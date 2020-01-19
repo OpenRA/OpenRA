@@ -226,6 +226,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			windowModeDropdown.GetText = () => ds.Mode == WindowMode.Windowed ?
 				"Windowed" : ds.Mode == WindowMode.Fullscreen ? "Fullscreen (Legacy)" : "Fullscreen";
 
+			var modeChangesDesc = panel.Get("MODE_CHANGES_DESC");
+			modeChangesDesc.IsVisible = () => ds.Mode != WindowMode.Windowed && ds.Mode != OriginalGraphicsMode;
+
 			var statusBarsDropDown = panel.Get<DropDownButtonWidget>("STATUS_BAR_DROPDOWN");
 			statusBarsDropDown.OnMouseDown = _ => ShowStatusBarsDropdown(statusBarsDropDown, gs);
 			statusBarsDropDown.GetText = () => gs.StatusBars == StatusBarsType.Standard ?
@@ -252,10 +255,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			panel.Get("WINDOW_RESOLUTION").IsVisible = () => ds.Mode == WindowMode.Windowed;
 			var windowWidth = panel.Get<TextFieldWidget>("WINDOW_WIDTH");
-			windowWidth.Text = ds.WindowedSize.X.ToString();
+			var origWidthText = windowWidth.Text = ds.WindowedSize.X.ToString();
 
 			var windowHeight = panel.Get<TextFieldWidget>("WINDOW_HEIGHT");
-			windowHeight.Text = ds.WindowedSize.Y.ToString();
+			var origHeightText = windowHeight.Text = ds.WindowedSize.Y.ToString();
+
+			var windowChangesDesc = panel.Get("WINDOW_CHANGES_DESC");
+			windowChangesDesc.IsVisible = () => ds.Mode == WindowMode.Windowed &&
+				(ds.Mode != OriginalGraphicsMode || origWidthText != windowWidth.Text || origHeightText != windowHeight.Text);
 
 			var frameLimitCheckbox = panel.Get<CheckboxWidget>("FRAME_LIMIT_CHECKBOX");
 			var frameLimitOrigLabel = frameLimitCheckbox.Text;
