@@ -188,7 +188,7 @@ namespace OpenRA.Graphics
 				return;
 
 			// Render cursor in software
-			var doubleCursor = graphicSettings.CursorDouble && cursor.Name != "default";
+			var doubleCursor = graphicSettings.CursorDouble;
 			var cursorSprite = cursor.Sprites[frame % cursor.Length];
 			var cursorSize = doubleCursor ? 2.0f * cursorSprite.Size : cursorSprite.Size;
 			var mousePos = isLocked ? lockedPosition : Viewport.LastMousePos;
@@ -266,7 +266,7 @@ namespace OpenRA.Graphics
 				}
 			}
 
-			return Game.Renderer.Window.CreateHardwareCursor(name, new Size(newWidth, newHeight), rgbaData, hotspot, graphicSettings.CursorDouble && cursor.Name != "default");
+			return Game.Renderer.Window.CreateHardwareCursor(name, new Size(newWidth, newHeight), rgbaData, hotspot, graphicSettings.CursorDouble);
 		}
 
 		void ClearHardwareCursors()
