@@ -26,7 +26,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		static readonly WindowMode OriginalGraphicsMode;
 		static readonly int2 OriginalGraphicsWindowedSize;
 		static readonly int2 OriginalGraphicsFullscreenSize;
-		static readonly bool OriginalGraphicsHardwareCursors;
 		static readonly bool OriginalServerDiscoverNatDevices;
 
 		readonly Dictionary<PanelType, Action> leavePanelActions = new Dictionary<PanelType, Action>();
@@ -53,7 +52,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			OriginalGraphicsMode = original.Graphics.Mode;
 			OriginalGraphicsWindowedSize = original.Graphics.WindowedSize;
 			OriginalGraphicsFullscreenSize = original.Graphics.FullscreenSize;
-			OriginalGraphicsHardwareCursors = original.Graphics.HardwareCursors;
 			OriginalServerDiscoverNatDevices = original.Server.DiscoverNatDevices;
 		}
 
@@ -84,8 +82,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				    current.Graphics.Mode != OriginalGraphicsMode ||
 				    current.Graphics.WindowedSize != OriginalGraphicsWindowedSize ||
 					current.Graphics.FullscreenSize != OriginalGraphicsFullscreenSize ||
-					current.Server.DiscoverNatDevices != OriginalServerDiscoverNatDevices ||
-					current.Graphics.HardwareCursors != OriginalGraphicsHardwareCursors)
+					current.Server.DiscoverNatDevices != OriginalServerDiscoverNatDevices)
 				{
 					Action restart = () =>
 					{
@@ -211,7 +208,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var ds = Game.Settings.Graphics;
 			var gs = Game.Settings.Game;
 
-			BindCheckboxPref(panel, "HARDWARECURSORS_CHECKBOX", ds, "HardwareCursors");
 			BindCheckboxPref(panel, "CURSORDOUBLE_CHECKBOX", ds, "CursorDouble");
 			BindCheckboxPref(panel, "VSYNC_CHECKBOX", ds, "VSync");
 			BindCheckboxPref(panel, "FRAME_LIMIT_CHECKBOX", ds, "CapFramerate");
