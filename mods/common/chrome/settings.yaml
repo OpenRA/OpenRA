@@ -93,106 +93,35 @@ Background@SETTINGS_PANEL:
 			Width: PARENT_RIGHT - 10
 			Height: PARENT_BOTTOM
 			Children:
-				Label@MODE_LABEL:
-					X: 110
+				Label@PLAYER:
+					Text: Player Name:
+					X: 15
 					Y: 40
-					Width: 45
+					Width: 120
 					Height: 25
 					Align: Right
-					Text: Mode:
-				DropDownButton@MODE_DROPDOWN:
-					X: 160
-					Y: 40
-					Width: 170
-					Height: 25
-					Font: Regular
-					Text: Windowed
-				Container@WINDOW_RESOLUTION:
-					X: 330
-					Y: 40
-					Children:
-						Label@At:
-							Text: @
-							Font: Bold
-							Y: 1
-							Height: 25
-							Width: 25
-							Align: Center
-						TextField@WINDOW_WIDTH:
-							X: 25
-							Width: 45
-							Height: 25
-							MaxLength: 5
-							Type: Integer
-						Label@X:
-							Text: x
-							Font: Bold
-							X: 70
-							Y: 0
-							Height: 25
-							Width: 15
-							Align: Center
-						TextField@WINDOW_HEIGHT:
-							X: 85
-							Width: 45
-							Height: 25
-							MaxLength: 5
-							Type: Integer
-				Label@VIDEO_DESC:
-					Y: 67
-					Width: PARENT_RIGHT
-					Height: 25
-					Font: Tiny
-					Align: Center
-					Text: Mode and resolutiom changes will be applied after the game is restarted
-				Checkbox@VSYNC_CHECKBOX:
-					X: 80
-					Y: 125
-					Width: 200
-					Height: 20
-					Font: Regular
-					Text: Enable VSync
-				Checkbox@FRAME_LIMIT_CHECKBOX:
-					X: 310
-					Y: 125
-					Width: 200
-					Height: 20
-					Font: Regular
-					Text: Enable Frame Limiter
-				Slider@FRAME_LIMIT_SLIDER:
-					X: 330
-					Y: 150
-					Width: 200
-					Height: 20
-					Ticks: 20
-					MinimumValue: 50
-					MaximumValue: 240
-				Checkbox@PLAYER_STANCE_COLORS_CHECKBOX:
-					X: 310
-					Y: 183
-					Width: 200
-					Height: 20
-					Font: Regular
-					Text: Player Stance Colors
-				Label@PLAYER:
-					Text: Player:
-					X: 15
-					Y: 180
-					Height: 25
 				TextField@PLAYERNAME:
 					Text: Name
-					X: 65
-					Y: 180
-					Width: 145
+					X: 140
+					Y: 40
+					Width: 160
 					Height: 25
 					MaxLength: 16
+				Label@COLOR:
+					X: 265
+					Y: 40
+					Width: 145
+					Height: 25
+					Text: Preferred Color:
+					Align: Right
 				ColorPreviewManager@COLOR_MANAGER:
 				DropDownButton@PLAYERCOLOR:
-					X: 215
-					Y: 180
-					Width: 70
+					X: 415
+					Y: 40
+					Width: 75
 					Height: 25
 					IgnoreChildMouseOver: true
+					PanelAlign: Right
 					Children:
 						ColorBlock@COLORBLOCK:
 							X: 5
@@ -201,50 +130,141 @@ Background@SETTINGS_PANEL:
 							Height: PARENT_BOTTOM - 12
 				Label@BATTLEFIELD_CAMERA:
 					X: 15
-					Y: 210
+					Y: 70
 					Width: 120
 					Height: 25
 					Text: Battlefield Camera:
 					Align: Right
 				DropDownButton@BATTLEFIELD_CAMERA_DROPDOWN:
 					X: 140
-					Y: 210
-					Width: 145
+					Y: 70
+					Width: 160
 					Height: 25
 					Font: Regular
 				Label@TARGET_LINES:
-					X: 250
-					Y: 210
+					X: 265
+					Y: 70
 					Width: 145
 					Height: 25
 					Text: Target Lines:
 					Align: Right
 				DropDownButton@TARGET_LINES_DROPDOWN:
-					X: 400
-					Y: 210
-					Width: 175
+					X: 415
+					Y: 70
+					Width: 160
 					Height: 25
 					Font: Regular
 				Label@STATUS_BARS:
-					X: 250
-					Y: 240
+					X: 265
+					Y: 100
 					Width: 145
 					Height: 25
 					Text: Status Bars:
 					Align: Right
+				DropDownButton@STATUS_BAR_DROPDOWN:
+					X: 415
+					Y: 100
+					Width: 160
+					Height: 25
+					Font: Regular
 				Checkbox@CURSORDOUBLE_CHECKBOX:
 					X: 15
-					Y: 243
+					Y: 133
 					Width: 200
 					Height: 20
 					Font: Regular
 					Text: Increase Cursor Size
-				DropDownButton@STATUS_BAR_DROPDOWN:
-					X: 400
-					Y: 240
-					Width: 175
+				Checkbox@PLAYER_STANCE_COLORS_CHECKBOX:
+					X: 310
+					Y: 133
+					Width: 200
+					Height: 20
+					Font: Regular
+					Text: Player Stance Colors
+				Label@VIDEO_TITLE:
+					Y: 190
+					Width: PARENT_RIGHT
+					Font: Bold
+					Text: Video
+					Align: Center
+				Label@VIDEO_MODE:
+					X: 15
+					Y: 210
+					Width: 120
+					Height: 25
+					Align: Right
+					Text: Video Mode:
+				DropDownButton@MODE_DROPDOWN:
+					X: 140
+					Y: 210
+					Width: 160
 					Height: 25
 					Font: Regular
+					Text: Windowed
+				Label@MODE_CHANGES_DESC:
+					X: 100
+					Y: 237
+					Width: 200
+					Height: 15
+					Font: Tiny
+					Text: Video mode changes require restart
+				Checkbox@VSYNC_CHECKBOX:
+					X: 310
+					Y: 213
+					Width: 200
+					Height: 20
+					Font: Regular
+					Text: Enable VSync
+				Container@WINDOW_RESOLUTION:
+					Y: 240
+					Children:
+						Label@WINDOW_SIZE:
+							X: 15
+							Height: 25
+							Width: 120
+							Align: Right
+							Text: Window Size:
+						TextField@WINDOW_WIDTH:
+							X: 140
+							Width: 55
+							Height: 25
+							MaxLength: 5
+							Type: Integer
+						Label@X:
+							Text: x
+							Font: Bold
+							X: 195
+							Height: 25
+							Width: 15
+							Align: Center
+						TextField@WINDOW_HEIGHT:
+							X: 210
+							Width: 55
+							Height: 25
+							MaxLength: 5
+							Type: Integer
+						Label@WINDOW_CHANGES_DESC:
+							X: 60
+							Y: 27
+							Width: 200
+							Height: 15
+							Font: Tiny
+							Text: Video mode and window size changes require restart
+				Checkbox@FRAME_LIMIT_CHECKBOX:
+					X: 310
+					Y: 243
+					Width: 200
+					Height: 20
+					Font: Regular
+					Text: Enable Frame Limiter
+				Slider@FRAME_LIMIT_SLIDER:
+					X: 340
+					Y: 265
+					Width: 200
+					Height: 20
+					Ticks: 20
+					MinimumValue: 50
+					MaximumValue: 240
 		Container@AUDIO_PANEL:
 			X: 5
 			Y: 50
