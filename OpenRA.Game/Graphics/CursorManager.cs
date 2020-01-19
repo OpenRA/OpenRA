@@ -40,8 +40,7 @@ namespace OpenRA.Graphics
 
 		public CursorManager(CursorProvider cursorProvider)
 		{
-			// Cursor settings are applied on game start
-			hardwareCursorsDisabled = !Game.Settings.Graphics.HardwareCursors;
+			hardwareCursorsDisabled = Game.Settings.Graphics.DisableHardwareCursors;
 
 			graphicSettings = Game.Settings.Graphics;
 			sheetBuilder = new SheetBuilder(SheetType.BGRA);

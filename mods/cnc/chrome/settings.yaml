@@ -124,20 +124,13 @@ Container@SETTINGS_PANEL:
 									Height: 25
 									MaxLength: 5
 									Type: Integer
-						Checkbox@HARDWARECURSORS_CHECKBOX:
-							X: 80
-							Y: 75
-							Width: 200
-							Height: 20
-							Font: Regular
-							Text: Use Hardware Cursors
 						Label@VIDEO_DESC:
-							Y: 97
+							Y: 67
 							Width: PARENT_RIGHT
 							Height: 25
 							Font: Tiny
 							Align: Center
-							Text: Mode, resolution, and cursor changes will be applied after the game is restarted
+							Text: Mode and resolution changes will be applied after the game is restarted
 						Checkbox@VSYNC_CHECKBOX:
 							X: 80
 							Y: 125
