@@ -21,6 +21,7 @@ namespace OpenRA.Mods.Common.Widgets
 	{
 		public readonly string SeparatorCollection = "dropdown";
 		public readonly string SeparatorImage = "separator";
+		public readonly TextAlign PanelAlign = TextAlign.Left;
 
 		Widget panel;
 		MaskWidget fullscreenMask;
@@ -101,12 +102,18 @@ namespace OpenRA.Mods.Common.Widgets
 			panelRoot.AddChild(fullscreenMask);
 
 			var oldBounds = panel.Bounds;
+			var panelX = RenderOrigin.X - panelRoot.RenderOrigin.X;
+			if (PanelAlign == TextAlign.Right)
+				panelX += Bounds.Width - oldBounds.Width;
+			else if (PanelAlign == TextAlign.Center)
+				panelX += (Bounds.Width - oldBounds.Width) / 2;
+
 			var panelY = RenderOrigin.Y + Bounds.Height - panelRoot.RenderOrigin.Y;
 			if (panelY + oldBounds.Height > Game.Renderer.Resolution.Height)
 				panelY -= (Bounds.Height + oldBounds.Height);
 
 			panel.Bounds = new Rectangle(
-				RenderOrigin.X - panelRoot.RenderOrigin.X,
+				panelX,
 				panelY,
 				oldBounds.Width,
 				oldBounds.Height);
