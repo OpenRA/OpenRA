@@ -41,6 +41,25 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				var nodes = MiniYaml.Merge(modData.Manifest.Sequences.Select(s => MiniYaml.FromStream(modData.DefaultFileSystem.Open(s), s)));
 				foreach (var n in nodes.Where(node => !node.Key.StartsWith(ActorInfo.AbstractActorPrefix, StringComparison.Ordinal)))
 					modData.SpriteSequenceLoader.ParseSequences(modData, ts, sc, n);
+
+				foreach (var template in ts.Templates)
+				{
+					foreach (var image in template.Value.Images)
+					{
+						if (!modData.DefaultFileSystem.Exists(image))
+						{
+							failed = true;
+							Console.WriteLine("\t" + "Tileset file {0} not found.".F(image));
+						}
+
+						var sprites = sc[image];
+						if (template.Value.TilesCount > sprites.Length)
+						{
+							failed = true;
+							Console.WriteLine("\t" + "Tileset tile {0} has frames defined without matching artwork.".F(template.Key));
+						}
+					}
+				}
 			}
 
 			if (failed)
