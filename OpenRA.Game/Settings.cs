@@ -171,6 +171,9 @@ namespace OpenRA
 		[Desc("Disable separate OpenGL render thread on Windows operating systems.")]
 		public bool DisableWindowsRenderThread = true;
 
+		[Desc("Disable the OpenGL debug message callback feature.")]
+		public bool DisableGLDebugMessageCallback = false;
+
 		[Desc("Use OpenGL ES if both ES and regular OpenGL are available.")]
 		public bool PreferGLES = false;
 
