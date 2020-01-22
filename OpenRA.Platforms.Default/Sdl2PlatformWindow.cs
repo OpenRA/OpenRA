@@ -29,7 +29,7 @@ namespace OpenRA.Platforms.Default
 		readonly object syncObject = new object();
 		Size windowSize;
 		Size surfaceSize;
-		float windowScale;
+		float windowScale = 1f;
 		int2? lockedMousePosition;
 
 		internal IntPtr Window
@@ -73,13 +73,11 @@ namespace OpenRA.Platforms.Default
 		[DllImport("user32.dll")]
 		static extern bool SetProcessDPIAware();
 
-		public Sdl2PlatformWindow(Size requestWindowSize, WindowMode windowMode, int batchSize)
+		public Sdl2PlatformWindow(Size requestEffectiveWindowSize, WindowMode windowMode, int batchSize)
 		{
 			// Lock the Window/Surface properties until initialization is complete
 			lock (syncObject)
 			{
-				windowSize = requestWindowSize;
-
 				// Disable legacy scaling on Windows
 				if (Platform.CurrentPlatform == PlatformType.Windows)
 					SetProcessDPIAware();
@@ -113,12 +111,31 @@ namespace OpenRA.Platforms.Default
 				SDL.SDL_DisplayMode display;
 				SDL.SDL_GetCurrentDisplayMode(0, out display);
 
+				// Windows and Linux define window sizes in native pixel units.
+				// Query the display/dpi scale so we can convert our requested effective size to pixels.
+				// This is not necessary on macOS, which defines window sizes in effective units ("points").
+				if (Platform.CurrentPlatform == PlatformType.Windows)
+				{
+					float ddpi, hdpi, vdpi;
+					if (SDL.SDL_GetDisplayDPI(0, out ddpi, out hdpi, out vdpi) == 0)
+						windowScale = ddpi / 96;
+				}
+				else if (Platform.CurrentPlatform != PlatformType.OSX)
+				{
+					float scale = 1;
+					var scaleVariable = Environment.GetEnvironmentVariable("OPENRA_DISPLAY_SCALE");
+					if (scaleVariable != null && float.TryParse(scaleVariable, out scale))
+						windowScale = scale;
+				}
+
 				Console.WriteLine("Desktop resolution: {0}x{1}", display.w, display.h);
-				if (windowSize.Width == 0 && windowSize.Height == 0)
+				if (requestEffectiveWindowSize.Width == 0 && requestEffectiveWindowSize.Height == 0)
 				{
 					Console.WriteLine("No custom resolution provided, using desktop resolution");
-					windowSize = new Size(display.w, display.h);
+					surfaceSize = windowSize = new Size(display.w, display.h);
 				}
+				else
+					surfaceSize = windowSize = new Size((int)(requestEffectiveWindowSize.Width * windowScale), (int)(requestEffectiveWindowSize.Height * windowScale));
 
 				Console.WriteLine("Using resolution: {0}x{1}", windowSize.Width, windowSize.Height);
 
@@ -156,9 +173,6 @@ namespace OpenRA.Platforms.Default
 					}
 				}
 
-				surfaceSize = windowSize;
-				windowScale = 1;
-
 				// Enable high resolution rendering for Retina displays
 				if (Platform.CurrentPlatform == PlatformType.OSX)
 				{
@@ -170,25 +184,8 @@ namespace OpenRA.Platforms.Default
 					surfaceSize = new Size(width, height);
 					windowScale = width * 1f / windowSize.Width;
 				}
-				else if (Platform.CurrentPlatform == PlatformType.Windows)
-				{
-					float ddpi, hdpi, vdpi;
-					if (SDL.SDL_GetDisplayDPI(0, out ddpi, out hdpi, out vdpi) == 0)
-					{
-						windowScale = ddpi / 96;
-						windowSize = new Size((int)(surfaceSize.Width / windowScale), (int)(surfaceSize.Height / windowScale));
-					}
-				}
 				else
-				{
-					float scale = 1;
-					var scaleVariable = Environment.GetEnvironmentVariable("OPENRA_DISPLAY_SCALE");
-					if (scaleVariable != null && float.TryParse(scaleVariable, out scale))
-					{
-						windowScale = scale;
-						windowSize = new Size((int)(surfaceSize.Width / windowScale), (int)(surfaceSize.Height / windowScale));
-					}
-				}
+					windowSize = new Size((int)(surfaceSize.Width / windowScale), (int)(surfaceSize.Height / windowScale));
 
 				Console.WriteLine("Using window scale {0:F2}", windowScale);
 
