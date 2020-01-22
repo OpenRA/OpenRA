@@ -512,8 +512,9 @@ namespace OpenRA.Platforms.Default
 			{
 				try
 				{
-					glDebugMessageCallback = Bind<DebugMessageCallback>("glDebugMessageCallback");
-					glDebugMessageInsert = Bind<DebugMessageInsert>("glDebugMessageInsert");
+					var suffix = Features.HasFlag(GLFeatures.GLES) ? "KHR" : "";
+					glDebugMessageCallback = Bind<DebugMessageCallback>("glDebugMessageCallback" + suffix);
+					glDebugMessageInsert = Bind<DebugMessageInsert>("glDebugMessageInsert" + suffix);
 
 					glEnable(GL_DEBUG_OUTPUT);
 					glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
