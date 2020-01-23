@@ -17,6 +17,8 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[Desc("Measured in ticks.")]
 		public readonly int ChargeInterval = 0;
+
+		[FieldLoader.Require]
 		public readonly string Icon = null;
 		public readonly string Description = "";
 		public readonly string LongDesc = "";
