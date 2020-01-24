@@ -65,6 +65,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			panelContainer = widget.Get("SETTINGS_PANEL");
 			tabContainer = widget.Get("TAB_CONTAINER");
 
+			var panelNames = new Dictionary<PanelType, string>()
+			{
+				{ PanelType.Display, "Display" },
+				{ PanelType.Audio, "Audio" },
+				{ PanelType.Input, "Input" },
+				{ PanelType.Hotkeys, "Hotkeys" },
+				{ PanelType.Advanced, "Advanced" },
+			};
+
 			RegisterSettingsPanel(PanelType.Display, InitDisplayPanel, ResetDisplayPanel, "DISPLAY_PANEL", "DISPLAY_TAB");
 			RegisterSettingsPanel(PanelType.Audio, InitAudioPanel, ResetAudioPanel, "AUDIO_PANEL", "AUDIO_TAB");
 			RegisterSettingsPanel(PanelType.Input, InitInputPanel, ResetInputPanel, "INPUT_PANEL", "INPUT_TAB");
@@ -104,8 +113,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			panelContainer.Get<ButtonWidget>("RESET_BUTTON").OnClick = () =>
 			{
-				resetPanelActions[settingsPanel]();
-				Game.Settings.Save();
+				Action reset = () =>
+				{
+					resetPanelActions[settingsPanel]();
+					Game.Settings.Save();
+				};
+
+				ConfirmationDialogs.ButtonPrompt(
+					title: "Reset \"{0}\"".F(panelNames[settingsPanel]),
+					text: "Are you sure you want to reset\nall settings in this panel?",
+					onConfirm: reset,
+					onCancel: () => { },
+					confirmText: "Reset",
+					cancelText: "Cancel");
 			};
 		}
 
