@@ -146,6 +146,9 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new RenameProneTime(),
 				new ReplaceAttackTypeStrafe(),
 				new RemoveWithPermanentInjury(),
+				new AddResourceRenderer(),
+				new ReformatChromeProvider(),
+				new RenameSpins(),
 				new CreateScreenShakeWarhead(),
 			})
 		};
