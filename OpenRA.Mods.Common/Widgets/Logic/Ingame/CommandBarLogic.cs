@@ -227,7 +227,7 @@ namespace OpenRA.Mods.Common.Widgets
 								continue;
 
 							// Event is not valid for this button
-							if (e.Event == KeyInputEvent.Up && !keyUpButtons.Contains(b))
+							if (!(b.DisableKeyRepeat ^ e.IsRepeat) || (e.Event == KeyInputEvent.Up && !keyUpButtons.Contains(b)))
 								continue;
 
 							b.OnKeyPress(e);
