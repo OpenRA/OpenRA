@@ -366,6 +366,8 @@ dropdown:
 	Inherits: ^Chrome
 	Regions:
 		separator: 65, 1, 1, 19
+		separator-hover: 161, 2, 1, 19
+		separator-disabled: 65, 1, 1, 19
 
 #
 # Common chrome

@@ -683,6 +683,8 @@ dropdown:
 	Inherits: ^Dialog
 	Regions:
 		separator: 513, 1, 1, 19
+		separator-hover: 513, 1, 1, 19
+		separator-disabled: 513, 1, 1, 19
 
 logos:
 	Inherits: ^LoadScreen
