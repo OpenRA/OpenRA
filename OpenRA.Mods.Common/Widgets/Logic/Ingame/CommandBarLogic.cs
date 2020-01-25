@@ -207,6 +207,7 @@ namespace OpenRA.Mods.Common.Widgets
 			if (keyOverrides != null)
 			{
 				var noShiftButtons = new[] { guardButton, deployButton, attackMoveButton };
+				var keyUpButtons = new[] { guardButton, attackMoveButton };
 				keyOverrides.AddHandler(e =>
 				{
 					// HACK: allow command buttons to be triggered if the shift (queue order modifier) key is held
@@ -217,11 +218,20 @@ namespace OpenRA.Mods.Common.Widgets
 
 						foreach (var b in noShiftButtons)
 						{
-							if (b != null && !b.IsDisabled() && b.Key.IsActivatedBy(eNoShift))
-							{
-								b.OnKeyPress(e);
-								return true;
-							}
+							// Button is not used by this mod
+							if (b == null)
+								continue;
+
+							// Button is not valid for this event
+							if (b.IsDisabled() || !b.Key.IsActivatedBy(eNoShift))
+								continue;
+
+							// Event is not valid for this button
+							if (e.Event == KeyInputEvent.Up && !keyUpButtons.Contains(b))
+								continue;
+
+							b.OnKeyPress(e);
+							return true;
 						}
 					}
 
