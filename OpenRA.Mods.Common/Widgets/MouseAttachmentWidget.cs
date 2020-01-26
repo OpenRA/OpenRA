@@ -36,7 +36,12 @@ namespace OpenRA.Mods.Common.Widgets
 			if (sprite != null && palette != null)
 			{
 				var directionPalette = worldRenderer.Palette(palette);
-				WidgetUtils.DrawSHPCentered(sprite, ChildOrigin, directionPalette, graphicSettings.CursorDouble ? 2 : 1);
+
+				// Cursor is rendered in native window coordinates
+				// Apply same scaling rules as hardware cursors
+				var ws = Game.Renderer.WindowScale;
+				var scale = (graphicSettings.CursorDouble ? 2 : 1) * (ws > 1.5f ? 2 : 1);
+				WidgetUtils.DrawSHPCentered(sprite, ChildOrigin, directionPalette, scale / ws);
 			}
 		}
 

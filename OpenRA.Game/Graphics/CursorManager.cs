@@ -190,11 +190,17 @@ namespace OpenRA.Graphics
 			var doubleCursor = graphicSettings.CursorDouble;
 			var cursorSprite = cursor.Sprites[frame % cursor.Length];
 			var cursorSize = doubleCursor ? 2.0f * cursorSprite.Size : cursorSprite.Size;
-			var mousePos = isLocked ? lockedPosition : Viewport.LastMousePos;
 
+			// Cursor is rendered in native window coordinates
+			// Apply same scaling rules as hardware cursors
+			var ws = Game.Renderer.WindowScale;
+			if (ws > 1.5f)
+				cursorSize = 2 * cursorSize;
+
+			var mousePos = isLocked ? lockedPosition : Viewport.LastMousePos;
 			renderer.RgbaSpriteRenderer.DrawSprite(cursorSprite,
 				mousePos,
-				cursorSize);
+				cursorSize / ws);
 		}
 
 		public void Lock()
