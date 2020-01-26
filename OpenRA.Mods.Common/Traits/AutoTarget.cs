@@ -236,8 +236,9 @@ namespace OpenRA.Mods.Common.Traits
 			if (attacker.Disposed)
 				return;
 
+			var allowMove = allowMovement && Stance > UnitStance.Defend;
 			foreach (var dat in disableAutoTarget)
-				if (dat.DisableAutoTarget(self))
+				if (dat.DisableAutoTarget(self, allowMove))
 					return;
 
 			if (!attacker.IsInWorld)
@@ -249,7 +250,6 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			// Don't fire at an invisible enemy when we can't move to reveal it
-			var allowMove = allowMovement && Stance > UnitStance.Defend;
 			if (!allowMove && !attacker.CanBeViewedByPlayer(self.Owner))
 				return;
 
@@ -293,7 +293,7 @@ namespace OpenRA.Mods.Common.Traits
 				nextScanTime = self.World.SharedRandom.Next(Info.MinimumScanTimeInterval, Info.MaximumScanTimeInterval);
 
 				foreach (var dat in disableAutoTarget)
-					if (dat.DisableAutoTarget(self))
+					if (dat.DisableAutoTarget(self, allowMove))
 						return Target.Invalid;
 
 				foreach (var ab in ActiveAttackBases)

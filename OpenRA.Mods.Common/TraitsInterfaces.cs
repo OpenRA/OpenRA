@@ -310,7 +310,7 @@ namespace OpenRA.Mods.Common.Traits
 	[RequireExplicitImplementation]
 	public interface IDisableAutoTarget
 	{
-		bool DisableAutoTarget(Actor self);
+		bool DisableAutoTarget(Actor self, bool allowMove);
 	}
 
 	[RequireExplicitImplementation]
