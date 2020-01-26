@@ -282,8 +282,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (check <= BlockedByActor.Immovable && !cellCache.Immovable.Overlaps(actor.Owner.PlayerMask))
 				return true;
 
-			// Cache doesn't account for ignored actors or temporary blockers - these must use the slow path.
-			if (ignoreActor == null && !cellFlag.HasCellFlag(CellFlag.HasTemporaryBlocker))
+			// Cache doesn't account for ignored actors, temporary blockers, or subcells - these must use the slow path.
+			if (ignoreActor == null && !cellFlag.HasCellFlag(CellFlag.HasTemporaryBlocker) && subCell == SubCell.FullCell)
 			{
 				// We already know there are uncrushable actors in the cell so we are always blocked.
 				if (check == BlockedByActor.All)

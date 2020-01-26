@@ -560,7 +560,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!self.IsAtGroundLevel())
 				return;
 
-			var actors = self.World.ActorMap.GetActorsAt(ToCell).Where(a => a != self).ToList();
+			var actors = self.World.ActorMap.GetActorsAt(ToCell, ToSubCell).Where(a => a != self).ToList();
 			if (!AnyCrushables(actors))
 				return;
 
