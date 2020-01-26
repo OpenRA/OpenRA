@@ -433,13 +433,15 @@ namespace OpenRA.Mods.Common.Widgets
 				var bi = item.TraitInfo<BuildableInfo>();
 				icon.Play(bi.Icon);
 
+				var palette = bi.IconPaletteIsPlayerPalette ? bi.IconPalette + producer.Actor.Owner.InternalName : bi.IconPalette;
+
 				var pi = new ProductionIcon()
 				{
 					Actor = item,
 					Name = item.Name,
 					Hotkey = DisplayedIconCount < HotkeyCount ? hotkeys[DisplayedIconCount] : null,
 					Sprite = icon.Image,
-					Palette = worldRenderer.Palette(bi.IconPalette),
+					Palette = worldRenderer.Palette(palette),
 					IconClockPalette = worldRenderer.Palette(ClockPalette),
 					IconDarkenPalette = worldRenderer.Palette(NotBuildablePalette),
 					Pos = new float2(rect.Location),

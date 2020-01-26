@@ -38,9 +38,12 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Sequence of the actor that contains the icon.")]
 		public readonly string Icon = "icon";
 
-		[PaletteReference]
+		[PaletteReference("IconPaletteIsPlayerPalette")]
 		[Desc("Palette used for the production icon.")]
 		public readonly string IconPalette = "chrome";
+
+		[Desc("Custom palette is a player palette BaseName")]
+		public readonly bool IconPaletteIsPlayerPalette = false;
 
 		[Desc("Base build time in frames (-1 indicates to use the unit's Value).")]
 		public readonly int BuildDuration = -1;
