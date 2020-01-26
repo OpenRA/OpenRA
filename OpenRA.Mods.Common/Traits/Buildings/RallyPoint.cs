@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool IsPlayerPalette = true;
 
 		[Desc("A list of 0 or more offsets defining the initial rally point path.")]
-		public readonly CVec[] Path = { new CVec(1, 3) };
+		public readonly CVec[] Path = { };
 
 		public object Create(ActorInitializer init) { return new RallyPoint(init.Self, this); }
 	}
