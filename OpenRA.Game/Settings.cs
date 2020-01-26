@@ -241,6 +241,9 @@ namespace OpenRA
 
 		public bool FetchNews = true;
 
+		[Desc("Version of introduction prompt that the player last viewed.")]
+		public int IntroductionPromptVersion = 0;
+
 		public MPGameFilters MPGameFilters = MPGameFilters.Waiting | MPGameFilters.Empty | MPGameFilters.Protected | MPGameFilters.Started;
 	}
 

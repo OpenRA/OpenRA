@@ -226,21 +226,35 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			menuType = MenuType.StartupPrompts;
-			Action onSysInfoComplete = () =>
+
+			Action onIntroductionComplete = () =>
 			{
-				LoadAndDisplayNews(webServices.GameNews, newsBG);
-				SwitchMenu(MenuType.Main);
+				Action onSysInfoComplete = () =>
+				{
+					LoadAndDisplayNews(webServices.GameNews, newsBG);
+					SwitchMenu(MenuType.Main);
+				};
+
+				if (SystemInfoPromptLogic.ShouldShowPrompt())
+				{
+					Ui.OpenWindow("MAINMENU_SYSTEM_INFO_PROMPT", new WidgetArgs
+					{
+						{ "onComplete", onSysInfoComplete }
+					});
+				}
+				else
+					onSysInfoComplete();
 			};
 
-			if (SystemInfoPromptLogic.ShouldShowPrompt())
+			if (IntroductionPromptLogic.ShouldShowPrompt())
 			{
-				Ui.OpenWindow("MAINMENU_SYSTEM_INFO_PROMPT", new WidgetArgs
+				Game.OpenWindow("MAINMENU_INTRODUCTION_PROMPT", new WidgetArgs
 				{
-					{ "onComplete", onSysInfoComplete }
+					{ "onComplete", onIntroductionComplete }
 				});
 			}
 			else
-				onSysInfoComplete();
+				onIntroductionComplete();
 
 			Game.OnShellmapLoaded += OpenMenuBasedOnLastGame;
 		}

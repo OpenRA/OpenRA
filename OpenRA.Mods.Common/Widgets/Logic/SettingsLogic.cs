@@ -135,7 +135,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 		}
 
-		static void BindCheckboxPref(Widget parent, string id, object group, string pref)
+		public static void BindCheckboxPref(Widget parent, string id, object group, string pref)
 		{
 			var field = group.GetType().GetField(pref);
 			if (field == null)
@@ -221,7 +221,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			resetPanelActions.Add(type, reset(panel));
 		}
 
-		static readonly Dictionary<WorldViewport, string> ViewportSizeNames = new Dictionary<WorldViewport, string>()
+		public static readonly Dictionary<WorldViewport, string> ViewportSizeNames = new Dictionary<WorldViewport, string>()
 		{
 			{ WorldViewport.Close, "Close" },
 			{ WorldViewport.Medium, "Medium" },
@@ -697,7 +697,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 		}
 
-		static void ShowMouseControlDropdown(DropDownButtonWidget dropdown, GameSettings s)
+		public static void ShowMouseControlDropdown(DropDownButtonWidget dropdown, GameSettings s)
 		{
 			var options = new Dictionary<string, bool>()
 			{
@@ -880,7 +880,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, options.Keys, setupItem);
 		}
 
-		static void ShowBattlefieldCameraDropdown(DropDownButtonWidget dropdown, WorldViewportSizes viewportSizes, GraphicSettings gs)
+		public static void ShowBattlefieldCameraDropdown(DropDownButtonWidget dropdown, WorldViewportSizes viewportSizes, GraphicSettings gs)
 		{
 			Func<WorldViewport, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
 			{
@@ -949,7 +949,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				RecalculateWidgetLayout(c, insideScrollPanel || w is ScrollPanelWidget);
 		}
 
-		static void ShowUIScaleDropdown(DropDownButtonWidget dropdown, GraphicSettings gs)
+		public static void ShowUIScaleDropdown(DropDownButtonWidget dropdown, GraphicSettings gs)
 		{
 			Func<float, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
 			{
