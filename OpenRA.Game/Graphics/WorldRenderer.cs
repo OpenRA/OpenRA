@@ -250,8 +250,10 @@ namespace OpenRA.Graphics
 
 		public void DrawAnnotations()
 		{
+			Game.Renderer.EnableAntialiasingFilter();
 			for (var i = 0; i < preparedAnnotationRenderables.Count; i++)
 				preparedAnnotationRenderables[i].Render(this);
+			Game.Renderer.DisableAntialiasingFilter();
 
 			// Engine debugging overlays
 			if (debugVis.Value != null && debugVis.Value.RenderGeometry)
