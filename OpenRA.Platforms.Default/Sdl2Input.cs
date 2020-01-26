@@ -148,7 +148,9 @@ namespace OpenRA.Platforms.Default
 						{
 							int x, y;
 							SDL.SDL_GetMouseState(out x, out y);
-							inputHandler.OnMouseInput(new MouseInput(MouseInputEvent.Scroll, MouseButton.None, new int2(x, y), new int2(0, e.wheel.y), mods, 0));
+
+							var pos = EventPosition(device, x, y);
+							inputHandler.OnMouseInput(new MouseInput(MouseInputEvent.Scroll, MouseButton.None, pos, new int2(0, e.wheel.y), mods, 0));
 
 							break;
 						}
