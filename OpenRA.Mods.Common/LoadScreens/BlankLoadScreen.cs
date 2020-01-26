@@ -22,11 +22,11 @@ namespace OpenRA.Mods.Common.LoadScreens
 	public class BlankLoadScreen : ILoadScreen
 	{
 		public LaunchArguments Launch;
-		ModData modData;
+		protected ModData ModData { get; private set; }
 
 		public virtual void Init(ModData modData, Dictionary<string, string> info)
 		{
-			this.modData = modData;
+			ModData = modData;
 		}
 
 		public virtual void Display()
@@ -110,14 +110,14 @@ namespace OpenRA.Mods.Common.LoadScreens
 			GC.SuppressFinalize(this);
 		}
 
-		public bool BeforeLoad()
+		public virtual bool BeforeLoad()
 		{
 			// If a ModContent section is defined then we need to make sure that the
 			// required content is installed or switch to the defined content installer.
-			if (!modData.Manifest.Contains<ModContent>())
+			if (!ModData.Manifest.Contains<ModContent>())
 				return true;
 
-			var content = modData.Manifest.Get<ModContent>();
+			var content = ModData.Manifest.Get<ModContent>();
 			var contentInstalled = content.Packages
 				.Where(p => p.Value.Required)
 				.All(p => p.Value.TestFiles.All(f => File.Exists(Platform.ResolvePath(f))));
@@ -125,7 +125,7 @@ namespace OpenRA.Mods.Common.LoadScreens
 			if (contentInstalled)
 				return true;
 
-			Game.InitializeMod(content.ContentInstallerMod, new Arguments(new[] { "Content.Mod=" + modData.Manifest.Id }));
+			Game.InitializeMod(content.ContentInstallerMod, new Arguments(new[] { "Content.Mod=" + ModData.Manifest.Id }));
 			return false;
 		}
 	}
