@@ -203,8 +203,8 @@ namespace OpenRA
 
 	public class PlayerSettings
 	{
-		[Desc("Sets the player nickname for in-game and IRC chat.")]
-		public string Name = "Newbie";
+		[Desc("Sets the player nickname.")]
+		public string Name = "Commander";
 		public Color Color = Color.FromAhsl(75, 255, 180);
 		public string LastServer = "localhost:1234";
 		public Color[] CustomColors = { };
