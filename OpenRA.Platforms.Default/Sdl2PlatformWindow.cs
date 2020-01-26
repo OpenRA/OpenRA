@@ -10,6 +10,8 @@
 #endregion
 
 using System;
+using System.Diagnostics;
+using System.Globalization;
 using System.Runtime.InteropServices;
 using OpenRA.Primitives;
 using SDL2;
@@ -162,10 +164,27 @@ namespace OpenRA.Platforms.Default
 				}
 				else if (Platform.CurrentPlatform != PlatformType.OSX)
 				{
-					float scale = 1;
-					var scaleVariable = Environment.GetEnvironmentVariable("OPENRA_DISPLAY_SCALE");
-					if (scaleVariable != null && float.TryParse(scaleVariable, out scale))
-						windowScale = scale;
+					// Launch the game with OPENRA_DISPLAY_SCALE to force a specific scaling factor
+					// Otherwise fall back to GDK_SCALE or parsing the x11 DPI configuration
+					var scaleVariable = Environment.GetEnvironmentVariable("OPENRA_DISPLAY_SCALE") ?? Environment.GetEnvironmentVariable("GDK_SCALE");
+					if (scaleVariable == null || !float.TryParse(scaleVariable, NumberStyles.Float, NumberFormatInfo.InvariantInfo, out windowScale))
+					{
+						// Attempt to automatically detect DPI
+						try
+						{
+							var psi = new ProcessStartInfo("/usr/bin/xrdb", "-query");
+							psi.UseShellExecute = false;
+							psi.RedirectStandardOutput = true;
+							var p = Process.Start(psi);
+							var lines = p.StandardOutput.ReadToEnd().Split('\n');
+
+							int dpi;
+							foreach (var line in lines)
+								if (line.StartsWith("Xft.dpi") && int.TryParse(line.Substring(8), out dpi))
+									windowScale = dpi / 96f;
+						}
+						catch { }
+					}
 				}
 
 				Console.WriteLine("Desktop resolution: {0}x{1}", display.w, display.h);
