@@ -10,7 +10,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using OpenRA.Graphics;
@@ -20,35 +19,32 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.LoadScreens
 {
-	public sealed class ModContentLoadScreen : ILoadScreen
+	public sealed class ModContentLoadScreen : SheetLoadScreen
 	{
 		Sprite sprite;
 		Rectangle bounds;
 
-		public void Init(ModData modData, Dictionary<string, string> info)
-		{
-			var res = Game.Renderer.Resolution;
-			bounds = new Rectangle(0, 0, res.Width, res.Height);
+		Sheet lastSheet;
+		Size lastResolution;
 
-			using (var stream = modData.DefaultFileSystem.Open(info["Image"]))
+		public override void DisplayInner(Renderer r, Sheet s)
+		{
+			if (s != lastSheet)
 			{
-				var sheet = new Sheet(SheetType.BGRA, stream);
-				sprite = new Sprite(sheet, new Rectangle(0, 0, 1024, 480), TextureChannel.RGBA);
+				lastSheet = s;
+				sprite = new Sprite(s, new Rectangle(0, 0, 1024, 480), TextureChannel.RGBA);
 			}
-		}
 
-		public void Display()
-		{
-			var r = Game.Renderer;
-			if (r == null)
-				return;
+			if (r.Resolution != lastResolution)
+			{
+				lastResolution = r.Resolution;
+				bounds = new Rectangle(0, 0, lastResolution.Width, lastResolution.Height);
+			}
 
-			r.BeginUI();
 			WidgetUtils.FillRectWithSprite(bounds, sprite);
-			r.EndFrame(new NullInputHandler());
 		}
 
-		public void StartGame(Arguments args)
+		public override void StartGame(Arguments args)
 		{
 			var modId = args.GetValue("Content.Mod", null);
 			Manifest selectedMod;
@@ -90,13 +86,7 @@ namespace OpenRA.Mods.Common.LoadScreens
 				.All(p => p.Value.TestFiles.All(f => File.Exists(Platform.ResolvePath(f))));
 		}
 
-		public void Dispose()
-		{
-			if (sprite != null)
-				sprite.Sheet.Dispose();
-		}
-
-		public bool BeforeLoad()
+		public override bool BeforeLoad()
 		{
 			return true;
 		}
