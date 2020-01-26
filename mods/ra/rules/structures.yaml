@@ -1814,7 +1814,6 @@ KENN:
 	WithBuildingBib:
 		HasMinibib: True
 	RallyPoint:
-		Path: 0,2
 	Exit@0:
 		RequiresCondition: !being-captured
 		SpawnOffset: -280,400,0
