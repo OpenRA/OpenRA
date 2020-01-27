@@ -196,6 +196,8 @@ DOME.NoInfiltrate:
 	-InfiltrateForExploration:
 	Targetable:
 		TargetTypes: Ground, Structure, C4, DetonateAttack, MissionObjective
+	ProvidesPrerequisite:
+		Prerequisite: dome
 
 SPY:
 	Infiltrates:
