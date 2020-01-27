@@ -180,7 +180,7 @@ namespace OpenRA.Mods.Common.Graphics
 				{
 					MiniYaml length;
 					if (d.TryGetValue("Length", out length) && length.Value == "*")
-						Length = frameCount - Start;
+						Length = Frames != null ? Frames.Length : frameCount - Start;
 					else
 						Length = LoadField(d, "Length", 1);
 
