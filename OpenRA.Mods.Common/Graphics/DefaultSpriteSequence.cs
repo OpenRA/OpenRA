@@ -210,7 +210,7 @@ namespace OpenRA.Mods.Common.Graphics
 							.F(sequence, animation, Start, Start + (Facings - 1) * Stride + Length - 1, frameCount - 1,
 								info.Nodes[0].Location));
 
-					if (ShadowStart + (Facings - 1) * Stride + Length > frameCount)
+					if (ShadowStart >= 0 && ShadowStart + (Facings - 1) * Stride + Length > frameCount)
 						throw new InvalidOperationException(
 							"{5}: Sequence {0}.{1}'s shadow frames use frames [{2}..{3}], but only [0..{4}] actually exist"
 							.F(sequence, animation, ShadowStart, ShadowStart + (Facings - 1) * Stride + Length - 1, frameCount - 1,
