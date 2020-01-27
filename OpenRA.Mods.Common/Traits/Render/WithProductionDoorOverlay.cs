@@ -40,6 +40,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		readonly Animation door;
 		int desiredFrame;
 		CPos openExit;
+		Actor exitingActor;
 
 		public WithProductionDoorOverlay(Actor self, WithProductionDoorOverlayInfo info)
 			: base(info)
@@ -57,8 +58,14 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		void ITick.Tick(Actor self)
 		{
-			if (desiredFrame > 0 && !self.World.ActorMap.GetActorsAt(openExit).Any(a => a != self))
+			if (exitingActor == null)
+				return;
+
+			if (!exitingActor.IsInWorld || exitingActor.Location != openExit || !(exitingActor.CurrentActivity is Mobile.ReturnToCellActivity))
+			{
 				desiredFrame = 0;
+				exitingActor = null;
+			}
 		}
 
 		void INotifyDamageStateChanged.DamageStateChanged(Actor self, AttackInfo e)
@@ -70,6 +77,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		void INotifyProduction.UnitProduced(Actor self, Actor other, CPos exit)
 		{
 			openExit = exit;
+			exitingActor = other;
 			desiredFrame = door.CurrentSequence.Length - 1;
 		}
 	}
