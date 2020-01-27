@@ -92,6 +92,8 @@ WEAP.infiltratable:
 		TargetTypes: Ground, C4, DetonateAttack, Structure, Mission Objectives
 	RenderSprites:
 		Image: WEAP
+	ProvidesPrerequisite:
+		Prerequisite: weap
 
 MISS:
 	Tooltip:
