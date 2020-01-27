@@ -636,7 +636,7 @@ namespace OpenRA.Mods.Common.Traits
 			return new ReturnToCellActivity(self);
 		}
 
-		class ReturnToCellActivity : Activity
+		public class ReturnToCellActivity : Activity
 		{
 			readonly Mobile mobile;
 			readonly bool recalculateSubCell;
