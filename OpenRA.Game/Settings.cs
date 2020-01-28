@@ -205,7 +205,7 @@ namespace OpenRA
 	{
 		[Desc("Sets the player nickname.")]
 		public string Name = "Commander";
-		public Color Color = Color.FromAhsl(75, 255, 180);
+		public Color Color = Color.FromArgb(200, 32, 32);
 		public string LastServer = "localhost:1234";
 		public Color[] CustomColors = { };
 	}
