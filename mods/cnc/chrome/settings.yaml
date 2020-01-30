@@ -140,6 +140,19 @@ Container@SETTINGS_PANEL:
 							Width: 160
 							Height: 25
 							Font: Regular
+						Label@UI_SCALE:
+							X: 15
+							Y: 100
+							Width: 120
+							Height: 25
+							Text: UI Scale:
+							Align: Right
+						DropDownButton@UI_SCALE_DROPDOWN:
+							X: 140
+							Y: 100
+							Width: 160
+							Height: 25
+							Font: Regular
 						Label@STATUS_BARS:
 							X: 265
 							Y: 100

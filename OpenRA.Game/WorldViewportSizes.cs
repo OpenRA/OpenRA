@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using OpenRA.Primitives;
 
 namespace OpenRA
 {
@@ -22,6 +23,8 @@ namespace OpenRA
 		public readonly float MaxZoomScale = 2.0f;
 		public readonly int MaxZoomWindowHeight = 240;
 		public readonly bool AllowNativeZoom = true;
+
+		public readonly Size MinEffectiveResolution = new Size(1024, 720);
 
 		public int2 GetSizeRange(WorldViewport distance)
 		{
