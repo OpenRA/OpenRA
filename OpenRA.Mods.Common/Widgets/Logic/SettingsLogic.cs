@@ -1023,6 +1023,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			hotkeyEntryWidget = panel.Get<HotkeyEntryWidget>("HOTKEY_ENTRY");
 			hotkeyEntryWidget.IsValid = () => isHotkeyValid;
 			hotkeyEntryWidget.OnLoseFocus = ValidateHotkey;
+			hotkeyEntryWidget.OnEscKey = () =>
+			{
+				hotkeyEntryWidget.Key = modData.Hotkeys[selectedHotkeyDefinition.Name].GetValue();
+			};
 		}
 
 		void ValidateHotkey()
@@ -1033,6 +1037,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			if (isHotkeyValid)
 				SaveHotkey();
+			else
+				hotkeyEntryWidget.TakeKeyboardFocus();
 		}
 
 		void SaveHotkey()
