@@ -42,9 +42,6 @@ Metrics:
 	TextfieldColorHighlight: 195BC4
 	TextfieldFont: Regular
 	WaitingGameColor: 00FF00
-	UPnPDisabledColor: FFFFFF
-	UPnPEnabledColor: 00FF00
-	UPnPNotSupportedColor: FF0000
 	NoticeInfoColor: FFFFFF
 	NoticeWarningColor: FFA500
 	NoticeSuccessColor: 00FF00
