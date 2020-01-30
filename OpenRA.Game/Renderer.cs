@@ -91,6 +91,11 @@ namespace OpenRA
 			return new Size(size.X, size.Y);
 		}
 
+		public void SetUIScale(float scale)
+		{
+			Window.SetScaleModifier(scale);
+		}
+
 		public void InitializeFonts(ModData modData)
 		{
 			if (Fonts != null)

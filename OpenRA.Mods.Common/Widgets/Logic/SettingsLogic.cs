@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
+using OpenRA.Support;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -34,6 +35,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		readonly ModData modData;
 		readonly WorldRenderer worldRenderer;
+		readonly WorldViewportSizes viewportSizes;
 		readonly Dictionary<string, MiniYaml> logicArgs;
 
 		SoundDevice soundDevice;
@@ -61,6 +63,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			this.worldRenderer = worldRenderer;
 			this.modData = modData;
 			this.logicArgs = logicArgs;
+			viewportSizes = modData.Manifest.Get<WorldViewportSizes>();
 
 			panelContainer = widget.Get("SETTINGS_PANEL");
 			tabContainer = widget.Get("TAB_CONTAINER");
@@ -261,7 +264,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var battlefieldCameraDropDown = panel.Get<DropDownButtonWidget>("BATTLEFIELD_CAMERA_DROPDOWN");
 			var battlefieldCameraLabel = new CachedTransform<WorldViewport, string>(vs => ViewportSizeNames[vs]);
-			battlefieldCameraDropDown.OnMouseDown = _ => ShowBattlefieldCameraDropdown(battlefieldCameraDropDown, ds);
+			battlefieldCameraDropDown.OnMouseDown = _ => ShowBattlefieldCameraDropdown(battlefieldCameraDropDown, viewportSizes, ds);
 			battlefieldCameraDropDown.GetText = () => battlefieldCameraLabel.Update(ds.ViewportDistance);
 
 			// Update vsync immediately
@@ -272,6 +275,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				vsyncOnClick();
 				Game.Renderer.SetVSyncEnabled(ds.VSync);
 			};
+
+			var uiScaleDropdown = panel.Get<DropDownButtonWidget>("UI_SCALE_DROPDOWN");
+			var uiScaleLabel = new CachedTransform<float, string>(s => "{0}%".F((int)(100 * s)));
+			uiScaleDropdown.OnMouseDown = _ => ShowUIScaleDropdown(uiScaleDropdown, ds);
+			uiScaleDropdown.GetText = () => uiScaleLabel.Update(ds.UIScale);
+
+			var minResolution = viewportSizes.MinEffectiveResolution;
+			var resolution = Game.Renderer.Resolution;
+			var disableUIScale = worldRenderer.World.Type != WorldType.Shellmap ||
+				resolution.Width * ds.UIScale < 1.25f * minResolution.Width ||
+				resolution.Height * ds.UIScale < 1.25f * minResolution.Height;
+
+			uiScaleDropdown.IsDisabled = () => disableUIScale;
 
 			panel.Get("WINDOW_RESOLUTION").IsVisible = () => ds.Mode == WindowMode.Windowed;
 			var windowWidth = panel.Get<TextFieldWidget>("WINDOW_WIDTH");
@@ -356,6 +372,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				ds.WindowedSize = dds.WindowedSize;
 				ds.CursorDouble = dds.CursorDouble;
 				ds.ViewportDistance = dds.ViewportDistance;
+
+				if (ds.UIScale != dds.UIScale)
+				{
+					var oldScale = ds.UIScale;
+					ds.UIScale = dds.UIScale;
+					Game.Renderer.SetUIScale(dds.UIScale);
+					RecalculateWidgetLayout(Ui.Root);
+					Viewport.LastMousePos = (Viewport.LastMousePos.ToFloat2() * oldScale / ds.UIScale).ToInt2();
+				}
 
 				ps.Color = dps.Color;
 				ps.Name = dps.Name;
@@ -827,7 +852,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, options.Keys, setupItem);
 		}
 
-		static void ShowBattlefieldCameraDropdown(DropDownButtonWidget dropdown, GraphicSettings gs)
+		static void ShowBattlefieldCameraDropdown(DropDownButtonWidget dropdown, WorldViewportSizes viewportSizes, GraphicSettings gs)
 		{
 			Func<WorldViewport, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
 			{
@@ -840,7 +865,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return item;
 			};
 
-			var viewportSizes = Game.ModData.Manifest.Get<WorldViewportSizes>();
 			var windowHeight = Game.Renderer.NativeResolution.Height;
 
 			var validSizes = new List<WorldViewport>() { WorldViewport.Close };
@@ -855,6 +879,78 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				validSizes.Add(WorldViewport.Native);
 
 			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, validSizes, setupItem);
+		}
+
+		static void RecalculateWidgetLayout(Widget w, bool insideScrollPanel = false)
+		{
+			// HACK: Recalculate the widget bounds to fit within the new effective window bounds
+			// This is fragile, and only works when called when Settings is opened via the main menu.
+
+			// HACK: Skip children badges container on the main menu
+			// This has a fixed size, with calculated size and children positions that break if we adjust them here
+			if (w.Id == "BADGES_CONTAINER")
+				return;
+
+			var parentBounds = w.Parent == null
+				? new Rectangle(0, 0, Game.Renderer.Resolution.Width, Game.Renderer.Resolution.Height)
+				: w.Parent.Bounds;
+
+			var substitutions = new Dictionary<string, int>();
+			substitutions.Add("WINDOW_RIGHT", Game.Renderer.Resolution.Width);
+			substitutions.Add("WINDOW_BOTTOM", Game.Renderer.Resolution.Height);
+			substitutions.Add("PARENT_RIGHT", parentBounds.Width);
+			substitutions.Add("PARENT_LEFT", parentBounds.Left);
+			substitutions.Add("PARENT_TOP", parentBounds.Top);
+			substitutions.Add("PARENT_BOTTOM", parentBounds.Height);
+
+			var width = Evaluator.Evaluate(w.Width, substitutions);
+			var height = Evaluator.Evaluate(w.Height, substitutions);
+
+			substitutions.Add("WIDTH", width);
+			substitutions.Add("HEIGHT", height);
+
+			if (insideScrollPanel)
+				w.Bounds = new Rectangle(w.Bounds.X, w.Bounds.Y, width, w.Bounds.Height);
+			else
+				w.Bounds = new Rectangle(Evaluator.Evaluate(w.X, substitutions),
+									   Evaluator.Evaluate(w.Y, substitutions),
+									   width,
+									   height);
+
+			foreach (var c in w.Children)
+				RecalculateWidgetLayout(c, insideScrollPanel || w is ScrollPanelWidget);
+		}
+
+		static void ShowUIScaleDropdown(DropDownButtonWidget dropdown, GraphicSettings gs)
+		{
+			Func<float, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
+			{
+				var item = ScrollItemWidget.Setup(itemTemplate,
+					() => gs.UIScale == o,
+					() =>
+					{
+						Game.RunAfterTick(() =>
+						{
+							var oldScale = gs.UIScale;
+							gs.UIScale = o;
+
+							Game.Renderer.SetUIScale(o);
+							RecalculateWidgetLayout(Ui.Root);
+							Viewport.LastMousePos = (Viewport.LastMousePos.ToFloat2() * oldScale / gs.UIScale).ToInt2();
+						});
+					});
+
+				var label = "{0}%".F((int)(100 * o));
+				item.Get<LabelWidget>("LABEL").GetText = () => label;
+				return item;
+			};
+
+			var viewportSizes = Game.ModData.Manifest.Get<WorldViewportSizes>();
+			var maxScales = new float2(Game.Renderer.NativeResolution) / new float2(viewportSizes.MinEffectiveResolution);
+			var maxScale = Math.Min(maxScales.X, maxScales.Y);
+
+			var validScales = new[] { 1f, 1.25f, 1.5f, 1.75f, 2f }.Where(x => x <= maxScale);
+			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, validScales, setupItem);
 		}
 
 		void MakeMouseFocusSettingsLive()

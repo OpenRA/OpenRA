@@ -112,6 +112,15 @@ namespace OpenRA.Mods.Common.LoadScreens
 
 		public virtual bool BeforeLoad()
 		{
+			// Reset the UI scaling if the user has configured a UI scale that pushes us below the minimum allowed effective resolution
+			var minResolution = ModData.Manifest.Get<WorldViewportSizes>().MinEffectiveResolution;
+			var resolution = Game.Renderer.Resolution;
+			if ((resolution.Width < minResolution.Width || resolution.Height < minResolution.Height) && Game.Settings.Graphics.UIScale > 1.0f)
+			{
+				Game.Settings.Graphics.UIScale = 1.0f;
+				Game.Renderer.SetUIScale(1.0f);
+			}
+
 			// If a ModContent section is defined then we need to make sure that the
 			// required content is installed or switch to the defined content installer.
 			if (!ModData.Manifest.Contains<ModContent>())

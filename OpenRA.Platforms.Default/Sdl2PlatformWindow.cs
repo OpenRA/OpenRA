@@ -443,5 +443,12 @@ namespace OpenRA.Platforms.Default
 			SDL.SDL_DestroyWindow(window);
 			return true;
 		}
+
+		public void SetScaleModifier(float scale)
+		{
+			var oldScaleModifier = scaleModifier;
+			scaleModifier = scale;
+			OnWindowScaleChanged(windowScale, windowScale * oldScaleModifier, windowScale, windowScale * scaleModifier);
+		}
 	}
 }
