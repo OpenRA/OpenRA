@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (IsTraitDisabled)
 				return;
 
-			var cash = Util.ApplyPercentageModifiers(amount, modifier);
+			var cash = OpenRA.Mods.Common.Util.ApplyPercentageModifiers(amount, modifier);
 			playerResources.GiveCash(cash);
 
 			if (Info.ShowTicks && self.Info.HasTraitInfo<IOccupySpaceInfo>())

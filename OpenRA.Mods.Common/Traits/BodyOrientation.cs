@@ -17,17 +17,14 @@ namespace OpenRA.Mods.Common.Traits
 {
 	public class BodyOrientationInfo : ITraitInfo
 	{
-		[Desc("Number of facings for gameplay calculations. -1 indicates auto-detection from another trait")]
+		[Desc("Number of facings for gameplay calculations. -1 indicates auto-detection from another trait.")]
 		public readonly int QuantizedFacings = -1;
 
-		[Desc("Camera pitch for rotation calculations")]
+		[Desc("Camera pitch for rotation calculations.")]
 		public readonly WAngle CameraPitch = WAngle.FromDegrees(40);
 
-		[Desc("Fudge the coordinate system angles like the early games.")]
+		[Desc("Fudge the coordinate system angles to simulate non-top-down perspective in mods with square cells.")]
 		public readonly bool UseClassicPerspectiveFudge = true;
-
-		[Desc("Fudge the coordinate system angles like the early games.")]
-		public readonly bool UseClassicFacingFudge = false;
 
 		public WVec LocalToWorld(WVec vec)
 		{
@@ -35,7 +32,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!UseClassicPerspectiveFudge)
 				return new WVec(vec.Y, -vec.X, vec.Z);
 
-			// RA's 2d perspective doesn't correspond to an orthonormal 3D
+			// The 2d perspective of older games with square cells doesn't correspond to an orthonormal 3D
 			// coordinate system, so fudge the y axis to make things look good
 			return new WVec(vec.Y, -CameraPitch.Sin() * vec.X / 1024, vec.Z);
 		}
@@ -53,12 +50,12 @@ namespace OpenRA.Mods.Common.Traits
 			return new WRot(WAngle.Zero, WAngle.Zero, WAngle.FromFacing(facing));
 		}
 
-		public int QuantizeFacing(int facing, int facings)
+		public virtual int QuantizeFacing(int facing, int facings)
 		{
-			return Util.QuantizeFacing(facing, facings, UseClassicFacingFudge) * (256 / facings);
+			return Util.QuantizeFacing(facing, facings) * (256 / facings);
 		}
 
-		public object Create(ActorInitializer init) { return new BodyOrientation(init, this); }
+		public virtual object Create(ActorInitializer init) { return new BodyOrientation(init, this); }
 	}
 
 	public class BodyOrientation : ISync
