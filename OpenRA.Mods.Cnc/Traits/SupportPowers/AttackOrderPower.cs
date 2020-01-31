@@ -45,6 +45,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public override void Activate(Actor self, Order order, SupportPowerManager manager)
 		{
 			base.Activate(self, order, manager);
+			PlayLaunchSounds();
 
 			attack.AttackTarget(order.Target, AttackSource.Default, false, false, true);
 		}
