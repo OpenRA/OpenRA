@@ -134,7 +134,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		int MovementSpeed
 		{
-			get { return Util.ApplyPercentageModifiers(Info.Speed, speedModifiers); }
+			get { return OpenRA.Mods.Common.Util.ApplyPercentageModifiers(Info.Speed, speedModifiers); }
 		}
 
 		public Pair<CPos, SubCell>[] OccupiedCells() { return new[] { Pair.New(TopLeft, SubCell.FullCell) }; }
