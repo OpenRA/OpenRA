@@ -33,6 +33,9 @@ namespace OpenRA.Mods.Common.Traits
 			"It cannot be paused, but can be overridden by selecting a new track.")]
 		public readonly string BackgroundMusic = null;
 
+		[Desc("Allow the background music to be muted by the player.")]
+		public readonly bool AllowMuteBackgroundMusic = false;
+
 		[Desc("Disable all world sounds (combat etc).")]
 		public readonly bool DisableWorldSounds = false;
 
@@ -49,6 +52,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly bool IsMusicInstalled;
 		public readonly bool IsMusicAvailable;
+		public readonly bool AllowMuteBackgroundMusic;
+
+		public bool IsBackgroundMusicMuted
+		{
+			get { return AllowMuteBackgroundMusic && Game.Settings.Sound.MuteBackgroundMusic; }
+		}
+
 		public bool CurrentSongIsBackground { get; private set; }
 
 		MusicInfo currentSong;
@@ -73,6 +83,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			random = playlist.Shuffle(Game.CosmeticRandom).ToArray();
 			IsMusicAvailable = playlist.Any();
+			AllowMuteBackgroundMusic = info.AllowMuteBackgroundMusic;
 
 			if (SongExists(info.BackgroundMusic))
 			{
@@ -150,7 +161,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void Play()
 		{
-			if (!SongExists(currentSong))
+			if (!SongExists(currentSong) || (CurrentSongIsBackground && IsBackgroundMusicMuted))
 				return;
 
 			Game.Sound.PlayMusicThen(currentSong, () =>
@@ -228,7 +239,9 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				currentSong = currentBackgroundSong;
 				CurrentSongIsBackground = true;
-				Play();
+
+				if (!IsBackgroundMusicMuted)
+					Play();
 			}
 		}
 

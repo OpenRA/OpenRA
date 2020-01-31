@@ -13,6 +13,7 @@ World:
 		Maximum: 3
 	MusicPlaylist:
 		BackgroundMusic: options
+		AllowMuteBackgroundMusic: true
 		DisableWorldSounds: true
 	LuaScript:
 		Scripts: d2k-shellmap.lua

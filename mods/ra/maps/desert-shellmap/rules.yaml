@@ -10,6 +10,7 @@ World:
 	-MPStartLocations:
 	MusicPlaylist:
 		BackgroundMusic: intro
+		AllowMuteBackgroundMusic: true
 		DisableWorldSounds: true
 	ResourceType@ore:
 		ValuePerUnit: 0

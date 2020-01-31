@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Support;
 using OpenRA.Widgets;
@@ -401,10 +402,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		Action InitAudioPanel(Widget panel)
 		{
+			var musicPlaylist = worldRenderer.World.WorldActor.Trait<MusicPlaylist>();
 			var ss = Game.Settings.Sound;
 
 			BindCheckboxPref(panel, "CASH_TICKS", ss, "CashTicks");
 			BindCheckboxPref(panel, "MUTE_SOUND", ss, "Mute");
+			BindCheckboxPref(panel, "MUTE_BACKGROUND_MUSIC", ss, "MuteBackgroundMusic");
 
 			BindSliderPref(panel, "SOUND_VOLUME", ss, "SoundVolume");
 			BindSliderPref(panel, "MUSIC_VOLUME", ss, "MusicVolume");
@@ -423,6 +426,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					Game.Sound.MuteAudio();
 				else
 					Game.Sound.UnmuteAudio();
+			};
+
+			var muteBackgroundMusicCheckbox = panel.Get<CheckboxWidget>("MUTE_BACKGROUND_MUSIC");
+			var muteBackgroundMusicCheckboxOnClick = muteBackgroundMusicCheckbox.OnClick;
+			muteBackgroundMusicCheckbox.OnClick = () =>
+			{
+				muteBackgroundMusicCheckboxOnClick();
+
+				if (!musicPlaylist.AllowMuteBackgroundMusic)
+					return;
+
+				if (musicPlaylist.CurrentSongIsBackground)
+					musicPlaylist.Stop();
 			};
 
 			// Replace controls with a warning label if sound is disabled
@@ -471,6 +487,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				ss.VideoVolume = dss.VideoVolume;
 				ss.CashTicks = dss.CashTicks;
 				ss.Mute = dss.Mute;
+				ss.MuteBackgroundMusic = dss.MuteBackgroundMusic;
 				ss.Device = dss.Device;
 
 				panel.Get<SliderWidget>("SOUND_VOLUME").Value = ss.SoundVolume;

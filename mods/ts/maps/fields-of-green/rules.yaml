@@ -13,6 +13,7 @@ World:
 	MusicPlaylist:
 		BackgroundMusic: intro
 		DisableWorldSounds: true
+		AllowMuteBackgroundMusic: true
 	GlobalLightingPaletteEffect:
 		Blue: 0.7
 		Ambient: 0.7
