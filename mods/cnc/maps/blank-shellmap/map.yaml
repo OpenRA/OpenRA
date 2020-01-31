@@ -32,4 +32,5 @@ Rules:
 		-CrateSpawner:
 		MusicPlaylist:
 			BackgroundMusic: map1
+			AllowMuteBackgroundMusic: true
 			DisableWorldSounds: true
