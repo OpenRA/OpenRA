@@ -13,10 +13,11 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Orders;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.Common.Widgets;
 using OpenRA.Primitives;
 
-namespace OpenRA.Mods.Common.Traits
+namespace OpenRA.Mods.D2k.Traits
 {
 	[Desc("Creates a building placement preview based on the map editor actor preview.")]
 	public class D2kActorPreviewPlaceBuildingPreviewInfo : ActorPreviewPlaceBuildingPreviewInfo
