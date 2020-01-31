@@ -68,6 +68,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override void Activate(Actor self, Order order, SupportPowerManager manager)
 		{
 			base.Activate(self, order, manager);
+			PlayLaunchSounds();
 
 			var wsb = self.TraitOrDefault<WithSpriteBody>();
 			if (wsb != null && wsb.DefaultAnimation.HasSequence(info.Sequence))

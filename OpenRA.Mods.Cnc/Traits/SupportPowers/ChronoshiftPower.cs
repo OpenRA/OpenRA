@@ -70,6 +70,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public override void Activate(Actor self, Order order, SupportPowerManager manager)
 		{
 			base.Activate(self, order, manager);
+			PlayLaunchSounds();
 
 			var info = (ChronoshiftPowerInfo)Info;
 			var targetDelta = self.World.Map.CellContaining(order.Target.CenterPosition) - order.ExtraLocation;
