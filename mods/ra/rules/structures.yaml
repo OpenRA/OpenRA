@@ -713,6 +713,14 @@ PBOX:
 		MaxWeight: 1
 		PipCount: 1
 		InitialUnits: e1
+		LoadedCondition: loaded
+	WithCargoSounds:
+		EnterNotification: BuildingInfiltrated
+		EnterSounds: placbldg.aud, radaron2.aud
+		RequiresCondition: !loaded
+	WithCargoSounds@Exit:
+		ExitNotification: Cancelled
+		ExitSounds: cashturn.aud, radardn1.aud
 	-SpawnActorsOnSell:
 	AttackGarrisoned:
 		RequiresCondition: !build-incomplete

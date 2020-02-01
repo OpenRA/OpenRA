@@ -468,6 +468,14 @@ APC:
 		MaxWeight: 5
 		PipCount: 5
 		LoadingCondition: notmobile
+		LoadedCondition: loaded
+	WithCargoSounds:
+		EnterNotification: BuildingInfiltrated
+		EnterSounds: placbldg.aud, radaron2.aud
+	WithCargoSounds@Exit:
+		ExitNotification: Cancelled
+		ExitSounds: cashturn.aud, radardn1.aud
+		RequiresCondition: loaded == 1
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
 
