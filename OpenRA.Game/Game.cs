@@ -266,7 +266,7 @@ namespace OpenRA
 		static void Initialize(Arguments args)
 		{
 			var supportDirArg = args.GetValue("Engine.SupportDir", null);
-			if (supportDirArg != null)
+			if (!string.IsNullOrEmpty(supportDirArg))
 				Platform.OverrideSupportDir(supportDirArg);
 
 			Console.WriteLine("Platform is {0}", Platform.CurrentPlatform);

@@ -23,7 +23,7 @@ namespace OpenRA.Server
 		{
 			var arguments = new Arguments(args);
 			var supportDirArg = arguments.GetValue("Engine.SupportDir", null);
-			if (supportDirArg != null)
+			if (!string.IsNullOrEmpty(supportDirArg))
 				Platform.OverrideSupportDir(supportDirArg);
 
 			Log.AddChannel("debug", "dedicated-debug.log", true);
