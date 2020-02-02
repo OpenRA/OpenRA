@@ -117,6 +117,14 @@ namespace OpenRA.Mods.Common.UpdateRules
 					files.AddRange(mapWeapons);
 				}
 
+				var mapSequencesNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Sequences");
+				if (mapSequencesNode != null)
+				{
+					var mapSequences = LoadInternalMapYaml(modData, mapPackage, mapSequencesNode.Value, externalFilenames);
+					manualSteps.AddRange(ApplyTopLevelTransform(modData, mapSequences, rule.UpdateWeaponNode));
+					files.AddRange(mapSequences);
+				}
+
 				manualSteps.AddRange(rule.AfterUpdate(modData));
 			}
 
@@ -143,6 +151,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 
 			var modRules = LoadModYaml(modData, FilterExternalModFiles(modData, modData.Manifest.Rules, externalFilenames));
 			var modWeapons = LoadModYaml(modData, FilterExternalModFiles(modData, modData.Manifest.Weapons, externalFilenames));
+			var modSequences = LoadModYaml(modData, FilterExternalModFiles(modData, modData.Manifest.Sequences, externalFilenames));
 			var modTilesets = LoadModYaml(modData, FilterExternalModFiles(modData, modData.Manifest.TileSets, externalFilenames));
 			var modChromeLayout = LoadModYaml(modData, FilterExternalModFiles(modData, modData.Manifest.ChromeLayout, externalFilenames));
 			var modChromeProvider = LoadModYaml(modData, FilterExternalModFiles(modData, modData.Manifest.Chrome, externalFilenames));
@@ -167,12 +176,19 @@ namespace OpenRA.Mods.Common.UpdateRules
 						foreach (var f in LoadExternalMapYaml(modData, mapWeaponsNode.Value, externalFilenames))
 							if (!modWeapons.Any(m => m.Item1 == f.Item1 && m.Item2 == f.Item2))
 								modWeapons.Add(f);
+
+					var mapSequencesNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Sequences");
+					if (mapSequencesNode != null)
+						foreach (var f in LoadExternalMapYaml(modData, mapSequencesNode.Value, externalFilenames))
+							if (!modSequences.Any(m => m.Item1 == f.Item1 && m.Item2 == f.Item2))
+								modSequences.Add(f);
 				}
 			}
 
 			manualSteps.AddRange(rule.BeforeUpdate(modData));
 			manualSteps.AddRange(ApplyTopLevelTransform(modData, modRules, rule.UpdateActorNode));
 			manualSteps.AddRange(ApplyTopLevelTransform(modData, modWeapons, rule.UpdateWeaponNode));
+			manualSteps.AddRange(ApplyTopLevelTransform(modData, modSequences, rule.UpdateSequenceNode));
 			manualSteps.AddRange(ApplyTopLevelTransform(modData, modTilesets, rule.UpdateTilesetNode));
 			manualSteps.AddRange(ApplyChromeTransform(modData, modChromeLayout, rule.UpdateChromeNode));
 			manualSteps.AddRange(ApplyTopLevelTransform(modData, modChromeProvider, rule.UpdateChromeProviderNode));
@@ -180,6 +196,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 
 			files = modRules.ToList();
 			files.AddRange(modWeapons);
+			files.AddRange(modSequences);
 			files.AddRange(modTilesets);
 			files.AddRange(modChromeLayout);
 			files.AddRange(modChromeProvider);
