@@ -71,6 +71,8 @@ LST:
 		Type: Heavy
 	RevealsShroud:
 		Range: 7c0
+	-BodyOrientation:
+	ClassicFacingBodyOrientation:
 	WithFacingSpriteBody:
 	Selectable:
 		Bounds: 48,48

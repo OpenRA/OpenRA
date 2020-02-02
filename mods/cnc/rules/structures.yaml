@@ -865,8 +865,8 @@ GUN:
 		Range: 3c0
 	Power:
 		Amount: -20
-	BodyOrientation:
-		UseClassicFacingFudge: True
+	-BodyOrientation:
+	ClassicFacingBodyOrientation:
 
 SAM:
 	Inherits: ^Defense
@@ -915,8 +915,8 @@ SAM:
 	-RenderDetectionCircle:
 	Power:
 		Amount: -20
-	BodyOrientation:
-		UseClassicFacingFudge: True
+	-BodyOrientation:
+	ClassicFacingBodyOrientation:
 	-ActorPreviewPlaceBuildingPreview:
 	SequencePlaceBuildingPreview:
 		Sequence: place
