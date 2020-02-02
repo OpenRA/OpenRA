@@ -279,4 +279,5 @@ stnk:
 	turret:
 		Start: 38
 		Facings: 32
+		UseClassicFacings: True
 	icon: stnkicon
