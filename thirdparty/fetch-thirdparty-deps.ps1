@@ -40,7 +40,7 @@ if (!(Test-Path "windows/SDL2.dll"))
 	echo "Fetching SDL2 from libsdl.org"
 	
 	# Download zip:
-	$zipFileName = "SDL2-2.0.5-win32-x64.zip"
+	$zipFileName = "SDL2-2.0.10-win32-x64.zip"
 	$target = Join-Path $pwd.ToString() $zipFileName
 	(New-Object System.Net.WebClient).DownloadFile("https://www.libsdl.org/release/" + $zipFileName, $target)
 	
