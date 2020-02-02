@@ -14,7 +14,7 @@ yak:
 heli:
 	idle:
 		Facings: 32
-		UseClassicFacingFudge: True
+		UseClassicFacings: True
 	rotor: lrotor
 		Length: 4
 	slow-rotor: lrotor
@@ -25,7 +25,7 @@ heli:
 hind:
 	idle:
 		Facings: 32
-		UseClassicFacingFudge: True
+		UseClassicFacings: True
 	rotor: lrotorlg
 		Length: 4
 	slow-rotor: lrotorlg
@@ -39,7 +39,7 @@ hind:
 tran:
 	idle: tran2
 		Facings: 32
-		UseClassicFacingFudge: True
+		UseClassicFacings: True
 	rotor: lrotor
 		Length: 4
 	rotor2: rrotor
@@ -74,7 +74,7 @@ badr:
 mh60:
 	idle:
 		Facings: 32
-		UseClassicFacingFudge: True
+		UseClassicFacings: True
 	rotor: yrotorlg
 		Length: 4
 	slow-rotor: yrotorlg

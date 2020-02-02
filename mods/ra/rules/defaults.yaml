@@ -12,6 +12,11 @@
 	QuantizeFacingsFromSequence:
 	RenderSprites:
 
+^ClassicFacingSpriteActor:
+	ClassicFacingBodyOrientation:
+	QuantizeFacingsFromSequence:
+	RenderSprites:
+
 ^1x1Shape:
 	HitShape:
 		UseTargetableCellsOffsets: true
@@ -227,7 +232,7 @@
 ^Vehicle:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^IronCurtainable
-	Inherits@3: ^SpriteActor
+	Inherits@3: ^ClassicFacingSpriteActor
 	Inherits@bounty: ^GlobalBounty
 	Inherits@selection: ^SelectableCombatUnit
 	Huntable:
@@ -293,8 +298,6 @@
 		OpeningSequence: open
 		Offset: 0,0,200
 		RequiresCondition: parachute
-	BodyOrientation:
-		UseClassicFacingFudge: True
 	HitShape:
 	MapEditorData:
 		Categories: Vehicle
@@ -612,8 +615,8 @@
 		String: Helicopter
 	Hovers@CRUISING:
 		RequiresCondition: cruising
-	BodyOrientation:
-		UseClassicFacingFudge: True
+	-BodyOrientation:
+	ClassicFacingBodyOrientation:
 
 ^BasicBuilding:
 	Inherits@1: ^ExistsInWorld
@@ -960,7 +963,6 @@
 		Categories: Decoration
 
 ^BasicHusk:
-	Inherits@1: ^SpriteActor
 	Interactable:
 	Health:
 		HP: 28000
@@ -977,6 +979,7 @@
 
 ^Husk:
 	Inherits: ^BasicHusk
+	Inherits@2: ^ClassicFacingSpriteActor
 	Husk:
 		AllowedTerrain: Clear, Rough, Road, Ore, Gems, Beach
 	Burns:
@@ -1000,11 +1003,10 @@
 	Chronoshiftable:
 	Tooltip:
 		GenericName: Destroyed Vehicle
-	BodyOrientation:
-		UseClassicFacingFudge: True
 
 ^PlaneHusk:
 	Inherits: ^BasicHusk
+	Inherits@2: ^SpriteActor
 	WithShadow:
 		Offset: 43, 128, 0
 		ZOffset: -129
@@ -1023,6 +1025,7 @@
 
 ^HelicopterHusk:
 	Inherits: ^BasicHusk
+	Inherits@2: ^ClassicFacingSpriteActor
 	WithShadow:
 		Offset: 43, 128, 0
 		ZOffset: -129
@@ -1034,8 +1037,6 @@
 		CanSlide: True
 	FallsToEarth:
 		Explosion: UnitExplodeHeli
-	BodyOrientation:
-		UseClassicFacingFudge: True
 	-MapEditorData:
 	RevealOnDeath:
 		Duration: 60

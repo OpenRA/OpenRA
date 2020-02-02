@@ -601,8 +601,8 @@ AGUN:
 		RangeCircleType: aa
 	Power:
 		Amount: -50
-	BodyOrientation:
-		UseClassicFacingFudge: True
+	-BodyOrientation:
+	ClassicFacingBodyOrientation:
 
 DOME:
 	Inherits: ^Building
@@ -814,8 +814,8 @@ GUN:
 		Amount: -40
 	DetectCloaked:
 		Range: 6c0
-	BodyOrientation:
-		UseClassicFacingFudge: True
+	-BodyOrientation:
+	ClassicFacingBodyOrientation:
 
 FTUR:
 	Inherits: ^Defense
@@ -914,8 +914,8 @@ SAM:
 		RangeCircleType: aa
 	Power:
 		Amount: -40
-	BodyOrientation:
-		UseClassicFacingFudge: True
+	-BodyOrientation:
+	ClassicFacingBodyOrientation:
 
 ATEK:
 	Inherits: ^ScienceBuilding

@@ -13,6 +13,11 @@
 	QuantizeFacingsFromSequence:
 	RenderSprites:
 
+^ClassicFacingSpriteActor:
+	ClassicFacingBodyOrientation:
+	QuantizeFacingsFromSequence:
+	RenderSprites:
+
 ^1x1Shape:
 	HitShape:
 		UseTargetableCellsOffsets: true
@@ -263,7 +268,7 @@
 
 ^Vehicle:
 	Inherits@1: ^ExistsInWorld
-	Inherits@3: ^SpriteActor
+	Inherits@3: ^ClassicFacingSpriteActor
 	Inherits@selection: ^SelectableCombatUnit
 	Huntable:
 	OwnerLostAction:
@@ -294,8 +299,6 @@
 	MustBeDestroyed:
 	Voiced:
 		VoiceSet: VehicleVoice
-	BodyOrientation:
-		UseClassicFacingFudge: True
 	HitShape:
 	MapEditorData:
 		Categories: Vehicle
@@ -310,7 +313,7 @@
 
 ^Helicopter:
 	Inherits@1: ^ExistsInWorld
-	Inherits@3: ^SpriteActor
+	Inherits@3: ^ClassicFacingSpriteActor
 	Inherits@selection: ^SelectableCombatUnit
 	Huntable:
 	OwnerLostAction:
@@ -357,8 +360,6 @@
 	MustBeDestroyed:
 	Voiced:
 		VoiceSet: VehicleVoice
-	BodyOrientation:
-		UseClassicFacingFudge: True
 	HitShape:
 	MapEditorData:
 		Categories: Aircraft
@@ -641,7 +642,7 @@
 
 ^Plane:
 	Inherits@1: ^ExistsInWorld
-	Inherits@2: ^SpriteActor
+	Inherits@2: ^ClassicFacingSpriteActor
 	Huntable:
 	OwnerLostAction:
 		Action: Kill
@@ -1030,7 +1031,7 @@
 		ValidOwnerNames: Neutral
 
 ^CommonHuskDefaults:
-	Inherits@1: ^SpriteActor
+	Inherits@1: ^ClassicFacingSpriteActor
 	Interactable:
 	Health:
 		HP: 14000
@@ -1068,8 +1069,6 @@
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
-	BodyOrientation:
-		UseClassicFacingFudge: True
 
 ^LightHusk:
 	Inherits: ^Husk
@@ -1090,8 +1089,6 @@
 		Explosion: HeliCrash
 	Tooltip:
 		GenericName: Destroyed Helicopter
-	BodyOrientation:
-		UseClassicFacingFudge: True
 	-MapEditorData:
 
 ^Bridge:

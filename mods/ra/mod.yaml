@@ -217,7 +217,7 @@ SoundFormats: Aud, Wav
 
 SpriteFormats: ShpD2, ShpTD, TmpRA, TmpTD, ShpTS
 
-SpriteSequenceFormat: TilesetSpecificSpriteSequence
+SpriteSequenceFormat: ClassicTilesetSpecificSpriteSequence
 	TilesetExtensions:
 		TEMPERAT: .tem
 		SNOW: .sno
