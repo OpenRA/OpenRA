@@ -22,6 +22,8 @@ EnableSingleplayer="${EnableSingleplayer:-"False"}"
 EnableSyncReports="${EnableSyncReports:-"False"}"
 ShareAnonymizedIPs="${ShareAnonymizedIPs:-"True"}"
 
+SupportDir="${SupportDir:-""}"
+
 while true; do
      mono --debug OpenRA.Server.exe Game.Mod="$Mod" \
      Server.Name="$Name" \
@@ -34,5 +36,6 @@ while true; do
      Server.ProfileIDBlacklist="$ProfileIDBlacklist" \
      Server.ProfileIDWhitelist="$ProfileIDWhitelist" \
      Server.EnableSyncReports="$EnableSyncReports" \
-     Server.ShareAnonymizedIPs="$ShareAnonymizedIPs"
+     Server.ShareAnonymizedIPs="$ShareAnonymizedIPs" \
+     Engine.SupportDir="$SupportDir"
 done
