@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 					yield break;
 
 				var attackType = attackAircraft.LastChildMatching("AttackType");
-				if (attackType.NodeValue<AirAttackType>() == AirAttackType.Strafe)
+				if (attackType != null && attackType.NodeValue<AirAttackType>() == AirAttackType.Strafe)
 					attackAircraft.RemoveNode(attackType);
 
 				attackAircraft.RemoveNodes("AttackTurnDelay");
