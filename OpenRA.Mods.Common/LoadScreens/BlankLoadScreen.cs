@@ -121,6 +121,9 @@ namespace OpenRA.Mods.Common.LoadScreens
 				Game.Renderer.SetUIScale(1.0f);
 			}
 
+			// Saved settings may have been invalidated by a hardware change
+			Game.Settings.Graphics.VideoDisplay = Game.Renderer.CurrentDisplay;
+
 			// If a ModContent section is defined then we need to make sure that the
 			// required content is installed or switch to the defined content installer.
 			if (!ModData.Manifest.Contains<ModContent>())

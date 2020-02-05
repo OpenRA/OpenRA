@@ -87,12 +87,28 @@ namespace OpenRA.Platforms.Default
 			}
 		}
 
+		public int CurrentDisplay
+		{
+			get
+			{
+				return SDL.SDL_GetWindowDisplayIndex(window);
+			}
+		}
+
+		public int DisplayCount
+		{
+			get
+			{
+				return SDL.SDL_GetNumVideoDisplays();
+			}
+		}
+
 		public event Action<float, float, float, float> OnWindowScaleChanged = (oldNative, oldEffective, newNative, newEffective) => { };
 
 		[DllImport("user32.dll")]
 		static extern bool SetProcessDPIAware();
 
-		public Sdl2PlatformWindow(Size requestEffectiveWindowSize, WindowMode windowMode, float scaleModifier, int batchSize)
+		public Sdl2PlatformWindow(Size requestEffectiveWindowSize, WindowMode windowMode, float scaleModifier, int batchSize, int videoDisplay)
 		{
 			// Lock the Window/Surface properties until initialization is complete
 			lock (syncObject)
@@ -129,8 +145,11 @@ namespace OpenRA.Platforms.Default
 
 				Console.WriteLine("Using SDL 2 with OpenGL{0} renderer", useGLES ? " ES" : "");
 
+				if (videoDisplay < 0 || videoDisplay >= DisplayCount)
+					videoDisplay = 0;
+
 				SDL.SDL_DisplayMode display;
-				SDL.SDL_GetCurrentDisplayMode(0, out display);
+				SDL.SDL_GetCurrentDisplayMode(videoDisplay, out display);
 
 				// Windows and Linux define window sizes in native pixel units.
 				// Query the display/dpi scale so we can convert our requested effective size to pixels.
@@ -138,7 +157,7 @@ namespace OpenRA.Platforms.Default
 				if (Platform.CurrentPlatform == PlatformType.Windows)
 				{
 					float ddpi, hdpi, vdpi;
-					if (SDL.SDL_GetDisplayDPI(0, out ddpi, out hdpi, out vdpi) == 0)
+					if (SDL.SDL_GetDisplayDPI(videoDisplay, out ddpi, out hdpi, out vdpi) == 0)
 						windowScale = ddpi / 96;
 				}
 				else if (Platform.CurrentPlatform != PlatformType.OSX)
@@ -166,7 +185,7 @@ namespace OpenRA.Platforms.Default
 				if (Platform.CurrentPlatform == PlatformType.OSX && windowMode == WindowMode.Fullscreen)
 					SDL.SDL_SetHint(SDL.SDL_HINT_VIDEO_HIGHDPI_DISABLED, "1");
 
-				window = SDL.SDL_CreateWindow("OpenRA", SDL.SDL_WINDOWPOS_CENTERED, SDL.SDL_WINDOWPOS_CENTERED,
+				window = SDL.SDL_CreateWindow("OpenRA", SDL.SDL_WINDOWPOS_CENTERED_DISPLAY(videoDisplay), SDL.SDL_WINDOWPOS_CENTERED_DISPLAY(videoDisplay),
 					windowSize.Width, windowSize.Height, windowFlags);
 
 				// Work around an issue in macOS's GL backend where the window remains permanently black
@@ -235,11 +254,6 @@ namespace OpenRA.Platforms.Default
 				}
 				else if (windowMode == WindowMode.PseudoFullscreen)
 				{
-					// Work around a visual glitch in OSX: the window is offset
-					// partially offscreen if the dock is at the left of the screen
-					if (Platform.CurrentPlatform == PlatformType.OSX)
-						SDL.SDL_SetWindowPosition(Window, 0, 0);
-
 					SDL.SDL_SetWindowFullscreen(Window, (uint)SDL.SDL_WindowFlags.SDL_WINDOW_FULLSCREEN_DESKTOP);
 					SDL.SDL_SetHint(SDL.SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, "0");
 				}
