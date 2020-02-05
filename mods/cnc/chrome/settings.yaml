@@ -200,13 +200,6 @@ Container@SETTINGS_PANEL:
 							Height: 25
 							Font: Regular
 							Text: Windowed
-						Label@MODE_CHANGES_DESC:
-							X: 100
-							Y: 237
-							Width: 200
-							Height: 15
-							Font: Tiny
-							Text: Video mode changes require restart
 						Container@WINDOW_RESOLUTION:
 							Y: 240
 							Children:
@@ -242,6 +235,27 @@ Container@SETTINGS_PANEL:
 									Height: 15
 									Font: Tiny
 									Text: Video mode and window size changes require restart
+						Container@DISPLAY_SELECTION:
+							Y: 240
+							Children:
+								Label@DISPLAY_SELECTION_LABEL:
+									X: 15
+									Height: 25
+									Width: 120
+									Align: Right
+									Text: Select Display:
+								DropDownButton@DISPLAY_SELECTION_DROPDOWN:
+									X: 140
+									Width: 160
+									Height: 25
+									Font: Regular
+								Label@MODE_CHANGES_DESC:
+									X: 60
+									Y: 27
+									Width: 200
+									Height: 15
+									Font: Tiny
+									Text: Video mode and display changes require restart
 						Checkbox@VSYNC_CHECKBOX:
 							X: 310
 							Y: 210

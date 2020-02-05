@@ -176,6 +176,9 @@ namespace OpenRA
 		[Desc("Use OpenGL ES if both ES and regular OpenGL are available.")]
 		public bool PreferGLES = false;
 
+		[Desc("Display index to use in a multi-monitor fullscreen setup.")]
+		public int VideoDisplay = 0;
+
 		public int BatchSize = 8192;
 		public int SheetSize = 2048;
 

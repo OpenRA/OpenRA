@@ -66,7 +66,7 @@ namespace OpenRA
 			this.platform = platform;
 			var resolution = GetResolution(graphicSettings);
 
-			Window = platform.CreateWindow(new Size(resolution.Width, resolution.Height), graphicSettings.Mode, graphicSettings.UIScale, graphicSettings.BatchSize);
+			Window = platform.CreateWindow(new Size(resolution.Width, resolution.Height), graphicSettings.Mode, graphicSettings.UIScale, graphicSettings.BatchSize, graphicSettings.VideoDisplay);
 			Context = Window.Context;
 
 			TempBufferSize = graphicSettings.BatchSize;
@@ -477,6 +477,16 @@ namespace OpenRA
 		public IFont CreateFont(byte[] data)
 		{
 			return platform.CreateFont(data);
+		}
+
+		public int DisplayCount
+		{
+			get { return Window.DisplayCount; }
+		}
+
+		public int CurrentDisplay
+		{
+			get { return Window.CurrentDisplay; }
 		}
 	}
 }

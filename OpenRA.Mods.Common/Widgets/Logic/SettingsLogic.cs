@@ -23,6 +23,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	{
 		enum PanelType { Display, Audio, Input, Hotkeys, Advanced }
 
+		static readonly int OriginalVideoDisplay;
 		static readonly string OriginalSoundDevice;
 		static readonly WindowMode OriginalGraphicsMode;
 		static readonly int2 OriginalGraphicsWindowedSize;
@@ -52,6 +53,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var original = Game.Settings;
 			OriginalSoundDevice = original.Sound.Device;
 			OriginalGraphicsMode = original.Graphics.Mode;
+			OriginalVideoDisplay = original.Graphics.VideoDisplay;
 			OriginalGraphicsWindowedSize = original.Graphics.WindowedSize;
 			OriginalGraphicsFullscreenSize = original.Graphics.FullscreenSize;
 			OriginalServerDiscoverNatDevices = original.Server.DiscoverNatDevices;
@@ -92,6 +94,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				Action closeAndExit = () => { Ui.CloseWindow(); onExit(); };
 				if (current.Sound.Device != OriginalSoundDevice ||
 				    current.Graphics.Mode != OriginalGraphicsMode ||
+					current.Graphics.VideoDisplay != OriginalVideoDisplay ||
 				    current.Graphics.WindowedSize != OriginalGraphicsWindowedSize ||
 					current.Graphics.FullscreenSize != OriginalGraphicsFullscreenSize ||
 					current.Server.DiscoverNatDevices != OriginalServerDiscoverNatDevices)
@@ -250,7 +253,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				"Windowed" : ds.Mode == WindowMode.Fullscreen ? "Fullscreen (Legacy)" : "Fullscreen";
 
 			var modeChangesDesc = panel.Get("MODE_CHANGES_DESC");
-			modeChangesDesc.IsVisible = () => ds.Mode != WindowMode.Windowed && ds.Mode != OriginalGraphicsMode;
+			modeChangesDesc.IsVisible = () => ds.Mode != WindowMode.Windowed && (ds.Mode != OriginalGraphicsMode ||
+				ds.VideoDisplay != OriginalVideoDisplay);
+
+			var displaySelectionDropDown = panel.Get<DropDownButtonWidget>("DISPLAY_SELECTION_DROPDOWN");
+			displaySelectionDropDown.OnMouseDown = _ => ShowDisplaySelectionDropdown(displaySelectionDropDown, ds);
+			var displaySelectionLabel = new CachedTransform<int, string>(i => "Display {0}".F(i + 1));
+			displaySelectionDropDown.GetText = () => displaySelectionLabel.Update(ds.VideoDisplay);
+			displaySelectionDropDown.IsDisabled = () => Game.Renderer.DisplayCount < 2;
 
 			var statusBarsDropDown = panel.Get<DropDownButtonWidget>("STATUS_BAR_DROPDOWN");
 			statusBarsDropDown.OnMouseDown = _ => ShowStatusBarsDropdown(statusBarsDropDown, gs);
@@ -289,6 +299,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			uiScaleDropdown.IsDisabled = () => disableUIScale;
 
+			panel.Get("DISPLAY_SELECTION").IsVisible = () => ds.Mode != WindowMode.Windowed;
 			panel.Get("WINDOW_RESOLUTION").IsVisible = () => ds.Mode == WindowMode.Windowed;
 			var windowWidth = panel.Get<TextFieldWidget>("WINDOW_WIDTH");
 			var origWidthText = windowWidth.Text = ds.WindowedSize.X.ToString();
@@ -369,6 +380,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				ds.MaxFramerate = dds.MaxFramerate;
 				ds.Language = dds.Language;
 				ds.Mode = dds.Mode;
+				ds.VideoDisplay = dds.VideoDisplay;
 				ds.WindowedSize = dds.WindowedSize;
 				ds.CursorDouble = dds.CursorDouble;
 				ds.ViewportDistance = dds.ViewportDistance;
@@ -828,6 +840,22 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, options.Keys, setupItem);
+		}
+
+		static void ShowDisplaySelectionDropdown(DropDownButtonWidget dropdown, GraphicSettings s)
+		{
+			Func<int, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
+			{
+				var item = ScrollItemWidget.Setup(itemTemplate,
+					() => s.VideoDisplay == o,
+					() => s.VideoDisplay = o);
+
+				var label = "Display {0}".F(o + 1);
+				item.Get<LabelWidget>("LABEL").GetText = () => label;
+				return item;
+			};
+
+			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, Enumerable.Range(0, Game.Renderer.DisplayCount), setupItem);
 		}
 
 		static void ShowTargetLinesDropdown(DropDownButtonWidget dropdown, GameSettings s)

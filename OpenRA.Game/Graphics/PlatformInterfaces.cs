@@ -17,7 +17,7 @@ namespace OpenRA
 {
 	public interface IPlatform
 	{
-		IPlatformWindow CreateWindow(Size size, WindowMode windowMode, float scaleModifier, int batchSize);
+		IPlatformWindow CreateWindow(Size size, WindowMode windowMode, float scaleModifier, int batchSize, int videoDisplay);
 		ISoundEngine CreateSound(string device);
 		IFont CreateFont(byte[] data);
 	}
@@ -44,6 +44,8 @@ namespace OpenRA
 		float NativeWindowScale { get; }
 		float EffectiveWindowScale { get; }
 		Size SurfaceSize { get; }
+		int DisplayCount { get; }
+		int CurrentDisplay { get; }
 
 		event Action<float, float, float, float> OnWindowScaleChanged;
 
