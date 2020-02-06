@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public CPos GetRandomBaseCenter(bool distanceToBaseIsImportant)
 		{
-			if (distanceToBaseIsImportant == false)
+			if (!distanceToBaseIsImportant)
 				return initialBaseCenter;
 
 			var tileset = world.Map.Rules.TileSet;
@@ -233,8 +233,7 @@ namespace OpenRA.Mods.Common.Traits
 			var actors = world.FindActorsInCircle(wPos, newBaseRadius)
 				.Where(a => !a.Disposed);
 
-			var enemies = actors.Where(a => player.Stances[a.Owner] == Stance.Enemy
-				&& a.Info.HasTraitInfo<BuildingInfo>());
+			var enemies = actors.Where(a => player.Stances[a.Owner] == Stance.Enemy);
 
 			if (enemies.Count() > 0)
 				return null;
