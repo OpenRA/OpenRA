@@ -57,9 +57,8 @@ namespace OpenRA.Mods.Common.Traits
 				return initialBaseCenter;
 
 			var tileset = world.Map.Rules.TileSet;
-			BitArray resourceTypeIndices;
+			var resourceTypeIndices = new BitArray(tileset.TerrainInfo.Length);
 
-			resourceTypeIndices = new BitArray(tileset.TerrainInfo.Length);
 			foreach (var t in world.Map.Rules.Actors["world"].TraitInfos<ResourceTypeInfo>())
 				resourceTypeIndices.Set(tileset.GetTerrainIndex(t.TerrainType), true);
 
@@ -218,9 +217,9 @@ namespace OpenRA.Mods.Common.Traits
 				return null;
 			};
 
-			CPos baseCenter = GetRandomBaseCenter(distanceToBaseIsImportant);
+			var baseCenter = GetRandomBaseCenter(distanceToBaseIsImportant);
 
-			CPos? bc = findPos(baseCenter, baseCenter, Info.MinBaseRadius,
+			var bc = findPos(baseCenter, baseCenter, Info.MinBaseRadius,
 				distanceToBaseIsImportant ? Info.MaxBaseRadius : world.Map.Grid.MaximumTileSearchRange);
 
 			if (!bc.HasValue)
@@ -228,17 +227,19 @@ namespace OpenRA.Mods.Common.Traits
 
 			baseCenter = bc.Value;
 
-			WPos wPos = world.Map.CenterOfCell(bc.Value);
-			WDist newBaseRadius = new WDist(Info.MaxBaseRadius * 1024);
+			var wPos = world.Map.CenterOfCell(baseCenter);
+			var newBaseRadius = new WDist(Info.MaxBaseRadius * 1024);
 
-			var enemies = world.FindActorsInCircle(wPos, newBaseRadius)
-				.Where(a => !a.Disposed && player.Stances[a.Owner] == Stance.Enemy && a.Info.HasTraitInfo<BuildingInfo>());
+			var actors = world.FindActorsInCircle(wPos, newBaseRadius)
+				.Where(a => !a.Disposed);
+
+			var enemies = actors.Where(a => player.Stances[a.Owner] == Stance.Enemy
+				&& a.Info.HasTraitInfo<BuildingInfo>());
 
 			if (enemies.Count() > 0)
 				return null;
 
-			var self = world.FindActorsInCircle(wPos, newBaseRadius)
-				.Where(a => !a.Disposed && a.Owner == player
+			var self = actors.Where(a => a.Owner == player
 					&& (Info.McvTypes.Contains(a.Info.Name) || (Info.ConstructionYardTypes.Contains(a.Info.Name) && a.Info.HasTraitInfo<BuildingInfo>())));
 
 			if (self.Count() > 0)
