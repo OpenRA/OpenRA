@@ -83,6 +83,7 @@ namespace OpenRA.Activities
 		public bool ChildHasPriority { get; protected set; }
 		public bool IsCanceling { get { return State == ActivityState.Canceling; } }
 		bool finishing;
+		bool firstRunCompleted;
 		bool lastRun;
 
 		public Activity()
@@ -99,8 +100,12 @@ namespace OpenRA.Activities
 			if (State == ActivityState.Queued)
 			{
 				OnFirstRun(self);
+				firstRunCompleted = true;
 				State = ActivityState.Active;
 			}
+
+			if (!firstRunCompleted)
+				throw new InvalidOperationException("Actor {0} attempted to tick activity {1} before running its OnFirstRun method.".F(self, GetType()));
 
 			// Only run the parent tick when the child is done.
 			// We must always let the child finish on its own before continuing.
