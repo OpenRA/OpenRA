@@ -37,7 +37,7 @@ namespace OpenRA.GameRules
 	{
 		public WeaponInfo Weapon;
 		public int[] DamageModifiers = { };
-		public WPos Source;
+		public WPos? Source;
 		public Actor SourceActor;
 		public Target WeaponTarget;
 
