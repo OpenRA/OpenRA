@@ -219,10 +219,12 @@ namespace OpenRA.GameRules
 			var args = new WarheadArgs
 			{
 				Weapon = this,
-				Source = firedBy.CenterPosition,
 				SourceActor = firedBy,
 				WeaponTarget = target
 			};
+
+			if (firedBy.OccupiesSpace != null)
+				args.Source = firedBy.CenterPosition;
 
 			Impact(target, args);
 		}
