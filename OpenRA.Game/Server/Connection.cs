@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Sockets;
 
@@ -19,7 +20,7 @@ namespace OpenRA.Server
 	public class Connection
 	{
 		public const int MaxOrderLength = 131072;
-		public Socket Socket;
+		public readonly Socket Socket;
 		public List<byte> Data = new List<byte>();
 		public ReceiveState State = ReceiveState.Header;
 		public int ExpectLength = 8;
@@ -30,6 +31,16 @@ namespace OpenRA.Server
 		public long TimeSinceLastResponse { get { return Game.RunTime - lastReceivedTime; } }
 		public bool TimeoutMessageShown = false;
 		long lastReceivedTime = 0;
+
+		readonly Stopwatch stopwatch;
+		public long ConnectedTime { get { return stopwatch.ElapsedMilliseconds; } }
+
+		public Connection(Socket socket)
+		{
+			Socket = socket;
+			lastReceivedTime = Game.RunTime;
+			stopwatch = Stopwatch.StartNew();
+		}
 
 		/* client data */
 		public int PlayerIndex;

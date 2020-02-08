@@ -213,7 +213,16 @@ namespace OpenRA.Server
 						var preConn = PreConns.SingleOrDefault(c => c.Socket == s);
 						if (preConn != null)
 						{
+							// Drop the client if they have taken more than 5 seconds to respond to the handshake request
+							// They either have an unusably bad connection or are trying something malicious
+							if (preConn.ConnectedTime > 5000)
+							{
+								DropClient(preConn);
+								Log.Write("server", "Dropping client {0} because handshake timed out", preConn.PlayerIndex.ToString(CultureInfo.InvariantCulture));
+							}
+
 							preConn.ReadData(this);
+
 							continue;
 						}
 
@@ -275,7 +284,7 @@ namespace OpenRA.Server
 				return;
 			}
 
-			var newConn = new Connection { Socket = newSocket };
+			var newConn = new Connection(newSocket);
 			try
 			{
 				newConn.Socket.Blocking = false;
