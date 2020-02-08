@@ -343,8 +343,9 @@ namespace OpenRA.Server
 				}
 
 				var handshake = HandshakeResponse.Deserialize(data);
+				var passwordHash = CryptoUtil.SHA1Hash(newConn.AuthToken + Settings.Password);
 
-				if (!string.IsNullOrEmpty(Settings.Password) && handshake.Password != Settings.Password)
+				if (!string.IsNullOrEmpty(Settings.Password) && handshake.Password != passwordHash)
 				{
 					var message = string.IsNullOrEmpty(handshake.Password) ? "Server requires a password" : "Incorrect password";
 					SendOrderTo(newConn, "AuthenticationError", message);
