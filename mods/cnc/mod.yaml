@@ -92,6 +92,7 @@ Assemblies:
 
 ChromeLayout:
 	cnc|chrome/mainmenu.yaml
+	cnc|chrome/mainmenu-prompts.yaml
 	cnc|chrome/playerprofile.yaml
 	cnc|chrome/multiplayer-browser.yaml
 	cnc|chrome/multiplayer-browserpanels.yaml
