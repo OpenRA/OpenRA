@@ -22,11 +22,9 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	[SuppressMessage("StyleCop.CSharp.OrderingRules", "SA1203:ConstantsMustAppearBeforeFields",
-		Justification = "SystemInformation version should be defined next to the dictionary it refers to.")]
 	public class MainMenuLogic : ChromeLogic
 	{
-		protected enum MenuType { Main, Singleplayer, Extras, MapEditor, SystemInfoPrompt, None }
+		protected enum MenuType { Main, Singleplayer, Extras, MapEditor, StartupPrompts, None }
 
 		protected enum MenuPanel { None, Missions, Skirmish, Multiplayer, MapEditor, Replays, GameSaves }
 
@@ -42,27 +40,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		protected static MenuPanel lastGameState = MenuPanel.None;
 
 		bool newsOpen;
-
-		// Increment the version number when adding new stats
-		const int SystemInformationVersion = 4;
-		Dictionary<string, Pair<string, string>> GetSystemInformation()
-		{
-			var lang = System.Globalization.CultureInfo.InstalledUICulture.TwoLetterISOLanguageName;
-			return new Dictionary<string, Pair<string, string>>()
-			{
-				{ "id", Pair.New("Anonymous ID", Game.Settings.Debug.UUID) },
-				{ "platform", Pair.New("OS Type", Platform.CurrentPlatform.ToString()) },
-				{ "os", Pair.New("OS Version", Environment.OSVersion.ToString()) },
-				{ "x64", Pair.New("OS is 64 bit", Environment.Is64BitOperatingSystem.ToString()) },
-				{ "x64process", Pair.New("Process is 64 bit", Environment.Is64BitProcess.ToString()) },
-				{ "runtime", Pair.New(".NET Runtime", Platform.RuntimeVersion) },
-				{ "gl", Pair.New("OpenGL Version", Game.Renderer.GLVersion) },
-				{ "windowsize", Pair.New("Window Size", "{0}x{1}".F(Game.Renderer.NativeResolution.Width, Game.Renderer.NativeResolution.Height)) },
-				{ "windowscale", Pair.New("Window Scale", Game.Renderer.NativeWindowScale.ToString("F2", CultureInfo.InvariantCulture)) },
-				{ "uiscale", Pair.New("UI Scale", Game.Settings.Graphics.UIScale.ToString("F2", CultureInfo.InvariantCulture)) },
-				{ "lang", Pair.New("System Language", lang) }
-			};
-		}
 
 		void SwitchMenu(MenuType type)
 		{
@@ -215,7 +192,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var newsBG = widget.GetOrNull("NEWS_BG");
 			if (newsBG != null)
 			{
-				newsBG.IsVisible = () => Game.Settings.Game.FetchNews && menuType != MenuType.None && menuType != MenuType.SystemInfoPrompt;
+				newsBG.IsVisible = () => Game.Settings.Game.FetchNews && menuType != MenuType.None && menuType != MenuType.StartupPrompts;
 
 				newsPanel = Ui.LoadWidget<ScrollPanelWidget>("NEWS_PANEL", null, new WidgetArgs());
 				newsTemplate = newsPanel.Get("NEWS_ITEM_TEMPLATE");
@@ -235,7 +212,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var updateLabel = rootMenu.GetOrNull("UPDATE_NOTICE");
 			if (updateLabel != null)
 				updateLabel.IsVisible = () => !newsOpen && menuType != MenuType.None &&
-					menuType != MenuType.SystemInfoPrompt &&
+					menuType != MenuType.StartupPrompts &&
 					webServices.ModVersionStatus == ModVersionStatus.Outdated;
 
 			var playerProfile = widget.GetOrNull("PLAYER_PROFILE_CONTAINER");
@@ -248,39 +225,22 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				});
 			}
 
-			// System information opt-out prompt
-			var sysInfoPrompt = widget.Get("SYSTEM_INFO_PROMPT");
-			sysInfoPrompt.IsVisible = () => menuType == MenuType.SystemInfoPrompt;
-			if (Game.Settings.Debug.SystemInformationVersionPrompt < SystemInformationVersion)
+			menuType = MenuType.StartupPrompts;
+			Action onSysInfoComplete = () =>
 			{
-				menuType = MenuType.SystemInfoPrompt;
+				LoadAndDisplayNews(webServices.GameNews, newsBG);
+				SwitchMenu(MenuType.Main);
+			};
 
-				var sysInfoCheckbox = sysInfoPrompt.Get<CheckboxWidget>("SYSINFO_CHECKBOX");
-				sysInfoCheckbox.IsChecked = () => Game.Settings.Debug.SendSystemInformation;
-				sysInfoCheckbox.OnClick = () => Game.Settings.Debug.SendSystemInformation ^= true;
-
-				var sysInfoData = sysInfoPrompt.Get<ScrollPanelWidget>("SYSINFO_DATA");
-				var template = sysInfoData.Get<LabelWidget>("DATA_TEMPLATE");
-				sysInfoData.RemoveChildren();
-
-				foreach (var info in GetSystemInformation().Values)
+			if (SystemInfoPromptLogic.ShouldShowPrompt())
+			{
+				Ui.OpenWindow("MAINMENU_SYSTEM_INFO_PROMPT", new WidgetArgs
 				{
-					var label = template.Clone() as LabelWidget;
-					var text = info.First + ": " + info.Second;
-					label.GetText = () => text;
-					sysInfoData.AddChild(label);
-				}
-
-				sysInfoPrompt.Get<ButtonWidget>("BACK_BUTTON").OnClick = () =>
-				{
-					Game.Settings.Debug.SystemInformationVersionPrompt = SystemInformationVersion;
-					Game.Settings.Save();
-					SwitchMenu(MenuType.Main);
-					LoadAndDisplayNews(webServices.GameNews, newsBG);
-				};
+					{ "onComplete", onSysInfoComplete }
+				});
 			}
 			else
-				LoadAndDisplayNews(webServices.GameNews, newsBG);
+				onSysInfoComplete();
 
 			Game.OnShellmapLoaded += OpenMenuBasedOnLastGame;
 		}
@@ -305,12 +265,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							Uri.EscapeUriString(Game.ModData.Manifest.Id),
 							Uri.EscapeUriString(Game.ModData.Manifest.Metadata.Version));
 
-						// Append system profile data if the player has opted in
-						if (Game.Settings.Debug.SendSystemInformation)
-							newsURL += "&sysinfoversion={0}&".F(SystemInformationVersion)
-								+ GetSystemInformation()
-								.Select(kv => kv.Key + "=" + Uri.EscapeUriString(kv.Value.Second))
-								.JoinWith("&");
+						// Parameter string is blank if the player has opted out
+						newsURL += SystemInfoPromptLogic.CreateParameterString();
 
 						new Download(newsURL, cacheFile, e => { },
 							e => NewsDownloadComplete(e, cacheFile, currentNews,
