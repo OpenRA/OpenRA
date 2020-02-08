@@ -188,6 +188,10 @@ namespace OpenRA.Network
 
 				case "HandshakeRequest":
 					{
+						// Ignore duplicated handshake requests
+						if (orderManager.HandshakeSent)
+							break;
+
 						// Switch to the server's mod if we need and are able to
 						var mod = Game.ModData.Manifest;
 						var request = HandshakeRequest.Deserialize(order.TargetString);

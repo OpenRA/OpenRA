@@ -45,6 +45,8 @@ namespace OpenRA.Network
 		public bool GameStarted { get { return NetFrameNumber != 0; } }
 		public IConnection Connection { get; private set; }
 
+		public bool HandshakeSent { get; private set; }
+
 		internal int GameSaveLastFrame = -1;
 		internal int GameSaveLastSyncFrame = -1;
 
@@ -99,6 +101,9 @@ namespace OpenRA.Network
 
 		public void IssueOrder(Order order)
 		{
+			if (order.OrderString == "HandshakeResponse")
+				HandshakeSent = true;
+
 			if (order.IsImmediate)
 				localImmediateOrders.Add(order);
 			else
