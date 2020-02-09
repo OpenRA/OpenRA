@@ -39,7 +39,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Custom palette is a player palette BaseName")]
 		public readonly bool IsPlayerPalette = true;
 
-		public readonly CVec Offset = new CVec(1, 3);
+		[Desc("A list of 0 or more offsets defining the initial rally point path.")]
+		public readonly CVec[] Path = { new CVec(1, 3) };
 
 		public object Create(ActorInitializer init) { return new RallyPoint(init.Self, this); }
 	}
@@ -57,7 +58,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void ResetPath(Actor self)
 		{
-			Path = new List<CPos> { self.Location + Info.Offset };
+			Path = Info.Path.Select(p => self.Location + p).ToList();
 		}
 
 		public RallyPoint(Actor self, RallyPointInfo info)

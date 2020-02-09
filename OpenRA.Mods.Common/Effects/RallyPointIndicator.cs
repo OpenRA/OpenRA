@@ -73,6 +73,9 @@ namespace OpenRA.Mods.Common.Effects
 			foreach (var c in cachedLocations)
 				targetLineNodes.Add(world.Map.CenterOfCell(c));
 
+			if (targetLineNodes.Count == 0)
+				return;
+
 			var exitPos = building.CenterPosition;
 
 			// Find closest exit

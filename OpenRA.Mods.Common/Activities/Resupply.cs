@@ -187,7 +187,7 @@ namespace OpenRA.Mods.Common.Activities
 			{
 				if (wasRepaired || isHostInvalid || (!stayOnResupplier && aircraft.Info.TakeOffOnResupply))
 				{
-					if (self.CurrentActivity.NextActivity == null && rp != null)
+					if (self.CurrentActivity.NextActivity == null && rp != null && rp.Path.Count > 0)
 						foreach (var cell in rp.Path)
 							QueueChild(move.MoveTo(cell, 1, ignoreActor: repairableNear != null ? null : host.Actor, targetLineColor: Color.Green));
 					else
@@ -208,7 +208,7 @@ namespace OpenRA.Mods.Common.Activities
 				// If there's a next activity and we're not RepairableNear, first leave host if the next activity is not a Move.
 				if (self.CurrentActivity.NextActivity == null)
 				{
-					if (rp != null)
+					if (rp != null && rp.Path.Count > 0)
 						foreach (var cell in rp.Path)
 							QueueChild(move.MoveTo(cell, 1, repairableNear != null ? null : host.Actor, true));
 					else if (repairableNear == null)

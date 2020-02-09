@@ -228,8 +228,10 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			foreach (var rp in world.ActorsWithTrait<RallyPoint>())
 			{
-				if (rp.Actor.Owner == player &&
-					!IsRallyPointValid(rp.Trait.Path[0], rp.Actor.Info.TraitInfoOrDefault<BuildingInfo>()))
+				if (rp.Actor.Owner != player)
+					continue;
+
+				if (rp.Trait.Path.Count == 0 || !IsRallyPointValid(rp.Trait.Path[0], rp.Actor.Info.TraitInfoOrDefault<BuildingInfo>()))
 				{
 					bot.QueueOrder(new Order("SetRallyPoint", rp.Actor, Target.FromCell(world, ChooseRallyLocationNear(rp.Actor)), false)
 					{

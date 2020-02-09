@@ -150,7 +150,7 @@ NAHAND:
 		ExitCell: 0,2
 	ExitsDebugOverlay:
 	RallyPoint:
-		Offset: 3,3
+		Path: 3,3
 		Palette: mouse
 		IsPlayerPalette: false
 		LineWidth: 2
@@ -208,7 +208,7 @@ NAWEAP:
 		Range: 4c0
 		MaxHeightDelta: 3
 	RallyPoint:
-		Offset: 4,1
+		Path: 4,1
 		Palette: mouse
 		IsPlayerPalette: false
 		LineWidth: 2

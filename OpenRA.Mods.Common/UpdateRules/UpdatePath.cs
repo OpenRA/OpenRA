@@ -98,6 +98,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new ReformatChromeProvider(),
 				new RenameSpins(),
 				new CreateScreenShakeWarhead(),
+				new RenameRallyPointPath(),
 			})
 		};
 
