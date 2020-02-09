@@ -96,7 +96,7 @@ GAPILE:
 		Range: 5c0
 		MaxHeightDelta: 3
 	RallyPoint:
-		Offset: 2,3
+		Path: 2,3
 		Palette: mouse
 		IsPlayerPalette: false
 		LineWidth: 2
@@ -196,7 +196,7 @@ GAWEAP:
 	Armor:
 		Type: Heavy
 	RallyPoint:
-		Offset: 4,1
+		Path: 4,1
 		Palette: mouse
 		IsPlayerPalette: false
 		LineWidth: 2

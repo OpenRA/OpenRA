@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.Traits
 			var aircraftInfo = producee.TraitInfoOrDefault<AircraftInfo>();
 			var mobileInfo = producee.TraitInfoOrDefault<MobileInfo>();
 
-			var destinations = rp != null ? rp.Path : new List<CPos> { self.Location };
+			var destinations = rp != null && rp.Path.Count > 0 ? rp.Path : new List<CPos> { self.Location };
 
 			var location = spawnLocation;
 			if (!location.HasValue)

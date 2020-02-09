@@ -79,8 +79,21 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Query or set a factory's rally point.")]
 		public CPos RallyPoint
 		{
-			get { return rp.Path.Last(); }
-			set { rp.Path = new List<CPos> { value }; }
+			get
+			{
+				if (rp.Path.Count > 0)
+					return rp.Path.Last();
+
+				var exit = Self.FirstExitOrDefault();
+				if (exit != null)
+					return Self.Location + exit.Info.ExitCell;
+
+				return Self.Location;
+			}
+			set
+			{
+				rp.Path = new List<CPos> { value };
+			}
 		}
 	}
 

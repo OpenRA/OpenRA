@@ -123,7 +123,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				var initialFacing = exitinfo.Facing < 0 ? (to - spawn).Yaw.Facing : exitinfo.Facing;
 
-				exitLocations = rp.Value != null ? rp.Value.Path : new List<CPos> { exit };
+				exitLocations = rp.Value != null && rp.Value.Path.Count > 0 ? rp.Value.Path : new List<CPos> { exit };
 
 				td.Add(new LocationInit(exit));
 				td.Add(new CenterPositionInit(spawn));

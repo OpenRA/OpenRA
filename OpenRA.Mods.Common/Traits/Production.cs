@@ -69,7 +69,7 @@ namespace OpenRA.Mods.Common.Traits
 						initialFacing = delta.Yaw.Facing;
 				}
 
-				exitLocations = rp.Value != null ? rp.Value.Path : new List<CPos> { exit };
+				exitLocations = rp.Value != null && rp.Value.Path.Count > 0 ? rp.Value.Path : new List<CPos> { exit };
 
 				td.Add(new LocationInit(exit));
 				td.Add(new CenterPositionInit(spawn));

@@ -376,7 +376,7 @@ HAND:
 		Range: 5c0
 	WithBuildingBib:
 	RallyPoint:
-		Offset: 1,2
+		Path: 1,2
 	Exit@1:
 		SpawnOffset: 512,1024,0
 		ExitCell: 1,2
@@ -432,7 +432,7 @@ AFLD:
 	RevealsShroud:
 		Range: 7c0
 	RallyPoint:
-		Offset: 4,2
+		Path: 4,2
 	Exit@1:
 		SpawnOffset: -1024,0,0
 		ExitCell: 3,1
@@ -497,7 +497,7 @@ WEAP:
 		RequiresCondition: !build-incomplete
 		Sequence: build-top
 	RallyPoint:
-		Offset: 0,2
+		Path: 0,2
 	Exit@1:
 		SpawnOffset: -512,-512,0
 		ExitCell: 0,1
