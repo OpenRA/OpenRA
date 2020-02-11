@@ -88,9 +88,9 @@ namespace OpenRA.Graphics
 			return rect;
 		}
 
-		public Sprite Add(Png src)
+		public Sprite Add(Png src, float scale = 1f)
 		{
-			var rect = Allocate(new Size(src.Width, src.Height));
+			var rect = Allocate(new Size(src.Width, src.Height),  scale);
 			Util.FastCopyIntoSprite(rect, src);
 			current.CommitBufferedData();
 			return rect;
@@ -114,8 +114,8 @@ namespace OpenRA.Graphics
 			return (TextureChannel)nextChannel;
 		}
 
-		public Sprite Allocate(Size imageSize) { return Allocate(imageSize, 0, float3.Zero); }
-		public Sprite Allocate(Size imageSize, float zRamp, float3 spriteOffset)
+		public Sprite Allocate(Size imageSize, float scale = 1f) { return Allocate(imageSize, 0, float3.Zero, scale); }
+		public Sprite Allocate(Size imageSize, float zRamp, float3 spriteOffset, float scale = 1f)
 		{
 			if (imageSize.Width + p.X + margin > current.Size.Width)
 			{
@@ -143,7 +143,7 @@ namespace OpenRA.Graphics
 				p = int2.Zero;
 			}
 
-			var rect = new Sprite(current, new Rectangle(p.X + margin, p.Y + margin, imageSize.Width, imageSize.Height), zRamp, spriteOffset, channel, BlendMode.Alpha);
+			var rect = new Sprite(current, new Rectangle(p.X + margin, p.Y + margin, imageSize.Width, imageSize.Height), zRamp, spriteOffset, channel, BlendMode.Alpha, scale);
 			p += new int2(imageSize.Width + margin, 0);
 
 			return rect;

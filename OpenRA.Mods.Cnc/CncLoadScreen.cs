@@ -31,6 +31,7 @@ namespace OpenRA.Mods.Cnc
 		float2 loadingPos, versionPos;
 
 		Sheet lastSheet;
+		int lastDensity;
 		Size lastResolution;
 		IReadOnlyDictionary<string, SpriteFont> lastFonts;
 
@@ -41,31 +42,32 @@ namespace OpenRA.Mods.Cnc
 			versionText = modData.Manifest.Metadata.Version;
 		}
 
-		public override void DisplayInner(Renderer r, Sheet s)
+		public override void DisplayInner(Renderer r, Sheet s, int density)
 		{
-			if (s != lastSheet)
+			if (s != lastSheet || density != lastDensity)
 			{
 				lastSheet = s;
+				lastDensity = density;
 
 				border = new[]
 				{
-					new Sprite(s, new Rectangle(129, 129, 32, 32), TextureChannel.RGBA),
-					new Sprite(s, new Rectangle(161, 129, 62, 32), TextureChannel.RGBA),
-					new Sprite(s, new Rectangle(223, 129, 32, 32), TextureChannel.RGBA),
-					new Sprite(s, new Rectangle(129, 161, 32, 62), TextureChannel.RGBA),
+					CreateSprite(s, density, new Rectangle(129, 129, 32, 32)),
+					CreateSprite(s, density, new Rectangle(161, 129, 62, 32)),
+					CreateSprite(s, density, new Rectangle(223, 129, 32, 32)),
+					CreateSprite(s, density, new Rectangle(129, 161, 32, 62)),
 					null,
-					new Sprite(s, new Rectangle(223, 161, 32, 62), TextureChannel.RGBA),
-					new Sprite(s, new Rectangle(129, 223, 32, 32), TextureChannel.RGBA),
-					new Sprite(s, new Rectangle(161, 223, 62, 32), TextureChannel.RGBA),
-					new Sprite(s, new Rectangle(223, 223, 32, 32), TextureChannel.RGBA)
+					CreateSprite(s, density, new Rectangle(223, 161, 32, 62)),
+					CreateSprite(s, density, new Rectangle(129, 223, 32, 32)),
+					CreateSprite(s, density, new Rectangle(161, 223, 62, 32)),
+					CreateSprite(s, density, new Rectangle(223, 223, 32, 32))
 				};
 
-				nodLogo = new Sprite(s, new Rectangle(0, 256, 256, 256), TextureChannel.RGBA);
-				gdiLogo = new Sprite(s, new Rectangle(256, 256, 256, 256), TextureChannel.RGBA);
-				evaLogo = new Sprite(s, new Rectangle(769, 320, 128, 64), TextureChannel.RGBA);
+				nodLogo = CreateSprite(s, density, new Rectangle(0, 256, 256, 256));
+				gdiLogo = CreateSprite(s, density, new Rectangle(256, 256, 256, 256));
+				evaLogo = CreateSprite(s, density, new Rectangle(769, 320, 128, 64));
 
-				brightBlock = new Sprite(s, new Rectangle(777, 385, 16, 35), TextureChannel.RGBA);
-				dimBlock = new Sprite(s, new Rectangle(794, 385, 16, 35), TextureChannel.RGBA);
+				brightBlock = CreateSprite(s, density, new Rectangle(777, 385, 16, 35));
+				dimBlock = CreateSprite(s, density, new Rectangle(794, 385, 16, 35));
 			}
 
 			if (r.Resolution != lastResolution)

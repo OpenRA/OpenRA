@@ -54,10 +54,10 @@ namespace OpenRA.Graphics
 
 		public static IReadOnlyDictionary<string, Collection> Collections { get; private set; }
 		static Dictionary<string, Collection> collections;
-		static Dictionary<string, Sheet> cachedSheets;
+		static Dictionary<string, Pair<Sheet, int>> cachedSheets;
 		static Dictionary<string, Dictionary<string, Sprite>> cachedSprites;
 		static Dictionary<string, Sprite[]> cachedPanelSprites;
-		static Dictionary<Collection, Sheet> cachedCollectionSheets;
+		static Dictionary<Collection, Pair<Sheet, int>> cachedCollectionSheets;
 
 		static IReadOnlyFileSystem fileSystem;
 		static float dpiScale = 1;
@@ -72,10 +72,10 @@ namespace OpenRA.Graphics
 
 			fileSystem = modData.DefaultFileSystem;
 			collections = new Dictionary<string, Collection>();
-			cachedSheets = new Dictionary<string, Sheet>();
+			cachedSheets = new Dictionary<string, Pair<Sheet, int>>();
 			cachedSprites = new Dictionary<string, Dictionary<string, Sprite>>();
 			cachedPanelSprites = new Dictionary<string, Sprite[]>();
-			cachedCollectionSheets = new Dictionary<Collection, Sheet>();
+			cachedCollectionSheets = new Dictionary<Collection, Pair<Sheet, int>>();
 
 			Collections = new ReadOnlyDictionary<string, Collection>(collections);
 
@@ -91,7 +91,7 @@ namespace OpenRA.Graphics
 		{
 			if (cachedSheets != null)
 				foreach (var sheet in cachedSheets.Values)
-					sheet.Dispose();
+					sheet.First.Dispose();
 
 			collections = null;
 			cachedSheets = null;
@@ -108,47 +108,43 @@ namespace OpenRA.Graphics
 			collections.Add(name, FieldLoader.Load<Collection>(yaml));
 		}
 
-		static Sheet SheetForCollection(Collection c)
+		static Pair<Sheet, int> SheetForCollection(Collection c)
 		{
-			Sheet sheet;
+			Pair<Sheet, int> sheetDensity;
 
 			// Outer cache avoids recalculating image names
-			if (!cachedCollectionSheets.TryGetValue(c, out sheet))
+			if (!cachedCollectionSheets.TryGetValue(c, out sheetDensity))
 			{
-				string sheetImage;
-				float sheetScale;
+				var image = c.Image;
+				var density = 1;
 				if (dpiScale > 2 && !string.IsNullOrEmpty(c.Image3x))
 				{
-					sheetImage = c.Image3x;
-					sheetScale = 3;
+					image = c.Image3x;
+					density = 3;
 				}
 				else if (dpiScale > 1 && !string.IsNullOrEmpty(c.Image2x))
 				{
-					sheetImage = c.Image2x;
-					sheetScale = 2;
-				}
-				else
-				{
-					sheetImage = c.Image;
-					sheetScale = 1;
+					image = c.Image2x;
+					density = 2;
 				}
 
 				// Inner cache makes sure we share sheets between collections
-				if (!cachedSheets.TryGetValue(sheetImage, out sheet))
+				if (!cachedSheets.TryGetValue(image, out sheetDensity))
 				{
-					using (var stream = fileSystem.Open(sheetImage))
+					Sheet sheet;
+					using (var stream = fileSystem.Open(image))
 						sheet = new Sheet(SheetType.BGRA, stream);
 
 					sheet.GetTexture().ScaleFilter = TextureScaleFilter.Linear;
-					sheet.DPIScale = sheetScale;
 
-					cachedSheets.Add(sheetImage, sheet);
+					sheetDensity = Pair.New(sheet, density);
+					cachedSheets.Add(image, sheetDensity);
 				}
 
-				cachedCollectionSheets.Add(c, sheet);
+				cachedCollectionSheets.Add(c, sheetDensity);
 			}
 
-			return sheet;
+			return sheetDensity;
 		}
 
 		public static Sprite GetImage(string collectionName, string imageName)
@@ -174,14 +170,14 @@ namespace OpenRA.Graphics
 				return null;
 
 			// Cache the sprite
-			var sheet = SheetForCollection(collection);
+			var sheetDensity = SheetForCollection(collection);
 			if (cachedCollection == null)
 			{
 				cachedCollection = new Dictionary<string, Sprite>();
 				cachedSprites.Add(collectionName, cachedCollection);
 			}
 
-			var image = new Sprite(sheet, mi, TextureChannel.RGBA);
+			var image = new Sprite(sheetDensity.First, sheetDensity.Second * mi, TextureChannel.RGBA, 1f / sheetDensity.Second);
 			cachedCollection.Add(imageName, image);
 
 			return image;
@@ -214,7 +210,7 @@ namespace OpenRA.Graphics
 				}
 
 				// Cache the sprites
-				var sheet = SheetForCollection(collection);
+				var sheetDensity = SheetForCollection(collection);
 				var pr = collection.PanelRegion;
 				var ps = collection.PanelSides;
 
@@ -231,7 +227,7 @@ namespace OpenRA.Graphics
 					Pair.New(PanelSides.Bottom | PanelSides.Right, new Rectangle(pr[0] + pr[2] + pr[4], pr[1] + pr[3] + pr[5], pr[6], pr[7]))
 				};
 
-				sprites = sides.Select(x => ps.HasSide(x.First) ? new Sprite(sheet, x.Second, TextureChannel.RGBA) : null)
+				sprites = sides.Select(x => ps.HasSide(x.First) ? new Sprite(sheetDensity.First, sheetDensity.Second * x.Second, TextureChannel.RGBA, 1f / sheetDensity.Second) : null)
 					.ToArray();
 			}
 			else

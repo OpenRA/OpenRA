@@ -25,14 +25,16 @@ namespace OpenRA.Mods.Common.LoadScreens
 		Rectangle bounds;
 
 		Sheet lastSheet;
+		int lastDensity;
 		Size lastResolution;
 
-		public override void DisplayInner(Renderer r, Sheet s)
+		public override void DisplayInner(Renderer r, Sheet s, int density)
 		{
-			if (s != lastSheet)
+			if (s != lastSheet || density != lastDensity)
 			{
 				lastSheet = s;
-				sprite = new Sprite(s, new Rectangle(0, 0, 1024, 480), TextureChannel.RGBA);
+				lastDensity = density;
+				sprite = CreateSprite(s, density, new Rectangle(0, 0, 1024, 480));
 			}
 
 			if (r.Resolution != lastResolution)

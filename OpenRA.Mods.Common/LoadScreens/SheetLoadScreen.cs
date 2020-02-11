@@ -12,6 +12,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using OpenRA.Graphics;
+using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.LoadScreens
 {
@@ -21,7 +22,9 @@ namespace OpenRA.Mods.Common.LoadScreens
 
 		protected Dictionary<string, string> Info { get; private set; }
 		float dpiScale = 1;
+
 		Sheet sheet;
+		int density;
 
 		public override void Init(ModData modData, Dictionary<string, string> info)
 		{
@@ -29,7 +32,7 @@ namespace OpenRA.Mods.Common.LoadScreens
 			Info = info;
 		}
 
-		public abstract void DisplayInner(Renderer r, Sheet s);
+		public abstract void DisplayInner(Renderer r, Sheet s, int density);
 
 		public override void Display()
 		{
@@ -58,31 +61,35 @@ namespace OpenRA.Mods.Common.LoadScreens
 			if (sheet == null && Info.ContainsKey("Image"))
 			{
 				var key = "Image";
-				float sheetScale = 1;
+				density = 1;
 				if (dpiScale > 2 && Info.ContainsKey("Image3x"))
 				{
 					key = "Image3x";
-					sheetScale = 3;
+					density = 3;
 				}
 				else if (dpiScale > 1 && Info.ContainsKey("Image2x"))
 				{
 					key = "Image2x";
-					sheetScale = 2;
+					density = 2;
 				}
 
 				using (var stream = ModData.DefaultFileSystem.Open(Info[key]))
 				{
 					sheet = new Sheet(SheetType.BGRA, stream);
 					sheet.GetTexture().ScaleFilter = TextureScaleFilter.Linear;
-					sheet.DPIScale = sheetScale;
 				}
 			}
 
 			Game.Renderer.BeginUI();
-			DisplayInner(Game.Renderer, sheet);
+			DisplayInner(Game.Renderer, sheet, density);
 			Game.Renderer.EndFrame(new NullInputHandler());
 
 			lastUpdate.Restart();
+		}
+
+		protected static Sprite CreateSprite(Sheet s, int density, Rectangle rect)
+		{
+			return new Sprite(s, density * rect, TextureChannel.RGBA, 1f / density);
 		}
 
 		protected override void Dispose(bool disposing)
