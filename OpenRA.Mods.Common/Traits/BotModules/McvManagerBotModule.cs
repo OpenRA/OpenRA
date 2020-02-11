@@ -144,25 +144,17 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Only build MCV if the conyardCount + mcvCount are lower than the minimum conyard count.
 			var conyardCount = AIUtils.CountBuildingByCommonName(Info.ConstructionYardTypes, player);
-			if (conyardCount + mcvCount >= Info.MinimumConstructionYardCount)
+			if (conyardCount >= Info.MinimumConstructionYardCount)
 				return false;
 
 			// Only build MCV if there isn't already one being built.
-			var blds = player.World.ActorsWithTrait<ProductionQueue>()
+			var queues = player.World.ActorsWithTrait<ProductionQueue>()
 				.Where(a => a.Actor.Owner == player && Info.McvFactoryTypes.Contains(a.Actor.Info.Name) && a.Trait.Enabled)
 				.Select(a => a.Trait);
 
-			int queuedMcvCount = 0;
-			foreach (var factory in blds)
-			{
-				var q = factory.AllQueued().Where(z => Info.McvTypes.Contains(z.Item));
-
-				if (q != null)
-					queuedMcvCount += q.Count();
-			}
-
-			if (queuedMcvCount > 0)
-				return false;
+			foreach (var factory in queues)
+				if (factory.AllQueued().Any(z => Info.McvTypes.Contains(z.Item)))
+					return false;
 
 			return true;
 		}
