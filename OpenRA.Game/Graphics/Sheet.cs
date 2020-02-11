@@ -25,7 +25,6 @@ namespace OpenRA.Graphics
 
 		public readonly Size Size;
 		public readonly SheetType Type;
-		public float DPIScale = 1f;
 
 		public byte[] GetData()
 		{

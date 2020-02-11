@@ -47,22 +47,27 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public static void FillRectWithSprite(Rectangle r, Sprite s)
 		{
-			for (var x = r.Left; x < r.Right; x += (int)s.Size.X)
-				for (var y = r.Top; y < r.Bottom; y += (int)s.Size.Y)
+			var scale = s.Size.X / s.Bounds.Width;
+			for (var x = (float)r.Left; x < r.Right; x += s.Size.X)
+			{
+				for (var y = (float)r.Top; y < r.Bottom; y += s.Size.Y)
 				{
 					var ss = s;
-					var left = new int2(r.Right - x, r.Bottom - y);
-					if (left.X < (int)s.Size.X || left.Y < (int)s.Size.Y)
+					var dx = r.Right - x;
+					var dy = r.Bottom - y;
+					if (dx < s.Size.X || dy < s.Size.Y)
 					{
-						var rr = new Rectangle(s.Bounds.Left,
+						var rr = new Rectangle(
+							s.Bounds.Left,
 							s.Bounds.Top,
-							Math.Min(left.X, (int)s.Size.X),
-							Math.Min(left.Y, (int)s.Size.Y));
-						ss = new Sprite(s.Sheet, rr, s.Channel);
+							Math.Min(s.Bounds.Width, (int)(dx / scale)),
+							Math.Min(s.Bounds.Height, (int)(dy / scale)));
+						ss = new Sprite(s.Sheet, rr, s.Channel, scale);
 					}
 
 					DrawRGBA(ss, new float2(x, y));
 				}
+			}
 		}
 
 		public static void FillRectWithColor(Rectangle r, Color c)

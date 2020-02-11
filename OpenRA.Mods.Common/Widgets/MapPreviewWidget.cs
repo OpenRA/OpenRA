@@ -191,10 +191,10 @@ namespace OpenRA.Mods.Common.Widgets
 					var owned = colors.ContainsKey(p);
 					var pos = ConvertToPreview(p, gridType);
 					var sprite = owned ? spawnClaimed : spawnUnclaimed;
-					var offset = new int2(sprite.Bounds.Width, sprite.Bounds.Height) / 2;
+					var offset = sprite.Size.XY.ToInt2() / 2;
 
 					if (owned)
-						WidgetUtils.FillEllipseWithColor(new Rectangle(pos.X - offset.X + 1, pos.Y - offset.Y + 1, sprite.Bounds.Width - 2, sprite.Bounds.Height - 2), colors[p]);
+						WidgetUtils.FillEllipseWithColor(new Rectangle(pos.X - offset.X + 1, pos.Y - offset.Y + 1, (int)sprite.Size.X - 2, (int)sprite.Size.Y - 2), colors[p]);
 
 					Game.Renderer.RgbaSpriteRenderer.DrawSprite(sprite, pos - offset);
 					var number = Convert.ToChar('A' + spawnPoints.IndexOf(p)).ToString();

@@ -117,6 +117,8 @@ namespace OpenRA.Primitives
 			return rect == Intersect(this, rect);
 		}
 
+		public static Rectangle operator *(int a, Rectangle b) { return new Rectangle(a * b.X, a * b.Y, a * b.Width, a * b.Height); }
+
 		public override string ToString()
 		{
 			return string.Format("{{X={0},Y={1},Width={2},Height={3}}}", X, Y, Width, Height);

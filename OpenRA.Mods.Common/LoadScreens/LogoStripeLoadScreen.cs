@@ -24,6 +24,7 @@ namespace OpenRA.Mods.Common.LoadScreens
 		Sprite stripe, logo;
 
 		Sheet lastSheet;
+		int lastDensity;
 		Size lastResolution;
 
 		string[] messages = { "Loading..." };
@@ -36,13 +37,14 @@ namespace OpenRA.Mods.Common.LoadScreens
 				messages = info["Text"].Split(',');
 		}
 
-		public override void DisplayInner(Renderer r, Sheet s)
+		public override void DisplayInner(Renderer r, Sheet s, int density)
 		{
-			if (s != lastSheet)
+			if (s != lastSheet || density != lastDensity)
 			{
 				lastSheet = s;
-				logo = new Sprite(s, new Rectangle(0, 0, 256, 256), TextureChannel.RGBA);
-				stripe = new Sprite(s, new Rectangle(258, 0, 253, 256), TextureChannel.RGBA);
+				lastDensity = density;
+				logo = CreateSprite(s, density, new Rectangle(0, 0, 256, 256));
+				stripe = CreateSprite(s, density, new Rectangle(258, 0, 253, 256));
 			}
 
 			if (r.Resolution != lastResolution)
