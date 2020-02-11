@@ -8,6 +8,12 @@ Player:
 	ModularBot@HAL9001:
 		Name: HAL 9001
 		Type: hal9001
+	ModularBot@Hard:
+		Name: Hard AI
+		Type: hard
+	ModularBot@Brutal:
+		Name: Brutal AI
+		Type: brutal
 	GrantConditionOnBotOwner@cabal:
 		Condition: enable-cabal-ai
 		Bots: cabal
@@ -17,8 +23,14 @@ Player:
 	GrantConditionOnBotOwner@hal9001:
 		Condition: enable-hal9001-ai
 		Bots: hal9001
+	GrantConditionOnBotOwner@hard:
+		Condition: enable-hard-ai
+		Bots: hard
+	GrantConditionOnBotOwner@brutal:
+		Condition: enable-brutal-ai
+		Bots: brutal
 	SupportPowerBotModule:
-		RequiresCondition: enable-cabal-ai || enable-watson-ai || enable-hal9001-ai
+		RequiresCondition: enable-cabal-ai || enable-watson-ai || enable-hal9001-ai || enable-brutal-ai
 		Decisions:
 			Airstrike:
 				OrderName: AirstrikePowerInfoOrder
@@ -212,7 +224,7 @@ Player:
 			sam: 7
 			fix: 1
 	BuildingRepairBotModule:
-		RequiresCondition: enable-cabal-ai || enable-watson-ai || enable-hal9001-ai
+		RequiresCondition: enable-cabal-ai || enable-watson-ai || enable-hal9001-ai || enable-brutal-ai
 	SquadManagerBotModule@cabal:
 		RequiresCondition: enable-cabal-ai
 		SquadSize: 15
@@ -307,3 +319,241 @@ Player:
 			orca: 10
 		UnitLimits:
 			harv: 8
+	SquadManagerBotModule@hard:
+		RequiresCondition: enable-hard-ai
+		SquadSize: 16
+		SquadSizeRandomBonus: 10
+		ProtectionScanRadius: 18
+		ProtectUnitScanRadius: 24
+		IdleScanRadius: 12
+		ExcludeFromSquadsTypes: harv, mcv, e6
+		ConstructionYardTypes: fact
+	UnitBuilderBotModule@hard:
+		RequiresCondition: enable-hard-ai
+		IdleBaseUnitsMaximum: 16
+		UnitQueues: Vehicle.Nod, Vehicle.GDI, Infantry.Nod, Infantry.GDI, Aircraft.Nod, Aircraft.GDI
+		UnitsToBuild:
+			e1: 10
+			e2: 25
+			e3: 35
+			e4: 15
+			e5: 15
+			e6: 5
+			harv: 20
+			bggy: 10
+			bike: 40
+			ltnk: 30
+			ftnk: 15
+			arty: 50
+			stnk: 50
+			jeep: 10
+			mtnk: 30
+			msam: 50
+			htnk: 50
+			mrls: 5
+		UnitLimits:
+			harv: 10
+			e6: 1
+			mcv: 1
+		UnitDelays:
+			bggy: 6000
+			bike: 6000
+			ltnk: 6000
+			ftnk: 6000
+			arty: 6000
+			stnk: 10000
+			jeep: 6000
+			mtnk: 6000
+			msam: 6000
+			htnk: 10000
+			mrls: 6000
+	CaptureManagerBotModule@hard:
+		RequiresCondition: enable-hard-ai
+		MinimumCaptureDelay: 300
+		CapturingActorTypes: e6
+		CapturableActorTypes: hosp,bio,v19
+		MaximumCaptureTargetOptions: 10
+	BaseBuilderBotModule@hard:
+		RequiresCondition: enable-hard-ai
+		BuildingQueues: Building.Nod, Building.GDI
+		DefenseQueues: Defence.Nod, Defence.GDI
+		MinimumExcessPower: 40
+		MaximumExcessPower: 210
+		ExcessPowerIncrement: 30
+		ExcessPowerIncreaseThreshold: 4
+		PlaceDefenseTowardsEnemyChance: 50
+		ConstructionYardTypes: fact
+		MaximumDefenseRadius: 16
+		RefineryTypes: proc
+		PowerTypes: nuke,nuk2
+		BarracksTypes: pyle,hand
+		VehiclesFactoryTypes: weap,afld
+		ProductionTypes: pyle,hand,weap,afld,hpad
+		SiloTypes: silo
+		BuildingLimits:
+			proc: 6
+			pyle: 3
+			hand: 3
+			hq: 1
+			weap: 3
+			afld: 3
+			eye: 1
+			tmpl: 1
+			fix: 1
+			silo: 1
+		BuildingFractions:
+			proc: 20
+			pyle: 5
+			hand: 5
+			hq: 4
+			weap: 8
+			afld: 8
+			gtwr: 5
+			gun: 5
+			atwr: 8
+			obli: 7
+			sam: 7
+			eye: 1
+			tmpl: 1
+			fix: 1
+		BuildingDelays:
+			hq: 4000
+			gtwr: 3000
+			gun: 3000
+			hand: 2000
+			pyle: 2000
+			sam: 4000
+			obli: 5000
+			atwr: 5000
+	McvManagerBotModule@hard:
+		RequiresCondition: enable-hard-ai
+		McvTypes: mcv
+		ConstructionYardTypes: fact
+		McvFactoryTypes: weap,afld
+		MinBaseRadius: 8
+		MaxBaseRadius: 24
+		MinimumConstructionYardCount: 2
+	HarvesterBotModule@hard:
+		RequiresCondition: enable-hard-ai
+		HarvesterTypes: harv
+		RefineryTypes: proc
+	SquadManagerBotModule@brutal:
+		RequiresCondition: enable-brutal-ai
+		SquadSize: 18
+		SquadSizeRandomBonus: 12
+		ProtectionScanRadius: 20
+		ProtectUnitScanRadius: 24
+		IdleScanRadius: 12
+		ExcludeFromSquadsTypes: harv,mcv,e6,mrls
+		ConstructionYardTypes: fact
+	UnitBuilderBotModule@brutal:
+		RequiresCondition: enable-brutal-ai
+		IdleBaseUnitsMaximum: 18
+		UnitQueues: Vehicle.Nod, Vehicle.GDI, Infantry.Nod, Infantry.GDI, Aircraft.Nod, Aircraft.GDI
+		UnitsToBuild:
+			e1: 10
+			e2: 25
+			e3: 35
+			e4: 15
+			e5: 15
+			e6: 5
+			harv: 20
+			bggy: 10
+			bike: 40
+			ltnk: 30
+			ftnk: 15
+			arty: 50
+			stnk: 50
+			jeep: 10
+			mtnk: 30
+			msam: 50
+			htnk: 50
+			mrls: 5
+		UnitLimits:
+			harv: 12
+			e6: 1
+			mcv: 1
+		UnitDelays:
+			bggy: 6000
+			bike: 6000
+			ltnk: 6000
+			ftnk: 6000
+			arty: 6000
+			stnk: 10000
+			jeep: 6000
+			mtnk: 6000
+			msam: 6000
+			htnk: 10000
+			mrls: 6000
+	CaptureManagerBotModule@brutal:
+		RequiresCondition: enable-brutal-ai
+		MinimumCaptureDelay: 250
+		CapturingActorTypes: e6
+		CapturableActorTypes: fact,hosp,bio,v19
+		MaximumCaptureTargetOptions: 10
+	BaseBuilderBotModule@brutal:
+		RequiresCondition: enable-brutal-ai
+		BuildingQueues: Building.Nod, Building.GDI
+		DefenseQueues: Defence.Nod, Defence.GDI
+		MinimumExcessPower: 40
+		MaximumExcessPower: 210
+		ExcessPowerIncrement: 30
+		ExcessPowerIncreaseThreshold: 4
+		PlaceDefenseTowardsEnemyChance: 50
+		ConstructionYardTypes: fact
+		MaximumDefenseRadius: 16
+		RefineryTypes: proc
+		PowerTypes: nuke,nuk2
+		BarracksTypes: pyle,hand
+		VehiclesFactoryTypes: weap,afld
+		ProductionTypes: pyle,hand,weap,afld,hpad
+		SiloTypes: silo
+		BuildingLimits:
+			proc: 8
+			pyle: 2
+			hand: 2
+			hq: 1
+			weap: 4
+			afld: 4
+			eye: 1
+			tmpl: 1
+			fix: 1
+			silo: 1
+		BuildingFractions:
+			proc: 20
+			pyle: 5
+			hand: 5
+			hq: 4
+			weap: 8
+			afld: 8
+			gtwr: 5
+			gun: 5
+			atwr: 8
+			obli: 7
+			sam: 7
+			eye: 1
+			tmpl: 1
+			fix: 1
+		BuildingDelays:
+			hq: 4000
+			gtwr: 3000
+			gun: 3000
+			hand: 2000
+			pyle: 2000
+			sam: 4000
+			obli: 5000
+			atwr: 5000
+	McvManagerBotModule@brutal:
+		RequiresCondition: enable-brutal-ai
+		McvTypes: mcv
+		ConstructionYardTypes: fact
+		McvFactoryTypes: weap,afld
+		MinBaseRadius: 8
+		MaxBaseRadius: 24
+		MinimumConstructionYardCount: 2
+	HarvesterBotModule@brutal:
+		RequiresCondition: enable-brutal-ai
+		HarvesterTypes: harv
+		RefineryTypes: proc
+		HarvesterEnemyAvoidanceRadius: 12
+		HarvestersPerRefinery: 1
