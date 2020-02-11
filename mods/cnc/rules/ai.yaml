@@ -30,7 +30,7 @@ Player:
 		Condition: enable-brutal-ai
 		Bots: brutal
 	SupportPowerBotModule:
-		RequiresCondition: enable-cabal-ai || enable-watson-ai || enable-hal9001-ai || enable-brutal-ai
+		RequiresCondition: enable-cabal-ai || enable-watson-ai || enable-hal9001-ai || enable-hard-ai || enable-brutal-ai
 		Decisions:
 			Airstrike:
 				OrderName: AirstrikePowerInfoOrder
@@ -224,7 +224,7 @@ Player:
 			sam: 7
 			fix: 1
 	BuildingRepairBotModule:
-		RequiresCondition: enable-cabal-ai || enable-watson-ai || enable-hal9001-ai || enable-brutal-ai
+		RequiresCondition: enable-cabal-ai || enable-watson-ai || enable-hal9001-ai || enable-hard-ai || enable-brutal-ai
 	SquadManagerBotModule@cabal:
 		RequiresCondition: enable-cabal-ai
 		SquadSize: 15
