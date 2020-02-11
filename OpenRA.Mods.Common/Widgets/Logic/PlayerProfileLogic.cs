@@ -270,7 +270,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			// Negotiate the label length that the tooltip will allow
 			var maxLabelWidth = 0;
-			var templateIcon = badgeTemplate.Get<SpriteWidget>("ICON");
+			var templateIcon = badgeTemplate.Get("ICON");
 			var templateLabel = badgeTemplate.Get<LabelWidget>("LABEL");
 			var templateLabelFont = Game.Renderer.Fonts[templateLabel.Font];
 			foreach (var badge in profile.Badges)
@@ -285,8 +285,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			foreach (var badge in profile.Badges)
 			{
 				var b = badgeTemplate.Clone();
-				var icon = b.Get<SpriteWidget>("ICON");
-				icon.GetSprite = () => badge.Icon24;
+				var icon = b.Get<BadgeWidget>("ICON");
+				icon.Badge = badge;
 
 				var label = b.Get<LabelWidget>("LABEL");
 				var labelFont = Game.Renderer.Fonts[label.Font];

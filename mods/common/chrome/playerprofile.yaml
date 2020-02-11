@@ -217,7 +217,7 @@ Container@PLAYER_PROFILE_BADGES_INSERT:
 			Width: PARENT_RIGHT
 			Height: 25
 			Children:
-				Sprite@ICON:
+				Badge@ICON:
 					X: 6
 					Y: 1
 					Width: 24
