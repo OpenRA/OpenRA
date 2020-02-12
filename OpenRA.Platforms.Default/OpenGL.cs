@@ -501,6 +501,14 @@ namespace OpenRA.Platforms.Default
 			if (Features.HasFlag(GLFeatures.DebugMessagesCallback) && Game.Settings.Graphics.DisableGLDebugMessageCallback)
 				Features ^= GLFeatures.DebugMessagesCallback;
 
+			// Force disable the debug message callback feature on Linux + AMD GPU to work around a startup freeze
+			if (Features.HasFlag(GLFeatures.DebugMessagesCallback) && Platform.CurrentPlatform == PlatformType.Linux)
+			{
+				var renderer = glGetString(GL_RENDERER);
+				if (renderer.Contains("AMD") || renderer.Contains("Radeon"))
+					Features ^= GLFeatures.DebugMessagesCallback;
+			}
+
 			if (!Features.HasFlag(GLFeatures.Core))
 			{
 				WriteGraphicsLog("Unsupported OpenGL version: " + glGetString(GL_VERSION));
