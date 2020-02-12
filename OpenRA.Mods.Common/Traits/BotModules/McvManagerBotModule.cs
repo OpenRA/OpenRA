@@ -51,13 +51,26 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class McvManagerBotModule : ConditionalTrait<McvManagerBotModuleInfo>, IBotTick, IBotPositionsUpdated, IGameSaveTraitData
 	{
-		public CPos GetRandomBaseCenter()
+		public CPos GetRandomBaseCenter(bool distanceToBaseIsImportant)
 		{
+			if (!distanceToBaseIsImportant)
+				return initialBaseCenter;
+
+			var tileset = world.Map.Rules.TileSet;
+			var resourceTypeIndices = new BitArray(tileset.TerrainInfo.Length);
+
+			foreach (var t in world.Map.Rules.Actors["world"].TraitInfos<ResourceTypeInfo>())
+				resourceTypeIndices.Set(tileset.GetTerrainIndex(t.TerrainType), true);
+
 			var randomConstructionYard = world.Actors.Where(a => a.Owner == player &&
 				Info.ConstructionYardTypes.Contains(a.Info.Name))
 				.RandomOrDefault(world.LocalRandom);
 
-			return randomConstructionYard != null ? randomConstructionYard.Location : initialBaseCenter;
+			var newResources = world.Map.FindTilesInAnnulus(randomConstructionYard.Location, Info.MaxBaseRadius, world.Map.Grid.MaximumTileSearchRange)
+				.Where(a => resourceTypeIndices.Get(world.Map.GetTerrainIndex(a)))
+				.Shuffle(world.LocalRandom).FirstOrDefault();
+
+			return newResources;
 		}
 
 		readonly World world;
@@ -174,7 +187,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (move)
 			{
 				// If we lack a base, we need to make sure we don't restrict deployment of the MCV to the base!
-				var restrictToBase = Info.RestrictMCVDeploymentFallbackToBase && AIUtils.CountBuildingByCommonName(Info.ConstructionYardTypes, player) > 0;
+				var restrictToBase = AIUtils.CountBuildingByCommonName(Info.ConstructionYardTypes, player) > 0;
 
 				var transformsInfo = mcv.Info.TraitInfo<TransformsInfo>();
 				var desiredLocation = ChooseMcvDeployLocation(transformsInfo.IntoActor, transformsInfo.Offset, restrictToBase);
@@ -221,10 +234,34 @@ namespace OpenRA.Mods.Common.Traits
 				return null;
 			};
 
-			var baseCenter = GetRandomBaseCenter();
+			var baseCenter = GetRandomBaseCenter(distanceToBaseIsImportant);
 
-			return findPos(baseCenter, baseCenter, Info.MinBaseRadius,
+			var bc = findPos(baseCenter, baseCenter, Info.MinBaseRadius,
 				distanceToBaseIsImportant ? Info.MaxBaseRadius : world.Map.Grid.MaximumTileSearchRange);
+
+			if (!bc.HasValue)
+				return null;
+
+			baseCenter = bc.Value;
+
+			var wPos = world.Map.CenterOfCell(baseCenter);
+			var newBaseRadius = new WDist(Info.MaxBaseRadius * 1024);
+
+			var actors = world.FindActorsInCircle(wPos, newBaseRadius)
+				.Where(a => !a.Disposed);
+
+			var enemies = actors.Where(a => player.Stances[a.Owner] == Stance.Enemy);
+
+			if (enemies.Count() > 0)
+				return null;
+
+			var self = actors.Where(a => a.Owner == player
+					&& (Info.McvTypes.Contains(a.Info.Name) || (Info.ConstructionYardTypes.Contains(a.Info.Name) && a.Info.HasTraitInfo<BuildingInfo>())));
+
+			if (self.Count() > 0)
+				return null;
+
+			return baseCenter;
 		}
 
 		List<MiniYamlNode> IGameSaveTraitData.IssueTraitData(Actor self)
