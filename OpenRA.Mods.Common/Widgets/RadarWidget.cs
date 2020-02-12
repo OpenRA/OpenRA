@@ -77,9 +77,14 @@ namespace OpenRA.Mods.Common.Widgets
 				previewWidth = 2 * previewWidth - 1;
 		}
 
-		void CellTerrainColorChanged(MPos puv)
+		void CellTerrainColorChanged(MPos uv)
 		{
-			UpdateTerrainColor(puv);
+			UpdateTerrainColor(uv);
+		}
+
+		void CellTerrainColorChanged(CPos cell)
+		{
+			UpdateTerrainColor(cell.ToMPos(world.Map));
 		}
 
 		public override void Initialize(WidgetArgs args)
@@ -93,26 +98,17 @@ namespace OpenRA.Mods.Common.Widgets
 
 			MapBoundsChanged();
 
-			if (world.Type == WorldType.Regular)
-				SetPlayer(world.LocalPlayer ?? world.RenderPlayer);
-			else
+			var player = world.Type == WorldType.Regular ? world.LocalPlayer ?? world.RenderPlayer : null;
+			SetPlayer(player, true);
+
+			if (player == null)
 			{
 				// Set initial terrain data
 				foreach (var uv in world.Map.AllCells.MapCoords)
 					UpdateTerrainColor(uv);
-
-				world.Map.Tiles.CellEntryChanged += UpdateTerrainCell;
-				world.Map.CustomTerrain.CellEntryChanged += UpdateTerrainCell;
 			}
 
 			world.RenderPlayerChanged += WorldOnRenderPlayerChanged;
-		}
-
-		void UpdateTerrainCell(CPos cell)
-		{
-			var uv = cell.ToMPos(world.Map);
-
-			UpdateTerrainColor(uv);
 		}
 
 		void WorldOnRenderPlayerChanged(Player player)
@@ -124,7 +120,7 @@ namespace OpenRA.Mods.Common.Widgets
 				UpdateTerrainColor(uv);
 		}
 
-		void SetPlayer(Player player)
+		void SetPlayer(Player player, bool forceUpdate = false)
 		{
 			currentPlayer = player;
 
@@ -148,13 +144,23 @@ namespace OpenRA.Mods.Common.Widgets
 			var newPlayerRadarTerrain =
 				currentPlayer != null ? currentPlayer.PlayerActor.TraitOrDefault<PlayerRadarTerrain>() : null;
 
-			if (newPlayerRadarTerrain != playerRadarTerrain)
+			if (forceUpdate || newPlayerRadarTerrain != playerRadarTerrain)
 			{
 				if (playerRadarTerrain != null)
 					playerRadarTerrain.CellTerrainColorChanged -= CellTerrainColorChanged;
+				else
+				{
+					world.Map.Tiles.CellEntryChanged -= CellTerrainColorChanged;
+					world.Map.CustomTerrain.CellEntryChanged -= CellTerrainColorChanged;
+				}
 
 				if (newPlayerRadarTerrain != null)
 					newPlayerRadarTerrain.CellTerrainColorChanged += CellTerrainColorChanged;
+				else
+				{
+					world.Map.Tiles.CellEntryChanged += CellTerrainColorChanged;
+					world.Map.CustomTerrain.CellEntryChanged += CellTerrainColorChanged;
+				}
 
 				playerRadarTerrain = newPlayerRadarTerrain;
 			}
