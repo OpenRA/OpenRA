@@ -132,17 +132,14 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool ShouldBuildMCV()
 		{
-			// Only build MCV if we have a factory to build it with.
 			var enoughFactories = AIUtils.CountBuildingByCommonName(Info.McvFactoryTypes, player) > 0;
 			if (!enoughFactories)
 				return false;
 
-			// Only build MCV if we don't already have one in the field.
 			var mcvCount = AIUtils.CountActorByCommonName(Info.McvTypes, player);
 			if (mcvCount > 0)
 				return false;
 
-			// Only build MCV if the conyardCount + mcvCount are lower than the minimum conyard count.
 			var conyardCount = AIUtils.CountBuildingByCommonName(Info.ConstructionYardTypes, player);
 			if (conyardCount >= Info.MinimumConstructionYardCount)
 				return false;
