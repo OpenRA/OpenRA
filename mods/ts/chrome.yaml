@@ -693,5 +693,5 @@ logos:
 
 loadscreen-stripe:
 	Inherits: ^LoadScreen
-	PanelRegion: 256, 0, 0, 0, 256, 256, 0, 0
+	PanelRegion: 258, 0, 0, 0, 253, 256, 0, 0
 	PanelSides: Center
