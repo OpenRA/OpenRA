@@ -40,11 +40,11 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int MinBaseRadius = 2;
 
 		[Desc("Maximum distance in cells from center of the base when checking for MCV deployment location.",
-			"AI will not send MCVs to locations containing enemies within the MaxBaseRadius of that location.",
-			"AI will not send MCVs to locations containing its own MCVs or construction yards within the MaxBaseRadius of that location.",
-			"In the case of less than 1 construction yard, the AI will choose a random new base center and place the MCV within the MaxBaseRadius of that location.",
-			"In the case of at least 1 construction yard, the AI will choose a location nearer resource fields outside of all bases MaxBaseRadius up to world.Map.Grid.MaximumTileSearchRange.")]
+			"Only applies if RestrictMCVDeploymentFallbackToBase is enabled and there's at least one construction yard.")]
 		public readonly int MaxBaseRadius = 20;
+
+		[Desc("Should deployment of additional MCVs be restricted to MaxBaseRadius if explicit deploy locations are missing or occupied?")]
+		public readonly bool RestrictMCVDeploymentFallbackToBase = true;
 
 		public override object Create(ActorInitializer init) { return new McvManagerBotModule(init.Self, this); }
 	}
@@ -236,7 +236,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			var baseCenter = GetRandomBaseCenter(distanceToBaseIsImportant);
 
-			var bc = findPos(baseCenter, baseCenter, Info.MinBaseRadius, Info.MaxBaseRadius);
+			var bc = findPos(baseCenter, baseCenter, Info.MinBaseRadius,
+				distanceToBaseIsImportant ? Info.MaxBaseRadius : world.Map.Grid.MaximumTileSearchRange);
 
 			if (!bc.HasValue)
 				return null;
