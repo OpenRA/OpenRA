@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Traits
 			var tileset = world.Map.Rules.TileSet;
 			var resourceTypeIndices = new BitArray(tileset.TerrainInfo.Length);
 
-			foreach (var t in world.Map.Rules.Actors["world"].TraitInfos<ResourceTypeInfo>())
+			foreach (var t in world.WorldActor.Info.TraitInfos<ResourceTypeInfo>())
 				resourceTypeIndices.Set(tileset.GetTerrainIndex(t.TerrainType), true);
 
 			var randomConstructionYard = world.Actors.Where(a => a.Owner == player &&
@@ -226,15 +226,15 @@ namespace OpenRA.Mods.Common.Traits
 			var actors = world.FindActorsInCircle(wPos, newBaseRadius)
 				.Where(a => !a.Disposed);
 
-			var enemies = actors.Where(a => player.Stances[a.Owner] == Stance.Enemy);
+			var enemies = actors.Any(a => player.Stances[a.Owner] == Stance.Enemy);
 
-			if (enemies.Count() > 0)
+			if (enemies)
 				return null;
 
-			var self = actors.Where(a => a.Owner == player
-					&& (Info.McvTypes.Contains(a.Info.Name) || (Info.ConstructionYardTypes.Contains(a.Info.Name) && a.Info.HasTraitInfo<BuildingInfo>())));
+			var self = actors.Any(a => a.Owner == player
+					&& (Info.McvTypes.Contains(a.Info.Name) || Info.ConstructionYardTypes.Contains(a.Info.Name)));
 
-			if (self.Count() > 0)
+			if (self)
 				return null;
 
 			return baseCenter;
