@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly CachedTransform<Player, PlayerStatistics> stats = new CachedTransform<Player, PlayerStatistics>(player => player.PlayerActor.TraitOrDefault<PlayerStatistics>());
 
 		int lastIconIdx;
-		Rectangle currentIconBounds;
+		int currentTooltipToken;
 
 		[ObjectCreator.UseCtor]
 		public ObserverArmyIconsWidget(World world, WorldRenderer worldRenderer)
@@ -118,7 +118,18 @@ namespace OpenRA.Mods.Common.Widgets
 				queueCol++;
 			}
 
-			Bounds.Width = queueCol * (IconWidth + IconSpacing);
+			var newWidth = Math.Max(queueCol * (IconWidth + IconSpacing), MinWidth);
+			if (newWidth != Bounds.Width)
+			{
+				var wasInBounds = EventBounds.Contains(Viewport.LastMousePos);
+				Bounds.Width = newWidth;
+				var isInBounds = EventBounds.Contains(Viewport.LastMousePos);
+
+				// HACK: Ui.MouseOverWidget is normally only updated when the mouse moves
+				// Call ResetTooltips to force a fake mouse movement so the checks in Tick will work properly
+				if (wasInBounds != isInBounds)
+					Game.RunAfterTick(Ui.ResetTooltips);
+			}
 
 			Game.Renderer.DisableAntialiasingFilter();
 
@@ -149,41 +160,29 @@ namespace OpenRA.Mods.Common.Widgets
 			return new ObserverArmyIconsWidget(this);
 		}
 
-		public override void MouseEntered()
-		{
-			if (TooltipContainer == null)
-				return;
-
-			foreach (var armyIcon in armyIcons)
-			{
-				if (!armyIcon.Bounds.Contains(Viewport.LastMousePos))
-					continue;
-
-				TooltipUnit = armyIcon.Unit;
-				break;
-			}
-
-			tooltipContainer.Value.SetTooltip(TooltipTemplate, new WidgetArgs { { "getTooltipUnit", GetTooltipUnit } });
-		}
-
-		public override void MouseExited()
-		{
-			if (TooltipContainer == null)
-				return;
-
-			tooltipContainer.Value.RemoveTooltip();
-		}
-
 		public override void Tick()
 		{
-			if (lastIconIdx >= armyIcons.Count)
+			if (TooltipContainer == null)
+				return;
+
+			if (Ui.MouseOverWidget != this)
 			{
-				TooltipUnit = null;
+				if (TooltipUnit != null)
+				{
+					tooltipContainer.Value.RemoveTooltip(currentTooltipToken);
+					lastIconIdx = 0;
+					TooltipUnit = null;
+				}
+
 				return;
 			}
 
-			if (TooltipUnit != null && currentIconBounds.Contains(Viewport.LastMousePos))
-				return;
+			if (TooltipUnit != null && lastIconIdx < armyIcons.Count)
+			{
+				var armyIcon = armyIcons[lastIconIdx];
+				if (armyIcon.Unit.ActorInfo == TooltipUnit.ActorInfo && armyIcon.Bounds.Contains(Viewport.LastMousePos))
+					return;
+			}
 
 			for (var i = 0; i < armyIcons.Count; i++)
 			{
@@ -192,8 +191,9 @@ namespace OpenRA.Mods.Common.Widgets
 					continue;
 
 				lastIconIdx = i;
-				currentIconBounds = armyIcon.Bounds;
 				TooltipUnit = armyIcon.Unit;
+				currentTooltipToken = tooltipContainer.Value.SetTooltip(TooltipTemplate, new WidgetArgs { { "getTooltipUnit", GetTooltipUnit } });
+
 				return;
 			}
 

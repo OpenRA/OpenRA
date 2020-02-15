@@ -48,6 +48,7 @@ namespace OpenRA.Mods.Common.Widgets
 		float2 iconSize;
 		int lastIconIdx;
 		public int MinWidth = 240;
+		int currentTooltipToken;
 
 		[ObjectCreator.UseCtor]
 		public ObserverProductionIconsWidget(World world, WorldRenderer worldRenderer)
@@ -117,8 +118,6 @@ namespace OpenRA.Mods.Common.Widgets
 					.ThenBy(g => g.First().BuildPaletteOrder)
 					.ToList();
 
-			Bounds.Width = Math.Max(currentItemsByItem.Count * (IconWidth + IconSpacing), MinWidth);
-
 			Game.Renderer.EnableAntialiasingFilter();
 
 			var queueCol = 0;
@@ -177,6 +176,20 @@ namespace OpenRA.Mods.Common.Widgets
 				queueCol++;
 			}
 
+			var newWidth = Math.Max(queueCol * (IconWidth + IconSpacing), MinWidth);
+
+			if (newWidth != Bounds.Width)
+			{
+				var wasInBounds = EventBounds.Contains(Viewport.LastMousePos);
+				Bounds.Width = newWidth;
+				var isInBounds = EventBounds.Contains(Viewport.LastMousePos);
+
+				// HACK: Ui.MouseOverWidget is normally only updated when the mouse moves
+				// Call ResetTooltips to force a fake mouse movement so the checks in Tick will work properly
+				if (wasInBounds != isInBounds)
+					Game.RunAfterTick(Ui.ResetTooltips);
+			}
+
 			Game.Renderer.DisableAntialiasingFilter();
 
 			var tiny = Game.Renderer.Fonts["Tiny"];
@@ -227,40 +240,24 @@ namespace OpenRA.Mods.Common.Widgets
 			return new ObserverProductionIconsWidget(this);
 		}
 
-		public override void MouseEntered()
-		{
-			if (TooltipContainer == null)
-				return;
-
-			for (var i = 0; i < productionIconsBounds.Count; i++)
-			{
-				if (!productionIconsBounds[i].Contains(Viewport.LastMousePos))
-					continue;
-
-				TooltipIcon = productionIcons[i];
-				break;
-			}
-
-			tooltipContainer.Value.SetTooltip(TooltipTemplate, new WidgetArgs { { "player", GetPlayer() }, { "getTooltipIcon", GetTooltipIcon } });
-		}
-
-		public override void MouseExited()
-		{
-			if (TooltipContainer == null)
-				return;
-
-			tooltipContainer.Value.RemoveTooltip();
-		}
-
 		public override void Tick()
 		{
-			if (lastIconIdx >= productionIconsBounds.Count)
+			if (TooltipContainer == null)
+				return;
+
+			if (Ui.MouseOverWidget != this)
 			{
-				TooltipIcon = null;
+				if (TooltipIcon != null)
+				{
+					tooltipContainer.Value.RemoveTooltip(currentTooltipToken);
+					lastIconIdx = 0;
+					TooltipIcon = null;
+				}
+
 				return;
 			}
 
-			if (TooltipIcon != null && productionIconsBounds[lastIconIdx].Contains(Viewport.LastMousePos))
+			if (TooltipIcon != null && productionIconsBounds.Count > lastIconIdx && productionIcons[lastIconIdx].Actor == TooltipIcon.Actor && productionIconsBounds[lastIconIdx].Contains(Viewport.LastMousePos))
 				return;
 
 			for (var i = 0; i < productionIconsBounds.Count; i++)
@@ -270,6 +267,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 				lastIconIdx = i;
 				TooltipIcon = productionIcons[i];
+				currentTooltipToken = tooltipContainer.Value.SetTooltip(TooltipTemplate, new WidgetArgs { { "player", GetPlayer() }, { "getTooltipIcon", GetTooltipIcon } });
 				return;
 			}
 

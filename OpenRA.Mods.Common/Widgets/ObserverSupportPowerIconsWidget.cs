@@ -46,6 +46,7 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly List<SupportPowersWidget.SupportPowerIcon> supportPowerIconsIcons = new List<SupportPowersWidget.SupportPowerIcon>();
 		readonly List<Rectangle> supportPowerIconsBounds = new List<Rectangle>();
 		int lastIconIdx;
+		int currentTooltipToken;
 
 		[ObjectCreator.UseCtor]
 		public ObserverSupportPowerIconsWidget(World world, WorldRenderer worldRenderer)
@@ -164,32 +165,24 @@ namespace OpenRA.Mods.Common.Widgets
 			return new ObserverSupportPowerIconsWidget(this);
 		}
 
-		public override void MouseEntered()
-		{
-			if (TooltipContainer == null)
-				return;
-
-			tooltipContainer.Value.SetTooltip(TooltipTemplate,
-				new WidgetArgs() { { "world", worldRenderer.World }, { "player", GetPlayer() }, { "getTooltipIcon", GetTooltipIcon } });
-		}
-
-		public override void MouseExited()
-		{
-			if (TooltipContainer == null)
-				return;
-
-			tooltipContainer.Value.RemoveTooltip();
-		}
-
 		public override void Tick()
 		{
-			if (lastIconIdx >= supportPowerIconsBounds.Count)
+			if (TooltipContainer == null)
+				return;
+
+			if (Ui.MouseOverWidget != this)
 			{
-				TooltipIcon = null;
+				if (TooltipIcon != null)
+				{
+					tooltipContainer.Value.RemoveTooltip(currentTooltipToken);
+					lastIconIdx = 0;
+					TooltipIcon = null;
+				}
+
 				return;
 			}
 
-			if (TooltipIcon != null && supportPowerIconsBounds[lastIconIdx].Contains(Viewport.LastMousePos))
+			if (TooltipIcon != null && lastIconIdx < supportPowerIconsBounds.Count && supportPowerIconsIcons[lastIconIdx].Power == TooltipIcon.Power && supportPowerIconsBounds[lastIconIdx].Contains(Viewport.LastMousePos))
 				return;
 
 			for (var i = 0; i < supportPowerIconsBounds.Count; i++)
@@ -199,6 +192,8 @@ namespace OpenRA.Mods.Common.Widgets
 
 				lastIconIdx = i;
 				TooltipIcon = supportPowerIconsIcons[i];
+				currentTooltipToken = tooltipContainer.Value.SetTooltip(TooltipTemplate,
+					new WidgetArgs() { { "world", worldRenderer.World }, { "player", GetPlayer() }, { "getTooltipIcon", GetTooltipIcon } });
 				return;
 			}
 
