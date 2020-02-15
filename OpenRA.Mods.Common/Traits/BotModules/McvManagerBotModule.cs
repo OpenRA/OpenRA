@@ -33,6 +33,10 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Try to maintain at least this many ConstructionYardTypes, build an MCV if number is below this.")]
 		public readonly int MinimumConstructionYardCount = 1;
 
+		[Desc("Delay (in ticks) of when to build an additional MCV up to MinimumConstructionYardCount.",
+			"This value is used only if there is a minimum of 1 construction yard. It will be ignored if the AI has no construction yard placed.")]
+		public readonly int BuildAdditionalMcvDelay = 10000;
+
 		[Desc("Delay (in ticks) between looking for and giving out orders to new MCVs.")]
 		public readonly int ScanForNewMcvInterval = 20;
 
@@ -71,6 +75,8 @@ namespace OpenRA.Mods.Common.Traits
 		CPos initialBaseCenter;
 		int scanInterval;
 		bool firstTick = true;
+		int newMcvInterval;
+		int buildAdditionalMcvDelay;
 
 		public McvManagerBotModule(Actor self, McvManagerBotModuleInfo info)
 			: base(info)
@@ -94,6 +100,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			// Avoid all AIs reevaluating assignments on the same tick, randomize their initial evaluation delay.
 			scanInterval = world.LocalRandom.Next(Info.ScanForNewMcvInterval, Info.ScanForNewMcvInterval * 2);
+			buildAdditionalMcvDelay = Info.BuildAdditionalMcvDelay;
 		}
 
 		void IBotPositionsUpdated.UpdatedBaseCenter(CPos newLocation)
@@ -144,6 +151,12 @@ namespace OpenRA.Mods.Common.Traits
 			if (conyardCount >= Info.MinimumConstructionYardCount)
 				return false;
 
+			if (conyardCount > 0 && world.WorldTick < buildAdditionalMcvDelay)
+				return false;
+
+			if (world.WorldTick < newMcvInterval)
+				return false;
+
 			// Only build MCV if there isn't already one being built.
 			var queues = player.World.ActorsWithTrait<ProductionQueue>()
 				.Where(a => a.Actor.Owner == player && Info.McvFactoryTypes.Contains(a.Actor.Info.Name) && a.Trait.Enabled)
@@ -151,7 +164,11 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var factory in queues)
 				if (factory.AllQueued().Any(z => Info.McvTypes.Contains(z.Item)))
+				{
+					newMcvInterval = world.WorldTick + 2000;
+					buildAdditionalMcvDelay = world.WorldTick + Info.BuildAdditionalMcvDelay;
 					return false;
+				}
 
 			return true;
 		}
