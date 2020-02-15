@@ -50,7 +50,12 @@ namespace OpenRA.Activities
 	{
 		public ActivityState State { get; private set; }
 
-		protected Activity ChildActivity { get; private set; }
+		Activity childActivity;
+		protected Activity ChildActivity
+		{
+			get { return SkipDoneActivities(childActivity); }
+			private set { childActivity = value; }
+		}
 
 		Activity nextActivity;
 		public Activity NextActivity
