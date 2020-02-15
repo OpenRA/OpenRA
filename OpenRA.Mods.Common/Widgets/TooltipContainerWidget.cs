@@ -27,6 +27,8 @@ namespace OpenRA.Mods.Common.Widgets
 		public Action BeforeRender = Nothing;
 		public int TooltipDelayMilliseconds = 200;
 		Widget tooltip;
+		int nextToken = 1;
+		int currentToken;
 
 		public TooltipContainerWidget()
 		{
@@ -34,16 +36,29 @@ namespace OpenRA.Mods.Common.Widgets
 			IsVisible = () => Game.RunTime > Viewport.LastMoveRunTime + TooltipDelayMilliseconds;
 		}
 
-		public void SetTooltip(string id, WidgetArgs args)
+		public int SetTooltip(string id, WidgetArgs args)
 		{
 			RemoveTooltip();
+			currentToken = nextToken++;
+
 			tooltip = Ui.LoadWidget(id, this, new WidgetArgs(args) { { "tooltipContainer", this } });
+
+			return currentToken;
+		}
+
+		public void RemoveTooltip(int token)
+		{
+			if (currentToken != token)
+				return;
+
+			RemoveChildren();
+			BeforeRender = Nothing;
+			currentToken = -1;
 		}
 
 		public void RemoveTooltip()
 		{
-			RemoveChildren();
-			BeforeRender = Nothing;
+			RemoveTooltip(currentToken);
 		}
 
 		public override void Draw() { BeforeRender(); }
