@@ -55,26 +55,23 @@ namespace OpenRA.Activities
 		Activity nextActivity;
 		public Activity NextActivity
 		{
-			get
-			{
-				// If Activity.NextActivity.Cancel() was called, NextActivity will be in the Canceling
-				// state rather than Queued (the activity system guarantees that it cannot be Active or Done).
-				// An unknown number of ticks may have elapsed between the Activity.NextActivity.Cancel() call
-				// and now, so we cannot make any assumptions on the value of Activity.NextActivity.NextActivity.
-				// We must not return nextActivity (ticking it would be bogus), but returning null would potentially
-				// drop valid activities queued after it. Walk the queue until we find a valid activity or
-				// (more likely) run out of activities.
-				var next = nextActivity;
-				while (next != null && next.State == ActivityState.Canceling)
-					next = next.NextActivity;
+			get { return SkipDoneActivities(nextActivity); }
+			private set { nextActivity = value; }
+		}
 
-				return next;
-			}
+		internal static Activity SkipDoneActivities(Activity first)
+		{
+			// If first.Cancel() was called while it was queued (i.e. before it first ticked), its state will be Done
+			// rather than Queued (the activity system guarantees that it cannot be Active or Canceling).
+			// An unknown number of ticks may have elapsed between the Cancel() call and now,
+			// so we cannot make any assumptions on the value of first.NextActivity.
+			// We must not return first (ticking it would be bogus), but returning null would potentially
+			// drop valid activities queued after it. Walk the queue until we find a valid activity or
+			// (more likely) run out of activities.
+			while (first != null && first.State == ActivityState.Done)
+				first = first.NextActivity;
 
-			private set
-			{
-				nextActivity = value;
-			}
+			return first;
 		}
 
 		public bool IsInterruptible { get; protected set; }
@@ -195,7 +192,8 @@ namespace OpenRA.Activities
 			if (ChildActivity != null)
 				ChildActivity.Cancel(self);
 
-			State = ActivityState.Canceling;
+			// Directly mark activities that are queued and therefore didn't run yet as done
+			State = State == ActivityState.Queued ? ActivityState.Done : ActivityState.Canceling;
 		}
 
 		public void Queue(Activity activity)
