@@ -159,9 +159,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var abortButton = panel.Get<ButtonWidget>("ABORT_BUTTON");
 			var switchButton = panel.Get<ButtonWidget>("SWITCH_BUTTON");
 
-			var modTitle = orderManager.ServerExternalMod.Title;
-			var modVersion = orderManager.ServerExternalMod.Version;
-			var modIcon = orderManager.ServerExternalMod.Icon;
+			var mod = orderManager.ServerExternalMod;
+			var modTitle = mod.Title;
+			var modVersion = mod.Version;
 
 			switchButton.OnClick = () =>
 			{
@@ -206,10 +206,22 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			var logo = panel.GetOrNull<RGBASpriteWidget>("MOD_ICON");
-			if (logo != null && modIcon != null)
-				logo.GetSprite = () => modIcon;
+			if (logo != null)
+			{
+				logo.GetSprite = () =>
+				{
+					var ws = Game.Renderer.WindowScale;
+					if (ws > 2 && mod.Icon3x != null)
+						return mod.Icon3x;
 
-			if (logo != null && modIcon == null)
+					if (ws > 1 && mod.Icon2x != null)
+						return mod.Icon2x;
+
+					return mod.Icon;
+				};
+			}
+
+			if (logo != null && mod.Icon == null)
 			{
 				// Hide the logo and center just the text
 				if (title != null)
