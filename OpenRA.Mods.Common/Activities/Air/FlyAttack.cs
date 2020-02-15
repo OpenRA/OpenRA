@@ -222,8 +222,14 @@ namespace OpenRA.Mods.Common.Activities
 
 		protected override void OnFirstRun(Actor self)
 		{
-			QueueChild(new Fly(self, target, target.CenterPosition));
-			QueueChild(new Fly(self, target, exitRange, WDist.MaxValue, target.CenterPosition));
+			// The target may have died while this activity was queued
+			if (target.IsValidFor(self))
+			{
+				QueueChild(new Fly(self, target, target.CenterPosition));
+				QueueChild(new Fly(self, target, exitRange, WDist.MaxValue, target.CenterPosition));
+			}
+			else
+				Cancel(self);
 		}
 
 		public override bool Tick(Actor self)
@@ -261,8 +267,14 @@ namespace OpenRA.Mods.Common.Activities
 
 		protected override void OnFirstRun(Actor self)
 		{
-			QueueChild(new Fly(self, target, target.CenterPosition));
-			QueueChild(new Fly(self, target, exitRange, WDist.MaxValue, target.CenterPosition));
+			// The target may have died while this activity was queued
+			if (target.IsValidFor(self))
+			{
+				QueueChild(new Fly(self, target, target.CenterPosition));
+				QueueChild(new Fly(self, target, exitRange, WDist.MaxValue, target.CenterPosition));
+			}
+			else
+				Cancel(self);
 		}
 
 		public override bool Tick(Actor self)
