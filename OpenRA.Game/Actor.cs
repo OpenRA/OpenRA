@@ -44,7 +44,12 @@ namespace OpenRA
 		public bool WillDispose { get; private set; }
 		public bool Disposed { get; private set; }
 
-		public Activity CurrentActivity { get; private set; }
+		Activity currentActivity;
+		public Activity CurrentActivity
+		{
+			get { return Activity.SkipDoneActivities(currentActivity); }
+			private set { currentActivity = value; }
+		}
 
 		public int Generation;
 		public Actor ReplacedByActor;
