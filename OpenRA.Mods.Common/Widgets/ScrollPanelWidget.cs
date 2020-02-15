@@ -238,9 +238,9 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 		}
 
-		public override Rectangle GetEventBounds()
+		public override bool EventBoundsContains(int2 location)
 		{
-			return EventBounds;
+			return EventBounds.Contains(location);
 		}
 
 		void Scroll(int amount, bool smooth = false)

@@ -277,21 +277,18 @@ namespace OpenRA.Widgets
 
 		public virtual Rectangle EventBounds { get { return RenderBounds; } }
 
-		public virtual Rectangle GetEventBounds()
+		public virtual bool EventBoundsContains(int2 location)
 		{
 			// PERF: Avoid LINQ.
-			var bounds = EventBounds;
-			foreach (var child in Children)
-			{
-				if (child.IsVisible())
-				{
-					var childBounds = child.GetEventBounds();
-					if (childBounds != Rectangle.Empty)
-						bounds = Rectangle.Union(bounds, childBounds);
-				}
-			}
+			if (EventBounds.Contains(location))
+				return true;
 
-			return bounds;
+			foreach (var child in Children)
+				if (child.IsVisible())
+					if (child.EventBoundsContains(location))
+						return true;
+
+			return false;
 		}
 
 		public bool HasMouseFocus { get { return Ui.MouseFocusWidget == this; } }
@@ -354,7 +351,7 @@ namespace OpenRA.Widgets
 		public string GetCursorOuter(int2 pos)
 		{
 			// Is the cursor on top of us?
-			if (!(IsVisible() && GetEventBounds().Contains(pos)))
+			if (!(IsVisible() && EventBoundsContains(pos)))
 				return null;
 
 			// Do any of our children specify a cursor?
@@ -379,7 +376,7 @@ namespace OpenRA.Widgets
 		public bool HandleMouseInputOuter(MouseInput mi)
 		{
 			// Are we able to handle this event?
-			if (!(HasMouseFocus || (IsVisible() && GetEventBounds().Contains(mi.Location))))
+			if (!(HasMouseFocus || (IsVisible() && EventBoundsContains(mi.Location))))
 				return false;
 
 			var oldMouseOver = Ui.MouseOverWidget;

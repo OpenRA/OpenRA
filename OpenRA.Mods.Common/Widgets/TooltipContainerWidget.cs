@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public override void Draw() { BeforeRender(); }
 
-		public override Rectangle GetEventBounds() { return Rectangle.Empty; }
+		public override bool EventBoundsContains(int2 location) { return false; }
 
 		public override int2 ChildOrigin
 		{
