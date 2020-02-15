@@ -53,7 +53,6 @@ namespace OpenRA.Mods.Common.Widgets
 
 			RemoveChildren();
 			BeforeRender = Nothing;
-			currentToken = -1;
 		}
 
 		public void RemoveTooltip()
