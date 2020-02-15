@@ -83,7 +83,7 @@ namespace OpenRA.Traits
 				bounds.Top + bounds.Size.Height / 2);
 
 			var pixelDistance = (centerPixel - selectionPixel).Length;
-			return ((long)-pixelDistance << 32) + info.SelectionPriority(modifiers);
+			return info.SelectionPriority(modifiers) - (long)pixelDistance << 16;
 		}
 
 		static readonly Actor[] NoActors = { };
