@@ -37,6 +37,7 @@ Players:
 		Bot: campaign
 	PlayerReference@Nod:
 		Name: Nod
+		LockFaction: True
 		AllowBots: False
 		Playable: True
 		Required: True
