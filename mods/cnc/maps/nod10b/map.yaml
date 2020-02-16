@@ -40,6 +40,7 @@ Players:
 		Playable: True
 		Required: True
 		Faction: nod
+		LockFaction: True
 		LockColor: True
 		Color: FE1100
 		LockSpawn: True
