@@ -290,11 +290,11 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (nextScanTime <= 0 && ActiveAttackBases.Any())
 			{
-				nextScanTime = self.World.SharedRandom.Next(Info.MinimumScanTimeInterval, Info.MaximumScanTimeInterval);
-
 				foreach (var dat in disableAutoTarget)
 					if (dat.DisableAutoTarget(self, allowMove))
 						return Target.Invalid;
+
+				nextScanTime = self.World.SharedRandom.Next(Info.MinimumScanTimeInterval, Info.MaximumScanTimeInterval);
 
 				foreach (var ab in ActiveAttackBases)
 				{
