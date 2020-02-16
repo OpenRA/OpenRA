@@ -41,6 +41,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly CVec Offset = new CVec(1, 3);
 
+		[NotificationReference("Speech")]
+		[Desc("The speech notification to play when setting a new rallypoint.")]
+		public readonly string Notification = null;
+
 		public object Create(ActorInitializer init) { return new RallyPoint(init.Self, this); }
 	}
 
@@ -95,6 +99,8 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (order.OrderID == OrderID)
 			{
+				Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", Info.Notification, self.Owner.Faction.InternalName);
+
 				return new Order(order.OrderID, self, target, queued)
 				{
 					SuppressVisualFeedback = true,
