@@ -181,10 +181,6 @@ namespace OpenRA.Mods.Common.Traits
 			BuildableInfo = actorInfo.TraitInfoOrDefault<BuildableInfo>();
 			TooltipInfo = actorInfo.TraitInfos<TooltipInfo>().FirstOrDefault(info => info.EnabledByDefault);
 
-			ProductionQueueOrder = queues.Where(q => BuildableInfo.Queue.Contains(q.Type))
-				.Select(q => q.DisplayOrder)
-				.MinByOrDefault(o => o);
-
 			var rsi = actorInfo.TraitInfoOrDefault<RenderSpritesInfo>();
 
 			if (BuildableInfo != null && rsi != null)
@@ -194,6 +190,9 @@ namespace OpenRA.Mods.Common.Traits
 				Icon.Play(BuildableInfo.Icon);
 				IconPalette = BuildableInfo.IconPalette;
 				BuildPaletteOrder = BuildableInfo.BuildPaletteOrder;
+				ProductionQueueOrder = queues.Where(q => BuildableInfo.Queue.Contains(q.Type))
+					.Select(q => q.DisplayOrder)
+					.MinByOrDefault(o => o);
 			}
 		}
 	}
