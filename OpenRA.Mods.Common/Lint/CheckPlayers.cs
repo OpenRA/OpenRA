@@ -46,6 +46,11 @@ namespace OpenRA.Mods.Common.Lint
 					if (player.Playable)
 						emitError("The player {0} owning the world can't be playable.".F(player.Name));
 				}
+				else if (map.Visibility == MapVisibility.MissionSelector && player.Playable && !player.LockFaction)
+				{
+					// Missions must lock the faction of the player to force the server to override the default Random faction
+					emitError("The player {0} must specify LockFaction: True.".F(player.Name));
+				}
 			}
 
 			if (!worldOwnerFound)
