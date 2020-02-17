@@ -85,14 +85,18 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new RemoveMoveIntoWorldFromExit(),
 			}),
 
-			new UpdatePath("release-20191117", new UpdateRule[]
+			new UpdatePath("release-20191117", "release-20200202", new UpdateRule[]
+			{
+				new ReplaceAttackTypeStrafe()
+			}),
+
+			new UpdatePath("release-20200202", new UpdateRule[]
 			{
 				// Bleed only changes here
 				new RemoveYesNo(),
 				new RemoveInitialFacingHardcoding(),
 				new RemoveAirdropActorTypeDefault(),
 				new RenameProneTime(),
-				new ReplaceAttackTypeStrafe(),
 				new RemoveWithPermanentInjury(),
 				new AddResourceRenderer(),
 				new ReformatChromeProvider(),
