@@ -801,7 +801,7 @@
 		Voice: Move
 	Guardable:
 	BodyOrientation:
-		CameraPitch: 90
+		CameraPitch: 85
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
@@ -906,7 +906,7 @@
 	ActorLostNotification:
 	BodyOrientation:
 		QuantizedFacings: 0
-		CameraPitch: 90
+		CameraPitch: 85
 	Guard:
 		Voice: Move
 	Guardable:
@@ -938,7 +938,7 @@
 	WithVoxelBody:
 	BodyOrientation:
 		QuantizedFacings: 0
-		CameraPitch: 90
+		CameraPitch: 85
 	Aircraft:
 	Health:
 		HP: 28000
@@ -1155,7 +1155,7 @@
 		Voice: Move
 	HiddenUnderFog:
 	BodyOrientation:
-		CameraPitch: 90
+		CameraPitch: 85
 		QuantizedFacings: 0
 	Explodes:
 		Weapon: UnitExplodeSmall
