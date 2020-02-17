@@ -242,8 +242,29 @@ namespace OpenRA.Mods.Common.Activities
 				var cellRange = nearEnough.Length / 1024;
 				if (!containsTemporaryBlocker && (mobile.ToCell - destination.Value).LengthSquared <= cellRange * cellRange && mobile.CanStayInCell(mobile.ToCell))
 				{
-					path.Clear();
-					return null;
+					// Apply some simple checks to avoid giving up in cases where we can be confident that
+					// nudging/waiting/repathing should produce better results.
+
+					// Avoid fighting over the destination cell
+					if (path.Count < 2)
+					{
+						path.Clear();
+						return null;
+					}
+
+					// We can reasonably assume that the blocker is friendly and has a similar locomotor type.
+					// If there is a free cell next to the blocker that is a similar or closer distance to the
+					// destination then we can probably nudge or path around it.
+					var blockerDistSq = (nextCell - destination.Value).LengthSquared;
+					var nudgeOrRepath = CVec.Directions
+						.Select(d => nextCell + d)
+						.Any(c => c != self.Location && (c - destination.Value).LengthSquared <= blockerDistSq && mobile.CanEnterCell(c, ignoreActor));
+
+					if (!nudgeOrRepath)
+					{
+						path.Clear();
+						return null;
+					}
 				}
 
 				// There is no point in waiting for the other actor to move if it is incapable of moving.
