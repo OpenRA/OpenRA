@@ -34,35 +34,6 @@ namespace OpenRA.Mods.Common.UpdateRules
 			Justification = "Extracting update lists to temporary variables obfuscates the definitions.")]
 		static readonly UpdatePath[] Paths =
 		{
-			new UpdatePath("release-20181215", "release-20190314", new UpdateRule[]
-			{
-				new AddCarryableHarvester(),
-				new RenameEditorTilesetFilter(),
-				new DefineNotificationDefaults(),
-				new MergeRearmAndRepairAnimation(),
-				new MergeCaptureTraits(),
-				new RemovedNotifyBuildComplete(),
-				new LowPowerSlowdownToModifier(),
-				new ChangeTakeOffSoundAndLandingSound(),
-				new RemoveHealthPercentageRing(),
-				new RenameCrateActionNotification(),
-				new RemoveRepairBuildingsFromAircraft(),
-				new AddRearmable(),
-				new MergeAttackPlaneAndHeli(),
-				new RemovedDemolishLocking(),
-				new RequireProductionType(),
-				new CloakRequiresConditionToPause(),
-				new ExtractHackyAIModules(),
-				new RemoveNegativeDamageFullHealthCheck(),
-				new RemoveResourceExplodeModifier(),
-				new DefineLevelUpImageDefault(),
-				new RemovedAutoCarryallCircleTurnSpeed(),
-				new RemoveAttackIgnoresVisibility(),
-				new ReplacedWithChargeAnimation(),
-				new RefactorResourceLevelAnimating(),
-				new RemoveAttackSuicides(),
-			}),
-
 			new UpdatePath("release-20190314", "release-20191117", new UpdateRule[]
 			{
 				new MultipleDeploySounds(),
