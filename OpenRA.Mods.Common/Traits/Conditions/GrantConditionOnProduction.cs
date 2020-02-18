@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		float ISelectionBar.GetValue()
 		{
-			if (info.Duration < 0 || token == ConditionManager.InvalidConditionToken)
+			if (!info.ShowSelectionBar || info.Duration < 0 || token == ConditionManager.InvalidConditionToken)
 				return 0;
 
 			return (float)ticks / info.Duration;
