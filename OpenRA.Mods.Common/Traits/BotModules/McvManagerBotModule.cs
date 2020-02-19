@@ -139,6 +139,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool ShouldBuildMCV()
 		{
+			if (world.WorldTick < newMcvInterval)
+				return false;
+
 			var enoughFactories = AIUtils.CountBuildingByCommonName(Info.McvFactoryTypes, player) > 0;
 			if (!enoughFactories)
 				return false;
@@ -152,9 +155,6 @@ namespace OpenRA.Mods.Common.Traits
 				return false;
 
 			if (conyardCount > 0 && world.WorldTick < buildAdditionalMcvDelay)
-				return false;
-
-			if (world.WorldTick < newMcvInterval)
 				return false;
 
 			// Only build MCV if there isn't already one being built.
