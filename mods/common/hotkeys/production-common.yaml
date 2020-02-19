@@ -1,8 +1,8 @@
-CycleProductionBuildings: TAB
+CycleProductionBuildings: TAB Ctrl
 	Description: Next facility
 	Types: Production, Player, Spectator
 
-SelectProductionBuilding:
+SelectProductionBuilding: TAB
 	Description: Current facility
 	Types: Production, Player
 
