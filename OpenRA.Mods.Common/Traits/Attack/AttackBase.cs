@@ -204,8 +204,7 @@ namespace OpenRA.Mods.Common.Traits
 				AttackTarget(order.Target, AttackSource.Default, order.Queued, true, forceAttack, Info.TargetLineColor);
 				self.ShowTargetLines();
 			}
-
-			if (order.OrderString == "Stop")
+			else if (order.OrderString == "Stop")
 				OnStopOrder(self);
 		}
 
