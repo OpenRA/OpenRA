@@ -952,10 +952,9 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			// TODO: This should only cancel activities queued by this trait
-			if (order.OrderString == "Stop")
+			else if (order.OrderString == "Stop")
 				self.CancelActivity();
-
-			if (order.OrderString == "Scatter")
+			else if (order.OrderString == "Scatter")
 				Nudge(self);
 		}
 
