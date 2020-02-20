@@ -307,8 +307,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				self.QueueActivity(order.Queued, new DeliverUnit(self, Info.DropRange));
 			}
-
-			if (order.OrderString == "PickupUnit")
+			else if (order.OrderString == "PickupUnit")
 			{
 				if (order.Target.Type != TargetType.Actor)
 					return;
