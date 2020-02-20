@@ -1070,10 +1070,10 @@ namespace OpenRA.Mods.Common.Traits
 				self.CancelActivity();
 				UnReserve();
 			}
-			else if (orderString == "ReturnToBase" && rearmable != null && rearmable.Info.RearmActors.Any())
+			else if (orderString == "ReturnToBase")
 			{
-				// Don't restart activity every time deploy hotkey is triggered
-				if (self.CurrentActivity is ReturnToBase || GetActorBelow() != null)
+				// Do nothing if not rearmable and don't restart activity every time deploy hotkey is triggered
+				if (rearmable == null || !rearmable.Info.RearmActors.Any() || self.CurrentActivity is ReturnToBase || GetActorBelow() != null)
 					return;
 
 				if (!order.Queued)
