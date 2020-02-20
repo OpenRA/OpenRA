@@ -968,7 +968,7 @@ namespace OpenRA.Mods.Common.Traits
 			return new Order("ReturnToBase", self, queued);
 		}
 
-		bool IIssueDeployOrder.CanIssueDeployOrder(Actor self) { return rearmable != null && rearmable.Info.RearmActors.Any(); }
+		bool IIssueDeployOrder.CanIssueDeployOrder(Actor self, bool queued) { return rearmable != null && rearmable.Info.RearmActors.Any(); }
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{

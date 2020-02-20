@@ -121,7 +121,7 @@ namespace OpenRA.Mods.Common.Traits
 			return new Order("DeployTransform", self, queued);
 		}
 
-		bool IIssueDeployOrder.CanIssueDeployOrder(Actor self) { return !IsTraitPaused && !IsTraitDisabled; }
+		bool IIssueDeployOrder.CanIssueDeployOrder(Actor self, bool queued) { return !IsTraitPaused && !IsTraitDisabled; }
 
 		public void DeployTransform(bool queued)
 		{
