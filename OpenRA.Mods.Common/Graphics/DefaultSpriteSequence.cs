@@ -187,9 +187,10 @@ namespace OpenRA.Mods.Common.Graphics
 					// Plays the animation forwards, and then in reverse
 					if (LoadField(d, "Reverses", false))
 					{
-						var frames = Frames ?? Exts.MakeArray(Length, i => Start + i);
-						Frames = frames.Concat(frames.Skip(1).Take(frames.Length - 2).Reverse()).ToArray();
+						var frames = Frames != null ? Frames.Skip(Start).Take(Length).ToArray() : Exts.MakeArray(Length, i => Start + i);
+						Frames = frames.Concat(frames.Skip(1).Take(Length - 2).Reverse()).ToArray();
 						Length = 2 * Length - 2;
+						Start = 0;
 					}
 
 					Stride = LoadField(d, "Stride", Length);
