@@ -254,7 +254,7 @@ panel-allblack-gdi:
 
 panel-transparent:
 	Inherits: ^Chrome
-	PanelRegion: 1, 33, 0, 0, 30, 30, 0, 0
+	PanelRegion: 1, 33, 1, 1, 28, 28, 1, 1
 	PanelSides: Edges
 
 panel-transparent-nod:
