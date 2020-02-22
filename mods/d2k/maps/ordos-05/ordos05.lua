@@ -201,10 +201,10 @@ WorldLoaded = function()
 
 		Reinforcements.ReinforceWithTransport(player, "frigate", { "mcv" }, { OrdosStarportEntry.Location, AStarport.Location + CVec.New(1, 1) }, { OrdosStarportExit.Location })
 
-		if APower8.Owner ~= player then
+		if APower8.Owner ~= player and not APower8.IsDead then
 			APower8.Sell()
 		end
-		if APower9.Owner ~= player then
+		if APower9.Owner ~= player and not APower9.IsDead then
 			APower9.Sell()
 		end
 	end)
