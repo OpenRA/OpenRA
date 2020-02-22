@@ -64,8 +64,8 @@ e1:
 		Start: 324
 		Length: 18
 	die6: electro
-		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
-		Length: 29
+		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
+		Length: *
 		UseTilesetExtension: true
 		TilesetOverrides:
 			DESERT: TEMPERAT
@@ -147,8 +147,8 @@ sniper:
 		Start: 452
 		Length: 18
 	die6: electro
-		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
-		Length: 29
+		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
+		Length: *
 		UseTilesetExtension: true
 		TilesetOverrides:
 			DESERT: TEMPERAT
@@ -208,8 +208,8 @@ e3:
 		Start: 340
 		Length: 18
 	die6: electro
-		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
-		Length: 29
+		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
+		Length: *
 		UseTilesetExtension: true
 		TilesetOverrides:
 			DESERT: TEMPERAT
@@ -278,8 +278,8 @@ e6:
 		Start: 182
 		Length: 18
 	die6: electro
-		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
-		Length: 29
+		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
+		Length: *
 		UseTilesetExtension: true
 		TilesetOverrides:
 			DESERT: TEMPERAT
@@ -343,8 +343,8 @@ medi:
 		Start: 229
 		Length: 18
 	die6: electro
-		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
-		Length: 29
+		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
+		Length: *
 		UseTilesetExtension: true
 		TilesetOverrides:
 			DESERT: TEMPERAT
@@ -404,8 +404,8 @@ mech:
 		Start: 229
 		Length: 18
 	die6: electro
-		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
-		Length: 29
+		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
+		Length: *
 		UseTilesetExtension: true
 		TilesetOverrides:
 			DESERT: TEMPERAT
@@ -470,8 +470,8 @@ e2:
 		Start: 452
 		Length: 18
 	die6: electro
-		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
-		Length: 29
+		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
+		Length: *
 		UseTilesetExtension: true
 		TilesetOverrides:
 			DESERT: TEMPERAT
@@ -598,8 +598,8 @@ spy:
 		Start: 324
 		Length: 18
 	die6: electro
-		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
-		Length: 29
+		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
+		Length: *
 		UseTilesetExtension: true
 		TilesetOverrides:
 			DESERT: TEMPERAT
@@ -659,8 +659,8 @@ thf:
 		Start: 175
 		Length: 18
 	die6: electro
-		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
-		Length: 29
+		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
+		Length: *
 		UseTilesetExtension: true
 		TilesetOverrides:
 			DESERT: TEMPERAT
@@ -720,8 +720,8 @@ e7:
 		Start: 298
 		Length: 18
 	die6: electro
-		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
-		Length: 29
+		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
+		Length: *
 		UseTilesetExtension: true
 		TilesetOverrides:
 			DESERT: TEMPERAT
@@ -794,8 +794,8 @@ e4:
 		Start: 452
 		Length: 18
 	die6: electro
-		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
-		Length: 29
+		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
+		Length: *
 		UseTilesetExtension: true
 		TilesetOverrides:
 			DESERT: TEMPERAT
@@ -876,8 +876,8 @@ gnrl:
 		Start: 246
 		Length: 18
 	die6: electro
-		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
-		Length: 29
+		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
+		Length: *
 		UseTilesetExtension: true
 		TilesetOverrides:
 			DESERT: TEMPERAT
@@ -957,8 +957,8 @@ shok:
 		Start: 452
 		Length: 18
 	die6: electro
-		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
-		Length: 29
+		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
+		Length: *
 		UseTilesetExtension: true
 		TilesetOverrides:
 			DESERT: TEMPERAT
@@ -1002,8 +1002,8 @@ c1:
 		Start: 180
 		Length: 18
 	die6: electro
-		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
-		Length: 29
+		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
+		Length: *
 		UseTilesetExtension: true
 		TilesetOverrides:
 			DESERT: TEMPERAT
@@ -1051,8 +1051,8 @@ c2:
 		Start: 180
 		Length: 18
 	die6: electro
-		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
-		Length: 29
+		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
+		Length: *
 		UseTilesetExtension: true
 		TilesetOverrides:
 			DESERT: TEMPERAT
@@ -1100,8 +1100,8 @@ c3:
 		Start: 180
 		Length: 18
 	die6: electro
-		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
-		Length: 29
+		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
+		Length: *
 		UseTilesetExtension: true
 		TilesetOverrides:
 			DESERT: TEMPERAT
@@ -1150,8 +1150,8 @@ einstein:
 		Start: 148
 		Length: 17
 	die6: electro
-		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
-		Length: 29
+		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
+		Length: *
 		UseTilesetExtension: true
 		TilesetOverrides:
 			DESERT: TEMPERAT
@@ -1195,8 +1195,8 @@ delphi:
 		Start: 357
 		Length: 17
 	die6: electro
-		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
-		Length: 29
+		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
+		Length: *
 		UseTilesetExtension: true
 		TilesetOverrides:
 			DESERT: TEMPERAT
@@ -1240,8 +1240,8 @@ chan:
 		Start: 148
 		Length: 17
 	die6: electro
-		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
-		Length: 29
+		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
+		Length: *
 		UseTilesetExtension: true
 		TilesetOverrides:
 			DESERT: TEMPERAT
@@ -1290,8 +1290,8 @@ zombie:
 		Start: 114
 		Length: 19
 	die6: electro
-		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
-		Length: 29
+		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
+		Length: *
 		UseTilesetExtension: true
 		TilesetOverrides:
 			DESERT: TEMPERAT
