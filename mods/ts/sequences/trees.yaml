@@ -123,50 +123,70 @@ tree24:
 tree25:
 	Inherits: ^tree
 
-fona01:
+^fona:
 	Inherits: ^tree
+	idle:
+		AddExtension: false
+
+fona01:
+	Inherits: ^fona
+	Defaults: fona01.tem
 
 fona02:
-	Inherits: ^tree
+	Inherits: ^fona
+	Defaults: fona02.tem
 
 fona03:
-	Inherits: ^tree
+	Inherits: ^fona
+	Defaults: fona03.tem
 
 fona04:
-	Inherits: ^tree
+	Inherits: ^fona
+	Defaults: fona04.tem
 
 fona05:
-	Inherits: ^tree
+	Inherits: ^fona
+	Defaults: fona05.tem
 
 fona06:
-	Inherits: ^tree
+	Inherits: ^fona
+	Defaults: fona06.tem
 
 fona07:
-	Inherits: ^tree
+	Inherits: ^fona
+	Defaults: fona07.tem
 
 fona08:
-	Inherits: ^tree
+	Inherits: ^fona
+	Defaults: fona08.tem
 
 fona09:
-	Inherits: ^tree
+	Inherits: ^fona
+	Defaults: fona09.tem
 
 fona10:
-	Inherits: ^tree
+	Inherits: ^fona
+	Defaults: fona10.tem
 
 fona11:
-	Inherits: ^tree
+	Inherits: ^fona
+	Defaults: fona11.tem
 
 fona12:
-	Inherits: ^tree
+	Inherits: ^fona
+	Defaults: fona12.tem
 
 fona13:
-	Inherits: ^tree
+	Inherits: ^fona
+	Defaults: fona13.tem
 
 fona14:
-	Inherits: ^tree
+	Inherits: ^fona
+	Defaults: fona14.tem
 
 fona15:
-	Inherits: ^tree
+	Inherits: ^fona
+	Defaults: fona15.tem
 
 veinhole:
 	idle:
