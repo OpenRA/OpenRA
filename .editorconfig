@@ -1,5 +1,6 @@
 ; Top-most http://editorconfig.org/ file
 root = true
+charset=utf-8
 
 ; Unix-style newlines
 [*]
