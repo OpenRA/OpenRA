@@ -389,7 +389,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var facility = CurrentQueue.MostLikelyProducer().Actor;
 
-			if (facility == null)
+			if (facility == null || facility.OccupiesSpace == null)
 				return true;
 
 			if (selection.Actors.Count() == 1 && selection.Contains(facility))
