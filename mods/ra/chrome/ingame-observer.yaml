@@ -1,5 +1,25 @@
 Container@OBSERVER_WIDGETS:
 	Children:
+		Container@MUTE_INDICATOR:
+			Logic: MuteIndicatorLogic
+			X: WINDOW_RIGHT - WIDTH - 260
+			Y: 10
+			Width: 200
+			Height: 25
+			Children:
+				Image@ICON:
+					X: PARENT_RIGHT - WIDTH
+					Y: 1
+					Width: 24
+					Height: 24
+					ImageCollection: sidebar-bits
+					ImageName: indicator-muted
+				Label@LABEL:
+					Width: PARENT_RIGHT - 30
+					Height: 25
+					Align: Right
+					Text: Audio Muted
+					Contrast: true
 		Image@SIDEBAR_BACKGROUND_TOP:
 			X: WINDOW_RIGHT - 250
 			Y: 10

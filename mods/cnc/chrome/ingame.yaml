@@ -112,6 +112,26 @@ Container@OBSERVER_WIDGETS:
 					Align: Center
 					Font: Bold
 					Contrast: true
+		Container@MUTE_INDICATOR:
+			Logic: MuteIndicatorLogic
+			X: WINDOW_RIGHT - WIDTH - 295
+			Y: 5
+			Width: 200
+			Height: 25
+			Children:
+				Image@ICON:
+					X: PARENT_RIGHT - WIDTH
+					Y: 1
+					Width: 24
+					Height: 24
+					ImageCollection: sidebar-bits
+					ImageName: indicator-muted
+				Label@LABEL:
+					Width: PARENT_RIGHT - 30
+					Height: 25
+					Align: Right
+					Text: Audio Muted
+					Contrast: true
 		LogicKeyListener@OBSERVER_KEY_LISTENER:
 		MenuButton@OPTIONS_BUTTON:
 			Key: escape
@@ -1479,6 +1499,26 @@ Container@PLAYER_WIDGETS:
 							Y: 5
 							ImageCollection: stance-icons
 							ImageName: hold-fire
+		Container@MUTE_INDICATOR:
+			Logic: MuteIndicatorLogic
+			X: WINDOW_RIGHT - WIDTH - 240
+			Y: 5
+			Width: 200
+			Height: 25
+			Children:
+				Image@ICON:
+					X: PARENT_RIGHT - WIDTH
+					Y: 1
+					Width: 24
+					Height: 24
+					ImageCollection: sidebar-bits
+					ImageName: indicator-muted
+				Label@LABEL:
+					Width: PARENT_RIGHT - 30
+					Height: 25
+					Align: Right
+					Text: Audio Muted
+					Contrast: true
 		Image@SIDEBAR_BACKGROUND:
 			X: WINDOW_RIGHT - WIDTH - 5
 			Y: 5
