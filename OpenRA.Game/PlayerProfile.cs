@@ -35,19 +35,20 @@ namespace OpenRA
 			var badgesNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Badges");
 			if (badgesNode != null)
 			{
-				try
+				var playerDatabase = Game.ModData.Manifest.Get<PlayerDatabase>();
+				foreach (var badgeNode in badgesNode.Value.Nodes)
 				{
-					var playerDatabase = Game.ModData.Manifest.Get<PlayerDatabase>();
-					foreach (var badgeNode in badgesNode.Value.Nodes)
+					Game.RunAfterTick(() =>
 					{
-						var badge = playerDatabase.LoadBadge(badgeNode.Value);
-						if (badge != null)
-							badges.Add(badge);
-					}
-				}
-				catch
-				{
-					// Discard badges on error
+						// Discard badge on error
+						try
+						{
+							var badge = playerDatabase.LoadBadge(badgeNode.Value);
+							if (badge != null)
+								badges.Add(badge);
+						}
+						catch { }
+					});
 				}
 			}
 
