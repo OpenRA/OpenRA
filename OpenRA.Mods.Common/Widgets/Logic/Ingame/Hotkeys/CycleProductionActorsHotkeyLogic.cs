@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic.Ingame
 			var player = world.RenderPlayer ?? world.LocalPlayer;
 
 			var facilities = world.ActorsHavingTrait<Production>()
-				.Where(a => a.Owner == player && !a.Info.HasTraitInfo<BaseBuildingInfo>()
+				.Where(a => a.Owner == player && a.OccupiesSpace != null && !a.Info.HasTraitInfo<BaseBuildingInfo>()
 					&& a.TraitsImplementing<Production>().Any(t => !t.IsTraitDisabled))
 				.OrderBy(f => f.TraitsImplementing<Production>().First(t => !t.IsTraitDisabled).Info.Produces.First())
 				.ToList();
