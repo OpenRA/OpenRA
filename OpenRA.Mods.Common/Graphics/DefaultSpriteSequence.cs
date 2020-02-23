@@ -261,17 +261,18 @@ namespace OpenRA.Mods.Common.Graphics
 						var subOffset = LoadField(sd, "Offset", float3.Zero);
 						var subFlipX = LoadField(sd, "FlipX", false);
 						var subFlipY = LoadField(sd, "FlipY", false);
+						var subFrames = LoadField<int[]>(sd, "Frames", null);
 						var subLength = 0;
 
 						Func<int, IEnumerable<int>> subGetUsedFrames = subFrameCount =>
 						{
 							MiniYaml subLengthYaml;
 							if (sd.TryGetValue("Length", out subLengthYaml) && subLengthYaml.Value == "*")
-								subLength = subFrameCount - subStart;
+								subLength = subFrames != null ? subFrames.Length : subFrameCount - subStart;
 							else
 								subLength = LoadField(sd, "Length", 1);
 
-							return Enumerable.Range(subStart, subLength);
+							return subFrames != null ? subFrames.Skip(subStart).Take(subLength) : Enumerable.Range(subStart, subLength);
 						};
 
 						var subSrc = GetSpriteSrc(modData, tileSet, sequence, animation, sub.Key, sd);
@@ -279,9 +280,10 @@ namespace OpenRA.Mods.Common.Graphics
 							s => s != null ? new Sprite(s.Sheet,
 								FlipRectangle(s.Bounds, subFlipX, subFlipY), ZRamp,
 								new float3(subFlipX ? -s.Offset.X : s.Offset.X, subFlipY ? -s.Offset.Y : s.Offset.Y, s.Offset.Z) + subOffset + offset,
-								s.Channel, blendMode) : null);
+								s.Channel, blendMode) : null).ToList();
 
-						combined = combined.Concat(subSprites.Skip(subStart).Take(subLength));
+						var frames = subFrames != null ? subFrames.Skip(subStart).Take(subLength).ToArray() : Exts.MakeArray(subLength, i => subStart + i);
+						combined = combined.Concat(frames.Select(i => subSprites[i]));
 					}
 
 					sprites = combined.ToArray();
