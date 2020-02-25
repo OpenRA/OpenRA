@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Traits
 				.OrderBy(e => e.Info.Priority);
 
 			if (string.IsNullOrEmpty(productionType))
-				return all.FirstOrDefault(e => e.Info.ProductionTypes.Count == 0);
+				return all.FirstOrDefault();
 
 			return all.FirstOrDefault(e => e.Info.ProductionTypes.Count == 0 || e.Info.ProductionTypes.Contains(productionType));
 		}
@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Common.Traits
 				.Where(Exts.IsTraitEnabled);
 
 			if (string.IsNullOrEmpty(productionType))
-				return all.Where(e => e.Info.ProductionTypes.Count == 0);
+				return all;
 
 			return all.Where(e => e.Info.ProductionTypes.Count == 0 || e.Info.ProductionTypes.Contains(productionType));
 		}

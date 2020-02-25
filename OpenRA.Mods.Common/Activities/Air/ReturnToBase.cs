@@ -111,7 +111,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			if (ShouldLandAtBuilding(self, dest))
 			{
-				var exit = dest.FirstExitOrDefault(null);
+				var exit = dest.FirstExitOrDefault();
 				var offset = exit != null ? exit.Info.SpawnOffset : WVec.Zero;
 				if (aircraft.Info.TurnToDock || !aircraft.Info.VTOL)
 					facing = aircraft.Info.InitialFacing;
