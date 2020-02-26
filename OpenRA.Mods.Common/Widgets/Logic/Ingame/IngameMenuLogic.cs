@@ -104,9 +104,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var panelRoot = widget.GetOrNull("PANEL_ROOT");
 			if (panelRoot != null && world.Type != WorldType.Editor)
 			{
+				Action<bool> requestHideMenu = h => hideMenu = h;
 				var gameInfoPanel = Game.LoadWidget(world, "GAME_INFO_PANEL", panelRoot, new WidgetArgs()
 				{
-					{ "activePanel", activePanel }
+					{ "activePanel", activePanel },
+					{ "hideMenu", requestHideMenu }
 				});
 
 				gameInfoPanel.IsVisible = () => !hideMenu;
