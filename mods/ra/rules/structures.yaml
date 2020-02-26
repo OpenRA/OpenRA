@@ -1174,7 +1174,6 @@ FACT:
 		RequiresForceMove: true
 	TransformsIntoTransforms:
 		RequiresCondition: factundeploy && build-incomplete
-		RequiresForceMove: true
 	Sellable:
 		RequiresCondition: !build-incomplete && !chrono-vortex && !being-captured && !being-demolished
 	GrantConditionOnPrerequisite@GLOBALFACTUNDEPLOY:
