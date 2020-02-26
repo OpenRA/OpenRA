@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
@@ -22,7 +23,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	class GameInfoStatsLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
-		public GameInfoStatsLogic(Widget widget, World world, OrderManager orderManager, WorldRenderer worldRenderer)
+		public GameInfoStatsLogic(Widget widget, World world, OrderManager orderManager, WorldRenderer worldRenderer, Action<bool> hideMenu)
 		{
 			var player = world.LocalPlayer;
 			var playerPanel = widget.Get<ScrollPanelWidget>("PLAYER_LIST");
@@ -61,6 +62,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var teamTemplate = playerPanel.Get<ScrollItemWidget>("TEAM_TEMPLATE");
 			var playerTemplate = playerPanel.Get("PLAYER_TEMPLATE");
+			var spectatorTemplate = playerPanel.Get("SPECTATOR_TEMPLATE");
 			playerPanel.RemoveChildren();
 
 			var teams = world.Players.Where(p => !p.NonCombatant && p.Playable)
@@ -137,7 +139,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				foreach (var client in spectators)
 				{
-					var item = playerTemplate.Clone();
+					var item = spectatorTemplate.Clone();
 					LobbyUtils.SetupProfileWidget(item, client, orderManager, worldRenderer);
 
 					var nameLabel = item.Get<LabelWidget>("NAME");
@@ -153,7 +155,23 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						return name.Update(Pair.New(client.Name, suffix));
 					};
 
-					item.Get<ImageWidget>("FACTIONFLAG").IsVisible = () => false;
+					var kickButton = item.Get<ButtonWidget>("KICK");
+					kickButton.IsVisible = () => Game.IsHost && client.Index != orderManager.LocalClient.Index && client.State != Session.ClientState.Disconnected;
+					kickButton.OnClick = () =>
+					{
+						hideMenu(true);
+						ConfirmationDialogs.ButtonPrompt(
+							title: "Kick {0}?".F(client.Name),
+							text: "They will not be able to rejoin this game.",
+							onConfirm: () =>
+							{
+								orderManager.IssueOrder(Order.Command("kick {0} {1}".F(client.Index, false)));
+								hideMenu(false);
+							},
+							onCancel: () => hideMenu(false),
+							confirmText: "Kick");
+					};
+
 					playerPanel.AddChild(item);
 				}
 			}

@@ -120,3 +120,36 @@ Container@SKIRMISH_STATS:
 							Height: 25
 							Align: Right
 							Shadow: True
+				Container@SPECTATOR_TEMPLATE:
+					Width: PARENT_RIGHT - 27
+					Height: 25
+					X: 2
+					Children:
+						Image@PROFILE:
+							ImageCollection: lobby-bits
+							X: 8
+							Y: 4
+							Visible: false
+						ClientTooltipRegion@PROFILE_TOOLTIP:
+							X: 8
+							Y: 4
+							Width: 16
+							Height: 16
+							Visible: false
+							TooltipContainer: TOOLTIP_CONTAINER
+							Template: ANONYMOUS_PLAYER_TOOLTIP
+						Label@NAME:
+							X: 29
+							Width: 166
+							Height: 25
+							Shadow: True
+						Button@KICK:
+							X: 195
+							Width: 24
+							Height: 25
+							Children:
+								Image:
+									ImageCollection: lobby-bits
+									ImageName: kick
+									X: 6
+									Y: 8

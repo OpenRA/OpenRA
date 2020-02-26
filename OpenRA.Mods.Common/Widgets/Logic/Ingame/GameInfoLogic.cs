@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Linq;
 using OpenRA.Mods.Common.Scripting;
 using OpenRA.Mods.Common.Traits;
@@ -21,7 +22,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	class GameInfoLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
-		public GameInfoLogic(Widget widget, World world, IngameInfoPanel activePanel)
+		public GameInfoLogic(Widget widget, World world, IngameInfoPanel activePanel, Action<bool> hideMenu)
 		{
 			var lp = world.LocalPlayer;
 			var numTabs = 0;
@@ -47,7 +48,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var objectivesPanel = widget.Get<ContainerWidget>("OBJECTIVES_PANEL");
 				objectivesPanel.IsVisible = () => activePanel == IngameInfoPanel.Objectives;
 
-				Game.LoadWidget(world, panel, objectivesPanel, new WidgetArgs());
+				Game.LoadWidget(world, panel, objectivesPanel, new WidgetArgs()
+				{
+					{ "hideMenu", hideMenu }
+				});
 
 				if (activePanel == IngameInfoPanel.AutoSelect)
 					activePanel = IngameInfoPanel.Objectives;
