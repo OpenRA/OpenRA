@@ -129,8 +129,12 @@ end
 
 SendSovietParadrops = function(table)
 	local paraproxy = Actor.Create(table.type, false, { Owner = soviets })
-	units = paraproxy.SendParatroopers(table.target.CenterPosition)
-	Utils.Do(units, function(unit) IdleHunt(unit) end)
+	local aircraft = paraproxy.ActivateParatroopers(table.target.CenterPosition)
+	Utils.Do(aircraft, function(a)
+		Trigger.OnPassengerExited(a, function(t, p)
+			IdleHunt(p)
+		end)
+	end)
 	paraproxy.Destroy()
 end
 

@@ -17,16 +17,16 @@ EnemyBaseEntranceShroudTrigger = { CPos.New(80, 73), CPos.New(81, 73), CPos.New(
 
 SendUSSRParadrops = function()
 	paraproxy1 = Actor.Create("powerproxy.paratroopers", false, { Owner = player })
-	paraproxy1.SendParatroopers(ParachuteBaseEntrance.CenterPosition, false,  Facing.North)
+	paraproxy1.ActivateParatroopers(ParachuteBaseEntrance.CenterPosition,  Facing.North)
 	paraproxy1.Destroy()
 end
 
 SendUSSRParadropsBase = function()
 	paraproxy2 = Actor.Create("powerproxy.paratroopers2", false, { Owner = player })
-	paraproxy2.SendParatroopers(ParachuteBase1.CenterPosition, false, Facing.East)
+	paraproxy2.ActivateParatroopers(ParachuteBase1.CenterPosition, Facing.East)
 	paraproxy2.Destroy()
 	paraproxy3 = Actor.Create("powerproxy.paratroopers3", false, { Owner = player })
-	paraproxy3.SendParatroopers(ParachuteBase2.CenterPosition, false, Facing.East)
+	paraproxy3.ActivateParatroopers(ParachuteBase2.CenterPosition, Facing.East)
 	paraproxy3.Destroy()
 end
 

@@ -37,9 +37,11 @@ Paradropped = 0
 
 Paradrop = function()
 	Trigger.AfterDelay(Utils.RandomInteger(ParadropDelay[1], ParadropDelay[2]), function()
-		local units = PowerProxy.SendParatroopers(Utils.Random(ParadropLZs))
-		Utils.Do(units, function(unit)
-			Trigger.OnAddedToWorld(unit, IdleHunt)
+		local aircraft = PowerProxy.ActivateParatroopers(Utils.Random(ParadropLZs))
+		Utils.Do(aircraft, function(a)
+			Trigger.OnPassengerExited(a, function(t, p)
+				IdleHunt(p)
+			end)
 		end)
 
 		Paradropped = Paradropped + 1

@@ -123,8 +123,8 @@ WorldLoaded = function()
 	-- When destroying the allied radar dome or the refinery drop 2 badgers with 5 grenadiers each
 	Trigger.OnAnyKilled({ AlliedDome, AlliedProc }, function()
 		local powerproxy = Actor.Create("powerproxy.paratroopers", true, { Owner = player })
-		powerproxy.SendParatroopers(ParadropLZ.CenterPosition, false, Facing.South)
-		powerproxy.SendParatroopers(ParadropLZ.CenterPosition, false, Facing.SouthEast)
+		powerproxy.ActivateParatroopers(ParadropLZ.CenterPosition, Facing.South)
+		powerproxy.ActivateParatroopers(ParadropLZ.CenterPosition, Facing.SouthEast)
 		powerproxy.Destroy()
 	end)
 end

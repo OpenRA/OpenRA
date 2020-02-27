@@ -72,6 +72,14 @@ ReinforcementsDelay = DateTime.Minutes(16)
 ReinforcementsUnits = { "2tnk", "2tnk", "2tnk", "2tnk", "2tnk", "2tnk", "1tnk", "1tnk", "jeep", "e1",
 	"e1", "e1", "e1", "e3", "e3", "mcv", "truk", "truk", "truk", "truk", "truk", "truk" }
 
+IdleHunt = function(actor)
+	Trigger.OnIdle(actor, function(a)
+		if a.IsInWorld then
+			a.Hunt()
+		end
+	end)
+end
+
 SpawnAlliedReinforcements = function()
 	if allies2.IsLocalPlayer then
 		UserInterface.SetMissionText("")
@@ -115,16 +123,16 @@ end
 SendParatroopers = function()
 	Utils.Do(Paratroopers, function(para)
 		local proxy = Actor.Create(para.proxy, false, { Owner = soviets })
-		local units = proxy.SendParatroopersFrom(para.entry, para.drop)
-		proxy.Destroy()
-
-		Utils.Do(units, function(unit)
-			Trigger.OnIdle(unit, function(a)
-				if a.IsInWorld then
-					a.Hunt()
-				end
+		local target = Map.CenterOfCell(para.drop)
+		local dir = target - Map.CenterOfCell(para.entry)
+		
+		local aircraft = proxy.ActivateParatroopers(target, dir.facing)
+		Utils.Do(aircraft, function(a)
+			Trigger.OnPassengerExited(a, function(t, p)
+				IdleHunt(p)
 			end)
 		end)
+		proxy.Destroy()
 	end)
 end
 

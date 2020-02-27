@@ -62,15 +62,20 @@ GroundPatrolUnits =
 	{ "3tnk", "3tnk" }
 }
 
+IdleHunt = function(actor)
+	Trigger.OnIdle(actor, function(a)
+		if a.IsInWorld then
+			a.Hunt()
+		end
+	end)
+end
+
 ParadropSovietUnits = function()
 	local powerproxy = Actor.Create("powerproxy.paratroopers", false, { Owner = soviets })
-	local units = powerproxy.SendParatroopers(MCVDeployLocation.CenterPosition, false, 256 - 53)
-
-	Utils.Do(units, function(a)
-		Trigger.OnIdle(a, function(actor)
-			if actor.IsInWorld then
-				actor.Hunt()
-			end
+	local aircraft = powerproxy.ActivateParatroopers(MCVDeployLocation.CenterPosition, 256 - 53)
+	Utils.Do(aircraft, function(a)
+		Trigger.OnPassengerExited(a, function(t, p)
+			IdleHunt(p)
 		end)
 	end)
 

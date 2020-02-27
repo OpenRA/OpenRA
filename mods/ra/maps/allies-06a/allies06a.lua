@@ -143,7 +143,7 @@ InfiltrateTechCenter = function()
 
 			local Proxy = Actor.Create("powerproxy.paratroopers", false, { Owner = ussr })
 			Utils.Do(ParadropWaypoints[Map.LobbyOption("difficulty")], function(waypoint)
-				Proxy.SendParatroopers(waypoint.CenterPosition, false, Facing.South)
+				Proxy.ActivateParatroopers(waypoint.CenterPosition, Facing.South)
 			end)
 			Proxy.Destroy()
 		end)

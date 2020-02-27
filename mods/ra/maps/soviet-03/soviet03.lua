@@ -96,7 +96,7 @@ end
 
 SendUSSRParadrops = function()
 	paraproxy = Actor.Create("powerproxy.paratroopers", false, { Owner = player })
-	paraproxy.SendParatroopers(ReinforcementDropOff.CenterPosition, false, 0)
+	paraproxy.ActivateParatroopers(ReinforcementDropOff.CenterPosition, 0)
 	paraproxy.Destroy()
 end
 
