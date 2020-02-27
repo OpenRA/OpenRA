@@ -153,8 +153,8 @@ namespace OpenRA.Graphics
 				var nextCorner = width / 2 * new float3(-nextDir.Y, nextDir.X, nextDir.Z);
 
 				// Vertices for the corners joining start-end to end-next
-				var cc = closed || i < limit ? IntersectionOf(end + corner, dir, end + nextCorner, nextDir) : end + corner;
-				var cd = closed || i < limit ? IntersectionOf(end - corner, dir, end - nextCorner, nextDir) : end - corner;
+				var cc = closed || i < limit - 1 ? IntersectionOf(end + corner, dir, end + nextCorner, nextDir) : end + corner;
+				var cd = closed || i < limit - 1 ? IntersectionOf(end - corner, dir, end - nextCorner, nextDir) : end - corner;
 
 				// Fill segment
 				vertices[0] = new Vertex(ca + Offset, r, g, b, a, 0, 0);
