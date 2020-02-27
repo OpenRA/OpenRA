@@ -119,10 +119,12 @@ end
 
 ParadropSovietUnits = function()
 	local lz = Utils.Random(ParadropWaypoints)
-	local units = powerproxy.SendParatroopers(lz.CenterPosition)
+	local aircraft = powerproxy.ActivateParatroopers(lz.CenterPosition)
 
-	Utils.Do(units, function(a)
-		BindActorTriggers(a)
+	Utils.Do(aircraft, function(a)
+		Trigger.OnPassengerExited(a, function(t, p)
+			BindActorTriggers(p)
+		end)
 	end)
 
 	Trigger.AfterDelay(DateTime.Seconds(35), ParadropSovietUnits)

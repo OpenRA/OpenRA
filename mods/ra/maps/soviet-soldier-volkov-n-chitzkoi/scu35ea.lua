@@ -37,6 +37,14 @@ TanyaTrigger = { CPos.New(59, 43), CPos.New(60, 43), CPos.New(61, 43), CPos.New(
 GreeceHarvestersAreDead = false
 AlloyFacilityDestroyed = false
 
+IdleHunt = function(actor)
+	Trigger.OnIdle(actor, function(a)
+		if a.IsInWorld then
+			a.Hunt()
+		end
+	end)
+end
+
 WorldLoaded = function()
 
 --Players Setup
@@ -324,19 +332,15 @@ WorldLoaded = function()
 	Trigger.OnEnteredFootprint(ParaTrigger, function(unit, id)
 		if unit.Owner == player then
 			local powerproxy = Actor.Create("powerproxy.pararifles", true, { Owner = greece })
-			local paratroopers = powerproxy.SendParatroopers(waypoint89.CenterPosition, false, Facing.South)
+			local aircraft = powerproxy.ActivateParatroopers(waypoint89.CenterPosition, Facing.South)
 			local prtcamera = Actor.Create("camera", true, { Owner = player, Location = waypoint89.Location })
+			Utils.Do(aircraft, function(a)
+				Trigger.OnPassengerExited(a, function(t, p)
+					IdleHunt(p)
+				end)
+			end)
 			Trigger.AfterDelay(DateTime.Seconds(10), function()
 				if prtcamera.IsInWorld then prtcamera.Destroy() end
-			end)
-			Utils.Do(paratroopers, function(unit)
-				if not unit.IsDead then
-					Trigger.OnIdle(unit, function(unit)
-						if unit.IsInWorld then
-							unit.Hunt()
-						end
-					end)
-				end
 			end)
 			if Map.LobbyOption("difficulty") == "hard" and not RiflemanGuard01.IsDead then
 				Trigger.ClearAll(RiflemanGuard01)

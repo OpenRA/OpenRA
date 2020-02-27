@@ -188,9 +188,11 @@ WTransWaves = function()
 end
 
 Paradrop = function()
-	local units = PowerProxy.SendParatroopers(Utils.Random(ParadropLZs))
-	Utils.Do(units, function(unit)
-		Trigger.OnAddedToWorld(unit, IdleHunt)
+	local aircraft = PowerProxy.ActivateParatroopers(Utils.Random(ParadropLZs))
+	Utils.Do(aircraft, function(a)
+		Trigger.OnPassengerExited(a, function(t, p)
+			IdleHunt(p)
+		end)
 	end)
 
 	Trigger.AfterDelay(DateTime.Minutes(ParadropDelays), Paradrop)
