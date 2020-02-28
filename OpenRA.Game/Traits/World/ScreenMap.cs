@@ -18,7 +18,7 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Traits
 {
-	public struct ActorBoundsPair : IEquatable<ActorBoundsPair>
+	public struct ActorBoundsPair
 	{
 		public readonly Actor Actor;
 
@@ -27,13 +27,7 @@ namespace OpenRA.Traits
 
 		public ActorBoundsPair(Actor actor, Rectangle bounds) { Actor = actor; Bounds = bounds; }
 
-		public static bool operator ==(ActorBoundsPair me, ActorBoundsPair other) { return me.Actor == other.Actor && Equals(me.Bounds, other.Bounds); }
-		public static bool operator !=(ActorBoundsPair me, ActorBoundsPair other) { return !(me == other); }
-
 		public override int GetHashCode() { return Actor.GetHashCode() ^ Bounds.GetHashCode(); }
-
-		public bool Equals(ActorBoundsPair other) { return this == other; }
-		public override bool Equals(object obj) { return obj is ActorBoundsPair && Equals((ActorBoundsPair)obj); }
 
 		public override string ToString() { return "{0}->{1}".F(Actor.Info.Name, Bounds.GetType().Name); }
 	}
