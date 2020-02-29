@@ -11,6 +11,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Graphics;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -33,6 +34,9 @@ namespace OpenRA.Mods.Common.Traits
 			"This option implies the `" + nameof(Sticky) + "` behaviour as well.")]
 		public readonly bool Permanent = false;
 
+		[Desc("If set, will draw a border in the owner's color around the capturable area.")]
+		public readonly bool DrawDecoration = true;
+
 		public void RulesetLoaded(Ruleset rules, ActorInfo info)
 		{
 			var pci = rules.Actors[SystemActors.Player].TraitInfoOrDefault<ProximityCaptorInfo>();
@@ -43,7 +47,7 @@ namespace OpenRA.Mods.Common.Traits
 		public abstract override object Create(ActorInitializer init);
 	}
 
-	public abstract class ProximityCapturableBase : ITick, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyOwnerChanged
+	public abstract class ProximityCapturableBase : ITick, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyOwnerChanged, IRenderAnnotations
 	{
 		public readonly Player OriginalOwner;
 		public bool Captured => Self.Owner != OriginalOwner;
@@ -66,6 +70,7 @@ namespace OpenRA.Mods.Common.Traits
 		protected abstract int CreateTrigger(Actor self);
 		protected abstract void RemoveTrigger(Actor self, int trigger);
 		protected abstract void TickInner(Actor self);
+		protected abstract IRenderable GetRenderable(Actor self, WorldRenderer wr);
 
 		void INotifyAddedToWorld.AddedToWorld(Actor self)
 		{
@@ -192,5 +197,15 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			Game.RunAfterTick(() => skipTriggerUpdate = false);
 		}
+
+		IEnumerable<IRenderable> IRenderAnnotations.RenderAnnotations(Actor self, WorldRenderer wr)
+		{
+			if (!self.IsInWorld || !Info.DrawDecoration)
+				return Enumerable.Empty<IRenderable>();
+
+			return new[] { GetRenderable(self, wr) };
+		}
+
+		bool IRenderAnnotations.SpatiallyPartitionable { get { return false; } }
 	}
 }

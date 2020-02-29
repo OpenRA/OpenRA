@@ -12,6 +12,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Graphics;
+using OpenRA.Mods.Common.Graphics;
+using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.Traits
 {
@@ -53,6 +56,11 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		protected override void TickInner(Actor self) { }
+
+		protected override IRenderable GetRenderable(Actor self, WorldRenderer wr)
+		{
+			return new BorderedRegionRenderable(region, self.Owner.Color, 1, Color.Black, 3);
+		}
 	}
 
 	public class RegionInit : ValueActorInit<CVec[]>

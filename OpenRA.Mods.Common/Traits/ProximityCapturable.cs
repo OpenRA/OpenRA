@@ -9,6 +9,10 @@
  */
 #endregion
 
+using OpenRA.Graphics;
+using OpenRA.Mods.Common.Graphics;
+using OpenRA.Primitives;
+
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Actor can be captured by units within a certain range.")]
@@ -43,6 +47,11 @@ namespace OpenRA.Mods.Common.Traits
 		protected override void TickInner(Actor self)
 		{
 			self.World.ActorMap.UpdateProximityTrigger(trigger, self.CenterPosition, Info.Range, WDist.Zero);
+		}
+
+		protected override IRenderable GetRenderable(Actor self, WorldRenderer wr)
+		{
+			return new RangeCircleAnnotationRenderable(self.CenterPosition, Info.Range, 0, self.Owner.Color, 1, Color.Black, 3);
 		}
 	}
 }
