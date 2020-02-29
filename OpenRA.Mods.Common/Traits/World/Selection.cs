@@ -123,13 +123,12 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Play the selection voice from one of the selected actors
 			// TODO: This probably should only be considering the newly selected actors
-			// TODO: Ship this into an INotifySelection trait to remove the engine dependency on Selectable
 			foreach (var actor in actors)
 			{
 				if (actor.Owner != world.LocalPlayer || !actor.IsInWorld)
 					continue;
 
-				var selectable = actor.Info.TraitInfoOrDefault<SelectableInfo>();
+				var selectable = actor.Info.TraitInfoOrDefault<ISelectableInfo>();
 				if (selectable == null || !actor.HasVoice(selectable.Voice))
 					continue;
 

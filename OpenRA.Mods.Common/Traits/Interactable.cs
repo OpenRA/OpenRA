@@ -12,8 +12,9 @@
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Used to enable mouse interaction on actors that are not Selectable.")]
 	public class InteractableInfo : ITraitInfo, IMouseBoundsInfo, IDecorationBoundsInfo

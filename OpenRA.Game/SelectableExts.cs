@@ -20,7 +20,7 @@ namespace OpenRA.Traits
 	{
 		public static int SelectionPriority(this ActorInfo a, Modifiers modifiers)
 		{
-			var selectableInfo = a.TraitInfoOrDefault<SelectableInfo>();
+			var selectableInfo = a.TraitInfoOrDefault<ISelectableInfo>();
 			return selectableInfo != null ? BaseSelectionPriority(selectableInfo, modifiers) : int.MinValue;
 		}
 
@@ -28,7 +28,7 @@ namespace OpenRA.Traits
 
 		public static int SelectionPriority(this Actor a, Modifiers modifiers)
 		{
-			var info = a.Info.TraitInfo<SelectableInfo>();
+			var info = a.Info.TraitInfo<ISelectableInfo>();
 			var basePriority = BaseSelectionPriority(info, modifiers);
 
 			var viewer = (a.World.LocalPlayer == null || a.World.LocalPlayer.Spectating) ? a.World.RenderPlayer : a.World.LocalPlayer;
@@ -47,7 +47,7 @@ namespace OpenRA.Traits
 			}
 		}
 
-		static int BaseSelectionPriority(SelectableInfo info, Modifiers modifiers)
+		static int BaseSelectionPriority(ISelectableInfo info, Modifiers modifiers)
 		{
 			var priority = info.Priority;
 

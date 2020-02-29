@@ -440,6 +440,22 @@ namespace OpenRA.Traits
 		bool SpatiallyPartitionable { get; }
 	}
 
+	[Flags]
+	public enum SelectionPriorityModifiers
+	{
+		None = 0,
+		Ctrl = 1,
+		Alt = 2
+	}
+
+	[RequireExplicitImplementation]
+	public interface ISelectableInfo : ITraitInfoInterface
+	{
+		int Priority { get; }
+		SelectionPriorityModifiers PriorityModifiers { get; }
+		string Voice { get; }
+	}
+
 	public interface ISelection
 	{
 		int Hash { get; }
