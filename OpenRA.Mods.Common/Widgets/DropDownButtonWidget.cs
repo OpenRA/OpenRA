@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var image = ChromeProvider.GetImage("scrollbar", IsDisabled() ? "down_pressed" : "down_arrow");
 			var rb = RenderBounds;
 
-			WidgetUtils.DrawRGBA(image, stateOffset + new float2(rb.Right - (rb.Height + image.Size.X) / 2, rb.Top + (rb.Height - image.Size.Y) / 2));
+			WidgetUtils.DrawRGBA(image, stateOffset + new float2(rb.Right - (int)((rb.Height + image.Size.X) / 2), rb.Top + (int)((rb.Height - image.Size.Y) / 2)));
 
 			var separator = ChromeProvider.GetImage(SeparatorCollection, SeparatorImage);
 			WidgetUtils.DrawRGBA(separator, stateOffset + new float2(-3, 0) + new float2(rb.Right - rb.Height + 4, rb.Top + (rb.Height - separator.Size.Y) / 2));
