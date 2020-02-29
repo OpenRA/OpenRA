@@ -28,24 +28,43 @@ namespace OpenRA
 				systemMessageLabel = "Battlefield Control";
 		}
 
+		public static void AddFeedbackLine(string text)
+		{
+			AddTextNotification(TextNotificationPool.Feedback, systemMessageLabel, text, systemMessageColor, systemMessageColor);
+		}
+
 		public static void AddSystemLine(string text)
 		{
 			AddSystemLine(systemMessageLabel, text);
 		}
 
-		public static void AddSystemLine(string name, string text)
+		public static void AddSystemLine(string prefix, string text)
 		{
-			Game.OrderManager.AddChatLine(name, systemMessageColor, text, systemMessageColor);
+			AddTextNotification(TextNotificationPool.System, prefix, text, systemMessageColor, systemMessageColor);
 		}
 
-		public static void AddChatLine(string name, Color nameColor, string text)
+		public static void AddChatLine(string prefix, string text, Color? prefixColor = null, Color? textColor = null)
 		{
-			Game.OrderManager.AddChatLine(name, nameColor, text, chatMessageColor);
+			AddTextNotification(TextNotificationPool.Chat, prefix, text, prefixColor, textColor);
 		}
 
 		public static void Debug(string s, params object[] args)
 		{
 			AddSystemLine("Debug", string.Format(s, args));
+		}
+
+		static void AddTextNotification(TextNotificationPool pool, string prefix, string text, Color? prefixColor = null, Color? textColor = null)
+		{
+			if (IsPoolEnabled(pool))
+				Game.OrderManager.AddTextNotification(new TextNotification(pool, prefix, text, prefixColor ?? chatMessageColor, textColor ?? chatMessageColor));
+		}
+
+		static bool IsPoolEnabled(TextNotificationPool pool)
+		{
+			return pool == TextNotificationPool.Chat ||
+				pool == TextNotificationPool.System ||
+				pool == TextNotificationPool.Mission ||
+				pool == TextNotificationPool.Feedback;
 		}
 	}
 }

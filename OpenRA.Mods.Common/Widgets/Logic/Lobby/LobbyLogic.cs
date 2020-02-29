@@ -119,7 +119,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			services = modData.Manifest.Get<WebServices>();
 
-			orderManager.AddChatLine += AddChatLine;
+			orderManager.AddTextNotification += AddChatLine;
 			Game.LobbyInfoChanged += UpdateCurrentMap;
 			Game.LobbyInfoChanged += UpdatePlayerList;
 			Game.LobbyInfoChanged += UpdateDiscordStatus;
@@ -463,7 +463,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (disposing && !disposed)
 			{
 				disposed = true;
-				orderManager.AddChatLine -= AddChatLine;
+				orderManager.AddTextNotification -= AddChatLine;
 				Game.LobbyInfoChanged -= UpdateCurrentMap;
 				Game.LobbyInfoChanged -= UpdatePlayerList;
 				Game.LobbyInfoChanged -= UpdateDiscordStatus;
@@ -486,10 +486,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				panel = PanelType.Players;
 		}
 
-		void AddChatLine(string name, Color nameColor, string text, Color textColor)
+		void AddChatLine(TextNotification chatLine)
 		{
 			var template = (ContainerWidget)chatTemplate.Clone();
-			LobbyUtils.SetupChatLine(template, DateTime.Now, name, nameColor, text, textColor);
+			LobbyUtils.SetupChatLine(template, DateTime.Now, chatLine);
 
 			var scrolledToBottom = lobbyChatPanel.ScrolledToBottom;
 			lobbyChatPanel.AddChild(template);

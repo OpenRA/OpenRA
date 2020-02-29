@@ -39,6 +39,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		readonly string chatLineSound = ChromeMetrics.Get<string>("ChatLineSound");
 
+		TextNotification lastLine;
+		int repetitions;
+
 		[ObjectCreator.UseCtor]
 		public IngameChatLogic(Widget widget, OrderManager orderManager, World world, ModData modData, bool isMenuChat, Dictionary<string, MiniYaml> logicArgs)
 		{
@@ -182,10 +185,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			chatScrollPanel.RemoveChildren();
 			chatScrollPanel.ScrollToBottom();
 
-			foreach (var chatLine in orderManager.ChatCache)
-				AddChatLine(chatLine.Name, chatLine.Color, chatLine.Text, chatLine.TextColor, true);
+			foreach (var chatLine in orderManager.NotificationsCache)
+				AddChatLine(chatLine, true);
 
-			orderManager.AddChatLine += AddChatLineWrapper;
+			orderManager.AddTextNotification += AddChatLineWrapper;
 
 			chatText.IsDisabled = () => world.IsReplay && !Game.Settings.Debug.EnableDebugCommandsInReplays;
 
@@ -231,38 +234,58 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			chatOverlay.Visible = true;
 		}
 
-		public void AddChatLineWrapper(string name, Color nameColor, string text, Color textColor)
+		public void AddChatLineWrapper(TextNotification chatLine)
 		{
-			chatOverlayDisplay?.AddLine(name, nameColor, text, textColor);
+			var chatLineToDisplay = chatLine;
+
+			if (chatLine.CanIncrementOnDuplicate() && chatLine.Equals(lastLine))
+			{
+				repetitions++;
+				chatLineToDisplay = new TextNotification(
+					chatLine.Pool,
+					chatLine.Prefix,
+					$"{chatLine.Text} ({repetitions + 1})",
+					chatLine.PrefixColor,
+					chatLine.TextColor);
+
+				chatScrollPanel.RemoveChild(chatScrollPanel.Children[chatScrollPanel.Children.Count - 1]);
+				chatOverlayDisplay?.RemoveMostRecentLine();
+			}
+			else
+				repetitions = 0;
+
+			lastLine = chatLine;
+
+			chatOverlayDisplay?.AddLine(chatLineToDisplay);
 
 			// HACK: Force disable the chat notification sound for the in-menu chat dialog
 			// This works around our inability to disable the sounds for the in-game dialog when it is hidden
-			AddChatLine(name, nameColor, text, textColor, chatOverlay == null);
+			AddChatLine(chatLineToDisplay, chatOverlay == null);
 		}
 
-		void AddChatLine(string @from, Color nameColor, string text, Color textColor, bool suppressSound)
+		void AddChatLine(TextNotification chatLine, bool suppressSound)
 		{
 			var template = chatTemplate.Clone();
 			var nameLabel = template.Get<LabelWidget>("NAME");
 			var textLabel = template.Get<LabelWidget>("TEXT");
 
 			var name = "";
-			if (!string.IsNullOrEmpty(from))
-				name = from + ":";
+			if (!string.IsNullOrEmpty(chatLine.Prefix))
+				name = chatLine.Prefix + ":";
 
 			var font = Game.Renderer.Fonts[nameLabel.Font];
-			var nameSize = font.Measure(from);
+			var nameSize = font.Measure(chatLine.Prefix);
 
-			nameLabel.GetColor = () => nameColor;
+			nameLabel.GetColor = () => chatLine.PrefixColor;
 			nameLabel.GetText = () => name;
 			nameLabel.Bounds.Width = nameSize.X;
 
-			textLabel.GetColor = () => textColor;
+			textLabel.GetColor = () => chatLine.TextColor;
 			textLabel.Bounds.X += nameSize.X;
 			textLabel.Bounds.Width -= nameSize.X;
 
 			// Hack around our hacky wordwrap behavior: need to resize the widget to fit the text
-			text = WidgetUtils.WrapText(text, textLabel.Bounds.Width, font);
+			var text = WidgetUtils.WrapText(chatLine.Text, textLabel.Bounds.Width, font);
 			textLabel.GetText = () => text;
 			var dh = font.Measure(text).Y - textLabel.Bounds.Height;
 			if (dh > 0)
@@ -285,7 +308,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			if (!disposed)
 			{
-				orderManager.AddChatLine -= AddChatLineWrapper;
+				orderManager.AddTextNotification -= AddChatLineWrapper;
 				disposed = true;
 			}
 
