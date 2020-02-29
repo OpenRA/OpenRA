@@ -110,6 +110,13 @@ Container@DISPLAY_PANEL:
 			Height: 20
 			Font: Regular
 			Text: Pause Menu Background
+		Checkbox@UI_FEEDBACK_CHECKBOX:
+			X: 15
+			Y: 163
+			Width: 200
+			Height: 20
+			Font: Regular
+			Text: UI Feedback in Chat
 		Label@VIDEO_TITLE:
 			Y: 190
 			Width: PARENT_RIGHT
