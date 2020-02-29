@@ -106,6 +106,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			battlefieldCameraDropDown.OnMouseDown = _ => ShowBattlefieldCameraDropdown(battlefieldCameraDropDown, viewportSizes, ds);
 			battlefieldCameraDropDown.GetText = () => battlefieldCameraLabel.Update(ds.ViewportDistance);
 
+			BindTextNotificationPoolFilterSettings(panel, gs);
+
 			// Update vsync immediately
 			var vsyncCheckbox = panel.Get<CheckboxWidget>("VSYNC_CHECKBOX");
 			var vsyncOnClick = vsyncCheckbox.OnClick;
@@ -211,8 +213,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var ds = Game.Settings.Graphics;
 			var ps = Game.Settings.Player;
+			var gs = Game.Settings.Game;
 			var dds = new GraphicSettings();
 			var dps = new PlayerSettings();
+			var dgs = new GameSettings();
 			return () =>
 			{
 				ds.CapFramerate = dds.CapFramerate;
@@ -235,6 +239,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				ps.Color = dps.Color;
 				ps.Name = dps.Name;
+
+				gs.TextNotificationPoolFilters = dgs.TextNotificationPoolFilters;
 			};
 		}
 
@@ -258,6 +264,22 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, options.Keys, setupItem);
+		}
+
+		public static void BindTextNotificationPoolFilterSettings(Widget panel, GameSettings gs)
+		{
+			Action<TextNotificationPoolFilters> toggleFilterFlag = f =>
+			{
+				gs.TextNotificationPoolFilters ^= f;
+				Game.Settings.Save();
+			};
+
+			var feedbackCheckbox = panel.GetOrNull<CheckboxWidget>("UI_FEEDBACK_CHECKBOX");
+			if (feedbackCheckbox != null)
+			{
+				feedbackCheckbox.IsChecked = () => gs.TextNotificationPoolFilters.HasFlag(TextNotificationPoolFilters.Feedback);
+				feedbackCheckbox.OnClick = () => toggleFilterFlag(TextNotificationPoolFilters.Feedback);
+			}
 		}
 
 		static void ShowStatusBarsDropdown(DropDownButtonWidget dropdown, GameSettings s)

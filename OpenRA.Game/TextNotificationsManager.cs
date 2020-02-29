@@ -61,10 +61,12 @@ namespace OpenRA
 
 		static bool IsPoolEnabled(TextNotificationPool pool)
 		{
+			var filters = Game.Settings.Game.TextNotificationPoolFilters;
+
 			return pool == TextNotificationPool.Chat ||
 				pool == TextNotificationPool.System ||
 				pool == TextNotificationPool.Mission ||
-				pool == TextNotificationPool.Feedback;
+				(pool == TextNotificationPool.Feedback && filters.HasFlag(TextNotificationPoolFilters.Feedback));
 		}
 	}
 }
