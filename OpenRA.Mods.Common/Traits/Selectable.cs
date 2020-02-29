@@ -10,19 +10,12 @@
 #endregion
 
 using System;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.Common.Traits
 {
-	[Flags]
-	public enum SelectionPriorityModifiers
-	{
-		None = 0,
-		Ctrl = 1,
-		Alt = 2
-	}
-
 	[Desc("This actor is selectable. Defines bounds of selectable area, selection class, selection priority and selection priority modifiers.")]
-	public class SelectableInfo : InteractableInfo
+	public class SelectableInfo : InteractableInfo, ISelectableInfo
 	{
 		public readonly int Priority = 10;
 
@@ -40,18 +33,24 @@ namespace OpenRA.Traits
 		public readonly string Voice = "Select";
 
 		public override object Create(ActorInitializer init) { return new Selectable(init.Self, this); }
+
+		int ISelectableInfo.Priority { get { return Priority; } }
+		SelectionPriorityModifiers ISelectableInfo.PriorityModifiers { get { return PriorityModifiers; } }
+		string ISelectableInfo.Voice { get { return Voice; } }
 	}
 
-	public class Selectable : Interactable
+	public class Selectable : Interactable, ISelectable
 	{
-		public readonly string Class = null;
+		readonly string selectionClass = null;
 		public readonly SelectableInfo Info;
 
 		public Selectable(Actor self, SelectableInfo info)
 			: base(info)
 		{
-			Class = string.IsNullOrEmpty(info.Class) ? self.Info.Name : info.Class;
+			selectionClass = string.IsNullOrEmpty(info.Class) ? self.Info.Name : info.Class;
 			Info = info;
 		}
+
+		string ISelectable.Class { get { return selectionClass; } }
 	}
 }

@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Effects;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Orders;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -127,7 +128,7 @@ namespace OpenRA.Mods.Common.Widgets
 					if (!IsValidDragbox && World.Selection.Actors.Any() && !multiClick)
 					{
 						var selectableActor = World.ScreenMap.ActorsAtMouse(mousePos).Select(a => a.Actor).Any(x =>
-							x.Info.HasTraitInfo<SelectableInfo>() && (x.Owner.IsAlliedWith(World.RenderPlayer) || !World.FogObscures(x)));
+							x.Info.HasTraitInfo<ISelectableInfo>() && (x.Owner.IsAlliedWith(World.RenderPlayer) || !World.FogObscures(x)));
 
 						if (!selectableActor || uog.InputOverridesSelection(World, mousePos, mi))
 						{
@@ -153,7 +154,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 					if (unit != null && eligiblePlayers.Contains(unit.Owner))
 					{
-						var s = unit.TraitOrDefault<Selectable>();
+						var s = unit.TraitOrDefault<ISelectable>();
 						if (s != null)
 						{
 							// Select actors on the screen that have the same selection class as the actor under the mouse cursor
@@ -305,7 +306,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 					// Get all the selected actors' selection classes
 					var selectedClasses = ownedActors
-						.Select(a => a.Trait<Selectable>().Class)
+						.Select(a => a.Trait<ISelectable>().Class)
 						.ToHashSet();
 
 					// Select actors on the screen that have the same selection class as one of the already selected actors
@@ -346,7 +347,7 @@ namespace OpenRA.Mods.Common.Widgets
 				if (!owners.Contains(a.Owner))
 					return false;
 
-				var s = a.TraitOrDefault<Selectable>();
+				var s = a.TraitOrDefault<ISelectable>();
 
 				// selectionClasses == null means that units, that meet all other criteria, get selected
 				return s != null && (selectionClasses == null || selectionClasses.Contains(s.Class));
@@ -356,7 +357,7 @@ namespace OpenRA.Mods.Common.Widgets
 		static IEnumerable<Actor> SelectHighestPriorityActorAtPoint(World world, int2 a, Modifiers modifiers)
 		{
 			var selected = world.ScreenMap.ActorsAtMouse(a)
-				.Where(x => x.Actor.Info.HasTraitInfo<SelectableInfo>() && (x.Actor.Owner.IsAlliedWith(world.RenderPlayer) || !world.FogObscures(x.Actor)))
+				.Where(x => x.Actor.Info.HasTraitInfo<ISelectableInfo>() && (x.Actor.Owner.IsAlliedWith(world.RenderPlayer) || !world.FogObscures(x.Actor)))
 				.WithHighestSelectionPriority(a, modifiers);
 
 			if (selected != null)
@@ -374,7 +375,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			return world.ScreenMap.ActorsInMouseBox(a, b)
 				.Select(x => x.Actor)
-				.Where(x => x.Info.HasTraitInfo<SelectableInfo>() && (x.Owner.IsAlliedWith(world.RenderPlayer) || !world.FogObscures(x)))
+				.Where(x => x.Info.HasTraitInfo<ISelectableInfo>() && (x.Owner.IsAlliedWith(world.RenderPlayer) || !world.FogObscures(x)))
 				.SubsetWithHighestSelectionPriority(modifiers);
 		}
 	}

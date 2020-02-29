@@ -636,4 +636,10 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		void NotifyTimerExpired(Actor self);
 	}
+
+	[RequireExplicitImplementation]
+	public interface ISelectable
+	{
+		string Class { get; }
+	}
 }
