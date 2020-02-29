@@ -28,8 +28,14 @@ Container@CHAT_PANEL:
 				TextField@CHAT_TEXTFIELD:
 					X: 55
 					Y: PARENT_BOTTOM - HEIGHT
-					Width: 466
+					Width: 437
 					Height: 25
+				DropDownButton@CHAT_POOL_FILTERS_DROPDOWN:
+					X: 497
+					Y: PARENT_BOTTOM - HEIGHT
+					Width: 24
+					Height: 25
+					DecorationMarker: options-marker
 				Button@CHAT_CLOSE:
 					X: 526
 					Y: PARENT_BOTTOM - HEIGHT
@@ -40,7 +46,7 @@ Container@CHAT_PANEL:
 							ImageCollection: lobby-bits
 							ImageName: kick
 							X: 6
-							Y: 8
+							Y: 7
 				LogicKeyListener@KEY_LISTENER:
 				ScrollPanel@CHAT_SCROLLPANEL:
 					Y: PARENT_BOTTOM - HEIGHT - 30

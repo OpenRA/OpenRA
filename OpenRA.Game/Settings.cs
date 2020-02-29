@@ -33,6 +33,14 @@ namespace OpenRA
 		Incompatible = 16
 	}
 
+	[Flags]
+	public enum ChatPoolFilters
+	{
+		None = 0,
+		Feedback = 1,
+		Transcriptions = 2
+	}
+
 	public enum WorldViewport { Native, Close, Medium, Far }
 
 	public class ServerSettings
@@ -249,6 +257,7 @@ namespace OpenRA
 		public int IntroductionPromptVersion = 0;
 
 		public MPGameFilters MPGameFilters = MPGameFilters.Waiting | MPGameFilters.Empty | MPGameFilters.Protected | MPGameFilters.Started;
+		public ChatPoolFilters ChatPoolFilters = ChatPoolFilters.Feedback;
 	}
 
 	public class Settings

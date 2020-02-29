@@ -32,6 +32,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly ScrollPanelWidget chatScrollPanel;
 		readonly ContainerWidget chatTemplate;
 		readonly TextFieldWidget chatText;
+		readonly DropDownButtonWidget chatPoolFiltersDropDown;
 
 		readonly INotifyChat[] chatTraits;
 
@@ -178,6 +179,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					return false;
 				};
+
+				chatPoolFiltersDropDown = chatChrome.Get<DropDownButtonWidget>("CHAT_POOL_FILTERS_DROPDOWN");
+				SettingsLogic.InitChatPoolFiltersDropdown(chatPoolFiltersDropDown, Game.Settings.Game, true);
 			}
 
 			chatScrollPanel = chatChrome.Get<ScrollPanelWidget>("CHAT_SCROLLPANEL");
@@ -229,6 +233,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		public void CloseChat()
 		{
+			chatPoolFiltersDropDown.RemovePanel();
 			chatChrome.Visible = false;
 			chatText.YieldKeyboardFocus();
 			chatOverlay.Visible = true;

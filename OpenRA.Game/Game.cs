@@ -869,12 +869,14 @@ namespace OpenRA
 
 		public static void AddTranscribedChatLine(string text)
 		{
-			AddChatLine("Battlefield Control", systemMessageColor, text, systemMessageColor, ChatPool.Transcriptions);
+			if (Settings.Game.ChatPoolFilters.HasFlag(ChatPoolFilters.Transcriptions))
+				AddChatLine("Battlefield Control", systemMessageColor, text, systemMessageColor, ChatPool.Transcriptions);
 		}
 
 		public static void AddFeedbackChatLine(string text)
 		{
-			AddChatLine("Battlefield Control", systemMessageColor, text, systemMessageColor, ChatPool.Feedback);
+			if (Settings.Game.ChatPoolFilters.HasFlag(ChatPoolFilters.Feedback))
+				AddChatLine("Battlefield Control", systemMessageColor, text, systemMessageColor, ChatPool.Feedback);
 		}
 
 		public static void AddMissionChatLine(string name, Color nameColor, string text)

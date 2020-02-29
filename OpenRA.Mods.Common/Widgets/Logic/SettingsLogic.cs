@@ -286,6 +286,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			battlefieldCameraDropDown.OnMouseDown = _ => ShowBattlefieldCameraDropdown(battlefieldCameraDropDown, viewportSizes, ds);
 			battlefieldCameraDropDown.GetText = () => battlefieldCameraLabel.Update(ds.ViewportDistance);
 
+			var chatPoolFiltersDropDown = panel.Get<DropDownButtonWidget>("CHAT_POOL_FILTERS_DROPDOWN");
+			InitChatPoolFiltersDropdown(chatPoolFiltersDropDown, gs);
+
 			// Update vsync immediately
 			var vsyncCheckbox = panel.Get<CheckboxWidget>("VSYNC_CHECKBOX");
 			var vsyncOnClick = vsyncCheckbox.OnClick;
@@ -381,8 +384,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var ds = Game.Settings.Graphics;
 			var ps = Game.Settings.Player;
+			var gs = Game.Settings.Game;
 			var dds = new GraphicSettings();
 			var dps = new PlayerSettings();
+			var dgs = new GameSettings();
 			return () =>
 			{
 				ds.CapFramerate = dds.CapFramerate;
@@ -406,6 +411,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				ps.Color = dps.Color;
 				ps.Name = dps.Name;
+
+				gs.ChatPoolFilters = dgs.ChatPoolFilters;
 			};
 		}
 
@@ -1017,6 +1024,72 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var validScales = new[] { 1f, 1.25f, 1.5f, 1.75f, 2f }.Where(x => x <= maxScale);
 			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, validScales, setupItem);
+		}
+
+		public static void InitChatPoolFiltersDropdown(DropDownButtonWidget dropdown, GameSettings gs, bool hideScrollbar = false)
+		{
+			Action<ChatPoolFilters> toggleFilterFlag = f =>
+			{
+				gs.ChatPoolFilters ^= f;
+				Game.Settings.Save();
+			};
+
+			// HACK: CHAT_POOL_FILTER_PANEL doesn't follow our normal procedure for dropdown creation
+			// but we still need to be able to set the dropdown width based on the parent
+			// The yaml should use PARENT_RIGHT instead of DROPDOWN_WIDTH
+			var filtersPanel = Ui.LoadWidget("CHAT_POOL_FILTER_PANEL", dropdown, new WidgetArgs());
+			dropdown.Children.Remove(filtersPanel);
+
+			var transcriptionsCheckbox = filtersPanel.GetOrNull<CheckboxWidget>("TRANSCRIPTIONS");
+			if (transcriptionsCheckbox != null)
+			{
+				transcriptionsCheckbox.IsChecked = () => gs.ChatPoolFilters.HasFlag(ChatPoolFilters.Transcriptions);
+				transcriptionsCheckbox.OnClick = () => toggleFilterFlag(ChatPoolFilters.Transcriptions);
+			}
+
+			var feedbackCheckbox = filtersPanel.GetOrNull<CheckboxWidget>("FEEDBACK");
+			if (feedbackCheckbox != null)
+			{
+				feedbackCheckbox.IsChecked = () => gs.ChatPoolFilters.HasFlag(ChatPoolFilters.Feedback);
+				feedbackCheckbox.OnClick = () => toggleFilterFlag(ChatPoolFilters.Feedback);
+			}
+
+			var chatCheckbox = filtersPanel.GetOrNull<CheckboxWidget>("CHAT");
+			if (chatCheckbox != null)
+			{
+				chatCheckbox.IsChecked = () => true;
+				chatCheckbox.Disabled = true;
+			}
+
+			var missionCheckbox = filtersPanel.GetOrNull<CheckboxWidget>("MISSION");
+			if (missionCheckbox != null)
+			{
+				missionCheckbox.IsChecked = () => true;
+				missionCheckbox.Disabled = true;
+			}
+
+			var systemCheckbox = filtersPanel.GetOrNull<CheckboxWidget>("SYSTEM");
+			if (systemCheckbox != null)
+			{
+				systemCheckbox.IsChecked = () => true;
+				systemCheckbox.Disabled = true;
+			}
+
+			if (hideScrollbar)
+			{
+				var scrollPanel = filtersPanel as ScrollPanelWidget;
+				if (scrollPanel != null)
+				{
+					scrollPanel.ScrollBar = ScrollBar.Hidden;
+					scrollPanel.Bounds.Width -= scrollPanel.ScrollbarWidth;
+				}
+			}
+
+			dropdown.OnMouseDown = _ =>
+			{
+				dropdown.RemovePanel();
+				dropdown.AttachPanel(filtersPanel);
+			};
 		}
 
 		void MakeMouseFocusSettingsLive()

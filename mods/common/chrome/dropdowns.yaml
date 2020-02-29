@@ -183,3 +183,39 @@ ScrollPanel@NEWS_PANEL:
 			Height: PARENT_BOTTOM
 			Align: Center
 			VAlign: Middle
+
+ScrollPanel@CHAT_POOL_FILTER_PANEL:
+	Width: 160
+	Height: 105
+	Children:
+		Checkbox@FEEDBACK:
+			X: 5
+			Y: 5
+			Width: PARENT_RIGHT - 29
+			Height: 20
+			Text: UI Feedback
+			Font: Regular
+		Checkbox@CHAT:
+			X: 5
+			Y: 30
+			Width: PARENT_RIGHT - 29
+			Height: 20
+			Text: Chat
+			TextColor: BEBEBE
+			Font: Regular
+		Checkbox@MISSION:
+			X: 5
+			Y: 55
+			Width: PARENT_RIGHT - 29
+			Height: 20
+			Text: Mission
+			TextColor: BEBEBE
+			Font: Regular
+		Checkbox@SYSTEM:
+			X: 5
+			Y: 80
+			Width: PARENT_RIGHT - 29
+			Height: 20
+			Text: System
+			TextColor: BEBEBE
+			Font: Regular

@@ -180,16 +180,30 @@ Background@SETTINGS_PANEL:
 					Width: 160
 					Height: 25
 					Font: Regular
+				Label@CHAT_POOL_FILTERS:
+					X: 265
+					Y: 130
+					Width: 145
+					Height: 25
+					Text: Chat:
+					Align: Right
+				DropDownButton@CHAT_POOL_FILTERS_DROPDOWN:
+					X: 415
+					Y: 130
+					Width: 160
+					Height: 25
+					Font: Regular
+					Text: Filter Notifications
 				Checkbox@CURSORDOUBLE_CHECKBOX:
 					X: 15
-					Y: 133
+					Y: 163
 					Width: 200
 					Height: 20
 					Font: Regular
 					Text: Increase Cursor Size
 				Checkbox@PLAYER_STANCE_COLORS_CHECKBOX:
 					X: 310
-					Y: 133
+					Y: 163
 					Width: 200
 					Height: 20
 					Font: Regular

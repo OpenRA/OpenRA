@@ -697,6 +697,8 @@ dropdown-decorations:
 		marker: 68, 17, 16, 16
 		marker-pressed: 68, 17, 16, 16
 		marker-disabled: 85, 17, 16, 16
+		options-marker: 221, 17, 16, 16
+		options-marker-disabled: 238, 17, 16, 16
 
 dropdown-separators:
 	Inherits: ^Dialog

@@ -420,6 +420,8 @@ dropdown-decorations:
 	Inherits: ^Glyphs
 	Regions:
 		marker: 119, 0, 16, 16
+		options-marker: 221, 17, 16, 16
+		options-marker-disabled: 238, 17, 16, 16
 
 dropdown-separators:
 	Inherits: ^Dialog

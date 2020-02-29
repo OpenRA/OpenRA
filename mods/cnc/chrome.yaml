@@ -383,6 +383,9 @@ dropdown-decorations:
 		marker: 836, 17, 16, 16
 		marker-pressed: 836, 17, 16, 16
 		marker-disabled: 853, 17, 16, 16
+		options-marker: 870, 68, 16, 16
+		options-marker-disabled: 870, 85, 16, 16
+		options-marker-active: 870, 102, 16, 16
 
 dropdown-separators:
 	Inherits: ^Chrome
