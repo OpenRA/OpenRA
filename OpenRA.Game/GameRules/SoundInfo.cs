@@ -33,7 +33,7 @@ namespace OpenRA.GameRules
 		{
 			FieldLoader.Load(this, y);
 
-			VoicePools = Exts.Lazy(() => Voices.ToDictionary(a => a.Key, a => new SoundPool(1f, a.Value)));
+			VoicePools = Exts.Lazy(() => Voices.ToDictionary(a => a.Key, a => new SoundPool(1f, "", a.Value)));
 			NotificationsPools = Exts.Lazy(() => ParseSoundPool(y, "Notifications"));
 		}
 
@@ -48,8 +48,13 @@ namespace OpenRA.GameRules
 				if (volumeModifierNode != null)
 					volumeModifier = FieldLoader.GetValue<float>(volumeModifierNode.Key, volumeModifierNode.Value.Value);
 
+				var transcription = "";
+				var transcriptionNode = t.Value.Nodes.FirstOrDefault(x => x.Key == "Transcription");
+				if (transcriptionNode != null)
+					transcription = FieldLoader.GetValue<string>(transcriptionNode.Key, transcriptionNode.Value.Value);
+
 				var names = FieldLoader.GetValue<string[]>(t.Key, t.Value.Value);
-				var sp = new SoundPool(volumeModifier, names);
+				var sp = new SoundPool(volumeModifier, transcription, names);
 				ret.Add(t.Key, sp);
 			}
 
@@ -60,12 +65,14 @@ namespace OpenRA.GameRules
 	public class SoundPool
 	{
 		public readonly float VolumeModifier;
+		public readonly string Transcription;
 		readonly string[] clips;
 		readonly List<string> liveclips = new List<string>();
 
-		public SoundPool(float volumeModifier, params string[] clips)
+		public SoundPool(float volumeModifier, string transcription, params string[] clips)
 		{
 			VolumeModifier = volumeModifier;
+			Transcription = transcription;
 			this.clips = clips;
 		}
 

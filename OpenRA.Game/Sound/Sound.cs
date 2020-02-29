@@ -391,6 +391,9 @@ namespace OpenRA
 
 					currentSounds[id] = sound;
 				}
+
+				if (!string.IsNullOrEmpty(pool.Transcription))
+					TextNotificationsManager.AddTranscribedLine(pool.Transcription);
 			}
 
 			return true;
