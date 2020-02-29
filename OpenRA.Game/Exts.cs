@@ -80,7 +80,7 @@ namespace OpenRA
 
 		static int WindingDirectionTest(int2 v0, int2 v1, int2 p)
 		{
-			return (v1.X - v0.X) * (p.Y - v0.Y) - (p.X - v0.X) * (v1.Y - v0.Y);
+			return Math.Sign((v1.X - v0.X) * (p.Y - v0.Y) - (p.X - v0.X) * (v1.Y - v0.Y));
 		}
 
 		public static bool PolygonContains(this int2[] polygon, int2 p)
@@ -99,6 +99,16 @@ namespace OpenRA
 			}
 
 			return windingNumber != 0;
+		}
+
+		public static bool LinesIntersect(int2 a, int2 b, int2 c, int2 d)
+		{
+			// If line segments AB and CD intersect:
+			//  - the triangles ACD and BCD must have opposite sense (clockwise or anticlockwise)
+			//  - the triangles CAB and DAB must have opposite sense
+			// Segments intersect if the orientation (clockwise or anticlockwise) of the two points in each line segment are opposite with respect to the other
+			// Assumes that lines are not colinear
+			return WindingDirectionTest(c, d, a) != WindingDirectionTest(c, d, b) && WindingDirectionTest(a, b, c) != WindingDirectionTest(a, b, d);
 		}
 
 		public static bool HasModifier(this Modifiers k, Modifiers mod)

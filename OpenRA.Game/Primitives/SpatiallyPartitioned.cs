@@ -139,5 +139,7 @@ namespace OpenRA.Primitives
 		}
 
 		public IEnumerable<Rectangle> ItemBounds { get { return itemBounds.Values; } }
+
+		public IEnumerable<T> Items { get { return itemBounds.Keys; } }
 	}
 }

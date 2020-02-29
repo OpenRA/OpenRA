@@ -233,7 +233,7 @@ namespace OpenRA
 						yield return r;
 		}
 
-		public Rectangle MouseBounds(WorldRenderer wr)
+		public Polygon MouseBounds(WorldRenderer wr)
 		{
 			foreach (var mb in mouseBounds)
 			{
@@ -242,7 +242,7 @@ namespace OpenRA
 					return bounds;
 			}
 
-			return Rectangle.Empty;
+			return Polygon.Empty;
 		}
 
 		public void QueueActivity(bool queued, Activity nextActivity)
