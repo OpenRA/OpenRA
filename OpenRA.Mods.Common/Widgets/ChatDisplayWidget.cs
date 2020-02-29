@@ -11,6 +11,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Network;
 using OpenRA.Primitives;
 using OpenRA.Widgets;
 
@@ -29,6 +30,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		const int LogLength = 9;
 		List<ChatLine> recentLines = new List<ChatLine>();
+		List<int> lineExpirations = new List<int>();
 
 		public override Rectangle EventBounds { get { return Rectangle.Empty; } }
 
@@ -99,21 +101,37 @@ namespace OpenRA.Mods.Common.Widgets
 			Game.Renderer.DisableScissor();
 		}
 
-		public void AddLine(string name, Color nameColor, string text, Color textColor)
+		public void AddLine(ChatLine chatLine, bool isRepeated)
 		{
-			recentLines.Add(new ChatLine(name, nameColor, text, textColor, Game.LocalTick + RemoveTime));
+			if (isRepeated)
+				RemoveMostRecentLine();
+
+			recentLines.Add(chatLine);
+			lineExpirations.Add(Game.LocalTick + RemoveTime);
 
 			if (Notification != null)
 				Game.Sound.Play(SoundType.UI, Notification);
 
 			while (recentLines.Count > LogLength)
-				recentLines.RemoveAt(0);
+				RemoveLine();
+		}
+
+		public void RemoveMostRecentLine()
+		{
+			if (recentLines.Count == 0)
+				return;
+
+			recentLines.RemoveAt(recentLines.Count - 1);
+			lineExpirations.RemoveAt(lineExpirations.Count - 1);
 		}
 
 		public void RemoveLine()
 		{
-			if (recentLines.Count > 0)
-				recentLines.RemoveAt(0);
+			if (recentLines.Count == 0)
+				return;
+
+			recentLines.RemoveAt(0);
+			lineExpirations.RemoveAt(0);
 		}
 
 		public override void Tick()
@@ -122,25 +140,8 @@ namespace OpenRA.Mods.Common.Widgets
 				return;
 
 			// This takes advantage of the fact that recentLines is ordered by expiration, from sooner to later
-			while (recentLines.Count > 0 && Game.LocalTick >= recentLines[0].Expiration)
-				recentLines.RemoveAt(0);
-		}
-	}
-
-	class ChatLine
-	{
-		public readonly Color NameColor;
-		public readonly Color TextColor;
-		public readonly string Name, Text;
-		public readonly int Expiration;
-
-		public ChatLine(string name, Color nameColor, string text, Color textColor, int expiration)
-		{
-			Name = name;
-			Text = text;
-			Expiration = expiration;
-			NameColor = nameColor;
-			TextColor = textColor;
+			while (recentLines.Count > 0 && Game.LocalTick >= lineExpirations[0])
+				RemoveLine();
 		}
 	}
 }

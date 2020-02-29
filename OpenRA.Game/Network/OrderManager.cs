@@ -103,10 +103,10 @@ namespace OpenRA.Network
 				localOrders.Add(order);
 		}
 
-		public Action<string, Color, string, Color> AddChatLine = (n, nc, s, tc) => { };
-		void CacheChatLine(string name, Color nameColor, string text, Color textColor)
+		public Action<ChatLine> AddChatLine = (chatLine) => { };
+		void CacheChatLine(ChatLine chatLine)
 		{
-			chatCache.Add(new ChatLine(name, nameColor, text, textColor));
+			chatCache.Add(chatLine);
 		}
 
 		public void TickImmediate()
@@ -207,22 +207,6 @@ namespace OpenRA.Network
 		{
 			disposed = true;
 			Connection?.Dispose();
-		}
-	}
-
-	public class ChatLine
-	{
-		public readonly Color Color;
-		public readonly string Name;
-		public readonly string Text;
-		public readonly Color TextColor;
-
-		public ChatLine(string name, Color nameColor, string text, Color textColor)
-		{
-			Color = nameColor;
-			Name = name;
-			Text = text;
-			TextColor = textColor;
 		}
 	}
 }

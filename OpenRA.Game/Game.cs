@@ -852,14 +852,34 @@ namespace OpenRA
 			AddSystemLine("Battlefield Control", text);
 		}
 
-		public static void AddSystemLine(string name, string text)
+		public static void AddSystemLine(string prefix, string text)
 		{
-			OrderManager.AddChatLine(name, systemMessageColor, text, systemMessageColor);
+			AddChatLine(prefix, systemMessageColor, text, systemMessageColor, ChatPool.System);
 		}
 
 		public static void AddChatLine(string name, Color nameColor, string text)
 		{
-			OrderManager.AddChatLine(name, nameColor, text, chatMessageColor);
+			AddChatLine(name, nameColor, text, chatMessageColor, ChatPool.Chat);
+		}
+
+		public static void AddChatLine(string name, Color nameColor, string text, Color textColor,  ChatPool pool)
+		{
+			OrderManager.AddChatLine(new ChatLine(name, nameColor, text, textColor, pool));
+		}
+
+		public static void AddTranscribedChatLine(string text)
+		{
+			AddChatLine("Battlefield Control", systemMessageColor, text, systemMessageColor, ChatPool.Transcriptions);
+		}
+
+		public static void AddFeedbackChatLine(string text)
+		{
+			AddChatLine("Battlefield Control", systemMessageColor, text, systemMessageColor, ChatPool.Feedback);
+		}
+
+		public static void AddMissionChatLine(string name, Color nameColor, string text)
+		{
+			AddChatLine(name, nameColor, text, chatMessageColor, ChatPool.Mission);
 		}
 
 		public static void Debug(string s, params object[] args)

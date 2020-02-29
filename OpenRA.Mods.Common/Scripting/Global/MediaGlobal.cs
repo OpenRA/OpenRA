@@ -194,7 +194,7 @@ namespace OpenRA.Mods.Common.Scripting
 				return;
 
 			var c = color.HasValue ? color.Value : Color.White;
-			Game.AddChatLine(prefix, c, text);
+			Game.AddMissionChatLine(prefix, c, text);
 		}
 
 		[Desc("Display a system message to the player. If 'prefix' is nil the default system prefix is used.")]

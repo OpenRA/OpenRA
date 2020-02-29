@@ -482,10 +482,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				panel = PanelType.Players;
 		}
 
-		void AddChatLine(string name, Color nameColor, string text, Color textColor)
+		void AddChatLine(ChatLine chatLine)
 		{
 			var template = (ContainerWidget)chatTemplate.Clone();
-			LobbyUtils.SetupChatLine(template, DateTime.Now, name, nameColor, text, textColor);
+			LobbyUtils.SetupChatLine(template, DateTime.Now, chatLine);
 
 			var scrolledToBottom = lobbyChatPanel.ScrolledToBottom;
 			lobbyChatPanel.AddChild(template);
