@@ -314,19 +314,26 @@ ScrollPanel@NEWS_PANEL:
 
 ScrollPanel@CHAT_POOL_FILTER_PANEL:
 	Width: 160
-	Height: 105
+	Height: 130
 	Background: panel-black
 	Children:
-		Checkbox@FEEDBACK:
+		Checkbox@TRANSCRIPTIONS:
 			X: 5
 			Y: 5
+			Width: PARENT_RIGHT - 29
+			Height: 20
+			Text: Transcriptions
+			Font: Regular
+		Checkbox@FEEDBACK:
+			X: 5
+			Y: 30
 			Width: PARENT_RIGHT - 29
 			Height: 20
 			Text: UI Feedback
 			Font: Regular
 		Checkbox@CHAT:
 			X: 5
-			Y: 30
+			Y: 55
 			Width: PARENT_RIGHT - 29
 			Height: 20
 			Text: Chat
@@ -334,7 +341,7 @@ ScrollPanel@CHAT_POOL_FILTER_PANEL:
 			Font: Regular
 		Checkbox@MISSION:
 			X: 5
-			Y: 55
+			Y: 80
 			Width: PARENT_RIGHT - 29
 			Height: 20
 			Text: Mission
@@ -342,7 +349,7 @@ ScrollPanel@CHAT_POOL_FILTER_PANEL:
 			Font: Regular
 		Checkbox@SYSTEM:
 			X: 5
-			Y: 80
+			Y: 105
 			Width: PARENT_RIGHT - 29
 			Height: 20
 			Text: System

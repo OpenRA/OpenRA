@@ -4,49 +4,76 @@ Speech:
 		nod: nod
 	Notifications:
 		AirstrikeReady: airredy1
+			Transcription: Airstrike ready.
 		BaseAttack: baseatk1
+			Transcription: Our base is under attack.
 		Building: bldging1
 		BuildingCannotPlaceAudio: deploy1
+			Transcription: Cannot deploy here.
 		BuildingCaptured: capt1
+			Transcription: Building captured.
 		BuildingInProgress: bldg1
+			Transcription: Unable to comply. Building in progress.
 		BuildingLost: strclost
+			Transcription: Structure lost.
 		Cancelled: cancel1
 		CivilianBuildingCaptured: civcapt1
+			Transcription: Civilian building captured.
 		CivilianKilled: civdead1
+			Transcription: Civilian killed.
 		ConstructionComplete: constru1
+			Transcription: Construction complete.
 		EnemyUnitsApproaching: enmyunit
+			Transcription: Enemy approaching.
 		EnemyStructureDestroyed: estrucx
+			Transcription: Enemy structure destroyed.
 		EnemyPlanesApproaching: enemya
+			Transcription: Enemy planes approaching.
 		HarvesterAttack:
 		InsufficientPower: nopower1
+			Transcription: Insufficient power.
 		IonCannonCharging: ionchrg1
+			Transcription: Ion cannon charging.
 		IonCannonReady: ionredy1
+			Transcription: Ion cannon ready.
 		Leave: batlcon1
+			Transcription: Battle control terminated.
 		Lose: fail1
+			Transcription: Your mission is a failure.
 		LowPower: lopower1
+			Transcription: Low power.
 		MissionAccomplished: accom1
 		MissionFailed: fail1
 		NewOptions: newopt1
+			Transcription: New construction options.
 		NoBuild: nobuild1
+			Transcription: Unable to build more.
 		NodStructureDestroyed: nstruc1
 		NotReady: noredy1
 		NuclearWarheadApproaching: nuke1
+			Transcription: Nuclear warhead approaching.
 		NuclearWeaponAvailable: nukavail
+			Transcription: Nuclear weapon available.
 		NuclearWeaponLaunched: nuklnch1
 		OnHold: onhold1
 		PrimaryBuildingSelected: pribldg1
 		Reinforce: reinfor1
+			Transcription: Reinforcements have arrived.
 		Repairing: repair1
 		SelectTarget: select1
 		SilosNeeded: silos1
+			Transcription: Silos needed.
 		StartGame:
 		GameLoaded:
 		GameSaved:
 		Training: bldging1
 		UnitDestroyed: dead1
 		UnitLost: unitlost
+			Transcription: Unit lost.
 		UnitReady: unitredy
+			Transcription: Unit ready.
 		Win: accom1
+			Transcription: Mission accomplished.
 	DisablePrefixes: AirstrikeReady, BaseAttack, Building, BuildingCannotPlaceAudio, BuildingInProgress, BuildingLost, Cancelled, CivilianBuildingCaptured, CivilianKilled, ConstructionComplete, EnemyUnitsApproaching, EnemyStructureDestroyed, EnemyPlanesApproaching, HarvesterAttack, InsufficientPower, IonCannonCharging, IonCannonReady, Leave, Lose, LowPower, MissionAccomplished, MissionFailed, NewOptions, NoBuild, NodStructureDestroyed, NotReady, NuclearWarheadApproaching, NuclearWeaponAvailable, NuclearWeaponLaunched, OnHold, PrimaryBuildingSelected, Reinforce, Repairing, SelectTarget, SilosNeeded, Training, UnitLost, UnitReady, Win
 
 Sounds:
