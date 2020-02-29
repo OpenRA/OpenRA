@@ -52,10 +52,10 @@ namespace OpenRA.Mods.Common.Traits
 			return autoBounds.Select(s => s.AutoMouseoverBounds(self, wr)).FirstOrDefault(r => !r.IsEmpty);
 		}
 
-		Rectangle Bounds(Actor self, WorldRenderer wr, int[] bounds)
+		Polygon Bounds(Actor self, WorldRenderer wr, int[] bounds)
 		{
 			if (bounds == null)
-				return AutoBounds(self, wr);
+				return new Polygon(AutoBounds(self, wr));
 
 			var size = new int2(bounds[0], bounds[1]);
 
@@ -64,17 +64,17 @@ namespace OpenRA.Mods.Common.Traits
 				offset += new int2(bounds[2], bounds[3]);
 
 			var xy = wr.ScreenPxPosition(self.CenterPosition) + offset;
-			return new Rectangle(xy.X, xy.Y, size.X, size.Y);
+			return new Polygon(new Rectangle(xy.X, xy.Y, size.X, size.Y));
 		}
 
-		Rectangle IMouseBounds.MouseoverBounds(Actor self, WorldRenderer wr)
+		Polygon IMouseBounds.MouseoverBounds(Actor self, WorldRenderer wr)
 		{
 			return Bounds(self, wr, info.Bounds);
 		}
 
 		public Rectangle DecorationBounds(Actor self, WorldRenderer wr)
 		{
-			return Bounds(self, wr, info.DecorationBounds ?? info.Bounds);
+			return Bounds(self, wr, info.DecorationBounds ?? info.Bounds).BoundingRect;
 		}
 	}
 }

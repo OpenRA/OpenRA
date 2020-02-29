@@ -145,7 +145,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			IRenderable[] renderables = null;
 			Rectangle[] bounds = null;
-			Rectangle mouseBounds = Rectangle.Empty;
+			var mouseBounds = Polygon.Empty;
 			for (var playerIndex = 0; playerIndex < frozenStates.Count; playerIndex++)
 			{
 				var frozen = frozenStates[playerIndex].FrozenActor;

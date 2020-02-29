@@ -68,8 +68,7 @@ namespace OpenRA.Traits
 		public IRenderable[] Renderables = NoRenderables;
 		public Rectangle[] ScreenBounds = NoBounds;
 
-		// TODO: Replace this with an int2[] polygon
-		public Rectangle MouseBounds = Rectangle.Empty;
+		public Polygon MouseBounds = Polygon.Empty;
 
 		static readonly IRenderable[] NoRenderables = new IRenderable[0];
 		static readonly Rectangle[] NoBounds = new Rectangle[0];

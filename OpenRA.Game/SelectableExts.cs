@@ -73,14 +73,18 @@ namespace OpenRA.Traits
 			return actors.MaxByOrDefault(a => CalculateActorSelectionPriority(a.Info, a.MouseBounds, selectionPixel, modifiers));
 		}
 
-		static long CalculateActorSelectionPriority(ActorInfo info, Rectangle bounds, int2 selectionPixel, Modifiers modifiers)
+		static long CalculateActorSelectionPriority(ActorInfo info, Polygon bounds, int2 selectionPixel, Modifiers modifiers)
 		{
 			if (bounds.IsEmpty)
 				return info.SelectionPriority(modifiers);
 
+			// Assume that the center of the polygon is the same as the center of the bounding box
+			// This isn't necessarily true for arbitrary polygons, but is fine for the hexagonal and diamond
+			// shapes that are currently implemented
+			var br = bounds.BoundingRect;
 			var centerPixel = new int2(
-				bounds.Left + bounds.Size.Width / 2,
-				bounds.Top + bounds.Size.Height / 2);
+				br.Left + br.Size.Width / 2,
+				br.Top + br.Size.Height / 2);
 
 			var pixelDistance = (centerPixel - selectionPixel).Length;
 			return info.SelectionPriority(modifiers) - (long)pixelDistance << 16;
