@@ -651,28 +651,28 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			HideChildWidget(parent, "STATUS_IMAGE");
 		}
 
-		public static void SetupChatLine(ContainerWidget template, DateTime time, string name, Color nameColor, string text, Color textColor)
+		public static void SetupChatLine(ContainerWidget template, DateTime time, TextNotification chatLine)
 		{
 			var nameLabel = template.Get<LabelWidget>("NAME");
 			var timeLabel = template.Get<LabelWidget>("TIME");
 			var textLabel = template.Get<LabelWidget>("TEXT");
 
-			var nameText = name + ":";
+			var nameText = chatLine.Prefix + ":";
 			var font = Game.Renderer.Fonts[nameLabel.Font];
 			var nameSize = font.Measure(nameText);
 
 			timeLabel.GetText = () => $"{time.Hour:D2}:{time.Minute:D2}";
 
-			nameLabel.GetColor = () => nameColor;
+			nameLabel.GetColor = () => chatLine.PrefixColor;
 			nameLabel.GetText = () => nameText;
 			nameLabel.Bounds.Width = nameSize.X;
 
-			textLabel.GetColor = () => textColor;
+			textLabel.GetColor = () => chatLine.TextColor;
 			textLabel.Bounds.X += nameSize.X;
 			textLabel.Bounds.Width -= nameSize.X;
 
 			// Hack around our hacky wordwrap behavior: need to resize the widget to fit the text
-			text = WidgetUtils.WrapText(text, textLabel.Bounds.Width, font);
+			var text = WidgetUtils.WrapText(chatLine.Text, textLabel.Bounds.Width, font);
 			textLabel.GetText = () => text;
 			var dh = font.Measure(text).Y - textLabel.Bounds.Height;
 			if (dh > 0)

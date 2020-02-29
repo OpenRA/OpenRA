@@ -28,7 +28,8 @@ namespace OpenRA.Mods.Common.Widgets
 		public readonly int Space = 4;
 
 		const int LogLength = 9;
-		List<ChatLine> recentLines = new List<ChatLine>();
+		List<TextNotification> recentLines = new List<TextNotification>();
+		List<int> lineExpirations = new List<int>();
 
 		public override Rectangle EventBounds => Rectangle.Empty;
 
@@ -47,9 +48,9 @@ namespace OpenRA.Mods.Common.Widgets
 				var inset = 0;
 				string name = null;
 
-				if (!string.IsNullOrEmpty(line.Name))
+				if (!string.IsNullOrEmpty(line.Prefix))
 				{
-					name = line.Name + ":";
+					name = line.Prefix + ":";
 					inset = font.Measure(name).X + 5;
 				}
 
@@ -76,12 +77,12 @@ namespace OpenRA.Mods.Common.Widgets
 
 					if (UseContrast)
 						font.DrawTextWithContrast(name, namePos,
-							line.NameColor, BackgroundColorDark, BackgroundColorLight, 1);
+							line.PrefixColor, BackgroundColorDark, BackgroundColorLight, 1);
 					else if (UseShadow)
 						font.DrawTextWithShadow(name, namePos,
-							line.NameColor, BackgroundColorDark, BackgroundColorLight, 1);
+							line.PrefixColor, BackgroundColorDark, BackgroundColorLight, 1);
 					else
-						font.DrawText(name, namePos, line.NameColor);
+						font.DrawText(name, namePos, line.PrefixColor);
 				}
 
 				if (UseContrast)
@@ -99,21 +100,34 @@ namespace OpenRA.Mods.Common.Widgets
 			Game.Renderer.DisableScissor();
 		}
 
-		public void AddLine(string name, Color nameColor, string text, Color textColor)
+		public void AddLine(TextNotification chatLine)
 		{
-			recentLines.Add(new ChatLine(name, nameColor, text, textColor, Game.LocalTick + RemoveTime));
+			recentLines.Add(chatLine);
+			lineExpirations.Add(Game.LocalTick + RemoveTime);
 
 			if (Notification != null)
 				Game.Sound.Play(SoundType.UI, Notification);
 
 			while (recentLines.Count > LogLength)
-				recentLines.RemoveAt(0);
+				RemoveLine();
+		}
+
+		public void RemoveMostRecentLine()
+		{
+			if (recentLines.Count == 0)
+				return;
+
+			recentLines.RemoveAt(recentLines.Count - 1);
+			lineExpirations.RemoveAt(lineExpirations.Count - 1);
 		}
 
 		public void RemoveLine()
 		{
-			if (recentLines.Count > 0)
-				recentLines.RemoveAt(0);
+			if (recentLines.Count == 0)
+				return;
+
+			recentLines.RemoveAt(0);
+			lineExpirations.RemoveAt(0);
 		}
 
 		public override void Tick()
@@ -122,25 +136,8 @@ namespace OpenRA.Mods.Common.Widgets
 				return;
 
 			// This takes advantage of the fact that recentLines is ordered by expiration, from sooner to later
-			while (recentLines.Count > 0 && Game.LocalTick >= recentLines[0].Expiration)
-				recentLines.RemoveAt(0);
-		}
-	}
-
-	class ChatLine
-	{
-		public readonly Color NameColor;
-		public readonly Color TextColor;
-		public readonly string Name, Text;
-		public readonly int Expiration;
-
-		public ChatLine(string name, Color nameColor, string text, Color textColor, int expiration)
-		{
-			Name = name;
-			Text = text;
-			Expiration = expiration;
-			NameColor = nameColor;
-			TextColor = textColor;
+			while (recentLines.Count > 0 && Game.LocalTick >= lineExpirations[0])
+				RemoveLine();
 		}
 	}
 }
