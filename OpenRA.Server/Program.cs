@@ -30,6 +30,7 @@ namespace OpenRA.Server
 			Log.AddChannel("perf", "dedicated-perf.log", true);
 			Log.AddChannel("server", "dedicated-server.log", true);
 			Log.AddChannel("nat", "dedicated-nat.log", true);
+			Log.AddChannel("geoip", "dedicated-geoip.log", true);
 
 			// Special case handling of Game.Mod argument: if it matches a real filesystem path
 			// then we use this to override the mod search path, and replace it with the mod id
