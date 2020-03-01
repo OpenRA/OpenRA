@@ -42,7 +42,6 @@ namespace OpenRA.Mods.Common.Traits
 		Activity requestedTargetPresetForActivity;
 		bool opportunityForceAttack;
 		bool opportunityTargetIsPersistentTarget;
-		bool scanningForOpportunityTarget;
 
 		public void SetRequestedTarget(Actor self, Target target, bool isForceAttack = false)
 		{
@@ -138,10 +137,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (!IsAiming && Info.OpportunityFire && autoTarget != null &&
 				    !autoTarget.IsTraitDisabled && autoTarget.Stance >= UnitStance.Defend)
 				{
-					scanningForOpportunityTarget = true;
 					OpportunityTarget = autoTarget.ScanForTarget(self, false, false);
-					scanningForOpportunityTarget = false;
-
 					opportunityForceAttack = false;
 					opportunityTargetIsPersistentTarget = false;
 
@@ -186,13 +182,8 @@ namespace OpenRA.Mods.Common.Traits
 			opportunityTargetIsPersistentTarget = false;
 		}
 
-		bool IDisableAutoTarget.DisableAutoTarget(Actor self, bool allowMove)
+		bool IDisableAutoTarget.DisableAutoTarget(Actor self)
 		{
-			// HACK: Disable standard AutoTarget scanning, which we want to be
-			// controlled by the opportunity target logic in this trait
-			if (!allowMove && !scanningForOpportunityTarget)
-				return true;
-
 			return RequestedTarget.Type != TargetType.Invalid ||
 				(opportunityTargetIsPersistentTarget && OpportunityTarget.Type != TargetType.Invalid);
 		}
