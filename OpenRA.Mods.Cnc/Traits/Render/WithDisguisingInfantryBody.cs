@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Linq;
 using OpenRA.Mods.Common.Traits.Render;
 using OpenRA.Traits;
 
@@ -21,39 +22,53 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 
 	class WithDisguisingInfantryBody : WithInfantryBody
 	{
-		readonly WithDisguisingInfantryBodyInfo info;
 		readonly Disguise disguise;
 		readonly RenderSprites rs;
 		ActorInfo disguiseActor;
 		Player disguisePlayer;
+		WithInfantryBodyInfo disguiseInfantryBody;
 		string disguiseImage;
 
 		public WithDisguisingInfantryBody(ActorInitializer init, WithDisguisingInfantryBodyInfo info)
 			: base(init, info)
 		{
-			this.info = info;
 			rs = init.Self.Trait<RenderSprites>();
 			disguise = init.Self.Trait<Disguise>();
+		}
+
+		protected override WithInfantryBodyInfo GetDisplayInfo()
+		{
+			return disguiseInfantryBody ?? Info;
 		}
 
 		protected override void Tick(Actor self)
 		{
 			if (disguise.AsActor != disguiseActor || disguise.AsPlayer != disguisePlayer)
 			{
+				// Force actor back to the stand state to avoid mismatched sequences
+				PlayStandAnimation(self);
+
 				disguiseActor = disguise.AsActor;
 				disguisePlayer = disguise.AsPlayer;
 				disguiseImage = null;
+				disguiseInfantryBody = null;
 
 				if (disguisePlayer != null)
 				{
 					var renderSprites = disguiseActor.TraitInfoOrDefault<RenderSpritesInfo>();
-					if (renderSprites != null)
+					var infantryBody = disguiseActor.TraitInfos<WithInfantryBodyInfo>()
+						.FirstOrDefault(t => t.EnabledByDefault);
+					if (renderSprites != null && infantryBody != null)
+					{
 						disguiseImage = renderSprites.GetImage(disguiseActor, self.World.Map.Rules.Sequences, disguisePlayer.InternalName);
+						disguiseInfantryBody = infantryBody;
+					}
 				}
 
-				var sequence = DefaultAnimation.GetRandomExistingSequence(info.StandSequences, Game.CosmeticRandom);
+				var sequence = DefaultAnimation.GetRandomExistingSequence(GetDisplayInfo().StandSequences, Game.CosmeticRandom);
 				if (sequence != null)
 					DefaultAnimation.ChangeImage(disguiseImage ?? rs.GetImage(self), sequence);
+
 				rs.UpdatePalette();
 			}
 
