@@ -59,7 +59,9 @@ namespace OpenRA
 
 		public ExternalMods()
 		{
-			sheetBuilder = new SheetBuilder(SheetType.BGRA, CreateSheet);
+			// Don't try to load mod icons if we don't have a texture to put them in
+			if (Game.Renderer != null)
+				sheetBuilder = new SheetBuilder(SheetType.BGRA, CreateSheet);
 
 			// Several types of support directory types are available, depending on
 			// how the player has installed and launched the game.
@@ -94,20 +96,24 @@ namespace OpenRA
 		void LoadMod(MiniYaml yaml, string path = null, bool forceRegistration = false)
 		{
 			var mod = FieldLoader.Load<ExternalMod>(yaml);
-			var iconNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Icon");
-			if (iconNode != null && !string.IsNullOrEmpty(iconNode.Value.Value))
-				using (var stream = new MemoryStream(Convert.FromBase64String(iconNode.Value.Value)))
-					mod.Icon = sheetBuilder.Add(new Png(stream));
 
-			var icon2xNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Icon2x");
-			if (icon2xNode != null && !string.IsNullOrEmpty(icon2xNode.Value.Value))
-				using (var stream = new MemoryStream(Convert.FromBase64String(icon2xNode.Value.Value)))
-					mod.Icon2x = sheetBuilder.Add(new Png(stream), 1f / 2);
+			if (sheetBuilder != null)
+			{
+				var iconNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Icon");
+				if (iconNode != null && !string.IsNullOrEmpty(iconNode.Value.Value))
+					using (var stream = new MemoryStream(Convert.FromBase64String(iconNode.Value.Value)))
+						mod.Icon = sheetBuilder.Add(new Png(stream));
 
-			var icon3xNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Icon3x");
-			if (icon3xNode != null && !string.IsNullOrEmpty(icon3xNode.Value.Value))
-				using (var stream = new MemoryStream(Convert.FromBase64String(icon3xNode.Value.Value)))
-					mod.Icon3x = sheetBuilder.Add(new Png(stream), 1f / 3);
+				var icon2xNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Icon2x");
+				if (icon2xNode != null && !string.IsNullOrEmpty(icon2xNode.Value.Value))
+					using (var stream = new MemoryStream(Convert.FromBase64String(icon2xNode.Value.Value)))
+						mod.Icon2x = sheetBuilder.Add(new Png(stream), 1f / 2);
+
+				var icon3xNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Icon3x");
+				if (icon3xNode != null && !string.IsNullOrEmpty(icon3xNode.Value.Value))
+					using (var stream = new MemoryStream(Convert.FromBase64String(icon3xNode.Value.Value)))
+						mod.Icon3x = sheetBuilder.Add(new Png(stream), 1f / 3);
+			}
 
 			// Avoid possibly overwriting a valid mod with an obviously bogus one
 			var key = ExternalMod.MakeKey(mod);
