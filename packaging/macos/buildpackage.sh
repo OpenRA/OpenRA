@@ -13,7 +13,7 @@
 #   MACOS_DEVELOPER_PASSWORD: App-specific password for the developer account
 #
 
-LAUNCHER_TAG="osx-launcher-20200316"
+LAUNCHER_TAG="osx-launcher-20200328"
 
 if [ $# -ne "2" ]; then
 	echo "Usage: $(basename "$0") tag outputdir"
@@ -92,10 +92,10 @@ echo "Building core files"
 
 pushd "${SRCDIR}" > /dev/null || exit 1
 make clean
-make osx-dependencies
-make core
+make core TARGETPLATFORM=osx-x64
 make version VERSION="${TAG}"
 make install-core gameinstalldir="/Contents/Resources/" DESTDIR="${BUILTDIR}/OpenRA.app"
+make install-dependencies TARGETPLATFORM=osx-x64 gameinstalldir="/Contents/Resources/"  DESTDIR="${BUILTDIR}/OpenRA.app"
 popd > /dev/null || exit 1
 
 populate_bundle "OpenRA - Red Alert.app" "ra" "Red Alert"

@@ -3,15 +3,13 @@
 # to compile, run:
 #   make [DEBUG=true]
 #
-# to check unit tests (requires NUnit version >= 2.6), run:
-#  make nunit [NUNIT_CONSOLE=<path-to/nunit[2]-console>] [NUNIT_LIBS_PATH=<path-to-libs-dir>] [NUNIT_LIBS=<nunit-libs>]
-#      Use NUNIT_CONSOLE if nunit[3|2]-console was not downloaded by `make dependencies` nor is it in bin search paths
-#      Use NUNIT_LIBS_PATH if NUnit libs are not in search paths. Include trailing /
-#      Use NUNIT_LIBS if NUnit libs have different names (such as including a prefix or suffix)
+# to compile using system libraries for native dependencies, run:
+#   make [DEBUG=true] TARGETPLATFORM=unix-generic
+#
 # to check the official mods for erroneous yaml files, run:
 #   make test
 #
-# to check the official mod dlls for StyleCop violations, run:
+# to check the engine and official mod dlls for code style violations, run:
 #   make check
 #
 # to install, run:
@@ -22,6 +20,7 @@
 #
 # to install the engine and common mod files (omitting the default mods):
 #   make install-engine
+#   make install-dependencies
 #   make install-common-mod-files
 #
 # to uninstall, run:
@@ -40,11 +39,11 @@
 WHITELISTED_OPENRA_ASSEMBLIES = OpenRA.Game.exe OpenRA.Utility.exe OpenRA.Platforms.Default.dll OpenRA.Mods.Common.dll OpenRA.Mods.Cnc.dll OpenRA.Mods.D2k.dll OpenRA.Game.dll
 
 # These are explicitly shipped alongside our core files by the packaging script
-WHITELISTED_THIRDPARTY_ASSEMBLIES = ICSharpCode.SharpZipLib.dll FuzzyLogicLibrary.dll Eluant.dll rix0rrr.BeaconLib.dll Open.Nat.dll SDL2-CS.dll OpenAL-CS.dll
+WHITELISTED_THIRDPARTY_ASSEMBLIES = ICSharpCode.SharpZipLib.dll FuzzyLogicLibrary.dll Eluant.dll BeaconLib.dll Open.Nat.dll SDL2-CS.dll OpenAL-CS.Core.dll 
 
 # These are shipped in our custom minimal mono runtime and also available in the full system-installed .NET/mono stack
 # This list *must* be kept in sync with the files packaged by the AppImageSupport and OpenRALauncherOSX repositories
-WHITELISTED_CORE_ASSEMBLIES = mscorlib.dll System.dll System.Configuration.dll System.Core.dll System.Numerics.dll System.Security.dll System.Xml.dll Mono.Security.dll
+WHITELISTED_CORE_ASSEMBLIES = mscorlib.dll System.dll System.Configuration.dll System.Core.dll System.Numerics.dll System.Security.dll System.Xml.dll Mono.Security.dll netstandard.dll
 
 NUNIT_LIBS_PATH :=
 NUNIT_LIBS  := $(NUNIT_LIBS_PATH)nunit.framework.dll
@@ -81,16 +80,23 @@ MSBUILD = msbuild -verbosity:m -nologo
 # Enable 32 bit builds while generating the windows installer
 WIN32 = false
 
+# dependencies
+ifndef TARGETPLATFORM
+UNAME_S := $(shell uname -s)
+UNAME_M := $(shell uname -m)
+ifeq ($(UNAME_S),Darwin)
+TARGETPLATFORM = osx-x64
+else
+ifeq ($(UNAME_M),x86_64)
+TARGETPLATFORM = linux-x64
+else
+TARGETPLATFORM = unix-generic
+endif
+endif
+endif
+
 # program targets
 VERSION     = $(shell git name-rev --name-only --tags --no-undefined HEAD 2>/dev/null || echo git-`git rev-parse --short HEAD`)
-
-# dependencies
-UNAME_S := $(shell uname -s)
-ifeq ($(UNAME_S),Darwin)
-os-dependencies = osx-dependencies
-else
-os-dependencies = linux-dependencies
-endif
 
 check-scripts:
 	@echo
@@ -98,7 +104,7 @@ check-scripts:
 	@luac -p $(shell find mods/*/maps/* -iname '*.lua')
 	@luac -p $(shell find lua/* -iname '*.lua')
 
-check: dependencies
+check:
 	@echo
 	@echo "Compiling in debug mode..."
 	@$(MSBUILD) -t:build -p:Configuration=Debug
@@ -111,26 +117,6 @@ check: dependencies
 	@echo
 	@echo "Checking for incorrect conditional trait interface overrides..."
 	@mono --debug OpenRA.Utility.exe all --check-conditional-trait-interface-overrides
-
-
-NUNIT_CONSOLE := $(shell test -f thirdparty/download/nunit3-console.exe && echo mono thirdparty/download/nunit3-console.exe || \
-	which nunit3-console 2>/dev/null || which nunit2-console 2>/dev/null || which nunit-console 2>/dev/null)
-nunit: core
-	@echo
-	@echo "Checking unit tests..."
-	@if [ "$(NUNIT_CONSOLE)" = "" ] ; then \
-		echo 'nunit[3|2]-console not found!'; \
-		echo 'Was "make dependencies" called or is NUnit installed?'>&2; \
-		echo 'See "make help".'; \
-		exit 1; \
-	fi
-	@if $(NUNIT_CONSOLE) --help | head -n 1 | grep -E "NUnit version (1|2\.[0-5])";then \
-		echo 'NUnit version >= 2.6 required'>&2; \
-		echo 'Try "make dependencies" first to use NUnit from NuGet.'>&2; \
-		echo 'See "make help".'; \
-		exit 1; \
-	fi
-	@$(NUNIT_CONSOLE) --noresult OpenRA.Test.nunit
 
 test: core
 	@echo
@@ -148,52 +134,21 @@ test: core
 
 ########################## MAKE/INSTALL RULES ##########################
 #
-all: dependencies core
+all: core
 
 core:
-	@command -v $(firstword $(MSBUILD)) >/dev/null || (echo "OpenRA requires the '$(MSBUILD)' tool provided by Mono >= 5.4."; exit 1)
-ifeq ($(WIN32), $(filter $(WIN32),true yes y on 1))
-	@$(MSBUILD) -t:build -p:Configuration="Release-x86"
-else
-	@$(MSBUILD) -t:build -p:Configuration=Release
+	@command -v $(firstword $(MSBUILD)) >/dev/null || (echo "OpenRA requires the '$(MSBUILD)' tool provided by Mono >= 5.18."; exit 1)
+	@$(MSBUILD) -t:Build -restore -p:Configuration=Release -p:TargetPlatform=$(TARGETPLATFORM)
+ifeq ($(TARGETPLATFORM), unix-generic)
+	@./configure-system-libraries.sh
 endif
 	@./fetch-geoip.sh
 
 clean:
-	@ $(MSBUILD) -t:clean
 	@-$(RM_F) *.config IP2LOCATION-LITE-DB1.IPV6.BIN.ZIP
-	@-$(RM_F) *.exe *.dll *.dylib ./OpenRA*/*.dll *.pdb mods/**/*.dll mods/**/*.pdb *.resources
+	@-$(RM_F) *.exe *.dll *.dll.config *.so *.dylib ./OpenRA*/*.dll *.pdb mods/**/*.dll mods/**/*.pdb *.resources
 	@-$(RM_RF) ./*/bin ./*/obj
-	@-$(RM_RF) ./thirdparty/download
-
-distclean: clean
-
-cli-dependencies:
-	@./thirdparty/fetch-thirdparty-deps.sh
-	@ $(CP_R) thirdparty/download/*.dll .
-	@ $(CP_R) thirdparty/download/*.dll.config .
-	@ test -f OpenRA.Game/obj/project.assets.json || $(MSBUILD) -t:restore
-
-linux-dependencies: cli-dependencies linux-native-dependencies
-
-linux-native-dependencies:
-	@./thirdparty/configure-native-deps.sh
-
-windows-dependencies: cli-dependencies
-ifeq ($(WIN32), $(filter $(WIN32),true yes y on 1))
-	@./thirdparty/fetch-thirdparty-deps-windows.sh x86
-else
-	@./thirdparty/fetch-thirdparty-deps-windows.sh x64
-endif
-
-osx-dependencies: cli-dependencies
-	@./thirdparty/fetch-thirdparty-deps-osx.sh
-	@ $(CP_R) thirdparty/download/osx/*.dylib .
-	@ $(CP_R) thirdparty/download/osx/*.dll.config .
-
-dependencies: $(os-dependencies)
-
-all-dependencies: cli-dependencies windows-dependencies osx-dependencies
+	@ $(MSBUILD) -t:clean
 
 version: VERSION mods/ra/mod.yaml mods/cnc/mod.yaml mods/d2k/mod.yaml mods/ts/mod.yaml mods/modcontent/mod.yaml mods/all/mod.yaml
 	@echo "$(VERSION)" > VERSION
@@ -203,9 +158,32 @@ version: VERSION mods/ra/mod.yaml mods/cnc/mod.yaml mods/d2k/mod.yaml mods/ts/mo
 		rm $${i}.tmp; \
 	done
 
-install: dependencies core install-core
+install: core install-core
 
 install-linux-shortcuts: install-linux-scripts install-linux-icons install-linux-desktop
+
+install-dependencies:
+ifeq ($(TARGETPLATFORM), $(filter $(TARGETPLATFORM),win-x86 win-x64))
+	@-echo "Installing OpenRA dependencies to $(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) soft_oal.dll "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) SDL2.dll "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) freetype6.dll "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) lua51.dll "$(DATA_INSTALL_DIR)"
+endif
+ifeq ($(TARGETPLATFORM), linux-x64)
+	@-echo "Installing OpenRA dependencies to $(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) soft_oal.so "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) SDL2.so "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) freetype6.so "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) lua51.so "$(DATA_INSTALL_DIR)"
+endif
+ifeq ($(TARGETPLATFORM), osx-x64)
+	@-echo "Installing OpenRA dependencies to $(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) soft_oal.dylib "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) SDL2.dylib "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) freetype6.dylib "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) lua51.dylib "$(DATA_INSTALL_DIR)"
+endif
 
 install-engine:
 	@-echo "Installing OpenRA engine to $(DATA_INSTALL_DIR)"
@@ -215,7 +193,9 @@ install-engine:
 	@$(INSTALL_PROGRAM) OpenRA.Utility.exe "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) OpenRA.Platforms.Default.dll "$(DATA_INSTALL_DIR)"
 
+ifneq ($(TARGETPLATFORM), $(filter $(TARGETPLATFORM),win-x86 win-x64))
 	@$(INSTALL_DATA) OpenRA.Platforms.Default.dll.config "$(DATA_INSTALL_DIR)"
+endif
 	@$(INSTALL_DATA) VERSION "$(DATA_INSTALL_DIR)/VERSION"
 	@$(INSTALL_DATA) AUTHORS "$(DATA_INSTALL_DIR)/AUTHORS"
 	@$(INSTALL_DATA) COPYING "$(DATA_INSTALL_DIR)/COPYING"
@@ -229,7 +209,7 @@ install-engine:
 	@$(INSTALL_PROGRAM) ICSharpCode.SharpZipLib.dll "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) FuzzyLogicLibrary.dll "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) Open.Nat.dll "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) rix0rrr.BeaconLib.dll "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) BeaconLib.dll "$(DATA_INSTALL_DIR)"
 
 install-common-mod-files:
 	@-echo "Installing OpenRA common mod files to $(DATA_INSTALL_DIR)"
@@ -354,15 +334,15 @@ uninstall:
 
 help:
 	@echo 'to compile, run:'
-	@echo '  make [DEBUG=false]'
+	@echo '  make [DEBUG=true]'
 	@echo
-	@echo 'to check unit tests (requires NUnit version >= 2.6), run:'
-	@echo '  make nunit [NUNIT_CONSOLE=<path-to/nunit[3|2]-console>] [NUNIT_LIBS_PATH=<path-to-libs-dir>] [NUNIT_LIBS=<nunit-libs>]'
-	@echo '     Use NUNIT_CONSOLE if nunit[3|2]-console was not downloaded by `make dependencies` nor is it in bin search paths'
-	@echo '     Use NUNIT_LIBS_PATH if NUnit libs are not in search paths. Include trailing /'
-	@echo '     Use NUNIT_LIBS if NUnit libs have different names (such as including a prefix or suffix)'
+	@echo 'to compile using system libraries for native dependencies, run:'
+	@echo '  make [DEBUG=true] TARGETPLATFORM=unix-generic'
 	@echo
 	@echo 'to check the official mods for erroneous yaml files, run:'
+	@echo '  make test'
+	@echo
+	@echo 'to check the engine and official mod dlls for code style violations, run:'
 	@echo '  make test'
 	@echo
 	@echo 'to install, run:'
@@ -370,6 +350,11 @@ help:
 	@echo
 	@echo 'to install Linux startup scripts, desktop files and icons'
 	@echo '  make install-linux-shortcuts [DEBUG=false]'
+	@echo
+	@echo ' to install the engine and common mod files (omitting the default mods):'
+	@echo '   make install-engine'
+	@echo '   make install-dependencies'
+	@echo '   make install-common-mod-files'
 	@echo
 	@echo 'to uninstall, run:'
 	@echo '  make uninstall'
@@ -383,4 +368,4 @@ help:
 
 .SUFFIXES:
 
-.PHONY: check-scripts check nunit test all core clean distclean cli-dependencies linux-dependencies linux-native-dependencies windows-dependencies osx-dependencies dependencies all-dependencies version install install-linux-shortcuts install-engine install-common-mod-files install-default-mods install-core install-linux-icons install-linux-desktop install-linux-mime install-linux-appdata install-man-page install-linux-scripts uninstall help
+.PHONY: check-scripts check test all core clean version install install-linux-shortcuts install-dependencies install-engine install-common-mod-files install-default-mods install-core install-linux-icons install-linux-desktop install-linux-mime install-linux-appdata install-man-page install-linux-scripts uninstall help

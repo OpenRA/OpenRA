@@ -7,7 +7,7 @@ command -v python >/dev/null 2>&1 || { echo >&2 "Linux packaging requires python
 command -v tar >/dev/null 2>&1 || { echo >&2 "Linux packaging requires tar."; exit 1; }
 command -v curl >/dev/null 2>&1 || command -v wget > /dev/null 2>&1 || { echo >&2 "Linux packaging requires curl or wget."; exit 1; }
 
-DEPENDENCIES_TAG="20200222"
+DEPENDENCIES_TAG="20200328"
 
 if [ $# -eq "0" ]; then
 	echo "Usage: $(basename "$0") version [outputdir]"
@@ -48,24 +48,21 @@ pushd "${SRCDIR}" > /dev/null || exit 1
 
 make clean
 
-# linux-dependencies target will trigger the lua detection script, which we don't want during packaging
-make cli-dependencies
-sed "s/@LIBLUA51@/liblua5.1.so.0/" thirdparty/Eluant.dll.config.in > Eluant.dll.config
-
-make core
+make core TARGETPLATFORM=linux-x64
 make version VERSION="${TAG}"
 make install-engine prefix="usr" DESTDIR="${BUILTDIR}/"
 make install-common-mod-files prefix="usr" DESTDIR="${BUILTDIR}/"
+make install-dependencies TARGETPLATFORM=linux-x64 prefix="usr" DESTDIR="${BUILTDIR}/"
 
 popd > /dev/null || exit 1
 
 # Add native libraries
 echo "Downloading dependencies"
 if command -v curl >/dev/null 2>&1; then
-	curl -s -L -O https://github.com/OpenRA/AppImageSupport/releases/download/${DEPENDENCIES_TAG}/libs.tar.bz2 || exit 3
+	curl -s -L -O https://github.com/OpenRA/AppImageSupport/releases/download/${DEPENDENCIES_TAG}/mono.tar.bz2 || exit 3
 	curl -s -L -O https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage || exit 3
 else
-	wget -cq https://github.com/OpenRA/AppImageSupport/releases/download/${DEPENDENCIES_TAG}/libs.tar.bz2 || exit 3
+	wget -cq https://github.com/OpenRA/AppImageSupport/releases/download/${DEPENDENCIES_TAG}/mono.tar.bz2 || exit 3
 	wget -cq https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage || exit 3
 fi
 
@@ -74,23 +71,24 @@ chmod a+x appimagetool-x86_64.AppImage
 echo "Building AppImage"
 mkdir libs
 pushd libs
-tar xf ../libs.tar.bz2
+tar xf ../mono.tar.bz2
 
 install -d "${BUILTDIR}/usr/bin"
 install -d "${BUILTDIR}/etc/mono/4.5"
-install -d "${BUILTDIR}/usr/lib/mono/4.5"
+install -d "${BUILTDIR}/usr/lib/mono/4.5/Facades"
 
 install -Dm 0755 usr/bin/mono "${BUILTDIR}/usr/bin/"
 
 install -Dm 0644 /etc/mono/config "${BUILTDIR}/etc/mono/"
 install -Dm 0644 /etc/mono/4.5/machine.config "${BUILTDIR}/etc/mono/4.5"
 
+for f in $(ls usr/lib/mono/4.5/Facades/*.dll); do install -Dm 0644 "$f" "${BUILTDIR}/usr/lib/mono/4.5/Facades/"; done
 for f in $(ls usr/lib/mono/4.5/*.dll usr/lib/mono/4.5/*.exe); do install -Dm 0644 "$f" "${BUILTDIR}/usr/lib/mono/4.5/"; done
-for f in $(ls usr/lib/*.so usr/lib/*.so.*); do install -Dm 0755 "$f" "${BUILTDIR}/usr/lib/"; done
+for f in $(ls usr/lib/*.so); do install -Dm 0755 "$f" "${BUILTDIR}/usr/lib/"; done
 
 popd
 
-rm -rf libs libs.tar.bz2
+rm -rf libs mono.tar.bz2
 
 build_appimage() {
 	MOD_ID=${1}

@@ -39,19 +39,21 @@ function build_platform()
 {
 	echo "Building core files ($1)"
 	if [ "$1" = "x86" ]; then
+		TARGETPLATFORM="TARGETPLATFORM=win-x86"
 		IS_WIN32="WIN32=true"
 		USE_PROGRAMFILES32="-DUSE_PROGRAMFILES32=true"
 	else
 		IS_WIN32="WIN32=false"
+		TARGETPLATFORM="TARGETPLATFORM=win-x64"
 		USE_PROGRAMFILES32=""
 	fi
 
 	pushd "${SRCDIR}" > /dev/null || exit 1
 	make clean
-	make windows-dependencies "${IS_WIN32}"
-	make core "${IS_WIN32}"
+	make core "${TARGETPLATFORM}" "${IS_WIN32}"
 	make version VERSION="${TAG}"
-	make install-core gameinstalldir="" DESTDIR="${BUILTDIR}"
+	make install-core "${TARGETPLATFORM}" gameinstalldir="" DESTDIR="${BUILTDIR}"
+	make install-dependencies "${TARGETPLATFORM}" gameinstalldir="" DESTDIR="${BUILTDIR}"
 	popd > /dev/null || exit 1
 
 	echo "Compiling Windows launchers ($1)"
