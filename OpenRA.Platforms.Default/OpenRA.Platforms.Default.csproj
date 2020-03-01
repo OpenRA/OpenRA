@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-      <TargetFramework>net461</TargetFramework>
+      <TargetFramework>net472</TargetFramework>
       <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
       <Optimize>true</Optimize>
       <LangVersion>5</LangVersion>
@@ -12,6 +12,11 @@
       <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
       <CodeAnalysisRuleSet>..\OpenRA.ruleset</CodeAnalysisRuleSet>
     </PropertyGroup>
+  <PropertyGroup>
+    <TargetPlatform Condition="$([MSBuild]::IsOsPlatform('Windows'))">win-x64</TargetPlatform>
+    <TargetPlatform Condition="$([MSBuild]::IsOsPlatform('Linux'))">linux-x64</TargetPlatform>
+    <TargetPlatform Condition="$([MSBuild]::IsOsPlatform('OSX'))">osx-x64</TargetPlatform>
+  </PropertyGroup>
     <ItemGroup>
       <!-- Work around an issue where Rider does not detect files in the project root using the default glob -->
       <Compile Include="**/*.cs" Exclude="$(DefaultItemExcludes)" />
@@ -21,19 +26,12 @@
     <Optimize>false</Optimize>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Eluant">
-      <HintPath>..\thirdparty\download\Eluant.dll</HintPath>
-    </Reference>
-    <Reference Include="SDL2-CS">
-      <HintPath>..\thirdparty\download\SDL2-CS.dll</HintPath>
-    </Reference>
-    <Reference Include="OpenAL-CS">
-      <HintPath>..\thirdparty\download\OpenAL-CS.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj" />
+    <PackageReference Include="OpenRA-Freetype6" Version="1.0.4" />
+    <PackageReference Include="OpenRA-OpenAL-CS" Version="1.0.16" />
+    <PackageReference Include="OpenRA-SDL2-CS" Version="1.0.26" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" />
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0" PrivateAssets="All" />
     <AdditionalFiles Include="../stylecop.json" />
   </ItemGroup>
   <Target Name="DisableAnalyzers" BeforeTargets="CoreCompile" Condition="'$(Configuration)'=='Release'">
@@ -43,7 +41,7 @@
     </ItemGroup>
   </Target>
   <ItemGroup>
-    <Content Include="OpenRA.Platforms.Default.dll.config">
+    <Content Include="OpenRA.Platforms.Default.dll.config" Condition="'$(TargetPlatform)' != 'win-x64' And '$(TargetPlatform)' != 'win-x86'">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

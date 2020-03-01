@@ -34,12 +34,13 @@ env:
 # call OpenRA to check for YAML errors
 # Run the NUnit tests
 script:
- - travis_retry make all-dependencies
  - make all
  - test "$TRAVIS_OS_NAME" == "linux" && make check || echo "Skipping check"
  - test "$TRAVIS_OS_NAME" == "linux" && make check-scripts || echo "Skipping scripts check"
  - test "$TRAVIS_OS_NAME" == "linux" && make test || echo "Skipping tests"
- - test "$TRAVIS_OS_NAME" == "linux" && make nunit || echo "Skipping nunit tests"
+ - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+     mono ~/.nuget/packages/nunit.consolerunner/3.11.1/tools/nunit3-console.exe --noresult OpenRA.Test.dll;
+   fi
 
 # Only watch the development branch and tagged release.
 branches:
