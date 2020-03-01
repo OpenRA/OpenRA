@@ -55,7 +55,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 	{
 		readonly IMove move;
 		protected readonly Animation DefaultAnimation;
-		readonly bool hasIdleSequence;
 
 		bool dirty;
 		string idleSequence;
@@ -66,6 +65,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 		bool IsModifyingSequence { get { return rsm != null && rsm.IsModifyingSequence; } }
 		bool wasModifying;
 
+		// Allow subclasses to override the info that we use for rendering
+		protected virtual WithInfantryBodyInfo GetDisplayInfo()
+		{
+			return Info;
+		}
+
 		public WithInfantryBody(ActorInitializer init, WithInfantryBodyInfo info)
 			: base(info)
 		{
@@ -75,7 +80,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 			DefaultAnimation = new Animation(init.World, rs.GetImage(self), RenderSprites.MakeFacingFunc(self));
 			rs.Add(new AnimationWithOffset(DefaultAnimation, null, () => IsTraitDisabled));
 			PlayStandAnimation(self);
-			hasIdleSequence = Info.IdleSequences.Length > 0;
 
 			move = init.Self.Trait<IMove>();
 		}
@@ -83,7 +87,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 		protected override void Created(Actor self)
 		{
 			rsm = self.TraitOrDefault<IRenderInfantrySequenceModifier>();
-			idleDelay = self.World.SharedRandom.Next(Info.MinIdleDelay, Info.MaxIdleDelay);
+			var info = GetDisplayInfo();
+			idleDelay = self.World.SharedRandom.Next(info.MinIdleDelay, info.MaxIdleDelay);
 
 			base.Created(self);
 		}
@@ -100,7 +105,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		protected virtual bool AllowIdleAnimation(Actor self)
 		{
-			return hasIdleSequence && !IsModifyingSequence;
+			return GetDisplayInfo().IdleSequences.Length > 0 && !IsModifyingSequence;
 		}
 
 		public void PlayStandAnimation(Actor self)
@@ -118,8 +123,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public void Attacking(Actor self, Target target, Armament a)
 		{
 			string sequence;
-			if (!Info.AttackSequences.TryGetValue(a.Info.Name, out sequence))
-				sequence = Info.DefaultAttackSequence;
+			var info = GetDisplayInfo();
+			if (!info.AttackSequences.TryGetValue(a.Info.Name, out sequence))
+				sequence = info.DefaultAttackSequence;
 
 			if (!string.IsNullOrEmpty(sequence) && DefaultAnimation.HasSequence(NormalizeInfantrySequence(self, sequence)))
 			{
@@ -153,7 +159,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if ((state != AnimationState.Moving || dirty) && move.CurrentMovementTypes.HasFlag(MovementType.Horizontal))
 			{
 				state = AnimationState.Moving;
-				DefaultAnimation.PlayRepeating(NormalizeInfantrySequence(self, Info.MoveSequence));
+				DefaultAnimation.PlayRepeating(NormalizeInfantrySequence(self, GetDisplayInfo().MoveSequence));
 			}
 			else if (((state == AnimationState.Moving || dirty) && !move.CurrentMovementTypes.HasFlag(MovementType.Horizontal))
 				|| ((state == AnimationState.Idle || state == AnimationState.IdleAnimating) && !self.IsIdle))
@@ -170,8 +176,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (state == AnimationState.Waiting)
 			{
 				state = AnimationState.Idle;
-				idleSequence = Info.IdleSequences.Random(self.World.SharedRandom);
-				idleDelay = self.World.SharedRandom.Next(Info.MinIdleDelay, Info.MaxIdleDelay);
+				var info = GetDisplayInfo();
+				idleSequence = info.IdleSequences.Random(self.World.SharedRandom);
+				idleDelay = self.World.SharedRandom.Next(info.MinIdleDelay, info.MaxIdleDelay);
 			}
 			else if (state == AnimationState.Idle && idleDelay > 0 && --idleDelay == 0)
 			{
