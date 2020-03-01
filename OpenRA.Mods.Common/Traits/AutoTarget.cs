@@ -40,6 +40,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("It will try to pivot to face the enemy if stance is not HoldFire.")]
 		public readonly bool AllowTurning = true;
 
+		[Desc("Scan for new targets when idle.")]
+		public readonly bool ScanOnIdle = true;
+
 		[Desc("Set to a value >1 to override weapons maximum range for this.")]
 		public readonly int ScanRadius = -1;
 
@@ -269,7 +272,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyIdle.TickIdle(Actor self)
 		{
-			if (IsTraitDisabled || Stance < UnitStance.Defend)
+			if (IsTraitDisabled || !Info.ScanOnIdle || Stance < UnitStance.Defend)
 				return;
 
 			var allowMove = allowMovement && Stance > UnitStance.Defend;
