@@ -62,8 +62,13 @@ namespace OpenRA.Network
 			try
 			{
 				using (var fileStream = new FileStream(databasePath, FileMode.Open, FileAccess.Read))
-				using (var gzipStream = new GZipInputStream(fileStream))
-					database = new Reader(gzipStream);
+				{
+					if (databasePath.EndsWith(".gz"))
+						using (var gzipStream = new GZipInputStream(fileStream))
+							database = new Reader(gzipStream);
+					else
+						database = new Reader(fileStream);
+				}
 			}
 			catch (Exception e)
 			{
