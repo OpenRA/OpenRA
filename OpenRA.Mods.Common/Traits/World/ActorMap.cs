@@ -265,7 +265,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			var layer = a.Layer == 0 ? influence : customInfluence[a.Layer];
 			for (var i = layer[uv]; i != null; i = i.Next)
-				if (!i.Actor.Disposed && (i.SubCell == sub || i.SubCell == SubCell.FullCell))
+				if (!i.Actor.Disposed && (i.SubCell == sub || i.SubCell == SubCell.FullCell || sub == SubCell.FullCell || sub == SubCell.Any))
 					yield return i.Actor;
 		}
 
