@@ -34,6 +34,8 @@ namespace OpenRA.Mods.Common.Activities
 		readonly Aircraft aircraft;
 		readonly bool stayOnResupplier;
 		readonly bool wasRepaired;
+		readonly PlayerResources playerResources;
+		readonly int unitCost;
 
 		int remainingTicks;
 		bool played;
@@ -54,6 +56,10 @@ namespace OpenRA.Mods.Common.Activities
 			transportCallers = self.TraitsImplementing<ICallForTransport>().ToArray();
 			move = self.Trait<IMove>();
 			aircraft = move as Aircraft;
+			playerResources = self.Owner.PlayerActor.Trait<PlayerResources>();
+
+			var valued = self.Info.TraitInfoOrDefault<ValuedInfo>();
+			unitCost = valued != null ? valued.Cost : 0;
 
 			var cannotRepairAtHost = health == null || health.DamageState == DamageState.Undamaged
 				|| !allRepairsUnits.Any()
@@ -221,7 +227,6 @@ namespace OpenRA.Mods.Common.Activities
 
 		void RepairTick(Actor self)
 		{
-			// First active.
 			var repairsUnits = allRepairsUnits.FirstOrDefault(r => !r.IsTraitDisabled && !r.IsTraitPaused);
 			if (repairsUnits == null)
 			{
@@ -248,8 +253,6 @@ namespace OpenRA.Mods.Common.Activities
 
 			if (remainingTicks == 0)
 			{
-				var valued = self.Info.TraitInfoOrDefault<ValuedInfo>();
-				var unitCost = valued != null ? valued.Cost : 0;
 				var hpToRepair = repairable != null && repairable.Info.HpPerStep > 0 ? repairable.Info.HpPerStep : repairsUnits.Info.HpPerStep;
 
 				// Cast to long to avoid overflow when multiplying by the health
@@ -261,7 +264,7 @@ namespace OpenRA.Mods.Common.Activities
 					Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", repairsUnits.Info.StartRepairingNotification, self.Owner.Faction.InternalName);
 				}
 
-				if (!self.Owner.PlayerActor.Trait<PlayerResources>().TakeCash(cost, true))
+				if (!playerResources.TakeCash(cost, true))
 				{
 					remainingTicks = 1;
 					return;
