@@ -111,10 +111,11 @@ namespace OpenRA.Mods.Common.Activities
 
 			if (ShouldLandAtBuilding(self, dest))
 			{
-				var exit = dest.FirstExitOrDefault();
-				var offset = exit != null ? exit.Info.SpawnOffset : WVec.Zero;
-				if (aircraft.Info.TurnToDock || !aircraft.Info.VTOL)
-					facing = aircraft.Info.InitialFacing;
+				var exits = dest.Exits(null);
+				int cell = Reservable.GetFreeReservation(dest, self);
+				WVec offset = cell == -1 ? WVec.Zero : exits.ElementAt(cell).Info.SpawnOffset;
+				if (cell < 0)
+					return true;
 
 				aircraft.MakeReservation(dest);
 				QueueChild(new Land(self, Target.FromActor(dest), offset, facing, Color.Green));

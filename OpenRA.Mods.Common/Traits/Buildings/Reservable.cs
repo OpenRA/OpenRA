@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -17,13 +18,25 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Reserve landing places for aircraft.")]
-	class ReservableInfo : TraitInfo<Reservable> { }
+	public class ReservableInfo : ITraitInfo
+	{
+		[Desc("Maximum Reserve Spaces.")]
+		public readonly int MaxReserves = 1;
+		public virtual object Create(ActorInitializer init) { return new Reservable(init, this); }
+	}
 
 	public class Reservable : ITick, INotifyOwnerChanged, INotifySold, INotifyActorDisposing, INotifyCreated
 	{
-		Actor reservedFor;
-		Aircraft reservedForAircraft;
+		Actor[] reservedForActors;
+		Aircraft[] reservedForAircrafts;
 		RallyPoint rallyPoint;
+		public readonly ReservableInfo Info;
+		public Reservable(ActorInitializer init, ReservableInfo info)
+		{
+			Info = info;
+			reservedForActors = new Actor[info.MaxReserves];
+			reservedForAircrafts = new Aircraft[info.MaxReserves];
+		}
 
 		void INotifyCreated.Created(Actor self)
 		{
@@ -32,31 +45,48 @@ namespace OpenRA.Mods.Common.Traits
 
 		void ITick.Tick(Actor self)
 		{
-			// Nothing to do.
-			if (reservedFor == null)
-				return;
-
-			if (!Target.FromActor(reservedFor).IsValidFor(self))
+			for (int i = 0; i < Info.MaxReserves; i++)
 			{
-				// Not likely to arrive now.
-				reservedForAircraft.UnReserve();
-				reservedFor = null;
-				reservedForAircraft = null;
+				Actor cachedActor = reservedForActors[i];
+				if (cachedActor == null)
+					continue;
+
+				if (!Target.FromActor(cachedActor).IsValidFor(self))
+				{
+					// Not likely to arrive now.
+					reservedForAircrafts[i].UnReserve();
+					reservedForActors[i] = null;
+					reservedForAircrafts[i] = null;
+				}
 			}
 		}
 
 		public IDisposable Reserve(Actor self, Actor forActor, Aircraft forAircraft)
 		{
-			if (reservedForAircraft != null && reservedForAircraft.MayYieldReservation)
+			bool freeSpace = false;
+			int i = 0;
+			for (; i < Info.MaxReserves; i++)
+			{
+				if (reservedForActors[i] != null && reservedForAircrafts[i].MayYieldReservation)
+					freeSpace = false;
+				else
+				{
+					freeSpace = true;
+					break;
+				}
+			}
+
+			if (!freeSpace)
+			{
+				// prevent index out of range
+				i--;
 				UnReserve(self);
+			}
 
-			reservedFor = forActor;
-			reservedForAircraft = forAircraft;
-
-			// NOTE: we really don't care about the GC eating DisposableActions that apply to a world *other* than
-			// the one we're playing in.
+			reservedForActors[i] = forActor;
+			reservedForAircrafts[i] = forAircraft;
 			return new DisposableAction(
-				() => { reservedFor = null; reservedForAircraft = null; },
+				() => { reservedForActors[i] = null; reservedForAircrafts[i] = null; },
 				() => Game.RunAfterTick(() =>
 				{
 					if (Game.IsCurrentWorld(self.World))
@@ -69,29 +99,70 @@ namespace OpenRA.Mods.Common.Traits
 		public static bool IsReserved(Actor a)
 		{
 			var res = a.TraitOrDefault<Reservable>();
-			return res != null && res.reservedForAircraft != null && !res.reservedForAircraft.MayYieldReservation;
+			if (res == null)
+				return false;
+
+			bool isReserved = true;
+			for (int i = 0; i < res.Info.MaxReserves; i++)
+			{
+				isReserved = res.reservedForAircrafts[i] != null && !res.reservedForAircrafts[i].MayYieldReservation;
+				if (!isReserved)
+					break;
+			}
+
+			return isReserved;
+		}
+
+		public static int GetFreeReservation(Actor a, Actor self)
+		{
+			var res = a.TraitOrDefault<Reservable>();
+			for (int i = 0; i < res.Info.MaxReserves; i++)
+			{
+				if (res.reservedForActors[i] == null || res.reservedForActors[i] == self)
+					return i;
+			}
+
+			// cells exhausted, return -1 to signify none found
+			return -1;
 		}
 
 		public static bool IsAvailableFor(Actor reservable, Actor forActor)
 		{
 			var res = reservable.TraitOrDefault<Reservable>();
-			return res == null || res.reservedForAircraft == null || res.reservedForAircraft.MayYieldReservation || res.reservedFor == forActor;
+			bool isAvailable = true;
+			for (int i = 0; i < res.Info.MaxReserves; i++)
+			{
+				isAvailable = res == null || res.reservedForAircrafts[i] == null || res.reservedForAircrafts[i].MayYieldReservation || res.reservedForActors[i] == forActor;
+				if (!isAvailable)
+					break;
+			}
+
+			return isAvailable;
 		}
 
 		void UnReserve(Actor self)
 		{
-			if (reservedForAircraft != null)
+			for (int i = 0; i < Info.MaxReserves; i++)
 			{
-				if (reservedForAircraft.GetActorBelow() == self)
+				Actor cachedActor = reservedForActors[i];
+				Aircraft cachedAircraft = reservedForAircrafts[i];
+				if (cachedAircraft != null)
 				{
-					if (rallyPoint != null)
-						foreach (var cell in rallyPoint.Path)
-							reservedFor.QueueActivity(reservedForAircraft.MoveTo(cell, 1, targetLineColor: Color.Green));
-					else
-						reservedFor.QueueActivity(new TakeOff(reservedFor));
-				}
+					if (cachedAircraft.GetActorBelow() == self)
+					{
+						if (rallyPoint != null)
+							cachedActor.QueueActivity(
+									cachedAircraft.MoveTo(
+										rallyPoint.Location,
+										null,
+										targetLineColor: Color.Green));
+						else
+							cachedActor.QueueActivity(
+									new TakeOff(reservedForActors[i]));
+					}
 
-				reservedForAircraft.UnReserve();
+					reservedForAircrafts[i].UnReserve();
+				}
 			}
 		}
 
