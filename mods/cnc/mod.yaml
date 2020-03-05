@@ -34,7 +34,7 @@ Packages:
 
 MapFolders:
 	cnc|maps: System
-	~^maps/cnc/git-8d866b002: User
+	~^maps/cnc/{DEV_VERSION}: User
 
 Rules:
 	cnc|rules/misc.yaml
