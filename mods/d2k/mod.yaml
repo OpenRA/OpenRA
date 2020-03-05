@@ -1,6 +1,6 @@
 Metadata:
 	Title: Dune 2000
-	Version: {DEV_VERSION}
+	Version: git-8d866b002
 	Website: https://www.openra.net
 	WebIcon32: https://www.openra.net/images/icons/d2k_32x32.png
 
@@ -23,7 +23,7 @@ Packages:
 
 MapFolders:
 	d2k|maps: System
-	~^maps/d2k/{DEV_VERSION}: User
+	~^maps/d2k/git-8d866b002: User
 
 Rules:
 	d2k|rules/misc.yaml

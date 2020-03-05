@@ -1,6 +1,6 @@
 Metadata:
 	Title: Red Alert
-	Version: {DEV_VERSION}
+	Version: git-8d866b002
 	Website: https://www.openra.net
 	WebIcon32: https://www.openra.net/images/icons/ra_32x32.png
 
@@ -36,7 +36,7 @@ Packages:
 
 MapFolders:
 	ra|maps: System
-	~^maps/ra/{DEV_VERSION}: User
+	~^maps/ra/git-8d866b002: User
 
 Rules:
 	ra|rules/misc.yaml

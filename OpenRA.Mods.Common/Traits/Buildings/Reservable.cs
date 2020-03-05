@@ -151,11 +151,12 @@ namespace OpenRA.Mods.Common.Traits
 					if (cachedAircraft.GetActorBelow() == self)
 					{
 						if (rallyPoint != null)
-							cachedActor.QueueActivity(
-									cachedAircraft.MoveTo(
-										rallyPoint.Location,
-										null,
-										targetLineColor: Color.Green));
+							foreach (var cell in rallyPoint.Path)
+								cachedActor.QueueActivity(
+										cachedAircraft.MoveTo(
+											cell,
+											1,
+											targetLineColor: Color.Green));
 						else
 							cachedActor.QueueActivity(
 									new TakeOff(reservedForActors[i]));
