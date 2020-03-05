@@ -1,6 +1,6 @@
 Metadata:
 	Title: Tiberian Sun
-	Version: git-8d866b002
+	Version: {DEV_VERSION}
 	Website: https://www.openra.net
 	WebIcon32: https://www.openra.net/images/icons/ts_32x32.png
 
@@ -51,7 +51,7 @@ Packages:
 
 MapFolders:
 	ts|maps: System
-	~^maps/ts/git-8d866b002: User
+	~^maps/ts/{DEV_VERSION}: User
 
 Rules:
 	ts|rules/ai.yaml
