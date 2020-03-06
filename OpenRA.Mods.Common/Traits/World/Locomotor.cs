@@ -304,7 +304,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			var otherActors = subCell == SubCell.FullCell ? world.ActorMap.GetActorsAt(cell) : world.ActorMap.GetActorsAt(cell, subCell);
 			foreach (var otherActor in otherActors)
-				if (IsBlockedBy(actor, otherActor, ignoreActor, check, cellFlag))
+				if (IsBlockedBy(actor, otherActor, ignoreActor, cell, check, cellFlag))
 					return false;
 
 			return true;
@@ -322,7 +322,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (check > BlockedByActor.None)
 			{
-				Func<Actor, bool> checkTransient = otherActor => IsBlockedBy(self, otherActor, ignoreActor, check, GetCache(cell).CellFlag);
+				Func<Actor, bool> checkTransient = otherActor => IsBlockedBy(self, otherActor, ignoreActor, cell, check, GetCache(cell).CellFlag);
 
 				if (!sharesCell)
 					return world.ActorMap.AnyActorsAt(cell, SubCell.FullCell, checkTransient) ? SubCell.Invalid : SubCell.FullCell;
@@ -336,7 +336,7 @@ namespace OpenRA.Mods.Common.Traits
 			return world.ActorMap.FreeSubCell(cell, preferredSubCell);
 		}
 
-		bool IsBlockedBy(Actor actor, Actor otherActor, Actor ignoreActor, BlockedByActor check, CellFlag cellFlag)
+		bool IsBlockedBy(Actor actor, Actor otherActor, Actor ignoreActor, CPos cell, BlockedByActor check, CellFlag cellFlag)
 		{
 			if (otherActor == ignoreActor)
 				return false;
@@ -360,6 +360,14 @@ namespace OpenRA.Mods.Common.Traits
 				// If there is a temporary blocker in our path, but we can remove it, we are not blocked.
 				var temporaryBlocker = otherActor.TraitOrDefault<ITemporaryBlocker>();
 				if (temporaryBlocker != null && temporaryBlocker.CanRemoveBlockage(otherActor, actor))
+					return false;
+			}
+
+			if (cellFlag.HasCellFlag(CellFlag.HasTransitOnlyActor))
+			{
+				// Transit only tiles should not block movement
+				var building = otherActor.TraitOrDefault<Building>();
+				if (building != null && building.TransitOnlyCells().Contains(cell))
 					return false;
 			}
 
