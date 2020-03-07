@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Activities;
@@ -119,15 +120,23 @@ namespace OpenRA.Mods.Common.Activities
 			return TickChild(self);
 		}
 
+		List<CPos> searchCells = new List<CPos>();
+		int searchCellsTick = -1;
+
 		List<CPos> CalculatePathToTarget(Actor self, BlockedByActor check)
 		{
-			var targetCells = CandidateMovementCells(self);
-			var searchCells = new List<CPos>();
 			var loc = self.Location;
 
-			foreach (var cell in targetCells)
-				if (domainIndex.IsPassable(loc, cell, Mobile.Info.LocomotorInfo) && Mobile.CanEnterCell(cell))
-					searchCells.Add(cell);
+			// PERF: Assume that CandidateMovementCells doesn't change within a tick to avoid repeated queries
+			// when Move enumerates different BlockedByActor values
+			if (searchCellsTick != self.World.WorldTick)
+			{
+				searchCells.Clear();
+				searchCellsTick = self.World.WorldTick;
+				foreach (var cell in CandidateMovementCells(self))
+					if (domainIndex.IsPassable(loc, cell, Mobile.Info.LocomotorInfo) && Mobile.CanEnterCell(cell))
+						searchCells.Add(cell);
+			}
 
 			if (!searchCells.Any())
 				return NoPath;
