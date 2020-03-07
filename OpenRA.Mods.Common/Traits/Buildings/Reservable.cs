@@ -84,7 +84,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				if (reservedForAircraft.GetActorBelow() == self)
 				{
-					if (rallyPoint != null)
+					if (rallyPoint != null && rallyPoint.Path.Count > 0)
 						foreach (var cell in rallyPoint.Path)
 							reservedFor.QueueActivity(reservedForAircraft.MoveTo(cell, 1, targetLineColor: Color.Green));
 					else
