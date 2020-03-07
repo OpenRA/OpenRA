@@ -87,7 +87,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyAttack.Attacking(Actor self, Target target, Armament a, Barrel barrel)
 		{
-			if (self.World.SharedRandom.Next(100 / info.AttackPanicChance) == 0)
+			if (self.World.SharedRandom.Next(100) < info.AttackPanicChance)
 				Panic();
 		}
 
