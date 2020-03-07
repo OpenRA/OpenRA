@@ -305,7 +305,7 @@ namespace OpenRA.Mods.Common.Activities
 					var newCell = path[path.Count - 1];
 					path.RemoveAt(path.Count - 1);
 
-					return Pair.New(newCell, mobile.GetAvailableSubCell(nextCell, SubCell.Any, ignoreActor));
+					return Pair.New(newCell, mobile.GetAvailableSubCell(nextCell, mobile.FromSubCell, ignoreActor));
 				}
 				else if (mobile.IsBlocking)
 				{
@@ -316,7 +316,7 @@ namespace OpenRA.Mods.Common.Activities
 						if ((nextCell - newCell).Value.LengthSquared > 2)
 							path.Add(mobile.ToCell);
 
-						return Pair.New(newCell.Value, mobile.GetAvailableSubCell(newCell.Value, SubCell.Any, ignoreActor));
+						return Pair.New(newCell.Value, mobile.GetAvailableSubCell(newCell.Value, mobile.FromSubCell, ignoreActor));
 					}
 				}
 
@@ -326,7 +326,7 @@ namespace OpenRA.Mods.Common.Activities
 			hasWaited = false;
 			path.RemoveAt(path.Count - 1);
 
-			return Pair.New(nextCell, mobile.GetAvailableSubCell(nextCell, SubCell.Any, ignoreActor));
+			return Pair.New(nextCell, mobile.GetAvailableSubCell(nextCell, mobile.FromSubCell, ignoreActor));
 		}
 
 		protected override void OnLastRun(Actor self)
