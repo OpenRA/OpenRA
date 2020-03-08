@@ -18,6 +18,7 @@ namespace OpenRA.Mods.Cnc.Traits
 {
 	class InfiltrateForSupportPowerResetInfo : ITraitInfo
 	{
+		[Desc("The `TargetTypes` from `Targetable` that are allowed to enter.")]
 		public readonly BitSet<TargetableType> Types = default(BitSet<TargetableType>);
 
 		public object Create(ActorInitializer init) { return new InfiltrateForSupportPowerReset(this); }

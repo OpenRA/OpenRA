@@ -22,6 +22,7 @@ namespace OpenRA.Mods.Cnc.Traits
 {
 	public class InfiltratesInfo : ConditionalTraitInfo
 	{
+		[Desc("The `TargetTypes` from `Targetable` that are allowed to enter.")]
 		public readonly BitSet<TargetableType> Types = default(BitSet<TargetableType>);
 
 		[VoiceReference]

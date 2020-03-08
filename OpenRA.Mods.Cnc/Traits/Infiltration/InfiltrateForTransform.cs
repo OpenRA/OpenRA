@@ -29,6 +29,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		public readonly bool SkipMakeAnims = true;
 
+		[Desc("The `TargetTypes` from `Targetable` that are allowed to enter.")]
 		public readonly BitSet<TargetableType> Types = default(BitSet<TargetableType>);
 
 		public object Create(ActorInitializer init) { return new InfiltrateForTransform(init, this); }
