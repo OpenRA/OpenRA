@@ -171,6 +171,11 @@ namespace OpenRA.Mods.Common.Traits
 		protected bool notifiedCharging;
 		bool notifiedReady;
 
+		public void ResetTimer()
+		{
+			remainingSubTicks = TotalTicks * 100;
+		}
+
 		public SupportPowerInstance(string key, SupportPowerInfo info, SupportPowerManager manager)
 		{
 			Key = key;
