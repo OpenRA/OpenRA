@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Activities
 		[Flags]
 		protected enum AttackStatus { UnableToAttack, NeedsToTurn, NeedsToMove, Attacking }
 
-		readonly AttackFrontal[] attackTraits;
+		readonly IEnumerable<AttackFrontal> attackTraits;
 		readonly RevealsShroud[] revealsShroud;
 		readonly IMove move;
 		readonly IFacing facing;
@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Activities
 			this.targetLineColor = targetLineColor;
 			this.forceAttack = forceAttack;
 
-			attackTraits = self.TraitsImplementing<AttackFrontal>().ToArray();
+			attackTraits = self.TraitsImplementing<AttackFrontal>().ToArray().Where(Exts.IsTraitEnabled);
 			revealsShroud = self.TraitsImplementing<RevealsShroud>().ToArray();
 			facing = self.Trait<IFacing>();
 			positionable = self.Trait<IPositionable>();
@@ -90,13 +90,19 @@ namespace OpenRA.Mods.Common.Activities
 			if (IsCanceling)
 				return true;
 
+			if (!attackTraits.Any())
+			{
+				Cancel(self);
+				return false;
+			}
+
 			bool targetIsHiddenActor;
 			target = RecalculateTarget(self, out targetIsHiddenActor);
+
 			if (!targetIsHiddenActor && target.Type == TargetType.Actor)
 			{
 				lastVisibleTarget = Target.FromTargetPositions(target);
-				lastVisibleMaximumRange = attackTraits.Where(x => !x.IsTraitDisabled)
-					.Min(x => x.GetMaximumRangeVersusTarget(target));
+				lastVisibleMaximumRange = attackTraits.Min(x => x.GetMaximumRangeVersusTarget(target));
 
 				lastVisibleOwner = target.Actor.Owner;
 				lastVisibleTargetTypes = target.Actor.GetEnabledTargetTypes();
@@ -132,7 +138,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			attackStatus = AttackStatus.UnableToAttack;
 
-			foreach (var attack in attackTraits.Where(x => !x.IsTraitDisabled))
+			foreach (var attack in attackTraits)
 			{
 				var status = TickAttack(self, attack);
 				attack.IsAiming = status == AttackStatus.Attacking || status == AttackStatus.NeedsToTurn;
