@@ -152,6 +152,9 @@ namespace OpenRA.Mods.Common.Traits
 			Game.Sound.PlayToPlayer(SoundType.UI, self.Owner, Info.EndChargeSound);
 			Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech",
 				Info.EndChargeSpeechNotification, self.Owner.Faction.InternalName);
+
+			foreach (var notify in self.TraitsImplementing<INotifySupportPower>())
+				notify.Charged(self);
 		}
 
 		public virtual void SelectTarget(Actor self, string order, SupportPowerManager manager)
@@ -172,6 +175,9 @@ namespace OpenRA.Mods.Common.Traits
 					order.Player.Color,
 					Info.RadarPingDuration);
 			}
+
+			foreach (var notify in self.TraitsImplementing<INotifySupportPower>())
+				notify.Activated(self);
 		}
 
 		public virtual void PlayLaunchSounds()
