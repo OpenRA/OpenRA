@@ -21,6 +21,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		[FieldLoader.Require]
 		public readonly string Proxy = null;
 
+		[Desc("The `TargetTypes` from `Targetable` that are allowed to enter.")]
 		public readonly BitSet<TargetableType> Types = default(BitSet<TargetableType>);
 
 		[NotificationReference("Speech")]

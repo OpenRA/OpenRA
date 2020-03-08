@@ -19,6 +19,7 @@ namespace OpenRA.Mods.Cnc.Traits
 	[Desc("Steal and reset the owner's exploration.")]
 	class InfiltrateForExplorationInfo : ITraitInfo
 	{
+		[Desc("The `TargetTypes` from `Targetable` that are allowed to enter.")]
 		public readonly BitSet<TargetableType> Types = default(BitSet<TargetableType>);
 
 		[NotificationReference("Speech")]
