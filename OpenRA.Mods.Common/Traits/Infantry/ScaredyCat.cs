@@ -16,13 +16,16 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Makes the unit automatically run around when taking damage.")]
 	class ScaredyCatInfo : ITraitInfo, Requires<MobileInfo>
 	{
+		[Desc("Chance (out of 100) the unit has to enter panic mode when attacked.")]
+		public readonly int PanicChance = 100;
+
 		[Desc("How long (in ticks) the actor should panic for.")]
 		public readonly int PanicLength = 25 * 10;
 
 		[Desc("Panic movement speed as a percentage of the normal speed.")]
 		public readonly int PanicSpeedModifier = 200;
 
-		[Desc("Chance (out of 100) the unit has to enter panic mode when attacked.")]
+		[Desc("Chance (out of 100) the unit has to enter panic mode when attacking.")]
 		public readonly int AttackPanicChance = 20;
 
 		[SequenceReference(null, true)]
@@ -81,7 +84,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyDamage.Damaged(Actor self, AttackInfo e)
 		{
-			if (e.Damage.Value > 0)
+			if (e.Damage.Value > 0 && self.World.SharedRandom.Next(100) < info.PanicChance)
 				Panic();
 		}
 
