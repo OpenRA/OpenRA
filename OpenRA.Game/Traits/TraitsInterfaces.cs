@@ -66,9 +66,6 @@ namespace OpenRA.Traits
 		void Kill(Actor self, Actor attacker, BitSet<DamageType> damageTypes);
 	}
 
-	// depends on the order of pips in WorldRenderer.cs!
-	public enum PipType { Transparent, Green, Yellow, Red, Gray, Blue, Ammo, AmmoEmpty }
-
 	[Flags]
 	public enum Stance
 	{
@@ -127,38 +124,6 @@ namespace OpenRA.Traits
 	public interface IMouseBounds { Rectangle MouseoverBounds(Actor self, WorldRenderer wr); }
 	public interface IMouseBoundsInfo : ITraitInfoInterface { }
 	public interface IAutoMouseBounds { Rectangle AutoMouseoverBounds(Actor self, WorldRenderer wr); }
-
-	// HACK: This provides a shim for legacy code until it can be rewritten
-	public interface IDecorationBounds { Rectangle DecorationBounds(Actor self, WorldRenderer wr); }
-	public interface IDecorationBoundsInfo : ITraitInfoInterface { }
-	public static class DecorationBoundsExtensions
-	{
-		public static Rectangle FirstNonEmptyBounds(this IEnumerable<IDecorationBounds> decorationBounds, Actor self, WorldRenderer wr)
-		{
-			// PERF: Avoid LINQ.
-			foreach (var decoration in decorationBounds)
-			{
-				var bounds = decoration.DecorationBounds(self, wr);
-				if (!bounds.IsEmpty)
-					return bounds;
-			}
-
-			return Rectangle.Empty;
-		}
-
-		public static Rectangle FirstNonEmptyBounds(this IDecorationBounds[] decorationBounds, Actor self, WorldRenderer wr)
-		{
-			// PERF: Avoid LINQ.
-			foreach (var decoration in decorationBounds)
-			{
-				var bounds = decoration.DecorationBounds(self, wr);
-				if (!bounds.IsEmpty)
-					return bounds;
-			}
-
-			return Rectangle.Empty;
-		}
-	}
 
 	public interface IIssueOrder
 	{
@@ -296,12 +261,15 @@ namespace OpenRA.Traits
 	public interface ILoadsPalettes { void LoadPalettes(WorldRenderer wr); }
 	public interface ILoadsPlayerPalettes { void LoadPlayerPalettes(WorldRenderer wr, string playerName, Color playerColor, bool replaceExisting); }
 	public interface IPaletteModifier { void AdjustPalette(IReadOnlyDictionary<string, MutablePalette> b); }
-	public interface IPips { IEnumerable<PipType> GetPips(Actor self); }
 
 	[RequireExplicitImplementation]
 	public interface ISelectionBar { float GetValue(); Color GetColor(); bool DisplayWhenEmpty { get; } }
 
-	public interface ISelectionDecorations { void DrawRollover(Actor self, WorldRenderer worldRenderer); }
+	public interface ISelectionDecorations
+	{
+		IEnumerable<IRenderable> RenderRolloverAnnotations(Actor self, WorldRenderer worldRenderer);
+		IEnumerable<IRenderable> RenderSelectionAnnotations(Actor self, WorldRenderer worldRenderer, Color color);
+	}
 
 	public interface IMapPreviewSignatureInfo : ITraitInfoInterface
 	{

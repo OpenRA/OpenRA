@@ -23,7 +23,10 @@ namespace OpenRA.Mods.Common.Traits
 	public class PassengerInfo : ITraitInfo, IObservesVariablesInfo
 	{
 		public readonly string CargoType = null;
-		public readonly PipType PipType = PipType.Green;
+
+		[Desc("If defined, use a custom pip type defined on the transport's WithCargoPipsDecoration.CustomPipSequences list.")]
+		public readonly string CustomPipType = null;
+
 		public readonly int Weight = 1;
 
 		[GrantedConditionReference]

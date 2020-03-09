@@ -42,9 +42,6 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("How many bales can it dump at once.")]
 		public readonly int BaleUnloadAmount = 1;
 
-		[Desc("How many squares to show the fill level.")]
-		public readonly int PipCount = 7;
-
 		public readonly int HarvestFacings = 0;
 
 		[Desc("Which resources it can harvest.")]
@@ -90,15 +87,16 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new Harvester(init.Self, this); }
 	}
 
-	public class Harvester : IIssueOrder, IResolveOrder, IPips, IOrderVoice,
+	public class Harvester : IIssueOrder, IResolveOrder, IOrderVoice,
 		ISpeedModifier, ISync, INotifyCreated
 	{
 		public readonly HarvesterInfo Info;
+		public readonly IReadOnlyDictionary<ResourceTypeInfo, int> Contents;
+
 		readonly Mobile mobile;
 		readonly ResourceLayer resLayer;
 		readonly ResourceClaimLayer claimLayer;
 		readonly Dictionary<ResourceTypeInfo, int> contents = new Dictionary<ResourceTypeInfo, int>();
-		INotifyHarvesterAction[] notifyHarvesterAction;
 		ConditionManager conditionManager;
 		int conditionToken = ConditionManager.InvalidConditionToken;
 		HarvesterResourceMultiplier[] resourceMultipliers;
@@ -127,6 +125,8 @@ namespace OpenRA.Mods.Common.Traits
 		public Harvester(Actor self, HarvesterInfo info)
 		{
 			Info = info;
+			Contents = new ReadOnlyDictionary<ResourceTypeInfo, int>(contents);
+
 			mobile = self.Trait<Mobile>();
 			resLayer = self.World.WorldActor.Trait<ResourceLayer>();
 			claimLayer = self.World.WorldActor.Trait<ResourceClaimLayer>();
@@ -134,7 +134,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyCreated.Created(Actor self)
 		{
-			notifyHarvesterAction = self.TraitsImplementing<INotifyHarvesterAction>().ToArray();
 			resourceMultipliers = self.TraitsImplementing<HarvesterResourceMultiplier>().ToArray();
 			conditionManager = self.TraitOrDefault<ConditionManager>();
 			UpdateCondition(self);
@@ -346,27 +345,6 @@ namespace OpenRA.Mods.Common.Traits
 				self.QueueActivity(order.Queued, new FindAndDeliverResources(self, targetActor));
 				self.ShowTargetLines();
 			}
-		}
-
-		PipType GetPipAt(int i)
-		{
-			var n = i * Info.Capacity / Info.PipCount;
-
-			foreach (var rt in contents)
-				if (n < rt.Value)
-					return rt.Key.PipColor;
-				else
-					n -= rt.Value;
-
-			return PipType.Transparent;
-		}
-
-		IEnumerable<PipType> IPips.GetPips(Actor self)
-		{
-			var numPips = Info.PipCount;
-
-			for (var i = 0; i < numPips; i++)
-				yield return GetPipAt(i);
 		}
 
 		int ISpeedModifier.GetSpeedModifier()
