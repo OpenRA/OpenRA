@@ -35,7 +35,6 @@ BOAT:
 	AutoTarget:
 		AllowMovement: false
 	RejectsOrders:
-	SelectionDecorations:
 	GrantConditionOnDamageState@HEAVY:
 		Condition: heavy-damage
 		ValidDamageStates: Heavy
@@ -51,6 +50,7 @@ BOAT:
 
 LST:
 	Inherits: ^Ship
+	Inherits@TRANSPORT: ^Transport
 	Valued:
 		Cost: 300
 	Tooltip:
@@ -81,6 +81,5 @@ LST:
 	Cargo:
 		Types: Infantry, Vehicle
 		MaxWeight: 5
-		PipCount: 5
 		PassengerFacing: 0
 		LoadingCondition: notmobile
