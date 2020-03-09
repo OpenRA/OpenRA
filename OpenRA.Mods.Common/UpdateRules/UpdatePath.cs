@@ -61,9 +61,8 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new ReplaceAttackTypeStrafe()
 			}),
 
-			new UpdatePath("release-20200202", new UpdateRule[]
+			new UpdatePath("release-20200202", "playtest-20200303", new UpdateRule[]
 			{
-				// Bleed only changes here
 				new RemoveYesNo(),
 				new RemoveInitialFacingHardcoding(),
 				new RemoveAirdropActorTypeDefault(),
@@ -74,6 +73,13 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new RenameSpins(),
 				new CreateScreenShakeWarhead(),
 				new RenameRallyPointPath(),
+			}),
+
+			new UpdatePath("playtest-20200303", new UpdateRule[]
+			{
+				// Bleed only changes here
+				new AddPipDecorationTraits(),
+				new ModernizeDecorationTraits(),
 			})
 		};
 

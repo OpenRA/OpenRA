@@ -18,12 +18,10 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
 {
-	[Desc("Displays a text overlay relative to the selection box.")]
-	public class WithTextDecorationInfo : WithDecorationBaseInfo
+	[Desc("Displays the player name above the unit")]
+	public class WithNameTagDecorationInfo : WithDecorationBaseInfo
 	{
-		[Translate]
-		[FieldLoader.Require]
-		public readonly string Text = null;
+		public readonly int MaxLength = 10;
 
 		public readonly string Font = "TinyBold";
 
@@ -33,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Use the player color of the current owner.")]
 		public readonly bool UsePlayerColor = false;
 
-		public override object Create(ActorInitializer init) { return new WithTextDecoration(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new WithNameTagDecoration(init.Self, this); }
 
 		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
@@ -44,16 +42,21 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 	}
 
-	public class WithTextDecoration : WithDecorationBase<WithTextDecorationInfo>, INotifyOwnerChanged
+	public class WithNameTagDecoration : WithDecorationBase<WithNameTagDecorationInfo>, INotifyOwnerChanged
 	{
 		readonly SpriteFont font;
+		string name;
 		Color color;
 
-		public WithTextDecoration(Actor self, WithTextDecorationInfo info)
+		public WithNameTagDecoration(Actor self, WithNameTagDecorationInfo info)
 			: base(self, info)
 		{
 			font = Game.Renderer.Fonts[info.Font];
 			color = info.UsePlayerColor ? self.Owner.Color : info.Color;
+
+			name = self.Owner.PlayerName;
+			if (name.Length > info.MaxLength)
+				name = name.Substring(0, info.MaxLength);
 		}
 
 		protected override IEnumerable<IRenderable> RenderDecoration(Actor self, WorldRenderer wr, int2 screenPos)
@@ -61,10 +64,10 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (IsTraitDisabled || self.IsDead || !self.IsInWorld || !ShouldRender(self))
 				return Enumerable.Empty<IRenderable>();
 
-			var size = font.Measure(Info.Text);
+			var size = font.Measure(name);
 			return new IRenderable[]
 			{
-				new UITextRenderable(font, self.CenterPosition, screenPos - size / 2, 0, color, Info.Text)
+				new UITextRenderable(font, self.CenterPosition, screenPos - size / 2, 0, color, name)
 			};
 		}
 
@@ -72,6 +75,10 @@ namespace OpenRA.Mods.Common.Traits.Render
 		{
 			if (Info.UsePlayerColor)
 				color = newOwner.Color;
+
+			name = self.Owner.PlayerName;
+			if (name.Length > Info.MaxLength)
+				name = name.Substring(0, Info.MaxLength);
 		}
 	}
 }

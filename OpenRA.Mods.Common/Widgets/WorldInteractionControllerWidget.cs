@@ -64,7 +64,8 @@ namespace OpenRA.Mods.Common.Widgets
 			if (selectionDecorations == null)
 				return;
 
-			selectionDecorations.DrawRollover(unit, worldRenderer);
+			foreach (var r in selectionDecorations.RenderRolloverAnnotations(unit, worldRenderer))
+				r.PrepareRender(worldRenderer).Render(worldRenderer);
 		}
 
 		public override void Draw()
