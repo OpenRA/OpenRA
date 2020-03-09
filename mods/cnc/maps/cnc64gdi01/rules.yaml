@@ -41,8 +41,6 @@ OLDLST:
 	Inherits: LST
 	-WithRoof:
 	-Selectable:
-	SelectionDecorations:
-		RenderSelectionBars: False
 	RejectsOrders:
 	Cargo:
 		Types: disabled
