@@ -1038,7 +1038,7 @@ palace:
 			corrino: palace.corrino
 	WithBuildingBib:
 		HasMinibib: True
-	WithNukeLaunchOverlay:
+	WithSupportPowerActivationOverlay:
 		RequiresCondition: !build-incomplete && !launchpad-damaged && harkonnen
 	GrantConditionOnDamageState@LAUNCHPADDAMAGED:
 		Condition: launchpad-damaged
