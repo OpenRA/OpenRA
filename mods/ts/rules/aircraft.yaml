@@ -1,6 +1,7 @@
 DPOD:
 	Inherits: ^Aircraft
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Inherits@CARGOPIPS: ^CargoPips
 	Valued:
 		Cost: 10
 	Tooltip:
@@ -17,7 +18,6 @@ DPOD:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 1
-		PipCount: 1
 		UnloadVoice: Move
 		EjectOnDeath: true
 	Armament:
@@ -26,13 +26,18 @@ DPOD:
 		Voice: Attack
 	AmmoPool:
 		Ammo: 5
-		PipCount: 5
-		PipType: Ammo
-		PipTypeEmpty: AmmoEmpty
 	-SpawnActorOnDeath:
+	WithAmmoPipsDecoration:
+		Position: BottomLeft
+		RequiresSelection: true
+		Margin: 4, 5
+		FullSequence: pip-ammo
+		EmptySequence: pip-ammoempty
+		Palette: pips
 
 DSHP:
 	Inherits: ^Aircraft
+	Inherits@CARGOPIPS: ^CargoPips
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -60,7 +65,6 @@ DSHP:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 5
-		PipCount: 5
 		UnloadVoice: Move
 		EjectOnDeath: true
 	SpawnActorOnDeath:
@@ -109,9 +113,6 @@ ORCA:
 		AttackType: Hover
 	AmmoPool:
 		Ammo: 5
-		PipCount: 5
-		PipType: Ammo
-		PipTypeEmpty: AmmoEmpty
 		AmmoCondition: ammo
 	RenderSprites:
 	SpawnActorOnDeath:
@@ -122,6 +123,13 @@ ORCA:
 		RequiresCondition: empdisable
 	Rearmable:
 		RearmActors: gahpad, nahpad
+	WithAmmoPipsDecoration:
+		Position: BottomLeft
+		RequiresSelection: true
+		Margin: 4, 5
+		FullSequence: pip-ammo
+		EmptySequence: pip-ammoempty
+		Palette: pips
 
 ORCAB:
 	Inherits: ^EMPableAircraft
@@ -166,11 +174,8 @@ ORCAB:
 		PauseOnCondition: empdisable
 	AmmoPool:
 		Ammo: 10
-		PipCount: 2
 		ReloadCount: 5
 		ReloadDelay: 200
-		PipType: Ammo
-		PipTypeEmpty: AmmoEmpty
 		AmmoCondition: ammo
 	RenderSprites:
 	Hovers@CRUISING:
@@ -183,9 +188,18 @@ ORCAB:
 		RequiresCondition: empdisable
 	Rearmable:
 		RearmActors: gahpad, nahpad
+	WithAmmoPipsDecoration:
+		Position: BottomLeft
+		RequiresSelection: true
+		Margin: 4, 5
+		PipCount: 2
+		FullSequence: pip-ammo
+		EmptySequence: pip-ammoempty
+		Palette: pips
 
 ORCATRAN:
 	Inherits: ^EMPableAircraft
+	Inherits@CARGOPIPS: ^CargoPips
 	Valued:
 		Cost: 1200
 	Tooltip:
@@ -216,7 +230,6 @@ ORCATRAN:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 5
-		PipCount: 5
 		UnloadVoice: Move
 		EjectOnDeath: true
 		AfterUnloadDelay: 40
@@ -312,10 +325,7 @@ SCRIN:
 		PauseOnCondition: empdisable
 	AmmoPool:
 		Ammo: 15
-		PipCount: 3
 		ReloadCount: 5
-		PipType: Ammo
-		PipTypeEmpty: AmmoEmpty
 		AmmoCondition: ammo
 	RenderSprites:
 	DeathSounds:
@@ -327,6 +337,14 @@ SCRIN:
 		RequiresCondition: empdisable
 	Rearmable:
 		RearmActors: gahpad, nahpad
+	WithAmmoPipsDecoration:
+		Position: BottomLeft
+		RequiresSelection: true
+		Margin: 4, 5
+		PipCount: 3
+		FullSequence: pip-ammo
+		EmptySequence: pip-ammoempty
+		Palette: pips
 
 APACHE:
 	Inherits: ^EMPableAircraft
@@ -368,9 +386,6 @@ APACHE:
 		AttackType: Hover
 	AmmoPool:
 		Ammo: 12
-		PipCount: 4
-		PipType: Ammo
-		PipTypeEmpty: AmmoEmpty
 		AmmoCondition: ammo
 	WithIdleOverlay@ROTORAIR:
 		Offset: 85,0,598
@@ -389,6 +404,14 @@ APACHE:
 		RequiresCondition: empdisable
 	Rearmable:
 		RearmActors: gahpad, nahpad
+	WithAmmoPipsDecoration:
+		Position: BottomLeft
+		RequiresSelection: true
+		Margin: 4, 5
+		PipCount: 4
+		FullSequence: pip-ammo
+		EmptySequence: pip-ammoempty
+		Palette: pips
 
 HUNTER:
 	Inherits@2: ^ExistsInWorld
@@ -427,12 +450,9 @@ HUNTER:
 	Hovers@CRUISING:
 		RequiresCondition: cruising
 	QuantizeFacingsFromSequence:
-	DrawLineToTarget:
 	AppearsOnRadar:
 		UseLocation: true
 	Interactable:
-	SelectionDecorations:
-		Palette: pips
 	HitShape:
 	MapEditorData:
 		Categories: System

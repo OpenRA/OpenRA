@@ -59,7 +59,7 @@ ENGINEER:
 	Health:
 		HP: 10000
 	Passenger:
-		PipType: Yellow
+		CustomPipType: yellow
 	EngineerRepair:
 	RepairsBridges:
 		RepairNotification: BridgeRepaired

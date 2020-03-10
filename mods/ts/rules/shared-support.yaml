@@ -37,7 +37,6 @@ NAPULS:
 		Sequence: turret
 	Power:
 		Amount: -150
-	SelectionDecorations:
 	RenderSprites:
 		Image: napuls.gdi
 		FactionImages:

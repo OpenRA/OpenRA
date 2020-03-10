@@ -71,12 +71,12 @@ CHAMSPY:
 	Disguise:
 		DisguisedCondition: disguise
 	WithDecoration@disguise:
+		RequiresCondition: disguise
+		Position: TopRight
+		Margin: 6, 10
 		Image: pips
 		Sequence: pip-disguise
 		Palette: pips
-		ReferencePoint: Top, Right
-		ZOffset: 256
-		RequiresCondition: disguise
 	Infiltrates:
 		Types: SpyInfiltrate
 		Notification: BuildingInfiltrated

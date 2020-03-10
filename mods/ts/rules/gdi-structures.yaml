@@ -66,11 +66,11 @@ GAPOWR:
 		RequiresCondition: !empdisable && powrup.b
 		Amount: 50
 	ProvidesPrerequisite@buildingname:
-	SelectionDecorations:
 
 GAPILE:
 	Inherits: ^Building
 	Inherits@SHAPE: ^2x2Shape
+	Inherits@PRIMARY: ^PrimaryBuilding
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 30
@@ -141,9 +141,6 @@ GAPILE:
 	Production:
 		Produces: Infantry
 		PauseOnCondition: empdisable
-	PrimaryBuilding:
-		PrimaryCondition: primary
-		SelectionNotification: PrimaryBuildingSelected
 	ProductionBar:
 		ProductionType: Infantry
 	WithIdleOverlay@LIGHTS:
@@ -158,18 +155,11 @@ GAPILE:
 	Power:
 		Amount: -20
 	ProvidesPrerequisite@buildingname:
-	SelectionDecorations:
-	WithTextDecoration@primary:
-		RequiresSelection: true
-		Text: PRIMARY
-		ReferencePoint: Top
-		Color: E0D048
-		ZOffset: 256
-		RequiresCondition: primary
 
 GAWEAP:
 	Inherits: ^Building
 	Inherits@SHAPE: ^4x3FactoryWithBibShape
+	Inherits@PRIMARY: ^PrimaryBuilding
 	Valued:
 		Cost: 2000
 	Tooltip:
@@ -206,9 +196,6 @@ GAWEAP:
 	Production:
 		Produces: Vehicle
 		PauseOnCondition: empdisable
-	PrimaryBuilding:
-		PrimaryCondition: primary
-		SelectionNotification: PrimaryBuildingSelected
 	ProductionBar:
 		ProductionType: Vehicle
 	WithIdleOverlay@ROOF:
@@ -231,18 +218,11 @@ GAWEAP:
 	Power:
 		Amount: -30
 	ProvidesPrerequisite@buildingname:
-	SelectionDecorations:
-	WithTextDecoration@primary:
-		RequiresSelection: true
-		Text: PRIMARY
-		ReferencePoint: Top
-		Color: E0D048
-		ZOffset: 256
-		RequiresCondition: primary
 
 GAHPAD:
 	Inherits: ^Building
 	Inherits@SHAPE: ^2x2Shape
+	Inherits@PRIMARY: ^PrimaryBuilding
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -270,9 +250,6 @@ GAHPAD:
 	Production:
 		Produces: Air
 		PauseOnCondition: empdisable
-	PrimaryBuilding:
-		PrimaryCondition: primary
-		SelectionNotification: PrimaryBuildingSelected
 	Reservable:
 	RepairsUnits:
 		HpPerStep: 1000
@@ -296,14 +273,6 @@ GAHPAD:
 		Bounds: 88, 66, 0, -5
 		DecorationBounds: 88, 66, 0, -5
 	ProvidesPrerequisite@buildingname:
-	SelectionDecorations:
-	WithTextDecoration@primary:
-		RequiresSelection: true
-		Text: PRIMARY
-		ReferencePoint: Top
-		Color: E0D048
-		ZOffset: 256
-		RequiresCondition: primary
 
 GADEPT:
 	Inherits: ^Building
@@ -362,7 +331,6 @@ GADEPT:
 	Power:
 		Amount: -30
 	ProvidesPrerequisite@buildingname:
-	SelectionDecorations:
 	RenderSprites:
 		Image: gadept.gdi
 		FactionImages:
@@ -412,7 +380,6 @@ GARADR:
 	Power:
 		Amount: -50
 	ProvidesPrerequisite@buildingname:
-	SelectionDecorations:
 
 GATECH:
 	Inherits: ^Building
@@ -448,7 +415,6 @@ GATECH:
 	Power:
 		Amount: -150
 	ProvidesPrerequisite@buildingname:
-	SelectionDecorations:
 
 GAPLUG:
 	Inherits: ^Building
@@ -558,4 +524,3 @@ GAPLUG:
 		PauseOnCondition: disabled
 		Sequence: idle-hunterseekerb
 	ProvidesPrerequisite@buildingname:
-	SelectionDecorations:

@@ -200,7 +200,6 @@
 	ResourceType@Tiberium:
 		Type: Tiberium
 		Name: Tiberium
-		PipColor: Green
 		ResourceType: 1
 		Palette: greentiberium
 		Sequences: tib01, tib02, tib03, tib04, tib05, tib06, tib07, tib08, tib09, tib10, tib11, tib12
@@ -212,7 +211,6 @@
 	ResourceType@BlueTiberium:
 		Type: BlueTiberium
 		Name: Tiberium
-		PipColor: Blue
 		ResourceType: 2
 		Palette: bluetiberium
 		Sequences: tib01, tib02, tib03, tib04, tib05, tib06, tib07, tib08, tib09, tib10, tib11, tib12
@@ -224,7 +222,6 @@
 	ResourceType@Veins:
 		Type: Veins
 		Name: Veins
-		PipColor: Red
 		ResourceType: 3
 		Palette: player
 		Sequences: veins

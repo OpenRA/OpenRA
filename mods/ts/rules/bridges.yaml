@@ -11,7 +11,8 @@ CABHUT:
 		Palette: player
 	Targetable:
 		TargetTypes: C4
-	-SelectionDecorations:
+	-Selectable:
+	Interactable:
 	-Demolishable:
 	-Explodes:
 	-FrozenUnderFog:
