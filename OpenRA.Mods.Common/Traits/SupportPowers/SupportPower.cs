@@ -194,15 +194,14 @@ namespace OpenRA.Mods.Common.Traits
 			Game.Sound.PlayNotification(Self.World.Map.Rules, toPlayer, "Speech", speech, toPlayer.Faction.InternalName);
 		}
 
-		public IEnumerable<CPos> CellsMatching(CPos location, string footprint, CVec dimensions)
+		public IEnumerable<CPos> CellsMatching(CPos location, char[] footprint, CVec dimensions)
 		{
 			var index = 0;
-			var fp = footprint.Where(c => !char.IsWhiteSpace(c)).ToArray();
 			var x = location.X - (dimensions.X - 1) / 2;
 			var y = location.Y - (dimensions.Y - 1) / 2;
 			for (var j = 0; j < dimensions.Y; j++)
 				for (var i = 0; i < dimensions.X; i++)
-					if (fp[index++] == 'x')
+					if (footprint[index++] == 'x')
 						yield return new CPos(x + i, y + j);
 		}
 	}

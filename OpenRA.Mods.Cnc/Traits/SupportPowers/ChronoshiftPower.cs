@@ -63,8 +63,15 @@ namespace OpenRA.Mods.Cnc.Traits
 
 	class ChronoshiftPower : SupportPower
 	{
+		readonly char[] footprint;
+		readonly CVec dimensions;
+
 		public ChronoshiftPower(Actor self, ChronoshiftPowerInfo info)
-			: base(self, info) { }
+			: base(self, info)
+		{
+			footprint = info.Footprint.Where(c => !char.IsWhiteSpace(c)).ToArray();
+			dimensions = info.Dimensions;
+		}
 
 		public override void SelectTarget(Actor self, string order, SupportPowerManager manager)
 		{
@@ -96,8 +103,6 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		public IEnumerable<Actor> UnitsInRange(CPos xy)
 		{
-			var footprint = ((ChronoshiftPowerInfo)Info).Footprint;
-			var dimensions = ((ChronoshiftPowerInfo)Info).Dimensions;
 			var tiles = CellsMatching(xy, footprint, dimensions);
 			var units = new HashSet<Actor>();
 			foreach (var t in tiles)
@@ -111,8 +116,6 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (!Self.Owner.Shroud.IsExplored(xy))
 				return false;
 
-			var footprint = ((ChronoshiftPowerInfo)Info).Footprint;
-			var dimensions = ((ChronoshiftPowerInfo)Info).Dimensions;
 			var sourceTiles = CellsMatching(xy, footprint, dimensions);
 			var destTiles = CellsMatching(sourceLocation, footprint, dimensions);
 
@@ -139,7 +142,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		class SelectChronoshiftTarget : OrderGenerator
 		{
 			readonly ChronoshiftPower power;
-			readonly string footprint;
+			readonly char[] footprint;
 			readonly CVec dimensions;
 			readonly Sprite tile;
 			readonly SupportPowerManager manager;
@@ -156,7 +159,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				this.power = power;
 
 				var info = (ChronoshiftPowerInfo)power.Info;
-				footprint = info.Footprint;
+				footprint = info.Footprint.Where(c => !char.IsWhiteSpace(c)).ToArray();
 				dimensions = info.Dimensions;
 				tile = world.Map.Rules.Sequences.GetSequence(info.FootprintImage, info.SourceFootprintSequence).GetSprite(0);
 			}
@@ -214,7 +217,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		{
 			readonly ChronoshiftPower power;
 			readonly CPos sourceLocation;
-			readonly string footprint;
+			readonly char[] footprint;
 			readonly CVec dimensions;
 			readonly Sprite validTile, invalidTile, sourceTile;
 			readonly SupportPowerManager manager;
@@ -228,7 +231,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				this.sourceLocation = sourceLocation;
 
 				var info = (ChronoshiftPowerInfo)power.Info;
-				footprint = info.Footprint;
+				footprint = info.Footprint.Where(c => !char.IsWhiteSpace(c)).ToArray();
 				dimensions = info.Dimensions;
 
 				var sequences = world.Map.Rules.Sequences;

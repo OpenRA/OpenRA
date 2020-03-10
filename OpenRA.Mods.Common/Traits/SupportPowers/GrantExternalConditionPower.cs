@@ -57,11 +57,13 @@ namespace OpenRA.Mods.Common.Traits
 	class GrantExternalConditionPower : SupportPower
 	{
 		readonly GrantExternalConditionPowerInfo info;
+		readonly char[] footprint;
 
 		public GrantExternalConditionPower(Actor self, GrantExternalConditionPowerInfo info)
 			: base(self, info)
 		{
 			this.info = info;
+			footprint = info.Footprint.Where(c => !char.IsWhiteSpace(c)).ToArray();
 		}
 
 		public override void SelectTarget(Actor self, string order, SupportPowerManager manager)
@@ -93,7 +95,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public IEnumerable<Actor> UnitsInRange(CPos xy)
 		{
-			var tiles = CellsMatching(xy, info.Footprint, info.Dimensions);
+			var tiles = CellsMatching(xy, footprint, info.Dimensions);
 			var units = new List<Actor>();
 			foreach (var t in tiles)
 				units.AddRange(Self.World.ActorMap.GetActorsAt(t));
@@ -111,7 +113,7 @@ namespace OpenRA.Mods.Common.Traits
 		class SelectConditionTarget : OrderGenerator
 		{
 			readonly GrantExternalConditionPower power;
-			readonly string footprint;
+			readonly char[] footprint;
 			readonly CVec dimensions;
 			readonly Sprite tile;
 			readonly SupportPowerManager manager;
@@ -126,7 +128,7 @@ namespace OpenRA.Mods.Common.Traits
 				this.manager = manager;
 				this.order = order;
 				this.power = power;
-				footprint = power.info.Footprint;
+				footprint = power.info.Footprint.Where(c => !char.IsWhiteSpace(c)).ToArray();
 				dimensions = power.info.Dimensions;
 				tile = world.Map.Rules.Sequences.GetSequence("overlay", "target-select").GetSprite(0);
 			}
