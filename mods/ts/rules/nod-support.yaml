@@ -182,7 +182,6 @@ NALASR:
 		RequiresCondition: !build-incomplete
 	Power:
 		Amount: -40
-	SelectionDecorations:
 	BodyOrientation:
 		QuantizedFacings: 0
 
@@ -233,7 +232,6 @@ NAOBEL:
 		Sequence: idle-lights
 	Power:
 		Amount: -150
-	SelectionDecorations:
 
 NASAM:
 	Inherits: ^Defense
@@ -273,7 +271,6 @@ NASAM:
 		LocalOffset: 543,0,815
 	Power:
 		Amount: -30
-	SelectionDecorations:
 
 NASTLH:
 	Inherits: ^Building
@@ -318,7 +315,6 @@ NASTLH:
 	Selectable:
 		Bounds: 106, 48, 8, -6
 		DecorationBounds: 106, 60, 8, -15
-	SelectionDecorations:
 
 NAMISL:
 	Inherits: ^Building
@@ -381,7 +377,6 @@ NAMISL:
 		TrailInterval: 0
 		TrailSequences: idle
 	WithNukeLaunchOverlay:
-	SelectionDecorations:
 
 NAWAST:
 	Inherits: ^Building
@@ -414,8 +409,6 @@ NAWAST:
 		DockAngle: 160
 		DockOffset: 2,1
 	StoresResources:
-		PipColor: Red
-		PipCount: 15
 		Capacity: 56
 	Power:
 		Amount: -40
@@ -433,4 +426,10 @@ NAWAST:
 		RequiresCondition: !build-incomplete
 		Sequence: bib
 	ProvidesPrerequisite@buildingname:
-	SelectionDecorations:
+	WithResourceStoragePipsDecoration:
+		Position: BottomLeft
+		RequiresSelection: true
+		Margin: 5, 2
+		PipCount: 15
+		FullSequence: pip-red
+		Palette: pips

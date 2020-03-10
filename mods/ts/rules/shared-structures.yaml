@@ -84,7 +84,6 @@ GACNST:
 	ProvidesPrerequisite@nod:
 		Factions: nod
 		Prerequisite: structures.nod
-	SelectionDecorations:
 
 PROC:
 	Inherits: ^Building
@@ -114,8 +113,6 @@ PROC:
 		DockOffset: 2,1
 		DiscardExcessResources: true
 	StoresResources:
-		PipColor: Green
-		PipCount: 10
 		Capacity: 2000
 	CustomSellValue:
 		Value: 600
@@ -138,7 +135,6 @@ PROC:
 	Power:
 		Amount: -30
 	ProvidesPrerequisite@buildingname:
-	SelectionDecorations:
 	RenderSprites:
 		Image: proc.gdi
 		FactionImages:
@@ -149,6 +145,12 @@ PROC:
 	Explodes:
 		RequiresCondition: contains-tiberium
 		Weapon: TiberiumExplosion
+	WithResourceStoragePipsDecoration:
+		Position: BottomLeft
+		RequiresSelection: true
+		Margin: 5, 2
+		PipCount: 10
+		Palette: pips
 
 GASILO:
 	Inherits: ^Building
@@ -190,17 +192,20 @@ GASILO:
 		RequiresCondition: !build-incomplete
 		Sequence: idle-lights
 	StoresResources:
-		PipColor: Green
-		PipCount: 5
 		Capacity: 1500
 	Power:
 		Amount: -10
-	SelectionDecorations:
 	GrantConditionOnPlayerResources:
 		Condition: contains-tiberium
 	Explodes:
 		RequiresCondition: contains-tiberium
 		Weapon: TiberiumExplosion
+	WithResourceStoragePipsDecoration:
+		Position: BottomLeft
+		RequiresSelection: true
+		Margin: 5, 2
+		PipCount: 5
+		Palette: pips
 
 ANYPOWER:
 	AlwaysVisible:

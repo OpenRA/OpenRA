@@ -35,7 +35,6 @@ NAPOWR:
 		TargetTypes: Ground, Building, C4, SpyInfiltrate
 	ScalePowerWithHealth:
 	PowerTooltip:
-	SelectionDecorations:
 
 NAAPWR:
 	Inherits: ^Building
@@ -74,12 +73,12 @@ NAAPWR:
 		TargetTypes: Ground, Building, C4, SpyInfiltrate
 	ScalePowerWithHealth:
 	PowerTooltip:
-	SelectionDecorations:
 	ProvidesPrerequisite@buildingname:
 
 NAHAND:
 	Inherits: ^Building
 	Inherits@SHAPE: ^3x2Shape
+	Inherits@PRIMARY: ^PrimaryBuilding
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 40
@@ -156,9 +155,6 @@ NAHAND:
 	Production:
 		Produces: Infantry
 		PauseOnCondition: empdisable
-	PrimaryBuilding:
-		PrimaryCondition: primary
-		SelectionNotification: PrimaryBuildingSelected
 	ProductionBar:
 		ProductionType: Infantry
 	WithIdleOverlay@LIGHTS:
@@ -170,18 +166,11 @@ NAHAND:
 	Power:
 		Amount: -20
 	ProvidesPrerequisite@buildingname:
-	SelectionDecorations:
-	WithTextDecoration@primary:
-		RequiresSelection: true
-		Text: PRIMARY
-		ReferencePoint: Top
-		Color: E0D048
-		ZOffset: 256
-		RequiresCondition: primary
 
 NAWEAP:
 	Inherits: ^Building
 	Inherits@SHAPE: ^4x3FactoryWithBibShape
+	Inherits@PRIMARY: ^PrimaryBuilding
 	Valued:
 		Cost: 2000
 	Tooltip:
@@ -218,9 +207,6 @@ NAWEAP:
 	Production:
 		Produces: Vehicle
 		PauseOnCondition: empdisable
-	PrimaryBuilding:
-		PrimaryCondition: primary
-		SelectionNotification: PrimaryBuildingSelected
 	ProductionBar:
 		ProductionType: Vehicle
 	WithIdleOverlay@ROOF:
@@ -237,18 +223,11 @@ NAWEAP:
 	Power:
 		Amount: -30
 	ProvidesPrerequisite@buildingname:
-	SelectionDecorations:
-	WithTextDecoration@primary:
-		RequiresSelection: true
-		Text: PRIMARY
-		ReferencePoint: Top
-		Color: E0D048
-		ZOffset: 256
-		RequiresCondition: primary
 
 NAHPAD:
 	Inherits: ^Building
 	Inherits@SHAPE: ^2x2Shape
+	Inherits@PRIMARY: ^PrimaryBuilding
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -276,9 +255,6 @@ NAHPAD:
 	Production:
 		Produces: Air
 		PauseOnCondition: empdisable
-	PrimaryBuilding:
-		PrimaryCondition: primary
-		SelectionNotification: PrimaryBuildingSelected
 	Reservable:
 	RepairsUnits:
 		HpPerStep: 1000
@@ -302,14 +278,6 @@ NAHPAD:
 		Bounds: 78, 48, 0, -6
 		DecorationBounds: 78, 54, 0, -8
 	ProvidesPrerequisite@buildingname:
-	SelectionDecorations:
-	WithTextDecoration@primary:
-		RequiresSelection: true
-		Text: PRIMARY
-		ReferencePoint: Top
-		Color: E0D048
-		ZOffset: 256
-		RequiresCondition: primary
 
 NARADR:
 	Inherits: ^Building
@@ -354,7 +322,6 @@ NARADR:
 	Power:
 		Amount: -40
 	ProvidesPrerequisite@buildingname:
-	SelectionDecorations:
 
 NATECH:
 	Inherits: ^Building
@@ -390,7 +357,6 @@ NATECH:
 	Power:
 		Amount: -150
 	ProvidesPrerequisite@buildingname:
-	SelectionDecorations:
 
 NATMPL:
 	Inherits: ^Building

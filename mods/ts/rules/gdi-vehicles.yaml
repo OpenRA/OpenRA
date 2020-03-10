@@ -1,6 +1,7 @@
 APC:
 	Inherits: ^Tank
 	Inherits@VOXELS: ^VoxelActor
+	Inherits@CARGOPIPS: ^CargoPips
 	Valued:
 		Cost: 800
 	Tooltip:
@@ -28,7 +29,6 @@ APC:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 5
-		PipCount: 5
 		UnloadVoice: Unload
 		LoadingCondition: loading
 		EjectOnDeath: true
@@ -409,6 +409,5 @@ JUGG:
 	WithMuzzleOverlay:
 	RevealOnFire:
 		ArmamentNames: deployed
-	SelectionDecorations:
 	Selectable:
 		DecorationBounds: 48,40,0,-8

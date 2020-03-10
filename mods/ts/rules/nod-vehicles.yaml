@@ -383,10 +383,18 @@ WEED:
 	WithVoxelUnloadBody:
 	-DamagedByTerrain@VEINS:
 	-LeavesTrails@VEINS:
+	WithHarvesterPipsDecoration:
+		Position: BottomLeft
+		RequiresSelection: true
+		Margin: 5, 2
+		FullSequence: pip-red
+		Palette: pips
+		PipCount: 7
 
 SAPC:
 	Inherits: ^Tank
 	Inherits@VOXELS: ^VoxelActor
+	Inherits@CARGOPIPS: ^CargoPips
 	Valued:
 		Cost: 800
 	Tooltip:
@@ -414,7 +422,6 @@ SAPC:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 5
-		PipCount: 5
 		UnloadVoice: Unload
 		LoadingCondition: loading
 		EjectOnDeath: true

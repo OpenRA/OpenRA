@@ -74,7 +74,7 @@ MEDIC:
 		Step: 500
 		Delay: 60
 	Passenger:
-		PipType: Red
+		CustomPipType: red
 
 JUMPJET:
 	Inherits: ^Soldier
@@ -102,7 +102,7 @@ JUMPJET:
 	Armor:
 		Type: Light
 	Passenger:
-		PipType: Green
+		CustomPipType: green
 	RevealsShroud:
 		Range: 6c0
 	Armament:

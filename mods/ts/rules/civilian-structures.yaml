@@ -1385,7 +1385,6 @@ GASPOT:
 		MaxHeightDelta: 3
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
-	SelectionDecorations:
 	MapEditorData:
 		Categories: Civilian building
 
@@ -1417,7 +1416,6 @@ GALITE:
 	Selectable:
 		Bounds: 24, 24, 0, -4
 		DecorationBounds: 25, 35, 0, -12
-	SelectionDecorations:
 	-Cloak@EXTERNALCLOAK:
 	-ExternalCondition@CLOAKGENERATOR:
 	-ExternalCondition@CRATE-CLOAK:
@@ -1515,7 +1513,6 @@ UFO:
 		Type: Heavy
 	MapEditorData:
 		RequireTilesets: TEMPERATE
-	SelectionDecorations:
 	ThrowsShrapnel@SMALL:
 		Pieces: 9, 12
 	ThrowsShrapnel@LARGE:

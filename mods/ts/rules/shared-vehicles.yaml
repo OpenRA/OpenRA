@@ -34,7 +34,6 @@ MCV:
 		TransformSounds: place2.aud
 		NoTransformSounds:
 		Voice: Move
-	SelectionDecorations:
 	RenderSprites:
 		Image: mcv.gdi
 		FactionImages:
@@ -92,7 +91,6 @@ HARV:
 	WithHarvestOverlay:
 		LocalOffset: 543,0,0
 		Palette: effect
-	SelectionDecorations:
 	RenderSprites:
 		Image: harv.gdi
 		FactionImages:
@@ -100,6 +98,15 @@ HARV:
 			nod: harv.nod
 	-DamagedByTerrain@VEINS:
 	-LeavesTrails@VEINS:
+	WithHarvesterPipsDecoration:
+		Position: BottomLeft
+		RequiresSelection: true
+		Margin: 5, 2
+		PipCount: 7
+		Palette: pips
+		ResourceSequences:
+			Tiberium: pip-green
+			BlueTiberium: pip-blue
 
 LPST:
 	Inherits: ^Tank
