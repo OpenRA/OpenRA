@@ -14,8 +14,8 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
 {
-	[Desc("Displays an overlay when `NukePower` is triggered.")]
-	public class WithNukeLaunchOverlayInfo : ConditionalTraitInfo, Requires<RenderSpritesInfo>, Requires<BodyOrientationInfo>
+	[Desc("Displays an overlay when a support power is triggered.")]
+	public class WithSupportPowerActivationOverlayInfo : ConditionalTraitInfo, Requires<RenderSpritesInfo>, Requires<BodyOrientationInfo>
 	{
 		[SequenceReference]
 		[Desc("Sequence name to use")]
@@ -31,15 +31,15 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Custom palette is a player palette BaseName")]
 		public readonly bool IsPlayerPalette = false;
 
-		public override object Create(ActorInitializer init) { return new WithNukeLaunchOverlay(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new WithSupportPowerActivationOverlay(init.Self, this); }
 	}
 
-	public class WithNukeLaunchOverlay : ConditionalTrait<WithNukeLaunchOverlayInfo>, INotifySupportPower
+	public class WithSupportPowerActivationOverlay : ConditionalTrait<WithSupportPowerActivationOverlayInfo>, INotifySupportPower
 	{
 		readonly Animation overlay;
 		bool visible;
 
-		public WithNukeLaunchOverlay(Actor self, WithNukeLaunchOverlayInfo info)
+		public WithSupportPowerActivationOverlay(Actor self, WithSupportPowerActivationOverlayInfo info)
 			: base(info)
 		{
 			var rs = self.Trait<RenderSprites>();

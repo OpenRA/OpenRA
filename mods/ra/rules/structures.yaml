@@ -62,7 +62,7 @@ MSLO:
 		Amount: -150
 	MustBeDestroyed:
 		RequiredForShortGame: false
-	WithNukeLaunchAnimation:
+	WithSupportPowerActivationAnimation:
 		RequiresCondition: !build-incomplete
 
 GAP:

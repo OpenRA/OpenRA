@@ -495,7 +495,7 @@ NAMISL:
 		TrailPalette: effectalpha75
 		TrailInterval: 0
 		TrailSequences: idle
-	WithNukeLaunchOverlay:
+	WithSupportPowerActivationOverlay:
 
 NAWAST:
 	Inherits: ^Building

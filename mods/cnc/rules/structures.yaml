@@ -813,9 +813,9 @@ TMPL:
 		CircleSequence: circles
 		SupportPowerPaletteOrder: 30
 	WithBuildingBib:
-	WithNukeLaunchAnimation:
+	WithSupportPowerActivationAnimation:
 		RequiresCondition: !build-incomplete
-	WithNukeLaunchOverlay:
+	WithSupportPowerActivationOverlay:
 		RequiresCondition: !build-incomplete
 		Sequence: smoke
 	SupportPowerChargeBar:
