@@ -15,4 +15,7 @@ namespace OpenRA.Mods.Cnc.Traits
 {
 	[RequireExplicitImplementation]
 	public interface INotifyTeslaCharging { void Charging(Actor self, Target target); }
+
+	[RequireExplicitImplementation]
+	public interface INotifyChronosphere { void Teleporting(WPos from, WPos to); }
 }
