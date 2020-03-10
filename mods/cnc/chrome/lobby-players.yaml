@@ -148,7 +148,7 @@ Container@LOBBY_PLAYER_BIN:
 							Height: 25
 							Font: Regular
 						Image@STATUS_IMAGE:
-							X: 521
+							X: 529
 							Y: 4
 							Width: 20
 							Height: 20
@@ -198,7 +198,6 @@ Container@LOBBY_PLAYER_BIN:
 							Template: ANONYMOUS_PLAYER_TOOLTIP
 						Label@NAME:
 							X: 39
-							Y: 0 - 1
 							Width: 161
 							Height: 25
 						DropDownButton@PLAYER_ACTION:
@@ -233,8 +232,8 @@ Container@LOBBY_PLAYER_BIN:
 							Height: 25
 							Children:
 								Image@FACTIONFLAG:
-									X: 5
-									Y: 5
+									X: 4
+									Y: 4
 									Width: 30
 									Height: 15
 								Label@FACTIONNAME:
@@ -265,7 +264,7 @@ Container@LOBBY_PLAYER_BIN:
 							Font: Regular
 							Visible: false
 						Image@STATUS_IMAGE:
-							X: 527
+							X: 529
 							Y: 4
 							Width: 20
 							Height: 20
@@ -287,7 +286,6 @@ Container@LOBBY_PLAYER_BIN:
 							Visible: false
 						Label@NAME:
 							X: 20
-							Y: 0 - 1
 							Width: 195
 							Height: 25
 							Visible: false
@@ -348,7 +346,7 @@ Container@LOBBY_PLAYER_BIN:
 							Align: Center
 							Font: Bold
 						Image@STATUS_IMAGE:
-							X: 521
+							X: 529
 							Y: 4
 							Width: 20
 							Height: 20
@@ -398,7 +396,6 @@ Container@LOBBY_PLAYER_BIN:
 							Template: ANONYMOUS_PLAYER_TOOLTIP
 						Label@NAME:
 							X: 39
-							Y: 0 - 1
 							Width: 161
 							Height: 25
 						DropDownButton@PLAYER_ACTION:
