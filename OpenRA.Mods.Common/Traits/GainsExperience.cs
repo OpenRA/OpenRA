@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new GainsExperience(init, this); }
 	}
 
-	public class GainsExperience : INotifyCreated, ISync, IResolveOrder
+	public class GainsExperience : INotifyCreated, ISync, IResolveOrder, ITransformActorInitModifier
 	{
 		readonly Actor self;
 		readonly GainsExperienceInfo info;
@@ -142,6 +142,11 @@ namespace OpenRA.Mods.Common.Traits
 				else
 					GiveLevels(1);
 			}
+		}
+
+		void ITransformActorInitModifier.ModifyTransformActorInit(Actor self, TypeDictionary init)
+		{
+			init.Add(new ExperienceInit(experience));
 		}
 	}
 
