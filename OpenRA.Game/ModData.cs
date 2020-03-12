@@ -137,7 +137,7 @@ namespace OpenRA
 			CursorProvider = new CursorProvider(this);
 		}
 
-		public IEnumerable<string> Languages { get; private set; }
+		public IEnumerable<string> Languages { get; set; }
 
 		void LoadTranslations(Map map)
 		{
@@ -187,7 +187,7 @@ namespace OpenRA
 			using (new Support.PerfTimer("Map"))
 				map = new Map(this, MapCache[uid].Package);
 
-			LoadTranslations(map);
+			// LoadTranslations(map);
 
 			// Reinitialize all our assets
 			InitializeLoaders(map);

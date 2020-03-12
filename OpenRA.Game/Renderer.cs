@@ -106,7 +106,7 @@ namespace OpenRA
 				if (fontSheetBuilder != null)
 					fontSheetBuilder.Dispose();
 				fontSheetBuilder = new SheetBuilder(SheetType.BGRA, 512);
-				Fonts = modData.Manifest.Get<Fonts>().FontList.ToDictionary(x => x.Key,
+				Fonts = Game.Translator.CurrentFontList.ToDictionary(x => x.Key,
 					x => new SpriteFont(x.Value.Font, modData.DefaultFileSystem.Open(x.Value.Font).ReadAllBytes(),
 										x.Value.Size, x.Value.Ascender, Window.EffectiveWindowScale, fontSheetBuilder)).AsReadOnly();
 			}

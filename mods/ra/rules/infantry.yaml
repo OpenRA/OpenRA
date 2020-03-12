@@ -73,13 +73,13 @@ E1:
 		BuildAtProductionType: Soldier
 		BuildPaletteOrder: 10
 		Prerequisites: ~barracks, ~techlevel.infonly
-		Description: General-purpose infantry.\n  Strong vs Infantry\n  Weak vs Vehicles, Aircraft
+		Description: DESC:E1
 	Selectable:
 		Class: E1
 	Valued:
 		Cost: 100
 	Tooltip:
-		Name: Rifle Infantry
+		Name: NAME:E1
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:

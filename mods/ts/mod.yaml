@@ -186,7 +186,10 @@ Music:
 	ts|audio/music.yaml
 
 Translations:
+	common|languages/english.yaml
+	common|languages/chinese.yaml
 	ts|languages/english.yaml
+	ts|languages/chinese.yaml
 
 Hotkeys:
 	common|hotkeys/game.yaml
@@ -209,40 +212,6 @@ ServerTraits:
 ChromeMetrics:
 	common|metrics.yaml
 	ts|metrics.yaml
-
-Fonts:
-	Tiny:
-		Font: common|FreeSans.ttf
-		Size: 10
-		Ascender: 8
-	TinyBold:
-		Font: common|FreeSansBold.ttf
-		Size: 10
-		Ascender: 8
-	Small:
-		Font: common|FreeSans.ttf
-		Size: 12
-		Ascender: 9
-	Regular:
-		Font: common|FreeSans.ttf
-		Size: 14
-		Ascender: 11
-	Bold:
-		Font: common|FreeSansBold.ttf
-		Size: 14
-		Ascender: 11
-	MediumBold:
-		Font: common|FreeSansBold.ttf
-		Size: 18
-		Ascender: 14
-	BigBold:
-		Font: common|FreeSansBold.ttf
-		Size: 24
-		Ascender: 18
-	Title:
-		Font: common|FreeSansBold.ttf
-		Size: 32
-		Ascender: 24
 
 SupportsMapsFrom: ts
 

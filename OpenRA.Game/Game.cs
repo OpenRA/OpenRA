@@ -43,10 +43,10 @@ namespace OpenRA
 		public static bool HideCursor;
 		static WorldRenderer worldRenderer;
 		static string modLaunchWrapper;
+		public static Translator Translator;
 
 		internal static OrderManager OrderManager;
 		static Server.Server server;
-
 		public static MersenneTwister CosmeticRandom = new MersenneTwister(); // not synced
 
 		public static Renderer Renderer;
@@ -426,6 +426,8 @@ namespace OpenRA
 			using (new PerfTimer("LoadMaps"))
 				ModData.MapCache.LoadMaps();
 
+			Translator = new Translator();
+			Translator.LoadTranslations(ModData);
 			ModData.InitializeLoaders(ModData.DefaultFileSystem);
 			Renderer.InitializeFonts(ModData);
 

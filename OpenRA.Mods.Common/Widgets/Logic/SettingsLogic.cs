@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class SettingsLogic : ChromeLogic
 	{
-		enum PanelType { Display, Audio, Input, Hotkeys, Advanced }
+		enum PanelType { Display, Language, Audio, Input, Hotkeys, Advanced }
 
 		static readonly int OriginalVideoDisplay;
 		static readonly string OriginalSoundDevice;
@@ -30,6 +30,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		static readonly int2 OriginalGraphicsWindowedSize;
 		static readonly int2 OriginalGraphicsFullscreenSize;
 		static readonly bool OriginalServerDiscoverNatDevices;
+		static readonly string OriginalLanguage;
 
 		readonly Dictionary<PanelType, Action> leavePanelActions = new Dictionary<PanelType, Action>();
 		readonly Dictionary<PanelType, Action> resetPanelActions = new Dictionary<PanelType, Action>();
@@ -58,6 +59,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			OriginalGraphicsWindowedSize = original.Graphics.WindowedSize;
 			OriginalGraphicsFullscreenSize = original.Graphics.FullscreenSize;
 			OriginalServerDiscoverNatDevices = original.Server.DiscoverNatDevices;
+			OriginalLanguage = original.Graphics.Language;
 		}
 
 		[ObjectCreator.UseCtor]
@@ -81,6 +83,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			RegisterSettingsPanel(PanelType.Display, InitDisplayPanel, ResetDisplayPanel, "DISPLAY_PANEL", "DISPLAY_TAB");
+			RegisterSettingsPanel(PanelType.Language, InitLanguagePanel, ResetLanguagePanel, "LANGUAGE_PANEL", "LANGUAGE_TAB");
 			RegisterSettingsPanel(PanelType.Audio, InitAudioPanel, ResetAudioPanel, "AUDIO_PANEL", "AUDIO_TAB");
 			RegisterSettingsPanel(PanelType.Input, InitInputPanel, ResetInputPanel, "INPUT_PANEL", "INPUT_TAB");
 			RegisterSettingsPanel(PanelType.Hotkeys, InitHotkeysPanel, ResetHotkeysPanel, "HOTKEYS_PANEL", "HOTKEYS_TAB");
@@ -98,7 +101,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					current.Graphics.VideoDisplay != OriginalVideoDisplay ||
 				    current.Graphics.WindowedSize != OriginalGraphicsWindowedSize ||
 					current.Graphics.FullscreenSize != OriginalGraphicsFullscreenSize ||
-					current.Server.DiscoverNatDevices != OriginalServerDiscoverNatDevices)
+					current.Server.DiscoverNatDevices != OriginalServerDiscoverNatDevices ||
+					current.Graphics.Language != OriginalLanguage)
 				{
 					Action restart = () =>
 					{
@@ -107,12 +111,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					};
 
 					ConfirmationDialogs.ButtonPrompt(
-						title: "Restart Now?",
-						text: "Some changes will not be applied until\nthe game is restarted. Restart now?",
+						title: FieldLoader.Translate("SETTING:RESTART_DIANLOGS-TITLE"),
+						text: FieldLoader.Translate("SETTING:RESTART_DIANLOGS-TEXT"),
 						onConfirm: restart,
 						onCancel: closeAndExit,
-						confirmText: "Restart Now",
-						cancelText: "Restart Later");
+						confirmText: FieldLoader.Translate("SETTING:RESTART_DIANLOGS-OK_BUTTON-TEXT"),
+						cancelText: FieldLoader.Translate("SETTING:RESTART_DIANLOGS-CANCEL_BUTTON-TEXT"));
 				}
 				else
 					closeAndExit();
@@ -245,13 +249,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (languageDropDownButton != null)
 			{
 				languageDropDownButton.OnMouseDown = _ => ShowLanguageDropdown(languageDropDownButton, modData.Languages);
-				languageDropDownButton.GetText = () => FieldLoader.Translate(ds.Language);
+				languageDropDownButton.GetText = () => FieldLoader.Translate("LANGUAGES:" + ds.Language);
 			}
 
 			var windowModeDropdown = panel.Get<DropDownButtonWidget>("MODE_DROPDOWN");
 			windowModeDropdown.OnMouseDown = _ => ShowWindowModeDropdown(windowModeDropdown, ds);
 			windowModeDropdown.GetText = () => ds.Mode == WindowMode.Windowed ?
-				"Windowed" : ds.Mode == WindowMode.Fullscreen ? "Fullscreen (Legacy)" : "Fullscreen";
+				FieldLoader.Translate("SETTING:WINDOW_MODE-WINDOWED") : ds.Mode == WindowMode.Fullscreen ?
+				FieldLoader.Translate("SETTING:WINDOW_MODE-FULLSCREEN_LEGSCY") :
+				FieldLoader.Translate("SETTING:WINDOW_MODE-FULLSCREEN");
 
 			var modeChangesDesc = panel.Get("MODE_CHANGES_DESC");
 			modeChangesDesc.IsVisible = () => ds.Mode != WindowMode.Windowed && (ds.Mode != OriginalGraphicsMode ||
@@ -266,12 +272,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var statusBarsDropDown = panel.Get<DropDownButtonWidget>("STATUS_BAR_DROPDOWN");
 			statusBarsDropDown.OnMouseDown = _ => ShowStatusBarsDropdown(statusBarsDropDown, gs);
 			statusBarsDropDown.GetText = () => gs.StatusBars == StatusBarsType.Standard ?
-				"Standard" : gs.StatusBars == StatusBarsType.DamageShow ? "Show On Damage" : "Always Show";
+				FieldLoader.Translate("SETTING:STATUS_BAR-STANDARD") : gs.StatusBars == StatusBarsType.DamageShow ?
+				FieldLoader.Translate("SETTING:STATUS_BAR-SHOW_ON_DAMAGE") :
+				FieldLoader.Translate("SETTING:STATUS_BAR-ALWAYS_SHOW");
 
 			var targetLinesDropDown = panel.Get<DropDownButtonWidget>("TARGET_LINES_DROPDOWN");
 			targetLinesDropDown.OnMouseDown = _ => ShowTargetLinesDropdown(targetLinesDropDown, gs);
 			targetLinesDropDown.GetText = () => gs.TargetLines == TargetLinesType.Automatic ?
-				"Automatic" : gs.TargetLines == TargetLinesType.Manual ? "Manual" : "Disabled";
+				FieldLoader.Translate("SETTING:TARGET_LINES-AUTO") : gs.TargetLines == TargetLinesType.Manual ?
+				FieldLoader.Translate("SETTING:TARGET_LINES-MANUAL") :
+				FieldLoader.Translate("SETTING:TARGET_LINES-DISABLE");
 
 			var battlefieldCameraDropDown = panel.Get<DropDownButtonWidget>("BATTLEFIELD_CAMERA_DROPDOWN");
 			var battlefieldCameraLabel = new CachedTransform<WorldViewport, string>(vs => ViewportSizeNames[vs]);
@@ -397,6 +407,32 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				ps.Color = dps.Color;
 				ps.Name = dps.Name;
+			};
+		}
+
+		Action InitLanguagePanel(Widget panel)
+		{
+			var ds = Game.Settings.Graphics;
+			var gs = Game.Settings.Game;
+
+			var languageDropDownButton = panel.Get<DropDownButtonWidget>("LANGUAGE_DROPDOWNBUTTON");
+			languageDropDownButton.OnMouseDown = _ => ShowLanguageDropdown(languageDropDownButton, modData.Languages);
+			languageDropDownButton.GetText = () => FieldLoader.Translate("LANGUAGES:" + ds.Language);
+
+			return () =>
+			{
+			};
+		}
+
+		Action ResetLanguagePanel(Widget panel)
+		{
+			var ds = Game.Settings.Graphics;
+			var ps = Game.Settings.Player;
+			var dds = new GraphicSettings();
+			var dps = new PlayerSettings();
+			return () =>
+			{
+				ds.Language = dds.Language;
 			};
 		}
 
@@ -566,7 +602,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var zoomModifierDropdown = panel.Get<DropDownButtonWidget>("ZOOM_MODIFIER");
 			zoomModifierDropdown.OnMouseDown = _ => ShowZoomModifierDropdown(zoomModifierDropdown, gs);
-			zoomModifierDropdown.GetText = () => gs.ZoomModifier.ToString();
+			zoomModifierDropdown.GetText = () => gs.ZoomModifier == Modifiers.None ?
+			FieldLoader.Translate("SETTING:ZOOM_MODIFIER-NONE") : gs.ZoomModifier.ToString();
 
 			return () => { };
 		}
@@ -738,10 +775,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var options = new Dictionary<string, MouseScrollType>()
 			{
-				{ "Disabled", MouseScrollType.Disabled },
-				{ "Standard", MouseScrollType.Standard },
-				{ "Inverted", MouseScrollType.Inverted },
-				{ "Joystick", MouseScrollType.Joystick },
+				{ FieldLoader.Translate("SETTING:MOUSE_SCROLL-DISABLE"), MouseScrollType.Disabled },
+				{ FieldLoader.Translate("SETTING:MOUSE_SCROLL-STANDARD"), MouseScrollType.Standard },
+				{ FieldLoader.Translate("SETTING:MOUSE_SCROLL-INVERTED"), MouseScrollType.Inverted },
+				{ FieldLoader.Translate("SETTING:MOUSE_SCROLL-JOYSTICK"), MouseScrollType.Joystick },
 			};
 
 			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
@@ -764,7 +801,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{ "Ctrl", Modifiers.Ctrl },
 				{ "Meta", Modifiers.Meta },
 				{ "Shift", Modifiers.Shift },
-				{ "None", Modifiers.None }
+				{ FieldLoader.Translate("SETTING:ZOOM_MODIFIER-NONE"), Modifiers.None }
 			};
 
 			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
@@ -804,9 +841,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var options = new Dictionary<string, WindowMode>()
 			{
-				{ "Fullscreen", WindowMode.PseudoFullscreen },
-				{ "Fullscreen (Legacy)", WindowMode.Fullscreen },
-				{ "Windowed", WindowMode.Windowed },
+				{ FieldLoader.Translate("SETTING:WINDOW_MODE-FULLSCREEN"), WindowMode.PseudoFullscreen },
+				{ FieldLoader.Translate("SETTING:WINDOW_MODE-FULLSCREEN_LEGSCY"), WindowMode.Fullscreen },
+				{ FieldLoader.Translate("SETTING:WINDOW_MODE-WINDOWED"), WindowMode.Windowed },
 			};
 
 			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
@@ -830,7 +867,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					() => Game.Settings.Graphics.Language == o,
 					() => Game.Settings.Graphics.Language = o);
 
-				item.Get<LabelWidget>("LABEL").GetText = () => FieldLoader.Translate(o);
+				item.Get<LabelWidget>("LABEL").GetText = () => FieldLoader.Translate("LANGUAGES:" + o);
 				return item;
 			};
 
@@ -841,9 +878,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var options = new Dictionary<string, StatusBarsType>()
 			{
-				{ "Standard", StatusBarsType.Standard },
-				{ "Show On Damage", StatusBarsType.DamageShow },
-				{ "Always Show", StatusBarsType.AlwaysShow },
+				{ FieldLoader.Translate("SETTING:STATUS_BAR-STANDARD"), StatusBarsType.Standard },
+				{ FieldLoader.Translate("SETTING:STATUS_BAR-SHOW_ON_DAMAGE"), StatusBarsType.DamageShow },
+				{ FieldLoader.Translate("SETTING:STATUS_BAR-ALWAYS_SHOW"), StatusBarsType.AlwaysShow },
 			};
 
 			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
@@ -879,9 +916,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var options = new Dictionary<string, TargetLinesType>()
 			{
-				{ "Automatic", TargetLinesType.Automatic },
-				{ "Manual", TargetLinesType.Manual },
-				{ "Disabled", TargetLinesType.Disabled },
+				{ FieldLoader.Translate("SETTING:TARGET_LINES-AUTO"), TargetLinesType.Automatic },
+				{ FieldLoader.Translate("SETTING:TARGET_LINES-MANUAL"), TargetLinesType.Manual },
+				{ FieldLoader.Translate("SETTING:TARGET_LINES-DISABLE"), TargetLinesType.Disabled },
 			};
 
 			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>

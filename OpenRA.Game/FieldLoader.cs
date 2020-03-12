@@ -223,7 +223,7 @@ namespace OpenRA
 			else if (fieldType == typeof(string))
 			{
 				if (field != null && MemberHasTranslateAttribute[field] && value != null)
-					return Regex.Replace(value, "@[^@]+@", m => Translate(m.Value.Substring(1, m.Value.Length - 2)), RegexOptions.Compiled);
+					return Regex.Replace(value, "(?s)^(?:(?!:).)+:(?:(?!:).)+$", m => Translate(value), RegexOptions.Compiled);
 				return value;
 			}
 			else if (fieldType == typeof(Color))

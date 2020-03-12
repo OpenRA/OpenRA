@@ -43,7 +43,7 @@ Container@MAINMENU:
 							Y: 22
 							Width: 200
 							Height: 30
-							Text: OpenRA
+							Text: UI_MENU:MAIN_MENU_TITLE
 							Align: Center
 							Font: Bold
 						Button@SINGLEPLAYER_BUTTON:
@@ -51,42 +51,42 @@ Container@MAINMENU:
 							Y: 60
 							Width: 140
 							Height: 30
-							Text: Singleplayer
+							Text: UI_MENU:SINGLEPLAYER_BUTTON
 							Font: Bold
 						Button@MULTIPLAYER_BUTTON:
 							X: PARENT_RIGHT / 2 - WIDTH / 2
 							Y: 100
 							Width: 140
 							Height: 30
-							Text: Multiplayer
+							Text: UI_MENU:MULTIPLAYER_BUTTON
 							Font: Bold
 						Button@SETTINGS_BUTTON:
 							X: PARENT_RIGHT / 2 - WIDTH / 2
 							Y: 140
 							Width: 140
 							Height: 30
-							Text: Settings
+							Text: UI_MENU:SETTINGS_BUTTON
 							Font: Bold
 						Button@EXTRAS_BUTTON:
 							X: PARENT_RIGHT / 2 - WIDTH / 2
 							Y: 180
 							Width: 140
 							Height: 30
-							Text: Extras
+							Text: UI_MENU:EXTRAS_BUTTON
 							Font: Bold
 						Button@CONTENT_BUTTON:
 							X: PARENT_RIGHT / 2 - WIDTH / 2
 							Y: 220
 							Width: 140
 							Height: 30
-							Text: Manage Content
+							Text: UI_MENU:CONTENT_BUTTON
 							Font: Bold
 						Button@QUIT_BUTTON:
 							X: PARENT_RIGHT / 2 - WIDTH / 2
 							Y: 260
 							Width: 140
 							Height: 30
-							Text: Quit
+							Text: UI_MENU:QUIT_BUTTON
 							Font: Bold
 				Background@SINGLEPLAYER_MENU:
 					Width: PARENT_RIGHT
@@ -97,7 +97,7 @@ Container@MAINMENU:
 							Y: 20
 							Width: 200
 							Height: 30
-							Text: Singleplayer
+							Text: UI_MENU:SINGLEPLAYER_MENU_TITLE
 							Align: Center
 							Font: Bold
 						Button@SKIRMISH_BUTTON:
@@ -105,21 +105,21 @@ Container@MAINMENU:
 							Y: 60
 							Width: 140
 							Height: 30
-							Text: Skirmish
+							Text: UI_MENU:SKIRMISH_BUTTON
 							Font: Bold
 						Button@MISSIONS_BUTTON:
 							X: PARENT_RIGHT / 2 - WIDTH / 2
 							Y: 100
 							Width: 140
 							Height: 30
-							Text: Missions
+							Text: UI_MENU:MISSIONS_BUTTON
 							Font: Bold
 						Button@LOAD_BUTTON:
 							X: PARENT_RIGHT / 2 - WIDTH / 2
 							Y: 140
 							Width: 140
 							Height: 30
-							Text: Load
+							Text: UI_MENU:LOAD_BUTTON
 							Font: Bold
 						Button@BACK_BUTTON:
 							X: PARENT_RIGHT / 2 - WIDTH / 2
@@ -127,7 +127,7 @@ Container@MAINMENU:
 							Y: 260
 							Width: 140
 							Height: 30
-							Text: Back
+							Text: UI_MENU:BACK_BUTTON
 							Font: Bold
 				Background@EXTRAS_MENU:
 					Width: PARENT_RIGHT
@@ -138,7 +138,7 @@ Container@MAINMENU:
 							Y: 20
 							Width: 200
 							Height: 30
-							Text: Extras
+							Text: UI_MENU:EXTRAS_MENU_TITLE
 							Align: Center
 							Font: Bold
 						Button@REPLAYS_BUTTON:
@@ -146,35 +146,35 @@ Container@MAINMENU:
 							Y: 60
 							Width: 140
 							Height: 30
-							Text: Replays
+							Text: UI_MENU:REPLAYS_BUTTON
 							Font: Bold
 						Button@MUSIC_BUTTON:
 							X: PARENT_RIGHT / 2 - WIDTH / 2
 							Y: 100
 							Width: 140
 							Height: 30
-							Text: Music
+							Text: UI_MENU:MUSIC_BUTTON
 							Font: Bold
 						Button@MAP_EDITOR_BUTTON:
 							X: PARENT_RIGHT / 2 - WIDTH / 2
 							Y: 140
 							Width: 140
 							Height: 30
-							Text: Map Editor
+							Text: UI_MENU:MAP_EDITOR_BUTTON
 							Font: Bold
 						Button@ASSETBROWSER_BUTTON:
 							X: PARENT_RIGHT / 2 - WIDTH / 2
 							Y: 180
 							Width: 140
 							Height: 30
-							Text: Asset Browser
+							Text: UI_MENU:ASSET_BROWSER_BUTTON
 							Font: Bold
 						Button@CREDITS_BUTTON:
 							X: PARENT_RIGHT / 2 - WIDTH / 2
 							Y: 220
 							Width: 140
 							Height: 30
-							Text: Credits
+							Text: UI_MENU:CREDITS_BUTTON
 							Font: Bold
 						Button@BACK_BUTTON:
 							X: PARENT_RIGHT / 2 - WIDTH / 2
@@ -182,7 +182,7 @@ Container@MAINMENU:
 							Y: 260
 							Width: 140
 							Height: 30
-							Text: Back
+							Text: UI_MENU:BACK_BUTTON
 							Font: Bold
 				Background@MAP_EDITOR_MENU:
 					Width: PARENT_RIGHT
@@ -193,7 +193,7 @@ Container@MAINMENU:
 							Y: 20
 							Width: 200
 							Height: 30
-							Text: Map Editor
+							Text: UI_MENU:MAP_EDITOR_MENU_TITLE
 							Align: Center
 							Font: Bold
 						Button@NEW_MAP_BUTTON:
@@ -201,14 +201,14 @@ Container@MAINMENU:
 							Y: 60
 							Width: 140
 							Height: 30
-							Text: New Map
+							Text: UI_MENU:NEW_MAP_BUTTON
 							Font: Bold
 						Button@LOAD_MAP_BUTTON:
 							X: PARENT_RIGHT / 2 - WIDTH / 2
 							Y: 100
 							Width: 140
 							Height: 30
-							Text: Load Map
+							Text: UI_MENU:LOAD_MAP_BUTTON
 							Font: Bold
 						Button@BACK_BUTTON:
 							X: PARENT_RIGHT / 2 - WIDTH / 2
@@ -216,7 +216,7 @@ Container@MAINMENU:
 							Y: 260
 							Width: 140
 							Height: 30
-							Text: Back
+							Text: UI_MENU:BACK_BUTTON
 							Font: Bold
 		Container@PERFORMANCE_INFO:
 			Logic: PerfDebugLogic
@@ -252,7 +252,7 @@ Container@MAINMENU:
 					Y: 15
 					Width: 400
 					Height: 25
-					Text: Battlefield News
+					Text: UI_MENU:NEWS_BUTTON
 					Font: Bold
 		Container@UPDATE_NOTICE:
 			X: (WINDOW_RIGHT - WIDTH) / 2
@@ -264,14 +264,14 @@ Container@MAINMENU:
 					Height: 25
 					Align: Center
 					Shadow: true
-					Text: You are running an outdated version of OpenRA.
+					Text: UI_MENU:UPDATE_LABEL_A
 				Label@B:
 					Y: 20
 					Width: PARENT_RIGHT
 					Height: 25
 					Align: Center
 					Shadow: true
-					Text: Download the latest version from www.openra.net
+					Text: UI_MENU:UPDATE_LABEL_B
 		Container@PLAYER_PROFILE_CONTAINER:
 			X: 25
 			Y: 25

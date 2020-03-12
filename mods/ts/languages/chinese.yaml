@@ -1,0 +1,34 @@
+chinese:
+	Fonts:
+		Tiny:
+			Font: common|SourceHanSansK-Light.ttf
+			Size: 10
+			Ascender: 8
+		TinyBold:
+			Font: common|SourceHanSansK-Medium.ttf
+			Size: 10
+			Ascender: 8
+		Small:
+			Font: common|SourceHanSansK-Light.ttf
+			Size: 12
+			Ascender: 9
+		Regular:
+			Font: common|SourceHanSansK-Light.ttf
+			Size: 14
+			Ascender: 11
+		Bold:
+			Font: common|SourceHanSansK-Medium.ttf
+			Size: 14
+			Ascender: 11
+		MediumBold:
+			Font: common|SourceHanSansK-Medium.ttf
+			Size: 18
+			Ascender: 14
+		BigBold:
+			Font: common|SourceHanSansK-Medium.ttf
+			Size: 24
+			Ascender: 18
+		Title:
+			Font: common|SourceHanSansK-Medium.ttf
+			Size: 32
+			Ascender: 24

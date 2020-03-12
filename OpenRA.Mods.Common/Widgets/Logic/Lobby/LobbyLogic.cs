@@ -264,7 +264,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						{
 							teamOptions.Add(new DropDownOption
 							{
-								Title = "Humans vs Bots",
+								Title = FieldLoader.Translate("UI_LOBBY:TEAM_OPTIONS-HUMANS_VS_BOTS"),
 								IsSelected = () => false,
 								OnClick = () => orderManager.IssueOrder(Order.Command("assignteams 1"))
 							});
@@ -388,7 +388,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			disconnectButton.OnClick = () => { Ui.CloseWindow(); onExit(); };
 
 			if (skirmishMode)
-				disconnectButton.Text = "Back";
+				disconnectButton.Text = FieldLoader.Translate("UI_LOBBY:SKIRMISH_MODE-BACK");
 
 			var chatMode = lobby.Get<ButtonWidget>("CHAT_MODE");
 			chatMode.GetText = () => teamChat ? "Team" : "All";

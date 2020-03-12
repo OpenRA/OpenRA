@@ -34,7 +34,7 @@ Background@SETTINGS_PANEL:
 			Y: 20
 			Width: PARENT_RIGHT
 			Height: 25
-			Text: Settings
+			Text: SETTING:TITLE
 			Align: Center
 			Font: Bold
 		Button@RESET_BUTTON:
@@ -42,7 +42,7 @@ Background@SETTINGS_PANEL:
 			Y: PARENT_BOTTOM - 45
 			Width: 160
 			Height: 25
-			Text: Reset
+			Text: SETTING:RESET_BUTTON
 			Font: Bold
 		Button@BACK_BUTTON:
 			Key: escape
@@ -50,7 +50,7 @@ Background@SETTINGS_PANEL:
 			Y: PARENT_BOTTOM - 45 
 			Width: 160
 			Height: 25
-			Text: Back
+			Text: SETTING:BACK_BUTTON
 			Font: Bold
 		Container@TAB_CONTAINER:
 			Y: 50
@@ -58,34 +58,40 @@ Background@SETTINGS_PANEL:
 			Height: 25
 			Children:
 				Button@DISPLAY_TAB:
-					X: 70
+					X: (PARENT_RIGHT - 540) / 2
 					Width: 90
 					Height: 25
-					Text: Display
+					Text: SETTING:DISPLAY_TAB_TEXT
+					Font: Bold
+				Button@LANGUAGE_TAB:
+					X: (PARENT_RIGHT - 540) / 2 + 90
+					Width: 90
+					Height: 25
+					Text: SETTING:LANGUAGE_TAB_TEXT
 					Font: Bold
 				Button@AUDIO_TAB:
-					X: 70 + WIDTH
+					X: (PARENT_RIGHT - 540) / 2 + 180
 					Width: 90
 					Height: 25
-					Text: Audio
+					Text: SETTING:AUDIO_TAB_TEXT
 					Font: Bold
 				Button@INPUT_TAB:
-					X: 70 + 2 * WIDTH
+					X: (PARENT_RIGHT - 540) / 2 + 270
 					Width: 90
 					Height: 25
-					Text: Input
+					Text: SETTING:INPUT_TAB_TEXT
 					Font: Bold
 				Button@HOTKEYS_TAB:
-					X: 70 + 3 * WIDTH
+					X: (PARENT_RIGHT - 540) / 2 + 360
 					Width: 90
 					Height: 25
-					Text: Hotkeys
+					Text: SETTING:HOTKEYS_TAB_TEXT
 					Font: Bold
 				Button@ADVANCED_TAB:
-					X: 70 + 4 * WIDTH
+					X: (PARENT_RIGHT - 540) / 2 + 450
 					Width: 90
 					Height: 25
-					Text: Advanced
+					Text: SETTING:ADVANCED_TAB_TEXT
 					Font: Bold
 		Container@DISPLAY_PANEL:
 			X: 5
@@ -146,7 +152,7 @@ Background@SETTINGS_PANEL:
 					Y: 70
 					Width: 145
 					Height: 25
-					Text: Target Lines:
+					Text: SETTING:TARGET_LINES-LABEL
 					Align: Right
 				DropDownButton@TARGET_LINES_DROPDOWN:
 					X: 415
@@ -172,7 +178,7 @@ Background@SETTINGS_PANEL:
 					Y: 100
 					Width: 145
 					Height: 25
-					Text: Status Bars:
+					Text: SETTING:STATUS_BAR-LABEL
 					Align: Right
 				DropDownButton@STATUS_BAR_DROPDOWN:
 					X: 415
@@ -193,7 +199,7 @@ Background@SETTINGS_PANEL:
 					Width: 200
 					Height: 20
 					Font: Regular
-					Text: Player Stance Colors
+					Text: SETTING:PLAYER_STANCE_COLORS
 				Label@VIDEO_TITLE:
 					Y: 190
 					Width: PARENT_RIGHT
@@ -206,7 +212,7 @@ Background@SETTINGS_PANEL:
 					Width: 120
 					Height: 25
 					Align: Right
-					Text: Video Mode:
+					Text: SETTING:VIDEO_MODE-LABEL
 				DropDownButton@MODE_DROPDOWN:
 					X: 140
 					Y: 210
@@ -284,7 +290,7 @@ Background@SETTINGS_PANEL:
 					Width: 200
 					Height: 20
 					Font: Regular
-					Text: Enable Frame Limiter
+					Text: SETTING:FRAME_LIMIT
 				Slider@FRAME_LIMIT_SLIDER:
 					X: 340
 					Y: 265
@@ -293,6 +299,49 @@ Background@SETTINGS_PANEL:
 					Ticks: 20
 					MinimumValue: 50
 					MaximumValue: 240
+		Container@LANGUAGE_PANEL:
+			X: 5
+			Y: 50
+			Width: PARENT_RIGHT - 10
+			Height: PARENT_BOTTOM
+			Children:
+				Label@LOCALIZATION_TITLE:
+					Y: 70
+					Width: PARENT_RIGHT
+					Font: Bold
+					Text: SETTING:LOCALIZATION_TITLE
+					Align: Center
+					Visible: true
+				Label@LANGUAGE_LABEL:
+					X: 230 - WIDTH - 5
+					Y: 89
+					Width: 75
+					Height: 25
+					Align: Right
+					Text: SETTING:LANGUAGE-LABEL
+					Visible: true
+				DropDownButton@LANGUAGE_DROPDOWNBUTTON:
+					X: 230
+					Y: 90
+					Width: 200
+					Height: 25
+					Visible: true
+				Label@LANGUAGE_DESC_A:
+					Y: 110
+					Width: PARENT_RIGHT
+					Height: 25
+					Font: Tiny
+					Align: Center
+					Text: SETTING:LANGUAGE-DESC_A
+					Visible: true
+				Label@LANGUAGE_DESC_B:
+					Y: 125
+					Width: PARENT_RIGHT
+					Height: 25
+					Font: Tiny
+					Align: Center
+					Text: SETTING:LANGUAGE-DESC_B
+					Visible: true
 		Container@AUDIO_PANEL:
 			X: 5
 			Y: 50
@@ -303,7 +352,7 @@ Background@SETTINGS_PANEL:
 					Y: 50
 					Width: PARENT_RIGHT
 					Align: Center
-					Text: Audio controls require an active sound device
+					Text: SETTING:NO_AUDIO_DEVICE-LABEL
 				Container@AUDIO_CONTROLS:
 					Width: PARENT_RIGHT
 					Height: PARENT_BOTTOM
@@ -314,14 +363,14 @@ Background@SETTINGS_PANEL:
 							Width: 200
 							Height: 20
 							Font: Regular
-							Text: Cash Ticks
+							Text: SETTING:CASH_TICKS
 						Checkbox@MUTE_SOUND:
 							X: 15
 							Y: 73
 							Width: 200
 							Height: 20
 							Font: Regular
-							Text: Mute Sound
+							Text: SETTING:MUTE_SOUND
 						Checkbox@MUTE_BACKGROUND_MUSIC:
 							X: 15
 							Y: 103
@@ -335,7 +384,7 @@ Background@SETTINGS_PANEL:
 							Width: 95
 							Height: 25
 							Align: Right
-							Text: Sound Volume:
+							Text: SETTING:SOUND_LABEL
 						ExponentialSlider@SOUND_VOLUME:
 							X: PARENT_RIGHT - WIDTH - 15
 							Y: 45
@@ -348,7 +397,7 @@ Background@SETTINGS_PANEL:
 							Width: 95
 							Height: 25
 							Align: Right
-							Text: Music Volume:
+							Text: SETTING:MUSIC_LABEL
 						ExponentialSlider@MUSIC_VOLUME:
 							X: PARENT_RIGHT - WIDTH - 15
 							Y: 75
@@ -361,7 +410,7 @@ Background@SETTINGS_PANEL:
 							Width: 95
 							Height: 25
 							Align: Right
-							Text: Video Volume:
+							Text: SETTING:VIDEO_LABEL
 						ExponentialSlider@VIDEO_VOLUME:
 							X: PARENT_RIGHT - WIDTH - 15
 							Y: 105
@@ -374,7 +423,7 @@ Background@SETTINGS_PANEL:
 					Width: 75
 					Height: 25
 					Align: Right
-					Text: Audio Device:
+					Text: SETTING:AUDIO_DEVICE-LABEL
 				DropDownButton@AUDIO_DEVICE:
 					X: 190
 					Y: 240
@@ -386,7 +435,7 @@ Background@SETTINGS_PANEL:
 					Height: 25
 					Font: Tiny
 					Align: Center
-					Text: Device changes will be applied after the game is restarted
+					Text: SETTING:AUDIO_DEVICE-DESC
 		Container@INPUT_PANEL:
 			X: 5
 			Y: 50
@@ -563,7 +612,7 @@ Background@SETTINGS_PANEL:
 					Y: 215
 					Width: 165
 					Height: 20
-					Ticks: 5
+					Ticks: 7
 					MinimumValue: 10
 					MaximumValue: 50
 				Label@ZOOM_SPEED_LABEL:
@@ -593,7 +642,7 @@ Background@SETTINGS_PANEL:
 					Y: 275
 					Width: 165
 					Height: 20
-					Ticks: 5
+					Ticks: 7
 					MinimumValue: 1
 					MaximumValue: 100
 		Container@HOTKEYS_PANEL:
@@ -695,25 +744,25 @@ Background@SETTINGS_PANEL:
 									Height: PARENT_BOTTOM
 									Font: Tiny
 									Align: Left
-									Text: This is the default
+									Text: SETTING:DEFAULT_NOTICE
 								Label@ORIGINAL_NOTICE:
 									Width: PARENT_RIGHT
 									Height: PARENT_BOTTOM
 									Font: Tiny
 									Align: Left
-									Text: The default is "{0}"
+									Text: SETTING:ORIGINAL_NOTICE
 								Label@DUPLICATE_NOTICE:
 									Width: PARENT_RIGHT
 									Height: PARENT_BOTTOM
 									Font: Tiny
 									Align: Left
-									Text: This is already used for "{0}"
+									Text: SETTING:DUPLICATE_NOTICE
 						Button@CLEAR_HOTKEY_BUTTON:
 							X: PARENT_RIGHT - 2 * WIDTH - 30
 							Y: 20
 							Width: 65
 							Height: 25
-							Text: Clear
+							Text: SETTING:CLEAR_HOTKEY_BUTTON
 							Font: Bold
 							TooltipText: Unbind the hotkey
 							TooltipContainer: TOOLTIP_CONTAINER
@@ -723,7 +772,7 @@ Background@SETTINGS_PANEL:
 							Y: 20
 							Width: 65
 							Height: 25
-							Text: Reset
+							Text: SETTING:RESET_HOTKEY_BUTTON
 							Font: Bold
 							TooltipText: Reset to default
 							TooltipContainer: TOOLTIP_CONTAINER
@@ -740,42 +789,42 @@ Background@SETTINGS_PANEL:
 					Width: 200
 					Height: 20
 					Font: Regular
-					Text: Enable Network Discovery (UPnP)
+					Text: SETTING:NAT_DISCOVERY
 				Checkbox@PERFTEXT_CHECKBOX:
 					X: 15
 					Y: 73
 					Width: 300
 					Height: 20
 					Font: Regular
-					Text: Show Performance Text
+					Text: SETTING:PERF_TEXT
 				Checkbox@PERFGRAPH_CHECKBOX:
 					X: 15
 					Y: 103
 					Width: 300
 					Height: 20
 					Font: Regular
-					Text: Show Performance Graph
+					Text: SETTING:PERF_GRAPH
 				Checkbox@FETCH_NEWS_CHECKBOX:
 					X: 310
 					Y: 43
 					Width: 300
 					Height: 20
 					Font: Regular
-					Text: Fetch Community News
+					Text: SETTING:FETCH_NEWS
 				Checkbox@CHECK_VERSION_CHECKBOX:
 					X: 310
 					Y: 73
 					Width: 300
 					Height: 20
 					Font: Regular
-					Text: Check for Updates
+					Text: SETTING:CHECK_VERSION
 				Checkbox@SENDSYSINFO_CHECKBOX:
 					X: 310
 					Y: 103
 					Width: 300
 					Height: 20
 					Font: Regular
-					Text: Send System Information
+					Text: SETTING:SEND_SYS_INFO
 				Label@SENDSYSINFO_DESC:
 					X: 310
 					Y: 118
@@ -783,12 +832,12 @@ Background@SETTINGS_PANEL:
 					Height: 30
 					Font: Tiny
 					WordWrap: True
-					Text: Your Operating System, OpenGL and .NET runtime versions, and language settings will be sent along with an anonymous ID to help prioritize future development.
+					Text: SETTING:SEND_SYS_INFO-DESC
 				Label@DEBUG_TITLE:
 					Y: 190
 					Width: PARENT_RIGHT
 					Font: Bold
-					Text: Developer
+					Text: SETTING:DEBUG_TITLE
 					Align: Center
 				Container@DEBUG_HIDDEN_LABEL:
 					Y: 245
@@ -798,14 +847,14 @@ Background@SETTINGS_PANEL:
 							Width: PARENT_RIGHT
 							Height: 20
 							Font: Regular
-							Text: Additional developer-specific options can be enabled via the
+							Text: SETTING:DEBUG_HIDDEN_DESC_A
 							Align: Center
 						Label@B:
 							Y: 20
 							Width: PARENT_RIGHT
 							Height: 20
 							Font: Regular
-							Text: Debug.DisplayDeveloperSettings setting or launch flag
+							Text: SETTING:DEBUG_HIDDEN_DESC_B
 							Align: Center
 				Container@DEBUG_OPTIONS:
 					Width: PARENT_RIGHT
@@ -817,33 +866,33 @@ Background@SETTINGS_PANEL:
 							Width: 300
 							Height: 20
 							Font: Regular
-							Text: Show Bot Debug Messages
+							Text: SETTING:BOT_DEBUG
 						Checkbox@CHECKUNSYNCED_CHECKBOX:
 							X: 15
 							Y: 243
 							Width: 300
 							Height: 20
 							Font: Regular
-							Text: Check Sync around Unsynced Code
+							Text: SETTING:CHECK_UNSYNCED
 						Checkbox@CHECKBOTSYNC_CHECKBOX:
 							X: 15
 							Y: 273
 							Width: 300
 							Height: 20
 							Font: Regular
-							Text: Check Sync around BotModule Code
+							Text: SETTING:CHECK_BOT_SYNC
 						Checkbox@LUADEBUG_CHECKBOX:
 							X: 310
 							Y: 213
 							Width: 300
 							Height: 20
 							Font: Regular
-							Text: Show Map Debug Messages
+							Text: SETTING:LUA_DEBUG
 						Checkbox@REPLAY_COMMANDS_CHECKBOX:
 							X: 310
 							Y: 243
 							Width: 300
 							Height: 20
 							Font: Regular
-							Text: Enable Debug Commands in Replays
+							Text: SETTING:REPLAY_COMMANDS
 		TooltipContainer@TOOLTIP_CONTAINER:

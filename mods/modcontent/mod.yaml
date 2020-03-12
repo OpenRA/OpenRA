@@ -35,31 +35,11 @@ ChromeMetrics:
 	common|metrics.yaml
 	modcontent|metrics.yaml
 
-Fonts:
-	Tiny:
-		Font: common|FreeSans.ttf
-		Size: 10
-		Ascender: 8
-	TinyBold:
-		Font: common|FreeSansBold.ttf
-		Size: 10
-		Ascender: 8
-	Regular:
-		Font: common|FreeSans.ttf
-		Size: 14
-		Ascender: 11
-	Bold:
-		Font: common|FreeSansBold.ttf
-		Size: 14
-		Ascender: 11
-	MediumBold:
-		Font: common|FreeSansBold.ttf
-		Size: 18
-		Ascender: 14
-	BigBold:
-		Font: common|FreeSansBold.ttf
-		Size: 24
-		Ascender: 18
+Translations:
+	common|languages/english.yaml
+	common|languages/chinese.yaml
+	modcontent|languages/english.yaml
+	modcontent|languages/chinese.yaml
 
 SoundFormats:
 

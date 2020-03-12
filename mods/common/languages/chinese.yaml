@@ -1,0 +1,120 @@
+chinese:
+	Translations:
+		LANGUAGES:
+			english: 英文
+			chinese: 简体中文
+
+		SETTING:
+			TITLE: 设置
+
+			RESET_BUTTON: 重置
+			BACK_BUTTON: 返回
+
+			RESTART_DIANLOGS-TITLE: 现在重启?
+			RESTART_DIANLOGS-TEXT: 部分设置将在重启后生效, 现在重启?
+			RESTART_DIANLOGS-OK_BUTTON-TEXT: 立即重启
+			RESTART_DIANLOGS-CANCEL_BUTTON-TEXT: 稍后重启
+
+			DISPLAY_TAB_TEXT: 显示
+			LANGUAGE_TAB_TEXT: 语言
+			AUDIO_TAB_TEXT: 音频
+			INPUT_TAB_TEXT: 输入
+			HOTKEYS_TAB_TEXT: 快捷键
+			ADVANCED_TAB_TEXT: 高级
+
+			# Display Panel
+			WINDOW_MODE-WINDOWED: 窗口化
+			WINDOW_MODE-FULLSCREEN_LEGSCY: 全屏化 (旧方法)
+			WINDOW_MODE-FULLSCREEN: 全屏化
+
+			VIDEO_MODE-LABEL: 视频模式:
+			
+			FRAME_LIMIT: 限制帧率
+
+			STATUS_BAR-STANDARD: 标准
+			STATUS_BAR-SHOW_ON_DAMAGE: 受损时显示
+			STATUS_BAR-ALWAYS_SHOW: 一直显示
+			STATUS_BAR-LABEL: 生命条显示：
+
+			PLAYER_STANCE_COLORS: 敌友颜色模式
+
+			TARGET_LINES-AUTO: 自动
+			TARGET_LINES-MANUAL: 手动
+			TARGET_LINES-DISABLE: 禁用
+			TARGET_LINES-LABEL: 显示目标线：
+
+			#Language Panel
+			LOCALIZATION_TITLE: 本地化
+			
+			LANGUAGE-LABEL: 语言：
+			LANGUAGE-DESC_A: 语言更改将在重启后生效。
+			LANGUAGE-DESC_B: 翻译仅适用于文本字符串； 语音和构建图标将保留为英文
+
+			#Audio Panel
+			NO_AUDIO_DEVICE-LABEL: 未检测到音频设备
+			AUDIO_DEVICE-LABEL: 音频设备：
+			AUDIO_DEVICE-DESC: 音频设备更改将在重启后生效。
+			CASH_TICKS: 音频变动音效
+			MUTE_SOUND: 静音
+			SOUND_LABEL: 音效音量：
+			MUSIC_LABEL: 音乐音量：
+			VIDEO_LABEL: 视频音量：
+
+			#Input Panel
+			MOUSE_SCROLL-DISABLE: 禁用
+			MOUSE_SCROLL-INVERTED: 反向
+			MOUSE_SCROLL-JOYSTICK: 摇杆
+			MOUSE_SCROLL-STANDARD: 标准
+
+			ZOOM_MODIFIER-NONE: 无
+
+			#Hotkeys Panel
+			DEFAULT_NOTICE: 当前为默认设置
+			ORIGINAL_NOTICE: 默认设置为"{0}"
+			DUPLICATE_NOTICE: 该键已被"{0}"使用
+
+			CLEAR_HOTKEY_BUTTON: 清除
+			RESET_HOTKEY_BUTTON: 重置
+
+		UI_MENU:
+			#Main Menu
+			MAIN_MENU_TITLE: OpenRA
+			SINGLEPLAYER_BUTTON: 单人游戏
+			MULTIPLAYER_BUTTON: 多人游戏
+			SETTINGS_BUTTON: 设置
+			EXTRAS_BUTTON: 附加功能
+			CONTENT_BUTTON: 资源管理
+			QUIT_BUTTON: 退出
+
+			#Single Player Menu
+			SINGLEPLAYER_MENU_TITLE: 单人游戏
+			SKIRMISH_BUTTON: 遭遇战
+			MISSIONS_BUTTON: 任务
+			LOAD_BUTTON: 加载游戏
+			BACK_BUTTON: 退出
+
+			#Extras Menu
+			EXTRAS_MENU_TITLE: 附加功能
+			REPLAYS_BUTTON: 录像回放
+			MUSIC_BUTTON: 音乐
+			MAP_EDITOR_BUTTON: 地图编辑器
+			ASSET_BROWSER_BUTTON: 资源管理器
+			CREDITS_BUTTON: 鸣谢
+
+			#Map Editor Menu
+			MAP_EDITOR_MENU_TITLE:　地图编辑器
+			NEW_MAP_BUTTON: 新地图
+			LOAD_MAP_BUTTON: 加载地图
+
+			#News
+			NEWS_BUTTON: 战地新闻
+
+			#Update
+			UPDATE_LABEL_A: 您正在运行旧版本的OpenRA
+			UPDATE_LABEL_B: 请从www.openra.net下载最新版
+
+
+		UI_LOBBY:
+			SKIRMISH_MODE-BACK: 返回
+			TEAM_OPTIONS-HUMANS_VS_BOTS: 人类 Vs. 电脑玩家
+

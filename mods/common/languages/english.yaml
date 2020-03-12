@@ -1,0 +1,139 @@
+english:
+	Translations:
+		LANGUAGES:
+			english: English
+			chinese: Chinese	
+
+		SETTING:
+			TITLE: Settings
+
+			RESET_BUTTON: Reset
+			BACK_BUTTON: Back
+
+			RESTART_DIANLOGS-TITLE: Restart Now?
+			RESTART_DIANLOGS-TEXT: Some changes will not be applied until\nthe game is restarted. Restart now?
+			RESTART_DIANLOGS-OK_BUTTON-TEXT: Restart Now
+			RESTART_DIANLOGS-CANCEL_BUTTON-TEXT: Restart Later
+
+			DISPLAY_TAB_TEXT: Display
+			LANGUAGE_TAB_TEXT: Language
+			AUDIO_TAB_TEXT: Audio
+			INPUT_TAB_TEXT: Input
+			HOTKEYS_TAB_TEXT: Hotkeys
+			ADVANCED_TAB_TEXT: Advanced
+
+			# Display Panel
+			WINDOW_MODE-WINDOWED: Windowed
+			WINDOW_MODE-FULLSCREEN_LEGSCY: Fullscreen (Legacy)
+			WINDOW_MODE-FULLSCREEN: Fullscreen
+
+			VIDEO_MODE-LABEL: Video Mode:
+
+			FRAME_LIMIT: Enable Frame Limiter
+			
+			STATUS_BAR-STANDARD: Standard
+			STATUS_BAR-SHOW_ON_DAMAGE: Show On Damage
+			STATUS_BAR-ALWAYS_SHOW: Always Show
+			STATUS_BAR-LABEL: Status Bars:
+
+			PLAYER_STANCE_COLORS: Player Stance Colors
+
+			TARGET_LINES-AUTO: Automatic
+			TARGET_LINES-MANUAL: Manual
+			TARGET_LINES-DISABLE: Disabled
+			TARGET_LINES-LABEL: Target Lines:
+
+			#Language Panel
+			LOCALIZATION_TITLE: Localization
+
+			LANGUAGE-LABEL: Language:
+			LANGUAGE-DESC_A: Language changes will be applied after the game is restarted
+			LANGUAGE-DESC_B: Translations apply to text strings only; Speech and build icons will remain in English
+
+			#Audio Panel
+			NO_AUDIO_DEVICE-LABEL: Audio controls require an active sound device
+			AUDIO_DEVICE-LABEL: Audio Device:
+			AUDIO_DEVICE-DESC: Device changes will be applied after the game is restarted
+			CASH_TICKS: Cash Ticks
+			MUTE_SOUND: Mute Sound
+			SOUND_LABEL: Sound Volume:
+			MUSIC_LABEL: Music Volume:
+			VIDEO_LABEL: Video Volume:
+
+			#Input Panel
+			MOUSE_SCROLL-DISABLE: Disabled
+			MOUSE_SCROLL-INVERTED: Inverted
+			MOUSE_SCROLL-JOYSTICK: Joystick
+			MOUSE_SCROLL-STANDARD: Standard
+
+			ZOOM_MODIFIER-NONE: None
+
+			#Hotkeys Panel
+			DEFAULT_NOTICE: This is the default
+			ORIGINAL_NOTICE: The default is "{0}"
+			DUPLICATE_NOTICE: This is already used for "{0}"
+
+			CLEAR_HOTKEY_BUTTON: Clear
+			RESET_HOTKEY_BUTTON: Reset
+
+			#Advanced Panel
+			NAT_DISCOVERY: Enable Network Discovery (UPnP)
+			PERF_TEXT: Show Performance Text
+			PERF_GRAPH: Show Performance Graph
+			FETCH_NEWS: Fetch Community News
+			CHECK_VERSION: Check for Updates
+			SEND_SYS_INFO: Send System Information
+			SEND_SYS_INFO-DESC: Your Operating System, OpenGL and .NET runtime versions, and language settings will be sent along with an anonymous ID to help prioritize future development.
+
+			DEBUG_TITLE: Developer
+			DEBUG_HIDDEN_DESC_A: Additional developer-specific options can be enabled via the
+			DEBUG_HIDDEN_DESC_B: Debug.DisplayDeveloperSettings setting or launch flag
+
+			BOT_DEBUG: Show Bot Debug Messages
+			CHECK_UNSYNCED: Check Sync around Unsynced Code
+			CHECK_BOT_SYNC: Check Sync around BotModule Code
+			LUA_DEBUG: Show Map Debug Messages
+			REPLAY_COMMANDS: Enable Debug Commands in Replays
+
+		UI_MENU:
+			#Main Menu
+			MAIN_MENU_TITLE: OpenRA
+			SINGLEPLAYER_BUTTON: Singleplayer
+			MULTIPLAYER_BUTTON: Multiplayer
+			SETTINGS_BUTTON: Settings
+			EXTRAS_BUTTON: Extras
+			CONTENT_BUTTON: Manage Content
+			QUIT_BUTTON: Quit
+
+			#Single Player Menu
+			SINGLEPLAYER_MENU_TITLE: Singleplayer
+			SKIRMISH_BUTTON: Skirmish
+			MISSIONS_BUTTON: Missions
+			LOAD_BUTTON: Load
+			BACK_BUTTON: Back
+
+			#Extras Menu
+			EXTRAS_MENU_TITLE: Extras
+			REPLAYS_BUTTON: Replays
+			MUSIC_BUTTON: Music
+			MAP_EDITOR_BUTTON: Map Editor
+			ASSET_BROWSER_BUTTON: Asset Browser
+			CREDITS_BUTTON: Credits
+
+			#Map Editor Menu
+			MAP_EDITOR_MENU_TITLE: Map Editor
+			NEW_MAP_BUTTON: New Map
+			LOAD_MAP_BUTTON: Load Map
+
+			#News
+			NEWS_BUTTON: Battlefield News
+
+			#Update
+			UPDATE_LABEL_A: You are running an outdated version of OpenRA.
+			UPDATE_LABEL_B: Download the latest version from www.openra.net
+
+
+		UI_LOBBY:
+			SKIRMISH_MODE-BACK: back
+			TEAM_OPTIONS-HUMANS_VS_BOTS: Humans vs Bots
+
