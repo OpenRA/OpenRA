@@ -17,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Used for day/night effects.")]
-	class GlobalLightingPaletteEffectInfo : ITraitInfo, ILobbyCustomRulesIgnore
+	public class GlobalLightingPaletteEffectInfo : ITraitInfo, ILobbyCustomRulesIgnore
 	{
 		[Desc("Do not modify graphics that use any palette in this list.")]
 		public readonly HashSet<string> ExcludePalettes = new HashSet<string> { "cursor", "chrome", "colorpicker", "fog", "shroud", "alpha" };
@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new GlobalLightingPaletteEffect(this); }
 	}
 
-	class GlobalLightingPaletteEffect : IPaletteModifier
+	public class GlobalLightingPaletteEffect : IPaletteModifier
 	{
 		readonly GlobalLightingPaletteEffectInfo info;
 
