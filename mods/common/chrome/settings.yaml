@@ -648,7 +648,7 @@ Background@SETTINGS_PANEL:
 													Width: 80
 													Height: 25
 													Align: Left
-													TooltipContainer: TOOLTIP_CONTAINER
+													TooltipContainer: SETTINGS_TOOLTIP_CONTAINER
 										Container@THREE_COLUMN:
 											Width: 173
 											Height: 25
@@ -664,7 +664,7 @@ Background@SETTINGS_PANEL:
 													Width: 80
 													Height: 25
 													Align: Left
-													TooltipContainer: TOOLTIP_CONTAINER
+													TooltipContainer: SETTINGS_TOOLTIP_CONTAINER
 				Background@HOTKEY_DIALOG_ROOT:
 					X: 15
 					Y: 230
@@ -716,7 +716,7 @@ Background@SETTINGS_PANEL:
 							Text: Clear
 							Font: Bold
 							TooltipText: Unbind the hotkey
-							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipContainer: SETTINGS_TOOLTIP_CONTAINER
 							TooltipTemplate: SIMPLE_TOOLTIP
 						Button@RESET_HOTKEY_BUTTON:
 							X: PARENT_RIGHT - WIDTH - 20
@@ -726,7 +726,7 @@ Background@SETTINGS_PANEL:
 							Text: Reset
 							Font: Bold
 							TooltipText: Reset to default
-							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipContainer: SETTINGS_TOOLTIP_CONTAINER
 							TooltipTemplate: SIMPLE_TOOLTIP
 		Container@ADVANCED_PANEL:
 			X: 5
@@ -846,4 +846,4 @@ Background@SETTINGS_PANEL:
 							Height: 20
 							Font: Regular
 							Text: Enable Debug Commands in Replays
-		TooltipContainer@TOOLTIP_CONTAINER:
+		TooltipContainer@SETTINGS_TOOLTIP_CONTAINER:
