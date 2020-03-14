@@ -634,7 +634,7 @@ Container@SETTINGS_PANEL:
 													Width: 80
 													Height: 25
 													Align: Left
-													TooltipContainer: TOOLTIP_CONTAINER
+													TooltipContainer: SETTINGS_TOOLTIP_CONTAINER
 										Container@THREE_COLUMN:
 											Width: 173
 											Height: 25
@@ -650,7 +650,7 @@ Container@SETTINGS_PANEL:
 													Width: 80
 													Height: 25
 													Align: Left
-													TooltipContainer: TOOLTIP_CONTAINER
+													TooltipContainer: SETTINGS_TOOLTIP_CONTAINER
 						Background@HOTKEY_DIALOG_ROOT:
 							X: 15
 							Y: 230
@@ -700,7 +700,7 @@ Container@SETTINGS_PANEL:
 									Width: 25
 									Height: 25
 									TooltipText: Unbind the hotkey
-									TooltipContainer: TOOLTIP_CONTAINER
+									TooltipContainer: SETTINGS_TOOLTIP_CONTAINER
 									TooltipTemplate: SIMPLE_TOOLTIP
 									Children:
 										Image:
@@ -715,7 +715,7 @@ Container@SETTINGS_PANEL:
 									Width: 25
 									Height: 25
 									TooltipText: Reset to default
-									TooltipContainer: TOOLTIP_CONTAINER
+									TooltipContainer: SETTINGS_TOOLTIP_CONTAINER
 									TooltipTemplate: SIMPLE_TOOLTIP
 									Children:
 										Image@IMAGE_RELOAD:
@@ -860,4 +860,4 @@ Container@SETTINGS_PANEL:
 			Width: 140
 			Height: 35
 			Text: Reset
-		TooltipContainer@TOOLTIP_CONTAINER:
+		TooltipContainer@SETTINGS_TOOLTIP_CONTAINER:
