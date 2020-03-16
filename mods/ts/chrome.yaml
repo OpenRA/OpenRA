@@ -445,7 +445,7 @@ sidebar-bits:
 		production-tooltip-time: 136, 51, 16, 16
 		production-tooltip-power: 102, 51, 16, 16
 		production-tooltip-cost: 68, 51, 16, 16
-		indicator-muted: 0, 119, 24, 24
+		indicator-muted: 0, 119, 26, 24
 
 flags:
 	Inherits: ^Glyphs
