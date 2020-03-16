@@ -2,12 +2,12 @@
 	ReloadDelay: 10
 	Range: 8c0
 	Report: aacanon3.aud
-	ValidTargets: AirborneActor
+	ValidTargets: Air
 	Projectile: InstantHit
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
 		Damage: 2000
-		ValidTargets: AirborneActor
+		ValidTargets: Air
 		Versus:
 			None: 40
 			Wood: 10
@@ -37,35 +37,33 @@ ZSU-23:
 FLAK-23-AA:
 	Inherits: ^AACannon
 	Warhead@1Dam: SpreadDamage
-		ValidTargets: AirborneActor, GroundActor, WaterActor
+		ValidTargets: Air, Ground, Water
 
 FLAK-23-AG:
 	Inherits: ^AACannon
 	Range: 6c0
-	ValidTargets: Ground, Water, GroundActor, WaterActor
+	ValidTargets: Ground, Water
 	Projectile: InstantHit
 		Blockable: true
 	Warhead@1Dam: SpreadDamage
-		ValidTargets: AirborneActor, GroundActor, WaterActor
+		ValidTargets: Air, Ground, Water
 	Warhead@2Eff: CreateEffect
 		Explosions: flak_explosion_ground
-		ValidTargets: Ground, GroundActor, Air, AirborneActor, WaterActor, Trees
+		ValidTargets: Ground, Ship, Air, Trees
 	Warhead@3EffWater: CreateEffect
 		Explosions: small_splash
 		ValidTargets: Water, Underwater
-		InvalidTargets: Bridge
+		InvalidTargets: Ship, Structure, Bridge
 
 ^HeavyMG:
 	ReloadDelay: 30
 	Range: 6c0
 	Report: gun13.aud
-	ValidTargets: Ground, Water, GroundActor, WaterActor
 	Projectile: InstantHit
 		Blockable: true
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 2500
-		ValidTargets: GroundActor, WaterActor
 		Versus:
 			None: 120
 			Wood: 60
@@ -75,12 +73,11 @@ FLAK-23-AG:
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: piffs
-		ValidTargets: Ground, Air
-		ImpactActors: false
+		ValidTargets: Ground, Ship, Air, Trees
 	Warhead@3EffWater: CreateEffect
 		Explosions: water_piffs
 		ValidTargets: Water, Underwater
-		InvalidTargets: Bridge
+		InvalidTargets: Ship, Structure, Bridge
 
 ^LightMG:
 	Inherits: ^HeavyMG
@@ -117,13 +114,12 @@ Vulcan:
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@4Eff_2: CreateEffect
 		Explosions: piffs
-		ValidTargets: Ground
-		ImpactActors: false
+		ValidTargets: Ground, Ship, Trees
 		Delay: 2
 	Warhead@4Eff_2Water: CreateEffect
 		Explosions: water_piffs
 		ValidTargets: Water, Underwater
-		InvalidTargets: Bridge
+		InvalidTargets: Ship, Structure, Bridge
 		Delay: 2
 	Warhead@5Dam_3: SpreadDamage
 		Spread: 128
@@ -138,13 +134,12 @@ Vulcan:
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@6Eff_3: CreateEffect
 		Explosions: piffs
-		ValidTargets: Ground
-		ImpactActors: false
+		ValidTargets: Ground, Ship, Trees
 		Delay: 4
 	Warhead@6Eff_3Water: CreateEffect
 		Explosions: water_piffs
 		ValidTargets: Water, Underwater
-		InvalidTargets: Bridge
+		InvalidTargets: Ship, Structure, Bridge
 		Delay: 4
 	Warhead@7Dam_4: SpreadDamage
 		Spread: 128
@@ -159,13 +154,12 @@ Vulcan:
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@8Eff_4: CreateEffect
 		Explosions: piffs
-		ValidTargets: Ground
-		ImpactActors: false
+		ValidTargets: Ground, Ship, Trees
 		Delay: 6
 	Warhead@8Eff_4Water: CreateEffect
 		Explosions: water_piffs
 		ValidTargets: Water, Underwater
-		InvalidTargets: Bridge
+		InvalidTargets: Ship, Structure, Bridge
 		Delay: 6
 	Warhead@9Dam_5: SpreadDamage
 		Spread: 128
@@ -180,13 +174,12 @@ Vulcan:
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@10Eff_5: CreateEffect
 		Explosions: piffs
-		ValidTargets: Ground
-		ImpactActors: false
+		ValidTargets: Ground, Ship, Trees
 		Delay: 8
 	Warhead@10Eff_5Water: CreateEffect
 		Explosions: water_piffs
 		ValidTargets: Water, Underwater
-		InvalidTargets: Bridge
+		InvalidTargets: Ship, Structure, Bridge
 		Delay: 8
 	Warhead@11Dam_6: SpreadDamage
 		Spread: 128
@@ -201,13 +194,12 @@ Vulcan:
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@12Eff_6: CreateEffect
 		Explosions: piffs
-		ValidTargets: Ground
-		ImpactActors: false
+		ValidTargets: Ground, Ship, Trees
 		Delay: 10
 	Warhead@12Eff_6Water: CreateEffect
 		Explosions: water_piffs
 		ValidTargets: Water, Underwater
-		InvalidTargets: Bridge
+		InvalidTargets: Ship, Structure, Bridge
 		Delay: 10
 
 ChainGun:
@@ -274,7 +266,8 @@ M60mg:
 	ReloadDelay: 80
 	Range: 2c512
 	Report: gun5.aud
-	ValidTargets: Ground, Infantry, Barrel
+	ValidTargets: Ground, Infantry
+	InvalidTargets: Vehicle, Water, Structure, Wall, Husk, Mine
 	Projectile: InstantHit
 		Blockable: true
 	Warhead@1Dam: SpreadDamage
