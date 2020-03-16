@@ -64,7 +64,7 @@ MIG:
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
-		HP: 7500
+		HP: 10000
 	RevealsShroud:
 		MinRange: 11c0
 		Range: 13c0
@@ -81,6 +81,7 @@ MIG:
 	AttackAircraft:
 		FacingTolerance: 20
 		PersistentTargeting: false
+		OpportunityFire: False
 	Aircraft:
 		CruiseAltitude: 2560
 		InitialFacing: 192
@@ -89,7 +90,6 @@ MIG:
 		RepulsionSpeed: 40
 		MaximumPitch: 56
 	AutoTarget:
-		ScanOnIdle: false
 		InitialStance: HoldFire
 		InitialStanceAI: HoldFire
 	AmmoPool:
@@ -155,6 +155,7 @@ YAK:
 	AttackAircraft:
 		FacingTolerance: 20
 		PersistentTargeting: false
+		OpportunityFire: False
 	Aircraft:
 		CruiseAltitude: 2560
 		InitialFacing: 192
@@ -163,7 +164,6 @@ YAK:
 		RepulsionSpeed: 40
 		MaximumPitch: 56
 	AutoTarget:
-		ScanOnIdle: false
 		InitialStance: HoldFire
 		InitialStanceAI: HoldFire
 	AmmoPool:
@@ -206,7 +206,7 @@ TRAN:
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
-		HP: 14000
+		HP: 20000
 	RevealsShroud:
 		MinRange: 6c0
 		Range: 8c0
@@ -281,6 +281,7 @@ HELI:
 		FacingTolerance: 20
 		PersistentTargeting: false
 		AttackType: Hover
+		OpportunityFire: False
 	Aircraft:
 		TurnSpeed: 4
 		Speed: 149
@@ -353,6 +354,7 @@ HIND:
 		FacingTolerance: 20
 		PersistentTargeting: false
 		AttackType: Hover
+		OpportunityFire: False
 	Aircraft:
 		TurnSpeed: 4
 		Speed: 112
