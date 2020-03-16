@@ -516,6 +516,8 @@ MNLY:
 		Image: MNLY
 	Rearmable:
 		RearmActors: fix
+	Targetable:
+		TargetTypes: Ground, Vehicle, Mine
 
 TRUK:
 	Inherits: ^Vehicle
@@ -759,11 +761,11 @@ CTNK:
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
-		HP: 45000
+		HP: 40000
 	Armor:
 		Type: Light
 	Mobile:
-		Speed: 113
+		Speed: 96
 		Locomotor: heavywheeled
 	RevealsShroud:
 		MinRange: 4c0
@@ -861,7 +863,7 @@ STNK:
 		InitialStance: HoldFire
 		InitialStanceAI: ReturnFire
 	Armament:
-		Weapon: APTusk
+		Weapon: APTusk.stnk
 		LocalOffset: 192,0,176
 	Turreted:
 		TurnSpeed: 5
@@ -869,7 +871,7 @@ STNK:
 	WithSpriteTurret:
 	Cargo:
 		Types: Infantry
-		MaxWeight: 4
+		MaxWeight: 5
 		LoadingCondition: notmobile
 	Cloak:
 		InitialDelay: 125
