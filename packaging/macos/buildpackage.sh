@@ -13,7 +13,7 @@
 #   MACOS_DEVELOPER_PASSWORD: App-specific password for the developer account
 #
 
-LAUNCHER_TAG="osx-launcher-20200306"
+LAUNCHER_TAG="osx-launcher-20200316"
 
 if [ $# -ne "2" ]; then
 	echo "Usage: $(basename "$0") tag outputdir"
