@@ -388,7 +388,7 @@ sidebar-bits:
 		production-tooltip-time: 904, 51, 16, 16
 		production-tooltip-power: 870, 51, 16, 16
 		production-tooltip-cost: 836, 51, 16, 16
-		indicator-muted: 918, 221, 24, 24
+		indicator-muted: 918, 221, 26, 24
 
 vertical-bars:
 	Inherits: ^Chrome
