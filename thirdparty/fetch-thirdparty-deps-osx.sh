@@ -1,6 +1,6 @@
 #!/bin/bash
 
-LAUNCHER_TAG="osx-launcher-20200306"
+LAUNCHER_TAG="osx-launcher-20200316"
 
 download_dir="${0%/*}/download/osx"
 mkdir -p "$download_dir"
@@ -24,4 +24,9 @@ fi
 if [ ! -f libfreetype.6.dylib ]; then
 	echo "Fetching OS X FreeType library from GitHub."
 	curl -LOs https://github.com/OpenRA/OpenRALauncherOSX/releases/download/${LAUNCHER_TAG}/libfreetype.6.dylib
+fi
+
+if [ ! -f libopenal.1.dylib ]; then
+	echo "Fetching OS X OpenAL Soft library from GitHub."
+	curl -LOs https://github.com/OpenRA/OpenRALauncherOSX/releases/download/${LAUNCHER_TAG}/libopenal.1.dylib
 fi
