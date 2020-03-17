@@ -41,7 +41,6 @@ mcv:
 		EffectiveOwnerFromOwner: true
 	AttractsWorms:
 		Intensity: 700
-	SelectionDecorations:
 	SelfHealing:
 		Step: 50
 		Delay: 3
@@ -66,7 +65,6 @@ harvester:
 		Class: harvester
 		DecorationBounds: 42,42
 	Harvester:
-		PipCount: 7
 		Capacity: 28
 		HarvestFacings: 8
 		Resources: Spice
@@ -94,12 +92,16 @@ harvester:
 	WithDockingAnimation:
 	AttractsWorms:
 		Intensity: 700
-	SelectionDecorations:
 	SelfHealing:
 		Step: 50
 		Delay: 3
 		HealIfBelow: 50
 	-RevealOnFire:
+	WithHarvesterPipsDecoration:
+		Position: BottomLeft
+		Margin: 1, 4
+		RequiresSelection: true
+		PipCount: 7
 
 trike:
 	Inherits: ^Vehicle
@@ -383,7 +385,6 @@ devastator:
 		GrantsCondition: meltdown
 	AttractsWorms:
 		Intensity: 700
-	SelectionDecorations:
 	SelfHealing:
 		Step: 50
 		Delay: 3
