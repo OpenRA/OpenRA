@@ -82,6 +82,10 @@ TriggerCarryallReinforcements = function(triggeringPlayer, reinforcingPlayer, ar
 	end)
 end
 
+DestroyCarryalls = function(player)
+	Utils.Do(player.GetActorsByType("carryall"), function(actor) actor.Kill() end)
+end
+
 -- Used for the AI:
 
 IdlingUnits = { }
