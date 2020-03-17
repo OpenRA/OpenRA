@@ -254,11 +254,14 @@ WorldLoaded = function()
 		unit.AttackMove(Utils.Random(EnemyAttackLocations))
 		IdleHunt(unit)
 	end
+	local announcementFunction = function()
+		Media.DisplayMessage("Enemy reinforcements have arrived.", "Mentat")
+	end
 
-	SendCarryallReinforcements(atreides, 0, AtreidesAttackWaves[Difficulty], EnemyAttackDelay[Difficulty], atreidesPath, AtreidesReinforcements[Difficulty], atreidesCondition, huntFunction)
+	SendCarryallReinforcements(atreides, 0, AtreidesAttackWaves[Difficulty], EnemyAttackDelay[Difficulty], atreidesPath, AtreidesReinforcements[Difficulty], atreidesCondition, huntFunction, announcementFunction)
 
 	Trigger.AfterDelay(Utils.RandomInteger(DateTime.Seconds(45), DateTime.Minutes(1) + DateTime.Seconds(15)), function()
-		SendCarryallReinforcements(harkonnen, 0, HarkonnenAttackWaves[Difficulty], EnemyAttackDelay[Difficulty], harkonnenPath, HarkonnenReinforcements[Difficulty], harkonnenCondition, huntFunction)
+		SendCarryallReinforcements(harkonnen, 0, HarkonnenAttackWaves[Difficulty], EnemyAttackDelay[Difficulty], harkonnenPath, HarkonnenReinforcements[Difficulty], harkonnenCondition, huntFunction, announcementFunction)
 	end)
 
 	Actor.Create("upgrade.barracks", true, { Owner = atreides })
