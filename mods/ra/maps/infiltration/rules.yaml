@@ -44,7 +44,6 @@ LST.Unselectable.UnloadOnly:
 		Prerequisites: ~disabled
 	Cargo:
 		MaxWeight: 0
-		PipCount: 0
 	Targetable:
 		TargetTypes: Ground, Water, Repair, NoAutoTarget
 	Interactable:
@@ -80,6 +79,7 @@ DOG.Patrol:
 
 TRUK.Hijackable:
 	Inherits: TRUK
+	Inherits@CARGOPIPS: ^CargoPips
 	Buildable:
 		Prerequisites: ~disabled
 	Mobile:
@@ -87,7 +87,6 @@ TRUK.Hijackable:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 5
-		PipCount: 5
 		PassengerConditions:
 			spy.strong: mobile
 	Targetable:

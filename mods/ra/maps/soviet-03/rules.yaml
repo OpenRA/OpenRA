@@ -30,10 +30,10 @@ FENC:
 		HP: 900000
 
 V01:
+	Inherits@CARGOPIPS: ^CargoPips
 	Cargo:
 		Types: Infantry
 		MaxWeight: 1
-		PipCount: 1
 
 V05:
 	SpawnActorOnDeath:

@@ -151,7 +151,6 @@
 	ResourceType@ore:
 		Type: Ore
 		Name: Valuable Minerals
-		PipColor: Yellow
 		ResourceType: 1
 		TerrainType: Ore
 		Palette: player
@@ -163,7 +162,6 @@
 	ResourceType@gem:
 		Type: Gems
 		Name: Valuable Minerals
-		PipColor: Red
 		ResourceType: 2
 		TerrainType: Gems
 		Palette: player
