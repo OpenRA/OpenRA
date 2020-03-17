@@ -54,6 +54,8 @@ concreteb:
 
 construction_yard:
 	Inherits: ^Building
+	Inherits@PRIMARY: ^PrimaryBuilding
+	Inherits@UPGRADEABLE: ^Upgradeable
 	Buildable:
 		Description: Produces structures.
 	-DamagedByTerrain:
@@ -103,26 +105,10 @@ construction_yard:
 		RequiresCondition: !build-incomplete
 		Palette: d2k
 	PrimaryBuilding:
-		PrimaryCondition: primary
 		ProductionQueues: Building
-		SelectionNotification: PrimaryBuildingSelected
 	ProvidesPrerequisite@buildingname:
-	GrantConditionOnPrerequisite:
+	GrantConditionOnPrerequisite@UPGRADEABLE:
 		Prerequisites: upgrade.conyard
-		Condition: stardecoration
-	WithDecoration@upgraded:
-		RequiresSelection: true
-		Image: pips
-		Sequence: tag-upgraded
-		ReferencePoint: Top, Right
-		ZOffset: 256
-		RequiresCondition: stardecoration
-	WithTextDecoration@primary:
-		RequiresSelection: true
-		Text: PRIMARY
-		ReferencePoint: Top
-		ZOffset: 256
-		RequiresCondition: primary
 	RevealOnDeath:
 		Radius: 5c768
 
@@ -174,6 +160,8 @@ wind_trap:
 
 barracks:
 	Inherits: ^Building
+	Inherits@PRIMARY: ^PrimaryBuilding
+	Inherits@UPGRADEABLE: ^Upgradeable
 	Buildable:
 		Prerequisites: wind_trap
 		Queue: Building
@@ -211,9 +199,7 @@ barracks:
 	Production:
 		Produces: Infantry, Upgrade
 	PrimaryBuilding:
-		PrimaryCondition: primary
 		ProductionQueues: Infantry
-		SelectionNotification: PrimaryBuildingSelected
 	ProductionBar:
 		ProductionType: Infantry
 	ProvidesPrerequisite@atreides:
@@ -236,22 +222,8 @@ barracks:
 			corrino: barracks.harkonnen
 	WithBuildingBib:
 	ProvidesPrerequisite@buildingname:
-	GrantConditionOnPrerequisite:
+	GrantConditionOnPrerequisite@UPGRADEABLE:
 		Prerequisites: upgrade.barracks
-		Condition: stardecoration
-	WithDecoration@upgraded:
-		RequiresSelection: true
-		Image: pips
-		Sequence: tag-upgraded
-		ReferencePoint: Top, Right
-		ZOffset: 256
-		RequiresCondition: stardecoration
-	WithTextDecoration@primary:
-		RequiresSelection: true
-		Text: PRIMARY
-		ReferencePoint: Top
-		ZOffset: 256
-		RequiresCondition: primary
 	RevealOnDeath:
 		Radius: 3c768
 
@@ -293,8 +265,6 @@ refinery:
 		DockOffset: 2,1
 		TickRate: 20
 	StoresResources:
-		PipColor: green
-		PipCount: 10
 		Capacity: 2000
 	CustomSellValue:
 		Value: 500
@@ -320,6 +290,11 @@ refinery:
 	Power:
 		Amount: -75
 	ProvidesPrerequisite@buildingname:
+	WithResourceStoragePipsDecoration:
+		Position: BottomLeft
+		Margin: 1, 4
+		RequiresSelection: true
+		PipCount: 10
 
 silo:
 	Inherits: ^Building
@@ -356,8 +331,6 @@ silo:
 	WithResourceLevelSpriteBody:
 		Sequence: stages
 	StoresResources:
-		PipColor: green
-		PipCount: 5
 		Capacity: 2000
 	-SpawnActorsOnSell:
 	Power:
@@ -370,9 +343,16 @@ silo:
 		Range: 2c0, 5c0
 	RevealOnDeath:
 		Radius: 2c768
+	WithResourceStoragePipsDecoration:
+		Position: BottomLeft
+		Margin: 1, 4
+		RequiresSelection: true
+		PipCount: 5
 
 light_factory:
 	Inherits: ^Building
+	Inherits@PRIMARY: ^PrimaryBuilding
+	Inherits@UPGRADEABLE: ^Upgradeable
 	Buildable:
 		Prerequisites: refinery
 		Queue: Building
@@ -423,9 +403,7 @@ light_factory:
 	Production:
 		Produces: Vehicle, Upgrade
 	PrimaryBuilding:
-		PrimaryCondition: primary
 		ProductionQueues: Vehicle
-		SelectionNotification: PrimaryBuildingSelected
 	ProductionBar:
 		ProductionType: Vehicle
 	ProvidesPrerequisite@atreides:
@@ -446,25 +424,13 @@ light_factory:
 	ProvidesPrerequisite@buildingname:
 	Power:
 		Amount: -125
-	GrantConditionOnPrerequisite:
+	GrantConditionOnPrerequisite@UPGRADEABLE:
 		Prerequisites: upgrade.light
-		Condition: stardecoration
-	WithDecoration@upgraded:
-		RequiresSelection: true
-		Image: pips
-		Sequence: tag-upgraded
-		ReferencePoint: Top, Right
-		ZOffset: 256
-		RequiresCondition: stardecoration
-	WithTextDecoration@primary:
-		RequiresSelection: true
-		Text: PRIMARY
-		ReferencePoint: Top
-		ZOffset: 256
-		RequiresCondition: primary
 
 heavy_factory:
 	Inherits: ^Building
+	Inherits@PRIMARY: ^PrimaryBuilding
+	Inherits@UPGRADEABLE: ^Upgradeable
 	Buildable:
 		Prerequisites: refinery
 		Queue: Building
@@ -504,9 +470,7 @@ heavy_factory:
 	Production:
 		Produces: Armor, Upgrade
 	PrimaryBuilding:
-		PrimaryCondition: primary
 		ProductionQueues: Armor
-		SelectionNotification: PrimaryBuildingSelected
 	ProductionBar:
 		ProductionType: Armor
 	ProvidesPrerequisite@atreides:
@@ -549,22 +513,8 @@ heavy_factory:
 	Power:
 		Amount: -150
 	ProvidesPrerequisite@buildingname:
-	GrantConditionOnPrerequisite:
+	GrantConditionOnPrerequisite@UPGRADEABLE:
 		Prerequisites: upgrade.heavy
-		Condition: stardecoration
-	WithDecoration@upgraded:
-		RequiresSelection: true
-		Image: pips
-		Sequence: tag-upgraded
-		ReferencePoint: Top, Right
-		ZOffset: 256
-		RequiresCondition: stardecoration
-	WithTextDecoration@primary:
-		RequiresSelection: true
-		Text: PRIMARY
-		ReferencePoint: Top
-		ZOffset: 256
-		RequiresCondition: primary
 
 outpost:
 	Inherits: ^Building
@@ -618,6 +568,7 @@ outpost:
 
 starport:
 	Inherits: ^Building
+	Inherits@PRIMARY: ^PrimaryBuilding
 	Tooltip:
 		Name: Starport
 	Buildable:
@@ -672,9 +623,7 @@ starport:
 	ProductionBar:
 		ProductionType: Starport
 	PrimaryBuilding:
-		PrimaryCondition: primary
 		ProductionQueues: Starport
-		SelectionNotification: PrimaryBuildingSelected
 	ProvidesPrerequisite@atreides:
 		Prerequisite: starport.atreides
 		Factions: atreides
@@ -696,12 +645,6 @@ starport:
 	Power:
 		Amount: -150
 	ProvidesPrerequisite@buildingname:
-	WithTextDecoration@primary:
-		RequiresSelection: true
-		Text: PRIMARY
-		ReferencePoint: Top
-		ZOffset: 256
-		RequiresCondition: primary
 
 wall:
 	Inherits@1: ^SpriteActor
@@ -919,6 +862,8 @@ repair_pad:
 
 high_tech_factory:
 	Inherits: ^Building
+	Inherits@PRIMARY: ^PrimaryBuilding
+	Inherits@UPGRADEABLE: ^Upgradeable
 	Buildable:
 		Prerequisites: outpost, ~techlevel.medium
 		Queue: Building
@@ -937,9 +882,7 @@ high_tech_factory:
 	ProductionBar:
 		ProductionType: Aircraft
 	PrimaryBuilding:
-		PrimaryCondition: primary
 		ProductionQueues: Aircraft
-		SelectionNotification: PrimaryBuildingSelected
 	Exit:
 		SpawnOffset: 0,0,728
 		ExitCell: 0,0
@@ -995,22 +938,8 @@ high_tech_factory:
 		SupportPowerPaletteOrder: 10
 	Power:
 		Amount: -75
-	GrantConditionOnPrerequisite:
+	GrantConditionOnPrerequisite@UPGRADEABLE:
 		Prerequisites: upgrade.hightech
-		Condition: stardecoration
-	WithDecoration@upgraded:
-		RequiresSelection: true
-		Image: pips
-		Sequence: tag-upgraded
-		ReferencePoint: Top, Right
-		ZOffset: 256
-		RequiresCondition: stardecoration
-	WithTextDecoration@primary:
-		RequiresSelection: true
-		Text: PRIMARY
-		ReferencePoint: Top
-		ZOffset: 256
-		RequiresCondition: primary
 
 research_centre:
 	Inherits: ^Building
@@ -1064,6 +993,7 @@ research_centre:
 
 palace:
 	Inherits: ^Building
+	Inherits@PRIMARY: ^PrimaryBuilding
 	Inherits@IDISABLE: ^DisableOnLowPowerOrPowerDown
 	Buildable:
 		Prerequisites: research_centre, ~techlevel.high
@@ -1127,14 +1057,8 @@ palace:
 		Prerequisite: palace.sardaukar
 		Factions: corrino
 	PrimaryBuilding:
-		PrimaryCondition: primary
 		RequiresCondition: atreides || ordos
-		SelectionNotification: PrimaryBuildingSelected
 	WithTextDecoration@primary:
-		RequiresSelection: true
-		Text: PRIMARY
-		ReferencePoint: Top
-		ZOffset: 256
 		RequiresCondition: primary && (atreides || ordos)
 	NukePower:
 		Cursor: nuke
