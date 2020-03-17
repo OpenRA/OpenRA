@@ -41,7 +41,7 @@ Players:
 		Faction: atreides
 		LockColor: True
 		Color: 9191FF
-		Enemies: Harkonnen
+		Enemies: Harkonnen, Creeps
 		Bot: campaign
 
 Actors:
