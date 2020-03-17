@@ -42,7 +42,7 @@ Players:
 		LockColor: True
 		Color: 9191FF
 		Allies: Fremen
-		Enemies: Harkonnen
+		Enemies: Harkonnen, Creeps
 		Bot: campaign
 	PlayerReference@Fremen:
 		Name: Fremen
@@ -51,7 +51,7 @@ Players:
 		LockColor: True
 		Color: DDDDDD
 		Allies: Atreides
-		Enemies: Harkonnen
+		Enemies: Harkonnen, Creeps
 		Bot: campaign
 
 Actors:

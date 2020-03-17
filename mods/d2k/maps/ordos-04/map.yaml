@@ -44,7 +44,7 @@ Players:
 		LockColor: True
 		Color: FE0000
 		Allies: Smugglers
-		Enemies: Ordos
+		Enemies: Ordos, Creeps
 		Bot: campaign
 	PlayerReference@Smugglers:
 		Name: Smugglers
@@ -53,7 +53,7 @@ Players:
 		LockColor: True
 		Color: 542209
 		Allies: Harkonnen
-		Enemies: Ordos
+		Enemies: Ordos, Creeps
 		Bot: campaign
 
 Actors:

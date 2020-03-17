@@ -42,7 +42,7 @@ Players:
 		LockColor: True
 		Color: 9191FF
 		Allies: Atreides Small Base 1, Atreides Small Base 2, Corrino Main Base, Corrino Small Base
-		Enemies: Harkonnen
+		Enemies: Harkonnen, Creeps
 		Bot: campaign
 	PlayerReference@Atreides Small Base 1:
 		Name: Atreides Small Base 1
@@ -51,7 +51,7 @@ Players:
 		LockColor: True
 		Color: 9191FF
 		Allies: Atreides Main Base, Atreides Small Base 2, Corrino Main Base, Corrino Small Base
-		Enemies: Harkonnen
+		Enemies: Harkonnen, Creeps
 		Bot: campaign
 	PlayerReference@Atreides Small Base 2:
 		Name: Atreides Small Base 2
@@ -60,7 +60,7 @@ Players:
 		LockColor: True
 		Color: 9191FF
 		Allies: Atreides Main Base, Atreides Small Base 1, Corrino Main Base, Corrino Small Base
-		Enemies: Harkonnen
+		Enemies: Harkonnen, Creeps
 		Bot: campaign
 	PlayerReference@Corrino Main Base:
 		Name: Corrino Main Base
@@ -69,7 +69,7 @@ Players:
 		LockColor: True
 		Color: 7D00FE
 		Allies: Atreides Main Base, Atreides Small Base 1, Atreides Small Base 2, Corrino Small Base
-		Enemies: Harkonnen
+		Enemies: Harkonnen, Creeps
 		Bot: campaign
 	PlayerReference@Corrino Small Base:
 		Name: Corrino Small Base
@@ -78,7 +78,7 @@ Players:
 		LockColor: True
 		Color: 7D00FE
 		Allies: Atreides Main Base, Atreides Small Base 1, Atreides Small Base 2, Corrino Main Base
-		Enemies: Harkonnen
+		Enemies: Harkonnen, Creeps
 		Bot: campaign
 
 Actors:

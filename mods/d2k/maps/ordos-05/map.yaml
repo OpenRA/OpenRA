@@ -44,7 +44,7 @@ Players:
 		LockColor: True
 		Color: 9191FF
 		Allies: AtreidesSmallBase1, AtreidesSmallBase2
-		Enemies: Ordos
+		Enemies: Ordos, Creeps
 		Bot: campaign
 	PlayerReference@AtreidesSmallBase1:
 		Name: AtreidesSmallBase1
@@ -53,7 +53,7 @@ Players:
 		LockColor: True
 		Color: 9191FF
 		Allies: AtreidesMainBase, AtreidesSmallBase2, AtreidesSmallBase3
-		Enemies: Ordos
+		Enemies: Ordos, Creeps
 		Bot: campaign
 	PlayerReference@AtreidesSmallBase2:
 		Name: AtreidesSmallBase2
@@ -62,7 +62,7 @@ Players:
 		LockColor: True
 		Color: 9191FF
 		Allies: AtreidesMainBase, AtreidesSmallBase1, AtreidesSmallBase3
-		Enemies: Ordos
+		Enemies: Ordos, Creeps
 		Bot: campaign
 	PlayerReference@AtreidesSmallBase3:
 		Name: AtreidesSmallBase3
@@ -71,7 +71,7 @@ Players:
 		LockColor: True
 		Color: 9191FF
 		Allies: AtreidesMainBase, AtreidesSmallBase1, AtreidesSmallBase2
-		Enemies: Ordos
+		Enemies: Ordos, Creeps
 		Bot: campaign
 
 Actors:
