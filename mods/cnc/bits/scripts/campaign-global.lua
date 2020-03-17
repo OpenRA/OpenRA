@@ -129,6 +129,18 @@ MoveAndHunt = function(actors, path)
 	end)
 end
 
+MoveAndIdle = function(actors, path)
+	Utils.Do(actors, function(actor)
+		if not actor or actor.IsDead then
+			return
+		end
+
+		Utils.Do(path, function(point)
+			actor.Move(point.Location, 0)
+		end)
+	end)
+end
+
 Searches = 0
 GetAirstrikeTarget = function(player)
 	local list = player.GetGroundAttackers()

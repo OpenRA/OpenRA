@@ -1,0 +1,180 @@
+World:
+	LuaScript:
+		Scripts: campaign-global.lua, gdi08b.lua, gdi08b-AI.lua
+	MusicPlaylist:
+		StartingMusic: march
+		VictoryMusic: gdi_win1
+	MissionData:
+		Briefing: Dr. Mobius is establishing a Hospital to treat the civilians in the region who are falling ill due to exposure to Tiberium.\n\nProtect Mobius and the civilians.\n\nEliminate Nod presence in the area.
+		BackgroundVideo: tbrinfo1.vqa
+		StartVideo: desolat.vqa
+		LossVideo: gdilose.vqa
+		WinVideo: hellvaly.vqa
+		BriefingVideo: gdi8b.vqa
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			easy: Easy
+			normal: Normal
+			hard: Hard
+		Default: normal
+		Locked: false
+	MapOptions:
+		ShortGameCheckboxLocked: True
+		ShortGameCheckboxEnabled: True
+	SmudgeLayer@SCORCH:
+		InitialSmudges:
+			30,43: sc3,0
+			10,21: sc5,0
+			7,20: sc5,0
+			9,19: sc1,0
+			6,19: sc3,0
+			5,18: sc4,0
+			40,8: sc4,0
+			19,8: sc4,0
+			36,7: sc6,0
+			35,7: sc6,0
+			34,7: sc5,0
+			19,7: sc3,0
+			18,7: sc2,0
+			15,7: sc1,0
+			37,6: sc2,0
+			17,6: sc2,0
+			34,5: sc3,0
+			20,5: sc6,0
+			19,5: sc4,0
+			38,4: sc1,0
+			37,4: sc6,0
+			18,4: sc5,0
+	SmudgeLayer@CRATER:
+		InitialSmudges:
+			36,6: cr1,0
+
+ATWR:
+	Buildable:
+		Prerequisites: ~disabled
+
+NUK2:
+	Buildable:
+		Prerequisites: ~disabled
+
+HPAD:
+	Buildable:
+		Prerequisites: ~disabled
+
+BRIK:
+	Buildable:
+		Prerequisites: ~disabled
+
+EYE:
+	Buildable:
+		Prerequisites: ~disabled
+
+OBLI:
+	Buildable:
+		Prerequisites: ~disabled
+
+TMPL:
+	Buildable:
+		Prerequisites: ~disabled
+
+HTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+TRAN:
+	Buildable:
+		Prerequisites: ~disabled
+
+ORCA:
+	Buildable:
+		Prerequisites: ~disabled
+
+RMBO:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSAM:
+	Buildable:
+		Prerequisites: ~disabled
+
+MCV:
+	Buildable:
+		Prerequisites: ~disabled
+
+BOAT:
+	Buildable:
+		Prerequisites: ~disabled
+
+FTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+STNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+ARTY:
+	RevealsShroud:
+		Range: 10c0
+
+HARV:
+	Harvester:
+		SearchFromProcRadius: 64
+
+HELI:
+	Buildable:
+		Prerequisites: ~disabled
+
+E5:
+	Buildable:
+		Prerequisites: ~disabled
+
+MLRS:
+	Buildable:
+		Prerequisites: ~disabled
+
+SAM:
+	Buildable:
+		Prerequisites: ~disabled
+
+^Bridge:
+	DamageMultiplier@INVULNERABLE:
+		Modifier: 0
+
+BRIDGEHUT:
+	-Targetable:
+
+CYCL:
+	Buildable:
+		Prerequisites: ~disabled
+
+SBAG:
+	Buildable:
+		Queue: Defence.GDI, Defence.Nod
+
+GUN:
+	Buildable:
+		Queue: Defence.GDI, Defence.Nod
+
+airstrike.proxy:
+	AirstrikePower:
+		SquadSize: 2
+		SquadOffset: -1536, 1024, 0
+
+HQ:
+	Tooltip:
+	-AirstrikePower:
+	Buildable:
+		Description: Provides an overview of the battlefield.\n  Requires power to operate.
+
+^CivInfantry:
+	Health:
+		HP: 3500
+	Wanders:
+		MinMoveDelay: 500
+		MaxMoveDelay: 1000
+	ActorLostNotification:
+		Notification: CivilianKilled
+		NotifyAll: true
