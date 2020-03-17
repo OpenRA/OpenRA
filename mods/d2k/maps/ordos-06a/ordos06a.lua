@@ -182,6 +182,7 @@ Tick = function()
 	if not player.IsObjectiveCompleted(KillAtreides) and atreides.HasNoRequiredUnits() then
 		Media.DisplayMessage("The Atreides have been annihilated!", "Mentat")
 		player.MarkCompletedObjective(KillAtreides)
+		DestroyCarryalls(atreides)
 
 		if player.IsObjectiveCompleted(KillHarkonnen) then
 			player.MarkCompletedObjective(GuardStarport)
@@ -191,6 +192,7 @@ Tick = function()
 	if not player.IsObjectiveCompleted(KillHarkonnen) and harkonnen.HasNoRequiredUnits() then
 		Media.DisplayMessage("The Harkonnen have been annihilated!", "Mentat")
 		player.MarkCompletedObjective(KillHarkonnen)
+		DestroyCarryalls(harkonnen)
 
 		if player.IsObjectiveCompleted(KillAtreides) then
 			player.MarkCompletedObjective(GuardStarport)
