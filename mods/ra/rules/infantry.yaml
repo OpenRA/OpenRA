@@ -16,7 +16,6 @@ DOG:
 	Selectable:
 		Bounds: 12,17,-1,-4
 		DecorationBounds: 12,17,-1,-4
-	SelectionDecorations:
 	Health:
 		HP: 1800
 	Mobile:
@@ -265,7 +264,7 @@ E6:
 		StandSequences: parachute
 		RequiresCondition: parachute
 	Passenger:
-		PipType: Yellow
+		CustomPipType: yellow
 	EngineerRepair:
 	RepairsBridges:
 	CaptureManager:
@@ -312,7 +311,7 @@ SPY:
 	RevealsShroud:
 		Range: 5c0
 	Passenger:
-		PipType: Blue
+		CustomPipType: blue
 		Voice: Move
 	Disguise:
 		DisguisedCondition: disguise
@@ -330,11 +329,11 @@ SPY:
 		IdleSequences: idle1,idle2
 		StandSequences: stand,stand2
 	WithDecoration@disguise:
+		Margin: 6, 10
 		Image: pips
 		Sequence: pip-disguise
 		Palette: effect
-		ReferencePoint: Top, Right
-		ZOffset: 256
+		Position: TopRight
 		RequiresCondition: disguise
 	IgnoresDisguise:
 	Armament:
@@ -386,7 +385,7 @@ E7:
 		DetonationDelay: 45
 		Voice: Demolish
 	Passenger:
-		PipType: Red
+		CustomPipType: red
 		Voice: Move
 	Armament@PRIMARY:
 		Weapon: Colt45
@@ -431,7 +430,7 @@ MEDI:
 	RevealsShroud:
 		Range: 3c0
 	Passenger:
-		PipType: Blue
+		CustomPipType: blue
 	Armament:
 		Weapon: Heal
 		Cursor: heal
@@ -470,7 +469,7 @@ MECH:
 	RevealsShroud:
 		Range: 3c0
 	Passenger:
-		PipType: Blue
+		CustomPipType: blue
 		Voice: Move
 	Armament:
 		Weapon: Repair
@@ -573,7 +572,7 @@ THF:
 	RevealsShroud:
 		Range: 5c0
 	Passenger:
-		PipType: Blue
+		CustomPipType: blue
 	CaptureManager:
 	Captures:
 		CaptureTypes: vehicle
@@ -669,7 +668,7 @@ SNIPER:
 	Health:
 		HP: 8000
 	Passenger:
-		PipType: Red
+		CustomPipType: red
 	RevealsShroud:
 		Range: 6c0
 	AutoTarget:
@@ -749,7 +748,6 @@ Ant:
 	Selectable:
 		Bounds: 24,24,0,-5
 		DecorationBounds: 30,30,0,-2
-	SelectionDecorations:
 	Health:
 		HP: 75000
 	Mobile:

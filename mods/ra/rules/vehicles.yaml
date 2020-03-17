@@ -40,7 +40,6 @@ V2RL:
 		RequiresCondition: reloading
 		Sequence: empty-idle
 		Name: reloading
-	SelectionDecorations:
 	Explodes:
 		Weapon: V2Explode
 	ProducibleWithLevel:
@@ -133,7 +132,6 @@ V2RL:
 	WithSpriteTurret:
 	SpawnActorOnDeath:
 		Actor: 2TNK.Husk
-	SelectionDecorations:
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
 	Selectable:
@@ -180,7 +178,6 @@ V2RL:
 	WithSpriteTurret:
 	SpawnActorOnDeath:
 		Actor: 3TNK.Husk
-	SelectionDecorations:
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
 	Selectable:
@@ -240,7 +237,6 @@ V2RL:
 		Delay: 3
 		HealIfBelow: 50
 		DamageCooldown: 150
-	SelectionDecorations:
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
 	Selectable:
@@ -305,7 +301,6 @@ HARV:
 		GenericName: Harvester
 	Selectable:
 		DecorationBounds: 42,42
-	SelectionDecorations:
 	Harvester:
 		Capacity: 20
 		Resources: Ore,Gems
@@ -342,6 +337,14 @@ HARV:
 	WithHarvesterSpriteBody:
 		ImageByFullness: harvempty, harvhalf, harv
 	-WithFacingSpriteBody:
+	WithHarvesterPipsDecoration:
+		Position: BottomLeft
+		Margin: 4, 3
+		RequiresSelection: true
+		PipCount: 7
+		ResourceSequences:
+			Ore: pip-yellow
+			Gems: pip-red
 
 MCV:
 	Inherits: ^Vehicle
@@ -358,7 +361,6 @@ MCV:
 		Name: Mobile Construction Vehicle
 	Selectable:
 		DecorationBounds: 42,42
-	SelectionDecorations:
 	Health:
 		HP: 60000
 	Armor:
@@ -386,6 +388,7 @@ JEEP:
 	Inherits: ^Vehicle
 	Inherits@GAINSEXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Inherits@CARGOPIPS: ^CargoPips
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 130
@@ -424,7 +427,6 @@ JEEP:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 1
-		PipCount: 1
 		LoadingCondition: notmobile
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
@@ -433,6 +435,7 @@ APC:
 	Inherits: ^TrackedVehicle
 	Inherits@GAINSEXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Inherits@CARGOPIPS: ^CargoPips
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 120
@@ -466,7 +469,6 @@ APC:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 5
-		PipCount: 5
 		LoadingCondition: notmobile
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
@@ -647,7 +649,6 @@ TTNK:
 	Turreted:
 	WithIdleOverlay@SPINNER:
 		Sequence: spinner
-	SelectionDecorations:
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
 	Selectable:
@@ -697,7 +698,6 @@ FTRK:
 	AttackTurreted:
 	WithMuzzleOverlay:
 	WithSpriteTurret:
-	SelectionDecorations:
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
 	Selectable:
@@ -758,7 +758,6 @@ CTNK:
 		GenericName: Tank
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
-	SelectionDecorations:
 	Health:
 		HP: 45000
 	Armor:
@@ -818,7 +817,6 @@ QTNK:
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 4c0
-	SelectionDecorations:
 	MadTank:
 		DeployedCondition: deployed
 	WithRangeCircle:
@@ -833,6 +831,7 @@ STNK:
 	Inherits: ^Vehicle
 	Inherits@GAINSEXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Inherits@CARGOPIPS: ^CargoPips
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 330
@@ -871,7 +870,6 @@ STNK:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 4
-		PipCount: 4
 		LoadingCondition: notmobile
 	Cloak:
 		InitialDelay: 125
