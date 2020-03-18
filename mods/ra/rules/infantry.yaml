@@ -329,11 +329,11 @@ SPY:
 		IdleSequences: idle1,idle2
 		StandSequences: stand,stand2
 	WithDecoration@disguise:
-		Margin: 6, 10
+		Position: Top
+		Margin: 0, -6
 		Image: pips
-		Sequence: pip-disguise
+		Sequence: tag-spy
 		Palette: effect
-		Position: TopRight
 		RequiresCondition: disguise
 	IgnoresDisguise:
 	Armament:

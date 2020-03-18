@@ -112,6 +112,7 @@ pips:
 	tag-primary:
 		Start: 2
 		Offset: 0, 2
+	tag-spy: tag-spy
 	pip-empty: pips2
 	pip-green: pips2
 		Start: 1
