@@ -141,7 +141,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public int GetInitialFacing() { return InitialFacing; }
 		public WDist GetCruiseAltitude() { return CruiseAltitude; }
-
+		[Desc("The ratio of the aircraft's tilt to the angular velocity when turning")]
+		public readonly int TurnInclinationRatio = 0;
 		public override object Create(ActorInitializer init) { return new Aircraft(init, this); }
 
 		IEnumerable<object> IActorPreviewInitInfo.ActorPreviewInits(ActorInfo ai, ActorPreviewType type)

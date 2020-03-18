@@ -357,6 +357,18 @@ namespace OpenRA.Traits
 
 	public interface IFacingInfo : ITraitInfoInterface { int GetInitialFacing(); }
 
+	public interface IPosture
+	{
+		WRot Posture { get; set; }
+	}
+
+	public interface IPostureInfo : ITraitInfoInterface { WRot GetInitialPosture(); }
+
+	public interface ITerrainSlope
+	{
+		WRot Slope { get; set; }
+	}
+
 	public interface ITraitInfoInterface { }
 	public interface ITraitInfo : ITraitInfoInterface { object Create(ActorInitializer init); }
 

@@ -64,19 +64,37 @@ namespace OpenRA
 		public CPos Location { get { return OccupiesSpace.TopLeft; } }
 		public WPos CenterPosition { get { return OccupiesSpace.CenterPosition; } }
 
+		int lastFacing = 0;
+		WRot lastPosture = WRot.Zero;
+		WRot lastSlope = WRot.Zero;
+		WRot orientationCache = WRot.Zero;
 		public WRot Orientation
 		{
 			get
 			{
 				// TODO: Support non-zero pitch/roll in IFacing (IOrientation?)
 				var facingValue = facing != null ? facing.Facing : 0;
-				return new WRot(WAngle.Zero, WAngle.Zero, WAngle.FromFacing(facingValue));
+				var postureValue = posture != null ? posture.Posture : WRot.Zero;
+				var slopeValue = terrainSlope != null ? terrainSlope.Slope : WRot.Zero;
+
+				if (lastFacing != facingValue || postureValue != lastPosture || slopeValue != lastSlope)
+				{
+					lastFacing = facingValue;
+					lastPosture = postureValue;
+					lastSlope = slopeValue;
+
+					orientationCache = WRot.RotateOverlay(WRot.RotateOverlay(slopeValue, WRot.FromYaw(WAngle.FromFacing(facingValue))), postureValue);
+				}
+
+				return orientationCache;
 			}
 		}
 
 		internal SyncHash[] SyncHashes { get; private set; }
 
+		readonly IPosture posture;
 		readonly IFacing facing;
+		readonly ITerrainSlope terrainSlope;
 		readonly IHealth health;
 		readonly IRenderModifier[] renderModifiers;
 		readonly IRender[] renders;
@@ -121,7 +139,9 @@ namespace OpenRA
 			// actor that allows us to provide some fast implementations of commonly used methods that are relied on by
 			// performance-sensitive parts of the core game engine, such as pathfinding, visibility and rendering.
 			EffectiveOwner = TraitOrDefault<IEffectiveOwner>();
+			posture = TraitOrDefault<IPosture>();
 			facing = TraitOrDefault<IFacing>();
+			terrainSlope = TraitOrDefault<ITerrainSlope>();
 			health = TraitOrDefault<IHealth>();
 			renderModifiers = TraitsImplementing<IRenderModifier>().ToArray();
 			renders = TraitsImplementing<IRender>().ToArray();

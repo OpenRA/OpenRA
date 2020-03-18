@@ -91,6 +91,8 @@ ORCA:
 		AltitudeVelocity: 128
 		CanSlide: false
 		TakeOffOnResupply: true
+		TurnInclinationRatio: 5
+		InitialFacing: 80
 	Health:
 		HP: 20000
 	Armor:
@@ -122,6 +124,8 @@ ORCA:
 		RequiresCondition: empdisable
 	Rearmable:
 		RearmActors: gahpad, nahpad
+	BodyOrientation:
+		InitialPosture: 0, -60, 00
 
 ORCAB:
 	Inherits: ^EMPableAircraft
@@ -149,6 +153,7 @@ ORCAB:
 		LandingSounds: orcadwn1.aud
 		CanHover: false
 		CanSlide: false
+		TurnInclinationRatio: 5
 	Health:
 		HP: 26000
 	Armor:
@@ -206,6 +211,7 @@ ORCATRAN:
 		TakeoffSounds: orcaup1.aud
 		LandingSounds: orcadwn1.aud
 		IdealSeparation: 1275
+		TurnInclinationRatio: 2
 	Health:
 		HP: 20000
 	Armor:
@@ -295,6 +301,7 @@ SCRIN:
 		LandingSounds: dropdwn1.aud
 		CanHover: false
 		CanSlide: false
+		TurnInclinationRatio: 10
 	Health:
 		HP: 28000
 	Armor:

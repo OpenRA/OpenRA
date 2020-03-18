@@ -79,6 +79,26 @@ namespace OpenRA
 			return new WAngle(aa + (bb - aa) * mul / div);
 		}
 
+		public static WAngle ChangeByStep(WAngle a, WAngle b, WAngle stepSpeed)
+		{
+			if (a == b)
+				return a;
+
+			var aa = a.Angle;
+			var bb = b.Angle;
+			var step = stepSpeed.Angle;
+			if (aa > bb && aa - bb > 512)
+				aa -= 1024;
+
+			if (bb > aa && bb - aa > 512)
+				bb -= 1024;
+
+			if (aa > bb)
+				return aa - step < bb ? new WAngle(bb) : new WAngle(aa - step);
+			else
+				return aa + step > bb ? new WAngle(bb) : new WAngle(aa + step);
+		}
+
 		public static WAngle ArcTan(int y, int x) { return ArcTan(y, x, 1); }
 		public static WAngle ArcTan(int y, int x, int stride)
 		{
@@ -115,6 +135,16 @@ namespace OpenRA
 				bestAngle = 1024 - bestAngle;
 
 			return new WAngle(bestAngle);
+		}
+
+		public static WAngle ArcSin(int d)
+		{
+			return new WAngle((int)(Math.Asin(d / 1024.0) * 512 / Math.PI));
+		}
+
+		public static WAngle ArcCos(int d)
+		{
+			return new WAngle((int)(Math.Acos(d / 1024.0) * 512 / Math.PI));
 		}
 
 		// Must not be used outside rendering code

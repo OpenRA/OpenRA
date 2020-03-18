@@ -79,6 +79,47 @@ namespace OpenRA
 			new[] { 0, 1, 0, 1 }
 		};
 
+		readonly WRot[] slopes = new WRot[]
+		{
+			// Flat
+			new WRot(WAngle.Zero, WAngle.Zero, WAngle.Zero),		// 0
+
+			// Slopes (two corners high)
+			new WRot(new WAngle(-76), new WAngle(-40), WAngle.Zero),	// 1
+			new WRot(new WAngle(76), new WAngle(-40), WAngle.Zero),	// 2
+			new WRot(new WAngle(76), new WAngle(40), WAngle.Zero),	// 3
+			new WRot(new WAngle(-76), new WAngle(40), WAngle.Zero),	// 4
+
+			// Slopes (one corner high)
+			new WRot(WAngle.Zero, new WAngle(-76), WAngle.Zero),	// 5
+			new WRot(new WAngle(76), WAngle.Zero, WAngle.Zero),	// 6
+			new WRot(WAngle.Zero, new WAngle(76), WAngle.Zero),	// 7
+			new WRot(new WAngle(-76), WAngle.Zero, WAngle.Zero),	// 8
+
+			// Slopes (three corners high)
+			new WRot(WAngle.Zero, new WAngle(-76), WAngle.Zero),	// 9
+			new WRot(new WAngle(76), WAngle.Zero, WAngle.Zero),	// 10
+			new WRot(WAngle.Zero, new WAngle(76), WAngle.Zero),	// 11
+			new WRot(new WAngle(-76), WAngle.Zero, WAngle.Zero),	// 12
+
+			// Slopes (two corners high, one corner double high)
+			new WRot(WAngle.Zero, new WAngle(-128), WAngle.Zero),	// 13
+			new WRot(new WAngle(128), WAngle.Zero, WAngle.Zero),	// 14
+			new WRot(WAngle.Zero, new WAngle(128), WAngle.Zero),	// 15
+			new WRot(new WAngle(-128), WAngle.Zero, WAngle.Zero),	// 16
+
+			// Slopes (two corners high, alternating)
+			new WRot(WAngle.Zero, WAngle.Zero, WAngle.Zero),	// 17
+			new WRot(WAngle.Zero, WAngle.Zero, WAngle.Zero),	// 18
+			new WRot(WAngle.Zero, WAngle.Zero, WAngle.Zero),	// 19
+			new WRot(WAngle.Zero, WAngle.Zero, WAngle.Zero) // 20
+		};
+
+		public WRot GetGridSlope(byte rampType)
+		{
+			return slopes[rampType];
+		}
+
 		internal readonly CVec[][] TilesByDistance;
 
 		public MapGrid(MiniYaml yaml)

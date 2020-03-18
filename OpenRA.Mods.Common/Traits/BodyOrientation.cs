@@ -15,7 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class BodyOrientationInfo : ITraitInfo
+	public class BodyOrientationInfo : ITraitInfo, IPostureInfo
 	{
 		[Desc("Number of facings for gameplay calculations. -1 indicates auto-detection from another trait")]
 		public readonly int QuantizedFacings = -1;
@@ -28,6 +28,14 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Fudge the coordinate system angles like the early games.")]
 		public readonly bool UseClassicFacingFudge = false;
+
+		[Desc("Initisl posture of actor")]
+		public readonly WRot InitialPosture = WRot.Zero;
+
+		public WRot GetInitialPosture()
+		{
+			return InitialPosture;
+		}
 
 		public WVec LocalToWorld(WVec vec)
 		{
@@ -61,10 +69,15 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new BodyOrientation(init, this); }
 	}
 
-	public class BodyOrientation : ISync
+	public class BodyOrientation : ISync, IPosture
 	{
 		readonly BodyOrientationInfo info;
 		readonly Lazy<int> quantizedFacings;
+		public WRot Posture { get; set; }
+		public WRot InitialPosture
+		{
+			get { return info.GetInitialPosture(); }
+		}
 
 		[Sync]
 		public int QuantizedFacings { get { return quantizedFacings.Value; } }
@@ -72,6 +85,7 @@ namespace OpenRA.Mods.Common.Traits
 		public BodyOrientation(ActorInitializer init, BodyOrientationInfo info)
 		{
 			this.info = info;
+			Posture = info.GetInitialPosture();
 			var self = init.Self;
 			var faction = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : self.Owner.Faction.InternalName;
 

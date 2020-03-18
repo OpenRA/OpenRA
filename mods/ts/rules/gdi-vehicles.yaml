@@ -258,6 +258,7 @@ HMEC:
 		Bounds: 40, 40, 0, -8
 	Carryable:
 		LocalOffset: 0,0,509
+	-AffectedBySlope:
 
 SONIC:
 	Inherits: ^Tank

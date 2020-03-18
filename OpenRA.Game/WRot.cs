@@ -36,9 +36,41 @@ namespace OpenRA
 
 		public static bool operator !=(WRot me, WRot other) { return !(me == other); }
 
+		public static WRot RotateOverlay(WRot a, WRot b)
+		{
+			if (a == WRot.Zero)
+				return b;
+
+			if (b == WRot.Zero)
+				return a;
+
+			int x1, y1, z1, w1;
+			int x2, y2, z2, w2;
+			a.AsQuarternion(out x1, out y1, out z1, out w1);
+			b.AsQuarternion(out x2, out y2, out z2, out w2);
+
+			var x3 = (w1 * x2 + x1 * w2 + y1 * z2 - z1 * y2) / 1024;
+			var y3 = (w1 * y2 - x1 * z2 + y1 * w2 + z1 * x2) / 1024;
+			var z3 = (w1 * z2 + x1 * y2 - y1 * x2 + z1 * w2) / 1024;
+			var w3 = (w1 * w2 - x1 * x2 - y1 * y2 - z1 * z2) / 1024;
+
+			var r = FromQuarternion(x3, y3, z3, w3);
+			return r;
+		}
+
 		public WRot WithYaw(WAngle yaw)
 		{
 			return new WRot(Roll, Pitch, yaw);
+		}
+
+		// Inverse operation for AsQuarternion
+		static WRot FromQuarternion(int x, int y, int z, int w)
+		{
+			// Add minus sign to fit function AsQuarternion
+			var roll = WAngle.ArcTan(-2 * (x * w + y * z), 1048576 - 2 * (x * x + y * y));
+			var pitch = WAngle.ArcSin(-2 * (w * y - x * z) / 1024);
+			var yaw = WAngle.ArcTan(-2 * (w * z + x * y), 1048576 - 2 * (y * y + z * z));
+			return new WRot(roll, pitch, yaw);
 		}
 
 		void AsQuarternion(out int x, out int y, out int z, out int w)

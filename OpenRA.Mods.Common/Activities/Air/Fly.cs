@@ -31,6 +31,15 @@ namespace OpenRA.Mods.Common.Activities
 		bool useLastVisibleTarget;
 		readonly List<WPos> positionBuffer = new List<WPos>();
 
+		BodyOrientation bodyOrientation;
+		IFacing facing;
+		IPosture posture;
+		int lastFacing;
+		int currentFacing;
+		bool firstCall;
+		WAngle currentRoll;
+		readonly WAngle rollStep;
+
 		public Fly(Actor self, Target t, WDist nearEnough, WPos? initialTargetPosition = null, Color? targetLineColor = null)
 			: this(self, t, initialTargetPosition, targetLineColor)
 		{
@@ -50,6 +59,18 @@ namespace OpenRA.Mods.Common.Activities
 				lastVisibleTarget = Target.FromPos(target.CenterPosition);
 			else if (initialTargetPosition.HasValue)
 				lastVisibleTarget = Target.FromPos(initialTargetPosition.Value);
+
+			bodyOrientation = self.TraitOrDefault<BodyOrientation>();
+			facing = self.TraitOrDefault<IFacing>();
+			posture = self.TraitOrDefault<IPosture>();
+			currentFacing = lastFacing;
+			firstCall = true;
+			rollStep = WAngle.FromDegrees(5);
+			if (facing != null)
+				lastFacing = facing.Facing;
+
+			if (bodyOrientation != null)
+				currentRoll = posture.Posture.Roll - bodyOrientation.InitialPosture.Roll;
 		}
 
 		public Fly(Actor self, Target t, WDist minRange, WDist maxRange,
@@ -112,6 +133,20 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override bool Tick(Actor self)
 		{
+			if (aircraft.Info.TurnInclinationRatio != 0 && bodyOrientation != null && facing != null)
+			{
+				currentFacing = facing.Facing;
+				var diffFacing = currentFacing - lastFacing;
+				if (!firstCall)
+				{
+					currentRoll = WAngle.ChangeByStep(currentRoll, diffFacing < 2 && diffFacing > -2 ? WAngle.Zero : WAngle.FromFacing((diffFacing) * -aircraft.Info.TurnInclinationRatio), rollStep);
+					posture.Posture = bodyOrientation.InitialPosture + new WRot(currentRoll, WAngle.Zero, WAngle.Zero);
+				}
+
+				firstCall = false;
+				lastFacing = currentFacing;
+			}
+
 			// Refuse to take off if it would land immediately again.
 			if (aircraft.ForceLanding)
 				Cancel(self);

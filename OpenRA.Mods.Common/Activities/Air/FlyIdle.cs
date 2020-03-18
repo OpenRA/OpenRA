@@ -23,11 +23,32 @@ namespace OpenRA.Mods.Common.Activities
 		readonly int turnSpeed;
 		int remainingTicks;
 
+		BodyOrientation bodyOrientation;
+		IFacing facing;
+		IPosture posture;
+		int lastFacing;
+		int currentFacing;
+		bool firstCall;
+		WAngle currentRoll;
+		readonly WAngle rollStep;
+
 		public FlyIdle(Actor self, int ticks = -1, bool tickIdle = true)
 		{
 			aircraft = self.Trait<Aircraft>();
 			turnSpeed = aircraft.Info.IdleTurnSpeed > -1 ? aircraft.Info.IdleTurnSpeed : aircraft.TurnSpeed;
 			remainingTicks = ticks;
+
+			bodyOrientation = self.TraitOrDefault<BodyOrientation>();
+			facing = self.TraitOrDefault<IFacing>();
+			posture = self.TraitOrDefault<IPosture>();
+			currentFacing = lastFacing;
+			firstCall = true;
+			rollStep = WAngle.FromDegrees(5);
+			if (facing != null)
+				lastFacing = facing.Facing;
+
+			if (bodyOrientation != null)
+				currentRoll = posture.Posture.Roll - bodyOrientation.InitialPosture.Roll;
 
 			if (tickIdle)
 				tickIdles = self.TraitsImplementing<INotifyIdle>().ToArray();
@@ -40,6 +61,20 @@ namespace OpenRA.Mods.Common.Activities
 
 			if (aircraft.ForceLanding || IsCanceling)
 				return true;
+
+			if (aircraft.Info.TurnInclinationRatio != 0 && bodyOrientation != null && facing != null)
+			{
+				currentFacing = facing.Facing;
+				var diffFacing = currentFacing - lastFacing;
+				if (!firstCall)
+				{
+					currentRoll = WAngle.ChangeByStep(currentRoll, diffFacing < 2 && diffFacing > -2 ? WAngle.Zero : WAngle.FromFacing((diffFacing) * -aircraft.Info.TurnInclinationRatio), rollStep);
+					posture.Posture = bodyOrientation.InitialPosture + new WRot(currentRoll, WAngle.Zero, WAngle.Zero);
+				}
+
+				firstCall = false;
+				lastFacing = currentFacing;
+			}
 
 			if (remainingTicks > 0)
 				remainingTicks--;

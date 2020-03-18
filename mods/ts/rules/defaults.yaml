@@ -845,6 +845,7 @@
 		QuantizedFacings: 0
 	RenderVoxels:
 	WithVoxelBody:
+	AffectedBySlope:
 
 ^CivilianVoxelVehicle:
 	Inherits: ^Vehicle
