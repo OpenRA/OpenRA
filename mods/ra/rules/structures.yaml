@@ -1221,7 +1221,7 @@ PROC:
 	InfiltrateForCash:
 		Percentage: 50
 		Types: SpyInfiltrate, ThiefInfiltrate
-		Notification: CreditsStolen
+		InfiltratedNotification: CreditsStolen
 	WithBuildingBib:
 	WithIdleOverlay@TOP:
 		RequiresCondition: !build-incomplete
@@ -1283,7 +1283,7 @@ SILO:
 	InfiltrateForCash:
 		Percentage: 50
 		Types: ThiefInfiltrate
-		Notification: CreditsStolen
+		InfiltratedNotification: CreditsStolen
 	WithBuildingBib:
 		HasMinibib: true
 	-WithSpriteBody:
