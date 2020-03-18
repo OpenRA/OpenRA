@@ -446,18 +446,23 @@
 	Inherits: ^Building
 	Inherits@selection: ^SelectableCombatBuilding
 	WithSpriteTurret:
+		RequiresCondition: !build-incomplete
 	AttackTurreted:
 	RenderRangeCircle:
 	DetectCloaked:
 		Range: 1c768
 	-GivesBuildableArea:
-	-WithMakeAnimation:
+	WithMakeAnimation:
+		BodyNames: make
 	-WithCrumbleOverlay:
 	-Capturable:
-	-WithSpriteBody:
+	WithSpriteBody:
+		Name: make
+		Sequence: invisible
 	Sellable:
 		RequiresCondition: !being-demolished
 	WithWallSpriteBody:
+		RequiresCondition: !build-incomplete
 	LineBuildNode:
 		Types: turret
 	ThrowsShrapnel:
