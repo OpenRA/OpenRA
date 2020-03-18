@@ -421,6 +421,7 @@ silo.atreides:
 		Length: 7
 		Offset: -16,16
 		Tick: 200
+		ZOffset: 1024
 	icon: DATA.R8
 		Start: 4348
 		Offset: -30,-24
@@ -931,6 +932,7 @@ silo.harkonnen:
 		Length: 7
 		Offset: -16,16
 		Tick: 200
+		ZOffset: 1024
 	icon: DATA.R8
 		Start: 4349
 		Offset: -30,-24
@@ -1333,6 +1335,7 @@ silo.ordos:
 		Start: 4584
 		Length: 7
 		Offset: -16,16
+		ZOffset: 1024
 		Tick: 200
 	icon: DATA.R8
 		Start: 4350
