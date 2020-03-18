@@ -22,6 +22,8 @@ wall:
 		Offset: -30,-24
 
 medium_gun_turret:
+	invisible: DATA.R8
+		Start: 38
 	idle: DATA.R8
 		Frames: 2821, 2824, 2822, 2832, 2825, 2826, 2836, 2829, 2823, 2833, 2827, 2828, 2834, 2830, 2831, 2835
 		Length: 16
@@ -34,6 +36,7 @@ medium_gun_turret:
 		Start: 4577
 		Length: 8
 		Offset: -16,16
+		ZOffset: 1024
 	crumble-overlay: DATA.R8
 		Start: 4585
 		Length: 7
@@ -53,6 +56,8 @@ medium_gun_turret:
 		Offset: -30,-24
 
 large_gun_turret:
+	invisible: DATA.R8
+		Start: 38
 	idle: DATA.R8
 		Frames: 2821, 2824, 2822, 2832, 2825, 2826, 2836, 2829, 2823, 2833, 2827, 2828, 2834, 2830, 2831, 2835
 		Length: 16
@@ -65,6 +70,7 @@ large_gun_turret:
 		Start: 4577
 		Length: 8
 		Offset: -16,16
+		ZOffset: 1024
 	crumble-overlay: DATA.R8
 		Start: 4585
 		Length: 7
