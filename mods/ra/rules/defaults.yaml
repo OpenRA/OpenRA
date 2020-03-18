@@ -802,7 +802,7 @@
 	WithDecoration@fake:
 		Position: Top
 		Margin: 0, 4
-		RequiresSelection: true
+		RequiresSelection: false
 		Image: pips
 		Sequence: tag-fake
 	-SpawnActorsOnSell:
