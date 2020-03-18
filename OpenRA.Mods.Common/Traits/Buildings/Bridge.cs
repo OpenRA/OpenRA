@@ -12,7 +12,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Effects;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
@@ -89,7 +88,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	class Bridge : IRender, INotifyDamageStateChanged
+	class Bridge : IRender, INotifyDamageStateChanged, ITick
 	{
 		readonly BuildingInfo buildingInfo;
 		readonly Bridge[] neighbours = new Bridge[2];
@@ -102,6 +101,17 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Lazy<bool> isDangling;
 		ushort template;
 		Dictionary<CPos, byte> footprint;
+
+		Actor repairActor;
+		int repairDirection;
+		Action repairAction;
+		int repairDelay;
+		bool repairing;
+
+		bool demolishing;
+		int demolishDelay;
+		Actor saboteurActor;
+		int demolishDirection;
 
 		public LegacyBridgeHut Hut { get; private set; }
 		public bool IsDangling { get { return isDangling.Value; } }
@@ -337,8 +347,35 @@ namespace OpenRA.Mods.Common.Traits
 				var delay = initialDamage == DamageState.Undamaged || NeighbourIsDeadShore(neighbours[direction]) ?
 					0 : info.RepairPropagationDelay;
 
-				self.World.AddFrameEndTask(w => w.Add(new DelayedAction(delay, () =>
-					neighbours[direction].Repair(repairer, direction, onComplete))));
+				repairing = true;
+				repairDelay = delay;
+				repairActor = repairer;
+				repairDirection = direction;
+				repairAction = onComplete;
+			}
+		}
+
+		void ITick.Tick(Actor self)
+		{
+			if (!repairing && !demolishing)
+				return;
+
+			if (repairing && repairDelay-- > 0)
+				return;
+
+			if (demolishing && demolishDelay-- > 0)
+				return;
+
+			if (repairing)
+			{
+				repairing = false;
+				neighbours[repairDirection].Repair(repairActor, repairDirection, repairAction);
+			}
+
+			if (demolishing)
+			{
+				demolishing = false;
+				neighbours[demolishDirection].Demolish(saboteurActor, demolishDirection);
 			}
 		}
 
@@ -387,8 +424,10 @@ namespace OpenRA.Mods.Common.Traits
 				var delay = initialDamage == DamageState.Dead || NeighbourIsDeadShore(neighbours[direction]) ?
 					0 : info.RepairPropagationDelay;
 
-				self.World.AddFrameEndTask(w => w.Add(new DelayedAction(delay, () =>
-					neighbours[direction].Demolish(saboteur, direction))));
+				demolishing = true;
+				demolishDelay = delay;
+				demolishDirection = direction;
+				saboteurActor = saboteur;
 			}
 		}
 	}
