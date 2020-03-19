@@ -106,6 +106,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		protected override void DamageStateChanged(Actor self)
 		{
+			if (IsTraitDisabled)
+				return;
+
 			DefaultAnimation.PlayFetchIndex(NormalizeSequence(self, Info.Sequence), () => adjacent);
 		}
 
