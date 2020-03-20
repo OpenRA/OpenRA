@@ -163,8 +163,8 @@ fremen:
 	WithInfantryBody:
 		DefaultAttackSequence: shoot
 	Cloak:
-		InitialDelay: 85
-		CloakDelay: 85
+		InitialDelay: 25
+		CloakDelay: 25
 		UncloakOn: Attack, Unload, Infiltrate, Demolish, Dock, Damage, Heal
 		IsPlayerPalette: true
 		PauseOnCondition: cloak-force-disabled
@@ -266,7 +266,7 @@ saboteur:
 		Queue: Infantry
 		BuildPaletteOrder: 100
 		Prerequisites: ~disabled
-		Description: Sneaky infantry, armed with explosives\n  Strong vs Buildings\n  Weak vs Everything\n  Special Ability: destroy buildings
+		Description: Sneaky infantry, armed with explosives.\nCan be deployed to become invisible for a limited time.\n  Strong vs Buildings\n  Weak vs Everything\n  Special Ability: destroy buildings
 	Valued:
 		Cost: 300 ## actually 0, but spawns from support power at Palace
 	Tooltip:
@@ -282,11 +282,18 @@ saboteur:
 		Flashes: 0
 		EnterBehaviour: Suicide
 	-RevealOnFire:
+	GrantChargeDrainCondition:
+		MaxChargePoints: 125
+		ChargeDuration: 10
+		DrainDuration: 3
+		MinActivationPoints: 125
+		DeployedCondition: deployed
 	Cloak:
-		InitialDelay: 85
-		CloakDelay: 85
+		RequiresCondition: deployed
+		InitialDelay: 0
+		CloakDelay: 25
 		CloakSound: STEALTH1.WAV
-		UncloakOn: Attack, Unload, Infiltrate, Demolish, Move, Damage, Heal
+		UncloakOn: Attack, Unload, Infiltrate, Demolish, Damage, Heal
 		IsPlayerPalette: true
 		PauseOnCondition: cloak-force-disabled
 	GrantConditionOnDamageState@UNCLOAK:
