@@ -15,9 +15,6 @@ NAPOWR:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
-	Selectable:
-		Bounds: 88, 48, 2, -6
-		DecorationBounds: 88, 80, 2, -12
 	Health:
 		HP: 75000
 	Armor:
@@ -35,6 +32,8 @@ NAPOWR:
 		TargetTypes: Ground, Building, C4, SpyInfiltrate
 	ScalePowerWithHealth:
 	PowerTooltip:
+	IsometricSelectable:
+		Height: 48
 
 NAAPWR:
 	Inherits: ^Building
@@ -53,9 +52,6 @@ NAAPWR:
 	Building:
 		Footprint: xxx xxx
 		Dimensions: 2,3
-	Selectable:
-		Bounds: 100, 54, 0, -4
-		DecorationBounds: 100, 74, 0, -12
 	Health:
 		HP: 75000
 	Armor:
@@ -74,6 +70,8 @@ NAAPWR:
 	ScalePowerWithHealth:
 	PowerTooltip:
 	ProvidesPrerequisite@buildingname:
+	IsometricSelectable:
+		Height: 48
 
 NAHAND:
 	Inherits: ^Building
@@ -93,9 +91,6 @@ NAHAND:
 	Building:
 		Footprint: xxx xxx
 		Dimensions: 3,2
-	Selectable:
-		Bounds: 116, 60, 3, -6
-		DecorationBounds: 116, 78, 3, -8
 	Health:
 		HP: 80000
 	Armor:
@@ -185,9 +180,6 @@ NAWEAP:
 	Building:
 		Footprint: xxX+ xxX+ xxX+
 		Dimensions: 4,3
-	Selectable:
-		Bounds: 149, 80, -3, -10
-		DecorationBounds: 149, 116, -3, -20
 	Health:
 		HP: 100000
 	Armor:
@@ -223,6 +215,8 @@ NAWEAP:
 	Power:
 		Amount: -30
 	ProvidesPrerequisite@buildingname:
+	IsometricSelectable:
+		Height: 48
 
 NAHPAD:
 	Inherits: ^Building
@@ -274,10 +268,9 @@ NAHPAD:
 		UseDeathTypeSuffix: false
 	Power:
 		Amount: -10
-	Selectable:
-		Bounds: 78, 48, 0, -6
-		DecorationBounds: 78, 54, 0, -8
 	ProvidesPrerequisite@buildingname:
+	IsometricSelectable:
+		Height: 36
 
 NARADR:
 	Inherits: ^Building
@@ -297,9 +290,6 @@ NARADR:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
-	Selectable:
-		Bounds: 96, 48, 0, -6
-		DecorationBounds: 96, 72, 0, -12
 	Health:
 		HP: 100000
 	Armor:
@@ -322,6 +312,8 @@ NARADR:
 	Power:
 		Amount: -40
 	ProvidesPrerequisite@buildingname:
+	IsometricSelectable:
+		Height: 72
 
 NATECH:
 	Inherits: ^Building
@@ -341,9 +333,6 @@ NATECH:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
-	Selectable:
-		Bounds: 86, 48, 0, -4
-		DecorationBounds: 86, 58, 0, -4
 	Health:
 		HP: 50000
 	Armor:
@@ -379,8 +368,6 @@ NATMPL:
 		Dimensions: 4,3
 	RequiresBuildableArea:
 		Adjacent: 3
-	Selectable:
-		Bounds: 134, 120, 12, -12
 	Health:
 		HP: 100000
 	Armor:
@@ -407,3 +394,5 @@ NATMPL:
 		PauseOnCondition: empdisable
 	Exit@1:
 	ExitsDebugOverlay:
+	IsometricSelectable:
+		Height: 60
