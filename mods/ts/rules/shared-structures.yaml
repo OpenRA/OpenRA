@@ -75,15 +75,14 @@ GACNST:
 		RequiresCondition: !build-incomplete
 	Power:
 		Amount: 0
-	Selectable:
-		Bounds: 144, 60, 0, -6
-		DecorationBounds: 144, 80, 0, -12
 	ProvidesPrerequisite@gdi:
 		Factions: gdi
 		Prerequisite: structures.gdi
 	ProvidesPrerequisite@nod:
 		Factions: nod
 		Prerequisite: structures.nod
+	IsometricSelectable:
+		Height: 36
 
 PROC:
 	Inherits: ^Building
@@ -100,9 +99,6 @@ PROC:
 	Building:
 		Footprint: xxX+ xx++ xxX+
 		Dimensions: 4,3
-	Selectable:
-		Bounds: 134, 96, 0, -12
-		DecorationBounds: 134, 122, 0, -18
 	Health:
 		HP: 90000
 	RevealsShroud:
@@ -148,8 +144,11 @@ PROC:
 	WithResourceStoragePipsDecoration:
 		Position: BottomLeft
 		RequiresSelection: true
-		Margin: 5, 2
-		PipCount: 10
+		Margin: 8, 2
+		FullSequence: pip-green-building
+		EmptySequence: pip-empty-building
+		PipStride: 4, 2
+		PipCount: 25
 		Palette: pips
 
 GASILO:
@@ -167,9 +166,6 @@ GASILO:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2, 2
-	Selectable:
-		Bounds: 80, 48, -5, 0
-		DecorationBounds: 80, 48, -5, 0
 	-GivesBuildableArea:
 	Health:
 		HP: 30000
@@ -203,8 +199,11 @@ GASILO:
 	WithResourceStoragePipsDecoration:
 		Position: BottomLeft
 		RequiresSelection: true
-		Margin: 5, 2
-		PipCount: 5
+		Margin: 8, 2
+		FullSequence: pip-green-building
+		EmptySequence: pip-empty-building
+		PipStride: 4, 2
+		PipCount: 12
 		Palette: pips
 
 ANYPOWER:

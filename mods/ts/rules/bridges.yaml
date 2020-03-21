@@ -11,8 +11,10 @@ CABHUT:
 		Palette: player
 	Targetable:
 		TargetTypes: C4
-	-Selectable:
+	-IsometricSelectable:
+	-IsometricSelectionDecorations:
 	Interactable:
+	SelectionDecorations:
 	-Demolishable:
 	-Explodes:
 	-FrozenUnderFog:

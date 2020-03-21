@@ -29,9 +29,6 @@ GAPOWR:
 		RequiresCondition: !build-incomplete
 		PauseOnCondition: empdisable
 		Sequence: idle-plug
-	Selectable:
-		Bounds: 90, 48, 0, -6
-		DecorationBounds: 90, 84, 0, -12
 	Power:
 		Amount: 100
 		RequiresCondition: !empdisable
@@ -66,6 +63,8 @@ GAPOWR:
 		RequiresCondition: !empdisable && powrup.b
 		Amount: 50
 	ProvidesPrerequisite@buildingname:
+	IsometricSelectable:
+		Height: 48
 
 GAPILE:
 	Inherits: ^Building
@@ -85,9 +84,6 @@ GAPILE:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
-	Selectable:
-		Bounds: 88, 48, 0, -8
-		DecorationBounds: 88, 56, 0, -8
 	Health:
 		HP: 80000
 	Armor:
@@ -174,9 +170,6 @@ GAWEAP:
 	Building:
 		Footprint: xxX+ xxX+ xxX+
 		Dimensions: 4,3
-	Selectable:
-		Bounds: 154, 96, -2, -12
-		DecorationBounds: 154, 100, -2, -12
 	Health:
 		HP: 100000
 	RevealsShroud:
@@ -218,6 +211,8 @@ GAWEAP:
 	Power:
 		Amount: -30
 	ProvidesPrerequisite@buildingname:
+	IsometricSelectable:
+		Height: 48
 
 GAHPAD:
 	Inherits: ^Building
@@ -269,9 +264,6 @@ GAHPAD:
 		UseDeathTypeSuffix: false
 	Power:
 		Amount: -10
-	Selectable:
-		Bounds: 88, 66, 0, -5
-		DecorationBounds: 88, 66, 0, -5
 	ProvidesPrerequisite@buildingname:
 
 GADEPT:
@@ -289,9 +281,6 @@ GADEPT:
 	Building:
 		Footprint: =+= x++ x+=
 		Dimensions: 3,3
-	Selectable:
-		Bounds: 96, 64, -6, -6
-		DecorationBounds: 98, 68, -6, -6
 	Health:
 		HP: 110000
 	RevealsShroud:
@@ -355,9 +344,6 @@ GARADR:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
-	Selectable:
-		Bounds: 96, 48, 0, -6
-		DecorationBounds: 96, 118, 0, -38
 	Health:
 		HP: 100000
 	Armor:
@@ -380,6 +366,8 @@ GARADR:
 	Power:
 		Amount: -50
 	ProvidesPrerequisite@buildingname:
+	IsometricSelectable:
+		Height: 72
 
 GATECH:
 	Inherits: ^Building
@@ -399,9 +387,6 @@ GATECH:
 	Building:
 		Footprint: xxx xxx
 		Dimensions: 3,2
-	Selectable:
-		Bounds: 110, 60, 3, -4
-		DecorationBounds: 110, 60, 3, -4
 	Health:
 		HP: 50000
 	Armor:
@@ -415,6 +400,8 @@ GATECH:
 	Power:
 		Amount: -150
 	ProvidesPrerequisite@buildingname:
+	IsometricSelectable:
+		Height: 48
 
 GAPLUG:
 	Inherits: ^Building
@@ -424,9 +411,6 @@ GAPLUG:
 		Cost: 1000
 	Tooltip:
 		Name: GDI Upgrade Center
-	Selectable:
-		Bounds: 115,72,0,-12
-		DecorationBounds: 115,104,0,-24
 	Buildable:
 		BuildPaletteOrder: 170
 		Prerequisites: proc, gatech, ~structures.gdi, ~techlevel.superweapons
@@ -524,3 +508,5 @@ GAPLUG:
 		PauseOnCondition: disabled
 		Sequence: idle-hunterseekerb
 	ProvidesPrerequisite@buildingname:
+	IsometricSelectable:
+		Height: 48

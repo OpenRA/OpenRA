@@ -1348,15 +1348,20 @@
 			green: pip-green
 			yellow: pip-yellow
 
-^SelectableCombatBuilding:
-	Inherits@selectiondecorations: ^Selectable
-	Selectable:
-		Priority: 4
-
 ^SelectableBuilding:
-	Inherits@selectiondecorations: ^Selectable
-	Selectable:
+	IsometricSelectable:
 		Priority: 2
+	IsometricSelectionDecorations:
+	WithTextControlGroupDecoration:
+		Margin: 1, 1
+	DrawLineToTarget:
+		QueuedLineWidth: 2
+		QueuedMarkerWidth: 3
+
+^SelectableCombatBuilding:
+	Inherits@selectiondecorations: ^SelectableBuilding
+	IsometricSelectable:
+		Priority: 4
 
 ^PrimaryBuilding:
 	PrimaryBuilding:
@@ -1366,6 +1371,5 @@
 		RequiresCondition: primary
 		Position: Top
 		RequiresSelection: true
-		Margin: 0, 5
 		Text: PRIMARY
 		Color: E0D048
