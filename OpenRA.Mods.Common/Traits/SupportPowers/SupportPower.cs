@@ -30,7 +30,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly string Description = "";
 		public readonly string LongDesc = "";
+
+		[Desc("Allow multiple instances of the same support power.")]
 		public readonly bool AllowMultiple = false;
+
+		[Desc("Allow this to be used only once.")]
 		public readonly bool OneShot = false;
 
 		[Desc("Cursor to display for using this support power.")]
