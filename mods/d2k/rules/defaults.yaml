@@ -125,12 +125,14 @@
 		AttackAnythingCondition: stance-attackanything
 	AutoTargetPriority@DEFAULT:
 		RequiresCondition: !stance-attackanything
-		ValidTargets: Infantry, Vehicle, Creep, Water, Defense
+		ValidTargets: Infantry, Vehicle, Water, Defense
 		InvalidTargets: NoAutoTarget
 	AutoTargetPriority@ATTACKANYTHING:
 		RequiresCondition: stance-attackanything
-		ValidTargets: Infantry, Vehicle, Creep, Water, Structure, Defense
+		ValidTargets: Infantry, Vehicle, Water, Structure, Defense
 		InvalidTargets: NoAutoTarget
+	AutoTargetPriority@CREEPS:
+		ValidTargets: Creep
 
 ^AutoTargetGroundAssaultMove:
 	Inherits: ^AutoTargetGround
@@ -138,7 +140,16 @@
 		RequiresCondition: !stance-attackanything && !assault-move
 	AutoTargetPriority@ATTACKANYTHING:
 		RequiresCondition: stance-attackanything || assault-move
+	GrantConditionOnBotOwner@BOTOWNER:
+		Condition: bot-owned
+		Bots: omnius, vidious, gladius
+	GrantCondition@IGNORECREEPS:
+		Condition: ignore-creeps
+		RequiresCondition: bot-owned && (attack-move || assault-move)
+	AutoTargetPriority@CREEPS:
+		RequiresCondition: !ignore-creeps
 	AttackMove:
+		AttackMoveCondition: attack-move
 		AssaultMoveCondition: assault-move
 
 ^AutoTargetAll:
@@ -146,12 +157,14 @@
 		AttackAnythingCondition: stance-attackanything
 	AutoTargetPriority@DEFAULT:
 		RequiresCondition: !stance-attackanything
-		ValidTargets: Infantry, Vehicle, Creep, Water, Air, Defense
+		ValidTargets: Infantry, Vehicle, Water, Air, Defense
 		InvalidTargets: NoAutoTarget
 	AutoTargetPriority@ATTACKANYTHING:
 		RequiresCondition: stance-attackanything
-		ValidTargets: Infantry, Vehicle, Creep, Water, Air, Structure, Defense
+		ValidTargets: Infantry, Vehicle, Water, Air, Structure, Defense
 		InvalidTargets: NoAutoTarget
+	AutoTargetPriority@CREEPS:
+		ValidTargets: Creep
 
 ^AutoTargetAllAssaultMove:
 	Inherits: ^AutoTargetAll
@@ -159,7 +172,16 @@
 		RequiresCondition: !stance-attackanything && !assault-move
 	AutoTargetPriority@ATTACKANYTHING:
 		RequiresCondition: stance-attackanything || assault-move
+	GrantConditionOnBotOwner@BOTOWNER:
+		Condition: bot-owned
+		Bots: omnius, vidious, gladius
+	GrantCondition@IGNORECREEPS:
+		Condition: ignore-creeps
+		RequiresCondition: bot-owned && (attack-move || assault-move)
+	AutoTargetPriority@CREEPS:
+		RequiresCondition: !ignore-creeps
 	AttackMove:
+		AttackMoveCondition: attack-move
 		AssaultMoveCondition: assault-move
 
 ^Vehicle:
