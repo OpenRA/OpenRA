@@ -514,7 +514,7 @@ NAWAST:
 		BuildLimit: 1
 		Description: Processes Veins\ninto useable resources.\nMaximum 1 can be built.
 	Building:
-		Footprint: Xx= xx= Xx=
+		Footprint: Xx+ xx+ Xx+
 		Dimensions: 3,3
 	Health:
 		HP: 40000
