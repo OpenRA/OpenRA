@@ -929,6 +929,8 @@ high_tech_factory:
 		ChargeInterval: 7500
 		SquadSize: 3
 		SquadOffset: -1536, 1024, 0
+		Strikes: 3
+		CircleDelay: 30
 		LongDesc: Ornithopters hit the target with bombs
 		UnitType: ornithopter
 		DisplayBeacon: True

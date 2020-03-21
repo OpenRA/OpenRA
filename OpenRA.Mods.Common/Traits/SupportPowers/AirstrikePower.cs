@@ -48,6 +48,12 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Weapon range offset to apply during the beacon clock calculation")]
 		public readonly WDist BeaconDistanceOffset = WDist.FromCells(6);
 
+		[Desc("How many attack runs to perform.")]
+		public readonly int Strikes = 1;
+
+		[Desc("How long to allow idling in the circle phase between strikes.")]
+		public readonly int CircleDelay = 0;
+
 		public override object Create(ActorInitializer init) { return new AirstrikePower(init.Self, this); }
 	}
 
@@ -169,7 +175,13 @@ namespace OpenRA.Mods.Common.Traits
 					attack.OnExitedAttackRange += onExitRange;
 					attack.OnRemovedFromWorld += onRemovedFromWorld;
 
-					a.QueueActivity(new Fly(a, Target.FromPos(target + spawnOffset)));
+					for (var strikes = 0; strikes < info.Strikes; strikes++)
+					{
+						a.QueueActivity(new Fly(a, Target.FromPos(target + spawnOffset)));
+						if (info.Strikes > 1)
+							a.QueueActivity(new FlyTimed(info.CircleDelay, a));
+					}
+
 					a.QueueActivity(new Fly(a, Target.FromPos(finishEdge + spawnOffset)));
 					a.QueueActivity(new RemoveSelf());
 					aircraftInRange.Add(a, false);
