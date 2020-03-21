@@ -17,7 +17,17 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[Desc("Measured in ticks.")]
 		public readonly int ChargeInterval = 0;
+
+		public readonly string IconImage = "icon";
+
+		[SequenceReference("IconImage")]
+		[Desc("Icon sprite displayed in the support power palette.")]
 		public readonly string Icon = null;
+
+		[PaletteReference]
+		[Desc("Palette used for the icon.")]
+		public readonly string IconPalette = "chrome";
+
 		public readonly string Description = "";
 		public readonly string LongDesc = "";
 		public readonly bool AllowMultiple = false;
@@ -63,10 +73,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Defines to which players the timer is shown.")]
 		public readonly Stance DisplayTimerStances = Stance.None;
-
-		[PaletteReference]
-		[Desc("Palette used for the icon.")]
-		public readonly string IconPalette = "chrome";
 
 		[Desc("Beacons are only supported on the Airstrike, Paratroopers, and Nuke powers")]
 		public readonly bool DisplayBeacon = false;
