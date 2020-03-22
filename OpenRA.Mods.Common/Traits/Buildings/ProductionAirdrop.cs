@@ -112,7 +112,6 @@ namespace OpenRA.Mods.Common.Traits
 			CPos startPos;
 			CPos endPos;
 			int spawnFacing;
-			WVec spawnDirection;
 
 			switch (info.EntryType)
 			{
@@ -122,7 +121,8 @@ namespace OpenRA.Mods.Common.Traits
 					var loc = self.Location.ToMPos(map);
 					startPos = new MPos(loc.U + map.Bounds.Width, loc.V).ToCPos(map);
 					endPos = new MPos(map.Bounds.Left, loc.V).ToCPos(map);
-					spawnFacing = info.Facing;
+
+					spawnFacing = GetSpawnFacing(self.Location, startPos);
 
 					return new DeliveryActorPathInfo(startPos, endPos, spawnFacing, info.Facing);
 
@@ -135,16 +135,15 @@ namespace OpenRA.Mods.Common.Traits
 					var spawnVec = spawn - center;
 					startPos = spawn + spawnVec * (Exts.ISqrt((bounds.Height * bounds.Height + bounds.Width * bounds.Width) / (4 * spawnVec.LengthSquared)));
 					endPos = startPos;
-					spawnDirection = new WVec((self.Location - startPos).X, (self.Location - startPos).Y, 0);
-					spawnFacing = spawnDirection.Yaw.Facing;
+
+					spawnFacing = GetSpawnFacing(self.Location, startPos);
 
 					return new DeliveryActorPathInfo(startPos, endPos, spawnFacing, info.Facing);
 
 				case EntryType.DropSiteClosestEdge:
 					startPos = self.World.Map.ChooseClosestEdgeCell(self.Location);
 
-					spawnDirection = new WVec((self.Location - startPos).X, (self.Location - startPos).Y, 0);
-					spawnFacing = spawnDirection.Yaw.Facing;
+					spawnFacing = GetSpawnFacing(self.Location, startPos);
 
 					bounds = self.World.Map.Bounds;
 					if ((info.SpawnOffset.X != 0 && startPos.X != bounds.X && startPos.X != bounds.X + bounds.Width)
@@ -155,6 +154,13 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			throw new ArgumentOutOfRangeException("info.EntryType", info.EntryType, "Unsupported value for delivery actor entry type!");
+		}
+
+		static int GetSpawnFacing(CPos targetLocation, CPos spawnLocation)
+		{
+			var direction = targetLocation - spawnLocation;
+			var spawnDirection = new WVec(direction.X, direction.Y, 0);
+			return spawnDirection.Yaw.Facing;
 		}
 
 		class DeliveryActorPathInfo
