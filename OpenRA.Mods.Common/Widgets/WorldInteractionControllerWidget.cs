@@ -58,19 +58,10 @@ namespace OpenRA.Mods.Common.Widgets
 				normalSelectionColor = Color.White;
 		}
 
-		void DrawRollover(Actor unit)
-		{
-			var selectionDecorations = unit.TraitOrDefault<ISelectionDecorations>();
-			if (selectionDecorations == null)
-				return;
-
-			foreach (var r in selectionDecorations.RenderRolloverAnnotations(unit, worldRenderer))
-				r.PrepareRender(worldRenderer).Render(worldRenderer);
-		}
-
 		public override void Draw()
 		{
 			var modifiers = Game.GetModifierKeys();
+			IEnumerable<Actor> rollover;
 			if (IsValidDragbox)
 			{
 				var a = worldRenderer.Viewport.WorldToViewPx(dragStart);
@@ -85,15 +76,15 @@ namespace OpenRA.Mods.Common.Widgets
 				Game.Renderer.RgbaColorRenderer.DrawRect(a, b, 1, color);
 
 				// Render actors in the dragbox
-				foreach (var u in SelectActorsInBoxWithDeadzone(World, dragStart, mousePos, modifiers))
-					DrawRollover(u);
+				rollover = SelectActorsInBoxWithDeadzone(World, dragStart, mousePos, modifiers);
 			}
 			else
 			{
 				// Render actors under the mouse pointer
-				foreach (var u in SelectActorsInBoxWithDeadzone(World, mousePos, mousePos, modifiers))
-					DrawRollover(u);
+				rollover = SelectActorsInBoxWithDeadzone(World, mousePos, mousePos, modifiers);
 			}
+
+			worldRenderer.World.Selection.SetRollover(rollover);
 		}
 
 		public override bool HandleMouseInput(MouseInput mi)

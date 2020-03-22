@@ -28,6 +28,8 @@ namespace OpenRA.Mods.Common.Traits
 		public IEnumerable<Actor> Actors { get { return actors; } }
 
 		readonly HashSet<Actor> actors = new HashSet<Actor>();
+		IEnumerable<Actor> rolloverActors;
+
 		INotifySelection[] worldNotifySelection;
 
 		public Selection(SelectionInfo info) { }
@@ -141,6 +143,16 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			actors.Clear();
 			UpdateHash();
+		}
+
+		public void SetRollover(IEnumerable<Actor> rollover)
+		{
+			rolloverActors = rollover;
+		}
+
+		public bool RolloverContains(Actor a)
+		{
+			return rolloverActors != null && rolloverActors.Contains(a);
 		}
 
 		void ITick.Tick(Actor self)
