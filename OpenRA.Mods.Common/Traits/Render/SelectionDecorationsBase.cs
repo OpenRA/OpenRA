@@ -85,20 +85,21 @@ namespace OpenRA.Mods.Common.Traits.Render
 		IEnumerable<IRenderable> DrawDecorations(Actor self, WorldRenderer wr)
 		{
 			var selected = self.World.Selection.Contains(self);
+			var rollover = self.World.Selection.RolloverContains(self);
 			var regularWorld = self.World.Type == WorldType.Regular;
 			var statusBars = Game.Settings.Game.StatusBars;
 
 			// Health bars are shown when:
-			//  * actor is selected
+			//  * actor is selected / in active drag rectangle / under the mouse
 			//  * status bar preference is set to "always show"
 			//  * status bar preference is set to "when damaged" and actor is damaged
-			var displayHealth = selected || (regularWorld && statusBars == StatusBarsType.AlwaysShow)
+			var displayHealth = selected || rollover || (regularWorld && statusBars == StatusBarsType.AlwaysShow)
 				|| (regularWorld && statusBars == StatusBarsType.DamageShow && self.GetDamageState() != DamageState.Undamaged);
 
 			// Extra bars are shown when:
-			//  * actor is selected
+			//  * actor is selected / in active drag rectangle / under the mouse
 			//  * status bar preference is set to "always show" or "when damaged"
-			var displayExtra = selected || (regularWorld && statusBars != StatusBarsType.Standard);
+			var displayExtra = selected || rollover || (regularWorld && statusBars != StatusBarsType.Standard);
 
 			if (selected)
 				foreach (var r in RenderSelectionBox(self, wr, info.SelectionBoxColor))
@@ -123,14 +124,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 			if (self.World.LocalPlayer != null && self.World.LocalPlayer.PlayerActor.Trait<DeveloperMode>().PathDebug)
 				yield return new TargetLineRenderable(ActivityTargetPath(self), Color.Green);
-		}
-
-		IEnumerable<IRenderable> ISelectionDecorations.RenderRolloverAnnotations(Actor self, WorldRenderer worldRenderer)
-		{
-			if (self.World.Selection.Contains(self))
-				return Enumerable.Empty<IRenderable>();
-
-			return RenderSelectionBars(self, worldRenderer, true, true);
 		}
 
 		IEnumerable<IRenderable> ISelectionDecorations.RenderSelectionAnnotations(Actor self, WorldRenderer worldRenderer, Color color)

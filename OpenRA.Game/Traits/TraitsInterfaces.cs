@@ -266,7 +266,6 @@ namespace OpenRA.Traits
 
 	public interface ISelectionDecorations
 	{
-		IEnumerable<IRenderable> RenderRolloverAnnotations(Actor self, WorldRenderer worldRenderer);
 		IEnumerable<IRenderable> RenderSelectionAnnotations(Actor self, WorldRenderer worldRenderer, Color color);
 	}
 
@@ -433,6 +432,8 @@ namespace OpenRA.Traits
 		bool Contains(Actor a);
 		void Combine(World world, IEnumerable<Actor> newSelection, bool isCombine, bool isClick);
 		void Clear();
+		bool RolloverContains(Actor a);
+		void SetRollover(IEnumerable<Actor> actors);
 		void DoControlGroup(World world, WorldRenderer worldRenderer, int group, Modifiers mods, int multiTapCount);
 		void AddToControlGroup(Actor a, int group);
 		void RemoveFromControlGroup(Actor a);
