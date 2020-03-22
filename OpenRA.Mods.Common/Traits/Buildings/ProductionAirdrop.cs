@@ -12,7 +12,6 @@
 using System;
 using System.Linq;
 using OpenRA.Activities;
-using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -41,18 +40,23 @@ namespace OpenRA.Mods.Common.Traits
 
 	class ProductionAirdrop : Production
 	{
+		readonly AircraftInfo aircraftInfo;
+		readonly ProductionAirdropInfo info;
+
 		public ProductionAirdrop(ActorInitializer init, ProductionAirdropInfo info)
-			: base(init, info) { }
+			: base(init, info)
+		{
+			aircraftInfo = init.Self.World.Map.Rules.Actors[info.ActorType].TraitInfo<AircraftInfo>();
+			this.info = info;
+		}
 
 		public override bool Produce(Actor self, ActorInfo producee, string productionType, TypeDictionary inits)
 		{
 			if (IsTraitDisabled || IsTraitPaused)
 				return false;
 
-			var info = (ProductionAirdropInfo)Info;
 			var owner = self.Owner;
 			var map = owner.World.Map;
-			var aircraftInfo = self.World.Map.Rules.Actors[info.ActorType].TraitInfo<AircraftInfo>();
 			var mpStart = owner.World.WorldActor.TraitOrDefault<MPStartLocations>();
 
 			CPos startPos;
