@@ -274,7 +274,7 @@ Player:
 	SquadManagerBotModule@rush:
 		RequiresCondition: enable-rush-ai
 		SquadSize: 20
-		ExcludeFromSquadsTypes: harv, mcv, dog
+		ExcludeFromSquadsTypes: harv, mcv, dog, e6
 		NavalUnitsTypes: ss,msub,dd,ca,lst,pt
 		ConstructionYardTypes: fact
 	McvManagerBotModule:
@@ -282,6 +282,12 @@ Player:
 		McvTypes: mcv
 		ConstructionYardTypes: fact
 		McvFactoryTypes: weap
+	CaptureManagerBotModule:
+		RequiresCondition: enable-rush-ai || enable-normal-ai || enable-turtle-ai
+		CapturingActorTypes: e6
+		CapturableActorTypes: oilb, hosp, fcom, miss
+		CapturableStances: Neutral
+		CheckCaptureTargetsForVisibility: false
 	UnitBuilderBotModule@rush:
 		RequiresCondition: enable-rush-ai
 		UnitsToBuild:
@@ -289,6 +295,7 @@ Player:
 			e2: 15
 			e3: 30
 			e4: 15
+			e6: 1
 			dog: 15
 			shok: 15
 			harv: 10
@@ -304,6 +311,7 @@ Player:
 			ttnk: 25
 			stnk: 5
 		UnitLimits:
+			e6: 1
 			dog: 4
 			harv: 8
 			jeep: 4
@@ -311,7 +319,7 @@ Player:
 	SquadManagerBotModule@normal:
 		RequiresCondition: enable-normal-ai
 		SquadSize: 40
-		ExcludeFromSquadsTypes: harv, mcv, dog
+		ExcludeFromSquadsTypes: harv, mcv, dog, e6
 		NavalUnitsTypes: ss,msub,dd,ca,lst,pt
 		ConstructionYardTypes: fact
 		NavalProductionTypes: spen,syrd
@@ -322,6 +330,7 @@ Player:
 			e2: 15
 			e3: 30
 			e4: 15
+			e6: 1
 			dog: 15
 			shok: 15
 			harv: 15
@@ -346,6 +355,7 @@ Player:
 			ca: 10
 			pt: 10
 		UnitLimits:
+			e6: 1
 			dog: 4
 			harv: 8
 			jeep: 4
@@ -353,7 +363,7 @@ Player:
 	SquadManagerBotModule@turtle:
 		RequiresCondition: enable-turtle-ai
 		SquadSize: 10
-		ExcludeFromSquadsTypes: harv, mcv, dog
+		ExcludeFromSquadsTypes: harv, mcv, dog, e6
 		NavalUnitsTypes: ss,msub,dd,ca,lst,pt
 		ConstructionYardTypes: fact
 		NavalProductionTypes: spen,syrd
@@ -364,6 +374,7 @@ Player:
 			e2: 15
 			e3: 30
 			e4: 15
+			e6: 1
 			dog: 15
 			shok: 15
 			harv: 15
@@ -388,6 +399,7 @@ Player:
 			ca: 10
 			pt: 10
 		UnitLimits:
+			e6: 1
 			dog: 4
 			harv: 8
 			jeep: 4
@@ -395,7 +407,7 @@ Player:
 	SquadManagerBotModule@naval:
 		RequiresCondition: enable-naval-ai
 		SquadSize: 1
-		ExcludeFromSquadsTypes: harv, mcv, dog
+		ExcludeFromSquadsTypes: harv, mcv, dog, e6
 		NavalUnitsTypes: ss,msub,dd,ca,lst,pt
 		ConstructionYardTypes: fact
 		NavalProductionTypes: spen,syrd

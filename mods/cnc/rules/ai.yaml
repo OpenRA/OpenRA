@@ -82,6 +82,12 @@ Player:
 		RequiresCondition: enable-cabal-ai || enable-watson-ai || enable-hal9001-ai
 		HarvesterTypes: harv
 		RefineryTypes: proc
+	CaptureManagerBotModule:
+		RequiresCondition: enable-cabal-ai || enable-watson-ai || enable-hal9001-ai
+		CapturingActorTypes: e6
+		CapturableActorTypes: v19, hosp, bio
+		CapturableStances: Neutral
+		CheckCaptureTargetsForVisibility: false
 	BaseBuilderBotModule@cabal:
 		RequiresCondition: enable-cabal-ai
 		BuildingQueues: Building.Nod, Building.GDI
@@ -216,7 +222,7 @@ Player:
 	SquadManagerBotModule@cabal:
 		RequiresCondition: enable-cabal-ai
 		SquadSize: 15
-		ExcludeFromSquadsTypes: harv, mcv
+		ExcludeFromSquadsTypes: harv, mcv, e6
 		ConstructionYardTypes: fact
 	UnitBuilderBotModule@cabal:
 		RequiresCondition: enable-cabal-ai
@@ -227,6 +233,7 @@ Player:
 			e3: 40
 			e4: 15
 			e5: 15
+			e6: 1
 			harv: 10
 			bggy: 5
 			bike: 40
@@ -241,6 +248,7 @@ Player:
 			heli: 5
 			orca: 5
 		UnitLimits:
+			e6: 1
 			harv: 8
 	McvManagerBotModule:
 		RequiresCondition: enable-cabal-ai || enable-watson-ai || enable-hal9001-ai
@@ -250,7 +258,7 @@ Player:
 	SquadManagerBotModule@watson:
 		RequiresCondition: enable-watson-ai
 		SquadSize: 15
-		ExcludeFromSquadsTypes: harv, mcv
+		ExcludeFromSquadsTypes: harv, mcv, e6
 		ConstructionYardTypes: fact
 	UnitBuilderBotModule@watson:
 		RequiresCondition: enable-watson-ai
@@ -261,6 +269,7 @@ Player:
 			e3: 40
 			e4: 30
 			e5: 30
+			e6: 1
 			harv: 10
 			bggy: 10
 			ftnk: 10
@@ -275,11 +284,12 @@ Player:
 			jeep: 20
 			mtnk: 50
 		UnitLimits:
+			e6: 1
 			harv: 8
 	SquadManagerBotModule@hal9001:
 		RequiresCondition: enable-hal9001-ai
 		SquadSize: 8
-		ExcludeFromSquadsTypes: harv, mcv
+		ExcludeFromSquadsTypes: harv, mcv, e6
 		ConstructionYardTypes: fact
 	UnitBuilderBotModule@hal9001:
 		RequiresCondition: enable-hal9001-ai
@@ -290,6 +300,7 @@ Player:
 			e3: 40
 			e4: 50
 			e5: 50
+			e6: 1
 			harv: 16
 			bggy: 10
 			bike: 10
@@ -307,3 +318,4 @@ Player:
 			orca: 10
 		UnitLimits:
 			harv: 8
+			e6: 1
