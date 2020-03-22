@@ -37,8 +37,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Offset relative to the automatically calculated spawn point.")]
 		public readonly CVec SpawnOffset = CVec.Zero;
 
-		[Desc("Direction the aircraft should face to land.")]
-		public readonly int Facing = 64;
+		[Desc("Direction the aircraft should face to land. A value of -1 would mean to ignore facing and just land.")]
+		public readonly int LandingFacing = -1;
 
 		public override object Create(ActorInitializer init) { return new ProductionAirdrop(init, this); }
 	}
@@ -124,7 +124,7 @@ namespace OpenRA.Mods.Common.Traits
 
 					spawnFacing = GetSpawnFacing(self.Location, startPos);
 
-					return new DeliveryActorPathInfo(startPos, endPos, spawnFacing, info.Facing);
+					return new DeliveryActorPathInfo(startPos, endPos, spawnFacing, info.LandingFacing);
 
 				case EntryType.PlayerSpawnClosestEdge:
 					if (mpStart == null)
@@ -138,7 +138,7 @@ namespace OpenRA.Mods.Common.Traits
 
 					spawnFacing = GetSpawnFacing(self.Location, startPos);
 
-					return new DeliveryActorPathInfo(startPos, endPos, spawnFacing, info.Facing);
+					return new DeliveryActorPathInfo(startPos, endPos, spawnFacing, info.LandingFacing);
 
 				case EntryType.DropSiteClosestEdge:
 					startPos = self.World.Map.ChooseClosestEdgeCell(self.Location);
@@ -150,7 +150,7 @@ namespace OpenRA.Mods.Common.Traits
 						|| (info.SpawnOffset.Y != 0 && startPos.Y != bounds.Y && startPos.Y != bounds.Y + bounds.Height))
 						startPos += info.SpawnOffset;
 
-					return new DeliveryActorPathInfo(startPos, startPos, spawnFacing, info.Facing);
+					return new DeliveryActorPathInfo(startPos, startPos, spawnFacing, info.LandingFacing);
 			}
 
 			throw new ArgumentOutOfRangeException("info.EntryType", info.EntryType, "Unsupported value for delivery actor entry type!");
