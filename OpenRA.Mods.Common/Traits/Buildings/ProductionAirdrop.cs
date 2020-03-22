@@ -34,6 +34,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("The delivery aircraft spawn and entry behaviour.")]
 		public readonly EntryType EntryType = EntryType.Fixed;
 
+		[Desc("Offset relative to the automatically calculated spawn point.")]
+		public readonly CVec SpawnOffset = CVec.Zero;
+
 		[Desc("Direction the aircraft should face to land.")]
 		public readonly int Facing = 64;
 
@@ -103,12 +106,13 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var owner = self.Owner;
 			var map = owner.World.Map;
+			var bounds = map.Bounds;
 			var mpStart = owner.World.WorldActor.TraitOrDefault<MPStartLocations>();
 
 			CPos startPos;
 			CPos endPos;
 			int spawnFacing;
-			CVec spawnVec;
+			WVec spawnDirection;
 
 			switch (info.EntryType)
 			{
@@ -127,21 +131,25 @@ namespace OpenRA.Mods.Common.Traits
 						break;
 
 					var spawn = mpStart.Start[owner];
-					var bounds = map.Bounds;
 					var center = new MPos(bounds.Left + bounds.Width / 2, bounds.Top + bounds.Height / 2).ToCPos(map);
-					spawnVec = spawn - center;
+					var spawnVec = spawn - center;
 					startPos = spawn + spawnVec * (Exts.ISqrt((bounds.Height * bounds.Height + bounds.Width * bounds.Width) / (4 * spawnVec.LengthSquared)));
 					endPos = startPos;
-					var spawnDirection = new WVec((self.Location - startPos).X, (self.Location - startPos).Y, 0);
+					spawnDirection = new WVec((self.Location - startPos).X, (self.Location - startPos).Y, 0);
 					spawnFacing = spawnDirection.Yaw.Facing;
 
 					return new DeliveryActorPathInfo(startPos, endPos, spawnFacing, info.Facing);
 
 				case EntryType.DropSiteClosestEdge:
 					startPos = self.World.Map.ChooseClosestEdgeCell(self.Location);
-					spawnVec = startPos - self.Location;
-					var spawnDirection2 = new WVec((self.Location - startPos).X, (self.Location - startPos).Y, 0);
-					spawnFacing = spawnDirection2.Yaw.Facing;
+
+					spawnDirection = new WVec((self.Location - startPos).X, (self.Location - startPos).Y, 0);
+					spawnFacing = spawnDirection.Yaw.Facing;
+
+					bounds = self.World.Map.Bounds;
+					if ((info.SpawnOffset.X != 0 && startPos.X != bounds.X && startPos.X != bounds.X + bounds.Width)
+						|| (info.SpawnOffset.Y != 0 && startPos.Y != bounds.Y && startPos.Y != bounds.Y + bounds.Height))
+						startPos += info.SpawnOffset;
 
 					return new DeliveryActorPathInfo(startPos, startPos, spawnFacing, info.Facing);
 			}
