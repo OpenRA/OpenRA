@@ -18,6 +18,8 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	public enum EntryType { Fixed, PlayerSpawnClosestEdge, DropSiteClosestEdge }
+
 	[Desc("Deliver the unit in production via skylift.")]
 	public class ProductionAirdropInfo : ProductionInfo
 	{
@@ -29,8 +31,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Cargo aircraft used for delivery. Must have the `Aircraft` trait.")]
 		public readonly string ActorType = null;
 
-		[Desc("The cargo aircraft will spawn at the player baseline (map edge closest to the player spawn)")]
-		public readonly bool BaselineSpawn = false;
+		[Desc("The delivery aircraft spawn and entry behaviour.")]
+		public readonly EntryType EntryType = EntryType.Fixed;
 
 		[Desc("Direction the aircraft should face to land.")]
 		public readonly int Facing = 64;
@@ -106,31 +108,45 @@ namespace OpenRA.Mods.Common.Traits
 			CPos startPos;
 			CPos endPos;
 			int spawnFacing;
+			CVec spawnVec;
 
-			if (info.BaselineSpawn && mpStart != null)
+			switch (info.EntryType)
 			{
-				var spawn = mpStart.Start[owner];
-				var bounds = map.Bounds;
-				var center = new MPos(bounds.Left + bounds.Width / 2, bounds.Top + bounds.Height / 2).ToCPos(map);
-				var spawnVec = spawn - center;
-				startPos = spawn + spawnVec * (Exts.ISqrt((bounds.Height * bounds.Height + bounds.Width * bounds.Width) / (4 * spawnVec.LengthSquared)));
-				endPos = startPos;
-				var spawnDirection = new WVec((self.Location - startPos).X, (self.Location - startPos).Y, 0);
-				spawnFacing = spawnDirection.Yaw.Facing;
+				case EntryType.Fixed:
+					// Start a fixed distance away: the width of the map.
+					// This makes the production timing independent of spawnpoint
+					var loc = self.Location.ToMPos(map);
+					startPos = new MPos(loc.U + map.Bounds.Width, loc.V).ToCPos(map);
+					endPos = new MPos(map.Bounds.Left, loc.V).ToCPos(map);
+					spawnFacing = info.Facing;
 
-				return new DeliveryActorPathInfo(startPos, endPos, spawnFacing, info.Facing);
-			}
-			else
-			{
-				// Start a fixed distance away: the width of the map.
-				// This makes the production timing independent of spawnpoint
-				var loc = self.Location.ToMPos(map);
-				startPos = new MPos(loc.U + map.Bounds.Width, loc.V).ToCPos(map);
-				endPos = new MPos(map.Bounds.Left, loc.V).ToCPos(map);
-				spawnFacing = info.Facing;
+					return new DeliveryActorPathInfo(startPos, endPos, spawnFacing, info.Facing);
 
-				return new DeliveryActorPathInfo(startPos, endPos, spawnFacing, info.Facing);
+				case EntryType.PlayerSpawnClosestEdge:
+					if (mpStart == null)
+						break;
+
+					var spawn = mpStart.Start[owner];
+					var bounds = map.Bounds;
+					var center = new MPos(bounds.Left + bounds.Width / 2, bounds.Top + bounds.Height / 2).ToCPos(map);
+					spawnVec = spawn - center;
+					startPos = spawn + spawnVec * (Exts.ISqrt((bounds.Height * bounds.Height + bounds.Width * bounds.Width) / (4 * spawnVec.LengthSquared)));
+					endPos = startPos;
+					var spawnDirection = new WVec((self.Location - startPos).X, (self.Location - startPos).Y, 0);
+					spawnFacing = spawnDirection.Yaw.Facing;
+
+					return new DeliveryActorPathInfo(startPos, endPos, spawnFacing, info.Facing);
+
+				case EntryType.DropSiteClosestEdge:
+					startPos = self.World.Map.ChooseClosestEdgeCell(self.Location);
+					spawnVec = startPos - self.Location;
+					var spawnDirection2 = new WVec((self.Location - startPos).X, (self.Location - startPos).Y, 0);
+					spawnFacing = spawnDirection2.Yaw.Facing;
+
+					return new DeliveryActorPathInfo(startPos, startPos, spawnFacing, info.Facing);
 			}
+
+			throw new ArgumentOutOfRangeException("info.EntryType", info.EntryType, "Unsupported value for delivery actor entry type!");
 		}
 
 		class DeliveryActorPathInfo
