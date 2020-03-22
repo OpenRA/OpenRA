@@ -74,6 +74,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Radius in cells that protecting squads should scan for enemies around their position.")]
 		public readonly int ProtectionScanRadius = 8;
 
+		[Desc("Unit types that are not chosen as attack target despite being owned by an enemy player.")]
+		public readonly HashSet<string> IgnoredEnemyUnitTypes = new HashSet<string>();
+
 		public override object Create(ActorInitializer init) { return new SquadManagerBotModule(init.Self, this); }
 	}
 
@@ -121,7 +124,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool IsEnemyUnit(Actor a)
 		{
-			return a != null && !a.IsDead && Player.Stances[a.Owner] == Stance.Enemy
+			return a != null && !a.IsDead && !Info.IgnoredEnemyUnitTypes.Contains(a.Info.Name)
+				&& Player.Stances[a.Owner] == Stance.Enemy
 				&& !a.Info.HasTraitInfo<HuskInfo>()
 				&& !a.GetEnabledTargetTypes().IsEmpty;
 		}
