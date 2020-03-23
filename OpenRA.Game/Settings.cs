@@ -179,9 +179,6 @@ namespace OpenRA
 		[Desc("At which frames per second to cap the framerate.")]
 		public int MaxFramerate = 60;
 
-		[Desc("Disable separate OpenGL render thread on Windows operating systems.")]
-		public bool DisableWindowsRenderThread = true;
-
 		[Desc("Disable the OpenGL debug message callback feature.")]
 		public bool DisableGLDebugMessageCallback = false;
 
