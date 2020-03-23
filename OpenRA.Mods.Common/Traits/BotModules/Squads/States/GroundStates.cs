@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			}
 
 			var enemyUnits = owner.World.FindActorsInCircle(owner.TargetActor.CenterPosition, WDist.FromCells(owner.SquadManager.Info.IdleScanRadius))
-				.Where(owner.SquadManager.IsEnemyUnit).ToList();
+				.Where(owner.SquadManager.IsPreferredEnemyUnit).ToList();
 
 			if (enemyUnits.Count == 0)
 				return;
@@ -105,7 +105,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			else
 			{
 				var enemies = owner.World.FindActorsInCircle(leader.CenterPosition, WDist.FromCells(owner.SquadManager.Info.AttackScanRadius))
-					.Where(owner.SquadManager.IsEnemyUnit);
+					.Where(owner.SquadManager.IsPreferredEnemyUnit);
 				var target = enemies.ClosestTo(leader.CenterPosition);
 				if (target != null)
 				{

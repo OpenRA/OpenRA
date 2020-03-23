@@ -95,7 +95,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 				if (u.Owner == squad.Bot.Player && u.Info.HasTraitInfo<BuildingInfo>())
 					return false;
 
-			var enemyAroundUnit = units.Where(unit => squad.SquadManager.IsEnemyUnit(unit) && unit.Info.HasTraitInfo<AttackBaseInfo>());
+			var enemyAroundUnit = units.Where(unit => squad.SquadManager.IsPreferredEnemyUnit(unit) && unit.Info.HasTraitInfo<AttackBaseInfo>());
 			if (!enemyAroundUnit.Any())
 				return false;
 
