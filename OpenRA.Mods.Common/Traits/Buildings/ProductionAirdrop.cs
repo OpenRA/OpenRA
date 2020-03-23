@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new ProductionAirdrop(init, this); }
 	}
 
-	class ProductionAirdrop : Production
+	public class ProductionAirdrop : Production
 	{
 		readonly AircraftInfo aircraftInfo;
 		readonly ProductionAirdropInfo info;
