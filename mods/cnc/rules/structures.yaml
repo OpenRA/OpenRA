@@ -434,6 +434,7 @@ AFLD:
 	ProductionAirdrop:
 		Produces: Vehicle.Nod
 		ActorType: c17
+		LandingFacing: 64
 	WithBuildingBib:
 	WithIdleOverlay@DISH:
 		RequiresCondition: !build-incomplete

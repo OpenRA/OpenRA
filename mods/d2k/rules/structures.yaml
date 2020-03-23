@@ -609,6 +609,7 @@ starport:
 	ProductionAirdrop:
 		Produces: Starport
 		ActorType: frigate
+		LandingFacing: 64
 	RenderSprites:
 		Image: starport.ordos
 		FactionImages:
