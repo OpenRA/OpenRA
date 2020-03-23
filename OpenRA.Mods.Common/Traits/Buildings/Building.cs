@@ -46,6 +46,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly bool AllowInvalidPlacement = false;
 
+		public readonly bool AllowPlacementOnResources = false;
+
 		[Desc("Clear smudges from underneath the building footprint.")]
 		public readonly bool RemoveSmudgesOnBuild = true;
 
