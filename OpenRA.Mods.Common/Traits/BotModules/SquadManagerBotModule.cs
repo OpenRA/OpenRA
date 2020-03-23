@@ -14,6 +14,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Traits.BotModules.Squads;
+using OpenRA.Primitives;
 using OpenRA.Support;
 using OpenRA.Traits;
 
@@ -74,6 +75,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Radius in cells that protecting squads should scan for enemies around their position.")]
 		public readonly int ProtectionScanRadius = 8;
 
+		[Desc("Enemy target types to never target.")]
+		public readonly BitSet<TargetableType> IgnoredEnemyTargetTypes = default(BitSet<TargetableType>);
+
 		public override object Create(ActorInitializer init) { return new SquadManagerBotModule(init.Self, this); }
 	}
 
@@ -119,11 +123,14 @@ namespace OpenRA.Mods.Common.Traits
 			unitCannotBeOrdered = a => a == null || a.Owner != Player || a.IsDead || !a.IsInWorld;
 		}
 
-		public bool IsEnemyUnit(Actor a)
+		// Use for proactive targeting.
+		public bool IsPreferredEnemyUnit(Actor a)
 		{
-			return a != null && !a.IsDead && Player.Stances[a.Owner] == Stance.Enemy
-				&& !a.Info.HasTraitInfo<HuskInfo>()
-				&& !a.GetEnabledTargetTypes().IsEmpty;
+			if (a == null || a.IsDead || Player.Stances[a.Owner] != Stance.Enemy || a.Info.HasTraitInfo<HuskInfo>())
+				return false;
+
+			var targetTypes = a.GetEnabledTargetTypes();
+			return !targetTypes.IsEmpty && !targetTypes.Overlaps(Info.IgnoredEnemyTargetTypes);
 		}
 
 		public bool IsNotHiddenUnit(Actor a)
@@ -175,13 +182,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		internal Actor FindClosestEnemy(WPos pos)
 		{
-			var units = World.Actors.Where(IsEnemyUnit);
+			var units = World.Actors.Where(IsPreferredEnemyUnit);
 			return units.Where(IsNotHiddenUnit).ClosestTo(pos) ?? units.ClosestTo(pos);
 		}
 
 		internal Actor FindClosestEnemy(WPos pos, WDist radius)
 		{
-			return World.FindActorsInCircle(pos, radius).Where(a => IsEnemyUnit(a) && IsNotHiddenUnit(a)).ClosestTo(pos);
+			return World.FindActorsInCircle(pos, radius).Where(a => IsPreferredEnemyUnit(a) && IsNotHiddenUnit(a)).ClosestTo(pos);
 		}
 
 		void CleanSquads()
@@ -311,7 +318,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				// Don't rush enemy aircraft!
 				var enemies = World.FindActorsInCircle(b.CenterPosition, WDist.FromCells(Info.RushAttackScanRadius))
-					.Where(unit => IsEnemyUnit(unit) && unit.Info.HasTraitInfo<AttackBaseInfo>() && !unit.Info.HasTraitInfo<AircraftInfo>() && !Info.NavalUnitsTypes.Contains(unit.Info.Name)).ToList();
+					.Where(unit => IsPreferredEnemyUnit(unit) && unit.Info.HasTraitInfo<AttackBaseInfo>() && !unit.Info.HasTraitInfo<AircraftInfo>() && !Info.NavalUnitsTypes.Contains(unit.Info.Name)).ToList();
 
 				if (AttackOrFleeFuzzy.Rush.CanAttack(ownUnits, enemies))
 				{
@@ -357,7 +364,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void IBotRespondToAttack.RespondToAttack(IBot bot, Actor self, AttackInfo e)
 		{
-			if (!IsEnemyUnit(e.Attacker))
+			if (!IsPreferredEnemyUnit(e.Attacker))
 				return;
 
 			// Protected priority assets, MCVs, harvesters and buildings
