@@ -25,15 +25,11 @@ namespace OpenRA.Mods.Cnc
 		Sprite[] border;
 		float2 nodPos, gdiPos, evaPos;
 		Rectangle bounds;
-
-		SpriteFont loadingFont, versionFont;
-		string loadingText, versionText;
-		float2 loadingPos, versionPos;
+		string versionText;
 
 		Sheet lastSheet;
 		int lastDensity;
 		Size lastResolution;
-		IReadOnlyDictionary<string, SpriteFont> lastFonts;
 
 		public override void Init(ModData modData, Dictionary<string, string> info)
 		{
@@ -82,20 +78,6 @@ namespace OpenRA.Mods.Cnc
 
 			var barY = bounds.Height - 78;
 
-			// The fonts dictionary may change when switching between the mod and content installer
-			if (r.Fonts != lastFonts)
-			{
-				lastFonts = r.Fonts;
-
-				loadingFont = lastFonts["BigBold"];
-				loadingText = Info["Text"];
-				loadingPos = new float2((bounds.Width - loadingFont.Measure(loadingText).X) / 2, barY);
-
-				versionFont = lastFonts["Regular"];
-				var versionSize = versionFont.Measure(versionText);
-				versionPos = new float2(bounds.Width - 107 - versionSize.X / 2, 115 - versionSize.Y / 2);
-			}
-
 			loadTick = ++loadTick % 8;
 
 			r.RgbaSpriteRenderer.DrawSprite(gdiLogo, gdiPos);
@@ -104,11 +86,18 @@ namespace OpenRA.Mods.Cnc
 
 			WidgetUtils.DrawPanel(bounds, border);
 
-			if (loadingFont != null)
+			if (r.Fonts != null)
+			{
+				var loadingFont = r.Fonts["BigBold"];
+				var loadingText = Info["Text"];
+				var loadingPos = new float2((bounds.Width - loadingFont.Measure(loadingText).X) / 2, barY);
 				loadingFont.DrawText(loadingText, loadingPos, Color.Gray);
 
-			if (versionFont != null)
+				var versionFont = r.Fonts["Regular"];
+				var versionSize = versionFont.Measure(versionText);
+				var versionPos = new float2(bounds.Width - 107 - versionSize.X / 2, 115 - versionSize.Y / 2);
 				versionFont.DrawTextWithContrast(versionText, versionPos, Color.White, Color.Black, 2);
+			}
 
 			for (var i = 0; i <= 8; i++)
 			{
