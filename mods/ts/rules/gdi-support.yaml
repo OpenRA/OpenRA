@@ -134,10 +134,19 @@ GACTWR:
 			tower.rocket: !build-incomplete && !tower.rocket && !tower.vulcan && !tower.sam
 			tower.sam: !build-incomplete && !tower.vulcan && !tower.rocket && !tower.sam
 	ProvidesPrerequisite@buildingname:
+	ProvidesPrerequisite@pluggable:
+		RequiresCondition: !build-incomplete && !tower.vulcan && !tower.rocket && !tower.sam
+		Prerequisite: gactwr.socket
 	Replacement:
 		ReplaceableTypes: GDITower
 	IsometricSelectable:
 		Height: 48
+
+GACTWR.SOCKET:
+	AlwaysVisible:
+	Interactable:
+	Tooltip:
+		Name: Component Tower (unupgraded)
 
 GAVULC:
 	Inherits: ^BuildingPlug
@@ -148,7 +157,7 @@ GAVULC:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 80
-		Prerequisites: gactwr, gapile, ~structures.gdi, ~techlevel.low
+		Prerequisites: gactwr.socket, gapile, ~structures.gdi, ~techlevel.low
 		Description: Basic base defense.\nDoes not require power to operate.\n  Strong vs Infantry, Light armor\n  Weak vs Aircraft
 	Plug:
 		Type: tower.vulcan
@@ -164,7 +173,7 @@ GAROCK:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 90
-		Prerequisites: gactwr, gapile, ~structures.gdi, ~techlevel.high
+		Prerequisites: gactwr.socket, gapile, ~structures.gdi, ~techlevel.high
 		Description: GDI Advanced base defense.\nDoes not require power to operate.\n  Strong vs Armored ground units\n  Weak vs Aircraft
 	Plug:
 		Type: tower.rocket
@@ -180,7 +189,7 @@ GACSAM:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 100
-		Prerequisites: gactwr, garadr, ~structures.gdi, ~techlevel.medium
+		Prerequisites: gactwr.socket, garadr, ~structures.gdi, ~techlevel.medium
 		Description: GDI Anti-Air base defense.\nDoes not require power to operate.\n  Strong vs Aircraft\n  Weak vs Ground units
 	Plug:
 		Type: tower.sam
