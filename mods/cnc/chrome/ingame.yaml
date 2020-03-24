@@ -166,120 +166,132 @@ Container@OBSERVER_WIDGETS:
 					Width: PARENT_RIGHT - 2
 					Height: PARENT_BOTTOM - 2
 					Skippable: false
-		Background@REPLAY_PLAYER:
-			Logic: ReplayControlBarLogic
-			X: WINDOW_RIGHT - WIDTH - 5
-			Y: 283
-			Width: 256
-			Height: 46
-			Background: panel-black
-			Visible: false
-			Children:
-				Button@BUTTON_PAUSE:
-					X: 16
-					Y: 10
-					Width: 26
-					Height: 26
-					Key: Pause
-					TooltipText: Pause
-					TooltipContainer: TOOLTIP_CONTAINER
-					IgnoreChildMouseOver: true
-					Children:
-						Image@IMAGE_PAUSE:
-							X: 5
-							Y: 5
-							Width: 16
-							Height: 16
-							ImageCollection: music
-							ImageName: pause
-				Button@BUTTON_PLAY:
-					X: 16
-					Y: 10
-					Width: 26
-					Height: 26
-					Key: Pause
-					TooltipText: Play
-					TooltipContainer: TOOLTIP_CONTAINER
-					IgnoreChildMouseOver: true
-					Children:
-						Image@IMAGE_PLAY:
-							X: 5
-							Y: 5
-							Width: 16
-							Height: 16
-							ImageCollection: music
-							ImageName: play
-				Button@BUTTON_SLOW:
-					X: 57
-					Y: 13
-					Width: 36
-					Height: 20
-					Key: ReplaySpeedSlow
-					TooltipText: Slow speed
-					TooltipContainer: TOOLTIP_CONTAINER
-					VisualHeight: 0
-					Text: 50%
-					Font: TinyBold
-				Button@BUTTON_REGULAR:
-					X: 57 + 48
-					Y: 13
-					Width: 38
-					Height: 20
-					Key: ReplaySpeedRegular
-					TooltipText: Regular speed
-					TooltipContainer: TOOLTIP_CONTAINER
-					VisualHeight: 0
-					Text: 100%
-					Font: TinyBold
-				Button@BUTTON_FAST:
-					X: 57 + 48 * 2
-					Y: 13
-					Width: 38
-					Height: 20
-					Key: ReplaySpeedFast
-					TooltipText: Fast speed
-					TooltipContainer: TOOLTIP_CONTAINER
-					VisualHeight: 0
-					Text: 200%
-					Font: TinyBold
-				Button@BUTTON_MAXIMUM:
-					X: 57 + 48 * 3
-					Y: 13
-					Width: 38
-					Height: 20
-					Key: ReplaySpeedMax
-					TooltipText: Maximum speed
-					TooltipContainer: TOOLTIP_CONTAINER
-					VisualHeight: 0
-					Text: MAX
-					Font: TinyBold
-		DropDownButton@SHROUD_SELECTOR:
-			Logic: ObserverShroudSelectorLogic
-				CombinedViewKey: ObserverCombinedView
-				WorldViewKey: ObserverWorldView
-				LockToPlayerCameraKey: ObserverLockToPlayerCamera
+		Background@OBSERVER_CONTROL_BG:
 			X: WINDOW_RIGHT - WIDTH - 5
 			Y: 260
 			Width: 256
-			Height: 25
-			Font: Bold
+			Height: 55
+			Background: panel-black
+			Visible: true
 			Children:
-				LogicKeyListener@SHROUD_KEYHANDLER:
-				Image@FLAG:
-					X: 4
-					Y: 4
-					Width: 32
-					Height: 16
-				Label@LABEL:
-					X: 40
-					Width: 60
+				Checkbox@LOCK_CAMERA:
+					X: 16
+					Y: 30
+					Width: 200
+					Height: 20
+					Text: Lock camera to player view
+				DropDownButton@SHROUD_SELECTOR:
+					Logic: ObserverShroudSelectorLogic
+						CombinedViewKey: ObserverCombinedView
+						WorldViewKey: ObserverWorldView
+						LockToPlayerCameraKey: ObserverLockToPlayerCamera
+					X: 0
+					Y: 0
+					Width: 256
 					Height: 25
-					Shadow: True
-				Label@NOFLAG_LABEL:
-					X: 5
-					Width: PARENT_RIGHT
-					Height: 25
-					Shadow: True
+					Font: Bold
+					Children:
+						LogicKeyListener@SHROUD_KEYHANDLER:
+						Image@FLAG:
+							X: 4
+							Y: 4
+							Width: 32
+							Height: 16
+						Label@LABEL:
+							X: 40
+							Width: 60
+							Height: 25
+							Shadow: True
+						Label@NOFLAG_LABEL:
+							X: 5
+							Width: PARENT_RIGHT
+							Height: 25
+							Shadow: True
+				Container@REPLAY_PLAYER:
+					Logic: ReplayControlBarLogic
+					X: 0
+					Y: 55
+					Width: 256
+					Height: 46
+					Children:
+						Button@BUTTON_PAUSE:
+							X: 16
+							Y: 10
+							Width: 26
+							Height: 26
+							Key: Pause
+							TooltipText: Pause
+							TooltipContainer: TOOLTIP_CONTAINER
+							IgnoreChildMouseOver: true
+							Children:
+								Image@IMAGE_PAUSE:
+									X: 5
+									Y: 5
+									Width: 16
+									Height: 16
+									ImageCollection: music
+									ImageName: pause
+						Button@BUTTON_PLAY:
+							X: 16
+							Y: 10
+							Width: 26
+							Height: 26
+							Key: Pause
+							TooltipText: Play
+							TooltipContainer: TOOLTIP_CONTAINER
+							IgnoreChildMouseOver: true
+							Children:
+								Image@IMAGE_PLAY:
+									X: 5
+									Y: 5
+									Width: 16
+									Height: 16
+									ImageCollection: music
+									ImageName: play
+						Button@BUTTON_SLOW:
+							X: 57
+							Y: 13
+							Width: 36
+							Height: 20
+							Key: ReplaySpeedSlow
+							TooltipText: Slow speed
+							TooltipContainer: TOOLTIP_CONTAINER
+							VisualHeight: 0
+							Text: 50%
+							Font: TinyBold
+						Button@BUTTON_REGULAR:
+							X: 57 + 48
+							Y: 13
+							Width: 38
+							Height: 20
+							Key: ReplaySpeedRegular
+							TooltipText: Regular speed
+							TooltipContainer: TOOLTIP_CONTAINER
+							VisualHeight: 0
+							Text: 100%
+							Font: TinyBold
+						Button@BUTTON_FAST:
+							X: 57 + 48 * 2
+							Y: 13
+							Width: 38
+							Height: 20
+							Key: ReplaySpeedFast
+							TooltipText: Fast speed
+							TooltipContainer: TOOLTIP_CONTAINER
+							VisualHeight: 0
+							Text: 200%
+							Font: TinyBold
+						Button@BUTTON_MAXIMUM:
+							X: 57 + 48 * 3
+							Y: 13
+							Width: 38
+							Height: 20
+							Key: ReplaySpeedMax
+							TooltipText: Maximum speed
+							TooltipContainer: TOOLTIP_CONTAINER
+							VisualHeight: 0
+							Text: MAX
+							Font: TinyBold
 		Container@INGAME_OBSERVERSTATS_BG:
 			Logic: ObserverStatsLogic
 				StatisticsNoneKey: StatisticsNone

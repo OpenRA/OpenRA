@@ -24,7 +24,7 @@ Container@OBSERVER_WIDGETS:
 			X: WINDOW_RIGHT - 250
 			Y: 10
 			Width: 238
-			Height: 287
+			Height: 325
 			ImageCollection: sidebar-observer
 			ImageName: background
 			ClickThrough: false
@@ -87,6 +87,14 @@ Container@OBSERVER_WIDGETS:
 							Width: 220
 							Height: 220
 							Skippable: false
+				Checkbox@LOCK_CAMERA:
+					X: 15
+					Y: 294
+					Width: 200
+					Height: 20 
+					Background: sidebar-button-observer
+					Contrast: true
+					Text: Lock camera to player view
 				DropDownButton@SHROUD_SELECTOR:
 					Logic: ObserverShroudSelectorLogic
 						CombinedViewKey: ObserverCombinedView
@@ -121,15 +129,15 @@ Container@OBSERVER_WIDGETS:
 			X: WINDOW_RIGHT - 250
 			Y: 297
 			Width: 238
-			Height: 8
+			Height: 18
 			ImageCollection: sidebar-observer
 			ImageName: observer-bottom
 		Image@REPLAY_PLAYER:
 			Logic: ReplayControlBarLogic
 			X: WINDOW_RIGHT - 250
-			Y: 297
+			Y: 330
 			Width: 238
-			Height: 40
+			Height: 50
 			Visible: false
 			ImageCollection: sidebar-observer
 			ImageName: replay-bottom
