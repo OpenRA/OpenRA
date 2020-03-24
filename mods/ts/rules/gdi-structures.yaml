@@ -66,13 +66,29 @@ GAPOWR:
 	IsometricSelectable:
 		Height: 48
 
+GAPOWRUP:
+	Inherits: ^BuildingPlug
+	Valued:
+		Cost: 150
+	Tooltip:
+		Name: Power Turbine
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 100
+		Prerequisites: gapowr, ~structures.gdi, ~techlevel.medium
+		Description: Provides extra power generation.
+	Plug:
+		Type: powrup
+	Power:
+		Amount: 50
+
 GAPILE:
 	Inherits: ^Building
 	Inherits@SHAPE: ^2x2Shape
 	Inherits@PRIMARY: ^PrimaryBuilding
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 30
+		BuildPaletteOrder: 20
 		Prerequisites: anypower, ~structures.gdi, ~techlevel.low
 		Description: Produces infantry.
 	Valued:
@@ -164,7 +180,7 @@ GAWEAP:
 		Prerequisite: factory
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 60
+		BuildPaletteOrder: 50
 		Prerequisites: proc, ~structures.gdi, ~techlevel.low
 		Description: Produces vehicles.
 	Building:
@@ -223,7 +239,7 @@ GAHPAD:
 	Tooltip:
 		Name: Helipad
 	Buildable:
-		BuildPaletteOrder: 130
+		BuildPaletteOrder: 80
 		Queue: Building
 		Prerequisites: garadr, ~structures.gdi, ~techlevel.medium
 		Description: Produces, rearms and\nrepairs helicopters.
@@ -274,7 +290,7 @@ GADEPT:
 	Tooltip:
 		Name: Service Depot
 	Buildable:
-		BuildPaletteOrder: 110
+		BuildPaletteOrder: 70
 		Prerequisites: factory, ~structures.gdi, ~techlevel.medium
 		Queue: Building
 		Description: Repairs vehicles.
@@ -332,7 +348,7 @@ GARADR:
 	Inherits@SHAPE: ^2x2Shape
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 80
+		BuildPaletteOrder: 40
 		Prerequisites: proc, ~structures.gdi, ~techlevel.low
 		Description: Provides an overview of the battlefield.\nCan detect cloaked units.\nRequires power to operate.
 	Valued:
@@ -375,7 +391,7 @@ GATECH:
 	Inherits@SHAPE: ^3x2Shape
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 150
+		BuildPaletteOrder: 90
 		Prerequisites: gaweap, garadr, ~structures.gdi, ~techlevel.medium
 		Description: Provides access to advanced GDI technologies.
 	Valued:
@@ -412,7 +428,7 @@ GAPLUG:
 	Tooltip:
 		Name: GDI Upgrade Center
 	Buildable:
-		BuildPaletteOrder: 170
+		BuildPaletteOrder: 110
 		Prerequisites: proc, gatech, ~structures.gdi, ~techlevel.superweapons
 		Queue: Building
 		Description: Can be upgraded for additional technology.
@@ -510,3 +526,35 @@ GAPLUG:
 	ProvidesPrerequisite@buildingname:
 	IsometricSelectable:
 		Height: 48
+
+GAPLUG2:
+	Inherits: ^BuildingPlug
+	Valued:
+		Cost: 1000
+	Tooltip:
+		Name: Seeker Control
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 110
+		Prerequisites: gaplug, gatech, gaweap, ~structures.gdi, ~techlevel.superweapons
+		Description: Enables use of the hunter-seeker droid.
+	Plug:
+		Type: plug.hunterseeker
+	Power:
+		Amount: -50
+
+GAPLUG3:
+	Inherits: ^BuildingPlug
+	Valued:
+		Cost: 1500
+	Tooltip:
+		Name: Ion Cannon Uplink
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 120
+		Prerequisites: gaplug, gatech, ~structures.gdi, ~techlevel.superweapons
+		Description: Enables use of the Ion Cannon.
+	Plug:
+		Type: plug.ioncannon
+	Power:
+		Amount: -100

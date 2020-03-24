@@ -147,7 +147,7 @@ GAVULC:
 		Name: Vulcan Tower
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 120
+		BuildPaletteOrder: 80
 		Prerequisites: gactwr, gapile, ~structures.gdi, ~techlevel.low
 		Description: Basic base defense.\nDoes not require power to operate.\n  Strong vs Infantry, Light armor\n  Weak vs Aircraft
 	Plug:
@@ -163,7 +163,7 @@ GAROCK:
 		Name: RPG Upgrade
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 130
+		BuildPaletteOrder: 90
 		Prerequisites: gactwr, gapile, ~structures.gdi, ~techlevel.high
 		Description: GDI Advanced base defense.\nDoes not require power to operate.\n  Strong vs Armored ground units\n  Weak vs Aircraft
 	Plug:
@@ -179,58 +179,10 @@ GACSAM:
 		Name: SAM Upgrade
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 140
+		BuildPaletteOrder: 100
 		Prerequisites: gactwr, garadr, ~structures.gdi, ~techlevel.medium
 		Description: GDI Anti-Air base defense.\nDoes not require power to operate.\n  Strong vs Aircraft\n  Weak vs Ground units
 	Plug:
 		Type: tower.sam
 	Power:
 		Amount: -30
-
-GAPOWRUP:
-	Inherits: ^BuildingPlug
-	Valued:
-		Cost: 150
-	Tooltip:
-		Name: Power Turbine
-	Buildable:
-		Queue: Defense
-		BuildPaletteOrder: 80
-		Prerequisites: gapowr, ~structures.gdi, ~techlevel.medium
-		Description: Provides extra power generation.
-	Plug:
-		Type: powrup
-	Power:
-		Amount: 50
-
-GAPLUG2:
-	Inherits: ^BuildingPlug
-	Valued:
-		Cost: 1000
-	Tooltip:
-		Name: Seeker Control
-	Buildable:
-		Queue: Defense
-		BuildPaletteOrder: 170
-		Prerequisites: gaplug, gatech, gaweap, ~structures.gdi, ~techlevel.superweapons
-		Description: Enables use of the hunter-seeker droid.
-	Plug:
-		Type: plug.hunterseeker
-	Power:
-		Amount: -50
-
-GAPLUG3:
-	Inherits: ^BuildingPlug
-	Valued:
-		Cost: 1500
-	Tooltip:
-		Name: Ion Cannon Uplink
-	Buildable:
-		Queue: Defense
-		BuildPaletteOrder: 180
-		Prerequisites: gaplug, gatech, ~structures.gdi, ~techlevel.superweapons
-		Description: Enables use of the Ion Cannon.
-	Plug:
-		Type: plug.ioncannon
-	Power:
-		Amount: -100
