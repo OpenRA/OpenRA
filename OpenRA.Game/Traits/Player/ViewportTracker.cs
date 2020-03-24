@@ -24,6 +24,10 @@ namespace OpenRA.Traits
 	{
 		static WorldRenderer worldRenderer;
 
+		public bool IsForceLocked { get; set; }
+
+		bool hasLockedViewport;
+
 		public void WorldLoaded(World w, WorldRenderer wr)
 		{
 			worldRenderer = wr;

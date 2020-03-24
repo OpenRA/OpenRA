@@ -74,8 +74,14 @@ Container@OBSERVER_WIDGETS:
 			X: WINDOW_RIGHT - 255
 			Y: 260
 			Width: 250
-			Height: 55
+			Height: 80
 			Children:
+				Checkbox@LOCK_CAMERA:
+					X: 15
+					Y: 45
+					Width: 200
+					Height: 20
+					Text: Lock camera to player view
 				DropDownButton@SHROUD_SELECTOR:
 					Logic: ObserverShroudSelectorLogic
 						CombinedViewKey: ObserverCombinedView
@@ -104,9 +110,9 @@ Container@OBSERVER_WIDGETS:
 							Shadow: True
 				Container@REPLAY_PLAYER:
 					Logic: ReplayControlBarLogic
-					Y: 39
+					Y: 60
 					Width: 160
-					Height: 35
+					Height: 30
 					Visible: false
 					Children:
 						Button@BUTTON_PAUSE:

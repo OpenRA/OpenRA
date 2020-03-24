@@ -16,6 +16,7 @@ using OpenRA.Graphics;
 using OpenRA.Mods.Common.Lint;
 using OpenRA.Network;
 using OpenRA.Primitives;
+using OpenRA.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -26,6 +27,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly CameraOption combined, disableShroud;
 		readonly IOrderedEnumerable<IGrouping<int, CameraOption>> teams;
 		readonly bool limitViews;
+		readonly CheckboxWidget lockCheckbox;
 
 		readonly HotkeyReference combinedViewKey = new HotkeyReference();
 		readonly HotkeyReference worldViewKey = new HotkeyReference();
@@ -33,6 +35,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly World world;
 
 		CameraOption selected;
+		bool isPlayerViewLocked;
 
 		class CameraOption
 		{
@@ -41,7 +44,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			public readonly Color Color;
 			public readonly string Faction;
 			public readonly Func<bool> IsSelected;
-			public readonly Action OnClick;
+			public readonly Action<bool> OnClick;
+			public readonly ViewportTracker ViewportTracker;
 
 			public CameraOption(ObserverShroudSelectorLogic logic, Player p)
 			{
@@ -50,7 +54,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				Color = p.Color;
 				Faction = p.Faction.InternalName;
 				IsSelected = () => p.World.RenderPlayer == p;
-				OnClick = () => { p.World.RenderPlayer = p; logic.selected = this; p.World.Selection.Clear(); };
+
+				ViewportTracker = p.PlayerActor.TraitOrDefault<ViewportTracker>();
+
+				OnClick = forceLock =>
+				{
+					p.World.RenderPlayer = p;
+					logic.selected = this;
+					p.World.Selection.Clear();
+
+					if (ViewportTracker != null)
+						ViewportTracker.IsForceLocked = forceLock;
+				};
 			}
 
 			public CameraOption(ObserverShroudSelectorLogic logic, World w, string label, Player p)
@@ -60,7 +75,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				Color = Color.White;
 				Faction = null;
 				IsSelected = () => w.RenderPlayer == p;
-				OnClick = () => { w.RenderPlayer = p; logic.selected = this; };
+
+				if (p != null)
+					ViewportTracker = p.PlayerActor.TraitOrDefault<ViewportTracker>();
+
+				OnClick = forceLock =>
+				{
+					w.RenderPlayer = p;
+					logic.selected = this;
+
+					if (ViewportTracker != null)
+						ViewportTracker.IsForceLocked = forceLock;
+				};
 			}
 		}
 
@@ -102,7 +128,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				Func<CameraOption, ScrollItemWidget, ScrollItemWidget> setupItem = (option, template) =>
 				{
-					var item = ScrollItemWidget.Setup(template, option.IsSelected, option.OnClick);
+					var item = ScrollItemWidget.Setup(template, option.IsSelected, () => option.OnClick(isPlayerViewLocked));
 					var showFlag = option.Faction != null;
 
 					var label = item.Get<LabelWidget>("LABEL");
@@ -145,7 +171,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			keyhandler.AddHandler(HandleKeyPress);
 
 			selected = limitViews ? groups.First().Value.First() : world.WorldActor.Owner.Shroud.ExploreMapEnabled ? combined : disableShroud;
-			selected.OnClick();
+			selected.OnClick(isPlayerViewLocked);
+
+			lockCheckbox = widget.Parent.GetOrNull<CheckboxWidget>("LOCK_CAMERA");
+			lockCheckbox.IsChecked = () => !lockCheckbox.IsDisabled() && isPlayerViewLocked;
+			lockCheckbox.IsDisabled = () => selected == combined || selected == disableShroud;
+			lockCheckbox.OnClick = () =>
+			{
+				isPlayerViewLocked = !isPlayerViewLocked;
+				selected.OnClick(isPlayerViewLocked);
+			};
 
 			// Enable zooming out to fractional zoom levels
 			worldRenderer.Viewport.UnlockMinimumZoom(0.5f);
@@ -158,7 +193,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (combinedViewKey.IsActivatedBy(e) && !limitViews)
 				{
 					selected = combined;
-					selected.OnClick();
+					selected.OnClick(isPlayerViewLocked);
 
 					return true;
 				}
@@ -166,7 +201,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (worldViewKey.IsActivatedBy(e) && !limitViews)
 				{
 					selected = disableShroud;
-					selected.OnClick();
+					selected.OnClick(isPlayerViewLocked);
 
 					return true;
 				}
@@ -182,7 +217,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						team = team.Reverse();
 
 					selected = team.SkipWhile(t => t.Player != selected.Player).Skip(1).FirstOrDefault() ?? team.FirstOrDefault();
-					selected.OnClick();
+					selected.OnClick(isPlayerViewLocked);
 
 					return true;
 				}
@@ -197,14 +232,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (selected != null && world.RenderPlayer != selected.Player)
 			{
 				if (combined.Player == world.RenderPlayer)
-					combined.OnClick();
+					combined.OnClick(isPlayerViewLocked);
 				else if (disableShroud.Player == world.RenderPlayer)
-					disableShroud.OnClick();
+					disableShroud.OnClick(isPlayerViewLocked);
 				else
 					foreach (var group in teams)
 						foreach (var option in group)
 							if (option.Player == world.RenderPlayer)
-								option.OnClick();
+								option.OnClick(isPlayerViewLocked);
 			}
 		}
 	}
