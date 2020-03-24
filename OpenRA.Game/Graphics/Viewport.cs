@@ -52,6 +52,10 @@ namespace OpenRA.Graphics
 		public int2 TopLeft { get { return CenterLocation - viewportSize / 2; } }
 		public int2 BottomRight { get { return CenterLocation + viewportSize / 2; } }
 		int2 viewportSize;
+
+		public bool IsMovementLocked { get; set; }
+		public bool IsZoomingLocked { get; set; }
+
 		ProjectedCellRegion cells;
 		bool cellsDirty = true;
 
@@ -84,13 +88,19 @@ namespace OpenRA.Graphics
 			}
 		}
 
-		public void SetZoom(float newValue)
+		public void SetZoom(float newValue, bool ignoreLock = false)
 		{
+			if (IsZoomingLocked && !ignoreLock)
+				return;
+
 			Zoom = newValue;
 		}
 
-		public void AdjustZoom(float dz)
+		public void AdjustZoom(float dz, bool ignoreLock = false)
 		{
+			if (IsZoomingLocked && !ignoreLock)
+				return;
+
 			// Exponential ensures that equal positive and negative steps have the same effect
 			Zoom = (zoom * (float)Math.Exp(dz)).Clamp(unlockMinZoom ? unlockedMinZoom : minZoom, maxZoom);
 		}
@@ -313,23 +323,29 @@ namespace OpenRA.Graphics
 		public int2 WorldToViewPx(int2 world) { return ((Zoom / graphicSettings.UIScale) * (world - TopLeft).ToFloat2()).ToInt2(); }
 		public int2 WorldToViewPx(float3 world) { return ((Zoom / graphicSettings.UIScale) * (world - TopLeft).XY).ToInt2(); }
 
-		public void Center(IEnumerable<Actor> actors)
+		public void Center(IEnumerable<Actor> actors, bool ignoreLock = false)
 		{
 			if (!actors.Any())
 				return;
 
-			Center(actors.Select(a => a.CenterPosition).Average());
+			Center(actors.Select(a => a.CenterPosition).Average(), ignoreLock);
 		}
 
-		public void Center(WPos pos)
+		public void Center(WPos pos, bool ignoreLock = false)
 		{
+			if (IsMovementLocked && !ignoreLock)
+				return;
+
 			CenterLocation = worldRenderer.ScreenPxPosition(pos).Clamp(mapBounds);
 			cellsDirty = true;
 			allCellsDirty = true;
 		}
 
-		public void Scroll(float2 delta, bool ignoreBorders)
+		public void Scroll(float2 delta, bool ignoreBorders, bool ignoreLock = false)
 		{
+			if (IsMovementLocked && !ignoreLock)
+				return;
+
 			// Convert scroll delta from world-px to viewport-px
 			CenterLocation += (1f / Zoom * delta).ToInt2();
 			cellsDirty = true;
