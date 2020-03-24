@@ -63,8 +63,17 @@ GAPOWR:
 		RequiresCondition: !empdisable && powrup.b
 		Amount: 50
 	ProvidesPrerequisite@buildingname:
+	ProvidesPrerequisite@pluggable:
+		RequiresCondition: !powrup.a || !powrup.b
+		Prerequisite: gapowr.socket
 	IsometricSelectable:
 		Height: 48
+
+GAPOWR.SOCKET:
+	AlwaysVisible:
+	Interactable:
+	Tooltip:
+		Name: GDI Power Plant socket
 
 GAPOWRUP:
 	Inherits: ^BuildingPlug
@@ -75,7 +84,7 @@ GAPOWRUP:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 100
-		Prerequisites: gapowr, ~structures.gdi, ~techlevel.medium
+		Prerequisites: gapowr.socket, ~structures.gdi, ~techlevel.medium
 		Description: Provides extra power generation.
 	Plug:
 		Type: powrup
@@ -524,8 +533,26 @@ GAPLUG:
 		PauseOnCondition: disabled
 		Sequence: idle-hunterseekerb
 	ProvidesPrerequisite@buildingname:
+	ProvidesPrerequisite@pluggableion:
+		RequiresCondition: !plug.ioncannona && !plug.ioncannonb
+		Prerequisite: gaplug.socket.ioncannon
+	ProvidesPrerequisite@pluggablehunter:
+		RequiresCondition: !plug.hunterseekera && !plug.hunterseekerb
+		Prerequisite: gaplug.socket.hunterseeker
 	IsometricSelectable:
 		Height: 48
+
+GAPLUG.SOCKET.IONCANNON:
+	AlwaysVisible:
+	Interactable:
+	Tooltip:
+		Name: GDI Upgrade Center socket
+
+GAPLUG.SOCKET.HUNTERSEEKER:
+	AlwaysVisible:
+	Interactable:
+	Tooltip:
+		Name: GDI Upgrade Center socket
 
 GAPLUG2:
 	Inherits: ^BuildingPlug
@@ -536,7 +563,7 @@ GAPLUG2:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 110
-		Prerequisites: gaplug, gatech, gaweap, ~structures.gdi, ~techlevel.superweapons
+		Prerequisites: gaplug.socket.hunterseeker, gatech, gaweap, ~structures.gdi, ~techlevel.superweapons
 		Description: Enables use of the hunter-seeker droid.
 	Plug:
 		Type: plug.hunterseeker
@@ -552,7 +579,7 @@ GAPLUG3:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 120
-		Prerequisites: gaplug, gatech, ~structures.gdi, ~techlevel.superweapons
+		Prerequisites: gaplug.socket.ioncannon, gatech, ~structures.gdi, ~techlevel.superweapons
 		Description: Enables use of the Ion Cannon.
 	Plug:
 		Type: plug.ioncannon
