@@ -501,6 +501,7 @@ MNLY:
 	Minelayer:
 		Mine: MINV
 		TileUnknownName: build-valid
+		TerrainTypes: Clear, Road, Beach, Ore, Gems, Rough, Bridge
 	MineImmune:
 	AmmoPool:
 		Ammo: 5
