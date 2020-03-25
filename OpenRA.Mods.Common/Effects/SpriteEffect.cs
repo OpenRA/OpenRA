@@ -62,16 +62,18 @@ namespace OpenRA.Mods.Common.Effects
 				world.ScreenMap.Add(this, pos, anim.Image);
 				initialized = true;
 			}
+			else
+			{
+				anim.Tick();
 
-			anim.Tick();
-
-			pos = posFunc();
-			world.ScreenMap.Update(this, pos, anim.Image);
+				pos = posFunc();
+				world.ScreenMap.Update(this, pos, anim.Image);
+			}
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			if (!visibleThroughFog && world.FogObscures(pos))
+			if (!initialized || (!visibleThroughFog && world.FogObscures(pos)))
 				return SpriteRenderable.None;
 
 			return anim.Render(pos, wr.Palette(palette));
