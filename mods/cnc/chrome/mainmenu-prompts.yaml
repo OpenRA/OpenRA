@@ -190,7 +190,13 @@ Container@MAINMENU_INTRODUCTION_PROMPT:
 							Height: 16
 							Font: Small
 							Text: - Zoom the battlefield using {MODIFIER + Scroll Wheel}
-						LabelWithHighlight@DESC_SCROLL:
+						LabelWithHighlight@DESC_SCROLL_RIGHT:
+							X: 265
+							Y: 34
+							Height: 16
+							Font: Small
+							Text: - Pan the battlefield using the {Right} mouse button
+						LabelWithHighlight@DESC_SCROLL_MIDDLE:
 							X: 265
 							Y: 34
 							Height: 16

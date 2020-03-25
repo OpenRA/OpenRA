@@ -228,7 +228,8 @@ namespace OpenRA
 		public int MouseScrollDeadzone = 8;
 
 		public bool UseClassicMouseStyle = false;
-		public bool ClassicMouseMiddleScroll = false;
+		public bool UseAlternateScrollButton = false;
+
 		public StatusBarsType StatusBars = StatusBarsType.Standard;
 		public TargetLinesType TargetLines = TargetLinesType.Manual;
 		public bool UsePlayerStanceColors = false;

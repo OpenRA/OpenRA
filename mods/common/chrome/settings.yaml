@@ -491,7 +491,12 @@ Background@SETTINGS_PANEL:
 							Height: 16
 							Font: Small
 							Text: - Zoom the battlefield using {MODIFIER + Scroll Wheel}
-						LabelWithHighlight@DESC_SCROLL:
+						LabelWithHighlight@DESC_SCROLL_RIGHT:
+							Y: 85
+							Height: 16
+							Font: Small
+							Text: - Pan the battlefield using the {Right} mouse button
+						LabelWithHighlight@DESC_SCROLL_MIDDLE:
 							Y: 85
 							Height: 16
 							Font: Small
@@ -544,13 +549,13 @@ Background@SETTINGS_PANEL:
 					Height: 20
 					Font: Regular
 					Text: Screen Edge Panning
-				Checkbox@CLASSIC_MOUSE_MIDDLE_SCROLL_CHECKBOX:
+				Checkbox@ALTERNATE_SCROLL_CHECKBOX:
 					X: 360
 					Y: 133
 					Width: 180
 					Height: 20
 					Font: Regular
-					Text: Middle Mouse Panning
+					Text: Alternate Mouse Panning
 				Label@SCROLL_SPEED_LABEL:
 					X: 305
 					Y: 210
