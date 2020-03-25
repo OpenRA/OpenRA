@@ -164,6 +164,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void OnGameStart()
 		{
 			Ui.CloseWindow();
+
+			DiscordService.UpdateStatus(DiscordState.PlayingCampaign);
+
 			onStart();
 		}
 

@@ -9,4 +9,4 @@ Icon=openra-{MODID}
 Exec=openra-{MODID} %U
 Terminal=false
 Categories=Game;StrategyGame;
-MimeType=x-scheme-handler/openra-{MODID}-{TAG};
+MimeType=x-scheme-handler/openra-{MODID}-{TAG};x-scheme-handler/discord-{DISCORDAPPID};

@@ -62,6 +62,10 @@ Var StartMenuFolder
 
 !insertmacro MUI_LANGUAGE "English"
 
+!define RA_DISCORDID 699222659766026240
+!define CNC_DISCORDID 699223250181292033
+!define D2K_DISCORDID 712711732770111550
+
 ;***************************
 ;Section Definitions
 ;***************************
@@ -76,15 +80,30 @@ Section "-Reg" Reg
 	WriteRegStr HKLM "Software\Classes\openra-ra-${TAG}\DefaultIcon" "" "$INSTDIR\RedAlert.ico,0"
 	WriteRegStr HKLM "Software\Classes\openra-ra-${TAG}\Shell\Open\Command" "" "$INSTDIR\RedAlert.exe Launch.URI=%1"
 
+	WriteRegStr HKLM "Software\Classes\discord-${RA_DISCORDID}" "" "URL:Run game ${RA_DISCORDID} protocol"
+	WriteRegStr HKLM "Software\Classes\discord-${RA_DISCORDID}" "URL Protocol" ""
+	WriteRegStr HKLM "Software\Classes\discord-${RA_DISCORDID}\DefaultIcon" "" "$INSTDIR\RedAlert.ico,0"
+	WriteRegStr HKLM "Software\Classes\discord-${RA_DISCORDID}\Shell\Open\Command" "" "$INSTDIR\RedAlert.exe"
+
 	WriteRegStr HKLM "Software\Classes\openra-cnc-${TAG}" "" "URL:Join OpenRA server"
 	WriteRegStr HKLM "Software\Classes\openra-cnc-${TAG}" "URL Protocol" ""
 	WriteRegStr HKLM "Software\Classes\openra-cnc-${TAG}\DefaultIcon" "" "$INSTDIR\TiberianDawn.ico,0"
 	WriteRegStr HKLM "Software\Classes\openra-cnc-${TAG}\Shell\Open\Command" "" "$INSTDIR\TiberianDawn.exe Launch.URI=%1"
 
+	WriteRegStr HKLM "Software\Classes\discord-${CNC_DISCORDID}" "" "URL:Run game ${CNC_DISCORDID} protocol"
+	WriteRegStr HKLM "Software\Classes\discord-${CNC_DISCORDID}" "URL Protocol" ""
+	WriteRegStr HKLM "Software\Classes\discord-${CNC_DISCORDID}\DefaultIcon" "" "$INSTDIR\TiberianDawn.ico,0"
+	WriteRegStr HKLM "Software\Classes\discord-${CNC_DISCORDID}\Shell\Open\Command" "" "$INSTDIR\TiberianDawn.exe"
+
 	WriteRegStr HKLM "Software\Classes\openra-d2k-${TAG}" "" "URL:Join OpenRA server"
 	WriteRegStr HKLM "Software\Classes\openra-d2k-${TAG}" "URL Protocol" ""
 	WriteRegStr HKLM "Software\Classes\openra-d2k-${TAG}\DefaultIcon" "" "$INSTDIR\Dune2000.ico,0"
 	WriteRegStr HKLM "Software\Classes\openra-d2k-${TAG}\Shell\Open\Command" "" "$INSTDIR\Dune2000.exe Launch.URI=%1"
+
+	WriteRegStr HKLM "Software\Classes\discord-${D2K_DISCORDID}" "" "URL:Run game ${D2K_DISCORDID} protocol"
+	WriteRegStr HKLM "Software\Classes\discord-${D2K_DISCORDID}" "URL Protocol" ""
+	WriteRegStr HKLM "Software\Classes\discord-${D2K_DISCORDID}\DefaultIcon" "" "$INSTDIR\Dune2000.ico,0"
+	WriteRegStr HKLM "Software\Classes\discord-${D2K_DISCORDID}\Shell\Open\Command" "" "$INSTDIR\Dune2000.exe"
 
 	; Remove obsolete file associations
 	DeleteRegKey HKLM "Software\Classes\.orarep"
@@ -135,6 +154,8 @@ Section "Game" GAME
 	File "${SRCDIR}\eluant.dll"
 	File "${SRCDIR}\BeaconLib.dll"
 	File "${SRCDIR}\soft_oal.dll"
+	File "${SRCDIR}\DiscordRPC.dll"
+	File "${SRCDIR}\Newtonsoft.Json.dll"
 	File "${SRCDIR}\SDL2.dll"
 	File "${SRCDIR}\freetype6.dll"
 	File "${SRCDIR}\lua51.dll"
@@ -254,6 +275,8 @@ Function ${UN}Clean
 	Delete $INSTDIR\lua51.dll
 	Delete $INSTDIR\eluant.dll
 	Delete $INSTDIR\freetype6.dll
+	Delete $INSTDIR\DiscordRPC.dll
+	Delete $INSTDIR\Newtonsoft.Json.dll
 	Delete $INSTDIR\SDL2-CS.dll
 	Delete $INSTDIR\OpenAL-CS.Core.dll
 	Delete $INSTDIR\BeaconLib.dll
@@ -263,6 +286,10 @@ Function ${UN}Clean
 	DeleteRegKey HKLM "Software\Classes\openra-ra-${TAG}"
 	DeleteRegKey HKLM "Software\Classes\openra-cnc-${TAG}"
 	DeleteRegKey HKLM "Software\Classes\openra-d2k-${TAG}"
+
+	DeleteRegKey HKLM "Software\Classes\discord-${RA_DISCORDID}"
+	DeleteRegKey HKLM "Software\Classes\discord-${CNC_DISCORDID}"
+	DeleteRegKey HKLM "Software\Classes\discord-${D2K_DISCORDID}"
 
 	Delete $INSTDIR\uninstaller.exe
 	RMDir $INSTDIR

@@ -52,7 +52,7 @@ namespace OpenRA
 	}
 
 	/// <summary> Describes what is to be loaded in order to run a mod. </summary>
-	public class Manifest
+	public class Manifest : IDisposable
 	{
 		public readonly string Id;
 		public readonly IReadOnlyPackage Package;
@@ -240,6 +240,16 @@ namespace OpenRA
 			}
 
 			return (T)module;
+		}
+
+		public void Dispose()
+		{
+			foreach (var module in modules)
+			{
+				var disposableModule = module as IDisposable;
+				if (disposableModule != null)
+					disposableModule.Dispose();
+			}
 		}
 	}
 }

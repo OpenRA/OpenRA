@@ -288,3 +288,6 @@ ModContent:
 		cnc|installer/gdi95.yaml
 		cnc|installer/nod95.yaml
 		cnc|installer/origin.yaml
+
+DiscordService:
+	ApplicationId: 699223250181292033

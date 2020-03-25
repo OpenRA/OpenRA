@@ -323,3 +323,6 @@ ModContent:
 		ts|installer/firstdecade.yaml
 		ts|installer/origin.yaml
 		ts|installer/tibsun.yaml
+
+DiscordService:
+	ApplicationId: 712713986558394399

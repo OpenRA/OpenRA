@@ -25,6 +25,7 @@
       <Private>False</Private>
     </ProjectReference>
     <PackageReference Include="OpenRA-FuzzyLogicLibrary" Version="1.0.1" />
+    <PackageReference Include="DiscordRichPresence" Version="1.0.150" />
     <PackageReference Include="rix0rrr.BeaconLib" Version="1.0.2" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" />
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0" PrivateAssets="All" />
