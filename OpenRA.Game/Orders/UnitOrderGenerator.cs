@@ -96,7 +96,7 @@ namespace OpenRA.Orders
 		public virtual bool InputOverridesSelection(World world, int2 xy, MouseInput mi)
 		{
 			var actor = world.ScreenMap.ActorsAtMouse(xy)
-				.Where(a => !a.Actor.IsDead)
+				.Where(a => !a.Actor.IsDead && a.Actor.Info.HasTraitInfo<ISelectableInfo>() && (a.Actor.Owner.IsAlliedWith(world.RenderPlayer) || !world.FogObscures(a.Actor)))
 				.WithHighestSelectionPriority(xy, mi.Modifiers);
 
 			if (actor == null)
