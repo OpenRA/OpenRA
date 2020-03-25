@@ -77,12 +77,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var mouseControlDescClassic = widget.Get("MOUSE_CONTROL_DESC_CLASSIC");
 			mouseControlDescClassic.IsVisible = () => gs.UseClassicMouseStyle;
 
-			var classicScrollRight = mouseControlDescClassic.Get("DESC_SCROLL_RIGHT");
-			classicScrollRight.IsVisible = () => !gs.ClassicMouseMiddleScroll;
-
-			var classicScrollMiddle = mouseControlDescClassic.Get("DESC_SCROLL_MIDDLE");
-			classicScrollMiddle.IsVisible = () => gs.ClassicMouseMiddleScroll;
-
 			var mouseControlDescModern = widget.Get("MOUSE_CONTROL_DESC_MODERN");
 			mouseControlDescModern.IsVisible = () => !gs.UseClassicMouseStyle;
 
@@ -92,6 +86,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			foreach (var container in new[] { mouseControlDescClassic, mouseControlDescModern })
 			{
+				var classicScrollRight = container.Get("DESC_SCROLL_RIGHT");
+				classicScrollRight.IsVisible = () => gs.UseClassicMouseStyle ^ gs.UseAlternateScrollButton;
+
+				var classicScrollMiddle = container.Get("DESC_SCROLL_MIDDLE");
+				classicScrollMiddle.IsVisible = () => !gs.UseClassicMouseStyle ^ gs.UseAlternateScrollButton;
+
 				var zoomDesc = container.Get("DESC_ZOOM");
 				zoomDesc.IsVisible = () => gs.ZoomModifier == Modifiers.None;
 
