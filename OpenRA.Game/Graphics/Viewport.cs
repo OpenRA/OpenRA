@@ -19,6 +19,11 @@ namespace OpenRA.Graphics
 	[Flags]
 	public enum ScrollDirection { None = 0, Up = 1, Left = 2, Down = 4, Right = 8 }
 
+	public interface INotifyViewportZoomExtentsChanged
+	{
+		void ViewportZoomExtentsChanged(float minZoom, float maxZoom);
+	}
+
 	public static class ViewportExts
 	{
 		public static bool Includes(this ScrollDirection d, ScrollDirection s)
@@ -237,6 +242,9 @@ namespace OpenRA.Graphics
 				Zoom = minZoom;
 			else
 				Zoom = Zoom.Clamp(minZoom, maxZoom);
+
+			foreach (var t in worldRenderer.World.WorldActor.TraitsImplementing<INotifyViewportZoomExtentsChanged>())
+				t.ViewportZoomExtentsChanged(minZoom, maxZoom);
 		}
 
 		public CPos ViewToWorld(int2 view)
