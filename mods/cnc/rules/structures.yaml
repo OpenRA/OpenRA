@@ -420,7 +420,7 @@ AFLD:
 		Queue: Building.Nod
 		Description: Provides a dropzone\nfor vehicle reinforcements
 	Building:
-		Footprint: XXXX xxxx ====
+		Footprint: XXX+ xxx+ ====
 		Dimensions: 4,3
 		LocalCenterOffset: 0,-512,0
 	Health:
