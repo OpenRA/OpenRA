@@ -93,6 +93,7 @@ rm -rf libs mono.tar.bz2
 build_appimage() {
 	MOD_ID=${1}
 	DISPLAY_NAME=${2}
+	DISCORD_ID=${3}
 	APPDIR="$(pwd)/${MOD_ID}.appdir"
 	APPIMAGE="OpenRA-$(echo "${DISPLAY_NAME}" | sed 's/ /-/g')${SUFFIX}-x86_64.AppImage"
 
@@ -107,7 +108,7 @@ build_appimage() {
 	sed "s/{MODID}/${MOD_ID}/g" AppRun.in | sed "s/{MODNAME}/${DISPLAY_NAME}/g" > AppRun.temp
 	install -m 0755 AppRun.temp "${APPDIR}/AppRun"
 
-	sed "s/{MODID}/${MOD_ID}/g" openra.desktop.in | sed "s/{MODNAME}/${DISPLAY_NAME}/g" | sed "s/{TAG}/${TAG}/g" > temp.desktop
+	sed "s/{MODID}/${MOD_ID}/g" openra.desktop.in | sed "s/{MODNAME}/${DISPLAY_NAME}/g" | sed "s/{TAG}/${TAG}/g" | sed "s/{DISCORDAPPID}/${DISCORD_ID}/g" > temp.desktop
 	echo "StartupWMClass=openra-${MOD_ID}-${TAG}" >> temp.desktop
 
 	install -Dm 0755 temp.desktop "${APPDIR}/usr/share/applications/openra-${MOD_ID}.desktop"
@@ -154,9 +155,9 @@ build_appimage() {
 	rm -rf "${APPDIR}"
 }
 
-build_appimage "ra" "Red Alert"
-build_appimage "cnc" "Tiberian Dawn"
-build_appimage "d2k" "Dune 2000"
+build_appimage "ra" "Red Alert" "699222659766026240"
+build_appimage "cnc" "Tiberian Dawn" "699223250181292033"
+build_appimage "d2k" "Dune 2000" "712711732770111550"
 
 # Clean up
 rm -rf openra-mod.temp openra-mod-server.temp openra-mod-utility.temp temp.desktop temp.xml AppRun.temp appimagetool-x86_64.AppImage squashfs-root "${BUILTDIR}"

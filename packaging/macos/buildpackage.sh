@@ -13,7 +13,7 @@
 #   MACOS_DEVELOPER_PASSWORD: App-specific password for the developer account
 #
 
-LAUNCHER_TAG="osx-launcher-20200328"
+LAUNCHER_TAG="osx-launcher-20200525"
 
 if [ $# -ne "2" ]; then
 	echo "Usage: $(basename "$0") tag outputdir"
@@ -54,6 +54,7 @@ populate_bundle() {
 	TEMPLATE_DIR="${BUILTDIR}/${1}"
 	MOD_ID=${2}
 	MOD_NAME=${3}
+	DISCORD_APPID=${4}
 	cp -r "${BUILTDIR}/OpenRA.app" "${TEMPLATE_DIR}"
 
 	# Assemble multi-resolution icon
@@ -63,6 +64,7 @@ populate_bundle() {
 	modify_plist "{MOD_ID}" "${MOD_ID}" "${TEMPLATE_DIR}/Contents/Info.plist"
 	modify_plist "{MOD_NAME}" "${MOD_NAME}" "${TEMPLATE_DIR}/Contents/Info.plist"
 	modify_plist "{JOIN_SERVER_URL_SCHEME}" "openra-${MOD_ID}-${TAG}" "${TEMPLATE_DIR}/Contents/Info.plist"
+	modify_plist "{ADDITIONAL_URL_SCHEMES}" "<string>discord-${DISCORD_APPID}</string>" "${TEMPLATE_DIR}/Contents/Info.plist"
 }
 
 # Deletes from the first argument's mod dirs all the later arguments
@@ -98,15 +100,15 @@ make install-core gameinstalldir="/Contents/Resources/" DESTDIR="${BUILTDIR}/Ope
 make install-dependencies TARGETPLATFORM=osx-x64 gameinstalldir="/Contents/Resources/"  DESTDIR="${BUILTDIR}/OpenRA.app"
 popd > /dev/null || exit 1
 
-populate_bundle "OpenRA - Red Alert.app" "ra" "Red Alert"
+populate_bundle "OpenRA - Red Alert.app" "ra" "Red Alert" "699222659766026240"
 delete_mods "OpenRA - Red Alert.app" "cnc" "d2k"
 sign_bundle "OpenRA - Red Alert.app"
 
-populate_bundle "OpenRA - Tiberian Dawn.app" "cnc" "Tiberian Dawn"
+populate_bundle "OpenRA - Tiberian Dawn.app" "cnc" "Tiberian Dawn" "699223250181292033"
 delete_mods "OpenRA - Tiberian Dawn.app" "ra" "d2k"
 sign_bundle "OpenRA - Tiberian Dawn.app"
 
-populate_bundle "OpenRA - Dune 2000.app" "d2k" "Dune 2000"
+populate_bundle "OpenRA - Dune 2000.app" "d2k" "Dune 2000" "712711732770111550"
 delete_mods "OpenRA - Dune 2000.app" "ra" "cnc"
 sign_bundle "OpenRA - Dune 2000.app"
 

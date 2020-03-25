@@ -305,3 +305,6 @@ ModContent:
 		ra|installer/firstdecade.yaml
 		ra|installer/origin.yaml
 		ra|installer/soviet95.yaml
+
+DiscordService:
+	ApplicationId: 699222659766026240

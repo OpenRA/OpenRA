@@ -208,6 +208,8 @@ namespace OpenRA
 
 			if (ObjectCreator != null)
 				ObjectCreator.Dispose();
+
+			Manifest.Dispose();
 		}
 	}
 

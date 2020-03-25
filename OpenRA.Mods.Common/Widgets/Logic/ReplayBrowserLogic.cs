@@ -688,6 +688,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (selectedReplay != null && ReplayUtils.PromptConfirmReplayCompatibility(selectedReplay))
 			{
 				cancelLoadingReplays = true;
+
+				DiscordService.UpdateStatus(DiscordState.WatchingReplay);
+
 				Game.JoinReplay(selectedReplay.FilePath);
 			}
 		}

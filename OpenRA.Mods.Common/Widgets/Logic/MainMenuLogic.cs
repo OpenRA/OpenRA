@@ -46,6 +46,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			menuType = type;
 
+			DiscordService.UpdateStatus(DiscordState.InMenu);
+
 			// Update button mouseover
 			Game.RunAfterTick(Ui.ResetTooltips);
 		}
@@ -258,6 +260,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				onIntroductionComplete();
 
 			Game.OnShellmapLoaded += OpenMenuBasedOnLastGame;
+
+			DiscordService.UpdateStatus(DiscordState.InMenu);
 		}
 
 		void LoadAndDisplayNews(string newsURL, Widget newsBG)
@@ -316,6 +320,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				"",
 				() => { Game.LoadEditor(uid); },
 				() => { Game.CloseServer(); SwitchMenu(MenuType.MapEditor); });
+
+			DiscordService.UpdateStatus(DiscordState.InMapEditor);
 
 			lastGameState = MenuPanel.MapEditor;
 		}

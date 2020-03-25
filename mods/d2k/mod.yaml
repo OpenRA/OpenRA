@@ -264,3 +264,6 @@ ModContent:
 		d2k|installer/d2k-e.yaml
 		d2k|installer/downloads.yaml
 		d2k|installer/gruntmods.yaml
+
+DiscordService:
+	ApplicationId: 712711732770111550

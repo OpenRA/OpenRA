@@ -95,6 +95,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				});
 
 				Game.Disconnect();
+
+				DiscordService.UpdateStatus(DiscordState.InMenu);
 			};
 
 			Game.OpenWindow("SERVER_LOBBY", new WidgetArgs
