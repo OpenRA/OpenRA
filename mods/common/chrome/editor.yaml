@@ -173,8 +173,10 @@ Background@SAVE_MAP_PANEL:
 			Key: escape
 
 ScrollPanel@MAP_SAVE_VISIBILITY_PANEL:
+	TopBottomSpacing: 5
+	ItemSpacing: 5
 	Width: 220
-	Height: 64
+	Height: 55
 	Children:
 		Checkbox@VISIBILITY_TEMPLATE:
 			X: 5
