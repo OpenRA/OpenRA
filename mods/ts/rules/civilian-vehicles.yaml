@@ -92,6 +92,7 @@ ICBM:
 
 BUS:
 	Inherits: ^CivilianVoxelCrusher
+	Inherits@CARGOPIPS: ^CargoPips
 	Valued:
 		Cost: 800
 	Tooltip:
@@ -111,13 +112,13 @@ BUS:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 20
-		PipCount: 5
 		UnloadVoice: Unload
 		LoadingCondition: loading
 		EjectOnDeath: true
 
 PICK:
 	Inherits: ^CivilianVoxelVehicle
+	Inherits@CARGOPIPS: ^CargoPips
 	Valued:
 		Cost: 800
 	Tooltip:
@@ -137,13 +138,13 @@ PICK:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 2
-		PipCount: 5
 		UnloadVoice: Unload
 		LoadingCondition: loading
 		EjectOnDeath: true
 
 CAR:
 	Inherits: ^CivilianVoxelVehicle
+	Inherits@CARGOPIPS: ^CargoPips
 	Valued:
 		Cost: 800
 	Tooltip:
@@ -163,13 +164,13 @@ CAR:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 4
-		PipCount: 5
 		UnloadVoice: Unload
 		LoadingCondition: loading
 		EjectOnDeath: true
 
 WINI:
 	Inherits: ^CivilianVoxelVehicle
+	Inherits@CARGOPIPS: ^CargoPips
 	Valued:
 		Cost: 800
 	Tooltip:
@@ -189,40 +190,39 @@ WINI:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 5
-		PipCount: 5
 		UnloadVoice: Unload
 		LoadingCondition: loading
 		EjectOnDeath: true
 
 LOCOMOTIVE:
 	Inherits: ^Train
+	Inherits@CARGOPIPS: ^CargoPips
 	Valued:
 		Cost: 800
 	Tooltip:
 		Name: Train Locomotive
 	Cargo:
 		MaxWeight: 2
-		PipCount: 2
 		EjectOnDeath: true
 
 TRAINCAR:
 	Inherits: ^Train
+	Inherits@CARGOPIPS: ^CargoPips
 	Valued:
 		Cost: 800
 	Tooltip:
 		Name: Passenger Car
 	Cargo:
 		MaxWeight: 10
-		PipCount: 5
 		EjectOnDeath: true
 
 CARGOCAR:
 	Inherits: ^Train
+	Inherits@CARGOPIPS: ^CargoPips
 	Valued:
 		Cost: 800
 	Tooltip:
 		Name: Cargo Car
 	Cargo:
 		MaxWeight: 10
-		PipCount: 5
 		EjectOnDeath: true

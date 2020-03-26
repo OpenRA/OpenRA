@@ -420,7 +420,6 @@ CTFLAG:
 	-Health:
 	-Explodes:
 	-Selectable:
-	-SelectionDecorations:
 	-Targetable:
 	MapEditorData:
 		Categories: Decoration

@@ -428,7 +428,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			if (!tp.Trait.DeflectionStances.HasStance(tp.Actor.Owner.Stances[args.SourceActor.Owner]))
 				return false;
 
-			return tp.Actor.World.SharedRandom.Next(100 / tp.Trait.Chance) == 0;
+			return tp.Actor.World.SharedRandom.Next(100) < tp.Trait.Chance;
 		}
 
 		void ChangeSpeed(int sign = 1)

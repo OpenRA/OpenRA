@@ -19,7 +19,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Displays a text overlay relative to the selection box.")]
-	public class WithTextDecorationInfo : ConditionalTraitInfo, Requires<IDecorationBoundsInfo>
+	public class WithTextDecorationInfo : WithDecorationBaseInfo
 	{
 		[Translate]
 		[FieldLoader.Require]
@@ -33,19 +33,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Use the player color of the current owner.")]
 		public readonly bool UsePlayerColor = false;
 
-		[Desc("Point in the actor's selection box used as reference for offsetting the decoration image. " +
-			"Possible values are combinations of Center, Top, Bottom, Left, Right.")]
-		public readonly ReferencePoints ReferencePoint = ReferencePoints.Top | ReferencePoints.Left;
-
-		[Desc("The Z offset to apply when rendering this decoration.")]
-		public readonly int ZOffset = 1;
-
-		[Desc("Player stances who can view the decoration.")]
-		public readonly Stance ValidStances = Stance.Ally;
-
-		[Desc("Should this be visible only when selected?")]
-		public readonly bool RequiresSelection = false;
-
 		public override object Create(ActorInitializer init) { return new WithTextDecoration(init.Self, this); }
 
 		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
@@ -57,79 +44,28 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 	}
 
-	public class WithTextDecoration : ConditionalTrait<WithTextDecorationInfo>, IRenderAnnotations, IRenderAnnotationsWhenSelected, INotifyOwnerChanged
+	public class WithTextDecoration : WithDecorationBase<WithTextDecorationInfo>, INotifyOwnerChanged
 	{
 		readonly SpriteFont font;
-		readonly IDecorationBounds[] decorationBounds;
 		Color color;
 
 		public WithTextDecoration(Actor self, WithTextDecorationInfo info)
-			: base(info)
+			: base(self, info)
 		{
 			font = Game.Renderer.Fonts[info.Font];
-			decorationBounds = self.TraitsImplementing<IDecorationBounds>().ToArray();
-			color = Info.UsePlayerColor ? self.Owner.Color : Info.Color;
+			color = info.UsePlayerColor ? self.Owner.Color : info.Color;
 		}
 
-		public virtual bool ShouldRender(Actor self) { return true; }
-
-		IEnumerable<IRenderable> IRenderAnnotations.RenderAnnotations(Actor self, WorldRenderer wr)
+		protected override IEnumerable<IRenderable> RenderDecoration(Actor self, WorldRenderer wr, int2 screenPos)
 		{
-			return !Info.RequiresSelection ? RenderInner(self, wr) : SpriteRenderable.None;
-		}
-
-		public bool SpatiallyPartitionable { get { return true; } }
-
-		IEnumerable<IRenderable> IRenderAnnotationsWhenSelected.RenderAnnotations(Actor self, WorldRenderer wr)
-		{
-			return Info.RequiresSelection ? RenderInner(self, wr) : SpriteRenderable.None;
-		}
-
-		bool IRenderAnnotationsWhenSelected.SpatiallyPartitionable { get { return true; } }
-
-		IEnumerable<IRenderable> RenderInner(Actor self, WorldRenderer wr)
-		{
-			if (IsTraitDisabled || self.IsDead || !self.IsInWorld)
+			if (IsTraitDisabled || self.IsDead || !self.IsInWorld || !ShouldRender(self))
 				return Enumerable.Empty<IRenderable>();
 
-			if (self.World.RenderPlayer != null)
+			var size = font.Measure(Info.Text);
+			return new IRenderable[]
 			{
-				var stance = self.Owner.Stances[self.World.RenderPlayer];
-				if (!Info.ValidStances.HasStance(stance))
-					return Enumerable.Empty<IRenderable>();
-			}
-
-			if (!ShouldRender(self) || self.World.FogObscures(self))
-				return Enumerable.Empty<IRenderable>();
-
-			var bounds = decorationBounds.FirstNonEmptyBounds(self, wr);
-			var halfSize = font.Measure(Info.Text) / 2;
-
-			var boundsOffset = new int2(bounds.Left + bounds.Right, bounds.Top + bounds.Bottom) / 2;
-			var sizeOffset = int2.Zero;
-			if (Info.ReferencePoint.HasFlag(ReferencePoints.Top))
-			{
-				boundsOffset -= new int2(0, bounds.Height / 2);
-				sizeOffset += new int2(0, halfSize.Y);
-			}
-			else if (Info.ReferencePoint.HasFlag(ReferencePoints.Bottom))
-			{
-				boundsOffset += new int2(0, bounds.Height / 2);
-				sizeOffset -= new int2(0, halfSize.Y);
-			}
-
-			if (Info.ReferencePoint.HasFlag(ReferencePoints.Left))
-			{
-				boundsOffset -= new int2(bounds.Width / 2, 0);
-				sizeOffset += new int2(halfSize.X, 0);
-			}
-			else if (Info.ReferencePoint.HasFlag(ReferencePoints.Right))
-			{
-				boundsOffset += new int2(bounds.Width / 2, 0);
-				sizeOffset -= new int2(halfSize.X, 0);
-			}
-
-			return new IRenderable[] { new TextAnnotationRenderable(font, wr.ProjectedPosition(boundsOffset + sizeOffset), Info.ZOffset, color, Info.Text) };
+				new UITextRenderable(font, self.CenterPosition, screenPos - size / 2, 0, color, Info.Text)
+			};
 		}
 
 		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)

@@ -17,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Renders Ctrl groups using pixel art.")]
-	public class WithSpriteControlGroupDecorationInfo : ITraitInfo, Requires<IDecorationBoundsInfo>
+	public class WithSpriteControlGroupDecorationInfo : ITraitInfo
 	{
 		[PaletteReference]
 		public readonly string Palette = "chrome";
@@ -28,66 +28,49 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Sprite sequence used to render the control group 0-9 numbers.")]
 		public readonly string GroupSequence = "groups";
 
-		[Desc("Point in the actor's selection box used as reference for offsetting the decoration image. " +
-			"Possible values are combinations of Center, Top, Bottom, Left, Right.")]
-		public readonly ReferencePoints ReferencePoint = ReferencePoints.Top | ReferencePoints.Left;
+		[Desc("Position in the actor's selection box to draw the decoration.")]
+		public readonly DecorationPosition Position = DecorationPosition.TopLeft;
+
+		[Desc("Offset sprite center position from the selection box edge.")]
+		public readonly int2 Margin = int2.Zero;
 
 		public object Create(ActorInitializer init) { return new WithSpriteControlGroupDecoration(init.Self, this); }
 	}
 
-	public class WithSpriteControlGroupDecoration : IRenderAnnotationsWhenSelected
+	public class WithSpriteControlGroupDecoration : IDecoration
 	{
 		public readonly WithSpriteControlGroupDecorationInfo Info;
-		readonly IDecorationBounds[] decorationBounds;
-		readonly Animation pipImages;
+		readonly Actor self;
+		readonly Animation anim;
 
 		public WithSpriteControlGroupDecoration(Actor self, WithSpriteControlGroupDecorationInfo info)
 		{
 			Info = info;
+			this.self = self;
 
-			decorationBounds = self.TraitsImplementing<IDecorationBounds>().ToArray();
-			pipImages = new Animation(self.World, Info.Image);
+			anim = new Animation(self.World, Info.Image);
 		}
 
-		IEnumerable<IRenderable> IRenderAnnotationsWhenSelected.RenderAnnotations(Actor self, WorldRenderer wr)
-		{
-			if (self.Owner != wr.World.LocalPlayer)
-				yield break;
+		DecorationPosition IDecoration.Position { get { return Info.Position; } }
 
-			if (self.World.FogObscures(self))
-				yield break;
+		bool IDecoration.Enabled { get { return self.Owner == self.World.LocalPlayer && self.World.Selection.GetControlGroupForActor(self) != null; } }
 
-			var pal = wr.Palette(Info.Palette);
-			foreach (var r in DrawControlGroup(self, wr, pal))
-				yield return r;
-		}
+		bool IDecoration.RequiresSelection { get { return true; } }
 
-		bool IRenderAnnotationsWhenSelected.SpatiallyPartitionable { get { return true; } }
-
-		IEnumerable<IRenderable> DrawControlGroup(Actor self, WorldRenderer wr, PaletteReference palette)
+		IEnumerable<IRenderable> IDecoration.RenderDecoration(Actor self, WorldRenderer wr, int2 pos)
 		{
 			var group = self.World.Selection.GetControlGroupForActor(self);
 			if (group == null)
-				yield break;
+				return Enumerable.Empty<IRenderable>();
 
-			pipImages.PlayFetchIndex(Info.GroupSequence, () => (int)group);
+			anim.PlayFetchIndex(Info.GroupSequence, () => (int)group);
 
-			var bounds = decorationBounds.FirstNonEmptyBounds(self, wr);
-			var boundsOffset = 0.5f * new float2(bounds.Left + bounds.Right, bounds.Top + bounds.Bottom);
-			if (Info.ReferencePoint.HasFlag(ReferencePoints.Top))
-				boundsOffset -= new float2(0, 0.5f * bounds.Height);
-
-			if (Info.ReferencePoint.HasFlag(ReferencePoints.Bottom))
-				boundsOffset += new float2(0, 0.5f * bounds.Height);
-
-			if (Info.ReferencePoint.HasFlag(ReferencePoints.Left))
-				boundsOffset -= new float2(0.5f * bounds.Width, 0);
-
-			if (Info.ReferencePoint.HasFlag(ReferencePoints.Right))
-				boundsOffset += new float2(0.5f * bounds.Width, 0);
-
-			var pxPos = wr.Viewport.WorldToViewPx(boundsOffset.ToInt2()) - (0.5f * pipImages.Image.Size.XY).ToInt2();
-			yield return new UISpriteRenderable(pipImages.Image, self.CenterPosition, pxPos, 0, palette, 1f);
+			var screenPos = wr.Viewport.WorldToViewPx(pos) + Info.Position.CreateMargin(Info.Margin) - (0.5f * anim.Image.Size.XY).ToInt2();
+			var palette = wr.Palette(Info.Palette);
+			return new IRenderable[]
+			{
+				new UISpriteRenderable(anim.Image, self.CenterPosition, screenPos, 0, palette, 1f)
+			};
 		}
 	}
 }

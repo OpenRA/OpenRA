@@ -293,7 +293,6 @@ FAPW:
 	Selectable:
 		Bounds: 72,48
 		DecorationBounds: 72,68,0,-10
-	SelectionDecorations:
 	Valued:
 		Cost: 50
 

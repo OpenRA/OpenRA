@@ -277,11 +277,13 @@ namespace OpenRA.Graphics
 					Game.Renderer.RgbaColorRenderer.DrawRect(tl, br, 1, Color.MediumSpringGreen);
 				}
 
-				foreach (var r in World.ScreenMap.MouseBounds(World.RenderPlayer))
+				foreach (var b in World.ScreenMap.MouseBounds(World.RenderPlayer))
 				{
-					var tl = Viewport.WorldToViewPx(new float2(r.Left, r.Top));
-					var br = Viewport.WorldToViewPx(new float2(r.Right, r.Bottom));
-					Game.Renderer.RgbaColorRenderer.DrawRect(tl, br, 1, Color.OrangeRed);
+					var points = b.Vertices
+						.Select(p => Viewport.WorldToViewPx(p).ToFloat2())
+						.ToArray();
+
+					Game.Renderer.RgbaColorRenderer.DrawPolygon(points, 1, Color.OrangeRed);
 				}
 			}
 

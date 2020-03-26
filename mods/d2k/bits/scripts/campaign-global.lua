@@ -39,7 +39,7 @@ InitObjectives = function(player)
 	end)
 end
 
-SendCarryallReinforcements = function(player, currentWave, totalWaves, delay, pathFunction, unitTypes, customCondition, customHuntFunction)
+SendCarryallReinforcements = function(player, currentWave, totalWaves, delay, pathFunction, unitTypes, customCondition, customHuntFunction, announcementFunction)
 	Trigger.AfterDelay(delay, function()
 		if customCondition and customCondition() then
 			return
@@ -48,6 +48,10 @@ SendCarryallReinforcements = function(player, currentWave, totalWaves, delay, pa
 		currentWave = currentWave + 1
 		if currentWave > totalWaves then
 			return
+		end
+
+		if announcementFunction then
+			announcementFunction(currentWave)
 		end
 
 		local path = pathFunction()
@@ -76,6 +80,10 @@ TriggerCarryallReinforcements = function(triggeringPlayer, reinforcingPlayer, ar
 			Utils.Do(units, IdleHunt)
 		end
 	end)
+end
+
+DestroyCarryalls = function(player)
+	Utils.Do(player.GetActorsByType("carryall"), function(actor) actor.Kill() end)
 end
 
 -- Used for the AI:

@@ -304,7 +304,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			var otherActors = subCell == SubCell.FullCell ? world.ActorMap.GetActorsAt(cell) : world.ActorMap.GetActorsAt(cell, subCell);
 			foreach (var otherActor in otherActors)
-				if (IsBlockedBy(actor, otherActor, ignoreActor, check, cellFlag))
+				if (IsBlockedBy(actor, otherActor, ignoreActor, cell, check, cellFlag))
 					return false;
 
 			return true;
@@ -322,7 +322,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (check > BlockedByActor.None)
 			{
-				Func<Actor, bool> checkTransient = otherActor => IsBlockedBy(self, otherActor, ignoreActor, check, GetCache(cell).CellFlag);
+				Func<Actor, bool> checkTransient = otherActor => IsBlockedBy(self, otherActor, ignoreActor, cell, check, GetCache(cell).CellFlag);
 
 				if (!sharesCell)
 					return world.ActorMap.AnyActorsAt(cell, SubCell.FullCell, checkTransient) ? SubCell.Invalid : SubCell.FullCell;
@@ -336,14 +336,14 @@ namespace OpenRA.Mods.Common.Traits
 			return world.ActorMap.FreeSubCell(cell, preferredSubCell);
 		}
 
-		bool IsBlockedBy(Actor self, Actor otherActor, Actor ignoreActor, BlockedByActor check, CellFlag cellFlag)
+		bool IsBlockedBy(Actor actor, Actor otherActor, Actor ignoreActor, CPos cell, BlockedByActor check, CellFlag cellFlag)
 		{
 			if (otherActor == ignoreActor)
 				return false;
 
 			// If the check allows: We are not blocked by units that we can force to move out of the way.
 			if (check <= BlockedByActor.Immovable && cellFlag.HasCellFlag(CellFlag.HasMovableActor) &&
-				self.Owner.Stances[otherActor.Owner] == Stance.Ally)
+				actor.Owner.Stances[otherActor.Owner] == Stance.Ally)
 			{
 				var mobile = otherActor.TraitOrDefault<Mobile>();
 				if (mobile != null && !mobile.IsTraitDisabled && !mobile.IsTraitPaused && !mobile.IsImmovable)
@@ -352,14 +352,22 @@ namespace OpenRA.Mods.Common.Traits
 
 			// If the check allows: we are not blocked by moving units.
 			if (check <= BlockedByActor.Stationary && cellFlag.HasCellFlag(CellFlag.HasMovingActor) &&
-				IsMoving(self, otherActor))
+				IsMoving(actor, otherActor))
 				return false;
 
 			if (cellFlag.HasCellFlag(CellFlag.HasTemporaryBlocker))
 			{
 				// If there is a temporary blocker in our path, but we can remove it, we are not blocked.
 				var temporaryBlocker = otherActor.TraitOrDefault<ITemporaryBlocker>();
-				if (temporaryBlocker != null && temporaryBlocker.CanRemoveBlockage(otherActor, self))
+				if (temporaryBlocker != null && temporaryBlocker.CanRemoveBlockage(otherActor, actor))
+					return false;
+			}
+
+			if (cellFlag.HasCellFlag(CellFlag.HasTransitOnlyActor))
+			{
+				// Transit only tiles should not block movement
+				var building = otherActor.TraitOrDefault<Building>();
+				if (building != null && building.TransitOnlyCells().Contains(cell))
 					return false;
 			}
 
@@ -371,7 +379,7 @@ namespace OpenRA.Mods.Common.Traits
 			// PERF: Avoid LINQ.
 			var crushables = otherActor.TraitsImplementing<ICrushable>();
 			foreach (var crushable in crushables)
-				if (crushable.CrushableBy(otherActor, self, Info.Crushes))
+				if (crushable.CrushableBy(otherActor, actor, Info.Crushes))
 					return false;
 
 			return true;

@@ -505,7 +505,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var gs = Game.Settings.Game;
 
-			BindCheckboxPref(panel, "CLASSIC_MOUSE_MIDDLE_SCROLL_CHECKBOX", gs, "ClassicMouseMiddleScroll");
+			BindCheckboxPref(panel, "ALTERNATE_SCROLL_CHECKBOX", gs, "UseAlternateScrollButton");
 			BindCheckboxPref(panel, "EDGESCROLL_CHECKBOX", gs, "ViewportEdgeScroll");
 			BindCheckboxPref(panel, "LOCKMOUSE_CHECKBOX", gs, "LockMouseWindow");
 			BindSliderPref(panel, "ZOOMSPEED_SLIDER", gs, "ZoomSpeed");
@@ -520,23 +520,20 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			mouseScrollDropdown.OnMouseDown = _ => ShowMouseScrollDropdown(mouseScrollDropdown, gs);
 			mouseScrollDropdown.GetText = () => gs.MouseScroll.ToString();
 
-			var classicMouseMiddleScrollCheckbox = panel.Get<CheckboxWidget>("CLASSIC_MOUSE_MIDDLE_SCROLL_CHECKBOX");
-			classicMouseMiddleScrollCheckbox.IsVisible = () => gs.UseClassicMouseStyle;
-
 			var mouseControlDescClassic = panel.Get("MOUSE_CONTROL_DESC_CLASSIC");
 			mouseControlDescClassic.IsVisible = () => gs.UseClassicMouseStyle;
-
-			var classicScrollRight = mouseControlDescClassic.Get("DESC_SCROLL_RIGHT");
-			classicScrollRight.IsVisible = () => !gs.ClassicMouseMiddleScroll;
-
-			var classicScrollMiddle = mouseControlDescClassic.Get("DESC_SCROLL_MIDDLE");
-			classicScrollMiddle.IsVisible = () => gs.ClassicMouseMiddleScroll;
 
 			var mouseControlDescModern = panel.Get("MOUSE_CONTROL_DESC_MODERN");
 			mouseControlDescModern.IsVisible = () => !gs.UseClassicMouseStyle;
 
 			foreach (var container in new[] { mouseControlDescClassic, mouseControlDescModern })
 			{
+				var classicScrollRight = container.Get("DESC_SCROLL_RIGHT");
+				classicScrollRight.IsVisible = () => gs.UseClassicMouseStyle ^ gs.UseAlternateScrollButton;
+
+				var classicScrollMiddle = container.Get("DESC_SCROLL_MIDDLE");
+				classicScrollMiddle.IsVisible = () => !gs.UseClassicMouseStyle ^ gs.UseAlternateScrollButton;
+
 				var zoomDesc = container.Get("DESC_ZOOM");
 				zoomDesc.IsVisible = () => gs.ZoomModifier == Modifiers.None;
 
@@ -635,7 +632,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				gs.UseClassicMouseStyle = dgs.UseClassicMouseStyle;
 				gs.MouseScroll = dgs.MouseScroll;
-				gs.ClassicMouseMiddleScroll = dgs.ClassicMouseMiddleScroll;
+				gs.UseAlternateScrollButton = dgs.UseAlternateScrollButton;
 				gs.LockMouseWindow = dgs.LockMouseWindow;
 				gs.ViewportEdgeScroll = dgs.ViewportEdgeScroll;
 				gs.ViewportEdgeScrollStep = dgs.ViewportEdgeScrollStep;

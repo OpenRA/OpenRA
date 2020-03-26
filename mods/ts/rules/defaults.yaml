@@ -59,19 +59,19 @@
 		DamageCooldown: 125
 		RequiresCondition: rank-elite
 	WithDecoration@VETERAN:
+		RequiresCondition: rank-veteran
+		Position: BottomRight
+		Margin: 3, 4
 		Image: rank
 		Sequence: veteran
 		Palette: ra
-		ReferencePoint: Bottom, Right
-		RequiresCondition: rank-veteran
-		ZOffset: 256
 	WithDecoration@ELITE:
+		RequiresCondition: rank-elite
+		Position: BottomRight
+		Margin: 3, 4
 		Image: rank
 		Sequence: elite
 		Palette: ra
-		ReferencePoint: Bottom, Right
-		RequiresCondition: rank-elite
-		ZOffset: 256
 
 ^InfantryExperienceHospitalOverrides:
 	WithDecoration@VETERAN:
@@ -304,9 +304,6 @@
 	Inherits@3: ^Cloakable
 	Inherits@selection: ^SelectableBuilding
 	Huntable:
-	WithTextControlGroupDecoration:
-	SelectionDecorations:
-		Palette: pips
 	Targetable:
 		TargetTypes: Ground, Building, C4
 	HitShape:
@@ -397,7 +394,7 @@
 	WithBuildingRepairDecoration:
 		Image: allyrepair
 		Sequence: repair
-		ReferencePoint: Center
+		Position: Center
 		Palette: mouse
 
 ^CivBuilding:
@@ -547,9 +544,6 @@
 	OwnerLostAction:
 		Action: Kill
 		DeathTypes: BulletDeath
-	DrawLineToTarget:
-		QueuedLineWidth: 2
-		QueuedMarkerWidth: 3
 	Health:
 		HP: 5000
 	Armor:
@@ -564,9 +558,6 @@
 		Voice: Move
 		Speed: 71
 		Locomotor: foot
-	WithTextControlGroupDecoration:
-	SelectionDecorations:
-		Palette: pips
 	Selectable:
 		DecorationBounds: 15,23,0,-9
 		Bounds: 24,24,0,-9
@@ -616,11 +607,12 @@
 		RequiresCondition: hospital && damaged
 		Condition: hospitalheal
 	WithDecoration@REDCROSS:
+		RequiresCondition: hospitalheal
+		Position: BottomRight
+		Margin: 3, 4
 		Image: pips
 		Sequence: medic
 		Palette: pips
-		ReferencePoint: Bottom, Right
-		RequiresCondition: hospitalheal
 		BlinkInterval: 32
 		BlinkPattern: Off, On
 	RevealOnFire:
@@ -758,9 +750,6 @@
 	Huntable:
 	OwnerLostAction:
 		Action: Kill
-	DrawLineToTarget:
-		QueuedLineWidth: 2
-		QueuedMarkerWidth: 3
 	Mobile:
 		PauseOnCondition: empdisable || being-captured || carried
 		Locomotor: wheeled
@@ -768,9 +757,6 @@
 		Voice: Move
 	Selectable:
 		Bounds: 40,24
-	WithTextControlGroupDecoration:
-	SelectionDecorations:
-		Palette: pips
 	Voiced:
 		VoiceSet: Vehicle
 	Targetable:
@@ -863,9 +849,6 @@
 	Huntable:
 	OwnerLostAction:
 		Action: Kill
-	DrawLineToTarget:
-		QueuedLineWidth: 2
-		QueuedMarkerWidth: 3
 	AppearsOnRadar:
 		UseLocation: true
 	Targetable@GROUND:
@@ -874,10 +857,6 @@
 	Targetable@AIRBORNE:
 		TargetTypes: Air
 		RequiresCondition: airborne
-	Selectable:
-	WithTextControlGroupDecoration:
-	SelectionDecorations:
-		Palette: pips
 	Repairable:
 		RepairActors: gadept
 		Voice: Move
@@ -963,9 +942,6 @@
 	Inherits@3: ^HealsOnTiberium
 	Inherits@selection: ^SelectableCombatUnit
 	Huntable:
-	DrawLineToTarget:
-		QueuedLineWidth: 2
-		QueuedMarkerWidth: 3
 	Health:
 	Armor:
 		Type: Light
@@ -973,9 +949,6 @@
 		Speed: 113
 		TurnSpeed: 16
 		Locomotor: visceroid
-	WithTextControlGroupDecoration:
-	SelectionDecorations:
-		Palette: pips
 	Selectable:
 		Bounds: 26,26,0,-3
 	Targetable:
@@ -1121,9 +1094,6 @@
 	RenderVoxels:
 	RenderSprites:
 	WithVoxelBody:
-	DrawLineToTarget:
-		QueuedLineWidth: 2
-		QueuedMarkerWidth: 3
 	Mobile:
 		TurnSpeed: 5
 		Voice: Move
@@ -1143,9 +1113,6 @@
 		RequiresCondition: !inside-tunnel
 	Selectable:
 		Bounds: 40,24
-	WithTextControlGroupDecoration:
-	SelectionDecorations:
-		Palette: pips
 	Voiced:
 		VoiceSet: Vehicle
 	Targetable:
@@ -1324,7 +1291,7 @@
 		Sequence: offline
 		Palette: mouse
 		RequiresCondition: powerdown
-		ReferencePoint: Center
+		Position: Center
 		Offsets:
 			repairing: 12, 0
 	PowerMultiplier@POWERDOWN:
@@ -1343,25 +1310,66 @@
 		RequiresCondition: lowpower || powerdown
 		Condition: disabled
 
+^Selectable:
+	Selectable:
+	SelectionDecorations:
+	WithTextControlGroupDecoration:
+		Margin: 2, 0
+	DrawLineToTarget:
+		QueuedLineWidth: 2
+		QueuedMarkerWidth: 3
+
 ^SelectableCombatUnit:
+	Inherits@selectiondecorations: ^Selectable
 	Selectable:
 		Priority: 10
 		PriorityModifiers: Ctrl
 
 ^SelectableSupportUnit:
+	Inherits@selectiondecorations: ^Selectable
 	Selectable:
 		Priority: 8
 		PriorityModifiers: Ctrl, Alt
 
 ^SelectableEconomicUnit:
+	Inherits@selectiondecorations: ^Selectable
 	Selectable:
 		Priority: 6
 		PriorityModifiers: Ctrl, Alt
 
-^SelectableCombatBuilding:
-	Selectable:
-		Priority: 4
+^CargoPips:
+	WithCargoPipsDecoration:
+		Position: BottomLeft
+		RequiresSelection: true
+		Palette: pips
+		Margin: 5, 2
+		CustomPipSequences:
+			red: pip-red
+			green: pip-green
+			yellow: pip-yellow
 
 ^SelectableBuilding:
-	Selectable:
+	IsometricSelectable:
 		Priority: 2
+	IsometricSelectionDecorations:
+	WithTextControlGroupDecoration:
+		Margin: 1, 1
+	DrawLineToTarget:
+		QueuedLineWidth: 2
+		QueuedMarkerWidth: 3
+
+^SelectableCombatBuilding:
+	Inherits@selectiondecorations: ^SelectableBuilding
+	IsometricSelectable:
+		Priority: 4
+
+^PrimaryBuilding:
+	PrimaryBuilding:
+		PrimaryCondition: primary
+		SelectionNotification: PrimaryBuildingSelected
+	WithTextDecoration@primary:
+		RequiresCondition: primary
+		Position: Top
+		RequiresSelection: true
+		Text: PRIMARY
+		Color: E0D048

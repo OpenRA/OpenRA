@@ -140,7 +140,6 @@
 	ResourceType@green-tib:
 		Type: Tiberium
 		Name: Tiberium
-		PipColor: Green
 		ResourceType: 1
 		Palette: staticterrain
 		TerrainType: Tiberium
@@ -152,7 +151,6 @@
 	ResourceType@blue-tib:
 		Type: BlueTiberium
 		Name: Tiberium
-		PipColor: Blue
 		ResourceType: 2
 		Palette: bluetiberium
 		TerrainType: BlueTiberium

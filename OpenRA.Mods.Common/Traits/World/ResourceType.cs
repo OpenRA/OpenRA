@@ -63,9 +63,6 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Allow resource to spawn on ramp tiles.")]
 		public readonly bool AllowOnRamps = false;
 
-		[Desc("Harvester content pip color.")]
-		public PipType PipColor = PipType.Yellow;
-
 		void IMapPreviewSignatureInfo.PopulateMapPreviewSignatureCells(Map map, ActorInfo ai, ActorReference s, List<Pair<MPos, Color>> destinationBuffer)
 		{
 			var tileSet = map.Rules.TileSet;

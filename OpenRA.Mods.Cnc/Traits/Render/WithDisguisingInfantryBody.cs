@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 						.FirstOrDefault(t => t.EnabledByDefault);
 					if (renderSprites != null && infantryBody != null)
 					{
-						disguiseImage = renderSprites.GetImage(disguiseActor, self.World.Map.Rules.Sequences, disguisePlayer.InternalName);
+						disguiseImage = renderSprites.GetImage(disguiseActor, self.World.Map.Rules.Sequences, disguisePlayer.Faction.InternalName);
 						disguiseInfantryBody = infantryBody;
 					}
 				}

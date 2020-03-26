@@ -30,15 +30,6 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Initial ammo the actor is created with. Defaults to Ammo.")]
 		public readonly int InitialAmmo = -1;
 
-		[Desc("Defaults to value in Ammo. 0 means no visible pips.")]
-		public readonly int PipCount = -1;
-
-		[Desc("PipType to use for loaded ammo.")]
-		public readonly PipType PipType = PipType.Green;
-
-		[Desc("PipType to use for empty ammo.")]
-		public readonly PipType PipTypeEmpty = PipType.Transparent;
-
 		[Desc("How much ammo is reloaded after a certain period.")]
 		public readonly int ReloadCount = 1;
 
@@ -56,7 +47,7 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new AmmoPool(init.Self, this); }
 	}
 
-	public class AmmoPool : INotifyCreated, INotifyAttack, IPips, ISync
+	public class AmmoPool : INotifyCreated, INotifyAttack, ISync
 	{
 		public readonly AmmoPoolInfo Info;
 		readonly Stack<int> tokens = new Stack<int>();
@@ -125,15 +116,6 @@ namespace OpenRA.Mods.Common.Traits
 
 			while (CurrentAmmoCount < tokens.Count && tokens.Count > 0)
 				conditionManager.RevokeCondition(self, tokens.Pop());
-		}
-
-		public IEnumerable<PipType> GetPips(Actor self)
-		{
-			var pips = Info.PipCount >= 0 ? Info.PipCount : Info.Ammo;
-
-			return Enumerable.Range(0, pips).Select(i =>
-				(CurrentAmmoCount * pips) / Info.Ammo > i ?
-				Info.PipType : Info.PipTypeEmpty);
 		}
 	}
 }

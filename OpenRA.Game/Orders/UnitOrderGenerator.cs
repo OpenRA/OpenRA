@@ -70,7 +70,7 @@ namespace OpenRA.Orders
 
 			bool useSelect;
 			if (Game.Settings.Game.UseClassicMouseStyle && !InputOverridesSelection(world, worldPixel, mi))
-				useSelect = target.Type == TargetType.Actor && target.Actor.Info.HasTraitInfo<SelectableInfo>();
+				useSelect = target.Type == TargetType.Actor && target.Actor.Info.HasTraitInfo<ISelectableInfo>();
 			else
 			{
 				var ordersWithCursor = world.Selection.Actors
@@ -81,7 +81,7 @@ namespace OpenRA.Orders
 				if (cursorOrder != null)
 					return cursorOrder.Cursor;
 
-				useSelect = target.Type == TargetType.Actor && target.Actor.Info.HasTraitInfo<SelectableInfo>() &&
+				useSelect = target.Type == TargetType.Actor && target.Actor.Info.HasTraitInfo<ISelectableInfo>() &&
 				    (mi.Modifiers.HasModifier(Modifiers.Shift) || !world.Selection.Actors.Any());
 			}
 

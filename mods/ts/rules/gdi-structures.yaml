@@ -29,9 +29,6 @@ GAPOWR:
 		RequiresCondition: !build-incomplete
 		PauseOnCondition: empdisable
 		Sequence: idle-plug
-	Selectable:
-		Bounds: 90, 48, 0, -6
-		DecorationBounds: 90, 84, 0, -12
 	Power:
 		Amount: 100
 		RequiresCondition: !empdisable
@@ -66,14 +63,41 @@ GAPOWR:
 		RequiresCondition: !empdisable && powrup.b
 		Amount: 50
 	ProvidesPrerequisite@buildingname:
-	SelectionDecorations:
+	ProvidesPrerequisite@pluggable:
+		RequiresCondition: !powrup.a || !powrup.b
+		Prerequisite: gapowr.socket
+	IsometricSelectable:
+		Height: 48
+
+GAPOWR.SOCKET:
+	AlwaysVisible:
+	Interactable:
+	Tooltip:
+		Name: GDI Power Plant socket
+
+GAPOWRUP:
+	Inherits: ^BuildingPlug
+	Valued:
+		Cost: 150
+	Tooltip:
+		Name: Power Turbine
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 100
+		Prerequisites: gapowr.socket, ~structures.gdi, ~techlevel.medium
+		Description: Provides extra power generation.
+	Plug:
+		Type: powrup
+	Power:
+		Amount: 50
 
 GAPILE:
 	Inherits: ^Building
 	Inherits@SHAPE: ^2x2Shape
+	Inherits@PRIMARY: ^PrimaryBuilding
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 30
+		BuildPaletteOrder: 20
 		Prerequisites: anypower, ~structures.gdi, ~techlevel.low
 		Description: Produces infantry.
 	Valued:
@@ -85,9 +109,6 @@ GAPILE:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
-	Selectable:
-		Bounds: 88, 48, 0, -8
-		DecorationBounds: 88, 56, 0, -8
 	Health:
 		HP: 80000
 	Armor:
@@ -141,9 +162,6 @@ GAPILE:
 	Production:
 		Produces: Infantry
 		PauseOnCondition: empdisable
-	PrimaryBuilding:
-		PrimaryCondition: primary
-		SelectionNotification: PrimaryBuildingSelected
 	ProductionBar:
 		ProductionType: Infantry
 	WithIdleOverlay@LIGHTS:
@@ -158,18 +176,11 @@ GAPILE:
 	Power:
 		Amount: -20
 	ProvidesPrerequisite@buildingname:
-	SelectionDecorations:
-	WithTextDecoration@primary:
-		RequiresSelection: true
-		Text: PRIMARY
-		ReferencePoint: Top
-		Color: E0D048
-		ZOffset: 256
-		RequiresCondition: primary
 
 GAWEAP:
 	Inherits: ^Building
 	Inherits@SHAPE: ^4x3FactoryWithBibShape
+	Inherits@PRIMARY: ^PrimaryBuilding
 	Valued:
 		Cost: 2000
 	Tooltip:
@@ -178,15 +189,12 @@ GAWEAP:
 		Prerequisite: factory
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 60
+		BuildPaletteOrder: 50
 		Prerequisites: proc, ~structures.gdi, ~techlevel.low
 		Description: Produces vehicles.
 	Building:
 		Footprint: xxX+ xxX+ xxX+
 		Dimensions: 4,3
-	Selectable:
-		Bounds: 154, 96, -2, -12
-		DecorationBounds: 154, 100, -2, -12
 	Health:
 		HP: 100000
 	RevealsShroud:
@@ -206,9 +214,6 @@ GAWEAP:
 	Production:
 		Produces: Vehicle
 		PauseOnCondition: empdisable
-	PrimaryBuilding:
-		PrimaryCondition: primary
-		SelectionNotification: PrimaryBuildingSelected
 	ProductionBar:
 		ProductionType: Vehicle
 	WithIdleOverlay@ROOF:
@@ -231,24 +236,19 @@ GAWEAP:
 	Power:
 		Amount: -30
 	ProvidesPrerequisite@buildingname:
-	SelectionDecorations:
-	WithTextDecoration@primary:
-		RequiresSelection: true
-		Text: PRIMARY
-		ReferencePoint: Top
-		Color: E0D048
-		ZOffset: 256
-		RequiresCondition: primary
+	IsometricSelectable:
+		Height: 48
 
 GAHPAD:
 	Inherits: ^Building
 	Inherits@SHAPE: ^2x2Shape
+	Inherits@PRIMARY: ^PrimaryBuilding
 	Valued:
 		Cost: 500
 	Tooltip:
 		Name: Helipad
 	Buildable:
-		BuildPaletteOrder: 130
+		BuildPaletteOrder: 80
 		Queue: Building
 		Prerequisites: garadr, ~structures.gdi, ~techlevel.medium
 		Description: Produces, rearms and\nrepairs helicopters.
@@ -270,9 +270,6 @@ GAHPAD:
 	Production:
 		Produces: Air
 		PauseOnCondition: empdisable
-	PrimaryBuilding:
-		PrimaryCondition: primary
-		SelectionNotification: PrimaryBuildingSelected
 	Reservable:
 	RepairsUnits:
 		HpPerStep: 1000
@@ -292,18 +289,7 @@ GAHPAD:
 		UseDeathTypeSuffix: false
 	Power:
 		Amount: -10
-	Selectable:
-		Bounds: 88, 66, 0, -5
-		DecorationBounds: 88, 66, 0, -5
 	ProvidesPrerequisite@buildingname:
-	SelectionDecorations:
-	WithTextDecoration@primary:
-		RequiresSelection: true
-		Text: PRIMARY
-		ReferencePoint: Top
-		Color: E0D048
-		ZOffset: 256
-		RequiresCondition: primary
 
 GADEPT:
 	Inherits: ^Building
@@ -313,16 +299,13 @@ GADEPT:
 	Tooltip:
 		Name: Service Depot
 	Buildable:
-		BuildPaletteOrder: 110
+		BuildPaletteOrder: 70
 		Prerequisites: factory, ~structures.gdi, ~techlevel.medium
 		Queue: Building
 		Description: Repairs vehicles.
 	Building:
 		Footprint: =+= x++ x+=
 		Dimensions: 3,3
-	Selectable:
-		Bounds: 96, 64, -6, -6
-		DecorationBounds: 98, 68, -6, -6
 	Health:
 		HP: 110000
 	RevealsShroud:
@@ -362,7 +345,6 @@ GADEPT:
 	Power:
 		Amount: -30
 	ProvidesPrerequisite@buildingname:
-	SelectionDecorations:
 	RenderSprites:
 		Image: gadept.gdi
 		FactionImages:
@@ -375,7 +357,7 @@ GARADR:
 	Inherits@SHAPE: ^2x2Shape
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 80
+		BuildPaletteOrder: 40
 		Prerequisites: proc, ~structures.gdi, ~techlevel.low
 		Description: Provides an overview of the battlefield.\nCan detect cloaked units.\nRequires power to operate.
 	Valued:
@@ -387,9 +369,6 @@ GARADR:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
-	Selectable:
-		Bounds: 96, 48, 0, -6
-		DecorationBounds: 96, 118, 0, -38
 	Health:
 		HP: 100000
 	Armor:
@@ -412,7 +391,8 @@ GARADR:
 	Power:
 		Amount: -50
 	ProvidesPrerequisite@buildingname:
-	SelectionDecorations:
+	IsometricSelectable:
+		Height: 72
 
 GATECH:
 	Inherits: ^Building
@@ -420,7 +400,7 @@ GATECH:
 	Inherits@SHAPE: ^3x2Shape
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 150
+		BuildPaletteOrder: 90
 		Prerequisites: gaweap, garadr, ~structures.gdi, ~techlevel.medium
 		Description: Provides access to advanced GDI technologies.
 	Valued:
@@ -432,9 +412,6 @@ GATECH:
 	Building:
 		Footprint: xxx xxx
 		Dimensions: 3,2
-	Selectable:
-		Bounds: 110, 60, 3, -4
-		DecorationBounds: 110, 60, 3, -4
 	Health:
 		HP: 50000
 	Armor:
@@ -448,7 +425,8 @@ GATECH:
 	Power:
 		Amount: -150
 	ProvidesPrerequisite@buildingname:
-	SelectionDecorations:
+	IsometricSelectable:
+		Height: 48
 
 GAPLUG:
 	Inherits: ^Building
@@ -458,11 +436,8 @@ GAPLUG:
 		Cost: 1000
 	Tooltip:
 		Name: GDI Upgrade Center
-	Selectable:
-		Bounds: 115,72,0,-12
-		DecorationBounds: 115,104,0,-24
 	Buildable:
-		BuildPaletteOrder: 170
+		BuildPaletteOrder: 110
 		Prerequisites: proc, gatech, ~structures.gdi, ~techlevel.superweapons
 		Queue: Building
 		Description: Can be upgraded for additional technology.
@@ -558,4 +533,55 @@ GAPLUG:
 		PauseOnCondition: disabled
 		Sequence: idle-hunterseekerb
 	ProvidesPrerequisite@buildingname:
-	SelectionDecorations:
+	ProvidesPrerequisite@pluggableion:
+		RequiresCondition: !plug.ioncannona && !plug.ioncannonb
+		Prerequisite: gaplug.socket.ioncannon
+	ProvidesPrerequisite@pluggablehunter:
+		RequiresCondition: !plug.hunterseekera && !plug.hunterseekerb
+		Prerequisite: gaplug.socket.hunterseeker
+	IsometricSelectable:
+		Height: 48
+
+GAPLUG.SOCKET.IONCANNON:
+	AlwaysVisible:
+	Interactable:
+	Tooltip:
+		Name: GDI Upgrade Center socket
+
+GAPLUG.SOCKET.HUNTERSEEKER:
+	AlwaysVisible:
+	Interactable:
+	Tooltip:
+		Name: GDI Upgrade Center socket
+
+GAPLUG2:
+	Inherits: ^BuildingPlug
+	Valued:
+		Cost: 1000
+	Tooltip:
+		Name: Seeker Control
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 110
+		Prerequisites: gaplug.socket.hunterseeker, gatech, gaweap, ~structures.gdi, ~techlevel.superweapons
+		Description: Enables use of the hunter-seeker droid.
+	Plug:
+		Type: plug.hunterseeker
+	Power:
+		Amount: -50
+
+GAPLUG3:
+	Inherits: ^BuildingPlug
+	Valued:
+		Cost: 1500
+	Tooltip:
+		Name: Ion Cannon Uplink
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 120
+		Prerequisites: gaplug.socket.ioncannon, gatech, ~structures.gdi, ~techlevel.superweapons
+		Description: Enables use of the Ion Cannon.
+	Plug:
+		Type: plug.ioncannon
+	Power:
+		Amount: -100

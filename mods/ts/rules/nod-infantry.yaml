@@ -68,7 +68,6 @@ CYBORG:
 		Weapon: Vulcan3
 	AttackFrontal:
 		Voice: Attack
-	SelectionDecorations:
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
 
@@ -108,7 +107,6 @@ CYC2:
 		LocalOffset: 240,120,966
 	AttackFrontal:
 		Voice: Attack
-	SelectionDecorations:
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
 

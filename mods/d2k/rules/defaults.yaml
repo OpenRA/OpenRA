@@ -96,30 +96,30 @@
 		Image: rank
 		Sequence: rank-veteran-1
 		Palette: effect
-		ReferencePoint: Bottom, Right
+		Position: BottomRight
+		Margin: 5, 6
 		RequiresCondition: rank-veteran == 1
-		ZOffset: 256
 	WithDecoration@RANK-2:
 		Image: rank
 		Sequence: rank-veteran-2
 		Palette: effect
-		ReferencePoint: Bottom, Right
+		Position: BottomRight
+		Margin: 5, 6
 		RequiresCondition: rank-veteran == 2
-		ZOffset: 256
 	WithDecoration@RANK-3:
 		Image: rank
 		Sequence: rank-veteran-3
 		Palette: effect
-		ReferencePoint: Bottom, Right
+		Position: BottomRight
+		Margin: 5, 6
 		RequiresCondition: rank-veteran == 3
-		ZOffset: 256
 	WithDecoration@RANK-ELITE:
 		Image: rank
 		Sequence: rank-elite
 		Palette: effect
-		ReferencePoint: Bottom, Right
+		Position: BottomRight
+		Margin: 5, 6
 		RequiresCondition: rank-elite
-		ZOffset: 256
 
 ^AutoTargetGround:
 	AutoTarget:
@@ -176,8 +176,6 @@
 		TurnSpeed: 5
 		Locomotor: vehicle
 		PauseOnCondition: notmobile
-	SelectionDecorations:
-	WithSpriteControlGroupDecoration:
 	Selectable:
 		Bounds: 32,32
 	Targetable:
@@ -185,7 +183,6 @@
 	Passenger:
 		CargoType: Vehicle
 	AttackMove:
-	DrawLineToTarget:
 	HiddenUnderFog:
 	ActorLostNotification:
 	Repairable:
@@ -205,9 +202,8 @@
 		LockedCondition: notmobile
 	WithDecoration@CARRYALL:
 		Image: pips
+		Margin: 7, 9
 		Sequence: pickup-indicator
-		ReferencePoint: Top, Left
-		ZOffset: 256
 		RequiresCondition: carryall-reserved
 	RevealOnFire:
 	RevealOnDeath:
@@ -285,8 +281,6 @@
 		Range: 3c768
 	Mobile:
 		Locomotor: foot
-	SelectionDecorations:
-	WithSpriteControlGroupDecoration:
 	Selectable:
 		Bounds: 24,24,0,-4
 		DecorationBounds: 12,20,0,-4
@@ -309,10 +303,8 @@
 			BulletDeath: 4
 		CrushedSequence: die-crushed
 	AttackMove:
-	DrawLineToTarget:
 	Passenger:
 		CargoType: Infantry
-		PipType: Green
 	HiddenUnderFog:
 	ActorLostNotification:
 	Crushable:
@@ -356,7 +348,6 @@
 		AlwaysVisibleStances: None
 	ActorLostNotification:
 	AttackMove:
-	DrawLineToTarget:
 	WithFacingSpriteBody:
 	WithShadow:
 	HitShape:
@@ -372,8 +363,6 @@
 	Huntable:
 	OwnerLostAction:
 		Action: Kill
-	SelectionDecorations:
-	WithSpriteControlGroupDecoration:
 	RevealsShroud:
 	Targetable:
 		TargetTypes: Ground, C4, Structure
@@ -449,7 +438,7 @@
 	WithBuildingRepairDecoration:
 		Image: allyrepair
 		Sequence: repair
-		ReferencePoint: Center
+		Position: Center
 		Palette: player
 		IsPlayerPalette: True
 
@@ -510,7 +499,7 @@
 		Sequence: offline
 		Palette: chrome
 		RequiresCondition: powerdown
-		ReferencePoint: Center
+		Position: Center
 		Offsets:
 			repairing: 10, 0
 	PowerMultiplier@POWERDOWN:
@@ -522,25 +511,60 @@
 		Offsets:
 			powerdown: -10, 0
 
+^Selectable:
+	Selectable:
+	SelectionDecorations:
+	WithSpriteControlGroupDecoration:
+		Margin: -1, -1
+	DrawLineToTarget:
+
 ^SelectableCombatUnit:
+	Inherits@selectiondecorations: ^Selectable
 	Selectable:
 		Priority: 10
 		PriorityModifiers: Ctrl
 
 ^SelectableSupportUnit:
+	Inherits@selectiondecorations: ^Selectable
 	Selectable:
 		Priority: 8
 		PriorityModifiers: Ctrl, Alt
 
 ^SelectableEconomicUnit:
+	Inherits@selectiondecorations: ^Selectable
 	Selectable:
 		Priority: 6
 		PriorityModifiers: Ctrl, Alt
 
 ^SelectableCombatBuilding:
+	Inherits@selectiondecorations: ^Selectable
 	Selectable:
 		Priority: 4
 
 ^SelectableBuilding:
+	Inherits@selectiondecorations: ^Selectable
 	Selectable:
 		Priority: 2
+
+^PrimaryBuilding:
+	PrimaryBuilding:
+		PrimaryCondition: primary
+		ProductionQueues: Building
+		SelectionNotification: PrimaryBuildingSelected
+	WithTextDecoration@primary:
+		RequiresCondition: primary
+		Position: Top
+		Margin: 0, 5
+		RequiresSelection: true
+		Text: PRIMARY
+
+^Upgradeable:
+	GrantConditionOnPrerequisite@UPGRADEABLE:
+		Condition: stardecoration
+	WithDecoration@upgraded:
+		RequiresCondition: stardecoration
+		Position: TopRight
+		Margin: 6, 8
+		RequiresSelection: true
+		Image: pips
+		Sequence: tag-upgraded

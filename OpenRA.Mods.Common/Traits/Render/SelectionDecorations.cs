@@ -18,160 +18,49 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
 {
-	public class SelectionDecorationsInfo : ITraitInfo, Requires<IDecorationBoundsInfo>
+	public class SelectionDecorationsInfo : SelectionDecorationsBaseInfo, Requires<InteractableInfo>
 	{
-		[PaletteReference]
-		public readonly string Palette = "chrome";
-
-		[Desc("Health bar, production progress bar etc.")]
-		public readonly bool RenderSelectionBars = true;
-
-		public readonly bool RenderSelectionBox = true;
-
-		public readonly Color SelectionBoxColor = Color.White;
-
-		public readonly string Image = "pips";
-
-		public object Create(ActorInitializer init) { return new SelectionDecorations(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new SelectionDecorations(init.Self, this); }
 	}
 
-	public class SelectionDecorations : ISelectionDecorations, IRenderAnnotations, INotifyCreated, ITick
+	public class SelectionDecorations : SelectionDecorationsBase
 	{
-		// depends on the order of pips in TraitsInterfaces.cs!
-		static readonly string[] PipStrings = { "pip-empty", "pip-green", "pip-yellow", "pip-red", "pip-gray", "pip-blue", "pip-ammo", "pip-ammoempty" };
-
-		public readonly SelectionDecorationsInfo Info;
-
-		readonly IDecorationBounds[] decorationBounds;
-		readonly Animation pipImages;
-		IPips[] pipSources;
+		readonly Interactable interactable;
 
 		public SelectionDecorations(Actor self, SelectionDecorationsInfo info)
+			: base(info)
 		{
-			Info = info;
-
-			decorationBounds = self.TraitsImplementing<IDecorationBounds>().ToArray();
-			pipImages = new Animation(self.World, Info.Image);
+			interactable = self.Trait<Interactable>();
 		}
 
-		void INotifyCreated.Created(Actor self)
+		protected override int2 GetDecorationPosition(Actor self, WorldRenderer wr, DecorationPosition pos)
 		{
-			pipSources = self.TraitsImplementing<IPips>().ToArray();
-		}
-
-		IEnumerable<WPos> ActivityTargetPath(Actor self)
-		{
-			if (!self.IsInWorld || self.IsDead)
-				yield break;
-
-			var activity = self.CurrentActivity;
-			if (activity != null)
+			var bounds = interactable.DecorationBounds(self, wr);
+			switch (pos)
 			{
-				var targets = activity.GetTargets(self);
-				yield return self.CenterPosition;
-
-				foreach (var t in targets.Where(t => t.Type != TargetType.Invalid))
-					yield return t.CenterPosition;
+				case DecorationPosition.TopLeft: return bounds.TopLeft;
+				case DecorationPosition.TopRight: return bounds.TopRight;
+				case DecorationPosition.BottomLeft: return bounds.BottomLeft;
+				case DecorationPosition.BottomRight: return bounds.BottomRight;
+				case DecorationPosition.Top: return new int2(bounds.Left + bounds.Size.Width / 2, bounds.Top);
+				default: return bounds.TopLeft + new int2(bounds.Size.Width / 2, bounds.Size.Height / 2);
 			}
 		}
 
-		IEnumerable<IRenderable> IRenderAnnotations.RenderAnnotations(Actor self, WorldRenderer wr)
+		protected override IEnumerable<IRenderable> RenderSelectionBox(Actor self, WorldRenderer wr, Color color)
 		{
-			if (self.World.FogObscures(self))
-				return Enumerable.Empty<IRenderable>();
-
-			return DrawDecorations(self, wr);
+			var bounds = interactable.DecorationBounds(self, wr);
+			yield return new SelectionBoxAnnotationRenderable(self, bounds, color);
 		}
 
-		bool IRenderAnnotations.SpatiallyPartitionable { get { return true; } }
-
-		IEnumerable<IRenderable> DrawDecorations(Actor self, WorldRenderer wr)
+		protected override IEnumerable<IRenderable> RenderSelectionBars(Actor self, WorldRenderer wr, bool displayHealth, bool displayExtra)
 		{
-			var selected = self.World.Selection.Contains(self);
-			var regularWorld = self.World.Type == WorldType.Regular;
-			var statusBars = Game.Settings.Game.StatusBars;
-			var bounds = decorationBounds.FirstNonEmptyBounds(self, wr);
-
-			// Health bars are shown when:
-			//  * actor is selected
-			//  * status bar preference is set to "always show"
-			//  * status bar preference is set to "when damaged" and actor is damaged
-			var displayHealth = selected || (regularWorld && statusBars == StatusBarsType.AlwaysShow)
-				|| (regularWorld && statusBars == StatusBarsType.DamageShow && self.GetDamageState() != DamageState.Undamaged);
-
-			// Extra bars are shown when:
-			//  * actor is selected
-			//  * status bar preference is set to "always show"
-			//  * status bar preference is set to "when damaged"
-			var displayExtra = selected || (regularWorld && statusBars != StatusBarsType.Standard);
-
-			if (Info.RenderSelectionBox && selected)
-				yield return new SelectionBoxAnnotationRenderable(self, bounds, Info.SelectionBoxColor);
-
-			if (Info.RenderSelectionBars && (displayHealth || displayExtra))
-				yield return new SelectionBarsAnnotationRenderable(self, bounds, displayHealth, displayExtra);
-
-			// Target lines and pips are always only displayed for selected allied actors
-			if (!selected || !self.Owner.IsAlliedWith(wr.World.RenderPlayer))
+			// Don't render the selection bars for non-selectable actors
+			if (!(interactable is Selectable) || (!displayHealth && !displayExtra))
 				yield break;
 
-			if (self.World.LocalPlayer != null && self.World.LocalPlayer.PlayerActor.Trait<DeveloperMode>().PathDebug)
-				yield return new TargetLineRenderable(ActivityTargetPath(self), Color.Green);
-
-			foreach (var r in DrawPips(self, bounds, wr))
-				yield return r;
-		}
-
-		public void DrawRollover(Actor self, WorldRenderer worldRenderer)
-		{
-			var bounds = decorationBounds.FirstNonEmptyBounds(self, worldRenderer);
-			new SelectionBarsAnnotationRenderable(self, bounds, true, true).Render(worldRenderer);
-		}
-
-		IEnumerable<IRenderable> DrawPips(Actor self, Rectangle bounds, WorldRenderer wr)
-		{
-			if (pipSources.Length == 0)
-				return Enumerable.Empty<IRenderable>();
-
-			return DrawPipsInner(self, bounds, wr);
-		}
-
-		IEnumerable<IRenderable> DrawPipsInner(Actor self, Rectangle bounds, WorldRenderer wr)
-		{
-			pipImages.PlayRepeating(PipStrings[0]);
-
-			var palette = wr.Palette(Info.Palette);
-			var basePosition = wr.Viewport.WorldToViewPx(new int2(bounds.Left, bounds.Bottom));
-			var pipSize = pipImages.Image.Size.XY.ToInt2();
-			var pipxyBase = basePosition + new int2(1 - pipSize.X / 2, -(3 + pipSize.Y / 2));
-			var pipxyOffset = new int2(0, 0);
-			var width = bounds.Width;
-
-			foreach (var pips in pipSources)
-			{
-				var thisRow = pips.GetPips(self);
-				if (thisRow == null)
-					continue;
-
-				foreach (var pip in thisRow)
-				{
-					if (pipxyOffset.X + pipSize.X >= width)
-						pipxyOffset = new int2(0, pipxyOffset.Y - pipSize.Y);
-
-					pipImages.PlayRepeating(PipStrings[(int)pip]);
-					pipxyOffset += new int2(pipSize.X, 0);
-
-					yield return new UISpriteRenderable(pipImages.Image, self.CenterPosition, pipxyBase + pipxyOffset, 0, palette, 1f);
-				}
-
-				// Increment row
-				pipxyOffset = new int2(0, pipxyOffset.Y - (pipSize.Y + 1));
-			}
-		}
-
-		void ITick.Tick(Actor self)
-		{
-			pipImages.Tick();
+			var bounds = interactable.DecorationBounds(self, wr);
+			yield return new SelectionBarsAnnotationRenderable(self, bounds, displayHealth, displayExtra);
 		}
 	}
 }
