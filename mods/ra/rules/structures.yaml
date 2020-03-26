@@ -1240,8 +1240,9 @@ PROC:
 	RevealsShroud@GAPGEN:
 		Range: 4c0
 	Refinery:
-		DockAngle: 64
-		DockOffset: 1,2
+	Dock@1:
+		Facing: 64
+		EntranceCell: 1,2
 	StoresResources:
 		PipCount: 17
 		Capacity: 2000

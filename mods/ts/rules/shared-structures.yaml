@@ -110,9 +110,10 @@ PROC:
 		Range: 6c0
 		MaxHeightDelta: 3
 	TiberianSunRefinery:
-		DockAngle: 160
-		DockOffset: 2,1
 		DiscardExcessResources: true
+	Dock@1:
+		Facing: 160
+		EntranceCell: 2,1
 	StoresResources:
 		PipColor: Green
 		PipCount: 10

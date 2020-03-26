@@ -289,9 +289,10 @@ refinery:
 	RevealsShroud:
 		Range: 3c768
 	Refinery:
-		DockAngle: 160
-		DockOffset: 2,1
 		TickRate: 20
+	Dock@1:
+		Facing: 160
+		EntranceCell: 2,1
 	StoresResources:
 		PipColor: green
 		PipCount: 10

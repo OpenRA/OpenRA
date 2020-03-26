@@ -23,12 +23,6 @@ namespace OpenRA.Mods.Common.Traits
 {
 	public class RefineryInfo : IAcceptResourcesInfo, Requires<WithSpriteBodyInfo>
 	{
-		[Desc("Actual harvester facing when docking, 0-255 counter-clock-wise.")]
-		public readonly int DockAngle = 0;
-
-		[Desc("Docking cell relative to top-left cell.")]
-		public readonly CVec DockOffset = CVec.Zero;
-
 		[Desc("Does the refinery require the harvester to be dragged in?")]
 		public readonly bool IsDragRequired = false;
 
@@ -57,6 +51,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly Actor self;
 		readonly RefineryInfo info;
+		readonly DockInfo dockInfo;
 		PlayerResources playerResources;
 		RefineryResourceMultiplier[] resourceMultipliers;
 
@@ -70,8 +65,8 @@ namespace OpenRA.Mods.Common.Traits
 		bool preventDock = false;
 
 		public bool AllowDocking { get { return !preventDock; } }
-		public CVec DeliveryOffset { get { return info.DockOffset; } }
-		public int DeliveryAngle { get { return info.DockAngle; } }
+		public CVec DeliveryOffset { get { return dockInfo.EntranceCell; } }
+		public int DeliveryAngle { get { return dockInfo.Facing; } }
 		public bool IsDragRequired { get { return info.IsDragRequired; } }
 		public WVec DragOffset { get { return info.DragOffset; } }
 		public int DragLength { get { return info.DragLength; } }
@@ -80,6 +75,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			this.self = self;
 			this.info = info;
+			this.dockInfo = self.Trait<DockInfo>();
 			playerResources = self.Owner.PlayerActor.Trait<PlayerResources>();
 			currentDisplayTick = info.TickRate;
 		}

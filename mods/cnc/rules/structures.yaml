@@ -226,12 +226,13 @@ PROC:
 	RevealsShroud:
 		Range: 6c0
 	Refinery:
-		DockAngle: 112
-		DockOffset: 0,2
 		IsDragRequired: True
 		DragOffset: -554,512,0
 		DragLength: 12
 		TickRate: 15
+	Dock@1:
+		Facing: 112
+		EntranceCell: 0,2
 	StoresResources:
 		PipColor: Green
 		PipCount: 10

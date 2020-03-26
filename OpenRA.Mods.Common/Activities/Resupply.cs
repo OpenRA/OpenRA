@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		public Resupply(Actor self, Actor host, WDist closeEnough, bool stayOnResupplier = false)
 		{
-			this.host = Target.FromActor(host);
+			this.host = Target.FromPos(host.CenterPosition + host.Trait<Dock>().Info.EnterOffset);
 			this.closeEnough = closeEnough;
 			this.stayOnResupplier = stayOnResupplier;
 			allRepairsUnits = host.TraitsImplementing<RepairsUnits>().ToArray();
