@@ -9,9 +9,9 @@
  */
 #endregion
 
+using OpenRA.Activities;
 using OpenRA.Primitives;
 using OpenRA.Traits;
-using OpenRA.Activities;
 
 namespace OpenRA.Mods.Common.Traits
 {
@@ -35,12 +35,11 @@ namespace OpenRA.Mods.Common.Traits
 
     public class Dock : ConditionalTrait<DockInfo>
     {
-        //readonly DockingManager dockingManager;
-
+        // readonly DockingManager dockingManager;
         public Dock(Actor self, DockInfo info)
             : base(info)
         {
-            //dockingManager = self.Trait<DockingManager>();
+            // dockingManager = self.Trait<DockingManager>();
         }
     }
 }
