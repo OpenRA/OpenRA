@@ -15,7 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Orders
 {
-	public class BeaconOrderGenerator : OrderGenerator
+	public class BeaconOrderGenerator : GlobalButtonOrderGenerator
 	{
 		protected override IEnumerable<Order> OrderInner(World world, CPos cell, int2 worldPixel, MouseInput mi)
 		{
@@ -25,9 +25,6 @@ namespace OpenRA.Mods.Common.Orders
 				yield return new Order("PlaceBeacon", world.LocalPlayer.PlayerActor, Target.FromCell(world, cell), false) { SuppressVisualFeedback = true };
 		}
 
-		protected override IEnumerable<IRenderable> Render(WorldRenderer wr, World world) { yield break; }
-		protected override IEnumerable<IRenderable> RenderAboveShroud(WorldRenderer wr, World world) { yield break; }
-		protected override IEnumerable<IRenderable> RenderAnnotations(WorldRenderer wr, World world) { yield break; }
 		protected override string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
 		{
 			return "ability";

@@ -1,4 +1,4 @@
-#region Copyright & License Information
+﻿#region Copyright & License Information
 /*
  * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
@@ -17,7 +17,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Orders
 {
-	public class RepairOrderGenerator : OrderGenerator
+	public class RepairOrderGenerator : GlobalButtonOrderGenerator
 	{
 		protected override IEnumerable<Order> OrderInner(World world, CPos cell, int2 worldPixel, MouseInput mi)
 		{
@@ -82,10 +82,6 @@ namespace OpenRA.Mods.Common.Orders
 				world.LocalPlayer.WinState != WinState.Undefined)
 				world.CancelInputMode();
 		}
-
-		protected override IEnumerable<IRenderable> Render(WorldRenderer wr, World world) { yield break; }
-		protected override IEnumerable<IRenderable> RenderAboveShroud(WorldRenderer wr, World world) { yield break; }
-		protected override IEnumerable<IRenderable> RenderAnnotations(WorldRenderer wr, World world) { yield break; }
 
 		protected override string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
 		{

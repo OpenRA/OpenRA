@@ -16,91 +16,36 @@ using OpenRA.Mods.Common.Traits;
 
 namespace OpenRA.Mods.Common.Orders
 {
-	public abstract class GlobalButtonOrderGenerator<T> : OrderGenerator
+	public abstract class GlobalButtonOrderGenerator : IOrderGenerator
 	{
-		string order;
-
-		public GlobalButtonOrderGenerator(string order)
+		public virtual IEnumerable<Order> Order(World world, CPos cell, int2 worldPixel, MouseInput mi)
 		{
-			this.order = order;
+			if ((mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Down) || (mi.Button == MouseButton.Right && mi.Event == MouseInputEvent.Up))
+				return OrderInner(world, cell, worldPixel, mi);
+
+			return Enumerable.Empty<Order>();
 		}
 
-		protected override IEnumerable<Order> OrderInner(World world, CPos cell, int2 worldPixel, MouseInput mi)
-		{
-			if (mi.Button == MouseButton.Right)
-				world.CancelInputMode();
+		void IOrderGenerator.Tick(World world) { Tick(world); }
+		IEnumerable<IRenderable> IOrderGenerator.Render(WorldRenderer wr, World world) { return Render(wr, world); }
+		IEnumerable<IRenderable> IOrderGenerator.RenderAboveShroud(WorldRenderer wr, World world) { return RenderAboveShroud(wr, world); }
+		IEnumerable<IRenderable> IOrderGenerator.RenderAnnotations(WorldRenderer wr, World world) { return RenderAnnotations(wr, world); }
+		string IOrderGenerator.GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi) { return GetCursor(world, cell, worldPixel, mi); }
+		void IOrderGenerator.Deactivate() { }
+		bool IOrderGenerator.HandleKeyPress(KeyInput e) { return false; }
 
-			return OrderInner(world, mi);
-		}
-
-		protected virtual bool IsValidTrait(T t)
-		{
-			return Exts.IsTraitEnabled(t);
-		}
-
-		protected IEnumerable<Order> OrderInner(World world, MouseInput mi)
-		{
-			if (mi.Button == MouseButton.Left)
-			{
-				var underCursor = world.ScreenMap.ActorsAtMouse(mi)
-					.Select(a => a.Actor)
-					.FirstOrDefault(a => a.Owner == world.LocalPlayer && a.TraitsImplementing<T>()
-						.Any(IsValidTrait));
-
-				if (underCursor == null)
-					yield break;
-
-				yield return new Order(order, underCursor, false);
-			}
-		}
-
-		protected override void Tick(World world)
+		protected virtual void Tick(World world)
 		{
 			if (world.LocalPlayer != null &&
 				world.LocalPlayer.WinState != WinState.Undefined)
 				world.CancelInputMode();
 		}
 
-		protected override IEnumerable<IRenderable> Render(WorldRenderer wr, World world) { yield break; }
-		protected override IEnumerable<IRenderable> RenderAboveShroud(WorldRenderer wr, World world) { yield break; }
-		protected override IEnumerable<IRenderable> RenderAnnotations(WorldRenderer wr, World world) { yield break; }
-
-		protected abstract override string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi);
-	}
-
-	public class PowerDownOrderGenerator : GlobalButtonOrderGenerator<ToggleConditionOnOrder>
-	{
-		public PowerDownOrderGenerator()
-			: base("PowerDown") { }
-
-		protected override bool IsValidTrait(ToggleConditionOnOrder t)
-		{
-			return !t.IsTraitDisabled && !t.IsTraitPaused;
-		}
-
-		protected override string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
-		{
-			mi.Button = MouseButton.Left;
-			return OrderInner(world, mi).Any() ? "powerdown" : "powerdown-blocked";
-		}
-	}
-
-	public class SellOrderGenerator : GlobalButtonOrderGenerator<Sellable>
-	{
-		public SellOrderGenerator()
-			: base("Sell") { }
-
-		protected override string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
-		{
-			mi.Button = MouseButton.Left;
-
-			var cursor = OrderInner(world, mi)
-				.SelectMany(o => o.Subject.TraitsImplementing<Sellable>())
-				.Where(Exts.IsTraitEnabled)
-				.Select(si => si.Info.Cursor)
-				.FirstOrDefault();
-
-			return cursor ?? "sell-blocked";
-		}
+		protected virtual IEnumerable<IRenderable> Render(WorldRenderer wr, World world) { yield break; }
+		protected virtual IEnumerable<IRenderable> RenderAboveShroud(WorldRenderer wr, World world) { yield break; }
+		protected virtual IEnumerable<IRenderable> RenderAnnotations(WorldRenderer wr, World world) { yield break; }
+		protected abstract string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi);
+		protected abstract IEnumerable<Order> OrderInner(World world, CPos cell, int2 worldPixel, MouseInput mi);
+		public virtual void SelectionChanged(World world, IEnumerable<Actor> selected) { }
 	}
 }
