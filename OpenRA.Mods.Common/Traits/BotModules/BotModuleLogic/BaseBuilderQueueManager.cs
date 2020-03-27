@@ -72,7 +72,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (waterState == WaterCheck.NotChecked)
 			{
-				if (AIUtils.IsAreaAvailable<BaseProvider>(world, player, world.Map, baseBuilder.Info.MaxBaseRadius, baseBuilder.Info.WaterTerrainTypes))
+				if (AIUtils.IsAreaAvailable<BaseBuilding>(world, player, world.Map, baseBuilder.Info.MaxBaseRadius, baseBuilder.Info.WaterTerrainTypes))
 					waterState = WaterCheck.EnoughWater;
 				else
 				{
@@ -83,8 +83,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (waterState == WaterCheck.NotEnoughWater && --checkForBasesTicks <= 0)
 			{
-				var currentBases = world.ActorsHavingTrait<BaseProvider>().Count(a => a.Owner == player);
-
+				var currentBases = world.ActorsHavingTrait<BaseBuilding>().Count(a => a.Owner == player);
 				if (currentBases > cachedBases)
 				{
 					cachedBases = currentBases;
