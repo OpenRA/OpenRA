@@ -22,8 +22,10 @@ namespace OpenRA.Mods.Common
 
 	public static class AIUtils
 	{
-		public static bool IsAreaAvailable<T>(World world, Player player, Map map, int radius, HashSet<string> terrainTypes)
+		public static bool IsAreaAvailable<T>(World world, Player player, Map map, BaseBuilderBotModule baseBuilder)
 		{
+			var radius = baseBuilder.Info.MaxBaseRadius;
+			var terrainTypes = baseBuilder.Info.WaterTerrainTypes;
 			var cells = world.ActorsHavingTrait<T>().Where(a => a.Owner == player);
 
 			// TODO: Properly check building foundation rather than 3x3 area.

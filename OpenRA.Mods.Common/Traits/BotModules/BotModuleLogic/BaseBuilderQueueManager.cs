@@ -72,7 +72,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (waterState == WaterCheck.NotChecked)
 			{
-				if (AIUtils.IsAreaAvailable<BaseBuilding>(world, player, world.Map, baseBuilder.Info.MaxBaseRadius, baseBuilder.Info.WaterTerrainTypes))
+				if (AIUtils.IsAreaAvailable<BaseBuilding>(world, player, world.Map, baseBuilder))
 					waterState = WaterCheck.EnoughWater;
 				else
 				{
@@ -255,7 +255,7 @@ namespace OpenRA.Mods.Common.Traits
 			// Only consider building this if there is enough water inside the base perimeter and there are close enough adjacent buildings
 			if (waterState == WaterCheck.EnoughWater && baseBuilder.Info.NewProductionCashThreshold > 0
 				&& playerResources.Resources > baseBuilder.Info.NewProductionCashThreshold
-				&& AIUtils.IsAreaAvailable<GivesBuildableArea>(world, player, world.Map, baseBuilder.Info.CheckForWaterRadius, baseBuilder.Info.WaterTerrainTypes))
+				&& AIUtils.IsAreaAvailable<GivesBuildableArea>(world, player, world.Map, baseBuilder))
 			{
 				var navalproduction = GetProducibleBuilding(baseBuilder.Info.NavalProductionTypes, buildableThings);
 				if (navalproduction != null && HasSufficientPowerForActor(navalproduction))
@@ -316,7 +316,7 @@ namespace OpenRA.Mods.Common.Traits
 				// TODO: Extend this check to cover any naval structure, not just production.
 				if (baseBuilder.Info.NavalProductionTypes.Contains(name)
 					&& (waterState == WaterCheck.NotEnoughWater
-						|| !AIUtils.IsAreaAvailable<GivesBuildableArea>(world, player, world.Map, baseBuilder.Info.CheckForWaterRadius, baseBuilder.Info.WaterTerrainTypes)))
+						|| !AIUtils.IsAreaAvailable<GivesBuildableArea>(world, player, world.Map, baseBuilder)))
 					continue;
 
 				// Will this put us into low power?
