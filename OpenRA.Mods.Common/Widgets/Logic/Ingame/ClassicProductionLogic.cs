@@ -78,6 +78,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (foreground != null)
 					foregroundTemplate = foreground.Get("ROW_TEMPLATE");
 
+				var powerMeter = widget.GetOrNull<SpritePowerMeterWidget>("POWER_BAR");
 				Action<int, int> updateBackground = (_, icons) =>
 				{
 					var rows = Math.Max(palette.MinimumRows, (icons + palette.Columns - 1) / palette.Columns);
@@ -94,6 +95,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							row.Bounds.Y = i * rowHeight;
 							background.AddChild(row);
 						}
+
+						if (powerMeter != null)
+							powerMeter.Bounds.Height = rows * rowHeight;
 
 						if (backgroundBottom == null)
 							return;
