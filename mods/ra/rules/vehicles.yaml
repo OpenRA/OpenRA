@@ -518,6 +518,10 @@ MNLY:
 		RearmActors: fix
 	Targetable:
 		TargetTypes: Ground, Vehicle, Mine
+	WithAmmoPipsDecoration:
+		Position: BottomLeft
+		Margin: 4, 3
+		RequiresSelection: true
 
 TRUK:
 	Inherits: ^Vehicle
