@@ -50,6 +50,16 @@ sidebar-bits:
 		production-tooltip-cost: 68, 51, 16, 16
 		indicator-muted: 0, 119, 26, 24
 
+power-meter:
+	Inherits: ^Chrome
+	Regions:
+		background: 228, 278, 78, 10
+		none: 468, 508, 4 ,4
+		available: 468, 503, 12, 2
+		used: 467, 487, 5, 6
+		danger: 468, 482, 4, 4
+		disabled: 468, 498, 4, 4
+
 commandbar:
 	Inherits: ^Chrome
 	Regions:

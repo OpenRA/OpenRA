@@ -478,6 +478,11 @@ Container@PLAYER_WIDGETS:
 							ClickThrough: false
 							ImageCollection: sidebar
 							ImageName: background-bottom
+						Image@POWERBAR_BACKGROUND_TOP:
+							Width: 78
+							Height: 10
+							ImageCollection: power-meter
+							ImageName: background
 				LogicTicker@PRODUCTION_TICKER:
 				ProductionPalette@PRODUCTION_PALETTE:
 					X: 39
@@ -632,3 +637,18 @@ Container@PLAYER_WIDGETS:
 									Y: 5
 									ImageCollection: scrollbar
 									ImageName: down_arrow
+				SpritePowerMeter@POWERMETER:
+					Logic: SpritePowerMeterLogic
+					X: WINDOW_RIGHT - 225
+					Y: 270
+					MeterAlongside: ROW_TEMPLATE
+					ParentContainer: PALETTE_BACKGROUND
+					MeterHeight: 4
+					PowerUnitsPerBar: 25
+					TickWait: 4
+					ImageCollection: power-meter
+					NoPowerImage: none
+					AvailablePowerImage: available
+					UsedPowerImage: danger
+					OverUsedPowerImage: disabled
+					FlashPowerImage: used
