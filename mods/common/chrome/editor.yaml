@@ -620,29 +620,30 @@ Container@EDITOR_WORLD_ROOT:
 			Contrast: true
 
 ScrollPanel@CATEGORY_FILTER_PANEL:
-	Width: 170
+	Width: 240
+	TopBottomSpacing: 5
+	ItemSpacing: 5
 	Children:
 		Container@SELECT_CATEGORIES_BUTTONS:
 			Width: PARENT_RIGHT
-			Height: 29
+			Height: 25
 			Children:
 				Button@SELECT_ALL:
 					X: 10
-					Y: 2
-					Width: 60
+					Y: 0 - 5
+					Width: 93
 					Height: 25
 					Text: All
 					Font: Bold
 				Button@SELECT_NONE:
-					X: PARENT_RIGHT - WIDTH - 34
-					Y: 2
-					Width: 60
+					X: 10 + 93 + 10
+					Y: 0 - 5
+					Width: 93
 					Height: 25
 					Text: None
 					Font: Bold
 		Checkbox@CATEGORY_TEMPLATE:
 			X: 5
-			Y: 5
 			Width: PARENT_RIGHT - 29
 			Height: 20
 			Visible: false
