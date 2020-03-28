@@ -147,6 +147,7 @@ namespace OpenRA.Mods.Common.Traits
 			this.world = world;
 			targetWindStrengthIndex = info.ChangingWindLevel ? world.LocalRandom.Next(info.WindLevels.Length) : 0;
 			windUpdateCountdown = world.LocalRandom.Next(info.WindTick[0], info.WindTick[1]);
+			windStrength = info.WindLevels[targetWindStrengthIndex];
 		}
 
 		void INotifyViewportZoomExtentsChanged.ViewportZoomExtentsChanged(float minZoom, float maxZoom)
