@@ -259,7 +259,10 @@ namespace OpenRA.Mods.Common.Traits
 			if (developerMode.AllTech)
 				return Producible.Keys;
 
-			return allProducibles;
+			if (self.Owner.IsBot)
+				return allProducibles;
+			else
+				return allProducibles.Select(a => a).Where(a => a.TraitInfo<BuildableInfo>().BotOnly == false);
 		}
 
 		public virtual IEnumerable<ActorInfo> BuildableItems()
@@ -271,7 +274,10 @@ namespace OpenRA.Mods.Common.Traits
 			if (developerMode.AllTech)
 				return Producible.Keys;
 
-			return buildableProducibles;
+			if (self.Owner.IsBot)
+				return buildableProducibles;
+			else
+				return buildableProducibles.Select(a => a).Where(a => a.TraitInfo<BuildableInfo>().BotOnly == false);
 		}
 
 		public bool CanBuild(ActorInfo actor)

@@ -34,6 +34,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Force a specific faction variant, overriding the faction of the producing actor.")]
 		public readonly string ForceFaction = null;
 
+		[Desc("Only Bots can produce this actor. Detailed control is possible for bot when just devs just edit the yaml files")]
+		public readonly bool BotOnly = false;
+
 		[SequenceReference]
 		[Desc("Sequence of the actor that contains the icon.")]
 		public readonly string Icon = "icon";
