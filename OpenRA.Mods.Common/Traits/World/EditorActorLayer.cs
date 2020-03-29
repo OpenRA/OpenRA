@@ -133,12 +133,13 @@ namespace OpenRA.Mods.Common.Traits
 			if (!preview.Bounds.IsEmpty)
 				screenMap.Add(preview, preview.Bounds);
 
-			foreach (var kv in preview.Footprint)
-				AddPreviewLocation(preview, kv.Key);
-
 			// Fallback to the actor's CenterPosition for the ActorMap if it has no Footprint
-			if (!preview.Footprint.Any())
-				AddPreviewLocation(preview, worldRenderer.World.Map.CellContaining(preview.CenterPosition));
+			var footprint = preview.Footprint.Select(kv => kv.Key).ToArray();
+			if (!footprint.Any())
+				footprint = new[] { worldRenderer.World.Map.CellContaining(preview.CenterPosition) };
+
+			foreach (var cell in footprint)
+				AddPreviewLocation(preview, cell);
 
 			if (!initialSetup)
 			{
@@ -154,16 +155,21 @@ namespace OpenRA.Mods.Common.Traits
 			previews.Remove(preview);
 			screenMap.Remove(preview);
 
-			foreach (var kv in preview.Footprint)
+			// Fallback to the actor's CenterPosition for the ActorMap if it has no Footprint
+			var footprint = preview.Footprint.Select(kv => kv.Key).ToArray();
+			if (!footprint.Any())
+				footprint = new[] { worldRenderer.World.Map.CellContaining(preview.CenterPosition) };
+
+			foreach (var cell in footprint)
 			{
 				List<EditorActorPreview> list;
-				if (!cellMap.TryGetValue(kv.Key, out list))
+				if (!cellMap.TryGetValue(cell, out list))
 					continue;
 
 				list.Remove(preview);
 
 				if (!list.Any())
-					cellMap.Remove(kv.Key);
+					cellMap.Remove(cell);
 			}
 
 			UpdateNeighbours(preview.Footprint);
