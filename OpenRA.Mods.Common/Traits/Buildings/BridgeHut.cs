@@ -59,7 +59,9 @@ namespace OpenRA.Mods.Common.Traits
 		// Enabled during a demolish action
 		int demolishStep;
 		int demolishDelay;
+		int initialDemolishDelay;
 		Actor demolishSaboteur;
+		bool beginDemolishing;
 
 		public BridgeHut(World world, BridgeHutInfo info)
 		{
@@ -100,6 +102,27 @@ namespace OpenRA.Mods.Common.Traits
 
 		void ITick.Tick(Actor self)
 		{
+			if (beginDemolishing && initialDemolishDelay-- <= 0 && !self.IsDead)
+			{
+				var modifiers = self.TraitsImplementing<IDamageModifier>()
+					.Concat(self.Owner.PlayerActor.TraitsImplementing<IDamageModifier>())
+					.Select(t => t.GetDamageModifier(self, null));
+
+				if (Util.ApplyPercentageModifiers(100, modifiers) > 0)
+				{
+					if (Info.DemolishPropagationDelay > 0)
+					{
+						demolishStep = 0;
+						DemolishStep();
+					}
+					else
+						foreach (var s in segments.Values)
+							s.Demolish(demolishSaboteur);
+				}
+
+				beginDemolishing = false;
+			}
+
 			// Update any dead segments
 			dirtyLocations.Clear();
 			foreach (var kv in segments)
@@ -172,29 +195,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		void IDemolishable.Demolish(Actor self, Actor saboteur, int delay)
 		{
-			// TODO: Handle using ITick
-			self.World.Add(new DelayedAction(delay, () =>
-			{
-				if (self.IsDead)
-					return;
-
-				var modifiers = self.TraitsImplementing<IDamageModifier>()
-					.Concat(self.Owner.PlayerActor.TraitsImplementing<IDamageModifier>())
-					.Select(t => t.GetDamageModifier(self, null));
-
-				if (Util.ApplyPercentageModifiers(100, modifiers) > 0)
-				{
-					if (Info.DemolishPropagationDelay > 0)
-					{
-						demolishStep = 0;
-						demolishSaboteur = saboteur;
-						DemolishStep();
-					}
-					else
-						foreach (var s in segments.Values)
-							s.Demolish(saboteur);
-				}
-			}));
+			demolishSaboteur = saboteur;
+			beginDemolishing = true;
+			initialDemolishDelay = delay;
 		}
 
 		public void DemolishStep()
