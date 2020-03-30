@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -11,13 +11,17 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 
 namespace OpenRA.Traits
 {
+	public interface ICreatesFrozenActors
+	{
+		void OnVisibilityChanged(FrozenActor frozen);
+	}
+
 	[Desc("Required for FrozenUnderFog to work. Attach this to the player actor.")]
 	public class FrozenActorLayerInfo : Requires<ShroudInfo>, ITraitInfo
 	{
@@ -32,11 +36,13 @@ namespace OpenRA.Traits
 		public readonly PPos[] Footprint;
 		public readonly WPos CenterPosition;
 		readonly Actor actor;
+		readonly ICreatesFrozenActors frozenTrait;
 		readonly Player viewer;
 		readonly Shroud shroud;
 
 		public Player Owner { get; private set; }
 		public BitSet<TargetableType> TargetTypes { get; private set; }
+		public WPos[] TargetablePositions { get; private set; }
 
 		public ITooltipInfo TooltipInfo { get; private set; }
 		public Player TooltipOwner { get; private set; }
@@ -46,7 +52,17 @@ namespace OpenRA.Traits
 		public DamageState DamageState { get; private set; }
 		readonly IHealth health;
 
+		// The Visible flag is tied directly to the actor visibility under the fog.
+		// If Visible is true, the actor is made invisible (via FrozenUnderFog/IDefaultVisibility)
+		// and this FrozenActor is rendered instead.
+		// The Hidden flag covers the edge case that occurs when the backing actor was last "seen"
+		// to be cloaked or otherwise not CanBeViewedByPlayer()ed. Setting Visible to true when
+		// the actor is hidden under the fog would leak the actors position via the tooltips and
+		// AutoTargetability, and keeping Visible as false would cause the actor to be rendered
+		// under the fog.
 		public bool Visible = true;
+		public bool Hidden = false;
+
 		public bool Shrouded { get; private set; }
 		public bool NeedRenderables { get; set; }
 		public IRenderable[] Renderables = NoRenderables;
@@ -60,9 +76,10 @@ namespace OpenRA.Traits
 
 		int flashTicks;
 
-		public FrozenActor(Actor actor, PPos[] footprint, Player viewer, bool startsRevealed)
+		public FrozenActor(Actor actor, ICreatesFrozenActors frozenTrait, PPos[] footprint, Player viewer, bool startsRevealed)
 		{
 			this.actor = actor;
+			this.frozenTrait = frozenTrait;
 			this.viewer = viewer;
 			shroud = viewer.Shroud;
 			NeedRenderables = startsRevealed;
@@ -101,6 +118,8 @@ namespace OpenRA.Traits
 		{
 			Owner = actor.Owner;
 			TargetTypes = actor.GetEnabledTargetTypes();
+			TargetablePositions = actor.GetTargetablePositions().ToArray();
+			Hidden = !actor.CanBeViewedByPlayer(viewer);
 
 			if (health != null)
 			{
@@ -142,7 +161,17 @@ namespace OpenRA.Traits
 					Shrouded = false;
 			}
 
+			// Force the backing trait to update so other actors can't
+			// query inconsistent state (both hidden or both visible)
+			if (Visible != wasVisible)
+				frozenTrait.OnVisibilityChanged(this);
+
 			NeedRenderables |= Visible && !wasVisible;
+		}
+
+		public void Invalidate()
+		{
+			Owner = null;
 		}
 
 		public void Flash()
@@ -175,8 +204,11 @@ namespace OpenRA.Traits
 
 	public class FrozenActorLayer : IRender, ITick, ISync
 	{
-		[Sync] public int VisibilityHash;
-		[Sync] public int FrozenHash;
+		[Sync]
+		public int VisibilityHash;
+
+		[Sync]
+		public int FrozenHash;
 
 		readonly int binSize;
 		readonly World world;
@@ -323,11 +355,28 @@ namespace OpenRA.Traits
 			return fa;
 		}
 
-		public IEnumerable<FrozenActor> FrozenActorsInRegion(CellRegion region)
+		public IEnumerable<FrozenActor> FrozenActorsInRegion(CellRegion region, bool onlyVisible = true)
 		{
 			var tl = region.TopLeft;
 			var br = region.BottomRight;
-			return partitionedFrozenActorIds.InBox(Rectangle.FromLTRB(tl.X, tl.Y, br.X, br.Y)).Select(FromID);
+			return partitionedFrozenActorIds.InBox(Rectangle.FromLTRB(tl.X, tl.Y, br.X, br.Y))
+				.Select(FromID)
+				.Where(fa => fa.IsValid && (!onlyVisible || fa.Visible));
+		}
+
+		public IEnumerable<FrozenActor> FrozenActorsInCircle(World world, WPos origin, WDist r, bool onlyVisible = true)
+		{
+			var centerCell = world.Map.CellContaining(origin);
+			var cellRange = (r.Length + 1023) / 1024;
+			var tl = centerCell - new CVec(cellRange, cellRange);
+			var br = centerCell + new CVec(cellRange, cellRange);
+
+			// Target ranges are calculated in 2D, so ignore height differences
+			return partitionedFrozenActorIds.InBox(Rectangle.FromLTRB(tl.X, tl.Y, br.X, br.Y))
+				.Select(FromID)
+				.Where(fa => fa.IsValid &&
+					(!onlyVisible || fa.Visible) &&
+					(fa.CenterPosition - origin).HorizontalLengthSquared <= r.LengthSquared);
 		}
 	}
 }

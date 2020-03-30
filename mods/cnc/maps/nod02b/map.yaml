@@ -25,6 +25,7 @@ Players:
 		Color: F5D378
 		Allies: GDI
 		Enemies: Nod
+		Bot: campaign
 	PlayerReference@Nod:
 		Name: Nod
 		Playable: True
@@ -138,9 +139,6 @@ Actors:
 		Location: 7,40
 		Owner: GDI
 		SubCell: 2
-	waypoint27: waypoint
-		Location: 60,61
-		Owner: Neutral
 	waypoint26: waypoint
 		Location: 26,41
 		Owner: Neutral

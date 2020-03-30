@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -11,8 +11,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using OpenRA.Graphics;
+using OpenRA.Primitives;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
@@ -92,7 +92,7 @@ namespace OpenRA.Mods.Common.Widgets
 			// Mask to prevent any clicks from being sent to other widgets
 			fullscreenMask = new MaskWidget();
 			fullscreenMask.Bounds = new Rectangle(0, 0, Game.Renderer.Resolution.Width, Game.Renderer.Resolution.Height);
-			fullscreenMask.OnMouseDown += mi => { Game.Sound.PlayNotification(ModRules, null, "Sounds", "ClickSound", null); RemovePanel(); };
+			fullscreenMask.OnMouseDown += mi => { Game.Sound.PlayNotification(ModRules, null, "Sounds", ClickSound, null); RemovePanel(); };
 			if (onCancel != null)
 				fullscreenMask.OnMouseDown += _ => onCancel();
 
@@ -101,9 +101,13 @@ namespace OpenRA.Mods.Common.Widgets
 			panelRoot.AddChild(fullscreenMask);
 
 			var oldBounds = panel.Bounds;
+			var panelY = RenderOrigin.Y + Bounds.Height - panelRoot.RenderOrigin.Y;
+			if (panelY + oldBounds.Height > Game.Renderer.Resolution.Height)
+				panelY -= (Bounds.Height + oldBounds.Height);
+
 			panel.Bounds = new Rectangle(
 				RenderOrigin.X - panelRoot.RenderOrigin.X,
-				RenderOrigin.Y + Bounds.Height - panelRoot.RenderOrigin.Y,
+				panelY,
 				oldBounds.Width,
 				oldBounds.Height);
 			panelRoot.AddChild(panel);

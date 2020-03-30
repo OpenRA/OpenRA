@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -16,11 +16,11 @@ namespace OpenRA.Mods.Common.Orders
 {
 	public class EnterAlliedActorTargeter<T> : UnitOrderTargeter where T : ITraitInfo
 	{
-		readonly Func<Actor, bool> canTarget;
+		readonly Func<Actor, TargetModifiers, bool> canTarget;
 		readonly Func<Actor, bool> useEnterCursor;
 
 		public EnterAlliedActorTargeter(string order, int priority,
-			Func<Actor, bool> canTarget, Func<Actor, bool> useEnterCursor)
+			Func<Actor, TargetModifiers, bool> canTarget, Func<Actor, bool> useEnterCursor)
 			: base(order, priority, "enter", false, true)
 		{
 			this.canTarget = canTarget;
@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Orders
 
 		public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 		{
-			if (!self.Owner.IsAlliedWith(target.Owner) || !target.Info.HasTraitInfo<T>() || !canTarget(target))
+			if (!self.Owner.IsAlliedWith(target.Owner) || !target.Info.HasTraitInfo<T>() || !canTarget(target, modifiers))
 				return false;
 
 			cursor = useEnterCursor(target) ? "enter" : "enter-blocked";

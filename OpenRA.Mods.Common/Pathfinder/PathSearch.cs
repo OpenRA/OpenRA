@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -45,18 +45,18 @@ namespace OpenRA.Mods.Common.Pathfinder
 			considered = new LinkedList<Pair<CPos, int>>();
 		}
 
-		public static IPathSearch Search(World world, LocomotorInfo li, Actor self, bool checkForBlocked, Func<CPos, bool> goalCondition)
+		public static IPathSearch Search(World world, Locomotor locomotor, Actor self, bool checkForBlocked, Func<CPos, bool> goalCondition)
 		{
-			var graph = new PathGraph(LayerPoolForWorld(world), li, self, world, checkForBlocked);
+			var graph = new PathGraph(LayerPoolForWorld(world), locomotor, self, world, checkForBlocked);
 			var search = new PathSearch(graph);
 			search.isGoal = goalCondition;
 			search.heuristic = loc => 0;
 			return search;
 		}
 
-		public static IPathSearch FromPoint(World world, LocomotorInfo li, Actor self, CPos from, CPos target, bool checkForBlocked)
+		public static IPathSearch FromPoint(World world, Locomotor locomotor, Actor self, CPos @from, CPos target, bool checkForBlocked)
 		{
-			var graph = new PathGraph(LayerPoolForWorld(world), li, self, world, checkForBlocked);
+			var graph = new PathGraph(LayerPoolForWorld(world), locomotor, self, world, checkForBlocked);
 			var search = new PathSearch(graph)
 			{
 				heuristic = DefaultEstimator(target)
@@ -74,9 +74,9 @@ namespace OpenRA.Mods.Common.Pathfinder
 			return search;
 		}
 
-		public static IPathSearch FromPoints(World world, LocomotorInfo li, Actor self, IEnumerable<CPos> froms, CPos target, bool checkForBlocked)
+		public static IPathSearch FromPoints(World world, Locomotor locomotor, Actor self, IEnumerable<CPos> froms, CPos target, bool checkForBlocked)
 		{
-			var graph = new PathGraph(LayerPoolForWorld(world), li, self, world, checkForBlocked);
+			var graph = new PathGraph(LayerPoolForWorld(world), locomotor, self, world, checkForBlocked);
 			var search = new PathSearch(graph)
 			{
 				heuristic = DefaultEstimator(target)

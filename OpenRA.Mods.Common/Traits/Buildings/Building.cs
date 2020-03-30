@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -13,7 +13,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
-using OpenRA.Mods.Common.Traits.Render;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -27,7 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 		OccupiedUntargetable = 'X'
 	}
 
-	public class BuildingInfo : ITraitInfo, IOccupySpaceInfo, IPlaceBuildingDecorationInfo, UsesInit<LocationInit>
+	public class BuildingInfo : ITraitInfo, IOccupySpaceInfo, IPlaceBuildingDecorationInfo
 	{
 		[Desc("Where you are allowed to place the building (Water, Clear, ...)")]
 		public readonly HashSet<string> TerrainTypes = new HashSet<string>();
@@ -243,33 +242,19 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class Building : IOccupySpace, ITargetableCells, INotifySold, INotifyTransform, ISync, INotifyCreated,
-		INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyDemolition
+	public class Building : IOccupySpace, ITargetableCells, INotifySold, INotifyTransform, ISync,
+		INotifyAddedToWorld, INotifyRemovedFromWorld
 	{
-		public readonly bool SkipMakeAnimation;
 		public readonly BuildingInfo Info;
-		public bool BuildComplete { get; private set; }
 
-		[Sync] readonly CPos topLeft;
+		[Sync]
+		readonly CPos topLeft;
+
 		readonly Actor self;
 		readonly BuildingInfluence influence;
 
 		Pair<CPos, SubCell>[] occupiedCells;
 		Pair<CPos, SubCell>[] targetableCells;
-
-		// Shared activity lock: undeploy, sell, capture, etc.
-		[Sync] public bool Locked = true;
-
-		public bool Lock()
-		{
-			if (Locked)
-				return false;
-
-			Locked = true;
-			return true;
-		}
-
-		public void Unlock() { Locked = false; }
 
 		public CPos TopLeft { get { return topLeft; } }
 		public WPos CenterPosition { get; private set; }
@@ -288,18 +273,11 @@ namespace OpenRA.Mods.Common.Traits
 				.Select(c => Pair.New(c, SubCell.FullCell)).ToArray();
 
 			CenterPosition = init.World.Map.CenterOfCell(topLeft) + Info.CenterOffset(init.World);
-			SkipMakeAnimation = init.Contains<SkipMakeAnimsInit>();
 		}
 
 		public Pair<CPos, SubCell>[] OccupiedCells() { return occupiedCells; }
 
 		Pair<CPos, SubCell>[] ITargetableCells.TargetableCells() { return targetableCells; }
-
-		void INotifyCreated.Created(Actor self)
-		{
-			if (SkipMakeAnimation || !self.Info.HasTraitInfo<WithMakeAnimationInfo>())
-				NotifyBuildingComplete(self);
-		}
 
 		void INotifyAddedToWorld.AddedToWorld(Actor self)
 		{
@@ -321,29 +299,10 @@ namespace OpenRA.Mods.Common.Traits
 			influence.RemoveInfluence(self, Info.Tiles(self.Location));
 		}
 
-		public void NotifyBuildingComplete(Actor self)
-		{
-			if (BuildComplete)
-				return;
-
-			BuildComplete = true;
-			Unlock();
-
-			foreach (var notify in self.TraitsImplementing<INotifyBuildComplete>())
-				notify.BuildingComplete(self);
-		}
-
-		void INotifyDemolition.Demolishing(Actor self)
-		{
-			Lock();
-		}
-
 		void INotifySold.Selling(Actor self)
 		{
 			if (Info.RemoveSmudgesOnSell)
 				RemoveSmudges();
-
-			BuildComplete = false;
 		}
 
 		void INotifySold.Sold(Actor self) { }

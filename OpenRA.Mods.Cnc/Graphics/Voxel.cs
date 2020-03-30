@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,10 +10,10 @@
 #endregion
 
 using System;
-using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Cnc.FileFormats;
+using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Cnc.Graphics
 {
@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Cnc.Graphics
 			for (var i = 0; i < vxl.LimbCount; i++)
 			{
 				var vl = vxl.Limbs[i];
-				var l = new Limb();
+				var l = default(Limb);
 				l.Scale = vl.Scale;
 				l.Bounds = (float[])vl.Bounds.Clone();
 				l.Size = (byte[])vl.Size.Clone();
@@ -101,18 +101,21 @@ namespace OpenRA.Mods.Cnc.Graphics
 
 		public float[] Bounds(uint frame)
 		{
-			var ret = new float[] { float.MaxValue, float.MaxValue, float.MaxValue,
-				float.MinValue, float.MinValue, float.MinValue };
+			var ret = new[]
+			{
+				float.MaxValue, float.MaxValue, float.MaxValue,
+				float.MinValue, float.MinValue, float.MinValue
+			};
 
 			for (uint j = 0; j < limbs; j++)
 			{
 				var l = limbData[j];
-				var b = new float[]
+				var b = new[]
 				{
 					0, 0, 0,
-					(l.Bounds[3] - l.Bounds[0]),
-					(l.Bounds[4] - l.Bounds[1]),
-					(l.Bounds[5] - l.Bounds[2])
+					l.Bounds[3] - l.Bounds[0],
+					l.Bounds[4] - l.Bounds[1],
+					l.Bounds[5] - l.Bounds[2]
 				};
 
 				// Calculate limb bounding box

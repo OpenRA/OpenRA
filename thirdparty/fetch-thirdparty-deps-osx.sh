@@ -1,10 +1,14 @@
 #!/bin/bash
 
+<<<<<<< HEAD
 LAUNCHER_TAG="osx-launcher-20171118"
+=======
+LAUNCHER_TAG="osx-launcher-20191007"
+>>>>>>> e82c30fbabc008a988936025f3250729d9a22b4c
 
 download_dir="${0%/*}/download/osx"
 mkdir -p "$download_dir"
-cd "$download_dir"
+cd "$download_dir" || exit 1
 
 if [ ! -f libSDL2.dylib ]; then
 	echo "Fetching OS X SDL2 library from GitHub."
@@ -18,5 +22,10 @@ fi
 
 if [ ! -f Eluant.dll.config ]; then
 	echo "Fetching OS X Lua configuration file from GitHub."
-	curl -LOs https://raw.githubusercontent.com/OpenRA/OpenRALauncherOSX/${LAUNCHER_TAG}/dependencies/Eluant.dll.config
+	curl -LOs https://raw.githubusercontent.com/OpenRA/OpenRALauncherOSX/${LAUNCHER_TAG}/Eluant.dll.config
+fi
+
+if [ ! -f libfreetype.6.dylib ]; then
+	echo "Fetching OS X FreeType library from GitHub."
+	curl -LOs https://github.com/OpenRA/OpenRALauncherOSX/releases/download/${LAUNCHER_TAG}/libfreetype.6.dylib
 fi

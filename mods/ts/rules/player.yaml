@@ -11,54 +11,76 @@ Player:
 	GrantConditionOnPrerequisiteManager:
 	ClassicProductionQueue@Building:
 		Type: Building
+		DisplayOrder: 0
 		BuildDurationModifier: 120
-		LowPowerSlowdown: 3
-		QueuedAudio: Building
+		LowPowerModifier: 300
 		ReadyAudio: ConstructionComplete
-		BlockedAudio:
 		LimitedAudio: BuildingInProgress
+		QueuedAudio: Building
+		OnHoldAudio: OnHold
+		CancelledAudio: Cancelled
 		SpeedUp: True
 	ClassicProductionQueue@Defense:
 		Type: Defense
+		DisplayOrder: 1
 		BuildDurationModifier: 120
-		LowPowerSlowdown: 3
-		QueuedAudio: Building
+		LowPowerModifier: 300
 		ReadyAudio: ConstructionComplete
-		BlockedAudio:
 		LimitedAudio: BuildingInProgress
+		QueuedAudio: Building
+		OnHoldAudio: OnHold
+		CancelledAudio: Cancelled
 		SpeedUp: True
 	ClassicProductionQueue@Vehicle:
 		Type: Vehicle
+		DisplayOrder: 3
 		BuildDurationModifier: 120
-		LowPowerSlowdown: 3
-		BlockedAudio:
+		LowPowerModifier: 300
+		ReadyAudio: UnitReady
 		LimitedAudio: BuildingInProgress
+		QueuedAudio: Training
+		OnHoldAudio: OnHold
+		CancelledAudio: Cancelled
 		SpeedUp: True
 	ClassicProductionQueue@Infantry:
 		Type: Infantry
+		DisplayOrder: 2
 		BuildDurationModifier: 120
-		LowPowerSlowdown: 3
-		BlockedAudio:
+		LowPowerModifier: 300
+		ReadyAudio: UnitReady
 		LimitedAudio: BuildingInProgress
+		QueuedAudio: Training
+		OnHoldAudio: OnHold
+		CancelledAudio: Cancelled
 		SpeedUp: True
 	ClassicProductionQueue@Air:
 		Type: Air
+		DisplayOrder: 4
 		BuildDurationModifier: 120
-		LowPowerSlowdown: 3
-		BlockedAudio:
+		LowPowerModifier: 300
+		ReadyAudio: UnitReady
 		LimitedAudio: BuildingInProgress
+		QueuedAudio: Training
+		OnHoldAudio: OnHold
+		CancelledAudio: Cancelled
 		SpeedUp: True
 	PlaceBuilding:
-		Palette: placebuilding
-		LineBuildSegmentPalette: placelinesegment
+		NewOptionsNotification: NewOptions
+		CannotPlaceNotification: BuildingCannotPlaceAudio
 	SupportPowerManager:
 	ScriptTriggers:
 	MissionObjectives:
+		WinNotification: Win
+		LoseNotification: Lose
+		LeaveNotification: Leave
 	ConquestVictoryConditions:
 	PowerManager:
+		SpeechNotification: LowPower
 	AllyRepair:
 	PlayerResources:
 		InsufficientFundsNotification: InsufficientFunds
+		CashTickUpNotification: CashTickUp
+		CashTickDownNotification: CashTickDown
 	DeveloperMode:
 		CheckboxEnabled: true
 		CheckboxDisplayOrder: 8
@@ -67,7 +89,7 @@ Player:
 	LobbyPrerequisiteCheckbox@GLOBALFACTUNDEPLOY:
 		ID: factundeploy
 		Label: Redeployable MCVs
-		Description: Allow undeploying Construction Yard.
+		Description: Allow undeploying Construction Yard
 		Enabled: True
 		DisplayOrder: 7
 		Prerequisites: global-factundeploy
@@ -76,7 +98,12 @@ Player:
 		AllyNotification: OurAllyIsUnderAttack
 	HarvesterAttackNotifier:
 	PlayerStatistics:
-	PlaceSimpleBeacon:
+	PlaceBeacon:
+		Palette: effect
+		IsPlayerPalette: false
+		BeaconSequence: idle
+		ArrowSequence:
+		CircleSequence:
 	ProvidesTechPrerequisite@low:
 		Name: Low
 		Prerequisites: techlevel.low
@@ -95,3 +122,5 @@ Player:
 		Id: unrestricted
 	ResourceStorageWarning:
 	PlayerExperience:
+	ConditionManager:
+	GameSaveViewportManager:

@@ -66,7 +66,7 @@ large_trail:
 	idle: DATA.R8
 		Start: 4126
 		Length: 4
-		Tick: 80
+		Tick: 120
 		BlendMode: Additive
 		ZOffset: 1023
 
@@ -169,12 +169,14 @@ rank:
 overlay:
 	Defaults: DATA.R8
 		Offset: -16,-16
-	build-valid-arrakis:
+	build-valid:
+	build-unsafe: concfoot.shp
+		Offset: 0, 0
 	build-invalid:
 		Start: 1
 	target-select:
 		Start: 2
-	target-valid-arrakis:
+	target-valid:
 	target-invalid:
 		Start: 1
 
@@ -259,14 +261,15 @@ missile2:
 		Facings: -32
 		ZOffset: 1023
 
-atomic:
+deathhand:
 	up: DATA.R8
 		Start: 2147
 		ZOffset: 1023
-		Offset: -9,-9
+		Offset: 2,0
 	down: DATA.R8
 		Start: 2148
 		ZOffset: 1023
+		Offset: -1,0
 
 fire:
 	1: DATA.R8
@@ -438,6 +441,7 @@ moveflsh:
 		Tick: 80
 		BlendMode: Multiply
 		ZOffset: 2047
+		EmbeddedPalette: moveflash
 
 resources:
 	spice: BLOXBASE.R8
@@ -450,6 +454,9 @@ shroud:
 		BlendMode: Subtractive
 		Offset: -16,-16
 		Length: 14
+	palette: DATA.R8
+		Start: 38
+		EmbeddedPalette: shroud
 	shrouda: DATA.R8
 		Start: 40
 	shroudb: DATA.R8

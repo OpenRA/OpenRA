@@ -9,15 +9,19 @@ if [[ "$OSTYPE" != "darwin"* ]]; then
 	command -v genisoimage >/dev/null 2>&1 || { echo >&2 "macOS packaging requires genisoimage."; exit 1; }
 fi
 
+<<<<<<< HEAD
 LAUNCHER_TAG="osx-launcher-20171118"
+=======
+LAUNCHER_TAG="osx-launcher-20191007"
+>>>>>>> e82c30fbabc008a988936025f3250729d9a22b4c
 
 if [ $# -ne "2" ]; then
-	echo "Usage: `basename $0` tag outputdir"
+	echo "Usage: $(basename "$0") tag outputdir"
     exit 1
 fi
 
 # Set the working dir to the location of this script
-cd $(dirname $0)
+cd "$(dirname "$0")" || exit 1
 
 TAG="$1"
 OUTPUTDIR="$2"
@@ -44,24 +48,23 @@ populate_template() {
 
 # Deletes from the first argument's mod dirs all the later arguments
 delete_mods() {
-	pushd "${BUILTDIR}/${1}/Contents/Resources/mods" > /dev/null
+	pushd "${BUILTDIR}/${1}/Contents/Resources/mods" > /dev/null || exit 1
 	shift
-	rm -rf $@
-	pushd > /dev/null
+	rm -rf "$@"
+	pushd > /dev/null || exit 1
 }
 
 echo "Building launchers"
 curl -s -L -O https://github.com/OpenRA/OpenRALauncherOSX/releases/download/${LAUNCHER_TAG}/launcher.zip || exit 3
 unzip -qq -d "${BUILTDIR}" launcher.zip
 rm launcher.zip
-mkdir -p "${BUILTDIR}/.DropDMGBackground"
 
 # Background image is created from source svg in artsrc repository
 # exported to tiff at 72 + 144 DPI, then combined using
 # tiffutil -cathidpicheck bg.tiff bg2x.tiff -out background.tiff
-cp background.tiff "${BUILTDIR}/.DropDMGBackground"
+cp background.tiff "${BUILTDIR}/.background.tiff"
 
-# Finder metadata created using free trial of DropDMG
+# Finder metadata created using create-dsstore.sh
 cp DS_Store "${BUILTDIR}/.DS_Store"
 
 ln -s /Applications/ "${BUILTDIR}/Applications"
@@ -70,12 +73,13 @@ modify_plist "{DEV_VERSION}" "${TAG}" "${BUILTDIR}/OpenRA.app/Contents/Info.plis
 modify_plist "{FAQ_URL}" "http://wiki.openra.net/FAQ" "${BUILTDIR}/OpenRA.app/Contents/Info.plist"
 echo "Building core files"
 
-pushd ${SRCDIR} > /dev/null
+pushd "${SRCDIR}" > /dev/null || exit 1
+make clean
 make osx-dependencies
-make core SDK="-sdk:4.5"
+make core
 make version VERSION="${TAG}"
 make install-core gameinstalldir="/Contents/Resources/" DESTDIR="${BUILTDIR}/OpenRA.app"
-popd > /dev/null
+popd > /dev/null || exit 1
 
 curl -s -L -O https://raw.githubusercontent.com/wiki/OpenRA/OpenRA/Changelog.md
 markdown Changelog.md > "${BUILTDIR}/OpenRA.app/Contents/Resources/CHANGELOG.html"
@@ -106,10 +110,10 @@ else
 	curl -s -L -O https://github.com/OpenRA/libdmg-hfsplus/archive/master.zip || exit 3
 	unzip -qq master.zip
 	rm master.zip
-	pushd libdmg-hfsplus-master > /dev/null
+	pushd libdmg-hfsplus-master > /dev/null || exit 1
 	cmake . > /dev/null
 	make > /dev/null
-	popd > /dev/null
+	popd > /dev/null || exit 1
 
 	if [[ ! -f libdmg-hfsplus-master/dmg/dmg ]] ; then
 		echo "libdmg-hfsplus compilation failed"

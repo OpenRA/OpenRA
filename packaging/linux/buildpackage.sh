@@ -7,15 +7,15 @@ command -v python >/dev/null 2>&1 || { echo >&2 "Linux packaging requires python
 command -v tar >/dev/null 2>&1 || { echo >&2 "Linux packaging requires tar."; exit 1; }
 command -v curl >/dev/null 2>&1 || command -v wget > /dev/null 2>&1 || { echo >&2 "Linux packaging requires curl or wget."; exit 1; }
 
-DEPENDENCIES_TAG="20180723"
+DEPENDENCIES_TAG="20191004"
 
 if [ $# -eq "0" ]; then
-	echo "Usage: `basename $0` version [outputdir]"
+	echo "Usage: $(basename "$0") version [outputdir]"
 	exit 1
 fi
 
 # Set the working dir to the location of this script
-cd $(dirname $0)
+cd "$(dirname "$0")" || exit 1
 
 TAG="$1"
 OUTPUTDIR="$2"
@@ -35,7 +35,7 @@ elif [[ ${TAG} == pkgtest* ]]; then
 	SUFFIX="-pkgtest"
 fi
 
-pushd "${TEMPLATE_ROOT}" > /dev/null
+pushd "${TEMPLATE_ROOT}" > /dev/null || exit 1
 
 if [ ! -d "${OUTPUTDIR}" ]; then
 	echo "Output directory '${OUTPUTDIR}' does not exist.";
@@ -44,14 +44,20 @@ fi
 
 echo "Building core files"
 
-pushd ${SRCDIR} > /dev/null
-make linux-dependencies
-make core SDK="-sdk:4.5"
+pushd "${SRCDIR}" > /dev/null || exit 1
+
+make clean
+
+# linux-dependencies target will trigger the lua detection script, which we don't want during packaging
+make cli-dependencies
+sed "s/@LIBLUA51@/liblua5.1.so.0/" thirdparty/Eluant.dll.config.in > Eluant.dll.config
+
+make core
 make version VERSION="${TAG}"
 make install-engine prefix="usr" DESTDIR="${BUILTDIR}/"
 make install-common-mod-files prefix="usr" DESTDIR="${BUILTDIR}/"
 
-popd > /dev/null
+popd > /dev/null || exit 1
 
 # Add native libraries
 echo "Downloading dependencies"
@@ -66,27 +72,38 @@ fi
 chmod a+x appimagetool-x86_64.AppImage
 
 echo "Building AppImage"
-tar xf libs.tar.bz2
-install -Dm 0755 libSDL2.so "${BUILTDIR}/usr/lib/openra/"
-install -Dm 0644 SDL2-CS.dll.config "${BUILTDIR}/usr/lib/openra/"
-install -Dm 0755 libopenal.so "${BUILTDIR}/usr/lib/openra/"
-install -Dm 0644 OpenAL-CS.dll.config "${BUILTDIR}/usr/lib/openra/"
-install -Dm 0755 liblua.so "${BUILTDIR}/usr/lib/openra/"
-install -Dm 0644 Eluant.dll.config "${BUILTDIR}/usr/lib/openra/"
-rm libs.tar.bz2 libSDL2.so SDL2-CS.dll.config libopenal.so OpenAL-CS.dll.config liblua.so Eluant.dll.config
+mkdir libs
+pushd libs
+tar xf ../libs.tar.bz2
+
+install -d "${BUILTDIR}/usr/bin"
+install -d "${BUILTDIR}/etc/mono/4.5"
+install -d "${BUILTDIR}/usr/lib/mono/4.5"
+
+install -Dm 0755 usr/bin/mono "${BUILTDIR}/usr/bin/"
+
+install -Dm 0644 /etc/mono/config "${BUILTDIR}/etc/mono/"
+install -Dm 0644 /etc/mono/4.5/machine.config "${BUILTDIR}/etc/mono/4.5"
+
+for f in $(ls usr/lib/mono/4.5/*.dll usr/lib/mono/4.5/*.exe); do install -Dm 0644 "$f" "${BUILTDIR}/usr/lib/mono/4.5/"; done
+for f in $(ls usr/lib/*.so usr/lib/*.so.*); do install -Dm 0755 "$f" "${BUILTDIR}/usr/lib/"; done
+
+popd
+
+rm -rf libs libs.tar.bz2
 
 build_appimage() {
 	MOD_ID=${1}
 	DISPLAY_NAME=${2}
 	APPDIR="$(pwd)/${MOD_ID}.appdir"
-	APPIMAGE="OpenRA-$(echo ${DISPLAY_NAME} | sed 's/ /-/g')${SUFFIX}-x86_64.AppImage"
+	APPIMAGE="OpenRA-$(echo "${DISPLAY_NAME}" | sed 's/ /-/g')${SUFFIX}-x86_64.AppImage"
 
 	cp -r "${BUILTDIR}" "${APPDIR}"
 
 	# Add mod files
-	pushd "${SRCDIR}" > /dev/null
+	pushd "${SRCDIR}" > /dev/null || exit 1
 	cp -r "mods/${MOD_ID}" mods/modcontent "${APPDIR}/usr/lib/openra/mods"
-	popd > /dev/null
+	popd > /dev/null || exit 1
 
 	# Add launcher and icons
 	sed "s/{MODID}/${MOD_ID}/g" AppRun.in | sed "s/{MODNAME}/${DISPLAY_NAME}/g" > AppRun.temp
@@ -112,15 +129,18 @@ build_appimage() {
 		fi
 	done
 
-	install -d "${APPDIR}/usr/bin"
-
 	sed "s/{MODID}/${MOD_ID}/g" openra.appimage.in | sed "s/{TAG}/${TAG}/g" | sed "s/{MODNAME}/${DISPLAY_NAME}/g" > openra-mod.temp
 	install -m 0755 openra-mod.temp "${APPDIR}/usr/bin/openra-${MOD_ID}"
 
 	sed "s/{MODID}/${MOD_ID}/g" openra-server.appimage.in > openra-mod-server.temp
 	install -m 0755 openra-mod-server.temp "${APPDIR}/usr/bin/openra-${MOD_ID}-server"
 
+	sed "s/{MODID}/${MOD_ID}/g" openra-utility.appimage.in > openra-mod-utility.temp
+	install -m 0755 openra-mod-utility.temp "${APPDIR}/usr/bin/openra-${MOD_ID}-utility"
+
 	install -m 0755 gtk-dialog.py "${APPDIR}/usr/bin/gtk-dialog.py"
+
+	install -m 0755 restore-environment.sh "${APPDIR}/usr/bin/restore-environment.sh"
 
 	# travis-ci doesn't support mounting FUSE filesystems so extract and run the contents manually
 	./appimagetool-x86_64.AppImage --appimage-extract
@@ -141,4 +161,4 @@ build_appimage "cnc" "Tiberian Dawn"
 build_appimage "d2k" "Dune 2000"
 
 # Clean up
-rm -rf openra-mod.temp openra-mod-server.temp temp.desktop temp.xml AppRun.temp appimagetool-x86_64.AppImage squashfs-root "${BUILTDIR}"
+rm -rf openra-mod.temp openra-mod-server.temp openra-mod-utility.temp temp.desktop temp.xml AppRun.temp appimagetool-x86_64.AppImage squashfs-root "${BUILTDIR}"

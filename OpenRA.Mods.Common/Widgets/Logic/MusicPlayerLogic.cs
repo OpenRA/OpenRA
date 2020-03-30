@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,7 +10,6 @@
 #endregion
 
 using System;
-using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Widgets;
@@ -133,11 +132,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			currentSong = musicPlaylist.CurrentSong();
 
 			musicList.RemoveChildren();
-			foreach (var s in music)
+			foreach (var song in music)
 			{
-				var song = s;
 				var item = ScrollItemWidget.Setup(song.Filename, itemTemplate, () => currentSong == song, () => { currentSong = song; Play(); }, () => { });
-				item.Get<LabelWidget>("TITLE").GetText = () => song.Title;
+				var label = item.Get<LabelWithTooltipWidget>("TITLE");
+				WidgetUtils.TruncateLabelToTooltip(label, song.Title);
+
 				item.Get<LabelWidget>("LENGTH").GetText = () => SongLengthLabel(song);
 				musicList.AddChild(item);
 			}

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -21,25 +21,35 @@ namespace OpenRA.Mods.Common.Traits
 	public class ShroudRendererInfo : ITraitInfo
 	{
 		public readonly string Sequence = "shroud";
-		[SequenceReference("Sequence")] public readonly string[] ShroudVariants = new[] { "shroud" };
-		[SequenceReference("Sequence")] public readonly string[] FogVariants = new[] { "fog" };
+		[SequenceReference("Sequence")]
+		public readonly string[] ShroudVariants = { "shroud" };
 
-		[PaletteReference] public readonly string ShroudPalette = "shroud";
-		[PaletteReference] public readonly string FogPalette = "fog";
+		[SequenceReference("Sequence")]
+		public readonly string[] FogVariants = { "fog" };
+
+		[PaletteReference]
+		public readonly string ShroudPalette = "shroud";
+
+		[PaletteReference]
+		public readonly string FogPalette = "fog";
 
 		[Desc("Bitfield of shroud directions for each frame. Lower four bits are",
 			"corners clockwise from TL; upper four are edges clockwise from top")]
-		public readonly int[] Index = new[] { 12, 9, 8, 3, 1, 6, 4, 2, 13, 11, 7, 14 };
+		public readonly int[] Index = { 12, 9, 8, 3, 1, 6, 4, 2, 13, 11, 7, 14 };
 
 		[Desc("Use the upper four bits when calculating frame")]
 		public readonly bool UseExtendedIndex = false;
 
+		[SequenceReference("Sequence")]
 		[Desc("Override for source art that doesn't define a fully shrouded tile")]
-		[SequenceReference("Sequence")] public readonly string OverrideFullShroud = null;
+		public readonly string OverrideFullShroud = null;
+
 		public readonly int OverrideShroudIndex = 15;
 
+		[SequenceReference("Sequence")]
 		[Desc("Override for source art that doesn't define a fully fogged tile")]
-		[SequenceReference("Sequence")] public readonly string OverrideFullFog = null;
+		public readonly string OverrideFullFog = null;
+
 		public readonly int OverrideFogIndex = 15;
 
 		public readonly BlendMode ShroudBlend = BlendMode.Alpha;

@@ -36,7 +36,6 @@ carryall.reinforce:
 frigate:
 	Aircraft:
 		LandableTerrainTypes: Sand, Rock, Transition, Spice, SpiceSand, Dune, Concrete
-		VTOL: true # The frigate would teleport to land otherwise
 
 concreteb:
 	Buildable:

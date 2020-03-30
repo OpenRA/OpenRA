@@ -1,6 +1,6 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -16,7 +16,6 @@ using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using OpenRA.Network;
 
 namespace OpenRA
 {
@@ -161,14 +160,18 @@ namespace OpenRA
 			}
 
 			innerState = LinkState.Uninitialized;
-			parameters = new RSAParameters();
+			parameters = default(RSAParameters);
 			innerFingerprint = null;
 			innerData = null;
 		}
 
 		public string Sign(params string[] data)
 		{
-			if (State != LinkState.Linked)
+			// If we don't have any keys, or we know for sure that they haven't been linked to the forum
+			// then we can't do much here. If we have keys but don't yet know if they have been linked to the
+			// forum (LinkState.CheckingLink or ConnectionFailed) then we sign to avoid blocking the main thread
+			// but accept that - if the cert is invalid - the server will reject the result.
+			if (State <= LinkState.Unlinked)
 				return null;
 
 			return CryptoUtil.Sign(parameters, data.Where(x => !string.IsNullOrEmpty(x)).JoinWith(string.Empty));
@@ -176,7 +179,7 @@ namespace OpenRA
 
 		public string DecryptString(string data)
 		{
-			if (State != LinkState.Linked)
+			if (State <= LinkState.Unlinked)
 				return null;
 
 			return CryptoUtil.DecryptString(parameters, data);

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new KillsSelf(init.Self, this); }
 	}
 
-	class KillsSelf : ConditionalTrait<KillsSelfInfo>, INotifyCreated, INotifyAddedToWorld, ITick
+	class KillsSelf : ConditionalTrait<KillsSelfInfo>, INotifyAddedToWorld, ITick
 	{
 		int lifetime;
 		ConditionManager conditionManager;
@@ -51,9 +51,10 @@ namespace OpenRA.Mods.Common.Traits
 				Kill(self);
 		}
 
-		void INotifyCreated.Created(Actor self)
+		protected override void Created(Actor self)
 		{
 			conditionManager = self.TraitOrDefault<ConditionManager>();
+			base.Created(self);
 		}
 
 		void INotifyAddedToWorld.AddedToWorld(Actor self)
@@ -82,7 +83,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (conditionManager != null && !string.IsNullOrEmpty(Info.GrantsCondition))
 				conditionManager.GrantCondition(self, Info.GrantsCondition);
 
-			if (Info.RemoveInstead || !self.Info.HasTraitInfo<HealthInfo>())
+			if (Info.RemoveInstead || !self.Info.HasTraitInfo<IHealthInfo>())
 				self.Dispose();
 			else
 				self.Kill(self, Info.DamageTypes);

@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+   Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -10,7 +10,7 @@ AlliedUnits =
 {
 	{ delay = 0, types = { "1tnk", "1tnk", "2tnk", "2tnk" } },
 	{ delay = DateTime.Seconds(3), types = { "e1", "e1", "e1", "e3", "e3" } },
-	{ delay = DateTime.Seconds(7), types = { "e6" } }
+	{ delay = DateTime.Seconds(7), types = { "e6", "e6", "thf" } }
 }
 ReinforceBaseUnits = { "1tnk", "1tnk", "2tnk", "arty", "arty" }
 CivilianEvacuees = { "c1", "c2", "c5", "c7", "c8" }
@@ -226,8 +226,8 @@ CreateDemitri = function()
 	end)
 	Trigger.OnRemovedFromWorld(demitri, function()
 		if not demitriChinook.IsDead and demitriChinook.HasPassengers then
-			demitriChinook.Move(ExtractionWaypoint)
-			Trigger.OnIdle(demitriChinook, demitriChinook.Destroy)
+			demitriChinook.Move(ExtractionWaypoint + CVec.New(0, -1))
+			demitriChinook.Destroy()
 			demitriLZFlare.Destroy()
 		end
 	end)
@@ -289,9 +289,6 @@ InitPlayers = function()
 
 	ussr.Cash = 2000
 	Trigger.AfterDelay(0, function() badguy.Resources = badguy.ResourceCapacity * 0.75 end)
-	Trigger.OnCapture(USSROutpostSilo, function() -- getting money through capturing doesn't work
-		player.Cash = player.Cash + Utils.RandomInteger(1200, 1300)
-	end)
 end
 
 InitObjectives = function()
@@ -425,6 +422,7 @@ InitTriggers = function()
 
 	LstProduced = 0
 	Trigger.OnKilled(USSRSpen, LandingPossible)
+	Trigger.OnSold(USSRSpen, LandingPossible)
 	Trigger.OnProduction(USSRSpen, function(self, produced)
 		if produced.Type == "lst" then
 			LstProduced = LstProduced + 1

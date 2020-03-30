@@ -10,6 +10,7 @@
 		Inaccuracy: 128
 		Image: DRAGON
 		TrailImage: small_smoke_trail
+		TrailPalette: effectalpha75
 		HorizontalRateOfTurn: 8
 		RangeLimit: 8c0
 		Palette: ra
@@ -88,7 +89,7 @@ MammothTusk:
 		ImpactActors: false
 		Explosions: medium_twlt
 		ImpactSounds: expnew07.aud
-	-Warhead@3EffWater: CreateEffect
+	-Warhead@3EffWater:
 
 BikeMissile:
 	Inherits: ^DefaultMissile

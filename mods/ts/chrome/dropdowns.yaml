@@ -12,7 +12,7 @@ ScrollPanel@LABEL_DROPDOWN_TEMPLATE:
 				Label@LABEL:
 					Font: TinyBold
 					Width: PARENT_RIGHT
-					Height: 10
+					Height: 13
 					Align: Center
 		ScrollItem@TEMPLATE:
 			Width: PARENT_RIGHT - 27
@@ -88,7 +88,7 @@ ScrollPanel@SPECTATOR_DROPDOWN_TEMPLATE:
 				Label@LABEL:
 					Font: TinyBold
 					Width: PARENT_RIGHT
-					Height: 10
+					Height: 13
 					Align: Center
 		ScrollItem@TEMPLATE:
 			Width: PARENT_RIGHT - 27
@@ -121,7 +121,7 @@ ScrollPanel@NEWS_PANEL:
 	Children:
 		Container@NEWS_ITEM_TEMPLATE:
 			X: 10
-			Y: 5
+			Y: 6
 			Width: PARENT_RIGHT - 40
 			Height: 45
 			Children:
@@ -142,7 +142,7 @@ ScrollPanel@NEWS_PANEL:
 					Width: PARENT_RIGHT
 		Label@NEWS_STATUS:
 			X: 80
-			Y: 0
+			Y: 1
 			Width: PARENT_RIGHT - 80 - 80 - 24
 			Height: PARENT_BOTTOM
 			Align: Center

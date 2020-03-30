@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -168,8 +168,8 @@ namespace OpenRA.Support
 			public readonly Grouping Closes;
 
 			public TokenTypeInfo(string symbol, Precedence precedence, Sides operandSides = Sides.None,
-			                     Associativity associativity = Associativity.Left,
-			                     Grouping opens = Grouping.None, Grouping closes = Grouping.None)
+				Associativity associativity = Associativity.Left,
+				Grouping opens = Grouping.None, Grouping closes = Grouping.None)
 			{
 				Symbol = symbol;
 				Precedence = precedence;
@@ -181,9 +181,9 @@ namespace OpenRA.Support
 			}
 
 			public TokenTypeInfo(string symbol, Precedence precedence, Sides operandSides,
-			                     Sides whitespaceSides,
-			                     Associativity associativity = Associativity.Left,
-			                     Grouping opens = Grouping.None, Grouping closes = Grouping.None)
+				Sides whitespaceSides,
+				Associativity associativity = Associativity.Left,
+				Grouping opens = Grouping.None, Grouping closes = Grouping.None)
 			{
 				Symbol = symbol;
 				Precedence = precedence;
@@ -195,15 +195,14 @@ namespace OpenRA.Support
 			}
 
 			public TokenTypeInfo(string symbol, Precedence precedence, Grouping opens, Grouping closes = Grouping.None,
-			                     Associativity associativity = Associativity.Left)
+				Associativity associativity = Associativity.Left)
 			{
 				Symbol = symbol;
 				Precedence = precedence;
 				WhitespaceSides = Sides.None;
 				OperandSides = opens == Grouping.None ?
-				                                (closes == Grouping.None ? Sides.None : Sides.Left)
-				                                :
-				                                (closes == Grouping.None ? Sides.Right : Sides.Both);
+					(closes == Grouping.None ? Sides.None : Sides.Left) :
+					(closes == Grouping.None ? Sides.Right : Sides.Both);
 				Associativity = associativity;
 				Opens = opens;
 				Closes = closes;
@@ -562,7 +561,8 @@ namespace OpenRA.Support
 
 			public override string Symbol { get { return Name; } }
 
-			public VariableToken(int index, string symbol) : base(TokenType.Variable, index) { Name = symbol; }
+			public VariableToken(int index, string symbol)
+				: base(TokenType.Variable, index) { Name = symbol; }
 		}
 
 		class NumberToken : Token
@@ -590,7 +590,7 @@ namespace OpenRA.Support
 			var tokens = new List<Token>();
 			var currentOpeners = new Stack<Token>();
 			Token lastToken = null;
-			for (var i = 0;;)
+			for (var i = 0; ;)
 			{
 				var token = Token.GetNext(Expression, ref i, lastToken != null ? lastToken.Type : TokenType.Invalid);
 				if (token == null)
@@ -958,7 +958,8 @@ namespace OpenRA.Support
 	{
 		readonly Func<IReadOnlyDictionary<string, int>, bool> asFunction;
 
-		public BooleanExpression(string expression) : base(expression)
+		public BooleanExpression(string expression)
+			: base(expression)
 		{
 			asFunction = Compile<bool>();
 		}
@@ -973,7 +974,8 @@ namespace OpenRA.Support
 	{
 		readonly Func<IReadOnlyDictionary<string, int>, int> asFunction;
 
-		public IntegerExpression(string expression) : base(expression)
+		public IntegerExpression(string expression)
+			: base(expression)
 		{
 			asFunction = Compile<int>();
 		}

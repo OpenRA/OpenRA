@@ -11,7 +11,7 @@ Container@MAINMENU:
 				MuteAudioKey: ToggleMute
 		Label@VERSION_LABEL:
 			X: WINDOW_RIGHT - 10
-			Y: WINDOW_BOTTOM - 20
+			Y: WINDOW_BOTTOM - 19
 			Align: Right
 			Font: Regular
 			Shadow: True
@@ -27,7 +27,7 @@ Container@MAINMENU:
 					Children:
 						Label@MAINMENU_LABEL_TITLE:
 							X: 0
-							Y: 20
+							Y: 21
 							Width: 200
 							Height: 30
 							Text: OpenRA
@@ -81,7 +81,7 @@ Container@MAINMENU:
 					Children:
 						Label@SINGLEPLAYER_MENU_TITLE:
 							X: 0
-							Y: 20
+							Y: 21
 							Width: 200
 							Height: 30
 							Text: Singleplayer
@@ -101,6 +101,13 @@ Container@MAINMENU:
 							Height: 30
 							Text: Missions
 							Font: Bold
+						Button@LOAD_BUTTON:
+							X: PARENT_RIGHT / 2 - WIDTH / 2
+							Y: 140
+							Width: 140
+							Height: 30
+							Text: Load
+							Font: Bold
 						Button@BACK_BUTTON:
 							X: PARENT_RIGHT / 2 - WIDTH / 2
 							Key: escape
@@ -115,7 +122,7 @@ Container@MAINMENU:
 					Children:
 						Label@EXTRAS_MENU_TITLE:
 							X: 0
-							Y: 20
+							Y: 21
 							Width: 200
 							Height: 30
 							Text: Extras
@@ -170,7 +177,7 @@ Container@MAINMENU:
 					Children:
 						Label@MAP_EDITOR_MENU_TITLE:
 							X: 0
-							Y: 20
+							Y: 21
 							Width: 200
 							Height: 30
 							Text: Map Editor
@@ -206,21 +213,21 @@ Container@MAINMENU:
 			Children:
 				Label@PROMPT_TITLE:
 					Width: PARENT_RIGHT
-					Y: 20
+					Y: 21
 					Height: 25
 					Font: Bold
 					Align: Center
 					Text: System Information
 				Label@PROMPT_TEXT_A:
 					X: 15
-					Y: 50
+					Y: 51
 					Width: PARENT_RIGHT - 30
 					Height: 16
 					Align: Center
 					Text: We would like to collect some details that will help us optimize OpenRA.
 				Label@PROMPT_TEXT_B:
 					X: 15
-					Y: 68
+					Y: 69
 					Width: PARENT_RIGHT - 30
 					Height: 16
 					Align: Center
@@ -268,7 +275,7 @@ Container@MAINMENU:
 					Font: Bold
 		Container@UPDATE_NOTICE:
 			X: (WINDOW_RIGHT - WIDTH) / 2
-			Y: 95
+			Y: 96
 			Width: 128
 			Children:
 				Label@A:
@@ -289,7 +296,7 @@ Container@MAINMENU:
 			Children:
 				Label@PERF_TEXT:
 					X: 30
-					Y: WINDOW_BOTTOM - 70
+					Y: WINDOW_BOTTOM - 69
 					Width: 170
 					Height: 40
 					Contrast: true

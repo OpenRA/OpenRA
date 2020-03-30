@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -19,8 +19,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 	[Desc("Replaces the sprite during construction/deploy/undeploy.")]
 	public class WithMakeAnimationInfo : ITraitInfo, Requires<WithSpriteBodyInfo>
 	{
+		[SequenceReference]
 		[Desc("Sequence name to use.")]
-		[SequenceReference] public readonly string Sequence = "make";
+		public readonly string Sequence = "make";
 
 		[GrantedConditionReference]
 		[Desc("The condition to grant to self while the make animation is playing.")]
@@ -36,6 +37,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 	{
 		readonly WithMakeAnimationInfo info;
 		readonly WithSpriteBody[] wsbs;
+		readonly bool skipMakeAnimation;
 
 		ConditionManager conditionManager;
 		int token = ConditionManager.InvalidConditionToken;
@@ -45,14 +47,14 @@ namespace OpenRA.Mods.Common.Traits.Render
 			this.info = info;
 			var self = init.Self;
 			wsbs = self.TraitsImplementing<WithSpriteBody>().Where(w => info.BodyNames.Contains(w.Info.Name)).ToArray();
+			skipMakeAnimation = init.Contains<SkipMakeAnimsInit>();
 		}
 
 		void INotifyCreated.Created(Actor self)
 		{
 			conditionManager = self.TraitOrDefault<ConditionManager>();
-			var building = self.TraitOrDefault<Building>();
-			if (building != null && !building.SkipMakeAnimation)
-				Forward(self, () => building.NotifyBuildingComplete(self));
+			if (!skipMakeAnimation)
+				Forward(self, () => { });
 		}
 
 		public void Forward(Actor self, Action onComplete)
@@ -67,11 +69,14 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 			wsb.PlayCustomAnimation(self, info.Sequence, () =>
 			{
-				if (token != ConditionManager.InvalidConditionToken)
-					token = conditionManager.RevokeCondition(self, token);
+				self.World.AddFrameEndTask(w =>
+				{
+					if (token != ConditionManager.InvalidConditionToken)
+						token = conditionManager.RevokeCondition(self, token);
 
-				// TODO: Rewrite this to use a trait notification for save game support
-				onComplete();
+					// TODO: Rewrite this to use a trait notification for save game support
+					onComplete();
+				});
 			});
 		}
 
@@ -87,11 +92,14 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 			wsb.PlayCustomAnimationBackwards(self, info.Sequence, () =>
 			{
-				if (token != ConditionManager.InvalidConditionToken)
-					token = conditionManager.RevokeCondition(self, token);
+				self.World.AddFrameEndTask(w =>
+				{
+					if (token != ConditionManager.InvalidConditionToken)
+						token = conditionManager.RevokeCondition(self, token);
 
-				// TODO: Rewrite this to use a trait notification for save game support
-				onComplete();
+					// TODO: Rewrite this to use a trait notification for save game support
+					onComplete();
+				});
 			});
 		}
 

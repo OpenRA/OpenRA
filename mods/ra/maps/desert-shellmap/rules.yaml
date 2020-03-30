@@ -23,9 +23,11 @@ World:
 			Soviets: 229, 230, 231, 232, 233, 234, 235, 8, 236, 237, 238, 239, 221, 222, 223, 223
 			Allies: 160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175
 
+^ExistsInWorld:
+	GivesExperience:
+		ActorExperienceModifier: 0
+
 ^Vehicle:
-	GainsExperience:
-		Conditions:
 	DamageMultiplier@UNKILLABLE:
 		RequiresCondition: unkillable
 		Modifier: 0
@@ -33,8 +35,6 @@ World:
 		Condition: unkillable
 
 ^Infantry:
-	GainsExperience:
-		Conditions:
 	DeathSounds@NORMAL:
 		VolumeMultiplier: 0.1
 	DeathSounds@BURNED:
@@ -48,8 +48,6 @@ World:
 		Condition: unkillable
 
 ^Ship:
-	GainsExperience:
-		Conditions:
 	DamageMultiplier@UNKILLABLE:
 		RequiresCondition: unkillable
 		Modifier: 0
@@ -71,6 +69,10 @@ World:
 		Condition: unkillable
 
 ^Bridge:
+	DamageMultiplier:
+		Modifier: 0
+
+^Wall:
 	DamageMultiplier:
 		Modifier: 0
 

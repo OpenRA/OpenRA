@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -33,18 +33,39 @@ namespace OpenRA.GameRules
 		{
 			FieldLoader.Load(this, y);
 
-			VoicePools = Exts.Lazy(() => Voices.ToDictionary(a => a.Key, a => new SoundPool(a.Value)));
-			NotificationsPools = Exts.Lazy(() => Notifications.ToDictionary(a => a.Key, a => new SoundPool(a.Value)));
+			VoicePools = Exts.Lazy(() => Voices.ToDictionary(a => a.Key, a => new SoundPool(1f, a.Value)));
+			NotificationsPools = Exts.Lazy(() => ParseSoundPool(y, "Notifications"));
+		}
+
+		Dictionary<string, SoundPool> ParseSoundPool(MiniYaml y, string key)
+		{
+			var ret = new Dictionary<string, SoundPool>();
+			var classifiction = y.Nodes.First(x => x.Key == key);
+			foreach (var t in classifiction.Value.Nodes)
+			{
+				var volumeModifier = 1f;
+				var volumeModifierNode = t.Value.Nodes.FirstOrDefault(x => x.Key == "VolumeModifier");
+				if (volumeModifierNode != null)
+					volumeModifier = FieldLoader.GetValue<float>(volumeModifierNode.Key, volumeModifierNode.Value.Value);
+
+				var names = FieldLoader.GetValue<string[]>(t.Key, t.Value.Value);
+				var sp = new SoundPool(volumeModifier, names);
+				ret.Add(t.Key, sp);
+			}
+
+			return ret;
 		}
 	}
 
 	public class SoundPool
 	{
+		public readonly float VolumeModifier;
 		readonly string[] clips;
 		readonly List<string> liveclips = new List<string>();
 
-		public SoundPool(params string[] clips)
+		public SoundPool(float volumeModifier, params string[] clips)
 		{
+			VolumeModifier = volumeModifier;
 			this.clips = clips;
 		}
 
@@ -53,8 +74,9 @@ namespace OpenRA.GameRules
 			if (liveclips.Count == 0)
 				liveclips.AddRange(clips);
 
+			// Avoid crashing if there's no clips at all
 			if (liveclips.Count == 0)
-				return null;		/* avoid crashing if there's no clips at all */
+				return null;
 
 			var i = Game.CosmeticRandom.Next(liveclips.Count);
 			var s = liveclips[i];

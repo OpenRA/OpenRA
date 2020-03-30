@@ -4,7 +4,7 @@ Container@SCRIPT_ERROR_PANEL:
 	Children:
 		Label@DESCA:
 			X: 15
-			Y: 15
+			Y: 16
 			Width: PARENT_RIGHT - 30
 			Height: 20
 			Font: Bold
@@ -12,7 +12,7 @@ Container@SCRIPT_ERROR_PANEL:
 			Text: The map script has encountered a fatal error
 		Label@DESCB:
 			X: 15
-			Y: 45
+			Y: 46
 			Width: PARENT_RIGHT - 30
 			Height: 20
 			Font: Regular
@@ -20,7 +20,7 @@ Container@SCRIPT_ERROR_PANEL:
 			Text: The details of the error have been saved to lua.log in the logs directory.
 		Label@DESCC:
 			X: 15
-			Y: 65
+			Y: 66
 			Width: PARENT_RIGHT - 30
 			Height: 20
 			Font: Regular

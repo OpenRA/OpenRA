@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -42,18 +42,24 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class FallsToEarth : IEffectiveOwner
+	public class FallsToEarth : IEffectiveOwner, INotifyCreated
 	{
+		readonly FallsToEarthInfo info;
 		readonly Player effectiveOwner;
 
 		public FallsToEarth(ActorInitializer init, FallsToEarthInfo info)
 		{
-			init.Self.QueueActivity(false, new FallToEarth(init.Self, info));
+			this.info = info;
 			effectiveOwner = init.Contains<EffectiveOwnerInit>() ? init.Get<EffectiveOwnerInit, Player>() : init.Self.Owner;
 		}
 
 		// We return init.Self.Owner if there's no effective owner
 		bool IEffectiveOwner.Disguised { get { return true; } }
 		Player IEffectiveOwner.Owner { get { return effectiveOwner; } }
+
+		void INotifyCreated.Created(Actor self)
+		{
+			self.QueueActivity(false, new FallToEarth(self, info));
+		}
 	}
 }

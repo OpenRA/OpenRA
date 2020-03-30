@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -28,7 +28,8 @@ namespace OpenRA
 
 		public static string WriteToString(this MiniYamlNodes y)
 		{
-			return y.ToLines().JoinWith("\n");
+			// Remove all trailing newlines and restore the final EOF newline
+			return y.ToLines().JoinWith("\n").TrimEnd('\n') + "\n";
 		}
 
 		public static IEnumerable<string> ToLines(this MiniYamlNodes y)
@@ -132,7 +133,8 @@ namespace OpenRA
 			return ret;
 		}
 
-		public MiniYaml(string value) : this(value, null) { }
+		public MiniYaml(string value)
+			: this(value, null) { }
 
 		public MiniYaml(string value, List<MiniYamlNode> nodes)
 		{
@@ -302,7 +304,7 @@ namespace OpenRA
 			foreach (var kv in tree)
 			{
 				var inherited = new Dictionary<string, MiniYamlNode.SourceLocation>();
-				inherited.Add(kv.Key, new MiniYamlNode.SourceLocation());
+				inherited.Add(kv.Key, default(MiniYamlNode.SourceLocation));
 
 				var children = ResolveInherits(kv.Key, kv.Value, tree, inherited);
 				resolved.Add(kv.Key, new MiniYaml(kv.Value.Value, children));
@@ -473,6 +475,7 @@ namespace OpenRA
 	[Serializable]
 	public class YamlException : Exception
 	{
-		public YamlException(string s) : base(s) { }
+		public YamlException(string s)
+			: base(s) { }
 	}
 }

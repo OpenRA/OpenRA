@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,52 +9,48 @@
  */
 #endregion
 
-using OpenRA.Effects;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Rendered when a harvester is docked.")]
-	public class WithDockedOverlayInfo : ITraitInfo, Requires<RenderSpritesInfo>, Requires<BodyOrientationInfo>
+	public class WithDockedOverlayInfo : PausableConditionalTraitInfo, Requires<RenderSpritesInfo>, Requires<BodyOrientationInfo>
 	{
+		[SequenceReference]
 		[Desc("Sequence name to use")]
-		[SequenceReference] public readonly string Sequence = "docking-overlay";
+		public readonly string Sequence = "docking-overlay";
 
 		[Desc("Position relative to body")]
 		public readonly WVec Offset = WVec.Zero;
 
+		[PaletteReference("IsPlayerPalette")]
 		[Desc("Custom palette name")]
-		[PaletteReference("IsPlayerPalette")] public readonly string Palette = null;
+		public readonly string Palette = null;
 
 		[Desc("Custom palette is a player palette BaseName")]
 		public readonly bool IsPlayerPalette = false;
 
-		public object Create(ActorInitializer init) { return new WithDockedOverlay(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new WithDockedOverlay(init.Self, this); }
 	}
 
-	public class WithDockedOverlay : INotifyDocking, INotifyBuildComplete, INotifySold
+	public class WithDockedOverlay : PausableConditionalTrait<WithDockedOverlayInfo>, INotifyDocking
 	{
-		readonly WithDockedOverlayInfo info;
 		readonly AnimationWithOffset anim;
-		bool buildComplete;
 		bool docked;
 
 		public WithDockedOverlay(Actor self, WithDockedOverlayInfo info)
+			: base(info)
 		{
-			this.info = info;
-
 			var rs = self.Trait<RenderSprites>();
 			var body = self.Trait<BodyOrientation>();
 
-			buildComplete = !self.Info.HasTraitInfo<BuildingInfo>(); // always render instantly for units
-
-			var overlay = new Animation(self.World, rs.GetImage(self));
+			var overlay = new Animation(self.World, rs.GetImage(self), () => IsTraitPaused);
 			overlay.Play(info.Sequence);
 
 			anim = new AnimationWithOffset(overlay,
 				() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation))),
-				() => !buildComplete || !docked);
+				() => IsTraitDisabled || !docked);
 
 			rs.Add(anim, info.Palette, info.IsPlayerPalette);
 		}
@@ -62,18 +58,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		void PlayDockingOverlay()
 		{
 			if (docked)
-				anim.Animation.PlayThen(info.Sequence, PlayDockingOverlay);
-		}
-
-		void INotifyBuildComplete.BuildingComplete(Actor self)
-		{
-			buildComplete = true;
-		}
-
-		void INotifySold.Sold(Actor self) { }
-		void INotifySold.Selling(Actor self)
-		{
-			buildComplete = false;
+				anim.Animation.PlayThen(Info.Sequence, PlayDockingOverlay);
 		}
 
 		void INotifyDocking.Docked(Actor self, Actor harvester) { docked = true; PlayDockingOverlay(); }

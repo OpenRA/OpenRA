@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -12,7 +12,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Graphics;
 using OpenRA.Primitives;
+using OpenRA.Support;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -26,12 +28,34 @@ namespace OpenRA.Mods.Common.Traits
 		All = TransientActors | BlockedByMovers
 	}
 
-	public static class CellConditionsExts
+	[Flags]
+	public enum CellFlag : byte
+	{
+		HasFreeSpace = 0,
+		HasActor = 1,
+		HasMovingActor = 2,
+		HasCrushableActor = 4,
+		HasTemporaryBlocker = 8
+	}
+
+	public static class LocomoterExts
 	{
 		public static bool HasCellCondition(this CellConditions c, CellConditions cellCondition)
 		{
 			// PERF: Enum.HasFlag is slower and requires allocations.
 			return (c & cellCondition) == cellCondition;
+		}
+
+		public static bool HasCellFlag(this CellFlag c, CellFlag cellFlag)
+		{
+			// PERF: Enum.HasFlag is slower and requires allocations.
+			return (c & cellFlag) == cellFlag;
+		}
+
+		public static bool HasMovementType(this MovementType m, MovementType movementType)
+		{
+			// PERF: Enum.HasFlag is slower and requires allocations.
+			return (m & movementType) == movementType;
 		}
 	}
 
@@ -66,7 +90,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly BitSet<DamageType> CrushDamageTypes = default(BitSet<DamageType>);
 
 		[FieldLoader.LoadUsing("LoadSpeeds", true)]
-		[Desc("Set Water: 0 for ground units and lower the value on rough terrain.")]
+		[Desc("Lower the value on rough terrain. Leave out entries for impassable terrain.")]
 		public readonly Dictionary<string, TerrainInfo> TerrainSpeeds;
 
 		protected static object LoadSpeeds(MiniYaml y)
@@ -75,11 +99,14 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var t in y.ToDictionary()["TerrainSpeeds"].Nodes)
 			{
 				var speed = FieldLoader.GetValue<int>("speed", t.Value.Value);
-				var nodesDict = t.Value.ToDictionary();
-				var cost = nodesDict.ContainsKey("PathingCost")
-					? FieldLoader.GetValue<int>("cost", nodesDict["PathingCost"].Value)
-					: 10000 / speed;
-				ret.Add(t.Key, new TerrainInfo(speed, cost));
+				if (speed > 0)
+				{
+					var nodesDict = t.Value.ToDictionary();
+					var cost = (nodesDict.ContainsKey("PathingCost")
+						? FieldLoader.GetValue<short>("cost", nodesDict["PathingCost"].Value)
+						: 10000 / speed);
+					ret.Add(t.Key, new TerrainInfo(speed, (short)cost));
+				}
 			}
 
 			return ret;
@@ -105,16 +132,16 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			public static readonly TerrainInfo Impassable = new TerrainInfo();
 
-			public readonly int Cost;
+			public readonly short Cost;
 			public readonly int Speed;
 
 			public TerrainInfo()
 			{
-				Cost = int.MaxValue;
+				Cost = short.MaxValue;
 				Speed = 0;
 			}
 
-			public TerrainInfo(int speed, int cost)
+			public TerrainInfo(int speed, short cost)
 			{
 				Speed = speed;
 				Cost = cost;
@@ -143,29 +170,10 @@ namespace OpenRA.Mods.Common.Traits
 			TilesetMovementClass = new Cache<TileSet, int>(CalculateTilesetMovementClass);
 		}
 
-		public int MovementCostForCell(World world, CPos cell)
-		{
-			return MovementCostForCell(world, TilesetTerrainInfo[world.Map.Rules.TileSet], cell);
-		}
-
-		int MovementCostForCell(World world, TerrainInfo[] terrainInfos, CPos cell)
-		{
-			if (!world.Map.Contains(cell))
-				return int.MaxValue;
-
-			var index = cell.Layer == 0 ? world.Map.GetTerrainIndex(cell) :
-				world.GetCustomMovementLayers()[cell.Layer].GetTerrainIndex(cell);
-
-			if (index == byte.MaxValue)
-				return int.MaxValue;
-
-			return terrainInfos[index].Cost;
-		}
-
 		public int CalculateTilesetMovementClass(TileSet tileset)
 		{
 			// collect our ability to cross *all* terraintypes, in a bitvector
-			return TilesetTerrainInfo[tileset].Select(ti => ti.Cost < int.MaxValue).ToBits();
+			return TilesetTerrainInfo[tileset].Select(ti => ti.Cost < short.MaxValue).ToBits();
 		}
 
 		public uint GetMovementClass(TileSet tileset)
@@ -187,43 +195,182 @@ namespace OpenRA.Mods.Common.Traits
 			return new WorldMovementInfo(world, this);
 		}
 
-		public int MovementCostToEnterCell(WorldMovementInfo worldMovementInfo, Actor self, CPos cell, Actor ignoreActor = null, CellConditions check = CellConditions.All)
+		public virtual bool DisableDomainPassabilityCheck { get { return false; } }
+
+		public virtual object Create(ActorInitializer init) { return new Locomotor(init.Self, this); }
+	}
+
+	public class Locomotor : IWorldLoaded
+	{
+		struct CellCache
 		{
-			var cost = MovementCostForCell(worldMovementInfo.World, worldMovementInfo.TerrainInfos, cell);
-			if (cost == int.MaxValue || !CanMoveFreelyInto(worldMovementInfo.World, self, cell, ignoreActor, check))
-				return int.MaxValue;
-			return cost;
+			public readonly LongBitSet<PlayerBitMask> Blocking;
+			public readonly LongBitSet<PlayerBitMask> Crushable;
+			public readonly CellFlag CellFlag;
+
+			public CellCache(LongBitSet<PlayerBitMask> blocking, CellFlag cellFlag, LongBitSet<PlayerBitMask> crushable = default(LongBitSet<PlayerBitMask>))
+			{
+				Blocking = blocking;
+				Crushable = crushable;
+				CellFlag = cellFlag;
+			}
 		}
 
-		public SubCell GetAvailableSubCell(
-			World world, Actor self, CPos cell, SubCell preferredSubCell = SubCell.Any, Actor ignoreActor = null, CellConditions check = CellConditions.All)
+		public readonly LocomotorInfo Info;
+		CellLayer<short> cellsCost;
+		CellLayer<CellCache> blockingCache;
+
+		readonly Dictionary<byte, CellLayer<short>> customLayerCellsCost = new Dictionary<byte, CellLayer<short>>();
+		readonly Dictionary<byte, CellLayer<CellCache>> customLayerBlockingCache = new Dictionary<byte, CellLayer<CellCache>>();
+
+		LocomotorInfo.TerrainInfo[] terrainInfos;
+		World world;
+		readonly HashSet<CPos> dirtyCells = new HashSet<CPos>();
+
+		IActorMap actorMap;
+		bool sharesCell;
+
+		public Locomotor(Actor self, LocomotorInfo info)
 		{
-			if (MovementCostForCell(world, cell) == int.MaxValue)
+			Info = info;
+			sharesCell = info.SharesCell;
+		}
+
+		public short MovementCostForCell(CPos cell)
+		{
+			if (!world.Map.Contains(cell))
+				return short.MaxValue;
+
+			return cell.Layer == 0 ? cellsCost[cell] : customLayerCellsCost[cell.Layer][cell];
+		}
+
+		public short MovementCostToEnterCell(Actor actor, CPos destNode, Actor ignoreActor, CellConditions check)
+		{
+			if (!world.Map.Contains(destNode))
+				return short.MaxValue;
+
+			var cellCost = destNode.Layer == 0 ? cellsCost[destNode] : customLayerCellsCost[destNode.Layer][destNode];
+
+			if (cellCost == short.MaxValue ||
+				!CanMoveFreelyInto(actor, destNode, ignoreActor, check))
+				return short.MaxValue;
+
+			return cellCost;
+		}
+
+		// Determines whether the actor is blocked by other Actors
+		public bool CanMoveFreelyInto(Actor actor, CPos cell, Actor ignoreActor, CellConditions check)
+		{
+			return CanMoveFreelyInto(actor, cell, SubCell.FullCell, ignoreActor, check);
+		}
+
+		public bool CanMoveFreelyInto(Actor actor, CPos cell, SubCell subCell, Actor ignoreActor, CellConditions check)
+		{
+			var cellCache = GetCache(cell);
+			var cellFlag = cellCache.CellFlag;
+
+			if (!check.HasCellCondition(CellConditions.TransientActors))
+				return true;
+
+			// No actor in the cell or free SubCell.
+			if (cellFlag == CellFlag.HasFreeSpace)
+				return true;
+
+			// If actor is null we're just checking what would happen theoretically.
+			// In such a scenario - we'll just assume any other actor in the cell will block us by default.
+			// If we have a real actor, we can then perform the extra checks that allow us to avoid being blocked.
+			if (actor == null)
+				return false;
+
+			// All actors that may be in the cell can be crushed.
+			if (cellCache.Crushable.Overlaps(actor.Owner.PlayerMask))
+				return true;
+
+			// Cache doesn't account for ignored actors or temporary blockers - these must use the slow path.
+			if (ignoreActor == null && !cellFlag.HasCellFlag(CellFlag.HasTemporaryBlocker))
+			{
+				// We are blocked by another actor in the cell.
+				if (cellCache.Blocking.Overlaps(actor.Owner.PlayerMask))
+					return false;
+
+				if (check == CellConditions.BlockedByMovers && cellFlag < CellFlag.HasCrushableActor)
+					return false;
+			}
+
+			var otherActors = subCell == SubCell.FullCell ? world.ActorMap.GetActorsAt(cell) : world.ActorMap.GetActorsAt(cell, subCell);
+			foreach (var otherActor in otherActors)
+				if (IsBlockedBy(actor, otherActor, ignoreActor, check, cellFlag))
+					return false;
+
+			return true;
+		}
+
+		public SubCell GetAvailableSubCell(Actor self, CPos cell, SubCell preferredSubCell = SubCell.Any, Actor ignoreActor = null, CellConditions check = CellConditions.All)
+		{
+			if (MovementCostForCell(cell) == short.MaxValue)
 				return SubCell.Invalid;
 
 			if (check.HasCellCondition(CellConditions.TransientActors))
 			{
-				Func<Actor, bool> checkTransient = otherActor => IsBlockedBy(self, otherActor, ignoreActor, check);
+				Func<Actor, bool> checkTransient = otherActor => IsBlockedBy(self, otherActor, ignoreActor, check, GetCache(cell).CellFlag);
 
-				if (!SharesCell)
+				if (!sharesCell)
 					return world.ActorMap.AnyActorsAt(cell, SubCell.FullCell, checkTransient) ? SubCell.Invalid : SubCell.FullCell;
 
 				return world.ActorMap.FreeSubCell(cell, preferredSubCell, checkTransient);
 			}
 
-			if (!SharesCell)
+			if (!sharesCell)
 				return world.ActorMap.AnyActorsAt(cell, SubCell.FullCell) ? SubCell.Invalid : SubCell.FullCell;
 
 			return world.ActorMap.FreeSubCell(cell, preferredSubCell);
 		}
 
-		static bool IsMovingInMyDirection(Actor self, Actor other)
+		bool IsBlockedBy(Actor self, Actor otherActor, Actor ignoreActor, CellConditions check, CellFlag cellFlag)
 		{
-			var otherMobile = other.TraitOrDefault<Mobile>();
-			if (otherMobile == null || !otherMobile.IsMoving)
+			if (otherActor == ignoreActor)
 				return false;
 
-			var selfMobile = self.TraitOrDefault<Mobile>();
+			// If the check allows: we are not blocked by allied units moving in our direction.
+			if (!check.HasCellCondition(CellConditions.BlockedByMovers) && cellFlag.HasCellFlag(CellFlag.HasMovingActor) &&
+				self.Owner.Stances[otherActor.Owner] == Stance.Ally &&
+				IsMovingInMyDirection(self, otherActor))
+				return false;
+
+			if (cellFlag.HasCellFlag(CellFlag.HasTemporaryBlocker))
+			{
+				// If there is a temporary blocker in our path, but we can remove it, we are not blocked.
+				var temporaryBlocker = otherActor.TraitOrDefault<ITemporaryBlocker>();
+				if (temporaryBlocker != null && temporaryBlocker.CanRemoveBlockage(otherActor, self))
+					return false;
+			}
+
+			if (!cellFlag.HasCellFlag(CellFlag.HasCrushableActor))
+				return true;
+
+			// If we cannot crush the other actor in our way, we are blocked.
+			if (Info.Crushes.IsEmpty)
+				return true;
+
+			// If the other actor in our way cannot be crushed, we are blocked.
+			// PERF: Avoid LINQ.
+			var crushables = otherActor.TraitsImplementing<ICrushable>();
+			foreach (var crushable in crushables)
+				if (crushable.CrushableBy(otherActor, self, Info.Crushes))
+					return false;
+
+			return true;
+		}
+
+		static bool IsMovingInMyDirection(Actor self, Actor other)
+		{
+			// PERF: Because we can be sure that OccupiesSpace is Mobile here we can save some performance by avoiding querying for the trait.
+			var otherMobile = other.OccupiesSpace as Mobile;
+			if (otherMobile == null || !otherMobile.CurrentMovementTypes.HasMovementType(MovementType.Horizontal))
+				return false;
+
+			// PERF: Same here.
+			var selfMobile = self.OccupiesSpace as Mobile;
 			if (selfMobile == null)
 				return false;
 
@@ -232,76 +379,142 @@ namespace OpenRA.Mods.Common.Traits
 			return delta < 64 || delta > 192;
 		}
 
-		// Determines whether the actor is blocked by other Actors
-		public bool CanMoveFreelyInto(World world, Actor self, CPos cell, Actor ignoreActor, CellConditions check)
+		public void WorldLoaded(World w, WorldRenderer wr)
 		{
-			if (!check.HasCellCondition(CellConditions.TransientActors))
-				return true;
+			world = w;
+			var map = w.Map;
+			actorMap = w.ActorMap;
+			actorMap.CellUpdated += CellUpdated;
+			terrainInfos = Info.TilesetTerrainInfo[map.Rules.TileSet];
 
-			if (SharesCell && world.ActorMap.HasFreeSubCell(cell))
-				return true;
+			blockingCache = new CellLayer<CellCache>(map);
+			cellsCost = new CellLayer<short>(map);
 
-			// PERF: Avoid LINQ.
-			foreach (var otherActor in world.ActorMap.GetActorsAt(cell))
-				if (IsBlockedBy(self, otherActor, ignoreActor, check))
-					return false;
+			foreach (var cell in map.AllCells)
+				UpdateCellCost(cell);
 
-			return true;
+			map.CustomTerrain.CellEntryChanged += UpdateCellCost;
+			map.Tiles.CellEntryChanged += UpdateCellCost;
+
+			// This section needs to run after WorldLoaded() because we need to be sure that all types of ICustomMovementLayer have been initialized.
+			w.AddFrameEndTask(_ =>
+			{
+				var customMovementLayers = w.WorldActor.TraitsImplementing<ICustomMovementLayer>();
+				foreach (var cml in customMovementLayers)
+				{
+					var cellLayer = new CellLayer<short>(map);
+					customLayerCellsCost[cml.Index] = cellLayer;
+					customLayerBlockingCache[cml.Index] = new CellLayer<CellCache>(map);
+
+					foreach (var cell in map.AllCells)
+					{
+						var index = cml.GetTerrainIndex(cell);
+
+						var cost = short.MaxValue;
+
+						if (index != byte.MaxValue)
+							cost = terrainInfos[index].Cost;
+
+						cellLayer[cell] = cost;
+					}
+				}
+			});
 		}
 
-		bool IsBlockedBy(Actor self, Actor otherActor, Actor ignoreActor, CellConditions check)
+		CellCache GetCache(CPos cell)
 		{
-			// We are not blocked by the actor we are ignoring.
-			if (otherActor == ignoreActor)
-				return false;
-
-			// If self is null, we don't have a real actor - we're just checking what would happen theoretically.
-			// In such a scenario - we'll just assume any other actor in the cell will block us by default.
-			// If we have a real actor, we can then perform the extra checks that allow us to avoid being blocked.
-			if (self == null)
-				return true;
-
-			// If the check allows: we are not blocked by allied units moving in our direction.
-			if (!check.HasCellCondition(CellConditions.BlockedByMovers) &&
-				self.Owner.Stances[otherActor.Owner] == Stance.Ally &&
-				IsMovingInMyDirection(self, otherActor))
-				return false;
-
-			// PERF: Only perform ITemporaryBlocker trait look-up if mod/map rules contain any actors that are temporary blockers
-			if (self.World.RulesContainTemporaryBlocker)
+			if (dirtyCells.Contains(cell))
 			{
-				// If there is a temporary blocker in our path, but we can remove it, we are not blocked.
-				var temporaryBlocker = otherActor.TraitOrDefault<ITemporaryBlocker>();
-				if (temporaryBlocker != null && temporaryBlocker.CanRemoveBlockage(otherActor, self))
-					return false;
+				UpdateCellBlocking(cell);
+				dirtyCells.Remove(cell);
 			}
 
-			// If we cannot crush the other actor in our way, we are blocked.
-			if (Crushes.IsEmpty)
-				return true;
+			var cache = cell.Layer == 0 ? blockingCache : customLayerBlockingCache[cell.Layer];
 
-			// If the other actor in our way cannot be crushed, we are blocked.
-			// PERF: Avoid LINQ.
-			var crushables = otherActor.TraitsImplementing<ICrushable>();
-			foreach (var crushable in crushables)
-				if (crushable.CrushableBy(otherActor, self, Crushes))
-					return false;
-
-			return true;
+			return cache[cell];
 		}
 
-		public virtual bool DisableDomainPassabilityCheck { get { return false; } }
-
-		public virtual object Create(ActorInitializer init) { return new Locomotor(init.Self, this); }
-	}
-
-	public class Locomotor
-	{
-		public readonly LocomotorInfo Info;
-
-		public Locomotor(Actor self, LocomotorInfo info)
+		void CellUpdated(CPos cell)
 		{
-			Info = info;
+			dirtyCells.Add(cell);
+		}
+
+		void UpdateCellCost(CPos cell)
+		{
+			var index = cell.Layer == 0
+				? world.Map.GetTerrainIndex(cell)
+				: world.GetCustomMovementLayers()[cell.Layer].GetTerrainIndex(cell);
+
+			var cost = short.MaxValue;
+
+			if (index != byte.MaxValue)
+				cost = terrainInfos[index].Cost;
+
+			var cache = cell.Layer == 0 ? cellsCost : customLayerCellsCost[cell.Layer];
+
+			cache[cell] = cost;
+		}
+
+		void UpdateCellBlocking(CPos cell)
+		{
+			using (new PerfSample("locomotor_cache"))
+			{
+				var cache = cell.Layer == 0 ? blockingCache : customLayerBlockingCache[cell.Layer];
+
+				var actors = actorMap.GetActorsAt(cell);
+
+				if (!actors.Any())
+				{
+					cache[cell] = new CellCache(default(LongBitSet<PlayerBitMask>), CellFlag.HasFreeSpace);
+					return;
+				}
+
+				if (sharesCell && actorMap.HasFreeSubCell(cell))
+				{
+					cache[cell] = new CellCache(default(LongBitSet<PlayerBitMask>), CellFlag.HasFreeSpace);
+					return;
+				}
+
+				var cellFlag = CellFlag.HasActor;
+				var cellBlockedPlayers = default(LongBitSet<PlayerBitMask>);
+				var cellCrushablePlayers = world.AllPlayersMask;
+
+				foreach (var actor in actors)
+				{
+					var actorBlocksPlayers = world.AllPlayersMask;
+					var actorCrushablePlayers = world.NoPlayersMask;
+
+					var crushables = actor.TraitsImplementing<ICrushable>();
+					var mobile = actor.OccupiesSpace as Mobile;
+					var isMoving = mobile != null && mobile.CurrentMovementTypes.HasMovementType(MovementType.Horizontal);
+
+					if (crushables.Any())
+					{
+						cellFlag |= CellFlag.HasCrushableActor;
+						foreach (var crushable in crushables)
+							actorCrushablePlayers = actorCrushablePlayers.Union(crushable.CrushableBy(actor, Info.Crushes));
+					}
+
+					if (isMoving)
+					{
+						actorBlocksPlayers = actorBlocksPlayers.Except(actor.Owner.AlliedPlayersMask);
+						cellFlag |= CellFlag.HasMovingActor;
+					}
+
+					// PERF: Only perform ITemporaryBlocker trait look-up if mod/map rules contain any actors that are temporary blockers
+					if (world.RulesContainTemporaryBlocker)
+					{
+						// If there is a temporary blocker in this cell.
+						if (actor.TraitOrDefault<ITemporaryBlocker>() != null)
+							cellFlag |= CellFlag.HasTemporaryBlocker;
+					}
+
+					cellCrushablePlayers = cellCrushablePlayers.Intersect(actorCrushablePlayers);
+					cellBlockedPlayers = cellBlockedPlayers.Union(actorBlocksPlayers);
+				}
+
+				cache[cell] = new CellCache(cellBlockedPlayers, cellFlag, cellCrushablePlayers);
+			}
 		}
 	}
 }

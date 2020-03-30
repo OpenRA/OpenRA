@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,9 +10,9 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Drawing;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -27,14 +27,12 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new BaseProvider(init.Self, this); }
 	}
 
-	public class BaseProvider : PausableConditionalTrait<BaseProviderInfo>, ITick, INotifyCreated, IRenderAboveShroudWhenSelected, ISelectionBar
+	public class BaseProvider : PausableConditionalTrait<BaseProviderInfo>, ITick, IRenderAboveShroudWhenSelected, ISelectionBar
 	{
 		readonly DeveloperMode devMode;
 		readonly Actor self;
 		readonly bool allyBuildEnabled;
 		readonly bool buildRadiusEnabled;
-
-		Building building;
 
 		int total;
 		int progress;
@@ -50,11 +48,6 @@ namespace OpenRA.Mods.Common.Traits
 			buildRadiusEnabled = mapBuildRadius != null && mapBuildRadius.BuildRadiusEnabled;
 		}
 
-		void INotifyCreated.Created(Actor self)
-		{
-			building = self.TraitOrDefault<Building>();
-		}
-
 		void ITick.Tick(Actor self)
 		{
 			if (progress > 0)
@@ -68,7 +61,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool Ready()
 		{
-			if (IsTraitDisabled || IsTraitPaused || (building != null && building.Locked))
+			if (IsTraitDisabled || IsTraitPaused)
 				return false;
 
 			return devMode.FastBuild || progress == 0;

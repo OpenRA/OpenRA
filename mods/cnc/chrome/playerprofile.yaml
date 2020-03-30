@@ -10,13 +10,13 @@ Container@LOCAL_PROFILE_PANEL:
 			Children:
 				Label@PROFILE_NAME:
 					X: 10
-					Y: 3
+					Y: 5
 					Width: PARENT_RIGHT - 20
 					Height: 25
 					Font: MediumBold
 				Label@PROFILE_RANK:
 					X: 10
-					Y: 23
+					Y: 24
 					Width: PARENT_RIGHT - 20
 					Height: 25
 					Font: TinyBold
@@ -26,7 +26,6 @@ Container@LOCAL_PROFILE_PANEL:
 					Width: 60
 					Height: 20
 					Font: TinyBold
-					BaseLine: 1
 					Text: Logout
 		Background@BADGES_CONTAINER:
 			Width: PARENT_RIGHT
@@ -39,21 +38,21 @@ Container@LOCAL_PROFILE_PANEL:
 			Background: panel-black
 			Children:
 				Label@DESC_A:
-					Y: 5
+					Y: 6
 					Width: PARENT_RIGHT
 					Height: 25
 					Font: Small
 					Align: Center
 					Text: Connect to a forum account to identify
 				Label@DESC_B:
-					Y: 21
+					Y: 22
 					Width: PARENT_RIGHT
 					Height: 25
 					Font: Small
 					Align: Center
 					Text: yourself to other players, join private
 				Label@DESC_C:
-					Y: 37
+					Y: 38
 					Width: PARENT_RIGHT
 					Height: 25
 					Font: Small
@@ -65,7 +64,6 @@ Container@LOCAL_PROFILE_PANEL:
 					Width: 240
 					Height: 20
 					Font: TinyBold
-					BaseLine: 1
 					Text: Connect to an OpenRA forum account
 		Background@GENERATING_KEYS:
 			Width: PARENT_RIGHT
@@ -73,14 +71,14 @@ Container@LOCAL_PROFILE_PANEL:
 			Background: panel-black
 			Children:
 				Label@DESC_A:
-					Y: 13
+					Y: 14
 					Width: PARENT_RIGHT
 					Height: 25
 					Font: Small
 					Align: Center
 					Text: Generating authentication key pair.
 				Label@DESC_B:
-					Y: 29
+					Y: 30
 					Width: PARENT_RIGHT
 					Height: 25
 					Font: Small
@@ -98,21 +96,21 @@ Container@LOCAL_PROFILE_PANEL:
 			Background: panel-black
 			Children:
 				Label@DESC_A:
-					Y: 2
+					Y: 3
 					Width: PARENT_RIGHT
 					Height: 25
 					Font: Small
 					Align: Center
 					Text: An authentication key has been copied to your
 				Label@DESC_B:
-					Y: 18
+					Y: 19
 					Width: PARENT_RIGHT
 					Height: 25
 					Font: Small
 					Align: Center
 					Text: clipboard. Add this to your User Control Panel
 				Label@DESC_C:
-					Y: 34
+					Y: 35
 					Width: PARENT_RIGHT
 					Height: 25
 					Font: Small
@@ -123,7 +121,6 @@ Container@LOCAL_PROFILE_PANEL:
 					Y: 70
 					Width: 70
 					Height: 20
-					BaseLine: 1
 					Font: TinyBold
 					Text: Cancel
 				Button@CHECK_KEY:
@@ -131,7 +128,6 @@ Container@LOCAL_PROFILE_PANEL:
 					Y: 70
 					Width: 70
 					Height: 20
-					BaseLine: 1
 					Font: TinyBold
 					Text: Continue
 		Background@CHECKING_FINGERPRINT:
@@ -140,14 +136,14 @@ Container@LOCAL_PROFILE_PANEL:
 			Background: panel-black
 			Children:
 				Label@DESC_A:
-					Y: 13
+					Y: 14
 					Width: PARENT_RIGHT
 					Height: 25
 					Font: Small
 					Align: Center
 					Text: Querying account details from
 				Label@DESC_B:
-					Y: 29
+					Y: 30
 					Width: PARENT_RIGHT
 					Height: 25
 					Font: Small
@@ -165,14 +161,14 @@ Container@LOCAL_PROFILE_PANEL:
 			Background: panel-black
 			Children:
 				Label@DESC_A:
-					Y: 13
+					Y: 14
 					Width: PARENT_RIGHT
 					Height: 25
 					Font: Small
 					Align: Center
 					Text: Your authentication key is not connected
 				Label@DESC_B:
-					Y: 29
+					Y: 30
 					Width: PARENT_RIGHT
 					Height: 25
 					Font: Small
@@ -183,7 +179,6 @@ Container@LOCAL_PROFILE_PANEL:
 					Y: 70
 					Width: 70
 					Height: 20
-					BaseLine: 1
 					Font: TinyBold
 					Text: Back
 		Background@CONNECTION_ERROR:
@@ -192,14 +187,14 @@ Container@LOCAL_PROFILE_PANEL:
 			Background: panel-black
 			Children:
 				Label@DESC_A:
-					Y: 13
+					Y: 14
 					Width: PARENT_RIGHT
 					Height: 25
 					Font: Small
 					Align: Center
 					Text: Failed to connect to the OpenRA forum.
 				Label@DESC_B:
-					Y: 29
+					Y: 30
 					Width: PARENT_RIGHT
 					Height: 25
 					Font: Small
@@ -210,7 +205,6 @@ Container@LOCAL_PROFILE_PANEL:
 					Y: 70
 					Width: 70
 					Height: 20
-					BaseLine: 1
 					Font: TinyBold
 					Text: Retry
 
@@ -229,6 +223,7 @@ Container@PLAYER_PROFILE_BADGES_INSERT:
 					Height: 24
 				Label@LABEL:
 					X: 36
+					Y: 2
 					Width: PARENT_RIGHT - 60
 					Height: 24
 					Font: Bold

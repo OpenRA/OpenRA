@@ -40,7 +40,7 @@ CrateNapalm:
 		Explosions: napalm
 		ImpactSounds: firebl3.aud
 		ValidTargets: Ground, Water, Air, Trees
-	-Warhead@3EffWater: CreateEffect
+	-Warhead@3EffWater:
 	Warhead@Smu: LeaveSmudge
 		SmudgeType: Scorch
 
@@ -51,7 +51,7 @@ CrateExplosion:
 		AffectsParent: true
 	Warhead@2Eff: CreateEffect
 		ValidTargets: Ground, Water, Air
-	-Warhead@3EffWater: CreateEffect
+	-Warhead@3EffWater:
 
 UnitExplode:
 	Inherits: ^Explosion
@@ -70,14 +70,14 @@ UnitExplodeHeli:
 
 VisualExplode:
 	Inherits: ^Explosion
-	-Warhead@1Dam: SpreadDamage
+	-Warhead@1Dam:
 	Warhead@2Eff: CreateEffect
 		Explosions: offseted_napalm
 		ImpactSounds: firebl3.aud
 
 UnitExplodeShip:
 	Inherits: ^Explosion
-	-Warhead@Smu: LeaveSmudge
+	-Warhead@Smu:
 	Warhead@2Eff: CreateEffect
 		Explosions: building
 		ImpactSounds: kaboom25.aud
@@ -85,7 +85,7 @@ UnitExplodeShip:
 
 UnitExplodeSubmarine:
 	Inherits: ^Explosion
-	-Warhead@Smu: LeaveSmudge
+	-Warhead@Smu:
 	Warhead@2Eff: CreateEffect
 		Explosions: large_splash
 		ImpactSounds: splash9.aud
@@ -146,7 +146,7 @@ BarrelExplode:
 		Explosions: napalm
 		ImpactSounds: firebl3.aud
 		Delay: 5
-	-Warhead@3EffWater: CreateEffect
+	-Warhead@3EffWater:
 	Warhead@Smu: LeaveSmudge
 		SmudgeType: Scorch
 		Size: 2
@@ -157,6 +157,7 @@ ATMine:
 		Spread: 256
 		Damage: 40000
 		AffectsParent: true
+		InvalidTargets: Mine
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: large_explosion

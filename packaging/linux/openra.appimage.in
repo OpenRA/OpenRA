@@ -5,7 +5,7 @@ cd "${HERE}/../lib/openra" || exit 1
 
 # APPIMAGE is an environment variable set by the runtime
 # defining the absolute path to the .AppImage file
-if [ ! -z "${APPIMAGE}" ]; then
+if [ -n "${APPIMAGE}" ]; then
   LAUNCHER=${APPIMAGE}
 
   # appimaged doesn't update the mime or icon caches when registering AppImages.
@@ -35,7 +35,7 @@ fi
 
 # Run the game
 export SDL_VIDEO_X11_WMCLASS="openra-{MODID}-{TAG}"
-mono --debug OpenRA.Game.exe Game.Mod={MODID} Engine.LaunchPath="${LAUNCHER}" "${JOIN_SERVER}" "$@"
+mono --debug OpenRA.Game.exe Game.Mod={MODID} Engine.LaunchPath="${LAUNCHER}" Engine.LaunchWrapper="${HERE}/restore-environment.sh" "${JOIN_SERVER}" "$@"
 
 # Show a crash dialog if something went wrong
 if [ $? != 0 ] && [ $? != 1 ]; then

@@ -7,7 +7,7 @@ Container@MULTIPLAYER_CREATESERVER_PANEL:
 	Children:
 		Label@TITLE:
 			Width: PARENT_RIGHT
-			Y: 0-25
+			Y: 0 - 22
 			Font: BigBold
 			Contrast: true
 			Align: Center

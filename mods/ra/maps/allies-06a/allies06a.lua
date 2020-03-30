@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+   Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -162,20 +162,6 @@ InfiltrateTechCenter = function()
 	end)
 end
 
-InfiltrateRef = function()
-	Trigger.OnInfiltrated(Refinery, function()
-		player.MarkCompletedObjective(InfiltrateRefObj)
-	end)
-	Trigger.OnCapture(Refinery, function()
-		player.MarkCompletedObjective(InfiltrateRefObj)
-	end)
-	Trigger.OnKilled(Refinery, function()
-		if not player.IsObjectiveCompleted(InfiltrateRefObj) then
-			player.MarkFailedObjective(InfiltrateRefObj)
-		end
-	end)
-end
-
 Tick = function()
 	if DateTime.GameTime > DateTime.Seconds(10) and player.HasNoRequiredUnits() then
 		player.MarkFailedObjective(InfiltrateTechCenterObj)
@@ -211,7 +197,6 @@ WorldLoaded = function()
 
 	InfiltrateTechCenterObj = player.AddPrimaryObjective("Infiltrate one of the Soviet tech centers with a spy.")
 	CaptureRadarDomeObj = player.AddSecondaryObjective("Capture the Radar Dome at the shore.")
-	InfiltrateRefObj = player.AddSecondaryObjective("Infiltrate the Refinery for money.")
 
 	Camera.Position = DefaultCameraPosition.CenterPosition
 
@@ -234,6 +219,5 @@ WorldLoaded = function()
 
 	CaptureRadarDome()
 	InfiltrateTechCenter()
-	InfiltrateRef()
 	Trigger.AfterDelay(0, ActivateAI)
 end

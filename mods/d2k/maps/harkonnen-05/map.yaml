@@ -43,6 +43,7 @@ Players:
 		Color: B3EAA5
 		Allies: Ordos Small Base, Corrino
 		Enemies: Harkonnen
+		Bot: campaign
 	PlayerReference@Ordos Small Base:
 		Name: Ordos Small Base
 		LockFaction: True
@@ -51,6 +52,7 @@ Players:
 		Color: B3EAA5
 		Allies: Ordos Main Base, Corrino
 		Enemies: Harkonnen
+		Bot: campaign
 	PlayerReference@Corrino:
 		Name: Corrino
 		LockFaction: True
@@ -59,6 +61,7 @@ Players:
 		Color: 7D00FE
 		Allies: Ordos Main Base, Ordos Small Base
 		Enemies: Harkonnen
+		Bot: campaign
 
 Actors:
 	Actor0: wall

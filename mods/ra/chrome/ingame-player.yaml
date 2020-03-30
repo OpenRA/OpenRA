@@ -73,7 +73,7 @@ Container@PLAYER_WIDGETS:
 					Background: command-button
 					DisableKeySound: true
 					TooltipText: Force Move
-					TooltipDesc: Selected units will move to the desired location\n - Default activity for the target is suppressed\n - Vehicles will attempt to crush enemies at the target location\n - Units entering transports will consider nearby alternatives\n - Chrono Tanks will teleport towards the target location\n\nLeft-click icon then right-click on target.\nHold {(Alt)} to activate temporarily while commanding units.
+					TooltipDesc: Selected units will move to the desired location\n - Default activity for the target is suppressed\n - Vehicles will attempt to crush enemies at the target location\n - Helicopters will land at the target location\n - Chrono Tanks will teleport towards the target location\n\nLeft-click icon then right-click on target.\nHold {(Alt)} to activate temporarily while commanding units.
 					TooltipContainer: TOOLTIP_CONTAINER
 					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP
 					Children:
@@ -91,7 +91,7 @@ Container@PLAYER_WIDGETS:
 					Background: command-button
 					DisableKeySound: true
 					TooltipText: Force Attack
-					TooltipDesc: Selected units will attack the targeted unit or location\nignoring their default activity for the target.\n\nLeft-click icon then right-click on target.\nHold {(Ctrl)} to activate temporarily while commanding units.
+					TooltipDesc: Selected units will attack the targeted unit or location\n - Default activity for the target is suppressed\n - Allows targeting of own or ally forces\n - Long-range artillery units will always target the\n   location, ignoring units and buildings\n\nLeft-click icon then right-click on target.\nHold {(Ctrl)} to activate temporarily while commanding units.
 					TooltipContainer: TOOLTIP_CONTAINER
 					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP
 					Children:
@@ -398,6 +398,8 @@ Container@PLAYER_WIDGETS:
 							Y: 41
 							Width: 220
 							Height: 220
+							SoundUp: RadarUp
+							SoundDown: RadarDown
 							Children:
 						VqaPlayer@PLAYER:
 							X: 8
@@ -408,17 +410,17 @@ Container@PLAYER_WIDGETS:
 				Label@GAME_TIMER:
 					Logic: GameTimerLogic
 					X: 3
-					Y: 263
+					Y: 264
 					Width: PARENT_RIGHT
-					Height: 22
+					Height: 23
 					Align: Center
 					Font: TinyBold
 				LabelWithTooltip@CASH:
 					Logic: IngameCashCounterLogic
 					X: 35
-					Y: 262
+					Y: 264
 					Width: 50
-					Height: 22
+					Height: 23
 					Font: Bold
 					Text: {0}
 					TooltipContainer: TOOLTIP_CONTAINER
@@ -426,9 +428,9 @@ Container@PLAYER_WIDGETS:
 				LabelWithTooltip@POWER:
 					Logic: IngamePowerCounterLogic
 					X: PARENT_RIGHT - WIDTH - 30
-					Y: 262
+					Y: 264
 					Width: 50
-					Height: 22
+					Height: 23
 					Align: Right
 					Font: Bold
 					Text: {0}
@@ -437,7 +439,7 @@ Container@PLAYER_WIDGETS:
 					Children:
 						Image@POWER_ICON:
 							X: PARENT_RIGHT + 4
-							Y: 5
+							Y: 3
 							ImageCollection: power-icons
 							ImageName: power-normal
 		Container@SIDEBAR_PRODUCTION:

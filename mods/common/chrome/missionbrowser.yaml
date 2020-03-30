@@ -6,7 +6,7 @@ Background@MISSIONBROWSER_PANEL:
 	Height: 487
 	Children:
 		Label@MISSIONBROWSER_TITLE:
-			Y: 20
+			Y: 21
 			Width: PARENT_RIGHT
 			Height: 25
 			Text: Missions
@@ -28,17 +28,20 @@ Background@MISSIONBROWSER_PANEL:
 						Label@LABEL:
 							Font: TinyBold
 							Width: PARENT_RIGHT
-							Height: 10
+							Height: 13
 							Align: Center
 				ScrollItem@TEMPLATE:
 					Width: PARENT_RIGHT - 27
 					Height: 25
 					X: 2
+					EnableChildMouseOver: True
 					Children:
-						Label@TITLE:
+						LabelWithTooltip@TITLE:
 							X: 10
 							Width: PARENT_RIGHT - 20
 							Height: 25
+							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipTemplate: SIMPLE_TOOLTIP
 		Container@MISSION_INFO:
 			X: 300
 			Y: 50
@@ -62,10 +65,10 @@ Background@MISSIONBROWSER_PANEL:
 					Y: 212
 					Width: PARENT_RIGHT
 					Height: 130
+					TopBottomSpacing: 5
 					Children:
 						Label@MISSION_DESCRIPTION:
 							X: 4
-							Y: 1
 							Width: PARENT_RIGHT - 32
 							VAlign: Top
 							Font: Small
@@ -149,6 +152,7 @@ Background@MISSIONBROWSER_PANEL:
 					Y: 1
 					Width: 640
 					Height: 375
+		TooltipContainer@TOOLTIP_CONTAINER:
 
 Background@FULLSCREEN_PLAYER:
 	Width: WINDOW_RIGHT

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,8 +10,8 @@
 #endregion
 
 using System;
-using System.Drawing;
-using System.Drawing.Imaging;
+using OpenRA.FileFormats;
+using OpenRA.Primitives;
 
 namespace OpenRA.Graphics
 {
@@ -81,53 +81,43 @@ namespace OpenRA.Graphics
 			}
 		}
 
-		public static void FastCopyIntoSprite(Sprite dest, Bitmap src)
+		public static void FastCopyIntoSprite(Sprite dest, Png src)
 		{
-			var createdTempBitmap = false;
-			if (src.PixelFormat != PixelFormat.Format32bppArgb)
+			var destData = dest.Sheet.GetData();
+			var destStride = dest.Sheet.Size.Width;
+			var width = dest.Bounds.Width;
+			var height = dest.Bounds.Height;
+
+			unsafe
 			{
-				src = src.CloneWith32bbpArgbPixelFormat();
-				createdTempBitmap = true;
-			}
-
-			try
-			{
-				var destData = dest.Sheet.GetData();
-				var destStride = dest.Sheet.Size.Width;
-				var width = dest.Bounds.Width;
-				var height = dest.Bounds.Height;
-
-				var srcData = src.LockBits(src.Bounds(),
-					ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
-
-				unsafe
+				// Cast the data to an int array so we can copy the src data directly
+				fixed (byte* bd = &destData[0])
 				{
-					var c = (int*)srcData.Scan0;
+					var data = (int*)bd;
+					var x = dest.Bounds.Left;
+					var y = dest.Bounds.Top;
 
-					// Cast the data to an int array so we can copy the src data directly
-					fixed (byte* bd = &destData[0])
+					var k = 0;
+					for (var j = 0; j < height; j++)
 					{
-						var data = (int*)bd;
-						var x = dest.Bounds.Left;
-						var y = dest.Bounds.Top;
-
-						for (var j = 0; j < height; j++)
+						for (var i = 0; i < width; i++)
 						{
-							for (var i = 0; i < width; i++)
+							Color cc;
+							if (src.Palette == null)
 							{
-								var cc = Color.FromArgb(*(c + (j * srcData.Stride >> 2) + i));
-								data[(y + j) * destStride + x + i] = PremultiplyAlpha(cc).ToArgb();
+								var r = src.Data[k++];
+								var g = src.Data[k++];
+								var b = src.Data[k++];
+								var a = src.Data[k++];
+								cc = Color.FromArgb(a, r, g, b);
 							}
+							else
+								cc = src.Palette[src.Data[k++]];
+
+							data[(y + j) * destStride + x + i] = PremultiplyAlpha(cc).ToArgb();
 						}
 					}
 				}
-
-				src.UnlockBits(srcData);
-			}
-			finally
-			{
-				if (createdTempBitmap)
-					src.Dispose();
 			}
 		}
 
@@ -330,7 +320,7 @@ namespace OpenRA.Graphics
 		public static float[] MakeFloatMatrix(Int32Matrix4x4 imtx)
 		{
 			var multipler = 1f / imtx.M44;
-			return new float[]
+			return new[]
 			{
 				imtx.M11 * multipler,
 				imtx.M12 * multipler,
@@ -362,13 +352,16 @@ namespace OpenRA.Graphics
 			var iz = new uint[] { 2, 5, 2, 5, 2, 5, 2, 5 };
 
 			// Vectors to opposing corner
-			var ret = new float[] { float.MaxValue, float.MaxValue, float.MaxValue,
-				float.MinValue, float.MinValue, float.MinValue };
+			var ret = new[]
+			{
+				float.MaxValue, float.MaxValue, float.MaxValue,
+				float.MinValue, float.MinValue, float.MinValue
+			};
 
 			// Transform vectors and find new bounding box
 			for (var i = 0; i < 8; i++)
 			{
-				var vec = new float[] { bounds[ix[i]], bounds[iy[i]], bounds[iz[i]], 1 };
+				var vec = new[] { bounds[ix[i]], bounds[iy[i]], bounds[iz[i]], 1 };
 				var tvec = MatrixVectorMultiply(mtx, vec);
 
 				ret[0] = Math.Min(ret[0], tvec[0] / tvec[3]);

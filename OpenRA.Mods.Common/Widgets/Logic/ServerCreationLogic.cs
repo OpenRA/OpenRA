@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,10 +10,10 @@
 #endregion
 
 using System;
-using System.Drawing;
 using System.Linq;
 using System.Net;
 using OpenRA.Network;
+using OpenRA.Primitives;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -204,11 +204,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			catch (System.Net.Sockets.SocketException e)
 			{
 				var message = "Could not listen on port {0}.".F(Game.Settings.Server.ListenPort);
-				if (e.ErrorCode == 10048) { // AddressAlreadyInUse (WSAEADDRINUSE)
+
+				// AddressAlreadyInUse (WSAEADDRINUSE)
+				if (e.ErrorCode == 10048)
 					message += "\nCheck if the port is already being used.";
-				} else {
+				else
 					message += "\nError is: \"{0}\" ({1})".F(e.Message, e.ErrorCode);
-				}
 
 				ConfirmationDialogs.ButtonPrompt("Server Creation Failed", message, onCancel: () => { }, cancelText: "Back");
 				return;

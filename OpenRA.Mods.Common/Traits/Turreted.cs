@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -17,7 +17,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class TurretedInfo : ITraitInfo, UsesInit<TurretFacingInit>, Requires<BodyOrientationInfo>, IActorPreviewInitInfo
+	public class TurretedInfo : PausableConditionalTraitInfo, Requires<BodyOrientationInfo>, IActorPreviewInitInfo, IEditorActorOptions
 	{
 		public readonly string Turret = "primary";
 		[Desc("Speed at which the turret turns.")]
@@ -33,6 +33,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Facing to use for actor previews (map editor, color picker, etc)")]
 		public readonly int PreviewFacing = 92;
 
+		[Desc("Display order for the turret facing slider in the map editor")]
+		public readonly int EditorTurretFacingDisplayOrder = 4;
+
 		IEnumerable<object> IActorPreviewInitInfo.ActorPreviewInits(ActorInfo ai, ActorPreviewType type)
 		{
 			// HACK: The ActorInit system does not support multiple instances of the same type
@@ -41,18 +44,47 @@ namespace OpenRA.Mods.Common.Traits
 				yield return new TurretFacingInit(PreviewFacing);
 		}
 
-		public virtual object Create(ActorInitializer init) { return new Turreted(init, this); }
+		IEnumerable<EditorActorOption> IEditorActorOptions.ActorOptions(ActorInfo ai, World world)
+		{
+			// TODO: Handle multiple turrets properly (will probably require a rewrite of the Init system)
+			if (ai.TraitInfos<TurretedInfo>().FirstOrDefault() != this)
+				yield break;
+
+			yield return new EditorActorSlider("Turret", EditorTurretFacingDisplayOrder, 0, 255, 8,
+				actor =>
+				{
+					var init = actor.Init<TurretFacingInit>();
+					if (init != null)
+						return init.Value(world);
+
+					var facingInit = actor.Init<FacingInit>();
+					if (facingInit != null)
+						return facingInit.Value(world);
+
+					return InitialFacing;
+				},
+				(actor, value) =>
+				{
+					actor.RemoveInit<TurretFacingsInit>();
+					actor.ReplaceInit(new TurretFacingInit((int)value));
+				});
+		}
+
+		public override object Create(ActorInitializer init) { return new Turreted(init, this); }
 	}
 
-	public class Turreted : ITick, ISync, INotifyCreated, IDeathActorInitModifier, IActorPreviewInitModifier
+	public class Turreted : PausableConditionalTrait<TurretedInfo>, ITick, IDeathActorInitModifier, IActorPreviewInitModifier
 	{
-		public readonly TurretedInfo Info;
 		AttackTurreted attack;
 		IFacing facing;
 		BodyOrientation body;
 
-		[Sync] public int QuantizedFacings = 0;
-		[Sync] public int TurretFacing = 0;
+		[Sync]
+		public int QuantizedFacings = 0;
+
+		[Sync]
+		public int TurretFacing = 0;
+
 		public int? DesiredFacing;
 		int realignTick = 0;
 
@@ -97,13 +129,14 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		public Turreted(ActorInitializer init, TurretedInfo info)
+			: base(info)
 		{
-			Info = info;
 			TurretFacing = TurretFacingFromInit(init, Info.InitialFacing, Info.Turret)();
 		}
 
-		void INotifyCreated.Created(Actor self)
+		protected override void Created(Actor self)
 		{
+			base.Created(self);
 			attack = self.TraitsImplementing<AttackTurreted>().SingleOrDefault(at => ((AttackTurretedInfo)at.Info).Turrets.Contains(Info.Turret));
 			facing = self.TraitOrDefault<IFacing>();
 			body = self.Trait<BodyOrientation>();
@@ -116,6 +149,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected virtual void Tick(Actor self)
 		{
+			if (IsTraitDisabled)
+				return;
+
 			// NOTE: FaceTarget is called in AttackTurreted.CanAttack if the turret has a target.
 			if (attack != null)
 			{
@@ -145,7 +181,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool FaceTarget(Actor self, Target target)
 		{
-			if (attack == null || attack.IsTraitDisabled || attack.IsTraitPaused)
+			if (IsTraitDisabled || IsTraitPaused || attack == null || attack.IsTraitDisabled || attack.IsTraitPaused)
 				return false;
 
 			var pos = self.CenterPosition;
@@ -217,11 +253,19 @@ namespace OpenRA.Mods.Common.Traits
 			var facingOffset = TurretFacing - bodyFacing();
 			facings.Value(self.World).Add(Name, () => bodyFacing() + facingOffset);
 		}
+
+		protected override void TraitDisabled(Actor self)
+		{
+			if (attack != null && attack.IsAiming)
+				attack.OnStopOrder(self);
+		}
 	}
 
 	public class TurretFacingInit : IActorInit<int>
 	{
-		[FieldFromYamlKey] readonly int value = 128;
+		[FieldFromYamlKey]
+		readonly int value = 128;
+
 		public TurretFacingInit() { }
 		public TurretFacingInit(int init) { value = init; }
 		public int Value(World world) { return value; }
@@ -231,6 +275,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[DictionaryFromYamlKey]
 		readonly Dictionary<string, int> value = new Dictionary<string, int>();
+
 		public TurretFacingsInit() { }
 		public TurretFacingsInit(Dictionary<string, int> init) { value = init; }
 		public Dictionary<string, int> Value(World world) { return value; }

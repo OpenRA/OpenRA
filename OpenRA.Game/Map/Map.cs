@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -11,14 +11,12 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using OpenRA.FileFormats;
 using OpenRA.FileSystem;
-using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Support;
 using OpenRA.Traits;
@@ -568,6 +566,10 @@ namespace OpenRA
 			foreach (var field in YamlFields)
 				field.Serialize(this, root);
 
+			// HACK: map.yaml is expected to have empty lines between top-level blocks
+			for (var i = root.Count - 1; i > 0; i--)
+				root.Insert(i, new MiniYamlNode("", ""));
+
 			// Saving to a new package: copy over all the content from the map
 			if (Package != null && toPackage != Package)
 				foreach (var file in Package.Contents)
@@ -648,8 +650,24 @@ namespace OpenRA
 		public byte[] SavePreview()
 		{
 			var tileset = Rules.TileSet;
-			var resources = Rules.Actors["world"].TraitInfos<ResourceTypeInfo>()
-				.ToDictionary(r => r.ResourceType, r => r.TerrainType);
+			var actorTypes = Rules.Actors.Values.Where(a => a.HasTraitInfo<IMapPreviewSignatureInfo>());
+			var actors = ActorDefinitions.Where(a => actorTypes.Where(ai => ai.Name == a.Value.Value).Any());
+			var positions = new List<Pair<MPos, Color>>();
+			foreach (var actor in actors)
+			{
+				var s = new ActorReference(actor.Value.Value, actor.Value.ToDictionary());
+
+				var ai = Rules.Actors[actor.Value.Value];
+				var impsis = ai.TraitInfos<IMapPreviewSignatureInfo>();
+				foreach (var impsi in impsis)
+					impsi.PopulateMapPreviewSignatureCells(this, ai, s, positions);
+			}
+
+			// ResourceLayer is on world actor, which isn't caught above, so an extra check for it.
+			var worldActorInfo = Rules.Actors["world"];
+			var worldimpsis = worldActorInfo.TraitInfos<IMapPreviewSignatureInfo>();
+			foreach (var worldimpsi in worldimpsis)
+				worldimpsi.PopulateMapPreviewSignatureCells(this, worldActorInfo, null, positions);
 
 			using (var stream = new MemoryStream())
 			{
@@ -665,61 +683,64 @@ namespace OpenRA
 				if (isRectangularIsometric)
 					bitmapWidth = 2 * bitmapWidth - 1;
 
-				using (var bitmap = new Bitmap(bitmapWidth, height))
+				var stride = bitmapWidth * 4;
+				var pxStride = 4;
+				var minimapData = new byte[stride * height];
+				Color leftColor, rightColor;
+				for (var y = 0; y < height; y++)
 				{
-					var bitmapData = bitmap.LockBits(bitmap.Bounds(),
-						ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
-
-					unsafe
+					for (var x = 0; x < width; x++)
 					{
-						var colors = (int*)bitmapData.Scan0;
-						var stride = bitmapData.Stride / 4;
-						Color leftColor, rightColor;
-
-						for (var y = 0; y < height; y++)
+						var uv = new MPos(x + Bounds.Left, y + Bounds.Top);
+						var actorsThere = positions.Where(ap => ap.First == uv);
+						if (actorsThere.Any())
 						{
-							for (var x = 0; x < width; x++)
+							leftColor = rightColor = actorsThere.First().Second;
+						}
+						else
+						{
+							// Cell contains terrain
+							var type = tileset.GetTileInfo(Tiles[uv]);
+							leftColor = type != null ? type.LeftColor : Color.Black;
+							rightColor = type != null ? type.RightColor : Color.Black;
+						}
+
+						if (isRectangularIsometric)
+						{
+							// Odd rows are shifted right by 1px
+							var dx = uv.V & 1;
+							var xOffset = pxStride * (2 * x + dx);
+							if (x + dx > 0)
 							{
-								var uv = new MPos(x + Bounds.Left, y + Bounds.Top);
-								var resourceType = Resources[uv].Type;
-								if (resourceType != 0)
-								{
-									// Cell contains resources
-									string res;
-									if (!resources.TryGetValue(resourceType, out res))
-										continue;
+								var z = y * stride + xOffset - pxStride;
+								minimapData[z++] = leftColor.R;
+								minimapData[z++] = leftColor.G;
+								minimapData[z++] = leftColor.B;
+								minimapData[z++] = leftColor.A;
+							}
 
-									leftColor = rightColor = tileset[tileset.GetTerrainIndex(res)].Color;
-								}
-								else
-								{
-									// Cell contains terrain
-									var type = tileset.GetTileInfo(Tiles[uv]);
-									leftColor = type != null ? type.LeftColor : Color.Black;
-									rightColor = type != null ? type.RightColor : Color.Black;
-								}
-
-								if (isRectangularIsometric)
-								{
-									// Odd rows are shifted right by 1px
-									var dx = uv.V & 1;
-									if (x + dx > 0)
-										colors[y * stride + 2 * x + dx - 1] = leftColor.ToArgb();
-
-									if (2 * x + dx < stride)
-										colors[y * stride + 2 * x + dx] = rightColor.ToArgb();
-								}
-								else
-									colors[y * stride + x] = leftColor.ToArgb();
+							if (xOffset < stride)
+							{
+								var z = y * stride + xOffset;
+								minimapData[z++] = rightColor.R;
+								minimapData[z++] = rightColor.G;
+								minimapData[z++] = rightColor.B;
+								minimapData[z++] = rightColor.A;
 							}
 						}
+						else
+						{
+							var z = y * stride + pxStride * x;
+							minimapData[z++] = leftColor.R;
+							minimapData[z++] = leftColor.G;
+							minimapData[z++] = leftColor.B;
+							minimapData[z++] = leftColor.A;
+						}
 					}
-
-					bitmap.UnlockBits(bitmapData);
-					bitmap.Save(stream, ImageFormat.Png);
 				}
 
-				return stream.ToArray();
+				var png = new Png(minimapData, bitmapWidth, height);
+				return png.Save();
 			}
 		}
 
@@ -730,6 +751,11 @@ namespace OpenRA
 			// so we pre-filter these to avoid returning the wrong result
 			if (Grid.Type == MapGridType.RectangularIsometric && cell.X < cell.Y)
 				return false;
+
+			// If the mod uses flat & rectangular maps, ToMPos and Contains(MPos) create unnecessary cost.
+			// Just check if CPos is within map bounds.
+			if (Grid.MaximumTerrainHeight == 0 && Grid.Type == MapGridType.Rectangular)
+				return Bounds.Contains(cell.X, cell.Y);
 
 			return Contains(cell.ToMPos(this));
 		}
@@ -786,7 +812,7 @@ namespace OpenRA
 		public WPos CenterOfSubCell(CPos cell, SubCell subCell)
 		{
 			var index = (int)subCell;
-			if (index >= 0 && index <= Grid.SubCellOffsets.Length)
+			if (index >= 0 && index < Grid.SubCellOffsets.Length)
 				return CenterOfCell(cell) + Grid.SubCellOffsets[index];
 			return CenterOfCell(cell);
 		}
@@ -1058,7 +1084,8 @@ namespace OpenRA
 				var v = rand.Next(Bounds.Top, Bounds.Bottom);
 
 				cells = Unproject(new PPos(u, v));
-			} while (!cells.Any());
+			}
+			while (!cells.Any());
 
 			return cells.Random(rand).ToCPos(Grid.Type);
 		}

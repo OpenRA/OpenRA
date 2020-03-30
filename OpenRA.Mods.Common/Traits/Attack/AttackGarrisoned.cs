@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -11,10 +11,11 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits.Render;
+using OpenRA.Primitives;
+
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -43,7 +44,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public FirePort[] Ports { get; private set; }
 
-		[PaletteReference] public readonly string MuzzlePalette = "effect";
+		[PaletteReference]
+		public readonly string MuzzlePalette = "effect";
 
 		public override object Create(ActorInitializer init) { return new AttackGarrisoned(init.Self, this); }
 		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
@@ -141,7 +143,7 @@ namespace OpenRA.Mods.Common.Traits
 			return coords.Value.LocalToWorld(p.Offset.Rotate(bodyOrientation));
 		}
 
-		public override void DoAttack(Actor self, Target target, IEnumerable<Armament> armaments = null)
+		public override void DoAttack(Actor self, Target target)
 		{
 			if (!CanAttack(self, target))
 				return;

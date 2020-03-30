@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -15,7 +15,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Attach this to actors which should be able to regenerate their health points.")]
-	class SelfHealingInfo : ConditionalTraitInfo, Requires<HealthInfo>
+	class SelfHealingInfo : ConditionalTraitInfo, Requires<IHealthInfo>
 	{
 		[Desc("Absolute amount of health points added in each step.")]
 		public readonly int Step = 5;
@@ -39,15 +39,18 @@ namespace OpenRA.Mods.Common.Traits
 
 	class SelfHealing : ConditionalTrait<SelfHealingInfo>, ITick, INotifyDamage
 	{
-		readonly Health health;
+		readonly IHealth health;
 
-		[Sync] int ticks;
-		[Sync] int damageTicks;
+		[Sync]
+		int ticks;
+
+		[Sync]
+		int damageTicks;
 
 		public SelfHealing(Actor self, SelfHealingInfo info)
 			: base(info)
 		{
-			health = self.Trait<Health>();
+			health = self.Trait<IHealth>();
 		}
 
 		void ITick.Tick(Actor self)

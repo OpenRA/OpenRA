@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -11,10 +11,10 @@
 
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
-using System.IO;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.LoadScreens;
+using OpenRA.Mods.Common.Widgets;
+using OpenRA.Primitives;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Cnc
@@ -62,18 +62,18 @@ namespace OpenRA.Mods.Cnc
 
 			nodLogo = new Sprite(sheet, new Rectangle(0, 256, 256, 256), TextureChannel.RGBA);
 			gdiLogo = new Sprite(sheet, new Rectangle(256, 256, 256, 256), TextureChannel.RGBA);
-			evaLogo = new Sprite(sheet, new Rectangle(256, 64, 128, 64), TextureChannel.RGBA);
+			evaLogo = new Sprite(sheet, new Rectangle(768, 320, 128, 64), TextureChannel.RGBA);
 			nodPos = new float2(bounds.Width / 2 - 384, bounds.Height / 2 - 128);
 			gdiPos = new float2(bounds.Width / 2 + 128, bounds.Height / 2 - 128);
 			evaPos = new float2(bounds.Width - 43 - 128, 43);
 
-			brightBlock = new Sprite(sheet, new Rectangle(320, 0, 16, 35), TextureChannel.RGBA);
-			dimBlock = new Sprite(sheet, new Rectangle(336, 0, 16, 35), TextureChannel.RGBA);
+			brightBlock = new Sprite(sheet, new Rectangle(776, 384, 16, 35), TextureChannel.RGBA);
+			dimBlock = new Sprite(sheet, new Rectangle(792, 384, 16, 35), TextureChannel.RGBA);
 
 			versionText = modData.Manifest.Metadata.Version;
 		}
 
-		bool setup;
+		object rendererFonts;
 		SpriteFont loadingFont, versionFont;
 		string loadingText, versionText;
 		float2 loadingPos, versionPos;
@@ -97,8 +97,10 @@ namespace OpenRA.Mods.Cnc
 				null);
 			var barY = bounds.Height - 78;
 
-			if (!setup && r.Fonts != null)
+			// The fonts dictionary may change when switching between the mod and content installer
+			if (r.Fonts != rendererFonts)
 			{
+				rendererFonts = r.Fonts;
 				loadingFont = r.Fonts["BigBold"];
 				loadingText = loadInfo["Text"];
 				loadingPos = new float2((bounds.Width - loadingFont.Measure(loadingText).X) / 2, barY);
@@ -106,8 +108,6 @@ namespace OpenRA.Mods.Cnc
 				versionFont = r.Fonts["Regular"];
 				var versionSize = versionFont.Measure(versionText);
 				versionPos = new float2(bounds.Width - 107 - versionSize.X / 2, 115 - versionSize.Y / 2);
-
-				setup = true;
 			}
 
 			if (loadingFont != null)

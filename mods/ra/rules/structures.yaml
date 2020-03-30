@@ -22,6 +22,7 @@ MSLO:
 	Armor:
 		Type: Wood
 	RevealsShroud:
+		MinRange: 5c0
 		Range: 6c0
 		RequiresCondition: !disabled
 		RevealGeneratedShroud: False
@@ -55,12 +56,14 @@ MSLO:
 		ArrowSequence: arrow
 		ClockSequence: clock
 		CircleSequence: circles
+		SupportPowerPaletteOrder: 70
 	SupportPowerChargeBar:
 	Power:
 		Amount: -150
 	MustBeDestroyed:
 		RequiredForShortGame: false
 	WithNukeLaunchAnimation:
+		RequiresCondition: !build-incomplete
 
 GAP:
 	Inherits: ^ScienceBuilding
@@ -85,6 +88,7 @@ GAP:
 	Armor:
 		Type: Heavy
 	RevealsShroud:
+		MinRange: 5c0
 		Range: 6c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -139,46 +143,55 @@ SPEN:
 	Armor:
 		Type: Wood
 	RevealsShroud:
+		MinRange: 4c0
 		Range: 5c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 4c0
 	Exit@1:
+		RequiresCondition: !being-captured
 		SpawnOffset: 0,-213,0
 		Facing: 96
 		ExitCell: -1,2
 		ProductionTypes: Submarine
 	Exit@2:
+		RequiresCondition: !being-captured
 		SpawnOffset: 0,-213,0
 		Facing: 160
 		ExitCell: 3,2
 		ProductionTypes: Submarine
 	Exit@3:
+		RequiresCondition: !being-captured
 		SpawnOffset: 0,0,0
 		Facing: 32
 		ExitCell: 0,0
 		ProductionTypes: Submarine
 	Exit@4:
+		RequiresCondition: !being-captured
 		SpawnOffset: 0,0,0
 		Facing: 224
 		ExitCell: 2,0
 		ProductionTypes: Submarine
 	Exit@b1:
+		RequiresCondition: !being-captured
 		SpawnOffset: -1024,1024,0
 		Facing: 160
 		ExitCell: 0,2
 		ProductionTypes: Ship
 	Exit@b2:
+		RequiresCondition: !being-captured
 		SpawnOffset: 1024,1024,0
 		Facing: 224
 		ExitCell: 2,2
 		ProductionTypes: Ship
 	Exit@b3:
+		RequiresCondition: !being-captured
 		SpawnOffset: -1024,-1024,0
 		Facing: 96
 		ExitCell: 0,0
 		ProductionTypes: Ship
 	Exit@b4:
+		RequiresCondition: !being-captured
 		SpawnOffset: 1024,-1024,0
 		Facing: 32
 		ExitCell: 2,0
@@ -187,13 +200,16 @@ SPEN:
 		Produces: Ship, Submarine
 	PrimaryBuilding:
 		PrimaryCondition: primary
+		SelectionNotification: PrimaryBuildingSelected
 	-SpawnActorsOnSell:
 	RepairsUnits:
 		HpPerStep: 1000
+		StartRepairingNotification: Repairing
 		FinishRepairingNotification: UnitRepaired
 		PlayerExperience: 15
 	RallyPoint:
 	ProductionBar:
+		ProductionType: Ship
 	Power:
 		Amount: -30
 	DetectCloaked:
@@ -225,7 +241,7 @@ SPEN:
 		RequiresPrerequisites: structures.ukraine
 		Prerequisite: ships.ukraine
 	ProvidesPrerequisite@buildingname:
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: INTERIOR
 	WithDecoration@primary:
 		RequiresSelection: true
@@ -274,26 +290,31 @@ SYRD:
 	Armor:
 		Type: Wood
 	RevealsShroud:
+		MinRange: 4c0
 		Range: 5c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 4c0
 	Exit@1:
+		RequiresCondition: !being-captured
 		SpawnOffset: -1024,1024,0
 		Facing: 160
 		ExitCell: 0,2
 		ProductionTypes: Ship, Boat
 	Exit@2:
+		RequiresCondition: !being-captured
 		SpawnOffset: 1024,1024,0
 		Facing: 224
 		ExitCell: 2,2
 		ProductionTypes: Ship, Boat
 	Exit@3:
+		RequiresCondition: !being-captured
 		SpawnOffset: -1024,-1024,0
 		Facing: 96
 		ExitCell: 0,0
 		ProductionTypes: Ship, Boat
 	Exit@4:
+		RequiresCondition: !being-captured
 		SpawnOffset: 1024,-1024,0
 		Facing: 32
 		ExitCell: 2,0
@@ -302,13 +323,16 @@ SYRD:
 		Produces: Ship, Boat
 	PrimaryBuilding:
 		PrimaryCondition: primary
+		SelectionNotification: PrimaryBuildingSelected
 	-SpawnActorsOnSell:
 	RepairsUnits:
 		HpPerStep: 1000
+		StartRepairingNotification: Repairing
 		FinishRepairingNotification: UnitRepaired
 		PlayerExperience: 15
 	RallyPoint:
 	ProductionBar:
+		ProductionType: Ship
 	Power:
 		Amount: -30
 	DetectCloaked:
@@ -346,7 +370,7 @@ SYRD:
 		RequiresPrerequisites: structures.germany
 		Prerequisite: ships.germany
 	ProvidesPrerequisite@buildingname:
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: INTERIOR
 	WithDecoration@primary:
 		RequiresSelection: true
@@ -392,6 +416,7 @@ IRON:
 	Armor:
 		Type: Wood
 	RevealsShroud:
+		MinRange: 5c0
 		Range: 6c0
 		RequiresCondition: !disabled
 		RevealGeneratedShroud: False
@@ -417,6 +442,7 @@ IRON:
 		DisplayRadarPing: True
 		Condition: invulnerability
 		OnFireSound: ironcur9.aud
+		SupportPowerPaletteOrder: 10
 	SupportPowerChargeBar:
 	Power:
 		Amount: -200
@@ -447,6 +473,7 @@ PDOX:
 	Armor:
 		Type: Wood
 	RevealsShroud:
+		MinRange: 5c0
 		Range: 6c0
 		RequiresCondition: !disabled
 		RevealGeneratedShroud: False
@@ -476,9 +503,10 @@ PDOX:
 		InsufficientPowerSpeechNotification: InsufficientPower
 		BeginChargeSpeechNotification: ChronosphereCharging
 		EndChargeSpeechNotification: ChronosphereReady
-		Duration: 500
+		Duration: 400
 		KillCargo: yes
 		DisplayRadarPing: True
+		SupportPowerPaletteOrder: 20
 	ChronoshiftPower@advancedchronoshift:
 		OrderName: AdvancedChronoshift
 		PauseOnCondition: disabled
@@ -491,10 +519,11 @@ PDOX:
 		InsufficientPowerSpeechNotification: InsufficientPower
 		BeginChargeSpeechNotification: ChronosphereCharging
 		EndChargeSpeechNotification: ChronosphereReady
-		Duration: 500
+		Duration: 400
 		KillCargo: yes
 		DisplayRadarPing: True
 		Range: 2
+		SupportPowerPaletteOrder: 30
 	SupportPowerChargeBar:
 	Power:
 		Amount: -200
@@ -524,6 +553,7 @@ TSLA:
 	Armor:
 		Type: Heavy
 	RevealsShroud:
+		MinRange: 6c0
 		Range: 8c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -535,6 +565,7 @@ TSLA:
 		Weapon: TeslaZap
 		LocalOffset: 0,0,896
 	AttackTesla:
+		RequiresCondition: !build-incomplete
 		PauseOnCondition: disabled
 		ChargeAudio: tslachg2.aud
 		MaxCharges: 3
@@ -568,6 +599,7 @@ AGUN:
 	Armor:
 		Type: Heavy
 	RevealsShroud:
+		MinRange: 5c0
 		Range: 6c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -584,6 +616,7 @@ AGUN:
 		LocalOffset: 520,100,450, 520,-150,450
 		MuzzleSequence: muzzle
 	AttackTurreted:
+		RequiresCondition: !build-incomplete
 		PauseOnCondition: disabled
 	WithMuzzleOverlay:
 	RenderRangeCircle:
@@ -606,7 +639,7 @@ DOME:
 		Queue: Building
 		BuildPaletteOrder: 90
 		Prerequisites: proc, ~techlevel.medium
-		Description: Provides an overview\nof the battlefield.\nCan detect cloaked units.\nRequires power to operate.
+		Description: Provides an overview\nof the battlefield.\nRequires power to operate.
 	Valued:
 		Cost: 1800
 	Tooltip:
@@ -622,6 +655,7 @@ DOME:
 	Armor:
 		Type: Wood
 	RevealsShroud:
+		MinRange: 6c0
 		Range: 10c0
 		RequiresCondition: !disabled
 		RevealGeneratedShroud: False
@@ -636,10 +670,6 @@ DOME:
 		RequiresCondition: !jammed && !disabled
 	InfiltrateForExploration:
 		Types: SpyInfiltrate
-	DetectCloaked:
-		Range: 10c0
-		RequiresCondition: !disabled
-	RenderDetectionCircle:
 	Power:
 		Amount: -40
 	ProvidesPrerequisite@buildingname:
@@ -666,6 +696,7 @@ PBOX:
 	Armor:
 		Type: Heavy
 	RevealsShroud:
+		MinRange: 5c0
 		Range: 6c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -684,6 +715,7 @@ PBOX:
 		InitialUnits: e1
 	-SpawnActorsOnSell:
 	AttackGarrisoned:
+		RequiresCondition: !build-incomplete
 		Armaments: garrisoned
 		PortOffsets: 384,0,128, 224,-341,128, -224,-341,128, -384,0,128, -224,341,128, 224,341,128
 		PortYaws: 0, 176, 341, 512, 682, 853
@@ -707,14 +739,15 @@ HBOX:
 		Prerequisites: tent, ~structures.allies, ~techlevel.medium
 		Description: Camouflaged static defense with a fireport\nfor a garrisoned soldier.\nCan detect cloaked units.\n  Strong vs Infantry, Light armor\n  Weak vs Tanks, Aircraft
 	Valued:
-		Cost: 700
+		Cost: 750
 	CustomSellValue:
-		Value: 500
+		Value: 550
 	Health:
 		HP: 40000
 	Armor:
 		Type: Heavy
 	RevealsShroud:
+		MinRange: 5c0
 		Range: 6c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -723,7 +756,7 @@ HBOX:
 		InitialDelay: 125
 		CloakDelay: 60
 		IsPlayerPalette: true
-		RequiresCondition: !cloak-force-disabled
+		PauseOnCondition: cloak-force-disabled
 	GrantConditionOnDamageState@UNCLOAK:
 		Condition: cloak-force-disabled
 		ValidDamageStates: Critical
@@ -743,6 +776,7 @@ HBOX:
 	RenderRangeCircle:
 		FallbackRange: 6c0
 	AttackGarrisoned:
+		RequiresCondition: !build-incomplete
 		Armaments: garrisoned
 		PortOffsets: 384,0,128, 224,-341,128, -224,-341,128, -384,0,128, -224,341,128, 224,341,128
 		PortYaws: 0, 176, 341, 512, 682, 853
@@ -769,6 +803,7 @@ GUN:
 	Armor:
 		Type: Heavy
 	RevealsShroud:
+		MinRange: 5c0
 		Range: 7c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -785,6 +820,7 @@ GUN:
 		LocalOffset: 512,0,112
 		MuzzleSequence: muzzle
 	AttackTurreted:
+		RequiresCondition: !build-incomplete
 	WithMuzzleOverlay:
 	Power:
 		Amount: -40
@@ -811,6 +847,7 @@ FTUR:
 	Armor:
 		Type: Heavy
 	RevealsShroud:
+		MinRange: 5c0
 		Range: 6c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -824,6 +861,7 @@ FTUR:
 		Weapon: FireballLauncher
 		LocalOffset: 512,0,0
 	AttackTurreted:
+		RequiresCondition: !build-incomplete
 	-QuantizeFacingsFromSequence:
 	BodyOrientation:
 		QuantizedFacings: 8
@@ -864,6 +902,7 @@ SAM:
 	Armor:
 		Type: Heavy
 	RevealsShroud:
+		MinRange: 5c0
 		Range: 8c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -880,6 +919,7 @@ SAM:
 		LocalOffset: 0,0,320
 		MuzzleSequence: muzzle
 	AttackTurreted:
+		RequiresCondition: !build-incomplete
 		PauseOnCondition: disabled
 	WithMuzzleOverlay:
 	RenderRangeCircle:
@@ -915,10 +955,11 @@ ATEK:
 	Armor:
 		Type: Wood
 	RevealsShroud:
+		MinRange: 4c0
 		Range: 5c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
-		Range: 6c0
+		Range: 4c0
 	WithBuildingBib:
 	GpsPower:
 		PauseOnCondition: disabled
@@ -930,6 +971,7 @@ ATEK:
 		RevealDelay: 375
 		LaunchSpeechNotification: SatelliteLaunched
 		DisplayTimerStances: Ally, Neutral, Enemy
+		SupportPowerPaletteOrder: 90
 	SupportPowerChargeBar:
 	Power:
 		Amount: -200
@@ -958,15 +1000,18 @@ WEAP:
 	Armor:
 		Type: Wood
 	RevealsShroud:
+		MinRange: 4c0
 		Range: 5c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 4c0
 	WithBuildingBib:
 	WithProductionDoorOverlay:
+		RequiresCondition: !build-incomplete
 		Sequence: build-top
 	RallyPoint:
 	Exit@1:
+		RequiresCondition: !being-captured
 		SpawnOffset: 213,-128,0
 		ExitCell: 1,2
 	Production:
@@ -1027,7 +1072,9 @@ WEAP:
 		Prerequisite: vehicles.ukraine
 	PrimaryBuilding:
 		PrimaryCondition: primary
+		SelectionNotification: PrimaryBuildingSelected
 	ProductionBar:
+		ProductionType: Vehicle
 	Power:
 		Amount: -30
 	ProvidesPrerequisite@buildingname:
@@ -1043,6 +1090,10 @@ WEAP:
 		ReferencePoint: Top
 		ZOffset: 256
 		RequiresCondition: primary
+	-ActorPreviewPlaceBuildingPreview:
+	SequencePlaceBuildingPreview:
+		Sequence: place
+		SequencePalette: placebuilding
 
 FACT:
 	Inherits: ^Building
@@ -1089,28 +1140,40 @@ FACT:
 	Armor:
 		Type: Wood
 	RevealsShroud:
+		MinRange: 4c0
 		Range: 5c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 4c0
-	WithBuildingBib:
 	Production:
-		Produces: Building,Defense
+		Produces: Building, Defense
 	Valued:
-		Cost: 2500
+		Cost: 2000
 	Tooltip:
 		Name: Construction Yard
 	SpawnActorsOnSell:
 		ActorTypes: e1,e1,e1,tecn,tecn,e6
 	BaseBuilding:
 	Transforms:
-		PauseOnCondition: chrono-vortex
+		RequiresCondition: factundeploy
+		PauseOnCondition: chrono-vortex || being-captured || being-demolished || build-incomplete
 		IntoActor: mcv
 		Offset: 1,1
 		Facing: 96
+	TransformsIntoMobile:
 		RequiresCondition: factundeploy
+		Locomotor: heavywheeled
+		RequiresForceMove: true
+	TransformsIntoPassenger:
+		RequiresCondition: factundeploy
+		CargoType: Vehicle
+		RequiresForceMove: true
+	TransformsIntoRepairable:
+		RequiresCondition: factundeploy
+		RepairActors: fix
+		RequiresForceMove: true
 	Sellable:
-		RequiresCondition: !chrono-vortex
+		RequiresCondition: !build-incomplete && !chrono-vortex && !being-captured && !being-demolished
 	GrantConditionOnPrerequisite@GLOBALFACTUNDEPLOY:
 		Condition: factundeploy
 		Prerequisites: global-factundeploy
@@ -1120,8 +1183,11 @@ FACT:
 		ProductionType: Defense
 		Color: 8A8A8A
 	BaseProvider:
+		PauseOnCondition: being-captured
 		Range: 16c0
+	WithBuildingBib:
 	WithBuildingPlacedAnimation:
+		RequiresCondition: !build-incomplete && !chrono-vortex
 	Power:
 		Amount: 0
 	WithDeathAnimation:
@@ -1134,6 +1200,7 @@ FACT:
 			TopLeft: -1536, -1536
 			BottomRight: 1536, 1536
 	ConyardChronoReturn:
+		ReturnOriginalActorOnCondition: build-incomplete
 		Condition: chrono-vortex
 		Damage: 950
 	TransferTimedExternalConditionOnTransform:
@@ -1159,17 +1226,17 @@ PROC:
 		DecorationBounds: 72,70,0,-2
 	SelectionDecorations:
 	Targetable:
-		TargetTypes: Ground, Structure, C4, DetonateAttack, SpyInfiltrate
+		TargetTypes: Ground, Structure, C4, DetonateAttack, ThiefInfiltrate, SpyInfiltrate
 	Health:
 		HP: 90000
 	Armor:
 		Type: Wood
 	RevealsShroud:
+		MinRange: 4c0
 		Range: 5c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 4c0
-	WithBuildingBib:
 	Refinery:
 		DockAngle: 64
 		DockOffset: 1,2
@@ -1185,9 +1252,11 @@ PROC:
 		Facing: 64
 	InfiltrateForCash:
 		Percentage: 50
-		Types: SpyInfiltrate
+		Types: SpyInfiltrate, ThiefInfiltrate
 		Notification: CreditsStolen
+	WithBuildingBib:
 	WithIdleOverlay@TOP:
+		RequiresCondition: !build-incomplete
 		Sequence: idle-top
 	Power:
 		Amount: -30
@@ -1209,6 +1278,10 @@ PROC:
 		Type: Rectangle
 			TopLeft: -1536, 598
 			BottomRight: -512, 1280
+	-ActorPreviewPlaceBuildingPreview:
+	SequencePlaceBuildingPreview:
+		Sequence: idle
+		SequencePalette: placebuilding
 
 SILO:
 	Inherits: ^Building
@@ -1221,6 +1294,8 @@ SILO:
 		Description: Stores excess refined\nOre and Gems.
 	Valued:
 		Cost: 150
+	Targetable:
+		TargetTypes: Ground, Structure, C4, DetonateAttack, ThiefInfiltrate
 	Tooltip:
 		Name: Silo
 	-GivesBuildableArea:
@@ -1231,9 +1306,15 @@ SILO:
 		Type: Wood
 	RevealsShroud:
 		Range: 4c0
+	InfiltrateForCash:
+		Percentage: 50
+		Types: ThiefInfiltrate
+		Notification: CreditsStolen
 	WithBuildingBib:
 		HasMinibib: Yes
-	WithSiloAnimation:
+	-WithSpriteBody:
+	WithResourceLevelSpriteBody:
+		Sequence: stages
 	StoresResources:
 		PipCount: 5
 		Capacity: 3000
@@ -1270,23 +1351,28 @@ HPAD:
 	Armor:
 		Type: Wood
 	RevealsShroud:
+		MinRange: 4c0
 		Range: 5c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 4c0
 	WithBuildingBib:
+	WithResupplyAnimation:
+		RequiresCondition: !build-incomplete
 	Exit@1:
+		RequiresCondition: !being-captured
 		SpawnOffset: 0,-256,0
 		ExitCell: 0,0
-		MoveIntoWorld: false
 		Facing: 224
 	RallyPoint:
 	Production:
 		Produces: Aircraft, Helicopter
 	Reservable:
 	ProductionBar:
+		ProductionType: Aircraft
 	PrimaryBuilding:
 		PrimaryCondition: primary
+		SelectionNotification: PrimaryBuildingSelected
 	Power:
 		Amount: -10
 	ProvidesPrerequisite@allies:
@@ -1332,7 +1418,6 @@ HPAD:
 		ReferencePoint: Top
 		ZOffset: 256
 		RequiresCondition: primary
-	WithRearmAnimation:
 
 AFLD:
 	Inherits: ^Building
@@ -1360,14 +1445,15 @@ AFLD:
 	Armor:
 		Type: Wood
 	RevealsShroud:
+		MinRange: 4c0
 		Range: 5c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 4c0
 	Exit@1:
+		RequiresCondition: !being-captured
 		ExitCell: 1,1
 		Facing: 192
-		MoveIntoWorld: false
 	RallyPoint:
 	Production:
 		Produces: Aircraft, Plane
@@ -1402,7 +1488,7 @@ AFLD:
 		Icon: spyplane
 		ChargeInterval: 3750
 		Description: Spy Plane
-		LongDesc: Reveals an area of the map\nand cloaked enemy units.
+		LongDesc: Reveals an area of the map.
 		SelectTargetSpeechNotification: SelectTarget
 		EndChargeSpeechNotification: SpyPlaneReady
 		CameraActor: camera.spyplane
@@ -1414,6 +1500,9 @@ AFLD:
 		ArrowSequence: arrow
 		ClockSequence: clock
 		CircleSequence: circles
+		UseDirectionalTarget: True
+		DirectionArrowAnimation: paradirection
+		SupportPowerPaletteOrder: 60
 	ParatroopersPower@paratroopers:
 		OrderName: SovietParatroopers
 		Prerequisites: aircraft.soviet
@@ -1432,6 +1521,9 @@ AFLD:
 		ArrowSequence: arrow
 		ClockSequence: clock
 		CircleSequence: circles
+		UseDirectionalTarget: True
+		DirectionArrowAnimation: paradirection
+		SupportPowerPaletteOrder: 50
 	AirstrikePower@parabombs:
 		OrderName: UkraineParabombs
 		Prerequisites: aircraft.ukraine
@@ -1451,10 +1543,15 @@ AFLD:
 		ArrowSequence: arrow
 		ClockSequence: clock
 		CircleSequence: circles
+		UseDirectionalTarget: True
+		DirectionArrowAnimation: paradirection
+		SupportPowerPaletteOrder: 40
 	ProductionBar:
+		ProductionType: Aircraft
 	SupportPowerChargeBar:
 	PrimaryBuilding:
 		PrimaryCondition: primary
+		SelectionNotification: PrimaryBuildingSelected
 	Power:
 		Amount: -20
 	ProvidesPrerequisite@buildingname:
@@ -1471,7 +1568,8 @@ AFLD:
 		ReferencePoint: Top
 		ZOffset: 256
 		RequiresCondition: primary
-	WithRearmAnimation:
+	WithResupplyAnimation:
+		RequiresCondition: !build-incomplete
 
 AFLD.Ukraine:
 	Inherits: AFLD
@@ -1589,6 +1687,7 @@ STEK:
 	Armor:
 		Type: Wood
 	RevealsShroud:
+		MinRange: 4c0
 		Range: 5c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -1624,6 +1723,7 @@ BARR:
 	Armor:
 		Type: Wood
 	RevealsShroud:
+		MinRange: 4c0
 		Range: 5c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -1631,18 +1731,24 @@ BARR:
 	WithBuildingBib:
 	RallyPoint:
 	Exit@1:
+		RequiresCondition: !being-captured
 		SpawnOffset: -170,810,0
 		ExitCell: 1,2
 		ProductionTypes: Soldier, Infantry
 	Exit@2:
+		RequiresCondition: !being-captured
 		SpawnOffset: -725,640,0
 		ExitCell: 0,2
 		ProductionTypes: Soldier, Infantry
 	Production:
 		Produces: Infantry, Soldier
+	GrantExternalConditionToProduced:
+		Condition: produced
 	PrimaryBuilding:
 		PrimaryCondition: primary
+		SelectionNotification: PrimaryBuildingSelected
 	ProductionBar:
+		ProductionType: Infantry
 	ProvidesPrerequisite:
 		Prerequisite: barracks
 	ProvidesPrerequisite@soviet:
@@ -1695,7 +1801,7 @@ KENN:
 		Prerequisites: anypower, ~structures.soviet, ~techlevel.infonly
 		Description: Trains Attack Dogs.
 	Valued:
-		Cost: 100
+		Cost: 200
 	Tooltip:
 		Name: Kennel
 	-GivesBuildableArea:
@@ -1710,10 +1816,12 @@ KENN:
 	RallyPoint:
 		Offset: 0,2
 	Exit@1:
+		RequiresCondition: !being-captured
 		SpawnOffset: -280,400,0
 		ExitCell: 0,1
 		ProductionTypes: Dog, Infantry
 	Exit@2:
+		RequiresCondition: !being-captured
 		SpawnOffset: -280,400,0
 		ExitCell: -1,0
 		ProductionTypes: Dog, Infantry
@@ -1721,7 +1829,9 @@ KENN:
 		Produces: Infantry, Dog
 	PrimaryBuilding:
 		PrimaryCondition: primary
+		SelectionNotification: PrimaryBuildingSelected
 	ProductionBar:
+		ProductionType: Infantry
 	-SpawnActorsOnSell:
 	Power:
 		Amount: -10
@@ -1760,6 +1870,7 @@ TENT:
 	Armor:
 		Type: Wood
 	RevealsShroud:
+		MinRange: 4c0
 		Range: 5c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -1767,18 +1878,24 @@ TENT:
 	WithBuildingBib:
 	RallyPoint:
 	Exit@1:
+		RequiresCondition: !being-captured
 		SpawnOffset: -42,810,0
 		ExitCell: 1,2
 		ProductionTypes: Soldier, Infantry
 	Exit@2:
+		RequiresCondition: !being-captured
 		SpawnOffset: -725,640,0
 		ExitCell: 0,2
 		ProductionTypes: Soldier, Infantry
 	Production:
 		Produces: Infantry, Soldier
+	GrantExternalConditionToProduced:
+		Condition: produced
 	PrimaryBuilding:
 		PrimaryCondition: primary
+		SelectionNotification: PrimaryBuildingSelected
 	ProductionBar:
+		ProductionType: Infantry
 	ProvidesPrerequisite@barracks:
 		Prerequisite: barracks
 	ProvidesPrerequisite@allies:
@@ -1850,21 +1967,23 @@ FIX:
 	Armor:
 		Type: Wood
 	RevealsShroud:
+		MinRange: 4c0
 		Range: 5c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 4c0
-	WithBuildingBib:
-		HasMinibib: Yes
 	Reservable:
 	RallyPoint:
 	RepairsUnits:
 		HpPerStep: 1000
 		Interval: 7
+		StartRepairingNotification: Repairing
 		FinishRepairingNotification: UnitRepaired
 		PlayerExperience: 15
-	WithRepairAnimation:
-	WithRearmAnimation:
+	WithBuildingBib:
+		HasMinibib: Yes
+	WithResupplyAnimation:
+		RequiresCondition: !build-incomplete
 	Power:
 		Amount: -30
 	ProvidesPrerequisite@buildingname:
@@ -1881,7 +2000,7 @@ SBAG:
 		Prerequisites: fact, ~structures.allies, ~techlevel.low
 		Description: Stops infantry and light vehicles.\nCan be crushed by tanks.
 	Valued:
-		Cost: 50
+		Cost: 30
 	CustomSellValue:
 		Value: 0
 	Tooltip:
@@ -1905,7 +2024,7 @@ FENC:
 		Prerequisites: fact, ~structures.soviet, ~techlevel.low
 		Description: Stops infantry and light vehicles.\nCan be crushed by tanks.
 	Valued:
-		Cost: 50
+		Cost: 30
 	CustomSellValue:
 		Value: 0
 	Tooltip:

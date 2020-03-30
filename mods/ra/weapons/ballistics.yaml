@@ -31,7 +31,7 @@
 25mm:
 	Inherits: ^Cannon
 	ReloadDelay: 21
-	Range: 4c0
+	Range: 4c768
 	Report: cannon2.aud
 	Projectile: Bullet
 		Speed: 853
@@ -44,7 +44,7 @@
 			Light: 116
 			Heavy: 48
 			Concrete: 32
-	-Warhead@2Smu: LeaveSmudge
+	-Warhead@2Smu:
 	Warhead@3Eff: CreateEffect
 		-ImpactSounds:
 	Warhead@4EffWater: CreateEffect
@@ -60,7 +60,6 @@
 	Inherits: ^Cannon
 	ReloadDelay: 70
 	Burst: 2
-	BurstDelays: 4
 	Warhead@1Dam: SpreadDamage
 		Versus:
 			Heavy: 115
@@ -118,6 +117,12 @@ TurretGun:
 	TargetActorCenter: true
 	Projectile: Bullet
 		ContrailLength: 30
+		Speed: 170
+		Inaccuracy: 1c138
+	Warhead@1Dam: SpreadDamage
+		Falloff: 100, 55, 20, 5
+		Versus:
+			None: 60
 
 8Inch:
 	Inherits: ^Artillery

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -20,9 +20,11 @@ namespace OpenRA.Mods.Cnc.Traits
 {
 	public class WithBuildingBibInfo : ITraitInfo, Requires<BuildingInfo>, IRenderActorPreviewSpritesInfo, IActorPreviewInitInfo, Requires<RenderSpritesInfo>
 	{
-		[SequenceReference] public readonly string Sequence = "bib";
+		[SequenceReference]
+		public readonly string Sequence = "bib";
 
-		[PaletteReference] public readonly string Palette = TileSet.TerrainPaletteInternalName;
+		[PaletteReference]
+		public readonly string Palette = TileSet.TerrainPaletteInternalName;
 
 		public readonly bool HasMinibib = false;
 
@@ -130,7 +132,9 @@ namespace OpenRA.Mods.Cnc.Traits
 
 	class HideBibPreviewInit : IActorInit<bool>, ISuppressInitExport
 	{
-		[FieldFromYamlKey] readonly bool value = true;
+		[FieldFromYamlKey]
+		readonly bool value = true;
+
 		public HideBibPreviewInit() { }
 		public HideBibPreviewInit(bool init) { value = init; }
 		public bool Value(World world) { return value; }

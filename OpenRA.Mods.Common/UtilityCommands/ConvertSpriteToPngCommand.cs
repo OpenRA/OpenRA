@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,12 +10,11 @@
 #endregion
 
 using System;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
+using OpenRA.FileFormats;
 using OpenRA.Graphics;
+using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
@@ -46,8 +45,12 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			}
 
 			var palette = new ImmutablePalette(args[2], shadowIndex);
+			var palColors = new Color[Palette.Size];
+			for (var i = 0; i < Palette.Size; i++)
+				palColors[i] = palette.GetColor(i);
 
-			var frames = FrameLoader.GetFrames(File.OpenRead(src), modData.SpriteLoaders);
+			TypeDictionary metadata;
+			var frames = FrameLoader.GetFrames(File.OpenRead(src), modData.SpriteLoaders, out metadata);
 
 			var usePadding = !args.Contains("--nopadding");
 			var count = 0;
@@ -65,31 +68,19 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					continue;
 				}
 
-				using (var bitmap = new Bitmap(frameSize.Width, frameSize.Height, PixelFormat.Format8bppIndexed))
+				// TODO: expand frame with zero padding
+				var pngData = frame.Data;
+				if (frameSize != frame.Size)
 				{
-					bitmap.Palette = palette.AsSystemPalette();
-					var data = bitmap.LockBits(new Rectangle(0, 0, frameSize.Width, frameSize.Height),
-						ImageLockMode.WriteOnly, PixelFormat.Format8bppIndexed);
-
-					// Clear the frame
-					if (usePadding && !frame.DisableExportPadding)
-					{
-						var clearRow = new byte[data.Stride];
-						for (var i = 0; i < frameSize.Height; i++)
-							Marshal.Copy(clearRow, 0, new IntPtr(data.Scan0.ToInt64() + i * data.Stride), data.Stride);
-					}
-
+					pngData = new byte[frameSize.Width * frameSize.Height];
 					for (var i = 0; i < frame.Size.Height; i++)
-					{
-						var destIndex = new IntPtr(data.Scan0.ToInt64() + (i + offset.Y) * data.Stride + offset.X);
-						Marshal.Copy(frame.Data, i * frame.Size.Width, destIndex, frame.Size.Width);
-					}
-
-					bitmap.UnlockBits(data);
-
-					var filename = "{0}-{1:D4}.png".F(prefix, count++);
-					bitmap.Save(filename);
+						Buffer.BlockCopy(frame.Data, i * frame.Size.Width,
+							pngData, (i + offset.Y) * frameSize.Width + offset.X,
+							frame.Size.Width);
 				}
+
+				var png = new Png(pngData, frameSize.Width, frameSize.Height, palColors);
+				png.Save("{0}-{1:D4}.png".F(prefix, count++));
 			}
 
 			Console.WriteLine("Saved {0}-[0..{1}].png", prefix, count - 1);

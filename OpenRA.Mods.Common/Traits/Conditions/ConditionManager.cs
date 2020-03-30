@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -115,9 +114,12 @@ namespace OpenRA.Mods.Common.Traits
 			return token;
 		}
 
-		/// <summary>Revokes a previously granted condition.</summary>
-		/// <returns>The invalid token ID.</returns>
+		/// <summary>
+		/// Revokes a previously granted condition.
+		/// </summary>
+		/// <param name="self">The actor to which this trait is attached.</param>
 		/// <param name="token">The token ID returned by GrantCondition.</param>
+		/// <returns>The invalid token ID.</returns>
 		public int RevokeCondition(Actor self, int token)
 		{
 			string condition;

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class ResourceLayer : IRenderOverlay, IWorldLoaded, ITickRender, INotifyActorDisposing
 	{
-		static readonly CellContents EmptyCell = new CellContents();
+		static readonly CellContents EmptyCell = default(CellContents);
 
 		readonly World world;
 		readonly BuildingInfluence buildingInfluence;
@@ -310,7 +310,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public struct CellContents
 		{
-			public static readonly CellContents Empty = new CellContents();
+			public static readonly CellContents Empty = default(CellContents);
 			public ResourceType Type;
 			public int Density;
 			public string Variant;

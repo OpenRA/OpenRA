@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,13 +10,12 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Drawing;
-using OpenRA.Effects;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Projectiles
@@ -76,23 +75,27 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Impact animation.")]
 		public readonly string HitAnim = null;
 
+		[SequenceReference("HitAnim")]
 		[Desc("Sequence of impact animation to use.")]
-		[SequenceReference("HitAnim")] public readonly string HitAnimSequence = "idle";
+		public readonly string HitAnimSequence = "idle";
 
-		[PaletteReference] public readonly string HitAnimPalette = "effect";
+		[PaletteReference]
+		public readonly string HitAnimPalette = "effect";
 
 		[Desc("Image containing launch effect sequence.")]
 		public readonly string LaunchEffectImage = null;
 
+		[SequenceReference("LaunchEffectImage")]
 		[Desc("Launch effect sequence to play.")]
-		[SequenceReference("LaunchEffectImage")] public readonly string LaunchEffectSequence = null;
+		public readonly string LaunchEffectSequence = null;
 
+		[PaletteReference]
 		[Desc("Palette to use for launch effect.")]
-		[PaletteReference] public readonly string LaunchEffectPalette = "effect";
+		public readonly string LaunchEffectPalette = "effect";
 
 		public IProjectile Create(ProjectileArgs args)
 		{
-			var c = UsePlayerColor ? args.SourceActor.Owner.Color.RGB : Color;
+			var c = UsePlayerColor ? args.SourceActor.Owner.Color : Color;
 			return new LaserZap(this, args, c);
 		}
 	}
@@ -104,19 +107,23 @@ namespace OpenRA.Mods.Common.Projectiles
 		readonly Animation hitanim;
 		readonly Color color;
 		readonly Color secondaryColor;
-		int ticks = 0;
+		readonly bool hasLaunchEffect;
+		int ticks;
 		int interval;
 		bool showHitAnim;
-		bool hasLaunchEffect;
-		[Sync] WPos target;
-		[Sync] WPos source;
+
+		[Sync]
+		WPos target;
+
+		[Sync]
+		WPos source;
 
 		public LaserZap(LaserZapInfo info, ProjectileArgs args, Color color)
 		{
 			this.args = args;
 			this.info = info;
 			this.color = color;
-			secondaryColor = info.SecondaryBeamUsePlayerColor ? args.SourceActor.Owner.Color.RGB : info.SecondaryBeamColor;
+			secondaryColor = info.SecondaryBeamUsePlayerColor ? args.SourceActor.Owner.Color : info.SecondaryBeamColor;
 			target = args.PassiveTarget;
 			source = args.Source;
 
@@ -141,7 +148,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			source = args.CurrentSource();
 
 			if (hasLaunchEffect && ticks == 0)
-				world.AddFrameEndTask(w => w.Add(new LaunchEffect(world, args.CurrentSource, () => 0,
+				world.AddFrameEndTask(w => w.Add(new SpriteEffect(args.CurrentSource, args.CurrentMuzzleFacing, world,
 					info.LaunchEffectImage, info.LaunchEffectSequence, info.LaunchEffectPalette)));
 
 			// Beam tracks target

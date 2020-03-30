@@ -904,6 +904,8 @@ scrollitem-hover: dialog.png
 	corner-bl: 512,127,1,1
 	corner-br: 639,127,1,1
 
+scrollitem-nohover: dialog.png
+
 # A copy of dialog2 (normal button)
 scrollheader-selected: dialog.png
 	background: 513,1,126,126
@@ -932,3 +934,9 @@ mainmenu-border: dialog.png
 
 dropdown: dialog.png
 	separator: 512,1,1,19
+
+logos: loadscreen.png
+	logo: 0,0,256,256
+
+loadscreen-stripe: loadscreen.png
+	background: 256,0,256,256

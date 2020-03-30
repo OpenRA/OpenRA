@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,7 +10,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
@@ -18,10 +17,10 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
 {
-	[Desc("This structure can be infiltrated causing funds to be stolen.")]
+	[Desc("Funds are transferred from the owner to the infiltrator.")]
 	class InfiltrateForCashInfo : ITraitInfo
 	{
-		public readonly BitSet<TargetableType> Types;
+		public readonly BitSet<TargetableType> Types = default(BitSet<TargetableType>);
 
 		[Desc("Percentage of the victim's resources that will be stolen.")]
 		public readonly int Percentage = 100;
@@ -33,6 +32,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("Maximum amount of funds which will be stolen.")]
 		public readonly int Maximum = int.MaxValue;
 
+		[NotificationReference("Speech")]
 		[Desc("Sound the victim will hear when they get robbed.")]
 		public readonly string Notification = null;
 
@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", info.Notification, self.Owner.Faction.InternalName);
 
 			if (info.ShowTicks)
-				self.World.AddFrameEndTask(w => w.Add(new FloatingText(self.CenterPosition, infiltrator.Owner.Color.RGB, FloatingText.FormatCashTick(toGive), 30)));
+				self.World.AddFrameEndTask(w => w.Add(new FloatingText(self.CenterPosition, infiltrator.Owner.Color, FloatingText.FormatCashTick(toGive), 30)));
 		}
 	}
 }

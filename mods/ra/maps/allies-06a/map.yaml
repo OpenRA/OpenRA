@@ -29,6 +29,7 @@ Players:
 		Faction: soviet
 		Color: FF1400
 		Enemies: USSR, Greece
+		Bot: campaign
 	PlayerReference@Greece:
 		Name: Greece
 		AllowBots: False

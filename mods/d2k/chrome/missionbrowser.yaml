@@ -28,17 +28,20 @@ Background@MISSIONBROWSER_PANEL:
 						Label@LABEL:
 							Font: TinyBold
 							Width: PARENT_RIGHT
-							Height: 10
+							Height: 13
 							Align: Center
 				ScrollItem@TEMPLATE:
 					Width: PARENT_RIGHT - 27
 					Height: 25
 					X: 2
+					EnableChildMouseOver: True
 					Children:
-						Label@TITLE:
+						LabelWithTooltip@TITLE:
 							X: 10
 							Width: PARENT_RIGHT - 20
 							Height: 25
+							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipTemplate: SIMPLE_TOOLTIP
 		Label@DIFFICULTY_DESC:
 			X: 210 - WIDTH - 125
 			Y: 468
@@ -152,6 +155,7 @@ Background@MISSIONBROWSER_PANEL:
 					Height: 480
 					AspectRatio: 1.2
 					DrawOverlay: False
+		TooltipContainer@TOOLTIP_CONTAINER:
 
 Background@FULLSCREEN_PLAYER:
 	Width: WINDOW_RIGHT

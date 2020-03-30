@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -18,7 +18,9 @@ namespace OpenRA.Mods.Common.Traits
 	public enum LineBuildDirection { Unset, X, Y }
 	public class LineBuildDirectionInit : IActorInit<LineBuildDirection>
 	{
-		[FieldFromYamlKey] readonly LineBuildDirection value = LineBuildDirection.Unset;
+		[FieldFromYamlKey]
+		readonly LineBuildDirection value = LineBuildDirection.Unset;
+
 		public LineBuildDirectionInit() { }
 		public LineBuildDirectionInit(LineBuildDirection init) { value = init; }
 		public LineBuildDirection Value(World world) { return value; }
@@ -26,7 +28,9 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class LineBuildParentInit : IActorInit<Actor[]>
 	{
-		[FieldFromYamlKey] public readonly string[] ParentNames = new string[0];
+		[FieldFromYamlKey]
+		public readonly string[] ParentNames = new string[0];
+
 		readonly Actor[] parents = null;
 
 		public LineBuildParentInit() { }

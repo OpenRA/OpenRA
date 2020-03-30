@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,8 +10,8 @@
 #endregion
 
 using System;
-using System.Drawing;
 using System.Runtime.InteropServices;
+using OpenRA.Primitives;
 using SDL2;
 
 namespace OpenRA.Platforms.Default
@@ -30,6 +30,7 @@ namespace OpenRA.Platforms.Default
 		Size windowSize;
 		Size surfaceSize;
 		float windowScale;
+		int2? lockedMousePosition;
 
 		internal IntPtr Window
 		{
@@ -112,6 +113,31 @@ namespace OpenRA.Platforms.Default
 
 				window = SDL.SDL_CreateWindow("OpenRA", SDL.SDL_WINDOWPOS_CENTERED, SDL.SDL_WINDOWPOS_CENTERED,
 					windowSize.Width, windowSize.Height, windowFlags);
+
+				// Work around an issue in macOS's GL backend where the window remains permanently black
+				// (if dark mode is enabled) unless we drain the event queue before initializing GL
+				if (Platform.CurrentPlatform == PlatformType.OSX)
+				{
+					SDL.SDL_Event e;
+					while (SDL.SDL_PollEvent(out e) != 0)
+					{
+						// We can safely ignore all mouse/keyboard events and window size changes
+						// (these will be caught in the window setup below), but do need to process focus
+						if (e.type == SDL.SDL_EventType.SDL_WINDOWEVENT)
+						{
+							switch (e.window.windowEvent)
+							{
+								case SDL.SDL_WindowEventID.SDL_WINDOWEVENT_FOCUS_LOST:
+									Game.HasInputFocus = false;
+									break;
+
+								case SDL.SDL_WindowEventID.SDL_WINDOWEVENT_FOCUS_GAINED:
+									Game.HasInputFocus = true;
+									break;
+							}
+						}
+					}
+				}
 
 				surfaceSize = windowSize;
 				windowScale = 1;
@@ -202,6 +228,24 @@ namespace OpenRA.Platforms.Default
 			input = new Sdl2Input();
 		}
 
+		byte[] DoublePixelData(byte[] data, Size size)
+		{
+			var scaledData = new byte[4 * data.Length];
+			for (var y = 0; y < size.Height; y++)
+			{
+				for (var x = 0; x < size.Width; x++)
+				{
+					var a = 4 * (y * size.Width + x);
+					var b = 8 * (2 * y * size.Width + x);
+					var c = b + 8 * size.Width;
+					for (var i = 0; i < 4; i++)
+						scaledData[b + i] = scaledData[b + 4 + i] = scaledData[c + i] = scaledData[c + 4 + i] = data[a + i];
+				}
+			}
+
+			return scaledData;
+		}
+
 		public IHardwareCursor CreateHardwareCursor(string name, Size size, byte[] data, int2 hotspot)
 		{
 			VerifyThreadAffinity();
@@ -211,23 +255,9 @@ namespace OpenRA.Platforms.Default
 				// OSX does this for us automatically
 				if (Platform.CurrentPlatform != PlatformType.OSX && WindowScale > 1.5)
 				{
-					var scaledData = new byte[4 * data.Length];
-					for (var y = 0; y < size.Height * 4; y += 4)
-					{
-						for (var x = 0; x < size.Width * 4; x += 4)
-						{
-							var a = 4 * (y * size.Width + x);
-							var b = 4 * ((y + 1) * size.Width + x);
-							for (var i = 0; i < 4; i++)
-							{
-								scaledData[2 * a + i] = scaledData[2 * a + 4 + i] = data[a + i];
-								scaledData[2 * b + i] = scaledData[2 * b + 4 + i] = data[b + i];
-							}
-						}
-					}
-
+					data = DoublePixelData(data, size);
 					size = new Size(2 * size.Width, 2 * size.Height);
-					data = scaledData;
+					hotspot *= 2;
 				}
 
 				return new Sdl2HardwareCursor(size, data, hotspot);
@@ -248,6 +278,23 @@ namespace OpenRA.Platforms.Default
 			{
 				SDL.SDL_ShowCursor((int)SDL.SDL_bool.SDL_TRUE);
 				SDL.SDL_SetCursor(c.Cursor);
+			}
+		}
+
+		public void SetRelativeMouseMode(bool mode)
+		{
+			if (mode)
+			{
+				int x, y;
+				SDL.SDL_GetMouseState(out x, out y);
+				lockedMousePosition = new int2(x, y);
+			}
+			else
+			{
+				if (lockedMousePosition.HasValue)
+					SDL.SDL_WarpMouseInWindow(window, lockedMousePosition.Value.X, lockedMousePosition.Value.Y);
+
+				lockedMousePosition = null;
 			}
 		}
 
@@ -306,7 +353,10 @@ namespace OpenRA.Platforms.Default
 		public void PumpInput(IInputHandler inputHandler)
 		{
 			VerifyThreadAffinity();
-			input.PumpInput(this, inputHandler);
+			input.PumpInput(this, inputHandler, lockedMousePosition);
+
+			if (lockedMousePosition.HasValue)
+				SDL.SDL_WarpMouseInWindow(window, lockedMousePosition.Value.X, lockedMousePosition.Value.Y);
 		}
 
 		public string GetClipboardText()

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,8 +10,8 @@
 #endregion
 
 using System;
-using System.Drawing;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -19,9 +19,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class SupportPowerTooltipLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
-		public SupportPowerTooltipLogic(Widget widget, TooltipContainerWidget tooltipContainer, SupportPowersWidget palette, World world)
+		public SupportPowerTooltipLogic(Widget widget, TooltipContainerWidget tooltipContainer, Func<SupportPowersWidget.SupportPowerIcon> getTooltipIcon, World world)
 		{
-			widget.IsVisible = () => palette.TooltipIcon != null && palette.TooltipIcon.Power.Info != null;
+			widget.IsVisible = () => getTooltipIcon() != null && getTooltipIcon().Power.Info != null;
 			var nameLabel = widget.Get<LabelWidget>("NAME");
 			var hotkeyLabel = widget.Get<LabelWidget>("HOTKEY");
 			var timeLabel = widget.Get<LabelWidget>("TIME");
@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			tooltipContainer.BeforeRender = () =>
 			{
-				var icon = palette.TooltipIcon;
+				var icon = getTooltipIcon();
 				if (icon == null || icon.Power == null || icon.Power.Instances.Count == 0)
 					return;
 
@@ -86,7 +86,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				lastRemainingSeconds = remainingSeconds;
 			};
 
-			timeLabel.GetColor = () => palette.TooltipIcon != null && !palette.TooltipIcon.Power.Active
+			timeLabel.GetColor = () => getTooltipIcon() != null && !getTooltipIcon().Power.Active
 				? Color.Red : Color.White;
 		}
 	}

@@ -138,10 +138,10 @@ ChromeLayout:
 	common|chrome/ingame-infoobjectives.yaml
 	common|chrome/ingame-infostats.yaml
 	ts|chrome/ingame-observer.yaml
-	ts|chrome/ingame-observerstats.yaml
 	ts|chrome/ingame-player.yaml
 	common|chrome/ingame-perf.yaml
 	ts|chrome/ingame-debug.yaml
+	common|chrome/ingame-debuginfo.yaml
 	common|chrome/ingame-infochat.yaml
 	common|chrome/mainmenu.yaml
 	ts|chrome/mainmenu-prerelease-notification.yaml
@@ -163,6 +163,8 @@ ChromeLayout:
 	common|chrome/multiplayer-directconnect.yaml
 	common|chrome/connection.yaml
 	common|chrome/replaybrowser.yaml
+	common|chrome/gamesave-browser.yaml
+	common|chrome/gamesave-loading.yaml
 	ts|chrome/dropdowns.yaml
 	common|chrome/musicplayer.yaml
 	common|chrome/tooltips.yaml
@@ -211,27 +213,35 @@ Fonts:
 	Tiny:
 		Font: common|FreeSans.ttf
 		Size: 10
+		Ascender: 8
 	TinyBold:
 		Font: common|FreeSansBold.ttf
 		Size: 10
+		Ascender: 8
 	Small:
 		Font: common|FreeSans.ttf
 		Size: 12
+		Ascender: 9
 	Regular:
 		Font: common|FreeSans.ttf
 		Size: 14
+		Ascender: 11
 	Bold:
 		Font: common|FreeSansBold.ttf
 		Size: 14
+		Ascender: 11
 	MediumBold:
 		Font: common|FreeSansBold.ttf
 		Size: 18
+		Ascender: 14
 	BigBold:
 		Font: common|FreeSansBold.ttf
 		Size: 24
+		Ascender: 18
 	Title:
 		Font: common|FreeSansBold.ttf
 		Size: 32
+		Ascender: 24
 
 SupportsMapsFrom: ts
 

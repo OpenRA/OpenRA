@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -199,7 +199,8 @@ namespace OpenRA.Test
 				Is.EqualTo(878));
 
 			// Plus shaped dodecagon
-			shape = new PolygonShape(new int2[] {
+			shape = new PolygonShape(new[]
+			{
 				new int2(-511, -1535), new int2(511, -1535), new int2(511, -511), new int2(1535, -511),
 				new int2(1535, 511), new int2(511, 511), new int2(511, 1535), new int2(-511, 1535),
 				new int2(-511, 511), new int2(-1535, 511), new int2(-1535, -511), new int2(-511, -511)

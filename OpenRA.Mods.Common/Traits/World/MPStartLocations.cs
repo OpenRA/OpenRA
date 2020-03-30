@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Translate]
 		[Desc("Tooltip description for the spawn positions checkbox in the lobby.")]
-		public readonly string SeparateTeamSpawnsCheckboxDescription = "Players without assigned spawn points will start as far as possible from enemy players.";
+		public readonly string SeparateTeamSpawnsCheckboxDescription = "Players without assigned spawn points will start as far as possible from enemy players";
 
 		[Desc("Default value of the spawn positions checkbox in the lobby.")]
 		public readonly bool SeparateTeamSpawnsCheckboxEnabled = true;
@@ -132,7 +132,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			var n = taken.Count == 0 || !separateTeamSpawns
 				? world.SharedRandom.Next(available.Count)
-				: available			// pick the most distant spawnpoint from everyone else
+				: available // pick the most distant spawnpoint from everyone else
 					.Select((k, i) => Pair.New(k, i))
 					.MaxBy(a => taken.Sum(t => (t - a.First).LengthSquared)).Second;
 

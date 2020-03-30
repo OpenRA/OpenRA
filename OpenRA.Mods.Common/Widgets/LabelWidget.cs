@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,8 +10,8 @@
 #endregion
 
 using System;
-using System.Drawing;
 using OpenRA.Graphics;
+using OpenRA.Primitives;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
@@ -21,7 +21,8 @@ namespace OpenRA.Mods.Common.Widgets
 
 	public class LabelWidget : Widget
 	{
-		[Translate] public string Text = null;
+		[Translate]
+		public string Text = null;
 		public TextAlign Align = TextAlign.Left;
 		public TextVAlign VAlign = TextVAlign.Middle;
 		public string Font = ChromeMetrics.Get<string>("TextFont");
@@ -49,6 +50,7 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			Text = other.Text;
 			Align = other.Align;
+			VAlign = other.VAlign;
 			Font = other.Font;
 			TextColor = other.TextColor;
 			Contrast = other.Contrast;
@@ -74,9 +76,13 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var textSize = font.Measure(text);
 			var position = RenderOrigin;
+			var offset = font.TopOffset;
+
+			if (VAlign == TextVAlign.Top)
+				position += new int2(0, -offset);
 
 			if (VAlign == TextVAlign.Middle)
-				position += new int2(0, (Bounds.Height - textSize.Y) / 2);
+				position += new int2(0, (Bounds.Height - textSize.Y - offset) / 2);
 
 			if (VAlign == TextVAlign.Bottom)
 				position += new int2(0, Bounds.Height - textSize.Y);

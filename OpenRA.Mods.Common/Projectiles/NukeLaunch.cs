@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -25,6 +25,7 @@ namespace OpenRA.Mods.Common.Effects
 		readonly Animation anim;
 		readonly WeaponInfo weapon;
 		readonly string weaponPalette;
+		readonly string upSequence;
 		readonly string downSequence;
 		readonly string flashType;
 
@@ -32,44 +33,72 @@ namespace OpenRA.Mods.Common.Effects
 		readonly WPos ascendTarget;
 		readonly WPos descendSource;
 		readonly WPos descendTarget;
-		readonly int delay;
+		readonly WDist detonationAltitude;
+		readonly bool removeOnDetonation;
+		readonly int impactDelay;
 		readonly int turn;
+		readonly string trailImage;
+		readonly string[] trailSequences;
+		readonly string trailPalette;
+		readonly int trailInterval;
+		readonly int trailDelay;
 
 		WPos pos;
-		int ticks;
-		bool isAddedToScreenMap;
+		int ticks, trailTicks;
+		int launchDelay;
+		bool isLaunched;
+		bool detonated;
 
 		public NukeLaunch(Player firedBy, string name, WeaponInfo weapon, string weaponPalette, string upSequence, string downSequence,
-			WPos launchPos, WPos targetPos, WDist velocity, int delay, bool skipAscent, string flashType)
+			WPos launchPos, WPos targetPos, WDist detonationAltitude, bool removeOnDetonation, WDist velocity, int launchDelay, int impactDelay,
+			bool skipAscent, string flashType,
+			string trailImage, string[] trailSequences, string trailPalette, bool trailUsePlayerPalette, int trailDelay, int trailInterval)
 		{
 			this.firedBy = firedBy;
 			this.weapon = weapon;
 			this.weaponPalette = weaponPalette;
+			this.upSequence = upSequence;
 			this.downSequence = downSequence;
-			this.delay = delay;
-			turn = skipAscent ? 0 : delay / 2;
+			this.launchDelay = launchDelay;
+			this.impactDelay = impactDelay;
+			turn = skipAscent ? 0 : impactDelay / 2;
 			this.flashType = flashType;
+			this.trailImage = trailImage;
+			this.trailSequences = trailSequences;
+			this.trailPalette = trailPalette;
+			if (trailUsePlayerPalette)
+				trailPalette += firedBy.InternalName;
 
-			var offset = new WVec(WDist.Zero, WDist.Zero, velocity * (delay - turn));
+			this.trailInterval = trailInterval;
+			this.trailDelay = trailDelay;
+			trailTicks = trailDelay;
+
+			var offset = new WVec(WDist.Zero, WDist.Zero, velocity * (impactDelay - turn));
 			ascendSource = launchPos;
 			ascendTarget = launchPos + offset;
 			descendSource = targetPos + offset;
 			descendTarget = targetPos;
+			this.detonationAltitude = detonationAltitude;
+			this.removeOnDetonation = removeOnDetonation;
 
 			anim = new Animation(firedBy.World, name);
-			anim.PlayRepeating(upSequence);
 
 			pos = skipAscent ? descendSource : ascendSource;
-			if (weapon.Report != null && weapon.Report.Any())
-				Game.Sound.Play(SoundType.World, weapon.Report.Random(firedBy.World.SharedRandom), pos);
 		}
 
 		public void Tick(World world)
 		{
-			if (!isAddedToScreenMap)
+			if (launchDelay-- > 0)
+				return;
+
+			if (!isLaunched)
 			{
+				anim.PlayRepeating(upSequence);
+				if (weapon.Report != null && weapon.Report.Any())
+					Game.Sound.Play(SoundType.World, weapon.Report, world, pos);
+
 				world.ScreenMap.Add(this, pos, anim.Image);
-				isAddedToScreenMap = true;
+				isLaunched = true;
 			}
 
 			anim.Tick();
@@ -77,35 +106,58 @@ namespace OpenRA.Mods.Common.Effects
 			if (ticks == turn)
 				anim.PlayRepeating(downSequence);
 
-			if (ticks < turn)
+			var isDescending = ticks >= turn;
+			if (!isDescending)
 				pos = WPos.LerpQuadratic(ascendSource, ascendTarget, WAngle.Zero, ticks, turn);
 			else
-				pos = WPos.LerpQuadratic(descendSource, descendTarget, WAngle.Zero, ticks - turn, delay - turn);
+				pos = WPos.LerpQuadratic(descendSource, descendTarget, WAngle.Zero, ticks - turn, impactDelay - turn);
 
-			if (ticks == delay)
-				Explode(world);
+			if (!string.IsNullOrEmpty(trailImage) && --trailTicks < 0)
+			{
+				var trailPos = !isDescending ? WPos.LerpQuadratic(ascendSource, ascendTarget, WAngle.Zero, ticks - trailDelay, turn)
+					: WPos.LerpQuadratic(descendSource, descendTarget, WAngle.Zero, ticks - turn - trailDelay, impactDelay - turn);
+
+				world.AddFrameEndTask(w => w.Add(new SpriteEffect(trailPos, w, trailImage, trailSequences.Random(world.SharedRandom),
+					trailPalette, false, false, 0)));
+
+				trailTicks = trailInterval;
+			}
+
+			var dat = world.Map.DistanceAboveTerrain(pos);
+			if (ticks == impactDelay || (isDescending && dat <= detonationAltitude))
+				Explode(world, ticks == impactDelay || removeOnDetonation);
 
 			world.ScreenMap.Update(this, pos, anim.Image);
 
 			ticks++;
 		}
 
-		void Explode(World world)
+		void Explode(World world, bool removeProjectile)
 		{
-			world.AddFrameEndTask(w => { w.Remove(this); w.ScreenMap.Remove(this); });
+			if (removeProjectile)
+				world.AddFrameEndTask(w => { w.Remove(this); w.ScreenMap.Remove(this); });
+
+			if (detonated)
+				return;
+
 			weapon.Impact(Target.FromPos(pos), firedBy.PlayerActor, Enumerable.Empty<int>());
 			world.WorldActor.Trait<ScreenShaker>().AddEffect(20, pos, 5);
 
 			foreach (var flash in world.WorldActor.TraitsImplementing<FlashPaletteEffect>())
 				if (flash.Info.Type == flashType)
 					flash.Enable(-1);
+
+			detonated = true;
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
+			if (!isLaunched)
+				return Enumerable.Empty<IRenderable>();
+
 			return anim.Render(pos, wr.Palette(weaponPalette));
 		}
 
-		public float FractionComplete { get { return ticks * 1f / delay; } }
+		public float FractionComplete { get { return ticks * 1f / impactDelay; } }
 	}
 }

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -51,6 +51,7 @@ namespace OpenRA.Mods.Common.AudioLoaders
 		readonly int totalSamples;
 
 		IEnumerator<VocBlock> currentBlock;
+		bool currentBlockEnded;
 		int samplesLeftInBlock;
 		int samplePosition;
 
@@ -120,8 +121,8 @@ namespace OpenRA.Mods.Common.AudioLoaders
 				throw new InvalidDataException("Voc header description not recognized");
 			if (vfh.DatablockOffset != 26)
 				throw new InvalidDataException("Voc header offset is wrong");
-			if (vfh.Version != 0x010A)
-				throw new InvalidDataException("Voc header version not recognized");
+			if (vfh.Version < 0x0100 || vfh.Version >= 0x0200)
+				throw new InvalidDataException("Voc header version " + vfh.Version.ToString("X") + " not supported");
 			if (vfh.ID != ~vfh.Version + 0x1234)
 				throw new InvalidDataException("Voc header id is bogus - expected: " +
 					(~vfh.Version + 0x1234).ToString("X") + " but value is : " + vfh.ID.ToString("X"));
@@ -147,7 +148,7 @@ namespace OpenRA.Mods.Common.AudioLoaders
 
 			while (true)
 			{
-				VocBlock block = new VocBlock();
+				var block = default(VocBlock);
 				try
 				{
 					block.Code = stream.ReadByte();
@@ -271,7 +272,8 @@ namespace OpenRA.Mods.Common.AudioLoaders
 
 		void Rewind()
 		{
-			currentBlock = (IEnumerator<VocBlock>)blocks.GetEnumerator();
+			currentBlock = ((IEnumerable<VocBlock>)blocks).GetEnumerator();
+			currentBlockEnded = false;
 			samplesLeftInBlock = 0;
 			samplePosition = 0;
 
@@ -284,9 +286,11 @@ namespace OpenRA.Mods.Common.AudioLoaders
 					return;
 				}
 			}
+
+			currentBlockEnded = true;
 		}
 
-		bool EndOfData { get { return currentBlock.Current.Equals(blocks.Last()) && samplesLeftInBlock == 0; } }
+		bool EndOfData { get { return currentBlockEnded && samplesLeftInBlock == 0; } }
 
 		int FillBuffer(int maxSamples)
 		{
@@ -324,6 +328,8 @@ namespace OpenRA.Mods.Common.AudioLoaders
 					samplesLeftInBlock = currentBlock.Current.SampleBlock.Samples;
 					return;
 				}
+
+				currentBlockEnded = true;
 			}
 		}
 

@@ -1,10 +1,5 @@
-ShadowIndex: 1
-
-Palettes:
-	mouse: PALETTE.BIN
-
 Cursors:
-	MOUSE.R8: mouse
+	MOUSE.R8: d2k
 		scroll-t:
 			Start: 112
 			X: 24
@@ -284,7 +279,7 @@ Cursors:
 			Length: 8
 			X: 24
 			Y: 24
-	nopower.shp: mouse
+	nopower.shp: d2k
 		powerdown-blocked:
 			Start: 0
 			Length: 1
@@ -295,7 +290,7 @@ Cursors:
 			Length: 3
 			X: 12
 			Y: 12
-	attackmove.shp: mouse
+	attackmove.shp: d2k
 		attackmove:
 			Start: 0
 			Length: 8
@@ -314,7 +309,7 @@ Cursors:
 			Start: 8
 			X: -2
 			Y: -2
-	assaultmove.shp: mouse
+	assaultmove.shp: d2k
 		assaultmove:
 			Start: 0
 			Length: 8

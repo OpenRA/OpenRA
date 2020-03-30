@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -18,15 +18,27 @@ namespace OpenRA.Mods.Common.Traits
 	public class PlaceBeaconInfo : ITraitInfo
 	{
 		public readonly int Duration = 30 * 25;
+
 		public readonly string NotificationType = "Sounds";
+
+		[NotificationReference(typeFromField: "NotificationType")]
 		public readonly string Notification = "Beacon";
 
 		public readonly bool IsPlayerPalette = true;
-		[PaletteReference("IsPlayerPalette")] public readonly string Palette = "player";
+
+		[PaletteReference("IsPlayerPalette")]
+		public readonly string Palette = "player";
 
 		public readonly string BeaconImage = "beacon";
-		[SequenceReference("BeaconImage")] public readonly string ArrowSequence = "arrow";
-		[SequenceReference("BeaconImage")] public readonly string CircleSequence = "circles";
+
+		[SequenceReference("BeaconImage")]
+		public readonly string BeaconSequence = null;
+
+		[SequenceReference("BeaconImage")]
+		public readonly string ArrowSequence = "arrow";
+
+		[SequenceReference("BeaconImage")]
+		public readonly string CircleSequence = "circles";
 
 		public object Create(ActorInitializer init) { return new PlaceBeacon(init.Self, this); }
 	}
@@ -50,14 +62,13 @@ namespace OpenRA.Mods.Common.Traits
 			if (order.OrderString != "PlaceBeacon")
 				return;
 
-			var pos = self.World.Map.CenterOfCell(order.TargetLocation);
-
 			self.World.AddFrameEndTask(w =>
 			{
 				if (playerBeacon != null)
 					self.World.Remove(playerBeacon);
 
-				playerBeacon = new Beacon(self.Owner, pos, info.Duration, info.Palette, info.IsPlayerPalette, info.BeaconImage, info.ArrowSequence, info.CircleSequence);
+				playerBeacon = new Beacon(self.Owner, order.Target.CenterPosition, info.Duration, info.Palette, info.IsPlayerPalette,
+					info.BeaconImage, info.BeaconSequence, info.ArrowSequence, info.CircleSequence);
 
 				self.World.Add(playerBeacon);
 
@@ -72,8 +83,8 @@ namespace OpenRA.Mods.Common.Traits
 
 					playerRadarPing = radarPings.Add(
 						() => self.Owner.IsAlliedWith(self.World.RenderPlayer),
-						pos,
-						self.Owner.Color.RGB,
+						order.Target.CenterPosition,
+						self.Owner.Color,
 						info.Duration);
 				}
 			});

@@ -4,13 +4,15 @@ V2RL:
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 80
+		BuildPaletteOrder: 230
 		Prerequisites: dome, ~vehicles.soviet, ~techlevel.medium
 		Description: Long-range rocket artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles, Aircraft
 	Valued:
 		Cost: 900
 	Tooltip:
 		Name: V2 Rocket Launcher
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 20000
 	Armor:
@@ -18,6 +20,7 @@ V2RL:
 	Mobile:
 		Speed: 85
 	RevealsShroud:
+		MinRange: 4c0
 		Range: 5c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -28,6 +31,8 @@ V2RL:
 	AutoTarget:
 		ScanRadius: 10
 	AttackFrontal:
+		TargetFrozenActors: True
+		ForceFireIgnoresActors: True
 	WithFacingSpriteBody:
 		RequiresCondition: !reloading
 		Name: loaded
@@ -49,7 +54,7 @@ V2RL:
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 50
+		BuildPaletteOrder: 120
 		Prerequisites: ~vehicles.allies, ~techlevel.low
 		Description: Fast tank, good for scouting.\n  Strong vs Light armor\n  Weak vs Infantry, Tanks, Aircraft
 	Valued:
@@ -57,13 +62,16 @@ V2RL:
 	Tooltip:
 		Name: Light Tank
 		GenericName: Tank
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 22000
 	Armor:
 		Type: Heavy
 	Mobile:
-		Speed: 128
+		Speed: 118
 	RevealsShroud:
+		MinRange: 4c0
 		Range: 5c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -81,8 +89,6 @@ V2RL:
 	WithSpriteTurret:
 	SpawnActorOnDeath:
 		Actor: 1TNK.Husk
-		OwnerType: InternalName
-		EffectiveOwnerFromOwner: true
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
 
@@ -92,7 +98,7 @@ V2RL:
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 110
+		BuildPaletteOrder: 220
 		Prerequisites: fix, ~vehicles.allies, ~techlevel.medium
 		Description: Allied Main Battle Tank.\n  Strong vs Vehicles\n  Weak vs Infantry, Aircraft
 	Valued:
@@ -100,6 +106,8 @@ V2RL:
 	Tooltip:
 		Name: Medium Tank
 		GenericName: Tank
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 45000
 	Armor:
@@ -107,6 +115,7 @@ V2RL:
 	Mobile:
 		Speed: 85
 	RevealsShroud:
+		MinRange: 4c0
 		Range: 6c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -124,8 +133,6 @@ V2RL:
 	WithSpriteTurret:
 	SpawnActorOnDeath:
 		Actor: 2TNK.Husk
-		OwnerType: InternalName
-		EffectiveOwnerFromOwner: true
 	SelectionDecorations:
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
@@ -138,7 +145,7 @@ V2RL:
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 120
+		BuildPaletteOrder: 220
 		Prerequisites: fix, ~vehicles.soviet, ~techlevel.medium
 		Description: Soviet Main Battle Tank, with dual cannons\n  Strong vs Vehicles\n  Weak vs Infantry, Aircraft
 	Valued:
@@ -146,6 +153,8 @@ V2RL:
 	Tooltip:
 		Name: Heavy Tank
 		GenericName: Tank
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 60000
 	Armor:
@@ -153,6 +162,7 @@ V2RL:
 	Mobile:
 		Speed: 71
 	RevealsShroud:
+		MinRange: 4c0
 		Range: 6c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -170,8 +180,6 @@ V2RL:
 	WithSpriteTurret:
 	SpawnActorOnDeath:
 		Actor: 3TNK.Husk
-		OwnerType: InternalName
-		EffectiveOwnerFromOwner: true
 	SelectionDecorations:
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
@@ -184,15 +192,16 @@ V2RL:
 	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 180
+		BuildPaletteOrder: 320
 		Prerequisites: fix, stek, ~vehicles.soviet, ~techlevel.high
-		BuildDurationModifier: 50
-		Description: Big and slow tank, with anti-air capability.\nCan crush concrete walls.\nCan detect cloaked units.\n  Strong vs Vehicles, Infantry, Aircraft\n  Weak vs Nothing
+		Description: Big and slow tank, with anti-air capability.\nCan crush concrete walls.\n  Strong vs Vehicles, Infantry, Aircraft\n  Weak vs Nothing
 	Valued:
 		Cost: 2000
 	Tooltip:
 		Name: Mammoth Tank
 		GenericName: Tank
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 90000
 	Armor:
@@ -201,7 +210,8 @@ V2RL:
 		Speed: 50
 		Locomotor: heavytracked
 	RevealsShroud:
-		Range: 7c0
+		MinRange: 4c0
+		Range: 6c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 4c0
@@ -225,8 +235,6 @@ V2RL:
 	WithSpriteTurret:
 	SpawnActorOnDeath:
 		Actor: 4TNK.Husk
-		OwnerType: InternalName
-		EffectiveOwnerFromOwner: true
 	SelfHealing:
 		Step: 100
 		Delay: 3
@@ -235,8 +243,6 @@ V2RL:
 	SelectionDecorations:
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
-	DetectCloaked:
-		Range: 6c0
 	Selectable:
 		DecorationBounds: 44,38,0,-4
 
@@ -246,13 +252,15 @@ ARTY:
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 70
+		BuildPaletteOrder: 230
 		Prerequisites: dome, ~vehicles.allies, ~techlevel.medium
 		Description: Long-range artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles, Aircraft
 	Valued:
 		Cost: 850
 	Tooltip:
 		Name: Artillery
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 10000
 	Armor:
@@ -262,6 +270,7 @@ ARTY:
 		Speed: 85
 		Locomotor: lighttracked
 	RevealsShroud:
+		MinRange: 4c0
 		Range: 5c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -271,6 +280,8 @@ ARTY:
 		LocalOffset: 624,0,208
 		MuzzleSequence: muzzle
 	AttackFrontal:
+		TargetFrozenActors: True
+		ForceFireIgnoresActors: True
 	WithMuzzleOverlay:
 	Explodes:
 		Weapon: ArtilleryExplode
@@ -281,9 +292,10 @@ ARTY:
 
 HARV:
 	Inherits: ^Vehicle
+	Inherits@selection: ^SelectableEconomicUnit
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 10
+		BuildPaletteOrder: 110
 		Prerequisites: proc, ~techlevel.infonly
 		Description: Collects Ore and Gems for processing.\n  Unarmed
 	Valued:
@@ -292,15 +304,15 @@ HARV:
 		Name: Ore Truck
 		GenericName: Harvester
 	Selectable:
-		Priority: 7
 		DecorationBounds: 42,42
 	SelectionDecorations:
 	Harvester:
 		Capacity: 20
 		Resources: Ore,Gems
 		BaleUnloadDelay: 1
-		SearchFromProcRadius: 30
-		SearchFromOrderRadius: 11
+		SearchFromProcRadius: 15
+		SearchFromHarvesterRadius: 8
+		EmptyCondition: no-ore
 	Health:
 		HP: 60000
 	Armor:
@@ -311,14 +323,11 @@ HARV:
 	RevealsShroud:
 		Range: 4c0
 	WithHarvestAnimation:
-		PrefixByFullness: empty-, half-, full-
 	WithDockingAnimation:
 	GpsDot:
 		String: Harvester
 	SpawnActorOnDeath:
 		Actor: HARV.EmptyHusk
-		OwnerType: InternalName
-		EffectiveOwnerFromOwner: true
 	HarvesterHuskModifier:
 		FullHuskActor: HARV.FullHusk
 		FullnessThreshold: 50
@@ -328,13 +337,18 @@ HARV:
 		HealIfBelow: 50
 		DamageCooldown: 500
 	Explodes:
+		RequiresCondition: !no-ore
 		Weapon: OreExplosion
+	WithHarvesterSpriteBody:
+		ImageByFullness: harvempty, harvhalf, harv
+	-WithFacingSpriteBody:
 
 MCV:
 	Inherits: ^Vehicle
+	Inherits@selection: ^SelectableSupportUnit
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 90
+		BuildPaletteOrder: 210
 		Prerequisites: fix, ~techlevel.medium
 		BuildDurationModifier: 50
 		Description: Deploys into another Construction Yard.\n  Unarmed
@@ -343,7 +357,6 @@ MCV:
 	Tooltip:
 		Name: Mobile Construction Vehicle
 	Selectable:
-		Priority: 4
 		DecorationBounds: 42,42
 	SelectionDecorations:
 	Health:
@@ -366,8 +379,6 @@ MCV:
 	BaseBuilding:
 	SpawnActorOnDeath:
 		Actor: MCV.Husk
-		OwnerType: InternalName
-		EffectiveOwnerFromOwner: true
 	TransferTimedExternalConditionOnTransform:
 		Condition: invulnerability
 
@@ -377,13 +388,15 @@ JEEP:
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 30
+		BuildPaletteOrder: 130
 		Prerequisites: ~vehicles.allies, ~techlevel.low
 		Description: Fast scout & anti-infantry vehicle.\nCan carry one infantry.\n  Strong vs Infantry\n  Weak vs Vehicles, Aircraft
 	Valued:
 		Cost: 500
 	Tooltip:
 		Name: Ranger
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 15000
 	Armor:
@@ -391,8 +404,9 @@ JEEP:
 	Mobile:
 		TurnSpeed: 10
 		Speed: 170
-		RequiresCondition: !notmobile
+		PauseOnCondition: notmobile || being-captured
 	RevealsShroud:
+		MinRange: 4c0
 		Range: 8c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -421,21 +435,24 @@ APC:
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 40
+		BuildPaletteOrder: 120
 		Prerequisites: ~vehicles.soviet, ~techlevel.low
 		Description: Tough infantry transport.\n  Strong vs Infantry, Light armor\n  Weak vs Tanks, Aircraft
 	Valued:
 		Cost: 850
 	Tooltip:
 		Name: Armored Personnel Carrier
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
-		HP: 30000
+		HP: 35000
 	Armor:
 		Type: Heavy
 	Mobile:
 		Speed: 142
-		RequiresCondition: !notmobile
+		PauseOnCondition: notmobile || being-captured
 	RevealsShroud:
+		MinRange: 4c0
 		Range: 5c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -456,24 +473,26 @@ APC:
 
 MNLY:
 	Inherits: ^TrackedVehicle
+	Inherits@selection: ^SelectableSupportUnit
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 100
+		BuildPaletteOrder: 310
 		Prerequisites: fix, ~techlevel.medium
 		Description: Lays mines to destroy\nunwary enemy units.\nCan detect mines.\n  Unarmed
 	Valued:
 		Cost: 800
 	Tooltip:
 		Name: Minelayer
-	Selectable:
-		Priority: 5
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
-		HP: 15000
+		HP: 30000
 	Armor:
 		Type: Heavy
 	Mobile:
 		Speed: 128
 	RevealsShroud:
+		MinRange: 4c0
 		Range: 5c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -492,20 +511,21 @@ MNLY:
 		Weapon: ATMine
 	RenderSprites:
 		Image: MNLY
+	Rearmable:
+		RearmActors: fix
 
 TRUK:
 	Inherits: ^Vehicle
+	Inherits@selection: ^SelectableSupportUnit
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 20
+		BuildPaletteOrder: 410
 		Prerequisites: ~techlevel.low
 		Description: Transports cash to other players.\n  Unarmed
 	Valued:
 		Cost: 500
 	Tooltip:
 		Name: Supply Truck
-	Selectable:
-		Priority: 6
 	Health:
 		HP: 11000
 	Armor:
@@ -524,24 +544,26 @@ MGG:
 	Inherits: ^Vehicle
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 150
+		BuildPaletteOrder: 330
 		Prerequisites: atek, ~vehicles.england, ~techlevel.high
-		BuildDurationModifier: 50
 		Description: Regenerates the shroud nearby, \nobscuring the area.\n  Unarmed
 	Valued:
-		Cost: 1200
+		Cost: 1000
 	Tooltip:
 		Name: Mobile Gap Generator
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 22000
 	Armor:
 		Type: Heavy
 	Mobile:
-		Speed: 99
+		Speed: 85
 	WithIdleOverlay@SPINNER:
 		Offset: -299,0,171
 		Sequence: spinner
 	RevealsShroud:
+		MinRange: 4c0
 		Range: 6c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -551,27 +573,26 @@ MGG:
 	RenderShroudCircle:
 	SpawnActorOnDeath:
 		Actor: MGG.Husk
-		OwnerType: InternalName
-		EffectiveOwnerFromOwner: true
 
 MRJ:
 	Inherits: ^Vehicle
 	Valued:
-		Cost: 1100
+		Cost: 1000
 	Tooltip:
 		Name: Mobile Radar Jammer
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 140
+		BuildPaletteOrder: 320
 		Prerequisites: atek, ~vehicles.allies, ~techlevel.high
-		BuildDurationModifier: 50
-		Description: Jams nearby enemy radar domes\nand deflects incoming missiles.\nCan detect cloaked units.\n  Unarmed
+		Description: Jams nearby enemy radar domes\nand deflects incoming missiles.\n  Unarmed
 	Health:
 		HP: 22000
 	Armor:
 		Type: Heavy
 	Mobile:
-		Speed: 99
+		Speed: 85
 	RevealsShroud:
 		Range: 7c0
 	WithIdleOverlay@SPINNER:
@@ -589,8 +610,6 @@ MRJ:
 		Range: 5c0
 		DeflectionStances: Neutral, Enemy
 	RenderJammerCircle:
-	DetectCloaked:
-		Range: 6c0
 
 TTNK:
 	Inherits: ^TrackedVehicle
@@ -598,22 +617,24 @@ TTNK:
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 170
+		BuildPaletteOrder: 330
 		Prerequisites: tsla, stek, ~vehicles.russia, ~techlevel.high
-		BuildDurationModifier: 50
 		Description: Tank with mounted Tesla coil.\n  Strong vs Infantry, Vehicles, Buildings\n  Weak vs Aircraft
 	Valued:
 		Cost: 1350
 	Tooltip:
 		Name: Tesla Tank
 		GenericName: Tank
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
-		HP: 45000
+		HP: 40000
 	Armor:
 		Type: Light
 	Mobile:
 		Speed: 99
 	RevealsShroud:
+		MinRange: 6c0
 		Range: 7c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -637,21 +658,24 @@ FTRK:
 	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 60
+		BuildPaletteOrder: 130
 		Prerequisites: ~vehicles.soviet, ~techlevel.low
 		Description: Mobile unit with mounted Flak cannon.\n  Strong vs Infantry, Light armor, Aircraft\n  Weak vs Tanks
 	Valued:
 		Cost: 600
 	Tooltip:
 		Name: Mobile Flak
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 15000
 	Armor:
 		Type: Light
 	Mobile:
 		TurnSpeed: 10
-		Speed: 128
+		Speed: 118
 	RevealsShroud:
+		MinRange: 4c0
 		Range: 6c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -682,13 +706,15 @@ DTRK:
 	Inherits: ^Vehicle
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 160
+		BuildPaletteOrder: 330
 		Prerequisites: stek, ~vehicles.ukraine, ~techlevel.high
 		Description: Truck with actively armed nuclear\nexplosives. Has very weak armor.
 	Valued:
 		Cost: 2500
 	Tooltip:
 		Name: Demolition Truck
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 5000
 	Armor:
@@ -701,10 +727,17 @@ DTRK:
 		Weapon: MiniNuke
 		EmptyWeapon: MiniNuke
 		DamageSource: Killer
-	AttackSuicides:
+	AttackFrontal:
+		FacingTolerance: 128
+	Armament@PRIMARY:
+		Weapon: DemoTruckTargeting
+	GrantConditionOnAttack:
+		Condition: triggered
+	GrantConditionOnDeploy:
+		DeployedCondition: triggered
 	-DamageMultiplier@IRONCURTAIN:
 	KillsSelf:
-		RequiresCondition: invulnerability
+		RequiresCondition: invulnerability || triggered
 	Chronoshiftable:
 		ExplodeInstead: yes
 
@@ -714,15 +747,16 @@ CTNK:
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 200
+		BuildPaletteOrder: 330
 		Prerequisites: atek, ~vehicles.germany, ~techlevel.high
-		BuildDurationModifier: 50
 		Description: Armed with anti-ground missiles.\nTeleports to areas within range.\n  Strong vs Vehicles, Buildings\n  Weak vs Infantry, Aircraft\n  Special ability: Can teleport
 	Valued:
 		Cost: 1350
 	Tooltip:
 		Name: Chrono Tank
 		GenericName: Tank
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	SelectionDecorations:
 	Health:
 		HP: 45000
@@ -732,6 +766,7 @@ CTNK:
 		Speed: 113
 		Locomotor: heavywheeled
 	RevealsShroud:
+		MinRange: 4c0
 		Range: 6c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -756,7 +791,7 @@ QTNK:
 	Inherits: ^TrackedVehicle
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 190
+		BuildPaletteOrder: 420
 		Prerequisites: fix, stek, ~vehicles.soviet, ~techlevel.high
 		Description: Deals seismic damage to nearby vehicles\nand structures.\n  Strong vs Vehicles, Buildings\n  Weak vs Infantry, Aircraft
 	Valued:
@@ -764,16 +799,26 @@ QTNK:
 	Tooltip:
 		Name: MAD Tank
 		GenericName: Tank
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 90000
 	Armor:
 		Type: Heavy
 	Mobile:
 		RequiresCondition: !deployed
+<<<<<<< HEAD
 		Speed: 56
 	Chronoshiftable:
 		RequiresCondition: !deployed
+=======
+		PauseOnCondition: being-captured
+		Speed: 56
+	Chronoshiftable:
+		RequiresCondition: !deployed && !being-captured
+>>>>>>> e82c30fbabc008a988936025f3250729d9a22b4c
 	RevealsShroud:
+		MinRange: 4c0
 		Range: 6c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -781,8 +826,14 @@ QTNK:
 	SelectionDecorations:
 	MadTank:
 		DeployedCondition: deployed
+<<<<<<< HEAD
+=======
+	WithRangeCircle:
+		Color: FFFF0080
+		Range: 7c0
+>>>>>>> e82c30fbabc008a988936025f3250729d9a22b4c
 	Targetable:
-		TargetTypes: Ground, MADTank, Repair, Vehicle
+		TargetTypes: Ground, MADTank, Vehicle
 	Selectable:
 		DecorationBounds: 44,38,0,-4
 
@@ -792,23 +843,25 @@ STNK:
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 130
+		BuildPaletteOrder: 330
 		Prerequisites: atek, ~vehicles.france, ~techlevel.high
-		BuildDurationModifier: 50
-		Description: Lightly armored infantry transport which\ncan cloak. Armed with anti-ground missiles.\nCan detect cloaked units.\n  Strong vs Light armor\n  Weak vs Infantry, Tanks, Aircraft
+		Description: Lightly armored infantry transport which\ncan cloak. Armed with anti-ground missiles.\n  Strong vs Light armor\n  Weak vs Infantry, Tanks, Aircraft
 	Valued:
-		Cost: 1350
+		Cost: 1000
 	Tooltip:
 		Name: Phase Transport
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
-		HP: 30000
+		HP: 35000
 	Armor:
 		Type: Light
 	Mobile:
 		Speed: 142
 		Locomotor: heavywheeled
-		RequiresCondition: !notmobile
+		PauseOnCondition: notmobile || being-captured
 	RevealsShroud:
+		MinRange: 4c0
 		Range: 7c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -834,12 +887,10 @@ STNK:
 		CloakSound: appear1.aud
 		UncloakSound: appear1.aud
 		IsPlayerPalette: true
-		RequiresCondition: !cloak-force-disabled
+		PauseOnCondition: cloak-force-disabled
 	GrantConditionOnDamageState@UNCLOAK:
 		Condition: cloak-force-disabled
 		ValidDamageStates: Critical
-	DetectCloaked:
-		Range: 7c0
 	-MustBeDestroyed:
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -123,17 +123,17 @@ namespace OpenRA.Scripting
 
 	public sealed class ScriptContext : IDisposable
 	{
-		public World World { get; private set; }
-		public WorldRenderer WorldRenderer { get; private set; }
-
-		readonly MemoryConstrainedLuaRuntime runtime;
-		readonly LuaFunction tick;
-
 		// Restrict user scripts (excluding system libraries) to 50 MB of memory use
 		const int MaxUserScriptMemory = 50 * 1024 * 1024;
 
 		// Restrict the number of instructions that will be run per map function call
 		const int MaxUserScriptInstructions = 1000000;
+
+		public World World { get; private set; }
+		public WorldRenderer WorldRenderer { get; private set; }
+
+		readonly MemoryConstrainedLuaRuntime runtime;
+		readonly LuaFunction tick;
 
 		readonly Type[] knownActorCommands;
 		public readonly Cache<ActorInfo, Type[]> ActorCommands;

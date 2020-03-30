@@ -26,6 +26,8 @@ SPLITBLUE:
 		Name: Blossom Tree (blue)
 	RadarColorFromTerrain:
 		Terrain: BlueTiberium
+	AppearsOnMapPreview:
+		Terrain: BlueTiberium
 
 ROCK1:
 	Inherits: ^Rock
@@ -67,86 +69,86 @@ ROCK7:
 
 T01:
 	Inherits: ^Tree
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 	SpawnActorOnDeath:
 		Actor: T01.Husk
 
 T01.Husk:
 	Inherits: ^TreeHusk
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 
 T02:
 	Inherits: ^Tree
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 	SpawnActorOnDeath:
 		Actor: T02.Husk
 
 T02.Husk:
 	Inherits: ^TreeHusk
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 
 T03:
 	Inherits: ^Tree
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 	SpawnActorOnDeath:
 		Actor: T03.Husk
 
 T03.Husk:
 	Inherits: ^TreeHusk
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 
 T04:
 	Inherits: ^Tree
-	EditorTilesetFilter:
+	MapEditorData:
 		RequireTilesets: DESERT
 	SpawnActorOnDeath:
 		Actor: T04.Husk
 
 T04.Husk:
 	Inherits: ^TreeHusk
-	EditorTilesetFilter:
+	MapEditorData:
 		RequireTilesets: DESERT
 
 T05:
 	Inherits: ^Tree
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 	SpawnActorOnDeath:
 		Actor: T05.Husk
 
 T05.Husk:
 	Inherits: ^TreeHusk
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 
 T06:
 	Inherits: ^Tree
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 	SpawnActorOnDeath:
 		Actor: T06.Husk
 
 T06.Husk:
 	Inherits: ^TreeHusk
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 
 T07:
 	Inherits: ^Tree
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 	SpawnActorOnDeath:
 		Actor: T07.Husk
 
 T07.Husk:
 	Inherits: ^TreeHusk
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 
 T08:
@@ -168,7 +170,7 @@ T09:
 	Building:
 		Footprint: x_
 		Dimensions: 2,1
-	EditorTilesetFilter:
+	MapEditorData:
 		RequireTilesets: DESERT
 	SpawnActorOnDeath:
 		Actor: T09.Husk
@@ -178,14 +180,14 @@ T09.Husk:
 	Building:
 		Footprint: x_
 		Dimensions: 2,1
-	EditorTilesetFilter:
+	MapEditorData:
 		RequireTilesets: DESERT
 
 T10:
 	Inherits: ^Tree
 	Building:
 		Footprint: __ xx
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 	SpawnActorOnDeath:
 		Actor: T10.Husk
@@ -194,14 +196,14 @@ T10.Husk:
 	Inherits: ^TreeHusk
 	Building:
 		Footprint: __ xx
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 
 T11:
 	Inherits: ^Tree
 	Building:
 		Footprint: __ xx
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 	SpawnActorOnDeath:
 		Actor: T11.Husk
@@ -210,12 +212,12 @@ T11.Husk:
 	Inherits: ^TreeHusk
 	Building:
 		Footprint: __ xx
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 
 T12:
 	Inherits: ^Tree
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 	SpawnActorOnDeath:
 		Actor: T12.Husk
@@ -223,12 +225,12 @@ T12:
 T12.Husk:
 	Inherits: ^TreeHusk
 	Building:
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 
 T13:
 	Inherits: ^Tree
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 	SpawnActorOnDeath:
 		Actor: T13.Husk
@@ -236,19 +238,19 @@ T13:
 T13.Husk:
 	Inherits: ^TreeHusk
 	Building:
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 
 T14:
 	Inherits: ^Tree
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 	SpawnActorOnDeath:
 		Actor: T14.Husk
 
 T14.Husk:
 	Inherits: ^TreeHusk
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 
 T15:
@@ -256,7 +258,7 @@ T15:
 	Building:
 		Footprint: ___ xx_
 		Dimensions: 3,2
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 	SpawnActorOnDeath:
 		Actor: T15.Husk
@@ -266,43 +268,43 @@ T15.Husk:
 	Building:
 		Footprint: ___ xx_
 		Dimensions: 3,2
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 
 T16:
 	Inherits: ^Tree
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 	SpawnActorOnDeath:
 		Actor: T16.Husk
 
 T16.Husk:
 	Inherits: ^TreeHusk
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 
 T17:
 	Inherits: ^Tree
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 	SpawnActorOnDeath:
 		Actor: T17.Husk
 
 T17.Husk:
 	Inherits: ^TreeHusk
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 
 T18:
 	Inherits: ^Tree
-	EditorTilesetFilter:
+	MapEditorData:
 		RequireTilesets: DESERT
 	SpawnActorOnDeath:
 		Actor: T18.Husk
 
 T18.Husk:
 	Inherits: ^TreeHusk
-	EditorTilesetFilter:
+	MapEditorData:
 		RequireTilesets: DESERT
 
 TC01:
@@ -310,7 +312,7 @@ TC01:
 	Building:
 		Footprint: ___ xx_
 		Dimensions: 3,2
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 	SpawnActorOnDeath:
 		Actor: TC01.Husk
@@ -320,7 +322,7 @@ TC01.Husk:
 	Building:
 		Footprint: ___ xx_
 		Dimensions: 3,2
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 
 TC02:
@@ -328,7 +330,7 @@ TC02:
 	Building:
 		Footprint: _x_ xx_
 		Dimensions: 3,2
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 	SpawnActorOnDeath:
 		Actor: TC02.Husk
@@ -338,7 +340,7 @@ TC02.Husk:
 	Building:
 		Footprint: _x_ xx_
 		Dimensions: 3,2
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 
 TC03:
@@ -346,7 +348,7 @@ TC03:
 	Building:
 		Footprint: _x_ xx_
 		Dimensions: 3,2
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 	SpawnActorOnDeath:
 		Actor: TC03.Husk
@@ -356,7 +358,7 @@ TC03.Husk:
 	Building:
 		Footprint: _x_ xx_
 		Dimensions: 3,2
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 
 TC04:
@@ -364,7 +366,7 @@ TC04:
 	Building:
 		Footprint: ____ xxx_ x___
 		Dimensions: 4,3
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 	SpawnActorOnDeath:
 		Actor: TC04.Husk
@@ -374,7 +376,7 @@ TC04.Husk:
 	Building:
 		Footprint: ____ xxx_ x___
 		Dimensions: 4,3
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 
 TC05:
@@ -382,7 +384,7 @@ TC05:
 	Building:
 		Footprint: __x_ xxx_ _xx_
 		Dimensions: 4,3
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 	SpawnActorOnDeath:
 		Actor: TC05.Husk
@@ -392,5 +394,5 @@ TC05.Husk:
 	Building:
 		Footprint: __x_ xxx_ _xx_
 		Dimensions: 4,3
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT

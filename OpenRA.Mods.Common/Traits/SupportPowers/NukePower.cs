@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,20 +9,17 @@
  */
 #endregion
 
-using System;
-using OpenRA.Effects;
+using System.Linq;
 using OpenRA.GameRules;
-using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Effects;
-using OpenRA.Mods.Common.Traits.Render;
-using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
 	class NukePowerInfo : SupportPowerInfo, IRulesetLoaded, Requires<BodyOrientationInfo>
 	{
-		[WeaponReference, FieldLoader.Require]
+		[WeaponReference]
+		[FieldLoader.Require]
 		[Desc("Weapon to use for the impact.",
 			"Also image to use for the missile.")]
 		public readonly string MissileWeapon = "";
@@ -30,20 +27,50 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Delay (in ticks) after launch until the missile is spawned.")]
 		public readonly int MissileDelay = 0;
 
+		[SequenceReference("MissileWeapon")]
 		[Desc("Sprite sequence for the ascending missile.")]
-		[SequenceReference("MissileWeapon")] public readonly string MissileUp = "up";
+		public readonly string MissileUp = "up";
 
+		[SequenceReference("MissileWeapon")]
 		[Desc("Sprite sequence for the descending missile.")]
-		[SequenceReference("MissileWeapon")] public readonly string MissileDown = "down";
+		public readonly string MissileDown = "down";
 
 		[Desc("Offset from the actor the missile spawns on.")]
 		public readonly WVec SpawnOffset = WVec.Zero;
 
+		[Desc("Altitude offset from the target position at which the warhead should detonate.")]
+		public readonly WDist DetonationAltitude = WDist.Zero;
+
+		[Desc("Should nuke missile projectile be removed on detonation above ground.",
+			"'False' will make the missile continue until it hits the ground and disappears (without triggering another explosion).")]
+		public readonly bool RemoveMissileOnDetonation = true;
+
+		[PaletteReference("IsPlayerPalette")]
 		[Desc("Palette to use for the missile weapon image.")]
-		[PaletteReference("IsPlayerPalette")] public readonly string MissilePalette = "effect";
+		public readonly string MissilePalette = "effect";
 
 		[Desc("Custom palette is a player palette BaseName.")]
 		public readonly bool IsPlayerPalette = false;
+
+		[Desc("Trail animation.")]
+		public readonly string TrailImage = null;
+
+		[SequenceReference("TrailImage")]
+		[Desc("Loop a randomly chosen sequence of TrailImage from this list while this projectile is moving.")]
+		public readonly string[] TrailSequences = { };
+
+		[Desc("Interval in ticks between each spawned Trail animation.")]
+		public readonly int TrailInterval = 1;
+
+		[Desc("Delay in ticks until trail animation is spawned.")]
+		public readonly int TrailDelay = 1;
+
+		[PaletteReference("TrailUsePlayerPalette")]
+		[Desc("Palette used to render the trail sequence.")]
+		public readonly string TrailPalette = "effect";
+
+		[Desc("Use the Player Palette to render the trail sequence.")]
+		public readonly bool TrailUsePlayerPalette = false;
 
 		[Desc("Travel time - split equally between ascent and descent.")]
 		public readonly int FlightDelay = 400;
@@ -80,6 +107,9 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new NukePower(init.Self, this); }
 		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
+			if (!string.IsNullOrEmpty(TrailImage) && !TrailSequences.Any())
+				throw new YamlException("At least one entry in TrailSequences must be defined when TrailImage is defined.");
+
 			WeaponInfo weapon;
 			var weaponToLower = (MissileWeapon ?? string.Empty).ToLowerInvariant();
 			if (!rules.Weapons.TryGetValue(weaponToLower, out weapon))
@@ -108,7 +138,7 @@ namespace OpenRA.Mods.Common.Traits
 			base.Activate(self, order, manager);
 			PlayLaunchSounds();
 
-			Activate(self, self.World.Map.CenterOfCell(order.TargetLocation));
+			Activate(self, order.Target.CenterPosition);
 		}
 
 		public void Activate(Actor self, WPos targetPosition)
@@ -119,11 +149,12 @@ namespace OpenRA.Mods.Common.Traits
 			var palette = info.IsPlayerPalette ? info.MissilePalette + self.Owner.InternalName : info.MissilePalette;
 			var missile = new NukeLaunch(self.Owner, info.MissileWeapon, info.WeaponInfo, palette, info.MissileUp, info.MissileDown,
 				self.CenterPosition + body.LocalToWorld(info.SpawnOffset),
-				targetPosition,
-				info.FlightVelocity, info.FlightDelay, info.SkipAscent,
-				info.FlashType);
+				targetPosition, info.DetonationAltitude, info.RemoveMissileOnDetonation,
+				info.FlightVelocity, info.MissileDelay, info.FlightDelay, info.SkipAscent,
+				info.FlashType,
+				info.TrailImage, info.TrailSequences, info.TrailPalette, info.TrailUsePlayerPalette, info.TrailDelay, info.TrailInterval);
 
-			self.World.AddFrameEndTask(w => w.Add(new DelayedAction(info.MissileDelay, () => self.World.Add(missile))));
+			self.World.AddFrameEndTask(w => w.Add(missile));
 
 			if (info.CameraRange != WDist.Zero)
 			{
@@ -144,6 +175,7 @@ namespace OpenRA.Mods.Common.Traits
 					Info.BeaconImage,
 					Info.BeaconPoster,
 					Info.BeaconPosterPalette,
+					Info.BeaconSequence,
 					Info.ArrowSequence,
 					Info.CircleSequence,
 					Info.ClockSequence,

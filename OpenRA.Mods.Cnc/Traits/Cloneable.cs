@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,17 +9,20 @@
  */
 #endregion
 
-using System.Collections.Generic;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
 {
+	// Type tag for CloneableTypes
+	public class CloneableType { }
+
 	[Desc("Actors with the \"ClonesProducedUnits\" trait will produce a free duplicate of me.")]
 	public class CloneableInfo : TraitInfo<Cloneable>
 	{
 		[FieldLoader.Require]
 		[Desc("This unit's cloneable type is:")]
-		public readonly HashSet<string> Types = new HashSet<string>();
+		public readonly BitSet<CloneableType> Types = default(BitSet<CloneableType>);
 	}
 
 	public class Cloneable { }

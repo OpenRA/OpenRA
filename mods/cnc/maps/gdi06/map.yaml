@@ -30,6 +30,7 @@ Players:
 		Color: FE1100
 		Allies: Nod
 		Enemies: GDI
+		Bot: campaign
 	PlayerReference@GDI:
 		Name: GDI
 		AllowBots: False

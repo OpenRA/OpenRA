@@ -57,7 +57,7 @@ TiberiumExplosion:
 	Warhead@2Eff: CreateEffect
 		Explosions: large_explosion
 		ExplosionPalette: effect-ignore-lighting-alpha75
-	-Warhead@4Smu: LeaveSmudge
+	-Warhead@4Smu:
 
 Demolish:
 	Warhead@1Dam: SpreadDamage

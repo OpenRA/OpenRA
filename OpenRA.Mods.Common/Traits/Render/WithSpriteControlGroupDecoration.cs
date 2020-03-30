@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,10 +10,8 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
-using OpenRA.Mods.Common.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
@@ -21,12 +19,14 @@ namespace OpenRA.Mods.Common.Traits.Render
 	[Desc("Renders Ctrl groups using pixel art.")]
 	public class WithSpriteControlGroupDecorationInfo : ITraitInfo, Requires<IDecorationBoundsInfo>
 	{
-		[PaletteReference] public readonly string Palette = "chrome";
+		[PaletteReference]
+		public readonly string Palette = "chrome";
 
 		public readonly string Image = "pips";
 
+		[SequenceReference("Image")]
 		[Desc("Sprite sequence used to render the control group 0-9 numbers.")]
-		[SequenceReference("Image")] public readonly string GroupSequence = "groups";
+		public readonly string GroupSequence = "groups";
 
 		[Desc("Point in the actor's selection box used as reference for offsetting the decoration image. " +
 			"Possible values are combinations of Center, Top, Bottom, Left, Right.")]

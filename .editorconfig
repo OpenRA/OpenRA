@@ -4,6 +4,7 @@ root = true
 ; Unix-style newlines
 [*]
 end_of_line = LF
+insert_final_newline = true
 
 ; 4-column tab indentation
 [*.cs]

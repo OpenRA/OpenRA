@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -43,20 +43,18 @@ namespace OpenRA.Mods.Common.Projectiles
 		readonly InstantHitInfo info;
 
 		Target target;
-		WPos source;
 
 		public InstantHit(InstantHitInfo info, ProjectileArgs args)
 		{
 			this.args = args;
 			this.info = info;
-			source = args.Source;
 
 			if (args.Weapon.TargetActorCenter)
 				target = args.GuidedTarget;
 			else if (info.Inaccuracy.Length > 0)
 			{
 				var inaccuracy = Util.ApplyPercentageModifiers(info.Inaccuracy.Length, args.InaccuracyModifiers);
-				var maxOffset = inaccuracy * (args.PassiveTarget - source).Length / args.Weapon.Range.Length;
+				var maxOffset = inaccuracy * (args.PassiveTarget - args.Source).Length / args.Weapon.Range.Length;
 				target = Target.FromPos(args.PassiveTarget + WVec.FromPDF(args.SourceActor.World.SharedRandom, 2) * maxOffset / 1024);
 			}
 			else
@@ -67,10 +65,17 @@ namespace OpenRA.Mods.Common.Projectiles
 		{
 			// Check for blocking actors
 			WPos blockedPos;
-			if (info.Blockable && BlocksProjectiles.AnyBlockingActorsBetween(world, source, target.CenterPosition,
-				info.Width, out blockedPos))
+			if (info.Blockable)
 			{
-				target = Target.FromPos(blockedPos);
+				// If GuidedTarget has become invalid due to getting killed the same tick,
+				// we need to set target to args.PassiveTarget to prevent target.CenterPosition below from crashing.
+				// The warheads have target validity checks themselves so they don't need this, but AnyBlockingActorsBetween does.
+				if (target.Type == TargetType.Invalid)
+					target = Target.FromPos(args.PassiveTarget);
+
+				if (BlocksProjectiles.AnyBlockingActorsBetween(world, args.Source, target.CenterPosition,
+					info.Width, out blockedPos))
+					target = Target.FromPos(blockedPos);
 			}
 
 			args.Weapon.Impact(target, args.SourceActor, args.DamageModifiers);

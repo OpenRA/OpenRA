@@ -45,6 +45,7 @@ Players:
 		Color: FE0000
 		Allies: Smugglers
 		Enemies: Ordos
+		Bot: campaign
 	PlayerReference@Smugglers:
 		Name: Smugglers
 		LockFaction: True
@@ -53,6 +54,7 @@ Players:
 		Color: 542209
 		Allies: Harkonnen
 		Enemies: Ordos
+		Bot: campaign
 
 Actors:
 	Actor0: wall

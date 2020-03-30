@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -29,15 +29,19 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Image where Ground/WaterCorpseSequence is looked up.")]
 		public readonly string Image = "explosion";
 
-		[SequenceReference("Image")] public readonly string GroundCorpseSequence = null;
+		[SequenceReference("Image")]
+		public readonly string GroundCorpseSequence = null;
 
-		[PaletteReference] public readonly string GroundCorpsePalette = "effect";
+		[PaletteReference]
+		public readonly string GroundCorpsePalette = "effect";
 
 		public readonly string GroundImpactSound = null;
 
-		[SequenceReference("Image")] public readonly string WaterCorpseSequence = null;
+		[SequenceReference("Image")]
+		public readonly string WaterCorpseSequence = null;
 
-		[PaletteReference] public readonly string WaterCorpsePalette = "effect";
+		[PaletteReference]
+		public readonly string WaterCorpsePalette = "effect";
 
 		[Desc("Terrain types on which to display WaterCorpseSequence.")]
 		public readonly HashSet<string> WaterTerrainTypes = new HashSet<string> { "Water" };
@@ -57,6 +61,8 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly ParachutableInfo info;
 		readonly IPositionable positionable;
+
+		public Actor IgnoreActor;
 
 		ConditionManager conditionManager;
 		int parachutingToken = ConditionManager.InvalidConditionToken;
@@ -82,7 +88,7 @@ namespace OpenRA.Mods.Common.Traits
 				parachutingToken = conditionManager.GrantCondition(self, info.ParachutingCondition);
 		}
 
-		void INotifyParachute.OnLanded(Actor self, Actor ignore)
+		void INotifyParachute.OnLanded(Actor self)
 		{
 			IsInAir = false;
 
@@ -96,7 +102,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (positionable.CanEnterCell(cell, self))
 				return;
 
-			if (ignore != null && self.World.ActorMap.GetActorsAt(cell).Any(a => a != ignore))
+			if (IgnoreActor != null && self.World.ActorMap.GetActorsAt(cell).Any(a => a != IgnoreActor))
 				return;
 
 			var onWater = info.WaterTerrainTypes.Contains(self.World.Map.GetTerrainInfo(cell).Type);

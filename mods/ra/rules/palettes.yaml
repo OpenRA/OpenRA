@@ -28,6 +28,11 @@
 		Filename: temperat.pal
 		ShadowIndex: 3
 		AllowModifiers: false
+	PaletteFromFile@cursor:
+		Name: cursor
+		Filename: temperat.pal
+		AllowModifiers: false
+		CursorPalette: true
 	PaletteFromFile@effect:
 		Name: effect
 		Filename: temperat.pal
@@ -106,8 +111,19 @@
 		Palettes: terrain
 		Tilesets: DESERT
 		RotationBase: 32
+	RotationPaletteEffect@desertwater-actor:
+		Palettes: desert
+		RotationBase: 32
 	LightPaletteRotator:
-		ExcludePalettes: terrain, effect
+		ExcludePalettes: terrain, effect, desert
 	ChronoshiftPaletteEffect:
 	FlashPaletteEffect@NUKE:
 		Type: Nuke
+	PaletteFromPaletteWithAlpha@placelinesegment:
+		Name: placelinesegment
+		BasePalette: terrain
+		Alpha: 0.65
+	PaletteFromPlayerPaletteWithAlpha@placebuilding:
+		BaseName: placebuilding
+		BasePalette: player
+		Alpha: 0.65

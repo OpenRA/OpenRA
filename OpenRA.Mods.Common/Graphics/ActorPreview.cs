@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
@@ -96,16 +95,16 @@ namespace OpenRA.Mods.Common.Graphics
 			if (hf <= 0)
 				return DamageState.Dead;
 
-			if (hf < 0.25f)
+			if (hf < 25)
 				return DamageState.Critical;
 
-			if (hf < 0.5f)
+			if (hf < 50)
 				return DamageState.Heavy;
 
-			if (hf < 0.75f)
+			if (hf < 75)
 				return DamageState.Medium;
 
-			if (hf < 1.0f)
+			if (hf < 100)
 				return DamageState.Light;
 
 			return DamageState.Undamaged;

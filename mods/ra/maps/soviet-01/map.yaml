@@ -25,6 +25,7 @@ Players:
 		Color: 5CC1A3
 		Allies: Germany
 		Enemies: USSR
+		Bot: campaign
 	PlayerReference@Germany:
 		Name: Germany
 		NonCombatant: True
@@ -32,6 +33,7 @@ Players:
 		Color: 505050
 		Allies: France
 		Enemies: USSR
+		Bot: campaign
 	PlayerReference@USSR:
 		Name: USSR
 		Playable: True
@@ -119,9 +121,6 @@ Actors:
 		Owner: Neutral
 	Actor22: tc01
 		Location: 48,47
-		Owner: Neutral
-	Actor23: t06
-		Location: 73,59
 		Owner: Neutral
 	Actor24: t01
 		Location: 49,74
@@ -567,7 +566,7 @@ Actors:
 		Location: 45,82
 		Owner: USSR
 	ParadropEntryPoint1: waypoint
-		Location: 67,65
+		Location: 63,65
 		Owner: Neutral
 	ParadropPoint1: waypoint
 		Location: 47,67

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,45 +9,58 @@
  */
 #endregion
 
-using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
 {
 	class DonateExperience : Enter
 	{
-		readonly Actor target;
-		readonly GainsExperience targetGainsExperience;
 		readonly int level;
 		readonly int playerExperience;
 
-		public DonateExperience(Actor self, Actor target, int level, int playerExperience, GainsExperience targetGainsExperience)
-			: base(self, target, EnterBehaviour.Dispose)
+		Actor enterActor;
+		GainsExperience enterGainsExperience;
+
+		public DonateExperience(Actor self, Target target, int level, int playerExperience)
+			: base(self, target, Color.Yellow)
 		{
-			this.target = target;
 			this.level = level;
 			this.playerExperience = playerExperience;
-			this.targetGainsExperience = targetGainsExperience;
 		}
 
-		protected override void OnInside(Actor self)
+		protected override bool TryStartEnter(Actor self, Actor targetActor)
 		{
-			if (target.IsDead)
+			enterActor = targetActor;
+			enterGainsExperience = targetActor.TraitOrDefault<GainsExperience>();
+
+			if (enterGainsExperience == null || enterGainsExperience.Level == enterGainsExperience.MaxLevel)
+			{
+				Cancel(self, true);
+				return false;
+			}
+
+			return true;
+		}
+
+		protected override void OnEnterComplete(Actor self, Actor targetActor)
+		{
+			// Make sure the target hasn't changed while entering
+			// OnEnterComplete is only called if targetActor is alive
+			if (targetActor != enterActor)
 				return;
 
-			targetGainsExperience.GiveLevels(level);
+			if (enterGainsExperience.Level == enterGainsExperience.MaxLevel)
+				return;
+
+			enterGainsExperience.GiveLevels(level);
 
 			var exp = self.Owner.PlayerActor.TraitOrDefault<PlayerExperience>();
-			if (exp != null && target.Owner != self.Owner)
+			if (exp != null && enterActor.Owner != self.Owner)
 				exp.GiveExperience(playerExperience);
-		}
 
-		public override Activity Tick(Actor self)
-		{
-			if (target.IsDead || targetGainsExperience.Level == targetGainsExperience.MaxLevel)
-				Cancel(self);
-
-			return base.Tick(self);
+			self.Dispose();
 		}
 	}
 }

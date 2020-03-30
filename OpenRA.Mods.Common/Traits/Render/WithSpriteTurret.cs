@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -22,8 +22,16 @@ namespace OpenRA.Mods.Common.Traits.Render
 	public class WithSpriteTurretInfo : ConditionalTraitInfo, IRenderActorPreviewSpritesInfo,
 		Requires<RenderSpritesInfo>, Requires<TurretedInfo>, Requires<BodyOrientationInfo>, Requires<ArmamentInfo>
 	{
+		[SequenceReference]
 		[Desc("Sequence name to use")]
-		[SequenceReference] public readonly string Sequence = "turret";
+		public readonly string Sequence = "turret";
+
+		[PaletteReference("IsPlayerPalette")]
+		[Desc("Custom palette name")]
+		public readonly string Palette = null;
+
+		[Desc("Palette is a player palette BaseName")]
+		public readonly bool IsPlayerPalette = false;
 
 		[Desc("Turreted 'Turret' key to display")]
 		public readonly string Turret = "primary";
@@ -55,20 +63,22 @@ namespace OpenRA.Mods.Common.Traits.Render
 				return -(tmpOffset.Y + tmpOffset.Z) + 1;
 			};
 
+			if (IsPlayerPalette)
+				p = init.WorldRenderer.Palette(Palette + init.Get<OwnerInit>().PlayerName);
+			else if (Palette != null)
+				p = init.WorldRenderer.Palette(Palette);
+
 			yield return new SpriteActorPreview(anim, offset, zOffset, p, rs.Scale);
 		}
 	}
 
-	public class WithSpriteTurret : ConditionalTrait<WithSpriteTurretInfo>, INotifyBuildComplete, INotifySold, INotifyTransform, INotifyDamageStateChanged
+	public class WithSpriteTurret : ConditionalTrait<WithSpriteTurretInfo>, INotifyDamageStateChanged
 	{
 		public readonly Animation DefaultAnimation;
 		readonly RenderSprites rs;
 		readonly BodyOrientation body;
 		readonly Turreted t;
 		readonly Armament[] arms;
-
-		// TODO: This should go away once https://github.com/OpenRA/OpenRA/issues/7035 is implemented
-		bool buildComplete;
 
 		public WithSpriteTurret(Actor self, WithSpriteTurretInfo info)
 			: base(info)
@@ -79,14 +89,13 @@ namespace OpenRA.Mods.Common.Traits.Render
 				.First(tt => tt.Name == info.Turret);
 			arms = self.TraitsImplementing<Armament>()
 				.Where(w => w.Info.Turret == info.Turret).ToArray();
-			buildComplete = !self.Info.HasTraitInfo<BuildingInfo>(); // always render instantly for units
 
 			DefaultAnimation = new Animation(self.World, rs.GetImage(self), () => t.TurretFacing);
 			DefaultAnimation.PlayRepeating(NormalizeSequence(self, info.Sequence));
 			rs.Add(new AnimationWithOffset(DefaultAnimation,
 				() => TurretOffset(self),
-				() => IsTraitDisabled || !buildComplete,
-				p => RenderUtils.ZOffsetFromCenter(self, p, 1)));
+				() => IsTraitDisabled,
+				p => RenderUtils.ZOffsetFromCenter(self, p, 1)), info.Palette, info.IsPlayerPalette);
 
 			// Restrict turret facings to match the sprite
 			t.QuantizedFacings = DefaultAnimation.CurrentSequence.Facings;
@@ -133,12 +142,5 @@ namespace OpenRA.Mods.Common.Traits.Render
 		{
 			DefaultAnimation.PlayRepeating(NormalizeSequence(self, Info.Sequence));
 		}
-
-		void INotifyBuildComplete.BuildingComplete(Actor self) { buildComplete = true; }
-		void INotifySold.Selling(Actor self) { buildComplete = false; }
-		void INotifySold.Sold(Actor self) { }
-		void INotifyTransform.BeforeTransform(Actor self) { buildComplete = false; }
-		void INotifyTransform.OnTransform(Actor self) { }
-		void INotifyTransform.AfterTransform(Actor toActor) { }
 	}
 }

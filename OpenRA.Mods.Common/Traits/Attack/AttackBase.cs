@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -11,14 +11,18 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using OpenRA.Activities;
+using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Warheads;
+using OpenRA.Primitives;
+using OpenRA.Support;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	public enum AttackSource { Default, AutoTarget, AttackMove }
+
 	public abstract class AttackBaseInfo : PausableConditionalTraitInfo
 	{
 		[Desc("Armament names")]
@@ -28,27 +32,49 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly string OutsideRangeCursor = null;
 
+		[Desc("Color to use for the target line.")]
+		public readonly Color TargetLineColor = Color.Crimson;
+
 		[Desc("Does the attack type require the attacker to enter the target's cell?")]
 		public readonly bool AttackRequiresEnteringCell = false;
 
-		[Desc("Does not care about shroud or fog. Enables the actor to launch an attack against a target even if he has no visibility of it.")]
-		public readonly bool IgnoresVisibility = false;
+		[Desc("Allow firing into the fog to target frozen actors without requiring force-fire.")]
+		public readonly bool TargetFrozenActors = false;
 
-		[VoiceReference] public readonly string Voice = "Action";
+		[Desc("Force-fire mode ignores actors and targets the ground instead.")]
+		public readonly bool ForceFireIgnoresActors = false;
+
+		[Desc("Force-fire mode is required to enable targeting against targets outside of range.")]
+		public readonly bool OutsideRangeRequiresForceFire = false;
+
+		[VoiceReference]
+		public readonly string Voice = "Action";
+
+		[Desc("Tolerance for attack angle. Range [0, 128], 128 covers 360 degrees.")]
+		public readonly int FacingTolerance = 128;
+
+		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
+		{
+			base.RulesetLoaded(rules, ai);
+
+			if (FacingTolerance < 0 || FacingTolerance > 128)
+				throw new YamlException("Facing tolerance must be in range of [0, 128], 128 covers 360 degrees.");
+		}
 
 		public override abstract object Create(ActorInitializer init);
 	}
 
-	public abstract class AttackBase : PausableConditionalTrait<AttackBaseInfo>, INotifyCreated, ITick, IIssueOrder, IResolveOrder, IOrderVoice, ISync
+	public abstract class AttackBase : PausableConditionalTrait<AttackBaseInfo>, ITick, IIssueOrder, IResolveOrder, IOrderVoice, ISync
 	{
 		readonly string attackOrderName = "Attack";
 		readonly string forceAttackOrderName = "ForceAttack";
 
-		[Sync] public bool IsAiming { get; internal set; }
+		[Sync]
+		public bool IsAiming { get; set; }
+
 		public IEnumerable<Armament> Armaments { get { return getArmaments(); } }
 
 		protected IFacing facing;
-		protected Building building;
 		protected IPositionable positionable;
 		protected INotifyAiming[] notifyAiming;
 		protected Func<IEnumerable<Armament>> getArmaments;
@@ -66,7 +92,6 @@ namespace OpenRA.Mods.Common.Traits
 		protected override void Created(Actor self)
 		{
 			facing = self.TraitOrDefault<IFacing>();
-			building = self.TraitOrDefault<Building>();
 			positionable = self.TraitOrDefault<IPositionable>();
 			notifyAiming = self.TraitsImplementing<INotifyAiming>().ToArray();
 
@@ -100,6 +125,21 @@ namespace OpenRA.Mods.Common.Traits
 			return () => armaments;
 		}
 
+		public bool TargetInFiringArc(Actor self, Target target, int facingTolerance)
+		{
+			if (facing == null)
+				return true;
+
+			var pos = self.CenterPosition;
+			var targetedPosition = GetTargetPosition(pos, target);
+			var delta = targetedPosition - pos;
+
+			if (delta.HorizontalLengthSquared == 0)
+				return true;
+
+			return Util.FacingWithinTolerance(facing.Facing, delta.Yaw.Facing, facingTolerance);
+		}
+
 		protected virtual bool CanAttack(Actor self, Target target)
 		{
 			if (!self.IsInWorld || IsTraitDisabled || IsTraitPaused)
@@ -115,22 +155,18 @@ namespace OpenRA.Mods.Common.Traits
 			if (mobile != null && !mobile.CanInteractWithGroundLayer(self))
 				return false;
 
-			// Building is under construction or is being sold
-			if (building != null && !building.BuildComplete)
-				return false;
-
 			if (Armaments.All(a => a.IsReloading))
 				return false;
 
 			return true;
 		}
 
-		public virtual void DoAttack(Actor self, Target target, IEnumerable<Armament> armaments = null)
+		public virtual void DoAttack(Actor self, Target target)
 		{
-			if (armaments == null && !CanAttack(self, target))
+			if (!CanAttack(self, target))
 				return;
 
-			foreach (var a in armaments ?? Armaments)
+			foreach (var a in Armaments)
 				a.CheckFire(self, facing, target);
 		}
 
@@ -145,8 +181,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (armament == null)
 					yield break;
 
-				var negativeDamage = (armament.Weapon.Warheads.FirstOrDefault(w => (w is DamageWarhead)) as DamageWarhead).Damage < 0;
-				yield return new AttackOrderTargeter(this, 6, negativeDamage);
+				yield return new AttackOrderTargeter(this, 6);
 			}
 		}
 
@@ -163,12 +198,11 @@ namespace OpenRA.Mods.Common.Traits
 			var forceAttack = order.OrderString == forceAttackOrderName;
 			if (forceAttack || order.OrderString == attackOrderName)
 			{
-				var target = self.ResolveFrozenActorOrder(order, Color.Red);
-				if (!target.IsValidFor(self))
+				if (!order.Target.IsValidFor(self))
 					return;
 
-				self.SetTargetLine(target, Color.Red);
-				AttackTarget(target, order.Queued, true, forceAttack);
+				AttackTarget(order.Target, AttackSource.Default, order.Queued, true, forceAttack, Info.TargetLineColor);
+				self.ShowTargetLines();
 			}
 
 			if (order.OrderString == "Stop")
@@ -178,6 +212,12 @@ namespace OpenRA.Mods.Common.Traits
 		// Some 3rd-party mods rely on this being public
 		public virtual void OnStopOrder(Actor self)
 		{
+			// We don't want Stop orders from traits other than Mobile or Aircraft to cancel Resupply activity.
+			// Resupply is always either the main activity or a child of ReturnToBase.
+			// TODO: This should generally only cancel activities queued by this trait.
+			if (self.CurrentActivity == null || self.CurrentActivity is Resupply || self.CurrentActivity is ReturnToBase)
+				return;
+
 			self.CancelActivity();
 		}
 
@@ -186,7 +226,7 @@ namespace OpenRA.Mods.Common.Traits
 			return order.OrderString == attackOrderName || order.OrderString == forceAttackOrderName ? Info.Voice : null;
 		}
 
-		public abstract Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove, bool forceAttack);
+		public abstract Activity GetAttackActivity(Actor self, AttackSource source, Target newTarget, bool allowMove, bool forceAttack, Color? targetLineColor = null);
 
 		public bool HasAnyValidWeapons(Target t, bool checkForCenterTargetingWeapons = false)
 		{
@@ -353,19 +393,20 @@ namespace OpenRA.Mods.Common.Traits
 				&& a.Weapon.IsValidAgainst(t, self.World, self));
 		}
 
-		public void AttackTarget(Target target, bool queued, bool allowMove, bool forceAttack = false)
+		public void AttackTarget(Target target, AttackSource source, bool queued, bool allowMove, bool forceAttack = false, Color? targetLineColor = null)
 		{
-			if (IsTraitDisabled || IsTraitPaused)
+			if (IsTraitDisabled)
 				return;
 
 			if (!target.IsValidFor(self))
 				return;
 
-			if (!queued)
-				self.CancelActivity();
-
-			self.QueueActivity(GetAttackActivity(self, target, allowMove, forceAttack));
+			var activity = GetAttackActivity(self, source, target, allowMove, forceAttack, targetLineColor);
+			self.QueueActivity(queued, activity);
+			OnResolveAttackOrder(self, activity, target, queued, forceAttack);
 		}
+
+		public virtual void OnResolveAttackOrder(Actor self, Activity activity, Target target, bool queued, bool forceAttack) { }
 
 		public bool IsReachableTarget(Target target, bool allowMove)
 		{
@@ -388,7 +429,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			readonly AttackBase ab;
 
-			public AttackOrderTargeter(AttackBase ab, int priority, bool negativeDamage)
+			public AttackOrderTargeter(AttackBase ab, int priority)
 			{
 				this.ab = ab;
 				OrderID = ab.attackOrderName;
@@ -397,13 +438,16 @@ namespace OpenRA.Mods.Common.Traits
 
 			public string OrderID { get; private set; }
 			public int OrderPriority { get; private set; }
-			public bool TargetOverridesSelection(TargetModifiers modifiers) { return true; }
+			public bool TargetOverridesSelection(Actor self, Target target, List<Actor> actorsAt, CPos xy, TargetModifiers modifiers) { return true; }
 
 			bool CanTargetActor(Actor self, Target target, ref TargetModifiers modifiers, ref string cursor)
 			{
 				IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
 
 				if (modifiers.HasModifier(TargetModifiers.ForceMove))
+					return false;
+
+				if (ab.Info.ForceFireIgnoresActors && modifiers.HasModifier(TargetModifiers.ForceAttack))
 					return false;
 
 				// Disguised actors are revealed by the attack cursor
@@ -426,9 +470,13 @@ namespace OpenRA.Mods.Common.Traits
 				if (a == null)
 					a = armaments.First();
 
-				cursor = !target.IsInRange(self.CenterPosition, a.MaxRange())
-					? ab.Info.OutsideRangeCursor ?? a.Info.OutsideRangeCursor
-					: ab.Info.Cursor ?? a.Info.Cursor;
+				var outOfRange = !target.IsInRange(self.CenterPosition, a.MaxRange()) ||
+					(!forceAttack && target.Type == TargetType.FrozenActor && !ab.Info.TargetFrozenActors);
+
+				if (outOfRange && ab.Info.OutsideRangeRequiresForceFire && !modifiers.HasModifier(TargetModifiers.ForceAttack))
+					return false;
+
+				cursor = outOfRange ? ab.Info.OutsideRangeCursor ?? a.Info.OutsideRangeCursor : ab.Info.Cursor ?? a.Info.Cursor;
 
 				if (!forceAttack)
 					return true;

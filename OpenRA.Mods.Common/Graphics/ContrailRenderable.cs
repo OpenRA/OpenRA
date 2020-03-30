@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,9 +9,9 @@
  */
 #endregion
 
-using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.Graphics
 {
@@ -108,7 +108,7 @@ namespace OpenRA.Mods.Common.Graphics
 
 		public static Color ChooseColor(Actor self)
 		{
-			var ownerColor = Color.FromArgb(255, self.Owner.Color.RGB);
+			var ownerColor = Color.FromArgb(255, self.Owner.Color);
 			return Exts.ColorLerp(0.5f, ownerColor, Color.White);
 		}
 	}

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,8 +10,8 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Drawing;
 using OpenRA.Graphics;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -19,11 +19,13 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Create a palette by applying alpha transparency to another palette.")]
 	class PaletteFromPaletteWithAlphaInfo : ITraitInfo
 	{
-		[FieldLoader.Require, PaletteDefinition]
+		[PaletteDefinition]
+		[FieldLoader.Require]
 		[Desc("Internal palette name")]
 		public readonly string Name = null;
 
-		[FieldLoader.Require, PaletteReference]
+		[PaletteReference]
+		[FieldLoader.Require]
 		[Desc("The name of the palette to base off.")]
 		public readonly string BasePalette = null;
 

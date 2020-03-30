@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -52,15 +52,23 @@ namespace OpenRA.Mods.Cnc.Activities
 				IsInterruptible = false;
 		}
 
-		public override Activity Tick(Actor self)
+		public override bool Tick(Actor self)
 		{
 			var pc = self.TraitOrDefault<PortableChrono>();
+<<<<<<< HEAD
 			if (teleporter == self && pc != null && !pc.CanTeleport)
+=======
+			if (teleporter == self && pc != null && (!pc.CanTeleport || IsCanceling))
+>>>>>>> e82c30fbabc008a988936025f3250729d9a22b4c
 			{
 				if (killOnFailure)
 					self.Kill(teleporter, killDamageTypes);
 
+<<<<<<< HEAD
 				return NextActivity;
+=======
+				return true;
+>>>>>>> e82c30fbabc008a988936025f3250729d9a22b4c
 			}
 
 			var bestCell = ChooseBestDestinationCell(self, destination);
@@ -69,7 +77,11 @@ namespace OpenRA.Mods.Cnc.Activities
 				if (killOnFailure)
 					self.Kill(teleporter, killDamageTypes);
 
+<<<<<<< HEAD
 				return NextActivity;
+=======
+				return true;
+>>>>>>> e82c30fbabc008a988936025f3250729d9a22b4c
 			}
 
 			destination = bestCell.Value;
@@ -112,7 +124,7 @@ namespace OpenRA.Mods.Cnc.Activities
 					building.PlayCustomAnimation(teleporter, "active");
 			}
 
-			return NextActivity;
+			return true;
 		}
 
 		CPos? ChooseBestDestinationCell(Actor self, CPos destination)

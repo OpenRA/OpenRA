@@ -1,6 +1,6 @@
 Container@CHAT_PANEL:
 	X: (WINDOW_RIGHT - WIDTH) / 2
-	Y: WINDOW_BOTTOM - HEIGHT - 45
+	Y: WINDOW_BOTTOM - HEIGHT - 56
 	Width: 550
 	Height: 194
 	Logic: IngameChatLogic
@@ -46,7 +46,7 @@ Container@CHAT_PANEL:
 					Y: PARENT_BOTTOM - HEIGHT - 30
 					Width: 550
 					Height: 164
-					TopBottomSpacing: 4
+					TopBottomSpacing: 3
 					ItemSpacing: 4
 					Align: Bottom
 					Children:
@@ -58,13 +58,11 @@ Container@CHAT_PANEL:
 								Label@NAME:
 									X: 3
 									Width: 50
-									Height: 15
-									VAlign: Top
+									Height: 16
 									Shadow: True
 								Label@TEXT:
 									X: 12
 									Width: PARENT_RIGHT - 17
-									Height: 15
+									Height: 16
 									WordWrap: true
-									VAlign: Top
 									Shadow: True

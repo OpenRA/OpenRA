@@ -5,7 +5,7 @@ Container@LOBBY_MUSIC_BIN:
 	Children:
 		LogicTicker@SONG_WATCHER:
 		Container@LABEL_CONTAINER:
-			Y: 0 - 25
+			Y: 0 - 23
 			Width: PARENT_RIGHT
 			Children:
 				Label@MUSIC:
@@ -133,17 +133,17 @@ Container@LOBBY_MUSIC_BIN:
 					Font: Regular
 					Text: Loop
 				Label@VOLUME_LABEL:
-					Y: 180
+					Y: 182
 					Width: 65
 					Height: 25
 					Align: Right
 					Text: Volume:
-				Slider@MUSIC_SLIDER:
+				ExponentialSlider@MUSIC_SLIDER:
 					X: 70
 					Y: 186
 					Width: PARENT_RIGHT - 80
 					Height: 20
-					Ticks: 5
+					Ticks: 7
 		ScrollPanel@MUSIC_LIST:
 			X: 307
 			Width: PARENT_RIGHT - 307
@@ -154,11 +154,14 @@ Container@LOBBY_MUSIC_BIN:
 					Height: 25
 					X: 2
 					Visible: false
+					EnableChildMouseOver: True
 					Children:
-						Label@TITLE:
+						LabelWithTooltip@TITLE:
 							X: 10
 							Width: PARENT_RIGHT - 50
 							Height: 25
+							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipTemplate: SIMPLE_TOOLTIP
 						Label@LENGTH:
 							X: PARENT_RIGHT - 60
 							Width: 50

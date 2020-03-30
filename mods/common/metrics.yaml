@@ -1,5 +1,4 @@
 Metrics:
-	ButtonBaseLine: 0
 	ButtonDepth: 1
 	ButtonFont: Regular
 	ButtonTextColor: FFFFFF
@@ -12,6 +11,7 @@ Metrics:
 	GameStartedColor: FFA500
 	HotkeyColor: FFFFFF
 	HotkeyColorDisabled: 808080
+	HotkeyColorInvalid: FF0000
 	HotkeyFont: Regular
 	IncompatibleGameColor: A9A9A9
 	IncompatibleGameStartedColor: D2691E
@@ -42,3 +42,7 @@ Metrics:
 	UPnPDisabledColor: FFFFFF
 	UPnPEnabledColor: 00FF00
 	UPnPNotSupportedColor: FF0000
+	NoticeInfoColor: FFFFFF
+	NoticeWarningColor: FFA500
+	NoticeSuccessColor: 00FF00
+	NoticeErrorColor: FF0000

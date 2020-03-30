@@ -57,17 +57,20 @@ World:
 		SeparateTeamSpawnsCheckboxEnabled: False
 		SeparateTeamSpawnsCheckboxLocked: True
 		SeparateTeamSpawnsCheckboxVisible: False
+	TimeLimitManager:
+		TimeLimitLocked: True
+		TimeLimitDropdownVisible: False
 
 FORTCRATE:
 	Inherits: ^Crate
 	SupportPowerCrateAction@parabombs:
 		SelectionShares: 30
 		Proxy: powerproxy.parabombs
-		Effect: parabombs
+		Sequence: parabombs
 	HealUnitsCrateAction:
 		SelectionShares: 30
-		Notification: heal2.aud
-		Effect: heal
+		Sound: heal2.aud
+		Sequence: heal
 	GiveCashCrateAction:
 		Amount: 400
 		UseCashTick: true
@@ -77,8 +80,8 @@ FORTCRATE:
 		SelectionShares: 10
 	GrantExternalConditionCrateAction@ironcurtain:
 		SelectionShares: 10
-		Effect: invuln
-		Notification: ironcur9.aud
+		Sequence: invuln
+		Sound: ironcur9.aud
 		Condition: invulnerability
 		Duration: 1200
 	ExplodeCrateAction@bigboom:
@@ -105,11 +108,11 @@ Player:
 		DefaultCashDropdownLocked: True
 		DefaultCashDropdownVisible: False
 		DefaultCash: 50
-	-HackyAI@RushAI:
-	-HackyAI@NormalAI:
-	-HackyAI@NavalAI:
-	-HackyAI@TurtleAI:
-	DummyAI@LonestarAI:
+	-ModularBot@RushAI:
+	-ModularBot@NormalAI:
+	-ModularBot@NavalAI:
+	-ModularBot@TurtleAI:
+	DummyBot@LonestarAI:
 		Name: Lonestar AI
 		Type: lonestar
 	LobbyPrerequisiteCheckbox@GLOBALFACTUNDEPLOY:
@@ -135,12 +138,12 @@ OILB:
 
 MOBILETENT:
 	Inherits: ^Vehicle
+	Inherits@selection: ^SelectableSupportUnit
 	Valued:
 		Cost: 2000
 	Tooltip:
 		Name: Mobile Tent
 	Selectable:
-		Priority: 4
 		DecorationBounds: 21,21
 	SelectionDecorations:
 	Health:
@@ -170,6 +173,8 @@ TENT:
 	Production:
 		Produces: Infantry, Soldier, Dog, Defense
 	-Sellable:
+	Demolishable:
+		-Condition:
 	BaseProvider:
 		Range: 12c0
 	Power:
@@ -206,6 +211,7 @@ PBOX:
 DOG:
 	Buildable:
 		Prerequisites: barracks
+		BuildAtProductionType: Soldier
 	Valued:
 		Cost: 20
 
@@ -417,6 +423,6 @@ TSLA:
 	Buildable:
 		Prerequisites: ~disabled
 
-HIJACKER:
+THF:
 	Buildable:
 		Prerequisites: ~disabled

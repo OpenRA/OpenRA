@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -66,17 +66,19 @@ namespace OpenRA
 		public readonly IReadOnlyDictionary<string, string> Packages;
 		public readonly IReadOnlyDictionary<string, string> MapFolders;
 		public readonly MiniYaml LoadScreen;
-		public readonly Dictionary<string, Pair<string, int>> Fonts;
 
 		public readonly string[] SoundFormats = { };
 		public readonly string[] SpriteFormats = { };
 		public readonly string[] PackageFormats = { };
 
-		readonly string[] reservedModuleNames = { "Metadata", "Folders", "MapFolders", "Packages", "Rules",
+		readonly string[] reservedModuleNames =
+		{
+			"Metadata", "Folders", "MapFolders", "Packages", "Rules",
 			"Sequences", "ModelSequences", "Cursors", "Chrome", "Assemblies", "ChromeLayout", "Weapons",
 			"Voices", "Notifications", "Music", "Translations", "TileSets", "ChromeMetrics", "Missions", "Hotkeys",
-			"ServerTraits", "LoadScreen", "Fonts", "SupportsMapsFrom", "SoundFormats", "SpriteFormats",
-			"RequiresMods", "PackageFormats" };
+			"ServerTraits", "LoadScreen", "SupportsMapsFrom", "SoundFormats", "SpriteFormats",
+			"RequiresMods", "PackageFormats"
+		};
 
 		readonly TypeDictionary modules = new TypeDictionary();
 		readonly Dictionary<string, MiniYaml> yaml;
@@ -119,12 +121,6 @@ namespace OpenRA
 
 			if (!yaml.TryGetValue("LoadScreen", out LoadScreen))
 				throw new InvalidDataException("`LoadScreen` section is not defined.");
-
-			Fonts = yaml["Fonts"].ToDictionary(my =>
-			{
-				var nd = my.ToDictionary();
-				return Pair.New(nd["Font"].Value, Exts.ParseIntegerInvariant(nd["Size"].Value));
-			});
 
 			// Allow inherited mods to import parent maps.
 			var compat = new List<string> { Id };

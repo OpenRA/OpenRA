@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -12,8 +12,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -76,21 +74,9 @@ namespace OpenRA
 
 			var t = v.GetType();
 
-			// Color.ToString() does the wrong thing; force it to format as rgb[a] hex
 			if (t == typeof(Color))
 			{
-				return HSLColor.ToHexString((Color)v);
-			}
-
-			// HSLColor.ToString() does the wrong thing; force it to format as rgb[a] hex
-			if (t == typeof(HSLColor))
-			{
-				return ((HSLColor)v).ToHexString();
-			}
-
-			if (t == typeof(ImageFormat))
-			{
-				return ((ImageFormat)v).ToString();
+				return ((Color)v).ToString();
 			}
 
 			if (t == typeof(Rectangle))

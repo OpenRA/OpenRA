@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,28 +10,25 @@
 #endregion
 
 using System;
-using System.Drawing;
 using System.Linq;
 using OpenRA.Primitives;
 using OpenRA.Support;
 using OpenRA.Widgets;
-using SharpFont;
 
 namespace OpenRA.Graphics
 {
 	public sealed class SpriteFont : IDisposable
 	{
-		static readonly Library Library = new Library();
-
+		public int TopOffset { get; private set; }
 		readonly int size;
 		readonly SheetBuilder builder;
 		readonly Func<string, float> lineWidth;
-		readonly Face face;
+		readonly IFont font;
 		readonly Cache<Pair<char, Color>, GlyphInfo> glyphs;
 
 		float deviceScale;
 
-		public SpriteFont(string name, byte[] data, int size, float scale, SheetBuilder builder)
+		public SpriteFont(string name, byte[] data, int size, int ascender, float scale, SheetBuilder builder)
 		{
 			if (builder.Type != SheetType.BGRA)
 				throw new ArgumentException("The sheet builder must create BGRA sheets.", "builder");
@@ -40,8 +37,7 @@ namespace OpenRA.Graphics
 			this.size = size;
 			this.builder = builder;
 
-			face = new Face(Library, data, 0);
-			face.SetPixelSizes((uint)(size * deviceScale), (uint)(size * deviceScale));
+			font = Game.Renderer.CreateFont(data);
 
 			glyphs = new Cache<Pair<char, Color>, GlyphInfo>(CreateGlyph, Pair<char, Color>.EqualityComparer);
 
@@ -51,18 +47,19 @@ namespace OpenRA.Graphics
 
 			if (size <= 24)
 				PrecacheColor(Color.White, name);
+
+			TopOffset = size - ascender;
 		}
 
 		public void SetScale(float scale)
 		{
 			deviceScale = scale;
-			face.SetPixelSizes((uint)(size * deviceScale), (uint)(size * deviceScale));
 			glyphs.Clear();
 		}
 
 		void PrecacheColor(Color c, string name)
 		{
-			using (new PerfTimer("PrecacheColor {0} {1}px {2}".F(name, size, c.Name)))
+			using (new PerfTimer("PrecacheColor {0} {1}px {2}".F(name, size, c)))
 				for (var n = (char)0x20; n < (char)0x7f; n++)
 					if (glyphs[Pair.New(n, c)] == null)
 						throw new InvalidOperationException();
@@ -89,7 +86,53 @@ namespace OpenRA.Graphics
 						new float2(
 							(int)Math.Round(p.X * deviceScale + g.Offset.X, 0) / deviceScale,
 							p.Y + g.Offset.Y / deviceScale),
-							g.Sprite.Size / deviceScale);
+						g.Sprite.Size / deviceScale);
+
+				p += new float2(g.Advance / deviceScale, 0);
+			}
+		}
+
+		float3 Rotate(float3 v, float sina, float cosa, float2 offset)
+		{
+			return new float3(
+				v.X * cosa - v.Y * sina + offset.X,
+				v.X * sina + v.Y * cosa + offset.Y,
+				0);
+		}
+
+		public void DrawText(string text, float2 location, Color c, float angle)
+		{
+			// Offset from the baseline position to the top-left of the glyph for rendering
+			var offset = new float2(0, size);
+			var cosa = (float)Math.Cos(-angle);
+			var sina = (float)Math.Sin(-angle);
+
+			var p = offset;
+			foreach (var s in text)
+			{
+				if (s == '\n')
+				{
+					offset += new float2(0, size);
+					p = offset;
+					continue;
+				}
+
+				var g = glyphs[Pair.New(s, c)];
+				if (g.Sprite != null)
+				{
+					var tl = new float3(
+						(int)Math.Round(p.X * deviceScale + g.Offset.X, 0) / deviceScale,
+						p.Y + g.Offset.Y / deviceScale, 0);
+					var br = tl + g.Sprite.Size / deviceScale;
+					var tr = new float3(br.X, tl.Y, 0);
+					var bl = new float3(tl.X, br.Y, 0);
+
+					Game.Renderer.RgbaSpriteRenderer.DrawSprite(g.Sprite,
+						Rotate(tl, sina, cosa, location),
+						Rotate(tr, sina, cosa, location),
+						Rotate(br, sina, cosa, location),
+						Rotate(bl, sina, cosa, location));
+				}
 
 				p += new float2(g.Advance / deviceScale, 0);
 			}
@@ -110,7 +153,7 @@ namespace OpenRA.Graphics
 
 		public void DrawTextWithContrast(string text, float2 location, Color fg, Color bgDark, Color bgLight, int offset)
 		{
-			DrawTextWithContrast(text, location, fg, WidgetUtils.GetContrastColor(fg, bgDark, bgLight), offset);
+			DrawTextWithContrast(text, location, fg, GetContrastColor(fg, bgDark, bgLight), offset);
 		}
 
 		public void DrawTextWithShadow(string text, float2 location, Color fg, Color bg, int offset)
@@ -123,7 +166,20 @@ namespace OpenRA.Graphics
 
 		public void DrawTextWithShadow(string text, float2 location, Color fg, Color bgDark, Color bgLight, int offset)
 		{
-			DrawTextWithShadow(text, location, fg, WidgetUtils.GetContrastColor(fg, bgDark, bgLight), offset);
+			DrawTextWithShadow(text, location, fg, GetContrastColor(fg, bgDark, bgLight), offset);
+		}
+
+		public void DrawTextWithShadow(string text, float2 location, Color fg, Color bg, int offset, float angle)
+		{
+			if (offset != 0)
+				DrawText(text, location + new float2(offset, offset), bg, angle);
+
+			DrawText(text, location, fg, angle);
+		}
+
+		public void DrawTextWithShadow(string text, float2 location, Color fg, Color bgDark, Color bgLight, int offset, float angle)
+		{
+			DrawTextWithShadow(text, location, fg, GetContrastColor(fg, bgDark, bgLight), offset, angle);
 		}
 
 		public int2 Measure(string text)
@@ -137,11 +193,9 @@ namespace OpenRA.Graphics
 
 		GlyphInfo CreateGlyph(Pair<char, Color> c)
 		{
-			try
-			{
-				face.LoadChar(c.First, LoadFlags.Default, LoadTarget.Normal);
-			}
-			catch (FreeTypeException)
+			var glyph = font.CreateGlyph(c.First, size, deviceScale);
+
+			if (glyph.Data == null)
 			{
 				return new GlyphInfo
 				{
@@ -151,44 +205,31 @@ namespace OpenRA.Graphics
 				};
 			}
 
-			face.Glyph.RenderGlyph(RenderMode.Normal);
-
-			var size = new Size((int)face.Glyph.Metrics.Width, (int)face.Glyph.Metrics.Height);
-			var s = builder.Allocate(size);
-
+			var s = builder.Allocate(glyph.Size);
 			var g = new GlyphInfo
 			{
 				Sprite = s,
-				Advance = (float)face.Glyph.Metrics.HorizontalAdvance,
-				Offset = new int2(face.Glyph.BitmapLeft, -face.Glyph.BitmapTop)
+				Advance = glyph.Advance,
+				Offset = glyph.Offset
 			};
 
-			// A new bitmap is generated each time this property is accessed, so we do need to dispose it.
-			using (var bitmap = face.Glyph.Bitmap)
+			var dest = s.Sheet.GetData();
+			var destStride = s.Sheet.Size.Width * 4;
+
+			for (var j = 0; j < s.Size.Y; j++)
 			{
-				unsafe
+				for (var i = 0; i < s.Size.X; i++)
 				{
-					var p = (byte*)bitmap.Buffer;
-					var dest = s.Sheet.GetData();
-					var destStride = s.Sheet.Size.Width * 4;
-
-					for (var j = 0; j < s.Size.Y; j++)
+					var p = glyph.Data[j * glyph.Size.Width + i];
+					if (p != 0)
 					{
-						for (var i = 0; i < s.Size.X; i++)
-						{
-							if (p[i] != 0)
-							{
-								var q = destStride * (j + s.Bounds.Top) + 4 * (i + s.Bounds.Left);
-								var pmc = Util.PremultiplyAlpha(Color.FromArgb(p[i], c.Second));
+						var q = destStride * (j + s.Bounds.Top) + 4 * (i + s.Bounds.Left);
+						var pmc = Util.PremultiplyAlpha(Color.FromArgb(p, c.Second));
 
-								dest[q] = pmc.B;
-								dest[q + 1] = pmc.G;
-								dest[q + 2] = pmc.R;
-								dest[q + 3] = pmc.A;
-							}
-						}
-
-						p += bitmap.Pitch;
+						dest[q] = pmc.B;
+						dest[q + 1] = pmc.G;
+						dest[q + 2] = pmc.R;
+						dest[q + 3] = pmc.A;
 					}
 				}
 			}
@@ -198,9 +239,14 @@ namespace OpenRA.Graphics
 			return g;
 		}
 
+		static Color GetContrastColor(Color fgColor, Color bgDark, Color bgLight)
+		{
+			return fgColor == Color.White || fgColor.GetBrightness() > 0.33 ? bgDark : bgLight;
+		}
+
 		public void Dispose()
 		{
-			face.Dispose();
+			font.Dispose();
 		}
 	}
 

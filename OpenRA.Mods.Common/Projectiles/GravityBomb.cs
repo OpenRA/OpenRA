@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,10 +10,8 @@
 #endregion
 
 using System.Collections.Generic;
-using OpenRA.Effects;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
-using OpenRA.Mods.Common.Effects;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Projectiles
@@ -22,21 +20,25 @@ namespace OpenRA.Mods.Common.Projectiles
 	{
 		public readonly string Image = null;
 
+		[SequenceReference("Image")]
 		[Desc("Loop a randomly chosen sequence of Image from this list while falling.")]
-		[SequenceReference("Image")] public readonly string[] Sequences = { "idle" };
+		public readonly string[] Sequences = { "idle" };
 
+		[SequenceReference("Image")]
 		[Desc("Sequence to play when launched. Skipped if null or empty.")]
-		[SequenceReference("Image")] public readonly string OpenSequence = null;
+		public readonly string OpenSequence = null;
 
+		[PaletteReference]
 		[Desc("The palette used to draw this projectile.")]
-		[PaletteReference] public readonly string Palette = "effect";
+		public readonly string Palette = "effect";
 
 		[Desc("Palette is a player palette BaseName")]
 		public readonly bool IsPlayerPalette = false;
 
 		public readonly bool Shadow = false;
 
-		[PaletteReference] public readonly string ShadowPalette = "shadow";
+		[PaletteReference]
+		public readonly string ShadowPalette = "shadow";
 
 		[Desc("Projectile movement vector per tick (forward, right, up), use negative values for opposite directions.")]
 		public readonly WVec Velocity = WVec.Zero;
@@ -53,8 +55,10 @@ namespace OpenRA.Mods.Common.Projectiles
 		readonly Animation anim;
 		readonly ProjectileArgs args;
 		readonly WVec acceleration;
-		[Sync] WVec velocity;
-		[Sync] WPos pos;
+		WVec velocity;
+
+		[Sync]
+		WPos pos;
 
 		public GravityBomb(GravityBombInfo info, ProjectileArgs args)
 		{
@@ -67,7 +71,7 @@ namespace OpenRA.Mods.Common.Projectiles
 
 			if (!string.IsNullOrEmpty(info.Image))
 			{
-				anim = new Animation(args.SourceActor.World, info.Image);
+				anim = new Animation(args.SourceActor.World, info.Image, () => args.Facing);
 
 				if (!string.IsNullOrEmpty(info.OpenSequence))
 					anim.PlayThen(info.OpenSequence, () => anim.PlayRepeating(info.Sequences.Random(args.SourceActor.World.SharedRandom)));

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -32,36 +32,69 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string[] Prerequisites = { };
 
 		public readonly string BeginChargeSound = null;
+
+		[NotificationReference("Speech")]
 		public readonly string BeginChargeSpeechNotification = null;
+
 		public readonly string EndChargeSound = null;
+
+		[NotificationReference("Speech")]
 		public readonly string EndChargeSpeechNotification = null;
+
 		public readonly string SelectTargetSound = null;
+
+		[NotificationReference("Speech")]
 		public readonly string SelectTargetSpeechNotification = null;
+
 		public readonly string InsufficientPowerSound = null;
+
+		[NotificationReference("Speech")]
 		public readonly string InsufficientPowerSpeechNotification = null;
+
 		public readonly string LaunchSound = null;
+
+		[NotificationReference("Speech")]
 		public readonly string LaunchSpeechNotification = null;
+
 		public readonly string IncomingSound = null;
+
+		[NotificationReference("Speech")]
 		public readonly string IncomingSpeechNotification = null;
 
 		[Desc("Defines to which players the timer is shown.")]
 		public readonly Stance DisplayTimerStances = Stance.None;
 
+		[PaletteReference]
 		[Desc("Palette used for the icon.")]
-		[PaletteReference] public readonly string IconPalette = "chrome";
+		public readonly string IconPalette = "chrome";
 
 		[Desc("Beacons are only supported on the Airstrike, Paratroopers, and Nuke powers")]
 		public readonly bool DisplayBeacon = false;
 
 		public readonly bool BeaconPaletteIsPlayerPalette = true;
-		[PaletteReference("BeaconPaletteIsPlayerPalette")] public readonly string BeaconPalette = "player";
+
+		[PaletteReference("BeaconPaletteIsPlayerPalette")]
+		public readonly string BeaconPalette = "player";
 
 		public readonly string BeaconImage = "beacon";
-		[SequenceReference("BeaconImage")] public readonly string BeaconPoster = null;
-		[PaletteReference] public readonly string BeaconPosterPalette = "chrome";
-		[SequenceReference("BeaconImage")] public readonly string ClockSequence = null;
-		[SequenceReference("BeaconImage")] public readonly string ArrowSequence = null;
-		[SequenceReference("BeaconImage")] public readonly string CircleSequence = null;
+
+		[SequenceReference("BeaconImage")]
+		public readonly string BeaconPoster = null;
+
+		[PaletteReference]
+		public readonly string BeaconPosterPalette = "chrome";
+
+		[SequenceReference("BeaconImage")]
+		public readonly string ClockSequence = null;
+
+		[SequenceReference("BeaconImage")]
+		public readonly string BeaconSequence = null;
+
+		[SequenceReference("BeaconImage")]
+		public readonly string ArrowSequence = null;
+
+		[SequenceReference("BeaconImage")]
+		public readonly string CircleSequence = null;
 
 		[Desc("Delay after launch, measured in ticks.")]
 		public readonly int BeaconDelay = 0;
@@ -72,6 +105,9 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int RadarPingDuration = 5 * 25;
 
 		public readonly string OrderName;
+
+		[Desc("Sort order for the support power palette. Smaller numbers are presented earlier.")]
+		public readonly int SupportPowerPaletteOrder = 9999;
 
 		public SupportPowerInfo() { OrderName = GetType().Name + "Order"; }
 	}
@@ -117,8 +153,8 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				ping = manager.RadarPings.Value.Add(
 					() => order.Player.IsAlliedWith(self.World.RenderPlayer),
-					self.World.Map.CenterOfCell(order.TargetLocation),
-					order.Player.Color.RGB,
+					order.Target.CenterPosition,
+					order.Player.Color,
 					Info.RadarPingDuration);
 			}
 		}

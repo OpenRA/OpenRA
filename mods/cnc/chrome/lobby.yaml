@@ -8,7 +8,7 @@ Container@SERVER_LOBBY:
 		ColorPreviewManager@COLOR_MANAGER:
 		Label@SERVER_NAME:
 			Width: PARENT_RIGHT
-			Y: 0 - 25
+			Y: 0 - 22
 			Font: BigBold
 			Contrast: true
 			Align: Center
@@ -96,7 +96,7 @@ Container@SERVER_LOBBY:
 						ScrollPanel@CHAT_DISPLAY:
 							Width: PARENT_RIGHT
 							Height: PARENT_BOTTOM - 30
-							TopBottomSpacing: 2
+							TopBottomSpacing: 3
 							ItemSpacing: 2
 							Children:
 								Container@CHAT_TEMPLATE:
@@ -108,34 +108,30 @@ Container@SERVER_LOBBY:
 										Label@TIME:
 											X: 3
 											Width: 50
-											Height: 15
-											VAlign: Top
+											Height: 16
 											Shadow: True
 										Label@NAME:
 											X: 45
 											Width: 50
-											Height: 15
-											VAlign: Top
+											Height: 16
 											Shadow: True
 										Label@TEXT:
 											X: 55
 											Width: PARENT_RIGHT - 60
-											Height: 15
+											Height: 16
 											WordWrap: true
-											VAlign: Top
 											Shadow: True
-						TextField@CHAT_TEXTFIELD:
+						Button@CHAT_MODE:
 							Y: PARENT_BOTTOM - HEIGHT
-							Width: PARENT_RIGHT
+							Width: 50
 							Height: 25
-							LeftMargin: 50
-							Children:
-								Label@LABEL_CHATTYPE:
-									Y: 0 - 1
-									Width: 45
-									Height: 25
-									Align: Right
-									Text: Chat:
+							Text: Team
+							Font: Bold
+						TextField@CHAT_TEXTFIELD:
+							X: 55
+							Y: PARENT_BOTTOM - HEIGHT
+							Width: PARENT_RIGHT - 55
+							Height: 25
 		Button@DISCONNECT_BUTTON:
 			Y: PARENT_BOTTOM - 36
 			Width: 140

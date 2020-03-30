@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -16,10 +16,11 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This actor receives damage from the given weapon when on the specified terrain type.")]
-	class DamagedByTerrainInfo : ConditionalTraitInfo, Requires<HealthInfo>
+	class DamagedByTerrainInfo : ConditionalTraitInfo, Requires<IHealthInfo>
 	{
+		[FieldLoader.Require]
 		[Desc("Amount of damage received per DamageInterval ticks.")]
-		[FieldLoader.Require] public readonly int Damage = 0;
+		public readonly int Damage = 0;
 
 		[Desc("Delay between receiving damage.")]
 		public readonly int DamageInterval = 0;
@@ -27,8 +28,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Apply the damage using these damagetypes.")]
 		public readonly BitSet<DamageType> DamageTypes = default(BitSet<DamageType>);
 
+		[FieldLoader.Require]
 		[Desc("Terrain types where the actor will take damage.")]
-		[FieldLoader.Require] public readonly string[] Terrain = { };
+		public readonly string[] Terrain = { };
 
 		[Desc("Percentage health below which the actor will not receive further damage.")]
 		public readonly int DamageThreshold = 0;
@@ -41,14 +43,18 @@ namespace OpenRA.Mods.Common.Traits
 
 	class DamagedByTerrain : ConditionalTrait<DamagedByTerrainInfo>, ITick, ISync, INotifyAddedToWorld
 	{
-		readonly Health health;
+		readonly IHealth health;
 
-		[Sync] int damageTicks;
-		[Sync] int damageThreshold;
+		[Sync]
+		int damageTicks;
 
-		public DamagedByTerrain(Actor self, DamagedByTerrainInfo info) : base(info)
+		[Sync]
+		int damageThreshold;
+
+		public DamagedByTerrain(Actor self, DamagedByTerrainInfo info)
+			: base(info)
 		{
-			health = self.Trait<Health>();
+			health = self.Trait<IHealth>();
 		}
 
 		void INotifyAddedToWorld.AddedToWorld(Actor self)

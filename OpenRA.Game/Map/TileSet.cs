@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,7 +10,6 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using OpenRA.FileSystem;
@@ -30,36 +29,10 @@ namespace OpenRA
 
 		public readonly float ZOffset = 0.0f;
 		public readonly float ZRamp = 1.0f;
-
-		public MiniYaml Save(TileSet tileSet)
-		{
-			var root = new List<MiniYamlNode>();
-			if (Height != 0)
-				root.Add(FieldSaver.SaveField(this, "Height"));
-
-			if (RampType != 0)
-				root.Add(FieldSaver.SaveField(this, "RampType"));
-
-			if (LeftColor != tileSet.TerrainInfo[TerrainType].Color)
-				root.Add(FieldSaver.SaveField(this, "LeftColor"));
-
-			if (RightColor != tileSet.TerrainInfo[TerrainType].Color)
-				root.Add(FieldSaver.SaveField(this, "RightColor"));
-
-			if (ZOffset != 0.0f)
-				root.Add(FieldSaver.SaveField(this, "ZOffset"));
-
-			if (ZRamp != 1.0f)
-				root.Add(FieldSaver.SaveField(this, "ZRamp"));
-
-			return new MiniYaml(tileSet.TerrainInfo[TerrainType].Type, root);
-		}
 	}
 
 	public class TerrainTypeInfo
 	{
-		static readonly TerrainTypeInfo Default = new TerrainTypeInfo();
-
 		public readonly string Type;
 		public readonly BitSet<TargetableType> TargetTypes;
 		public readonly HashSet<string> AcceptsSmudgeType = new HashSet<string>();
@@ -67,18 +40,11 @@ namespace OpenRA
 		public readonly bool RestrictPlayerColor = false;
 		public readonly string CustomCursor;
 
-		// Private default ctor for serialization comparison
-		TerrainTypeInfo() { }
-
 		public TerrainTypeInfo(MiniYaml my) { FieldLoader.Load(this, my); }
-
-		public MiniYaml Save() { return FieldSaver.SaveDifferences(this, Default); }
 	}
 
 	public class TerrainTemplateInfo
 	{
-		static readonly TerrainTemplateInfo Default = new TerrainTemplateInfo(0, new string[] { null }, int2.Zero, null);
-
 		public readonly ushort Id;
 		public readonly string[] Images;
 		public readonly int[] Frames;
@@ -160,21 +126,6 @@ namespace OpenRA
 		{
 			get { return tileInfo.Length; }
 		}
-
-		public MiniYaml Save(TileSet tileSet)
-		{
-			var root = FieldSaver.SaveDifferences(this, Default);
-
-			var tileYaml = tileInfo
-				.Select((ti, i) => Pair.New(i.ToString(), ti))
-				.Where(t => t.Second != null)
-				.Select(t => new MiniYamlNode(t.First, t.Second.Save(tileSet)))
-				.ToList();
-
-			root.Nodes.Add(new MiniYamlNode("Tiles", null, tileYaml));
-
-			return root;
-		}
 	}
 
 	public class TileSet
@@ -196,9 +147,6 @@ namespace OpenRA
 		public readonly TerrainTypeInfo[] TerrainInfo;
 		readonly Dictionary<string, byte> terrainIndexByType = new Dictionary<string, byte>();
 		readonly byte defaultWalkableTerrainIndex;
-
-		// Private default ctor for serialization comparison
-		TileSet() { }
 
 		public TileSet(IReadOnlyFileSystem fileSystem, string filepath)
 		{
@@ -297,19 +245,6 @@ namespace OpenRA
 				return null;
 
 			return tpl.Contains(r.Index) ? tpl[r.Index] : null;
-		}
-
-		public void Save(string filepath)
-		{
-			var root = new List<MiniYamlNode>();
-			root.Add(new MiniYamlNode("General", FieldSaver.SaveDifferences(this, new TileSet())));
-
-			root.Add(new MiniYamlNode("Terrain", null,
-				TerrainInfo.Select(t => new MiniYamlNode("TerrainType@{0}".F(t.Type), t.Save())).ToList()));
-
-			root.Add(new MiniYamlNode("Templates", null,
-				Templates.Select(t => new MiniYamlNode("Template@{0}".F(t.Value.Id), t.Value.Save(this))).ToList()));
-			root.WriteToFile(filepath);
 		}
 	}
 }

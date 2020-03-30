@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -11,13 +11,11 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using OpenRA.Effects;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
-using OpenRA.Mods.Common.Effects;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Projectiles
@@ -71,7 +69,7 @@ namespace OpenRA.Mods.Common.Projectiles
 
 		public IProjectile Create(ProjectileArgs args)
 		{
-			var c = UsePlayerColor ? args.SourceActor.Owner.Color.RGB : Color;
+			var c = UsePlayerColor ? args.SourceActor.Owner.Color : Color;
 			return new AreaBeam(this, args, c);
 		}
 	}
@@ -84,9 +82,15 @@ namespace OpenRA.Mods.Common.Projectiles
 		readonly Color color;
 		readonly WDist speed;
 
-		[Sync] WPos headPos;
-		[Sync] WPos tailPos;
-		[Sync] WPos target;
+		[Sync]
+		WPos headPos;
+
+		[Sync]
+		WPos tailPos;
+
+		[Sync]
+		WPos target;
+
 		int length;
 		int towardsTargetFacing;
 		int headTicks;
@@ -95,8 +99,13 @@ namespace OpenRA.Mods.Common.Projectiles
 		bool isTailTravelling;
 		bool continueTracking = true;
 
-		bool IsBeamComplete { get { return !isHeadTravelling && headTicks >= length &&
-			!isTailTravelling && tailTicks >= length; } }
+		bool IsBeamComplete
+		{
+			get
+			{
+				return !isHeadTravelling && headTicks >= length && !isTailTravelling && tailTicks >= length;
+			}
+		}
 
 		public AreaBeam(AreaBeamInfo info, ProjectileArgs args, Color color)
 		{

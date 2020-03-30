@@ -40,7 +40,7 @@ Container@MAINMENU:
 					Children:
 						Label@MAINMENU_LABEL_TITLE:
 							X: 0
-							Y: 20
+							Y: 22
 							Width: 200
 							Height: 30
 							Text: OpenRA
@@ -113,6 +113,13 @@ Container@MAINMENU:
 							Width: 140
 							Height: 30
 							Text: Missions
+							Font: Bold
+						Button@LOAD_BUTTON:
+							X: PARENT_RIGHT / 2 - WIDTH / 2
+							Y: 140
+							Width: 140
+							Height: 30
+							Text: Load
 							Font: Bold
 						Button@BACK_BUTTON:
 							X: PARENT_RIGHT / 2 - WIDTH / 2

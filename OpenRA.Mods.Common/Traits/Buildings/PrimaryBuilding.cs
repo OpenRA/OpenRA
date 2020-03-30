@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -32,8 +32,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("The condition to grant to self while this is the primary building.")]
 		public readonly string PrimaryCondition = null;
 
+		[NotificationReference("Speech")]
 		[Desc("The speech notification to play when selecting a primary building.")]
-		public readonly string SelectionNotification = "PrimaryBuildingSelected";
+		public readonly string SelectionNotification = null;
 
 		[Desc("List of production queues for which the primary flag should be set.",
 			"If empty, the list given in the `Produces` property of the `Production` trait will be used.")]
@@ -42,7 +43,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new PrimaryBuilding(init.Self, this); }
 	}
 
-	public class PrimaryBuilding : ConditionalTrait<PrimaryBuildingInfo>, INotifyCreated, IIssueOrder, IResolveOrder
+	public class PrimaryBuilding : ConditionalTrait<PrimaryBuildingInfo>, IIssueOrder, IResolveOrder
 	{
 		const string OrderID = "PrimaryProducer";
 
@@ -54,9 +55,10 @@ namespace OpenRA.Mods.Common.Traits
 		public PrimaryBuilding(Actor self, PrimaryBuildingInfo info)
 			: base(info) { }
 
-		void INotifyCreated.Created(Actor self)
+		protected override void Created(Actor self)
 		{
 			conditionManager = self.TraitOrDefault<ConditionManager>();
+			base.Created(self);
 		}
 
 		IEnumerable<IOrderTargeter> IIssueOrder.Orders
@@ -93,7 +95,8 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				// Cancel existing primaries
 				// TODO: THIS IS SHIT
-				var queues = Info.ProductionQueues.Length == 0 ? self.Info.TraitInfos<ProductionInfo>().SelectMany(pi => pi.Produces) : Info.ProductionQueues;
+				var queues = Info.ProductionQueues.Length == 0 ? self.TraitsImplementing<Production>()
+					.Where(t => !t.IsTraitDisabled).SelectMany(pi => pi.Info.Produces) : Info.ProductionQueues;
 				foreach (var q in queues)
 				{
 					foreach (var b in self.World
@@ -102,7 +105,7 @@ namespace OpenRA.Mods.Common.Traits
 								a.Actor != self &&
 								a.Actor.Owner == self.Owner &&
 								a.Trait.IsPrimary &&
-								a.Actor.Info.TraitInfos<ProductionInfo>().Any(pi => pi.Produces.Contains(q))))
+								a.Actor.TraitsImplementing<Production>().Where(p => !p.IsTraitDisabled).Any(pi => pi.Info.Produces.Contains(q))))
 						b.Trait.SetPrimaryProducer(b.Actor, false);
 				}
 

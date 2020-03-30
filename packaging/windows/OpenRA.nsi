@@ -1,4 +1,4 @@
-; Copyright 2007-2018 OpenRA developers (see AUTHORS)
+; Copyright 2007-2019 OpenRA developers (see AUTHORS)
 ; This file is part of OpenRA.
 ;
 ;  OpenRA is free software: you can redistribute it and/or modify
@@ -14,7 +14,6 @@
 ;  You should have received a copy of the GNU General Public License
 ;  along with OpenRA.  If not, see <http://www.gnu.org/licenses/>.
 
-
 !include "MUI2.nsh"
 !include "FileFunc.nsh"
 !include "WordFunc.nsh"
@@ -22,8 +21,22 @@
 Name "OpenRA"
 OutFile "OpenRA.Setup.exe"
 
-InstallDir "$PROGRAMFILES\OpenRA${SUFFIX}"
-InstallDirRegKey HKLM "Software\OpenRA${SUFFIX}" "InstallDir"
+ManifestDPIAware true
+
+Function .onInit
+	!ifndef USE_PROGRAMFILES32
+		SetRegView 64
+	!endif
+	ReadRegStr $INSTDIR HKLM "Software\OpenRA${SUFFIX}" "InstallDir"
+	StrCmp $INSTDIR "" unset done
+	unset:
+	!ifndef USE_PROGRAMFILES32
+		StrCpy $INSTDIR "$PROGRAMFILES64\OpenRA${SUFFIX}"
+	!else
+		StrCpy $INSTDIR "$PROGRAMFILES32\OpenRA${SUFFIX}"
+	!endif
+	done:
+FunctionEnd
 
 SetCompressor lzma
 RequestExecutionLevel admin
@@ -115,7 +128,6 @@ Section "Game" GAME
 	File "${SRCDIR}\RedAlert.ico"
 	File "${SRCDIR}\TiberianDawn.ico"
 	File "${SRCDIR}\Dune2000.ico"
-	File "${SRCDIR}\SharpFont.dll"
 	File "${SRCDIR}\SDL2-CS.dll"
 	File "${SRCDIR}\OpenAL-CS.dll"
 	File "${SRCDIR}\global mix database.dat"
@@ -177,15 +189,12 @@ SectionEnd
 ;***************************
 Section "-DotNet" DotNet
 	ClearErrors
-	ReadRegDWORD $0 HKLM "SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Client" "Install"
+	; https://docs.microsoft.com/en-us/dotnet/framework/migration-guide/how-to-determine-which-versions-are-installed
+	ReadRegDWORD $0 HKLM "SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full" "Release"
 	IfErrors error 0
-	IntCmp $0 1 0 error 0
-	ClearErrors
-	ReadRegDWORD $0 HKLM "SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full" "Install"
-	IfErrors error 0
-	IntCmp $0 1 done error done
+	IntCmp $0 394254 done error done
 	error:
-		MessageBox MB_OK ".NET Framework v4.5 or later is required to run OpenRA."
+		MessageBox MB_OK ".NET Framework v4.6.1 or later is required to run OpenRA."
 		Abort
 	done:
 SectionEnd
@@ -229,7 +238,6 @@ Function ${UN}Clean
 	Delete $INSTDIR\ICSharpCode.SharpZipLib.dll
 	Delete $INSTDIR\FuzzyLogicLibrary.dll
 	Delete $INSTDIR\Open.Nat.dll
-	Delete $INSTDIR\SharpFont.dll
 	Delete $INSTDIR\VERSION
 	Delete $INSTDIR\AUTHORS
 	Delete $INSTDIR\COPYING

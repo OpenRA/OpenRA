@@ -159,10 +159,8 @@ civ1:
 		Facings: 8
 		ShadowStart: 378
 	panic-stand:
-		Start: 86
 		Facings: 8
-		Stride: 6
-		ShadowStart: 378
+		ShadowStart: 292
 
 civ2:
 	Inherits: ^BasicInfantry
@@ -172,10 +170,8 @@ civ2:
 		Facings: 8
 		ShadowStart: 378
 	panic-stand:
-		Start: 86
 		Facings: 8
-		Stride: 6
-		ShadowStart: 378
+		ShadowStart: 292
 
 civ3:
 	Inherits: civ1

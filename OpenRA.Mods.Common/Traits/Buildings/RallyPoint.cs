@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -20,13 +20,21 @@ namespace OpenRA.Mods.Common.Traits
 	public class RallyPointInfo : ITraitInfo
 	{
 		public readonly string Image = "rallypoint";
-		[SequenceReference("Image")] public readonly string FlagSequence = "flag";
-		[SequenceReference("Image")] public readonly string CirclesSequence = "circles";
+
+		[Desc("Width (in pixels) of the rallypoint line.")]
+		public readonly int LineWidth = 1;
+
+		[SequenceReference("Image")]
+		public readonly string FlagSequence = "flag";
+
+		[SequenceReference("Image")]
+		public readonly string CirclesSequence = "circles";
 
 		public readonly string Cursor = "ability";
 
+		[PaletteReference("IsPlayerPalette")]
 		[Desc("Custom indicator palette name")]
-		[PaletteReference("IsPlayerPalette")] public readonly string Palette = "player";
+		public readonly string Palette = "player";
 
 		[Desc("Custom palette is a player palette BaseName")]
 		public readonly bool IsPlayerPalette = true;
@@ -40,7 +48,9 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		const string OrderID = "SetRallyPoint";
 
-		[Sync] public CPos Location;
+		[Sync]
+		public CPos Location;
+
 		public RallyPointInfo Info;
 		public string PaletteName { get; private set; }
 
@@ -79,8 +89,13 @@ namespace OpenRA.Mods.Common.Traits
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
 			if (order.OrderID == OrderID)
-				return new Order(order.OrderID, self, target, false) { SuppressVisualFeedback = true,
-					ExtraData = ((RallyPointOrderTargeter)order).ForceSet ? ForceSet : 0 };
+			{
+				return new Order(order.OrderID, self, target, false)
+				{
+					SuppressVisualFeedback = true,
+					ExtraData = ((RallyPointOrderTargeter)order).ForceSet ? ForceSet : 0
+				};
+			}
 
 			return null;
 		}
@@ -88,7 +103,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == OrderID)
-				Location = order.TargetLocation;
+				Location = self.World.Map.CellContaining(order.Target.CenterPosition);
 		}
 
 		public static bool IsForceSet(Order order)
@@ -107,7 +122,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			public string OrderID { get { return "SetRallyPoint"; } }
 			public int OrderPriority { get { return 0; } }
-			public bool TargetOverridesSelection(TargetModifiers modifiers) { return true; }
+			public bool TargetOverridesSelection(Actor self, Target target, List<Actor> actorsAt, CPos xy, TargetModifiers modifiers) { return true; }
 			public bool ForceSet { get; private set; }
 
 			public bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor)

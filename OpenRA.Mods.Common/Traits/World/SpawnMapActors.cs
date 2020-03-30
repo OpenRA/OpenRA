@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -26,6 +26,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void WorldLoaded(World world, WorldRenderer wr)
 		{
+			var preventMapSpawns = world.WorldActor.TraitsImplementing<IPreventMapSpawn>()
+				.Concat(world.WorldActor.Owner.PlayerActor.TraitsImplementing<IPreventMapSpawn>())
+				.ToArray();
+
 			foreach (var kv in world.Map.ActorDefinitions)
 			{
 				var actorReference = new ActorReference(kv.Value.Value, kv.Value.ToDictionary());
@@ -38,10 +42,23 @@ namespace OpenRA.Mods.Common.Traits
 				var initDict = actorReference.InitDict;
 				initDict.Add(new SkipMakeAnimsInit());
 				initDict.Add(new SpawnedByMapInit(kv.Key));
+
+				if (PreventMapSpawn(world, actorReference, preventMapSpawns))
+					continue;
+
 				var actor = world.CreateActor(actorReference.Type, initDict);
 				Actors[kv.Key] = actor;
 				LastMapActorID = actor.ActorID;
 			}
+		}
+
+		bool PreventMapSpawn(World world, ActorReference actorReference, IEnumerable<IPreventMapSpawn> preventMapSpawns)
+		{
+			foreach (var pms in preventMapSpawns)
+				if (pms.PreventMapSpawn(world, actorReference))
+					return true;
+
+			return false;
 		}
 	}
 

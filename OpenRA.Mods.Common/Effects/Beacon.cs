@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -23,13 +23,9 @@ namespace OpenRA.Mods.Common.Effects
 
 		readonly Player owner;
 		readonly WPos position;
-		readonly string beaconPalette;
 		readonly bool isPlayerPalette;
-		readonly string posterPalette;
-		readonly Animation arrow;
-		readonly Animation circles;
-		readonly Animation poster;
-		readonly Animation clock;
+		readonly string beaconPalette, posterPalette;
+		readonly Animation arrow, beacon, circles, clock, poster;
 		readonly int duration;
 
 		int delay;
@@ -39,7 +35,7 @@ namespace OpenRA.Mods.Common.Effects
 
 		// Player-placed beacons are removed after a delay
 		public Beacon(Player owner, WPos position, int duration, string beaconPalette, bool isPlayerPalette,
-			string beaconCollection, string arrowSprite, string circleSprite, int delay = 0)
+			string beaconCollection, string beaconSequence, string arrowSprite, string circleSprite, int delay = 0)
 		{
 			this.owner = owner;
 			this.position = position;
@@ -47,6 +43,12 @@ namespace OpenRA.Mods.Common.Effects
 			this.isPlayerPalette = isPlayerPalette;
 			this.duration = duration;
 			this.delay = delay;
+
+			if (!string.IsNullOrEmpty(beaconSequence))
+			{
+				beacon = new Animation(owner.World, beaconCollection);
+				beacon.PlayRepeating(beaconSequence);
+			}
 
 			if (!string.IsNullOrEmpty(arrowSprite))
 			{
@@ -63,8 +65,8 @@ namespace OpenRA.Mods.Common.Effects
 
 		// By default, support power beacons are expected to clean themselves up
 		public Beacon(Player owner, WPos position, bool isPlayerPalette, string palette, string posterCollection, string posterType, string posterPalette,
-			string arrowSequence, string circleSequence, string clockSequence, Func<float> clockFraction, int delay = 0, int duration = -1)
-				: this(owner, position, duration, palette, isPlayerPalette, posterCollection, arrowSequence, circleSequence, delay)
+			string beaconSequence, string arrowSequence, string circleSequence, string clockSequence, Func<float> clockFraction, int delay = 0, int duration = -1)
+				: this(owner, position, duration, palette, isPlayerPalette, posterCollection, beaconSequence, arrowSequence, circleSequence, delay)
 		{
 			this.posterPalette = posterPalette;
 
@@ -97,6 +99,9 @@ namespace OpenRA.Mods.Common.Effects
 			if (arrow != null)
 				arrow.Tick();
 
+			if (beacon != null)
+				beacon.Tick();
+
 			if (circles != null)
 				circles.Tick();
 
@@ -118,6 +123,10 @@ namespace OpenRA.Mods.Common.Effects
 				yield break;
 
 			var palette = r.Palette(isPlayerPalette ? beaconPalette + owner.InternalName : beaconPalette);
+
+			if (beacon != null)
+				foreach (var a in beacon.Render(position, palette))
+					yield return a;
 
 			if (circles != null)
 				foreach (var a in circles.Render(position, palette))

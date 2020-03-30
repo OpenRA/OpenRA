@@ -5,7 +5,7 @@ Container@DEBUG_PANEL:
 	Height: PARENT_BOTTOM
 	Children:
 		Label@TITLE:
-			Y: 25
+			Y: 26
 			Font: Bold
 			Text: Debug Options
 			Align: Center
@@ -81,7 +81,7 @@ Container@DEBUG_PANEL:
 			Font: Bold
 			Text: Reset Shroud
 		Label@VISUALIZATIONS_TITLE:
-			Y: 255
+			Y: 256
 			Font: Bold
 			Text: Visualizations
 			Align: Center

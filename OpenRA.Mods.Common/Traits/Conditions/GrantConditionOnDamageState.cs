@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -14,7 +14,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Applies a condition to the actor at specified damage states.")]
-	public class GrantConditionOnDamageStateInfo : ITraitInfo, Requires<HealthInfo>
+	public class GrantConditionOnDamageStateInfo : ITraitInfo, Requires<IHealthInfo>
 	{
 		[FieldLoader.Require]
 		[GrantedConditionReference]
@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class GrantConditionOnDamageState : INotifyDamageStateChanged, INotifyCreated
 	{
 		readonly GrantConditionOnDamageStateInfo info;
-		readonly Health health;
+		readonly IHealth health;
 
 		ConditionManager conditionManager;
 		int conditionToken = ConditionManager.InvalidConditionToken;
@@ -47,12 +47,12 @@ namespace OpenRA.Mods.Common.Traits
 		public GrantConditionOnDamageState(Actor self, GrantConditionOnDamageStateInfo info)
 		{
 			this.info = info;
-			health = self.Trait<Health>();
+			health = self.Trait<IHealth>();
 		}
 
 		void INotifyCreated.Created(Actor self)
 		{
-			conditionManager = self.TraitOrDefault<ConditionManager>();
+			conditionManager = self.Trait<ConditionManager>();
 			GrantConditionOnValidDamageState(self, health.DamageState);
 		}
 
@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.Traits
 		void INotifyDamageStateChanged.DamageStateChanged(Actor self, AttackInfo e)
 		{
 			var granted = conditionToken != ConditionManager.InvalidConditionToken;
-			if ((granted && info.GrantPermanently) || conditionManager == null)
+			if (granted && info.GrantPermanently)
 				return;
 
 			if (!granted && !info.ValidDamageStates.HasFlag(e.PreviousDamageState))

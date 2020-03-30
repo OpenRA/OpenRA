@@ -26,7 +26,7 @@ NAPOWR:
 		Range: 4c0
 		MaxHeightDelta: 3
 	WithIdleOverlay@LIGHTS:
-		RequiresCondition: !empdisable
+		RequiresCondition: !build-incomplete && !empdisable
 		Sequence: idle-lights
 	Power:
 		Amount: 100
@@ -65,7 +65,7 @@ NAAPWR:
 		Range: 4c0
 		MaxHeightDelta: 3
 	WithIdleOverlay@LIGHTS:
-		RequiresCondition: !empdisable
+		RequiresCondition: !build-incomplete && !empdisable
 		Sequence: idle-lights
 	Power:
 		Amount: 200
@@ -112,15 +112,20 @@ NAHAND:
 		Offset: 3,3
 		Palette: mouse
 		IsPlayerPalette: false
+		LineWidth: 2
 	Production:
 		Produces: Infantry
 		PauseOnCondition: empdisable
 	PrimaryBuilding:
 		PrimaryCondition: primary
+		SelectionNotification: PrimaryBuildingSelected
 	ProductionBar:
+		ProductionType: Infantry
 	WithIdleOverlay@LIGHTS:
+		RequiresCondition: !build-incomplete
 		Sequence: idle-lights
 	WithIdleOverlay@LIGHT:
+		RequiresCondition: !build-incomplete
 		Sequence: idle-light
 	Power:
 		Amount: -20
@@ -165,6 +170,7 @@ NAWEAP:
 		Offset: 4,1
 		Palette: mouse
 		IsPlayerPalette: false
+		LineWidth: 2
 	Exit@1:
 		SpawnOffset: -384,-384,0
 		ExitCell: 3,1
@@ -175,13 +181,19 @@ NAWEAP:
 		PauseOnCondition: empdisable
 	PrimaryBuilding:
 		PrimaryCondition: primary
+		SelectionNotification: PrimaryBuildingSelected
 	ProductionBar:
+		ProductionType: Vehicle
 	WithIdleOverlay@ROOF:
+		RequiresCondition: !build-incomplete
 		Sequence: idle-roof
 	WithProductionDoorOverlay@DOOR:
+		RequiresCondition: !build-incomplete
 	WithIdleOverlay@LIGHTS:
+		RequiresCondition: !build-incomplete
 		Sequence: idle-lights
 	WithIdleOverlay@BIB:
+		RequiresCondition: !build-incomplete
 		Sequence: bib
 	Power:
 		Amount: -30
@@ -221,20 +233,26 @@ NAHPAD:
 	RallyPoint:
 		Palette: mouse
 		IsPlayerPalette: false
+		LineWidth: 2
 	Production:
 		Produces: Air
 		PauseOnCondition: empdisable
 	PrimaryBuilding:
 		PrimaryCondition: primary
+		SelectionNotification: PrimaryBuildingSelected
 	Reservable:
 	RepairsUnits:
 		HpPerStep: 1000
 		PauseOnCondition: empdisable
 		PlayerExperience: 15
+		StartRepairingNotification: Repairing
 	ProductionBar:
+		ProductionType: Air
 	WithIdleOverlay@PLATFORM:
+		RequiresCondition: !build-incomplete
 		Sequence: idle-platform
 	WithIdleOverlay@LIGHTS:
+		RequiresCondition: !build-incomplete
 		Sequence: idle-lights
 	WithDeathAnimation@BIB:
 		DeathSequence: dead-platform
@@ -289,8 +307,9 @@ NARADR:
 		Range: 10c0
 		MaxHeightDelta: 3
 	WithIdleOverlay@DISH:
-		Sequence: idle-dish
+		RequiresCondition: !build-incomplete
 		PauseOnCondition: disabled || empdisable
+		Sequence: idle-dish
 	Targetable:
 		TargetTypes: Ground, Building, C4, SpyInfiltrate
 	Power:
@@ -327,7 +346,7 @@ NATECH:
 		Range: 4c0
 		MaxHeightDelta: 3
 	WithIdleOverlay@LIGHTS:
-		RequiresCondition: !disabled
+		RequiresCondition: !build-incomplete && !disabled
 		Sequence: idle-lights
 	Power:
 		Amount: -150
@@ -367,7 +386,7 @@ NATMPL:
 	Power:
 		Amount: -200
 	WithIdleOverlay@LIGHTS:
-		RequiresCondition: !disabled
+		RequiresCondition: !build-incomplete && !disabled
 		Sequence: idle-lights
 	ProduceActorPower:
 		PauseOnCondition: empdisable || disabled

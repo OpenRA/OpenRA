@@ -26,5 +26,5 @@ Container@MAP_PANEL:
 			Children:
 				Label@MAP_DESCRIPTION:
 					X: 4
-					Y: 1
+					Y: 2
 					Width: PARENT_RIGHT - 32

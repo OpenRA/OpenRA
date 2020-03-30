@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,12 +9,11 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
@@ -22,7 +21,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 	[Desc("Displays a text overlay relative to the selection box.")]
 	public class WithTextDecorationInfo : ConditionalTraitInfo, Requires<IDecorationBoundsInfo>
 	{
-		[FieldLoader.Require] [Translate] public readonly string Text = null;
+		[Translate]
+		[FieldLoader.Require]
+		public readonly string Text = null;
 
 		public readonly string Font = "TinyBold";
 
@@ -49,7 +50,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
-			if (!Game.ModData.Manifest.Fonts.ContainsKey(Font))
+			if (!Game.ModData.Manifest.Get<Fonts>().FontList.ContainsKey(Font))
 				throw new YamlException("Font '{0}' is not listed in the mod.yaml's Fonts section".F(Font));
 
 			base.RulesetLoaded(rules, ai);
@@ -67,7 +68,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		{
 			font = Game.Renderer.Fonts[info.Font];
 			decorationBounds = self.TraitsImplementing<IDecorationBounds>().ToArray();
-			color = Info.UsePlayerColor ? self.Owner.Color.RGB : Info.Color;
+			color = Info.UsePlayerColor ? self.Owner.Color : Info.Color;
 		}
 
 		public virtual bool ShouldRender(Actor self) { return true; }
@@ -109,7 +110,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var halfSize = font.Measure(Info.Text) / 2;
 
 			var boundsOffset = new int2(bounds.Left + bounds.Right, bounds.Top + bounds.Bottom) / 2;
-			var sizeOffset = new int2();
+			var sizeOffset = int2.Zero;
 			if (Info.ReferencePoint.HasFlag(ReferencePoints.Top))
 			{
 				boundsOffset -= new int2(0, bounds.Height / 2);
@@ -138,7 +139,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
 			if (Info.UsePlayerColor)
-				color = newOwner.Color.RGB;
+				color = newOwner.Color;
 		}
 	}
 }

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -11,7 +11,6 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.GameRules;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
@@ -21,13 +20,15 @@ namespace OpenRA.Mods.Common.Warheads
 {
 	public class CreateEffectWarhead : Warhead
 	{
+		[SequenceReference("Image")]
 		[Desc("List of explosion sequences that can be used.")]
-		[SequenceReference("Image")] public readonly string[] Explosions = new string[0];
+		public readonly string[] Explosions = new string[0];
 
 		[Desc("Image containing explosion effect sequence.")]
 		public readonly string Image = "explosion";
 
-		[Desc("Palette to use for explosion effect."), PaletteReference("UsePlayerPalette")]
+		[PaletteReference("UsePlayerPalette")]
+		[Desc("Palette to use for explosion effect.")]
 		public readonly string ExplosionPalette = "effect";
 
 		[Desc("Remap explosion effect to player color, if art supports it.")]
@@ -80,7 +81,7 @@ namespace OpenRA.Mods.Common.Warheads
 				if (!AffectsParent && victim == firedBy)
 					continue;
 
-				if (!victim.Info.HasTraitInfo<HealthInfo>())
+				if (!victim.Info.HasTraitInfo<IHealthInfo>())
 					continue;
 
 				// If the impact position is within any HitShape, we have a direct hit
@@ -119,7 +120,7 @@ namespace OpenRA.Mods.Common.Warheads
 			if (UsePlayerPalette)
 				palette += firedBy.Owner.InternalName;
 
-			var explosion = Explosions.RandomOrDefault(Game.CosmeticRandom);
+			var explosion = Explosions.RandomOrDefault(world.LocalRandom);
 			if (Image != null && explosion != null)
 			{
 				if (ForceDisplayAtGroundLevel)
@@ -131,8 +132,8 @@ namespace OpenRA.Mods.Common.Warheads
 				world.AddFrameEndTask(w => w.Add(new SpriteEffect(pos, w, Image, explosion, palette)));
 			}
 
-			var impactSound = ImpactSounds.RandomOrDefault(Game.CosmeticRandom);
-			if (impactSound != null && Game.CosmeticRandom.Next(0, 100) < ImpactSoundChance)
+			var impactSound = ImpactSounds.RandomOrDefault(world.LocalRandom);
+			if (impactSound != null && world.LocalRandom.Next(0, 100) < ImpactSoundChance)
 				Game.Sound.Play(SoundType.World, impactSound, pos);
 		}
 

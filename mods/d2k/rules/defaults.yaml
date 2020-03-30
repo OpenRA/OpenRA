@@ -15,11 +15,13 @@
 
 ^GainsExperience:
 	GainsExperience:
+		LevelUpNotification: LevelUp
 		Conditions:
 			200: rank-veteran
 			400: rank-veteran
 			800: rank-veteran
 			1600: rank-veteran
+		LevelUpImage: crate-effects
 	GrantCondition@RANK-ELITE:
 		RequiresCondition: rank-veteran >= 4
 		Condition: rank-elite
@@ -138,7 +140,7 @@
 	AutoTargetPriority@ATTACKANYTHING:
 		RequiresCondition: stance-attackanything || assault-move
 	AttackMove:
-		AssaultMoveScanCondition: assault-move
+		AssaultMoveCondition: assault-move
 
 ^AutoTargetAll:
 	AutoTarget:
@@ -159,11 +161,12 @@
 	AutoTargetPriority@ATTACKANYTHING:
 		RequiresCondition: stance-attackanything || assault-move
 	AttackMove:
-		AssaultMoveScanCondition: assault-move
+		AssaultMoveCondition: assault-move
 
 ^Vehicle:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
+	Inherits@selection: ^SelectableCombatUnit
 	Tooltip:
 		GenericName: Unit
 	Huntable:
@@ -172,7 +175,7 @@
 	Mobile:
 		TurnSpeed: 5
 		Locomotor: vehicle
-		RequiresCondition: !notmobile
+		PauseOnCondition: notmobile
 	SelectionDecorations:
 	WithSpriteControlGroupDecoration:
 	Selectable:
@@ -186,7 +189,7 @@
 	HiddenUnderFog:
 	ActorLostNotification:
 	Repairable:
-		RepairBuildings: repair_pad
+		RepairActors: repair_pad
 	Guard:
 		Voice: Guard
 	Guardable:
@@ -199,6 +202,7 @@
 	AutoCarryable:
 		CarriedCondition: notmobile
 		ReservedCondition: carryall-reserved
+		LockedCondition: notmobile
 	WithDecoration@CARRYALL:
 		Image: pips
 		Sequence: pickup-indicator
@@ -210,7 +214,7 @@
 		Duration: 100
 		Radius: 2c512
 	HitShape:
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Vehicle
 
 ^Tank:
@@ -227,12 +231,13 @@
 		Type: light
 	HiddenUnderFog:
 		Type: CenterPosition
+		AlwaysVisibleStances: None
 	Tooltip:
 		GenericName: Destroyed Unit
 	ScriptTriggers:
 	WithFacingSpriteBody:
 	HitShape:
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Husk
 
 ^VehicleHusk:
@@ -260,11 +265,13 @@
 		Spins: False
 		Moves: True
 		Explosion: UnitExplodeLarge
+	-MapEditorData:
 
 ^Infantry:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^GainsExperience
 	Inherits@3: ^SpriteActor
+	Inherits@selection: ^SelectableCombatUnit
 	Tooltip:
 		GenericName: Unit
 	Huntable:
@@ -329,8 +336,9 @@
 	HitShape:
 		Type: Circle
 			Radius: 96
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Infantry
+	AttackFrontal:
 
 ^Plane:
 	Inherits@1: ^ExistsInWorld
@@ -352,12 +360,13 @@
 	WithFacingSpriteBody:
 	WithShadow:
 	HitShape:
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Aircraft
 
 ^Building:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
+	Inherits@selection: ^SelectableBuilding
 	Tooltip:
 		GenericName: Structure
 	Huntable:
@@ -365,8 +374,6 @@
 		Action: Kill
 	SelectionDecorations:
 	WithSpriteControlGroupDecoration:
-	Selectable:
-		Priority: 2
 	RevealsShroud:
 	Targetable:
 		TargetTypes: Ground, C4, Structure
@@ -380,17 +387,20 @@
 		Footprint: x
 		TerrainTypes: Rock, Concrete
 		BuildSounds: BUILD1.WAV
+	D2kActorPreviewPlaceBuildingPreview:
+		OverridePalette: placebuilding
 	RequiresBuildableArea:
 		AreaTypes: building
 		Adjacent: 3
 	GivesBuildableArea:
 		AreaTypes: building
+	CaptureManager:
 	Capturable:
-		CaptureThreshold: 100
+		RequiresCondition: !build-incomplete
+		Types: building
 	SoundOnDamageTransition:
 		DamagedSounds: EXPLSML1.WAV
 		DestroyedSounds: EXPLHG1.WAV
-	WithSpriteBody:
 	Explodes:
 		Type: Footprint
 		Weapon: BuildingExplode
@@ -398,6 +408,7 @@
 	RepairableBuilding:
 		RepairStep: 500
 		PlayerExperience: 25
+		RepairingNotification: Repairing
 	SpawnActorsOnSell:
 		ActorTypes: light_inf
 	MustBeDestroyed:
@@ -407,12 +418,13 @@
 	ActorLostNotification:
 		Notification: BuildingLost
 	ShakeOnDeath:
+	Demolishable:
+		Condition: being-demolished
 	Sellable:
+		RequiresCondition: !build-incomplete && !being-demolished
 		SellSounds: BUILD1.WAV
 	Guardable:
 		Range: 3c0
-	WithCrumbleOverlay:
-	Demolishable:
 	DamagedByTerrain:
 		Damage: 500
 		DamageInterval: 100
@@ -423,11 +435,15 @@
 		Weapons: Debris, Debris2, Debris3, Debris4
 		Pieces: 2, 5
 		Range: 1c512, 4c0
+	WithSpriteBody:
 	WithMakeAnimation:
+		Condition: build-incomplete
+	WithCrumbleOverlay:
+		RequiresCondition: !build-incomplete
 	RevealOnDeath:
 		Duration: 100
 		Radius: 4c768
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Building
 	CommandBarBlacklist:
 	WithBuildingRepairDecoration:
@@ -439,6 +455,7 @@
 
 ^Defense:
 	Inherits: ^Building
+	Inherits@selection: ^SelectableCombatBuilding
 	WithSpriteTurret:
 	AttackTurreted:
 	RenderRangeCircle:
@@ -446,8 +463,11 @@
 		Range: 1c768
 	-GivesBuildableArea:
 	-WithMakeAnimation:
+	-WithCrumbleOverlay:
 	-Capturable:
 	-WithSpriteBody:
+	Sellable:
+		RequiresCondition: !being-demolished
 	WithWallSpriteBody:
 	LineBuildNode:
 		Types: turret
@@ -460,7 +480,7 @@
 	RevealOnFire:
 	Targetable:
 		TargetTypes: Ground, C4, Structure, Defense
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Defense
 	-CommandBarBlacklist:
 
@@ -501,3 +521,26 @@
 	WithBuildingRepairDecoration:
 		Offsets:
 			powerdown: -10, 0
+
+^SelectableCombatUnit:
+	Selectable:
+		Priority: 10
+		PriorityModifiers: Ctrl
+
+^SelectableSupportUnit:
+	Selectable:
+		Priority: 8
+		PriorityModifiers: Ctrl, Alt
+
+^SelectableEconomicUnit:
+	Selectable:
+		Priority: 6
+		PriorityModifiers: Ctrl, Alt
+
+^SelectableCombatBuilding:
+	Selectable:
+		Priority: 4
+
+^SelectableBuilding:
+	Selectable:
+		Priority: 2

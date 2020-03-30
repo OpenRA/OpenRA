@@ -4,7 +4,7 @@ Container@LOBBY_SERVERS_BIN:
 	Height: PARENT_BOTTOM
 	Children:
 		Container@LABEL_CONTAINER:
-			Y: 0 - 25
+			Y: 0 - 24
 			Width: PARENT_RIGHT
 			Children:
 				Label@NAME:
@@ -85,10 +85,12 @@ Container@LOBBY_SERVERS_BIN:
 					X: 2
 					EnableChildMouseOver: True
 					Children:
-						Label@TITLE:
+						LabelWithTooltip@TITLE:
 							X: 5
 							Width: 245
 							Height: 25
+							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipTemplate: SIMPLE_TOOLTIP
 						Image@PASSWORD_PROTECTED:
 							X: 272
 							Y: 6

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -18,7 +18,8 @@ namespace OpenRA.Mods.Common.Scripting
 	[ScriptGlobal("Player")]
 	public class PlayerGlobal : ScriptGlobal
 	{
-		public PlayerGlobal(ScriptContext context) : base(context) { }
+		public PlayerGlobal(ScriptContext context)
+			: base(context) { }
 
 		[Desc("Returns the player with the specified internal name, or nil if a match is not found.")]
 		public Player GetPlayer(string name)

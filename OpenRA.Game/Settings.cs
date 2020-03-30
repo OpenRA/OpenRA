@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -11,16 +11,17 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA
 {
 	public enum MouseScrollType { Disabled, Standard, Inverted, Joystick }
 	public enum StatusBarsType { Standard, DamageShow, AlwaysShow }
+	public enum TargetLinesType { Disabled, Manual, Automatic }
 
 	[Flags]
 	public enum MPGameFilters
@@ -74,7 +75,11 @@ namespace OpenRA
 		[Desc("Query map information from the Resource Center if they are not available locally.")]
 		public bool QueryMapRepository = true;
 
-		public string TimestampFormat = "s";
+		[Desc("Enable client-side report generation to help debug desync errors.")]
+		public bool EnableSyncReports = false;
+
+		[Desc("Sets the timestamp format. Defaults to the ISO 8601 standard.")]
+		public string TimestampFormat = "yyyy-MM-ddTHH:mm:ss";
 
 		public ServerSettings Clone()
 		{
@@ -84,21 +89,14 @@ namespace OpenRA
 
 	public class DebugSettings
 	{
-		public bool BotDebug = false;
-		public bool LuaDebug = false;
+		[Desc("Display average FPS and tick/render times")]
 		public bool PerfText = false;
+
+		[Desc("Display a graph with various profiling traces")]
 		public bool PerfGraph = false;
 
-		[Desc("Amount of time required for triggering perf.log output.")]
-		public float LongTickThresholdMs = 1;
-
-		public bool SanityCheckUnsyncedCode = false;
+		[Desc("Numer of samples to average over when calculating tick and render times.")]
 		public int Samples = 25;
-
-		[Desc("Show incompatible games in server browser.")]
-		public bool IgnoreVersionMismatch = false;
-
-		public bool StrictActivityChecking = false;
 
 		[Desc("Check whether a newer version is available online.")]
 		public bool CheckVersion = true;
@@ -106,9 +104,32 @@ namespace OpenRA
 		[Desc("Allow the collection of anonymous data such as Operating System, .NET runtime, OpenGL version and language settings.")]
 		public bool SendSystemInformation = true;
 
+		[Desc("Version of sysinfo that the player last opted in or out of.")]
 		public int SystemInformationVersionPrompt = 0;
-		public string UUID = System.Guid.NewGuid().ToString();
+
+		[Desc("Sysinfo anonymous user identifier.")]
+		public string UUID = Guid.NewGuid().ToString();
+
+		[Desc("Enable hidden developer settings in the Advanced settings tab.")]
+		public bool DisplayDeveloperSettings = false;
+
+		[Desc("Display bot debug messages in the game chat.")]
+		public bool BotDebug = false;
+
+		[Desc("Display Lua debug messages in the game chat.")]
+		public bool LuaDebug = false;
+
+		[Desc("Enable the chat field during replays to allow use of console commands.")]
 		public bool EnableDebugCommandsInReplays = false;
+
+		[Desc("Amount of time required for triggering perf.log output.")]
+		public float LongTickThresholdMs = 1;
+
+		[Desc("Throw an exception if the world sync hash changes while evaluating user input.")]
+		public bool SyncCheckUnsyncedCode = false;
+
+		[Desc("Throw an exception if the world sync hash changes while evaluating BotModules.")]
+		public bool SyncCheckBotModuleCode = false;
 	}
 
 	public class GraphicSettings
@@ -144,8 +165,6 @@ namespace OpenRA
 
 		public string Language = "english";
 		public string DefaultLanguage = "english";
-
-		public ImageFormat ScreenshotFormat = ImageFormat.Png;
 	}
 
 	public class SoundSettings
@@ -167,9 +186,9 @@ namespace OpenRA
 	{
 		[Desc("Sets the player nickname for in-game and IRC chat.")]
 		public string Name = "Newbie";
-		public HSLColor Color = new HSLColor(75, 255, 180);
+		public Color Color = Color.FromAhsl(75, 255, 180);
 		public string LastServer = "localhost:1234";
-		public HSLColor[] CustomColors = { };
+		public Color[] CustomColors = { };
 	}
 
 	public class GameSettings
@@ -183,15 +202,15 @@ namespace OpenRA
 		public MouseScrollType MiddleMouseScroll = MouseScrollType.Standard;
 		public MouseScrollType RightMouseScroll = MouseScrollType.Disabled;
 		public MouseButtonPreference MouseButtonPreference = new MouseButtonPreference();
-		public float ViewportEdgeScrollStep = 10f;
+		public float ViewportEdgeScrollStep = 30f;
 		public float UIScrollSpeed = 50f;
 		public int SelectionDeadzone = 24;
 		public int MouseScrollDeadzone = 8;
 
 		public bool UseClassicMouseStyle = false;
 		public StatusBarsType StatusBars = StatusBarsType.Standard;
+		public TargetLinesType TargetLines = TargetLinesType.Manual;
 		public bool UsePlayerStanceColors = false;
-		public bool DrawTargetLine = true;
 
 		public bool AllowDownloading = true;
 

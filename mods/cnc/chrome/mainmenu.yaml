@@ -32,7 +32,7 @@ Container@MENU_BACKGROUND:
 			ImageName: eva
 		Label@VERSION_LABEL:
 			X: WINDOW_RIGHT - 128 - 43
-			Y: 115
+			Y: 116
 			Width: 128
 			Align: Center
 			Shadow: true
@@ -51,7 +51,7 @@ Container@MENU_BACKGROUND:
 					Children:
 						Label@MAINMENU_LABEL_TITLE:
 							X: 0
-							Y: 0 - 30
+							Y: 0 - 28
 							Width: PARENT_RIGHT
 							Height: 20
 							Text: Main Menu
@@ -100,7 +100,7 @@ Container@MENU_BACKGROUND:
 					Children:
 						Label@SINGLEPLAYER_MENU_TITLE:
 							X: 0
-							Y: 0 - 30
+							Y: 0 - 28
 							Width: PARENT_RIGHT
 							Height: 20
 							Text: Singleplayer
@@ -119,6 +119,12 @@ Container@MENU_BACKGROUND:
 							Width: 140
 							Height: 35
 							Text: Missions
+						Button@LOAD_BUTTON:
+							X: 300
+							Y: 0
+							Width: 140
+							Height: 35
+							Text: Load
 						Button@BACK_BUTTON:
 							Key: escape
 							X: 450
@@ -132,7 +138,7 @@ Container@MENU_BACKGROUND:
 					Children:
 						Label@EXTRAS_MENU_TITLE:
 							X: 0
-							Y: 0 - 30
+							Y: 0 - 28
 							Width: PARENT_RIGHT
 							Height: 20
 							Text: Extras
@@ -183,7 +189,7 @@ Container@MENU_BACKGROUND:
 					Children:
 						Label@MAP_EDITOR_MENU_TITLE:
 							X: 0
-							Y: 0 - 30
+							Y: 0 - 28
 							Width: PARENT_RIGHT
 							Height: 20
 							Text: Map Editor

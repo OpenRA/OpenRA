@@ -8,7 +8,7 @@ Container@MUSIC_PANEL:
 		LogicTicker@SONG_WATCHER:
 		Label@TITLE:
 			Width: 360
-			Y: 0 - 25
+			Y: 0 - 22
 			Font: BigBold
 			Contrast: true
 			Align: Center
@@ -30,11 +30,14 @@ Container@MUSIC_PANEL:
 							X: 2
 							Y: 0
 							Visible: false
+							EnableChildMouseOver: True
 							Children:
-								Label@TITLE:
+								LabelWithTooltip@TITLE:
 									X: 10
 									Width: PARENT_RIGHT - 50
 									Height: 25
+									TooltipContainer: TOOLTIP_CONTAINER
+									TooltipTemplate: SIMPLE_TOOLTIP
 								Label@LENGTH:
 									Width: 50
 									X: PARENT_RIGHT - 60
@@ -42,7 +45,7 @@ Container@MUSIC_PANEL:
 									Height: 25
 				Container@LABEL_CONTAINER:
 					X: 25
-					Y: 5
+					Y: 4
 					Width: 330
 					Children:
 						Label@TITLE:
@@ -128,15 +131,15 @@ Container@MUSIC_PANEL:
 									Height: 16
 									ImageCollection: music
 									ImageName: next
-						Slider@MUSIC_SLIDER:
+						ExponentialSlider@MUSIC_SLIDER:
 							X: 145
 							Y: 3
 							Width: 185
 							Height: 20
-							Ticks: 5
+							Ticks: 7
 				Label@TIME_LABEL:
 					X: (PARENT_RIGHT - WIDTH) / 2
-					Y: 315
+					Y: 317
 					Width: 140
 					Height: 25
 					Align: Center
@@ -156,7 +159,7 @@ Container@MUSIC_PANEL:
 					Text: Loop
 				Container@NO_MUSIC_LABEL:
 					X: 15
-					Y: 120
+					Y: 121
 					Width: 330
 					Height: 60
 					Visible: false
@@ -188,7 +191,8 @@ Container@MUSIC_PANEL:
 			Text: Back
 		Label@MUTE_LABEL:
 			X: 100
-			Y: 337
+			Y: 339
 			Width: 300
 			Height: 20
 			Font: Small
+		TooltipContainer@TOOLTIP_CONTAINER:

@@ -2,6 +2,8 @@ Container@INGAME_MENU:
 	Width: WINDOW_RIGHT
 	Height: WINDOW_BOTTOM
 	Logic: IngameMenuLogic
+		Buttons: EXIT_EDITOR, SAVE_MAP, ABORT_MISSION, SURRENDER, RESTART, LOAD_GAME, SAVE_GAME, MUSIC, SETTINGS, RESUME
+		ButtonStride: 130, 0
 	Children:
 		Image@EVA:
 			X: WINDOW_RIGHT - 128 - 43
@@ -12,7 +14,7 @@ Container@INGAME_MENU:
 			ImageName: eva
 		Label@VERSION_LABEL:
 			X: WINDOW_RIGHT - 128 - 43
-			Y: 115
+			Y: 116
 			Width: 128
 			Align: Center
 			Contrast: true
@@ -24,49 +26,9 @@ Container@INGAME_MENU:
 		Container@MENU_BUTTONS:
 			X: (WINDOW_RIGHT - WIDTH) / 2
 			Y: WINDOW_BOTTOM - 33 - HEIGHT - 10
-			Width: 740
+			Width: 120
 			Height: 35
 			Children:
-				Button@ABORT_MISSION:
-					X: 0
-					Y: 0
-					Width: 140
+				Button@BUTTON_TEMPLATE:
+					Width: 120
 					Height: 35
-					Text: Abort Mission
-				Button@EXIT_EDITOR:
-					X: 0
-					Y: 0
-					Width: 140
-					Height: 35
-					Text: Exit Map Editor
-				Button@SURRENDER:
-					X: 150
-					Y: 0
-					Width: 140
-					Height: 35
-					Text: Surrender
-				Button@SAVE_MAP:
-					X: 150
-					Y: 0
-					Width: 140
-					Height: 35
-					Text: Save Map
-				Button@MUSIC:
-					X: 300
-					Y: 0
-					Width: 140
-					Height: 35
-					Text: Music
-				Button@SETTINGS:
-					X: 450
-					Y: 0
-					Width: 140
-					Height: 35
-					Text: Settings
-				Button@RESUME:
-					Key: escape
-					X: 600
-					Y: 0
-					Width: 140
-					Height: 35
-					Text: Resume

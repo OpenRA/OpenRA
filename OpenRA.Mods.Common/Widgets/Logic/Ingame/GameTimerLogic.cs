@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -23,6 +23,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var timer = widget.GetOrNull<LabelWidget>("GAME_TIMER");
 			var status = widget.GetOrNull<LabelWidget>("GAME_TIMER_STATUS");
+			var tlm = world.WorldActor.TraitOrDefault<TimeLimitManager>();
 			var startTick = Ui.LastTickTime;
 
 			Func<bool> shouldShowStatus = () => (world.Paused || world.Timestep != world.LobbyInfo.GlobalSettings.Timestep)
@@ -51,7 +52,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					if (status == null && shouldShowStatus())
 						return statusText();
 
-					return WidgetUtils.FormatTime(world.WorldTick, timestep);
+					var timeLimit = tlm != null ? tlm.TimeLimit : 0;
+					var displayTick = timeLimit > 0 ? timeLimit - world.WorldTick : world.WorldTick;
+					return WidgetUtils.FormatTime(Math.Max(0, displayTick), timestep);
 				};
 			}
 
@@ -66,7 +69,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (timerTooltip != null)
 			{
 				var connection = orderManager.Connection as ReplayConnection;
-				if (connection != null && connection.TickCount != 0)
+				if (connection != null && connection.FinalGameTick != 0)
+					timerTooltip.GetTooltipText = () => "{0}% complete".F(world.WorldTick * 100 / connection.FinalGameTick);
+				else if (connection != null && connection.TickCount != 0)
 					timerTooltip.GetTooltipText = () => "{0}% complete".F(orderManager.NetFrameNumber * 100 / connection.TickCount);
 				else
 					timerTooltip.GetTooltipText = null;

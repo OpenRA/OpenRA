@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -31,7 +31,7 @@ namespace OpenRA.Network
 		int LocalClientId { get; }
 		ConnectionState ConnectionState { get; }
 		void Send(int frame, List<byte[]> orders);
-		void SendImmediate(List<byte[]> orders);
+		void SendImmediate(IEnumerable<byte[]> orders);
 		void SendSync(int frame, byte[] syncData);
 		void Receive(Action<int, byte[]> packetFn);
 	}
@@ -66,13 +66,15 @@ namespace OpenRA.Network
 			Send(ms.ToArray());
 		}
 
-		public virtual void SendImmediate(List<byte[]> orders)
+		public virtual void SendImmediate(IEnumerable<byte[]> orders)
 		{
-			var ms = new MemoryStream();
-			ms.WriteArray(BitConverter.GetBytes(0));
 			foreach (var o in orders)
+			{
+				var ms = new MemoryStream();
+				ms.WriteArray(BitConverter.GetBytes(0));
 				ms.WriteArray(o);
-			Send(ms.ToArray());
+				Send(ms.ToArray());
+			}
 		}
 
 		public virtual void SendSync(int frame, byte[] syncData)
@@ -165,17 +167,17 @@ namespace OpenRA.Network
 			{
 				var networkStream = (NetworkStream)networkStreamObject;
 				var reader = new BinaryReader(networkStream);
-				var serverProtocol = reader.ReadInt32();
+				var handshakeProtocol = reader.ReadInt32();
 
-				if (ProtocolVersion.Version != serverProtocol)
+				if (handshakeProtocol != ProtocolVersion.Handshake)
 					throw new InvalidOperationException(
-						"Protocol version mismatch. Server={0} Client={1}"
-							.F(serverProtocol, ProtocolVersion.Version));
+						"Handshake protocol version mismatch. Server={0} Client={1}"
+							.F(handshakeProtocol, ProtocolVersion.Handshake));
 
 				clientId = reader.ReadInt32();
 				connectionState = ConnectionState.Connected;
 
-				for (;;)
+				while (true)
 				{
 					var len = reader.ReadInt32();
 					var client = reader.ReadInt32();

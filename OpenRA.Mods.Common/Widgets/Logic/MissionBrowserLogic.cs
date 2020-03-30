@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -17,7 +17,6 @@ using System.Threading;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Network;
-using OpenRA.Primitives;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -108,11 +107,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var missionMapPaths = kv.Value.Nodes.Select(n => n.Key).ToList();
 
 					var previews = modData.MapCache
-						.Where(p => p.Status == MapStatus.Available)
+						.Where(p => p.Class == MapClassification.System && p.Status == MapStatus.Available)
 						.Select(p => new
 						{
 							Preview = p,
-							Index = missionMapPaths.IndexOf(Platform.UnresolvePath(p.Package.Name))
+							Index = missionMapPaths.IndexOf(Path.GetFileName(p.Package.Name))
 						})
 						.Where(x => x.Index != -1)
 						.OrderBy(x => x.Index)
@@ -186,16 +185,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			header.Get<LabelWidget>("LABEL").GetText = () => title;
 			missionList.AddChild(header);
 
-			foreach (var p in previews)
+			foreach (var preview in previews)
 			{
-				var preview = p;
-
 				var item = ScrollItemWidget.Setup(template,
 					() => selectedMap != null && selectedMap.Uid == preview.Uid,
 					() => SelectMap(preview),
 					StartMissionClicked);
 
-				item.Get<LabelWidget>("TITLE").GetText = () => preview.Title;
+				var label = item.Get<LabelWithTooltipWidget>("TITLE");
+				WidgetUtils.TruncateLabelToTooltip(label, preview.Title);
+
 				missionList.AddChild(item);
 			}
 		}

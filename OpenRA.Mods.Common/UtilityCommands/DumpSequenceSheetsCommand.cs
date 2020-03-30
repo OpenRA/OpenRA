@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,10 +10,6 @@
 #endregion
 
 using System;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Reflection;
 using OpenRA.FileSystem;
 using OpenRA.Graphics;
 
@@ -53,7 +49,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			{
 				var max = s == sb.Current ? (int)sb.CurrentChannel + 1 : 4;
 				for (var i = 0; i < max; i++)
-					s.AsBitmap((TextureChannel)ChannelMasks[i], palette).Save("{0}.png".F(count++));
+					s.AsPng((TextureChannel)ChannelMasks[i], palette).Save("{0}.png".F(count++));
 			}
 
 			Console.WriteLine("Saved [0..{0}].png", count - 1);

@@ -107,7 +107,7 @@ OrcaAAMissiles:
 		Versus:
 			Light: 84
 			Heavy: 56
-	-Warhead@2Smu: LeaveSmudge
+	-Warhead@2Smu:
 
 MammothMissiles:
 	Inherits: ^MissileWeapon
@@ -222,10 +222,10 @@ TowerMissile:
 		Speed: 298
 		RangeLimit: 8c409
 	Warhead@1Dam: SpreadDamage
-		Spread: 683
+		Spread: 483
 		ValidTargets: Ground
 		Versus:
-			None: 48
+			None: 52
 			Wood: 24
 			Light: 100
 			Heavy: 100
@@ -253,7 +253,7 @@ TowerAAMissile:
 			Wood: 140
 			Light: 140
 			Heavy: 104
-	-Warhead@2Smu: LeaveSmudge
+	-Warhead@2Smu:
 	Warhead@4EffAir: CreateEffect
 		Explosions: small_building
 
@@ -279,6 +279,6 @@ Patriot:
 			Wood: 84
 			Light: 100
 			Heavy: 74
-	-Warhead@2Smu: LeaveSmudge
+	-Warhead@2Smu:
 	Warhead@4EffAir: CreateEffect
 		Explosions: poof

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,6 +9,7 @@
  */
 #endregion
 
+using OpenRA.Mods.Common.Commands;
 using OpenRA.Mods.Common.Scripting;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Widgets;
@@ -53,6 +54,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				};
 			}
 
+			Game.LoadWidget(world, "DEBUG_WIDGETS", worldRoot, new WidgetArgs());
 			Game.LoadWidget(world, "CHAT_PANEL", worldRoot, new WidgetArgs() { { "isMenuChat", false } });
 
 			world.GameOver += () =>
@@ -74,7 +76,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				var optionsButton = playerRoot.GetOrNull<MenuButtonWidget>("OPTIONS_BUTTON");
 				if (optionsButton != null)
-					Sync.CheckSyncUnchanged(world, optionsButton.OnClick);
+					Sync.RunUnsynced(Game.Settings.Debug.SyncCheckUnsyncedCode, world, optionsButton.OnClick);
 			};
 		}
 	}

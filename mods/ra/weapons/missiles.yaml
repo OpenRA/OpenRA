@@ -45,15 +45,15 @@
 
 Maverick:
 	Inherits: ^AntiGroundMissile
-	ReloadDelay: 30
+	ReloadDelay: 50
 	Range: 9c0
-	MinRange: 3c0
+	MinRange: 2c0
 	Report: missile7.aud
 	Burst: 2
 	BurstDelays: 7
 	Projectile: Missile
 		Speed: 256
-		Inaccuracy: 512
+		Inaccuracy: 316
 		CruiseAltitude: 2c0
 		RangeLimit: 14c410
 	Warhead@1Dam: SpreadDamage
@@ -111,7 +111,7 @@ HellfireAA:
 MammothTusk:
 	Inherits: ^AntiGroundMissile
 	ReloadDelay: 60
-	Range: 8c0
+	Range: 6c512
 	Burst: 2
 	ValidTargets: Air, Infantry
 	Projectile: Missile

@@ -1,0 +1,5 @@
+#!/bin/sh
+
+# OpenRA.Utility relies on keeping the original working directory, so don't change directory
+HERE="$(dirname "$(readlink -f "${0}")")"
+mono --debug "${HERE}/../lib/openra/OpenRA.Utility.exe" {MODID} "$@"

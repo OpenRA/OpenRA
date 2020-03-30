@@ -1,11 +1,9 @@
 # Travis-CI Build for OpenRA
 # see travis-ci.org for details
 
+dist: xenial
 language: csharp
-mono: 4.6.1
-
-# http://docs.travis-ci.com/user/migrating-from-legacy
-sudo: false
+mono: 6.4.0
 
 cache:
   directories:
@@ -15,8 +13,6 @@ addons:
   apt:
     packages:
     - lua5.1
-    - nsis
-    - nsis-common
     - dpkg
     - markdown
     - zlib1g-dev
@@ -37,7 +33,7 @@ env:
 # Run the NUnit tests
 script:
  - travis_retry make all-dependencies
- - make all SDK="-sdk:4.5"
+ - make all
  - make check
  - make check-scripts
  - make test
@@ -67,6 +63,11 @@ notifications:
     skip_join: true
 
 before_deploy:
+ - wget http://mirrors.kernel.org/ubuntu/pool/universe/n/nsis/nsis-common_3.03-2_all.deb
+ - wget http://mirrors.kernel.org/ubuntu/pool/universe/n/nsis/nsis_3.03-2_amd64.deb
+ - sudo dpkg -i nsis-common_3.03-2_all.deb
+ - sudo dpkg -i nsis_3.03-2_amd64.deb
+ - makensis -VERSION
  - export PATH=$PATH:$HOME/usr/bin
  - DOTVERSION=`echo ${TRAVIS_TAG} | sed "s/-/\\./g"`
  - cd packaging

@@ -8,27 +8,66 @@ Background@SIMPLE_TOOLTIP:
 			Height: 19
 		Label@LABEL:
 			X: 5
-			Y: 0 - 2
+			Y: 0 - 1
+			Height: 23
+			Font: Bold
+
+Background@SIMPLE_TOOLTIP_FACTIONSUFFIX:
+	Logic: SimpleTooltipLogic, AddFactionSuffixLogic
+	Background: panel-black
+	Height: 27
+	Children:
+		Container@LINE_HEIGHT:
+			Y: 2
+			Height: 19
+		Label@LABEL:
+			X: 5
+			Y: 0 - 1
 			Height: 23
 			Font: Bold
 
 Background@BUTTON_TOOLTIP:
 	Logic: ButtonTooltipLogic
 	Background: panel-black
-	Height: 25
+	Height: 26
 	Children:
 		Label@LABEL:
 			X: 5
+			Y: 1
 			Height: 23
 			Font: Bold
 		Label@HOTKEY:
+			Y: 1
 			Visible: false
 			TextColor: FFFF00
 			Height: 23
 			Font: Bold
 		Label@DESC:
 			X: 5
-			Y: 23
+			Y: 26
+			Height: 12
+			Font: TinyBold
+			VAlign: Top
+
+Background@BUTTON_TOOLTIP_FACTIONSUFFIX:
+	Logic: ButtonTooltipLogic, AddFactionSuffixLogic
+	Background: panel-black
+	Height: 26
+	Children:
+		Label@LABEL:
+			X: 5
+			Y: 1
+			Height: 23
+			Font: Bold
+		Label@HOTKEY:
+			Y: 1
+			Visible: false
+			TextColor: FFFF00
+			Height: 23
+			Font: Bold
+		Label@DESC:
+			X: 5
+			Y: 26
 			Height: 12
 			Font: TinyBold
 			VAlign: Top
@@ -37,20 +76,46 @@ Background@BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP:
 	Logic: ButtonTooltipWithDescHighlightLogic
 		Highlight: FFFF00
 	Background: panel-black
-	Height: 25
+	Height: 26
 	Children:
 		Label@LABEL:
 			X: 5
+			Y: 1
 			Height: 23
 			Font: Bold
 		Label@HOTKEY:
+			Y: 1
 			Visible: false
 			TextColor: FFFF00
 			Height: 23
 			Font: Bold
 		Label@DESC:
 			X: 5
-			Y: 23
+			Y: 26
+			Height: 12
+			Font: TinyBold
+			VAlign: Top
+
+Background@BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP_FACTIONSUFFIX:
+	Logic: ButtonTooltipWithDescHighlightLogic, AddFactionSuffixLogic
+		Highlight: FFFF00
+	Background: panel-black
+	Height: 26
+	Children:
+		Label@LABEL:
+			X: 5
+			Y: 1
+			Height: 23
+			Font: Bold
+		Label@HOTKEY:
+			Y: 1
+			Visible: false
+			TextColor: FFFF00
+			Height: 23
+			Font: Bold
+		Label@DESC:
+			X: 5
+			Y: 26
 			Height: 12
 			Font: TinyBold
 			VAlign: Top
@@ -60,11 +125,12 @@ Background@WORLD_TOOLTIP:
 	Background: panel-black
 	Children:
 		Container@SINGLE_HEIGHT:
-			Height: 25
+			Height: 26
 		Container@DOUBLE_HEIGHT:
 			Height: 45
 		Label@LABEL:
 			X: 5
+			Y: 1
 			Height: 23
 			Font: Bold
 		Image@FLAG:
@@ -74,13 +140,43 @@ Background@WORLD_TOOLTIP:
 			Height: 16
 		Label@OWNER:
 			X: 42
-			Y: 19
+			Y: 20
 			Height: 23
 			Font: Bold
 			Shadow: True
 		Label@EXTRA:
 			X: 5
 			Y: 47
+			Height: 5
+			Font: Bold
+
+Background@WORLD_TOOLTIP_FACTIONSUFFIX:
+	Logic: WorldTooltipLogic, AddFactionSuffixLogic
+	Background: panel-black
+	Children:
+		Container@SINGLE_HEIGHT:
+			Height: 26
+		Container@DOUBLE_HEIGHT:
+			Height: 45
+		Label@LABEL:
+			X: 5
+			Y: 1
+			Height: 23
+			Font: Bold
+		Image@FLAG:
+			X: 5
+			Y: 24
+			Width: 32
+			Height: 16
+		Label@OWNER:
+			X: 42
+			Y: 20
+			Height: 23
+			Font: Bold
+			Shadow: True
+		Label@EXTRA:
+			X: 5
+			Y: 49
 			Height: 5
 			Font: Bold
 
@@ -92,50 +188,118 @@ Background@PRODUCTION_TOOLTIP:
 	Children:
 		Label@NAME:
 			X: 5
+			Y: 1
 			Height: 23
 			Font: Bold
 		Label@HOTKEY:
+			Y: 1
 			Visible: false
 			Height: 23
 			TextColor: FFFF00
 			Font: Bold
 		Label@REQUIRES:
 			X: 5
-			Y: 19
-			Height: 23
+			Y: 20
+			Height: 15
 			Font: TinyBold
 			Text: Requires {0}
 		Label@DESC:
 			X: 5
-			Y: 39
+			Y: 20
+			Height: 5
+			Font: TinyBold
+			VAlign: Top
+		Image@COST_ICON:
+			X: 3
+			Y: 5
+			Width: 16
+			Height: 16
+			ImageCollection: sidebar-bits
+			ImageName: production-tooltip-cost
+		Label@COST:
+			Y: 1
+			Height: 24
+			Font: Bold
+		Image@TIME_ICON:
+			X: 3
+			Y: 24
+			Width: 16
+			Height: 16
+			ImageCollection: sidebar-bits
+			ImageName: production-tooltip-time
+		Label@TIME:
+			Y: 20
 			Height: 23
+			Font: Bold
+		Image@POWER_ICON:
+			Y: 44
+			Width: 16
+			Height: 16
+			ImageCollection: sidebar-bits
+			ImageName: production-tooltip-power
+		Label@POWER:
+			Y: 40
+			Height: 23
+			Font: Bold
+
+Background@PRODUCTION_TOOLTIP_FACTIONSUFFIX:
+	Logic: ProductionTooltipLogic, AddFactionSuffixLogic
+	Background: panel-black
+	Width: 200
+	Height: 65
+	Children:
+		Label@NAME:
+			X: 5
+			Y: 1
+			Height: 23
+			Font: Bold
+		Label@HOTKEY:
+			Y: 1
+			Visible: false
+			Height: 23
+			TextColor: FFFF00
+			Font: Bold
+		Label@REQUIRES:
+			X: 5
+			Y: 20
+			Height: 15
+			Font: TinyBold
+			Text: Requires {0}
+		Label@DESC:
+			X: 5
+			Y: 20
+			Height: 5
 			Font: TinyBold
 			VAlign: Top
 		Image@COST_ICON:
 			Y: 5
 			Width: 16
+			Height: 16
 			ImageCollection: sidebar-bits
 			ImageName: production-tooltip-cost
 		Label@COST:
+			Y: 1
 			Height: 23
 			Font: Bold
 		Image@TIME_ICON:
 			X: 3
 			Y: 24
 			Width: 16
+			Height: 16
 			ImageCollection: sidebar-bits
 			ImageName: production-tooltip-time
 		Label@TIME:
-			Y: 19
+			Y: 20
 			Height: 23
 			Font: Bold
 		Image@POWER_ICON:
 			Y: 44
 			Width: 16
+			Height: 16
 			ImageCollection: sidebar-bits
 			ImageName: production-tooltip-power
 		Label@POWER:
-			Y: 39
+			Y: 40
 			Height: 23
 			Font: Bold
 
@@ -143,7 +307,7 @@ Background@SUPPORT_POWER_TOOLTIP:
 	Logic: SupportPowerTooltipLogic
 	Background: panel-black
 	Width: 200
-	Height: 25
+	Height: 27
 	Children:
 		Label@NAME:
 			X: 5
@@ -164,6 +328,33 @@ Background@SUPPORT_POWER_TOOLTIP:
 			Font: TinyBold
 			VAlign: Top
 
+Background@SUPPORT_POWER_TOOLTIP_FACTIONSUFFIX:
+	Logic: SupportPowerTooltipLogic, AddFactionSuffixLogic
+	Background: panel-black
+	Width: 200
+	Height: 27
+	Children:
+		Label@NAME:
+			X: 5
+			Y: 2
+			Height: 20
+			Font: Bold
+		Label@HOTKEY:
+			Y: 2
+			Visible: false
+			Height: 20
+			TextColor: FFFF00
+			Font: Bold
+		Label@TIME:
+			Y: 8
+			Font: TinyBold
+			VAlign: Top
+		Label@DESC:
+			X: 5
+			Y: 22
+			Font: TinyBold
+			VAlign: Top
+
 Background@SPAWN_TOOLTIP:
 	Logic: SpawnSelectorTooltipLogic
 	Background: panel-black
@@ -175,6 +366,7 @@ Background@SPAWN_TOOLTIP:
 			Height: 40
 		Label@LABEL:
 			X: 5
+			Y: 1
 			Height: 23
 			Font: Bold
 		Image@FLAG:
@@ -183,7 +375,7 @@ Background@SPAWN_TOOLTIP:
 			Width: 32
 			Height: 16
 		Label@TEAM:
-			Y: 21
+			Y: 22
 			Height: 15
 			Font: TinyBold
 			Align: center
@@ -196,10 +388,12 @@ Background@LATENCY_TOOLTIP:
 	Children:
 		Label@LATENCY_PREFIX:
 			X: 5
+			Y: 1
 			Height: 23
 			Font: Bold
 			Text: Latency:
 		Label@LATENCY:
+			Y: 1
 			Height: 23
 			Font: Bold
 
@@ -211,17 +405,18 @@ Background@ANONYMOUS_PLAYER_TOOLTIP:
 	Children:
 		Label@NAME:
 			X: 5
+			Y: 2
 			Text: Anonymous Player
 			Height: 23
 			Font: MediumBold
 		Label@LOCATION:
 			X: 5
-			Y: 23
+			Y: 24
 			Height: 12
 			Font: TinyBold
 		Label@IP:
 			X: 5
-			Y: 36
+			Y: 37
 			Height: 12
 			Font: TinyBold
 		Container@GAME_ADMIN:
@@ -231,6 +426,7 @@ Background@ANONYMOUS_PLAYER_TOOLTIP:
 			Visible: False
 			Children:
 				Image@ICON:
+					X: 1
 					Y: 5
 					Width: 7
 					Height: 5
@@ -238,6 +434,7 @@ Background@ANONYMOUS_PLAYER_TOOLTIP:
 					ImageName: admin
 				Label@LABEL:
 					X: 10
+					Y: 1
 					Height: 12
 					Text: Game Admin
 					Font: TinyBold
@@ -257,12 +454,13 @@ Container@REGISTERED_PLAYER_TOOLTIP:
 					Children:
 						Label@PROFILE_NAME:
 							X: 5
+							Y: 2
 							Width: PARENT_RIGHT - 20
 							Height: 23
 							Font: MediumBold
 						Label@PROFILE_RANK:
 							X: 5
-							Y: 23
+							Y: 24
 							Width: PARENT_RIGHT - 20
 							Height: 12
 							Font: TinyBold
@@ -274,6 +472,7 @@ Container@REGISTERED_PLAYER_TOOLTIP:
 							Visible: False
 							Children:
 								Image@ICON:
+									X: 1
 									Y: 5
 									Width: 7
 									Height: 5
@@ -281,6 +480,7 @@ Container@REGISTERED_PLAYER_TOOLTIP:
 									ImageName: admin
 								Label@LABEL:
 									X: 10
+									Y: 1
 									Height: 12
 									Text: Game Admin
 									Font: TinyBold
@@ -289,6 +489,7 @@ Container@REGISTERED_PLAYER_TOOLTIP:
 					Width: PARENT_RIGHT
 					Children:
 						Label@MESSAGE:
+							Y: 1
 							X: 5
 							Width: PARENT_RIGHT - 20
 							Height: 23

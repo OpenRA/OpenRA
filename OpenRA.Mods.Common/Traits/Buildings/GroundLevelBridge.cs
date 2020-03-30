@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -18,7 +18,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Bridge actor that can't be passed underneath.")]
-	class GroundLevelBridgeInfo : ITraitInfo, IRulesetLoaded, Requires<BuildingInfo>, Requires<HealthInfo>
+	class GroundLevelBridgeInfo : ITraitInfo, IRulesetLoaded, Requires<BuildingInfo>, Requires<IHealthInfo>
 	{
 		public readonly string TerrainType = "Bridge";
 
@@ -26,8 +26,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly CVec[] NeighbourOffsets = { };
 
+		[WeaponReference]
 		[Desc("The name of the weapon to use when demolishing the bridge")]
-		[WeaponReference] public readonly string DemolishWeapon = "Demolish";
+		public readonly string DemolishWeapon = "Demolish";
 
 		public WeaponInfo DemolishWeaponInfo { get; private set; }
 
@@ -53,13 +54,13 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Actor self;
 		readonly BridgeLayer bridgeLayer;
 		readonly IEnumerable<CPos> cells;
-		readonly Health health;
+		readonly IHealth health;
 
 		public GroundLevelBridge(Actor self, GroundLevelBridgeInfo info)
 		{
 			Info = info;
 			this.self = self;
-			health = self.Trait<Health>();
+			health = self.Trait<IHealth>();
 
 			bridgeLayer = self.World.WorldActor.Trait<BridgeLayer>();
 			var buildingInfo = self.Info.TraitInfo<BuildingInfo>();

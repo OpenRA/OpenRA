@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System.Collections.Generic;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -22,6 +21,16 @@ namespace OpenRA.Mods.Common
 			// PERF: Avoid LINQ.
 			foreach (var cell in cells)
 				if (shroud.IsExplored(cell.First))
+					return true;
+
+			return false;
+		}
+
+		public static bool AnyExplored(this Shroud shroud, PPos[] puvs)
+		{
+			// PERF: Avoid LINQ.
+			foreach (var puv in puvs)
+				if (shroud.IsExplored(puv))
 					return true;
 
 			return false;

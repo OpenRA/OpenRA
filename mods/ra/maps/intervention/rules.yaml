@@ -32,22 +32,8 @@ MISS:
 		Name: Soviet Air Force HQ
 	Capturable:
 		Types: building
-		CaptureThreshold: 100
 		ValidStances: Enemy
-
-E6.MOD:
-	Inherits: E6
-	Buildable:
-		Prerequisites: ~barracks
-	Captures:
-		CaptureTypes: building
-		Sabotage: False
-	RenderSprites:
-		Image: e6
-
-E6:
-	Buildable:
-		Prerequisites: ~disabled
+	CaptureManager:
 
 TENT:
 	Buildable:
@@ -85,11 +71,16 @@ GIVEFIX:
 	Tooltip:
 		Name: Weapons Factory or Helipad
 
-MIG:
+MIG.SCRIPTED:
+	Inherits: MIG
 	Buildable:
-		Prerequisites: ~afld
+		Prerequisites: ~disabled
+	RenderSprites:
+		Image: mig
 	AmmoPool:
 		Ammo: 2
+	Aircraft:
+		IdleBehavior: LeaveMap
 
 HELI:
 	Buildable:
@@ -139,10 +130,6 @@ THF:
 	Buildable:
 		Prerequisites: ~disabled
 
-HIJACKER:
-	Buildable:
-		Prerequisites: ~disabled
-
 SHOK:
 	Buildable:
 		Prerequisites: ~disabled
@@ -175,7 +162,7 @@ TRUK:
 	Buildable:
 		Prerequisites: ~disabled
 
-HIND:
+MH60:
 	Buildable:
 		Prerequisites: ~disabled
 

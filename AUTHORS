@@ -3,24 +3,24 @@ hard work of many contributors.
 
 The OpenRA developers are:
     * Chris Forbes (chrisf)
-    * Igor Popov (ihptru)
     * Lukas Franke (abcdefg30)
-    * Oliver Brakmann (obrakmann)
     * Paul Chote (pchote)
     * Reaperrr
-    * Tom Roostan (RoosterDragon)
 
 Previous developers included:
     * Alli Witheford (alzeih)
     * Caleb Anderson (RobotCaleb)
     * Curtis Shmyr (hamb)
     * Daniel Hernandez (Mancano)
+    * Igor Popov (ihptru)
     * Matthias Mailänder (Mailaender)
     * Megan Bowra-Dean (beedee)
     * Mike Bundy (kehaar)
+    * Oliver Brakmann (obrakmann)
     * Pavel Penev (penev92)
     * Robert Pepperell (ytinasni)
     * ScottNZ
+    * Tom Roostan (RoosterDragon)
 
 Also thanks to:
     * Adam Valy (Tschokky)
@@ -54,6 +54,7 @@ Also thanks to:
     * David Russell (DavidARussell)
     * DeadlySurprise
     * Dmitri Suvorov (suvjunmd)
+    * dtluna
     * Erasmus Schroder (rasco)
     * Eric Bajumpaa (SteelPhase)
     * Evgeniy Sergeev (evgeniysergeev)
@@ -61,11 +62,10 @@ Also thanks to:
     * Florian Wiesbauer (FiveAces)
     * Frank Razenberg (zzattack)
     * Gareth Needham (Ripley`)
-    * Glen Anderson (GlenLife)
+    * Glen Anderson (glen7)
     * Glenn Martin Jensen (Baxxster)
     * Gordon Martin (Happy0)
     * Guido Lipke (LipkeGu)
-    * Gyula Zimmermann (Graion Dilach)
     * Hervé Matysiak (Herve-M)
     * Huw Pascoe
     * Ian T. Jacobsen (Smilex)
@@ -89,10 +89,12 @@ Also thanks to:
     * Kenny Hoxworth (hoxworth)
     * Kevin Azzam (ChaoticMind)
     * Krishnakanth Mallik
+    * Kyle Smith (Smitty)
     * Kyrre Soerensen (zypres)
     * Lawrence Wang
     * Lesueur Benjamin (Valkirie)
     * Maarten Meuris (Nyerguds)
+    * Manuel Geiger (Ectras)
     * Mark Olson (markolson)
     * Markus Hartung (hartmark)
     * Matija Hustic (matija-hustic)
@@ -101,12 +103,15 @@ Also thanks to:
     * Matthijs Benschop (Nerdie)
     * Max621
     * Max Ugrumov (katzsmile)
+    * Mazar Farran (mazarf)
     * Michael Rätzel
     * Michael Silber (frühstück)
     * Michael Sztolcman (s1w_)
+    * Mike Gagné (AngryBirdz)
     * Muh
     * Mustafa Alperen Seki (MustaphaTR)
     * Neil Shivkar (havok13888)
+    * Nikolay Fomin (netnazgul)
     * Nooze
     * Nukem
     * Okunev Yu Dmitry (xaionaro)
@@ -134,6 +139,8 @@ Also thanks to:
     * Teemu Nieminen (Temeez)
     * Tim Mylemans (gecko)
     * Tirili
+    * Tomas Einarsson (Mesacer)
+    * Tom van Leth (tovl)
     * Tristan Keating (Kilkakon)
     * Tristan Mühlbacher (MicroBit)
     * UnknownProgrammer
@@ -156,9 +163,6 @@ the Apache 2.0 license.
 
 Using GeoLite2 data created by MaxMind and
 distributed under the CC BY-SA 3.0 license.
-
-Using SharpFont created by Robert Rouhani and
-distributed under the MIT license.
 
 Using SDL2-CS and OpenAL-CS created by Ethan
 Lee and released under the zlib license.

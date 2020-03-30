@@ -97,7 +97,7 @@ Background@COLOR_CHOOSER:
 								Label@LABEL:
 									Font: TinyBold
 									Width: PARENT_RIGHT
-									Height: 10
+									Height: 13
 									Align: Center
 									Text: Preset Colors
 						Container@PRESET_AREA:
@@ -122,7 +122,7 @@ Background@COLOR_CHOOSER:
 								Label@LABEL:
 									Font: TinyBold
 									Width: PARENT_RIGHT
-									Height: 10
+									Height: 13
 									Align: Center
 									Text: Custom Colors
 						Container@CUSTOM_AREA:

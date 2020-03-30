@@ -19,7 +19,7 @@ Background@BUTTON_TOOLTIP:
 	Children:
 		Label@LABEL:
 			X: 7
-			Y: 2
+			Y: 3
 			Height: 23
 			Font: Bold
 		Label@HOTKEY:
@@ -30,7 +30,7 @@ Background@BUTTON_TOOLTIP:
 			Font: Bold
 		Label@DESC:
 			X: 7
-			Y: 25
+			Y: 28
 			Height: 12
 			Font: TinyBold
 			VAlign: Top
@@ -43,18 +43,18 @@ Background@BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP:
 	Children:
 		Label@LABEL:
 			X: 7
-			Y: 2
+			Y: 3
 			Height: 23
 			Font: Bold
 		Label@HOTKEY:
-			Y: 2
+			Y: 3
 			Visible: false
 			TextColor: FFFF00
 			Height: 23
 			Font: Bold
 		Label@DESC:
 			X: 7
-			Y: 25
+			Y: 27
 			Height: 12
 			Font: TinyBold
 			VAlign: Top
@@ -79,13 +79,13 @@ Background@WORLD_TOOLTIP:
 			Height: 16
 		Label@OWNER:
 			X: 45
-			Y: 22
+			Y: 23
 			Height: 23
 			Font: Bold
 			Shadow: True
 		Label@EXTRA:
 			X: 7
-			Y: 50
+			Y: 51
 			Height: 5
 			Font: Bold
 
@@ -99,7 +99,7 @@ Background@SPAWN_TOOLTIP:
 		Container@DOUBLE_HEIGHT:
 			Height: 44
 		Label@LABEL:
-			Y: 2
+			Y: 3
 			Height: 23
 			Font: Bold
 		Image@FLAG:
@@ -108,7 +108,7 @@ Background@SPAWN_TOOLTIP:
 			Width: 32
 			Height: 16
 		Label@TEAM:
-			Y: 23
+			Y: 24
 			Height: 15
 			Font: TinyBold
 			Align: center
@@ -121,13 +121,13 @@ Background@LATENCY_TOOLTIP:
 	Children:
 		Label@LATENCY_PREFIX:
 			X: 7
-			Y: 2
-			Height: 23
+			Y: 3
+			Height: 26
 			Font: Bold
 			Text: Latency:
 		Label@LATENCY:
-			Y: 2
-			Height: 23
+			Y: 3
+			Height: 26
 			Font: Bold
 
 Background@ANONYMOUS_PLAYER_TOOLTIP:
@@ -138,17 +138,18 @@ Background@ANONYMOUS_PLAYER_TOOLTIP:
 	Children:
 		Label@NAME:
 			X: 7
+			Y: 2
 			Text: Anonymous Player
 			Height: 24
 			Font: MediumBold
 		Label@LOCATION:
 			X: 7
-			Y: 23
+			Y: 24
 			Height: 12
 			Font: TinyBold
 		Label@IP:
 			X: 7
-			Y: 36
+			Y: 37
 			Height: 12
 			Font: TinyBold
 		Container@GAME_ADMIN:
@@ -165,6 +166,7 @@ Background@ANONYMOUS_PLAYER_TOOLTIP:
 					ImageName: admin
 				Label@LABEL:
 					X: 9
+					Y: 1
 					Height: 12
 					Text: Game Admin
 					Font: TinyBold
@@ -182,12 +184,13 @@ Background@REGISTERED_PLAYER_TOOLTIP:
 					Children:
 						Label@PROFILE_NAME:
 							X: 7
+							Y: 2
 							Width: PARENT_RIGHT - 20
 							Height: 24
 							Font: MediumBold
 						Label@PROFILE_RANK:
 							X: 7
-							Y: 23
+							Y: 24
 							Width: PARENT_RIGHT - 20
 							Height: 12
 							Font: TinyBold
@@ -206,6 +209,7 @@ Background@REGISTERED_PLAYER_TOOLTIP:
 									ImageName: admin
 								Label@LABEL:
 									X: 10
+									Y: 1
 									Height: 12
 									Text: Game Admin
 									Font: TinyBold
@@ -235,52 +239,56 @@ Background@PRODUCTION_TOOLTIP:
 	Children:
 		Label@NAME:
 			X: 7
-			Y: 2
+			Y: 3
 			Height: 23
 			Font: Bold
 		Label@HOTKEY:
 			Visible: false
-			Y: 2
+			Y: 3
 			Height: 23
 			TextColor: FFFF00
 			Font: Bold
 		Label@REQUIRES:
 			X: 7
-			Y: 21
-			Height: 23
+			Y: 26
+			Height: 15
 			Font: TinyBold
 			Text: Requires {0}
 		Label@DESC:
 			X: 7
-			Y: 41
-			Height: 23
+			Y: 27
+			Height: 2
 			Font: TinyBold
 			VAlign: Top
 		Image@COST_ICON:
 			Y: 5
 			Width: 16
+			Height: 16
 			ImageCollection: sidebar-bits
 			ImageName: production-tooltip-cost
 		Label@COST:
+			Y: 1
 			Height: 23
 			Font: Bold
 		Image@TIME_ICON:
 			X: 3
 			Y: 26
 			Width: 16
+			Height: 16
 			ImageCollection: sidebar-bits
 			ImageName: production-tooltip-time
 		Label@TIME:
-			Y: 21
+			Y: 22
 			Height: 23
 			Font: Bold
 		Image@POWER_ICON:
 			Y: 46
 			Width: 16
+			Height: 16
 			ImageCollection: sidebar-bits
 			ImageName: production-tooltip-power
 		Label@POWER:
-			Y: 41
+			Y: 42
 			Height: 23
 			Font: Bold
 
@@ -288,25 +296,25 @@ Background@SUPPORT_POWER_TOOLTIP:
 	Logic: SupportPowerTooltipLogic
 	Background: dialog4
 	Width: 200
-	Height: 29
+	Height: 32
 	Children:
 		Label@NAME:
 			X: 7
-			Y: 2
+			Y: 4
 			Height: 20
 			Font: Bold
 		Label@HOTKEY:
 			Visible: false
-			Y: 2
+			Y: 4
 			Height: 20
 			TextColor: FFFF00
 			Font: Bold
 		Label@TIME:
-			Y: 8
+			Y: 10
 			Font: TinyBold
 			VAlign: Top
 		Label@DESC:
 			X: 7
-			Y: 22
+			Y: 24
 			Font: TinyBold
 			VAlign: Top

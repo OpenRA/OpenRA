@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -41,6 +41,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			Actor = actor;
 			this.owner = owner;
+			var ownerName = owner.Name;
 
 			preview = editorWidget.Get<ActorPreviewWidget>("DRAG_ACTOR_PREVIEW");
 			preview.GetScale = () => worldRenderer.Viewport.Zoom;
@@ -50,10 +51,15 @@ namespace OpenRA.Mods.Common.Widgets
 			if (buildingInfo != null)
 				centerOffset = buildingInfo.CenterOffset(world);
 
+			// Enforce first entry of ValidOwnerNames as owner if the actor has RequiresSpecificOwners
+			var specificOwnerInfo = actor.TraitInfoOrDefault<RequiresSpecificOwnersInfo>();
+			if (specificOwnerInfo != null && !specificOwnerInfo.ValidOwnerNames.Contains(ownerName))
+				ownerName = specificOwnerInfo.ValidOwnerNames.First();
+
 			var td = new TypeDictionary();
 			td.Add(new FacingInit(facing));
 			td.Add(new TurretFacingInit(facing));
-			td.Add(new OwnerInit(owner.Name));
+			td.Add(new OwnerInit(ownerName));
 			td.Add(new FactionInit(owner.Faction));
 			preview.SetPreview(actor, td);
 
@@ -94,8 +100,14 @@ namespace OpenRA.Mods.Common.Widgets
 				if (!footprint.All(c => world.Map.Tiles.Contains(cell + c)))
 					return true;
 
+				// Enforce first entry of ValidOwnerNames as owner if the actor has RequiresSpecificOwners
+				var ownerName = owner.Name;
+				var specificOwnerInfo = Actor.TraitInfoOrDefault<RequiresSpecificOwnersInfo>();
+				if (specificOwnerInfo != null && !specificOwnerInfo.ValidOwnerNames.Contains(ownerName))
+					ownerName = specificOwnerInfo.ValidOwnerNames.First();
+
 				var newActorReference = new ActorReference(Actor.Name);
-				newActorReference.Add(new OwnerInit(owner.Name));
+				newActorReference.Add(new OwnerInit(ownerName));
 
 				newActorReference.Add(new LocationInit(cell));
 

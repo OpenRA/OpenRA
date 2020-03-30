@@ -45,6 +45,7 @@ Players:
 		Color: 9191FF
 		Allies: AtreidesSmallBase1, AtreidesSmallBase2
 		Enemies: Ordos
+		Bot: campaign
 	PlayerReference@AtreidesSmallBase1:
 		Name: AtreidesSmallBase1
 		LockFaction: True
@@ -53,6 +54,7 @@ Players:
 		Color: 9191FF
 		Allies: AtreidesMainBase, AtreidesSmallBase2, AtreidesSmallBase3
 		Enemies: Ordos
+		Bot: campaign
 	PlayerReference@AtreidesSmallBase2:
 		Name: AtreidesSmallBase2
 		LockFaction: True
@@ -61,6 +63,7 @@ Players:
 		Color: 9191FF
 		Allies: AtreidesMainBase, AtreidesSmallBase1, AtreidesSmallBase3
 		Enemies: Ordos
+		Bot: campaign
 	PlayerReference@AtreidesSmallBase3:
 		Name: AtreidesSmallBase3
 		LockFaction: True
@@ -69,6 +72,7 @@ Players:
 		Color: 9191FF
 		Allies: AtreidesMainBase, AtreidesSmallBase1, AtreidesSmallBase2
 		Enemies: Ordos
+		Bot: campaign
 
 Actors:
 	Actor0: wall

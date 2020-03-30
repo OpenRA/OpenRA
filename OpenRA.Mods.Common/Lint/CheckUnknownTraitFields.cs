@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -12,8 +12,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Mods.Common.Traits;
-using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Lint
 {
@@ -34,14 +32,27 @@ namespace OpenRA.Mods.Common.Lint
 			{
 				foreach (var t in actor.Value.Nodes)
 				{
-					// Removals can never define children
-					if (t.Key.StartsWith("-", StringComparison.Ordinal) && t.Value.Nodes.Any())
+					// Removals can never define children or values
+					if (t.Key.StartsWith("-", StringComparison.Ordinal))
 					{
-						emitError("{0} has child nodes, which is not valid for removals.".F(t.Key));
+						if (t.Value.Nodes.Any())
+							emitError("{0} {1} defines child nodes, which are not valid for removals.".F(t.Location, t.Key));
+
+						if (!string.IsNullOrEmpty(t.Value.Value))
+							emitError("{0} {1} defines a value, which is not valid for removals.".F(t.Location, t.Key));
+
 						continue;
 					}
 
 					var traitName = NormalizeName(t.Key);
+
+					// Inherits can never define children
+					if (traitName == "Inherits" && t.Value.Nodes.Any())
+					{
+						emitError("{0} defines child nodes, which are not valid for Inherits.".F(t.Location));
+						continue;
+					}
+
 					var traitInfo = modData.ObjectCreator.FindType(traitName + "Info");
 					foreach (var field in t.Value.Nodes)
 					{

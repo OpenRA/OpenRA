@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -11,8 +11,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
+using OpenRA.Primitives;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
@@ -35,6 +35,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public string YAxisValueFormat = "{0}";
 		public int XAxisSize = 10;
 		public int YAxisSize = 10;
+		public int XAxisTicksPerLabel = 1;
 		public string XAxisLabel = "";
 		public string YAxisLabel = "";
 		public bool DisplayFirstYAxisValue = false;
@@ -42,6 +43,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public string AxisFont;
 		public Color BackgroundColorDark = ChromeMetrics.Get<Color>("TextContrastColorDark");
 		public Color BackgroundColorLight = ChromeMetrics.Get<Color>("TextContrastColorLight");
+		public int Padding = 5;
 
 		public LineGraphWidget()
 		{
@@ -76,6 +78,7 @@ namespace OpenRA.Mods.Common.Widgets
 			YAxisValueFormat = other.YAxisValueFormat;
 			XAxisSize = other.XAxisSize;
 			YAxisSize = other.YAxisSize;
+			XAxisTicksPerLabel = other.XAxisTicksPerLabel;
 			XAxisLabel = other.XAxisLabel;
 			YAxisLabel = other.YAxisLabel;
 			DisplayFirstYAxisValue = other.DisplayFirstYAxisValue;
@@ -83,44 +86,70 @@ namespace OpenRA.Mods.Common.Widgets
 			AxisFont = other.AxisFont;
 			BackgroundColorDark = other.BackgroundColorDark;
 			BackgroundColorLight = other.BackgroundColorLight;
+			Padding = other.Padding;
 		}
 
 		public override void Draw()
 		{
-			if (GetSeries == null || !GetSeries().Any()
-				|| GetLabelFont == null || GetLabelFont() == null
-				|| GetAxisFont == null || GetAxisFont() == null)
+			if (GetSeries == null || GetLabelFont == null)
+				return;
+
+			var series = GetSeries();
+			if (!series.Any())
+				return;
+
+			var font = GetLabelFont();
+			if (font == null)
 				return;
 
 			var cr = Game.Renderer.RgbaColorRenderer;
 			var rect = RenderBounds;
-			var origin = new float2(rect.Left, rect.Bottom);
 
-			var width = rect.Width;
-			var height = rect.Height;
-
-			var tiny = Game.Renderer.Fonts[GetLabelFont()];
-			var bold = Game.Renderer.Fonts[GetAxisFont()];
+			var labelFont = Game.Renderer.Fonts[font];
+			var axisFont = Game.Renderer.Fonts[GetAxisFont()];
 
 			var xAxisSize = GetXAxisSize();
 			var yAxisSize = GetYAxisSize();
 
-			var maxValue = GetSeries().Select(p => p.Points).SelectMany(d => d).Concat(new[] { 0f }).Max();
+			var xAxisLabel = GetXAxisLabel();
+			var xAxisLabelSize = axisFont.Measure(xAxisLabel);
+
+			var xAxisPointLabelHeight = labelFont.Measure("0").Y;
+
+			var graphBottomOffset = Padding * 2 + xAxisLabelSize.Y + xAxisPointLabelHeight;
+			var height = rect.Height - (graphBottomOffset + Padding);
+
+			var maxValue = series.Select(p => p.Points).SelectMany(d => d).Concat(new[] { 0f }).Max();
+			var longestName = series.Select(s => s.Key).OrderByDescending(s => s.Length).FirstOrDefault() ?? "";
+
 			var scale = 200 / Math.Max(5000, (float)Math.Ceiling(maxValue / 1000) * 1000);
+
+			var widthMaxValue = labelFont.Measure(GetYAxisValueFormat().F(height / scale)).X;
+			var widthLongestName = labelFont.Measure(longestName).X;
+
+			// y axis label
+			var yAxisLabel = GetYAxisLabel();
+			var yAxisLabelSize = axisFont.Measure(yAxisLabel);
+
+			var width = rect.Width - (Padding * 4 + widthMaxValue + widthLongestName + yAxisLabelSize.Y);
 
 			var xStep = width / xAxisSize;
 			var yStep = height / yAxisSize;
 
-			var pointCount = GetSeries().First().Points.Count();
+			var pointCount = series.Max(s => s.Points.Count());
 			var pointStart = Math.Max(0, pointCount - xAxisSize);
 			var pointEnd = Math.Max(pointCount, xAxisSize);
 
+			var graphOrigin = new float2(rect.Left, rect.Bottom) + new float2(Padding * 2 + widthMaxValue + yAxisLabelSize.Y, -graphBottomOffset);
+
+			var origin = new float2(rect.Left, rect.Bottom);
+
 			var keyOffset = 0;
-			foreach (var series in GetSeries())
+			foreach (var s in series)
 			{
-				var key = series.Key;
-				var color = series.Color;
-				var points = series.Points;
+				var key = s.Key;
+				var color = s.Color;
+				var points = s.Points;
 				if (points.Any())
 				{
 					points = points.Reverse().Take(xAxisSize).Reverse();
@@ -131,41 +160,56 @@ namespace OpenRA.Mods.Common.Widgets
 						{
 							lastX = x;
 							lastPoint = point;
-							return origin + new float3(x * xStep, -point * scale, 0);
+							return graphOrigin + new float3(x * xStep, -point * scale, 0);
 						}), 1, color);
 
 					if (lastPoint != 0f)
-						tiny.DrawTextWithShadow(GetValueFormat().F(lastPoint), origin + new float2(lastX * xStep, -lastPoint * scale - 2),
+						labelFont.DrawTextWithShadow(GetValueFormat().F(lastPoint), graphOrigin + new float2(lastX * xStep, -lastPoint * scale - 2),
 							color, BackgroundColorDark, BackgroundColorLight, 1);
 				}
 
-				tiny.DrawTextWithShadow(key, new float2(rect.Left, rect.Top) + new float2(5, 10 * keyOffset + 3),
+				labelFont.DrawTextWithShadow(key, new float2(rect.Right, rect.Top) + new float2(-(widthLongestName + Padding), 10 * keyOffset + 3),
 					color, BackgroundColorDark, BackgroundColorLight, 1);
 				keyOffset++;
 			}
 
+			// Draw x axis
+			axisFont.DrawTextWithShadow(xAxisLabel, new float2(graphOrigin.X, origin.Y) + new float2(width / 2 - xAxisLabelSize.X / 2, -(xAxisLabelSize.Y + Padding)), Color.White, BackgroundColorDark, BackgroundColorLight, 1);
+
 			// TODO: make this stuff not draw outside of the RenderBounds
 			for (int n = pointStart, x = 0; n <= pointEnd; n++, x += xStep)
 			{
-				cr.DrawLine(origin + new float2(x, 0), origin + new float2(x, -5), 1, Color.White);
-				tiny.DrawText(GetXAxisValueFormat().F(n), origin + new float2(x, 2), Color.White);
+				cr.DrawLine(graphOrigin + new float2(x, 0), graphOrigin + new float2(x, -5), 1, Color.White);
+				if (n % XAxisTicksPerLabel != 0)
+					continue;
+
+				var xAxisText = GetXAxisValueFormat().F(n / XAxisTicksPerLabel);
+				var xAxisTickTextWidth = labelFont.Measure(xAxisText).X;
+				var xLocation = x - (xAxisTickTextWidth / 2);
+				labelFont.DrawTextWithShadow(xAxisText, graphOrigin + new float2(xLocation, 2), Color.White, BackgroundColorDark, BackgroundColorLight, 1);
 			}
 
-			bold.DrawText(GetXAxisLabel(), origin + new float2(width / 2, 20), Color.White);
+			// Draw y axis
+			axisFont.DrawTextWithShadow(yAxisLabel,  new float2(origin.X, graphOrigin.Y) + new float2(5 - axisFont.TopOffset, -(height / 2 - yAxisLabelSize.X / 2)), Color.White, BackgroundColorDark, BackgroundColorLight, 1, (float)Math.PI / 2);
 
 			for (var y = GetDisplayFirstYAxisValue() ? 0 : yStep; y <= height; y += yStep)
 			{
 				var yValue = y / scale;
-				cr.DrawLine(origin + new float2(width - 5, -y), origin + new float2(width, -y), 1, Color.White);
-				tiny.DrawText(GetYAxisValueFormat().F(yValue), origin + new float2(width + 2, -y), Color.White);
+				cr.DrawLine(graphOrigin + new float2(0, -y), graphOrigin + new float2(5, -y), 1, Color.White);
+				var text = GetYAxisValueFormat().F(yValue);
+
+				var textWidth = labelFont.Measure(text);
+
+				var yLocation = y + (textWidth.Y + labelFont.TopOffset) / 2;
+
+				labelFont.DrawTextWithShadow(text, graphOrigin + new float2(-(textWidth.X + 3), -yLocation), Color.White, BackgroundColorDark, BackgroundColorLight, 1);
 			}
 
-			bold.DrawText(GetYAxisLabel(), origin + new float2(width + 40, -(height / 2)), Color.White);
+			// Bottom line
+			cr.DrawLine(graphOrigin, graphOrigin + new float2(width, 0), 1, Color.White);
 
-			cr.DrawLine(origin, origin + new float2(width, 0), 1, Color.White);
-			cr.DrawLine(origin, origin + new float2(0, -height), 1, Color.White);
-			cr.DrawLine(origin + new float2(width, 0), origin + new float2(width, -height), 1, Color.White);
-			cr.DrawLine(origin + new float2(0, -height), origin + new float2(width, -height), 1, Color.White);
+			// Left line
+			cr.DrawLine(graphOrigin, graphOrigin + new float2(0, -height), 1, Color.White);
 		}
 
 		public override Widget Clone()

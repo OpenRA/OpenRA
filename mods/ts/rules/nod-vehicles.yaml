@@ -7,6 +7,8 @@ BGGY:
 		Cost: 500
 	Tooltip:
 		Name: Attack Buggy
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 30
@@ -45,6 +47,8 @@ BIKE:
 		Cost: 600
 	Tooltip:
 		Name: Attack Cycle
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 40
@@ -90,6 +94,8 @@ TTNK:
 	Tooltip@DEPLOYED:
 		Name: Tick Tank (deployed)
 		RequiresCondition: deployed
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 60
@@ -98,7 +104,7 @@ TTNK:
 	Mobile:
 		TurnSpeed: 5
 		Speed: 85
-		RequiresCondition: !empdisable && undeployed
+		RequireForceMoveCondition: !undeployed
 	Health:
 		HP: 35000
 	Armor:
@@ -125,12 +131,22 @@ TTNK:
 		Image: ttnk
 	WithMakeAnimation:
 	GrantConditionOnDeploy:
+		PauseOnCondition: empdisable || being-captured
 		DeployedCondition: deployed
 		UndeployedCondition: undeployed
+		UndeployOnMove: true
+		UndeployOnPickup: true
 		Facing: 160
 		AllowedTerrainTypes: Clear, Road, DirtRoad, Rough
-		DeploySound: place2.aud
-		UndeploySound: clicky1.aud
+		DeploySounds: place2.aud
+		UndeploySounds: clicky1.aud
+		Voice: Move
+	EntersTunnels:
+		RequireForceMoveCondition: !undeployed
+	Repairable:
+		RequireForceMoveCondition: !undeployed
+	Passenger:
+		RequireForceMoveCondition: !undeployed
 	GrantCondition@PREVIEWWORKAROUND:
 		Condition: real-actor
 	WithVoxelBody:
@@ -160,6 +176,7 @@ TTNK:
 		Turrets: deployed
 		RequiresCondition: deployed
 		PauseOnCondition: empdisable
+		OutsideRangeRequiresForceFire: True
 	Armament@deployed:
 		Name: deployed
 		Turret: deployed
@@ -183,8 +200,6 @@ TTNK:
 		Range: 1c768
 		RequiresCondition: rank-elite
 	RenderDetectionCircle:
-	Carryable:
-		RequiresCondition: undeployed
 	RevealOnFire:
 		ArmamentNames: primary, deployed
 	RenderVoxels:
@@ -203,6 +218,8 @@ ART2:
 	Tooltip@DEPLOYED:
 		Name: Artillery (deployed)
 		RequiresCondition: deployed
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 100
@@ -215,7 +232,7 @@ ART2:
 	Mobile:
 		Speed: 71
 		TurnSpeed: 2
-		RequiresCondition: !empdisable && undeployed
+		RequireForceMoveCondition: !undeployed
 	RevealsShroud:
 		RequiresCondition: !inside-tunnel
 		Range: 9c0
@@ -226,12 +243,22 @@ ART2:
 		Image: art2
 	WithMakeAnimation:
 	GrantConditionOnDeploy:
+		PauseOnCondition: empdisable || being-captured
 		DeployedCondition: deployed
 		UndeployedCondition: undeployed
+		UndeployOnMove: true
+		UndeployOnPickup: true
 		Facing: 96
 		AllowedTerrainTypes: Clear, Road, DirtRoad, Rough
-		DeploySound: place2.aud
-		UndeploySound: clicky1.aud
+		DeploySounds: place2.aud
+		UndeploySounds: clicky1.aud
+		Voice: Move
+	EntersTunnels:
+		RequireForceMoveCondition: !undeployed
+	Repairable:
+		RequireForceMoveCondition: !undeployed
+	Passenger:
+		RequireForceMoveCondition: !undeployed
 	GrantCondition@PREVIEWWORKAROUND:
 		Condition: real-actor
 	WithVoxelBody:
@@ -248,16 +275,19 @@ ART2:
 		Armament: deployed
 		LocalOffset: 203,0,0
 		LocalOrientation: 0, 128, 0
-		RequiresCondition: deployed
+		RequiresCondition: !undeployed
 	WithVoxelTurret@deployed:
 		Turret: deployed
-		RequiresCondition: deployed
+		RequiresCondition: !undeployed
 	AttackTurreted@deployed:
 		Voice: Attack
 		Armaments: deployed
 		Turrets: deployed
 		RequiresCondition: deployed
 		PauseOnCondition: empdisable
+		TargetFrozenActors: True
+		ForceFireIgnoresActors: True
+		OutsideRangeRequiresForceFire: True
 	Armament@deployed:
 		Name: deployed
 		Turret: deployed
@@ -267,8 +297,6 @@ ART2:
 		MuzzleSequence: muzzle
 		MuzzlePalette: effect-ignore-lighting
 	WithMuzzleOverlay:
-	Carryable:
-		RequiresCondition: undeployed
 	RevealOnFire:
 		ArmamentNames: deployed
 
@@ -284,6 +312,8 @@ REPAIR:
 		Cost: 1000
 	Tooltip:
 		Name: Mobile Repair Vehicle
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 20000
 	Mobile:
@@ -309,6 +339,7 @@ REPAIR:
 WEED:
 	Inherits: ^Tank
 	Inherits@VOXELS: ^VoxelActor
+	Inherits@selection: ^SelectableEconomicUnit
 	Valued:
 		Cost: 1400
 	Tooltip:
@@ -324,8 +355,8 @@ WEED:
 		Resources: Veins
 		BaleUnloadDelay: 20
 		BaleLoadDelay: 40
-		SearchFromProcRadius: 72
-		SearchFromOrderRadius: 36
+		SearchFromProcRadius: 30
+		SearchFromHarvesterRadius: 16
 		HarvestVoice: Attack
 		DeliverVoice: Move
 	Mobile:
@@ -356,6 +387,8 @@ SAPC:
 		Cost: 800
 	Tooltip:
 		Name: Subterranean APC
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 110
@@ -364,7 +397,7 @@ SAPC:
 	Mobile:
 		TurnSpeed: 5
 		Speed: 71
-		RequiresCondition: !empdisable && !loading
+		PauseOnCondition: empdisable || loading || being-captured || carried
 		Locomotor: subterranean
 	Health:
 		HP: 17500
@@ -390,6 +423,8 @@ SAPC:
 		SubterraneanTransitionImage: dig
 		SubterraneanTransitionSequence: idle
 		SubterraneanTransitionSound: subdril1.aud
+	Carryable:
+		RequiresCondition: !submerged
 
 SUBTANK:
 	Inherits: ^Tank
@@ -400,6 +435,8 @@ SUBTANK:
 		Cost: 750
 	Tooltip:
 		Name: Devil's Tongue
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 130
@@ -431,6 +468,8 @@ SUBTANK:
 		SubterraneanTransitionImage: dig
 		SubterraneanTransitionSequence: idle
 		SubterraneanTransitionSound: subdril1.aud
+	Carryable:
+		RequiresCondition: !submerged
 
 STNK:
 	Inherits: ^Tank
@@ -441,6 +480,8 @@ STNK:
 		Cost: 1100
 	Tooltip:
 		Name: Stealth Tank
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		BuildPaletteOrder: 150
 		Prerequisites: ~naweap, natech, ~techlevel.high
@@ -464,7 +505,7 @@ STNK:
 		UncloakSound: cloak5.aud
 		IsPlayerPalette: true
 		UncloakOn: Attack, Unload, Infiltrate, Demolish, Damage, Heal
-		RequiresCondition: !cloak-force-disabled && !empdisable
+		PauseOnCondition: cloak-force-disabled || empdisable
 	GrantConditionOnDamageState@UNCLOAK:
 		Condition: cloak-force-disabled
 		ValidDamageStates: Critical

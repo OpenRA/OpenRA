@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -63,9 +63,11 @@ namespace OpenRA.Mods.Common.Traits
 		ConditionManager conditionManager;
 
 		// HACK: Temporarily needed until Rearm activity is gone for good
-		[Sync] public int RemainingTicks;
+		[Sync]
+		public int RemainingTicks;
 
-		[Sync] int currentAmmo;
+		[Sync]
+		int currentAmmo;
 
 		public AmmoPool(Actor self, AmmoPoolInfo info)
 		{
@@ -97,15 +99,9 @@ namespace OpenRA.Mods.Common.Traits
 			return true;
 		}
 
-		// This mostly serves to avoid complicated ReloadAmmoPool look-ups in various other places.
-		// TODO: Investigate removing this when the Rearm activity is replaced with a condition-based solution.
-		public bool AutoReloads { get; private set; }
-
 		void INotifyCreated.Created(Actor self)
 		{
 			conditionManager = self.TraitOrDefault<ConditionManager>();
-			AutoReloads = self.TraitsImplementing<ReloadAmmoPool>().Any(r => r.Info.AmmoPool == Info.Name && r.Info.RequiresCondition == null);
-
 			UpdateCondition(self);
 
 			// HACK: Temporarily needed until Rearm activity is gone for good

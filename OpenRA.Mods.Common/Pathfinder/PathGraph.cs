@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -14,7 +14,6 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
-using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Pathfinder
 {
@@ -84,7 +83,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 		public Actor IgnoreActor { get; set; }
 
 		readonly CellConditions checkConditions;
-		readonly LocomotorInfo locomotorInfo;
+		readonly Locomotor locomotor;
 		readonly LocomotorInfo.WorldMovementInfo worldMovementInfo;
 		readonly CellInfoLayerPool.PooledCellInfoLayer pooledLayer;
 		readonly bool checkTerrainHeight;
@@ -93,11 +92,12 @@ namespace OpenRA.Mods.Common.Pathfinder
 		readonly Dictionary<byte, Pair<ICustomMovementLayer, CellLayer<CellInfo>>> customLayerInfo =
 			new Dictionary<byte, Pair<ICustomMovementLayer, CellLayer<CellInfo>>>();
 
-		public PathGraph(CellInfoLayerPool layerPool, LocomotorInfo li, Actor actor, World world, bool checkForBlocked)
+		public PathGraph(CellInfoLayerPool layerPool, Locomotor locomotor, Actor actor, World world, bool checkForBlocked)
 		{
 			pooledLayer = layerPool.Get();
 			groundInfo = pooledLayer.GetLayer();
-			locomotorInfo = li;
+			var locomotorInfo = locomotor.Info;
+			this.locomotor = locomotor;
 			var layers = world.GetCustomMovementLayers().Values
 				.Where(cml => cml.EnabledForActor(actor.Info, locomotorInfo));
 
@@ -117,7 +117,8 @@ namespace OpenRA.Mods.Common.Pathfinder
 		// For horizontal/vertical directions, the set is the three cells 'ahead'. For diagonal directions, the set
 		// is the three cells ahead, plus the two cells to the side, which we cannot exclude without knowing if
 		// the cell directly between them and our parent is passable.
-		static readonly CVec[][] DirectedNeighbors = {
+		static readonly CVec[][] DirectedNeighbors =
+		{
 			new[] { new CVec(-1, -1), new CVec(0, -1), new CVec(1, -1), new CVec(-1, 0), new CVec(-1, 1) },
 			new[] { new CVec(-1, -1), new CVec(0, -1), new CVec(1, -1) },
 			new[] { new CVec(-1, -1), new CVec(0, -1), new CVec(1, -1), new CVec(1, 0), new CVec(1, 1) },
@@ -153,7 +154,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 				foreach (var cli in customLayerInfo.Values)
 				{
 					var layerPosition = new CPos(position.X, position.Y, cli.First.Index);
-					var entryCost = cli.First.EntryMovementCost(Actor.Info, locomotorInfo, layerPosition);
+					var entryCost = cli.First.EntryMovementCost(Actor.Info, locomotor.Info, layerPosition);
 					if (entryCost != Constants.InvalidNode)
 						validNeighbors.Add(new GraphConnection(layerPosition, entryCost));
 				}
@@ -161,7 +162,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			else
 			{
 				var layerPosition = new CPos(position.X, position.Y, 0);
-				var exitCost = customLayerInfo[position.Layer].First.ExitMovementCost(Actor.Info, locomotorInfo, layerPosition);
+				var exitCost = customLayerInfo[position.Layer].First.ExitMovementCost(Actor.Info, locomotor.Info, layerPosition);
 				if (exitCost != Constants.InvalidNode)
 					validNeighbors.Add(new GraphConnection(layerPosition, exitCost));
 			}
@@ -171,8 +172,9 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 		int GetCostToNode(CPos destNode, CVec direction)
 		{
-			var movementCost = locomotorInfo.MovementCostToEnterCell(worldMovementInfo, Actor, destNode, IgnoreActor, checkConditions);
-			if (movementCost != int.MaxValue && !(CustomBlock != null && CustomBlock(destNode)))
+			var movementCost = locomotor.MovementCostToEnterCell(Actor, destNode, IgnoreActor, checkConditions);
+
+			if (movementCost != short.MaxValue && !(CustomBlock != null && CustomBlock(destNode)))
 				return CalculateCellCost(destNode, direction, movementCost);
 
 			return Constants.InvalidNode;

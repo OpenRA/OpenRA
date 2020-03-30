@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,17 +10,18 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
 {
 	public class SelectionDecorationsInfo : ITraitInfo, Requires<IDecorationBoundsInfo>
 	{
-		[PaletteReference] public readonly string Palette = "chrome";
+		[PaletteReference]
+		public readonly string Palette = "chrome";
 
 		[Desc("Health bar, production progress bar etc.")]
 		public readonly bool RenderSelectionBars = true;
@@ -34,7 +35,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public object Create(ActorInitializer init) { return new SelectionDecorations(init.Self, this); }
 	}
 
-	public class SelectionDecorations : IRenderAboveShroud, INotifyCreated, ITick
+	public class SelectionDecorations : ISelectionDecorations, IRenderAboveShroud, INotifyCreated, ITick
 	{
 		// depends on the order of pips in TraitsInterfaces.cs!
 		static readonly string[] PipStrings = { "pip-empty", "pip-green", "pip-yellow", "pip-red", "pip-gray", "pip-blue", "pip-ammo", "pip-ammoempty" };
@@ -119,6 +120,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 			foreach (var r in DrawPips(self, bounds, wr))
 				yield return r;
+		}
+
+		public void DrawRollover(Actor self, WorldRenderer worldRenderer)
+		{
+			var bounds = decorationBounds.FirstNonEmptyBounds(self, worldRenderer);
+			new SelectionBarsRenderable(self, bounds, true, true).Render(worldRenderer);
 		}
 
 		IEnumerable<IRenderable> DrawPips(Actor self, Rectangle bounds, WorldRenderer wr)

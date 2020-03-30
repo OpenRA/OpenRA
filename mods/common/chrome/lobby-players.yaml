@@ -4,7 +4,7 @@ Container@LOBBY_PLAYER_BIN:
 	Children:
 		Container@LABEL_CONTAINER:
 			X: 5
-			Y: 0 - 25
+			Y: 0 - 24
 			Width: PARENT_RIGHT
 			Height: PARENT_BOTTOM
 			Children:
@@ -194,7 +194,6 @@ Container@LOBBY_PLAYER_BIN:
 							Template: ANONYMOUS_PLAYER_TOOLTIP
 						Label@NAME:
 							X: 39
-							Y: 0 - 1
 							Width: 146
 							Height: 25
 							Text: Name
@@ -278,7 +277,6 @@ Container@LOBBY_PLAYER_BIN:
 							Width: 165
 							Height: 25
 							X: 20
-							Y: 0 - 1
 							Text: Name
 						DropDownButton@SLOT_OPTIONS:
 							X: 15
@@ -390,7 +388,6 @@ Container@LOBBY_PLAYER_BIN:
 							Template: ANONYMOUS_PLAYER_TOOLTIP
 						Label@NAME:
 							X: 39
-							Y: 0 - 1
 							Width: 179
 							Height: 25
 							Text: Name

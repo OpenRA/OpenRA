@@ -3,7 +3,7 @@ Container@LOBBY_OPTIONS_BIN:
 	Height: PARENT_BOTTOM
 	Children:
 		Label@TITLE:
-			Y: 0 - 25
+			Y: 0 - 24
 			Width: PARENT_RIGHT
 			Height: 25
 			Font: Bold

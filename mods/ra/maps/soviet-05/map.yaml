@@ -30,6 +30,7 @@ Players:
 		Color: E2E6F5
 		Allies: GoodGuy, France
 		Enemies: USSR
+		Bot: campaign
 	PlayerReference@USSR:
 		Name: USSR
 		Faction: soviet
@@ -48,12 +49,14 @@ Players:
 		Color: E2E6F5
 		Allies: Greece, France
 		Enemies: USSR
+		Bot: campaign
 	PlayerReference@France:
 		Name: France
 		Faction: allies
 		Color: 0CF7B2
 		Allies: Greece, GoodGuy
 		Enemies: USSR
+		Bot: campaign
 
 Actors:
 	Actor0: sbag
@@ -474,10 +477,6 @@ Actors:
 		Location: 58,89
 		Facing: 60
 		TurretFacing: 60
-	Helper: proc
-		Owner: Greece
-		Location: 42,42
-		FreeActor: False
 	Actor181: mine
 		Owner: Neutral
 		Location: 63,65

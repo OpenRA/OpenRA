@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -34,7 +34,13 @@ namespace OpenRA
 			}
 
 			foreach (var kv in settings)
-				keys[kv.Key] = kv.Value;
+			{
+				if (definitions.ContainsKey(kv.Key))
+					keys[kv.Key] = kv.Value;
+			}
+
+			foreach (var hd in definitions)
+				hd.Value.HasDuplicates = GetFirstDuplicate(hd.Value.Name, this[hd.Value.Name].GetValue(), hd.Value) != null;
 		}
 
 		internal Func<Hotkey> GetHotkeyReference(string name)
@@ -62,6 +68,34 @@ namespace OpenRA
 				settings[name] = value;
 			else
 				settings.Remove(name);
+
+			var hadDuplicates = definition.HasDuplicates;
+			definition.HasDuplicates = GetFirstDuplicate(definition.Name, this[definition.Name].GetValue(), definition) != null;
+
+			if (hadDuplicates || definition.HasDuplicates)
+			{
+				foreach (var hd in definitions)
+				{
+					if (hd.Value == definition)
+						continue;
+
+					hd.Value.HasDuplicates = GetFirstDuplicate(hd.Value.Name, this[hd.Value.Name].GetValue(), hd.Value) != null;
+				}
+			}
+		}
+
+		public HotkeyDefinition GetFirstDuplicate(string name, Hotkey value, HotkeyDefinition definition)
+		{
+			foreach (var kv in keys)
+			{
+				if (kv.Key == name)
+					continue;
+
+				if (kv.Value == value && definitions[kv.Key].Types.Overlaps(definition.Types))
+					return definitions[kv.Key];
+			}
+
+			return null;
 		}
 
 		public HotkeyReference this[string name]

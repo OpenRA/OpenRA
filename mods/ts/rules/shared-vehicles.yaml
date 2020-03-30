@@ -1,6 +1,7 @@
 MCV:
 	Inherits: ^Tank
 	Inherits@VOXELS: ^VoxelActor
+	Inherits@selection: ^SelectableSupportUnit
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 160
@@ -11,7 +12,6 @@ MCV:
 	Tooltip:
 		Name: Mobile Construction Vehicle
 	Selectable:
-		Priority: 3
 		DecorationBounds: 42,42
 	Health:
 		HP: 100000
@@ -27,6 +27,7 @@ MCV:
 		RequiredForShortGame: true
 	BaseBuilding:
 	Transforms:
+		PauseOnCondition: empdisable || being-captured
 		IntoActor: gacnst
 		Offset: -1,-1
 		Facing: 96
@@ -43,6 +44,7 @@ MCV:
 HARV:
 	Inherits: ^Tank
 	Inherits@VOXELS: ^VoxelActor
+	Inherits@selection: ^SelectableEconomicUnit
 	Valued:
 		Cost: 1400
 	Tooltip:
@@ -53,7 +55,6 @@ HARV:
 		Prerequisites: ~factory, proc, ~techlevel.low
 		Description: Collects Tiberium for processing.\n  Unarmed
 	Selectable:
-		Priority: 7
 		Bounds: 36,36
 		DecorationBounds: 36,36
 	Harvester:
@@ -63,10 +64,11 @@ HARV:
 		BaleLoadDelay: 15
 		BaleUnloadDelay: 15
 		FullyLoadedSpeed: 100
-		SearchFromProcRadius: 36
-		SearchFromOrderRadius: 18
+		SearchFromProcRadius: 15
+		SearchFromHarvesterRadius: 8
 		HarvestVoice: Attack
 		DeliverVoice: Move
+		EmptyCondition: no-tiberium
 	Mobile:
 		Speed: 71
 	Health:
@@ -85,6 +87,7 @@ HARV:
 	-WithVoxelBody:
 	WithVoxelUnloadBody:
 	Explodes:
+		RequiresCondition: !no-tiberium
 		Weapon: TiberiumExplosion
 	WithHarvestOverlay:
 		LocalOffset: 543,0,0
@@ -101,6 +104,7 @@ HARV:
 LPST:
 	Inherits: ^Tank
 	Inherits@VOXELS: ^VoxelActor
+	Inherits@selection: ^SelectableSupportUnit
 	-AppearsOnRadar:
 	Buildable:
 		Queue: Vehicle
@@ -122,7 +126,7 @@ LPST:
 	Mobile:
 		Speed: 85
 		TurnSpeed: 5
-		RequiresCondition: !empdisable && undeployed
+		RequireForceMoveCondition: !undeployed
 	RevealsShroud:
 		RequiresCondition: !inside-tunnel && undeployed
 		Range: 10c0
@@ -140,12 +144,22 @@ LPST:
 			gdi: lpst.gdi
 			nod: lpst.nod
 	GrantConditionOnDeploy:
+		PauseOnCondition: empdisable || being-captured
 		DeployedCondition: deployed
 		UndeployedCondition: undeployed
+		UndeployOnMove: true
+		UndeployOnPickup: true
 		Facing: 160
 		AllowedTerrainTypes: Clear, Road, DirtRoad, Rough
-		DeploySound: place2.aud
-		UndeploySound: clicky1.aud
+		DeploySounds: place2.aud
+		UndeploySounds: clicky1.aud
+		Voice: Move
+	EntersTunnels:
+		RequireForceMoveCondition: !undeployed
+	Repairable:
+		RequireForceMoveCondition: !undeployed
+	Passenger:
+		RequireForceMoveCondition: !undeployed
 	WithVoxelBody:
 		RequiresCondition: undeployed
 	WithSpriteBody@deployed:
@@ -155,7 +169,5 @@ LPST:
 		Range: 18c0
 	RenderDetectionCircle:
 		TrailCount: 3
-	Carryable:
-		RequiresCondition: undeployed
 	RenderVoxels:
 		Scale: 11.5

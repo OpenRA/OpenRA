@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,17 +9,18 @@
  */
 #endregion
 
-using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Primitives;
 
 namespace OpenRA.Traits
 {
 	[Desc("Add this to the Player actor definition.")]
 	public class PlayerHighlightPaletteInfo : ITraitInfo
 	{
+		[PaletteDefinition(true)]
 		[Desc("The prefix for the resulting player palettes")]
-		[PaletteDefinition(true)] public readonly string BaseName = "highlight";
+		public readonly string BaseName = "highlight";
 
 		public object Create(ActorInitializer init) { return new PlayerHighlightPalette(this); }
 	}
@@ -33,9 +34,9 @@ namespace OpenRA.Traits
 			this.info = info;
 		}
 
-		public void LoadPlayerPalettes(WorldRenderer wr, string playerName, HSLColor color, bool replaceExisting)
+		public void LoadPlayerPalettes(WorldRenderer wr, string playerName, Color color, bool replaceExisting)
 		{
-			var argb = (uint)Color.FromArgb(128, color.RGB).ToArgb();
+			var argb = (uint)Color.FromArgb(128, color).ToArgb();
 			var pal = new ImmutablePalette(Enumerable.Range(0, Palette.Size).Select(i => i == 0 ? 0 : argb));
 			wr.AddPalette(info.BaseName + playerName, pal, false, replaceExisting);
 		}

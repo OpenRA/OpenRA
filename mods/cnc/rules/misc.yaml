@@ -12,13 +12,13 @@ CRATE:
 		UseCashTick: yes
 	RevealMapCrateAction:
 		SelectionShares: 1
-		Effect: reveal-map
+		Sequence: reveal-map
 	ExplodeCrateAction@fire:
 		Weapon: Napalm.Crate
 		SelectionShares: 5
 	GrantExternalConditionCrateAction@cloak:
 		SelectionShares: 5
-		Effect: cloak
+		Sequence: cloak
 		Condition: cloak-crate-collected
 	GiveMcvCrateAction:
 		SelectionShares: 0
@@ -56,8 +56,10 @@ mpspawn:
 	RenderSpritesEditorOnly:
 	BodyOrientation:
 		QuantizedFacings: 1
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: System
+	RequiresSpecificOwners:
+		ValidOwnerNames: Neutral
 
 waypoint:
 	Interactable:
@@ -70,13 +72,13 @@ waypoint:
 	RenderSpritesEditorOnly:
 	BodyOrientation:
 		QuantizedFacings: 1
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: System
 
 fact.colorpicker:
 	Inherits: FACT
 	-Buildable:
-	-EditorTilesetFilter:
+	-MapEditorData:
 	RenderSprites:
 		Image: fact
 		Palette: colorpicker
@@ -95,7 +97,7 @@ CAMERA:
 	RevealsShroud:
 		Range: 10c0
 		Type: CenterPosition
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: System
 
 CAMERA.small:
@@ -116,7 +118,7 @@ CAMERA.small:
 	RevealsShroud:
 		Range: 6c0
 		Type: CenterPosition
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: System
 
 FLARE:
@@ -137,6 +139,6 @@ FLARE:
 		ShowOwnerRow: false
 	BodyOrientation:
 		QuantizedFacings: 1
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: System
 	Interactable:

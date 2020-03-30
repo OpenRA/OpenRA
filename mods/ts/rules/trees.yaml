@@ -15,6 +15,8 @@ BIGBLUE:
 		Palette: bluetiberium
 	RadarColorFromTerrain:
 		Terrain: BlueTiberium
+	AppearsOnMapPreview:
+		Terrain: BlueTiberium
 	SeedsResource:
 		ResourceType: BlueTiberium
 		Interval: 1000
@@ -101,6 +103,8 @@ VEINHOLEDUMMY:
 	HiddenUnderShroud:
 	RadarColorFromTerrain:
 		Terrain: Veins
+	AppearsOnMapPreview:
+		Terrain: Veins
 	Building:
 		Footprint: xx xx
 		Dimensions: 2, 2
@@ -115,7 +119,7 @@ VEINHOLE:
 	RenderSprites:
 		Palette: player
 	WithSpriteBody:
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Resource spawn
 	Interactable:
 

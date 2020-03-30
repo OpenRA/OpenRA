@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,17 +10,22 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Drawing;
+using System.Linq;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Orders;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Can instantly repair other actors, but gets consumed afterwards.")]
-	class EngineerRepairInfo : ITraitInfo
+	class EngineerRepairInfo : ConditionalTraitInfo
 	{
-		[VoiceReference] public readonly string Voice = "Action";
+		[Desc("Uses the \"EngineerRepairable\" trait to determine repairability.")]
+		public readonly BitSet<EngineerRepairType> Types = default(BitSet<EngineerRepairType>);
+
+		[VoiceReference]
+		public readonly string Voice = "Action";
 
 		[Desc("Behaviour when entering the structure.",
 			"Possible values are Exit, Suicide, Dispose.")]
@@ -29,21 +34,32 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("What diplomatic stances allow target to be repaired by this actor.")]
 		public readonly Stance ValidStances = Stance.Ally;
 
-		public object Create(ActorInitializer init) { return new EngineerRepair(init, this); }
+		[Desc("Sound to play when repairing is done.")]
+		public readonly string RepairSound = null;
+
+		[Desc("Cursor to show when hovering over a valid actor to repair.")]
+		public readonly string Cursor = "goldwrench";
+
+		[Desc("Cursor to show when target actor has full health so it can't be repaired.")]
+		public readonly string RepairBlockedCursor = "goldwrench-blocked";
+
+		public override object Create(ActorInitializer init) { return new EngineerRepair(init, this); }
 	}
 
-	class EngineerRepair : IIssueOrder, IResolveOrder, IOrderVoice
+	class EngineerRepair : ConditionalTrait<EngineerRepairInfo>, IIssueOrder, IResolveOrder, IOrderVoice
 	{
-		readonly EngineerRepairInfo info;
-
 		public EngineerRepair(ActorInitializer init, EngineerRepairInfo info)
-		{
-			this.info = info;
-		}
+			: base(info) { }
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
-			get { yield return new EngineerRepairOrderTargeter(); }
+			get
+			{
+				if (IsTraitDisabled)
+					yield break;
+
+				yield return new EngineerRepairOrderTargeter(Info);
+			}
 		}
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
@@ -68,7 +84,7 @@ namespace OpenRA.Mods.Common.Traits
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
 			return order.OrderString == "EngineerRepair" && IsValidOrder(self, order)
-				? info.Voice : null;
+				? Info.Voice : null;
 		}
 
 		public void ResolveOrder(Actor self, Order order)
@@ -76,54 +92,58 @@ namespace OpenRA.Mods.Common.Traits
 			if (order.OrderString != "EngineerRepair" || !IsValidOrder(self, order))
 				return;
 
-			var target = self.ResolveFrozenActorOrder(order, Color.Yellow);
-			if (target.Type != TargetType.Actor)
-				return;
-
 			if (!order.Queued)
 				self.CancelActivity();
 
-			self.SetTargetLine(target, Color.Yellow);
-			self.QueueActivity(new RepairBuilding(self, target.Actor, info.EnterBehaviour, info.ValidStances));
+			self.QueueActivity(new RepairBuilding(self, order.Target, Info));
+			self.ShowTargetLines();
 		}
 
 		class EngineerRepairOrderTargeter : UnitOrderTargeter
 		{
-			public EngineerRepairOrderTargeter()
-				: base("EngineerRepair", 6, "goldwrench", false, true) { }
+			EngineerRepairInfo info;
+
+			public EngineerRepairOrderTargeter(EngineerRepairInfo info)
+				: base("EngineerRepair", 6, info.Cursor, true, true)
+			{
+				this.info = info;
+			}
 
 			public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 			{
-				if (!target.Info.HasTraitInfo<EngineerRepairableInfo>())
+				var engineerRepairable = target.Info.TraitInfoOrDefault<EngineerRepairableInfo>();
+				if (engineerRepairable == null)
 					return false;
 
-				if (self.Owner.Stances[target.Owner] != Stance.Ally)
+				if (!engineerRepairable.Types.IsEmpty && !engineerRepairable.Types.Overlaps(info.Types))
+					return false;
+
+				if (!info.ValidStances.HasStance(self.Owner.Stances[target.Owner]))
 					return false;
 
 				if (target.GetDamageState() == DamageState.Undamaged)
-					cursor = "goldwrench-blocked";
+					cursor = info.RepairBlockedCursor;
 
 				return true;
 			}
 
 			public override bool CanTargetFrozenActor(Actor self, FrozenActor target, TargetModifiers modifiers, ref string cursor)
 			{
-				if (!target.Info.HasTraitInfo<EngineerRepairableInfo>())
+				var engineerRepairable = target.Info.TraitInfoOrDefault<EngineerRepairableInfo>();
+				if (engineerRepairable == null)
 					return false;
 
-				if (self.Owner.Stances[target.Owner] != Stance.Ally)
+				if (!engineerRepairable.Types.IsEmpty && !engineerRepairable.Types.Overlaps(info.Types))
+					return false;
+
+				if (!info.ValidStances.HasStance(self.Owner.Stances[target.Owner]))
 					return false;
 
 				if (target.DamageState == DamageState.Undamaged)
-					cursor = "goldwrench-blocked";
+					cursor = info.RepairBlockedCursor;
 
 				return true;
 			}
 		}
 	}
-
-	[Desc("Eligible for instant repair.")]
-	class EngineerRepairableInfo : TraitInfo<EngineerRepairable> { }
-
-	class EngineerRepairable { }
 }

@@ -5,52 +5,45 @@
 ###############################################################
 function All-Command 
 {
-	Dependencies-Command 
-	$msBuild = FindMSBuild
-	$msBuildArguments = "/t:Rebuild /nr:false"
-	if ($msBuild -eq $null)
+	if ((CheckForDotnet) -eq 1)
 	{
-		echo "Unable to locate an appropriate version of MSBuild."
+		return
+	}
+
+	Dependencies-Command
+
+	dotnet build /p:Configuration=Release /nologo
+	if ($lastexitcode -ne 0)
+	{
+		Write-Host "Build failed. If just the development tools failed to build, try installing Visual Studio. You may also still be able to run the game." -ForegroundColor Red
 	}
 	else
 	{
-		$proc = Start-Process $msBuild $msBuildArguments -NoNewWindow -PassThru -Wait
-		if ($proc.ExitCode -ne 0)
-		{
-			echo "Build failed. If just the development tools failed to build, try installing Visual Studio. You may also still be able to run the game."
-		}
-		else
-		{
-			echo "Build succeeded."
-		}
+		Write-Host "Build succeeded." -ForegroundColor Green
 	}
 }
 
 function Clean-Command 
 {
-	$msBuild = FindMSBuild
-	$msBuildArguments = "/t:Clean /nr:false"
-	if ($msBuild -eq $null)
+	if ((CheckForDotnet) -eq 1)
 	{
-		echo "Unable to locate an appropriate version of MSBuild."
+		return
 	}
-	else
+
+	dotnet clean /nologo
+	rm *.dll
+	rm mods/*/*.dll
+	rm *.config
+	rm *.pdb
+	rm mods/*/*.pdb
+	rm *.exe
+	rm ./*/bin -r
+	rm ./*/obj -r
+	if (Test-Path thirdparty/download/)
 	{
-		$proc = Start-Process $msBuild $msBuildArguments -NoNewWindow -PassThru -Wait
-		rm *.dll
-		rm *.dll.config
-		rm mods/*/*.dll
-		rm *.pdb
-		rm mods/*/*.pdb
-		rm *.exe
-		rm ./*/bin -r
-		rm ./*/obj -r
-		if (Test-Path thirdparty/download/)
-		{
-			rmdir thirdparty/download -Recurse -Force
-		}
-		echo "Clean complete."
+		rmdir thirdparty/download -Recurse -Force
 	}
+	Write-Host "Clean complete." -ForegroundColor Green
 }
 
 function Version-Command 
@@ -72,12 +65,12 @@ function Version-Command
 		}
 		else
 		{
-			echo "Not a git repository. The version will remain unchanged."
+			Write-Host "Not a git repository. The version will remain unchanged." -ForegroundColor Red
 		}
 	}
 	else
 	{	
-		echo "Unable to locate Git. The version will remain unchanged."
+		Write-Host "Unable to locate Git. The version will remain unchanged." -ForegroundColor Red
 	}
 	
 	if ($version -ne $null)
@@ -97,7 +90,7 @@ function Version-Command
 			$replacement = (gc $mod) -Replace ".*: User", ("{0}/{1}: User" -f $prefix, $version)
 			sc $mod $replacement
 		}
-		echo ("Version strings set to '{0}'." -f $version)
+		Write-Host ("Version strings set to '{0}'." -f $version)
 	}
 }
 
@@ -106,63 +99,56 @@ function Dependencies-Command
 	cd thirdparty
 	./fetch-thirdparty-deps.ps1
 	cp download/*.dll ..
-	cp download/GeoLite2-Country.mmdb.gz ..
 	cp download/windows/*.dll ..
 	cd ..
-	echo "Dependencies copied."
+	Write-Host "Dependencies copied." -ForegroundColor Cyan
+
+	if ((CheckForDotnet) -eq 1)
+	{
+		return
+	}
+
+	dotnet restore /nologo
+	if ($lastexitcode -ne 0)
+	{
+		Write-Host "Project restoration failed." -ForegroundColor Red
+	}
 }
 
 function Test-Command
 {
-	if (Test-Path OpenRA.Utility.exe)
+	if ((CheckForUtility) -eq 1)
 	{
-		echo "Testing mods..."
-		echo "Testing Tiberian Sun mod MiniYAML..."
-		./OpenRA.Utility.exe ts --check-yaml
-		echo "Testing Dune 2000 mod MiniYAML..."
-		./OpenRA.Utility.exe d2k --check-yaml
-		echo "Testing Tiberian Dawn mod MiniYAML..."
-		./OpenRA.Utility.exe cnc --check-yaml
-		echo "Testing Red Alert mod MiniYAML..."
-		./OpenRA.Utility.exe ra --check-yaml
+		return
 	}
-	else
-	{
-		UtilityNotFound
-	}
+
+	Write-Host "Testing mods..." -ForegroundColor Cyan
+	Write-Host "Testing Tiberian Sun mod MiniYAML..." -ForegroundColor Cyan
+	./OpenRA.Utility.exe ts --check-yaml
+	Write-Host "Testing Dune 2000 mod MiniYAML..." -ForegroundColor Cyan
+	./OpenRA.Utility.exe d2k --check-yaml
+	Write-Host "Testing Tiberian Dawn mod MiniYAML..." -ForegroundColor Cyan
+	./OpenRA.Utility.exe cnc --check-yaml
+	Write-Host "Testing Red Alert mod MiniYAML..." -ForegroundColor Cyan
+	./OpenRA.Utility.exe ra --check-yaml
 }
 
-function Check-Command {
-	if (Test-Path OpenRA.Utility.exe)
+function Check-Command
+{
+	Write-Host "Compiling in debug configuration..." -ForegroundColor Cyan
+	dotnet build /p:Configuration=Debug /nologo
+	if ($lastexitcode -ne 0)
 	{
-		echo "Checking for explicit interface violations..."
-		./OpenRA.Utility.exe all --check-explicit-interfaces
-	}
-	else
-	{
-		UtilityNotFound
+		Write-Host "Build failed." -ForegroundColor Red
 	}
 
-	if (Test-Path OpenRA.StyleCheck.exe)
+	if ((CheckForUtility) -eq 0)
 	{
-		echo "Checking for code style violations in OpenRA.Platforms.Default..."
-		./OpenRA.StyleCheck.exe OpenRA.Platforms.Default
-		echo "Checking for code style violations in OpenRA.Game..."
-		./OpenRA.StyleCheck.exe OpenRA.Game
-		echo "Checking for code style violations in OpenRA.Mods.Common..."
-		./OpenRA.StyleCheck.exe OpenRA.Mods.Common
-		echo "Checking for code style violations in OpenRA.Mods.Cnc..."
-		./OpenRA.StyleCheck.exe OpenRA.Mods.Cnc
-		echo "Checking for code style violations in OpenRA.Mods.D2k..."
-		./OpenRA.StyleCheck.exe OpenRA.Mods.D2k
-		echo "Checking for code style violations in OpenRA.Utility..."
-		./OpenRA.StyleCheck.exe OpenRA.Utility
-		echo "Checking for code style violations in OpenRA.Test..."
-		./OpenRA.StyleCheck.exe OpenRA.Test
-	}
-	else
-	{
-		echo "OpenRA.StyleCheck.exe could not be found. Build the project first using the `"all`" command."
+		Write-Host "Checking for explicit interface violations..." -ForegroundColor Cyan
+		./OpenRA.Utility.exe all --check-explicit-interfaces
+
+		Write-Host "Checking for incorrect conditional trait interface overrides..." -ForegroundColor Cyan
+		./OpenRA.Utility.exe all --check-conditional-trait-interface-overrides
 	}
 }
 
@@ -170,7 +156,7 @@ function Check-Scripts-Command
 {
 	if ((Get-Command "luac.exe" -ErrorAction SilentlyContinue) -ne $null)
 	{
-		echo "Testing Lua scripts..."
+		Write-Host "Testing Lua scripts..." -ForegroundColor Cyan
 		foreach ($script in ls "mods/*/maps/*/*.lua")
 		{
 			luac -p $script
@@ -179,56 +165,53 @@ function Check-Scripts-Command
 		{
 			luac -p $script
 		}
-		echo "Check completed!"
+		Write-Host "Check completed!" -ForegroundColor Green
 	}
 	else
 	{
-		echo "luac.exe could not be found. Please install Lua."
+		Write-Host "luac.exe could not be found. Please install Lua." -ForegroundColor Red
 	}
 }
 
 function Docs-Command
 {
+	if ((CheckForUtility) -eq 1)
+	{
+		return
+	}
+
+	./make.ps1 version
+	./OpenRA.Utility.exe all --docs | Out-File -Encoding "UTF8" DOCUMENTATION.md
+	./OpenRA.Utility.exe all --weapon-docs | Out-File -Encoding "UTF8" WEAPONS.md
+	./OpenRA.Utility.exe all --lua-docs | Out-File -Encoding "UTF8" Lua-API.md
+	./OpenRA.Utility.exe all --settings-docs | Out-File -Encoding "UTF8" Settings.md
+}
+
+function CheckForUtility
+{
 	if (Test-Path OpenRA.Utility.exe)
 	{
-		./make.ps1 version
-		./OpenRA.Utility.exe all --docs | Out-File -Encoding "UTF8" DOCUMENTATION.md
-		./OpenRA.Utility.exe all --weapon-docs | Out-File -Encoding "UTF8" WEAPONS.md
-		./OpenRA.Utility.exe all --lua-docs | Out-File -Encoding "UTF8" Lua-API.md
-		./OpenRA.Utility.exe all --settings-docs | Out-File -Encoding "UTF8" Settings.md
+		return 0
 	}
-	else
-	{
-		UtilityNotFound
-	}
+
+	Write-Host "OpenRA.Utility.exe could not be found. Build the project first using the `"all`" command." -ForegroundColor Red
+	return 1
 }
 
-function FindMSBuild
+function CheckForDotnet
 {
-	$key = "HKLM:\SOFTWARE\Microsoft\MSBuild\ToolsVersions\4.0"
-	$property = Get-ItemProperty $key -ErrorAction SilentlyContinue
-	if ($property -eq $null -or $property.MSBuildToolsPath -eq $null)
+	if ((Get-Command "dotnet" -ErrorAction SilentlyContinue) -eq $null) 
 	{
-		return $null
+		Write-Host "The 'dotnet' tool is required to compile OpenRA. Please install the .NET Core SDK or Visual Studio and try again. https://dotnet.microsoft.com/download" -ForegroundColor Red
+		return 1
 	}
 
-	$path = Join-Path $property.MSBuildToolsPath -ChildPath "MSBuild.exe"
-	if (Test-Path $path)
-	{
-		return $path
-	}
-
-	return $null
-}
-
-function UtilityNotFound
-{
-	echo "OpenRA.Utility.exe could not be found. Build the project first using the `"all`" command."
+	return 0
 }
 
 function WaitForInput
 {
-	echo "Press enter to continue."
+	Write-Host "Press enter to continue."
 	while ($true)
 	{
 		if ([System.Console]::KeyAvailable)
@@ -244,26 +227,26 @@ function WaitForInput
 ###############################################################
 if ($PSVersionTable.PSVersion.Major -clt 3)
 {
-	echo "The makefile requires PowerShell version 3 or higher."
-	echo "Please download and install the latest Windows Management Framework version from Microsoft."
+	Write-Host "The makefile requires PowerShell version 3 or higher." -ForegroundColor Red
+	Write-Host "Please download and install the latest Windows Management Framework version from Microsoft." -ForegroundColor Red
 	WaitForInput
 }
 
 if ($args.Length -eq 0)
 {
-	echo "Command list:"
-	echo ""
-	echo "  all, a              Builds the game and its development tools."
-	echo "  dependencies, d     Copies the game's dependencies into the main game folder."
-	echo "  version, v          Sets the version strings for the default mods to the"
-	echo "                      latest version for the current Git branch."
-	echo "  clean, c            Removes all built and copied files. Use the 'all' and"
-	echo "                      'dependencies' commands to restore removed files."
-	echo "  test, t             Tests the default mods for errors."
-	echo "  check, ck           Checks .cs files for StyleCop violations."
-	echo "  check-scripts, cs   Checks .lua files for syntax errors."
-	echo "  docs                Generates the trait and Lua API documentation."
-	echo ""
+	Write-Host "Command list:"
+	Write-Host ""
+	Write-Host "  all, a              Builds the game and its development tools."
+	Write-Host "  dependencies, d     Copies the game's dependencies into the main game folder."
+	Write-Host "  version, v          Sets the version strings for the default mods to the"
+	Write-Host "                      latest version for the current Git branch."
+	Write-Host "  clean, c            Removes all built and copied files. Use the 'all' and"
+	Write-Host "                      'dependencies' commands to restore removed files."
+	Write-Host "  test, t             Tests the default mods for errors."
+	Write-Host "  check, ck           Checks .cs files for StyleCop violations."
+	Write-Host "  check-scripts, cs   Checks .lua files for syntax errors."
+	Write-Host "  docs                Generates the trait and Lua API documentation."
+	Write-Host ""
 	$command = (Read-Host "Enter command").Split(' ', 2)
 }
 else
@@ -287,7 +270,7 @@ switch ($execute)
 	{"check",         "ck" -contains $_} { Check-Command }
 	{"check-scripts", "cs" -contains $_} { Check-Scripts-Command }
 	 "docs"                              { Docs-Command }
-	Default { echo ("Invalid command '{0}'" -f $command) }
+	Default { Write-Host ("Invalid command '{0}'" -f $command) }
 }
 
 #In case the script was called without any parameters we keep the window open 

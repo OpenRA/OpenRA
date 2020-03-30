@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,7 +10,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using OpenRA.Traits;
@@ -26,16 +25,20 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			return true;
 		}
 
-		[Desc("Generate trait documentation in MarkDown format.")]
+		[Desc("[VERSION]", "Generate trait documentation in MarkDown format.")]
 		void IUtilityCommand.Run(Utility utility, string[] args)
 		{
 			// HACK: The engine code assumes that Game.modData is set.
 			Game.ModData = utility.ModData;
 
+			var version = utility.ModData.Manifest.Metadata.Version;
+			if (args.Length > 1)
+				version = args[1];
+
 			Console.WriteLine(
 				"This documentation is aimed at modders. It displays all traits with default values and developer commentary. " +
 				"Please do not edit it directly, but add new `[Desc(\"String\")]` tags to the source code. This file has been " +
-				"automatically generated for version {0} of OpenRA.", utility.ModData.Manifest.Metadata.Version);
+				"automatically generated for version {0} of OpenRA.", version);
 			Console.WriteLine();
 
 			var toc = new StringBuilder();

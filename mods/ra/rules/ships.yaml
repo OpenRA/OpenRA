@@ -11,6 +11,8 @@ SS:
 		Cost: 950
 	Tooltip:
 		Name: Submarine
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 25000
 	Armor:
@@ -19,6 +21,7 @@ SS:
 		TurnSpeed: 4
 		Speed: 71
 	RevealsShroud:
+		MinRange: 5c0
 		Range: 8c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -37,7 +40,7 @@ SS:
 		UncloakSound: subshow1.aud
 		CloakedCondition: underwater
 		Palette: submerged
-		RequiresCondition: !cloak-force-disabled
+		PauseOnCondition: cloak-force-disabled
 	GrantConditionOnDamageState@UNCLOAK:
 		Condition: cloak-force-disabled
 		ValidDamageStates: Critical
@@ -73,12 +76,13 @@ MSUB:
 		BuildAtProductionType: Submarine
 		BuildPaletteOrder: 60
 		Prerequisites: ~spen, stek, ~techlevel.high
-		BuildDurationModifier: 50
 		Description: Submerged anti-ground siege unit\nwith anti-air capabilities.\nCan detect other submarines.\n  Strong vs Buildings, Ground units, Aircraft\n  Weak vs Naval units\n  Special Ability: Submerge
 	Valued:
 		Cost: 2000
 	Tooltip:
 		Name: Missile Submarine
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 40000
 	Armor:
@@ -87,6 +91,7 @@ MSUB:
 		TurnSpeed: 3
 		Speed: 42
 	RevealsShroud:
+		MinRange: 5c0
 		Range: 8c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -105,7 +110,7 @@ MSUB:
 		UncloakSound: subshow1.aud
 		CloakedCondition: underwater
 		Palette: submerged
-		RequiresCondition: !cloak-force-disabled
+		PauseOnCondition: cloak-force-disabled
 	GrantConditionOnDamageState@UNCLOAK:
 		Condition: cloak-force-disabled
 		ValidDamageStates: Critical
@@ -118,6 +123,8 @@ MSUB:
 		LocalOffset: 0,-171,0, 0,171,0
 		FireDelay: 2
 	AttackFrontal:
+		TargetFrozenActors: True
+		ForceFireIgnoresActors: True
 	SelectionDecorations:
 	AutoTarget:
 		InitialStance: HoldFire
@@ -146,6 +153,8 @@ DD:
 		Cost: 1000
 	Tooltip:
 		Name: Destroyer
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 40000
 	Armor:
@@ -154,6 +163,7 @@ DD:
 		TurnSpeed: 7
 		Speed: 85
 	RevealsShroud:
+		MinRange: 5c0
 		Range: 6c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -191,12 +201,13 @@ CA:
 		BuildAtProductionType: Boat
 		BuildPaletteOrder: 50
 		Prerequisites: ~syrd, atek, ~techlevel.high
-		BuildDurationModifier: 50
 		Description: Very slow long-range ship.\n  Strong vs Buildings, Ground units\n  Weak vs Naval units, Aircraft
 	Valued:
 		Cost: 2400
 	Tooltip:
 		Name: Cruiser
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 80000
 	Armor:
@@ -205,6 +216,7 @@ CA:
 		TurnSpeed: 3
 		Speed: 42
 	RevealsShroud:
+		MinRange: 5c0
 		Range: 7c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -234,6 +246,8 @@ CA:
 		MuzzleSequence: muzzle
 	AttackTurreted:
 		Turrets: primary, secondary
+		TargetFrozenActors: True
+		ForceFireIgnoresActors: True
 	WithMuzzleOverlay:
 	SelectionDecorations:
 	WithSpriteTurret@PRIMARY:
@@ -254,16 +268,18 @@ LST:
 		Cost: 700
 	Tooltip:
 		Name: Transport
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 35000
 	Armor:
 		Type: Heavy
 	Mobile:
 		Locomotor: lcraft
-		TurnSpeed: 10
 		Speed: 113
-		RequiresCondition: !notmobile
+		PauseOnCondition: notmobile
 	RevealsShroud:
+		MinRange: 5c0
 		Range: 6c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -294,6 +310,8 @@ PT:
 		Cost: 500
 	Tooltip:
 		Name: Gunboat
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 20000
 	Armor:
@@ -302,6 +320,7 @@ PT:
 		TurnSpeed: 7
 		Speed: 128
 	RevealsShroud:
+		MinRange: 5c0
 		Range: 7c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:

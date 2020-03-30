@@ -1,5 +1,6 @@
 mcv:
 	Inherits: ^Tank
+	Inherits@selection: ^SelectableSupportUnit
 	Buildable:
 		Prerequisites: repair_pad, upgrade.heavy, ~techlevel.medium
 		Queue: Armor
@@ -13,7 +14,6 @@ mcv:
 		Name: Mobile Construction Vehicle
 	Selectable:
 		Class: mcv
-		Priority: 3
 		DecorationBounds: 42,42
 	Health:
 		HP: 45000
@@ -50,6 +50,7 @@ mcv:
 
 harvester:
 	Inherits: ^Tank
+	Inherits@selection: ^SelectableEconomicUnit
 	Buildable:
 		Queue: Armor
 		Prerequisites: refinery
@@ -63,7 +64,6 @@ harvester:
 		Name: Spice Harvester
 	Selectable:
 		Class: harvester
-		Priority: 7
 		DecorationBounds: 42,42
 	Harvester:
 		PipCount: 7
@@ -72,7 +72,8 @@ harvester:
 		Resources: Spice
 		BaleUnloadDelay: 5
 		SearchFromProcRadius: 30
-		SearchFromOrderRadius: 15
+		SearchFromHarvesterRadius: 15
+	CarryableHarvester:
 	Health:
 		HP: 45000
 	Armor:
@@ -115,6 +116,8 @@ trike:
 		Cost: 300
 	Tooltip:
 		Name: Trike
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Selectable:
 		Class: trike
 	Health:
@@ -156,6 +159,8 @@ quad:
 		Cost: 400
 	Tooltip:
 		Name: Missile Quad
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 11000
 	Armor:
@@ -192,6 +197,8 @@ siege_tank:
 		Cost: 700
 	Tooltip:
 		Name: Siege Tank
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 12000
 	Armor:
@@ -233,6 +240,8 @@ missile_tank:
 	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
 	Tooltip:
 		Name: Missile Tank
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		Queue: Armor
 		Prerequisites: ~heavy.missile_tank, upgrade.heavy, research_centre, ~techlevel.high
@@ -284,6 +293,8 @@ sonic_tank:
 		Cost: 1000
 	Tooltip:
 		Name: Sonic Tank
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 30000
 	Armor:
@@ -322,6 +333,8 @@ devastator:
 		Cost: 1050
 	Tooltip:
 		Name: Devastator
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 50000
 	Armor:
@@ -330,7 +343,8 @@ devastator:
 		TurnSpeed: 3
 		Speed: 31
 		Locomotor: devastator
-		RequiresCondition: !overload && !notmobile
+		RequiresCondition: !overload
+		PauseOnCondition: notmobile
 	AutoCarryable:
 		RequiresCondition: !overload
 	RevealsShroud:
@@ -392,6 +406,8 @@ raider:
 		Cost: 350
 	Tooltip:
 		Name: Raider Trike
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 10000
 	Armor:
@@ -428,12 +444,14 @@ stealth_raider:
 		Cost: 400
 	Tooltip:
 		Name: Stealth Raider Trike
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Cloak:
 		InitialDelay: 45
 		CloakDelay: 90
 		UncloakOn: Attack, Unload, Infiltrate, Demolish, Dock, Damage, Heal
 		IsPlayerPalette: true
-		RequiresCondition: !cloak-force-disabled
+		PauseOnCondition: cloak-force-disabled
 	GrantConditionOnDamageState@UNCLOAK:
 		Condition: cloak-force-disabled
 		ValidDamageStates: Critical
@@ -450,6 +468,8 @@ deviator:
 		Cost: 1000
 	Tooltip:
 		Name: Deviator
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		Queue: Armor
 		BuildPaletteOrder: 50
@@ -496,6 +516,8 @@ deviator:
 		Cost: 700
 	Tooltip:
 		Name: Combat Tank
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 21000
 	Armor:

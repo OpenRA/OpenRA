@@ -3,11 +3,13 @@
 	AlwaysVisible:
 	ScreenMap:
 	ActorMap:
+	Selection:
 	MusicPlaylist:
 		VictoryMusic: score
 		DefeatMusic: score
 	TerrainGeometryOverlay:
 	DebugVisualizations:
+	TerrainRenderer:
 	ShroudRenderer:
 		ShroudVariants: shrouda, shroudb, shroudc, shroudd
 		FogVariants: foga, fogb, fogc, fogd
@@ -231,6 +233,9 @@ World:
 		ExitDelay: 0
 		PanelName: SKIRMISH_STATS
 	LoadWidgetAtGameStart:
+	ScriptTriggers:
+	StartGameNotification:
+	TimeLimitManager:
 
 EditorWorld:
 	Inherits: ^BaseWorld

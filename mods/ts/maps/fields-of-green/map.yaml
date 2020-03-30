@@ -1419,46 +1419,4 @@ Actors:
 		Owner: Neutral
 		Location: 45,6
 
-Rules:
-	Player:
-		-ConquestVictoryConditions:
-	World:
-		-CrateSpawner:
-		-StartGameNotification:
-		-SpawnMPUnits:
-		-MPStartLocations:
-		LuaScript:
-			Scripts: fields-of-green.lua
-		ResourceType@Tiberium:
-			ValuePerUnit: 0
-		MusicPlaylist:
-			BackgroundMusic: intro
-			DisableWorldSounds: true
-		GlobalLightingPaletteEffect:
-			Blue: 0.7
-			Ambient: 0.7
-	HARV:
-		-Targetable:
-	GALITE:
-		-Targetable:
-	APC:
-		Cargo:
-			InitialUnits: e1, e1, e2, e2, medic
-	GACTWR:
-		DamageMultiplier@UNKILLABLE:
-			RequiresCondition: unkillable
-			Modifier: 0
-		ExternalCondition@UNKILLABLE:
-			Condition: unkillable
-	NAOBEL:
-		DamageMultiplier@UNKILLABLE:
-			RequiresCondition: unkillable
-			Modifier: 0
-		ExternalCondition@UNKILLABLE:
-			Condition: unkillable
-	NALASR:
-		DamageMultiplier@UNKILLABLE:
-			RequiresCondition: unkillable
-			Modifier: 0
-		ExternalCondition@UNKILLABLE:
-			Condition: unkillable
+Rules: rules.yaml

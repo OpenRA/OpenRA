@@ -3,10 +3,12 @@
 	Inherits: ^Palettes
 	ScreenMap:
 	ActorMap:
+	Selection:
 	MusicPlaylist:
 		VictoryMusic: win1
 		DefeatMusic: nod_map1
 	DebugVisualizations:
+	TerrainRenderer:
 	TerrainGeometryOverlay:
 	ShroudRenderer:
 		ShroudVariants: typea, typeb, typec, typed
@@ -257,6 +259,8 @@ World:
 	RadarPings:
 	LoadWidgetAtGameStart:
 		ShellmapRoot: MENU_BACKGROUND
+	ScriptTriggers:
+	TimeLimitManager:
 
 EditorWorld:
 	Inherits: ^BaseWorld

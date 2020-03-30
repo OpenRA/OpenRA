@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	{
 		protected enum MenuType { Main, Singleplayer, Extras, MapEditor, SystemInfoPrompt, None }
 
-		protected enum MenuPanel { None, Missions, Skirmish, Multiplayer, MapEditor, Replays }
+		protected enum MenuPanel { None, Missions, Skirmish, Multiplayer, MapEditor, Replays, GameSaves }
 
 		protected MenuType menuType = MenuType.Main;
 		readonly Widget rootMenu;
@@ -122,7 +122,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			missionsButton.Disabled = !hasCampaign && !hasMissions;
 
-			singleplayerMenu.Get<ButtonWidget>("SKIRMISH_BUTTON").OnClick = StartSkirmishGame;
+			var hasMaps = modData.MapCache.Any(p => p.Visibility.HasFlag(MapVisibility.Lobby));
+			var skirmishButton = singleplayerMenu.Get<ButtonWidget>("SKIRMISH_BUTTON");
+			skirmishButton.OnClick = StartSkirmishGame;
+			skirmishButton.Disabled = !hasMaps;
+
+			var loadButton = singleplayerMenu.Get<ButtonWidget>("LOAD_BUTTON");
+			loadButton.IsDisabled = () => !GameSaveBrowserLogic.IsLoadPanelEnabled(modData.Manifest);
+			loadButton.OnClick = OpenGameSaveBrowserPanel;
 
 			singleplayerMenu.Get<ButtonWidget>("BACK_BUTTON").OnClick = () => SwitchMenu(MenuType.Main);
 
@@ -199,6 +206,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{ "filter", MapVisibility.Lobby | MapVisibility.Shellmap | MapVisibility.MissionSelector },
 				});
 			};
+
+			loadMapButton.Disabled = !hasMaps;
 
 			mapEditorMenu.Get<ButtonWidget>("BACK_BUTTON").OnClick = () => SwitchMenu(MenuType.Extras);
 
@@ -495,6 +504,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			});
 		}
 
+		void OpenGameSaveBrowserPanel()
+		{
+			SwitchMenu(MenuType.None);
+			Ui.OpenWindow("GAMESAVE_BROWSER_PANEL", new WidgetArgs
+			{
+				{ "onExit", () => SwitchMenu(MenuType.Singleplayer) },
+				{ "onStart", () => { RemoveShellmapUI(); lastGameState = MenuPanel.GameSaves; } },
+				{ "isSavePanel", false },
+				{ "world", null }
+			});
+		}
+
 		protected override void Dispose(bool disposing)
 		{
 			if (disposing)
@@ -529,6 +550,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				case MenuPanel.MapEditor:
 					SwitchMenu(MenuType.MapEditor);
+					break;
+
+				case MenuPanel.GameSaves:
+					SwitchMenu(MenuType.Singleplayer);
 					break;
 			}
 

@@ -42,6 +42,7 @@
 
 ^TRUCK:
 	Inherits: ^CivilianVoxelVehicle
+	Inherits@selection: ^SelectableSupportUnit
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -65,6 +66,7 @@ TRUCKB:
 
 ICBM:
 	Inherits: ^CivilianVoxelCrusher
+	Inherits@selection: ^SelectableSupportUnit
 	Valued:
 		Cost: 1400
 	Tooltip:
@@ -97,7 +99,7 @@ BUS:
 	Mobile:
 		TurnSpeed: 5
 		Speed: 113
-		RequiresCondition: !empdisable && !loading
+		PauseOnCondition: empdisable || loading || being-captured || carried
 	Health:
 		HP: 10000
 	Armor:
@@ -123,7 +125,7 @@ PICK:
 	Mobile:
 		TurnSpeed: 5
 		Speed: 113
-		RequiresCondition: !empdisable && !loading
+		PauseOnCondition: empdisable || loading || being-captured || carried
 	Health:
 		HP: 10000
 	Armor:
@@ -149,7 +151,7 @@ CAR:
 	Mobile:
 		TurnSpeed: 5
 		Speed: 113
-		RequiresCondition: !empdisable && !loading
+		PauseOnCondition: empdisable || loading || being-captured || carried
 	Health:
 		HP: 10000
 	Armor:
@@ -175,7 +177,7 @@ WINI:
 	Mobile:
 		TurnSpeed: 5
 		Speed: 113
-		RequiresCondition: !empdisable && !loading
+		PauseOnCondition: empdisable || loading || being-captured || carried
 	Health:
 		HP: 20000
 	Armor:

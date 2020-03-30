@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -45,17 +45,11 @@ namespace OpenRA.Mods.Common.LoadScreens
 			Ui.ResetAll();
 			Game.Settings.Save();
 
-			if (Launch.Benchmark)
+			if (!string.IsNullOrEmpty(Launch.Benchmark))
 			{
-				Log.AddChannel("cpu", "cpu.csv");
-				Log.Write("cpu", "tick;time [ms]");
-
-				Log.AddChannel("render", "render.csv");
-				Log.Write("render", "frame;time [ms]");
-
 				Console.WriteLine("Saving benchmark data into {0}".F(Path.Combine(Platform.SupportDir, "Logs")));
 
-				Game.BenchmarkMode = true;
+				Game.BenchmarkMode(Launch.Benchmark);
 			}
 
 			// Join a server directly
@@ -72,6 +66,13 @@ namespace OpenRA.Mods.Common.LoadScreens
 					Game.RemoteDirectConnect(host, port);
 					return;
 				}
+			}
+
+			// Start a map directly
+			if (!string.IsNullOrEmpty(Launch.Map))
+			{
+				Game.LoadMap(Launch.Map);
+				return;
 			}
 
 			// Load a replay directly

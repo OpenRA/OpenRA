@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+   Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -166,20 +166,6 @@ InfiltrateTechCenter = function()
 	end)
 end
 
-InfiltrateRef = function()
-	Trigger.OnInfiltrated(Refinery, function()
-		player.MarkCompletedObjective(InfiltrateRefObj)
-	end)
-	Trigger.OnCapture(Refinery, function()
-		player.MarkCompletedObjective(InfiltrateRefObj)
-	end)
-	Trigger.OnKilled(Refinery, function()
-		if not player.IsObjectiveCompleted(InfiltrateRefObj) then
-			player.MarkFailedObjective(InfiltrateRefObj)
-		end
-	end)
-end
-
 Tick = function()
 	if player.HasNoRequiredUnits() then
 		player.MarkFailedObjective(InfiltrateTechCenterObj)
@@ -215,11 +201,10 @@ WorldLoaded = function()
 
 	InfiltrateTechCenterObj = player.AddPrimaryObjective("Infiltrate one of the Soviet tech centers with a spy.")
 	CaptureRadarDomeObj = player.AddSecondaryObjective("Capture the Radar Dome at the shore.")
-	InfiltrateRefObj = player.AddSecondaryObjective("Infiltrate the Refinery for money.")
 
 	Camera.Position = DefaultCameraPosition.CenterPosition
 
-	if Map.LobbyOption("difficulty") ~= "hard" then
+	if Map.LobbyOption("difficulty") == "easy" then
 		Trigger.OnEnteredProximityTrigger(SovietDefenseCam.CenterPosition, WDist.New(1024 * 7), function(a, id)
 			if a.Owner == player then
 				Trigger.RemoveProximityTrigger(id)
@@ -235,15 +220,19 @@ WorldLoaded = function()
 				end
 			end
 		end)
+	end
 
-		if Map.LobbyOption("difficulty") == "easy" then
-			Trigger.OnKilled(DefBrl1, function(a, b)
+	if Map.LobbyOption("difficulty") ~= "hard" then
+		Trigger.OnKilled(DefBrl1, function(a, b)
+			if not DefenseFlame1.IsDead then
 				DefenseFlame1.Kill()
-			end)
-			Trigger.OnKilled(DefBrl2, function(a, b)
+			end
+		end)
+		Trigger.OnKilled(DefBrl2, function(a, b)
+			if not DefenseFlame2.IsDead then
 				DefenseFlame2.Kill()
-			end)
-		end
+			end
+		end)
 	end
 
 	Utils.Do(BadGuys, function(a)
@@ -264,6 +253,5 @@ WorldLoaded = function()
 	end)
 	CaptureRadarDome()
 	InfiltrateTechCenter()
-	InfiltrateRef()
 	Trigger.AfterDelay(0, ActivateAI)
 end

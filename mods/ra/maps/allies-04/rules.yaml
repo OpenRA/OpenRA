@@ -50,6 +50,7 @@ MCV:
 TRUK:
 	Buildable:
 		Prerequisites: ~disabled
+	-SpawnActorOnDeath:
 
 SPEN:
 	Buildable:
@@ -103,6 +104,6 @@ MECH:
 	Buildable:
 		Prerequisites: ~disabled
 
-HIJACKER:
+THF:
 	Buildable:
 		Prerequisites: ~disabled

@@ -35,6 +35,7 @@ Players:
 		Color: E2E6F5
 		Allies: Soviet
 		Enemies: USSR, Creeps
+		Bot: campaign
 	PlayerReference@USSR:
 		Name: USSR
 		AllowBots: False
@@ -53,10 +54,12 @@ Players:
 		Faction: soviet
 		Color: FE1100
 		Allies: USSR, Greece
+		Bot: campaign
 	PlayerReference@Spain:
 		Name: Spain
 		Faction: allies
 		Color: 0CBB4A
+		Bot: campaign
 
 Actors:
 	Actor0: boxes01

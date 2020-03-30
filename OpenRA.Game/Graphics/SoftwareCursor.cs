@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -21,6 +21,8 @@ namespace OpenRA.Graphics
 		void Render(Renderer renderer);
 		void SetCursor(string cursor);
 		void Tick();
+		void Lock();
+		void Unlock();
 	}
 
 	public sealed class SoftwareCursor : ICursor
@@ -30,6 +32,9 @@ namespace OpenRA.Graphics
 		readonly Dictionary<string, Sprite[]> sprites = new Dictionary<string, Sprite[]>();
 		readonly CursorProvider cursorProvider;
 		readonly SheetBuilder sheetBuilder;
+
+		bool isLocked = false;
+		int2 lockedPosition;
 
 		public SoftwareCursor(CursorProvider cursorProvider)
 		{
@@ -77,7 +82,7 @@ namespace OpenRA.Graphics
 				return;
 
 			var cursorSequence = cursorProvider.GetCursorSequence(cursorName);
-			var cursorSprite = sprites[cursorName][((int)cursorFrame % cursorSequence.Length)];
+			var cursorSprite = sprites[cursorName][(int)cursorFrame % cursorSequence.Length];
 			var cursorSize = CursorProvider.CursorViewportZoomed ? 2.0f * cursorSprite.Size : cursorSprite.Size;
 
 			var cursorOffset = CursorProvider.CursorViewportZoomed ?
@@ -85,10 +90,24 @@ namespace OpenRA.Graphics
 				cursorSequence.Hotspot + (0.5f * cursorSprite.Size.XY).ToInt2();
 
 			renderer.SetPalette(palette);
+			var mousePos = isLocked ? lockedPosition : Viewport.LastMousePos;
 			renderer.SpriteRenderer.DrawSprite(cursorSprite,
-				Viewport.LastMousePos - cursorOffset,
+				mousePos - cursorOffset,
 				paletteReferences[cursorSequence.Palette],
 				cursorSize);
+		}
+
+		public void Lock()
+		{
+			Game.Renderer.Window.SetRelativeMouseMode(true);
+			lockedPosition = Viewport.LastMousePos;
+			isLocked = true;
+		}
+
+		public void Unlock()
+		{
+			Game.Renderer.Window.SetRelativeMouseMode(false);
+			isLocked = false;
 		}
 
 		public void Dispose()

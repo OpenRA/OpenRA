@@ -23,7 +23,7 @@ Container@CHAT_CONTAINER:
 				ScrollPanel@CHAT_SCROLLPANEL:
 					Width: PARENT_RIGHT
 					Height: PARENT_BOTTOM - 30
-					TopBottomSpacing: 2
+					TopBottomSpacing: 3
 					ItemSpacing: 2
 					Children:
 						Container@CHAT_TEMPLATE:
@@ -34,13 +34,11 @@ Container@CHAT_CONTAINER:
 								Label@NAME:
 									X: 3
 									Width: 50
-									Height: 15
-									VAlign: Top
+									Height: 16
 									Shadow: True
 								Label@TEXT:
 									X: 12
 									Width: PARENT_RIGHT - 17
-									Height: 15
+									Height: 16
 									WordWrap: true
-									VAlign: Top
 									Shadow: True

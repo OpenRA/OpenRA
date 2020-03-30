@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,9 +10,9 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -20,8 +20,9 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Adds the hard-coded shroud palette to the game")]
 	class ShroudPaletteInfo : ITraitInfo
 	{
+		[PaletteDefinition]
+		[FieldLoader.Require]
 		[Desc("Internal palette name")]
-		[FieldLoader.Require, PaletteDefinition]
 		public readonly string Name = "shroud";
 
 		[Desc("Palette type")]

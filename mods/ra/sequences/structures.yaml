@@ -83,6 +83,7 @@ proc:
 	idle:
 		ZOffset: -1c511
 	damaged-idle:
+		Start: 1
 		ZOffset: -1c511
 	idle-top: proctop
 		ZOffset: 0
@@ -191,6 +192,8 @@ tent:
 		Length: *
 	icon: tenticon
 		UseTilesetExtension: false
+	fake-icon: tenficon
+		UseTilesetExtension: false
 
 kenn:
 	idle:
@@ -254,6 +257,8 @@ weap:
 	idle:
 	damaged-idle:
 		Start: 1
+	place: weapmake
+		Start: 14
 	make: weapmake
 		Length: *
 	build-top: weap3
@@ -278,10 +283,12 @@ hpad:
 	active:
 		Start: 1
 		Length: 6
+		Tick: 100
 		ZOffset: -1023
 	damaged-active:
 		Start: 8
 		Length: 6
+		Tick: 100
 		ZOffset: -1023
 	make: hpadmake
 		Length: *

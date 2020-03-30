@@ -18,6 +18,7 @@ V19:
 		ValidStances: Neutral, Enemy
 	SpawnActorOnDeath:
 		Actor: V19.Husk
+	UpdatesDerrickCount:
 
 V19.Husk:
 	Inherits: ^CivBuildingHusk
@@ -38,7 +39,6 @@ HOSP:
 	Inherits@shape: ^2x2Shape
 	Selectable:
 		Bounds: 48,48
-		Priority: 0
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -96,9 +96,15 @@ BIO:
 	ProductionQueue:
 		Type: Biolab
 		Group: Infantry
-		LowPowerSlowdown: 3
+		LowPowerModifier: 300
+		ReadyAudio: UnitReady
+		BlockedAudio: NoBuild
 		LimitedAudio: BuildingInProgress
+		QueuedAudio: Training
+		OnHoldAudio: OnHold
+		CancelledAudio: Cancelled
 	ProductionBar:
+		ProductionType: Biolab
 	RallyPoint:
 		Offset: -1,-1
 	SpawnActorOnDeath:

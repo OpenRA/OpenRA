@@ -1,0 +1,134 @@
+Player:
+	PlayerResources:
+		DefaultCash: 1500
+World:
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			easy: Easy
+			normal: Normal
+			hard: Hard
+		Default: easy
+	LuaScript:
+		Scripts: ant-01.lua, ant-attack.lua
+	MissionData:
+		BackgroundVideo: antintro.vqa
+		Briefing: We've lost contact with one of our outposts. Before it went off-line, we recieved a brief communique about giant ants. We're unsure what to make of this report, so we want you to investigate.  \n\nScout the area, bring the outpost back on-line, and report your findings. If there is a threat, reinforcements will be sent in to help you.  \n\nKeep the base functional and radio contact open -- we don't want to lose the outpost again.
+
+^Palettes:
+	IndexedPlayerPalette@scoutant:
+		BaseName: scoutant
+		BasePalette: player
+		RemapIndex: 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95
+		PlayerIndex:
+			AntMan: 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 123, 123, 123, 123
+		AllowModifiers: True
+	IndexedPlayerPalette@warriorant:
+		BaseName: warriorant
+		BasePalette: player
+		RemapIndex: 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95
+		PlayerIndex:
+			AntMan: 229, 230, 231, 232, 233, 234, 235, 8, 236, 237, 238, 239, 221, 222, 223, 223
+		AllowModifiers: True
+	IndexedPlayerPalette@fireant:
+		BaseName: fireant
+		BasePalette: player
+		RemapIndex: 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95
+		PlayerIndex:
+			AntMan: 158, 158, 159, 159, 229, 229, 216, 216, 217, 217, 218, 218, 221, 222, 223, 223
+		AllowModifiers: True
+
+WarriorAnt:
+	RenderSprites:
+		PlayerPalette: warriorant
+
+ScoutAnt:
+	RenderSprites:
+		PlayerPalette: scoutant
+
+FireAnt:
+	RenderSprites:
+		PlayerPalette: fireant
+
+SPY:
+	Buildable:
+		Prerequisites: ~disabled
+
+SPY.England:
+	Buildable:
+		Prerequisites: ~disabled
+
+MECH:
+	Buildable:
+		Prerequisites: ~disabled
+
+MRJ:
+	Buildable:
+		Prerequisites: ~disabled
+
+APC:
+	Buildable:
+		Prerequisites: ~disabled
+
+STNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+TRUK:
+	Buildable:
+		Prerequisites: ~disabled
+
+SPY:
+	Buildable:
+		Prerequisites: ~disabled
+
+SNIPER:
+	Buildable:
+		Prerequisites: ~disabled
+
+MGG:
+	Buildable:
+		Prerequisites: ~disabled
+
+1TNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+2TNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+E3:
+	Buildable:
+		Prerequisites: ~disabled
+
+E2:
+	Buildable:
+		Prerequisites: ~tent
+
+E7:
+	Buildable:
+		Prerequisites: ~disabled
+
+ARTY:
+	Buildable:
+		Prerequisites: ~disabled
+
+MCV:
+	Buildable:
+		Prerequisites: ~disabled
+
+TRAN.Insertion:
+	Inherits: TRAN
+	WithFacingSpriteBody:
+	RenderSprites:
+		Image: tran
+	Interactable:
+	-Selectable:
+
+MONEYCRATE:
+	GiveCashCrateAction:
+		Amount: 2000
+		SelectionShares: 1
+		UseCashTick: true

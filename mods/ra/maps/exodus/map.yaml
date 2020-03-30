@@ -16,6 +16,8 @@ Visibility: Lobby, MissionSelector
 
 Categories: Mission, Cooperative Mission
 
+LockPreview: True
+
 Players:
 	PlayerReference@Neutral:
 		Name: Neutral
@@ -53,11 +55,13 @@ Players:
 		Color: 5CC1A3
 		Allies: Allies1, Allies2
 		Enemies: Soviets
+		Bot: campaign
 	PlayerReference@Soviets:
 		Name: Soviets
 		Faction: soviet
 		Color: FE1100
 		Enemies: Allies1, Allies2
+		Bot: campaign
 
 Actors:
 	Actor239: dog

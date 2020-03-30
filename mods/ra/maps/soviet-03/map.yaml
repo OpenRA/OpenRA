@@ -34,17 +34,20 @@ Players:
 		Color: E2E6F5
 		Allies: Greece, BadGuy
 		Enemies: USSR
+		Bot: campaign
 	PlayerReference@BadGuy:
 		Name: BadGuy
 		Faction: soviet
 		Color: FE1100
 		Allies: England, Greece, USSR
+		Bot: campaign
 	PlayerReference@Greece:
 		Name: Greece
 		Faction: allies
 		Color: E2E6F5
 		Allies: England, BadGuy
 		Enemies: USSR, Creeps
+		Bot: campaign
 	PlayerReference@USSR:
 		Name: USSR
 		AllowBots: False
@@ -155,18 +158,6 @@ Actors:
 	Actor31: t14
 		Location: 60,55
 		Owner: Neutral
-	Actor32: tc02
-		Location: 18,51
-		Owner: Neutral
-	Actor33: tc01
-		Location: 7,67
-		Owner: Neutral
-	Actor34: tc03
-		Location: 7,61
-		Owner: Neutral
-	Actor35: t15
-		Location: 19,47
-		Owner: Neutral
 	Actor36: tc04
 		Location: 60,31
 		Owner: Neutral
@@ -179,15 +170,6 @@ Actors:
 	Actor39: tc03
 		Location: 63,29
 		Owner: Neutral
-	Actor40: t10
-		Location: 14,46
-		Owner: Neutral
-	Actor41: tc03
-		Location: 11,48
-		Owner: Neutral
-	Actor42: t01
-		Location: 11,45
-		Owner: Neutral
 	Actor43: tc04
 		Location: 45,42
 		Owner: Neutral
@@ -196,12 +178,6 @@ Actors:
 		Owner: Neutral
 	Actor45: t07
 		Location: 63,39
-		Owner: Neutral
-	Actor46: t07
-		Location: 14,61
-		Owner: Neutral
-	Actor47: t12
-		Location: 18,56
 		Owner: Neutral
 	Actor48: tc02
 		Location: 70,35
@@ -233,41 +209,11 @@ Actors:
 	Actor57: tc02
 		Location: 44,34
 		Owner: Neutral
-	Actor58: tc05
-		Location: 21,55
-		Owner: Neutral
-	Actor59: tc04
-		Location: 20,43
-		Owner: Neutral
-	Actor60: tc05
-		Location: 17,43
-		Owner: Neutral
-	Actor61: t12
-		Location: 18,45
-		Owner: Neutral
-	Actor62: t14
-		Location: 21,44
-		Owner: Neutral
-	Actor63: tc05
-		Location: 5,38
-		Owner: Neutral
-	Actor64: tc02
-		Location: 7,36
-		Owner: Neutral
-	Actor65: tc01
-		Location: 5,37
-		Owner: Neutral
-	Actor66: t16
-		Location: 5,39
-		Owner: Neutral
 	Actor67: tc03
 		Location: 64,37
 		Owner: Neutral
 	Actor68: t02
 		Location: 68,53
-		Owner: Neutral
-	Actor69: t03
-		Location: 17,69
 		Owner: Neutral
 	Actor70: tc04
 		Location: 50,48
@@ -299,38 +245,14 @@ Actors:
 	Actor79: t14
 		Location: 83,58
 		Owner: Neutral
-	Actor80: tc02
-		Location: 12,52
-		Owner: Neutral
-	Actor81: t16
-		Location: 17,59
-		Owner: Neutral
-	Actor82: tc03
-		Location: 5,65
-		Owner: Neutral
-	Actor83: tc02
-		Location: 7,52
-		Owner: Neutral
 	Actor84: tc02
 		Location: 27,31
-		Owner: Neutral
-	Actor85: tc01
-		Location: 21,35
-		Owner: Neutral
-	Actor86: tc03
-		Location: 21,34
-		Owner: Neutral
-	Actor87: t14
-		Location: 21,39
 		Owner: Neutral
 	Actor88: tc05
 		Location: 67,22
 		Owner: Neutral
 	Actor89: t17
 		Location: 85,32
-		Owner: Neutral
-	Actor90: tc01
-		Location: 18,29
 		Owner: Neutral
 	Actor91: t02
 		Location: 39,30
@@ -521,35 +443,6 @@ Actors:
 	Actor171: brl3
 		Location: 81,31
 		Owner: Creeps
-	Actor172: e1
-		Location: 16,31
-		Owner: Greece
-		Facing: 128
-		SubCell: 4
-	Actor173: e1
-		Location: 16,31
-		Owner: Greece
-		Facing: 192
-		SubCell: 0
-	Actor174: e1
-		Location: 17,33
-		Owner: Greece
-		Facing: 160
-		SubCell: 1
-	Actor175: e1
-		Location: 17,33
-		Owner: Greece
-		Facing: 128
-		SubCell: 4
-	Actor176: e3
-		Location: 17,33
-		Owner: Greece
-		Facing: 128
-		SubCell: 2
-	Actor177: e3
-		Location: 17,31
-		Owner: Greece
-		SubCell: 1
 	Actor183: e1
 		Location: 77,61
 		Owner: Greece
@@ -896,14 +789,8 @@ Actors:
 	waypoint56: waypoint
 		Location: 40,70
 		Owner: Neutral
-	waypoint57: waypoint
-		Location: 39,73
-		Owner: Neutral
 	waypoint60: waypoint
 		Location: 58,22
-		Owner: Neutral
-	waypoint61: waypoint
-		Location: 58,20
 		Owner: Neutral
 	waypoint79: waypoint
 		Location: 93,65
@@ -1048,7 +935,7 @@ Actors:
 		Location: 90,39
 		Owner: Neutral
 	HelicopterEscape: waypoint
-		Location: 20,33
+		Location: 24,27
 		Owner: Neutral
 	HelicopterGoal: waypoint
 		Location: 31,33

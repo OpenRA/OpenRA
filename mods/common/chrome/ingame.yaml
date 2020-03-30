@@ -10,7 +10,8 @@ Container@INGAME_ROOT:
 				TakeScreenshotKey: TakeScreenshot
 				MuteAudioKey: ToggleMute
 		LogicKeyListener@WORLD_KEYHANDLER:
-			Logic: CycleBasesHotkeyLogic, CycleProductionActorsHotkeyLogic, JumpToLastEventHotkeyLogic, JumpToSelectedActorsHotkeyLogic, TogglePixelDoubleHotkeyLogic, TogglePlayerStanceColorHotkeyLogic, CycleStatusBarsHotkeyLogic, PauseHotkeyLogic
+			Logic: CycleBasesHotkeyLogic, CycleProductionActorsHotkeyLogic, JumpToLastEventHotkeyLogic, JumpToSelectedActorsHotkeyLogic, TogglePixelDoubleHotkeyLogic, TogglePlayerStanceColorHotkeyLogic, CycleStatusBarsHotkeyLogic, PauseHotkeyLogic, RemoveFromControlGroupHotkeyLogic
+				RemoveFromControlGroupKey: RemoveFromControlGroup
 				CycleBasesKey: CycleBase
 				CycleProductionActorsKey: CycleProductionBuildings
 				JumpToLastEventKey: ToLastEvent
@@ -26,7 +27,7 @@ Container@INGAME_ROOT:
 					Logic: DisconnectWatcherLogic
 				Label@MISSION_TEXT:
 					X: WINDOW_RIGHT / 2 - 256
-					Y: 22
+					Y: 23
 					Width: 512
 					Height: 25
 					Font: Bold
@@ -59,3 +60,4 @@ Container@INGAME_ROOT:
 				Container@PERF_ROOT:
 		Container@MENU_ROOT:
 		TooltipContainer@TOOLTIP_CONTAINER:
+		MouseAttachment@MOUSE_ATTATCHMENT:

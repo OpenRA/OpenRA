@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -139,8 +139,11 @@ namespace OpenRA.Mods.Common.Traits.Render
 			dirty = false;
 		}
 
-		protected override void OnBuildComplete(Actor self)
+		protected override void TraitEnabled(Actor self)
 		{
+			base.TraitEnabled(self);
+			dirty = true;
+
 			DefaultAnimation.PlayFetchIndex(NormalizeSequence(self, Info.Sequence), () => adjacent);
 			UpdateNeighbours(self);
 
@@ -162,13 +165,13 @@ namespace OpenRA.Mods.Common.Traits.Render
 		{
 			UpdateNeighbours(self);
 		}
-
-		protected override void TraitEnabled(Actor self) { dirty = true; }
 	}
 
 	public class RuntimeNeighbourInit : IActorInit<Dictionary<CPos, string[]>>, ISuppressInitExport
 	{
-		[FieldFromYamlKey] readonly Dictionary<CPos, string[]> value = null;
+		[FieldFromYamlKey]
+		readonly Dictionary<CPos, string[]> value = null;
+
 		public RuntimeNeighbourInit() { }
 		public RuntimeNeighbourInit(Dictionary<CPos, string[]> init) { value = init; }
 		public Dictionary<CPos, string[]> Value(World world) { return value; }

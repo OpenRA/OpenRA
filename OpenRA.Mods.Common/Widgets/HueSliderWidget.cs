@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,9 +9,8 @@
  */
 #endregion
 
-using System.Drawing;
-using System.Drawing.Imaging;
 using OpenRA.Graphics;
+using OpenRA.Primitives;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
@@ -21,29 +20,21 @@ namespace OpenRA.Mods.Common.Widgets
 		Sprite hueSprite;
 
 		public HueSliderWidget() { }
-		public HueSliderWidget(HueSliderWidget other) : base(other) { }
+		public HueSliderWidget(HueSliderWidget other)
+			: base(other) { }
 
 		public override void Initialize(WidgetArgs args)
 		{
 			base.Initialize(args);
 
-			using (var hueBitmap = new Bitmap(256, 256))
-			{
-				var hueSheet = new Sheet(SheetType.BGRA, new Size(256, 256));
-				hueSprite = new Sprite(hueSheet, new Rectangle(0, 0, 256, 1), TextureChannel.RGBA);
+			var hueSheet = new Sheet(SheetType.BGRA, new Size(256, 1));
+			hueSprite = new Sprite(hueSheet, new Rectangle(0, 0, 256, 1), TextureChannel.RGBA);
 
-				var bitmapData = hueBitmap.LockBits(hueBitmap.Bounds(),
-					ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
-				unsafe
-				{
-					var c = (int*)bitmapData.Scan0;
-					for (var h = 0; h < 256; h++)
-						*(c + h) = HSLColor.FromHSV(h / 255f, 1, 1).RGB.ToArgb();
-				}
+			var hueData = new uint[1, 256];
+			for (var x = 0; x < 256; x++)
+				hueData[0, x] = (uint)Color.FromAhsv(x / 255f, 1, 1).ToArgb();
 
-				hueBitmap.UnlockBits(bitmapData);
-				hueSheet.GetTexture().SetData(hueBitmap);
-			}
+			hueSheet.GetTexture().SetData(hueData);
 		}
 
 		public override void Draw()

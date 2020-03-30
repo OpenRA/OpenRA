@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,9 +10,9 @@
 #endregion
 
 using System;
-using System.Drawing;
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -62,13 +62,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			parent.RemoveChildren();
 
-			foreach (var o in mo.Objectives.OrderBy(o => o.Type))
+			foreach (var objective in mo.Objectives.OrderBy(o => o.Type))
 			{
-				var objective = o; // Work around the loop closure issue in older versions of C#
 				var widget = template.Clone();
-
 				var label = widget.Get<LabelWidget>("OBJECTIVE_TYPE");
-				label.GetText = () => objective.Type == ObjectiveType.Primary ? "Primary" : "Secondary";
+				label.GetText = () => objective.Type;
 
 				var checkbox = widget.Get<CheckboxWidget>("OBJECTIVE_STATUS");
 				checkbox.IsChecked = () => objective.State != ObjectiveState.Incomplete;

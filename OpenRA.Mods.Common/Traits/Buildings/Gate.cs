@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	public class Gate : PausableConditionalTrait<GateInfo>, ITick, ITemporaryBlocker, IBlocksProjectiles,
-		INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyBlockingMove, ISync
+		INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyBlockingMove
 	{
 		readonly Actor self;
 		readonly Building building;
@@ -42,7 +42,10 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly IEnumerable<CPos> Footprint;
 
 		public readonly int OpenPosition;
-		[Sync] public int Position { get; private set; }
+
+		[Sync]
+		public int Position { get; private set; }
+
 		int desiredPosition;
 		int remainingOpenTime;
 
@@ -50,7 +53,7 @@ namespace OpenRA.Mods.Common.Traits
 			: base(info)
 		{
 			self = init.Self;
-			OpenPosition = Info.TransitionDelay;
+			Position = OpenPosition = Info.TransitionDelay;
 			building = self.Trait<Building>();
 			blockedPositions = building.Info.Tiles(self.Location);
 			Footprint = blockedPositions;
@@ -58,7 +61,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void ITick.Tick(Actor self)
 		{
-			if (IsTraitDisabled || IsTraitPaused || building.Locked || !building.BuildComplete)
+			if (IsTraitDisabled || IsTraitPaused)
 				return;
 
 			if (desiredPosition < Position)
@@ -125,7 +128,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool CanRemoveBlockage(Actor self, Actor blocking)
 		{
-			return !IsTraitDisabled && !IsTraitPaused && building.BuildComplete && !building.Locked && blocking.AppearsFriendlyTo(self);
+			return !IsTraitDisabled && !IsTraitPaused && blocking.AppearsFriendlyTo(self);
 		}
 
 		bool IsBlocked()

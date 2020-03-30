@@ -4,7 +4,7 @@ Container@LOBBY_PLAYER_BIN:
 	Children:
 		Container@LABEL_CONTAINER:
 			X: 5
-			Y: 0 - 27
+			Y: 0 - 26
 			Width: PARENT_RIGHT
 			Height: PARENT_BOTTOM
 			Children:
@@ -194,7 +194,6 @@ Container@LOBBY_PLAYER_BIN:
 							Template: ANONYMOUS_PLAYER_TOOLTIP
 						Label@NAME:
 							X: 39
-							Y: 0 - 1
 							Width: 146
 							Height: 25
 							Text: Name
@@ -276,7 +275,6 @@ Container@LOBBY_PLAYER_BIN:
 					Children:
 						Label@NAME:
 							X: 20
-							Y: 0 - 1
 							Width: 165
 							Height: 25
 							Text: Name
@@ -390,7 +388,6 @@ Container@LOBBY_PLAYER_BIN:
 							Template: ANONYMOUS_PLAYER_TOOLTIP
 						Label@NAME:
 							X: 39
-							Y: 0 - 1
 							Width: 160
 							Height: 25
 							Text: Name
@@ -463,7 +460,7 @@ ScrollPanel@FACTION_DROPDOWN_TEMPLATE:
 				Label@LABEL:
 					Font: TinyBold
 					Width: PARENT_RIGHT
-					Height: 10
+					Height: 13
 					Align: Center
 		ScrollItem@TEMPLATE:
 			Width: PARENT_RIGHT - 27

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -18,6 +18,7 @@ namespace OpenRA
 	public struct ChannelInfo
 	{
 		public string Filename;
+		public bool IsTimestamped;
 		public TextWriter Writer;
 	}
 
@@ -30,7 +31,7 @@ namespace OpenRA
 			var path = Platform.SupportDir + "Logs";
 			Directory.CreateDirectory(path);
 
-			for (var i = 0;; i++)
+			for (var i = 0; ; i++)
 				yield return Path.Combine(path, i > 0 ? "{0}.{1}".F(baseFilename, i) : baseFilename);
 		}
 
@@ -44,7 +45,7 @@ namespace OpenRA
 			return info;
 		}
 
-		public static void AddChannel(string channelName, string baseFilename)
+		public static void AddChannel(string channelName, string baseFilename, bool isTimestamped = false)
 		{
 			lock (Channels)
 			{
@@ -52,7 +53,7 @@ namespace OpenRA
 
 				if (string.IsNullOrEmpty(baseFilename))
 				{
-					Channels.Add(channelName, new ChannelInfo());
+					Channels.Add(channelName, default(ChannelInfo));
 					return;
 				}
 
@@ -66,6 +67,7 @@ namespace OpenRA
 							new ChannelInfo
 							{
 								Filename = filename,
+								IsTimestamped = isTimestamped,
 								Writer = TextWriter.Synchronized(writer)
 							});
 
@@ -75,22 +77,35 @@ namespace OpenRA
 			}
 		}
 
-		public static void Write(string channel, string value)
+		public static void Write(string channelName, string value)
 		{
-			var writer = Channel(channel).Writer;
+			var channel = Channel(channelName);
+			var writer = channel.Writer;
 			if (writer == null)
 				return;
 
-			writer.WriteLine(value);
+			if (!channel.IsTimestamped)
+				writer.WriteLine(value);
+			else
+			{
+				var timestamp = DateTime.Now.ToString(Game.Settings.Server.TimestampFormat);
+				writer.WriteLine("[{0}] {1}", timestamp, value);
+			}
 		}
 
-		public static void Write(string channel, string format, params object[] args)
+		public static void Write(string channelName, string format, params object[] args)
 		{
-			var writer = Channel(channel).Writer;
-			if (writer == null)
+			var channel = Channel(channelName);
+			if (channel.Writer == null)
 				return;
 
-			writer.WriteLine(format, args);
+			if (!channel.IsTimestamped)
+				channel.Writer.WriteLine(format, args);
+			else
+			{
+				var timestamp = DateTime.Now.ToString(Game.Settings.Server.TimestampFormat);
+				channel.Writer.WriteLine("[{0}] {1}", timestamp, format.F(args));
+			}
 		}
 	}
 }

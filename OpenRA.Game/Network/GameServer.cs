@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -13,7 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using OpenRA.Graphics;
+using OpenRA.Primitives;
 
 namespace OpenRA.Network
 {
@@ -21,7 +21,11 @@ namespace OpenRA.Network
 	{
 		public readonly string Name;
 		public readonly string Fingerprint;
+<<<<<<< HEAD
 		public readonly HSLColor Color;
+=======
+		public readonly Color Color;
+>>>>>>> e82c30fbabc008a988936025f3250729d9a22b4c
 		public readonly string Faction;
 		public readonly int Team;
 		public readonly int SpawnPoint;

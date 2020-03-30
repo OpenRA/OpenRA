@@ -70,7 +70,8 @@ E5:
 
 HARV:
 	Harvester:
-		SearchFromOrderRadius: 30
+		SearchFromProcRadius: 30
+		SearchFromHarvesterRadius: 30
 
 HTNK:
 	Buildable:
@@ -138,12 +139,14 @@ HPAD.IN:
 	ProvidesPrerequisite:
 		Prerequisite: hpad
 	Capturable:
-		CaptureThreshold: 100
+		Types: building
 	Building:
 		Footprint: x_ xx
 		BuildSounds: placbldg.aud, build5.aud
 		UndeploySounds: cashturn.aud
 	-Sellable:
+	Demolishable:
+		-Condition:
 	-Power:
 
 ORCA.IN:

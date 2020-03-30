@@ -1,5 +1,6 @@
 #!/bin/sh
 
+<<<<<<< HEAD
 # Make sure the user has a sufficiently recent version of mono on the PATH
 MINIMUM_MONO_VERSION="4.2"
 
@@ -25,10 +26,11 @@ mono_missing_or_old() {
   return 1
 }
 
+=======
+>>>>>>> e82c30fbabc008a988936025f3250729d9a22b4c
 HERE="$(dirname "$(readlink -f "${0}")")"
-export PATH="${HERE}"/usr/bin/:"${PATH}"
-export XDG_DATA_DIRS="${HERE}"/usr/share/:"${XDG_DATA_DIRS}"
 
+<<<<<<< HEAD
 # If mono is not installed, and the user has apt-cache, apt-url,
 # xdg-open, and either zenity or kdialog, then we can prompt to
 # automatically install the mono-complete package
@@ -66,11 +68,45 @@ if [ ! -d "/usr/share/.mono/certs" ] && [ ! -d "${HOME}/.config/.mono/certs" ]; 
   elif [ -f "/etc/ssl/certs/ca-certificates.crt" ]; then
     cert-sync --quiet --user /etc/ssl/certs/ca-certificates.crt
   fi
+=======
+# Stash original environment values so they can be restored
+# when switching to other mods using restore-environment
+export OPENRA_ORIG_PATH="${PATH}"
+export OPENRA_ORIG_XDG_DATA_DIRS="${XDG_DATA_DIRS}"
+export OPENRA_ORIG_DYLD_LIBRARY_PATH="${DYLD_LIBRARY_PATH}"
+export OPENRA_ORIG_LD_LIBRARY_PATH="${LD_LIBRARY_PATH}"
+export OPENRA_ORIG_MONO_PATH="${MONO_PATH}"
+export OPENRA_ORIG_MONO_CFG_DIR="${MONO_CFG_DIR}"
+export OPENRA_ORIG_MONO_CONFIG="${MONO_CONFIG}"
+
+# Override runtime paths to use bundled mono and shared libraries
+export PATH="${HERE}/usr/bin:${PATH}"
+export XDG_DATA_DIRS="${HERE}/usr/share:${XDG_DATA_DIRS}"
+export DYLD_LIBRARY_PATH="${HERE}/usr/lib:${DYLD_LIBRARY_PATH}"
+export LD_LIBRARY_PATH="${HERE}/usr/lib:${LD_LIBRARY_PATH}"
+export MONO_PATH="${HERE}/usr/lib/mono/4.5"
+export MONO_CFG_DIR="${HERE}/etc"
+export MONO_CONFIG="${HERE}/etc/mono/config"
+
+# Update/create the mono certificate store to enable https web queries
+if [ -f "/etc/pki/tls/certs/ca-bundle.crt" ]; then
+  mono "${HERE}/usr/lib/mono/4.5/cert-sync.exe" --quiet --user /etc/pki/tls/certs/ca-bundle.crt
+elif [ -f "/etc/ssl/certs/ca-certificates.crt" ]; then
+  mono "${HERE}/usr/lib/mono/4.5/cert-sync.exe" --quiet --user /etc/ssl/certs/ca-certificates.crt
+else
+  echo "WARNING: Unable to sync system certificate store - https requests will fail"
+>>>>>>> e82c30fbabc008a988936025f3250729d9a22b4c
 fi
 
 # Run the game or server
 if [ -n "$1" ] && [ "$1" = "--server" ]; then
+  # Drop the --server argument
+  shift
   exec "openra-{MODID}-server" "$@"
+elif [ -n "$1" ] && [ "$1" = "--utility" ]; then
+  # Drop the --utility argument
+  shift
+  exec "openra-{MODID}-utility" "$@"
 else
   exec "openra-{MODID}" "$@"
 fi

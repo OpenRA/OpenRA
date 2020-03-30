@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,20 +9,18 @@
  */
 #endregion
 
-using System.Drawing;
-using System.Linq;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Produce a unit on the closest map edge cell and move into the world.")]
-	class ProductionFromMapEdgeInfo : ProductionInfo, UsesInit<ProductionSpawnLocationInit>
+	class ProductionFromMapEdgeInfo : ProductionInfo
 	{
 		public override object Create(ActorInitializer init) { return new ProductionFromMapEdge(init, this); }
 	}
 
-	class ProductionFromMapEdge : Production, INotifyCreated
+	class ProductionFromMapEdge : Production
 	{
 		readonly CPos? spawnLocation;
 		readonly DomainIndex domainIndex;
@@ -36,8 +34,10 @@ namespace OpenRA.Mods.Common.Traits
 				spawnLocation = init.Get<ProductionSpawnLocationInit, CPos>();
 		}
 
-		void INotifyCreated.Created(Actor self)
+		protected override void Created(Actor self)
 		{
+			base.Created(self);
+
 			rp = self.TraitOrDefault<RallyPoint>();
 		}
 
@@ -93,18 +93,13 @@ namespace OpenRA.Mods.Common.Traits
 				if (move != null)
 					newUnit.QueueActivity(move.MoveTo(destination, 2));
 
-				newUnit.SetTargetLine(Target.FromCell(self.World, destination), Color.Green, false);
-
 				if (!self.IsDead)
 					foreach (var t in self.TraitsImplementing<INotifyProduction>())
 						t.UnitProduced(self, newUnit, destination);
 
 				var notifyOthers = self.World.ActorsWithTrait<INotifyOtherProduction>();
 				foreach (var notify in notifyOthers)
-					notify.Trait.UnitProducedByOther(notify.Actor, self, newUnit, productionType);
-
-				foreach (var t in newUnit.TraitsImplementing<INotifyBuildComplete>())
-					t.BuildingComplete(newUnit);
+					notify.Trait.UnitProducedByOther(notify.Actor, self, newUnit, productionType, td);
 			});
 
 			return true;
@@ -113,7 +108,9 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class ProductionSpawnLocationInit : IActorInit<CPos>
 	{
-		[FieldFromYamlKey] readonly CPos value = CPos.Zero;
+		[FieldFromYamlKey]
+		readonly CPos value = CPos.Zero;
+
 		public ProductionSpawnLocationInit() { }
 		public ProductionSpawnLocationInit(CPos init) { value = init; }
 		public CPos Value(World world) { return value; }

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override void Activate(Actor collector)
 		{
-			foreach (var healable in collector.World.ActorsWithTrait<Health>().Where(tp => tp.Actor.Owner == collector.Owner))
+			foreach (var healable in collector.World.ActorsWithTrait<IHealth>().Where(tp => tp.Actor.Owner == collector.Owner))
 				if (!healable.Trait.IsDead)
 					healable.Trait.InflictDamage(healable.Actor, healable.Actor, new Damage(-(healable.Trait.MaxHP - healable.Trait.HP)), true);
 

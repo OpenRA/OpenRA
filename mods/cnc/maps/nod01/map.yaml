@@ -28,12 +28,14 @@ Players:
 		Name: Villagers
 		NonCombatant: True
 		Faction: gdi
+		Bot: campaign
 	PlayerReference@GDI:
 		Name: GDI
 		Faction: gdi
 		Color: F5D378
 		Allies: Villagers
 		Enemies: Nod
+		Bot: campaign
 	PlayerReference@Nod:
 		Name: Nod
 		Playable: True
@@ -143,30 +145,6 @@ Actors:
 		Owner: Neutral
 	Actor16: t08
 		Location: 55,37
-		Owner: Neutral
-	Actor17: t08
-		Location: 30,51
-		Owner: Neutral
-	Actor18: t08
-		Location: 58,53
-		Owner: Neutral
-	Actor19: t08
-		Location: 43,56
-		Owner: Neutral
-	Actor20: rock1
-		Location: 24,58
-		Owner: Neutral
-	Actor21: t08
-		Location: 52,58
-		Owner: Neutral
-	Actor22: rock1
-		Location: 55,58
-		Owner: Neutral
-	Actor23: t08
-		Location: 29,59
-		Owner: Neutral
-	Actor24: rock2
-		Location: 31,61
 		Owner: Neutral
 	Actor27: jeep
 		Location: 31,28

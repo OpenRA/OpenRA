@@ -39,7 +39,9 @@ Speech:
 		Repairing: repair1
 		SelectTarget: select1
 		SilosNeeded: silos1
-		StartGame:
+		StartGame: 
+		GameLoaded:
+		GameSaved: scold1
 		Training: bldging1
 		UnitDestroyed: dead1
 		UnitLost: unitlost
@@ -56,6 +58,7 @@ Sounds:
 		Beepy6: beepy6
 		CashTickDown: tone16
 		CashTickUp: tone15
+			VolumeModifier: 0.33
 		ChatLine: scold1
 		ClickDisabledSound: scold2
 		ClickSound: button
@@ -78,7 +81,6 @@ Sounds:
 		SignalFlareNorth: flaren1
 		SignalFlareSouth: flares1
 		SignalFlareWest: flarew1
-		TabClick: button
 		Target1: target1
 		Target2: target2
 		Target3: target3

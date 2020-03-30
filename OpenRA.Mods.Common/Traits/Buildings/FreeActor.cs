@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -18,7 +18,8 @@ namespace OpenRA.Mods.Common.Traits
 		"If you want more than one unit to appear copy this section and assign IDs like FreeActor@2, ...")]
 	public class FreeActorInfo : ConditionalTraitInfo
 	{
-		[ActorReference, FieldLoader.Require]
+		[ActorReference]
+		[FieldLoader.Require]
 		[Desc("Name of the actor.")]
 		public readonly string Actor = null;
 
@@ -38,7 +39,8 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		bool allowSpawn;
 
-		public FreeActor(ActorInitializer init, FreeActorInfo info) : base(info)
+		public FreeActor(ActorInitializer init, FreeActorInfo info)
+			: base(info)
 		{
 			allowSpawn = !init.Contains<FreeActorInit>() || init.Get<FreeActorInit>().ActorValue;
 		}

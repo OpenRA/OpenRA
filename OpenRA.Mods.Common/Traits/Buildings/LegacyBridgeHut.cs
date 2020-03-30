@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,6 +10,7 @@
 #endregion
 
 using System.Linq;
+using OpenRA.Effects;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -43,14 +44,26 @@ namespace OpenRA.Mods.Common.Traits
 			Bridge.Do((b, d) => b.Repair(repairer, d, () => repairDirections--));
 		}
 
-		public void Demolish(Actor self, Actor saboteur)
-		{
-			Bridge.Do((b, d) => b.Demolish(saboteur, d));
-		}
-
-		public bool IsValidTarget(Actor self, Actor saboteur)
+		bool IDemolishable.IsValidTarget(Actor self, Actor saboteur)
 		{
 			return BridgeDamageState != DamageState.Dead;
+		}
+
+		void IDemolishable.Demolish(Actor self, Actor saboteur, int delay)
+		{
+			// TODO: Handle using ITick
+			self.World.Add(new DelayedAction(delay, () =>
+			{
+				if (self.IsDead)
+					return;
+
+				var modifiers = self.TraitsImplementing<IDamageModifier>()
+					.Concat(self.Owner.PlayerActor.TraitsImplementing<IDamageModifier>())
+					.Select(t => t.GetDamageModifier(self, null));
+
+				if (Util.ApplyPercentageModifiers(100, modifiers) > 0)
+					Bridge.Do((b, d) => b.Demolish(saboteur, d));
+			}));
 		}
 	}
 }

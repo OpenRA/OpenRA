@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -12,8 +12,8 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Drawing;
 using OpenRA.Activities;
+using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Network;
 using OpenRA.Primitives;
@@ -37,6 +37,11 @@ namespace OpenRA.Traits
 	/// Type tag for DamageTypes <see cref="Primitives.BitSet{T}"/>.
 	/// </summary>
 	public sealed class DamageType { DamageType() { } }
+
+	public interface IHealthInfo : ITraitInfo
+	{
+		int MaxHP { get; }
+	}
 
 	public interface IHealth
 	{
@@ -150,7 +155,8 @@ namespace OpenRA.Traits
 		Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued);
 	}
 
-	[Flags] public enum TargetModifiers { None = 0, ForceAttack = 1, ForceQueue = 2, ForceMove = 4 }
+	[Flags]
+	public enum TargetModifiers { None = 0, ForceAttack = 1, ForceQueue = 2, ForceMove = 4 }
 
 	public static class TargetModifiersExts
 	{
@@ -167,7 +173,7 @@ namespace OpenRA.Traits
 		int OrderPriority { get; }
 		bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor);
 		bool IsQueued { get; }
-		bool TargetOverridesSelection(TargetModifiers modifiers);
+		bool TargetOverridesSelection(Actor self, Target target, List<Actor> actorsAt, CPos xy, TargetModifiers modifiers);
 	}
 
 	public interface IResolveOrder { void ResolveOrder(Actor self, Order order); }
@@ -254,6 +260,9 @@ namespace OpenRA.Traits
 
 		WDist LargestActorRadius { get; }
 		WDist LargestBlockingActorRadius { get; }
+
+		void UpdateOccupiedCells(IOccupySpace ios);
+		event Action<CPos> CellUpdated;
 	}
 
 	[RequireExplicitImplementation]
@@ -266,13 +275,27 @@ namespace OpenRA.Traits
 		IEnumerable<Rectangle> ModifyScreenBounds(Actor self, WorldRenderer wr, IEnumerable<Rectangle> r);
 	}
 
+	[RequireExplicitImplementation]
+	public interface IProvidesCursorPaletteInfo : ITraitInfoInterface
+	{
+		string Palette { get; }
+		ImmutablePalette ReadPalette(IReadOnlyFileSystem fileSystem);
+	}
+
 	public interface ILoadsPalettes { void LoadPalettes(WorldRenderer wr); }
-	public interface ILoadsPlayerPalettes { void LoadPlayerPalettes(WorldRenderer wr, string playerName, HSLColor playerColor, bool replaceExisting); }
+	public interface ILoadsPlayerPalettes { void LoadPlayerPalettes(WorldRenderer wr, string playerName, Color playerColor, bool replaceExisting); }
 	public interface IPaletteModifier { void AdjustPalette(IReadOnlyDictionary<string, MutablePalette> b); }
 	public interface IPips { IEnumerable<PipType> GetPips(Actor self); }
 
 	[RequireExplicitImplementation]
 	public interface ISelectionBar { float GetValue(); Color GetColor(); bool DisplayWhenEmpty { get; } }
+
+	public interface ISelectionDecorations { void DrawRollover(Actor self, WorldRenderer worldRenderer); }
+
+	public interface IMapPreviewSignatureInfo : ITraitInfoInterface
+	{
+		void PopulateMapPreviewSignatureCells(Map map, ActorInfo ai, ActorReference s, List<Pair<MPos, Color>> destinationBuffer);
+	}
 
 	public interface IOccupySpaceInfo : ITraitInfoInterface
 	{
@@ -287,11 +310,11 @@ namespace OpenRA.Traits
 		Pair<CPos, SubCell>[] OccupiedCells();
 	}
 
-	public enum SubCell { Invalid = int.MinValue, Any = int.MinValue / 2, FullCell = 0, First = 1 }
+	public enum SubCell : byte { Invalid = byte.MaxValue, Any = byte.MaxValue - 1, FullCell = 0, First = 1 }
 
 	public interface IPositionableInfo : IOccupySpaceInfo
 	{
-		bool CanEnterCell(World world, Actor self, CPos cell, Actor ignoreActor = null, bool checkTransientActors = true);
+		bool CanEnterCell(World world, Actor self, CPos cell, SubCell subCell = SubCell.FullCell, Actor ignoreActor = null, bool checkTransientActors = true);
 	}
 
 	public interface IPositionable : IOccupySpace
@@ -331,8 +354,8 @@ namespace OpenRA.Traits
 
 	[SuppressMessage("StyleCop.CSharp.NamingRules", "SA1302:InterfaceNamesMustBeginWithI", Justification = "Not a real interface, but more like a tag.")]
 	public interface Requires<T> where T : class, ITraitInfoInterface { }
-	[SuppressMessage("StyleCop.CSharp.NamingRules", "SA1302:InterfaceNamesMustBeginWithI", Justification = "Not a real interface, but more like a tag.")]
-	public interface UsesInit<T> : ITraitInfo where T : IActorInit { }
+
+	public interface IActivityInterface { }
 
 	[RequireExplicitImplementation]
 	public interface INotifySelected { void Selected(Actor self); }
@@ -340,6 +363,15 @@ namespace OpenRA.Traits
 	public interface INotifySelection { void SelectionChanged(); }
 
 	public interface IWorldLoaded { void WorldLoaded(World w, WorldRenderer wr); }
+	public interface INotifyGameLoading { void GameLoading(World w); }
+	public interface INotifyGameLoaded { void GameLoaded(World w); }
+	public interface INotifyGameSaved { void GameSaved(World w); }
+
+	public interface IGameSaveTraitData
+	{
+		List<MiniYamlNode> IssueTraitData(Actor self);
+		void ResolveTraitData(Actor self, List<MiniYamlNode> data);
+	}
 
 	[RequireExplicitImplementation]
 	public interface ICreatePlayers { void CreatePlayers(World w); }
@@ -353,7 +385,9 @@ namespace OpenRA.Traits
 	public interface IBot
 	{
 		void Activate(Player p);
+		void QueueOrder(Order order);
 		IBotInfo Info { get; }
+		Player Player { get; }
 	}
 
 	[RequireExplicitImplementation]
@@ -361,11 +395,15 @@ namespace OpenRA.Traits
 
 	[RequireExplicitImplementation]
 	public interface INotifyBecomingIdle { void OnBecomingIdle(Actor self); }
+
 	[RequireExplicitImplementation]
 	public interface INotifyIdle { void TickIdle(Actor self); }
 
 	public interface IRenderAboveWorld { void RenderAboveWorld(Actor self, WorldRenderer wr); }
 	public interface IRenderShroud { void RenderShroud(Shroud shroud, WorldRenderer wr); }
+
+	[RequireExplicitImplementation]
+	public interface IRenderTerrain { void RenderTerrain(WorldRenderer wr, Viewport viewport); }
 
 	public interface IRenderAboveShroud
 	{
@@ -377,6 +415,22 @@ namespace OpenRA.Traits
 	{
 		IEnumerable<IRenderable> RenderAboveShroud(Actor self, WorldRenderer wr);
 		bool SpatiallyPartitionable { get; }
+	}
+
+	public interface ISelection
+	{
+		int Hash { get; }
+		IEnumerable<Actor> Actors { get; }
+
+		void Add(Actor a);
+		void Remove(Actor a);
+		bool Contains(Actor a);
+		void Combine(World world, IEnumerable<Actor> newSelection, bool isCombine, bool isClick);
+		void Clear();
+		void DoControlGroup(World world, WorldRenderer worldRenderer, int group, Modifiers mods, int multiTapCount);
+		void AddToControlGroup(Actor a, int group);
+		void RemoveFromControlGroup(Actor a);
+		int? GetControlGroupForActor(Actor a);
 	}
 
 	/// <summary>
@@ -475,4 +529,7 @@ namespace OpenRA.Traits
 
 	[RequireExplicitImplementation]
 	public interface IUnlocksRenderPlayer { bool RenderPlayerUnlocked { get; } }
+
+	[RequireExplicitImplementation]
+	public interface ICreationActivity { Activity GetCreationActivity(); }
 }

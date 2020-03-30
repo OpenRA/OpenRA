@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,17 +10,20 @@
 #endregion
 
 using OpenRA.Graphics;
+using OpenRA.Primitives;
 
 namespace OpenRA.Traits
 {
 	[Desc("Add this to the Player actor definition.")]
 	public class PlayerColorPaletteInfo : ITraitInfo
 	{
+		[PaletteReference]
 		[Desc("The name of the palette to base off.")]
-		[PaletteReference] public readonly string BasePalette = null;
+		public readonly string BasePalette = null;
 
+		[PaletteDefinition(true)]
 		[Desc("The prefix for the resulting player palettes")]
-		[PaletteDefinition(true)] public readonly string BaseName = "player";
+		public readonly string BaseName = "player";
 
 		[Desc("Remap these indices to player colors.")]
 		public readonly int[] RemapIndex = { };
@@ -43,7 +46,7 @@ namespace OpenRA.Traits
 			this.info = info;
 		}
 
-		public void LoadPlayerPalettes(WorldRenderer wr, string playerName, HSLColor color, bool replaceExisting)
+		public void LoadPlayerPalettes(WorldRenderer wr, string playerName, Color color, bool replaceExisting)
 		{
 			var remap = new PlayerColorRemap(info.RemapIndex, color, info.Ramp);
 			var pal = new ImmutablePalette(wr.Palette(info.BasePalette).Palette, remap);

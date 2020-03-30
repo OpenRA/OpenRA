@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+   Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -17,44 +17,21 @@ TruckPath = { TruckEntryPoint.Location, TruckRallyPoint.Location }
 
 PathGuards = { PathGuard1, PathGuard2, PathGuard3, PathGuard4, PathGuard5, PathGuard6, PathGuard7, PathGuard8, PathGuard9, PathGuard10, PathGuard11, PathGuard12, PathGuard13, PathGuard14, PathGuard15 }
 
+SovietBase = { SovietConyard, SovietRefinery, SovietPower1, SovietPower2, SovietSilo, SovietKennel, SovietBarracks, SovietWarfactory }
+
 IdlingUnits = { }
 
 if Map.LobbyOption("difficulty") == "easy" then
-	TimerTicks = DateTime.Minutes(10)
-	Announcements =
-	{
-		{ speech = "TenMinutesRemaining", delay = DateTime.Seconds(3) },
-		{ speech = "WarningFiveMinutesRemaining", delay = DateTime.Minutes(5) },
-		{ speech = "WarningFourMinutesRemaining", delay = DateTime.Minutes(6) },
-		{ speech = "WarningThreeMinutesRemaining", delay = DateTime.Minutes(7) },
-		{ speech = "WarningTwoMinutesRemaining", delay = DateTime.Minutes(8) },
-		{ speech = "WarningOneMinuteRemaining", delay = DateTime.Minutes(9) }
-	}
+	DateTime.TimeLimit = DateTime.Minutes(10) + DateTime.Seconds(3)
 
 elseif Map.LobbyOption("difficulty") == "normal" then
-	TimerTicks = DateTime.Minutes(5)
-	Announcements =
-	{
-		{ speech = "WarningFiveMinutesRemaining", delay = DateTime.Seconds(3) },
-		{ speech = "WarningFourMinutesRemaining", delay = DateTime.Minutes(1) },
-		{ speech = "WarningThreeMinutesRemaining", delay = DateTime.Minutes(2) },
-		{ speech = "WarningTwoMinutesRemaining", delay = DateTime.Minutes(3) },
-		{ speech = "WarningOneMinuteRemaining", delay = DateTime.Minutes(4) }
-	}
-
+	DateTime.TimeLimit = DateTime.Minutes(5) + DateTime.Seconds(3)
 	InfantryTypes = { "e1", "e1", "e1", "e2", "e2", "e1" }
 	InfantryDelay = DateTime.Seconds(18)
 	AttackGroupSize = 5
 
 elseif Map.LobbyOption("difficulty") == "hard" then
-	TimerTicks = DateTime.Minutes(3)
-	Announcements =
-	{
-		{ speech = "WarningThreeMinutesRemaining", delay = DateTime.Seconds(3) },
-		{ speech = "WarningTwoMinutesRemaining", delay = DateTime.Minutes(1) },
-		{ speech = "WarningOneMinuteRemaining", delay = DateTime.Minutes(2) },
-	}
-
+	DateTime.TimeLimit = DateTime.Minutes(3) + DateTime.Seconds(3)
 	InfantryTypes = { "e1", "e1", "e1", "e2", "e2", "e1" }
 	InfantryDelay = DateTime.Seconds(10)
 	VehicleTypes = { "ftrk" }
@@ -62,8 +39,7 @@ elseif Map.LobbyOption("difficulty") == "hard" then
 	AttackGroupSize = 7
 
 else
-	TimerTicks = DateTime.Minutes(1)
-	Announcements = { { speech = "WarningOneMinuteRemaining", delay = DateTime.Seconds(3) } }
+	DateTime.TimeLimit = DateTime.Minutes(1) + DateTime.Seconds(3)
 	ConstructionVehicleReinforcements = { "jeep" }
 
 	InfantryTypes = { "e1", "e1", "e1", "e2", "e2", "dog", "dog" }
@@ -85,6 +61,14 @@ RunInitialActivities = function()
 	Trigger.OnAllKilled(PathGuards, function()
 		player.MarkCompletedObjective(SecureObjective)
 		SendTrucks()
+	end)
+
+	Trigger.OnAllKilled(SovietBase, function()
+		Utils.Do(ussr.GetGroundAttackers(), function(unit)
+			if not Utils.Any(PathGuards, function(pg) return pg == unit end) then
+				Trigger.OnIdle(unit, unit.Hunt)
+			end
+		end)
 	end)
 
 	if InfantryTypes then
@@ -164,7 +148,6 @@ SendAttack = function()
 	end)
 end
 
-ticked = TimerTicks
 Tick = function()
 	ussr.Resources = ussr.Resources - (0.01 * ussr.ResourceCapacity / 25)
 
@@ -175,18 +158,10 @@ Tick = function()
 	if player.HasNoRequiredUnits() then
 		ussr.MarkCompletedObjective(ussrObj)
 	end
-
-	if ticked > 0 then
-		UserInterface.SetMissionText("The convoy arrives in " .. Utils.FormatTime(ticked), TimerColor)
-		ticked = ticked - 1
-	elseif ticked == 0 then
-		FinishTimer()
-		SendTrucks()
-		ticked = ticked - 1
-	end
 end
 
 FinishTimer = function()
+	DateTime.TimeLimit = 0
 	for i = 0, 5, 1 do
 		local c = TimerColor
 		if i % 2 == 0 then
@@ -203,7 +178,8 @@ SendTrucks = function()
 	if not ConvoyOnSite then
 		ConvoyOnSite = true
 
-		ticked = 0
+		DateTime.TimeLimit = 0
+		UserInterface.SetMissionText("")
 		ConvoyObjective = player.AddPrimaryObjective("Escort the convoy.")
 
 		Media.PlaySpeechNotification(player, "ConvoyApproaching")
@@ -234,16 +210,6 @@ ConvoyCasualites = function()
 	if ConvoyUnharmed then
 		ConvoyUnharmed = false
 		Trigger.AfterDelay(DateTime.Seconds(1), function() player.MarkFailedObjective(ConvoyObjective) end)
-	end
-end
-
-ConvoyTimerAnnouncements = function()
-	for i = #Announcements, 1, -1 do
-		Trigger.AfterDelay(Announcements[i].delay, function()
-			if not ConvoyOnSite then
-				Media.PlaySpeechNotification(player, Announcements[i].speech)
-			end
-		end)
 	end
 end
 
@@ -281,8 +247,11 @@ WorldLoaded = function()
 	Trigger.AfterDelay(DateTime.Seconds(5), SendJeepReinforcements)
 	Trigger.AfterDelay(DateTime.Seconds(10), SendJeepReinforcements)
 
+	Trigger.OnTimerExpired(function()
+		FinishTimer()
+		SendTrucks()
+	end)
+
 	Camera.Position = ReinforcementsEntryPoint.CenterPosition
 	TimerColor = player.Color
-
-	ConvoyTimerAnnouncements()
 end

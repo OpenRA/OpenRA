@@ -8,7 +8,7 @@ BADR:
 	Aircraft:
 		CruiseAltitude: 2560
 		TurnSpeed: 5
-		Speed: 149
+		Speed: 180
 		Repulsable: False
 		MaximumPitch: 56
 	Cargo:
@@ -47,11 +47,11 @@ BADR.Bomber:
 	Aircraft:
 		CruiseAltitude: 2560
 		TurnSpeed: 5
-		Speed: 149
+		Speed: 180
 		Repulsable: False
 		MaximumPitch: 56
 	AmmoPool:
-		Ammo: 7
+		Ammo: 5
 	-Selectable:
 	SelectionDecorations:
 		RenderSelectionBars: False
@@ -71,6 +71,7 @@ BADR.Bomber:
 		Offset: -432,-560,0
 		Interval: 2
 	-EjectOnDeath:
+	-MapEditorData:
 	RejectsOrders:
 	RenderSprites:
 		Image: badr
@@ -86,30 +87,34 @@ MIG:
 		BuildAtProductionType: Plane
 		BuildPaletteOrder: 50
 		Prerequisites: ~afld, stek, ~techlevel.high
-		BuildDurationModifier: 50
 		Description: Fast Ground-Attack Plane.\n  Strong vs Buildings, Vehicles\n  Weak vs Infantry, Aircraft
 	Valued:
 		Cost: 2000
 	Tooltip:
 		Name: MiG Attack Plane
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 7500
 	RevealsShroud:
+		MinRange: 11c0
 		Range: 13c0
+		MoveRecalculationThreshold: 0
 		Type: GroundPosition
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 11c0
+		MoveRecalculationThreshold: 0
 		Type: GroundPosition
 	Armament:
 		Weapon: Maverick
 		LocalOffset: 0,-640,0, 0,640,0
 		LocalYaw: -40, 24
 		PauseOnCondition: !ammo
-	AttackPlane:
+	AttackAircraft:
 		FacingTolerance: 20
+		PersistentTargeting: false
 	Aircraft:
-		RearmBuildings: afld, afld.ukraine
 		CruiseAltitude: 2560
 		InitialFacing: 192
 		TurnSpeed: 4
@@ -122,7 +127,6 @@ MIG:
 	AmmoPool:
 		Ammo: 8
 		AmmoCondition: ammo
-	ReturnOnIdle:
 	Selectable:
 		Bounds: 36,28,0,2
 		DecorationBounds: 40,29,0,1
@@ -138,6 +142,8 @@ MIG:
 		Interval: 2
 	ProducibleWithLevel:
 		Prerequisites: aircraft.upgraded
+	Rearmable:
+		RearmActors: afld, afld.ukraine
 
 YAK:
 	Inherits: ^Plane
@@ -152,14 +158,19 @@ YAK:
 		Cost: 1350
 	Tooltip:
 		Name: Yak Attack Plane
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 6000
 	RevealsShroud:
+		MinRange: 9c0
 		Range: 11c0
+		MoveRecalculationThreshold: 0
 		Type: GroundPosition
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 9c0
+		MoveRecalculationThreshold: 0
 		Type: GroundPosition
 	Armament@PRIMARY:
 		Weapon: ChainGun.Yak
@@ -172,10 +183,10 @@ YAK:
 		LocalOffset: 256,213,0
 		MuzzleSequence: muzzle
 		PauseOnCondition: !ammo
-	AttackPlane:
+	AttackAircraft:
 		FacingTolerance: 20
+		PersistentTargeting: false
 	Aircraft:
-		RearmBuildings: afld, afld.ukraine
 		CruiseAltitude: 2560
 		InitialFacing: 192
 		TurnSpeed: 4
@@ -190,7 +201,6 @@ YAK:
 		PipCount: 6
 		ReloadDelay: 11
 		AmmoCondition: ammo
-	ReturnOnIdle:
 	SelectionDecorations:
 	WithMuzzleOverlay:
 	Contrail:
@@ -204,6 +214,8 @@ YAK:
 		Prerequisites: aircraft.upgraded
 	Selectable:
 		DecorationBounds: 30,28,0,2
+	Rearmable:
+		RearmActors: afld, afld.ukraine
 
 TRAN:
 	Inherits: ^Helicopter
@@ -217,20 +229,23 @@ TRAN:
 		Cost: 900
 	Tooltip:
 		Name: Chinook
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 14000
 	RevealsShroud:
+		MinRange: 6c0
 		Range: 8c0
+		MoveRecalculationThreshold: 0
 		Type: GroundPosition
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 6c0
+		MoveRecalculationThreshold: 0
 		Type: GroundPosition
 	Aircraft:
-		InitialFacing: 224
 		TurnSpeed: 5
 		Speed: 128
-		LandableTerrainTypes: Clear,Rough,Road,Ore,Beach,Gems
 		AltitudeVelocity: 0c58
 	WithIdleOverlay@ROTOR1AIR:
 		Offset: 597,0,213
@@ -252,6 +267,7 @@ TRAN:
 		Types: Infantry
 		MaxWeight: 8
 		PipCount: 8
+		AfterUnloadDelay: 40
 	SpawnActorOnDeath:
 		Actor: TRAN.Husk
 	SelectionDecorations:
@@ -266,20 +282,24 @@ HELI:
 		BuildAtProductionType: Helicopter
 		BuildPaletteOrder: 40
 		Prerequisites: ~hpad, atek, ~techlevel.high
-		BuildDurationModifier: 50
 		Description: Helicopter gunship armed\nwith multi-purpose missiles.\n  Strong vs Buildings, Vehicles, Aircraft\n  Weak vs Infantry
 	Valued:
 		Cost: 2000
 	Tooltip:
 		Name: Longbow
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 12000
 	RevealsShroud:
+		MinRange: 10c0
 		Range: 12c0
+		MoveRecalculationThreshold: 0
 		Type: GroundPosition
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 10c0
+		MoveRecalculationThreshold: 0
 		Type: GroundPosition
 	Armament@PRIMARY:
 		Weapon: HellfireAA
@@ -289,12 +309,11 @@ HELI:
 		Weapon: HellfireAG
 		LocalOffset: 0,213,-85, 0,-213,-85
 		PauseOnCondition: !ammo
-	AttackHeli:
+	AttackAircraft:
 		FacingTolerance: 20
+		PersistentTargeting: false
+		AttackType: Hover
 	Aircraft:
-		RearmBuildings: hpad
-		LandWhenIdle: false
-		InitialFacing: 224
 		TurnSpeed: 4
 		Speed: 149
 	AutoTarget:
@@ -320,6 +339,8 @@ HELI:
 		Prerequisites: aircraft.upgraded
 	Selectable:
 		DecorationBounds: 36,28
+	Rearmable:
+		RearmActors: hpad
 
 HIND:
 	Inherits: ^Helicopter
@@ -328,20 +349,25 @@ HIND:
 		Queue: Aircraft
 		BuildAtProductionType: Helicopter
 		BuildPaletteOrder: 20
-		Prerequisites: ~hpad, ~techlevel.medium
+		Prerequisites: ~disabled, ~hpad, ~techlevel.medium
 		Description: Helicopter gunship armed\nwith dual chainguns.\n  Strong vs Infantry, Light armor\n  Weak vs Tanks, Aircraft
 	Valued:
-		Cost: 1350
+		Cost: 1500
 	Tooltip:
 		Name: Hind
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 10000
 	RevealsShroud:
+		MinRange: 8c0
 		Range: 10c0
+		MoveRecalculationThreshold: 0
 		Type: GroundPosition
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 8c0
+		MoveRecalculationThreshold: 0
 		Type: GroundPosition
 	Armament@PRIMARY:
 		Weapon: ChainGun
@@ -354,12 +380,11 @@ HIND:
 		LocalOffset: 85,213,-85, 85,-213,-85
 		MuzzleSequence: muzzle
 		PauseOnCondition: !ammo
-	AttackHeli:
+	AttackAircraft:
 		FacingTolerance: 20
+		PersistentTargeting: false
+		AttackType: Hover
 	Aircraft:
-		RearmBuildings: hpad
-		LandWhenIdle: false
-		InitialFacing: 224
 		TurnSpeed: 4
 		Speed: 112
 	AutoTarget:
@@ -386,6 +411,8 @@ HIND:
 		Prerequisites: aircraft.upgraded
 	Selectable:
 		DecorationBounds: 38,32
+	Rearmable:
+		RearmActors: hpad
 
 U2:
 	Inherits: ^NeutralPlane
@@ -416,3 +443,76 @@ U2:
 		Interval: 2
 	RejectsOrders:
 	Interactable:
+	-MapEditorData:
+
+MH60:
+	Inherits: ^Helicopter
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Buildable:
+		Queue: Aircraft
+		BuildAtProductionType: Helicopter
+		BuildPaletteOrder: 20
+		Prerequisites: ~hpad, ~techlevel.medium
+		Description: Helicopter gunship armed\nwith dual chainguns.\n  Strong vs Infantry, Light armor\n  Weak vs Tanks, Aircraft
+	Valued:
+		Cost: 1500
+	Tooltip:
+		Name: Black Hawk
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
+	Health:
+		HP: 10000
+	RevealsShroud:
+		MinRange: 8c0
+		Range: 10c0
+		MoveRecalculationThreshold: 0
+		Type: GroundPosition
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 8c0
+		MoveRecalculationThreshold: 0
+		Type: GroundPosition
+	Armament@PRIMARY:
+		Weapon: ChainGun
+		LocalOffset: 85,-213,-85, 85,213,-85
+		MuzzleSequence: muzzle
+		PauseOnCondition: !ammo
+	Armament@SECONDARY:
+		Name: secondary
+		Weapon: ChainGun
+		LocalOffset: 85,213,-85, 85,-213,-85
+		MuzzleSequence: muzzle
+		PauseOnCondition: !ammo
+	AttackAircraft:
+		FacingTolerance: 20
+		PersistentTargeting: false
+		AttackType: Hover
+	Aircraft:
+		TurnSpeed: 4
+		Speed: 112
+	AutoTarget:
+		InitialStance: HoldFire
+		InitialStanceAI: HoldFire
+	WithIdleOverlay@ROTORAIR:
+		Sequence: rotor
+		RequiresCondition: airborne
+	WithIdleOverlay@ROTORGROUND:
+		Sequence: slow-rotor
+		RequiresCondition: !airborne
+	AmmoPool:
+		Ammo: 24
+		PipCount: 6
+		ReloadDelay: 8
+		AmmoCondition: ammo
+	SelectionDecorations:
+	WithMuzzleOverlay:
+	SpawnActorOnDeath:
+		Actor: MH60.Husk
+	SmokeTrailWhenDamaged:
+		Offset: -427,0,0
+	ProducibleWithLevel:
+		Prerequisites: aircraft.upgraded
+	Selectable:
+		DecorationBounds: 38,32
+	Rearmable:
+		RearmActors: hpad

@@ -76,10 +76,10 @@ ChromeLayout:
 	common|chrome/ingame-infoobjectives.yaml
 	d2k|chrome/ingame-infostats.yaml
 	common|chrome/ingame-observer.yaml
-	common|chrome/ingame-observerstats.yaml
 	d2k|chrome/ingame-player.yaml
 	common|chrome/ingame-perf.yaml
 	common|chrome/ingame-debug.yaml
+	common|chrome/ingame-debuginfo.yaml
 	common|chrome/ingame-infochat.yaml
 	d2k|chrome/mainmenu.yaml
 	common|chrome/settings.yaml
@@ -107,6 +107,8 @@ ChromeLayout:
 	common|chrome/confirmation-dialogs.yaml
 	common|chrome/editor.yaml
 	common|chrome/replaybrowser.yaml
+	common|chrome/gamesave-browser.yaml
+	common|chrome/gamesave-loading.yaml
 
 Weapons:
 	d2k|weapons/debris.yaml
@@ -153,27 +155,35 @@ Fonts:
 	Tiny:
 		Font: common|FreeSans.ttf
 		Size: 10
+		Ascender: 8
 	TinyBold:
 		Font: common|FreeSansBold.ttf
 		Size: 10
+		Ascender: 8
 	Small:
 		Font: common|FreeSans.ttf
 		Size: 12
+		Ascender: 9
 	Regular:
 		Font: common|FreeSans.ttf
 		Size: 14
+		Ascender: 11
 	Bold:
 		Font: common|FreeSansBold.ttf
 		Size: 14
+		Ascender: 11
 	MediumBold:
 		Font: common|FreeSansBold.ttf
 		Size: 18
+		Ascender: 14
 	BigBold:
 		Font: common|FreeSansBold.ttf
 		Size: 24
+		Ascender: 18
 	Title:
 		Font: d2k|Dune2k.ttf
 		Size: 32
+		Ascender: 23
 
 Missions:
 	d2k|missions.yaml

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -25,7 +25,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Chance (out of 100) the unit has to enter panic mode when attacked.")]
 		public readonly int AttackPanicChance = 20;
 
-		[SequenceReference(null, true)] public readonly string PanicSequencePrefix = "panic-";
+		[SequenceReference(null, true)]
+		public readonly string PanicSequencePrefix = "panic-";
 
 		public object Create(ActorInitializer init) { return new ScaredyCat(init.Self, this); }
 	}
@@ -34,8 +35,10 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly ScaredyCatInfo info;
 		readonly Mobile mobile;
-		[Sync] readonly Actor self;
-		[Sync] int panicStartedTick;
+		readonly Actor self;
+
+		[Sync]
+		int panicStartedTick;
 		bool Panicking { get { return panicStartedTick > 0; } }
 
 		bool IRenderInfantrySequenceModifier.IsModifyingSequence { get { return Panicking; } }

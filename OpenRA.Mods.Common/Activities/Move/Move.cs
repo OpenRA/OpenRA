@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -29,6 +29,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly WDist nearEnough;
 		readonly Func<List<CPos>> getPath;
 		readonly Actor ignoreActor;
+		readonly Color? targetLineColor;
 
 		List<CPos> path;
 		CPos? destination;
@@ -43,7 +44,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		// Scriptable move order
 		// Ignores lane bias and nearby units
-		public Move(Actor self, CPos destination)
+		public Move(Actor self, CPos destination, Color? targetLineColor = null)
 		{
 			mobile = self.Trait<Mobile>();
 
@@ -51,16 +52,18 @@ namespace OpenRA.Mods.Common.Activities
 			{
 				List<CPos> path;
 				using (var search =
-					PathSearch.FromPoint(self.World, mobile.Info.LocomotorInfo, self, mobile.ToCell, destination, false)
+					PathSearch.FromPoint(self.World, mobile.Locomotor, self, mobile.ToCell, destination, false)
 					.WithoutLaneBias())
 					path = self.World.WorldActor.Trait<IPathFinder>().FindPath(search);
 				return path;
 			};
 			this.destination = destination;
+			this.targetLineColor = targetLineColor;
 			nearEnough = WDist.Zero;
 		}
 
-		public Move(Actor self, CPos destination, WDist nearEnough, Actor ignoreActor = null, bool evaluateNearestMovableCell = false)
+		public Move(Actor self, CPos destination, WDist nearEnough, Actor ignoreActor = null, bool evaluateNearestMovableCell = false,
+			Color? targetLineColor = null)
 		{
 			mobile = self.Trait<Mobile>();
 
@@ -79,9 +82,10 @@ namespace OpenRA.Mods.Common.Activities
 			this.nearEnough = nearEnough;
 			this.ignoreActor = ignoreActor;
 			this.evaluateNearestMovableCell = evaluateNearestMovableCell;
+			this.targetLineColor = targetLineColor;
 		}
 
-		public Move(Actor self, CPos destination, SubCell subCell, WDist nearEnough)
+		public Move(Actor self, CPos destination, SubCell subCell, WDist nearEnough, Color? targetLineColor = null)
 		{
 			mobile = self.Trait<Mobile>();
 
@@ -89,9 +93,10 @@ namespace OpenRA.Mods.Common.Activities
 				.FindUnitPathToRange(mobile.FromCell, subCell, self.World.Map.CenterOfSubCell(destination, subCell), nearEnough, self);
 			this.destination = destination;
 			this.nearEnough = nearEnough;
+			this.targetLineColor = targetLineColor;
 		}
 
-		public Move(Actor self, Target target, WDist range)
+		public Move(Actor self, Target target, WDist range, Color? targetLineColor = null)
 		{
 			mobile = self.Trait<Mobile>();
 
@@ -106,9 +111,10 @@ namespace OpenRA.Mods.Common.Activities
 
 			destination = null;
 			nearEnough = range;
+			this.targetLineColor = targetLineColor;
 		}
 
-		public Move(Actor self, Func<List<CPos>> getPath)
+		public Move(Actor self, Func<List<CPos>> getPath, Color? targetLineColor = null)
 		{
 			mobile = self.Trait<Mobile>();
 
@@ -116,6 +122,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			destination = null;
 			nearEnough = WDist.Zero;
+			this.targetLineColor = targetLineColor;
 		}
 
 		static int HashList<T>(List<T> xs)
@@ -144,95 +151,40 @@ namespace OpenRA.Mods.Common.Activities
 			}
 		}
 
-		public override bool Cancel(Actor self, bool keepQueue = false)
+		public override bool Tick(Actor self)
 		{
-			if (ChildActivity == null)
-				return base.Cancel(self, keepQueue);
-
-			// Although MoveFirstHalf and MoveSecondHalf can't be interrupted,
-			// we prevent them from moving forever by removing the path.
-			if (path != null)
-				path.Clear();
-
-			// Remove queued activities
-			if (!keepQueue && NextInQueue != null)
-				NextInQueue = null;
-
-			// In current implementation, ChildActivity can be Turn, MoveFirstHalf and MoveSecondHalf.
-			// Turn may be interrupted freely while they are turning.
-			// Unlike Turn, MoveFirstHalf and MoveSecondHalf are not Interruptable, but clearing the
-			// path guarantees that they will return as soon as possible, once the actor is back in a
-			// valid position.
-			// This means that it is safe to unconditionally return true, which avoids breaking parent
-			// activities that rely on cancellation succeeding (but not necessarily immediately
-			ChildActivity.Cancel(self, false);
-
-			return true;
-		}
-
-		public override Activity Tick(Actor self)
-		{
-			// ChildActivity is the top priority, unlike other activities.
-			// Even if this activity is canceled, we must let the child be run so that units
-			// will not end up in an odd place.
-			if (ChildActivity != null)
-			{
-				ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
-
-				// Child activities such as Turn might have finished.
-				// If we "return this" in this situation, the unit loses one tick and pauses movement briefly.
-				if (ChildActivity != null)
-					return this;
-			}
-
 			// If the actor is inside a tunnel then we must let them move
 			// all the way through before moving to the next activity
-			if (IsCanceled && self.Location.Layer != CustomMovementLayerType.Tunnel)
-				return NextActivity;
+			if (IsCanceling && self.Location.Layer != CustomMovementLayerType.Tunnel)
+				return true;
 
-			if (mobile.IsTraitDisabled)
-				return this;
+			if (mobile.IsTraitDisabled || mobile.IsTraitPaused)
+				return false;
 
 			if (destination == mobile.ToCell)
-				return NextActivity;
+				return true;
 
 			if (path == null)
-			{
 				path = EvalPath();
-				SanityCheckPath(mobile);
-			}
 
 			if (path.Count == 0)
 			{
 				destination = mobile.ToCell;
-				return this;
+				return false;
 			}
 
 			destination = path[0];
 
 			var nextCell = PopPath(self);
 			if (nextCell == null)
-				return this;
+				return false;
 
 			var firstFacing = self.World.Map.FacingBetween(mobile.FromCell, nextCell.Value.First, mobile.Facing);
 			if (firstFacing != mobile.Facing)
 			{
 				path.Add(nextCell.Value.First);
-
-				// If Mobile.Info.AlwaysConsiderTurnAsMove is true, we consider Turn as movement regardless of facing delta size.
-				// IsMoving is then set back to false in Turn.OnLastRun.
-				// This is needed for actors that want to display their movement animation during turns (walker units, for example).
-				mobile.IsMoving = mobile.Info.AlwaysConsiderTurnAsMove;
-
-				// HACK: To fix visual hiccups on actors with move animations during "L-turn to next part of movement" transitions
-				// or invisible mini-turns (due to less sprite facings than internal facings), we set IsMoving to  'true' during Turn activity
-				// when the facing delta is low enough to be covered with a single Turn tick.
-				// To avoid issues, we also make these mini-turns uninterruptible (like MovePart activities) to ensure the actor
-				// finishes that mini-turn before starting something else.
-				var facingWithinTolerance = Util.FacingWithinTolerance(mobile.Facing, firstFacing, mobile.TurnSpeed);
-				QueueChild(new Turn(self, firstFacing, facingWithinTolerance, !facingWithinTolerance));
-				ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
-				return this;
+				QueueChild(new Turn(self, firstFacing));
+				return false;
 			}
 
 			mobile.SetLocation(mobile.FromCell, mobile.FromSubCell, nextCell.Value.First, nextCell.Value.Second);
@@ -245,29 +197,8 @@ namespace OpenRA.Mods.Common.Activities
 			var to = Util.BetweenCells(self.World, mobile.FromCell, mobile.ToCell) +
 				(map.Grid.OffsetOfSubCell(mobile.FromSubCell) + map.Grid.OffsetOfSubCell(mobile.ToSubCell)) / 2;
 
-			QueueChild(new MoveFirstHalf(
-				this,
-				from,
-				to,
-				mobile.Facing,
-				mobile.Facing,
-				0));
-
-			// While carrying out one Move order, MoveSecondHalf finishes its work from time to time and returns null.
-			// That causes the ChildActivity to be null and makes us return to this part of code.
-			// If we only queue the activity and not run it, units will lose one tick and pause briefly!
-			ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
-			return this;
-		}
-
-		[Conditional("SANITY_CHECKS")]
-		void SanityCheckPath(Mobile mobile)
-		{
-			if (path.Count == 0)
-				return;
-			var d = path[path.Count - 1] - mobile.ToCell;
-			if (d.LengthSquared > 2)
-				throw new InvalidOperationException("(Move) Sanity check failed");
+			QueueChild(new MoveFirstHalf(this, from, to, mobile.Facing, mobile.Facing, 0));
+			return false;
 		}
 
 		Pair<CPos, SubCell>? PopPath(Actor self)
@@ -276,6 +207,13 @@ namespace OpenRA.Mods.Common.Activities
 				return null;
 
 			var nextCell = path[path.Count - 1];
+
+			// Something else might have moved us, so the path is no longer valid.
+			if (!Util.AreAdjacentCells(mobile.ToCell, nextCell))
+			{
+				path = EvalPath();
+				return null;
+			}
 
 			var containsTemporaryBlocker = WorldUtils.ContainsTemporaryBlocker(self.World, nextCell, self);
 
@@ -328,6 +266,14 @@ namespace OpenRA.Mods.Common.Activities
 			return Pair.New(nextCell, subCell);
 		}
 
+		public override void Cancel(Actor self, bool keepQueue = false)
+		{
+			if (path != null)
+				path.Clear();
+
+			base.Cancel(self, keepQueue);
+		}
+
 		public override IEnumerable<Target> GetTargets(Actor self)
 		{
 			if (path != null)
@@ -335,6 +281,12 @@ namespace OpenRA.Mods.Common.Activities
 			if (destination != null)
 				return new Target[] { Target.FromCell(self.World, destination.Value) };
 			return Target.None;
+		}
+
+		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
+		{
+			if (targetLineColor != null)
+				yield return new TargetLineNode(Target.FromCell(self.World, destination.Value), targetLineColor.Value);
 		}
 
 		abstract class MovePart : Activity
@@ -384,10 +336,9 @@ namespace OpenRA.Mods.Common.Activities
 				}
 			}
 
-			public override Activity Tick(Actor self)
+			public override bool Tick(Actor self)
 			{
 				var ret = InnerTick(self, Move.mobile);
-				Move.mobile.IsMoving = ret is MovePart;
 
 				if (moveFraction > MoveFractionTotal)
 					moveFraction = MoveFractionTotal;
@@ -395,10 +346,10 @@ namespace OpenRA.Mods.Common.Activities
 				UpdateCenterLocation(self, Move.mobile);
 
 				if (ret == this)
-					return ret;
+					return false;
 
 				Queue(ret);
-				return NextActivity;
+				return true;
 			}
 
 			Activity InnerTick(Actor self, Mobile mobile)
@@ -462,29 +413,26 @@ namespace OpenRA.Mods.Common.Activities
 				var fromSubcellOffset = map.Grid.OffsetOfSubCell(mobile.FromSubCell);
 				var toSubcellOffset = map.Grid.OffsetOfSubCell(mobile.ToSubCell);
 
-				if (!IsCanceled || self.Location.Layer == CustomMovementLayerType.Tunnel)
+				var nextCell = parent.PopPath(self);
+				if (nextCell != null)
 				{
-					var nextCell = parent.PopPath(self);
-					if (nextCell != null)
+					if (!mobile.IsTraitPaused && !mobile.IsTraitDisabled && IsTurn(mobile, nextCell.Value.First))
 					{
-						if (IsTurn(mobile, nextCell.Value.First))
-						{
-							var nextSubcellOffset = map.Grid.OffsetOfSubCell(nextCell.Value.Second);
-							var ret = new MoveFirstHalf(
-								Move,
-								Util.BetweenCells(self.World, mobile.FromCell, mobile.ToCell) + (fromSubcellOffset + toSubcellOffset) / 2,
-								Util.BetweenCells(self.World, mobile.ToCell, nextCell.Value.First) + (toSubcellOffset + nextSubcellOffset) / 2,
-								mobile.Facing,
-								Util.GetNearestFacing(mobile.Facing, map.FacingBetween(mobile.ToCell, nextCell.Value.First, mobile.Facing)),
-								moveFraction - MoveFractionTotal);
+						var nextSubcellOffset = map.Grid.OffsetOfSubCell(nextCell.Value.Second);
+						var ret = new MoveFirstHalf(
+							Move,
+							Util.BetweenCells(self.World, mobile.FromCell, mobile.ToCell) + (fromSubcellOffset + toSubcellOffset) / 2,
+							Util.BetweenCells(self.World, mobile.ToCell, nextCell.Value.First) + (toSubcellOffset + nextSubcellOffset) / 2,
+							mobile.Facing,
+							Util.GetNearestFacing(mobile.Facing, map.FacingBetween(mobile.ToCell, nextCell.Value.First, mobile.Facing)),
+							moveFraction - MoveFractionTotal);
 
-							mobile.FinishedMoving(self);
-							mobile.SetLocation(mobile.ToCell, mobile.ToSubCell, nextCell.Value.First, nextCell.Value.Second);
-							return ret;
-						}
-
-						parent.path.Add(nextCell.Value.First);
+						mobile.FinishedMoving(self);
+						mobile.SetLocation(mobile.ToCell, mobile.ToSubCell, nextCell.Value.First, nextCell.Value.Second);
+						return ret;
 					}
+
+					parent.path.Add(nextCell.Value.First);
 				}
 
 				var toPos = mobile.ToCell.Layer == 0 ? map.CenterOfCell(mobile.ToCell) :

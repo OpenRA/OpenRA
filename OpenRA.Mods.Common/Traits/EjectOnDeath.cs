@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -40,8 +40,6 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new EjectOnDeath(init.Self, this); }
 	}
 
-	public interface IPreventsEjectOnDeath { bool PreventsEjectOnDeath(Actor self); }
-
 	public class EjectOnDeath : ConditionalTrait<EjectOnDeathInfo>, INotifyKilled
 	{
 		public EjectOnDeath(Actor self, EjectOnDeathInfo info)
@@ -52,13 +50,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (IsTraitDisabled || self.Owner.WinState == WinState.Lost || !self.World.Map.Contains(self.Location))
 				return;
 
-			foreach (var condition in self.TraitsImplementing<IPreventsEjectOnDeath>())
-				if (condition.PreventsEjectOnDeath(self))
-					return;
-
-			var r = self.World.SharedRandom.Next(1, 100);
-
-			if (r <= 100 - Info.SuccessRate)
+			if (self.World.SharedRandom.Next(100) >= Info.SuccessRate)
 				return;
 
 			var cp = self.CenterPosition;
@@ -66,35 +58,47 @@ namespace OpenRA.Mods.Common.Traits
 			if ((inAir && !Info.EjectInAir) || (!inAir && !Info.EjectOnGround))
 				return;
 
-			var pilot = self.World.CreateActor(false, Info.PilotActor.ToLowerInvariant(),
-				new TypeDictionary { new OwnerInit(self.Owner), new LocationInit(self.Location) });
-
-			if (Info.AllowUnsuitableCell || IsSuitableCell(self, pilot))
+			self.World.AddFrameEndTask(w =>
 			{
+				if (!Info.AllowUnsuitableCell)
+				{
+					var pilotInfo = self.World.Map.Rules.Actors[Info.PilotActor.ToLowerInvariant()];
+					var pilotPositionable = pilotInfo.TraitInfo<IPositionableInfo>();
+					if (!pilotPositionable.CanEnterCell(self.World, null, self.Location))
+						return;
+				}
+
+				var td = new TypeDictionary
+				{
+					new OwnerInit(self.Owner),
+					new LocationInit(self.Location),
+				};
+
+				// If airborne, offset the spawn location so the pilot doesn't drop on another infantry's head
+				var spawnPos = cp;
 				if (inAir)
 				{
-					self.World.AddFrameEndTask(w =>
+					var subCell = self.World.ActorMap.FreeSubCell(self.Location);
+					if (subCell != SubCell.Invalid)
 					{
-						w.Add(pilot);
-						pilot.QueueActivity(new Parachute(pilot, cp));
-					});
-					Game.Sound.Play(SoundType.World, Info.ChuteSound, cp);
+						td.Add(new SubCellInit(subCell));
+						spawnPos = self.World.Map.CenterOfSubCell(self.Location, subCell) + new WVec(0, 0, spawnPos.Z);
+					}
 				}
-				else
+
+				td.Add(new CenterPositionInit(spawnPos));
+
+				var pilot = self.World.CreateActor(true, Info.PilotActor.ToLowerInvariant(), td);
+
+				if (!inAir)
 				{
-					self.World.AddFrameEndTask(w => w.Add(pilot));
 					var pilotMobile = pilot.TraitOrDefault<Mobile>();
 					if (pilotMobile != null)
 						pilotMobile.Nudge(pilot, pilot, true);
 				}
-			}
-			else
-				pilot.Dispose();
-		}
-
-		static bool IsSuitableCell(Actor self, Actor actorToDrop)
-		{
-			return actorToDrop.Trait<IPositionable>().CanEnterCell(self.Location, self, true);
+				else
+					Game.Sound.Play(SoundType.World, Info.ChuteSound, cp);
+			});
 		}
 	}
 }

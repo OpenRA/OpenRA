@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -11,14 +11,13 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
-using OpenRA.Effects;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Projectiles
@@ -34,11 +33,13 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Image to display.")]
 		public readonly string Image = null;
 
+		[SequenceReference("Image")]
 		[Desc("Loop a randomly chosen sequence of Image from this list while this projectile is moving.")]
-		[SequenceReference("Image")] public readonly string[] Sequences = { "idle" };
+		public readonly string[] Sequences = { "idle" };
 
+		[PaletteReference]
 		[Desc("The palette used to draw this projectile.")]
-		[PaletteReference] public readonly string Palette = "effect";
+		public readonly string Palette = "effect";
 
 		[Desc("Palette is a player palette BaseName")]
 		public readonly bool IsPlayerPalette = false;
@@ -46,14 +47,29 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Does this projectile have a shadow?")]
 		public readonly bool Shadow = false;
 
+		[PaletteReference]
 		[Desc("Palette to use for this projectile's shadow if Shadow is true.")]
-		[PaletteReference] public readonly string ShadowPalette = "shadow";
+		public readonly string ShadowPalette = "shadow";
 
 		[Desc("Trail animation.")]
 		public readonly string TrailImage = null;
 
+		[SequenceReference("TrailImage")]
 		[Desc("Loop a randomly chosen sequence of TrailImage from this list while this projectile is moving.")]
-		[SequenceReference("TrailImage")] public readonly string[] TrailSequences = { "idle" };
+		public readonly string[] TrailSequences = { "idle" };
+
+		[Desc("Interval in ticks between each spawned Trail animation.")]
+		public readonly int TrailInterval = 2;
+
+		[Desc("Delay in ticks until trail animation is spawned.")]
+		public readonly int TrailDelay = 1;
+
+		[PaletteReference("TrailUsePlayerPalette")]
+		[Desc("Palette used to render the trail sequence.")]
+		public readonly string TrailPalette = "effect";
+
+		[Desc("Use the Player Palette to render the trail sequence.")]
+		public readonly bool TrailUsePlayerPalette = false;
 
 		[Desc("Is this blocked by actors with BlocksProjectiles trait.")]
 		public readonly bool Blockable = true;
@@ -74,20 +90,8 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("If projectile touches an actor with one of these stances during or after the first bounce, trigger explosion.")]
 		public readonly Stance ValidBounceBlockerStances = Stance.Enemy | Stance.Neutral;
 
-		[Desc("Interval in ticks between each spawned Trail animation.")]
-		public readonly int TrailInterval = 2;
-
-		[Desc("Delay in ticks until trail animation is spawned.")]
-		public readonly int TrailDelay = 1;
-
 		[Desc("Altitude above terrain below which to explode. Zero effectively deactivates airburst.")]
 		public readonly WDist AirburstAltitude = WDist.Zero;
-
-		[Desc("Palette used to render the trail sequence.")]
-		[PaletteReference("TrailUsePlayerPalette")] public readonly string TrailPalette = "effect";
-
-		[Desc("Use the Player Palette to render the trail sequence.")]
-		public readonly bool TrailUsePlayerPalette = false;
 
 		public readonly int ContrailLength = 0;
 		public readonly int ContrailZOffset = 2047;
@@ -104,19 +108,19 @@ namespace OpenRA.Mods.Common.Projectiles
 		readonly BulletInfo info;
 		readonly ProjectileArgs args;
 		readonly Animation anim;
-		[Sync] readonly WAngle angle;
-		[Sync] readonly WDist speed;
+		readonly int facing;
+		readonly WAngle angle;
+		readonly WDist speed;
+		readonly string trailPalette;
 
 		ContrailRenderable contrail;
-		string trailPalette;
 
-		[Sync] WPos pos, target, source;
+		[Sync]
+		WPos pos, target, source;
+
 		int length;
-		[Sync] int facing;
 		int ticks, smokeTicks;
 		int remainingBounces;
-
-		public Actor SourceActor { get { return args.SourceActor; } }
 
 		public Bullet(BulletInfo info, ProjectileArgs args)
 		{

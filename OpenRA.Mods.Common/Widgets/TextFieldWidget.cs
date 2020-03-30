@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,9 +10,9 @@
 #endregion
 
 using System;
-using System.Drawing;
 using System.IO;
 using System.Linq;
+using OpenRA.Primitives;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
@@ -579,7 +579,8 @@ namespace OpenRA.Mods.Common.Widgets
 			var textPos = pos + new int2(LeftMargin, verticalMargin);
 
 			// Right align when editing and scissor when the text overflows
-			if (textSize.X > Bounds.Width - LeftMargin - RightMargin)
+			var isTextOverflowing = textSize.X > Bounds.Width - LeftMargin - RightMargin;
+			if (isTextOverflowing)
 			{
 				if (HasKeyboardFocus)
 					textPos += new int2(Bounds.Width - LeftMargin - RightMargin - textSize.X, 0);
@@ -609,7 +610,7 @@ namespace OpenRA.Mods.Common.Widgets
 			if (showCursor && HasKeyboardFocus)
 				font.DrawText("|", new float2(textPos.X + cursorPosition.X - 2, textPos.Y), TextColor);
 
-			if (textSize.X > Bounds.Width - LeftMargin - RightMargin)
+			if (isTextOverflowing)
 				Game.Renderer.DisableScissor();
 		}
 

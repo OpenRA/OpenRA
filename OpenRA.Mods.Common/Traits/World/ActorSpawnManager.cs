@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Primitives;
@@ -37,12 +36,12 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Owner = "Creeps";
 
 		[Desc("Type of ActorSpawner with which it connects.")]
- 		public readonly HashSet<string> Types = new HashSet<string>() { };
+		public readonly HashSet<string> Types = new HashSet<string>() { };
 
 		public override object Create(ActorInitializer init) { return new ActorSpawnManager(init.Self, this); }
 	}
 
-	public class ActorSpawnManager : ConditionalTrait<ActorSpawnManagerInfo>, ITick, INotifyCreated
+	public class ActorSpawnManager : ConditionalTrait<ActorSpawnManagerInfo>, ITick
 	{
 		readonly ActorSpawnManagerInfo info;
 
@@ -50,14 +49,16 @@ namespace OpenRA.Mods.Common.Traits
 		int spawnCountdown;
 		int actorsPresent;
 
-		public ActorSpawnManager(Actor self, ActorSpawnManagerInfo info) : base(info)
+		public ActorSpawnManager(Actor self, ActorSpawnManagerInfo info)
+			: base(info)
 		{
 			this.info = info;
 		}
 
-		void INotifyCreated.Created(Actor self)
+		protected override void Created(Actor self)
 		{
 			enabled = self.Trait<MapCreeps>().Enabled;
+			base.Created(self);
 		}
 
 		void ITick.Tick(Actor self)
@@ -83,7 +84,8 @@ namespace OpenRA.Mods.Common.Traits
 				// Always spawn at least one actor, plus
 				// however many needed to reach the minimum.
 				SpawnActor(self, spawnPoint);
-			} while (actorsPresent < info.Minimum);
+			}
+			while (actorsPresent < info.Minimum);
 		}
 
 		WPos SpawnActor(Actor self, Actor spawnPoint)

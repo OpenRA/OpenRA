@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -18,7 +18,8 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Throws particles when the actor is destroyed that do damage on impact.")]
 	public class ThrowsShrapnelInfo : ConditionalTraitInfo, IRulesetLoaded
 	{
-		[WeaponReference, FieldLoader.Require]
+		[WeaponReference]
+		[FieldLoader.Require]
 		[Desc("The weapons used for shrapnel.")]
 		public readonly string[] Weapons = { };
 
@@ -68,6 +69,7 @@ namespace OpenRA.Mods.Common.Traits
 					{
 						Weapon = wep,
 						Facing = self.World.SharedRandom.Next(-1, 255),
+						CurrentMuzzleFacing = () => 0,
 
 						DamageModifiers = self.TraitsImplementing<IFirepowerModifier>()
 							.Select(a => a.GetFirepowerModifier()).ToArray(),
@@ -93,7 +95,7 @@ namespace OpenRA.Mods.Common.Traits
 								self.World.Add(projectile);
 
 							if (args.Weapon.Report != null && args.Weapon.Report.Any())
-								Game.Sound.Play(SoundType.World, args.Weapon.Report.Random(self.World.SharedRandom), self.CenterPosition);
+								Game.Sound.Play(SoundType.World, args.Weapon.Report, self.World, self.CenterPosition);
 						}
 					});
 				}

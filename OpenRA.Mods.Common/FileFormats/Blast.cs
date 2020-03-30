@@ -1,12 +1,15 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
  * the License, or (at your option) any later version. For more
  * information, see COPYING.
- *
+ */
+#endregion
+#region Additional Copyright & License Information
+/*
  * This file is based on the blast routines (version 1.1 by Mark Adler)
  * included in zlib/contrib
  */
@@ -22,7 +25,8 @@ namespace OpenRA.Mods.Common.FileFormats
 		public static readonly int MAXBITS = 13; // maximum code length
 		public static readonly int MAXWIN = 4096; // maximum window size
 
-		static byte[] litlen = new byte[] {
+		static byte[] litlen =
+		{
 			11, 124, 8, 7, 28, 7, 188, 13, 76, 4,
 			10, 8, 12, 10, 12, 10, 8, 23, 8, 9,
 			7, 6, 7, 8, 7, 6, 55, 8, 23, 24,
@@ -36,19 +40,21 @@ namespace OpenRA.Mods.Common.FileFormats
 		};
 
 		// bit lengths of length codes 0..15
-		static byte[] lenlen = new byte[] { 2, 35, 36, 53, 38, 23 };
+		static byte[] lenlen = { 2, 35, 36, 53, 38, 23 };
 
 		// bit lengths of distance codes 0..63
-		static byte[] distlen = new byte[] { 2, 20, 53, 230, 247, 151, 248 };
+		static byte[] distlen = { 2, 20, 53, 230, 247, 151, 248 };
 
 		// base for length codes
-		static short[] lengthbase = new short[] {
+		static short[] lengthbase =
+		{
 			3, 2, 4, 5, 6, 7, 8, 9, 10, 12,
 			16, 24, 40, 72, 136, 264
 		};
 
 		// extra bits for length codes
-		static byte[] extra = new byte[] {
+		static byte[] extra =
+		{
 			0, 0, 0, 0, 0, 0, 0, 0, 1, 2,
 			3, 4, 5, 6, 7, 8
 		};
@@ -152,7 +158,8 @@ namespace OpenRA.Mods.Common.FileFormats
 							if (onProgress != null)
 								onProgress(input.Position - inputStart, output.Position - outputStart);
 						}
-					} while (len != 0);
+					}
+					while (len != 0);
 				}
 				else
 				{
@@ -170,7 +177,8 @@ namespace OpenRA.Mods.Common.FileFormats
 							onProgress(input.Position - inputStart, output.Position - outputStart);
 					}
 				}
-			} while (true);
+			}
+			while (true);
 		}
 
 		// Decode a code using Huffman table h.

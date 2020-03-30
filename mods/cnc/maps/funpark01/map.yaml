@@ -35,6 +35,7 @@ Players:
 		Faction: gdi
 		Color: 8C5033
 		Enemies: Nod, Civilian
+		Bot: campaign
 	PlayerReference@Nod:
 		Name: Nod
 		Playable: True

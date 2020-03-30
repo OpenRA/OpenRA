@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common;
@@ -23,37 +22,34 @@ namespace OpenRA.Mods.Cnc.Traits
 	[Desc("Deliver the unit in production via skylift.")]
 	public class ProductionAirdropInfo : ProductionInfo
 	{
+		[NotificationReference("Speech")]
 		public readonly string ReadyAudio = "Reinforce";
+
+		[ActorReference(typeof(AircraftInfo))]
 		[Desc("Cargo aircraft used for delivery. Must have the `Aircraft` trait.")]
-		[ActorReference(typeof(AircraftInfo))] public readonly string ActorType = "c17";
+		public readonly string ActorType = "c17";
 
 		public override object Create(ActorInitializer init) { return new ProductionAirdrop(init, this); }
 	}
 
 	class ProductionAirdrop : Production
 	{
-		readonly ProductionAirdropInfo info;
 		public ProductionAirdrop(ActorInitializer init, ProductionAirdropInfo info)
-			: base(init, info)
-		{
-			this.info = info;
-		}
+			: base(init, info) { }
 
 		public override bool Produce(Actor self, ActorInfo producee, string productionType, TypeDictionary inits)
 		{
 			if (IsTraitDisabled || IsTraitPaused)
 				return false;
 
+			var info = (ProductionAirdropInfo)Info;
 			var owner = self.Owner;
 			var aircraftInfo = self.World.Map.Rules.Actors[info.ActorType].TraitInfo<AircraftInfo>();
-
-			// WDist required to take off or land
-			var landDistance = aircraftInfo.CruiseAltitude.Length * 1024 / aircraftInfo.MaximumPitch.Tan();
 
 			// Start a fixed distance away: the width of the map.
 			// This makes the production timing independent of spawnpoint
 			var startPos = self.Location + new CVec(owner.World.Map.Bounds.Width, 0);
-			var endPos = new CPos(owner.World.Map.Bounds.Left - 2 * landDistance / 1024, self.Location.Y);
+			var endPos = new CPos(owner.World.Map.Bounds.Left, self.Location.Y);
 
 			// Assume a single exit point for simplicity
 			var exit = self.Info.TraitInfos<ExitInfo>().First();
@@ -73,8 +69,8 @@ namespace OpenRA.Mods.Cnc.Traits
 					new FacingInit(64)
 				});
 
-				actor.QueueActivity(new Fly(actor, Target.FromPos(self.CenterPosition + new WVec(landDistance, 0, 0))));
-				actor.QueueActivity(new Land(actor, Target.FromActor(self)));
+				var exitCell = self.Location + exit.ExitCell;
+				actor.QueueActivity(new Land(actor, Target.FromActor(self), WDist.Zero, WVec.Zero, 64, clearCells: new CPos[1] { exitCell }));
 				actor.QueueActivity(new CallFunc(() =>
 				{
 					if (!self.IsInWorld || self.IsDead)
@@ -87,7 +83,7 @@ namespace OpenRA.Mods.Cnc.Traits
 					Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", info.ReadyAudio, self.Owner.Faction.InternalName);
 				}));
 
-				actor.QueueActivity(new Fly(actor, Target.FromCell(w, endPos)));
+				actor.QueueActivity(new FlyOffMap(actor, Target.FromCell(w, endPos)));
 				actor.QueueActivity(new RemoveSelf());
 			});
 

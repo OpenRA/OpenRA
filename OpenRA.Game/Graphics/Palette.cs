@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -11,11 +11,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
-using System.Reflection;
-using System.Runtime.InteropServices;
+using OpenRA.Primitives;
 
 namespace OpenRA.Graphics
 {
@@ -34,35 +31,6 @@ namespace OpenRA.Graphics
 		public static Color GetColor(this IPalette palette, int index)
 		{
 			return Color.FromArgb((int)palette[index]);
-		}
-
-		public static ColorPalette AsSystemPalette(this IPalette palette)
-		{
-			ColorPalette pal;
-			using (var b = new Bitmap(1, 1, PixelFormat.Format8bppIndexed))
-				pal = b.Palette;
-
-			for (var i = 0; i < Size; i++)
-				pal.Entries[i] = palette.GetColor(i);
-
-			// hack around a mono bug -- the palette flags get set wrong.
-			if (Platform.CurrentPlatform != PlatformType.Windows)
-				typeof(ColorPalette).GetField("flags",
-					BindingFlags.Instance | BindingFlags.NonPublic).SetValue(pal, 1);
-
-			return pal;
-		}
-
-		public static Bitmap AsBitmap(this IPalette palette)
-		{
-			var b = new Bitmap(Size, 1, PixelFormat.Format32bppArgb);
-			var data = b.LockBits(new Rectangle(0, 0, b.Width, b.Height),
-								  ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
-			var temp = new uint[Size];
-			palette.CopyToArray(temp, 0);
-			Marshal.Copy((int[])(object)temp, 0, data.Scan0, Size);
-			b.UnlockBits(data);
-			return b;
 		}
 
 		public static IPalette AsReadOnly(this IPalette palette)
@@ -117,6 +85,12 @@ namespace OpenRA.Graphics
 					var r = (byte)(reader.ReadByte() << 2);
 					var g = (byte)(reader.ReadByte() << 2);
 					var b = (byte)(reader.ReadByte() << 2);
+
+					// Replicate high bits into the (currently zero) low bits.
+					r |= (byte)(r >> 6);
+					g |= (byte)(g >> 6);
+					b |= (byte)(b >> 6);
+
 					colors[i] = (uint)((255 << 24) | (r << 16) | (g << 8) | b);
 				}
 

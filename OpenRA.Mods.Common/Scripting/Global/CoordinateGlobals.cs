@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -15,7 +15,8 @@ namespace OpenRA.Mods.Common.Scripting
 	[ScriptGlobal("CPos")]
 	public class CPosGlobal : ScriptGlobal
 	{
-		public CPosGlobal(ScriptContext context) : base(context) { }
+		public CPosGlobal(ScriptContext context)
+			: base(context) { }
 
 		[Desc("Create a new CPos with the specified coordinates.")]
 		public CPos New(int x, int y) { return new CPos(x, y); }
@@ -27,7 +28,8 @@ namespace OpenRA.Mods.Common.Scripting
 	[ScriptGlobal("CVec")]
 	public class CVecGlobal : ScriptGlobal
 	{
-		public CVecGlobal(ScriptContext context) : base(context) { }
+		public CVecGlobal(ScriptContext context)
+			: base(context) { }
 
 		[Desc("Create a new CVec with the specified coordinates.")]
 		public CVec New(int x, int y) { return new CVec(x, y); }
@@ -39,7 +41,8 @@ namespace OpenRA.Mods.Common.Scripting
 	[ScriptGlobal("WPos")]
 	public class WPosGlobal : ScriptGlobal
 	{
-		public WPosGlobal(ScriptContext context) : base(context) { }
+		public WPosGlobal(ScriptContext context)
+			: base(context) { }
 
 		[Desc("Create a new WPos with the specified coordinates.")]
 		public WPos New(int x, int y, int z) { return new WPos(x, y, z); }
@@ -51,7 +54,8 @@ namespace OpenRA.Mods.Common.Scripting
 	[ScriptGlobal("WVec")]
 	public class WVecGlobal : ScriptGlobal
 	{
-		public WVecGlobal(ScriptContext context) : base(context) { }
+		public WVecGlobal(ScriptContext context)
+			: base(context) { }
 
 		[Desc("Create a new WVec with the specified coordinates.")]
 		public WVec New(int x, int y, int z) { return new WVec(x, y, z); }
@@ -63,7 +67,8 @@ namespace OpenRA.Mods.Common.Scripting
 	[ScriptGlobal("WDist")]
 	public class WDistGlobal : ScriptGlobal
 	{
-		public WDistGlobal(ScriptContext context) : base(context) { }
+		public WDistGlobal(ScriptContext context)
+			: base(context) { }
 
 		[Desc("Create a new WDist.")]
 		public WDist New(int r) { return new WDist(r); }

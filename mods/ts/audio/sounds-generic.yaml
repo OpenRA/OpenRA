@@ -9,7 +9,9 @@ Sounds:
 		Button: button
 		CantPushButtonSound: scold8
 		CashTickDown: creddwn1
+			VolumeModifier: 0.33
 		CashTickUp: credup1
+			VolumeModifier: 0.33
 		ChatLine: message1
 		ClickDisabledSound: wrong1
 		ClickSound: clicky1
@@ -28,7 +30,6 @@ Sounds:
 		Scoldsfx: scoldsfx
 		SellSound: cashturn
 		StubSoundForTriggers: boop
-		TabClick:
 		Text1: text1
 		Text2: text2
 		Text3: text3

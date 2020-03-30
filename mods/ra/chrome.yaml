@@ -1043,8 +1043,13 @@ scrollheader-selected: dialog.png
 	corner-bl: 512,127,1,1
 	corner-br: 639,127,1,1
 
+scrollitem-nohover: dialog.png
+
 logos: loadscreen.png
 	logo: 0,0,256,256
+
+loadscreen-stripe: loadscreen.png
+	background: 256,0,256,256
 
 mainmenu-border: dialog.png
 	border-r: 728,427,40,40
@@ -1057,5 +1062,5 @@ mainmenu-border: dialog.png
 	corner-br: 728,467,40,40
 
 dropdown: dialog.png
-    separator: 512,1,1,19
-    observer-separator: 768,256,1,19
+	separator: 512,1,1,19
+	observer-separator: 768,256,1,19

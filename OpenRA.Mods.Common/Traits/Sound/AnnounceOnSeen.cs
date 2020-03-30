@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,17 +10,19 @@
 #endregion
 
 using System;
-using System.Drawing;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Sound
 {
-	[Desc("Players will be notified when this actor becomes visible to them.")]
+	[Desc("Players will be notified when this actor becomes visible to them.",
+		"Requires the 'EnemyWatcher' trait on the player actor.")]
 	public class AnnounceOnSeenInfo : ITraitInfo
 	{
 		[Desc("Should there be a radar ping on enemies' radar at the actor's location when they see him")]
 		public readonly bool PingRadar = false;
 
+		[NotificationReference("Speech")]
 		public readonly string Notification = null;
 
 		public readonly bool AnnounceNeutrals = false;

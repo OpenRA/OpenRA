@@ -6,6 +6,8 @@ BOAT:
 		Cost: 300
 	Tooltip:
 		Name: Gunboat
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 70000
 	Armor:
@@ -62,7 +64,7 @@ LST:
 		InitialFacing: 0
 		TurnSpeed: 4
 		Speed: 142
-		RequiresCondition: !notmobile
+		PauseOnCondition: notmobile
 	Health:
 		HP: 40000
 	Armor:

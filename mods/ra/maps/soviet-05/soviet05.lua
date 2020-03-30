@@ -1,11 +1,12 @@
 --[[
-   Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+   Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
    the License, or (at your option) any later version. For more
    information, see COPYING.
 ]]
+
 CheckForBase = function()
 	baseBuildings = Map.ActorsInBox(Map.TopLeft, CFBPoint.CenterPosition, function(actor)
 		return actor.Type == "fact" or actor.Type == "powr"
@@ -36,7 +37,6 @@ RunInitialActivities = function()
 
 	Trigger.AfterDelay(1, function()
 		Harvester.FindResources()
-		Helper.Destroy()
 		IdlingUnits()
 		Media.PlaySpeechNotification(player, "ReinforcementsArrived")
 
@@ -75,32 +75,29 @@ RunInitialActivities = function()
 end
 
 Expand = function()
-	if ExpansionCheck then
-		return
-	elseif mcvtransport.IsDead then
-		return
-	elseif mcvGG.IsDead then
+	if ExpansionCheck or mcvtransport.IsDead or mcvGG.IsDead then
 		return
 	end
 
-	mcvGG.Move(mcvGGLoadPoint.Location)
-	mcvtransport.Move(lstBeachPoint.Location)
+	ExpansionCheck = true
+	Trigger.ClearAll(mcvGG)
+	Trigger.ClearAll(mcvtransport)
 	Media.DisplayMessage("Allied MCV detected moving to the island.")
 
 	Reinforcements.Reinforce(GoodGuy, { "dd", "dd" }, ShipArrivePath, 0, function(ddsquad)
 		ddsquad.AttackMove(NearExpPoint.Location) end)
 
-	ExpansionCheck = true
-	Trigger.ClearAll(mcvGG)
-	Trigger.ClearAll(mcvtransport)
-	Trigger.AfterDelay(DateTime.Seconds(3), function()
-		if mcvtransport.IsDead then
-			return
-		elseif mcvGG.IsDead then
+
+	mcvtransport.Move(lstBeachPoint.Location)
+
+	mcvGG.Move(mcvGGLoadPoint.Location)
+	mcvGG.EnterTransport(mcvtransport)
+
+	Trigger.AfterDelay(DateTime.Seconds(5), function()
+		if mcvtransport.IsDead or mcvGG.IsDead then
 			return
 		end
 
-		mcvGG.EnterTransport(mcvtransport)
 		mcvtransport.Move(GGUnloadPoint.Location)
 		mcvtransport.UnloadPassengers()
 		Trigger.AfterDelay(DateTime.Seconds(12), function()
@@ -144,7 +141,10 @@ end
 Tick = function()
 	if Greece.HasNoRequiredUnits() and GoodGuy.HasNoRequiredUnits() then
 		player.MarkCompletedObjective(KillAll)
-		player.MarkCompletedObjective(HoldObjective)
+
+		if HoldObjective then
+			player.MarkCompletedObjective(HoldObjective)
+		end
 	end
 
 	if player.HasNoRequiredUnits() then
@@ -226,6 +226,14 @@ WorldLoaded = function()
 
 	RadarDome.GrantCondition("french")
 	Trigger.OnCapture(RadarDome, function()
+<<<<<<< HEAD
+=======
+		if player.IsObjectiveCompleted(KillAll) then
+			player.MarkCompletedObjective(CaptureObjective)
+			return
+		end
+
+>>>>>>> e82c30fbabc008a988936025f3250729d9a22b4c
 		HoldObjective = player.AddPrimaryObjective("Defend the Radar Dome.")
 		player.MarkCompletedObjective(CaptureObjective)
 		Beacon.New(player, MCVDeploy.CenterPosition)

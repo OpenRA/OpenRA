@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -11,11 +11,11 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 using OpenRA.Support;
 using OpenRA.Traits;
 
@@ -141,6 +141,12 @@ namespace OpenRA.Mods.Common
 			}
 		}
 
+		public static bool AreAdjacentCells(CPos a, CPos b)
+		{
+			var offset = b - a;
+			return Math.Abs(offset.X) < 2 && Math.Abs(offset.Y) < 2;
+		}
+
 		public static IEnumerable<CPos> ExpandFootprint(IEnumerable<CPos> cells, bool allowDiagonal)
 		{
 			return cells.SelectMany(c => Neighbours(c, allowDiagonal)).Distinct();
@@ -164,7 +170,7 @@ namespace OpenRA.Mods.Common
 
 		public static IEnumerable<CPos> RandomWalk(CPos p, MersenneTwister r)
 		{
-			for (;;)
+			while (true)
 			{
 				var dx = r.Next(-1, 2);
 				var dy = r.Next(-1, 2);
@@ -235,7 +241,7 @@ namespace OpenRA.Mods.Common
 			if (t == typeof(WVec))
 				return "3D World Vector";
 
-			if (t == typeof(HSLColor) || t == typeof(Color))
+			if (t == typeof(Color))
 				return "Color (RRGGBB[AA] notation)";
 
 			if (t == typeof(IProjectileInfo))

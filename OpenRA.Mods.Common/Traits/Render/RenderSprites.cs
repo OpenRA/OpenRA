@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
@@ -34,11 +33,13 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("A dictionary of faction-specific image overrides.")]
 		public readonly Dictionary<string, string> FactionImages = null;
 
+		[PaletteReference]
 		[Desc("Custom palette name")]
-		[PaletteReference] public readonly string Palette = null;
+		public readonly string Palette = null;
 
+		[PaletteReference(true)]
 		[Desc("Custom PlayerColorPalette: BaseName")]
-		[PaletteReference(true)] public readonly string PlayerPalette = "player";
+		public readonly string PlayerPalette = "player";
 
 		[Desc("Change the sprite image size.")]
 		public readonly float Scale = 1f;

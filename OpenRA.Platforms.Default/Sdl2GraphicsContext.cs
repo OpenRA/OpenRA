@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,8 +10,10 @@
 #endregion
 
 using System;
-using System.Drawing;
+using System.Threading;
+using OpenRA.FileFormats;
 using OpenRA.Graphics;
+using OpenRA.Primitives;
 using SDL2;
 
 namespace OpenRA.Platforms.Default
@@ -55,12 +57,6 @@ namespace OpenRA.Platforms.Default
 		{
 			VerifyThreadAffinity();
 			return new Texture();
-		}
-
-		public ITexture CreateTexture(Bitmap bitmap)
-		{
-			VerifyThreadAffinity();
-			return new Texture(bitmap);
 		}
 
 		public IFrameBuffer CreateFrameBuffer(Size s)
@@ -117,29 +113,49 @@ namespace OpenRA.Platforms.Default
 			OpenGL.CheckGLError();
 		}
 
-		public Bitmap TakeScreenshot()
+		public void SaveScreenshot(string path)
 		{
-			var rect = new Rectangle(Point.Empty, window.SurfaceSize);
-			var bitmap = new Bitmap(rect.Width, rect.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-			var data = bitmap.LockBits(rect,
-				System.Drawing.Imaging.ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+			var s = window.SurfaceSize;
+			var raw = new byte[s.Width * s.Height * 4];
 
 			OpenGL.glPushClientAttrib(OpenGL.GL_CLIENT_PIXEL_STORE_BIT);
 
-			OpenGL.glPixelStoref(OpenGL.GL_PACK_ROW_LENGTH, data.Stride / 4f);
+			OpenGL.glPixelStoref(OpenGL.GL_PACK_ROW_LENGTH, s.Width);
 			OpenGL.glPixelStoref(OpenGL.GL_PACK_ALIGNMENT, 1);
 
-			OpenGL.glReadPixels(rect.X, rect.Y, rect.Width, rect.Height, OpenGL.GL_BGRA, OpenGL.GL_UNSIGNED_BYTE, data.Scan0);
-			OpenGL.glFinish();
+			unsafe
+			{
+				fixed (byte* pRaw = raw)
+					OpenGL.glReadPixels(0, 0, s.Width, s.Height,
+						OpenGL.GL_BGRA, OpenGL.GL_UNSIGNED_BYTE, (IntPtr)pRaw);
+			}
 
+			OpenGL.glFinish();
 			OpenGL.glPopClientAttrib();
 
-			bitmap.UnlockBits(data);
+			ThreadPool.QueueUserWorkItem(_ =>
+			{
+				// Convert GL pixel data into format expected by png
+				// - Flip vertically
+				// - BGRA to RGBA
+				// - Force A to 255 (no transparent pixels!)
+				var data = new byte[raw.Length];
+				for (var y = 0; y < s.Height; y++)
+				{
+					for (var x = 0; x < s.Width; x++)
+					{
+						var iData = 4 * (y * s.Width + x);
+						var iRaw = 4 * ((s.Height - y - 1) * s.Width + x);
+						data[iData] = raw[iRaw + 2];
+						data[iData + 1] = raw[iRaw + 1];
+						data[iData + 2] = raw[iRaw + 0];
+						data[iData + 3] = byte.MaxValue;
+					}
+				}
 
-			// OpenGL standard defines the origin in the bottom left corner which is why this is upside-down by default.
-			bitmap.RotateFlip(RotateFlipType.RotateNoneFlipY);
-
-			return bitmap;
+				var screenshot = new Png(data, window.SurfaceSize.Width, window.SurfaceSize.Height);
+				screenshot.Save(path);
+			});
 		}
 
 		public void Present()

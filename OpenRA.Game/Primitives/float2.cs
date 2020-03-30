@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -11,8 +11,8 @@
 
 using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Drawing;
 using System.Runtime.InteropServices;
+using OpenRA.Primitives;
 
 namespace OpenRA
 {
@@ -23,13 +23,8 @@ namespace OpenRA
 		public readonly float X, Y;
 
 		public float2(float x, float y) { X = x; Y = y; }
-		public float2(PointF p) { X = p.X; Y = p.Y; }
-		public float2(Point p) { X = p.X; Y = p.Y; }
 		public float2(Size p) { X = p.Width; Y = p.Height; }
-		public float2(SizeF p) { X = p.Width; Y = p.Height; }
-
-		public PointF ToPointF() { return new PointF(X, Y); }
-		public SizeF ToSizeF() { return new SizeF(X, Y); }
+		public float2(int2 p) { X = p.X; Y = p.Y; }
 
 		public static implicit operator float2(int2 src) { return new float2(src.X, src.Y); }
 

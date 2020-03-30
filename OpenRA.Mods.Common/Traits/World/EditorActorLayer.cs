@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits.Render;
@@ -106,7 +105,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public EditorActorPreview Add(ActorReference reference) { return Add(NextActorName(), reference); }
 
-		EditorActorPreview Add(string id, ActorReference reference, bool initialSetup = false)
+		public EditorActorPreview Add(string id, ActorReference reference, bool initialSetup = false)
 		{
 			var owner = Players.Players[reference.InitDict.Get<OwnerInit>().PlayerName];
 
@@ -172,7 +171,10 @@ namespace OpenRA.Mods.Common.Traits
 				var index = int.Parse(name.Substring(5));
 
 				if (index >= newCount)
+				{
 					Players.Players.Remove(name);
+					OnPlayerRemoved();
+				}
 			}
 
 			for (var index = 0; index < newCount; index++)
@@ -237,7 +239,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!previews.Any())
 				return map.Grid.DefaultSubCell;
 
-			for (var i = (int)SubCell.First; i < map.Grid.SubCellOffsets.Length; i++)
+			for (var i = (byte)SubCell.First; i < map.Grid.SubCellOffsets.Length; i++)
 				if (!previews.Any(p => p.Footprint[cell] == (SubCell)i))
 					return (SubCell)i;
 
@@ -248,6 +250,8 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			return screenMap.At(worldPx);
 		}
+
+		public Action OnPlayerRemoved = () => { };
 
 		string NextActorName()
 		{
@@ -276,7 +280,12 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			foreach (var previewsForCell in cellMap)
 				foreach (var preview in previewsForCell.Value)
-					destinationBuffer.Add(Pair.New(previewsForCell.Key, preview.Owner.Color.RGB));
+					destinationBuffer.Add(Pair.New(previewsForCell.Key, preview.Owner.Color));
+		}
+
+		public EditorActorPreview this[string id]
+		{
+			get { return previews.FirstOrDefault(p => p.ID.ToLowerInvariant() == id); }
 		}
 	}
 }

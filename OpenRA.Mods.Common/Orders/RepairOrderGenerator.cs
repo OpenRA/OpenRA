@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -17,9 +17,9 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Orders
 {
-	public class RepairOrderGenerator : IOrderGenerator
+	public class RepairOrderGenerator : OrderGenerator
 	{
-		public IEnumerable<Order> Order(World world, CPos cell, int2 worldPixel, MouseInput mi)
+		protected override IEnumerable<Order> OrderInner(World world, CPos cell, int2 worldPixel, MouseInput mi)
 		{
 			if (mi.Button == MouseButton.Right)
 				world.CancelInputMode();
@@ -70,20 +70,23 @@ namespace OpenRA.Mods.Common.Orders
 			if (repairBuilding == null)
 				yield break;
 
-			yield return new Order(orderId, underCursor, Target.FromActor(repairBuilding), false) { VisualFeedbackTarget = Target.FromActor(underCursor) };
+			yield return new Order(orderId, underCursor, Target.FromActor(repairBuilding), mi.Modifiers.HasModifier(Modifiers.Shift))
+			{
+				VisualFeedbackTarget = Target.FromActor(underCursor)
+			};
 		}
 
-		public void Tick(World world)
+		protected override void Tick(World world)
 		{
 			if (world.LocalPlayer != null &&
 				world.LocalPlayer.WinState != WinState.Undefined)
 				world.CancelInputMode();
 		}
 
-		public IEnumerable<IRenderable> Render(WorldRenderer wr, World world) { yield break; }
-		public IEnumerable<IRenderable> RenderAboveShroud(WorldRenderer wr, World world) { yield break; }
+		protected override IEnumerable<IRenderable> Render(WorldRenderer wr, World world) { yield break; }
+		protected override IEnumerable<IRenderable> RenderAboveShroud(WorldRenderer wr, World world) { yield break; }
 
-		public string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
+		protected override string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
 		{
 			mi.Button = MouseButton.Left;
 			return OrderInner(world, mi).Any()

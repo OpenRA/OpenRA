@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -12,6 +12,7 @@
 using System.Collections.Generic;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Lint;
+using OpenRA.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic.Ingame
@@ -20,7 +21,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic.Ingame
 	public class JumpToSelectedActorsHotkeyLogic : SingleHotkeyBaseLogic
 	{
 		readonly Viewport viewport;
-		readonly Selection selection;
+		readonly ISelection selection;
 
 		[ObjectCreator.UseCtor]
 		public JumpToSelectedActorsHotkeyLogic(Widget widget, ModData modData, WorldRenderer worldRenderer, World world, Dictionary<string, MiniYaml> logicArgs)

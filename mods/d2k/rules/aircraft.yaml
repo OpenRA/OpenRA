@@ -12,14 +12,14 @@ carryall.reinforce:
 		CruiseAltitude: 2160
 		CruisingCondition: cruising
 		InitialFacing: 0
-		Speed: 144 # 112 * ~1.3 for balance reasons
+		Speed: 144
 		TurnSpeed: 4
 		LandableTerrainTypes: Sand, Rock, Transition, Spice, SpiceSand, Dune, Concrete
 		Repulsable: False
-		LandWhenIdle: False
 		AirborneCondition: airborne
-		CanHover: True
+		CanSlide: True
 		VTOL: true
+		IdleTurnSpeed: 1
 	Targetable@GROUND:
 		TargetTypes: Ground, Vehicle
 		RequiresCondition: !airborne
@@ -33,8 +33,8 @@ carryall.reinforce:
 		Actor: carryall.huskVTOL
 		RequiresCondition: !cruising
 	Carryall:
-		LoadingDelay: 10
-		UnloadingDelay: 15
+		BeforeLoadDelay: 10
+		BeforeUnloadDelay: 15
 		LocalOffset: 0, 0, -128
 	RenderSprites:
 		Image: carryall
@@ -51,17 +51,19 @@ carryall:
 	Inherits: carryall.reinforce
 	-Carryall:
 	AutoCarryall:
-		LoadingDelay: 10
-		UnloadingDelay: 15
+		BeforeLoadDelay: 10
+		BeforeUnloadDelay: 15
 		LocalOffset: 0, 0, -128
 	Aircraft:
 		MinAirborneAltitude: 400
 	RevealsShroud@lifting_low:
 		Range: 2c512
+		MoveRecalculationThreshold: 0
 		Type: GroundPosition
 		RequiresCondition: !airborne
 	RevealsShroud@lifting_high:
 		Range: 1c256
+		MoveRecalculationThreshold: 0
 		Type: GroundPosition
 		RequiresCondition: !cruising
 	Buildable:
@@ -76,16 +78,19 @@ frigate:
 	Tooltip:
 		Name: Frigate
 	Aircraft:
-		Speed: 189 # 126 * ~1.5 for balance reasons
+		IdleBehavior: LeaveMap
+		Speed: 189
 		TurnSpeed: 1
 		Repulsable: False
 		MaximumPitch: 20
 		CruiseAltitude: 2048
+		VTOL: true
+		CanHover: true
+		CanSlide: true
 	-AppearsOnRadar:
 	Cargo:
 		MaxWeight: 20
 		PipCount: 10
-	FlyAwayOnIdle:
 	RejectsOrders:
 
 ornithopter:
@@ -98,12 +103,10 @@ ornithopter:
 	Armor:
 		Type: light
 	Aircraft:
-		Speed: 224 # 189 * ~1.2 for balance reasons
+		Speed: 224
 		TurnSpeed: 2
 		Repulsable: False
-		CanHover: True
 		CruiseAltitude: 1920
-		VTOL: true
 	AmmoPool:
 		Ammo: 5
 	Tooltip:
@@ -112,6 +115,7 @@ ornithopter:
 		Actor: ornithopter.husk
 	RejectsOrders:
 	RevealOnFire:
+	-MapEditorData:
 
 ornithopter.husk:
 	Inherits: ^AircraftHusk
@@ -130,7 +134,7 @@ carryall.husk:
 	Aircraft:
 		TurnSpeed: 4
 		Speed: 144
-		CanHover: True
+		CanSlide: True
 		VTOL: true
 	RenderSprites:
 		Image: carryall
@@ -144,7 +148,7 @@ carryall.huskVTOL:
 		Velocity: 0c128
 	Aircraft:
 		TurnSpeed: 4
-		CanHover: True
+		CanSlide: True
 		VTOL: true
 	RenderSprites:
 		Image: carryall

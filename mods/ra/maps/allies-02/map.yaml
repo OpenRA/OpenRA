@@ -24,6 +24,7 @@ Players:
 		Faction: soviet
 		Color: FE1100
 		Enemies: Greece, England
+		Bot: campaign
 	PlayerReference@England:
 		Name: England
 		NonCombatant: True
@@ -31,6 +32,7 @@ Players:
 		Color: A1EF8C
 		Allies: Greece
 		Enemies: USSR
+		Bot: campaign
 	PlayerReference@Neutral:
 		Name: Neutral
 		OwnsWorld: True
@@ -153,15 +155,6 @@ Actors:
 	Actor33: tc02
 		Location: 44,68
 		Owner: Neutral
-	Actor34: t12
-		Location: 93,81
-		Owner: Neutral
-	Actor35: t03
-		Location: 93,55
-		Owner: Neutral
-	Actor36: t02
-		Location: 93,57
-		Owner: Neutral
 	Actor37: t02
 		Location: 79,47
 		Owner: Neutral
@@ -170,12 +163,6 @@ Actors:
 		Owner: Neutral
 	Actor39: t01
 		Location: 92,45
-		Owner: Neutral
-	Actor40: t05
-		Location: 93,54
-		Owner: Neutral
-	Actor41: t06
-		Location: 93,82
 		Owner: Neutral
 	Actor42: t07
 		Location: 87,44
@@ -222,19 +209,6 @@ Actors:
 	Actor56: tc03
 		Location: 43,70
 		Owner: Neutral
-	Actor58: fact
-		Location: 62,61
-		Owner: USSR
-	Actor59: proc
-		Location: 53,62
-		Owner: USSR
-		FreeActor: False
-	Actor60: powr
-		Location: 57,62
-		Owner: USSR
-	Actor62: powr
-		Location: 59,62
-		Owner: USSR
 	Actor64: brl3
 		Location: 65,59
 		Owner: USSR
@@ -258,9 +232,6 @@ Actors:
 		Owner: USSR
 	Actor71: barl
 		Location: 65,62
-		Owner: USSR
-	Actor72: silo
-		Location: 54,68
 		Owner: USSR
 	Actor73: brl3
 		Location: 55,70
@@ -364,7 +335,7 @@ Actors:
 		Facing: 96
 		SubCell: 0
 	Actor103: e1
-		Location: 77,74
+		Location: 78,74
 		Owner: USSR
 		Facing: 128
 		SubCell: 2
@@ -562,6 +533,22 @@ Actors:
 		Owner: USSR
 	Actor170: fenc
 		Location: 50,51
+		Owner: USSR
+	SovietConyard: fact
+		Location: 62,61
+		Owner: USSR
+	SovietRefinery: proc
+		Location: 53,62
+		Owner: USSR
+		FreeActor: False
+	SovietPower1: powr
+		Location: 57,62
+		Owner: USSR
+	SovietPower2: powr
+		Location: 59,62
+		Owner: USSR
+	SovietSilo: silo
+		Location: 54,68
 		Owner: USSR
 	SovietKennel: kenn
 		Location: 58,68

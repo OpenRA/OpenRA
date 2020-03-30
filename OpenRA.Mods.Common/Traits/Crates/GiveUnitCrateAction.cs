@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -19,8 +19,9 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Spawns units when collected.")]
 	class GiveUnitCrateActionInfo : CrateActionInfo
 	{
+		[ActorReference]
+		[FieldLoader.Require]
 		[Desc("The list of units to spawn.")]
-		[ActorReference, FieldLoader.Require]
 		public readonly string[] Units = { };
 
 		[Desc("Factions that are allowed to trigger this action.")]

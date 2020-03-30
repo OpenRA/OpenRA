@@ -12,7 +12,7 @@ ScrollPanel@LABEL_DROPDOWN_TEMPLATE:
 				Label@LABEL:
 					Font: TinyBold
 					Width: PARENT_RIGHT
-					Height: 10
+					Height: 13
 					Align: Center
 		ScrollItem@TEMPLATE:
 			Width: PARENT_RIGHT - 27

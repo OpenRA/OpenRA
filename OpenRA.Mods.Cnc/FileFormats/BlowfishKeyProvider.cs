@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -230,10 +230,10 @@ namespace OpenRA.Mods.Cnc.FileFormats
 			InitBigNum(nTmp, 0, len);
 			InitBigNum(n1, 0, len);
 			nTwoBitLen = (int)BitLenBigNum(n2, len);
-			bit = ((uint)1) << (nTwoBitLen % 32);
+			bit = 1U << (nTwoBitLen % 32);
 			j = ((nTwoBitLen + 32) / 32) - 1;
 			nTwoByteLen = (uint)((nTwoBitLen - 1) / 32) * 4;
-			nTmp[nTwoByteLen / 4] |= ((uint)1) << ((nTwoBitLen - 1) & 0x1f);
+			nTmp[nTwoByteLen / 4] |= 1U << ((nTwoBitLen - 1) & 0x1f);
 
 			while (nTwoBitLen > 0)
 			{
@@ -302,6 +302,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 						pn2++;
 						tmp >>= 16;
 					}
+
 					*pn1 += (ushort)tmp;
 				}
 			}
@@ -431,7 +432,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 					InitTwoDw(n4, n4_len);
 					n3_bitlen = (int)BitLenBigNum(n3, n4_len);
 					n3_len = (uint)((n3_bitlen + 31) / 32);
-					bit_mask = (((uint)1) << ((n3_bitlen - 1) % 32)) >> 1;
+					bit_mask = (1U << ((n3_bitlen - 1) % 32)) >> 1;
 					pn3 += n3_len - 1;
 					n3_bitlen--;
 					MoveBigNum(n1, n2, n4_len);

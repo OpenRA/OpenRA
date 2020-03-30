@@ -107,6 +107,8 @@ ChromeLayout:
 	cnc|chrome/color-picker.yaml
 	cnc|chrome/mapchooser.yaml
 	cnc|chrome/replaybrowser.yaml
+	cnc|chrome/gamesave-browser.yaml
+	cnc|chrome/gamesave-loading.yaml
 	cnc|chrome/ingame.yaml
 	cnc|chrome/ingame-chat.yaml
 	cnc|chrome/ingame-menu.yaml
@@ -117,7 +119,7 @@ ChromeLayout:
 	cnc|chrome/ingame-infoscripterror.yaml
 	cnc|chrome/ingame-infoobjectives.yaml
 	cnc|chrome/ingame-infostats.yaml
-	cnc|chrome/ingame-observerstats.yaml
+	cnc|chrome/ingame-debuginfo.yaml
 	cnc|chrome/music.yaml
 	cnc|chrome/settings.yaml
 	cnc|chrome/credits.yaml
@@ -166,27 +168,35 @@ Fonts:
 	Tiny:
 		Font: common|FreeSans.ttf
 		Size: 10
+		Ascender: 8
 	TinyBold:
 		Font: common|FreeSansBold.ttf
 		Size: 10
+		Ascender: 8
 	Small:
 		Font: common|FreeSans.ttf
 		Size: 12
+		Ascender: 9
 	Regular:
 		Font: common|FreeSans.ttf
 		Size: 14
+		Ascender: 11
 	Bold:
 		Font: common|FreeSansBold.ttf
 		Size: 14
+		Ascender: 11
 	MediumBold:
 		Font: common|FreeSansBold.ttf
 		Size: 18
+		Ascender: 14
 	BigBold:
 		Font: common|FreeSansBold.ttf
 		Size: 24
+		Ascender: 18
 	Title:
 		Font: common|FreeSansBold.ttf
 		Size: 32
+		Ascender: 24
 
 Missions:
 	./mods/cnc/missions.yaml

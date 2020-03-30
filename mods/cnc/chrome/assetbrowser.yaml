@@ -10,7 +10,7 @@ Container@ASSETBROWSER_PANEL:
 		ColorPreviewManager@COLOR_MANAGER:
 		Label@ASSETBROWSER_TITLE:
 			Width: PARENT_RIGHT
-			Y: 0 - 25
+			Y: 0 - 22
 			Font: BigBold
 			Contrast: true
 			Align: Center
@@ -22,7 +22,7 @@ Container@ASSETBROWSER_PANEL:
 			Children:
 				Label@SOURCE_SELECTOR_DESC:
 					X: 15
-					Y: 5
+					Y: 6
 					Width: 160
 					Height: 25
 					Font: TinyBold
@@ -48,14 +48,17 @@ Container@ASSETBROWSER_PANEL:
 							X: 2
 							Y: 0
 							Visible: false
+							EnableChildMouseOver: True
 							Children:
-								Label@TITLE:
+								LabelWithTooltip@TITLE:
 									X: 10
 									Width: PARENT_RIGHT - 15
 									Height: 25
+									TooltipContainer: TOOLTIP_CONTAINER
+									TooltipTemplate: SIMPLE_TOOLTIP
 				Label@FILENAME_DESC:
 					X: 15
-					Y: 340
+					Y: 341
 					Width: 160
 					Height: 25
 					Font: TinyBold
@@ -69,7 +72,7 @@ Container@ASSETBROWSER_PANEL:
 					Type: Filename
 				Label@PALETTE_DESC:
 					X: PARENT_RIGHT - WIDTH - 270
-					Y: 30
+					Y: 31
 					Width: 150
 					Height: 25
 					Font: Bold
@@ -190,6 +193,7 @@ Container@ASSETBROWSER_PANEL:
 							MinimumValue: 0
 						Label@FRAME_COUNT:
 							X: 445
+							Y: 1
 							Width: 40
 							Height: 25
 							Font: TinyBold
@@ -200,3 +204,4 @@ Container@ASSETBROWSER_PANEL:
 			Width: 140
 			Height: 35
 			Text: Back
+		TooltipContainer@TOOLTIP_CONTAINER:

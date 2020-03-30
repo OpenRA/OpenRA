@@ -28,6 +28,9 @@ Player:
 	PlayerResources:
 		DefaultCashDropdownLocked: True
 		DefaultCash: 5000
+	ModularBot@CampaignAI:
+		Name: Campaign Player AI
+		Type: campaign
 
 airstrike.proxy:
 	AlwaysVisible:
@@ -51,6 +54,7 @@ airstrike.proxy:
 		ArrowSequence: arrow
 		ClockSequence: clock
 		CircleSequence: circles
+		SupportPowerPaletteOrder: 10
 
 TRUCK:
 	Buildable:

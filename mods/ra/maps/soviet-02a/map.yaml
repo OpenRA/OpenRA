@@ -36,6 +36,7 @@ Players:
 		Faction: allies
 		Color: E2E6F5
 		Enemies: USSR
+		Bot: campaign
 	PlayerReference@Neutral:
 		Name: Neutral
 		OwnsWorld: True
@@ -380,63 +381,6 @@ Actors:
 		Location: 74,50
 		Owner: USSR
 		SubCell: 3
-	waypoint8: waypoint
-		Location: 62,38
-		Owner: Neutral
-	waypoint9: waypoint
-		Location: 52,72
-		Owner: Neutral
-	waypoint10: waypoint
-		Location: 83,77
-		Owner: Neutral
-	waypoint11: waypoint
-		Location: 64,62
-		Owner: Neutral
-	waypoint23: waypoint
-		Location: 66,53
-		Owner: Neutral
-	waypoint25: waypoint
-		Location: 75,59
-		Owner: Neutral
-	waypoint26: waypoint
-		Location: 79,67
-		Owner: Neutral
-	waypoint27: waypoint
-		Location: 85,63
-		Owner: Neutral
-	waypoint28: waypoint
-		Location: 85,53
-		Owner: Neutral
-	waypoint42: waypoint
-		Location: 42,53
-		Owner: Neutral
-	waypoint49: waypoint
-		Location: 42,59
-		Owner: Neutral
-	waypoint52: waypoint
-		Location: 60,60
-		Owner: Neutral
-	waypoint53: waypoint
-		Location: 61,59
-		Owner: Neutral
-	waypoint94: waypoint
-		Location: 77,53
-		Owner: Neutral
-	waypoint95: waypoint
-		Location: 59,44
-		Owner: Neutral
-	waypoint1: waypoint
-		Location: 47,57
-		Owner: Neutral
-	waypoint4: waypoint
-		Location: 57,59
-		Owner: Neutral
-	waypoint5: waypoint
-		Location: 63,52
-		Owner: Neutral
-	waypoint6: waypoint
-		Location: 68,39
-		Owner: Neutral
 	Actor121: fenc
 		Location: 68,59
 		Owner: USSR
@@ -476,18 +420,6 @@ Actors:
 	Actor133: fenc
 		Location: 69,51
 		Owner: USSR
-	CameraWaypoint: waypoint
-		Location: 68,54
-		Owner: Neutral
-	ParadropLZ: waypoint
-		Location: 45,43
-		Owner: Neutral
-	AttackWaypoint1: waypoint
-		Location: 73,49
-		Owner: Neutral
-	AttackWaypoint2: waypoint
-		Location: 73,76
-		Owner: Neutral
 	CommandCenter: fcom
 		Location: 76,52
 		Owner: USSR
@@ -557,5 +489,26 @@ Actors:
 		Location: 54,74
 		Owner: Greece
 		SubCell: 2
+	CameraWaypoint: waypoint
+		Location: 68,54
+		Owner: Neutral
+	ParadropLZ: waypoint
+		Location: 45,43
+		Owner: Neutral
+	AttackWaypoint1: waypoint
+		Location: 73,49
+		Owner: Neutral
+	AttackWaypoint2: waypoint
+		Location: 73,76
+		Owner: Neutral
+	RifleRetreat: waypoint
+		Location: 57,59
+		Owner: Neutral
+	Box1: waypoint
+		Location: 66,53
+		Owner: Neutral
+	Box2: waypoint
+		Location: 42,59
+		Owner: Neutral
 
 Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, ra|rules/campaign-palettes.yaml, rules.yaml

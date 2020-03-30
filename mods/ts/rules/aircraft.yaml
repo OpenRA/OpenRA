@@ -1,16 +1,15 @@
 DPOD:
-	Inherits: ^Helicopter
+	Inherits: ^Aircraft
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Valued:
 		Cost: 10
 	Tooltip:
 		Name: Drop Pod
 	Aircraft:
-		LandWhenIdle: true
+		IdleBehavior: Land
 		TurnSpeed: 5
 		Speed: 149
 		InitialFacing: 0
-		LandableTerrainTypes: Clear,Road,Rail,DirtRoad,Rough,Tiberium,BlueTiberium,Veins
 	Health:
 		HP: 6000
 	Armor:
@@ -23,7 +22,7 @@ DPOD:
 		EjectOnDeath: true
 	Armament:
 		Weapon: Vulcan2
-	AttackHeli:
+	AttackAircraft:
 		Voice: Attack
 	AmmoPool:
 		Ammo: 5
@@ -33,20 +32,24 @@ DPOD:
 	-SpawnActorOnDeath:
 
 DSHP:
-	Inherits: ^Helicopter
+	Inherits: ^Aircraft
 	Valued:
 		Cost: 1000
 	Tooltip:
 		Name: Dropship
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Aircraft:
-		LandWhenIdle: true
+		IdleBehavior: Land
 		TurnSpeed: 5
 		Speed: 168
 		InitialFacing: 0
-		LandableTerrainTypes: Clear,Road,Rail,DirtRoad,Rough,Tiberium,BlueTiberium,Veins
-		TakeoffSound: dropup1.aud
-		LandingSound: dropdwn1.aud
+		TakeoffSounds: dropup1.aud
+		LandingSounds: dropdwn1.aud
 		IdealSeparation: 1275
+		CruiseAltitude: 12c512
+		AltitudeVelocity: 256
+		MoveIntoShroud: true
 	Health:
 		HP: 20000
 	Armor:
@@ -64,7 +67,7 @@ DSHP:
 		Actor: DSHP.Husk
 
 ORCA:
-	Inherits: ^Helicopter
+	Inherits: ^Aircraft
 	Inherits@EXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Inherits@EMPDISABLE: ^EmpDisable
@@ -72,6 +75,8 @@ ORCA:
 		Cost: 1000
 	Tooltip:
 		Name: Orca Fighter
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		Queue: Air
 		BuildPaletteOrder: 10
@@ -80,12 +85,13 @@ ORCA:
 	Selectable:
 		Bounds: 30,24
 	Aircraft:
-		RearmBuildings: gahpad, nahpad
 		TurnSpeed: 5
 		Speed: 186
-		MoveIntoShroud: false
-		TakeoffSound: orcaup1.aud
-		LandingSound: orcadwn1.aud
+		TakeoffSounds: orcaup1.aud
+		LandingSounds: orcadwn1.aud
+		AltitudeVelocity: 128
+		CanSlide: false
+		TakeOffOnResupply: true
 	Health:
 		HP: 20000
 	Armor:
@@ -96,10 +102,12 @@ ORCA:
 	Armament:
 		Weapon: Hellfire
 		PauseOnCondition: !ammo
-	AttackHeli:
+	AttackAircraft:
 		FacingTolerance: 20
+		PersistentTargeting: false
 		Voice: Attack
 		PauseOnCondition: empdisable
+		AttackType: Hover
 	AmmoPool:
 		Ammo: 5
 		PipCount: 5
@@ -109,6 +117,8 @@ ORCA:
 	RenderSprites:
 	SpawnActorOnDeath:
 		Actor: ORCA.Husk
+	Rearmable:
+		RearmActors: gahpad, nahpad
 
 ORCAB:
 	Inherits: ^Aircraft
@@ -119,6 +129,8 @@ ORCAB:
 		Cost: 1600
 	Tooltip:
 		Name: Orca Bomber
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		Queue: Air
 		BuildPaletteOrder: 30
@@ -127,16 +139,14 @@ ORCAB:
 	Selectable:
 		Bounds: 30,24
 	Aircraft:
-		RearmBuildings: gahpad, nahpad
-		CruiseAltitude: 3072
-		MaximumPitch: 120
+		CruiseAltitude: 5c512
 		TurnSpeed: 3
 		Speed: 96
 		CruisingCondition: cruising
-		MoveIntoShroud: false
-		TakeoffSound: orcaup1.aud
-		LandingSound: orcadwn1.aud
-	ReturnOnIdle:
+		TakeoffSounds: orcaup1.aud
+		LandingSounds: orcadwn1.aud
+		CanHover: false
+		CanSlide: false
 	Health:
 		HP: 26000
 	Armor:
@@ -147,9 +157,10 @@ ORCAB:
 	Armament:
 		Weapon: Bomb
 		PauseOnCondition: !ammo
-	AttackPlane:
+	AttackAircraft:
 		Voice: Attack
 		FacingTolerance: 20
+		PersistentTargeting: false
 		PauseOnCondition: empdisable
 	AmmoPool:
 		Ammo: 10
@@ -164,26 +175,30 @@ ORCAB:
 		RequiresCondition: cruising
 	SpawnActorOnDeath:
 		Actor: ORCAB.Husk
+	Rearmable:
+		RearmActors: gahpad, nahpad
 
 ORCATRAN:
-	Inherits: ^Helicopter
+	Inherits: ^Aircraft
 	Valued:
 		Cost: 1200
 	Tooltip:
 		Name: Orca Transport
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		Queue: Air
 		BuildPaletteOrder: 50
 		Prerequisites: ~disabled
 	RenderSprites:
 	Aircraft:
-		LandWhenIdle: true
 		TurnSpeed: 5
 		Speed: 84
 		InitialFacing: 0
-		LandableTerrainTypes: Clear,Road,Rail,DirtRoad,Rough,Tiberium,BlueTiberium,Veins
-		TakeoffSound: orcaup1.aud
-		LandingSound: orcadwn1.aud
+		LandableTerrainTypes: Clear, Road, Rail, DirtRoad, Rough, Tiberium, BlueTiberium, Veins
+		Crushes: crate, infantry
+		TakeoffSounds: orcaup1.aud
+		LandingSounds: orcadwn1.aud
 		IdealSeparation: 1275
 	Health:
 		HP: 20000
@@ -198,33 +213,34 @@ ORCATRAN:
 		PipCount: 5
 		UnloadVoice: Move
 		EjectOnDeath: true
+		AfterUnloadDelay: 40
 	SpawnActorOnDeath:
 		Actor: ORCATRAN.Husk
 
 TRNSPORT:
-	Inherits: ^Helicopter
+	Inherits: ^Aircraft
 	Valued:
 		Cost: 750
 	Tooltip:
 		Name: Carryall
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		Queue: Air
 		BuildPaletteOrder: 60
 		Prerequisites: ~gahpad, gadept
 		Description: VTOL aircraft capable of lifting\nand transporting vehicles.\n  Unarmed
 	Aircraft:
-		LandWhenIdle: true
 		TurnSpeed: 5
 		Speed: 149
 		InitialFacing: 0
-		LandableTerrainTypes: Clear,Road,Rail,DirtRoad,Rough,Tiberium,BlueTiberium,Veins
-		TakeoffSound: dropup1.aud
-		LandingSound: dropdwn1.aud
-		AltitudeVelocity: 64
-		MoveIntoShroud: false
+		TakeoffSounds: dropup1.aud
+		LandingSounds: dropdwn1.aud
 	Carryall:
 		Voice: Move
 		LocalOffset: 0,0,-317
+		BeforeLoadDelay: 10
+		BeforeUnloadDelay: 10
 	Health:
 		HP: 17500
 	Armor:
@@ -247,6 +263,8 @@ SCRIN:
 		Cost: 1500
 	Tooltip:
 		Name: Banshee Fighter
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		Queue: Air
 		BuildPaletteOrder: 40
@@ -257,16 +275,14 @@ SCRIN:
 	Voiced:
 		VoiceSet: Scrin
 	Aircraft:
-		RearmBuildings: gahpad, nahpad
-		CruiseAltitude: 2560
-		MaximumPitch: 90
+		CruiseAltitude: 5c0
 		TurnSpeed: 3
 		Speed: 168
 		AirborneCondition: airborne
-		MoveIntoShroud: false
-		TakeoffSound: dropup1.aud
-		LandingSound: dropdwn1.aud
-	ReturnOnIdle:
+		TakeoffSounds: dropup1.aud
+		LandingSounds: dropdwn1.aud
+		CanHover: false
+		CanSlide: false
 	Health:
 		HP: 28000
 	Armor:
@@ -277,9 +293,10 @@ SCRIN:
 	Armament:
 		Weapon: Proton
 		PauseOnCondition: !ammo
-	AttackPlane:
+	AttackAircraft:
 		Voice: Attack
 		FacingTolerance: 20
+		PersistentTargeting: false
 		PauseOnCondition: empdisable
 	AmmoPool:
 		Ammo: 15
@@ -292,9 +309,11 @@ SCRIN:
 	DeathSounds:
 	SpawnActorOnDeath:
 		Actor: SCRIN.Husk
+	Rearmable:
+		RearmActors: gahpad, nahpad
 
 APACHE:
-	Inherits: ^Helicopter
+	Inherits: ^Aircraft
 	Inherits@EXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Inherits@EMPDISABLE: ^EmpDisable
@@ -302,6 +321,8 @@ APACHE:
 		Cost: 1000
 	Tooltip:
 		Name: Harpy
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		Queue: Air
 		BuildPaletteOrder: 20
@@ -310,10 +331,10 @@ APACHE:
 	Selectable:
 		Bounds: 30,24
 	Aircraft:
-		RearmBuildings: gahpad, nahpad
 		TurnSpeed: 5
 		Speed: 130
-		MoveIntoShroud: false
+		CanSlide: false
+		TakeOffOnResupply: true
 	Health:
 		HP: 22500
 	Armor:
@@ -324,10 +345,12 @@ APACHE:
 	Armament:
 		Weapon: HarpyClaw
 		PauseOnCondition: !ammo
-	AttackHeli:
+	AttackAircraft:
 		FacingTolerance: 20
+		PersistentTargeting: false
 		Voice: Attack
 		PauseOnCondition: empdisable
+		AttackType: Hover
 	AmmoPool:
 		Ammo: 12
 		PipCount: 4
@@ -335,16 +358,18 @@ APACHE:
 		PipTypeEmpty: AmmoEmpty
 		AmmoCondition: ammo
 	WithIdleOverlay@ROTORAIR:
-		Offset: 85,0,384
+		Offset: 85,0,598
 		Sequence: rotor
 		RequiresCondition: airborne
 	WithIdleOverlay@ROTORGROUND:
-		Offset: 85,0,384
+		Offset: 85,0,598
 		Sequence: slow-rotor
 		RequiresCondition: !airborne
 	RenderSprites:
 	SpawnActorOnDeath:
 		Actor: APACHE.Husk
+	Rearmable:
+		RearmActors: gahpad, nahpad
 
 HUNTER:
 	Inherits@2: ^ExistsInWorld
@@ -356,17 +381,21 @@ HUNTER:
 		HP: 50000
 	Armor:
 		Type: Light
-	AttackSuicides:
-	Explodes:
-		Weapon: SuicideBomb
-		EmptyWeapon: SuicideBomb
 	Aircraft:
 		TurnSpeed: 16
 		Speed: 355
-		CruiseAltitude: 256
-		CanHover: True
+		CruiseAltitude: 3c128
 		CruisingCondition: cruising
-		VTOL: true
+		MoveIntoShroud: true
+	AttackAircraft:
+		FacingTolerance: 128
+		AttackType: Hover
+	Armament@PRIMARY:
+		Weapon: SuicideBomb
+	GrantConditionOnAttack:
+		Condition: triggered
+	KillsSelf:
+		RequiresCondition: triggered
 	Targetable:
 		TargetTypes: Ground, Vehicle
 	HiddenUnderFog:
@@ -385,7 +414,6 @@ HUNTER:
 	Interactable:
 	SelectionDecorations:
 		Palette: pips
-	ActorLostNotification:
 	HitShape:
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: System

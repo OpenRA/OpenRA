@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -130,7 +130,8 @@ namespace OpenRA.Mods.Cnc.FileFormats
 			return i;
 		}
 
-		uint[] lookupMfromP = new uint[] {
+		uint[] lookupMfromP =
+		{
 			0x243f6a88, 0x85a308d3, 0x13198a2e, 0x03707344,
 			0xa4093822, 0x299f31d0, 0x082efa98, 0xec4e6c89,
 			0x452821e6, 0x38d01377, 0xbe5466cf, 0x34e90c6c,
@@ -138,7 +139,8 @@ namespace OpenRA.Mods.Cnc.FileFormats
 			0x9216d5d9, 0x8979fb1b
 		};
 
-		uint[,] lookupMfromS = new uint[,] {
+		uint[,] lookupMfromS =
+		{
 			{
 				0xd1310ba6, 0x98dfb5ac, 0x2ffd72db, 0xd01adfb7,
 				0xb8e1afed, 0x6a267e96, 0xba7c9045, 0xf12c7f99,

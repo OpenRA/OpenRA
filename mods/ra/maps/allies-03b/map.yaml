@@ -29,6 +29,7 @@ Players:
 		Faction: soviet
 		Color: FE1100
 		Enemies: Greece
+		Bot: campaign
 	PlayerReference@Greece:
 		Name: Greece
 		Playable: True
@@ -42,6 +43,7 @@ Players:
 		Name: England
 		Color: A1EF8C
 		Faction: allies
+		Bot: campaign
 
 Actors:
 	Actor0: cycl
@@ -1124,22 +1126,22 @@ Actors:
 		Health: 15
 		Facing: 192
 		SubCell: 0
-	PrisonedEngi1: hacke6
+	PrisonedEngi1: e6
 		Location: 91,86
 		Owner: Greece
 		Facing: 192
 		SubCell: 0
-	PrisonedEngi2: hacke6
+	PrisonedEngi2: e6
 		Location: 91,86
 		Owner: Greece
 		Facing: 192
 		SubCell: 1
-	PrisonedEngi3: hacke6
+	PrisonedEngi3: e6
 		Location: 91,86
 		Owner: Greece
 		Facing: 192
 		SubCell: 2
-	PrisonedEngi4: hacke6
+	PrisonedEngi4: e6
 		Location: 91,86
 		Owner: Greece
 		Facing: 192

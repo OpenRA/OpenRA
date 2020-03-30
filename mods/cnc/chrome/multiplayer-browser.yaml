@@ -8,7 +8,7 @@ Container@MULTIPLAYER_PANEL:
 		Label@TITLE:
 			Text: Multiplayer
 			Width: PARENT_RIGHT
-			Y: 0 - 25
+			Y: 0 - 22
 			Font: BigBold
 			Contrast: true
 			Align: Center
@@ -19,7 +19,7 @@ Container@MULTIPLAYER_PANEL:
 			Children:
 				Container@LABEL_CONTAINER:
 					X: 15
-					Y: 5
+					Y: 6
 					Width: PARENT_RIGHT
 					Height: PARENT_BOTTOM
 					Children:
@@ -63,21 +63,21 @@ Container@MULTIPLAYER_PANEL:
 								Label@OUTDATED_VERSION_LABEL:
 									X: 5
 									Width: PARENT_RIGHT-10
-									Height: 18
+									Height: 20
 									Align: Center
 									Text: You are running an outdated version of OpenRA. Download the latest version from www.openra.net
 									Font: TinyBold
 								Label@UNKNOWN_VERSION_LABEL:
 									X: 5
 									Width: PARENT_RIGHT-10
-									Height: 18
+									Height: 20
 									Align: Center
 									Text: You are running an unrecognized version of OpenRA. Download the latest version from www.openra.net
 									Font: TinyBold
 								Label@PLAYTEST_AVAILABLE_LABEL:
 									X: 5
 									Width: PARENT_RIGHT-10
-									Height: 18
+									Height: 20
 									Align: Center
 									Text: A preview of the next OpenRA release is available for testing. Download the playtest from www.openra.net
 									Font: TinyBold
@@ -95,7 +95,6 @@ Container@MULTIPLAYER_PANEL:
 							Visible: false
 							Children:
 								Label@LABEL:
-									Y: 0 - 1
 									Font: TinyBold
 									Width: PARENT_RIGHT
 									Height: 20
@@ -106,10 +105,12 @@ Container@MULTIPLAYER_PANEL:
 							X: 2
 							EnableChildMouseOver: True
 							Children:
-								Label@TITLE:
+								LabelWithTooltip@TITLE:
 									X: 5
 									Width: 245
 									Height: 25
+									TooltipContainer: TOOLTIP_CONTAINER
+									TooltipTemplate: SIMPLE_TOOLTIP
 								Image@PASSWORD_PROTECTED:
 									X: 272
 									Y: 6
@@ -144,7 +145,7 @@ Container@MULTIPLAYER_PANEL:
 									Height: 25
 				Label@PROGRESS_LABEL:
 					X: 15
-					Y: 30 + (PARENT_BOTTOM - 75 - HEIGHT) / 2
+					Y: 31 + (PARENT_BOTTOM - 75 - HEIGHT) / 2
 					Width: 582
 					Height: 25
 					Font: Bold
@@ -168,31 +169,31 @@ Container@MULTIPLAYER_PANEL:
 									Height: PARENT_BOTTOM - 2
 									TooltipContainer: TOOLTIP_CONTAINER
 						Label@SELECTED_MAP:
-							Y: 172
+							Y: 173
 							Width: PARENT_RIGHT
 							Height: 25
 							Font: Bold
 							Align: Center
 						Label@SELECTED_IP:
-							Y: 187
+							Y: 188
 							Width: PARENT_RIGHT
 							Height: 25
 							Font: Tiny
 							Align: Center
 						Label@SELECTED_STATUS:
-							Y: 203
+							Y: 204
 							Width: PARENT_RIGHT
 							Height: 25
 							Font: TinyBold
 							Align: Center
 						Label@SELECTED_MOD_VERSION:
-							Y: 216
+							Y: 217
 							Width: PARENT_RIGHT
 							Height: 25
 							Font: Tiny
 							Align: Center
 						Label@SELECTED_PLAYERS:
-							Y: 229
+							Y: 230
 							Width: PARENT_RIGHT
 							Height: 25
 							Font: TinyBold

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -22,7 +22,8 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int ValuePercent = 40;
 		public readonly int MinHpPercent = 30;
 
-		[ActorReference, FieldLoader.Require]
+		[ActorReference]
+		[FieldLoader.Require]
 		[Desc("Actor types to spawn on sell. Be sure to use lowercase.")]
 		public readonly string[] ActorTypes = null;
 
@@ -55,7 +56,7 @@ namespace OpenRA.Mods.Common.Traits
 			var valued = self.Info.TraitInfoOrDefault<ValuedInfo>();
 			var cost = csv != null ? csv.Value : (valued != null ? valued.Cost : 0);
 
-			var health = self.TraitOrDefault<Health>();
+			var health = self.TraitOrDefault<IHealth>();
 			var dudesValue = Info.ValuePercent * cost / 100;
 			if (health != null)
 			{
@@ -69,7 +70,15 @@ namespace OpenRA.Mods.Common.Traits
 			var buildingInfo = self.Info.TraitInfoOrDefault<BuildingInfo>();
 
 			var eligibleLocations = buildingInfo != null ? buildingInfo.Tiles(self.Location).ToList() : new List<CPos>();
-			var actorTypes = Info.ActorTypes.Select(a => new { Name = a, Cost = self.World.Map.Rules.Actors[a].TraitInfo<ValuedInfo>().Cost }).ToList();
+			var actorTypes = Info.ActorTypes.Select(a =>
+			{
+				var av = self.World.Map.Rules.Actors[a].TraitInfoOrDefault<ValuedInfo>();
+				return new
+				{
+					Name = a,
+					Cost = av != null ? av.Cost : 0
+				};
+			}).ToList();
 
 			while (eligibleLocations.Count > 0 && actorTypes.Any(a => a.Cost <= dudesValue))
 			{

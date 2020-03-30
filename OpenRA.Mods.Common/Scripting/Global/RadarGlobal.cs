@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,8 +9,8 @@
  */
 #endregion
 
-using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 using OpenRA.Scripting;
 
 namespace OpenRA.Mods.Common.Scripting
@@ -20,20 +20,21 @@ namespace OpenRA.Mods.Common.Scripting
 	{
 		readonly RadarPings radarPings;
 
-		public RadarGlobal(ScriptContext context) : base(context)
+		public RadarGlobal(ScriptContext context)
+			: base(context)
 		{
 			radarPings = context.World.WorldActor.TraitOrDefault<RadarPings>();
 		}
 
 		[Desc("Creates a new radar ping that stays for the specified time at the specified WPos.")]
-		public void Ping(Player player, WPos position, HSLColor color, int duration = 30 * 25)
+		public void Ping(Player player, WPos position, Color color, int duration = 30 * 25)
 		{
 			if (radarPings != null)
 			{
 				radarPings.Add(
 					() => player.World.RenderPlayer == player,
 					position,
-					color.RGB,
+					color,
 					duration);
 			}
 		}

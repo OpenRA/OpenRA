@@ -9,6 +9,9 @@ Player:
 		ExploredMapCheckboxEnabled: False
 	PlayerResources:
 		DefaultCashDropdownLocked: True
+	ModularBot@CampaignAI:
+		Name: Campaign Player AI
+		Type: campaign
 
 World:
 	-CrateSpawner:

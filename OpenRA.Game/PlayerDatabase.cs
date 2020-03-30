@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -11,11 +11,12 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
+using OpenRA.FileFormats;
 using OpenRA.Graphics;
+using OpenRA.Primitives;
 
 namespace OpenRA
 {
@@ -64,7 +65,7 @@ namespace OpenRA
 
 						try
 						{
-							var icon = new Bitmap(new MemoryStream(i.Result));
+							var icon = new Png(new MemoryStream(i.Result));
 							if (icon.Width == 24 && icon.Height == 24)
 							{
 								Game.RunAfterTick(() =>

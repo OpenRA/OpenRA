@@ -1,107 +1,111 @@
 CycleBase: H
 	Description: Jump to base
-	Types: World
+	Types: World, Player, Spectator
 
 ToLastEvent: SPACE
 	Description: Jump to last radar event
-	Types: World
+	Types: World, Player, Spectator
 
 ToSelection: HOME
 	Description: Jump to selection
-	Types: World
+	Types: World, Player, Spectator
 
 SelectAllUnits: Q
 	Description: Select all combat units
-	Types: World
+	Types: World, Player, Spectator
 
 SelectUnitsByType: W
 	Description: Select units by type
-	Types: World
+	Types: World, Player, Spectator
+
+RemoveFromControlGroup:
+	Description: Remove from control group
+	Types: World, Player
 
 Pause: PAUSE
 	Description: Pause / Unpause
-	Types: World
+	Types: World, Player, Spectator
 
 Sell: Z
 	Description: Sell mode
-	Types: OrderGenerator
+	Types: OrderGenerator, Player
 
 Repair: C
 	Description: Repair mode
-	Types: OrderGenerator
+	Types: OrderGenerator, Player
 
 PlaceBeacon: B
 	Description: Place beacon
-	Types: OrderGenerator
+	Types: OrderGenerator, Player, Spectator
 
 CycleStatusBars: COMMA
 	Description: Cycle status bars display
-	Types: World
+	Types: World, Player, Spectator
 
 TogglePixelDouble: PERIOD
 	Description: Toggle pixel doubling
-	Types: World
+	Types: World, Player, Spectator
 
 ToggleMute: M
 	Description: Toggle audio mute
-	Types: World, Menu
+	Types: World, Menu, Player, Spectator
 
 TogglePlayerStanceColor: COMMA Ctrl
 	Description: Toggle player stance colors
-	Types: World
+	Types: World, Player, Spectator
 
 TakeScreenshot: P Ctrl
 	Description: Take screenshot
-	Types: World, Menu
+	Types: World, Menu, Player, Spectator
 
 AttackMove: A
 	Description: Attack Move
-	Types: Unit
+	Types: Unit, Player
 
 Stop: S
 	Description: Stop
-	Types: Unit
+	Types: Unit, Player
 
 Scatter: X Ctrl
 	Description: Scatter
-	Types: Unit
+	Types: Unit, Player
 
 Deploy: F
 	Description: Deploy
-	Types: Unit
+	Types: Unit, Player
 
 Guard: D
 	Description: Guard
-	Types: Unit
-
-StanceHoldFire: F Alt
-	Description: Hold fire
-	Types: Stance
-
-StanceReturnFire: D Alt
-	Description: Return fire
-	Types: Stance
-
-StanceDefend: S Alt
-	Description: Defend
-	Types: Stance
+	Types: Unit, Player
 
 StanceAttackAnything: A Alt
 	Description: Attack anything
-	Types: Stance
+	Types: Stance, Player
+
+StanceDefend: S Alt
+	Description: Defend
+	Types: Stance, Player
+
+StanceReturnFire: D Alt
+	Description: Return fire
+	Types: Stance, Player
+
+StanceHoldFire: F Alt
+	Description: Hold fire
+	Types: Stance, Player
 
 StopMusic: AUDIOSTOP
 	Description: Stop
-	Types: Music
+	Types: Music, Player, Spectator
 
 PauseMusic: AUDIOPLAY
 	Description: Pause or Resume
-	Types: Music
+	Types: Music, Player, Spectator
 
 PrevMusic: AUDIOPREV
 	Description: Previous
-	Types: Music
+	Types: Music, Player, Spectator
 
 NextMusic: AUDIONEXT
 	Description: Next
-	Types: Music
+	Types: Music, Player, Spectator

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -205,6 +205,10 @@ namespace OpenRA
 					var yaml = MiniYaml.FromString(data);
 					foreach (var kv in yaml)
 						maps[kv.Key].UpdateRemoteSearch(MapStatus.DownloadAvailable, kv.Value, mapDetailsReceived);
+
+					foreach (var map in maps)
+						if (map.Value.Status != MapStatus.DownloadAvailable)
+							map.Value.UpdateRemoteSearch(MapStatus.Unavailable, null);
 				}
 				catch (Exception e)
 				{
@@ -229,7 +233,7 @@ namespace OpenRA
 			var maxKeepAlive = 5000 / emptyDelay;
 			var keepAlive = maxKeepAlive;
 
-			for (;;)
+			while (true)
 			{
 				List<MapPreview> todo;
 				lock (syncRoot)
@@ -332,8 +336,8 @@ namespace OpenRA
 			if (string.IsNullOrEmpty(initialUid) || previews[initialUid].Status != MapStatus.Available)
 			{
 				var selected = previews.Values.Where(IsSuitableInitialMap).RandomOrDefault(random) ??
-					previews.Values.First(m => m.Status == MapStatus.Available && m.Visibility.HasFlag(MapVisibility.Lobby));
-				return selected.Uid;
+					previews.Values.FirstOrDefault(m => m.Status == MapStatus.Available && m.Visibility.HasFlag(MapVisibility.Lobby));
+				return selected == null ? string.Empty : selected.Uid;
 			}
 
 			return initialUid;

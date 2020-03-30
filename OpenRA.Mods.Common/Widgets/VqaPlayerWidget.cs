@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,9 +10,9 @@
 #endregion
 
 using System;
-using System.Drawing;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.FileFormats;
+using OpenRA.Primitives;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
@@ -87,7 +87,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var scaledHeight = (int)videoSize.Y;
 			overlay = new uint[Exts.NextPowerOf2(scaledHeight), 1];
-			var black = (uint)255 << 24;
+			var black = 255U << 24;
 			for (var y = 0; y < scaledHeight; y += 2)
 				overlay[y, 0] = black;
 
@@ -104,7 +104,7 @@ namespace OpenRA.Mods.Common.Widgets
 			if (!stopped && !paused)
 			{
 				var nextFrame = 0;
-				if (video.HasAudio)
+				if (video.HasAudio && !Game.Sound.DummyEngine)
 					nextFrame = (int)float2.Lerp(0, video.Frames, Game.Sound.VideoSeekPosition * invLength);
 				else
 					nextFrame = video.CurrentFrame + 1;

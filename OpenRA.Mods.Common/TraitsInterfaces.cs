@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,8 +9,8 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
-using System.Drawing;
 using OpenRA.Activities;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Activities;
@@ -23,6 +23,14 @@ namespace OpenRA.Mods.Common.Traits
 	public enum VisibilityType { Footprint, CenterPosition, GroundPosition }
 
 	public enum AttackDelayType { Preparation, Attack }
+
+	[Flags]
+	public enum ResupplyType
+	{
+		None = 0,
+		Rearm = 1,
+		Repair = 2
+	}
 
 	public interface IQuantizeBodyOrientationInfo : ITraitInfo
 	{
@@ -71,8 +79,8 @@ namespace OpenRA.Mods.Common.Traits
 	public interface IDemolishableInfo : ITraitInfoInterface { bool IsValidTarget(ActorInfo actorInfo, Actor saboteur); }
 	public interface IDemolishable
 	{
-		void Demolish(Actor self, Actor saboteur);
 		bool IsValidTarget(Actor self, Actor saboteur);
+		void Demolish(Actor self, Actor saboteur, int delay);
 	}
 
 	// Type tag for crush class bits
@@ -82,6 +90,7 @@ namespace OpenRA.Mods.Common.Traits
 	public interface ICrushable
 	{
 		bool CrushableBy(Actor self, Actor crusher, BitSet<CrushClass> crushClasses);
+		LongBitSet<PlayerBitMask> CrushableBy(Actor self, BitSet<CrushClass> crushClasses);
 	}
 
 	[RequireExplicitImplementation]
@@ -106,9 +115,6 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	[RequireExplicitImplementation]
-	public interface INotifyBuildComplete { void BuildingComplete(Actor self); }
-
-	[RequireExplicitImplementation]
 	public interface INotifyDamageStateChanged { void DamageStateChanged(Actor self, AttackInfo e); }
 
 	[RequireExplicitImplementation]
@@ -119,11 +125,10 @@ namespace OpenRA.Mods.Common.Traits
 	public interface INotifyAppliedDamage { void AppliedDamage(Actor self, Actor damaged, AttackInfo e); }
 
 	[RequireExplicitImplementation]
-	public interface INotifyRepair
+	public interface INotifyResupply
 	{
-		void BeforeRepair(Actor self, Actor target);
-		void RepairTick(Actor self, Actor target);
-		void AfterRepair(Actor self, Actor target);
+		void BeforeResupply(Actor host, Actor target, ResupplyType types);
+		void ResupplyTick(Actor host, Actor target, ResupplyType types);
 	}
 
 	[RequireExplicitImplementation]
@@ -134,16 +139,20 @@ namespace OpenRA.Mods.Common.Traits
 	public interface INotifyBurstComplete { void FiredBurst(Actor self, Target target, Armament a); }
 	public interface INotifyChat { bool OnChat(string from, string message); }
 	public interface INotifyProduction { void UnitProduced(Actor self, Actor other, CPos exit); }
-	public interface INotifyOtherProduction { void UnitProducedByOther(Actor self, Actor producer, Actor produced, string productionType); }
+	public interface INotifyOtherProduction { void UnitProducedByOther(Actor self, Actor producer, Actor produced, string productionType, TypeDictionary init); }
 	public interface INotifyDelivery { void IncomingDelivery(Actor self); void Delivered(Actor self); }
 	public interface INotifyDocking { void Docked(Actor self, Actor harvester); void Undocked(Actor self, Actor harvester); }
-	public interface INotifyParachute { void OnParachute(Actor self); void OnLanded(Actor self, Actor ignore); }
-	public interface INotifyCapture { void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner); }
+
+	[RequireExplicitImplementation]
+	public interface INotifyResourceAccepted { void OnResourceAccepted(Actor self, Actor refinery, int amount); }
+	public interface INotifyParachute { void OnParachute(Actor self); void OnLanded(Actor self); }
+
+	[RequireExplicitImplementation]
+	public interface INotifyCapture { void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner, BitSet<CaptureType> captureTypes); }
 	public interface INotifyDiscovered { void OnDiscovered(Actor self, Player discoverer, bool playNotification); }
 	public interface IRenderActorPreviewInfo : ITraitInfo { IEnumerable<IActorPreview> RenderPreview(ActorPreviewInitializer init); }
 	public interface ICruiseAltitudeInfo : ITraitInfo { WDist GetCruiseAltitude(); }
 
-	public interface IExplodeModifier { bool ShouldExplode(Actor self); }
 	public interface IHuskModifier { string HuskActor(Actor self); }
 
 	public interface ISeedableResource { void Seed(Actor self); }
@@ -188,8 +197,8 @@ namespace OpenRA.Mods.Common.Traits
 
 	public interface INotifyHarvesterAction
 	{
-		void MovingToResources(Actor self, CPos targetCell, Activity next);
-		void MovingToRefinery(Actor self, Actor refineryActor, Activity next);
+		void MovingToResources(Actor self, CPos targetCell);
+		void MovingToRefinery(Actor self, Actor refineryActor);
 		void MovementCancelled(Actor self);
 		void Harvested(Actor self, ResourceType resource);
 		void Docked();
@@ -279,7 +288,7 @@ namespace OpenRA.Mods.Common.Traits
 		WDist MinimumDistance { get; }
 		bool WantsTransport { get; }
 		void MovementCancelled(Actor self);
-		void RequestTransport(Actor self, CPos destination, Activity afterLandActivity);
+		void RequestTransport(Actor self, CPos destination);
 	}
 
 	public interface IDeathActorInitModifier
@@ -292,9 +301,16 @@ namespace OpenRA.Mods.Common.Traits
 		void ModifyTransformActorInit(Actor self, TypeDictionary init);
 	}
 
-	public interface IPreventsAutoTarget
+	[RequireExplicitImplementation]
+	public interface IDisableEnemyAutoTarget
 	{
-		bool PreventsAutoTarget(Actor self, Actor attacker);
+		bool DisableEnemyAutoTarget(Actor self, Actor attacker);
+	}
+
+	[RequireExplicitImplementation]
+	public interface IDisableAutoTarget
+	{
+		bool DisableAutoTarget(Actor self);
 	}
 
 	[RequireExplicitImplementation]
@@ -311,7 +327,12 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	[RequireExplicitImplementation]
-	public interface INotifyRearm { void Rearming(Actor host, Actor other); }
+	public interface INotifyRearm
+	{
+		void RearmingStarted(Actor host, Actor other);
+		void Rearming(Actor host, Actor other);
+		void RearmingFinished(Actor host, Actor other);
+	}
 
 	[RequireExplicitImplementation]
 	public interface IRenderInfantrySequenceModifier
@@ -319,6 +340,12 @@ namespace OpenRA.Mods.Common.Traits
 		bool IsModifyingSequence { get; }
 		string SequencePrefix { get; }
 	}
+
+	[RequireExplicitImplementation]
+	public interface IProductionCostModifierInfo : ITraitInfo { int GetProductionCostModifier(TechTree techTree, string queue); }
+
+	[RequireExplicitImplementation]
+	public interface IProductionTimeModifierInfo : ITraitInfo { int GetProductionTimeModifier(TechTree techTree, string queue); }
 
 	[RequireExplicitImplementation]
 	public interface ICashTricklerModifier { int GetCashTricklerModifier(); }
@@ -334,6 +361,9 @@ namespace OpenRA.Mods.Common.Traits
 
 	[RequireExplicitImplementation]
 	public interface IReloadModifier { int GetReloadModifier(); }
+
+	[RequireExplicitImplementation]
+	public interface IReloadAmmoModifier { int GetReloadAmmoModifier(); }
 
 	[RequireExplicitImplementation]
 	public interface IInaccuracyModifier { int GetInaccuracyModifier(); }
@@ -354,10 +384,20 @@ namespace OpenRA.Mods.Common.Traits
 	public interface IGainsExperienceModifier { int GetGainsExperienceModifier(); }
 
 	[RequireExplicitImplementation]
+	public interface ICreatesShroudModifier { int GetCreatesShroudModifier(); }
+
+	[RequireExplicitImplementation]
+	public interface IRevealsShroudModifier { int GetRevealsShroudModifier(); }
+
+	[RequireExplicitImplementation]
+	public interface IDetectCloakedModifier { int GetDetectCloakedModifier(); }
+
+	[RequireExplicitImplementation]
 	public interface ICustomMovementLayer
 	{
 		byte Index { get; }
 		bool InteractsWithDefaultLayer { get; }
+		bool ReturnToGroundLayerOnIdle { get; }
 
 		bool EnabledForActor(ActorInfo a, LocomotorInfo li);
 		int EntryMovementCost(ActorInfo a, LocomotorInfo li, CPos cell);
@@ -371,7 +411,7 @@ namespace OpenRA.Mods.Common.Traits
 	[RequireExplicitImplementation]
 	public interface IIssueDeployOrder
 	{
-		Order IssueDeployOrder(Actor self);
+		Order IssueDeployOrder(Actor self, bool queued);
 		bool CanIssueDeployOrder(Actor self);
 	}
 
@@ -385,19 +425,38 @@ namespace OpenRA.Mods.Common.Traits
 
 	public interface IMove
 	{
-		Activity MoveTo(CPos cell, int nearEnough);
-		Activity MoveTo(CPos cell, Actor ignoreActor);
-		Activity MoveWithinRange(Target target, WDist range);
-		Activity MoveWithinRange(Target target, WDist minRange, WDist maxRange);
-		Activity MoveFollow(Actor self, Target target, WDist minRange, WDist maxRange);
-		Activity MoveIntoWorld(Actor self, CPos cell, SubCell subCell = SubCell.Any);
-		Activity MoveToTarget(Actor self, Target target);
+		Activity MoveTo(CPos cell, int nearEnough, Color? targetLineColor = null);
+		Activity MoveTo(CPos cell, Actor ignoreActor, Color? targetLineColor = null);
+		Activity MoveWithinRange(Target target, WDist range,
+			WPos? initialTargetPosition = null, Color? targetLineColor = null);
+		Activity MoveWithinRange(Target target, WDist minRange, WDist maxRange,
+			WPos? initialTargetPosition = null, Color? targetLineColor = null);
+		Activity MoveFollow(Actor self, Target target, WDist minRange, WDist maxRange,
+			WPos? initialTargetPosition = null, Color? targetLineColor = null);
+		Activity MoveToTarget(Actor self, Target target,
+			WPos? initialTargetPosition = null, Color? targetLineColor = null);
+		Activity ReturnToCell(Actor self);
 		Activity MoveIntoTarget(Actor self, Target target);
 		Activity VisualMove(Actor self, WPos fromPos, WPos toPos);
+		int EstimatedMoveDuration(Actor self, WPos fromPos, WPos toPos);
 		CPos NearestMoveableCell(CPos target);
-		bool IsMoving { get; set; }
-		bool IsMovingVertically { get; set; }
+		MovementType CurrentMovementTypes { get; set; }
 		bool CanEnterTargetNow(Actor self, Target target);
+	}
+
+	public interface IWrapMove
+	{
+		Activity WrapMove(Activity moveInner);
+	}
+
+	public interface IAircraftCenterPositionOffset
+	{
+		WVec PositionOffset { get; }
+	}
+
+	public interface IOverrideAircraftLanding
+	{
+		HashSet<string> LandableTerrainTypes { get; }
 	}
 
 	public interface IRadarSignature
@@ -413,13 +472,19 @@ namespace OpenRA.Mods.Common.Traits
 		int ExitDelay { get; }
 	}
 
+	[RequireExplicitImplementation]
 	public interface INotifyObjectivesUpdated
 	{
-		void OnPlayerWon(Player winner);
-		void OnPlayerLost(Player loser);
 		void OnObjectiveAdded(Player player, int objectiveID);
 		void OnObjectiveCompleted(Player player, int objectiveID);
 		void OnObjectiveFailed(Player player, int objectiveID);
+	}
+
+	[RequireExplicitImplementation]
+	public interface INotifyWinStateChanged
+	{
+		void OnPlayerWon(Player winner);
+		void OnPlayerLost(Player loser);
 	}
 
 	public interface INotifyCashTransfer
@@ -436,4 +501,124 @@ namespace OpenRA.Mods.Common.Traits
 
 	[RequireExplicitImplementation]
 	public interface IPreventsShroudReset { bool PreventShroudReset(Actor self); }
+
+	[RequireExplicitImplementation]
+	public interface IBotEnabled { void BotEnabled(IBot bot); }
+
+	[RequireExplicitImplementation]
+	public interface IBotTick { void BotTick(IBot bot); }
+
+	[RequireExplicitImplementation]
+	public interface IBotRespondToAttack { void RespondToAttack(IBot bot, Actor self, AttackInfo e); }
+
+	[RequireExplicitImplementation]
+	public interface IBotPositionsUpdated
+	{
+		void UpdatedBaseCenter(CPos newLocation);
+		void UpdatedDefenseCenter(CPos newLocation);
+	}
+
+	[RequireExplicitImplementation]
+	public interface IBotNotifyIdleBaseUnits
+	{
+		void UpdatedIdleBaseUnits(List<Actor> idleUnits);
+	}
+
+	[RequireExplicitImplementation]
+	public interface IBotRequestUnitProduction
+	{
+		void RequestUnitProduction(IBot bot, string requestedActor);
+		int RequestedProductionCount(IBot bot, string requestedActor);
+	}
+
+	[RequireExplicitImplementation]
+	public interface IBotRequestPauseUnitProduction
+	{
+		bool PauseUnitProduction { get; }
+	}
+
+	[RequireExplicitImplementation]
+	public interface IEditorActorOptions : ITraitInfoInterface
+	{
+		IEnumerable<EditorActorOption> ActorOptions(ActorInfo ai, World world);
+	}
+
+	public abstract class EditorActorOption
+	{
+		public readonly string Name;
+		public readonly int DisplayOrder;
+
+		public EditorActorOption(string name, int displayOrder)
+		{
+			Name = name;
+			DisplayOrder = displayOrder;
+		}
+	}
+
+	public class EditorActorSlider : EditorActorOption
+	{
+		public readonly float MinValue;
+		public readonly float MaxValue;
+		public readonly int Ticks;
+		public readonly Func<EditorActorPreview, float> GetValue;
+		public readonly Action<EditorActorPreview, float> OnChange;
+
+		public EditorActorSlider(string name, int displayOrder,
+			float minValue, float maxValue, int ticks,
+			Func<EditorActorPreview, float> getValue,
+			Action<EditorActorPreview, float> onChange)
+			: base(name, displayOrder)
+		{
+			MinValue = minValue;
+			MaxValue = maxValue;
+			Ticks = ticks;
+			GetValue = getValue;
+			OnChange = onChange;
+		}
+	}
+
+	public class EditorActorDropdown : EditorActorOption
+	{
+		public readonly Dictionary<string, string> Labels;
+		public readonly Func<EditorActorPreview, string> GetValue;
+		public readonly Action<EditorActorPreview, string> OnChange;
+
+		public EditorActorDropdown(string name, int displayOrder,
+			Dictionary<string, string> labels,
+			Func<EditorActorPreview, string> getValue,
+			Action<EditorActorPreview, string> onChange)
+			: base(name, displayOrder)
+		{
+			Labels = labels;
+			GetValue = getValue;
+			OnChange = onChange;
+		}
+	}
+
+	[RequireExplicitImplementation]
+	public interface IPreventMapSpawn
+	{
+		bool PreventMapSpawn(World world, ActorReference actorReference);
+	}
+
+	[Flags]
+	public enum MovementType
+	{
+		None = 0,
+		Horizontal = 1,
+		Vertical = 2,
+		Turn = 4
+	}
+
+	[RequireExplicitImplementation]
+	public interface INotifyMoving
+	{
+		void MovementTypeChanged(Actor self, MovementType type);
+	}
+
+	[RequireExplicitImplementation]
+	public interface INotifyTimeLimit
+	{
+		void NotifyTimerExpired(Actor self);
+	}
 }

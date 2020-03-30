@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,9 +10,9 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Drawing;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Orders;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -26,7 +26,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Identifier checked against AcceptsDeliveredExperience.ValidTypes. Only needed if the latter is not empty.")]
 		public readonly string Type = null;
 
-		[VoiceReference] public readonly string Voice = "Action";
+		[VoiceReference]
+		public readonly string Voice = "Action";
 
 		public object Create(ActorInitializer init) { return new DeliversExperience(init, this); }
 	}
@@ -63,6 +64,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
+			if (order.OrderString != "DeliverExperience")
+				return null;
+
 			return info.Voice;
 		}
 
@@ -71,21 +75,20 @@ namespace OpenRA.Mods.Common.Traits
 			if (order.OrderString != "DeliverExperience")
 				return;
 
-			var target = self.ResolveFrozenActorOrder(order, Color.Yellow);
-			if (target.Type != TargetType.Actor)
-				return;
-
-			var targetGainsExperience = target.Actor.Trait<GainsExperience>();
-			if (targetGainsExperience.Level == targetGainsExperience.MaxLevel)
+			if (order.Target.Type == TargetType.Actor)
+			{
+				var targetGainsExperience = order.Target.Actor.Trait<GainsExperience>();
+				if (targetGainsExperience.Level == targetGainsExperience.MaxLevel)
+					return;
+			}
+			else if (order.Target.Type != TargetType.FrozenActor)
 				return;
 
 			if (!order.Queued)
 				self.CancelActivity();
 
-			var level = gainsExperience.Level;
-
-			self.SetTargetLine(target, Color.Yellow);
-			self.QueueActivity(new DonateExperience(self, target.Actor, level, info.PlayerExperience, targetGainsExperience));
+			self.QueueActivity(new DonateExperience(self, order.Target, gainsExperience.Level, info.PlayerExperience));
+			self.ShowTargetLines();
 		}
 
 		public class DeliversExperienceOrderTargeter : UnitOrderTargeter

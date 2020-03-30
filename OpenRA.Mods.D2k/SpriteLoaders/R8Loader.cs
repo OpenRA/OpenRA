@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,9 +10,11 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
+using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Graphics;
+using OpenRA.Primitives;
 
 namespace OpenRA.Mods.D2k.SpriteLoaders
 {
@@ -25,6 +27,8 @@ namespace OpenRA.Mods.D2k.SpriteLoaders
 			public float2 Offset { get; private set; }
 			public byte[] Data { get; set; }
 			public bool DisableExportPadding { get { return true; } }
+
+			public readonly uint[] Palette = null;
 
 			public R8Frame(Stream s)
 			{
@@ -57,9 +61,20 @@ namespace OpenRA.Mods.D2k.SpriteLoaders
 
 				Data = s.ReadBytes(width * height);
 
-				// Ignore palette
+				// Read palette
 				if (type == 1 && paletteOffset != 0)
-					s.Seek(520, SeekOrigin.Current);
+				{
+					// Skip header
+					s.ReadUInt32();
+					s.ReadUInt32();
+
+					Palette = new uint[256];
+					for (var i = 0; i < 256; i++)
+					{
+						var packed = s.ReadUInt16();
+						Palette[i] = (uint)((255 << 24) | ((packed & 0xF800) << 8) | ((packed & 0x7E0) << 5) | ((packed & 0x1f) << 3));
+					}
+				}
 			}
 		}
 
@@ -82,8 +97,9 @@ namespace OpenRA.Mods.D2k.SpriteLoaders
 			return d == 8;
 		}
 
-		public bool TryParseSprite(Stream s, out ISpriteFrame[] frames)
+		public bool TryParseSprite(Stream s, out ISpriteFrame[] frames, out TypeDictionary metadata)
 		{
+			metadata = null;
 			if (!IsR8(s))
 			{
 				frames = null;
@@ -92,11 +108,21 @@ namespace OpenRA.Mods.D2k.SpriteLoaders
 
 			var start = s.Position;
 			var tmp = new List<R8Frame>();
+			var palettes = new Dictionary<int, uint[]>();
 			while (s.Position < s.Length)
-				tmp.Add(new R8Frame(s));
+			{
+				var f = new R8Frame(s);
+				if (f.Palette != null)
+					palettes.Add(tmp.Count, f.Palette);
+				tmp.Add(f);
+			}
+
 			s.Position = start;
 
 			frames = tmp.ToArray();
+			if (palettes.Any())
+				metadata = new TypeDictionary { new EmbeddedSpritePalette(framePalettes: palettes) };
+
 			return true;
 		}
 	}

@@ -12,6 +12,8 @@ E1:
 		Cost: 120
 	Tooltip:
 		Name: Light Infantry
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 12500
 	Mobile:
@@ -38,10 +40,13 @@ E1:
 
 ENGINEER:
 	Inherits: ^Soldier
+	Inherits@selection: ^SelectableSupportUnit
 	Valued:
 		Cost: 500
 	Tooltip:
 		Name: Engineer
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 40
@@ -58,6 +63,7 @@ ENGINEER:
 	EngineerRepair:
 	RepairsBridges:
 		RepairNotification: BridgeRepaired
+	CaptureManager:
 	Captures:
 		CaptureTypes: building
 		PlayerExperience: 50
@@ -66,8 +72,6 @@ ENGINEER:
 		FactionImages:
 			gdi: engineer.gdi
 			nod: engineer.nod
-	Selectable:
-		Priority: 5
 
 FLAMEGUY:
 	Inherits@1: ^ExistsInWorld
@@ -89,5 +93,5 @@ FLAMEGUY:
 		FallbackSequence: die
 		UseDeathTypeSuffix: false
 	HitShape:
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: System

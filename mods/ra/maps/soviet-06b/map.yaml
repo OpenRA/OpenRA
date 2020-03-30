@@ -29,6 +29,7 @@ Players:
 		Faction: allies
 		Color: E2E6F5
 		Enemies: USSR
+		Bot: campaign
 	PlayerReference@USSR:
 		Name: USSR
 		AllowBots: False
@@ -43,21 +44,6 @@ Players:
 		Enemies: Greece
 
 Actors:
-	Actor0: cycl
-		Location: 17,14
-		Owner: Neutral
-	Actor1: cycl
-		Location: 17,15
-		Owner: Neutral
-	Actor2: cycl
-		Location: 17,16
-		Owner: Neutral
-	Actor3: cycl
-		Location: 17,17
-		Owner: Neutral
-	Actor4: cycl
-		Location: 17,18
-		Owner: Neutral
 	Actor5: sbag
 		Location: 62,37
 		Owner: Greece

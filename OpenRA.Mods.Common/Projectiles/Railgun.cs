@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,11 +10,11 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Drawing;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Projectiles
@@ -92,8 +92,8 @@ namespace OpenRA.Mods.Common.Projectiles
 
 		public IProjectile Create(ProjectileArgs args)
 		{
-			var bc = BeamPlayerColor ? Color.FromArgb(BeamColor.A, args.SourceActor.Owner.Color.RGB) : BeamColor;
-			var hc = HelixPlayerColor ? Color.FromArgb(HelixColor.A, args.SourceActor.Owner.Color.RGB) : HelixColor;
+			var bc = BeamPlayerColor ? Color.FromArgb(BeamColor.A, args.SourceActor.Owner.Color) : BeamColor;
+			var hc = HelixPlayerColor ? Color.FromArgb(HelixColor.A, args.SourceActor.Owner.Color) : HelixColor;
 			return new Railgun(args, this, bc, hc);
 		}
 	}
@@ -106,7 +106,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		public readonly Color BeamColor;
 		public readonly Color HelixColor;
 
-		int ticks = 0;
+		int ticks;
 		bool animationComplete;
 		WPos target;
 
@@ -125,8 +125,8 @@ namespace OpenRA.Mods.Common.Projectiles
 			this.info = info;
 			target = args.PassiveTarget;
 
-			this.BeamColor = beamColor;
-			this.HelixColor = helixColor;
+			BeamColor = beamColor;
+			HelixColor = helixColor;
 
 			if (!string.IsNullOrEmpty(info.HitAnim))
 				hitanim = new Animation(args.SourceActor.World, info.HitAnim);
@@ -153,14 +153,17 @@ namespace OpenRA.Mods.Common.Projectiles
 
 			// An easy vector to find which is perpendicular vector to forwardStep, with 0 Z component
 			LeftVector = new WVec(ForwardStep.Y, -ForwardStep.X, 0);
-			LeftVector = 1024 * LeftVector / LeftVector.Length;
+			if (LeftVector.LengthSquared != 0)
+				LeftVector = 1024 * LeftVector / LeftVector.Length;
 
 			// Vector that is pointing upwards from the ground
 			UpVector = new WVec(
 				-ForwardStep.X * ForwardStep.Z,
 				-ForwardStep.Z * ForwardStep.Y,
 				ForwardStep.X * ForwardStep.X + ForwardStep.Y * ForwardStep.Y);
-			UpVector = 1024 * UpVector / UpVector.Length;
+
+			if (UpVector.LengthSquared != 0)
+				UpVector = 1024 * UpVector / UpVector.Length;
 
 			//// LeftVector and UpVector are unit vectors of size 1024.
 

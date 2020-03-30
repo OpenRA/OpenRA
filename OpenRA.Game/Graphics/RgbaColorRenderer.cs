@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -11,8 +11,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
+using OpenRA.Primitives;
 
 namespace OpenRA.Graphics
 {
@@ -236,6 +236,29 @@ namespace OpenRA.Graphics
 			vertices[4] = new Vertex(d + Offset, cr, cg, cb, ca, 0, 0);
 			vertices[5] = new Vertex(a + Offset, cr, cg, cb, ca, 0, 0);
 			parent.DrawRGBAVertices(vertices);
+		}
+
+		public void FillRect(float3 a, float3 b, float3 c, float3 d, Color topLeftColor, Color topRightColor, Color bottomRightColor, Color bottomLeftColor)
+		{
+			vertices[0] = VertexWithColor(a + Offset, topLeftColor);
+			vertices[1] = VertexWithColor(b + Offset, topRightColor);
+			vertices[2] = VertexWithColor(c + Offset, bottomRightColor);
+			vertices[3] = VertexWithColor(c + Offset, bottomRightColor);
+			vertices[4] = VertexWithColor(d + Offset, bottomLeftColor);
+			vertices[5] = VertexWithColor(a + Offset, topLeftColor);
+
+			parent.DrawRGBAVertices(vertices);
+		}
+
+		static Vertex VertexWithColor(float3 xyz, Color color)
+		{
+			color = Util.PremultiplyAlpha(color);
+			var cr = color.R / 255.0f;
+			var cg = color.G / 255.0f;
+			var cb = color.B / 255.0f;
+			var ca = color.A / 255.0f;
+
+			return new Vertex(xyz, cr, cg, cb, ca, 0, 0);
 		}
 
 		public void FillEllipse(float3 tl, float3 br, Color color, int vertices = 32)

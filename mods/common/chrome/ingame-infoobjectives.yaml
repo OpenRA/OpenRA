@@ -5,14 +5,14 @@ Container@MISSION_OBJECTIVES:
 	Children:
 		Label@MISSION:
 			X: 20
-			Y: 20
+			Y: 21
 			Width: 80
 			Height: 25
 			Font: MediumBold
 			Text: Mission:
 		Label@MISSION_STATUS:
 			X: 100
-			Y: 20
+			Y: 21
 			Width: PARENT_RIGHT - 120
 			Height: 25
 			Font: MediumBold
@@ -30,7 +30,7 @@ Container@MISSION_OBJECTIVES:
 					Children:
 						Label@OBJECTIVE_TYPE:
 							X: 10
-							Y: 0
+							Y: 1
 							Width: 70
 							Height: PARENT_BOTTOM
 							Align: Center

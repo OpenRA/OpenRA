@@ -185,6 +185,7 @@ PBOX:
 		Image: 4TNK
 	-Capturable:
 	-TransformOnCapture:
+	-InfiltrateForTransform:
 
 DOME.NoInfiltrate:
 	Inherits: DOME
@@ -195,6 +196,8 @@ DOME.NoInfiltrate:
 	-InfiltrateForExploration:
 	Targetable:
 		TargetTypes: Ground, Structure, C4, DetonateAttack, MissionObjective
+	ProvidesPrerequisite:
+		Prerequisite: dome
 
 SPY:
 	Infiltrates:
@@ -333,7 +336,7 @@ SHOK:
 	Buildable:
 		Prerequisites: ~disabled
 
-HIJACKER:
+THF:
 	Buildable:
 		Prerequisites: ~disabled
 

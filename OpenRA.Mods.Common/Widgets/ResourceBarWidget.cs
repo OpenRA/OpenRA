@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,8 +10,8 @@
 #endregion
 
 using System;
-using System.Drawing;
 using OpenRA.Graphics;
+using OpenRA.Primitives;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
@@ -33,10 +33,12 @@ namespace OpenRA.Mods.Common.Widgets
 		public Func<Color> GetBarColor = () => Color.White;
 		EWMA providedLerp = new EWMA(0.3f);
 		EWMA usedLerp = new EWMA(0.3f);
+		readonly World world;
 
 		[ObjectCreator.UseCtor]
 		public ResourceBarWidget(World world)
 		{
+			this.world = world;
 			tooltipContainer = Exts.Lazy(() =>
 				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
 		}
@@ -47,7 +49,7 @@ namespace OpenRA.Mods.Common.Widgets
 				return;
 
 			Func<string> getText = () => TooltipFormat.F(GetUsed(), GetProvided());
-			tooltipContainer.Value.SetTooltip(TooltipTemplate, new WidgetArgs() { { "getText", getText } });
+			tooltipContainer.Value.SetTooltip(TooltipTemplate, new WidgetArgs() { { "getText", getText }, { "world", world } });
 		}
 
 		public override void MouseExited()

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using Eluant;
 using Eluant.ObjectBinding;
@@ -42,11 +41,13 @@ namespace OpenRA
 		public Player Owner { get; internal set; }
 
 		public bool IsInWorld { get; internal set; }
+		public bool WillDispose { get; private set; }
 		public bool Disposed { get; private set; }
 
 		public Activity CurrentActivity { get; private set; }
 
 		public int Generation;
+		public Actor ReplacedByActor;
 
 		public IEffectiveOwner EffectiveOwner { get; private set; }
 		public IOccupySpace OccupiesSpace { get; private set; }
@@ -77,8 +78,11 @@ namespace OpenRA
 		readonly IMouseBounds[] mouseBounds;
 		readonly IVisibilityModifier[] visibilityModifiers;
 		readonly IDefaultVisibility defaultVisibility;
+		readonly INotifyBecomingIdle[] becomingIdles;
+		readonly INotifyIdle[] tickIdles;
 		readonly ITargetablePositions[] targetablePositions;
 		WPos[] staticTargetablePositions;
+		bool created;
 
 		internal Actor(World world, string name, TypeDictionary initDict)
 		{
@@ -119,6 +123,8 @@ namespace OpenRA
 			mouseBounds = TraitsImplementing<IMouseBounds>().ToArray();
 			visibilityModifiers = TraitsImplementing<IVisibilityModifier>().ToArray();
 			defaultVisibility = Trait<IDefaultVisibility>();
+			becomingIdles = TraitsImplementing<INotifyBecomingIdle>().ToArray();
+			tickIdles = TraitsImplementing<INotifyIdle>().ToArray();
 			Targetables = TraitsImplementing<ITargetable>().ToArray();
 			targetablePositions = TraitsImplementing<ITargetablePositions>().ToArray();
 			world.AddFrameEndTask(w =>
@@ -133,14 +139,53 @@ namespace OpenRA
 			SyncHashes = TraitsImplementing<ISync>().Select(sync => new SyncHash(sync)).ToArray();
 		}
 
+		internal void Created()
+		{
+			created = true;
+
+			foreach (var t in TraitsImplementing<INotifyCreated>())
+				t.Created(this);
+
+			// The initial activity should run before any activities queued by INotifyCreated.Created
+			// However, we need to know which traits are enabled (via conditions), so wait for after the calls and insert the activity as the first
+			ICreationActivity creationActivity = null;
+			foreach (var ica in TraitsImplementing<ICreationActivity>())
+			{
+				if (!ica.IsTraitEnabled())
+					continue;
+
+				if (creationActivity != null)
+					throw new InvalidOperationException("More than one enabled ICreationActivity trait: {0} and {1}".F(creationActivity.GetType().Name, ica.GetType().Name));
+
+				var activity = ica.GetCreationActivity();
+				if (activity == null)
+					continue;
+
+				creationActivity = ica;
+
+				activity.Queue(CurrentActivity);
+				CurrentActivity = activity;
+			}
+		}
+
 		public void Tick()
 		{
 			var wasIdle = IsIdle;
 			CurrentActivity = ActivityUtils.RunActivity(this, CurrentActivity);
 
 			if (!wasIdle && IsIdle)
-				foreach (var n in TraitsImplementing<INotifyBecomingIdle>())
+			{
+				foreach (var n in becomingIdles)
 					n.OnBecomingIdle(this);
+
+				// If IsIdle is true, it means the last CurrentActivity.Tick returned null.
+				// If a next activity has been queued via OnBecomingIdle, we need to start running it now,
+				// to avoid an 'empty' null tick where the actor will (visibly, if moving) do nothing.
+				CurrentActivity = ActivityUtils.RunActivity(this, CurrentActivity);
+			}
+			else if (wasIdle)
+				foreach (var tickIdle in tickIdles)
+					tickIdle.TickIdle(this);
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
@@ -199,23 +244,25 @@ namespace OpenRA
 		{
 			if (!queued)
 				CancelActivity();
+
 			QueueActivity(nextActivity);
 		}
 
 		public void QueueActivity(Activity nextActivity)
 		{
+			if (!created)
+				throw new InvalidOperationException("An activity was queued before the actor was created. Queue it inside the INotifyCreated.Created callback instead.");
+
 			if (CurrentActivity == null)
 				CurrentActivity = nextActivity;
 			else
-				CurrentActivity.RootActivity.Queue(nextActivity);
+				CurrentActivity.Queue(nextActivity);
 		}
 
-		public bool CancelActivity()
+		public void CancelActivity()
 		{
 			if (CurrentActivity != null)
-				return CurrentActivity.RootActivity.Cancel(this);
-
-			return true;
+				CurrentActivity.Cancel(this);
 		}
 
 		public override int GetHashCode()
@@ -265,6 +312,14 @@ namespace OpenRA
 
 		public void Dispose()
 		{
+			// If CurrentActivity isn't null, run OnActorDisposeOuter in case some cleanups are needed.
+			// This should be done before the FrameEndTask to avoid dependency issues.
+			if (CurrentActivity != null)
+				CurrentActivity.OnActorDisposeOuter(this);
+
+			// Allow traits/activities to prevent a race condition when they depend on disposing the actor (e.g. Transforms)
+			WillDispose = true;
+
 			World.AddFrameEndTask(w =>
 			{
 				if (Disposed)
@@ -312,6 +367,9 @@ namespace OpenRA
 			foreach (var t in TraitsImplementing<INotifyOwnerChanged>())
 				t.OnOwnerChanged(this, oldOwner, newOwner);
 
+			foreach (var t in World.WorldActor.TraitsImplementing<INotifyOwnerChanged>())
+				t.OnOwnerChanged(this, oldOwner, newOwner);
+
 			if (wasInWorld)
 				World.Add(this);
 		}
@@ -353,7 +411,7 @@ namespace OpenRA
 		public BitSet<TargetableType> GetAllTargetTypes()
 		{
 			// PERF: Avoid LINQ.
-			var targetTypes = new BitSet<TargetableType>();
+			var targetTypes = default(BitSet<TargetableType>);
 			foreach (var targetable in Targetables)
 				targetTypes = targetTypes.Union(targetable.TargetTypes);
 			return targetTypes;
@@ -362,7 +420,7 @@ namespace OpenRA
 		public BitSet<TargetableType> GetEnabledTargetTypes()
 		{
 			// PERF: Avoid LINQ.
-			var targetTypes = new BitSet<TargetableType>();
+			var targetTypes = default(BitSet<TargetableType>);
 			foreach (var targetable in Targetables)
 				if (targetable.IsTraitEnabled())
 					targetTypes = targetTypes.Union(targetable.TargetTypes);
@@ -388,7 +446,7 @@ namespace OpenRA
 			if (enabledTargetablePositionTraits.Any())
 				return enabledTargetablePositionTraits.SelectMany(tp => tp.TargetablePositions(this));
 
-			return new[] { this.CenterPosition };
+			return new[] { CenterPosition };
 		}
 
 		#region Scripting interface

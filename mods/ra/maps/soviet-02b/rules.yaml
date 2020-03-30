@@ -72,7 +72,7 @@ SHOK:
 	Buildable:
 		Prerequisites: ~disabled
 
-HIJACKER:
+THF:
 	Buildable:
 		Prerequisites: ~disabled
 
@@ -95,11 +95,7 @@ GUN:
 HARV:
 	Harvester:
 		SearchFromProcRadius: 50
-		SearchFromOrderRadius: 50
-
-MONEYCRATE:
-	GiveCashCrateAction:
-		Amount: 2000
+		SearchFromHarvesterRadius: 50
 
 powerproxy.paratroopers:
 	ParatroopersPower:

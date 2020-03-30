@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -11,9 +11,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
@@ -21,14 +21,19 @@ namespace OpenRA.Mods.Common.Traits.Render
 	[Desc("Default trait for rendering sprite-based actors.")]
 	public class WithSpriteBodyInfo : PausableConditionalTraitInfo, IRenderActorPreviewSpritesInfo, Requires<RenderSpritesInfo>
 	{
-		[Desc("Animation to play when the actor is created."), SequenceReference]
+		[SequenceReference]
+		[Desc("Animation to play when the actor is created.")]
 		public readonly string StartSequence = null;
 
-		[Desc("Animation to play when the actor is idle."), SequenceReference]
+		[SequenceReference]
+		[Desc("Animation to play when the actor is idle.")]
 		public readonly string Sequence = "idle";
 
 		[Desc("Identifier used to assign modifying traits to this sprite body.")]
 		public readonly string Name = "body";
+
+		[Desc("Forces sprite body to be rendered on ground regardless of actor altitude (for example for custom shadow sprites).")]
+		public readonly bool ForceToGround = false;
 
 		public override object Create(ActorInitializer init) { return new WithSpriteBody(init, this); }
 
@@ -44,7 +49,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 	}
 
-	public class WithSpriteBody : PausableConditionalTrait<WithSpriteBodyInfo>, INotifyDamageStateChanged, INotifyBuildComplete, IAutoMouseBounds
+	public class WithSpriteBody : PausableConditionalTrait<WithSpriteBodyInfo>, INotifyDamageStateChanged, IAutoMouseBounds
 	{
 		public readonly Animation DefaultAnimation;
 		readonly RenderSprites rs;
@@ -61,18 +66,16 @@ namespace OpenRA.Mods.Common.Traits.Render
 			Func<bool> paused = () => IsTraitPaused &&
 				DefaultAnimation.CurrentSequence.Name == NormalizeSequence(init.Self, Info.Sequence);
 
+			Func<WVec> subtractDAT = null;
+			if (info.ForceToGround)
+				subtractDAT = () => new WVec(0, 0, -init.Self.World.Map.DistanceAboveTerrain(init.Self.CenterPosition).Length);
+
 			DefaultAnimation = new Animation(init.World, rs.GetImage(init.Self), baseFacing, paused);
-			rs.Add(new AnimationWithOffset(DefaultAnimation, null, () => IsTraitDisabled));
+			rs.Add(new AnimationWithOffset(DefaultAnimation, subtractDAT, () => IsTraitDisabled));
 
 			// Cache the bounds from the default sequence to avoid flickering when the animation changes
 			boundsAnimation = new Animation(init.World, rs.GetImage(init.Self), baseFacing, paused);
 			boundsAnimation.PlayRepeating(info.Sequence);
-
-			if (info.StartSequence != null)
-				PlayCustomAnimation(init.Self, info.StartSequence,
-					() => PlayCustomAnimationRepeating(init.Self, info.Sequence));
-			else
-				DefaultAnimation.PlayRepeating(NormalizeSequence(init.Self, info.Sequence));
 		}
 
 		public string NormalizeSequence(Actor self, string sequence)
@@ -80,18 +83,16 @@ namespace OpenRA.Mods.Common.Traits.Render
 			return RenderSprites.NormalizeSequence(DefaultAnimation, self.GetDamageState(), sequence);
 		}
 
-		protected virtual void OnBuildComplete(Actor self)
+		protected override void TraitEnabled(Actor self)
 		{
-			DefaultAnimation.PlayRepeating(NormalizeSequence(self, Info.Sequence));
+			if (Info.StartSequence != null)
+				PlayCustomAnimation(self, Info.StartSequence,
+					() => DefaultAnimation.PlayRepeating(NormalizeSequence(self, Info.Sequence)));
+			else
+				DefaultAnimation.PlayRepeating(NormalizeSequence(self, Info.Sequence));
 		}
 
-		// TODO: Get rid of INotifyBuildComplete in favor of using the condition system
-		void INotifyBuildComplete.BuildingComplete(Actor self)
-		{
-			OnBuildComplete(self);
-		}
-
-		public void PlayCustomAnimation(Actor self, string name, Action after = null)
+		public virtual void PlayCustomAnimation(Actor self, string name, Action after = null)
 		{
 			DefaultAnimation.PlayThen(NormalizeSequence(self, name), () =>
 			{
@@ -101,13 +102,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 			});
 		}
 
-		public void PlayCustomAnimationRepeating(Actor self, string name)
+		public virtual void PlayCustomAnimationRepeating(Actor self, string name)
 		{
-			var sequence = NormalizeSequence(self, name);
-			DefaultAnimation.PlayThen(sequence, () => PlayCustomAnimationRepeating(self, sequence));
+			DefaultAnimation.PlayRepeating(NormalizeSequence(self, name));
 		}
 
-		public void PlayCustomAnimationBackwards(Actor self, string name, Action after = null)
+		public virtual void PlayCustomAnimationBackwards(Actor self, string name, Action after = null)
 		{
 			DefaultAnimation.PlayBackwardsThen(NormalizeSequence(self, name), () =>
 			{
@@ -117,7 +117,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			});
 		}
 
-		public void CancelCustomAnimation(Actor self)
+		public virtual void CancelCustomAnimation(Actor self)
 		{
 			DefaultAnimation.PlayRepeating(NormalizeSequence(self, Info.Sequence));
 		}

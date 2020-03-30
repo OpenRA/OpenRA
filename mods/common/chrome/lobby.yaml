@@ -7,7 +7,7 @@ Background@SERVER_LOBBY:
 	Children:
 		ColorPreviewManager@COLOR_MANAGER:
 		Label@SERVER_NAME:
-			Y: 15
+			Y: 16
 			Align: Center
 			Width: PARENT_RIGHT
 			Height: 25
@@ -111,34 +111,30 @@ Background@SERVER_LOBBY:
 								Label@TIME:
 									X: 3
 									Width: 50
-									Height: 15
-									VAlign: Top
+									Height: 16
 									Shadow: True
 								Label@NAME:
 									X: 45
 									Width: 50
-									Height: 15
-									VAlign: Top
+									Height: 16
 									Shadow: True
 								Label@TEXT:
 									X: 55
 									Width: PARENT_RIGHT - 60
-									Height: 15
+									Height: 16
 									WordWrap: true
-									VAlign: Top
 									Shadow: True
-				TextField@CHAT_TEXTFIELD:
+				Button@CHAT_MODE:
 					Y: PARENT_BOTTOM - HEIGHT
-					Width: PARENT_RIGHT - 260
+					Width: 50
 					Height: 25
-					LeftMargin: 50
-					Children:
-						Label@LABEL_CHATTYPE:
-							Y: 0 - 1
-							Width: 45
-							Height: 25
-							Align: Right
-							Text: Chat:
+					Text: Team
+					Font: Bold
+				TextField@CHAT_TEXTFIELD:
+					X: 55
+					Y: PARENT_BOTTOM - HEIGHT
+					Width: PARENT_RIGHT - 260 - 55
+					Height: 25
 		Button@START_GAME_BUTTON:
 			X: PARENT_RIGHT - WIDTH - 150
 			Y: PARENT_BOTTOM - HEIGHT - 20

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -23,10 +23,17 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 		[Desc("Turreted 'Turret' key to display")]
 		public readonly string Turret = "primary";
 
-		[SequenceReference] public readonly string LeftSequence = "left";
-		[SequenceReference] public readonly string RightSequence = "right";
-		[SequenceReference] public readonly string WakeLeftSequence = "wake-left";
-		[SequenceReference] public readonly string WakeRightSequence = "wake-right";
+		[SequenceReference]
+		public readonly string LeftSequence = "left";
+
+		[SequenceReference]
+		public readonly string RightSequence = "right";
+
+		[SequenceReference]
+		public readonly string WakeLeftSequence = "wake-left";
+
+		[SequenceReference]
+		public readonly string WakeRightSequence = "wake-right";
 
 		public override object Create(ActorInitializer init) { return new WithGunboatBody(init, this); }
 	}
@@ -55,11 +62,16 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 			var name = rs.GetImage(init.Self);
 			turret = init.Self.TraitsImplementing<Turreted>()
 				.First(t => t.Name == info.Turret);
-			turret.QuantizedFacings = DefaultAnimation.CurrentSequence.Facings;
 
 			wake = new Animation(init.World, name);
 			wake.PlayRepeating(info.WakeLeftSequence);
 			rs.Add(new AnimationWithOffset(wake, null, null, -87));
+		}
+
+		protected override void TraitEnabled(Actor self)
+		{
+			base.TraitEnabled(self);
+			turret.QuantizedFacings = DefaultAnimation.CurrentSequence.Facings;
 		}
 
 		void ITick.Tick(Actor self)

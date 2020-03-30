@@ -12,7 +12,7 @@ ScrollPanel@LABEL_DROPDOWN_TEMPLATE:
 				Label@LABEL:
 					Font: TinyBold
 					Width: PARENT_RIGHT
-					Height: 10
+					Height: 13
 					Align: Center
 		ScrollItem@TEMPLATE:
 			Width: PARENT_RIGHT - 27
@@ -77,6 +77,7 @@ ScrollPanel@SPAWN_DROPDOWN_TEMPLATE:
 ScrollPanel@SPECTATOR_DROPDOWN_TEMPLATE:
 	Width: DROPDOWN_WIDTH
 	Background: observer-scrollpanel-button-pressed
+	ScrollBarBackground: observer-scrollpanel-button-pressed
 	Button: observer-scrollpanel-button
 	Children:
 		ScrollItem@HEADER:
@@ -115,6 +116,38 @@ ScrollPanel@SPECTATOR_DROPDOWN_TEMPLATE:
 					Width: PARENT_RIGHT
 					Height: 25
 					Shadow: True
+
+ScrollPanel@SPECTATOR_LABEL_DROPDOWN_TEMPLATE:
+	Width: DROPDOWN_WIDTH
+	Background: observer-scrollpanel-button-pressed
+	ScrollBarBackground: observer-scrollpanel-button-pressed
+	Button: observer-scrollpanel-button
+	Children:
+		ScrollItem@HEADER:
+			BaseName: observer-scrollitem
+			Width: PARENT_RIGHT - 27
+			Height: 13
+			X: 2
+			Y: 0
+			Visible: false
+			Children:
+				Label@LABEL:
+					Font: TinyBold
+					Width: PARENT_RIGHT
+					Height: 10
+					Align: Center
+		ScrollItem@TEMPLATE:
+			BaseName: observer-scrollitem
+			Width: PARENT_RIGHT - 27
+			Height: 25
+			X: 2
+			Y: 0
+			Visible: false
+			Children:
+				Label@LABEL:
+					X: 10
+					Width: PARENT_RIGHT - 20
+					Height: 25
 
 ScrollPanel@NEWS_PANEL:
 	Width: 400

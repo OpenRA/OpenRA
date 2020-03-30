@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -13,15 +13,13 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common;
-using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
 {
-	public class TDGunboatInfo : ITraitInfo, IPositionableInfo, IFacingInfo, IMoveInfo,
-		UsesInit<LocationInit>, UsesInit<FacingInit>, IActorPreviewInitInfo
+	public class TDGunboatInfo : ITraitInfo, IPositionableInfo, IFacingInfo, IMoveInfo, IActorPreviewInitInfo
 	{
 		public readonly int Speed = 28;
 
@@ -49,12 +47,9 @@ namespace OpenRA.Mods.Cnc.Traits
 		bool IOccupySpaceInfo.SharesCell { get { return false; } }
 
 		// Used to determine if actor can spawn
-		public bool CanEnterCell(World world, Actor self, CPos cell, Actor ignoreActor = null, bool checkTransientActors = false)
+		public bool CanEnterCell(World world, Actor self, CPos cell, SubCell subCell = SubCell.FullCell, Actor ignoreActor = null, bool checkTransientActors = false)
 		{
-			if (!world.Map.Contains(cell))
-				return false;
-
-			return true;
+			return world.Map.Contains(cell);
 		}
 	}
 
@@ -66,8 +61,12 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		IEnumerable<int> speedModifiers;
 
-		[Sync] public int Facing { get; set; }
-		[Sync] public WPos CenterPosition { get; private set; }
+		[Sync]
+		public int Facing { get; set; }
+
+		[Sync]
+		public WPos CenterPosition { get; private set; }
+
 		public CPos TopLeft { get { return self.World.Map.CellContaining(CenterPosition); } }
 
 		// Isn't used anyway
@@ -181,22 +180,29 @@ namespace OpenRA.Mods.Cnc.Traits
 			self.World.UpdateMaps(self, this);
 		}
 
-		public Activity MoveTo(CPos cell, int nearEnough) { return null; }
-		public Activity MoveTo(CPos cell, Actor ignoreActor) { return null; }
-		public Activity MoveWithinRange(Target target, WDist range) { return null; }
-		public Activity MoveWithinRange(Target target, WDist minRange, WDist maxRange) { return null; }
-		public Activity MoveFollow(Actor self, Target target, WDist minRange, WDist maxRange) { return null; }
-		public Activity MoveIntoWorld(Actor self, CPos cell, SubCell subCell = SubCell.Any) { return null; }
-		public Activity MoveToTarget(Actor self, Target target) { return null; }
+		public Activity MoveTo(CPos cell, int nearEnough, Color? targetLineColor = null) { return null; }
+		public Activity MoveTo(CPos cell, Actor ignoreActor, Color? targetLineColor = null) { return null; }
+		public Activity MoveWithinRange(Target target, WDist range,
+			WPos? initialTargetPosition = null, Color? targetLineColor = null) { return null; }
+		public Activity MoveWithinRange(Target target, WDist minRange, WDist maxRange,
+			WPos? initialTargetPosition = null, Color? targetLineColor = null) { return null; }
+		public Activity MoveFollow(Actor self, Target target, WDist minRange, WDist maxRange,
+			WPos? initialTargetPosition = null, Color? targetLineColor = null) { return null; }
+		public Activity ReturnToCell(Actor self) { return null; }
+		public Activity MoveToTarget(Actor self, Target target,
+			WPos? initialTargetPosition = null, Color? targetLineColor = null) { return null; }
 		public Activity MoveIntoTarget(Actor self, Target target) { return null; }
 		public Activity VisualMove(Actor self, WPos fromPos, WPos toPos) { return null; }
+
+		public int EstimatedMoveDuration(Actor self, WPos fromPos, WPos toPos)
+		{
+			return (toPos - fromPos).Length / Info.Speed;
+		}
 
 		public CPos NearestMoveableCell(CPos cell) { return cell; }
 
 		// Actors with TDGunboat always move
-		public bool IsMoving { get { return true; } set { } }
-
-		public bool IsMovingVertically { get { return false; } set { } }
+		public MovementType CurrentMovementTypes { get { return MovementType.Horizontal; } set { } }
 
 		public bool CanEnterTargetNow(Actor self, Target target)
 		{
