@@ -32,6 +32,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly HotkeyReference combinedViewKey = new HotkeyReference();
 		readonly HotkeyReference worldViewKey = new HotkeyReference();
 		readonly HotkeyReference lockToPlayerCameraKey = new HotkeyReference();
+		readonly Dictionary<int, Session.Client> playerClients = new Dictionary<int, Session.Client>();
 
 		readonly World world;
 
@@ -179,7 +180,27 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			lockCheckbox = widget.Parent.GetOrNull<CheckboxWidget>("LOCK_CAMERA");
 			lockCheckbox.IsChecked = () => !lockCheckbox.IsDisabled() && isPlayerViewLocked;
-			lockCheckbox.IsDisabled = () => selected == combined || selected == disableShroud;
+			lockCheckbox.IsDisabled = () =>
+			{
+				if (selected == combined || selected == disableShroud || selected.Player.IsBot)
+					return true;
+
+				var player = selected.Player;
+				if (!playerClients.ContainsKey(player.ClientIndex))
+					playerClients.Add(player.ClientIndex, player.World.LobbyInfo.ClientWithIndex(player.ClientIndex));
+
+				// If the player is disconnected we should disable the checkbox.
+				var isDisconnected = playerClients[player.ClientIndex].State == Session.ClientState.Disconnected;
+				if (!isDisconnected)
+					return false;
+
+				// If the player has disconnected, but we're still locked to their view we should unlock.
+				if (isPlayerViewLocked)
+					lockCheckbox.OnClick();
+
+				return true;
+			};
+
 			lockCheckbox.OnClick = () =>
 			{
 				isPlayerViewLocked = !isPlayerViewLocked;

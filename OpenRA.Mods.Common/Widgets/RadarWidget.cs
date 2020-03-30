@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Network;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 using OpenRA.Widgets;
@@ -38,6 +39,7 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly int cellWidth;
 		readonly int previewWidth;
 		readonly int previewHeight;
+		readonly Dictionary<int, Session.Client> playerClients = new Dictionary<int, Session.Client>();
 
 		float radarMinimapHeight;
 		int frame;
@@ -391,6 +393,13 @@ namespace OpenRA.Mods.Common.Widgets
 
 			foreach (var player in players)
 			{
+				if (!playerClients.ContainsKey(player.ClientIndex))
+					playerClients.Add(player.ClientIndex, player.World.LobbyInfo.ClientWithIndex(player.ClientIndex));
+
+				var client = playerClients[player.ClientIndex];
+				if (client.State == Session.ClientState.Disconnected)
+					continue;
+
 				var tl2 = CellToMinimapPixel(world.Map.CellContaining(worldRenderer.ProjectedPosition(player.ViewportTopLeft)));
 				var br2 = CellToMinimapPixel(world.Map.CellContaining(worldRenderer.ProjectedPosition(player.ViewportBottomRight)));
 				Game.Renderer.RgbaColorRenderer.DrawRect(tl2, br2, 1, player.Color);
