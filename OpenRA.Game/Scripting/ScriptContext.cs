@@ -196,6 +196,7 @@ namespace OpenRA.Scripting
 			}
 
 			// System functions do not count towards the memory limit
+			// Good to know
 			runtime.MaxMemoryUse = runtime.MemoryUse + MaxUserScriptMemory;
 
 			using (var loadScript = (LuaFunction)runtime.Globals["ExecuteSandboxedScript"])
