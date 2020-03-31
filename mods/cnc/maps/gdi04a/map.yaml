@@ -405,6 +405,9 @@ Actors:
 		Owner: Nod
 		Facing: 192
 		SubCell: 3
+	Actor101: moneycrate
+		Location: 56,23
+		Owner: Neutral
 	HandOfNod: hand
 		Location: 30,53
 		Owner: Nod
