@@ -483,6 +483,9 @@ Actors:
 		Owner: Nod
 		Facing: 160
 		SubCell: 4
+	Actor167: moneycrate
+		Location: 26,42
+		Owner: Neutral
 	waypoint27: waypoint
 		Location: 32,41
 		Owner: Neutral

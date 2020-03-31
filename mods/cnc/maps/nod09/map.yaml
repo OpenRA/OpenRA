@@ -696,6 +696,9 @@ Actors:
 		Location: 54,6
 		Facing: 92
 		TurretFacing: 92
+	Actor245: moneycrate
+		Location: 5,6
+		Owner: Neutral
 	waypoint27: waypoint
 		Location: 32,32
 		Owner: Neutral

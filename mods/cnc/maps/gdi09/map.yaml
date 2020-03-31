@@ -776,6 +776,9 @@ Actors:
 	GDIHeliLZ: waypoint
 		Location: 41,44
 		Owner: Neutral
+	Actor224: moneycrate
+		Owner: Neutral
+		Location: 5,48
 
 Rules: cnc|rules/campaign-maprules.yaml, cnc|rules/campaign-tooltips.yaml, cnc|rules/campaign-palettes.yaml, rules.yaml
 
