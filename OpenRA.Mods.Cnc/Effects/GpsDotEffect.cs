@@ -28,6 +28,7 @@ namespace OpenRA.Mods.Cnc.Effects
 		readonly PlayerDictionary<DotState> dotStates;
 		readonly IDefaultVisibility visibility;
 		readonly IVisibilityModifier[] visibilityModifiers;
+		readonly GpsDot gpsDot;
 
 		class DotState
 		{
@@ -51,6 +52,8 @@ namespace OpenRA.Mods.Cnc.Effects
 
 			visibility = actor.Trait<IDefaultVisibility>();
 			visibilityModifiers = actor.TraitsImplementing<IVisibilityModifier>().ToArray();
+
+			gpsDot = actor.Trait<GpsDot>();
 
 			dotStates = new PlayerDictionary<DotState>(actor.World,
 				p => new DotState(actor, p.PlayerActor.Trait<GpsWatcher>(), p.FrozenActorLayer));
@@ -78,6 +81,9 @@ namespace OpenRA.Mods.Cnc.Effects
 
 			// Hide the indicator behind shroud
 			if (!toPlayer.Shroud.IsExplored(actor.CenterPosition))
+				return false;
+
+			if (gpsDot.IsTraitDisabled)
 				return false;
 
 			return !visibility.IsVisible(actor, toPlayer) && toPlayer.Shroud.IsExplored(actor.CenterPosition);
