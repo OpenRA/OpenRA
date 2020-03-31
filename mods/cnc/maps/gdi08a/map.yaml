@@ -882,5 +882,8 @@ Actors:
 	waypoint0: waypoint
 		Location: 19,53
 		Owner: Neutral
+	Actor239: moneycrate
+		Owner: Neutral
+		Location: 5,42
 
 Rules: cnc|rules/campaign-maprules.yaml, cnc|rules/campaign-tooltips.yaml, cnc|rules/campaign-palettes.yaml, rules.yaml
