@@ -100,7 +100,7 @@ SendWaves = function(counter, Waves)
 end
 
 SendReinforcementsWave = function(team)
-	Reinforcements.ReinforceWithTransport(GDI, "apc", GetCargo(team), { ReinforcementsGDISpawn.Location, waypoint12.Location}, nil, function(transport, passengers)
+	Reinforcements.ReinforceWithTransport(GDI, "apc", team.units, { ReinforcementsGDISpawn.Location, waypoint12.Location}, nil, function(transport, passengers)
 		MoveAndHunt(transport, team.waypoints)
 		transport.UnloadPassengers()
 		Trigger.OnPassengerExited(transport, function(_, passenger)
