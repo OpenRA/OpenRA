@@ -95,6 +95,10 @@ Player:
 	DeveloperMode:
 		CheckboxDisplayOrder: 10
 	GpsWatcher:
+		RequiresCondition: gps-online
+	GrantConditionOnPrerequisite:
+		Condition: gps-online
+		Prerequisites: gps-uplink
 	Shroud:
 		FogCheckboxDisplayOrder: 3
 	LobbyPrerequisiteCheckbox@GLOBALBOUNTY:

@@ -909,7 +909,7 @@ SAM:
 
 ATEK:
 	Inherits: ^ScienceBuilding
-	Inherits@IDISABLE: ^DisableOnLowPower
+	Inherits@IDISABLE: ^DisableOnLowPowerOrPowerDown
 	Inherits@shape: ^2x2Shape
 	Selectable:
 		Bounds: 48,48
@@ -954,6 +954,9 @@ ATEK:
 	Power:
 		Amount: -200
 	ProvidesPrerequisite@buildingname:
+	ProvidesPrerequisite@online:
+		Prerequisite: gps-uplink
+		RequiresCondition: !disabled
 
 WEAP:
 	Inherits: ^Building
