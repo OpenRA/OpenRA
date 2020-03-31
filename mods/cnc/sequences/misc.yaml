@@ -175,6 +175,14 @@ crate:
 	idle:
 		ZOffset: -511
 
+scrate:
+	idle:
+		ZOffset: -511
+
+wcrate:
+	idle:
+		ZOffset: -511
+
 xcratea:
 	idle: xcrate
 		ZOffset: -511

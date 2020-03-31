@@ -71,6 +71,8 @@ MoneyCrate:
 		Amount: 2000
 		Sequence: dollar
 		UseCashTick: true
+	RenderSprites:
+		Image: wcrate
 
 TRUCK:
 	Buildable:
