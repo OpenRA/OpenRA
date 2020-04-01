@@ -38,6 +38,7 @@ Container@INGAME_ROOT:
 					X: WINDOW_RIGHT / 2
 					Y: 40
 				Container@PERF_ROOT:
+				Container@NET_ROOT:
 				WorldInteractionController@INTERACTION_CONTROLLER:
 					Width: WINDOW_RIGHT
 					Height: WINDOW_BOTTOM
@@ -68,6 +69,29 @@ Container@PERF_WIDGETS:
 				PerfGraph@GRAPH:
 					X: 10
 					Y: 10
+					Width: 200
+					Height: 200
+
+Container@NET_WIDGETS:
+	Logic: NetDebugLogic
+	Children:
+		Label@NET_TEXT:
+			X: 10
+			Y: 420
+			Width: 170
+			Height: 40
+			Contrast: true
+		Background@GRAPH_BG:
+			ClickThrough: true
+			Background: dialog4
+			X: 10
+			Y: 200
+			Width: 210
+			Height: 210
+			Children:
+				NetGraph@GRAPH:
+					X: 5
+					Y: 5
 					Width: 200
 					Height: 200
 

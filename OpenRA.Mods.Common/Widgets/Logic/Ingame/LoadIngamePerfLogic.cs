@@ -20,6 +20,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var perfRoot = widget.Get("PERF_ROOT");
 			Game.LoadWidget(world, "PERF_WIDGETS", perfRoot, new WidgetArgs());
+
+			var netRoot = widget.Get("NET_ROOT");
+			Game.LoadWidget(world, "NET_WIDGETS", netRoot, new WidgetArgs());
 		}
 	}
 }

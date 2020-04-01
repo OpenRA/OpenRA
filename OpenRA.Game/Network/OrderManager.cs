@@ -43,7 +43,10 @@ namespace OpenRA.Network
 		public int OrderLatency = 0; // Set during lobby by a "SyncInfo" packet, see UnitOrders
 		public int NextOrderFrame;
 		private bool compensate = false;
-		private int latencyTickup = 0;
+		private int catchupCooldown = 0;
+		private int increaseRateLimiter = 0;
+
+		private bool isReadyForNextFrame = false;
 
 		public long LastTickTime = Game.RunTime;
 
@@ -81,7 +84,9 @@ namespace OpenRA.Network
 			NetFrameNumber = 1;
 			NextOrderFrame = 1;
 
-			SendOrders();
+			NetHistory.Restart(Connection.LocalClientId);
+
+			SendLatencyCompensation();
 		}
 
 		public OrderManager(string host, int port, string password, IConnection conn)
@@ -169,19 +174,35 @@ namespace OpenRA.Network
 				syncForFrame.Add(frame, packet);
 		}
 
-		public bool IsReadyForNextFrame()
+		public bool CheckIsReadyForNextFrame()
 		{
 			if (NetFrameNumber >= 1 && frameData.IsReadyForFrame(NetFrameNumber))
 			{
-				return true;
+				isReadyForNextFrame = true;
 			}
 			else
 			{
 				// Raise order latency if we were the probably the reason stuff was delayed
 				if (!compensate && frameData.BufferSizeForClient(NetFrameNumber, Connection.LocalClientId) == 0)
-					compensate = true;
-				return false;
+				{
+					// Limit the rate at which we increase latency to 10 per lock
+					// TODO should be based on real time, not net ticks
+					if (increaseRateLimiter < 5)
+					{
+						increaseRateLimiter++;
+						OrderLatency++;
+						SendLatencyCompensation();
+					}
+
+					// Force us to be unable to attempt to decrease latency until we've seen at least a round-trip
+					catchupCooldown = OrderLatency + 1;
+				}
+				isReadyForNextFrame = false;
 			}
+
+			BufferNetHistory();
+
+			return isReadyForNextFrame;
 		}
 
 		public IEnumerable<Session.Client> GetClientsNotReadyForNextFrame
@@ -200,17 +221,30 @@ namespace OpenRA.Network
 			if (OrderLatency <= 1) // Minimum
 				return;
 
+			if (catchupCooldown > 0)
+			{
+				catchupCooldown--;
+				return;
+			}
+
 			// If our own buffer is fuller than necessary, tick
 			if (frameData.BufferSizeForClient(NetFrameNumber, Connection.LocalClientId) > 1)
-				latencyTickup++;
-			else
-				latencyTickup = 0;
-
-			if (latencyTickup > 1)
 			{
-				if (OrderLatency > 1)
-					OrderLatency--;
-				latencyTickup = 0;
+				OrderLatency--;
+
+				// Force us to wait the full net round-trip until we decrease latency again
+				catchupCooldown = OrderLatency + 1;
+			}
+		}
+
+		private void SendLatencyCompensation()
+		{
+			// When we are increasing latency, we send extra packets
+			while (NextOrderFrame < NetFrameNumber + OrderLatency)
+			{
+				if (GameSaveLastFrame < NextOrderFrame)
+					Connection.Send(NextOrderFrame, BLANK);
+				NextOrderFrame++;
 			}
 		}
 
@@ -219,14 +253,8 @@ namespace OpenRA.Network
 			// When we are lowering latency, we buffer orders
 			if (NextOrderFrame > NetFrameNumber + OrderLatency)
 				return;
-
-			// When we are increasing latency, we send extra packets
-			while (NextOrderFrame < NetFrameNumber + OrderLatency)
-			{
-				if (GameSaveLastFrame < NextOrderFrame)
-					Connection.Send(NextOrderFrame, BLANK);
-				NextOrderFrame++;
-			}
+			
+			SendLatencyCompensation();
 
 			Connection.Send(NextOrderFrame, localOrders.Select(o => o.Serialize()).ToList());
 			localOrders.Clear();
@@ -235,14 +263,10 @@ namespace OpenRA.Network
 
 		public void Tick()
 		{
-			if (!IsReadyForNextFrame())
+			if (!isReadyForNextFrame)
 				throw new InvalidOperationException();
 
-			if (compensate)
-			{
-				OrderLatency++;
-				compensate = false;
-			}
+			increaseRateLimiter = 0;
 
 			// Lower order latency if we received multiple orders from some client (excluding our own echo)
 			// Will undo the forced compensate if a player has caused slowdown
@@ -263,6 +287,17 @@ namespace OpenRA.Network
 					syncReport.UpdateSyncReport();
 
 			++NetFrameNumber;
+			isReadyForNextFrame = false;
+		}
+
+		public void BufferNetHistory()
+		{
+			var buffers = new Dictionary<int, int>();
+
+			foreach (var c in frameData.ClientsPlayingInFrame(NetFrameNumber))
+				buffers.Add(c, frameData.BufferSizeForClient(NetFrameNumber, c));
+
+			NetHistory.Tick(new NetHistoryFrame(NetFrameNumber, OrderLatency, isReadyForNextFrame, buffers));
 		}
 
 		public void Dispose()

@@ -61,6 +61,7 @@ Container@INGAME_ROOT:
 					Y: 40
 				Container@PLAYER_ROOT:
 				Container@PERF_ROOT:
+				Container@NET_ROOT:
 		Container@MENU_ROOT:
 		TooltipContainer@TOOLTIP_CONTAINER:
 		MouseAttachment@MOUSE_ATTATCHMENT:

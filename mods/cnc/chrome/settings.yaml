@@ -762,6 +762,20 @@ Container@SETTINGS_PANEL:
 							Height: 20
 							Font: Regular
 							Text: Show Performance Graph
+						Checkbox@NETTEXT_CHECKBOX:
+							X: 15
+							Y: 133
+							Width: 300
+							Height: 20
+							Font: Regular
+							Text: Show Network Text
+						Checkbox@NETGRAPH_CHECKBOX:
+							X: 15
+							Y: 163
+							Width: 300
+							Height: 20
+							Font: Regular
+							Text: Show Network Graph
 						Checkbox@FETCH_NEWS_CHECKBOX:
 							X: 310
 							Y: 43

@@ -103,6 +103,12 @@ namespace OpenRA
 		[Desc("Display a graph with various profiling traces")]
 		public bool PerfGraph = false;
 
+		[Desc("Display net text")]
+		public bool NetText = false;
+
+		[Desc("Display a graph with various network state information")]
+		public bool NetGraph = false;
+
 		[Desc("Numer of samples to average over when calculating tick and render times.")]
 		public int Samples = 25;
 

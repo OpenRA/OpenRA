@@ -87,7 +87,7 @@ namespace OpenRA.Network
 		public int BufferSizeForClient(int frame, int client)
 		{
 			return framePackets
-				.Where(x => frame < x.Key)
+				.Where(x => x.Key >= frame)
 				.Where(x => x.Value.ContainsKey(client))
 				.Count();
 		}
