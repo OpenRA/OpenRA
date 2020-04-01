@@ -72,10 +72,24 @@ namespace OpenRA.Network
 			var clientData = ClientsPlayingInFrame(frame)
 				.ToDictionary(k => k, v => frameData[v]);
 
-			return clientData
+			var orders = clientData
 				.SelectMany(x => x.Value
 					.ToOrderList(world)
 					.Select(o => new ClientOrder { Client = x.Key, Order = o }));
+
+			// TODO hand off frame packets to SyncReport
+			// TODO consider how to handle clients quitting in this representation
+			// framePackets.Remove(frame);
+			// clientQuitTimes.Remove(frame);
+			return orders;
+		}
+
+		public int BufferSizeForClient(int frame, int client)
+		{
+			return framePackets
+				.Where(x => frame < x.Key)
+				.Where(x => x.Value.ContainsKey(client))
+				.Count();
 		}
 	}
 }

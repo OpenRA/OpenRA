@@ -89,7 +89,9 @@ namespace OpenRA.Network
 		{
 			if (packet.Length == 0)
 				throw new NotImplementedException();
-			AddPacket(new ReceivedPacket { FromClient = LocalClientId, Data = packet });
+
+			// TODO replace overridden method with acking system
+			// AddPacket(new ReceivedPacket { FromClient = LocalClientId, Data = packet });
 		}
 
 		protected void AddPacket(ReceivedPacket packet)

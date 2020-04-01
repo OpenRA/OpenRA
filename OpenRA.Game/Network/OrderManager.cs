@@ -19,6 +19,7 @@ namespace OpenRA.Network
 {
 	public sealed class OrderManager : IDisposable
 	{
+		private static readonly List<byte[]> BLANK = new List<byte[]>();
 		static readonly IEnumerable<Session.Client> NoClients = new Session.Client[] { };
 
 		readonly SyncReport syncReport;
@@ -38,7 +39,11 @@ namespace OpenRA.Network
 
 		public int NetFrameNumber { get; private set; }
 		public int LocalFrameNumber;
-		public int FramesAhead = 0;
+
+		public int OrderLatency = 0; // Set during lobby by a "SyncInfo" packet, see UnitOrders
+		public int NextOrderFrame;
+		private bool compensate = false;
+		private int latencyTickup = 0;
 
 		public long LastTickTime = Game.RunTime;
 
@@ -74,10 +79,9 @@ namespace OpenRA.Network
 			generateSyncReport = !(Connection is ReplayConnection) && LobbyInfo.GlobalSettings.EnableSyncReports;
 
 			NetFrameNumber = 1;
+			NextOrderFrame = 1;
 
-			if (GameSaveLastFrame < 0)
-				for (var i = NetFrameNumber; i <= FramesAhead; i++)
-					Connection.Send(i, new List<byte[]>());
+			SendOrders();
 		}
 
 		public OrderManager(string host, int port, string password, IConnection conn)
@@ -113,7 +117,7 @@ namespace OpenRA.Network
 
 		public void TickImmediate()
 		{
-			if (localImmediateOrders.Count != 0 && GameSaveLastFrame < NetFrameNumber + FramesAhead)
+			if (localImmediateOrders.Count != 0 && GameSaveLastFrame < NetFrameNumber + OrderLatency)
 				Connection.SendImmediate(localImmediateOrders.Select(o => o.Serialize()));
 			localImmediateOrders.Clear();
 
@@ -165,9 +169,19 @@ namespace OpenRA.Network
 				syncForFrame.Add(frame, packet);
 		}
 
-		public bool IsReadyForNextFrame
+		public bool IsReadyForNextFrame()
 		{
-			get { return NetFrameNumber >= 1 && frameData.IsReadyForFrame(NetFrameNumber); }
+			if (NetFrameNumber >= 1 && frameData.IsReadyForFrame(NetFrameNumber))
+			{
+				return true;
+			}
+			else
+			{
+				// Raise order latency if we were the probably the reason stuff was delayed
+				if (!compensate && frameData.BufferSizeForClient(NetFrameNumber, Connection.LocalClientId) == 0)
+					compensate = true;
+				return false;
+			}
 		}
 
 		public IEnumerable<Session.Client> GetClientsNotReadyForNextFrame
@@ -181,20 +195,65 @@ namespace OpenRA.Network
 			}
 		}
 
+		public void TryDecreaseOrderLatency()
+		{
+			if (OrderLatency <= 1) // Minimum
+				return;
+
+			// If our own buffer is fuller than necessary, tick
+			if (frameData.BufferSizeForClient(NetFrameNumber, Connection.LocalClientId) > 1)
+				latencyTickup++;
+			else
+				latencyTickup = 0;
+
+			if (latencyTickup > 1)
+			{
+				if (OrderLatency > 1)
+					OrderLatency--;
+				latencyTickup = 0;
+			}
+		}
+
+		private void SendOrders()
+		{
+			// When we are lowering latency, we buffer orders
+			if (NextOrderFrame > NetFrameNumber + OrderLatency)
+				return;
+
+			// When we are increasing latency, we send extra packets
+			while (NextOrderFrame < NetFrameNumber + OrderLatency)
+			{
+				if (GameSaveLastFrame < NextOrderFrame)
+					Connection.Send(NextOrderFrame, BLANK);
+				NextOrderFrame++;
+			}
+
+			Connection.Send(NextOrderFrame, localOrders.Select(o => o.Serialize()).ToList());
+			localOrders.Clear();
+			NextOrderFrame++;
+		}
+
 		public void Tick()
 		{
-			if (!IsReadyForNextFrame)
+			if (!IsReadyForNextFrame())
 				throw new InvalidOperationException();
 
-			if (GameSaveLastFrame < NetFrameNumber + FramesAhead)
-				Connection.Send(NetFrameNumber + FramesAhead, localOrders.Select(o => o.Serialize()).ToList());
+			if (compensate)
+			{
+				OrderLatency++;
+				compensate = false;
+			}
 
-			localOrders.Clear();
+			// Lower order latency if we received multiple orders from some client (excluding our own echo)
+			// Will undo the forced compensate if a player has caused slowdown
+			TryDecreaseOrderLatency();
+
+			SendOrders();
 
 			foreach (var order in frameData.OrdersForFrame(World, NetFrameNumber))
 				UnitOrders.ProcessOrder(this, World, order.Client, order.Order);
 
-			if (NetFrameNumber + FramesAhead >= GameSaveLastSyncFrame)
+			if (NetFrameNumber + OrderLatency >= GameSaveLastSyncFrame)
 				Connection.SendSync(NetFrameNumber, OrderIO.SerializeSync(World.SyncHash()));
 			else
 				Connection.SendSync(NetFrameNumber, OrderIO.SerializeSync(0));

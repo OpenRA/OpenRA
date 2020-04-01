@@ -352,9 +352,9 @@ namespace OpenRA.Network
 
 		static void SetOrderLag(OrderManager o)
 		{
-			if (o.FramesAhead != o.LobbyInfo.GlobalSettings.OrderLatency && !o.GameStarted)
+			if (o.OrderLatency != o.LobbyInfo.GlobalSettings.OrderLatency && !o.GameStarted)
 			{
-				o.FramesAhead = o.LobbyInfo.GlobalSettings.OrderLatency;
+				o.OrderLatency = o.LobbyInfo.GlobalSettings.OrderLatency;
 				Log.Write("server", "Order lag is now {0} frames.", o.LobbyInfo.GlobalSettings.OrderLatency);
 			}
 		}

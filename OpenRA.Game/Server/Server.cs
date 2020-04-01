@@ -592,8 +592,12 @@ namespace OpenRA.Server
 		public void DispatchOrdersToClients(Connection conn, int frame, byte[] data)
 		{
 			var from = conn != null ? conn.PlayerIndex : 0;
-			foreach (var c in Conns.Except(conn).ToList())
+
+			// foreach (var c in Conns.Except(conn).ToList())
+			foreach (var c in Conns.ToList())
 				DispatchOrdersToClient(c, from, frame, data);
+
+			// TODO just ack with blank packet rather than relaying all data
 		}
 
 		public void DispatchOrders(Connection conn, int frame, byte[] data)
