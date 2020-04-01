@@ -137,7 +137,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 				faction = "gdi";
 				break;
 			case "BadGuy":
-				color = "red"; // TODO: use the grey unit color theme for missions
+				color = "red";
 				faction = "nod";
 				break;
 			case "Special":
