@@ -593,11 +593,8 @@ namespace OpenRA.Server
 		{
 			var from = conn != null ? conn.PlayerIndex : 0;
 
-			// foreach (var c in Conns.Except(conn).ToList())
-			foreach (var c in Conns.ToList())
+			foreach (var c in Conns.Except(conn).ToList())
 				DispatchOrdersToClient(c, from, frame, data);
-
-			// TODO just ack with blank packet rather than relaying all data
 		}
 
 		public void DispatchOrders(Connection conn, int frame, byte[] data)
@@ -605,7 +602,13 @@ namespace OpenRA.Server
 			if (frame == 0 && conn != null)
 				InterpretServerOrders(conn, data);
 			else
+			{
+				// Ack if not a SyncHash and not immediate
+				if (conn != null && (data.Length == 0 || (OrderType)data[0] != OrderType.SyncHash))
+					DispatchOrdersToClient(conn, conn.PlayerIndex, frame, new byte[0]);
+
 				DispatchOrdersToClients(conn, frame, data);
+			}
 
 			if (GameSave != null && conn != null)
 				GameSave.DispatchOrders(conn, frame, data);

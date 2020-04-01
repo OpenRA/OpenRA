@@ -90,8 +90,7 @@ namespace OpenRA.Network
 			if (packet.Length == 0)
 				throw new NotImplementedException();
 
-			// TODO replace overridden method with acking system
-			// AddPacket(new ReceivedPacket { FromClient = LocalClientId, Data = packet });
+			AddPacket(new ReceivedPacket { FromClient = LocalClientId, Data = packet });
 		}
 
 		protected void AddPacket(ReceivedPacket packet)
@@ -142,6 +141,7 @@ namespace OpenRA.Network
 	{
 		readonly TcpClient tcp;
 		readonly List<byte[]> queuedSyncPackets = new List<byte[]>();
+		readonly Queue<byte[]> awaitingAckPacketsQueue = new Queue<byte[]>();
 		volatile ConnectionState connectionState = ConnectionState.Connecting;
 		volatile int clientId;
 		bool disposed;
@@ -184,9 +184,20 @@ namespace OpenRA.Network
 					var len = reader.ReadInt32();
 					var client = reader.ReadInt32();
 					var buf = reader.ReadBytes(len);
-					if (len == 0)
+					if (client == LocalClientId && len == 4)
+					{
+						var queuedPacket = awaitingAckPacketsQueue.Dequeue();
+
+						// Check frame numbers match (for sanity)
+						if (BitConverter.ToInt32(buf, 0) != BitConverter.ToInt32(queuedPacket, 0))
+							throw new NotSupportedException();
+
+						AddPacket(new ReceivedPacket { FromClient = LocalClientId, Data = queuedPacket });
+					}
+					else if (len == 0)
 						throw new NotImplementedException();
-					AddPacket(new ReceivedPacket { FromClient = client, Data = buf });
+					else
+						AddPacket(new ReceivedPacket { FromClient = client, Data = buf });
 				}
 			}
 			catch { }
@@ -199,6 +210,7 @@ namespace OpenRA.Network
 		public override int LocalClientId { get { return clientId; } }
 		public override ConnectionState ConnectionState { get { return connectionState; } }
 
+		// TODO why do we need this? does queueing sync packets do anything?
 		public override void SendSync(int frame, byte[] syncData)
 		{
 			var ms = new MemoryStream(4 + syncData.Length);
@@ -207,10 +219,26 @@ namespace OpenRA.Network
 			queuedSyncPackets.Add(ms.GetBuffer());
 		}
 
+		// Override send frame orders so we can hold them until ACK'ed
+		public override void Send(int frame, List<byte[]> orders)
+		{
+			var ms = new MemoryStream();
+			ms.WriteArray(BitConverter.GetBytes(frame));
+			foreach (var o in orders)
+				ms.WriteArray(o);
+			byte[] packet = ms.GetBuffer();
+			awaitingAckPacketsQueue.Enqueue(ms.GetBuffer());
+			SendNetwork(packet);
+		}
+
 		protected override void Send(byte[] packet)
 		{
 			base.Send(packet);
+			SendNetwork(packet);
+		}
 
+		private void SendNetwork(byte[] packet)
+		{
 			try
 			{
 				var ms = new MemoryStream();
