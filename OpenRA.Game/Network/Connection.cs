@@ -141,7 +141,7 @@ namespace OpenRA.Network
 	{
 		readonly TcpClient tcp;
 		readonly List<byte[]> queuedSyncPackets = new List<byte[]>();
-		readonly Queue<byte[]> awaitingAckPacketsQueue = new Queue<byte[]>();
+		readonly Queue<byte[]> awaitingAckPackets = new Queue<byte[]>();
 		volatile ConnectionState connectionState = ConnectionState.Connecting;
 		volatile int clientId;
 		bool disposed;
@@ -186,13 +186,18 @@ namespace OpenRA.Network
 					var buf = reader.ReadBytes(len);
 					if (client == LocalClientId && len == 4)
 					{
-						var queuedPacket = awaitingAckPacketsQueue.Dequeue();
+						var receivedFrame = BitConverter.ToInt32(buf, 0);
+						var queuedPacket = awaitingAckPackets.Peek();
+						var queuedFrame = BitConverter.ToInt32(queuedPacket, 0);
 
-						// Check frame numbers match (for sanity)
-						if (BitConverter.ToInt32(buf, 0) != BitConverter.ToInt32(queuedPacket, 0))
+						// Check frame numbers match our expectations (we don't want to repeat unexpected acks)
+						if (receivedFrame == queuedFrame)
+						{
+							awaitingAckPackets.Dequeue();
+							AddPacket(new ReceivedPacket { FromClient = LocalClientId, Data = queuedPacket });
+						}
+						else if (receivedFrame > queuedFrame)
 							throw new NotSupportedException();
-
-						AddPacket(new ReceivedPacket { FromClient = LocalClientId, Data = queuedPacket });
 					}
 					else if (len == 0)
 						throw new NotImplementedException();
@@ -227,7 +232,7 @@ namespace OpenRA.Network
 			foreach (var o in orders)
 				ms.WriteArray(o);
 			byte[] packet = ms.GetBuffer();
-			awaitingAckPacketsQueue.Enqueue(ms.GetBuffer());
+			awaitingAckPackets.Enqueue(ms.GetBuffer());
 			SendNetwork(packet);
 		}
 

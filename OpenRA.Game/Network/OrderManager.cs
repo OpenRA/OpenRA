@@ -197,6 +197,7 @@ namespace OpenRA.Network
 					// Force us to be unable to attempt to decrease latency until we've seen at least a round-trip
 					catchupCooldown = OrderLatency + 1;
 				}
+
 				isReadyForNextFrame = false;
 			}
 
@@ -253,7 +254,7 @@ namespace OpenRA.Network
 			// When we are lowering latency, we buffer orders
 			if (NextOrderFrame > NetFrameNumber + OrderLatency)
 				return;
-			
+
 			SendLatencyCompensation();
 
 			Connection.Send(NextOrderFrame, localOrders.Select(o => o.Serialize()).ToList());
