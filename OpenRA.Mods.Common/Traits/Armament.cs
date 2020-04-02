@@ -126,6 +126,8 @@ namespace OpenRA.Mods.Common.Traits
 		int currentBarrel;
 		int barrelCount;
 
+		ISound reportLoop;
+
 		List<Pair<int, Action>> delayedActions = new List<Pair<int, Action>>();
 
 		public WDist Recoil;
@@ -205,6 +207,9 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (FireDelay > 0)
 				--FireDelay;
+
+			if (reportLoop != null && reportLoop.Complete)
+				reportLoop = Game.Sound.Play(SoundType.World, Weapon.Report.Random(self.World.SharedRandom), self.CenterPosition);
 
 			Recoil = new WDist(Math.Max(0, Recoil.Length - Info.RecoilRecovery.Length));
 
@@ -329,7 +334,13 @@ namespace OpenRA.Mods.Common.Traits
 						self.World.Add(projectile);
 
 					if (args.Weapon.Report != null && args.Weapon.Report.Any())
-						Game.Sound.Play(SoundType.World, args.Weapon.Report, self.World, self.CenterPosition);
+					{
+						if (args.Weapon.ReportLooped)
+							if (reportLoop == null)
+								reportLoop = Game.Sound.Play(SoundType.World, args.Weapon.Report.Random(self.World.SharedRandom), self.CenterPosition);
+						else
+							Game.Sound.Play(SoundType.World, args.Weapon.Report, self.World, self.CenterPosition);
+					}
 
 					if (Burst == args.Weapon.Burst && args.Weapon.StartBurstReport != null && args.Weapon.StartBurstReport.Any())
 						Game.Sound.Play(SoundType.World, args.Weapon.StartBurstReport, self.World, self.CenterPosition);
