@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using OpenRA.Mods.Common.UtilityCommands;
 using OpenRA.Support;
 using OpenRA.Widgets;
 
@@ -33,12 +34,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
                     if (historyE.MoveNext())
                     {
                         var history = historyE.Current;
-                        return string.Format("Order latency: {0}\n" +
+                        return String.Format("Order latency: {0}\n" +
                             "Ticked: {1}\n" +
-                            "Self buffer size: {2}",
+                            "Self buffer size: {2}\n" +
+	                        "{3}ms (+/- {4:F1}ms)\n" +
+                            "peak+delta: {5}ms",
                             history.OrderLatency,
                             history.Ticked,
-                            history.CurrentClientBufferSize);
+                            history.CurrentClientBufferSize,
+                            history.MeasuredLatency,
+                            history.MeasuredJitter,
+                            history.PeakJitter);
                     }
                     else
                         return "Waiting for net history";

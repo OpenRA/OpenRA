@@ -19,7 +19,6 @@ namespace OpenRA.Network
 {
 	public sealed class OrderManager : IDisposable
 	{
-		private static readonly List<byte[]> BLANK = new List<byte[]>();
 		static readonly IEnumerable<Session.Client> NoClients = new Session.Client[] { };
 
 		readonly SyncReport syncReport;
@@ -244,7 +243,7 @@ namespace OpenRA.Network
 			while (NextOrderFrame < NetFrameNumber + OrderLatency)
 			{
 				if (GameSaveLastFrame < NextOrderFrame)
-					Connection.Send(NextOrderFrame, BLANK);
+					Connection.Send(NextOrderFrame, Enumerable.Empty<byte[]>());
 				NextOrderFrame++;
 			}
 		}
@@ -298,7 +297,9 @@ namespace OpenRA.Network
 			foreach (var c in frameData.ClientsPlayingInFrame(NetFrameNumber))
 				buffers.Add(c, frameData.BufferSizeForClient(NetFrameNumber, c));
 
-			NetHistory.Tick(new NetHistoryFrame(NetFrameNumber, OrderLatency, isReadyForNextFrame, buffers));
+			NetHistory.Tick(new NetHistoryFrame(NetFrameNumber, OrderLatency, isReadyForNextFrame, buffers,
+				Connection.LatencyReporter.Latency, Connection.LatencyReporter.Jitter,
+				Connection.LatencyReporter.PeakJitter)); // TODO don't calculate twice
 		}
 
 		public void Dispose()

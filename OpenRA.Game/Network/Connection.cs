@@ -30,10 +30,12 @@ namespace OpenRA.Network
 	{
 		int LocalClientId { get; }
 		ConnectionState ConnectionState { get; }
-		void Send(int frame, List<byte[]> orders);
+		void Send(int frame, IEnumerable<byte[]> orders);
 		void SendImmediate(IEnumerable<byte[]> orders);
 		void SendSync(int frame, byte[] syncData);
 		void Receive(Action<int, byte[]> packetFn);
+
+		ILatencyReporter LatencyReporter { get; }
 	}
 
 	class EchoConnection : IConnection
@@ -47,6 +49,11 @@ namespace OpenRA.Network
 		readonly List<ReceivedPacket> receivedPackets = new List<ReceivedPacket>();
 		public ReplayRecorder Recorder { get; private set; }
 
+		public virtual ILatencyReporter LatencyReporter
+		{
+			get { return EmptyLatencyReporter.Instance; }
+		}
+
 		public virtual int LocalClientId
 		{
 			get { return 1; }
@@ -57,7 +64,7 @@ namespace OpenRA.Network
 			get { return ConnectionState.PreConnecting; }
 		}
 
-		public virtual void Send(int frame, List<byte[]> orders)
+		public virtual void Send(int frame, IEnumerable<byte[]> orders)
 		{
 			var ms = new MemoryStream();
 			ms.WriteArray(BitConverter.GetBytes(frame));
@@ -146,6 +153,13 @@ namespace OpenRA.Network
 		volatile int clientId;
 		bool disposed;
 
+		readonly OrderLatencyTracker latencyTracker = new OrderLatencyTracker();
+
+		public override ILatencyReporter LatencyReporter
+		{
+			get { return latencyTracker; }
+		}
+
 		public NetworkConnection(string host, int port)
 		{
 			try
@@ -193,6 +207,7 @@ namespace OpenRA.Network
 						// Check frame numbers match our expectations (we don't want to repeat unexpected acks)
 						if (receivedFrame == queuedFrame)
 						{
+							latencyTracker.TrackAck(receivedFrame);
 							awaitingAckPackets.Dequeue();
 							AddPacket(new ReceivedPacket { FromClient = LocalClientId, Data = queuedPacket });
 						}
@@ -215,7 +230,6 @@ namespace OpenRA.Network
 		public override int LocalClientId { get { return clientId; } }
 		public override ConnectionState ConnectionState { get { return connectionState; } }
 
-		// TODO why do we need this? does queueing sync packets do anything?
 		public override void SendSync(int frame, byte[] syncData)
 		{
 			var ms = new MemoryStream(4 + syncData.Length);
@@ -225,7 +239,7 @@ namespace OpenRA.Network
 		}
 
 		// Override send frame orders so we can hold them until ACK'ed
-		public override void Send(int frame, List<byte[]> orders)
+		public override void Send(int frame, IEnumerable<byte[]> orders)
 		{
 			var ms = new MemoryStream();
 			ms.WriteArray(BitConverter.GetBytes(frame));
@@ -233,6 +247,7 @@ namespace OpenRA.Network
 				ms.WriteArray(o);
 			byte[] packet = ms.GetBuffer();
 			awaitingAckPackets.Enqueue(ms.GetBuffer());
+			latencyTracker.TrackSend(frame);
 			SendNetwork(packet);
 		}
 

@@ -38,6 +38,11 @@ namespace OpenRA.Network
 		public readonly Session LobbyInfo;
 		public readonly string Filename;
 
+		public ILatencyReporter LatencyReporter
+		{
+			get { return EmptyLatencyReporter.Instance; }
+		}
+
 		public ReplayConnection(string replayFilename)
 		{
 			Filename = replayFilename;
@@ -124,7 +129,7 @@ namespace OpenRA.Network
 		}
 
 		// Do nothing: ignore locally generated orders
-		public void Send(int frame, List<byte[]> orders) { }
+		public void Send(int frame, IEnumerable<byte[]> orders) { }
 		public void SendImmediate(IEnumerable<byte[]> orders) { }
 
 		public void SendSync(int frame, byte[] syncData)

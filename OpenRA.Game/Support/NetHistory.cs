@@ -56,18 +56,30 @@ namespace OpenRA.Support
 		public Dictionary<int, int> ClientBufferSizes;
 		public int OrderLatency;
 		public bool Ticked;
+		public int MeasuredLatency;
+		public double MeasuredJitter;
+		public int PeakJitter;
 
 		public int CurrentClientBufferSize
 		{
 			get { return ClientBufferSizes[NetHistory.CurrentClientId]; }
 		}
 
-		public NetHistoryFrame(int netFrameNumber, int orderLatency, bool ticked, Dictionary<int, int> clientBufferSizes)
+		public NetHistoryFrame(int netFrameNumber,
+			int orderLatency,
+			bool ticked,
+			Dictionary<int, int> clientBufferSizes,
+			int measuredLatency,
+			double measuredJitter,
+			int peakJitter)
 		{
 			NetFrameNumber = netFrameNumber;
 			OrderLatency = orderLatency;
 			Ticked = ticked;
 			ClientBufferSizes = clientBufferSizes;
+			MeasuredLatency = measuredLatency;
+			MeasuredJitter = measuredJitter;
+			PeakJitter = peakJitter;
 		}
 	}
 }
