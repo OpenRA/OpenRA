@@ -34,7 +34,7 @@ namespace OpenRA.Network
 		void SendImmediate(IEnumerable<byte[]> orders);
 		void SendSync(int frame, byte[] syncData);
 		void Receive(Action<int, byte[]> packetFn);
-
+		int LastAckedFrame { get; }
 		ILatencyReporter LatencyReporter { get; }
 	}
 
@@ -64,6 +64,23 @@ namespace OpenRA.Network
 			get { return ConnectionState.PreConnecting; }
 		}
 
+		public virtual int LastAckedFrame
+		{
+			get
+			{
+				return lastAckedFrame;
+			}
+
+			protected set
+			{
+				if (value <= lastAckedFrame)
+					throw new InvalidOperationException("Sent frame twice or out of order");
+				lastAckedFrame = value;
+			}
+		}
+
+		int lastAckedFrame;
+
 		public virtual void Send(int frame, IEnumerable<byte[]> orders)
 		{
 			var ms = new MemoryStream();
@@ -71,6 +88,7 @@ namespace OpenRA.Network
 			foreach (var o in orders)
 				ms.WriteArray(o);
 			Send(ms.ToArray());
+			LastAckedFrame = frame;
 		}
 
 		public virtual void SendImmediate(IEnumerable<byte[]> orders)
@@ -201,18 +219,9 @@ namespace OpenRA.Network
 					if (client == LocalClientId && len == 4)
 					{
 						var receivedFrame = BitConverter.ToInt32(buf, 0);
-						var queuedPacket = awaitingAckPackets.Peek();
-						var queuedFrame = BitConverter.ToInt32(queuedPacket, 0);
 
-						// Check frame numbers match our expectations (we don't want to repeat unexpected acks)
-						if (receivedFrame == queuedFrame)
-						{
-							latencyTracker.TrackAck(receivedFrame);
-							awaitingAckPackets.Dequeue();
-							AddPacket(new ReceivedPacket { FromClient = LocalClientId, Data = queuedPacket });
-						}
-						else if (receivedFrame > queuedFrame)
-							throw new NotSupportedException();
+						latencyTracker.TrackAck(receivedFrame);
+						LastAckedFrame = receivedFrame;
 					}
 					else if (len == 0)
 						throw new NotImplementedException();
@@ -246,9 +255,9 @@ namespace OpenRA.Network
 			foreach (var o in orders)
 				ms.WriteArray(o);
 			byte[] packet = ms.GetBuffer();
-			awaitingAckPackets.Enqueue(ms.GetBuffer());
+
 			latencyTracker.TrackSend(frame);
-			SendNetwork(packet);
+			Send(packet);
 		}
 
 		protected override void Send(byte[] packet)

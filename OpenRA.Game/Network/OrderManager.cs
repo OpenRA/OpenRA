@@ -38,14 +38,14 @@ namespace OpenRA.Network
 
 		public int NetFrameNumber { get; private set; }
 		public int LocalFrameNumber;
+		public int NextReceivedNetFrame { get; private set; }
+		public int NextSafeNetFrame { get; private set; }
 
-		public int OrderLatency = 0; // Set during lobby by a "SyncInfo" packet, see UnitOrders
+		public int OrderLatency; // Set during lobby by a "SyncInfo" packet, see UnitOrders
 		public int NextOrderFrame;
-		private bool compensate = false;
-		private int catchupCooldown = 0;
-		private int increaseRateLimiter = 0;
+		public bool IsCatchingUp { get; private set; }
 
-		private bool isReadyForNextFrame = false;
+		int lastLatency = Int32.MaxValue;
 
 		public long LastTickTime = Game.RunTime;
 
@@ -85,7 +85,7 @@ namespace OpenRA.Network
 
 			NetHistory.Restart(Connection.LocalClientId);
 
-			SendLatencyCompensation();
+			SendOrders();
 		}
 
 		public OrderManager(string host, int port, string password, IConnection conn)
@@ -173,38 +173,6 @@ namespace OpenRA.Network
 				syncForFrame.Add(frame, packet);
 		}
 
-		public bool CheckIsReadyForNextFrame()
-		{
-			if (NetFrameNumber >= 1 && frameData.IsReadyForFrame(NetFrameNumber))
-			{
-				isReadyForNextFrame = true;
-			}
-			else
-			{
-				// Raise order latency if we were the probably the reason stuff was delayed
-				if (!compensate && frameData.BufferSizeForClient(NetFrameNumber, Connection.LocalClientId) == 0)
-				{
-					// Limit the rate at which we increase latency to 10 per lock
-					// TODO should be based on real time, not net ticks
-					if (increaseRateLimiter < 5)
-					{
-						increaseRateLimiter++;
-						OrderLatency++;
-						SendLatencyCompensation();
-					}
-
-					// Force us to be unable to attempt to decrease latency until we've seen at least a round-trip
-					catchupCooldown = OrderLatency + 1;
-				}
-
-				isReadyForNextFrame = false;
-			}
-
-			BufferNetHistory();
-
-			return isReadyForNextFrame;
-		}
-
 		public IEnumerable<Session.Client> GetClientsNotReadyForNextFrame
 		{
 			get
@@ -216,31 +184,97 @@ namespace OpenRA.Network
 			}
 		}
 
-		public void TryDecreaseOrderLatency()
+		private void CompensateForLatency()
 		{
-			if (OrderLatency <= 1) // Minimum
-				return;
-
-			if (catchupCooldown > 0)
+			if (Connection.LatencyReporter.IsLocal)
 			{
-				catchupCooldown--;
+				OrderLatency = 0;
+				NextSafeNetFrame = NetFrameNumber;
 				return;
 			}
 
-			// If our own buffer is fuller than necessary, tick
-			if (frameData.BufferSizeForClient(NetFrameNumber, Connection.LocalClientId) > 1)
-			{
-				OrderLatency--;
+			var realLatency = Connection.LatencyReporter.Latency;
+			var jitter = Connection.LatencyReporter.Jitter;
 
-				// Force us to wait the full net round-trip until we decrease latency again
-				catchupCooldown = OrderLatency + 1;
-			}
+			var jitterToIgnore = realLatency - lastLatency;
+			if (jitterToIgnore < (jitter * 2)) // HACK
+				jitterToIgnore = 0;
+
+			var msPerNetFrame = World.Timestep * Game.NetTickScale;
+
+			var targetLatency = realLatency + (jitter * 2) - jitterToIgnore;
+
+			// Calculate catchup: we want to have enough frames in the incoming buffer to deal with peak jitter
+			var targetIncomingBuffer = (int)Math.Round(jitter / msPerNetFrame);
+
+			var lastAck = Connection.LastAckedFrame;
+
+			bool wasAlreadyCatchingUp = IsCatchingUp;
+
+			// Our orders exist in FrameData even if they aren't acked :/
+			NextSafeNetFrame = Math.Min(lastAck - targetIncomingBuffer, NextReceivedNetFrame);
+
+			var catchUpNetFrames = NextSafeNetFrame - NetFrameNumber;
+			if (catchUpNetFrames < 0)
+				catchUpNetFrames = 0;
+
+			IsCatchingUp = catchUpNetFrames > 0;
+
+			// We need order latency to match our real latency and also compensate for peak jitter
+			// We also need to be considerate and not decimate our order latency until finished catching up
+			var targetOrderLatency = (catchUpNetFrames > 0
+				                         ? catchUpNetFrames - (wasAlreadyCatchingUp ? 1 : 0)
+				                         : 0)
+										+ (int)Math.Round(targetLatency / msPerNetFrame) + 1;
+
+			OrderLatency = targetOrderLatency;
+
+			BufferNetHistory(realLatency, jitter, catchUpNetFrames);
+
+			lastLatency = realLatency;
 		}
 
-		private void SendLatencyCompensation()
+		public bool CheckIsReadyForNextFrame()
 		{
+			if (Connection.LatencyReporter.IsLocal)
+			{
+				if (frameData.IsReadyForFrame(NetFrameNumber))
+					NextReceivedNetFrame = NetFrameNumber;
+			}
+			else
+				while (frameData.IsReadyForFrame(NextReceivedNetFrame + 1))
+					NextReceivedNetFrame++;
+
+			// We don't need to stop sending orders just because we aren't ticking
+			CompensateForLatency();
+
+			return NetFrameNumber <= NextSafeNetFrame;
+		}
+
+		private void SendOrders()
+		{
+			var netstep = (Game.NetTickScale * World.Timestep);
+
+			int adjustedLatencyFrame = NetFrameNumber + OrderLatency;
+
+			// When we are lowering latency, we buffer orders
+			if (NextOrderFrame > adjustedLatencyFrame)
+				return;
+
+			// Eagerly send orders
+			if (localOrders.Count > 0)
+			{
+				if (GameSaveLastFrame < NextOrderFrame)
+				{
+					Connection.Send(NextOrderFrame, localOrders.Select(o => o.Serialize()).ToList());
+					localOrders.Clear();
+				}
+
+				NextOrderFrame++;
+			}
+
 			// When we are increasing latency, we send extra packets
-			while (NextOrderFrame < NetFrameNumber + OrderLatency)
+			while (NextOrderFrame <= adjustedLatencyFrame)
 			{
 				if (GameSaveLastFrame < NextOrderFrame)
 					Connection.Send(NextOrderFrame, Enumerable.Empty<byte[]>());
@@ -248,29 +282,11 @@ namespace OpenRA.Network
 			}
 		}
 
-		private void SendOrders()
-		{
-			// When we are lowering latency, we buffer orders
-			if (NextOrderFrame > NetFrameNumber + OrderLatency)
-				return;
-
-			SendLatencyCompensation();
-
-			Connection.Send(NextOrderFrame, localOrders.Select(o => o.Serialize()).ToList());
-			localOrders.Clear();
-			NextOrderFrame++;
-		}
-
+		// This tick only deals with receiving orders and incrementing the net frame number
 		public void Tick()
 		{
-			if (!isReadyForNextFrame)
+			if (NetFrameNumber > NextSafeNetFrame)
 				throw new InvalidOperationException();
-
-			increaseRateLimiter = 0;
-
-			// Lower order latency if we received multiple orders from some client (excluding our own echo)
-			// Will undo the forced compensate if a player has caused slowdown
-			TryDecreaseOrderLatency();
 
 			SendOrders();
 
@@ -287,19 +303,17 @@ namespace OpenRA.Network
 					syncReport.UpdateSyncReport();
 
 			++NetFrameNumber;
-			isReadyForNextFrame = false;
 		}
 
-		public void BufferNetHistory()
+		public void BufferNetHistory(int latency, double jitter, int catchUpNetFrames)
 		{
 			var buffers = new Dictionary<int, int>();
 
 			foreach (var c in frameData.ClientsPlayingInFrame(NetFrameNumber))
 				buffers.Add(c, frameData.BufferSizeForClient(NetFrameNumber, c));
 
-			NetHistory.Tick(new NetHistoryFrame(NetFrameNumber, OrderLatency, isReadyForNextFrame, buffers,
-				Connection.LatencyReporter.Latency, Connection.LatencyReporter.Jitter,
-				Connection.LatencyReporter.PeakJitter)); // TODO don't calculate twice
+			NetHistory.Tick(new NetHistoryFrame(NetFrameNumber, OrderLatency, NetFrameNumber <= NextSafeNetFrame, catchUpNetFrames, buffers,
+				latency, jitter, Connection.LatencyReporter.PeakJitter));
 		}
 
 		public void Dispose()

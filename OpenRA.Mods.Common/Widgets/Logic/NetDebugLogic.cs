@@ -36,11 +36,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
                         var history = historyE.Current;
                         return String.Format("Order latency: {0}\n" +
                             "Ticked: {1}\n" +
-                            "Self buffer size: {2}\n" +
-	                        "{3}ms (+/- {4:F1}ms)\n" +
-                            "peak+delta: {5}ms",
+                            "To Catchup: {2}\n" +
+                            "Self buffer size: {3}\n" +
+	                        "{4}ms (+/- {5:F1}ms)\n" +
+                            "peak+delta: {6}ms",
                             history.OrderLatency,
                             history.Ticked,
+                            history.CatchUpNetFrames,
                             history.CurrentClientBufferSize,
                             history.MeasuredLatency,
                             history.MeasuredJitter,

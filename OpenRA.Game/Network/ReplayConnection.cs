@@ -125,7 +125,7 @@ namespace OpenRA.Network
 				}
 			}
 
-			ordersFrame = LobbyInfo.GlobalSettings.OrderLatency;
+			ordersFrame = LobbyInfo.GlobalSettings.OrderLatency; // TODO Fix when adaptive order latency is on
 		}
 
 		// Do nothing: ignore locally generated orders
@@ -154,6 +154,11 @@ namespace OpenRA.Network
 			while (chunks.Count != 0 && chunks.Peek().Frame <= ordersFrame)
 				foreach (var o in chunks.Dequeue().Packets)
 					packetFn(o.First, o.Second);
+		}
+
+		public int LastAckedFrame
+		{
+			get { return ordersFrame;  }
 		}
 
 		public void Dispose() { }

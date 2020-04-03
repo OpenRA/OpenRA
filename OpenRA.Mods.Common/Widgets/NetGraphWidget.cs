@@ -45,10 +45,18 @@ namespace OpenRA.Mods.Common
 
 					for (int i = 0; it.MoveNext(); i++)
 					{
+						// Catchup
+						cr.DrawLine(
+							u + new float2(i, previous.CatchUpNetFrames) * basis,
+							u + new float2(i + 1, it.Current.CatchUpNetFrames) * basis,
+							1, Color.Aqua);
+
+						// Order latency
 						cr.DrawLine(
 							u + new float2(i, previous.OrderLatency) * basis,
 							u + new float2(i + 1, it.Current.OrderLatency) * basis,
 							1, it.Current.Ticked ? Color.Green : (it.Current.CurrentClientBufferSize > 0 ? Color.Orange : Color.Red));
+
 						previous = it.Current;
 					}
 				}

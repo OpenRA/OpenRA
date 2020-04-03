@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -20,6 +21,7 @@ namespace OpenRA.Network
 		int Latency { get; }
 		double Jitter { get; }
 		int PeakJitter { get; }
+		bool IsLocal { get; }
 	}
 
 	public interface ILatencyTracker
@@ -41,15 +43,15 @@ namespace OpenRA.Network
 			public int Jitter;
 		}
 
-		readonly Queue<JitterEntry> jitterEntries = new Queue<JitterEntry>();
+		readonly ConcurrentQueue<JitterEntry> jitterEntries = new ConcurrentQueue<JitterEntry>();
 
 		struct FrameToAck
 		{
-			public long entryTime;
-			public int frame; // Not strictly required, used for sanity checking
+			public long EntryTime;
+			public int Frame; // Not strictly required, used for sanity checking
 		}
 
-		readonly Queue<FrameToAck> framesToAck = new Queue<FrameToAck>();
+		readonly ConcurrentQueue<FrameToAck> framesToAck = new ConcurrentQueue<FrameToAck>();
 
 		int lastLatency;
 		readonly int jitterLength;
@@ -68,8 +70,8 @@ namespace OpenRA.Network
 
 			framesToAck.Enqueue(new FrameToAck
 			{
-				entryTime = Game.RunTime,
-				frame = frame
+				EntryTime = Game.RunTime,
+				Frame = frame
 			});
 		}
 
@@ -77,18 +79,21 @@ namespace OpenRA.Network
 		{
 			var currentTime = Game.RunTime;
 
-			var entryToAck = framesToAck.Dequeue();
-			if (frame < entryToAck.frame)
+			FrameToAck entryToAck;
+			if (!framesToAck.TryDequeue(out entryToAck))
+				return; // May happen if buffer is empty, if acks out of sync, an exception will get thrown later
+
+			if (frame < entryToAck.Frame)
 			{
 				return; // We probably had to drop this frame to avoid overloading the buffer
 			}
 
-			if (frame > entryToAck.frame)
+			if (frame > entryToAck.Frame)
 			{
 				throw new InvalidOperationException("Missed an ack");
 			}
 
-			var currentLatency = (int)(currentTime - entryToAck.entryTime);
+			var currentLatency = (int)(currentTime - entryToAck.EntryTime);
 
 			jitterEntries.Enqueue(new JitterEntry
 			{
@@ -103,10 +108,11 @@ namespace OpenRA.Network
 		{
 			get
 			{
-				if (framesToAck.Count == 0)
+				FrameToAck frame;
+				if (!framesToAck.TryPeek(out frame))
 					return lastLatency;
 
-				var currentLatency = (int)(Game.RunTime - framesToAck.Peek().entryTime);
+				var currentLatency = (int)(Game.RunTime - frame.EntryTime);
 				if (currentLatency > lastLatency)
 				{
 					return currentLatency;
@@ -119,15 +125,19 @@ namespace OpenRA.Network
 		void DropIrrelevantJitterPackets()
 		{
 			var absoluteCutoff = Game.RunTime - Math.Max(jitterLength, peakJitterHold);
-			var countToDrop = 0;
-			foreach (var e in jitterEntries)
-				if (e.EntryTime < absoluteCutoff)
-					countToDrop++;
-				else
-					break;
 
-			for (int i = 0; i < countToDrop; ++i)
-				jitterEntries.Dequeue();
+			JitterEntry jitter;
+			if (!jitterEntries.TryPeek(out jitter))
+				return;
+
+			while (jitter.EntryTime < absoluteCutoff)
+			{
+				JitterEntry dummy;
+				if (!jitterEntries.TryDequeue(out dummy))
+					return;
+				if (!jitterEntries.TryPeek(out jitter))
+					return;
+			}
 		}
 
 		public double Jitter
@@ -169,6 +179,11 @@ namespace OpenRA.Network
 					currentJitter);
 			}
 		}
+
+		public bool IsLocal
+		{
+			get { return false; }
+		}
 	}
 
 	public class EmptyLatencyReporter : ILatencyReporter
@@ -178,5 +193,6 @@ namespace OpenRA.Network
 		public int Latency { get { return 0; } }
 		public double Jitter { get { return 0; } }
 		public int PeakJitter { get { return 0; } }
+		public bool IsLocal { get { return true; } }
 	}
 }
