@@ -578,26 +578,22 @@ namespace OpenRA
 					orderManager.LastTickTime += integralTickTimestep >= TimestepJankThreshold ? integralTickTimestep : worldTimestep;
 
 					Sound.Tick();
-					Sync.RunUnsynced(Settings.Debug.SyncCheckUnsyncedCode, world, orderManager.TickImmediate);
 
 					if (world == null)
-						return;
-
-					var isNetTick = LocalTick % NetTickScale == 0;
-
-					if (!isNetTick || orderManager.SendNetFrameOrdersAndCheckReady())
 					{
-						++orderManager.LocalFrameNumber;
+						orderManager.TickPreGame();
+						return;
+					}
 
-						Log.Write("debug", "--Tick: {0} ({1})", LocalTick, isNetTick ? "net" : "local");
+					// Collect orders first, we will dispatch them if we can this frame
+					Sync.RunUnsynced(Settings.Debug.SyncCheckUnsyncedCode, world, () =>
+					{
+						world.OrderGenerator.Tick(world);
+					});
 
-						if (isNetTick)
-							orderManager.Tick();
-
-						Sync.RunUnsynced(Settings.Debug.SyncCheckUnsyncedCode, world, () =>
-						{
-							world.OrderGenerator.Tick(world);
-						});
+					if (orderManager.TryTick())
+					{
+						Log.Write("debug", "--Tick: {0} ({1})", LocalTick, orderManager.IsNetTick ? "net" : "local");
 
 						world.Tick();
 

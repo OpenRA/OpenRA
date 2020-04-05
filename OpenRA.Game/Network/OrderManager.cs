@@ -35,10 +35,10 @@ namespace OpenRA.Network
 		public bool AuthenticationFailed = false;
 		public ExternalMod ServerExternalMod = null;
 
+		public bool IsNetTick { get { return LocalFrameNumber % Game.NetTickScale == 0; } }
 		public int NetFrameNumber { get; private set; }
 		public int LocalFrameNumber;
 		public int FramesAhead = 0;
-		bool isReadyForNextFrame;
 		int lastFrameSent;
 
 		public long LastTickTime = Game.RunTime;
@@ -49,10 +49,11 @@ namespace OpenRA.Network
 		internal int GameSaveLastFrame = -1;
 		internal int GameSaveLastSyncFrame = -1;
 
-		List<Order> localOrders = new List<Order>();
-		List<Order> localImmediateOrders = new List<Order>();
+		readonly List<Order> localOrders = new List<Order>();
+		readonly List<Order> localImmediateOrders = new List<Order>();
+		readonly List<Pair<int, byte[]>> receivedImmediateOrders = new List<Pair<int, byte[]>>();
 
-		List<ChatLine> chatCache = new List<ChatLine>();
+		readonly List<ChatLine> chatCache = new List<ChatLine>();
 
 		public readonly ReadOnlyList<ChatLine> ChatCache;
 
@@ -78,7 +79,6 @@ namespace OpenRA.Network
 
 			// Technically redundant since we will attempt to send orders before the next frame
 			SendOrders();
-			isReadyForNextFrame = false;
 		}
 
 		public OrderManager(ConnectionTarget endpoint, string password, IConnection conn)
@@ -111,14 +111,15 @@ namespace OpenRA.Network
 			chatCache.Add(new ChatLine(name, nameColor, text, textColor));
 		}
 
-		public void TickImmediate()
+		void SendImmediateOrders()
 		{
-			if (localImmediateOrders.Count != 0 && GameSaveLastFrame < NetFrameNumber + FramesAhead)
+			if (localImmediateOrders.Count != 0 && GameSaveLastFrame < NetFrameNumber)
 				Connection.SendImmediate(localImmediateOrders.Select(o => o.Serialize()));
 			localImmediateOrders.Clear();
+		}
 
-			var immediatePackets = new List<Pair<int, byte[]>>();
-
+		void ReceiveAllOrdersAndCheckSync()
+		{
 			Connection.Receive(
 				(clientId, packet) =>
 				{
@@ -128,12 +129,15 @@ namespace OpenRA.Network
 					else if (packet.Length >= 5 && packet[4] == (byte)OrderType.SyncHash)
 						CheckSync(packet);
 					else if (frame == 0)
-						immediatePackets.Add(Pair.New(clientId, packet));
+						receivedImmediateOrders.Add(Pair.New(clientId, packet));
 					else
 						frameData.AddFrameOrders(clientId, frame, packet);
 				});
+		}
 
-			foreach (var p in immediatePackets)
+		void ProcessImmediateOrders()
+		{
+			foreach (var p in receivedImmediateOrders)
 			{
 				foreach (var o in p.Second.ToOrderList(World))
 				{
@@ -144,6 +148,8 @@ namespace OpenRA.Network
 						return;
 				}
 			}
+
+			receivedImmediateOrders.Clear();
 		}
 
 		Dictionary<int, byte[]> syncForFrame = new Dictionary<int, byte[]>();
@@ -165,7 +171,7 @@ namespace OpenRA.Network
 				syncForFrame.Add(frame, packet);
 		}
 
-		public IEnumerable<Session.Client> GetClientsNotReadyForNextFrame
+		IEnumerable<Session.Client> GetClientsNotReadyForNextFrame
 		{
 			get
 			{
@@ -192,26 +198,12 @@ namespace OpenRA.Network
 			}
 		}
 
-		public bool SendNetFrameOrdersAndCheckReady()
-		{
-			// Send our frame orders if we should
-			SendOrders();
-
-			if (!isReadyForNextFrame)
-				isReadyForNextFrame = NetFrameNumber >= 1 && frameData.IsReadyForFrame(NetFrameNumber);
-
-			return isReadyForNextFrame;
-		}
-
 		/*
 		 * Only available if TickImmediate() is called first and we are ready to dispatch received orders locally.
 		 * Process all incoming orders for this frame, handle sync hashes and step our net frame.
 		 */
-		public void Tick()
+		void ProcessOrders()
 		{
-			if (!isReadyForNextFrame)
-				throw new InvalidOperationException();
-
 			foreach (var order in frameData.OrdersForFrame(World, NetFrameNumber))
 				UnitOrders.ProcessOrder(this, World, order.Client, order.Order);
 
@@ -225,7 +217,52 @@ namespace OpenRA.Network
 					syncReport.UpdateSyncReport();
 
 			++NetFrameNumber;
-			isReadyForNextFrame = false;
+		}
+
+		public void TickPreGame()
+		{
+			SendImmediateOrders();
+
+			ReceiveAllOrdersAndCheckSync();
+
+			Sync.RunUnsynced(Game.Settings.Debug.SyncCheckUnsyncedCode, World, ProcessImmediateOrders);
+		}
+
+		public bool TryTick()
+		{
+			var shouldTick = true;
+
+			if (IsNetTick)
+			{
+				// Check whether or not we will be ready for a tick next frame
+				// We don't need to include ourselves in the equation because we can always generate orders this frame
+				shouldTick = !GetClientsNotReadyForNextFrame.Except(new[] { LocalClient }).Any();
+
+				// Send orders only if we are currently ready, this prevents us sending orders too soon if we are
+				// stalling
+				if (shouldTick)
+					SendOrders();
+			}
+
+			SendImmediateOrders();
+
+			ReceiveAllOrdersAndCheckSync();
+
+			// Always send immediate orders
+			Sync.RunUnsynced(Game.Settings.Debug.SyncCheckUnsyncedCode, World, ProcessImmediateOrders);
+
+			var willTick = shouldTick;
+			if (willTick && IsNetTick)
+			{
+				willTick = frameData.IsReadyForFrame(NetFrameNumber);
+				if (willTick)
+					ProcessOrders();
+			}
+
+			if (willTick)
+				LocalFrameNumber++;
+
+			return willTick;
 		}
 
 		public void Dispose()
