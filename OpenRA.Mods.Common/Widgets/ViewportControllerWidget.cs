@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Widgets
 	public class ViewportControllerWidget : Widget
 	{
 		readonly ModData modData;
-		readonly ResourceRenderer resourceRenderer;
+		readonly IEnumerable<ResourceRenderer> resourceRenderers;
 
 		public readonly HotkeyReference ZoomInKey = new HotkeyReference();
 		public readonly HotkeyReference ZoomOutKey = new HotkeyReference();
@@ -144,7 +144,7 @@ namespace OpenRA.Mods.Common.Widgets
 			tooltipContainer = Exts.Lazy(() =>
 				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
 
-			resourceRenderer = world.WorldActor.TraitOrDefault<ResourceRenderer>();
+			resourceRenderers = world.WorldActor.TraitsImplementing<ResourceRenderer>().ToArray();
 		}
 
 		public override void Initialize(WidgetArgs args)
@@ -266,13 +266,14 @@ namespace OpenRA.Mods.Common.Widgets
 				return;
 			}
 
-			if (resourceRenderer != null)
+			foreach (var resourceRenderer in resourceRenderers)
 			{
 				var resource = resourceRenderer.GetRenderedResourceType(cell);
 				if (resource != null)
 				{
 					TooltipType = WorldTooltipType.Resource;
 					ResourceTooltip = resource;
+					break;
 				}
 			}
 		}
