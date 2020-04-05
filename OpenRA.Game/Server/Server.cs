@@ -1005,7 +1005,7 @@ namespace OpenRA.Server
 
 			// HACK: Turn down the latency if there is only one real player
 			if (LobbyInfo.NonBotClients.Count() == 1)
-				LobbyInfo.GlobalSettings.OrderLatency = 1;
+				LobbyInfo.GlobalSettings.OrderLatency = 0;
 
 			// Enable game saves for singleplayer missions only
 			// TODO: Enable for multiplayer (non-dedicated servers only) once the lobby UI has been created

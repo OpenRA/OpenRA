@@ -38,6 +38,8 @@ namespace OpenRA.Network
 		public int NetFrameNumber { get; private set; }
 		public int LocalFrameNumber;
 		public int FramesAhead = 0;
+		public bool IsReadyForNextFrame { get; private set; }
+		int lastFrameSent;
 
 		public long LastTickTime = Game.RunTime;
 
@@ -74,9 +76,9 @@ namespace OpenRA.Network
 
 			NetFrameNumber = 1;
 
-			if (GameSaveLastFrame < 0)
-				for (var i = NetFrameNumber; i <= FramesAhead; i++)
-					Connection.Send(i, new List<byte[]>());
+			// Technically redundant since we will attempt to send orders before the next frame
+			SendOrders();
+			IsReadyForNextFrame = false;
 		}
 
 		public OrderManager(ConnectionTarget endpoint, string password, IConnection conn)
@@ -109,8 +111,17 @@ namespace OpenRA.Network
 			chatCache.Add(new ChatLine(name, nameColor, text, textColor));
 		}
 
+		/*
+		 * Send all frame orders that are ready if we can (game is started and our next available send frame is free),
+		 * Send all immediate orders,
+		 * Receive and dispatch immediate orders, check incoming sync matchs, and buffer received frame orders,
+		 * Update our ready status for the next frame for Tick().
+		 */
 		public void TickImmediate()
 		{
+			// Send our frame orders if we should
+			SendOrders();
+
 			if (localImmediateOrders.Count != 0 && GameSaveLastFrame < NetFrameNumber + FramesAhead)
 				Connection.SendImmediate(localImmediateOrders.Select(o => o.Serialize()));
 			localImmediateOrders.Clear();
@@ -142,6 +153,9 @@ namespace OpenRA.Network
 						return;
 				}
 			}
+
+			if (!IsReadyForNextFrame)
+				IsReadyForNextFrame = NetFrameNumber >= 1 && frameData.IsReadyForFrame(NetFrameNumber);
 		}
 
 		Dictionary<int, byte[]> syncForFrame = new Dictionary<int, byte[]>();
@@ -163,11 +177,6 @@ namespace OpenRA.Network
 				syncForFrame.Add(frame, packet);
 		}
 
-		public bool IsReadyForNextFrame
-		{
-			get { return NetFrameNumber >= 1 && frameData.IsReadyForFrame(NetFrameNumber); }
-		}
-
 		public IEnumerable<Session.Client> GetClientsNotReadyForNextFrame
 		{
 			get
@@ -179,15 +188,30 @@ namespace OpenRA.Network
 			}
 		}
 
+		void SendOrders()
+		{
+			if (NetFrameNumber < 1)
+				return;
+
+			// Loop exists to ensure we never miss a frame, since that would stall the game.
+			// This loop also sends the initial blank frames to get to the correct order latency.
+			while (lastFrameSent < NetFrameNumber + FramesAhead)
+			{
+				lastFrameSent++;
+				if (GameSaveLastFrame < NetFrameNumber + FramesAhead)
+					Connection.Send(lastFrameSent, localOrders.Select(o => o.Serialize()).ToList());
+				localOrders.Clear();
+			}
+		}
+
+		/*
+		 * Only available if TickImmediate() is called first and we are ready to dispatch received orders locally.
+		 * Process all incoming orders for this frame, handle sync hashes and step our net frame.
+		 */
 		public void Tick()
 		{
 			if (!IsReadyForNextFrame)
 				throw new InvalidOperationException();
-
-			if (GameSaveLastFrame < NetFrameNumber + FramesAhead)
-				Connection.Send(NetFrameNumber + FramesAhead, localOrders.Select(o => o.Serialize()).ToList());
-
-			localOrders.Clear();
 
 			foreach (var order in frameData.OrdersForFrame(World, NetFrameNumber))
 				UnitOrders.ProcessOrder(this, World, order.Client, order.Order);
@@ -202,6 +226,7 @@ namespace OpenRA.Network
 					syncReport.UpdateSyncReport();
 
 			++NetFrameNumber;
+			IsReadyForNextFrame = false;
 		}
 
 		public void Dispose()
