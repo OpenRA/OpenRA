@@ -86,15 +86,15 @@ namespace OpenRA.Mods.Common.Widgets
 			{ ScrollDirection.Right, new float2(1, 0) },
 		};
 
-		Lazy<TooltipContainerWidget> tooltipContainer;
+		readonly Lazy<TooltipContainerWidget> tooltipContainer;
 		int2? joystickScrollStart, joystickScrollEnd;
 		int2? standardScrollStart;
 		bool isStandardScrolling;
 
 		ScrollDirection keyboardDirections;
 		ScrollDirection edgeDirections;
-		World world;
-		WorldRenderer worldRenderer;
+		readonly World world;
+		readonly WorldRenderer worldRenderer;
 
 		HotkeyReference[] saveBookmarkHotkeys;
 		HotkeyReference[] restoreBookmarkHotkeys;
