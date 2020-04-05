@@ -53,8 +53,8 @@ namespace OpenRA.Mods.Common
 
 						// Order latency
 						cr.DrawLine(
-							u + new float2(i, previous.OrderLatency) * basis,
-							u + new float2(i + 1, it.Current.OrderLatency) * basis,
+							u + new float2(i, previous.MeasuredLatency * 0.01f) * basis,
+							u + new float2(i + 1, it.Current.MeasuredLatency * 0.01f) * basis,
 							1, it.Current.Ticked ? Color.Green : (it.Current.CurrentClientBufferSize > 0 ? Color.Orange : Color.Red));
 
 						previous = it.Current;

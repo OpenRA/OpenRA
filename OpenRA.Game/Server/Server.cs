@@ -39,7 +39,7 @@ namespace OpenRA.Server
 		Dedicated = 2
 	}
 
-	public class Server
+	public class Server : IFrameOrderDispatcher
 	{
 		public readonly string TwoHumansRequiredText = "This server requires at least two human players to start a match.";
 
@@ -72,6 +72,8 @@ namespace OpenRA.Server
 
 		volatile ActionQueue delayedActions = new ActionQueue();
 		int waitingForAuthenticationCallback = 0;
+
+		ServerGame serverGame;
 
 		public ServerState State
 		{
@@ -183,6 +185,14 @@ namespace OpenRA.Server
 
 				while (true)
 				{
+					if (State == ServerState.ShuttingDown)
+					{
+						EndGame();
+						if (UPnP.Status == UPnPStatus.Enabled)
+							UPnP.RemovePortForward().Wait();
+						break;
+					}
+
 					var checkRead = new List<Socket>();
 					if (State == ServerState.WaitingPlayers)
 						checkRead.Add(listener.Server);
@@ -190,17 +200,21 @@ namespace OpenRA.Server
 					checkRead.AddRange(Conns.Select(c => c.Socket));
 					checkRead.AddRange(PreConns.Select(c => c.Socket));
 
-					// Block for at most 1 second in order to guarantee a minimum tick rate for ServerTraits
-					// Decrease this to 100ms to improve responsiveness if we are waiting for an authentication query
-					var localTimeout = waitingForAuthenticationCallback > 0 ? 100000 : 1000000;
+					int localTimeout;
+
+					if (State == ServerState.GameStarted)
+					{
+						localTimeout = serverGame.MillisToNextNetFrame * 1000;
+					}
+					else
+					{
+						// Block for at most 1 second in order to guarantee a minimum tick rate for ServerTraits
+						// Decrease this to 100ms to improve responsiveness if we are waiting for an authentication query
+						localTimeout = waitingForAuthenticationCallback > 0 ? 100000 : 1000000;
+					}
+
 					if (checkRead.Count > 0)
 						Socket.Select(checkRead, null, null, localTimeout);
-
-					if (State == ServerState.ShuttingDown)
-					{
-						EndGame();
-						break;
-					}
 
 					foreach (var s in checkRead)
 					{
@@ -231,13 +245,8 @@ namespace OpenRA.Server
 					foreach (var t in serverTraits.WithInterface<ITick>())
 						t.Tick(this);
 
-					if (State == ServerState.ShuttingDown)
-					{
-						EndGame();
-						if (UPnP.Status == UPnPStatus.Enabled)
-							UPnP.RemovePortForward().Wait();
-						break;
-					}
+					if (State == ServerState.GameStarted)
+						serverGame.TryTick(this);
 				}
 
 				foreach (var t in serverTraits.WithInterface<INotifyServerShutdown>())
@@ -305,7 +314,7 @@ namespace OpenRA.Server
 					AuthToken = token
 				};
 
-				DispatchOrdersToClient(newConn, 0, 0, new Order("HandshakeRequest", null, false)
+				SendOrdersToClient(newConn, 0, 0, new Order("HandshakeRequest", null, false)
 				{
 					Type = OrderType.Handshake,
 					IsImmediate = true,
@@ -570,7 +579,7 @@ namespace OpenRA.Server
 			}
 		}
 
-		void DispatchOrdersToClient(Connection c, int client, int frame, byte[] data)
+		void SendOrdersToClient(Connection c, int client, int frame, byte[] data)
 		{
 			try
 			{
@@ -589,29 +598,80 @@ namespace OpenRA.Server
 			}
 		}
 
-		public void DispatchOrdersToClients(Connection conn, int frame, byte[] data)
+		public void DispatchOrdersToOtherClients(Connection conn, int frame, byte[] data)
 		{
 			var from = conn != null ? conn.PlayerIndex : 0;
 
 			foreach (var c in Conns.Except(conn).ToList())
-				DispatchOrdersToClient(c, from, frame, data);
-		}
+				SendOrdersToClient(c, from, frame, data);
 
-		public void DispatchOrders(Connection conn, int frame, byte[] data)
-		{
-			if (frame == 0 && conn != null)
-				InterpretServerOrders(conn, data);
-			else
-			{
-				// Ack if not a SyncHash and not immediate
-				if (conn != null && (data.Length == 0 || (OrderType)data[0] != OrderType.SyncHash))
-					DispatchOrdersToClient(conn, conn.PlayerIndex, frame, new byte[0]);
-
-				DispatchOrdersToClients(conn, frame, data);
-			}
-
+			// TODO: Make this nicer
 			if (GameSave != null && conn != null)
 				GameSave.DispatchOrders(conn, frame, data);
+		}
+
+		public void DispatchServerCreatedOrdersToAllClients(Connection fakeFrom, int frame, byte[] data)
+		{
+			var from = fakeFrom != null ? fakeFrom.PlayerIndex : 0;
+
+			foreach (var c in Conns.ToList())
+				SendOrdersToClient(c, from, frame, data);
+
+			// TODO: Make this nicer
+			if (GameSave != null && fakeFrom != null)
+				GameSave.DispatchOrders(fakeFrom, frame, data);
+		}
+
+		public void ReceiveOrders(Connection conn, int frame, byte[] data)
+		{
+			if (frame == 0 && conn != null)
+			{
+				InterpretServerOrders(conn, data);
+				if (GameSave != null)
+					GameSave.DispatchOrders(conn, frame, data);
+			}
+			else if (conn != null && (data.Length == 0 || (OrderType)data[0] == OrderType.SyncHash))
+			{
+				// TODO: Find a less hacky way to deal with synchash relaying
+				DispatchOrdersToOtherClients(conn, frame, data);
+			}
+			else if (conn != null && State == ServerState.GameStarted)
+			{
+				serverGame.OrderBuffer.BufferOrders(conn.PlayerIndex, data);
+			}
+			else
+			{
+				// TODO: Remove frame-based order relaying unless game is running
+				DispatchOrdersToOtherClients(conn, frame, data);
+			}
+		}
+
+		public void DispatchBufferedOrdersToOtherClients(int fromClient, List<byte[]> allData)
+		{
+			var ms = new MemoryStream(allData.Select(d => d.Length).Sum());
+			foreach (var data in allData)
+			{
+				ms.WriteArray(data);
+			}
+
+			Connection conn = Conns.FirstOrDefault(c => c.PlayerIndex == fromClient);
+			DispatchOrdersToOtherClients(conn, serverGame.CurrentNetFrame, ms.ToArray());
+		}
+
+		public void DispatchBufferedOrderAcks(int forClient, int acks)
+		{
+			if (acks > 0xFFFF)
+				throw new InvalidOperationException("Acks too great");
+
+			var ms = new MemoryStream(3);
+			var writer = new BinaryWriter(ms);
+			writer.Write((byte)OrderType.Ack);
+			writer.Write((short)acks);
+
+			Connection conn = Conns.FirstOrDefault(c => c.PlayerIndex == forClient);
+
+			// Send acks to client from themselves
+			SendOrdersToClient(conn, forClient, serverGame.CurrentNetFrame, ms.ToArray());
 		}
 
 		void InterpretServerOrders(Connection conn, byte[] data)
@@ -634,12 +694,12 @@ namespace OpenRA.Server
 
 		public void SendOrderTo(Connection conn, string order, string data)
 		{
-			DispatchOrdersToClient(conn, 0, 0, Order.FromTargetString(order, data, true).Serialize());
+			SendOrdersToClient(conn, 0, 0, Order.FromTargetString(order, data, true).Serialize());
 		}
 
 		public void SendMessage(string text, Connection conn = null)
 		{
-			DispatchOrdersToClients(conn, 0, Order.FromTargetString("Message", text, true).Serialize());
+			DispatchOrdersToOtherClients(conn, 0, Order.FromTargetString("Message", text, true).Serialize());
 
 			if (Type == ServerType.Dedicated)
 				Console.WriteLine("[{0}] {1}".F(DateTime.Now.ToString(Settings.TimestampFormat), text));
@@ -681,7 +741,7 @@ namespace OpenRA.Server
 					}
 
 				case "Chat":
-					DispatchOrdersToClients(conn, 0, o.Serialize());
+					DispatchOrdersToOtherClients(conn, 0, o.Serialize());
 					break;
 				case "Pong":
 					{
@@ -748,7 +808,7 @@ namespace OpenRA.Server
 								Directory.CreateDirectory(baseSavePath);
 
 							GameSave.Save(Path.Combine(baseSavePath, filename));
-							DispatchOrdersToClients(null, 0, Order.FromTargetString("GameSaved", filename, true).Serialize());
+							DispatchOrdersToOtherClients(null, 0, Order.FromTargetString("GameSaved", filename, true).Serialize());
 						}
 
 						break;
@@ -852,7 +912,7 @@ namespace OpenRA.Server
 				SendMessage("{0}{1} has disconnected.".F(dropClient.Name, suffix));
 
 				// Send disconnected order, even if still in the lobby
-				DispatchOrdersToClients(toDrop, 0, Order.FromTargetString("Disconnected", "", true).Serialize());
+				DispatchOrdersToOtherClients(toDrop, 0, Order.FromTargetString("Disconnected", "", true).Serialize());
 
 				LobbyInfo.Clients.RemoveAll(c => c.Index == toDrop.PlayerIndex);
 				LobbyInfo.ClientPings.RemoveAll(p => p.Index == toDrop.PlayerIndex);
@@ -874,7 +934,10 @@ namespace OpenRA.Server
 					}
 				}
 
-				DispatchOrders(toDrop, toDrop.MostRecentFrame, new[] { (byte)OrderType.Disconnect });
+				if (serverGame != null)
+					serverGame.OrderBuffer.DropClient(toDrop.PlayerIndex);
+
+				DispatchServerCreatedOrdersToAllClients(toDrop, toDrop.MostRecentFrame, new[] { (byte)OrderType.Disconnect });
 
 				// All clients have left: clean up
 				if (!Conns.Any())
@@ -898,7 +961,7 @@ namespace OpenRA.Server
 		public void SyncLobbyInfo()
 		{
 			if (State == ServerState.WaitingPlayers) // Don't do this while the game is running, it breaks things!
-				DispatchOrders(null, 0, Order.FromTargetString("SyncInfo", LobbyInfo.Serialize(), true).Serialize());
+				DispatchServerCreatedOrdersToAllClients(null, 0, Order.FromTargetString("SyncInfo", LobbyInfo.Serialize(), true).Serialize());
 
 			foreach (var t in serverTraits.WithInterface<INotifySyncLobbyInfo>())
 				t.LobbyInfoSynced(this);
@@ -912,7 +975,7 @@ namespace OpenRA.Server
 			// TODO: Only need to sync the specific client that has changed to avoid conflicts!
 			var clientData = LobbyInfo.Clients.Select(client => client.Serialize()).ToList();
 
-			DispatchOrders(null, 0, Order.FromTargetString("SyncLobbyClients", clientData.WriteToString(), true).Serialize());
+			DispatchServerCreatedOrdersToAllClients(null, 0, Order.FromTargetString("SyncLobbyClients", clientData.WriteToString(), true).Serialize());
 
 			foreach (var t in serverTraits.WithInterface<INotifySyncLobbyInfo>())
 				t.LobbyInfoSynced(this);
@@ -926,7 +989,7 @@ namespace OpenRA.Server
 			// TODO: Don't sync all the slots if just one changed!
 			var slotData = LobbyInfo.Slots.Select(slot => slot.Value.Serialize()).ToList();
 
-			DispatchOrders(null, 0, Order.FromTargetString("SyncLobbySlots", slotData.WriteToString(), true).Serialize());
+			DispatchServerCreatedOrdersToAllClients(null, 0, Order.FromTargetString("SyncLobbySlots", slotData.WriteToString(), true).Serialize());
 
 			foreach (var t in serverTraits.WithInterface<INotifySyncLobbyInfo>())
 				t.LobbyInfoSynced(this);
@@ -939,7 +1002,7 @@ namespace OpenRA.Server
 
 			var sessionData = new List<MiniYamlNode> { LobbyInfo.GlobalSettings.Serialize() };
 
-			DispatchOrders(null, 0, Order.FromTargetString("SyncLobbyGlobalSettings", sessionData.WriteToString(), true).Serialize());
+			DispatchServerCreatedOrdersToAllClients(null, 0, Order.FromTargetString("SyncLobbyGlobalSettings", sessionData.WriteToString(), true).Serialize());
 
 			foreach (var t in serverTraits.WithInterface<INotifySyncLobbyInfo>())
 				t.LobbyInfoSynced(this);
@@ -951,7 +1014,7 @@ namespace OpenRA.Server
 			var clientPings = LobbyInfo.ClientPings.Select(ping => ping.Serialize()).ToList();
 
 			// Note that syncing pings doesn't trigger INotifySyncLobbyInfo
-			DispatchOrders(null, 0, Order.FromTargetString("SyncClientPings", clientPings.WriteToString(), true).Serialize());
+			DispatchServerCreatedOrdersToAllClients(null, 0, Order.FromTargetString("SyncClientPings", clientPings.WriteToString(), true).Serialize());
 		}
 
 		public void StartGame()
@@ -980,11 +1043,15 @@ namespace OpenRA.Server
 			LobbyInfo.GlobalSettings.GameSavesEnabled = Type != ServerType.Dedicated && LobbyInfo.NonBotClients.Count() == 1;
 
 			SyncLobbyInfo();
+			serverGame = new ServerGame(LobbyInfo.GlobalSettings.Timestep);
+			foreach (var c in Conns)
+				serverGame.OrderBuffer.AddClient(c.PlayerIndex);
+
 			State = ServerState.GameStarted;
 
 			foreach (var c in Conns)
 				foreach (var d in Conns)
-					DispatchOrdersToClient(c, d.PlayerIndex, 0x7FFFFFFF, new[] { (byte)OrderType.Disconnect });
+					SendOrdersToClient(c, d.PlayerIndex, 0x7FFFFFFF, new[] { (byte)OrderType.Disconnect });
 
 			if (GameSave == null && LobbyInfo.GlobalSettings.GameSavesEnabled)
 				GameSave = new GameSave();
@@ -1003,7 +1070,7 @@ namespace OpenRA.Server
 				}
 			}
 
-			DispatchOrders(null, 0,
+			DispatchServerCreatedOrdersToAllClients(null, 0,
 				Order.FromTargetString("StartGame", startGameData, true).Serialize());
 
 			foreach (var t in serverTraits.WithInterface<IStartGame>())
@@ -1014,7 +1081,7 @@ namespace OpenRA.Server
 				GameSave.ParseOrders(LobbyInfo, (frame, client, data) =>
 				{
 					foreach (var c in Conns)
-						DispatchOrdersToClient(c, client, frame, data);
+						SendOrdersToClient(c, client, frame, data);
 				});
 			}
 		}

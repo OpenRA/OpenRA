@@ -9,49 +9,43 @@
  */
 #endregion
 
-using System;
-using OpenRA.Mods.Common.UtilityCommands;
+using System.Linq;
 using OpenRA.Support;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-    public class NetDebugLogic : ChromeLogic
-    {
-        [ObjectCreator.UseCtor]
-        public NetDebugLogic(Widget widget)
-        {
-            var netGraph = widget.Get("GRAPH_BG");
-            netGraph.IsVisible = () => Game.Settings.Debug.NetGraph;
+	public class NetDebugLogic : ChromeLogic
+	{
+		[ObjectCreator.UseCtor]
+		public NetDebugLogic(Widget widget)
+		{
+			var netGraph = widget.Get("GRAPH_BG");
+			netGraph.IsVisible = () => Game.Settings.Debug.NetGraph;
 
-            var netText = widget.Get<LabelWidget>("NET_TEXT");
-            netText.IsVisible = () => Game.Settings.Debug.NetText;
+			var netText = widget.Get<LabelWidget>("NET_TEXT");
+			netText.IsVisible = () => Game.Settings.Debug.NetText;
 
-            netText.GetText = () =>
-            {
-                using (var historyE = NetHistory.GetHistory().GetEnumerator())
-                {
-                    if (historyE.MoveNext())
-                    {
-                        var history = historyE.Current;
-                        return String.Format("Order latency: {0}\n" +
-                            "Ticked: {1}\n" +
-                            "To Catchup: {2}\n" +
-                            "Self buffer size: {3}\n" +
-	                        "{4}ms (+/- {5:F1}ms)\n" +
-                            "peak+delta: {6}ms",
-                            history.OrderLatency,
-                            history.Ticked,
-                            history.CatchUpNetFrames,
-                            history.CurrentClientBufferSize,
-                            history.MeasuredLatency,
-                            history.MeasuredJitter,
-                            history.PeakJitter);
-                    }
-                    else
-                        return "Waiting for net history";
-                }
-            };
-        }
-    }
+			netText.GetText = () =>
+			{
+				var history = NetHistory.GetHistory().FirstOrDefault();
+				if (history == null)
+					return "Waiting for net history";
+
+				return string.Format(
+					"Ticked: {0}\n" +
+					"To Catchup: {1}\n" +
+					"Self buffer size: {2}\n" +
+					"{3}ms (+/- {4:F1}ms)\n" +
+					"peak+delta: {5}ms",
+					history.Ticked,
+					history.CatchUpNetFrames,
+					history.CurrentClientBufferSize,
+					history.MeasuredLatency,
+					history.MeasuredJitter,
+					history.PeakJitter);
+
+			};
+		}
+	}
 }

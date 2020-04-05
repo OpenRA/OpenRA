@@ -54,7 +54,6 @@ namespace OpenRA.Support
 	{
 		public int NetFrameNumber;
 		public Dictionary<int, int> ClientBufferSizes;
-		public int OrderLatency;
 		public bool Ticked;
 		public int CatchUpNetFrames;
 		public int MeasuredLatency;
@@ -67,7 +66,6 @@ namespace OpenRA.Support
 		}
 
 		public NetHistoryFrame(int netFrameNumber,
-			int orderLatency,
 			bool ticked,
 			int catchUpNetFrames,
 			Dictionary<int, int> clientBufferSizes,
@@ -76,7 +74,6 @@ namespace OpenRA.Support
 			int peakJitter)
 		{
 			NetFrameNumber = netFrameNumber;
-			OrderLatency = orderLatency;
 			Ticked = ticked;
 			CatchUpNetFrames = catchUpNetFrames;
 			ClientBufferSizes = clientBufferSizes;

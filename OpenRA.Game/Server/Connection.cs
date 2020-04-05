@@ -111,7 +111,7 @@ namespace OpenRA.Server
 								if (MostRecentFrame < Frame)
 									MostRecentFrame = Frame;
 
-								server.DispatchOrders(this, Frame, bytes);
+								server.ReceiveOrders(this, Frame, bytes);
 								ExpectLength = 8;
 								State = ReceiveState.Header;
 

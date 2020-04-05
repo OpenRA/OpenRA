@@ -41,11 +41,11 @@ namespace OpenRA.Network
 		public int NextReceivedNetFrame { get; private set; }
 		public int NextSafeNetFrame { get; private set; }
 
+		public int SyncFrameScale = 30; // TODO make this based on actual time, I would suggest once per second
+
 		public int OrderLatency; // Set during lobby by a "SyncInfo" packet, see UnitOrders
 		public int NextOrderFrame;
 		public bool IsCatchingUp { get; private set; }
-
-		int lastLatency = Int32.MaxValue;
 
 		public long LastTickTime = Game.RunTime;
 
@@ -121,7 +121,9 @@ namespace OpenRA.Network
 
 		public void TickImmediate()
 		{
-			if (localImmediateOrders.Count != 0 && GameSaveLastFrame < NetFrameNumber + OrderLatency)
+			// TODO why is it GameSaveLastFrame < NetFrameNumer + OrderLatency?
+			// Is it because it knows that we have started sending actual orders?
+			if (localImmediateOrders.Count != 0 && GameSaveLastFrame < NetFrameNumber)
 				Connection.SendImmediate(localImmediateOrders.Select(o => o.Serialize()));
 			localImmediateOrders.Clear();
 
@@ -173,46 +175,28 @@ namespace OpenRA.Network
 				syncForFrame.Add(frame, packet);
 		}
 
-		public IEnumerable<Session.Client> GetClientsNotReadyForNextFrame
-		{
-			get
-			{
-				return NetFrameNumber >= 1
-					? frameData.ClientsNotReadyForFrame(NetFrameNumber)
-						.Select(a => LobbyInfo.ClientWithIndex(a))
-					: NoClients;
-			}
-		}
-
-		private void CompensateForLatency()
+		void CompensateForLatency()
 		{
 			if (Connection.LatencyReporter.IsLocal)
 			{
-				OrderLatency = 0;
 				NextSafeNetFrame = NetFrameNumber;
 				return;
 			}
 
 			var realLatency = Connection.LatencyReporter.Latency;
-			var jitter = Connection.LatencyReporter.Jitter;
-
-			var jitterToIgnore = realLatency - lastLatency;
-			if (jitterToIgnore < (jitter * 2)) // HACK
-				jitterToIgnore = 0;
+			var jitter = Connection.LatencyReporter.PeakJitter;
 
 			var msPerNetFrame = World.Timestep * Game.NetTickScale;
 
-			var targetLatency = realLatency + (jitter * 2) - jitterToIgnore;
-
 			// Calculate catchup: we want to have enough frames in the incoming buffer to deal with peak jitter
-			var targetIncomingBuffer = (int)Math.Round(jitter / msPerNetFrame);
+			var targetIncomingBuffer = (int)Math.Round((double)jitter / msPerNetFrame);
 
 			var lastAck = Connection.LastAckedFrame;
 
-			bool wasAlreadyCatchingUp = IsCatchingUp;
-
 			// Our orders exist in FrameData even if they aren't acked :/
-			NextSafeNetFrame = Math.Min(lastAck - targetIncomingBuffer, NextReceivedNetFrame);
+			// NextSafeNetFrame = Math.Min(lastAck - targetIncomingBuffer, NextReceivedNetFrame);
+			// TODO: Add a new latency measure
+			NextSafeNetFrame = NextReceivedNetFrame;
 
 			var catchUpNetFrames = NextSafeNetFrame - NetFrameNumber;
 			if (catchUpNetFrames < 0)
@@ -220,18 +204,7 @@ namespace OpenRA.Network
 
 			IsCatchingUp = catchUpNetFrames > 0;
 
-			// We need order latency to match our real latency and also compensate for peak jitter
-			// We also need to be considerate and not decimate our order latency until finished catching up
-			var targetOrderLatency = (catchUpNetFrames > 0
-				                         ? catchUpNetFrames - (wasAlreadyCatchingUp ? 1 : 0)
-				                         : 0)
-										+ (int)Math.Round(targetLatency / msPerNetFrame) + 1;
-
-			OrderLatency = targetOrderLatency;
-
 			BufferNetHistory(realLatency, jitter, catchUpNetFrames);
-
-			lastLatency = realLatency;
 		}
 
 		public bool CheckIsReadyForNextFrame()
@@ -242,26 +215,20 @@ namespace OpenRA.Network
 					NextReceivedNetFrame = NetFrameNumber;
 			}
 			else
+			{
 				while (frameData.IsReadyForFrame(NextReceivedNetFrame + 1))
 					NextReceivedNetFrame++;
+			}
 
 			// We don't need to stop sending orders just because we aren't ticking
 			CompensateForLatency();
+			SendOrders();
 
 			return NetFrameNumber <= NextSafeNetFrame;
 		}
 
-		private void SendOrders()
+		void SendOrders()
 		{
-			var netstep = (Game.NetTickScale * World.Timestep);
-
-			int adjustedLatencyFrame = NetFrameNumber + OrderLatency;
-
-			// When we are lowering latency, we buffer orders
-			if (NextOrderFrame > adjustedLatencyFrame)
-				return;
-
-			// Eagerly send orders
 			if (localOrders.Count > 0)
 			{
 				if (GameSaveLastFrame < NextOrderFrame)
@@ -272,14 +239,6 @@ namespace OpenRA.Network
 
 				NextOrderFrame++;
 			}
-
-			// When we are increasing latency, we send extra packets
-			while (NextOrderFrame <= adjustedLatencyFrame)
-			{
-				if (GameSaveLastFrame < NextOrderFrame)
-					Connection.Send(NextOrderFrame, Enumerable.Empty<byte[]>());
-				NextOrderFrame++;
-			}
 		}
 
 		// This tick only deals with receiving orders and incrementing the net frame number
@@ -288,12 +247,10 @@ namespace OpenRA.Network
 			if (NetFrameNumber > NextSafeNetFrame)
 				throw new InvalidOperationException();
 
-			SendOrders();
-
 			foreach (var order in frameData.OrdersForFrame(World, NetFrameNumber))
 				UnitOrders.ProcessOrder(this, World, order.Client, order.Order);
 
-			if (NetFrameNumber + OrderLatency >= GameSaveLastSyncFrame)
+			if (NetFrameNumber % SyncFrameScale == 0 && NetFrameNumber >= GameSaveLastSyncFrame)
 				Connection.SendSync(NetFrameNumber, OrderIO.SerializeSync(World.SyncHash()));
 			else
 				Connection.SendSync(NetFrameNumber, OrderIO.SerializeSync(0));
@@ -305,15 +262,15 @@ namespace OpenRA.Network
 			++NetFrameNumber;
 		}
 
-		public void BufferNetHistory(int latency, double jitter, int catchUpNetFrames)
+		public void BufferNetHistory(int latency, int peakJitter, int catchUpNetFrames)
 		{
 			var buffers = new Dictionary<int, int>();
 
 			foreach (var c in frameData.ClientsPlayingInFrame(NetFrameNumber))
 				buffers.Add(c, frameData.BufferSizeForClient(NetFrameNumber, c));
 
-			NetHistory.Tick(new NetHistoryFrame(NetFrameNumber, OrderLatency, NetFrameNumber <= NextSafeNetFrame, catchUpNetFrames, buffers,
-				latency, jitter, Connection.LatencyReporter.PeakJitter));
+			NetHistory.Tick(new NetHistoryFrame(NetFrameNumber, NetFrameNumber <= NextSafeNetFrame, catchUpNetFrames, buffers,
+				latency, Connection.LatencyReporter.Jitter, peakJitter));
 		}
 
 		public void Dispose()

@@ -10,10 +10,13 @@
 #endregion
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net.Sockets;
 using System.Threading;
+using OpenRA.Primitives;
 using OpenRA.Server;
 
 namespace OpenRA.Network
@@ -64,22 +67,7 @@ namespace OpenRA.Network
 			get { return ConnectionState.PreConnecting; }
 		}
 
-		public virtual int LastAckedFrame
-		{
-			get
-			{
-				return lastAckedFrame;
-			}
-
-			protected set
-			{
-				if (value <= lastAckedFrame)
-					throw new InvalidOperationException("Sent frame twice or out of order");
-				lastAckedFrame = value;
-			}
-		}
-
-		int lastAckedFrame;
+		public int LastAckedFrame { get; protected set; }
 
 		public virtual void Send(int frame, IEnumerable<byte[]> orders)
 		{
@@ -107,7 +95,7 @@ namespace OpenRA.Network
 			var ms = new MemoryStream(4 + syncData.Length);
 			ms.WriteArray(BitConverter.GetBytes(frame));
 			ms.WriteArray(syncData);
-			Send(ms.GetBuffer());
+			Send(ms.ToArray());
 		}
 
 		protected virtual void Send(byte[] packet)
@@ -166,7 +154,7 @@ namespace OpenRA.Network
 	{
 		readonly TcpClient tcp;
 		readonly List<byte[]> queuedSyncPackets = new List<byte[]>();
-		readonly Queue<byte[]> awaitingAckPackets = new Queue<byte[]>();
+		readonly ConcurrentQueue<Pair<int, byte[]>> awaitingAckPackets = new ConcurrentQueue<Pair<int, byte[]>>();
 		volatile ConnectionState connectionState = ConnectionState.Connecting;
 		volatile int clientId;
 		bool disposed;
@@ -216,12 +204,10 @@ namespace OpenRA.Network
 					var len = reader.ReadInt32();
 					var client = reader.ReadInt32();
 					var buf = reader.ReadBytes(len);
-					if (client == LocalClientId && len == 4)
-					{
-						var receivedFrame = BitConverter.ToInt32(buf, 0);
 
-						latencyTracker.TrackAck(receivedFrame);
-						LastAckedFrame = receivedFrame;
+					if (client == LocalClientId && len == 7 && buf[4] == (byte)OrderType.Ack)
+					{
+						Ack(buf);
 					}
 					else if (len == 0)
 						throw new NotImplementedException();
@@ -236,6 +222,35 @@ namespace OpenRA.Network
 			}
 		}
 
+		void Ack(byte[] buf)
+		{
+			var reader = new BinaryReader(new MemoryStream(buf));
+			var frameReceived = reader.ReadInt32();
+			reader.ReadByte();
+			var framesToAck = reader.ReadInt16();
+
+			LastAckedFrame += framesToAck;
+
+			var ms = new MemoryStream();
+			ms.WriteArray(BitConverter.GetBytes(frameReceived));
+
+			for (int i = 0; i < framesToAck; i++)
+			{
+				Pair<int, byte[]> queuedPacket;
+				if (!awaitingAckPackets.TryDequeue(out queuedPacket))
+				{
+					throw new InvalidOperationException("Received acks for unknown frames");
+				}
+
+				var queuedFrame = queuedPacket.First;
+				latencyTracker.TrackAck(queuedFrame);
+
+				ms.WriteArray(queuedPacket.Second);
+			}
+
+			AddPacket(new ReceivedPacket { FromClient = LocalClientId, Data = ms.ToArray() });
+		}
+
 		public override int LocalClientId { get { return clientId; } }
 		public override ConnectionState ConnectionState { get { return connectionState; } }
 
@@ -244,20 +259,28 @@ namespace OpenRA.Network
 			var ms = new MemoryStream(4 + syncData.Length);
 			ms.WriteArray(BitConverter.GetBytes(frame));
 			ms.WriteArray(syncData);
-			queuedSyncPackets.Add(ms.GetBuffer());
+
+			queuedSyncPackets.Add(ms.ToArray()); // TODO: re-add sync packets
 		}
 
 		// Override send frame orders so we can hold them until ACK'ed
 		public override void Send(int frame, IEnumerable<byte[]> orders)
 		{
+			var ackMs = new MemoryStream();
+			var enumerable = orders as byte[][] ?? orders.ToArray();
+			foreach (var o in enumerable)
+				ackMs.WriteArray(o);
+
+			awaitingAckPackets.Enqueue(new Pair<int, byte[]>(frame, ackMs.ToArray())); // TODO fix having to write byte buffer twice
+
 			var ms = new MemoryStream();
 			ms.WriteArray(BitConverter.GetBytes(frame));
-			foreach (var o in orders)
+			foreach (var o in enumerable)
 				ms.WriteArray(o);
-			byte[] packet = ms.GetBuffer();
+			byte[] packet = ms.ToArray();
 
 			latencyTracker.TrackSend(frame);
-			Send(packet);
+			SendNetwork(packet);
 		}
 
 		protected override void Send(byte[] packet)
@@ -266,7 +289,7 @@ namespace OpenRA.Network
 			SendNetwork(packet);
 		}
 
-		private void SendNetwork(byte[] packet)
+		void SendNetwork(byte[] packet)
 		{
 			try
 			{
