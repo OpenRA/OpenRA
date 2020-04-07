@@ -54,6 +54,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public readonly Animation DefaultAnimation;
 		readonly RenderSprites rs;
 		readonly Animation boundsAnimation;
+		IHealth health;
 
 		public WithSpriteBody(ActorInitializer init, WithSpriteBodyInfo info)
 			: this(init, info, () => 0) { }
@@ -78,9 +79,16 @@ namespace OpenRA.Mods.Common.Traits.Render
 			boundsAnimation.PlayRepeating(info.Sequence);
 		}
 
+		protected override void Created(Actor self)
+		{
+			health = self.TraitOrDefault<IHealth>();
+			base.Created(self);
+		}
+
 		public string NormalizeSequence(Actor self, string sequence)
 		{
-			return RenderSprites.NormalizeSequence(DefaultAnimation, self.GetDamageState(), sequence);
+			var damageState = health != null ? health.DamageState : self.GetDamageState();
+			return RenderSprites.NormalizeSequence(DefaultAnimation, damageState, sequence);
 		}
 
 		protected override void TraitEnabled(Actor self)

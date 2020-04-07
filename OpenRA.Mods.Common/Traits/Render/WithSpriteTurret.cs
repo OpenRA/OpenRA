@@ -79,6 +79,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		readonly BodyOrientation body;
 		readonly Turreted t;
 		readonly Armament[] arms;
+		IHealth health;
 
 		public WithSpriteTurret(Actor self, WithSpriteTurretInfo info)
 			: base(info)
@@ -112,9 +113,16 @@ namespace OpenRA.Mods.Common.Traits.Render
 			return t.Position(self) + body.LocalToWorld(localOffset.Rotate(quantizedWorldTurret));
 		}
 
+		protected override void Created(Actor self)
+		{
+			health = self.TraitOrDefault<IHealth>();
+			base.Created(self);
+		}
+
 		public string NormalizeSequence(Actor self, string sequence)
 		{
-			return RenderSprites.NormalizeSequence(DefaultAnimation, self.GetDamageState(), sequence);
+			var damageState = health != null ? health.DamageState : self.GetDamageState();
+			return RenderSprites.NormalizeSequence(DefaultAnimation, damageState, sequence);
 		}
 
 		protected virtual void DamageStateChanged(Actor self)

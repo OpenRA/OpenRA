@@ -193,6 +193,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		readonly Actor self;
 
+		IHealth health;
 		Repairable repairable;
 		Rearmable rearmable;
 		IAircraftCenterPositionOffset[] positionOffsets;
@@ -214,6 +215,8 @@ namespace OpenRA.Mods.Common.Traits
 		public Actor ReservedActor { get; private set; }
 		public bool MayYieldReservation { get; private set; }
 		public bool ForceLanding { get; private set; }
+
+		public DamageState DamageState { get { return health != null ? health.DamageState : self.GetDamageState(); } }
 
 		IEnumerable<CPos> landingCells = Enumerable.Empty<CPos>();
 		bool requireForceMove;
@@ -291,6 +294,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected override void Created(Actor self)
 		{
+			health = self.TraitOrDefault<IHealth>();
 			repairable = self.TraitOrDefault<Repairable>();
 			rearmable = self.TraitOrDefault<Rearmable>();
 			conditionManager = self.TraitOrDefault<ConditionManager>();
@@ -536,7 +540,7 @@ namespace OpenRA.Mods.Common.Traits
 			var canRepairAtActor = repairable != null && repairable.Info.RepairActors.Contains(a.Info.Name);
 
 			var allowedToEnterRearmer = canRearmAtActor && (allowedToForceEnter || rearmable.RearmableAmmoPools.Any(p => !p.HasFullAmmo));
-			var allowedToEnterRepairer = canRepairAtActor && (allowedToForceEnter || self.GetDamageState() != DamageState.Undamaged);
+			var allowedToEnterRepairer = canRepairAtActor && (allowedToForceEnter || DamageState != DamageState.Undamaged);
 
 			return allowedToEnterRearmer || allowedToEnterRepairer;
 		}
@@ -654,7 +658,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool CanRepairAt(Actor host)
 		{
-			return repairable != null && repairable.Info.RepairActors.Contains(host.Info.Name) && self.GetDamageState() != DamageState.Undamaged;
+			return repairable != null && repairable.Info.RepairActors.Contains(host.Info.Name) && DamageState != DamageState.Undamaged;
 		}
 
 		public void ModifyDeathActorInit(Actor self, TypeDictionary init)

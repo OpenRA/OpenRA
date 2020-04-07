@@ -70,6 +70,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		readonly Armament armament;
 		readonly Turreted turreted;
 		readonly BodyOrientation body;
+		IHealth health;
 
 		public WithSpriteBarrel(Actor self, WithSpriteBarrelInfo info)
 			: base(info)
@@ -91,9 +92,16 @@ namespace OpenRA.Mods.Common.Traits.Render
 			turreted.QuantizedFacings = DefaultAnimation.CurrentSequence.Facings;
 		}
 
+		protected override void Created(Actor self)
+		{
+			health = self.TraitOrDefault<IHealth>();
+			base.Created(self);
+		}
+
 		public string NormalizeSequence(Actor self, string sequence)
 		{
-			return RenderSprites.NormalizeSequence(DefaultAnimation, self.GetDamageState(), sequence);
+			var damageState = health != null ? health.DamageState : self.GetDamageState();
+			return RenderSprites.NormalizeSequence(DefaultAnimation, damageState, sequence);
 		}
 
 		WVec BarrelOffset()

@@ -25,9 +25,11 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new Burns(init.Self, this); }
 	}
 
-	class Burns : ITick, ISync
+	class Burns : ITick, ISync, INotifyCreated
 	{
 		readonly BurnsInfo info;
+		IHealth health;
+
 		[Sync]
 		int ticks;
 
@@ -41,11 +43,16 @@ namespace OpenRA.Mods.Common.Traits
 			self.Trait<RenderSprites>().Add(anim);
 		}
 
+		void INotifyCreated.Created(Actor self)
+		{
+			health = self.TraitOrDefault<IHealth>();
+		}
+
 		void ITick.Tick(Actor self)
 		{
-			if (--ticks <= 0)
+			if (health != null && --ticks <= 0)
 			{
-				self.InflictDamage(self, new Damage(info.Damage));
+				health.InflictDamage(self, self, new Damage(info.Damage), false);
 				ticks = info.Interval;
 			}
 		}

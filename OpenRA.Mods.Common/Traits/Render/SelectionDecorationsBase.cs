@@ -29,6 +29,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 		Dictionary<DecorationPosition, IDecoration[]> decorations;
 		Dictionary<DecorationPosition, IDecoration[]> selectedDecorations;
 
+		IHealth health;
+
 		protected readonly SelectionDecorationsBaseInfo info;
 
 		public SelectionDecorationsBase(SelectionDecorationsBaseInfo info)
@@ -54,6 +56,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 			selectedDecorations = groupedSelectionDecorations.ToDictionary(
 				d => d.Key,
 				d => d.Value.ToArray());
+
+			health = self.TraitOrDefault<IHealth>();
 		}
 
 		IEnumerable<WPos> ActivityTargetPath(Actor self)
@@ -94,7 +98,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 			//  * status bar preference is set to "always show"
 			//  * status bar preference is set to "when damaged" and actor is damaged
 			var displayHealth = selected || rollover || (regularWorld && statusBars == StatusBarsType.AlwaysShow)
-				|| (regularWorld && statusBars == StatusBarsType.DamageShow && self.GetDamageState() != DamageState.Undamaged);
+				|| (regularWorld && statusBars == StatusBarsType.DamageShow
+					&& (health != null ? health.DamageState != DamageState.Undamaged : self.GetDamageState() != DamageState.Undamaged));
 
 			// Extra bars are shown when:
 			//  * actor is selected / in active drag rectangle / under the mouse

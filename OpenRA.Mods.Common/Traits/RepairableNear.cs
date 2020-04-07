@@ -41,12 +41,14 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public readonly RepairableNearInfo Info;
 		readonly Actor self;
+		readonly IHealth health;
 		bool requireForceMove;
 
 		public RepairableNear(Actor self, RepairableNearInfo info)
 		{
 			this.self = self;
 			Info = info;
+			health = self.Trait<IHealth>();
 		}
 
 		IEnumerable<IOrderTargeter> IIssueOrder.Orders
@@ -81,7 +83,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool ShouldRepair()
 		{
-			return self.GetDamageState() > DamageState.Undamaged;
+			return health.DamageState > DamageState.Undamaged;
 		}
 
 		string IOrderVoice.VoicePhraseForOrder(Actor self, Order order)

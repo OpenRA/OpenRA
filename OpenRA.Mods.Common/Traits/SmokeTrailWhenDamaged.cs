@@ -14,7 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	class SmokeTrailWhenDamagedInfo : ITraitInfo, Requires<BodyOrientationInfo>
+	class SmokeTrailWhenDamagedInfo : ITraitInfo, Requires<BodyOrientationInfo>, Requires<IHealthInfo>
 	{
 		[Desc("Position relative to body")]
 		public readonly WVec Offset = WVec.Zero;
@@ -37,6 +37,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly SmokeTrailWhenDamagedInfo info;
 		readonly BodyOrientation body;
+		readonly IHealth health;
 		readonly int getFacing;
 		int ticks;
 
@@ -44,6 +45,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			this.info = info;
 			body = self.Trait<BodyOrientation>();
+			health = self.Trait<IHealth>();
 			var facing = self.TraitOrDefault<IFacing>();
 
 			if (facing != null)
@@ -57,7 +59,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (--ticks <= 0)
 			{
 				var position = self.CenterPosition;
-				if (position.Z > 0 && self.GetDamageState() >= info.MinDamage && !self.World.FogObscures(self))
+				if (position.Z > 0 && health.DamageState >= info.MinDamage && !self.World.FogObscures(self))
 				{
 					var offset = info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation));
 					var pos = position + body.LocalToWorld(offset);
