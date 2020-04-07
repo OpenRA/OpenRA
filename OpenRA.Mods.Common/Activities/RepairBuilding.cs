@@ -67,7 +67,8 @@ namespace OpenRA.Mods.Common.Activities
 			if (enterHealth.DamageState == DamageState.Undamaged)
 				return;
 
-			enterActor.InflictDamage(self, new Damage(-enterHealth.MaxHP));
+			// Setting ignoreModifiers to true, otherwise negative damage modifiers might prevent a full recovery
+			enterHealth.InflictDamage(enterActor, self, new Damage(-enterHealth.MaxHP), true);
 			if (!string.IsNullOrEmpty(info.RepairSound))
 				Game.Sound.Play(SoundType.World, info.RepairSound, enterActor.CenterPosition);
 

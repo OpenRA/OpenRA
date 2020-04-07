@@ -170,7 +170,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				// activePlayers won't cause IndexOutOfRange because we capped the max amount of players
 				// to the length of the array
-				self.InflictDamage(self, new Damage(-(hpToRepair * Info.RepairBonuses[activePlayers - 1] / 100), Info.RepairDamageTypes));
+				health.InflictDamage(self, self, new Damage(-(hpToRepair * Info.RepairBonuses[activePlayers - 1] / 100), Info.RepairDamageTypes), false);
 
 				if (health.DamageState == DamageState.Undamaged)
 				{

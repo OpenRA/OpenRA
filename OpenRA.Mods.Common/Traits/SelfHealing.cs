@@ -73,7 +73,7 @@ namespace OpenRA.Mods.Common.Traits
 				ticks = Info.Delay;
 
 				// Cast to long to avoid overflow when multiplying by the health
-				self.InflictDamage(self, new Damage((int)(-(Info.Step + Info.PercentageStep * (long)health.MaxHP / 100)), Info.DamageTypes));
+				health.InflictDamage(self, self, new Damage((int)(-(Info.Step + Info.PercentageStep * (long)health.MaxHP / 100)), Info.DamageTypes), false);
 			}
 		}
 

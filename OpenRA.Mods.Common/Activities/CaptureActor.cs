@@ -97,7 +97,9 @@ namespace OpenRA.Mods.Common.Activities
 					if (100 * (long)health.HP > captures.Info.SabotageThreshold * (long)health.MaxHP)
 					{
 						var damage = (int)((long)health.MaxHP * captures.Info.SabotageHPRemoval / 100);
-						enterActor.InflictDamage(self, new Damage(damage, captures.Info.SabotageDamageTypes));
+
+						// TODO: Investigate whether we really want damage modifiers to affect this
+						health.InflictDamage(enterActor, self, new Damage(damage, captures.Info.SabotageDamageTypes), false);
 
 						if (captures.Info.ConsumedByCapture)
 							self.Dispose();

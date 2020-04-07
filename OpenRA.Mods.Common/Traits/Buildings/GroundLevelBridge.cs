@@ -123,7 +123,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		string IBridgeSegment.Type { get { return Info.Type; } }
-		DamageState IBridgeSegment.DamageState { get { return self.GetDamageState(); } }
+		DamageState IBridgeSegment.DamageState { get { return health.DamageState; } }
 		bool IBridgeSegment.Valid { get { return self.IsInWorld; } }
 		CVec[] IBridgeSegment.NeighbourOffsets { get { return Info.NeighbourOffsets; } }
 		CPos IBridgeSegment.Location { get { return self.Location; } }

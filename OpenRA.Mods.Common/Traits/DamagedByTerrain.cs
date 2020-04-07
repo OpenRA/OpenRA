@@ -80,7 +80,7 @@ namespace OpenRA.Mods.Common.Traits
 			// Actors start with maximum damage applied
 			var delta = health.HP - damageThreshold;
 			if (delta > 0)
-				self.InflictDamage(self.World.WorldActor, new Damage(delta, Info.DamageTypes));
+				health.InflictDamage(self, self.World.WorldActor, new Damage(delta, Info.DamageTypes), false);
 		}
 
 		void ITick.Tick(Actor self)
@@ -96,7 +96,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!Info.Terrain.Contains(t.Type))
 				return;
 
-			self.InflictDamage(self.World.WorldActor, new Damage(Info.Damage, Info.DamageTypes));
+			health.InflictDamage(self, self.World.WorldActor, new Damage(Info.Damage, Info.DamageTypes), false);
 			damageTicks = Info.DamageInterval;
 		}
 	}

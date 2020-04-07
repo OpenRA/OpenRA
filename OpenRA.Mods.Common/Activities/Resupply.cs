@@ -267,7 +267,8 @@ namespace OpenRA.Mods.Common.Activities
 					return;
 				}
 
-				self.InflictDamage(host.Actor, new Damage(-hpToRepair, repairsUnits.Info.RepairDamageTypes));
+				// Setting ignoreModifiers to true, otherwise negative damage modifiers would also slow down repairs!
+				health.InflictDamage(self, host.Actor, new Damage(-hpToRepair, repairsUnits.Info.RepairDamageTypes), true);
 				remainingTicks = repairsUnits.Info.Interval;
 			}
 			else
