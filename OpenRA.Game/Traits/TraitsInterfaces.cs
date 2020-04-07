@@ -49,22 +49,6 @@ namespace OpenRA.Traits
 	/// </summary>
 	public sealed class DamageType { DamageType() { } }
 
-	public interface IHealthInfo : ITraitInfo
-	{
-		int MaxHP { get; }
-	}
-
-	public interface IHealth : IActorDeath
-	{
-		DamageState DamageState { get; }
-		int HP { get; }
-		int MaxHP { get; }
-		int DisplayHP { get; }
-
-		void InflictDamage(Actor self, Actor attacker, Damage damage, bool ignoreModifiers);
-		void Kill(Actor self, Actor attacker, BitSet<DamageType> damageTypes);
-	}
-
 	public interface IActorDeath
 	{
 		bool IsDead { get; }
