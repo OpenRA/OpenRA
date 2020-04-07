@@ -125,6 +125,8 @@ VEINHOLE:
 
 ^TibFlora:
 	Inherits: ^Tree
+	MapEditorData:
+		RequireTilesets: TEMPERATE
 	Tooltip:
 		Name: Tiberian Flora
 
