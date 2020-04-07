@@ -46,6 +46,7 @@ namespace OpenRA
 		Size SurfaceSize { get; }
 		int DisplayCount { get; }
 		int CurrentDisplay { get; }
+		bool HasInputFocus { get; }
 
 		event Action<float, float, float, float> OnWindowScaleChanged;
 
