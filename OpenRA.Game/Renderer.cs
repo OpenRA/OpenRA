@@ -31,6 +31,15 @@ namespace OpenRA
 		public RgbaColorRenderer RgbaColorRenderer { get; private set; }
 		public SpriteRenderer SpriteRenderer { get; private set; }
 		public RgbaSpriteRenderer RgbaSpriteRenderer { get; private set; }
+
+		public bool WindowHasInputFocus
+		{
+			get
+			{
+				return Window.HasInputFocus;
+			}
+		}
+
 		public IReadOnlyDictionary<string, SpriteFont> Fonts;
 
 		internal IPlatformWindow Window { get; private set; }

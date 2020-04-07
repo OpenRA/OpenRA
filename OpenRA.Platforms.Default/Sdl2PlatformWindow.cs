@@ -105,6 +105,8 @@ namespace OpenRA.Platforms.Default
 			}
 		}
 
+		public bool HasInputFocus { get; internal set; }
+
 		public event Action<float, float, float, float> OnWindowScaleChanged = (oldNative, oldEffective, newNative, newEffective) => { };
 
 		[DllImport("user32.dll")]
@@ -221,11 +223,11 @@ namespace OpenRA.Platforms.Default
 							switch (e.window.windowEvent)
 							{
 								case SDL.SDL_WindowEventID.SDL_WINDOWEVENT_FOCUS_LOST:
-									Game.HasInputFocus = false;
+									HasInputFocus = false;
 									break;
 
 								case SDL.SDL_WindowEventID.SDL_WINDOWEVENT_FOCUS_GAINED:
-									Game.HasInputFocus = true;
+									HasInputFocus = true;
 									break;
 							}
 						}
