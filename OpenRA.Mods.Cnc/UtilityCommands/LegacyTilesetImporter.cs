@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			var name = args.Length > 3 ? args[3] : Path.GetFileNameWithoutExtension(args[2]);
 			metadata.AppendLine("\tName: {0}".F(name));
 			metadata.AppendLine("\tId: {0}".F(name.ToUpperInvariant()));
-			metadata.AppendLine("\tHeightDebugColors:  00000080, 00004480, 00008880, 0000CC80, 0000FF80, 4400CC80," +
+			metadata.AppendLine("\tHeightDebugColors: 00000080, 00004480, 00008880, 0000CC80, 0000FF80, 4400CC80," +
 				" 88008880, CC004480, FF110080, FF550080, FF990080, FFDD0080, DDFF0080, 99FF0080, 55FF0080, 11FF0080");
 
 			// Loop over template sets
