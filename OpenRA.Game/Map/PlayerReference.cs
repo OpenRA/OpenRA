@@ -30,7 +30,7 @@ namespace OpenRA
 		public string Faction;
 
 		public bool LockColor = false;
-		public Color Color = Color.FromAhsl(0, 0, 238);
+		public Color Color = Game.ModData.Manifest.Get<DefaultPlayer>().Color;
 
 		public bool LockSpawn = false;
 		public int Spawn = 0;
