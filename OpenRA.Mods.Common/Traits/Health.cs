@@ -80,6 +80,8 @@ namespace OpenRA.Mods.Common.Traits
 		public int MaxHP { get; private set; }
 
 		public bool IsDead { get { return hp <= 0; } }
+		bool IActorDeath.IsDead { get { return IsDead; } }
+
 		public bool RemoveOnDeath = true;
 
 		public DamageState DamageState

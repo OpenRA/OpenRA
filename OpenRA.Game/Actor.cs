@@ -59,7 +59,7 @@ namespace OpenRA
 		public ITargetable[] Targetables { get; private set; }
 
 		public bool IsIdle { get { return CurrentActivity == null; } }
-		public bool IsDead { get { return Disposed || (health != null && health.IsDead); } }
+		public bool IsDead { get { return Disposed || (death != null && death.IsDead); } }
 
 		public CPos Location { get { return OccupiesSpace.TopLeft; } }
 		public WPos CenterPosition { get { return OccupiesSpace.CenterPosition; } }
@@ -77,7 +77,7 @@ namespace OpenRA
 		internal SyncHash[] SyncHashes { get; private set; }
 
 		readonly IFacing facing;
-		readonly IHealth health;
+		readonly IActorDeath death;
 		readonly IRenderModifier[] renderModifiers;
 		readonly IRender[] renders;
 		readonly IMouseBounds[] mouseBounds;
@@ -122,7 +122,7 @@ namespace OpenRA
 			// performance-sensitive parts of the core game engine, such as pathfinding, visibility and rendering.
 			EffectiveOwner = TraitOrDefault<IEffectiveOwner>();
 			facing = TraitOrDefault<IFacing>();
-			health = TraitOrDefault<IHealth>();
+			death = TraitOrDefault<IActorDeath>();
 			renderModifiers = TraitsImplementing<IRenderModifier>().ToArray();
 			renders = TraitsImplementing<IRender>().ToArray();
 			mouseBounds = TraitsImplementing<IMouseBounds>().ToArray();
