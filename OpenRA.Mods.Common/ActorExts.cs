@@ -91,5 +91,15 @@ namespace OpenRA.Mods.Common
 			var health = self.TraitOrDefault<Health>();
 			return health == null ? DamageState.Undamaged : health.DamageState;
 		}
+
+		public static void Kill(this Actor self, Actor attacker, BitSet<DamageType> damageTypes = default(BitSet<DamageType>))
+		{
+			if (self.WillDispose)
+				return;
+
+			var health = self.TraitOrDefault<Health>();
+			if (health != null)
+				health.Kill(self, attacker, damageTypes);
+		}
 	}
 }

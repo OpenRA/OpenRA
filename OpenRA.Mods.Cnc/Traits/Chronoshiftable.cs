@@ -10,6 +10,7 @@
 #endregion
 
 using OpenRA.Mods.Cnc.Activities;
+using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;

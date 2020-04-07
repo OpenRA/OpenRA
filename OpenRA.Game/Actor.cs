@@ -379,14 +379,6 @@ namespace OpenRA
 				World.Add(this);
 		}
 
-		public void Kill(Actor attacker, BitSet<DamageType> damageTypes = default(BitSet<DamageType>))
-		{
-			if (Disposed || health == null)
-				return;
-
-			health.Kill(this, attacker, damageTypes);
-		}
-
 		public bool CanBeViewedByPlayer(Player player)
 		{
 			// PERF: Avoid LINQ.
