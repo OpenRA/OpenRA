@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.Warheads
 				if (closestActiveShape.First == null || closestActiveShape.Second > Spread)
 					continue;
 
-				InflictDamage(victim, firedBy, closestActiveShape.First.Info, damageModifiers);
+				InflictDamage(victim, firedBy, closestActiveShape.First, damageModifiers);
 			}
 		}
 	}

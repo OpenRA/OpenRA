@@ -71,6 +71,7 @@ namespace OpenRA.Mods.Common.Traits
 		BodyOrientation orientation;
 		ITargetableCells targetableCells;
 		Turreted turret;
+		Health health;
 
 		public HitShape(Actor self, HitShapeInfo info)
 			: base(info) { }
@@ -80,9 +81,13 @@ namespace OpenRA.Mods.Common.Traits
 			orientation = self.Trait<BodyOrientation>();
 			targetableCells = self.TraitOrDefault<ITargetableCells>();
 			turret = self.TraitsImplementing<Turreted>().FirstOrDefault(t => t.Name == Info.Turret);
+			health = self.TraitOrDefault<Health>();
 
 			base.Created(self);
 		}
+
+		// Mostly serves to avoid Health look-ups in warheads
+		public Health Health { get { return health; } }
 
 		bool ITargetablePositions.AlwaysEnabled { get { return Info.RequiresCondition == null; } }
 

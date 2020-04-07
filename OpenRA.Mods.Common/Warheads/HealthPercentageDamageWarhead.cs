@@ -17,11 +17,13 @@ namespace OpenRA.Mods.Common.Warheads
 {
 	public class HealthPercentageDamageWarhead : TargetDamageWarhead
 	{
-		protected override void InflictDamage(Actor victim, Actor firedBy, HitShapeInfo hitshapeInfo, IEnumerable<int> damageModifiers)
+		protected override void InflictDamage(Actor victim, Actor firedBy, HitShape shape, IEnumerable<int> damageModifiers)
 		{
-			var healthInfo = victim.Info.TraitInfo<HealthInfo>();
-			var damage = Util.ApplyPercentageModifiers(healthInfo.HP, damageModifiers.Append(Damage, DamageVersus(victim, hitshapeInfo)));
-			victim.InflictDamage(firedBy, new Damage(damage, DamageTypes));
+			if (shape.Health == null)
+				return;
+
+			var damage = Util.ApplyPercentageModifiers(shape.Health.Info.HP, damageModifiers.Append(Damage, DamageVersus(victim, shape)));
+			shape.Health.InflictDamage(victim, firedBy, new Damage(damage, DamageTypes), false);
 		}
 	}
 }
