@@ -21,6 +21,9 @@ tran:
 	open:
 		Start: 32
 		Length: 4
+	close:
+		Frames: 35, 34, 33, 32
+		Length: 4
 	unload:
 		Start: 35
 	icon: tranicnh.tem

@@ -53,6 +53,9 @@ tran:
 	open: tran2
 		Start: 32
 		Length: 4
+	close: tran2
+		Frames: 35, 34, 33, 32
+		Length: 4
 	unload: tran2
 		Start: 35
 	icon: tranicon

@@ -75,3 +75,8 @@ Ant:
 Zombie:
 	Buildable:
 		Prerequisites: ~disabled
+
+TRAN:
+	WithCargoHatchAnimation:
+	Aircraft:
+		InitialFacing: 0
