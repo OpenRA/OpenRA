@@ -95,7 +95,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 						using (var s = modData.DefaultFileSystem.Open(templateFilename))
 						{
 							data.AppendLine("\tTemplate@{0}:".F(templateIndex));
-							data.AppendLine("\t\tCategory: {0}".F(sectionCategory));
+							data.AppendLine("\t\tCategories: {0}".F(sectionCategory));
 							usedCategories.Add(sectionCategory);
 
 							data.AppendLine("\t\tId: {0}".F(templateIndex));
