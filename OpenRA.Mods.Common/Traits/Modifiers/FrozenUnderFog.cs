@@ -36,9 +36,13 @@ namespace OpenRA.Mods.Common.Traits
 		readonly bool startsRevealed;
 		readonly PPos[] footprint;
 
+		IHealth health;
 		PlayerDictionary<FrozenState> frozenStates;
 		bool isRendering;
 		bool created;
+
+		int hp;
+		DamageState damageState;
 
 		class FrozenState
 		{
@@ -67,6 +71,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyCreated.Created(Actor self)
 		{
+			health = self.TraitOrDefault<IHealth>();
+
 			frozenStates = new PlayerDictionary<FrozenState>(self.World, (player, playerIndex) =>
 			{
 				var frozenActor = new FrozenActor(self, this, footprint, player, startsRevealed);
@@ -78,7 +84,14 @@ namespace OpenRA.Mods.Common.Traits
 		void UpdateFrozenActor(Actor self, FrozenActor frozenActor, int playerIndex)
 		{
 			VisibilityHash |= 1 << (playerIndex % 32);
-			frozenActor.RefreshState();
+
+			if (health != null)
+			{
+				hp = health.HP;
+				damageState = health.DamageState;
+			}
+
+			frozenActor.RefreshState(hp, damageState);
 		}
 
 		void ICreatesFrozenActors.OnVisibilityChanged(FrozenActor frozen)

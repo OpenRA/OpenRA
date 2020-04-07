@@ -35,7 +35,17 @@ namespace OpenRA.Mods.Cnc.Traits
 				// HACK: RefreshState updated *all* actor state, not just the owner
 				// This is generally bogus, and specifically breaks cursors and tooltips by setting Hidden to false
 				var hidden = fa.Hidden;
-				fa.RefreshState();
+
+				var hp = 0;
+				var damageState = DamageState.Undamaged;
+				var health = fufubg.self.TraitOrDefault<Health>();
+				if (health != null)
+				{
+					hp = health.HP;
+					damageState = health.DamageState;
+				}
+
+				fa.RefreshState(hp, damageState);
 				fa.Hidden = hidden;
 				fa.NeedRenderables = true;
 			}

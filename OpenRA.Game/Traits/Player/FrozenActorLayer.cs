@@ -50,7 +50,6 @@ namespace OpenRA.Traits
 
 		public int HP { get; private set; }
 		public DamageState DamageState { get; private set; }
-		readonly IHealth health;
 
 		// The Visible flag is tied directly to the actor visibility under the fog.
 		// If Visible is true, the actor is made invisible (via FrozenUnderFog/IDefaultVisibility)
@@ -102,7 +101,6 @@ namespace OpenRA.Traits
 			CenterPosition = actor.CenterPosition;
 
 			tooltips = actor.TraitsImplementing<ITooltip>().ToArray();
-			health = actor.TraitOrDefault<IHealth>();
 
 			UpdateVisibility();
 		}
@@ -113,18 +111,15 @@ namespace OpenRA.Traits
 		public Actor Actor { get { return !actor.IsDead ? actor : null; } }
 		public Player Viewer { get { return viewer; } }
 
-		public void RefreshState()
+		public void RefreshState(int hp, DamageState damageState)
 		{
 			Owner = actor.Owner;
 			TargetTypes = actor.GetEnabledTargetTypes();
 			TargetablePositions = actor.GetTargetablePositions().ToArray();
 			Hidden = !actor.CanBeViewedByPlayer(viewer);
 
-			if (health != null)
-			{
-				HP = health.HP;
-				DamageState = health.DamageState;
-			}
+			HP = hp;
+			DamageState = damageState;
 
 			var tooltip = tooltips.FirstEnabledTraitOrDefault();
 			if (tooltip != null)
