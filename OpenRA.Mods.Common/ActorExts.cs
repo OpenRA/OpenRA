@@ -82,5 +82,14 @@ namespace OpenRA.Mods.Common
 		{
 			return cells.MinByOrDefault(c => (self.Location - c).LengthSquared);
 		}
+
+		public static DamageState GetDamageState(this Actor self)
+		{
+			if (self.WillDispose)
+				return DamageState.Dead;
+
+			var health = self.TraitOrDefault<Health>();
+			return health == null ? DamageState.Undamaged : health.DamageState;
+		}
 	}
 }

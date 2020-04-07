@@ -379,14 +379,6 @@ namespace OpenRA
 				World.Add(this);
 		}
 
-		public DamageState GetDamageState()
-		{
-			if (Disposed)
-				return DamageState.Dead;
-
-			return (health == null) ? DamageState.Undamaged : health.DamageState;
-		}
-
 		public void Kill(Actor attacker, BitSet<DamageType> damageTypes = default(BitSet<DamageType>))
 		{
 			if (Disposed || health == null)
