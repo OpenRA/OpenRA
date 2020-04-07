@@ -387,14 +387,6 @@ namespace OpenRA
 			return (health == null) ? DamageState.Undamaged : health.DamageState;
 		}
 
-		public void InflictDamage(Actor attacker, Damage damage)
-		{
-			if (Disposed || health == null)
-				return;
-
-			health.InflictDamage(this, attacker, damage, false);
-		}
-
 		public void Kill(Actor attacker, BitSet<DamageType> damageTypes = default(BitSet<DamageType>))
 		{
 			if (Disposed || health == null)
