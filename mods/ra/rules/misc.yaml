@@ -32,7 +32,7 @@ CRATE:
 	HideMapCrateAction:
 		SelectionShares: 5
 		Sequence: hide-map
-	HealUnitsCrateAction:
+	HealActorsCrateAction:
 		Sound: heal2.aud
 		SelectionShares: 2
 		Sequence: heal
@@ -124,7 +124,7 @@ HEALCRATE:
 	Inherits: ^Crate
 	Tooltip:
 		Name: Heal Crate
-	HealUnitsCrateAction:
+	HealActorsCrateAction:
 		Sound: heal2.aud
 		SelectionShares: 1
 		Sequence: heal
