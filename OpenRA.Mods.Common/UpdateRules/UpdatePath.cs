@@ -58,6 +58,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				// Bleed only changes here
 				new AddPipDecorationTraits(),
 				new ModernizeDecorationTraits(),
+				new RenameHealCrateAction(),
 				new RenameInfiltrationNotifications(),
 				new MoveClassicFacingFudge(),
 				new RenameWithNukeLaunch(),
