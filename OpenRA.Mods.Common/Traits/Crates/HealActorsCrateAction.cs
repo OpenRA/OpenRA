@@ -15,14 +15,14 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Heals all actors that belong to the owner of the collector.")]
-	class HealUnitsCrateActionInfo : CrateActionInfo
+	class HealActorsCrateActionInfo : CrateActionInfo
 	{
-		public override object Create(ActorInitializer init) { return new HealUnitsCrateAction(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new HealActorsCrateAction(init.Self, this); }
 	}
 
-	class HealUnitsCrateAction : CrateAction
+	class HealActorsCrateAction : CrateAction
 	{
-		public HealUnitsCrateAction(Actor self, HealUnitsCrateActionInfo info)
+		public HealActorsCrateAction(Actor self, HealActorsCrateActionInfo info)
 			: base(self, info) { }
 
 		public override void Activate(Actor collector)
