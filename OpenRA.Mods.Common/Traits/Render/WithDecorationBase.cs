@@ -107,41 +107,41 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 
 		public override IEnumerable<VariableObserver> GetVariableObservers()
-        {
-        	foreach (var observer in base.GetVariableObservers())
-        		yield return observer;
+		{
+			foreach (var observer in base.GetVariableObservers())
+				yield return observer;
 
-        	foreach (var condition in Info.Offsets.Keys)
-        		yield return new VariableObserver(OffsetConditionChanged, condition.Variables);
+			foreach (var condition in Info.Offsets.Keys)
+				yield return new VariableObserver(OffsetConditionChanged, condition.Variables);
 
-        	foreach (var condition in Info.BlinkPatterns.Keys)
-        		yield return new VariableObserver(BlinkConditionsChanged, condition.Variables);
-        }
+			foreach (var condition in Info.BlinkPatterns.Keys)
+				yield return new VariableObserver(BlinkConditionsChanged, condition.Variables);
+		}
 
 		void OffsetConditionChanged(Actor self, IReadOnlyDictionary<string, int> conditions)
-        {
-        	conditionalOffset = int2.Zero;
-        	foreach (var kv in Info.Offsets)
-        	{
-        		if (kv.Key.Evaluate(conditions))
-        		{
-        			conditionalOffset = kv.Value;
-        			break;
-        		}
-        	}
-        }
+		{
+			conditionalOffset = int2.Zero;
+			foreach (var kv in Info.Offsets)
+			{
+				if (kv.Key.Evaluate(conditions))
+				{
+					conditionalOffset = kv.Value;
+					break;
+				}
+			}
+		}
 
 		void BlinkConditionsChanged(Actor self, IReadOnlyDictionary<string, int> conditions)
-        {
-        	blinkPattern = Info.BlinkPattern;
-        	foreach (var kv in Info.BlinkPatterns)
-        	{
-        		if (kv.Key.Evaluate(conditions))
-        		{
-        			blinkPattern = kv.Value;
-        			return;
-        		}
-        	}
-        }
+		{
+			blinkPattern = Info.BlinkPattern;
+			foreach (var kv in Info.BlinkPatterns)
+			{
+				if (kv.Key.Evaluate(conditions))
+				{
+					blinkPattern = kv.Value;
+					return;
+				}
+			}
+		}
 	}
 }
