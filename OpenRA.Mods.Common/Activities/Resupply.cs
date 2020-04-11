@@ -171,6 +171,12 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override void Cancel(Actor self, bool keepQueue = false)
 		{
+			// HACK: force move activities to ignore the transit-only cells when cancelling
+			// The idle handler will take over and move them into a safe cell
+			if (ChildActivity != null)
+				foreach (var c in ChildActivity.ActivitiesImplementing<Move>())
+					c.Cancel(self, false, true);
+
 			foreach (var t in transportCallers)
 				t.MovementCancelled(self);
 
