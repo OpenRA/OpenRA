@@ -78,7 +78,8 @@ namespace OpenRA.Mods.Common.Activities
 
 		protected virtual IEnumerable<CPos> CandidateMovementCells(Actor self)
 		{
-			return Util.AdjacentCells(self.World, Target);
+			return Util.AdjacentCells(self.World, Target)
+				.Where(c => Mobile.CanStayInCell(c));
 		}
 
 		protected override void OnFirstRun(Actor self)

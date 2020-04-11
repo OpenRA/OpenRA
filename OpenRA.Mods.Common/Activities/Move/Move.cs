@@ -348,9 +348,14 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override void Cancel(Actor self, bool keepQueue = false)
 		{
+			Cancel(self, keepQueue, false);
+		}
+
+		public void Cancel(Actor self, bool keepQueue, bool forceClearPath)
+		{
 			// We need to clear the path here in order to prevent MovePart queueing new instances of itself
 			// when the unit is making a turn.
-			if (path != null && mobile.CanStayInCell(mobile.ToCell))
+			if (path != null && (forceClearPath || mobile.CanStayInCell(mobile.ToCell)))
 				path.Clear();
 
 			base.Cancel(self, keepQueue);
