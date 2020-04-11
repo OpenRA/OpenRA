@@ -866,7 +866,13 @@ namespace OpenRA.Mods.Common.Traits
 		void INotifyBecomingIdle.OnBecomingIdle(Actor self)
 		{
 			if (self.Location.Layer == 0)
+			{
+				// Make sure that units aren't left idling in a transit-only cell
+				// HACK: activities should be making sure that this can't happen in the first place!
+				if (!Locomotor.CanStayInCell(self.Location))
+					self.QueueActivity(MoveTo(self.Location, evaluateNearestMovableCell: true));
 				return;
+			}
 
 			var cml = self.World.WorldActor.TraitsImplementing<ICustomMovementLayer>()
 				.First(l => l.Index == self.Location.Layer);
