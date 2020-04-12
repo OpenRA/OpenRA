@@ -38,9 +38,11 @@ medium_gun_turret:
 		Offset: -16,16
 		ZOffset: 1024
 	crumble-overlay: DATA.R8
-		Start: 4585
+		Start: 4584
 		Length: 7
 		Offset: -16,16
+		Tick: 200
+		ZOffset: 1024
 	turret: DATA.R8
 		Start: 2837
 		Facings: -32
@@ -72,9 +74,11 @@ large_gun_turret:
 		Offset: -16,16
 		ZOffset: 1024
 	crumble-overlay: DATA.R8
-		Start: 4585
+		Start: 4584
 		Length: 7
 		Offset: -16,16
+		Tick: 200
+		ZOffset: 1024
 	turret: DATA.R8
 		Start: 2885
 		Facings: -32
