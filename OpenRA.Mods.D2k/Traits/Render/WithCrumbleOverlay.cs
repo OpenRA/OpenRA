@@ -35,21 +35,34 @@ namespace OpenRA.Mods.D2k.Traits.Render
 
 	public class WithCrumbleOverlay : ConditionalTrait<WithCrumbleOverlayInfo>
 	{
+		readonly WithCrumbleOverlayInfo info;
+		readonly RenderSprites renderSprites;
+		readonly Animation overlay;
+		readonly AnimationWithOffset animation;
+
 		public WithCrumbleOverlay(ActorInitializer init, WithCrumbleOverlayInfo info)
 			: base(info)
 		{
+			this.info = info;
+
 			if (init.Contains<SkipMakeAnimsInit>())
 				return;
 
-			var rs = init.Self.Trait<RenderSprites>();
+			renderSprites = init.Self.Trait<RenderSprites>();
 
-			var overlay = new Animation(init.World, rs.GetImage(init.Self));
-			var anim = new AnimationWithOffset(overlay, null, () => IsTraitDisabled);
+			overlay = new Animation(init.World, renderSprites.GetImage(init.Self));
+			animation = new AnimationWithOffset(overlay, null, () => IsTraitDisabled);
+		}
+
+		protected override void TraitEnabled(Actor self)
+		{
+			if (overlay == null)
+				return;
+
+			renderSprites.Add(animation, info.Palette, info.IsPlayerPalette);
 
 			// Remove the animation once it is complete
-			overlay.PlayThen(info.Sequence, () => init.World.AddFrameEndTask(w => rs.Remove(anim)));
-
-			rs.Add(anim, info.Palette, info.IsPlayerPalette);
+			overlay.PlayThen(info.Sequence, () => self.World.AddFrameEndTask(w => renderSprites.Remove(animation)));
 		}
 	}
 }

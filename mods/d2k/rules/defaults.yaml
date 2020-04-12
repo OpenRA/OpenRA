@@ -454,7 +454,6 @@
 	-GivesBuildableArea:
 	WithMakeAnimation:
 		BodyNames: make
-	-WithCrumbleOverlay:
 	-Capturable:
 	WithSpriteBody:
 		Name: make
