@@ -322,8 +322,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			if (client.Location != null)
 			{
+				var locationFont = Game.Renderer.Fonts[locationLabel.Font];
+				var locationWidth = widget.Bounds.Width - 2 * locationLabel.Bounds.X;
+				var location = WidgetUtils.TruncateText(client.Location, locationWidth, locationFont);
 				locationLabel.IsVisible = () => true;
-				locationLabel.GetText = () => client.Location;
+				locationLabel.GetText = () => location;
 				widget.Bounds.Height += locationLabel.Bounds.Height;
 				ipLabel.Bounds.Y += locationLabel.Bounds.Height;
 				adminLabel.Bounds.Y += locationLabel.Bounds.Height;
