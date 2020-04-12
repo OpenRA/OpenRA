@@ -556,6 +556,7 @@
 		Voice: Move
 		Speed: 71
 		Locomotor: foot
+	TurnOnIdle:
 	Selectable:
 		DecorationBounds: 15,23,0,-9
 		Bounds: 24,24,0,-9
