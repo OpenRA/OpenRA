@@ -293,7 +293,7 @@ saboteur:
 		InitialDelay: 0
 		CloakDelay: 25
 		CloakSound: STEALTH1.WAV
-		UncloakOn: Attack, Unload, Infiltrate, Demolish, Damage, Heal
+		UncloakOn: Demolish, Damage
 		IsPlayerPalette: true
 		PauseOnCondition: cloak-force-disabled
 	GrantConditionOnDamageState@UNCLOAK:
