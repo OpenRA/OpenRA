@@ -150,11 +150,8 @@ namespace OpenRA.Mods.Common.Graphics
 
 			var health = actor.TraitOrDefault<IHealth>();
 
-			if (DisplayHealth)
+			if (DisplayHealth && health != null)
 			{
-				if (health == null || health.IsDead)
-					return;
-
 				var displayValue = health.DisplayHP != health.HP ? (float?)health.DisplayHP / health.MaxHP : null;
 				DrawBar(wr, (float)health.HP / health.MaxHP, GetHealthColor(health), 0,  displayValue, Color.OrangeRed);
 			}
