@@ -20,13 +20,6 @@ if [ ! -f ICSharpCode.SharpZipLib.dll ]; then
 	rm -rf SharpZipLib
 fi
 
-if [ ! -f MaxMind.Db.dll ]; then
-	echo "Fetching MaxMind.Db from NuGet"
-	../noget.sh MaxMind.Db 2.0.0 -IgnoreDependencies
-	cp ./MaxMind.Db/lib/net45/MaxMind.Db.* .
-	rm -rf MaxMind.Db
-fi
-
 if [ ! -f nunit.framework.dll ]; then
 	echo "Fetching NUnit from NuGet"
 	../noget.sh NUnit 3.0.1

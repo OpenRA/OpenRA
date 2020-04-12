@@ -58,10 +58,6 @@
       <HintPath>..\thirdparty\download\ICSharpCode.SharpZipLib.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="MaxMind.Db">
-      <HintPath>..\thirdparty\download\MaxMind.Db.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <ProjectReference Include="..\OpenRA.PostProcess\OpenRA.PostProcess.csproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>

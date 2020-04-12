@@ -149,7 +149,8 @@ namespace OpenRA.Server
 
 			randomSeed = (int)DateTime.Now.ToBinary();
 
-			GeoIP.Initialize(settings.GeoIPDatabase);
+			if (type != ServerType.Local && settings.EnableGeoIP)
+				GeoIP.Initialize();
 
 			if (UPnP.Status == UPnPStatus.Enabled)
 				UPnP.ForwardPort(Settings.ListenPort, Settings.ListenPort).Wait();
