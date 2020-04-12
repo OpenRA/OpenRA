@@ -12,14 +12,13 @@ ListenPort="${ListenPort:-"1234"}"
 AdvertiseOnline="${AdvertiseOnline:-"True"}"
 Password="${Password:-""}"
 
-GeoIPDatabase="${GeoIPDatabase:-""}"
-
 RequireAuthentication="${RequireAuthentication:-"False"}"
 ProfileIDBlacklist="${ProfileIDBlacklist:-""}"
 ProfileIDWhitelist="${ProfileIDWhitelist:-""}"
 
 EnableSingleplayer="${EnableSingleplayer:-"False"}"
 EnableSyncReports="${EnableSyncReports:-"False"}"
+EnableGeoIP="${EnableGeoIP:-"True"}"
 ShareAnonymizedIPs="${ShareAnonymizedIPs:-"True"}"
 
 SupportDir="${SupportDir:-""}"
@@ -36,6 +35,7 @@ while true; do
      Server.ProfileIDBlacklist="$ProfileIDBlacklist" \
      Server.ProfileIDWhitelist="$ProfileIDWhitelist" \
      Server.EnableSyncReports="$EnableSyncReports" \
+     Server.EnableGeoIP="$EnableGeoIP" \
      Server.ShareAnonymizedIPs="$ShareAnonymizedIPs" \
      Engine.SupportDir="$SupportDir"
 done

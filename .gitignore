@@ -26,7 +26,7 @@ mods/*/*.pdb
 /*.exe
 /*.exe.config
 thirdparty/download/*
-*.mmdb.gz
+IP2LOCATION-LITE-DB1.IPV6.BIN.ZIP
 
 # backup files by various editors
 *~

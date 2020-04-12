@@ -19,14 +19,6 @@ if (!(Test-Path "ICSharpCode.SharpZipLib.dll"))
 	rmdir SharpZipLib -Recurse
 }
 
-if (!(Test-Path "MaxMind.Db.dll"))
-{
-	echo "Fetching MaxMind.Db from NuGet."
-	./nuget.exe install MaxMind.Db -Version 2.0.0 -ExcludeVersion -Verbosity quiet -Source nuget.org
-	cp MaxMind.Db/lib/net45/MaxMind.Db.* .
-	rmdir MaxMind.Db -Recurse
-}
-
 if (!(Test-Path "nunit.framework.dll"))
 {
 	echo "Fetching NUnit from NuGet."

@@ -40,7 +40,7 @@
 WHITELISTED_OPENRA_ASSEMBLIES = OpenRA.Game.exe OpenRA.Utility.exe OpenRA.Platforms.Default.dll OpenRA.Mods.Common.dll OpenRA.Mods.Cnc.dll OpenRA.Mods.D2k.dll OpenRA.Game.dll
 
 # These are explicitly shipped alongside our core files by the packaging script
-WHITELISTED_THIRDPARTY_ASSEMBLIES = ICSharpCode.SharpZipLib.dll FuzzyLogicLibrary.dll MaxMind.Db.dll Eluant.dll rix0rrr.BeaconLib.dll Open.Nat.dll SDL2-CS.dll OpenAL-CS.dll 
+WHITELISTED_THIRDPARTY_ASSEMBLIES = ICSharpCode.SharpZipLib.dll FuzzyLogicLibrary.dll Eluant.dll rix0rrr.BeaconLib.dll Open.Nat.dll SDL2-CS.dll OpenAL-CS.dll
 
 # These are shipped in our custom minimal mono runtime and also available in the full system-installed .NET/mono stack
 # This list *must* be kept in sync with the files packaged by the AppImageSupport and OpenRALauncherOSX repositories
@@ -157,10 +157,11 @@ ifeq ($(WIN32), $(filter $(WIN32),true yes y on 1))
 else
 	@$(MSBUILD) -t:build -p:Configuration=Release
 endif
+	@./fetch-geoip.sh
 
 clean:
 	@ $(MSBUILD) -t:clean
-	@-$(RM_F) *.config
+	@-$(RM_F) *.config IP2LOCATION-LITE-DB1.IPV6.BIN.ZIP
 	@-$(RM_F) *.exe *.dll *.dylib ./OpenRA*/*.dll *.pdb mods/**/*.dll mods/**/*.pdb *.resources
 	@-$(RM_RF) ./*/bin ./*/obj
 	@-$(RM_RF) ./thirdparty/download
@@ -218,6 +219,7 @@ install-engine:
 	@$(INSTALL_DATA) VERSION "$(DATA_INSTALL_DIR)/VERSION"
 	@$(INSTALL_DATA) AUTHORS "$(DATA_INSTALL_DIR)/AUTHORS"
 	@$(INSTALL_DATA) COPYING "$(DATA_INSTALL_DIR)/COPYING"
+	@$(INSTALL_DATA) IP2LOCATION-LITE-DB1.IPV6.BIN.ZIP "$(DATA_INSTALL_DIR)/IP2LOCATION-LITE-DB1.IPV6.BIN.ZIP"
 
 	@$(CP_R) glsl "$(DATA_INSTALL_DIR)"
 	@$(CP_R) lua "$(DATA_INSTALL_DIR)"
@@ -227,7 +229,6 @@ install-engine:
 	@$(INSTALL_PROGRAM) ICSharpCode.SharpZipLib.dll "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) FuzzyLogicLibrary.dll "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) Open.Nat.dll "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) MaxMind.Db.dll "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) rix0rrr.BeaconLib.dll "$(DATA_INSTALL_DIR)"
 
 install-common-mod-files:

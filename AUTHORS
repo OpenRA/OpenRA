@@ -160,9 +160,6 @@ FreeType License.
 
 Using OpenAL Soft distributed under the GNU LGPL.
 
-Using MaxMind GeoIP2 .NET API distributed under
-the Apache 2.0 license.
-
 Using SDL2-CS and OpenAL-CS created by Ethan
 Lee and released under the zlib license.
 
@@ -181,6 +178,9 @@ Krueger and distributed under the GNU GPL terms.
 
 Using rix0rrr.BeaconLib developed by Rico Huijbers
 distributed under MIT License.
+
+This site or product includes IP2Location LITE data
+available from http://www.ip2location.com.
 
 Finally, special thanks goes to the original teams
 at Westwood Studios and EA for creating the classic
