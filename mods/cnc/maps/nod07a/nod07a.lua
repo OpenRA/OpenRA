@@ -105,13 +105,11 @@ SendReinforcementsWave = function(team)
 
 		transport.UnloadPassengers()
 		Trigger.OnPassengerExited(transport, function(_, passenger)
-			Utils.Do(passengers, function(actor)
-				if actor.Type == "e6" then
-					CaptureStructures(actor)
-				else
-					IdleHunt(actor)
-				end
-			end)
+			if passenger.Type == "e6" then
+				Trigger.OnIdle(passenger, CaptureStructures)
+			else
+				IdleHunt(passenger)
+			end
 
 			if not transport.HasPassengers then
 				IdleHunt(transport)
