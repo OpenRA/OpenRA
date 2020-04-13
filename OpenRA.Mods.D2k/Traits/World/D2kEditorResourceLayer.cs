@@ -20,13 +20,13 @@ namespace OpenRA.Mods.D2k.Traits
 	[Desc("Used to render spice with round borders.")]
 	public class D2kEditorResourceLayerInfo : EditorResourceLayerInfo
 	{
-		public override object Create(ActorInitializer init) { return new D2kEditorResourceLayer(init.Self); }
+		public override object Create(ActorInitializer init) { return new D2kEditorResourceLayer(init.Self, this); }
 	}
 
 	public class D2kEditorResourceLayer : EditorResourceLayer
 	{
-		public D2kEditorResourceLayer(Actor self)
-			: base(self) { }
+		public D2kEditorResourceLayer(Actor self, D2kEditorResourceLayerInfo info)
+			: base(self, info) { }
 
 		public override EditorCellContents UpdateDirtyTile(CPos c)
 		{
@@ -38,6 +38,9 @@ namespace OpenRA.Mods.D2k.Traits
 				t.Sprite = null;
 				return t;
 			}
+
+			if (Info.Types != null && !Info.Types.Contains(t.Type.Info.Type))
+				return t;
 
 			NetWorth -= t.Density * t.Type.Info.ValuePerUnit;
 

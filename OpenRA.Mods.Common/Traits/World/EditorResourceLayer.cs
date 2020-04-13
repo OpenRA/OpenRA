@@ -23,7 +23,10 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Required for the map editor to work. Attach this to the world actor.")]
 	public class EditorResourceLayerInfo : ITraitInfo, Requires<ResourceTypeInfo>
 	{
-		public virtual object Create(ActorInitializer init) { return new EditorResourceLayer(init.Self); }
+		[Desc("Only care for these ResourceType names.")]
+		public readonly string[] Types = null;
+
+		public virtual object Create(ActorInitializer init) { return new EditorResourceLayer(init.Self, this); }
 	}
 
 	public class EditorResourceLayer : IWorldLoaded, IRenderOverlay, INotifyActorDisposing
@@ -35,15 +38,18 @@ namespace OpenRA.Mods.Common.Traits
 		protected readonly HashSet<CPos> Dirty = new HashSet<CPos>();
 
 		readonly Dictionary<PaletteReference, TerrainSpriteLayer> spriteLayers = new Dictionary<PaletteReference, TerrainSpriteLayer>();
+		public readonly EditorResourceLayerInfo Info;
 
 		public int NetWorth { get; protected set; }
 
 		bool disposed;
 
-		public EditorResourceLayer(Actor self)
+		public EditorResourceLayer(Actor self, EditorResourceLayerInfo info)
 		{
 			if (self.World.Type != WorldType.Editor)
 				return;
+
+			Info = info;
 
 			Map = self.World.Map;
 			Tileset = self.World.Map.Rules.TileSet;
@@ -92,6 +98,10 @@ namespace OpenRA.Mods.Common.Traits
 			var tile = Map.Resources[uv];
 
 			var t = Tiles[cell];
+
+			if (Info.Types != null && t.Type != null && !Info.Types.Contains(t.Type.Info.Type))
+				return;
+
 			if (t.Density > 0)
 				NetWorth -= (t.Density + 1) * t.Type.Info.ValuePerUnit;
 
@@ -154,6 +164,9 @@ namespace OpenRA.Mods.Common.Traits
 				t.Sprite = null;
 				return t;
 			}
+
+			if (Info.Types != null && !Info.Types.Contains(t.Type.Info.Type))
+				return t;
 
 			// Density + 1 as workaround for fixing ResourceLayer.Harvest as it would be very disruptive to balancing
 			if (t.Density > 0)
