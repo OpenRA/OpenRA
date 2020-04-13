@@ -207,8 +207,9 @@ namespace OpenRA.Mods.Common.Activities
 
 	class FlyAttackRun : Activity
 	{
+		readonly WDist exitRange;
+
 		Target target;
-		WDist exitRange;
 		bool targetIsVisibleActor;
 
 		public FlyAttackRun(Actor self, in Target t, WDist exitRange)
@@ -250,9 +251,10 @@ namespace OpenRA.Mods.Common.Activities
 
 	class StrafeAttackRun : Activity
 	{
-		Target target;
-		WDist exitRange;
 		readonly AttackAircraft attackAircraft;
+		readonly WDist exitRange;
+
+		Target target;
 
 		public StrafeAttackRun(Actor self, AttackAircraft attackAircraft, in Target t, WDist exitRange)
 		{
