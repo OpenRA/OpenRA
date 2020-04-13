@@ -18,13 +18,26 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		readonly Aircraft aircraft;
 		readonly WDist cruiseAltitude;
-		int remainingTicks;
+		readonly int flyTicks;
+		int remainingDistance;
+		int ticks;
 
-		public FlyForward(int ticks, Actor self)
+		FlyForward(Actor self)
 		{
-			remainingTicks = ticks;
 			aircraft = self.Trait<Aircraft>();
 			cruiseAltitude = aircraft.Info.CruiseAltitude;
+		}
+
+		public FlyForward(int ticks, Actor self)
+			: this(self)
+		{
+			flyTicks = ticks;
+		}
+
+		public FlyForward(Actor self, WDist distance)
+			: this(self)
+		{
+			remainingDistance = distance.Length;
 		}
 
 		public override bool Tick(Actor self)
@@ -36,11 +49,15 @@ namespace OpenRA.Mods.Common.Activities
 				return true;
 			}
 
-			if (IsCanceling || remainingTicks-- == 0)
+			// Having flyTicks < 0 is valid and means the actor flies until this activity is canceled
+			if (IsCanceling || (flyTicks > 0 && ticks++ >= flyTicks) || (flyTicks == 0 && remainingDistance <= 0))
 				return true;
 
-			Fly.FlyTick(self, aircraft, aircraft.Facing, cruiseAltitude);
+			// FlyTick moves the aircraft while FlyStep calculates how far we are moving
+			if (remainingDistance != 0)
+				remainingDistance -= aircraft.FlyStep(aircraft.Facing).HorizontalLength;
 
+			Fly.FlyTick(self, aircraft, aircraft.Facing, cruiseAltitude);
 			return false;
 		}
 	}
