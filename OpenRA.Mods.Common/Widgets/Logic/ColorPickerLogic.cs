@@ -72,7 +72,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			mixer.SetPaletteRange(validator.HsvSaturationRange[0], validator.HsvSaturationRange[1], validator.HsvValueRange[0], validator.HsvValueRange[1]);
 			mixer.Set(initialColor);
 			hueSlider.Value = HueFromColor(initialColor);
-			onChange(mixer.Color);
+
+			// HACK: the value returned from the color mixer will generally not
+			// be equal to the given initialColor due to its internal RGB -> HSL -> RGB
+			// conversion. This conversion can sometimes convert a valid initial value
+			// into an invalid (too close to terrain / another player) color.
+			// We use the original colour here instead of the mixer color to make sure
+			// that we keep the player's previous colour value if they don't change anything
+			onChange(initialColor);
 
 			// Setup tab controls
 			var mixerTab = widget.Get("MIXER_TAB");
