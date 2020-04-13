@@ -45,6 +45,7 @@ namespace OpenRA.Mods.Common.Server
 			{ "team", Team },
 			{ "spawn", Spawn },
 			{ "color", PlayerColor },
+			{ "handicap", Handicap },
 			{ "sync_lobby", SyncLobby }
 		};
 
@@ -684,6 +685,30 @@ namespace OpenRA.Mods.Common.Server
 			Log.Write("server", "Player@{0} is now known as {1}.", conn.Socket.RemoteEndPoint, sanitizedName);
 			server.SendMessage("{0} is now known as {1}.".F(client.Name, sanitizedName));
 			client.Name = sanitizedName;
+			server.SyncLobbyClients();
+
+			return true;
+		}
+
+		static bool Handicap(S server, Connection conn, Session.Client client, string s)
+		{
+			var parts = s.Split(' ');
+			var targetClient = server.LobbyInfo.ClientWithIndex(Exts.ParseIntegerInvariant(parts[0]));
+
+			// Only the host can change other client's info
+			if (targetClient.Index != client.Index && !client.IsAdmin)
+				return true;
+
+			int handicap;
+			if (!Exts.TryParseIntegerInvariant(parts[1], out handicap) && handicap >= 50 && handicap <= 100)
+			{
+				Log.Write("server", "Invalid Handicap: {0}", s);
+				return false;
+			}
+
+			Log.Write("server", "Handicap changed: Player@{0} units will do {1}% of normal damage.", conn.Socket.RemoteEndPoint, handicap);
+			server.SendMessage("Handicap changed: {0} units will do {1}% of normal damage.".F(targetClient.Name, handicap));
+			targetClient.Handicap = handicap;
 			server.SyncLobbyClients();
 
 			return true;

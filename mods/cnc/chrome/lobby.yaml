@@ -2,7 +2,7 @@ Container@SERVER_LOBBY:
 	Logic: LobbyLogic
 	X: (WINDOW_RIGHT - WIDTH) / 2
 	Y: (WINDOW_BOTTOM - 560) / 2
-	Width: 800
+	Width: 900
 	Height: 575
 	Children:
 		ColorPreviewManager@COLOR_MANAGER:

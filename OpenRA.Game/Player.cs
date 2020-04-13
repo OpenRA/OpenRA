@@ -54,6 +54,7 @@ namespace OpenRA
 		public readonly bool NonCombatant = false;
 		public readonly bool Playable = true;
 		public readonly int ClientIndex;
+		public readonly int Handicap = 100;
 		public readonly PlayerReference PlayerReference;
 		public readonly bool IsBot;
 		public readonly string BotType;
@@ -146,6 +147,7 @@ namespace OpenRA
 				BotType = client.Bot;
 				Faction = ChooseFaction(world, client.Faction, !pr.LockFaction);
 				DisplayFaction = ChooseDisplayFaction(world, client.Faction);
+				Handicap = client.Handicap;
 			}
 			else
 			{

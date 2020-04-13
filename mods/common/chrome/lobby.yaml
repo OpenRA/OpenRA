@@ -2,7 +2,7 @@ Background@SERVER_LOBBY:
 	Logic: LobbyLogic
 	X: (WINDOW_RIGHT - WIDTH) / 2
 	Y: (WINDOW_BOTTOM - HEIGHT) / 2
-	Width: 808
+	Width: 908
 	Height: 600
 	Children:
 		ColorPreviewManager@COLOR_MANAGER:

@@ -194,6 +194,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				};
 			}
 
+			var handicapButton = lobby.GetOrNull<DropDownButtonWidget>("HANDICAP_DROPDOWNBUTTON");
+			if (handicapButton != null)
+			{
+				handicapButton.IsDisabled = () => configurationDisabled();
+			}
+
 			var slotsButton = lobby.GetOrNull<DropDownButtonWidget>("SLOTS_DROPDOWNBUTTON");
 			if (slotsButton != null)
 			{
@@ -618,6 +624,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					LobbyUtils.SetupEditableFactionWidget(template, slot, client, orderManager, factions);
 					LobbyUtils.SetupEditableTeamWidget(template, slot, client, orderManager, map);
 					LobbyUtils.SetupEditableSpawnWidget(template, slot, client, orderManager, map);
+					LobbyUtils.SetupEditableHandicapWidget(template, slot, client, orderManager);
 					LobbyUtils.SetupEditableReadyWidget(template, slot, client, orderManager, map);
 				}
 				else
@@ -629,6 +636,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					LobbyUtils.SetupLatencyWidget(template, client, orderManager);
 					LobbyUtils.SetupColorWidget(template, slot, client);
 					LobbyUtils.SetupFactionWidget(template, slot, client, factions);
+					LobbyUtils.SetupHandicapWidget(template, slot, client);
 
 					if (isHost)
 					{

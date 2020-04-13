@@ -170,6 +170,13 @@ namespace OpenRA.Mods.Common.Traits
 					.Concat(damageModifiersPlayer)
 					.Select(t => t.GetDamageModifier(attacker, damage));
 
+				if (attacker.Owner.Handicap > 0)
+				{
+					var list = modifiers.ToList();
+					list.Add(attacker.Owner.Handicap);
+					modifiers = list;
+				}
+
 				damage = new Damage(Util.ApplyPercentageModifiers(damage.Value, modifiers), damage.DamageTypes);
 			}
 

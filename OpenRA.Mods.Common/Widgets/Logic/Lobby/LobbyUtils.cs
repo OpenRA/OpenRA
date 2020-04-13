@@ -162,6 +162,23 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			dropdown.ShowDropDown("SPAWN_DROPDOWN_TEMPLATE", 150, spawnPoints, setupItem);
 		}
 
+		public static void ShowHandicapDropDown(DropDownButtonWidget dropdown, Session.Client client,
+			OrderManager orderManager)
+		{
+			Func<int, ScrollItemWidget, ScrollItemWidget> setupItem = (ii, itemTemplate) =>
+			{
+				var item = ScrollItemWidget.Setup(itemTemplate,
+					() => client.Handicap == ii,
+					() => orderManager.IssueOrder(Order.Command("handicap {0} {1}".F(client.Index, ii))));
+
+				item.Get<LabelWidget>("LABEL").GetText = () => ii.ToString();
+				return item;
+			};
+
+			int[] options = { 100, 90, 80, 70, 60, 50 };
+			dropdown.ShowDropDown("HANDICAP_DROPDOWN_TEMPLATE", 150, options, setupItem);
+		}
+
 		/// <summary>Splits a string into two parts on the first instance of a given token.</summary>
 		static Pair<string, string> SplitOnFirstToken(string input, string token = "\\n")
 		{
@@ -524,6 +541,25 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var factionFlag = parent.Get<ImageWidget>("FACTIONFLAG");
 			factionFlag.GetImageName = () => c.Faction;
 			factionFlag.GetImageCollection = () => "flags";
+		}
+
+		public static void SetupEditableHandicapWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager)
+		{
+			var dropdown = parent.Get<DropDownButtonWidget>("HANDICAP_DROPDOWN");
+			dropdown.IsVisible = () => true;
+			dropdown.IsDisabled = () => orderManager.LocalClient.IsReady;
+			dropdown.OnMouseDown = _ => ShowHandicapDropDown(dropdown, c, orderManager);
+			dropdown.GetText = () => (c.Handicap == 0) ? "-" : c.Handicap.ToString();
+
+			HideChildWidget(parent, "HANDICAP");
+		}
+
+		public static void SetupHandicapWidget(Widget parent, Session.Slot s, Session.Client c)
+		{
+			var team = parent.Get<LabelWidget>("HANDICAP");
+			team.IsVisible = () => true;
+			team.GetText = () => (c.Handicap == 0) ? "-" : c.Handicap.ToString();
+			HideChildWidget(parent, "HANDICAP_DROPDOWN");
 		}
 
 		public static void SetupEditableTeamWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, MapPreview map)

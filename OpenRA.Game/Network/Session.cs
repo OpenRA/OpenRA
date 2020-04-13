@@ -138,6 +138,7 @@ namespace OpenRA.Network
 			public string Location;
 
 			public ClientState State = ClientState.Invalid;
+			public int Handicap = 100; // could be 50, 60, 70, 80, 90 or 100
 			public int Team;
 			public string Slot; // Slot ID, or null for observer
 			public string Bot; // Bot type, null for real clients

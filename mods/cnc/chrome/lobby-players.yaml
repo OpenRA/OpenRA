@@ -40,24 +40,31 @@ Container@LOBBY_PLAYER_BIN:
 					Width: 50
 					Height: 25
 					Text: Spawn
+					Align: Center
+					Font: Bold
+				Label@HANDICAP:
+					X: 527
+					Width: 91
+					Height: 25
+					Text: Unit Damage
 					Align: Left
 					Font: Bold
 				Label@STATUS:
-					X: 527
+					X: 627
 					Width: 20
 					Height: 25
 					Text: Ready
 					Align: Left
 					Font: Bold
 		ScrollPanel@LOBBY_PLAYERS:
-			Width: PARENT_RIGHT
+			Width: PARENT_RIGHT + 100
 			Height: PARENT_BOTTOM
 			TopBottomSpacing: 5
 			ItemSpacing: 5
 			Children:
 				Container@TEMPLATE_EDITABLE_PLAYER:
 					X: 5
-					Width: 530
+					Width: 630
 					Height: 25
 					Visible: false
 					Children:
@@ -147,8 +154,13 @@ Container@LOBBY_PLAYER_BIN:
 							Width: 50
 							Height: 25
 							Font: Regular
+						DropDownButton@HANDICAP_DROPDOWN:
+							X: 526
+							Width: 95
+							Height: 25
+							Font: Regular
 						Image@STATUS_IMAGE:
-							X: 529
+							X: 629
 							Y: 4
 							Width: 20
 							Height: 20
@@ -156,14 +168,14 @@ Container@LOBBY_PLAYER_BIN:
 							ImageName: checked
 							Visible: false
 						Checkbox@STATUS_CHECKBOX:
-							X: 527
+							X: 627
 							Y: 2
 							Width: 20
 							Height: 20
 							Visible: false
 				Container@TEMPLATE_NONEDITABLE_PLAYER:
 					X: 5
-					Width: 530
+					Width: 630
 					Height: 25
 					Visible: false
 					Children:
@@ -251,6 +263,11 @@ Container@LOBBY_PLAYER_BIN:
 							Width: 25
 							Height: 25
 							Align: Center
+						Label@HANDICAP:
+							X: 529
+							Width: 65
+							Height: 25
+							Align: Center
 						DropDownButton@TEAM_DROPDOWN:
 							X: 416
 							Width: 50
@@ -261,10 +278,15 @@ Container@LOBBY_PLAYER_BIN:
 							X: 471
 							Width: 50
 							Height: 25
+							Visible: false
+						DropDownButton@HANDICAP_DROPDOWN:
+							X: 529
+							Width: 95
+							Height: 25
 							Font: Regular
 							Visible: false
 						Image@STATUS_IMAGE:
-							X: 529
+							X: 629
 							Y: 4
 							Width: 20
 							Height: 20
@@ -273,7 +295,7 @@ Container@LOBBY_PLAYER_BIN:
 							Visible: false
 				Container@TEMPLATE_EMPTY:
 					X: 5
-					Width: 530
+					Width: 630
 					Height: 25
 					Visible: false
 					Children:
@@ -291,7 +313,7 @@ Container@LOBBY_PLAYER_BIN:
 							Visible: false
 						Button@JOIN:
 							X: 210
-							Width: 338
+							Width: 411
 							Height: 25
 							Text: Play in this slot
 							Font: Regular
@@ -340,13 +362,13 @@ Container@LOBBY_PLAYER_BIN:
 									Template: ANONYMOUS_PLAYER_TOOLTIP
 						Label@SPECTATOR:
 							X: 210
-							Width: 341
+							Width: 411
 							Height: 25
 							Text: Spectator
 							Align: Center
 							Font: Bold
 						Image@STATUS_IMAGE:
-							X: 529
+							X: 629
 							Y: 4
 							Width: 20
 							Height: 20
@@ -354,7 +376,7 @@ Container@LOBBY_PLAYER_BIN:
 							ImageName: checked
 							Visible: false
 						Checkbox@STATUS_CHECKBOX:
-							X: 527
+							X: 627
 							Y: 2
 							Width: 20
 							Height: 20
@@ -436,7 +458,7 @@ Container@LOBBY_PLAYER_BIN:
 							Visible: false
 				Container@TEMPLATE_NEW_SPECTATOR:
 					X: 5
-					Width: 529
+					Width: 629
 					Height: 25
 					Visible: false
 					Children:
@@ -448,7 +470,7 @@ Container@LOBBY_PLAYER_BIN:
 							Text: Allow Spectators?
 						Button@SPECTATE:
 							X: 210
-							Width: 338
+							Width: 411
 							Height: 25
 							Text: Spectate
 							Font: Regular
