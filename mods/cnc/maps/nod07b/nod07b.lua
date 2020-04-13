@@ -101,16 +101,17 @@ end
 
 SendReinforcementsWave = function(team)
 	Reinforcements.ReinforceWithTransport(GDI, "apc", team.units, { ReinforcementsGDISpawn.Location, waypoint12.Location}, nil, function(transport, passengers)
-		MoveAndHunt(transport, team.waypoints)
+		Utils.Do(team.waypoints, function(waypoint)
+			transport.Move(waypoint.Location)
+		end)
+
 		transport.UnloadPassengers()
 		Trigger.OnPassengerExited(transport, function(_, passenger)
-			Utils.Do(passengers, function(actor)
-				if actor.Type == "e6" then
-					CaptureStructures(actor)
-				else
-					IdleHunt(actor)
-				end
-			end)
+			if passenger.Type == "e6" then
+				Trigger.OnIdle(passenger, CaptureStructures)
+			else
+				IdleHunt(passenger)
+			end
 
 			if not transport.HasPassengers then
 				IdleHunt(transport)
