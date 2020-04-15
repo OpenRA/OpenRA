@@ -398,8 +398,17 @@ namespace OpenRA.Mods.Common.Server
 				LoadMapSettings(server, server.LobbyInfo.GlobalSettings, server.Map.Rules);
 
 				// Reset client states
+				var selectableFactions = server.Map.Rules.Actors["world"].TraitInfos<FactionInfo>()
+					.Where(f => f.Selectable)
+					.Select(f => f.InternalName)
+					.ToList();
+
 				foreach (var c in server.LobbyInfo.Clients)
+				{
 					c.State = Session.ClientState.Invalid;
+					if (!selectableFactions.Contains(c.Faction))
+						c.Faction = "Random";
+				}
 
 				// Reassign players into new slots based on their old slots:
 				//  - Observers remain as observers
