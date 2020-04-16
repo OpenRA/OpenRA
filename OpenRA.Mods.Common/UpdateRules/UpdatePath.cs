@@ -82,7 +82,8 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new ModernizeDecorationTraits(),
 				new RenameInfiltrationNotifications(),
 				new MoveClassicFacingFudge(),
-				new RenameWithNukeLaunch()
+				new RenameWithNukeLaunch(),
+				new SpawnActorPowerDefaultEffect(),
 			})
 		};
 
