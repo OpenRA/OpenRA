@@ -14,13 +14,13 @@ using OpenRA.Mods.Common.Traits;
 
 namespace OpenRA.Mods.Common.Activities
 {
-	public class FlyTimed : Activity
+	public class FlyForward : Activity
 	{
 		readonly Aircraft aircraft;
 		readonly WDist cruiseAltitude;
 		int remainingTicks;
 
-		public FlyTimed(int ticks, Actor self)
+		public FlyForward(int ticks, Actor self)
 		{
 			remainingTicks = ticks;
 			aircraft = self.Trait<Aircraft>();
