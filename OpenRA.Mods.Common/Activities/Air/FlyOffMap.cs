@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (hasTarget)
 			{
 				QueueChild(new Fly(self, target));
-				QueueChild(new FlyForward(-1, self));
+				QueueChild(new FlyForward(self));
 				return;
 			}
 
@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (aircraft.Info.VTOL && self.World.Map.DistanceAboveTerrain(aircraft.CenterPosition) != aircraft.Info.CruiseAltitude)
 				QueueChild(new TakeOff(self));
 
-			QueueChild(new FlyForward(-1, self));
+			QueueChild(new FlyForward(self));
 		}
 
 		public override bool Tick(Actor self)
