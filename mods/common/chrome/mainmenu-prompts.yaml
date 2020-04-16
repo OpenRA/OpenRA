@@ -245,7 +245,7 @@ Background@MAINMENU_INTRODUCTION_PROMPT:
 			Text: Increase Cursor Size
 		Button@CONTINUE_BUTTON:
 			X: PARENT_RIGHT - 180
-			Y: PARENT_BOTTOM - 45 
+			Y: PARENT_BOTTOM - 45
 			Width: 160
 			Height: 25
 			Text: Continue
