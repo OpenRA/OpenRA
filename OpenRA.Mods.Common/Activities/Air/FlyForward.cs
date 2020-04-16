@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Activities
 			cruiseAltitude = aircraft.Info.CruiseAltitude;
 		}
 
-		public FlyForward(int ticks, Actor self)
+		public FlyForward(Actor self, int ticks = -1)
 			: this(self)
 		{
 			flyTicks = ticks;
