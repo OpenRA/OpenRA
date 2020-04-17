@@ -231,13 +231,14 @@ namespace OpenRA.Mods.Cnc.Traits
 					minelayers.Max(m => m.Info.TraitInfo<MinelayerInfo>().MinefieldDepth));
 
 				var movement = minelayer.Trait<IPositionable>();
+				var mobile = movement as Mobile;
 				var pal = wr.Palette(TileSet.TerrainPaletteInternalName);
 				foreach (var c in minefield)
 				{
 					var tile = tileOk;
 					if (world.FogObscures(c))
 						tile = tileUnknown;
-					else if (!movement.CanEnterCell(c, null, BlockedByActor.Immovable))
+					else if (!movement.CanEnterCell(c, null, BlockedByActor.Immovable) || (mobile != null && !mobile.CanStayInCell(c)))
 						tile = tileBlocked;
 
 					yield return new SpriteRenderable(tile, world.Map.CenterOfCell(c),
