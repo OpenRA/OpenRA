@@ -322,7 +322,7 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 			// Get all templates from the tileset YAML file that have at least one frame and an Image property corresponding to the requested tileset
 			// Each frame is a tile from the Dune 2000 tileset files, with the Frame ID being the index of the tile in the original file
 			tileSetsFromYaml = tileSet.Templates.Where(t => t.Value.Frames != null
-				&& t.Value.Images[0].ToLower() == tilesetName.ToLower()).Select(ts => ts.Value).ToList();
+				&& t.Value.Images[0].ToLowerInvariant() == tilesetName.ToLowerInvariant()).Select(ts => ts.Value).ToList();
 
 			var players = new MapPlayers(map.Rules, playerCount);
 			map.PlayerDefinitions = players.ToMiniYaml();
@@ -350,7 +350,7 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 				if (ActorDataByActorCode.ContainsKey(tileSpecialInfo))
 				{
 					var kvp = ActorDataByActorCode[tileSpecialInfo];
-					if (!rules.Actors.ContainsKey(kvp.First.ToLower()))
+					if (!rules.Actors.ContainsKey(kvp.First.ToLowerInvariant()))
 						throw new InvalidOperationException("Actor with name {0} could not be found in the rules YAML file!".F(kvp.First));
 
 					var a = new ActorReference(kvp.First)
@@ -380,7 +380,7 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 		TerrainTile GetTile(int tileIndex)
 		{
 			// Some tiles are duplicates of other tiles, just on a different tileset
-			if (tilesetName.ToLower() == "bloxbgbs.r8")
+			if (tilesetName.ToLowerInvariant() == "bloxbgbs.r8")
 			{
 				if (tileIndex == 355)
 					return new TerrainTile(441, 0);
@@ -389,7 +389,7 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 					return new TerrainTile(442, 0);
 			}
 
-			if (tilesetName.ToLower() == "bloxtree.r8")
+			if (tilesetName.ToLowerInvariant() == "bloxtree.r8")
 			{
 				var indices = new[] { 683, 684, 685, 706, 703, 704, 705, 726, 723, 724, 725, 746, 743, 744, 745, 747 };
 				for (var i = 0; i < 16; i++)
@@ -410,7 +410,7 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 					return new TerrainTile(215, 0);
 			}
 
-			if (tilesetName.ToLower() == "bloxwast.r8")
+			if (tilesetName.ToLowerInvariant() == "bloxwast.r8")
 			{
 				if (tileIndex == 342)
 					return new TerrainTile(250, 0);

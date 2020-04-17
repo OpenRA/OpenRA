@@ -92,7 +92,7 @@ namespace OpenRA.Mods.Common.Lint
 				if (value == null)
 					continue;
 
-				if (!dict.ContainsKey(value.ToLower()))
+				if (!dict.ContainsKey(value.ToLowerInvariant()))
 					emitError("{0}.{1}.{2}: Missing weapon `{3}`."
 						.F(actorInfo.Name, traitInfo.GetType().Name, fieldInfo.Name, value));
 			}
@@ -110,7 +110,7 @@ namespace OpenRA.Mods.Common.Lint
 				if (value == null)
 					continue;
 
-				if (!dict.ContainsKey(value.ToLower()))
+				if (!dict.ContainsKey(value.ToLowerInvariant()))
 					emitError("{0}.{1}.{2}: Missing voice `{3}`."
 						.F(actorInfo.Name, traitInfo.GetType().Name, fieldInfo.Name, value));
 			}
