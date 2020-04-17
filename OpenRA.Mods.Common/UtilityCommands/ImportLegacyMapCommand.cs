@@ -182,19 +182,19 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					switch (s.Key)
 					{
 					case "Intro":
-						videos.Add(new MiniYamlNode("BackgroundVideo", s.Value.ToLower() + ".vqa"));
+						videos.Add(new MiniYamlNode("BackgroundVideo", s.Value.ToLowerInvariant() + ".vqa"));
 						break;
 					case "Brief":
-						videos.Add(new MiniYamlNode("BriefingVideo", s.Value.ToLower() + ".vqa"));
+						videos.Add(new MiniYamlNode("BriefingVideo", s.Value.ToLowerInvariant() + ".vqa"));
 						break;
 					case "Action":
-						videos.Add(new MiniYamlNode("StartVideo", s.Value.ToLower() + ".vqa"));
+						videos.Add(new MiniYamlNode("StartVideo", s.Value.ToLowerInvariant() + ".vqa"));
 						break;
 					case "Win":
-						videos.Add(new MiniYamlNode("WinVideo", s.Value.ToLower() + ".vqa"));
+						videos.Add(new MiniYamlNode("WinVideo", s.Value.ToLowerInvariant() + ".vqa"));
 						break;
 					case "Lose":
-						videos.Add(new MiniYamlNode("LossVideo", s.Value.ToLower() + ".vqa"));
+						videos.Add(new MiniYamlNode("LossVideo", s.Value.ToLowerInvariant() + ".vqa"));
 						break;
 					}
 				}

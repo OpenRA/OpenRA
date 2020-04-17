@@ -88,7 +88,7 @@ namespace OpenRA.Mods.Common.Traits
 			var initialFacing = self.World.Map.FacingBetween(location, self.Location, 0);
 
 			// If aircraft, spawn at cruise altitude
-			var aircraftInfo = self.World.Map.Rules.Actors[deliveringActorName.ToLower()].TraitInfoOrDefault<AircraftInfo>();
+			var aircraftInfo = self.World.Map.Rules.Actors[deliveringActorName.ToLowerInvariant()].TraitInfoOrDefault<AircraftInfo>();
 			if (aircraftInfo != null)
 				spawn += new WVec(0, 0, aircraftInfo.CruiseAltitude.Length);
 
