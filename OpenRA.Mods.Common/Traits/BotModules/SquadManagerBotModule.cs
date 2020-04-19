@@ -126,6 +126,14 @@ namespace OpenRA.Mods.Common.Traits
 				&& !a.GetEnabledTargetTypes().IsEmpty;
 		}
 
+		public bool IsVisibleEnemyUnit(Actor a)
+		{
+			return a != null && !a.IsDead && Player.Stances[a.Owner] == Stance.Enemy
+				&& !a.Info.HasTraitInfo<HuskInfo>()
+				&& !a.GetEnabledTargetTypes().IsEmpty
+				&& !(a.TraitsImplementing<Cloak>().Where(t => !t.IsTraitDisabled && !t.IsTraitPaused && !t.IsVisible(a, Player)).Any());
+		}
+
 		protected override void Created(Actor self)
 		{
 			// Special case handling is required for the Player actor.
@@ -160,12 +168,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		internal Actor FindClosestEnemy(WPos pos)
 		{
-			return World.Actors.Where(IsEnemyUnit).ClosestTo(pos);
+			return World.Actors.Where(IsVisibleEnemyUnit).ClosestTo(pos) ?? World.Actors.Where(IsEnemyUnit).ClosestTo(pos);
 		}
 
 		internal Actor FindClosestEnemy(WPos pos, WDist radius)
 		{
-			return World.FindActorsInCircle(pos, radius).Where(IsEnemyUnit).ClosestTo(pos);
+			return World.FindActorsInCircle(pos, radius).Where(IsVisibleEnemyUnit).ClosestTo(pos) ?? World.FindActorsInCircle(pos, radius).Where(IsEnemyUnit).ClosestTo(pos);
 		}
 
 		void CleanSquads()
