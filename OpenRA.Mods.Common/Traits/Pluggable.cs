@@ -49,8 +49,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly PluggableInfo Info;
 
 		readonly string initialPlug;
-		ConditionManager conditionManager;
-		int conditionToken = ConditionManager.InvalidConditionToken;
+		int conditionToken = Actor.InvalidConditionToken;
 		Dictionary<string, bool> plugTypesAvailability = null;
 
 		string active;
@@ -73,8 +72,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyCreated.Created(Actor self)
 		{
-			conditionManager = self.TraitOrDefault<ConditionManager>();
-
 			if (!string.IsNullOrEmpty(initialPlug))
 				EnablePlug(self, initialPlug);
 		}
@@ -96,10 +93,10 @@ namespace OpenRA.Mods.Common.Traits
 			if (!Info.Conditions.TryGetValue(type, out condition))
 				return;
 
-			if (conditionToken != ConditionManager.InvalidConditionToken)
-				conditionManager.RevokeCondition(self, conditionToken);
+			if (conditionToken != Actor.InvalidConditionToken)
+				self.RevokeCondition(conditionToken);
 
-			conditionToken = conditionManager.GrantCondition(self, condition);
+			conditionToken = self.GrantCondition(condition);
 			active = type;
 		}
 
@@ -108,8 +105,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (type != active)
 				return;
 
-			if (conditionToken != ConditionManager.InvalidConditionToken)
-				conditionToken = conditionManager.RevokeCondition(self, conditionToken);
+			if (conditionToken != Actor.InvalidConditionToken)
+				conditionToken = self.RevokeCondition(conditionToken);
 
 			active = null;
 		}

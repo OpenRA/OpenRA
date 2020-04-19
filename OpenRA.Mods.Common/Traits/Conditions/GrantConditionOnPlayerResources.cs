@@ -33,8 +33,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly GrantConditionOnPlayerResourcesInfo info;
 		PlayerResources playerResources;
 
-		ConditionManager conditionManager;
-		int conditionToken = ConditionManager.InvalidConditionToken;
+		int conditionToken = Actor.InvalidConditionToken;
 
 		public GrantConditionOnPlayerResources(GrantConditionOnPlayerResourcesInfo info)
 		{
@@ -49,7 +48,6 @@ namespace OpenRA.Mods.Common.Traits
 			// it refers to the same actor as self.Owner.PlayerActor
 			var playerActor = self.Info.Name == "player" ? self : self.Owner.PlayerActor;
 			playerResources = playerActor.Trait<PlayerResources>();
-			conditionManager = self.TraitOrDefault<ConditionManager>();
 		}
 
 		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
@@ -59,14 +57,14 @@ namespace OpenRA.Mods.Common.Traits
 
 		void ITick.Tick(Actor self)
 		{
-			if (string.IsNullOrEmpty(info.Condition) || conditionManager == null)
+			if (string.IsNullOrEmpty(info.Condition))
 				return;
 
 			var enabled = playerResources.Resources > info.Threshold;
-			if (enabled && conditionToken == ConditionManager.InvalidConditionToken)
-				conditionToken = conditionManager.GrantCondition(self, info.Condition);
-			else if (!enabled && conditionToken != ConditionManager.InvalidConditionToken)
-				conditionToken = conditionManager.RevokeCondition(self, conditionToken);
+			if (enabled && conditionToken == Actor.InvalidConditionToken)
+				conditionToken = self.GrantCondition(info.Condition);
+			else if (!enabled && conditionToken != Actor.InvalidConditionToken)
+				conditionToken = self.RevokeCondition(conditionToken);
 		}
 	}
 }

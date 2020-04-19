@@ -84,6 +84,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new MoveClassicFacingFudge(),
 				new RenameWithNukeLaunch(),
 				new SpawnActorPowerDefaultEffect(),
+				new RemoveConditionManager(),
 			})
 		};
 

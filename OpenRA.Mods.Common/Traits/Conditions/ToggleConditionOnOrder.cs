@@ -42,8 +42,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class ToggleConditionOnOrder : PausableConditionalTrait<ToggleConditionOnOrderInfo>, IResolveOrder
 	{
-		ConditionManager conditionManager;
-		int conditionToken = ConditionManager.InvalidConditionToken;
+		int conditionToken = Actor.InvalidConditionToken;
 
 		// If the trait is paused this may be true with no condition granted
 		[Sync]
@@ -52,21 +51,11 @@ namespace OpenRA.Mods.Common.Traits
 		public ToggleConditionOnOrder(Actor self, ToggleConditionOnOrderInfo info)
 			: base(info) { }
 
-		protected override void Created(Actor self)
-		{
-			base.Created(self);
-
-			conditionManager = self.TraitOrDefault<ConditionManager>();
-		}
-
 		void SetCondition(Actor self, bool granted)
 		{
-			if (conditionManager == null)
-				return;
-
-			if (granted && conditionToken == ConditionManager.InvalidConditionToken)
+			if (granted && conditionToken == Actor.InvalidConditionToken)
 			{
-				conditionToken = conditionManager.GrantCondition(self, Info.Condition);
+				conditionToken = self.GrantCondition(Info.Condition);
 
 				if (Info.EnabledSound != null)
 					Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Sounds", Info.EnabledSound, self.Owner.Faction.InternalName);
@@ -74,9 +63,9 @@ namespace OpenRA.Mods.Common.Traits
 				if (Info.EnabledSpeech != null)
 					Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", Info.EnabledSpeech, self.Owner.Faction.InternalName);
 			}
-			else if (!granted && conditionToken != ConditionManager.InvalidConditionToken)
+			else if (!granted && conditionToken != Actor.InvalidConditionToken)
 			{
-				conditionToken = conditionManager.RevokeCondition(self, conditionToken);
+				conditionToken = self.RevokeCondition(conditionToken);
 
 				if (Info.DisabledSound != null)
 					Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Sounds", Info.DisabledSound, self.Owner.Faction.InternalName);

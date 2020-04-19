@@ -57,15 +57,14 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new Parachutable(init.Self, this); }
 	}
 
-	public class Parachutable : INotifyCreated, INotifyParachute
+	public class Parachutable : INotifyParachute
 	{
 		readonly ParachutableInfo info;
 		readonly IPositionable positionable;
 
 		public Actor IgnoreActor;
 
-		ConditionManager conditionManager;
-		int parachutingToken = ConditionManager.InvalidConditionToken;
+		int parachutingToken = Actor.InvalidConditionToken;
 
 		public Parachutable(Actor self, ParachutableInfo info)
 		{
@@ -75,17 +74,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool IsInAir { get; private set; }
 
-		void INotifyCreated.Created(Actor self)
-		{
-			conditionManager = self.TraitOrDefault<ConditionManager>();
-		}
-
 		void INotifyParachute.OnParachute(Actor self)
 		{
 			IsInAir = true;
 
-			if (conditionManager != null && parachutingToken == ConditionManager.InvalidConditionToken && !string.IsNullOrEmpty(info.ParachutingCondition))
-				parachutingToken = conditionManager.GrantCondition(self, info.ParachutingCondition);
+			if (parachutingToken == Actor.InvalidConditionToken && !string.IsNullOrEmpty(info.ParachutingCondition))
+				parachutingToken = self.GrantCondition(info.ParachutingCondition);
 
 			self.NotifyBlocker(self.Location);
 		}
@@ -94,8 +88,8 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			IsInAir = false;
 
-			if (parachutingToken != ConditionManager.InvalidConditionToken)
-				parachutingToken = conditionManager.RevokeCondition(self, parachutingToken);
+			if (parachutingToken != Actor.InvalidConditionToken)
+				parachutingToken = self.RevokeCondition(parachutingToken);
 
 			if (!info.KilledOnImpassableTerrain)
 				return;

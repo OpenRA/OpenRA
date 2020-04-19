@@ -44,10 +44,9 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class Carryable : ConditionalTrait<CarryableInfo>
 	{
-		ConditionManager conditionManager;
-		int reservedToken = ConditionManager.InvalidConditionToken;
-		int carriedToken = ConditionManager.InvalidConditionToken;
-		int lockedToken = ConditionManager.InvalidConditionToken;
+		int reservedToken = Actor.InvalidConditionToken;
+		int carriedToken = Actor.InvalidConditionToken;
+		int lockedToken = Actor.InvalidConditionToken;
 
 		Mobile mobile;
 		IDelayCarryallPickup[] delayPickups;
@@ -66,7 +65,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected override void Created(Actor self)
 		{
-			conditionManager = self.Trait<ConditionManager>();
 			mobile = self.TraitOrDefault<Mobile>();
 			delayPickups = self.TraitsImplementing<IDelayCarryallPickup>().ToArray();
 
@@ -80,8 +78,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			attached = true;
 
-			if (carriedToken == ConditionManager.InvalidConditionToken && !string.IsNullOrEmpty(Info.CarriedCondition))
-				carriedToken = conditionManager.GrantCondition(self, Info.CarriedCondition);
+			if (carriedToken == Actor.InvalidConditionToken && !string.IsNullOrEmpty(Info.CarriedCondition))
+				carriedToken = self.GrantCondition(Info.CarriedCondition);
 		}
 
 		// This gets called by carrier after we touched down
@@ -92,8 +90,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			attached = false;
 
-			if (carriedToken != ConditionManager.InvalidConditionToken)
-				carriedToken = conditionManager.RevokeCondition(self, carriedToken);
+			if (carriedToken != Actor.InvalidConditionToken)
+				carriedToken = self.RevokeCondition(carriedToken);
 		}
 
 		public virtual bool Reserve(Actor self, Actor carrier)
@@ -104,8 +102,8 @@ namespace OpenRA.Mods.Common.Traits
 			state = State.Reserved;
 			Carrier = carrier;
 
-			if (reservedToken == ConditionManager.InvalidConditionToken && !string.IsNullOrEmpty(Info.ReservedCondition))
-				reservedToken = conditionManager.GrantCondition(self, Info.ReservedCondition);
+			if (reservedToken == Actor.InvalidConditionToken && !string.IsNullOrEmpty(Info.ReservedCondition))
+				reservedToken = self.GrantCondition(Info.ReservedCondition);
 
 			return true;
 		}
@@ -115,11 +113,11 @@ namespace OpenRA.Mods.Common.Traits
 			state = State.Free;
 			Carrier = null;
 
-			if (reservedToken != ConditionManager.InvalidConditionToken)
-				reservedToken = conditionManager.RevokeCondition(self, reservedToken);
+			if (reservedToken != Actor.InvalidConditionToken)
+				reservedToken = self.RevokeCondition(reservedToken);
 
-			if (lockedToken != ConditionManager.InvalidConditionToken)
-				lockedToken = conditionManager.RevokeCondition(self, lockedToken);
+			if (lockedToken != Actor.InvalidConditionToken)
+				lockedToken = self.RevokeCondition(lockedToken);
 		}
 
 		// Prepare for transport pickup
@@ -136,8 +134,8 @@ namespace OpenRA.Mods.Common.Traits
 				state = State.Locked;
 				Carrier = carrier;
 
-				if (lockedToken == ConditionManager.InvalidConditionToken && !string.IsNullOrEmpty(Info.LockedCondition))
-					lockedToken = conditionManager.GrantCondition(self, Info.LockedCondition);
+				if (lockedToken == Actor.InvalidConditionToken && !string.IsNullOrEmpty(Info.LockedCondition))
+					lockedToken = self.GrantCondition(Info.LockedCondition);
 			}
 
 			// Make sure we are not moving and at our normal position with respect to the cell grid

@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public object Create(ActorInitializer init) { return new ConyardChronoReturn(init, this); }
 	}
 
-	public class ConyardChronoReturn : INotifyCreated, ITick, ISync, IObservesVariables, ISelectionBar, INotifySold,
+	public class ConyardChronoReturn : ITick, ISync, IObservesVariables, ISelectionBar, INotifySold,
 		IDeathActorInitModifier, ITransformActorInitModifier
 	{
 		readonly ConyardChronoReturnInfo info;
@@ -70,8 +70,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		readonly Actor self;
 		readonly string faction;
 
-		ConditionManager conditionManager;
-		int conditionToken = ConditionManager.InvalidConditionToken;
+		int conditionToken = Actor.InvalidConditionToken;
 
 		Actor chronosphere;
 		int duration;
@@ -110,11 +109,6 @@ namespace OpenRA.Mods.Cnc.Traits
 				chronosphere = init.Get<ChronoshiftChronosphereInit, Actor>();
 		}
 
-		void INotifyCreated.Created(Actor self)
-		{
-			conditionManager = self.TraitOrDefault<ConditionManager>();
-		}
-
 		IEnumerable<VariableObserver> IObservesVariables.GetVariableObservers()
 		{
 			if (info.ReturnOriginalActorOnCondition != null)
@@ -128,8 +122,8 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		void TriggerVortex()
 		{
-			if (conditionManager != null && !string.IsNullOrEmpty(info.Condition) && conditionToken == ConditionManager.InvalidConditionToken)
-				conditionToken = conditionManager.GrantCondition(self, info.Condition);
+			if (!string.IsNullOrEmpty(info.Condition) && conditionToken == Actor.InvalidConditionToken)
+				conditionToken = self.GrantCondition(info.Condition);
 
 			triggered = true;
 
@@ -140,8 +134,8 @@ namespace OpenRA.Mods.Cnc.Traits
 			wsb.PlayCustomAnimation(self, info.Sequence, () =>
 			{
 				triggered = false;
-				if (conditionToken != ConditionManager.InvalidConditionToken)
-					conditionToken = conditionManager.RevokeCondition(self, conditionToken);
+				if (conditionToken != Actor.InvalidConditionToken)
+					conditionToken = self.RevokeCondition(conditionToken);
 			});
 		}
 

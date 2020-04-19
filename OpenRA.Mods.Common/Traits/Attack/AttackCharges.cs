@@ -35,8 +35,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class AttackCharges : AttackOmni, INotifyAttack, INotifySold
 	{
 		readonly AttackChargesInfo info;
-		ConditionManager conditionManager;
-		int chargingToken = ConditionManager.InvalidConditionToken;
+		int chargingToken = Actor.InvalidConditionToken;
 		bool charging;
 
 		public int ChargeLevel { get; private set; }
@@ -47,13 +46,6 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 		}
 
-		protected override void Created(Actor self)
-		{
-			conditionManager = self.TraitOrDefault<ConditionManager>();
-
-			base.Created(self);
-		}
-
 		protected override void Tick(Actor self)
 		{
 			// Stop charging when we lose our target
@@ -62,12 +54,12 @@ namespace OpenRA.Mods.Common.Traits
 			var delta = charging ? info.ChargeRate : -info.DischargeRate;
 			ChargeLevel = (ChargeLevel + delta).Clamp(0, info.ChargeLevel);
 
-			if (ChargeLevel > 0 && conditionManager != null && !string.IsNullOrEmpty(info.ChargingCondition)
-					&& chargingToken == ConditionManager.InvalidConditionToken)
-				chargingToken = conditionManager.GrantCondition(self, info.ChargingCondition);
+			if (ChargeLevel > 0 && !string.IsNullOrEmpty(info.ChargingCondition)
+					&& chargingToken == Actor.InvalidConditionToken)
+				chargingToken = self.GrantCondition(info.ChargingCondition);
 
-			if (ChargeLevel == 0 && conditionManager != null && chargingToken != ConditionManager.InvalidConditionToken)
-				chargingToken = conditionManager.RevokeCondition(self, chargingToken);
+			if (ChargeLevel == 0 && chargingToken != Actor.InvalidConditionToken)
+				chargingToken = self.RevokeCondition(chargingToken);
 
 			base.Tick(self);
 		}

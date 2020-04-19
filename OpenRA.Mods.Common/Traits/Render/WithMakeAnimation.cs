@@ -39,8 +39,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		readonly WithSpriteBody[] wsbs;
 		readonly bool skipMakeAnimation;
 
-		ConditionManager conditionManager;
-		int token = ConditionManager.InvalidConditionToken;
+		int token = Actor.InvalidConditionToken;
 
 		public WithMakeAnimation(ActorInitializer init, WithMakeAnimationInfo info)
 		{
@@ -52,15 +51,14 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		void INotifyCreated.Created(Actor self)
 		{
-			conditionManager = self.TraitOrDefault<ConditionManager>();
 			if (!skipMakeAnimation)
 				Forward(self, () => { });
 		}
 
 		public void Forward(Actor self, Action onComplete)
 		{
-			if (conditionManager != null && !string.IsNullOrEmpty(info.Condition) && token == ConditionManager.InvalidConditionToken)
-				token = conditionManager.GrantCondition(self, info.Condition);
+			if (!string.IsNullOrEmpty(info.Condition) && token == Actor.InvalidConditionToken)
+				token = self.GrantCondition(info.Condition);
 
 			var wsb = wsbs.FirstEnabledTraitOrDefault();
 
@@ -71,8 +69,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 			{
 				self.World.AddFrameEndTask(w =>
 				{
-					if (token != ConditionManager.InvalidConditionToken)
-						token = conditionManager.RevokeCondition(self, token);
+					if (token != Actor.InvalidConditionToken)
+						token = self.RevokeCondition(token);
 
 					// TODO: Rewrite this to use a trait notification for save game support
 					onComplete();
@@ -82,8 +80,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		public void Reverse(Actor self, Action onComplete)
 		{
-			if (conditionManager != null && !string.IsNullOrEmpty(info.Condition) && token == ConditionManager.InvalidConditionToken)
-				token = conditionManager.GrantCondition(self, info.Condition);
+			if (!string.IsNullOrEmpty(info.Condition) && token == Actor.InvalidConditionToken)
+				token = self.GrantCondition(info.Condition);
 
 			var wsb = wsbs.FirstEnabledTraitOrDefault();
 
@@ -94,8 +92,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 			{
 				self.World.AddFrameEndTask(w =>
 				{
-					if (token != ConditionManager.InvalidConditionToken)
-						token = conditionManager.RevokeCondition(self, token);
+					if (token != Actor.InvalidConditionToken)
+						token = self.RevokeCondition(token);
 
 					// TODO: Rewrite this to use a trait notification for save game support
 					onComplete();
@@ -116,8 +114,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 				if (wsb != null)
 					wsb.DefaultAnimation.PlayFetchIndex(info.Sequence, () => 0);
 
-				if (conditionManager != null && !string.IsNullOrEmpty(info.Condition))
-					token = conditionManager.GrantCondition(self, info.Condition);
+				if (!string.IsNullOrEmpty(info.Condition))
+					token = self.GrantCondition(info.Condition);
 
 				self.QueueActivity(queued, activity);
 			});

@@ -98,10 +98,9 @@ namespace OpenRA.Mods.Common.Traits
 		readonly IMove move;
 
 		DeployState deployState;
-		ConditionManager conditionManager;
 		INotifyDeployTriggered[] notify;
-		int deployedToken = ConditionManager.InvalidConditionToken;
-		int undeployedToken = ConditionManager.InvalidConditionToken;
+		int deployedToken = Actor.InvalidConditionToken;
+		int undeployedToken = Actor.InvalidConditionToken;
 
 		public DeployState DeployState { get { return deployState; } }
 
@@ -118,7 +117,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected override void Created(Actor self)
 		{
-			conditionManager = self.TraitOrDefault<ConditionManager>();
 			notify = self.TraitsImplementing<INotifyDeployTriggered>().ToArray();
 			base.Created(self);
 
@@ -317,32 +315,32 @@ namespace OpenRA.Mods.Common.Traits
 
 		void OnDeployStarted()
 		{
-			if (undeployedToken != ConditionManager.InvalidConditionToken)
-				undeployedToken = conditionManager.RevokeCondition(self, undeployedToken);
+			if (undeployedToken != Actor.InvalidConditionToken)
+				undeployedToken = self.RevokeCondition(undeployedToken);
 
 			deployState = DeployState.Deploying;
 		}
 
 		void OnDeployCompleted()
 		{
-			if (conditionManager != null && !string.IsNullOrEmpty(Info.DeployedCondition) && deployedToken == ConditionManager.InvalidConditionToken)
-				deployedToken = conditionManager.GrantCondition(self, Info.DeployedCondition);
+			if (!string.IsNullOrEmpty(Info.DeployedCondition) && deployedToken == Actor.InvalidConditionToken)
+				deployedToken = self.GrantCondition(Info.DeployedCondition);
 
 			deployState = DeployState.Deployed;
 		}
 
 		void OnUndeployStarted()
 		{
-			if (deployedToken != ConditionManager.InvalidConditionToken)
-				deployedToken = conditionManager.RevokeCondition(self, deployedToken);
+			if (deployedToken != Actor.InvalidConditionToken)
+				deployedToken = self.RevokeCondition(deployedToken);
 
 			deployState = DeployState.Deploying;
 		}
 
 		void OnUndeployCompleted()
 		{
-			if (conditionManager != null && !string.IsNullOrEmpty(Info.UndeployedCondition) && undeployedToken == ConditionManager.InvalidConditionToken)
-				undeployedToken = conditionManager.GrantCondition(self, Info.UndeployedCondition);
+			if (!string.IsNullOrEmpty(Info.UndeployedCondition) && undeployedToken == Actor.InvalidConditionToken)
+				undeployedToken = self.GrantCondition(Info.UndeployedCondition);
 
 			deployState = DeployState.Undeployed;
 		}

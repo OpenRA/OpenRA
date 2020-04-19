@@ -57,7 +57,6 @@ namespace OpenRA.Mods.Common.Traits
 		readonly IHealth health;
 		readonly Predicate<Player> isNotActiveAlly;
 		readonly Stack<int> repairTokens = new Stack<int>();
-		ConditionManager conditionManager;
 		int remainingTicks;
 
 		public readonly List<Player> Repairers = new List<Player>();
@@ -68,12 +67,6 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			health = self.Trait<IHealth>();
 			isNotActiveAlly = player => player.WinState != WinState.Undefined || player.Stances[self.Owner] != Stance.Ally;
-		}
-
-		protected override void Created(Actor self)
-		{
-			base.Created(self);
-			conditionManager = self.TraitOrDefault<ConditionManager>();
 		}
 
 		[Sync]
@@ -90,15 +83,15 @@ namespace OpenRA.Mods.Common.Traits
 
 		void UpdateCondition(Actor self)
 		{
-			if (conditionManager == null || string.IsNullOrEmpty(Info.RepairCondition))
+			if (string.IsNullOrEmpty(Info.RepairCondition))
 				return;
 
 			var currentRepairers = Repairers.Count;
 			while (Repairers.Count > repairTokens.Count)
-				repairTokens.Push(conditionManager.GrantCondition(self, Info.RepairCondition));
+				repairTokens.Push(self.GrantCondition(Info.RepairCondition));
 
 			while (Repairers.Count < repairTokens.Count && repairTokens.Count > 0)
-				conditionManager.RevokeCondition(self, repairTokens.Pop());
+				self.RevokeCondition(repairTokens.Pop());
 		}
 
 		public void RepairBuilding(Actor self, Player player)

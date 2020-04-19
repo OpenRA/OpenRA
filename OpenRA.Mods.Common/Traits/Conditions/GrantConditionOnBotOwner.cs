@@ -33,8 +33,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly GrantConditionOnBotOwnerInfo info;
 
-		ConditionManager conditionManager;
-		int conditionToken = ConditionManager.InvalidConditionToken;
+		int conditionToken = Actor.InvalidConditionToken;
 
 		public GrantConditionOnBotOwner(ActorInitializer init, GrantConditionOnBotOwnerInfo info)
 		{
@@ -49,22 +48,18 @@ namespace OpenRA.Mods.Common.Traits
 			// it's defined on the PlayerActor.
 			self.World.AddFrameEndTask(w =>
 			{
-				conditionManager = self.TraitOrDefault<ConditionManager>();
-				if (conditionManager != null && self.Owner.IsBot && info.Bots.Contains(self.Owner.BotType))
-					conditionToken = conditionManager.GrantCondition(self, info.Condition);
+				if (self.Owner.IsBot && info.Bots.Contains(self.Owner.BotType))
+					conditionToken = self.GrantCondition(info.Condition);
 			});
 		}
 
 		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
-			if (conditionManager == null)
-				return;
-
-			if (conditionToken != ConditionManager.InvalidConditionToken)
-				conditionToken = conditionManager.RevokeCondition(self, conditionToken);
+			if (conditionToken != Actor.InvalidConditionToken)
+				conditionToken = self.RevokeCondition(conditionToken);
 
 			if (info.Bots.Contains(newOwner.BotType))
-				conditionToken = conditionManager.GrantCondition(self, info.Condition);
+				conditionToken = self.GrantCondition(info.Condition);
 		}
 	}
 }

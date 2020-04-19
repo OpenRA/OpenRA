@@ -43,18 +43,11 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		ConditionManager conditionManager;
 		List<DemolishAction> actions = new List<DemolishAction>();
 		List<DemolishAction> removeActions = new List<DemolishAction>();
 
 		public Demolishable(DemolishableInfo info)
 			: base(info) { }
-
-		protected override void Created(Actor self)
-		{
-			base.Created(self);
-			conditionManager = self.TraitOrDefault<ConditionManager>();
-		}
 
 		bool IDemolishable.IsValidTarget(Actor self, Actor saboteur)
 		{
@@ -66,9 +59,9 @@ namespace OpenRA.Mods.Common.Traits
 			if (IsTraitDisabled)
 				return;
 
-			var token = ConditionManager.InvalidConditionToken;
-			if (conditionManager != null && !string.IsNullOrEmpty(Info.Condition))
-				token = conditionManager.GrantCondition(self, Info.Condition);
+			var token = Actor.InvalidConditionToken;
+			if (!string.IsNullOrEmpty(Info.Condition))
+				token = self.GrantCondition(Info.Condition);
 
 			actions.Add(new DemolishAction(saboteur, delay, token));
 		}
@@ -88,9 +81,9 @@ namespace OpenRA.Mods.Common.Traits
 
 					if (Util.ApplyPercentageModifiers(100, modifiers) > 0)
 						self.Kill(a.Saboteur);
-					else if (a.Token != ConditionManager.InvalidConditionToken)
+					else if (a.Token != Actor.InvalidConditionToken)
 					{
-						conditionManager.RevokeCondition(self, a.Token);
+						self.RevokeCondition(a.Token);
 						removeActions.Add(a);
 					}
 				}

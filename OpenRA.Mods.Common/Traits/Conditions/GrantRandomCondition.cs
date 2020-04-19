@@ -40,8 +40,7 @@ namespace OpenRA.Mods.Common.Traits.Conditions
 				return;
 
 			var condition = info.Conditions.Random(self.World.SharedRandom);
-			var conditionManager = self.Trait<ConditionManager>();
-			conditionManager.GrantCondition(self, condition);
+			self.GrantCondition(condition);
 		}
 	}
 }

@@ -31,8 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class GrantConditionOnPowerState : ConditionalTrait<GrantConditionOnPowerStateInfo>, INotifyOwnerChanged, INotifyPowerLevelChanged
 	{
 		PowerManager playerPower;
-		ConditionManager conditionManager;
-		int conditionToken = ConditionManager.InvalidConditionToken;
+		int conditionToken = Actor.InvalidConditionToken;
 
 		bool validPowerState;
 
@@ -45,8 +44,6 @@ namespace OpenRA.Mods.Common.Traits
 		protected override void Created(Actor self)
 		{
 			base.Created(self);
-
-			conditionManager = self.TraitOrDefault<ConditionManager>();
 
 			Update(self);
 		}
@@ -63,15 +60,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		void Update(Actor self)
 		{
-			if (conditionManager == null)
-				return;
-
 			validPowerState = !IsTraitDisabled && Info.ValidPowerStates.HasFlag(playerPower.PowerState);
 
-			if (validPowerState && conditionToken == ConditionManager.InvalidConditionToken)
-				conditionToken = conditionManager.GrantCondition(self, Info.Condition);
-			else if (!validPowerState && conditionToken != ConditionManager.InvalidConditionToken)
-				conditionToken = conditionManager.RevokeCondition(self, conditionToken);
+			if (validPowerState && conditionToken == Actor.InvalidConditionToken)
+				conditionToken = self.GrantCondition(Info.Condition);
+			else if (!validPowerState && conditionToken != Actor.InvalidConditionToken)
+				conditionToken = self.RevokeCondition(conditionToken);
 		}
 
 		void INotifyPowerLevelChanged.PowerLevelChanged(Actor self)

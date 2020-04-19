@@ -27,8 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class AffectedByPowerOutage : ConditionalTrait<AffectedByPowerOutageInfo>, INotifyOwnerChanged, ISelectionBar, INotifyCreated, INotifyAddedToWorld
 	{
 		PowerManager playerPower;
-		ConditionManager conditionManager;
-		int token = ConditionManager.InvalidConditionToken;
+		int token = Actor.InvalidConditionToken;
 
 		public AffectedByPowerOutage(Actor self, AffectedByPowerOutageInfo info)
 			: base(info)
@@ -39,13 +38,6 @@ namespace OpenRA.Mods.Common.Traits
 		void INotifyAddedToWorld.AddedToWorld(Actor self) { UpdateStatus(self); }
 		protected override void TraitEnabled(Actor self) { UpdateStatus(self); }
 		protected override void TraitDisabled(Actor self) { Revoke(self); }
-
-		protected override void Created(Actor self)
-		{
-			conditionManager = self.TraitOrDefault<ConditionManager>();
-
-			base.Created(self);
-		}
 
 		float ISelectionBar.GetValue()
 		{
@@ -72,14 +64,14 @@ namespace OpenRA.Mods.Common.Traits
 
 		void Grant(Actor self)
 		{
-			if (token == ConditionManager.InvalidConditionToken)
-				token = conditionManager.GrantCondition(self, Info.Condition);
+			if (token == Actor.InvalidConditionToken)
+				token = self.GrantCondition(Info.Condition);
 		}
 
 		void Revoke(Actor self)
 		{
-			if (token != ConditionManager.InvalidConditionToken)
-				token = conditionManager.RevokeCondition(self, token);
+			if (token != Actor.InvalidConditionToken)
+				token = self.RevokeCondition(token);
 		}
 
 		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)

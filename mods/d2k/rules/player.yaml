@@ -150,6 +150,5 @@ Player:
 	ResourceStorageWarning:
 		AdviceInterval: 26
 	PlayerExperience:
-	ConditionManager:
 	GameSaveViewportManager:
 	PlayerRadarTerrain:

@@ -83,20 +83,13 @@ namespace OpenRA.Mods.Cnc.Traits
 		}
 	}
 
-	class MadTank : INotifyCreated, IIssueOrder, IResolveOrder, IOrderVoice, IIssueDeployOrder
+	class MadTank : IIssueOrder, IResolveOrder, IOrderVoice, IIssueDeployOrder
 	{
 		readonly MadTankInfo info;
-
-		ConditionManager conditionManager;
 
 		public MadTank(Actor self, MadTankInfo info)
 		{
 			this.info = info;
-		}
-
-		void INotifyCreated.Created(Actor self)
-		{
-			conditionManager = self.TraitOrDefault<ConditionManager>();
 		}
 
 		public IEnumerable<IOrderTargeter> Orders
@@ -195,8 +188,8 @@ namespace OpenRA.Mods.Cnc.Traits
 					if (target.Type == TargetType.Invalid)
 						return true;
 
-					if (mad.conditionManager != null && !string.IsNullOrEmpty(mad.info.DeployedCondition))
-						mad.conditionManager.GrantCondition(self, mad.info.DeployedCondition);
+					if (!string.IsNullOrEmpty(mad.info.DeployedCondition))
+						self.GrantCondition(mad.info.DeployedCondition);
 
 					self.World.AddFrameEndTask(w => EjectDriver());
 					if (mad.info.ThumpSequence != null)

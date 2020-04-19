@@ -22,15 +22,13 @@ namespace OpenRA.Mods.Common.Activities
 		readonly Func<Activity> getInner;
 		readonly bool isAssaultMove;
 		AutoTarget autoTarget;
-		ConditionManager conditionManager;
 		AttackMove attackMove;
-		int token = ConditionManager.InvalidConditionToken;
+		int token = Actor.InvalidConditionToken;
 
 		public AttackMoveActivity(Actor self, Func<Activity> getInner, bool assaultMoving = false)
 		{
 			this.getInner = getInner;
 			autoTarget = self.TraitOrDefault<AutoTarget>();
-			conditionManager = self.TraitOrDefault<ConditionManager>();
 			attackMove = self.TraitOrDefault<AttackMove>();
 			isAssaultMove = assaultMoving;
 			ChildHasPriority = false;
@@ -41,13 +39,13 @@ namespace OpenRA.Mods.Common.Activities
 			// Start moving.
 			QueueChild(getInner());
 
-			if (conditionManager == null || attackMove == null)
+			if (attackMove == null)
 				return;
 
 			if (!isAssaultMove && !string.IsNullOrEmpty(attackMove.Info.AttackMoveCondition))
-				token = conditionManager.GrantCondition(self, attackMove.Info.AttackMoveCondition);
+				token = self.GrantCondition(attackMove.Info.AttackMoveCondition);
 			else if (isAssaultMove && !string.IsNullOrEmpty(attackMove.Info.AssaultMoveCondition))
-				token = conditionManager.GrantCondition(self, attackMove.Info.AssaultMoveCondition);
+				token = self.GrantCondition(attackMove.Info.AssaultMoveCondition);
 		}
 
 		public override bool Tick(Actor self)
@@ -77,8 +75,8 @@ namespace OpenRA.Mods.Common.Activities
 
 		protected override void OnLastRun(Actor self)
 		{
-			if (conditionManager != null && token != ConditionManager.InvalidConditionToken)
-				token = conditionManager.RevokeCondition(self, token);
+			if (token != Actor.InvalidConditionToken)
+				token = self.RevokeCondition(token);
 		}
 
 		public override IEnumerable<Target> GetTargets(Actor self)

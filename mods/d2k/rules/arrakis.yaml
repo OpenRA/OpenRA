@@ -10,7 +10,6 @@ spicebloom.spawnpoint:
 		Sequence: grow3
 	BodyOrientation:
 		QuantizedFacings: 1
-	ConditionManager:
 	GrantConditionOnTerrain:
 		Condition: clearsand
 		TerrainTypes: SpiceSand
@@ -125,7 +124,6 @@ sandworm:
 		TerrainTypes: Sand, Dune, SpiceSand, Spice
 		MovingInterval: 3
 		RequiresCondition: !attacking
-	ConditionManager:
 	RevealOnFire:
 		Duration: 50
 		Radius: 2c512

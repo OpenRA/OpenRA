@@ -40,16 +40,16 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected override void UpdateConditions(Actor self, byte oldLayer, byte newLayer)
 		{
-			if (!jumpjetInAir && newLayer == ValidLayerType && oldLayer != ValidLayerType && conditionToken == ConditionManager.InvalidConditionToken)
+			if (!jumpjetInAir && newLayer == ValidLayerType && oldLayer != ValidLayerType && conditionToken == Actor.InvalidConditionToken)
 			{
-				conditionToken = conditionManager.GrantCondition(self, Info.Condition);
+				conditionToken = self.GrantCondition(Info.Condition);
 				jumpjetInAir = true;
 			}
 
 			// By the time the condition is meant to be revoked, the 'oldLayer' is already no longer the Jumpjet layer, either
-			if (jumpjetInAir && newLayer != ValidLayerType && oldLayer != ValidLayerType && conditionToken != ConditionManager.InvalidConditionToken)
+			if (jumpjetInAir && newLayer != ValidLayerType && oldLayer != ValidLayerType && conditionToken != Actor.InvalidConditionToken)
 			{
-				conditionToken = conditionManager.RevokeCondition(self, conditionToken);
+				conditionToken = self.RevokeCondition(conditionToken);
 				jumpjetInAir = false;
 			}
 		}

@@ -50,15 +50,14 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new Passenger(this); }
 	}
 
-	public class Passenger : INotifyCreated, IIssueOrder, IResolveOrder, IOrderVoice, INotifyRemovedFromWorld, INotifyEnteredCargo, INotifyExitedCargo, INotifyKilled, IObservesVariables
+	public class Passenger : IIssueOrder, IResolveOrder, IOrderVoice, INotifyRemovedFromWorld, INotifyEnteredCargo, INotifyExitedCargo, INotifyKilled, IObservesVariables
 	{
 		public readonly PassengerInfo Info;
 		public Actor Transport;
 		bool requireForceMove;
 
-		ConditionManager conditionManager;
-		int anyCargoToken = ConditionManager.InvalidConditionToken;
-		int specificCargoToken = ConditionManager.InvalidConditionToken;
+		int anyCargoToken = Actor.InvalidConditionToken;
+		int specificCargoToken = Actor.InvalidConditionToken;
 
 		public Passenger(PassengerInfo info)
 		{
@@ -73,11 +72,6 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				yield return new EnterAlliedActorTargeter<CargoInfo>("EnterTransport", 5, IsCorrectCargoType, CanEnter);
 			}
-		}
-
-		void INotifyCreated.Created(Actor self)
-		{
-			conditionManager = self.TraitOrDefault<ConditionManager>();
 		}
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
@@ -126,14 +120,12 @@ namespace OpenRA.Mods.Common.Traits
 		void INotifyEnteredCargo.OnEnteredCargo(Actor self, Actor cargo)
 		{
 			string specificCargoCondition;
-			if (conditionManager != null)
-			{
-				if (anyCargoToken == ConditionManager.InvalidConditionToken && !string.IsNullOrEmpty(Info.CargoCondition))
-					anyCargoToken = conditionManager.GrantCondition(self, Info.CargoCondition);
 
-				if (specificCargoToken == ConditionManager.InvalidConditionToken && Info.CargoConditions.TryGetValue(cargo.Info.Name, out specificCargoCondition))
-					specificCargoToken = conditionManager.GrantCondition(self, specificCargoCondition);
-			}
+			if (anyCargoToken == Actor.InvalidConditionToken && !string.IsNullOrEmpty(Info.CargoCondition))
+				anyCargoToken = self.GrantCondition(Info.CargoCondition);
+
+			if (specificCargoToken == Actor.InvalidConditionToken && Info.CargoConditions.TryGetValue(cargo.Info.Name, out specificCargoCondition))
+				specificCargoToken = self.GrantCondition(specificCargoCondition);
 
 			// Allow scripted / initial actors to move from the unload point back into the cell grid on unload
 			// This is handled by the RideTransport activity for player-loaded cargo
@@ -148,11 +140,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyExitedCargo.OnExitedCargo(Actor self, Actor cargo)
 		{
-			if (anyCargoToken != ConditionManager.InvalidConditionToken)
-				anyCargoToken = conditionManager.RevokeCondition(self, anyCargoToken);
+			if (anyCargoToken != Actor.InvalidConditionToken)
+				anyCargoToken = self.RevokeCondition(anyCargoToken);
 
-			if (specificCargoToken != ConditionManager.InvalidConditionToken)
-				specificCargoToken = conditionManager.RevokeCondition(self, specificCargoToken);
+			if (specificCargoToken != Actor.InvalidConditionToken)
+				specificCargoToken = self.RevokeCondition(specificCargoToken);
 		}
 
 		void IResolveOrder.ResolveOrder(Actor self, Order order)

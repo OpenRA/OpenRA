@@ -23,33 +23,27 @@ namespace OpenRA.Mods.Common.Traits
 		object ITraitInfo.Create(ActorInitializer init) { return new GrantConditionWhileAiming(this); }
 	}
 
-	public class GrantConditionWhileAiming : INotifyCreated, INotifyAiming
+	public class GrantConditionWhileAiming : INotifyAiming
 	{
 		readonly GrantConditionWhileAimingInfo info;
 
-		ConditionManager conditionManager;
-		int conditionToken = ConditionManager.InvalidConditionToken;
+		int conditionToken = Actor.InvalidConditionToken;
 
 		public GrantConditionWhileAiming(GrantConditionWhileAimingInfo info)
 		{
 			this.info = info;
 		}
 
-		void INotifyCreated.Created(Actor self)
-		{
-			conditionManager = self.TraitOrDefault<ConditionManager>();
-		}
-
 		void INotifyAiming.StartedAiming(Actor self, AttackBase attack)
 		{
-			if (conditionToken == ConditionManager.InvalidConditionToken)
-				conditionToken = conditionManager.GrantCondition(self, info.Condition);
+			if (conditionToken == Actor.InvalidConditionToken)
+				conditionToken = self.GrantCondition(info.Condition);
 		}
 
 		void INotifyAiming.StoppedAiming(Actor self, AttackBase attack)
 		{
-			if (conditionToken != ConditionManager.InvalidConditionToken)
-				conditionToken = conditionManager.RevokeCondition(self, conditionToken);
+			if (conditionToken != Actor.InvalidConditionToken)
+				conditionToken = self.RevokeCondition(conditionToken);
 		}
 	}
 }
