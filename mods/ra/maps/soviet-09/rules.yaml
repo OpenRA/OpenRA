@@ -1,0 +1,121 @@
+World:
+	LuaScript:
+		Scripts: campaign-global.lua, soviet09.lua, soviet09-AI.lua
+	MissionData:
+		BriefingVideo: soviet9.vqa
+		WinVideo: v2rocket.vqa
+		LossVideo: sfrozen.vqa
+		StartVideo: movingin.vqa
+		Briefing: The Allied forces have intercepted and destroyed a convoy that carried parts for our secret weapon. One truck remains, but they have captured that last truck and its cargo.\n\nThis is not acceptable! You are to destroy that truck before the Allies leave the area with it.
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			easy: Easy
+			normal: Normal
+			hard: Hard
+		Default: easy
+	SmudgeLayer@SCORCH:
+		InitialSmudges:
+			98,87: sc3,0
+			100,87: sc2,0
+			108,87: sc1,0
+			88,93: sc6,0
+			104,101: sc3,0
+	SmudgeLayer@CRATER:
+		InitialSmudges:
+			99,87: cr1,2
+			86,93: cr1,0
+			87,93: cr1,1
+
+Player:
+	PlayerResources:
+		DefaultCash: 8000
+
+AFLD:
+	AirstrikePower@parabombs:
+		Prerequisites: ~disabled
+
+ATEK:
+	Buildable:
+		Prerequisites: ~disabled
+
+HPAD:
+	Buildable:
+		Prerequisites: ~structures.allies
+
+IRON:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSLO:
+	Buildable:
+		Prerequisites: ~disabled
+
+TRUK:
+	Buildable:
+		Prerequisites: ~disabled
+	-SpawnActorOnDeath:
+
+FTRK:
+	Buildable:
+		Prerequisites: ~disabled
+
+QTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+MRJ:
+	Buildable:
+		Prerequisites: ~disabled
+
+HELI:
+	Buildable:
+		Prerequisites: ~hpad
+
+HIND:
+	Buildable:
+		Prerequisites: ~disabled
+
+MIG:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSUB:
+	Buildable:
+		Prerequisites: ~disabled
+
+CA:
+	Buildable:
+		Prerequisites: ~disabled
+
+THF:
+	Buildable:
+		Prerequisites: ~disabled
+
+GAP:
+	Buildable:
+		Prerequisites: ~disabled
+
+PDOX:
+	Buildable:
+		Prerequisites: ~disabled
+
+E7:
+	Buildable:
+		Prerequisites: ~disabled
+
+MECH:
+	Buildable:
+		Prerequisites: ~disabled
+
+SPY:
+	Buildable:
+		Prerequisites: ~disabled
+
+E3:
+	Buildable:
+		Prerequisites: ~tent
+
+CHAN:
+	-Wanders:
