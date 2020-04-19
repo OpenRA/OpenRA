@@ -58,7 +58,6 @@ namespace OpenRA.Mods.Common.Traits
 	public class CaptureManager : INotifyCreated, INotifyCapture, ITick, IDisableEnemyAutoTarget
 	{
 		readonly CaptureManagerInfo info;
-		ConditionManager conditionManager;
 		IMove move;
 		ICaptureProgressWatcher[] progressWatchers;
 
@@ -75,8 +74,8 @@ namespace OpenRA.Mods.Common.Traits
 		CaptureManager currentTargetManager;
 		int currentTargetDelay;
 		int currentTargetTotal;
-		int capturingToken = ConditionManager.InvalidConditionToken;
-		int beingCapturedToken = ConditionManager.InvalidConditionToken;
+		int capturingToken = Actor.InvalidConditionToken;
+		int beingCapturedToken = Actor.InvalidConditionToken;
 		bool enteringCurrentTarget;
 
 		HashSet<Actor> currentCaptors = new HashSet<Actor>();
@@ -90,7 +89,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyCreated.Created(Actor self)
 		{
-			conditionManager = self.TraitOrDefault<ConditionManager>();
 			move = self.TraitOrDefault<IMove>();
 			progressWatchers = self.TraitsImplementing<ICaptureProgressWatcher>().ToArray();
 
@@ -206,13 +204,13 @@ namespace OpenRA.Mods.Common.Traits
 			else
 				currentTargetDelay += 1;
 
-			if (conditionManager != null && !string.IsNullOrEmpty(info.CapturingCondition) &&
-					capturingToken == ConditionManager.InvalidConditionToken)
-				capturingToken = conditionManager.GrantCondition(self, info.CapturingCondition);
+			if (!string.IsNullOrEmpty(info.CapturingCondition) &&
+					capturingToken == Actor.InvalidConditionToken)
+				capturingToken = self.GrantCondition(info.CapturingCondition);
 
-			if (targetManager.conditionManager != null && !string.IsNullOrEmpty(targetManager.info.BeingCapturedCondition) &&
-					targetManager.beingCapturedToken == ConditionManager.InvalidConditionToken)
-				targetManager.beingCapturedToken = targetManager.conditionManager.GrantCondition(target, targetManager.info.BeingCapturedCondition);
+			if (!string.IsNullOrEmpty(targetManager.info.BeingCapturedCondition) &&
+					targetManager.beingCapturedToken == Actor.InvalidConditionToken)
+				targetManager.beingCapturedToken = target.GrantCondition(targetManager.info.BeingCapturedCondition);
 
 			captures = enabledCaptures
 				.OrderBy(c => c.Info.CaptureDelay)
@@ -262,11 +260,11 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var w in targetManager.progressWatchers)
 				w.Update(target, self, target, 0, 0);
 
-			if (capturingToken != ConditionManager.InvalidConditionToken)
-				capturingToken = conditionManager.RevokeCondition(self, capturingToken);
+			if (capturingToken != Actor.InvalidConditionToken)
+				capturingToken = self.RevokeCondition(capturingToken);
 
-			if (targetManager.beingCapturedToken != ConditionManager.InvalidConditionToken)
-				targetManager.beingCapturedToken = targetManager.conditionManager.RevokeCondition(self, targetManager.beingCapturedToken);
+			if (targetManager.beingCapturedToken != Actor.InvalidConditionToken)
+				targetManager.beingCapturedToken = self.RevokeCondition(targetManager.beingCapturedToken);
 
 			currentTarget = null;
 			currentTargetManager = null;

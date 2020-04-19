@@ -59,7 +59,6 @@ namespace OpenRA.Mods.Common.Traits
 		readonly int initialExperience;
 
 		readonly List<Pair<int, string>> nextLevel = new List<Pair<int, string>>();
-		ConditionManager conditionManager;
 
 		// Stored as a percentage of our value
 		[Sync]
@@ -87,7 +86,6 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var kv in info.Conditions)
 				nextLevel.Add(Pair.New(kv.Key * requiredExperience, kv.Value));
 
-			conditionManager = self.TraitOrDefault<ConditionManager>();
 			if (initialExperience > 0)
 				GiveExperience(initialExperience, info.SuppressLevelupAnimation);
 		}
@@ -115,8 +113,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			while (Level < MaxLevel && experience >= nextLevel[Level].First)
 			{
-				if (conditionManager != null)
-					conditionManager.GrantCondition(self, nextLevel[Level].Second);
+				self.GrantCondition(nextLevel[Level].Second);
 
 				Level++;
 

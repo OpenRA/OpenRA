@@ -34,9 +34,8 @@ namespace OpenRA.Mods.Common.Traits
 		readonly GrantConditionOnPrerequisiteInfo info;
 
 		bool wasAvailable;
-		ConditionManager conditionManager;
 		GrantConditionOnPrerequisiteManager globalManager;
-		int conditionToken = ConditionManager.InvalidConditionToken;
+		int conditionToken = Actor.InvalidConditionToken;
 
 		public GrantConditionOnPrerequisite(Actor self, GrantConditionOnPrerequisiteInfo info)
 		{
@@ -52,7 +51,6 @@ namespace OpenRA.Mods.Common.Traits
 			var playerActor = self.Info.Name == "player" ? self : self.Owner.PlayerActor;
 
 			globalManager = playerActor.Trait<GrantConditionOnPrerequisiteManager>();
-			conditionManager = self.TraitOrDefault<ConditionManager>();
 		}
 
 		void INotifyAddedToWorld.AddedToWorld(Actor self)
@@ -74,13 +72,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void PrerequisitesUpdated(Actor self, bool available)
 		{
-			if (available == wasAvailable || conditionManager == null)
+			if (available == wasAvailable)
 				return;
 
-			if (available && conditionToken == ConditionManager.InvalidConditionToken)
-				conditionToken = conditionManager.GrantCondition(self, info.Condition);
-			else if (!available && conditionToken != ConditionManager.InvalidConditionToken)
-				conditionToken = conditionManager.RevokeCondition(self, conditionToken);
+			if (available && conditionToken == Actor.InvalidConditionToken)
+				conditionToken = self.GrantCondition(info.Condition);
+			else if (!available && conditionToken != Actor.InvalidConditionToken)
+				conditionToken = self.RevokeCondition(conditionToken);
 
 			wasAvailable = available;
 		}

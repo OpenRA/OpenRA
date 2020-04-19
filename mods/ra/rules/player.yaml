@@ -149,6 +149,5 @@ Player:
 		Sequence: veteran
 	ResourceStorageWarning:
 	PlayerExperience:
-	ConditionManager:
 	GameSaveViewportManager:
 	PlayerRadarTerrain:

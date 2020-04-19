@@ -41,8 +41,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly GrantConditionOnDamageStateInfo info;
 		readonly IHealth health;
 
-		ConditionManager conditionManager;
-		int conditionToken = ConditionManager.InvalidConditionToken;
+		int conditionToken = Actor.InvalidConditionToken;
 
 		public GrantConditionOnDamageState(Actor self, GrantConditionOnDamageStateInfo info)
 		{
@@ -52,16 +51,15 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyCreated.Created(Actor self)
 		{
-			conditionManager = self.Trait<ConditionManager>();
 			GrantConditionOnValidDamageState(self, health.DamageState);
 		}
 
 		void GrantConditionOnValidDamageState(Actor self, DamageState state)
 		{
-			if (!info.ValidDamageStates.HasFlag(state) || conditionToken != ConditionManager.InvalidConditionToken)
+			if (!info.ValidDamageStates.HasFlag(state) || conditionToken != Actor.InvalidConditionToken)
 				return;
 
-			conditionToken = conditionManager.GrantCondition(self, info.Condition);
+			conditionToken = self.GrantCondition(info.Condition);
 
 			var sound = info.EnabledSounds.RandomOrDefault(Game.CosmeticRandom);
 			Game.Sound.Play(SoundType.World, sound, self.CenterPosition);
@@ -69,7 +67,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyDamageStateChanged.DamageStateChanged(Actor self, AttackInfo e)
 		{
-			var granted = conditionToken != ConditionManager.InvalidConditionToken;
+			var granted = conditionToken != Actor.InvalidConditionToken;
 			if (granted && info.GrantPermanently)
 				return;
 
@@ -77,7 +75,7 @@ namespace OpenRA.Mods.Common.Traits
 				GrantConditionOnValidDamageState(self, health.DamageState);
 			else if (granted && !info.ValidDamageStates.HasFlag(e.DamageState) && info.ValidDamageStates.HasFlag(e.PreviousDamageState))
 			{
-				conditionToken = conditionManager.RevokeCondition(self, conditionToken);
+				conditionToken = self.RevokeCondition(conditionToken);
 
 				var sound = info.DisabledSounds.RandomOrDefault(Game.CosmeticRandom);
 				Game.Sound.Play(SoundType.World, sound, self.CenterPosition);

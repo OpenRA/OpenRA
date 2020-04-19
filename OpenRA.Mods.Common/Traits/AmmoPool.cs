@@ -51,7 +51,6 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public readonly AmmoPoolInfo Info;
 		readonly Stack<int> tokens = new Stack<int>();
-		ConditionManager conditionManager;
 
 		// HACK: Temporarily needed until Rearm activity is gone for good
 		[Sync]
@@ -91,7 +90,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyCreated.Created(Actor self)
 		{
-			conditionManager = self.TraitOrDefault<ConditionManager>();
 			UpdateCondition(self);
 
 			// HACK: Temporarily needed until Rearm activity is gone for good
@@ -108,14 +106,14 @@ namespace OpenRA.Mods.Common.Traits
 
 		void UpdateCondition(Actor self)
 		{
-			if (conditionManager == null || string.IsNullOrEmpty(Info.AmmoCondition))
+			if (string.IsNullOrEmpty(Info.AmmoCondition))
 				return;
 
 			while (CurrentAmmoCount > tokens.Count && tokens.Count < Info.Ammo)
-				tokens.Push(conditionManager.GrantCondition(self, Info.AmmoCondition));
+				tokens.Push(self.GrantCondition(Info.AmmoCondition));
 
 			while (CurrentAmmoCount < tokens.Count && tokens.Count > 0)
-				conditionManager.RevokeCondition(self, tokens.Pop());
+				self.RevokeCondition(tokens.Pop());
 		}
 	}
 }

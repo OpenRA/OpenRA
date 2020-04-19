@@ -182,7 +182,6 @@ JUMPJET.Husk:
 		Sequence: die-falling
 	Health:
 	HitShape:
-	ConditionManager:
 	GrantConditionOnTerrain:
 		TerrainTypes: Water
 		Condition: water-death

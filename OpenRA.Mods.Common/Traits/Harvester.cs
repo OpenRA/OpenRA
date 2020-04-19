@@ -97,8 +97,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly ResourceLayer resLayer;
 		readonly ResourceClaimLayer claimLayer;
 		readonly Dictionary<ResourceTypeInfo, int> contents = new Dictionary<ResourceTypeInfo, int>();
-		ConditionManager conditionManager;
-		int conditionToken = ConditionManager.InvalidConditionToken;
+		int conditionToken = Actor.InvalidConditionToken;
 		HarvesterResourceMultiplier[] resourceMultipliers;
 
 		[Sync]
@@ -135,7 +134,6 @@ namespace OpenRA.Mods.Common.Traits
 		void INotifyCreated.Created(Actor self)
 		{
 			resourceMultipliers = self.TraitsImplementing<HarvesterResourceMultiplier>().ToArray();
-			conditionManager = self.TraitOrDefault<ConditionManager>();
 			UpdateCondition(self);
 
 			self.QueueActivity(new CallFunc(() => ChooseNewProc(self, null)));
@@ -212,15 +210,15 @@ namespace OpenRA.Mods.Common.Traits
 
 		void UpdateCondition(Actor self)
 		{
-			if (string.IsNullOrEmpty(Info.EmptyCondition) || conditionManager == null)
+			if (string.IsNullOrEmpty(Info.EmptyCondition))
 				return;
 
 			var enabled = IsEmpty;
 
-			if (enabled && conditionToken == ConditionManager.InvalidConditionToken)
-				conditionToken = conditionManager.GrantCondition(self, Info.EmptyCondition);
-			else if (!enabled && conditionToken != ConditionManager.InvalidConditionToken)
-				conditionToken = conditionManager.RevokeCondition(self, conditionToken);
+			if (enabled && conditionToken == Actor.InvalidConditionToken)
+				conditionToken = self.GrantCondition(Info.EmptyCondition);
+			else if (!enabled && conditionToken != Actor.InvalidConditionToken)
+				conditionToken = self.RevokeCondition(conditionToken);
 		}
 
 		public void AcceptResource(Actor self, ResourceType type)

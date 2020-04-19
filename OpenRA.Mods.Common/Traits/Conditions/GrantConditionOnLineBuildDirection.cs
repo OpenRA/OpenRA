@@ -43,9 +43,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (direction != info.Direction)
 				return;
 
-			var conditionManager = self.TraitOrDefault<ConditionManager>();
-			if (conditionManager != null && !string.IsNullOrEmpty(info.Condition))
-				conditionManager.GrantCondition(self, info.Condition);
+			if (!string.IsNullOrEmpty(info.Condition))
+				self.GrantCondition(info.Condition);
 		}
 	}
 }

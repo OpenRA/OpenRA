@@ -28,13 +28,12 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new GrantConditionOnTerrain(init, this); }
 	}
 
-	public class GrantConditionOnTerrain : INotifyCreated, ITick
+	public class GrantConditionOnTerrain : ITick
 	{
 		readonly GrantConditionOnTerrainInfo info;
 		readonly TileSet tileSet;
 
-		ConditionManager conditionManager;
-		int conditionToken = ConditionManager.InvalidConditionToken;
+		int conditionToken = Actor.InvalidConditionToken;
 		string cachedTerrain;
 
 		public GrantConditionOnTerrain(ActorInitializer init, GrantConditionOnTerrainInfo info)
@@ -43,18 +42,10 @@ namespace OpenRA.Mods.Common.Traits
 			tileSet = init.World.Map.Rules.TileSet;
 		}
 
-		void INotifyCreated.Created(Actor self)
-		{
-			conditionManager = self.TraitOrDefault<ConditionManager>();
-		}
-
 		void ITick.Tick(Actor self)
 		{
 			var cell = self.Location;
 			if (!self.World.Map.Contains(cell))
-				return;
-
-			if (conditionManager == null)
 				return;
 
 			// The terrain type may change between ticks without the actor moving
@@ -64,10 +55,10 @@ namespace OpenRA.Mods.Common.Traits
 			var wantsGranted = info.TerrainTypes.Contains(currentTerrain);
 			if (currentTerrain != cachedTerrain)
 			{
-				if (wantsGranted && conditionToken == ConditionManager.InvalidConditionToken)
-					conditionToken = conditionManager.GrantCondition(self, info.Condition);
-				else if (!wantsGranted && conditionToken != ConditionManager.InvalidConditionToken)
-					conditionToken = conditionManager.RevokeCondition(self, conditionToken);
+				if (wantsGranted && conditionToken == Actor.InvalidConditionToken)
+					conditionToken = self.GrantCondition(info.Condition);
+				else if (!wantsGranted && conditionToken != Actor.InvalidConditionToken)
+					conditionToken = self.RevokeCondition(conditionToken);
 			}
 
 			cachedTerrain = currentTerrain;

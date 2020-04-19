@@ -196,7 +196,6 @@ namespace OpenRA.Mods.Common.Traits
 		Repairable repairable;
 		Rearmable rearmable;
 		IAircraftCenterPositionOffset[] positionOffsets;
-		ConditionManager conditionManager;
 		IDisposable reservation;
 		IEnumerable<int> speedModifiers;
 		INotifyMoving[] notifyMoving;
@@ -230,8 +229,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool airborne;
 		bool cruising;
-		int airborneToken = ConditionManager.InvalidConditionToken;
-		int cruisingToken = ConditionManager.InvalidConditionToken;
+		int airborneToken = Actor.InvalidConditionToken;
+		int cruisingToken = Actor.InvalidConditionToken;
 
 		MovementType movementTypes;
 		WPos cachedPosition;
@@ -293,7 +292,6 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			repairable = self.TraitOrDefault<Repairable>();
 			rearmable = self.TraitOrDefault<Rearmable>();
-			conditionManager = self.TraitOrDefault<ConditionManager>();
 			speedModifiers = self.TraitsImplementing<ISpeedModifier>().ToArray().Select(sm => sm.GetSpeedModifier());
 			cachedPosition = self.CenterPosition;
 			notifyMoving = self.TraitsImplementing<INotifyMoving>().ToArray();
@@ -1116,8 +1114,8 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			airborne = true;
-			if (conditionManager != null && !string.IsNullOrEmpty(Info.AirborneCondition) && airborneToken == ConditionManager.InvalidConditionToken)
-				airborneToken = conditionManager.GrantCondition(self, Info.AirborneCondition);
+			if (!string.IsNullOrEmpty(Info.AirborneCondition) && airborneToken == Actor.InvalidConditionToken)
+				airborneToken = self.GrantCondition(Info.AirborneCondition);
 		}
 
 		void OnAirborneAltitudeLeft()
@@ -1126,8 +1124,8 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			airborne = false;
-			if (conditionManager != null && airborneToken != ConditionManager.InvalidConditionToken)
-				airborneToken = conditionManager.RevokeCondition(self, airborneToken);
+			if (airborneToken != Actor.InvalidConditionToken)
+				airborneToken = self.RevokeCondition(airborneToken);
 		}
 
 		#endregion
@@ -1140,8 +1138,8 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			cruising = true;
-			if (conditionManager != null && !string.IsNullOrEmpty(Info.CruisingCondition) && cruisingToken == ConditionManager.InvalidConditionToken)
-				cruisingToken = conditionManager.GrantCondition(self, Info.CruisingCondition);
+			if (!string.IsNullOrEmpty(Info.CruisingCondition) && cruisingToken == Actor.InvalidConditionToken)
+				cruisingToken = self.GrantCondition(Info.CruisingCondition);
 		}
 
 		void OnCruisingAltitudeLeft()
@@ -1150,8 +1148,8 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			cruising = false;
-			if (conditionManager != null && cruisingToken != ConditionManager.InvalidConditionToken)
-				cruisingToken = conditionManager.RevokeCondition(self, cruisingToken);
+			if (cruisingToken != Actor.InvalidConditionToken)
+				cruisingToken = self.RevokeCondition(cruisingToken);
 		}
 
 		#endregion

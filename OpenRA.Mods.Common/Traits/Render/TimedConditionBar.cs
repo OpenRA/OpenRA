@@ -15,7 +15,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Visualizes the remaining time for a condition.")]
-	class TimedConditionBarInfo : ITraitInfo, Requires<ConditionManagerInfo>
+	class TimedConditionBarInfo : ITraitInfo
 	{
 		[FieldLoader.Require]
 		[Desc("Condition that this bar corresponds to")]

@@ -175,26 +175,6 @@ namespace OpenRA.Mods.Common.Traits
 	[RequireExplicitImplementation]
 	public interface INotifyExitedCargo { void OnExitedCargo(Actor self, Actor cargo); }
 
-	[RequireExplicitImplementation]
-	public interface IObservesVariablesInfo : ITraitInfo { }
-
-	public delegate void VariableObserverNotifier(Actor self, IReadOnlyDictionary<string, int> variables);
-	public struct VariableObserver
-	{
-		public VariableObserverNotifier Notifier;
-		public IEnumerable<string> Variables;
-		public VariableObserver(VariableObserverNotifier notifier, IEnumerable<string> variables)
-		{
-			Notifier = notifier;
-			Variables = variables;
-		}
-	}
-
-	public interface IObservesVariables
-	{
-		IEnumerable<VariableObserver> GetVariableObservers();
-	}
-
 	public interface INotifyHarvesterAction
 	{
 		void MovingToResources(Actor self, CPos targetCell);

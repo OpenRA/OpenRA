@@ -5,7 +5,6 @@
 	GivesExperience:
 		PlayerExperienceModifier: 1
 	ScriptTriggers:
-	ConditionManager:
 	RenderDebugState:
 
 ^SpriteActor:
@@ -502,7 +501,6 @@
 		RequiresCondition: !being-demolished
 		SellSounds: cashturn.aud
 	ScriptTriggers:
-	ConditionManager:
 	Health:
 	HitShape:
 		Type: Rectangle

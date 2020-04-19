@@ -35,7 +35,6 @@ namespace OpenRA.Mods.Common.Traits
 	class KillsSelf : ConditionalTrait<KillsSelfInfo>, INotifyAddedToWorld, ITick
 	{
 		int lifetime;
-		ConditionManager conditionManager;
 
 		public KillsSelf(Actor self, KillsSelfInfo info)
 			: base(info)
@@ -49,12 +48,6 @@ namespace OpenRA.Mods.Common.Traits
 			// We want to make sure that this only triggers once they are inserted into the world
 			if (lifetime == 0 && self.IsInWorld)
 				self.World.AddFrameEndTask(w => Kill(self));
-		}
-
-		protected override void Created(Actor self)
-		{
-			conditionManager = self.TraitOrDefault<ConditionManager>();
-			base.Created(self);
 		}
 
 		void INotifyAddedToWorld.AddedToWorld(Actor self)
@@ -80,8 +73,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (self.IsDead)
 				return;
 
-			if (conditionManager != null && !string.IsNullOrEmpty(Info.GrantsCondition))
-				conditionManager.GrantCondition(self, Info.GrantsCondition);
+			if (!string.IsNullOrEmpty(Info.GrantsCondition))
+				self.GrantCondition(Info.GrantsCondition);
 
 			if (Info.RemoveInstead || !self.Info.HasTraitInfo<IHealthInfo>())
 				self.Dispose();
