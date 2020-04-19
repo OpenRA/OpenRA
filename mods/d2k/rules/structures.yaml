@@ -729,12 +729,8 @@ medium_gun_turret:
 		Cost: 550
 	Tooltip:
 		Name: Gun Turret
-	Building:
-		BuildSounds: CHUNG.WAV
 	RequiresBuildableArea:
 		Adjacent: 4
-	Sellable:
-		SellSounds: CHUNG.WAV
 	Selectable:
 		Bounds: 32,32
 		DecorationBounds: 32,40,0,-8
@@ -776,12 +772,8 @@ large_gun_turret:
 		Cost: 750
 	Tooltip:
 		Name: Rocket Turret
-	Building:
-		BuildSounds: CHUNG.WAV
 	RequiresBuildableArea:
 		Adjacent: 4
-	Sellable:
-		SellSounds: CHUNG.WAV
 	Selectable:
 		Bounds: 32,32
 		DecorationBounds: 32,40,0,-8
