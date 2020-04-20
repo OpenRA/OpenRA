@@ -53,8 +53,6 @@ ParadropWaypoints =
 
 SovietTechLabs = { TechLab1, TechLab2 }
 
-TechLabCams = { TechCam1, TechCam2 }
-
 GroupPatrol = function(units, waypoints, delay)
 	local i = 1
 	local stop = false
@@ -126,17 +124,22 @@ CaptureRadarDome = function()
 
 	Trigger.OnCapture(RadarDome, function()
 		player.MarkCompletedObjective(CaptureRadarDomeObj)
-		Beacon.New(player, TechLab1.CenterPosition)
-		Beacon.New(player, TechLab2.CenterPosition)
-		Media.DisplayMessage("Coordinates of the Soviet tech centers discovered.")
-		if Map.LobbyOption("difficulty") ~= "hard" then
-			Utils.Do(TechLabCams, function(a)
-				Actor.Create("TECH.CAM", true, { Owner = player, Location = a.Location })
-			end)
 
-			if Map.LobbyOption("difficulty") == "easy" then
-				Actor.Create("Camera", true, { Owner = player, Location = Weapcam.Location })
+		Utils.Do(SovietTechLabs, function(a)
+			if a.IsDead then
+				return
 			end
+
+			Beacon.New(player, a.CenterPosition)
+			if Map.LobbyOption("difficulty") ~= "hard" then
+				Actor.Create("TECH.CAM", true, { Owner = player, Location = a.Location + CVec.New(1, 1) })
+			end
+		end)
+
+		Media.DisplayMessage("Coordinates of the Soviet tech centers discovered.")
+
+		if Map.LobbyOption("difficulty") == "easy" then
+			Actor.Create("Camera", true, { Owner = player, Location = Weapcam.Location })
 		end
 	end)
 end

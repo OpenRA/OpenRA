@@ -30,10 +30,10 @@ Players:
 		Faction: england
 	PlayerReference@USSR:
 		Name: USSR
+		Bot: campaign
 		Faction: soviet
 		Color: FF1400
 		Enemies: Greece
-		Bot: campaign
 	PlayerReference@Greece:
 		Name: Greece
 		AllowBots: False
@@ -586,12 +586,6 @@ Actors:
 	SovietDefenseCam: waypoint
 		Owner: Neutral
 		Location: 49,91
-	TechCam1: waypoint
-		Owner: Neutral
-		Location: 55,58
-	TechCam2: waypoint
-		Owner: Neutral
-		Location: 91,43
 	Weapcam: waypoint
 		Owner: Neutral
 		Location: 53,47
