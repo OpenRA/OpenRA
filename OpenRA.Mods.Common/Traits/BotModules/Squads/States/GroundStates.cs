@@ -10,6 +10,7 @@
 #endregion
 
 using System.Linq;
+using OpenRA.Mods.Common.Activities;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.BotModules.Squads
@@ -24,6 +25,69 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 		protected Actor FindClosestEnemy(Squad owner)
 		{
 			return owner.SquadManager.FindClosestEnemy(owner.Units.First().CenterPosition);
+		}
+
+		protected static bool IsRearm(Actor a)
+		{
+			if (a.IsIdle)
+				return false;
+
+			var activity = a.CurrentActivity;
+			var type = activity.GetType();
+			if (type == typeof(Resupply))
+				return true;
+
+			var next = activity.NextActivity;
+			if (next == null)
+				return false;
+
+			var nextType = next.GetType();
+			if (nextType == typeof(Resupply))
+				return true;
+
+			return false;
+		}
+
+		// Retreat units from combat, or for supply only in idle
+		protected virtual void Retreat(Squad owner, bool resupplyonly)
+		{
+			// Repair units. One by one to avoid give out mass orders
+			foreach (var a in owner.Units)
+			{
+				if (IsRearm(a))
+					continue;
+
+				Actor repairBuilding = null;
+				var orderId = "Repair";
+				var alreadysend = false;
+
+				if (!alreadysend && a.TraitOrDefault<IHealth>() != null && a.TraitOrDefault<IHealth>().DamageState > DamageState.Undamaged)
+				{
+					var repairable = a.TraitOrDefault<Repairable>();
+					if (repairable != null)
+						repairBuilding = repairable.FindRepairBuilding(a);
+					else
+					{
+						var repairableNear = a.TraitOrDefault<RepairableNear>();
+						if (repairableNear != null)
+						{
+							orderId = "RepairNear";
+							repairBuilding = repairableNear.FindRepairBuilding(a);
+						}
+					}
+
+					if (repairBuilding != null)
+					{
+						owner.Bot.QueueOrder(new Order(orderId, a, Target.FromActor(repairBuilding), false));
+						alreadysend = true;
+						continue;
+					}
+					else if (!resupplyonly)
+						owner.Bot.QueueOrder(new Order("Move", a, Target.FromCell(owner.World, RandomBuildingLocation(owner)), false));
+				}
+				else if (!resupplyonly)
+					owner.Bot.QueueOrder(new Order("Move", a, Target.FromCell(owner.World, RandomBuildingLocation(owner)), false));
+			}
 		}
 	}
 
@@ -46,10 +110,13 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			}
 
 			var enemyUnits = owner.World.FindActorsInCircle(owner.TargetActor.CenterPosition, WDist.FromCells(owner.SquadManager.Info.IdleScanRadius))
-				.Where(owner.SquadManager.IsEnemyUnit).ToList();
+				.Where(a => owner.SquadManager.IsEnemyUnit(a) && owner.SquadManager.IsVisibleUnit(a)).ToList();
 
 			if (enemyUnits.Count == 0)
+			{
+				Retreat(owner, true);
 				return;
+			}
 
 			if (AttackOrFleeFuzzy.Default.CanAttack(owner.Units, enemyUnits))
 			{
@@ -105,7 +172,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			else
 			{
 				var enemies = owner.World.FindActorsInCircle(leader.CenterPosition, WDist.FromCells(owner.SquadManager.Info.AttackScanRadius))
-					.Where(owner.SquadManager.IsEnemyUnit);
+					.Where(a => owner.SquadManager.IsEnemyUnit(a) && owner.SquadManager.IsVisibleUnit(a));
 				var target = enemies.ClosestTo(leader.CenterPosition);
 				if (target != null)
 				{
@@ -145,9 +212,32 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 				}
 			}
 
-			foreach (var a in owner.Units)
-				if (!BusyAttack(a))
-					owner.Bot.QueueOrder(new Order("Attack", a, Target.FromActor(owner.TargetActor), false));
+			// rescan target to prevent being ambushed and die without fight
+			// return to AttackMove state for formation
+			var leader = owner.Units.ClosestTo(owner.TargetActor.CenterPosition);
+			var enemies = owner.World.FindActorsInCircle(leader.CenterPosition, WDist.FromCells(owner.SquadManager.Info.AttackScanRadius))
+				.Where(a => owner.SquadManager.IsEnemyUnit(a) && owner.SquadManager.IsVisibleUnit(a));
+			var target = enemies.ClosestTo(leader.CenterPosition);
+			if (target == null)
+				owner.FuzzyStateMachine.ChangeState(owner, new GroundUnitsAttackMoveState(), true);
+			else
+			{
+				if (target == owner.TargetActor)
+				{
+					foreach (var a in owner.Units)
+					{
+						if (!BusyAttack(a))
+						{
+							if (CanAttackTarget(a, target))
+								owner.Bot.QueueOrder(new Order("Attack", a, Target.FromActor(owner.TargetActor), false));
+							else
+								owner.Bot.QueueOrder(new Order("Guard", a, Target.FromActor(leader), false));
+						}
+					}
+				}
+				else
+					owner.TargetActor = target;
+			}
 
 			if (ShouldFlee(owner))
 				owner.FuzzyStateMachine.ChangeState(owner, new GroundUnitsFleeState(), true);
@@ -165,7 +255,8 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			if (!owner.IsValid)
 				return;
 
-			GoToRandomOwnBuilding(owner);
+			Retreat(owner, false);
+
 			owner.FuzzyStateMachine.ChangeState(owner, new GroundUnitsIdleState(), true);
 		}
 

@@ -126,6 +126,11 @@ namespace OpenRA.Mods.Common.Traits
 				&& !a.GetEnabledTargetTypes().IsEmpty;
 		}
 
+		public bool IsVisibleUnit(Actor a)
+		{
+			return !(a.TraitsImplementing<Cloak>().Where(t => !t.IsTraitDisabled && !t.IsTraitPaused && !t.IsVisible(a, Player)).Any());
+		}
+
 		protected override void Created(Actor self)
 		{
 			// Special case handling is required for the Player actor.
@@ -160,12 +165,14 @@ namespace OpenRA.Mods.Common.Traits
 
 		internal Actor FindClosestEnemy(WPos pos)
 		{
-			return World.Actors.Where(IsEnemyUnit).ClosestTo(pos);
+			var units = World.Actors.Where(IsEnemyUnit);
+			return units.Where(IsVisibleUnit).ClosestTo(pos) ?? units.ClosestTo(pos);
 		}
 
 		internal Actor FindClosestEnemy(WPos pos, WDist radius)
 		{
-			return World.FindActorsInCircle(pos, radius).Where(IsEnemyUnit).ClosestTo(pos);
+			var units = World.FindActorsInCircle(pos, radius).Where(IsEnemyUnit);
+			return units.Where(IsVisibleUnit).ClosestTo(pos);
 		}
 
 		void CleanSquads()
