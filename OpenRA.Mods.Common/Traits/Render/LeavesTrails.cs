@@ -111,6 +111,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (++ticks >= cachedInterval)
 			{
 				var spawnCell = Info.SpawnAtLastPosition ? self.World.Map.CellContaining(cachedPosition) : self.World.Map.CellContaining(self.CenterPosition);
+				if (!self.World.Map.Contains(spawnCell))
+					return;
+
 				var type = self.World.Map.GetTerrainInfo(spawnCell).Type;
 
 				if (++offset >= Info.Offsets.Length)
