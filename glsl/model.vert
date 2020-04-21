@@ -3,12 +3,21 @@
 uniform mat4 View;
 uniform mat4 TransformMatrix;
 
+#if __VERSION__ == 120
+attribute vec4 aVertexPosition;
+attribute vec4 aVertexTexCoord;
+attribute vec2 aVertexTexMetadata;
+varying vec4 vTexCoord;
+varying vec4 vChannelMask;
+varying vec4 vNormalsMask;
+#else
 in vec4 aVertexPosition;
 in vec4 aVertexTexCoord;
 in vec2 aVertexTexMetadata;
 out vec4 vTexCoord;
 out vec4 vChannelMask;
 out vec4 vNormalsMask;
+#endif
 
 vec4 DecodeMask(float x)
 {

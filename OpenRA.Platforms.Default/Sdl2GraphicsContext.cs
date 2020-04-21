@@ -35,14 +35,17 @@ namespace OpenRA.Platforms.Default
 			if (context == IntPtr.Zero || SDL.SDL_GL_MakeCurrent(window.Window, context) < 0)
 				throw new InvalidOperationException("Can not create OpenGL context. (Error: {0})".F(SDL.SDL_GetError()));
 
-			OpenGL.Initialize();
+			OpenGL.Initialize(window.GLProfile == GLProfile.Legacy);
+			OpenGL.CheckGLError();
 
-			uint vao;
-			OpenGL.CheckGLError();
-			OpenGL.glGenVertexArrays(1, out vao);
-			OpenGL.CheckGLError();
-			OpenGL.glBindVertexArray(vao);
-			OpenGL.CheckGLError();
+			if (OpenGL.Profile != GLProfile.Legacy)
+			{
+				uint vao;
+				OpenGL.glGenVertexArrays(1, out vao);
+				OpenGL.CheckGLError();
+				OpenGL.glBindVertexArray(vao);
+				OpenGL.CheckGLError();
+			}
 
 			OpenGL.glEnableVertexAttribArray(Shader.VertexPosAttributeIndex);
 			OpenGL.CheckGLError();

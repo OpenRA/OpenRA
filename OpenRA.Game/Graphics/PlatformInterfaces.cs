@@ -19,6 +19,7 @@ namespace OpenRA
 	{
 		Modern,
 		Embedded,
+		Legacy
 	}
 
 	public interface IPlatform
