@@ -33,7 +33,7 @@ namespace OpenRA.Platforms.Default
 			var filename = Path.Combine(Platform.GameDir, "glsl", name + "." + ext);
 			var code = File.ReadAllText(filename);
 
-			var version = OpenGL.Features.HasFlag(OpenGL.GLFeatures.GLES) ? "300 es" : "140";
+			var version = OpenGL.Profile == GLProfile.Embedded ? "300 es" : "140";
 			code = code.Replace("{VERSION}", version);
 
 			var shader = OpenGL.glCreateShader(type);
