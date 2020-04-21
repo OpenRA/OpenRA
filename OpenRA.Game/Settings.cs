@@ -177,7 +177,8 @@ namespace OpenRA
 
 		[Desc("Preferred OpenGL profile to use.",
 			"Modern: OpenGL Core Profile 3.2 or greater.",
-			"Embedded: OpenGL ES 3.0 or greater.")]
+			"Embedded: OpenGL ES 3.0 or greater.",
+			"Legacy: OpenGL 2.1 with framebuffer_object extension.")]
 		public GLProfile GLProfile = GLProfile.Modern;
 
 		public int BatchSize = 8192;
