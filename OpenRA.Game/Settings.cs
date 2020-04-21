@@ -53,7 +53,7 @@ namespace OpenRA
 		public bool DiscoverNatDevices = false;
 
 		[Desc("Time in milliseconds to search for UPnP enabled NAT devices.")]
-		public int NatDiscoveryTimeout = 5000;
+		public int NatDiscoveryTimeout = 1000;
 
 		[Desc("Starts the game with a default map. Input as hash that can be obtained by the utility.")]
 		public string Map = null;
@@ -177,8 +177,7 @@ namespace OpenRA
 
 		[Desc("Preferred OpenGL profile to use.",
 			"Modern: OpenGL Core Profile 3.2 or greater.",
-			"Embedded: OpenGL ES 3.0 or greater.",
-			"Legacy: OpenGL 2.1 with framebuffer_object extension.")]
+			"Embedded: OpenGL ES 3.0 or greater.")]
 		public GLProfile GLProfile = GLProfile.Modern;
 
 		public int BatchSize = 8192;

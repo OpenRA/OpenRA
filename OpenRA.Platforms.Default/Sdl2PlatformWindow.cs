@@ -108,8 +108,6 @@ namespace OpenRA.Platforms.Default
 			}
 		}
 
-		public bool HasInputFocus { get; internal set; }
-
 		public GLProfile GLProfile
 		{
 			get
@@ -151,9 +149,9 @@ namespace OpenRA.Platforms.Default
 				// We first need to query the available profiles on Windows/Linux.
 				// On macOS, known/consistent OpenGL support is provided by the OS.
 				if (Platform.CurrentPlatform == PlatformType.OSX)
-					supportedProfiles = new[] { GLProfile.Modern, GLProfile.Legacy };
+					supportedProfiles = new[] { GLProfile.Modern };
 				else
-					supportedProfiles = new[] { GLProfile.Modern, GLProfile.Embedded, GLProfile.Legacy }
+					supportedProfiles = new[] { GLProfile.Modern, GLProfile.Embedded }
 						.Where(CanCreateGLWindow)
 						.ToArray();
 
@@ -238,11 +236,11 @@ namespace OpenRA.Platforms.Default
 							switch (e.window.windowEvent)
 							{
 								case SDL.SDL_WindowEventID.SDL_WINDOWEVENT_FOCUS_LOST:
-									HasInputFocus = false;
+									Game.HasInputFocus = false;
 									break;
 
 								case SDL.SDL_WindowEventID.SDL_WINDOWEVENT_FOCUS_GAINED:
-									HasInputFocus = true;
+									Game.HasInputFocus = true;
 									break;
 							}
 						}
@@ -486,10 +484,6 @@ namespace OpenRA.Platforms.Default
 					SDL.SDL_GL_SetAttribute(SDL.SDL_GLattr.SDL_GL_CONTEXT_MAJOR_VERSION, 3);
 					SDL.SDL_GL_SetAttribute(SDL.SDL_GLattr.SDL_GL_CONTEXT_MINOR_VERSION, 0);
 					SDL.SDL_GL_SetAttribute(SDL.SDL_GLattr.SDL_GL_CONTEXT_PROFILE_MASK, (int)SDL.SDL_GLprofile.SDL_GL_CONTEXT_PROFILE_ES);
-					break;
-				case GLProfile.Legacy:
-					SDL.SDL_GL_SetAttribute(SDL.SDL_GLattr.SDL_GL_CONTEXT_MAJOR_VERSION, 2);
-					SDL.SDL_GL_SetAttribute(SDL.SDL_GLattr.SDL_GL_CONTEXT_MINOR_VERSION, 1);
 					break;
 			}
 		}
