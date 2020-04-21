@@ -91,7 +91,7 @@ Background@SETTINGS_PANEL:
 			X: 5
 			Y: 50
 			Width: PARENT_RIGHT - 10
-			Height: PARENT_BOTTOM
+			Height: PARENT_BOTTOM - 50
 			Children:
 				Label@PLAYER:
 					Text: Player Name:
@@ -249,13 +249,6 @@ Background@SETTINGS_PANEL:
 							Height: 25
 							MaxLength: 5
 							Type: Integer
-						Label@WINDOW_CHANGES_DESC:
-							X: 60
-							Y: 27
-							Width: 200
-							Height: 15
-							Font: Tiny
-							Text: Video mode and window size changes require restart
 				Container@DISPLAY_SELECTION:
 					Y: 240
 					Children:
@@ -271,13 +264,6 @@ Background@SETTINGS_PANEL:
 							Height: 25
 							Font: Regular
 							Text: Standard
-						Label@MODE_CHANGES_DESC:
-							X: 60
-							Y: 27
-							Width: 200
-							Height: 15
-							Font: Tiny
-							Text: Video mode and display changes require restart
 				Checkbox@FRAME_LIMIT_CHECKBOX:
 					X: 310
 					Y: 243
@@ -293,6 +279,26 @@ Background@SETTINGS_PANEL:
 					Ticks: 20
 					MinimumValue: 50
 					MaximumValue: 240
+				Label@GL_PROFILE:
+					X: 15
+					Y: 270
+					Width: 120
+					Height: 25
+					Align: Right
+					Text: OpenGL Profile:
+				DropDownButton@GL_PROFILE_DROPDOWN:
+					X: 140
+					Y: 270
+					Width: 160
+					Height: 25
+					Font: Regular
+				Label@RESTART_REQUIRED_DESC:
+					Y: PARENT_BOTTOM - 40
+					Width: PARENT_RIGHT
+					Height: 15
+					Font: Tiny
+					Text: Display and OpenGL changes require restart
+					Align: Center
 		Container@AUDIO_PANEL:
 			X: 5
 			Y: 50
