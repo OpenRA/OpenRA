@@ -122,6 +122,7 @@ namespace OpenRA.Mods.Common.LoadScreens
 			}
 
 			// Saved settings may have been invalidated by a hardware change
+			Game.Settings.Graphics.GLProfile = Game.Renderer.GLProfile;
 			Game.Settings.Graphics.VideoDisplay = Game.Renderer.CurrentDisplay;
 
 			// If a ModContent section is defined then we need to make sure that the

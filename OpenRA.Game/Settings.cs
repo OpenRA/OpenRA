@@ -172,11 +172,13 @@ namespace OpenRA
 		[Desc("Disable operating-system provided cursor rendering.")]
 		public bool DisableHardwareCursors = false;
 
-		[Desc("Use OpenGL ES if both ES and regular OpenGL are available.")]
-		public bool PreferGLES = false;
-
 		[Desc("Display index to use in a multi-monitor fullscreen setup.")]
 		public int VideoDisplay = 0;
+
+		[Desc("Preferred OpenGL profile to use.",
+			"Modern: OpenGL Core Profile 3.2 or greater.",
+			"Embedded: OpenGL ES 3.0 or greater.")]
+		public GLProfile GLProfile = GLProfile.Modern;
 
 		public int BatchSize = 8192;
 		public int SheetSize = 2048;
