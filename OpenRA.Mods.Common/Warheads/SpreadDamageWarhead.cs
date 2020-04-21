@@ -87,9 +87,21 @@ namespace OpenRA.Mods.Common.Warheads
 					continue;
 
 				var localModifiers = args.DamageModifiers.Append(GetDamageFalloff(falloffDistance));
+				var impactOrientation = args.ImpactOrientation;
+
+				// If a warhead lands outside the victim's HitShape, we need to calculate the vertical and horizontal impact angles
+				// from impact position, rather than last projectile facing/angle.
+				if (falloffDistance > 0)
+				{
+					var towardsTargetYaw = (victim.CenterPosition - args.ImpactPosition).Yaw;
+					var impactAngle = Util.GetVerticalAngle(args.ImpactPosition, victim.CenterPosition);
+					impactOrientation = new WRot(WAngle.Zero, impactAngle, towardsTargetYaw);
+				}
+
 				var updatedWarheadArgs = new WarheadArgs(args)
 				{
 					DamageModifiers = localModifiers.ToArray(),
+					ImpactOrientation = impactOrientation,
 				};
 
 				InflictDamage(victim, firedBy, closestActiveShape.First, updatedWarheadArgs);
