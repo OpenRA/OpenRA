@@ -29,12 +29,11 @@ namespace OpenRA.Platforms.Default
 		public enum GLFeatures
 		{
 			None = 0,
-			Core = 1,
-			GLES = 2,
-			DebugMessagesCallback = 4,
-			ESReadFormatBGRA = 8
+			DebugMessagesCallback = 1,
+			ESReadFormatBGRA = 2,
 		}
 
+		public static GLProfile Profile { get; private set; }
 		public static GLFeatures Features { get; private set; }
 
 		public static string Version { get; private set; }
@@ -495,7 +494,11 @@ namespace OpenRA.Platforms.Default
 				throw new InvalidProgramException("Failed to initialize low-level OpenGL bindings. GPU information is not available.", e);
 			}
 
-			DetectGLFeatures();
+			if (!DetectGLFeatures())
+			{
+				WriteGraphicsLog("Unsupported OpenGL version: " + glGetString(GL_VERSION));
+				throw new InvalidProgramException("OpenGL Version Error: See graphics.log for details.");
+			}
 
 			// Allow users to force-disable the debug message callback feature to work around driver bugs
 			if (Features.HasFlag(GLFeatures.DebugMessagesCallback) && Game.Settings.Graphics.DisableGLDebugMessageCallback)
@@ -509,18 +512,12 @@ namespace OpenRA.Platforms.Default
 					Features ^= GLFeatures.DebugMessagesCallback;
 			}
 
-			if (!Features.HasFlag(GLFeatures.Core))
-			{
-				WriteGraphicsLog("Unsupported OpenGL version: " + glGetString(GL_VERSION));
-				throw new InvalidProgramException("OpenGL Version Error: See graphics.log for details.");
-			}
-
 			// Setup the debug message callback handler
 			if (Features.HasFlag(GLFeatures.DebugMessagesCallback))
 			{
 				try
 				{
-					var suffix = Features.HasFlag(GLFeatures.GLES) ? "KHR" : "";
+					var suffix = Profile == GLProfile.Embedded ? "KHR" : "";
 					glDebugMessageCallback = Bind<DebugMessageCallback>("glDebugMessageCallback" + suffix);
 					glDebugMessageInsert = Bind<DebugMessageInsert>("glDebugMessageInsert" + suffix);
 
@@ -620,8 +617,9 @@ namespace OpenRA.Platforms.Default
 			return (T)(object)Marshal.GetDelegateForFunctionPointer(SDL.SDL_GL_GetProcAddress(name), typeof(T));
 		}
 
-		public static void DetectGLFeatures()
+		public static bool DetectGLFeatures()
 		{
+			var hasValidConfiguration = false;
 			try
 			{
 				Version = glGetString(GL_VERSION);
@@ -641,13 +639,16 @@ namespace OpenRA.Platforms.Default
 				var hasBGRA = SDL.SDL_GL_ExtensionSupported("GL_EXT_texture_format_BGRA8888") == SDL.SDL_bool.SDL_TRUE;
 				if (Version.Contains(" ES") && hasBGRA && major >= 3)
 				{
-					Features = GLFeatures.Core | GLFeatures.GLES;
-
+					hasValidConfiguration = true;
+					Profile = GLProfile.Embedded;
 					if (SDL.SDL_GL_ExtensionSupported("GL_EXT_read_format_bgra") == SDL.SDL_bool.SDL_TRUE)
 						Features |= GLFeatures.ESReadFormatBGRA;
 				}
 				else if (major > 3 || (major == 3 && minor >= 2))
-					Features = GLFeatures.Core;
+				{
+					hasValidConfiguration = true;
+					Profile = GLProfile.Modern;
+				}
 
 				// Debug callbacks were introduced in GL 4.3
 				var hasDebugMessagesCallback = SDL.SDL_GL_ExtensionSupported("GL_KHR_debug") == SDL.SDL_bool.SDL_TRUE;
@@ -655,6 +656,8 @@ namespace OpenRA.Platforms.Default
 					Features |= GLFeatures.DebugMessagesCallback;
 			}
 			catch (Exception) { }
+
+			return hasValidConfiguration;
 		}
 
 		public static void WriteGraphicsLog(string message)

@@ -15,6 +15,12 @@ using OpenRA.Primitives;
 
 namespace OpenRA
 {
+	public enum GLProfile
+	{
+		Modern,
+		Embedded,
+	}
+
 	public interface IPlatform
 	{
 		IPlatformWindow CreateWindow(Size size, WindowMode windowMode, float scaleModifier, int batchSize, int videoDisplay);

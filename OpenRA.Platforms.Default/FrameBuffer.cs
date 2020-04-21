@@ -50,7 +50,7 @@ namespace OpenRA.Platforms.Default
 			OpenGL.glBindRenderbuffer(OpenGL.GL_RENDERBUFFER, depth);
 			OpenGL.CheckGLError();
 
-			var glDepth = OpenGL.Features.HasFlag(OpenGL.GLFeatures.GLES) ? OpenGL.GL_DEPTH_COMPONENT16 : OpenGL.GL_DEPTH_COMPONENT;
+			var glDepth = OpenGL.Profile == GLProfile.Embedded ? OpenGL.GL_DEPTH_COMPONENT16 : OpenGL.GL_DEPTH_COMPONENT;
 			OpenGL.glRenderbufferStorage(OpenGL.GL_RENDERBUFFER, glDepth, size.Width, size.Height);
 			OpenGL.CheckGLError();
 

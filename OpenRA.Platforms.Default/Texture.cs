@@ -75,7 +75,7 @@ namespace OpenRA.Platforms.Default
 		void SetData(IntPtr data, int width, int height)
 		{
 			PrepareTexture();
-			var glInternalFormat = OpenGL.Features.HasFlag(OpenGL.GLFeatures.GLES) ? OpenGL.GL_BGRA : OpenGL.GL_RGBA8;
+			var glInternalFormat = OpenGL.Profile == GLProfile.Embedded ? OpenGL.GL_BGRA : OpenGL.GL_RGBA8;
 			OpenGL.glTexImage2D(OpenGL.GL_TEXTURE_2D, 0, glInternalFormat, width, height,
 				0, OpenGL.GL_BGRA, OpenGL.GL_UNSIGNED_BYTE, data);
 			OpenGL.CheckGLError();
@@ -119,7 +119,7 @@ namespace OpenRA.Platforms.Default
 			var data = new byte[4 * Size.Width * Size.Height];
 
 			// GLES doesn't support glGetTexImage so data must be read back via a frame buffer
-			if (OpenGL.Features.HasFlag(OpenGL.GLFeatures.GLES))
+			if (OpenGL.Profile == GLProfile.Embedded)
 			{
 				// Query the active framebuffer so we can restore it afterwards
 				int lastFramebuffer;
