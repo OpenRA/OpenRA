@@ -23,6 +23,7 @@ namespace OpenRA.Platforms.Default
 		public const int TexMetadataAttributeIndex = 2;
 
 		readonly Dictionary<string, int> samplers = new Dictionary<string, int>();
+		readonly Dictionary<int, int> legacySizeUniforms = new Dictionary<int, int>();
 		readonly Dictionary<int, ITexture> textures = new Dictionary<int, ITexture>();
 		readonly Queue<int> unbindTextures = new Queue<int>();
 		readonly uint program;
@@ -33,7 +34,9 @@ namespace OpenRA.Platforms.Default
 			var filename = Path.Combine(Platform.GameDir, "glsl", name + "." + ext);
 			var code = File.ReadAllText(filename);
 
-			var version = OpenGL.Profile == GLProfile.Embedded ? "300 es" : "140";
+			var version = OpenGL.Profile == GLProfile.Embedded ? "300 es" :
+				OpenGL.Profile == GLProfile.Legacy ? "120" : "140";
+
 			code = code.Replace("{VERSION}", version);
 
 			var shader = OpenGL.glCreateShader(type);
@@ -80,8 +83,12 @@ namespace OpenRA.Platforms.Default
 			OpenGL.CheckGLError();
 			OpenGL.glBindAttribLocation(program, TexMetadataAttributeIndex, "aVertexTexMetadata");
 			OpenGL.CheckGLError();
-			OpenGL.glBindFragDataLocation(program, 0, "fragColor");
-			OpenGL.CheckGLError();
+
+			if (OpenGL.Profile != GLProfile.Legacy)
+			{
+				OpenGL.glBindFragDataLocation(program, 0, "fragColor");
+				OpenGL.CheckGLError();
+			}
 
 			OpenGL.glAttachShader(program, vertexShader);
 			OpenGL.CheckGLError();
@@ -132,6 +139,13 @@ namespace OpenRA.Platforms.Default
 					OpenGL.glUniform1i(loc, nextTexUnit);
 					OpenGL.CheckGLError();
 
+					if (OpenGL.Profile == GLProfile.Legacy)
+					{
+						var sizeLoc = OpenGL.glGetUniformLocation(program, sampler + "Size");
+						if (sizeLoc >= 0)
+							legacySizeUniforms.Add(nextTexUnit, sizeLoc);
+					}
+
 					nextTexUnit++;
 				}
 			}
@@ -146,13 +160,21 @@ namespace OpenRA.Platforms.Default
 			// bind the textures
 			foreach (var kv in textures)
 			{
-				var id = ((ITextureInternal)kv.Value).ID;
+				var texture = (ITextureInternal)kv.Value;
 
 				// Evict disposed textures from the cache
-				if (OpenGL.glIsTexture(id))
+				if (OpenGL.glIsTexture(texture.ID))
 				{
 					OpenGL.glActiveTexture(OpenGL.GL_TEXTURE0 + kv.Key);
-					OpenGL.glBindTexture(OpenGL.GL_TEXTURE_2D, id);
+					OpenGL.glBindTexture(OpenGL.GL_TEXTURE_2D, texture.ID);
+
+					// Work around missing textureSize GLSL function by explicitly tracking sizes in a uniform
+					int param;
+					if (OpenGL.Profile == GLProfile.Legacy && legacySizeUniforms.TryGetValue(kv.Key, out param))
+					{
+						OpenGL.glUniform2f(param, texture.Size.Width, texture.Size.Height);
+						OpenGL.CheckGLError();
+					}
 				}
 				else
 					unbindTextures.Enqueue(kv.Key);

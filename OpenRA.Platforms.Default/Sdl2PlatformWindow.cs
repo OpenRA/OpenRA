@@ -151,9 +151,9 @@ namespace OpenRA.Platforms.Default
 				// We first need to query the available profiles on Windows/Linux.
 				// On macOS, known/consistent OpenGL support is provided by the OS.
 				if (Platform.CurrentPlatform == PlatformType.OSX)
-					supportedProfiles = new[] { GLProfile.Modern };
+					supportedProfiles = new[] { GLProfile.Modern, GLProfile.Legacy };
 				else
-					supportedProfiles = new[] { GLProfile.Modern, GLProfile.Embedded }
+					supportedProfiles = new[] { GLProfile.Modern, GLProfile.Embedded, GLProfile.Legacy }
 						.Where(CanCreateGLWindow)
 						.ToArray();
 
@@ -486,6 +486,10 @@ namespace OpenRA.Platforms.Default
 					SDL.SDL_GL_SetAttribute(SDL.SDL_GLattr.SDL_GL_CONTEXT_MAJOR_VERSION, 3);
 					SDL.SDL_GL_SetAttribute(SDL.SDL_GLattr.SDL_GL_CONTEXT_MINOR_VERSION, 0);
 					SDL.SDL_GL_SetAttribute(SDL.SDL_GLattr.SDL_GL_CONTEXT_PROFILE_MASK, (int)SDL.SDL_GLprofile.SDL_GL_CONTEXT_PROFILE_ES);
+					break;
+				case GLProfile.Legacy:
+					SDL.SDL_GL_SetAttribute(SDL.SDL_GLattr.SDL_GL_CONTEXT_MAJOR_VERSION, 2);
+					SDL.SDL_GL_SetAttribute(SDL.SDL_GLattr.SDL_GL_CONTEXT_MINOR_VERSION, 1);
 					break;
 			}
 		}
