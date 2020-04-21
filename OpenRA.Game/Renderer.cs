@@ -75,7 +75,10 @@ namespace OpenRA
 			this.platform = platform;
 			var resolution = GetResolution(graphicSettings);
 
-			Window = platform.CreateWindow(new Size(resolution.Width, resolution.Height), graphicSettings.Mode, graphicSettings.UIScale, graphicSettings.BatchSize, graphicSettings.VideoDisplay);
+			Window = platform.CreateWindow(new Size(resolution.Width, resolution.Height),
+				graphicSettings.Mode, graphicSettings.UIScale, graphicSettings.BatchSize,
+				graphicSettings.VideoDisplay, graphicSettings.GLProfile);
+
 			Context = Window.Context;
 
 			TempBufferSize = graphicSettings.BatchSize;
@@ -310,6 +313,8 @@ namespace OpenRA
 		public Size NativeResolution { get { return Window.NativeWindowSize; } }
 		public float WindowScale { get { return Window.EffectiveWindowScale; } }
 		public float NativeWindowScale { get { return Window.NativeWindowScale; } }
+		public GLProfile GLProfile { get { return Window.GLProfile; } }
+		public GLProfile[] SupportedGLProfiles { get { return Window.SupportedGLProfiles; } }
 
 		public interface IBatchRenderer { void Flush(); }
 
