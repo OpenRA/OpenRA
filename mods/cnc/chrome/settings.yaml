@@ -228,13 +228,6 @@ Container@SETTINGS_PANEL:
 									Height: 25
 									MaxLength: 5
 									Type: Integer
-								Label@WINDOW_CHANGES_DESC:
-									X: 60
-									Y: 27
-									Width: 200
-									Height: 15
-									Font: Tiny
-									Text: Video mode and window size changes require restart
 						Container@DISPLAY_SELECTION:
 							Y: 240
 							Children:
@@ -249,13 +242,6 @@ Container@SETTINGS_PANEL:
 									Width: 160
 									Height: 25
 									Font: Regular
-								Label@MODE_CHANGES_DESC:
-									X: 60
-									Y: 27
-									Width: 200
-									Height: 15
-									Font: Tiny
-									Text: Video mode and display changes require restart
 						Checkbox@VSYNC_CHECKBOX:
 							X: 310
 							Y: 210
@@ -278,6 +264,27 @@ Container@SETTINGS_PANEL:
 							Ticks: 20
 							MinimumValue: 50
 							MaximumValue: 240
+						Label@GL_PROFILE:
+							X: 15
+							Y: 270
+							Width: 120
+							Height: 25
+							Align: Right
+							Text: OpenGL Profile:
+						DropDownButton@GL_PROFILE_DROPDOWN:
+							X: 140
+							Y: 270
+							Width: 160
+							Height: 25
+							Font: Regular
+						Label@RESTART_REQUIRED_DESC:
+							X: 300
+							Y: PARENT_BOTTOM + 10
+							Width: PARENT_RIGHT - 300
+							Height: 15
+							Font: TinyBold
+							Text: Display and OpenGL changes require restart
+							Align: Center
 				Container@AUDIO_PANEL:
 					Width: PARENT_RIGHT
 					Height: PARENT_BOTTOM
