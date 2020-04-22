@@ -513,6 +513,14 @@ namespace OpenRA.Platforms.Default
 					Features ^= GLFeatures.DebugMessagesCallback;
 			}
 
+			// Older Intel on Windows is broken too
+			if (Features.HasFlag(GLFeatures.DebugMessagesCallback) && Platform.CurrentPlatform == PlatformType.Windows)
+			{
+				var renderer = glGetString(GL_RENDERER);
+				if (renderer.Contains("HD Graphics") && !renderer.Contains("UHD Graphics"))
+					Features ^= GLFeatures.DebugMessagesCallback;
+			}
+
 			// Setup the debug message callback handler
 			if (Features.HasFlag(GLFeatures.DebugMessagesCallback))
 			{
