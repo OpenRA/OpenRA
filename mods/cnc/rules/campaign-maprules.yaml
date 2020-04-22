@@ -29,7 +29,7 @@ Player:
 		EarlyGameOver: true
 	Shroud:
 		FogCheckboxLocked: True
-		FogCheckboxEnabled: True
+		FogCheckboxEnabled: False
 		ExploredMapCheckboxLocked: True
 		ExploredMapCheckboxEnabled: False
 	PlayerResources:

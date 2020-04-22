@@ -3,7 +3,7 @@ Player:
 	MissionObjectives:
 		EarlyGameOver: true
 	Shroud:
-		FogCheckboxLocked: True
+		FogCheckboxLocked: False
 		FogCheckboxEnabled: True
 		ExploredMapCheckboxLocked: True
 		ExploredMapCheckboxEnabled: False
