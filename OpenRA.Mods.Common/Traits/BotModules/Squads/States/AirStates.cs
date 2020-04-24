@@ -20,8 +20,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 	abstract class AirStateBase : StateBase
 	{
 		static readonly BitSet<TargetableType> AirTargetTypes = new BitSet<TargetableType>("Air");
-
-		protected const int MissileUnitMultiplier = 3;
+		protected const int MissileUnitMultiplier = 1;
 
 		protected static int CountAntiAirUnits(IEnumerable<Actor> units)
 		{
@@ -31,7 +30,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			var missileUnitsCount = 0;
 			foreach (var unit in units)
 			{
-				if (unit == null || unit.Info.HasTraitInfo<AircraftInfo>())
+				if (unit == null)
 					continue;
 
 				foreach (var ab in unit.TraitsImplementing<AttackBase>())
@@ -43,7 +42,10 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 					{
 						if (a.Weapon.IsValidTarget(AirTargetTypes))
 						{
-							missileUnitsCount++;
+							if (unit.Info.HasTraitInfo<AircraftInfo>())
+								missileUnitsCount += 1;
+							else
+								missileUnitsCount += 3;
 							break;
 						}
 					}
@@ -57,7 +59,13 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 		{
 			Actor target = null;
 			FindSafePlace(owner, out target, true);
-			return target;
+
+			if (target != null)
+				foreach (var a in owner.Units)
+					if (CanAttackTarget(a, target))
+						return target;
+
+			return null;
 		}
 
 		protected static CPos? FindSafePlace(Squad owner, out Actor detectedEnemyTarget, bool needTarget)
@@ -97,7 +105,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			detectedEnemyTarget = null;
 			var dangerRadius = owner.SquadManager.Info.DangerScanRadius;
 			var unitsAroundPos = owner.World.FindActorsInCircle(loc, WDist.FromCells(dangerRadius))
-				.Where(owner.SquadManager.IsEnemyUnit).ToList();
+				.Where(a => owner.SquadManager.IsEnemyUnit(a) && owner.SquadManager.IsHiddenUnit(a)).ToList();
 
 			if (!unitsAroundPos.Any())
 				return true;
@@ -159,6 +167,57 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 		{
 			return ShouldFlee(owner, enemies => CountAntiAirUnits(enemies) * MissileUnitMultiplier > owner.Units.Count);
 		}
+
+		// Retreat units from combat, or for supply only in idle
+		protected void Retreat(Squad owner, bool resupplyonly)
+		{
+			// Reload units.
+			foreach (var a in owner.Units)
+			{
+				if (!ReloadsAutomatically(a) && !FullAmmo(a))
+				{
+					if (IsRearm(a))
+						continue;
+
+					owner.Bot.QueueOrder(new Order("ReturnToBase", a, false));
+					continue;
+				}
+				else if (!resupplyonly)
+					owner.Bot.QueueOrder(new Order("Move", a, Target.FromCell(owner.World, RandomBuildingLocation(owner)), false));
+			}
+
+			// Repair units. One by one to avoid give out mass orders
+			foreach (var a in owner.Units)
+			{
+				if (IsRearm(a))
+					continue;
+
+				Actor repairBuilding = null;
+				var orderId = "Repair";
+
+				if (a.TraitOrDefault<IHealth>() != null && a.TraitOrDefault<IHealth>().DamageState > DamageState.Undamaged)
+				{
+					var repairable = a.TraitOrDefault<Repairable>();
+					if (repairable != null)
+						repairBuilding = repairable.FindRepairBuilding(a);
+					else
+					{
+						var repairableNear = a.TraitOrDefault<RepairableNear>();
+						if (repairableNear != null)
+						{
+							orderId = "RepairNear";
+							repairBuilding = repairableNear.FindRepairBuilding(a);
+						}
+					}
+
+					if (repairBuilding != null)
+					{
+						owner.Bot.QueueOrder(new Order(orderId, a, Target.FromActor(repairBuilding), true));
+						break;
+					}
+				}
+			}
+		}
 	}
 
 	class AirIdleState : AirStateBase, IState
@@ -178,7 +237,10 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 
 			var e = FindDefenselessTarget(owner);
 			if (e == null)
+			{
+				Retreat(owner, true);
 				return;
+			}
 
 			owner.TargetActor = e;
 			owner.FuzzyStateMachine.ChangeState(owner, new AirAttackState(), true);
@@ -209,7 +271,13 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 				}
 			}
 
-			if (!NearToPosSafely(owner, owner.TargetActor.CenterPosition))
+			var leader = owner.Units.ClosestTo(owner.TargetActor.CenterPosition);
+
+			var unitsAroundPos = owner.World.FindActorsInCircle(leader.CenterPosition, WDist.FromCells(owner.SquadManager.Info.DangerScanRadius))
+				.Where(a => owner.SquadManager.IsEnemyUnit(a) && owner.SquadManager.IsHiddenUnit(a));
+			var ambushed = CountAntiAirUnits(unitsAroundPos) * MissileUnitMultiplier > owner.Units.Count;
+
+			if ((!NearToPosSafely(owner, owner.TargetActor.CenterPosition)) || ambushed)
 			{
 				owner.FuzzyStateMachine.ChangeState(owner, new AirFleeState(), true);
 				return;
@@ -234,6 +302,8 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 
 				if (CanAttackTarget(a, owner.TargetActor))
 					owner.Bot.QueueOrder(new Order("Attack", a, Target.FromActor(owner.TargetActor), false));
+				else
+					owner.Bot.QueueOrder(new Order("Move", a, Target.FromCell(owner.World, RandomBuildingLocation(owner)), false));
 			}
 		}
 
@@ -249,19 +319,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			if (!owner.IsValid)
 				return;
 
-			foreach (var a in owner.Units)
-			{
-				if (!ReloadsAutomatically(a) && !FullAmmo(a))
-				{
-					if (IsRearm(a))
-						continue;
-
-					owner.Bot.QueueOrder(new Order("ReturnToBase", a, false));
-					continue;
-				}
-
-				owner.Bot.QueueOrder(new Order("Move", a, Target.FromCell(owner.World, RandomBuildingLocation(owner)), false));
-			}
+			Retreat(owner, false);
 
 			owner.FuzzyStateMachine.ChangeState(owner, new AirIdleState(), true);
 		}
