@@ -133,23 +133,43 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			if (!owner.IsValid)
 				return;
 
-			if (!owner.IsTargetValid)
+			// rescan target to prevent being ambushed and die without fight
+			// return to AttackMove state for formation
+			var leader = owner.Units.ClosestTo(owner.TargetActor.CenterPosition);
+			var enemies = owner.World.FindActorsInCircle(leader.CenterPosition, WDist.FromCells(owner.SquadManager.Info.AttackScanRadius))
+				.Where(a => owner.SquadManager.IsEnemyUnit(a) && owner.SquadManager.IsNotHiddenUnit(a));
+			var target = enemies.ClosestTo(leader.CenterPosition);
+			var cannotRetaliate = false;
+
+			if (target == null)
 			{
-				var closestEnemy = FindClosestEnemy(owner);
-				if (closestEnemy != null)
-					owner.TargetActor = closestEnemy;
-				else
+				owner.TargetActor = null;
+				owner.FuzzyStateMachine.ChangeState(owner, new GroundUnitsAttackMoveState(), true);
+				return;
+			}
+			else
+			{
+				cannotRetaliate = true;
+				owner.TargetActor = target;
+
+				foreach (var a in owner.Units)
 				{
-					owner.FuzzyStateMachine.ChangeState(owner, new GroundUnitsFleeState(), true);
-					return;
+					if (!BusyAttack(a))
+					{
+						if (CanAttackTarget(a, target))
+						{
+							owner.Bot.QueueOrder(new Order("Attack", a, Target.FromActor(owner.TargetActor), false));
+							cannotRetaliate = false;
+						}
+						else if (leader.TraitsImplementing<Guardable>().Any())
+							owner.Bot.QueueOrder(new Order("Guard", a, Target.FromActor(leader), false));
+					}
+					else
+						cannotRetaliate = false;
 				}
 			}
 
-			foreach (var a in owner.Units)
-				if (!BusyAttack(a))
-					owner.Bot.QueueOrder(new Order("Attack", a, Target.FromActor(owner.TargetActor), false));
-
-			if (ShouldFlee(owner))
+			if (ShouldFlee(owner) || cannotRetaliate)
 				owner.FuzzyStateMachine.ChangeState(owner, new GroundUnitsFleeState(), true);
 		}
 
