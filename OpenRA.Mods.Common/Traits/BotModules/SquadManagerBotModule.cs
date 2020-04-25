@@ -128,7 +128,17 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool IsNotHiddenUnit(Actor a)
 		{
-			return a.TraitsImplementing<Cloak>().Where(ha => ha.IsVisible(a, Player)).Any();
+			var hasModifier = false;
+			var visModifiers = a.TraitsImplementing<IVisibilityModifier>().ToArray();
+			foreach (var v in visModifiers)
+			{
+				if (v.IsVisible(a, Player))
+					return true;
+
+				hasModifier = true;
+			}
+
+			return !hasModifier;
 		}
 
 		protected override void Created(Actor self)
