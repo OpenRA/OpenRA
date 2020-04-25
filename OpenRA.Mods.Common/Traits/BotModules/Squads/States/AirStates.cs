@@ -125,33 +125,12 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 
 		protected static bool ReloadsAutomatically(Actor a)
 		{
-			var ammoPools = a.TraitsImplementing<AmmoPool>();
 			var rearmable = a.TraitOrDefault<Rearmable>();
 			if (rearmable == null)
 				return true;
 
+			var ammoPools = a.TraitsImplementing<AmmoPool>();
 			return ammoPools.All(ap => !rearmable.Info.AmmoPools.Contains(ap.Info.Name));
-		}
-
-		protected static bool IsRearm(Actor a)
-		{
-			if (a.IsIdle)
-				return false;
-
-			var activity = a.CurrentActivity;
-			var type = activity.GetType();
-			if (type == typeof(Resupply))
-				return true;
-
-			var next = activity.NextActivity;
-			if (next == null)
-				return false;
-
-			var nextType = next.GetType();
-			if (nextType == typeof(Resupply))
-				return true;
-
-			return false;
 		}
 
 		// Checks the number of anti air enemies around units
