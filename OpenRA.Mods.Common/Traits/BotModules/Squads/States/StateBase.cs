@@ -101,5 +101,26 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 
 			return flee(enemyAroundUnit);
 		}
+
+		protected static bool IsRearm(Actor a)
+		{
+			if (a.IsIdle)
+				return false;
+
+			var activity = a.CurrentActivity;
+			var type = activity.GetType();
+			if (type == typeof(Resupply))
+				return true;
+
+			var next = activity.NextActivity;
+			if (next == null)
+				return false;
+
+			var nextType = next.GetType();
+			if (nextType == typeof(Resupply))
+				return true;
+
+			return false;
+		}
 	}
 }
