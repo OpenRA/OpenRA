@@ -21,6 +21,9 @@ soviet: Red Alert 95 (Soviet Disc, English)
 			^SupportDir|Content/ra/v2/conquer.mix:
 				Offset: 236
 				Length: 2177047
+			^SupportDir|Content/ra/v2/general.mix:
+				Offset: 2239848
+				Length: 14932344
 			^SupportDir|Content/ra/v2/interior.mix:
 				Offset: 17172192
 				Length: 247425

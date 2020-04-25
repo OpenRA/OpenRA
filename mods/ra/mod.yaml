@@ -30,6 +30,7 @@ Packages:
 	~expand2.mix
 	~hires1.mix
 	~desert.mix
+	~general.mix
 	ra|bits
 	ra|bits/desert
 	ra|bits/scripts
@@ -223,7 +224,7 @@ SoundFormats: Aud, Wav
 
 SpriteFormats: ShpD2, ShpTD, TmpRA, TmpTD, ShpTS
 
-VideoFormats: Vqa
+VideoFormats: Vqa, Wsa
 
 TerrainFormat: DefaultTerrain
 
@@ -237,7 +238,7 @@ SpriteSequenceFormat: ClassicTilesetSpecificSpriteSequence
 ModelSequenceFormat: PlaceholderModelSequence
 
 AssetBrowser:
-	SupportedExtensions: .shp, .tmp, .tem, .des, .sno, .int, .vqa
+	SupportedExtensions: .shp, .tmp, .tem, .des, .sno, .int, .vqa, .wsa
 
 GameSpeeds:
 	slowest:

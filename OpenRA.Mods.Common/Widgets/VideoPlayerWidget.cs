@@ -195,7 +195,7 @@ namespace OpenRA.Mods.Common.Widgets
 				return;
 
 			onComplete = after;
-			if (stopped)
+			if (stopped && video.HasAudio)
 				Game.Sound.PlayVideo(video.AudioData, video.AudioChannels, video.SampleBits, video.SampleRate);
 			else
 				Game.Sound.PlayVideo();

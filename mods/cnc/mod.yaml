@@ -24,6 +24,7 @@ Packages:
 	~scores2.mix
 	~scores-covertops.mix
 	~transit.mix
+	~general.mix
 	cnc|bits/snow.mix
 	cnc|bits
 	cnc|bits/jungle
@@ -217,7 +218,7 @@ SoundFormats: Aud, Wav
 
 SpriteFormats: ShpTD, TmpTD, ShpTS, TmpRA
 
-VideoFormats: Vqa
+VideoFormats: Vqa, Wsa
 
 TerrainFormat: DefaultTerrain
 
@@ -232,7 +233,7 @@ SpriteSequenceFormat: ClassicTilesetSpecificSpriteSequence
 ModelSequenceFormat: PlaceholderModelSequence
 
 AssetBrowser:
-	SupportedExtensions: .shp, .tem, .des, .sno, .jun, .vqa
+	SupportedExtensions: .shp, .tem, .des, .sno, .jun, .vqa, .wsa
 
 GameSpeeds:
 	slowest:
