@@ -60,7 +60,13 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 		{
 			Actor target = null;
 			FindSafePlace(owner, out target, true);
-			return target;
+
+			if (target != null)
+				foreach (var a in owner.Units)
+					if (CanAttackTarget(a, target))
+						return target;
+
+			return null;
 		}
 
 		protected static CPos? FindSafePlace(Squad owner, out Actor detectedEnemyTarget, bool needTarget)
