@@ -21,8 +21,6 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 	{
 		static readonly BitSet<TargetableType> AirTargetTypes = new BitSet<TargetableType>("Air");
 
-		protected const int MissileUnitMultiplier = 1;
-
 		protected static int CountAntiAirUnits(IEnumerable<Actor> units)
 		{
 			if (!units.Any())
@@ -111,7 +109,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			if (!unitsAroundPos.Any())
 				return true;
 
-			if (CountAntiAirUnits(unitsAroundPos) * MissileUnitMultiplier < owner.Units.Count)
+			if (CountAntiAirUnits(unitsAroundPos) < owner.Units.Count)
 			{
 				detectedEnemyTarget = unitsAroundPos.Random(owner.Random);
 				return true;
@@ -145,7 +143,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 		// Checks the number of anti air enemies around units
 		protected virtual bool ShouldFlee(Squad owner)
 		{
-			return ShouldFlee(owner, enemies => CountAntiAirUnits(enemies) * MissileUnitMultiplier > owner.Units.Count);
+			return ShouldFlee(owner, enemies => CountAntiAirUnits(enemies) > owner.Units.Count);
 		}
 	}
 
@@ -201,7 +199,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 
 			var unitsAroundPos = owner.World.FindActorsInCircle(leader.CenterPosition, WDist.FromCells(owner.SquadManager.Info.DangerScanRadius))
 				.Where(a => owner.SquadManager.IsEnemyUnit(a) && owner.SquadManager.IsNotHiddenUnit(a));
-			var ambushed = CountAntiAirUnits(unitsAroundPos) * MissileUnitMultiplier > owner.Units.Count;
+			var ambushed = CountAntiAirUnits(unitsAroundPos) > owner.Units.Count;
 
 			if ((!NearToPosSafely(owner, owner.TargetActor.CenterPosition)) || ambushed)
 			{
