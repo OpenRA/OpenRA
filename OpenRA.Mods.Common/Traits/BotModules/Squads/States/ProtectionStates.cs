@@ -107,7 +107,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 
 						if (!ReloadsAutomatically(a))
 						{
-							if (IsRearm(a))
+							if (IsRearming(a))
 								continue;
 
 							if (!HasAmmo(a))
