@@ -64,8 +64,9 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 
 				Actor repairBuilding = null;
 				var orderId = "Repair";
+				var health = a.TraitOrDefault<IHealth>();
 
-				if (a.TraitOrDefault<IHealth>() != null && a.TraitOrDefault<IHealth>().DamageState > DamageState.Undamaged)
+				if (health != null && health.DamageState > DamageState.Undamaged)
 				{
 					var repairable = a.TraitOrDefault<Repairable>();
 					if (repairable != null)

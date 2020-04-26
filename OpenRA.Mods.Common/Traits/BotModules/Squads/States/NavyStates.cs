@@ -55,6 +55,8 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 		protected virtual void Retreat(Squad owner, bool resupplyonly)
 		{
 			// Repair units. One by one to avoid give out mass orders
+			var alreadysend = false;
+
 			foreach (var a in owner.Units)
 			{
 				if (IsRearming(a))
@@ -62,9 +64,9 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 
 				Actor repairBuilding = null;
 				var orderId = "Repair";
-				var alreadysend = false;
+				var health = a.TraitOrDefault<IHealth>();
 
-				if (!alreadysend && a.TraitOrDefault<IHealth>() != null && a.TraitOrDefault<IHealth>().DamageState > DamageState.Undamaged)
+				if (!alreadysend && health != null && health.DamageState > DamageState.Undamaged)
 				{
 					var repairable = a.TraitOrDefault<Repairable>();
 					if (repairable != null)
