@@ -111,49 +111,6 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			return false;
 		}
 
-		protected static bool FullAmmo(Actor a)
-		{
-			var ammoPools = a.TraitsImplementing<AmmoPool>();
-			return ammoPools.All(x => x.HasFullAmmo);
-		}
-
-		protected static bool HasAmmo(Actor a)
-		{
-			var ammoPools = a.TraitsImplementing<AmmoPool>();
-			return ammoPools.All(x => x.HasAmmo);
-		}
-
-		protected static bool ReloadsAutomatically(Actor a)
-		{
-			var ammoPools = a.TraitsImplementing<AmmoPool>();
-			var rearmable = a.TraitOrDefault<Rearmable>();
-			if (rearmable == null)
-				return true;
-
-			return ammoPools.All(ap => !rearmable.Info.AmmoPools.Contains(ap.Info.Name));
-		}
-
-		protected static bool IsRearm(Actor a)
-		{
-			if (a.IsIdle)
-				return false;
-
-			var activity = a.CurrentActivity;
-			var type = activity.GetType();
-			if (type == typeof(Resupply))
-				return true;
-
-			var next = activity.NextActivity;
-			if (next == null)
-				return false;
-
-			var nextType = next.GetType();
-			if (nextType == typeof(Resupply))
-				return true;
-
-			return false;
-		}
-
 		// Checks the number of anti air enemies around units
 		protected virtual bool ShouldFlee(Squad owner)
 		{
@@ -220,12 +177,13 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 				if (BusyAttack(a))
 					continue;
 
-				if (!ReloadsAutomatically(a))
+				var ammoPools = a.TraitsImplementing<AmmoPool>().ToArray();
+				if (!ReloadsAutomatically(ammoPools, a.TraitOrDefault<Rearmable>()))
 				{
-					if (IsRearm(a))
+					if (IsRearming(a))
 						continue;
 
-					if (!HasAmmo(a))
+					if (!HasAmmo(ammoPools))
 					{
 						owner.Bot.QueueOrder(new Order("ReturnToBase", a, false));
 						continue;
@@ -251,9 +209,10 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 
 			foreach (var a in owner.Units)
 			{
-				if (!ReloadsAutomatically(a) && !FullAmmo(a))
+				var ammoPools = a.TraitsImplementing<AmmoPool>().ToArray();
+				if (!ReloadsAutomatically(ammoPools, a.TraitOrDefault<Rearmable>()) && !FullAmmo(ammoPools))
 				{
-					if (IsRearm(a))
+					if (IsRearming(a))
 						continue;
 
 					owner.Bot.QueueOrder(new Order("ReturnToBase", a, false));

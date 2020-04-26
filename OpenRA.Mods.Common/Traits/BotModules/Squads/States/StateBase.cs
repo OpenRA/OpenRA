@@ -101,5 +101,54 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 
 			return flee(enemyAroundUnit);
 		}
+
+		protected static bool IsRearming(Actor a)
+		{
+			if (a.IsIdle)
+				return false;
+
+			var activity = a.CurrentActivity;
+			if (activity.GetType() == typeof(Resupply))
+				return true;
+
+			var next = activity.NextActivity;
+			if (next == null)
+				return false;
+
+			if (next.GetType() == typeof(Resupply))
+				return true;
+
+			return false;
+		}
+
+		protected static bool FullAmmo(IEnumerable<AmmoPool> ammoPools)
+		{
+			foreach (var ap in ammoPools)
+				if (!ap.HasFullAmmo)
+					return false;
+
+			return true;
+		}
+
+		protected static bool HasAmmo(IEnumerable<AmmoPool> ammoPools)
+		{
+			foreach (var ap in ammoPools)
+				if (!ap.HasAmmo)
+					return false;
+
+			return true;
+		}
+
+		protected static bool ReloadsAutomatically(IEnumerable<AmmoPool> ammoPools, Rearmable rearmable)
+		{
+			if (rearmable == null)
+				return true;
+
+			foreach (var ap in ammoPools)
+				if (!rearmable.Info.AmmoPools.Contains(ap.Info.Name))
+					return false;
+
+			return true;
+		}
 	}
 }
