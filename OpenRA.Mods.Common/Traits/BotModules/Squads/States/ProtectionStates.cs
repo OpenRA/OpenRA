@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			{
 				if (!ReloadsAutomatically(a) && !FullAmmo(a))
 				{
-					if (IsRearm(a))
+					if (IsRearming(a))
 						continue;
 
 					owner.Bot.QueueOrder(new Order("ReturnToBase", a, false));
@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			// Repair units. One by one to avoid give out mass orders
 			foreach (var a in owner.Units)
 			{
-				if (IsRearm(a))
+				if (IsRearming(a))
 					continue;
 
 				Actor repairBuilding = null;

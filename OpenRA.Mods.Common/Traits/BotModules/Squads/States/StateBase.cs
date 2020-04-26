@@ -102,7 +102,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			return flee(enemyAroundUnit);
 		}
 
-		protected static bool IsRearm(Actor a)
+		protected static bool IsRearming(Actor a)
 		{
 			if (a.IsIdle)
 				return false;

@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			// Repair units. One by one to avoid give out mass orders
 			foreach (var a in owner.Units)
 			{
-				if (IsRearm(a))
+				if (IsRearming(a))
 					continue;
 
 				Actor repairBuilding = null;
