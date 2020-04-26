@@ -121,7 +121,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			string specificCargoCondition;
 
-			if (anyCargoToken == Actor.InvalidConditionToken && !string.IsNullOrEmpty(Info.CargoCondition))
+			if (anyCargoToken == Actor.InvalidConditionToken)
 				anyCargoToken = self.GrantCondition(Info.CargoCondition);
 
 			if (specificCargoToken == Actor.InvalidConditionToken && Info.CargoConditions.TryGetValue(cargo.Info.Name, out specificCargoCondition))

@@ -54,8 +54,7 @@ namespace OpenRA.Mods.Common.Traits
 			var delta = charging ? info.ChargeRate : -info.DischargeRate;
 			ChargeLevel = (ChargeLevel + delta).Clamp(0, info.ChargeLevel);
 
-			if (ChargeLevel > 0 && !string.IsNullOrEmpty(info.ChargingCondition)
-					&& chargingToken == Actor.InvalidConditionToken)
+			if (ChargeLevel > 0 && chargingToken == Actor.InvalidConditionToken)
 				chargingToken = self.GrantCondition(info.ChargingCondition);
 
 			if (ChargeLevel == 0 && chargingToken != Actor.InvalidConditionToken)

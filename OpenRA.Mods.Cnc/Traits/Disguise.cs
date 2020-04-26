@@ -221,7 +221,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 			if (Disguised != oldDisguiseSetting)
 			{
-				if (Disguised && disguisedToken == Actor.InvalidConditionToken && !string.IsNullOrEmpty(info.DisguisedCondition))
+				if (Disguised && disguisedToken == Actor.InvalidConditionToken)
 					disguisedToken = self.GrantCondition(info.DisguisedCondition);
 				else if (!Disguised && disguisedToken != Actor.InvalidConditionToken)
 					disguisedToken = self.RevokeCondition(disguisedToken);

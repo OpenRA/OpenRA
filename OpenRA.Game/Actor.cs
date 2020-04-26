@@ -528,10 +528,16 @@ namespace OpenRA
 					notify(this, readOnlyConditionCache);
 		}
 
-		/// <summary>Grants a specified condition.</summary>
+		/// <summary>
+		/// Grants a specified condition if it is valid.
+		/// Otherwise, just returns InvalidConditionToken.
+		/// </summary>
 		/// <returns>The token that is used to revoke this condition.</returns>
 		public int GrantCondition(string condition)
 		{
+			if (string.IsNullOrEmpty(condition))
+				return InvalidConditionToken;
+
 			var token = nextConditionToken++;
 			conditionTokens.Add(token, condition);
 			UpdateConditionState(condition, token, false);

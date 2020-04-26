@@ -55,8 +55,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		public void GrantLeapCondition(Actor self)
 		{
-			if (!string.IsNullOrEmpty(info.LeapCondition))
-				leapToken = self.GrantCondition(info.LeapCondition);
+			leapToken = self.GrantCondition(info.LeapCondition);
 		}
 
 		public void RevokeLeapCondition(Actor self)

@@ -262,7 +262,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!HasSpace(w))
 				return false;
 
-			if (loadingToken == Actor.InvalidConditionToken && !string.IsNullOrEmpty(Info.LoadingCondition))
+			if (loadingToken == Actor.InvalidConditionToken)
 				loadingToken = self.GrantCondition(Info.LoadingCondition);
 
 			reserves.Add(a);

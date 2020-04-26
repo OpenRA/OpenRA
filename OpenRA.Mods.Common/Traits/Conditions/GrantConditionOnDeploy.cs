@@ -323,7 +323,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void OnDeployCompleted()
 		{
-			if (!string.IsNullOrEmpty(Info.DeployedCondition) && deployedToken == Actor.InvalidConditionToken)
+			if (deployedToken == Actor.InvalidConditionToken)
 				deployedToken = self.GrantCondition(Info.DeployedCondition);
 
 			deployState = DeployState.Deployed;
@@ -339,7 +339,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void OnUndeployCompleted()
 		{
-			if (!string.IsNullOrEmpty(Info.UndeployedCondition) && undeployedToken == Actor.InvalidConditionToken)
+			if (undeployedToken == Actor.InvalidConditionToken)
 				undeployedToken = self.GrantCondition(Info.UndeployedCondition);
 
 			deployState = DeployState.Undeployed;

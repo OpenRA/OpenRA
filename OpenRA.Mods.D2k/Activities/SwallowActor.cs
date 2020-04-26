@@ -101,8 +101,9 @@ namespace OpenRA.Mods.D2k.Activities
 					stance = AttackState.Burrowed;
 					countdown = swallow.Info.AttackDelay;
 					burrowLocation = self.Location;
-					if (attackingToken == Actor.InvalidConditionToken && !string.IsNullOrEmpty(swallow.Info.AttackingCondition))
+					if (attackingToken == Actor.InvalidConditionToken)
 						attackingToken = self.GrantCondition(swallow.Info.AttackingCondition);
+
 					break;
 				case AttackState.Burrowed:
 					if (--countdown > 0)
