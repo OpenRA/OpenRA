@@ -603,6 +603,17 @@ namespace OpenRA.Server
 				DispatchOrdersToClient(c, from, frame, data);
 		}
 
+		void OutOfSync(int frame)
+		{
+			foreach (var c in Conns.ToList())
+			{
+				SendOrderTo(c, "ServerError", "Out of sync detected");
+				DropClient(c);
+			}
+		}
+
+		Dictionary<int, byte[]> syncForFrame = new Dictionary<int, byte[]>();
+
 		public void DispatchOrders(Connection conn, int frame, byte[] data)
 		{
 			if (frame == 0 && conn != null)
@@ -612,6 +623,22 @@ namespace OpenRA.Server
 
 			if (GameSave != null && conn != null)
 				GameSave.DispatchOrders(conn, frame, data);
+
+			if (conn != null && data.Length > 0 && data[0] == (byte)OrderType.SyncHash)
+			{
+				byte[] existingSync;
+				if (syncForFrame.TryGetValue(frame, out existingSync))
+				{
+					if (data.Length != existingSync.Length)
+						OutOfSync(frame);
+					else
+						for (var i = 0; i < data.Length; i++)
+							if (data[i] != existingSync[i])
+								OutOfSync(frame);
+				}
+				else
+					syncForFrame.Add(frame, data);
+			}
 		}
 
 		void InterpretServerOrders(Connection conn, byte[] data)
