@@ -136,7 +136,6 @@ namespace OpenRA.Mods.Common.Traits
 	public interface INotifySupportPower { void Charged(Actor self); void Activated(Actor self); }
 
 	public interface INotifyBuildingPlaced { void BuildingPlaced(Actor self); }
-	public interface INotifyNuke { void Launching(Actor self); }
 	public interface INotifyBurstComplete { void FiredBurst(Actor self, Target target, Armament a); }
 	public interface INotifyChat { bool OnChat(string from, string message); }
 	public interface INotifyProduction { void UnitProduced(Actor self, Actor other, CPos exit); }
