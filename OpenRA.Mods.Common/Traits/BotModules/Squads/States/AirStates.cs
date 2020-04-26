@@ -216,7 +216,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 
 				if (!ReloadsAutomatically(a))
 				{
-					if (IsRearm(a))
+					if (IsRearming(a))
 						continue;
 
 					if (!HasAmmo(a))
@@ -249,7 +249,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			{
 				if (!ReloadsAutomatically(a) && !FullAmmo(a))
 				{
-					if (IsRearm(a))
+					if (IsRearming(a))
 						continue;
 
 					owner.Bot.QueueOrder(new Order("ReturnToBase", a, false));
