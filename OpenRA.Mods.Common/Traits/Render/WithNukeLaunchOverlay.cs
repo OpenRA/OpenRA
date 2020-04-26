@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public override object Create(ActorInitializer init) { return new WithNukeLaunchOverlay(init.Self, this); }
 	}
 
-	public class WithNukeLaunchOverlay : ConditionalTrait<WithNukeLaunchOverlayInfo>, INotifyNuke
+	public class WithNukeLaunchOverlay : ConditionalTrait<WithNukeLaunchOverlayInfo>, INotifySupportPower
 	{
 		readonly Animation overlay;
 		bool visible;
@@ -56,7 +56,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 			rs.Add(anim, info.Palette, info.IsPlayerPalette);
 		}
 
-		void INotifyNuke.Launching(Actor self)
+		void INotifySupportPower.Charged(Actor self) { }
+
+		void INotifySupportPower.Activated(Actor self)
 		{
 			visible = true;
 			overlay.PlayThen(overlay.CurrentSequence.Name, () => visible = false);

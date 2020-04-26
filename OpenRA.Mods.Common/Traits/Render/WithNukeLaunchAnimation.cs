@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public override object Create(ActorInitializer init) { return new WithNukeLaunchAnimation(init.Self, this); }
 	}
 
-	public class WithNukeLaunchAnimation : ConditionalTrait<WithNukeLaunchAnimationInfo>, INotifyNuke
+	public class WithNukeLaunchAnimation : ConditionalTrait<WithNukeLaunchAnimationInfo>, INotifySupportPower
 	{
 		readonly WithSpriteBody wsb;
 
@@ -37,7 +37,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 			wsb = self.TraitsImplementing<WithSpriteBody>().Single(w => w.Info.Name == Info.Body);
 		}
 
-		void INotifyNuke.Launching(Actor self)
+		void INotifySupportPower.Charged(Actor self) { }
+
+		void INotifySupportPower.Activated(Actor self)
 		{
 			if (!IsTraitDisabled)
 				wsb.PlayCustomAnimation(self, Info.Sequence, () => wsb.CancelCustomAnimation(self));
