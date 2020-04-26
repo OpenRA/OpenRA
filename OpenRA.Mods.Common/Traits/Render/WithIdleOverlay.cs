@@ -38,6 +38,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Custom palette is a player palette BaseName")]
 		public readonly bool IsPlayerPalette = false;
 
+		public readonly bool IsDecoration = false;
+
 		public override object Create(ActorInitializer init) { return new WithIdleOverlay(init.Self, this); }
 
 		public IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p)
@@ -59,6 +61,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			}
 
 			var anim = new Animation(init.World, image, facing);
+			anim.IsDecoration = IsDecoration;
 			anim.PlayRepeating(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), Sequence));
 
 			var body = init.Actor.TraitInfo<BodyOrientationInfo>();
@@ -85,6 +88,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var body = self.Trait<BodyOrientation>();
 
 			overlay = new Animation(self.World, rs.GetImage(self), () => IsTraitPaused);
+			overlay.IsDecoration = info.IsDecoration;
 			if (info.StartSequence != null)
 				overlay.PlayThen(RenderSprites.NormalizeSequence(overlay, self.GetDamageState(), info.StartSequence),
 					() => overlay.PlayRepeating(RenderSprites.NormalizeSequence(overlay, self.GetDamageState(), info.Sequence)));
