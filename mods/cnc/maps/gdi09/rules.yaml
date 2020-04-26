@@ -136,8 +136,15 @@ HQ:
 
 airstrike.proxy:
 	AirstrikePower:
-		SquadSize: 2
-		SquadOffset: -1536, 1024, 0
+		Squad@override:
+			SquadMember@0:
+				UnitType: a10
+				SpawnOffset: -1536,-1024,0
+				TargetOffset: 0,-1024,0
+			SquadMember@1:
+				UnitType: a10
+				SpawnOffset: -1536,1024,0
+				TargetOffset: 0,1024,0
 
 BOAT:
 	AutoTarget:

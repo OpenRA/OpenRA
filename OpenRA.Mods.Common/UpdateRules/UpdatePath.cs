@@ -97,6 +97,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new ReplaceCrateSecondsWithTicks(),
 				new UseMillisecondsForSounds(),
 				new AttackBomberFacingTolerance(),
+				new ImproveAirstrikePowerConfiguration(),
 			})
 		};
 

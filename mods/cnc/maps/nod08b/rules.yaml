@@ -107,7 +107,9 @@ HTNK:
 HQ:
 	AirstrikePower:
 		Prerequisites: gdi
-		SquadSize: 1
+		Squad@override:
+			SquadMember:
+				UnitType: a10
 
 RMBO:
 	Buildable:
@@ -154,7 +156,17 @@ A10.IN:
 
 airstrike.proxy:
 	AirstrikePower:
-		UnitType: a10.in
+		Squad@override:
+			SquadMember@0:
+				UnitType: a10.in
+				SpawnOffset: -1536,-1536,0
+				TargetOffset: 0,-1536,0
+			SquadMember@1:
+				UnitType: a10.in
+			SquadMember@2:
+				UnitType: a10.in
+				SpawnOffset: -1536,1536,0
+				TargetOffset: 0,1536,0
 
 BOAT:
 	Health:

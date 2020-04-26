@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Activities;
@@ -19,12 +18,28 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	public class AirstrikePowerSquadMember
+	{
+		public readonly string UnitType;
+
+		public readonly WVec SpawnOffset;
+
+		public readonly WVec TargetOffset;
+
+		public AirstrikePowerSquadMember(MiniYamlNode yamlNode)
+		{
+			FieldLoader.Load(this, yamlNode.Value);
+		}
+	}
+
 	public class AirstrikePowerInfo : SupportPowerInfo
 	{
-		[ActorReference(typeof(AircraftInfo))]
-		public readonly string UnitType = "badr.bomber";
-		public readonly int SquadSize = 1;
-		public readonly WVec SquadOffset = new WVec(-1536, 1536, 0);
+		[FieldLoader.LoadUsing(nameof(LoadSquad))]
+		[Desc("A list of aircraft in the squad. Each has configurable "
+		      + nameof(AirstrikePowerSquadMember.UnitType) + ", "
+		      + nameof(AirstrikePowerSquadMember.SpawnOffset) + " and "
+		      + nameof(AirstrikePowerSquadMember.TargetOffset))]
+		public readonly List<AirstrikePowerSquadMember> Squad;
 
 		public readonly int QuantizedFacings = 32;
 		public readonly WDist Cordon = new WDist(5120);
@@ -47,6 +62,23 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Weapon range offset to apply during the beacon clock calculation")]
 		public readonly WDist BeaconDistanceOffset = WDist.FromCells(6);
+
+		static object LoadSquad(MiniYaml yaml)
+		{
+			var ret = new List<AirstrikePowerSquadMember>();
+
+			// A less than great workaround for the YamlParser merging nodes and not supporting a way to remove nodes that are not "traits".
+			var squadNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Squad@override") ?? yaml.Nodes.FirstOrDefault(n => n.Key == "Squad");
+			if (squadNode != null)
+				foreach (var d in squadNode.Value.Nodes)
+					ret.Add(new AirstrikePowerSquadMember(d));
+
+			return ret;
+		}
+
+		// This property is specially added so we can still lint-check the actor types.
+		[ActorReference(typeof(AircraftInfo))]
+		public IEnumerable<string> LintSquadActors => Squad.Select(s => s.UnitType);
 
 		public override object Create(ActorInitializer init) { return new AirstrikePower(init.Self, this); }
 	}
@@ -83,18 +115,11 @@ namespace OpenRA.Mods.Common.Traits
 			if (!facing.HasValue)
 				facing = new WAngle(1024 * self.World.SharedRandom.Next(info.QuantizedFacings) / info.QuantizedFacings);
 
-			var altitude = self.World.Map.Rules.Actors[info.UnitType].TraitInfo<AircraftInfo>().CruiseAltitude.Length;
-			var attackRotation = WRot.FromYaw(facing.Value);
-			var delta = new WVec(0, -1024, 0).Rotate(attackRotation);
-			target = target + new WVec(0, 0, altitude);
-			var startEdge = target - (self.World.Map.DistanceToEdge(target, -delta) + info.Cordon).Length * delta / 1024;
-			var finishEdge = target + (self.World.Map.DistanceToEdge(target, delta) + info.Cordon).Length * delta / 1024;
-
 			Actor camera = null;
 			Beacon beacon = null;
 			var aircraftInRange = new Dictionary<Actor, bool>();
 
-			Action<Actor> onEnterRange = a =>
+			void OnEnterRange(Actor a)
 			{
 				// Spawn a camera and remove the beacon when the first plane enters the target area
 				if (info.CameraActor != null && camera == null && !aircraftInRange.Any(kv => kv.Value))
@@ -112,18 +137,18 @@ namespace OpenRA.Mods.Common.Traits
 				RemoveBeacon(beacon);
 
 				aircraftInRange[a] = true;
-			};
+			}
 
-			Action<Actor> onExitRange = a =>
+			void OnExitRange(Actor a)
 			{
 				aircraftInRange[a] = false;
 
 				// Remove the camera when the final plane leaves the target area
 				if (!aircraftInRange.Any(kv => kv.Value))
 					RemoveCamera(camera);
-			};
+			}
 
-			Action<Actor> onRemovedFromWorld = a =>
+			void OnRemovedFromWorld(Actor a)
 			{
 				aircraftInRange[a] = false;
 
@@ -135,68 +160,70 @@ namespace OpenRA.Mods.Common.Traits
 					RemoveCamera(camera);
 					RemoveBeacon(beacon);
 				}
-			};
+			}
 
-			// Create the actors immediately so they can be returned
-			for (var i = -info.SquadSize / 2; i <= info.SquadSize / 2; i++)
+			WPos? startPos = null;
+
+			// Create the actors immediately so they can be returned.
+			foreach (var squadMember in info.Squad)
 			{
-				// Even-sized squads skip the lead plane
-				if (i == 0 && (info.SquadSize & 1) == 0)
-					continue;
-
-				// Includes the 90 degree rotation between body and world coordinates
-				var so = info.SquadOffset;
-				var spawnOffset = new WVec(i * so.Y, -Math.Abs(i) * so.X, 0).Rotate(attackRotation);
-				var targetOffset = new WVec(i * so.Y, 0, 0).Rotate(attackRotation);
-				var a = self.World.CreateActor(false, info.UnitType, new TypeDictionary
+				var a = self.World.CreateActor(false, squadMember.UnitType, new TypeDictionary
 				{
-					new CenterPositionInit(startEdge + spawnOffset),
 					new OwnerInit(self.Owner),
-					new FacingInit(facing.Value),
+					new FacingInit(facing.Value)
 				});
 
 				aircraft.Add(a);
 				aircraftInRange.Add(a, false);
-
-				var attack = a.Trait<AttackBomber>();
-				attack.SetTarget(self.World, target + targetOffset);
-				attack.OnEnteredAttackRange += onEnterRange;
-				attack.OnExitedAttackRange += onExitRange;
-				attack.OnRemovedFromWorld += onRemovedFromWorld;
 			}
 
 			self.World.AddFrameEndTask(w =>
 			{
 				PlayLaunchSounds();
 
-				var j = 0;
 				Actor distanceTestActor = null;
-				for (var i = -info.SquadSize / 2; i <= info.SquadSize / 2; i++)
+				for (var i = 0; i < aircraft.Count; i++)
 				{
-					// Even-sized squads skip the lead plane
-					if (i == 0 && (info.SquadSize & 1) == 0)
-						continue;
+					var squadMember = info.Squad[i];
+					var actor = aircraft[i];
+
+					var altitude = self.World.Map.Rules.Actors[squadMember.UnitType].TraitInfo<AircraftInfo>().CruiseAltitude.Length;
+					var attackRotation = WRot.FromYaw(facing.Value);
+					var delta = new WVec(0, -1024, 0).Rotate(attackRotation);
+					var targetPos = target + new WVec(0, 0, altitude);
+					var startEdge = targetPos - (self.World.Map.DistanceToEdge(target, -delta) + info.Cordon).Length * delta / 1024;
+					var finishEdge = targetPos + (self.World.Map.DistanceToEdge(target, delta) + info.Cordon).Length * delta / 1024;
+
+					startPos = startEdge;
 
 					// Includes the 90 degree rotation between body and world coordinates
-					var so = info.SquadOffset;
-					var spawnOffset = new WVec(i * so.Y, -Math.Abs(i) * so.X, 0).Rotate(attackRotation);
+					var so = squadMember.SpawnOffset;
+					var to = squadMember.TargetOffset;
+					var spawnOffset = new WVec(so.Y, -1 * so.X, 0).Rotate(attackRotation);
+					var targetOffset = new WVec(to.Y, 0, 0).Rotate(attackRotation);
 
-					var a = aircraft[j++];
-					w.Add(a);
+					actor.Trait<IPositionable>().SetPosition(actor, startEdge + spawnOffset);
+					w.Add(actor);
 
-					a.QueueActivity(new Fly(a, Target.FromPos(target + spawnOffset)));
-					a.QueueActivity(new Fly(a, Target.FromPos(finishEdge + spawnOffset)));
-					a.QueueActivity(new RemoveSelf());
-					distanceTestActor = a;
+					var attack = actor.Trait<AttackBomber>();
+					attack.SetTarget(self.World, targetPos + targetOffset);
+					attack.OnEnteredAttackRange += OnEnterRange;
+					attack.OnExitedAttackRange += OnExitRange;
+					attack.OnRemovedFromWorld += OnRemovedFromWorld;
+
+					actor.QueueActivity(new Fly(actor, Target.FromPos(target + targetOffset)));
+					actor.QueueActivity(new Fly(actor, Target.FromPos(finishEdge + spawnOffset)));
+					actor.QueueActivity(new RemoveSelf());
+					distanceTestActor = actor;
 				}
 
-				if (Info.DisplayBeacon)
+				if (Info.DisplayBeacon && startPos.HasValue)
 				{
-					var distance = (target - startEdge).HorizontalLength;
+					var distance = (target - startPos.Value).HorizontalLength;
 
 					beacon = new Beacon(
 						self.Owner,
-						target - new WVec(0, 0, altitude),
+						new WPos(target.X, target.Y, 0),
 						Info.BeaconPaletteIsPlayerPalette,
 						Info.BeaconPalette,
 						Info.BeaconImage,

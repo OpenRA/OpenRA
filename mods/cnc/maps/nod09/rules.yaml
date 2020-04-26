@@ -127,7 +127,15 @@ SBAG:
 HQ:
 	AirstrikePower:
 		Prerequisites: gdi
-		SquadSize: 2
+		Squad@override:
+			SquadMember@0:
+				UnitType: a10
+				SpawnOffset: -1536,-1024,0
+				TargetOffset: 0,-1024,0
+			SquadMember@1:
+				UnitType: a10
+				SpawnOffset: -1536,1024,0
+				TargetOffset: 0,1024,0
 
 BOAT:
 	Health:

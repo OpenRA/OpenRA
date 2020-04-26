@@ -125,4 +125,6 @@ GTWR:
 HQ:
 	AirstrikePower:
 		Prerequisites: gdi
-		SquadSize: 1
+		Squad@override:
+			SquadMember:
+				UnitType: a10

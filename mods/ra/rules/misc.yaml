@@ -349,7 +349,6 @@ powerproxy.parabombs:
 		Description: A Badger drops a load of parachuted bombs on your target.
 		OneShot: true
 		AllowMultiple: true
-		UnitType: badr.bomber
 		SelectTargetSpeechNotification: SelectTarget
 		QuantizedFacings: 8
 		DisplayBeacon: True
@@ -359,6 +358,9 @@ powerproxy.parabombs:
 		ArrowSequence: arrow
 		ClockSequence: clock
 		CircleSequence: circles
+		Squad:
+			SquadMember:
+				UnitType: badr.bomber
 
 powerproxy.sonarpulse:
 	AlwaysVisible:
