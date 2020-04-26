@@ -59,10 +59,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (IsTraitDisabled)
 				return;
 
-			var token = Actor.InvalidConditionToken;
-			if (!string.IsNullOrEmpty(Info.Condition))
-				token = self.GrantCondition(Info.Condition);
-
+			var token = self.GrantCondition(Info.Condition);
 			actions.Add(new DemolishAction(saboteur, delay, token));
 		}
 

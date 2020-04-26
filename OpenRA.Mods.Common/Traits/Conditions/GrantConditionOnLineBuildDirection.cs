@@ -40,10 +40,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyCreated.Created(Actor self)
 		{
-			if (direction != info.Direction)
-				return;
-
-			if (!string.IsNullOrEmpty(info.Condition))
+			if (direction == info.Direction)
 				self.GrantCondition(info.Condition);
 		}
 	}

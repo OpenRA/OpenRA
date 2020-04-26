@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			attached = true;
 
-			if (carriedToken == Actor.InvalidConditionToken && !string.IsNullOrEmpty(Info.CarriedCondition))
+			if (carriedToken == Actor.InvalidConditionToken)
 				carriedToken = self.GrantCondition(Info.CarriedCondition);
 		}
 
@@ -102,7 +102,7 @@ namespace OpenRA.Mods.Common.Traits
 			state = State.Reserved;
 			Carrier = carrier;
 
-			if (reservedToken == Actor.InvalidConditionToken && !string.IsNullOrEmpty(Info.ReservedCondition))
+			if (reservedToken == Actor.InvalidConditionToken)
 				reservedToken = self.GrantCondition(Info.ReservedCondition);
 
 			return true;
@@ -134,7 +134,7 @@ namespace OpenRA.Mods.Common.Traits
 				state = State.Locked;
 				Carrier = carrier;
 
-				if (lockedToken == Actor.InvalidConditionToken && !string.IsNullOrEmpty(Info.LockedCondition))
+				if (lockedToken == Actor.InvalidConditionToken)
 					lockedToken = self.GrantCondition(Info.LockedCondition);
 			}
 

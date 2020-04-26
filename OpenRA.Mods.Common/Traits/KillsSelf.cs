@@ -73,8 +73,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (self.IsDead)
 				return;
 
-			if (!string.IsNullOrEmpty(Info.GrantsCondition))
-				self.GrantCondition(Info.GrantsCondition);
+			self.GrantCondition(Info.GrantsCondition);
 
 			if (Info.RemoveInstead || !self.Info.HasTraitInfo<IHealthInfo>())
 				self.Dispose();

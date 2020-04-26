@@ -42,10 +42,10 @@ namespace OpenRA.Mods.Common.Activities
 			if (attackMove == null)
 				return;
 
-			if (!isAssaultMove && !string.IsNullOrEmpty(attackMove.Info.AttackMoveCondition))
-				token = self.GrantCondition(attackMove.Info.AttackMoveCondition);
-			else if (isAssaultMove && !string.IsNullOrEmpty(attackMove.Info.AssaultMoveCondition))
+			if (isAssaultMove)
 				token = self.GrantCondition(attackMove.Info.AssaultMoveCondition);
+			else
+				token = self.GrantCondition(attackMove.Info.AttackMoveCondition);
 		}
 
 		public override bool Tick(Actor self)
