@@ -20,11 +20,14 @@ namespace OpenRA.Mods.Common.Traits.Render
 	[Desc("Renders a decorative animation on units and buildings.")]
 	public class WithIdleOverlayInfo : PausableConditionalTraitInfo, IRenderActorPreviewSpritesInfo, Requires<RenderSpritesInfo>, Requires<BodyOrientationInfo>
 	{
-		[SequenceReference]
+		[Desc("Image used for this decoration. Defaults to the actor's type.")]
+		public readonly string Image = null;
+
+		[SequenceReference("Image")]
 		[Desc("Animation to play when the actor is created.")]
 		public readonly string StartSequence = null;
 
-		[SequenceReference]
+		[SequenceReference("Image")]
 		[Desc("Sequence name to use")]
 		public readonly string Sequence = "idle-overlay";
 
@@ -87,7 +90,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var rs = self.Trait<RenderSprites>();
 			var body = self.Trait<BodyOrientation>();
 
-			overlay = new Animation(self.World, rs.GetImage(self), () => IsTraitPaused);
+			var image = info.Image ?? rs.GetImage(self);
+			overlay = new Animation(self.World, image, () => IsTraitPaused);
 			overlay.IsDecoration = info.IsDecoration;
 			if (info.StartSequence != null)
 				overlay.PlayThen(RenderSprites.NormalizeSequence(overlay, self.GetDamageState(), info.StartSequence),
