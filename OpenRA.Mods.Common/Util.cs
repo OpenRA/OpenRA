@@ -260,6 +260,12 @@ namespace OpenRA.Mods.Common
 			if (t == typeof(IWarhead))
 				return "Warhead";
 
+			if (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(GrantedVariableReference<>))
+				return "Granted Variable Name";
+
+			if (t == typeof(UsedVariableReference))
+				return "Used Variable Name";
+
 			return t.Name;
 		}
 	}

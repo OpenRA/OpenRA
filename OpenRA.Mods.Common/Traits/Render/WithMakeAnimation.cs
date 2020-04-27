@@ -23,9 +23,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Sequence name to use.")]
 		public readonly string Sequence = "make";
 
-		[GrantedConditionReference]
 		[Desc("The condition to grant to self while the make animation is playing.")]
-		public readonly string Condition = null;
+		public readonly GrantedVariableReference<bool> Condition;
 
 		[Desc("Apply to sprite bodies with these names.")]
 		public readonly string[] BodyNames = { "body" };

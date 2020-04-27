@@ -62,12 +62,6 @@ namespace OpenRA.Traits
 		}
 	}
 
-	[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
-	public sealed class GrantedConditionReferenceAttribute : Attribute { }
-
-	[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
-	public sealed class ConsumedConditionReferenceAttribute : Attribute { }
-
 	[AttributeUsage(AttributeTargets.Field)]
 	public sealed class PaletteDefinitionAttribute : Attribute
 	{

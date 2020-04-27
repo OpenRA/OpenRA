@@ -22,14 +22,12 @@ namespace OpenRA.Mods.Common.Traits
 		"Can be paused with the granted condition to disable undeploying.")]
 	public class GrantConditionOnDeployInfo : PausableConditionalTraitInfo, IEditorActorOptions
 	{
-		[GrantedConditionReference]
 		[Desc("The condition to grant while the actor is undeployed.")]
-		public readonly string UndeployedCondition = null;
+		public readonly GrantedVariableReference<bool> UndeployedCondition;
 
 		[FieldLoader.Require]
-		[GrantedConditionReference]
 		[Desc("The condition to grant after deploying and revoke before undeploying.")]
-		public readonly string DeployedCondition = null;
+		public readonly GrantedVariableReference<bool> DeployedCondition;
 
 		[Desc("The terrain types that this actor can deploy on. Leave empty to allow any.")]
 		public readonly HashSet<string> AllowedTerrainTypes = new HashSet<string>();

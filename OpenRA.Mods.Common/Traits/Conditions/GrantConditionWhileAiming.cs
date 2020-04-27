@@ -16,9 +16,8 @@ namespace OpenRA.Mods.Common.Traits
 	public class GrantConditionWhileAimingInfo : TraitInfo
 	{
 		[FieldLoader.Require]
-		[GrantedConditionReference]
 		[Desc("The condition to grant while aiming.")]
-		public readonly string Condition = null;
+		public readonly GrantedVariableReference<bool> Condition;
 
 		public override object Create(ActorInitializer init) { return new GrantConditionWhileAiming(this); }
 	}

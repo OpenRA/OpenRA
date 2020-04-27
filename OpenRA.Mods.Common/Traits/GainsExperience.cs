@@ -24,10 +24,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Condition to grant at each level.",
 			"Key is the XP requirements for each level as a percentage of our own value.",
 			"Value is the condition to grant.")]
-		public readonly Dictionary<int, string> Conditions = null;
-
-		[GrantedConditionReference]
-		public IEnumerable<string> LinterConditions { get { return Conditions.Values; } }
+		public readonly Dictionary<int, GrantedVariableReference<bool>> Conditions;
 
 		[Desc("Image for the level up sprite.")]
 		public readonly string LevelUpImage = null;
@@ -58,7 +55,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly GainsExperienceInfo info;
 		readonly int initialExperience;
 
-		readonly List<Pair<int, string>> nextLevel = new List<Pair<int, string>>();
+		readonly List<Pair<int, GrantedVariableReference<bool>>> nextLevel = new List<Pair<int, GrantedVariableReference<bool>>>();
 
 		// Stored as a percentage of our value
 		[Sync]

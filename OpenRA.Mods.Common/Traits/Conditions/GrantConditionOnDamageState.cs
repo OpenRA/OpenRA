@@ -17,9 +17,8 @@ namespace OpenRA.Mods.Common.Traits
 	public class GrantConditionOnDamageStateInfo : TraitInfo, Requires<IHealthInfo>
 	{
 		[FieldLoader.Require]
-		[GrantedConditionReference]
 		[Desc("Condition to grant.")]
-		public readonly string Condition = null;
+		public readonly GrantedVariableReference<bool> Condition;
 
 		[Desc("Play a random sound from this list when enabled.")]
 		public readonly string[] EnabledSounds = { };

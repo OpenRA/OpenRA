@@ -42,9 +42,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Experience gained by a player for repairing structures of allied players.")]
 		public readonly int PlayerExperience = 0;
 
-		[GrantedConditionReference]
 		[Desc("The condition to grant to self while being repaired.")]
-		public readonly string RepairCondition = null;
+		public readonly GrantedVariableReference<bool> RepairCondition;
 
 		[NotificationReference("Speech")]
 		public readonly string RepairingNotification = null;
@@ -83,7 +82,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void UpdateCondition(Actor self)
 		{
-			if (string.IsNullOrEmpty(Info.RepairCondition))
+			if (!Info.RepairCondition.Valid)
 				return;
 
 			var currentRepairers = Repairers.Count;

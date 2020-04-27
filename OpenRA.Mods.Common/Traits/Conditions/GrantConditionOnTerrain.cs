@@ -17,9 +17,8 @@ namespace OpenRA.Mods.Common.Traits
 	public class GrantConditionOnTerrainInfo : TraitInfo
 	{
 		[FieldLoader.Require]
-		[GrantedConditionReference]
 		[Desc("Condition to grant.")]
-		public readonly string Condition = null;
+		public readonly GrantedVariableReference<bool> Condition;
 
 		[FieldLoader.Require]
 		[Desc("Terrain names to trigger the condition.")]

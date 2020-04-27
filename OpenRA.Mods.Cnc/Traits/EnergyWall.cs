@@ -26,7 +26,6 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("The weapon to attack units on top of the wall with when activated.")]
 		public readonly string Weapon = null;
 
-		[ConsumedConditionReference]
 		[Desc("Boolean expression defining the condition to activate this trait.")]
 		public readonly BooleanExpression ActiveCondition = null;
 

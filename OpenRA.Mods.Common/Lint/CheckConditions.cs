@@ -22,35 +22,14 @@ namespace OpenRA.Mods.Common.Lint
 		{
 			foreach (var actorInfo in rules.Actors)
 			{
-				var granted = new HashSet<string>();
-				var consumed = new HashSet<string>();
+				var withGranted = actorInfo.Value.TraitInfos<TraitInfo>()
+					.SelectMany(trait => Exts.EnumerateInFieldsAndProperties<IWithGrantedVariables>(trait));
 
-				foreach (var trait in actorInfo.Value.TraitInfos<TraitInfo>())
-				{
-					var fieldConsumed = trait.GetType().GetFields()
-						.Where(x => x.HasAttribute<ConsumedConditionReferenceAttribute>())
-						.SelectMany(f => LintExts.GetFieldValues(trait, f, emitError));
+				var withUsed = actorInfo.Value.TraitInfos<TraitInfo>()
+					.SelectMany(trait => Exts.EnumerateInFieldsAndProperties<IWithUsedVariables>(trait));
 
-					var propertyConsumed = trait.GetType().GetProperties()
-						.Where(x => x.HasAttribute<ConsumedConditionReferenceAttribute>())
-						.SelectMany(p => LintExts.GetPropertyValues(trait, p, emitError));
-
-					var fieldGranted = trait.GetType().GetFields()
-						.Where(x => x.HasAttribute<GrantedConditionReferenceAttribute>())
-						.SelectMany(f => LintExts.GetFieldValues(trait, f, emitError));
-
-					var propertyGranted = trait.GetType().GetProperties()
-						.Where(x => x.HasAttribute<GrantedConditionReferenceAttribute>())
-						.SelectMany(f => LintExts.GetPropertyValues(trait, f, emitError));
-
-					foreach (var c in fieldConsumed.Concat(propertyConsumed))
-						if (!string.IsNullOrEmpty(c))
-							consumed.Add(c);
-
-					foreach (var g in fieldGranted.Concat(propertyGranted))
-						if (!string.IsNullOrEmpty(g))
-							granted.Add(g);
-				}
+				var granted = new HashSet<string>(withGranted.GetGrantedVariables());
+				var consumed = new HashSet<string>(withUsed.GetUsedVariables());
 
 				var unconsumed = granted.Except(consumed);
 				if (unconsumed.Any())

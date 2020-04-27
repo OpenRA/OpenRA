@@ -52,11 +52,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Display order for the facing slider in the map editor")]
 		public readonly int EditorFacingDisplayOrder = 3;
 
-		[ConsumedConditionReference]
 		[Desc("Boolean expression defining the condition under which the regular (non-force) move cursor is disabled.")]
 		public readonly BooleanExpression RequireForceMoveCondition = null;
 
-		[ConsumedConditionReference]
 		[Desc("Boolean expression defining the condition under which this actor cannot be nudged by other actors.")]
 		public readonly BooleanExpression ImmovableCondition = null;
 

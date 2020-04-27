@@ -28,9 +28,8 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Used together with ClassicProductionQueue.")]
 	public class PrimaryBuildingInfo : ConditionalTraitInfo
 	{
-		[GrantedConditionReference]
 		[Desc("The condition to grant to self while this is the primary building.")]
-		public readonly string PrimaryCondition = null;
+		public readonly GrantedVariableReference<bool> PrimaryCondition;
 
 		[NotificationReference("Speech")]
 		[Desc("The speech notification to play when selecting a primary building.")]

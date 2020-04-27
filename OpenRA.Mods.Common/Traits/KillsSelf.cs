@@ -14,6 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	#pragma warning disable CS0649
 	class KillsSelfInfo : ConditionalTraitInfo
 	{
 		[Desc("Remove the actor from the world (and destroy it) instead of killing it.")]
@@ -25,12 +26,12 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Types of damage that this trait causes. Leave empty for no damage types.")]
 		public readonly BitSet<DamageType> DamageTypes = default(BitSet<DamageType>);
 
-		[GrantedConditionReference]
 		[Desc("The condition to grant moments before suiciding.")]
-		public readonly string GrantsCondition = null;
+		public readonly GrantedVariableReference<bool> GrantsCondition;
 
 		public override object Create(ActorInitializer init) { return new KillsSelf(init.Self, this); }
 	}
+	#pragma warning restore CS0649
 
 	class KillsSelf : ConditionalTrait<KillsSelfInfo>, INotifyAddedToWorld, ITick
 	{

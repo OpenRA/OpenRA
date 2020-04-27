@@ -27,13 +27,11 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Manages Captures and Capturable traits on an actor.")]
 	public class CaptureManagerInfo : TraitInfo
 	{
-		[GrantedConditionReference]
 		[Desc("Condition granted when capturing an actor.")]
-		public readonly string CapturingCondition = null;
+		public readonly GrantedVariableReference<bool> CapturingCondition;
 
-		[GrantedConditionReference]
 		[Desc("Condition granted when being captured by another actor.")]
-		public readonly string BeingCapturedCondition = null;
+		public readonly GrantedVariableReference<bool> BeingCapturedCondition;
 
 		[Desc("Should units friendly to the capturing actor auto-target this actor while it is being captured?")]
 		public readonly bool PreventsAutoTarget = true;

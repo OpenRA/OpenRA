@@ -17,9 +17,8 @@ namespace OpenRA.Mods.Common.Traits
 	public class ToggleConditionOnOrderInfo : PausableConditionalTraitInfo
 	{
 		[FieldLoader.Require]
-		[GrantedConditionReference]
 		[Desc("Condition to grant.")]
-		public readonly string Condition = null;
+		public readonly GrantedVariableReference<bool> Condition;
 
 		[FieldLoader.Require]
 		[Desc("Order name that toggles the condition.")]

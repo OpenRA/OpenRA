@@ -33,7 +33,6 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("The amount the unit will be repaired at each step. Use -1 for fallback behavior where HpPerStep from RepairsUnits trait will be used.")]
 		public readonly int HpPerStep = -1;
 
-		[ConsumedConditionReference]
 		[Desc("Boolean expression defining the condition under which the regular (non-force) enter cursor is disabled.")]
 		public readonly BooleanExpression RequireForceMoveCondition = null;
 

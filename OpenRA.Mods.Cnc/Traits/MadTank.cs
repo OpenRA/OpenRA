@@ -23,6 +23,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
 {
+	#pragma warning disable CS0649
 	class MadTankInfo : TraitInfo, IRulesetLoaded, Requires<ExplodesInfo>, Requires<WithFacingSpriteBodyInfo>
 	{
 		[SequenceReference]
@@ -52,9 +53,8 @@ namespace OpenRA.Mods.Cnc.Traits
 		[VoiceReference]
 		public readonly string Voice = "Action";
 
-		[GrantedConditionReference]
 		[Desc("The condition to grant to self while deployed.")]
-		public readonly string DeployedCondition = null;
+		public readonly GrantedVariableReference<bool> DeployedCondition;
 
 		public WeaponInfo ThumpDamageWeaponInfo { get; private set; }
 
@@ -82,6 +82,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			DetonationWeaponInfo = detonationWeapon;
 		}
 	}
+	#pragma warning restore CS0649
 
 	class MadTank : IIssueOrder, IResolveOrder, IOrderVoice, IIssueDeployOrder
 	{

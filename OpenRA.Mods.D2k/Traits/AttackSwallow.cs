@@ -20,6 +20,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.D2k.Traits
 {
+	#pragma warning disable CS0649
 	[Desc("Sandworms use this attack model.")]
 	class AttackSwallowInfo : AttackFrontalInfo
 	{
@@ -29,9 +30,8 @@ namespace OpenRA.Mods.D2k.Traits
 		[Desc("The number of ticks it takes to get in place under the target to attack.")]
 		public readonly int AttackDelay = 30;
 
-		[GrantedConditionReference]
 		[Desc("The condition to grant to self while attacking.")]
-		public readonly string AttackingCondition = null;
+		public readonly GrantedVariableReference<bool> AttackingCondition;
 
 		public readonly string WormAttackSound = "WORM.WAV";
 
@@ -40,6 +40,7 @@ namespace OpenRA.Mods.D2k.Traits
 
 		public override object Create(ActorInitializer init) { return new AttackSwallow(init.Self, this); }
 	}
+	#pragma warning restore CS0649
 
 	class AttackSwallow : AttackFrontal
 	{

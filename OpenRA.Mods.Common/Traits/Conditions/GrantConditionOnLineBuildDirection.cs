@@ -16,9 +16,8 @@ namespace OpenRA.Mods.Common.Traits
 	public class GrantConditionOnLineBuildDirectionInfo : TraitInfo, Requires<LineBuildInfo>
 	{
 		[FieldLoader.Require]
-		[GrantedConditionReference]
 		[Desc("Condition to grant.")]
-		public readonly string Condition = null;
+		public readonly GrantedVariableReference<bool> Condition;
 
 		[FieldLoader.Require]
 		[Desc("Line build direction to trigger the condition.")]

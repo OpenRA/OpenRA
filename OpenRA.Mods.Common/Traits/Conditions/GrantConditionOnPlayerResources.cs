@@ -18,9 +18,8 @@ namespace OpenRA.Mods.Common.Traits
 	public class GrantConditionOnPlayerResourcesInfo : TraitInfo
 	{
 		[FieldLoader.Require]
-		[GrantedConditionReference]
 		[Desc("Condition to grant.")]
-		public readonly string Condition = null;
+		public readonly GrantedVariableReference<bool> Condition;
 
 		[Desc("Enable condition when the amount of stored resources is greater than this.")]
 		public readonly int Threshold = 0;
@@ -52,7 +51,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void ITick.Tick(Actor self)
 		{
-			if (string.IsNullOrEmpty(info.Condition))
+			if (!info.Condition.Valid)
 				return;
 
 			var enabled = playerResources.Resources > info.Threshold;

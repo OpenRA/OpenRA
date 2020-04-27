@@ -50,9 +50,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly int FallRate = 13;
 
-		[GrantedConditionReference]
 		[Desc("The condition to grant to self while parachuting.")]
-		public readonly string ParachutingCondition = null;
+		public readonly GrantedVariableReference<bool> ParachutingCondition;
 
 		public override object Create(ActorInitializer init) { return new Parachutable(init.Self, this); }
 	}

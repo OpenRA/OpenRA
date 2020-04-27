@@ -9,23 +9,22 @@
  */
 #endregion
 
-using OpenRA.Traits;
-
 namespace OpenRA.Mods.Common.Traits
 {
+	#pragma warning disable CS0649
 	[Desc("Grants a condition while the trait is active.")]
 	class GrantConditionInfo : ConditionalTraitInfo
 	{
 		[FieldLoader.Require]
-		[GrantedConditionReference]
 		[Desc("Condition to grant.")]
-		public readonly string Condition = null;
+		public readonly GrantedVariableReference<bool> Condition;
 
 		[Desc("Is the condition irrevocable once it has been activated?")]
 		public readonly bool GrantPermanently = false;
 
 		public override object Create(ActorInitializer init) { return new GrantCondition(this); }
 	}
+	#pragma warning restore CS0649
 
 	class GrantCondition : ConditionalTrait<GrantConditionInfo>
 	{

@@ -18,9 +18,8 @@ namespace OpenRA.Mods.Common.Traits
 	public class GrantConditionOnPrerequisiteInfo : TraitInfo
 	{
 		[FieldLoader.Require]
-		[GrantedConditionReference]
 		[Desc("The condition to grant.")]
-		public readonly string Condition = null;
+		public readonly GrantedVariableReference<bool> Condition;
 
 		[FieldLoader.Require]
 		[Desc("List of required prerequisites.")]

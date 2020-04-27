@@ -20,9 +20,8 @@ namespace OpenRA.Mods.Common.Traits
 	public class GrantConditionOnProductionInfo : TraitInfo
 	{
 		[FieldLoader.Require]
-		[GrantedConditionReference]
 		[Desc("The condition to grant")]
-		public readonly string Condition = null;
+		public readonly GrantedVariableReference<bool> Condition;
 
 		[ActorReference]
 		[Desc("The actors to grant condition for. If empty condition will be granted for all actors.")]

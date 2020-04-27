@@ -17,17 +17,14 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Can be carried by actors with the `Carryall` trait.")]
 	public class CarryableInfo : ConditionalTraitInfo
 	{
-		[GrantedConditionReference]
 		[Desc("The condition to grant to self while a carryall has been reserved.")]
-		public readonly string ReservedCondition = null;
+		public readonly GrantedVariableReference<bool> ReservedCondition;
 
-		[GrantedConditionReference]
 		[Desc("The condition to grant to self while being carried.")]
-		public readonly string CarriedCondition = null;
+		public readonly GrantedVariableReference<bool> CarriedCondition;
 
-		[GrantedConditionReference]
 		[Desc("The condition to grant to self while being locked for carry.")]
-		public readonly string LockedCondition = null;
+		public readonly GrantedVariableReference<bool> LockedCondition;
 
 		[Desc("Carryall attachment point relative to body.")]
 		public readonly WVec LocalOffset = WVec.Zero;

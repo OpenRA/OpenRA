@@ -40,9 +40,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Time to reload per ReloadCount on airfield etc.")]
 		public readonly int ReloadDelay = 50;
 
-		[GrantedConditionReference]
 		[Desc("The condition to grant to self for each ammo point in this pool.")]
-		public readonly string AmmoCondition = null;
+		public readonly GrantedVariableReference<bool> AmmoCondition;
 
 		public override object Create(ActorInitializer init) { return new AmmoPool(init.Self, this); }
 	}
@@ -106,7 +105,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void UpdateCondition(Actor self)
 		{
-			if (string.IsNullOrEmpty(Info.AmmoCondition))
+			if (!Info.AmmoCondition.Valid)
 				return;
 
 			while (CurrentAmmoCount > tokens.Count && tokens.Count < Info.Ammo)

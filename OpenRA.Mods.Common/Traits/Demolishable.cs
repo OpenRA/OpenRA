@@ -20,9 +20,8 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public bool IsValidTarget(ActorInfo actorInfo, Actor saboteur) { return true; }
 
-		[GrantedConditionReference]
 		[Desc("Condition to grant during demolition countdown.")]
-		public readonly string Condition = null;
+		public readonly GrantedVariableReference<bool> Condition;
 
 		public override object Create(ActorInitializer init) { return new Demolishable(this); }
 	}

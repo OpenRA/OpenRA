@@ -10,7 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Linq;
+using OpenRA.Primitives;
 using OpenRA.Support;
 using OpenRA.Traits;
 
@@ -25,21 +25,12 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Conditions to grant for each accepted plug type.",
 			"Key is the plug type.",
 			"Value is the condition that is granted when the plug is enabled.")]
-		public readonly Dictionary<string, string> Conditions = null;
+		public readonly Dictionary<string, GrantedVariableReference<bool>> Conditions = new Dictionary<string, GrantedVariableReference<bool>>();
 
 		[Desc("Requirements for accepting a plug type.",
 			"Key is the plug type that the requirements applies to.",
 			"Value is the condition expression defining the requirements to place the plug.")]
 		public readonly Dictionary<string, BooleanExpression> Requirements = new Dictionary<string, BooleanExpression>();
-
-		[GrantedConditionReference]
-		public IEnumerable<string> LinterConditions { get { return Conditions.Values; } }
-
-		[ConsumedConditionReference]
-		public IEnumerable<string> ConsumedConditions
-		{
-			get { return Requirements.Values.SelectMany(r => r.Variables).Distinct(); }
-		}
 
 		public override object Create(ActorInitializer init) { return new Pluggable(init, this); }
 	}
@@ -89,7 +80,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void EnablePlug(Actor self, string type)
 		{
-			string condition;
+			GrantedVariableReference<bool> condition;
 			if (!Info.Conditions.TryGetValue(type, out condition))
 				return;
 

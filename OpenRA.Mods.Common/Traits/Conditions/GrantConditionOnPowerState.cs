@@ -17,9 +17,8 @@ namespace OpenRA.Mods.Common.Traits
 	public class GrantConditionOnPowerStateInfo : ConditionalTraitInfo
 	{
 		[FieldLoader.Require]
-		[GrantedConditionReference]
 		[Desc("Condition to grant.")]
-		public readonly string Condition = null;
+		public readonly GrantedVariableReference<bool> Condition;
 
 		[FieldLoader.Require]
 		[Desc("PowerStates at which the condition is granted. Options are Normal, Low and Critical.")]

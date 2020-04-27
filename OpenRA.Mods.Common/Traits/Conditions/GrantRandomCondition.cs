@@ -18,9 +18,8 @@ namespace OpenRA.Mods.Common.Traits.Conditions
 	public class GrantRandomConditionInfo : TraitInfo
 	{
 		[FieldLoader.Require]
-		[GrantedConditionReference]
 		[Desc("List of conditions to grant from.")]
-		public readonly string[] Conditions = null;
+		public readonly GrantedVariableReference<bool>[] Conditions = null;
 
 		public override object Create(ActorInitializer init) { return new GrantRandomCondition(init.Self, this); }
 	}

@@ -74,9 +74,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Does the unit queue harvesting runs instead of individual harvest actions?")]
 		public readonly bool QueueFullLoad = false;
 
-		[GrantedConditionReference]
 		[Desc("Condition to grant while empty.")]
-		public readonly string EmptyCondition = null;
+		public readonly GrantedVariableReference<bool> EmptyCondition;
 
 		[VoiceReference]
 		public readonly string HarvestVoice = "Action";
@@ -216,7 +215,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void UpdateCondition(Actor self)
 		{
-			if (string.IsNullOrEmpty(Info.EmptyCondition))
+			if (!Info.EmptyCondition.Valid)
 				return;
 
 			var enabled = IsEmpty;

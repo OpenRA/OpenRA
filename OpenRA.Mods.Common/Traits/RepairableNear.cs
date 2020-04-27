@@ -30,7 +30,6 @@ namespace OpenRA.Mods.Common.Traits
 		[VoiceReference]
 		public readonly string Voice = "Action";
 
-		[ConsumedConditionReference]
 		[Desc("Boolean expression defining the condition under which the regular (non-force) enter cursor is disabled.")]
 		public readonly BooleanExpression RequireForceMoveCondition = null;
 

@@ -19,25 +19,25 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	#pragma warning disable CS0649
 	[Desc("Provides access to the attack-move command, which will make the actor automatically engage viable targets while moving to the destination.")]
 	class AttackMoveInfo : TraitInfo, Requires<IMoveInfo>
 	{
 		[VoiceReference]
 		public readonly string Voice = "Action";
 
-		[GrantedConditionReference]
 		[Desc("The condition to grant to self while an attack-move is active.")]
-		public readonly string AttackMoveCondition = null;
+		public readonly GrantedVariableReference<bool> AttackMoveCondition;
 
-		[GrantedConditionReference]
 		[Desc("The condition to grant to self while an assault-move is active.")]
-		public readonly string AssaultMoveCondition = null;
+		public readonly GrantedVariableReference<bool> AssaultMoveCondition;
 
 		[Desc("Can the actor be ordered to move in to shroud?")]
 		public readonly bool MoveIntoShroud = true;
 
 		public override object Create(ActorInitializer init) { return new AttackMove(init.Self, this); }
 	}
+	#pragma warning restore CS0649
 
 	class AttackMove : IResolveOrder, IOrderVoice
 	{

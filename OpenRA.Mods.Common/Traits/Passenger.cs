@@ -29,21 +29,16 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly int Weight = 1;
 
-		[GrantedConditionReference]
 		[Desc("The condition to grant to when this actor is loaded inside any transport.")]
-		public readonly string CargoCondition = null;
+		public readonly GrantedVariableReference<bool> CargoCondition;
 
 		[Desc("Conditions to grant when this actor is loaded inside specified transport.",
 			"A dictionary of [actor id]: [condition].")]
-		public readonly Dictionary<string, string> CargoConditions = new Dictionary<string, string>();
-
-		[GrantedConditionReference]
-		public IEnumerable<string> LinterCargoConditions { get { return CargoConditions.Values; } }
+		public readonly Dictionary<string, GrantedVariableReference<bool>> CargoConditions = new Dictionary<string, GrantedVariableReference<bool>>();
 
 		[VoiceReference]
 		public readonly string Voice = "Action";
 
-		[ConsumedConditionReference]
 		[Desc("Boolean expression defining the condition under which the regular (non-force) enter cursor is disabled.")]
 		public readonly BooleanExpression RequireForceMoveCondition = null;
 
@@ -131,7 +126,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyEnteredCargo.OnEnteredCargo(Actor self, Actor cargo)
 		{
-			string specificCargoCondition;
+			GrantedVariableReference<bool> specificCargoCondition;
 
 			if (anyCargoToken == Actor.InvalidConditionToken)
 				anyCargoToken = self.GrantCondition(Info.CargoCondition);

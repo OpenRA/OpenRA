@@ -18,9 +18,8 @@ namespace OpenRA.Mods.Common.Traits
 	public class GrantConditionOnBotOwnerInfo : TraitInfo
 	{
 		[FieldLoader.Require]
-		[GrantedConditionReference]
 		[Desc("Condition to grant.")]
-		public readonly string Condition = null;
+		public readonly GrantedVariableReference<bool> Condition;
 
 		[FieldLoader.Require]
 		[Desc("Bot types that trigger the condition.")]

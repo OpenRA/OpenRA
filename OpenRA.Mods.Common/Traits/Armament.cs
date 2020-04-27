@@ -63,9 +63,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Use multiple muzzle images if non-zero")]
 		public readonly int MuzzleSplitFacings = 0;
 
-		[GrantedConditionReference]
 		[Desc("Condition to grant while reloading.")]
-		public readonly string ReloadingCondition = null;
+		public readonly GrantedVariableReference<bool> ReloadingCondition;
 
 		public WeaponInfo WeaponInfo { get; private set; }
 		public WDist ModifiedRange { get; private set; }
@@ -181,7 +180,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void UpdateCondition(Actor self)
 		{
-			if (string.IsNullOrEmpty(Info.ReloadingCondition))
+			if (!Info.ReloadingCondition.Valid)
 				return;
 
 			var enabled = !IsTraitDisabled && IsReloading;

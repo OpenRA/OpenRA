@@ -14,13 +14,13 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	#pragma warning disable CS0649
 	[Desc("Grants a condition while the trait is active.")]
 	class GrantConditionOnFactionInfo : ConditionalTraitInfo
 	{
 		[FieldLoader.Require]
-		[GrantedConditionReference]
 		[Desc("Condition to grant.")]
-		public readonly string Condition = null;
+		public readonly GrantedVariableReference<bool> Condition;
 
 		[Desc("Only grant this condition for certain factions.")]
 		public readonly HashSet<string> Factions = new HashSet<string>();
@@ -30,6 +30,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override object Create(ActorInitializer init) { return new GrantConditionOnFaction(init, this); }
 	}
+	#pragma warning restore CS0649
 
 	class GrantConditionOnFaction : ConditionalTrait<GrantConditionOnFactionInfo>, INotifyOwnerChanged
 	{

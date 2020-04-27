@@ -59,9 +59,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly BitSet<CloakType> CloakTypes = new BitSet<CloakType>("Cloak");
 
-		[GrantedConditionReference]
 		[Desc("The condition to grant to self while cloaked.")]
-		public readonly string CloakedCondition = null;
+		public readonly GrantedVariableReference<bool> CloakedCondition;
 
 		public override object Create(ActorInitializer init) { return new Cloak(this); }
 	}

@@ -24,8 +24,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public readonly WDist Speed = new WDist(426);
 
 		[Desc("Conditions that last from start of the leap until the attack.")]
-		[GrantedConditionReference]
-		public readonly string LeapCondition = "attacking";
+		public readonly GrantedVariableReference<bool> LeapCondition = new GrantedVariableReference<bool>("attacking");
 
 		public override object Create(ActorInitializer init) { return new AttackLeap(init.Self, this); }
 	}

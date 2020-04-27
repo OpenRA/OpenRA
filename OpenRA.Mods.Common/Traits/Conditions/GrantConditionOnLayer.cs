@@ -9,16 +9,13 @@
  */
 #endregion
 
-using OpenRA.Traits;
-
 namespace OpenRA.Mods.Common.Traits
 {
 	public abstract class GrantConditionOnLayerInfo : ConditionalTraitInfo
 	{
 		[FieldLoader.Require]
-		[GrantedConditionReference]
 		[Desc("The condition to grant to self when changing to specific custom layer.")]
-		public readonly string Condition = null;
+		public readonly GrantedVariableReference<bool> Condition;
 	}
 
 	public abstract class GrantConditionOnLayer<InfoType> : ConditionalTrait<InfoType>, INotifyCustomLayerChanged where InfoType : GrantConditionOnLayerInfo

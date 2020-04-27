@@ -25,9 +25,8 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Allows a condition to be granted from an external source (Lua, warheads, etc).")]
 	public class ExternalConditionInfo : TraitInfo
 	{
-		[GrantedConditionReference]
 		[FieldLoader.Require]
-		public readonly string Condition = null;
+		public readonly GrantedVariableReference<bool> Condition;
 
 		[Desc("If > 0, restrict the number of times that this condition can be granted by a single source.")]
 		public readonly int SourceCap = 0;
@@ -229,7 +228,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		bool Notifies(IConditionTimerWatcher watcher) { return watcher.Condition == Info.Condition; }
+		bool Notifies(IConditionTimerWatcher watcher) { return watcher.Condition == Info.Condition.Name; }
 
 		void INotifyCreated.Created(Actor self)
 		{

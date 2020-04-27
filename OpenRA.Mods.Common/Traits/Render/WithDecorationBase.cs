@@ -12,6 +12,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Primitives;
 using OpenRA.Support;
 using OpenRA.Traits;
 
@@ -46,12 +47,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Override blink conditions to use when defined conditions are enabled.",
 			"A dictionary of [condition string]: [pattern].")]
 		public readonly Dictionary<BooleanExpression, BlinkState[]> BlinkPatterns = new Dictionary<BooleanExpression, BlinkState[]>();
-
-		[ConsumedConditionReference]
-		public IEnumerable<string> ConsumedConditions
-		{
-			get { return Offsets.Keys.Concat(BlinkPatterns.Keys).SelectMany(r => r.Variables).Distinct(); }
-		}
 	}
 
 	public abstract class WithDecorationBase<InfoType> : ConditionalTrait<InfoType>, IDecoration where InfoType : WithDecorationBaseInfo

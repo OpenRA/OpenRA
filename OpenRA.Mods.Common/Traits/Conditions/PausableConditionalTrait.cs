@@ -18,7 +18,6 @@ namespace OpenRA.Mods.Common.Traits
 	/// <summary>Use as base class for *Info to subclass of PausableConditionalTrait. (See PausableConditionalTrait.)</summary>
 	public abstract class PausableConditionalTraitInfo : ConditionalTraitInfo
 	{
-		[ConsumedConditionReference]
 		[Desc("Boolean expression defining the condition to pause this trait.")]
 		public readonly BooleanExpression PauseOnCondition = null;
 

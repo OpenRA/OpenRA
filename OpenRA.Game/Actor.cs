@@ -537,14 +537,14 @@ namespace OpenRA
 		/// Otherwise, just returns InvalidConditionToken.
 		/// </summary>
 		/// <returns>The token that is used to revoke this condition.</returns>
-		public int GrantCondition(string condition)
+		public int GrantCondition(GrantedVariableReference<bool> condition)
 		{
-			if (string.IsNullOrEmpty(condition))
+			if (!condition.Valid)
 				return InvalidConditionToken;
 
 			var token = nextConditionToken++;
-			conditionTokens.Add(token, condition);
-			UpdateConditionState(condition, token, false);
+			conditionTokens.Add(token, condition.Name);
+			UpdateConditionState(condition.Name, token, false);
 			return token;
 		}
 

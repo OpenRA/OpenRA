@@ -16,9 +16,8 @@ namespace OpenRA.Mods.Common.Traits
 	public class GrantConditionOnMovementInfo : ConditionalTraitInfo, Requires<IMoveInfo>
 	{
 		[FieldLoader.Require]
-		[GrantedConditionReference]
 		[Desc("Condition to grant.")]
-		public readonly string Condition = null;
+		public readonly GrantedVariableReference<bool> Condition;
 
 		[Desc("Apply condition on listed movement types. Available options are: None, Horizontal, Vertical, Turn.")]
 		public readonly MovementType ValidMovementTypes = MovementType.Horizontal;

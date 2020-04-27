@@ -17,9 +17,8 @@ namespace OpenRA.Mods.Common.Traits
 	public class GrantConditionOnAttackInfo : PausableConditionalTraitInfo
 	{
 		[FieldLoader.Require]
-		[GrantedConditionReference]
 		[Desc("The condition type to grant.")]
-		public readonly string Condition = null;
+		public readonly GrantedVariableReference<bool> Condition;
 
 		[Desc("Name of the armaments that grant this condition.")]
 		public readonly HashSet<string> ArmamentNames = new HashSet<string>() { "primary" };
@@ -59,12 +58,10 @@ namespace OpenRA.Mods.Common.Traits
 		public GrantConditionOnAttack(ActorInitializer init, GrantConditionOnAttackInfo info)
 			: base(info) { }
 
-		void GrantInstance(Actor self, string cond)
+		void GrantInstance(Actor self, GrantedVariableReference<bool> condition)
 		{
-			if (string.IsNullOrEmpty(cond))
-				return;
-
-			tokens.Push(self.GrantCondition(cond));
+			if (condition.Valid)
+				tokens.Push(self.GrantCondition(condition));
 		}
 
 		void RevokeInstance(Actor self, bool revokeAll)

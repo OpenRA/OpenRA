@@ -66,21 +66,16 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Cursor to display when unable to unload the passengers.")]
 		public readonly string UnloadBlockedCursor = "deploy-blocked";
 
-		[GrantedConditionReference]
 		[Desc("The condition to grant to self while waiting for cargo to load.")]
-		public readonly string LoadingCondition = null;
+		public readonly GrantedVariableReference<bool> LoadingCondition;
 
-		[GrantedConditionReference]
 		[Desc("The condition to grant to self while passengers are loaded.",
 			"Condition can stack with multiple passengers.")]
-		public readonly string LoadedCondition = null;
+		public readonly GrantedVariableReference<bool> LoadedCondition;
 
 		[Desc("Conditions to grant when specified actors are loaded inside the transport.",
 			"A dictionary of [actor id]: [condition].")]
-		public readonly Dictionary<string, string> PassengerConditions = new Dictionary<string, string>();
-
-		[GrantedConditionReference]
-		public IEnumerable<string> LinterPassengerConditions { get { return PassengerConditions.Values; } }
+		public readonly Dictionary<string, GrantedVariableReference<bool>> PassengerConditions = new Dictionary<string, GrantedVariableReference<bool>>();
 
 		public override object Create(ActorInitializer init) { return new Cargo(init, this); }
 	}
@@ -172,12 +167,12 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				foreach (var c in cargo)
 				{
-					string passengerCondition;
+					GrantedVariableReference<bool> passengerCondition;
 					if (Info.PassengerConditions.TryGetValue(c.Info.Name, out passengerCondition))
 						passengerTokens.GetOrAdd(c.Info.Name).Push(self.GrantCondition(passengerCondition));
 				}
 
-				if (!string.IsNullOrEmpty(Info.LoadedCondition))
+				if (Info.LoadedCondition.Valid)
 					loadedTokens.Push(self.GrantCondition(Info.LoadedCondition));
 			}
 
@@ -403,11 +398,11 @@ namespace OpenRA.Mods.Common.Traits
 					npe.OnPassengerEntered(self, a);
 			}
 
-			string passengerCondition;
+			GrantedVariableReference<bool> passengerCondition;
 			if (Info.PassengerConditions.TryGetValue(a.Info.Name, out passengerCondition))
 				passengerTokens.GetOrAdd(a.Info.Name).Push(self.GrantCondition(passengerCondition));
 
-			if (!string.IsNullOrEmpty(Info.LoadedCondition))
+			if (Info.LoadedCondition.Valid)
 				loadedTokens.Push(self.GrantCondition(Info.LoadedCondition));
 		}
 

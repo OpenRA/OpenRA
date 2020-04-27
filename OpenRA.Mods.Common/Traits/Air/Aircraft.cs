@@ -73,13 +73,11 @@ namespace OpenRA.Mods.Common.Traits
 		[VoiceReference]
 		public readonly string Voice = "Action";
 
-		[GrantedConditionReference]
 		[Desc("The condition to grant to self while airborne.")]
-		public readonly string AirborneCondition = null;
+		public readonly GrantedVariableReference<bool> AirborneCondition;
 
-		[GrantedConditionReference]
 		[Desc("The condition to grant to self while at cruise altitude.")]
-		public readonly string CruisingCondition = null;
+		public readonly GrantedVariableReference<bool> CruisingCondition;
 
 		[Desc("Can the actor hover in place mid-air? If not, then the actor will have to remain in motion (circle around).")]
 		public readonly bool CanHover = false;
@@ -135,7 +133,6 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Display order for the facing slider in the map editor")]
 		public readonly int EditorFacingDisplayOrder = 3;
 
-		[ConsumedConditionReference]
 		[Desc("Boolean expression defining the condition under which the regular (non-force) move cursor is disabled.")]
 		public readonly BooleanExpression RequireForceMoveCondition = null;
 

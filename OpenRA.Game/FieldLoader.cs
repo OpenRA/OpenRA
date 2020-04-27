@@ -403,6 +403,38 @@ namespace OpenRA
 
 				return InvalidValueAction(value, fieldType, fieldName);
 			}
+			else if (fieldType == typeof(GrantedVariableReference<bool>))
+			{
+				if (value != null)
+				{
+					try
+					{
+						return new GrantedVariableReference<bool>(value);
+					}
+					catch (InvalidDataException e)
+					{
+						throw new YamlException(e.Message);
+					}
+				}
+
+				return InvalidValueAction(value, fieldType, fieldName);
+			}
+			else if (fieldType == typeof(GrantedVariableReference<int>))
+			{
+				if (value != null)
+				{
+					try
+					{
+						return new GrantedVariableReference<int>(value);
+					}
+					catch (InvalidDataException e)
+					{
+						throw new YamlException(e.Message);
+					}
+				}
+
+				return InvalidValueAction(value, fieldType, fieldName);
+			}
 			else if (fieldType.IsEnum)
 			{
 				try

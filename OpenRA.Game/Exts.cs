@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -22,6 +23,8 @@ namespace OpenRA
 {
 	public static class Exts
 	{
+		private static readonly Dictionary<Type, object> RecursiveEnumerableFuncCaches = new Dictionary<Type, object>();
+
 		public static bool IsUppercase(this string str)
 		{
 			return string.Compare(str.ToUpperInvariant(), str, false) == 0;
@@ -529,6 +532,131 @@ namespace OpenRA
 					return t;
 
 			return default(T);
+		}
+
+		private static IEnumerable<T> SelectManyIgnoreNull<T>(this IEnumerable source, Func<object, IEnumerable<T>> selector)
+		{
+			if (selector == null)
+				yield break;
+
+			foreach (var entry in source)
+			{
+				if (entry != null)
+				{
+					var selection = selector(entry);
+					if (selection != null)
+						foreach (var subentry in selection)
+							yield return subentry;
+				}
+			}
+		}
+
+		private static Func<object, IEnumerable<T>> GetRecursiveEnumerableFunc<T>(Type type, Dictionary<Type, Func<object, IEnumerable<T>>> cache)
+		{
+			Func<object, IEnumerable<T>> enumerable = null;
+			if (cache.TryGetValue(type, out enumerable))
+				return enumerable;
+
+			// TODO: See if IsAssignableFrom covers GetInterfaces for structs.
+			else if (typeof(T).IsAssignableFrom(type) || type.GetInterfaces().Any(i => typeof(T).IsAssignableFrom(i)))
+				enumerable = source => new[] { (T)source };
+			else if (type.GetInterfaces().Any(i => i.IsGenericTypeDefinition && i.GetGenericTypeDefinition() == typeof(IEnumerable) && typeof(T).IsAssignableFrom(i.GetGenericArguments()[0])))
+				enumerable = source => source as IEnumerable<T>;
+			else
+			{
+				var genericType = type.GetInterfaces().FirstOrDefault(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IDictionary<,>));
+				if (genericType != null)
+				{
+					var keysInfo = genericType.GetProperty("Keys");
+					Func<object, object> getKeys = keysInfo.GetValue;
+					var enumerateKeys = GetRecursiveEnumerableFunc(keysInfo.PropertyType, cache);
+
+					var valuesInfo = genericType.GetProperty("Values");
+					Func<object, object> getValues = valuesInfo.GetValue;
+					var enumerateValues = GetRecursiveEnumerableFunc(valuesInfo.PropertyType, cache);
+
+					if (enumerateKeys != null && enumerateValues != null)
+						enumerable = source => enumerateKeys(getKeys(source)).Concat(enumerateValues(getValues(source)));
+					else if (enumerateKeys != null)
+						enumerable = source => enumerateKeys(getKeys(source));
+					else if (enumerateValues != null)
+						enumerable = source => enumerateValues(getValues(source));
+				}
+				else
+				{
+					genericType = type.GetInterfaces().FirstOrDefault(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IEnumerable<>));
+					if (genericType != null)
+						enumerable = source => SelectManyIgnoreNull(source as IEnumerable, GetRecursiveEnumerableFunc<T>(genericType.GetGenericArguments()[0]));
+					else if (type.GetInterfaces().Any(i => i == typeof(IEnumerable)))
+						enumerable = source => SelectManyIgnoreNull(source as IEnumerable, AsRecursiveEnumerable<T>);
+				}
+			}
+
+			cache[type] = enumerable;
+			return enumerable;
+		}
+
+		public static Func<object, IEnumerable<T>> GetRecursiveEnumerableFunc<T>(Type type)
+		{
+			object oCache = null;
+			if (RecursiveEnumerableFuncCaches.TryGetValue(typeof(T), out oCache))
+				return GetRecursiveEnumerableFunc(type, (Dictionary<Type, Func<object, IEnumerable<T>>>)oCache);
+
+			var cache = new Dictionary<Type, Func<object, IEnumerable<T>>>();
+			RecursiveEnumerableFuncCaches.Add(typeof(T), cache);
+			return GetRecursiveEnumerableFunc(type, cache);
+		}
+
+		public static IEnumerable<T> AsRecursiveEnumerable<T>(this object source)
+		{
+			if (source is IEnumerable<T>)
+				return source as IEnumerable<T>;
+
+			var enumerable = GetRecursiveEnumerableFunc<T>(source.GetType());
+			if (enumerable != null)
+				return enumerable(source);
+
+			return null;
+		}
+
+		/// <summary>
+		/// Gets object as a T, instances of T from object as a recursive enumerable, or empty if neither.
+		/// </summary>
+		/// <returns>The source if it is a T else instances of T in source as a recursive enumerable.</returns>
+		/// <param name="source">Value.</param>
+		/// <typeparam name="T">The type to collect.</typeparam>
+		public static IEnumerable<T> GetValues<T>(object source) where T : class
+		{
+			if (source == null)
+				return Enumerable.Empty<T>();
+
+			if (typeof(T).IsAssignableFrom(source.GetType()))
+				return new[] { (T)source };
+
+			var enumerable = source as IEnumerable;
+			if (enumerable != null)
+				return enumerable.AsRecursiveEnumerable<T>();
+
+			return Enumerable.Empty<T>();
+		}
+
+		/// <summary>
+		/// Collects instances of T from fields and propertires without the Ignore attribute of an object.
+		/// </summary>
+		/// <returns>The instances of T in fields and properties.</returns>
+		/// <param name="source">Source object.</param>
+		/// <typeparam name="T">Type to collect.</typeparam>
+		public static IEnumerable<T> EnumerateInFieldsAndProperties<T>(object source) where T : class
+		{
+			foreach (var field in source.GetType().GetFields())
+				if (!field.HasAttribute<FieldLoader.IgnoreAttribute>())
+					foreach (var item in GetValues<T>(field.GetValue(source)))
+						yield return item;
+
+			foreach (var property in source.GetType().GetProperties())
+				if (!property.HasAttribute<FieldLoader.IgnoreAttribute>())
+					foreach (var item in GetValues<T>(property.GetValue(source)))
+						yield return item;
 		}
 	}
 

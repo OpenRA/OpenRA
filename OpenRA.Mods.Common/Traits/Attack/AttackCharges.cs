@@ -25,9 +25,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Amount to decrease the charge level each tick without a valid target.")]
 		public readonly int DischargeRate = 1;
 
-		[GrantedConditionReference]
 		[Desc("The condition to grant to self while the charge level is greater than zero.")]
-		public readonly string ChargingCondition = null;
+		public readonly GrantedVariableReference<bool> ChargingCondition;
 
 		public override object Create(ActorInitializer init) { return new AttackCharges(init.Self, this); }
 	}

@@ -69,15 +69,16 @@ namespace OpenRA.Mods.Cnc.Traits
 		Move = 32
 	}
 
+
+	#pragma warning disable CS0649
 	[Desc("Provides access to the disguise command, which makes the actor appear to be another player's actor.")]
 	class DisguiseInfo : TraitInfo
 	{
 		[VoiceReference]
 		public readonly string Voice = "Action";
 
-		[GrantedConditionReference]
 		[Desc("The condition to grant to self while disguised.")]
-		public readonly string DisguisedCondition = null;
+		public readonly GrantedVariableReference<bool> DisguisedCondition;
 
 		[Desc("What diplomatic stances can this actor disguise as.")]
 		public readonly Stance ValidStances = Stance.Ally | Stance.Neutral | Stance.Enemy;
@@ -91,16 +92,14 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		[Desc("Conditions to grant when disguised as specified actor.",
 			"A dictionary of [actor id]: [condition].")]
-		public readonly Dictionary<string, string> DisguisedAsConditions = new Dictionary<string, string>();
+		public readonly Dictionary<string, GrantedVariableReference<bool>> DisguisedAsConditions = new Dictionary<string, GrantedVariableReference<bool>>();
 
 		[Desc("Cursor to display when hovering over a valid actor to disguise as.")]
 		public readonly string Cursor = "ability";
 
-		[GrantedConditionReference]
-		public IEnumerable<string> LinterConditions { get { return DisguisedAsConditions.Values; } }
-
 		public override object Create(ActorInitializer init) { return new Disguise(init.Self, this); }
 	}
+	#pragma warning restore CS0649
 
 	class Disguise : IEffectiveOwner, IIssueOrder, IResolveOrder, IOrderVoice, IRadarColorModifier, INotifyAttack,
 		INotifyDamage, INotifyUnload, INotifyDemolition, INotifyInfiltration, ITick
@@ -235,7 +234,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				if (disguisedAsToken != Actor.InvalidConditionToken)
 					disguisedAsToken = self.RevokeCondition(disguisedAsToken);
 
-				string disguisedAsCondition;
+				GrantedVariableReference<bool> disguisedAsCondition;
 				if (info.DisguisedAsConditions.TryGetValue(AsActor.Name, out disguisedAsCondition))
 					disguisedAsToken = self.GrantCondition(disguisedAsCondition);
 			}

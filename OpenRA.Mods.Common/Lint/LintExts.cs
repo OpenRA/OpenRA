@@ -57,5 +57,37 @@ namespace OpenRA.Mods.Common.Lint
 			throw new InvalidOperationException("Bad type for reference on {0}.{1}. Supported types: string, IEnumerable<string>, BooleanExpression, IntegerExpression"
 				.F(ruleInfo.GetType().Name, propertyInfo.Name));
 		}
+
+		public static IEnumerable<T> GetFieldValues<T>(object ruleInfo, FieldInfo fieldInfo) where T : class
+		{
+			var type = fieldInfo.FieldType;
+			if (fieldInfo.GetValue(ruleInfo) == null)
+				return Enumerable.Empty<T>();
+
+			if (typeof(T).IsAssignableFrom(type))
+				return new[] { (T)fieldInfo.GetValue(ruleInfo) };
+
+			var enumerable = fieldInfo.GetValue(ruleInfo) as IEnumerable;
+			if (enumerable != null)
+				return enumerable.AsRecursiveEnumerable<T>();
+
+			return Enumerable.Empty<T>();
+		}
+
+		public static IEnumerable<T> GetPropertyValues<T>(object ruleInfo, PropertyInfo propertyInfo) where T : class
+		{
+			var type = propertyInfo.PropertyType;
+			if (propertyInfo.GetValue(ruleInfo) == null)
+				return Enumerable.Empty<T>();
+
+			if (typeof(T).IsAssignableFrom(type))
+				return new[] { (T)propertyInfo.GetValue(ruleInfo) };
+
+			var enumerable = propertyInfo.GetValue(ruleInfo) as IEnumerable;
+			if (enumerable != null)
+				return enumerable.AsRecursiveEnumerable<T>();
+
+			return Enumerable.Empty<T>();
+		}
 	}
 }

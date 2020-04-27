@@ -33,9 +33,8 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("Sprite body to play the vortex animation on.")]
 		public readonly string Body = "body";
 
-		[GrantedConditionReference]
 		[Desc("Condition to grant while the vortex animation plays.")]
-		public readonly string Condition = null;
+		public readonly GrantedVariableReference<bool> Condition;
 
 		[Desc("Amount of damage to apply each tick while the vortex animation plays.")]
 		public readonly int Damage = 1000;
@@ -43,7 +42,6 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("Apply the damage using these damagetypes.")]
 		public readonly BitSet<DamageType> DamageTypes = default(BitSet<DamageType>);
 
-		[ConsumedConditionReference]
 		[Desc("Boolean expression defining the condition under which to teleport a replacement actor instead of triggering the vortex.")]
 		public readonly BooleanExpression ReturnOriginalActorOnCondition = null;
 

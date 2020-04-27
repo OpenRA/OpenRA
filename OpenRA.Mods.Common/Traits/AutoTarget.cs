@@ -53,24 +53,20 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Possible values are HoldFire, ReturnFire, Defend and AttackAnything. Used for human players.")]
 		public readonly UnitStance InitialStance = UnitStance.Defend;
 
-		[GrantedConditionReference]
 		[Desc("The condition to grant to self while in the HoldFire stance.")]
-		public readonly string HoldFireCondition = null;
+		public readonly GrantedVariableReference<bool> HoldFireCondition;
 
-		[GrantedConditionReference]
 		[Desc("The condition to grant to self while in the ReturnFire stance.")]
-		public readonly string ReturnFireCondition = null;
+		public readonly GrantedVariableReference<bool> ReturnFireCondition;
 
-		[GrantedConditionReference]
 		[Desc("The condition to grant to self while in the Defend stance.")]
-		public readonly string DefendCondition = null;
+		public readonly GrantedVariableReference<bool> DefendCondition;
 
-		[GrantedConditionReference]
 		[Desc("The condition to grant to self while in the AttackAnything stance.")]
-		public readonly string AttackAnythingCondition = null;
+		public readonly GrantedVariableReference<bool> AttackAnythingCondition;
 
 		[FieldLoader.Ignore]
-		public readonly Dictionary<UnitStance, string> ConditionByStance = new Dictionary<UnitStance, string>();
+		public readonly Dictionary<UnitStance, GrantedVariableReference<bool>> ConditionByStance = new Dictionary<UnitStance, GrantedVariableReference<bool>>();
 
 		[Desc("Allow the player to change the unit stance.")]
 		public readonly bool EnableStances = true;
@@ -90,16 +86,16 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			base.RulesetLoaded(rules, info);
 
-			if (HoldFireCondition != null)
+			if (HoldFireCondition.Name != null)
 				ConditionByStance[UnitStance.HoldFire] = HoldFireCondition;
 
-			if (ReturnFireCondition != null)
+			if (ReturnFireCondition.Name != null)
 				ConditionByStance[UnitStance.ReturnFire] = ReturnFireCondition;
 
-			if (DefendCondition != null)
+			if (DefendCondition.Name != null)
 				ConditionByStance[UnitStance.Defend] = DefendCondition;
 
-			if (AttackAnythingCondition != null)
+			if (AttackAnythingCondition.Name != null)
 				ConditionByStance[UnitStance.AttackAnything] = AttackAnythingCondition;
 		}
 
@@ -172,7 +168,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (conditionToken != Actor.InvalidConditionToken)
 				conditionToken = self.RevokeCondition(conditionToken);
 
-			string condition;
+			GrantedVariableReference<bool> condition;
 			if (Info.ConditionByStance.TryGetValue(stance, out condition))
 				conditionToken = self.GrantCondition(condition);
 		}
