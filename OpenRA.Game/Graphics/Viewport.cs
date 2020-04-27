@@ -263,7 +263,7 @@ namespace OpenRA.Graphics
 				if (Math.Abs(s.X - world.X) <= tileSize.Width && Math.Abs(s.Y - world.Y) <= tileSize.Height)
 				{
 					var ramp = map.Ramp.Contains(uv) ? map.Ramp[uv] : 0;
-					var corners = map.Grid.CellCorners[ramp];
+					var corners = map.Grid.Ramps[ramp].Corners;
 					var pos = map.CenterOfCell(uv.ToCPos(map));
 					var screen = corners.Select(c => worldRenderer.ScreenPxPosition(pos + c)).ToArray();
 
