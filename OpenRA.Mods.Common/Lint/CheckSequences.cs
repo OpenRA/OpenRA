@@ -82,7 +82,12 @@ namespace OpenRA.Mods.Common.Lint
 											{
 												if (string.IsNullOrEmpty(imageOverride))
 												{
-													emitWarning("Custom sprite image of actor {0} is null.".F(actorInfo.Value.Name));
+													foreach (var sequenceProvider in sequenceProviders)
+													{
+														var image = renderInfo.GetImage(actorInfo.Value, sequenceProvider, faction);
+														CheckDefinitions(image, sequenceReference, actorInfo, sequence, faction, field, traitInfo);
+													}
+
 													continue;
 												}
 
