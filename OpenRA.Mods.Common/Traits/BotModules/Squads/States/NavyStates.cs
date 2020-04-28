@@ -50,6 +50,50 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 
 			return owner.SquadManager.FindClosestEnemy(first.CenterPosition);
 		}
+
+		// Retreat units from combat, or for supply only in idle
+		protected virtual void Retreat(Squad owner, bool resupplyonly)
+		{
+			// Repair units. One by one to avoid give out mass orders
+			var alreadysend = false;
+
+			foreach (var a in owner.Units)
+			{
+				if (IsRearming(a))
+					continue;
+
+				Actor repairBuilding = null;
+				var orderId = "Repair";
+				var health = a.TraitOrDefault<IHealth>();
+
+				if (!alreadysend && health != null && health.DamageState > DamageState.Undamaged)
+				{
+					var repairable = a.TraitOrDefault<Repairable>();
+					if (repairable != null)
+						repairBuilding = repairable.FindRepairBuilding(a);
+					else
+					{
+						var repairableNear = a.TraitOrDefault<RepairableNear>();
+						if (repairableNear != null)
+						{
+							orderId = "RepairNear";
+							repairBuilding = repairableNear.FindRepairBuilding(a);
+						}
+					}
+
+					if (repairBuilding != null)
+					{
+						owner.Bot.QueueOrder(new Order(orderId, a, Target.FromActor(repairBuilding), false));
+						alreadysend = true;
+						continue;
+					}
+					else if (!resupplyonly)
+						owner.Bot.QueueOrder(new Order("Move", a, Target.FromCell(owner.World, RandomBuildingLocation(owner)), false));
+				}
+				else if (!resupplyonly)
+					owner.Bot.QueueOrder(new Order("Move", a, Target.FromCell(owner.World, RandomBuildingLocation(owner)), false));
+			}
+		}
 	}
 
 	class NavyUnitsIdleState : NavyStateBase, IState
@@ -74,7 +118,10 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 				.Where(owner.SquadManager.IsEnemyUnit).ToList();
 
 			if (enemyUnits.Count == 0)
+			{
+				Retreat(owner, true);
 				return;
+			}
 
 			if (AttackOrFleeFuzzy.Default.CanAttack(owner.Units, enemyUnits))
 			{
@@ -190,7 +237,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			if (!owner.IsValid)
 				return;
 
-			GoToRandomOwnBuilding(owner);
+			Retreat(owner, false);
 			owner.FuzzyStateMachine.ChangeState(owner, new NavyUnitsIdleState(), true);
 		}
 
