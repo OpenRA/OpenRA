@@ -82,7 +82,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					{
 						Console.WriteLine("**Default Value:** {0}", value);
 						Console.WriteLine();
-						Console.WriteLine("```yaml");
+						Console.WriteLine("```salt");
 						Console.WriteLine("{0}: ", section.Key);
 						Console.WriteLine("\t{0}: {1}", field.Name, value);
 						Console.WriteLine("```");
