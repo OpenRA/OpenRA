@@ -644,3 +644,14 @@ dig:
 		Length: *
 		ZOffset: 511
 		Offset: 0, 0, 24
+
+typeglyphs:
+	infantry:
+	vehicle:
+		Start: 1
+	helicopter:
+		Start: 2
+	harvester:
+		Start: 3
+	structure:
+		Start: 4

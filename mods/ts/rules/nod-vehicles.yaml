@@ -439,6 +439,8 @@ SAPC:
 		SubterraneanTransitionSound: subdril1.aud
 	Carryable:
 		RequiresCondition: !submerged
+	WithDecoration@UNDERGROUND:
+		RequiresCondition: inside-tunnel || submerged
 
 SUBTANK:
 	Inherits: ^Tank
@@ -487,6 +489,8 @@ SUBTANK:
 		SubterraneanTransitionSound: subdril1.aud
 	Carryable:
 		RequiresCondition: !submerged
+	WithDecoration@UNDERGROUND:
+		RequiresCondition: inside-tunnel || submerged
 
 STNK:
 	Inherits: ^Tank
