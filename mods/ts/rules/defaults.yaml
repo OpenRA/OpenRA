@@ -625,6 +625,13 @@
 		Categories: Infantry
 	GrantConditionOnTunnelLayer:
 		Condition: inside-tunnel
+	WithDecoration@UNDERGROUND:
+		RequiresCondition: inside-tunnel
+		Position: Center
+		Image: typeglyphs
+		Sequence: infantry
+		Palette: player
+		IsPlayerPalette: true
 
 ^RegularInfantryDeath:
 	WithDeathAnimation@normal:
@@ -820,6 +827,13 @@
 		Categories: Vehicle
 	GrantConditionOnTunnelLayer:
 		Condition: inside-tunnel
+	WithDecoration@UNDERGROUND:
+		RequiresCondition: inside-tunnel
+		Position: Center
+		Image: typeglyphs
+		Sequence: vehicle
+		Palette: player
+		IsPlayerPalette: true
 
 ^Tank:
 	Inherits: ^Vehicle

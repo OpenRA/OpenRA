@@ -107,6 +107,8 @@ HARV:
 		ResourceSequences:
 			Tiberium: pip-green
 			BlueTiberium: pip-blue
+	WithDecoration@UNDERGROUND:
+		Sequence: harvester
 
 LPST:
 	Inherits: ^Tank
