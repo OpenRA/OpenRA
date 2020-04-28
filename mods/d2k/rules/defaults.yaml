@@ -448,6 +448,7 @@
 	WithSpriteTurret:
 		RequiresCondition: !build-incomplete
 	AttackTurreted:
+		RequiresCondition: !build-incomplete
 	RenderRangeCircle:
 	DetectCloaked:
 		Range: 1c768
