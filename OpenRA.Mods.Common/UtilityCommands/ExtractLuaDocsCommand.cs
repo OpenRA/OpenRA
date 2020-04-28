@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			Console.WriteLine();
 			Console.WriteLine("You can access this interface by adding the [LuaScript](Traits#luascript) trait to the world actor in your map rules " +
 				"(note, you must replace the spaces in the snippet below with a single tab for each level of indentation):");
-			Console.WriteLine("```\nRules:\n\tWorld:\n\t\tLuaScript:\n\t\t\tScripts: myscript.lua\n```");
+			Console.WriteLine("```salt\nRules:\n\tWorld:\n\t\tLuaScript:\n\t\t\tScripts: myscript.lua\n```");
 			Console.WriteLine();
 			Console.WriteLine("Map scripts can interact with the game engine in three ways:\n" +
 				"* Global tables provide functions for interacting with the global world state, or performing general helper tasks.\n" +
