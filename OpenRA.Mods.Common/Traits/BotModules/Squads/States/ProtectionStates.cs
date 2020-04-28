@@ -9,18 +9,41 @@
  */
 #endregion
 
+using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 {
-	class UnitsForProtectionIdleState : GroundStateBase, IState
+	abstract class ProtectionStateBase : GroundStateBase
+	{
+	}
+
+	class UnitsForProtectionIdleState : ProtectionStateBase, IState
 	{
 		public void Activate(Squad owner) { }
-		public void Tick(Squad owner) { owner.FuzzyStateMachine.ChangeState(owner, new UnitsForProtectionAttackState(), true); }
+		public void Tick(Squad owner)
+		{
+			if (!owner.IsValid)
+				return;
+
+			if (!owner.IsTargetValid)
+			{
+				owner.TargetActor = owner.SquadManager.FindClosestEnemy(owner.CenterPosition, WDist.FromCells(owner.SquadManager.Info.ProtectionScanRadius));
+
+				if (owner.TargetActor == null)
+				{
+					Retreat(owner, false, true, true);
+					return;
+				}
+			}
+
+			owner.FuzzyStateMachine.ChangeState(owner, new UnitsForProtectionAttackState(), true);
+		}
+
 		public void Deactivate(Squad owner) { }
 	}
 
-	class UnitsForProtectionAttackState : GroundStateBase, IState
+	class UnitsForProtectionAttackState : ProtectionStateBase, IState
 	{
 		public const int BackoffTicks = 4;
 		internal int Backoff = BackoffTicks;
@@ -64,7 +87,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 		public void Deactivate(Squad owner) { }
 	}
 
-	class UnitsForProtectionFleeState : GroundStateBase, IState
+	class UnitsForProtectionFleeState : ProtectionStateBase, IState
 	{
 		public void Activate(Squad owner) { }
 
@@ -73,7 +96,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			if (!owner.IsValid)
 				return;
 
-			GoToRandomOwnBuilding(owner);
+			Retreat(owner, true, true, true);
 			owner.FuzzyStateMachine.ChangeState(owner, new UnitsForProtectionIdleState(), true);
 		}
 

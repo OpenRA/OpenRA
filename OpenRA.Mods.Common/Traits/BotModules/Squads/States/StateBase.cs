@@ -150,5 +150,73 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 
 			return true;
 		}
+
+		// Retreat units from combat, or for supply only in idle
+		protected void Retreat(Squad squad, bool flee, bool rearm, bool repair)
+		{
+			var loc = new CPos(0, 0, 0);
+
+			// HACK: "alreadyRepair" is to solve AI repair orders performance,
+			// which is only allow one goes to repairpad at the same time to avoid queueing too many orders.
+			// if repairpad logic is better we can just drop it.
+			var alreadyRepair = false;
+
+			if (flee)
+				loc = RandomBuildingLocation(squad);
+
+			foreach (var a in squad.Units)
+			{
+				if (IsRearming(a))
+					continue;
+
+				var orderQueued = false;
+
+				// Try rearm units.
+				if (rearm)
+				{
+					var ammoPools = a.TraitsImplementing<AmmoPool>().ToArray();
+					if (!ReloadsAutomatically(ammoPools, a.TraitOrDefault<Rearmable>()) && !FullAmmo(ammoPools))
+					{
+						squad.Bot.QueueOrder(new Order("ReturnToBase", a, orderQueued));
+						orderQueued = true;
+					}
+				}
+
+				// Try repair units.
+				if (repair && !alreadyRepair)
+				{
+					Actor repairBuilding = null;
+					var orderId = "Repair";
+					var health = a.TraitOrDefault<IHealth>();
+
+					if (health != null && health.DamageState > DamageState.Undamaged)
+					{
+						var repairable = a.TraitOrDefault<Repairable>();
+						if (repairable != null)
+							repairBuilding = repairable.FindRepairBuilding(a);
+						else
+						{
+							var repairableNear = a.TraitOrDefault<RepairableNear>();
+							if (repairableNear != null)
+							{
+								orderId = "RepairNear";
+								repairBuilding = repairableNear.FindRepairBuilding(a);
+							}
+						}
+
+						if (repairBuilding != null)
+						{
+							squad.Bot.QueueOrder(new Order(orderId, a, Target.FromActor(repairBuilding), orderQueued));
+							orderQueued = true;
+							alreadyRepair = true;
+						}
+					}
+				}
+
+				// If there is no order in queue and units should flee, try flee.
+				if (flee && !orderQueued)
+					squad.Bot.QueueOrder(new Order("Move", a, Target.FromCell(squad.World, loc), false));
+			}
+		}
 	}
 }
