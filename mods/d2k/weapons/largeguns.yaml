@@ -8,7 +8,7 @@
 		Image: 120mm
 	Warhead@1Dam: SpreadDamage
 		Damage: 2700
-		Spread: 256
+		Spread: 512
 		Falloff: 100, 0
 		Versus:
 			none: 20
@@ -62,7 +62,6 @@ DevBullet:
 		Inaccuracy: 0
 		Image: doubleblastbullet
 	Warhead@1Dam: SpreadDamage
-		Spread: 384
 		Damage: 6500
 		Versus:
 			none: 50
@@ -94,7 +93,7 @@ DevBullet:
 		Image: 155mm
 	Warhead@1Dam: SpreadDamage
 		Damage: 4500
-		Spread: 416
+		Spread: 1c0
 		Versus:
 			none: 125
 			wall: 100

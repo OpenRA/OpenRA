@@ -12,7 +12,7 @@
 		TrailInterval: 1
 	Warhead@1Dam: SpreadDamage
 		Damage: 3000
-		Spread: 192
+		Spread: 512
 		Falloff: 100, 0
 		Versus:
 			none: 8
@@ -52,7 +52,6 @@
 		TrailImage: large_trail
 		Speed: 288
 	Warhead@1Dam: SpreadDamage
-		Spread: 256
 		Damage: 4800
 		Versus:
 			none: 15
@@ -80,7 +79,6 @@ Rocket:
 	Projectile: Bullet
 		Speed: 352
 	Warhead@1Dam: SpreadDamage
-		Spread: 160
 		Damage: 2500
 		Versus:
 			none: 25
@@ -139,6 +137,7 @@ DeviatorMissile:
 		TrailUsePlayerPalette: true
 	Warhead@1Dam: SpreadDamage
 		Damage: 1000
+		Spread: 480
 		Versus:
 			none: 100
 			wall: 100
