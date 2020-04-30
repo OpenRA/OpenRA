@@ -4,9 +4,9 @@
 	Report: MGUN2.WAV
 	Projectile: InstantHit
 	Warhead@1Dam: SpreadDamage
-		Spread: 128
-		Falloff: 100, 50, 25, 0
 		Damage: 1250
+		Spread: 128
+		Falloff: 100, 0
 		Versus:
 			wall: 10
 			building: 25
@@ -81,7 +81,6 @@ HMG:
 	Report: 20MMGUN1.WAV
 	Warhead@1Dam: SpreadDamage
 		Spread: 160
-		Falloff: 100, 60, 30, 0
 		Damage: 1800
 	Warhead@2Concrete: DamagesConcrete
 		Damage: 1800

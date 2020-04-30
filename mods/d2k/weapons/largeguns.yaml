@@ -7,9 +7,9 @@
 		Inaccuracy: 380
 		Image: 120mm
 	Warhead@1Dam: SpreadDamage
-		Spread: 256
-		Falloff: 100, 50, 25, 0
 		Damage: 2700
+		Spread: 256
+		Falloff: 100, 0
 		Versus:
 			none: 20
 			wall: 50
@@ -93,9 +93,8 @@ DevBullet:
 		ContrailLength: 20
 		Image: 155mm
 	Warhead@1Dam: SpreadDamage
-		Spread: 416
-		Falloff: 100, 65, 35, 20, 0
 		Damage: 4500
+		Spread: 416
 		Versus:
 			none: 125
 			wall: 100
