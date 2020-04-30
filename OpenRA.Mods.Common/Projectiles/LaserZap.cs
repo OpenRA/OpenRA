@@ -50,8 +50,10 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Beam follows the target.")]
 		public readonly bool TrackTarget = true;
 
-		[Desc("Maximum offset at the maximum range.")]
 		public readonly WDist Inaccuracy = WDist.Zero;
+
+		[Desc("Controls the way inaccuracy is calculated. Possible values are 'Maximum' and 'PerCellIncrement'.")]
+		public readonly InaccuracyType InaccuracyType = InaccuracyType.Maximum;
 
 		[Desc("Beam can be blocked.")]
 		public readonly bool Blockable = false;
@@ -130,8 +132,14 @@ namespace OpenRA.Mods.Common.Projectiles
 
 			if (info.Inaccuracy.Length > 0)
 			{
-				var inaccuracy = OpenRA.Mods.Common.Util.ApplyPercentageModifiers(info.Inaccuracy.Length, args.InaccuracyModifiers);
-				var maxOffset = inaccuracy * (target - source).Length / args.Weapon.Range.Length;
+				var inaccuracy = Util.ApplyPercentageModifiers(info.Inaccuracy.Length, args.InaccuracyModifiers);
+
+				int maxOffset;
+				if (info.InaccuracyType == InaccuracyType.Maximum)
+					maxOffset = inaccuracy * (target - source).Length / args.Weapon.Range.Length;
+				else
+					maxOffset = inaccuracy * (target - source).Length / 1024;
+
 				target += WVec.FromPDF(args.SourceActor.World.SharedRandom, 2) * maxOffset / 1024;
 			}
 

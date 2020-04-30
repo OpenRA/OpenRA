@@ -25,8 +25,10 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Damage all units hit by the beam instead of just the target?")]
 		public readonly bool DamageActorsInLine = false;
 
-		[Desc("Maximum offset at the maximum range.")]
 		public readonly WDist Inaccuracy = WDist.Zero;
+
+		[Desc("Controls the way inaccuracy is calculated. Possible values are 'Maximum' and 'PerCellIncrement'.")]
+		public readonly InaccuracyType InaccuracyType = InaccuracyType.Maximum;
 
 		[Desc("Can this projectile be blocked when hitting actors with an IBlocksProjectiles trait.")]
 		public readonly bool Blockable = false;
@@ -129,6 +131,19 @@ namespace OpenRA.Mods.Common.Projectiles
 
 			BeamColor = beamColor;
 			HelixColor = helixColor;
+
+			if (info.Inaccuracy.Length > 0)
+			{
+				var inaccuracy = Util.ApplyPercentageModifiers(info.Inaccuracy.Length, args.InaccuracyModifiers);
+
+				int maxOffset;
+				if (info.InaccuracyType == InaccuracyType.Maximum)
+					maxOffset = inaccuracy * (target - source).Length / args.Weapon.Range.Length;
+				else
+					maxOffset = inaccuracy * (target - source).Length / 1024;
+
+				target += WVec.FromPDF(args.SourceActor.World.SharedRandom, 2) * maxOffset / 1024;
+			}
 
 			if (!string.IsNullOrEmpty(info.HitAnim))
 				hitanim = new Animation(args.SourceActor.World, info.HitAnim);
