@@ -21,8 +21,10 @@ namespace OpenRA.Mods.Common.Projectiles
 	[Desc("Simple, invisible, usually direct-on-target projectile.")]
 	public class InstantHitInfo : IProjectileInfo
 	{
-		[Desc("Maximum offset at the maximum range.")]
 		public readonly WDist Inaccuracy = WDist.Zero;
+
+		[Desc("Controls the way inaccuracy is calculated. Possible values are 'Maximum' and 'PerCellIncrement'.")]
+		public readonly InaccuracyType InaccuracyType = InaccuracyType.Maximum;
 
 		[Desc("Projectile can be blocked.")]
 		public readonly bool Blockable = false;
@@ -54,7 +56,13 @@ namespace OpenRA.Mods.Common.Projectiles
 			else if (info.Inaccuracy.Length > 0)
 			{
 				var inaccuracy = Util.ApplyPercentageModifiers(info.Inaccuracy.Length, args.InaccuracyModifiers);
-				var maxOffset = inaccuracy * (args.PassiveTarget - args.Source).Length / args.Weapon.Range.Length;
+
+				int maxOffset;
+				if (info.InaccuracyType == InaccuracyType.Maximum)
+					maxOffset = inaccuracy * (args.PassiveTarget - args.Source).Length / args.Weapon.Range.Length;
+				else
+					maxOffset = inaccuracy * (args.PassiveTarget - args.Source).Length / 1024;
+
 				target = Target.FromPos(args.PassiveTarget + WVec.FromPDF(args.SourceActor.World.SharedRandom, 2) * maxOffset / 1024);
 			}
 			else

@@ -71,8 +71,10 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Width of projectile (used for finding blocking actors).")]
 		public readonly WDist Width = new WDist(1);
 
-		[Desc("Maximum inaccuracy offset at the maximum range")]
 		public readonly WDist Inaccuracy = WDist.Zero;
+
+		[Desc("Controls the way inaccuracy is calculated. Possible values are 'Maximum' and 'PerCellIncrement'.")]
+		public readonly InaccuracyType InaccuracyType = InaccuracyType.Maximum;
 
 		[Desc("Inaccuracy override when sucessfully locked onto target. Defaults to Inaccuracy if negative.")]
 		public readonly WDist LockOnInaccuracy = new WDist(-1);
@@ -237,7 +239,12 @@ namespace OpenRA.Mods.Common.Projectiles
 			if (inaccuracy > 0)
 			{
 				inaccuracy = Util.ApplyPercentageModifiers(inaccuracy, args.InaccuracyModifiers);
-				offset = WVec.FromPDF(world.SharedRandom, 2) * inaccuracy / 1024;
+
+				var maxOffset = inaccuracy;
+				if (info.InaccuracyType == InaccuracyType.PerCellIncrement)
+					maxOffset = inaccuracy * (targetPosition - pos).Length / 1024;
+
+				offset = WVec.FromPDF(world.SharedRandom, 2) * maxOffset / 1024;
 			}
 
 			DetermineLaunchSpeedAndAngle(world, out speed, out vFacing);

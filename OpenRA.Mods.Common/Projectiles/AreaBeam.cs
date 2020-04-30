@@ -21,6 +21,8 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Projectiles
 {
+	public enum InaccuracyType { Maximum, PerCellIncrement }
+
 	public class AreaBeamInfo : IProjectileInfo
 	{
 		[Desc("Projectile speed in WDist / tick, two values indicate a randomly picked velocity per beam.")]
@@ -47,8 +49,10 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Ranges at which each Falloff step is defined.")]
 		public readonly WDist[] Range = { WDist.Zero, new WDist(int.MaxValue) };
 
-		[Desc("Maximum offset at the maximum range.")]
 		public readonly WDist Inaccuracy = WDist.Zero;
+
+		[Desc("Controls the way inaccuracy is calculated. Possible values are 'Maximum' and 'PerCellIncrement'.")]
+		public readonly InaccuracyType InaccuracyType = InaccuracyType.Maximum;
 
 		[Desc("Can this projectile be blocked when hitting actors with an IBlocksProjectiles trait.")]
 		public readonly bool Blockable = false;
@@ -129,7 +133,13 @@ namespace OpenRA.Mods.Common.Projectiles
 			if (info.Inaccuracy.Length > 0)
 			{
 				var inaccuracy = Util.ApplyPercentageModifiers(info.Inaccuracy.Length, args.InaccuracyModifiers);
-				var maxOffset = inaccuracy * (target - headPos).Length / args.Weapon.Range.Length;
+
+				int maxOffset;
+				if (info.InaccuracyType == InaccuracyType.Maximum)
+					maxOffset = inaccuracy * (target - headPos).Length / args.Weapon.Range.Length;
+				else
+					maxOffset = inaccuracy * (target - headPos).Length / 1024;
+
 				target += WVec.FromPDF(world.SharedRandom, 2) * maxOffset / 1024;
 			}
 
