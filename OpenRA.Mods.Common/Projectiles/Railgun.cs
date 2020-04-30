@@ -108,6 +108,8 @@ namespace OpenRA.Mods.Common.Projectiles
 
 		int ticks;
 		bool animationComplete;
+
+		[Sync]
 		WPos target;
 
 		// Computing these in Railgun instead of RailgunRenderable saves Info.Duration ticks of computation.
