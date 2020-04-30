@@ -5,7 +5,8 @@
 	Projectile: Bullet
 		Blockable: false
 		Speed: 281
-		Inaccuracy: 256
+		Inaccuracy: 128
+		InaccuracyType: PerCellIncrement
 		Image: RPG
 		TrailImage: bazooka_trail2
 		TrailPalette: effect75alpha
@@ -45,7 +46,6 @@
 		Shadow: true
 		HorizontalRateOfTurn: 3
 		RangeLimit: 6c614
-		Inaccuracy: 384
 		CruiseAltitude: 1c0
 		MinimumLaunchAngle: 64
 		VerticalRateOfTurn: 10
@@ -117,7 +117,6 @@ mtank_pri:
 	Range: 6c0
 	ValidTargets: Ground, Air
 	Projectile: Missile
-		Inaccuracy: 96
 		RangeLimit: 7c204
 	Warhead@1Dam: SpreadDamage
 		Damage: 6000
@@ -132,6 +131,7 @@ DeviatorMissile:
 	Report: MISSLE1.WAV
 	Projectile: Missile
 		RangeLimit: 6c0
+		Inaccuracy: 96
 		Image: MISSILE
 		TrailImage: deviator_trail
 		TrailPalette: deviatorgas

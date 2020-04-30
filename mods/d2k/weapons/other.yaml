@@ -4,6 +4,8 @@ Sound:
 	Report: SONIC1.WAV
 	Projectile: AreaBeam
 		Speed: 0c128
+		Inaccuracy: 128
+		InaccuracyType: PerCellIncrement
 		Duration: 4 # Has a length of 0c512
 		DamageInterval: 3 # Travels 0c384 between impacts, will hit a target roughly three times
 		Width: 0c512
@@ -216,7 +218,8 @@ grenade:
 		Speed: 160
 		Blockable: false
 		LaunchAngle: 128
-		Inaccuracy: 416
+		Inaccuracy: 128
+		InaccuracyType: PerCellIncrement
 		Image: grenade
 		Shadow: true
 	Warhead@1Dam: SpreadDamage

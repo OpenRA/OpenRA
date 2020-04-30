@@ -4,7 +4,8 @@
 	Report: MEDTANK1.WAV
 	Projectile: Bullet
 		Speed: 562
-		Inaccuracy: 380
+		Inaccuracy: 128
+		InaccuracyType: PerCellIncrement
 		Image: 120mm
 	Warhead@1Dam: SpreadDamage
 		Damage: 2700
@@ -60,7 +61,6 @@ DevBullet:
 	Report: TANKHVY1.WAV
 	Projectile: Bullet
 		Speed: 281
-		Inaccuracy: 0
 		Image: doubleblastbullet
 	Warhead@1Dam: SpreadDamage
 		Damage: 6500
@@ -89,7 +89,6 @@ DevBullet:
 		Blockable: false
 		Shadow: true
 		LaunchAngle: 62
-		Inaccuracy: 768
 		ContrailLength: 20
 		Image: 155mm
 	Warhead@1Dam: SpreadDamage

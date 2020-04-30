@@ -3,6 +3,8 @@
 	Range: 2c512
 	Report: MGUN2.WAV
 	Projectile: InstantHit
+		Inaccuracy: 128
+		InaccuracyType: PerCellIncrement
 	Warhead@1Dam: SpreadDamage
 		Damage: 1250
 		Spread: 480
