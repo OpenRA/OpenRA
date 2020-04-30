@@ -11,9 +11,9 @@
 		TrailPalette: effect75alpha
 		TrailInterval: 1
 	Warhead@1Dam: SpreadDamage
-		Spread: 192
-		Falloff: 100, 50, 25, 0
 		Damage: 3000
+		Spread: 192
+		Falloff: 100, 0
 		Versus:
 			none: 8
 			wall: 75

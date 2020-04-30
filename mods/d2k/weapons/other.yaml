@@ -68,7 +68,7 @@ OrniBomb:
 		Shadow: true
 	Warhead@1Dam: SpreadDamage
 		Spread: 320
-		Falloff: 100, 60, 30, 15, 0
+		Falloff: 100, 0
 		Damage: 7500 #400 in original, reduce when bombers can do multiple passes
 		Versus:
 			none: 90
@@ -156,7 +156,7 @@ DeathHandCluster:
 CrateExplosion:
 	Warhead@1Dam: SpreadDamage
 		Spread: 320
-		Falloff: 100, 60, 30, 15, 0
+		Falloff: 100, 0
 		Damage: 5000
 		Versus:
 			none: 90
@@ -218,7 +218,7 @@ grenade:
 		Shadow: true
 	Warhead@1Dam: SpreadDamage
 		Spread: 320
-		Falloff: 100, 65, 35, 20, 0
+		Falloff: 100, 0
 		Damage: 1500
 		Versus:
 			none: 125
@@ -242,7 +242,7 @@ grenade:
 GrenDeath:
 	Warhead@1Dam: SpreadDamage
 		Spread: 320
-		Falloff: 100, 60, 30, 15, 0
+		Falloff: 100, 0
 		Damage: 1500
 		Versus:
 			none: 125
@@ -265,7 +265,7 @@ GrenDeath:
 SardDeath:
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
-		Falloff: 100, 50, 25, 0
+		Falloff: 100, 0
 		Damage: 3000
 		Versus:
 			none: 15
@@ -295,7 +295,7 @@ SpiceExplosion:
 		Image: 120mm
 	Warhead@1Dam: SpreadDamage
 		Spread: 320
-		Falloff: 100, 60, 30, 15, 0
+		Falloff: 100, 0
 		Damage: 750
 		Versus:
 			none: 90
@@ -322,7 +322,7 @@ BloomExplosion:
 	Projectile: InstantHit
 	Warhead@1Dam: SpreadDamage
 		Spread: 320
-		Falloff: 100, 60, 30, 15, 0
+		Falloff: 100, 0
 		Damage: 7500
 		Versus:
 			none: 90
@@ -340,7 +340,7 @@ BloomExplosion:
 PlasmaExplosion:
 	Warhead@1Dam: SpreadDamage
 		Spread: 2c0
-		Falloff: 100, 37, 0
+		Falloff: 100, 0
 		Damage: 20000
 		Versus:
 			None: 100
