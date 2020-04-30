@@ -50,6 +50,16 @@ namespace OpenRA.GameRules
 			WeaponTarget = args.GuidedTarget;
 		}
 
+		// For places that only want to update some of the fields (usually DamageModifiers)
+		public WarheadArgs(WarheadArgs args)
+		{
+			Weapon = args.Weapon;
+			DamageModifiers = args.DamageModifiers;
+			Source = args.Source;
+			SourceActor = args.SourceActor;
+			WeaponTarget = args.WeaponTarget;
+		}
+
 		// Default empty constructor for callers that want to initialize fields themselves
 		public WarheadArgs() { }
 	}
