@@ -67,9 +67,9 @@ OrniBomb:
 		Acceleration: 0, 0, 0
 		Shadow: true
 	Warhead@1Dam: SpreadDamage
-		Spread: 320
-		Falloff: 100, 0
 		Damage: 7500 #400 in original, reduce when bombers can do multiple passes
+		Spread: 1c0
+		Falloff: 100, 0
 		Versus:
 			none: 90
 			wall: 50
@@ -155,9 +155,9 @@ DeathHandCluster:
 
 CrateExplosion:
 	Warhead@1Dam: SpreadDamage
-		Spread: 320
-		Falloff: 100, 0
 		Damage: 5000
+		Spread: 1c0
+		Falloff: 100, 0
 		Versus:
 			none: 90
 			wall: 5
@@ -217,9 +217,9 @@ grenade:
 		Image: grenade
 		Shadow: true
 	Warhead@1Dam: SpreadDamage
-		Spread: 320
-		Falloff: 100, 0
 		Damage: 1500
+		Spread: 1c0
+		Falloff: 100, 0
 		Versus:
 			none: 125
 			wood: 70
@@ -241,9 +241,9 @@ grenade:
 
 GrenDeath:
 	Warhead@1Dam: SpreadDamage
-		Spread: 320
-		Falloff: 100, 0
 		Damage: 1500
+		Spread: 1c0
+		Falloff: 100, 0
 		Versus:
 			none: 125
 			wood: 70
@@ -264,9 +264,9 @@ GrenDeath:
 
 SardDeath:
 	Warhead@1Dam: SpreadDamage
-		Spread: 256
-		Falloff: 100, 0
 		Damage: 3000
+		Spread: 512
+		Falloff: 100, 0
 		Versus:
 			none: 15
 			wall: 75
@@ -294,9 +294,9 @@ SpiceExplosion:
 		TrailImage: large_trail
 		Image: 120mm
 	Warhead@1Dam: SpreadDamage
-		Spread: 320
-		Falloff: 100, 0
 		Damage: 750
+		Spread: 1c0
+		Falloff: 100, 0
 		Versus:
 			none: 90
 			wall: 5
@@ -321,9 +321,9 @@ BloomExplosion:
 	Range: 0c8
 	Projectile: InstantHit
 	Warhead@1Dam: SpreadDamage
+		Damage: 7500
 		Spread: 320
 		Falloff: 100, 0
-		Damage: 7500
 		Versus:
 			none: 90
 			wall: 5
@@ -339,9 +339,9 @@ BloomExplosion:
 
 PlasmaExplosion:
 	Warhead@1Dam: SpreadDamage
-		Spread: 2c0
-		Falloff: 100, 0
 		Damage: 20000
+		Spread: 3c0
+		Falloff: 100, 0
 		Versus:
 			None: 100
 			Wood: 100

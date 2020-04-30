@@ -12,7 +12,7 @@ Debris:
 		BounceRangeModifier: 20
 	Warhead@1Dam: SpreadDamage
 		Damage: 1500
-		Spread: 320
+		Spread: 512
 		Falloff: 100, 0
 		Versus:
 			none: 20
@@ -44,6 +44,7 @@ Debris2:
 		TrailInterval: 1
 	Warhead@1Dam: SpreadDamage
 		Damage: 2500
+		Spread: 1c0
 		Versus:
 			none: 90
 			wall: 5
