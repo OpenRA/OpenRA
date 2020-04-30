@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Warheads
 				Range = Exts.MakeArray(Falloff.Length, i => i * Spread);
 		}
 
-		public override void DoImpact(WPos pos, Actor firedBy, IEnumerable<int> damageModifiers)
+		public override void DoImpact(WPos pos, Actor firedBy, WarheadArgs args)
 		{
 			var debugVis = firedBy.World.WorldActor.TraitOrDefault<DebugVisualizations>();
 			if (debugVis != null && debugVis.CombatGeometry)
@@ -64,8 +64,13 @@ namespace OpenRA.Mods.Common.Warheads
 				if (closestActiveShape.First == null)
 					continue;
 
-				var localModifiers = damageModifiers.Append(GetDamageFalloff(closestActiveShape.Second.Length));
-				InflictDamage(victim, firedBy, closestActiveShape.First.Info, localModifiers);
+				var localModifiers = args.DamageModifiers.Append(GetDamageFalloff(closestActiveShape.Second.Length));
+				var updatedWarheadArgs = new WarheadArgs(args)
+				{
+					DamageModifiers = localModifiers.ToArray(),
+				};
+
+				InflictDamage(victim, firedBy, closestActiveShape.First, updatedWarheadArgs);
 			}
 		}
 
