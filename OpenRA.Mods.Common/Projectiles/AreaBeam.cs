@@ -21,7 +21,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Projectiles
 {
-	public enum InaccuracyType { Maximum, PerCellIncrement }
+	public enum InaccuracyType { Maximum, PerCellIncrement, Absolute }
 
 	public class AreaBeamInfo : IProjectileInfo
 	{
@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Projectiles
 
 		public readonly WDist Inaccuracy = WDist.Zero;
 
-		[Desc("Controls the way inaccuracy is calculated. Possible values are 'Maximum' and 'PerCellIncrement'.")]
+		[Desc("Controls the way inaccuracy is calculated. Possible values are 'Maximum' - scale from 0 to max with range, 'PerCellIncrement' - scale from 0 with range and 'Absolute' - use set value regardless of range.")]
 		public readonly InaccuracyType InaccuracyType = InaccuracyType.Maximum;
 
 		[Desc("Can this projectile be blocked when hitting actors with an IBlocksProjectiles trait.")]
@@ -134,11 +134,19 @@ namespace OpenRA.Mods.Common.Projectiles
 			{
 				var inaccuracy = Util.ApplyPercentageModifiers(info.Inaccuracy.Length, args.InaccuracyModifiers);
 
-				int maxOffset;
-				if (info.InaccuracyType == InaccuracyType.Maximum)
-					maxOffset = inaccuracy * (target - headPos).Length / args.Weapon.Range.Length;
-				else
-					maxOffset = inaccuracy * (target - headPos).Length / 1024;
+				var maxOffset = 0;
+				switch (info.InaccuracyType)
+				{
+					case InaccuracyType.Maximum:
+						maxOffset = inaccuracy * (target - headPos).Length / args.Weapon.Range.Length;
+						break;
+					case InaccuracyType.PerCellIncrement:
+						maxOffset = inaccuracy * (target - headPos).Length / 1024;
+						break;
+					case InaccuracyType.Absolute:
+						maxOffset = inaccuracy;
+						break;
+				}
 
 				target += WVec.FromPDF(world.SharedRandom, 2) * maxOffset / 1024;
 			}

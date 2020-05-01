@@ -73,8 +73,8 @@ namespace OpenRA.Mods.Common.Projectiles
 
 		public readonly WDist Inaccuracy = WDist.Zero;
 
-		[Desc("Controls the way inaccuracy is calculated. Possible values are 'Maximum' and 'PerCellIncrement'.")]
-		public readonly InaccuracyType InaccuracyType = InaccuracyType.Maximum;
+		[Desc("Controls the way inaccuracy is calculated. Possible values are 'Maximum' - scale from 0 to max with range, 'PerCellIncrement' - scale from 0 with range and 'Absolute' - use set value regardless of range.")]
+		public readonly InaccuracyType InaccuracyType = InaccuracyType.Absolute;
 
 		[Desc("Inaccuracy override when sucessfully locked onto target. Defaults to Inaccuracy if negative.")]
 		public readonly WDist LockOnInaccuracy = new WDist(-1);
@@ -240,9 +240,19 @@ namespace OpenRA.Mods.Common.Projectiles
 			{
 				inaccuracy = Util.ApplyPercentageModifiers(inaccuracy, args.InaccuracyModifiers);
 
-				var maxOffset = inaccuracy;
-				if (info.InaccuracyType == InaccuracyType.PerCellIncrement)
-					maxOffset = inaccuracy * (targetPosition - pos).Length / 1024;
+				var maxOffset = 0;
+				switch (info.InaccuracyType)
+				{
+					case InaccuracyType.Maximum:
+						maxOffset = inaccuracy * (targetPosition - pos).Length / args.Weapon.Range.Length;
+						break;
+					case InaccuracyType.PerCellIncrement:
+						maxOffset = inaccuracy * (targetPosition - pos).Length / 1024;
+						break;
+					case InaccuracyType.Absolute:
+						maxOffset = inaccuracy;
+						break;
+				}
 
 				offset = WVec.FromPDF(world.SharedRandom, 2) * maxOffset / 1024;
 			}
