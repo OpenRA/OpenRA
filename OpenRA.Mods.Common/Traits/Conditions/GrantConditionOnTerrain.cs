@@ -50,13 +50,16 @@ namespace OpenRA.Mods.Common.Traits
 
 		void ITick.Tick(Actor self)
 		{
-			var loc = self.Location;
+			var cell = self.Location;
+			if (!self.World.Map.Contains(cell))
+				return;
+
 			if (conditionManager == null)
 				return;
 
 			// The terrain type may change between ticks without the actor moving
-			var currentTerrain = loc.Layer == 0 ? self.World.Map.GetTerrainInfo(loc).Type :
-					tileSet[self.World.GetCustomMovementLayers()[loc.Layer].GetTerrainIndex(loc)].Type;
+			var currentTerrain = cell.Layer == 0 ? self.World.Map.GetTerrainInfo(cell).Type :
+					tileSet[self.World.GetCustomMovementLayers()[cell.Layer].GetTerrainIndex(cell)].Type;
 
 			var wantsGranted = info.TerrainTypes.Contains(currentTerrain);
 			if (currentTerrain != cachedTerrain)
