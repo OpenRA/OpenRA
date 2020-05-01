@@ -414,3 +414,4 @@ Player:
 			pt: 10
 		UnitLimits:
 			harv: 8
+	PowerDownBotModule:

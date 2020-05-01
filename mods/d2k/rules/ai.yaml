@@ -337,3 +337,4 @@ Player:
 		UnitLimits:
 			harvester: 8
 			carryall: 4
+	PowerDownBotModule:

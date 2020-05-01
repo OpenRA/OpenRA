@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new ToggleConditionOnOrder(init.Self, this); }
 	}
 
-	public class ToggleConditionOnOrder : PausableConditionalTrait<ToggleConditionOnOrderInfo>, IResolveOrder
+	public class ToggleConditionOnOrder : PausableConditionalTrait<ToggleConditionOnOrderInfo>, IResolveOrder, INotifyOwnerChanged
 	{
 		int conditionToken = Actor.InvalidConditionToken;
 
@@ -102,6 +102,12 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			// Unpausing the trait restores the previous state
 			SetCondition(self, enabled);
+		}
+
+		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
+		{
+			// Switch toggle back to untoggled if ownerchanged
+			TraitDisabled(self);
 		}
 	}
 }
