@@ -41,8 +41,9 @@ Atomic:
 			Wood: 25
 			Concrete: 25
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
-	Warhead@2Res_impact: DestroyResource
+	Warhead@2Res_impact: ModifyResource
 		Size: 1
+		RemoveResource: true
 	Warhead@3Smu_impact: LeaveSmudge
 		SmudgeType: Scorch
 		InvalidTargets: Vehicle, Structure, Wall
@@ -62,9 +63,10 @@ Atomic:
 			Wood: 25
 			Concrete: 25
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
-	Warhead@6Res_areanuke1: DestroyResource
+	Warhead@6Res_areanuke1: ModifyResource
 		Size: 2
 		Delay: 5
+		RemoveResource: true
 	Warhead@7Smu_areanuke1: LeaveSmudge
 		SmudgeType: Scorch
 		InvalidTargets: Vehicle, Structure, Wall, Husk, Trees
@@ -91,9 +93,10 @@ Atomic:
 		Delay: 15
 		ValidTargets: Trees
 		DamageTypes: Incendiary
-	Warhead@11Res_areanuke2: DestroyResource
+	Warhead@11Res_areanuke2: ModifyResource
 		Size: 3
 		Delay: 10
+		RemoveResource: true
 	Warhead@12Smu_areanuke2: LeaveSmudge
 		SmudgeType: Scorch
 		InvalidTargets: Vehicle, Structure, Wall, Husk, Trees
@@ -115,9 +118,10 @@ Atomic:
 		Delay: 15
 		ValidTargets: Trees
 		DamageTypes: Incendiary
-	Warhead@15Res_areanuke3: DestroyResource
+	Warhead@15Res_areanuke3: ModifyResource
 		Size: 4
 		Delay: 15
+		RemoveResource: true
 	Warhead@16Smu_areanuke3: LeaveSmudge
 		SmudgeType: Scorch
 		InvalidTargets: Vehicle, Structure, Wall, Husk, Trees
@@ -139,9 +143,10 @@ Atomic:
 		Delay: 20
 		ValidTargets: Trees
 		DamageTypes: Incendiary
-	Warhead@19Res_areanuke4: DestroyResource
+	Warhead@19Res_areanuke4: ModifyResource
 		Size: 5
 		Delay: 20
+		RemoveResource: true
 	Warhead@20Smu_areanuke4: LeaveSmudge
 		SmudgeType: Scorch
 		InvalidTargets: Vehicle, Structure, Wall, Husk, Trees

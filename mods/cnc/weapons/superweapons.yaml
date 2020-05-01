@@ -30,9 +30,10 @@ Atomic:
 			Light: 60
 			Heavy: 50
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
-	Warhead@4Res_areanukea: DestroyResource
+	Warhead@4Res_areanukea: ModifyResource
 		Size: 3
 		Delay: 3
+		RemoveResource: true
 	Warhead@5Smu_areanukea: LeaveSmudge
 		SmudgeType: Scorch
 		InvalidTargets: Vehicle, Structure, Wall
@@ -55,9 +56,10 @@ Atomic:
 			Light: 60
 			Heavy: 50
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
-	Warhead@8Res_areanukeb: DestroyResource
+	Warhead@8Res_areanukeb: ModifyResource
 		Size: 4
 		Delay: 6
+		RemoveResource: true
 	Warhead@9Smu_areanukeb: LeaveSmudge
 		SmudgeType: Scorch
 		InvalidTargets: Vehicle, Structure, Wall
@@ -76,9 +78,10 @@ Atomic:
 			Light: 60
 			Heavy: 50
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
-	Warhead@11Res_areanukec: DestroyResource
+	Warhead@11Res_areanukec: ModifyResource
 		Size: 5
 		Delay: 9
+		RemoveResource: true
 	Warhead@12Smu_areanukec: LeaveSmudge
 		SmudgeType: Scorch
 		InvalidTargets: Vehicle, Structure, Wall
@@ -106,9 +109,10 @@ IonCannon:
 		InvalidTargets: Vehicle, Structure, Wall, Husk, Trees, Creep
 		Size: 1
 		Delay: 3
-	Warhead@4Res_area2: DestroyResource
+	Warhead@4Res_area2: ModifyResource
 		Size: 2
 		Delay: 6
+		RemoveResource: true
 	Warhead@5Smu_area2: LeaveSmudge
 		SmudgeType: Scorch
 		InvalidTargets: Vehicle, Structure, Wall, Husk, Trees, Creep

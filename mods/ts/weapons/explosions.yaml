@@ -51,7 +51,7 @@ TiberiumExplosion:
 		Spread: 9
 		Damage: 1000
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
-	Warhead@Res: CreateResource
+	Warhead@Res: ModifyResource
 		AddsResourceType: Tiberium
 		Size: 1,1
 	Warhead@2Eff: CreateEffect

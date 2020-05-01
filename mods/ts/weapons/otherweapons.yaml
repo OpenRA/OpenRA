@@ -60,8 +60,9 @@ Bomb:
 	Warhead@4Smu: LeaveSmudge
 		SmudgeType: MediumCrater
 		InvalidTargets: Vehicle, Building, Wall
-	Warhead@5Res: DestroyResource
+	Warhead@5Res: ModifyResource
 		Size: 1
+		RemoveResource: true
 
 FiendShard:
 	ReloadDelay: 30

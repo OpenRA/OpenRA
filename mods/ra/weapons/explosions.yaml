@@ -186,7 +186,7 @@ OreExplosion:
 			Light: 60
 			Heavy: 20
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
-	Warhead@3Res: CreateResource
+	Warhead@3Res: ModifyResource
 		AddsResourceType: Ore
 		Size: 1,1
 	Warhead@2Eff: CreateEffect
@@ -204,7 +204,8 @@ CrateNuke:
 			Concrete: 25
 		AffectsParent: true
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
-	Warhead@2Res_impact: DestroyResource
+	Warhead@2Res_impact: ModifyResource
+		RemoveResource: true
 	Warhead@3Eff_impact: CreateEffect
 		Explosions: nuke
 		ImpactSounds: kaboom1.aud
@@ -219,9 +220,10 @@ CrateNuke:
 			Concrete: 25
 		AffectsParent: true
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
-	Warhead@5Res_areanuke1: DestroyResource
+	Warhead@5Res_areanuke1: ModifyResource
 		Size: 4
 		Delay: 5
+		RemoveResource: true
 	Warhead@6Eff_areanuke1: CreateEffect
 		ImpactSounds: kaboom22.aud
 		Delay: 5
@@ -251,8 +253,9 @@ MiniNuke:
 			Concrete: 25
 		AffectsParent: true
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
-	Warhead@2Res_impact: DestroyResource
+	Warhead@2Res_impact: ModifyResource
 		Size: 1
+		RemoveResource: true
 	Warhead@3Eff_impact: CreateEffect
 		Explosions: nuke
 		ImpactSounds: kaboom1.aud
@@ -268,9 +271,10 @@ MiniNuke:
 			Concrete: 25
 		AffectsParent: true
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
-	Warhead@5Res_areanuke1: DestroyResource
+	Warhead@5Res_areanuke1: ModifyResource
 		Size: 2
 		Delay: 5
+		RemoveResource: true
 	Warhead@6Eff_areanuke1: CreateEffect
 		ImpactSounds: kaboom22.aud
 		Delay: 5
@@ -293,9 +297,10 @@ MiniNuke:
 		Delay: 10
 		ValidTargets: Trees
 		DamageTypes: Incendiary
-	Warhead@9Res_areanuke2: DestroyResource
+	Warhead@9Res_areanuke2: ModifyResource
 		Size: 3
 		Delay: 10
+		RemoveResource: true
 	Warhead@10Dam_areanuke3: SpreadDamage
 		Spread: 4c0
 		Damage: 6000
@@ -313,9 +318,10 @@ MiniNuke:
 		Delay: 15
 		ValidTargets: Trees
 		DamageTypes: Incendiary
-	Warhead@12Res_areanuke3: DestroyResource
+	Warhead@12Res_areanuke3: ModifyResource
 		Size: 4
 		Delay: 15
+		RemoveResource: true
 	Warhead@13Smu_areanuke3: LeaveSmudge
 		SmudgeType: Scorch
 		InvalidTargets: Vehicle, Structure, Wall, Trees

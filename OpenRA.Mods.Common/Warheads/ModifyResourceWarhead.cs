@@ -17,18 +17,20 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Warheads
 {
-	public class CreateResourceWarhead : Warhead
+	public class ModifyResourceWarhead : Warhead
 	{
 		[Desc("Size of the area. The resources are seeded within this area.", "Provide 2 values for a ring effect (outer/inner).")]
 		public readonly int[] Size = { 0, 0 };
 
+		[Desc("Removes resources in effect area. If AddsResourceType is not null, the removal of old resources is triggered first.")]
+		public readonly bool RemoveResources = false;
+
 		[Desc("Will this splatter resources and which?")]
 		public readonly string AddsResourceType = null;
 
-		// TODO: Allow maximum resource splatter to be defined. (Per tile, and in total).
 		public override void DoImpact(Target target, WarheadArgs args)
 		{
-			if (string.IsNullOrEmpty(AddsResourceType))
+			if (!RemoveResources && string.IsNullOrEmpty(AddsResourceType))
 				return;
 
 			var firedBy = args.SourceActor;
@@ -39,6 +41,15 @@ namespace OpenRA.Mods.Common.Warheads
 			var minRange = (Size.Length > 1 && Size[1] > 0) ? Size[1] : 0;
 			var allCells = world.Map.FindTilesInAnnulus(targetTile, minRange, Size[0]);
 
+			// Destroy all resources in the selected tiles
+			// TODO: Allow maximum resource removal to be defined (per tile, and in total)
+			if (RemoveResources)
+				foreach (var cell in allCells)
+					resLayer.Destroy(cell);
+
+			if (string.IsNullOrEmpty(AddsResourceType))
+				return;
+
 			var resourceType = world.WorldActor.TraitsImplementing<ResourceType>()
 				.FirstOrDefault(t => t.Info.Type == AddsResourceType);
 
@@ -46,6 +57,7 @@ namespace OpenRA.Mods.Common.Warheads
 				Log.Write("debug", "Warhead defines an invalid resource type '{0}'".F(AddsResourceType));
 			else
 			{
+				// TODO: Allow maximum resource splatter to be defined. (Per tile, and in total).
 				foreach (var cell in allCells)
 				{
 					if (!resLayer.CanSpawnResourceAt(resourceType, cell))

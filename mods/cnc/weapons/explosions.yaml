@@ -124,6 +124,6 @@ TiberiumExplosion:
 		Explosions: chemball
 		ImpactSounds: xplosml2.aud
 	-Warhead@3Smu:
-	Warhead@4Res: CreateResource
+	Warhead@4Res: ModifyResource
 		AddsResourceType: Tiberium
 		Size: 1,1

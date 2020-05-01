@@ -309,7 +309,7 @@ SpiceExplosion:
 			harvester: 25
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 		AffectsParent: true
-	Warhead@2Res: CreateResource
+	Warhead@2Res: ModifyResource
 		AddsResourceType: Spice
 		Size: 1
 	Warhead@3Eff: CreateEffect

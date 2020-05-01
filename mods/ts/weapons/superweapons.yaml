@@ -26,7 +26,8 @@ MultiCluster:
 		ImpactActors: false
 		Explosions: large_twlt
 		ImpactSounds: expnew09.aud
-	Warhead@ResourceDestruction: DestroyResource
+	Warhead@ResourceDestruction: ModifyResource
+		RemoveResource: true
 
 ClusterMissile:
 	ValidTargets: Ground, Water, Air
