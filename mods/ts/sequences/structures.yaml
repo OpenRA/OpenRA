@@ -1192,6 +1192,8 @@ gactwr:
 		Start: 2
 		ShadowStart: 5
 		Tick: 400
+	invisible: null
+		UseTilesetCode: false
 	idle-lights: gtctwr_a
 		Length: 6
 		Tick: 200

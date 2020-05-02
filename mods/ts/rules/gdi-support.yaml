@@ -45,8 +45,13 @@ GACTWR:
 	Inherits: ^Defense
 	Inherits@IDISABLE: ^DisableOnPowerDown
 	Inherits@AUTOTARGET: ^AutoTargetAll
-	-WithSpriteBody:
+	WithMakeAnimation:
+		BodyNames: make
+	WithSpriteBody:
+		Name: make
+		Sequence: invisible
 	WithWallSpriteBody:
+		RequiresCondition: !build-incomplete
 		Type: wall
 	Valued:
 		Cost: 200
