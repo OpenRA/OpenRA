@@ -26,20 +26,9 @@ namespace OpenRA.PostProcess
 			var data = File.ReadAllBytes(assembly);
 			var peOffset = BitConverter.ToInt32(data, 0x3c);
 
-			foreach (var flag in flags)
-			{
-				if (flag == "-LAA")
-				{
-					// Set /LARGEADDRESSAWARE Flag (Application can handle large (>2GB) addresses)
-					Console.WriteLine(" - Enabling /LARGEADDRESSAWARE");
-					data[peOffset + 4 + 18] |= 0x20;
-				}
-				else
-					Console.WriteLine("error: Unknown flag '{0}'", flag);
-			}
-
-			if (flags.Length == 0)
-				Console.WriteLine("error: No flags were specified");
+			// Set /LARGEADDRESSAWARE Flag (Application can handle large (>2GB) addresses)
+			Console.WriteLine(" - Enabling /LARGEADDRESSAWARE");
+			data[peOffset + 4 + 18] |= 0x20;
 
 			File.WriteAllBytes(args[0], data);
 		}
