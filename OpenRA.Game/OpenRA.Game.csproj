@@ -17,7 +17,6 @@
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
     <CodeAnalysisRuleSet>..\OpenRA.ruleset</CodeAnalysisRuleSet>
     <Configurations>Release;Debug</Configurations>
-    <ManagedExeLauncher Condition="('$(OS)' != 'Windows_NT')">mono </ManagedExeLauncher>
   </PropertyGroup>
   <PropertyGroup>
     <TargetPlatform Condition="$([MSBuild]::IsOsPlatform('Windows'))">win-x64</TargetPlatform>
@@ -52,9 +51,6 @@
     <StartArguments>Game.Mod=ts</StartArguments>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\OpenRA.PostProcess\OpenRA.PostProcess.csproj">
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
     <None Include="App.config" />
     <PackageReference Include="OpenRA-Eluant" Version="1.0.17" />
     <PackageReference Include="OpenRA-Open.NAT" Version="1.0.0" />
@@ -69,9 +65,5 @@
     <ItemGroup Condition="'$(Configuration)'=='Release'">
       <Analyzer Remove="@(Analyzer)" />
     </ItemGroup>
-  </Target>
-  <Target Name="PostProcess" AfterTargets="Build" Inputs="$(TargetPath)" Outputs="$(IntermediateOutputPath)\$(TargetFileName).processed">
-    <Exec Command="$(ManagedExeLauncher)&quot;$(TargetDir)OpenRA.PostProcess.exe&quot; &quot;$(TargetPath)&quot; -LAA" />
-    <Touch Files="$(IntermediateOutputPath)\$(TargetFileName).processed" AlwaysCreate="true" />
   </Target>
 </Project>

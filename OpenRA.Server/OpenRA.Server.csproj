@@ -15,7 +15,6 @@
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
     <CodeAnalysisRuleSet>..\OpenRA.ruleset</CodeAnalysisRuleSet>
     <Configurations>Release;Debug</Configurations>
-    <ManagedExeLauncher Condition="('$(OS)' != 'Windows_NT')">mono </ManagedExeLauncher>
   </PropertyGroup>
   <ItemGroup>
     <!-- Work around an issue where Rider does not detect files in the project root using the default glob -->
@@ -30,9 +29,6 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj" />
-    <ProjectReference Include="..\OpenRA.PostProcess\OpenRA.PostProcess.csproj">
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" />
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0" PrivateAssets="All" />
     <AdditionalFiles Include="../stylecop.json" />
@@ -42,9 +38,5 @@
     <ItemGroup Condition="'$(Configuration)'=='Release'">
       <Analyzer Remove="@(Analyzer)" />
     </ItemGroup>
-  </Target>
-  <Target Name="PostProcess" AfterTargets="Build" Inputs="$(TargetPath)" Outputs="$(IntermediateOutputPath)\$(TargetFileName).processed">
-    <Exec Command="$(ManagedExeLauncher)&quot;$(TargetDir)OpenRA.PostProcess.exe&quot; &quot;$(TargetPath)&quot; -LAA" />
-    <Touch Files="$(IntermediateOutputPath)\$(TargetFileName).processed" AlwaysCreate="true" />
   </Target>
 </Project>
