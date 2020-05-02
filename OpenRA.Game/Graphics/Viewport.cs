@@ -89,6 +89,8 @@ namespace OpenRA.Graphics
 			}
 		}
 
+		public float MinZoom { get { return minZoom; } }
+
 		public void AdjustZoom(float dz)
 		{
 			// Exponential ensures that equal positive and negative steps have the same effect
