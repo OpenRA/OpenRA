@@ -17,6 +17,7 @@
 			cy: 20
 			harvester: 25
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
+		DamageCalculationType: ClosestTargetablePosition
 	Warhead@2Eff: CreateEffect
 		Explosions: piffs
 		ImpactActors: false

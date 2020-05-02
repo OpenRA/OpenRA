@@ -26,6 +26,7 @@ Debris:
 			cy: 20
 			harvester: 50
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
+		DamageCalculationType: ClosestTargetablePosition
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater
 		InvalidTargets: Vehicle, Structure
