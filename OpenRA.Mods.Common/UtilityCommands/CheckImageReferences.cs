@@ -15,9 +15,9 @@ using OpenRA.Graphics;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
-	class CheckSquenceSprites : IUtilityCommand
+	class CheckImageReferences : IUtilityCommand
 	{
-		string IUtilityCommand.Name { get { return "--check-sequence-sprites"; } }
+		string IUtilityCommand.Name { get { return "--check-image-references"; } }
 
 		bool IUtilityCommand.ValidateArguments(string[] args)
 		{
