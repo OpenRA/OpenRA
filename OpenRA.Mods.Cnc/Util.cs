@@ -13,28 +13,30 @@ namespace OpenRA.Mods.Cnc
 {
 	public static class Util
 	{
+		// TD and RA used a nonlinear mapping between artwork frames and unit facings for units with 32 facings.
+		// This table defines the exclusive maximum facing for the i'th sprite frame.
+		// i.e. sprite frame 1 is used for facings 5-13, sprite frame 2 for 14-21, and so on.
+		// Sprite frame 0 is used for facings smaller than 5 or larger than 249.
+		static readonly int[] SpriteFacings =
+		{
+			5, 14, 22, 33, 39, 46, 53, 60,
+			67, 74, 81, 88, 96, 104, 113, 122,
+			133, 142, 151, 161, 167, 174, 181, 188,
+			195, 202, 209, 216, 224, 232, 241, 250
+		};
+
 		public static int ClassicQuantizeFacing(int facing, int numFrames, bool useClassicFacingFudge)
 		{
-			if (!useClassicFacingFudge || numFrames != 32)
-				return OpenRA.Mods.Common.Util.QuantizeFacing(facing, numFrames);
+			if (useClassicFacingFudge && numFrames == 32)
+			{
+				for (var i = 0; i < SpriteFacings.Length; i++)
+					if (facing < SpriteFacings[i])
+						return i;
 
-			// TD and RA divided the facing artwork into 3 frames from (north|south) to (north|south)-(east|west)
-			// and then 5 frames from (north|south)-(east|west) to (east|west)
-			var quadrant = ((facing + 31) & 0xFF) / 64;
-			if (quadrant == 0 || quadrant == 2)
-			{
-				var frame = OpenRA.Mods.Common.Util.QuantizeFacing(facing, 24);
-				if (frame > 18)
-					return frame + 6;
-				if (frame > 4)
-					return frame + 3;
-				return frame;
+				return 0;
 			}
-			else
-			{
-				var frame = OpenRA.Mods.Common.Util.QuantizeFacing(facing, 40);
-				return frame < 20 ? frame - 3 : frame - 8;
-			}
+
+			return Common.Util.QuantizeFacing(facing, numFrames);
 		}
 	}
 }
