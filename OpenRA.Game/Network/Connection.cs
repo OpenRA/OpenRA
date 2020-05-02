@@ -252,7 +252,7 @@ namespace OpenRA.Network
 					}
 					catch (Exception ex)
 					{
-						errorMessage = "Failed to connect to {0}".F(endpoint);
+						errorMessage = "Failed to connect";
 						Log.Write("client", "Failed to connect to {0}: {1}".F(endpoint, ex.Message));
 					}
 				})
@@ -264,7 +264,7 @@ namespace OpenRA.Network
 
 			if (!atLeastOneEndpoint)
 			{
-				errorMessage = "Failed to resolve addresses for {0}".F(target);
+				errorMessage = "Failed to resolve address";
 				connectionState = ConnectionState.NotConnected;
 			}
 
@@ -318,7 +318,7 @@ namespace OpenRA.Network
 			}
 			catch (Exception ex)
 			{
-				errorMessage = "Connection to {0} failed".F(endpoint);
+				errorMessage = "Connection failed";
 				Log.Write("client", "Connection to {0} failed: {1}".F(endpoint, ex.Message));
 			}
 			finally
