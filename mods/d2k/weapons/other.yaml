@@ -81,6 +81,7 @@ OrniBomb:
 			cy: 25
 			harvester: 60
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
+		DamageCalculationType: ClosestTargetablePosition
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 		InvalidTargets: Vehicle, Structure
@@ -144,6 +145,7 @@ DeathHandCluster:
 			cy: 25
 			harvester: 60
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+		DamageCalculationType: ClosestTargetablePosition
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 		InvalidTargets: Vehicle, Structure
@@ -170,6 +172,7 @@ CrateExplosion:
 			harvester: 25
 		AffectsParent: true
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
+		DamageCalculationType: ClosestTargetablePosition
 	Warhead@2Eff: CreateEffect
 		Explosions: large_explosion
 		ImpactSounds: EXPLSML4.WAV
@@ -229,6 +232,7 @@ grenade:
 			cy: 20
 			harvester: 25
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+		DamageCalculationType: ClosestTargetablePosition
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater
 		InvalidTargets: Vehicle, Structure
@@ -253,6 +257,7 @@ GrenDeath:
 			cy: 20
 			harvester: 25
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+		DamageCalculationType: ClosestTargetablePosition
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
@@ -277,6 +282,7 @@ SardDeath:
 			cy: 30
 			harvester: 50
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+		DamageCalculationType: ClosestTargetablePosition
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
@@ -308,6 +314,7 @@ SpiceExplosion:
 			cy: 20
 			harvester: 25
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+		DamageCalculationType: ClosestTargetablePosition
 		AffectsParent: true
 	Warhead@2Res: CreateResource
 		AddsResourceType: Spice
@@ -335,6 +342,7 @@ BloomExplosion:
 			cy: 20
 			harvester: 25
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+		DamageCalculationType: ClosestTargetablePosition
 		AffectsParent: true
 
 PlasmaExplosion:
@@ -349,6 +357,7 @@ PlasmaExplosion:
 			Heavy: 100
 			Concrete: 60
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+		DamageCalculationType: ClosestTargetablePosition
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater
 	Warhead@3Eff: CreateEffect
