@@ -17,6 +17,8 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Warheads
 {
+	public enum DamageCalculationType { HitShape, ClosestTargetablePosition, CenterPosition }
+
 	public class SpreadDamageWarhead : DamageWarhead, IRulesetLoaded<WeaponInfo>
 	{
 		[Desc("Range between falloff steps.")]
@@ -27,6 +29,9 @@ namespace OpenRA.Mods.Common.Warheads
 
 		[Desc("Ranges at which each Falloff step is defined. Overrides Spread.")]
 		public WDist[] Range = null;
+
+		[Desc("Controls the way damage is calculated. Possible values are 'HitShape', 'ClosestTargetablePosition' and 'CenterPosition'.")]
+		public readonly DamageCalculationType DamageCalculationType = DamageCalculationType.HitShape;
 
 		void IRulesetLoaded<WeaponInfo>.RulesetLoaded(Ruleset rules, WeaponInfo info)
 		{
@@ -63,11 +68,25 @@ namespace OpenRA.Mods.Common.Warheads
 				if (closestActiveShape.First == null)
 					continue;
 
-				// Cannot be damaged if HitShape is outside Range.
-				if (closestActiveShape.Second > Range[Range.Length - 1])
+				var falloffDistance = 0;
+				switch (DamageCalculationType)
+				{
+					case DamageCalculationType.HitShape:
+						falloffDistance = closestActiveShape.Second.Length;
+						break;
+					case DamageCalculationType.ClosestTargetablePosition:
+						falloffDistance = victim.GetTargetablePositions().Select(x => (x - pos).Length).Min();
+						break;
+					case DamageCalculationType.CenterPosition:
+						falloffDistance = (victim.CenterPosition - pos).Length;
+						break;
+				}
+
+				// The range to target is more than the range the warhead covers, so GetDamageFalloff() is going to give us 0 and we're going to do 0 damage anyway, so bail early.
+				if (falloffDistance > Range[Range.Length - 1].Length)
 					continue;
 
-				var localModifiers = args.DamageModifiers.Append(GetDamageFalloff(closestActiveShape.Second.Length));
+				var localModifiers = args.DamageModifiers.Append(GetDamageFalloff(falloffDistance));
 				var updatedWarheadArgs = new WarheadArgs(args)
 				{
 					DamageModifiers = localModifiers.ToArray(),
