@@ -231,6 +231,8 @@
 		Duration: 100
 		Radius: 2c512
 	HitShape:
+		Type: Circle
+			Radius: 16
 	MapEditorData:
 		Categories: Vehicle
 
@@ -254,6 +256,8 @@
 	ScriptTriggers:
 	WithFacingSpriteBody:
 	HitShape:
+		Type: Circle
+			Radius: 16
 	MapEditorData:
 		Categories: Husk
 
@@ -348,7 +352,7 @@
 		Duration: 100
 	HitShape:
 		Type: Circle
-			Radius: 96
+			Radius: 16
 	MapEditorData:
 		Categories: Infantry
 	AttackFrontal:
@@ -372,6 +376,8 @@
 	WithFacingSpriteBody:
 	WithShadow:
 	HitShape:
+		Type: Circle
+			Radius: 16
 	MapEditorData:
 		Categories: Aircraft
 
