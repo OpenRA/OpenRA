@@ -41,8 +41,12 @@ namespace OpenRA.Mods.Common.Warheads
 					.Select(s => Pair.New(s, s.DistanceFromEdge(victim, pos)))
 					.MinByOrDefault(s => s.Second);
 
-				// Cannot be damaged without an active HitShape or if HitShape is outside Spread
-				if (closestActiveShape.First == null || closestActiveShape.Second > Spread)
+				// Cannot be damaged without an active HitShape.
+				if (closestActiveShape.First == null)
+					continue;
+
+				// Cannot be damaged if HitShape is outside Spread.
+				if (closestActiveShape.Second > Spread)
 					continue;
 
 				InflictDamage(victim, firedBy, closestActiveShape.First, args);

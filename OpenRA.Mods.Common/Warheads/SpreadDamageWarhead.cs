@@ -59,8 +59,12 @@ namespace OpenRA.Mods.Common.Warheads
 					.Select(s => Pair.New(s, s.DistanceFromEdge(victim, pos)))
 					.MinByOrDefault(s => s.Second);
 
-				// Cannot be damaged without an active HitShape
+				// Cannot be damaged without an active HitShape.
 				if (closestActiveShape.First == null)
+					continue;
+
+				// Cannot be damaged if HitShape is outside Range.
+				if (closestActiveShape.Second > Range[Range.Length - 1])
 					continue;
 
 				var localModifiers = args.DamageModifiers.Append(GetDamageFalloff(closestActiveShape.Second.Length));
