@@ -63,7 +63,7 @@ spicebloom:
 		Actor: spicebloom.spawnpoint
 	HitShape:
 		Type: Circle
-			Radius: 512
+			Radius: 16
 	MapEditorData:
 		Categories: System
 	Interactable:
@@ -79,7 +79,7 @@ sandworm:
 		HP: 100000
 	HitShape:
 		Type: Circle
-			Radius: 256
+			Radius: 16
 	Armor:
 		Type: heavy
 	Mobile:
