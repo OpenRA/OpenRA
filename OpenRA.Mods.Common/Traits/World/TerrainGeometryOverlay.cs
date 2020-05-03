@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				var height = (int)map.Height[uv];
 				var r = map.Grid.Ramps[map.Ramp[uv]];
-				var pos = map.CenterOfCell(uv.ToCPos(map));
+				var pos = map.CenterOfCell(uv.ToCPos(map)) - new WVec(0, 0, r.CenterHeightOffset);
 				var width = uv == mouseCell ? 3 : 1;
 
 				// Colors change between points, so render separately

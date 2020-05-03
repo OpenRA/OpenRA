@@ -464,6 +464,7 @@ namespace OpenRA.Mods.Common.Activities
 					else
 						pos = WPos.Lerp(From, To, moveFraction, MoveFractionTotal);
 
+					pos -= new WVec(WDist.Zero, WDist.Zero, self.World.Map.DistanceAboveTerrain(pos));
 					mobile.SetVisualPosition(self, pos);
 				}
 				else

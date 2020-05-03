@@ -262,11 +262,9 @@ namespace OpenRA.Graphics
 				var s = worldRenderer.ScreenPxPosition(p);
 				if (Math.Abs(s.X - world.X) <= tileSize.Width && Math.Abs(s.Y - world.Y) <= tileSize.Height)
 				{
-					var ramp = map.Ramp.Contains(uv) ? map.Ramp[uv] : 0;
-					var corners = map.Grid.Ramps[ramp].Corners;
-					var pos = map.CenterOfCell(uv.ToCPos(map));
-					var screen = corners.Select(c => worldRenderer.ScreenPxPosition(pos + c)).ToArray();
-
+					var ramp = map.Grid.Ramps[map.Ramp.Contains(uv) ? map.Ramp[uv] : 0];
+					var pos = map.CenterOfCell(uv.ToCPos(map)) - new WVec(0, 0, ramp.CenterHeightOffset);
+					var screen = ramp.Corners.Select(c => worldRenderer.ScreenPxPosition(pos + c)).ToArray();
 					if (screen.PolygonContains(world))
 						return uv.ToCPos(map);
 				}

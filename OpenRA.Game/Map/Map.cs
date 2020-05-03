@@ -820,7 +820,7 @@ namespace OpenRA
 			// (c) u, v coordinates run diagonally to the cell axes, and we define
 			//     1024 as the length projected onto the primary cell axis
 			//  - 512 * sqrt(2) = 724
-			var z = Height.Contains(cell) ? 724 * Height[cell] : 0;
+			var z = Height.Contains(cell) ? 724 * Height[cell] + Grid.Ramps[Ramp[cell]].CenterHeightOffset : 0;
 			return new WPos(724 * (cell.X - cell.Y + 1), 724 * (cell.X + cell.Y + 1), z);
 		}
 
@@ -828,15 +828,39 @@ namespace OpenRA
 		{
 			var index = (int)subCell;
 			if (index >= 0 && index < Grid.SubCellOffsets.Length)
-				return CenterOfCell(cell) + Grid.SubCellOffsets[index];
+			{
+				var center = CenterOfCell(cell);
+				var offset = Grid.SubCellOffsets[index];
+				var ramp = Ramp.Contains(cell) ? Ramp[cell] : 0;
+				if (ramp != 0)
+				{
+					var r = Grid.Ramps[ramp];
+					offset += new WVec(0, 0, r.HeightOffset(offset.X, offset.Y) - r.CenterHeightOffset);
+				}
+
+				return center + offset;
+			}
+
 			return CenterOfCell(cell);
 		}
 
 		public WDist DistanceAboveTerrain(WPos pos)
 		{
+			if (Grid.Type == MapGridType.Rectangular)
+				return new WDist(pos.Z);
+
+			// Apply ramp offset
 			var cell = CellContaining(pos);
-			var delta = pos - CenterOfCell(cell);
-			return new WDist(delta.Z);
+			var offset = pos - CenterOfCell(cell);
+
+			var ramp = Ramp[cell];
+			if (ramp != 0)
+			{
+				var r = Grid.Ramps[ramp];
+				return new WDist(offset.Z + r.CenterHeightOffset - r.HeightOffset(offset.X, offset.Y));
+			}
+
+			return new WDist(offset.Z);
 		}
 
 		public WVec Offset(CVec delta, int dz)
