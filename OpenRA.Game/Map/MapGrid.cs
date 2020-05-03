@@ -24,6 +24,7 @@ namespace OpenRA
 
 	public struct CellRamp
 	{
+		public readonly int CenterHeightOffset;
 		public readonly WVec[] Corners;
 		public readonly WVec[][] Polygons;
 
@@ -68,9 +69,13 @@ namespace OpenRA
 			}
 			else
 				Polygons = new[] { Corners };
+
+			// Initial value must be asigned before HeightOffset can be called
+			CenterHeightOffset = 0;
+			CenterHeightOffset = HeightOffset(0, 0);
 		}
 
-		public WDist DistanceAboveTerrain(WVec delta)
+		public int HeightOffset(int dX, int dY)
 		{
 			// Enumerate over the polygons, assuming that they are triangles
 			// If the ramp is not split we will take the first three vertices of the corners as a valid triangle
@@ -80,8 +85,8 @@ namespace OpenRA
 			for (var i = 0; i < Polygons.Length; i++)
 			{
 				p = Polygons[i];
-				u = ((p[1].Y - p[2].Y) * (delta.X - p[2].X) - (p[1].X - p[2].X) * (delta.Y - p[2].Y)) / 1024;
-				v = ((p[0].X - p[2].X) * (delta.Y - p[2].Y) - (p[0].Y - p[2].Y) * (delta.X - p[2].X)) / 1024;
+				u = ((p[1].Y - p[2].Y) * (dX - p[2].X) - (p[1].X - p[2].X) * (dY - p[2].Y)) / 1024;
+				v = ((p[0].X - p[2].X) * (dY - p[2].Y) - (p[0].Y - p[2].Y) * (dX - p[2].X)) / 1024;
 
 				// Point is within the triangle if 0 <= u,v <= 1024
 				if (u >= 0 && u <= 1024 && v >= 0 && v <= 1024)
@@ -89,8 +94,7 @@ namespace OpenRA
 			}
 
 			// Calculate w from u,v and interpolate height
-			var dz = (u * p[0].Z + v * p[1].Z + (1024 - u - v) * p[2].Z) / 1024;
-			return new WDist(delta.Z - dz);
+			return (u * p[0].Z + v * p[1].Z + (1024 - u - v) * p[2].Z) / 1024;
 		}
 	}
 
