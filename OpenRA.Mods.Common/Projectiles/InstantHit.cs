@@ -55,23 +55,9 @@ namespace OpenRA.Mods.Common.Projectiles
 				target = args.GuidedTarget;
 			else if (info.Inaccuracy.Length > 0)
 			{
-				var inaccuracy = Util.ApplyPercentageModifiers(info.Inaccuracy.Length, args.InaccuracyModifiers);
-
-				var maxOffset = 0;
-				switch (info.InaccuracyType)
-				{
-					case InaccuracyType.Maximum:
-						maxOffset = inaccuracy * (args.PassiveTarget - args.Source).Length / args.Weapon.Range.Length;
-						break;
-					case InaccuracyType.PerCellIncrement:
-						maxOffset = inaccuracy * (args.PassiveTarget - args.Source).Length / 1024;
-						break;
-					case InaccuracyType.Absolute:
-						maxOffset = inaccuracy;
-						break;
-				}
-
-				target = Target.FromPos(args.PassiveTarget + WVec.FromPDF(args.SourceActor.World.SharedRandom, 2) * maxOffset / 1024);
+				var maxInaccuracyOffset = Util.GetProjectileInaccuracy(info.Inaccuracy.Length, info.InaccuracyType, args);
+				var inaccuracyOffset = WVec.FromPDF(args.SourceActor.World.SharedRandom, 2) * maxInaccuracyOffset / 1024;
+				target = Target.FromPos(args.PassiveTarget + inaccuracyOffset);
 			}
 			else
 				target = Target.FromPos(args.PassiveTarget);
