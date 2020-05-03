@@ -65,8 +65,9 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			// Correlate the tile "image" aka subtile with its position to find the template origin
-			var tile = w.Map.Tiles[cell].Type;
-			var index = w.Map.Tiles[cell].Index;
+			var ti = w.Map.Tiles[cell];
+			var tile = ti.Type;
+			var index = ti.Index;
 			var template = w.Map.Rules.TileSet.Templates[tile];
 			var ni = cell.X - index % template.Size.X;
 			var nj = cell.Y - index / template.Size.X;
@@ -89,7 +90,8 @@ namespace OpenRA.Mods.Common.Traits
 				var subtile = new CPos(ni + ind % template.Size.X, nj + ind / template.Size.X);
 
 				// This isn't the bridge you're looking for
-				if (!mapTiles.Contains(subtile) || mapTiles[subtile].Type != tile || mapTiles[subtile].Index != ind)
+				var subti = mapTiles[subtile];
+				if (!mapTiles.Contains(subtile) || subti.Type != tile || subti.Index != ind)
 					continue;
 
 				subTiles.Add(subtile, ind);

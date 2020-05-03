@@ -63,11 +63,7 @@ namespace OpenRA.Mods.Common.Traits
 					continue;
 
 				var height = (int)map.Height[uv];
-				var tile = map.Tiles[uv];
-				var ti = tileSet.GetTileInfo(tile);
-				var ramp = ti != null ? ti.RampType : 0;
-
-				var corners = map.Grid.CellCorners[ramp];
+				var corners = map.Grid.CellCorners[map.Ramp[uv]];
 				var pos = map.CenterOfCell(uv.ToCPos(map));
 				var width = uv == mouseCell ? 3 : 1;
 

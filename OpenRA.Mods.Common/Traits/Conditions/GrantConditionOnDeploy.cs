@@ -241,16 +241,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (Info.CanDeployOnRamps)
 				return true;
 
-			var ramp = 0;
-			if (self.World.Map.Contains(location))
-			{
-				var tile = self.World.Map.Tiles[location];
-				var ti = self.World.Map.Rules.TileSet.GetTileInfo(tile);
-				if (ti != null)
-					ramp = ti.RampType;
-			}
-
-			return ramp == 0;
+			var map = self.World.Map;
+			return !map.Ramp.Contains(location) || map.Ramp[location] == 0;
 		}
 
 		void INotifyDeployComplete.FinishedDeploy(Actor self)
