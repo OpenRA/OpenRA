@@ -238,23 +238,8 @@ namespace OpenRA.Mods.Common.Projectiles
 			var inaccuracy = lockOn && info.LockOnInaccuracy.Length > -1 ? info.LockOnInaccuracy.Length : info.Inaccuracy.Length;
 			if (inaccuracy > 0)
 			{
-				inaccuracy = Util.ApplyPercentageModifiers(inaccuracy, args.InaccuracyModifiers);
-
-				var maxOffset = 0;
-				switch (info.InaccuracyType)
-				{
-					case InaccuracyType.Maximum:
-						maxOffset = inaccuracy * (targetPosition - pos).Length / args.Weapon.Range.Length;
-						break;
-					case InaccuracyType.PerCellIncrement:
-						maxOffset = inaccuracy * (targetPosition - pos).Length / 1024;
-						break;
-					case InaccuracyType.Absolute:
-						maxOffset = inaccuracy;
-						break;
-				}
-
-				offset = WVec.FromPDF(world.SharedRandom, 2) * maxOffset / 1024;
+				var maxInaccuracyOffset = Util.GetProjectileInaccuracy(info.Inaccuracy.Length, info.InaccuracyType, args);
+				offset = WVec.FromPDF(world.SharedRandom, 2) * maxInaccuracyOffset / 1024;
 			}
 
 			DetermineLaunchSpeedAndAngle(world, out speed, out vFacing);

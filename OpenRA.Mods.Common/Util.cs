@@ -11,9 +11,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using OpenRA.GameRules;
-using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Support;
@@ -21,6 +21,8 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common
 {
+	public enum InaccuracyType { Maximum, PerCellIncrement, Absolute }
+
 	public static class Util
 	{
 		public static int TickFacing(int facing, int desiredFacing, int rot)
@@ -250,6 +252,23 @@ namespace OpenRA.Mods.Common
 				return "Warhead";
 
 			return t.Name;
+		}
+
+		public static int GetProjectileInaccuracy(int baseInaccuracy, InaccuracyType inaccuracyType, ProjectileArgs args)
+		{
+			var inaccuracy = ApplyPercentageModifiers(baseInaccuracy, args.InaccuracyModifiers);
+			switch (inaccuracyType)
+			{
+				case InaccuracyType.Maximum:
+					var weaponMaxRange = ApplyPercentageModifiers(args.Weapon.Range.Length, args.RangeModifiers);
+					return inaccuracy * (args.PassiveTarget - args.Source).Length / weaponMaxRange;
+				case InaccuracyType.PerCellIncrement:
+					return inaccuracy * (args.PassiveTarget - args.Source).Length / 1024;
+				case InaccuracyType.Absolute:
+					return inaccuracy;
+				default:
+					throw new InvalidEnumArgumentException("inaccuracyType", (int)inaccuracyType, typeof(InaccuracyType));
+			}
 		}
 	}
 }

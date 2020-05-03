@@ -149,24 +149,8 @@ namespace OpenRA.Mods.Common.Projectiles
 			target = args.PassiveTarget;
 			if (info.Inaccuracy.Length > 0)
 			{
-				var inaccuracy = Util.ApplyPercentageModifiers(info.Inaccuracy.Length, args.InaccuracyModifiers);
-				var range = Util.ApplyPercentageModifiers(args.Weapon.Range.Length, args.RangeModifiers);
-
-				var maxOffset = 0;
-				switch (info.InaccuracyType)
-				{
-					case InaccuracyType.Maximum:
-						maxOffset = inaccuracy * (target - pos).Length / range;
-						break;
-					case InaccuracyType.PerCellIncrement:
-						maxOffset = inaccuracy * (target - pos).Length / 1024;
-						break;
-					case InaccuracyType.Absolute:
-						maxOffset = inaccuracy;
-						break;
-				}
-
-				target += WVec.FromPDF(world.SharedRandom, 2) * maxOffset / 1024;
+				var maxInaccuracyOffset = Util.GetProjectileInaccuracy(info.Inaccuracy.Length, info.InaccuracyType, args);
+				target += WVec.FromPDF(world.SharedRandom, 2) * maxInaccuracyOffset / 1024;
 			}
 
 			if (info.AirburstAltitude > WDist.Zero)
