@@ -82,9 +82,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (sli.SubterraneanTransitionOnRamps)
 				return true;
 
-			var tile = map.Tiles[cell];
-			var ti = map.Rules.TileSet.GetTileInfo(tile);
-			return ti == null || ti.RampType == 0;
+			return map.Ramp[cell] == 0;
 		}
 
 		int ICustomMovementLayer.EntryMovementCost(ActorInfo a, LocomotorInfo li, CPos cell)

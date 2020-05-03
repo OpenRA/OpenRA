@@ -109,15 +109,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!rt.Info.AllowUnderBuildings && buildingInfluence.GetBuildingAt(cell) != null)
 				return false;
 
-			if (!rt.Info.AllowOnRamps)
-			{
-				var tile = world.Map.Tiles[cell];
-				var tileInfo = world.Map.Rules.TileSet.GetTileInfo(tile);
-				if (tileInfo != null && tileInfo.RampType > 0)
-					return false;
-			}
-
-			return true;
+			return rt.Info.AllowOnRamps || world.Map.Ramp[cell] == 0;
 		}
 
 		public bool CanSpawnResourceAt(ResourceType newResourceType, CPos cell)

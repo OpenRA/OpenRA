@@ -39,14 +39,8 @@ namespace OpenRA.Mods.Common.Traits
 			else if (!bi.AllowInvalidPlacement && world.ActorMap.GetActorsAt(cell).Any(a => a != toIgnore))
 				return false;
 
-			var tile = world.Map.Tiles[cell];
-			var tileInfo = world.Map.Rules.TileSet.GetTileInfo(tile);
-
-			// TODO: This is bandaiding over bogus tilesets.
-			if (tileInfo != null && tileInfo.RampType > 0)
-				return false;
-
-			return bi.TerrainTypes.Contains(world.Map.GetTerrainInfo(cell).Type);
+			// Buildings can never be placed on ramps
+			return world.Map.Ramp[cell] == 0 && bi.TerrainTypes.Contains(world.Map.GetTerrainInfo(cell).Type);
 		}
 
 		public static bool CanPlaceBuilding(this World world, CPos cell, ActorInfo ai, BuildingInfo bi, Actor toIgnore)

@@ -254,7 +254,6 @@ namespace OpenRA.Graphics
 			var world = worldRenderer.Viewport.ViewToWorldPx(view);
 			var map = worldRenderer.World.Map;
 			var candidates = CandidateMouseoverCells(world).ToList();
-			var tileSet = worldRenderer.World.Map.Rules.TileSet;
 
 			foreach (var uv in candidates)
 			{
@@ -263,14 +262,7 @@ namespace OpenRA.Graphics
 				var s = worldRenderer.ScreenPxPosition(p);
 				if (Math.Abs(s.X - world.X) <= tileSize.Width && Math.Abs(s.Y - world.Y) <= tileSize.Height)
 				{
-					var ramp = 0;
-					if (map.Contains(uv))
-					{
-						var ti = tileSet.GetTileInfo(map.Tiles[uv]);
-						if (ti != null)
-							ramp = ti.RampType;
-					}
-
+					var ramp = map.Ramp.Contains(uv) ? map.Ramp[uv] : 0;
 					var corners = map.Grid.CellCorners[ramp];
 					var pos = map.CenterOfCell(uv.ToCPos(map));
 					var screen = corners.Select(c => worldRenderer.ScreenPxPosition(pos + c)).ToArray();
