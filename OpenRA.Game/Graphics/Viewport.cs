@@ -52,6 +52,7 @@ namespace OpenRA.Graphics
 		public int2 CenterLocation { get; private set; }
 
 		public WPos CenterPosition { get { return worldRenderer.ProjectedPosition(CenterLocation); } }
+		public WPos Pos { get; private set; }
 
 		public Rectangle Rectangle { get { return new Rectangle(TopLeft, new Size(viewportSize.X, viewportSize.Y)); } }
 		public int2 TopLeft { get { return CenterLocation - viewportSize / 2; } }
@@ -328,6 +329,7 @@ namespace OpenRA.Graphics
 
 		public void Center(WPos pos)
 		{
+			Pos = pos;
 			CenterLocation = worldRenderer.ScreenPxPosition(pos).Clamp(mapBounds);
 			cellsDirty = true;
 			allCellsDirty = true;

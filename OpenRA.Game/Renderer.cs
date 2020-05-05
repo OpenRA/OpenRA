@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading;
 using OpenRA.FileFormats;
@@ -66,6 +67,7 @@ namespace OpenRA
 
 		Size lastWorldBufferSize = new Size(-1, -1);
 		Rectangle lastWorldViewport = Rectangle.Empty;
+		float2 lastScroll = new float2(0, 0);
 		ITexture currentPaletteTexture;
 		IBatchRenderer currentBatchRenderer;
 		RenderType renderType = RenderType.None;
@@ -180,12 +182,12 @@ namespace OpenRA
 			var bufferSize = new Size((int)(surfaceBufferSize.Width / scale), (int)(surfaceBufferSize.Height / scale));
 			if (lastBufferSize != bufferSize)
 			{
-				SpriteRenderer.SetViewportParams(bufferSize, 0f, 0f, int2.Zero);
+				SpriteRenderer.SetViewportParams(bufferSize, 0f, 0f, new float2(0, 0));
 				lastBufferSize = bufferSize;
 			}
 		}
 
-		public void BeginWorld(Rectangle worldViewport)
+		public void BeginWorld(Rectangle worldViewport, float2 scroll)
 		{
 			if (renderType != RenderType.None)
 				throw new InvalidOperationException("BeginWorld called with renderType = {0}, expected RenderType.None.".F(renderType));
@@ -213,12 +215,14 @@ namespace OpenRA
 
 			worldBuffer.Bind();
 
-			if (worldBufferSize != lastWorldBufferSize || lastWorldViewport != worldViewport)
+			Console.WriteLine("Setting " + scroll.X.ToString(CultureInfo.InvariantCulture) + ", " + scroll.Y.ToString(CultureInfo.InvariantCulture));
+			if (worldBufferSize != lastWorldBufferSize || lastWorldViewport != worldViewport || lastScroll != scroll)
 			{
 				var depthScale = worldBufferSize.Height / (worldBufferSize.Height + depthMargin);
-				WorldSpriteRenderer.SetViewportParams(worldBufferSize, depthScale, depthScale / 2, worldViewport.Location);
+				WorldSpriteRenderer.SetViewportParams(worldBufferSize, depthScale, depthScale / 2, scroll);
 				WorldModelRenderer.SetViewportParams(worldBufferSize, worldViewport.Location);
 
+				lastScroll = scroll;
 				lastWorldViewport = worldViewport;
 				lastWorldBufferSize = worldBufferSize;
 			}
