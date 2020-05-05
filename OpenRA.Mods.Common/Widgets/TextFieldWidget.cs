@@ -531,6 +531,7 @@ namespace OpenRA.Mods.Common.Widgets
 				ClearSelection();
 
 				CursorPosition = lowestIndex;
+				OnTextEdited();
 			}
 		}
 
