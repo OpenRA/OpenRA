@@ -34,28 +34,6 @@ namespace OpenRA.Mods.Common.UpdateRules
 			Justification = "Extracting update lists to temporary variables obfuscates the definitions.")]
 		static readonly UpdatePath[] Paths =
 		{
-			new UpdatePath("release-20190314", "release-20191117", new UpdateRule[]
-			{
-				new MultipleDeploySounds(),
-				new RemoveSimpleBeacon(),
-				new MakeMobilePausableConditional(),
-				new StreamlineRepairableTraits(),
-				new ReplaceSpecialMoveConsiderations(),
-				new RefactorHarvesterIdle(),
-				new SplitHarvesterSpriteBody(),
-				new RenameAttackMoveConditions(),
-				new RemovePlaceBuildingPalettes(),
-				new RenameHoversOffsetModifier(),
-				new AddAirAttackTypes(),
-				new MoveAbortOnResupply(),
-				new RenameCarryallDelays(),
-				new AddCanSlide(),
-				new AddAircraftIdleBehavior(),
-				new RenameSearchRadius(),
-				new RenameChronoshiftFootprint(),
-				new RemoveMoveIntoWorldFromExit(),
-			}),
-
 			new UpdatePath("release-20191117", "release-20200202", new UpdateRule[]
 			{
 				new ReplaceAttackTypeStrafe()
