@@ -142,6 +142,9 @@ namespace OpenRA.Mods.D2k.Traits
 					InaccuracyModifiers = self.TraitsImplementing<IInaccuracyModifier>()
 						.Select(a => a.GetInaccuracyModifier()).ToArray(),
 
+					RangeModifiers = self.TraitsImplementing<IRangeModifier>()
+						.Select(a => a.GetRangeModifier()).ToArray(),
+
 					Source = self.CenterPosition,
 					CurrentSource = () => self.CenterPosition,
 					SourceActor = self,
