@@ -123,7 +123,7 @@ WorldLoaded = function()
 		if a.Type == "boat" then
 			a.Destroy()
 			Media.DisplayMessage("Part of Carter's convoy passed through!")
-			Media.PlaySoundNotification(GDI, "AlertBleep")
+			Media.PlaySoundNotification(GDI, "Beepy6")
 		end
 	end)
 
