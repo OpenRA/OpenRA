@@ -214,6 +214,13 @@ Civilian3:
 		Select: 69-n100, 69-b102, 69-n104
 		Move: 69-n106, 69-n108, 69-n110
 
+CivilianTechnician:
+	Inherits: Civilian
+	Voices:
+		Select: 70-n000, 70-n002, 70-n004
+		Move: 70-n006, 70-n008, 70-n010
+		Attack: 70-n014, 70-n016, 70-n018
+
 CivilianFemale: #can be used for female mutant as well
 	Voices:
 		Select:

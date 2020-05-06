@@ -238,10 +238,17 @@ CIV3:
 	Inherits: ^CivilianInfantry
 	Voiced:
 		VoiceSet: Civilian3
+
+CTECH:
+	Inherits: CIV3
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	RenderSprites:
+		Image: civ3
 	WithInfantryBody:
 		DefaultAttackSequence: attack
 	Armament:
 		Weapon: Pistola
 	AttackFrontal:
 		Voice: Attack
+	Voiced:
+		VoiceSet: CivilianTechnician
