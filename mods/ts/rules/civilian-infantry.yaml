@@ -226,12 +226,18 @@ CIV1:
 		Weapon: Pistola
 	AttackFrontal:
 		Voice: Attack
+	Voiced:
+		VoiceSet: Civilian1
 
 CIV2:
 	Inherits: ^CivilianInfantry
+	Voiced:
+		VoiceSet: Civilian2
 
 CIV3:
 	Inherits: ^CivilianInfantry
+	Voiced:
+		VoiceSet: Civilian3
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	WithInfantryBody:
 		DefaultAttackSequence: attack
