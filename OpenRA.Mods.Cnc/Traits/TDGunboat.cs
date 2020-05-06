@@ -176,12 +176,16 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		public void SetPosition(Actor self, WPos pos)
 		{
+			if (self.IsInWorld)
+				self.World.ActorMap.RemoveInfluence(self, this);
+
 			CenterPosition = pos;
 
 			if (!self.IsInWorld)
 				return;
 
 			self.World.UpdateMaps(self, this);
+			self.World.ActorMap.AddInfluence(self, this);
 
 			// This can be called from the constructor before notifyVisualPositionChanged is assigned.
 			if (notifyVisualPositionChanged != null)
