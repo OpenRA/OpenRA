@@ -22,6 +22,23 @@ World:
 			normal: Normal
 		Default: normal
 		Locked: true
+	Locomotor@CIVILIAN:
+		Name: civilian
+		SharesCell: true
+		TerrainSpeeds:
+			Clear: 90
+			Rough: 80
+			Road: 100
+			Bridge: 100
+			Tiberium: 70
+				PathingCost: 300
+			BlueTiberium: 70
+				PathingCost: 300
+			Beach: 80
+
+^CivInfantry:
+	Mobile:
+		Locomotor: civilian
 
 Player:
 	-ConquestVictoryConditions:
