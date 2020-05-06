@@ -476,6 +476,8 @@ namespace OpenRA
 
 			ChromeMetrics.TryGet("ChatMessageColor", out chatMessageColor);
 			ChromeMetrics.TryGet("SystemMessageColor", out systemMessageColor);
+			if (!ChromeMetrics.TryGet("SystemMessageLabel", out systemMessageLabel))
+				systemMessageLabel = "Battlefield Control";
 
 			ModData.LoadScreen.StartGame(args);
 		}
@@ -545,6 +547,8 @@ namespace OpenRA
 		static volatile ActionQueue delayedActions = new ActionQueue();
 		static Color systemMessageColor = Color.White;
 		static Color chatMessageColor = Color.White;
+		static string systemMessageLabel;
+
 		public static void RunAfterTick(Action a) { delayedActions.Add(a, RunTime); }
 		public static void RunAfterDelay(int delayMilliseconds, Action a) { delayedActions.Add(a, RunTime + delayMilliseconds); }
 
@@ -876,7 +880,7 @@ namespace OpenRA
 
 		public static void AddSystemLine(string text)
 		{
-			AddSystemLine("Battlefield Control", text);
+			AddSystemLine(systemMessageLabel, text);
 		}
 
 		public static void AddSystemLine(string name, string text)
