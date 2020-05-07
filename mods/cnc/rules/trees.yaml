@@ -101,6 +101,21 @@ T03:
 	SpawnActorOnDeath:
 		Actor: T03.Husk
 
+T03.Transformable:
+	Inherits: ^Tree
+	RenderSprites:
+		Image: t03
+	MapEditorData:
+		ExcludeTilesets: DESERT
+	SpawnActorOnDeath:
+		Actor: T03.Husk
+	TransformsNearResources:
+		Type: Tiberium
+		IntoActor: split2
+		Offset: 0,1
+	EditorOnlyTooltip:
+		Name: (Tree that can transform into a Blossom Tree)
+
 T03.Husk:
 	Inherits: ^TreeHusk
 	MapEditorData:
@@ -237,6 +252,21 @@ T13:
 		ExcludeTilesets: DESERT
 	SpawnActorOnDeath:
 		Actor: T13.Husk
+
+T13.Transformable:
+	Inherits: ^Tree
+	RenderSprites:
+		Image: t13
+	MapEditorData:
+		ExcludeTilesets: DESERT
+	SpawnActorOnDeath:
+		Actor: T13.Husk
+	TransformsNearResources:
+		Type: Tiberium
+		IntoActor: split3
+		Offset: 0,1
+	EditorOnlyTooltip:
+		Name: (Tree that can transform into a Blossom Tree)
 
 T13.Husk:
 	Inherits: ^TreeHusk
