@@ -81,7 +81,7 @@ namespace OpenRA.Mods.Common.Traits
 			// Facing rotation
 			rotation = WAngle.FromFacing(WDist.FromPDF(Game.CosmeticRandom, 2).Length * info.TurnSpeed / 1024);
 
-			var anim = new Animation(init.World, rs.GetImage(self), () => facing.Angle / 4);
+			var anim = new Animation(init.World, rs.GetImage(self), () => facing);
 			anim.PlayRepeating(info.Anim);
 			rs.Add(new AnimationWithOffset(anim, () => pos, null));
 		}

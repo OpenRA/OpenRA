@@ -161,7 +161,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (port == null)
 					return;
 
-				var muzzleFacing = targetYaw.Angle / 4;
+				var muzzleFacing = targetYaw.Facing;
 				paxFacing[a.Actor].Facing = muzzleFacing;
 				paxPos[a.Actor].SetVisualPosition(a.Actor, pos + PortOffset(self, port));
 
@@ -172,7 +172,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (a.Info.MuzzleSequence != null)
 				{
 					// Muzzle facing is fixed once the firing starts
-					var muzzleAnim = new Animation(self.World, paxRender[a.Actor].GetImage(a.Actor), () => muzzleFacing);
+					var muzzleAnim = new Animation(self.World, paxRender[a.Actor].GetImage(a.Actor), () => targetYaw);
 					var sequence = a.Info.MuzzleSequence;
 
 					if (a.Info.MuzzleSplitFacings > 0)

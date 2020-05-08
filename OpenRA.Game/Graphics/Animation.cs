@@ -23,7 +23,7 @@ namespace OpenRA.Graphics
 		public bool IsDecoration { get; set; }
 
 		readonly SequenceProvider sequenceProvider;
-		readonly Func<int> facingFunc;
+		readonly Func<WAngle> facingFunc;
 		readonly Func<bool> paused;
 
 		int frame;
@@ -33,15 +33,15 @@ namespace OpenRA.Graphics
 		Action tickFunc = () => { };
 
 		public Animation(World world, string name)
-			: this(world, name, () => 0) { }
+			: this(world, name, () => WAngle.Zero) { }
 
-		public Animation(World world, string name, Func<int> facingFunc)
+		public Animation(World world, string name, Func<WAngle> facingFunc)
 			: this(world, name, facingFunc, null) { }
 
 		public Animation(World world, string name, Func<bool> paused)
-			: this(world, name, () => 0, paused) { }
+			: this(world, name, () => WAngle.Zero, paused) { }
 
-		public Animation(World world, string name, Func<int> facingFunc, Func<bool> paused)
+		public Animation(World world, string name, Func<WAngle> facingFunc, Func<bool> paused)
 		{
 			sequenceProvider = world.Map.Rules.Sequences;
 			Name = name.ToLowerInvariant();
@@ -50,7 +50,7 @@ namespace OpenRA.Graphics
 		}
 
 		public int CurrentFrame { get { return backwards ? CurrentSequence.Length - frame - 1 : frame; } }
-		public Sprite Image { get { return CurrentSequence.GetSprite(CurrentFrame, WAngle.FromFacing(facingFunc())); } }
+		public Sprite Image { get { return CurrentSequence.GetSprite(CurrentFrame, facingFunc()); } }
 
 		public IRenderable[] Render(WPos pos, WVec offset, int zOffset, PaletteReference palette, float scale)
 		{
@@ -58,7 +58,7 @@ namespace OpenRA.Graphics
 
 			if (CurrentSequence.ShadowStart >= 0)
 			{
-				var shadow = CurrentSequence.GetShadow(CurrentFrame, WAngle.FromFacing(facingFunc()));
+				var shadow = CurrentSequence.GetShadow(CurrentFrame, facingFunc());
 				var shadowRenderable = new SpriteRenderable(shadow, pos, offset, CurrentSequence.ShadowZOffset + zOffset, palette, scale, true);
 				return new IRenderable[] { shadowRenderable, imageRenderable };
 			}
@@ -74,7 +74,7 @@ namespace OpenRA.Graphics
 
 			if (CurrentSequence.ShadowStart >= 0)
 			{
-				var shadow = CurrentSequence.GetShadow(CurrentFrame, WAngle.FromFacing(facingFunc()));
+				var shadow = CurrentSequence.GetShadow(CurrentFrame, facingFunc());
 				var shadowPos = pos - new int2((int)(scale * shadow.Size.X / 2), (int)(scale * shadow.Size.Y / 2));
 				var shadowRenderable = new UISpriteRenderable(shadow, WPos.Zero + offset, shadowPos, CurrentSequence.ShadowZOffset + zOffset, palette, scale);
 				return new IRenderable[] { shadowRenderable, imageRenderable };

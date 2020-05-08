@@ -67,20 +67,23 @@ namespace OpenRA.Mods.Common.Graphics
 			return () => orientation;
 		}
 
-		public Func<int> GetFacing()
+		public Func<WAngle> GetFacing()
 		{
 			var facingInfo = Actor.TraitInfoOrDefault<IFacingInfo>();
 			if (facingInfo == null)
-				return () => 0;
+				return () => WAngle.Zero;
 
 			// Dynamic facing takes priority
 			var dynamicInit = dict.GetOrDefault<DynamicFacingInit>();
 			if (dynamicInit != null)
-				return dynamicInit.Value(null);
+			{
+				var getFacing = dynamicInit.Value(null);
+				return () => WAngle.FromFacing(getFacing());
+			}
 
 			// Fall back to initial actor facing if an Init isn't available
 			var facingInit = dict.GetOrDefault<FacingInit>();
-			var facing = facingInit != null ? facingInit.Value(null) : facingInfo.GetInitialFacing();
+			var facing = WAngle.FromFacing(facingInit != null ? facingInit.Value(null) : facingInfo.GetInitialFacing());
 			return () => facing;
 		}
 

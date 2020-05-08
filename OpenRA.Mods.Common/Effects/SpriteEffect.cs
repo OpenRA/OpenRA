@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Effects
 			this.visibleThroughFog = visibleThroughFog;
 			this.delay = delay;
 			pos = posFunc();
-			anim = new Animation(world, image, facingFunc);
+			anim = new Animation(world, image, () => WAngle.FromFacing(facingFunc()));
 		}
 
 		public void Tick(World world)

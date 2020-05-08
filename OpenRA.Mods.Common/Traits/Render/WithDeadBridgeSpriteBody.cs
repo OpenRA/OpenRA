@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		readonly BridgeLayer bridgeLayer;
 
 		public WithDeadBridgeSpriteBody(ActorInitializer init, WithDeadBridgeSpriteBodyInfo info)
-			: base(init, info, () => 0)
+			: base(init, info)
 		{
 			bridgeInfo = info;
 			bridgeLayer = init.World.WorldActor.Trait<BridgeLayer>();
