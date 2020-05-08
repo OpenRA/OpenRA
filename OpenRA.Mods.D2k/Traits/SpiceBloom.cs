@@ -133,8 +133,8 @@ namespace OpenRA.Mods.D2k.Traits
 				var args = new ProjectileArgs
 				{
 					Weapon = self.World.Map.Rules.Weapons[info.Weapon.ToLowerInvariant()],
-					Facing = 0,
-					CurrentMuzzleFacing = () => 0,
+					Facing = WAngle.Zero,
+					CurrentMuzzleFacing = () => WAngle.Zero,
 
 					DamageModifiers = self.TraitsImplementing<IFirepowerModifier>()
 						.Select(a => a.GetFirepowerModifier()).ToArray(),
