@@ -52,11 +52,10 @@ namespace OpenRA.Mods.Common.Warheads
 
 			var map = firedBy.World.Map;
 			var targetCell = map.CellContaining(target.CenterPosition);
-			var damageModifiers = args.DamageModifiers;
 
 			var targetCells = CellsMatching(targetCell, false);
 			foreach (var c in targetCells)
-				FireProjectileAtCell(map, firedBy, target, c, damageModifiers);
+				FireProjectileAtCell(map, firedBy, target, c, args);
 
 			if (RandomClusterCount != 0)
 			{
@@ -64,23 +63,23 @@ namespace OpenRA.Mods.Common.Warheads
 				var clusterCount = RandomClusterCount < 0 ? randomTargetCells.Count() : RandomClusterCount;
 				if (randomTargetCells.Any())
 					for (var i = 0; i < clusterCount; i++)
-						FireProjectileAtCell(map, firedBy, target, randomTargetCells.Random(firedBy.World.SharedRandom), damageModifiers);
+						FireProjectileAtCell(map, firedBy, target, randomTargetCells.Random(firedBy.World.SharedRandom), args);
 			}
 		}
 
-		void FireProjectileAtCell(Map map, Actor firedBy, Target target, CPos targetCell, IEnumerable<int> damageModifiers)
+		void FireProjectileAtCell(Map map, Actor firedBy, Target target, CPos targetCell, WarheadArgs args)
 		{
 			var tc = Target.FromCell(firedBy.World, targetCell);
 
 			if (!weapon.IsValidAgainst(tc, firedBy.World, firedBy))
 				return;
 
-			var args = new ProjectileArgs
+			var projectileArgs = new ProjectileArgs
 			{
 				Weapon = weapon,
 				Facing = (map.CenterOfCell(targetCell) - target.CenterPosition).Yaw.Facing,
 
-				DamageModifiers = damageModifiers.ToArray(),
+				DamageModifiers = args.DamageModifiers,
 				InaccuracyModifiers = new int[0],
 				RangeModifiers = new int[0],
 
@@ -91,13 +90,13 @@ namespace OpenRA.Mods.Common.Warheads
 				GuidedTarget = tc
 			};
 
-			if (args.Weapon.Projectile != null)
+			if (projectileArgs.Weapon.Projectile != null)
 			{
-				var projectile = args.Weapon.Projectile.Create(args);
+				var projectile = projectileArgs.Weapon.Projectile.Create(projectileArgs);
 				if (projectile != null)
 					firedBy.World.AddFrameEndTask(w => w.Add(projectile));
 
-				if (args.Weapon.Report != null && args.Weapon.Report.Any())
+				if (projectileArgs.Weapon.Report != null && projectileArgs.Weapon.Report.Any())
 					Game.Sound.Play(SoundType.World, args.Weapon.Report, firedBy.World, target.CenterPosition);
 			}
 		}
