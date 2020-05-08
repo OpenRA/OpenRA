@@ -218,7 +218,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			this.args = args;
 
 			pos = args.Source;
-			hFacing = args.Facing;
+			hFacing = args.Facing.Facing;
 			gravity = new WVec(0, 0, -info.Gravity);
 			targetPosition = args.PassiveTarget;
 			rangeLimit = info.RangeLimit != WDist.Zero ? info.RangeLimit : args.Weapon.Range;
