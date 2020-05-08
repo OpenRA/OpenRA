@@ -47,7 +47,7 @@ ClusterMissile:
 		ExplosionPalette: effect-ignore-lighting-alpha75
 		ImpactSounds: expnew19.aud
 		ImpactActors: false
-		ValidTargets: Ground Water, Air
+		ValidTargets: Ground, Water, Air
 	Warhead@Cluster: FireCluster
 		Weapon: MultiCluster
 		RandomClusterCount: 10
