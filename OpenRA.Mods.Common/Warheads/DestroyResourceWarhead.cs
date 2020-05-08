@@ -30,6 +30,10 @@ namespace OpenRA.Mods.Common.Warheads
 			var firedBy = args.SourceActor;
 			var pos = target.CenterPosition;
 			var world = firedBy.World;
+			var dat = world.Map.DistanceAboveTerrain(pos);
+			if (dat > AirThreshold)
+				return;
+
 			var targetTile = world.Map.CellContaining(pos);
 			var resLayer = world.WorldActor.Trait<ResourceLayer>();
 
