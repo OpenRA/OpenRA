@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Warheads
 
 			var armor = victim.TraitsImplementing<Armor>()
 				.Where(a => !a.IsTraitDisabled && a.Info.Type != null && Versus.ContainsKey(a.Info.Type) &&
-					(shape.Info.ArmorTypes == default(BitSet<ArmorType>) || shape.Info.ArmorTypes.Contains(a.Info.Type)))
+					(shape.Info.ArmorTypes.IsEmpty || shape.Info.ArmorTypes.Contains(a.Info.Type)))
 				.Select(a => Versus[a.Info.Type]);
 
 			return Util.ApplyPercentageModifiers(100, armor);
