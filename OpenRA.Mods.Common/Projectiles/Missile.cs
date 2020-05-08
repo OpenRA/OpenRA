@@ -203,7 +203,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		WDist distanceCovered;
 		WDist rangeLimit;
 
-		int renderFacing;
+		WAngle renderFacing;
 
 		[Sync]
 		int hFacing;
@@ -835,7 +835,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			else
 				move = HomingTick(world, tarDistVec, relTarHorDist);
 
-			renderFacing = new WVec(move.X, move.Y - move.Z, 0).Yaw.Facing;
+			renderFacing = new WVec(move.X, move.Y - move.Z, 0).Yaw;
 
 			// Move the missile
 			var lastPos = pos;
@@ -858,7 +858,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			if (!string.IsNullOrEmpty(info.TrailImage) && --ticksToNextSmoke < 0 && (state != States.Freefall || info.TrailWhenDeactivated))
 			{
 				world.AddFrameEndTask(w => w.Add(new SpriteEffect(pos - 3 * move / 2, w, info.TrailImage, info.TrailSequences.Random(world.SharedRandom),
-					trailPalette, facing: renderFacing)));
+					trailPalette, facing: renderFacing.Facing)));
 
 				ticksToNextSmoke = info.TrailInterval;
 			}

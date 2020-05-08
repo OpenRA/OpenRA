@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 		public WithRoof(Actor self, WithRoofInfo info)
 		{
 			var rs = self.Trait<RenderSprites>();
-			var roof = new Animation(self.World, rs.GetImage(self), () => self.Trait<IFacing>().Facing);
+			var roof = new Animation(self.World, rs.GetImage(self), RenderSprites.MakeFacingFunc(self));
 			roof.Play(info.Sequence);
 			rs.Add(new AnimationWithOffset(roof, null, null, 1024));
 		}

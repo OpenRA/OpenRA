@@ -158,7 +158,7 @@ namespace OpenRA.Mods.Common.Projectiles
 
 			if (!string.IsNullOrEmpty(info.Image))
 			{
-				anim = new Animation(world, info.Image, new Func<int>(GetEffectiveFacing));
+				anim = new Animation(world, info.Image, new Func<WAngle>(GetEffectiveFacing));
 				anim.PlayRepeating(info.Sequences.Random(world.SharedRandom));
 			}
 
@@ -176,7 +176,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			remainingBounces = info.BounceCount;
 		}
 
-		int GetEffectiveFacing()
+		WAngle GetEffectiveFacing()
 		{
 			var at = (float)ticks / (length - 1);
 			var attitude = angle.Tan() * (1 - 2 * at) / (4 * 1024);
@@ -184,9 +184,11 @@ namespace OpenRA.Mods.Common.Projectiles
 			var u = (facing % 128) / 128f;
 			var scale = 512 * u * (1 - u);
 
-			return (int)(facing < 128
+			var effective = (int)(facing < 128
 				? facing - scale * attitude
 				: facing + scale * attitude);
+
+			return WAngle.FromFacing(effective);
 		}
 
 		public void Tick(World world)
@@ -211,7 +213,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			{
 				var delayedPos = WPos.LerpQuadratic(source, target, angle, ticks - info.TrailDelay, length);
 				world.AddFrameEndTask(w => w.Add(new SpriteEffect(delayedPos, w, info.TrailImage, info.TrailSequences.Random(world.SharedRandom),
-					trailPalette, facing: GetEffectiveFacing())));
+					trailPalette, facing: GetEffectiveFacing().Facing)));
 
 				smokeTicks = info.TrailInterval;
 			}

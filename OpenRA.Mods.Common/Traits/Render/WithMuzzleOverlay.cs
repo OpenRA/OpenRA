@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 	{
 		readonly Dictionary<Barrel, bool> visible = new Dictionary<Barrel, bool>();
 		readonly Dictionary<Barrel, AnimationWithOffset> anims = new Dictionary<Barrel, AnimationWithOffset>();
-		readonly Func<int> getFacing;
+		readonly Func<WAngle> getFacing;
 		readonly Armament[] armaments;
 
 		public WithMuzzleOverlay(Actor self, WithMuzzleOverlayInfo info)
@@ -55,11 +55,11 @@ namespace OpenRA.Mods.Common.Traits.Render
 					// Workaround for broken ternary operators in certain versions of mono (3.10 and
 					// certain versions of the 3.8 series): https://bugzilla.xamarin.com/show_bug.cgi?id=23319
 					if (turreted != null)
-						getFacing = () => turreted.TurretFacing;
+						getFacing = () => WAngle.FromFacing(turreted.TurretFacing);
 					else if (facing != null)
-						getFacing = () => facing.Facing;
+						getFacing = () => WAngle.FromFacing(facing.Facing);
 					else
-						getFacing = () => 0;
+						getFacing = () => WAngle.Zero;
 
 					var muzzleFlash = new Animation(self.World, render.GetImage(self), getFacing);
 					visible.Add(barrel, false);
@@ -79,7 +79,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 			var sequence = a.Info.MuzzleSequence;
 			if (a.Info.MuzzleSplitFacings > 0)
-				sequence += Util.QuantizeFacing(getFacing(), a.Info.MuzzleSplitFacings).ToString();
+				sequence += Util.QuantizeFacing(getFacing().Facing, a.Info.MuzzleSplitFacings).ToString();
 
 			visible[barrel] = true;
 			anims[barrel].Animation.PlayThen(sequence, () => visible[barrel] = false);

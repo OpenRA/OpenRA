@@ -157,11 +157,13 @@ namespace OpenRA.Mods.Common.Traits.Render
 		readonly List<AnimationWrapper> anims = new List<AnimationWrapper>();
 		string cachedImage;
 
-		public static Func<int> MakeFacingFunc(Actor self)
+		public static Func<WAngle> MakeFacingFunc(Actor self)
 		{
 			var facing = self.TraitOrDefault<IFacing>();
-			if (facing == null) return () => 0;
-			return () => facing.Facing;
+			if (facing == null)
+				return () => WAngle.Zero;
+
+			return () => WAngle.FromFacing(facing.Facing);
 		}
 
 		public RenderSprites(ActorInitializer init, RenderSpritesInfo info)

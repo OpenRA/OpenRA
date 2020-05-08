@@ -56,9 +56,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 		readonly Animation boundsAnimation;
 
 		public WithSpriteBody(ActorInitializer init, WithSpriteBodyInfo info)
-			: this(init, info, () => 0) { }
+			: this(init, info, () => WAngle.Zero) { }
 
-		protected WithSpriteBody(ActorInitializer init, WithSpriteBodyInfo info, Func<int> baseFacing)
+		protected WithSpriteBody(ActorInitializer init, WithSpriteBodyInfo info, Func<WAngle> baseFacing)
 			: base(info)
 		{
 			rs = init.Self.Trait<RenderSprites>();

@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		readonly Actor self;
 
 		public WithBridgeSpriteBody(ActorInitializer init, WithBridgeSpriteBodyInfo info)
-			: base(init, info, () => 0)
+			: base(init, info)
 		{
 			self = init.Self;
 			bridgeInfo = info;
