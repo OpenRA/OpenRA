@@ -50,7 +50,7 @@ namespace OpenRA.Graphics
 		}
 
 		public int CurrentFrame { get { return backwards ? CurrentSequence.Length - frame - 1 : frame; } }
-		public Sprite Image { get { return CurrentSequence.GetSprite(CurrentFrame, facingFunc()); } }
+		public Sprite Image { get { return CurrentSequence.GetSprite(CurrentFrame, WAngle.FromFacing(facingFunc())); } }
 
 		public IRenderable[] Render(WPos pos, WVec offset, int zOffset, PaletteReference palette, float scale)
 		{
@@ -58,7 +58,7 @@ namespace OpenRA.Graphics
 
 			if (CurrentSequence.ShadowStart >= 0)
 			{
-				var shadow = CurrentSequence.GetShadow(CurrentFrame, facingFunc());
+				var shadow = CurrentSequence.GetShadow(CurrentFrame, WAngle.FromFacing(facingFunc()));
 				var shadowRenderable = new SpriteRenderable(shadow, pos, offset, CurrentSequence.ShadowZOffset + zOffset, palette, scale, true);
 				return new IRenderable[] { shadowRenderable, imageRenderable };
 			}
@@ -74,7 +74,7 @@ namespace OpenRA.Graphics
 
 			if (CurrentSequence.ShadowStart >= 0)
 			{
-				var shadow = CurrentSequence.GetShadow(CurrentFrame, facingFunc());
+				var shadow = CurrentSequence.GetShadow(CurrentFrame, WAngle.FromFacing(facingFunc()));
 				var shadowPos = pos - new int2((int)(scale * shadow.Size.X / 2), (int)(scale * shadow.Size.Y / 2));
 				var shadowRenderable = new UISpriteRenderable(shadow, WPos.Zero + offset, shadowPos, CurrentSequence.ShadowZOffset + zOffset, palette, scale);
 				return new IRenderable[] { shadowRenderable, imageRenderable };

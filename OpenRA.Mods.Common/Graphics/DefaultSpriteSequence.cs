@@ -363,22 +363,22 @@ namespace OpenRA.Mods.Common.Graphics
 
 		public Sprite GetSprite(int frame)
 		{
-			return GetSprite(Start, frame, 0);
+			return GetSprite(Start, frame, WAngle.Zero);
 		}
 
-		public Sprite GetSprite(int frame, int facing)
+		public Sprite GetSprite(int frame, WAngle facing)
 		{
 			return GetSprite(Start, frame, facing);
 		}
 
-		public Sprite GetShadow(int frame, int facing)
+		public Sprite GetShadow(int frame, WAngle facing)
 		{
 			return ShadowStart >= 0 ? GetSprite(ShadowStart, frame, facing) : null;
 		}
 
-		protected virtual Sprite GetSprite(int start, int frame, int facing)
+		protected virtual Sprite GetSprite(int start, int frame, WAngle facing)
 		{
-			var f = QuantizeFacing(facing);
+			var f = GetFacingFrameOffset(facing);
 			if (reverseFacings)
 				f = (Facings - f) % Facings;
 
@@ -393,9 +393,9 @@ namespace OpenRA.Mods.Common.Graphics
 			return sprites[j];
 		}
 
-		protected virtual int QuantizeFacing(int facing)
+		protected virtual int GetFacingFrameOffset(WAngle facing)
 		{
-			return Util.QuantizeFacing(facing, Facings);
+			return Util.QuantizeFacing(facing.Facing, Facings);
 		}
 	}
 }

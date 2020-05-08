@@ -34,8 +34,8 @@ namespace OpenRA.Graphics
 		Rectangle Bounds { get; }
 
 		Sprite GetSprite(int frame);
-		Sprite GetSprite(int frame, int facing);
-		Sprite GetShadow(int frame, int facing);
+		Sprite GetSprite(int frame, WAngle facing);
+		Sprite GetShadow(int frame, WAngle facing);
 	}
 
 	public interface ISpriteSequenceLoader

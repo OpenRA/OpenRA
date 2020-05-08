@@ -42,9 +42,9 @@ namespace OpenRA.Mods.Cnc.Graphics
 					.F(info.Nodes[0].Location, sequence, animation));
 		}
 
-		protected override int QuantizeFacing(int facing)
+		protected override int GetFacingFrameOffset(WAngle facing)
 		{
-			return OpenRA.Mods.Cnc.Util.ClassicQuantizeFacing(facing, Facings, useClassicFacings);
+			return Util.ClassicQuantizeFacing(facing.Facing, Facings, useClassicFacings);
 		}
 	}
 }
