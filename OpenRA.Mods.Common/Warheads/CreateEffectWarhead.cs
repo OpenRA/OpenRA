@@ -102,10 +102,10 @@ namespace OpenRA.Mods.Common.Warheads
 
 		public override void DoImpact(Target target, WarheadArgs args)
 		{
-			var firedBy = args.SourceActor;
-			if (!target.IsValidFor(firedBy))
+			if (target.Type == TargetType.Invalid)
 				return;
 
+			var firedBy = args.SourceActor;
 			var pos = target.CenterPosition;
 			var world = firedBy.World;
 			var targetTile = world.Map.CellContaining(pos);
