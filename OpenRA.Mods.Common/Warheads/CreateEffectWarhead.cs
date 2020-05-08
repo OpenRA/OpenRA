@@ -118,10 +118,6 @@ namespace OpenRA.Mods.Common.Warheads
 			if ((!world.Map.Contains(targetTile)) || (!isValid))
 				return;
 
-			var palette = ExplosionPalette;
-			if (UsePlayerPalette)
-				palette += firedBy.Owner.InternalName;
-
 			var explosion = Explosions.RandomOrDefault(world.LocalRandom);
 			if (Image != null && explosion != null)
 			{
@@ -130,6 +126,10 @@ namespace OpenRA.Mods.Common.Warheads
 					var dat = world.Map.DistanceAboveTerrain(pos);
 					pos = new WPos(pos.X, pos.Y, pos.Z - dat.Length);
 				}
+
+				var palette = ExplosionPalette;
+				if (UsePlayerPalette)
+					palette += firedBy.Owner.InternalName;
 
 				world.AddFrameEndTask(w => w.Add(new SpriteEffect(pos, w, Image, explosion, palette)));
 			}
