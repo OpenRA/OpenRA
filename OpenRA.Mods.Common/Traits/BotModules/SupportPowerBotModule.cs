@@ -125,8 +125,6 @@ namespace OpenRA.Mods.Common.Traits
 		/// <summary>Scans the map in chunks, evaluating all actors in each.</summary>
 		CPos? FindCoarseAttackLocationToSupportPower(SupportPowerInstance readyPower)
 		{
-			CPos? bestLocation = null;
-			var bestAttractiveness = 0;
 			var powerDecision = powerDecisions[readyPower.Info.OrderName];
 			if (powerDecision == null)
 			{
@@ -136,6 +134,9 @@ namespace OpenRA.Mods.Common.Traits
 
 			var map = world.Map;
 			var checkRadius = powerDecision.CoarseScanRadius;
+			var suitableLocations = new List<(MPos UV, int Attractiveness)>();
+			var totalAttractiveness = 0;
+
 			for (var i = 0; i < map.MapSize.X; i += checkRadius)
 			{
 				for (var j = 0; j < map.MapSize.Y; j += checkRadius)
@@ -151,15 +152,22 @@ namespace OpenRA.Mods.Common.Traits
 
 					var frozenTargets = player.FrozenActorLayer != null ? player.FrozenActorLayer.FrozenActorsInRegion(region) : Enumerable.Empty<FrozenActor>();
 					var consideredAttractiveness = powerDecision.GetAttractiveness(targets, player) + powerDecision.GetAttractiveness(frozenTargets, player);
-					if (consideredAttractiveness <= bestAttractiveness || consideredAttractiveness < powerDecision.MinimumAttractiveness)
+					if (consideredAttractiveness < powerDecision.MinimumAttractiveness)
 						continue;
 
-					bestAttractiveness = consideredAttractiveness;
-					bestLocation = new MPos(i, j).ToCPos(map);
+					suitableLocations.Add((tl, consideredAttractiveness));
+					totalAttractiveness += consideredAttractiveness;
 				}
 			}
 
-			return bestLocation;
+			if (suitableLocations.Count == 0)
+				return null;
+
+			// Pick a random location with above average attractiveness.
+			var averageAttractiveness = totalAttractiveness / suitableLocations.Count;
+			return suitableLocations.Shuffle(world.LocalRandom)
+				.First(x => x.Attractiveness >= averageAttractiveness)
+				.UV.ToCPos(map);
 		}
 
 		/// <summary>Detail scans an area, evaluating positions.</summary>
