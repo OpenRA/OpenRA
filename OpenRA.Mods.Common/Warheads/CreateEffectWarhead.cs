@@ -44,10 +44,6 @@ namespace OpenRA.Mods.Common.Warheads
 		[Desc("Chance of impact sound to play.")]
 		public readonly int ImpactSoundChance = 100;
 
-		[Desc("Consider explosion above this altitude an air explosion.",
-			"If that's the case, this warhead will consider the explosion position to have the 'Air' TargetType (in addition to any nearby actor's TargetTypes).")]
-		public readonly WDist AirThreshold = new WDist(128);
-
 		[Desc("Whether to consider actors in determining whether the explosion should happen. If false, only terrain will be considered.")]
 		public readonly bool ImpactActors = true;
 
