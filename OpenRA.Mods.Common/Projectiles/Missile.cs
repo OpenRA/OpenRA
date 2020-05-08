@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.GameRules;
@@ -857,8 +858,8 @@ namespace OpenRA.Mods.Common.Projectiles
 			// Create the sprite trail effect
 			if (!string.IsNullOrEmpty(info.TrailImage) && --ticksToNextSmoke < 0 && (state != States.Freefall || info.TrailWhenDeactivated))
 			{
-				world.AddFrameEndTask(w => w.Add(new SpriteEffect(pos - 3 * move / 2, w, info.TrailImage, info.TrailSequences.Random(world.SharedRandom),
-					trailPalette, facing: renderFacing.Facing)));
+				world.AddFrameEndTask(w => w.Add(new SpriteEffect(pos - 3 * move / 2, renderFacing, w,
+					info.TrailImage, info.TrailSequences.Random(world.SharedRandom), trailPalette)));
 
 				ticksToNextSmoke = info.TrailInterval;
 			}
