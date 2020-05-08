@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Warheads
 		[Desc("The color used for this warhead's visualization in the world's `WarheadDebugOverlay` trait.")]
 		public readonly Color DebugOverlayColor = Color.Red;
 
-		public bool IsValidTarget(BitSet<TargetableType> targetTypes)
+		protected bool IsValidTarget(BitSet<TargetableType> targetTypes)
 		{
 			return ValidTargets.Overlaps(targetTypes) && !InvalidTargets.Overlaps(targetTypes);
 		}
