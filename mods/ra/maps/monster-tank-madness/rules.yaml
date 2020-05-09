@@ -195,7 +195,7 @@ DOME.NoInfiltrate:
 		Image: DOME
 	-InfiltrateForExploration:
 	Targetable:
-		TargetTypes: Ground, Structure, C4, DetonateAttack, MissionObjective
+		TargetTypes: GroundActor, Structure, C4, DetonateAttack, MissionObjective
 	ProvidesPrerequisite:
 		Prerequisite: dome
 

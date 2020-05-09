@@ -33,7 +33,7 @@ World:
 
 MISS:
 	Targetable:
-		TargetTypes: Ground, C4, DetonateAttack, Structure, MissionObjective, NoAutoTarget
+		TargetTypes: GroundActor, C4, DetonateAttack, Structure, MissionObjective, NoAutoTarget
 
 LST.Unselectable.UnloadOnly:
 	Inherits: LST
@@ -45,7 +45,7 @@ LST.Unselectable.UnloadOnly:
 	Cargo:
 		MaxWeight: 0
 	Targetable:
-		TargetTypes: Ground, Water, Repair, NoAutoTarget
+		TargetTypes: GroundActor, Water, Repair, NoAutoTarget
 	Interactable:
 
 SPY.Strong:
@@ -90,7 +90,7 @@ TRUK.Hijackable:
 		PassengerConditions:
 			spy.strong: mobile
 	Targetable:
-		TargetTypes: Ground, Repair, Vehicle, NoAutoTarget
+		TargetTypes: GroundActor, Repair, Vehicle, NoAutoTarget
 	-Huntable:
 	Capturable:
 		Types: MissionObjective

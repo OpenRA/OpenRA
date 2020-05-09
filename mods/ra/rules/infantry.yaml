@@ -47,7 +47,7 @@ DOG:
 	AutoTargetPriority@DEFAULT:
 		ValidTargets: Infantry
 	Targetable:
-		TargetTypes: Ground, Infantry
+		TargetTypes: GroundActor, Infantry
 	WithInfantryBody:
 		MoveSequence: walk
 		StandSequences: stand
@@ -763,7 +763,7 @@ Ant:
 	Armament:
 		Weapon: mandible
 	Targetable:
-		TargetTypes: Ground, Infantry, Ant
+		TargetTypes: GroundActor, Infantry, Ant
 	WithDeathAnimation:
 		UseDeathTypeSuffix: false
 	Voiced:
