@@ -35,7 +35,7 @@ SAM:
 LST:
 	-Selectable:
 	Targetable:
-		TargetTypes: Ground, Water
+		TargetTypes: GroundActor, WaterActor
 	Interactable:
 
 LST.IN:
@@ -50,7 +50,7 @@ TRAN:
 	RevealsShroud:
 		Range: 4c0
 	Targetable@GROUND:
-		TargetTypes: Ground
+		TargetTypes: GroundActor
 	Interactable:
 
 TRAN.IN:
@@ -82,14 +82,14 @@ SPY:
 WEAP:
 	-InfiltrateForSupportPower:
 	Targetable:
-		TargetTypes: Ground, C4, DetonateAttack, Structure
+		TargetTypes: GroundActor, C4, DetonateAttack, Structure
 
 WEAP.infiltratable:
 	Inherits: WEAP
 	Buildable:
 		Prerequisites: ~disabled
 	Targetable@Spy:
-		TargetTypes: Ground, C4, DetonateAttack, Structure, Mission Objectives
+		TargetTypes: GroundActor, C4, DetonateAttack, Structure, Mission Objectives
 	RenderSprites:
 		Image: WEAP
 	ProvidesPrerequisite:
@@ -99,7 +99,7 @@ MISS:
 	Tooltip:
 		Name: Prison
 	Targetable:
-		TargetTypes: Ground, C4, DetonateAttack, Structure, Mission Objectives
+		TargetTypes: GroundActor, C4, DetonateAttack, Structure, Mission Objectives
 	AttackOmni:
 	Armament:
 		Weapon: PrisonColt

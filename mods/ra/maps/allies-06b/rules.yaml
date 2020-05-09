@@ -50,7 +50,7 @@ TECH.CAM:
 
 STEK:
 	Targetable:
-		TargetTypes: Ground, Structure, C4, DetonateAttack, SpyInfiltrate
+		TargetTypes: GroundActor, Structure, C4, DetonateAttack, SpyInfiltrate
 
 APWR:
 	Buildable:

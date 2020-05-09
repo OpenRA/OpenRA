@@ -517,7 +517,7 @@ MNLY:
 	Rearmable:
 		RearmActors: fix
 	Targetable:
-		TargetTypes: Ground, Vehicle, Mine
+		TargetTypes: GroundActor, Vehicle, Mine
 	WithAmmoPipsDecoration:
 		Position: BottomLeft
 		Margin: 4, 3
@@ -829,7 +829,7 @@ QTNK:
 		Color: FFFF0080
 		Range: 7c0
 	Targetable:
-		TargetTypes: Ground, MADTank, Vehicle
+		TargetTypes: GroundActor, MADTank, Vehicle
 	Selectable:
 		DecorationBounds: 44,38,0,-4
 
