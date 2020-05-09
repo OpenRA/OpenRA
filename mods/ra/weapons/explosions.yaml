@@ -1,5 +1,5 @@
 ^Explosion:
-	ValidTargets: Ground, Water, Air
+	ValidTargets: Ground, Water, Air, GroundActor, WaterActor, AirborneActor
 	Warhead@1Dam: SpreadDamage
 		Spread: 426
 		Damage: 5000
@@ -25,7 +25,7 @@
 
 CrateNapalm:
 	Inherits: ^Explosion
-	ValidTargets: Ground, Trees
+	ValidTargets: Ground, GroundActor, WaterActor, Trees
 	Warhead@1Dam: SpreadDamage
 		Spread: 170
 		Damage: 6000
@@ -112,6 +112,7 @@ V2Explode:
 	-Report:
 
 BuildingExplode:
+	ValidTargets: Ground, Water, GroundActor, WaterActor
 	Warhead@2Eff: CreateEffect
 		Explosions: building, building_napalm, large_explosion, self_destruct, large_napalm
 	Warhead@Smu: LeaveSmudge
@@ -124,6 +125,7 @@ SmallBuildingExplode:
 		Explosions: building, building_napalm, large_explosion, self_destruct
 
 CivPanicExplosion:
+	ValidTargets: Ground, GroundActor
 	Warhead@1Dam: SpreadDamage # Used to panic civilians which are emitted from a killed CivBuilding
 		Falloff: 100, 100
 		Range: 0, 128
@@ -153,6 +155,7 @@ BarrelExplode:
 		Delay: 5
 
 ATMine:
+	ValidTargets: Ground, Water, GroundActor, WaterActor
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
 		Damage: 40000
@@ -177,6 +180,7 @@ APMine:
 		SmudgeType: Scorch
 
 OreExplosion:
+	ValidTargets: Ground, Water, GroundActor, WaterActor
 	Warhead@1Dam: SpreadDamage
 		Spread: 9
 		Damage: 1000
@@ -194,7 +198,7 @@ OreExplosion:
 		ImpactSounds: kaboom25.aud
 
 CrateNuke:
-	ValidTargets: Ground, Trees, Water, Air
+	ValidTargets: Ground, GroundActor, Trees, Water, WaterActor, Underwater, Air, AirborneActor
 	Warhead@1Dam_impact: SpreadDamage
 		Spread: 1c0
 		Damage: 10000
@@ -240,7 +244,7 @@ CrateNuke:
 		DamageTypes: Incendiary
 
 MiniNuke:
-	ValidTargets: Ground, Trees, Water, Underwater, Air
+	ValidTargets: Ground, GroundActor, Trees, Water, WaterActor, Underwater, Air, AirborneActor
 	Warhead@1Dam_impact: SpreadDamage
 		Spread: 1c0
 		Damage: 15000

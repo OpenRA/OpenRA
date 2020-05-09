@@ -3,6 +3,7 @@
 	Range: 5c0
 	MinRange: 0c512
 	Report: missile6.aud
+	ValidTargets: Ground, Water, GroundActor, WaterActor
 	Projectile: Missile
 		Speed: 213
 		Arm: 2
@@ -39,7 +40,7 @@
 
 ^AntiAirMissile:
 	Inherits: ^AntiGroundMissile
-	ValidTargets: Air
+	ValidTargets: AirborneActor
 	Warhead@3Eff: CreateEffect
 		ImpactActors: false
 
@@ -115,7 +116,7 @@ MammothTusk:
 	ReloadDelay: 60
 	Range: 6c512
 	Burst: 2
-	ValidTargets: Air, Infantry
+	ValidTargets: AirborneActor, Infantry
 	Projectile: Missile
 		Speed: 341
 		HorizontalRateOfTurn: 15
@@ -196,7 +197,7 @@ Stinger:
 
 StingerAA:
 	Inherits: Stinger
-	ValidTargets: Air
+	ValidTargets: AirborneActor
 	Projectile: Missile
 		Speed: 255
 		CloseEnough: 298
@@ -222,7 +223,7 @@ TorpTube:
 	ReloadDelay: 100
 	Range: 9c0
 	Report: torpedo1.aud
-	ValidTargets: Water, Underwater, Bridge
+	ValidTargets: Water, WaterActor, Underwater, Bridge
 	Burst: 2
 	BurstDelays: 20
 	Projectile: Missile
@@ -304,7 +305,7 @@ SubMissile:
 
 SubMissileAA:
 	Inherits: ^SubMissileDefault
-	ValidTargets: Air
+	ValidTargets: AirborneActor
 	Warhead@1Dam: SpreadDamage
 		Damage: 1500
 

@@ -2,6 +2,7 @@ ParaBomb:
 	ReloadDelay: 8
 	Range: 3c0
 	Report: chute1.aud
+	ValidTargets: Ground, Water, GroundActor, WaterActor
 	Projectile: GravityBomb
 		Image: PARABOMB
 		OpenSequence: open
@@ -31,7 +32,7 @@ ParaBomb:
 		InvalidTargets: Ship, Structure
 
 Atomic:
-	ValidTargets: Ground, Trees, Water, Underwater, Air
+	ValidTargets: Ground, GroundActor, Trees, Water, WaterActor, Underwater, Air, AirborneActor
 	Warhead@1Dam_impact: SpreadDamage
 		Spread: 1c0
 		Damage: 15000

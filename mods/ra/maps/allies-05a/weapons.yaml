@@ -1,4 +1,5 @@
 PrisonColt:
+	ValidTargets: Ground, GroundActor
 	ReloadDelay: 5
 	Report: gun5.aud
 	Projectile: InstantHit
