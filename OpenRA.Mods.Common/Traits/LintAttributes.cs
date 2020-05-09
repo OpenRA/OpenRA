@@ -13,7 +13,7 @@ using System;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	[AttributeUsage(AttributeTargets.Field)]
+	[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
 	public sealed class VoiceSetReferenceAttribute : Attribute { }
 
 	[AttributeUsage(AttributeTargets.Field)]
