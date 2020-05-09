@@ -93,9 +93,6 @@ Ant:
 	Health:
 		HP: 20000
 
-E7:
-	-AnnounceOnKill:
-
 powerproxy.paratroopers:
 	ParatroopersPower:
 		DisplayBeacon: false
