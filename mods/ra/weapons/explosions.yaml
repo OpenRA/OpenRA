@@ -84,6 +84,9 @@ UnitExplodeShip:
 		ImpactSounds: kaboom25.aud
 		ValidTargets: Ground, Water
 		ImpactActors: false
+	Warhead@3EffWater: CreateEffect
+		ValidTargets: Water
+		ImpactActors: false
 
 UnitExplodeSubmarine:
 	Inherits: ^Explosion
@@ -91,8 +94,9 @@ UnitExplodeSubmarine:
 	Warhead@2Eff: CreateEffect
 		Explosions: large_splash
 		ImpactSounds: splash9.aud
-		ValidTargets: Ground, Water
+		ValidTargets: Water
 		ImpactActors: false
+	-Warhead@3EffWater:
 
 UnitExplodeSmall:
 	Inherits: ^Explosion
