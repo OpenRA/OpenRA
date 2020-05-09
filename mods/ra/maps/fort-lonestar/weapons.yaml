@@ -23,7 +23,7 @@
 MammothTusk:
 	ReloadDelay: 300
 	Range: 10c0
-	ValidTargets: Ground, Air
+	ValidTargets: Ground, GroundActor, AirborneActor
 	Projectile: Missile
 		Blockable: false
 		Speed: 128
@@ -49,7 +49,7 @@ TankNapalm:
 	ReloadDelay: 40
 	Range: 8c0
 	Report: aacanon3.aud
-	ValidTargets: Ground
+	ValidTargets: Ground, GroundActor
 	Burst: 6
 	BurstDelays: 1
 	Projectile: Bullet
@@ -124,7 +124,7 @@ FLAK-23:
 	ReloadDelay: 10
 	Range: 8c0
 	Report: aacanon3.aud
-	ValidTargets: Air, Ground
+	ValidTargets: AirborneActor, Ground, GroundActor
 	Projectile: Bullet
 		Speed: 1c682
 		Blockable: false

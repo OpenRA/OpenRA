@@ -2,7 +2,7 @@
 	ReloadDelay: 10
 	Range: 8c0
 	Report: aacanon3.aud
-	ValidTargets: Air
+	ValidTargets: AirborneActor
 	Projectile: InstantHit
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
@@ -59,6 +59,7 @@ FLAK-23-AG:
 	ReloadDelay: 30
 	Range: 6c0
 	Report: gun13.aud
+	ValidTargets: Ground, Water, GroundActor, WaterActor
 	Projectile: InstantHit
 		Blockable: true
 	Warhead@1Dam: SpreadDamage
@@ -267,7 +268,6 @@ M60mg:
 	Range: 2c512
 	Report: gun5.aud
 	ValidTargets: Ground, Infantry
-	InvalidTargets: Vehicle, Water, Structure, Wall, Husk, Mine
 	Projectile: InstantHit
 		Blockable: true
 	Warhead@1Dam: SpreadDamage

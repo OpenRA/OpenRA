@@ -10,8 +10,8 @@ VolkovWeapon:
 	Inherits: SilencedPPK
 	ReloadDelay: 25
 	Range: 6c0
-	-ValidTargets:
-	InvalidTargets: Air, Bridge, Structure
+	ValidTargets: Ground, GroundActor, Water, WaterActor
+	InvalidTargets: Bridge, Structure
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
 		Versus:
