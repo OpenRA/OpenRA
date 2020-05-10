@@ -178,11 +178,11 @@
 		AttackAnythingCondition: stance-attackanything
 	AutoTargetPriority@DEFAULT:
 		RequiresCondition: !stance-attackanything
-		ValidTargets: Infantry, Vehicle, Water, Underwater, Defense, Mine
-		InvalidTargets: NoAutoTarget, WaterStructure
+		ValidTargets: Infantry, Vehicle, Ship, Underwater, Defense, Mine
+		InvalidTargets: NoAutoTarget
 	AutoTargetPriority@ATTACKANYTHING:
 		RequiresCondition: stance-attackanything
-		ValidTargets: Infantry, Vehicle, Water, Underwater, Structure, Defense, Mine
+		ValidTargets: Infantry, Vehicle, Ship, Underwater, Structure, Defense, Mine
 		InvalidTargets: NoAutoTarget
 
 ^AutoTargetGroundAssaultMove:
@@ -205,11 +205,11 @@
 		AttackAnythingCondition: stance-attackanything
 	AutoTargetPriority@DEFAULT:
 		RequiresCondition: !stance-attackanything
-		ValidTargets: Infantry, Vehicle, Water, Underwater, Air, Defense, Mine
-		InvalidTargets: NoAutoTarget, WaterStructure
+		ValidTargets: Infantry, Vehicle, Ship, Underwater, Air, Defense, Mine
+		InvalidTargets: NoAutoTarget
 	AutoTargetPriority@ATTACKANYTHING:
 		RequiresCondition: stance-attackanything
-		ValidTargets: Infantry, Vehicle, Water, Underwater, Air, Structure, Defense, Mine
+		ValidTargets: Infantry, Vehicle, Ship, Underwater, Air, Structure, Defense, Mine
 		InvalidTargets: NoAutoTarget
 
 ^AutoTargetAllAssaultMove:
