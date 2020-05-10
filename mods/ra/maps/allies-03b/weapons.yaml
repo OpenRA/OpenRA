@@ -7,4 +7,4 @@ Colt45:
 
 BarrelExplode:
 	Warhead@1Dam: SpreadDamage
-		ValidTargets: Ground, Prisoner
+		ValidTargets: Ground, GroundActor, Prisoner

@@ -5,7 +5,7 @@
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
 		Damage: 15000
-		ValidTargets: Ground, Water, Trees
+		ValidTargets: GroundActor, WaterActor, Trees
 		Versus:
 			None: 90
 			Wood: 50
@@ -80,6 +80,7 @@ Napalm:
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
 		Damage: 10000
+		ValidTargets: GroundActor, WaterActor
 		Versus:
 			None: 1000
 		DamageTypes: Prone50Percent, TriggerProne, ElectricityDeath
@@ -144,6 +145,7 @@ Demolish:
 	ValidTargets: GroundActor, WaterActor
 	Warhead@1Dam: SpreadDamage
 		DamageTypes: DefaultDeath
+		ValidTargets: GroundActor, WaterActor
 	Warhead@2Eff: CreateEffect
 		Explosions: building
 		ImpactSounds: kaboom25.aud
@@ -157,6 +159,7 @@ Claw:
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
 		Damage: 3000
+		ValidTargets: GroundActor, WaterActor
 		Versus:
 			None: 97
 			Wood: 10
@@ -224,6 +227,7 @@ MADTankThump:
 	Warhead@1Dam: HealthPercentageDamage
 		Spread: 7c0
 		Damage: 1
+		ValidTargets: GroundActor, WaterActor
 		InvalidTargets: MADTank, Infantry
 	Warhead@Shake: ShakeScreen
 		Duration: 10
@@ -236,6 +240,7 @@ MADTankDetonate:
 	Warhead@1Dam: HealthPercentageDamage
 		Spread: 7c0
 		Damage: 19
+		ValidTargets: GroundActor, WaterActor
 		InvalidTargets: MADTank, Infantry
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater

@@ -34,7 +34,7 @@ MammothTusk:
 		RangeLimit: 12c0
 	Warhead@1Dam: SpreadDamage
 		Spread: 640
-		ValidTargets: Ground, Air
+		ValidTargets: GroundActor, AirborneActor
 		Versus:
 			None: 125
 			Wood: 110
@@ -61,7 +61,7 @@ TankNapalm:
 		Blockable: false
 	Warhead: SpreadDamage
 		Spread: 341
-		ValidTargets: Ground
+		ValidTargets: GroundActor
 		Versus:
 			None: 65
 			Wood: 125
@@ -130,7 +130,7 @@ FLAK-23:
 		Blockable: false
 	Warhead: SpreadDamage
 		Spread: 213
-		ValidTargets: Air, Ground
+		ValidTargets: AirborneActor, GroundActor
 		Versus:
 			None: 32
 			Wood: 28
