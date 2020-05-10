@@ -1,5 +1,5 @@
 Atomic:
-	ValidTargets: Ground, Air, Trees
+	ValidTargets: Ground, Water, Air, Trees
 	Report: nukemisl.aud
 	Warhead@1Dam_impact: SpreadDamage
 		Spread: 1c0
@@ -90,7 +90,7 @@ Atomic:
 		Multiplier: 1,1
 
 IonCannon:
-	ValidTargets: Ground, Air, Trees
+	ValidTargets: Ground, Water, Air, Trees
 	Warhead@1Dam_impact: SpreadDamage
 		Range: 0, 1c1, 2c1, 2c512
 		Damage: 10000
