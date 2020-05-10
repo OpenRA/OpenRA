@@ -207,11 +207,15 @@ DepthCharge:
 		Versus:
 			Light: 75
 		DamageTypes: ExplosionDeath
-	Warhead@4EffWater: CreateEffect
-		Explosions: large_splash
-		ImpactSounds: h2obomb2.aud
-		ValidTargets: Water, Underwater
 	Warhead@3Eff: CreateEffect
-		Explosions: small_explosion
+		Explosions: med_explosion
 		ImpactSounds: kaboom15.aud
 		ValidTargets: Submarine
+		InvalidTargets: Underwater
+	Warhead@4EffWater: CreateEffect
+		Explosions: large_splash
+		ImpactSounds: splash9.aud
+		ValidTargets: Water, Underwater
+	Warhead@5EffSubmergedHitSound: CreateEffect
+		ImpactSounds: h2obomb2.aud
+		ValidTargets: Underwater
