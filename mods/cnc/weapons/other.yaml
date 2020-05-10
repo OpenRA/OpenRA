@@ -51,11 +51,11 @@ Chemspray:
 	Inherits: ^FlameWeapon
 	ReloadDelay: 65
 	Range: 3c0
-	InvalidTargets:
+	-InvalidTargets:
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
 		Damage: 8000
-		InvalidTargets:
+		-InvalidTargets:
 		Versus:
 			None: 70
 			Wood: 35
