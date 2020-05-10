@@ -22,7 +22,7 @@ DOGGIE:
 	Voiced:
 		VoiceSet: Fiend
 	Targetable:
-		TargetTypes: Ground
+		TargetTypes: Ground, Creep
 	Armament:
 		Weapon: FiendShard
 	AttackFrontal:
