@@ -10,6 +10,7 @@
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 4000
+		ValidTargets: GroundActor, WaterActor
 		Versus:
 			None: 30
 			Wood: 75
@@ -18,16 +19,16 @@
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
-		InvalidTargets: Vehicle, Structure, Wall, Husk, Trees
+		ValidTargets: Ground, Infantry
 	Warhead@3Eff: CreateEffect
 		Explosions: small_explosion
 		ImpactSounds: kaboom12.aud
-		ValidTargets: Ground, Ship, Trees
+		ValidTargets: Ground, GroundActor, WaterActor, Trees
 	Warhead@4EffWater: CreateEffect
 		Explosions: small_splash
 		ImpactSounds: splash9.aud
 		ValidTargets: Water, Underwater
-		InvalidTargets: Ship, Structure, Bridge
+		InvalidTargets: Bridge
 
 25mm:
 	Inherits: ^Cannon
