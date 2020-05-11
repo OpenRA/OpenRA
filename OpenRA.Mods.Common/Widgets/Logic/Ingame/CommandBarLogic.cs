@@ -12,7 +12,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Graphics;
 using OpenRA.Mods.Common.Orders;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Orders;
@@ -54,7 +53,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var attackMoveButton = widget.GetOrNull<ButtonWidget>("ATTACK_MOVE");
 			if (attackMoveButton != null)
 			{
-				BindButtonIcon(attackMoveButton);
+				WidgetUtils.BindButtonIcon(attackMoveButton);
 
 				attackMoveButton.IsDisabled = () => { UpdateStateIfNecessary(); return attackMoveDisabled; };
 				attackMoveButton.IsHighlighted = () => world.OrderGenerator is AttackMoveOrderGenerator;
@@ -77,7 +76,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var forceMoveButton = widget.GetOrNull<ButtonWidget>("FORCE_MOVE");
 			if (forceMoveButton != null)
 			{
-				BindButtonIcon(forceMoveButton);
+				WidgetUtils.BindButtonIcon(forceMoveButton);
 
 				forceMoveButton.IsDisabled = () => { UpdateStateIfNecessary(); return forceMoveDisabled; };
 				forceMoveButton.IsHighlighted = () => !forceMoveButton.IsDisabled() && IsForceModifiersActive(Modifiers.Alt);
@@ -93,7 +92,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var forceAttackButton = widget.GetOrNull<ButtonWidget>("FORCE_ATTACK");
 			if (forceAttackButton != null)
 			{
-				BindButtonIcon(forceAttackButton);
+				WidgetUtils.BindButtonIcon(forceAttackButton);
 
 				forceAttackButton.IsDisabled = () => { UpdateStateIfNecessary(); return forceAttackDisabled; };
 				forceAttackButton.IsHighlighted = () => !forceAttackButton.IsDisabled() && IsForceModifiersActive(Modifiers.Ctrl)
@@ -111,7 +110,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var guardButton = widget.GetOrNull<ButtonWidget>("GUARD");
 			if (guardButton != null)
 			{
-				BindButtonIcon(guardButton);
+				WidgetUtils.BindButtonIcon(guardButton);
 
 				guardButton.IsDisabled = () => { UpdateStateIfNecessary(); return guardDisabled; };
 				guardButton.IsHighlighted = () => world.OrderGenerator is GuardOrderGenerator;
@@ -135,7 +134,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var scatterButton = widget.GetOrNull<ButtonWidget>("SCATTER");
 			if (scatterButton != null)
 			{
-				BindButtonIcon(scatterButton);
+				WidgetUtils.BindButtonIcon(scatterButton);
 
 				scatterButton.IsDisabled = () => { UpdateStateIfNecessary(); return scatterDisabled; };
 				scatterButton.IsHighlighted = () => scatterHighlighted > 0;
@@ -153,7 +152,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var deployButton = widget.GetOrNull<ButtonWidget>("DEPLOY");
 			if (deployButton != null)
 			{
-				BindButtonIcon(deployButton);
+				WidgetUtils.BindButtonIcon(deployButton);
 
 				deployButton.IsDisabled = () =>
 				{
@@ -179,7 +178,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var stopButton = widget.GetOrNull<ButtonWidget>("STOP");
 			if (stopButton != null)
 			{
-				BindButtonIcon(stopButton);
+				WidgetUtils.BindButtonIcon(stopButton);
 
 				stopButton.IsDisabled = () => { UpdateStateIfNecessary(); return stopDisabled; };
 				stopButton.IsHighlighted = () => stopHighlighted > 0;
@@ -197,7 +196,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var queueOrdersButton = widget.GetOrNull<ButtonWidget>("QUEUE_ORDERS");
 			if (queueOrdersButton != null)
 			{
-				BindButtonIcon(queueOrdersButton);
+				WidgetUtils.BindButtonIcon(queueOrdersButton);
 
 				queueOrdersButton.IsDisabled = () => { UpdateStateIfNecessary(); return waypointModeDisabled; };
 				queueOrdersButton.IsHighlighted = () => !queueOrdersButton.IsDisabled() && IsForceModifiersActive(Modifiers.Shift);
@@ -270,20 +269,6 @@ namespace OpenRA.Mods.Common.Widgets
 				stopHighlighted--;
 
 			base.Tick();
-		}
-
-		void BindButtonIcon(ButtonWidget button)
-		{
-			var icon = button.Get<ImageWidget>("ICON");
-			var hasDisabled = ChromeProvider.GetImage(icon.ImageCollection, icon.ImageName + "-disabled") != null;
-			var hasActive = ChromeProvider.GetImage(icon.ImageCollection, icon.ImageName + "-active") != null;
-			var hasActiveHover = ChromeProvider.GetImage(icon.ImageCollection, icon.ImageName + "-active-hover") != null;
-			var hasHover = ChromeProvider.GetImage(icon.ImageCollection, icon.ImageName + "-hover") != null;
-
-			icon.GetImageName = () => hasActive && button.IsHighlighted() ?
-						(hasActiveHover && Ui.MouseOverWidget == button ? icon.ImageName + "-active-hover" : icon.ImageName + "-active") :
-					hasDisabled && button.IsDisabled() ? icon.ImageName + "-disabled" :
-					hasHover && Ui.MouseOverWidget == button ? icon.ImageName + "-hover" : icon.ImageName;
 		}
 
 		bool IsForceModifiersActive(Modifiers modifiers)

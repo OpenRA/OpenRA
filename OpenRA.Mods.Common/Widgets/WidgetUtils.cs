@@ -14,6 +14,7 @@ using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Network;
 using OpenRA.Primitives;
+using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
 {
@@ -281,6 +282,55 @@ namespace OpenRA.Mods.Common.Widgets
 				button.GetTooltipText = () => text;
 			else
 				button.GetTooltipText = null;
+		}
+
+		public static void BindButtonIcon(ButtonWidget button)
+		{
+			var icon = button.Get<ImageWidget>("ICON");
+
+			var hasActiveImage = ChromeProvider.GetImage(icon.ImageCollection, icon.ImageName + "-active") != null;
+			var hasActiveDisabledImage = ChromeProvider.GetImage(icon.ImageCollection, icon.ImageName + "-active-disabled") != null;
+			var hasActivePressedImage = ChromeProvider.GetImage(icon.ImageCollection, icon.ImageName + "-active-pressed") != null;
+			var hasActiveHoverImage = ChromeProvider.GetImage(icon.ImageCollection, icon.ImageName + "-active-hover") != null;
+
+			var hasImage = ChromeProvider.GetImage(icon.ImageCollection, icon.ImageName) != null;
+			var hasDisabledImage = ChromeProvider.GetImage(icon.ImageCollection, icon.ImageName + "-disabled") != null;
+			var hasPressedImage = ChromeProvider.GetImage(icon.ImageCollection, icon.ImageName + "-pressed") != null;
+			var hasHoverImage = ChromeProvider.GetImage(icon.ImageCollection, icon.ImageName + "-hover") != null;
+
+			icon.GetImageName = () =>
+			{
+				var isActive = button.IsHighlighted();
+				var isDisabled = button.IsDisabled();
+				var isPressed = button.Depressed;
+				var isHovered = Ui.MouseOverWidget == button;
+
+				var baseName = button.IsHighlighted() ? icon.ImageName + "-active" : icon.ImageName;
+				var stateName = WidgetUtils.GetStatefulImageName(baseName, isDisabled, isPressed, isHovered);
+
+				if (isActive)
+				{
+					if (isDisabled)
+						return hasActiveDisabledImage ? stateName : hasActiveImage ? baseName : icon.ImageName;
+					else if (isPressed)
+						return hasActivePressedImage ? stateName : hasActiveImage ? baseName : icon.ImageName;
+					else if (isHovered)
+						return hasActiveHoverImage ? stateName : hasActiveImage ? baseName : icon.ImageName;
+					else
+						return hasActiveImage ? baseName : icon.ImageName;
+				}
+				else
+				{
+					if (isDisabled)
+						return hasDisabledImage ? stateName : baseName;
+					else if (isPressed)
+						return hasPressedImage ? stateName : baseName;
+					else if (isHovered)
+						return hasHoverImage ? stateName : baseName;
+					else
+						return baseName;
+				}
+			};
 		}
 
 		public static void BindPlayerNameAndStatus(LabelWidget label, Player p)
