@@ -21,7 +21,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Transports actors with the `Carryable` trait.")]
-	public class CarryallInfo : ITraitInfo, Requires<BodyOrientationInfo>, Requires<AircraftInfo>
+	public class CarryallInfo : TraitInfo, Requires<BodyOrientationInfo>, Requires<AircraftInfo>
 	{
 		[Desc("Delay (in ticks) on the ground while attaching an actor to the carryall.")]
 		public readonly int BeforeLoadDelay = 0;
@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Traits
 		[VoiceReference]
 		public readonly string Voice = "Action";
 
-		public virtual object Create(ActorInitializer init) { return new Carryall(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new Carryall(init.Self, this); }
 	}
 
 	public class Carryall : INotifyKilled, ISync, ITick, IRender, INotifyActorDisposing, IIssueOrder, IResolveOrder,

@@ -16,7 +16,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Create player palettes by applying alpha transparency to another player palette.")]
-	class PaletteFromPlayerPaletteWithAlphaInfo : ITraitInfo
+	class PaletteFromPlayerPaletteWithAlphaInfo : TraitInfo
 	{
 		[FieldLoader.Require]
 		[PaletteDefinition(true)]
@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Premultiply color by the alpha component.")]
 		public readonly bool Premultiply = true;
 
-		public object Create(ActorInitializer init) { return new PaletteFromPlayerPaletteWithAlpha(this); }
+		public override object Create(ActorInitializer init) { return new PaletteFromPlayerPaletteWithAlpha(this); }
 	}
 
 	class PaletteFromPlayerPaletteWithAlpha : ILoadsPlayerPalettes

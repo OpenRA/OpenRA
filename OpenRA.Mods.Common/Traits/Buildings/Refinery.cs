@@ -21,7 +21,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class RefineryInfo : IAcceptResourcesInfo, Requires<WithSpriteBodyInfo>
+	public class RefineryInfo : TraitInfo, Requires<WithSpriteBodyInfo>, IAcceptResourcesInfo
 	{
 		[Desc("Actual harvester facing when docking, 0-255 counter-clock-wise.")]
 		public readonly int DockAngle = 0;
@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int TickVelocity = 2;
 		public readonly int TickRate = 10;
 
-		public virtual object Create(ActorInitializer init) { return new Refinery(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new Refinery(init.Self, this); }
 	}
 
 	public class Refinery : INotifyCreated, ITick, IAcceptResources, INotifySold, INotifyCapture,

@@ -17,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Grants a condition when this actor produces a specific actor.")]
-	public class GrantConditionOnProductionInfo : ITraitInfo
+	public class GrantConditionOnProductionInfo : TraitInfo
 	{
 		[FieldLoader.Require]
 		[GrantedConditionReference]
@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool ShowSelectionBar = true;
 		public readonly Color SelectionBarColor = Color.Magenta;
 
-		public object Create(ActorInitializer init) { return new GrantConditionOnProduction(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new GrantConditionOnProduction(init.Self, this); }
 	}
 
 	public class GrantConditionOnProduction : INotifyProduction, ITick, ISync, ISelectionBar

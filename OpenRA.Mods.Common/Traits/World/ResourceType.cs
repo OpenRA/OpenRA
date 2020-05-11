@@ -16,7 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class ResourceTypeInfo : ITraitInfo, IMapPreviewSignatureInfo
+	public class ResourceTypeInfo : TraitInfo, IMapPreviewSignatureInfo
 	{
 		[Desc("Sequence image that holds the different variants.")]
 		public readonly string Image = "resources";
@@ -79,7 +79,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public object Create(ActorInitializer init) { return new ResourceType(this, init.World); }
+		public override object Create(ActorInitializer init) { return new ResourceType(this, init.World); }
 	}
 
 	public class ResourceType : IWorldLoaded

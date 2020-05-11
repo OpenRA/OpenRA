@@ -16,7 +16,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Grant a condition to the crushing actor.")]
-	public class GrantExternalConditionToCrusherInfo : ITraitInfo
+	public class GrantExternalConditionToCrusherInfo : TraitInfo
 	{
 		[Desc("The condition to apply on a crush attempt. Must be included among the crusher actor's ExternalCondition traits.")]
 		public readonly string WarnCrushCondition = null;
@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Duration of the condition applied on a successful crush (in ticks). Set to 0 for a permanent condition.")]
 		public readonly int OnCrushDuration = 0;
 
-		public virtual object Create(ActorInitializer init) { return new GrantExternalConditionToCrusher(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new GrantExternalConditionToCrusher(init.Self, this); }
 	}
 
 	public class GrantExternalConditionToCrusher : INotifyCrushed

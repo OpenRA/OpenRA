@@ -18,7 +18,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class CrateSpawnerInfo : ITraitInfo, ILobbyOptions
+	public class CrateSpawnerInfo : TraitInfo, ILobbyOptions
 	{
 		[Translate]
 		[Desc("Descriptive label for the crates checkbox in the lobby.")]
@@ -83,7 +83,7 @@ namespace OpenRA.Mods.Common.Traits
 			yield return new LobbyBooleanOption("crates", CheckboxLabel, CheckboxDescription, CheckboxVisible, CheckboxDisplayOrder, CheckboxEnabled, CheckboxLocked);
 		}
 
-		public object Create(ActorInitializer init) { return new CrateSpawner(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new CrateSpawner(init.Self, this); }
 	}
 
 	public class CrateSpawner : ITick, INotifyCreated

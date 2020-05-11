@@ -15,12 +15,12 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class TerrainTunnelLayerInfo : ITraitInfo, Requires<DomainIndexInfo>, ILobbyCustomRulesIgnore
+	public class TerrainTunnelLayerInfo : TraitInfo, Requires<DomainIndexInfo>, ILobbyCustomRulesIgnore
 	{
 		[Desc("Terrain type used by cells outside any tunnel footprint.")]
 		public readonly string ImpassableTerrainType = "Impassable";
 
-		public object Create(ActorInitializer init) { return new TerrainTunnelLayer(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new TerrainTunnelLayer(init.Self, this); }
 	}
 
 	public class TerrainTunnelLayer : ICustomMovementLayer, IWorldLoaded

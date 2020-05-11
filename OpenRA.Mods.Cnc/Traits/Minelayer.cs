@@ -21,7 +21,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
 {
-	public class MinelayerInfo : ITraitInfo, Requires<RearmableInfo>
+	public class MinelayerInfo : TraitInfo, Requires<RearmableInfo>
 	{
 		[ActorReference]
 		public readonly string Mine = "minv";
@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("Sprite overlay to use for minefield cells hidden behind fog or shroud.")]
 		public readonly string TileUnknownName = "build-unknown";
 
-		public object Create(ActorInitializer init) { return new Minelayer(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new Minelayer(init.Self, this); }
 	}
 
 	public class Minelayer : IIssueOrder, IResolveOrder, ISync, IIssueDeployOrder, IOrderVoice, ITick

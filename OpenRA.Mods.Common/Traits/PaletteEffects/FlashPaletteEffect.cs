@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 	using GUtil = OpenRA.Graphics.Util;
 
 	[Desc("Used for bursted one-colored whole screen effects. Add this to the world actor.")]
-	public class FlashPaletteEffectInfo : ITraitInfo
+	public class FlashPaletteEffectInfo : TraitInfo
 	{
 		public readonly HashSet<string> ExcludePalettes = new HashSet<string> { "cursor", "chrome", "colorpicker", "fog", "shroud" };
 
@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Set this when using multiple independent flash effects.")]
 		public readonly string Type = null;
 
-		public object Create(ActorInitializer init) { return new FlashPaletteEffect(this); }
+		public override object Create(ActorInitializer init) { return new FlashPaletteEffect(this); }
 	}
 
 	public class FlashPaletteEffect : IPaletteModifier, ITick

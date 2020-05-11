@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Lint
 
 			foreach (var actorInfo in rules.Actors)
 			{
-				foreach (var traitInfo in actorInfo.Value.TraitInfos<ITraitInfo>())
+				foreach (var traitInfo in actorInfo.Value.TraitInfos<TraitInfo>())
 				{
 					var fields = traitInfo.GetType().GetFields();
 					foreach (var field in fields.Where(x => x.HasAttribute<PaletteReferenceAttribute>()))
@@ -115,7 +115,7 @@ namespace OpenRA.Mods.Common.Lint
 		{
 			foreach (var actorInfo in rules.Actors)
 			{
-				foreach (var traitInfo in actorInfo.Value.TraitInfos<ITraitInfo>())
+				foreach (var traitInfo in actorInfo.Value.TraitInfos<TraitInfo>())
 				{
 					var fields = traitInfo.GetType().GetFields();
 					foreach (var field in fields.Where(x => x.HasAttribute<PaletteDefinitionAttribute>()))

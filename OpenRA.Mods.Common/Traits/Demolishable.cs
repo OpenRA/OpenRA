@@ -16,7 +16,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Handle demolitions from C4 explosives.")]
-	public class DemolishableInfo : ConditionalTraitInfo, IDemolishableInfo, ITraitInfo
+	public class DemolishableInfo : ConditionalTraitInfo, IDemolishableInfo
 	{
 		public bool IsValidTarget(ActorInfo actorInfo, Actor saboteur) { return true; }
 

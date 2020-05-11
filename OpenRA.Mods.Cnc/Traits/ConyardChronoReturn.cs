@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Cnc.Traits
 	[Desc("Implements the special case handling for the Chronoshiftable return on a construction yard.",
 		"If ReturnOriginalActorOnCondition evaluates true and the actor is not being sold then OriginalActor will be returned to the origin.",
 		"Otherwise, a vortex animation is played and damage is dealt each tick, ignoring modifiers.")]
-	public class ConyardChronoReturnInfo : IObservesVariablesInfo, Requires<HealthInfo>, Requires<WithSpriteBodyInfo>
+	public class ConyardChronoReturnInfo : TraitInfo, Requires<HealthInfo>, Requires<WithSpriteBodyInfo>, IObservesVariablesInfo
 	{
 		[SequenceReference]
 		[Desc("Sequence name with the baked-in vortex animation")]
@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("The color the bar of the 'return-to-origin' logic has.")]
 		public readonly Color TimeBarColor = Color.White;
 
-		public object Create(ActorInitializer init) { return new ConyardChronoReturn(init, this); }
+		public override object Create(ActorInitializer init) { return new ConyardChronoReturn(init, this); }
 	}
 
 	public class ConyardChronoReturn : ITick, ISync, IObservesVariables, ISelectionBar, INotifySold,

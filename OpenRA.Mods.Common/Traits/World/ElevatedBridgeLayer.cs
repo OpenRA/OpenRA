@@ -15,12 +15,12 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class ElevatedBridgeLayerInfo : ITraitInfo, Requires<DomainIndexInfo>, ILobbyCustomRulesIgnore
+	public class ElevatedBridgeLayerInfo : TraitInfo, Requires<DomainIndexInfo>, ILobbyCustomRulesIgnore
 	{
 		[Desc("Terrain type used by cells outside any elevated bridge footprint.")]
 		public readonly string ImpassableTerrainType = "Impassable";
 
-		public object Create(ActorInitializer init) { return new ElevatedBridgeLayer(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new ElevatedBridgeLayer(init.Self, this); }
 	}
 
 	// For now this is mostly copies TerrainTunnelLayer. This will change once bridge destruction is implemented

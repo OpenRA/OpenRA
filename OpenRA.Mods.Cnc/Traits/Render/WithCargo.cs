@@ -21,7 +21,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Cnc.Traits.Render
 {
 	[Desc("Renders the cargo loaded into the unit.")]
-	public class WithCargoInfo : ITraitInfo, Requires<CargoInfo>, Requires<BodyOrientationInfo>
+	public class WithCargoInfo : TraitInfo, Requires<CargoInfo>, Requires<BodyOrientationInfo>
 	{
 		[Desc("Cargo position relative to turret or body in (forward, right, up) triples. The default offset should be in the middle of the list.")]
 		public readonly WVec[] LocalOffset = { WVec.Zero };
@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 		[Desc("Passenger CargoType to display.")]
 		public readonly HashSet<string> DisplayTypes = new HashSet<string>();
 
-		public object Create(ActorInitializer init) { return new WithCargo(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new WithCargo(init.Self, this); }
 	}
 
 	public class WithCargo : ITick, IRender, INotifyPassengerEntered, INotifyPassengerExited

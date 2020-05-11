@@ -14,7 +14,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This actor has a voice.")]
-	public class VoicedInfo : ITraitInfo
+	public class VoicedInfo : TraitInfo
 	{
 		[VoiceSetReference]
 		[FieldLoader.Require]
@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Multiply volume with this factor.")]
 		public readonly float Volume = 1f;
 
-		public object Create(ActorInitializer init) { return new Voiced(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new Voiced(init.Self, this); }
 	}
 
 	public class Voiced : IVoiced

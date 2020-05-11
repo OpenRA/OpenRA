@@ -15,7 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.D2k.Traits
 {
-	public class LaysTerrainInfo : ITraitInfo, Requires<BuildingInfo>
+	public class LaysTerrainInfo : TraitInfo, Requires<BuildingInfo>
 	{
 		[Desc("The terrain template to place. If the template is PickAny, then " +
 			"the actor footprint will be filled with this tile.")]
@@ -29,7 +29,7 @@ namespace OpenRA.Mods.D2k.Traits
 			"Tiles being offset out of the actor's footprint will not be placed.")]
 		public readonly CVec Offset = CVec.Zero;
 
-		public object Create(ActorInitializer init) { return new LaysTerrain(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new LaysTerrain(init.Self, this); }
 	}
 
 	public class LaysTerrain : INotifyAddedToWorld

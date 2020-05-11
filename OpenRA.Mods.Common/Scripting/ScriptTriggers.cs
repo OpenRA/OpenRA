@@ -28,9 +28,9 @@ namespace OpenRA.Mods.Common.Scripting
 	}
 
 	[Desc("Allows map scripts to attach triggers to this actor via the Triggers global.")]
-	public class ScriptTriggersInfo : ITraitInfo
+	public class ScriptTriggersInfo : TraitInfo
 	{
-		public object Create(ActorInitializer init) { return new ScriptTriggers(init.World, init.Self); }
+		public override object Create(ActorInitializer init) { return new ScriptTriggers(init.World, init.Self); }
 	}
 
 	public sealed class ScriptTriggers : INotifyIdle, INotifyDamage, INotifyKilled, INotifyProduction, INotifyOtherProduction,

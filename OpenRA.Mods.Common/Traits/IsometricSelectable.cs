@@ -18,7 +18,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This actor is selectable. Defines bounds of selectable area, selection class, selection priority and selection priority modifiers.")]
-	public class IsometricSelectableInfo : ITraitInfo, IMouseBoundsInfo, ISelectableInfo, IRulesetLoaded, Requires<BuildingInfo>
+	public class IsometricSelectableInfo : TraitInfo, IMouseBoundsInfo, ISelectableInfo, IRulesetLoaded, Requires<BuildingInfo>
 	{
 		[Desc("Defines a custom rectangle for mouse interaction with the actor.",
 			"If null, the engine will guess an appropriate size based on the building's footprint.",
@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Traits
 		[VoiceReference]
 		public readonly string Voice = "Select";
 
-		public object Create(ActorInitializer init) { return new IsometricSelectable(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new IsometricSelectable(init.Self, this); }
 
 		int ISelectableInfo.Priority { get { return Priority; } }
 		SelectionPriorityModifiers ISelectableInfo.PriorityModifiers { get { return PriorityModifiers; } }

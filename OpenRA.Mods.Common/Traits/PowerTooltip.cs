@@ -14,9 +14,9 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Shown power info on the build palette widget.")]
-	public class PowerTooltipInfo : ITraitInfo
+	public class PowerTooltipInfo : TraitInfo
 	{
-		public object Create(ActorInitializer init) { return new PowerTooltip(init.Self); }
+		public override object Create(ActorInitializer init) { return new PowerTooltip(init.Self); }
 	}
 
 	public class PowerTooltip : IProvideTooltipInfo, INotifyOwnerChanged

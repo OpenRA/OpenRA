@@ -18,7 +18,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.D2k.Traits
 {
 	[Desc("Create a palette by applying a scale and offset to the colors in another palette.")]
-	class PaletteFromScaledPaletteInfo : ITraitInfo
+	class PaletteFromScaledPaletteInfo : TraitInfo
 	{
 		[PaletteDefinition]
 		[FieldLoader.Require]
@@ -39,7 +39,7 @@ namespace OpenRA.Mods.D2k.Traits
 		[Desc("Amount to offset the base palette colors by.")]
 		public readonly int Offset = 0;
 
-		public object Create(ActorInitializer init) { return new PaletteFromScaledPalette(this); }
+		public override object Create(ActorInitializer init) { return new PaletteFromScaledPalette(this); }
 	}
 
 	class PaletteFromScaledPalette : ILoadsPalettes, IProvidesAssetBrowserPalettes

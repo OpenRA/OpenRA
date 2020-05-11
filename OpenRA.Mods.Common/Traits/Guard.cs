@@ -16,12 +16,12 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("The player can give this unit the order to follow and protect friendly units with the Guardable trait.")]
-	public class GuardInfo : ITraitInfo, Requires<IMoveInfo>
+	public class GuardInfo : TraitInfo, Requires<IMoveInfo>
 	{
 		[VoiceReference]
 		public readonly string Voice = "Action";
 
-		public object Create(ActorInitializer init) { return new Guard(this); }
+		public override object Create(ActorInitializer init) { return new Guard(this); }
 	}
 
 	public class Guard : IResolveOrder, IOrderVoice, INotifyCreated

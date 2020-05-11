@@ -17,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Allows bridges to be targeted for demolition and repair.")]
-	class BridgeHutInfo : IDemolishableInfo, ITraitInfo
+	class BridgeHutInfo : TraitInfo, IDemolishableInfo
 	{
 		[Desc("Bridge types to act on")]
 		public readonly string[] Types = { "GroundLevelBridge" };
@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool IsValidTarget(ActorInfo actorInfo, Actor saboteur) { return false; } // TODO: bridges don't support frozen under fog
 
-		public object Create(ActorInitializer init) { return new BridgeHut(init.World, this); }
+		public override object Create(ActorInitializer init) { return new BridgeHut(init.World, this); }
 	}
 
 	class BridgeHut : INotifyCreated, IDemolishable, ITick

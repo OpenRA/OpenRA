@@ -17,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This unit can spawn and eject other actors while flying.")]
-	public class ParaDropInfo : ITraitInfo, Requires<CargoInfo>
+	public class ParaDropInfo : TraitInfo, Requires<CargoInfo>
 	{
 		[Desc("Distance around the drop-point to unload troops.")]
 		public readonly WDist DropRange = WDist.FromCells(4);
@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Sound to play when dropping.")]
 		public readonly string ChuteSound = null;
 
-		public object Create(ActorInitializer init) { return new ParaDrop(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new ParaDrop(init.Self, this); }
 	}
 
 	public class ParaDrop : ITick, ISync, INotifyRemovedFromWorld

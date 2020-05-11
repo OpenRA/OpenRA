@@ -16,7 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class PluggableInfo : ITraitInfo
+	public class PluggableInfo : TraitInfo
 	{
 		[Desc("Footprint cell offset where a plug can be placed.")]
 		public readonly CVec Offset = CVec.Zero;
@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Traits
 			get { return Requirements.Values.SelectMany(r => r.Variables).Distinct(); }
 		}
 
-		public object Create(ActorInitializer init) { return new Pluggable(init, this); }
+		public override object Create(ActorInitializer init) { return new Pluggable(init, this); }
 	}
 
 	public class Pluggable : IObservesVariables, INotifyCreated

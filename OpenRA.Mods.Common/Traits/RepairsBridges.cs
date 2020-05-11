@@ -18,7 +18,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Can enter a BridgeHut or LegacyBridgeHut to trigger a repair.")]
-	class RepairsBridgesInfo : ITraitInfo
+	class RepairsBridgesInfo : TraitInfo
 	{
 		[VoiceReference]
 		public readonly string Voice = "Action";
@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Speech notification to play when a bridge is repaired.")]
 		public readonly string RepairNotification = null;
 
-		public object Create(ActorInitializer init) { return new RepairsBridges(this); }
+		public override object Create(ActorInitializer init) { return new RepairsBridges(this); }
 	}
 
 	class RepairsBridges : IIssueOrder, IResolveOrder, IOrderVoice

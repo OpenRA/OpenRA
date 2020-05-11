@@ -19,9 +19,9 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Calculates routes for mobile units based on the A* search algorithm.", " Attach this to the world actor.")]
-	public class PathFinderInfo : ITraitInfo, Requires<LocomotorInfo>
+	public class PathFinderInfo : TraitInfo, Requires<LocomotorInfo>
 	{
-		public object Create(ActorInitializer init)
+		public override object Create(ActorInitializer init)
 		{
 			return new PathFinderUnitPathCacheDecorator(new PathFinder(init.World), new PathCacheStorage(init.World));
 		}

@@ -21,7 +21,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.D2k.Traits
 {
 	[Desc("Seeds resources by explosive eruptions after accumulation times.")]
-	public class SpiceBloomInfo : ITraitInfo, IRenderActorPreviewSpritesInfo, Requires<RenderSpritesInfo>
+	public class SpiceBloomInfo : TraitInfo, IRenderActorPreviewSpritesInfo, Requires<RenderSpritesInfo>
 	{
 		[SequenceReference]
 		public readonly string[] GrowthSequences = { "grow1", "grow2", "grow3" };
@@ -47,7 +47,7 @@ namespace OpenRA.Mods.D2k.Traits
 		[Desc("The maximum distance in cells that spice may be expelled.")]
 		public readonly int Range = 5;
 
-		public object Create(ActorInitializer init) { return new SpiceBloom(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new SpiceBloom(init.Self, this); }
 
 		public IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p)
 		{

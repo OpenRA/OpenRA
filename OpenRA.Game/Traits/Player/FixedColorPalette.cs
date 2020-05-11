@@ -15,7 +15,7 @@ using OpenRA.Primitives;
 namespace OpenRA.Traits
 {
 	[Desc("Add this to the World actor definition.")]
-	public class FixedColorPaletteInfo : ITraitInfo
+	public class FixedColorPaletteInfo : TraitInfo
 	{
 		[PaletteReference]
 		[Desc("The name of the palette to base off.")]
@@ -37,7 +37,7 @@ namespace OpenRA.Traits
 		[Desc("Allow palette modifiers to change the palette.")]
 		public readonly bool AllowModifiers = true;
 
-		public object Create(ActorInitializer init) { return new FixedColorPalette(this); }
+		public override object Create(ActorInitializer init) { return new FixedColorPalette(this); }
 	}
 
 	public class FixedColorPalette : ILoadsPalettes

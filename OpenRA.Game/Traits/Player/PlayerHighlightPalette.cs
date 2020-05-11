@@ -16,7 +16,7 @@ using OpenRA.Primitives;
 namespace OpenRA.Traits
 {
 	[Desc("Add this to the Player actor definition.")]
-	public class PlayerHighlightPaletteInfo : ITraitInfo
+	public class PlayerHighlightPaletteInfo : TraitInfo
 	{
 		[PaletteDefinition(true)]
 		[Desc("The prefix for the resulting player palettes")]
@@ -25,7 +25,7 @@ namespace OpenRA.Traits
 		[Desc("Index set to be fully transparent/invisible.")]
 		public readonly int TransparentIndex = 0;
 
-		public object Create(ActorInitializer init) { return new PlayerHighlightPalette(this); }
+		public override object Create(ActorInitializer init) { return new PlayerHighlightPalette(this); }
 	}
 
 	public class PlayerHighlightPalette : ILoadsPlayerPalettes

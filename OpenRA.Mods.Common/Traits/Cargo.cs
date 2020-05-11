@@ -21,7 +21,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This actor can transport Passenger actors.")]
-	public class CargoInfo : ITraitInfo, Requires<IOccupySpaceInfo>
+	public class CargoInfo : TraitInfo, Requires<IOccupySpaceInfo>
 	{
 		[Desc("The maximum sum of Passenger.Weight that this actor can support.")]
 		public readonly int MaxWeight = 0;
@@ -82,7 +82,7 @@ namespace OpenRA.Mods.Common.Traits
 		[GrantedConditionReference]
 		public IEnumerable<string> LinterPassengerConditions { get { return PassengerConditions.Values; } }
 
-		public object Create(ActorInitializer init) { return new Cargo(init, this); }
+		public override object Create(ActorInitializer init) { return new Cargo(init, this); }
 	}
 
 	public class Cargo : IIssueOrder, IResolveOrder, IOrderVoice, INotifyCreated, INotifyKilled,

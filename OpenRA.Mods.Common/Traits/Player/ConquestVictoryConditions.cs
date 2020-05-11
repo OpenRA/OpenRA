@@ -16,7 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class ConquestVictoryConditionsInfo : ITraitInfo, Requires<MissionObjectivesInfo>
+	public class ConquestVictoryConditionsInfo : TraitInfo, Requires<MissionObjectivesInfo>
 	{
 		[Desc("Delay for the end game notification in milliseconds.")]
 		public readonly int NotificationDelay = 1500;
@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Disable the win/loss messages and audio notifications?")]
 		public readonly bool SuppressNotifications = false;
 
-		public object Create(ActorInitializer init) { return new ConquestVictoryConditions(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new ConquestVictoryConditions(init.Self, this); }
 	}
 
 	public class ConquestVictoryConditions : ITick, INotifyWinStateChanged, INotifyTimeLimit

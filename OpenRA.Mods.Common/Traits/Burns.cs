@@ -16,13 +16,13 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This actor will play a fire animation over its body and take damage over time.")]
-	class BurnsInfo : ITraitInfo, Requires<RenderSpritesInfo>
+	class BurnsInfo : TraitInfo, Requires<RenderSpritesInfo>
 	{
 		public readonly string Anim = "1";
 		public readonly int Damage = 1;
 		public readonly int Interval = 8;
 
-		public object Create(ActorInitializer init) { return new Burns(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new Burns(init.Self, this); }
 	}
 
 	class Burns : ITick, ISync

@@ -17,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Replaces the sprite during construction/deploy/undeploy.")]
-	public class WithMakeAnimationInfo : ITraitInfo, Requires<WithSpriteBodyInfo>
+	public class WithMakeAnimationInfo : TraitInfo, Requires<WithSpriteBodyInfo>
 	{
 		[SequenceReference]
 		[Desc("Sequence name to use.")]
@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Apply to sprite bodies with these names.")]
 		public readonly string[] BodyNames = { "body" };
 
-		public object Create(ActorInitializer init) { return new WithMakeAnimation(init, this); }
+		public override object Create(ActorInitializer init) { return new WithMakeAnimation(init, this); }
 	}
 
 	public class WithMakeAnimation : INotifyCreated, INotifyDeployTriggered

@@ -18,7 +18,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class CrateInfo : ITraitInfo, IPositionableInfo, Requires<RenderSpritesInfo>
+	public class CrateInfo : TraitInfo, IPositionableInfo, Requires<RenderSpritesInfo>
 	{
 		[Desc("Length of time (in seconds) until the crate gets removed automatically. " +
 			"A value of zero disables auto-removal.")]
@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Define actors that can collect crates by setting this into the Crushes field from the Mobile trait.")]
 		public readonly string CrushClass = "crate";
 
-		public object Create(ActorInitializer init) { return new Crate(init, this); }
+		public override object Create(ActorInitializer init) { return new Crate(init, this); }
 
 		public IReadOnlyDictionary<CPos, SubCell> OccupiedCells(ActorInfo info, CPos location, SubCell subCell = SubCell.Any)
 		{

@@ -17,9 +17,9 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Cnc.Traits
 {
 	[Desc("Required for `GpsPower`. Attach this to the player actor.")]
-	class GpsWatcherInfo : ITraitInfo
+	class GpsWatcherInfo : TraitInfo
 	{
-		public object Create(ActorInitializer init) { return new GpsWatcher(init.Self.Owner); }
+		public override object Create(ActorInitializer init) { return new GpsWatcher(init.Self.Owner); }
 	}
 
 	interface IOnGpsRefreshed { void OnGpsRefresh(Actor self, Player player); }

@@ -17,12 +17,12 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	class ProductionQueueFromSelectionInfo : ITraitInfo
+	class ProductionQueueFromSelectionInfo : TraitInfo
 	{
 		public string ProductionTabsWidget = null;
 		public string ProductionPaletteWidget = null;
 
-		public object Create(ActorInitializer init) { return new ProductionQueueFromSelection(init.World, this); }
+		public override object Create(ActorInitializer init) { return new ProductionQueueFromSelection(init.World, this); }
 	}
 
 	class ProductionQueueFromSelection : INotifySelection

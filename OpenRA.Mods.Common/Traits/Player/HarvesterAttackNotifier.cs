@@ -16,7 +16,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Plays an audio notification and shows a radar ping when a harvester is attacked.",
 		"Attach this to the player actor.")]
-	public class HarvesterAttackNotifierInfo : ITraitInfo
+	public class HarvesterAttackNotifierInfo : TraitInfo
 	{
 		[Desc("Minimum duration (in seconds) between notification events.")]
 		public readonly int NotifyInterval = 30;
@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("The audio notification type to play.")]
 		public string Notification = "HarvesterAttack";
 
-		public object Create(ActorInitializer init) { return new HarvesterAttackNotifier(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new HarvesterAttackNotifier(init.Self, this); }
 	}
 
 	public class HarvesterAttackNotifier : INotifyDamage

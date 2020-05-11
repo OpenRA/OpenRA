@@ -16,14 +16,14 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Attach this to the player actor.")]
-	public class PowerManagerInfo : ITraitInfo, Requires<DeveloperModeInfo>
+	public class PowerManagerInfo : TraitInfo, Requires<DeveloperModeInfo>
 	{
 		public readonly int AdviceInterval = 250;
 
 		[NotificationReference("Speech")]
 		public readonly string SpeechNotification = null;
 
-		public object Create(ActorInitializer init) { return new PowerManager(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new PowerManager(init.Self, this); }
 	}
 
 	public class PowerManager : INotifyCreated, ITick, ISync, IResolveOrder

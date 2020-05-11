@@ -18,7 +18,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	class DemolitionInfo : ITraitInfo
+	class DemolitionInfo : TraitInfo
 	{
 		[Desc("Delay to demolish the target once the explosive device is planted. " +
 			"Measured in game ticks. Default is 1.8 seconds.")]
@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly string Cursor = "c4";
 
-		public object Create(ActorInitializer init) { return new Demolition(this); }
+		public override object Create(ActorInitializer init) { return new Demolition(this); }
 	}
 
 	class Demolition : IIssueOrder, IResolveOrder, IOrderVoice

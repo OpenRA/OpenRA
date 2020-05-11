@@ -19,11 +19,11 @@ namespace OpenRA.Mods.Common.Traits
 	public enum EditorCursorType { None, Actor, TerrainTemplate, Resource }
 
 	[Desc("Required for the map editor to work. Attach this to the world actor.")]
-	public class EditorCursorLayerInfo : ITraitInfo, Requires<EditorActorLayerInfo>
+	public class EditorCursorLayerInfo : TraitInfo, Requires<EditorActorLayerInfo>
 	{
 		public readonly int PreviewFacing = 96;
 
-		public object Create(ActorInitializer init) { return new EditorCursorLayer(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new EditorCursorLayer(init.Self, this); }
 	}
 
 	public class EditorCursorLayer : ITickRender, IRenderAboveShroud, IRenderAnnotations

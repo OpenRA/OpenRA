@@ -13,14 +13,14 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class GrantConditionWhileAimingInfo : ITraitInfo
+	public class GrantConditionWhileAimingInfo : TraitInfo
 	{
 		[FieldLoader.Require]
 		[GrantedConditionReference]
 		[Desc("The condition to grant while aiming.")]
 		public readonly string Condition = null;
 
-		object ITraitInfo.Create(ActorInitializer init) { return new GrantConditionWhileAiming(this); }
+		public override object Create(ActorInitializer init) { return new GrantConditionWhileAiming(this); }
 	}
 
 	public class GrantConditionWhileAiming : INotifyAiming

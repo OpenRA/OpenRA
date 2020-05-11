@@ -16,7 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	class ThrowsParticleInfo : ITraitInfo, Requires<WithSpriteBodyInfo>, Requires<BodyOrientationInfo>
+	class ThrowsParticleInfo : TraitInfo, Requires<WithSpriteBodyInfo>, Requires<BodyOrientationInfo>
 	{
 		[FieldLoader.Require]
 		public readonly string Anim = null;
@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Speed at which the particle turns.")]
 		public readonly int TurnSpeed = 15;
 
-		public object Create(ActorInitializer init) { return new ThrowsParticle(init, this); }
+		public override object Create(ActorInitializer init) { return new ThrowsParticle(init, this); }
 	}
 
 	class ThrowsParticle : ITick

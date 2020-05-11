@@ -18,7 +18,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
 {
-	public class WithBuildingBibInfo : ITraitInfo, Requires<BuildingInfo>, IRenderActorPreviewSpritesInfo, IActorPreviewInitInfo, Requires<RenderSpritesInfo>
+	public class WithBuildingBibInfo : TraitInfo, Requires<BuildingInfo>, IRenderActorPreviewSpritesInfo, IActorPreviewInitInfo, Requires<RenderSpritesInfo>
 	{
 		[SequenceReference]
 		public readonly string Sequence = "bib";
@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		public readonly bool HasMinibib = false;
 
-		public object Create(ActorInitializer init) { return new WithBuildingBib(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new WithBuildingBib(init.Self, this); }
 
 		public IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p)
 		{

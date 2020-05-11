@@ -20,7 +20,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This actor can interact with TunnelEntrances to move through TerrainTunnels.")]
-	public class EntersTunnelsInfo : ITraitInfo, Requires<IMoveInfo>, IObservesVariablesInfo
+	public class EntersTunnelsInfo : TraitInfo, Requires<IMoveInfo>, IObservesVariablesInfo
 	{
 		public readonly string EnterCursor = "enter";
 		public readonly string EnterBlockedCursor = "enter-blocked";
@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Boolean expression defining the condition under which the regular (non-force) enter cursor is disabled.")]
 		public readonly BooleanExpression RequireForceMoveCondition = null;
 
-		public object Create(ActorInitializer init) { return new EntersTunnels(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new EntersTunnels(init.Self, this); }
 	}
 
 	public class EntersTunnels : IIssueOrder, IResolveOrder, IOrderVoice, IObservesVariables

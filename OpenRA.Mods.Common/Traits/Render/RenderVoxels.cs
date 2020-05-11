@@ -19,13 +19,13 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
 {
-	public interface IRenderActorPreviewVoxelsInfo : ITraitInfo
+	public interface IRenderActorPreviewVoxelsInfo : ITraitInfoInterface
 	{
 		IEnumerable<ModelAnimation> RenderPreviewVoxels(
 			ActorPreviewInitializer init, RenderVoxelsInfo rv, string image, Func<WRot> orientation, int facings, PaletteReference p);
 	}
 
-	public class RenderVoxelsInfo : ITraitInfo, IRenderActorPreviewInfo, Requires<BodyOrientationInfo>
+	public class RenderVoxelsInfo : TraitInfo, IRenderActorPreviewInfo, Requires<BodyOrientationInfo>
 	{
 		[Desc("Defaults to the actor name.")]
 		public readonly string Image = null;
@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public readonly float[] LightAmbientColor = { 0.6f, 0.6f, 0.6f };
 		public readonly float[] LightDiffuseColor = { 0.4f, 0.4f, 0.4f };
 
-		public virtual object Create(ActorInitializer init) { return new RenderVoxels(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new RenderVoxels(init.Self, this); }
 
 		public virtual IEnumerable<IActorPreview> RenderPreview(ActorPreviewInitializer init)
 		{

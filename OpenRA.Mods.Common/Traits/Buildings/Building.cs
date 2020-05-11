@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 		OccupiedPassableTransitOnly = '+'
 	}
 
-	public class BuildingInfo : ITraitInfo, IOccupySpaceInfo, IPlaceBuildingDecorationInfo
+	public class BuildingInfo : TraitInfo, IOccupySpaceInfo, IPlaceBuildingDecorationInfo
 	{
 		[Desc("Where you are allowed to place the building (Water, Clear, ...)")]
 		public readonly HashSet<string> TerrainTypes = new HashSet<string>();
@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly string[] UndeploySounds = { };
 
-		public virtual object Create(ActorInitializer init) { return new Building(init, this); }
+		public override object Create(ActorInitializer init) { return new Building(init, this); }
 
 		protected static object LoadFootprint(MiniYaml yaml)
 		{

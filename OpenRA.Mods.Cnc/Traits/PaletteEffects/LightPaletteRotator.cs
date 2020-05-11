@@ -16,7 +16,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Cnc.Traits
 {
 	[Desc("Palette effect used for blinking \"animations\" on actors.")]
-	class LightPaletteRotatorInfo : ITraitInfo
+	class LightPaletteRotatorInfo : TraitInfo
 	{
 		[Desc("Palettes this effect should not apply to.")]
 		public readonly HashSet<string> ExcludePalettes = new HashSet<string>();
@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("Palette indices to rotate through.")]
 		public readonly int[] RotationIndices = { 230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 238, 237, 236, 235, 234, 233, 232, 231 };
 
-		public object Create(ActorInitializer init) { return new LightPaletteRotator(this); }
+		public override object Create(ActorInitializer init) { return new LightPaletteRotator(this); }
 	}
 
 	class LightPaletteRotator : ITick, IPaletteModifier

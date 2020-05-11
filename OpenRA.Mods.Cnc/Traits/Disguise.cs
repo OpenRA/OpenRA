@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Cnc.Traits
 	}
 
 	[Desc("Provides access to the disguise command, which makes the actor appear to be another player's actor.")]
-	class DisguiseInfo : ITraitInfo
+	class DisguiseInfo : TraitInfo
 	{
 		[VoiceReference]
 		public readonly string Voice = "Action";
@@ -96,7 +96,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		[GrantedConditionReference]
 		public IEnumerable<string> LinterConditions { get { return DisguisedAsConditions.Values; } }
 
-		public object Create(ActorInitializer init) { return new Disguise(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new Disguise(init.Self, this); }
 	}
 
 	class Disguise : IEffectiveOwner, IIssueOrder, IResolveOrder, IOrderVoice, IRadarColorModifier, INotifyAttack,

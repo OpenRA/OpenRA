@@ -18,13 +18,13 @@ namespace OpenRA.Mods.Cnc.Traits
 	[Desc("A special case trait that re-grants a timed external condition when this actor transforms.",
 		"This trait does not work with permanently granted external conditions.",
 		"This trait changes the external condition source, so cannot be used for conditions that may later be revoked")]
-	public class TransferTimedExternalConditionOnTransformInfo : ITraitInfo, Requires<TransformsInfo>
+	public class TransferTimedExternalConditionOnTransformInfo : TraitInfo, Requires<TransformsInfo>
 	{
 		[FieldLoader.Require]
 		[Desc("External condition to transfer")]
 		public readonly string Condition = null;
 
-		public object Create(ActorInitializer init) { return new TransferTimedExternalConditionOnTransform(this); }
+		public override object Create(ActorInitializer init) { return new TransferTimedExternalConditionOnTransform(this); }
 	}
 
 	public class TransferTimedExternalConditionOnTransform : IConditionTimerWatcher, INotifyTransform

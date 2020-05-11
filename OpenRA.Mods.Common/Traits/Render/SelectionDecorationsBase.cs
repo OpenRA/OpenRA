@@ -17,11 +17,9 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
 {
-	public abstract class SelectionDecorationsBaseInfo : ITraitInfo
+	public abstract class SelectionDecorationsBaseInfo : TraitInfo
 	{
 		public readonly Color SelectionBoxColor = Color.White;
-
-		public abstract object Create(ActorInitializer init);
 	}
 
 	public abstract class SelectionDecorationsBase : ISelectionDecorations, IRenderAnnotations, INotifyCreated

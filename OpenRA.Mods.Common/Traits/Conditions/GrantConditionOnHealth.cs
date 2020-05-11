@@ -14,7 +14,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Applies a condition to the actor at when its health is between 2 specific values.")]
-	public class GrantConditionOnHealthInfo : ITraitInfo, IRulesetLoaded, Requires<IHealthInfo>
+	public class GrantConditionOnHealthInfo : TraitInfo, IRulesetLoaded, Requires<IHealthInfo>
 	{
 		[FieldLoader.Require]
 		[GrantedConditionReference]
@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Is the condition irrevokable once it has been granted?")]
 		public readonly bool GrantPermanently = false;
 
-		public object Create(ActorInitializer init) { return new GrantConditionOnHealth(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new GrantConditionOnHealth(init.Self, this); }
 
 		public void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{

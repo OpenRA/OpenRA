@@ -21,7 +21,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This actor can be sent to a structure for repairs.")]
-	public class RepairableInfo : ITraitInfo, Requires<IHealthInfo>, Requires<IMoveInfo>, IObservesVariablesInfo
+	public class RepairableInfo : TraitInfo, Requires<IHealthInfo>, Requires<IMoveInfo>, IObservesVariablesInfo
 	{
 		[ActorReference]
 		[FieldLoader.Require]
@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Boolean expression defining the condition under which the regular (non-force) enter cursor is disabled.")]
 		public readonly BooleanExpression RequireForceMoveCondition = null;
 
-		public virtual object Create(ActorInitializer init) { return new Repairable(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new Repairable(init.Self, this); }
 	}
 
 	public class Repairable : IIssueOrder, IResolveOrder, IOrderVoice, INotifyCreated, IObservesVariables

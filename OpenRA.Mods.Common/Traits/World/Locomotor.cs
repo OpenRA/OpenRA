@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	[Desc("Used by Mobile. Attach these to the world actor. You can have multiple variants by adding @suffixes.")]
-	public class LocomotorInfo : ITraitInfo
+	public class LocomotorInfo : TraitInfo
 	{
 		[Desc("Locomotor ID.")]
 		public readonly string Name = "default";
@@ -184,7 +184,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual bool DisableDomainPassabilityCheck { get { return false; } }
 
-		public virtual object Create(ActorInitializer init) { return new Locomotor(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new Locomotor(init.Self, this); }
 	}
 
 	public class Locomotor : IWorldLoaded

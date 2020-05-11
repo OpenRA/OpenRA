@@ -17,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Attach this to the player actor.")]
-	public class DeveloperModeInfo : ITraitInfo, ILobbyOptions
+	public class DeveloperModeInfo : TraitInfo, ILobbyOptions
 	{
 		[Translate]
 		[Desc("Descriptive label for the developer mode checkbox in the lobby.")]
@@ -68,7 +68,7 @@ namespace OpenRA.Mods.Common.Traits
 			yield return new LobbyBooleanOption("cheats", CheckboxLabel, CheckboxDescription, CheckboxVisible, CheckboxDisplayOrder, CheckboxEnabled, CheckboxLocked);
 		}
 
-		public object Create(ActorInitializer init) { return new DeveloperMode(this); }
+		public override object Create(ActorInitializer init) { return new DeveloperMode(this); }
 	}
 
 	public class DeveloperMode : IResolveOrder, ISync, INotifyCreated, IUnlocksRenderPlayer

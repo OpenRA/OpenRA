@@ -15,7 +15,7 @@ using System.Collections.Generic;
 namespace OpenRA.Traits
 {
 	[Desc("Required for shroud and fog visibility checks. Add this to the player actor.")]
-	public class ShroudInfo : ITraitInfo, ILobbyOptions
+	public class ShroudInfo : TraitInfo, ILobbyOptions
 	{
 		[Translate]
 		[Desc("Descriptive label for the fog checkbox in the lobby.")]
@@ -65,7 +65,7 @@ namespace OpenRA.Traits
 				FogCheckboxVisible, FogCheckboxDisplayOrder, FogCheckboxEnabled, FogCheckboxLocked);
 		}
 
-		public object Create(ActorInitializer init) { return new Shroud(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new Shroud(init.Self, this); }
 	}
 
 	public class Shroud : ISync, INotifyCreated, ITick

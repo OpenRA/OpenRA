@@ -15,7 +15,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Grants a condition to this actor when it is owned by an AI bot.")]
-	public class GrantConditionOnBotOwnerInfo : ITraitInfo
+	public class GrantConditionOnBotOwnerInfo : TraitInfo
 	{
 		[FieldLoader.Require]
 		[GrantedConditionReference]
@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Bot types that trigger the condition.")]
 		public readonly string[] Bots = { };
 
-		public object Create(ActorInitializer init) { return new GrantConditionOnBotOwner(init, this); }
+		public override object Create(ActorInitializer init) { return new GrantConditionOnBotOwner(init, this); }
 	}
 
 	public class GrantConditionOnBotOwner : INotifyCreated, INotifyOwnerChanged

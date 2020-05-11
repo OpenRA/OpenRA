@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	[Desc("Place the second actor in line to build more of the same at once (used for walls).")]
-	public class LineBuildInfo : ITraitInfo
+	public class LineBuildInfo : TraitInfo
 	{
 		[Desc("The maximum allowed length of the line.")]
 		public readonly int Range = 5;
@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Delete generated segments when destroyed or sold.")]
 		public readonly bool SegmentsRequireNode = false;
 
-		public object Create(ActorInitializer init) { return new LineBuild(init, this); }
+		public override object Create(ActorInitializer init) { return new LineBuild(init, this); }
 	}
 
 	public class LineBuild : INotifyKilled, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyLineBuildSegmentsChanged

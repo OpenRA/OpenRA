@@ -14,7 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class GrantConditionOnTerrainInfo : ITraitInfo
+	public class GrantConditionOnTerrainInfo : TraitInfo
 	{
 		[FieldLoader.Require]
 		[GrantedConditionReference]
@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Terrain names to trigger the condition.")]
 		public readonly string[] TerrainTypes = { };
 
-		public object Create(ActorInitializer init) { return new GrantConditionOnTerrain(init, this); }
+		public override object Create(ActorInitializer init) { return new GrantConditionOnTerrain(init, this); }
 	}
 
 	public class GrantConditionOnTerrain : ITick

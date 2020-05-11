@@ -14,7 +14,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Applies a condition to the actor at specified damage states.")]
-	public class GrantConditionOnDamageStateInfo : ITraitInfo, Requires<IHealthInfo>
+	public class GrantConditionOnDamageStateInfo : TraitInfo, Requires<IHealthInfo>
 	{
 		[FieldLoader.Require]
 		[GrantedConditionReference]
@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Is the condition irrevocable once it has been activated?")]
 		public readonly bool GrantPermanently = false;
 
-		public object Create(ActorInitializer init) { return new GrantConditionOnDamageState(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new GrantConditionOnDamageState(init.Self, this); }
 	}
 
 	public class GrantConditionOnDamageState : INotifyDamageStateChanged, INotifyCreated

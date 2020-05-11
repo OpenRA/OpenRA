@@ -18,7 +18,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	class RenderShroudCircleInfo : ITraitInfo, IPlaceBuildingDecorationInfo
+	class RenderShroudCircleInfo : TraitInfo, IPlaceBuildingDecorationInfo
 	{
 		[Desc("Color of the circle.")]
 		public readonly Color Color = Color.FromArgb(128, Color.Cyan);
@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Traits
 			return otherRangeRenderables.Append(localRangeRenderable);
 		}
 
-		public object Create(ActorInitializer init) { return new RenderShroudCircle(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new RenderShroudCircle(init.Self, this); }
 	}
 
 	class RenderShroudCircle : INotifyCreated, IRenderAnnotationsWhenSelected

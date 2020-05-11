@@ -15,7 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
 {
-	public class WithHarvestAnimationInfo : ITraitInfo, Requires<WithSpriteBodyInfo>, Requires<HarvesterInfo>
+	public class WithHarvestAnimationInfo : TraitInfo, Requires<WithSpriteBodyInfo>, Requires<HarvesterInfo>
 	{
 		[SequenceReference]
 		[Desc("Displayed while harvesting.")]
@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Which sprite body to play the animation on.")]
 		public readonly string Body = "body";
 
-		public object Create(ActorInitializer init) { return new WithHarvestAnimation(init, this); }
+		public override object Create(ActorInitializer init) { return new WithHarvestAnimation(init, this); }
 	}
 
 	public class WithHarvestAnimation : INotifyHarvesterAction

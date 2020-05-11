@@ -19,7 +19,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Spawn base actor at the spawnpoint and support units in an annulus around the base actor. Both are defined at MPStartUnits. Attach this to the world actor.")]
-	public class SpawnMPUnitsInfo : ITraitInfo, Requires<MPStartLocationsInfo>, Requires<MPStartUnitsInfo>, ILobbyOptions
+	public class SpawnMPUnitsInfo : TraitInfo, Requires<MPStartLocationsInfo>, Requires<MPStartUnitsInfo>, ILobbyOptions
 	{
 		public readonly string StartingUnitsClass = "none";
 
@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Traits
 					new ReadOnlyDictionary<string, string>(startingUnits), StartingUnitsClass, DropdownLocked);
 		}
 
-		public object Create(ActorInitializer init) { return new SpawnMPUnits(this); }
+		public override object Create(ActorInitializer init) { return new SpawnMPUnits(this); }
 	}
 
 	public class SpawnMPUnits : IWorldLoaded

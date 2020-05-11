@@ -15,7 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
 {
-	public class VoxelNormalsPaletteInfo : ITraitInfo
+	public class VoxelNormalsPaletteInfo : TraitInfo
 	{
 		[PaletteDefinition]
 		public readonly string Name = "normals";
@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("Can be TiberianSun or RedAlert2")]
 		public readonly NormalType Type = NormalType.TiberianSun;
 
-		public object Create(ActorInitializer init) { return new VoxelNormalsPalette(this); }
+		public override object Create(ActorInitializer init) { return new VoxelNormalsPalette(this); }
 	}
 
 	public class VoxelNormalsPalette : ILoadsPalettes
