@@ -63,6 +63,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new RenameWithNukeLaunch(),
 				new SpawnActorPowerDefaultEffect(),
 				new RemoveConditionManager(),
+				new ConvertSupportPowerRangesToFootprint(),
 			})
 		};
 
