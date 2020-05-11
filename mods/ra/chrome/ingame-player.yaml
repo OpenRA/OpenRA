@@ -572,8 +572,8 @@ Container@PLAYER_WIDGETS:
 								Image@ICON:
 									X: 6
 									Y: 3
-									ImageCollection: scrollbar
-									ImageName: up_arrow
+									ImageCollection: scrollpanel-decorations
+									ImageName: up
 						Button@SCROLL_DOWN_BUTTON:
 							Logic: AddFactionSuffixLogic
 							Y: 211
@@ -587,8 +587,8 @@ Container@PLAYER_WIDGETS:
 								Image@ICON:
 									X: 6
 									Y: 3
-									ImageCollection: scrollbar
-									ImageName: down_arrow
+									ImageCollection: scrollpanel-decorations
+									ImageName: down
 		Image@SIDEBAR_MONEYBIN:
 			Logic: AddFactionSuffixLogic
 			X: WINDOW_RIGHT - 250

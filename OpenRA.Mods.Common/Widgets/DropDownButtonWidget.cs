@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Widgets;
@@ -19,7 +20,9 @@ namespace OpenRA.Mods.Common.Widgets
 {
 	public class DropDownButtonWidget : ButtonWidget
 	{
-		public readonly string SeparatorCollection = "dropdown";
+		public readonly string Decorations = "dropdown-decorations";
+		public readonly string DecorationMarker = "marker";
+		public readonly string Separators = "dropdown-separators";
 		public readonly string SeparatorImage = "separator";
 		public readonly TextAlign PanelAlign = TextAlign.Left;
 
@@ -45,13 +48,20 @@ namespace OpenRA.Mods.Common.Widgets
 			base.Draw();
 			var stateOffset = Depressed ? new int2(VisualHeight, VisualHeight) : new int2(0, 0);
 
-			var image = ChromeProvider.GetImage("scrollbar", IsDisabled() ? "down_pressed" : "down_arrow");
 			var rb = RenderBounds;
+			var isDisabled = IsDisabled();
+			var isHover = Ui.MouseOverWidget == this || Children.Any(c => c == Ui.MouseOverWidget);
 
-			WidgetUtils.DrawRGBA(image, stateOffset + new float2(rb.Right - (int)((rb.Height + image.Size.X) / 2), rb.Top + (int)((rb.Height - image.Size.Y) / 2)));
+			var markerImageName = WidgetUtils.GetStatefulImageName(DecorationMarker, isDisabled, Depressed, isHover);
+			var arrowImage = ChromeProvider.GetImage(Decorations, markerImageName) ?? ChromeProvider.GetImage(Decorations, DecorationMarker);
 
-			var separator = ChromeProvider.GetImage(SeparatorCollection, SeparatorImage);
-			WidgetUtils.DrawRGBA(separator, stateOffset + new float2(-3, 0) + new float2(rb.Right - rb.Height + 4, rb.Top + (rb.Height - separator.Size.Y) / 2));
+			WidgetUtils.DrawRGBA(arrowImage, stateOffset + new float2(rb.Right - (int)((rb.Height + arrowImage.Size.X) / 2), rb.Top + (int)((rb.Height - arrowImage.Size.Y) / 2)));
+
+			var separatorImageName = WidgetUtils.GetStatefulImageName(SeparatorImage, isDisabled, Depressed, isHover);
+			var separatorImage = ChromeProvider.GetImage(Separators, separatorImageName) ?? ChromeProvider.GetImage(Separators, SeparatorImage);
+
+			if (separatorImage != null)
+				WidgetUtils.DrawRGBA(separatorImage, stateOffset + new float2(-3, 0) + new float2(rb.Right - rb.Height + 4, rb.Top + (int)((rb.Height - separatorImage.Size.Y) / 2)));
 		}
 
 		public override Widget Clone() { return new DropDownButtonWidget(this); }

@@ -292,13 +292,10 @@ namespace OpenRA.Mods.Common.Widgets
 			if (string.IsNullOrEmpty(baseName))
 				return;
 
-			var variant = highlighted ? "-highlighted" : "";
-			var state = disabled ? "-disabled" :
-						pressed ? "-pressed" :
-						hover ? "-hover" :
-						"";
+			var variantName = highlighted ? baseName + "-highlighted" : baseName;
+			var imageName = WidgetUtils.GetStatefulImageName(variantName, disabled, pressed, hover);
 
-			WidgetUtils.DrawPanel(baseName + variant + state, rect);
+			WidgetUtils.DrawPanel(imageName, rect);
 		}
 	}
 }

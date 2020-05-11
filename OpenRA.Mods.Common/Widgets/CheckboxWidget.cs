@@ -44,7 +44,6 @@ namespace OpenRA.Mods.Common.Widgets
 		public override void Draw()
 		{
 			var disabled = IsDisabled();
-			var highlighted = IsHighlighted();
 			var font = Game.Renderer.Fonts[Font];
 			var color = GetColor();
 			var colordisabled = GetColorDisabled();
@@ -54,11 +53,8 @@ namespace OpenRA.Mods.Common.Widgets
 			var text = GetText();
 			var textSize = font.Measure(text);
 			var check = new Rectangle(rect.Location, new Size(Bounds.Height, Bounds.Height));
-			var state = disabled ? "checkbox-disabled" :
-						highlighted ? "checkbox-highlighted" :
-						Depressed && HasPressedState ? "checkbox-pressed" :
-						Ui.MouseOverWidget == this ? "checkbox-hover" :
-						"checkbox";
+			var baseName = IsHighlighted() ? "checkbox-highlighted" : "checkbox";
+			var state = WidgetUtils.GetStatefulImageName(baseName, disabled, Depressed && HasPressedState, Ui.MouseOverWidget == this);
 
 			WidgetUtils.DrawPanel(state, check);
 

@@ -201,6 +201,15 @@ checkbox-pressed:
 checkbox-highlighted:
 	Inherits: button-highlighted-pressed
 
+checkbox-highlighted-hover:
+	Inherits: button-highlighted-hover
+
+checkbox-highlighted-disabled:
+	Inherits: button-highlighted-disabled
+
+checkbox-highlighted-pressed:
+	Inherits: button-highlighted-pressed
+
 #
 # Panels
 # ===
@@ -337,18 +346,6 @@ checkbox-bits:
 		crossed: 972, 0, 16, 16
 		crossed-disabled: 989, 0, 16, 16
 
-scrollbar:
-	Inherits: ^Chrome
-	Regions:
-		down_arrow: 836, 17, 16, 16
-		down_pressed: 853, 17, 16, 16
-		up_arrow: 870, 17, 16, 16
-		up_pressed: 887, 17, 16, 16
-		right_arrow: 904, 17, 16, 16
-		right_pressed: 921, 17, 16, 16
-		left_arrow: 938, 17, 16, 16
-		left_pressed: 955, 17, 16, 16
-
 flags:
 	Inherits: ^Chrome
 	Regions:
@@ -364,10 +361,36 @@ strategic:
 		enemy_owned: 837, 223, 22, 22
 		player_owned: 883, 223, 22, 22
 
-dropdown:
+scrollpanel-decorations:
 	Inherits: ^Chrome
 	Regions:
-		separator: 65, 1, 1, 19
+		down: 836, 17, 16, 16
+		down-pressed: 836, 17, 16, 16
+		down-disabled: 853, 17, 16, 16
+		up: 870, 17, 16, 16
+		up-pressed: 870, 17, 16, 16
+		up-disabled: 887, 17, 16, 16
+		right: 904, 17, 16, 16
+		right-pressed: 904, 17, 16, 16
+		right-disabled: 921, 17, 16, 16
+		left: 938, 17, 16, 16
+		left-pressed: 938, 17, 16, 16
+		left-disabled: 955, 17, 16, 16
+
+dropdown-decorations:
+	Inherits: ^Chrome
+	Regions:
+		marker: 836, 17, 16, 16
+		marker-pressed: 836, 17, 16, 16
+		marker-disabled: 853, 17, 16, 16
+
+dropdown-separators:
+	Inherits: ^Chrome
+	Regions:
+		separator: 129, 2, 1, 19
+		separator-hover: 161, 2, 1, 19
+		separator-pressed: 129, 34, 1, 19
+		separator-disabled: 161, 34, 1, 19
 
 #
 # Common chrome
