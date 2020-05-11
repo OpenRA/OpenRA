@@ -312,6 +312,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool CanStayInCell(CPos cell)
 		{
+			if (!world.Map.Contains(cell))
+				return false;
+
 			return !GetCache(cell).CellFlag.HasCellFlag(CellFlag.HasTransitOnlyActor);
 		}
 
