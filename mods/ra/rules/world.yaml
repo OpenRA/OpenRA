@@ -104,7 +104,7 @@
 		Name: England
 		InternalName: england
 		Side: Allies
-		Description: England: Counterintelligence\nSpecial Unit: British Spy\nSpecial Unit: Mobile Gap Generator
+		Selectable: False
 	Faction@2:
 		Name: France
 		InternalName: france
@@ -114,7 +114,7 @@
 		Name: Germany
 		InternalName: germany
 		Side: Allies
-		Description: Germany: Technology\nSpecial Ability: Advanced Chronoshift\nSpecial Unit: Chrono Tank
+		Description: Germany: Technology\nSpecial Ability: Advanced Chronoshift\nSpecial Unit: Mobile Gap Generator
 	Faction@4:
 		Name: Soviet
 		InternalName: soviet
@@ -139,7 +139,7 @@
 	Faction@randomallies:
 		Name: Allies
 		InternalName: RandomAllies
-		RandomFactionMembers: england, france, germany
+		RandomFactionMembers: france, germany
 		Side: Random
 		Description: Random Allied Country\nA random Allied country will be chosen when the game starts.
 	Faction@randomsoviet:

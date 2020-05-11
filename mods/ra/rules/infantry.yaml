@@ -295,7 +295,7 @@ SPY:
 		Queue: Infantry
 		BuildAtProductionType: Soldier
 		BuildPaletteOrder: 90
-		Prerequisites: ~!infantry.england, dome, ~tent, ~techlevel.medium
+		Prerequisites: dome, ~tent, ~techlevel.medium
 		Description: Infiltrates enemy structures for intel or\nsabotage. Exact effect depends on the\nbuilding infiltrated.\nLoses disguise when attacking.\nCan detect spies.\n  Strong vs Infantry\n  Weak vs Vehicles, Aircraft\n  Special Ability: Disguised
 	Valued:
 		Cost: 500
@@ -342,19 +342,6 @@ SPY:
 		Voice: Move
 	Voiced:
 		VoiceSet: SpyVoice
-
-SPY.England:
-	Inherits: SPY
-	Buildable:
-		Prerequisites: ~infantry.england, dome, ~tent, ~techlevel.medium
-	Valued:
-		Cost: 250
-	GivesExperience:
-		Experience: 500
-	DisguiseTooltip:
-		Name: British Spy
-	RenderSprites:
-		Image: spy
 
 E7:
 	Inherits: ^Soldier

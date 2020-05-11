@@ -55,10 +55,6 @@ SPY:
 	Buildable:
 		Prerequisites: ~disabled
 
-SPY.England:
-	Buildable:
-		Prerequisites: ~disabled
-
 MECH:
 	Buildable:
 		Prerequisites: ~disabled
