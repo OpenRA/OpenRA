@@ -188,7 +188,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 			}
 
-			var groupActors = controlGroups[group].Where(a => !a.IsDead && a.IsInWorld);
+			var groupActors = controlGroups[group].Where(a => a.IsInWorld);
 
 			if (mods.HasModifier(Modifiers.Alt) || multiTapCount >= 2)
 			{
