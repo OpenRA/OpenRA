@@ -20,7 +20,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This actor can enter Cargo actors.")]
-	public class PassengerInfo : ITraitInfo, IObservesVariablesInfo
+	public class PassengerInfo : TraitInfo, IObservesVariablesInfo
 	{
 		public readonly string CargoType = null;
 
@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Boolean expression defining the condition under which the regular (non-force) enter cursor is disabled.")]
 		public readonly BooleanExpression RequireForceMoveCondition = null;
 
-		public object Create(ActorInitializer init) { return new Passenger(this); }
+		public override object Create(ActorInitializer init) { return new Passenger(this); }
 	}
 
 	public class Passenger : IIssueOrder, IResolveOrder, IOrderVoice, INotifyRemovedFromWorld, INotifyEnteredCargo, INotifyExitedCargo, INotifyKilled, IObservesVariables

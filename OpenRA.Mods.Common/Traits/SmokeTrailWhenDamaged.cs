@@ -16,7 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	class SmokeTrailWhenDamagedInfo : ITraitInfo, Requires<BodyOrientationInfo>
+	class SmokeTrailWhenDamagedInfo : TraitInfo, Requires<BodyOrientationInfo>
 	{
 		[Desc("Position relative to body")]
 		public readonly WVec Offset = WVec.Zero;
@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly DamageState MinDamage = DamageState.Heavy;
 
-		public object Create(ActorInitializer init) { return new SmokeTrailWhenDamaged(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new SmokeTrailWhenDamaged(init.Self, this); }
 	}
 
 	class SmokeTrailWhenDamaged : ITick

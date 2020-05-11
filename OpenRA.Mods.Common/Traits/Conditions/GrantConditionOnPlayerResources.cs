@@ -15,7 +15,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Grants a condition to this actor when the player has stored resources.")]
-	public class GrantConditionOnPlayerResourcesInfo : ITraitInfo
+	public class GrantConditionOnPlayerResourcesInfo : TraitInfo
 	{
 		[FieldLoader.Require]
 		[GrantedConditionReference]
@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Enable condition when the amount of stored resources is greater than this.")]
 		public readonly int Threshold = 0;
 
-		public object Create(ActorInitializer init) { return new GrantConditionOnPlayerResources(this); }
+		public override object Create(ActorInitializer init) { return new GrantConditionOnPlayerResources(this); }
 	}
 
 	public class GrantConditionOnPlayerResources : INotifyCreated, INotifyOwnerChanged, ITick

@@ -13,11 +13,11 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class ShakeOnDeathInfo : ITraitInfo
+	public class ShakeOnDeathInfo : TraitInfo
 	{
 		public readonly int Duration = 10;
 		public readonly int Intensity = 1;
-		public object Create(ActorInitializer init) { return new ShakeOnDeath(this); }
+		public override object Create(ActorInitializer init) { return new ShakeOnDeath(this); }
 	}
 
 	public class ShakeOnDeath : INotifyKilled

@@ -32,12 +32,12 @@ namespace OpenRA.Mods.Common.Traits
 		Repair = 2
 	}
 
-	public interface IQuantizeBodyOrientationInfo : ITraitInfo
+	public interface IQuantizeBodyOrientationInfo : ITraitInfoInterface
 	{
 		int QuantizedBodyFacings(ActorInfo ai, SequenceProvider sequenceProvider, string race);
 	}
 
-	public interface IPlaceBuildingDecorationInfo : ITraitInfo
+	public interface IPlaceBuildingDecorationInfo : ITraitInfoInterface
 	{
 		IEnumerable<IRenderable> RenderAnnotations(WorldRenderer wr, World w, ActorInfo ai, WPos centerPosition);
 	}
@@ -150,8 +150,8 @@ namespace OpenRA.Mods.Common.Traits
 	[RequireExplicitImplementation]
 	public interface INotifyCapture { void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner, BitSet<CaptureType> captureTypes); }
 	public interface INotifyDiscovered { void OnDiscovered(Actor self, Player discoverer, bool playNotification); }
-	public interface IRenderActorPreviewInfo : ITraitInfo { IEnumerable<IActorPreview> RenderPreview(ActorPreviewInitializer init); }
-	public interface ICruiseAltitudeInfo : ITraitInfo { WDist GetCruiseAltitude(); }
+	public interface IRenderActorPreviewInfo : ITraitInfoInterface { IEnumerable<IActorPreview> RenderPreview(ActorPreviewInitializer init); }
+	public interface ICruiseAltitudeInfo : ITraitInfoInterface { WDist GetCruiseAltitude(); }
 
 	public interface IHuskModifier { string HuskActor(Actor self); }
 
@@ -203,7 +203,7 @@ namespace OpenRA.Mods.Common.Traits
 		void Infiltrating(Actor self);
 	}
 
-	public interface ITechTreePrerequisiteInfo : ITraitInfo
+	public interface ITechTreePrerequisiteInfo : ITraitInfoInterface
 	{
 		IEnumerable<string> Prerequisites(ActorInfo info);
 	}
@@ -248,7 +248,7 @@ namespace OpenRA.Mods.Common.Traits
 		void Undeploy(Actor self, bool skipMakeAnim);
 	}
 
-	public interface IAcceptResourcesInfo : ITraitInfo { }
+	public interface IAcceptResourcesInfo : ITraitInfoInterface { }
 	public interface IAcceptResources
 	{
 		void OnDock(Actor harv, DeliverResources dockOrder);
@@ -322,10 +322,10 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	[RequireExplicitImplementation]
-	public interface IProductionCostModifierInfo : ITraitInfo { int GetProductionCostModifier(TechTree techTree, string queue); }
+	public interface IProductionCostModifierInfo : ITraitInfoInterface { int GetProductionCostModifier(TechTree techTree, string queue); }
 
 	[RequireExplicitImplementation]
-	public interface IProductionTimeModifierInfo : ITraitInfo { int GetProductionTimeModifier(TechTree techTree, string queue); }
+	public interface IProductionTimeModifierInfo : ITraitInfoInterface { int GetProductionTimeModifier(TechTree techTree, string queue); }
 
 	[RequireExplicitImplementation]
 	public interface ICashTricklerModifier { int GetCashTricklerModifier(); }
@@ -398,7 +398,7 @@ namespace OpenRA.Mods.Common.Traits
 	public enum ActorPreviewType { PlaceBuilding, ColorPicker, MapEditorSidebar }
 
 	[RequireExplicitImplementation]
-	public interface IActorPreviewInitInfo : ITraitInfo
+	public interface IActorPreviewInitInfo : ITraitInfoInterface
 	{
 		IEnumerable<object> ActorPreviewInits(ActorInfo ai, ActorPreviewType type);
 	}

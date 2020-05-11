@@ -14,7 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class SubterraneanActorLayerInfo : ITraitInfo
+	public class SubterraneanActorLayerInfo : TraitInfo
 	{
 		[Desc("Terrain type of the underground layer.")]
 		public readonly string TerrainType = "Subterranean";
@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Cell radius for smoothing adjacent cell heights.")]
 		public readonly int SmoothingRadius = 2;
 
-		public object Create(ActorInitializer init) { return new SubterraneanActorLayer(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new SubterraneanActorLayer(init.Self, this); }
 	}
 
 	public class SubterraneanActorLayer : ICustomMovementLayer

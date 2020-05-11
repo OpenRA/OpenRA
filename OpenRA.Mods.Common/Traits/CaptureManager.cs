@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	[Desc("Manages Captures and Capturable traits on an actor.")]
-	public class CaptureManagerInfo : ITraitInfo
+	public class CaptureManagerInfo : TraitInfo
 	{
 		[GrantedConditionReference]
 		[Desc("Condition granted when capturing an actor.")]
@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Should units friendly to the capturing actor auto-target this actor while it is being captured?")]
 		public readonly bool PreventsAutoTarget = true;
 
-		public virtual object Create(ActorInitializer init) { return new CaptureManager(this); }
+		public override object Create(ActorInitializer init) { return new CaptureManager(this); }
 
 		public bool CanBeTargetedBy(FrozenActor frozenActor, Actor captor, Captures captures)
 		{

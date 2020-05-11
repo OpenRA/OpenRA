@@ -15,7 +15,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Enables defined prerequisites at game start for all players if the checkbox is enabled.")]
-	public class LobbyPrerequisiteCheckboxInfo : ITraitInfo, ILobbyOptions, ITechTreePrerequisiteInfo
+	public class LobbyPrerequisiteCheckboxInfo : TraitInfo, ILobbyOptions, ITechTreePrerequisiteInfo
 	{
 		[FieldLoader.Require]
 		[Desc("Internal id for this checkbox.")]
@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.Traits
 				Visible, DisplayOrder, Enabled, Locked);
 		}
 
-		public object Create(ActorInitializer init) { return new LobbyPrerequisiteCheckbox(this); }
+		public override object Create(ActorInitializer init) { return new LobbyPrerequisiteCheckbox(this); }
 	}
 
 	public class LobbyPrerequisiteCheckbox : INotifyCreated, ITechTreePrerequisite

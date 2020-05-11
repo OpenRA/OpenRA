@@ -18,7 +18,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This actor can grant experience levels equal to it's own current level via entering to other actors with the `AcceptsDeliveredExperience` trait.")]
-	class DeliversExperienceInfo : ITraitInfo, Requires<GainsExperienceInfo>
+	class DeliversExperienceInfo : TraitInfo, Requires<GainsExperienceInfo>
 	{
 		[Desc("The amount of experience the donating player receives.")]
 		public readonly int PlayerExperience = 0;
@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Traits
 		[VoiceReference]
 		public readonly string Voice = "Action";
 
-		public object Create(ActorInitializer init) { return new DeliversExperience(init, this); }
+		public override object Create(ActorInitializer init) { return new DeliversExperience(init, this); }
 	}
 
 	class DeliversExperience : IIssueOrder, IResolveOrder, IOrderVoice

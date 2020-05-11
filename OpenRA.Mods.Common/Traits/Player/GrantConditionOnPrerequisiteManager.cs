@@ -17,9 +17,9 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Attach this to the player actor.")]
-	public class GrantConditionOnPrerequisiteManagerInfo : ITraitInfo, Requires<TechTreeInfo>
+	public class GrantConditionOnPrerequisiteManagerInfo : TraitInfo, Requires<TechTreeInfo>
 	{
-		public object Create(ActorInitializer init) { return new GrantConditionOnPrerequisiteManager(init); }
+		public override object Create(ActorInitializer init) { return new GrantConditionOnPrerequisiteManager(init); }
 	}
 
 	public class GrantConditionOnPrerequisiteManager : ITechTreeElement

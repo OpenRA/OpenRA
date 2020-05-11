@@ -16,7 +16,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Causes aircraft husks that are spawned in the air to crash to the ground.")]
-	public class FallsToEarthInfo : ITraitInfo, IRulesetLoaded, Requires<AircraftInfo>
+	public class FallsToEarthInfo : TraitInfo, IRulesetLoaded, Requires<AircraftInfo>
 	{
 		[WeaponReference]
 		[Desc("Explosion weapon that triggers when hitting ground.")]
@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public WeaponInfo ExplosionWeapon { get; private set; }
 
-		public object Create(ActorInitializer init) { return new FallsToEarth(init, this); }
+		public override object Create(ActorInitializer init) { return new FallsToEarth(init, this); }
 		public void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
 			if (string.IsNullOrEmpty(Explosion))

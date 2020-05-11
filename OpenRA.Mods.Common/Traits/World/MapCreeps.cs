@@ -15,7 +15,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Controls the 'Creeps' checkbox in the lobby options.")]
-	public class MapCreepsInfo : ITraitInfo, ILobbyOptions
+	public class MapCreepsInfo : TraitInfo, ILobbyOptions
 	{
 		[Translate]
 		[Desc("Descriptive label for the creeps checkbox in the lobby.")]
@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Traits
 			yield return new LobbyBooleanOption("creeps", CheckboxLabel, CheckboxDescription, CheckboxVisible, CheckboxDisplayOrder, CheckboxEnabled, CheckboxLocked);
 		}
 
-		public object Create(ActorInitializer init) { return new MapCreeps(this); }
+		public override object Create(ActorInitializer init) { return new MapCreeps(this); }
 	}
 
 	public class MapCreeps : INotifyCreated

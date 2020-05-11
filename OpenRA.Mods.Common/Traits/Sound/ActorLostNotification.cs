@@ -13,14 +13,14 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Sound
 {
-	class ActorLostNotificationInfo : ITraitInfo
+	class ActorLostNotificationInfo : TraitInfo
 	{
 		[NotificationReference("Speech")]
 		public readonly string Notification = "UnitLost";
 
 		public readonly bool NotifyAll = false;
 
-		public object Create(ActorInitializer init) { return new ActorLostNotification(this); }
+		public override object Create(ActorInitializer init) { return new ActorLostNotification(this); }
 	}
 
 	class ActorLostNotification : INotifyKilled

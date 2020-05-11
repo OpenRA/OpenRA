@@ -15,12 +15,12 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class ExitsDebugOverlayManagerInfo : ITraitInfo
+	public class ExitsDebugOverlayManagerInfo : TraitInfo
 	{
 		[Desc("The font used to draw cell vectors. Should match the value as-is in the Fonts section of the mod manifest (do not convert to lowercase).")]
 		public readonly string Font = "TinyBold";
 
-		object ITraitInfo.Create(ActorInitializer init) { return new ExitsDebugOverlayManager(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new ExitsDebugOverlayManager(init.Self, this); }
 	}
 
 	public class ExitsDebugOverlayManager : IWorldLoaded, IChatCommand

@@ -30,12 +30,12 @@ namespace OpenRA.Traits
 		public override string ToString() { return "{0}->{1}".F(Actor.Info.Name, Bounds.GetType().Name); }
 	}
 
-	public class ScreenMapInfo : ITraitInfo
+	public class ScreenMapInfo : TraitInfo
 	{
 		[Desc("Size of partition bins (world pixels)")]
 		public readonly int BinSize = 250;
 
-		public object Create(ActorInitializer init) { return new ScreenMap(init.World, this); }
+		public override object Create(ActorInitializer init) { return new ScreenMap(init.World, this); }
 	}
 
 	public class ScreenMap : IWorldLoaded

@@ -18,7 +18,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Can be paradropped by a ParaDrop actor.")]
-	public class ParachutableInfo : ITraitInfo, Requires<IPositionableInfo>
+	public class ParachutableInfo : TraitInfo, Requires<IPositionableInfo>
 	{
 		[Desc("If we land on invalid terrain for my actor type should we be killed?")]
 		public readonly bool KilledOnImpassableTerrain = true;
@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("The condition to grant to self while parachuting.")]
 		public readonly string ParachutingCondition = null;
 
-		public object Create(ActorInitializer init) { return new Parachutable(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new Parachutable(init.Self, this); }
 	}
 
 	public class Parachutable : INotifyParachute

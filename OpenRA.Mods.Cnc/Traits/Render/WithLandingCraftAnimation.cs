@@ -17,7 +17,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits.Render
 {
-	public class WithLandingCraftAnimationInfo : ITraitInfo, Requires<IMoveInfo>, Requires<WithSpriteBodyInfo>, Requires<CargoInfo>
+	public class WithLandingCraftAnimationInfo : TraitInfo, Requires<IMoveInfo>, Requires<WithSpriteBodyInfo>, Requires<CargoInfo>
 	{
 		public readonly HashSet<string> OpenTerrainTypes = new HashSet<string> { "Clear" };
 
@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 		[Desc("Which sprite body to play the animation on.")]
 		public readonly string Body = "body";
 
-		public object Create(ActorInitializer init) { return new WithLandingCraftAnimation(init, this); }
+		public override object Create(ActorInitializer init) { return new WithLandingCraftAnimation(init, this); }
 	}
 
 	public class WithLandingCraftAnimation : ITick

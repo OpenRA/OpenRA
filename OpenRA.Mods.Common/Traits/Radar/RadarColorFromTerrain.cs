@@ -14,12 +14,12 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Radar
 {
-	public class RadarColorFromTerrainInfo : ITraitInfo
+	public class RadarColorFromTerrainInfo : TraitInfo
 	{
 		[FieldLoader.Require]
 		public readonly string Terrain;
 
-		public object Create(ActorInitializer init) { return new RadarColorFromTerrain(init.Self, Terrain); }
+		public override object Create(ActorInitializer init) { return new RadarColorFromTerrain(init.Self, Terrain); }
 	}
 
 	public class RadarColorFromTerrain : IRadarColorModifier

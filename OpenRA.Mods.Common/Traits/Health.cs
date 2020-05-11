@@ -16,7 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class HealthInfo : IHealthInfo, IRulesetLoaded, IEditorActorOptions
+	public class HealthInfo : TraitInfo, IHealthInfo, IRulesetLoaded, IEditorActorOptions
 	{
 		[Desc("HitPoints")]
 		public readonly int HP = 0;
@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Display order for the health slider in the map editor")]
 		public readonly int EditorHealthDisplayOrder = 2;
 
-		public virtual object Create(ActorInitializer init) { return new Health(init, this); }
+		public override object Create(ActorInitializer init) { return new Health(init, this); }
 
 		public void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{

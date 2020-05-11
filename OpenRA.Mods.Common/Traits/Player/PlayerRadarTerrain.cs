@@ -17,9 +17,9 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class PlayerRadarTerrainInfo : ITraitInfo, Requires<ShroudInfo>
+	public class PlayerRadarTerrainInfo : TraitInfo, Requires<ShroudInfo>
 	{
-		public object Create(ActorInitializer init)
+		public override object Create(ActorInitializer init)
 		{
 			return new PlayerRadarTerrain(init.Self);
 		}

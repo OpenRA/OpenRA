@@ -15,7 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
 {
-	class InfiltrateForSupportPowerInfo : ITraitInfo
+	class InfiltrateForSupportPowerInfo : TraitInfo
 	{
 		[ActorReference]
 		[FieldLoader.Require]
@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("Sound the perpetrator will hear after successful infiltration.")]
 		public readonly string InfiltrationNotification = null;
 
-		public object Create(ActorInitializer init) { return new InfiltrateForSupportPower(this); }
+		public override object Create(ActorInitializer init) { return new InfiltrateForSupportPower(this); }
 	}
 
 	class InfiltrateForSupportPower : INotifyInfiltrated

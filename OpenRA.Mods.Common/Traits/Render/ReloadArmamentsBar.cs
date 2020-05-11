@@ -17,14 +17,14 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Visualizes the minimum remaining time for reloading the armaments.")]
-	class ReloadArmamentsBarInfo : ITraitInfo
+	class ReloadArmamentsBarInfo : TraitInfo
 	{
 		[Desc("Armament names")]
 		public readonly string[] Armaments = { "primary", "secondary" };
 
 		public readonly Color Color = Color.Red;
 
-		public object Create(ActorInitializer init) { return new ReloadArmamentsBar(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new ReloadArmamentsBar(init.Self, this); }
 	}
 
 	class ReloadArmamentsBar : ISelectionBar, INotifyCreated

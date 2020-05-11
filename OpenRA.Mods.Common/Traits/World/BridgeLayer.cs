@@ -25,9 +25,9 @@ namespace OpenRA.Mods.Common.Traits
 		CPos Location { get; }
 	}
 
-	class BridgeLayerInfo : ITraitInfo
+	class BridgeLayerInfo : TraitInfo
 	{
-		public object Create(ActorInitializer init) { return new BridgeLayer(init.World); }
+		public override object Create(ActorInitializer init) { return new BridgeLayer(init.World); }
 	}
 
 	class BridgeLayer

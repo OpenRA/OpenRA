@@ -32,7 +32,7 @@ namespace OpenRA
 		/// </summary>
 		public readonly string Name;
 		readonly TypeDictionary traits = new TypeDictionary();
-		List<ITraitInfo> constructOrderCache = null;
+		List<TraitInfo> constructOrderCache = null;
 
 		public ActorInfo(ObjectCreator creator, string name, MiniYaml node)
 		{
@@ -64,7 +64,7 @@ namespace OpenRA
 			}
 		}
 
-		public ActorInfo(string name, params ITraitInfo[] traitInfos)
+		public ActorInfo(string name, params TraitInfo[] traitInfos)
 		{
 			Name = name;
 			foreach (var t in traitInfos)
@@ -72,7 +72,7 @@ namespace OpenRA
 			traits.TrimExcess();
 		}
 
-		static ITraitInfo LoadTraitInfo(ObjectCreator creator, string traitName, MiniYaml my)
+		static TraitInfo LoadTraitInfo(ObjectCreator creator, string traitName, MiniYaml my)
 		{
 			if (!string.IsNullOrEmpty(my.Value))
 				throw new YamlException("Junk value `{0}` on trait node {1}"
@@ -80,7 +80,7 @@ namespace OpenRA
 
 			// HACK: The linter does not want to crash when a trait doesn't exist but only print an error instead
 			// ObjectCreator will only return null to signal us to abort here if the linter is running
-			var info = creator.CreateObject<ITraitInfo>(traitName + "Info");
+			var info = creator.CreateObject<TraitInfo>(traitName + "Info");
 			if (info == null)
 				return null;
 
@@ -97,12 +97,12 @@ namespace OpenRA
 			return info;
 		}
 
-		public IEnumerable<ITraitInfo> TraitsInConstructOrder()
+		public IEnumerable<TraitInfo> TraitsInConstructOrder()
 		{
 			if (constructOrderCache != null)
 				return constructOrderCache;
 
-			var source = traits.WithInterface<ITraitInfo>().Select(i => new
+			var source = traits.WithInterface<TraitInfo>().Select(i => new
 			{
 				Trait = i,
 				Type = i.GetType(),
@@ -148,7 +148,7 @@ namespace OpenRA
 			return constructOrderCache;
 		}
 
-		public static IEnumerable<Type> PrerequisitesOf(ITraitInfo info)
+		public static IEnumerable<Type> PrerequisitesOf(TraitInfo info)
 		{
 			return info
 				.GetType()

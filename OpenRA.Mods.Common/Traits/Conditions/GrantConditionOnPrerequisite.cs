@@ -15,7 +15,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Grants a condition to the actor this is attached to when prerequisites are available.")]
-	public class GrantConditionOnPrerequisiteInfo : ITraitInfo
+	public class GrantConditionOnPrerequisiteInfo : TraitInfo
 	{
 		[FieldLoader.Require]
 		[GrantedConditionReference]
@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("List of required prerequisites.")]
 		public readonly string[] Prerequisites = { };
 
-		public object Create(ActorInitializer init) { return new GrantConditionOnPrerequisite(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new GrantConditionOnPrerequisite(init.Self, this); }
 	}
 
 	public class GrantConditionOnPrerequisite : INotifyCreated, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyOwnerChanged

@@ -17,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.D2k.Traits
 {
 	[Desc("Attach this to the world actor. Required for LaysTerrain to work.")]
-	public class BuildableTerrainLayerInfo : ITraitInfo
+	public class BuildableTerrainLayerInfo : TraitInfo
 	{
 		[Desc("Palette to render the layer sprites in.")]
 		public readonly string Palette = TileSet.TerrainPaletteInternalName;
@@ -25,7 +25,7 @@ namespace OpenRA.Mods.D2k.Traits
 		[Desc("The hitpoints, which can be reduced by the DamagesConcreteWarhead.")]
 		public readonly int MaxStrength = 9000;
 
-		public object Create(ActorInitializer init) { return new BuildableTerrainLayer(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new BuildableTerrainLayer(init.Self, this); }
 	}
 
 	public class BuildableTerrainLayer : IRenderOverlay, IWorldLoaded, ITickRender, INotifyActorDisposing

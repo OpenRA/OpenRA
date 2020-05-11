@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 	[Desc("Attach this to the player actor. When attached, enables all actors possessing the ProducibleWithLevel ",
 		"trait to have their production queue icons render with an overlay defined in this trait. ",
 		"The icon change occurs when ProducibleWithLevel.Prerequisites are met.")]
-	public class VeteranProductionIconOverlayInfo : ITraitInfo, Requires<TechTreeInfo>
+	public class VeteranProductionIconOverlayInfo : TraitInfo, Requires<TechTreeInfo>
 	{
 		[FieldLoader.Require]
 		[Desc("Image used for the overlay.")]
@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Palette to render the sprite in. Reference the world actor's PaletteFrom* traits.")]
 		public readonly string Palette = "chrome";
 
-		public object Create(ActorInitializer init) { return new VeteranProductionIconOverlay(init, this); }
+		public override object Create(ActorInitializer init) { return new VeteranProductionIconOverlay(init, this); }
 	}
 
 	public class VeteranProductionIconOverlay : ITechTreeElement, IProductionIconOverlay

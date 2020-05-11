@@ -17,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Used to waypoint units after production or repair is finished.")]
-	public class RallyPointInfo : ITraitInfo
+	public class RallyPointInfo : TraitInfo
 	{
 		public readonly string Image = "rallypoint";
 
@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("The speech notification to play when setting a new rallypoint.")]
 		public readonly string Notification = null;
 
-		public object Create(ActorInitializer init) { return new RallyPoint(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new RallyPoint(init.Self, this); }
 	}
 
 	public class RallyPoint : IIssueOrder, IResolveOrder, INotifyOwnerChanged, INotifyCreated

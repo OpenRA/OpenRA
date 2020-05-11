@@ -16,12 +16,12 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Cnc.Traits
 {
 	[Desc("Apply palette full screen rotations during chronoshifts. Add this to the world actor.")]
-	public class ChronoshiftPaletteEffectInfo : ITraitInfo
+	public class ChronoshiftPaletteEffectInfo : TraitInfo
 	{
 		[Desc("Measured in ticks.")]
 		public readonly int ChronoEffectLength = 60;
 
-		public object Create(ActorInitializer init) { return new ChronoshiftPaletteEffect(this); }
+		public override object Create(ActorInitializer init) { return new ChronoshiftPaletteEffect(this); }
 	}
 
 	public class ChronoshiftPaletteEffect : IPaletteModifier, ITick

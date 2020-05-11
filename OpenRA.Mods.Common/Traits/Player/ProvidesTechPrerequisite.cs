@@ -10,10 +10,11 @@
 #endregion
 
 using System.Collections.Generic;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class ProvidesTechPrerequisiteInfo : ITechTreePrerequisiteInfo
+	public class ProvidesTechPrerequisiteInfo : TraitInfo, ITechTreePrerequisiteInfo
 	{
 		[Desc("Internal id for this tech level.")]
 		public readonly string Id;
@@ -27,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		IEnumerable<string> ITechTreePrerequisiteInfo.Prerequisites(ActorInfo info) { return Prerequisites; }
 
-		public object Create(ActorInitializer init) { return new ProvidesTechPrerequisite(this, init); }
+		public override object Create(ActorInitializer init) { return new ProvidesTechPrerequisite(this, init); }
 	}
 
 	public class ProvidesTechPrerequisite : ITechTreePrerequisite

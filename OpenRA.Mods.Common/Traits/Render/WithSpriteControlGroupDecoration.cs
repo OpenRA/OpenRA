@@ -17,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Renders Ctrl groups using pixel art.")]
-	public class WithSpriteControlGroupDecorationInfo : ITraitInfo
+	public class WithSpriteControlGroupDecorationInfo : TraitInfo
 	{
 		[PaletteReference]
 		public readonly string Palette = "chrome";
@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Offset sprite center position from the selection box edge.")]
 		public readonly int2 Margin = int2.Zero;
 
-		public object Create(ActorInitializer init) { return new WithSpriteControlGroupDecoration(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new WithSpriteControlGroupDecoration(init.Self, this); }
 	}
 
 	public class WithSpriteControlGroupDecoration : IDecoration

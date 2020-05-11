@@ -18,7 +18,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Cnc.Traits
 {
 	[Desc("Funds are transferred from the owner to the infiltrator.")]
-	class InfiltrateForCashInfo : ITraitInfo
+	class InfiltrateForCashInfo : TraitInfo
 	{
 		[Desc("The `TargetTypes` from `Targetable` that are allowed to enter.")]
 		public readonly BitSet<TargetableType> Types = default(BitSet<TargetableType>);
@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("Whether to show the cash tick indicators rising from the actor.")]
 		public readonly bool ShowTicks = true;
 
-		public object Create(ActorInitializer init) { return new InfiltrateForCash(this); }
+		public override object Create(ActorInitializer init) { return new InfiltrateForCash(this); }
 	}
 
 	class InfiltrateForCash : INotifyInfiltrated

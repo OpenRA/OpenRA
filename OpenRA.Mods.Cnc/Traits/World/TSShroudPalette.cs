@@ -19,14 +19,14 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Cnc.Traits
 {
 	[Desc("Adds the hard-coded shroud palette to the game")]
-	class TSShroudPaletteInfo : ITraitInfo
+	class TSShroudPaletteInfo : TraitInfo
 	{
 		[PaletteDefinition]
 		[FieldLoader.Require]
 		[Desc("Internal palette name")]
 		public readonly string Name = "shroud";
 
-		public object Create(ActorInitializer init) { return new TSShroudPalette(this); }
+		public override object Create(ActorInitializer init) { return new TSShroudPalette(this); }
 	}
 
 	class TSShroudPalette : ILoadsPalettes, IProvidesAssetBrowserPalettes

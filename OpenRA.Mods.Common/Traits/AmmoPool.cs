@@ -16,7 +16,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Actor has a limited amount of ammo, after using it all the actor must reload in some way.")]
-	public class AmmoPoolInfo : ITraitInfo
+	public class AmmoPoolInfo : TraitInfo
 	{
 		[Desc("Name of this ammo pool, used to link reload traits to this pool.")]
 		public readonly string Name = "primary";
@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("The condition to grant to self for each ammo point in this pool.")]
 		public readonly string AmmoCondition = null;
 
-		public object Create(ActorInitializer init) { return new AmmoPool(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new AmmoPool(init.Self, this); }
 	}
 
 	public class AmmoPool : INotifyCreated, INotifyAttack, ISync

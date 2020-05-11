@@ -19,7 +19,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class ShroudRendererInfo : ITraitInfo
+	public class ShroudRendererInfo : TraitInfo
 	{
 		public readonly string Sequence = "shroud";
 		[SequenceReference("Sequence")]
@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int OverrideFogIndex = 15;
 
 		public readonly BlendMode ShroudBlend = BlendMode.Alpha;
-		public object Create(ActorInitializer init) { return new ShroudRenderer(init.World, this); }
+		public override object Create(ActorInitializer init) { return new ShroudRenderer(init.World, this); }
 	}
 
 	public sealed class ShroudRenderer : IRenderShroud, IWorldLoaded, INotifyActorDisposing

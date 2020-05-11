@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	[Desc("Allows a condition to be granted from an external source (Lua, warheads, etc).")]
-	public class ExternalConditionInfo : ITraitInfo
+	public class ExternalConditionInfo : TraitInfo
 	{
 		[GrantedConditionReference]
 		[FieldLoader.Require]
@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("If > 0, restrict the number of times that this condition can be granted by any source.")]
 		public readonly int TotalCap = 0;
 
-		public object Create(ActorInitializer init) { return new ExternalCondition(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new ExternalCondition(init.Self, this); }
 	}
 
 	public class ExternalCondition : ITick, INotifyCreated

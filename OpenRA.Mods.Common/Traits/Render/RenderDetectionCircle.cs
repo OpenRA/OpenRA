@@ -18,7 +18,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
 {
-	class RenderDetectionCircleInfo : ITraitInfo, Requires<DetectCloakedInfo>
+	class RenderDetectionCircleInfo : TraitInfo, Requires<DetectCloakedInfo>
 	{
 		[Desc("WAngle the Radar update line advances per tick.")]
 		public readonly WAngle UpdateLineTick = new WAngle(-1);
@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Contrast color of the circle and scanner update line.")]
 		public readonly Color ContrastColor = Color.FromArgb(96, Color.Black);
 
-		public object Create(ActorInitializer init) { return new RenderDetectionCircle(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new RenderDetectionCircle(init.Self, this); }
 	}
 
 	class RenderDetectionCircle : ITick, IRenderAnnotationsWhenSelected

@@ -14,7 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Sound
 {
-	public class CaptureNotificationInfo : ITraitInfo
+	public class CaptureNotificationInfo : TraitInfo
 	{
 		[NotificationReference("Speech")]
 		[Desc("The speech notification to play to the new owner.")]
@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Traits.Sound
 		[Desc("Specifies if LoseNotification is played with the voice of the new owners faction.")]
 		public readonly bool LoseNewOwnerVoice = false;
 
-		public object Create(ActorInitializer init) { return new CaptureNotification(this); }
+		public override object Create(ActorInitializer init) { return new CaptureNotification(this); }
 	}
 
 	public class CaptureNotification : INotifyCapture

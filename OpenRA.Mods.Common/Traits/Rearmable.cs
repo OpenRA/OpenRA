@@ -15,7 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class RearmableInfo : ITraitInfo
+	public class RearmableInfo : TraitInfo
 	{
 		[ActorReference]
 		[FieldLoader.Require]
@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Name(s) of AmmoPool(s) that use this trait to rearm.")]
 		public readonly HashSet<string> AmmoPools = new HashSet<string> { "primary" };
 
-		public object Create(ActorInitializer init) { return new Rearmable(this); }
+		public override object Create(ActorInitializer init) { return new Rearmable(this); }
 	}
 
 	public class Rearmable : INotifyCreated, INotifyResupply

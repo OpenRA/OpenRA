@@ -17,9 +17,9 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class SelectionInfo : ITraitInfo
+	public class SelectionInfo : TraitInfo
 	{
-		public object Create(ActorInitializer init) { return new Selection(this); }
+		public override object Create(ActorInitializer init) { return new Selection(this); }
 	}
 
 	public class Selection : ISelection, INotifyCreated, INotifyOwnerChanged, ITick, IGameSaveTraitData

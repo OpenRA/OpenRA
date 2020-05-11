@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Lint
 				var granted = new HashSet<string>();
 				var consumed = new HashSet<string>();
 
-				foreach (var trait in actorInfo.Value.TraitInfos<ITraitInfo>())
+				foreach (var trait in actorInfo.Value.TraitInfos<TraitInfo>())
 				{
 					var fieldConsumed = trait.GetType().GetFields()
 						.Where(x => x.HasAttribute<ConsumedConditionReferenceAttribute>())

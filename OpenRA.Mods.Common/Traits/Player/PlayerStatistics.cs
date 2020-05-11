@@ -20,9 +20,9 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Attach this to the player actor to collect observer stats.")]
-	public class PlayerStatisticsInfo : ITraitInfo
+	public class PlayerStatisticsInfo : TraitInfo
 	{
-		public object Create(ActorInitializer init) { return new PlayerStatistics(init.Self); }
+		public override object Create(ActorInitializer init) { return new PlayerStatistics(init.Self); }
 	}
 
 	public class PlayerStatistics : ITick, IResolveOrder, INotifyCreated, IWorldLoaded
@@ -200,7 +200,7 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	[Desc("Attach this to a unit to update observer stats.")]
-	public class UpdatesPlayerStatisticsInfo : ITraitInfo
+	public class UpdatesPlayerStatisticsInfo : TraitInfo
 	{
 		[Desc("Add to army value in statistics")]
 		public bool AddToArmyValue = false;
@@ -209,7 +209,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Count this actor as a different type in the spectator army display.")]
 		public string OverrideActor = null;
 
-		public object Create(ActorInitializer init) { return new UpdatesPlayerStatistics(this, init.Self); }
+		public override object Create(ActorInitializer init) { return new UpdatesPlayerStatistics(this, init.Self); }
 	}
 
 	public class UpdatesPlayerStatistics : INotifyKilled, INotifyCreated, INotifyOwnerChanged, INotifyActorDisposing

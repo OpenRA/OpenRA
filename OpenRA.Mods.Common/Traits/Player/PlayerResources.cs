@@ -16,7 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class PlayerResourcesInfo : ITraitInfo, ILobbyOptions
+	public class PlayerResourcesInfo : TraitInfo, ILobbyOptions
 	{
 		[Translate]
 		[Desc("Descriptive label for the starting cash option in the lobby.")]
@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Common.Traits
 					new ReadOnlyDictionary<string, string>(startingCash), DefaultCash.ToString(), DefaultCashDropdownLocked);
 		}
 
-		public object Create(ActorInitializer init) { return new PlayerResources(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new PlayerResources(init.Self, this); }
 	}
 
 	public class PlayerResources : ISync

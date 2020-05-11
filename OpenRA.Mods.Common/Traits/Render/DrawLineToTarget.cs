@@ -18,7 +18,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Renders target lines between order waypoints.")]
-	public class DrawLineToTargetInfo : ITraitInfo
+	public class DrawLineToTargetInfo : TraitInfo
 	{
 		[Desc("Delay (in ticks) before the target lines disappear.")]
 		public readonly int Delay = 60;
@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Width (in pixels) of the queued end node markers.")]
 		public readonly int QueuedMarkerWidth = 2;
 
-		public virtual object Create(ActorInitializer init) { return new DrawLineToTarget(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new DrawLineToTarget(init.Self, this); }
 	}
 
 	public class DrawLineToTarget : IRenderAboveShroud, IRenderAnnotationsWhenSelected, INotifySelected

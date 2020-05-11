@@ -16,7 +16,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Put this on the actor that gets crushed to replace the crusher with a new actor.")]
-	public class TransformCrusherOnCrushInfo : ITraitInfo
+	public class TransformCrusherOnCrushInfo : TraitInfo
 	{
 		[ActorReference]
 		[FieldLoader.Require]
@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly BitSet<CrushClass> CrushClasses = default(BitSet<CrushClass>);
 
-		public virtual object Create(ActorInitializer init) { return new TransformCrusherOnCrush(init, this); }
+		public override object Create(ActorInitializer init) { return new TransformCrusherOnCrush(init, this); }
 	}
 
 	public class TransformCrusherOnCrush : INotifyCrushed

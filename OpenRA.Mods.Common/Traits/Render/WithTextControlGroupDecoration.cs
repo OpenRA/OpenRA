@@ -20,7 +20,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Renders Ctrl groups using typeface.")]
-	public class WithTextControlGroupDecorationInfo : ITraitInfo, IRulesetLoaded
+	public class WithTextControlGroupDecorationInfo : TraitInfo, IRulesetLoaded
 	{
 		public readonly string Font = "TinyBold";
 
@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				throw new YamlException("Font '{0}' is not listed in the mod.yaml's Fonts section".F(Font));
 		}
 
-		public object Create(ActorInitializer init) { return new WithTextControlGroupDecoration(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new WithTextControlGroupDecoration(init.Self, this); }
 	}
 
 	public class WithTextControlGroupDecoration : IDecoration, INotifyOwnerChanged

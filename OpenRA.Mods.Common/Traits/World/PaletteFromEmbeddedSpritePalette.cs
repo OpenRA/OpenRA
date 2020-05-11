@@ -18,7 +18,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class PaletteFromEmbeddedSpritePaletteInfo : ITraitInfo, IProvidesCursorPaletteInfo
+	public class PaletteFromEmbeddedSpritePaletteInfo : TraitInfo, IProvidesCursorPaletteInfo
 	{
 		[PaletteDefinition]
 		[FieldLoader.Require]
@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Whether this palette is available for cursors.")]
 		public readonly bool CursorPalette = false;
 
-		public object Create(ActorInitializer init) { return new PaletteFromEmbeddedSpritePalette(this); }
+		public override object Create(ActorInitializer init) { return new PaletteFromEmbeddedSpritePalette(this); }
 
 		string IProvidesCursorPaletteInfo.Palette { get { return CursorPalette ? Name : null; } }
 

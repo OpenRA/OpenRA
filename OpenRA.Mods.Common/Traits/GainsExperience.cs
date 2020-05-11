@@ -18,7 +18,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This actor's experience increases when it has killed a GivesExperience actor.")]
-	public class GainsExperienceInfo : ITraitInfo
+	public class GainsExperienceInfo : TraitInfo
 	{
 		[FieldLoader.Require]
 		[Desc("Condition to grant at each level.",
@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.Traits
 		[NotificationReference("Sounds")]
 		public readonly string LevelUpNotification = null;
 
-		public object Create(ActorInitializer init) { return new GainsExperience(init, this); }
+		public override object Create(ActorInitializer init) { return new GainsExperience(init, this); }
 	}
 
 	public class GainsExperience : INotifyCreated, ISync, IResolveOrder, ITransformActorInitModifier

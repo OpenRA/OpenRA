@@ -18,11 +18,11 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Part of the combat overlay from DeveloperMode. Attach this to the world actor.")]
-	public class WarheadDebugOverlayInfo : ITraitInfo
+	public class WarheadDebugOverlayInfo : TraitInfo
 	{
 		public readonly int DisplayDuration = 25;
 
-		public object Create(ActorInitializer init) { return new WarheadDebugOverlay(this); }
+		public override object Create(ActorInitializer init) { return new WarheadDebugOverlay(this); }
 	}
 
 	public class WarheadDebugOverlay : IRenderAnnotations

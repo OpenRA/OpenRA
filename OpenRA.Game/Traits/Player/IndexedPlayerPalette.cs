@@ -17,7 +17,7 @@ using OpenRA.Primitives;
 namespace OpenRA.Traits
 {
 	[Desc("Define a player palette by swapping palette indices.")]
-	public class IndexedPlayerPaletteInfo : ITraitInfo, IRulesetLoaded
+	public class IndexedPlayerPaletteInfo : TraitInfo, IRulesetLoaded
 	{
 		[PaletteReference]
 		[Desc("The name of the palette to base off.")]
@@ -35,7 +35,7 @@ namespace OpenRA.Traits
 
 		public readonly Dictionary<string, int[]> PlayerIndex;
 
-		public object Create(ActorInitializer init) { return new IndexedPlayerPalette(this); }
+		public override object Create(ActorInitializer init) { return new IndexedPlayerPalette(this); }
 
 		public void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{

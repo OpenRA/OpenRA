@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class PlaceBuildingInit : IActorInit { }
 
 	[Desc("Allows the player to execute build orders.", " Attach this to the player actor.")]
-	public class PlaceBuildingInfo : ITraitInfo
+	public class PlaceBuildingInfo : TraitInfo
 	{
 		[Desc("Play NewOptionsNotification this many ticks after building placement.")]
 		public readonly int NewOptionsNotificationDelay = 10;
@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Hotkey to toggle between PlaceBuildingVariants when placing a structure.")]
 		public HotkeyReference ToggleVariantKey = new HotkeyReference();
 
-		public object Create(ActorInitializer init) { return new PlaceBuilding(this); }
+		public override object Create(ActorInitializer init) { return new PlaceBuilding(this); }
 	}
 
 	public class PlaceBuilding : IResolveOrder, ITick

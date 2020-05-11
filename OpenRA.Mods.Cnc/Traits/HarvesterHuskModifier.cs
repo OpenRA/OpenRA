@@ -14,13 +14,13 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
 {
-	public class HarvesterHuskModifierInfo : ITraitInfo, Requires<HarvesterInfo>
+	public class HarvesterHuskModifierInfo : TraitInfo, Requires<HarvesterInfo>
 	{
 		[ActorReference]
 		public readonly string FullHuskActor = null;
 		public readonly int FullnessThreshold = 50;
 
-		public object Create(ActorInitializer init) { return new HarvesterHuskModifier(this); }
+		public override object Create(ActorInitializer init) { return new HarvesterHuskModifier(this); }
 	}
 
 	public class HarvesterHuskModifier : IHuskModifier

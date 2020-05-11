@@ -15,7 +15,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Controls the map difficulty, tech level, and short game lobby options.")]
-	public class ScriptLobbyDropdownInfo : ITraitInfo, ILobbyOptions
+	public class ScriptLobbyDropdownInfo : TraitInfo, ILobbyOptions
 	{
 		[FieldLoader.Require]
 		[Desc("Internal id for this option.")]
@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Traits
 				new ReadOnlyDictionary<string, string>(Values), Default, Locked);
 		}
 
-		public object Create(ActorInitializer init) { return new ScriptLobbyDropdown(this); }
+		public override object Create(ActorInitializer init) { return new ScriptLobbyDropdown(this); }
 	}
 
 	public class ScriptLobbyDropdown : INotifyCreated

@@ -21,7 +21,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class HarvesterInfo : ITraitInfo, Requires<MobileInfo>
+	public class HarvesterInfo : TraitInfo, Requires<MobileInfo>
 	{
 		public readonly HashSet<string> DeliveryBuildings = new HashSet<string>();
 
@@ -84,7 +84,7 @@ namespace OpenRA.Mods.Common.Traits
 		[VoiceReference]
 		public readonly string DeliverVoice = "Action";
 
-		public object Create(ActorInitializer init) { return new Harvester(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new Harvester(init.Self, this); }
 	}
 
 	public class Harvester : IIssueOrder, IResolveOrder, IOrderVoice,
