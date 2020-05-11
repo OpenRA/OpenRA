@@ -500,18 +500,6 @@ music:
 		prev: 68, 0, 16, 16
 		fastforward: 85, 0, 16, 16
 
-scrollbar:
-	Inherits: ^Glyphs
-	Regions:
-		down_arrow: 68, 17, 16, 16
-		down_pressed: 85, 17, 16, 16
-		up_arrow: 102, 17, 16, 16
-		up_pressed: 119, 17, 16, 16
-		right_arrow: 136, 17, 16, 16
-		right_pressed: 153, 17, 16, 16
-		left_arrow: 170, 17, 16, 16
-		left_pressed: 187, 17, 16, 16
-
 # ----------------------------------------------------------------------
 # Other UI stuff
 # ----------------------------------------------------------------------
@@ -666,6 +654,12 @@ checkbox-highlighted:
 	Inherits: ^Dialog
 	PanelRegion: 897, 1, 2, 2, 122, 122, 2, 2
 
+checkbox-highlighted-hover:
+	Inherits: checkbox-highlighted
+
+checkbox-highlighted-disabled:
+	Inherits: checkbox-disabled
+
 scrollitem-selected:
 	Inherits: button-pressed
 
@@ -681,10 +675,36 @@ scrollheader-selected:
 mainmenu-border:
 	Inherits: ^Dialog
 
-dropdown:
+scrollpanel-decorations:
+	Inherits: ^Glyphs
+	Regions:
+		down: 68, 17, 16, 16
+		down-pressed: 68, 17, 16, 16
+		down-disabled: 85, 17, 16, 16
+		up: 102, 17, 16, 16
+		up-pressed: 102, 17, 16, 16
+		up-disabled: 119, 17, 16, 16
+		right: 136, 17, 16, 16
+		right-pressed: 136, 17, 16, 16
+		right-disabled: 153, 17, 16, 16
+		left: 170, 17, 16, 16
+		left-pressed: 170, 17, 16, 16
+		left-disabled: 187, 17, 16, 16
+
+dropdown-decorations:
+	Inherits: ^Glyphs
+	Regions:
+		marker: 68, 17, 16, 16
+		marker-pressed: 68, 17, 16, 16
+		marker-disabled: 85, 17, 16, 16
+
+dropdown-separators:
 	Inherits: ^Dialog
 	Regions:
-		separator: 513, 1, 1, 19
+		separator: 513, 2, 1, 19
+		separator-hover: 513, 130, 1, 19
+		separator-pressed: 766, 2, 1, 19
+		separator-disabled: 513, 258, 1, 19
 
 logos:
 	Inherits: ^LoadScreen

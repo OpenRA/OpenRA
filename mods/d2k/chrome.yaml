@@ -283,14 +283,6 @@ music:
 		prev: 68, 0, 16, 16
 		fastforward: 85, 0, 16, 16
 
-scrollbar:
-	Inherits: ^Glyphs
-	Regions:
-		down_arrow: 119, 0, 16, 16
-		down_pressed: 119, 0, 16, 16
-		up_arrow: 102, 0, 16, 16
-		up_pressed: 102, 0, 16, 16
-
 progressbar-bg:
 	Inherits: button-pressed
 
@@ -400,6 +392,12 @@ checkbox-disabled:
 checkbox-highlighted:
 	Inherits: button-highlighted-pressed
 
+checkbox-highlighted-hover:
+	Inherits: checkbox-highlighted
+
+checkbox-highlighted-disabled:
+	Inherits: checkbox-disabled
+
 scrollitem-selected:
 	Inherits: button-pressed
 
@@ -412,10 +410,24 @@ scrollheader-selected:
 scrollitem-nohover:
 	Inherits: ^Dialog
 
-dropdown:
+scrollpanel-decorations:
+	Inherits: ^Glyphs
+	Regions:
+		down: 119, 0, 16, 16
+		up: 102, 0, 16, 16
+
+dropdown-decorations:
+	Inherits: ^Glyphs
+	Regions:
+		marker: 119, 0, 16, 16
+
+dropdown-separators:
 	Inherits: ^Dialog
 	Regions:
-		separator: 513, 1, 1, 19
+		separator: 513, 2, 1, 19
+		separator-hover: 513, 130, 1, 19
+		separator-pressed: 641, 2, 1, 19
+		separator-disabled: 513, 258, 1, 19
 
 logos:
 	Inherits: ^LoadScreen

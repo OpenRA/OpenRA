@@ -83,6 +83,9 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public string Button = "button";
 		public string Background = "panel-black";
+		public readonly string Decorations = "scrollpanel-decorations";
+		public readonly string DecorationScrollLeft = "left";
+		public readonly string DecorationScrollRight = "right";
 
 		int contentWidth = 0;
 		float listOffset = 0;
@@ -182,9 +185,14 @@ namespace OpenRA.Mods.Common.Widgets
 			ButtonWidget.DrawBackground(Button, leftButtonRect, leftDisabled, leftPressed, leftHover, false);
 			ButtonWidget.DrawBackground(Button, rightButtonRect, rightDisabled, rightPressed, rightHover, false);
 
-			WidgetUtils.DrawRGBA(ChromeProvider.GetImage("scrollbar", leftPressed || leftDisabled ? "left_pressed" : "left_arrow"),
+			var leftArrowImageName = WidgetUtils.GetStatefulImageName(DecorationScrollLeft, leftDisabled, leftPressed, leftHover);
+			var leftArrowImage = ChromeProvider.GetImage(Decorations, leftArrowImageName) ?? ChromeProvider.GetImage(Decorations, DecorationScrollLeft);
+			WidgetUtils.DrawRGBA(leftArrowImage,
 				new float2(leftButtonRect.Left + 2, leftButtonRect.Top + 2));
-			WidgetUtils.DrawRGBA(ChromeProvider.GetImage("scrollbar", rightPressed || rightDisabled ? "right_pressed" : "right_arrow"),
+
+			var rightArrowImageName = WidgetUtils.GetStatefulImageName(DecorationScrollRight, rightDisabled, rightPressed, rightHover);
+			var rightArrowImage = ChromeProvider.GetImage(Decorations, rightArrowImageName) ?? ChromeProvider.GetImage(Decorations, DecorationScrollRight);
+			WidgetUtils.DrawRGBA(rightArrowImage,
 				new float2(rightButtonRect.Left + 2, rightButtonRect.Top + 2));
 
 			// Draw tab buttons
