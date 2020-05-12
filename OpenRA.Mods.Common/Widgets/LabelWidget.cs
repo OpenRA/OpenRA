@@ -42,10 +42,11 @@ namespace OpenRA.Mods.Common.Widgets
 
     class Selection
     {
-      public enum States { Empty, Primed, Active, Inactive };
+      public enum States { Empty, Ready, Active, Inactive };
       public States State = States.Empty;
       public int First = -1;
       public int Last = -1;
+      public LabelWidget selectionWidget = null;
 
       public int Start {
         get {
@@ -61,53 +62,101 @@ namespace OpenRA.Mods.Common.Widgets
 
       public Selection() { }
 
-      public bool Prime()
+      public bool OwnedBy(LabelWidget widget)
       {
-        if (State == States.Active && State == States.Inactive)
+        return selectionWidget == widget;
+      }
+
+      public bool HandleMouseDown(LabelWidget widget)
+      {
+        Console.WriteLine("State: " + State.ToString());
+        Console.WriteLine("Mouse Down");
+        switch (State)
+        {
+          case States.Empty:
+          case States.Inactive:
+            State = States.Ready;
+            First = -1;
+            Last = -1;
+            selectionWidget = widget;
+            return true;
+          default:
+            return false;
+        }
+      }
+
+      public bool HandleMouseMove(int index)
+      {
+        Console.WriteLine("State: " + State.ToString());
+        Console.WriteLine("Mouse Move");
+        switch (State)
+        {
+          case States.Ready:
+            First = index;
+            Last = index;
+            State = States.Active;
+            return true;
+          case States.Active:
+            Last = index;
+            return true;
+          default:
+            return false;
+        }
+      }
+
+      public bool HandleMouseUp()
+      {
+        Console.WriteLine("State: " + State.ToString());
+        Console.WriteLine("Mouse Up");
+        switch (State)
+        {
+          case States.Active:
+            State = States.Inactive;
+            return true;
+          case States.Ready:
+            State = States.Empty;
+            selectionWidget = null;
+            return true;
+          default:
+            return false;
+        }
+      }
+
+      public bool HandleMouseExit()
+      {
+        Console.WriteLine("State: " + State.ToString());
+        Console.WriteLine("Mouse Exit");
+        switch (State)
+        {
+          case States.Active:
+            State = States.Inactive;
+            return true;
+          case States.Ready:
+            State = States.Empty;
+            selectionWidget = null;
+            return true;
+          default:
+            return false;
+        }
+      }
+
+      public bool HandleMouseEnter(LabelWidget widget)
+      {
+        if (!OwnedBy(widget))
           return false;
 
-        State = States.Primed;
-        return true;
-      }
-
-      public bool Activate(int first)
-      {
-        if (State == States.Primed)
+        switch(State)
         {
-          State = States.Active;
-          First = first;
-          Last = first;
-          return true;
+          case States.Inactive:
+            State = States.Active;
+            return true;
+          default:
+            return false;
         }
-
-        return false;
-      }
-
-      public bool Update(int last)
-      {
-        if (State == States.Active)
-        {
-          Last = last;
-          return true;
-        }
-
-        return false;
-      }
-
-      public bool Deactivate()
-      {
-        State = States.Inactive;
-        return true;
-      }
-
-      public bool Reset()
-      {
-        State = States.Empty;
-        return true;
       }
     }
 
-    Selection selection = new Selection();
+    static Selection selection = new Selection();
 
 		public LabelWidget()
 		{
@@ -195,19 +244,16 @@ namespace OpenRA.Mods.Common.Widgets
       if (text == null)
         return;
 
-			DrawInner(text, font, GetColor(), position);
+			DrawInner(text, GetFont(), GetColor(), GetPosition());
 		}
 
 		protected virtual void DrawInner(string text, SpriteFont font, Color color, int2 position)
 		{
-      var font = GetFont();
-			var color = GetColor();
 			var bgDark = GetContrastColorDark();
 			var bgLight = GetContrastColorLight();
       var bgHighlight = GetColorHighlight();
-      var position = GetPosition();
 
-      if (selection.State != Selection.States.Empty)
+      if (selection.OwnedBy(this) && selection.State != Selection.States.Empty)
         font.DrawTextWithSelection(text, position, color, bgHighlight, selection.Start, selection.End);
 			else if (Contrast)
 				font.DrawTextWithContrast(text, position, color, bgDark, bgLight, 2);
@@ -224,44 +270,32 @@ namespace OpenRA.Mods.Common.Widgets
       switch (mi.Event)
       {
         case MouseInputEvent.Down:
-          if (selection.State == Selection.States.Empty)
-            return selection.Prime();
-
-          if (selection.State == Selection.States.Inactive)
-            return selection.Reset();
-
-          break;
-
+          return selection.HandleMouseDown(this);
         case MouseInputEvent.Move:
-          // only calculate the nearest index if we have to.
-          if (selection.State == Selection.States.Empty || selection.State == Selection.States.Inactive)
-            return false;
-
-          var nearestIndex = WidgetUtils.FindNearestIndex(
+          return selection.HandleMouseMove(WidgetUtils.FindNearestIndex(
               GetTextContent(),
               GetPosition(),
               GetFont(),
-              mi.Location);
-
-          if (selection.State == Selection.States.Primed)
-            return selection.Activate(nearestIndex);
-
-          if (selection.State == Selection.States.Active)
-            return selection.Update(nearestIndex);
-
-          break;
-
+              mi.Location));
         case MouseInputEvent.Up:
-          if (selection.State == Selection.States.Active)
-            return selection.Deactivate();
-
-          break;
-
+          return selection.HandleMouseUp();
         default:
           throw new Exception("Unrecognized MouseEvent on Label.");
       }
-
-      return false;
     }
-	}
+
+    public override void MouseExited()
+    {
+      selection.HandleMouseExit();
+    }
+
+    public override void MouseEntered()
+    {
+      // TODO: Enable Selections to continue after they leave the widget so long as the mouse hasn't gone down yet
+      //       This is currently hard to do as widgets only listen to mouse events on themselves. We would require
+      //       some sort of observer architecture where windown widgets are observable allowing us to set the selection
+      //       to Ready if a mouse down occurred outside of the widget.
+      // selection.HandleMouseEnter(this);
+    }
+  }
 }
