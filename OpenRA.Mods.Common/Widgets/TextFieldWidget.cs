@@ -365,7 +365,6 @@ namespace OpenRA.Mods.Common.Widgets
 						Game.Renderer.SetClipboardText(Text.Substring(lowestIndex, highestIndex - lowestIndex));
 
 						RemoveSelectedText();
-						OnTextEdited();
 					}
 
 					break;
