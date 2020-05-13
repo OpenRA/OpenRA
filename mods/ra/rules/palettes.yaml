@@ -127,3 +127,43 @@
 		BaseName: placebuilding
 		BasePalette: player
 		Alpha: 0.65
+	IndexedPalette@CIV2:
+		Name: civilian2
+		BasePalette: player
+		Index: 7, 14, 118, 119, 159, 187, 188
+		ReplaceIndex: 209, 12, 187, 188, 209, 167, 13
+	IndexedPalette@CIV4:
+		Name: civilian4
+		BasePalette: player
+		Index: 7, 109, 111, 206, 210
+		ReplaceIndex: 187, 118, 119, 188, 182
+	IndexedPalette@CIV5:
+		Name: civilian5
+		BasePalette: player
+		Index: 7, 12, 109, 111, 200, 206, 210
+		ReplaceIndex: 109, 131, 177, 178, 111, 111, 182
+	IndexedPalette@CIV6:
+		Name: civilian6
+		BasePalette: player
+		Index: 7, 14, 118, 119, 159
+		ReplaceIndex: 120, 238, 236, 206, 111
+	IndexedPalette@CIV7:
+		Name: civilian7
+		BasePalette: player
+		Index: 14, 118, 119, 159, 187, 188
+		ReplaceIndex: 131, 157, 212, 7, 118, 119
+	IndexedPalette@CIV8:
+		Name: civilian8
+		BasePalette: player
+		Index: 7, 14, 118, 119, 159, 187, 188, 200
+		ReplaceIndex: 182, 131, 215, 7, 182, 198, 199, 111
+	IndexedPalette@CIV9:
+		Name: civilian9
+		BasePalette: player
+		Index: 14, 118, 119, 159, 187, 188
+		ReplaceIndex: 7, 163, 165, 200, 111, 13
+	IndexedPalette@CIV10:
+		Name: civilian10
+		BasePalette: player
+		Index: 7, 14, 118, 119, 159, 187, 188
+		ReplaceIndex: 137, 15, 129, 131, 137, 163, 165
