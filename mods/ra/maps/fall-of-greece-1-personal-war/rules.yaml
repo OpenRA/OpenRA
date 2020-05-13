@@ -1,0 +1,98 @@
+World:
+	LuaScript:
+		Scripts: personal-war.lua
+	MissionData:
+		WinVideo: toofar.vqa
+		LossVideo: bmap.vqa
+		Briefing: With the fighting fast approaching Athens, Stavros has insisted that he be allowed to survey the damage in his own hometown in Greece.\n\nYou must escort Stavros through the town and to a nearby friendly outpost. Once you reach it, evacuate Stavros to safety.\n\nIf anything should happen, get Stavros to safety any way possible. He must be kept alive.
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			normal: Normal
+			hard: Hard
+		Default: normal
+
+INSERTIONDROP:
+	ParatroopersPower:
+		DisplayBeacon: False
+		DropItems: E7, GNRL
+	AlwaysVisible:
+
+INSERTIONDROPHARD:
+	ParatroopersPower:
+		DisplayBeacon: False
+		DropItems: E7.noautotarget, GNRL.noautotarget
+	AlwaysVisible:
+
+RIFLEDROP:
+	ParatroopersPower:
+		DisplayBeacon: False
+		DropItems: E1, E1, E1, E1, E1
+	AlwaysVisible:
+
+LST.Reinforcement:
+	Inherits: LST
+	RejectsOrders:
+	-Buildable:
+	-Selectable:
+	RenderSprites:
+		Image: lst
+	Interactable:
+
+GNRL:
+	Valued:
+		Cost: 1000
+	Tooltip:
+		Name: Stavros
+	Armament:
+		Weapon: SilencedPPK
+	Passenger:
+		CargoType: VIP
+
+GNRL.noautotarget:
+	Inherits: GNRL
+	-AutoTarget:
+	-AutoTargetPriority@DEFAULT:
+	-AutoTargetPriority@ATTACKANYTHING:
+	AttackMove:
+		-AssaultMoveCondition:
+	RenderSprites:
+		Image: GNRL
+
+E7:
+	Passenger:
+		CargoType: VIP
+
+TRUK:
+	SpawnActorOnDeath:
+		Actor: healcrate
+
+HEALCRATE:
+	Crate:
+		Lifetime: 0
+
+TRAN:
+	-Selectable:
+	RevealsShroud:
+		Range: 4c0
+	Targetable@GROUND:
+		TargetTypes: GroundActor
+	Interactable:
+	Health:
+		HP: 5000
+	Cargo:
+		Types: VIP
+		MaxWeight: 2
+
+BADR.Bomber:
+	Aircraft:
+		Speed: 373
+	Tooltip:
+		Name: Strategic Bomber
+	RenderSprites:
+		Image: U2
+
+MIG:
+	Aircraft:
+		IdleBehavior: LeaveMap
