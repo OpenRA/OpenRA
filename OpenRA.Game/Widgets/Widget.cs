@@ -182,6 +182,7 @@ namespace OpenRA.Widgets
 		public bool Visible = true;
 		public bool IgnoreMouseOver;
 		public bool IgnoreChildMouseOver;
+		public bool ShouldRepeat = false;
 
 		// Calculated internally
 		public Rectangle Bounds;
@@ -411,6 +412,9 @@ namespace OpenRA.Widgets
 			foreach (var child in Children.OfType<Widget>().Reverse())
 				if (child.HandleKeyPressOuter(e))
 					return true;
+
+			if (e.IsRepeat && !ShouldRepeat)
+				return false;
 
 			// Do any widgety behavior
 			var handled = HandleKeyPress(e);
