@@ -128,17 +128,20 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var titleText = widget.Get<LabelWidget>("TITLE");
 			var titleTextNoTabs = widget.GetOrNull<LabelWidget>("TITLE_NO_TABS");
 
+			// ADDED
+			var serverTitle = world.LobbyInfo.GlobalSettings.ServerName;
+
 			var mapTitle = world.Map.Title;
 			var firstCategory = world.Map.Categories.FirstOrDefault();
 			if (firstCategory != null)
 				mapTitle = firstCategory + ": " + mapTitle;
 
 			titleText.IsVisible = () => numTabs > 1 || (numTabs == 1 && titleTextNoTabs == null);
-			titleText.GetText = () => mapTitle;
+			titleText.GetText = () => (serverTitle + "\n" + mapTitle);
 			if (titleTextNoTabs != null)
 			{
 				titleTextNoTabs.IsVisible = () => numTabs == 1;
-				titleTextNoTabs.GetText = () => mapTitle;
+				titleTextNoTabs.GetText = () => serverTitle + "\n" + mapTitle;
 			}
 
 			var bg = widget.Get<BackgroundWidget>("BACKGROUND");
