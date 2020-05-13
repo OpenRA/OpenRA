@@ -137,6 +137,7 @@ namespace OpenRA.Mods.Common.Widgets
 		[ObjectCreator.UseCtor]
 		public ProductionPaletteWidget(ModData modData, OrderManager orderManager, World world, WorldRenderer worldRenderer)
 		{
+			ShouldRepeat = true;
 			this.modData = modData;
 			this.orderManager = orderManager;
 			World = world;
