@@ -13,8 +13,9 @@ using System.Collections.Generic;
 using System.IO;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.Common
 {
 	[Desc("Define a player palette by swapping palette indices.")]
 	public class IndexedPlayerPaletteInfo : TraitInfo, IRulesetLoaded
@@ -66,29 +67,6 @@ namespace OpenRA.Traits
 				pal = new ImmutablePalette(basePalette);
 
 			wr.AddPalette(info.BaseName + playerName, pal, info.AllowModifiers, replaceExisting);
-		}
-	}
-
-	public class IndexedColorRemap : IPaletteRemap
-	{
-		Dictionary<int, int> replacements = new Dictionary<int, int>();
-		IPalette basePalette;
-
-		public IndexedColorRemap(IPalette basePalette, int[] ramp, int[] remap)
-		{
-			this.basePalette = basePalette;
-			if (ramp.Length != remap.Length)
-				throw new InvalidDataException("ramp and remap lengths do no match.");
-
-			for (var i = 0; i < ramp.Length; i++)
-				replacements[ramp[i]] = remap[i];
-		}
-
-		public Color GetRemappedColor(Color original, int index)
-		{
-			int c;
-			return replacements.TryGetValue(index, out c)
-				? basePalette.GetColor(c) : original;
 		}
 	}
 }
