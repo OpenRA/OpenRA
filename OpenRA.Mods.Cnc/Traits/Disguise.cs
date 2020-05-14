@@ -93,6 +93,9 @@ namespace OpenRA.Mods.Cnc.Traits
 			"A dictionary of [actor id]: [condition].")]
 		public readonly Dictionary<string, string> DisguisedAsConditions = new Dictionary<string, string>();
 
+		[Desc("Cursor to show when hovering over a valid actor to disguise as.")]
+		public readonly string Cursor = "ability";
+
 		[GrantedConditionReference]
 		public IEnumerable<string> LinterConditions { get { return DisguisedAsConditions.Values; } }
 
@@ -284,7 +287,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		readonly DisguiseInfo info;
 
 		public DisguiseOrderTargeter(DisguiseInfo info)
-			: base("Disguise", 7, "ability", true, true)
+			: base("Disguise", 7, info.Cursor, true, true)
 		{
 			this.info = info;
 			ForceAttack = false;
