@@ -26,6 +26,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Identifier checked against AcceptsDeliveredExperience.ValidTypes. Only needed if the latter is not empty.")]
 		public readonly string Type = null;
 
+		[Desc("Cursor to show when hovering over a valid actor to deliver experience to.")]
+		public readonly string Cursor = "enter";
+
 		[VoiceReference]
 		public readonly string Voice = "Action";
 
@@ -50,7 +53,7 @@ namespace OpenRA.Mods.Common.Traits
 			get
 			{
 				if (gainsExperience.Level != 0)
-					yield return new DeliversExperienceOrderTargeter();
+					yield return new DeliversExperienceOrderTargeter(info);
 			}
 		}
 
@@ -90,8 +93,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public class DeliversExperienceOrderTargeter : UnitOrderTargeter
 		{
-			public DeliversExperienceOrderTargeter()
-				: base("DeliverExperience", 5, "enter", true, true) { }
+			public DeliversExperienceOrderTargeter(DeliversExperienceInfo info)
+				: base("DeliverExperience", 5, info.Cursor, true, true) { }
 
 			public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 			{

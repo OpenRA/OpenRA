@@ -50,6 +50,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Cursor to display when unable to drop off the passengers at location.")]
 		public readonly string DropOffBlockedCursor = "move-blocked";
 
+		[Desc("Cursor to display when picking up the passengers.")]
+		public readonly string PickUpCursor = "ability";
+
 		[VoiceReference]
 		public readonly string Voice = "Action";
 
@@ -266,7 +269,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			get
 			{
-				yield return new CarryallPickupOrderTargeter();
+				yield return new CarryallPickupOrderTargeter(Info);
 				yield return new DeployOrderTargeter("Unload", 10,
 				() => CanUnload() ? Info.UnloadCursor : Info.UnloadBlockedCursor);
 				yield return new CarryallDeliverUnitTargeter(aircraftInfo, Info);
@@ -332,8 +335,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		class CarryallPickupOrderTargeter : UnitOrderTargeter
 		{
-			public CarryallPickupOrderTargeter()
-				: base("PickupUnit", 5, "ability", false, true)
+			public CarryallPickupOrderTargeter(CarryallInfo info)
+				: base("PickupUnit", 5, info.PickUpCursor, false, true)
 			{
 			}
 

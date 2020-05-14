@@ -32,6 +32,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Sound to play when delivering cash")]
 		public readonly string[] Sounds = { };
 
+		[Desc("Cursor to show when hovering over a valid actor to deliver cash to.")]
+		public readonly string Cursor = "enter";
+
 		[VoiceReference]
 		public readonly string Voice = "Action";
 
@@ -49,7 +52,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
-			get { yield return new DeliversCashOrderTargeter(); }
+			get { yield return new DeliversCashOrderTargeter(info); }
 		}
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
@@ -87,8 +90,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public class DeliversCashOrderTargeter : UnitOrderTargeter
 		{
-			public DeliversCashOrderTargeter()
-				: base("DeliverCash", 5, "enter", false, true) { }
+			public DeliversCashOrderTargeter(DeliversCashInfo info)
+				: base("DeliverCash", 5, info.Cursor, false, true) { }
 
 			public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 			{
