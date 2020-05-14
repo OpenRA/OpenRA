@@ -132,10 +132,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var firstCategory = world.Map.Categories.FirstOrDefault();
 			if (firstCategory != null)
 				mapTitle = firstCategory + ": " + mapTitle;
-			var serverTitle = "Server: " + world.LobbyInfo.GlobalSettings.ServerName;
+			var serverTitle = world.LobbyInfo.GlobalSettings.ServerName;
 
 			titleText.IsVisible = () => numTabs > 1 || (numTabs == 1 && titleTextNoTabs == null);
-			titleText.GetText = () => serverTitle + "\n" + mapTitle;
+			titleText.GetText = () => mapTitle;
 			if (titleTextNoTabs != null)
 			{
 				titleTextNoTabs.IsVisible = () => numTabs == 1;
