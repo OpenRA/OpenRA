@@ -133,9 +133,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (firstCategory != null)
 				mapTitle = firstCategory + ": " + mapTitle;
 			var serverTitle = world.LobbyInfo.GlobalSettings.ServerName;
+			if (world.LobbyInfo.NonBotClients.Count() == 1)
+				serverTitle = "Singleplayer Game";
 
 			titleText.IsVisible = () => numTabs > 1 || (numTabs == 1 && titleTextNoTabs == null);
-			titleText.GetText = () => mapTitle;
+			titleText.GetText = () => mapTitle + "\n" + serverTitle;
 			if (titleTextNoTabs != null)
 			{
 				titleTextNoTabs.IsVisible = () => numTabs == 1;
