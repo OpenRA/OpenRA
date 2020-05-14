@@ -93,15 +93,13 @@ namespace OpenRA.Mods.Common.Traits
 				}
 			}
 
-			// Add buildables that have a build limit set and are not already in the list
-			player.World.ActorsWithTrait<Buildable>()
+			// Add buildables that have a build limit set
+			player.World.ActorsHavingTrait<Buildable>()
 				  .Where(a =>
-					  a.Actor.Owner == player &&
-					  a.Actor.IsInWorld &&
-					  !a.Actor.IsDead &&
-					  !ret.ContainsKey(a.Actor.Info.Name) &&
-					  a.Actor.Info.TraitInfo<BuildableInfo>().BuildLimit > 0)
-				  .Do(b => ret[b.Actor.Info.Name].Add(b.Actor));
+					  a.Owner == player &&
+					  !a.IsDead &&
+					  a.Info.TraitInfo<BuildableInfo>().BuildLimit > 0)
+				  .Do(a => ret[a.Info.Name].Add(a));
 
 			return ret;
 		}
