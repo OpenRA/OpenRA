@@ -107,6 +107,19 @@ TECN:
 	RenderSprites:
 		Image: C1
 
+TECN2:
+	Inherits@1: ^CivInfantry
+	Inherits@2: ^ArmedCivilian
+	Tooltip:
+		Name: Technician
+	RenderSprites:
+		Image: C1
+	WithInfantryBody:
+		Palette: civilian7
+	WithDeathAnimation:
+		DeathSequencePalette: civilian7
+		DeathPaletteIsPlayerPalette: false
+
 FCOM:
 	Inherits: ^TechBuilding
 	Inherits@shape: ^2x2Shape
