@@ -37,6 +37,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Boolean expression defining the condition under which the regular (non-force) enter cursor is disabled.")]
 		public readonly BooleanExpression RequireForceMoveCondition = null;
 
+		public readonly string EnterCursor = "enter";
+		public readonly string EnterBlockedCursor = "enter-blocked";
+
 		public override object Create(ActorInitializer init) { return new Repairable(init.Self, this); }
 	}
 
@@ -65,7 +68,7 @@ namespace OpenRA.Mods.Common.Traits
 			get
 			{
 				if (!isAircraft)
-					yield return new EnterAlliedActorTargeter<BuildingInfo>("Repair", 5, CanRepairAt, _ => CanRepair() || CanRearm());
+					yield return new EnterAlliedActorTargeter<BuildingInfo>("Repair", 5, Info.EnterCursor, Info.EnterBlockedCursor, CanRepairAt, _ => CanRepair() || CanRearm());
 			}
 		}
 
