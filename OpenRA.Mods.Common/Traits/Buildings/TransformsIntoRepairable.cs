@@ -33,6 +33,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Require the force-move modifier to display the enter cursor.")]
 		public readonly bool RequiresForceMove = false;
 
+		public readonly string EnterCursor = "enter";
+		public readonly string EnterBlockedCursor = "enter-blocked";
+
 		public override object Create(ActorInitializer init) { return new TransformsIntoRepairable(init.Self, this); }
 	}
 
@@ -60,7 +63,7 @@ namespace OpenRA.Mods.Common.Traits
 			get
 			{
 				if (!IsTraitDisabled)
-					yield return new EnterAlliedActorTargeter<BuildingInfo>("Repair", 5, CanRepairAt, _ => CanRepair());
+					yield return new EnterAlliedActorTargeter<BuildingInfo>("Repair", 5, Info.EnterCursor, Info.EnterBlockedCursor, CanRepairAt, _ => CanRepair());
 			}
 		}
 

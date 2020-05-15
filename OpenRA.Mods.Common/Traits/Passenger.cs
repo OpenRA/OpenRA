@@ -47,6 +47,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Boolean expression defining the condition under which the regular (non-force) enter cursor is disabled.")]
 		public readonly BooleanExpression RequireForceMoveCondition = null;
 
+		public readonly string EnterCursor = "enter";
+		public readonly string EnterBlockedCursor = "enter-blocked";
+
 		public override object Create(ActorInitializer init) { return new Passenger(this); }
 	}
 
@@ -70,7 +73,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			get
 			{
-				yield return new EnterAlliedActorTargeter<CargoInfo>("EnterTransport", 5, IsCorrectCargoType, CanEnter);
+				yield return new EnterAlliedActorTargeter<CargoInfo>("EnterTransport", 5, Info.EnterCursor, Info.EnterBlockedCursor, IsCorrectCargoType, CanEnter);
 			}
 		}
 

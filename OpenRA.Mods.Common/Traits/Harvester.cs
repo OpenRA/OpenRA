@@ -84,6 +84,9 @@ namespace OpenRA.Mods.Common.Traits
 		[VoiceReference]
 		public readonly string DeliverVoice = "Action";
 
+		public readonly string EnterCursor = "enter";
+		public readonly string EnterBlockedCursor = "enter-blocked";
+
 		public override object Create(ActorInitializer init) { return new Harvester(init.Self, this); }
 	}
 
@@ -278,7 +281,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			get
 			{
-				yield return new EnterAlliedActorTargeter<IAcceptResourcesInfo>("Deliver", 5,
+				yield return new EnterAlliedActorTargeter<IAcceptResourcesInfo>("Deliver", 5, Info.EnterCursor, Info.EnterBlockedCursor,
 					(proc, _) => IsAcceptableProcType(proc),
 					proc => proc.Trait<IAcceptResources>().AllowDocking);
 				yield return new HarvestOrderTargeter();
