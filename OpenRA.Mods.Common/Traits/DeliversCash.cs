@@ -19,8 +19,11 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Donate money to actors with the `AcceptsDeliveredCash` trait.")]
 	class DeliversCashInfo : TraitInfo
 	{
-		[Desc("The amount of cash the owner receives.")]
+		[Desc("The amount of cash the accepting player receives.")]
 		public readonly int Payload = 500;
+
+		[Desc("The percentage of the value of this actor in cash that the accepting player receives.")]
+		public readonly int PercentagePayload = 0;
 
 		[Desc("The amount of experience the donating player receives.")]
 		public readonly int PlayerExperience = 0;
@@ -75,7 +78,15 @@ namespace OpenRA.Mods.Common.Traits
 			if (order.OrderString != "DeliverCash")
 				return;
 
-			self.QueueActivity(order.Queued, new DonateCash(self, order.Target, info.Payload, info.PlayerExperience));
+			var payload = info.Payload;
+			if (info.PercentagePayload != 0)
+			{
+				var valued = self.Info.TraitInfoOrDefault<ValuedInfo>();
+				if (valued != null)
+					payload += info.PercentagePayload * valued.Cost / 100;
+			}
+
+			self.QueueActivity(order.Queued, new DonateCash(self, order.Target, payload, info.PlayerExperience));
 			self.ShowTargetLines();
 		}
 
