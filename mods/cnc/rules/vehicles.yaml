@@ -715,7 +715,6 @@ TRUCK:
 	RevealsShroud:
 		Range: 4c0
 	DeliversCash:
-		Payload: 500
 		PlayerExperience: 50
 	SpawnActorOnDeath:
 		Actor: TRUCK.Husk

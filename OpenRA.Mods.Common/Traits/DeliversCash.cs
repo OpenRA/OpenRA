@@ -20,10 +20,10 @@ namespace OpenRA.Mods.Common.Traits
 	class DeliversCashInfo : TraitInfo
 	{
 		[Desc("The amount of cash the accepting player receives.")]
-		public readonly int Payload = 500;
+		public readonly int Payload = 0;
 
 		[Desc("The percentage of the value of this actor in cash that the accepting player receives.")]
-		public readonly int PercentagePayload = 0;
+		public readonly int PercentagePayload = 100;
 
 		[Desc("The amount of experience the donating player receives.")]
 		public readonly int PlayerExperience = 0;
