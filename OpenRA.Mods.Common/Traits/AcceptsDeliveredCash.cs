@@ -23,6 +23,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Player relationships the owner of the delivering actor needs.")]
 		public readonly PlayerRelationship ValidRelationships = PlayerRelationship.Ally;
 
+		[Desc("If set to true, accepts only delivery actors owned by the same player as the acceptor.")]
+		public readonly bool SamePlayerOnly = false;
+
 		[Desc("Play a randomly selected sound from this list when accepting cash.")]
 		public readonly string[] Sounds = { };
 

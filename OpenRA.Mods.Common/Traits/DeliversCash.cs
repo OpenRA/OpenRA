@@ -103,6 +103,9 @@ namespace OpenRA.Mods.Common.Traits
 				if (targetInfo == null || !targetInfo.ValidRelationships.HasRelationship(target.Owner.RelationshipWith(self.Owner)))
 					return false;
 
+				if (targetInfo.SamePlayerOnly && target.Owner != self.Owner)
+					return false;
+
 				if (targetInfo.ValidTypes.Count == 0)
 					return true;
 
@@ -114,6 +117,9 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				var targetInfo = target.Info.TraitInfoOrDefault<AcceptsDeliveredCashInfo>();
 				if (targetInfo == null || !targetInfo.ValidRelationships.HasRelationship(target.Owner.RelationshipWith(self.Owner)))
+					return false;
+
+				if (targetInfo.SamePlayerOnly && target.Owner != self.Owner)
 					return false;
 
 				if (targetInfo.ValidTypes.Count == 0)
