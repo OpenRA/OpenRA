@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -21,10 +21,10 @@ namespace OpenRA.Mods.Common.Traits
 	class DeliversCashInfo : TraitInfo
 	{
 		[Desc("The amount of cash the accepting player receives (in addition to ValuePercentagePayload).")]
-		public readonly int Payload = 500;
+		public readonly int Payload = 0;
 
 		[Desc("The percentage of the value of this actor in cash that the accepting player receives (in addition to Payload).")]
-		public readonly int ValuePercentagePayload = 0;
+		public readonly int ValuePercentagePayload = 100;
 
 		[Desc("The amount of experience the donating player receives.")]
 		public readonly int PlayerExperience = 0;
