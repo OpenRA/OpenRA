@@ -23,6 +23,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Stance the delivering actor needs to enter.")]
 		public readonly Stance ValidStances = Stance.Ally;
 
+		[Desc("If set to true, accepts only delivery actors owned by the same player as the acceptor.")]
+		public readonly bool SamePlayerOnly = false;
+
 		[Desc("Play a randomly selected sound from this list when accepting cash.")]
 		public readonly string[] Sounds = { };
 

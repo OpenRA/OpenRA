@@ -98,6 +98,7 @@ namespace OpenRA.Mods.Common.Traits
 				var targetInfo = target.Info.TraitInfoOrDefault<AcceptsDeliveredCashInfo>();
 				return targetInfo != null
 					&& targetInfo.ValidStances.HasStance(target.Owner.Stances[self.Owner])
+					&& (!targetInfo.SamePlayerOnly || target.Owner == self.Owner)
 					&& (targetInfo.ValidTypes.Count == 0
 						|| (!string.IsNullOrEmpty(type) && targetInfo.ValidTypes.Contains(type)));
 			}
@@ -108,6 +109,7 @@ namespace OpenRA.Mods.Common.Traits
 				var targetInfo = target.Info.TraitInfoOrDefault<AcceptsDeliveredCashInfo>();
 				return targetInfo != null
 					&& targetInfo.ValidStances.HasStance(target.Owner.Stances[self.Owner])
+					&& (!targetInfo.SamePlayerOnly || target.Owner == self.Owner)
 					&& (targetInfo.ValidTypes.Count == 0
 						|| (!string.IsNullOrEmpty(type) && targetInfo.ValidTypes.Contains(type)));
 			}
