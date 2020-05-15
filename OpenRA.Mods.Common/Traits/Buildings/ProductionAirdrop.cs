@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Activities;
@@ -56,24 +57,39 @@ namespace OpenRA.Mods.Common.Traits
 			CPos endPos;
 			WAngle spawnFacing;
 
+			var bounds = map.Bounds;
+			var diagonal = Exts.ISqrt(bounds.Height * bounds.Height + bounds.Width * bounds.Width);
+
 			if (info.BaselineSpawn)
 			{
-				var bounds = map.Bounds;
+				var spawn = owner.HomeLocation;
 				var center = new MPos(bounds.Left + bounds.Width / 2, bounds.Top + bounds.Height / 2).ToCPos(map);
-				var spawnVec = owner.HomeLocation - center;
-				startPos = owner.HomeLocation + spawnVec * (Exts.ISqrt((bounds.Height * bounds.Height + bounds.Width * bounds.Width) / (4 * spawnVec.LengthSquared)));
+				var spawnVec = spawn - center;
+				startPos = spawn + spawnVec * diagonal / (2 * spawnVec.Length);
 				endPos = startPos;
-				var spawnDirection = new WVec((self.Location - startPos).X, (self.Location - startPos).Y, 0);
-				spawnFacing = spawnDirection.Yaw;
+				spawnFacing = map.FacingBetween(startPos, self.Location, WAngle.Zero);
 			}
 			else
 			{
-				// Start a fixed distance away: the width of the map.
-				// This makes the production timing independent of spawnpoint
-				var loc = self.Location.ToMPos(map);
-				startPos = new MPos(loc.U + map.Bounds.Width, loc.V).ToCPos(map);
-				endPos = new MPos(map.Bounds.Left, loc.V).ToCPos(map);
+				// Start a fixed distance away: the longest straight line across the
+				// map at a given angle. This makes the production timing independent
+				// of spawnpoint.
 				spawnFacing = info.Facing;
+				var diagonalAngle = WAngle.ArcTan(bounds.Width, bounds.Height);
+				var angle = Math.Abs(spawnFacing.Angle2);
+
+				if (angle > 256)
+					angle = 512 - angle;
+
+				int longestApproach;
+				if (angle < Math.Abs(diagonalAngle.Angle2))
+					longestApproach = bounds.Height * 1024 / spawnFacing.Cos();
+				else
+					longestApproach = bounds.Width * 1024 / spawnFacing.Sin();
+
+				var spawnVec = new MPos(spawnFacing.Sin() * longestApproach / 1024, spawnFacing.Cos() * longestApproach / 1024).ToCPos(map) - CPos.Zero;
+				startPos = self.Location + spawnVec;
+				endPos = self.Location - spawnVec;
 			}
 
 			// Assume a single exit point for simplicity
