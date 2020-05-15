@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
@@ -85,7 +84,7 @@ namespace OpenRA.Mods.Common.Traits
 				.ToArray();
 
 			if (world.LobbyInfo.Clients.Any(c => c.SpawnPoint > spawns.Length))
-				throw new DataException("Failed to obtain available spawns");
+				throw new InvalidOperationException("Failed to obtain available spawns");
 
 			var taken = world.LobbyInfo.Clients.Where(c => c.SpawnPoint != 0 && c.Slot != null)
 					.Select(c => spawns[c.SpawnPoint - 1]).ToList();

@@ -252,7 +252,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					ownerDropdown.GetColor = () => selectedOwner.Color;
 					ownerDropdown.OnClick = () =>
 					{
-						// Get if this trait requires a specific owner
 						var specificOwnerInfo = actor.Info.TraitInfoOrDefault<RequiresSpecificOwnersInfo>();
 						var owners = editorActorLayer.Players.Players.Values;
 						if (specificOwnerInfo != null)
