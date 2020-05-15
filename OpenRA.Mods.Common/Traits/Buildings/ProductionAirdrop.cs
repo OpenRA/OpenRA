@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Cargo aircraft used for delivery. Must have the `Aircraft` trait.")]
 		public readonly string ActorType = null;
 
-		[Desc("The cargo aircraft will spawn at the player baseline (map edge closest to the player spawn)")]
+		[Desc("The cargo aircraft will spawn at the player baseline (map edge directly behind the player spawn)")]
 		public readonly bool BaselineSpawn = false;
 
 		[Desc("Direction the aircraft should face to land.")]
