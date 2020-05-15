@@ -68,7 +68,13 @@ namespace OpenRA.Mods.Common.Traits
 			get
 			{
 				if (!isAircraft)
-					yield return new EnterAlliedActorTargeter<BuildingInfo>("Repair", 5, Info.EnterCursor, Info.EnterBlockedCursor, CanRepairAt, _ => CanRepair() || CanRearm());
+					yield return new EnterAlliedActorTargeter<BuildingInfo>(
+						"Repair",
+						5,
+						Info.EnterCursor,
+						Info.EnterBlockedCursor,
+						CanRepairAt,
+						_ => CanRepair() || CanRearm());
 			}
 		}
 

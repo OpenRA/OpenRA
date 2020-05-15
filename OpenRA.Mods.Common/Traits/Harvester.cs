@@ -281,7 +281,11 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			get
 			{
-				yield return new EnterAlliedActorTargeter<IAcceptResourcesInfo>("Deliver", 5, Info.EnterCursor, Info.EnterBlockedCursor,
+				yield return new EnterAlliedActorTargeter<IAcceptResourcesInfo>(
+					"Deliver",
+					5,
+					Info.EnterCursor,
+					Info.EnterBlockedCursor,
 					(proc, _) => IsAcceptableProcType(proc),
 					proc => proc.Trait<IAcceptResources>().AllowDocking);
 				yield return new HarvestOrderTargeter();
