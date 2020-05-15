@@ -148,6 +148,7 @@ APCGun:
 	Warhead@2Eff: CreateEffect
 		Explosions: small_frag
 		ValidTargets: Ground, Water, Air
+		ImpactActors: false
 
 APCGun.AA:
 	Inherits: APCGun

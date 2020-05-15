@@ -365,7 +365,6 @@ namespace OpenRA.Mods.Common.Widgets
 						Game.Renderer.SetClipboardText(Text.Substring(lowestIndex, highestIndex - lowestIndex));
 
 						RemoveSelectedText();
-						OnTextEdited();
 					}
 
 					break;
@@ -531,6 +530,7 @@ namespace OpenRA.Mods.Common.Widgets
 				ClearSelection();
 
 				CursorPosition = lowestIndex;
+				OnTextEdited();
 			}
 		}
 

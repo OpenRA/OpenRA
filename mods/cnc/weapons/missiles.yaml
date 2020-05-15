@@ -3,7 +3,7 @@
 	Range: 6c0
 	MinRange: 0c512
 	Report: bazook1.aud
-	ValidTargets: Ground, Air
+	ValidTargets: Ground, Water, Air
 	Projectile: Missile
 		Arm: 0
 		Blockable: false
@@ -82,7 +82,7 @@ OrcaAGMissiles:
 	ReloadDelay: 12
 	Range: 5c0
 	MinRange: 1c256
-	ValidTargets: Ground
+	ValidTargets: Ground, Water
 	Projectile: Missile
 		Arm: 1
 		HorizontalRateOfTurn: 20
@@ -141,7 +141,7 @@ MammothMissiles:
 	Burst: 4
 	BurstDelays: 4
 	Report: rocket1.aud
-	ValidTargets: Ground
+	ValidTargets: Ground, Water
 	TargetActorCenter: true
 	# Remove default Missile properties
 	-Projectile:
@@ -216,7 +216,7 @@ TowerMissile:
 	ReloadDelay: 15
 	Range: 7c0
 	Report: rocket2.aud
-	ValidTargets: Ground
+	ValidTargets: Ground, Water
 	Projectile: Missile
 		HorizontalRateOfTurn: 20
 		Speed: 298

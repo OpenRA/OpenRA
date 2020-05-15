@@ -66,7 +66,7 @@ WorldLoaded = function()
 
 	Trigger.OnEnteredFootprint(Apc3Trigger, function(a, id)
 		if a.Owner == Nod then
-			MoveAndHunt(Utils.Take(1, GDI.GetActorsByType("apc"), Apc3Waypoints))
+			MoveAndHunt(Utils.Take(1, GDI.GetActorsByType("apc")), Apc3Waypoints)
 			Trigger.RemoveFootprintTrigger(id)
 		end
 	end)
