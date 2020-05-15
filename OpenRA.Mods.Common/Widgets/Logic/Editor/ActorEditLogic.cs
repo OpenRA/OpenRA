@@ -252,7 +252,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					ownerDropdown.GetColor = () => selectedOwner.Color;
 					ownerDropdown.OnClick = () =>
 					{
-						var owners = editorActorLayer.Players.Players.Values.OrderBy(p => p.Name);
+						// Get if this trait requires a specific owner
+						var specificOwnerInfo = actor.Info.TraitInfoOrDefault<RequiresSpecificOwnersInfo>();
+						var owners = editorActorLayer.Players.Players.Values;
+						if (specificOwnerInfo != null)
+						{
+							owners = editorActorLayer.Players.Players.Values.Where(x =>
+								specificOwnerInfo.ValidOwnerNames.Any(y => x.Name == y))
+								.ToDictionary(player => player.Name)
+								.Values;
+						}
+
 						ownerDropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 270, owners, setupItem);
 					};
 
