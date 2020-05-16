@@ -75,3 +75,27 @@ Ant:
 Zombie:
 	Buildable:
 		Prerequisites: ~disabled
+
+HPAD:
+	ProvidesPrerequisite@allies:
+		Factions: allies
+		Prerequisite: helicopters.allies
+	ProvidesPrerequisite@soviet:
+		Factions: soviet
+		Prerequisite: helicopters.soviet
+
+MH60:
+	Buildable:
+		Prerequisites: ~disabled
+
+HIND:
+	Buildable:
+		Prerequisites: ~helicopters.soviet
+
+HELI:
+	Buildable:
+		Prerequisites: ~helicopters.allies
+
+TRAN:
+	Buildable:
+		Prerequisites: ~helicopters.allies
