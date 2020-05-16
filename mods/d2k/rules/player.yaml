@@ -11,7 +11,6 @@ Player:
 	ClassicProductionQueue@Building:
 		Type: Building
 		DisplayOrder: 0
-		BuildDurationModifier: 250
 		LowPowerModifier: 300
 		ReadyAudio: BuildingReady
 		BlockedAudio: NoRoom
@@ -22,7 +21,6 @@ Player:
 	ClassicProductionQueue@Infantry:
 		Type: Infantry
 		DisplayOrder: 1
-		BuildDurationModifier: 250
 		LowPowerModifier: 300
 		ReadyAudio: UnitReady
 		BlockedAudio: NoRoom
@@ -33,7 +31,6 @@ Player:
 	ClassicProductionQueue@Vehicle:
 		Type: Vehicle
 		DisplayOrder: 2
-		BuildDurationModifier: 250
 		LowPowerModifier: 300
 		ReadyAudio: UnitReady
 		BlockedAudio: NoRoom
@@ -44,7 +41,6 @@ Player:
 	ClassicProductionQueue@Armor:
 		Type: Armor
 		DisplayOrder: 3
-		BuildDurationModifier: 250
 		LowPowerModifier: 300
 		ReadyAudio: UnitReady
 		BlockedAudio: NoRoom
@@ -63,7 +59,6 @@ Player:
 	ClassicProductionQueue@Aircraft:
 		Type: Aircraft
 		DisplayOrder: 5
-		BuildDurationModifier: 312
 		LowPowerModifier: 300
 		ReadyAudio: UnitReady
 		BlockedAudio: NoRoom
@@ -73,7 +68,6 @@ Player:
 		SpeedUp: true
 	ClassicProductionQueue@Upgrade: # Upgrade is defined after others so it won't be automatically selected by ProductionQueueFromSelection.
 		Type: Upgrade
-		BuildDurationModifier: 250
 		ReadyAudio: NewOptions
 		BlockedAudio: NoRoom
 		QueuedAudio: Upgrading

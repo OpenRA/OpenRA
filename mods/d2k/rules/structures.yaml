@@ -34,8 +34,8 @@ concretea:
 		Cost: 20
 	Buildable:
 		BuildPaletteOrder: 110
-		BuildDuration: 54
-		BuildDurationModifier: 40
+		BuildDuration: 62
+		BuildDurationModifier: 100
 
 concreteb:
 	Inherits: ^concrete
@@ -49,8 +49,8 @@ concreteb:
 	Buildable:
 		BuildPaletteOrder: 210
 		Prerequisites: upgrade.conyard
-		BuildDuration: 81
-		BuildDurationModifier: 40
+		BuildDuration: 94
+		BuildDurationModifier: 100
 
 construction_yard:
 	Inherits: ^Building
@@ -117,8 +117,8 @@ wind_trap:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 120
-		BuildDuration: 180
-		BuildDurationModifier: 40
+		BuildDuration: 208
+		BuildDurationModifier: 100
 		Description: Provides power for other structures.
 	Selectable:
 		Bounds: 64,64
@@ -166,8 +166,8 @@ barracks:
 		Prerequisites: wind_trap
 		Queue: Building
 		BuildPaletteOrder: 220
-		BuildDuration: 231
-		BuildDurationModifier: 40
+		BuildDuration: 268
+		BuildDurationModifier: 100
 		Description: Trains infantry.
 	Selectable:
 		Bounds: 64,64
@@ -233,8 +233,8 @@ refinery:
 		Prerequisites: wind_trap
 		Queue: Building
 		BuildPaletteOrder: 130
-		BuildDuration: 540
-		BuildDurationModifier: 40
+		BuildDuration: 625
+		BuildDurationModifier: 100
 		Description: Harvesters unload Spice here for processing.
 	Selectable:
 		Bounds: 96,64
@@ -302,8 +302,8 @@ silo:
 		Prerequisites: refinery
 		Queue: Building
 		BuildPaletteOrder: 310
-		BuildDuration: 135
-		BuildDurationModifier: 40
+		BuildDuration: 156
+		BuildDurationModifier: 100
 		Description: Stores excess harvested Spice.
 	Selectable:
 		Bounds: 32,32
@@ -357,8 +357,8 @@ light_factory:
 		Prerequisites: refinery
 		Queue: Building
 		BuildPaletteOrder: 230
-		BuildDuration: 277
-		BuildDurationModifier: 40
+		BuildDuration: 321
+		BuildDurationModifier: 100
 		Description: Produces light vehicles.
 	Selectable:
 		Bounds: 96,64
@@ -435,8 +435,8 @@ heavy_factory:
 		Prerequisites: refinery
 		Queue: Building
 		BuildPaletteOrder: 330
-		BuildDuration: 648
-		BuildDurationModifier: 40
+		BuildDuration: 750
+		BuildDurationModifier: 100
 		Description: Produces heavy vehicles.
 	Selectable:
 		Bounds: 96,96
@@ -523,8 +523,8 @@ outpost:
 		Prerequisites: barracks, ~techlevel.medium
 		Queue: Building
 		BuildPaletteOrder: 320
-		BuildDuration: 270
-		BuildDurationModifier: 40
+		BuildDuration: 312
+		BuildDurationModifier: 100
 		Description: Provides a radar map of the battlefield.\n  Requires power to operate.
 	Selectable:
 		Bounds: 96,64
@@ -575,8 +575,8 @@ starport:
 		Prerequisites: heavy_factory, outpost, ~techlevel.high
 		Queue: Building
 		BuildPaletteOrder: 530
-		BuildDuration: 540
-		BuildDurationModifier: 40
+		BuildDuration: 625
+		BuildDurationModifier: 100
 		Description: Dropzone for quick reinforcements, at a price.
 	Valued:
 		Cost: 1500
@@ -658,8 +658,8 @@ wall:
 		Queue: Building
 		Prerequisites: barracks
 		BuildPaletteOrder: 410
-		BuildDuration: 54
-		BuildDurationModifier: 40
+		BuildDuration: 62
+		BuildDurationModifier: 100
 		Description: Stop units and blocks enemy fire.
 	Valued:
 		Cost: 20
@@ -722,8 +722,8 @@ medium_gun_turret:
 		Queue: Building
 		Prerequisites: barracks
 		BuildPaletteOrder: 510
-		BuildDuration: 231
-		BuildDurationModifier: 40
+		BuildDuration: 268
+		BuildDurationModifier: 100
 		Description: Defensive structure.\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft
 	Valued:
 		Cost: 550
@@ -765,8 +765,8 @@ large_gun_turret:
 		Queue: Building
 		Prerequisites: outpost, upgrade.conyard, ~techlevel.medium
 		BuildPaletteOrder: 610
-		BuildDuration: 270
-		BuildDurationModifier: 40
+		BuildDuration: 312
+		BuildDurationModifier: 100
 		Description: Defensive structure.\n  Strong vs Infantry, Aircraft\n  Weak vs Tanks\n\n  Requires power to operate.
 	Valued:
 		Cost: 750
@@ -804,8 +804,8 @@ repair_pad:
 		Queue: Building
 		Prerequisites: heavy_factory, upgrade.heavy, ~techlevel.medium
 		BuildPaletteOrder: 430
-		BuildDuration: 324
-		BuildDurationModifier: 40
+		BuildDuration: 375
+		BuildDurationModifier: 100
 		Description: Repairs vehicles.\n Allows construction of MCVs
 	Valued:
 		Cost: 800
@@ -860,8 +860,8 @@ high_tech_factory:
 		Prerequisites: outpost, ~techlevel.medium
 		Queue: Building
 		BuildPaletteOrder: 420
-		BuildDuration: 405
-		BuildDurationModifier: 40
+		BuildDuration: 468
+		BuildDurationModifier: 100
 		Description: Unlocks advanced technology.
 	Selectable:
 		Bounds: 96,96
@@ -939,8 +939,8 @@ research_centre:
 		Queue: Building
 		Prerequisites: outpost, heavy_factory, upgrade.heavy, ~techlevel.high
 		BuildPaletteOrder: 520
-		BuildDuration: 270
-		BuildDurationModifier: 40
+		BuildDuration: 312
+		BuildDurationModifier: 100
 		Description: Unlocks advanced tanks.
 	Selectable:
 		Bounds: 96,96
@@ -991,8 +991,8 @@ palace:
 		Prerequisites: research_centre, ~techlevel.high
 		Queue: Building
 		BuildPaletteOrder: 620
-		BuildDuration: 810
-		BuildDurationModifier: 40
+		BuildDuration: 937
+		BuildDurationModifier: 100
 		Description: Unlocks elite infantry and weapons.
 	Selectable:
 		Bounds: 96,96
