@@ -42,6 +42,21 @@ namespace OpenRA.Mods.Common.Traits
 				Update();
 		}
 
+		public void ChangeBuildLimit(string key, int changingNum)
+		{
+			var watcher = watchers.FirstOrDefault(w => w.Key == key);
+			if (watcher != null)
+				watcher.LimitModifier += changingNum;
+		}
+
+		public int GetAllowedNumber(string key)
+		{
+			var watcher = watchers.FirstOrDefault(w => w.Key == key);
+			if (watcher != null)
+				return watcher.Limit + watcher.LimitModifier - watcher.AlreadyHas;
+			return 0;
+		}
+
 		public void Update()
 		{
 			var ownedPrerequisites = GatherOwnedPrerequisites(player);
@@ -113,7 +128,9 @@ namespace OpenRA.Mods.Common.Traits
 			readonly string[] prerequisites;
 			readonly ITechTreeElement watcher;
 			bool hasPrerequisites;
-			int limit;
+			public readonly int Limit;
+			public int LimitModifier;
+			public int AlreadyHas;
 			bool hidden;
 			bool initialized = false;
 
@@ -123,8 +140,10 @@ namespace OpenRA.Mods.Common.Traits
 				this.prerequisites = prerequisites;
 				this.watcher = watcher;
 				hasPrerequisites = false;
-				this.limit = limit;
+				Limit = limit;
 				hidden = false;
+				AlreadyHas = 0;
+				LimitModifier = 0;
 			}
 
 			bool HasPrerequisites(Cache<string, List<Actor>> ownedPrerequisites)
@@ -157,7 +176,9 @@ namespace OpenRA.Mods.Common.Traits
 
 			public void Update(Cache<string, List<Actor>> ownedPrerequisites)
 			{
-				var hasReachedLimit = limit > 0 && ownedPrerequisites.ContainsKey(Key) && ownedPrerequisites[Key].Count >= limit;
+				if (Limit > 0)
+					AlreadyHas = ownedPrerequisites.ContainsKey(Key) ? ownedPrerequisites[Key].Count : 0;
+				var hasReachedLimit = Limit > 0 && AlreadyHas >= Limit + LimitModifier;
 
 				// The '!' annotation inverts prerequisites: "I'm buildable if this prerequisite *isn't* met"
 				var nowHasPrerequisites = HasPrerequisites(ownedPrerequisites) && !hasReachedLimit;

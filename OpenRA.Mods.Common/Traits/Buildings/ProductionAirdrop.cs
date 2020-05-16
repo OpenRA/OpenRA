@@ -58,6 +58,14 @@ namespace OpenRA.Mods.Common.Traits
 			CPos startPos;
 			CPos endPos;
 			int spawnFacing;
+			PlayerResources playerResources = null;
+			TechTree techTree = null;
+
+			if (owner.PlayerActor != null)
+			{
+				playerResources = owner.PlayerActor.TraitOrDefault<PlayerResources>();
+				techTree = owner.PlayerActor.Trait<TechTree>();
+			}
 
 			if (info.BaselineSpawn && mpStart != null)
 			{
@@ -88,8 +96,15 @@ namespace OpenRA.Mods.Common.Traits
 
 			owner.World.AddFrameEndTask(w =>
 			{
+				var cashSpent = GetProductionCost(producee, techTree, productionType);
+
+				// Refund if the building is gone
 				if (!self.IsInWorld || self.IsDead)
+				{
+					if (playerResources != null)
+						playerResources.GiveCash(cashSpent);
 					return;
+				}
 
 				var actor = w.CreateActor(info.ActorType, new TypeDictionary
 				{
@@ -98,20 +113,38 @@ namespace OpenRA.Mods.Common.Traits
 					new FacingInit(spawnFacing)
 				});
 
+				// Make a placeholder for build limit setting before unit is delivered.
+				bool hasBuildLimit = producee.TraitInfo<BuildableInfo>().BuildLimit > 0;
+				if (hasBuildLimit && techTree != null)
+				{
+					techTree.ChangeBuildLimit(producee.Name, -1);
+					techTree.Update();
+				}
+
 				var exitCell = self.Location + exit.ExitCell;
 				actor.QueueActivity(new Land(actor, Target.FromActor(self), WDist.Zero, WVec.Zero, info.Facing, clearCells: new CPos[1] { exitCell }));
 				actor.QueueActivity(new CallFunc(() =>
 				{
+					if (hasBuildLimit && techTree != null)
+					{
+						techTree.ChangeBuildLimit(producee.Name, 1);
+						techTree.Update();
+					}
+
 					if (!self.IsInWorld || self.IsDead)
+					{
+						// Refund if the building is gone
+						if (playerResources != null)
+							playerResources.GiveCash(cashSpent);
 						return;
+					}
 
 					foreach (var cargo in self.TraitsImplementing<INotifyDelivery>())
 						cargo.Delivered(self);
 
-					self.World.AddFrameEndTask(ww => DoProduction(self, producee, exit, productionType, inits));
+					self.World.AddFrameEndTask(_ => DoProduction(self, producee, exit, productionType, inits));
 					Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", info.ReadyAudio, self.Owner.Faction.InternalName);
 				}));
-
 				actor.QueueActivity(new FlyOffMap(actor, Target.FromCell(w, endPos)));
 				actor.QueueActivity(new RemoveSelf());
 			});

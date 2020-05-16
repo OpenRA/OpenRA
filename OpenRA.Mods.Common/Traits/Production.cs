@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -133,6 +134,20 @@ namespace OpenRA.Mods.Common.Traits
 
 			return mobileInfo == null ||
 				mobileInfo.CanEnterCell(self.World, self, self.Location + s.ExitCell, ignoreActor: self);
+		}
+
+		// Note: there is a same method in ProductionQueue and
+		// refactor is needed.
+		public int GetProductionCost(ActorInfo unit, TechTree techTree, string productionType)
+		{
+			var valued = unit.TraitInfoOrDefault<ValuedInfo>();
+			if (valued == null)
+				return 0;
+
+			var modifiers = unit.TraitInfos<IProductionCostModifierInfo>()
+				.Select(t => t.GetProductionCostModifier(techTree, productionType));
+
+			return Util.ApplyPercentageModifiers(valued.Cost, modifiers);
 		}
 	}
 }

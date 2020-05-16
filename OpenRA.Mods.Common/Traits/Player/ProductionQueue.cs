@@ -356,9 +356,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				if (bi.BuildLimit > 0)
 				{
-					var owned = self.Owner.World.ActorsHavingTrait<Buildable>()
-						.Count(a => a.Info.Name == actor.Name && a.Owner == self.Owner && !a.IsDead);
-					if (queueCount + owned >= bi.BuildLimit)
+					if (techTree.GetAllowedNumber(actor.Name) - queueCount <= 0)
 						return false;
 				}
 			}
@@ -400,8 +398,7 @@ namespace OpenRA.Mods.Common.Traits
 						if (bi.BuildLimit > 0)
 						{
 							var inQueue = Queue.Count(pi => pi.Item == order.TargetString);
-							var owned = self.Owner.World.ActorsHavingTrait<Buildable>().Count(a => a.Info.Name == order.TargetString && a.Owner == self.Owner && !a.IsDead);
-							fromLimit = Math.Min(fromLimit, bi.BuildLimit - (inQueue + owned));
+							fromLimit = Math.Min(fromLimit, techTree.GetAllowedNumber(order.TargetString) - inQueue);
 						}
 
 						if (fromLimit <= 0)
