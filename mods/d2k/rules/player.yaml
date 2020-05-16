@@ -18,6 +18,7 @@ Player:
 		OnHoldAudio: OnHold
 		CancelledAudio: Cancelled
 		SpeedUp: true
+		BuildTimeSpeedReduction: 100, 66, 50
 	ClassicProductionQueue@Infantry:
 		Type: Infantry
 		DisplayOrder: 1
@@ -28,6 +29,7 @@ Player:
 		OnHoldAudio: OnHold
 		CancelledAudio: Cancelled
 		SpeedUp: true
+		BuildTimeSpeedReduction: 100, 66, 50
 	ClassicProductionQueue@Vehicle:
 		Type: Vehicle
 		DisplayOrder: 2
@@ -38,6 +40,7 @@ Player:
 		OnHoldAudio: OnHold
 		CancelledAudio: Cancelled
 		SpeedUp: true
+		BuildTimeSpeedReduction: 100, 66, 50
 	ClassicProductionQueue@Armor:
 		Type: Armor
 		DisplayOrder: 3
@@ -48,6 +51,7 @@ Player:
 		OnHoldAudio: OnHold
 		CancelledAudio: Cancelled
 		SpeedUp: true
+		BuildTimeSpeedReduction: 100, 66, 50
 	ClassicProductionQueue@Starport:
 		Type: Starport
 		DisplayOrder: 4
@@ -66,6 +70,7 @@ Player:
 		OnHoldAudio: OnHold
 		CancelledAudio: Cancelled
 		SpeedUp: true
+		BuildTimeSpeedReduction: 100, 66, 50
 	ClassicProductionQueue@Upgrade: # Upgrade is defined after others so it won't be automatically selected by ProductionQueueFromSelection.
 		Type: Upgrade
 		ReadyAudio: NewOptions
