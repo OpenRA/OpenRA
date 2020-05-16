@@ -43,8 +43,8 @@ carryall.reinforce:
 		Delay: 3
 		HealIfBelow: 50
 	Buildable:
-		BuildDuration: 648
-		BuildDurationModifier: 40
+		BuildDuration: 750
+		BuildDurationModifier: 100
 		Description: Large winged, planet-bound ship\n  Automatically lifts harvesters from and to Spice.\n  Lifts vehicles to Repair Pads when ordered.
 
 carryall:
