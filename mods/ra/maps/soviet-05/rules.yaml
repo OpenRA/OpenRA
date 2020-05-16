@@ -114,10 +114,6 @@ BRIK:
 	Buildable:
 		Prerequisites: ~disabled
 
-E3:
-	Buildable:
-		Prerequisites: ~tent
-
 E4:
 	Buildable:
 		Prerequisites: ~disabled

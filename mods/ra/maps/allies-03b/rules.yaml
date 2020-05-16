@@ -127,10 +127,6 @@ JEEP.mission:
 		Image: JEEP
 	Interactable:
 
-E3:
-	Buildable:
-		Prerequisites: ~disabled
-
 E4:
 	Buildable:
 		Prerequisites: ~disabled

@@ -128,7 +128,3 @@ E7:
 MECH:
 	Buildable:
 		Prerequisites: ~disabled
-
-E3:
-	Buildable:
-		Prerequisites: ~tent

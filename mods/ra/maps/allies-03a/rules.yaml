@@ -175,10 +175,6 @@ KENN:
 	Buildable:
 		Prerequisites: ~disabled
 
-E3:
-	Buildable:
-		Prerequisites: ~disabled
-
 E4:
 	Buildable:
 		Prerequisites: ~disabled

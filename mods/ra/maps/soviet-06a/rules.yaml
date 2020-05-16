@@ -56,10 +56,6 @@ MSLO:
 	Buildable:
 		Prerequisites: ~disabled
 
-E3:
-	Buildable:
-		Prerequisites: ~tent
-
 E7:
 	Buildable:
 		Prerequisites: ~disabled

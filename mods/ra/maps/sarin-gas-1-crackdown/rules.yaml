@@ -21,10 +21,6 @@ APC:
 	Buildable:
 		Prerequisites: ~vehicles.allies
 
-E3:
-	Buildable:
-		Prerequisites: ~infantry.allies
-
 3TNK:
 	Buildable:
 		Prerequisites: ~vehicles.soviet

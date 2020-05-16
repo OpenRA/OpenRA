@@ -32,6 +32,10 @@ World:
 		ShortGameCheckboxLocked: True
 		ShortGameCheckboxEnabled: False
 
+E3:
+	Buildable:
+		Prerequisites: ~tent
+
 E7:
 	-Crushable:
 
