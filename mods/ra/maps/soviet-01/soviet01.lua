@@ -24,9 +24,9 @@ end
 JeepDemolishingBridge = function()
 	StartJeep.Move(StartJeepMovePoint.Location)
 
-	Trigger.OnIdle(StartJeep, function()
-		Trigger.ClearAll(StartJeep)
-		if not BridgeBarrel.IsDead then
+	Trigger.OnEnteredFootprint({ StartJeepMovePoint.Location }, function(actor, id)
+		if actor.Owner == france and not BridgeBarrel.IsDead then
+			Trigger.RemoveFootprintTrigger(id)
 			BridgeBarrel.Kill()
 		end
 
@@ -36,6 +36,23 @@ JeepDemolishingBridge = function()
 		if not bridge.IsDead then
 			bridge.Kill()
 		end
+	end)
+end
+
+Paratroopers = function()
+	Trigger.OnKilled(StartJeep, function()
+		Media.PlaySpeechNotification(player, "ReinforcementsArrived")
+		Paradrop.TargetParatroopers(StartJeepMovePoint.CenterPosition, Angle.East)
+	end)
+
+	Trigger.OnKilled(Church, function()
+		Media.PlaySpeechNotification(player, "ReinforcementsArrived")
+		Paradrop.TargetParatroopers(StartJeepMovePoint.CenterPosition, Angle.East)
+	end)
+
+	Trigger.OnKilled(ParaHut, function()
+		Media.PlaySpeechNotification(player, "ReinforcementsArrived")
+		Paradrop.TargetParatroopers(StartJeepMovePoint.CenterPosition, Angle.East)
 	end)
 end
 
@@ -70,7 +87,9 @@ WorldLoaded = function()
 		Media.PlaySpeechNotification(player, "MissionFailed")
 	end)
 
+	Paradrop = Actor.Create("powerproxy.paratroopers", false, { Owner = player })
 	Trigger.AfterDelay(DateTime.Seconds(2), InsertYaks)
+	Paratroopers()
 end
 
 Tick = function()
