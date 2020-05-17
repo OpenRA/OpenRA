@@ -55,10 +55,12 @@ namespace OpenRA.Traits
 	{
 		public readonly string ImageReference; // The field name in the same trait info that contains the image name.
 		public readonly bool Prefix;
-		public SequenceReferenceAttribute(string imageReference = null, bool prefix = false)
+		public readonly bool ActorNameFallback;
+		public SequenceReferenceAttribute(string imageReference = null, bool prefix = false, bool actorNameFallback = false)
 		{
 			ImageReference = imageReference;
 			Prefix = prefix;
+			ActorNameFallback = actorNameFallback;
 		}
 	}
 

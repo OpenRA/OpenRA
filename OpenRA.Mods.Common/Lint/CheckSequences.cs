@@ -82,6 +82,12 @@ namespace OpenRA.Mods.Common.Lint
 											{
 												if (string.IsNullOrEmpty(imageOverride))
 												{
+													if (!sequenceReference.ActorNameFallback)
+													{
+														emitWarning("Custom sprite image of actor {0} is null and there is no fallback.".F(actorInfo.Value.Name));
+														continue;
+													}
+
 													foreach (var sequenceProvider in sequenceProviders)
 													{
 														var image = renderInfo.GetImage(actorInfo.Value, sequenceProvider, faction);
