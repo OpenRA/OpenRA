@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public MusicHotkeyLogic(Widget widget, ModData modData, World world, Dictionary<string, MiniYaml> logicArgs)
 		{
-			musicPlaylist = world.WorldActor.Trait<MusicPlaylist>();
+			musicPlaylist = world.WorldActor.TraitsImplementing<MusicPlaylist>().FirstEnabledTraitOrDefault();
 
 			MiniYaml yaml;
 			var stopKey = new HotkeyReference();

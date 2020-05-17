@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Scripting
 			: base(context)
 		{
 			world = context.World;
-			playlist = world.WorldActor.Trait<MusicPlaylist>();
+			playlist = world.WorldActor.TraitsImplementing<MusicPlaylist>().FirstEnabledTraitOrDefault();
 		}
 
 		[Desc("Play an announcer voice listed in notifications.yaml")]

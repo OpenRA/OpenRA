@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			musicList = panel.Get<ScrollPanelWidget>("MUSIC_LIST");
 			itemTemplate = musicList.Get<ScrollItemWidget>("MUSIC_TEMPLATE");
-			musicPlaylist = world.WorldActor.Trait<MusicPlaylist>();
+			musicPlaylist = world.WorldActor.TraitsImplementing<MusicPlaylist>().FirstEnabledTraitOrDefault();
 
 			BuildMusicTable();
 

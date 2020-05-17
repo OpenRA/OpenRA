@@ -409,7 +409,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		Action InitAudioPanel(Widget panel)
 		{
-			var musicPlaylist = worldRenderer.World.WorldActor.Trait<MusicPlaylist>();
+			var musicPlaylist = worldRenderer.World.WorldActor.TraitsImplementing<MusicPlaylist>().FirstEnabledTraitOrDefault();
 			var ss = Game.Settings.Sound;
 
 			BindCheckboxPref(panel, "CASH_TICKS", ss, "CashTicks");
