@@ -139,7 +139,8 @@ namespace OpenRA.Mods.Common
 			// See the comments of PR#6079 for a faster algorithm if this becomes a performance bottleneck
 			var a = (decimal)number;
 			foreach (var p in percentages)
-				a *= p / 100m;
+				if (p != 100)
+					a *= p / 100m;
 
 			return (int)a;
 		}
