@@ -333,6 +333,7 @@ SCUD:
 		Versus:
 			None: 90
 			Wood: 75
+			Tree: 75
 			Light: 70
 			Heavy: 40
 			Concrete: 100

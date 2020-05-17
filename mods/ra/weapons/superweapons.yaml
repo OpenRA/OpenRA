@@ -80,18 +80,12 @@ Atomic:
 		Damage: 6000
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 10
-		ValidTargets: GroundActor, WaterActor, Underwater, AirborneActor
+		ValidTargets: GroundActor, Trees, WaterActor, Underwater, AirborneActor
 		Versus:
 			Wood: 50
+			Tree: 200
 			Concrete: 25
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
-	Warhead@10Dam_areanuke2: SpreadDamage
-		Spread: 3c0
-		Damage: 12000
-		Falloff: 1000, 368, 135, 50, 18, 7, 0
-		Delay: 15
-		ValidTargets: Trees
-		DamageTypes: Incendiary
 	Warhead@11Res_areanuke2: DestroyResource
 		Size: 3
 		Delay: 10
@@ -105,17 +99,11 @@ Atomic:
 		Damage: 6000
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 15
-		ValidTargets: GroundActor, WaterActor, Underwater, AirborneActor
+		ValidTargets: GroundActor, Trees, WaterActor, Underwater, AirborneActor
 		Versus:
+			Tree: 200
 			Concrete: 25
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
-	Warhead@14Dam_areanuke3: SpreadDamage
-		Spread: 4c0
-		Damage: 12000
-		Falloff: 1000, 368, 135, 50, 18, 7, 0
-		Delay: 15
-		ValidTargets: Trees
-		DamageTypes: Incendiary
 	Warhead@15Res_areanuke3: DestroyResource
 		Size: 4
 		Delay: 15
@@ -129,17 +117,11 @@ Atomic:
 		Damage: 6000
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 20
-		ValidTargets: GroundActor, WaterActor, Underwater, AirborneActor
+		ValidTargets: GroundActor, Trees, WaterActor, Underwater, AirborneActor
 		Versus:
+			Tree: 200
 			Concrete: 25
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
-	Warhead@18Dam_areanuke4: SpreadDamage
-		Spread: 5c0
-		Damage: 12000
-		Falloff: 1000, 368, 135, 50, 18, 7, 0
-		Delay: 20
-		ValidTargets: Trees
-		DamageTypes: Incendiary
 	Warhead@19Res_areanuke4: DestroyResource
 		Size: 5
 		Delay: 20

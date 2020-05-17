@@ -9,6 +9,7 @@
 		Versus:
 			None: 90
 			Wood: 50
+			Tree: 50
 			Light: 60
 			Heavy: 25
 			Concrete: 20
@@ -50,6 +51,7 @@ Flamer:
 		Versus:
 			None: 70
 			Wood: 80
+			Tree: 80
 			Light: 40
 			Heavy: 20
 			Concrete: 10
