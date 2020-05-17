@@ -115,69 +115,7 @@ namespace OpenRA.Mods.Common.Widgets
 			if (replace.Type == Template)
 				return;
 
-			var queue = new Queue<CPos>();
-			var touched = new CellLayer<bool>(map);
-
-			var tileset = map.Rules.TileSet;
-			var template = tileset.Templates[Template];
-
-			Action<CPos> maybeEnqueue = newCell =>
-			{
-				if (map.Contains(cell) && !touched[newCell])
-				{
-					queue.Enqueue(newCell);
-					touched[newCell] = true;
-				}
-			};
-
-			Func<CPos, bool> shouldPaint = cellToCheck =>
-			{
-				for (var y = 0; y < template.Size.Y; y++)
-				{
-					for (var x = 0; x < template.Size.X; x++)
-					{
-						var c = cellToCheck + new CVec(x, y);
-						if (!map.Contains(c) || mapTiles[c].Type != replace.Type)
-							return false;
-					}
-				}
-
-				return true;
-			};
-
-			Func<CPos, CVec, CPos> findEdge = (refCell, direction) =>
-			{
-				while (true)
-				{
-					var newCell = refCell + direction;
-					if (!shouldPaint(newCell))
-						return refCell;
-					refCell = newCell;
-				}
-			};
-
-			queue.Enqueue(cell);
-			while (queue.Count > 0)
-			{
-				var queuedCell = queue.Dequeue();
-				if (!shouldPaint(queuedCell))
-					continue;
-
-				var previousCell = findEdge(queuedCell, new CVec(-1 * template.Size.X, 0));
-				var nextCell = findEdge(queuedCell, new CVec(1 * template.Size.X, 0));
-
-				for (var x = previousCell.X; x <= nextCell.X; x += template.Size.X)
-				{
-					PaintCell(new CPos(x, queuedCell.Y), isMoving);
-					var upperCell = new CPos(x, queuedCell.Y - (1 * template.Size.Y));
-					var lowerCell = new CPos(x, queuedCell.Y + (1 * template.Size.Y));
-
-					if (shouldPaint(upperCell))
-						maybeEnqueue(upperCell);
-					if (shouldPaint(lowerCell))
-						maybeEnqueue(lowerCell);
-				}
-			}
+			editorActionManager.Add(new FloodFillEditorAction(Template, map, cell));
 		}
 
 		bool PlacementOverlapsSameTemplate(TerrainTemplateInfo template, CPos cell)
@@ -274,6 +212,141 @@ namespace OpenRA.Mods.Common.Widgets
 
 				mapTiles[undoTile.Cell] = undoTile.MapTile;
 				mapHeight[undoTile.Cell] = undoTile.Height;
+			}
+		}
+	}
+
+	class FloodFillEditorAction : IEditorAction
+	{
+		public string Text { get; private set; }
+
+		readonly ushort template;
+		readonly Map map;
+		readonly CPos cell;
+
+		readonly Queue<UndoTile> undoTiles = new Queue<UndoTile>();
+		readonly TerrainTemplateInfo terrainTemplate;
+
+		public FloodFillEditorAction(ushort template, Map map, CPos cell)
+		{
+			this.template = template;
+			this.map = map;
+			this.cell = cell;
+
+			var tileset = map.Rules.TileSet;
+			terrainTemplate = tileset.Templates[template];
+			Text = "Filled with tile {0}".F(terrainTemplate.Id);
+		}
+
+		public void Execute()
+		{
+			Do();
+		}
+
+		public void Do()
+		{
+			var queue = new Queue<CPos>();
+			var touched = new CellLayer<bool>(map);
+			var mapTiles = map.Tiles;
+			var replace = mapTiles[cell];
+
+			Action<CPos> maybeEnqueue = newCell =>
+			{
+				if (map.Contains(cell) && !touched[newCell])
+				{
+					queue.Enqueue(newCell);
+					touched[newCell] = true;
+				}
+			};
+
+			Func<CPos, bool> shouldPaint = cellToCheck =>
+			{
+				for (var y = 0; y < terrainTemplate.Size.Y; y++)
+				{
+					for (var x = 0; x < terrainTemplate.Size.X; x++)
+					{
+						var c = cellToCheck + new CVec(x, y);
+						if (!map.Contains(c) || mapTiles[c].Type != replace.Type)
+							return false;
+					}
+				}
+
+				return true;
+			};
+
+			Func<CPos, CVec, CPos> findEdge = (refCell, direction) =>
+			{
+				while (true)
+				{
+					var newCell = refCell + direction;
+					if (!shouldPaint(newCell))
+						return refCell;
+					refCell = newCell;
+				}
+			};
+
+			queue.Enqueue(cell);
+			while (queue.Count > 0)
+			{
+				var queuedCell = queue.Dequeue();
+				if (!shouldPaint(queuedCell))
+					continue;
+
+				var previousCell = findEdge(queuedCell, new CVec(-1 * terrainTemplate.Size.X, 0));
+				var nextCell = findEdge(queuedCell, new CVec(1 * terrainTemplate.Size.X, 0));
+
+				for (var x = previousCell.X; x <= nextCell.X; x += terrainTemplate.Size.X)
+				{
+					PaintSingleCell(new CPos(x, queuedCell.Y));
+					var upperCell = new CPos(x, queuedCell.Y - (1 * terrainTemplate.Size.Y));
+					var lowerCell = new CPos(x, queuedCell.Y + (1 * terrainTemplate.Size.Y));
+
+					if (shouldPaint(upperCell))
+						maybeEnqueue(upperCell);
+					if (shouldPaint(lowerCell))
+						maybeEnqueue(lowerCell);
+				}
+			}
+		}
+
+		public void Undo()
+		{
+			var mapTiles = map.Tiles;
+			var mapHeight = map.Height;
+
+			while (undoTiles.Count > 0)
+			{
+				var undoTile = undoTiles.Dequeue();
+
+				mapTiles[undoTile.Cell] = undoTile.MapTile;
+				mapHeight[undoTile.Cell] = undoTile.Height;
+			}
+		}
+
+		void PaintSingleCell(CPos cellToPaint)
+		{
+			var mapTiles = map.Tiles;
+			var mapHeight = map.Height;
+			var baseHeight = mapHeight.Contains(cellToPaint) ? mapHeight[cellToPaint] : (byte)0;
+
+			var i = 0;
+			for (var y = 0; y < terrainTemplate.Size.Y; y++)
+			{
+				for (var x = 0; x < terrainTemplate.Size.X; x++, i++)
+				{
+					if (terrainTemplate.Contains(i) && terrainTemplate[i] != null)
+					{
+						var index = terrainTemplate.PickAny ? (byte)Game.CosmeticRandom.Next(0, terrainTemplate.TilesCount) : (byte)i;
+						var c = cellToPaint + new CVec(x, y);
+						if (!mapTiles.Contains(c))
+							continue;
+
+						undoTiles.Enqueue(new UndoTile(c, mapTiles[c], mapHeight[c]));
+
+						mapTiles[c] = new TerrainTile(template, index);
+						mapHeight[c] = (byte)(baseHeight + terrainTemplate[index].Height).Clamp(0, map.Grid.MaximumTerrainHeight);
+					}
+				}
 			}
 		}
 	}
