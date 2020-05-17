@@ -339,7 +339,7 @@ Actors:
 	Actor98: barl
 		Location: 45,50
 		Owner: Germany
-	Actor99: v04
+	ParaHut: v04
 		Location: 58,54
 		Owner: France
 		Health: 41
