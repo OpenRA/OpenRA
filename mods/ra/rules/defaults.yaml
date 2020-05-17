@@ -898,7 +898,7 @@
 	Health:
 		HP: 50000
 	Armor:
-		Type: Wood
+		Type: Tree
 	Targetable:
 		TargetTypes: Trees
 	WithDamageOverlay@SmallBurn:

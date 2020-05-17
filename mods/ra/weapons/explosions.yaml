@@ -232,8 +232,9 @@ CrateNuke:
 		Damage: 6000
 		Falloff: 1000, 600, 400, 250, 150, 100, 0
 		Delay: 5
-		ValidTargets: GroundActor, WaterActor, AirborneActor
+		ValidTargets: GroundActor, Trees, WaterActor, AirborneActor
 		Versus:
+			Tree: 200
 			Concrete: 25
 		AffectsParent: true
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
@@ -249,13 +250,6 @@ CrateNuke:
 		ValidTargets: Ground, Infantry
 		Size: 4
 		Delay: 5
-	Warhead@TREEKILL: SpreadDamage
-		Spread: 1c0
-		Damage: 12000
-		Falloff: 1000, 600, 400, 250, 150, 100, 0
-		Delay: 5
-		ValidTargets: Trees
-		DamageTypes: Incendiary
 
 MiniNuke:
 	ValidTargets: Ground, GroundActor, Trees, Water, WaterActor, Underwater, Air, AirborneActor
@@ -298,19 +292,13 @@ MiniNuke:
 		Damage: 6000
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 10
-		ValidTargets: GroundActor, WaterActor, Underwater, AirborneActor
+		ValidTargets: GroundActor, Trees, WaterActor, Underwater, AirborneActor
 		Versus:
 			Wood: 50
+			Tree: 200
 			Concrete: 25
 		AffectsParent: true
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
-	Warhead@8Dam_areanuke2: SpreadDamage
-		Spread: 3c0
-		Damage: 12000
-		Falloff: 1000, 368, 135, 50, 18, 7, 0
-		Delay: 10
-		ValidTargets: Trees
-		DamageTypes: Incendiary
 	Warhead@9Res_areanuke2: DestroyResource
 		Size: 3
 		Delay: 10
@@ -319,18 +307,12 @@ MiniNuke:
 		Damage: 6000
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 15
-		ValidTargets: GroundActor, WaterActor, Underwater
+		ValidTargets: GroundActor, Trees, WaterActor, Underwater
 		Versus:
+			Tree: 300
 			Concrete: 25
 		AffectsParent: true
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
-	Warhead@11Dam_areanuke3: SpreadDamage
-		Spread: 4c0
-		Damage: 18000
-		Falloff: 1000, 368, 135, 50, 18, 7, 0
-		Delay: 15
-		ValidTargets: Trees
-		DamageTypes: Incendiary
 	Warhead@12Res_areanuke3: DestroyResource
 		Size: 4
 		Delay: 15
