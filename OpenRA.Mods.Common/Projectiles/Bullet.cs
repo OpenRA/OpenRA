@@ -87,6 +87,9 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Modify distance of each bounce by this percentage of previous distance.")]
 		public readonly int BounceRangeModifier = 60;
 
+		[Desc("Sound to play when the projectile hits the ground, but not the target.")]
+		public readonly string BounceSound = null;
+
 		[Desc("If projectile touches an actor with one of these stances during or after the first bounce, trigger explosion.")]
 		public readonly Stance ValidBounceBlockerStances = Stance.Enemy | Stance.Neutral;
 
@@ -233,6 +236,7 @@ namespace OpenRA.Mods.Common.Projectiles
 				length = Math.Max((target - pos).Length / speed.Length, 1);
 				ticks = 0;
 				source = pos;
+				Game.Sound.Play(SoundType.World, info.BounceSound, source);
 				remainingBounces--;
 			}
 
