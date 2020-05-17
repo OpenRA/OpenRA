@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public readonly string Image = null;
 
 		[FieldLoader.Require]
-		[SequenceReference("Image")]
+		[SequenceReference("Image", false, true)]
 		[Desc("Sequence used for this decoration (can be animated).")]
 		public readonly string Sequence = null;
 
