@@ -12,6 +12,7 @@
 using System;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Network;
 using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.Widgets
@@ -269,6 +270,24 @@ namespace OpenRA.Mods.Common.Widgets
 				button.GetTooltipText = () => text;
 			else
 				button.GetTooltipText = null;
+		}
+
+		public static void AddSuffixToPlayerNameLabel(LabelWidget label, Player p)
+		{
+			var client = p.World.LobbyInfo.ClientWithIndex(p.ClientIndex);
+			var playerNameFont = Game.Renderer.Fonts[label.Font];
+			var suffixLength = new CachedTransform<string, int>(s => playerNameFont.Measure(s).X);
+			var name = new CachedTransform<Pair<string, string>, string>(c =>
+				WidgetUtils.TruncateText(c.First, label.Bounds.Width - suffixLength.Update(c.Second), playerNameFont));
+
+			label.GetText = () =>
+			{
+				var suffix = p.WinState == WinState.Undefined ? "" : " (" + p.WinState + ")";
+				if (client != null && client.State == Session.ClientState.Disconnected)
+					suffix = " (Gone)";
+
+				return name.Update(Pair.New(p.PlayerName, suffix)) + suffix;
+			};
 		}
 	}
 
