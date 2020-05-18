@@ -526,7 +526,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			flag.GetImageName = () => player.Faction.InternalName;
 
 			var playerName = template.Get<LabelWidget>("PLAYER");
-			WidgetUtils.AddSuffixToPlayerNameLabel(playerName, player);
+			WidgetUtils.BindPlayerNameAndStatus(playerName, player);
 
 			playerName.GetColor = () => player.Color;
 		}

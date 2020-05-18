@@ -104,7 +104,7 @@ ScrollPanel@SPECTATOR_DROPDOWN_TEMPLATE:
 					Y: 2
 				Label@LABEL:
 					X: 34
-					Width: 60
+					Width: PARENT_RIGHT
 					Height: 25
 					Shadow: True
 				Label@NOFLAG_LABEL:

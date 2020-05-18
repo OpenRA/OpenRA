@@ -93,7 +93,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					LobbyUtils.SetupProfileWidget(item, client, orderManager, worldRenderer);
 
 					var nameLabel = item.Get<LabelWidget>("NAME");
-					WidgetUtils.AddSuffixToPlayerNameLabel(nameLabel, pp);
+					WidgetUtils.BindPlayerNameAndStatus(nameLabel, pp);
 					nameLabel.GetColor = () => pp.Color;
 
 					var flag = item.Get<ImageWidget>("FACTIONFLAG");

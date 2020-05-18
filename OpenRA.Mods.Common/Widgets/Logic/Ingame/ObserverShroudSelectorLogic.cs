@@ -33,6 +33,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly World world;
 
 		CameraOption selected;
+		LabelWidget shroudLabel;
 
 		class CameraOption
 		{
@@ -50,7 +51,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				Color = p.Color;
 				Faction = p.Faction.InternalName;
 				IsSelected = () => p.World.RenderPlayer == p;
-				OnClick = () => { p.World.RenderPlayer = p; logic.selected = this; p.World.Selection.Clear(); };
+				OnClick = () =>
+				{
+					p.World.RenderPlayer = p;
+					logic.selected = this;
+					p.World.Selection.Clear();
+					WidgetUtils.BindPlayerNameAndStatus(logic.shroudLabel, p);
+				};
 			}
 
 			public CameraOption(ObserverShroudSelectorLogic logic, World w, string label, Player p)
@@ -107,8 +114,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					var label = item.Get<LabelWidget>("LABEL");
 					label.IsVisible = () => showFlag;
-					label.GetText = () => option.Label;
 					label.GetColor = () => option.Color;
+
+					if (showFlag)
+						WidgetUtils.BindPlayerNameAndStatus(label, option.Player);
+					else
+						label.GetText = () => option.Label;
 
 					var flag = item.Get<ImageWidget>("FLAG");
 					flag.IsVisible = () => showFlag;
@@ -126,7 +137,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				shroudSelector.ShowDropDown("SPECTATOR_DROPDOWN_TEMPLATE", 400, groups, setupItem);
 			};
 
-			var shroudLabel = shroudSelector.Get<LabelWidget>("LABEL");
+			shroudLabel = shroudSelector.Get<LabelWidget>("LABEL");
 			shroudLabel.IsVisible = () => selected.Faction != null;
 			shroudLabel.GetText = () => selected.Label;
 			shroudLabel.GetColor = () => selected.Color;
