@@ -78,6 +78,14 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Enemy target types to never target.")]
 		public readonly BitSet<TargetableType> IgnoredEnemyTargetTypes = default(BitSet<TargetableType>);
 
+		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
+		{
+			base.RulesetLoaded(rules, ai);
+
+			if (DangerScanRadius <= 0)
+				throw new YamlException("DangerScanRadius must be greater than zero.");
+		}
+
 		public override object Create(ActorInitializer init) { return new SquadManagerBotModule(init.Self, this); }
 	}
 
