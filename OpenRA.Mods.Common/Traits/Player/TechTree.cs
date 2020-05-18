@@ -17,7 +17,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	[Desc("Manages build limits and pre-requisites.", " Attach this to the player actor.")]
+	[Desc("Manages pre-requisites.", " Attach this to the player actor.")]
 	public class TechTreeInfo : ITraitInfo
 	{
 		public object Create(ActorInitializer init) { return new TechTree(init); }
@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void ActorChanged(Actor a)
 		{
 			var bi = a.Info.TraitInfoOrDefault<BuildableInfo>();
-			if (a.Owner == player && (a.Info.HasTraitInfo<ITechTreePrerequisiteInfo>() || (bi != null && bi.BuildLimit > 0)))
+			if (a.Owner == player && a.Info.HasTraitInfo<ITechTreePrerequisiteInfo>())
 				Update();
 		}
 
@@ -49,9 +49,9 @@ namespace OpenRA.Mods.Common.Traits
 				w.Update(ownedPrerequisites);
 		}
 
-		public void Add(string key, string[] prerequisites, int limit, ITechTreeElement tte)
+		public void Add(string key, string[] prerequisites, ITechTreeElement tte)
 		{
-			watchers.Add(new Watcher(key, prerequisites, limit, tte));
+			watchers.Add(new Watcher(key, prerequisites, tte));
 		}
 
 		public void Remove(string key)
@@ -68,12 +68,12 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var ownedPrereqs = GatherOwnedPrerequisites(player);
 			return prerequisites.All(p => !(p.Replace("~", "").StartsWith("!", StringComparison.Ordinal)
-					^ !ownedPrereqs.ContainsKey(p.Replace("!", "").Replace("~", ""))));
+					^ !ownedPrereqs.Contains(p.Replace("!", "").Replace("~", ""))));
 		}
 
-		static Cache<string, List<Actor>> GatherOwnedPrerequisites(Player player)
+		static HashSet<string> GatherOwnedPrerequisites(Player player)
 		{
-			var ret = new Cache<string, List<Actor>>(x => new List<Actor>());
+			var ret = new HashSet<string>();
 			if (player == null)
 				return ret;
 
@@ -89,19 +89,9 @@ namespace OpenRA.Mods.Common.Traits
 					if (p == null)
 						continue;
 
-					ret[p].Add(b.Actor);
+					ret.Add(p);
 				}
 			}
-
-			// Add buildables that have a build limit set and are not already in the list
-			player.World.ActorsWithTrait<Buildable>()
-				  .Where(a =>
-					  a.Actor.Owner == player &&
-					  a.Actor.IsInWorld &&
-					  !a.Actor.IsDead &&
-					  !ret.ContainsKey(a.Actor.Info.Name) &&
-					  a.Actor.Info.TraitInfo<BuildableInfo>().BuildLimit > 0)
-				  .Do(b => ret[b.Actor.Info.Name].Add(b.Actor));
 
 			return ret;
 		}
@@ -115,34 +105,32 @@ namespace OpenRA.Mods.Common.Traits
 			readonly string[] prerequisites;
 			readonly ITechTreeElement watcher;
 			bool hasPrerequisites;
-			int limit;
 			bool hidden;
 			bool initialized = false;
 
-			public Watcher(string key, string[] prerequisites, int limit, ITechTreeElement watcher)
+			public Watcher(string key, string[] prerequisites, ITechTreeElement watcher)
 			{
 				Key = key;
 				this.prerequisites = prerequisites;
 				this.watcher = watcher;
 				hasPrerequisites = false;
-				this.limit = limit;
 				hidden = false;
 			}
 
-			bool HasPrerequisites(Cache<string, List<Actor>> ownedPrerequisites)
+			bool HasPrerequisites(HashSet<string> ownedPrerequisites)
 			{
 				// PERF: Avoid LINQ.
 				foreach (var prereq in prerequisites)
 				{
 					var withoutTilde = prereq.Replace("~", "");
-					if (withoutTilde.StartsWith("!", StringComparison.Ordinal) ^ !ownedPrerequisites.ContainsKey(withoutTilde.Replace("!", "")))
+					if (withoutTilde.StartsWith("!", StringComparison.Ordinal) ^ !ownedPrerequisites.Contains(withoutTilde.Replace("!", "")))
 						return false;
 				}
 
 				return true;
 			}
 
-			bool IsHidden(Cache<string, List<Actor>> ownedPrerequisites)
+			bool IsHidden(HashSet<string> ownedPrerequisites)
 			{
 				// PERF: Avoid LINQ.
 				foreach (var prereq in prerequisites)
@@ -150,19 +138,17 @@ namespace OpenRA.Mods.Common.Traits
 					if (!prereq.StartsWith("~", StringComparison.Ordinal))
 						continue;
 					var withoutTilde = prereq.Replace("~", "");
-					if (withoutTilde.StartsWith("!", StringComparison.Ordinal) ^ !ownedPrerequisites.ContainsKey(withoutTilde.Replace("!", "")))
+					if (withoutTilde.StartsWith("!", StringComparison.Ordinal) ^ !ownedPrerequisites.Contains(withoutTilde.Replace("!", "")))
 						return true;
 				}
 
 				return false;
 			}
 
-			public void Update(Cache<string, List<Actor>> ownedPrerequisites)
+			public void Update(HashSet<string> ownedPrerequisites)
 			{
-				var hasReachedLimit = limit > 0 && ownedPrerequisites.ContainsKey(Key) && ownedPrerequisites[Key].Count >= limit;
-
 				// The '!' annotation inverts prerequisites: "I'm buildable if this prerequisite *isn't* met"
-				var nowHasPrerequisites = HasPrerequisites(ownedPrerequisites) && !hasReachedLimit;
+				var nowHasPrerequisites = HasPrerequisites(ownedPrerequisites);
 				var nowHidden = IsHidden(ownedPrerequisites);
 
 				if (initialized == false)

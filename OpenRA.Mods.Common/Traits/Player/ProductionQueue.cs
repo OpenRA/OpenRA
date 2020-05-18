@@ -204,7 +204,7 @@ namespace OpenRA.Mods.Common.Traits
 				var bi = a.TraitInfo<BuildableInfo>();
 
 				Producible.Add(a, new ProductionState());
-				techTree.Add(a.Name, bi.Prerequisites, bi.BuildLimit, this);
+				techTree.Add(a.Name, bi.Prerequisites, this);
 			}
 		}
 
@@ -271,7 +271,24 @@ namespace OpenRA.Mods.Common.Traits
 			if (developerMode.AllTech)
 				return Producible.Keys;
 
-			return buildableProducibles;
+			return buildableProducibles.Where(a => CheckBuildLimit(a));
+		}
+
+		public bool CheckBuildLimit(ActorInfo actor)
+		{
+			var bi = actor.TraitInfoOrDefault<BuildableInfo>();
+			if (bi == null)
+				return false;
+
+			if (bi.BuildLimit > 0)
+			{
+				var owned = self.Owner.World.ActorsHavingTrait<Buildable>()
+					.Count(a => a.Info.Name == actor.Name && a.Owner == self.Owner && !a.IsDead);
+				if (owned >= bi.BuildLimit)
+					return false;
+			}
+
+			return true;
 		}
 
 		public bool CanBuild(ActorInfo actor)
@@ -357,7 +374,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (bi.BuildLimit > 0)
 				{
 					var owned = self.Owner.World.ActorsHavingTrait<Buildable>()
-						.Count(a => a.Info.Name == actor.Name && a.Owner == self.Owner);
+						.Count(a => a.Info.Name == actor.Name && a.Owner == self.Owner && !a.IsDead);
 					if (queueCount + owned >= bi.BuildLimit)
 						return false;
 				}
@@ -400,7 +417,7 @@ namespace OpenRA.Mods.Common.Traits
 						if (bi.BuildLimit > 0)
 						{
 							var inQueue = Queue.Count(pi => pi.Item == order.TargetString);
-							var owned = self.Owner.World.ActorsHavingTrait<Buildable>().Count(a => a.Info.Name == order.TargetString && a.Owner == self.Owner);
+							var owned = self.Owner.World.ActorsHavingTrait<Buildable>().Count(a => a.Info.Name == order.TargetString && a.Owner == self.Owner && !a.IsDead);
 							fromLimit = Math.Min(fromLimit, bi.BuildLimit - (inQueue + owned));
 						}
 

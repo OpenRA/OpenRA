@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!upgradables.ContainsKey(key))
 			{
 				upgradables.Add(key, new List<Pair<Actor, GrantConditionOnPrerequisite>>());
-				techTree.Add(key, prerequisites, 0, this);
+				techTree.Add(key, prerequisites, this);
 			}
 
 			upgradables[key].Add(Pair.New(actor, u));

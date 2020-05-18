@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Common.Traits
 
 					if (t.Info.Prerequisites.Any())
 					{
-						TechTree.Add(key, t.Info.Prerequisites, 0, this);
+						TechTree.Add(key, t.Info.Prerequisites, this);
 						TechTree.Update();
 					}
 				}

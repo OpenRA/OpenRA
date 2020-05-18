@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			{
 				var uwc = a.TraitInfoOrDefault<ProducibleWithLevelInfo>();
 				if (uwc != null)
-					ttc.Add(MakeKey(a.Name), uwc.Prerequisites, 0, this);
+					ttc.Add(MakeKey(a.Name), uwc.Prerequisites, this);
 			}
 		}
 
