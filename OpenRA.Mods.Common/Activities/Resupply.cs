@@ -212,7 +212,7 @@ namespace OpenRA.Mods.Common.Activities
 				{
 					if (self.CurrentActivity.NextActivity == null && rp != null && rp.Path.Count > 0)
 						foreach (var cell in rp.Path)
-							QueueChild(move.MoveTo(cell, 1, ignoreActor: repairableNear != null ? null : host.Actor, targetLineColor: Color.Green));
+							QueueChild(new AttackMoveActivity(self, () => move.MoveTo(cell, 1, ignoreActor: repairableNear != null ? null : host.Actor, targetLineColor: Color.OrangeRed)));
 					else
 						QueueChild(new TakeOff(self));
 
@@ -233,7 +233,7 @@ namespace OpenRA.Mods.Common.Activities
 				{
 					if (rp != null && rp.Path.Count > 0)
 						foreach (var cell in rp.Path)
-							QueueChild(move.MoveTo(cell, 1, repairableNear != null ? null : host.Actor, true, Color.Green));
+							QueueChild(new AttackMoveActivity(self, () => move.MoveTo(cell, 1, repairableNear != null ? null : host.Actor, true, Color.OrangeRed)));
 					else if (repairableNear == null)
 						QueueChild(move.MoveToTarget(self, host));
 				}

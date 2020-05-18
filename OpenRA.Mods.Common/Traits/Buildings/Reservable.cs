@@ -86,7 +86,7 @@ namespace OpenRA.Mods.Common.Traits
 				{
 					if (rallyPoint != null && rallyPoint.Path.Count > 0)
 						foreach (var cell in rallyPoint.Path)
-							reservedFor.QueueActivity(reservedForAircraft.MoveTo(cell, 1, targetLineColor: Color.Green));
+							reservedFor.QueueActivity(new AttackMoveActivity(reservedFor, () => reservedForAircraft.MoveTo(cell, 1, targetLineColor: Color.OrangeRed)));
 					else
 						reservedFor.QueueActivity(new TakeOff(reservedFor));
 				}
