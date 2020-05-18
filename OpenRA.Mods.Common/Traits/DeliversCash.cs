@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Sound to play when delivering cash")]
 		public readonly string[] Sounds = { };
 
-		[Desc("Cursor to show when hovering over a valid actor to deliver cash to.")]
+		[Desc("Cursor to display when hovering over a valid actor to deliver cash to.")]
 		public readonly string Cursor = "enter";
 
 		[VoiceReference]

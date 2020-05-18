@@ -37,7 +37,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly int Speed = 1;
 
+		[Desc("Cursor to display when a move order can be issued at target location.")]
 		public readonly string Cursor = "move";
+
+		[Desc("Cursor to display when a move order cannot be issued at target location.")]
 		public readonly string BlockedCursor = "move-blocked";
 
 		[VoiceReference]

@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Skip playing (reversed) make animation.")]
 		public readonly bool SkipMakeAnimation = false;
 
-		[Desc("Cursor type to use when the sell order generator hovers over this actor.")]
+		[Desc("Cursor to display when the sell order generator hovers over this actor.")]
 		public readonly string Cursor = "sell";
 
 		public override object Create(ActorInitializer init) { return new Sellable(init.Self, this); }

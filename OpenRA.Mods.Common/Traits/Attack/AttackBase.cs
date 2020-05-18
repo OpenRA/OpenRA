@@ -28,8 +28,10 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Armament names")]
 		public readonly string[] Armaments = { "primary", "secondary" };
 
+		[Desc("Cursor to display when hovering over a valid target.")]
 		public readonly string Cursor = null;
 
+		[Desc("Cursor to display when hovering over a valid target that is outside of range.")]
 		public readonly string OutsideRangeCursor = null;
 
 		[Desc("Color to use for the target line.")]

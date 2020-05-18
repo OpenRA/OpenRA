@@ -42,6 +42,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("Experience to grant to the infiltrating player.")]
 		public readonly int PlayerExperience = 0;
 
+		[Desc("Cursor to display when able to infiltrate the target actor.")]
 		public readonly string EnterCursor = "enter";
 
 		public override object Create(ActorInitializer init) { return new Infiltrates(this); }

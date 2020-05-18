@@ -84,7 +84,10 @@ namespace OpenRA.Mods.Common.Traits
 		[VoiceReference]
 		public readonly string DeliverVoice = "Action";
 
+		[Desc("Cursor to display when able to unload at target actor.")]
 		public readonly string EnterCursor = "enter";
+
+		[Desc("Cursor to display when unable to unload at target actor.")]
 		public readonly string EnterBlockedCursor = "enter-blocked";
 
 		public override object Create(ActorInitializer init) { return new Harvester(init.Self, this); }

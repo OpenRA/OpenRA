@@ -32,7 +32,10 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Require the force-move modifier to display the enter cursor.")]
 		public readonly bool RequiresForceMove = false;
 
+		[Desc("Cursor to display when able to enter target actor.")]
 		public readonly string EnterCursor = "enter";
+
+		[Desc("Cursor to display when unable to enter target actor.")]
 		public readonly string EnterBlockedCursor = "enter-blocked";
 
 		public override object Create(ActorInitializer init) { return new TransformsIntoPassenger(init.Self, this); }
