@@ -584,7 +584,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				Widget template = null;
 
 				// get template for possible reuse
-				if (idx < players.Children.Count)
+				if (idx < players.Children.Length)
 					template = players.Children[idx];
 
 				if (client == null)
@@ -652,7 +652,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				template.IsVisible = () => true;
 
-				if (idx >= players.Children.Count)
+				if (idx >= players.Children.Length)
 					players.AddChild(template);
 				else if (players.Children[idx].Id != template.Id)
 					players.ReplaceChild(players.Children[idx], template);
@@ -667,7 +667,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var c = client;
 
 				// get template for possible reuse
-				if (idx < players.Children.Count)
+				if (idx < players.Children.Length)
 					template = players.Children[idx];
 
 				// Editable spectator
@@ -704,7 +704,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				LobbyUtils.SetupLatencyWidget(template, c, orderManager);
 				template.IsVisible = () => true;
 
-				if (idx >= players.Children.Count)
+				if (idx >= players.Children.Length)
 					players.AddChild(template);
 				else if (players.Children[idx].Id != template.Id)
 					players.ReplaceChild(players.Children[idx], template);
@@ -716,7 +716,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (orderManager.LocalClient.Slot != null)
 			{
 				Widget spec = null;
-				if (idx < players.Children.Count)
+				if (idx < players.Children.Length)
 					spec = players.Children[idx];
 				if (spec == null || spec.Id != newSpectatorTemplate.Id)
 					spec = newSpectatorTemplate.Clone();
@@ -732,7 +732,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				spec.IsVisible = () => true;
 
-				if (idx >= players.Children.Count)
+				if (idx >= players.Children.Length)
 					players.AddChild(spec);
 				else if (players.Children[idx].Id != spec.Id)
 					players.ReplaceChild(players.Children[idx], spec);
@@ -740,7 +740,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				idx++;
 			}
 
-			while (players.Children.Count > idx)
+			while (players.Children.Length > idx)
 				players.RemoveChild(players.Children[idx]);
 
 			tabCompletion.Names = orderManager.LobbyInfo.Clients.Select(c => c.Name).Distinct().ToList();

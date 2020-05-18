@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
@@ -134,10 +135,9 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public void ReplaceChild(Widget oldChild, Widget newChild)
 		{
-			oldChild.Removed();
-			newChild.Parent = this;
-			Children[Children.IndexOf(oldChild)] = newChild;
-			Layout.AdjustChildren();
+			var index = Children.IndexOf(oldChild);
+			RemoveChild(Children[index]);
+			Insert(index, newChild);
 			Scroll(0);
 		}
 
@@ -490,7 +490,7 @@ namespace OpenRA.Mods.Common.Widgets
 				if (collection != col)
 					return;
 
-				if (index < 0 || index >= Children.Count)
+				if (index < 0 || index >= Children.Length)
 					return;
 
 				RemoveChild(Children[index]);
@@ -505,15 +505,12 @@ namespace OpenRA.Mods.Common.Widgets
 					return;
 
 				var newWidget = makeWidget(newItem);
-				newWidget.Parent = this;
 
-				var i = Children.FindIndex(w => widgetItemEquals(w, oldItem));
+				var i = Array.FindIndex(Children, w => widgetItemEquals(w, oldItem));
 				if (i >= 0)
 				{
-					var oldWidget = Children[i];
-					oldWidget.Removed();
-					Children[i] = newWidget;
-					Layout.AdjustChildren();
+					RemoveChild(Children[i]);
+					Insert(i, newWidget);
 				}
 				else
 					AddChild(newWidget);

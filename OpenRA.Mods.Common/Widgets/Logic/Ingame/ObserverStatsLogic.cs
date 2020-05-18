@@ -191,7 +191,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void ClearStats()
 		{
-			playerStatsPanel.Children.Clear();
+			foreach (var child in playerStatsPanel.Children)
+				playerStatsPanel.RemoveChild(child);
+
 			basicStatsHeaders.Visible = false;
 			economyStatsHeaders.Visible = false;
 			productionStatsHeaders.Visible = false;

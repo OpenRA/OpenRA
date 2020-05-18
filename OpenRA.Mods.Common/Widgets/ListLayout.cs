@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public void AdjustChild(Widget w)
 		{
-			if (widget.Children.Count == 0)
+			if (widget.Children.Length == 0)
 				widget.ContentHeight = 2 * widget.TopBottomSpacing - widget.ItemSpacing;
 
 			if (w.Node.PositionType == YogaPositionType.Absolute)

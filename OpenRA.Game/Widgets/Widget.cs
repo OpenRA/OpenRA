@@ -62,7 +62,7 @@ namespace OpenRA.Widgets
 		{
 			var window = Game.ModData.WidgetLoader.LoadWidget(args, Root, id);
 			if (WindowList.Count > 0)
-				Root.HideChild(WindowList.Peek());
+				Root.RemoveChild(WindowList.Peek());
 			WindowList.Push(window);
 			return window;
 		}
@@ -172,7 +172,8 @@ namespace OpenRA.Widgets
 	{
 		public readonly YogaNode Node = new YogaNode();
 
-		public readonly List<Widget> Children = new List<Widget>();
+		private readonly List<Widget> children = new List<Widget>();
+		public Widget[] Children { get { return children.ToArray(); } }
 
 		// Info defined in YAML
 		public string Id = null;
@@ -186,7 +187,8 @@ namespace OpenRA.Widgets
 		public bool IgnoreMouseOver;
 		public bool IgnoreChildMouseOver;
 
-		public Widget Parent = null;
+		private Widget parent = null;
+		public Widget Parent { get { return parent; } }
 		public Func<bool> IsVisible;
 		public Widget() { IsVisible = () => Visible; }
 
@@ -202,7 +204,6 @@ namespace OpenRA.Widgets
 
 			Node.CopyStyle(widget.Node);
 			Node.CalculateLayout();
-			Parent = widget.Parent;
 
 			IsVisible = widget.IsVisible;
 			IgnoreChildMouseOver = widget.IgnoreChildMouseOver;
@@ -265,6 +266,7 @@ namespace OpenRA.Widgets
 								   width,
 								   height);
 
+			Node.PositionType = YogaPositionType.Absolute;
 			Node.Left = bounds.X;
 			Node.Top = bounds.Y;
 			Node.Width = bounds.Width;
@@ -486,32 +488,31 @@ namespace OpenRA.Widgets
 
 		public virtual void AddChild(Widget child)
 		{
-			child.Parent = this;
-			Children.Add(child);
+			Insert(Children.Length, child);
+		}
+
+		public virtual void Insert(int position, Widget child)
+		{
+			child.parent = this;
+			children.Insert(position, child);
+			Node.Insert(position, child.Node);
 		}
 
 		public virtual void RemoveChild(Widget child)
 		{
 			if (child != null)
 			{
-				Children.Remove(child);
+				children.Remove(child);
+				Node.RemoveChild(child.Node);
+				child.parent = null;
 				child.Removed();
-			}
-		}
-
-		public virtual void HideChild(Widget child)
-		{
-			if (child != null)
-			{
-				Children.Remove(child);
-				child.Hidden();
 			}
 		}
 
 		public virtual void RemoveChildren()
 		{
-			while (Children.Count > 0)
-				RemoveChild(Children[Children.Count - 1]);
+			while (Children.Length > 0)
+				RemoveChild(Children[Children.Length - 1]);
 		}
 
 		public virtual void Hidden()
