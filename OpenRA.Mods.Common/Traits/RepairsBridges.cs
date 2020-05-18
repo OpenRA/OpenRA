@@ -27,10 +27,10 @@ namespace OpenRA.Mods.Common.Traits
 			"Possible values are Exit, Suicide, Dispose.")]
 		public readonly EnterBehaviour EnterBehaviour = EnterBehaviour.Dispose;
 
-		[Desc("Cursor to use when targeting an unrepaired bridge.")]
+		[Desc("Cursor to display when targeting an unrepaired bridge.")]
 		public readonly string TargetCursor = "goldwrench";
 
-		[Desc("Cursor to use when repairing is denied.")]
+		[Desc("Cursor to display when repairing is denied.")]
 		public readonly string TargetBlockedCursor = "goldwrench-blocked";
 
 		[NotificationReference("Speech")]

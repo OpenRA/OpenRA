@@ -36,7 +36,10 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Require the force-move modifier to display the move cursor.")]
 		public readonly bool RequiresForceMove = false;
 
+		[Desc("Cursor to display when able to land at target building.")]
 		public readonly string EnterCursor = "enter";
+
+		[Desc("Cursor to display when unable to land at target building.")]
 		public readonly string EnterBlockedCursor = "enter-blocked";
 
 		public override object Create(ActorInitializer init) { return new TransformsIntoAircraft(init, this); }

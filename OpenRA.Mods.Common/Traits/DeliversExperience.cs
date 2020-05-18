@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Identifier checked against AcceptsDeliveredExperience.ValidTypes. Only needed if the latter is not empty.")]
 		public readonly string Type = null;
 
-		[Desc("Cursor to show when hovering over a valid actor to deliver experience to.")]
+		[Desc("Cursor to display when hovering over a valid actor to deliver experience to.")]
 		public readonly string Cursor = "enter";
 
 		[VoiceReference]

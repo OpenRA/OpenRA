@@ -44,6 +44,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly Stance TargetStances = Stance.Enemy | Stance.Neutral;
 		public readonly Stance ForceTargetStances = Stance.Enemy | Stance.Neutral | Stance.Ally;
 
+		[Desc("Cursor to display when hovering over a demolishable target.")]
 		public readonly string Cursor = "c4";
 
 		public override object Create(ActorInitializer init) { return new Demolition(this); }

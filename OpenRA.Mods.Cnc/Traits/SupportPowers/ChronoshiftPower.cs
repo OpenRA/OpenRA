@@ -49,13 +49,13 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		public readonly bool KillCargo = true;
 
-		[Desc("Cursor sequence to use when selecting targets for the chronoshift.")]
+		[Desc("Cursor to display when selecting targets for the chronoshift.")]
 		public readonly string SelectionCursor = "chrono-select";
 
-		[Desc("Cursor sequence to use when targeting an area for the chronoshift.")]
+		[Desc("Cursor to display when targeting an area for the chronoshift.")]
 		public readonly string TargetCursor = "chrono-target";
 
-		[Desc("Cursor sequence to use when the targeted area is blocked.")]
+		[Desc("Cursor to display when the targeted area is blocked.")]
 		public readonly string TargetBlockedCursor = "move-blocked";
 
 		public override object Create(ActorInitializer init) { return new ChronoshiftPower(init.Self, this); }

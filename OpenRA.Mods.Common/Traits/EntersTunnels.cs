@@ -22,7 +22,10 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("This actor can interact with TunnelEntrances to move through TerrainTunnels.")]
 	public class EntersTunnelsInfo : TraitInfo, Requires<IMoveInfo>, IObservesVariablesInfo
 	{
+		[Desc("Cursor to display when able to enter target tunnel.")]
 		public readonly string EnterCursor = "enter";
+
+		[Desc("Cursor to display when unable to enter target tunnel.")]
 		public readonly string EnterBlockedCursor = "enter-blocked";
 
 		[VoiceReference]
