@@ -20,7 +20,7 @@ Player:
 		PowerTypes: gapowr, napowr, naapwr
 		BarracksTypes: gapile, nahand
 		VehiclesFactoryTypes: gaweap, naweap
-		ProductionTypes: gapile, nahand, gaweap, naweap
+		ProductionTypes: gapile, nahand, gaweap, naweap, gahpad, nahpad
 		SiloTypes: gasilo
 		BuildingLimits:
 			proc: 4
@@ -36,6 +36,8 @@ Player:
 			gatech: 1
 			natech: 1
 			nastlh: 1
+			gahpad: 3
+			nahpad: 3
 			gavulc: 8
 			garock: 2
 			gacsam: 4
@@ -53,6 +55,8 @@ Player:
 			gatech: 1
 			natech: 1
 			nastlh: 1
+			gahpad: 1
+			nahpad: 1
 			nalasr: 10
 			gavulc: 10
 			garock: 3
@@ -68,6 +72,7 @@ Player:
 		ConstructionYardTypes: gacnst
 	UnitBuilderBotModule@test:
 		RequiresCondition: enable-test-ai
+		UnitQueues: Vehicle, Infantry, Air
 		UnitsToBuild:
 			e1: 80
 			e2: 25
@@ -86,6 +91,10 @@ Player:
 			subtank: 10
 			sonic: 10
 			stnk: 8
+			orca: 5
+			orcab: 4
+			apache: 5
+			scrin: 4
 		UnitLimits:
 			harv: 12
 			medic: 3
