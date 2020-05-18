@@ -132,6 +132,13 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	[RequireExplicitImplementation]
+	public interface INotifyBeingResupplied
+	{
+		void StartingResupply(Actor self, Actor host);
+		void StoppingResupply(Actor self, Actor host);
+	}
+
+	[RequireExplicitImplementation]
 	public interface INotifyPowerLevelChanged { void PowerLevelChanged(Actor self); }
 	public interface INotifySupportPower { void Charged(Actor self); void Activated(Actor self); }
 
