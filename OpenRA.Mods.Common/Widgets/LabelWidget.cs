@@ -84,19 +84,19 @@ namespace OpenRA.Mods.Common.Widgets
 				position += new int2(0, -offset);
 
 			if (VAlign == TextVAlign.Middle)
-				position += new int2(0, (Bounds.Height - textSize.Y - offset) / 2);
+				position += new int2(0, ((int)Node.LayoutHeight - textSize.Y - offset) / 2);
 
 			if (VAlign == TextVAlign.Bottom)
-				position += new int2(0, Bounds.Height - textSize.Y);
+				position += new int2(0, (int)Node.LayoutHeight - textSize.Y);
 
 			if (Align == TextAlign.Center)
-				position += new int2((Bounds.Width - textSize.X) / 2, 0);
+				position += new int2(((int)Node.LayoutWidth - textSize.X) / 2, 0);
 
 			if (Align == TextAlign.Right)
-				position += new int2(Bounds.Width - textSize.X, 0);
+				position += new int2((int)Node.LayoutWidth - textSize.X, 0);
 
 			if (WordWrap)
-				text = WidgetUtils.WrapText(text, Bounds.Width, font);
+				text = WidgetUtils.WrapText(text, (int)Node.LayoutWidth, font);
 
 			DrawInner(text, font, GetColor(), position);
 		}

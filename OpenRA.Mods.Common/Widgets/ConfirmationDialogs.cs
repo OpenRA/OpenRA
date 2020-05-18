@@ -41,19 +41,22 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				var line = (LabelWidget)headerTemplate.Clone();
 				line.GetText = () => l;
-				line.Bounds.Y += headerHeight;
+				line.Node.Top = (int)line.Node.LayoutY + headerHeight;
+				line.Node.CalculateLayout();
 				prompt.AddChild(line);
 
-				headerHeight += headerTemplate.Bounds.Height;
+				headerHeight += (int)headerTemplate.Node.LayoutHeight;
 			}
 
-			prompt.Bounds.Height += headerHeight;
-			prompt.Bounds.Y -= headerHeight / 2;
+			prompt.Node.Height = (int)prompt.Node.LayoutHeight + headerHeight;
+			prompt.Node.Top = (int)prompt.Node.LayoutY - headerHeight / 2;
+			prompt.Node.CalculateLayout();
 
 			if (onConfirm != null && confirmButton != null)
 			{
 				confirmButton.Visible = true;
-				confirmButton.Bounds.Y += headerHeight;
+				confirmButton.Node.Top = (int)confirmButton.Node.LayoutY + headerHeight;
+				confirmButton.Node.CalculateLayout();
 				confirmButton.OnClick = () =>
 				{
 					Ui.CloseWindow();
@@ -67,7 +70,8 @@ namespace OpenRA.Mods.Common.Widgets
 			if (onCancel != null && cancelButton != null)
 			{
 				cancelButton.Visible = true;
-				cancelButton.Bounds.Y += headerHeight;
+				cancelButton.Node.Top = (int)cancelButton.Node.LayoutY + headerHeight;
+				cancelButton.Node.CalculateLayout();
 				cancelButton.OnClick = () =>
 				{
 					Ui.CloseWindow();
@@ -82,7 +86,8 @@ namespace OpenRA.Mods.Common.Widgets
 			if (onOther != null && otherButton != null)
 			{
 				otherButton.Visible = true;
-				otherButton.Bounds.Y += headerHeight;
+				otherButton.Node.Top = (int)otherButton.Node.LayoutY + headerHeight;
+				otherButton.Node.CalculateLayout();
 				otherButton.OnClick = () =>
 				{
 					if (onOther != null)

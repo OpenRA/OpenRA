@@ -37,9 +37,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var ownerColor = Color.White;
 			var extraText = "";
 
-			var singleHeight = widget.Get("SINGLE_HEIGHT").Bounds.Height;
-			var doubleHeight = widget.Get("DOUBLE_HEIGHT").Bounds.Height;
-			var extraHeightOnDouble = extras.Bounds.Y;
+			var singleHeight = (int)widget.Get("SINGLE_HEIGHT").Node.LayoutHeight;
+			var doubleHeight = (int)widget.Get("DOUBLE_HEIGHT").Node.LayoutHeight;
+			var extraHeightOnDouble = (int)extras.Node.LayoutY;
 			var extraHeightOnSingle = extraHeightOnDouble - (doubleHeight - singleHeight);
 
 			tooltipContainer.BeforeRender = () =>
@@ -99,8 +99,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				if (textWidth != cachedWidth)
 				{
-					label.Bounds.Width = textWidth;
-					widget.Bounds.Width = 2 * label.Bounds.X + textWidth;
+					label.Node.Width = textWidth;
+					label.Node.CalculateLayout();
+					widget.Node.Width = 2 * (int)label.Node.LayoutX + textWidth;
+					widget.Node.CalculateLayout();
 				}
 
 				if (showOwner)
@@ -108,21 +110,27 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					flagFaction = o.Faction.InternalName;
 					ownerName = o.PlayerName;
 					ownerColor = o.Color;
-					widget.Bounds.Height = doubleHeight;
-					widget.Bounds.Width = Math.Max(widget.Bounds.Width,
-						owner.Bounds.X + ownerFont.Measure(ownerName).X + label.Bounds.X);
+					widget.Node.Height = doubleHeight;
+					widget.Node.Width = Math.Max((int)widget.Node.LayoutWidth,
+						(int)owner.Node.LayoutX + ownerFont.Measure(ownerName).X + (int)label.Node.LayoutX);
+					widget.Node.CalculateLayout();
 					index++;
 				}
 				else
-					widget.Bounds.Height = singleHeight;
+				{
+					widget.Node.Height = singleHeight;
+					widget.Node.CalculateLayout();
+				}
 
 				if (extraText != "")
 				{
-					widget.Bounds.Height += font.Measure(extraText).Y + extras.Bounds.Height;
+					widget.Node.Height = (int)widget.Node.LayoutHeight + font.Measure(extraText).Y + (int)extras.Node.LayoutHeight;
+					widget.Node.CalculateLayout();
 					if (showOwner)
-						extras.Bounds.Y = extraHeightOnDouble;
+						extras.Node.Top = extraHeightOnDouble;
 					else
-						extras.Bounds.Y = extraHeightOnSingle;
+						extras.Node.Top = extraHeightOnSingle;
+					extras.Node.CalculateLayout();
 				}
 			};
 

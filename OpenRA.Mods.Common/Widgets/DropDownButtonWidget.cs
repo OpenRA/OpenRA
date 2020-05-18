@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public override Widget Clone() { return new DropDownButtonWidget(this); }
 
 		// This is crap
-		public override int UsableWidth { get { return Bounds.Width - Bounds.Height; } } /* space for button */
+		public override int UsableWidth { get { return (int)Node.LayoutWidth - (int)Node.LayoutHeight; } } /* space for button */
 
 		public override void Hidden()
 		{
@@ -102,7 +102,11 @@ namespace OpenRA.Mods.Common.Widgets
 
 			// Mask to prevent any clicks from being sent to other widgets
 			fullscreenMask = new MaskWidget();
-			fullscreenMask.Bounds = new Rectangle(0, 0, Game.Renderer.Resolution.Width, Game.Renderer.Resolution.Height);
+			fullscreenMask.Node.Left = 0;
+			fullscreenMask.Node.Top = 0;
+			fullscreenMask.Node.Width = Game.Renderer.Resolution.Width;
+			fullscreenMask.Node.Height = Game.Renderer.Resolution.Height;
+			fullscreenMask.Node.CalculateLayout();
 			fullscreenMask.OnMouseDown += mi => { Game.Sound.PlayNotification(ModRules, null, "Sounds", ClickSound, null); RemovePanel(); };
 			if (onCancel != null)
 				fullscreenMask.OnMouseDown += _ => onCancel();
@@ -111,22 +115,22 @@ namespace OpenRA.Mods.Common.Widgets
 
 			panelRoot.AddChild(fullscreenMask);
 
-			var oldBounds = panel.Bounds;
+			var oldBounds = new Rectangle((int)panel.Node.LayoutX, (int)panel.Node.LayoutY, (int)panel.Node.LayoutWidth, (int)panel.Node.LayoutHeight);
 			var panelX = RenderOrigin.X - panelRoot.RenderOrigin.X;
 			if (PanelAlign == TextAlign.Right)
-				panelX += Bounds.Width - oldBounds.Width;
+				panelX += (int)Node.LayoutWidth - oldBounds.Width;
 			else if (PanelAlign == TextAlign.Center)
-				panelX += (Bounds.Width - oldBounds.Width) / 2;
+				panelX += ((int)Node.LayoutWidth - oldBounds.Width) / 2;
 
-			var panelY = RenderOrigin.Y + Bounds.Height - panelRoot.RenderOrigin.Y;
+			var panelY = RenderOrigin.Y + (int)Node.LayoutHeight - panelRoot.RenderOrigin.Y;
 			if (panelY + oldBounds.Height > Game.Renderer.Resolution.Height)
-				panelY -= (Bounds.Height + oldBounds.Height);
+				panelY -= ((int)Node.LayoutHeight + oldBounds.Height);
 
-			panel.Bounds = new Rectangle(
-				panelX,
-				panelY,
-				oldBounds.Width,
-				oldBounds.Height);
+			panel.Node.Left = panelX;
+			panel.Node.Top = panelY;
+			panel.Node.Width = oldBounds.Width;
+			panel.Node.Height = oldBounds.Height;
+			panel.Node.CalculateLayout();
 			panelRoot.AddChild(panel);
 
 			var scrollPanel = panel as ScrollPanelWidget;
@@ -136,7 +140,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public void ShowDropDown<T>(string panelTemplate, int maxHeight, IEnumerable<T> options, Func<T, ScrollItemWidget, ScrollItemWidget> setupItem)
 		{
-			var substitutions = new Dictionary<string, int>() { { "DROPDOWN_WIDTH", Bounds.Width } };
+			var substitutions = new Dictionary<string, int>() { { "DROPDOWN_WIDTH", (int)Node.LayoutWidth } };
 			var panel = (ScrollPanelWidget)Ui.LoadWidget(panelTemplate, null, new WidgetArgs() { { "substitutions", substitutions } });
 
 			var itemTemplate = panel.Get<ScrollItemWidget>("TEMPLATE");
@@ -152,13 +156,14 @@ namespace OpenRA.Mods.Common.Widgets
 				panel.AddChild(item);
 			}
 
-			panel.Bounds.Height = Math.Min(maxHeight, panel.ContentHeight);
+			panel.Node.Height = Math.Min(maxHeight, panel.ContentHeight);
+			panel.Node.CalculateLayout();
 			AttachPanel(panel);
 		}
 
 		public void ShowDropDown<T>(string panelTemplate, int height, Dictionary<string, IEnumerable<T>> groups, Func<T, ScrollItemWidget, ScrollItemWidget> setupItem)
 		{
-			var substitutions = new Dictionary<string, int>() { { "DROPDOWN_WIDTH", Bounds.Width } };
+			var substitutions = new Dictionary<string, int>() { { "DROPDOWN_WIDTH", (int)Node.LayoutWidth } };
 			var panel = (ScrollPanelWidget)Ui.LoadWidget(panelTemplate, null, new WidgetArgs() { { "substitutions", substitutions } });
 
 			var headerTemplate = panel.GetOrNull<ScrollItemWidget>("HEADER");
@@ -187,7 +192,8 @@ namespace OpenRA.Mods.Common.Widgets
 				}
 			}
 
-			panel.Bounds.Height = Math.Min(height, panel.ContentHeight);
+			panel.Node.Height = Math.Min(height, panel.ContentHeight);
+			panel.Node.CalculateLayout();
 			AttachPanel(panel);
 		}
 	}

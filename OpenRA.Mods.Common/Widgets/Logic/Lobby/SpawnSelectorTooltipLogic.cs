@@ -25,13 +25,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var label = widget.Get<LabelWidget>("LABEL");
 			var flag = widget.Get<ImageWidget>("FLAG");
 			var team = widget.Get<LabelWidget>("TEAM");
-			var singleHeight = widget.Get("SINGLE_HEIGHT").Bounds.Height;
-			var doubleHeight = widget.Get("DOUBLE_HEIGHT").Bounds.Height;
+			var singleHeight = (int)widget.Get("SINGLE_HEIGHT").Node.LayoutHeight;
+			var doubleHeight = (int)widget.Get("DOUBLE_HEIGHT").Node.LayoutHeight;
 			var ownerFont = Game.Renderer.Fonts[label.Font];
 			var teamFont = Game.Renderer.Fonts[team.Font];
 
 			// Width specified in YAML is used as the margin between flag / label and label / border
-			var labelMargin = widget.Bounds.Width;
+			var labelMargin = (int)widget.Node.LayoutWidth;
 
 			var cachedWidth = 0;
 			var labelText = "";
@@ -55,28 +55,35 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					labelText = "Available spawn";
 					playerFaction = null;
 					playerTeam = 0;
-					widget.Bounds.Height = singleHeight;
+					widget.Node.Height = singleHeight;
+					widget.Node.CalculateLayout();
 				}
 				else
 				{
 					labelText = occupant.PlayerName;
 					playerFaction = occupant.Faction;
 					playerTeam = occupant.Team;
-					widget.Bounds.Height = playerTeam > 0 ? doubleHeight : singleHeight;
+					widget.Node.Height = playerTeam > 0 ? doubleHeight : singleHeight;
+					widget.Node.CalculateLayout();
 					teamWidth = teamFont.Measure(team.GetText()).X;
 				}
 
-				label.Bounds.X = playerFaction != null ? flag.Bounds.Right + labelMargin : labelMargin;
+				label.Node.Left = playerFaction != null ? (int)(flag.Node.LayoutX + flag.Node.LayoutWidth) + labelMargin : labelMargin;
+				label.Node.CalculateLayout();
 
 				var textWidth = ownerFont.Measure(labelText).X;
 				if (textWidth != cachedWidth)
 				{
-					label.Bounds.Width = textWidth;
-					widget.Bounds.Width = 2 * label.Bounds.X + textWidth;
+					label.Node.Width = textWidth;
+					label.Node.CalculateLayout();
+					widget.Node.Width = 2 * (int)label.Node.LayoutX + textWidth;
+					widget.Node.CalculateLayout();
 				}
 
-				widget.Bounds.Width = Math.Max(teamWidth + 2 * labelMargin, label.Bounds.Right + labelMargin);
-				team.Bounds.Width = widget.Bounds.Width;
+				widget.Node.Width = Math.Max(teamWidth + 2 * labelMargin, (int)(label.Node.LayoutX + label.Node.LayoutWidth) + labelMargin);
+				widget.Node.CalculateLayout();
+				team.Node.Width = (int)widget.Node.LayoutWidth;
+				team.Node.CalculateLayout();
 			};
 
 			label.GetText = () => labelText;

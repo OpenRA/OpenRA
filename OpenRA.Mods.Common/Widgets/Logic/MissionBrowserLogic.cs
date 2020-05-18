@@ -237,14 +237,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					infoVideo = missionData.BackgroundVideo;
 					infoVideoVisible = infoVideo != null;
 
-					var briefing = WidgetUtils.WrapText(missionData.Briefing.Replace("\\n", "\n"), description.Bounds.Width, descriptionFont);
+					var briefing = WidgetUtils.WrapText(missionData.Briefing.Replace("\\n", "\n"), (int)description.Node.LayoutWidth, descriptionFont);
 					var height = descriptionFont.Measure(briefing).Y;
 					Game.RunAfterTick(() =>
 					{
 						if (preview == selectedMap)
 						{
 							description.Text = briefing;
-							description.Bounds.Height = height;
+							description.Node.Height = height;
+							description.Node.CalculateLayout();
 							descriptionPanel.Layout.AdjustChildren();
 						}
 					});

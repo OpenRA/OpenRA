@@ -47,9 +47,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						{
 							var row = backgroundTemplate.Clone();
 							if (palette.Horizontal)
-								row.Bounds.X += i * rowWidth;
+								row.Node.Left = (int)row.Node.LayoutX + i * rowWidth;
 							else
-								row.Bounds.Y += i * rowHeight;
+								row.Node.Top = (int)row.Node.LayoutY + i * rowHeight;
+							row.Node.CalculateLayout();
 							background.AddChild(row);
 						}
 					}
@@ -62,9 +63,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						{
 							var row = foregroundTemplate.Clone();
 							if (palette.Horizontal)
-								row.Bounds.X += i * rowWidth;
+								row.Node.Left = (int)row.Node.LayoutX + i * rowWidth;
 							else
-								row.Bounds.Y += i * rowHeight;
+								row.Node.Top = (int)row.Node.LayoutY + i * rowHeight;
+							row.Node.CalculateLayout();
 							foreground.AddChild(row);
 						}
 					}

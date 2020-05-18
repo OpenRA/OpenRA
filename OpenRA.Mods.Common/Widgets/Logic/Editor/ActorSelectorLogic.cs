@@ -191,15 +191,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					// Scale templates to fit within the panel
 					var scale = 1f;
-					if (scale * preview.IdealPreviewSize.X > ItemTemplate.Bounds.Width)
-						scale = (ItemTemplate.Bounds.Width - Panel.ItemSpacing) / (float)preview.IdealPreviewSize.X;
+					if (scale * preview.IdealPreviewSize.X > (int)ItemTemplate.Node.LayoutWidth)
+						scale = ((int)ItemTemplate.Node.LayoutWidth - Panel.ItemSpacing) / (float)preview.IdealPreviewSize.X;
 
 					preview.GetScale = () => scale;
-					preview.Bounds.Width = (int)(scale * preview.IdealPreviewSize.X);
-					preview.Bounds.Height = (int)(scale * preview.IdealPreviewSize.Y);
+					preview.Node.Width = (int)(scale * preview.IdealPreviewSize.X);
+					preview.Node.Height = (int)(scale * preview.IdealPreviewSize.Y);
+					preview.Node.CalculateLayout();
 
-					item.Bounds.Width = preview.Bounds.Width + 2 * preview.Bounds.X;
-					item.Bounds.Height = preview.Bounds.Height + 2 * preview.Bounds.Y;
+					item.Node.Width = (int)preview.Node.LayoutWidth + 2 * (int)preview.Node.LayoutX;
+					item.Node.Height = (int)preview.Node.LayoutHeight + 2 * (int)preview.Node.LayoutY;
+					item.Node.CalculateLayout();
 					item.IsVisible = () => true;
 
 					item.GetTooltipText = () => a.Tooltip;

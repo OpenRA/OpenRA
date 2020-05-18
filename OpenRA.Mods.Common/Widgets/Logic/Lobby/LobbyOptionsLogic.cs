@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			panel = (ScrollPanelWidget)widget;
 			optionsContainer = widget.Get("LOBBY_OPTIONS");
-			yMargin = optionsContainer.Bounds.Y;
+			yMargin = (int)optionsContainer.Node.LayoutY;
 			optionsContainer.IsVisible = () => validOptions;
 			checkboxRowTemplate = optionsContainer.Get("CHECKBOX_ROW_TEMPLATE");
 			dropdownRowTemplate = optionsContainer.Get("DROPDOWN_ROW_TEMPLATE");
@@ -77,7 +77,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return;
 
 			optionsContainer.RemoveChildren();
-			optionsContainer.Bounds.Height = 0;
+			optionsContainer.Node.Height = 0;
+			optionsContainer.Node.CalculateLayout();
 			var allOptions = mapPreview.Rules.Actors["player"].TraitInfos<ILobbyOptions>()
 					.Concat(mapPreview.Rules.Actors["world"].TraitInfos<ILobbyOptions>())
 					.SelectMany(t => t.LobbyOptions(mapPreview.Rules))
@@ -94,8 +95,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (!checkboxColumns.Any())
 				{
 					row = checkboxRowTemplate.Clone();
-					row.Bounds.Y = optionsContainer.Bounds.Height;
-					optionsContainer.Bounds.Height += row.Bounds.Height;
+					row.Node.Top = (int)optionsContainer.Node.LayoutHeight;
+					row.Node.CalculateLayout();
+					optionsContainer.Node.Height = (int)optionsContainer.Node.LayoutHeight + (int)row.Node.LayoutHeight;
+					optionsContainer.Node.CalculateLayout();
 					foreach (var child in row.Children)
 						if (child is CheckboxWidget)
 							checkboxColumns.Enqueue((CheckboxWidget)child);
@@ -123,8 +126,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (!dropdownColumns.Any())
 				{
 					row = dropdownRowTemplate.Clone() as Widget;
-					row.Bounds.Y = optionsContainer.Bounds.Height;
-					optionsContainer.Bounds.Height += row.Bounds.Height;
+					row.Node.Top = (int)optionsContainer.Node.LayoutHeight;
+					row.Node.CalculateLayout();
+					optionsContainer.Node.Height = (int)optionsContainer.Node.LayoutHeight + (int)row.Node.LayoutHeight;
+					optionsContainer.Node.CalculateLayout();
 					foreach (var child in row.Children)
 						if (child is DropDownButtonWidget)
 							dropdownColumns.Enqueue((DropDownButtonWidget)child);
@@ -175,10 +180,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				}
 			}
 
-			panel.ContentHeight = yMargin + optionsContainer.Bounds.Height;
-			optionsContainer.Bounds.Y = yMargin;
-			if (panel.ContentHeight < panel.Bounds.Height)
-				optionsContainer.Bounds.Y += (panel.Bounds.Height - panel.ContentHeight) / 2;
+			panel.ContentHeight = yMargin + (int)optionsContainer.Node.LayoutHeight;
+			optionsContainer.Node.Top = yMargin;
+			optionsContainer.Node.CalculateLayout();
+			if (panel.ContentHeight < (int)panel.Node.LayoutHeight)
+			{
+				optionsContainer.Node.Top = (int)optionsContainer.Node.LayoutY + ((int)panel.Node.LayoutHeight - panel.ContentHeight) / 2;
+				optionsContainer.Node.CalculateLayout();
+			}
 
 			panel.ScrollToTop();
 		}

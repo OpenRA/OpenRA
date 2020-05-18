@@ -78,7 +78,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				var saveWidgets = panel.Get("SAVE_WIDGETS");
 				saveTextField = saveWidgets.Get<TextFieldWidget>("SAVE_TEXTFIELD");
-				gameList.Bounds.Height -= saveWidgets.Bounds.Height;
+				gameList.Node.Height = (int)gameList.Node.LayoutHeight - (int)saveWidgets.Node.LayoutHeight;
+				gameList.Node.CalculateLayout();
 				saveWidgets.IsVisible = () => true;
 			}
 			else

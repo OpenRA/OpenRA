@@ -87,18 +87,20 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{
 						background.RemoveChildren();
 
-						var rowHeight = backgroundTemplate.Bounds.Height;
+						var rowHeight = (int)backgroundTemplate.Node.LayoutHeight;
 						for (var i = 0; i < rows; i++)
 						{
 							var row = backgroundTemplate.Clone();
-							row.Bounds.Y = i * rowHeight;
+							row.Node.Top = i * rowHeight;
+							row.Node.CalculateLayout();
 							background.AddChild(row);
 						}
 
 						if (backgroundBottom == null)
 							return;
 
-						backgroundBottom.Bounds.Y = rows * rowHeight;
+						backgroundBottom.Node.Top = rows * rowHeight;
+						backgroundBottom.Node.CalculateLayout();
 						background.AddChild(backgroundBottom);
 					}
 
@@ -106,11 +108,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{
 						foreground.RemoveChildren();
 
-						var rowHeight = foregroundTemplate.Bounds.Height;
+						var rowHeight = (int)foregroundTemplate.Node.LayoutHeight;
 						for (var i = 0; i < rows; i++)
 						{
 							var row = foregroundTemplate.Clone();
-							row.Bounds.Y = i * rowHeight;
+							row.Node.Top = i * rowHeight;
+							row.Node.CalculateLayout();
 							foreground.AddChild(row);
 						}
 					}
@@ -176,7 +179,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (containerWidget == null)
 				return;
 
-			var sidebarProductionHeight = containerWidget.Bounds.Y;
+			var sidebarProductionHeight = (int)containerWidget.Node.LayoutY;
 
 			// Check if icon heights exceed y resolution
 			var maxItemsHeight = screenHeight - sidebarProductionHeight;

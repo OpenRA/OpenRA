@@ -179,10 +179,11 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var newWidth = Math.Max(queueCol * (IconWidth + IconSpacing), MinWidth);
 
-			if (newWidth != Bounds.Width)
+			if (newWidth != (int)Node.LayoutWidth)
 			{
 				var wasInBounds = EventBounds.Contains(Viewport.LastMousePos);
-				Bounds.Width = newWidth;
+				Node.Width = newWidth;
+				Node.CalculateLayout();
 				var isInBounds = EventBounds.Contains(Viewport.LastMousePos);
 
 				// HACK: Ui.MouseOverWidget is normally only updated when the mouse moves
@@ -211,18 +212,21 @@ namespace OpenRA.Mods.Common.Widgets
 				}
 			}
 
-			var parentWidth = Bounds.X + Bounds.Width;
-			Parent.Bounds.Width = parentWidth;
+			var parentWidth = (int)Node.LayoutX + (int)Node.LayoutWidth;
+			Parent.Node.Width = parentWidth;
+			Parent.Node.CalculateLayout();
 
 			var gradient = Parent.Get<GradientColorBlockWidget>("PLAYER_GRADIENT");
 
-			var offset = gradient.Bounds.X - Bounds.X;
+			var offset = (int)gradient.Node.LayoutX - (int)Node.LayoutX;
 			var gradientWidth = Math.Max(MinWidth - offset, currentItemsByItem.Count * (IconWidth + IconSpacing));
 
-			gradient.Bounds.Width = gradientWidth;
-			var widestChildWidth = Parent.Parent.Children.Max(x => x.Bounds.Width);
+			gradient.Node.Width = gradientWidth;
+			gradient.Node.CalculateLayout();
+			var widestChildWidth = Parent.Parent.Children.Max(x => (int)x.Node.LayoutWidth);
 
-			Parent.Parent.Bounds.Width = Math.Max(25 + widestChildWidth, Bounds.Left + MinWidth);
+			Parent.Parent.Node.Width = Math.Max(25 + widestChildWidth, (int)Node.LayoutX + MinWidth);
+			Parent.Parent.Node.CalculateLayout();
 		}
 
 		static string GetOverlayForItem(ProductionItem item, int timestep)

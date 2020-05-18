@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var costIcon = widget.Get<ImageWidget>("COST_ICON");
 			var descLabel = widget.Get<LabelWidget>("DESC");
 
-			var iconMargin = timeIcon.Bounds.X;
+			var iconMargin = (int)timeIcon.Node.LayoutX;
 
 			var font = Game.Renderer.Fonts[nameLabel.Font];
 			var descFont = Game.Renderer.Fonts[descLabel.Font];
@@ -50,8 +50,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			ActorInfo lastActor = null;
 			Hotkey lastHotkey = Hotkey.Invalid;
 			var lastPowerState = pm == null ? PowerState.Normal : pm.PowerState;
-			var descLabelY = descLabel.Bounds.Y;
-			var descLabelPadding = descLabel.Bounds.Height;
+			var descLabelY = (int)descLabel.Node.LayoutY;
+			var descLabelPadding = (int)descLabel.Node.LayoutHeight;
 
 			tooltipContainer.BeforeRender = () =>
 			{
@@ -91,9 +91,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					var hotkeyText = "({0})".F(hotkey.DisplayString());
 
-					hotkeyWidth = font.Measure(hotkeyText).X + 2 * nameLabel.Bounds.X;
+					hotkeyWidth = font.Measure(hotkeyText).X + 2 * (int)nameLabel.Node.LayoutX;
 					hotkeyLabel.Text = hotkeyText;
-					hotkeyLabel.Bounds.X = nameSize.X + 2 * nameLabel.Bounds.X;
+					hotkeyLabel.Node.Left = nameSize.X + 2 * (int)nameLabel.Node.LayoutX;
+					hotkeyLabel.Node.CalculateLayout();
 				}
 
 				var prereqs = buildable.Prerequisites.Select(a => ActorName(mapRules, a))
@@ -105,12 +106,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					requiresLabel.Text = requiresFormat.F(prereqs.JoinWith(", "));
 					requiresSize = requiresFont.Measure(requiresLabel.Text);
 					requiresLabel.Visible = true;
-					descLabel.Bounds.Y = descLabelY + requiresLabel.Bounds.Height;
+					descLabel.Node.Top = descLabelY + (int)requiresLabel.Node.LayoutHeight;
+					descLabel.Node.CalculateLayout();
 				}
 				else
 				{
 					requiresLabel.Visible = false;
-					descLabel.Bounds.Y = descLabelY;
+					descLabel.Node.Top = descLabelY;
+					descLabel.Node.CalculateLayout();
 				}
 
 				var powerSize = new int2(0, 0);
@@ -138,23 +141,32 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				descLabel.Text = buildable.Description.Replace("\\n", "\n");
 				var descSize = descFont.Measure(descLabel.Text);
-				descLabel.Bounds.Width = descSize.X;
-				descLabel.Bounds.Height = descSize.Y + descLabelPadding;
+				descLabel.Node.Width = descSize.X;
+				descLabel.Node.Height = descSize.Y + descLabelPadding;
+				descLabel.Node.CalculateLayout();
 
 				var leftWidth = new[] { nameSize.X + hotkeyWidth, requiresSize.X, descSize.X }.Aggregate(Math.Max);
 				var rightWidth = new[] { powerSize.X, timeSize.X, costSize.X }.Aggregate(Math.Max);
 
-				timeIcon.Bounds.X = powerIcon.Bounds.X = costIcon.Bounds.X = leftWidth + 2 * nameLabel.Bounds.X;
-				timeLabel.Bounds.X = powerLabel.Bounds.X = costLabel.Bounds.X = timeIcon.Bounds.Right + iconMargin;
-				widget.Bounds.Width = leftWidth + rightWidth + 3 * nameLabel.Bounds.X + timeIcon.Bounds.Width + iconMargin;
+				timeIcon.Node.Left = powerIcon.Node.Left = costIcon.Node.Left = leftWidth + 2 * (int)nameLabel.Node.LayoutX;
+				timeIcon.Node.CalculateLayout();
+				powerIcon.Node.CalculateLayout();
+				costIcon.Node.CalculateLayout();
+				timeLabel.Node.Left = powerLabel.Node.Left = costLabel.Node.Left = (int)(timeIcon.Node.LayoutX + timeIcon.Node.LayoutWidth) + iconMargin;
+				timeLabel.Node.CalculateLayout();
+				powerLabel.Node.CalculateLayout();
+				costLabel.Node.CalculateLayout();
+				widget.Node.Width = leftWidth + rightWidth + 3 * (int)nameLabel.Node.LayoutX + (int)timeIcon.Node.LayoutWidth + iconMargin;
+				widget.Node.CalculateLayout();
 
 				// Set the bottom margin to match the left margin
-				var leftHeight = descLabel.Bounds.Bottom + descLabel.Bounds.X;
+				var leftHeight = (int)(descLabel.Node.LayoutY + descLabel.Node.LayoutHeight) + (int)descLabel.Node.LayoutX;
 
 				// Set the bottom margin to match the top margin
-				var rightHeight = (powerLabel.Visible ? powerIcon.Bounds.Bottom : timeIcon.Bounds.Bottom) + costIcon.Bounds.Top;
+				var rightHeight = (powerLabel.Visible ? (int)(powerIcon.Node.LayoutY + powerIcon.Node.LayoutHeight) : (int)(timeIcon.Node.LayoutY + timeIcon.Node.LayoutHeight)) + (int)costIcon.Node.LayoutY;
 
-				widget.Bounds.Height = Math.Max(leftHeight, rightHeight);
+				widget.Node.Height = Math.Max(leftHeight, rightHeight);
+				widget.Node.CalculateLayout();
 
 				lastActor = actor;
 				lastHotkey = hotkey;

@@ -262,7 +262,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public static void TruncateLabelToTooltip(LabelWithTooltipWidget label, string text)
 		{
-			var truncatedText = TruncateText(text, label.Bounds.Width, Game.Renderer.Fonts[label.Font]);
+			var truncatedText = TruncateText(text, (int)label.Node.LayoutWidth, Game.Renderer.Fonts[label.Font]);
 
 			label.GetText = () => truncatedText;
 
@@ -274,7 +274,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public static void TruncateButtonToTooltip(ButtonWidget button, string text)
 		{
-			var truncatedText = TruncateText(text, button.Bounds.Width - button.LeftMargin - button.RightMargin, Game.Renderer.Fonts[button.Font]);
+			var truncatedText = TruncateText(text, (int)button.Node.LayoutWidth - button.LeftMargin - button.RightMargin, Game.Renderer.Fonts[button.Font]);
 
 			button.GetText = () => truncatedText;
 
@@ -343,7 +343,7 @@ namespace OpenRA.Mods.Common.Widgets
 				if (c.Item3 == Session.ClientState.Disconnected)
 					suffix = " (Gone)";
 
-				return TruncateText(c.Item1, label.Bounds.Width - nameFont.Measure(suffix).X, nameFont) + suffix;
+				return TruncateText(c.Item1, (int)label.Node.LayoutWidth - nameFont.Measure(suffix).X, nameFont) + suffix;
 			});
 
 			label.GetText = () =>

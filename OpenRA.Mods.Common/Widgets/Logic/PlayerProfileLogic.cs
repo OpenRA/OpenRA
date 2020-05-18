@@ -104,7 +104,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					if (localProfile.ProfileData.Badges.Any())
 					{
-						Func<int, int> negotiateWidth = _ => widget.Get("PROFILE_HEADER").Bounds.Width;
+						Func<int, int> negotiateWidth = _ => (int)widget.Get("PROFILE_HEADER").Node.LayoutWidth;
 
 						// Remove any stale badges that may be left over from a previous session
 						badgeContainer.RemoveChildren();
@@ -116,9 +116,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							{ "negotiateWidth", negotiateWidth }
 						});
 
-						if (badges.Bounds.Height > 0)
+						if ((int)badges.Node.LayoutHeight > 0)
 						{
-							badgeContainer.Bounds.Height = badges.Bounds.Height;
+							badgeContainer.Node.Height = (int)badges.Node.LayoutHeight;
+							badgeContainer.Node.CalculateLayout();
 							badgesVisible = true;
 						}
 					}
@@ -153,9 +154,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			messageHeader.IsVisible = () => !profileLoaded;
 
 			var profileWidth = 0;
-			var maxProfileWidth = widget.Bounds.Width;
+			var maxProfileWidth = (int)widget.Node.LayoutWidth;
 			var messageText = "Loading player profile...";
-			var messageWidth = messageFont.Measure(messageText).X + 2 * message.Bounds.Left;
+			var messageWidth = messageFont.Measure(messageText).X + 2 * (int)message.Node.LayoutX;
 
 			Action<DownloadDataCompletedEventArgs> onQueryComplete = i =>
 			{
@@ -178,24 +179,29 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 								var adminLabel = adminContainer.Get<LabelWidget>("LABEL");
 								var adminFont = Game.Renderer.Fonts[adminLabel.Font];
 
-								var headerSizeOffset = profileHeader.Bounds.Height - messageHeader.Bounds.Height;
+								var headerSizeOffset = (int)profileHeader.Node.LayoutHeight - (int)messageHeader.Node.LayoutHeight;
 
 								nameLabel.GetText = () => profile.ProfileName;
 								rankLabel.GetText = () => profile.ProfileRank;
 
-								profileWidth = Math.Max(profileWidth, nameFont.Measure(profile.ProfileName).X + 2 * nameLabel.Bounds.Left);
-								profileWidth = Math.Max(profileWidth, rankFont.Measure(profile.ProfileRank).X + 2 * rankLabel.Bounds.Left);
+								profileWidth = Math.Max(profileWidth, nameFont.Measure(profile.ProfileName).X + 2 * (int)nameLabel.Node.LayoutX);
+								profileWidth = Math.Max(profileWidth, rankFont.Measure(profile.ProfileRank).X + 2 * (int)rankLabel.Node.LayoutX);
 
-								header.Bounds.Height += headerSizeOffset;
-								badgeContainer.Bounds.Y += header.Bounds.Height;
+								header.Node.Height = (int)header.Node.LayoutHeight + headerSizeOffset;
+								header.Node.CalculateLayout();
+								badgeContainer.Node.Top = (int)badgeContainer.Node.LayoutY + (int)header.Node.LayoutHeight;
+								badgeContainer.Node.CalculateLayout();
 								if (client.IsAdmin)
 								{
-									profileWidth = Math.Max(profileWidth, adminFont.Measure(adminLabel.Text).X + 2 * adminLabel.Bounds.Left);
+									profileWidth = Math.Max(profileWidth, adminFont.Measure(adminLabel.Text).X + 2 * (int)adminLabel.Node.LayoutX);
 
 									adminContainer.IsVisible = () => true;
-									profileHeader.Bounds.Height += adminLabel.Bounds.Height;
-									header.Bounds.Height += adminLabel.Bounds.Height;
-									badgeContainer.Bounds.Y += adminLabel.Bounds.Height;
+									profileHeader.Node.Height = (int)profileHeader.Node.LayoutHeight + (int)adminLabel.Node.LayoutHeight;
+									profileHeader.Node.CalculateLayout();
+									header.Node.Height = (int)header.Node.LayoutHeight + (int)adminLabel.Node.LayoutHeight;
+									header.Node.CalculateLayout();
+									badgeContainer.Node.Top = (int)badgeContainer.Node.LayoutY + (int)adminLabel.Node.LayoutHeight;
+									badgeContainer.Node.CalculateLayout();
 								}
 
 								Func<int, int> negotiateWidth = badgeWidth =>
@@ -213,19 +219,27 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 										{ "negotiateWidth", negotiateWidth }
 									});
 
-									if (badges.Bounds.Height > 0)
+									if ((int)badges.Node.LayoutHeight > 0)
 									{
-										badgeContainer.Bounds.Height = badges.Bounds.Height;
+										badgeContainer.Node.Height = (int)badges.Node.LayoutHeight;
+										badgeContainer.Node.CalculateLayout();
 										badgeContainer.IsVisible = () => true;
 									}
 								}
 
 								profileWidth = Math.Min(profileWidth, maxProfileWidth);
-								header.Bounds.Width = widget.Bounds.Width = badgeContainer.Bounds.Width = profileWidth;
-								widget.Bounds.Height = header.Bounds.Height + badgeContainer.Bounds.Height;
+								header.Node.Width = widget.Node.Width = badgeContainer.Node.Width = profileWidth;
+								badgeContainer.Node.CalculateLayout();
+								header.Node.CalculateLayout();
+								widget.Node.CalculateLayout();
+								widget.Node.Height = (int)header.Node.LayoutHeight + (int)badgeContainer.Node.LayoutHeight;
+								widget.Node.CalculateLayout();
 
 								if (badgeSeparator != null)
-									badgeSeparator.Bounds.Width = profileWidth - 2 * badgeSeparator.Bounds.X;
+								{
+									badgeSeparator.Node.Width = profileWidth - 2 * (int)badgeSeparator.Node.LayoutX;
+									badgeSeparator.Node.CalculateLayout();
+								}
 
 								profileLoaded = true;
 							});
@@ -241,16 +255,21 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					if (profile == null)
 					{
 						messageText = "Failed to load player profile.";
-						messageWidth = messageFont.Measure(messageText).X + 2 * message.Bounds.Left;
-						header.Bounds.Width = widget.Bounds.Width = messageWidth;
+						messageWidth = messageFont.Measure(messageText).X + 2 * (int)message.Node.LayoutX;
+						header.Node.Width = widget.Node.Width = messageWidth;
+						header.Node.CalculateLayout();
+						widget.Node.CalculateLayout();
 					}
 				}
 			};
 
 			message.GetText = () => messageText;
-			header.Bounds.Height += messageHeader.Bounds.Height;
-			header.Bounds.Width = widget.Bounds.Width = messageWidth;
-			widget.Bounds.Height = header.Bounds.Height;
+			header.Node.Height = (int)header.Node.LayoutHeight + (int)messageHeader.Node.LayoutHeight;
+			header.Node.Width = widget.Node.Width = messageWidth;
+			header.Node.CalculateLayout();
+			widget.Node.CalculateLayout();
+			widget.Node.Height = (int)header.Node.LayoutHeight;
+			widget.Node.CalculateLayout();
 			badgeContainer.Visible = false;
 
 			new Download(playerDatabase.Profile + client.Fingerprint, _ => { }, onQueryComplete);
@@ -276,9 +295,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			foreach (var badge in profile.Badges)
 				maxLabelWidth = Math.Max(maxLabelWidth, templateLabelFont.Measure(badge.Label).X);
 
-			widget.Bounds.Width = negotiateWidth(2 * templateLabel.Bounds.Left - templateIcon.Bounds.Right + maxLabelWidth);
+			widget.Node.Width = negotiateWidth(2 * (int)templateLabel.Node.LayoutX - (int)(templateIcon.Node.LayoutX + templateIcon.Node.LayoutWidth) + maxLabelWidth);
+			widget.Node.CalculateLayout();
 
-			var badgeOffset = badgeTemplate.Bounds.Y;
+			var badgeOffset = (int)badgeTemplate.Node.LayoutY;
 			if (profile.Badges.Any())
 				badgeOffset += 3;
 
@@ -291,19 +311,21 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var label = b.Get<LabelWidget>("LABEL");
 				var labelFont = Game.Renderer.Fonts[label.Font];
 
-				var labelText = WidgetUtils.TruncateText(badge.Label, widget.Bounds.Width - label.Bounds.X - icon.Bounds.X, labelFont);
+				var labelText = WidgetUtils.TruncateText(badge.Label, (int)widget.Node.LayoutWidth - (int)label.Node.LayoutX - (int)icon.Node.LayoutX, labelFont);
 				label.GetText = () => labelText;
 
-				b.Bounds.Y = badgeOffset;
+				b.Node.Top = badgeOffset;
+				b.Node.CalculateLayout();
 				widget.AddChild(b);
 
-				badgeOffset += badgeTemplate.Bounds.Height;
+				badgeOffset += (int)badgeTemplate.Node.LayoutHeight;
 			}
 
-			if (badgeOffset > badgeTemplate.Bounds.Y)
+			if (badgeOffset > (int)badgeTemplate.Node.LayoutY)
 				badgeOffset += 5;
 
-			widget.Bounds.Height = badgeOffset;
+			widget.Node.Height = badgeOffset;
+			widget.Node.CalculateLayout();
 		}
 	}
 
@@ -314,7 +336,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var nameLabel = widget.Get<LabelWidget>("NAME");
 			var nameFont = Game.Renderer.Fonts[nameLabel.Font];
-			widget.Bounds.Width = nameFont.Measure(nameLabel.Text).X + 2 * nameLabel.Bounds.Left;
+			widget.Node.Width = nameFont.Measure(nameLabel.Text).X + 2 * (int)nameLabel.Node.LayoutX;
+			widget.Node.CalculateLayout();
 
 			var locationLabel = widget.Get<LabelWidget>("LOCATION");
 			var ipLabel = widget.Get<LabelWidget>("IP");
@@ -323,27 +346,33 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (client.Location != null)
 			{
 				var locationFont = Game.Renderer.Fonts[locationLabel.Font];
-				var locationWidth = widget.Bounds.Width - 2 * locationLabel.Bounds.X;
+				var locationWidth = (int)widget.Node.LayoutWidth - 2 * (int)locationLabel.Node.LayoutX;
 				var location = WidgetUtils.TruncateText(client.Location, locationWidth, locationFont);
 				locationLabel.IsVisible = () => true;
 				locationLabel.GetText = () => location;
-				widget.Bounds.Height += locationLabel.Bounds.Height;
-				ipLabel.Bounds.Y += locationLabel.Bounds.Height;
-				adminLabel.Bounds.Y += locationLabel.Bounds.Height;
+				widget.Node.Height = (int)widget.Node.LayoutHeight + (int)locationLabel.Node.LayoutHeight;
+				widget.Node.CalculateLayout();
+				ipLabel.Node.Top = (int)ipLabel.Node.LayoutY + (int)locationLabel.Node.LayoutHeight;
+				ipLabel.Node.CalculateLayout();
+				adminLabel.Node.Top = (int)adminLabel.Node.LayoutY + (int)locationLabel.Node.LayoutHeight;
+				adminLabel.Node.CalculateLayout();
 			}
 
 			if (client.AnonymizedIPAddress != null)
 			{
 				ipLabel.IsVisible = () => true;
 				ipLabel.GetText = () => client.AnonymizedIPAddress;
-				widget.Bounds.Height += ipLabel.Bounds.Height;
-				adminLabel.Bounds.Y += locationLabel.Bounds.Height;
+				widget.Node.Height = (int)widget.Node.LayoutHeight + (int)ipLabel.Node.LayoutHeight;
+				widget.Node.CalculateLayout();
+				adminLabel.Node.Top = (int)adminLabel.Node.LayoutY + (int)locationLabel.Node.LayoutHeight;
+				adminLabel.Node.CalculateLayout();
 			}
 
 			if (client.IsAdmin)
 			{
 				adminLabel.IsVisible = () => true;
-				widget.Bounds.Height += adminLabel.Bounds.Height;
+				widget.Node.Height = (int)widget.Node.LayoutHeight + (int)adminLabel.Node.LayoutHeight;
+				widget.Node.CalculateLayout();
 			}
 		}
 	}

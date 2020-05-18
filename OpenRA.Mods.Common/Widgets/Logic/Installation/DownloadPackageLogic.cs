@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var statusLabel = panel.Get<LabelWidget>("STATUS_LABEL");
 			var statusFont = Game.Renderer.Fonts[statusLabel.Font];
-			var status = new CachedTransform<string, string>(s => WidgetUtils.TruncateText(s, statusLabel.Bounds.Width, statusFont));
+			var status = new CachedTransform<string, string>(s => WidgetUtils.TruncateText(s, (int)statusLabel.Node.LayoutWidth, statusFont));
 			statusLabel.GetText = () => status.Update(getStatusText());
 
 			var text = "Downloading {0}".F(download.Title);

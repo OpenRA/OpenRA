@@ -191,7 +191,7 @@ namespace OpenRA.Mods.Common.Widgets
 				upDisabled = thumbHeight == 0 || currentListOffset >= 0;
 
 				var downHover = Ui.MouseOverWidget == this && downButtonRect.Contains(Viewport.LastMousePos);
-				downDisabled = thumbHeight == 0 || currentListOffset <= Bounds.Height - ContentHeight;
+				downDisabled = thumbHeight == 0 || currentListOffset <= (int)Node.LayoutHeight - ContentHeight;
 
 				var thumbHover = Ui.MouseOverWidget == this && thumbRect.Contains(Viewport.LastMousePos);
 				WidgetUtils.DrawPanel(ScrollBarBackground, scrollbarRect);
@@ -224,7 +224,7 @@ namespace OpenRA.Mods.Common.Widgets
 			drawBounds.Y -= co.Y;
 
 			foreach (var child in Children)
-				if (child.Bounds.IntersectsWith(drawBounds))
+				if (new Rectangle((int)child.Node.LayoutX, (int)child.Node.LayoutY, (int)child.Node.LayoutWidth, (int)child.Node.LayoutHeight).IntersectsWith(drawBounds))
 					child.DrawOuter();
 
 			Game.Renderer.DisableScissor();
@@ -246,7 +246,7 @@ namespace OpenRA.Mods.Common.Widgets
 		void Scroll(int amount, bool smooth = false)
 		{
 			var newTarget = targetListOffset + amount * Game.Settings.Game.UIScrollSpeed;
-			newTarget = Math.Min(0, Math.Max(Bounds.Height - ContentHeight, newTarget));
+			newTarget = Math.Min(0, Math.Max((int)Node.LayoutHeight - ContentHeight, newTarget));
 
 			SetListOffset(newTarget, smooth);
 		}
@@ -254,8 +254,8 @@ namespace OpenRA.Mods.Common.Widgets
 		public void ScrollToBottom(bool smooth = false)
 		{
 			var value = Align == ScrollPanelAlign.Top ?
-				Math.Min(0, Bounds.Height - ContentHeight) :
-				Bounds.Height - ContentHeight;
+				Math.Min(0, (int)Node.LayoutHeight - ContentHeight) :
+				(int)Node.LayoutHeight - ContentHeight;
 
 			SetListOffset(value, smooth);
 		}
@@ -263,25 +263,25 @@ namespace OpenRA.Mods.Common.Widgets
 		public void ScrollToTop(bool smooth = false)
 		{
 			var value = Align == ScrollPanelAlign.Top ? 0 :
-				Math.Max(0, Bounds.Height - ContentHeight);
+				Math.Max(0, (int)Node.LayoutHeight - ContentHeight);
 
 			SetListOffset(value, smooth);
 		}
 
 		public bool ScrolledToBottom
 		{
-			get { return targetListOffset == Math.Min(0, Bounds.Height - ContentHeight) || ContentHeight <= Bounds.Height; }
+			get { return targetListOffset == Math.Min(0, (int)Node.LayoutHeight - ContentHeight) || ContentHeight <= (int)Node.LayoutHeight; }
 		}
 
 		void ScrollToItem(Widget item, bool smooth = false)
 		{
 			// Scroll the item to be visible
 			float? newOffset = null;
-			if (item.Bounds.Top + currentListOffset < 0)
-				newOffset = ItemSpacing - item.Bounds.Top;
+			if ((int)item.Node.LayoutY + currentListOffset < 0)
+				newOffset = ItemSpacing - (int)item.Node.LayoutY;
 
-			if (item.Bounds.Bottom + currentListOffset > RenderBounds.Height)
-				newOffset = RenderBounds.Height - item.Bounds.Bottom - ItemSpacing;
+			if ((int)(item.Node.LayoutY + item.Node.LayoutHeight) + currentListOffset > RenderBounds.Height)
+				newOffset = RenderBounds.Height - (int)(item.Node.LayoutY + item.Node.LayoutHeight) - ItemSpacing;
 
 			if (newOffset.HasValue)
 				SetListOffset(newOffset.Value, smooth);

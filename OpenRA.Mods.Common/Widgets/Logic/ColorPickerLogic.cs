@@ -128,8 +128,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var newSwatch = (ColorBlockWidget)presetColorTemplate.Clone();
 					newSwatch.GetColor = () => color;
 					newSwatch.IsVisible = () => true;
-					newSwatch.Bounds.X = i * newSwatch.Bounds.Width;
-					newSwatch.Bounds.Y = j * newSwatch.Bounds.Height;
+					newSwatch.Node.Left = i * (int)newSwatch.Node.LayoutWidth;
+					newSwatch.Node.Top = j * (int)newSwatch.Node.LayoutHeight;
+					newSwatch.Node.CalculateLayout();
 					newSwatch.OnMouseUp = m =>
 					{
 						mixer.Set(color);
@@ -150,8 +151,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var newSwatch = (ColorBlockWidget)customColorTemplate.Clone();
 					newSwatch.GetColor = () => Game.Settings.Player.CustomColors[colorIndex];
 					newSwatch.IsVisible = () => Game.Settings.Player.CustomColors.Length > colorIndex;
-					newSwatch.Bounds.X = i * newSwatch.Bounds.Width;
-					newSwatch.Bounds.Y = j * newSwatch.Bounds.Height;
+					newSwatch.Node.Left = i * (int)newSwatch.Node.LayoutWidth;
+					newSwatch.Node.Top = j * (int)newSwatch.Node.LayoutHeight;
+					newSwatch.Node.CalculateLayout();
 					newSwatch.OnMouseUp = m =>
 					{
 						var color = Game.Settings.Player.CustomColors[colorIndex];

@@ -161,8 +161,8 @@ namespace OpenRA.Mods.Common.Widgets
 			var textSize = font.Measure(apparentText);
 
 			var start = RenderOrigin.X + LeftMargin;
-			if (textSize.X > Bounds.Width - LeftMargin - RightMargin && HasKeyboardFocus)
-				start += Bounds.Width - LeftMargin - RightMargin - textSize.X;
+			if (textSize.X > (int)Node.LayoutWidth - LeftMargin - RightMargin && HasKeyboardFocus)
+				start += (int)Node.LayoutWidth - LeftMargin - RightMargin - textSize.X;
 
 			var minIndex = -1;
 			var minValue = int.MaxValue;
@@ -570,21 +570,21 @@ namespace OpenRA.Mods.Common.Widgets
 			var state = WidgetUtils.GetStatefulImageName("textfield", disabled, false, hover, HasKeyboardFocus);
 
 			WidgetUtils.DrawPanel(state,
-				new Rectangle(pos.X, pos.Y, Bounds.Width, Bounds.Height));
+				new Rectangle(pos.X, pos.Y, (int)Node.LayoutWidth, (int)Node.LayoutHeight));
 
 			// Inset text by the margin and center vertically
-			var verticalMargin = (Bounds.Height - textSize.Y) / 2 - VisualHeight;
+			var verticalMargin = ((int)Node.LayoutHeight - textSize.Y) / 2 - VisualHeight;
 			var textPos = pos + new int2(LeftMargin, verticalMargin);
 
 			// Right align when editing and scissor when the text overflows
-			var isTextOverflowing = textSize.X > Bounds.Width - LeftMargin - RightMargin;
+			var isTextOverflowing = textSize.X > (int)Node.LayoutWidth - LeftMargin - RightMargin;
 			if (isTextOverflowing)
 			{
 				if (HasKeyboardFocus)
-					textPos += new int2(Bounds.Width - LeftMargin - RightMargin - textSize.X, 0);
+					textPos += new int2((int)Node.LayoutWidth - LeftMargin - RightMargin - textSize.X, 0);
 
 				Game.Renderer.EnableScissor(new Rectangle(pos.X + LeftMargin, pos.Y,
-					Bounds.Width - LeftMargin - RightMargin, Bounds.Bottom));
+					(int)Node.LayoutWidth - LeftMargin - RightMargin, (int)(Node.LayoutY + Node.LayoutHeight)));
 			}
 
 			// Draw the highlight around the selected area
@@ -596,7 +596,7 @@ namespace OpenRA.Mods.Common.Widgets
 				var highlightEndX = font.Measure(apparentText.Substring(0, visualSelectionEndIndex)).X;
 
 				WidgetUtils.FillRectWithColor(
-					new Rectangle(textPos.X + highlightStartX, textPos.Y, highlightEndX - highlightStartX, Bounds.Height - (verticalMargin * 2)), TextColorHighlight);
+					new Rectangle(textPos.X + highlightStartX, textPos.Y, highlightEndX - highlightStartX, (int)Node.LayoutHeight - (verticalMargin * 2)), TextColorHighlight);
 			}
 
 			var color =

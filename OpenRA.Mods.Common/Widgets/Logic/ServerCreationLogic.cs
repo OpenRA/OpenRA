@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (titleLabel != null)
 				{
 					var font = Game.Renderer.Fonts[titleLabel.Font];
-					var title = new CachedTransform<MapPreview, string>(m => WidgetUtils.TruncateText(m.Title, titleLabel.Bounds.Width, font));
+					var title = new CachedTransform<MapPreview, string>(m => WidgetUtils.TruncateText(m.Title, (int)titleLabel.Node.LayoutWidth, font));
 					titleLabel.GetText = () => title.Update(preview);
 					titleLabel.GetTooltipText = () => preview.Title;
 				}
@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					var font = Game.Renderer.Fonts[authorLabel.Font];
 					var author = new CachedTransform<MapPreview, string>(
-						m => WidgetUtils.TruncateText("Created by {0}".F(m.Author), authorLabel.Bounds.Width, font));
+						m => WidgetUtils.TruncateText("Created by {0}".F(m.Author), (int)authorLabel.Node.LayoutWidth, font));
 					authorLabel.GetText = () => author.Update(preview);
 				}
 			}
@@ -147,7 +147,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				noticesLabelA.Text = "Internet Server (UPnP ";
 				var aWidth = Game.Renderer.Fonts[noticesLabelA.Font].Measure(noticesLabelA.Text).X;
-				noticesLabelA.Bounds.Width = aWidth;
+				noticesLabelA.Node.Width = aWidth;
+				noticesLabelA.Node.CalculateLayout();
 
 				var status = UPnP.Status;
 				noticesLabelB.Text = status == UPnPStatus.Enabled ? "Enabled" :
@@ -158,12 +159,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					ChromeMetrics.Get<Color>("NoticeInfoColor");
 
 				var bWidth = Game.Renderer.Fonts[noticesLabelB.Font].Measure(noticesLabelB.Text).X;
-				noticesLabelB.Bounds.X = noticesLabelA.Bounds.Right;
-				noticesLabelB.Bounds.Width = bWidth;
+				noticesLabelB.Node.Left = (int)(noticesLabelA.Node.LayoutX + noticesLabelA.Node.LayoutWidth);
+				noticesLabelB.Node.Width = bWidth;
+				noticesLabelB.Node.CalculateLayout();
 				noticesLabelB.Visible = true;
 
 				noticesLabelC.Text = "):";
-				noticesLabelC.Bounds.X = noticesLabelB.Bounds.Right;
+				noticesLabelC.Node.Left = (int)(noticesLabelB.Node.LayoutX + noticesLabelB.Node.LayoutWidth);
+				noticesLabelC.Node.CalculateLayout();
 				noticesLabelC.Visible = true;
 			}
 			else

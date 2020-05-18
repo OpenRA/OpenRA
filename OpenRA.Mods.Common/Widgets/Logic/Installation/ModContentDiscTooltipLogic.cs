@@ -29,23 +29,26 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var discTitles = getText().Split('\n');
 
 			var maxWidth = Game.Renderer.Fonts[desc.Font].Measure(desc.Text).X;
-			var sideMargin = desc.Bounds.X;
-			var bottomMargin = discs.Bounds.Height;
+			var sideMargin = (int)desc.Node.LayoutX;
+			var bottomMargin = (int)discs.Node.LayoutHeight;
 			foreach (var disc in discTitles)
 			{
 				var label = (LabelWidget)template.Clone();
 				var title = disc;
 				label.GetText = () => title;
-				label.Bounds.Y = discs.Bounds.Height;
-				label.Bounds.Width = font.Measure(disc).X;
+				label.Node.Top = (int)discs.Node.LayoutHeight;
+				label.Node.Width = font.Measure(disc).X;
+				label.Node.CalculateLayout();
 
-				maxWidth = Math.Max(maxWidth, label.Bounds.Width + label.Bounds.X);
+				maxWidth = Math.Max(maxWidth, (int)label.Node.LayoutWidth + (int)label.Node.LayoutX);
 				discs.AddChild(label);
-				discs.Bounds.Height += label.Bounds.Height;
+				discs.Node.Height = (int)discs.Node.LayoutHeight + (int)label.Node.LayoutHeight;
+				discs.Node.CalculateLayout();
 			}
 
-			widget.Bounds.Width = 2 * sideMargin + maxWidth;
-			widget.Bounds.Height = discs.Bounds.Y + bottomMargin + discs.Bounds.Height;
+			widget.Node.Width = 2 * sideMargin + maxWidth;
+			widget.Node.Height = (int)discs.Node.LayoutY + bottomMargin + (int)discs.Node.LayoutHeight;
+			widget.Node.CalculateLayout();
 		}
 	}
 }

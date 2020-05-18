@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Facebook.Yoga;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Support;
@@ -169,6 +170,8 @@ namespace OpenRA.Widgets
 
 	public abstract class Widget
 	{
+		public readonly YogaNode Node = new YogaNode();
+
 		public readonly List<Widget> Children = new List<Widget>();
 
 		// Info defined in YAML
@@ -183,8 +186,6 @@ namespace OpenRA.Widgets
 		public bool IgnoreMouseOver;
 		public bool IgnoreChildMouseOver;
 
-		// Calculated internally
-		public Rectangle Bounds;
 		public Widget Parent = null;
 		public Func<bool> IsVisible;
 		public Widget() { IsVisible = () => Visible; }
@@ -199,7 +200,8 @@ namespace OpenRA.Widgets
 			Logic = widget.Logic;
 			Visible = widget.Visible;
 
-			Bounds = widget.Bounds;
+			Node.CopyStyle(widget.Node);
+			Node.CalculateLayout();
 			Parent = widget.Parent;
 
 			IsVisible = widget.IsVisible;
@@ -220,7 +222,7 @@ namespace OpenRA.Widgets
 			get
 			{
 				var offset = (Parent == null) ? int2.Zero : Parent.ChildOrigin;
-				return new int2(Bounds.X, Bounds.Y) + offset;
+				return new int2((int)Node.LayoutX, (int)Node.LayoutY) + offset;
 			}
 		}
 
@@ -231,7 +233,7 @@ namespace OpenRA.Widgets
 			get
 			{
 				var ro = RenderOrigin;
-				return new Rectangle(ro.X, ro.Y, Bounds.Width, Bounds.Height);
+				return new Rectangle(ro.X, ro.Y, (int)Node.LayoutWidth, (int)Node.LayoutHeight);
 			}
 		}
 
@@ -240,7 +242,7 @@ namespace OpenRA.Widgets
 			// Parse the YAML equations to find the widget bounds
 			var parentBounds = (Parent == null)
 				? new Rectangle(0, 0, Game.Renderer.Resolution.Width, Game.Renderer.Resolution.Height)
-				: Parent.Bounds;
+				: new Rectangle((int)Parent.Node.LayoutX, (int)Parent.Node.LayoutY, (int)Parent.Node.LayoutWidth, (int)Parent.Node.LayoutHeight);
 
 			var substitutions = args.ContainsKey("substitutions") ?
 				new Dictionary<string, int>((Dictionary<string, int>)args["substitutions"]) :
@@ -258,10 +260,16 @@ namespace OpenRA.Widgets
 			substitutions.Add("WIDTH", width);
 			substitutions.Add("HEIGHT", height);
 
-			Bounds = new Rectangle(Evaluator.Evaluate(X, substitutions),
+			var bounds = new Rectangle(Evaluator.Evaluate(X, substitutions),
 								   Evaluator.Evaluate(Y, substitutions),
 								   width,
 								   height);
+
+			Node.Left = bounds.X;
+			Node.Top = bounds.Y;
+			Node.Width = bounds.Width;
+			Node.Height = bounds.Height;
+			Node.CalculateLayout();
 		}
 
 		public void PostInit(WidgetArgs args)

@@ -257,20 +257,24 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			nameLabel.GetColor = () => nameColor;
 			nameLabel.GetText = () => name;
-			nameLabel.Bounds.Width = nameSize.X;
+			nameLabel.Node.Width = nameSize.X;
+			nameLabel.Node.CalculateLayout();
 
 			textLabel.GetColor = () => textColor;
-			textLabel.Bounds.X += nameSize.X;
-			textLabel.Bounds.Width -= nameSize.X;
+			textLabel.Node.Left = (int)textLabel.Node.LayoutX + nameSize.X;
+			textLabel.Node.Width = (int)textLabel.Node.LayoutWidth - nameSize.X;
+			textLabel.Node.CalculateLayout();
 
 			// Hack around our hacky wordwrap behavior: need to resize the widget to fit the text
-			text = WidgetUtils.WrapText(text, textLabel.Bounds.Width, font);
+			text = WidgetUtils.WrapText(text, (int)textLabel.Node.LayoutWidth, font);
 			textLabel.GetText = () => text;
-			var dh = font.Measure(text).Y - textLabel.Bounds.Height;
+			var dh = font.Measure(text).Y - (int)textLabel.Node.LayoutHeight;
 			if (dh > 0)
 			{
-				textLabel.Bounds.Height += dh;
-				template.Bounds.Height += dh;
+				textLabel.Node.Height = (int)textLabel.Node.LayoutHeight + dh;
+				textLabel.Node.CalculateLayout();
+				template.Node.Height = (int)template.Node.LayoutHeight + dh;
+				template.Node.CalculateLayout();
 			}
 
 			var scrolledToBottom = chatScrollPanel.ScrolledToBottom;

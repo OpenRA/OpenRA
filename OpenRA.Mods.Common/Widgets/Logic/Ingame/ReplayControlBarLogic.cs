@@ -39,7 +39,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				var background = widget.Parent.GetOrNull("OBSERVER_CONTROL_BG");
 				if (background != null)
-					background.Bounds.Height += container.Bounds.Height;
+				{
+					background.Node.Height = (int)background.Node.LayoutHeight + (int)container.Node.LayoutHeight;
+					background.Node.CalculateLayout();
+				}
 
 				container.Visible = true;
 				var speed = PlaybackSpeed.Regular;

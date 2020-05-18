@@ -23,15 +23,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var latencyPrefixFont = Game.Renderer.Fonts[latencyPrefix.Font];
 			var latency = widget.Get<LabelWidget>("LATENCY");
 			var latencyFont = Game.Renderer.Fonts[latency.Font];
-			var rightMargin = widget.Bounds.Width;
+			var rightMargin = (int)widget.Node.LayoutWidth;
 
-			latency.Bounds.X = latencyPrefix.Bounds.X + latencyPrefixFont.Measure(latencyPrefix.Text + " ").X;
+			latency.Node.Left = (int)latencyPrefix.Node.LayoutX + latencyPrefixFont.Measure(latencyPrefix.Text + " ").X;
+			latency.Node.CalculateLayout();
 
 			widget.IsVisible = () => client != null;
 			tooltipContainer.BeforeRender = () =>
 			{
 				if (widget.IsVisible())
-					widget.Bounds.Width = latency.Bounds.X + latencyFont.Measure(latency.GetText()).X + rightMargin;
+				{
+					widget.Node.Width = (int)latency.Node.LayoutX + latencyFont.Measure(latency.GetText()).X + rightMargin;
+					widget.Node.CalculateLayout();
+				}
 			};
 
 			var ping = orderManager.LobbyInfo.PingFromClient(client);

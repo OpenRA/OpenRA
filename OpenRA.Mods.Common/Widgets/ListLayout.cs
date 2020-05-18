@@ -9,6 +9,7 @@
  */
 #endregion
 
+using Facebook.Yoga;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
@@ -24,9 +25,14 @@ namespace OpenRA.Mods.Common.Widgets
 			if (widget.Children.Count == 0)
 				widget.ContentHeight = 2 * widget.TopBottomSpacing - widget.ItemSpacing;
 
-			w.Bounds.Y = widget.ContentHeight - widget.TopBottomSpacing + widget.ItemSpacing;
+			if (w.Node.PositionType == YogaPositionType.Absolute)
+			{
+				w.Node.Top = widget.ContentHeight - widget.TopBottomSpacing + widget.ItemSpacing;
+				w.Node.CalculateLayout();
+			}
+
 			if (!widget.CollapseHiddenChildren || w.IsVisible())
-				widget.ContentHeight += w.Bounds.Height + widget.ItemSpacing;
+				widget.ContentHeight += (int)w.Node.LayoutHeight + widget.ItemSpacing;
 		}
 
 		public void AdjustChildren()
@@ -34,9 +40,14 @@ namespace OpenRA.Mods.Common.Widgets
 			widget.ContentHeight = widget.TopBottomSpacing;
 			foreach (var w in widget.Children)
 			{
-				w.Bounds.Y = widget.ContentHeight;
+				if (w.Node.PositionType == YogaPositionType.Absolute)
+				{
+					w.Node.Top = widget.ContentHeight;
+					w.Node.CalculateLayout();
+				}
+
 				if (!widget.CollapseHiddenChildren || w.IsVisible())
-					widget.ContentHeight += w.Bounds.Height + widget.ItemSpacing;
+					widget.ContentHeight += (int)w.Node.LayoutHeight + widget.ItemSpacing;
 			}
 
 			// The loop above appended an extra widget.ItemSpacing after the last item.

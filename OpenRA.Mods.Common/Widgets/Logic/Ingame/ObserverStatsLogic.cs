@@ -242,17 +242,21 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var teamLabel = tt.Get<LabelWidget>("TEAM");
 					var teamText = team.Key == 0 ? "No Team" : "Team " + team.Key;
 					teamLabel.GetText = () => teamText;
-					tt.Bounds.Width = teamLabel.Bounds.Width = Game.Renderer.Fonts[tt.Font].Measure(tt.Get<LabelWidget>("TEAM").GetText()).X;
+					tt.Node.Width = teamLabel.Node.Width = Game.Renderer.Fonts[tt.Font].Measure(tt.Get<LabelWidget>("TEAM").GetText()).X;
+					tt.Node.CalculateLayout();
+					teamLabel.Node.CalculateLayout();
 
 					var colorBlockWidget = tt.Get<ColorBlockWidget>("TEAM_COLOR");
 					var scrollBarOffset = playerStatsPanel.ScrollBar != ScrollBar.Hidden
 						? playerStatsPanel.ScrollbarWidth
 						: 0;
-					var boundsWidth = tt.Parent.Bounds.Width - scrollBarOffset;
-					colorBlockWidget.Bounds.Width = boundsWidth - 200;
+					var boundsWidth = (int)tt.Parent.Node.LayoutWidth - scrollBarOffset;
+					colorBlockWidget.Node.Width = boundsWidth - 200;
+					colorBlockWidget.Node.CalculateLayout();
 
 					var gradient = tt.Get<GradientColorBlockWidget>("TEAM_GRADIENT");
-					gradient.Bounds.X = boundsWidth - 200;
+					gradient.Node.Left = boundsWidth - 200;
+					gradient.Node.CalculateLayout();
 
 					playerStatsPanel.AddChild(tt);
 				}
@@ -499,12 +503,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void AdjustStatisticsPanel(Widget itemTemplate)
 		{
-			var height = playerStatsPanel.Bounds.Height;
+			var height = (int)playerStatsPanel.Node.LayoutHeight;
 
 			var scrollbarWidth = playerStatsPanel.ScrollBar != ScrollBar.Hidden ? playerStatsPanel.ScrollbarWidth : 0;
-			playerStatsPanel.Bounds.Width = itemTemplate.Bounds.Width + scrollbarWidth;
+			playerStatsPanel.Node.Width = (int)itemTemplate.Node.LayoutWidth + scrollbarWidth;
+			playerStatsPanel.Node.CalculateLayout();
 
-			if (playerStatsPanel.Bounds.Height < height)
+			if ((int)playerStatsPanel.Node.LayoutHeight < height)
 				playerStatsPanel.ScrollToTop();
 		}
 
@@ -512,11 +517,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var offset = playerStatsPanel.ScrollbarWidth;
 
-			headerTemplate.Get<ColorBlockWidget>("HEADER_COLOR").Bounds.Width += offset;
-			headerTemplate.Get<GradientColorBlockWidget>("HEADER_GRADIENT").Bounds.X += offset;
+			headerTemplate.Get<ColorBlockWidget>("HEADER_COLOR").Node.Width = (int)headerTemplate.Get<ColorBlockWidget>("HEADER_COLOR").Node.LayoutWidth + offset;
+			headerTemplate.Get<GradientColorBlockWidget>("HEADER_GRADIENT").Node.Left = (int)headerTemplate.Get<GradientColorBlockWidget>("HEADER_GRADIENT").Node.LayoutX + offset;
 
 			foreach (var headerLabel in headerTemplate.Children.OfType<LabelWidget>())
-				headerLabel.Bounds.X += offset;
+				headerLabel.Node.Left = (int)headerLabel.Node.LayoutX + offset;
 		}
 
 		static void AddPlayerFlagAndName(ScrollItemWidget template, Player player)

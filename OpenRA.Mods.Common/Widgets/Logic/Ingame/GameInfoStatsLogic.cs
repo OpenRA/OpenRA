@@ -55,9 +55,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var statsHeader = widget.Get("STATS_HEADERS");
 
 				objectiveGroup.Visible = false;
-				statsHeader.Bounds.Y -= objectiveGroup.Bounds.Height;
-				playerPanel.Bounds.Y -= objectiveGroup.Bounds.Height;
-				playerPanel.Bounds.Height += objectiveGroup.Bounds.Height;
+				statsHeader.Node.Top = (int)statsHeader.Node.LayoutY - (int)objectiveGroup.Node.LayoutHeight;
+				statsHeader.Node.CalculateLayout();
+				playerPanel.Node.Top = (int)playerPanel.Node.LayoutY - (int)objectiveGroup.Node.LayoutHeight;
+				playerPanel.Node.Height = (int)playerPanel.Node.LayoutHeight + (int)objectiveGroup.Node.LayoutHeight;
+				playerPanel.Node.CalculateLayout();
 			}
 
 			var teamTemplate = playerPanel.Get<ScrollItemWidget>("TEAM_TEMPLATE");
@@ -134,7 +136,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					var suffixLength = new CachedTransform<string, int>(s => nameFont.Measure(s).X);
 					var name = new CachedTransform<Pair<string, string>, string>(c =>
-						WidgetUtils.TruncateText(c.First, nameLabel.Bounds.Width - suffixLength.Update(c.Second), nameFont) + c.Second);
+						WidgetUtils.TruncateText(c.First, (int)nameLabel.Node.LayoutWidth - suffixLength.Update(c.Second), nameFont) + c.Second);
 
 					nameLabel.GetText = () =>
 					{

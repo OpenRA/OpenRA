@@ -561,10 +561,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			titleLabel.Text = title;
 			messageLabel.Text = message;
 
-			primaryButton.Bounds.Y += messageContainer.Bounds.Height - panel.Bounds.Height;
-			secondaryButton.Bounds.Y += messageContainer.Bounds.Height - panel.Bounds.Height;
-			panel.Bounds.Y -= (messageContainer.Bounds.Height - panel.Bounds.Height) / 2;
-			panel.Bounds.Height = messageContainer.Bounds.Height;
+			primaryButton.Node.CalculateLayout();
+			secondaryButton.Node.Top = (int)secondaryButton.Node.LayoutY + (int)messageContainer.Node.LayoutHeight - (int)panel.Node.LayoutHeight;
+			secondaryButton.Node.CalculateLayout();
+			panel.Node.Top = (int)panel.Node.LayoutY - ((int)messageContainer.Node.LayoutHeight - (int)panel.Node.LayoutHeight) / 2;
+			panel.Node.Height = (int)messageContainer.Node.LayoutHeight;
+			panel.Node.CalculateLayout();
 		}
 
 		void ShowProgressbar(string title, Func<string> getMessage)
@@ -574,13 +576,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			progressBar.IsIndeterminate = () => true;
 
 			var font = Game.Renderer.Fonts[progressLabel.Font];
-			var status = new CachedTransform<string, string>(s => WidgetUtils.TruncateText(s, progressLabel.Bounds.Width, font));
+			var status = new CachedTransform<string, string>(s => WidgetUtils.TruncateText(s, (int)progressLabel.Node.LayoutWidth, font));
 			progressLabel.GetText = () => status.Update(getMessage());
 
-			primaryButton.Bounds.Y += progressContainer.Bounds.Height - panel.Bounds.Height;
-			secondaryButton.Bounds.Y += progressContainer.Bounds.Height - panel.Bounds.Height;
-			panel.Bounds.Y -= (progressContainer.Bounds.Height - panel.Bounds.Height) / 2;
-			panel.Bounds.Height = progressContainer.Bounds.Height;
+			primaryButton.Node.Top = (int)primaryButton.Node.LayoutY + (int)progressContainer.Node.LayoutHeight - (int)panel.Node.LayoutHeight;
+			primaryButton.Node.CalculateLayout();
+			secondaryButton.Node.Top = (int)secondaryButton.Node.LayoutY + (int)progressContainer.Node.LayoutHeight - (int)panel.Node.LayoutHeight;
+			secondaryButton.Node.CalculateLayout();
+			panel.Node.Top = (int)panel.Node.LayoutY - ((int)progressContainer.Node.LayoutHeight - (int)panel.Node.LayoutHeight) / 2;
+			panel.Node.Height = (int)progressContainer.Node.LayoutHeight;
+			panel.Node.CalculateLayout();
 		}
 
 		void ShowList(string title, string message, IEnumerable<string> items)
@@ -598,10 +603,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				listPanel.AddChild(labelWidget);
 			}
 
-			primaryButton.Bounds.Y += listContainer.Bounds.Height - panel.Bounds.Height;
-			secondaryButton.Bounds.Y += listContainer.Bounds.Height - panel.Bounds.Height;
-			panel.Bounds.Y -= (listContainer.Bounds.Height - panel.Bounds.Height) / 2;
-			panel.Bounds.Height = listContainer.Bounds.Height;
+			primaryButton.Node.Top = (int)primaryButton.Node.LayoutY + (int)listContainer.Node.LayoutHeight - (int)panel.Node.LayoutHeight;
+			primaryButton.Node.CalculateLayout();
+			secondaryButton.Node.Top = (int)secondaryButton.Node.LayoutY + (int)listContainer.Node.LayoutHeight - (int)panel.Node.LayoutHeight;
+			secondaryButton.Node.CalculateLayout();
+			panel.Node.Top = (int)panel.Node.LayoutY - ((int)listContainer.Node.LayoutHeight - (int)panel.Node.LayoutHeight) / 2;
+			panel.Node.Height = (int)listContainer.Node.LayoutHeight;
+			panel.Node.CalculateLayout();
 		}
 
 		void ShowList(string title, string message, Dictionary<string, IEnumerable<string>> groups)
@@ -632,10 +640,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				}
 			}
 
-			primaryButton.Bounds.Y += listContainer.Bounds.Height - panel.Bounds.Height;
-			secondaryButton.Bounds.Y += listContainer.Bounds.Height - panel.Bounds.Height;
-			panel.Bounds.Y -= (listContainer.Bounds.Height - panel.Bounds.Height) / 2;
-			panel.Bounds.Height = listContainer.Bounds.Height;
+			primaryButton.Node.Top = (int)primaryButton.Node.LayoutY + (int)listContainer.Node.LayoutHeight - (int)panel.Node.LayoutHeight;
+			primaryButton.Node.CalculateLayout();
+			secondaryButton.Node.Top = (int)secondaryButton.Node.LayoutY + (int)listContainer.Node.LayoutHeight - (int)panel.Node.LayoutHeight;
+			secondaryButton.Node.CalculateLayout();
+			panel.Node.Top = (int)panel.Node.LayoutY - ((int)listContainer.Node.LayoutHeight - (int)panel.Node.LayoutHeight) / 2;
+			panel.Node.Height = (int)listContainer.Node.LayoutHeight;
+			panel.Node.CalculateLayout();
 		}
 
 		void ShowContinueCancel(Action continueAction)

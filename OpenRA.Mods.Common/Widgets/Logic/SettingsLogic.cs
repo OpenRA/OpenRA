@@ -799,7 +799,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				var deviceLabel = item.Get<LabelWidget>("LABEL");
 				var font = Game.Renderer.Fonts[deviceLabel.Font];
-				var label = WidgetUtils.TruncateText(options[o].Label, deviceLabel.Bounds.Width, font);
+				var label = WidgetUtils.TruncateText(options[o].Label, (int)deviceLabel.Node.LayoutWidth, font);
 				deviceLabel.GetText = () => label;
 				return item;
 			};
@@ -961,7 +961,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var parentBounds = w.Parent == null
 				? new Rectangle(0, 0, Game.Renderer.Resolution.Width, Game.Renderer.Resolution.Height)
-				: w.Parent.Bounds;
+				: new Rectangle((int)w.Parent.Node.LayoutX, (int)w.Parent.Node.LayoutY, (int)w.Parent.Node.LayoutWidth, (int)w.Parent.Node.LayoutHeight);
 
 			var substitutions = new Dictionary<string, int>();
 			substitutions.Add("WINDOW_RIGHT", Game.Renderer.Resolution.Width);
@@ -978,12 +978,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			substitutions.Add("HEIGHT", height);
 
 			if (insideScrollPanel)
-				w.Bounds = new Rectangle(w.Bounds.X, w.Bounds.Y, width, w.Bounds.Height);
+				w.Node.Width = width;
 			else
-				w.Bounds = new Rectangle(Evaluator.Evaluate(w.X, substitutions),
-									   Evaluator.Evaluate(w.Y, substitutions),
-									   width,
-									   height);
+			{
+				w.Node.Left = Evaluator.Evaluate(w.X, substitutions);
+				w.Node.Top = Evaluator.Evaluate(w.Y, substitutions);
+				w.Node.Width = width;
+				w.Node.Height = height;
+			}
+
+			w.Node.CalculateLayout();
 
 			foreach (var c in w.Children)
 				RecalculateWidgetLayout(c, insideScrollPanel || w is ScrollPanelWidget);

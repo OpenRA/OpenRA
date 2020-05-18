@@ -393,7 +393,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var name = parent.Get<LabelWidget>("NAME");
 			name.IsVisible = () => true;
 			var font = Game.Renderer.Fonts[name.Font];
-			var label = WidgetUtils.TruncateText(c.Name, name.Bounds.Width, font);
+			var label = WidgetUtils.TruncateText(c.Name, (int)name.Node.LayoutWidth, font);
 			name.GetText = () => label;
 
 			SetupProfileWidget(parent, c, orderManager, worldRenderer);
@@ -407,7 +407,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			slot.IsDisabled = () => orderManager.LocalClient.IsReady;
 
 			var truncated = new CachedTransform<string, string>(name =>
-				WidgetUtils.TruncateText(name, slot.Bounds.Width - slot.Bounds.Height - slot.LeftMargin - slot.RightMargin,
+				WidgetUtils.TruncateText(name, (int)slot.Node.LayoutWidth - (int)slot.Node.LayoutHeight - slot.LeftMargin - slot.RightMargin,
 				Game.Renderer.Fonts[slot.Font]));
 
 			slot.GetText = () => truncated.Update(c != null ? c.Name : s.Closed ? "Closed" : "Open");
@@ -435,7 +435,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			slot.IsDisabled = () => orderManager.LocalClient.IsReady;
 
 			var truncated = new CachedTransform<string, string>(name =>
-				WidgetUtils.TruncateText(name, slot.Bounds.Width - slot.Bounds.Height - slot.LeftMargin - slot.RightMargin,
+				WidgetUtils.TruncateText(name, (int)slot.Node.LayoutWidth - (int)slot.Node.LayoutHeight - slot.LeftMargin - slot.RightMargin,
 				Game.Renderer.Fonts[slot.Font]));
 
 			slot.GetText = () => truncated.Update(c != null ? c.Name : string.Empty);
@@ -607,20 +607,24 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			nameLabel.GetColor = () => nameColor;
 			nameLabel.GetText = () => nameText;
-			nameLabel.Bounds.Width = nameSize.X;
+			nameLabel.Node.Width = nameSize.X;
+			nameLabel.Node.CalculateLayout();
 
 			textLabel.GetColor = () => textColor;
-			textLabel.Bounds.X += nameSize.X;
-			textLabel.Bounds.Width -= nameSize.X;
+			textLabel.Node.Left = textLabel.Node.LayoutX + nameSize.X;
+			textLabel.Node.Width = textLabel.Node.LayoutWidth - nameSize.X;
+			textLabel.Node.CalculateLayout();
 
 			// Hack around our hacky wordwrap behavior: need to resize the widget to fit the text
-			text = WidgetUtils.WrapText(text, textLabel.Bounds.Width, font);
+			text = WidgetUtils.WrapText(text, (int)textLabel.Node.LayoutWidth, font);
 			textLabel.GetText = () => text;
-			var dh = font.Measure(text).Y - textLabel.Bounds.Height;
+			var dh = font.Measure(text).Y - (int)textLabel.Node.LayoutHeight;
 			if (dh > 0)
 			{
-				textLabel.Bounds.Height += dh;
-				template.Bounds.Height += dh;
+				textLabel.Node.Height = textLabel.Node.LayoutHeight + dh;
+				textLabel.Node.CalculateLayout();
+				template.Node.Height = template.Node.LayoutHeight + dh;
+				template.Node.CalculateLayout();
 			}
 		}
 

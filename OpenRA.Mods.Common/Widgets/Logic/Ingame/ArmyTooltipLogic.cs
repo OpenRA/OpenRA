@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var descFont = Game.Renderer.Fonts[descLabel.Font];
 
 			ArmyUnit lastArmyUnit = null;
-			var descLabelPadding = descLabel.Bounds.Height;
+			var descLabelPadding = (int)descLabel.Node.LayoutHeight;
 
 			tooltipContainer.BeforeRender = () =>
 			{
@@ -48,17 +48,20 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				descLabel.Text = buildable.Description.Replace("\\n", "\n");
 				var descSize = descFont.Measure(descLabel.Text);
-				descLabel.Bounds.Width = descSize.X;
-				descLabel.Bounds.Height = descSize.Y + descLabelPadding;
+				descLabel.Node.Width = descSize.X;
+				descLabel.Node.Height = descSize.Y + descLabelPadding;
+				descLabel.Node.CalculateLayout();
 
 				var leftWidth = Math.Max(nameSize.X, descSize.X);
 
-				widget.Bounds.Width = leftWidth + 2 * nameLabel.Bounds.X;
+				widget.Node.Width = leftWidth + 2 * (int)nameLabel.Node.LayoutX;
+				widget.Node.CalculateLayout();
 
 				// Set the bottom margin to match the left margin
-				var leftHeight = descLabel.Bounds.Bottom + descLabel.Bounds.X;
+				var leftHeight = (int)(descLabel.Node.LayoutY + descLabel.Node.LayoutHeight) + (int)descLabel.Node.LayoutX;
 
-				widget.Bounds.Height = leftHeight;
+				widget.Node.Height = leftHeight;
+				widget.Node.CalculateLayout();
 
 				lastArmyUnit = armyUnit;
 			};

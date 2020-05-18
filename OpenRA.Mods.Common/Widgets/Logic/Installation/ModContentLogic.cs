@@ -61,18 +61,22 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				var line = (LabelWidget)headerTemplate.Clone();
 				line.GetText = () => l;
-				line.Bounds.Y += headerHeight;
+				line.Node.Top = (int)line.Node.LayoutY + headerHeight;
+				line.Node.CalculateLayout();
 				panel.AddChild(line);
 
-				headerHeight += headerTemplate.Bounds.Height;
+				headerHeight += (int)headerTemplate.Node.LayoutHeight;
 			}
 
-			panel.Bounds.Height += headerHeight;
-			panel.Bounds.Y -= headerHeight / 2;
-			scrollPanel.Bounds.Y += headerHeight;
+			panel.Node.Height = (int)panel.Node.LayoutHeight + headerHeight;
+			panel.Node.Top = (int)panel.Node.LayoutY - headerHeight / 2;
+			panel.Node.CalculateLayout();
+			scrollPanel.Node.Top = (int)scrollPanel.Node.LayoutY + headerHeight;
+			scrollPanel.Node.CalculateLayout();
 
 			var discButton = panel.Get<ButtonWidget>("CHECK_DISC_BUTTON");
-			discButton.Bounds.Y += headerHeight;
+			discButton.Node.Top = (int)discButton.Node.LayoutY + headerHeight;
+			discButton.Node.CalculateLayout();
 			discButton.IsVisible = () => discAvailable;
 
 			discButton.OnClick = () => Ui.OpenWindow("DISC_INSTALL_PANEL", new WidgetArgs
@@ -83,7 +87,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			});
 
 			var backButton = panel.Get<ButtonWidget>("BACK_BUTTON");
-			backButton.Bounds.Y += headerHeight;
+			backButton.Node.Top = (int)backButton.Node.LayoutY + headerHeight;
+			backButton.Node.CalculateLayout();
 			backButton.OnClick = () => { Ui.CloseWindow(); onCancel(); };
 
 			PopulateContentList();

@@ -52,14 +52,14 @@ namespace OpenRA.Mods.Common.Widgets
 			var rect = RenderBounds;
 			var text = GetText();
 			var textSize = font.Measure(text);
-			var check = new Rectangle(rect.Location, new Size(Bounds.Height, Bounds.Height));
+			var check = new Rectangle(rect.Location, new Size((int)Node.LayoutHeight, (int)Node.LayoutHeight));
 			var baseName = IsHighlighted() ? "checkbox-highlighted" : "checkbox";
 			var state = WidgetUtils.GetStatefulImageName(baseName, disabled, Depressed && HasPressedState, Ui.MouseOverWidget == this);
 
 			WidgetUtils.DrawPanel(state, check);
 
 			var topOffset = font.TopOffset;
-			var position = new float2(rect.Left + rect.Height * 1.5f, RenderOrigin.Y + (Bounds.Height - textSize.Y - topOffset) / 2);
+			var position = new float2(rect.Left + rect.Height * 1.5f, RenderOrigin.Y + ((int)Node.LayoutHeight - textSize.Y - topOffset) / 2);
 
 			if (Contrast)
 				font.DrawTextWithContrast(text, position,

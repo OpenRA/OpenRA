@@ -30,8 +30,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var hotkeyFont = Game.Renderer.Fonts[hotkeyLabel.Font];
 			var timeFont = Game.Renderer.Fonts[timeLabel.Font];
 			var descFont = Game.Renderer.Fonts[descLabel.Font];
-			var baseHeight = widget.Bounds.Height;
-			var timeOffset = timeLabel.Bounds.X;
+			var baseHeight = (int)widget.Node.LayoutHeight;
+			var timeOffset = (int)timeLabel.Node.LayoutX;
 
 			SupportPowerInstance lastPower = null;
 			Hotkey lastHotkey = Hotkey.Invalid;
@@ -76,16 +76,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					var hotkeyText = "({0})".F(hotkey.DisplayString());
 
-					hotkeyWidth = hotkeyFont.Measure(hotkeyText).X + 2 * nameLabel.Bounds.X;
+					hotkeyWidth = hotkeyFont.Measure(hotkeyText).X + 2 * (int)nameLabel.Node.LayoutX;
 					hotkeyLabel.Text = hotkeyText;
-					hotkeyLabel.Bounds.X = nameSize.X + 2 * nameLabel.Bounds.X;
+					hotkeyLabel.Node.Left = nameSize.X + 2 * (int)nameLabel.Node.LayoutX;
+					hotkeyLabel.Node.CalculateLayout();
 				}
 
 				var timeWidth = timeSize.X;
 				var topWidth = nameSize.X + hotkeyWidth + timeWidth + timeOffset;
-				widget.Bounds.Width = 2 * nameLabel.Bounds.X + Math.Max(topWidth, descSize.X);
-				widget.Bounds.Height = baseHeight + descSize.Y;
-				timeLabel.Bounds.X = widget.Bounds.Width - nameLabel.Bounds.X - timeWidth;
+				widget.Node.Width = 2 * (int)nameLabel.Node.LayoutX + Math.Max(topWidth, descSize.X);
+				widget.Node.Height = baseHeight + descSize.Y;
+				widget.Node.CalculateLayout();
+				timeLabel.Node.Left = (int)widget.Node.LayoutWidth - (int)nameLabel.Node.LayoutX - timeWidth;
+				timeLabel.Node.CalculateLayout();
 
 				lastPower = sp;
 				lastHotkey = hotkey;

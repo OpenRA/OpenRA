@@ -173,13 +173,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				if ((actorIDStatus & nextActorIDStatus) == 0)
 				{
-					var offset = actorIDErrorLabel.Bounds.Height;
+					var offset = (int)actorIDErrorLabel.Node.LayoutHeight;
 					if (nextActorIDStatus == ActorIDStatus.Normal)
 						offset *= -1;
 
-					actorEditPanel.Bounds.Height += offset;
-					initContainer.Bounds.Y += offset;
-					buttonContainer.Bounds.Y += offset;
+					actorEditPanel.Node.Height = (int)actorEditPanel.Node.LayoutHeight + offset;
+					actorEditPanel.Node.CalculateLayout();
+					initContainer.Node.Top = (int)initContainer.Node.LayoutY + offset;
+					initContainer.Node.CalculateLayout();
+					buttonContainer.Node.Top = (int)buttonContainer.Node.LayoutY + offset;
+					buttonContainer.Node.CalculateLayout();
 				}
 
 				actorIDStatus = nextActorIDStatus;
@@ -208,15 +211,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					initialActorID = actorIDField.Text = actor.ID;
 
 					var font = Game.Renderer.Fonts[typeLabel.Font];
-					var truncatedType = WidgetUtils.TruncateText(actor.DescriptiveName, typeLabel.Bounds.Width, font);
+					var truncatedType = WidgetUtils.TruncateText(actor.DescriptiveName, (int)typeLabel.Node.LayoutWidth, font);
 					typeLabel.Text = truncatedType;
 
 					actorIDField.CursorPosition = actor.ID.Length;
 					nextActorIDStatus = ActorIDStatus.Normal;
 
 					// Remove old widgets
-					var oldInitHeight = initContainer.Bounds.Height;
-					initContainer.Bounds.Height = 0;
+					var oldInitHeight = (int)initContainer.Node.LayoutHeight;
+					initContainer.Node.Height = 0;
+					initContainer.Node.CalculateLayout();
 					initContainer.RemoveChildren();
 
 					// Add owner dropdown
@@ -256,7 +260,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						ownerDropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 270, owners, setupItem);
 					};
 
-					initContainer.Bounds.Height += ownerContainer.Bounds.Height;
+					initContainer.Node.Height = (int)initContainer.Node.LayoutHeight + (int)ownerContainer.Node.LayoutHeight;
+					initContainer.Node.CalculateLayout();
 					initContainer.AddChild(ownerContainer);
 
 					// Add new children for inits
@@ -270,8 +275,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						{
 							var co = (EditorActorCheckbox)o;
 							var checkboxContainer = checkboxOptionTemplate.Clone();
-							checkboxContainer.Bounds.Y = initContainer.Bounds.Height;
-							initContainer.Bounds.Height += checkboxContainer.Bounds.Height;
+							checkboxContainer.Node.Top = (int)initContainer.Node.LayoutHeight;
+							checkboxContainer.Node.CalculateLayout();
+							initContainer.Node.Height = (int)initContainer.Node.LayoutHeight + (int)checkboxContainer.Node.LayoutHeight;
+							initContainer.Node.CalculateLayout();
 
 							var checkbox = checkboxContainer.Get<CheckboxWidget>("OPTION");
 							checkbox.GetText = () => co.Name;
@@ -293,8 +300,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						{
 							var so = (EditorActorSlider)o;
 							var sliderContainer = sliderOptionTemplate.Clone();
-							sliderContainer.Bounds.Y = initContainer.Bounds.Height;
-							initContainer.Bounds.Height += sliderContainer.Bounds.Height;
+							sliderContainer.Node.Top = (int)initContainer.Node.LayoutHeight;
+							sliderContainer.Node.CalculateLayout();
+							initContainer.Node.Height = (int)initContainer.Node.LayoutHeight + (int)sliderContainer.Node.LayoutHeight;
+							initContainer.Node.CalculateLayout();
 							sliderContainer.Get<LabelWidget>("LABEL").GetText = () => so.Name;
 
 							var slider = sliderContainer.Get<SliderWidget>("OPTION");
@@ -315,8 +324,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						{
 							var ddo = (EditorActorDropdown)o;
 							var dropdownContainer = dropdownOptionTemplate.Clone();
-							dropdownContainer.Bounds.Y = initContainer.Bounds.Height;
-							initContainer.Bounds.Height += dropdownContainer.Bounds.Height;
+							dropdownContainer.Node.Top = (int)initContainer.Node.LayoutHeight;
+							dropdownContainer.Node.CalculateLayout();
+							initContainer.Node.Height = (int)initContainer.Node.LayoutHeight + (int)dropdownContainer.Node.LayoutHeight;
+							initContainer.Node.CalculateLayout();
 							dropdownContainer.Get<LabelWidget>("LABEL").GetText = () => ddo.Name;
 
 							var editorActionHandle = new EditorActorOptionActionHandle<string>(ddo.OnChange, ddo.GetValue(actor));
@@ -344,13 +355,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						}
 					}
 
-					actorEditPanel.Bounds.Height += initContainer.Bounds.Height - oldInitHeight;
-					buttonContainer.Bounds.Y += initContainer.Bounds.Height - oldInitHeight;
+					actorEditPanel.Node.Height = (int)actorEditPanel.Node.LayoutHeight + (int)initContainer.Node.LayoutHeight - oldInitHeight;
+					actorEditPanel.Node.CalculateLayout();
+					buttonContainer.Node.Top = (int)buttonContainer.Node.LayoutY + (int)initContainer.Node.LayoutHeight - oldInitHeight;
+					buttonContainer.Node.CalculateLayout();
 				}
 
 				// Set the edit panel to the right of the selection border.
-				actorEditPanel.Bounds.X = origin.X + editPanelPadding;
-				actorEditPanel.Bounds.Y = origin.Y;
+				actorEditPanel.Node.Left = origin.X + editPanelPadding;
+				actorEditPanel.Node.Top = origin.Y;
+				actorEditPanel.Node.CalculateLayout();
 			}
 			else
 			{
