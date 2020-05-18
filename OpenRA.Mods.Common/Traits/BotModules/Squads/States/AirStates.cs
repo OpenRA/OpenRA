@@ -65,21 +65,19 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			var map = owner.World.Map;
 			var dangerRadius = owner.SquadManager.Info.DangerScanRadius;
 			detectedEnemyTarget = null;
-			var x = (map.MapSize.X % dangerRadius) == 0 ? map.MapSize.X : map.MapSize.X + dangerRadius;
-			var y = (map.MapSize.Y % dangerRadius) == 0 ? map.MapSize.Y : map.MapSize.Y + dangerRadius;
 
-			for (var i = 0; i < x; i += dangerRadius * 2)
+			var columnCount = (map.MapSize.X + dangerRadius - 1) / dangerRadius;
+			var rowCount = (map.MapSize.Y + dangerRadius - 1) / dangerRadius;
+			var checkIndices = Exts.MakeArray(columnCount * rowCount, i => i).Shuffle(owner.World.LocalRandom);
+			foreach (var i in checkIndices)
 			{
-				for (var j = 0; j < y; j += dangerRadius * 2)
+				var pos = new CPos((i % columnCount) * dangerRadius + dangerRadius / 2, (i / columnCount) * dangerRadius + dangerRadius / 2);
+				if (NearToPosSafely(owner, map.CenterOfCell(pos), out detectedEnemyTarget))
 				{
-					var pos = new CPos(i, j);
-					if (NearToPosSafely(owner, map.CenterOfCell(pos), out detectedEnemyTarget))
-					{
-						if (needTarget && detectedEnemyTarget == null)
-							continue;
+					if (needTarget && detectedEnemyTarget == null)
+						continue;
 
-						return pos;
-					}
+					return pos;
 				}
 			}
 
