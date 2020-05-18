@@ -108,7 +108,7 @@ Container@OBSERVER_WIDGETS:
 							Height: 16
 						Label@LABEL:
 							X: 40
-							Width: 60
+							Width: PARENT_RIGHT
 							Height: 25
 							Shadow: True
 						Label@NOFLAG_LABEL:

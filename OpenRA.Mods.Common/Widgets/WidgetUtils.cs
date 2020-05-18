@@ -272,21 +272,23 @@ namespace OpenRA.Mods.Common.Widgets
 				button.GetTooltipText = null;
 		}
 
-		public static void AddSuffixToPlayerNameLabel(LabelWidget label, Player p)
+		public static void BindPlayerNameAndStatus(LabelWidget label, Player p)
 		{
 			var client = p.World.LobbyInfo.ClientWithIndex(p.ClientIndex);
-			var playerNameFont = Game.Renderer.Fonts[label.Font];
-			var suffixLength = new CachedTransform<string, int>(s => playerNameFont.Measure(s).X);
-			var name = new CachedTransform<Pair<string, string>, string>(c =>
-				WidgetUtils.TruncateText(c.First, label.Bounds.Width - suffixLength.Update(c.Second), playerNameFont));
+			var nameFont = Game.Renderer.Fonts[label.Font];
+			var name = new CachedTransform<Tuple<string, WinState, Session.ClientState>, string>(c =>
+			{
+				var suffix = c.Item2 == WinState.Undefined ? "" : " (" + c.Item2 + ")";
+				if (c.Item3 == Session.ClientState.Disconnected)
+					suffix = " (Gone)";
+
+				return TruncateText(c.Item1, label.Bounds.Width - nameFont.Measure(suffix).X, nameFont) + suffix;
+			});
 
 			label.GetText = () =>
 			{
-				var suffix = p.WinState == WinState.Undefined ? "" : " (" + p.WinState + ")";
-				if (client != null && client.State == Session.ClientState.Disconnected)
-					suffix = " (Gone)";
-
-				return name.Update(Pair.New(p.PlayerName, suffix)) + suffix;
+				var clientState = client != null ? client.State : Session.ClientState.Ready;
+				return name.Update(Tuple.Create(p.PlayerName, p.WinState, clientState));
 			};
 		}
 	}
