@@ -71,13 +71,13 @@ namespace OpenRA.Mods.Common.Traits
 					^ !ownedPrereqs.ContainsKey(p.Replace("!", "").Replace("~", ""))));
 		}
 
-		static Cache<string, List<Actor>> GatherOwnedPrerequisites(Player player)
+		static Dictionary<string, int> GatherOwnedPrerequisites(Player player)
 		{
-			var ret = new Cache<string, List<Actor>>(x => new List<Actor>());
+			var ret = new Dictionary<string, int>();
 			if (player == null)
 				return ret;
 
-			// Add all actors that provide prerequisites
+			// 1. Check all actors that provide prerequisites
 			var prerequisites = player.World.ActorsWithTrait<ITechTreePrerequisite>()
 				.Where(a => a.Actor.Owner == player && a.Actor.IsInWorld && !a.Actor.IsDead);
 
@@ -89,19 +89,33 @@ namespace OpenRA.Mods.Common.Traits
 					if (p == null)
 						continue;
 
-					ret[p].Add(b.Actor);
+					if (ret.ContainsKey(p))
+						ret[p]++;
+					else
+						ret[p] = 1;
 				}
 			}
 
-			// Add buildables that have a build limit set and are not already in the list
-			player.World.ActorsWithTrait<Buildable>()
-				  .Where(a =>
-					  a.Actor.Owner == player &&
-					  a.Actor.IsInWorld &&
-					  !a.Actor.IsDead &&
-					  !ret.ContainsKey(a.Actor.Info.Name) &&
-					  a.Actor.Info.TraitInfo<BuildableInfo>().BuildLimit > 0)
-				  .Do(b => ret[b.Actor.Info.Name].Add(b.Actor));
+			// 2. Add Build limit as special prerequisites.
+			var buildLimitActors = player.World.ActorsHavingTrait<Buildable>().Where(a =>
+					  a.Owner == player &&
+					  !a.IsDead &&
+					  a.Info.TraitInfo<BuildableInfo>().BuildLimit > 0);
+
+			// HACK: for sovling sell limit building bug,
+			// actors can be sell must "in world" in counting build limit actors.
+			// Hope we can remove this someday.
+			var bla = buildLimitActors.Where(a => a.IsInWorld || !a.Info.HasTraitInfo<SellableInfo>());
+
+			foreach (var a in bla)
+			{
+				// Add "#" to avoid if actor has a prerequisite with the same name as the actor's name
+				var p = "#" + a.Info.Name;
+				if (ret.ContainsKey(p))
+					ret[p]++;
+				else
+					ret[p] = 1;
+			}
 
 			return ret;
 		}
@@ -129,7 +143,7 @@ namespace OpenRA.Mods.Common.Traits
 				hidden = false;
 			}
 
-			bool HasPrerequisites(Cache<string, List<Actor>> ownedPrerequisites)
+			bool HasPrerequisites(Dictionary<string, int> ownedPrerequisites)
 			{
 				// PERF: Avoid LINQ.
 				foreach (var prereq in prerequisites)
@@ -142,7 +156,7 @@ namespace OpenRA.Mods.Common.Traits
 				return true;
 			}
 
-			bool IsHidden(Cache<string, List<Actor>> ownedPrerequisites)
+			bool IsHidden(Dictionary<string, int> ownedPrerequisites)
 			{
 				// PERF: Avoid LINQ.
 				foreach (var prereq in prerequisites)
@@ -157,9 +171,10 @@ namespace OpenRA.Mods.Common.Traits
 				return false;
 			}
 
-			public void Update(Cache<string, List<Actor>> ownedPrerequisites)
+			public void Update(Dictionary<string, int> ownedPrerequisites)
 			{
-				var hasReachedLimit = limit > 0 && ownedPrerequisites.ContainsKey(Key) && ownedPrerequisites[Key].Count >= limit;
+				var buildLimtKey = "#" + Key;
+				var hasReachedLimit = ownedPrerequisites.ContainsKey(buildLimtKey) && ownedPrerequisites[buildLimtKey] >= limit;
 
 				// The '!' annotation inverts prerequisites: "I'm buildable if this prerequisite *isn't* met"
 				var nowHasPrerequisites = HasPrerequisites(ownedPrerequisites) && !hasReachedLimit;
