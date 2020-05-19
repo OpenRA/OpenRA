@@ -81,9 +81,10 @@ WorldLoaded = function()
 	RepairNamedActors(Nod, 0.9)
 
 	Trigger.AfterDelay(0, function()
-		local harv = Nod.GetActorsByType("harv")[1]
 		local toBuild = function() return { "harv" } end
-		RebuildHarvesters(harv, toBuild)
+		Utils.Do(Nod.GetActorsByType("harv"), function(harv)
+			RebuildHarvesters(harv, toBuild)
+		end)
 	end)
 
 	local vehicleToBuild = function() return Utils.Random(AutocreateSquads) end
