@@ -137,8 +137,8 @@ end
 
 RebuildHarvesters = function(harv, toBuild)
 	Trigger.OnRemovedFromWorld(harv, function()
-		ProduceUnits(Nod, Airfield, nil, toBuild, function(unit)
-			RebuildHarvesters(unit, toBuild)
+		ProduceUnits(Nod, Airfield, nil, toBuild, function(units)
+			RebuildHarvesters(units[1], toBuild)
 		end)
 	end)
 end
