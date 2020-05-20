@@ -188,8 +188,16 @@ namespace OpenRA.Mods.Common.Activities
 			if (ChildActivity == null)
 				yield return new TargetLineNode(host, Color.Green);
 			else
-				foreach (var n in ChildActivity.TargetLineNodes(self))
-					yield return n;
+			{
+				var current = ChildActivity;
+				while (current != null)
+				{
+					foreach (var n in current.TargetLineNodes(self))
+						yield return n;
+
+					current = current.NextActivity;
+				}
+			}
 		}
 
 		void OnResupplyEnding(Actor self, bool isHostInvalid = false)
