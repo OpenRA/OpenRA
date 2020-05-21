@@ -113,7 +113,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var showFlag = option.Faction != null;
 
 					var label = item.Get<LabelWidget>("LABEL");
-					label.IsVisible = () => showFlag;
+					label.VisibilityFunction = () => showFlag;
 					label.GetColor = () => option.Color;
 
 					if (showFlag)
@@ -122,12 +122,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						label.GetText = () => option.Label;
 
 					var flag = item.Get<ImageWidget>("FLAG");
-					flag.IsVisible = () => showFlag;
+					flag.VisibilityFunction = () => showFlag;
 					flag.GetImageCollection = () => "flags";
 					flag.GetImageName = () => option.Faction;
 
 					var labelAlt = item.Get<LabelWidget>("NOFLAG_LABEL");
-					labelAlt.IsVisible = () => !showFlag;
+					labelAlt.VisibilityFunction = () => !showFlag;
 					labelAlt.GetText = () => option.Label;
 					labelAlt.GetColor = () => option.Color;
 
@@ -138,17 +138,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			shroudLabel = shroudSelector.Get<LabelWidget>("LABEL");
-			shroudLabel.IsVisible = () => selected.Faction != null;
+			shroudLabel.VisibilityFunction = () => selected.Faction != null;
 			shroudLabel.GetText = () => selected.Label;
 			shroudLabel.GetColor = () => selected.Color;
 
 			var shroudFlag = shroudSelector.Get<ImageWidget>("FLAG");
-			shroudFlag.IsVisible = () => selected.Faction != null;
+			shroudFlag.VisibilityFunction = () => selected.Faction != null;
 			shroudFlag.GetImageCollection = () => "flags";
 			shroudFlag.GetImageName = () => selected.Faction;
 
 			var shroudLabelAlt = shroudSelector.Get<LabelWidget>("NOFLAG_LABEL");
-			shroudLabelAlt.IsVisible = () => selected.Faction == null;
+			shroudLabelAlt.VisibilityFunction = () => selected.Faction == null;
 			shroudLabelAlt.GetText = () => selected.Label;
 			shroudLabelAlt.GetColor = () => selected.Color;
 

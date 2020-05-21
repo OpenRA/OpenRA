@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			// Avoid filename conflicts when creating new saves
 			if (isSavePanel)
 			{
-				panel.Get("SAVE_TITLE").IsVisible = () => true;
+				panel.Get("SAVE_TITLE").VisibilityFunction = () => true;
 
 				defaultSaveFilename = world.Map.Title;
 				var filenameAttempt = 0;
@@ -74,19 +74,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				var saveButton = panel.Get<ButtonWidget>("SAVE_BUTTON");
 				saveButton.OnClick = () => { Save(world); };
-				saveButton.IsVisible = () => true;
+				saveButton.VisibilityFunction = () => true;
 
 				var saveWidgets = panel.Get("SAVE_WIDGETS");
 				saveTextField = saveWidgets.Get<TextFieldWidget>("SAVE_TEXTFIELD");
 				gameList.Node.Height = (int)gameList.Node.LayoutHeight - (int)saveWidgets.Node.LayoutHeight;
 				gameList.Node.CalculateLayout();
-				saveWidgets.IsVisible = () => true;
+				saveWidgets.VisibilityFunction = () => true;
 			}
 			else
 			{
-				panel.Get("LOAD_TITLE").IsVisible = () => true;
+				panel.Get("LOAD_TITLE").VisibilityFunction = () => true;
 				var loadButton = panel.Get<ButtonWidget>("LOAD_BUTTON");
-				loadButton.IsVisible = () => true;
+				loadButton.VisibilityFunction = () => true;
 				loadButton.IsDisabled = () => selectedSave == null;
 				loadButton.OnClick = () => { Load(); };
 			}
@@ -196,7 +196,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				// This simplifies the rename handling (only needs to update ItemKey)
 				var item = gameTemplate.Clone() as ScrollItemWidget;
 				item.ItemKey = savePath;
-				item.IsVisible = () => true;
+				item.VisibilityFunction = () => true;
 				item.IsSelected = () => selectedSave == item.ItemKey;
 				item.OnClick = () => Select(item.ItemKey);
 

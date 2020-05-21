@@ -45,7 +45,7 @@ namespace OpenRA.Widgets
 			if (WindowList.Count > 0)
 			{
 				var restore = WindowList.Peek();
-				Root.AddChild(restore);
+				restore.VisibilityFunction = () => true;
 
 				if (restore.LogicObjects != null)
 					foreach (var l in restore.LogicObjects)
@@ -62,7 +62,7 @@ namespace OpenRA.Widgets
 		{
 			var window = Game.ModData.WidgetLoader.LoadWidget(args, Root, id);
 			if (WindowList.Count > 0)
-				Root.RemoveChild(WindowList.Peek());
+				WindowList.Peek().VisibilityFunction = () => false;
 			WindowList.Push(window);
 			return window;
 		}
@@ -183,14 +183,15 @@ namespace OpenRA.Widgets
 		public string Height = "0";
 		public string[] Logic = { };
 		public ChromeLogic[] LogicObjects { get; private set; }
-		public bool Visible = true;
+		public bool Visible { set { VisibilityFunction = () => value; } }
 		public bool IgnoreMouseOver;
 		public bool IgnoreChildMouseOver;
 
 		private Widget parent = null;
 		public Widget Parent { get { return parent; } }
-		public Func<bool> IsVisible;
-		public Widget() { IsVisible = () => Visible; }
+		private Func<bool> visibilityFunction;
+		public Func<bool> VisibilityFunction { get { return visibilityFunction; } set { visibilityFunction = value; IsVisible(); } }
+		public Widget() { VisibilityFunction = () => true; }
 
 		public Widget(Widget widget)
 		{
@@ -200,12 +201,11 @@ namespace OpenRA.Widgets
 			Width = widget.Width;
 			Height = widget.Height;
 			Logic = widget.Logic;
-			Visible = widget.Visible;
 
 			Node.CopyStyle(widget.Node);
 			Node.CalculateLayout();
 
-			IsVisible = widget.IsVisible;
+			VisibilityFunction = widget.VisibilityFunction;
 			IgnoreChildMouseOver = widget.IgnoreChildMouseOver;
 			IgnoreMouseOver = widget.IgnoreMouseOver;
 
@@ -285,6 +285,21 @@ namespace OpenRA.Widgets
 				.ToArray();
 
 			args.Remove("widget");
+		}
+
+		public bool IsVisible()
+		{
+			var isVisible = visibilityFunction();
+
+			if (Node.Display == YogaDisplay.Flex == isVisible)
+				return isVisible;
+
+			Node.Display = isVisible ? YogaDisplay.Flex : YogaDisplay.None;
+
+			if (isVisible)
+				Node.CalculateLayout();
+
+			return isVisible;
 		}
 
 		public virtual Rectangle EventBounds { get { return RenderBounds; } }

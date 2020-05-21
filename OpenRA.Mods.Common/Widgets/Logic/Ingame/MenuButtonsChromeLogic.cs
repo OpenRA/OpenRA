@@ -77,7 +77,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				// if it has been explicitly enabled
 				var def = world.Map.Rules.Actors["player"].TraitInfo<DeveloperModeInfo>().CheckboxEnabled;
 				var enabled = world.LobbyInfo.GlobalSettings.OptionOrDefault("cheats", def);
-				debug.IsVisible = () => enabled;
+				debug.VisibilityFunction = () => enabled;
 				debug.IsDisabled = () => disableSystemButtons;
 				debug.OnClick = () => OpenMenuPanel(debug, new WidgetArgs()
 				{
@@ -99,7 +99,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				// Cancel custom input modes (guard, building placement, etc)
 				world.CancelInputMode();
 
-				worldRoot.IsVisible = () => false;
+				worldRoot.VisibilityFunction = () => false;
 			}
 
 			if (button.Pause && world.LobbyInfo.NonBotClients.Count() == 1)
@@ -113,7 +113,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			widgetArgs.Add("onExit", () =>
 			{
 				if (button.HideIngameUI)
-					worldRoot.IsVisible = () => true;
+					worldRoot.VisibilityFunction = () => true;
 
 				if (button.DisableWorldSounds)
 					Game.Sound.DisableWorldSounds = cachedDisableWorldSounds;

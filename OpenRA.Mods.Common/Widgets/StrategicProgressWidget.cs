@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Widgets
 		[ObjectCreator.UseCtor]
 		public StrategicProgressWidget(World world)
 		{
-			IsVisible = () => true;
+			VisibilityFunction = () => true;
 			this.world = world;
 		}
 
@@ -100,7 +100,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var visible = world.ActorsHavingTrait<StrategicVictoryConditions>().Any() &&
 				world.ActorsHavingTrait<StrategicPoint>().Any();
 
-			IsVisible = () => visible;
+			VisibilityFunction = () => visible;
 			initialised = true;
 		}
 	}

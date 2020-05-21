@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			latency.Node.Left = (int)latencyPrefix.Node.LayoutX + latencyPrefixFont.Measure(latencyPrefix.Text + " ").X;
 			latency.Node.CalculateLayout();
 
-			widget.IsVisible = () => client != null;
+			widget.VisibilityFunction = () => client != null;
 			tooltipContainer.BeforeRender = () =>
 			{
 				if (widget.IsVisible())

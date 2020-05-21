@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public ArmyTooltipLogic(Widget widget, TooltipContainerWidget tooltipContainer, Func<ArmyUnit> getTooltipUnit)
 		{
-			widget.IsVisible = () => getTooltipUnit() != null;
+			widget.VisibilityFunction = () => getTooltipUnit() != null;
 			var nameLabel = widget.Get<LabelWidget>("NAME");
 			var descLabel = widget.Get<LabelWidget>("DESC");
 

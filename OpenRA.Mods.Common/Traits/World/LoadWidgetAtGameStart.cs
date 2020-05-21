@@ -70,13 +70,13 @@ namespace OpenRA.Mods.Common.Traits
 
 			// The Lua API requires the UI to available, so hide it instead
 			if (world.IsLoadingGameSave)
-				root.IsVisible = () => false;
+				root.VisibilityFunction = () => false;
 		}
 
 		void INotifyGameLoaded.GameLoaded(World world)
 		{
 			Ui.CloseWindow();
-			root.IsVisible = () => true;
+			root.VisibilityFunction = () => true;
 
 			// Open the options menu
 			if (!world.IsReplay)

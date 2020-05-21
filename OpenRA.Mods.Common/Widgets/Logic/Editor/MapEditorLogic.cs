@@ -109,7 +109,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var category = (CheckboxWidget)categoryTemplate.Clone();
 				category.GetText = () => cat.ToString();
 				category.IsChecked = () => copyFilters.HasFlag(cat);
-				category.IsVisible = () => true;
+				category.VisibilityFunction = () => true;
 				category.OnClick = () => copyFilters ^= cat;
 
 				categoriesPanel.AddChild(category);

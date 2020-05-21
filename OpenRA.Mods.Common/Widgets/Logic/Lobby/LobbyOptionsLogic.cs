@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			panel = (ScrollPanelWidget)widget;
 			optionsContainer = widget.Get("LOBBY_OPTIONS");
 			yMargin = (int)optionsContainer.Node.LayoutY;
-			optionsContainer.IsVisible = () => validOptions;
+			optionsContainer.VisibilityFunction = () => validOptions;
 			checkboxRowTemplate = optionsContainer.Get("CHECKBOX_ROW_TEMPLATE");
 			dropdownRowTemplate = optionsContainer.Get("DROPDOWN_ROW_TEMPLATE");
 
@@ -114,7 +114,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (option.Description != null)
 					checkbox.GetTooltipText = () => option.Description;
 
-				checkbox.IsVisible = () => true;
+				checkbox.VisibilityFunction = () => true;
 				checkbox.IsChecked = () => optionValue.Update(orderManager.LobbyInfo.GlobalSettings).IsEnabled;
 				checkbox.IsDisabled = () => configurationDisabled() || optionValue.Update(orderManager.LobbyInfo.GlobalSettings).IsLocked;
 				checkbox.OnClick = () => orderManager.IssueOrder(Order.Command(
@@ -153,7 +153,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				dropdown.GetText = () => getOptionLabel.Update(optionValue.Update(orderManager.LobbyInfo.GlobalSettings).Value);
 				if (option.Description != null)
 					dropdown.GetTooltipText = () => option.Description;
-				dropdown.IsVisible = () => true;
+				dropdown.VisibilityFunction = () => true;
 				dropdown.IsDisabled = () => configurationDisabled() ||
 					optionValue.Update(orderManager.LobbyInfo.GlobalSettings).IsLocked;
 
@@ -176,7 +176,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (label != null)
 				{
 					label.GetText = () => option.Name;
-					label.IsVisible = () => true;
+					label.VisibilityFunction = () => true;
 				}
 			}
 

@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			var quickButton = panel.Get<ButtonWidget>("QUICK_BUTTON");
-			quickButton.IsVisible = () => !string.IsNullOrEmpty(content.QuickDownload);
+			quickButton.VisibilityFunction = () => !string.IsNullOrEmpty(content.QuickDownload);
 			quickButton.Node.Top = (int)quickButton.Node.LayoutY + headerHeight;
 			quickButton.Node.CalculateLayout();
 			quickButton.OnClick = () =>

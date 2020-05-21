@@ -153,7 +153,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (scrollDown != null)
 			{
 				scrollDown.OnClick = palette.ScrollDown;
-				scrollDown.IsVisible = () => palette.TotalIconCount > (palette.MaxIconRowOffset * palette.Columns);
+				scrollDown.VisibilityFunction = () => palette.TotalIconCount > (palette.MaxIconRowOffset * palette.Columns);
 				scrollDown.IsDisabled = () => !palette.CanScrollDown;
 			}
 
@@ -162,7 +162,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (scrollUp != null)
 			{
 				scrollUp.OnClick = palette.ScrollUp;
-				scrollUp.IsVisible = () => palette.TotalIconCount > (palette.MaxIconRowOffset * palette.Columns);
+				scrollUp.VisibilityFunction = () => palette.TotalIconCount > (palette.MaxIconRowOffset * palette.Columns);
 				scrollUp.IsDisabled = () => !palette.CanScrollUp;
 			}
 

@@ -36,11 +36,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			localProfile = Game.LocalPlayerProfile;
 
 			// Key registration
-			widget.Get("GENERATE_KEYS").IsVisible = () => localProfile.State == LocalPlayerProfile.LinkState.Uninitialized && !minimalProfile();
-			widget.Get("GENERATING_KEYS").IsVisible = () => localProfile.State == LocalPlayerProfile.LinkState.GeneratingKeys && !minimalProfile();
+			widget.Get("GENERATE_KEYS").VisibilityFunction = () => localProfile.State == LocalPlayerProfile.LinkState.Uninitialized && !minimalProfile();
+			widget.Get("GENERATING_KEYS").VisibilityFunction = () => localProfile.State == LocalPlayerProfile.LinkState.GeneratingKeys && !minimalProfile();
 
 			var lastProfileState = LocalPlayerProfile.LinkState.CheckingLink;
-			widget.Get("REGISTER_FINGERPRINT").IsVisible = () =>
+			widget.Get("REGISTER_FINGERPRINT").VisibilityFunction = () =>
 			{
 				// Take a copy of the state to avoid race conditions
 				var state = localProfile.State;
@@ -53,9 +53,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return localProfile.State == LocalPlayerProfile.LinkState.Unlinked && !notFound && !minimalProfile();
 			};
 
-			widget.Get("CHECKING_FINGERPRINT").IsVisible = () => localProfile.State == LocalPlayerProfile.LinkState.CheckingLink && !minimalProfile();
-			widget.Get("FINGERPRINT_NOT_FOUND").IsVisible = () => localProfile.State == LocalPlayerProfile.LinkState.Unlinked && notFound && !minimalProfile();
-			widget.Get("CONNECTION_ERROR").IsVisible = () => localProfile.State == LocalPlayerProfile.LinkState.ConnectionFailed && !minimalProfile();
+			widget.Get("CHECKING_FINGERPRINT").VisibilityFunction = () => localProfile.State == LocalPlayerProfile.LinkState.CheckingLink && !minimalProfile();
+			widget.Get("FINGERPRINT_NOT_FOUND").VisibilityFunction = () => localProfile.State == LocalPlayerProfile.LinkState.Unlinked && notFound && !minimalProfile();
+			widget.Get("CONNECTION_ERROR").VisibilityFunction = () => localProfile.State == LocalPlayerProfile.LinkState.ConnectionFailed && !minimalProfile();
 
 			widget.Get<ButtonWidget>("GENERATE_KEY").OnClick = localProfile.GenerateKeypair;
 
@@ -76,7 +76,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			widget.Get<ButtonWidget>("CONNECTION_ERROR_RETRY").OnClick = () => localProfile.RefreshPlayerData(() => RefreshComplete(true));
 
 			// Profile view
-			widget.Get("PROFILE_HEADER").IsVisible = () => localProfile.State == LocalPlayerProfile.LinkState.Linked;
+			widget.Get("PROFILE_HEADER").VisibilityFunction = () => localProfile.State == LocalPlayerProfile.LinkState.Linked;
 			widget.Get<LabelWidget>("PROFILE_NAME").GetText = () => localProfile.ProfileData.ProfileName;
 			widget.Get<LabelWidget>("PROFILE_RANK").GetText = () => localProfile.ProfileData.ProfileRank;
 
@@ -85,7 +85,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			destroyKey.IsDisabled = minimalProfile;
 
 			badgeContainer = widget.Get("BADGES_CONTAINER");
-			badgeContainer.IsVisible = () => badgesVisible && !minimalProfile()
+			badgeContainer.VisibilityFunction = () => badgesVisible && !minimalProfile()
 				&& localProfile.State == LocalPlayerProfile.LinkState.Linked;
 
 			localProfile.RefreshPlayerData(() => RefreshComplete(false));
@@ -150,8 +150,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var message = messageHeader.Get<LabelWidget>("MESSAGE");
 			var messageFont = Game.Renderer.Fonts[message.Font];
 
-			profileHeader.IsVisible = () => profileLoaded;
-			messageHeader.IsVisible = () => !profileLoaded;
+			profileHeader.VisibilityFunction = () => profileLoaded;
+			messageHeader.VisibilityFunction = () => !profileLoaded;
 
 			var profileWidth = 0;
 			var maxProfileWidth = (int)widget.Node.LayoutWidth;
@@ -195,7 +195,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 								{
 									profileWidth = Math.Max(profileWidth, adminFont.Measure(adminLabel.Text).X + 2 * (int)adminLabel.Node.LayoutX);
 
-									adminContainer.IsVisible = () => true;
+									adminContainer.VisibilityFunction = () => true;
 									profileHeader.Node.Height = (int)profileHeader.Node.LayoutHeight + (int)adminLabel.Node.LayoutHeight;
 									profileHeader.Node.CalculateLayout();
 									header.Node.Height = (int)header.Node.LayoutHeight + (int)adminLabel.Node.LayoutHeight;
@@ -223,7 +223,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 									{
 										badgeContainer.Node.Height = (int)badges.Node.LayoutHeight;
 										badgeContainer.Node.CalculateLayout();
-										badgeContainer.IsVisible = () => true;
+										badgeContainer.VisibilityFunction = () => true;
 									}
 								}
 
@@ -270,7 +270,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			widget.Node.CalculateLayout();
 			widget.Node.Height = (int)header.Node.LayoutHeight;
 			widget.Node.CalculateLayout();
-			badgeContainer.Visible = false;
+			badgeContainer.VisibilityFunction = () => false;
 
 			new Download(playerDatabase.Profile + client.Fingerprint, _ => { }, onQueryComplete);
 		}
@@ -282,7 +282,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		public PlayerProfileBadgesLogic(Widget widget, PlayerProfile profile, Func<int, int> negotiateWidth)
 		{
 			var showBadges = profile.Badges.Any();
-			widget.IsVisible = () => showBadges;
+			widget.VisibilityFunction = () => showBadges;
 
 			var badgeTemplate = widget.Get("BADGE_TEMPLATE");
 			widget.RemoveChild(badgeTemplate);
@@ -348,7 +348,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var locationFont = Game.Renderer.Fonts[locationLabel.Font];
 				var locationWidth = (int)widget.Node.LayoutWidth - 2 * (int)locationLabel.Node.LayoutX;
 				var location = WidgetUtils.TruncateText(client.Location, locationWidth, locationFont);
-				locationLabel.IsVisible = () => true;
+				locationLabel.VisibilityFunction = () => true;
 				locationLabel.GetText = () => location;
 				widget.Node.Height = (int)widget.Node.LayoutHeight + (int)locationLabel.Node.LayoutHeight;
 				widget.Node.CalculateLayout();
@@ -360,7 +360,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			if (client.AnonymizedIPAddress != null)
 			{
-				ipLabel.IsVisible = () => true;
+				ipLabel.VisibilityFunction = () => true;
 				ipLabel.GetText = () => client.AnonymizedIPAddress;
 				widget.Node.Height = (int)widget.Node.LayoutHeight + (int)ipLabel.Node.LayoutHeight;
 				widget.Node.CalculateLayout();
@@ -370,7 +370,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			if (client.IsAdmin)
 			{
-				adminLabel.IsVisible = () => true;
+				adminLabel.VisibilityFunction = () => true;
 				widget.Node.Height = (int)widget.Node.LayoutHeight + (int)adminLabel.Node.LayoutHeight;
 				widget.Node.CalculateLayout();
 			}

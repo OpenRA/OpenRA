@@ -179,7 +179,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var key = template.Clone() as Widget;
 			key.Id = hd.Name;
-			key.IsVisible = () => true;
+			key.VisibilityFunction = () => true;
 
 			key.Get<LabelWidget>("FUNCTION").GetText = () => hd.Description + ":";
 
@@ -220,7 +220,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var panel = panelContainer.Get(panelID);
 			var tab = tabContainer.Get<ButtonWidget>(buttonID);
 
-			panel.IsVisible = () => settingsPanel == type;
+			panel.VisibilityFunction = () => settingsPanel == type;
 			tab.IsHighlighted = () => settingsPanel == type;
 			tab.OnClick = () => { leavePanelActions[settingsPanel](); Game.Settings.Save(); settingsPanel = type; };
 
@@ -308,8 +308,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			uiScaleDropdown.IsDisabled = () => disableUIScale;
 
-			panel.Get("DISPLAY_SELECTION").IsVisible = () => ds.Mode != WindowMode.Windowed;
-			panel.Get("WINDOW_RESOLUTION").IsVisible = () => ds.Mode == WindowMode.Windowed;
+			panel.Get("DISPLAY_SELECTION").VisibilityFunction = () => ds.Mode != WindowMode.Windowed;
+			panel.Get("WINDOW_RESOLUTION").VisibilityFunction = () => ds.Mode == WindowMode.Windowed;
 			var windowWidth = panel.Get<TextFieldWidget>("WINDOW_WIDTH");
 			var origWidthText = windowWidth.Text = ds.WindowedSize.X.ToString();
 
@@ -318,7 +318,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			windowHeight.Text = ds.WindowedSize.Y.ToString();
 
 			var restartDesc = panel.Get("RESTART_REQUIRED_DESC");
-			restartDesc.IsVisible = () => ds.Mode != OriginalGraphicsMode || ds.VideoDisplay != OriginalVideoDisplay || ds.GLProfile != OriginalGLProfile ||
+			restartDesc.VisibilityFunction = () => ds.Mode != OriginalGraphicsMode || ds.VideoDisplay != OriginalVideoDisplay || ds.GLProfile != OriginalGLProfile ||
 				(ds.Mode == WindowMode.Windowed && (origWidthText != windowWidth.Text || origHeightText != windowHeight.Text));
 
 			var frameLimitCheckbox = panel.Get<CheckboxWidget>("FRAME_LIMIT_CHECKBOX");
@@ -454,11 +454,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			// Replace controls with a warning label if sound is disabled
 			var noDeviceLabel = panel.GetOrNull("NO_AUDIO_DEVICE");
 			if (noDeviceLabel != null)
-				noDeviceLabel.Visible = Game.Sound.DummyEngine;
+				noDeviceLabel.VisibilityFunction = () => Game.Sound.DummyEngine;
 
 			var controlsContainer = panel.GetOrNull("AUDIO_CONTROLS");
 			if (controlsContainer != null)
-				controlsContainer.Visible = !Game.Sound.DummyEngine;
+				controlsContainer.VisibilityFunction = () => !Game.Sound.DummyEngine;
 
 			var soundVolumeSlider = panel.Get<SliderWidget>("SOUND_VOLUME");
 			soundVolumeSlider.OnChange += x => Game.Sound.SoundVolume = x;
@@ -531,24 +531,24 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			mouseScrollDropdown.GetText = () => gs.MouseScroll.ToString();
 
 			var mouseControlDescClassic = panel.Get("MOUSE_CONTROL_DESC_CLASSIC");
-			mouseControlDescClassic.IsVisible = () => gs.UseClassicMouseStyle;
+			mouseControlDescClassic.VisibilityFunction = () => gs.UseClassicMouseStyle;
 
 			var mouseControlDescModern = panel.Get("MOUSE_CONTROL_DESC_MODERN");
-			mouseControlDescModern.IsVisible = () => !gs.UseClassicMouseStyle;
+			mouseControlDescModern.VisibilityFunction = () => !gs.UseClassicMouseStyle;
 
 			foreach (var container in new[] { mouseControlDescClassic, mouseControlDescModern })
 			{
 				var classicScrollRight = container.Get("DESC_SCROLL_RIGHT");
-				classicScrollRight.IsVisible = () => gs.UseClassicMouseStyle ^ gs.UseAlternateScrollButton;
+				classicScrollRight.VisibilityFunction = () => gs.UseClassicMouseStyle ^ gs.UseAlternateScrollButton;
 
 				var classicScrollMiddle = container.Get("DESC_SCROLL_MIDDLE");
-				classicScrollMiddle.IsVisible = () => !gs.UseClassicMouseStyle ^ gs.UseAlternateScrollButton;
+				classicScrollMiddle.VisibilityFunction = () => !gs.UseClassicMouseStyle ^ gs.UseAlternateScrollButton;
 
 				var zoomDesc = container.Get("DESC_ZOOM");
-				zoomDesc.IsVisible = () => gs.ZoomModifier == Modifiers.None;
+				zoomDesc.VisibilityFunction = () => gs.ZoomModifier == Modifiers.None;
 
 				var zoomDescModifier = container.Get<LabelWidget>("DESC_ZOOM_MODIFIER");
-				zoomDescModifier.IsVisible = () => gs.ZoomModifier != Modifiers.None;
+				zoomDescModifier.VisibilityFunction = () => gs.ZoomModifier != Modifiers.None;
 
 				var zoomDescModifierTemplate = zoomDescModifier.Text;
 				var zoomDescModifierLabel = new CachedTransform<Modifiers, string>(
@@ -556,7 +556,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				zoomDescModifier.GetText = () => zoomDescModifierLabel.Update(gs.ZoomModifier);
 
 				var edgescrollDesc = container.Get<LabelWidget>("DESC_EDGESCROLL");
-				edgescrollDesc.IsVisible = () => gs.ViewportEdgeScroll;
+				edgescrollDesc.VisibilityFunction = () => gs.ViewportEdgeScroll;
 			}
 
 			// Apply mouse focus preferences immediately
@@ -693,8 +693,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			BindCheckboxPref(panel, "CHECKUNSYNCED_CHECKBOX", ds, "SyncCheckUnsyncedCode");
 			BindCheckboxPref(panel, "CHECKBOTSYNC_CHECKBOX", ds, "SyncCheckBotModuleCode");
 
-			panel.Get("DEBUG_OPTIONS").IsVisible = () => ds.DisplayDeveloperSettings;
-			panel.Get("DEBUG_HIDDEN_LABEL").IsVisible = () => !ds.DisplayDeveloperSettings;
+			panel.Get("DEBUG_OPTIONS").VisibilityFunction = () => ds.DisplayDeveloperSettings;
+			panel.Get("DEBUG_HIDDEN_LABEL").VisibilityFunction = () => !ds.DisplayDeveloperSettings;
 
 			return () => { };
 		}
@@ -1042,17 +1042,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var duplicateNotice = panel.Get<LabelWidget>("DUPLICATE_NOTICE");
 			duplicateNotice.TextColor = ChromeMetrics.Get<Color>("NoticeErrorColor");
-			duplicateNotice.IsVisible = () => !isHotkeyValid;
+			duplicateNotice.VisibilityFunction = () => !isHotkeyValid;
 			var duplicateNoticeText = new CachedTransform<HotkeyDefinition, string>(hd => hd != null ? duplicateNotice.Text.F(hd.Description) : duplicateNotice.Text);
 			duplicateNotice.GetText = () => duplicateNoticeText.Update(duplicateHotkeyDefinition);
 
 			var defaultNotice = panel.Get<LabelWidget>("DEFAULT_NOTICE");
 			defaultNotice.TextColor = ChromeMetrics.Get<Color>("NoticeInfoColor");
-			defaultNotice.IsVisible = () => isHotkeyValid && isHotkeyDefault;
+			defaultNotice.VisibilityFunction = () => isHotkeyValid && isHotkeyDefault;
 
 			var originalNotice = panel.Get<LabelWidget>("ORIGINAL_NOTICE");
 			originalNotice.TextColor = ChromeMetrics.Get<Color>("NoticeInfoColor");
-			originalNotice.IsVisible = () => isHotkeyValid && !isHotkeyDefault;
+			originalNotice.VisibilityFunction = () => isHotkeyValid && !isHotkeyDefault;
 			var originalNoticeText = new CachedTransform<HotkeyDefinition, string>(hd => originalNotice.Text.F(hd.Default.DisplayString()));
 			originalNotice.GetText = () => originalNoticeText.Update(selectedHotkeyDefinition);
 

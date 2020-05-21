@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			if (onConfirm != null && confirmButton != null)
 			{
-				confirmButton.Visible = true;
+				confirmButton.VisibilityFunction = () => true;
 				confirmButton.Node.Top = (int)confirmButton.Node.LayoutY + headerHeight;
 				confirmButton.Node.CalculateLayout();
 				confirmButton.OnClick = () =>
@@ -69,7 +69,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			if (onCancel != null && cancelButton != null)
 			{
-				cancelButton.Visible = true;
+				cancelButton.VisibilityFunction = () => true;
 				cancelButton.Node.Top = (int)cancelButton.Node.LayoutY + headerHeight;
 				cancelButton.Node.CalculateLayout();
 				cancelButton.OnClick = () =>
@@ -85,7 +85,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			if (onOther != null && otherButton != null)
 			{
-				otherButton.Visible = true;
+				otherButton.VisibilityFunction = () => true;
 				otherButton.Node.Top = (int)otherButton.Node.LayoutY + headerHeight;
 				otherButton.Node.CalculateLayout();
 				otherButton.OnClick = () =>

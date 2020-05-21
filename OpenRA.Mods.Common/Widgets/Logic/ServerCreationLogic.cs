@@ -115,25 +115,25 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var noticesNoUPnP = panel.GetOrNull("NOTICES_NO_UPNP");
 			if (noticesNoUPnP != null)
 			{
-				noticesNoUPnP.IsVisible = () => advertiseOnline &&
+				noticesNoUPnP.VisibilityFunction = () => advertiseOnline &&
 					(UPnP.Status == UPnPStatus.NotSupported || UPnP.Status == UPnPStatus.Disabled);
 
 				var settingsA = noticesNoUPnP.GetOrNull("SETTINGS_A");
 				if (settingsA != null)
-					settingsA.IsVisible = () => UPnP.Status == UPnPStatus.Disabled;
+					settingsA.VisibilityFunction = () => UPnP.Status == UPnPStatus.Disabled;
 
 				var settingsB = noticesNoUPnP.GetOrNull("SETTINGS_B");
 				if (settingsB != null)
-					settingsB.IsVisible = () => UPnP.Status == UPnPStatus.Disabled;
+					settingsB.VisibilityFunction = () => UPnP.Status == UPnPStatus.Disabled;
 			}
 
 			var noticesUPnP = panel.GetOrNull("NOTICES_UPNP");
 			if (noticesUPnP != null)
-				noticesUPnP.IsVisible = () => advertiseOnline && UPnP.Status == UPnPStatus.Enabled;
+				noticesUPnP.VisibilityFunction = () => advertiseOnline && UPnP.Status == UPnPStatus.Enabled;
 
 			var noticesLAN = panel.GetOrNull("NOTICES_LAN");
 			if (noticesLAN != null)
-				noticesLAN.IsVisible = () => !advertiseOnline;
+				noticesLAN.VisibilityFunction = () => !advertiseOnline;
 
 			BuildNotices();
 		}
@@ -162,18 +162,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				noticesLabelB.Node.Left = (int)(noticesLabelA.Node.LayoutX + noticesLabelA.Node.LayoutWidth);
 				noticesLabelB.Node.Width = bWidth;
 				noticesLabelB.Node.CalculateLayout();
-				noticesLabelB.Visible = true;
+				noticesLabelB.VisibilityFunction = () => true;
 
 				noticesLabelC.Text = "):";
 				noticesLabelC.Node.Left = (int)(noticesLabelB.Node.LayoutX + noticesLabelB.Node.LayoutWidth);
 				noticesLabelC.Node.CalculateLayout();
-				noticesLabelC.Visible = true;
+				noticesLabelC.VisibilityFunction = () => true;
 			}
 			else
 			{
 				noticesLabelA.Text = "Local Server:";
-				noticesLabelB.Visible = false;
-				noticesLabelC.Visible = false;
+				noticesLabelB.VisibilityFunction = () => false;
+				noticesLabelC.VisibilityFunction = () => false;
 			}
 		}
 

@@ -90,10 +90,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var abortButton = panel.Get<ButtonWidget>("ABORT_BUTTON");
 			var retryButton = panel.Get<ButtonWidget>("RETRY_BUTTON");
 
-			abortButton.Visible = onAbort != null;
+			abortButton.VisibilityFunction = () => onAbort != null;
 			abortButton.OnClick = () => { Ui.CloseWindow(); onAbort(); };
 
-			retryButton.Visible = onRetry != null;
+			retryButton.VisibilityFunction = () => onRetry != null;
 			retryButton.OnClick = () =>
 			{
 				var password = passwordField != null && passwordField.IsVisible() ? passwordField.Text : orderManager.Password;
@@ -115,9 +115,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (passwordField != null)
 			{
 				passwordField.TakeKeyboardFocus();
-				passwordField.IsVisible = () => orderManager.AuthenticationFailed;
+				passwordField.VisibilityFunction = () => orderManager.AuthenticationFailed;
 				var passwordLabel = widget.Get<LabelWidget>("PASSWORD_LABEL");
-				passwordLabel.IsVisible = passwordField.IsVisible;
+				passwordLabel.VisibilityFunction = passwordField.VisibilityFunction;
 				passwordField.OnEnterKey = () => { retryButton.OnClick(); return true; };
 				passwordField.OnEscKey = () => { abortButton.OnClick(); return true; };
 			}
@@ -183,7 +183,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				});
 			};
 
-			abortButton.Visible = onAbort != null;
+			abortButton.VisibilityFunction = () => onAbort != null;
 			abortButton.OnClick = () => { Ui.CloseWindow(); onAbort(); };
 
 			var width = 0;

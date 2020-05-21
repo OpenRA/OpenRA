@@ -110,7 +110,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var category = (CheckboxWidget)categoryTemplate.Clone();
 				category.GetText = () => cat;
 				category.IsChecked = () => SelectedCategories.Contains(cat);
-				category.IsVisible = () => true;
+				category.VisibilityFunction = () => true;
 				category.OnClick = () =>
 				{
 					if (!SelectedCategories.Remove(cat))

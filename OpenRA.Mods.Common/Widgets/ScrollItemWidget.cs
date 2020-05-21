@@ -25,14 +25,14 @@ namespace OpenRA.Mods.Common.Widgets
 		public ScrollItemWidget(ModData modData)
 			: base(modData)
 		{
-			IsVisible = () => false;
+			VisibilityFunction = () => false;
 			VisualHeight = 0;
 		}
 
 		protected ScrollItemWidget(ScrollItemWidget other)
 			: base(other)
 		{
-			IsVisible = () => false;
+			VisibilityFunction = () => false;
 			VisualHeight = 0;
 			Key = other.Key;
 			BaseName = other.BaseName;
@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public static ScrollItemWidget Setup(ScrollItemWidget template, Func<bool> isSelected, Action onClick)
 		{
 			var w = template.Clone() as ScrollItemWidget;
-			w.IsVisible = () => true;
+			w.VisibilityFunction = () => true;
 			w.IsSelected = isSelected;
 			w.OnClick = onClick;
 			return w;

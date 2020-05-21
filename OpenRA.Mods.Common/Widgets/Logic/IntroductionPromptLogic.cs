@@ -75,10 +75,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			colorPreview.Color = ps.Color;
 
 			var mouseControlDescClassic = widget.Get("MOUSE_CONTROL_DESC_CLASSIC");
-			mouseControlDescClassic.IsVisible = () => gs.UseClassicMouseStyle;
+			mouseControlDescClassic.VisibilityFunction = () => gs.UseClassicMouseStyle;
 
 			var mouseControlDescModern = widget.Get("MOUSE_CONTROL_DESC_MODERN");
-			mouseControlDescModern.IsVisible = () => !gs.UseClassicMouseStyle;
+			mouseControlDescModern.VisibilityFunction = () => !gs.UseClassicMouseStyle;
 
 			var mouseControlDropdown = widget.Get<DropDownButtonWidget>("MOUSE_CONTROL_DROPDOWN");
 			mouseControlDropdown.OnMouseDown = _ => SettingsLogic.ShowMouseControlDropdown(mouseControlDropdown, gs);
@@ -87,16 +87,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			foreach (var container in new[] { mouseControlDescClassic, mouseControlDescModern })
 			{
 				var classicScrollRight = container.Get("DESC_SCROLL_RIGHT");
-				classicScrollRight.IsVisible = () => gs.UseClassicMouseStyle ^ gs.UseAlternateScrollButton;
+				classicScrollRight.VisibilityFunction = () => gs.UseClassicMouseStyle ^ gs.UseAlternateScrollButton;
 
 				var classicScrollMiddle = container.Get("DESC_SCROLL_MIDDLE");
-				classicScrollMiddle.IsVisible = () => !gs.UseClassicMouseStyle ^ gs.UseAlternateScrollButton;
+				classicScrollMiddle.VisibilityFunction = () => !gs.UseClassicMouseStyle ^ gs.UseAlternateScrollButton;
 
 				var zoomDesc = container.Get("DESC_ZOOM");
-				zoomDesc.IsVisible = () => gs.ZoomModifier == Modifiers.None;
+				zoomDesc.VisibilityFunction = () => gs.ZoomModifier == Modifiers.None;
 
 				var zoomDescModifier = container.Get<LabelWidget>("DESC_ZOOM_MODIFIER");
-				zoomDescModifier.IsVisible = () => gs.ZoomModifier != Modifiers.None;
+				zoomDescModifier.VisibilityFunction = () => gs.ZoomModifier != Modifiers.None;
 
 				var zoomDescModifierTemplate = zoomDescModifier.Text;
 				var zoomDescModifierLabel = new CachedTransform<Modifiers, string>(
@@ -104,7 +104,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				zoomDescModifier.GetText = () => zoomDescModifierLabel.Update(gs.ZoomModifier);
 
 				var edgescrollDesc = container.Get<LabelWidget>("DESC_EDGESCROLL");
-				edgescrollDesc.IsVisible = () => gs.ViewportEdgeScroll;
+				edgescrollDesc.VisibilityFunction = () => gs.ViewportEdgeScroll;
 			}
 
 			SettingsLogic.BindCheckboxPref(widget, "EDGESCROLL_CHECKBOX", gs, "ViewportEdgeScroll");

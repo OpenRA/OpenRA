@@ -202,7 +202,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					item.Node.Width = (int)preview.Node.LayoutWidth + 2 * (int)preview.Node.LayoutX;
 					item.Node.Height = (int)preview.Node.LayoutHeight + 2 * (int)preview.Node.LayoutY;
 					item.Node.CalculateLayout();
-					item.IsVisible = () => true;
+					item.VisibilityFunction = () => true;
 
 					item.GetTooltipText = () => a.Tooltip;
 

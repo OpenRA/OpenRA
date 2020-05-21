@@ -70,19 +70,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			// Progress view
 			progressContainer = panel.Get("PROGRESS");
-			progressContainer.IsVisible = () => visible == Mode.Progress;
+			progressContainer.VisibilityFunction = () => visible == Mode.Progress;
 			progressBar = panel.Get<ProgressBarWidget>("PROGRESS_BAR");
 			progressLabel = panel.Get<LabelWidget>("PROGRESS_MESSAGE");
-			progressLabel.IsVisible = () => visible == Mode.Progress;
+			progressLabel.VisibilityFunction = () => visible == Mode.Progress;
 
 			// Message view
 			messageContainer = panel.Get("MESSAGE");
-			messageContainer.IsVisible = () => visible == Mode.Message;
+			messageContainer.VisibilityFunction = () => visible == Mode.Message;
 			messageLabel = messageContainer.Get<LabelWidget>("MESSAGE_MESSAGE");
 
 			// List view
 			listContainer = panel.Get("LIST");
-			listContainer.IsVisible = () => visible == Mode.List;
+			listContainer.VisibilityFunction = () => visible == Mode.List;
 
 			listPanel = listContainer.Get<ScrollPanelWidget>("LIST_PANEL");
 			listHeaderTemplate = listPanel.Get("LIST_HEADER_TEMPLATE");
@@ -653,11 +653,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			primaryButton.OnClick = continueAction;
 			primaryButton.Text = "Continue";
-			primaryButton.Visible = true;
+			primaryButton.VisibilityFunction = () => true;
 
 			secondaryButton.OnClick = Ui.CloseWindow;
 			secondaryButton.Text = "Cancel";
-			secondaryButton.Visible = true;
+			secondaryButton.VisibilityFunction = () => true;
 			secondaryButton.Disabled = false;
 			Game.RunAfterTick(Ui.ResetTooltips);
 		}
@@ -666,18 +666,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			primaryButton.OnClick = retryAction;
 			primaryButton.Text = "Retry";
-			primaryButton.Visible = true;
+			primaryButton.VisibilityFunction = () => true;
 
 			secondaryButton.OnClick = Ui.CloseWindow;
 			secondaryButton.Text = "Back";
-			secondaryButton.Visible = true;
+			secondaryButton.VisibilityFunction = () => true;
 			secondaryButton.Disabled = false;
 			Game.RunAfterTick(Ui.ResetTooltips);
 		}
 
 		void ShowDisabledCancel()
 		{
-			primaryButton.Visible = false;
+			primaryButton.VisibilityFunction = () => false;
 			secondaryButton.Disabled = true;
 			Game.RunAfterTick(Ui.ResetTooltips);
 		}

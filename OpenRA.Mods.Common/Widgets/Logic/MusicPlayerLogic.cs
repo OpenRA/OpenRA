@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			BuildMusicTable();
 
 			Func<bool> noMusic = () => !musicPlaylist.IsMusicAvailable || musicPlaylist.CurrentSongIsBackground || currentSong == null;
-			panel.Get("NO_MUSIC_LABEL").IsVisible = () => !musicPlaylist.IsMusicAvailable;
+			panel.Get("NO_MUSIC_LABEL").VisibilityFunction = () => !musicPlaylist.IsMusicAvailable;
 
 			if (musicPlaylist.IsMusicAvailable)
 			{
@@ -52,12 +52,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var playButton = panel.Get<ButtonWidget>("BUTTON_PLAY");
 			playButton.OnClick = Play;
 			playButton.IsDisabled = noMusic;
-			playButton.IsVisible = () => !Game.Sound.MusicPlaying;
+			playButton.VisibilityFunction = () => !Game.Sound.MusicPlaying;
 
 			var pauseButton = panel.Get<ButtonWidget>("BUTTON_PAUSE");
 			pauseButton.OnClick = Game.Sound.PauseMusic;
 			pauseButton.IsDisabled = noMusic;
-			pauseButton.IsVisible = () => Game.Sound.MusicPlaying;
+			pauseButton.VisibilityFunction = () => Game.Sound.MusicPlaying;
 
 			var stopButton = panel.Get<ButtonWidget>("BUTTON_STOP");
 			stopButton.OnClick = () => { musicPlaylist.Stop(); };

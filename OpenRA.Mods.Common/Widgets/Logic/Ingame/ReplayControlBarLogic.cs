@@ -44,16 +44,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					background.Node.CalculateLayout();
 				}
 
-				container.Visible = true;
+				container.VisibilityFunction = () => true;
 				var speed = PlaybackSpeed.Regular;
 				var originalTimestep = world.Timestep;
 
 				var pauseButton = widget.Get<ButtonWidget>("BUTTON_PAUSE");
-				pauseButton.IsVisible = () => world.Timestep != 0 && orderManager.NetFrameNumber < replayNetTicks;
+				pauseButton.VisibilityFunction = () => world.Timestep != 0 && orderManager.NetFrameNumber < replayNetTicks;
 				pauseButton.OnClick = () => world.Timestep = 0;
 
 				var playButton = widget.Get<ButtonWidget>("BUTTON_PLAY");
-				playButton.IsVisible = () => world.Timestep == 0 || orderManager.NetFrameNumber >= replayNetTicks;
+				playButton.VisibilityFunction = () => world.Timestep == 0 || orderManager.NetFrameNumber >= replayNetTicks;
 				playButton.OnClick = () => world.Timestep = (int)Math.Ceiling(originalTimestep * multipliers[speed]);
 				playButton.IsDisabled = () => orderManager.NetFrameNumber >= replayNetTicks;
 

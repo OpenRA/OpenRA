@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public TooltipContainerWidget()
 		{
 			graphicSettings = Game.Settings.Graphics;
-			IsVisible = () => Game.RunTime > Viewport.LastMoveRunTime + TooltipDelayMilliseconds;
+			VisibilityFunction = () => Game.RunTime > Viewport.LastMoveRunTime + TooltipDelayMilliseconds;
 		}
 
 		public int SetTooltip(string id, WidgetArgs args)

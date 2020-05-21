@@ -118,7 +118,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					OnClick = () =>
 					{
 						ClearStats();
-						playerStatsPanel.Visible = true;
+						playerStatsPanel.VisibilityFunction = () => true;
 						statsDropDown.GetText = () => title;
 						activePanel = panel;
 						if (template != null)
@@ -139,7 +139,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					OnClick = () =>
 					{
 						statsDropDown.GetText = () => "Information: None";
-						playerStatsPanel.Visible = false;
+						playerStatsPanel.VisibilityFunction = () => false;
 						ClearStats();
 						activePanel = ObserverStatsPanel.None;
 					}
@@ -194,15 +194,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			foreach (var child in playerStatsPanel.Children)
 				playerStatsPanel.RemoveChild(child);
 
-			basicStatsHeaders.Visible = false;
-			economyStatsHeaders.Visible = false;
-			productionStatsHeaders.Visible = false;
-			supportPowerStatsHeaders.Visible = false;
-			armyHeaders.Visible = false;
-			combatStatsHeaders.Visible = false;
+			basicStatsHeaders.VisibilityFunction = () => false;
+			economyStatsHeaders.VisibilityFunction = () => false;
+			productionStatsHeaders.VisibilityFunction = () => false;
+			supportPowerStatsHeaders.VisibilityFunction = () => false;
+			armyHeaders.VisibilityFunction = () => false;
+			combatStatsHeaders.VisibilityFunction = () => false;
 
-			incomeGraphContainer.Visible = false;
-			armyValueGraphContainer.Visible = false;
+			incomeGraphContainer.VisibilityFunction = () => false;
+			armyValueGraphContainer.VisibilityFunction = () => false;
 
 			incomeGraph.GetSeries = null;
 			armyValueGraph.GetSeries = null;
@@ -210,8 +210,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void IncomeGraph()
 		{
-			playerStatsPanel.Visible = false;
-			incomeGraphContainer.Visible = true;
+			playerStatsPanel.VisibilityFunction = () => false;
+			incomeGraphContainer.VisibilityFunction = () => true;
 
 			incomeGraph.GetSeries = () =>
 				players.Select(p => new LineGraphSeries(
@@ -222,8 +222,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void ArmyValueGraph()
 		{
-			playerStatsPanel.Visible = false;
-			armyValueGraphContainer.Visible = true;
+			playerStatsPanel.VisibilityFunction = () => false;
+			armyValueGraphContainer.VisibilityFunction = () => true;
 
 			armyValueGraph.GetSeries = () =>
 				players.Select(p => new LineGraphSeries(
@@ -273,7 +273,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		ScrollItemWidget CombatStats(Player player)
 		{
-			combatStatsHeaders.Visible = true;
+			combatStatsHeaders.VisibilityFunction = () => true;
 			var template = SetupPlayerScrollItemWidget(combatPlayerTemplate, player);
 
 			AddPlayerFlagAndName(template, player);
@@ -316,7 +316,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		ScrollItemWidget ProductionStats(Player player)
 		{
-			productionStatsHeaders.Visible = true;
+			productionStatsHeaders.VisibilityFunction = () => true;
 			var template = SetupPlayerScrollItemWidget(productionPlayerTemplate, player);
 
 			AddPlayerFlagAndName(template, player);
@@ -337,7 +337,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		ScrollItemWidget SupportPowerStats(Player player)
 		{
-			supportPowerStatsHeaders.Visible = true;
+			supportPowerStatsHeaders.VisibilityFunction = () => true;
 			var template = SetupPlayerScrollItemWidget(supportPowersPlayerTemplate, player);
 
 			AddPlayerFlagAndName(template, player);
@@ -358,7 +358,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		ScrollItemWidget ArmyStats(Player player)
 		{
-			armyHeaders.Visible = true;
+			armyHeaders.VisibilityFunction = () => true;
 			var template = SetupPlayerScrollItemWidget(armyPlayerTemplate, player);
 
 			AddPlayerFlagAndName(template, player);
@@ -379,7 +379,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		ScrollItemWidget EconomyStats(Player player)
 		{
-			economyStatsHeaders.Visible = true;
+			economyStatsHeaders.VisibilityFunction = () => true;
 			var template = SetupPlayerScrollItemWidget(economyPlayerTemplate, player);
 
 			AddPlayerFlagAndName(template, player);
@@ -427,7 +427,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		ScrollItemWidget BasicStats(Player player)
 		{
-			basicStatsHeaders.Visible = true;
+			basicStatsHeaders.VisibilityFunction = () => true;
 			var template = SetupPlayerScrollItemWidget(basicPlayerTemplate, player);
 
 			AddPlayerFlagAndName(template, player);

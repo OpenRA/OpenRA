@@ -92,11 +92,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var presetColorTemplate = paletteTabPanel.Get<ColorBlockWidget>("COLORPRESET");
 			var customColorTemplate = paletteTabPanel.Get<ColorBlockWidget>("COLORCUSTOM");
 
-			mixerTab.IsVisible = () => !paletteTabOpenedLast;
+			mixerTab.VisibilityFunction = () => !paletteTabOpenedLast;
 			mixerTabButton.OnClick = () => paletteTabOpenedLast = false;
-			mixerTabButton.IsHighlighted = mixerTab.IsVisible;
+			mixerTabButton.IsHighlighted = mixerTab.VisibilityFunction;
 
-			paletteTab.IsVisible = () => paletteTabOpenedLast;
+			paletteTab.VisibilityFunction = () => paletteTabOpenedLast;
 			paletteTabButton.OnClick = () => paletteTabOpenedLast = true;
 			paletteTabButton.IsHighlighted = () => paletteTab.IsVisible() || paletteTabHighlighted > 0;
 
@@ -127,7 +127,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					var newSwatch = (ColorBlockWidget)presetColorTemplate.Clone();
 					newSwatch.GetColor = () => color;
-					newSwatch.IsVisible = () => true;
+					newSwatch.VisibilityFunction = () => true;
 					newSwatch.Node.Left = i * (int)newSwatch.Node.LayoutWidth;
 					newSwatch.Node.Top = j * (int)newSwatch.Node.LayoutHeight;
 					newSwatch.Node.CalculateLayout();
@@ -150,7 +150,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					var newSwatch = (ColorBlockWidget)customColorTemplate.Clone();
 					newSwatch.GetColor = () => Game.Settings.Player.CustomColors[colorIndex];
-					newSwatch.IsVisible = () => Game.Settings.Player.CustomColors.Length > colorIndex;
+					newSwatch.VisibilityFunction = () => Game.Settings.Player.CustomColors.Length > colorIndex;
 					newSwatch.Node.Left = i * (int)newSwatch.Node.LayoutWidth;
 					newSwatch.Node.Top = j * (int)newSwatch.Node.LayoutHeight;
 					newSwatch.Node.CalculateLayout();

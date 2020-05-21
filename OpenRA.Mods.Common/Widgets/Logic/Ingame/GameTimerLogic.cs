@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (status != null)
 			{
 				// Blink the status line
-				status.IsVisible = shouldShowStatus;
+				status.VisibilityFunction = shouldShowStatus;
 				status.GetText = statusText;
 			}
 

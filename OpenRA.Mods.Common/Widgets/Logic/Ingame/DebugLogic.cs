@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic.Ingame
 
 				labelWidget.GetText = () => cellPosText.Update(Viewport.LastMousePos);
 
-				labelWidget.IsVisible = () => geometryOverlay.Enabled;
+				labelWidget.VisibilityFunction = () => geometryOverlay.Enabled;
 			}
 		}
 	}

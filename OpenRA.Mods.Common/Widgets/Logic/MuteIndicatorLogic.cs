@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		public MuteIndicatorLogic(Widget widget)
 		{
 			var gs = Game.Settings.Sound;
-			widget.IsVisible = () => gs.Mute;
+			widget.VisibilityFunction = () => gs.Mute;
 		}
 	}
 }

@@ -102,7 +102,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var okButton = actorEditPanel.Get<ButtonWidget>("OK_BUTTON");
 
 			actorIDErrorLabel = actorEditPanel.Get<LabelWidget>("ACTOR_ID_ERROR_LABEL");
-			actorIDErrorLabel.IsVisible = () => actorIDStatus != ActorIDStatus.Normal;
+			actorIDErrorLabel.VisibilityFunction = () => actorIDStatus != ActorIDStatus.Normal;
 			actorIDErrorLabel.GetText = () => actorIDStatus == ActorIDStatus.Duplicate ?
 				"Duplicate Actor ID" : "Enter an Actor ID";
 
@@ -114,7 +114,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			okButton.OnClick = Save;
 			cancelButton.OnClick = Cancel;
 			deleteButton.OnClick = Delete;
-			actorEditPanel.IsVisible = () => CurrentActor != null
+			actorEditPanel.VisibilityFunction = () => CurrentActor != null
 				&& editor.CurrentBrush == editor.DefaultBrush
 				&& Game.RunTime > lastScrollTime + scrollVisibleTimeout;
 

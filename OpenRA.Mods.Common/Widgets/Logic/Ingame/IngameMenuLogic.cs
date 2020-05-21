@@ -72,7 +72,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			buttonContainer = menu.Get("MENU_BUTTONS");
 			buttonTemplate = buttonContainer.Get<ButtonWidget>("BUTTON_TEMPLATE");
 			buttonContainer.RemoveChild(buttonTemplate);
-			buttonContainer.IsVisible = () => !hideMenu;
+			buttonContainer.VisibilityFunction = () => !hideMenu;
 
 			MiniYaml buttonStrideNode;
 			if (logicArgs.TryGetValue("ButtonStride", out buttonStrideNode))
@@ -112,7 +112,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{ "hideMenu", requestHideMenu }
 				});
 
-				gameInfoPanel.IsVisible = () => !hideMenu;
+				gameInfoPanel.VisibilityFunction = () => !hideMenu;
 			}
 		}
 

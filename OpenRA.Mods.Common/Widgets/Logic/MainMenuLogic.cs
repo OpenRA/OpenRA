@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			// Menu buttons
 			var mainMenu = widget.Get("MAIN_MENU");
-			mainMenu.IsVisible = () => menuType == MenuType.Main;
+			mainMenu.VisibilityFunction = () => menuType == MenuType.Main;
 
 			mainMenu.Get<ButtonWidget>("SINGLEPLAYER_BUTTON").OnClick = () => SwitchMenu(MenuType.Singleplayer);
 
@@ -92,7 +92,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			// Singleplayer menu
 			var singleplayerMenu = widget.Get("SINGLEPLAYER_MENU");
-			singleplayerMenu.IsVisible = () => menuType == MenuType.Singleplayer;
+			singleplayerMenu.VisibilityFunction = () => menuType == MenuType.Singleplayer;
 
 			var missionsButton = singleplayerMenu.Get<ButtonWidget>("MISSIONS_BUTTON");
 			missionsButton.OnClick = OpenMissionBrowserPanel;
@@ -116,7 +116,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			// Extras menu
 			var extrasMenu = widget.Get("EXTRAS_MENU");
-			extrasMenu.IsVisible = () => menuType == MenuType.Extras;
+			extrasMenu.VisibilityFunction = () => menuType == MenuType.Extras;
 
 			extrasMenu.Get<ButtonWidget>("REPLAYS_BUTTON").OnClick = OpenReplayBrowserPanel;
 
@@ -156,7 +156,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			// Map editor menu
 			var mapEditorMenu = widget.Get("MAP_EDITOR_MENU");
-			mapEditorMenu.IsVisible = () => menuType == MenuType.MapEditor;
+			mapEditorMenu.VisibilityFunction = () => menuType == MenuType.MapEditor;
 
 			// Loading into the map editor
 			Game.BeforeGameStart += RemoveShellmapUI;
@@ -195,7 +195,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var newsBG = widget.GetOrNull("NEWS_BG");
 			if (newsBG != null)
 			{
-				newsBG.IsVisible = () => Game.Settings.Game.FetchNews && menuType != MenuType.None && menuType != MenuType.StartupPrompts;
+				newsBG.VisibilityFunction = () => Game.Settings.Game.FetchNews && menuType != MenuType.None && menuType != MenuType.StartupPrompts;
 
 				newsPanel = Ui.LoadWidget<ScrollPanelWidget>("NEWS_PANEL", null, new WidgetArgs());
 				newsTemplate = newsPanel.Get("NEWS_ITEM_TEMPLATE");
@@ -214,7 +214,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var updateLabel = rootMenu.GetOrNull("UPDATE_NOTICE");
 			if (updateLabel != null)
-				updateLabel.IsVisible = () => !newsOpen && menuType != MenuType.None &&
+				updateLabel.VisibilityFunction = () => !newsOpen && menuType != MenuType.None &&
 					menuType != MenuType.StartupPrompts &&
 					webServices.ModVersionStatus == ModVersionStatus.Outdated;
 

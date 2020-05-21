@@ -77,7 +77,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var discButton = panel.Get<ButtonWidget>("CHECK_DISC_BUTTON");
 			discButton.Node.Top = (int)discButton.Node.LayoutY + headerHeight;
 			discButton.Node.CalculateLayout();
-			discButton.IsVisible = () => discAvailable;
+			discButton.VisibilityFunction = () => discAvailable;
 
 			discButton.OnClick = () => Ui.OpenWindow("DISC_INSTALL_PANEL", new WidgetArgs
 			{
@@ -112,19 +112,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				titleWidget.GetText = () => title;
 
 				var requiredWidget = container.Get<LabelWidget>("REQUIRED");
-				requiredWidget.IsVisible = () => p.Value.Required;
+				requiredWidget.VisibilityFunction = () => p.Value.Required;
 
 				var sourceWidget = container.Get<ImageWidget>("DISC");
 				var sourceTitles = p.Value.Sources.Select(s => sources[s].Title).Distinct();
 				var sourceList = sourceTitles.JoinWith("\n");
 				var isSourceAvailable = sourceTitles.Any();
 				sourceWidget.GetTooltipText = () => sourceList;
-				sourceWidget.IsVisible = () => isSourceAvailable;
+				sourceWidget.VisibilityFunction = () => isSourceAvailable;
 
 				var installed = p.Value.IsInstalled();
 				var downloadButton = container.Get<ButtonWidget>("DOWNLOAD");
 				var downloadEnabled = !installed && p.Value.Download != null;
-				downloadButton.IsVisible = () => downloadEnabled;
+				downloadButton.VisibilityFunction = () => downloadEnabled;
 
 				if (downloadEnabled)
 				{
@@ -138,10 +138,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				}
 
 				var installedWidget = container.Get<LabelWidget>("INSTALLED");
-				installedWidget.IsVisible = () => installed;
+				installedWidget.VisibilityFunction = () => installed;
 
 				var requiresDiscWidget = container.Get<LabelWidget>("REQUIRES_DISC");
-				requiresDiscWidget.IsVisible = () => !installed && !downloadEnabled;
+				requiresDiscWidget.VisibilityFunction = () => !installed && !downloadEnabled;
 				if (!isSourceAvailable)
 					requiresDiscWidget.GetText = () => "Manual Install";
 

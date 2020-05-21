@@ -21,10 +21,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		public PerfDebugLogic(Widget widget)
 		{
 			var perfGraph = widget.Get("GRAPH_BG");
-			perfGraph.IsVisible = () => Game.Settings.Debug.PerfGraph;
+			perfGraph.VisibilityFunction = () => Game.Settings.Debug.PerfGraph;
 
 			var perfText = widget.Get<LabelWidget>("PERF_TEXT");
-			perfText.IsVisible = () => Game.Settings.Debug.PerfText;
+			perfText.VisibilityFunction = () => Game.Settings.Debug.PerfText;
 
 			var fpsTimer = Stopwatch.StartNew();
 			var fpsReferenceFrame = 0;

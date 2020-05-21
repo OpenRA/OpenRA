@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (key.IsValid())
 			{
 				var hotkey = widget.Get<LabelWidget>("HOTKEY");
-				hotkey.Visible = true;
+				hotkey.VisibilityFunction = () => true;
 
 				var hotkeyLabel = "({0})".F(key.DisplayString());
 				hotkey.GetText = () => hotkeyLabel;

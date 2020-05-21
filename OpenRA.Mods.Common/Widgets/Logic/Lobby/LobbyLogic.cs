@@ -140,12 +140,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{ "showUnoccupiedSpawnpoints", true },
 			});
 
-			mapContainer.IsVisible = () => panel != PanelType.Servers;
+			mapContainer.VisibilityFunction = () => panel != PanelType.Servers;
 
 			UpdateCurrentMap();
 
 			var playerBin = Ui.LoadWidget("LOBBY_PLAYER_BIN", lobby.Get("TOP_PANELS_ROOT"), new WidgetArgs());
-			playerBin.IsVisible = () => panel == PanelType.Players;
+			playerBin.VisibilityFunction = () => panel == PanelType.Players;
 
 			players = playerBin.Get<ScrollPanelWidget>("LOBBY_PLAYERS");
 			editablePlayerTemplate = players.Get("TEMPLATE_EDITABLE_PLAYER");
@@ -169,7 +169,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var mapButton = lobby.GetOrNull<ButtonWidget>("CHANGEMAP_BUTTON");
 			if (mapButton != null)
 			{
-				mapButton.IsVisible = () => panel != PanelType.Servers;
+				mapButton.VisibilityFunction = () => panel != PanelType.Servers;
 				mapButton.IsDisabled = () => gameStarting || panel == PanelType.Kick || panel == PanelType.ForceStart ||
 					orderManager.LocalClient == null || orderManager.LocalClient.IsReady;
 				mapButton.OnClick = () =>
@@ -199,7 +199,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var slotsButton = lobby.GetOrNull<DropDownButtonWidget>("SLOTS_DROPDOWNBUTTON");
 			if (slotsButton != null)
 			{
-				slotsButton.IsVisible = () => panel != PanelType.Servers;
+				slotsButton.VisibilityFunction = () => panel != PanelType.Servers;
 				slotsButton.IsDisabled = () => configurationDisabled() || panel != PanelType.Players ||
 					(orderManager.LobbyInfo.Slots.Values.All(s => !s.AllowBots) &&
 					orderManager.LobbyInfo.Slots.Count(s => !s.Value.LockTeam && orderManager.LobbyInfo.ClientInSlot(s.Key) != null) == 0);
@@ -299,14 +299,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{ "configurationDisabled", configurationDisabled }
 			});
 
-			optionsBin.IsVisible = () => panel == PanelType.Options;
+			optionsBin.VisibilityFunction = () => panel == PanelType.Options;
 
 			var musicBin = Ui.LoadWidget("LOBBY_MUSIC_BIN", lobby.Get("TOP_PANELS_ROOT"), new WidgetArgs
 			{
 				{ "onExit", DoNothing },
 				{ "world", worldRenderer.World }
 			});
-			musicBin.IsVisible = () => panel == PanelType.Music;
+			musicBin.VisibilityFunction = () => panel == PanelType.Music;
 
 			ServerListLogic serverListLogic = null;
 			if (!skirmishMode)
@@ -319,11 +319,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				});
 
 				serverListLogic = serversBin.LogicObjects.Select(l => l as ServerListLogic).FirstOrDefault(l => l != null);
-				serversBin.IsVisible = () => panel == PanelType.Servers;
+				serversBin.VisibilityFunction = () => panel == PanelType.Servers;
 			}
 
 			var tabContainer = skirmishMode ? lobby.Get("SKIRMISH_TABS") : lobby.Get("MULTIPLAYER_TABS");
-			tabContainer.IsVisible = () => true;
+			tabContainer.VisibilityFunction = () => true;
 
 			var optionsTab = tabContainer.Get<ButtonWidget>("OPTIONS_TAB");
 			optionsTab.IsHighlighted = () => panel == PanelType.Options;
@@ -381,8 +381,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			var forceStartBin = Ui.LoadWidget("FORCE_START_DIALOG", lobby.Get("TOP_PANELS_ROOT"), new WidgetArgs());
-			forceStartBin.IsVisible = () => panel == PanelType.ForceStart;
-			forceStartBin.Get("KICK_WARNING").IsVisible = () => orderManager.LobbyInfo.Clients.Any(c => c.IsInvalid);
+			forceStartBin.VisibilityFunction = () => panel == PanelType.ForceStart;
+			forceStartBin.Get("KICK_WARNING").VisibilityFunction = () => orderManager.LobbyInfo.Clients.Any(c => c.IsInvalid);
 			forceStartBin.Get<ButtonWidget>("OK_BUTTON").OnClick = startGame;
 			forceStartBin.Get<ButtonWidget>("CANCEL_BUTTON").OnClick = () => panel = PanelType.Players;
 
@@ -599,7 +599,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						LobbyUtils.SetupSlotWidget(template, slot, client);
 
 					var join = template.Get<ButtonWidget>("JOIN");
-					join.IsVisible = () => !slot.Closed;
+					join.VisibilityFunction = () => !slot.Closed;
 					join.IsDisabled = () => orderManager.LocalClient.IsReady;
 					join.OnClick = () => orderManager.IssueOrder(Order.Command("slot " + key));
 				}
@@ -650,7 +650,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					LobbyUtils.SetupReadyWidget(template, slot, client);
 				}
 
-				template.IsVisible = () => true;
+				template.VisibilityFunction = () => true;
 
 				if (idx >= players.Children.Length)
 					players.AddChild(template);
@@ -702,7 +702,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				}
 
 				LobbyUtils.SetupLatencyWidget(template, c, orderManager);
-				template.IsVisible = () => true;
+				template.VisibilityFunction = () => true;
 
 				if (idx >= players.Children.Length)
 					players.AddChild(template);
@@ -727,10 +727,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var btn = spec.Get<ButtonWidget>("SPECTATE");
 				btn.OnClick = () => orderManager.IssueOrder(Order.Command("spectate"));
 				btn.IsDisabled = () => orderManager.LocalClient.IsReady;
-				btn.IsVisible = () => orderManager.LobbyInfo.GlobalSettings.AllowSpectators
+				btn.VisibilityFunction = () => orderManager.LobbyInfo.GlobalSettings.AllowSpectators
 					|| orderManager.LocalClient.IsAdmin;
 
-				spec.IsVisible = () => true;
+				spec.VisibilityFunction = () => true;
 
 				if (idx >= players.Children.Length)
 					players.AddChild(spec);

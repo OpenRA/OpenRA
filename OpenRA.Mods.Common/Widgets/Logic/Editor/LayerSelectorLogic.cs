@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				newResourcePreviewTemplate.Node.CalculateLayout();
 
 				var layerPreview = newResourcePreviewTemplate.Get<SpriteWidget>("LAYER_PREVIEW");
-				layerPreview.IsVisible = () => true;
+				layerPreview.VisibilityFunction = () => true;
 				layerPreview.GetPalette = () => resource.Palette;
 
 				var variant = resource.Sequences.FirstOrDefault();
@@ -71,7 +71,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				newResourcePreviewTemplate.Node.Height = tileSize.Height + ((int)layerPreview.Node.LayoutY * 2);
 				newResourcePreviewTemplate.Node.CalculateLayout();
 
-				newResourcePreviewTemplate.IsVisible = () => true;
+				newResourcePreviewTemplate.VisibilityFunction = () => true;
 				newResourcePreviewTemplate.GetTooltipText = () => resource.Type;
 
 				layerTemplateList.AddChild(newResourcePreviewTemplate);

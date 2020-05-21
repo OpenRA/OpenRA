@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				// The connection window must be opened at the end of the tick for the widget hierarchy to
 				// work out, but we also want to prevent the server browser from flashing visible for one tick.
-				widget.Visible = false;
+				widget.VisibilityFunction = () => false;
 				Game.RunAfterTick(() =>
 				{
 					Ui.OpenWindow("DIRECTCONNECT_PANEL", new WidgetArgs
@@ -74,7 +74,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						{ "directConnectEndPoint", directConnectEndPoint },
 					});
 
-					widget.Visible = true;
+					widget.VisibilityFunction = () => true;
 				});
 			}
 		}

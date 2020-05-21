@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var pm = player.PlayerActor.TraitOrDefault<PowerManager>();
 			var pr = player.PlayerActor.Trait<PlayerResources>();
 
-			widget.IsVisible = () => getTooltipIcon() != null && getTooltipIcon().Actor != null;
+			widget.VisibilityFunction = () => getTooltipIcon() != null && getTooltipIcon().Actor != null;
 			var nameLabel = widget.Get<LabelWidget>("NAME");
 			var hotkeyLabel = widget.Get<LabelWidget>("HOTKEY");
 			var requiresLabel = widget.Get<LabelWidget>("REQUIRES");
@@ -85,9 +85,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				var nameSize = font.Measure(name);
 				var hotkeyWidth = 0;
-				hotkeyLabel.Visible = hotkey.IsValid();
+				hotkeyLabel.VisibilityFunction = () => hotkey.IsValid();
 
-				if (hotkeyLabel.Visible)
+				if (hotkeyLabel.IsVisible())
 				{
 					var hotkeyText = "({0})".F(hotkey.DisplayString());
 
@@ -105,13 +105,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					requiresLabel.Text = requiresFormat.F(prereqs.JoinWith(", "));
 					requiresSize = requiresFont.Measure(requiresLabel.Text);
-					requiresLabel.Visible = true;
+					requiresLabel.VisibilityFunction = () => true;
 					descLabel.Node.Top = descLabelY + (int)requiresLabel.Node.LayoutHeight;
 					descLabel.Node.CalculateLayout();
 				}
 				else
 				{
-					requiresLabel.Visible = false;
+					requiresLabel.VisibilityFunction = () => false;
 					descLabel.Node.Top = descLabelY;
 					descLabel.Node.CalculateLayout();
 				}
@@ -123,8 +123,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					powerLabel.Text = power.ToString();
 					powerLabel.GetColor = () => ((pm.PowerProvided - pm.PowerDrained) >= -power || power > 0)
 						? Color.White : Color.Red;
-					powerLabel.Visible = power != 0;
-					powerIcon.Visible = power != 0;
+					powerLabel.VisibilityFunction = () => power != 0;
+					powerIcon.VisibilityFunction = () => power != 0;
 					powerSize = font.Measure(powerLabel.Text);
 				}
 
@@ -163,7 +163,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var leftHeight = (int)(descLabel.Node.LayoutY + descLabel.Node.LayoutHeight) + (int)descLabel.Node.LayoutX;
 
 				// Set the bottom margin to match the top margin
-				var rightHeight = (powerLabel.Visible ? (int)(powerIcon.Node.LayoutY + powerIcon.Node.LayoutHeight) : (int)(timeIcon.Node.LayoutY + timeIcon.Node.LayoutHeight)) + (int)costIcon.Node.LayoutY;
+				var rightHeight = (powerLabel.IsVisible() ? (int)(powerIcon.Node.LayoutY + powerIcon.Node.LayoutHeight) : (int)(timeIcon.Node.LayoutY + timeIcon.Node.LayoutHeight)) + (int)costIcon.Node.LayoutY;
 
 				widget.Node.Height = Math.Max(leftHeight, rightHeight);
 				widget.Node.CalculateLayout();

@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var lp = world.LocalPlayer;
 			var numTabs = 0;
 
-			widget.IsVisible = () => activePanel != IngameInfoPanel.AutoSelect;
+			widget.VisibilityFunction = () => activePanel != IngameInfoPanel.AutoSelect;
 
 			// Objectives/Stats tab
 			var scriptContext = world.WorldActor.TraitOrDefault<LuaScript>();
@@ -40,13 +40,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				numTabs++;
 				var objectivesTabButton = widget.Get<ButtonWidget>(string.Concat("BUTTON", numTabs.ToString()));
 				objectivesTabButton.GetText = () => "Objectives";
-				objectivesTabButton.IsVisible = () => numTabs > 1 && !hasError;
+				objectivesTabButton.VisibilityFunction = () => numTabs > 1 && !hasError;
 				objectivesTabButton.OnClick = () => activePanel = IngameInfoPanel.Objectives;
 				objectivesTabButton.IsHighlighted = () => activePanel == IngameInfoPanel.Objectives;
 
 				var panel = hasError ? "SCRIPT_ERROR_PANEL" : iop.PanelName;
 				var objectivesPanel = widget.Get<ContainerWidget>("OBJECTIVES_PANEL");
-				objectivesPanel.IsVisible = () => activePanel == IngameInfoPanel.Objectives;
+				objectivesPanel.VisibilityFunction = () => activePanel == IngameInfoPanel.Objectives;
 
 				Game.LoadWidget(world, panel, objectivesPanel, new WidgetArgs()
 				{
@@ -64,12 +64,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				numTabs++;
 				var mapTabButton = widget.Get<ButtonWidget>(string.Concat("BUTTON", numTabs.ToString()));
 				mapTabButton.Text = "Briefing";
-				mapTabButton.IsVisible = () => numTabs > 1 && !hasError;
+				mapTabButton.VisibilityFunction = () => numTabs > 1 && !hasError;
 				mapTabButton.OnClick = () => activePanel = IngameInfoPanel.Map;
 				mapTabButton.IsHighlighted = () => activePanel == IngameInfoPanel.Map;
 
 				var mapPanel = widget.Get<ContainerWidget>("MAP_PANEL");
-				mapPanel.IsVisible = () => activePanel == IngameInfoPanel.Map;
+				mapPanel.VisibilityFunction = () => activePanel == IngameInfoPanel.Map;
 
 				Game.LoadWidget(world, "MAP_PANEL", mapPanel, new WidgetArgs());
 
@@ -88,13 +88,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				numTabs++;
 				var debugTabButton = widget.Get<ButtonWidget>(string.Concat("BUTTON", numTabs.ToString()));
 				debugTabButton.Text = "Debug";
-				debugTabButton.IsVisible = () => numTabs > 1 && !hasError;
+				debugTabButton.VisibilityFunction = () => numTabs > 1 && !hasError;
 				debugTabButton.IsDisabled = () => world.IsGameOver;
 				debugTabButton.OnClick = () => activePanel = IngameInfoPanel.Debug;
 				debugTabButton.IsHighlighted = () => activePanel == IngameInfoPanel.Debug;
 
 				var debugPanelContainer = widget.Get<ContainerWidget>("DEBUG_PANEL");
-				debugPanelContainer.IsVisible = () => activePanel == IngameInfoPanel.Debug;
+				debugPanelContainer.VisibilityFunction = () => activePanel == IngameInfoPanel.Debug;
 
 				Game.LoadWidget(world, "DEBUG_PANEL", debugPanelContainer, new WidgetArgs());
 
@@ -108,7 +108,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var chatPanelContainer = widget.Get<ContainerWidget>("CHAT_PANEL");
 				var chatTabButton = widget.Get<ButtonWidget>(string.Concat("BUTTON", numTabs.ToString()));
 				chatTabButton.Text = "Chat";
-				chatTabButton.IsVisible = () => numTabs > 1 && !hasError;
+				chatTabButton.VisibilityFunction = () => numTabs > 1 && !hasError;
 				chatTabButton.IsHighlighted = () => activePanel == IngameInfoPanel.Chat;
 				chatTabButton.OnClick = () =>
 				{
@@ -116,7 +116,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					chatPanelContainer.Get<TextFieldWidget>("CHAT_TEXTFIELD").TakeKeyboardFocus();
 				};
 
-				chatPanelContainer.IsVisible = () => activePanel == IngameInfoPanel.Chat;
+				chatPanelContainer.VisibilityFunction = () => activePanel == IngameInfoPanel.Chat;
 
 				Game.LoadWidget(world, "CHAT_CONTAINER", chatPanelContainer, new WidgetArgs() { { "isMenuChat", true } });
 
@@ -133,20 +133,20 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (firstCategory != null)
 				mapTitle = firstCategory + ": " + mapTitle;
 
-			titleText.IsVisible = () => numTabs > 1 || (numTabs == 1 && titleTextNoTabs == null);
+			titleText.VisibilityFunction = () => numTabs > 1 || (numTabs == 1 && titleTextNoTabs == null);
 			titleText.GetText = () => mapTitle;
 			if (titleTextNoTabs != null)
 			{
-				titleTextNoTabs.IsVisible = () => numTabs == 1;
+				titleTextNoTabs.VisibilityFunction = () => numTabs == 1;
 				titleTextNoTabs.GetText = () => mapTitle;
 			}
 
 			var bg = widget.Get<BackgroundWidget>("BACKGROUND");
 			var bgNoTabs = widget.GetOrNull<BackgroundWidget>("BACKGROUND_NO_TABS");
 
-			bg.IsVisible = () => numTabs > 1 || (numTabs == 1 && bgNoTabs == null);
+			bg.VisibilityFunction = () => numTabs > 1 || (numTabs == 1 && bgNoTabs == null);
 			if (bgNoTabs != null)
-				bgNoTabs.IsVisible = () => numTabs == 1;
+				bgNoTabs.VisibilityFunction = () => numTabs == 1;
 		}
 	}
 }

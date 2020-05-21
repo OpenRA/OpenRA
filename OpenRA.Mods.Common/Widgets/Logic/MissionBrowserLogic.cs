@@ -65,14 +65,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (title != null)
 				title.GetText = () => playingVideo != PlayingVideo.None ? selectedMap.Title : title.Text;
 
-			widget.Get("MISSION_INFO").IsVisible = () => selectedMap != null;
+			widget.Get("MISSION_INFO").VisibilityFunction = () => selectedMap != null;
 
 			var previewWidget = widget.Get<MapPreviewWidget>("MISSION_PREVIEW");
 			previewWidget.Preview = () => selectedMap;
-			previewWidget.IsVisible = () => playingVideo == PlayingVideo.None;
+			previewWidget.VisibilityFunction = () => playingVideo == PlayingVideo.None;
 
 			videoPlayer = widget.Get<VqaPlayerWidget>("MISSION_VIDEO");
-			widget.Get("MISSION_BIN").IsVisible = () => playingVideo != PlayingVideo.None;
+			widget.Get("MISSION_BIN").VisibilityFunction = () => playingVideo != PlayingVideo.None;
 			fullscreenVideoPlayer = Ui.LoadWidget<BackgroundWidget>("FULLSCREEN_PLAYER", Ui.Root, new WidgetArgs { { "world", world } });
 
 			descriptionPanel = widget.Get<ScrollPanelWidget>("MISSION_DESCRIPTION_PANEL");
@@ -85,12 +85,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			startBriefingVideoButton = widget.Get<ButtonWidget>("START_BRIEFING_VIDEO_BUTTON");
 			stopBriefingVideoButton = widget.Get<ButtonWidget>("STOP_BRIEFING_VIDEO_BUTTON");
-			stopBriefingVideoButton.IsVisible = () => playingVideo == PlayingVideo.Briefing;
+			stopBriefingVideoButton.VisibilityFunction = () => playingVideo == PlayingVideo.Briefing;
 			stopBriefingVideoButton.OnClick = () => StopVideo(videoPlayer);
 
 			startInfoVideoButton = widget.Get<ButtonWidget>("START_INFO_VIDEO_BUTTON");
 			stopInfoVideoButton = widget.Get<ButtonWidget>("STOP_INFO_VIDEO_BUTTON");
-			stopInfoVideoButton.IsVisible = () => playingVideo == PlayingVideo.Info;
+			stopInfoVideoButton.VisibilityFunction = () => playingVideo == PlayingVideo.Info;
 			stopInfoVideoButton.OnClick = () => StopVideo(videoPlayer);
 
 			var allPreviews = new List<MapPreview>();
@@ -252,10 +252,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				}
 			}).Start();
 
-			startBriefingVideoButton.IsVisible = () => briefingVideoVisible && playingVideo != PlayingVideo.Briefing;
+			startBriefingVideoButton.VisibilityFunction = () => briefingVideoVisible && playingVideo != PlayingVideo.Briefing;
 			startBriefingVideoButton.OnClick = () => PlayVideo(videoPlayer, briefingVideo, PlayingVideo.Briefing);
 
-			startInfoVideoButton.IsVisible = () => infoVideoVisible && playingVideo != PlayingVideo.Info;
+			startInfoVideoButton.VisibilityFunction = () => infoVideoVisible && playingVideo != PlayingVideo.Info;
 			startInfoVideoButton.OnClick = () => PlayVideo(videoPlayer, infoVideo, PlayingVideo.Info);
 
 			descriptionPanel.ScrollToTop();
@@ -388,7 +388,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (missionData != null && missionData.StartVideo != null && modData.DefaultFileSystem.Exists(missionData.StartVideo))
 			{
 				var fsPlayer = fullscreenVideoPlayer.Get<VqaPlayerWidget>("PLAYER");
-				fullscreenVideoPlayer.Visible = true;
+				fullscreenVideoPlayer.VisibilityFunction = () => true;
 				PlayVideo(fsPlayer, missionData.StartVideo, PlayingVideo.GameStart, () =>
 				{
 					Game.CreateAndStartLocalServer(selectedMap.Uid, orders);

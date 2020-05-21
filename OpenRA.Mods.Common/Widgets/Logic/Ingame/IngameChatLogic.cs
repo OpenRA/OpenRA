@@ -61,11 +61,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (chatOverlay != null)
 			{
 				chatOverlayDisplay = chatOverlay.Get<ChatDisplayWidget>("CHAT_DISPLAY");
-				chatOverlay.Visible = false;
+				chatOverlay.VisibilityFunction = () => false;
 			}
 
 			chatChrome = chatPanel.Get<ContainerWidget>("CHAT_CHROME");
-			chatChrome.Visible = true;
+			chatChrome.VisibilityFunction = () => true;
 
 			var chatMode = chatChrome.Get<ButtonWidget>("CHAT_MODE");
 			chatMode.GetText = () => teamChat && !disableTeamChat ? "Team" : "All";
@@ -217,19 +217,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		public void OpenChat()
 		{
 			chatText.Text = "";
-			chatChrome.Visible = true;
+			chatChrome.VisibilityFunction = () => true;
 			chatScrollPanel.ScrollToBottom();
 			if (!chatText.IsDisabled())
 				chatText.TakeKeyboardFocus();
 
-			chatOverlay.Visible = false;
+			chatOverlay.VisibilityFunction = () => false;
 		}
 
 		public void CloseChat()
 		{
-			chatChrome.Visible = false;
+			chatChrome.VisibilityFunction = () => false;
 			chatText.YieldKeyboardFocus();
-			chatOverlay.Visible = true;
+			chatOverlay.VisibilityFunction = () => true;
 		}
 
 		public void AddChatLineWrapper(string name, Color nameColor, string text, Color textColor)

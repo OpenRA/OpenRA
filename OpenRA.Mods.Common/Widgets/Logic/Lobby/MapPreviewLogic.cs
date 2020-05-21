@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var available = widget.GetOrNull("MAP_AVAILABLE");
 			if (available != null)
 			{
-				available.IsVisible = () =>
+				available.VisibilityFunction = () =>
 				{
 					var map = getMap();
 					return map.Status == MapStatus.Available && (!map.RulesLoaded || !map.InvalidCustomRules);
@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var invalid = widget.GetOrNull("MAP_INVALID");
 			if (invalid != null)
 			{
-				invalid.IsVisible = () =>
+				invalid.VisibilityFunction = () =>
 				{
 					var map = getMap();
 					return map.Status == MapStatus.Available && map.InvalidCustomRules;
@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var download = widget.GetOrNull("MAP_DOWNLOADABLE");
 			if (download != null)
 			{
-				download.IsVisible = () => getMap().Status == MapStatus.DownloadAvailable;
+				download.VisibilityFunction = () => getMap().Status == MapStatus.DownloadAvailable;
 				SetupWidgets(download, getMap, onMouseDown, getSpawnOccupants, showUnoccupiedSpawnpoints);
 
 				var install = download.GetOrNull<ButtonWidget>("MAP_INSTALL");
@@ -80,7 +80,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var progress = widget.GetOrNull("MAP_PROGRESS");
 			if (progress != null)
 			{
-				progress.IsVisible = () =>
+				progress.VisibilityFunction = () =>
 				{
 					var map = getMap();
 					return map.Status != MapStatus.Available && map.Status != MapStatus.DownloadAvailable;
@@ -90,12 +90,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				var statusSearching = progress.GetOrNull("MAP_STATUS_SEARCHING");
 				if (statusSearching != null)
-					statusSearching.IsVisible = () => getMap().Status == MapStatus.Searching;
+					statusSearching.VisibilityFunction = () => getMap().Status == MapStatus.Searching;
 
 				var statusUnavailable = progress.GetOrNull("MAP_STATUS_UNAVAILABLE");
 				if (statusUnavailable != null)
 				{
-					statusUnavailable.IsVisible = () =>
+					statusUnavailable.VisibilityFunction = () =>
 					{
 						var map = getMap();
 						return map.Status == MapStatus.Unavailable && map != MapCache.UnknownMap;
@@ -104,12 +104,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				var statusError = progress.GetOrNull("MAP_STATUS_ERROR");
 				if (statusError != null)
-					statusError.IsVisible = () => getMap().Status == MapStatus.DownloadError;
+					statusError.VisibilityFunction = () => getMap().Status == MapStatus.DownloadError;
 
 				var statusDownloading = progress.GetOrNull<LabelWidget>("MAP_STATUS_DOWNLOADING");
 				if (statusDownloading != null)
 				{
-					statusDownloading.IsVisible = () => getMap().Status == MapStatus.Downloading;
+					statusDownloading.VisibilityFunction = () => getMap().Status == MapStatus.Downloading;
 					statusDownloading.GetText = () =>
 					{
 						var map = getMap();
@@ -127,7 +127,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var retry = progress.GetOrNull<ButtonWidget>("MAP_RETRY");
 				if (retry != null)
 				{
-					retry.IsVisible = () =>
+					retry.VisibilityFunction = () =>
 					{
 						var map = getMap();
 						return (map.Status == MapStatus.DownloadError || map.Status == MapStatus.Unavailable) && map != MapCache.UnknownMap;
@@ -157,7 +157,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					progressbar.IsIndeterminate = () => getMap().DownloadPercentage == 0;
 					progressbar.GetPercentage = () => getMap().DownloadPercentage;
-					progressbar.IsVisible = () => getMap().Status == MapStatus.Downloading;
+					progressbar.VisibilityFunction = () => getMap().Status == MapStatus.Downloading;
 				}
 			}
 		}
@@ -183,7 +183,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var titleLabel = parent.GetOrNull<LabelWithTooltipWidget>("MAP_TITLE");
 			if (titleLabel != null)
 			{
-				titleLabel.IsVisible = () => getMap() != MapCache.UnknownMap;
+				titleLabel.VisibilityFunction = () => getMap() != MapCache.UnknownMap;
 				var font = Game.Renderer.Fonts[titleLabel.Font];
 				var title = new CachedTransform<MapPreview, string>(m => WidgetUtils.TruncateText(m.Title, (int)titleLabel.Node.LayoutWidth, font));
 				titleLabel.GetText = () => title.Update(getMap());

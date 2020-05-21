@@ -73,8 +73,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			watch.OnClick = () => { WatchReplay(); };
 
 			var mapPreviewRoot = panel.Get("MAP_PREVIEW_ROOT");
-			mapPreviewRoot.IsVisible = () => selectedReplay != null;
-			panel.Get("REPLAY_INFO").IsVisible = () => selectedReplay != null;
+			mapPreviewRoot.VisibilityFunction = () => selectedReplay != null;
+			panel.Get("REPLAY_INFO").VisibilityFunction = () => selectedReplay != null;
 
 			Ui.LoadWidget("MAP_PREVIEW", mapPreviewRoot, new WidgetArgs
 			{
@@ -590,7 +590,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			foreach (var replay in replays)
 				replayState[replay].Visible = EvaluateReplayVisibility(replay);
 
-			if (selectedReplay == null || replayState[selectedReplay].Visible == false)
+			if (selectedReplay == null || !replayState[selectedReplay].Visible)
 				SelectFirstVisibleReplay();
 
 			replayList.Layout.AdjustChildren();
@@ -714,7 +714,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var label = item.Get<LabelWithTooltipWidget>("TITLE");
 			WidgetUtils.TruncateLabelToTooltip(label, item.Text);
 
-			item.IsVisible = () => replayState[replay].Visible;
+			item.VisibilityFunction = () => replayState[replay].Visible;
 			replayList.AddChild(item);
 		}
 

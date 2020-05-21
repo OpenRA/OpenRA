@@ -96,10 +96,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			noticeContainer = widget.GetOrNull("NOTICE_CONTAINER");
 			if (noticeContainer != null)
 			{
-				noticeContainer.IsVisible = () => showNotices;
-				noticeContainer.Get("OUTDATED_VERSION_LABEL").IsVisible = () => services.ModVersionStatus == ModVersionStatus.Outdated;
-				noticeContainer.Get("UNKNOWN_VERSION_LABEL").IsVisible = () => services.ModVersionStatus == ModVersionStatus.Unknown;
-				noticeContainer.Get("PLAYTEST_AVAILABLE_LABEL").IsVisible = () => services.ModVersionStatus == ModVersionStatus.PlaytestAvailable;
+				noticeContainer.VisibilityFunction = () => showNotices;
+				noticeContainer.Get("OUTDATED_VERSION_LABEL").VisibilityFunction = () => services.ModVersionStatus == ModVersionStatus.Outdated;
+				noticeContainer.Get("UNKNOWN_VERSION_LABEL").VisibilityFunction = () => services.ModVersionStatus == ModVersionStatus.Unknown;
+				noticeContainer.Get("PLAYTEST_AVAILABLE_LABEL").VisibilityFunction = () => services.ModVersionStatus == ModVersionStatus.PlaytestAvailable;
 			}
 
 			var noticeWatcher = widget.Get<LogicTickerWidget>("NOTICE_WATCHER");
@@ -123,7 +123,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			joinButton = widget.GetOrNull<ButtonWidget>("JOIN_BUTTON");
 			if (joinButton != null)
 			{
-				joinButton.IsVisible = () => currentServer != null;
+				joinButton.VisibilityFunction = () => currentServer != null;
 				joinButton.IsDisabled = () => !currentServer.IsJoinable;
 				joinButton.OnClick = () => onJoin(currentServer);
 				joinButtonY = (int)joinButton.Node.LayoutY;
@@ -132,7 +132,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			// Display the progress label over the server list
 			// The text is only visible when the list is empty
 			var progressText = widget.Get<LabelWidget>("PROGRESS_LABEL");
-			progressText.IsVisible = () => searchStatus != SearchStatus.Hidden;
+			progressText.VisibilityFunction = () => searchStatus != SearchStatus.Hidden;
 			progressText.GetText = ProgressLabelText;
 
 			var gs = Game.Settings.Game;
@@ -224,7 +224,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (playersLabel != null)
 			{
 				var playersText = new CachedTransform<int, string>(c => c == 1 ? "1 Player Online" : c.ToString() + " Players Online");
-				playersLabel.IsVisible = () => playerCount != 0;
+				playersLabel.VisibilityFunction = () => playerCount != 0;
 				playersLabel.GetText = () => playersText.Update(playerCount);
 			}
 
@@ -257,14 +257,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var ip = widget.GetOrNull<LabelWidget>("SELECTED_IP");
 			if (ip != null)
 			{
-				ip.IsVisible = () => currentServer != null;
+				ip.VisibilityFunction = () => currentServer != null;
 				ip.GetText = () => currentServer.Address;
 			}
 
 			var status = widget.GetOrNull<LabelWidget>("SELECTED_STATUS");
 			if (status != null)
 			{
-				status.IsVisible = () => currentServer != null;
+				status.VisibilityFunction = () => currentServer != null;
 				status.GetText = () => GetStateLabel(currentServer);
 				status.GetColor = () => GetStateColor(currentServer, status);
 			}
@@ -272,7 +272,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var modVersion = widget.GetOrNull<LabelWidget>("SELECTED_MOD_VERSION");
 			if (modVersion != null)
 			{
-				modVersion.IsVisible = () => currentServer != null;
+				modVersion.VisibilityFunction = () => currentServer != null;
 				modVersion.GetColor = () => currentServer.IsCompatible ? modVersion.TextColor : incompatibleVersionColor;
 
 				var font = Game.Renderer.Fonts[modVersion.Font];
@@ -283,7 +283,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var players = widget.GetOrNull<LabelWidget>("SELECTED_PLAYERS");
 			if (players != null)
 			{
-				players.IsVisible = () => currentServer != null && (clientContainer == null || !currentServer.Clients.Any());
+				players.VisibilityFunction = () => currentServer != null && (clientContainer == null || !currentServer.Clients.Any());
 				players.GetText = () => PlayersLabel(currentServer);
 			}
 
@@ -291,7 +291,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (clientContainer != null)
 			{
 				clientList = Ui.LoadWidget("MULTIPLAYER_CLIENT_LIST", clientContainer, new WidgetArgs()) as ScrollPanelWidget;
-				clientList.IsVisible = () => currentServer != null && currentServer.Clients.Any();
+				clientList.VisibilityFunction = () => currentServer != null && currentServer.Clients.Any();
 				clientHeader = clientList.Get<ScrollItemWidget>("HEADER");
 				clientTemplate = clientList.Get<ScrollItemWidget>("TEMPLATE");
 				clientList.RemoveChildren();
@@ -493,7 +493,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						label.GetColor = () => o.Color;
 
 						var flag = item.Get<ImageWidget>("FLAG");
-						flag.IsVisible = () => true;
+						flag.VisibilityFunction = () => true;
 						flag.GetImageCollection = () => "flags";
 						flag.GetImageName = () => (factionInfo != null && factionInfo.Any(f => f.InternalName == o.Faction)) ? o.Faction : "Random";
 					}
@@ -613,14 +613,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						var password = item.GetOrNull<ImageWidget>("PASSWORD_PROTECTED");
 						if (password != null)
 						{
-							password.IsVisible = () => game.Protected;
+							password.VisibilityFunction = () => game.Protected;
 							password.GetImageName = () => canJoin ? "protected" : "protected-disabled";
 						}
 
 						var auth = item.GetOrNull<ImageWidget>("REQUIRES_AUTHENTICATION");
 						if (auth != null)
 						{
-							auth.IsVisible = () => game.Authentication;
+							auth.VisibilityFunction = () => game.Authentication;
 							auth.GetImageName = () => canJoin ? "authentication" : "authentication-disabled";
 
 							if (game.Protected && password != null)

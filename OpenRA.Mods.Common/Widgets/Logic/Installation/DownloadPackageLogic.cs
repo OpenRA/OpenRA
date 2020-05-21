@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			progressBar.Indeterminate = true;
 
 			var retryButton = panel.Get<ButtonWidget>("RETRY_BUTTON");
-			retryButton.IsVisible = () => false;
+			retryButton.VisibilityFunction = () => false;
 
 			var cancelButton = panel.Get<ButtonWidget>("CANCEL_BUTTON");
 
@@ -117,7 +117,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				progressBar.Indeterminate = false;
 				progressBar.Percentage = 100;
 				getStatusText = () => "Error: " + s;
-				retryButton.IsVisible = () => true;
+				retryButton.VisibilityFunction = () => true;
 				cancelButton.OnClick = Ui.CloseWindow;
 			});
 

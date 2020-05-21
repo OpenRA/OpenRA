@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var objectiveGroup = widget.Get("OBJECTIVE");
 				var statsHeader = widget.Get("STATS_HEADERS");
 
-				objectiveGroup.Visible = false;
+				objectiveGroup.VisibilityFunction = () => false;
 				statsHeader.Node.Top = (int)statsHeader.Node.LayoutY - (int)objectiveGroup.Node.LayoutHeight;
 				statsHeader.Node.CalculateLayout();
 				playerPanel.Node.Top = (int)playerPanel.Node.LayoutY - (int)objectiveGroup.Node.LayoutHeight;
@@ -145,7 +145,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					};
 
 					var kickButton = item.Get<ButtonWidget>("KICK");
-					kickButton.IsVisible = () => Game.IsHost && client.Index != orderManager.LocalClient.Index && client.State != Session.ClientState.Disconnected;
+					kickButton.VisibilityFunction = () => Game.IsHost && client.Index != orderManager.LocalClient.Index && client.State != Session.ClientState.Disconnected;
 					kickButton.OnClick = () =>
 					{
 						hideMenu(true);

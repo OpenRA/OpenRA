@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		public SpawnSelectorTooltipLogic(Widget widget, TooltipContainerWidget tooltipContainer, MapPreviewWidget preview, bool showUnoccupiedSpawnpoints)
 		{
 			bool showTooltip = true;
-			widget.IsVisible = () => preview.TooltipSpawnIndex != -1 && showTooltip;
+			widget.VisibilityFunction = () => preview.TooltipSpawnIndex != -1 && showTooltip;
 			var label = widget.Get<LabelWidget>("LABEL");
 			var flag = widget.Get<ImageWidget>("FLAG");
 			var team = widget.Get<LabelWidget>("TEAM");
@@ -87,11 +87,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			label.GetText = () => labelText;
-			flag.IsVisible = () => playerFaction != null;
+			flag.VisibilityFunction = () => playerFaction != null;
 			flag.GetImageCollection = () => "flags";
 			flag.GetImageName = () => playerFaction;
 			team.GetText = () => "Team {0}".F(playerTeam);
-			team.IsVisible = () => playerTeam > 0;
+			team.VisibilityFunction = () => playerTeam > 0;
 		}
 	}
 }

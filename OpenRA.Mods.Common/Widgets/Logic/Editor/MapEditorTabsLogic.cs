@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			tab.OnClick = () => { menuType = tabType; };
 
 			var container = widget.Parent.Get<ContainerWidget>(tabId);
-			container.IsVisible = () => menuType == tabType;
+			container.VisibilityFunction = () => menuType == tabType;
 		}
 	}
 }

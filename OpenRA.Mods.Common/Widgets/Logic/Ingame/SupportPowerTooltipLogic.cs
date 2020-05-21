@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public SupportPowerTooltipLogic(Widget widget, TooltipContainerWidget tooltipContainer, Func<SupportPowersWidget.SupportPowerIcon> getTooltipIcon, World world)
 		{
-			widget.IsVisible = () => getTooltipIcon() != null && getTooltipIcon().Power.Info != null;
+			widget.VisibilityFunction = () => getTooltipIcon() != null && getTooltipIcon().Power.Info != null;
 			var nameLabel = widget.Get<LabelWidget>("NAME");
 			var hotkeyLabel = widget.Get<LabelWidget>("HOTKEY");
 			var timeLabel = widget.Get<LabelWidget>("TIME");
@@ -71,8 +71,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				var timeSize = timeFont.Measure(timeLabel.Text);
 				var hotkeyWidth = 0;
-				hotkeyLabel.Visible = hotkey.IsValid();
-				if (hotkeyLabel.Visible)
+				hotkeyLabel.VisibilityFunction = () => hotkey.IsValid();
+				if (hotkeyLabel.IsVisible())
 				{
 					var hotkeyText = "({0})".F(hotkey.DisplayString());
 

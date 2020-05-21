@@ -105,7 +105,7 @@ namespace OpenRA.Mods.Common.Widgets
 				.Select(q => q.Group).Distinct().ToDictionary(g => g, g => new ProductionTabGroup() { Group = g });
 
 			// Only visible if the production palette has icons to display
-			IsVisible = () => queueGroup != null && Groups[queueGroup].Tabs.Count > 0;
+			VisibilityFunction = () => queueGroup != null && Groups[queueGroup].Tabs.Count > 0;
 
 			paletteWidget = Exts.Lazy(() => Ui.Root.Get<ProductionPaletteWidget>(PaletteWidget));
 		}

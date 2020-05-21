@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (block != null)
 			{
 				radar.Animating = x => blockColor = Color.FromArgb((int)(255 * x), Color.Black);
-				block.IsVisible = () => blockColor.A != 0;
+				block.VisibilityFunction = () => blockColor.A != 0;
 				block.GetColor = () => blockColor;
 			}
 		}

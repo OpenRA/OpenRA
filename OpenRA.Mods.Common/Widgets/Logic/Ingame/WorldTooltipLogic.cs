@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public WorldTooltipLogic(Widget widget, World world, TooltipContainerWidget tooltipContainer, ViewportControllerWidget viewport)
 		{
-			widget.IsVisible = () => viewport.TooltipType != WorldTooltipType.None;
+			widget.VisibilityFunction = () => viewport.TooltipType != WorldTooltipType.None;
 			var label = widget.Get<LabelWidget>("LABEL");
 			var flag = widget.Get<ImageWidget>("FLAG");
 			var owner = widget.Get<LabelWidget>("OWNER");
@@ -135,10 +135,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			label.GetText = () => labelText;
-			flag.IsVisible = () => showOwner;
+			flag.VisibilityFunction = () => showOwner;
 			flag.GetImageCollection = () => "flags";
 			flag.GetImageName = () => flagFaction;
-			owner.IsVisible = () => showOwner;
+			owner.VisibilityFunction = () => showOwner;
 			owner.GetText = () => ownerName;
 			owner.GetColor = () => ownerColor;
 			extras.GetText = () => extraText;

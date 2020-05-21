@@ -95,7 +95,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var deleteMapButton = widget.Get<ButtonWidget>("DELETE_MAP_BUTTON");
 			deleteMapButton.IsDisabled = () => modData.MapCache[selectedUid].Class != MapClassification.User;
-			deleteMapButton.IsVisible = () => currentTab == MapClassification.User;
+			deleteMapButton.VisibilityFunction = () => currentTab == MapClassification.User;
 			deleteMapButton.OnClick = () =>
 			{
 				DeleteOneMap(selectedUid, (string newUid) =>
@@ -108,7 +108,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			var deleteAllMapsButton = widget.Get<ButtonWidget>("DELETE_ALL_MAPS_BUTTON");
-			deleteAllMapsButton.IsVisible = () => currentTab == MapClassification.User;
+			deleteAllMapsButton.VisibilityFunction = () => currentTab == MapClassification.User;
 			deleteAllMapsButton.OnClick = () =>
 			{
 				DeleteAllMaps(visibleMaps, (string newUid) =>
@@ -152,14 +152,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void SetupMapTab(MapClassification tab, MapVisibility filter, string tabButtonName, string tabContainerName, ScrollItemWidget itemTemplate)
 		{
 			var tabContainer = widget.Get<ContainerWidget>(tabContainerName);
-			tabContainer.IsVisible = () => currentTab == tab;
+			tabContainer.VisibilityFunction = () => currentTab == tab;
 			var tabScrollpanel = tabContainer.Get<ScrollPanelWidget>("MAP_LIST");
 			tabScrollpanel.Layout = new GridLayout(tabScrollpanel);
 			scrollpanels.Add(tab, tabScrollpanel);
 
 			var tabButton = widget.Get<ButtonWidget>(tabButtonName);
 			tabButton.IsHighlighted = () => currentTab == tab;
-			tabButton.IsVisible = () => tabMaps[tab].Any();
+			tabButton.VisibilityFunction = () => tabMaps[tab].Any();
 			tabButton.OnClick = () => SwitchTab(tab, itemTemplate);
 
 			RefreshMaps(tab, filter);
@@ -248,7 +248,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				var item = ScrollItemWidget.Setup(preview.Uid, template, () => selectedUid == preview.Uid,
 					() => selectedUid = preview.Uid, dblClick);
-				item.IsVisible = () => item.RenderBounds.IntersectsWith(scrollpanels[tab].RenderBounds);
+				item.VisibilityFunction = () => item.RenderBounds.IntersectsWith(scrollpanels[tab].RenderBounds);
 
 				var titleLabel = item.Get<LabelWidget>("TITLE");
 				if (titleLabel != null)
