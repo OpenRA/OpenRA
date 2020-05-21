@@ -18,7 +18,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Trait for music handling. Attach this to the world actor.")]
-	public class MusicPlaylistInfo : TraitInfo
+	public class MusicPlaylistInfo : ConditionalTraitInfo
 	{
 		[Desc("Music to play when the map starts.", "Plays the first song on the playlist when undefined.")]
 		public readonly string StartingMusic = null;
@@ -39,10 +39,10 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Disable all world sounds (combat etc).")]
 		public readonly bool DisableWorldSounds = false;
 
-		public override object Create(ActorInitializer init) { return new MusicPlaylist(init.World, this); }
+		public override object Create(ActorInitializer init) { return new MusicPlaylist(this, init.World); }
 	}
 
-	public class MusicPlaylist : INotifyActorDisposing, IGameOver, IWorldLoaded, INotifyGameLoaded
+	public class MusicPlaylist : ConditionalTrait<MusicPlaylistInfo>, INotifyActorDisposing, IGameOver, IWorldLoaded, INotifyGameLoaded
 	{
 		readonly MusicPlaylistInfo info;
 		readonly World world;
@@ -64,7 +64,8 @@ namespace OpenRA.Mods.Common.Traits
 		MusicInfo currentSong;
 		MusicInfo currentBackgroundSong;
 
-		public MusicPlaylist(World world, MusicPlaylistInfo info)
+		public MusicPlaylist(MusicPlaylistInfo info, World world)
+			: base(info)
 		{
 			this.info = info;
 			this.world = world;
@@ -161,6 +162,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		void Play()
 		{
+			if (IsTraitDisabled)
+				return;
+
 			if (!SongExists(currentSong) || (CurrentSongIsBackground && IsBackgroundMusicMuted))
 				return;
 
