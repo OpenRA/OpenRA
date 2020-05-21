@@ -85,7 +85,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var categoryTemplate = categoriesPanel.Get<CheckboxWidget>("CATEGORY_TEMPLATE");
 
 			var selectButtons = categoriesPanel.Get<ContainerWidget>("SELECT_CATEGORIES_BUTTONS");
-			categoriesPanel.AddChild(selectButtons);
 
 			var selectAll = selectButtons.Get<ButtonWidget>("SELECT_ALL");
 			selectAll.OnClick = () =>

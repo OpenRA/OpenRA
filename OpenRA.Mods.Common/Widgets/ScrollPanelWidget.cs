@@ -223,6 +223,8 @@ namespace OpenRA.Mods.Common.Widgets
 			drawBounds.X -= co.X;
 			drawBounds.Y -= co.Y;
 
+			Layout.AdjustChildren();
+
 			foreach (var child in Children)
 				if (new Rectangle((int)child.Node.LayoutX, (int)child.Node.LayoutY, (int)child.Node.LayoutWidth, (int)child.Node.LayoutHeight).IntersectsWith(drawBounds))
 					child.DrawOuter();

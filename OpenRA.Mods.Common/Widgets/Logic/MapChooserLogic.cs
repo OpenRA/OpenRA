@@ -159,7 +159,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var tabButton = widget.Get<ButtonWidget>(tabButtonName);
 			tabButton.IsHighlighted = () => currentTab == tab;
-			tabButton.VisibilityFunction = () => tabMaps[tab].Any();
+			tabButton.VisibilityFunction = () => tabMaps.ContainsKey(tab) && tabMaps[tab].Any();
 			tabButton.OnClick = () => SwitchTab(tab, itemTemplate);
 
 			RefreshMaps(tab, filter);
@@ -248,7 +248,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				var item = ScrollItemWidget.Setup(preview.Uid, template, () => selectedUid == preview.Uid,
 					() => selectedUid = preview.Uid, dblClick);
-				item.VisibilityFunction = () => item.RenderBounds.IntersectsWith(scrollpanels[tab].RenderBounds);
 
 				var titleLabel = item.Get<LabelWidget>("TITLE");
 				if (titleLabel != null)

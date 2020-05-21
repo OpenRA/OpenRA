@@ -444,7 +444,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			Game.OpenWindow("MISSIONBROWSER_PANEL", new WidgetArgs
 			{
 				{ "onExit", () => SwitchMenu(MenuType.Singleplayer) },
-				{ "onStart", () => { RemoveShellmapUI(); lastGameState = MenuPanel.Missions; } }
+				{ "onStart", () => { lastGameState = MenuPanel.Missions; } }
 			});
 		}
 
@@ -454,7 +454,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			Game.OpenWindow("SERVER_LOBBY", new WidgetArgs
 			{
 				{ "onExit", () => { Game.Disconnect(); SwitchMenu(MenuType.Singleplayer); } },
-				{ "onStart", () => { RemoveShellmapUI(); lastGameState = MenuPanel.Skirmish; } },
+				{ "onStart", () => { lastGameState = MenuPanel.Skirmish; } },
 				{ "skirmishMode", true }
 			});
 		}
@@ -464,7 +464,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			SwitchMenu(MenuType.None);
 			Ui.OpenWindow("MULTIPLAYER_PANEL", new WidgetArgs
 			{
-				{ "onStart", () => { RemoveShellmapUI(); lastGameState = MenuPanel.Multiplayer; } },
+				{ "onStart", () => { lastGameState = MenuPanel.Multiplayer; } },
 				{ "onExit", () => SwitchMenu(MenuType.Main) },
 				{ "directConnectEndPoint", null },
 			});
@@ -476,7 +476,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			Ui.OpenWindow("REPLAYBROWSER_PANEL", new WidgetArgs
 			{
 				{ "onExit", () => SwitchMenu(MenuType.Extras) },
-				{ "onStart", () => { RemoveShellmapUI(); lastGameState = MenuPanel.Replays; } }
+				{ "onStart", () => { lastGameState = MenuPanel.Replays; } }
 			});
 		}
 
@@ -486,7 +486,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			Ui.OpenWindow("GAMESAVE_BROWSER_PANEL", new WidgetArgs
 			{
 				{ "onExit", () => SwitchMenu(MenuType.Singleplayer) },
-				{ "onStart", () => { RemoveShellmapUI(); lastGameState = MenuPanel.GameSaves; } },
+				{ "onStart", () => { lastGameState = MenuPanel.GameSaves; } },
 				{ "isSavePanel", false },
 				{ "world", null }
 			});

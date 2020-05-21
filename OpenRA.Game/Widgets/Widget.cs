@@ -543,6 +543,7 @@ namespace OpenRA.Widgets
 			{
 				children.Remove(child);
 				Node.RemoveChild(child.Node);
+				child.Node.CalculateLayout();
 				child.parent = null;
 				child.Removed();
 			}

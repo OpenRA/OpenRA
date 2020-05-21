@@ -149,6 +149,7 @@ Section "Game" GAME
 	File "${SRCDIR}\Dune2000.ico"
 	File "${SRCDIR}\SDL2-CS.dll"
 	File "${SRCDIR}\OpenAL-CS.Core.dll"
+	File "${SRCDIR}\IceReaper.YogaSharp.dll"
 	File "${SRCDIR}\global mix database.dat"
 	File "${SRCDIR}\IP2LOCATION-LITE-DB1.IPV6.BIN.ZIP"
 	File "${SRCDIR}\eluant.dll"
@@ -279,6 +280,7 @@ Function ${UN}Clean
 	Delete $INSTDIR\Newtonsoft.Json.dll
 	Delete $INSTDIR\SDL2-CS.dll
 	Delete $INSTDIR\OpenAL-CS.Core.dll
+	Delete $INSTDIR\IceReaper.YogaSharp.dll
 	Delete $INSTDIR\BeaconLib.dll
 	RMDir /r $INSTDIR\Support
 

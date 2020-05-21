@@ -138,17 +138,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			shroudLabel = shroudSelector.Get<LabelWidget>("LABEL");
-			shroudLabel.VisibilityFunction = () => selected.Faction != null;
+			shroudLabel.VisibilityFunction = () => selected != null && selected.Faction != null;
 			shroudLabel.GetText = () => selected.Label;
 			shroudLabel.GetColor = () => selected.Color;
 
 			var shroudFlag = shroudSelector.Get<ImageWidget>("FLAG");
-			shroudFlag.VisibilityFunction = () => selected.Faction != null;
+			shroudFlag.VisibilityFunction = () => selected != null && selected.Faction != null;
 			shroudFlag.GetImageCollection = () => "flags";
 			shroudFlag.GetImageName = () => selected.Faction;
 
 			var shroudLabelAlt = shroudSelector.Get<LabelWidget>("NOFLAG_LABEL");
-			shroudLabelAlt.VisibilityFunction = () => selected.Faction == null;
+			shroudLabelAlt.VisibilityFunction = () => selected != null && selected.Faction == null;
 			shroudLabelAlt.GetText = () => selected.Label;
 			shroudLabelAlt.GetColor = () => selected.Color;
 
