@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Cnc.Activities;
 using OpenRA.Mods.Common.Graphics;
@@ -209,9 +210,9 @@ namespace OpenRA.Mods.Cnc.Traits
 			}
 		}
 
-		protected override void Tick(World world)
+		protected override void SelectionChanged(World world, IEnumerable<Actor> selected)
 		{
-			if (!self.IsInWorld || self.IsDead)
+			if (!selected.Contains(self))
 				world.CancelInputMode();
 		}
 

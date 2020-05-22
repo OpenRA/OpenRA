@@ -28,6 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 		public IEnumerable<Actor> Actors { get { return actors; } }
 
 		readonly HashSet<Actor> actors = new HashSet<Actor>();
+		World world;
 		IEnumerable<Actor> rolloverActors;
 
 		INotifySelection[] worldNotifySelection;
@@ -37,6 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 		void INotifyCreated.Created(Actor self)
 		{
 			worldNotifySelection = self.TraitsImplementing<INotifySelection>().ToArray();
+			world = self.World;
 		}
 
 		void UpdateHash()
@@ -55,6 +57,7 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var sel in a.TraitsImplementing<INotifySelected>())
 				sel.Selected(a);
 
+			Sync.RunUnsynced(Game.Settings.Debug.SyncCheckUnsyncedCode, world, () => world.OrderGenerator.SelectionChanged(world, actors));
 			foreach (var ns in worldNotifySelection)
 				ns.SelectionChanged();
 		}
@@ -64,6 +67,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (actors.Remove(a))
 			{
 				UpdateHash();
+				Sync.RunUnsynced(Game.Settings.Debug.SyncCheckUnsyncedCode, world, () => world.OrderGenerator.SelectionChanged(world, actors));
 				foreach (var ns in worldNotifySelection)
 					ns.SelectionChanged();
 			}
@@ -76,7 +80,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Remove the actor from the original owners selection
 			// Call UpdateHash directly for everyone else so watchers can account for the owner change if needed
-			if (oldOwner == a.World.LocalPlayer)
+			if (oldOwner == world.LocalPlayer)
 				Remove(a);
 			else
 				UpdateHash();
@@ -91,7 +95,8 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (isClick)
 			{
-				var adjNewSelection = newSelection.Take(1); // TODO: select BEST, not FIRST
+				// TODO: select BEST, not FIRST
+				var adjNewSelection = newSelection.Take(1);
 				if (isCombine)
 					actors.SymmetricExceptWith(adjNewSelection);
 				else
@@ -117,6 +122,7 @@ namespace OpenRA.Mods.Common.Traits
 				foreach (var sel in a.TraitsImplementing<INotifySelected>())
 					sel.Selected(a);
 
+			Sync.RunUnsynced(Game.Settings.Debug.SyncCheckUnsyncedCode, world, () => world.OrderGenerator.SelectionChanged(world, actors));
 			foreach (var ns in worldNotifySelection)
 				ns.SelectionChanged();
 
@@ -143,6 +149,9 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			actors.Clear();
 			UpdateHash();
+			Sync.RunUnsynced(Game.Settings.Debug.SyncCheckUnsyncedCode, world, () => world.OrderGenerator.SelectionChanged(world, actors));
+			foreach (var ns in worldNotifySelection)
+				ns.SelectionChanged();
 		}
 
 		public void SetRollover(IEnumerable<Actor> rollover)
@@ -157,18 +166,23 @@ namespace OpenRA.Mods.Common.Traits
 
 		void ITick.Tick(Actor self)
 		{
-			var removed = actors.RemoveWhere(a => !a.IsInWorld || (!a.Owner.IsAlliedWith(self.World.RenderPlayer) && self.World.FogObscures(a)));
+			var removed = actors.RemoveWhere(a => !a.IsInWorld || (!a.Owner.IsAlliedWith(world.RenderPlayer) && world.FogObscures(a)));
 			if (removed > 0)
+			{
 				UpdateHash();
+				Sync.RunUnsynced(Game.Settings.Debug.SyncCheckUnsyncedCode, world, () => world.OrderGenerator.SelectionChanged(world, actors));
+				foreach (var ns in worldNotifySelection)
+					ns.SelectionChanged();
+			}
 
 			foreach (var cg in controlGroups.Values)
 			{
 				// note: NOT `!a.IsInWorld`, since that would remove things that are in transports.
-				cg.RemoveAll(a => a.Disposed || a.Owner != self.World.LocalPlayer);
+				cg.RemoveAll(a => a.Disposed || a.Owner != world.LocalPlayer);
 			}
 		}
 
-		Cache<int, List<Actor>> controlGroups = new Cache<int, List<Actor>>(_ => new List<Actor>());
+		readonly Cache<int, List<Actor>> controlGroups = new Cache<int, List<Actor>>(_ => new List<Actor>());
 
 		public void DoControlGroup(World world, WorldRenderer worldRenderer, int group, Modifiers mods, int multiTapCount)
 		{
