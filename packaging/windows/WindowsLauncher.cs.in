@@ -43,7 +43,7 @@ namespace OpenRA
 			var launcherPath = Assembly.GetExecutingAssembly().Location;
 			var directory = Path.GetDirectoryName(launcherPath);
 			Directory.SetCurrentDirectory(directory);
-			
+
 			AppDomain.CurrentDomain.UnhandledException += (_, e) => ExceptionHandler.HandleFatalError((Exception)e.ExceptionObject);
 
 			try

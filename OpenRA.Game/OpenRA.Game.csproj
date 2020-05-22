@@ -55,7 +55,7 @@
     <PackageReference Include="OpenRA-Eluant" Version="1.0.17" />
     <PackageReference Include="OpenRA-Open.NAT" Version="1.0.0" />
     <PackageReference Include="SharpZipLib" Version="1.2.0" />
-    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" /> 
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" />
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0" PrivateAssets="All" />
     <AdditionalFiles Include="../stylecop.json" />
     <AdditionalFiles Include="Properties/launchSettings.json" />
