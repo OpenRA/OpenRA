@@ -323,18 +323,18 @@ namespace OpenRA.Mods.Common.Traits
 					var projectile = args.Weapon.Projectile.Create(args);
 					if (projectile != null)
 						self.World.Add(projectile);
-
-					if (args.Weapon.Report != null && args.Weapon.Report.Any())
-						Game.Sound.Play(SoundType.World, args.Weapon.Report, self.World, self.CenterPosition);
-
-					if (Burst == args.Weapon.Burst && args.Weapon.StartBurstReport != null && args.Weapon.StartBurstReport.Any())
-						Game.Sound.Play(SoundType.World, args.Weapon.StartBurstReport, self.World, self.CenterPosition);
-
-					foreach (var na in notifyAttacks)
-						na.Attacking(self, target, this, barrel);
-
-					Recoil = Info.Recoil;
 				}
+
+				if (args.Weapon.Report != null && args.Weapon.Report.Any())
+					Game.Sound.Play(SoundType.World, args.Weapon.Report, self.World, self.CenterPosition);
+
+				if (Burst == args.Weapon.Burst && args.Weapon.StartBurstReport != null && args.Weapon.StartBurstReport.Any())
+					Game.Sound.Play(SoundType.World, args.Weapon.StartBurstReport, self.World, self.CenterPosition);
+
+				foreach (var na in notifyAttacks)
+					na.Attacking(self, target, this, barrel);
+
+				Recoil = Info.Recoil;
 			});
 		}
 

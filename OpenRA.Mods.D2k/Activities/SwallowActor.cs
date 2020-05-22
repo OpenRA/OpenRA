@@ -86,10 +86,6 @@ namespace OpenRA.Mods.D2k.Activities
 			if (barrel == null)
 				return false;
 
-			// armament.CheckFire already calls INotifyAttack.PreparingAttack
-			foreach (var notify in self.TraitsImplementing<INotifyAttack>())
-				notify.Attacking(self, target, armament, barrel);
-
 			return true;
 		}
 
