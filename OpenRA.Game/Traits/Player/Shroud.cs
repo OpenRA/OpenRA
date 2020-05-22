@@ -94,14 +94,14 @@ namespace OpenRA.Traits
 		readonly Dictionary<object, ShroudSource> sources = new Dictionary<object, ShroudSource>();
 
 		// Per-cell count of each source type, used to resolve the final cell type
-		readonly CellLayer<short> passiveVisibleCount;
-		readonly CellLayer<short> visibleCount;
-		readonly CellLayer<short> generatedShroudCount;
-		readonly CellLayer<bool> explored;
-		readonly CellLayer<bool> touched;
+		readonly ProjectedCellLayer<short> passiveVisibleCount;
+		readonly ProjectedCellLayer<short> visibleCount;
+		readonly ProjectedCellLayer<short> generatedShroudCount;
+		readonly ProjectedCellLayer<bool> explored;
+		readonly ProjectedCellLayer<bool> touched;
 
 		// Per-cell cache of the resolved cell type (shroud/fog/visible)
-		readonly CellLayer<ShroudCellType> resolvedType;
+		readonly ProjectedCellLayer<ShroudCellType> resolvedType;
 
 		[Sync]
 		bool disabled;
@@ -137,14 +137,14 @@ namespace OpenRA.Traits
 			this.info = info;
 			map = self.World.Map;
 
-			passiveVisibleCount = new CellLayer<short>(map);
-			visibleCount = new CellLayer<short>(map);
-			generatedShroudCount = new CellLayer<short>(map);
-			explored = new CellLayer<bool>(map);
-			touched = new CellLayer<bool>(map);
+			passiveVisibleCount = new ProjectedCellLayer<short>(map);
+			visibleCount = new ProjectedCellLayer<short>(map);
+			generatedShroudCount = new ProjectedCellLayer<short>(map);
+			explored = new ProjectedCellLayer<bool>(map);
+			touched = new ProjectedCellLayer<bool>(map);
 
 			// Defaults to 0 = Shroud
-			resolvedType = new CellLayer<ShroudCellType>(map);
+			resolvedType = new ProjectedCellLayer<ShroudCellType>(map);
 		}
 
 		void INotifyCreated.Created(Actor self)
@@ -164,27 +164,26 @@ namespace OpenRA.Traits
 
 			foreach (var puv in map.ProjectedCellBounds)
 			{
-				var uv = (MPos)puv;
-				if (!touched[uv])
+				if (!touched[puv])
 					continue;
 
-				touched[uv] = false;
+				touched[puv] = false;
 
 				var type = ShroudCellType.Shroud;
 
-				if (explored[uv] && (!shroudGenerationEnabled || generatedShroudCount[uv] == 0 || visibleCount[uv] > 0))
+				if (explored[puv] && (!shroudGenerationEnabled || generatedShroudCount[puv] == 0 || visibleCount[puv] > 0))
 				{
-					var count = visibleCount[uv];
+					var count = visibleCount[puv];
 					if (passiveVisibilityEnabled)
-						count += passiveVisibleCount[uv];
+						count += passiveVisibleCount[puv];
 
 					type = count > 0 ? ShroudCellType.Visible : ShroudCellType.Fog;
 				}
 
-				var oldResolvedType = resolvedType[uv];
-				resolvedType[uv] = type;
+				var oldResolvedType = resolvedType[puv];
+				resolvedType[puv] = type;
 				if (type != oldResolvedType)
-					OnShroudChanged((PPos)uv);
+					OnShroudChanged(puv);
 			}
 
 			Hash = Sync.HashPlayer(self.Owner) + self.World.WorldTick;
@@ -232,22 +231,21 @@ namespace OpenRA.Traits
 				if (!map.Contains(puv))
 					continue;
 
-				var uv = (MPos)puv;
-				touched[uv] = true;
+				touched[puv] = true;
 				switch (type)
 				{
 					case SourceType.PassiveVisibility:
 						passiveVisibilityEnabled = true;
-						passiveVisibleCount[uv]++;
-						explored[uv] = true;
+						passiveVisibleCount[puv]++;
+						explored[puv] = true;
 						break;
 					case SourceType.Visibility:
-						visibleCount[uv]++;
-						explored[uv] = true;
+						visibleCount[puv]++;
+						explored[puv] = true;
 						break;
 					case SourceType.Shroud:
 						shroudGenerationEnabled = true;
-						generatedShroudCount[uv]++;
+						generatedShroudCount[puv]++;
 						break;
 				}
 			}
@@ -264,18 +262,17 @@ namespace OpenRA.Traits
 				// Cells outside the visible bounds don't increment visibleCount
 				if (map.Contains(puv))
 				{
-					var uv = (MPos)puv;
-					touched[uv] = true;
+					touched[puv] = true;
 					switch (state.Type)
 					{
 						case SourceType.PassiveVisibility:
-							passiveVisibleCount[uv]--;
+							passiveVisibleCount[puv]--;
 							break;
 						case SourceType.Visibility:
-							visibleCount[uv]--;
+							visibleCount[puv]--;
 							break;
 						case SourceType.Shroud:
-							generatedShroudCount[uv]--;
+							generatedShroudCount[puv]--;
 							break;
 					}
 				}
@@ -288,11 +285,10 @@ namespace OpenRA.Traits
 		{
 			foreach (var puv in cells)
 			{
-				var uv = (MPos)puv;
-				if (map.Contains(puv) && !explored[uv])
+				if (map.Contains(puv) && !explored[puv])
 				{
-					touched[uv] = true;
-					explored[uv] = true;
+					touched[puv] = true;
+					explored[puv] = true;
 				}
 			}
 		}
@@ -304,11 +300,10 @@ namespace OpenRA.Traits
 
 			foreach (var puv in map.ProjectedCellBounds)
 			{
-				var uv = (MPos)puv;
-				if (!explored[uv] && s.explored[uv])
+				if (!explored[puv] && s.explored[puv])
 				{
-					touched[uv] = true;
-					explored[uv] = true;
+					touched[puv] = true;
+					explored[puv] = true;
 				}
 			}
 		}
@@ -317,11 +312,10 @@ namespace OpenRA.Traits
 		{
 			foreach (var puv in map.ProjectedCellBounds)
 			{
-				var uv = (MPos)puv;
-				if (!explored[uv])
+				if (!explored[puv])
 				{
-					touched[uv] = true;
-					explored[uv] = true;
+					touched[puv] = true;
+					explored[puv] = true;
 				}
 			}
 		}
@@ -330,9 +324,8 @@ namespace OpenRA.Traits
 		{
 			foreach (var puv in map.ProjectedCellBounds)
 			{
-				var uv = (MPos)puv;
-				touched[uv] = true;
-				explored[uv] = (visibleCount[uv] + passiveVisibleCount[uv]) > 0;
+				touched[puv] = true;
+				explored[puv] = (visibleCount[puv] + passiveVisibleCount[puv]) > 0;
 			}
 		}
 
@@ -363,8 +356,7 @@ namespace OpenRA.Traits
 			if (Disabled)
 				return map.Contains(puv);
 
-			var uv = (MPos)puv;
-			return resolvedType.Contains(uv) && resolvedType[uv] > ShroudCellType.Shroud;
+			return resolvedType.Contains(puv) && resolvedType[puv] > ShroudCellType.Shroud;
 		}
 
 		public bool IsVisible(WPos pos)
@@ -379,9 +371,6 @@ namespace OpenRA.Traits
 
 		public bool IsVisible(MPos uv)
 		{
-			if (!resolvedType.Contains(uv))
-				return false;
-
 			foreach (var puv in map.ProjectedCellsCovering(uv))
 				if (IsVisible(puv))
 					return true;
@@ -395,15 +384,14 @@ namespace OpenRA.Traits
 			if (!FogEnabled)
 				return map.Contains(puv);
 
-			var uv = (MPos)puv;
-			return resolvedType.Contains(uv) && resolvedType[uv] == ShroudCellType.Visible;
+			return resolvedType.Contains(puv) && resolvedType[puv] == ShroudCellType.Visible;
 		}
 
 		public bool Contains(PPos uv)
 		{
 			// Check that uv is inside the map area. There is nothing special
 			// about explored here: any of the CellLayers would have been suitable.
-			return explored.Contains((MPos)uv);
+			return explored.Contains(uv);
 		}
 	}
 }
