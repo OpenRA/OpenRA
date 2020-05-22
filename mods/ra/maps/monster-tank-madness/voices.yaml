@@ -1,5 +1,5 @@
-DemitriVoice: 
-	Variants: 
+DemitriVoice:
+	Variants:
 		allies: .r01,.r03
 		england: .r01,.r03
 		france: .r01,.r03
@@ -7,7 +7,7 @@ DemitriVoice:
 		soviet: .r01,.r03
 		russia: .r01,.r03
 		ukraine: .r01,.r03
-	Voices: 
+	Voices:
 		Select: await1,ready,report1,yessir1
 		Action: ackno,affirm1,noprob,overout,ritaway,roger,ugotit
 		Die: dedman1,dedman2,dedman3,dedman4,dedman5,dedman7,dedman8

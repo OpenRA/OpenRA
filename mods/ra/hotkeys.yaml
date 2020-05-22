@@ -19,7 +19,7 @@ ProductionTypeAircraft: U
 	Types: Production, Player
 
 ProductionTypeNaval: I
-	Description: Naval Tab 
+	Description: Naval Tab
 	Types: Production, Player
 
 PowerDown: X
