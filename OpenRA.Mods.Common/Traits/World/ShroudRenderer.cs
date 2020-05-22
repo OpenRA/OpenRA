@@ -271,7 +271,7 @@ namespace OpenRA.Mods.Common.Traits
 			UpdateShroud(new ProjectedCellRegion(map, tl, br));
 		}
 
-		void UpdateShroud(ProjectedCellRegion region)
+		void UpdateShroud(IEnumerable<PPos> region)
 		{
 			foreach (var puv in region)
 			{
@@ -299,7 +299,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void IRenderShroud.RenderShroud(WorldRenderer wr)
 		{
-			UpdateShroud(map.ProjectedCellBounds);
+			UpdateShroud(map.ProjectedCells);
 			fogLayer.Draw(wr.Viewport);
 			shroudLayer.Draw(wr.Viewport);
 		}

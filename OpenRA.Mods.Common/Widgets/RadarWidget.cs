@@ -134,7 +134,7 @@ namespace OpenRA.Mods.Common.Widgets
 				if (newShroud != null)
 				{
 					newShroud.OnShroudChanged += UpdateShroudCell;
-					foreach (var puv in world.Map.ProjectedCellBounds)
+					foreach (var puv in world.Map.ProjectedCells)
 						UpdateShroudCell(puv);
 				}
 

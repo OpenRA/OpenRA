@@ -233,7 +233,7 @@ namespace OpenRA
 		public CellLayer<byte> Ramp { get; private set; }
 		public CellLayer<byte> CustomTerrain { get; private set; }
 
-		public ProjectedCellRegion ProjectedCellBounds { get; private set; }
+		public PPos[] ProjectedCells { get; private set; }
 		public CellRegion AllCells { get; private set; }
 		public List<CPos> AllEdgeCells { get; private set; }
 
@@ -822,6 +822,7 @@ namespace OpenRA
 			foreach (var puv in projectedCells)
 				if (!Contains(puv))
 					return false;
+
 			return true;
 		}
 
@@ -1017,7 +1018,8 @@ namespace OpenRA
 				ProjectedBottomRight = new WPos(br.U * 1024 - 1, (br.V + 1) * 1024 - 1, 0);
 			}
 
-			ProjectedCellBounds = new ProjectedCellRegion(this, tl, br);
+			// PERF: This enumeration isn't going to change during the game
+			ProjectedCells = new ProjectedCellRegion(this, tl, br).ToArray();
 		}
 
 		public void FixOpenAreas()
