@@ -79,8 +79,33 @@ e1:
 			DESERT: TEMPERAT
 			INTERIOR: TEMPERAT
 	garrison-muzzle: minigun
-		Length: 6
+		Length: 12
 		Facings: 8
+		Combine:
+			minigun:
+				Length: 12
+				Frames: 0,1,2,3,4,5,0,1,2,3,4,5
+			minigun:
+				Length: 12
+				Frames: 6,7,8,9,10,11,6,7,8,9,10,11
+			minigun:
+				Length: 12
+				Frames: 12,13,14,15,16,17,12,13,14,15,16,17
+			minigun:
+				Length: 12
+				Frames: 18,19,20,21,22,23,18,19,20,21,22,23
+			minigun:
+				Length: 12
+				Frames: 24,25,26,27,28,29,24,25,26,27,28,29
+			minigun:
+				Length: 12
+				Frames: 30,31,32,33,34,35,30,31,32,33,34,35
+			minigun:
+				Length: 12
+				Frames: 36,37,38,39,40,41,36,37,38,39,40,41
+			minigun:
+				Length: 12
+				Frames: 42,43,44,45,46,47,42,43,44,45,46,47
 	icon: e1icon
 
 sniper:
