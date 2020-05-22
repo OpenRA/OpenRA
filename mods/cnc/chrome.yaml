@@ -185,7 +185,7 @@ slider-thumb-disabled:
 slider-thumb-pressed:
 	Inherits: button-pressed
 	Regions:
-		
+
 checkbox:
 	Inherits: button
 
