@@ -49,8 +49,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected PPos[] ProjectedCells(Actor self)
 		{
-			var map = self.World.Map;
-			return map.ProjectedCellBounds.ToArray();
+			return self.World.Map.ProjectedCells;
 		}
 
 		void INotifyActorDisposing.Disposing(Actor self)

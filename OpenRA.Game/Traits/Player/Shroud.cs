@@ -162,7 +162,7 @@ namespace OpenRA.Traits
 			if (OnShroudChanged == null)
 				return;
 
-			foreach (var puv in map.ProjectedCellBounds)
+			foreach (var puv in map.ProjectedCells)
 			{
 				if (!touched[puv])
 					continue;
@@ -298,7 +298,7 @@ namespace OpenRA.Traits
 			if (map.Bounds != s.map.Bounds)
 				throw new ArgumentException("The map bounds of these shrouds do not match.", "s");
 
-			foreach (var puv in map.ProjectedCellBounds)
+			foreach (var puv in map.ProjectedCells)
 			{
 				if (!explored[puv] && s.explored[puv])
 				{
@@ -310,7 +310,7 @@ namespace OpenRA.Traits
 
 		public void ExploreAll()
 		{
-			foreach (var puv in map.ProjectedCellBounds)
+			foreach (var puv in map.ProjectedCells)
 			{
 				if (!explored[puv])
 				{
@@ -322,7 +322,7 @@ namespace OpenRA.Traits
 
 		public void ResetExploration()
 		{
-			foreach (var puv in map.ProjectedCellBounds)
+			foreach (var puv in map.ProjectedCells)
 			{
 				touched[puv] = true;
 				explored[puv] = (visibleCount[puv] + passiveVisibleCount[puv]) > 0;
