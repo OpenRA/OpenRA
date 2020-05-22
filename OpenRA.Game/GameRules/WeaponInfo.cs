@@ -102,6 +102,12 @@ namespace OpenRA.GameRules
 		[Desc("What types of targets are unaffected.", "Overrules ValidTargets.")]
 		public readonly BitSet<TargetableType> InvalidTargets;
 
+		static readonly BitSet<TargetableType> TargetTypeAir = new BitSet<TargetableType>("Air");
+
+		[Desc("If weapon is not directly targeting an actor and targeted position is above this altitude,",
+			"the weapon will ignore terrain target types and only check TargetTypeAir for validity.")]
+		public readonly WDist AirThreshold = new WDist(128);
+
 		[Desc("Delay in ticks between firing shots from the same ammo magazine. If one entry, it will be used for all bursts.",
 			"If multiple entries, their number needs to match Burst - 1.")]
 		public readonly int[] BurstDelays = { 5 };
@@ -165,6 +171,10 @@ namespace OpenRA.GameRules
 
 			if (target.Type == TargetType.Terrain)
 			{
+				var dat = world.Map.DistanceAboveTerrain(target.CenterPosition);
+				if (dat > AirThreshold)
+					return IsValidTarget(TargetTypeAir);
+
 				var cell = world.Map.CellContaining(target.CenterPosition);
 				if (!world.Map.Contains(cell))
 					return false;
