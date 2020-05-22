@@ -33,7 +33,7 @@ Auto1 = { units = { ['e1'] = 2, ['e2'] = 2 }, waypoints = WaypointGroup5, delay 
 Auto2 = { units = { ['e3'] = 3, ['e4'] = 2 }, waypoints = WaypointGroup3, delay = 50 }
 Auto3 = { units = { ['ltnk'] = 1, ['bggy'] = 1 }, waypoints = WaypointGroup3, delay = 50 }
 Auto4 = { units = { ['bggy'] = 2 }, waypoints = WaypointGroup7, delay = 50 }
-Auto5 = { units = { ['ltnk'] = 1 }, waypoints = WaypointGroup6, delay = 50 } 
+Auto5 = { units = { ['ltnk'] = 1 }, waypoints = WaypointGroup6, delay = 50 }
 Auto6 = { units = { ['arty'] = 1 }, waypoints = WaypointGroup4, delay = 50 }
 Auto7 = { units = { ['e3'] = 3, ['e4'] = 2 }, waypoints = WaypointGroup6, delay = 50 }
 

@@ -7,7 +7,7 @@
    information, see COPYING.
 ]]
 
-Base = 
+Base =
 {
 	AtreidesMainBase = { AConyard, APower1, APower2, APower3, ABarracks1, ARefinery1, ALightFactory, AHeavyFactory, AGunt1, AGunt2, AGunt3, AGunt4, AGunt5 },
 	AtreidesSmallBase1 = { APower4, APower5, ABarracks2, ARefinery2, AGunt6, AGunt7 },
@@ -70,7 +70,7 @@ AtreidesPaths =
 	{ AtreidesEntry8.Location, AtreidesRally8.Location }
 }
 
-InitialReinforcements = 
+InitialReinforcements =
 {
 	AtreidesMainBase = { "combat_tank_a", "combat_tank_a", "quad", "quad", "trike", "light_inf", "light_inf", "light_inf", "light_inf" },
 	AtreidesSmallBase1 = { "trooper", "trooper", "trooper", "light_inf", "light_inf", "light_inf", "light_inf" },

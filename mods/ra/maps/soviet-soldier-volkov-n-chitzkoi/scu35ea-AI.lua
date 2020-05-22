@@ -86,7 +86,7 @@ ProduceArmor = function()
 	Utils.Do(AlliedWarFact, function(fact) fact.RallyPoint = Rally.Location end)
 	greece.Build(toBuild, function(unit)
 		ArmorAttack[#ArmorAttack + 1] = unit[1]
-    
+
 		if #ArmorAttack >= ArmorAttackNumbers[Map.LobbyOption("difficulty")] then
 			SendAttackToBase(ArmorAttack)
 			ArmorAttack = { }

@@ -17,13 +17,13 @@ IdleHunt = function(unit) if not unit.IsDead then Trigger.OnIdle(unit, unit.Hunt
 
 GroundWavesUpgradeDelay = DateTime.Minutes(12)
 GroundAttackUnitType = "Normal"
-GroundAttackUnits = 
-{ 
+GroundAttackUnits =
+{
 	Normal = { {"4tnk", "3tnk", "e2", "e2", "e2" }, { "3tnk", "v2rl", "e4", "e4", "e4" } },
 	Upgraded = { {"4tnk", "3tnk", "ftrk", "apc", "apc", "e1", "e1", "e1", "e1", "e1", "e2", "e2", "e2" }, { "3tnk", "v2rl", "ftrk", "apc", "apc", "e1", "e1", "e1", "e1", "e1", "e4", "e4", "e4" } }
 }
-GroundAttackPaths = 
-{ 
+GroundAttackPaths =
+{
 	{ SovEntry1.Location, ParaLZ3.Location, AttackChrono.Location },
 	{ SovEntry2.Location, ParaLZ5.Location, AttackChrono.Location },
 	{ SovEntry3.Location, ParaLZ5.Location, AttackChrono.Location }
@@ -209,8 +209,8 @@ SendParabombs = function()
 	end
 
 	local targets = Utils.Where(greece.GetActors(), function(actor)
-		return 
-			actor.HasProperty("Sell") and 
+		return
+			actor.HasProperty("Sell") and
 			actor.Type ~= "brik" and
 			actor.Type ~= "sbag" or
 			actor.Type == "pdox" or

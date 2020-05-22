@@ -8,7 +8,7 @@
 ]]
 alliedScouts = { Actor189, Actor216, Actor217, Actor218, Actor219 }
 
-ussrReinforcements = 
+ussrReinforcements =
 {
 	east =
 	{
@@ -118,15 +118,15 @@ WorldLoaded = function()
 	ussr = Player.GetPlayer("USSR")
 	germany = Player.GetPlayer("Germany")
 	greece = Player.GetPlayer("Greece")
-	
+
 	Trigger.OnObjectiveAdded(ussr, function(p, id)
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
 	end)
-	
+
 	KillAll = ussr.AddPrimaryObjective("Destroy all Allied units and structures.")
 	DestroyVillageObjective = ussr.AddSecondaryObjective("Destroy the village of Allied sympathizers.")
 	BeatUSSR = greece.AddPrimaryObjective("Defeat the Soviet forces.")
-	
+
 	Trigger.OnObjectiveCompleted(ussr, function(p, id)
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
 	end)
@@ -147,15 +147,15 @@ WorldLoaded = function()
 
 	AddReinforcmentTriggers()
 	AddRetreatTrigger()
-	
+
 	scripteddrop = Actor.Create("scripteddrop", false, { Owner = ussr })
-	
+
 	OnAnyDamaged(Obj2ActorTriggerActivator, ChurchAmbushTrigger)
-	
+
 	Trigger.OnAllRemovedFromWorld(Obj2ActorTriggerActivator, Obj2TriggerFunction)
-	
+
 	Camera.Position = SovietBase.CenterPosition
-	
+
 	Trigger.AfterDelay(ActivateAIDelay, ActivateAI)
 end
 

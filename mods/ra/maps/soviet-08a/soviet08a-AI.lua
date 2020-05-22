@@ -167,7 +167,7 @@ ActivateAI = function()
 
 	Trigger.AfterDelay(DateTime.Minutes(3), WTransWaves)
 
-	Trigger.AfterDelay(AlliedVehiclesUpgradeDelay, function() AlliedVehicleType = "Upgraded" end)	
+	Trigger.AfterDelay(AlliedVehiclesUpgradeDelay, function() AlliedVehicleType = "Upgraded" end)
 
 	ProduceInfantry()
 	ProduceVehicles()

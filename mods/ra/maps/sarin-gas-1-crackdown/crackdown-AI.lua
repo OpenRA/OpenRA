@@ -21,8 +21,8 @@ ProductionInterval =
 }
 
 GroundAttackUnits = { { "ttnk", "ttnk", "e2", "e2", "e2" }, { "3tnk", "v2rl", "e4", "e4", "e4" } }
-GroundAttackPaths = 
-{ 
+GroundAttackPaths =
+{
 	{ EscapeSouth5.Location, Patrol1.Location },
 	{ EscapeNorth10.Location, EscapeNorth7.Location }
 }

@@ -42,7 +42,7 @@ ActivateAIProduction = function()
 	local vehiclesToBuild = function() return { Utils.Random(EnemyVehicleTypes) } end
 	local tanksToBuild = function() return EnemyTankType end
 	local attackTresholdSize = AttackGroupSize[Difficulty] * 2.5
-	
+
 	ProduceUnits(atreides_main, ABarracks1, delay, infantryToBuild, AttackGroupSize[Difficulty], attackTresholdSize)
 	ProduceUnits(atreides_main, ALightFactory, delay, vehiclesToBuild, AttackGroupSize[Difficulty], attackTresholdSize)
 	ProduceUnits(atreides_main, AHeavyFactory, delay, tanksToBuild, AttackGroupSize[Difficulty], attackTresholdSize)
@@ -50,7 +50,7 @@ ActivateAIProduction = function()
 	ProduceUnits(atreides_small_1, ABarracks2, delay, infantryToBuild, AttackGroupSize[Difficulty], attackTresholdSize)
 
 	ProduceUnits(atreides_small_2, ABarracks3, delay, infantryToBuild, AttackGroupSize[Difficulty], attackTresholdSize)
-	
+
 	AIProductionActivated = true
 end
 

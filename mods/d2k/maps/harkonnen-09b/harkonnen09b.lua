@@ -101,7 +101,7 @@ FremenGroupSize =
 }
 
 InitialAtreidesReinforcements =
-{ 
+{
 	{ "combat_tank_a", "combat_tank_a", "quad", "trike" },
 	{ "trooper", "trooper", "trooper", "trooper", "trooper", "combat_tank_a" },
 	{ "combat_tank_a", "combat_tank_a", "quad", "quad", "trike" }
@@ -146,7 +146,7 @@ SendStarportReinforcements = function()
 		if CStarport.IsDead or CStarport.Owner ~= corrino_small then
 			return
 		end
-		
+
 		reinforcements = Utils.Random(CorrinoStarportReinforcements[Difficulty])
 
 		local units = Reinforcements.ReinforceWithTransport(corrino_small, "frigate", reinforcements, { CorrinoStarportEntry.Location, CStarport.Location + CVec.New(1, 1) }, { CorrinoStarportExit.Location })[2]
