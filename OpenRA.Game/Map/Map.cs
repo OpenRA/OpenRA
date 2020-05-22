@@ -810,8 +810,9 @@ namespace OpenRA
 
 		bool ContainsAllProjectedCellsCovering(MPos uv)
 		{
+			// PERF: Checking the bounds directly here is the same as calling Contains((PPos)uv) but saves an allocation
 			if (Grid.MaximumTerrainHeight == 0)
-				return Contains((PPos)uv);
+				return Bounds.Contains(uv.U, uv.V);
 
 			// If the cell has no valid projection, then we're off the map.
 			var projectedCells = ProjectedCellsCovering(uv);
