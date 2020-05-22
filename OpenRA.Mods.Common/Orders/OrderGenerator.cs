@@ -32,12 +32,14 @@ namespace OpenRA.Mods.Common.Orders
 		string IOrderGenerator.GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi) { return GetCursor(world, cell, worldPixel, mi); }
 		void IOrderGenerator.Deactivate() { }
 		bool IOrderGenerator.HandleKeyPress(KeyInput e) { return false; }
+		void IOrderGenerator.SelectionChanged(World world, IEnumerable<Actor> selected) { SelectionChanged(world, selected); }
 
-		protected abstract void Tick(World world);
+		protected virtual void Tick(World world) { }
 		protected abstract IEnumerable<IRenderable> Render(WorldRenderer wr, World world);
 		protected abstract IEnumerable<IRenderable> RenderAboveShroud(WorldRenderer wr, World world);
 		protected abstract IEnumerable<IRenderable> RenderAnnotations(WorldRenderer wr, World world);
 		protected abstract string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi);
 		protected abstract IEnumerable<Order> OrderInner(World world, CPos cell, int2 worldPixel, MouseInput mi);
+		protected virtual void SelectionChanged(World world, IEnumerable<Actor> selected) { }
 	}
 }

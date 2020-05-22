@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA;
 using OpenRA.Graphics;
 using OpenRA.Mods.Cnc.Activities;
 using OpenRA.Mods.Common.Orders;
@@ -211,9 +212,10 @@ namespace OpenRA.Mods.Cnc.Traits
 				}
 			}
 
-			protected override void Tick(World world)
+			protected override void SelectionChanged(World world, IEnumerable<Actor> selected)
 			{
-				minelayers.RemoveAll(minelayer => !minelayer.IsInWorld || minelayer.IsDead);
+				minelayers.Clear();
+				minelayers.AddRange(selected.Where(s => s.Info.HasTraitInfo<MinelayerInfo>()));
 				if (!minelayers.Any())
 					world.CancelInputMode();
 			}

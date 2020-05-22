@@ -84,7 +84,8 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class AttackMoveOrderGenerator : UnitOrderGenerator
 	{
-		readonly TraitPair<AttackMove>[] subjects;
+		TraitPair<AttackMove>[] subjects;
+
 		readonly MouseButton expectedButton;
 
 		public AttackMoveOrderGenerator(IEnumerable<Actor> subjects, MouseButton button)
@@ -120,9 +121,14 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public override void Tick(World world)
+		public override void SelectionChanged(World world, IEnumerable<Actor> selected)
 		{
-			if (subjects.All(s => s.Actor.IsDead))
+			subjects = selected.SelectMany(a => a.TraitsImplementing<AttackMove>()
+					.Select(am => new TraitPair<AttackMove>(a, am)))
+				.ToArray();
+
+			// AttackMove doesn't work without AutoTarget, so require at least one unit in the selection to have it
+			if (!subjects.Any(s => s.Actor.Info.HasTraitInfo<AutoTargetInfo>()))
 				world.CancelInputMode();
 		}
 

@@ -110,6 +110,8 @@ namespace OpenRA.Mods.Common.Traits
 				world.CancelInputMode();
 		}
 
+		void IOrderGenerator.SelectionChanged(World world, IEnumerable<Actor> selected) { }
+
 		bool IsOutsideDragZone
 		{
 			get { return dragStarted && dragDirection.Length > MinDragThreshold; }

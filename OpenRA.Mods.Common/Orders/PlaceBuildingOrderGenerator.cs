@@ -222,6 +222,8 @@ namespace OpenRA.Mods.Common.Orders
 					v.Preview.Tick();
 		}
 
+		void IOrderGenerator.SelectionChanged(World world, IEnumerable<Actor> selected) { }
+
 		bool AcceptsPlug(CPos cell, PlugInfo plug)
 		{
 			var host = buildingInfluence.GetBuildingAt(cell);

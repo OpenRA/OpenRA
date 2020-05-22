@@ -124,6 +124,8 @@ namespace OpenRA.Orders
 			return false;
 		}
 
+		public virtual void SelectionChanged(World world, IEnumerable<Actor> selected) { }
+
 		/// <summary>
 		/// Returns the most appropriate order for a given actor and target.
 		/// First priority is given to orders that interact with the given actors.
