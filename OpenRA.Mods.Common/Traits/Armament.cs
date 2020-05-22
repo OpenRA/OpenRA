@@ -342,16 +342,16 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected virtual void UpdateBurst(Actor self, Target target)
 		{
+			var modifiers = reloadModifiers.ToArray();
 			if (--Burst > 0)
 			{
 				if (Weapon.BurstDelays.Length == 1)
-					FireDelay = Weapon.BurstDelays[0];
+					FireDelay = Util.ApplyPercentageModifiers(Weapon.BurstDelays[0], modifiers);
 				else
-					FireDelay = Weapon.BurstDelays[Weapon.Burst - (Burst + 1)];
+					FireDelay = Util.ApplyPercentageModifiers(Weapon.BurstDelays[Weapon.Burst - (Burst + 1)], modifiers);
 			}
 			else
 			{
-				var modifiers = reloadModifiers.ToArray();
 				FireDelay = Util.ApplyPercentageModifiers(Weapon.ReloadDelay, modifiers);
 				Burst = Weapon.Burst;
 
