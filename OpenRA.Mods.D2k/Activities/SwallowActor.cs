@@ -33,7 +33,6 @@ namespace OpenRA.Mods.D2k.Activities
 		readonly Armament armament;
 		readonly AttackSwallow swallow;
 		readonly IPositionable positionable;
-		readonly IFacing facing;
 
 		int countdown;
 		CPos burrowLocation;
@@ -43,7 +42,6 @@ namespace OpenRA.Mods.D2k.Activities
 		public SwallowActor(Actor self, Target target, Armament a, IFacing facing)
 		{
 			this.target = target;
-			this.facing = facing;
 			armament = a;
 			weapon = a.Weapon;
 			sandworm = self.Trait<Sandworm>();
@@ -82,11 +80,7 @@ namespace OpenRA.Mods.D2k.Activities
 			foreach (var player in affectedPlayers)
 				self.World.AddFrameEndTask(w => w.Add(new MapNotificationEffect(player, "Speech", swallow.Info.WormAttackNotification, 25, true, attackPosition, Color.Red)));
 
-			var barrel = armament.CheckFire(self, facing, target);
-			if (barrel == null)
-				return false;
-
-			return true;
+			return armament.TryFiring(self, target);
 		}
 
 		public override bool Tick(Actor self)

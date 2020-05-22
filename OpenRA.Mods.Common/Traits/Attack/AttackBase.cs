@@ -168,7 +168,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			foreach (var a in Armaments)
-				a.CheckFire(self, facing, target);
+				a.TryFiring(self, target);
 		}
 
 		IEnumerable<IOrderTargeter> IIssueOrder.Orders

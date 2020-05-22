@@ -229,9 +229,9 @@ namespace OpenRA.Mods.Common.Traits
 				a();
 		}
 
-		protected virtual bool CanFire(Actor self, Target target)
+		protected virtual bool CanFire(Actor self, Target target, bool ignoreReloading = false)
 		{
-			if (IsReloading || IsTraitPaused)
+			if (IsTraitPaused || (!ignoreReloading && IsReloading))
 				return false;
 
 			if (turret != null && !turret.HasAchievedDesiredFacing)
@@ -247,12 +247,18 @@ namespace OpenRA.Mods.Common.Traits
 			return true;
 		}
 
-		// Note: facing is only used by the legacy positioning code
-		// The world coordinate model uses Actor.Orientation
-		public virtual Barrel CheckFire(Actor self, IFacing facing, Target target)
+		public bool TryFiring(Actor self, Target target)
+		{
+			return TryFiring(self, target, out _);
+		}
+
+		public virtual bool TryFiring(Actor self, Target target, out Barrel barrel)
 		{
 			if (!CanFire(self, target))
-				return null;
+			{
+				barrel = null;
+				return false;
+			}
 
 			if (ticksSinceLastShot >= Weapon.ReloadDelay)
 				Burst = Weapon.Burst;
@@ -261,20 +267,47 @@ namespace OpenRA.Mods.Common.Traits
 
 			// If Weapon.Burst == 1, cycle through all LocalOffsets, otherwise use the offset corresponding to current Burst
 			currentBarrel %= barrelCount;
-			var barrel = Weapon.Burst == 1 ? Barrels[currentBarrel] : Barrels[Burst % Barrels.Length];
+			barrel = Weapon.Burst == 1 ? Barrels[currentBarrel] : Barrels[Burst % Barrels.Length];
 			currentBarrel++;
 
-			FireBarrel(self, facing, target, barrel);
-
+			FireBarrel(self, target, barrel);
 			UpdateBurst(self, target);
 
-			return barrel;
+			return true;
 		}
 
-		protected virtual void FireBarrel(Actor self, IFacing facing, Target target, Barrel barrel)
+		protected virtual void FireBarrel(Actor self, Target target, Barrel barrel)
 		{
 			foreach (var na in notifyAttacks)
 				na.PreparingAttack(self, target, this, barrel);
+
+			ScheduleDelayedAction(Info.FireDelay, () =>
+			{
+				var args = CreateProjectileArgs(self, target, barrel);
+				if (args == null)
+					return;
+
+				var projectile = args.Weapon.Projectile?.Create(args);
+				if (projectile != null)
+					self.World.Add(projectile);
+
+				if (args.Weapon.Report != null && args.Weapon.Report.Any())
+					Game.Sound.Play(SoundType.World, args.Weapon.Report, self.World, self.CenterPosition);
+
+				if (Burst == args.Weapon.Burst && args.Weapon.StartBurstReport != null && args.Weapon.StartBurstReport.Any())
+					Game.Sound.Play(SoundType.World, args.Weapon.StartBurstReport, self.World, self.CenterPosition);
+
+				foreach (var na in notifyAttacks)
+					na.Attacking(self, target, this, barrel);
+
+				Recoil = Info.Recoil;
+			});
+		}
+
+		protected virtual ProjectileArgs CreateProjectileArgs(Actor self, Target target, Barrel barrel)
+		{
+			if (!CanFire(self, target, true))
+				return null;
 
 			Func<WPos> muzzlePosition = () => self.CenterPosition + MuzzleOffset(self, barrel);
 			Func<WAngle> muzzleFacing = () => MuzzleOrientation(self, barrel).Yaw;
@@ -302,13 +335,9 @@ namespace OpenRA.Mods.Common.Traits
 				Weapon = Weapon,
 				Facing = muzzleFacing(),
 				CurrentMuzzleFacing = muzzleFacing,
-
 				DamageModifiers = damageModifiers.ToArray(),
-
 				InaccuracyModifiers = inaccuracyModifiers.ToArray(),
-
 				RangeModifiers = rangeModifiers.ToArray(),
-
 				Source = muzzlePosition(),
 				CurrentSource = muzzlePosition,
 				SourceActor = self,
@@ -316,26 +345,7 @@ namespace OpenRA.Mods.Common.Traits
 				GuidedTarget = target
 			};
 
-			ScheduleDelayedAction(Info.FireDelay, () =>
-			{
-				if (args.Weapon.Projectile != null)
-				{
-					var projectile = args.Weapon.Projectile.Create(args);
-					if (projectile != null)
-						self.World.Add(projectile);
-				}
-
-				if (args.Weapon.Report != null && args.Weapon.Report.Any())
-					Game.Sound.Play(SoundType.World, args.Weapon.Report, self.World, self.CenterPosition);
-
-				if (Burst == args.Weapon.Burst && args.Weapon.StartBurstReport != null && args.Weapon.StartBurstReport.Any())
-					Game.Sound.Play(SoundType.World, args.Weapon.StartBurstReport, self.World, self.CenterPosition);
-
-				foreach (var na in notifyAttacks)
-					na.Attacking(self, target, this, barrel);
-
-				Recoil = Info.Recoil;
-			});
+			return args;
 		}
 
 		protected virtual void UpdateBurst(Actor self, Target target)

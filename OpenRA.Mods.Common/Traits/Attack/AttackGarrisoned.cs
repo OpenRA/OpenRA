@@ -171,8 +171,7 @@ namespace OpenRA.Mods.Common.Traits
 				paxFacing[a.Actor].Facing = targetYaw;
 				paxPos[a.Actor].SetVisualPosition(a.Actor, pos + PortOffset(self, port));
 
-				var barrel = a.CheckFire(a.Actor, facing, target);
-				if (barrel == null)
+				if (!a.TryFiring(a.Actor, target, out var barrel))
 					continue;
 
 				if (a.Info.MuzzleSequence != null)

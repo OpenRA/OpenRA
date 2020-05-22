@@ -28,7 +28,6 @@ namespace OpenRA.Mods.Common.Activities
 		readonly IEnumerable<AttackFrontal> attackTraits;
 		readonly RevealsShroud[] revealsShroud;
 		readonly IMove move;
-		readonly IFacing facing;
 		readonly IPositionable positionable;
 		readonly bool forceAttack;
 		readonly Color? targetLineColor;
@@ -53,7 +52,6 @@ namespace OpenRA.Mods.Common.Activities
 
 			attackTraits = self.TraitsImplementing<AttackFrontal>().ToArray().Where(Exts.IsTraitEnabled);
 			revealsShroud = self.TraitsImplementing<RevealsShroud>().ToArray();
-			facing = self.Trait<IFacing>();
 			positionable = self.Trait<IPositionable>();
 
 			move = allowMovement ? self.TraitOrDefault<IMove>() : null;
@@ -221,7 +219,7 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			if (!attack.IsTraitPaused)
 				foreach (var a in armaments)
-					a.CheckFire(self, facing, target);
+					a.TryFiring(self, target);
 		}
 
 		void IActivityNotifyStanceChanged.StanceChanged(Actor self, AutoTarget autoTarget, UnitStance oldStance, UnitStance newStance)
