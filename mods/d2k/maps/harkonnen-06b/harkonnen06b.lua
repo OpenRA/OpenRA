@@ -78,7 +78,7 @@ OrdosAttackWaves =
 }
 
 InitialOrdosReinforcements =
-{ 
+{
 	{ "trooper", "trooper", "trooper", "trooper", "light_inf", "light_inf", "light_inf", "light_inf", "light_inf", "light_inf" },
 	{ "combat_tank_o", "combat_tank_o", "quad", "quad", "raider", "raider" }
 }

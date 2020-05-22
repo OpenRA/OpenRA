@@ -71,7 +71,7 @@ HarkonnenHunters = {
 	{ "trike", "trike" }
 }
 
-HarkonnenHunterPaths = 
+HarkonnenHunterPaths =
 {
 	{ HarkonnenEntry1.Location, HarkonnenRally1.Location },
 	{ HarkonnenEntry2.Location, HarkonnenRally2.Location },

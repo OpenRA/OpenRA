@@ -14,7 +14,7 @@ BGAttackGroupSize = 8
 SovietAircraftType = { "yak" }
 Yaks = { }
 SovietInfantry = { "e1", "e2", "e4" }
-SovietVehicles = 
+SovietVehicles =
 {
 	hard = { "3tnk", "3tnk", "v2rl" },
 	normal = { "3tnk" },

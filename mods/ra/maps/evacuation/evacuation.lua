@@ -125,7 +125,7 @@ SendParatroopers = function()
 		local proxy = Actor.Create(para.proxy, false, { Owner = soviets })
 		local target = Map.CenterOfCell(para.drop)
 		local dir = target - Map.CenterOfCell(para.entry)
-		
+
 		local aircraft = proxy.ActivateParatroopers(target, dir.facing)
 		Utils.Do(aircraft, function(a)
 			Trigger.OnPassengerExited(a, function(t, p)

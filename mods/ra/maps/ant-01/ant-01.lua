@@ -25,7 +25,7 @@ AlliedBase = { WarFactory, PillBox1, PillBox2, Refinery, PowerPlant1, PowerPlant
 AlliedForces = { "2tnk" , "2tnk", "mcv" }
 ChopperTeam = { "e1r1", "e1r1", "e2", "e2", "e1r1" }
 
-SendTanks = function() 
+SendTanks = function()
 	Media.PlaySpeechNotification(allies, "ReinforcementsArrived")
 	Reinforcements.Reinforce(allies, AlliedForces, TankPath, DateTime.Seconds(1))
 end
@@ -52,7 +52,7 @@ end
 
 DiscoveredAlliedBase = function(actor, discoverer)
 	if (not baseDiscovered and discoverer.Owner == allies) then
-		baseDiscovered = true  
+		baseDiscovered = true
 		Media.PlaySpeechNotification(allies, "ObjectiveReached")
 		Utils.Do(AlliedBase, function(building)
 			building.Owner = allies
@@ -106,7 +106,7 @@ GetTicks = function()
 	return ticks
 end
 
-Tick = function() 
+Tick = function()
 	if SurviveObjective ~= nil then
 		if ticks > 0 then
 			if ticks == DateTime.Minutes(17) then

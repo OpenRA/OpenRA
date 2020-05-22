@@ -81,14 +81,14 @@ OrdosAttackWaves =
 	hard = 8
 }
 
-OrdosHunters = 
+OrdosHunters =
 {
 	{ "combat_tank_o", "combat_tank_o" },
 	{ "missile_tank" }
 }
 
 InitialOrdosReinforcements =
-{ 
+{
 	{ "trooper", "trooper", "trooper", "trooper", "light_inf", "light_inf", "light_inf", "light_inf", "light_inf", "light_inf" },
 	{ "combat_tank_o", "combat_tank_o", "quad", "quad", "raider", "raider" }
 }
@@ -117,13 +117,13 @@ OrdosHunterPaths =
 	{ OrdosEntry12.Location, OrdosEntry12.Location },
 }
 
-HarkonnenReinforcements = 
+HarkonnenReinforcements =
 {
 	{ "trooper", "trooper", "trooper", "trooper" },
 	{ "combat_tank_h", "combat_tank_h", "combat_tank_h", "combat_tank_h" }
 }
 
-HarkonnenPaths = 
+HarkonnenPaths =
 {
 	{ HarkonnenEntry1.Location, HarkonnenRally1.Location },
 	{ HarkonnenEntry2.Location, HarkonnenRally2.Location }
@@ -172,7 +172,7 @@ OrdosReinforcementNotification = function(currentWave, totalWaves)
 		end
 
 		Media.DisplayMessage("Enemy carryall drop detected!", "Mentat")
-		
+
 		OrdosReinforcementNotification(currentWave, totalWaves)
 	end)
 end
