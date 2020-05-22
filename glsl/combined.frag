@@ -179,7 +179,7 @@ void main()
 		// Offset the sampling point to simulate bilinear intepolation in window coordinates instead of texture coordinates
 		// https://csantosbh.wordpress.com/2014/01/25/manual-texture-filtering-for-pixelated-games-in-webgl/
 		// https://csantosbh.wordpress.com/2014/02/05/automatically-detecting-the-texture-filter-threshold-for-pixelated-magnifications/
-		// ik is defined as 1/k from the articles, set to 1/0.7 because it looks good 
+		// ik is defined as 1/k from the articles, set to 1/0.7 because it looks good
 		float ik = 1.43;
 		vec2 interp = clamp(offset * ik * AntialiasPixelsPerTexel, 0.0, .5) + clamp((offset - 1.0) * ik * AntialiasPixelsPerTexel + .5, 0.0, .5);
 		coords = (floor(coords.st * textureSize) + interp) / textureSize;

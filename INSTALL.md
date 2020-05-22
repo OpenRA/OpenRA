@@ -21,7 +21,7 @@ Linux
 
 Mono, version 5.18 or later, is required to compile OpenRA. You can add the [upstream mono repository](https://www.mono-project.com/download/stable/#download-lin) for your distro to obtain the latest version if your system packages are not sufficient.
 
-To compile OpenRA, run `make` from the command line. After this one can run the game with `./launch-game.sh`. It is also possible to specify the mod you wish to run from the command line, e.g. with `./launch-game.sh Game.Mod=ts` if you wish to try the experimental Tiberian Sun mod. 
+To compile OpenRA, run `make` from the command line. After this one can run the game with `./launch-game.sh`. It is also possible to specify the mod you wish to run from the command line, e.g. with `./launch-game.sh Game.Mod=ts` if you wish to try the experimental Tiberian Sun mod.
 
 The default behaviour on the x86_64 architecture is to download several pre-compiled native libraries using the Nuget packaging manager. If you prefer to use system libraries, compile instead using `make TARGETPLATFORM=unix-generic`.
 
@@ -31,7 +31,7 @@ If you choose to use system libraries, or your system is not x86_64, you will ne
 * [OpenAL](http://kcat.strangesoft.net/openal.html)
 * [liblua 5.1](http://luabinaries.sourceforge.net/download.html)
 
-Type `sudo make install` for system-wide installation. Run `sudo make install-linux-shortcuts` to get startup scripts, icons and desktop files. You can then run the Red Alert by executing the `openra-ra` command, the Dune 2000 mod by running the `openra-d2k` command and Tiberian Dawn by the `openra-cnc` command. Alternatively, you can also run these mods by clicking on their desktop shortcuts if you ran `sudo make install-linux-shortcuts`. 
+Type `sudo make install` for system-wide installation. Run `sudo make install-linux-shortcuts` to get startup scripts, icons and desktop files. You can then run the Red Alert by executing the `openra-ra` command, the Dune 2000 mod by running the `openra-d2k` command and Tiberian Dawn by the `openra-cnc` command. Alternatively, you can also run these mods by clicking on their desktop shortcuts if you ran `sudo make install-linux-shortcuts`.
 
 Arch Linux
 ----------
@@ -89,7 +89,7 @@ sudo zypper in mono-devel openal-soft freetype2 SDL2 lua51 xdg-utils zenity
 Red Hat Enterprise Linux (and rebuilds, e.g. CentOS)
 ----------------------------------------------------
 
-The EPEL repository is required in order for the following command to run properly. 
+The EPEL repository is required in order for the following command to run properly.
 
 ```
 sudo yum install "pkgconfig(mono)" SDL2 freetype "lua = 5.1" openal-soft xdg-utils zenity

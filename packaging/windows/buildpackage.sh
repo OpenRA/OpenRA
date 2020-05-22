@@ -35,7 +35,7 @@ function makelauncher()
 
 	if [ "$5" = "x86" ]; then
 		# Enable the full 4GB address space for the 32 bit game executable
-		# The server and utility do not use enough memory to need this 
+		# The server and utility do not use enough memory to need this
 		csc MakeLAA.cs -warn:4 -warnaserror -out:"MakeLAA.exe"
 		mono "MakeLAA.exe" "$1"
 		rm MakeLAA.exe

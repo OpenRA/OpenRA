@@ -142,7 +142,7 @@ build_appimage() {
 
 	# travis-ci doesn't support mounting FUSE filesystems so extract and run the contents manually
 	./appimagetool-x86_64.AppImage --appimage-extract
-	
+
 	# Embed update metadata if (and only if) compiled on travis
 	if [ ! -z "${TRAVIS_REPO_SLUG}" ]; then
 		ARCH=x86_64 ./squashfs-root/AppRun --no-appstream -u "zsync|https://master.openra.net/appimagecheck?mod=${MOD_ID}&channel=${UPDATE_CHANNEL}" "${APPDIR}" "${OUTPUTDIR}/${APPIMAGE}"
