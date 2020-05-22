@@ -78,6 +78,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class AttackGarrisoned : AttackFollow, INotifyPassengerEntered, INotifyPassengerExited, IRender
 	{
 		public readonly new AttackGarrisonedInfo Info;
+		INotifyAttack[] notifyAttacks;
 		Lazy<BodyOrientation> coords;
 		List<Armament> armaments;
 		List<AnimationWithOffset> muzzles;
@@ -100,6 +101,12 @@ namespace OpenRA.Mods.Common.Traits
 		protected override Func<IEnumerable<Armament>> InitializeGetArmaments(Actor self)
 		{
 			return () => armaments;
+		}
+
+		protected override void Created(Actor self)
+		{
+			notifyAttacks = self.TraitsImplementing<INotifyAttack>().ToArray();
+			base.Created(self);
 		}
 
 		void INotifyPassengerEntered.OnPassengerEntered(Actor self, Actor passenger)
@@ -186,7 +193,7 @@ namespace OpenRA.Mods.Common.Traits
 					muzzleAnim.PlayThen(sequence, () => muzzles.Remove(muzzleFlash));
 				}
 
-				foreach (var npa in self.TraitsImplementing<INotifyAttack>())
+				foreach (var npa in notifyAttacks)
 					npa.Attacking(self, target, a, barrel);
 			}
 		}
