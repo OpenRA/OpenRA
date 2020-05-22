@@ -96,6 +96,12 @@ FLAK-23-AG:
 
 Vulcan:
 	Inherits: ^HeavyMG
+	-Report:
+	StartBurstReport: gun13.aud
+	Burst: 6
+	BurstDelays: 2
+	BurstTracking: false
+	BurstInterruptable: false
 	Warhead@1Dam: SpreadDamage
 		Damage: 1000
 		Versus:
@@ -104,111 +110,6 @@ Vulcan:
 			Light: 50
 			Heavy: 20
 			Concrete: 20
-	Warhead@4Dam_2: SpreadDamage
-		Spread: 128
-		Damage: 1000
-		Delay: 2
-		Versus:
-			None: 200
-			Wood: 50
-			Light: 50
-			Heavy: 20
-			Concrete: 20
-		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
-	Warhead@4Eff_2: CreateEffect
-		Explosions: piffs
-		ValidTargets: Ground
-		ImpactActors: false
-		Delay: 2
-	Warhead@4Eff_2Water: CreateEffect
-		Explosions: water_piffs
-		ValidTargets: Water, Underwater
-		InvalidTargets: Bridge
-		Delay: 2
-	Warhead@5Dam_3: SpreadDamage
-		Spread: 128
-		Damage: 1000
-		Delay: 4
-		Versus:
-			None: 200
-			Wood: 50
-			Light: 50
-			Heavy: 20
-			Concrete: 20
-		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
-	Warhead@6Eff_3: CreateEffect
-		Explosions: piffs
-		ValidTargets: Ground
-		ImpactActors: false
-		Delay: 4
-	Warhead@6Eff_3Water: CreateEffect
-		Explosions: water_piffs
-		ValidTargets: Water, Underwater
-		InvalidTargets: Bridge
-		Delay: 4
-	Warhead@7Dam_4: SpreadDamage
-		Spread: 128
-		Damage: 1000
-		Delay: 6
-		Versus:
-			None: 200
-			Wood: 50
-			Light: 50
-			Heavy: 20
-			Concrete: 20
-		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
-	Warhead@8Eff_4: CreateEffect
-		Explosions: piffs
-		ValidTargets: Ground
-		ImpactActors: false
-		Delay: 6
-	Warhead@8Eff_4Water: CreateEffect
-		Explosions: water_piffs
-		ValidTargets: Water, Underwater
-		InvalidTargets: Bridge
-		Delay: 6
-	Warhead@9Dam_5: SpreadDamage
-		Spread: 128
-		Damage: 1000
-		Delay: 8
-		Versus:
-			None: 200
-			Wood: 50
-			Light: 50
-			Heavy: 20
-			Concrete: 20
-		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
-	Warhead@10Eff_5: CreateEffect
-		Explosions: piffs
-		ValidTargets: Ground
-		ImpactActors: false
-		Delay: 8
-	Warhead@10Eff_5Water: CreateEffect
-		Explosions: water_piffs
-		ValidTargets: Water, Underwater
-		InvalidTargets: Bridge
-		Delay: 8
-	Warhead@11Dam_6: SpreadDamage
-		Spread: 128
-		Damage: 1000
-		Delay: 10
-		Versus:
-			None: 200
-			Wood: 50
-			Light: 50
-			Heavy: 20
-			Concrete: 20
-		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
-	Warhead@12Eff_6: CreateEffect
-		Explosions: piffs
-		ValidTargets: Ground
-		ImpactActors: false
-		Delay: 10
-	Warhead@12Eff_6Water: CreateEffect
-		Explosions: water_piffs
-		ValidTargets: Water, Underwater
-		InvalidTargets: Bridge
-		Delay: 10
 
 ChainGun:
 	Inherits: ^HeavyMG
