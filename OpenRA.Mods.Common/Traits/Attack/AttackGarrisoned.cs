@@ -171,8 +171,7 @@ namespace OpenRA.Mods.Common.Traits
 				paxFacing[a.Actor].Facing = targetYaw;
 				paxPos[a.Actor].SetVisualPosition(a.Actor, pos + PortOffset(self, port));
 
-				var barrel = a.CheckFire(a.Actor, facing, target);
-				if (barrel == null)
+				if (!a.CheckFire(a.Actor, facing, target))
 					continue;
 
 				if (a.Info.MuzzleSequence != null)
@@ -193,8 +192,13 @@ namespace OpenRA.Mods.Common.Traits
 					muzzleAnim.PlayThen(sequence, () => muzzles.Remove(muzzleFlash));
 				}
 
+				// Armament only notifies the Armament's owner, not the garrisoned actor, so we need to do this manually here
+				// to make traits like Cloak work on garrisoned actors.
+				// Thankfully, WithMuzzleOverlay is literally the only trait implementing INotifyAttack
+				// that actually uses the 'barrel' parameter, and AttackGarrisoned does its own muzzle stuff above,
+				// so we can safely pass null instead of doing more code gymnastics to get the correct barrel.
 				foreach (var npa in notifyAttacks)
-					npa.Attacking(self, target, a, barrel);
+					npa.Attacking(self, target, a, null);
 			}
 		}
 

@@ -82,11 +82,7 @@ namespace OpenRA.Mods.D2k.Activities
 			foreach (var player in affectedPlayers)
 				self.World.AddFrameEndTask(w => w.Add(new MapNotificationEffect(player, "Speech", swallow.Info.WormAttackNotification, 25, true, attackPosition, Color.Red)));
 
-			var barrel = armament.CheckFire(self, facing, target);
-			if (barrel == null)
-				return false;
-
-			return true;
+			return armament.CheckFire(self, facing, target);
 		}
 
 		public override bool Tick(Actor self)

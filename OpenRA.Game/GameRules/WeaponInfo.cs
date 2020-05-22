@@ -115,6 +115,12 @@ namespace OpenRA.GameRules
 			"If multiple entries, their number needs to match Burst - 1.")]
 		public readonly int[] BurstDelays = { 5 };
 
+		[Desc("Update the firing position to follow targets if they move between bursts?")]
+		public readonly bool BurstTracking = true;
+
+		[Desc("Allow the weapon to cancel its target between bursts if requested by the player or the target dies?")]
+		public readonly bool BurstInterruptable = true;
+
 		[Desc("The minimum range the weapon can fire.")]
 		public readonly WDist MinRange = WDist.Zero;
 
