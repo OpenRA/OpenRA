@@ -54,6 +54,11 @@ namespace OpenRA
 			if (parent != null)
 				parent.AddChild(widget);
 
+			// To support two completely different layout approaches for a given time, we simply ignore this for now.
+			// We can remove this, when yoga is the only approach, and Widget extends YogaNode.
+			var unknownFieldAction = FieldLoader.UnknownFieldAction;
+			FieldLoader.UnknownFieldAction = (s, type) => { };
+
 			if (node.Key.Contains("@"))
 				FieldLoader.LoadField(widget, "Id", node.Key.Split('@')[1]);
 
@@ -61,7 +66,16 @@ namespace OpenRA
 				if (child.Key != "Children")
 					FieldLoader.LoadField(widget, child.Key, child.Value.Value);
 
-			widget.Initialize(args);
+			var positionType = node.Value.Nodes.FirstOrDefault(n => n.Key == "PositionType");
+
+			if (positionType == null || positionType.Value.Value == "Legacy")
+				widget.Initialize(args);
+			else
+				foreach (var child in node.Value.Nodes)
+					if (child.Key != "Children")
+						FieldLoader.LoadField(widget.Node, child.Key, child.Value.Value);
+
+			FieldLoader.UnknownFieldAction = unknownFieldAction;
 
 			foreach (var child in node.Value.Nodes)
 				if (child.Key == "Children")

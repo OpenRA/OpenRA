@@ -90,6 +90,14 @@ namespace OpenRA.Widgets
 
 		public static void PrepareRenderables() { Root.PrepareRenderablesOuter(); }
 
+		public static void Layout()
+		{
+			Root.Node.Width = Game.Renderer.Resolution.Width;
+			Root.Node.Height = Game.Renderer.Resolution.Height;
+			Root.UpdateLayoutOuter();
+			Root.Node.CalculateLayout();
+		}
+
 		public static void Draw() { Root.DrawOuter(); }
 
 		public static bool HandleInput(MouseInput mi)
@@ -241,9 +249,15 @@ namespace OpenRA.Widgets
 		public virtual void Initialize(WidgetArgs args)
 		{
 			// Parse the YAML equations to find the widget bounds
-			var parentBounds = (Parent == null)
-				? new Rectangle(0, 0, Game.Renderer.Resolution.Width, Game.Renderer.Resolution.Height)
-				: new Rectangle((int)Parent.Node.LayoutX, (int)Parent.Node.LayoutY, (int)Parent.Node.LayoutWidth, (int)Parent.Node.LayoutHeight);
+			var parentBounds = new Rectangle(0, 0, Game.Renderer.Resolution.Width, Game.Renderer.Resolution.Height);
+
+			if (Parent != null)
+			{
+				if (Parent.Node.IsDirty)
+					Parent.Node.CalculateLayout();
+
+				parentBounds = new Rectangle((int)Parent.Node.LayoutX, (int)Parent.Node.LayoutY, (int)Parent.Node.LayoutWidth, (int)Parent.Node.LayoutHeight);
+			}
 
 			var substitutions = args.ContainsKey("substitutions") ?
 				new Dictionary<string, int>((Dictionary<string, int>)args["substitutions"]) :
@@ -471,6 +485,16 @@ namespace OpenRA.Widgets
 				foreach (var child in Children)
 					child.PrepareRenderablesOuter();
 			}
+		}
+
+		public virtual void UpdateLayout() { }
+
+		public void UpdateLayoutOuter()
+		{
+			UpdateLayout();
+
+			foreach (var child in Children)
+				child.UpdateLayoutOuter();
 		}
 
 		public virtual void Draw() { }

@@ -678,6 +678,7 @@ namespace OpenRA
 					if (worldRenderer != null && !worldRenderer.World.IsLoadingGameSave)
 						worldRenderer.DrawAnnotations();
 
+					Ui.Layout();
 					Ui.Draw();
 
 					if (ModData != null && ModData.CursorProvider != null)
