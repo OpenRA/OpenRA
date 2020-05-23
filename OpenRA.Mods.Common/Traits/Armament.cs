@@ -271,10 +271,7 @@ namespace OpenRA.Mods.Common.Traits
 		//
 		// 4) BurstTracking = false + BurstInterruptable = true
 		// 		- fires all bursts at static position, but cancels unfired bursts if target dies
-		//
-		// Note: facing is only used by the legacy positioning code
-		// The world coordinate model uses Actor.Orientation
-		public virtual bool CheckFire(Actor self, IFacing facing, Target target)
+		public virtual bool CheckFire(Actor self, Target target)
 		{
 			if (!CanFire(self, target))
 				return false;
@@ -294,7 +291,7 @@ namespace OpenRA.Mods.Common.Traits
 				for (var i = Burst; i > 0; i--)
 				{
 					var barrel = Barrels[Burst % Barrels.Length];
-					FireBarrel(self, facing, target, barrel, delay, i == 0);
+					FireBarrel(self, target, barrel, delay, i == 0);
 					UpdateBurst(self, target);
 					delay += FireDelay;
 				}
@@ -306,25 +303,59 @@ namespace OpenRA.Mods.Common.Traits
 				var barrel = Weapon.Burst == 1 ? Barrels[currentBarrel] : Barrels[Burst % Barrels.Length];
 				currentBarrel++;
 
-				FireBarrel(self, facing, target, barrel);
+				FireBarrel(self, target, barrel);
 				UpdateBurst(self, target);
 			}
 
 			return true;
 		}
 
-		protected virtual void FireBarrel(Actor self, IFacing facing, Target target, Barrel barrel, int fireDelayOverride = 0, bool firstBulkBurst = false)
+		protected virtual void FireBarrel(Actor self, Target target, Barrel barrel, int fireDelayOverride = 0, bool firstBulkBurst = false)
 		{
+			var originalTarget = target;
 			var targetToAttack = Weapon.BurstTracking ? target : Target.FromTargetPositions(target);
 
 			foreach (var na in notifyAttacks)
 				na.PreparingAttack(self, targetToAttack, this, barrel);
 
+			var fireDelay = fireDelayOverride > 0 ? fireDelayOverride : Info.FireDelay;
+			ScheduleDelayedAction(fireDelay, () =>
+			{
+				var args = CreateProjectileArgs(self, originalTarget, targetToAttack, barrel);
+				if (args == null)
+					return;
+
+				var projectile = args.Weapon.Projectile != null ? args.Weapon.Projectile.Create(args) : null;
+				if (projectile != null)
+					self.World.Add(projectile);
+
+				if (args.Weapon.Report != null && args.Weapon.Report.Any())
+					Game.Sound.Play(SoundType.World, args.Weapon.Report, self.World, self.CenterPosition);
+
+				var firstBurst = firstBulkBurst || (!bulkScheduleBarrels && Burst == args.Weapon.Burst);
+				if (firstBurst && args.Weapon.StartBurstReport != null && args.Weapon.StartBurstReport.Any())
+					Game.Sound.Play(SoundType.World, args.Weapon.StartBurstReport, self.World, self.CenterPosition);
+
+				foreach (var na in notifyAttacks)
+					na.Attacking(self, target, this, barrel);
+
+				Recoil = Info.Recoil;
+			});
+		}
+
+		protected virtual ProjectileArgs CreateProjectileArgs(Actor self, Target originalTarget, Target target, Barrel barrel)
+		{
+			if (!CanFire(self, target, true))
+				return null;
+			else if (!Weapon.BurstTracking && Weapon.BurstInterruptable
+				&& (originalTarget.Type == TargetType.Invalid || !CanFire(self, originalTarget, true)))
+				return null;
+
 			Func<WPos> muzzlePosition = () => self.CenterPosition + MuzzleOffset(self, barrel);
 			Func<WAngle> muzzleFacing = () => MuzzleOrientation(self, barrel).Yaw;
 			var muzzleOrientation = WRot.FromYaw(muzzleFacing());
 
-			var passiveTarget = Weapon.TargetActorCenter ? targetToAttack.CenterPosition : targetToAttack.Positions.PositionClosestTo(muzzlePosition());
+			var passiveTarget = Weapon.TargetActorCenter ? target.CenterPosition : target.Positions.PositionClosestTo(muzzlePosition());
 			var cachedTargetPos = passiveTarget;
 			var initialOffset = Weapon.FirstBurstTargetOffset;
 			if (initialOffset != WVec.Zero)
@@ -354,56 +385,10 @@ namespace OpenRA.Mods.Common.Traits
 				CurrentSource = muzzlePosition,
 				SourceActor = self,
 				PassiveTarget = passiveTarget,
-				GuidedTarget = targetToAttack
+				GuidedTarget = target
 			};
 
-			var originalTarget = target;
-			var fireDelay = fireDelayOverride > 0 ? fireDelayOverride : Info.FireDelay;
-			ScheduleDelayedAction(fireDelay, () =>
-			{
-				if (args.Weapon.BurstTracking && originalTarget.Type == TargetType.Actor && CanFire(self, originalTarget, true))
-				{
-					var currentTargetPos = args.Weapon.TargetActorCenter ? originalTarget.CenterPosition
-						: originalTarget.Positions.PositionClosestTo(args.CurrentSource());
-					var targetDelta = currentTargetPos - cachedTargetPos;
-					args = new ProjectileArgs
-					{
-						Weapon = args.Weapon,
-						Facing = args.Facing,
-						CurrentMuzzleFacing = args.CurrentMuzzleFacing,
-						DamageModifiers = args.DamageModifiers,
-						InaccuracyModifiers = args.InaccuracyModifiers,
-						RangeModifiers = args.RangeModifiers,
-						Source = args.CurrentSource(),
-						CurrentSource = args.CurrentSource,
-						SourceActor = args.SourceActor,
-						PassiveTarget = args.PassiveTarget + targetDelta,
-						GuidedTarget = args.GuidedTarget
-					};
-				}
-				else if (!args.Weapon.BurstTracking && args.Weapon.BurstInterruptable
-					&& (originalTarget.Type == TargetType.Invalid || !CanFire(self, originalTarget, true)))
-					return;
-
-				if (args.Weapon.Projectile != null)
-				{
-					var projectile = args.Weapon.Projectile.Create(args);
-					if (projectile != null)
-						self.World.Add(projectile);
-				}
-
-				if (args.Weapon.Report != null && args.Weapon.Report.Any())
-					Game.Sound.Play(SoundType.World, args.Weapon.Report, self.World, self.CenterPosition);
-
-				var firstBurst = firstBulkBurst || (!bulkScheduleBarrels && Burst == args.Weapon.Burst);
-				if (firstBurst && args.Weapon.StartBurstReport != null && args.Weapon.StartBurstReport.Any())
-					Game.Sound.Play(SoundType.World, args.Weapon.StartBurstReport, self.World, self.CenterPosition);
-
-				foreach (var na in notifyAttacks)
-					na.Attacking(self, target, this, barrel);
-
-				Recoil = Info.Recoil;
-			});
+			return args;
 		}
 
 		protected virtual void UpdateBurst(Actor self, Target target)
