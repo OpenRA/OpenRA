@@ -38,26 +38,6 @@ namespace OpenRA.Mods.Common.Warheads
 			return base.IsValidAgainst(victim, firedBy);
 		}
 
-		public virtual int DamageVersus(Actor victim, HitShape shape, WarheadArgs args)
-		{
-			// If no Versus values are defined, DamageVersus would return 100 anyway, so we might as well do that early.
-			if (Versus.Count == 0)
-				return 100;
-
-			var armor = victim.TraitsImplementing<Armor>()
-				.Where(a => !a.IsTraitDisabled && a.Info.Type != null && Versus.ContainsKey(a.Info.Type) &&
-					(shape.Info.ArmorTypes.IsEmpty || shape.Info.ArmorTypes.Contains(a.Info.Type)))
-				.Select(a => Versus[a.Info.Type]);
-
-			return Util.ApplyPercentageModifiers(100, armor);
-		}
-
-		protected virtual void InflictDamage(Actor victim, Actor firedBy, HitShape shape, WarheadArgs args)
-		{
-			var damage = Util.ApplyPercentageModifiers(Damage, args.DamageModifiers.Append(DamageVersus(victim, shape, args)));
-			victim.InflictDamage(firedBy, new Damage(damage, DamageTypes));
-		}
-
 		public override void DoImpact(Target target, WarheadArgs args)
 		{
 			var firedBy = args.SourceActor;
@@ -83,6 +63,26 @@ namespace OpenRA.Mods.Common.Warheads
 				DoImpact(target.CenterPosition, firedBy, args);
 		}
 
-		public abstract void DoImpact(WPos pos, Actor firedBy, WarheadArgs args);
+		protected virtual int DamageVersus(Actor victim, HitShape shape, WarheadArgs args)
+		{
+			// If no Versus values are defined, DamageVersus would return 100 anyway, so we might as well do that early.
+			if (Versus.Count == 0)
+				return 100;
+
+			var armor = victim.TraitsImplementing<Armor>()
+				.Where(a => !a.IsTraitDisabled && a.Info.Type != null && Versus.ContainsKey(a.Info.Type) &&
+					(shape.Info.ArmorTypes.IsEmpty || shape.Info.ArmorTypes.Contains(a.Info.Type)))
+				.Select(a => Versus[a.Info.Type]);
+
+			return Util.ApplyPercentageModifiers(100, armor);
+		}
+
+		protected virtual void InflictDamage(Actor victim, Actor firedBy, HitShape shape, WarheadArgs args)
+		{
+			var damage = Util.ApplyPercentageModifiers(Damage, args.DamageModifiers.Append(DamageVersus(victim, shape, args)));
+			victim.InflictDamage(firedBy, new Damage(damage, DamageTypes));
+		}
+
+		protected abstract void DoImpact(WPos pos, Actor firedBy, WarheadArgs args);
 	}
 }

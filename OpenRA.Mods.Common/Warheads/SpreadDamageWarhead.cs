@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System.Collections.Generic;
 using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Mods.Common.Traits;
@@ -44,7 +43,7 @@ namespace OpenRA.Mods.Common.Warheads
 				Range = Exts.MakeArray(Falloff.Length, i => i * Spread);
 		}
 
-		public override void DoImpact(WPos pos, Actor firedBy, WarheadArgs args)
+		protected override void DoImpact(WPos pos, Actor firedBy, WarheadArgs args)
 		{
 			var debugVis = firedBy.World.WorldActor.TraitOrDefault<DebugVisualizations>();
 			if (debugVis != null && debugVis.CombatGeometry)

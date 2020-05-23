@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System.Collections.Generic;
 using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Mods.Common.Traits;
@@ -23,7 +22,7 @@ namespace OpenRA.Mods.Common.Warheads
 		[Desc("Damage will be applied to actors in this area. A value of zero means only targeted actor will be damaged.")]
 		public readonly WDist Spread = WDist.Zero;
 
-		public override void DoImpact(WPos pos, Actor firedBy, WarheadArgs args)
+		protected override void DoImpact(WPos pos, Actor firedBy, WarheadArgs args)
 		{
 			if (Spread == WDist.Zero)
 				return;
