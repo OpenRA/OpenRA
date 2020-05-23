@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System.Collections.Generic;
 using OpenRA.GameRules;
 using OpenRA.Primitives;
 using OpenRA.Traits;
