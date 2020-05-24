@@ -42,12 +42,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyCreated.Created(Actor self)
 		{
-			// Special case handling is required for the Player actor.
-			// Created is called before Player.PlayerActor is assigned,
-			// so we must query other player traits from self, knowing that
-			// it refers to the same actor as self.Owner.PlayerActor
-			var playerActor = self.Info.Name == "player" ? self : self.Owner.PlayerActor;
-			playerResources = playerActor.Trait<PlayerResources>();
+			playerResources = self.Owner.PlayerActor.Trait<PlayerResources>();
 		}
 
 		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)

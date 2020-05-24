@@ -54,11 +54,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected override void Created(Actor self)
 		{
-			// Special case handling is required for the Player actor.
-			// Created is called before Player.PlayerActor is assigned,
-			// so we must query player traits from self, which refers
-			// for bot modules always to the Player actor.
-			supportPowerManager = self.Trait<SupportPowerManager>();
+			supportPowerManager = self.Owner.PlayerActor.Trait<SupportPowerManager>();
 		}
 
 		protected override void TraitEnabled(Actor self)
