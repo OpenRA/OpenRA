@@ -146,7 +146,7 @@ BarrelExplode:
 	Warhead@1Dam: SpreadDamage
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 5
-		ValidTargets: Ground, Trees
+		ValidTargets: GroundActor, Trees
 		Versus:
 			None: 120
 			Wood: 100
