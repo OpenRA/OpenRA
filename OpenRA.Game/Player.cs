@@ -166,8 +166,16 @@ namespace OpenRA
 			if (!Spectating)
 				PlayerMask = new LongBitSet<PlayerBitMask>(InternalName);
 
+			// Special case handling is required for the Player actor:
+			// Since Actor.Created would be called before PlayerActor is assigned here
+			// querying player traits in INotifyCreated.Created would crash.
+			// Therefore only call the constructor of Actor and run the Created callbacks ourselves.
+			// Add the PlayerActor to the world afterwards.
 			var playerActorType = world.Type == WorldType.Editor ? EditorPlayerActorType : PlayerActorType;
-			PlayerActor = world.CreateActor(playerActorType, new TypeDictionary { new OwnerInit(this) });
+			PlayerActor = new Actor(world, playerActorType, new TypeDictionary { new OwnerInit(this) });
+			PlayerActor.Created();
+			world.Add(PlayerActor);
+
 			Shroud = PlayerActor.Trait<Shroud>();
 			FrozenActorLayer = PlayerActor.TraitOrDefault<FrozenActorLayer>();
 
