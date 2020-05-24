@@ -16,7 +16,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Lets the actor generate cash in a set periodic time.")]
-	public class CashTricklerInfo : PausableConditionalTraitInfo
+	public class CashTricklerInfo : PausableConditionalTraitInfo, IRulesetLoaded
 	{
 		[Desc("Number of ticks to wait between giving money.")]
 		public readonly int Interval = 50;
@@ -35,6 +35,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Use resource storage for cash granted.")]
 		public readonly bool UseResourceStorage = false;
+
+		void IRulesetLoaded<ActorInfo>.RulesetLoaded(Ruleset rules, ActorInfo info)
+		{
+			if (ShowTicks && !info.HasTraitInfo<IOccupySpaceInfo>())
+				throw new YamlException("CashTrickler is defined with ShowTicks 'true' but actor '{0}' occupies no space.".F(info.Name));
+		}
 
 		public override object Create(ActorInitializer init) { return new CashTrickler(this); }
 	}
@@ -78,7 +84,7 @@ namespace OpenRA.Mods.Common.Traits
 				var cashTrickerModifier = self.TraitsImplementing<ICashTricklerModifier>().Select(x => x.GetCashTricklerModifier());
 
 				Ticks = info.Interval;
-				ModifyCash(self, self.Owner, Util.ApplyPercentageModifiers(info.Amount, cashTrickerModifier));
+				ModifyCash(self, Util.ApplyPercentageModifiers(info.Amount, cashTrickerModifier));
 			}
 		}
 
@@ -88,7 +94,7 @@ namespace OpenRA.Mods.Common.Traits
 				new FloatingText(self.CenterPosition, self.Owner.Color, FloatingText.FormatCashTick(amount), info.DisplayDuration)));
 		}
 
-		void ModifyCash(Actor self, Player newOwner, int amount)
+		void ModifyCash(Actor self, int amount)
 		{
 			if (info.UseResourceStorage)
 			{
