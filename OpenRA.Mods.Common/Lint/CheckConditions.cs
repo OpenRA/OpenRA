@@ -28,14 +28,17 @@ namespace OpenRA.Mods.Common.Lint
 				var withUsed = actorInfo.Value.TraitInfos<TraitInfo>()
 					.SelectMany(trait => Exts.EnumerateInFieldsAndProperties<IWithUsedVariables>(trait));
 
-				var granted = new HashSet<string>(withGranted.GetGrantedVariables());
-				var consumed = new HashSet<string>(withUsed.GetUsedVariables());
+				var allGranted = new Dictionary<string, HashSet<Type>>();
+				foreach (var granted in withGranted.GetGrantedVariables())
+					allGranted.GetOrAdd(granted.Key).Add(granted.Value);
 
-				var unconsumed = granted.Except(consumed);
+				var allConsumed = new HashSet<string>(withUsed.GetUsedVariables());
+
+				var unconsumed = allGranted.Keys.Except(allConsumed);
 				if (unconsumed.Any())
 					emitWarning("Actor type `{0}` grants conditions that are not consumed: {1}".F(actorInfo.Key, unconsumed.JoinWith(", ")));
 
-				var ungranted = consumed.Except(granted);
+				var ungranted = allConsumed.Except(allGranted.Keys);
 				if (ungranted.Any())
 					emitError("Actor type `{0}` consumes conditions that are not granted: {1}".F(actorInfo.Key, ungranted.JoinWith(", ")));
 			}

@@ -97,7 +97,7 @@ namespace OpenRA.Test
 			var result = value.AsRecursiveEnumerable<IWithGrantedVariables>().ToArray();
 			Assert.AreEqual(1, result.Length, "Wrong source count");
 			Assert.AreEqual(1, result.SelectMany(r => r.GetGrantedVariables()).Count(), "Wrong source count");
-			Assert.True(result.SelectMany(r => r.GetGrantedVariables()).FirstOrDefault() == "hello", "Wrong string");
+			Assert.True(result.SelectMany(r => r.GetGrantedVariables()).Any() && result.SelectMany(r => r.GetGrantedVariables()).First().Key == "hello", "Wrong string");
 		}
 
 		[TestCase(TestName = "GrantedVariableReference<bool> array")]
@@ -111,8 +111,8 @@ namespace OpenRA.Test
 			var result = value.AsRecursiveEnumerable<IWithGrantedVariables>().ToArray();
 			Assert.AreEqual(2, result.Length, "Wrong source count");
 			Assert.AreEqual(2, result.SelectMany(r => r.GetGrantedVariables()).Count(), "Wrong source count");
-			Assert.True(result.SelectMany(r => r.GetGrantedVariables()).FirstOrDefault() == "hello", "Missing 'hello'");
-			Assert.True(result.SelectMany(r => r.GetGrantedVariables()).LastOrDefault() == "world", "Missing 'World'");
+			Assert.True(result.SelectMany(r => r.GetGrantedVariables()).Any() && result.SelectMany(r => r.GetGrantedVariables()).First().Key == "hello", "Missing 'hello'");
+			Assert.True(result.SelectMany(r => r.GetGrantedVariables()).Any() && result.SelectMany(r => r.GetGrantedVariables()).Last().Key == "world", "Missing 'World'");
 		}
 
 		[TestCase(TestName = "GrantedVariableReference<bool> array array")]
@@ -129,8 +129,8 @@ namespace OpenRA.Test
 			var result = value.AsRecursiveEnumerable<IWithGrantedVariables>().ToArray();
 			Assert.AreEqual(2, result.Length, "Wrong source count");
 			Assert.AreEqual(2, result.SelectMany(r => r.GetGrantedVariables()).Count(), "Wrong variable count");
-			Assert.True(result.SelectMany(r => r.GetGrantedVariables()).FirstOrDefault() == "hello", "Missing 'hello'");
-			Assert.True(result.SelectMany(r => r.GetGrantedVariables()).LastOrDefault() == "world", "Missing 'World'");
+			Assert.True(result.SelectMany(r => r.GetGrantedVariables()).Any() && result.SelectMany(r => r.GetGrantedVariables()).First().Key == "hello", "Missing 'hello'");
+			Assert.True(result.SelectMany(r => r.GetGrantedVariables()).Any() && result.SelectMany(r => r.GetGrantedVariables()).Last().Key == "world", "Missing 'World'");
 		}
 
 		[TestCase(TestName = "Dictionary<GrantedVariableReference<bool>, BooleanExpression>")]
@@ -146,7 +146,7 @@ namespace OpenRA.Test
 			Assert.AreEqual(1, used.Length, "Wrong granted source count");
 			Assert.AreEqual(2, used.GetUsedVariables().Count(), "Wrong used variables count");
 			Assert.AreEqual(1, granted.GetGrantedVariables().Count(), "Wrong granted variables count");
-			Assert.True(granted.Length > 0 && granted[0].GetGrantedVariables().FirstOrDefault() == "message", "Missing 'message'");
+			Assert.True(granted.Length > 0 && granted[0].GetGrantedVariables().Any() && granted[0].GetGrantedVariables().First().Key == "message", "Missing 'message'");
 			Assert.True(used.Length > 0 && used[0].GetUsedVariables().FirstOrDefault() == "hello", "Missing 'hello'");
 			Assert.True(used.Length > 0 && used[0].GetUsedVariables().LastOrDefault() == "world", "Missing 'World'");
 		}

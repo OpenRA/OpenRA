@@ -9,11 +9,12 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 
 namespace OpenRA
 {
-	public interface IWithGrantedVariables { IEnumerable<string> GetGrantedVariables(); }
+	public interface IWithGrantedVariables { IEnumerable<KeyValuePair<string, Type>> GetGrantedVariables(); }
 
 	public interface IWithGrantedVariables<TokenType> : IWithGrantedVariables { }
 
@@ -50,20 +51,20 @@ namespace OpenRA
 			return Name.GetHashCode();
 		}
 
-		IEnumerable<string> IWithGrantedVariables.GetGrantedVariables()
+		IEnumerable<KeyValuePair<string, Type>> IWithGrantedVariables.GetGrantedVariables()
 		{
 			if (!string.IsNullOrEmpty(Name))
-				yield return Name;
+				yield return new KeyValuePair<string, Type>(Name, typeof(TokenType));
 		}
 	}
 
 	public static class WithGrantedVariablesExts
 	{
-		public static IEnumerable<string> GetGrantedVariables(this IEnumerable<IWithGrantedVariables> variableCollections)
+		public static IEnumerable<KeyValuePair<string, Type>> GetGrantedVariables(this IEnumerable<IWithGrantedVariables> variableCollections)
 		{
 			foreach (var variables in variableCollections)
 				foreach (var variable in variables.GetGrantedVariables())
-					if (!string.IsNullOrEmpty(variable))
+					if (!string.IsNullOrEmpty(variable.Key))
 						yield return variable;
 		}
 	}
