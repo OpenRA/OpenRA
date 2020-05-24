@@ -45,7 +45,7 @@ namespace OpenRA.Mods.D2k.Traits.Render
 		{
 			this.info = info;
 
-			if (init.Contains<SkipMakeAnimsInit>())
+			if (init.Contains<SkipMakeAnimsInit>(info))
 				return;
 
 			renderSprites = init.Self.Trait<RenderSprites>();

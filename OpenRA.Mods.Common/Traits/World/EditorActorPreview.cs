@@ -67,11 +67,11 @@ namespace OpenRA.Mods.Common.Traits
 
 			CenterPosition = PreviewPosition(world, actor.InitDict);
 
-			var location = actor.InitDict.Get<LocationInit>().Value(worldRenderer.World);
+			var location = actor.InitDict.Get<LocationInit>().Value;
 			var ios = Info.TraitInfoOrDefault<IOccupySpaceInfo>();
 
 			var subCellInit = actor.InitDict.GetOrDefault<SubCellInit>();
-			var subCell = subCellInit != null ? subCellInit.Value(worldRenderer.World) : SubCell.Any;
+			var subCell = subCellInit != null ? subCellInit.Value : SubCell.Any;
 
 			if (ios != null)
 				Footprint = ios.OccupiedCells(Info, location, subCell);
@@ -152,7 +152,7 @@ namespace OpenRA.Mods.Common.Traits
 			Func<object, bool> saveInit = init =>
 			{
 				var factionInit = init as FactionInit;
-				if (factionInit != null && factionInit.Faction == Owner.Faction)
+				if (factionInit != null && factionInit.Value == Owner.Faction)
 					return false;
 
 				// TODO: Other default values will need to be filtered
@@ -166,15 +166,15 @@ namespace OpenRA.Mods.Common.Traits
 		WPos PreviewPosition(World world, TypeDictionary init)
 		{
 			if (init.Contains<CenterPositionInit>())
-				return init.Get<CenterPositionInit>().Value(world);
+				return init.Get<CenterPositionInit>().Value;
 
 			if (init.Contains<LocationInit>())
 			{
-				var cell = init.Get<LocationInit>().Value(world);
+				var cell = init.Get<LocationInit>().Value;
 				var offset = WVec.Zero;
 
 				var subCellInit = Actor.InitDict.GetOrDefault<SubCellInit>();
-				var subCell = subCellInit != null ? subCellInit.Value(worldRenderer.World) : SubCell.Any;
+				var subCell = subCellInit != null ? subCellInit.Value : SubCell.Any;
 
 				var buildingInfo = Info.TraitInfoOrDefault<BuildingInfo>();
 				if (buildingInfo != null)

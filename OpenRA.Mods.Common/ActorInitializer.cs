@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common
 
 		public FacingInit() { }
 		public FacingInit(int init) { value = init; }
-		public int Value(World world) { return value; }
+		public int Value { get { return value; } }
 	}
 
 	public class CreationActivityDelayInit : IActorInit<int>
@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common
 
 		public CreationActivityDelayInit() { }
 		public CreationActivityDelayInit(int init) { value = init; }
-		public int Value(World world) { return value; }
+		public int Value { get { return value; } }
 	}
 
 	public class DynamicFacingInit : IActorInit<Func<int>>
@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common
 		readonly Func<int> func;
 
 		public DynamicFacingInit(Func<int> func) { this.func = func; }
-		public Func<int> Value(World world) { return func; }
+		public Func<int> Value { get { return func; } }
 	}
 
 	public class SubCellInit : IActorInit<SubCell>
@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common
 		public SubCellInit() { }
 		public SubCellInit(byte init) { value = init; }
 		public SubCellInit(SubCell init) { value = (byte)init; }
-		public SubCell Value(World world) { return (SubCell)value; }
+		public SubCell Value { get { return (SubCell)value; } }
 	}
 
 	public class CenterPositionInit : IActorInit<WPos>
@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common
 
 		public CenterPositionInit() { }
 		public CenterPositionInit(WPos init) { value = init; }
-		public WPos Value(World world) { return value; }
+		public WPos Value { get { return value; } }
 	}
 
 	// Allows maps / transformations to specify the faction variant of an actor.
@@ -71,7 +71,7 @@ namespace OpenRA.Mods.Common
 
 		public FactionInit() { }
 		public FactionInit(string faction) { Faction = faction; }
-		public string Value(World world) { return Faction; }
+		public string Value { get { return Faction; } }
 	}
 
 	public class EffectiveOwnerInit : IActorInit<Player>
@@ -81,6 +81,6 @@ namespace OpenRA.Mods.Common
 
 		public EffectiveOwnerInit() { }
 		public EffectiveOwnerInit(Player owner) { value = owner; }
-		Player IActorInit<Player>.Value(World world) { return value; }
+		public Player Value { get { return value; } }
 	}
 }

@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		public IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p)
 		{
-			if (init.Contains<HideBibPreviewInit>() && init.Get<HideBibPreviewInit, bool>())
+			if (init.Contains<HideBibPreviewInit>(this))
 				yield break;
 
 			if (Palette != null)
@@ -45,10 +45,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			var bibOffset = bi.Dimensions.Y - rows;
 			var centerOffset = bi.CenterOffset(init.World);
 			var map = init.World.Map;
-			var location = CPos.Zero;
-
-			if (init.Contains<LocationInit>())
-				location = init.Get<LocationInit, CPos>();
+			var location = init.GetValue<LocationInit, CPos>(this, CPos.Zero);
 
 			for (var i = 0; i < rows * width; i++)
 			{
@@ -136,13 +133,8 @@ namespace OpenRA.Mods.Cnc.Traits
 		}
 	}
 
-	class HideBibPreviewInit : IActorInit<bool>, ISuppressInitExport
+	class HideBibPreviewInit : IActorInit, ISuppressInitExport
 	{
-		[FieldFromYamlKey]
-		readonly bool value = true;
-
 		public HideBibPreviewInit() { }
-		public HideBibPreviewInit(bool init) { value = init; }
-		public bool Value(World world) { return value; }
 	}
 }

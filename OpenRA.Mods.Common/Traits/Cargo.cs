@@ -129,14 +129,16 @@ namespace OpenRA.Mods.Common.Traits
 				return Util.AdjacentCells(self.World, Target.FromActor(self)).Where(c => loc != c);
 			});
 
-			if (init.Contains<RuntimeCargoInit>())
+			var runtimeCargoInit = init.GetOrDefault<RuntimeCargoInit>(info);
+			var cargoInit = init.GetOrDefault<CargoInit>(info);
+			if (runtimeCargoInit != null)
 			{
-				cargo = new List<Actor>(init.Get<RuntimeCargoInit, Actor[]>());
+				cargo = runtimeCargoInit.Value.ToList();
 				totalWeight = cargo.Sum(c => GetWeight(c));
 			}
-			else if (init.Contains<CargoInit>())
+			else if (cargoInit != null)
 			{
-				foreach (var u in init.Get<CargoInit, string[]>())
+				foreach (var u in cargoInit.Value)
 				{
 					var unit = self.World.CreateActor(false, u.ToLowerInvariant(),
 						new TypeDictionary { new OwnerInit(self.Owner) });
@@ -487,7 +489,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Actor[] value = { };
 		public RuntimeCargoInit() { }
 		public RuntimeCargoInit(Actor[] init) { value = init; }
-		public Actor[] Value(World world) { return value; }
+		public Actor[] Value { get { return value; } }
 	}
 
 	public class CargoInit : IActorInit<string[]>
@@ -496,6 +498,6 @@ namespace OpenRA.Mods.Common.Traits
 		readonly string[] value = { };
 		public CargoInit() { }
 		public CargoInit(string[] init) { value = init; }
-		public string[] Value(World world) { return value; }
+		public string[] Value { get { return value; } }
 	}
 }

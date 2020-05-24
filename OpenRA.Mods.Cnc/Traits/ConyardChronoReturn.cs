@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common;
@@ -94,19 +95,15 @@ namespace OpenRA.Mods.Cnc.Traits
 			health = self.Trait<Health>();
 
 			wsb = self.TraitsImplementing<WithSpriteBody>().Single(w => w.Info.Name == info.Body);
-			faction = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : self.Owner.Faction.InternalName;
+			faction = init.GetValue<FactionInit, string>(info, self.Owner.Faction.InternalName);
+			returnTicks = init.GetValue<ChronoshiftReturnInit, int>(info, 0);
+			duration = init.GetValue<ChronoshiftDurationInit, int>(info, 0);
+			origin = init.GetValue<ChronoshiftOriginInit, CPos>(info, CPos.Zero);
 
-			if (init.Contains<ChronoshiftReturnInit>())
-				returnTicks = init.Get<ChronoshiftReturnInit, int>();
-
-			if (init.Contains<ChronoshiftDurationInit>())
-				duration = init.Get<ChronoshiftDurationInit, int>();
-
-			if (init.Contains<ChronoshiftOriginInit>())
-				origin = init.Get<ChronoshiftOriginInit, CPos>();
-
-			if (init.Contains<ChronoshiftChronosphereInit>())
-				chronosphere = init.Get<ChronoshiftChronosphereInit, Actor>();
+			// Defer to the end of tick as the lazy value may reference an actor that hasn't been created yet
+			var chronosphereInit = init.GetOrDefault<ChronoshiftChronosphereInit>(info);
+			if (chronosphereInit != null)
+				init.World.AddFrameEndTask(w => chronosphere = chronosphereInit.Value(init.World).Value);
 		}
 
 		IEnumerable<VariableObserver> IObservesVariables.GetVariableObservers()

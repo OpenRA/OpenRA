@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			this.info = info;
 			var self = init.Self;
 			wsbs = self.TraitsImplementing<WithSpriteBody>().Where(w => info.BodyNames.Contains(w.Info.Name)).ToArray();
-			skipMakeAnimation = init.Contains<SkipMakeAnimsInit>();
+			skipMakeAnimation = init.Contains<SkipMakeAnimsInit>(info);
 		}
 
 		void INotifyCreated.Created(Actor self)

@@ -179,7 +179,7 @@ namespace OpenRA.Mods.Common.Traits
 				actor =>
 				{
 					var init = actor.Init<FacingInit>();
-					return init != null ? init.Value(world) : InitialFacing;
+					return init != null ? init.Value : InitialFacing;
 				},
 				(actor, value) => actor.ReplaceInit(new FacingInit((int)value)));
 		}
@@ -241,16 +241,16 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			self = init.Self;
 
-			if (init.Contains<LocationInit>())
-				SetPosition(self, init.Get<LocationInit, CPos>());
+			var locationInit = init.GetOrDefault<LocationInit>(info);
+			if (locationInit != null)
+				SetPosition(self, locationInit.Value);
 
-			if (init.Contains<CenterPositionInit>())
-				SetPosition(self, init.Get<CenterPositionInit, WPos>());
+			var centerPositionInit = init.GetOrDefault<CenterPositionInit>(info);
+			if (centerPositionInit != null)
+				SetPosition(self, centerPositionInit.Value);
 
-			Facing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : Info.InitialFacing;
-
-			if (init.Contains<CreationActivityDelayInit>())
-				creationActivityDelay = init.Get<CreationActivityDelayInit, int>();
+			Facing = init.GetValue<FacingInit, int>(info, Info.InitialFacing);
+			creationActivityDelay = init.GetValue<CreationActivityDelayInit, int>(info, 0);
 		}
 
 		public WDist LandAltitude

@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 			var model = init.World.ModelCache.GetModelSequence(image, Sequence);
 
-			var turretFacing = Turreted.TurretFacingFromInit(init, t.InitialFacing, t.Turret);
+			var turretFacing = Turreted.TurretFacingFromInit(init, t);
 			Func<WRot> turretOrientation = () => body.QuantizeOrientation(WRot.FromYaw(WAngle.FromFacing(turretFacing()) - orientation().Yaw), facings);
 
 			Func<WRot> quantizedTurret = () => body.QuantizeOrientation(turretOrientation(), facings);

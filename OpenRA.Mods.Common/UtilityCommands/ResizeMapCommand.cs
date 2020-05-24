@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			foreach (var kv in map.ActorDefinitions)
 			{
 				var actor = new ActorReference(kv.Value.Value, kv.Value.ToDictionary());
-				var location = actor.InitDict.Get<LocationInit>().Value(null);
+				var location = actor.InitDict.Get<LocationInit>().Value;
 				if (!map.Contains(location))
 				{
 					Console.WriteLine("Removing actor {0} located at {1} due being outside of the new map boundaries.".F(actor.Type, location));

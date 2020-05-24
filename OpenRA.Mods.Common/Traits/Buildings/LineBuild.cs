@@ -23,10 +23,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		public LineBuildDirectionInit() { }
 		public LineBuildDirectionInit(LineBuildDirection init) { value = init; }
-		public LineBuildDirection Value(World world) { return value; }
+		public LineBuildDirection Value { get { return value; } }
 	}
 
-	public class LineBuildParentInit : IActorInit<Actor[]>
+	public class LineBuildParentInit : IActorInit<string[]>
 	{
 		[FieldFromYamlKey]
 		public readonly string[] ParentNames = new string[0];
@@ -35,7 +35,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public LineBuildParentInit() { }
 		public LineBuildParentInit(Actor[] init) { parents = init; }
-		public Actor[] Value(World world)
+		public string[] Value { get { return ParentNames; } }
+		public Actor[] ActorValue(World world)
 		{
 			if (parents != null)
 				return parents;
@@ -79,8 +80,9 @@ namespace OpenRA.Mods.Common.Traits
 		public LineBuild(ActorInitializer init, LineBuildInfo info)
 		{
 			this.info = info;
-			if (init.Contains<LineBuildParentInit>())
-				parentNodes = init.Get<LineBuildParentInit>().Value(init.World);
+			var lineBuildParentInit = init.GetOrDefault<LineBuildParentInit>(info);
+			if (lineBuildParentInit != null)
+				parentNodes = lineBuildParentInit.ActorValue(init.World);
 		}
 
 		void INotifyLineBuildSegmentsChanged.SegmentAdded(Actor self, Actor segment)

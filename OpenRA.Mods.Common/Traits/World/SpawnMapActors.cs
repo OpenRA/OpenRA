@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Traits
 				var actorReference = new ActorReference(kv.Value.Value, kv.Value.ToDictionary());
 
 				// If there is no real player associated, don't spawn it.
-				var ownerName = actorReference.InitDict.Get<OwnerInit>().PlayerName;
+				var ownerName = actorReference.InitDict.Get<OwnerInit>().InternalName;
 				if (!world.Players.Any(p => p.InternalName == ownerName))
 					continue;
 
@@ -68,9 +68,6 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Name;
 		public SpawnedByMapInit(string name) { Name = name; }
 
-		public string Value(World world)
-		{
-			return Name;
-		}
+		public string Value { get { return Name; } }
 	}
 }

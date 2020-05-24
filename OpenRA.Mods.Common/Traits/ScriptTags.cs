@@ -26,8 +26,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public ScriptTags(ActorInitializer init, ScriptTagsInfo info)
 		{
-			if (init.Contains<ScriptTagsInit>())
-				foreach (var tag in init.Get<ScriptTagsInit, string[]>())
+			var scriptTagsInit = init.GetOrDefault<ScriptTagsInit>(info);
+			if (scriptTagsInit != null)
+				foreach (var tag in scriptTagsInit.Value)
 					tags.Add(tag);
 		}
 
@@ -55,6 +56,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		public ScriptTagsInit() { }
 		public ScriptTagsInit(string[] init) { value = init; }
-		public string[] Value(World world) { return value; }
+		public string[] Value { get { return value; } }
 	}
 }

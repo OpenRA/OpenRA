@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Traits
 		public GrantConditionOnLineBuildDirection(ActorInitializer init, GrantConditionOnLineBuildDirectionInfo info)
 		{
 			this.info = info;
-			direction = init.Get<LineBuildDirectionInit>().Value(init.World);
+			direction = init.GetValue<LineBuildDirectionInit, LineBuildDirection>(info);
 		}
 
 		void INotifyCreated.Created(Actor self)

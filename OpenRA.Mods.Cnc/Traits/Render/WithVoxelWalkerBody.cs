@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 		{
 			var model = init.World.ModelCache.GetModelSequence(image, Sequence);
 			var body = init.Actor.TraitInfo<BodyOrientationInfo>();
-			var frame = init.Contains<BodyAnimationFrameInit>() ? init.Get<BodyAnimationFrameInit, uint>() : 0;
+			var frame = init.GetValue<BodyAnimationFrameInit, uint>(this, 0);
 
 			yield return new ModelAnimation(model, () => WVec.Zero,
 				() => new[] { body.QuantizeOrientation(orientation(), facings) },
@@ -102,6 +102,6 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 
 		public BodyAnimationFrameInit() { }
 		public BodyAnimationFrameInit(uint init) { value = init; }
-		public uint Value(World world) { return value; }
+		public uint Value { get { return value; } }
 	}
 }

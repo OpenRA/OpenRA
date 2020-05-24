@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var t = init.Actor.TraitInfos<TurretedInfo>()
 				.First(tt => tt.Turret == armament.Turret);
 
-			var turretFacing = Turreted.TurretFacingFromInit(init, t.InitialFacing, armament.Turret);
+			var turretFacing = Turreted.TurretFacingFromInit(init, t);
 			var anim = new Animation(init.World, image, () => WAngle.FromFacing(turretFacing()));
 			anim.Play(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), Sequence));
 

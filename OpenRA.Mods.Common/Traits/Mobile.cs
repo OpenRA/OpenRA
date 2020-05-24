@@ -128,7 +128,7 @@ namespace OpenRA.Mods.Common.Traits
 				actor =>
 				{
 					var init = actor.Init<FacingInit>();
-					return init != null ? init.Value(world) : InitialFacing;
+					return init != null ? init.Value : InitialFacing;
 				},
 				(actor, value) =>
 				{
@@ -137,18 +137,18 @@ namespace OpenRA.Mods.Common.Traits
 					var turretsInit = actor.Init<TurretFacingsInit>();
 					var facingInit = actor.Init<FacingInit>();
 
-					var oldFacing = facingInit != null ? facingInit.Value(world) : InitialFacing;
+					var oldFacing = facingInit != null ? facingInit.Value : InitialFacing;
 					var newFacing = (int)value;
 
 					if (turretInit != null)
 					{
-						var newTurretFacing = (turretInit.Value(world) + newFacing - oldFacing + 255) % 255;
+						var newTurretFacing = (turretInit.Value + newFacing - oldFacing + 255) % 255;
 						actor.ReplaceInit(new TurretFacingInit(newTurretFacing));
 					}
 
 					if (turretsInit != null)
 					{
-						var newTurretFacings = turretsInit.Value(world)
+						var newTurretFacings = turretsInit.Value
 							.ToDictionary(kv => kv.Key, kv => (kv.Value + newFacing - oldFacing + 255) % 255);
 						actor.ReplaceInit(new TurretFacingsInit(newTurretFacings));
 					}
@@ -263,31 +263,34 @@ namespace OpenRA.Mods.Common.Traits
 			speedModifiers = Exts.Lazy(() => self.TraitsImplementing<ISpeedModifier>().ToArray().Select(x => x.GetSpeedModifier()));
 
 			ToSubCell = FromSubCell = info.LocomotorInfo.SharesCell ? init.World.Map.Grid.DefaultSubCell : SubCell.FullCell;
-			if (init.Contains<SubCellInit>())
+
+			var subCellInit = init.GetOrDefault<SubCellInit>(info);
+			if (subCellInit != null)
 			{
-				FromSubCell = ToSubCell = init.Get<SubCellInit, SubCell>();
+				FromSubCell = ToSubCell = subCellInit.Value;
 				returnToCellOnCreationRecalculateSubCell = false;
 			}
 
-			if (init.Contains<LocationInit>())
+			var locationInit = init.GetOrDefault<LocationInit>(info);
+			if (locationInit != null)
 			{
-				fromCell = toCell = init.Get<LocationInit, CPos>();
+				fromCell = toCell = locationInit.Value;
 				SetVisualPosition(self, init.World.Map.CenterOfSubCell(FromCell, FromSubCell));
 			}
 
-			Facing = oldFacing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : info.InitialFacing;
+			Facing = oldFacing = init.GetValue<FacingInit, int>(info, info.InitialFacing);
 
 			// Sets the initial visual position
 			// Unit will move into the cell grid (defined by LocationInit) as its initial activity
-			if (init.Contains<CenterPositionInit>())
+			var centerPositionInit = init.GetOrDefault<CenterPositionInit>(info);
+			if (centerPositionInit != null)
 			{
-				oldPos = init.Get<CenterPositionInit, WPos>();
+				oldPos = centerPositionInit.Value;
 				SetVisualPosition(self, oldPos);
 				returnToCellOnCreation = true;
 			}
 
-			if (init.Contains<CreationActivityDelayInit>())
-				creationActivityDelay = init.Get<CreationActivityDelayInit, int>();
+			creationActivityDelay = init.GetValue<CreationActivityDelayInit, int>(info, 0);
 		}
 
 		protected override void Created(Actor self)

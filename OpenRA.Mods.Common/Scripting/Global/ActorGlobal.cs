@@ -41,11 +41,18 @@ namespace OpenRA.Mods.Common.Scripting
 					if (initType == null)
 						throw new LuaException("Unknown initializer type '{0}'".F(typeName));
 
-					// Cast it up to an IActorInit<T>
-					var genericType = initType.GetInterfaces()
-						.First(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IActorInit<>));
-					var innerType = genericType.GetGenericArguments().First();
-					var valueType = innerType.IsEnum ? Enum.GetUnderlyingType(innerType) : innerType;
+					// HACK: Handle OwnerInit as a special case until ActorInit creation can be rewritten
+					Type innerType, valueType;
+					if (initType != typeof(OwnerInit))
+					{
+						// Cast it up to an IActorInit<T>
+						var genericType = initType.GetInterfaces()
+							.First(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IActorInit<>));
+						innerType = genericType.GetGenericArguments().First();
+						valueType = innerType.IsEnum ? Enum.GetUnderlyingType(innerType) : innerType;
+					}
+					else
+						innerType = valueType = typeof(Player);
 
 					// Try and coerce the table value to the required type
 					object value;

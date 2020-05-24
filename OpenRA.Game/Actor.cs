@@ -122,8 +122,9 @@ namespace OpenRA
 
 			World = world;
 			ActorID = world.NextAID();
-			if (initDict.Contains<OwnerInit>())
-				Owner = init.Get<OwnerInit, Player>();
+			var ownerInit = init.GetOrDefault<OwnerInit>(null);
+			if (ownerInit != null)
+				Owner = ownerInit.Value(world);
 
 			if (name != null)
 			{
