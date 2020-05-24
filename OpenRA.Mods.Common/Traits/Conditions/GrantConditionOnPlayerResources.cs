@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			var enabled = playerResources.Resources > info.Threshold;
 			if (enabled && conditionToken == Actor.InvalidConditionToken)
-				conditionToken = self.GrantCondition(info.Condition);
+				conditionToken = self.Grant(info.Condition);
 			else if (!enabled && conditionToken != Actor.InvalidConditionToken)
 				conditionToken = self.RevokeCondition(conditionToken);
 		}

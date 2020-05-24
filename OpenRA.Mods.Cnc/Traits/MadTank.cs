@@ -189,7 +189,7 @@ namespace OpenRA.Mods.Cnc.Traits
 					if (target.Type == TargetType.Invalid)
 						return true;
 
-					self.GrantCondition(mad.info.DeployedCondition);
+					self.Grant(mad.info.DeployedCondition);
 
 					self.World.AddFrameEndTask(w => EjectDriver());
 					if (mad.info.ThumpSequence != null)

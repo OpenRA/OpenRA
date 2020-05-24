@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Common.Traits
 		void Grant(Actor self)
 		{
 			if (token == Actor.InvalidConditionToken)
-				token = self.GrantCondition(Info.Condition);
+				token = self.Grant(Info.Condition);
 		}
 
 		void Revoke(Actor self)

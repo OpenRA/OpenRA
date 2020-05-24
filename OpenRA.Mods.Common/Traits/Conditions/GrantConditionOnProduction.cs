@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			if (token == Actor.InvalidConditionToken)
-				token = self.GrantCondition(info.Condition);
+				token = self.Grant(info.Condition);
 
 			ticks = info.Duration;
 		}

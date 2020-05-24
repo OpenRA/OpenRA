@@ -224,7 +224,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (Disguised != oldDisguiseSetting)
 			{
 				if (Disguised && disguisedToken == Actor.InvalidConditionToken)
-					disguisedToken = self.GrantCondition(info.DisguisedCondition);
+					disguisedToken = self.Grant(info.DisguisedCondition);
 				else if (!Disguised && disguisedToken != Actor.InvalidConditionToken)
 					disguisedToken = self.RevokeCondition(disguisedToken);
 			}
@@ -236,7 +236,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 				GrantedVariableReference<bool> disguisedAsCondition;
 				if (info.DisguisedAsConditions.TryGetValue(AsActor.Name, out disguisedAsCondition))
-					disguisedAsToken = self.GrantCondition(disguisedAsCondition);
+					disguisedAsToken = self.Grant(disguisedAsCondition);
 			}
 		}
 

@@ -71,7 +71,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (info.MinHP > hp || maxHP < hp || conditionToken != Actor.InvalidConditionToken)
 				return;
 
-			conditionToken = self.GrantCondition(info.Condition);
+			conditionToken = self.Grant(info.Condition);
 
 			var sound = info.EnabledSounds.RandomOrDefault(Game.CosmeticRandom);
 			Game.Sound.Play(SoundType.World, sound, self.CenterPosition);

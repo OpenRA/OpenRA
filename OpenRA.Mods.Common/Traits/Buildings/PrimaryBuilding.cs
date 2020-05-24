@@ -102,7 +102,7 @@ namespace OpenRA.Mods.Common.Traits
 				}
 
 				if (primaryToken == Actor.InvalidConditionToken)
-					primaryToken = self.GrantCondition(Info.PrimaryCondition);
+					primaryToken = self.Grant(Info.PrimaryCondition);
 
 				Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", Info.SelectionNotification, self.Owner.Faction.InternalName);
 			}

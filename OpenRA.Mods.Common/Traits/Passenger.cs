@@ -129,10 +129,10 @@ namespace OpenRA.Mods.Common.Traits
 			GrantedVariableReference<bool> specificCargoCondition;
 
 			if (anyCargoToken == Actor.InvalidConditionToken)
-				anyCargoToken = self.GrantCondition(Info.CargoCondition);
+				anyCargoToken = self.Grant(Info.CargoCondition);
 
 			if (specificCargoToken == Actor.InvalidConditionToken && Info.CargoConditions.TryGetValue(cargo.Info.Name, out specificCargoCondition))
-				specificCargoToken = self.GrantCondition(specificCargoCondition);
+				specificCargoToken = self.Grant(specificCargoCondition);
 
 			// Allow scripted / initial actors to move from the unload point back into the cell grid on unload
 			// This is handled by the RideTransport activity for player-loaded cargo

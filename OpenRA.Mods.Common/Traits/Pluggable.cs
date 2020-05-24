@@ -87,7 +87,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (conditionToken != Actor.InvalidConditionToken)
 				self.RevokeCondition(conditionToken);
 
-			conditionToken = self.GrantCondition(condition);
+			conditionToken = self.Grant(condition);
 			active = type;
 		}
 

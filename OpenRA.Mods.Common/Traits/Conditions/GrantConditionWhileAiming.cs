@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Traits
 		void INotifyAiming.StartedAiming(Actor self, AttackBase attack)
 		{
 			if (conditionToken == Actor.InvalidConditionToken)
-				conditionToken = self.GrantCondition(info.Condition);
+				conditionToken = self.Grant(info.Condition);
 		}
 
 		void INotifyAiming.StoppedAiming(Actor self, AttackBase attack)

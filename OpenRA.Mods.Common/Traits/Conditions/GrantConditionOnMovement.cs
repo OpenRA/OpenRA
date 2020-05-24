@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!validMovement && conditionToken != Actor.InvalidConditionToken)
 				conditionToken = self.RevokeCondition(conditionToken);
 			else if (validMovement && conditionToken == Actor.InvalidConditionToken)
-				conditionToken = self.GrantCondition(Info.Condition);
+				conditionToken = self.Grant(Info.Condition);
 		}
 
 		void INotifyMoving.MovementTypeChanged(Actor self, MovementType types)

@@ -313,7 +313,7 @@ namespace OpenRA.Mods.Common.Traits
 		void OnDeployCompleted()
 		{
 			if (deployedToken == Actor.InvalidConditionToken)
-				deployedToken = self.GrantCondition(Info.DeployedCondition);
+				deployedToken = self.Grant(Info.DeployedCondition);
 
 			deployState = DeployState.Deployed;
 		}
@@ -329,7 +329,7 @@ namespace OpenRA.Mods.Common.Traits
 		void OnUndeployCompleted()
 		{
 			if (undeployedToken == Actor.InvalidConditionToken)
-				undeployedToken = self.GrantCondition(Info.UndeployedCondition);
+				undeployedToken = self.Grant(Info.UndeployedCondition);
 
 			deployState = DeployState.Undeployed;
 		}

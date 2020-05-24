@@ -170,7 +170,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			GrantedVariableReference<bool> condition;
 			if (Info.ConditionByStance.TryGetValue(stance, out condition))
-				conditionToken = self.GrantCondition(condition);
+				conditionToken = self.Grant(condition);
 		}
 
 		public AutoTarget(ActorInitializer init, AutoTargetInfo info)

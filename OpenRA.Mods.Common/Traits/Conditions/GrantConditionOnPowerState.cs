@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.Traits
 			validPowerState = !IsTraitDisabled && Info.ValidPowerStates.HasFlag(playerPower.PowerState);
 
 			if (validPowerState && conditionToken == Actor.InvalidConditionToken)
-				conditionToken = self.GrantCondition(Info.Condition);
+				conditionToken = self.Grant(Info.Condition);
 			else if (!validPowerState && conditionToken != Actor.InvalidConditionToken)
 				conditionToken = self.RevokeCondition(conditionToken);
 		}

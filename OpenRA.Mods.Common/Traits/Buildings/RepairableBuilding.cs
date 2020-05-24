@@ -87,7 +87,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			var currentRepairers = Repairers.Count;
 			while (Repairers.Count > repairTokens.Count)
-				repairTokens.Push(self.GrantCondition(Info.RepairCondition));
+				repairTokens.Push(self.Grant(Info.RepairCondition));
 
 			while (Repairers.Count < repairTokens.Count && repairTokens.Count > 0)
 				self.RevokeCondition(repairTokens.Pop());

@@ -221,7 +221,7 @@ namespace OpenRA.Mods.Common.Traits
 			var enabled = IsEmpty;
 
 			if (enabled && conditionToken == Actor.InvalidConditionToken)
-				conditionToken = self.GrantCondition(Info.EmptyCondition);
+				conditionToken = self.Grant(Info.EmptyCondition);
 			else if (!enabled && conditionToken != Actor.InvalidConditionToken)
 				conditionToken = self.RevokeCondition(conditionToken);
 		}

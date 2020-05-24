@@ -109,7 +109,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			while (CurrentAmmoCount > tokens.Count && tokens.Count < Info.Ammo)
-				tokens.Push(self.GrantCondition(Info.AmmoCondition));
+				tokens.Push(self.Grant(Info.AmmoCondition));
 
 			while (CurrentAmmoCount < tokens.Count && tokens.Count > 0)
 				self.RevokeCondition(tokens.Pop());

@@ -203,10 +203,10 @@ namespace OpenRA.Mods.Common.Traits
 				currentTargetDelay += 1;
 
 			if (capturingToken == Actor.InvalidConditionToken)
-				capturingToken = self.GrantCondition(info.CapturingCondition);
+				capturingToken = self.Grant(info.CapturingCondition);
 
 			if (targetManager.beingCapturedToken == Actor.InvalidConditionToken)
-				targetManager.beingCapturedToken = target.GrantCondition(targetManager.info.BeingCapturedCondition);
+				targetManager.beingCapturedToken = target.Grant(targetManager.info.BeingCapturedCondition);
 
 			captures = enabledCaptures
 				.OrderBy(c => c.Info.CaptureDelay)

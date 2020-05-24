@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (IsTraitDisabled)
 				return;
 
-			var token = self.GrantCondition(Info.Condition);
+			var token = self.Grant(Info.Condition);
 			actions.Add(new DemolishAction(saboteur, delay, token));
 		}
 

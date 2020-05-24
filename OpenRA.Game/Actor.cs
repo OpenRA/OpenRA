@@ -537,7 +537,7 @@ namespace OpenRA
 		/// Otherwise, just returns InvalidConditionToken.
 		/// </summary>
 		/// <returns>The token that is used to revoke this condition.</returns>
-		public int GrantCondition(GrantedVariableReference<bool> condition)
+		public int Grant(GrantedVariableReference<bool> condition)
 		{
 			if (!condition.Valid)
 				return InvalidConditionToken;

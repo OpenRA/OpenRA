@@ -108,7 +108,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			while (Level < MaxLevel && experience >= nextLevel[Level].First)
 			{
-				self.GrantCondition(nextLevel[Level].Second);
+				self.Grant(nextLevel[Level].Second);
 
 				Level++;
 

@@ -95,7 +95,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				wasCloaked = true;
 				if (cloakedToken == Actor.InvalidConditionToken)
-					cloakedToken = self.GrantCondition(Info.CloakedCondition);
+					cloakedToken = self.Grant(Info.CloakedCondition);
 			}
 
 			base.Created(self);
@@ -163,7 +163,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (isCloaked && !wasCloaked)
 			{
 				if (cloakedToken == Actor.InvalidConditionToken)
-					cloakedToken = self.GrantCondition(Info.CloakedCondition);
+					cloakedToken = self.Grant(Info.CloakedCondition);
 
 				// Sounds shouldn't play if the actor starts cloaked
 				if (!(firstTick && Info.InitialDelay == 0) && !otherCloaks.Any(a => a.Cloaked))

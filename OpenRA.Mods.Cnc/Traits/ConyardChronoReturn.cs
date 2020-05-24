@@ -118,7 +118,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		void TriggerVortex()
 		{
 			if (conditionToken == Actor.InvalidConditionToken)
-				conditionToken = self.GrantCondition(info.Condition);
+				conditionToken = self.Grant(info.Condition);
 
 			triggered = true;
 

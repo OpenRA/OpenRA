@@ -1134,7 +1134,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			airborne = true;
 			if (airborneToken == Actor.InvalidConditionToken)
-				airborneToken = self.GrantCondition(Info.AirborneCondition);
+				airborneToken = self.Grant(Info.AirborneCondition);
 		}
 
 		void OnAirborneAltitudeLeft()
@@ -1158,7 +1158,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			cruising = true;
 			if (cruisingToken == Actor.InvalidConditionToken)
-				cruisingToken = self.GrantCondition(Info.CruisingCondition);
+				cruisingToken = self.Grant(Info.CruisingCondition);
 		}
 
 		void OnCruisingAltitudeLeft()

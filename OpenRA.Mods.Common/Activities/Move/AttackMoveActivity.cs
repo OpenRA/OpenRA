@@ -43,9 +43,9 @@ namespace OpenRA.Mods.Common.Activities
 				return;
 
 			if (isAssaultMove)
-				token = self.GrantCondition(attackMove.Info.AssaultMoveCondition);
+				token = self.Grant(attackMove.Info.AssaultMoveCondition);
 			else
-				token = self.GrantCondition(attackMove.Info.AttackMoveCondition);
+				token = self.Grant(attackMove.Info.AttackMoveCondition);
 		}
 
 		public override bool Tick(Actor self)

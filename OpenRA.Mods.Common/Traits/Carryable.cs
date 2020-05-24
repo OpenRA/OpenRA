@@ -76,7 +76,7 @@ namespace OpenRA.Mods.Common.Traits
 			attached = true;
 
 			if (carriedToken == Actor.InvalidConditionToken)
-				carriedToken = self.GrantCondition(Info.CarriedCondition);
+				carriedToken = self.Grant(Info.CarriedCondition);
 		}
 
 		// This gets called by carrier after we touched down
@@ -100,7 +100,7 @@ namespace OpenRA.Mods.Common.Traits
 			Carrier = carrier;
 
 			if (reservedToken == Actor.InvalidConditionToken)
-				reservedToken = self.GrantCondition(Info.ReservedCondition);
+				reservedToken = self.Grant(Info.ReservedCondition);
 
 			return true;
 		}
@@ -132,7 +132,7 @@ namespace OpenRA.Mods.Common.Traits
 				Carrier = carrier;
 
 				if (lockedToken == Actor.InvalidConditionToken)
-					lockedToken = self.GrantCondition(Info.LockedCondition);
+					lockedToken = self.Grant(Info.LockedCondition);
 			}
 
 			// Make sure we are not moving and at our normal position with respect to the cell grid

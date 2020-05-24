@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Traits
 		void GrantInstance(Actor self, GrantedVariableReference<bool> condition)
 		{
 			if (condition.Valid)
-				tokens.Push(self.GrantCondition(condition));
+				tokens.Push(self.Grant(condition));
 		}
 
 		void RevokeInstance(Actor self, bool revokeAll)

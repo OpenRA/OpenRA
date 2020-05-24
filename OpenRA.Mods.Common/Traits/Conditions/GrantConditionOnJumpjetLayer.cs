@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (!jumpjetInAir && newLayer == ValidLayerType && oldLayer != ValidLayerType && conditionToken == Actor.InvalidConditionToken)
 			{
-				conditionToken = self.GrantCondition(Info.Condition);
+				conditionToken = self.Grant(Info.Condition);
 				jumpjetInAir = true;
 			}
 

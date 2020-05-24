@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Traits
 		protected override void TraitEnabled(Actor self)
 		{
 			if (conditionToken == Actor.InvalidConditionToken && Info.Factions.Contains(faction))
-				conditionToken = self.GrantCondition(Info.Condition);
+				conditionToken = self.Grant(Info.Condition);
 		}
 
 		protected override void TraitDisabled(Actor self)

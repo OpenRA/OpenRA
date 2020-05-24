@@ -169,11 +169,11 @@ namespace OpenRA.Mods.Common.Traits
 				{
 					GrantedVariableReference<bool> passengerCondition;
 					if (Info.PassengerConditions.TryGetValue(c.Info.Name, out passengerCondition))
-						passengerTokens.GetOrAdd(c.Info.Name).Push(self.GrantCondition(passengerCondition));
+						passengerTokens.GetOrAdd(c.Info.Name).Push(self.Grant(passengerCondition));
 				}
 
 				if (Info.LoadedCondition.Valid)
-					loadedTokens.Push(self.GrantCondition(Info.LoadedCondition));
+					loadedTokens.Push(self.Grant(Info.LoadedCondition));
 			}
 
 			// Defer notifications until we are certain all traits on the transport are initialised
@@ -260,7 +260,7 @@ namespace OpenRA.Mods.Common.Traits
 				return false;
 
 			if (loadingToken == Actor.InvalidConditionToken)
-				loadingToken = self.GrantCondition(Info.LoadingCondition);
+				loadingToken = self.Grant(Info.LoadingCondition);
 
 			reserves.Add(a);
 			reservedWeight += w;
@@ -400,10 +400,10 @@ namespace OpenRA.Mods.Common.Traits
 
 			GrantedVariableReference<bool> passengerCondition;
 			if (Info.PassengerConditions.TryGetValue(a.Info.Name, out passengerCondition))
-				passengerTokens.GetOrAdd(a.Info.Name).Push(self.GrantCondition(passengerCondition));
+				passengerTokens.GetOrAdd(a.Info.Name).Push(self.Grant(passengerCondition));
 
 			if (Info.LoadedCondition.Valid)
-				loadedTokens.Push(self.GrantCondition(Info.LoadedCondition));
+				loadedTokens.Push(self.Grant(Info.LoadedCondition));
 		}
 
 		void INotifyKilled.Killed(Actor self, AttackInfo e)

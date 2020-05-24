@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public void Forward(Actor self, Action onComplete)
 		{
 			if (token == Actor.InvalidConditionToken)
-				token = self.GrantCondition(info.Condition);
+				token = self.Grant(info.Condition);
 
 			var wsb = wsbs.FirstEnabledTraitOrDefault();
 
@@ -80,7 +80,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public void Reverse(Actor self, Action onComplete)
 		{
 			if (token == Actor.InvalidConditionToken)
-				token = self.GrantCondition(info.Condition);
+				token = self.Grant(info.Condition);
 
 			var wsb = wsbs.FirstEnabledTraitOrDefault();
 
@@ -113,7 +113,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				if (wsb != null)
 					wsb.DefaultAnimation.PlayFetchIndex(info.Sequence, () => 0);
 
-				token = self.GrantCondition(info.Condition);
+				token = self.Grant(info.Condition);
 
 				self.QueueActivity(queued, activity);
 			});

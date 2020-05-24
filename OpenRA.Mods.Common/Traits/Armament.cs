@@ -186,7 +186,7 @@ namespace OpenRA.Mods.Common.Traits
 			var enabled = !IsTraitDisabled && IsReloading;
 
 			if (enabled && conditionToken == Actor.InvalidConditionToken)
-				conditionToken = self.GrantCondition(Info.ReloadingCondition);
+				conditionToken = self.Grant(Info.ReloadingCondition);
 			else if (!enabled && conditionToken != Actor.InvalidConditionToken)
 				conditionToken = self.RevokeCondition(conditionToken);
 		}

@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Common.Traits
 			IsInAir = true;
 
 			if (parachutingToken == Actor.InvalidConditionToken)
-				parachutingToken = self.GrantCondition(info.ParachutingCondition);
+				parachutingToken = self.Grant(info.ParachutingCondition);
 
 			self.NotifyBlocker(self.Location);
 		}

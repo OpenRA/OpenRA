@@ -92,7 +92,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!CanGrantCondition(self, source))
 				return Actor.InvalidConditionToken;
 
-			var token = self.GrantCondition(Info.Condition);
+			var token = self.Grant(Info.Condition);
 			HashSet<int> permanent;
 			permanentTokens.TryGetValue(source, out permanent);
 

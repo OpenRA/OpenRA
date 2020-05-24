@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Traits
 		void INotifyCreated.Created(Actor self)
 		{
 			if (self.Owner.IsBot && info.Bots.Contains(self.Owner.BotType))
-				conditionToken = self.GrantCondition(info.Condition);
+				conditionToken = self.Grant(info.Condition);
 		}
 
 		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Traits
 				conditionToken = self.RevokeCondition(conditionToken);
 
 			if (info.Bots.Contains(newOwner.BotType))
-				conditionToken = self.GrantCondition(info.Condition);
+				conditionToken = self.Grant(info.Condition);
 		}
 	}
 }

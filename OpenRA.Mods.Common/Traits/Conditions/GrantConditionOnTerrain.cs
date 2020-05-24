@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (currentTerrain != cachedTerrain)
 			{
 				if (wantsGranted && conditionToken == Actor.InvalidConditionToken)
-					conditionToken = self.GrantCondition(info.Condition);
+					conditionToken = self.Grant(info.Condition);
 				else if (!wantsGranted && conditionToken != Actor.InvalidConditionToken)
 					conditionToken = self.RevokeCondition(conditionToken);
 			}

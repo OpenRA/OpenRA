@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (granted && conditionToken == Actor.InvalidConditionToken)
 			{
-				conditionToken = self.GrantCondition(Info.Condition);
+				conditionToken = self.Grant(Info.Condition);
 
 				if (Info.EnabledSound != null)
 					Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Sounds", Info.EnabledSound, self.Owner.Faction.InternalName);
