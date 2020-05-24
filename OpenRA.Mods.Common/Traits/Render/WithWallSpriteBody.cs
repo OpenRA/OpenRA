@@ -37,15 +37,13 @@ namespace OpenRA.Mods.Common.Traits.Render
 				yield break;
 
 			var adjacent = 0;
+			var locationInit = init.GetOrDefault<LocationInit>(this);
+			var neighbourInit = init.GetOrDefault<RuntimeNeighbourInit>(this);
 
-			if (init.Contains<RuntimeNeighbourInit>())
+			if (locationInit != null && neighbourInit != null)
 			{
-				var location = CPos.Zero;
-				if (init.Contains<LocationInit>())
-					location = init.Get<LocationInit, CPos>();
-
-				var neighbours = init.Get<RuntimeNeighbourInit, Dictionary<CPos, string[]>>();
-				foreach (var kv in neighbours)
+				var location = locationInit.Value;
+				foreach (var kv in neighbourInit.Value)
 				{
 					var haveNeighbour = false;
 					foreach (var n in kv.Value)
@@ -177,6 +175,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		public RuntimeNeighbourInit() { }
 		public RuntimeNeighbourInit(Dictionary<CPos, string[]> init) { value = init; }
-		public Dictionary<CPos, string[]> Value(World world) { return value; }
+		public Dictionary<CPos, string[]> Value { get { return value; } }
 	}
 }

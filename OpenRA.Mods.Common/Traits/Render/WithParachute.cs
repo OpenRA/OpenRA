@@ -78,11 +78,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 				p = init.WorldRenderer.Palette(Palette);
 
 			Func<int> facing;
-			if (init.Contains<DynamicFacingInit>())
-				facing = init.Get<DynamicFacingInit, Func<int>>();
+			var dynamicfacingInit = init.GetOrDefault<DynamicFacingInit>(this);
+			if (dynamicfacingInit != null)
+				facing = dynamicfacingInit.Value;
 			else
 			{
-				var f = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : 0;
+				var f = init.GetValue<FacingInit, int>(this, 0);
 				facing = () => f;
 			}
 

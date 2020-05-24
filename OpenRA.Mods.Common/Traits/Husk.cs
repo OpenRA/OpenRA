@@ -78,14 +78,14 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 			self = init.Self;
 
-			TopLeft = init.Get<LocationInit, CPos>();
-			CenterPosition = init.Contains<CenterPositionInit>() ? init.Get<CenterPositionInit, WPos>() : init.World.Map.CenterOfCell(TopLeft);
-			Facing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : 128;
+			TopLeft = init.GetValue<LocationInit, CPos>(info);
+			CenterPosition = init.GetValue<CenterPositionInit, WPos>(info, init.World.Map.CenterOfCell(TopLeft));
+			Facing = init.GetValue<FacingInit, int>(info, 128);
 
-			dragSpeed = init.Contains<HuskSpeedInit>() ? init.Get<HuskSpeedInit, int>() : 0;
+			dragSpeed = init.GetValue<HuskSpeedInit, int>(info, 0);
 			finalPosition = init.World.Map.CenterOfCell(TopLeft);
 
-			effectiveOwner = init.Contains<EffectiveOwnerInit>() ? init.Get<EffectiveOwnerInit, Player>() : self.Owner;
+			effectiveOwner = init.GetValue<EffectiveOwnerInit, Player>(info, self.Owner);
 		}
 
 		void INotifyCreated.Created(Actor self)
@@ -178,6 +178,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		public HuskSpeedInit() { }
 		public HuskSpeedInit(int init) { value = init; }
-		public int Value(World world) { return value; }
+		public int Value { get { return value; } }
 	}
 }

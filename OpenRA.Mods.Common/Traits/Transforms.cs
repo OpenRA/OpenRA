@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.Traits
 			self = init.Self;
 			actorInfo = self.World.Map.Rules.Actors[info.IntoActor];
 			buildingInfo = actorInfo.TraitInfoOrDefault<BuildingInfo>();
-			faction = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : self.Owner.Faction.InternalName;
+			faction = init.GetValue<FactionInit, string>(info, self.Owner.Faction.InternalName);
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)

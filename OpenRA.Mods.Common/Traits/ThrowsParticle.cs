@@ -65,9 +65,9 @@ namespace OpenRA.Mods.Common.Traits
 			var body = self.Trait<BodyOrientation>();
 
 			// TODO: Carry orientation over from the parent instead of just facing
-			var bodyFacing = init.Contains<DynamicFacingInit>() ? init.Get<DynamicFacingInit, Func<int>>()()
-				: init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : 0;
-			facing = WAngle.FromFacing(Turreted.TurretFacingFromInit(init, 0)());
+			var dynamicFacingInit = init.GetOrDefault<DynamicFacingInit>(info);
+			var bodyFacing = dynamicFacingInit != null ? dynamicFacingInit.Value() : init.GetValue<FacingInit, int>(info, 0);
+			facing = WAngle.FromFacing(Turreted.TurretFacingFromInit(init, info, 0)());
 
 			// Calculate final position
 			var throwRotation = WRot.FromFacing(Game.CosmeticRandom.Next(1024));

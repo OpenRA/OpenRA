@@ -11,6 +11,7 @@
 
 using System.Collections.Generic;
 using OpenRA.Primitives;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
@@ -30,8 +31,10 @@ namespace OpenRA.Mods.Common.Traits
 			: base(init, info)
 		{
 			domainIndex = init.Self.World.WorldActor.Trait<DomainIndex>();
-			if (init.Contains<ProductionSpawnLocationInit>())
-				spawnLocation = init.Get<ProductionSpawnLocationInit, CPos>();
+
+			var spawnLocationInit = init.GetOrDefault<ProductionSpawnLocationInit>(info);
+			if (spawnLocationInit != null)
+				spawnLocation = spawnLocationInit.Value;
 		}
 
 		protected override void Created(Actor self)
@@ -114,6 +117,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		public ProductionSpawnLocationInit() { }
 		public ProductionSpawnLocationInit(CPos init) { value = init; }
-		public CPos Value(World world) { return value; }
+		public CPos Value { get { return value; } }
 	}
 }

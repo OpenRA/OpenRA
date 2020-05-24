@@ -41,9 +41,32 @@ namespace OpenRA.Mods.Common.Graphics
 			this.dict = dict;
 		}
 
-		public T Get<T>() where T : IActorInit { return dict.Get<T>(); }
-		public U Get<T, U>() where T : IActorInit<U> { return dict.Get<T>().Value(World); }
-		public bool Contains<T>() where T : IActorInit { return dict.Contains<T>(); }
+		public T GetOrDefault<T>(TraitInfo info) where T : IActorInit
+		{
+			return dict.GetOrDefault<T>();
+		}
+
+		public T Get<T>(TraitInfo info) where T : IActorInit
+		{
+			var init = GetOrDefault<T>(info);
+			if (init == null)
+				throw new InvalidOperationException("TypeDictionary does not contain instance of type `{0}`".F(typeof(T)));
+
+			return init;
+		}
+
+		public U GetValue<T, U>(TraitInfo info) where T : IActorInit<U>
+		{
+			return Get<T>(info).Value;
+		}
+
+		public U GetValue<T, U>(TraitInfo info, U fallback) where T : IActorInit<U>
+		{
+			var init = GetOrDefault<T>(info);
+			return init != null ? init.Value : fallback;
+		}
+
+		public bool Contains<T>(TraitInfo info) where T : IActorInit { return GetOrDefault<T>(info) != null; }
 
 		public Func<WRot> GetOrientation()
 		{
@@ -56,13 +79,13 @@ namespace OpenRA.Mods.Common.Graphics
 			if (dynamicInit != null)
 			{
 				// TODO: Account for terrain slope
-				var getFacing = dynamicInit.Value(null);
+				var getFacing = dynamicInit.Value;
 				return () => WRot.FromFacing(getFacing());
 			}
 
 			// Fall back to initial actor facing if an Init isn't available
 			var facingInit = dict.GetOrDefault<FacingInit>();
-			var facing = facingInit != null ? facingInit.Value(null) : facingInfo.GetInitialFacing();
+			var facing = facingInit != null ? facingInit.Value : facingInfo.GetInitialFacing();
 			var orientation = WRot.FromFacing(facing);
 			return () => orientation;
 		}
@@ -77,13 +100,13 @@ namespace OpenRA.Mods.Common.Graphics
 			var dynamicInit = dict.GetOrDefault<DynamicFacingInit>();
 			if (dynamicInit != null)
 			{
-				var getFacing = dynamicInit.Value(null);
+				var getFacing = dynamicInit.Value;
 				return () => WAngle.FromFacing(getFacing());
 			}
 
 			// Fall back to initial actor facing if an Init isn't available
 			var facingInit = dict.GetOrDefault<FacingInit>();
-			var facing = WAngle.FromFacing(facingInit != null ? facingInit.Value(null) : facingInfo.GetInitialFacing());
+			var facing = WAngle.FromFacing(facingInit != null ? facingInit.Value : facingInfo.GetInitialFacing());
 			return () => facing;
 		}
 
@@ -94,7 +117,7 @@ namespace OpenRA.Mods.Common.Graphics
 			if (health == null)
 				return DamageState.Undamaged;
 
-			var hf = health.Value(null);
+			var hf = health.Value;
 
 			if (hf <= 0)
 				return DamageState.Dead;

@@ -80,13 +80,15 @@ namespace OpenRA.Mods.Cnc.Traits
 			Info = info;
 			self = init.Self;
 
-			if (init.Contains<LocationInit>())
-				SetPosition(self, init.Get<LocationInit, CPos>());
+			var locationInit = init.GetOrDefault<LocationInit>(info);
+			if (locationInit != null)
+				SetPosition(self, locationInit.Value);
 
-			if (init.Contains<CenterPositionInit>())
-				SetPosition(self, init.Get<CenterPositionInit, WPos>());
+			var centerPositionInit = init.GetOrDefault<CenterPositionInit>(info);
+			if (centerPositionInit != null)
+				SetPosition(self, centerPositionInit.Value);
 
-			Facing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : Info.GetInitialFacing();
+			Facing = init.GetValue<FacingInit, int>(info, Info.GetInitialFacing());
 
 			// Prevent mappers from setting bogus facings
 			if (Facing != 64 && Facing != 192)

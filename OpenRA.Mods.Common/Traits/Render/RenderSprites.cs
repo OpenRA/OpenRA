@@ -49,8 +49,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public IEnumerable<IActorPreview> RenderPreview(ActorPreviewInitializer init)
 		{
 			var sequenceProvider = init.World.Map.Rules.Sequences;
-			var faction = init.Get<FactionInit, string>();
-			var ownerName = init.Get<OwnerInit>().PlayerName;
+			var faction = init.GetValue<FactionInit, string>(this);
+			var ownerName = init.Get<OwnerInit>(this).InternalName;
 			var image = GetImage(init.Actor, sequenceProvider, faction);
 			var palette = init.WorldRenderer.Palette(Palette ?? PlayerPalette + ownerName);
 
@@ -169,7 +169,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public RenderSprites(ActorInitializer init, RenderSpritesInfo info)
 		{
 			Info = info;
-			faction = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : init.Self.Owner.Faction.InternalName;
+			faction = init.GetValue<FactionInit, string>(info, init.Self.Owner.Faction.InternalName);
 		}
 
 		public string GetImage(Actor self)

@@ -74,9 +74,7 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 
 			MaxLevel = info.Conditions.Count;
-
-			if (init.Contains<ExperienceInit>())
-				initialExperience = init.Get<ExperienceInit, int>();
+			initialExperience = init.GetValue<ExperienceInit, int>(info, 0);
 		}
 
 		void INotifyCreated.Created(Actor self)
@@ -154,6 +152,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		public ExperienceInit() { }
 		public ExperienceInit(int init) { value = init; }
-		public int Value(World world) { return value; }
+		public int Value { get { return value; } }
 	}
 }

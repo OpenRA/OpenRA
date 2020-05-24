@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var t = init.Actor.TraitInfos<TurretedInfo>()
 				.First(tt => tt.Turret == Turret);
 
-			var turretFacing = Turreted.TurretFacingFromInit(init, t.InitialFacing, Turret);
+			var turretFacing = Turreted.TurretFacingFromInit(init, t);
 			var anim = new Animation(init.World, image, () => WAngle.FromFacing(turretFacing()));
 			anim.Play(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), Sequence));
 
@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			};
 
 			if (IsPlayerPalette)
-				p = init.WorldRenderer.Palette(Palette + init.Get<OwnerInit>().PlayerName);
+				p = init.WorldRenderer.Palette(Palette + init.Get<OwnerInit>(this).InternalName);
 			else if (Palette != null)
 				p = init.WorldRenderer.Palette(Palette);
 

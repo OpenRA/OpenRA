@@ -20,22 +20,26 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public bool IsValidTarget(ActorInfo actorInfo, Actor saboteur) { return false; } // TODO: bridges don't support frozen under fog
 
-		public override object Create(ActorInitializer init) { return new LegacyBridgeHut(init); }
+		public override object Create(ActorInitializer init) { return new LegacyBridgeHut(init, this); }
 	}
 
 	class LegacyBridgeHut : IDemolishable
 	{
-		public readonly Bridge FirstBridge;
-		public readonly Bridge Bridge;
+		public Bridge FirstBridge { get; private set; }
+		public Bridge Bridge { get; private set; }
 		public DamageState BridgeDamageState { get { return Bridge.AggregateDamageState(); } }
 		public bool Repairing { get { return repairDirections > 0; } }
 		int repairDirections = 0;
 
-		public LegacyBridgeHut(ActorInitializer init)
+		public LegacyBridgeHut(ActorInitializer init, LegacyBridgeHutInfo info)
 		{
-			Bridge = init.Get<ParentActorInit>().ActorValue.Trait<Bridge>();
-			Bridge.AddHut(this);
-			FirstBridge = Bridge.Enumerate(0, true).Last();
+			var bridge = init.GetOrDefault<ParentActorInit>(info);
+			init.World.AddFrameEndTask(_ =>
+			{
+				Bridge = bridge.Value(init.World).Value.Trait<Bridge>();
+				Bridge.AddHut(this);
+				FirstBridge = Bridge.Enumerate(0, true).Last();
+			});
 		}
 
 		public void Repair(Actor repairer)

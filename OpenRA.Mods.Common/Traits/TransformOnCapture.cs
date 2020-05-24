@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Traits
 		public TransformOnCapture(ActorInitializer init, TransformOnCaptureInfo info)
 		{
 			this.info = info;
-			faction = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : init.Self.Owner.Faction.InternalName;
+			faction = init.GetValue<FactionInit, string>(info, init.Self.Owner.Faction.InternalName);
 		}
 
 		void INotifyCapture.OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner, BitSet<CaptureType> captureTypes)

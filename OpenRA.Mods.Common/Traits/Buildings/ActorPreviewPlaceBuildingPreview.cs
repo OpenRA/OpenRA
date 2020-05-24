@@ -68,8 +68,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (!string.IsNullOrEmpty(info.OverridePalette))
 			{
-				var owner = init.Get<OwnerInit>().Value(wr.World);
-				palette = wr.Palette(info.OverridePaletteIsPlayerPalette ? info.OverridePalette + owner.InternalName : info.OverridePalette);
+				var ownerName = init.Get<OwnerInit>().InternalName;
+				palette = wr.Palette(info.OverridePaletteIsPlayerPalette ? info.OverridePalette + ownerName : info.OverridePalette);
 			}
 		}
 

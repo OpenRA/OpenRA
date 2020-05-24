@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Traits
 		public GrantConditionOnFaction(ActorInitializer init, GrantConditionOnFactionInfo info)
 			: base(info)
 		{
-			faction = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : init.Self.Owner.Faction.InternalName;
+			faction = init.GetValue<FactionInit, string>(info, init.Self.Owner.Faction.InternalName);
 		}
 
 		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)

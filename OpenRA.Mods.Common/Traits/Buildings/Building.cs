@@ -278,7 +278,7 @@ namespace OpenRA.Mods.Common.Traits
 		public Building(ActorInitializer init, BuildingInfo info)
 		{
 			self = init.Self;
-			topLeft = init.Get<LocationInit, CPos>();
+			topLeft = init.GetValue<LocationInit, CPos>(info);
 			Info = info;
 			influence = self.World.WorldActor.Trait<BuildingInfluence>();
 

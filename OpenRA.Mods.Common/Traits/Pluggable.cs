@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			Info = info;
 
-			var plugInit = init.Contains<PlugsInit>() ? init.Get<PlugsInit, Dictionary<CVec, string>>() : new Dictionary<CVec, string>();
+			var plugInit = init.GetValue<PlugsInit, Dictionary<CVec, string>>(info, new Dictionary<CVec, string>());
 			if (plugInit.ContainsKey(Info.Offset))
 				initialPlug = plugInit[Info.Offset];
 
@@ -126,6 +126,6 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Dictionary<CVec, string> value = new Dictionary<CVec, string>();
 		public PlugsInit() { }
 		public PlugsInit(Dictionary<CVec, string> init) { value = init; }
-		public Dictionary<CVec, string> Value(World world) { return value; }
+		public Dictionary<CVec, string> Value { get { return value; } }
 	}
 }

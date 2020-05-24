@@ -57,8 +57,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public virtual IEnumerable<IActorPreview> RenderPreview(ActorPreviewInitializer init)
 		{
 			var body = init.Actor.TraitInfo<BodyOrientationInfo>();
-			var faction = init.Get<FactionInit, string>();
-			var ownerName = init.Get<OwnerInit>().PlayerName;
+			var faction = init.GetValue<FactionInit, string>(this);
+			var ownerName = init.Get<OwnerInit>(this).InternalName;
 			var sequenceProvider = init.World.Map.Rules.Sequences;
 			var image = Image ?? init.Actor.Name;
 			var facings = body.QuantizedFacings == -1 ?

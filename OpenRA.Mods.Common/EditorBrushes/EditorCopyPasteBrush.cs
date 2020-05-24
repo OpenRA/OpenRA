@@ -138,7 +138,7 @@ namespace OpenRA.Mods.Common.Widgets
 						{
 							var location = copy.InitDict.Get<LocationInit>();
 							copy.InitDict.Remove(location);
-							copy.InitDict.Add(new LocationInit(location.Value(worldRenderer.World) + offset));
+							copy.InitDict.Add(new LocationInit(location.Value + offset));
 						}
 
 						previews.Add(preview.ID, copy);

@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -43,7 +44,7 @@ namespace OpenRA.Mods.Common.Traits
 				{
 					var init = actor.Init<FreeActorInit>();
 					if (init != null)
-						return init.Value(world);
+						return init.Value;
 
 					return true;
 				},
@@ -63,7 +64,7 @@ namespace OpenRA.Mods.Common.Traits
 		public FreeActor(ActorInitializer init, FreeActorInfo info)
 			: base(info)
 		{
-			allowSpawn = !init.Contains<FreeActorInit>() || init.Get<FreeActorInit>().ActorValue;
+			allowSpawn = init.GetValue<FreeActorInit, bool>(info, true);
 		}
 
 		protected override void TraitEnabled(Actor self)
@@ -92,13 +93,14 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool ActorValue = true;
 		public FreeActorInit() { }
 		public FreeActorInit(bool init) { ActorValue = init; }
-		public bool Value(World world) { return ActorValue; }
+		public bool Value { get { return ActorValue; } }
 	}
 
-	public class ParentActorInit : IActorInit<Actor>
+	public class ParentActorInit : IActorInit
 	{
-		public readonly Actor ActorValue;
-		public ParentActorInit(Actor parent) { ActorValue = parent; }
-		public Actor Value(World world) { return ActorValue; }
+		readonly Actor value;
+		public ParentActorInit(Actor init) { value = init; }
+
+		public Lazy<Actor> Value(World world) { return new Lazy<Actor>(() => value); }
 	}
 }
