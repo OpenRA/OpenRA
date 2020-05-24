@@ -36,6 +36,9 @@ namespace OpenRA
 
 	public class Player : IScriptBindable, IScriptNotifyBind, ILuaTableBinding, ILuaEqualityBinding, ILuaToStringBinding
 	{
+		public const string PlayerActorType = "Player";
+		public const string EditorPlayerActorType = "EditorPlayer";
+
 		struct StanceColors
 		{
 			public Color Self;
@@ -163,7 +166,7 @@ namespace OpenRA
 			if (!Spectating)
 				PlayerMask = new LongBitSet<PlayerBitMask>(InternalName);
 
-			var playerActorType = world.Type == WorldType.Editor ? "EditorPlayer" : "Player";
+			var playerActorType = world.Type == WorldType.Editor ? EditorPlayerActorType : PlayerActorType;
 			PlayerActor = world.CreateActor(playerActorType, new TypeDictionary { new OwnerInit(this) });
 			Shroud = PlayerActor.Trait<Shroud>();
 			FrozenActorLayer = PlayerActor.TraitOrDefault<FrozenActorLayer>();
