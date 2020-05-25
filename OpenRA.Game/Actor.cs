@@ -171,7 +171,7 @@ namespace OpenRA
 			SyncHashes = TraitsImplementing<ISync>().Select(sync => new SyncHash(sync)).ToArray();
 		}
 
-		internal void Created()
+		internal void Initialize(bool addToWorld = true)
 		{
 			created = true;
 
@@ -225,6 +225,9 @@ namespace OpenRA
 				activity.Queue(CurrentActivity);
 				CurrentActivity = activity;
 			}
+
+			if (addToWorld)
+				World.Add(this);
 		}
 
 		public void Tick()

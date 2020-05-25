@@ -169,12 +169,11 @@ namespace OpenRA
 			// Special case handling is required for the Player actor:
 			// Since Actor.Created would be called before PlayerActor is assigned here
 			// querying player traits in INotifyCreated.Created would crash.
-			// Therefore only call the constructor of Actor and run the Created callbacks ourselves.
-			// Add the PlayerActor to the world afterwards.
+			// Therefore assign the uninitialized actor and run the Created callbacks
+			// by calling Initialize ourselves.
 			var playerActorType = world.Type == WorldType.Editor ? EditorPlayerActorType : PlayerActorType;
 			PlayerActor = new Actor(world, playerActorType, new TypeDictionary { new OwnerInit(this) });
-			PlayerActor.Created();
-			world.Add(PlayerActor);
+			PlayerActor.Initialize(true);
 
 			Shroud = PlayerActor.Trait<Shroud>();
 			FrozenActorLayer = PlayerActor.TraitOrDefault<FrozenActorLayer>();
