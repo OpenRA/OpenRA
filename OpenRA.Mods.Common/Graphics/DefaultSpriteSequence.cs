@@ -395,7 +395,7 @@ namespace OpenRA.Mods.Common.Graphics
 
 		protected virtual int GetFacingFrameOffset(WAngle facing)
 		{
-			return Util.IndexFacing(facing.Facing, Facings);
+			return Util.IndexFacing(facing, Facings);
 		}
 	}
 }

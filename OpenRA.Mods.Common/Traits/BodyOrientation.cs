@@ -44,13 +44,13 @@ namespace OpenRA.Mods.Common.Traits
 				return orientation;
 
 			// Map yaw to the closest facing
-			var facing = QuantizeFacing(orientation.Yaw.Angle / 4, facings);
+			var facing = QuantizeFacing(orientation.Yaw, facings);
 
 			// Roll and pitch are always zero if yaw is quantized
-			return new WRot(WAngle.Zero, WAngle.Zero, WAngle.FromFacing(facing));
+			return WRot.FromYaw(facing);
 		}
 
-		public virtual int QuantizeFacing(int facing, int facings)
+		public virtual WAngle QuantizeFacing(WAngle facing, int facings)
 		{
 			return Util.QuantizeFacing(facing, facings);
 		}
@@ -106,12 +106,12 @@ namespace OpenRA.Mods.Common.Traits
 			return info.QuantizeOrientation(orientation, quantizedFacings.Value);
 		}
 
-		public int QuantizeFacing(int facing)
+		public WAngle QuantizeFacing(WAngle facing)
 		{
 			return info.QuantizeFacing(facing, quantizedFacings.Value);
 		}
 
-		public int QuantizeFacing(int facing, int facings)
+		public WAngle QuantizeFacing(WAngle facing, int facings)
 		{
 			return info.QuantizeFacing(facing, facings);
 		}
