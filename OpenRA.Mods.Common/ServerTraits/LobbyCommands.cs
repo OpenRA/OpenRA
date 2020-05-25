@@ -645,6 +645,13 @@ namespace OpenRA.Mods.Common.Server
 			var newAdminClient = server.GetClient(newAdminConn);
 			client.IsAdmin = false;
 			newAdminClient.IsAdmin = true;
+
+			var bots = server.LobbyInfo.Slots
+				.Select(slot => server.LobbyInfo.ClientInSlot(slot.Key))
+				.Where(c => c != null && c.Bot != null);
+			foreach (var b in bots)
+				b.BotControllerClientIndex = newAdminId;
+
 			server.SendMessage("{0} is now the admin.".F(newAdminClient.Name));
 			Log.Write("server", "{0} is now the admin.".F(newAdminClient.Name));
 			server.SyncLobbyClients();
