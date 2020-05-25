@@ -166,6 +166,9 @@ namespace OpenRA
 			if (!Spectating)
 				PlayerMask = new LongBitSet<PlayerBitMask>(InternalName);
 
+			// Set this property before running any Created callbacks on the player actor
+			IsBot = BotType != null;
+
 			// Special case handling is required for the Player actor:
 			// Since Actor.Created would be called before PlayerActor is assigned here
 			// querying player traits in INotifyCreated.Created would crash.
@@ -179,7 +182,6 @@ namespace OpenRA
 			FrozenActorLayer = PlayerActor.TraitOrDefault<FrozenActorLayer>();
 
 			// Enable the bot logic on the host
-			IsBot = BotType != null;
 			if (IsBot && Game.IsHost)
 			{
 				var logic = PlayerActor.TraitsImplementing<IBot>().FirstOrDefault(b => b.Info.Type == BotType);
