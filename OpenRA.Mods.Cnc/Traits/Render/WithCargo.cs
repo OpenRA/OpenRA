@@ -85,7 +85,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 				var passengerInits = new TypeDictionary()
 				{
 					new OwnerInit(p.Owner),
-					new DynamicFacingInit(() => body.QuantizeFacing(facing.Facing)),
+					new DynamicFacingInit(() => body.QuantizeFacing(WAngle.FromFacing(facing.Facing)).Facing),
 				};
 
 				foreach (var api in p.TraitsImplementing<IActorPreviewInitModifier>())

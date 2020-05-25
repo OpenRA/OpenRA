@@ -72,11 +72,11 @@ namespace OpenRA.Mods.Common.Activities
 			// Turn to one of the harvestable facings
 			if (harvInfo.HarvestFacings != 0)
 			{
-				var current = facing.Facing;
+				var current = WAngle.FromFacing(facing.Facing);
 				var desired = body.QuantizeFacing(current, harvInfo.HarvestFacings);
 				if (desired != current)
 				{
-					QueueChild(new Turn(self, desired));
+					QueueChild(new Turn(self, desired.Facing));
 					return false;
 				}
 			}

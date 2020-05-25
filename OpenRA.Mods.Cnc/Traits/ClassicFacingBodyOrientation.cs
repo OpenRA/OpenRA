@@ -16,7 +16,7 @@ namespace OpenRA.Mods.Cnc.Traits
 	[Desc("Fudge the coordinate system angles like the early games (for sprite sequences that use classic facing fudge).")]
 	public class ClassicFacingBodyOrientationInfo : BodyOrientationInfo
 	{
-		public override int QuantizeFacing(int facing, int facings)
+		public override WAngle QuantizeFacing(WAngle facing, int facings)
 		{
 			return Util.ClassicQuantizeFacing(facing, facings);
 		}
