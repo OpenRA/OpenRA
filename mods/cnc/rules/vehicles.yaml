@@ -129,20 +129,33 @@ APC:
 		TurnSpeed: 10
 	Armament@PRIMARY:
 		Weapon: APCGun
-		Recoil: 96
+		Recoil: 48
 		RecoilRecovery: 18
-		LocalOffset: 85,85,299, 85,-85,299
+		LocalOffset: 255,100,189, 255,-100,189
 		MuzzleSequence: muzzle
+		PauseOnCondition: reload-air
+		ReloadingCondition: reload-ground
 	Armament@SECONDARY:
 		Name: secondary
 		Weapon: APCGun.AA
-		Recoil: 96
+		Recoil: 48
 		RecoilRecovery: 18
-		LocalOffset: 85,85,299, 85,-85,299
-		MuzzleSequence: muzzle
+		LocalOffset: 175,100,299, 175,-100,299
+		MuzzleSequence: muzzle-air
+		PauseOnCondition: reload-ground
+		ReloadingCondition: reload-air
+	GrantConditionOnAttack:
+		Condition: attack-ground
+		RevokeDelay: 18
+		RevokeOnNewTarget: False
+		RevokeAll: True
 	AttackTurreted:
 	WithMuzzleOverlay:
 	WithSpriteTurret:
+		RequiresCondition: attack-ground
+	WithSpriteTurret@AIR:
+		Sequence: turret-air
+		RequiresCondition: !attack-ground
 	Cargo:
 		Types: Infantry
 		MaxWeight: 5
