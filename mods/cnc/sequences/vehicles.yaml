@@ -312,7 +312,13 @@ apc:
 		UseClassicFacings: True
 	turret: apctur
 		Facings: 32
-	muzzle: apcmuz
+	turret-air: apctur
+		Start: 32
+		Facings: 32
+	muzzle: minigun
+		Length: 6
+		Facings: 8
+	muzzle-air: apcmuz
 		Length: 3
 		Stride: 6
 		Facings: 8
