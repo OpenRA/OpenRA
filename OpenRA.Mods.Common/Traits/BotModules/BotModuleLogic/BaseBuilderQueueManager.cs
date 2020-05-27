@@ -134,14 +134,34 @@ namespace OpenRA.Mods.Common.Traits
 				// HACK: HACK HACK HACK
 				// TODO: Derive this from BuildingCommonNames instead
 				var type = BuildingType.Building;
+				CPos? location = null;
+				string orderString = "PlaceBuilding";
 
-				// Check if Building is a defense and if we should place it towards the enemy or not.
-				if (world.Map.Rules.Actors[currentBuilding.Item].HasTraitInfo<AttackBaseInfo>() && world.LocalRandom.Next(100) < baseBuilder.Info.PlaceDefenseTowardsEnemyChance)
-					type = BuildingType.Defense;
-				else if (baseBuilder.Info.RefineryTypes.Contains(world.Map.Rules.Actors[currentBuilding.Item].Name))
-					type = BuildingType.Refinery;
+				// Check if Building is a plug for other Building
+				var actorInfo = world.Map.Rules.Actors[currentBuilding.Item];
+				var plugInfo = actorInfo.TraitInfoOrDefault<PlugInfo>();
+				if (plugInfo != null)
+				{
+					var possibleBuilding = world.ActorsWithTrait<Pluggable>().FirstOrDefault(a =>
+						a.Actor.Owner == player && a.Trait.AcceptsPlug(a.Actor, plugInfo.Type));
 
-				var location = ChooseBuildLocation(currentBuilding.Item, true, type);
+					if (possibleBuilding != null)
+					{
+						orderString = "PlacePlug";
+						location = possibleBuilding.Actor.Location + possibleBuilding.Trait.Info.Offset;
+					}
+				}
+				else
+				{
+					// Check if Building is a defense and if we should place it towards the enemy or not.
+					if (actorInfo.HasTraitInfo<AttackBaseInfo>() && world.LocalRandom.Next(100) < baseBuilder.Info.PlaceDefenseTowardsEnemyChance)
+						type = BuildingType.Defense;
+					else if (baseBuilder.Info.RefineryTypes.Contains(actorInfo.Name))
+						type = BuildingType.Refinery;
+
+					location = ChooseBuildLocation(currentBuilding.Item, true, type);
+				}
+
 				if (location == null)
 				{
 					AIUtils.BotDebug("AI: {0} has nowhere to place {1}".F(player, currentBuilding.Item));
@@ -158,7 +178,8 @@ namespace OpenRA.Mods.Common.Traits
 				else
 				{
 					failCount = 0;
-					bot.QueueOrder(new Order("PlaceBuilding", player.PlayerActor, Target.FromCell(world, location.Value), false)
+
+					bot.QueueOrder(new Order(orderString, player.PlayerActor, Target.FromCell(world, location.Value), false)
 					{
 						// Building to place
 						TargetString = currentBuilding.Item,
