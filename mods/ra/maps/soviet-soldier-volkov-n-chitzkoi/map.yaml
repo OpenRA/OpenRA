@@ -31,11 +31,11 @@ Players:
 		Enemies: Greece, GoodGuy, Spain, France, USSR
 	PlayerReference@Greece:
 		Name: Greece
+		Bot: campaign
 		Faction: allies
 		Color: ABB7E4
 		Allies: Spain, France, GoodGuy
 		Enemies: USSR, Creeps
-		Bot: campaign
 	PlayerReference@USSR:
 		Name: USSR
 		AllowBots: False
@@ -50,25 +50,25 @@ Players:
 		Enemies: Greece, GoodGuy, Spain, France, Creeps
 	PlayerReference@GoodGuy:
 		Name: GoodGuy
+		Bot: campaign
 		Faction: allies
 		Color: ABB7E4
 		Allies: Greece, Spain, France
 		Enemies: USSR, Creeps
-		Bot: campaign
 	PlayerReference@Spain:
 		Name: Spain
+		Bot: campaign
 		Faction: allies
 		Color: F6D679
 		Allies: Greece, GoodGuy, France
 		Enemies: USSR, Creeps
-		Bot: campaign
 	PlayerReference@France:
 		Name: France
+		Bot: campaign
 		Faction: allies
 		Color: 5DC2A5
 		Allies: Greece, GoodGuy, Spain
 		Enemies: USSR, Creeps
-		Bot: campaign
 
 Actors:
 	Actor0: cycl
@@ -83,51 +83,18 @@ Actors:
 	Actor3: cycl
 		Location: 60,23
 		Owner: Greece
-	Actor4: brik
-		Location: 92,23
-		Owner: Neutral
 	Actor5: cycl
 		Location: 50,24
 		Owner: Greece
 	Actor6: cycl
 		Location: 60,24
 		Owner: Greece
-	Actor7: brik
-		Location: 92,24
-		Owner: Neutral
-	Actor8: brik
-		Location: 92,25
-		Owner: Neutral
-	Actor9: brik
-		Location: 92,26
-		Owner: Neutral
-	Actor10: brik
-		Location: 92,27
-		Owner: Neutral
-	Actor11: brik
-		Location: 92,28
-		Owner: Neutral
-	Actor12: brik
-		Location: 92,29
-		Owner: Neutral
-	Actor13: brik
-		Location: 92,30
-		Owner: Neutral
-	Actor14: brik
-		Location: 92,31
-		Owner: Neutral
-	Actor15: brik
-		Location: 92,32
-		Owner: Neutral
 	Actor16: cycl
 		Location: 50,33
 		Owner: Greece
 	Actor17: cycl
 		Location: 60,33
 		Owner: Greece
-	Actor18: brik
-		Location: 92,33
-		Owner: Neutral
 	Actor19: cycl
 		Location: 50,34
 		Owner: Greece
@@ -140,9 +107,6 @@ Actors:
 	Actor22: cycl
 		Location: 60,34
 		Owner: Greece
-	Actor23: brik
-		Location: 92,34
-		Owner: Neutral
 	Actor24: cycl
 		Location: 71,35
 		Owner: Greece
@@ -164,39 +128,24 @@ Actors:
 	Actor30: cycl
 		Location: 77,35
 		Owner: Greece
-	Actor31: brik
-		Location: 92,35
-		Owner: Neutral
 	Actor32: cycl
 		Location: 71,36
 		Owner: Greece
 	Actor33: cycl
 		Location: 77,36
 		Owner: Greece
-	Actor34: brik
-		Location: 92,36
-		Owner: Neutral
 	Actor35: cycl
 		Location: 77,37
 		Owner: Greece
-	Actor36: brik
-		Location: 92,37
-		Owner: Neutral
 	Actor37: cycl
 		Location: 77,38
 		Owner: Greece
-	Actor38: brik
-		Location: 92,38
-		Owner: Neutral
 	Actor39: cycl
 		Location: 71,39
 		Owner: Greece
 	Actor40: cycl
 		Location: 77,39
 		Owner: Greece
-	Actor41: brik
-		Location: 92,39
-		Owner: Neutral
 	Actor42: cycl
 		Location: 71,40
 		Owner: Greece
@@ -218,75 +167,6 @@ Actors:
 	Actor48: cycl
 		Location: 77,40
 		Owner: Greece
-	Actor49: brik
-		Location: 92,40
-		Owner: Neutral
-	Actor50: brik
-		Location: 92,41
-		Owner: Neutral
-	Actor51: brik
-		Location: 92,42
-		Owner: Neutral
-	Actor52: brik
-		Location: 92,43
-		Owner: Neutral
-	Actor53: brik
-		Location: 92,44
-		Owner: Neutral
-	Actor54: brik
-		Location: 92,45
-		Owner: Neutral
-	Actor55: brik
-		Location: 92,46
-		Owner: Neutral
-	Actor56: brik
-		Location: 92,47
-		Owner: Neutral
-	Actor57: brik
-		Location: 92,48
-		Owner: Neutral
-	Actor58: brik
-		Location: 92,49
-		Owner: Neutral
-	Actor59: brik
-		Location: 92,50
-		Owner: Neutral
-	Actor60: brik
-		Location: 92,51
-		Owner: Neutral
-	Actor61: brik
-		Location: 92,52
-		Owner: Neutral
-	Actor62: brik
-		Location: 83,53
-		Owner: Neutral
-	Actor63: brik
-		Location: 84,53
-		Owner: Neutral
-	Actor64: brik
-		Location: 85,53
-		Owner: Neutral
-	Actor65: brik
-		Location: 86,53
-		Owner: Neutral
-	Actor66: brik
-		Location: 87,53
-		Owner: Neutral
-	Actor67: brik
-		Location: 88,53
-		Owner: Neutral
-	Actor68: brik
-		Location: 89,53
-		Owner: Neutral
-	Actor69: brik
-		Location: 90,53
-		Owner: Neutral
-	Actor70: brik
-		Location: 91,53
-		Owner: Neutral
-	Actor71: brik
-		Location: 92,53
-		Owner: Neutral
 	Actor72: brik
 		Location: 51,56
 		Owner: Greece
@@ -506,12 +386,6 @@ Actors:
 	Actor144: brik
 		Location: 55,95
 		Owner: USSR
-	Actor145: brik
-		Location: 55,96
-		Owner: Neutral
-	Actor146: brik
-		Location: 78,86
-		Owner: Neutral
 	Actor147: tc02
 		Location: 45,23
 		Owner: Neutral
