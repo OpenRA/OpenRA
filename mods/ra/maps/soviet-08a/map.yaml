@@ -921,31 +921,31 @@ Actors:
 		Location: 100,97
 		Owner: USSR
 		Facing: 127
-	Actor258: pt
+	Boat1: pt
 		Location: 19,26
 		Owner: Greece
 		Facing: 191
-	Actor259: pt
+	Boat2: pt
 		Location: 19,58
 		Owner: Greece
 		Facing: 159
-	Actor260: pt
+	Boat3: pt
 		Location: 49,109
 		Owner: Greece
 		Facing: 223
-	Actor261: pt
+	Boat4: pt
 		Location: 109,75
 		Owner: Greece
 		Facing: 31
-	Actor262: pt
+	Boat5: pt
 		Location: 109,31
 		Owner: Greece
 		Facing: 63
-	Actor263: pt
+	Boat6: pt
 		Location: 69,18
 		Owner: Greece
 		Facing: 63
-	Actor264: dd
+	Boat7: dd
 		Location: 48,23
 		Owner: Greece
 		Facing: 159
@@ -1062,6 +1062,9 @@ Actors:
 		Owner: Neutral
 	DDPatrol2Point7: waypoint
 		Location: 97,78
+		Owner: Neutral
+	BoatRally: waypoint
+		Location: 97,93
 		Owner: Neutral
 
 Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, ra|rules/campaign-palettes.yaml, rules.yaml
