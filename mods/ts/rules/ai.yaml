@@ -17,7 +17,7 @@ Player:
 		ExcessPowerIncreaseThreshold: 4
 		ConstructionYardTypes: gacnst
 		RefineryTypes: proc
-		PowerTypes: gapowr, napowr, naapwr
+		PowerTypes: gapowr, gapowrup, napowr, naapwr
 		BarracksTypes: gapile, nahand
 		VehiclesFactoryTypes: gaweap, naweap
 		ProductionTypes: gapile, nahand, gaweap, naweap, gahpad, nahpad
@@ -41,6 +41,7 @@ Player:
 			gavulc: 8
 			garock: 2
 			gacsam: 4
+			gactwr: 14
 			naobel: 2
 			nalasr: 8
 			nasam: 4
@@ -61,6 +62,7 @@ Player:
 			gavulc: 10
 			garock: 3
 			gacsam: 6
+			gactwr: 18
 			nasam: 6
 			naobel: 3
 	BuildingRepairBotModule:
