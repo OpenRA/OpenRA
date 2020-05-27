@@ -84,8 +84,6 @@ namespace OpenRA.Mods.Common.Traits
 		BuildingInfo buildingInfo;
 		Armament[] armaments;
 
-		bool anyArmaments;
-
 		public Explodes(ExplodesInfo info, Actor self)
 			: base(info)
 		{
@@ -96,7 +94,6 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			buildingInfo = self.Info.TraitInfoOrDefault<BuildingInfo>();
 			armaments = self.TraitsImplementing<Armament>().ToArray();
-			anyArmaments = armaments.Length > 0;
 
 			base.Created(self);
 		}
@@ -106,14 +103,13 @@ namespace OpenRA.Mods.Common.Traits
 			if (IsTraitDisabled || !self.IsInWorld)
 				return;
 
-			var sharedRandom = self.World.SharedRandom.Next(100);
-			if (sharedRandom > Info.Chance)
+			if (self.World.SharedRandom.Next(100) > Info.Chance)
 				return;
 
 			if (!Info.DeathTypes.IsEmpty && !e.Damage.DamageTypes.Overlaps(Info.DeathTypes))
 				return;
 
-			var weapon = ChooseWeaponForExplosion(self, sharedRandom);
+			var weapon = ChooseWeaponForExplosion(self);
 			if (weapon == null)
 				return;
 
@@ -134,11 +130,11 @@ namespace OpenRA.Mods.Common.Traits
 			weapon.Impact(Target.FromPos(self.CenterPosition), source);
 		}
 
-		WeaponInfo ChooseWeaponForExplosion(Actor self, int sharedRandom)
+		WeaponInfo ChooseWeaponForExplosion(Actor self)
 		{
-			if (!anyArmaments)
+			if (armaments.Length == 0)
 				return Info.WeaponInfo;
-			else if (sharedRandom > Info.LoadedChance)
+			else if (self.World.SharedRandom.Next(100) > Info.LoadedChance)
 				return Info.EmptyWeaponInfo;
 
 			// PERF: Avoid LINQ
