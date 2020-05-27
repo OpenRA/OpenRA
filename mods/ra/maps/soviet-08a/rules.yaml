@@ -33,6 +33,11 @@ LST.Reinforcement:
 		Image: lst
 	Interactable:
 
+V01:
+	-SpawnActorOnDeath@1:
+	-SpawnActorOnDeath@2:
+	-SpawnActorOnDeath@3:
+
 SCRIPTEDDROP:
 	ParatroopersPower:
 		DisplayBeacon: False
