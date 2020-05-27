@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Cnc.Traits
 	{
 		public override int QuantizeFacing(int facing, int facings)
 		{
-			return OpenRA.Mods.Cnc.Util.ClassicQuantizeFacing(facing, facings, true) * (256 / facings);
+			return Util.ClassicQuantizeFacing(facing, facings);
 		}
 
 		public override object Create(ActorInitializer init) { return new ClassicFacingBodyOrientation(init, this); }

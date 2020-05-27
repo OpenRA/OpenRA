@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Cnc
 		// This table defines the exclusive maximum facing for the i'th sprite frame.
 		// i.e. sprite frame 1 is used for facings 5-13, sprite frame 2 for 14-21, and so on.
 		// Sprite frame 0 is used for facings smaller than 5 or larger than 249.
-		static readonly int[] SpriteFacings =
+		static readonly int[] SpriteRanges =
 		{
 			5, 14, 22, 33, 39, 46, 53, 60,
 			67, 74, 81, 88, 96, 104, 113, 122,
@@ -25,18 +25,44 @@ namespace OpenRA.Mods.Cnc
 			195, 202, 209, 216, 224, 232, 241, 250
 		};
 
-		public static int ClassicQuantizeFacing(int facing, int numFrames, bool useClassicFacingFudge)
+		// The actual facing associated with each sprite frame.
+		static readonly int[] SpriteFacings =
 		{
-			if (useClassicFacingFudge && numFrames == 32)
+			0, 10, 18, 28, 36, 43, 50, 57,
+			64, 71, 78, 85, 92, 100, 109, 118,
+			128, 138, 147, 156, 164, 171, 178, 185,
+			192, 199, 206, 213, 220, 228, 237, 246
+		};
+
+		/// <summary>
+		/// Calculate the frame index (between 0..numFrames) that
+		/// should be used for the given facing value, accounting
+		/// for the non-linear facing mapping for sprites with 32 directions.
+		/// </summary>
+		public static int ClassicIndexFacing(int facing, int numFrames)
+		{
+			if (numFrames == 32)
 			{
-				for (var i = 0; i < SpriteFacings.Length; i++)
-					if (facing < SpriteFacings[i])
+				for (var i = 0; i < SpriteRanges.Length; i++)
+					if (facing < SpriteRanges[i])
 						return i;
 
 				return 0;
 			}
 
-			return Common.Util.QuantizeFacing(facing, numFrames);
+			return Common.Util.IndexFacing(facing, numFrames);
+		}
+
+		/// <summary>
+		/// Rounds the given facing value to the nearest quantized step,
+		/// accounting for the non-linear facing mapping for sprites with 32 directions.
+		/// </summary>
+		public static int ClassicQuantizeFacing(int facing, int steps)
+		{
+			if (steps == 32)
+				return SpriteFacings[ClassicIndexFacing(facing, steps)];
+
+			return Common.Util.QuantizeFacing(facing, steps);
 		}
 	}
 }
