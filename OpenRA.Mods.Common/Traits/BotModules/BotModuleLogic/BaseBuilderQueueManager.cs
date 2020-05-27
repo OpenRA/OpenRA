@@ -162,7 +162,7 @@ namespace OpenRA.Mods.Common.Traits
 				}
 				else
 				{
-					// Check if Building is a defense and if we should place it towards the enemy or not.
+				// Check if Building is a defense and if we should place it towards the enemy or not.
 					if (world.Map.Rules.Actors[currentBuilding.Item].HasTraitInfo<AttackBaseInfo>() && world.LocalRandom.Next(100) < baseBuilder.Info.PlaceDefenseTowardsEnemyChance)
 						type = BuildingType.Defense;
 					else if (baseBuilder.Info.RefineryTypes.Contains(world.Map.Rules.Actors[currentBuilding.Item].Name))
@@ -207,17 +207,38 @@ namespace OpenRA.Mods.Common.Traits
 
 		ActorInfo GetProducibleBuilding(HashSet<string> actors, IEnumerable<ActorInfo> buildables, Func<ActorInfo, int> orderBy = null)
 		{
-			var available = buildables.Where(actor =>
+			var buidable_plugs = buildables.Where(b => b.HasTraitInfo<PlugInfo>());
+			IEnumerable<ActorInfo> available;
+
+			// build Plugs first !
+			if (buidable_plugs.Any())
 			{
-				// Are we able to build this?
-				if (!actors.Contains(actor.Name))
-					return false;
+				available = buidable_plugs.Where(actor =>
+				{
+					// Are we able to build this?
+					if (!actors.Contains(actor.Name))
+						return false;
 
-				if (!baseBuilder.Info.BuildingLimits.ContainsKey(actor.Name))
-					return true;
+					if (!baseBuilder.Info.BuildingLimits.ContainsKey(actor.Name))
+						return true;
 
-				return playerBuildings.Count(a => a.Info.Name == actor.Name) < baseBuilder.Info.BuildingLimits[actor.Name];
-			});
+					return playerBuildings.Count(a => a.Info.Name == actor.Name) < baseBuilder.Info.BuildingLimits[actor.Name];
+				});
+			}
+			else
+			{
+				available = buildables.Where(actor =>
+				{
+					// Are we able to build this?
+					if (!actors.Contains(actor.Name))
+						return false;
+
+					if (!baseBuilder.Info.BuildingLimits.ContainsKey(actor.Name))
+						return true;
+
+					return playerBuildings.Count(a => a.Info.Name == actor.Name) < baseBuilder.Info.BuildingLimits[actor.Name];
+				});
+			}
 
 			if (orderBy != null)
 				return available.MaxByOrDefault(orderBy);
@@ -236,7 +257,7 @@ namespace OpenRA.Mods.Common.Traits
 			var buildableThings = queue.BuildableItems();
 
 			// This gets used quite a bit, so let's cache it here
-			var power = GetProducibleBuilding(baseBuilder.Info.PowerTypes, buildableThings,
+			var	power = GetProducibleBuilding(baseBuilder.Info.PowerTypes, buildableThings,
 				a => a.TraitInfos<PowerInfo>().Where(i => i.EnabledByDefault).Sum(p => p.Amount));
 
 			// First priority is to get out of a low power situation
