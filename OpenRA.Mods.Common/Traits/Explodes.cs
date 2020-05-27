@@ -82,6 +82,9 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly IHealth health;
 		BuildingInfo buildingInfo;
+		Armament[] armaments;
+
+		bool anyArmaments;
 
 		public Explodes(ExplodesInfo info, Actor self)
 			: base(info)
@@ -92,6 +95,9 @@ namespace OpenRA.Mods.Common.Traits
 		protected override void Created(Actor self)
 		{
 			buildingInfo = self.Info.TraitInfoOrDefault<BuildingInfo>();
+			armaments = self.TraitsImplementing<Armament>().ToArray();
+			anyArmaments = armaments.Length > 0;
+
 			base.Created(self);
 		}
 
@@ -100,13 +106,14 @@ namespace OpenRA.Mods.Common.Traits
 			if (IsTraitDisabled || !self.IsInWorld)
 				return;
 
-			if (self.World.SharedRandom.Next(100) > Info.Chance)
+			var sharedRandom = self.World.SharedRandom.Next(100);
+			if (sharedRandom > Info.Chance)
 				return;
 
 			if (!Info.DeathTypes.IsEmpty && !e.Damage.DamageTypes.Overlaps(Info.DeathTypes))
 				return;
 
-			var weapon = ChooseWeaponForExplosion(self);
+			var weapon = ChooseWeaponForExplosion(self, sharedRandom);
 			if (weapon == null)
 				return;
 
@@ -127,24 +134,24 @@ namespace OpenRA.Mods.Common.Traits
 			weapon.Impact(Target.FromPos(self.CenterPosition), source);
 		}
 
-		WeaponInfo ChooseWeaponForExplosion(Actor self)
+		WeaponInfo ChooseWeaponForExplosion(Actor self, int sharedRandom)
 		{
-			var armaments = self.TraitsImplementing<Armament>();
-			if (!armaments.Any())
+			if (!anyArmaments)
 				return Info.WeaponInfo;
+			else if (sharedRandom > Info.LoadedChance)
+				return Info.EmptyWeaponInfo;
 
-			// TODO: EmptyWeapon should be removed in favour of conditions
-			var shouldExplode = !armaments.All(a => a.IsReloading);
-			var useFullExplosion = self.World.SharedRandom.Next(100) <= Info.LoadedChance;
-			return (shouldExplode && useFullExplosion) ? Info.WeaponInfo : Info.EmptyWeaponInfo;
+			// PERF: Avoid LINQ
+			foreach (var a in armaments)
+				if (!a.IsReloading)
+					return Info.WeaponInfo;
+
+			return Info.EmptyWeaponInfo;
 		}
 
 		void INotifyDamage.Damaged(Actor self, AttackInfo e)
 		{
-			if (IsTraitDisabled || !self.IsInWorld)
-				return;
-
-			if (Info.DamageThreshold == 0)
+			if (Info.DamageThreshold == 0 || IsTraitDisabled || !self.IsInWorld)
 				return;
 
 			if (!Info.DeathTypes.IsEmpty && !e.Damage.DamageTypes.Overlaps(Info.DeathTypes))
