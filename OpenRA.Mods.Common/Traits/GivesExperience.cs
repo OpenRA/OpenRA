@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Traits;
 
@@ -32,31 +33,36 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new GivesExperience(init.Self, this); }
 	}
 
-	class GivesExperience : INotifyKilled
+	class GivesExperience : INotifyKilled, INotifyCreated
 	{
 		readonly GivesExperienceInfo info;
+
+		int exp;
+		IEnumerable<int> experienceModifiers;
 
 		public GivesExperience(Actor self, GivesExperienceInfo info)
 		{
 			this.info = info;
 		}
 
+		void INotifyCreated.Created(Actor self)
+		{
+			var valued = self.Info.TraitInfoOrDefault<ValuedInfo>();
+			exp = info.Experience >= 0 ? info.Experience
+				: valued != null ? valued.Cost : 0;
+
+			experienceModifiers = self.TraitsImplementing<IGivesExperienceModifier>().ToArray().Select(m => m.GetGivesExperienceModifier());
+		}
+
 		void INotifyKilled.Killed(Actor self, AttackInfo e)
 		{
-			if (e.Attacker == null || e.Attacker.Disposed)
+			if (exp == 0 || e.Attacker == null || e.Attacker.Disposed)
 				return;
 
 			if (!info.ValidStances.HasStance(e.Attacker.Owner.Stances[self.Owner]))
 				return;
 
-			var valued = self.Info.TraitInfoOrDefault<ValuedInfo>();
-
-			var exp = info.Experience >= 0
-				? info.Experience
-				: valued != null ? valued.Cost : 0;
-
-			var experienceModifier = self.TraitsImplementing<IGivesExperienceModifier>().Select(x => x.GetGivesExperienceModifier());
-			exp = Util.ApplyPercentageModifiers(exp, experienceModifier);
+			exp = Util.ApplyPercentageModifiers(exp, experienceModifiers);
 
 			var killer = e.Attacker.TraitOrDefault<GainsExperience>();
 			if (killer != null)
