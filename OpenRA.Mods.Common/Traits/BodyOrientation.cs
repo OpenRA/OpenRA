@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual int QuantizeFacing(int facing, int facings)
 		{
-			return Util.QuantizeFacing(facing, facings) * (256 / facings);
+			return Util.QuantizeFacing(facing, facings);
 		}
 
 		public override object Create(ActorInitializer init) { return new BodyOrientation(init, this); }

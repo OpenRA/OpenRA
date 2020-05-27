@@ -176,7 +176,7 @@ namespace OpenRA.Mods.Common.Traits
 					var sequence = a.Info.MuzzleSequence;
 
 					if (a.Info.MuzzleSplitFacings > 0)
-						sequence += Util.QuantizeFacing(muzzleFacing, a.Info.MuzzleSplitFacings).ToString();
+						sequence += Util.IndexFacing(muzzleFacing, a.Info.MuzzleSplitFacings).ToString();
 
 					var muzzleFlash = new AnimationWithOffset(muzzleAnim,
 						() => PortOffset(self, port),
