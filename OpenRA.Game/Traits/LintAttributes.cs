@@ -21,7 +21,7 @@ namespace OpenRA.Traits
 		Values = 2
 	}
 
-	[AttributeUsage(AttributeTargets.Field)]
+	[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
 	public sealed class ActorReferenceAttribute : Attribute
 	{
 		public readonly Type[] RequiredTraits;
