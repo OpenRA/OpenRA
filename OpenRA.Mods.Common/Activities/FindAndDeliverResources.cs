@@ -109,21 +109,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			// Scan for resources. If no resources are found give up for now.
 			var closestHarvestableCell = ClosestHarvestablePos(self);
-			if (!closestHarvestableCell.HasValue)
-			{
-				if (lastHarvestedCell != null)
-				{
-					// Forces search from our current position.
-					lastHarvestedCell = null;
-
-					closestHarvestableCell = ClosestHarvestablePos(self);
-					LastSearchFailed = !closestHarvestableCell.HasValue;
-				}
-				else
-					LastSearchFailed = true;
-			}
-			else
-				LastSearchFailed = false;
+			LastSearchFailed = !closestHarvestableCell.HasValue;
 
 			// If no harvestable position could be found and we are at the refinery, get out of the way
 			// of the refinery entrance.
@@ -170,21 +156,34 @@ namespace OpenRA.Mods.Common.Activities
 			if (orderLocation != null && harv.CanHarvestCell(self, orderLocation.Value) && claimLayer.CanClaimCell(self, orderLocation.Value))
 				return orderLocation;
 
-			// Determine where to search from and how far to search:
-			// Prefer the explicit location first, then the nearest position from the refinery,
-			// then the nearest position from the last location, then the current location
-			var searchFromLoc = orderLocation;
-			var searchRadius = harvInfo.SearchFromHarvesterRadius;
 			var procLoc = GetSearchFromProcLocation(self);
-			if (!searchFromLoc.HasValue)
+			if (orderLocation.HasValue)
 			{
-				searchFromLoc = procLoc ?? lastHarvestedCell ?? self.Location;
-				if (procLoc.HasValue)
-					searchRadius = harvInfo.SearchFromProcRadius;
+				var closest = PathSearchHarvestablePos(self, orderLocation.Value, harvInfo.SearchFromHarvesterRadius, procLoc);
+				if (closest.HasValue)
+					return closest;
 			}
 
-			var searchRadiusSquared = searchRadius * searchRadius;
+			if (procLoc.HasValue)
+			{
+				var closest = PathSearchHarvestablePos(self, procLoc.Value, harvInfo.SearchFromProcRadius, procLoc);
+				if (closest.HasValue)
+					return closest;
+			}
 
+			if (lastHarvestedCell.HasValue)
+			{
+				var closest = PathSearchHarvestablePos(self, lastHarvestedCell.Value, harvInfo.SearchFromHarvesterRadius, procLoc);
+				if (closest.HasValue)
+					return closest;
+			}
+
+			return PathSearchHarvestablePos(self, self.Location, harvInfo.SearchFromHarvesterRadius, procLoc);
+		}
+
+		CPos? PathSearchHarvestablePos(Actor self, CPos searchFromLoc, int searchRadius, CPos? procLoc)
+		{
+			var searchRadiusSquared = searchRadius * searchRadius;
 			var procPos = procLoc.HasValue ? (WPos?)self.World.Map.CenterOfCell(procLoc.Value) : null;
 			var harvPos = self.CenterPosition;
 
@@ -194,7 +193,7 @@ namespace OpenRA.Mods.Common.Activities
 					domainIndex.IsPassable(self.Location, loc, locomotorInfo) && harv.CanHarvestCell(self, loc) && claimLayer.CanClaimCell(self, loc))
 				.WithCustomCost(loc =>
 				{
-					if ((loc - searchFromLoc.Value).LengthSquared > searchRadiusSquared)
+					if ((loc - searchFromLoc).LengthSquared > searchRadiusSquared)
 						return int.MaxValue;
 
 					// Add a cost modifier to harvestable cells to prefer resources that are closer to the refinery.
@@ -219,7 +218,7 @@ namespace OpenRA.Mods.Common.Activities
 
 					return 0;
 				})
-				.FromPoint(searchFromLoc.Value)
+				.FromPoint(searchFromLoc)
 				.FromPoint(self.Location))
 				path = pathFinder.FindPath(search);
 
