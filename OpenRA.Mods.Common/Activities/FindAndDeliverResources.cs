@@ -58,9 +58,8 @@ namespace OpenRA.Mods.Common.Activities
 
 		protected override void OnFirstRun(Actor self)
 		{
-			// If two "harvest" orders are issued consecutively, we deliver the load first if needed.
-			// We have to make sure the actual "harvest" order is not skipped if a third order is queued,
-			// so we keep hasDeliveredLoad false.
+			// The NextActivity handling will drop this activity once the harvester is full,
+			// so deliver the load first if needed while keeping 'hasDeliveredLoad' false.
 			if (orderLocation != null && harv.IsFull)
 				QueueChild(new DeliverResources(self));
 
