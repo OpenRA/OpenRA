@@ -89,8 +89,7 @@ namespace OpenRA.Mods.Common.Activities
 					return true;
 			}
 
-			// Are we full or have nothing more to gather? Deliver resources.
-			if (harv.IsFull || (!harv.IsEmpty && LastSearchFailed))
+			if (harv.IsFull)
 			{
 				QueueChild(new DeliverResources(self));
 				hasDeliveredLoad = true;
@@ -111,10 +110,19 @@ namespace OpenRA.Mods.Common.Activities
 			var closestHarvestableCell = ClosestHarvestablePos(self);
 			LastSearchFailed = !closestHarvestableCell.HasValue;
 
-			// If no harvestable position could be found and we are at the refinery, get out of the way
-			// of the refinery entrance.
 			if (LastSearchFailed)
 			{
+				// Deliver resources first if we can. A new harvestable pos might be available once we are finished.
+				if (!harv.IsEmpty)
+				{
+					QueueChild(new DeliverResources(self));
+					hasDeliveredLoad = true;
+					hasWaited = true;
+					return false;
+				}
+
+				// If no harvestable position could be found and we are at the refinery,
+				// get out of the way of the refinery entrance.
 				var lastproc = harv.LastLinkedProc ?? harv.LinkedProc;
 				if (lastproc != null && !lastproc.Disposed)
 				{
