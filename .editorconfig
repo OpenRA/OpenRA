@@ -8,10 +8,22 @@ end_of_line = LF
 insert_final_newline = true
 trim_trailing_whitespace = true
 
-; 4-column tab indentation
+; 4-column tab indentation and .NET coding conventions
 [*.cs]
 indent_style = tab
 indent_size = 4
+
+dotnet_separate_import_directive_groups = false
+dotnet_sort_system_directives_first = true
+
+csharp_style_var_elsewhere = true
+csharp_style_var_for_built_in_types = true
+csharp_style_var_when_type_is_apparent = true
+
+csharp_prefer_braces = false
+csharp_using_directive_placement = outside_namespace
+csharp_new_line_before_open_brace = all
+csharp_space_around_binary_operators = before_and_after
 
 ; 4-column tab indentation
 [*.yaml]
