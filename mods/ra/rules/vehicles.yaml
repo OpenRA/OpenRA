@@ -307,6 +307,7 @@ HARV:
 		BaleUnloadDelay: 1
 		SearchFromProcRadius: 15
 		SearchFromHarvesterRadius: 8
+		HarvestFacings: 8
 		EmptyCondition: no-ore
 	Health:
 		HP: 60000
