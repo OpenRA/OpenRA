@@ -28,9 +28,9 @@ namespace OpenRA.Mods.Common.Activities
 		readonly ResourceClaimLayer claimLayer;
 		readonly IPathFinder pathFinder;
 		readonly DomainIndex domainIndex;
+		readonly CPos? orderLocation;
 
 		Actor deliverActor;
-		CPos? orderLocation;
 		CPos? lastHarvestedCell;
 		bool hasDeliveredLoad;
 		bool hasHarvestedCell;
@@ -58,21 +58,14 @@ namespace OpenRA.Mods.Common.Activities
 
 		protected override void OnFirstRun(Actor self)
 		{
-			// If an explicit "harvest" order is given, direct the harvester to the ordered location instead of
-			// the previous harvested cell for the initial search.
-			if (orderLocation != null)
-			{
-				lastHarvestedCell = orderLocation;
-
-				// If two "harvest" orders are issued consecutively, we deliver the load first if needed.
-				// We have to make sure the actual "harvest" order is not skipped if a third order is queued,
-				// so we keep deliveredLoad false.
-				if (harv.IsFull)
-					QueueChild(new DeliverResources(self));
-			}
+			// If two "harvest" orders are issued consecutively, we deliver the load first if needed.
+			// We have to make sure the actual "harvest" order is not skipped if a third order is queued,
+			// so we keep hasDeliveredLoad false.
+			if (orderLocation != null && harv.IsFull)
+				QueueChild(new DeliverResources(self));
 
 			// If an explicit "deliver" order is given, the harvester goes immediately to the refinery.
-			if (deliverActor != null)
+			else if (deliverActor != null)
 			{
 				QueueChild(new DeliverResources(self, deliverActor));
 				hasDeliveredLoad = true;
@@ -114,14 +107,15 @@ namespace OpenRA.Mods.Common.Activities
 
 			hasWaited = false;
 
-			// Scan for resources. If no resources are found near the current field, search near the refinery
-			// instead. If that doesn't help, give up for now.
+			// Scan for resources. If no resources are found give up for now.
 			var closestHarvestableCell = ClosestHarvestablePos(self);
 			if (!closestHarvestableCell.HasValue)
 			{
 				if (lastHarvestedCell != null)
 				{
-					lastHarvestedCell = null; // Forces search from backup position.
+					// Forces search from our current position.
+					lastHarvestedCell = null;
+
 					closestHarvestableCell = ClosestHarvestablePos(self);
 					LastSearchFailed = !closestHarvestableCell.HasValue;
 				}
@@ -158,33 +152,35 @@ namespace OpenRA.Mods.Common.Activities
 		}
 
 		/// <summary>
-		/// Finds the closest harvestable pos between the current position of the harvester
-		/// and the last order location
+		/// If no explicit order is given, the current location is returned if it is harvestable.
+		/// If an explicit order is given, the order location is returned if it is harvestable.
+		/// Otherwise finds the closest harvestable position searching in order from:
+		/// - Location set by an explicit order with <see cref="HarvesterInfo.SearchFromHarvesterRadius"/>.
+		/// - Location of the (last) linked refinery with <see cref="HarvesterInfo.SearchFromProcRadius"/>.
+		/// - Location last harvested at with <see cref="HarvesterInfo.SearchFromHarvesterRadius"/>.
+		/// - The harvester's current location with <see cref="HarvesterInfo.SearchFromHarvesterRadius"/>.
 		/// </summary>
 		CPos? ClosestHarvestablePos(Actor self)
 		{
 			// Harvesters should respect an explicit harvest order instead of harvesting the current cell.
-			if (orderLocation == null)
-			{
-				if (harv.CanHarvestCell(self, self.Location) && claimLayer.CanClaimCell(self, self.Location))
-					return self.Location;
-			}
-			else
-			{
-				if (harv.CanHarvestCell(self, orderLocation.Value) && claimLayer.CanClaimCell(self, orderLocation.Value))
-					return orderLocation;
+			if (orderLocation == null && harv.CanHarvestCell(self, self.Location) && claimLayer.CanClaimCell(self, self.Location))
+				return self.Location;
 
-				orderLocation = null;
-			}
+			// Directly start harvesting at the explicit location if we can
+			if (orderLocation != null && harv.CanHarvestCell(self, orderLocation.Value) && claimLayer.CanClaimCell(self, orderLocation.Value))
+				return orderLocation;
 
 			// Determine where to search from and how far to search:
+			// Prefer the explicit location first, then the nearest position from the refinery,
+			// then the nearest position from the last location, then the current location
+			var searchFromLoc = orderLocation;
+			var searchRadius = harvInfo.SearchFromHarvesterRadius;
 			var procLoc = GetSearchFromProcLocation(self);
-			var searchFromLoc = lastHarvestedCell ?? procLoc;
-			var searchRadius = lastHarvestedCell.HasValue ? harvInfo.SearchFromHarvesterRadius : harvInfo.SearchFromProcRadius;
 			if (!searchFromLoc.HasValue)
 			{
-				searchFromLoc = self.Location;
-				searchRadius = harvInfo.SearchFromHarvesterRadius;
+				searchFromLoc = procLoc ?? lastHarvestedCell ?? self.Location;
+				if (procLoc.HasValue)
+					searchRadius = harvInfo.SearchFromProcRadius;
 			}
 
 			var searchRadiusSquared = searchRadius * searchRadius;
@@ -243,8 +239,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (ChildActivity != null)
 				foreach (var n in ChildActivity.TargetLineNodes(self))
 					yield return n;
-
-			if (orderLocation != null)
+			else if (orderLocation != null)
 				yield return new TargetLineNode(Target.FromCell(self.World, orderLocation.Value), Color.Crimson);
 			else if (deliverActor != null)
 				yield return new TargetLineNode(Target.FromActor(deliverActor), Color.Green);
