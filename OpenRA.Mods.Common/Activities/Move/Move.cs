@@ -52,7 +52,8 @@ namespace OpenRA.Mods.Common.Activities
 		// Ignores lane bias and nearby units
 		public Move(Actor self, CPos destination, Color? targetLineColor = null)
 		{
-			mobile = self.Trait<Mobile>();
+			// PERF: Because we can be sure that OccupiesSpace is Mobile here, we can save some performance by avoiding querying for the trait.
+			mobile = (Mobile)self.OccupiesSpace;
 
 			getPath = check =>
 			{
@@ -72,7 +73,8 @@ namespace OpenRA.Mods.Common.Activities
 		public Move(Actor self, CPos destination, WDist nearEnough, Actor ignoreActor = null, bool evaluateNearestMovableCell = false,
 			Color? targetLineColor = null)
 		{
-			mobile = self.Trait<Mobile>();
+			// PERF: Because we can be sure that OccupiesSpace is Mobile here, we can save some performance by avoiding querying for the trait.
+			mobile = (Mobile)self.OccupiesSpace;
 
 			getPath = check =>
 			{
@@ -93,7 +95,8 @@ namespace OpenRA.Mods.Common.Activities
 
 		public Move(Actor self, CPos destination, SubCell subCell, WDist nearEnough, Color? targetLineColor = null)
 		{
-			mobile = self.Trait<Mobile>();
+			// PERF: Because we can be sure that OccupiesSpace is Mobile here, we can save some performance by avoiding querying for the trait.
+			mobile = (Mobile)self.OccupiesSpace;
 
 			getPath = check => mobile.Pathfinder.FindUnitPathToRange(
 				mobile.FromCell, subCell, self.World.Map.CenterOfSubCell(destination, subCell), nearEnough, self, check);
@@ -105,7 +108,8 @@ namespace OpenRA.Mods.Common.Activities
 
 		public Move(Actor self, Target target, WDist range, Color? targetLineColor = null)
 		{
-			mobile = self.Trait<Mobile>();
+			// PERF: Because we can be sure that OccupiesSpace is Mobile here, we can save some performance by avoiding querying for the trait.
+			mobile = (Mobile)self.OccupiesSpace;
 
 			getPath = check =>
 			{
@@ -123,7 +127,8 @@ namespace OpenRA.Mods.Common.Activities
 
 		public Move(Actor self, Func<BlockedByActor, List<CPos>> getPath, Color? targetLineColor = null)
 		{
-			mobile = self.Trait<Mobile>();
+			// PERF: Because we can be sure that OccupiesSpace is Mobile here, we can save some performance by avoiding querying for the trait.
+			mobile = (Mobile)self.OccupiesSpace;
 
 			this.getPath = getPath;
 
