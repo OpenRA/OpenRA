@@ -126,7 +126,7 @@ SendParatroopers = function()
 		local target = Map.CenterOfCell(para.drop)
 		local dir = target - Map.CenterOfCell(para.entry)
 
-		local aircraft = proxy.ActivateParatroopers(target, dir.facing)
+		local aircraft = proxy.ActivateParatroopers(target, dir.Facing)
 		Utils.Do(aircraft, function(a)
 			Trigger.OnPassengerExited(a, function(t, p)
 				IdleHunt(p)
