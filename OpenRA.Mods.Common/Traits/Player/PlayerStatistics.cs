@@ -121,27 +121,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			switch (order.OrderString)
-			{
-				case "Chat":
-				case "HandshakeResponse":
-				case "PauseGame":
-				case "StartGame":
-				case "Disconnected":
-				case "ServerError":
-				case "AuthenticationError":
-				case "SyncLobbyInfo":
-				case "SyncClientInfo":
-				case "SyncLobbySlots":
-				case "SyncLobbyGlobalSettings":
-				case "SyncClientPing":
-				case "Ping":
-				case "Pong":
-					return;
-			}
-
 			if (order.OrderString.StartsWith("Dev"))
 				return;
+
 			OrderCount++;
 		}
 
