@@ -1,4 +1,4 @@
-#region Copyright & License Information
+﻿#region Copyright & License Information
 /*
  * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
@@ -86,18 +86,18 @@ namespace OpenRA
 			public readonly HashSet<int> Tokens = new HashSet<int>();
 		}
 
-		readonly Dictionary<string, ConditionState> conditionStates = new Dictionary<string, ConditionState>();
+		readonly Dictionary<string, IntVariableStateBase> variableStates = new Dictionary<string, IntVariableStateBase>();
 
 		/// <summary>Each granted condition receives a unique token that is used when revoking.</summary>
-		readonly Dictionary<int, string> conditionTokens = new Dictionary<int, string>();
+		readonly Dictionary<int, VariableStateBase> variableTokens = new Dictionary<int, VariableStateBase>();
 
 		int nextConditionToken = 1;
 
 		/// <summary>Cache of condition -> enabled state for quick evaluation of token counter conditions.</summary>
-		readonly Dictionary<string, int> conditionCache = new Dictionary<string, int>();
+		internal readonly Dictionary<string, int> VariableCache = new Dictionary<string, int>();
 
 		/// <summary>Read-only version of conditionCache that is passed to IConditionConsumers.</summary>
-		readonly IReadOnlyDictionary<string, int> readOnlyConditionCache;
+		internal readonly IReadOnlyDictionary<string, int> ReadOnlyVariableCache;
 
 		internal SyncHash[] SyncHashes { get; private set; }
 
@@ -112,13 +112,13 @@ namespace OpenRA
 		readonly INotifyIdle[] tickIdles;
 		readonly ITargetablePositions[] targetablePositions;
 		WPos[] staticTargetablePositions;
-		bool created;
+		internal bool Created;
 
 		internal Actor(World world, string name, TypeDictionary initDict)
 		{
 			var init = new ActorInitializer(this, initDict);
 
-			readOnlyConditionCache = new ReadOnlyDictionary<string, int>(conditionCache);
+			ReadOnlyVariableCache = new ReadOnlyDictionary<string, int>(VariableCache);
 
 			World = world;
 			ActorID = world.NextAID();
@@ -174,7 +174,7 @@ namespace OpenRA
 
 		internal void Initialize(bool addToWorld = true)
 		{
-			created = true;
+			Created = true;
 
 			// Make sure traits are usable for condition notifiers
 			foreach (var t in TraitsImplementing<INotifyCreated>())
@@ -188,20 +188,20 @@ namespace OpenRA
 					allObserverNotifiers.Add(variableUser.Notifier);
 					foreach (var variable in variableUser.Variables)
 					{
-						var cs = conditionStates.GetOrAdd(variable);
-						cs.Notifiers.Add(variableUser.Notifier);
+						var variableState = variableStates.GetOrAdd(variable, v => new CountVariableState(variable));
+						variableState.AddNotifier(variableUser.Notifier);
 
-						// Initialize conditions that have not yet been granted to 0
-						// NOTE: Some conditions may have already been granted by INotifyCreated calling GrantCondition,
-						// and we choose to assign the token count to safely cover both cases instead of adding an if branch.
-						conditionCache[variable] = cs.Tokens.Count;
+						// TODO: Remove after adding pre-initialization.
+						// Initialize variables that have not yet been granted.
+						if (!VariableCache.ContainsKey(variable))
+							VariableCache[variable] = variableState.Init();
 					}
 				}
 			}
 
 			// Update all traits with their initial condition state
 			foreach (var notify in allObserverNotifiers)
-				notify(this, readOnlyConditionCache);
+				notify(this, ReadOnlyVariableCache);
 
 			// TODO: Some traits may need initialization after being notified of initial condition state.
 
@@ -313,7 +313,7 @@ namespace OpenRA
 
 		public void QueueActivity(Activity nextActivity)
 		{
-			if (!created)
+			if (!Created)
 				throw new InvalidOperationException("An activity was queued before the actor was created. Queue it inside the INotifyCreated.Created callback instead.");
 
 			if (CurrentActivity == null)
@@ -514,60 +514,51 @@ namespace OpenRA
 
 		#region Conditions
 
-		void UpdateConditionState(string condition, int token, bool isRevoke)
-		{
-			ConditionState conditionState = conditionStates.GetOrAdd(condition);
-
-			if (isRevoke)
-				conditionState.Tokens.Remove(token);
-			else
-				conditionState.Tokens.Add(token);
-
-			conditionCache[condition] = conditionState.Tokens.Count;
-
-			// Conditions may be granted or revoked before the state is initialized.
-			// These notifications will be processed after INotifyCreated.Created.
-			if (created)
-				foreach (var notify in conditionState.Notifiers)
-					notify(this, readOnlyConditionCache);
-		}
-
 		/// <summary>
-		/// Grants a specified condition if it is valid.
+		/// Grants to a specified variable if it is valid.
 		/// Otherwise, just returns InvalidConditionToken.
 		/// </summary>
-		/// <returns>The token that is used to revoke this condition.</returns>
-		public int Grant(GrantedVariableReference<bool> condition)
+		/// <returns>The token that is used to revoke this variable.</returns>
+		public int Grant(GrantedVariableReference<bool> variable)
 		{
-			if (!condition.Valid)
+			if (!variable.Valid)
 				return InvalidConditionToken;
 
+			var variableState = variableStates.GetOrAdd(variable.Name, v => new CountVariableState(variable.Name));
+			var acceptsTokens = variableState as IAcceptsTokens<int>;
+			if (acceptsTokens == null)
+				throw new InvalidOperationException("{0} does not accept int valued tokens".F(variable));
+
 			var token = nextConditionToken++;
-			conditionTokens.Add(token, condition.Name);
-			UpdateConditionState(condition.Name, token, false);
+			variableTokens.Add(token, variableState);
+			acceptsTokens.AddOrUpdateToken(this, token);
 			return token;
 		}
 
 		/// <summary>
 		/// Revokes a previously granted condition.
 		/// </summary>
-		/// <param name="token">The token ID returned by GrantCondition.</param>
+		/// <param name="token">The token ID returned by Grant .</param>
 		/// <returns>The invalid token ID.</returns>
 		public int RevokeCondition(int token)
 		{
-			string condition;
-			if (!conditionTokens.TryGetValue(token, out condition))
+			VariableStateBase variableState;
+			if (!variableTokens.TryGetValue(token, out variableState))
 				throw new InvalidOperationException("Attempting to revoke condition with invalid token {0} for {1}.".F(token, this));
 
-			conditionTokens.Remove(token);
-			UpdateConditionState(condition, token, true);
+			var acceptsTokens = variableState as IAcceptsTokens<int>;
+			if (acceptsTokens == null)
+				throw new InvalidOperationException("Token {0} is corrupted for {1}.".F(token, this));
+
+			variableTokens.Remove(token);
+			acceptsTokens.RemoveToken(this, token);
 			return InvalidConditionToken;
 		}
 
 		/// <summary>Returns whether the specified token is valid for RevokeCondition</summary>
 		public bool TokenValid(int token)
 		{
-			return conditionTokens.ContainsKey(token);
+			return variableTokens.ContainsKey(token);
 		}
 
 		#endregion
