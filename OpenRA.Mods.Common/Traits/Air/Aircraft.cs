@@ -249,16 +249,16 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			self = init.Self;
 
-			var locationInit = init.GetOrDefault<LocationInit>(info);
+			var locationInit = init.GetOrDefault<LocationInit>();
 			if (locationInit != null)
 				SetPosition(self, locationInit.Value);
 
-			var centerPositionInit = init.GetOrDefault<CenterPositionInit>(info);
+			var centerPositionInit = init.GetOrDefault<CenterPositionInit>();
 			if (centerPositionInit != null)
 				SetPosition(self, centerPositionInit.Value);
 
-			Facing = WAngle.FromFacing(init.GetValue<FacingInit, int>(info, Info.InitialFacing));
-			creationActivityDelay = init.GetValue<CreationActivityDelayInit, int>(info, 0);
+			Facing = WAngle.FromFacing(init.GetValue<FacingInit, int>(Info.InitialFacing));
+			creationActivityDelay = init.GetValue<CreationActivityDelayInit, int>(0);
 		}
 
 		public WDist LandAltitude

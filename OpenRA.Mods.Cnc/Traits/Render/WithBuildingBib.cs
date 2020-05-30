@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			var bibOffset = bi.Dimensions.Y - rows;
 			var centerOffset = bi.CenterOffset(init.World);
 			var map = init.World.Map;
-			var location = init.GetValue<LocationInit, CPos>(this, CPos.Zero);
+			var location = init.GetValue<LocationInit, CPos>(CPos.Zero);
 
 			for (var i = 0; i < rows * width; i++)
 			{

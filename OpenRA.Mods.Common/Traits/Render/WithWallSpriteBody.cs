@@ -37,8 +37,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 				yield break;
 
 			var adjacent = 0;
-			var locationInit = init.GetOrDefault<LocationInit>(this);
-			var neighbourInit = init.GetOrDefault<RuntimeNeighbourInit>(this);
+			var locationInit = init.GetOrDefault<LocationInit>();
+			var neighbourInit = init.GetOrDefault<RuntimeNeighbourInit>();
 
 			if (locationInit != null && neighbourInit != null)
 			{
@@ -168,7 +168,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 	}
 
-	public class RuntimeNeighbourInit : ValueActorInit<Dictionary<CPos, string[]>>, ISuppressInitExport
+	public class RuntimeNeighbourInit : ValueActorInit<Dictionary<CPos, string[]>>, ISuppressInitExport, ISingleInstanceInit
 	{
 		public RuntimeNeighbourInit(Dictionary<CPos, string[]> value)
 			: base(value) { }

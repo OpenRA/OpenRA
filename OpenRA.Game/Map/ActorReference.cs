@@ -40,7 +40,14 @@ namespace OpenRA
 			{
 				var dict = new TypeDictionary();
 				foreach (var i in inits)
-					dict.Add(LoadInit(i.Key, i.Value));
+				{
+					var init = LoadInit(i.Key, i.Value);
+					if (init is ISingleInstanceInit && dict.Contains(init.GetType()))
+						throw new InvalidDataException("Duplicate initializer '{0}'".F(init.GetType().Name));
+
+					dict.Add(init);
+				}
+
 				return dict;
 			});
 		}
@@ -88,7 +95,14 @@ namespace OpenRA
 		}
 
 		// for initialization syntax
-		public void Add(object o) { InitDict.Add(o); }
+		public void Add(ActorInit init)
+		{
+			if (init is ISingleInstanceInit && InitDict.Contains(init.GetType()))
+				throw new InvalidDataException("Duplicate initializer '{0}'".F(init.GetType().Name));
+
+			InitDict.Add(init);
+		}
+
 		public IEnumerator GetEnumerator() { return InitDict.GetEnumerator(); }
 
 		public ActorReference Clone()

@@ -95,9 +95,9 @@ namespace OpenRA.Mods.Cnc.Traits
 			health = self.Trait<Health>();
 
 			wsb = self.TraitsImplementing<WithSpriteBody>().Single(w => w.Info.Name == info.Body);
-			faction = init.GetValue<FactionInit, string>(info, self.Owner.Faction.InternalName);
+			faction = init.GetValue<FactionInit, string>(self.Owner.Faction.InternalName);
 
-			var returnInit = init.GetOrDefault<ChronoshiftReturnInit>(info);
+			var returnInit = init.GetOrDefault<ChronoshiftReturnInit>();
 			if (returnInit != null)
 			{
 				returnTicks = returnInit.Ticks;

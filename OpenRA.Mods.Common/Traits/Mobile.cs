@@ -267,25 +267,25 @@ namespace OpenRA.Mods.Common.Traits
 
 			ToSubCell = FromSubCell = info.LocomotorInfo.SharesCell ? init.World.Map.Grid.DefaultSubCell : SubCell.FullCell;
 
-			var subCellInit = init.GetOrDefault<SubCellInit>(info);
+			var subCellInit = init.GetOrDefault<SubCellInit>();
 			if (subCellInit != null)
 			{
 				FromSubCell = ToSubCell = subCellInit.Value;
 				returnToCellOnCreationRecalculateSubCell = false;
 			}
 
-			var locationInit = init.GetOrDefault<LocationInit>(info);
+			var locationInit = init.GetOrDefault<LocationInit>();
 			if (locationInit != null)
 			{
 				fromCell = toCell = locationInit.Value;
 				SetVisualPosition(self, init.World.Map.CenterOfSubCell(FromCell, FromSubCell));
 			}
 
-			Facing = oldFacing = WAngle.FromFacing(init.GetValue<FacingInit, int>(info, info.InitialFacing));
+			Facing = oldFacing = WAngle.FromFacing(init.GetValue<FacingInit, int>(info.InitialFacing));
 
 			// Sets the initial visual position
 			// Unit will move into the cell grid (defined by LocationInit) as its initial activity
-			var centerPositionInit = init.GetOrDefault<CenterPositionInit>(info);
+			var centerPositionInit = init.GetOrDefault<CenterPositionInit>();
 			if (centerPositionInit != null)
 			{
 				oldPos = centerPositionInit.Value;
@@ -293,7 +293,7 @@ namespace OpenRA.Mods.Common.Traits
 				returnToCellOnCreation = true;
 			}
 
-			creationActivityDelay = init.GetValue<CreationActivityDelayInit, int>(info, 0);
+			creationActivityDelay = init.GetValue<CreationActivityDelayInit, int>(0);
 		}
 
 		protected override void Created(Actor self)

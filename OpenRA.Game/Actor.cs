@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Eluant;
 using Eluant.ObjectBinding;
@@ -116,13 +117,19 @@ namespace OpenRA
 
 		internal Actor(World world, string name, TypeDictionary initDict)
 		{
+			var duplicateInit = initDict.WithInterface<ISingleInstanceInit>().GroupBy(i => i.GetType())
+				.FirstOrDefault(i => i.Count() > 1);
+
+			if (duplicateInit != null)
+				throw new InvalidDataException("Duplicate initializer '{0}'".F(duplicateInit.Key.Name));
+
 			var init = new ActorInitializer(this, initDict);
 
 			readOnlyConditionCache = new ReadOnlyDictionary<string, int>(conditionCache);
 
 			World = world;
 			ActorID = world.NextAID();
-			var ownerInit = init.GetOrDefault<OwnerInit>(null);
+			var ownerInit = init.GetOrDefault<OwnerInit>();
 			if (ownerInit != null)
 				Owner = ownerInit.Value(world);
 

@@ -77,6 +77,29 @@ namespace OpenRA.Mods.Common.Graphics
 			return init != null ? init.Value : fallback;
 		}
 
+		public bool Contains<T>() where T : ActorInit, ISingleInstanceInit { return GetOrDefault<T>() != null; }
+
+		public T GetOrDefault<T>() where T : ActorInit, ISingleInstanceInit
+		{
+			return dict.GetOrDefault<T>();
+		}
+
+		public T Get<T>() where T : ActorInit, ISingleInstanceInit
+		{
+			return dict.Get<T>();
+		}
+
+		public U GetValue<T, U>() where T : ValueActorInit<U>, ISingleInstanceInit
+		{
+			return Get<T>().Value;
+		}
+
+		public U GetValue<T, U>(U fallback) where T : ValueActorInit<U>, ISingleInstanceInit
+		{
+			var init = GetOrDefault<T>();
+			return init != null ? init.Value : fallback;
+		}
+
 		public bool Contains<T>(TraitInfo info) where T : ActorInit { return GetOrDefault<T>(info) != null; }
 
 		public Func<WRot> GetOrientation()

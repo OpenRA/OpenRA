@@ -183,7 +183,7 @@ namespace OpenRA.Mods.Common.Traits
 			var self = init.Self;
 			ActiveAttackBases = self.TraitsImplementing<AttackBase>().ToArray().Where(Exts.IsTraitEnabled);
 
-			stance = init.GetValue<StanceInit, UnitStance>(info, self.Owner.IsBot || !self.Owner.Playable ? info.InitialStanceAI : info.InitialStance);
+			stance = init.GetValue<StanceInit, UnitStance>(self.Owner.IsBot || !self.Owner.Playable ? info.InitialStanceAI : info.InitialStance);
 
 			PredictedStance = stance;
 
@@ -445,7 +445,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class StanceInit : ValueActorInit<UnitStance>
+	public class StanceInit : ValueActorInit<UnitStance>, ISingleInstanceInit
 	{
 		public StanceInit(TraitInfo info, UnitStance value)
 			: base(info, value) { }

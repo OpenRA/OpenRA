@@ -82,15 +82,15 @@ namespace OpenRA.Mods.Cnc.Traits
 			Info = info;
 			self = init.Self;
 
-			var locationInit = init.GetOrDefault<LocationInit>(info);
+			var locationInit = init.GetOrDefault<LocationInit>();
 			if (locationInit != null)
 				SetPosition(self, locationInit.Value);
 
-			var centerPositionInit = init.GetOrDefault<CenterPositionInit>(info);
+			var centerPositionInit = init.GetOrDefault<CenterPositionInit>();
 			if (centerPositionInit != null)
 				SetPosition(self, centerPositionInit.Value);
 
-			Facing = WAngle.FromFacing(init.GetValue<FacingInit, int>(info, Info.GetInitialFacing()));
+			Facing = WAngle.FromFacing(init.GetValue<FacingInit, int>(Info.GetInitialFacing()));
 
 			// Prevent mappers from setting bogus facings
 			if (Facing != Left && Facing != Right)

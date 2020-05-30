@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	public class SkipMakeAnimsInit : RuntimeFlagInit { }
-	public class SpawnedByMapInit : ValueActorInit<string>, ISuppressInitExport
+	public class SpawnedByMapInit : ValueActorInit<string>, ISuppressInitExport, ISingleInstanceInit
 	{
 		public SpawnedByMapInit(string value)
 			: base(value) { }

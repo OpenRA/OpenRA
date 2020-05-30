@@ -131,7 +131,7 @@ namespace OpenRA.Mods.Common.Traits
 			self = init.Self;
 			Info = info;
 
-			Faction = init.GetValue<FactionInit, string>(info, self.Owner.Faction.InternalName);
+			Faction = init.GetValue<FactionInit, string>(self.Owner.Faction.InternalName);
 			IsValidFaction = !info.Factions.Any() || info.Factions.Contains(Faction);
 			Enabled = IsValidFaction;
 

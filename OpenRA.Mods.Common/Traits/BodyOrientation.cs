@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			this.info = info;
 			var self = init.Self;
-			var faction = init.GetValue<FactionInit, string>(info, self.Owner.Faction.InternalName);
+			var faction = init.GetValue<FactionInit, string>(self.Owner.Faction.InternalName);
 
 			quantizedFacings = Exts.Lazy(() =>
 			{

@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Immobile(ActorInitializer init, ImmobileInfo info)
 		{
-			location = init.GetValue<LocationInit, CPos>(info);
+			location = init.GetValue<LocationInit, CPos>();
 			position = init.World.Map.CenterOfCell(location);
 
 			if (info.OccupiesSpace)

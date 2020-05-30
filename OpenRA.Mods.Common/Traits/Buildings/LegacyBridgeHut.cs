@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public LegacyBridgeHut(ActorInitializer init, LegacyBridgeHutInfo info)
 		{
-			var bridge = init.Get<ParentActorInit>(info).Value;
+			var bridge = init.Get<ParentActorInit>().Value;
 			init.World.AddFrameEndTask(_ =>
 			{
 				Bridge = bridge.Actor(init.World).Value.Trait<Bridge>();

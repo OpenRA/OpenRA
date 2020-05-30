@@ -78,11 +78,11 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 			self = init.Self;
 
-			TopLeft = init.GetValue<LocationInit, CPos>(info);
-			CenterPosition = init.GetValue<CenterPositionInit, WPos>(info, init.World.Map.CenterOfCell(TopLeft));
-			Facing = WAngle.FromFacing(init.GetValue<FacingInit, int>(info, 128));
+			TopLeft = init.GetValue<LocationInit, CPos>();
+			CenterPosition = init.GetValue<CenterPositionInit, WPos>(init.World.Map.CenterOfCell(TopLeft));
+			Facing = WAngle.FromFacing(init.GetValue<FacingInit, int>(128));
 
-			dragSpeed = init.GetValue<HuskSpeedInit, int>(info, 0);
+			dragSpeed = init.GetValue<HuskSpeedInit, int>(0);
 			finalPosition = init.World.Map.CenterOfCell(TopLeft);
 
 			effectiveOwner = init.GetValue<EffectiveOwnerInit, Player>(info, self.Owner);
@@ -171,7 +171,7 @@ namespace OpenRA.Mods.Common.Traits
 		Player IEffectiveOwner.Owner { get { return effectiveOwner; } }
 	}
 
-	public class HuskSpeedInit : ValueActorInit<int>
+	public class HuskSpeedInit : ValueActorInit<int>, ISingleInstanceInit
 	{
 		public HuskSpeedInit(int value)
 			: base(value) { }

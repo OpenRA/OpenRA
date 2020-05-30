@@ -26,6 +26,12 @@ namespace OpenRA
 		U GetValue<T, U>(TraitInfo info) where T : ValueActorInit<U>;
 		U GetValue<T, U>(TraitInfo info, U fallback) where T : ValueActorInit<U>;
 		bool Contains<T>(TraitInfo info) where T : ActorInit;
+
+		T GetOrDefault<T>() where T : ActorInit, ISingleInstanceInit;
+		T Get<T>() where T : ActorInit, ISingleInstanceInit;
+		U GetValue<T, U>() where T : ValueActorInit<U>, ISingleInstanceInit;
+		U GetValue<T, U>(U fallback) where T : ValueActorInit<U>, ISingleInstanceInit;
+		bool Contains<T>() where T : ActorInit, ISingleInstanceInit;
 	}
 
 	public class ActorInitializer : IActorInitializer
@@ -77,6 +83,29 @@ namespace OpenRA
 		}
 
 		public bool Contains<T>(TraitInfo info) where T : ActorInit { return GetOrDefault<T>(info) != null; }
+
+		public T GetOrDefault<T>() where T : ActorInit, ISingleInstanceInit
+		{
+			return Dict.GetOrDefault<T>();
+		}
+
+		public T Get<T>() where T : ActorInit, ISingleInstanceInit
+		{
+			return Dict.Get<T>();
+		}
+
+		public U GetValue<T, U>() where T : ValueActorInit<U>, ISingleInstanceInit
+		{
+			return Get<T>().Value;
+		}
+
+		public U GetValue<T, U>(U fallback) where T : ValueActorInit<U>, ISingleInstanceInit
+		{
+			var init = GetOrDefault<T>();
+			return init != null ? init.Value : fallback;
+		}
+
+		public bool Contains<T>() where T : ActorInit, ISingleInstanceInit { return GetOrDefault<T>() != null; }
 	}
 
 	/*
@@ -88,6 +117,9 @@ namespace OpenRA
 	 *   finds with an argument type that matches the given LuaValue.
 	 * - Most ActorInits will want to inherit either ValueActorInit<T> or CompositeActorInit which hide the low-level plumbing.
 	 * - Inits that reference actors should use ActorInitActorReference which allows actors to be referenced by name in map.yaml
+	 * - Inits that should only have a single instance defined on an actor should implement ISingleInstanceInit to allow
+	 *   direct queries and runtime enforcement.
+	 * - Inits that aren't ISingleInstanceInit should expose a ctor that accepts a TraitInfo to allow per-trait targeting.
 	 */
 	public abstract class ActorInit
 	{
@@ -103,6 +135,8 @@ namespace OpenRA
 
 		public abstract MiniYaml Save();
 	}
+
+	public interface ISingleInstanceInit { }
 
 	public abstract class ValueActorInit<T> : ActorInit
 	{
@@ -181,16 +215,13 @@ namespace OpenRA
 		}
 	}
 
-	public class LocationInit : ValueActorInit<CPos>
+	public class LocationInit : ValueActorInit<CPos>, ISingleInstanceInit
 	{
-		public LocationInit(TraitInfo info, CPos value)
-			: base(info, value) { }
-
 		public LocationInit(CPos value)
 			: base(value) { }
 	}
 
-	public class OwnerInit : ActorInit
+	public class OwnerInit : ActorInit, ISingleInstanceInit
 	{
 		public readonly string InternalName;
 		protected readonly Player value;

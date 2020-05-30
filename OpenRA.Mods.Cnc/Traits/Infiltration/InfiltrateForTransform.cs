@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public InfiltrateForTransform(ActorInitializer init, InfiltrateForTransformInfo info)
 		{
 			this.info = info;
-			faction = init.GetValue<FactionInit, string>(info, init.Self.Owner.Faction.InternalName);
+			faction = init.GetValue<FactionInit, string>(init.Self.Owner.Faction.InternalName);
 		}
 
 		void INotifyInfiltrated.Infiltrated(Actor self, Actor infiltrator, BitSet<TargetableType> types)
