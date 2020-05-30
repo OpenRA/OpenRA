@@ -252,6 +252,13 @@ Actors:
 		Location: 20,86
 		Owner: Allies
 		Facing: 64
+		TurretFacing@PRIMARY: 128
+		TurretFacing@SECONDARY: 0
+		ChronoshiftReturn:
+			Ticks: 100
+			Duration: 100
+			Origin: 30,90
+			Chronosphere: Chronosphere
 	Actor94: ca
 		Location: 40,90
 		Owner: Allies
@@ -1265,5 +1272,10 @@ Actors:
 		Owner: Neutral
 
 Rules: ra|rules/campaign-palettes.yaml, rules.yaml
+	CA:
+		Turreted@PRIMARY:
+			TurnSpeed: 0
+		Turreted@SECONDARY:
+			TurnSpeed: 0
 
 Weapons: weapons.yaml
