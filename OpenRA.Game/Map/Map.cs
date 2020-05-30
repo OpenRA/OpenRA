@@ -853,6 +853,9 @@ namespace OpenRA
 			var cell = CellContaining(pos);
 			var offset = pos - CenterOfCell(cell);
 
+			if (!Ramp.Contains(cell))
+				return new WDist(offset.Z);
+
 			var ramp = Ramp[cell];
 			if (ramp != 0)
 			{
