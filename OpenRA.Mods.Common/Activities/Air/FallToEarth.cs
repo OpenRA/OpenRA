@@ -54,7 +54,9 @@ namespace OpenRA.Mods.Common.Activities
 				if (info.MaximumSpinSpeed < 0 || Math.Abs(spin) < info.MaximumSpinSpeed)
 					spin += acceleration; // TODO: Possibly unhardcode this
 
-				aircraft.Facing = (aircraft.Facing + spin) % 256;
+				// Allow for negative spin values and convert from facing to angle units
+				// TODO: Remember to convert this when removing WAngle.FromFacing
+				aircraft.Facing = new WAngle(aircraft.Facing.Angle + 4 * spin);
 			}
 
 			var move = info.Moves ? aircraft.FlyStep(aircraft.Facing) : WVec.Zero;

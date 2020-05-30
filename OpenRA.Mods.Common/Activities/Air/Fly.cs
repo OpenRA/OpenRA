@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.Activities
 			this.minRange = minRange;
 		}
 
-		public static void FlyTick(Actor self, Aircraft aircraft, int desiredFacing, WDist desiredAltitude, WVec moveOverride, int turnSpeedOverride = -1)
+		public static void FlyTick(Actor self, Aircraft aircraft, WAngle desiredFacing, WDist desiredAltitude, WVec moveOverride, int turnSpeedOverride = -1)
 		{
 			var dat = self.World.Map.DistanceAboveTerrain(aircraft.CenterPosition);
 			var move = aircraft.Info.CanSlide ? aircraft.FlyStep(desiredFacing) : aircraft.FlyStep(aircraft.Facing);
@@ -83,13 +83,13 @@ namespace OpenRA.Mods.Common.Activities
 			aircraft.SetPosition(self, aircraft.CenterPosition + move);
 		}
 
-		public static void FlyTick(Actor self, Aircraft aircraft, int desiredFacing, WDist desiredAltitude, int turnSpeedOverride = -1)
+		public static void FlyTick(Actor self, Aircraft aircraft, WAngle desiredFacing, WDist desiredAltitude, int turnSpeedOverride = -1)
 		{
 			FlyTick(self, aircraft, desiredFacing, desiredAltitude, WVec.Zero, turnSpeedOverride);
 		}
 
 		// Should only be used for vertical-only movement, usually VTOL take-off or land. Terrain-induced altitude changes should always be handled by FlyTick.
-		public static bool VerticalTakeOffOrLandTick(Actor self, Aircraft aircraft, int desiredFacing, WDist desiredAltitude, int turnSpeedOverride = -1)
+		public static bool VerticalTakeOffOrLandTick(Actor self, Aircraft aircraft, WAngle desiredFacing, WDist desiredAltitude, int turnSpeedOverride = -1)
 		{
 			var dat = self.World.Map.DistanceAboveTerrain(aircraft.CenterPosition);
 			var move = WVec.Zero;
@@ -173,7 +173,7 @@ namespace OpenRA.Mods.Common.Activities
 				return true;
 
 			var isSlider = aircraft.Info.CanSlide;
-			var desiredFacing = delta.HorizontalLengthSquared != 0 ? delta.Yaw.Facing : aircraft.Facing;
+			var desiredFacing = delta.HorizontalLengthSquared != 0 ? delta.Yaw : aircraft.Facing;
 			var move = isSlider ? aircraft.FlyStep(desiredFacing) : aircraft.FlyStep(aircraft.Facing);
 
 			// Inside the minimum range, so reverse if we CanSlide, otherwise face away from the target.
@@ -183,8 +183,7 @@ namespace OpenRA.Mods.Common.Activities
 					FlyTick(self, aircraft, desiredFacing, aircraft.Info.CruiseAltitude, -move);
 				else
 				{
-					desiredFacing = Util.NormalizeFacing(desiredFacing + 128);
-					FlyTick(self, aircraft, desiredFacing, aircraft.Info.CruiseAltitude, move);
+					FlyTick(self, aircraft, desiredFacing + new WAngle(512), aircraft.Info.CruiseAltitude, move);
 				}
 
 				return false;
@@ -230,10 +229,9 @@ namespace OpenRA.Mods.Common.Activities
 
 				// The current facing is a tangent of the minimal turn circle.
 				// Make a perpendicular vector, and use it to locate the turn's center.
-				var turnCenterFacing = aircraft.Facing;
-				turnCenterFacing += Util.GetNearestFacing(aircraft.Facing, desiredFacing) > 0 ? 64 : -64;
+				var turnCenterFacing = aircraft.Facing + new WAngle(Util.GetTurnDirection(aircraft.Facing, desiredFacing) * 256);
 
-				var turnCenterDir = new WVec(0, -1024, 0).Rotate(WRot.FromFacing(turnCenterFacing));
+				var turnCenterDir = new WVec(0, -1024, 0).Rotate(WRot.FromYaw(turnCenterFacing));
 				turnCenterDir *= turnRadius;
 				turnCenterDir /= 1024;
 
@@ -267,8 +265,8 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			// turnSpeed -> divide into 256 to get the number of ticks per complete rotation
 			// speed -> multiply to get distance travelled per rotation (circumference)
-			// 45 -> divide by 2*pi to get the turn radius: 45==256/(2*pi), with some extra leeway
-			return turnSpeed > 0 ? 45 * speed / turnSpeed : 0;
+			// 180 -> divide by 2*pi to get the turn radius: 180==1024/(2*pi), with some extra leeway
+			return turnSpeed > 0 ? 180 * speed / turnSpeed : 0;
 		}
 	}
 }

@@ -47,6 +47,30 @@ namespace OpenRA.Mods.Common
 		}
 
 		/// <summary>
+		/// Adds step angle units to facing in the direction that takes it closer to desiredFacing.
+		/// If facing is already within step of desiredFacing then desiredFacing is returned.
+		/// Step is given as an integer to allow negative values (step away from the desired facing)
+		/// </summary>
+		public static WAngle TickFacing(WAngle facing, WAngle desiredFacing, int step)
+		{
+			var leftTurn = (facing - desiredFacing).Angle;
+			var rightTurn = (desiredFacing - facing).Angle;
+			if (leftTurn < step || rightTurn < step)
+				return desiredFacing;
+
+			return rightTurn < leftTurn ? new WAngle(facing.Angle + step) : new WAngle(facing.Angle - step);
+		}
+
+		/// <summary>
+		/// Determines whether desiredFacing is clockwise (-1) or anticlockwise (+1) of facing.
+		/// If desiredFacing is equal to facing or directly behind facing we treat it as being anticlockwise
+		/// </summary>
+		public static int GetTurnDirection(WAngle facing, WAngle desiredFacing)
+		{
+			return (facing - desiredFacing).Angle < 512 ? -1 : 1;
+		}
+
+		/// <summary>
 		/// Calculate the frame index (between 0..numFrames) that
 		/// should be used for the given facing value.
 		/// </summary>

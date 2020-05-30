@@ -153,7 +153,7 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			var delta = attackAircraft.GetTargetPosition(pos, target) - pos;
-			var desiredFacing = delta.HorizontalLengthSquared != 0 ? delta.Yaw.Facing : aircraft.Facing;
+			var desiredFacing = delta.HorizontalLengthSquared != 0 ? delta.Yaw : aircraft.Facing;
 
 			QueueChild(new TakeOff(self));
 
