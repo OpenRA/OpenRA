@@ -93,7 +93,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		WPos target;
 
 		int length;
-		int towardsTargetFacing;
+		WAngle towardsTargetFacing;
 		int headTicks;
 		int tailTicks;
 		bool isHeadTravelling = true;
@@ -133,11 +133,11 @@ namespace OpenRA.Mods.Common.Projectiles
 				target += WVec.FromPDF(world.SharedRandom, 2) * maxOffset / 1024;
 			}
 
-			towardsTargetFacing = (target - headPos).Yaw.Facing;
+			towardsTargetFacing = (target - headPos).Yaw;
 
 			// Update the target position with the range we shoot beyond the target by
 			// I.e. we can deliberately overshoot, so aim for that position
-			var dir = new WVec(0, -1024, 0).Rotate(WRot.FromFacing(towardsTargetFacing));
+			var dir = new WVec(0, -1024, 0).Rotate(WRot.FromYaw(towardsTargetFacing));
 			target += dir * info.BeyondTargetRange.Length / 1024;
 
 			length = Math.Max((target - headPos).Length / speed.Length, 1);
@@ -160,11 +160,11 @@ namespace OpenRA.Mods.Common.Projectiles
 				else
 				{
 					target = guidedTargetPos;
-					towardsTargetFacing = (target - args.Source).Yaw.Facing;
+					towardsTargetFacing = (target - args.Source).Yaw;
 
 					// Update the target position with the range we shoot beyond the target by
 					// I.e. we can deliberately overshoot, so aim for that position
-					var dir = new WVec(0, -1024, 0).Rotate(WRot.FromFacing(towardsTargetFacing));
+					var dir = new WVec(0, -1024, 0).Rotate(WRot.FromYaw(towardsTargetFacing));
 					target += dir * info.BeyondTargetRange.Length / 1024;
 				}
 			}
