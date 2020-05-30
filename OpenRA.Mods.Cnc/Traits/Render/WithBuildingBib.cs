@@ -73,7 +73,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			}
 		}
 
-		IEnumerable<object> IActorPreviewInitInfo.ActorPreviewInits(ActorInfo ai, ActorPreviewType type)
+		IEnumerable<ActorInit> IActorPreviewInitInfo.ActorPreviewInits(ActorInfo ai, ActorPreviewType type)
 		{
 			yield return new HideBibPreviewInit();
 		}

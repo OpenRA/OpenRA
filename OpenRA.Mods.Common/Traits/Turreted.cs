@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Display order for the turret facing slider in the map editor")]
 		public readonly int EditorTurretFacingDisplayOrder = 4;
 
-		IEnumerable<object> IActorPreviewInitInfo.ActorPreviewInits(ActorInfo ai, ActorPreviewType type)
+		IEnumerable<ActorInit> IActorPreviewInitInfo.ActorPreviewInits(ActorInfo ai, ActorPreviewType type)
 		{
 			// HACK: The ActorInit system does not support multiple instances of the same type
 			// Make sure that we only return one TurretFacingInit, even for actors with multiple turrets
