@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		readonly Aircraft aircraft;
 		readonly WVec offset;
-		readonly int desiredFacing;
+		readonly WAngle? desiredFacing;
 		readonly bool assignTargetOnFirstRun;
 		readonly CPos[] clearCells;
 		readonly WDist landRange;
@@ -34,22 +34,22 @@ namespace OpenRA.Mods.Common.Activities
 		bool landingInitiated;
 		bool finishedApproach;
 
-		public Land(Actor self, int facing = -1, Color? targetLineColor = null)
+		public Land(Actor self, WAngle? facing = null, Color? targetLineColor = null)
 			: this(self, Target.Invalid, new WDist(-1), WVec.Zero, facing, null)
 		{
 			assignTargetOnFirstRun = true;
 		}
 
-		public Land(Actor self, Target target, int facing = -1, Color? targetLineColor = null)
+		public Land(Actor self, Target target, WAngle? facing = null, Color? targetLineColor = null)
 			: this(self, target, new WDist(-1), WVec.Zero, facing, targetLineColor: targetLineColor) { }
 
-		public Land(Actor self, Target target, WDist landRange, int facing = -1, Color? targetLineColor = null)
+		public Land(Actor self, Target target, WDist landRange, WAngle? facing = null, Color? targetLineColor = null)
 			: this(self, target, landRange, WVec.Zero, facing, targetLineColor: targetLineColor) { }
 
-		public Land(Actor self, Target target, WVec offset, int facing = -1, Color? targetLineColor = null)
+		public Land(Actor self, Target target, WVec offset, WAngle? facing = null, Color? targetLineColor = null)
 			: this(self, target, WDist.Zero, offset, facing, targetLineColor: targetLineColor) { }
 
-		public Land(Actor self, Target target, WDist landRange, WVec offset, int facing = -1, CPos[] clearCells = null, Color? targetLineColor = null)
+		public Land(Actor self, Target target, WDist landRange, WVec offset, WAngle? facing = null, CPos[] clearCells = null, Color? targetLineColor = null)
 		{
 			aircraft = self.Trait<Aircraft>();
 			this.target = target;
@@ -60,8 +60,8 @@ namespace OpenRA.Mods.Common.Activities
 
 			// NOTE: desiredFacing = -1 means we should not prefer any particular facing and instead just
 			// use whatever facing gives us the most direct path to the landing site.
-			if (facing == -1 && aircraft.Info.TurnToLand)
-				desiredFacing = aircraft.Info.InitialFacing;
+			if (!facing.HasValue && aircraft.Info.TurnToLand)
+				desiredFacing = WAngle.FromFacing(aircraft.Info.InitialFacing);
 			else
 				desiredFacing = facing;
 		}
@@ -141,9 +141,10 @@ namespace OpenRA.Mods.Common.Activities
 					QueueChild(new Fly(self, Target.FromPos(targetPosition)));
 					return false;
 				}
-				else if (desiredFacing != -1 && desiredFacing != aircraft.Facing)
+
+				if (desiredFacing.HasValue && desiredFacing.Value != aircraft.Facing)
 				{
-					QueueChild(new Turn(self, desiredFacing));
+					QueueChild(new Turn(self, desiredFacing.Value.Facing));
 					return false;
 				}
 			}
@@ -159,17 +160,17 @@ namespace OpenRA.Mods.Common.Activities
 				// Approach landing from the opposite direction of the desired facing
 				// TODO: Calculate sensible trajectory without preferred facing.
 				var rotation = WRot.Zero;
-				if (desiredFacing != -1)
-					rotation = WRot.FromFacing(desiredFacing);
+				if (desiredFacing.HasValue)
+					rotation = WRot.FromYaw(desiredFacing.Value);
 
 				var approachStart = targetPosition + new WVec(0, landDistance, altitude).Rotate(rotation);
 
 				// Add 10% to the turning radius to ensure we have enough room
 				var speed = aircraft.MovementSpeed * 32 / 35;
-				var turnRadius = Fly.CalculateTurnRadius(speed, aircraft.Info.TurnSpeed);
+				var turnRadius = Fly.CalculateTurnRadius(speed, aircraft.TurnSpeed);
 
 				// Find the center of the turning circles for clockwise and counterclockwise turns
-				var angle = WAngle.FromFacing(aircraft.Facing);
+				var angle = aircraft.Facing;
 				var fwd = -new WVec(angle.Sin(), angle.Cos(), 0);
 
 				// Work out whether we should turn clockwise or counter-clockwise for approach
@@ -196,7 +197,7 @@ namespace OpenRA.Mods.Common.Activities
 				var w2 = approachCenter + tangentOffset;
 				var w3 = approachStart;
 
-				turnRadius = Fly.CalculateTurnRadius(aircraft.Info.Speed, aircraft.Info.TurnSpeed);
+				turnRadius = Fly.CalculateTurnRadius(aircraft.Info.Speed, aircraft.TurnSpeed);
 
 				// Move along approach trajectory.
 				QueueChild(new Fly(self, Target.FromPos(w1), WDist.Zero, new WDist(turnRadius * 3)));
@@ -252,7 +253,7 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			var landingAlt = self.World.Map.DistanceAboveTerrain(targetPosition) + aircraft.LandAltitude;
-			Fly.FlyTick(self, aircraft, d.Yaw.Facing, landingAlt);
+			Fly.FlyTick(self, aircraft, d.Yaw, landingAlt);
 
 			return false;
 		}
