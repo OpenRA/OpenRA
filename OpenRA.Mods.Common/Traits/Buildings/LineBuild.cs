@@ -16,13 +16,13 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	public enum LineBuildDirection { Unset, X, Y }
-	public class LineBuildDirectionInit : ValueActorInit<LineBuildDirection>
+	public class LineBuildDirectionInit : ValueActorInit<LineBuildDirection>, ISingleInstanceInit
 	{
 		public LineBuildDirectionInit(LineBuildDirection value)
 			: base(value) { }
 	}
 
-	public class LineBuildParentInit : ValueActorInit<string[]>
+	public class LineBuildParentInit : ValueActorInit<string[]>, ISingleInstanceInit
 	{
 		readonly Actor[] parents = null;
 
@@ -76,7 +76,7 @@ namespace OpenRA.Mods.Common.Traits
 		public LineBuild(ActorInitializer init, LineBuildInfo info)
 		{
 			this.info = info;
-			var lineBuildParentInit = init.GetOrDefault<LineBuildParentInit>(info);
+			var lineBuildParentInit = init.GetOrDefault<LineBuildParentInit>();
 			if (lineBuildParentInit != null)
 				parentNodes = lineBuildParentInit.ActorValue(init.World);
 		}

@@ -71,7 +71,7 @@ namespace OpenRA.Mods.Common.Traits
 			MaxHP = hp = info.HP > 0 ? info.HP : 1;
 
 			// Cast to long to avoid overflow when multiplying by the health
-			var healthInit = init.GetOrDefault<HealthInit>(info);
+			var healthInit = init.GetOrDefault<HealthInit>();
 			if (healthInit != null)
 				hp = (int)(healthInit.Value * (long)MaxHP / 100);
 
@@ -233,12 +233,9 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class HealthInit : ValueActorInit<int>
+	public class HealthInit : ValueActorInit<int>, ISingleInstanceInit
 	{
 		readonly bool allowZero;
-
-		public HealthInit(TraitInfo info, int value, bool allowZero = false)
-			: base(info, value) { this.allowZero = allowZero; }
 
 		public HealthInit(int value, bool allowZero = false)
 			: base(value) { this.allowZero = allowZero; }

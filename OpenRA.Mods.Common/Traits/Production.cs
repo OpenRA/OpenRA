@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Traits
 			: base(info)
 		{
 			rp = Exts.Lazy(() => init.Self.IsDead ? null : init.Self.TraitOrDefault<RallyPoint>());
-			Faction = init.GetValue<FactionInit, string>(info, init.Self.Owner.Faction.InternalName);
+			Faction = init.GetValue<FactionInit, string>(init.Self.Owner.Faction.InternalName);
 		}
 
 		public virtual void DoProduction(Actor self, ActorInfo producee, ExitInfo exitinfo, string productionType, TypeDictionary inits)

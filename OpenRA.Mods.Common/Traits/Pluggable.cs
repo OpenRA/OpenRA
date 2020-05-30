@@ -120,7 +120,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class PlugsInit : ValueActorInit<Dictionary<CVec, string>>
+	public class PlugsInit : ValueActorInit<Dictionary<CVec, string>>, ISingleInstanceInit
 	{
 		public PlugsInit(Dictionary<CVec, string> value)
 			: base(value) { }

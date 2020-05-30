@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Traits
 		public TransformCrusherOnCrush(ActorInitializer init, TransformCrusherOnCrushInfo info)
 		{
 			this.info = info;
-			faction = init.GetValue<FactionInit, string>(info, init.Self.Owner.Faction.InternalName);
+			faction = init.GetValue<FactionInit, string>(init.Self.Owner.Faction.InternalName);
 		}
 
 		void INotifyCrushed.WarnCrush(Actor self, Actor crusher, BitSet<CrushClass> crushClasses) { }

@@ -16,38 +16,38 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common
 {
-	public class FacingInit : ValueActorInit<int>
+	public class FacingInit : ValueActorInit<int>, ISingleInstanceInit
 	{
 		public FacingInit(int value)
 			: base(value) { }
 	}
 
-	public class CreationActivityDelayInit : ValueActorInit<int>
+	public class CreationActivityDelayInit : ValueActorInit<int>, ISingleInstanceInit
 	{
 		public CreationActivityDelayInit(int value)
 			: base(value) { }
 	}
 
-	public class DynamicFacingInit : ValueActorInit<Func<int>>
+	public class DynamicFacingInit : ValueActorInit<Func<int>>, ISingleInstanceInit
 	{
 		public DynamicFacingInit(Func<int> value)
 			: base(value) { }
 	}
 
-	public class SubCellInit : ValueActorInit<SubCell>
+	public class SubCellInit : ValueActorInit<SubCell>, ISingleInstanceInit
 	{
 		public SubCellInit(SubCell value)
 			: base(value) { }
 	}
 
-	public class CenterPositionInit : ValueActorInit<WPos>
+	public class CenterPositionInit : ValueActorInit<WPos>, ISingleInstanceInit
 	{
 		public CenterPositionInit(WPos value)
 			: base(value) { }
 	}
 
 	// Allows maps / transformations to specify the faction variant of an actor.
-	public class FactionInit : ValueActorInit<string>
+	public class FactionInit : ValueActorInit<string>, ISingleInstanceInit
 	{
 		public FactionInit(string value)
 			: base(value) { }

@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			};
 
 			if (IsPlayerPalette)
-				p = init.WorldRenderer.Palette(Palette + init.Get<OwnerInit>(this).InternalName);
+				p = init.WorldRenderer.Palette(Palette + init.Get<OwnerInit>().InternalName);
 			else if (Palette != null)
 				p = init.WorldRenderer.Palette(Palette);
 

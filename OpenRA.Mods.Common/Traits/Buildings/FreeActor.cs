@@ -93,7 +93,7 @@ namespace OpenRA.Mods.Common.Traits
 			: base(info, value) { }
 	}
 
-	public class ParentActorInit : ValueActorInit<ActorInitActorReference>
+	public class ParentActorInit : ValueActorInit<ActorInitActorReference>, ISingleInstanceInit
 	{
 		public ParentActorInit(Actor value)
 			: base(value) { }

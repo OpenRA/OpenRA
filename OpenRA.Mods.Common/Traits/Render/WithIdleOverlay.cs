@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				p = init.WorldRenderer.Palette(Palette);
 
 			Func<WAngle> facing;
-			var dynamicfacingInit = init.GetOrDefault<DynamicFacingInit>(this);
+			var dynamicfacingInit = init.GetOrDefault<DynamicFacingInit>();
 			if (dynamicfacingInit != null)
 			{
 				var getFacing = dynamicfacingInit.Value;
@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			}
 			else
 			{
-				var f = WAngle.FromFacing(init.GetValue<FacingInit, int>(this, 0));
+				var f = WAngle.FromFacing(init.GetValue<FacingInit, int>(0));
 				facing = () => f;
 			}
 

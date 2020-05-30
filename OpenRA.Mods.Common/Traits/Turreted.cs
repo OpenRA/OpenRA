@@ -106,12 +106,12 @@ namespace OpenRA.Mods.Common.Traits
 			if (turret != null)
 			{
 				Func<int> getFacing;
-				var dynamicTurretFacingsInit = init.GetOrDefault<DynamicTurretFacingsInit>(info);
+				var dynamicTurretFacingsInit = init.GetOrDefault<DynamicTurretFacingsInit>();
 				if (dynamicTurretFacingsInit != null && dynamicTurretFacingsInit.Value.TryGetValue(turret, out getFacing))
 					return getFacing;
 
 				int facing;
-				var turretFacingsInit = init.GetOrDefault<TurretFacingsInit>(info);
+				var turretFacingsInit = init.GetOrDefault<TurretFacingsInit>();
 				if (turretFacingsInit != null && turretFacingsInit.Value.TryGetValue(turret, out facing))
 					return () => facing;
 			}
@@ -123,11 +123,11 @@ namespace OpenRA.Mods.Common.Traits
 				return () => facing;
 			}
 
-			var dynamicFacingInit = init.GetOrDefault<DynamicFacingInit>(info);
+			var dynamicFacingInit = init.GetOrDefault<DynamicFacingInit>();
 			if (dynamicFacingInit != null)
 				return dynamicFacingInit.Value;
 
-			var facingInit = init.GetOrDefault<FacingInit>(info);
+			var facingInit = init.GetOrDefault<FacingInit>();
 			if (facingInit != null)
 			{
 				var facing = facingInit.Value;
@@ -245,7 +245,7 @@ namespace OpenRA.Mods.Common.Traits
 			var facings = inits.GetOrDefault<DynamicTurretFacingsInit>();
 			if (facings == null)
 			{
-				facings = new DynamicTurretFacingsInit(Info, new Dictionary<string, Func<int>>());
+				facings = new DynamicTurretFacingsInit(new Dictionary<string, Func<int>>());
 				inits.Add(facings);
 			}
 
@@ -278,15 +278,15 @@ namespace OpenRA.Mods.Common.Traits
 			: base(value) { }
 	}
 
-	public class TurretFacingsInit : ValueActorInit<Dictionary<string, int>>
+	public class TurretFacingsInit : ValueActorInit<Dictionary<string, int>>, ISingleInstanceInit
 	{
 		public TurretFacingsInit(Dictionary<string, int> value)
 			: base(value) { }
 	}
 
-	public class DynamicTurretFacingsInit : ValueActorInit<Dictionary<string, Func<int>>>
+	public class DynamicTurretFacingsInit : ValueActorInit<Dictionary<string, Func<int>>>, ISingleInstanceInit
 	{
-		public DynamicTurretFacingsInit(TraitInfo info, Dictionary<string, Func<int>> value)
-			: base(info, value) { }
+		public DynamicTurretFacingsInit(Dictionary<string, Func<int>> value)
+			: base(value) { }
 	}
 }
