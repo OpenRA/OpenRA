@@ -96,7 +96,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 			// Determine the minimum possible cost for moving horizontally between cells based on terrain speeds.
 			// The minimum possible cost diagonally is then Sqrt(2) times more costly.
-			cellCost = graph.Actor.Trait<Mobile>().Locomotor.Info.TerrainSpeeds.Values.Min(ti => ti.Cost);
+			cellCost = ((Mobile)graph.Actor.OccupiesSpace).Info.LocomotorInfo.TerrainSpeeds.Values.Min(ti => ti.Cost);
 			diagonalCellCost = cellCost * 141421 / 100000;
 		}
 
