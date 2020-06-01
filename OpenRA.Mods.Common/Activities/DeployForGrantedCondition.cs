@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			// Turn to the required facing.
 			if (deploy.DeployState == DeployState.Undeployed && deploy.Info.Facing != -1 && canTurn && !moving)
-				QueueChild(new Turn(self, deploy.Info.Facing));
+				QueueChild(new Turn(self, WAngle.FromFacing(deploy.Info.Facing)));
 		}
 
 		public override bool Tick(Actor self)

@@ -132,7 +132,7 @@ namespace OpenRA.Mods.Cnc.Activities
 
 			var destination = self.World.Map.CenterOfSubCell(target.Actor.Location, targetSubcell);
 			var origin = self.World.Map.CenterOfSubCell(self.Location, mobile.FromSubCell);
-			var desiredFacing = (destination - origin).Yaw.Facing;
+			var desiredFacing = (destination - origin).Yaw;
 			if (mobile.Facing != desiredFacing)
 			{
 				QueueChild(new Turn(self, desiredFacing));

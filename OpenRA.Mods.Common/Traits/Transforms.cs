@@ -91,7 +91,7 @@ namespace OpenRA.Mods.Common.Traits
 			return new Transform(self, Info.IntoActor)
 			{
 				Offset = Info.Offset,
-				Facing = Info.Facing,
+				Facing = WAngle.FromFacing(Info.Facing),
 				Sounds = Info.TransformSounds,
 				Notification = Info.TransformNotification,
 				Faction = faction

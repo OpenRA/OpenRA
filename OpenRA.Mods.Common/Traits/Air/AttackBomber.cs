@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			inAttackRange = false;
 
-			facingTarget = TargetInFiringArc(self, target, info.FacingTolerance);
+			facingTarget = TargetInFiringArc(self, target, 4 * info.FacingTolerance);
 
 			foreach (var a in Armaments)
 			{

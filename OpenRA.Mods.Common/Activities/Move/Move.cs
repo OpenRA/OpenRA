@@ -385,7 +385,7 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			protected readonly Move Move;
 			protected readonly WPos From, To;
-			protected readonly int FromFacing, ToFacing;
+			protected readonly WAngle FromFacing, ToFacing;
 			protected readonly bool EnableArc;
 			protected readonly WPos ArcCenter;
 			protected readonly int ArcFromLength;
@@ -396,7 +396,7 @@ namespace OpenRA.Mods.Common.Activities
 			protected readonly int MoveFractionTotal;
 			protected int moveFraction;
 
-			public MovePart(Move move, WPos from, WPos to, int fromFacing, int toFacing, int startingFraction)
+			public MovePart(Move move, WPos from, WPos to, WAngle fromFacing, WAngle toFacing, int startingFraction)
 			{
 				Move = move;
 				From = from;
@@ -408,12 +408,12 @@ namespace OpenRA.Mods.Common.Activities
 				IsInterruptible = false; // See comments in Move.Cancel()
 
 				// Calculate an elliptical arc that joins from and to
-				var delta = Util.NormalizeFacing(fromFacing - toFacing);
-				if (delta != 0 && delta != 128)
+				var delta = (fromFacing - toFacing).Angle;
+				if (delta != 0 && delta != 512)
 				{
 					// The center of rotation is where the normal vectors cross
-					var u = new WVec(1024, 0, 0).Rotate(WRot.FromFacing(fromFacing));
-					var v = new WVec(1024, 0, 0).Rotate(WRot.FromFacing(toFacing));
+					var u = new WVec(1024, 0, 0).Rotate(WRot.FromYaw(fromFacing));
+					var v = new WVec(1024, 0, 0).Rotate(WRot.FromYaw(toFacing));
 					var w = from - to;
 					var s = (v.Y * w.X - v.X * w.Y) * 1024 / (v.X * u.Y - v.Y * u.X);
 					var x = from.X + s * u.X / 1024;
@@ -476,9 +476,9 @@ namespace OpenRA.Mods.Common.Activities
 					mobile.SetVisualPosition(self, To);
 
 				if (moveFraction >= MoveFractionTotal)
-					mobile.Facing = ToFacing & 0xFF;
+					mobile.Facing = ToFacing;
 				else
-					mobile.Facing = int2.Lerp(FromFacing, ToFacing, moveFraction, MoveFractionTotal) & 0xFF;
+					mobile.Facing = WAngle.Lerp(FromFacing, ToFacing, moveFraction, MoveFractionTotal);
 			}
 
 			protected abstract MovePart OnComplete(Actor self, Mobile mobile, Move parent);
@@ -491,7 +491,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		class MoveFirstHalf : MovePart
 		{
-			public MoveFirstHalf(Move move, WPos from, WPos to, int fromFacing, int toFacing, int startingFraction)
+			public MoveFirstHalf(Move move, WPos from, WPos to, WAngle fromFacing, WAngle toFacing, int startingFraction)
 				: base(move, from, to, fromFacing, toFacing, startingFraction) { }
 
 			static bool IsTurn(Mobile mobile, CPos nextCell, Map map)
@@ -499,8 +499,8 @@ namespace OpenRA.Mods.Common.Activities
 				// Tight U-turns should be done in place instead of making silly looking loops.
 				var nextFacing = map.FacingBetween(nextCell, mobile.ToCell, mobile.Facing);
 				var currentFacing = map.FacingBetween(mobile.ToCell, mobile.FromCell, mobile.Facing);
-				var delta = Util.NormalizeFacing(nextFacing - currentFacing);
-				return delta != 0 && (delta < 96 || delta > 160);
+				var delta = (nextFacing - currentFacing).Angle;
+				return delta != 0 && (delta < 384 || delta > 640);
 			}
 
 			protected override MovePart OnComplete(Actor self, Mobile mobile, Move parent)
@@ -520,7 +520,7 @@ namespace OpenRA.Mods.Common.Activities
 							Util.BetweenCells(self.World, mobile.FromCell, mobile.ToCell) + (fromSubcellOffset + toSubcellOffset) / 2,
 							Util.BetweenCells(self.World, mobile.ToCell, nextCell.Value.First) + (toSubcellOffset + nextSubcellOffset) / 2,
 							mobile.Facing,
-							Util.GetNearestFacing(mobile.Facing, map.FacingBetween(mobile.ToCell, nextCell.Value.First, mobile.Facing)),
+							map.FacingBetween(mobile.ToCell, nextCell.Value.First, mobile.Facing),
 							moveFraction - MoveFractionTotal);
 
 						mobile.FinishedMoving(self);
@@ -550,7 +550,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		class MoveSecondHalf : MovePart
 		{
-			public MoveSecondHalf(Move move, WPos from, WPos to, int fromFacing, int toFacing, int startingFraction)
+			public MoveSecondHalf(Move move, WPos from, WPos to, WAngle fromFacing, WAngle toFacing, int startingFraction)
 				: base(move, from, to, fromFacing, toFacing, startingFraction) { }
 
 			protected override MovePart OnComplete(Actor self, Mobile mobile, Move parent)

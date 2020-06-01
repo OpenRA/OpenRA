@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 		readonly Cargo cargo;
 		readonly BodyOrientation body;
 		readonly IFacing facing;
-		int cachedFacing;
+		WAngle cachedFacing;
 
 		Dictionary<Actor, IActorPreview[]> previews = new Dictionary<Actor, IActorPreview[]>();
 
@@ -85,7 +85,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 				var passengerInits = new TypeDictionary()
 				{
 					new OwnerInit(p.Owner),
-					new DynamicFacingInit(() => body.QuantizeFacing(WAngle.FromFacing(facing.Facing)).Facing),
+					new DynamicFacingInit(() => body.QuantizeFacing(facing.Facing).Facing),
 				};
 
 				foreach (var api in p.TraitsImplementing<IActorPreviewInitModifier>())

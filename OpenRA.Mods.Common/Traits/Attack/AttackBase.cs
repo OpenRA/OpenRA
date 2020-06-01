@@ -139,7 +139,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (delta.HorizontalLengthSquared == 0)
 				return true;
 
-			return Util.FacingWithinTolerance(facing.Facing, delta.Yaw.Facing, facingTolerance);
+			return Util.FacingWithinTolerance(facing.Facing, delta.Yaw, facingTolerance);
 		}
 
 		protected virtual bool CanAttack(Actor self, Target target)

@@ -941,13 +941,13 @@ namespace OpenRA
 			return projectedHeight[(MPos)puv];
 		}
 
-		public int FacingBetween(CPos cell, CPos towards, int fallbackfacing)
+		public WAngle FacingBetween(CPos cell, CPos towards, WAngle fallbackfacing)
 		{
 			var delta = CenterOfCell(towards) - CenterOfCell(cell);
 			if (delta.HorizontalLengthSquared == 0)
 				return fallbackfacing;
 
-			return delta.Yaw.Facing;
+			return delta.Yaw;
 		}
 
 		public void Resize(int width, int height)

@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 					if (turreted != null)
 						getFacing = () => WAngle.FromFacing(turreted.TurretFacing);
 					else if (facing != null)
-						getFacing = () => WAngle.FromFacing(facing.Facing);
+						getFacing = () => facing.Facing;
 					else
 						getFacing = () => WAngle.Zero;
 

@@ -144,7 +144,7 @@ namespace OpenRA.Mods.Common.Activities
 
 				if (desiredFacing.HasValue && desiredFacing.Value != aircraft.Facing)
 				{
-					QueueChild(new Turn(self, desiredFacing.Value.Facing));
+					QueueChild(new Turn(self, desiredFacing.Value));
 					return false;
 				}
 			}

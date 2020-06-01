@@ -82,7 +82,7 @@ namespace OpenRA.Mods.Common.Traits
 		public Actor Carryable { get; private set; }
 		public CarryallState State { get; private set; }
 
-		int cachedFacing;
+		WAngle cachedFacing;
 		IActorPreview[] carryablePreview;
 		HashSet<string> landableTerrainTypes;
 
@@ -225,7 +225,7 @@ namespace OpenRA.Mods.Common.Traits
 					var carryableInits = new TypeDictionary()
 					{
 						new OwnerInit(Carryable.Owner),
-						new DynamicFacingInit(() => facing.Facing),
+						new DynamicFacingInit(() => facing.Facing.Facing),
 					};
 
 					foreach (var api in Carryable.TraitsImplementing<IActorPreviewInitModifier>())

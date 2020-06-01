@@ -85,7 +85,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			var spawn = self.World.Map.CenterOfCell(location);
 
-			var initialFacing = self.World.Map.FacingBetween(location, self.Location, 0);
+			var initialFacing = self.World.Map.FacingBetween(location, self.Location, WAngle.Zero);
 
 			// If aircraft, spawn at cruise altitude
 			var aircraftInfo = self.World.Map.Rules.Actors[deliveringActorName.ToLowerInvariant()].TraitInfoOrDefault<AircraftInfo>();
@@ -98,7 +98,7 @@ namespace OpenRA.Mods.Common.Traits
 				new LocationInit(location),
 				new CenterPositionInit(spawn),
 				new OwnerInit(self.Owner),
-				new FacingInit(initialFacing)
+				new FacingInit(initialFacing.Facing)
 			});
 
 			// Create delivered actor

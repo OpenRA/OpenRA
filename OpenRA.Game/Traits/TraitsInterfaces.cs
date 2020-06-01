@@ -318,7 +318,7 @@ namespace OpenRA.Traits
 	public interface IFacing
 	{
 		int TurnSpeed { get; }
-		int Facing { get; set; }
+		WAngle Facing { get; set; }
 	}
 
 	public interface IFacingInfo : ITraitInfoInterface { int GetInitialFacing(); }

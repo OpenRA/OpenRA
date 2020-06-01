@@ -163,7 +163,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (facing == null)
 				return () => WAngle.Zero;
 
-			return () => WAngle.FromFacing(facing.Facing);
+			return () => facing.Facing;
 		}
 
 		public RenderSprites(ActorInitializer init, RenderSpritesInfo info)

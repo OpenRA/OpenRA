@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Scripting
 			}
 
 			if (entryLocation.HasValue && nextLocation.HasValue)
-				initDict.Add(new FacingInit(Context.World.Map.FacingBetween(CPos.Zero, CPos.Zero + (nextLocation.Value - entryLocation.Value), 0)));
+				initDict.Add(new FacingInit(Context.World.Map.FacingBetween(CPos.Zero, CPos.Zero + (nextLocation.Value - entryLocation.Value), WAngle.Zero).Facing));
 
 			var actor = Context.World.CreateActor(addToWorld, actorType, initDict);
 

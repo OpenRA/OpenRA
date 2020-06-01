@@ -194,7 +194,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 		#endregion
 
-		int oldFacing, facing;
+		WAngle oldFacing, facing;
 		WPos oldPos;
 		CPos fromCell, toCell;
 		public SubCell FromSubCell, ToSubCell;
@@ -216,13 +216,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		#region IFacing
 		[Sync]
-		public int Facing
+		public WAngle Facing
 		{
 			get { return facing; }
 			set { facing = value; }
 		}
 
-		public int TurnSpeed { get { return Info.TurnSpeed; } }
+		public int TurnSpeed { get { return 4 * Info.TurnSpeed; } }
 		#endregion
 
 		[Sync]
@@ -281,7 +281,7 @@ namespace OpenRA.Mods.Common.Traits
 				SetVisualPosition(self, init.World.Map.CenterOfSubCell(FromCell, FromSubCell));
 			}
 
-			Facing = oldFacing = init.GetValue<FacingInit, int>(info, info.InitialFacing);
+			Facing = oldFacing = WAngle.FromFacing(init.GetValue<FacingInit, int>(info, info.InitialFacing));
 
 			// Sets the initial visual position
 			// Unit will move into the cell grid (defined by LocationInit) as its initial activity
@@ -828,7 +828,7 @@ namespace OpenRA.Mods.Common.Traits
 			var length = speed > 0 ? (toPos - fromPos).Length / speed : 0;
 
 			var delta = toPos - fromPos;
-			var facing = delta.HorizontalLengthSquared != 0 ? delta.Yaw.Facing : Facing;
+			var facing = delta.HorizontalLengthSquared != 0 ? delta.Yaw : Facing;
 
 			return new Drag(self, fromPos, toPos, length, facing);
 		}
@@ -857,12 +857,12 @@ namespace OpenRA.Mods.Common.Traits
 		void IActorPreviewInitModifier.ModifyActorPreviewInit(Actor self, TypeDictionary inits)
 		{
 			if (!inits.Contains<DynamicFacingInit>() && !inits.Contains<FacingInit>())
-				inits.Add(new DynamicFacingInit(() => facing));
+				inits.Add(new DynamicFacingInit(() => facing.Facing));
 		}
 
 		void IDeathActorInitModifier.ModifyDeathActorInit(Actor self, TypeDictionary init)
 		{
-			init.Add(new FacingInit(facing));
+			init.Add(new FacingInit(facing.Facing));
 
 			// Allows the husk to drag to its final position
 			if (CanEnterCell(self.Location, self, BlockedByActor.Stationary))
