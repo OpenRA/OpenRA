@@ -1063,7 +1063,7 @@ palace:
 		LongDesc: Launches an atomic missile at a target location
 		BeginChargeSpeechNotification: DeathHandMissilePrepping
 		EndChargeSpeechNotification: DeathHandMissileReady
-		LaunchSpeechNotification: MissileLaunchDetected
+		IncomingSpeechNotification: MissileLaunchDetected
 		MissileWeapon: deathhand
 		MissileDelay: 18
 		SpawnOffset: 32,816,0
