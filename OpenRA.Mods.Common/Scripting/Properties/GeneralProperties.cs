@@ -129,7 +129,7 @@ namespace OpenRA.Mods.Common.Scripting
 				if (facing == null)
 					throw new LuaException("Actor '{0}' doesn't define a facing".F(Self));
 
-				return facing.Facing;
+				return facing.Facing.Facing;
 			}
 		}
 

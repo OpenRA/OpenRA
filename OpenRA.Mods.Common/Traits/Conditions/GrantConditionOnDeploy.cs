@@ -126,19 +126,19 @@ namespace OpenRA.Mods.Common.Traits
 					break;
 				case DeployState.Deploying:
 					if (canTurn)
-						self.Trait<IFacing>().Facing = Info.Facing;
+						self.Trait<IFacing>().Facing = WAngle.FromFacing(Info.Facing);
 
 					Deploy(true);
 					break;
 				case DeployState.Deployed:
 					if (canTurn)
-						self.Trait<IFacing>().Facing = Info.Facing;
+						self.Trait<IFacing>().Facing = WAngle.FromFacing(Info.Facing);
 
 					OnDeployCompleted();
 					break;
 				case DeployState.Undeploying:
 					if (canTurn)
-						self.Trait<IFacing>().Facing = Info.Facing;
+						self.Trait<IFacing>().Facing = WAngle.FromFacing(Info.Facing);
 
 					Undeploy(true);
 					break;

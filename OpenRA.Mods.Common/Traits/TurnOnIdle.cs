@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 	class TurnOnIdle : ConditionalTrait<TurnOnIdleInfo>, INotifyIdle
 	{
 		int currentDelay;
-		int targetFacing;
+		WAngle targetFacing;
 		readonly Mobile mobile;
 
 		public TurnOnIdle(ActorInitializer init, TurnOnIdleInfo info)
@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (targetFacing == mobile.Facing)
 			{
-				targetFacing = self.World.SharedRandom.Next(256);
+				targetFacing = new WAngle(self.World.SharedRandom.Next(1024));
 				currentDelay = self.World.SharedRandom.Next(Info.MinDelay, Info.MaxDelay);
 			}
 

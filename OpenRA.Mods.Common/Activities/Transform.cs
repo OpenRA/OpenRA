@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		public readonly string ToActor;
 		public CVec Offset = CVec.Zero;
-		public int Facing = 96;
+		public WAngle Facing = WAngle.FromFacing(96);
 		public string[] Sounds = { };
 		public string Notification = null;
 		public int ForceHealthPercentage = 0;
@@ -99,7 +99,7 @@ namespace OpenRA.Mods.Common.Activities
 				{
 					new LocationInit(self.Location + Offset),
 					new OwnerInit(self.Owner),
-					new FacingInit(Facing),
+					new FacingInit(Facing.Facing),
 				};
 
 				if (SkipMakeAnims)

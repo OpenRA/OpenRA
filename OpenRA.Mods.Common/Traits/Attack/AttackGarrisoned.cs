@@ -123,7 +123,7 @@ namespace OpenRA.Mods.Common.Traits
 		FirePort SelectFirePort(Actor self, WAngle targetYaw)
 		{
 			// Pick a random port that faces the target
-			var bodyYaw = facing != null ? WAngle.FromFacing(facing.Facing) : WAngle.Zero;
+			var bodyYaw = facing != null ? facing.Facing : WAngle.Zero;
 			var indices = Enumerable.Range(0, Info.Ports.Length).Shuffle(self.World.SharedRandom);
 			foreach (var i in indices)
 			{
@@ -161,8 +161,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (port == null)
 					return;
 
-				var muzzleFacing = targetYaw.Facing;
-				paxFacing[a.Actor].Facing = muzzleFacing;
+				paxFacing[a.Actor].Facing = targetYaw;
 				paxPos[a.Actor].SetVisualPosition(a.Actor, pos + PortOffset(self, port));
 
 				var barrel = a.CheckFire(a.Actor, facing, target);

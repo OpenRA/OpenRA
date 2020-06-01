@@ -76,7 +76,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 
 		void ITick.Tick(Actor self)
 		{
-			if (facing.Facing <= 128)
+			if (facing.Facing.Angle <= 512)
 			{
 				var left = NormalizeSequence(self, info.LeftSequence);
 				if (DefaultAnimation.CurrentSequence.Name != left)

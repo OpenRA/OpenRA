@@ -58,12 +58,14 @@ namespace OpenRA.Mods.Cnc.Traits
 	{
 		public readonly TDGunboatInfo Info;
 		readonly Actor self;
+		static readonly WAngle Left = new WAngle(256);
+		static readonly WAngle Right = new WAngle(768);
 
 		IEnumerable<int> speedModifiers;
 		INotifyVisualPositionChanged[] notifyVisualPositionChanged;
 
 		[Sync]
-		public int Facing { get; set; }
+		public WAngle Facing { get; set; }
 
 		[Sync]
 		public WPos CenterPosition { get; private set; }
@@ -88,11 +90,11 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (centerPositionInit != null)
 				SetPosition(self, centerPositionInit.Value);
 
-			Facing = init.GetValue<FacingInit, int>(info, Info.GetInitialFacing());
+			Facing = WAngle.FromFacing(init.GetValue<FacingInit, int>(info, Info.GetInitialFacing()));
 
 			// Prevent mappers from setting bogus facings
-			if (Facing != 64 && Facing != 192)
-				Facing = Facing > 127 ? 192 : 64;
+			if (Facing != Left && Facing != Right)
+				Facing = Facing.Angle > 511 ? Right : Left;
 		}
 
 		void INotifyCreated.Created(Actor self)
@@ -128,10 +130,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		void Turn()
 		{
-			if (Facing == 64)
-				Facing = 192;
-			else
-				Facing = 64;
+			Facing = Facing == Left ? Right : Left;
 		}
 
 		int MovementSpeed
@@ -141,20 +140,20 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		public Pair<CPos, SubCell>[] OccupiedCells() { return new[] { Pair.New(TopLeft, SubCell.FullCell) }; }
 
-		WVec MoveStep(int facing)
+		WVec MoveStep(WAngle facing)
 		{
 			return MoveStep(MovementSpeed, facing);
 		}
 
-		WVec MoveStep(int speed, int facing)
+		WVec MoveStep(int speed, WAngle facing)
 		{
-			var dir = new WVec(0, -1024, 0).Rotate(WRot.FromFacing(facing));
+			var dir = new WVec(0, -1024, 0).Rotate(WRot.FromYaw(facing));
 			return speed * dir / 1024;
 		}
 
 		void IDeathActorInitModifier.ModifyDeathActorInit(Actor self, TypeDictionary init)
 		{
-			init.Add(new FacingInit(Facing));
+			init.Add(new FacingInit(Facing.Facing));
 		}
 
 		public bool CanExistInCell(CPos cell) { return true; }
@@ -225,7 +224,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		void IActorPreviewInitModifier.ModifyActorPreviewInit(Actor self, TypeDictionary inits)
 		{
 			if (!inits.Contains<DynamicFacingInit>() && !inits.Contains<FacingInit>())
-				inits.Add(new DynamicFacingInit(() => Facing));
+				inits.Add(new DynamicFacingInit(() => Facing.Facing));
 		}
 	}
 }

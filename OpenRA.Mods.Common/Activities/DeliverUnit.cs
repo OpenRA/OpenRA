@@ -90,7 +90,7 @@ namespace OpenRA.Mods.Common.Activities
 				var carryableFacing = carryall.Carryable.Trait<IFacing>();
 				var facingDelta = facing.Facing - carryableFacing.Facing;
 				foreach (var t in carryall.Carryable.TraitsImplementing<Turreted>())
-					t.TurretFacing += facingDelta;
+					t.TurretFacing += facingDelta.Facing;
 
 				carryableFacing.Facing = facing.Facing;
 

@@ -184,7 +184,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void MoveTurret()
 		{
-			var df = DesiredFacing ?? (facing != null ? facing.Facing : TurretFacing);
+			var df = DesiredFacing ?? (facing != null ? facing.Facing.Facing : TurretFacing);
 			TurretFacing = Util.TickFacing(TurretFacing, df, Info.TurnSpeed);
 		}
 
@@ -249,7 +249,7 @@ namespace OpenRA.Mods.Common.Traits
 				inits.Add(facings);
 			}
 
-			Func<int> bodyFacing = () => facing.Facing;
+			Func<int> bodyFacing = () => facing.Facing.Facing;
 			var dynamicFacing = inits.GetOrDefault<DynamicFacingInit>();
 			var staticFacing = inits.GetOrDefault<FacingInit>();
 			if (dynamicFacing != null)

@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (aircraftInfo != null)
 				pos += new WVec(0, 0, aircraftInfo.CruiseAltitude.Length);
 
-			var initialFacing = self.World.Map.FacingBetween(location.Value, destinations[0], 0);
+			var initialFacing = self.World.Map.FacingBetween(location.Value, destinations[0], WAngle.Zero);
 
 			self.World.AddFrameEndTask(w =>
 			{
@@ -88,7 +88,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				td.Add(new LocationInit(location.Value));
 				td.Add(new CenterPositionInit(pos));
-				td.Add(new FacingInit(initialFacing));
+				td.Add(new FacingInit(initialFacing.Facing));
 
 				var newUnit = self.World.CreateActor(producee.Name, td);
 

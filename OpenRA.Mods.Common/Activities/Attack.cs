@@ -198,9 +198,9 @@ namespace OpenRA.Mods.Common.Activities
 				return AttackStatus.NeedsToMove;
 			}
 
-			if (!attack.TargetInFiringArc(self, target, attack.Info.FacingTolerance))
+			if (!attack.TargetInFiringArc(self, target, 4 * attack.Info.FacingTolerance))
 			{
-				var desiredFacing = (attack.GetTargetPosition(pos, target) - pos).Yaw.Facing;
+				var desiredFacing = (attack.GetTargetPosition(pos, target) - pos).Yaw;
 				attackStatus |= AttackStatus.NeedsToTurn;
 				QueueChild(new Turn(self, desiredFacing));
 				return AttackStatus.NeedsToTurn;

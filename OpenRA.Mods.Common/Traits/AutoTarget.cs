@@ -415,7 +415,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (!armaments.Any())
 					continue;
 
-				if (!allowTurn && !ab.TargetInFiringArc(self, target, ab.Info.FacingTolerance))
+				if (!allowTurn && !ab.TargetInFiringArc(self, target, 4 * ab.Info.FacingTolerance))
 					continue;
 
 				// Evaluate whether we want to target this actor

@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Activities
 
 				case DockingState.Turn:
 					dockingState = DockingState.Dock;
-					QueueChild(new Turn(self, DockAngle));
+					QueueChild(new Turn(self, WAngle.FromFacing(DockAngle)));
 					if (IsDragRequired)
 						QueueChild(new Drag(self, StartDrag, EndDrag, DragLength));
 					return false;

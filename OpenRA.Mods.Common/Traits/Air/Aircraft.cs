@@ -209,13 +209,7 @@ namespace OpenRA.Mods.Common.Traits
 		IOverrideAircraftLanding overrideAircraftLanding;
 
 		[Sync]
-		public WAngle Facing;
-
-		int IFacing.Facing
-		{
-			get { return Facing.Facing; }
-			set { Facing = WAngle.FromFacing(value); }
-		}
+		public WAngle Facing { get; set; }
 
 		[Sync]
 		public WPos CenterPosition { get; private set; }
