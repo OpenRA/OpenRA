@@ -262,7 +262,7 @@ namespace OpenRA.Mods.Common.Traits
 				capturingToken = self.RevokeCondition(capturingToken);
 
 			if (targetManager.beingCapturedToken != Actor.InvalidConditionToken)
-				targetManager.beingCapturedToken = self.RevokeCondition(targetManager.beingCapturedToken);
+				targetManager.beingCapturedToken = target.RevokeCondition(targetManager.beingCapturedToken);
 
 			currentTarget = null;
 			currentTargetManager = null;
