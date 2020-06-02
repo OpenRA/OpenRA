@@ -96,14 +96,18 @@ namespace OpenRA.Mods.Cnc.Traits
 
 			wsb = self.TraitsImplementing<WithSpriteBody>().Single(w => w.Info.Name == info.Body);
 			faction = init.GetValue<FactionInit, string>(info, self.Owner.Faction.InternalName);
-			returnTicks = init.GetValue<ChronoshiftReturnInit, int>(info, 0);
-			duration = init.GetValue<ChronoshiftDurationInit, int>(info, 0);
-			origin = init.GetValue<ChronoshiftOriginInit, CPos>(info, CPos.Zero);
 
-			// Defer to the end of tick as the lazy value may reference an actor that hasn't been created yet
-			var chronosphereInit = init.GetOrDefault<ChronoshiftChronosphereInit>(info);
-			if (chronosphereInit != null)
-				init.World.AddFrameEndTask(w => chronosphere = chronosphereInit.Value.Actor(init.World).Value);
+			var returnInit = init.GetOrDefault<ChronoshiftReturnInit>(info);
+			if (returnInit != null)
+			{
+				returnTicks = returnInit.Ticks;
+				duration = returnInit.Duration;
+				origin = returnInit.Origin;
+
+				// Defer to the end of tick as the lazy value may reference an actor that hasn't been created yet
+				if (returnInit.Chronosphere != null)
+					init.World.AddFrameEndTask(w => chronosphere = returnInit.Chronosphere.Actor(init.World).Value);
+			}
 		}
 
 		IEnumerable<VariableObserver> IObservesVariables.GetVariableObservers()
@@ -228,11 +232,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (returnTicks <= 0)
 				return;
 
-			init.Add(new ChronoshiftOriginInit(origin));
-			init.Add(new ChronoshiftReturnInit(returnTicks));
-			init.Add(new ChronoshiftDurationInit(duration));
-			if (chronosphere != self)
-				init.Add(new ChronoshiftChronosphereInit(chronosphere));
+			init.Add(new ChronoshiftReturnInit(returnTicks, duration, origin, chronosphere));
 		}
 
 		void IDeathActorInitModifier.ModifyDeathActorInit(Actor self, TypeDictionary init) { ModifyActorInit(init); }

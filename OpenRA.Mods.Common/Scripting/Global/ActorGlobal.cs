@@ -40,6 +40,41 @@ namespace OpenRA.Mods.Common.Scripting
 			if (initInstance.Length > 1)
 				initType.GetField("InstanceName").SetValue(init, initInstance[1]);
 
+			var compositeInit = init as CompositeActorInit;
+			var tableValue = value as LuaTable;
+			if (tableValue != null && compositeInit != null)
+			{
+				var args = compositeInit.InitializeArgs();
+				var initValues = new Dictionary<string, object>();
+				foreach (var kv in tableValue)
+				{
+					using (kv.Key)
+					using (kv.Value)
+					{
+						var key = kv.Key.ToString();
+						Type type;
+						if (!args.TryGetValue(key, out type))
+							throw new LuaException("Unknown initializer type '{0}.{1}'".F(initInstance[0], key));
+
+						object clrValue;
+						var isActorReference = type == typeof(ActorInitActorReference);
+						if (isActorReference)
+							type = kv.Value is LuaString ? typeof(string) : typeof(Actor);
+
+						if (!kv.Value.TryGetClrValue(type, out clrValue))
+							throw new LuaException("Invalid data type for '{0}.{1}' (expected {2}, got {3})".F(initInstance[0], key, type.Name, kv.Value.WrappedClrType()));
+
+						if (isActorReference)
+							clrValue = type == typeof(string) ? new ActorInitActorReference((string)clrValue) : new ActorInitActorReference((Actor)clrValue);
+
+						initValues[key] = clrValue;
+					}
+				}
+
+				compositeInit.Initialize(initValues);
+				return init;
+			}
+
 			var initializers = initType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
 				.Where(m => m.Name == "Initialize" && m.GetParameters().Length == 1);
 

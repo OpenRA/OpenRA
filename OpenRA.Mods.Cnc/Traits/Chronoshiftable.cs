@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System;
 using OpenRA.Mods.Cnc.Activities;
 using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.Activities;
@@ -60,14 +59,18 @@ namespace OpenRA.Mods.Cnc.Traits
 			: base(info)
 		{
 			self = init.Self;
-			ReturnTicks = init.GetValue<ChronoshiftReturnInit, int>(info, 0);
-			duration = init.GetValue<ChronoshiftDurationInit, int>(info, 0);
-			Origin = init.GetValue<ChronoshiftOriginInit, CPos>(info, CPos.Zero);
 
-			// Defer to the end of tick as the lazy value may reference an actor that hasn't been created yet
-			var chronosphereInit = init.GetOrDefault<ChronoshiftChronosphereInit>(info);
-			if (chronosphereInit != null)
-				init.World.AddFrameEndTask(w => chronosphere = chronosphereInit.Value.Actor(init.World).Value);
+			var returnInit = init.GetOrDefault<ChronoshiftReturnInit>(info);
+			if (returnInit != null)
+			{
+				ReturnTicks = returnInit.Ticks;
+				duration = returnInit.Duration;
+				Origin = returnInit.Origin;
+
+				// Defer to the end of tick as the lazy value may reference an actor that hasn't been created yet
+				if (returnInit.Chronosphere != null)
+					init.World.AddFrameEndTask(w => chronosphere = returnInit.Chronosphere.Actor(init.World).Value);
+			}
 		}
 
 		void ITick.Tick(Actor self)
@@ -91,7 +94,7 @@ namespace OpenRA.Mods.Cnc.Traits
 					typeof(Actor).GetProperty("CurrentActivity").SetValue(self, null);
 
 				// The actor is killed using Info.DamageTypes if the teleport fails
-				self.QueueActivity(false, new Teleport(chronosphere, Origin, null, true, killCargo, Info.ChronoshiftSound,
+				self.QueueActivity(false, new Teleport(chronosphere ?? self, Origin, null, true, killCargo, Info.ChronoshiftSound,
 					false, true, Info.DamageTypes));
 			}
 		}
@@ -166,38 +169,26 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (IsTraitDisabled || !Info.ReturnToOrigin || ReturnTicks <= 0)
 				return;
 
-			init.Add(new ChronoshiftOriginInit(Origin));
-			init.Add(new ChronoshiftReturnInit(ReturnTicks));
-			init.Add(new ChronoshiftDurationInit(duration));
-			if (chronosphere != self)
-				init.Add(new ChronoshiftChronosphereInit(chronosphere));
+			init.Add(new ChronoshiftReturnInit(ReturnTicks, duration, Origin, chronosphere));
 		}
 
 		void IDeathActorInitModifier.ModifyDeathActorInit(Actor self, TypeDictionary init) { ModifyActorInit(init); }
 		void ITransformActorInitModifier.ModifyTransformActorInit(Actor self, TypeDictionary init) { ModifyActorInit(init); }
 	}
 
-	public class ChronoshiftReturnInit : ValueActorInit<int>
+	public class ChronoshiftReturnInit : CompositeActorInit
 	{
-		public ChronoshiftReturnInit(int value)
-			: base(value) { }
-	}
+		public readonly int Ticks;
+		public readonly int Duration;
+		public readonly CPos Origin;
+		public readonly ActorInitActorReference Chronosphere;
 
-	public class ChronoshiftDurationInit : ValueActorInit<int>
-	{
-		public ChronoshiftDurationInit(int value)
-			: base(value) { }
-	}
-
-	public class ChronoshiftOriginInit : ValueActorInit<CPos>
-	{
-		public ChronoshiftOriginInit(CPos value)
-			: base(value) { }
-	}
-
-	public class ChronoshiftChronosphereInit : ValueActorInit<ActorInitActorReference>
-	{
-		public ChronoshiftChronosphereInit(Actor value)
-			: base(value) { }
+		public ChronoshiftReturnInit(int ticks, int duration, CPos origin, Actor chronosphere)
+		{
+			Ticks = ticks;
+			Duration = duration;
+			Origin = origin;
+			Chronosphere = chronosphere;
+		}
 	}
 }
