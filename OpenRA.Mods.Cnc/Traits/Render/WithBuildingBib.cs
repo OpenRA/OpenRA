@@ -133,8 +133,5 @@ namespace OpenRA.Mods.Cnc.Traits
 		}
 	}
 
-	class HideBibPreviewInit : IActorInit, ISuppressInitExport
-	{
-		public HideBibPreviewInit() { }
-	}
+	class HideBibPreviewInit : RuntimeFlagInit { }
 }

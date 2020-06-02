@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Traits
 			// HACK: The ActorInit system does not support multiple instances of the same type
 			// Make sure that we only return one TurretFacingInit, even for actors with multiple turrets
 			if (ai.TraitInfos<TurretedInfo>().FirstOrDefault() == this)
-				yield return new TurretFacingInit(PreviewFacing);
+				yield return new TurretFacingInit(this, PreviewFacing);
 		}
 
 		IEnumerable<EditorActorOption> IEditorActorOptions.ActorOptions(ActorInfo ai, World world)
@@ -66,6 +66,8 @@ namespace OpenRA.Mods.Common.Traits
 				(actor, value) =>
 				{
 					actor.RemoveInit<TurretFacingsInit>();
+
+					// Force a single global turret facing for multi-turret actors by not passing this TraitInfo instance
 					actor.ReplaceInit(new TurretFacingInit((int)value));
 				});
 		}
@@ -230,7 +232,7 @@ namespace OpenRA.Mods.Common.Traits
 			var facings = init.GetOrDefault<TurretFacingsInit>();
 			if (facings == null)
 			{
-				facings = new TurretFacingsInit();
+				facings = new TurretFacingsInit(new Dictionary<string, int>());
 				init.Add(facings);
 			}
 
@@ -243,7 +245,7 @@ namespace OpenRA.Mods.Common.Traits
 			var facings = inits.GetOrDefault<DynamicTurretFacingsInit>();
 			if (facings == null)
 			{
-				facings = new DynamicTurretFacingsInit();
+				facings = new DynamicTurretFacingsInit(Info, new Dictionary<string, Func<int>>());
 				inits.Add(facings);
 			}
 
@@ -267,31 +269,24 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class TurretFacingInit : IActorInit<int>
+	public class TurretFacingInit : ValueActorInit<int>
 	{
-		[FieldFromYamlKey]
-		readonly int value = 128;
+		public TurretFacingInit(TraitInfo info, int value)
+			: base(info, value) { }
 
-		public TurretFacingInit() { }
-		public TurretFacingInit(int init) { value = init; }
-		public int Value { get { return value; } }
+		public TurretFacingInit(int value)
+			: base(value) { }
 	}
 
-	public class TurretFacingsInit : IActorInit<Dictionary<string, int>>
+	public class TurretFacingsInit : ValueActorInit<Dictionary<string, int>>
 	{
-		[DictionaryFromYamlKey]
-		readonly Dictionary<string, int> value = new Dictionary<string, int>();
-
-		public TurretFacingsInit() { }
-		public TurretFacingsInit(Dictionary<string, int> init) { value = init; }
-		public Dictionary<string, int> Value { get { return value; } }
+		public TurretFacingsInit(Dictionary<string, int> value)
+			: base(value) { }
 	}
 
-	public class DynamicTurretFacingsInit : IActorInit<Dictionary<string, Func<int>>>
+	public class DynamicTurretFacingsInit : ValueActorInit<Dictionary<string, Func<int>>>
 	{
-		readonly Dictionary<string, Func<int>> value = new Dictionary<string, Func<int>>();
-		public DynamicTurretFacingsInit() { }
-		public DynamicTurretFacingsInit(Dictionary<string, Func<int>> init) { value = init; }
-		public Dictionary<string, Func<int>> Value { get { return value; } }
+		public DynamicTurretFacingsInit(TraitInfo info, Dictionary<string, Func<int>> value)
+			: base(info, value) { }
 	}
 }

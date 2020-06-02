@@ -19,6 +19,7 @@ using OpenRA.Graphics;
 using OpenRA.Mods.Common.FileFormats;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
@@ -416,7 +417,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						initDict.Add(new FacingInit(255 - facing));
 
 					if (section == "INFANTRY")
-						actor.Add(new SubCellInit(Exts.ParseByte(parts[4])));
+						actor.Add(new SubCellInit((SubCell)Exts.ParseByte(parts[4])));
 
 					var actorCount = map.ActorDefinitions.Count;
 

@@ -479,25 +479,19 @@ namespace OpenRA.Mods.Common.Traits
 
 		void ITransformActorInitModifier.ModifyTransformActorInit(Actor self, TypeDictionary init)
 		{
-			init.Add(new RuntimeCargoInit(Passengers.ToArray()));
+			init.Add(new RuntimeCargoInit(Info, Passengers.ToArray()));
 		}
 	}
 
-	public class RuntimeCargoInit : IActorInit<Actor[]>, ISuppressInitExport
+	public class RuntimeCargoInit : ValueActorInit<Actor[]>, ISuppressInitExport
 	{
-		[FieldFromYamlKey]
-		readonly Actor[] value = { };
-		public RuntimeCargoInit() { }
-		public RuntimeCargoInit(Actor[] init) { value = init; }
-		public Actor[] Value { get { return value; } }
+		public RuntimeCargoInit(TraitInfo info, Actor[] value)
+			: base(info, value) { }
 	}
 
-	public class CargoInit : IActorInit<string[]>
+	public class CargoInit : ValueActorInit<string[]>
 	{
-		[FieldFromYamlKey]
-		readonly string[] value = { };
-		public CargoInit() { }
-		public CargoInit(string[] init) { value = init; }
-		public string[] Value { get { return value; } }
+		public CargoInit(TraitInfo info, string[] value)
+			: base(info, value) { }
 	}
 }

@@ -141,17 +141,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		void ITransformActorInitModifier.ModifyTransformActorInit(Actor self, TypeDictionary init)
 		{
-			init.Add(new ExperienceInit(experience));
+			init.Add(new ExperienceInit(info, experience));
 		}
 	}
 
-	class ExperienceInit : IActorInit<int>
+	class ExperienceInit : ValueActorInit<int>
 	{
-		[FieldFromYamlKey]
-		readonly int value;
-
-		public ExperienceInit() { }
-		public ExperienceInit(int init) { value = init; }
-		public int Value { get { return value; } }
+		public ExperienceInit(TraitInfo info, int value)
+			: base(info, value) { }
 	}
 }

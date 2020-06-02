@@ -16,33 +16,29 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	public enum LineBuildDirection { Unset, X, Y }
-	public class LineBuildDirectionInit : IActorInit<LineBuildDirection>
+	public class LineBuildDirectionInit : ValueActorInit<LineBuildDirection>
 	{
-		[FieldFromYamlKey]
-		readonly LineBuildDirection value = LineBuildDirection.Unset;
-
-		public LineBuildDirectionInit() { }
-		public LineBuildDirectionInit(LineBuildDirection init) { value = init; }
-		public LineBuildDirection Value { get { return value; } }
+		public LineBuildDirectionInit(LineBuildDirection value)
+			: base(value) { }
 	}
 
-	public class LineBuildParentInit : IActorInit<string[]>
+	public class LineBuildParentInit : ValueActorInit<string[]>
 	{
-		[FieldFromYamlKey]
-		public readonly string[] ParentNames = new string[0];
-
 		readonly Actor[] parents = null;
 
-		public LineBuildParentInit() { }
-		public LineBuildParentInit(Actor[] init) { parents = init; }
-		public string[] Value { get { return ParentNames; } }
+		public LineBuildParentInit(Actor[] value)
+			: base(new string[0])
+		{
+			parents = value;
+		}
+
 		public Actor[] ActorValue(World world)
 		{
 			if (parents != null)
 				return parents;
 
 			var sma = world.WorldActor.Trait<SpawnMapActors>();
-			return ParentNames.Select(n => sma.Actors[n]).ToArray();
+			return value.Select(n => sma.Actors[n]).ToArray();
 		}
 	}
 
