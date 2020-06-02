@@ -30,12 +30,16 @@ namespace OpenRA.Mods.Common.Scripting
 		ActorInit CreateInit(string initName, LuaValue value)
 		{
 			// Find the requested type
-			var initType = Game.ModData.ObjectCreator.FindType(initName + "Init");
+			var initInstance = initName.Split(ActorInfo.TraitInstanceSeparator);
+			var initType = Game.ModData.ObjectCreator.FindType(initInstance[0] + "Init");
 			if (initType == null)
-				throw new LuaException("Unknown initializer type '{0}'".F(initName));
+				throw new LuaException("Unknown initializer type '{0}'".F(initInstance[0]));
 
 			// Construct the ActorInit.
 			var init = (ActorInit)FormatterServices.GetUninitializedObject(initType);
+			if (initInstance.Length > 1)
+				initType.GetField("InstanceName").SetValue(init, initInstance[1]);
+
 			var initializers = initType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
 				.Where(m => m.Name == "Initialize" && m.GetParameters().Length == 1);
 
@@ -55,7 +59,7 @@ namespace OpenRA.Mods.Common.Scripting
 			}
 
 			var types = initializers.Select(y => y.GetParameters()[0].ParameterType.Name).JoinWith(", ");
-			throw new LuaException("Invalid data type for '{0}' (expected one of {1})".F(initName, types));
+			throw new LuaException("Invalid data type for '{0}' (expected one of {1})".F(initInstance[0], types));
 		}
 
 		[Desc("Create a new actor. initTable specifies a list of key-value pairs that defines the initial parameters for the actor's traits.")]

@@ -43,7 +43,17 @@ namespace OpenRA
 
 		public T GetOrDefault<T>(TraitInfo info) where T : ActorInit
 		{
-			return Dict.GetOrDefault<T>();
+			var inits = Dict.WithInterface<T>();
+
+			// Traits tagged with an instance name prefer inits with the same name.
+			// If a more specific init is not available, fall back to an unnamed init.
+			// If duplicate inits are defined, take the last to match standard yaml override expectations
+			if (info != null && !string.IsNullOrEmpty(info.InstanceName))
+				return inits.LastOrDefault(i => i.InstanceName == info.InstanceName) ??
+					inits.LastOrDefault(i => string.IsNullOrEmpty(i.InstanceName));
+
+			// Untagged traits will only use untagged inits
+			return inits.LastOrDefault(i => string.IsNullOrEmpty(i.InstanceName));
 		}
 
 		public T Get<T>(TraitInfo info) where T : ActorInit
@@ -81,6 +91,16 @@ namespace OpenRA
 	 */
 	public abstract class ActorInit
 	{
+		[FieldLoader.Ignore]
+		public readonly string InstanceName;
+
+		protected ActorInit(string instanceName)
+		{
+			InstanceName = instanceName;
+		}
+
+		protected ActorInit() { }
+
 		public abstract MiniYaml Save();
 	}
 
@@ -88,7 +108,8 @@ namespace OpenRA
 	{
 		protected readonly T value;
 
-		protected ValueActorInit(TraitInfo info, T value) { this.value = value; }
+		protected ValueActorInit(TraitInfo info, T value)
+			: base(info.InstanceName) { this.value = value; }
 
 		protected ValueActorInit(T value) { this.value = value; }
 

@@ -47,14 +47,18 @@ namespace OpenRA
 
 		static ActorInit LoadInit(string initName, MiniYaml initYaml)
 		{
-			var type = Game.ModData.ObjectCreator.FindType(initName + "Init");
+			var initInstance = initName.Split(ActorInfo.TraitInstanceSeparator);
+			var type = Game.ModData.ObjectCreator.FindType(initInstance[0] + "Init");
 			if (type == null)
-				throw new InvalidDataException("Unknown initializer type '{0}Init'".F(initName));
+				throw new InvalidDataException("Unknown initializer type '{0}Init'".F(initInstance[0]));
 
 			var init = (ActorInit)FormatterServices.GetUninitializedObject(type);
+			if (initInstance.Length > 1)
+				type.GetField("InstanceName").SetValue(init, initInstance[1]);
+
 			var loader = type.GetMethod("Initialize", new[] { typeof(MiniYaml) });
 			if (loader == null)
-				throw new InvalidDataException("{0}Init does not define a yaml-assignable type.".F(initName));
+				throw new InvalidDataException("{0}Init does not define a yaml-assignable type.".F(initInstance[0]));
 
 			loader.Invoke(init, new[] { initYaml });
 			return init;
@@ -74,6 +78,9 @@ namespace OpenRA
 
 				var initTypeName = init.GetType().Name;
 				var initName = initTypeName.Substring(0, initTypeName.Length - 4);
+				if (!string.IsNullOrEmpty(init.InstanceName))
+					initName += ActorInfo.TraitInstanceSeparator + init.InstanceName;
+
 				ret.Nodes.Add(new MiniYamlNode(initName, init.Save()));
 			}
 
