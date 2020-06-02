@@ -23,6 +23,7 @@ namespace OpenRA
 	public class ActorInfo
 	{
 		public const string AbstractActorPrefix = "^";
+		public const char TraitInstanceSeparator = '@';
 
 		/// <summary>
 		/// The actor name can be anything, but the sprites used in the Render*: traits default to this one.
@@ -46,7 +47,7 @@ namespace OpenRA
 					{
 						// HACK: The linter does not want to crash when a trait doesn't exist but only print an error instead
 						// LoadTraitInfo will only return null to signal us to abort here if the linter is running
-						var trait = LoadTraitInfo(creator, t.Key.Split('@')[0], t.Value);
+						var trait = LoadTraitInfo(creator, t.Key, t.Value);
 						if (trait != null)
 							traits.Add(trait);
 					}
@@ -80,12 +81,16 @@ namespace OpenRA
 
 			// HACK: The linter does not want to crash when a trait doesn't exist but only print an error instead
 			// ObjectCreator will only return null to signal us to abort here if the linter is running
-			var info = creator.CreateObject<TraitInfo>(traitName + "Info");
+			var traitInstance = traitName.Split(TraitInstanceSeparator);
+			var info = creator.CreateObject<TraitInfo>(traitInstance[0] + "Info");
 			if (info == null)
 				return null;
 
 			try
 			{
+				if (traitInstance.Length > 1)
+					info.GetType().GetField("InstanceName").SetValue(info, traitInstance[1]);
+
 				FieldLoader.Load(info, my);
 			}
 			catch (FieldLoader.MissingFieldsException e)

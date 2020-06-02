@@ -44,7 +44,17 @@ namespace OpenRA.Mods.Common.Graphics
 
 		public T GetOrDefault<T>(TraitInfo info) where T : ActorInit
 		{
-			return dict.GetOrDefault<T>();
+			var inits = dict.WithInterface<T>();
+
+			// Traits tagged with an instance name prefer inits with the same name.
+			// If a more specific init is not available, fall back to an unnamed init.
+			// If duplicate inits are defined, take the last to match standard yaml override expectations
+			if (info != null && !string.IsNullOrEmpty(info.InstanceName))
+				return inits.LastOrDefault(i => i.InstanceName == info.InstanceName) ??
+				       inits.LastOrDefault(i => string.IsNullOrEmpty(i.InstanceName));
+
+			// Untagged traits will only use untagged inits
+			return inits.LastOrDefault(i => string.IsNullOrEmpty(i.InstanceName));
 		}
 
 		public T Get<T>(TraitInfo info) where T : ActorInit
