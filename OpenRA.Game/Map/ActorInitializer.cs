@@ -86,7 +86,7 @@ namespace OpenRA
 	 *   The object will be allocated directly then the best matching Initialize() method will be called to set valid state.
 	 * - ActorReference will always attempt to call Initialize(MiniYaml). ActorGlobal will use whichever one it first
 	 *   finds with an argument type that matches the given LuaValue.
-	 * - Most ActorInits will want to inherit ValueActorInit<T> which hides the low-level plumbing.
+	 * - Most ActorInits will want to inherit either ValueActorInit<T> or CompositeActorInit which hide the low-level plumbing.
 	 * - Inits that reference actors should use ActorInitActorReference which allows actors to be referenced by name in map.yaml
 	 */
 	public abstract class ActorInit
@@ -131,6 +131,54 @@ namespace OpenRA
 		public override MiniYaml Save()
 		{
 			return new MiniYaml(FieldSaver.FormatValue(value));
+		}
+	}
+
+	public abstract class CompositeActorInit : ActorInit
+	{
+		protected CompositeActorInit(TraitInfo info)
+			: base(info.InstanceName) { }
+
+		protected CompositeActorInit()
+			: base() { }
+
+		public virtual void Initialize(MiniYaml yaml)
+		{
+			FieldLoader.Load(this, yaml);
+		}
+
+		public virtual void Initialize(Dictionary<string, object> values)
+		{
+			object value;
+			foreach (var field in GetType().GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
+			{
+				var sa = field.GetCustomAttributes<FieldLoader.SerializeAttribute>(false).DefaultIfEmpty(FieldLoader.SerializeAttribute.Default).First();
+				if (!sa.Serialize)
+					continue;
+
+				if (values.TryGetValue(field.Name, out value))
+					field.SetValue(this, value);
+			}
+		}
+
+		public virtual Dictionary<string, Type> InitializeArgs()
+		{
+			var dict = new Dictionary<string, Type>();
+			foreach (var field in GetType().GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
+			{
+				var sa = field.GetCustomAttributes<FieldLoader.SerializeAttribute>(false).DefaultIfEmpty(FieldLoader.SerializeAttribute.Default).First();
+				if (!sa.Serialize)
+					continue;
+
+				dict[field.Name] = field.FieldType;
+			}
+
+			return dict;
+		}
+
+		public override MiniYaml Save()
+		{
+			return FieldSaver.Save(this);
 		}
 	}
 
