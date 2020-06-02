@@ -192,8 +192,9 @@ namespace OpenRA.Mods.Cnc.Traits
 					if (unit.CanBeViewedByPlayer(manager.Self.Owner))
 					{
 						var decorations = unit.TraitsImplementing<ISelectionDecorations>().FirstEnabledTraitOrDefault();
-						foreach (var d in decorations.RenderSelectionAnnotations(unit, wr, Color.Red))
-							yield return d;
+						if (decorations != null)
+							foreach (var d in decorations.RenderSelectionAnnotations(unit, wr, Color.Red))
+								yield return d;
 					}
 				}
 			}
@@ -318,8 +319,9 @@ namespace OpenRA.Mods.Cnc.Traits
 					if (unit.CanBeViewedByPlayer(manager.Self.Owner))
 					{
 						var decorations = unit.TraitsImplementing<ISelectionDecorations>().FirstEnabledTraitOrDefault();
-						foreach (var d in decorations.RenderSelectionAnnotations(unit, wr, Color.Red))
-							yield return d;
+						if (decorations != null)
+							foreach (var d in decorations.RenderSelectionAnnotations(unit, wr, Color.Red))
+								yield return d;
 					}
 				}
 			}
