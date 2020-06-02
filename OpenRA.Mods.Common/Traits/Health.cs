@@ -233,23 +233,17 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class HealthInit : IActorInit<int>
+	public class HealthInit : ValueActorInit<int>
 	{
-		[FieldFromYamlKey]
-		readonly int value = 100;
-
 		readonly bool allowZero;
-		public HealthInit() { }
-		public HealthInit(int init)
-			: this(init, false) { }
 
-		public HealthInit(int init, bool allowZero)
-		{
-			this.allowZero = allowZero;
-			value = init;
-		}
+		public HealthInit(TraitInfo info, int value, bool allowZero = false)
+			: base(info, value) { this.allowZero = allowZero; }
 
-		public int Value
+		public HealthInit(int value, bool allowZero = false)
+			: base(value) { this.allowZero = allowZero; }
+
+		public override int Value
 		{
 			get
 			{

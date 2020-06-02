@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
@@ -41,12 +42,12 @@ namespace OpenRA.Mods.Common.Graphics
 			this.dict = dict;
 		}
 
-		public T GetOrDefault<T>(TraitInfo info) where T : IActorInit
+		public T GetOrDefault<T>(TraitInfo info) where T : ActorInit
 		{
 			return dict.GetOrDefault<T>();
 		}
 
-		public T Get<T>(TraitInfo info) where T : IActorInit
+		public T Get<T>(TraitInfo info) where T : ActorInit
 		{
 			var init = GetOrDefault<T>(info);
 			if (init == null)
@@ -55,18 +56,18 @@ namespace OpenRA.Mods.Common.Graphics
 			return init;
 		}
 
-		public U GetValue<T, U>(TraitInfo info) where T : IActorInit<U>
+		public U GetValue<T, U>(TraitInfo info) where T : ValueActorInit<U>
 		{
 			return Get<T>(info).Value;
 		}
 
-		public U GetValue<T, U>(TraitInfo info, U fallback) where T : IActorInit<U>
+		public U GetValue<T, U>(TraitInfo info, U fallback) where T : ValueActorInit<U>
 		{
 			var init = GetOrDefault<T>(info);
 			return init != null ? init.Value : fallback;
 		}
 
-		public bool Contains<T>(TraitInfo info) where T : IActorInit { return GetOrDefault<T>(info) != null; }
+		public bool Contains<T>(TraitInfo info) where T : ActorInit { return GetOrDefault<T>(info) != null; }
 
 		public Func<WRot> GetOrientation()
 		{

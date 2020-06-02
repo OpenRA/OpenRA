@@ -80,7 +80,7 @@ namespace OpenRA.Mods.Common.Traits
 				},
 				(actor, value) =>
 				{
-					actor.ReplaceInit(new DeployStateInit(value ? DeployState.Deployed : DeployState.Undeployed));
+					actor.ReplaceInit(new DeployStateInit(this, value ? DeployState.Deployed : DeployState.Undeployed));
 				});
 		}
 
@@ -337,12 +337,12 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class DeployStateInit : IActorInit<DeployState>
+	public class DeployStateInit : ValueActorInit<DeployState>
 	{
-		[FieldFromYamlKey]
-		readonly DeployState value = DeployState.Deployed;
-		public DeployStateInit() { }
-		public DeployStateInit(DeployState init) { value = init; }
-		public DeployState Value { get { return value; } }
+		public DeployStateInit(TraitInfo info, DeployState value)
+			: base(info, value) { }
+
+		public DeployStateInit(DeployState value)
+			: base(value) { }
 	}
 }

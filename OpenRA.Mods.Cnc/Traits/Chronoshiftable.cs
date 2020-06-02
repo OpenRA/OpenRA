@@ -11,6 +11,7 @@
 
 using System;
 using OpenRA.Mods.Cnc.Activities;
+using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
@@ -66,7 +67,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			// Defer to the end of tick as the lazy value may reference an actor that hasn't been created yet
 			var chronosphereInit = init.GetOrDefault<ChronoshiftChronosphereInit>(info);
 			if (chronosphereInit != null)
-				init.World.AddFrameEndTask(w => chronosphere = chronosphereInit.Value(init.World).Value);
+				init.World.AddFrameEndTask(w => chronosphere = chronosphereInit.Value.Actor(init.World).Value);
 		}
 
 		void ITick.Tick(Actor self)
@@ -176,40 +177,27 @@ namespace OpenRA.Mods.Cnc.Traits
 		void ITransformActorInitModifier.ModifyTransformActorInit(Actor self, TypeDictionary init) { ModifyActorInit(init); }
 	}
 
-	public class ChronoshiftReturnInit : IActorInit<int>
+	public class ChronoshiftReturnInit : ValueActorInit<int>
 	{
-		[FieldFromYamlKey]
-		readonly int value = 0;
-
-		public ChronoshiftReturnInit() { }
-		public ChronoshiftReturnInit(int init) { value = init; }
-		public int Value { get { return value; } }
+		public ChronoshiftReturnInit(int value)
+			: base(value) { }
 	}
 
-	public class ChronoshiftDurationInit : IActorInit<int>
+	public class ChronoshiftDurationInit : ValueActorInit<int>
 	{
-		[FieldFromYamlKey]
-		readonly int value = 0;
-
-		public ChronoshiftDurationInit() { }
-		public ChronoshiftDurationInit(int init) { value = init; }
-		public int Value { get { return value; } }
+		public ChronoshiftDurationInit(int value)
+			: base(value) { }
 	}
 
-	public class ChronoshiftOriginInit : IActorInit<CPos>
+	public class ChronoshiftOriginInit : ValueActorInit<CPos>
 	{
-		[FieldFromYamlKey]
-		readonly CPos value;
-
-		public ChronoshiftOriginInit(CPos init) { value = init; }
-		public CPos Value { get { return value; } }
+		public ChronoshiftOriginInit(CPos value)
+			: base(value) { }
 	}
 
-	public class ChronoshiftChronosphereInit : IActorInit
+	public class ChronoshiftChronosphereInit : ValueActorInit<ActorInitActorReference>
 	{
-		readonly Actor value;
-		public ChronoshiftChronosphereInit(Actor init) { value = init; }
-
-		public Lazy<Actor> Value(World world) { return new Lazy<Actor>(() => value); }
+		public ChronoshiftChronosphereInit(Actor value)
+			: base(value) { }
 	}
 }

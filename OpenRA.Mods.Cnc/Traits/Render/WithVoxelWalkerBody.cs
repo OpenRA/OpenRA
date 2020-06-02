@@ -95,13 +95,9 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 		}
 	}
 
-	public class BodyAnimationFrameInit : IActorInit<uint>
+	public class BodyAnimationFrameInit : ValueActorInit<uint>
 	{
-		[FieldFromYamlKey]
-		readonly uint value = 0;
-
-		public BodyAnimationFrameInit() { }
-		public BodyAnimationFrameInit(uint init) { value = init; }
-		public uint Value { get { return value; } }
+		public BodyAnimationFrameInit(uint value)
+			: base(value) { }
 	}
 }

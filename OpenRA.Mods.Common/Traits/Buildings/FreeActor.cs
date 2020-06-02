@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Traits
 				},
 				(actor, value) =>
 				{
-					actor.ReplaceInit(new FreeActorInit(value));
+					actor.ReplaceInit(new FreeActorInit(this, value));
 				});
 		}
 
@@ -87,20 +87,15 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class FreeActorInit : IActorInit<bool>
+	public class FreeActorInit : ValueActorInit<bool>
 	{
-		[FieldFromYamlKey]
-		public readonly bool ActorValue = true;
-		public FreeActorInit() { }
-		public FreeActorInit(bool init) { ActorValue = init; }
-		public bool Value { get { return ActorValue; } }
+		public FreeActorInit(TraitInfo info, bool value)
+			: base(info, value) { }
 	}
 
-	public class ParentActorInit : IActorInit
+	public class ParentActorInit : ValueActorInit<ActorInitActorReference>
 	{
-		readonly Actor value;
-		public ParentActorInit(Actor init) { value = init; }
-
-		public Lazy<Actor> Value(World world) { return new Lazy<Actor>(() => value); }
+		public ParentActorInit(Actor value)
+			: base(value) { }
 	}
 }

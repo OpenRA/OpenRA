@@ -62,12 +62,10 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class SkipMakeAnimsInit : IActorInit, ISuppressInitExport { }
-	public class SpawnedByMapInit : IActorInit<string>, ISuppressInitExport
+	public class SkipMakeAnimsInit : RuntimeFlagInit { }
+	public class SpawnedByMapInit : ValueActorInit<string>, ISuppressInitExport
 	{
-		public readonly string Name;
-		public SpawnedByMapInit(string name) { Name = name; }
-
-		public string Value { get { return Name; } }
+		public SpawnedByMapInit(string value)
+			: base(value) { }
 	}
 }

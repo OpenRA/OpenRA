@@ -146,7 +146,7 @@ namespace OpenRA.Mods.Common.Traits
 					if (turretInit != null)
 					{
 						var newTurretFacing = (turretInit.Value + newFacing - oldFacing + 255) % 255;
-						actor.ReplaceInit(new TurretFacingInit(newTurretFacing));
+						actor.ReplaceInit(new TurretFacingInit(this, newTurretFacing));
 					}
 
 					if (turretsInit != null)

@@ -120,12 +120,9 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class PlugsInit : IActorInit<Dictionary<CVec, string>>
+	public class PlugsInit : ValueActorInit<Dictionary<CVec, string>>
 	{
-		[DictionaryFromYamlKey]
-		readonly Dictionary<CVec, string> value = new Dictionary<CVec, string>();
-		public PlugsInit() { }
-		public PlugsInit(Dictionary<CVec, string> init) { value = init; }
-		public Dictionary<CVec, string> Value { get { return value; } }
+		public PlugsInit(Dictionary<CVec, string> value)
+			: base(value) { }
 	}
 }

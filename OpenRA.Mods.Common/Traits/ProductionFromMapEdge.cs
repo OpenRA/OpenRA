@@ -110,13 +110,9 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class ProductionSpawnLocationInit : IActorInit<CPos>
+	public class ProductionSpawnLocationInit : ValueActorInit<CPos>
 	{
-		[FieldFromYamlKey]
-		readonly CPos value = CPos.Zero;
-
-		public ProductionSpawnLocationInit() { }
-		public ProductionSpawnLocationInit(CPos init) { value = init; }
-		public CPos Value { get { return value; } }
+		public ProductionSpawnLocationInit(TraitInfo info, CPos value)
+			: base(info, value) { }
 	}
 }

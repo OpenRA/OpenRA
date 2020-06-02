@@ -195,5 +195,5 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class HiddenUnderFogInit : IActorInit { }
+	public class HiddenUnderFogInit : RuntimeFlagInit { }
 }

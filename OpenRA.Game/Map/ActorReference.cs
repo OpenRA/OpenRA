@@ -12,6 +12,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization;
 using OpenRA.Primitives;
 
 namespace OpenRA
@@ -43,26 +45,36 @@ namespace OpenRA
 			});
 		}
 
-		static IActorInit LoadInit(string traitName, MiniYaml my)
+		static ActorInit LoadInit(string initName, MiniYaml initYaml)
 		{
-			var info = Game.CreateObject<IActorInit>(traitName + "Init");
-			FieldLoader.Load(info, my);
-			return info;
+			var type = Game.ModData.ObjectCreator.FindType(initName + "Init");
+			if (type == null)
+				throw new InvalidDataException("Unknown initializer type '{0}Init'".F(initName));
+
+			var init = (ActorInit)FormatterServices.GetUninitializedObject(type);
+			var loader = type.GetMethod("Initialize", new[] { typeof(MiniYaml) });
+			if (loader == null)
+				throw new InvalidDataException("{0}Init does not define a yaml-assignable type.".F(initName));
+
+			loader.Invoke(init, new[] { initYaml });
+			return init;
 		}
 
-		public MiniYaml Save(Func<object, bool> initFilter = null)
+		public MiniYaml Save(Func<ActorInit, bool> initFilter = null)
 		{
 			var ret = new MiniYaml(Type);
-			foreach (var init in InitDict)
+			foreach (var o in InitDict)
 			{
-				if (init is ISuppressInitExport)
+				var init = o as ActorInit;
+				if (init == null || o is ISuppressInitExport)
 					continue;
 
 				if (initFilter != null && !initFilter(init))
 					continue;
 
-				var initName = init.GetType().Name;
-				ret.Nodes.Add(new MiniYamlNode(initName.Substring(0, initName.Length - 4), FieldSaver.Save(init)));
+				var initTypeName = init.GetType().Name;
+				var initName = initTypeName.Substring(0, initTypeName.Length - 4);
+				ret.Nodes.Add(new MiniYamlNode(initName, init.Save()));
 			}
 
 			return ret;

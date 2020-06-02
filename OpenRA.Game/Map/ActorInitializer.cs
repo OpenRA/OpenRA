@@ -10,7 +10,9 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -19,11 +21,11 @@ namespace OpenRA
 	public interface IActorInitializer
 	{
 		World World { get; }
-		T GetOrDefault<T>(TraitInfo info) where T : IActorInit;
-		T Get<T>(TraitInfo info) where T : IActorInit;
-		U GetValue<T, U>(TraitInfo info) where T : IActorInit<U>;
-		U GetValue<T, U>(TraitInfo info, U fallback) where T : IActorInit<U>;
-		bool Contains<T>(TraitInfo info) where T : IActorInit;
+		T GetOrDefault<T>(TraitInfo info) where T : ActorInit;
+		T Get<T>(TraitInfo info) where T : ActorInit;
+		U GetValue<T, U>(TraitInfo info) where T : ValueActorInit<U>;
+		U GetValue<T, U>(TraitInfo info, U fallback) where T : ValueActorInit<U>;
+		bool Contains<T>(TraitInfo info) where T : ActorInit;
 	}
 
 	public class ActorInitializer : IActorInitializer
@@ -39,12 +41,12 @@ namespace OpenRA
 			Dict = dict;
 		}
 
-		public T GetOrDefault<T>(TraitInfo info) where T : IActorInit
+		public T GetOrDefault<T>(TraitInfo info) where T : ActorInit
 		{
 			return Dict.GetOrDefault<T>();
 		}
 
-		public T Get<T>(TraitInfo info) where T : IActorInit
+		public T Get<T>(TraitInfo info) where T : ActorInit
 		{
 			var init = GetOrDefault<T>(info);
 			if (init == null)
@@ -53,59 +55,119 @@ namespace OpenRA
 			return init;
 		}
 
-		public U GetValue<T, U>(TraitInfo info) where T : IActorInit<U>
+		public U GetValue<T, U>(TraitInfo info) where T : ValueActorInit<U>
 		{
 			return Get<T>(info).Value;
 		}
 
-		public U GetValue<T, U>(TraitInfo info, U fallback) where T : IActorInit<U>
+		public U GetValue<T, U>(TraitInfo info, U fallback) where T : ValueActorInit<U>
 		{
 			var init = GetOrDefault<T>(info);
 			return init != null ? init.Value : fallback;
 		}
 
-		public bool Contains<T>(TraitInfo info) where T : IActorInit { return GetOrDefault<T>(info) != null; }
+		public bool Contains<T>(TraitInfo info) where T : ActorInit { return GetOrDefault<T>(info) != null; }
 	}
 
-	public interface IActorInit { }
-
-	public interface IActorInit<T> : IActorInit
+	/*
+	 * Things to be aware of when writing ActorInits:
+	 *
+	 * - ActorReference and ActorGlobal can dynamically create objects without calling a constructor.
+	 *   The object will be allocated directly then the best matching Initialize() method will be called to set valid state.
+	 * - ActorReference will always attempt to call Initialize(MiniYaml). ActorGlobal will use whichever one it first
+	 *   finds with an argument type that matches the given LuaValue.
+	 * - Most ActorInits will want to inherit ValueActorInit<T> which hides the low-level plumbing.
+	 * - Inits that reference actors should use ActorInitActorReference which allows actors to be referenced by name in map.yaml
+	 */
+	public abstract class ActorInit
 	{
-		T Value { get; }
+		public abstract MiniYaml Save();
 	}
 
-	public class LocationInit : IActorInit<CPos>
+	public abstract class ValueActorInit<T> : ActorInit
 	{
-		[FieldFromYamlKey]
-		readonly CPos value = CPos.Zero;
+		protected readonly T value;
 
-		public LocationInit() { }
-		public LocationInit(CPos init) { value = init; }
-		public CPos Value { get { return value; } }
-	}
+		protected ValueActorInit(TraitInfo info, T value) { this.value = value; }
 
-	public class OwnerInit : IActorInit
-	{
-		[FieldFromYamlKey]
-		public readonly string InternalName = "Neutral";
+		protected ValueActorInit(T value) { this.value = value; }
 
-		Player player;
+		public virtual T Value { get { return value; } }
 
-		public OwnerInit() { }
-		public OwnerInit(string playerName) { InternalName = playerName; }
-
-		public OwnerInit(Player player)
+		public virtual void Initialize(MiniYaml yaml)
 		{
-			this.player = player;
-			InternalName = player.InternalName;
+			var valueType = typeof(T).IsEnum ? Enum.GetUnderlyingType(typeof(T)) : typeof(T);
+			Initialize((T)FieldLoader.GetValue("value", valueType, yaml.Value));
+		}
+
+		public virtual void Initialize(T value)
+		{
+			var field = GetType().GetField("value", BindingFlags.NonPublic | BindingFlags.Instance);
+			if (field != null)
+				field.SetValue(this, value);
+		}
+
+		public override MiniYaml Save()
+		{
+			return new MiniYaml(FieldSaver.FormatValue(value));
+		}
+	}
+
+	public class LocationInit : ValueActorInit<CPos>
+	{
+		public LocationInit(TraitInfo info, CPos value)
+			: base(info, value) { }
+
+		public LocationInit(CPos value)
+			: base(value) { }
+	}
+
+	public class OwnerInit : ActorInit
+	{
+		public readonly string InternalName;
+		protected readonly Player value;
+
+		public OwnerInit(Player value)
+		{
+			this.value = value;
+			InternalName = value.InternalName;
+		}
+
+		public OwnerInit(string value)
+		{
+			InternalName = value;
 		}
 
 		public Player Value(World world)
 		{
-			if (player != null)
-				return player;
+			return value ?? world.Players.First(x => x.InternalName == InternalName);
+		}
 
-			return world.Players.First(x => x.InternalName == InternalName);
+		public void Initialize(MiniYaml yaml)
+		{
+			var field = GetType().GetField("InternalName", BindingFlags.Public | BindingFlags.Instance);
+			if (field != null)
+				field.SetValue(this, yaml.Value);
+		}
+
+		public void Initialize(Player player)
+		{
+			var field = GetType().GetField("value", BindingFlags.NonPublic | BindingFlags.Instance);
+			if (field != null)
+				field.SetValue(this, player);
+		}
+
+		public override MiniYaml Save()
+		{
+			return new MiniYaml(InternalName);
+		}
+	}
+
+	public abstract class RuntimeFlagInit : ActorInit, ISuppressInitExport
+	{
+		public override MiniYaml Save()
+		{
+			throw new NotImplementedException("RuntimeFlagInit cannot be saved");
 		}
 	}
 }

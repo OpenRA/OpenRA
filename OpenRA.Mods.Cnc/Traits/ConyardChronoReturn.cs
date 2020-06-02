@@ -103,7 +103,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			// Defer to the end of tick as the lazy value may reference an actor that hasn't been created yet
 			var chronosphereInit = init.GetOrDefault<ChronoshiftChronosphereInit>(info);
 			if (chronosphereInit != null)
-				init.World.AddFrameEndTask(w => chronosphere = chronosphereInit.Value(init.World).Value);
+				init.World.AddFrameEndTask(w => chronosphere = chronosphereInit.Value.Actor(init.World).Value);
 		}
 
 		IEnumerable<VariableObserver> IObservesVariables.GetVariableObservers()

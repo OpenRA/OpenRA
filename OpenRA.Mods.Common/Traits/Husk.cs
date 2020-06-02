@@ -171,13 +171,9 @@ namespace OpenRA.Mods.Common.Traits
 		Player IEffectiveOwner.Owner { get { return effectiveOwner; } }
 	}
 
-	public class HuskSpeedInit : IActorInit<int>
+	public class HuskSpeedInit : ValueActorInit<int>
 	{
-		[FieldFromYamlKey]
-		readonly int value = 0;
-
-		public HuskSpeedInit() { }
-		public HuskSpeedInit(int init) { value = init; }
-		public int Value { get { return value; } }
+		public HuskSpeedInit(int value)
+			: base(value) { }
 	}
 }
