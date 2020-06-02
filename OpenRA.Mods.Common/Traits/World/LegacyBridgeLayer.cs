@@ -89,9 +89,12 @@ namespace OpenRA.Mods.Common.Traits
 				// Where do we expect to find the subtile
 				var subtile = new CPos(ni + ind % template.Size.X, nj + ind / template.Size.X);
 
+				if (!mapTiles.Contains(subtile))
+					continue;
+
 				// This isn't the bridge you're looking for
 				var subti = mapTiles[subtile];
-				if (!mapTiles.Contains(subtile) || subti.Type != tile || subti.Index != ind)
+				if (subti.Type != tile || subti.Index != ind)
 					continue;
 
 				subTiles.Add(subtile, ind);
