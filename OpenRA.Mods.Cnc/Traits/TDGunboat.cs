@@ -73,7 +73,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public CPos TopLeft { get { return self.World.Map.CellContaining(CenterPosition); } }
 
 		// Isn't used anyway
-		public int TurnSpeed { get { return 255; } }
+		public WAngle TurnSpeed { get { return WAngle.Zero; } }
 
 		CPos cachedLocation;
 

@@ -222,7 +222,7 @@ namespace OpenRA.Mods.Common.Traits
 			set { facing = value; }
 		}
 
-		public int TurnSpeed { get { return 4 * Info.TurnSpeed; } }
+		public WAngle TurnSpeed { get { return new WAngle(4 * Info.TurnSpeed); } }
 		#endregion
 
 		[Sync]

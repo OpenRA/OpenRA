@@ -71,7 +71,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Sync]
 		public WAngle Facing { get; set; }
 
-		public int TurnSpeed { get { return 0; } }
+		public WAngle TurnSpeed { get { return WAngle.Zero; } }
 
 		public Husk(ActorInitializer init, HuskInfo info)
 		{
