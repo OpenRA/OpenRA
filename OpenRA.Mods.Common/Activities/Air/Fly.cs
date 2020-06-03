@@ -60,14 +60,14 @@ namespace OpenRA.Mods.Common.Activities
 			this.minRange = minRange;
 		}
 
-		public static void FlyTick(Actor self, Aircraft aircraft, WAngle desiredFacing, WDist desiredAltitude, WVec moveOverride, int turnSpeedOverride = -1)
+		public static void FlyTick(Actor self, Aircraft aircraft, WAngle desiredFacing, WDist desiredAltitude, WVec moveOverride, WAngle? turnSpeedOverride = null)
 		{
 			var dat = self.World.Map.DistanceAboveTerrain(aircraft.CenterPosition);
 			var move = aircraft.Info.CanSlide ? aircraft.FlyStep(desiredFacing) : aircraft.FlyStep(aircraft.Facing);
 			if (moveOverride != WVec.Zero)
 				move = moveOverride;
 
-			var turnSpeed = turnSpeedOverride > -1 ? turnSpeedOverride : aircraft.TurnSpeed;
+			var turnSpeed = turnSpeedOverride ?? aircraft.TurnSpeed;
 			aircraft.Facing = Util.TickFacing(aircraft.Facing, desiredFacing, turnSpeed);
 
 			// Note: we assume that if move.Z is not zero, it's intentional and we want to move in that vertical direction instead of towards desiredAltitude.
@@ -83,18 +83,18 @@ namespace OpenRA.Mods.Common.Activities
 			aircraft.SetPosition(self, aircraft.CenterPosition + move);
 		}
 
-		public static void FlyTick(Actor self, Aircraft aircraft, WAngle desiredFacing, WDist desiredAltitude, int turnSpeedOverride = -1)
+		public static void FlyTick(Actor self, Aircraft aircraft, WAngle desiredFacing, WDist desiredAltitude, WAngle? turnSpeedOverride = null)
 		{
 			FlyTick(self, aircraft, desiredFacing, desiredAltitude, WVec.Zero, turnSpeedOverride);
 		}
 
 		// Should only be used for vertical-only movement, usually VTOL take-off or land. Terrain-induced altitude changes should always be handled by FlyTick.
-		public static bool VerticalTakeOffOrLandTick(Actor self, Aircraft aircraft, WAngle desiredFacing, WDist desiredAltitude, int turnSpeedOverride = -1)
+		public static bool VerticalTakeOffOrLandTick(Actor self, Aircraft aircraft, WAngle desiredFacing, WDist desiredAltitude, WAngle? turnSpeedOverride = null)
 		{
 			var dat = self.World.Map.DistanceAboveTerrain(aircraft.CenterPosition);
 			var move = WVec.Zero;
 
-			var turnSpeed = turnSpeedOverride > -1 ? turnSpeedOverride : aircraft.TurnSpeed;
+			var turnSpeed = turnSpeedOverride ?? aircraft.TurnSpeed;
 			aircraft.Facing = Util.TickFacing(aircraft.Facing, desiredFacing, turnSpeed);
 
 			if (dat != desiredAltitude)
@@ -261,12 +261,12 @@ namespace OpenRA.Mods.Common.Activities
 				yield return new TargetLineNode(useLastVisibleTarget ? lastVisibleTarget : target, targetLineColor.Value);
 		}
 
-		public static int CalculateTurnRadius(int speed, int turnSpeed)
+		public static int CalculateTurnRadius(int speed, WAngle turnSpeed)
 		{
 			// turnSpeed -> divide into 256 to get the number of ticks per complete rotation
 			// speed -> multiply to get distance travelled per rotation (circumference)
 			// 180 -> divide by 2*pi to get the turn radius: 180==1024/(2*pi), with some extra leeway
-			return turnSpeed > 0 ? 180 * speed / turnSpeed : 0;
+			return turnSpeed.Angle > 0 ? 180 * speed / turnSpeed.Angle : 0;
 		}
 	}
 }

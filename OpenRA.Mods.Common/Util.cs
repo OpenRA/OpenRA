@@ -40,14 +40,14 @@ namespace OpenRA.Mods.Common
 		/// If facing is already within step of desiredFacing then desiredFacing is returned.
 		/// Step is given as an integer to allow negative values (step away from the desired facing)
 		/// </summary>
-		public static WAngle TickFacing(WAngle facing, WAngle desiredFacing, int step)
+		public static WAngle TickFacing(WAngle facing, WAngle desiredFacing, WAngle step)
 		{
 			var leftTurn = (facing - desiredFacing).Angle;
 			var rightTurn = (desiredFacing - facing).Angle;
-			if (leftTurn < step || rightTurn < step)
+			if (leftTurn < step.Angle || rightTurn < step.Angle)
 				return desiredFacing;
 
-			return rightTurn < leftTurn ? new WAngle(facing.Angle + step) : new WAngle(facing.Angle - step);
+			return rightTurn < leftTurn ? facing + step : facing - step;
 		}
 
 		/// <summary>

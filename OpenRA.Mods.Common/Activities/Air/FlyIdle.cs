@@ -20,13 +20,13 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		readonly Aircraft aircraft;
 		readonly INotifyIdle[] tickIdles;
-		readonly int turnSpeed;
+		readonly WAngle turnSpeed;
 		int remainingTicks;
 
 		public FlyIdle(Actor self, int ticks = -1, bool tickIdle = true)
 		{
 			aircraft = self.Trait<Aircraft>();
-			turnSpeed = aircraft.IdleTurnSpeed > -1 ? aircraft.IdleTurnSpeed : aircraft.TurnSpeed;
+			turnSpeed = aircraft.IdleTurnSpeed ?? aircraft.TurnSpeed;
 			remainingTicks = ticks;
 
 			if (tickIdle)
