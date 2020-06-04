@@ -1,0 +1,42 @@
+World:
+	LuaScript:
+		Scripts: production-disruption.lua
+	MissionData:
+		WinVideo: battle.vqa
+		LossVideo: slntsrvc.vqa
+		Briefing: The Soviets are beginning construction of a new class of submarine capable of launching sea-to-ground missiles. We don't have to tell you the amount of devestation these could cause.\n\nTake a small squad of troops and infiltrate their power grid. When it is down, additional reinforcements will be sent in.  When ready, head north and destroy their Sub pen, preventing further construction of these subs.\n\nIf any are built, they must not be allowed to escape!
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			easy: Easy
+			normal: Normal
+		Default: easy
+
+CHALK1:
+	ParatroopersPower:
+		DisplayBeacon: False
+		DropItems: E1, E1, E1, E1, E1
+	AlwaysVisible:
+
+CHALK2:
+	ParatroopersPower:
+		DisplayBeacon: False
+		DropItems: E3, E3, E3, E3, MEDI
+	AlwaysVisible:
+
+LST.Reinforcement:
+	Inherits: LST
+	RejectsOrders:
+	-Buildable:
+	-Selectable:
+	RenderSprites:
+		Image: lst
+	Interactable:
+
+MSUB:
+	-Cloak:
+	-GrantConditionOnDamageState@UNCLOAK:
+	-Targetable@UNDERWATER:
+	Targetable:
+		-RequiresCondition:
