@@ -131,14 +131,14 @@ MachineGunH:
 			Light: 80
 
 APCGun:
-	ReloadDelay: 18
+	ReloadDelay: 9
 	Range: 5c0
 	Report: gun20.aud
 	Projectile: Bullet
 		Speed: 900
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 2000
+		Damage: 1000
 		Versus:
 			None: 30
 			Wood: 25
