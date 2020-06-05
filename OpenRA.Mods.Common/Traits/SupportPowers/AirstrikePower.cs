@@ -22,11 +22,19 @@ namespace OpenRA.Mods.Common.Traits
 	public class AirstrikePowerInfo : SupportPowerInfo
 	{
 		[ActorReference(typeof(AircraftInfo))]
+		[Desc("Aircraft used to deliver the airstrike.")]
 		public readonly string UnitType = "badr.bomber";
+
+		[Desc("Number of aircraft to use in an airstrike formation.")]
 		public readonly int SquadSize = 1;
+
+		[Desc("Offset vector between the aircraft in a formation.")]
 		public readonly WVec SquadOffset = new WVec(-1536, 1536, 0);
 
+		[Desc("Number of different possible facings of the aircraft (used only for choosing a random direction to spawn from.)")]
 		public readonly int QuantizedFacings = 32;
+
+		[Desc("Additional distance from the map edge to spawn and despawn the aircraft.")]
 		public readonly WDist Cordon = new WDist(5120);
 
 		[ActorReference]
