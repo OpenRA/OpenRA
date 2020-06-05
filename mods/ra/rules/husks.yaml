@@ -1,16 +1,3 @@
-1TNK.Husk:
-	Inherits: ^Husk
-	Tooltip:
-		Name: Husk (Light Tank)
-	ThrowsParticle@turret:
-		Anim: turret
-	TransformOnCapture:
-		IntoActor: 1tnk
-	InfiltrateForTransform:
-		IntoActor: 1tnk
-	RenderSprites:
-		Image: 1tnk.destroyed
-
 2TNK.Husk:
 	Inherits: ^Husk
 	Tooltip:

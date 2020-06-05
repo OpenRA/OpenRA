@@ -86,8 +86,6 @@ V2RL:
 	AttackTurreted:
 	WithMuzzleOverlay:
 	WithSpriteTurret:
-	SpawnActorOnDeath:
-		Actor: 1TNK.Husk
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
 
