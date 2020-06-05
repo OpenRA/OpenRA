@@ -49,9 +49,6 @@ SS:
 		LocalOffset: 0,-171,0, 0,171,0
 		FireDelay: 2
 	AttackFrontal:
-	AutoTarget:
-		InitialStance: HoldFire
-		InitialStanceAI: ReturnFire
 	AutoTargetPriority@DEFAULT:
 		ValidTargets: WaterActor, Underwater
 	AutoTargetPriority@ATTACKANYTHING:
