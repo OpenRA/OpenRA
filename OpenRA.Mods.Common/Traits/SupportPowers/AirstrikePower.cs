@@ -44,6 +44,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Amount of time to keep the camera alive after the aircraft have finished attacking")]
 		public readonly int CameraRemoveDelay = 25;
 
+		[Desc("The aircraft will spawn at the player baseline (map edge directly behind the player spawn)")]
+		public readonly bool BaselineSpawn = false;
+
 		[Desc("Enables the player directional targeting")]
 		public readonly bool UseDirectionalTarget = false;
 
@@ -62,11 +65,16 @@ namespace OpenRA.Mods.Common.Traits
 	public class AirstrikePower : SupportPower
 	{
 		readonly AirstrikePowerInfo info;
+		readonly MPStartLocations mpStart;
+		readonly WVec altitude;
 
 		public AirstrikePower(Actor self, AirstrikePowerInfo info)
 			: base(self, info)
 		{
 			this.info = info;
+			var aircraftInfo = self.World.Map.Rules.Actors[info.UnitType].TraitInfoOrDefault<AircraftInfo>();
+			altitude = new WVec(WDist.Zero, WDist.Zero, aircraftInfo.CruiseAltitude);
+			mpStart = self.World.WorldActor.TraitOrDefault<MPStartLocations>();
 		}
 
 		public override void SelectTarget(Actor self, string order, SupportPowerManager manager)
@@ -93,16 +101,34 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Actor[] SendAirstrike(Actor self, WPos target, WAngle? facing = null)
 		{
-			var aircraft = new List<Actor>();
-			if (!facing.HasValue)
-				facing = new WAngle(1024 * self.World.SharedRandom.Next(info.QuantizedFacings) / info.QuantizedFacings);
+			WPos startEdge;
+			WPos finishEdge;
+			WRot attackRotation;
+			WVec delta;
 
-			var altitude = self.World.Map.Rules.Actors[info.UnitType].TraitInfo<AircraftInfo>().CruiseAltitude.Length;
-			var attackRotation = WRot.FromYaw(facing.Value);
-			var delta = new WVec(0, -1024, 0).Rotate(attackRotation);
-			target = target + new WVec(0, 0, altitude);
-			var startEdge = target - (self.World.Map.DistanceToEdge(target, -delta) + info.Cordon).Length * delta / 1024;
-			var finishEdge = target + (self.World.Map.DistanceToEdge(target, delta) + info.Cordon).Length * delta / 1024;
+			if (info.BaselineSpawn && mpStart != null)
+			{
+				var spawnPos = self.World.Map.CenterOfCell(mpStart.Start[self.Owner]);
+				var bounds = self.World.Map.Bounds;
+				var spawnVec = spawnPos - self.World.Map.CenterOfCell(new MPos(bounds.Left + bounds.Width / 2, bounds.Top + bounds.Height / 2).ToCPos(self.World.Map));
+				startEdge = spawnPos + (self.World.Map.DistanceToEdge(spawnPos, spawnVec) + info.Cordon).Length * spawnVec / spawnVec.Length;
+				facing = (target - startEdge).Yaw;
+				attackRotation = WRot.FromYaw(facing.Value);
+				delta = new WVec(0, -1024, 0).Rotate(attackRotation);
+			}
+			else
+			{
+				if (!facing.HasValue)
+					facing = new WAngle(1024 * self.World.SharedRandom.Next(info.QuantizedFacings) / info.QuantizedFacings);
+
+				attackRotation = WRot.FromYaw(facing.Value);
+				delta = new WVec(0, -1024, 0).Rotate(attackRotation);
+				startEdge = target - (self.World.Map.DistanceToEdge(target, -delta) + info.Cordon).Length * delta / 1024;
+			}
+
+			target += altitude;
+			startEdge += altitude;
+			finishEdge = finishEdge = target + (self.World.Map.DistanceToEdge(target, delta) + info.Cordon).Length * delta / 1024;
 
 			Actor camera = null;
 			Beacon beacon = null;
@@ -152,6 +178,7 @@ namespace OpenRA.Mods.Common.Traits
 			};
 
 			// Create the actors immediately so they can be returned
+			var aircraft = new List<Actor>();
 			for (var i = -info.SquadSize / 2; i <= info.SquadSize / 2; i++)
 			{
 				// Even-sized squads skip the lead plane
@@ -210,7 +237,7 @@ namespace OpenRA.Mods.Common.Traits
 
 					beacon = new Beacon(
 						self.Owner,
-						target - new WVec(0, 0, altitude),
+						target - altitude,
 						Info.BeaconPaletteIsPlayerPalette,
 						Info.BeaconPalette,
 						Info.BeaconImage,
