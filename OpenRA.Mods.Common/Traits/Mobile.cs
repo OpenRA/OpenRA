@@ -195,10 +195,12 @@ namespace OpenRA.Mods.Common.Traits
 		}
 		#endregion
 
-		WAngle oldFacing, facing;
+		WAngle oldFacing;
+		WRot orientation;
 		WPos oldPos;
 		CPos fromCell, toCell;
 		public SubCell FromSubCell, ToSubCell;
+
 		INotifyCustomLayerChanged[] notifyCustomLayerChanged;
 		INotifyVisualPositionChanged[] notifyVisualPositionChanged;
 		INotifyMoving[] notifyMoving;
@@ -216,12 +218,15 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		#region IFacing
+
 		[Sync]
 		public WAngle Facing
 		{
-			get { return facing; }
-			set { facing = value; }
+			get { return orientation.Yaw; }
+			set { orientation = orientation.WithYaw(value); }
 		}
+
+		public WRot Orientation { get { return orientation; } }
 
 		public WAngle TurnSpeed { get { return new WAngle(4 * Info.TurnSpeed); } }
 		#endregion
@@ -858,12 +863,12 @@ namespace OpenRA.Mods.Common.Traits
 		void IActorPreviewInitModifier.ModifyActorPreviewInit(Actor self, TypeDictionary inits)
 		{
 			if (!inits.Contains<DynamicFacingInit>() && !inits.Contains<FacingInit>())
-				inits.Add(new DynamicFacingInit(() => facing.Facing));
+				inits.Add(new DynamicFacingInit(() => Facing.Facing));
 		}
 
 		void IDeathActorInitModifier.ModifyDeathActorInit(Actor self, TypeDictionary init)
 		{
-			init.Add(new FacingInit(facing.Facing));
+			init.Add(new FacingInit(Facing.Facing));
 
 			// Allows the husk to drag to its final position
 			if (CanEnterCell(self.Location, self, BlockedByActor.Stationary))

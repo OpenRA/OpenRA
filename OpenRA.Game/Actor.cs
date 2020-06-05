@@ -69,9 +69,7 @@ namespace OpenRA
 		{
 			get
 			{
-				// TODO: Support non-zero pitch/roll in IFacing (IOrientation?)
-				var facingValue = facing != null ? facing.Facing : WAngle.Zero;
-				return new WRot(WAngle.Zero, WAngle.Zero, facingValue);
+				return facing != null ? facing.Orientation : WRot.Zero;
 			}
 		}
 
