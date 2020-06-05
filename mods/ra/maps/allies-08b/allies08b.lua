@@ -74,18 +74,6 @@ CreateScientists = function()
 	end)
 end
 
-FinishTimer = function()
-	for i = 0, 5 do
-		local c = TimerColor
-		if i % 2 == 0 then
-			c = HSLColor.White
-		end
-
-		Trigger.AfterDelay(DateTime.Seconds(i), function() UserInterface.SetMissionText("The experiment is a success!", c) end)
-	end
-	Trigger.AfterDelay(DateTime.Seconds(6), function() UserInterface.SetMissionText("") end)
-end
-
 DefendChronosphereCompleted = function()
 	local cells = Utils.ExpandFootprint({ ChronoshiftLocation.Location }, false)
 	local units = { }
@@ -94,6 +82,7 @@ DefendChronosphereCompleted = function()
 		units[unit] = cells[i]
 	end
 	Chronosphere.Chronoshift(units)
+	UserInterface.SetMissionText("The experiment is a success!", greece.Color)
 
 	Trigger.AfterDelay(DateTime.Seconds(3), function()
 		greece.MarkCompletedObjective(DefendChronosphere)
