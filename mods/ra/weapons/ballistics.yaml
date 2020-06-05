@@ -80,7 +80,7 @@
 TurretGun:
 	Inherits: ^Cannon
 	ReloadDelay: 30
-	Range: 7c0
+	Range: 6c512
 	Report: turret1.aud
 	Warhead@1Dam: SpreadDamage
 		Damage: 6000
