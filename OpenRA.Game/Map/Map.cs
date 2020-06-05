@@ -1264,9 +1264,9 @@ namespace OpenRA
 		public WDist DistanceToEdge(WPos pos, WVec dir)
 		{
 			var projectedPos = pos - new WVec(0, pos.Z, pos.Z);
-			var x = dir.X == 0 ? int.MaxValue : ((dir.X < 0 ? ProjectedTopLeft.X : ProjectedBottomRight.X) - projectedPos.X) / dir.X;
-			var y = dir.Y == 0 ? int.MaxValue : ((dir.Y < 0 ? ProjectedTopLeft.Y : ProjectedBottomRight.Y) - projectedPos.Y) / dir.Y;
-			return new WDist(Math.Min(x, y) * dir.Length);
+			var x = dir.X == 0 ? int.MaxValue : ((dir.X < 0 ? ProjectedTopLeft.X : ProjectedBottomRight.X) - projectedPos.X) * dir.Length / dir.X;
+			var y = dir.Y == 0 ? int.MaxValue : ((dir.Y < 0 ? ProjectedTopLeft.Y : ProjectedBottomRight.Y) - projectedPos.Y) * dir.Length / dir.Y;
+			return new WDist(Math.Min(x, y));
 		}
 
 		// Both ranges are inclusive because everything that calls it is designed for maxRange being inclusive:
