@@ -1544,7 +1544,8 @@ AFLD:
 		ArrowSequence: arrow
 		ClockSequence: clock
 		CircleSequence: circles
-		UseDirectionalTarget: True
+		BaselineSpawn: true
+		UseDirectionalTarget: false
 		DirectionArrowAnimation: paradirection
 		SupportPowerPaletteOrder: 40
 	ProductionBar:
