@@ -75,7 +75,7 @@ Napalm:
 
 ^TeslaWeapon:
 	ReloadDelay: 3
-	Range: 8c0
+	Range: 7c0
 	Report: tesla1.aud
 	Projectile: TeslaZap
 	ValidTargets: Ground, Water, GroundActor, WaterActor

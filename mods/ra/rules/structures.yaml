@@ -549,7 +549,7 @@ TSLA:
 		Type: Heavy
 	RevealsShroud:
 		MinRange: 6c0
-		Range: 8c0
+		Range: 7c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 6c0
@@ -808,7 +808,7 @@ GUN:
 		Type: Heavy
 	RevealsShroud:
 		MinRange: 5c0
-		Range: 7c0
+		Range: 6c512
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 5c0

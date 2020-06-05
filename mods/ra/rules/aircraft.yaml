@@ -206,7 +206,7 @@ TRAN:
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
-		HP: 20000
+		HP: 14000
 	RevealsShroud:
 		MinRange: 6c0
 		Range: 8c0
