@@ -319,6 +319,7 @@ namespace OpenRA.Traits
 	{
 		WAngle TurnSpeed { get; }
 		WAngle Facing { get; set; }
+		WRot Orientation { get; }
 	}
 
 	public interface IFacingInfo : ITraitInfoInterface { int GetInitialFacing(); }

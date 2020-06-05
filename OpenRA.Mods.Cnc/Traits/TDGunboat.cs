@@ -64,8 +64,16 @@ namespace OpenRA.Mods.Cnc.Traits
 		IEnumerable<int> speedModifiers;
 		INotifyVisualPositionChanged[] notifyVisualPositionChanged;
 
+		WRot orientation;
+
 		[Sync]
-		public WAngle Facing { get; set; }
+		public WAngle Facing
+		{
+			get { return orientation.Yaw; }
+			set { orientation = orientation.WithYaw(value); }
+		}
+
+		public WRot Orientation { get { return orientation; } }
 
 		[Sync]
 		public WPos CenterPosition { get; private set; }

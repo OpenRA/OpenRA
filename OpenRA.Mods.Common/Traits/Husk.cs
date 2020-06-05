@@ -68,8 +68,16 @@ namespace OpenRA.Mods.Common.Traits
 		[Sync]
 		public WPos CenterPosition { get; private set; }
 
+		WRot orientation;
+
 		[Sync]
-		public WAngle Facing { get; set; }
+		public WAngle Facing
+		{
+			get { return orientation.Yaw; }
+			set { orientation = orientation.WithYaw(value); }
+		}
+
+		public WRot Orientation { get { return orientation; } }
 
 		public WAngle TurnSpeed { get { return WAngle.Zero; } }
 
