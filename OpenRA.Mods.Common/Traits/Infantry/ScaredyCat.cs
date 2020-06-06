@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Traits
 			mobile = self.Trait<Mobile>();
 		}
 
-		void Panic()
+		public void Panic()
 		{
 			if (!Panicking)
 				self.CancelActivity();
