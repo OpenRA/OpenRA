@@ -346,7 +346,7 @@ JUGG:
 		BodyNames: body, deployedbody
 	WithFacingSpriteBody:
 		Sequence: stand
-		RequiresCondition: undeployed
+		RequiresCondition: !deployed
 	WithMoveAnimation:
 		MoveSequence: walk
 		ValidMovementTypes: Horizontal, Turn
@@ -372,7 +372,7 @@ JUGG:
 	QuantizeFacingsFromSequence:
 		Sequence: turret
 	WithSpriteBody@deployed:
-		RequiresCondition: !undeployed && real-actor
+		RequiresCondition: deployed && real-actor
 		Name: deployedbody
 	Turreted:
 		Turret: deployed
