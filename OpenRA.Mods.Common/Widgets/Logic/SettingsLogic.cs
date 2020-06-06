@@ -42,9 +42,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		SoundDevice soundDevice;
 		PanelType settingsPanel = PanelType.Display;
 
+		ScrollPanelWidget hotkeyList;
 		ButtonWidget selectedHotkeyButton;
 		HotkeyEntryWidget hotkeyEntryWidget;
 		HotkeyDefinition duplicateHotkeyDefinition, selectedHotkeyDefinition;
+		int validHotkeyEntryWidth;
+		int invalidHotkeyEntryWidth;
 		bool isHotkeyValid;
 		bool isHotkeyDefault;
 
@@ -168,7 +171,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			ss.OnChange += x => field.SetValue(group, (int)x);
 		}
 
-		void BindHotkeyPref(HotkeyDefinition hd, Widget template, Widget parent)
+		void BindHotkeyPref(HotkeyDefinition hd, Widget template)
 		{
 			var key = template.Clone() as Widget;
 			key.Id = hd.Name;
@@ -205,7 +208,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				hotkeyEntryWidget.TakeKeyboardFocus();
 			};
 
-			parent.AddChild(key);
+			hotkeyList.AddChild(key);
 		}
 
 		void RegisterSettingsPanel(PanelType type, Func<Widget, Action> init, Func<Widget, Action> reset, string panelID, string buttonID)
@@ -557,7 +560,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		Action InitHotkeysPanel(Widget panel)
 		{
 			var hotkeyDialogRoot = panel.Get("HOTKEY_DIALOG_ROOT");
-			var hotkeyList = panel.Get<ScrollPanelWidget>("HOTKEY_LIST");
+			hotkeyList = panel.Get<ScrollPanelWidget>("HOTKEY_LIST");
 			hotkeyList.Layout = new GridLayout(hotkeyList);
 			var hotkeyHeader = hotkeyList.Get<ScrollItemWidget>("HEADER");
 			var templates = hotkeyList.Get("TEMPLATES");
@@ -595,7 +598,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 								if (selectedHotkeyDefinition == null)
 									selectedHotkeyDefinition = hd;
 
-								BindHotkeyPref(hd, template, hotkeyList);
+								BindHotkeyPref(hd, template);
 							}
 						}
 					}
@@ -1020,6 +1023,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			clearButton.IsDisabled = () => !hotkeyEntryWidget.Key.IsValid();
 			clearButton.OnClick = ClearHotkey;
 
+			var overrideButton = panel.Get<ButtonWidget>("OVERRIDE_HOTKEY_BUTTON");
+			overrideButton.IsDisabled = () => isHotkeyValid;
+			overrideButton.IsVisible = () => !isHotkeyValid;
+			overrideButton.OnClick = OverrideHotkey;
+
 			hotkeyEntryWidget = panel.Get<HotkeyEntryWidget>("HOTKEY_ENTRY");
 			hotkeyEntryWidget.IsValid = () => isHotkeyValid;
 			hotkeyEntryWidget.OnLoseFocus = ValidateHotkey;
@@ -1027,6 +1035,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				hotkeyEntryWidget.Key = modData.Hotkeys[selectedHotkeyDefinition.Name].GetValue();
 			};
+
+			validHotkeyEntryWidth = hotkeyEntryWidget.Bounds.Width;
+			invalidHotkeyEntryWidth = validHotkeyEntryWidth - (clearButton.Bounds.X - overrideButton.Bounds.X);
 		}
 
 		void ValidateHotkey()
@@ -1036,9 +1047,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			isHotkeyDefault = hotkeyEntryWidget.Key == selectedHotkeyDefinition.Default || (!hotkeyEntryWidget.Key.IsValid() && !selectedHotkeyDefinition.Default.IsValid());
 
 			if (isHotkeyValid)
+			{
+				hotkeyEntryWidget.Bounds.Width = validHotkeyEntryWidth;
 				SaveHotkey();
+			}
 			else
+			{
+				hotkeyEntryWidget.Bounds.Width = invalidHotkeyEntryWidth;
 				hotkeyEntryWidget.TakeKeyboardFocus();
+			}
 		}
 
 		void SaveHotkey()
@@ -1057,6 +1074,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void ClearHotkey()
 		{
 			hotkeyEntryWidget.Key = Hotkey.Invalid;
+			hotkeyEntryWidget.YieldKeyboardFocus();
+		}
+
+		void OverrideHotkey()
+		{
+			var duplicateHotkeyButton = hotkeyList.Get<ContainerWidget>(duplicateHotkeyDefinition.Name).Get<ButtonWidget>("HOTKEY");
+			WidgetUtils.TruncateButtonToTooltip(duplicateHotkeyButton, Hotkey.Invalid.DisplayString());
+			modData.Hotkeys.Set(duplicateHotkeyDefinition.Name, Hotkey.Invalid);
+			Game.Settings.Save();
 			hotkeyEntryWidget.YieldKeyboardFocus();
 		}
 	}
