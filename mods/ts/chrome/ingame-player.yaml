@@ -603,3 +603,15 @@ Container@PLAYER_WIDGETS:
 							Background: scrolldown-buttons
 							TooltipText: Scroll down
 							TooltipContainer: TOOLTIP_CONTAINER
+				SpritePowerMeter@POWER_BAR:
+					Logic: SpritePowerMeterLogic
+					X: WINDOW_RIGHT - 226
+					Y: 258
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: SIMPLE_TOOLTIP
+					ImageCollection: power-meter
+					NoPowerImage: none
+					AvailablePowerImage: available
+					UsedPowerImage: danger
+					OverUsedPowerImage: disabled
+					FlashPowerImage: used
