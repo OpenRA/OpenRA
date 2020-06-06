@@ -719,6 +719,13 @@ Background@SETTINGS_PANEL:
 									Font: Tiny
 									Align: Left
 									Text: This is already used for "{0}"
+						Button@OVERRIDE_HOTKEY_BUTTON:
+							X: PARENT_RIGHT - 3 * WIDTH - 30
+							Y: 20
+							Width: 70
+							Height: 25
+							Text: Override
+							Font: Bold
 						Button@CLEAR_HOTKEY_BUTTON:
 							X: PARENT_RIGHT - 2 * WIDTH - 30
 							Y: 20
