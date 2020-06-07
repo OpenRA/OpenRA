@@ -145,17 +145,18 @@ APC:
 		PauseOnCondition: reload-ground
 		ReloadingCondition: reload-air
 	GrantConditionOnAttack:
-		Condition: attack-ground
+		Condition: attack-air
+		ArmamentNames: secondary
 		RevokeDelay: 18
 		RevokeOnNewTarget: False
 		RevokeAll: True
 	AttackTurreted:
 	WithMuzzleOverlay:
 	WithSpriteTurret:
-		RequiresCondition: attack-ground
+		RequiresCondition: !attack-air
 	WithSpriteTurret@AIR:
 		Sequence: turret-air
-		RequiresCondition: !attack-ground
+		RequiresCondition: attack-air
 	Cargo:
 		Types: Infantry
 		MaxWeight: 5
