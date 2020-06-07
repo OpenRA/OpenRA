@@ -1,0 +1,333 @@
+remaster: C&C Remastered (Steam version, English)
+	Type: Steam
+	SteamAppId: 1213210
+	IDFiles:
+		Data/CNCDATA/TIBERIAN_DAWN/CD1/CONQUER.MIX: 3f891c8dc0864f654e1710430ea4ff34c3715e97
+	Install:
+		copy: .
+			^Content/cnc/conquer.mix: Data/CNCDATA/TIBERIAN_DAWN/CD1/CONQUER.MIX
+			^Content/cnc/desert.mix: Data/CNCDATA/TIBERIAN_DAWN/CD1/DESERT.MIX
+			^Content/cnc/general.mix: Data/CNCDATA/TIBERIAN_DAWN/CD1/GENERAL.MIX
+			^Content/cnc/scores.mix: Data/CNCDATA/TIBERIAN_DAWN/CD1/SCORES.MIX
+			^Content/cnc/sounds.mix: Data/CNCDATA/TIBERIAN_DAWN/CD1/SOUNDS.MIX
+			^Content/cnc/temperat.mix: Data/CNCDATA/TIBERIAN_DAWN/CD1/TEMPERAT.MIX
+			^Content/cnc/winter.mix: Data/CNCDATA/TIBERIAN_DAWN/CD1/WINTER.MIX
+			^Content/cnc/speech.mix: Data/CNCDATA/TIBERIAN_DAWN/CD1/SPEECH.MIX
+			^Content/cnc/tempicnh.mix: Data/CNCDATA/TIBERIAN_DAWN/CD1/TEMPICNH.MIX
+			^Content/cnc/transit.mix: Data/CNCDATA/TIBERIAN_DAWN/CD1/TRANSIT.MIX
+			^Content/cnc/scores-covertops.mix: Data/CNCDATA/TIBERIAN_DAWN/CONSOLE_1/SCORES.MIX
+		extract-raw: Data/CNCDATA/TIBERIAN_DAWN/CD1/MOVIES.MIX
+			^Content/cnc/movies/visor.vqa:
+				Offset: 774
+				Length: 4407162
+			^Content/cnc/movies/turtkill.vqa:
+				Offset: 4407936
+				Length: 3323444
+			^Content/cnc/movies/tbrinfo3.vqa:
+				Offset: 7731380
+				Length: 14972046
+			^Content/cnc/movies/tbrinfo2.vqa:
+				Offset: 22703426
+				Length: 16195290
+			^Content/cnc/movies/tbrinfo1.vqa:
+				Offset: 38898716
+				Length: 23479052
+			^Content/cnc/movies/seige.vqa:
+				Offset: 62377768
+				Length: 2705978
+			^Content/cnc/movies/samsite.vqa:
+				Offset: 65083746
+				Length: 1410418
+			^Content/cnc/movies/samdie.vqa:
+				Offset: 66494164
+				Length: 3741942
+			^Content/cnc/movies/sabotage.vqa:
+				Offset: 70236106
+				Length: 1386202
+			^Content/cnc/movies/retro.vqa:
+				Offset: 71622308
+				Length: 6434382
+			^Content/cnc/movies/podium.vqa:
+				Offset: 78056690
+				Length: 2790664
+			^Content/cnc/movies/planecra.vqa:
+				Offset: 80847354
+				Length: 5085426
+			^Content/cnc/movies/pintle.vqa:
+				Offset: 85932780
+				Length: 2757536
+			^Content/cnc/movies/paratrop.vqa:
+				Offset: 88690316
+				Length: 3180272
+			^Content/cnc/movies/nodsweep.vqa:
+				Offset: 91870588
+				Length: 3642174
+			^Content/cnc/movies/nodlose.vqa:
+				Offset: 95512762
+				Length: 5148924
+			^Content/cnc/movies/nodflees.vqa:
+				Offset: 100661686
+				Length: 3056426
+			^Content/cnc/movies/nod1.vqa:
+				Offset: 103718112
+				Length: 4663258
+			^Content/cnc/movies/nitejump.vqa:
+				Offset: 108381370
+				Length: 3702838
+			^Content/cnc/movies/napalm.vqa:
+				Offset: 112084208
+				Length: 4004146
+			^Content/cnc/movies/logo.vqa:
+				Offset: 116088354
+				Length: 3562630
+			^Content/cnc/movies/landing.vqa:
+				Offset: 119650984
+				Length: 1617094
+			^Content/cnc/movies/intro2.vqa:
+				Offset: 121268078
+				Length: 21058732
+			^Content/cnc/movies/hellvaly.vqa:
+				Offset: 142326810
+				Length: 6658950
+			^Content/cnc/movies/gunboat.vqa:
+				Offset: 148985760
+				Length: 3203706
+			^Content/cnc/movies/gdilose.vqa:
+				Offset: 152189466
+				Length: 2097912
+			^Content/cnc/movies/gdifinb.vqa:
+				Offset: 154287378
+				Length: 17769978
+			^Content/cnc/movies/gdifina.vqa:
+				Offset: 172057356
+				Length: 12888650
+			^Content/cnc/movies/gdiend2.vqa:
+				Offset: 184946006
+				Length: 25242946
+			^Content/cnc/movies/gdiend1.vqa:
+				Offset: 210188952
+				Length: 25311636
+			^Content/cnc/movies/gdi9.vqa:
+				Offset: 235500588
+				Length: 11806994
+			^Content/cnc/movies/gdi8b.vqa:
+				Offset: 247307582
+				Length: 5324410
+			^Content/cnc/movies/gdi8a.vqa:
+				Offset: 252631992
+				Length: 4672548
+			^Content/cnc/movies/gdi7.vqa:
+				Offset: 257304540
+				Length: 4241952
+			^Content/cnc/movies/gdi6.vqa:
+				Offset: 261546492
+				Length: 3959650
+			^Content/cnc/movies/gdi5.vqa:
+				Offset: 265506142
+				Length: 3818244
+			^Content/cnc/movies/gdi4b.vqa:
+				Offset: 269324386
+				Length: 6603530
+			^Content/cnc/movies/gdi4a.vqa:
+				Offset: 275927916
+				Length: 4450582
+			^Content/cnc/movies/gdi3lose.vqa:
+				Offset: 280378498
+				Length: 2265770
+			^Content/cnc/movies/gdi3.vqa:
+				Offset: 282644268
+				Length: 5443848
+			^Content/cnc/movies/gdi2.vqa:
+				Offset: 288088116
+				Length: 7883500
+			^Content/cnc/movies/gdi15.vqa:
+				Offset: 295971616
+				Length: 11684610
+			^Content/cnc/movies/gdi14.vqa:
+				Offset: 307656226
+				Length: 5282770
+			^Content/cnc/movies/gdi13.vqa:
+				Offset: 312938996
+				Length: 6900914
+			^Content/cnc/movies/gdi12.vqa:
+				Offset: 319839910
+				Length: 3669404
+			^Content/cnc/movies/gdi11.vqa:
+				Offset: 323509314
+				Length: 5895754
+			^Content/cnc/movies/gdi10.vqa:
+				Offset: 329405068
+				Length: 5758492
+			^Content/cnc/movies/gdi1.vqa:
+				Offset: 335163560
+				Length: 6341298
+			^Content/cnc/movies/generic.vqa:
+				Offset: 341504858
+				Length: 1452820
+			^Content/cnc/movies/gameover.vqa:
+				Offset: 342957678
+				Length: 2087322
+			^Content/cnc/movies/forestkl.vqa:
+				Offset: 345045000
+				Length: 1500986
+			^Content/cnc/movies/flyy.vqa:
+				Offset: 346545986
+				Length: 1373532
+			^Content/cnc/movies/flag.vqa:
+				Offset: 347919518
+				Length: 4308680
+			^Content/cnc/movies/dino.vqa:
+				Offset: 352228198
+				Length: 1347896
+			^Content/cnc/movies/desolat.vqa:
+				Offset: 353576094
+				Length: 8385122
+			^Content/cnc/movies/consyard.vqa:
+				Offset: 361961216
+				Length: 7864652
+			^Content/cnc/movies/cc2tease.vqa:
+				Offset: 369825868
+				Length: 11857200
+			^Content/cnc/movies/burdet2.vqa:
+				Offset: 381683068
+				Length: 2062190
+			^Content/cnc/movies/burdet1.vqa:
+				Offset: 383745258
+				Length: 10410614
+			^Content/cnc/movies/bombflee.vqa:
+				Offset: 394155872
+				Length: 2859726
+			^Content/cnc/movies/bombaway.vqa:
+				Offset: 397015598
+				Length: 5579588
+			^Content/cnc/movies/bkground.vqa:
+				Offset: 402595186
+				Length: 15267052
+			^Content/cnc/movies/bcanyon.vqa:
+				Offset: 417862238
+				Length: 5172288
+			^Content/cnc/movies/banner.vqa:
+				Offset: 423034526
+				Length: 2229408
+		extract-raw: Data/CNCDATA/TIBERIAN_DAWN/CD2/MOVIES.MIX
+			^Content/cnc/movies/trtkil_d.vqa:
+				Offset: 4407888
+				Length: 3511836
+			^Content/cnc/movies/tiberfx.vqa:
+				Offset: 7919724
+				Length: 8735102
+			^Content/cnc/movies/tankkill.vqa:
+				Offset: 16654826
+				Length: 3298978
+			^Content/cnc/movies/tankgo.vqa:
+				Offset: 19953804
+				Length: 1403876
+			^Content/cnc/movies/sundial.vqa:
+				Offset: 21357680
+				Length: 3653636
+			^Content/cnc/movies/stealth.vqa:
+				Offset: 25011316
+				Length: 4521860
+			^Content/cnc/movies/spycrash.vqa:
+				Offset: 29533176
+				Length: 1886288
+			^Content/cnc/movies/sethpre.vqa:
+				Offset: 31419464
+				Length: 10914610
+			^Content/cnc/movies/refint.vqa:
+				Offset: 52884852
+				Length: 5090040
+			^Content/cnc/movies/obel.vqa:
+				Offset: 57974892
+				Length: 3851370
+			^Content/cnc/movies/nuke.vqa:
+				Offset: 61826262
+				Length: 3126662
+			^Content/cnc/movies/nodfinal.vqa:
+				Offset: 70101848
+				Length: 23326586
+			^Content/cnc/movies/nodend4.vqa:
+				Offset: 93428434
+				Length: 25535232
+			^Content/cnc/movies/nodend3.vqa:
+				Offset: 118963666
+				Length: 25725824
+			^Content/cnc/movies/nodend2.vqa:
+				Offset: 144689490
+				Length: 27214048
+			^Content/cnc/movies/nodend1.vqa:
+				Offset: 171903538
+				Length: 27172272
+			^Content/cnc/movies/nod9.vqa:
+				Offset: 199075810
+				Length: 9357980
+			^Content/cnc/movies/nod8.vqa:
+				Offset: 208433790
+				Length: 11597940
+			^Content/cnc/movies/nod7b.vqa:
+				Offset: 220031730
+				Length: 4671402
+			^Content/cnc/movies/nod7a.vqa:
+				Offset: 224703132
+				Length: 4740470
+			^Content/cnc/movies/nod6.vqa:
+				Offset: 229443602
+				Length: 5007744
+			^Content/cnc/movies/nod5.vqa:
+				Offset: 234451346
+				Length: 6641700
+			^Content/cnc/movies/nod4b.vqa:
+				Offset: 241093046
+				Length: 3867618
+			^Content/cnc/movies/nod4a.vqa:
+				Offset: 244960664
+				Length: 3838924
+			^Content/cnc/movies/nod3.vqa:
+				Offset: 248799588
+				Length: 3603314
+			^Content/cnc/movies/nod2.vqa:
+				Offset: 252402902
+				Length: 7200720
+			^Content/cnc/movies/nod1pre.vqa:
+				Offset: 259603622
+				Length: 395720
+			^Content/cnc/movies/nod13.vqa:
+				Offset: 259999342
+				Length: 2746626
+			^Content/cnc/movies/nod12.vqa:
+				Offset: 262745968
+				Length: 6576562
+			^Content/cnc/movies/nod11.vqa:
+				Offset: 269322530
+				Length: 4629270
+			^Content/cnc/movies/nod10b.vqa:
+				Offset: 273951800
+				Length: 6386444
+			^Content/cnc/movies/nod10a.vqa:
+				Offset: 280338244
+				Length: 7205632
+			^Content/cnc/movies/kanepre.vqa:
+				Offset: 297386858
+				Length: 17220712
+			^Content/cnc/movies/insites.vqa:
+				Offset: 335666302
+				Length: 460482
+			^Content/cnc/movies/dessweep.vqa:
+				Offset: 353165786
+				Length: 3563646
+			^Content/cnc/movies/deskill.vqa:
+				Offset: 356729432
+				Length: 1483634
+			^Content/cnc/movies/desflees.vqa:
+				Offset: 358213066
+				Length: 2698426
+			^Content/cnc/movies/akira.vqa:
+				Offset: 396474354
+				Length: 7803444
+			^Content/cnc/movies/airstrk.vqa:
+				Offset: 404277798
+				Length: 4444442
+		extract-raw: Data/CNCDATA/TIBERIAN_DAWN/CD3/MOVIES.MIX
+			^Content/cnc/movies/trailer.vqa:
+				Offset: 534
+				Length: 23163930
