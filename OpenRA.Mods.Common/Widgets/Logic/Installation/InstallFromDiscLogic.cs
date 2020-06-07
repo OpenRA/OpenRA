@@ -167,9 +167,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					.Select(s => s.Title)
 					.Distinct();
 
+				var steam = missingSources
+					.Where(s => s.Type == ModContent.SourceType.Steam)
+					.Select(s => s.Title)
+					.Distinct();
+
 				var options = new Dictionary<string, IEnumerable<string>>()
 				{
 					{ "Game Discs", discs },
+					{ "Steam Installs", steam }
 				};
 
 				if (Platform.CurrentPlatform == PlatformType.Windows)
@@ -488,12 +494,21 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		string FindSourcePath(ModContent.ModSource source, IEnumerable<string> volumes)
 		{
-			if (source.Type == ModContent.SourceType.Install)
+			if (source.Type == ModContent.SourceType.Steam)
 			{
-				if (source.RegistryKey == null)
+				if (source.SteamAppId == null || Platform.CurrentPlatform != PlatformType.Windows)
 					return null;
 
-				if (Platform.CurrentPlatform != PlatformType.Windows)
+				var path = Microsoft.Win32.Registry.GetValue(ModContent.SteamRegistryPath + source.SteamAppId, ModContent.SteamRegistryValue, null) as string;
+				if (path == null || !IsValidSourcePath(path, source))
+					return null;
+
+				return path;
+			}
+
+			if (source.Type == ModContent.SourceType.Install)
+			{
+				if (source.RegistryKey == null || Platform.CurrentPlatform != PlatformType.Windows)
 					return null;
 
 				foreach (var prefix in source.RegistryPrefixes)

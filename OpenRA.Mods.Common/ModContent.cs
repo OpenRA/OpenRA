@@ -17,7 +17,11 @@ namespace OpenRA
 {
 	public class ModContent : IGlobalModData
 	{
-		public enum SourceType { Disc, Install }
+		public enum SourceType { Disc, Install, Steam }
+
+		public const string SteamRegistryPath = @"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Steam App ";
+		public const string SteamRegistryValue = "InstallLocation";
+
 		public class ModPackage
 		{
 			public readonly string Title;
@@ -46,6 +50,8 @@ namespace OpenRA
 			public readonly string[] RegistryPrefixes = { string.Empty };
 			public readonly string RegistryKey;
 			public readonly string RegistryValue;
+
+			public readonly string SteamAppId;
 
 			public readonly string Title;
 
