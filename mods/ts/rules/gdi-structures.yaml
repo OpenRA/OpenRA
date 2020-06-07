@@ -499,10 +499,10 @@ GAPLUG:
 	Power:
 		Amount: -150
 	Power@ioncannon:
-		RequiresCondition: (plug.ioncannona || plug.ioncannonb)
+		RequiresCondition: plug.ioncannona || plug.ioncannonb
 		Amount: -100
 	Power@hunterseeker:
-		RequiresCondition: (plug.hunterseekera || plug.hunterseekerb)
+		RequiresCondition: plug.hunterseekera || plug.hunterseekerb
 		Amount: -50
 	Pluggable@pluga:
 		Offset: 0,2
