@@ -560,7 +560,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							if (CryptoUtil.SHA1Hash(data) != kv.Value.Value)
 								return false;
 						}
-						else if (CryptoUtil.SHA1Hash(fileStream) != kv.Value.Value)
+						else if (!CryptoUtil.SHA1Hash(fileStream).Equals(kv.Value.Value, StringComparison.OrdinalIgnoreCase))
 								return false;
 					}
 				}
