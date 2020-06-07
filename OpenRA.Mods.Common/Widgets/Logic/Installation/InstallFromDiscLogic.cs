@@ -314,6 +314,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				var read = (int)Math.Min(buffer.Length, length - copied);
 				var write = input.Read(buffer, 0, read);
+				if (write == 0)
+					throw new InvalidOperationException("Reached end of file before finished copying the file!");
+
 				output.Write(buffer, 0, write);
 				copied += write;
 
