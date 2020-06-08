@@ -38,18 +38,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		IEnumerable<ActorInit> IActorPreviewInitInfo.ActorPreviewInits(ActorInfo ai, ActorPreviewType type)
 		{
-			// HACK: The ActorInit system does not support multiple instances of the same type
-			// Make sure that we only return one TurretFacingInit, even for actors with multiple turrets
-			if (ai.TraitInfos<TurretedInfo>().FirstOrDefault() == this)
-				yield return new TurretFacingInit(this, PreviewFacing);
+			yield return new TurretFacingInit(this, PreviewFacing);
 		}
 
 		IEnumerable<EditorActorOption> IEditorActorOptions.ActorOptions(ActorInfo ai, World world)
 		{
-			// TODO: Handle multiple turrets properly (will probably require a rewrite of the Init system)
-			if (ai.TraitInfos<TurretedInfo>().FirstOrDefault() != this)
-				yield break;
-
 			yield return new EditorActorSlider("Turret", EditorTurretFacingDisplayOrder, 0, 255, 8,
 				actor =>
 				{
@@ -66,10 +59,7 @@ namespace OpenRA.Mods.Common.Traits
 				(actor, value) =>
 				{
 					actor.RemoveInit<TurretFacingsInit>();
-
-					// Force a single global turret facing for multi-turret actors
-					actor.RemoveInits<TurretFacingInit>();
-					actor.AddInit(new TurretFacingInit((int)value));
+					actor.ReplaceInit(new TurretFacingInit(this, (int)value), this);
 				});
 		}
 
