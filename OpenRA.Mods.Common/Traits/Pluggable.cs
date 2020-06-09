@@ -92,9 +92,6 @@ namespace OpenRA.Mods.Common.Traits
 			Info = info;
 
 			initialPlug = init.GetValue<PlugInit, string>(info, null);
-			var plugsInit = init.GetValue<PlugsInit, Dictionary<CVec, string>>(new Dictionary<CVec, string>());
-			if (plugsInit.ContainsKey(Info.Offset))
-				initialPlug = plugsInit[Info.Offset];
 
 			if (info.Requirements.Count > 0)
 			{
@@ -152,12 +149,6 @@ namespace OpenRA.Mods.Common.Traits
 					(self, variables) => plugTypesAvailability[req.Key] = req.Value.Evaluate(variables),
 					req.Value.Variables);
 		}
-	}
-
-	public class PlugsInit : ValueActorInit<Dictionary<CVec, string>>, ISingleInstanceInit
-	{
-		public PlugsInit(Dictionary<CVec, string> value)
-			: base(value) { }
 	}
 
 	public class PlugInit : ValueActorInit<string>

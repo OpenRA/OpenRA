@@ -56,11 +56,7 @@ namespace OpenRA.Mods.Common.Traits
 
 					return InitialFacing;
 				},
-				(actor, value) =>
-				{
-					actor.RemoveInit<TurretFacingsInit>();
-					actor.ReplaceInit(new TurretFacingInit(this, (int)value), this);
-				});
+				(actor, value) => actor.ReplaceInit(new TurretFacingInit(this, (int)value), this));
 		}
 
 		public override object Create(ActorInitializer init) { return new Turreted(init, this); }
@@ -89,24 +85,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		public static Func<int> TurretFacingFromInit(IActorInitializer init, TurretedInfo info)
 		{
-			return TurretFacingFromInit(init, info, info.InitialFacing, info.Turret);
+			return TurretFacingFromInit(init, info, info.InitialFacing);
 		}
 
-		public static Func<int> TurretFacingFromInit(IActorInitializer init, TraitInfo info, int defaultFacing, string turret = null)
+		public static Func<int> TurretFacingFromInit(IActorInitializer init, TraitInfo info, int defaultFacing)
 		{
-			if (turret != null)
-			{
-				Func<int> getFacing;
-				var dynamicTurretFacingsInit = init.GetOrDefault<DynamicTurretFacingsInit>();
-				if (dynamicTurretFacingsInit != null && dynamicTurretFacingsInit.Value.TryGetValue(turret, out getFacing))
-					return getFacing;
-
-				int facing;
-				var turretFacingsInit = init.GetOrDefault<TurretFacingsInit>();
-				if (turretFacingsInit != null && turretFacingsInit.Value.TryGetValue(turret, out facing))
-					return () => facing;
-			}
-
 			var turretFacingInit = init.GetOrDefault<TurretFacingInit>(info);
 			if (turretFacingInit != null)
 			{
@@ -220,26 +203,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void ModifyDeathActorInit(Actor self, TypeDictionary init)
 		{
-			var facings = init.GetOrDefault<TurretFacingsInit>();
-			if (facings == null)
-			{
-				facings = new TurretFacingsInit(new Dictionary<string, int>());
-				init.Add(facings);
-			}
-
-			if (!facings.Value.ContainsKey(Name))
-				facings.Value.Add(Name, TurretFacing);
+			init.Add(new TurretFacingInit(Info, TurretFacing));
 		}
 
 		void IActorPreviewInitModifier.ModifyActorPreviewInit(Actor self, TypeDictionary inits)
 		{
-			var facings = inits.GetOrDefault<DynamicTurretFacingsInit>();
-			if (facings == null)
-			{
-				facings = new DynamicTurretFacingsInit(new Dictionary<string, Func<int>>());
-				inits.Add(facings);
-			}
-
 			Func<int> bodyFacing = () => facing.Facing.Facing;
 			var dynamicFacing = inits.GetOrDefault<DynamicFacingInit>();
 			var staticFacing = inits.GetOrDefault<FacingInit>();
@@ -250,7 +218,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Freeze the relative turret facing to its current value
 			var facingOffset = TurretFacing - bodyFacing();
-			facings.Value.Add(Name, () => bodyFacing() + facingOffset);
+			inits.Add(new DynamicTurretFacingInit(Info, () => bodyFacing() + facingOffset));
 		}
 
 		protected override void TraitDisabled(Actor self)
@@ -272,15 +240,9 @@ namespace OpenRA.Mods.Common.Traits
 			: base(value) { }
 	}
 
-	public class TurretFacingsInit : ValueActorInit<Dictionary<string, int>>, ISingleInstanceInit
+	public class DynamicTurretFacingInit : ValueActorInit<Func<int>>
 	{
-		public TurretFacingsInit(Dictionary<string, int> value)
-			: base(value) { }
-	}
-
-	public class DynamicTurretFacingsInit : ValueActorInit<Dictionary<string, Func<int>>>, ISingleInstanceInit
-	{
-		public DynamicTurretFacingsInit(Dictionary<string, Func<int>> value)
-			: base(value) { }
+		public DynamicTurretFacingInit(TraitInfo info, Func<int> value)
+			: base(info, value) { }
 	}
 }
