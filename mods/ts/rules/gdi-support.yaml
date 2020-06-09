@@ -138,6 +138,10 @@ GACTWR:
 			tower.vulcan: !build-incomplete && !tower.vulcan && !tower.rocket && !tower.sam
 			tower.rocket: !build-incomplete && !tower.rocket && !tower.vulcan && !tower.sam
 			tower.sam: !build-incomplete && !tower.vulcan && !tower.rocket && !tower.sam
+		EditorOptions:
+			tower.vulcan: Vulcan Tower
+			tower.rocket: RPG Upgrade
+			tower.sam: SAM Upgrade
 	ProvidesPrerequisite@buildingname:
 	ProvidesPrerequisite@pluggable:
 		RequiresCondition: !build-incomplete && !tower.vulcan && !tower.rocket && !tower.sam

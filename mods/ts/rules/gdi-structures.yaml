@@ -42,6 +42,8 @@ GAPOWR:
 			powrup: powrup.a
 		Requirements:
 			powrup: !build-incomplete && !powrup.a
+		EditorOptions:
+			powrup: Power Turbine
 	Power@pluga:
 		RequiresCondition: !empdisable && powrup.a
 		Amount: 50
@@ -55,6 +57,8 @@ GAPOWR:
 			powrup: powrup.b
 		Requirements:
 			powrup: !build-incomplete && !powrup.b
+		EditorOptions:
+			powrup: Power Turbine
 	WithIdleOverlay@plugb:
 		RequiresCondition: !build-incomplete && powrup.b
 		PauseOnCondition: empdisable
@@ -508,6 +512,9 @@ GAPLUG:
 		Requirements:
 			plug.ioncannon: !build-incomplete && !plug.ioncannonb && !plug.ioncannona && !plug.hunterseekera
 			plug.hunterseeker: !build-incomplete && !plug.hunterseekerb && !plug.ioncannona && !plug.hunterseekera
+		EditorOptions:
+			plug.ioncannon: Ion Cannon
+			plug.hunterseeker: Hunter Seeker
 	WithIdleOverlay@ioncannona:
 		RequiresCondition: !build-incomplete && plug.ioncannona
 		PauseOnCondition: disabled
@@ -524,6 +531,9 @@ GAPLUG:
 		Requirements:
 			plug.ioncannon: !build-incomplete && !plug.ioncannona && !plug.ioncannonb && !plug.hunterseekerb
 			plug.hunterseeker: !build-incomplete && !plug.hunterseekera && !plug.ioncannonb && !plug.hunterseekerb
+		EditorOptions:
+			plug.ioncannon: Ion Cannon
+			plug.hunterseeker: Hunter Seeker
 	WithIdleOverlay@ioncannonb:
 		RequiresCondition: !build-incomplete && plug.ioncannonb
 		PauseOnCondition: disabled
