@@ -100,7 +100,7 @@ end
 
 SpawnGunboat = function()
 	Media.PlaySpeechNotification(GDI, "Reinforce")
-	Actor.Create("boat", true, { Owner = GDI, Facing = 0, Location = CPos.New(62,37) })
+	Actor.Create("boat", true, { Owner = GDI, Facing = Angle.North, Location = CPos.New(62,37) })
 end
 
 WorldLoaded = function()

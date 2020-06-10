@@ -46,7 +46,7 @@ SendGDIAirstrike = function()
 		local target = GetAirstrikeTarget(Nod)
 
 		if target then
-			CommCenter.SendAirstrike(target, false, Facing.NorthEast + 4)
+			CommCenter.TargetAirstrike(target, Angle.NorthEast + Angle.New(16))
 			Trigger.AfterDelay(AirstrikeDelay, SendGDIAirstrike)
 		else
 			Trigger.AfterDelay(AirstrikeDelay/4, SendGDIAirstrike)

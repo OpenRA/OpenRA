@@ -90,7 +90,7 @@ DefendChronosphereCompleted = function()
 	local cells = Utils.ExpandFootprint({ ChronoshiftLocation.Location }, false)
 	local units = { }
 	for i = 1, #cells do
-		local unit = Actor.Create("2tnk", true, { Owner = greece, Facing = 0 })
+		local unit = Actor.Create("2tnk", true, { Owner = greece, Facing = Angle.North })
 		units[unit] = cells[i]
 	end
 	Chronosphere.Chronoshift(units)

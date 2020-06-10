@@ -37,7 +37,7 @@ Paradropped = 0
 
 Paradrop = function()
 	Trigger.AfterDelay(Utils.RandomInteger(ParadropDelay[1], ParadropDelay[2]), function()
-		local aircraft = PowerProxy.ActivateParatroopers(Utils.Random(ParadropLZs))
+		local aircraft = PowerProxy.TargetParatroopers(Utils.Random(ParadropLZs))
 		Utils.Do(aircraft, function(a)
 			Trigger.OnPassengerExited(a, function(t, p)
 				IdleHunt(p)

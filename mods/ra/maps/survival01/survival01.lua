@@ -53,10 +53,10 @@ FactoryClearRange = 10
 ParadropTicks = DateTime.Seconds(30)
 ParadropWaypoints =
 {
-	{ 192 + 4, ParaDrop1},
-	{ 192 - 4, ParaDrop2},
-	{ 192 + 4, Alliesbase2},
-	{ 192 - 4, Alliesbase1}
+	{ Angle.East + Angle.New(16), ParaDrop1},
+	{ Angle.East - Angle.New(16), ParaDrop2},
+	{ Angle.East + Angle.New(16), Alliesbase2},
+	{ Angle.East - Angle.New(16), Alliesbase1}
 }
 NavalTransportPassengers = { "e1", "e1", "e2", "e4", "e4" }
 NavalReinforcementsWaypoints = { NavalWaypoint1, NavalWaypoint2, NavalWaypoint2, NavalWaypoint3 }
@@ -191,7 +191,7 @@ IdleHunt = function(unit)
 end
 
 SendSovietParadrops = function(table)
-	local aircraft = powerproxy.ActivateParatroopers(table[2].CenterPosition, table[1])
+	local aircraft = powerproxy.TargetParatroopers(table[2].CenterPosition, table[1])
 	Utils.Do(aircraft, function(a)
 		Trigger.OnPassengerExited(a, function(t, p)
 			IdleHunt(p)
@@ -290,7 +290,7 @@ end
 
 DropAlliedArtillery = function(facing, dropzone)
 	local proxy = Actor.Create("powerproxy.allied", true, { Owner = allies })
-	proxy.ActivateParatroopers(dropzone, facing)
+	proxy.TargetParatroopers(dropzone, facing)
 	proxy.Destroy()
 end
 
@@ -300,7 +300,7 @@ SendLongBowReinforcements = function()
 	Reinforcements.Reinforce(allies, LongBowReinforcements, AlliedAirReinforcementsWaypoints[2])
 
 	if ParadropArtillery then
-		local facing = Utils.RandomInteger(Facing.NorthWest, Facing.SouthWest)
+		local facing = Angle.New(Utils.RandomInteger(128, 384))
 		DropAlliedArtillery(facing, Alliesbase.CenterPosition)
 	end
 end

@@ -63,7 +63,7 @@ SendGDIAirstrike = function(hq, delay)
 		local target = GetAirstrikeTarget(Nod)
 
 		if target then
-			hq.SendAirstrike(target, false, Facing.NorthEast + 4)
+			hq.TargetAirstrike(target, Angle.NorthEast + Angle.New(16))
 			Trigger.AfterDelay(delay, function() SendGDIAirstrike(hq, delay) end)
 		else
 			Trigger.AfterDelay(delay/4, function() SendGDIAirstrike(hq, delay) end)
@@ -99,7 +99,7 @@ Trigger.OnAllKilledOrCaptured(Outpost, function()
 		Trigger.AfterDelay(DateTime.Minutes(1), function()
 			if not GDIHQ.IsDead and (not NodHand.IsDead or not NodNuke.IsDead) then
 				local airstrikeproxy = Actor.Create("airstrike.proxy", false, { Owner = GDI })
-				airstrikeproxy.SendAirstrike(AirstrikeTarget.CenterPosition, false, Facing.NorthEast + 4)
+				airstrikeproxy.TargetAirstrike(AirstrikeTarget.CenterPosition, Angle.NorthEast + Angle.New(16))
 				airstrikeproxy.Destroy()
 			end
 		end)

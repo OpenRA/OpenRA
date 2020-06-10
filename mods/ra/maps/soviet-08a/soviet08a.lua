@@ -53,7 +53,7 @@ end
 AddParadropReinforcementTrigger = function()
 	Trigger.AfterDelay(DateTime.Seconds(90), function()
 		Media.PlaySpeechNotification(ussr, "ReinforcementsArrived")
-		scripteddrop.ActivateParatroopers(ScriptedParadrop.CenterPosition, 10)
+		scripteddrop.TargetParatroopers(ScriptedParadrop.CenterPosition, Angle.New(40))
 	end)
 end
 

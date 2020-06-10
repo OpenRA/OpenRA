@@ -146,7 +146,7 @@ SendWave = function()
 
 		if (Wave < #Waves) then
 			if Utils.RandomInteger(1, 100) < ParaChance then
-				local aircraft = ParaProxy.ActivateParatroopers(Utils.Random(ParadropWaypoints).CenterPosition)
+				local aircraft = ParaProxy.TargetParatroopers(Utils.Random(ParadropWaypoints).CenterPosition)
 				Utils.Do(aircraft, function(a)
 					Trigger.OnPassengerExited(a, function(t, p)
 						IdleHunt(p)
