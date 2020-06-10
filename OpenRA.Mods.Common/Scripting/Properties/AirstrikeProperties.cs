@@ -27,19 +27,27 @@ namespace OpenRA.Mods.Common.Scripting
 			ap = self.TraitsImplementing<AirstrikePower>().First();
 		}
 
-		[Desc("Activate the actor's Airstrike Power.")]
-		public void SendAirstrike(WPos target, bool randomize = true, int facing = 0)
+		[Desc("Activate the actor's Airstrike Power. Returns the aircraft that will attack.")]
+		public Actor[] TargetAirstrike(WPos target, WAngle? facing = null)
 		{
-			ap.SendAirstrike(Self, target, randomize, facing);
+			return ap.SendAirstrike(Self, target, facing);
 		}
 
-		[Desc("Activate the actor's Airstrike Power.")]
+		[Desc("Activate the actor's Airstrike Power. DEPRECATED! Will be removed.")]
+		public void SendAirstrike(WPos target, bool randomize = true, int facing = 0)
+		{
+			Game.Debug("SendAirstrike is deprecated. Use TargetAirstrike instead.");
+			ap.SendAirstrike(Self, target, randomize ? (WAngle?)null : WAngle.FromFacing(facing));
+		}
+
+		[Desc("Activate the actor's Airstrike Power. DEPRECATED! Will be removed.")]
 		public void SendAirstrikeFrom(CPos from, CPos to)
 		{
+			Game.Debug("SendAirstrikeFrom is deprecated. Use TargetAirstrike instead.");
 			var i = Self.World.Map.CenterOfCell(from);
 			var j = Self.World.Map.CenterOfCell(to);
 
-			ap.SendAirstrike(Self, j, false, (i - j).Yaw.Facing);
+			ap.SendAirstrike(Self, j, (i - j).Yaw);
 		}
 	}
 }
