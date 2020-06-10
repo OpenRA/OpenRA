@@ -150,7 +150,7 @@ namespace OpenRA
 					case "X": return X;
 					case "Y": return Y;
 					case "Z": return Z;
-					case "Facing": return Yaw.Facing;
+					case "Facing": return new LuaCustomClrObject(Yaw);
 					default: throw new LuaException("WVec does not define a member '{0}'".F(key));
 				}
 			}
