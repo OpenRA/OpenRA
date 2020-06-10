@@ -75,6 +75,7 @@ Player:
 		ConstructionYardTypes: construction_yard
 		RefineryTypes: refinery
 		PowerTypes: wind_trap
+		BarracksTypes: barracks
 		VehiclesFactoryTypes: light_factory, heavy_factory, starport
 		ProductionTypes: light_factory, heavy_factory, barracks, starport
 		SiloTypes: silo
@@ -125,6 +126,7 @@ Player:
 		ConstructionYardTypes: construction_yard
 		RefineryTypes: refinery
 		PowerTypes: wind_trap
+		BarracksTypes: barracks
 		VehiclesFactoryTypes: light_factory, heavy_factory, starport
 		ProductionTypes: light_factory, heavy_factory, barracks, starport
 		SiloTypes: silo
@@ -175,6 +177,7 @@ Player:
 		ConstructionYardTypes: construction_yard
 		RefineryTypes: refinery
 		PowerTypes: wind_trap
+		BarracksTypes: barracks
 		VehiclesFactoryTypes: light_factory, heavy_factory, starport
 		ProductionTypes: light_factory, heavy_factory, barracks, starport
 		SiloTypes: silo
