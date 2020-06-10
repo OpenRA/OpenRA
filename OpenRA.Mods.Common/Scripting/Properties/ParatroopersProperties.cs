@@ -33,24 +33,5 @@ namespace OpenRA.Mods.Common.Scripting
 			var actors = pp.SendParatroopers(Self, target, facing);
 			return actors.First;
 		}
-
-		[Desc("Activate the actor's Paratroopers Power. Returns the dropped units. DEPRECATED! Will be removed.")]
-		public Actor[] SendParatroopers(WPos target, bool randomize = true, int facing = 0)
-		{
-			Game.Debug("SendParatroopers is deprecated. Use ActivateParatroopers instead.");
-			var actors = pp.SendParatroopers(Self, target, randomize ? -1 : facing);
-			return actors.Second;
-		}
-
-		[Desc("Activate the actor's Paratroopers Power. Returns the dropped units. DEPRECATED! Will be removed.")]
-		public Actor[] SendParatroopersFrom(CPos from, CPos to)
-		{
-			Game.Debug("SendParatroopersFrom is deprecated. Use ActivateParatroopers instead.");
-			var i = Self.World.Map.CenterOfCell(from);
-			var j = Self.World.Map.CenterOfCell(to);
-
-			var actors = pp.SendParatroopers(Self, j, (i - j).Yaw.Facing);
-			return actors.Second;
-		}
 	}
 }
