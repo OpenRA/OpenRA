@@ -122,14 +122,14 @@ namespace OpenRA.Mods.Common.Scripting
 		public WPos CenterPosition { get { return Self.CenterPosition; } }
 
 		[Desc("The direction that the actor is facing.")]
-		public int Facing
+		public WAngle Facing
 		{
 			get
 			{
 				if (facing == null)
 					throw new LuaException("Actor '{0}' doesn't define a facing".F(Self));
 
-				return facing.Facing.Facing;
+				return facing.Facing;
 			}
 		}
 

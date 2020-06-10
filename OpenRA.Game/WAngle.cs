@@ -10,13 +10,16 @@
 #endregion
 
 using System;
+using Eluant;
+using Eluant.ObjectBinding;
+using OpenRA.Scripting;
 
 namespace OpenRA
 {
 	/// <summary>
 	/// 1D angle - 1024 units = 360 degrees.
 	/// </summary>
-	public struct WAngle : IEquatable<WAngle>
+	public struct WAngle : IScriptBindable, ILuaAdditionBinding, ILuaSubtractionBinding, ILuaEqualityBinding, IEquatable<WAngle>
 	{
 		public readonly int Angle;
 		public int AngleSquared { get { return (int)Angle * Angle; } }
@@ -169,5 +172,58 @@ namespace OpenRA
 			9233, 9781, 10396, 11094, 11891, 12810, 13882, 15148, 16667, 18524, 20843,
 			23826, 27801, 33366, 41713, 55622, 83438, 166883, int.MaxValue
 		};
+
+		#region Scripting interface
+
+		public LuaValue Add(LuaRuntime runtime, LuaValue left, LuaValue right)
+		{
+			WAngle a, b;
+			int c;
+
+			if (!left.TryGetClrValue(out a))
+				throw new LuaException("Attempted to call WAngle.Add(WAngle, WAngle) with invalid arguments ({0}, {1})".F(left.WrappedClrType().Name, right.WrappedClrType().Name));
+
+			if (right.TryGetClrValue(out c))
+			{
+				Game.Debug("Support for facing calculations mixing Angle with integers is deprecated. Make sure all facing calculations use Angle");
+				return new LuaCustomClrObject(a + FromFacing(c));
+			}
+
+			if (right.TryGetClrValue(out b))
+				return new LuaCustomClrObject(a + b);
+
+			throw new LuaException("Attempted to call WAngle.Add(WAngle, WAngle) with invalid arguments ({0}, {1})".F(left.WrappedClrType().Name, right.WrappedClrType().Name));
+		}
+
+		public LuaValue Subtract(LuaRuntime runtime, LuaValue left, LuaValue right)
+		{
+			WAngle a, b;
+			int c;
+
+			if (!left.TryGetClrValue(out a))
+				throw new LuaException("Attempted to call WAngle.Subtract(WAngle, WAngle) with invalid arguments ({0}, {1})".F(left.WrappedClrType().Name, right.WrappedClrType().Name));
+
+			if (right.TryGetClrValue(out c))
+			{
+				Game.Debug("Support for facing calculations mixing Angle with integers is deprecated. Make sure all facing calculations use Angle");
+				return new LuaCustomClrObject(a - FromFacing(c));
+			}
+
+			if (right.TryGetClrValue(out b))
+				return new LuaCustomClrObject(a - b);
+
+			throw new LuaException("Attempted to call WAngle.Subtract(WAngle, WAngle) with invalid arguments ({0}, {1})".F(left.WrappedClrType().Name, right.WrappedClrType().Name));
+		}
+
+		public LuaValue Equals(LuaRuntime runtime, LuaValue left, LuaValue right)
+		{
+			WAngle a, b;
+			if (!left.TryGetClrValue(out a) || !right.TryGetClrValue(out b))
+				return false;
+
+			return a == b;
+		}
+
+		#endregion
 	}
 }
