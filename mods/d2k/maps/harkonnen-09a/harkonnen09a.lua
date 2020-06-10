@@ -178,7 +178,7 @@ SendAirStrike = function()
 	end)
 
 	if #targets > 0 then
-		AHiTechFactory.SendAirstrike(Utils.Random(targets).CenterPosition, true, 0)
+		AHiTechFactory.TargetAirstrike(Utils.Random(targets).CenterPosition)
 	end
 
 	Trigger.AfterDelay(DateTime.Minutes(5), SendAirStrike)

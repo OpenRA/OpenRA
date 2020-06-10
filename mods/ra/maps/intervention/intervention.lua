@@ -72,7 +72,7 @@ end
 
 ParadropSovietUnits = function()
 	local powerproxy = Actor.Create("powerproxy.paratroopers", false, { Owner = soviets })
-	local aircraft = powerproxy.ActivateParatroopers(MCVDeployLocation.CenterPosition, 256 - 53)
+	local aircraft = powerproxy.TargetParatroopers(MCVDeployLocation.CenterPosition, Angle.New(812))
 	Utils.Do(aircraft, function(a)
 		Trigger.OnPassengerExited(a, function(t, p)
 			IdleHunt(p)

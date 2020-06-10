@@ -73,14 +73,14 @@ end
 SendUSSRParadrops = function()
 	local powerproxy = Actor.Create("powerproxy.paratroopers", false, { Owner = ussr })
 
-	local aircraftA = powerproxy.ActivateParatroopers(ParadropLZ.CenterPosition, 128 + 32)
+	local aircraftA = powerproxy.TargetParatroopers(ParadropLZ.CenterPosition, Angle.SouthEast)
 	Utils.Do(aircraftA, function(a)
 		Trigger.OnPassengerExited(a, function(t, p)
 			IdleHunt(p)
 		end)
 	end)
 
-	local aircraftB = powerproxy.ActivateParatroopers(ParadropLZ.CenterPosition, 128 - 32)
+	local aircraftB = powerproxy.TargetParatroopers(ParadropLZ.CenterPosition, Angle.SouthWest)
 	Utils.Do(aircraftB, function(a)
 		Trigger.OnPassengerExited(a, function(t, p)
 			IdleHunt(p)

@@ -47,13 +47,13 @@ TanksGGWaypoints = { PatrolPoint2, BetweenBasesPoint, PrepGGArmyPoint }
 
 Para = function()
 	local powerproxy = Actor.Create("powerproxy.paratroopers", false, { Owner = player })
-	powerproxy.ActivateParatroopers(ParaPoint.CenterPosition, 28)
+	powerproxy.TargetParatroopers(ParaPoint.CenterPosition, Angle.New(112))
 	powerproxy.Destroy()
 end
 
 Para2 = function()
 	local powerproxy = Actor.Create("powerproxy.paratroopers", false, { Owner = player })
-	powerproxy.ActivateParatroopers(USSRExpansionPoint.CenterPosition, 28)
+	powerproxy.TargetParatroopers(USSRExpansionPoint.CenterPosition, Angle.New(112))
 	powerproxy.Destroy()
 end
 

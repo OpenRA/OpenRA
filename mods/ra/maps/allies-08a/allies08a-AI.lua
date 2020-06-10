@@ -189,7 +189,7 @@ WTransWaves = function()
 end
 
 Paradrop = function()
-	local aircraft = PowerProxy.ActivateParatroopers(Utils.Random(ParadropLZs))
+	local aircraft = PowerProxy.TargetParatroopers(Utils.Random(ParadropLZs))
 	Utils.Do(aircraft, function(a)
 		Trigger.OnPassengerExited(a, function(t, p)
 			IdleHunt(p)
@@ -218,7 +218,7 @@ SendParabombs = function()
 	end)
 
 	if #targets > 0 then
-		airfield.SendAirstrike(Utils.Random(targets).CenterPosition, true, 0)
+		airfield.TargetAirstrike(Utils.Random(targets).CenterPosition)
 	end
 
 	Trigger.AfterDelay(DateTime.Minutes(BombDelays), SendParabombs)

@@ -119,7 +119,7 @@ end
 
 ParadropSovietUnits = function()
 	local lz = Utils.Random(ParadropWaypoints)
-	local aircraft = powerproxy.ActivateParatroopers(lz.CenterPosition)
+	local aircraft = powerproxy.TargetParatroopers(lz.CenterPosition)
 
 	Utils.Do(aircraft, function(a)
 		Trigger.OnPassengerExited(a, function(t, p)
@@ -159,7 +159,7 @@ ChronoshiftAlliedUnits = function()
 	local cells = Utils.ExpandFootprint({ ChronoshiftLocation.Location }, false)
 	local units = { }
 	for i = 1, #cells do
-		local unit = Actor.Create("2tnk", true, { Owner = allies, Facing = 0 })
+		local unit = Actor.Create("2tnk", true, { Owner = allies, Facing = Angle.North })
 		BindActorTriggers(unit)
 		units[unit] = cells[i]
 	end

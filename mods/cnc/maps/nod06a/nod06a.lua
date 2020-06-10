@@ -81,7 +81,7 @@ Atk3TriggerFunction = function()
 			local target = targets[DateTime.GameTime % #targets + 1].CenterPosition
 
 			if target then
-				CommCenter.SendAirstrike(target, false, Facing.NorthEast + 4)
+				CommCenter.TargetAirstrike(target, Angle.NorthEast + Angle.New(16))
 			end
 		end
 	end

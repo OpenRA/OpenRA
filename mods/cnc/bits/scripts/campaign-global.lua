@@ -40,7 +40,7 @@ InitObjectives = function(player)
 end
 
 ReinforceWithLandingCraft = function(player, units, transportStart, transportUnload, rallypoint)
-	local transport = Actor.Create("oldlst", true, { Owner = player, Facing = 0, Location = transportStart })
+	local transport = Actor.Create("oldlst", true, { Owner = player, Facing = Angle.North, Location = transportStart })
 	local subcell = 0
 	Utils.Do(units, function(a)
 		transport.LoadPassenger(Actor.Create(a, false, { Owner = transport.Owner, Facing = transport.Facing, Location = transportUnload, SubCell = subcell }))

@@ -332,7 +332,7 @@ WorldLoaded = function()
 	Trigger.OnEnteredFootprint(ParaTrigger, function(unit, id)
 		if unit.Owner == player then
 			local powerproxy = Actor.Create("powerproxy.pararifles", true, { Owner = greece })
-			local aircraft = powerproxy.ActivateParatroopers(waypoint89.CenterPosition, Facing.South)
+			local aircraft = powerproxy.TargetParatroopers(waypoint89.CenterPosition, Angle.South)
 			local prtcamera = Actor.Create("camera", true, { Owner = player, Location = waypoint89.Location })
 			Utils.Do(aircraft, function(a)
 				Trigger.OnPassengerExited(a, function(t, p)
