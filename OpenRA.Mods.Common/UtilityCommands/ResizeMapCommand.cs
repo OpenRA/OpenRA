@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.FileSystem;
 
 namespace OpenRA.Mods.Common.UtilityCommands
@@ -57,10 +58,13 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			foreach (var kv in map.ActorDefinitions)
 			{
 				var actor = new ActorReference(kv.Value.Value, kv.Value.ToDictionary());
-				var location = actor.InitDict.Get<LocationInit>().Value;
-				if (!map.Contains(location))
+				var locationInit = actor.GetOrDefault<LocationInit>();
+				if (locationInit == null)
+					continue;
+
+				if (!map.Contains(locationInit.Value))
 				{
-					Console.WriteLine("Removing actor {0} located at {1} due being outside of the new map boundaries.".F(actor.Type, location));
+					Console.WriteLine("Removing actor {0} located at {1} due being outside of the new map boundaries.".F(actor.Type, locationInit.Value));
 					forRemoval.Add(kv);
 				}
 			}

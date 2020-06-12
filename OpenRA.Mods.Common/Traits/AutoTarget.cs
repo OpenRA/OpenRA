@@ -119,7 +119,7 @@ namespace OpenRA.Mods.Common.Traits
 			yield return new EditorActorDropdown("Stance", EditorStanceDisplayOrder, labels,
 				actor =>
 				{
-					var init = actor.Init<StanceInit>();
+					var init = actor.GetInitOrDefault<StanceInit>(this);
 					var stance = init != null ? init.Value : InitialStance;
 					return stances[(int)stance];
 				},

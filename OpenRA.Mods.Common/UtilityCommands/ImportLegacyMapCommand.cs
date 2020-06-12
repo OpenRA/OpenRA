@@ -410,11 +410,10 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						new OwnerInit(parts[0]),
 					};
 
-					var initDict = actor.InitDict;
 					if (health != 100)
-						initDict.Add(new HealthInit(health));
+						actor.Add(new HealthInit(health));
 					if (facing != 0)
-						initDict.Add(new FacingInit(255 - facing));
+						actor.Add(new FacingInit(255 - facing));
 
 					if (section == "INFANTRY")
 						actor.Add(new SubCellInit((SubCell)Exts.ParseByte(parts[4])));

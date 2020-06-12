@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.Lint
 				foreach (var kv in map.ActorDefinitions.Where(d => d.Value.Value == "mpspawn"))
 				{
 					var s = new ActorReference(kv.Value.Value, kv.Value.ToDictionary());
-					spawns.Add(s.InitDict.Get<LocationInit>().Value);
+					spawns.Add(s.Get<LocationInit>().Value);
 				}
 
 				if (playerCount > spawns.Count)
@@ -88,7 +88,7 @@ namespace OpenRA.Mods.Common.Lint
 			foreach (var kv in map.ActorDefinitions)
 			{
 				var actorReference = new ActorReference(kv.Value.Value, kv.Value.ToDictionary());
-				var ownerInit = actorReference.InitDict.GetOrDefault<OwnerInit>();
+				var ownerInit = actorReference.GetOrDefault<OwnerInit>();
 				if (ownerInit == null)
 					emitError("Actor {0} is not owned by any player.".F(kv.Key));
 				else

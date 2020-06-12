@@ -33,74 +33,34 @@ namespace OpenRA.Mods.Common.Graphics
 		public readonly WorldRenderer WorldRenderer;
 		public World World { get { return WorldRenderer.World; } }
 
-		readonly TypeDictionary dict;
+		readonly ActorReference reference;
 
 		public ActorPreviewInitializer(ActorInfo actor, WorldRenderer worldRenderer, TypeDictionary dict)
 		{
 			Actor = actor;
 			WorldRenderer = worldRenderer;
-			this.dict = dict;
+			reference = new ActorReference(actor.Name, dict);
 		}
 
-		public T GetOrDefault<T>(TraitInfo info) where T : ActorInit
+		public ActorPreviewInitializer(ActorReference actor, WorldRenderer worldRenderer)
 		{
-			var inits = dict.WithInterface<T>();
-
-			// Traits tagged with an instance name prefer inits with the same name.
-			// If a more specific init is not available, fall back to an unnamed init.
-			// If duplicate inits are defined, take the last to match standard yaml override expectations
-			if (info != null && !string.IsNullOrEmpty(info.InstanceName))
-				return inits.LastOrDefault(i => i.InstanceName == info.InstanceName) ??
-				       inits.LastOrDefault(i => string.IsNullOrEmpty(i.InstanceName));
-
-			// Untagged traits will only use untagged inits
-			return inits.LastOrDefault(i => string.IsNullOrEmpty(i.InstanceName));
+			Actor = worldRenderer.World.Map.Rules.Actors[actor.Type];
+			reference = actor;
+			WorldRenderer = worldRenderer;
 		}
 
-		public T Get<T>(TraitInfo info) where T : ActorInit
-		{
-			var init = GetOrDefault<T>(info);
-			if (init == null)
-				throw new InvalidOperationException("TypeDictionary does not contain instance of type `{0}`".F(typeof(T)));
-
-			return init;
-		}
-
-		public U GetValue<T, U>(TraitInfo info) where T : ValueActorInit<U>
-		{
-			return Get<T>(info).Value;
-		}
-
-		public U GetValue<T, U>(TraitInfo info, U fallback) where T : ValueActorInit<U>
-		{
-			var init = GetOrDefault<T>(info);
-			return init != null ? init.Value : fallback;
-		}
-
-		public bool Contains<T>() where T : ActorInit, ISingleInstanceInit { return GetOrDefault<T>() != null; }
-
-		public T GetOrDefault<T>() where T : ActorInit, ISingleInstanceInit
-		{
-			return dict.GetOrDefault<T>();
-		}
-
-		public T Get<T>() where T : ActorInit, ISingleInstanceInit
-		{
-			return dict.Get<T>();
-		}
-
-		public U GetValue<T, U>() where T : ValueActorInit<U>, ISingleInstanceInit
-		{
-			return Get<T>().Value;
-		}
-
-		public U GetValue<T, U>(U fallback) where T : ValueActorInit<U>, ISingleInstanceInit
-		{
-			var init = GetOrDefault<T>();
-			return init != null ? init.Value : fallback;
-		}
-
-		public bool Contains<T>(TraitInfo info) where T : ActorInit { return GetOrDefault<T>(info) != null; }
+		// Forward IActorInitializer queries to the actor reference
+		// ActorReference can't reference a World instance, which prevents it from implementing this directly.
+		public T GetOrDefault<T>(TraitInfo info) where T : ActorInit { return reference.GetOrDefault<T>(info); }
+		public T Get<T>(TraitInfo info) where T : ActorInit { return reference.Get<T>(info); }
+		public U GetValue<T, U>(TraitInfo info) where T : ValueActorInit<U> { return reference.GetValue<T, U>(info); }
+		public U GetValue<T, U>(TraitInfo info, U fallback) where T : ValueActorInit<U> { return reference.GetValue<T, U>(info, fallback); }
+		public bool Contains<T>(TraitInfo info) where T : ActorInit { return reference.Contains<T>(info); }
+		public T GetOrDefault<T>() where T : ActorInit, ISingleInstanceInit { return reference.GetOrDefault<T>(); }
+		public T Get<T>() where T : ActorInit, ISingleInstanceInit { return reference.Get<T>(); }
+		public U GetValue<T, U>() where T : ValueActorInit<U>, ISingleInstanceInit { return reference.GetValue<T, U>(); }
+		public U GetValue<T, U>(U fallback) where T : ValueActorInit<U>, ISingleInstanceInit { return reference.GetValue<T, U>(fallback); }
+		public bool Contains<T>() where T : ActorInit, ISingleInstanceInit { return reference.Contains<T>(); }
 
 		public Func<WRot> GetOrientation()
 		{
@@ -109,7 +69,7 @@ namespace OpenRA.Mods.Common.Graphics
 				return () => WRot.Zero;
 
 			// Dynamic facing takes priority
-			var dynamicInit = dict.GetOrDefault<DynamicFacingInit>();
+			var dynamicInit = reference.GetOrDefault<DynamicFacingInit>();
 			if (dynamicInit != null)
 			{
 				// TODO: Account for terrain slope
@@ -118,7 +78,7 @@ namespace OpenRA.Mods.Common.Graphics
 			}
 
 			// Fall back to initial actor facing if an Init isn't available
-			var facingInit = dict.GetOrDefault<FacingInit>();
+			var facingInit = reference.GetOrDefault<FacingInit>();
 			var facing = facingInit != null ? facingInit.Value : facingInfo.GetInitialFacing();
 			var orientation = WRot.FromFacing(facing);
 			return () => orientation;
@@ -131,7 +91,7 @@ namespace OpenRA.Mods.Common.Graphics
 				return () => WAngle.Zero;
 
 			// Dynamic facing takes priority
-			var dynamicInit = dict.GetOrDefault<DynamicFacingInit>();
+			var dynamicInit = reference.GetOrDefault<DynamicFacingInit>();
 			if (dynamicInit != null)
 			{
 				var getFacing = dynamicInit.Value;
@@ -139,14 +99,14 @@ namespace OpenRA.Mods.Common.Graphics
 			}
 
 			// Fall back to initial actor facing if an Init isn't available
-			var facingInit = dict.GetOrDefault<FacingInit>();
+			var facingInit = reference.GetOrDefault<FacingInit>();
 			var facing = WAngle.FromFacing(facingInit != null ? facingInit.Value : facingInfo.GetInitialFacing());
 			return () => facing;
 		}
 
 		public DamageState GetDamageState()
 		{
-			var health = dict.GetOrDefault<HealthInit>();
+			var health = reference.GetOrDefault<HealthInit>();
 
 			if (health == null)
 				return DamageState.Undamaged;

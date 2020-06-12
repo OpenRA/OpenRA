@@ -113,8 +113,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (actorLocation != cell)
 				{
 					actorLocation = cell;
-					Actor.Actor.InitDict.Remove(Actor.Actor.InitDict.Get<LocationInit>());
-					Actor.Actor.InitDict.Add(new LocationInit(cell));
+					Actor.ReplaceInit(new LocationInit(cell));
 					updated = true;
 				}
 
@@ -122,23 +121,19 @@ namespace OpenRA.Mods.Common.Traits
 				{
 					actorSubCell = subCell;
 
-					var subcellInit = Actor.Actor.InitDict.GetOrDefault<SubCellInit>();
-					if (subcellInit != null)
-					{
-						Actor.Actor.InitDict.Remove(subcellInit);
+					if (Actor.RemoveInits<SubCellInit>() > 0)
 						updated = true;
-					}
 
 					var subcell = world.Map.Tiles.Contains(cell) ? editorLayer.FreeSubCellAt(cell) : SubCell.Invalid;
 					if (subcell != SubCell.Invalid)
 					{
-						Actor.Actor.InitDict.Add(new SubCellInit(subcell));
+						Actor.AddInit(new SubCellInit(subcell));
 						updated = true;
 					}
 				}
 
 				if (updated)
-					Actor = new EditorActorPreview(wr, null, Actor.Actor, Actor.Owner);
+					Actor = new EditorActorPreview(wr, null, Actor.Export(), Actor.Owner);
 			}
 		}
 
@@ -184,25 +179,25 @@ namespace OpenRA.Mods.Common.Traits
 				ownerName = specificOwnerInfo.ValidOwnerNames.First();
 
 			var reference = new ActorReference(actor.Name);
-			reference.InitDict.Add(new OwnerInit(ownerName));
-			reference.InitDict.Add(new FactionInit(owner.Faction));
+			reference.Add(new OwnerInit(ownerName));
+			reference.Add(new FactionInit(owner.Faction));
 
 			var worldPx = wr.Viewport.ViewToWorldPx(Viewport.LastMousePos) - wr.ScreenPxOffset(actorCenterOffset);
 			var cell = wr.Viewport.ViewToWorld(wr.Viewport.WorldToViewPx(worldPx));
 
-			reference.InitDict.Add(new LocationInit(cell));
+			reference.Add(new LocationInit(cell));
 			if (ios != null && ios.SharesCell)
 			{
 				actorSubCell = editorLayer.FreeSubCellAt(cell);
 				if (actorSubCell != SubCell.Invalid)
-					reference.InitDict.Add(new SubCellInit(actorSubCell));
+					reference.Add(new SubCellInit(actorSubCell));
 			}
 
 			if (actor.HasTraitInfo<IFacingInfo>())
-				reference.InitDict.Add(new FacingInit(info.PreviewFacing));
+				reference.Add(new FacingInit(info.PreviewFacing));
 
 			if (actor.HasTraitInfo<TurretedInfo>())
-				reference.InitDict.Add(new TurretFacingInit(info.PreviewFacing));
+				reference.Add(new TurretFacingInit(info.PreviewFacing));
 
 			Type = EditorCursorType.Actor;
 			Actor = new EditorActorPreview(wr, null, reference, owner);

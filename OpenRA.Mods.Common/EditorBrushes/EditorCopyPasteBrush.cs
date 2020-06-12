@@ -134,11 +134,11 @@ namespace OpenRA.Mods.Common.Widgets
 							continue;
 
 						var copy = preview.Export();
-						if (copy.InitDict.Contains<LocationInit>())
+						var locationInit = copy.GetOrDefault<LocationInit>();
+						if (locationInit != null)
 						{
-							var location = copy.InitDict.Get<LocationInit>();
-							copy.InitDict.Remove(location);
-							copy.InitDict.Add(new LocationInit(location.Value + offset));
+							copy.RemoveAll<LocationInit>();
+							copy.Add(new LocationInit(locationInit.Value + offset));
 						}
 
 						previews.Add(preview.ID, copy);

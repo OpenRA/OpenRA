@@ -130,23 +130,24 @@ namespace OpenRA.Mods.Common.Traits
 			yield return new EditorActorSlider("Facing", EditorFacingDisplayOrder, 0, 255, 8,
 				actor =>
 				{
-					var init = actor.Init<FacingInit>();
+					var init = actor.GetInitOrDefault<FacingInit>(this);
 					return init != null ? init.Value : InitialFacing;
 				},
 				(actor, value) =>
 				{
 					// TODO: This can all go away once turrets are properly defined as a relative facing
-					var turretInit = actor.Init<TurretFacingInit>();
-					var turretsInit = actor.Init<TurretFacingsInit>();
-					var facingInit = actor.Init<FacingInit>();
+					var turretsInit = actor.GetInitOrDefault<TurretFacingsInit>();
+					var facingInit = actor.GetInitOrDefault<FacingInit>();
 
 					var oldFacing = facingInit != null ? facingInit.Value : InitialFacing;
 					var newFacing = (int)value;
 
-					if (turretInit != null)
+					var turretInits = actor.GetInits<TurretFacingInit>().ToList();
+					actor.RemoveInits<TurretFacingInit>();
+					foreach (var turretInit in turretInits)
 					{
 						var newTurretFacing = (turretInit.Value + newFacing - oldFacing + 255) % 255;
-						actor.ReplaceInit(new TurretFacingInit(this, newTurretFacing));
+						actor.AddInit(new TurretFacingInit(turretInit.InstanceName, newTurretFacing));
 					}
 
 					if (turretsInit != null)

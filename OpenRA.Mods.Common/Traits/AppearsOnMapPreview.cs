@@ -42,14 +42,14 @@ namespace OpenRA.Mods.Common.Traits
 			}
 			else
 			{
-				var owner = map.PlayerDefinitions.Single(p => s.InitDict.Get<OwnerInit>().InternalName == p.Value.Nodes.Last(k => k.Key == "Name").Value.Value);
+				var owner = map.PlayerDefinitions.Single(p => s.Get<OwnerInit>().InternalName == p.Value.Nodes.Last(k => k.Key == "Name").Value.Value);
 				var colorValue = owner.Value.Nodes.Where(n => n.Key == "Color");
 				var ownerColor = colorValue.Any() ? colorValue.First().Value.Value : "FFFFFF";
 				Color.TryParse(ownerColor, out color);
 			}
 
 			var ios = ai.TraitInfo<IOccupySpaceInfo>();
-			var cells = ios.OccupiedCells(ai, s.InitDict.Get<LocationInit>().Value);
+			var cells = ios.OccupiedCells(ai, s.Get<LocationInit>().Value);
 			foreach (var cell in cells)
 				destinationBuffer.Add(new Pair<MPos, Color>(cell.Key.ToMPos(map), color));
 		}

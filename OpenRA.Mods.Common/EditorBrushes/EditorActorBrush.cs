@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.Widgets
 				if (!actor.Footprint.All(c => world.Map.Tiles.Contains(c.Key)))
 					return true;
 
-				var action = new AddActorAction(editorLayer, actor.Actor);
+				var action = new AddActorAction(editorLayer, actor.Export());
 				editorActionManager.Add(action);
 			}
 
