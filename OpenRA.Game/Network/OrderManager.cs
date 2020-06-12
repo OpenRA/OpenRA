@@ -164,14 +164,14 @@ namespace OpenRA.Network
 
 		public bool IsReadyForNextFrame
 		{
-			get { return NetFrameNumber >= 1 && frameData.IsReadyForFrame(NetFrameNumber); }
+			get { return GameStarted && frameData.IsReadyForFrame(NetFrameNumber); }
 		}
 
 		public IEnumerable<Session.Client> GetClientsNotReadyForNextFrame
 		{
 			get
 			{
-				return NetFrameNumber >= 1
+				return GameStarted
 					? frameData.ClientsNotReadyForFrame(NetFrameNumber)
 						.Select(a => LobbyInfo.ClientWithIndex(a))
 					: NoClients;
