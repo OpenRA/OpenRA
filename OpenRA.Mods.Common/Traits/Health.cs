@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Traits
 			yield return new EditorActorSlider("Health", EditorHealthDisplayOrder, 0, 100, 5,
 				actor =>
 				{
-					var init = actor.Init<HealthInit>();
+					var init = actor.GetInitOrDefault<HealthInit>();
 					return init != null ? init.Value : 100;
 				},
 				(actor, value) => actor.ReplaceInit(new HealthInit((int)value)));

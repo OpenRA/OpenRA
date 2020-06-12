@@ -334,6 +334,11 @@ namespace OpenRA
 			return CreateActor(true, name, initDict);
 		}
 
+		public Actor CreateActor(bool addToWorld, ActorReference reference)
+		{
+			return CreateActor(addToWorld, reference.Type, reference.InitDict);
+		}
+
 		public Actor CreateActor(bool addToWorld, string name, TypeDictionary initDict)
 		{
 			var a = new Actor(this, name, initDict);

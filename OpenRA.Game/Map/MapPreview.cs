@@ -276,7 +276,7 @@ namespace OpenRA
 					foreach (var kv in actorDefinitions.Nodes.Where(d => d.Value.Value == "mpspawn"))
 					{
 						var s = new ActorReference(kv.Value.Value, kv.Value.ToDictionary());
-						spawns.Add(s.InitDict.Get<LocationInit>().Value);
+						spawns.Add(s.Get<LocationInit>().Value);
 					}
 
 					newData.SpawnPoints = spawns.ToArray();

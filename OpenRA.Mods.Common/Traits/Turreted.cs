@@ -53,11 +53,11 @@ namespace OpenRA.Mods.Common.Traits
 			yield return new EditorActorSlider("Turret", EditorTurretFacingDisplayOrder, 0, 255, 8,
 				actor =>
 				{
-					var init = actor.Init<TurretFacingInit>();
+					var init = actor.GetInitOrDefault<TurretFacingInit>(this);
 					if (init != null)
 						return init.Value;
 
-					var facingInit = actor.Init<FacingInit>();
+					var facingInit = actor.GetInitOrDefault<FacingInit>(this);
 					if (facingInit != null)
 						return facingInit.Value;
 
@@ -67,8 +67,9 @@ namespace OpenRA.Mods.Common.Traits
 				{
 					actor.RemoveInit<TurretFacingsInit>();
 
-					// Force a single global turret facing for multi-turret actors by not passing this TraitInfo instance
-					actor.ReplaceInit(new TurretFacingInit((int)value));
+					// Force a single global turret facing for multi-turret actors
+					actor.RemoveInits<TurretFacingInit>();
+					actor.AddInit(new TurretFacingInit((int)value));
 				});
 		}
 
@@ -273,6 +274,9 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public TurretFacingInit(TraitInfo info, int value)
 			: base(info, value) { }
+
+		public TurretFacingInit(string instanceName, int value)
+			: base(instanceName, value) { }
 
 		public TurretFacingInit(int value)
 			: base(value) { }

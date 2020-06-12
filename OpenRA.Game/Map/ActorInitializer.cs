@@ -145,6 +145,9 @@ namespace OpenRA
 		protected ValueActorInit(TraitInfo info, T value)
 			: base(info.InstanceName) { this.value = value; }
 
+		protected ValueActorInit(string instanceName, T value)
+			: base(instanceName) { this.value = value; }
+
 		protected ValueActorInit(T value) { this.value = value; }
 
 		public virtual T Value { get { return value; } }

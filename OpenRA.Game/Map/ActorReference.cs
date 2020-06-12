@@ -13,8 +13,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization;
 using OpenRA.Primitives;
+using OpenRA.Traits;
 
 namespace OpenRA
 {
@@ -23,12 +25,9 @@ namespace OpenRA
 	public class ActorReference : IEnumerable
 	{
 		public string Type;
-		public TypeDictionary InitDict
-		{
-			get { return initDict.Value; }
-		}
-
 		Lazy<TypeDictionary> initDict;
+
+		internal TypeDictionary InitDict { get { return initDict.Value; } }
 
 		public ActorReference(string type)
 			: this(type, new Dictionary<string, MiniYaml>()) { }
@@ -48,6 +47,18 @@ namespace OpenRA
 					dict.Add(init);
 				}
 
+				return dict;
+			});
+		}
+
+		public ActorReference(string type, TypeDictionary inits)
+		{
+			Type = type;
+			initDict = new Lazy<TypeDictionary>(() =>
+			{
+				var dict = new TypeDictionary();
+				foreach (var i in inits)
+					dict.Add(i);
 				return dict;
 			});
 		}
@@ -74,7 +85,7 @@ namespace OpenRA
 		public MiniYaml Save(Func<ActorInit, bool> initFilter = null)
 		{
 			var ret = new MiniYaml(Type);
-			foreach (var o in InitDict)
+			foreach (var o in initDict.Value)
 			{
 				var init = o as ActorInit;
 				if (init == null || o is ISuppressInitExport)
@@ -94,7 +105,17 @@ namespace OpenRA
 			return ret;
 		}
 
-		// for initialization syntax
+		public IEnumerator GetEnumerator() { return initDict.Value.GetEnumerator(); }
+
+		public ActorReference Clone()
+		{
+			var clone = new ActorReference(Type);
+			foreach (var init in initDict.Value)
+				clone.initDict.Value.Add(init);
+
+			return clone;
+		}
+
 		public void Add(ActorInit init)
 		{
 			if (init is ISingleInstanceInit && InitDict.Contains(init.GetType()))
@@ -103,15 +124,83 @@ namespace OpenRA
 			InitDict.Add(init);
 		}
 
-		public IEnumerator GetEnumerator() { return InitDict.GetEnumerator(); }
+		public void Remove(ActorInit o) { initDict.Value.Remove(o); }
 
-		public ActorReference Clone()
+		public int RemoveAll<T>() where T : ActorInit
 		{
-			var clone = new ActorReference(Type);
-			foreach (var init in InitDict)
-				clone.InitDict.Add(init);
+			var removed = 0;
+			foreach (var o in initDict.Value.WithInterface<T>().ToList())
+			{
+				removed++;
+				initDict.Value.Remove(o);
+			}
 
-			return clone;
+			return removed;
 		}
+
+		public IEnumerable<T> GetAll<T>() where T : ActorInit
+		{
+			return initDict.Value.WithInterface<T>();
+		}
+
+		public T GetOrDefault<T>(TraitInfo info) where T : ActorInit
+		{
+			var inits = initDict.Value.WithInterface<T>();
+
+			// Traits tagged with an instance name prefer inits with the same name.
+			// If a more specific init is not available, fall back to an unnamed init.
+			// If duplicate inits are defined, take the last to match standard yaml override expectations
+			if (info != null && !string.IsNullOrEmpty(info.InstanceName))
+				return inits.LastOrDefault(i => i.InstanceName == info.InstanceName) ??
+				       inits.LastOrDefault(i => string.IsNullOrEmpty(i.InstanceName));
+
+			// Untagged traits will only use untagged inits
+			return inits.LastOrDefault(i => string.IsNullOrEmpty(i.InstanceName));
+		}
+
+		public T Get<T>(TraitInfo info) where T : ActorInit
+		{
+			var init = GetOrDefault<T>(info);
+			if (init == null)
+				throw new InvalidOperationException("TypeDictionary does not contain instance of type `{0}`".F(typeof(T)));
+
+			return init;
+		}
+
+		public U GetValue<T, U>(TraitInfo info) where T : ValueActorInit<U>
+		{
+			return Get<T>(info).Value;
+		}
+
+		public U GetValue<T, U>(TraitInfo info, U fallback) where T : ValueActorInit<U>
+		{
+			var init = GetOrDefault<T>(info);
+			return init != null ? init.Value : fallback;
+		}
+
+		public bool Contains<T>(TraitInfo info) where T : ActorInit { return GetOrDefault<T>(info) != null; }
+
+		public T GetOrDefault<T>() where T : ActorInit, ISingleInstanceInit
+		{
+			return initDict.Value.GetOrDefault<T>();
+		}
+
+		public T Get<T>() where T : ActorInit, ISingleInstanceInit
+		{
+			return initDict.Value.Get<T>();
+		}
+
+		public U GetValue<T, U>() where T : ValueActorInit<U>, ISingleInstanceInit
+		{
+			return Get<T>().Value;
+		}
+
+		public U GetValue<T, U>(U fallback) where T : ValueActorInit<U>, ISingleInstanceInit
+		{
+			var init = GetOrDefault<T>();
+			return init != null ? init.Value : fallback;
+		}
+
+		public bool Contains<T>() where T : ActorInit, ISingleInstanceInit { return GetOrDefault<T>() != null; }
 	}
 }

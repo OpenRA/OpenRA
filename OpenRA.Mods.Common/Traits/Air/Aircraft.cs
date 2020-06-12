@@ -184,7 +184,7 @@ namespace OpenRA.Mods.Common.Traits
 			yield return new EditorActorSlider("Facing", EditorFacingDisplayOrder, 0, 255, 8,
 				actor =>
 				{
-					var init = actor.Init<FacingInit>();
+					var init = actor.GetInitOrDefault<FacingInit>(this);
 					return init != null ? init.Value : InitialFacing;
 				},
 				(actor, value) => actor.ReplaceInit(new FacingInit((int)value)));

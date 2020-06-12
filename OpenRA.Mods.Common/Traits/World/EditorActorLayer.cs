@@ -118,7 +118,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public EditorActorPreview Add(string id, ActorReference reference, bool initialSetup = false)
 		{
-			var owner = Players.Players[reference.InitDict.Get<OwnerInit>().InternalName];
+			var owner = Players.Players[reference.Get<OwnerInit>().InternalName];
 			var preview = new EditorActorPreview(worldRenderer, id, reference, owner);
 
 			Add(preview, initialSetup);
@@ -144,7 +144,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				UpdateNeighbours(preview.Footprint);
 
-				if (preview.Actor.Type == "mpspawn")
+				if (preview.Type == "mpspawn")
 					SyncMultiplayerCount();
 			}
 		}

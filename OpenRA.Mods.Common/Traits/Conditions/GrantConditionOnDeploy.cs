@@ -72,7 +72,7 @@ namespace OpenRA.Mods.Common.Traits
 			yield return new EditorActorCheckbox("Deployed", EditorDeployedDisplayOrder,
 				actor =>
 				{
-					var init = actor.Init<DeployStateInit>();
+					var init = actor.GetInitOrDefault<DeployStateInit>();
 					if (init != null)
 						return init.Value == DeployState.Deployed;
 

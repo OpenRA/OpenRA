@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Traits
 			yield return new EditorActorCheckbox("Spawn Child Actor", EditorFreeActorDisplayOrder,
 				actor =>
 				{
-					var init = actor.Init<FreeActorInit>();
+					var init = actor.GetInitOrDefault<FreeActorInit>(this);
 					if (init != null)
 						return init.Value;
 
@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Traits
 				},
 				(actor, value) =>
 				{
-					actor.ReplaceInit(new FreeActorInit(this, value));
+					actor.ReplaceInit(new FreeActorInit(this, value), this);
 				});
 		}
 
