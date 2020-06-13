@@ -73,7 +73,7 @@ namespace OpenRA
 
 		readonly string[] reservedModuleNames =
 		{
-			"Metadata", "Folders", "MapFolders", "Packages", "Rules",
+			"Includes", "Metadata", "Folders", "MapFolders", "Packages", "Rules",
 			"Sequences", "ModelSequences", "Cursors", "Chrome", "Assemblies", "ChromeLayout", "Weapons",
 			"Voices", "Notifications", "Music", "Translations", "TileSets", "ChromeMetrics", "Missions", "Hotkeys",
 			"ServerTraits", "LoadScreen", "SupportsMapsFrom", "SoundFormats", "SpriteFormats",
@@ -89,7 +89,14 @@ namespace OpenRA
 		{
 			Id = modId;
 			Package = package;
-			yaml = new MiniYaml(null, MiniYaml.FromStream(package.GetStream("mod.yaml"), "mod.yaml")).ToDictionary();
+
+			var nodes = MiniYaml.FromStream(package.GetStream("mod.yaml"), "mod.yaml");
+			var includes = nodes.FirstOrDefault(node => node.Key == "Includes");
+
+			if (includes != null)
+				nodes = MiniYaml.Merge(new[] { nodes }.Concat(includes.Value.ToDictionary().Keys.Select(i => MiniYaml.FromStream(package.GetStream(i), i))));
+
+			yaml = new MiniYaml(null, nodes).ToDictionary();
 
 			Metadata = FieldLoader.Load<ModMetadata>(yaml["Metadata"]);
 
