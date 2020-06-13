@@ -1,0 +1,61 @@
+{
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"name": "Launch (TD)",
+			"type": "clr",
+			"linux": {
+				"type": "mono"
+			},
+			"osx": {
+				"type": "mono"
+			},
+			"request": "launch",
+			"program": "${workspaceRoot}/OpenRA.Game.exe",
+			"cwd": "${workspaceRoot}",
+			"args": ["Game.Mod=cnc"]
+		},
+		{
+			"name": "Launch (RA)",
+			"type": "clr",
+			"linux": {
+				"type": "mono"
+			},
+			"osx": {
+				"type": "mono"
+			},
+			"request": "launch",
+			"program": "${workspaceRoot}/OpenRA.Game.exe",
+			"cwd": "${workspaceRoot}",
+			"args": ["Game.Mod=ra"]
+		},
+		{
+			"name": "Launch (D2k)",
+			"type": "clr",
+			"linux": {
+				"type": "mono"
+			},
+			"osx": {
+				"type": "mono"
+			},
+			"request": "launch",
+			"program": "${workspaceRoot}/OpenRA.Game.exe",
+			"cwd": "${workspaceRoot}",
+			"args": ["Game.Mod=d2k"]
+		},
+		{
+			"name": "Launch (TS)",
+			"type": "clr",
+			"linux": {
+				"type": "mono"
+			},
+			"osx": {
+				"type": "mono"
+			},
+			"request": "launch",
+			"program": "${workspaceRoot}/OpenRA.Game.exe",
+			"cwd": "${workspaceRoot}",
+			"args": ["Game.Mod=ts"]
+		},
+	]
+}
