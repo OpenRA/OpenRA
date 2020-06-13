@@ -117,8 +117,7 @@ namespace OpenRA
 
 		public virtual void Initialize(MiniYaml yaml)
 		{
-			var valueType = typeof(T).IsEnum ? Enum.GetUnderlyingType(typeof(T)) : typeof(T);
-			Initialize((T)FieldLoader.GetValue("value", valueType, yaml.Value));
+			Initialize((T)FieldLoader.GetValue("value", typeof(T), yaml.Value));
 		}
 
 		public virtual void Initialize(T value)
