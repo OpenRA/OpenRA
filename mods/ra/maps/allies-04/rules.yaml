@@ -4,7 +4,7 @@ Player:
 
 World:
 	LuaScript:
-		Scripts: allies04.lua, allies04-AI.lua
+		Scripts: campaign-global.lua, allies04.lua, allies04-AI.lua
 	MissionData:
 		Briefing: Soviet forces are trying to retake the pass you cleared for our convoys.\n\nDon't let this happen. Hold the pass and prevent the Soviets from taking this vital area.\n\nDestroy all Soviet units and buildings in this region.
 		BriefingVideo: ally4.vqa
