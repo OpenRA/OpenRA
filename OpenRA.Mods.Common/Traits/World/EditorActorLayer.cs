@@ -316,7 +316,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			foreach (var previewsForCell in cellMap)
 				foreach (var preview in previewsForCell.Value)
-					destinationBuffer.Add(Pair.New(previewsForCell.Key, preview.Owner.Color));
+					destinationBuffer.Add(Pair.New(previewsForCell.Key, preview.RadarColor));
 		}
 
 		public EditorActorPreview this[string id]

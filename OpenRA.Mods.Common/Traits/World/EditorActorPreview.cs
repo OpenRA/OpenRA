@@ -15,6 +15,7 @@ using System.IO;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
+using OpenRA.Mods.Common.Traits.Radar;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -49,6 +50,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly TooltipInfoBase tooltip;
 		IActorPreview[] previews;
 		readonly ActorReference reference;
+		public readonly Color RadarColor;
 
 		public EditorActorPreview(WorldRenderer worldRenderer, string id, ActorReference reference, PlayerReference owner)
 		{
@@ -74,6 +76,9 @@ namespace OpenRA.Mods.Common.Traits
 
 			var subCellInit = reference.GetOrDefault<SubCellInit>();
 			var subCell = subCellInit != null ? subCellInit.Value : SubCell.Any;
+
+			var radarColorInfo = Info.TraitInfoOrDefault<RadarColorFromTerrainInfo>();
+			RadarColor = radarColorInfo == null ? owner.Color : radarColorInfo.GetColorFromTerrain(world);
 
 			if (ios != null)
 				Footprint = ios.OccupiedCells(Info, location, subCell);
