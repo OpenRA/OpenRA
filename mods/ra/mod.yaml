@@ -32,6 +32,7 @@ Packages:
 	~desert.mix
 	ra|bits
 	ra|bits/desert
+	ra|bits/scripts
 	ra|uibits
 
 MapFolders:

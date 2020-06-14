@@ -4,7 +4,7 @@ Player:
 
 World:
 	LuaScript:
-		Scripts: allies06b.lua, allies06b-AI.lua
+		Scripts: campaign-global.lua, allies06b.lua, allies06b-AI.lua
 	MissionData:
 		BriefingVideo: ally6.vqa
 		WinVideo: allymorf.vqa

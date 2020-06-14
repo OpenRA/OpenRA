@@ -240,35 +240,7 @@ ProduceAircraft = function()
 			Trigger.AfterDelay(DateTime.Minutes(1), ProduceAircraft)
 		end
 
-		TargetAndAttack(yak)
-	end)
-end
-
-TargetAndAttack = function(yak, target)
-	if yak.IsDead then
-		return
-	end
-
-	if not target or target.IsDead or (not target.IsInWorld) then
-		local enemies = Utils.Where(Map.ActorsInWorld, function(self) return self.Owner == player and self.HasProperty("Health") and yak.CanTarget(self) end)
-
-		if #enemies > 0 then
-			target = Utils.Random(enemies)
-		end
-	end
-
-	if target and yak.AmmoCount() > 0 and yak.CanTarget(target) then
-		yak.Attack(target)
-	else
-		yak.ReturnToBase()
-	end
-
-	yak.CallFunc(function()
-		-- TODO: Replace this with an idle trigger once that works for aircraft
-		-- Add a delay of one tick to fix an endless recursive call
-		Trigger.AfterDelay(1, function()
-			TargetAndAttack(yak, target)
-		end)
+		InitializeAttackAircraft(yak, player)
 	end)
 end
 

@@ -125,36 +125,7 @@ ProduceAircraft = function()
 			Trigger.AfterDelay(DateTime.Seconds(ProductionInterval[Map.LobbyOption("difficulty")] / 2), ProduceAircraft)
 		end
 
-		TargetAndAttack(mig)
-	end)
-end
-
-TargetAndAttack = function(mig, target)
-	if mig.IsDead then
-		return
-	end
-
-	if not target or target.IsDead or (not target.IsInWorld) then
-		local enemies = Utils.Where(greece.GetActors(), function(actor)
-			return actor.HasProperty("Health") and actor.Type ~= "brik" and mig.CanTarget(target)
-		end)
-		if #enemies > 0 then
-			target = Utils.Random(enemies)
-		end
-	end
-
-	if target and mig.AmmoCount() > 0 and mig.CanTarget(target) then
-		mig.Attack(target)
-	else
-		mig.ReturnToBase()
-	end
-
-	mig.CallFunc(function()
-		-- TODO: Replace this with an idle trigger once that works for aircraft
-		-- Add a delay of one tick to fix an endless recursive call
-		Trigger.AfterDelay(1, function()
-			TargetAndAttack(mig, target)
-		end)
+		InitializeAttackAircraft(mig, greece)
 	end)
 end
 
