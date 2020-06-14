@@ -206,8 +206,8 @@ namespace OpenRA.Mods.Common.Scripting
 
 			if (string.IsNullOrEmpty(prefix))
 				Game.AddSystemLine(text);
-
-			Game.AddSystemLine(prefix, text);
+			else
+				Game.AddSystemLine(prefix, text);
 		}
 
 		[Desc("Displays a debug message to the player, if \"Show Map Debug Messages\" is checked in the settings.")]
