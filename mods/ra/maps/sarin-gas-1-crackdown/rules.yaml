@@ -113,7 +113,3 @@ STNK:
 E7:
 	Buildable:
 		Prerequisites: ~disabled
-
-SS:
-	AutoTarget:
-		InitialStanceAI: AttackAnything

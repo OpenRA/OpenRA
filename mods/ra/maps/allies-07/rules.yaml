@@ -127,7 +127,3 @@ CA:
 MSUB:
 	Buildable:
 		Prerequisites: ~disabled
-
-SS:
-	AutoTarget:
-		InitialStanceAI: AttackAnything
