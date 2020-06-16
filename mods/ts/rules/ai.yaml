@@ -9,6 +9,9 @@ Player:
 		RequiresCondition: enable-test-ai
 		HarvesterTypes: harv
 		RefineryTypes: proc
+	CratePickupBotModule:
+		RequiresCondition: enable-test-ai
+		ExcludedUnitTypes: mcv, harv
 	BaseBuilderBotModule@test:
 		RequiresCondition: enable-test-ai
 		MinimumExcessPower: 30

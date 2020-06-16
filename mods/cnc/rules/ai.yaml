@@ -82,6 +82,9 @@ Player:
 		RequiresCondition: enable-cabal-ai || enable-watson-ai || enable-hal9001-ai
 		HarvesterTypes: harv
 		RefineryTypes: proc
+	CratePickupBotModule:
+		RequiresCondition: enable-cabal-ai || enable-watson-ai || enable-hal9001-ai
+		ExcludedUnitTypes: mcv, harv
 	BaseBuilderBotModule@cabal:
 		RequiresCondition: enable-cabal-ai
 		BuildingQueues: Building.Nod, Building.GDI

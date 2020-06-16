@@ -64,6 +64,9 @@ Player:
 		RequiresCondition: enable-omnius-ai || enable-vidious-ai || enable-gladius-ai
 		HarvesterTypes: harvester
 		RefineryTypes: refinery
+	CratePickupBotModule:
+		RequiresCondition: enable-omnius-ai || enable-vidious-ai || enable-gladius-ai
+		ExcludedUnitTypes: mcv, harvester
 	BaseBuilderBotModule@omnius:
 		RequiresCondition: enable-omnius-ai
 		BuildingQueues: Building, Upgrade
