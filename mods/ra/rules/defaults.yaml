@@ -325,6 +325,7 @@
 		Range: 4c0
 	Mobile:
 		Speed: 56
+		AlwaysTurnInPlace: true
 		Locomotor: foot
 	Selectable:
 		Bounds: 18,20,0,-6
