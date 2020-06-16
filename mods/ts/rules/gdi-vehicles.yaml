@@ -122,6 +122,7 @@ SMECH:
 	Mobile:
 		TurnSpeed: 5
 		Speed: 99
+		AlwaysTurnInPlace: true
 	Health:
 		HP: 17500
 	Armor:
@@ -169,6 +170,7 @@ MMCH:
 	Mobile:
 		TurnSpeed: 5
 		Speed: 56
+		AlwaysTurnInPlace: true
 	Health:
 		HP: 40000
 	Armor:
@@ -332,6 +334,7 @@ JUGG:
 	Mobile:
 		Speed: 71
 		TurnSpeed: 5
+		AlwaysTurnInPlace: true
 		ImmovableCondition: !undeployed
 		RequireForceMoveCondition: !undeployed
 	RevealsShroud:
