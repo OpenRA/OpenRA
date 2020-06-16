@@ -88,9 +88,11 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class CrateSpawner : ITick, INotifyCreated
 	{
+		public bool Enabled { get; private set; }
+
 		readonly Actor self;
 		readonly CrateSpawnerInfo info;
-		bool enabled;
+
 		int crates;
 		int ticks;
 
@@ -104,13 +106,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyCreated.Created(Actor self)
 		{
-			enabled = self.World.LobbyInfo.GlobalSettings
+			Enabled = self.World.LobbyInfo.GlobalSettings
 				.OptionOrDefault("crates", info.CheckboxEnabled);
 		}
 
 		void ITick.Tick(Actor self)
 		{
-			if (!enabled)
+			if (!Enabled)
 				return;
 
 			if (--ticks <= 0)
