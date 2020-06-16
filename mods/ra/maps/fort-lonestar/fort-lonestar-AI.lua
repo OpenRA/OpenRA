@@ -33,8 +33,6 @@ ActivateAI = function(player, id)
 			DefendActor(id, barracks[1])
 			RepairBarracks(id)
 			SellWalls(id)
-
-			Trigger.AfterDelay(DateTime.Seconds(10), function() LookOutForCrates(id) end)
 		end
 
 		local derricks = player.GetActorsByType("oilb")
@@ -159,30 +157,5 @@ SellWalls = function(id)
 	local walls = AIPlayers[id].GetActorsByType("brik")
 	Utils.Do(walls, function(wall)
 		wall.Sell()
-	end)
-end
-
-LookOutForCrates = function(id)
-	Trigger.OnEnteredProximityTrigger(AIBarracks[id].CenterPosition, WDist.New(12 * 1024), function(actor)
-		if actor.Type ~= "fortcrate" or #IdlingAIActors[id] == 0 then
-			return
-		end
-
-		local unit = Utils.Random(IdlingAIActors[id])
-		local home = AIBaseLocation[id]
-		local aim = actor.Location
-		if unit.IsDead then
-			return
-		end
-
-		unit.AttackMove(aim)
-		Trigger.OnIdle(unit, function()
-			if unit.Location == aim or not actor.IsInWorld then
-				unit.AttackMove(home)
-				Trigger.Clear(unit, "OnIdle")
-			else
-				unit.AttackMove(aim)
-			end
-		end)
 	end)
 end

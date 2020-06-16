@@ -112,9 +112,17 @@ Player:
 	-ModularBot@NormalAI:
 	-ModularBot@NavalAI:
 	-ModularBot@TurtleAI:
-	DummyBot@LonestarAI:
+	ModularBot@LonestarAI:
 		Name: Lonestar AI
 		Type: lonestar
+	GrantConditionOnBotOwner@lonestar:
+		Condition: enable-lonestar-ai
+		Bots: lonestar
+	CratePickupBotModule:
+		RequiresCondition: enable-lonestar-ai
+		ScanForCratesInterval: 10
+		MaxProximityRadius: 12
+		CheckTargetsForVisibility: false
 	LobbyPrerequisiteCheckbox@GLOBALFACTUNDEPLOY:
 		Visible: False
 ^Infantry:
