@@ -70,3 +70,18 @@ Player:
 		Visible: False
 	LobbyPrerequisiteCheckbox@GLOBALFACTUNDEPLOY:
 		Visible: False
+	-ModularBot@RushAI:
+	-ModularBot@NormalAI:
+	-ModularBot@NavalAI:
+	-ModularBot@TurtleAI:
+	ModularBot@DropZone:
+		Name: DropZone AI
+		Type: dropzone
+	GrantConditionOnBotOwner@dropzone:
+		Condition: enable-dropzone-ai
+		Bots: dropzone
+	CratePickupBotModule:
+		RequiresCondition: enable-dropzone-ai
+		ScanForCratesInterval: 10
+		EnemyAvoidanceRadius: 0
+		IncludedUnitTypes: lst

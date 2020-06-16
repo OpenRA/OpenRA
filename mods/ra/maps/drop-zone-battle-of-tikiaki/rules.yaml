@@ -35,12 +35,14 @@ UNITCRATE:
 		TerrainTypes: Clear, Road, Ore, Beach
 
 APC:
-	Inherits@AUTOTARGET: ^AutoTargetGround
 	Health:
 		HP: 100000
 	MustBeDestroyed:
 		RequiredForShortGame: true
 	-AttackMove:
+	-AutoTarget:
+	-AutoTargetPriority@DEFAULT:
+	-AutoTargetPriority@ATTACKANYTHING:
 
 DTRK:
 	Tooltip:
@@ -83,3 +85,17 @@ Player:
 		Visible: False
 	LobbyPrerequisiteCheckbox@REUSABLEENGINEERS:
 		Visible: False
+	-ModularBot@RushAI:
+	-ModularBot@NormalAI:
+	-ModularBot@NavalAI:
+	-ModularBot@TurtleAI:
+	ModularBot@DropZone:
+		Name: DropZone AI
+		Type: dropzone
+	GrantConditionOnBotOwner@dropzone:
+		Condition: enable-dropzone-ai
+		Bots: dropzone
+	CratePickupBotModule:
+		RequiresCondition: enable-dropzone-ai
+		ScanForCratesInterval: 10
+		EnemyAvoidanceRadius: 0
