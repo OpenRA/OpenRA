@@ -496,6 +496,10 @@ namespace OpenRA.Mods.Common.Activities
 
 			static bool IsTurn(Mobile mobile, CPos nextCell, Map map)
 			{
+				// Some actors with a limited number of sprite facings should never move along curved trajectories.
+				if (mobile.Info.AlwaysTurnInPlace)
+					return false;
+
 				// Tight U-turns should be done in place instead of making silly looking loops.
 				var nextFacing = map.FacingBetween(nextCell, mobile.ToCell, mobile.Facing);
 				var currentFacing = map.FacingBetween(mobile.ToCell, mobile.FromCell, mobile.Facing);

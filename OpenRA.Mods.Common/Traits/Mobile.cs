@@ -37,6 +37,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly int Speed = 1;
 
+		[Desc("If set to true, this unit will always turn in place instead of following a curved trajectory (like infantry).")]
+		public readonly bool AlwaysTurnInPlace = false;
+
 		[Desc("Cursor to display when a move order can be issued at target location.")]
 		public readonly string Cursor = "move";
 
