@@ -555,6 +555,7 @@
 	Mobile:
 		Voice: Move
 		Speed: 71
+		AlwaysTurnInPlace: true
 		Locomotor: foot
 	TurnOnIdle:
 	Selectable:

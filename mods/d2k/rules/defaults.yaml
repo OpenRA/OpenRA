@@ -305,6 +305,7 @@
 	RevealsShroud:
 		Range: 3c768
 	Mobile:
+		AlwaysTurnInPlace: true
 		Locomotor: foot
 	Selectable:
 		Bounds: 24,24,0,-4
