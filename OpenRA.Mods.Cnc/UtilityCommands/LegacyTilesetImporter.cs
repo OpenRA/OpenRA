@@ -143,8 +143,8 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 								if (rampType != 0)
 									data.AppendLine("\t\t\t\tRampType: {0}".F(rampType));
 
-								data.AppendLine("\t\t\t\tLeftColor: {0:X2}{1:X2}{2:X2}".F(s.ReadUInt8(), s.ReadUInt8(), s.ReadUInt8()));
-								data.AppendLine("\t\t\t\tRightColor: {0:X2}{1:X2}{2:X2}".F(s.ReadUInt8(), s.ReadUInt8(), s.ReadUInt8()));
+								data.AppendLine("\t\t\t\tMinColor: {0:X2}{1:X2}{2:X2}".F(s.ReadUInt8(), s.ReadUInt8(), s.ReadUInt8()));
+								data.AppendLine("\t\t\t\tMaxColor: {0:X2}{1:X2}{2:X2}".F(s.ReadUInt8(), s.ReadUInt8(), s.ReadUInt8()));
 								data.AppendLine("\t\t\t\tZOffset: {0}".F(-tileSize.Height / 2.0f));
 								data.AppendLine("\t\t\t\tZRamp: 0");
 							}

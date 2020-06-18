@@ -91,17 +91,31 @@ namespace OpenRA.Mods.Common.Traits
 		public static Pair<int, int> GetColor(Map map, MPos uv)
 		{
 			var custom = map.CustomTerrain[uv];
-			int leftColor, rightColor;
+			Color leftColor, rightColor;
 			if (custom == byte.MaxValue)
 			{
-				var type = map.Rules.TileSet.GetTileInfo(map.Tiles[uv]);
-				leftColor = type != null ? type.LeftColor.ToArgb() : Color.Black.ToArgb();
-				rightColor = type != null ? type.RightColor.ToArgb() : Color.Black.ToArgb();
+				var tileset = map.Rules.TileSet;
+				var type = tileset.GetTileInfo(map.Tiles[uv]);
+				if (type != null)
+				{
+					if (tileset.MinHeightColorBrightness != 1.0f || tileset.MaxHeightColorBrightness != 1.0f)
+					{
+						var left = Exts.ColorLerp(Game.CosmeticRandom.NextFloat(), type.MinColor, type.MaxColor);
+						var right = Exts.ColorLerp(Game.CosmeticRandom.NextFloat(), type.MinColor, type.MaxColor);
+						var scale = float2.Lerp(tileset.MinHeightColorBrightness, tileset.MaxHeightColorBrightness, map.Height[uv] * 1f / map.Grid.MaximumTerrainHeight);
+						leftColor = Color.FromArgb((int)(scale * left.R).Clamp(0, 255), (int)(scale * left.G).Clamp(0, 255), (int)(scale * left.B).Clamp(0, 255));
+						rightColor = Color.FromArgb((int)(scale * right.R).Clamp(0, 255), (int)(scale * right.G).Clamp(0, 255), (int)(scale * right.B).Clamp(0, 255));
+					}
+					else
+						leftColor = rightColor = type.MinColor;
+				}
+				else
+					leftColor = rightColor = Color.Black;
 			}
 			else
-				leftColor = rightColor = map.Rules.TileSet[custom].Color.ToArgb();
+				leftColor = rightColor = map.Rules.TileSet[custom].Color;
 
-			return Pair.New(leftColor, rightColor);
+			return Pair.New(leftColor.ToArgb(), rightColor.ToArgb());
 		}
 	}
 }

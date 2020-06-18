@@ -702,6 +702,11 @@ namespace OpenRA
 				var pxStride = 4;
 				var minimapData = new byte[stride * height];
 				Color leftColor, rightColor;
+
+				var useHeightModifiers = tileset.MinHeightColorBrightness != 1.0f || tileset.MaxHeightColorBrightness != 1.0f;
+				var minHeightBrightness = tileset.MinHeightColorBrightness;
+				var maxHeightBrightness = tileset.MaxHeightColorBrightness;
+				var heightModifier = 1f / Grid.MaximumTerrainHeight;
 				for (var y = 0; y < height; y++)
 				{
 					for (var x = 0; x < width; x++)
@@ -716,8 +721,21 @@ namespace OpenRA
 						{
 							// Cell contains terrain
 							var type = tileset.GetTileInfo(Tiles[uv]);
-							leftColor = type != null ? type.LeftColor : Color.Black;
-							rightColor = type != null ? type.RightColor : Color.Black;
+							if (type != null)
+							{
+								if (useHeightModifiers)
+								{
+									var left = Exts.ColorLerp(Game.CosmeticRandom.NextFloat(), type.MinColor, type.MaxColor);
+									var right = Exts.ColorLerp(Game.CosmeticRandom.NextFloat(), type.MinColor, type.MaxColor);
+									var scale = float2.Lerp(minHeightBrightness, maxHeightBrightness, heightModifier * Height[uv]);
+									leftColor = Color.FromArgb((int)(scale * left.R).Clamp(0, 255), (int)(scale * left.G).Clamp(0, 255), (int)(scale * left.B).Clamp(0, 255));
+									rightColor = Color.FromArgb((int)(scale * right.R).Clamp(0, 255), (int)(scale * right.G).Clamp(0, 255), (int)(scale * right.B).Clamp(0, 255));
+								}
+								else
+									leftColor = rightColor = type.MinColor;
+							}
+							else
+								leftColor = rightColor = Color.Black;
 						}
 
 						if (isRectangularIsometric)
