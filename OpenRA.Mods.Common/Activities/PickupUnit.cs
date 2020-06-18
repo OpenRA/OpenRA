@@ -49,6 +49,10 @@ namespace OpenRA.Mods.Common.Activities
 
 		protected override void OnFirstRun(Actor self)
 		{
+			// The cargo might have become invalid while we were moving towards it.
+			if (cargo.IsDead || carryable.IsTraitDisabled || !cargo.AppearsFriendlyTo(self))
+				return;
+
 			if (carryall.ReserveCarryable(self, cargo))
 			{
 				// Fly to the target and wait for it to be locked for pickup
