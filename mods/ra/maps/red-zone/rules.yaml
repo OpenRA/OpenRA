@@ -1,0 +1,483 @@
+Player:
+	MissionObjectives:
+		GameOverDelay: 1200
+	-EnemyWatcher:
+	-BaseAttackNotifier:
+	ProximityCaptor:
+		Types: Helicopter
+
+World:
+	-StartGameNotification:
+	FlashPaletteEffect@LIGHTNINGSTRIKE:
+		Type: LightningStrike
+	GlobalLightingPaletteEffect:
+		Red: 0.9
+		Green: 0.9
+		Blue: 1.1
+		Ambient: 0.75
+	MissionData:
+		Briefing: INCOMMING TRANSMISSION:\nThe Allies have seiged one of our vital nuclear testing facilities and are planning to use it against us.\n\nFirst Objective: Free Volkov who is being detained and interrogated in an Allied Prison.\n\nSecond Objective: Destroy Allied Communications Center to disrupt their reinforcements.\n\nFinal Objective: Escort our Demo Truck Into the Allied Base and detonate The Nukes. The Allies have set up heavy defenses in the area, keep your eyes peeled. Good Luck Comrade.\n\nEND TRANSMISSION.
+	LuaScript:
+		Scripts: red-zone.lua, red-zone-AI.lua
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			easy: Easy
+			normal: Normal
+			hard: Hard
+		Default: easy
+
+CAMERA.9_Cells:
+	Inherits: CAMERA
+	RevealsShroud:
+		Range: 9c0
+
+CAMERA.11_Cells:
+	Inherits: CAMERA
+	RevealsShroud:
+		Range: 11c0
+
+CAMERA.12_Cells:
+	Inherits: CAMERA
+	RevealsShroud:
+		Range: 12c0
+
+CAMERA.13_Cells:
+	Inherits: CAMERA
+	RevealsShroud:
+		Range: 13c0
+
+CAMERA.14_Cells:
+	Inherits: CAMERA
+	RevealsShroud:
+		Range: 14c0
+
+CAMERA.15_Cells:
+	Inherits: CAMERA
+	RevealsShroud:
+		Range: 15c0
+
+CAMERA.16_Cells:
+	Inherits: CAMERA
+	RevealsShroud:
+		Range: 16c0
+
+CAMERA.17_Cells:
+	Inherits: CAMERA
+	RevealsShroud:
+		Range: 17c0
+
+CAMERA.18_Cells:
+	Inherits: CAMERA
+	RevealsShroud:
+		Range: 18c0
+
+CAMERA.19_Cells:
+	Inherits: CAMERA
+	RevealsShroud:
+		Range: 19c0
+
+CAMERA.20_Cells:
+	Inherits: CAMERA
+	RevealsShroud:
+		Range: 20c0
+
+CAMERA.21_Cells:
+	Inherits: CAMERA
+	RevealsShroud:
+		Range: 21c0
+
+CAMERA.22_Cells:
+	Inherits: CAMERA
+	RevealsShroud:
+		Range: 22c0
+
+CAMERA.23_Cells:
+	Inherits: CAMERA
+	RevealsShroud:
+		Range: 23c0
+
+CAMERA.24_Cells:
+	Inherits: CAMERA
+	RevealsShroud:
+		Range: 24c0
+
+CAMERA.25_Cells:
+	Inherits: CAMERA
+	RevealsShroud:
+		Range: 25c0
+
+CAMERA.27_Cells:
+	Inherits: CAMERA
+	RevealsShroud:
+		Range: 27c0
+
+^Wall:
+	-Crushable:
+
+^Vehicle:
+	-Demolishable:
+	-Repairable:
+
+^Helicopter:
+	Targetable:
+		TargetTypes: Repair
+
+^Bridge:
+	DamageMultiplier@UNKILLABLE:
+		Modifier: 0
+
+^Palettes:
+	IndexedPlayerPalette:
+		PlayerIndex:
+			England Missile Silos: 160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175
+			England Air Base: 160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175
+			England Northern Base: 160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175
+			England Prison Base: 160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175
+			England Main Base: 160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175
+
+MSLO:
+	-Targetable:
+	-Selectable:
+	Interactable:
+	Tooltip:
+		GenericVisibility: None
+	Explodes:
+		Weapon: Atomic
+	NukePower:
+		ChargeInterval: 15000
+		AllowMultiple: True
+	Power:
+		Amount: 0
+
+CA:
+	RevealsShroud:
+		Range: 11c0
+	RevealsShroud@GAPGEN:
+		Range: 9c0
+
+MISS:
+	Tooltip:
+		Name: Prison
+	Targetable:
+		TargetTypes: Structure, Helicopter, Ground
+	Health:
+		HP: 130000
+	ProvidesPrerequisite@buildingname:
+	Power:
+		Amount: 600
+
+FIX:
+	Tooltip:
+		Name: Ammo Depot
+	Selectable:
+		Bounds: 24, 24
+		DecorationBounds: 24, 24
+	Building:
+		Footprint: x
+		Dimensions: 1,1
+	RepairsUnits:
+		Interval: 10
+	Reservable:
+	ProximityCapturable:
+		Range: 3c0
+		CaptorTypes: Helicopter
+	Power:
+		Amount: 0
+	-RallyPoint:
+	-CaptureNotification:
+	-WithResupplyAnimation:
+	-WithBuildingBib:
+	-Targetable:
+	RenderSprites:
+		Image: ammobox2
+
+THF:
+	Passenger:
+		CargoType: Pilot
+	Captures:
+		CaptureTypes: vehicle, helicopter, truck
+	CaptureManager:
+
+GNRL:
+	Tooltip:
+		Name: Volkov
+	RevealsShroud:
+		Range: 6c0
+	Demolition:
+		DetonationDelay: 45
+		Voice: Attack
+	Valued:
+		Cost: 150000
+	Health:
+		HP: 30000
+	Mobile:
+		Speed: 74
+	Armament:
+		Weapon: GrenadeLauncher
+		LocalOffset: 0,0,350
+	TakeCover:
+		DamageModifiers:
+			Prone50Percent: 50
+		DamageTriggers: TriggerProne
+	Passenger:
+		CargoType: Co-Pilot
+		CustomPipType: red
+	DamageMultiplier@EASY:
+		RequiresCondition: easy
+		Modifier: 80
+	DamageMultiplier@HARD:
+		RequiresCondition: hard
+		Modifier: 120
+	ExternalCondition@EASY:
+		Condition: easy
+	ExternalCondition@HARD:
+		Condition: hard
+
+HIND:
+	Inherits@CARGOPIPS: ^CargoPips
+	Valued:
+		Cost: 6000
+	Health:
+		HP: 30000
+	Armor:
+		Type: heavy
+	ProvidesRadar:
+	Armament@CHAINGUN:
+		Weapon: ChainGun
+		LocalOffset: 900, 0, -200
+		MuzzleSequence: muzzle
+		PauseOnCondition: !ammo
+	Armament@PRIMARY:
+		Name: primary
+		Weapon: HellfireAG
+		LocalOffset: 85,-300,-85
+		MuzzleSequence: muzzle
+		PauseOnCondition: !ammo
+	Armament@SECONDARY:
+		Name: secondary
+		Weapon: HellfireAG
+		LocalOffset: 85,300,-85
+		MuzzleSequence: muzzle
+		PauseOnCondition: !ammo
+	Aircraft:
+		InitialFacing: 20
+		LandableTerrainTypes: Clear, Rough, Road, Ore, Beach
+		IdleBehavior: None
+	Rearmable:
+		RearmActors: fix
+	-EjectOnDeath:
+	AmmoPool:
+		Ammo: 60
+		ReloadDelay: 10
+		ReloadCount: 3
+	ReloadAmmoPool:
+		Delay: 10
+		RequiresCondition: rank-veteran == 0
+	ReloadAmmoPool@RANK-1:
+		Delay: 9
+		RequiresCondition: rank-veteran == 1
+	ReloadAmmoPool@RANK-2:
+		Delay: 8
+		RequiresCondition: rank-veteran == 2
+	ReloadAmmoPool@RANK-3:
+		Delay: 7
+		RequiresCondition: rank-veteran == 3
+	ReloadAmmoPool@RANK-ELITE:
+		Delay: 5
+		RequiresCondition: rank-elite
+	WithAmmoPipsDecoration:
+		Position: BottomLeft
+		Margin: 4, 3
+		RequiresSelection: true
+		PipCount: 6
+	ProximityCaptor:
+		Types: Helicopter
+	CaptureManager:
+	Capturable:
+		Types: vehicle
+		CancelActivity: True
+	ChangeOwnerOnExit:
+	CaptureNotification:
+		Notification: UnitStolen
+	Cargo:
+		Types: Pilot, Co-Pilot
+		MaxWeight: 2
+		InitialUnits: thf
+	DamageMultiplier@EASY:
+		RequiresCondition: easy
+		Modifier: 80
+	DamageMultiplier@HARD:
+		RequiresCondition: hard
+		Modifier: 120
+	ExternalCondition@EASY:
+		Condition: easy
+	ExternalCondition@HARD:
+		Condition: hard
+	RenderSprites:
+		Scale: 1.3
+
+HIND.Husk:
+	RenderSprites:
+		Scale: 1.3
+
+APC.EntryUnit:
+	Inherits: APC
+	Inherits@CARGOPIPS: ^CargoPips
+	-Selectable:
+	-Buildable:
+	Interactable:
+	RejectsOrders:
+	Cargo:
+		Types: Infantry
+		MaxWeight: 1
+	RenderSprites:
+		Image: apc
+	MustBeDestroyed:
+
+LST.IN:
+	Inherits: LST
+	-Buildable:
+	RejectsOrders:
+	RenderSprites:
+		Image: LST
+	Cargo:
+		Types: disabled
+
+DOME:
+	RenderSprites:
+		Scale: 1.1
+	Health:
+		HP: 300000
+	Tooltip:
+		Name: Communications Center
+		GenericVisibility: None
+	Power:
+		Amount: 600
+
+DTRK:
+	RejectsOrders:
+	Health:
+		HP: 300000
+	Armor:
+		Type: heavy
+	Mobile:
+		Speed: 100
+
+TRUK:
+	Inherits@CARGOPIPS: ^CargoPips
+	Huntable:
+	SpawnActorOnDeath:
+		Actor: healcrate
+	Mobile:
+		PauseOnCondition: being-captured || !loaded
+	Cargo:
+		Types: Pilot
+		MaxWeight: 1
+		InitialUnits: thf
+		LoadedCondition: loaded
+
+JEEP:
+	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
+	Huntable:
+	Mobile:
+		PauseOnCondition: notmobile || being-captured || !loaded
+	Armament@AA:
+		Weapon: M60mgAA
+		MuzzleSequence: muzzle
+		LocalOffset: 128,0,43
+	Cargo:
+		Types: Infantry, Pilot, Co-Pilot
+		InitialUnits: thf
+		LoadedCondition: loaded
+	AttackTurreted:
+		RequiresCondition: loaded
+	Turreted:
+		RequiresCondition: loaded
+	Targetable:
+		TargetTypes: Piloted
+		RequiresCondition: loaded
+	ChangeOwnerOnExit:
+	MustBeDestroyed:
+
+2TNK:
+	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
+	Inherits@CARGOPIPS: ^CargoPips
+	AutoTarget:
+		AllowMovement: False
+	Huntable:
+	Mobile:
+		PauseOnCondition: being-captured || !loaded
+	Cargo:
+		Types: Pilot
+		MaxWeight: 1
+		InitialUnits: thf
+		LoadedCondition: loaded
+	ChangeOwnerOnExit:
+	Armament@AA:
+		Weapon: 90mmAA
+		Recoil: 128
+		RecoilRecovery: 38
+		LocalOffset: 720,0,80
+		MuzzleSequence: muzzle
+	AttackTurreted:
+		RequiresCondition: loaded
+	Turreted:
+		RequiresCondition: loaded
+	Targetable@IGNORE:
+		TargetTypes: NoAutoTarget
+		RequiresCondition: !loaded
+	MustBeDestroyed:
+
+1TNK:
+	Inherits@CARGOPIPS: ^CargoPips
+	Huntable:
+	Mobile:
+		PauseOnCondition: being-captured || !loaded
+	Cargo:
+		Types: Pilot
+		MaxWeight: 1
+		InitialUnits: thf
+		LoadedCondition: loaded
+	AttackTurreted:
+		RequiresCondition: loaded
+	Turreted:
+		RequiresCondition: loaded
+	Targetable@IGNORE:
+		TargetTypes: NoAutoTarget
+		RequiresCondition: !loaded
+	ChangeOwnerOnExit:
+	MustBeDestroyed:
+
+ARTY:
+	Inherits@CARGOPIPS: ^CargoPips
+	Huntable:
+	Mobile:
+		PauseOnCondition: being-captured || !loaded
+	Cargo:
+		Types: Pilot
+		MaxWeight: 1
+		InitialUnits: thf
+		LoadedCondition: loaded
+	AttackFrontal:
+		RequiresCondition: loaded
+	Targetable@IGNORE:
+		TargetTypes: NoAutoTarget
+		RequiresCondition: !loaded
+	ChangeOwnerOnExit:
+	MustBeDestroyed:
+
+OILB:
+	-Targetable:
+	-Selectable:
+	Interactable:
+	Explodes:
+		Weapon: Atomic
+	-TooltipDescription@ally:
+	-TooltipDescription@other:
+
+TRAN:
+	-Targetable:
+	-Selectable:
+	Interactable:
