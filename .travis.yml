@@ -35,11 +35,12 @@ env:
 # Run the NUnit tests
 script:
  - make all
- - test "$TRAVIS_OS_NAME" == "linux" && make check || echo "Skipping check"
- - test "$TRAVIS_OS_NAME" == "linux" && make check-scripts || echo "Skipping scripts check"
- - test "$TRAVIS_OS_NAME" == "linux" && make test || echo "Skipping tests"
- - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-     mono ~/.nuget/packages/nunit.consolerunner/3.11.1/tools/nunit3-console.exe --noresult OpenRA.Test.dll;
+ - |
+   if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+      make check || travis_terminate 1;
+      make check-scripts || travis_terminate 1;
+      make test || travis_terminate 1;
+      mono ~/.nuget/packages/nunit.consolerunner/3.11.1/tools/nunit3-console.exe --noresult OpenRA.Test.dll || travis_terminate 1;
    fi
 
 # Only watch the development branch and tagged release.
