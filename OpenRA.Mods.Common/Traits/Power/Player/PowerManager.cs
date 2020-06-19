@@ -92,6 +92,8 @@ namespace OpenRA.Mods.Common.Traits
 				totalProvided += amount;
 			else if (amount < 0)
 				totalDrained -= amount;
+
+			UpdatePowerState();
 		}
 
 		public void RemoveActor(Actor a)
@@ -108,6 +110,21 @@ namespace OpenRA.Mods.Common.Traits
 				totalProvided -= amount;
 			else if (amount < 0)
 				totalDrained += amount;
+
+			UpdatePowerState();
+		}
+
+		void UpdatePowerState()
+		{
+			isLowPower = ExcessPower < 0;
+
+			if (isLowPower != wasLowPower)
+				UpdatePowerRequiringActors();
+
+			if (isLowPower && !wasLowPower)
+				nextPowerAdviceTime = 0;
+
+			wasLowPower = isLowPower;
 		}
 
 		void ITick.Tick(Actor self)
@@ -129,17 +146,8 @@ namespace OpenRA.Mods.Common.Traits
 				}
 
 				wasHackEnabled = devMode.UnlimitedPower;
+				UpdatePowerState();
 			}
-
-			isLowPower = ExcessPower < 0;
-
-			if (isLowPower != wasLowPower)
-				UpdatePowerRequiringActors();
-
-			if (isLowPower && !wasLowPower)
-				nextPowerAdviceTime = 0;
-
-			wasLowPower = isLowPower;
 
 			if (--nextPowerAdviceTime <= 0)
 			{
