@@ -149,11 +149,9 @@ namespace OpenRA.Mods.Common.Traits
 				UpdatePowerState();
 			}
 
-			if (--nextPowerAdviceTime <= 0)
+			if (isLowPower && --nextPowerAdviceTime <= 0)
 			{
-				if (isLowPower)
-					Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", info.SpeechNotification, self.Owner.Faction.InternalName);
-
+				Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", info.SpeechNotification, self.Owner.Faction.InternalName);
 				nextPowerAdviceTime = info.AdviceInterval;
 			}
 
