@@ -73,16 +73,21 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void UpdateActor(Actor a)
 		{
+			// old is 0 if a is not in powerDrain
 			int old;
-			powerDrain.TryGetValue(a, out old); // old is 0 if a is not in powerDrain
+			powerDrain.TryGetValue(a, out old);
+
 			var amount = a.TraitsImplementing<Power>().Where(t => !t.IsTraitDisabled).Sum(p => p.GetEnabledPower());
 			powerDrain[a] = amount;
+
 			if (amount == old || devMode.UnlimitedPower)
 				return;
+
 			if (old > 0)
 				totalProvided -= old;
 			else if (old < 0)
 				totalDrained += old;
+
 			if (amount > 0)
 				totalProvided += amount;
 			else if (amount < 0)
@@ -113,11 +118,15 @@ namespace OpenRA.Mods.Common.Traits
 				totalDrained = 0;
 
 				if (!devMode.UnlimitedPower)
+				{
 					foreach (var kv in powerDrain)
+					{
 						if (kv.Value > 0)
 							totalProvided += kv.Value;
 						else if (kv.Value < 0)
 							totalDrained -= kv.Value;
+					}
+				}
 
 				wasHackEnabled = devMode.UnlimitedPower;
 			}
@@ -148,8 +157,12 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			get
 			{
-				if (PowerProvided >= PowerDrained) return PowerState.Normal;
-				if (PowerProvided > PowerDrained / 2) return PowerState.Low;
+				if (PowerProvided >= PowerDrained)
+					return PowerState.Normal;
+
+				if (PowerProvided > PowerDrained / 2)
+					return PowerState.Low;
+
 				return PowerState.Critical;
 			}
 		}
