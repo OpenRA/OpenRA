@@ -181,3 +181,7 @@ DD:
 STNK:
 	Buildable:
 		Prerequisites: ~disabled
+
+SS:
+	AutoTarget:
+		InitialStanceAI: Defend

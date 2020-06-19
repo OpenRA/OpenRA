@@ -158,6 +158,10 @@ VOLK:
 	RenderSprites:
 		Image: GNRL
 
+E1:
+	AutoTarget:
+		InitialStance: HoldFire
+
 powerproxy.pararifles:
 	Inherits: powerproxy.paratroopers
 	ParatroopersPower:

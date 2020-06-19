@@ -1020,7 +1020,6 @@ Actors:
 		Owner: GoodGuy
 		Facing: 159
 		SubCell: 1
-		Stance: HoldFire
 	TanyaSquadUnit01: e1
 		Location: 61,49
 		Owner: Greece
@@ -1034,7 +1033,6 @@ Actors:
 		Owner: GoodGuy
 		Facing: 127
 		SubCell: 4
-		Stance: HoldFire
 	TanyaSquadUnit03: e1
 		Location: 63,50
 		Owner: Greece
@@ -1052,13 +1050,11 @@ Actors:
 		Owner: GoodGuy
 		Facing: 127
 		SubCell: 1
-		Stance: HoldFire
 	MineSoldier04: e1
 		Location: 34,51
 		Owner: GoodGuy
 		Facing: 95
 		SubCell: 2
-		Stance: HoldFire
 	TanyaSquadUnit05: e1
 		Location: 62,51
 		Owner: Greece
@@ -1072,13 +1068,11 @@ Actors:
 		Owner: GoodGuy
 		Facing: 127
 		SubCell: 2
-		Stance: HoldFire
 	MineSoldier06: e1
 		Location: 33,52
 		Owner: GoodGuy
 		Facing: 127
 		SubCell: 1
-		Stance: HoldFire
 	TownMedic01: medi
 		Location: 26,57
 		Owner: Greece
