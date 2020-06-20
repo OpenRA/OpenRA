@@ -66,3 +66,8 @@ Demolish:
 		Explosions: large_twlt
 		ExplosionPalette: effect-ignore-lighting-alpha75
 		ImpactSounds: expnew09.aud
+
+DropPodExplode:
+	Warhead@1Eff: CreateEffect
+		Explosions: droppod_explosion, droppod2_explosion, droppody_explosion, droppody2_explosion
+		ExplosionPalette: effect-ignore-lighting-alpha75

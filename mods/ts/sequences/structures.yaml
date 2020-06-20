@@ -1977,6 +1977,13 @@ gaplug:
 		Length: 15
 		Reverses: true
 		Tick: 120
+	idle-droppoda: gaplug_d
+		Length: 15
+		Tick: 120
+		Offset: -12, -42, 30
+	idle-droppodb: gaplug_d
+		Length: 15
+		Tick: 120
 	make: gtplugmk
 		Length: 17
 		ShadowStart: 17
@@ -2009,3 +2016,12 @@ gaplug3:
 		Length: 14
 		Tick: 120
 	icon: rad3icon
+
+gaplug4:
+	place: gtplug_d
+		Offset: 24,-48, 48
+		UseTilesetCode: true
+		Reverses: true
+		Length: 14
+		Tick: 120
+	icon: rad1icon

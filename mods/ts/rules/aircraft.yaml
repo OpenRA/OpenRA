@@ -35,6 +35,52 @@ DPOD:
 		EmptySequence: pip-ammoempty
 		Palette: pips
 
+DPOD2:
+	Inherits@2: ^ExistsInWorld
+	Valued:
+		Cost: 10
+	Tooltip:
+		Name: Drop Pod
+	Health:
+		HP: 6000
+	Armor:
+		Type: Light
+	Aircraft:
+		TurnSpeed: 5
+		Speed: 300
+		CruiseAltitude: 16c0
+		MaximumPitch: 110
+		LandableTerrainTypes: Clear, Road, Rail, DirtRoad, Rough
+	HiddenUnderFog:
+		Type: CenterPosition
+	BodyOrientation:
+		UseClassicPerspectiveFudge: False
+	RenderSprites:
+		Image: pod
+	WithFacingSpriteBody:
+	QuantizeFacingsFromSequence:
+	HitShape:
+	Interactable:
+	WithShadow:
+	SmokeTrailWhenDamaged:
+		Sprite: largesmoke
+		MinDamage: Undamaged
+	FallsToEarth:
+		Explosion: DropPodExplode
+		Moves: true
+		Velocity: 768
+		MaximumSpinSpeed: 0
+
+DPOD2E1:
+	Inherits: DPOD2
+	SpawnActorOnDeath:
+		Actor: E1R3
+
+DPOD2E2:
+	Inherits: DPOD2
+	SpawnActorOnDeath:
+		Actor: E2R3
+
 DSHP:
 	Inherits: ^Aircraft
 	Inherits@CARGOPIPS: ^CargoPips

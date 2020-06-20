@@ -38,6 +38,15 @@ E1:
 	RevealsShroud:
 		Range: 5c0
 
+E1R3:
+	Inherits: E1
+	RenderSprites:
+		Image: e1.gdi
+	ProducibleWithLevel:
+		Prerequisites: techlevel.low
+		InitialLevels: 3
+	-Buildable:
+
 ENGINEER:
 	Inherits: ^Soldier
 	Inherits@selection: ^SelectableSupportUnit
