@@ -47,7 +47,6 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly World world;
 		readonly Player player;
-		readonly Func<Actor, bool> isEnemyUnit;
 		readonly Predicate<Actor> unitCannotBeOrderedOrIsIdle;
 		readonly int maximumCaptureTargetOptions;
 		int minCaptureDelayTicks;
@@ -63,11 +62,6 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (world.Type == WorldType.Editor)
 				return;
-
-			isEnemyUnit = unit =>
-				player.Stances[unit.Owner] == Stance.Enemy
-					&& !unit.Info.HasTraitInfo<HuskInfo>()
-					&& unit.Info.HasTraitInfo<ITargetableInfo>();
 
 			unitCannotBeOrderedOrIsIdle = a => a.Owner != player || a.IsDead || !a.IsInWorld || a.IsIdle;
 
@@ -87,16 +81,6 @@ namespace OpenRA.Mods.Common.Traits
 				minCaptureDelayTicks = Info.MinimumCaptureDelay;
 				QueueCaptureOrders(bot);
 			}
-		}
-
-		internal Actor FindClosestEnemy(WPos pos)
-		{
-			return world.Actors.Where(isEnemyUnit).ClosestTo(pos);
-		}
-
-		internal Actor FindClosestEnemy(WPos pos, WDist radius)
-		{
-			return world.FindActorsInCircle(pos, radius).Where(isEnemyUnit).ClosestTo(pos);
 		}
 
 		IEnumerable<Actor> GetVisibleActorsBelongingToPlayer(Player owner)
