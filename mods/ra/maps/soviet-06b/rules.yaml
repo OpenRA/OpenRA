@@ -142,11 +142,6 @@ MNLY:
 	Buildable:
 		Prerequisites: ~disabled
 
-HARV:
-	Harvester:
-		SearchFromProcRadius: 50
-		SearchFromHarvesterRadius: 50
-
 AFLD:
 	ParatroopersPower@paratroopers:
 		DropItems: E1,E1,E1,E1,E1
