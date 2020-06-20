@@ -33,6 +33,15 @@ E2:
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
 
+E2R3:
+	Inherits: E2
+	RenderSprites:
+		Image: E2
+	ProducibleWithLevel:
+		Prerequisites: techlevel.low
+		InitialLevels: 3
+	-Buildable:
+
 MEDIC:
 	Inherits: ^Soldier
 	Inherits@EXPERIENCE: ^GainsExperience
