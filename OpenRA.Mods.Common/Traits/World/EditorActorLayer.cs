@@ -140,6 +140,8 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var cell in footprint)
 				AddPreviewLocation(preview, cell);
 
+			preview.AddedToEditor();
+
 			if (!initialSetup)
 			{
 				UpdateNeighbours(preview.Footprint);
@@ -171,6 +173,7 @@ namespace OpenRA.Mods.Common.Traits
 					cellMap.Remove(cell);
 			}
 
+			preview.RemovedFromEditor();
 			UpdateNeighbours(preview.Footprint);
 
 			if (preview.Info.Name == "mpspawn")

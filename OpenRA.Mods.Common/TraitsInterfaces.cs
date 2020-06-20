@@ -591,6 +591,13 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	[RequireExplicitImplementation]
+	public interface INotifyEditorPlacementInfo : ITraitInfoInterface
+	{
+		object AddedToEditor(EditorActorPreview preview, World editorWorld);
+		void RemovedFromEditor(EditorActorPreview preview, World editorWorld, object data);
+	}
+
+	[RequireExplicitImplementation]
 	public interface IPreventMapSpawn
 	{
 		bool PreventMapSpawn(World world, ActorReference actorReference);

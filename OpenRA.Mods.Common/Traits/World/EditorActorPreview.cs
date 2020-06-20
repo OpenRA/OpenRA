@@ -45,12 +45,13 @@ namespace OpenRA.Mods.Common.Traits
 		public PlayerReference Owner { get; set; }
 		public SubCell SubCell { get; private set; }
 		public bool Selected { get; set; }
+		public readonly Color RadarColor;
 
 		readonly WorldRenderer worldRenderer;
 		readonly TooltipInfoBase tooltip;
 		IActorPreview[] previews;
 		readonly ActorReference reference;
-		public readonly Color RadarColor;
+		readonly Dictionary<INotifyEditorPlacementInfo, object> editorData = new Dictionary<INotifyEditorPlacementInfo, object>();
 
 		public EditorActorPreview(WorldRenderer worldRenderer, string id, ActorReference reference, PlayerReference owner)
 		{
@@ -129,6 +130,18 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (Selected)
 				yield return SelectionBox;
+		}
+
+		public void AddedToEditor()
+		{
+			foreach (var notify in Info.TraitInfos<INotifyEditorPlacementInfo>())
+				editorData[notify] = notify.AddedToEditor(this, worldRenderer.World);
+		}
+
+		public void RemovedFromEditor()
+		{
+			foreach (var kv in editorData)
+				kv.Key.RemovedFromEditor(this, worldRenderer.World, kv.Value);
 		}
 
 		public void AddInit<T>(T init) where T : ActorInit
