@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Mods.Common.Pathfinder;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -26,6 +27,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Actor types that can be targeted for capturing.",
 			"Leave this empty to include all actors.")]
 		public readonly HashSet<string> CapturableActorTypes = new HashSet<string>();
+
+		[Desc("Avoid enemy actors nearby when searching for capture opportunities. Should be somewhere near the max weapon range.")]
+		public readonly WDist EnemyAvoidanceRadius = WDist.FromCells(8);
 
 		[Desc("Minimum delay (in ticks) between trying to capture with CapturingActorTypes.")]
 		public readonly int MinimumCaptureDelay = 375;
@@ -49,10 +53,13 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Player player;
 		readonly Predicate<Actor> unitCannotBeOrderedOrIsIdle;
 		readonly int maximumCaptureTargetOptions;
-		int minCaptureDelayTicks;
 
 		// Units that the bot already knows about and has given a capture order. Any unit not on this list needs to be given a new order.
-		List<Actor> activeCapturers = new List<Actor>();
+		readonly List<Actor> activeCapturers = new List<Actor>();
+
+		int minCaptureDelayTicks;
+		IPathFinder pathfinder;
+		DomainIndex domainIndex;
 
 		public CaptureManagerBotModule(Actor self, CaptureManagerBotModuleInfo info)
 			: base(info)
@@ -72,6 +79,9 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			// Avoid all AIs reevaluating assignments on the same tick, randomize their initial evaluation delay.
 			minCaptureDelayTicks = world.LocalRandom.Next(0, Info.MinimumCaptureDelay);
+
+			pathfinder = world.WorldActor.Trait<IPathFinder>();
+			domainIndex = world.WorldActor.Trait<DomainIndex>();
 		}
 
 		void IBotTick.BotTick(IBot bot)
@@ -116,12 +126,12 @@ namespace OpenRA.Mods.Common.Traits
 			if (capturers.Length == 0)
 				return;
 
-			var randPlayer = world.Players.Where(p => !p.Spectating
+			var randomPlayer = world.Players.Where(p => !p.Spectating
 				&& Info.CapturableStances.HasStance(player.Stances[p])).Random(world.LocalRandom);
 
 			var targetOptions = Info.CheckCaptureTargetsForVisibility
-				? GetVisibleActorsBelongingToPlayer(randPlayer)
-				: GetActorsThatCanBeOrderedByPlayer(randPlayer);
+				? GetVisibleActorsBelongingToPlayer(randomPlayer)
+				: GetActorsThatCanBeOrderedByPlayer(randomPlayer);
 
 			var capturableTargetOptions = targetOptions
 				.Where(target =>
@@ -143,14 +153,41 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var capturer in capturers)
 			{
-				var targetActor = capturableTargetOptions.MinByOrDefault(target => (target.CenterPosition - capturer.Actor.CenterPosition).LengthSquared);
-				if (targetActor == null)
-					continue;
+				var nearestTargetActors = capturableTargetOptions.OrderBy(target => (target.CenterPosition - capturer.Actor.CenterPosition).LengthSquared);
+				foreach (var nearestTargetActor in nearestTargetActors)
+				{
+					if (activeCapturers.Contains(capturer.Actor))
+						continue;
 
-				bot.QueueOrder(new Order("CaptureActor", capturer.Actor, Target.FromActor(targetActor), true));
-				AIUtils.BotDebug("AI ({0}): Ordered {1} to capture {2}", player.ClientIndex, capturer.Actor, targetActor);
-				activeCapturers.Add(capturer.Actor);
+					var safeTarget = SafePath(capturer.Actor, nearestTargetActor);
+					if (safeTarget.Type == TargetType.Invalid)
+						continue;
+
+					bot.QueueOrder(new Order("CaptureActor", capturer.Actor, safeTarget, true));
+					AIUtils.BotDebug("AI ({0}): Ordered {1} to capture {2}", player.ClientIndex, capturer.Actor, nearestTargetActor);
+					activeCapturers.Add(capturer.Actor);
+				}
 			}
+		}
+
+		Target SafePath(Actor capturer, Actor target)
+		{
+			var locomotor = capturer.Trait<Mobile>().Locomotor;
+
+			if (!domainIndex.IsPassable(capturer.Location, target.Location, locomotor.Info))
+				return Target.Invalid;
+
+			var path = pathfinder.FindPath(
+				PathSearch.FromPoint(world, locomotor, capturer, capturer.Location, target.Location, BlockedByActor.None)
+					.WithCustomCost(loc => world.FindActorsInCircle(world.Map.CenterOfCell(loc), Info.EnemyAvoidanceRadius)
+						.Where(u => !u.IsDead && capturer.Owner.Stances[u.Owner] == Stance.Enemy && capturer.IsTargetableBy(u))
+						.Sum(u => Math.Max(WDist.Zero.Length, Info.EnemyAvoidanceRadius.Length - (world.Map.CenterOfCell(loc) - u.CenterPosition).Length)))
+					.FromPoint(capturer.Location));
+
+			if (path.Count == 0)
+				return Target.Invalid;
+
+			return Target.FromActor(target);
 		}
 	}
 }
