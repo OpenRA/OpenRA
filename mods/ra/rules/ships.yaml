@@ -337,3 +337,55 @@ PT:
 	RenderDetectionCircle:
 	Selectable:
 		DecorationBounds: 36,36
+
+CARR:
+	Inherits: ^Ship
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Buildable:
+		Queue: Ship
+		BuildAtProductionType: Boat
+		BuildPaletteOrder: 20
+		Prerequisites: ~disabled
+		Description: Launches attack helicopters.\nCut content.\n  Unbalanced.
+	Valued:
+		Cost: 700
+	Tooltip:
+		Name: Helicarrier
+	Health:
+		HP: 400
+	Armor:
+		Type: Heavy
+	Mobile:
+		TurnSpeed: 255
+		Speed: 88
+		InitialFacing: 0
+	RevealsShroud:
+		MinRange: 4c0
+		Range: 6c0
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 4c0
+	Armament@Heli:
+		Name: heli
+		Weapon: HeliLauncher
+	CarrierParent:
+		Actors: heli.carrier
+		RespawnTicks: 300
+		ArmamentNames: heli
+		LoadedCondition: loaded
+	AttackFrontal@Spawner:
+		Armaments: heli
+		FacingTolerance: 128
+	WithIdleAnimation:
+	-WithFacingSpriteBody:
+	WithSpriteBody:
+	Exit:
+		Facing: 0
+	WithIdleOverlay@HELI:
+		Sequence: heli
+		RequiresCondition: loaded
+		Offset: 512, 0, 0
+	WithIdleOverlay@ROTOR:
+		Sequence: rotor
+		RequiresCondition: loaded
+		Offset: 512, 0, 0

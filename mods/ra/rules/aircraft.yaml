@@ -314,6 +314,19 @@ HELI:
 		Margin: 4, 3
 		RequiresSelection: true
 
+HELI.CARRIER:
+	Inherits: HELI
+	RenderSprites:
+		Image: heli
+	-Selectable:
+	Interactable:
+	RejectsOrders:
+	CarrierChild:
+		LandingDistance: 8c0
+	-EjectOnDeath:
+	Aircraft:
+		InitialFacing: 0
+
 HIND:
 	Inherits: ^Helicopter
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove

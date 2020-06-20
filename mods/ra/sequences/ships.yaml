@@ -47,3 +47,20 @@ msub:
 	idle:
 		Facings: 16
 	icon: msubicon
+
+carr:
+	idle:
+		Length: 1
+		ZOffset: -1023
+	active:
+		Start: 1
+		Length: 8
+		ZOffset: -1023
+	heli: heli
+		Facings: 32
+		UseClassicFacings: True
+	rotor: lrotor
+		Start: 4
+		Length: 8
+	icon: carricon
+		Start: 0
