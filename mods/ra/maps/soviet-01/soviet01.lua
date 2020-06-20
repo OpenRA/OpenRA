@@ -56,6 +56,17 @@ Paratroopers = function()
 	end)
 end
 
+PanicAttack = function()
+	if not HouseDamaged then
+		local panicTeam = Reinforcements.Reinforce(france, { "c3", "c6", "c9" }, { CivSpawn.Location }, 0)
+		Utils.Do(panicTeam, function(a)
+			a.Move(a.Location + CVec.New(-1,-1))
+			a.Panic()
+		end)
+	end
+	HouseDamaged = true
+end
+
 WorldLoaded = function()
 	player = Player.GetPlayer("USSR")
 	france = Player.GetPlayer("France")
@@ -90,6 +101,7 @@ WorldLoaded = function()
 	Paradrop = Actor.Create("powerproxy.paratroopers", false, { Owner = player })
 	Trigger.AfterDelay(DateTime.Seconds(2), InsertYaks)
 	Paratroopers()
+	Trigger.OnDamaged(HayHouse, PanicAttack)
 end
 
 Tick = function()
