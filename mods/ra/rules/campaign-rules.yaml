@@ -48,6 +48,11 @@ E7.noautotarget:
 ^Vehicle:
 	Demolishable:
 
+HARV:
+	Harvester:
+		SearchFromProcRadius: 50
+		SearchFromHarvesterRadius: 50
+
 MONEYCRATE:
 	Tooltip:
 		Name: Crate

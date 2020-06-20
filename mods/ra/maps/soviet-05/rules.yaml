@@ -80,10 +80,6 @@ World:
 			hard: Hard
 		Default: easy
 
-HARV:
-	Harvester:
-		SearchFromProcRadius: 44
-
 MCV.CAM:
 	Inherits: CAMERA
 	RevealsShroud:

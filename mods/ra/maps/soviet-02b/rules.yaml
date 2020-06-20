@@ -92,11 +92,6 @@ GUN:
 	-RepairableBuilding:
 	-WithBuildingRepairDecoration:
 
-HARV:
-	Harvester:
-		SearchFromProcRadius: 50
-		SearchFromHarvesterRadius: 50
-
 powerproxy.paratroopers:
 	ParatroopersPower:
 		DropItems: E1,E1,E2,E2,E2
