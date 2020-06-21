@@ -12,6 +12,11 @@ World:
 		WinVideo: sovtstar.vqa
 		LossVideo: sovcemet.vqa
 
+V01:
+	-SpawnActorOnDeath@1:
+	-SpawnActorOnDeath@2:
+	-SpawnActorOnDeath@3:
+
 SPEN:
 	Buildable:
 		Prerequisites: ~disabled

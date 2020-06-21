@@ -152,9 +152,15 @@ AFLD:
 		DropItems: E1,E1,E1,E1,E1
 
 V01:
+	-SpawnActorOnDeath@1:
+	-SpawnActorOnDeath@2:
+	-SpawnActorOnDeath@3:
 	SpawnActorOnDeath:
 		Actor: moneycrate
 
 V05:
+	-SpawnActorOnDeath@1:
+	-SpawnActorOnDeath@2:
+	-SpawnActorOnDeath@3:
 	SpawnActorOnDeath:
 		Actor: healcrate

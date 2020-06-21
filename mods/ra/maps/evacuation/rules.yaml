@@ -58,6 +58,9 @@ EINSTEIN:
 		Weight: 0
 
 V01:
+	-SpawnActorOnDeath@1:
+	-SpawnActorOnDeath@2:
+	-SpawnActorOnDeath@3:
 	SpawnActorOnDeath:
 		Actor: healcrate
 

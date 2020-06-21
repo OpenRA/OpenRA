@@ -49,6 +49,9 @@ C10:
 	Inherits@2: ^ArmedCivilian
 
 V01:
+	-SpawnActorOnDeath@1:
+	-SpawnActorOnDeath@2:
+	-SpawnActorOnDeath@3:
 	SpawnActorOnDeath:
 		Actor: healcrate
 

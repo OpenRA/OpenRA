@@ -49,6 +49,11 @@ MONEYCRATE:
 	GiveCashCrateAction:
 		Amount: 2000
 
+V01:
+	-SpawnActorOnDeath@1:
+	-SpawnActorOnDeath@2:
+	-SpawnActorOnDeath@3:
+
 STEK:
 	Buildable:
 		Prerequisites: ~disabled

@@ -36,6 +36,9 @@ V01:
 		MaxWeight: 1
 
 V05:
+	-SpawnActorOnDeath@1:
+	-SpawnActorOnDeath@2:
+	-SpawnActorOnDeath@3:
 	SpawnActorOnDeath:
 		Actor: healcrate
 
