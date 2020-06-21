@@ -201,7 +201,9 @@ ORCAB:
 	Aircraft:
 		CruiseAltitude: 5c512
 		TurnSpeed: 3
+		IdleTurnSpeed: 1
 		Speed: 96
+		IdleSpeed: 60
 		CruisingCondition: cruising
 		TakeoffSounds: orcaup1.aud
 		LandingSounds: orcadwn1.aud
@@ -356,6 +358,8 @@ SCRIN:
 		CruiseAltitude: 5c0
 		TurnSpeed: 3
 		Speed: 168
+		IdleTurnSpeed: 2
+		IdleSpeed: 100
 		TakeoffSounds: dropup1.aud
 		LandingSounds: dropdwn1.aud
 		CanHover: false
