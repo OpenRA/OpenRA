@@ -82,13 +82,13 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			public string Type;
 			public int Depth;
-			public Sprite Sprite;
+			public ISpriteSequence Sequence;
 		}
 
 		public readonly SmudgeLayerInfo Info;
 		readonly Dictionary<CPos, Smudge> tiles = new Dictionary<CPos, Smudge>();
 		readonly Dictionary<CPos, Smudge> dirty = new Dictionary<CPos, Smudge>();
-		readonly Dictionary<string, Sprite[]> smudges = new Dictionary<string, Sprite[]>();
+		readonly Dictionary<string, ISpriteSequence> smudges = new Dictionary<string, ISpriteSequence>();
 		readonly World world;
 
 		TerrainSpriteLayer render;
@@ -102,22 +102,19 @@ namespace OpenRA.Mods.Common.Traits
 			var sequenceProvider = world.Map.Rules.Sequences;
 			var types = sequenceProvider.Sequences(Info.Sequence);
 			foreach (var t in types)
-			{
-				var seq = sequenceProvider.GetSequence(Info.Sequence, t);
-				var sprites = Exts.MakeArray(seq.Length, x => seq.GetSprite(x));
-				smudges.Add(t, sprites);
-			}
+				smudges.Add(t, sequenceProvider.GetSequence(Info.Sequence, t));
 		}
 
 		public void WorldLoaded(World w, WorldRenderer wr)
 		{
-			var first = smudges.First().Value.First();
-			var sheet = first.Sheet;
-			if (smudges.Values.Any(sprites => sprites.Any(s => s.Sheet != sheet)))
+			var sprites = smudges.Values.SelectMany(v => Exts.MakeArray(v.Length, x => v.GetSprite(x))).ToList();
+			var sheet = sprites[0].Sheet;
+			var blendMode = sprites[0].BlendMode;
+
+			if (sprites.Any(s => s.Sheet != sheet))
 				throw new InvalidDataException("Resource sprites span multiple sheets. Try loading their sequences earlier.");
 
-			var blendMode = first.BlendMode;
-			if (smudges.Values.Any(sprites => sprites.Any(s => s.BlendMode != blendMode)))
+			if (sprites.Any(s => s.BlendMode != blendMode))
 				throw new InvalidDataException("Smudges specify different blend modes. "
 					+ "Try using different smudge types for smudges that use different blend modes.");
 
@@ -130,15 +127,16 @@ namespace OpenRA.Mods.Common.Traits
 				if (!smudges.ContainsKey(s.Type))
 					continue;
 
+				var seq = smudges[s.Type];
 				var smudge = new Smudge
 				{
 					Type = s.Type,
 					Depth = s.Depth,
-					Sprite = smudges[s.Type][s.Depth]
+					Sequence = seq
 				};
 
 				tiles.Add(kv.Key, smudge);
-				render.Update(kv.Key, smudge.Sprite);
+				render.Update(kv.Key, seq, s.Depth);
 			}
 		}
 
@@ -150,24 +148,21 @@ namespace OpenRA.Mods.Common.Traits
 			if (Game.CosmeticRandom.Next(0, 100) <= Info.SmokePercentage)
 				world.AddFrameEndTask(w => w.Add(new SpriteEffect(world.Map.CenterOfCell(loc), w, Info.SmokeType, Info.SmokeSequence, Info.SmokePalette)));
 
-			// A null Sprite indicates a deleted smudge.
-			if ((!dirty.ContainsKey(loc) || dirty[loc].Sprite == null) && !tiles.ContainsKey(loc))
+			// A null Sequence indicates a deleted smudge.
+			if ((!dirty.ContainsKey(loc) || dirty[loc].Sequence == null) && !tiles.ContainsKey(loc))
 			{
 				// No smudge; create a new one
 				var st = smudges.Keys.Random(Game.CosmeticRandom);
-				dirty[loc] = new Smudge { Type = st, Depth = 0, Sprite = smudges[st][0] };
+				dirty[loc] = new Smudge { Type = st, Depth = 0, Sequence = smudges[st] };
 			}
 			else
 			{
 				// Existing smudge; make it deeper
-				// A null Sprite indicates a deleted smudge.
-				var tile = dirty.ContainsKey(loc) && dirty[loc].Sprite != null ? dirty[loc] : tiles[loc];
+				// A null Sequence indicates a deleted smudge.
+				var tile = dirty.ContainsKey(loc) && dirty[loc].Sequence != null ? dirty[loc] : tiles[loc];
 				var maxDepth = smudges[tile.Type].Length;
 				if (tile.Depth < maxDepth - 1)
-				{
 					tile.Depth++;
-					tile.Sprite = smudges[tile.Type][tile.Depth];
-				}
 
 				dirty[loc] = tile;
 			}
@@ -180,8 +175,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			var tile = dirty.ContainsKey(loc) ? dirty[loc] : default(Smudge);
 
-			// Setting Sprite to null to indicate a deleted smudge.
-			tile.Sprite = null;
+			// Setting Sequence to null to indicate a deleted smudge.
+			tile.Sequence = null;
 			dirty[loc] = tile;
 		}
 
@@ -192,12 +187,18 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				if (!self.World.FogObscures(kv.Key))
 				{
-					// A null Sprite indicates a deleted smudge.
-					if (kv.Value.Sprite == null)
+					// A null Sequence
+					if (kv.Value.Sequence == null)
+					{
 						tiles.Remove(kv.Key);
+						render.Clear(kv.Key);
+					}
 					else
-						tiles[kv.Key] = kv.Value;
-					render.Update(kv.Key, kv.Value.Sprite);
+					{
+						var smudge = kv.Value;
+						tiles[kv.Key] = smudge;
+						render.Update(kv.Key, smudge.Sequence, smudge.Depth);
+					}
 
 					remove.Add(kv.Key);
 				}

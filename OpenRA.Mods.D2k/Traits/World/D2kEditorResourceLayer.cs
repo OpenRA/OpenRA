@@ -35,7 +35,7 @@ namespace OpenRA.Mods.D2k.Traits
 			// Empty tile
 			if (t.Type == null)
 			{
-				t.Sprite = null;
+				t.Sequence = null;
 				return t;
 			}
 
@@ -51,12 +51,16 @@ namespace OpenRA.Mods.D2k.Traits
 			{
 				var sprites = D2kResourceRenderer.Variants[t.Variant];
 				var frame = t.Density > t.Type.Info.MaxDensity / 2 ? 1 : 0;
-				t.Sprite = t.Type.Variants.First().Value[sprites[frame]];
+				t.Sequence = t.Type.Variants.First().Value;
+				t.Frame = sprites[frame];
 			}
 			else if (D2kResourceRenderer.SpriteMap.TryGetValue(clear, out index))
-				t.Sprite = t.Type.Variants.First().Value[index];
+			{
+				t.Sequence = t.Type.Variants.First().Value;
+				t.Frame = index;
+			}
 			else
-				t.Sprite = null;
+				t.Sequence = null;
 
 			return t;
 		}

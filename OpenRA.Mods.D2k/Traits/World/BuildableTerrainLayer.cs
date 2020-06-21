@@ -31,7 +31,7 @@ namespace OpenRA.Mods.D2k.Traits
 	public class BuildableTerrainLayer : IRenderOverlay, IWorldLoaded, ITickRender, INotifyActorDisposing
 	{
 		readonly BuildableTerrainLayerInfo info;
-		readonly Dictionary<CPos, Sprite> dirty = new Dictionary<CPos, Sprite>();
+		readonly Dictionary<CPos, TerrainTile?> dirty = new Dictionary<CPos, TerrainTile?>();
 		readonly Map map;
 		readonly CellLayer<int> strength;
 
@@ -61,10 +61,7 @@ namespace OpenRA.Mods.D2k.Traits
 
 			map.CustomTerrain[cell] = map.Rules.TileSet.GetTerrainIndex(tile);
 			strength[cell] = info.MaxStrength;
-
-			// Terrain tiles define their origin at the topleft
-			var s = theater.TileSprite(tile);
-			dirty[cell] = new Sprite(s.Sheet, s.Bounds, s.ZRamp, float2.Zero, s.Channel, s.BlendMode);
+			dirty[cell] = tile;
 		}
 
 		public void HitTile(CPos cell, int damage)
@@ -94,7 +91,17 @@ namespace OpenRA.Mods.D2k.Traits
 			{
 				if (!self.World.FogObscures(kv.Key))
 				{
-					render.Update(kv.Key, kv.Value);
+					var tile = kv.Value;
+					if (tile.HasValue)
+					{
+						// Terrain tiles define their origin at the topleft
+						var s = theater.TileSprite(tile.Value);
+						var ss = new Sprite(s.Sheet, s.Bounds, s.ZRamp, float2.Zero, s.Channel, s.BlendMode);
+						render.Update(kv.Key, ss);
+					}
+					else
+						render.Clear(kv.Key);
+
 					remove.Add(kv.Key);
 				}
 			}

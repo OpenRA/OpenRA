@@ -86,17 +86,16 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public readonly ResourceTypeInfo Info;
 		public PaletteReference Palette { get; private set; }
-		public readonly Dictionary<string, Sprite[]> Variants;
+		public readonly Dictionary<string, ISpriteSequence> Variants;
 
 		public ResourceType(ResourceTypeInfo info, World world)
 		{
 			Info = info;
-			Variants = new Dictionary<string, Sprite[]>();
+			Variants = new Dictionary<string, ISpriteSequence>();
 			foreach (var v in info.Sequences)
 			{
 				var seq = world.Map.Rules.Sequences.GetSequence(Info.Image, v);
-				var sprites = Exts.MakeArray(seq.Length, x => seq.GetSprite(x));
-				Variants.Add(v, sprites);
+				Variants.Add(v, seq);
 			}
 		}
 
