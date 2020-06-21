@@ -54,7 +54,11 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Turn speed to apply when aircraft flies in circles while idle. Defaults to TurnSpeed if negative.")]
 		public readonly int IdleTurnSpeed = -1;
 
+		[Desc("Maximum flight speed")]
 		public readonly int Speed = 1;
+
+		[Desc("If non-negative, force the aircraft to move in circles at this speed when idle, ignoring CanHover.")]
+		public readonly int IdleSpeed = -1;
 
 		[Desc("Body pitch when flying forwards. Only relevant for voxel aircraft.")]
 		public readonly WAngle Pitch = WAngle.Zero;
