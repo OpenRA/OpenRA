@@ -888,6 +888,10 @@
 		CanHover: true
 		CanSlide: true
 		VTOL: true
+		Pitch: -64
+		PitchSpeed: 16
+		Roll: 56
+		RollSpeed: 14
 	Voiced:
 		VoiceSet: Heli
 	HiddenUnderFog:
