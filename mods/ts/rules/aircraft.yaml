@@ -8,6 +8,8 @@ DPOD:
 		Name: Drop Pod
 	Aircraft:
 		IdleBehavior: Land
+		Pitch: 0
+		Roll: 0
 		TurnSpeed: 5
 		Speed: 149
 		InitialFacing: 0
@@ -92,6 +94,8 @@ DSHP:
 		AddToArmyValue: true
 	Aircraft:
 		IdleBehavior: Land
+		Pitch: 0
+		Roll: 0
 		TurnSpeed: 5
 		Speed: 168
 		InitialFacing: 0
@@ -303,6 +307,8 @@ TRNSPORT:
 		TurnSpeed: 5
 		Speed: 149
 		InitialFacing: 0
+		Pitch: 0
+		Roll: 0
 		TakeoffSounds: dropup1.aud
 		LandingSounds: dropdwn1.aud
 	Carryall:
@@ -410,6 +416,10 @@ APACHE:
 	Selectable:
 		Bounds: 30,24
 	Aircraft:
+		Pitch: -32
+		PitchSpeed: 8
+		Roll: 16
+		RollSpeed: 8
 		TurnSpeed: 5
 		Speed: 130
 		CanSlide: false
@@ -472,6 +482,8 @@ HUNTER:
 	Aircraft:
 		TurnSpeed: 16
 		Speed: 355
+		Pitch: 0
+		Roll: 0
 		CruiseAltitude: 3c128
 		CruisingCondition: cruising
 		MoveIntoShroud: true
