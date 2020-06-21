@@ -56,6 +56,21 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly int Speed = 1;
 
+		[Desc("Body pitch when flying forwards. Only relevant for voxel aircraft.")]
+		public readonly WAngle Pitch = WAngle.Zero;
+
+		[Desc("Pitch steps to apply each tick when starting/stopping.")]
+		public readonly WAngle PitchSpeed = WAngle.Zero;
+
+		[Desc("Body roll when turning. Only relevant for voxel aircraft.")]
+		public readonly WAngle Roll = WAngle.Zero;
+
+		[Desc("Body roll to apply when aircraft flies in circles while idle. Defaults to Roll if undefined. Only relevant for voxel aircraft.")]
+		public readonly WAngle? IdleRoll = null;
+
+		[Desc("Roll steps to apply each tick when turning.")]
+		public readonly WAngle RollSpeed = WAngle.Zero;
+
 		[Desc("Minimum altitude where this aircraft is considered airborne.")]
 		public readonly int MinAirborneAltitude = 1;
 
@@ -215,6 +230,18 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			get { return orientation.Yaw; }
 			set { orientation = orientation.WithYaw(value); }
+		}
+
+		public WAngle Pitch
+		{
+			get { return orientation.Pitch; }
+			set { orientation = orientation.WithPitch(value); }
+		}
+
+		public WAngle Roll
+		{
+			get { return orientation.Roll; }
+			set { orientation = orientation.WithRoll(value); }
 		}
 
 		public WRot Orientation { get { return orientation; } }
@@ -388,6 +415,15 @@ namespace OpenRA.Mods.Common.Traits
 				newMovementTypes |= MovementType.Vertical;
 
 			CurrentMovementTypes = newMovementTypes;
+
+			if (!CurrentMovementTypes.HasFlag(MovementType.Horizontal))
+			{
+				if (Info.Roll != WAngle.Zero && Roll != WAngle.Zero)
+					Roll = Util.TickFacing(Roll, WAngle.Zero, Info.RollSpeed);
+
+				if (Info.Pitch != WAngle.Zero && Pitch != WAngle.Zero)
+					Pitch = Util.TickFacing(Pitch, WAngle.Zero, Info.PitchSpeed);
+			}
 
 			Repulse();
 		}

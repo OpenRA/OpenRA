@@ -20,16 +20,16 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		readonly Aircraft aircraft;
 		readonly INotifyIdle[] tickIdles;
-		readonly WAngle turnSpeed;
+		readonly bool idleTurn;
 		int remainingTicks;
 
-		public FlyIdle(Actor self, int ticks = -1, bool tickIdle = true)
+		public FlyIdle(Actor self, int ticks = -1, bool idleTurn = true)
 		{
 			aircraft = self.Trait<Aircraft>();
-			turnSpeed = aircraft.IdleTurnSpeed ?? aircraft.TurnSpeed;
 			remainingTicks = ticks;
+			this.idleTurn = idleTurn;
 
-			if (tickIdle)
+			if (idleTurn)
 				tickIdles = self.TraitsImplementing<INotifyIdle>().ToArray();
 		}
 
@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Activities
 
 				// We can't possibly turn this fast
 				var desiredFacing = aircraft.Facing + new WAngle(256);
-				Fly.FlyTick(self, aircraft, desiredFacing, aircraft.Info.CruiseAltitude, move, turnSpeed);
+				Fly.FlyTick(self, aircraft, desiredFacing, aircraft.Info.CruiseAltitude, move, idleTurn);
 			}
 
 			return false;
