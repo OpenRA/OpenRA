@@ -58,6 +58,7 @@ V01:
 HOSP:
 	SpawnActorOnDeath:
 		Actor: healcrate
+		Offset: 0,1
 
 HEALCRATE:
 	Crate:

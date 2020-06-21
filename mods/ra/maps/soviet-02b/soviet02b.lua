@@ -109,7 +109,7 @@ Trigger.OnKilled(BarrelBridge, function()
 end)
 
 Trigger.OnKilled(Church1, function()
-	Actor.Create("moneycrate", true, { Owner = player, Location = TransportWaypoint3.Location })
+	Actor.Create("moneycrate", true, { Owner = player, Location = Church1.Location + CVec.New(0, 1) })
 end)
 
 Trigger.OnKilled(Church2, function()

@@ -68,7 +68,7 @@ ChurchAmbushTrigger = function()
 end
 
 Trigger.OnKilled(Church, function()
-	Actor.Create("moneycrate", true, { Owner = ussr, Location = ChurchAmbush.Location })
+	Actor.Create("moneycrate", true, { Owner = ussr, Location = Church.Location })
 end)
 
 Obj2TriggerFunction = function()
