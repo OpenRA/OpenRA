@@ -60,22 +60,29 @@ namespace OpenRA.Mods.Common.Activities
 			this.minRange = minRange;
 		}
 
-		public static void FlyTick(Actor self, Aircraft aircraft, WAngle desiredFacing, WDist desiredAltitude, WVec moveOverride, bool idleTurn = false)
+		public static void FlyTick(Actor self, Aircraft aircraft, WAngle desiredFacing, WDist desiredAltitude, WVec moveOverride,
+			bool idleTurn = false, WAngle? desiredBodyFacing = null)
 		{
 			var dat = self.World.Map.DistanceAboveTerrain(aircraft.CenterPosition);
-			var move = aircraft.Info.CanSlide ? aircraft.FlyStep(desiredFacing) : aircraft.FlyStep(aircraft.Facing);
+			var move = aircraft.FlyStep(aircraft.FlightFacing);
 			if (moveOverride != WVec.Zero)
 				move = moveOverride;
 
-			var oldFacing = aircraft.Facing;
-			var turnSpeed = idleTurn ? aircraft.IdleTurnSpeed ?? aircraft.TurnSpeed : aircraft.TurnSpeed;
-			aircraft.Facing = Util.TickFacing(aircraft.Facing, desiredFacing, turnSpeed);
+			var flightTurnSpeed = idleTurn ? aircraft.TurnSpeed : aircraft.IdleTurnSpeed ?? aircraft.TurnSpeed;
+			var flightFacing = Util.TickFacing(aircraft.FlightFacing, desiredFacing, flightTurnSpeed);
+
+			var bodyFacing = flightFacing;
+			if (aircraft.Info.CanSlide)
+			{
+				var bodyTurnSpeed = aircraft.BodyTurnSpeed ?? flightTurnSpeed;
+				bodyFacing = Util.TickFacing(aircraft.Facing, desiredBodyFacing ?? desiredFacing, bodyTurnSpeed);
+			}
 
 			var roll = idleTurn ? aircraft.Info.IdleRoll ?? aircraft.Info.Roll : aircraft.Info.Roll;
 			if (roll != WAngle.Zero)
 			{
-				var desiredRoll = aircraft.Facing == desiredFacing ? WAngle.Zero :
-					new WAngle(roll.Angle * Util.GetTurnDirection(aircraft.Facing, oldFacing));
+				var desiredRoll = flightFacing == desiredFacing ? WAngle.Zero :
+					new WAngle(roll.Angle * Util.GetTurnDirection(flightFacing, aircraft.FlightFacing));
 
 				aircraft.Roll = Util.TickFacing(aircraft.Roll, desiredRoll, aircraft.Info.RollSpeed);
 			}
@@ -93,6 +100,8 @@ namespace OpenRA.Mods.Common.Activities
 				move = new WVec(move.X, move.Y, deltaZ);
 			}
 
+			aircraft.FlightFacing = flightFacing;
+			aircraft.Facing = bodyFacing;
 			aircraft.SetPosition(self, aircraft.CenterPosition + move);
 		}
 
@@ -107,8 +116,9 @@ namespace OpenRA.Mods.Common.Activities
 			var dat = self.World.Map.DistanceAboveTerrain(aircraft.CenterPosition);
 			var move = WVec.Zero;
 
-			var turnSpeed = idleTurn ? aircraft.IdleTurnSpeed ?? aircraft.TurnSpeed : aircraft.TurnSpeed;
-			aircraft.Facing = Util.TickFacing(aircraft.Facing, desiredFacing, turnSpeed);
+			var flightTurnSpeed = idleTurn ? aircraft.IdleTurnSpeed ?? aircraft.TurnSpeed : aircraft.TurnSpeed;
+			var bodyTurnSpeed = aircraft.BodyTurnSpeed ?? flightTurnSpeed;
+			aircraft.Facing = Util.TickFacing(aircraft.Facing, desiredFacing, bodyTurnSpeed);
 
 			if (dat != desiredAltitude)
 			{
@@ -186,18 +196,17 @@ namespace OpenRA.Mods.Common.Activities
 				return true;
 
 			var isSlider = aircraft.Info.CanSlide;
-			var desiredFacing = delta.HorizontalLengthSquared != 0 ? delta.Yaw : aircraft.Facing;
-			var move = isSlider ? aircraft.FlyStep(desiredFacing) : aircraft.FlyStep(aircraft.Facing);
+			var desiredFacing = delta.HorizontalLengthSquared != 0 ? delta.Yaw : aircraft.FlightFacing;
+			var desiredBodyFacing = delta.HorizontalLengthSquared != 0 ? delta.Yaw : aircraft.Facing;
+			var move = isSlider ? aircraft.FlyStep(desiredFacing) : aircraft.FlyStep(aircraft.FlightFacing);
 
 			// Inside the minimum range, so reverse if we CanSlide, otherwise face away from the target.
 			if (insideMinRange)
 			{
 				if (isSlider)
-					FlyTick(self, aircraft, desiredFacing, aircraft.Info.CruiseAltitude, -move);
+					FlyTick(self, aircraft, desiredFacing, aircraft.Info.CruiseAltitude, -move, desiredBodyFacing: desiredBodyFacing);
 				else
-				{
-					FlyTick(self, aircraft, desiredFacing + new WAngle(512), aircraft.Info.CruiseAltitude, move);
-				}
+					FlyTick(self, aircraft, desiredFacing + new WAngle(512), aircraft.Info.CruiseAltitude, move, desiredBodyFacing: desiredBodyFacing);
 
 				return false;
 			}
@@ -234,15 +243,16 @@ namespace OpenRA.Mods.Common.Activities
 				return true;
 			}
 
-			if (!isSlider)
+			var flightTurnSpeed = aircraft.TurnSpeed;
+			if (flightTurnSpeed.Angle < 512)
 			{
 				// Using the turn rate, compute a hypothetical circle traced by a continuous turn.
 				// If it contains the destination point, it's unreachable without more complex manuvering.
-				var turnRadius = CalculateTurnRadius(aircraft.MovementSpeed, aircraft.TurnSpeed);
+				var turnRadius = CalculateTurnRadius(aircraft.MovementSpeed, flightTurnSpeed);
 
 				// The current facing is a tangent of the minimal turn circle.
 				// Make a perpendicular vector, and use it to locate the turn's center.
-				var turnCenterFacing = aircraft.Facing + new WAngle(Util.GetTurnDirection(aircraft.Facing, desiredFacing) * 256);
+				var turnCenterFacing = aircraft.FlightFacing + new WAngle(Util.GetTurnDirection(aircraft.FlightFacing, desiredFacing) * 256);
 
 				var turnCenterDir = new WVec(0, -1024, 0).Rotate(WRot.FromYaw(turnCenterFacing));
 				turnCenterDir *= turnRadius;
@@ -251,7 +261,7 @@ namespace OpenRA.Mods.Common.Activities
 				// Compare with the target point, and keep flying away if it's inside the circle.
 				var turnCenter = aircraft.CenterPosition + turnCenterDir;
 				if ((checkTarget.CenterPosition - turnCenter).HorizontalLengthSquared < turnRadius * turnRadius)
-					desiredFacing = aircraft.Facing;
+					desiredFacing = aircraft.FlightFacing;
 			}
 
 			positionBuffer.Add(self.CenterPosition);

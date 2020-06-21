@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Activities
 				var move = aircraft.FlyStep(speed, aircraft.Facing);
 
 				// We can't possibly turn this fast
-				var desiredFacing = aircraft.Facing + new WAngle(256);
+				var desiredFacing = aircraft.FlightFacing + new WAngle(256);
 				Fly.FlyTick(self, aircraft, desiredFacing, aircraft.Info.CruiseAltitude, move, idleTurn);
 			}
 

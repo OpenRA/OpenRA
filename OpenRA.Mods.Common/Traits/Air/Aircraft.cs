@@ -49,7 +49,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly int InitialFacing = 0;
 
+		[Desc("How fast can this actor change its flight direction?")]
 		public readonly int TurnSpeed = 255;
+
+		[Desc("How fast can this actor change its body facing? defaults to TurnSpeed when -1. This parameter only applies to aircraft with CanSlide.")]
+		public readonly int BodyTurnSpeed = 255;
 
 		[Desc("Turn speed to apply when aircraft flies in circles while idle. Defaults to TurnSpeed if negative.")]
 		public readonly int IdleTurnSpeed = -1;
@@ -250,12 +254,15 @@ namespace OpenRA.Mods.Common.Traits
 
 		public WRot Orientation { get { return orientation; } }
 
+		public WAngle FlightFacing { get; set; }
+
 		[Sync]
 		public WPos CenterPosition { get; private set; }
 
 		public CPos TopLeft { get { return self.World.Map.CellContaining(CenterPosition); } }
 		public WAngle TurnSpeed { get { return !IsTraitDisabled && !IsTraitPaused ? new WAngle(4 * Info.TurnSpeed) : WAngle.Zero; } }
 		public WAngle? IdleTurnSpeed { get { return Info.IdleTurnSpeed != -1 ? new WAngle(4 * Info.IdleTurnSpeed) : (WAngle?)null; } }
+		public WAngle? BodyTurnSpeed { get { return Info.BodyTurnSpeed != -1 ? new WAngle(4 * Info.BodyTurnSpeed) : (WAngle?)null; } }
 
 		public Actor ReservedActor { get; private set; }
 		public bool MayYieldReservation { get; private set; }
@@ -296,7 +303,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (centerPositionInit != null)
 				SetPosition(self, centerPositionInit.Value);
 
-			Facing = init.GetValue<FacingInit, WAngle>(WAngle.FromFacing(Info.InitialFacing));
+			FlightFacing = Facing = init.GetValue<FacingInit, WAngle>(WAngle.FromFacing(Info.InitialFacing));
 			creationActivityDelay = init.GetValue<CreationActivityDelayInit, int>(0);
 		}
 
@@ -427,6 +434,8 @@ namespace OpenRA.Mods.Common.Traits
 
 				if (Info.Pitch != WAngle.Zero && Pitch != WAngle.Zero)
 					Pitch = Util.TickFacing(Pitch, WAngle.Zero, Info.PitchSpeed);
+
+				FlightFacing = Facing;
 			}
 
 			Repulse();
@@ -490,7 +499,7 @@ namespace OpenRA.Mods.Common.Traits
 				return repulsionForce;
 
 			// Non-hovering actors mush always keep moving forward, so they need extra calculations.
-			var currentDir = FlyStep(Facing);
+			var currentDir = FlyStep(FlightFacing);
 			var length = currentDir.HorizontalLength * repulsionForce.HorizontalLength;
 			if (length == 0)
 				return WVec.Zero;

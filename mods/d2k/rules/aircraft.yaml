@@ -13,7 +13,7 @@ carryall.reinforce:
 		CruisingCondition: cruising
 		InitialFacing: 0
 		Speed: 144
-		TurnSpeed: 4
+		BodyTurnSpeed: 4
 		LandableTerrainTypes: Sand, Rock, Transition, Spice, SpiceSand, Dune, Concrete
 		Repulsable: False
 		AirborneCondition: airborne
@@ -78,7 +78,7 @@ frigate:
 	Aircraft:
 		IdleBehavior: LeaveMap
 		Speed: 189
-		TurnSpeed: 1
+		BodyTurnSpeed: 1
 		Repulsable: False
 		MaximumPitch: 20
 		CruiseAltitude: 2048
@@ -129,7 +129,7 @@ carryall.husk:
 	Tooltip:
 		Name: Carryall
 	Aircraft:
-		TurnSpeed: 4
+		BodyTurnSpeed: 4
 		Speed: 144
 		CanSlide: True
 		VTOL: true
@@ -144,7 +144,7 @@ carryall.huskVTOL:
 		Moves: False
 		Velocity: 0c128
 	Aircraft:
-		TurnSpeed: 4
+		BodyTurnSpeed: 4
 		CanSlide: True
 		VTOL: true
 	RenderSprites:
