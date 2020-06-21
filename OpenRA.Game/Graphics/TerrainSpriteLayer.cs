@@ -66,6 +66,16 @@ namespace OpenRA.Graphics
 				dirtyRows.Add(row);
 		}
 
+		public void Clear(CPos cell)
+		{
+			Update(cell, null);
+		}
+
+		public void Update(CPos cell, ISpriteSequence sequence, int frame)
+		{
+			Update(cell, sequence.GetSprite(frame));
+		}
+
 		public void Update(CPos cell, Sprite sprite)
 		{
 			var xyz = float3.Zero;
