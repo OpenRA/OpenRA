@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Common.Activities
 				// Fly to the target and wait for it to be locked for pickup
 				// These activities will be cancelled and replaced by Land once the target has been locked
 				QueueChild(new Fly(self, Target.FromActor(cargo)));
-				QueueChild(new FlyIdle(self, tickIdle: false));
+				QueueChild(new FlyIdle(self, idleTurn: false));
 			}
 		}
 
