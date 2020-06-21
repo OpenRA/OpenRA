@@ -10,7 +10,7 @@ DPOD:
 		IdleBehavior: Land
 		Pitch: 0
 		Roll: 0
-		TurnSpeed: 20
+		BodyTurnSpeed: 20
 		Speed: 149
 	Health:
 		HP: 6000
@@ -47,7 +47,7 @@ DPOD2:
 	Armor:
 		Type: Light
 	Aircraft:
-		TurnSpeed: 20
+		BodyTurnSpeed: 20
 		Speed: 300
 		CruiseAltitude: 16c0
 		MaximumPitch: 110
@@ -95,7 +95,7 @@ DSHP:
 		IdleBehavior: Land
 		Pitch: 0
 		Roll: 0
-		TurnSpeed: 20
+		BodyTurnSpeed: 20
 		Speed: 168
 		TakeoffSounds: dropup1.aud
 		LandingSounds: dropdwn1.aud
@@ -136,6 +136,7 @@ ORCA:
 	Selectable:
 		Bounds: 30,24
 	Aircraft:
+		BodyTurnSpeed: 12
 		TurnSpeed: 20
 		Speed: 186
 		TakeoffSounds: orcaup1.aud
@@ -262,7 +263,7 @@ ORCATRAN:
 		Prerequisites: ~disabled
 	RenderSprites:
 	Aircraft:
-		TurnSpeed: 20
+		BodyTurnSpeed: 20
 		Speed: 84
 		LandableTerrainTypes: Clear, Road, Rail, DirtRoad, Rough, Tiberium, BlueTiberium, Veins
 		Crushes: crate, infantry
@@ -303,7 +304,7 @@ TRNSPORT:
 		Prerequisites: ~gahpad, gadept
 		Description: VTOL aircraft capable of lifting\nand transporting vehicles.\n  Unarmed
 	Aircraft:
-		TurnSpeed: 20
+		BodyTurnSpeed: 20
 		Speed: 149
 		Pitch: 0
 		Roll: 0
@@ -420,7 +421,7 @@ APACHE:
 		PitchSpeed: 8
 		Roll: 16
 		RollSpeed: 8
-		TurnSpeed: 20
+		BodyTurnSpeed: 20
 		Speed: 130
 		CanSlide: false
 		TakeOffOnResupply: true
@@ -483,7 +484,7 @@ HUNTER:
 	Armor:
 		Type: Light
 	Aircraft:
-		TurnSpeed: 64
+		BodyTurnSpeed: 64
 		Speed: 355
 		Pitch: 0
 		Roll: 0

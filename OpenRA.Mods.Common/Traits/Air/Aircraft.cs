@@ -50,8 +50,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly WAngle InitialFacing = WAngle.Zero;
 
-		[Desc("Speed at which the actor turns.")]
+		[Desc("How fast can this actor change its flight direction?")]
 		public readonly WAngle TurnSpeed = new WAngle(512);
+
+		[Desc("How fast can this actor change its body facing? defaults to TurnSpeed if undefined. This parameter only applies to aircraft with CanSlide.")]
+		public readonly WAngle? BodyTurnSpeed = null;
 
 		[Desc("Turn speed to apply when aircraft flies in circles while idle. Defaults to TurnSpeed if undefined.")]
 		public readonly WAngle? IdleTurnSpeed = null;
@@ -249,12 +252,14 @@ namespace OpenRA.Mods.Common.Traits
 
 		public WRot Orientation { get { return orientation; } }
 
+		public WAngle FlightFacing { get; set; }
+
 		[Sync]
 		public WPos CenterPosition { get; private set; }
 
 		public CPos TopLeft { get { return self.World.Map.CellContaining(CenterPosition); } }
+
 		public WAngle TurnSpeed { get { return !IsTraitDisabled && !IsTraitPaused ? Info.TurnSpeed : WAngle.Zero; } }
-		public WAngle? IdleTurnSpeed { get { return Info.IdleTurnSpeed; } }
 
 		public Actor ReservedActor { get; private set; }
 		public bool MayYieldReservation { get; private set; }
@@ -295,7 +300,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (centerPositionInit != null)
 				SetPosition(self, centerPositionInit.Value);
 
-			Facing = init.GetValue<FacingInit, WAngle>(Info.InitialFacing);
+			FlightFacing = Facing = init.GetValue<FacingInit, WAngle>(Info.InitialFacing);
+
 			creationActivityDelay = init.GetValue<CreationActivityDelayInit, int>(0);
 		}
 
@@ -426,6 +432,8 @@ namespace OpenRA.Mods.Common.Traits
 
 				if (Info.Pitch != WAngle.Zero && Pitch != WAngle.Zero)
 					Pitch = Util.TickFacing(Pitch, WAngle.Zero, Info.PitchSpeed);
+
+				FlightFacing = Facing;
 			}
 
 			Repulse();
@@ -489,7 +497,7 @@ namespace OpenRA.Mods.Common.Traits
 				return repulsionForce;
 
 			// Non-hovering actors mush always keep moving forward, so they need extra calculations.
-			var currentDir = FlyStep(Facing);
+			var currentDir = FlyStep(FlightFacing);
 			var length = currentDir.HorizontalLength * repulsionForce.HorizontalLength;
 			if (length == 0)
 				return WVec.Zero;

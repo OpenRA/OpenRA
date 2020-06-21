@@ -214,7 +214,7 @@ TRAN:
 		Range: 6c0
 		Type: GroundPosition
 	Aircraft:
-		TurnSpeed: 20
+		BodyTurnSpeed: 20
 		Speed: 128
 		AltitudeVelocity: 0c58
 	WithIdleOverlay@ROTOR1AIR:
@@ -281,7 +281,7 @@ HELI:
 		AttackType: Hover
 		OpportunityFire: False
 	Aircraft:
-		TurnSpeed: 16
+		BodyTurnSpeed: 16
 		Speed: 149
 	AutoTarget:
 		InitialStance: HoldFire
@@ -354,7 +354,7 @@ HIND:
 		AttackType: Hover
 		OpportunityFire: False
 	Aircraft:
-		TurnSpeed: 16
+		BodyTurnSpeed: 16
 		Speed: 112
 	AutoTarget:
 		InitialStance: HoldFire
@@ -456,7 +456,7 @@ MH60:
 		PersistentTargeting: false
 		AttackType: Hover
 	Aircraft:
-		TurnSpeed: 16
+		BodyTurnSpeed: 16
 		Speed: 112
 	AutoTarget:
 		InitialStance: HoldFire

@@ -151,9 +151,6 @@ namespace OpenRA.Mods.Common.Activities
 				return false;
 			}
 
-			var delta = attackAircraft.GetTargetPosition(pos, target) - pos;
-			var desiredFacing = delta.HorizontalLengthSquared != 0 ? delta.Yaw : aircraft.Facing;
-
 			QueueChild(new TakeOff(self));
 
 			var minimumRange = attackAircraft.Info.AttackType == AirAttackType.Strafe ? WDist.Zero : attackAircraft.GetMinimumRangeVersusTarget(target);
@@ -170,7 +167,11 @@ namespace OpenRA.Mods.Common.Activities
 
 			// Turn to face the target if required.
 			else if (!attackAircraft.TargetInFiringArc(self, target, 4 * attackAircraft.Info.FacingTolerance))
+			{
+				var delta = attackAircraft.GetTargetPosition(pos, target) - pos;
+				var desiredFacing = delta.HorizontalLengthSquared != 0 ? delta.Yaw : aircraft.Facing;
 				aircraft.Facing = Util.TickFacing(aircraft.Facing, desiredFacing, aircraft.TurnSpeed);
+			}
 
 			return false;
 		}

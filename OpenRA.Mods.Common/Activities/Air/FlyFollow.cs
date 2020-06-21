@@ -80,7 +80,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (checkTarget.IsInRange(pos, maxRange) && !checkTarget.IsInRange(pos, minRange))
 			{
 				if (!aircraft.Info.CanHover)
-					Fly.FlyTick(self, aircraft, aircraft.Facing, aircraft.Info.CruiseAltitude);
+					Fly.FlyTick(self, aircraft, aircraft.FlightFacing, aircraft.Info.CruiseAltitude);
 
 				return useLastVisibleTarget;
 			}

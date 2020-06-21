@@ -89,7 +89,7 @@ TRAN.Husk:
 	Tooltip:
 		Name: Chinook
 	Aircraft:
-		TurnSpeed: 16
+		BodyTurnSpeed: 16
 		Speed: 149
 	WithIdleOverlay@PRIMARY:
 		Offset: -597,0,341
@@ -202,7 +202,7 @@ HELI.Husk:
 	Tooltip:
 		Name: Longbow
 	Aircraft:
-		TurnSpeed: 16
+		BodyTurnSpeed: 16
 		Speed: 149
 	WithIdleOverlay:
 		Offset: 0,0,85
@@ -226,7 +226,7 @@ HIND.Husk:
 	Tooltip:
 		Name: Hind
 	Aircraft:
-		TurnSpeed: 16
+		BodyTurnSpeed: 16
 		Speed: 112
 	WithIdleOverlay:
 		Sequence: rotor
@@ -438,7 +438,7 @@ MH60.Husk:
 	Tooltip:
 		Name: Black Hawk
 	Aircraft:
-		TurnSpeed: 16
+		BodyTurnSpeed: 16
 		Speed: 112
 	WithIdleOverlay:
 		Sequence: rotor
