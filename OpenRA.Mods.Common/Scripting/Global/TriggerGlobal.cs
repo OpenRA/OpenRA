@@ -74,7 +74,7 @@ namespace OpenRA.Mods.Common.Scripting
 		}
 
 		[Desc("Call a function when the actor is damaged. The callback " +
-			"function will be called as func(Actor self, Actor attacker).")]
+			"function will be called as func(Actor self, Actor attacker, int damage).")]
 		public void OnDamaged(Actor a, LuaFunction func)
 		{
 			GetScriptTriggers(a).RegisterCallback(Trigger.OnDamaged, func, Context);

@@ -118,7 +118,8 @@ namespace OpenRA.Mods.Common.Scripting
 				try
 				{
 					using (var b = e.Attacker.ToLuaValue(f.Context))
-						f.Function.Call(f.Self, b).Dispose();
+					using (var c = e.Damage.Value.ToLuaValue(f.Context))
+						f.Function.Call(f.Self, b, c).Dispose();
 				}
 				catch (Exception ex)
 				{
