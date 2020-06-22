@@ -60,13 +60,18 @@ namespace OpenRA.Mods.Common.Activities
 			this.minRange = minRange;
 		}
 
-		public static void FlyTick(Actor self, Aircraft aircraft, WAngle desiredFacing, WDist desiredAltitude, WVec moveOverride,
+		public static void FlyTick(Actor self, Aircraft aircraft, WAngle desiredFacing, WDist desiredAltitude, WVec? moveOverride = null,
 			bool idleTurn = false, WAngle? desiredBodyFacing = null)
 		{
 			var dat = self.World.Map.DistanceAboveTerrain(aircraft.CenterPosition);
-			var move = aircraft.FlyStep(aircraft.FlightFacing);
-			if (moveOverride != WVec.Zero)
-				move = moveOverride;
+
+			var speed = aircraft.MovementSpeed;
+			if (idleTurn && aircraft.Info.IdleSpeed >= 0)
+				speed = aircraft.Info.IdleSpeed;
+
+			var move = aircraft.FlyStep(speed, aircraft.FlightFacing);
+			if (moveOverride.HasValue)
+				move = moveOverride.Value;
 
 			var flightTurnSpeed = idleTurn ? aircraft.TurnSpeed : aircraft.IdleTurnSpeed ?? aircraft.TurnSpeed;
 			var flightFacing = Util.TickFacing(aircraft.FlightFacing, desiredFacing, flightTurnSpeed);
@@ -103,11 +108,6 @@ namespace OpenRA.Mods.Common.Activities
 			aircraft.FlightFacing = flightFacing;
 			aircraft.Facing = bodyFacing;
 			aircraft.SetPosition(self, aircraft.CenterPosition + move);
-		}
-
-		public static void FlyTick(Actor self, Aircraft aircraft, WAngle desiredFacing, WDist desiredAltitude, bool idleTurn = false)
-		{
-			FlyTick(self, aircraft, desiredFacing, desiredAltitude, WVec.Zero, idleTurn);
 		}
 
 		// Should only be used for vertical-only movement, usually VTOL take-off or land. Terrain-induced altitude changes should always be handled by FlyTick.
@@ -198,16 +198,11 @@ namespace OpenRA.Mods.Common.Activities
 			var isSlider = aircraft.Info.CanSlide;
 			var desiredFacing = delta.HorizontalLengthSquared != 0 ? delta.Yaw : aircraft.FlightFacing;
 			var desiredBodyFacing = delta.HorizontalLengthSquared != 0 ? delta.Yaw : aircraft.Facing;
-			var move = isSlider ? aircraft.FlyStep(desiredFacing) : aircraft.FlyStep(aircraft.FlightFacing);
 
 			// Inside the minimum range, so reverse if we CanSlide, otherwise face away from the target.
 			if (insideMinRange)
 			{
-				if (isSlider)
-					FlyTick(self, aircraft, desiredFacing, aircraft.Info.CruiseAltitude, -move, desiredBodyFacing: desiredBodyFacing);
-				else
-					FlyTick(self, aircraft, desiredFacing + new WAngle(512), aircraft.Info.CruiseAltitude, move, desiredBodyFacing: desiredBodyFacing);
-
+				FlyTick(self, aircraft, desiredFacing + new WAngle(512), aircraft.Info.CruiseAltitude, desiredBodyFacing: desiredBodyFacing);
 				return false;
 			}
 
@@ -218,7 +213,7 @@ namespace OpenRA.Mods.Common.Activities
 				return true;
 
 			// The next move would overshoot, so consider it close enough or set final position if we CanSlide
-			if (delta.HorizontalLengthSquared < move.HorizontalLengthSquared)
+			if (delta.HorizontalLength < aircraft.MovementSpeed)
 			{
 				// For VTOL landing to succeed, it must reach the exact target position,
 				// so for the final move it needs to behave as if it had CanSlide.
