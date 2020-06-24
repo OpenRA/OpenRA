@@ -1008,6 +1008,7 @@
 		ResourceType: Tiberium
 		Interval: 55
 	WithIdleAnimation:
+		Interval: 500, 1000
 	MapEditorData:
 		Categories: Resource spawn
 
