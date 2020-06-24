@@ -21,7 +21,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Sequence names to use.")]
 		public readonly string[] Sequences = { "active" };
 
-		public readonly int Interval = 750;
+		[Desc("The amount of time (in ticks) between animations. Two values indicate a range between which a random value is chosen.")]
+		public readonly int[] Interval = { 750 };
 
 		[Desc("Which sprite body to play the animation on.")]
 		public readonly string Body = "body";
@@ -38,7 +39,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			: base(info)
 		{
 			wsb = self.TraitsImplementing<WithSpriteBody>().Single(w => w.Info.Name == Info.Body);
-			ticks = info.Interval;
+			ticks = Util.RandomDelay(self.World, info.Interval);
 		}
 
 		void ITick.Tick(Actor self)
@@ -49,7 +50,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (--ticks <= 0)
 			{
 				wsb.PlayCustomAnimation(self, Info.Sequences.Random(Game.CosmeticRandom));
-				ticks = Info.Interval;
+				ticks = Util.RandomDelay(self.World, Info.Interval);
 			}
 		}
 
