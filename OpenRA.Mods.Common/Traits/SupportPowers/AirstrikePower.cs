@@ -158,7 +158,7 @@ namespace OpenRA.Mods.Common.Traits
 				{
 					new CenterPositionInit(startEdge + spawnOffset),
 					new OwnerInit(self.Owner),
-					new FacingInit(facing.Value.Facing),
+					new FacingInit(facing.Value),
 				});
 
 				aircraft.Add(a);

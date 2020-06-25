@@ -55,11 +55,12 @@ namespace OpenRA.Mods.Common.Scripting
 			}
 
 			if (entryLocation.HasValue && nextLocation.HasValue)
-				initDict.Add(new FacingInit(Context.World.Map.FacingBetween(CPos.Zero, CPos.Zero + (nextLocation.Value - entryLocation.Value), WAngle.Zero).Facing));
+			{
+				var facing = Context.World.Map.FacingBetween(CPos.Zero, CPos.Zero + (nextLocation.Value - entryLocation.Value), WAngle.Zero);
+				initDict.Add(new FacingInit(facing));
+			}
 
-			var actor = Context.World.CreateActor(addToWorld, actorType, initDict);
-
-			return actor;
+			return Context.World.CreateActor(addToWorld, actorType, initDict);
 		}
 
 		void Move(Actor actor, CPos dest)

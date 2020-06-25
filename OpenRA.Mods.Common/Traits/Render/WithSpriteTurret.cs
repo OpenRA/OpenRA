@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				.First(tt => tt.Turret == Turret);
 
 			var turretFacing = Turreted.TurretFacingFromInit(init, t);
-			var anim = new Animation(init.World, image, () => WAngle.FromFacing(turretFacing()));
+			var anim = new Animation(init.World, image, turretFacing);
 			anim.Play(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), Sequence));
 
 			var facing = init.GetFacing();

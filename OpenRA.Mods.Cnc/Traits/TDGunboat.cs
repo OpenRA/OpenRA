@@ -31,11 +31,11 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		public override object Create(ActorInitializer init) { return new TDGunboat(init, this); }
 
-		public int GetInitialFacing() { return InitialFacing; }
+		public WAngle GetInitialFacing() { return WAngle.FromFacing(InitialFacing); }
 
 		IEnumerable<ActorInit> IActorPreviewInitInfo.ActorPreviewInits(ActorInfo ai, ActorPreviewType type)
 		{
-			yield return new FacingInit(PreviewFacing);
+			yield return new FacingInit(WAngle.FromFacing(PreviewFacing));
 		}
 
 		public IReadOnlyDictionary<CPos, SubCell> OccupiedCells(ActorInfo info, CPos location, SubCell subCell = SubCell.Any)
@@ -98,7 +98,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (centerPositionInit != null)
 				SetPosition(self, centerPositionInit.Value);
 
-			Facing = WAngle.FromFacing(init.GetValue<FacingInit, int>(Info.GetInitialFacing()));
+			Facing = init.GetValue<FacingInit, WAngle>(Info.GetInitialFacing());
 
 			// Prevent mappers from setting bogus facings
 			if (Facing != Left && Facing != Right)
@@ -161,7 +161,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		void IDeathActorInitModifier.ModifyDeathActorInit(Actor self, TypeDictionary init)
 		{
-			init.Add(new FacingInit(Facing.Facing));
+			init.Add(new FacingInit(Facing));
 		}
 
 		public bool CanExistInCell(CPos cell) { return true; }
@@ -232,7 +232,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		void IActorPreviewInitModifier.ModifyActorPreviewInit(Actor self, TypeDictionary inits)
 		{
 			if (!inits.Contains<DynamicFacingInit>() && !inits.Contains<FacingInit>())
-				inits.Add(new DynamicFacingInit(() => Facing.Facing));
+				inits.Add(new DynamicFacingInit(() => Facing));
 		}
 	}
 }

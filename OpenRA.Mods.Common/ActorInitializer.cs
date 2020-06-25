@@ -16,9 +16,9 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common
 {
-	public class FacingInit : ValueActorInit<int>, ISingleInstanceInit
+	public class FacingInit : ValueActorInit<WAngle>, ISingleInstanceInit
 	{
-		public FacingInit(int value)
+		public FacingInit(WAngle value)
 			: base(value) { }
 	}
 
@@ -28,9 +28,9 @@ namespace OpenRA.Mods.Common
 			: base(value) { }
 	}
 
-	public class DynamicFacingInit : ValueActorInit<Func<int>>, ISingleInstanceInit
+	public class DynamicFacingInit : ValueActorInit<Func<WAngle>>, ISingleInstanceInit
 	{
-		public DynamicFacingInit(Func<int> value)
+		public DynamicFacingInit(Func<WAngle> value)
 			: base(value) { }
 	}
 

@@ -57,6 +57,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		WAngle facing;
 		WAngle rotation;
+		int direction;
 
 		public ThrowsParticle(ActorInitializer init, ThrowsParticleInfo info)
 		{
@@ -66,20 +67,22 @@ namespace OpenRA.Mods.Common.Traits
 
 			// TODO: Carry orientation over from the parent instead of just facing
 			var dynamicFacingInit = init.GetOrDefault<DynamicFacingInit>();
-			var bodyFacing = dynamicFacingInit != null ? dynamicFacingInit.Value() : init.GetValue<FacingInit, int>(0);
-			facing = WAngle.FromFacing(Turreted.TurretFacingFromInit(init, info, 0)());
+			var bodyFacing = dynamicFacingInit != null ? dynamicFacingInit.Value() : init.GetValue<FacingInit, WAngle>(WAngle.Zero);
+			facing = Turreted.TurretFacingFromInit(init, info, WAngle.Zero)();
 
 			// Calculate final position
-			var throwRotation = WRot.FromFacing(Game.CosmeticRandom.Next(1024));
+			var throwRotation = WRot.FromYaw(new WAngle(Game.CosmeticRandom.Next(1024)));
 			var throwDistance = Game.CosmeticRandom.Next(info.MinThrowRange.Length, info.MaxThrowRange.Length);
 
-			initialPos = pos = info.Offset.Rotate(body.QuantizeOrientation(self, WRot.FromFacing(bodyFacing)));
+			initialPos = pos = info.Offset.Rotate(body.QuantizeOrientation(self, WRot.FromYaw(bodyFacing)));
 			finalPos = initialPos + new WVec(throwDistance, 0, 0).Rotate(throwRotation);
 			angle = new WAngle(Game.CosmeticRandom.Next(info.MinThrowAngle.Angle, info.MaxThrowAngle.Angle));
 			length = (finalPos - initialPos).Length / info.Velocity;
 
-			// Facing rotation
-			rotation = WAngle.FromFacing(WDist.FromPDF(Game.CosmeticRandom, 2).Length * info.TurnSpeed / 1024);
+			// WAngle requires positive inputs, so track the speed and direction separately
+			var rotationSpeed = WDist.FromPDF(Game.CosmeticRandom, 2).Length * info.TurnSpeed / 1024;
+			direction = rotationSpeed < 0 ? -1 : 1;
+			rotation = WAngle.FromFacing(Math.Abs(rotationSpeed));
 
 			var anim = new Animation(init.World, rs.GetImage(self), () => facing);
 			anim.PlayRepeating(info.Anim);
@@ -94,7 +97,7 @@ namespace OpenRA.Mods.Common.Traits
 			pos = WVec.LerpQuadratic(initialPos, finalPos, angle, tick++, length);
 
 			// Spin the particle
-			facing += rotation;
+			facing += new WAngle(direction * rotation.Angle);
 			rotation = new WAngle(rotation.Angle * 90 / 100);
 		}
 	}

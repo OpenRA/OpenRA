@@ -85,12 +85,13 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (unitGroup.BaseActor != null)
 			{
+				var facing = unitGroup.BaseActorFacing < 0 ? new WAngle(w.SharedRandom.Next(1024)) : WAngle.FromFacing(unitGroup.BaseActorFacing);
 				w.CreateActor(unitGroup.BaseActor.ToLowerInvariant(), new TypeDictionary
 				{
 					new LocationInit(sp + unitGroup.BaseActorOffset),
 					new OwnerInit(p),
 					new SkipMakeAnimsInit(),
-					new FacingInit(unitGroup.BaseActorFacing < 0 ? w.SharedRandom.Next(256) : unitGroup.BaseActorFacing),
+					new FacingInit(facing),
 				});
 			}
 
@@ -112,13 +113,14 @@ namespace OpenRA.Mods.Common.Traits
 				}
 
 				var subCell = ip.SharesCell ? w.ActorMap.FreeSubCell(validCell) : 0;
+				var facing = unitGroup.SupportActorsFacing < 0 ? new WAngle(w.SharedRandom.Next(1024)) : WAngle.FromFacing(unitGroup.SupportActorsFacing);
 
 				w.CreateActor(s.ToLowerInvariant(), new TypeDictionary
 				{
 					new OwnerInit(p),
 					new LocationInit(validCell),
 					new SubCellInit(subCell),
-					new FacingInit(unitGroup.SupportActorsFacing < 0 ? w.SharedRandom.Next(256) : unitGroup.SupportActorsFacing)
+					new FacingInit(facing),
 				});
 			}
 		}

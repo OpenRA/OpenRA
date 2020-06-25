@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.Common.Traits.Render;
@@ -34,9 +35,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 			var wsb = init.Actor.TraitInfos<WithSpriteBodyInfo>().FirstOrDefault();
 
 			// Show the correct turret facing
-			var facing = WAngle.FromFacing(init.GetValue<TurretFacingInit, int>(this, t.InitialFacing));
-
-			var anim = new Animation(init.World, image, () => facing);
+			var anim = new Animation(init.World, image, Turreted.TurretFacingFromInit(init, t));
 			anim.PlayRepeating(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), wsb.Sequence));
 
 			yield return new SpriteActorPreview(anim, () => WVec.Zero, () => 0, p, rs.Scale);

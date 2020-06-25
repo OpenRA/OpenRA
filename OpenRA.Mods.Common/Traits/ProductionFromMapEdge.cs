@@ -88,7 +88,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				td.Add(new LocationInit(location.Value));
 				td.Add(new CenterPositionInit(pos));
-				td.Add(new FacingInit(initialFacing.Facing));
+				td.Add(new FacingInit(initialFacing));
 
 				var newUnit = self.World.CreateActor(producee.Name, td);
 

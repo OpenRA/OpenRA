@@ -175,7 +175,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			{
 				new LocationInit(destination.Value),
 				new OwnerInit(self.Owner),
-				new FacingInit(info.Facing),
+				new FacingInit(WAngle.FromFacing(info.Facing)),
 				new FactionInit(faction),
 				new HealthInit((int)(health.HP * 100L / health.MaxHP))
 			};

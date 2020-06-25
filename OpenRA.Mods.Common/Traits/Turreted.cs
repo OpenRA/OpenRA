@@ -30,33 +30,26 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Muzzle position relative to turret or body. (forward, right, up) triples")]
 		public readonly WVec Offset = WVec.Zero;
 
-		[Desc("Facing to use for actor previews (map editor, color picker, etc)")]
-		public readonly int PreviewFacing = 96;
-
 		[Desc("Display order for the turret facing slider in the map editor")]
 		public readonly int EditorTurretFacingDisplayOrder = 4;
 
 		IEnumerable<ActorInit> IActorPreviewInitInfo.ActorPreviewInits(ActorInfo ai, ActorPreviewType type)
 		{
-			yield return new TurretFacingInit(this, PreviewFacing);
+			yield return new TurretFacingInit(this, WAngle.FromFacing(InitialFacing));
 		}
 
 		IEnumerable<EditorActorOption> IEditorActorOptions.ActorOptions(ActorInfo ai, World world)
 		{
-			yield return new EditorActorSlider("Turret", EditorTurretFacingDisplayOrder, 0, 255, 8,
+			yield return new EditorActorSlider("Turret", EditorTurretFacingDisplayOrder, 0, 1023, 8,
 				actor =>
 				{
 					var init = actor.GetInitOrDefault<TurretFacingInit>(this);
 					if (init != null)
-						return init.Value;
+						return init.Value.Angle;
 
-					var facingInit = actor.GetInitOrDefault<FacingInit>(this);
-					if (facingInit != null)
-						return facingInit.Value;
-
-					return InitialFacing;
+					return WAngle.FromFacing(InitialFacing).Angle;
 				},
-				(actor, value) => actor.ReplaceInit(new TurretFacingInit(this, (int)value), this));
+				(actor, value) => actor.ReplaceInit(new TurretFacingInit(this, new WAngle((int)value)), this));
 		}
 
 		public override object Create(ActorInitializer init) { return new Turreted(init, this); }
@@ -83,38 +76,41 @@ namespace OpenRA.Mods.Common.Traits
 		public WVec Offset { get { return Info.Offset + localOffset; } }
 		public string Name { get { return Info.Turret; } }
 
-		public static Func<int> TurretFacingFromInit(IActorInitializer init, TurretedInfo info)
+		public static Func<WAngle> TurretFacingFromInit(IActorInitializer init, TurretedInfo info)
 		{
-			return TurretFacingFromInit(init, info, info.InitialFacing);
+			return TurretFacingFromInit(init, info, WAngle.FromFacing(info.InitialFacing));
 		}
 
-		public static Func<int> TurretFacingFromInit(IActorInitializer init, TraitInfo info, int defaultFacing)
+		public static Func<WAngle> TurretFacingFromInit(IActorInitializer init, TraitInfo info, WAngle defaultFacing)
 		{
-			var turretFacingInit = init.GetOrDefault<TurretFacingInit>(info);
-			if (turretFacingInit != null)
-			{
-				var facing = turretFacingInit.Value;
-				return () => facing;
-			}
-
-			var dynamicFacingInit = init.GetOrDefault<DynamicFacingInit>();
-			if (dynamicFacingInit != null)
-				return dynamicFacingInit.Value;
-
+			// (Dynamic)TurretFacingInit is specified relative to the actor body.
+			// We need to add the body facing to return an absolute world angle.
+			Func<WAngle> bodyFacing = null;
 			var facingInit = init.GetOrDefault<FacingInit>();
 			if (facingInit != null)
 			{
 				var facing = facingInit.Value;
-				return () => facing;
+				bodyFacing = () => facing;
 			}
 
-			return () => defaultFacing;
+			var turretFacingInit = init.GetOrDefault<TurretFacingInit>(info);
+			if (turretFacingInit != null)
+			{
+				var facing = turretFacingInit.Value;
+				return bodyFacing != null ? (Func<WAngle>)(() => bodyFacing() + facing) : () => facing;
+			}
+
+			var dynamicFacingInit = init.GetOrDefault<DynamicFacingInit>();
+			if (dynamicFacingInit != null)
+				return bodyFacing != null ? () => bodyFacing() + dynamicFacingInit.Value() : dynamicFacingInit.Value;
+
+			return bodyFacing ?? (Func<WAngle>)(() => defaultFacing);
 		}
 
 		public Turreted(ActorInitializer init, TurretedInfo info)
 			: base(info)
 		{
-			TurretFacing = TurretFacingFromInit(init, Info)();
+			TurretFacing = TurretFacingFromInit(init, Info)().Facing;
 		}
 
 		protected override void Created(Actor self)
@@ -203,12 +199,16 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void ModifyDeathActorInit(Actor self, TypeDictionary init)
 		{
-			init.Add(new TurretFacingInit(Info, TurretFacing));
+			var turretFacing = WAngle.FromFacing(TurretFacing);
+			if (facing != null)
+				turretFacing -= facing.Facing;
+
+			init.Add(new TurretFacingInit(Info, turretFacing));
 		}
 
 		void IActorPreviewInitModifier.ModifyActorPreviewInit(Actor self, TypeDictionary inits)
 		{
-			Func<int> bodyFacing = () => facing.Facing.Facing;
+			Func<WAngle> bodyFacing = () => facing.Facing;
 			var dynamicFacing = inits.GetOrDefault<DynamicFacingInit>();
 			var staticFacing = inits.GetOrDefault<FacingInit>();
 			if (dynamicFacing != null)
@@ -217,7 +217,7 @@ namespace OpenRA.Mods.Common.Traits
 				bodyFacing = () => staticFacing.Value;
 
 			// Freeze the relative turret facing to its current value
-			var facingOffset = TurretFacing - bodyFacing();
+			var facingOffset = WAngle.FromFacing(TurretFacing) - bodyFacing();
 			inits.Add(new DynamicTurretFacingInit(Info, () => bodyFacing() + facingOffset));
 		}
 
@@ -228,21 +228,21 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class TurretFacingInit : ValueActorInit<int>
+	public class TurretFacingInit : ValueActorInit<WAngle>
 	{
-		public TurretFacingInit(TraitInfo info, int value)
+		public TurretFacingInit(TraitInfo info, WAngle value)
 			: base(info, value) { }
 
-		public TurretFacingInit(string instanceName, int value)
+		public TurretFacingInit(string instanceName, WAngle value)
 			: base(instanceName, value) { }
 
-		public TurretFacingInit(int value)
+		public TurretFacingInit(WAngle value)
 			: base(value) { }
 	}
 
-	public class DynamicTurretFacingInit : ValueActorInit<Func<int>>
+	public class DynamicTurretFacingInit : ValueActorInit<Func<WAngle>>
 	{
-		public DynamicTurretFacingInit(TraitInfo info, Func<int> value)
+		public DynamicTurretFacingInit(TraitInfo info, Func<WAngle> value)
 			: base(info, value) { }
 	}
 }

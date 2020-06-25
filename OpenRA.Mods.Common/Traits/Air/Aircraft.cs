@@ -160,14 +160,14 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Cursor to display when unable to land at target building.")]
 		public readonly string EnterBlockedCursor = "enter-blocked";
 
-		public int GetInitialFacing() { return InitialFacing; }
+		public WAngle GetInitialFacing() { return WAngle.FromFacing(InitialFacing); }
 		public WDist GetCruiseAltitude() { return CruiseAltitude; }
 
 		public override object Create(ActorInitializer init) { return new Aircraft(init, this); }
 
 		IEnumerable<ActorInit> IActorPreviewInitInfo.ActorPreviewInits(ActorInfo ai, ActorPreviewType type)
 		{
-			yield return new FacingInit(PreviewFacing);
+			yield return new FacingInit(WAngle.FromFacing(PreviewFacing));
 		}
 
 		public IReadOnlyDictionary<CPos, SubCell> OccupiedCells(ActorInfo info, CPos location, SubCell subCell = SubCell.Any) { return new ReadOnlyDictionary<CPos, SubCell>(); }
@@ -196,13 +196,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		IEnumerable<EditorActorOption> IEditorActorOptions.ActorOptions(ActorInfo ai, World world)
 		{
-			yield return new EditorActorSlider("Facing", EditorFacingDisplayOrder, 0, 255, 8,
+			yield return new EditorActorSlider("Facing", EditorFacingDisplayOrder, 0, 1024, 8,
 				actor =>
 				{
 					var init = actor.GetInitOrDefault<FacingInit>(this);
-					return init != null ? init.Value : InitialFacing;
+					return (init != null ? init.Value : WAngle.FromFacing(InitialFacing)).Angle;
 				},
-				(actor, value) => actor.ReplaceInit(new FacingInit((int)value)));
+				(actor, value) => actor.ReplaceInit(new FacingInit(new WAngle((int)value))));
 		}
 	}
 
@@ -292,7 +292,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (centerPositionInit != null)
 				SetPosition(self, centerPositionInit.Value);
 
-			Facing = WAngle.FromFacing(init.GetValue<FacingInit, int>(Info.InitialFacing));
+			Facing = init.GetValue<FacingInit, WAngle>(WAngle.FromFacing(Info.InitialFacing));
 			creationActivityDelay = init.GetValue<CreationActivityDelayInit, int>(0);
 		}
 
@@ -709,7 +709,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void ModifyDeathActorInit(Actor self, TypeDictionary init)
 		{
-			init.Add(new FacingInit(Facing.Facing));
+			init.Add(new FacingInit(Facing));
 		}
 
 		void INotifyBecomingIdle.OnBecomingIdle(Actor self)
@@ -1222,7 +1222,7 @@ namespace OpenRA.Mods.Common.Traits
 		void IActorPreviewInitModifier.ModifyActorPreviewInit(Actor self, TypeDictionary inits)
 		{
 			if (!inits.Contains<DynamicFacingInit>() && !inits.Contains<FacingInit>())
-				inits.Add(new DynamicFacingInit(() => Facing.Facing));
+				inits.Add(new DynamicFacingInit(() => Facing));
 		}
 
 		Activity ICreationActivity.GetCreationActivity()

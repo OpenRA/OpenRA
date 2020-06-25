@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			Func<WVec> turretOffset = () => body.LocalToWorld(t.Offset.Rotate(orientation()));
 
 			var turretFacing = Turreted.TurretFacingFromInit(init, t);
-			Func<WRot> turretBodyOrientation = () => WRot.FromYaw(WAngle.FromFacing(turretFacing()) - orientation().Yaw);
+			Func<WRot> turretBodyOrientation = () => WRot.FromYaw(turretFacing() - orientation().Yaw);
 			yield return new ModelAnimation(model, turretOffset,
 				() => new[] { turretBodyOrientation(), body.QuantizeOrientation(orientation(), facings) }, () => false, () => 0, ShowShadow);
 		}

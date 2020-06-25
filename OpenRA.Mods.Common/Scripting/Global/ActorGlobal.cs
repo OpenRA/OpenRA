@@ -75,18 +75,17 @@ namespace OpenRA.Mods.Common.Scripting
 				return init;
 			}
 
-			// HACK: Forward compatibility for future WAngle facings
+			// HACK: Backward compatibility for legacy int facings
 			var facingInit = init as FacingInit;
 			if (facingInit != null)
 			{
-				WAngle angle;
-				if (value.TryGetClrValue(out angle))
+				int facing;
+				if (value.TryGetClrValue(out facing))
 				{
-					facingInit.Initialize(angle.Facing);
+					facingInit.Initialize(WAngle.FromFacing(facing));
+					Game.Debug("Initializing Facing with integers is deprecated. Use Angle instead.");
 					return facingInit;
 				}
-
-				Game.Debug("Initializing Facing with integers is deprecated. Use Angle instead.");
 			}
 
 			var initializers = initType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)

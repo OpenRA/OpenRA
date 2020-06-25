@@ -542,7 +542,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 					ar.Add(new HealthInit(100 * health / 256));
 
 				if (facing != 96)
-					ar.Add(new FacingInit(facing));
+					ar.Add(new FacingInit(WAngle.FromFacing(facing)));
 
 				if (isDeployed)
 					ar.Add(new DeployStateInit(DeployState.Deployed));

@@ -81,7 +81,7 @@ namespace OpenRA.Mods.Common.Traits
 					new ParentActorInit(self),
 					new LocationInit(self.Location + Info.SpawnOffset),
 					new OwnerInit(self.Owner),
-					new FacingInit(Info.Facing),
+					new FacingInit(WAngle.FromFacing(Info.Facing)),
 				});
 			});
 		}

@@ -74,13 +74,13 @@ namespace OpenRA.Mods.Common.Graphics
 			{
 				// TODO: Account for terrain slope
 				var getFacing = dynamicInit.Value;
-				return () => WRot.FromFacing(getFacing());
+				return () => WRot.FromYaw(getFacing());
 			}
 
 			// Fall back to initial actor facing if an Init isn't available
 			var facingInit = reference.GetOrDefault<FacingInit>();
 			var facing = facingInit != null ? facingInit.Value : facingInfo.GetInitialFacing();
-			var orientation = WRot.FromFacing(facing);
+			var orientation = WRot.FromYaw(facing);
 			return () => orientation;
 		}
 
@@ -93,14 +93,11 @@ namespace OpenRA.Mods.Common.Graphics
 			// Dynamic facing takes priority
 			var dynamicInit = reference.GetOrDefault<DynamicFacingInit>();
 			if (dynamicInit != null)
-			{
-				var getFacing = dynamicInit.Value;
-				return () => WAngle.FromFacing(getFacing());
-			}
+				return dynamicInit.Value;
 
 			// Fall back to initial actor facing if an Init isn't available
 			var facingInit = reference.GetOrDefault<FacingInit>();
-			var facing = WAngle.FromFacing(facingInit != null ? facingInit.Value : facingInfo.GetInitialFacing());
+			var facing = facingInit != null ? facingInit.Value : facingInfo.GetInitialFacing();
 			return () => facing;
 		}
 
