@@ -225,7 +225,7 @@ namespace OpenRA.Mods.Common.Traits
 					var carryableInits = new TypeDictionary()
 					{
 						new OwnerInit(Carryable.Owner),
-						new DynamicFacingInit(() => facing.Facing.Facing),
+						new DynamicFacingInit(() => facing.Facing),
 					};
 
 					foreach (var api in Carryable.TraitsImplementing<IActorPreviewInitModifier>())

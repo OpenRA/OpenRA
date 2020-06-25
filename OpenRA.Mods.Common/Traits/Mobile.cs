@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		IEnumerable<ActorInit> IActorPreviewInitInfo.ActorPreviewInits(ActorInfo ai, ActorPreviewType type)
 		{
-			yield return new FacingInit(PreviewFacing);
+			yield return new FacingInit(WAngle.FromFacing(PreviewFacing));
 		}
 
 		public override object Create(ActorInitializer init) { return new Mobile(init, this); }
@@ -87,7 +87,7 @@ namespace OpenRA.Mods.Common.Traits
 			base.RulesetLoaded(rules, ai);
 		}
 
-		public int GetInitialFacing() { return InitialFacing; }
+		public WAngle GetInitialFacing() { return WAngle.FromFacing(InitialFacing); }
 
 		// initialized and used by CanEnterCell
 		Locomotor locomotor;
@@ -130,30 +130,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		IEnumerable<EditorActorOption> IEditorActorOptions.ActorOptions(ActorInfo ai, World world)
 		{
-			yield return new EditorActorSlider("Facing", EditorFacingDisplayOrder, 0, 255, 8,
+			yield return new EditorActorSlider("Facing", EditorFacingDisplayOrder, 0, 1023, 8,
 				actor =>
 				{
 					var init = actor.GetInitOrDefault<FacingInit>(this);
-					return init != null ? init.Value : InitialFacing;
+					return (init != null ? init.Value : WAngle.FromFacing(InitialFacing)).Angle;
 				},
-				(actor, value) =>
-				{
-					// TODO: This can all go away once turrets are properly defined as a relative facing
-					var facingInit = actor.GetInitOrDefault<FacingInit>();
-
-					var oldFacing = facingInit != null ? facingInit.Value : InitialFacing;
-					var newFacing = (int)value;
-
-					var turretInits = actor.GetInits<TurretFacingInit>().ToList();
-					actor.RemoveInits<TurretFacingInit>();
-					foreach (var turretInit in turretInits)
-					{
-						var newTurretFacing = (turretInit.Value + newFacing - oldFacing + 255) % 255;
-						actor.AddInit(new TurretFacingInit(turretInit.InstanceName, newTurretFacing));
-					}
-
-					actor.ReplaceInit(new FacingInit(newFacing));
-				});
+				(actor, value) => actor.ReplaceInit(new FacingInit(new WAngle((int)value))));
 		}
 	}
 
@@ -282,7 +265,7 @@ namespace OpenRA.Mods.Common.Traits
 				SetVisualPosition(self, init.World.Map.CenterOfSubCell(FromCell, FromSubCell));
 			}
 
-			Facing = oldFacing = WAngle.FromFacing(init.GetValue<FacingInit, int>(info.InitialFacing));
+			Facing = oldFacing = init.GetValue<FacingInit, WAngle>(WAngle.FromFacing(info.InitialFacing));
 
 			// Sets the initial visual position
 			// Unit will move into the cell grid (defined by LocationInit) as its initial activity
@@ -848,12 +831,12 @@ namespace OpenRA.Mods.Common.Traits
 		void IActorPreviewInitModifier.ModifyActorPreviewInit(Actor self, TypeDictionary inits)
 		{
 			if (!inits.Contains<DynamicFacingInit>() && !inits.Contains<FacingInit>())
-				inits.Add(new DynamicFacingInit(() => Facing.Facing));
+				inits.Add(new DynamicFacingInit(() => Facing));
 		}
 
 		void IDeathActorInitModifier.ModifyDeathActorInit(Actor self, TypeDictionary init)
 		{
-			init.Add(new FacingInit(Facing.Facing));
+			init.Add(new FacingInit(Facing));
 
 			// Allows the husk to drag to its final position
 			if (CanEnterCell(self.Location, self, BlockedByActor.Stationary))

@@ -99,7 +99,7 @@ namespace OpenRA.Mods.Common.Activities
 				{
 					new LocationInit(self.Location + Offset),
 					new OwnerInit(self.Owner),
-					new FacingInit(Facing.Facing),
+					new FacingInit(Facing),
 				};
 
 				if (SkipMakeAnims)

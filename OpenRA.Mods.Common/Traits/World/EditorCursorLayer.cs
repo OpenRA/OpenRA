@@ -194,10 +194,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			if (actor.HasTraitInfo<IFacingInfo>())
-				reference.Add(new FacingInit(info.PreviewFacing));
-
-			if (actor.HasTraitInfo<TurretedInfo>())
-				reference.Add(new TurretFacingInit(info.PreviewFacing));
+				reference.Add(new FacingInit(WAngle.FromFacing(info.PreviewFacing)));
 
 			Type = EditorCursorType.Actor;
 			Actor = new EditorActorPreview(wr, null, reference, owner);

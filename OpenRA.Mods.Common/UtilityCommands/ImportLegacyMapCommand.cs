@@ -413,7 +413,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					if (health != 100)
 						actor.Add(new HealthInit(health));
 					if (facing != 0)
-						actor.Add(new FacingInit(255 - facing));
+						actor.Add(new FacingInit(new WAngle(1024 - 4 * facing)));
 
 					if (section == "INFANTRY")
 						actor.Add(new SubCellInit((SubCell)Exts.ParseByte(parts[4])));

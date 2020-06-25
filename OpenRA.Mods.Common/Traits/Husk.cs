@@ -27,12 +27,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		IEnumerable<ActorInit> IActorPreviewInitInfo.ActorPreviewInits(ActorInfo ai, ActorPreviewType type)
 		{
-			yield return new FacingInit(PreviewFacing);
+			yield return new FacingInit(WAngle.FromFacing(PreviewFacing));
 		}
 
 		public override object Create(ActorInitializer init) { return new Husk(init, this); }
 
-		public int GetInitialFacing() { return 128; }
+		public WAngle GetInitialFacing() { return WAngle.FromFacing(128); }
 
 		public IReadOnlyDictionary<CPos, SubCell> OccupiedCells(ActorInfo info, CPos location, SubCell subCell = SubCell.Any)
 		{
@@ -88,7 +88,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			TopLeft = init.GetValue<LocationInit, CPos>();
 			CenterPosition = init.GetValue<CenterPositionInit, WPos>(init.World.Map.CenterOfCell(TopLeft));
-			Facing = WAngle.FromFacing(init.GetValue<FacingInit, int>(128));
+			Facing = init.GetValue<FacingInit, WAngle>(info.GetInitialFacing());
 
 			dragSpeed = init.GetValue<HuskSpeedInit, int>(0);
 			finalPosition = init.World.Map.CenterOfCell(TopLeft);
@@ -171,7 +171,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void IDeathActorInitModifier.ModifyDeathActorInit(Actor self, TypeDictionary init)
 		{
-			init.Add(new FacingInit(Facing.Facing));
+			init.Add(new FacingInit(Facing));
 		}
 
 		// We return self.Owner if there's no effective owner

@@ -98,7 +98,7 @@ namespace OpenRA.Mods.Common.Traits
 				new LocationInit(location),
 				new CenterPositionInit(spawn),
 				new OwnerInit(self.Owner),
-				new FacingInit(initialFacing.Facing)
+				new FacingInit(initialFacing)
 			});
 
 			// Create delivered actor
