@@ -27,6 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 		Land,
 		ReturnToBase,
 		LeaveMap,
+		LeaveMapAtClosestEdge
 	}
 
 	public class AircraftInfo : PausableConditionalTraitInfo, IPositionableInfo, IFacingInfo, IMoveInfo, ICruiseAltitudeInfo,
@@ -723,6 +724,12 @@ namespace OpenRA.Mods.Common.Traits
 			if (Info.IdleBehavior == IdleBehaviorType.LeaveMap)
 			{
 				self.QueueActivity(new FlyOffMap(self));
+				self.QueueActivity(new RemoveSelf());
+			}
+			else if (Info.IdleBehavior == IdleBehaviorType.LeaveMapAtClosestEdge)
+			{
+				var edgeCell = self.World.Map.ChooseClosestEdgeCell(self.Location);
+				self.QueueActivity(new FlyOffMap(self, Target.FromCell(self.World, edgeCell)));
 				self.QueueActivity(new RemoveSelf());
 			}
 			else if (Info.IdleBehavior == IdleBehaviorType.ReturnToBase && GetActorBelow() == null)
