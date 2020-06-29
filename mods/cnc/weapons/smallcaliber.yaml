@@ -49,7 +49,7 @@ Vulcan:
 		Damage: 10000
 		Versus:
 			Wood: 15
-			Light: 100
+			Light: 30
 			Heavy: 35
 
 HeliAGGun:

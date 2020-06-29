@@ -183,7 +183,7 @@ C17:
 		Cost: 2000
 	Aircraft:
 		TurnSpeed: 5
-		Speed: 326
+		Speed: 700
 		Repulsable: False
 		MaximumPitch: 36
 	HiddenUnderFog:
