@@ -97,10 +97,11 @@ FACT:
 		ProductionType: Building.Nod
 	ProductionBar@DefenceGDI:
 		ProductionType: Defence.GDI
+		Color: 8A8A8A
 	ProductionBar@DefenceNod:
 		ProductionType: Defence.Nod
+		Color: 8A8A8A
 	BaseProvider:
-		Cooldown: 75
 		Range: 14c0
 	WithBuildingBib:
 	WithBuildingPlacedAnimation:
@@ -219,7 +220,7 @@ PROC:
 		Queue: Building.GDI, Building.Nod
 		Description: Processes raw Tiberium\ninto useable resources
 	Building:
-		Footprint: _x_ xxx === ===
+		Footprint: _x_ xxx +++ ===
 		Dimensions: 3,4
 		LocalCenterOffset: 0,-512,0
 	Health:
@@ -342,7 +343,7 @@ PYLE:
 	ProductionBar:
 		ProductionType: Infantry.GDI
 	Power:
-		Amount: -20
+		Amount: -15
 	ProvidesPrerequisite@buildingname:
 	Selectable:
 		Bounds: 48,42,0,-5
@@ -393,7 +394,7 @@ HAND:
 	ProductionBar:
 		ProductionType: Infantry.Nod
 	Power:
-		Amount: -20
+		Amount: -15
 	ProvidesPrerequisite@buildingname:
 	Selectable:
 		Bounds: 48,48
@@ -476,7 +477,7 @@ WEAP:
 		Queue: Building.GDI
 		Description: Produces vehicles
 	Building:
-		Footprint: xxx === ===
+		Footprint: xxx +++ ===
 		Dimensions: 3,3
 		LocalCenterOffset: 0,-512,0
 	Selectable:
@@ -1033,6 +1034,10 @@ ATWR:
 		Type: Heavy
 	RevealsShroud:
 		Range: 8c0
+	-RenderRangeCircle:
+	WithRangeCircle:
+		Range: 7c0
+		Color: FFFF0080	
 	WithBuildingBib:
 		HasMinibib: true
 	Turreted:

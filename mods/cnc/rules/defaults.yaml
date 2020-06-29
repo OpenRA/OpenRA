@@ -105,20 +105,9 @@
 	ReloadDelayMultiplier@RANK-ELITE:
 		RequiresCondition: rank-elite
 		Modifier: 75
-	InaccuracyMultiplier@RANK-1:
-		RequiresCondition: rank-veteran == 1
-		Modifier: 90
-	InaccuracyMultiplier@RANK-2:
-		RequiresCondition: rank-veteran == 2
-		Modifier: 80
-	InaccuracyMultiplier@RANK-3:
-		RequiresCondition: rank-veteran == 3
-		Modifier: 70
-	InaccuracyMultiplier@RANK-ELITE:
-		RequiresCondition: rank-elite
-		Modifier: 50
 	SelfHealing@ELITE:
-		Step: 200
+		Step: 0
+		PercentageStep: 5
 		Delay: 100
 		HealIfBelow: 100
 		DamageCooldown: 125
@@ -129,6 +118,7 @@
 		Palette: effect
 		Position: BottomRight
 		Margin: 5, 6
+		ValidStances: Ally, Enemy, Neutral
 		RequiresCondition: rank-veteran == 1
 	WithDecoration@RANK-2:
 		Image: rank
@@ -136,6 +126,7 @@
 		Palette: effect
 		Position: BottomRight
 		Margin: 5, 6
+		ValidStances: Ally, Enemy, Neutral
 		RequiresCondition: rank-veteran == 2
 	WithDecoration@RANK-3:
 		Image: rank
@@ -143,6 +134,7 @@
 		Palette: effect
 		Position: BottomRight
 		Margin: 5, 6
+		ValidStances: Ally, Enemy, Neutral
 		RequiresCondition: rank-veteran == 3
 	WithDecoration@RANK-ELITE:
 		Image: rank
@@ -150,6 +142,7 @@
 		Palette: effect
 		Position: BottomRight
 		Margin: 5, 6
+		ValidStances: Ally, Enemy, Neutral
 		RequiresCondition: rank-elite
 
 ^InfantryExperienceHospitalHazmatOverrides:

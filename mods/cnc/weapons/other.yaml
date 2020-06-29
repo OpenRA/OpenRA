@@ -22,20 +22,21 @@
 		InvalidTargets: Vehicle, Structure, Wall
 	Warhead@3Eff: CreateEffect
 		Explosions: small_napalm
-		ImpactSounds: flamer2.aud
 		ImpactActors: false
 
 Flamethrower:
 	Inherits: ^FlameWeapon
+	Warhead@1Dam: SpreadDamage
+		Spread: 256
 
 BigFlamer:
 	Inherits: ^FlameWeapon
-	ReloadDelay: 50
+	ReloadDelay: 65
 	Range: 3c512
 	Projectile: Bullet
 		Speed: 341
 	Burst: 2
-	BurstDelays: 25
+	BurstDelays: 10
 	Warhead@1Dam: SpreadDamage
 		Spread: 400
 		Damage: 10000

@@ -381,7 +381,7 @@ LTNK:
 	Inherits@CLOAK: ^AcceptsCloakCrate
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Valued:
-		Cost: 650
+		Cost: 750
 	Tooltip:
 		Name: Light Tank
 	UpdatesPlayerStatistics:
@@ -390,8 +390,6 @@ LTNK:
 		BuildPaletteOrder: 40
 		Prerequisites: anyhq, ~techlevel.medium
 		Queue: Vehicle.Nod
-		BuildDuration: 1020
-		BuildDurationModifier: 40
 		Description: Fast, light tank.\n  Strong vs Vehicles, Tanks\n  Weak vs Infantry
 	Mobile:
 		TurnSpeed: 7
@@ -426,7 +424,7 @@ MTNK:
 	Inherits@CLOAK: ^AcceptsCloakCrate
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Valued:
-		Cost: 800
+		Cost: 900
 	Tooltip:
 		Name: Medium Tank
 	UpdatesPlayerStatistics:
@@ -470,7 +468,7 @@ HTNK:
 	Inherits@CLOAK: ^AcceptsCloakCrate
 	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
 	Valued:
-		Cost: 1500
+		Cost: 1800
 	Tooltip:
 		Name: Mammoth Tank
 	UpdatesPlayerStatistics:
