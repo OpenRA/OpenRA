@@ -699,16 +699,6 @@ namespace OpenRA.Mods.Common.Traits
 				QueueChild(mobile.VisualMove(self, pos, self.World.Map.CenterOfSubCell(cell, subCell)));
 				return true;
 			}
-
-			public override void Cancel(Actor self, bool keepQueue = false)
-			{
-				// If we are forbidden from stopping in this cell, use evaluateNearestMovableCell
-				// to nudge us to the nearest cell that we can stop in.
-				if (!mobile.CanStayInCell(cell))
-					QueueChild(new Move(self, cell, WDist.Zero, null, true));
-
-				base.Cancel(self, keepQueue);
-			}
 		}
 
 		public Activity MoveToTarget(Actor self, Target target,
