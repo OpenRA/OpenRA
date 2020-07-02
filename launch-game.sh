@@ -25,7 +25,17 @@ mono OpenRA.Game.exe Engine.LaunchPath="$MODLAUNCHER" $MODARG "$@"
 
 # Show a crash dialog if something went wrong
 if [ $? != 0 ] && [ $? != 1 ]; then
-	ERROR_MESSAGE="OpenRA has encountered a fatal error.\nPlease refer to the crash logs and FAQ for more information.\n\nLog files are located in ~/.openra/Logs\nThe FAQ is available at http://wiki.openra.net/FAQ"
+	if [ "$(uname -s)" = "Darwin" ]; then
+		LOGS="${HOME}/Library/Application Support/OpenRA/Logs/"
+	else
+		LOGS="${XDG_CONFIG_HOME:-${HOME}/.config}/openra/Logs"
+		if [ ! -d "${LOGS}" ] && [ -d "${HOME}/.openra/Logs" ]; then
+			LOGS="${HOME}/.openra/Logs"
+		fi
+	fi
+
+	test -d Support/Logs && LOGS="${PWD}/Support/Logs"
+	ERROR_MESSAGE="OpenRA has encountered a fatal error.\nPlease refer to the crash logs and FAQ for more information.\n\nLog files are located in ${LOGS}\nThe FAQ is available at http://wiki.openra.net/FAQ"
 	if command -v zenity > /dev/null; then
 		zenity --no-wrap --error --title "{MODNAME}" --text "${ERROR_MESSAGE}" 2> /dev/null
 	elif command -v kdialog > /dev/null; then
