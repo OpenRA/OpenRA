@@ -23,22 +23,22 @@ export MONO_CONFIG="${HERE}/etc/mono/config"
 
 # Update/create the mono certificate store to enable https web queries
 if [ -f "/etc/pki/tls/certs/ca-bundle.crt" ]; then
-  mono "${HERE}/usr/lib/mono/4.5/cert-sync.exe" --quiet --user /etc/pki/tls/certs/ca-bundle.crt
+	mono "${HERE}/usr/lib/mono/4.5/cert-sync.exe" --quiet --user /etc/pki/tls/certs/ca-bundle.crt
 elif [ -f "/etc/ssl/certs/ca-certificates.crt" ]; then
-  mono "${HERE}/usr/lib/mono/4.5/cert-sync.exe" --quiet --user /etc/ssl/certs/ca-certificates.crt
+	mono "${HERE}/usr/lib/mono/4.5/cert-sync.exe" --quiet --user /etc/ssl/certs/ca-certificates.crt
 else
-  echo "WARNING: Unable to sync system certificate store - https requests will fail"
+	echo "WARNING: Unable to sync system certificate store - https requests will fail"
 fi
 
 # Run the game or server
 if [ -n "$1" ] && [ "$1" = "--server" ]; then
-  # Drop the --server argument
-  shift
-  exec "openra-{MODID}-server" "$@"
+	# Drop the --server argument
+	shift
+	exec "openra-{MODID}-server" "$@"
 elif [ -n "$1" ] && [ "$1" = "--utility" ]; then
-  # Drop the --utility argument
-  shift
-  exec "openra-{MODID}-utility" "$@"
+	# Drop the --utility argument
+	shift
+	exec "openra-{MODID}-utility" "$@"
 else
-  exec "openra-{MODID}" "$@"
+	exec "openra-{MODID}" "$@"
 fi
