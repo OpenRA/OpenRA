@@ -133,8 +133,8 @@ namespace OpenRA.Mods.Common.Widgets
 						.WithHighestSelectionPriority(mousePos, mi.Modifiers);
 
 					// Players to be included in the selection (the viewer or all players in "Disable shroud" / "All players" mode)
-					var viewer = World.RenderPlayer ?? World.LocalPlayer;
-					var isShroudDisabled = viewer == null || (World.RenderPlayer == null && World.LocalPlayer.Spectating);
+					var viewer = World.RenderPlayer;
+					var isShroudDisabled = viewer == null;
 					var isEveryone = viewer != null && viewer.NonCombatant && viewer.Spectating;
 					var eligiblePlayers = isShroudDisabled || isEveryone ? World.Players : new[] { viewer };
 
@@ -256,8 +256,8 @@ namespace OpenRA.Mods.Common.Widgets
 			if (e.Event == KeyInputEvent.Down)
 			{
 				// Players to be included in the selection (the viewer or all players in "Disable shroud" / "All players" mode)
-				var viewer = World.RenderPlayer ?? World.LocalPlayer;
-				var isShroudDisabled = viewer == null || (World.RenderPlayer == null && World.LocalPlayer.Spectating);
+				var viewer = World.RenderPlayer;
+				var isShroudDisabled = viewer == null;
 				var isEveryone = viewer != null && viewer.NonCombatant && viewer.Spectating;
 				var eligiblePlayers = isShroudDisabled || isEveryone ? World.Players : new[] { viewer };
 

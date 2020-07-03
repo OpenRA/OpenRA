@@ -31,9 +31,9 @@ namespace OpenRA.Traits
 			var info = a.Info.TraitInfo<ISelectableInfo>();
 			var basePriority = BaseSelectionPriority(info, modifiers);
 
-			var viewer = (a.World.LocalPlayer == null || a.World.LocalPlayer.Spectating) ? a.World.RenderPlayer : a.World.LocalPlayer;
+			var viewer = a.World.RenderPlayer;
 
-			if (a.Owner == viewer || viewer == null)
+			if (viewer == null || a.Owner == viewer)
 				return basePriority;
 
 			switch (viewer.Stances[a.Owner])

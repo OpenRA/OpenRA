@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public GameInfoObjectivesLogic(Widget widget, World world)
 		{
-			var player = world.RenderPlayer ?? world.LocalPlayer;
+			var player = world.RenderPlayer;
 
 			var objectivesPanel = widget.Get<ScrollPanelWidget>("OBJECTIVES_PANEL");
 			template = objectivesPanel.Get<ContainerWidget>("OBJECTIVE_TEMPLATE");

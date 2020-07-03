@@ -43,10 +43,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic.Ingame
 
 		protected override bool OnHotkeyActivated(KeyInput e)
 		{
-			var player = world.RenderPlayer ?? world.LocalPlayer;
+			var viewer = world.RenderPlayer;
+			if (viewer == null)
+				return true;
 
 			var facilities = world.ActorsHavingTrait<Production>()
-				.Where(a => a.Owner == player && a.OccupiesSpace != null && !a.Info.HasTraitInfo<BaseBuildingInfo>()
+				.Where(a => a.Owner == viewer && a.OccupiesSpace != null && !a.Info.HasTraitInfo<BaseBuildingInfo>()
 					&& a.TraitsImplementing<Production>().Any(t => !t.IsTraitDisabled))
 				.OrderBy(f => f.TraitsImplementing<Production>().First(t => !t.IsTraitDisabled).Info.Produces.First())
 				.ToList();

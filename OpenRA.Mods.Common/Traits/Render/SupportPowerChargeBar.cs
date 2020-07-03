@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (power == null)
 				return 0;
 
-			var viewer = self.World.RenderPlayer ?? self.World.LocalPlayer;
+			var viewer = self.World.RenderPlayer;
 			if (viewer != null && !Info.DisplayStances.HasStance(self.Owner.Stances[viewer]))
 				return 0;
 

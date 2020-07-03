@@ -37,17 +37,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic.Ingame
 
 		protected override bool OnHotkeyActivated(KeyInput e)
 		{
-			var player = world.RenderPlayer ?? world.LocalPlayer;
+			var viewer = world.RenderPlayer;
+			if (viewer == null)
+				return true;
 
 			var bases = world.ActorsHavingTrait<BaseBuilding>()
-				.Where(a => a.Owner == player)
+				.Where(a => a.Owner == viewer)
 				.ToList();
 
 			// If no BaseBuilding exist pick the first selectable Building.
 			if (!bases.Any())
 			{
 				var building = world.ActorsHavingTrait<Building>()
-					.FirstOrDefault(a => a.Owner == player && a.Info.HasTraitInfo<SelectableInfo>());
+					.FirstOrDefault(a => a.Owner == viewer && a.Info.HasTraitInfo<SelectableInfo>());
 
 				// No buildings left
 				if (building == null)

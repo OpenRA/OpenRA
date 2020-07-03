@@ -98,10 +98,10 @@ namespace OpenRA.Mods.Common.Widgets
 
 			MapBoundsChanged();
 
-			var player = world.Type == WorldType.Regular ? world.LocalPlayer ?? world.RenderPlayer : null;
-			SetPlayer(player, true);
+			var viewer = world.Type == WorldType.Regular ? world.RenderPlayer : null;
+			SetPlayer(viewer, true);
 
-			if (player == null)
+			if (viewer == null)
 			{
 				// Set initial terrain data
 				foreach (var uv in world.Map.AllCells.MapCoords)

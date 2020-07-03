@@ -37,10 +37,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic.Ingame
 
 		protected override bool OnHotkeyActivated(KeyInput e)
 		{
-			var player = world.RenderPlayer ?? world.LocalPlayer;
+			var viewer = world.RenderPlayer;
+			if (viewer == null)
+				return true;
 
 			var harvesters = world.ActorsHavingTrait<Harvester>()
-				.Where(a => a.IsInWorld && a.Owner == player)
+				.Where(a => a.IsInWorld && a.Owner == viewer)
 				.ToList();
 
 			if (!harvesters.Any())

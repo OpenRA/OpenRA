@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Traits.Radar
 
 		public void PopulateRadarSignatureCells(Actor self, List<Pair<CPos, Color>> destinationBuffer)
 		{
-			var viewer = self.World.RenderPlayer ?? self.World.LocalPlayer;
+			var viewer = self.World.RenderPlayer;
 			if (IsTraitDisabled || (viewer != null && !Info.ValidStances.HasStance(self.Owner.Stances[viewer])))
 				return;
 

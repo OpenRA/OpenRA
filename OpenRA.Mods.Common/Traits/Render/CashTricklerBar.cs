@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		float ISelectionBar.GetValue()
 		{
-			var viewer = self.World.RenderPlayer ?? self.World.LocalPlayer;
+			var viewer = self.World.RenderPlayer;
 			if (viewer != null && !info.DisplayStances.HasStance(self.Owner.Stances[viewer]))
 				return 0;
 

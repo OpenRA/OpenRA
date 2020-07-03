@@ -213,20 +213,20 @@ namespace OpenRA
 
 		public Color PlayerStanceColor(Actor a)
 		{
-			var player = a.World.RenderPlayer ?? a.World.LocalPlayer;
-			if (player != null && !player.Spectating)
+			var viewer = a.World.RenderPlayer;
+			if (viewer != null)
 			{
 				var apparentOwner = a.EffectiveOwner != null && a.EffectiveOwner.Disguised
 					? a.EffectiveOwner.Owner
 					: a.Owner;
 
-				if (a.Owner.IsAlliedWith(a.World.RenderPlayer))
+				if (a.Owner.IsAlliedWith(viewer))
 					apparentOwner = a.Owner;
 
-				if (apparentOwner == player)
+				if (apparentOwner == viewer)
 					return stanceColors.Self;
 
-				if (apparentOwner.IsAlliedWith(player))
+				if (apparentOwner.IsAlliedWith(viewer))
 					return stanceColors.Allies;
 
 				if (!apparentOwner.NonCombatant)
