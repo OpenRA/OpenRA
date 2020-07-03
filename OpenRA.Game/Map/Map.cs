@@ -662,6 +662,34 @@ namespace OpenRA
 			return dataStream.ToArray();
 		}
 
+		public Pair<Color, Color> GetTerrainColorPair(MPos uv)
+		{
+			Color left, right;
+			var tileset = Rules.TileSet;
+			var type = tileset.GetTileInfo(Tiles[uv]);
+			if (type != null)
+			{
+				if (type.MinColor != type.MaxColor)
+				{
+					left = Exts.ColorLerp(Game.CosmeticRandom.NextFloat(), type.MinColor, type.MaxColor);
+					right = Exts.ColorLerp(Game.CosmeticRandom.NextFloat(), type.MinColor, type.MaxColor);
+				}
+				else
+					left = right = type.MinColor;
+
+				if (tileset.MinHeightColorBrightness != 1.0f || tileset.MaxHeightColorBrightness != 1.0f)
+				{
+					var scale = float2.Lerp(tileset.MinHeightColorBrightness, tileset.MaxHeightColorBrightness, Height[uv] * 1f / Grid.MaximumTerrainHeight);
+					left = Color.FromArgb((int)(scale * left.R).Clamp(0, 255), (int)(scale * left.G).Clamp(0, 255), (int)(scale * left.B).Clamp(0, 255));
+					right = Color.FromArgb((int)(scale * right.R).Clamp(0, 255), (int)(scale * right.G).Clamp(0, 255), (int)(scale * right.B).Clamp(0, 255));
+				}
+			}
+			else
+				left = right = Color.Black;
+
+			return Pair.New(left, right);
+		}
+
 		public byte[] SavePreview()
 		{
 			var tileset = Rules.TileSet;
@@ -701,42 +729,18 @@ namespace OpenRA
 				var stride = bitmapWidth * 4;
 				var pxStride = 4;
 				var minimapData = new byte[stride * height];
-				Color leftColor, rightColor;
+				Pair<Color, Color> terrainColor = default(Pair<Color, Color>);
 
-				var useHeightModifiers = tileset.MinHeightColorBrightness != 1.0f || tileset.MaxHeightColorBrightness != 1.0f;
-				var minHeightBrightness = tileset.MinHeightColorBrightness;
-				var maxHeightBrightness = tileset.MaxHeightColorBrightness;
-				var heightModifier = 1f / Grid.MaximumTerrainHeight;
 				for (var y = 0; y < height; y++)
 				{
 					for (var x = 0; x < width; x++)
 					{
 						var uv = new MPos(x + Bounds.Left, y + Bounds.Top);
-						var actorsThere = positions.Where(ap => ap.First == uv);
-						if (actorsThere.Any())
-						{
-							leftColor = rightColor = actorsThere.First().Second;
-						}
-						else
-						{
-							// Cell contains terrain
-							var type = tileset.GetTileInfo(Tiles[uv]);
-							if (type != null)
-							{
-								if (useHeightModifiers)
-								{
-									var left = Exts.ColorLerp(Game.CosmeticRandom.NextFloat(), type.MinColor, type.MaxColor);
-									var right = Exts.ColorLerp(Game.CosmeticRandom.NextFloat(), type.MinColor, type.MaxColor);
-									var scale = float2.Lerp(minHeightBrightness, maxHeightBrightness, heightModifier * Height[uv]);
-									leftColor = Color.FromArgb((int)(scale * left.R).Clamp(0, 255), (int)(scale * left.G).Clamp(0, 255), (int)(scale * left.B).Clamp(0, 255));
-									rightColor = Color.FromArgb((int)(scale * right.R).Clamp(0, 255), (int)(scale * right.G).Clamp(0, 255), (int)(scale * right.B).Clamp(0, 255));
-								}
-								else
-									leftColor = rightColor = type.MinColor;
-							}
-							else
-								leftColor = rightColor = Color.Black;
-						}
+
+						// FirstOrDefault will return a Pair(MPos.Zero, Color.Transparent) if positions is empty
+						var actorColor = positions.FirstOrDefault(ap => ap.First == uv).Second;
+						if (actorColor.A == 0)
+							terrainColor = GetTerrainColorPair(uv);
 
 						if (isRectangularIsometric)
 						{
@@ -746,28 +750,31 @@ namespace OpenRA
 							if (x + dx > 0)
 							{
 								var z = y * stride + xOffset - pxStride;
-								minimapData[z++] = leftColor.R;
-								minimapData[z++] = leftColor.G;
-								minimapData[z++] = leftColor.B;
-								minimapData[z++] = leftColor.A;
+								var c = actorColor.A == 0 ? terrainColor.First : actorColor;
+								minimapData[z++] = c.R;
+								minimapData[z++] = c.G;
+								minimapData[z++] = c.B;
+								minimapData[z] = c.A;
 							}
 
 							if (xOffset < stride)
 							{
 								var z = y * stride + xOffset;
-								minimapData[z++] = rightColor.R;
-								minimapData[z++] = rightColor.G;
-								minimapData[z++] = rightColor.B;
-								minimapData[z++] = rightColor.A;
+								var c = actorColor.A == 0 ? terrainColor.Second : actorColor;
+								minimapData[z++] = c.R;
+								minimapData[z++] = c.G;
+								minimapData[z++] = c.B;
+								minimapData[z] = c.A;
 							}
 						}
 						else
 						{
 							var z = y * stride + pxStride * x;
-							minimapData[z++] = leftColor.R;
-							minimapData[z++] = leftColor.G;
-							minimapData[z++] = leftColor.B;
-							minimapData[z++] = leftColor.A;
+							var c = actorColor.A == 0 ? terrainColor.First : actorColor;
+							minimapData[z++] = c.R;
+							minimapData[z++] = c.G;
+							minimapData[z++] = c.B;
+							minimapData[z] = c.A;
 						}
 					}
 				}
