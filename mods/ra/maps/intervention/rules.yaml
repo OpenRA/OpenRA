@@ -80,7 +80,7 @@ MIG.SCRIPTED:
 	AmmoPool:
 		Ammo: 2
 	Aircraft:
-		IdleBehavior: LeaveMap
+		IdleBehavior: LeaveMapAtClosestEdge
 
 HELI:
 	Buildable:
