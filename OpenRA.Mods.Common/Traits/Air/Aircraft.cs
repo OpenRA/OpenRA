@@ -50,13 +50,13 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int InitialFacing = 0;
 
 		[Desc("How fast can this actor change its flight direction?")]
-		public readonly int TurnSpeed = 255;
+		public readonly WAngle TurnSpeed = new WAngle(512);
 
-		[Desc("How fast can this actor change its body facing? defaults to TurnSpeed when -1. This parameter only applies to aircraft with CanSlide.")]
-		public readonly int BodyTurnSpeed = 255;
+		[Desc("How fast can this actor change its body facing? defaults to TurnSpeed if undefined. This parameter only applies to aircraft with CanSlide.")]
+		public readonly WAngle? BodyTurnSpeed = null;
 
-		[Desc("Turn speed to apply when aircraft flies in circles while idle. Defaults to TurnSpeed if negative.")]
-		public readonly int IdleTurnSpeed = -1;
+		[Desc("Turn speed to apply when aircraft flies in circles while idle. Defaults to TurnSpeed if undefined.")]
+		public readonly WAngle? IdleTurnSpeed = null;
 
 		[Desc("Maximum flight speed")]
 		public readonly int Speed = 1;
@@ -260,9 +260,7 @@ namespace OpenRA.Mods.Common.Traits
 		public WPos CenterPosition { get; private set; }
 
 		public CPos TopLeft { get { return self.World.Map.CellContaining(CenterPosition); } }
-		public WAngle TurnSpeed { get { return !IsTraitDisabled && !IsTraitPaused ? new WAngle(4 * Info.TurnSpeed) : WAngle.Zero; } }
-		public WAngle? IdleTurnSpeed { get { return Info.IdleTurnSpeed != -1 ? new WAngle(4 * Info.IdleTurnSpeed) : (WAngle?)null; } }
-		public WAngle? BodyTurnSpeed { get { return Info.BodyTurnSpeed != -1 ? new WAngle(4 * Info.BodyTurnSpeed) : (WAngle?)null; } }
+		public WAngle TurnSpeed { get { return !IsTraitDisabled && !IsTraitPaused ? Info.TurnSpeed : WAngle.Zero; } }
 
 		public Actor ReservedActor { get; private set; }
 		public bool MayYieldReservation { get; private set; }

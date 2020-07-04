@@ -73,13 +73,13 @@ namespace OpenRA.Mods.Common.Activities
 			if (moveOverride.HasValue)
 				move = moveOverride.Value;
 
-			var flightTurnSpeed = idleTurn ? aircraft.TurnSpeed : aircraft.IdleTurnSpeed ?? aircraft.TurnSpeed;
+			var flightTurnSpeed = idleTurn ? aircraft.Info.IdleTurnSpeed ?? aircraft.TurnSpeed : aircraft.TurnSpeed;
 			var flightFacing = Util.TickFacing(aircraft.FlightFacing, desiredFacing, flightTurnSpeed);
 
 			var bodyFacing = flightFacing;
 			if (aircraft.Info.CanSlide)
 			{
-				var bodyTurnSpeed = aircraft.BodyTurnSpeed ?? flightTurnSpeed;
+				var bodyTurnSpeed = aircraft.Info.BodyTurnSpeed ?? flightTurnSpeed;
 				bodyFacing = Util.TickFacing(aircraft.Facing, desiredBodyFacing ?? desiredFacing, bodyTurnSpeed);
 			}
 
@@ -116,8 +116,8 @@ namespace OpenRA.Mods.Common.Activities
 			var dat = self.World.Map.DistanceAboveTerrain(aircraft.CenterPosition);
 			var move = WVec.Zero;
 
-			var flightTurnSpeed = idleTurn ? aircraft.IdleTurnSpeed ?? aircraft.TurnSpeed : aircraft.TurnSpeed;
-			var bodyTurnSpeed = aircraft.BodyTurnSpeed ?? flightTurnSpeed;
+			var flightTurnSpeed = idleTurn ? aircraft.Info.IdleTurnSpeed ?? aircraft.TurnSpeed : aircraft.TurnSpeed;
+			var bodyTurnSpeed = aircraft.Info.BodyTurnSpeed ?? flightTurnSpeed;
 			aircraft.Facing = Util.TickFacing(aircraft.Facing, desiredFacing, bodyTurnSpeed);
 
 			if (dat != desiredAltitude)
