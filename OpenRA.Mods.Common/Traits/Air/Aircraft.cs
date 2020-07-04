@@ -68,10 +68,10 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Maximum acceleration/deceleration for forward movement. defaults to Speed if -1.")]
 		public readonly int Acceleration = -1;
 
-		[Desc("Body pitch when flying forwards. Only relevant for voxel aircraft.")]
+		[Desc("Maximum pitch offset when flying forwards at maximum speed. Only relevant for voxel aircraft.")]
 		public readonly WAngle Pitch = WAngle.Zero;
 
-		[Desc("Pitch steps to apply each tick when starting/stopping.")]
+		[Desc("Pitch steps to apply each tick when not moving forward.")]
 		public readonly WAngle PitchSpeed = WAngle.Zero;
 
 		[Desc("Body roll when turning. Only relevant for voxel aircraft.")]
@@ -258,7 +258,7 @@ namespace OpenRA.Mods.Common.Traits
 			set { orientation = orientation.WithRoll(value); }
 		}
 
-		public WRot Orientation { get { return orientation; } }
+		public WRot Orientation { get { return orientation; } set { orientation = value; } }
 
 		public WAngle FlightFacing { get; set; }
 		public int CurrentSpeed { get; set; }
@@ -452,9 +452,6 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				if (Info.Roll != WAngle.Zero && Roll != WAngle.Zero)
 					Roll = Util.TickFacing(Roll, WAngle.Zero, Info.RollSpeed);
-
-				if (Info.Pitch != WAngle.Zero && Pitch != WAngle.Zero)
-					Pitch = Util.TickFacing(Pitch, WAngle.Zero, Info.PitchSpeed);
 
 				FlightFacing = Facing;
 			}

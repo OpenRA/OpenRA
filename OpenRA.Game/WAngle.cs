@@ -48,6 +48,9 @@ namespace OpenRA
 
 		public int Facing { get { return Angle / 4; } }
 
+		// Angle in the domain (-512, +512]
+		public int Angle2 { get { return Angle > 512 ? Angle - 1024 : Angle; } }
+
 		public int Sin() { return new WAngle(Angle - 256).Cos(); }
 
 		public int Cos()

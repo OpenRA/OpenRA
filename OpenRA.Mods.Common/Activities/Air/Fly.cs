@@ -81,17 +81,25 @@ namespace OpenRA.Mods.Common.Activities
 				bodyFacing = Util.TickFacing(aircraft.Facing, desiredBodyFacing ?? desiredFacing, bodyTurnSpeed);
 			}
 
-			var roll = idleTurn ? aircraft.Info.IdleRoll ?? aircraft.Info.Roll : aircraft.Info.Roll;
-			if (roll != WAngle.Zero)
+			// Determine body roll and pitch offsets depending on horizontal forward speed.
+			var pitch = WAngle.Zero;
+			var rollOffset = WAngle.Zero;
+			if (aircraft.Info.Pitch != WAngle.Zero)
 			{
-				var desiredRoll = flightFacing == desiredFacing ? WAngle.Zero :
-					new WAngle(roll.Angle * Util.GetTurnDirection(flightFacing, aircraft.FlightFacing));
-
-				aircraft.Roll = Util.TickFacing(aircraft.Roll, desiredRoll, aircraft.Info.RollSpeed);
+				pitch = new WAngle(aircraft.Info.Pitch.Angle2 * speed * (flightFacing - bodyFacing).Cos() / (1024 * aircraft.Info.Speed));
+				rollOffset = new WAngle(aircraft.Info.Pitch.Angle2 * speed * (flightFacing - bodyFacing).Sin() / (1024 * aircraft.Info.Speed));
 			}
 
-			if (aircraft.Info.Pitch != WAngle.Zero)
-				aircraft.Pitch = Util.TickFacing(aircraft.Pitch, aircraft.Info.Pitch, aircraft.Info.PitchSpeed);
+			// Determine body roll.
+			var roll = WAngle.Zero;
+			var desiredRoll = idleTurn ? aircraft.Info.IdleRoll ?? aircraft.Info.Roll : aircraft.Info.Roll;
+			if (desiredRoll != WAngle.Zero)
+			{
+				desiredRoll = flightFacing == desiredFacing ? WAngle.Zero :
+					new WAngle(desiredRoll.Angle * Util.GetTurnDirection(flightFacing, aircraft.FlightFacing));
+
+				roll = Util.TickFacing(aircraft.Roll - rollOffset, desiredRoll, aircraft.Info.RollSpeed);
+			}
 
 			// Determine new displacement vector.
 			var move = aircraft.FlyStep(aircraft.CurrentSpeed, aircraft.FlightFacing);
@@ -110,7 +118,7 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			aircraft.FlightFacing = flightFacing;
-			aircraft.Facing = bodyFacing;
+			aircraft.Orientation = new WRot(roll + rollOffset, pitch, bodyFacing);
 			aircraft.CurrentSpeed = speed;
 			aircraft.SetPosition(self, aircraft.CenterPosition + move);
 		}
@@ -125,7 +133,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			var flightTurnSpeed = idleTurn ? aircraft.Info.IdleTurnSpeed ?? aircraft.TurnSpeed : aircraft.TurnSpeed;
 			var bodyTurnSpeed = aircraft.Info.BodyTurnSpeed ?? flightTurnSpeed;
-			aircraft.Facing = Util.TickFacing(aircraft.Facing, desiredFacing, bodyTurnSpeed);
+			var bodyFacing = Util.TickFacing(aircraft.Facing, desiredFacing, bodyTurnSpeed);
 
 			if (dat != desiredAltitude)
 			{
@@ -136,6 +144,9 @@ namespace OpenRA.Mods.Common.Activities
 			else
 				return false;
 
+			var bodyPitch = Util.TickFacing(aircraft.Pitch, WAngle.Zero, aircraft.Info.PitchSpeed);
+
+			aircraft.Orientation = new WRot(aircraft.Roll, bodyPitch, bodyFacing);
 			aircraft.SetPosition(self, aircraft.CenterPosition + move);
 			return true;
 		}
