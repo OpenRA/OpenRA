@@ -48,13 +48,10 @@ namespace OpenRA.Mods.Common.Activities
 				foreach (var tickIdle in tickIdles)
 					tickIdle.TickIdle(self);
 
-			if (aircraft.Info.IdleSpeed > 0 || (!aircraft.Info.CanHover && aircraft.Info.IdleSpeed < 0))
-			{
-				// We can't possibly turn this fast
-				var desiredFacing = aircraft.FlightFacing + new WAngle(256);
-				Fly.FlyTick(self, aircraft, desiredFacing, aircraft.Info.CruiseAltitude, idleTurn: idleTurn,
-					desiredBodyFacing: aircraft.FlightFacing);
-			}
+			// We can't possibly turn this fast
+			var desiredFacing = aircraft.IdleSpeed > 0 ? aircraft.FlightFacing + new WAngle(256) : aircraft.FlightFacing;
+			Fly.FlyTick(self, aircraft, desiredFacing, aircraft.Info.CruiseAltitude, idleTurn: idleTurn,
+				desiredBodyFacing: aircraft.FlightFacing, desiredSpeed: aircraft.IdleSpeed);
 
 			return false;
 		}

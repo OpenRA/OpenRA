@@ -52,7 +52,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("How fast can this actor change its flight direction?")]
 		public readonly WAngle TurnSpeed = new WAngle(512);
 
-		[Desc("How fast can this actor change its body facing? defaults to TurnSpeed if undefined. This parameter only applies to aircraft with CanSlide.")]
+		[Desc("How fast can this actor change its body facing? defaults to TurnSpeed if undefined. This parameter only" +
+			" applies to aircraft with CanSlide.")]
 		public readonly WAngle? BodyTurnSpeed = null;
 
 		[Desc("Turn speed to apply when aircraft flies in circles while idle. Defaults to TurnSpeed if undefined.")]
@@ -64,6 +65,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("If non-negative, force the aircraft to move in circles at this speed when idle, ignoring CanHover.")]
 		public readonly int IdleSpeed = -1;
 
+		[Desc("Maximum acceleration/deceleration for forward movement. defaults to Speed if -1.")]
+		public readonly int Acceleration = -1;
+
 		[Desc("Body pitch when flying forwards. Only relevant for voxel aircraft.")]
 		public readonly WAngle Pitch = WAngle.Zero;
 
@@ -73,7 +77,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Body roll when turning. Only relevant for voxel aircraft.")]
 		public readonly WAngle Roll = WAngle.Zero;
 
-		[Desc("Body roll to apply when aircraft flies in circles while idle. Defaults to Roll if undefined. Only relevant for voxel aircraft.")]
+		[Desc("Body roll to apply when aircraft flies in circles while idle. Defaults to Roll if undefined." +
+			" Only relevant for voxel aircraft.")]
 		public readonly WAngle? IdleRoll = null;
 
 		[Desc("Roll steps to apply each tick when turning.")]
@@ -137,7 +142,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("How fast this actor ascends or descends during horizontal movement.")]
 		public readonly WAngle MaximumPitch = WAngle.FromDegrees(10);
 
-		[Desc("How fast this actor ascends or descends when moving vertically only (vertical take off/landing or hovering towards CruiseAltitude).")]
+		[Desc("How fast this actor ascends or descends when moving vertically only (vertical take off/landing or" +
+			" hovering towards CruiseAltitude).")]
 		public readonly WDist AltitudeVelocity = new WDist(43);
 
 		[Desc("Sounds to play when the actor is taking off.")]
@@ -255,12 +261,29 @@ namespace OpenRA.Mods.Common.Traits
 		public WRot Orientation { get { return orientation; } }
 
 		public WAngle FlightFacing { get; set; }
+		public int CurrentSpeed { get; set; }
 
 		[Sync]
 		public WPos CenterPosition { get; private set; }
 
 		public CPos TopLeft { get { return self.World.Map.CellContaining(CenterPosition); } }
 		public WAngle TurnSpeed { get { return !IsTraitDisabled && !IsTraitPaused ? Info.TurnSpeed : WAngle.Zero; } }
+
+		public int IdleSpeed
+		{
+			get
+			{
+				if (Info.IdleSpeed >= 0)
+					return Info.IdleSpeed;
+
+				if (Info.CanHover)
+					return 0;
+
+				return MovementSpeed;
+			}
+		}
+
+		public int Acceleration { get { return Info.Acceleration >= 0 ? Info.Acceleration : MovementSpeed; } }
 
 		public Actor ReservedActor { get; private set; }
 		public bool MayYieldReservation { get; private set; }
@@ -617,7 +640,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public WVec FlyStep(WAngle facing)
 		{
-			return FlyStep(MovementSpeed, facing);
+			return FlyStep(CurrentSpeed, facing);
 		}
 
 		public WVec FlyStep(int speed, WAngle facing)

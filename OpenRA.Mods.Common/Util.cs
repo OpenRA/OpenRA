@@ -52,6 +52,14 @@ namespace OpenRA.Mods.Common
 			return rightTurn < leftTurn ? facing + step : facing - step;
 		}
 
+		public static int TickSpeed(int speed, int desiredSpeed, int acceleration)
+		{
+			if (desiredSpeed >= speed)
+				return Math.Min(speed + acceleration, desiredSpeed);
+
+			return Math.Max(speed - acceleration, desiredSpeed);
+		}
+
 		/// <summary>
 		/// Determines whether desiredFacing is clockwise (-1) or anticlockwise (+1) of facing.
 		/// If desiredFacing is equal to facing or directly behind facing we treat it as being anticlockwise

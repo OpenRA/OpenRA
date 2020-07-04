@@ -138,7 +138,7 @@ namespace OpenRA.Mods.Common.Activities
 			{
 				if ((pos - targetPosition).HorizontalLengthSquared != 0)
 				{
-					QueueChild(new Fly(self, Target.FromPos(targetPosition)));
+					QueueChild(new Fly(self, Target.FromPos(targetPosition), speed: 0));
 					return false;
 				}
 
