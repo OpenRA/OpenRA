@@ -53,6 +53,10 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Cursor to display when picking up the passengers.")]
 		public readonly string PickUpCursor = "ability";
 
+		[GrantedConditionReference]
+		[Desc("Condition to grant to the Carryall while it is carrying something.")]
+		public readonly string CarryCondition = null;
+
 		[VoiceReference]
 		public readonly string Voice = "Action";
 
@@ -85,6 +89,7 @@ namespace OpenRA.Mods.Common.Traits
 		WAngle cachedFacing;
 		IActorPreview[] carryablePreview;
 		HashSet<string> landableTerrainTypes;
+		int carryConditionToken = Actor.InvalidConditionToken;
 
 		/// <summary>Offset between the carryall's and the carried actor's CenterPositions</summary>
 		public WVec CarryableOffset { get; private set; }
@@ -177,6 +182,8 @@ namespace OpenRA.Mods.Common.Traits
 			Carryable = carryable;
 			State = CarryallState.Carrying;
 			self.World.ScreenMap.AddOrUpdate(self);
+			if (carryConditionToken == Actor.InvalidConditionToken)
+				carryConditionToken = self.GrantCondition(Info.CarryCondition);
 
 			CarryableOffset = OffsetForCarryable(self, carryable);
 			landableTerrainTypes = Carryable.Trait<Mobile>().Info.LocomotorInfo.TerrainSpeeds.Keys.ToHashSet();
@@ -188,6 +195,8 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			UnreserveCarryable(self);
 			self.World.ScreenMap.AddOrUpdate(self);
+			if (carryConditionToken != Actor.InvalidConditionToken)
+				carryConditionToken = self.RevokeCondition(carryConditionToken);
 
 			carryablePreview = null;
 			landableTerrainTypes = null;
