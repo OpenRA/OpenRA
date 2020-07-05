@@ -192,9 +192,9 @@ namespace OpenRA.Graphics
 		public void DrawLine(IEnumerable<float3> points, float width, Color color, bool connectSegments = false)
 		{
 			if (!connectSegments)
-				DrawDisconnectedLine(points as float3[] ?? points.ToArray(), width, color);
+				DrawDisconnectedLine(points, width, color);
 			else
-				DrawConnectedLine(points as float3[] ?? points.ToArray(), width, color, false);
+				DrawConnectedLine(points.ToArray(), width, color, false);
 		}
 
 		public void DrawLine(float3[] points, float width, Color color, bool connectSegments = false)
