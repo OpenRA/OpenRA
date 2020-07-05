@@ -67,6 +67,16 @@ FCOM:
 	-GivesBuildableArea:
 	BaseProvider:
 		Range: 0
+	RepairableBuilding:
+		RepairStep: 700
+		PlayerExperience: 25
+		RepairingNotification: Repairing
+	WithBuildingRepairDecoration:
+		Image: allyrepair
+		Sequence: repair
+		Position: Center
+		Palette: player
+		IsPlayerPalette: True
 
 MISS:
 	RevealsShroud:
