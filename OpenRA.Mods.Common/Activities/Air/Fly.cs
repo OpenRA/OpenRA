@@ -71,7 +71,7 @@ namespace OpenRA.Mods.Common.Activities
 			var speed = Util.TickSpeed(aircraft.CurrentSpeed, desiredSpeed, aircraft.Acceleration);
 
 			// Prevent oversteering by predicting our angular deceleration curve.
-			var desiredFlightTurnSpeed = idleTurn ? aircraft.Info.IdleTurnSpeed ?? aircraft.TurnSpeed : WAngle.Zero;
+			var desiredFlightTurnSpeed = idleTurn ? (aircraft.Info.IdleTurnSpeed ?? aircraft.TurnSpeed) : WAngle.Zero;
 			var flightFacingDelta = Math.Abs((desiredFacing - aircraft.FlightFacing).Angle2);
 			if (flightFacingDelta >= aircraft.CurrentFlightTurnSpeed.Angle2 * aircraft.CurrentFlightTurnSpeed.Angle2 / aircraft.TurnAcceleration.Angle2 / 2)
 				desiredFlightTurnSpeed = (desiredFacing - aircraft.FlightFacing).Clamp(-aircraft.TurnSpeed, aircraft.TurnSpeed);
@@ -94,24 +94,21 @@ namespace OpenRA.Mods.Common.Activities
 				bodyFacing = aircraft.Facing + bodyTurnSpeed;
 			}
 
-			// Determine body roll and pitch offsets depending on horizontal forward speed.
+			// Determine body roll and pitch offsets due to banking while turning.
+			var roll = WAngle.Zero;
 			var pitch = WAngle.Zero;
-			var rollOffset = WAngle.Zero;
-			if (aircraft.Info.Pitch != WAngle.Zero)
+			if (aircraft.Info.Roll != WAngle.Zero)
 			{
-				pitch = new WAngle(aircraft.Info.Pitch.Angle2 * speed * (flightFacing - bodyFacing).Cos() / (1024 * aircraft.Info.Speed));
-				rollOffset = new WAngle(aircraft.Info.Pitch.Angle2 * speed * (flightFacing - bodyFacing).Sin() / (1024 * aircraft.Info.Speed));
+				long cent = aircraft.Info.Roll.Angle2 * speed * flightTurnSpeed.Angle2;
+				roll = new WAngle((int)(-cent * (flightFacing - bodyFacing).Cos() / (1024 * aircraft.TurnSpeed.Angle * aircraft.Info.Speed)));
+				pitch = new WAngle((int)(cent * (flightFacing - bodyFacing).Sin() / (1024 * aircraft.TurnSpeed.Angle * aircraft.Info.Speed)));
 			}
 
-			// Determine body roll.
-			var roll = WAngle.Zero;
-			var desiredRoll = idleTurn ? aircraft.Info.IdleRoll ?? aircraft.Info.Roll : aircraft.Info.Roll;
-			if (desiredRoll != WAngle.Zero)
+			// Determine body roll and pitch offsets depending on horizontal forward speed.
+			if (aircraft.Info.Pitch != WAngle.Zero)
 			{
-				desiredRoll = flightFacing == desiredFacing ? WAngle.Zero :
-					new WAngle(desiredRoll.Angle * Util.GetTurnDirection(flightFacing, aircraft.FlightFacing));
-
-				roll = Util.TickFacing(aircraft.Roll - rollOffset, desiredRoll, aircraft.Info.RollSpeed);
+				pitch += new WAngle(aircraft.Info.Pitch.Angle2 * speed * (flightFacing - bodyFacing).Cos() / (1024 * aircraft.Info.Speed));
+				roll += new WAngle(aircraft.Info.Pitch.Angle2 * speed * (flightFacing - bodyFacing).Sin() / (1024 * aircraft.Info.Speed));
 			}
 
 			// Determine new displacement vector.
@@ -133,7 +130,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			// Lock in new body and flight attitudes and velocities.
 			aircraft.FlightFacing = flightFacing;
-			aircraft.Orientation = new WRot(roll + rollOffset, pitch, bodyFacing);
+			aircraft.Orientation = new WRot(roll, pitch, bodyFacing);
 			aircraft.CurrentSpeed = speed;
 			aircraft.CurrentFlightTurnSpeed = flightTurnSpeed;
 			aircraft.CurrentBodyTurnSpeed = bodyTurnSpeed;
@@ -162,8 +159,9 @@ namespace OpenRA.Mods.Common.Activities
 				return false;
 
 			var bodyPitch = Util.TickFacing(aircraft.Pitch, WAngle.Zero, aircraft.Info.PitchSpeed);
+			var bodyRoll = Util.TickFacing(aircraft.Roll, WAngle.Zero, aircraft.Info.RollSpeed);
 
-			aircraft.Orientation = new WRot(aircraft.Roll, bodyPitch, bodyFacing);
+			aircraft.Orientation = new WRot(bodyRoll, bodyPitch, bodyFacing);
 			aircraft.SetPosition(self, aircraft.CenterPosition + move);
 			return true;
 		}

@@ -87,7 +87,7 @@ namespace OpenRA.Mods.Common.Traits
 			" Only relevant for voxel aircraft.")]
 		public readonly WAngle? IdleRoll = null;
 
-		[Desc("Roll steps to apply each tick when turning.")]
+		[Desc("Roll steps to apply each tick when not turning.")]
 		public readonly WAngle RollSpeed = WAngle.Zero;
 
 		[Desc("Minimum altitude where this aircraft is considered airborne.")]
@@ -461,12 +461,7 @@ namespace OpenRA.Mods.Common.Traits
 			CurrentMovementTypes = newMovementTypes;
 
 			if (!CurrentMovementTypes.HasFlag(MovementType.Horizontal))
-			{
-				if (Info.Roll != WAngle.Zero && Roll != WAngle.Zero)
-					Roll = Util.TickFacing(Roll, WAngle.Zero, Info.RollSpeed);
-
 				FlightFacing = Facing;
-			}
 
 			Repulse();
 		}
