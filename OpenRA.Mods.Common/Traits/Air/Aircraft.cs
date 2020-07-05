@@ -59,6 +59,12 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Turn speed to apply when aircraft flies in circles while idle. Defaults to TurnSpeed if undefined.")]
 		public readonly WAngle? IdleTurnSpeed = null;
 
+		[Desc("Maximum acceleration/deceleration for rotational movement. defaults to TurnSpeed if undefined.")]
+		public readonly WAngle? TurnAcceleration = null;
+
+		[Desc("Maximum acceleration/deceleration for body facing rotation. defaults to TurnAcceleration if undefined.")]
+		public readonly WAngle? BodyTurnAcceleration = null;
+
 		[Desc("Maximum flight speed")]
 		public readonly int Speed = 1;
 
@@ -262,12 +268,15 @@ namespace OpenRA.Mods.Common.Traits
 
 		public WAngle FlightFacing { get; set; }
 		public int CurrentSpeed { get; set; }
+		public WAngle CurrentFlightTurnSpeed { get; set; }
+		public WAngle CurrentBodyTurnSpeed { get; set; }
 
 		[Sync]
 		public WPos CenterPosition { get; private set; }
 
 		public CPos TopLeft { get { return self.World.Map.CellContaining(CenterPosition); } }
 		public WAngle TurnSpeed { get { return !IsTraitDisabled && !IsTraitPaused ? Info.TurnSpeed : WAngle.Zero; } }
+		public WAngle BodyTurnSpeed { get { return Info.BodyTurnSpeed ?? Info.TurnSpeed; } }
 
 		public int IdleSpeed
 		{
@@ -284,6 +293,8 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		public int Acceleration { get { return Info.Acceleration >= 0 ? Info.Acceleration : MovementSpeed; } }
+		public WAngle TurnAcceleration { get { return Info.TurnAcceleration ?? Info.TurnSpeed; } }
+		public WAngle BodyTurnAcceleration { get { return Info.BodyTurnAcceleration ?? TurnAcceleration; } }
 
 		public Actor ReservedActor { get; private set; }
 		public bool MayYieldReservation { get; private set; }
@@ -325,6 +336,7 @@ namespace OpenRA.Mods.Common.Traits
 				SetPosition(self, centerPositionInit.Value);
 
 			FlightFacing = Facing = init.GetValue<FacingInit, WAngle>(WAngle.FromFacing(Info.InitialFacing));
+			CurrentFlightTurnSpeed = CurrentBodyTurnSpeed = WAngle.Zero;
 			creationActivityDelay = init.GetValue<CreationActivityDelayInit, int>(0);
 		}
 

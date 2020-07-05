@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Activities;
@@ -65,20 +66,32 @@ namespace OpenRA.Mods.Common.Activities
 		public static void FlyTick(Actor self, Aircraft aircraft, WAngle desiredFacing, WDist desiredAltitude, WVec? moveOverride = null,
 			bool idleTurn = false, WAngle? desiredBodyFacing = null, int desiredSpeed = -1)
 		{
-			var dat = self.World.Map.DistanceAboveTerrain(aircraft.CenterPosition);
-
 			// Acceleration
 			desiredSpeed = desiredSpeed >= 0 ? desiredSpeed : aircraft.MovementSpeed;
 			var speed = Util.TickSpeed(aircraft.CurrentSpeed, desiredSpeed, aircraft.Acceleration);
 
-			var flightTurnSpeed = idleTurn ? aircraft.Info.IdleTurnSpeed ?? aircraft.TurnSpeed : aircraft.TurnSpeed;
-			var flightFacing = Util.TickFacing(aircraft.FlightFacing, desiredFacing, flightTurnSpeed);
+			// Prevent oversteering by predicting our angular deceleration curve.
+			var desiredFlightTurnSpeed = idleTurn ? aircraft.Info.IdleTurnSpeed ?? aircraft.TurnSpeed : WAngle.Zero;
+			var flightFacingDelta = Math.Abs((desiredFacing - aircraft.FlightFacing).Angle2);
+			if (flightFacingDelta >= aircraft.CurrentFlightTurnSpeed.Angle2 * aircraft.CurrentFlightTurnSpeed.Angle2 / aircraft.TurnAcceleration.Angle2 / 2)
+				desiredFlightTurnSpeed = (desiredFacing - aircraft.FlightFacing).Clamp(-aircraft.TurnSpeed, aircraft.TurnSpeed);
 
+			// Angular acceleration
+			var flightTurnSpeed = Util.TickFacing(aircraft.CurrentFlightTurnSpeed, desiredFlightTurnSpeed, aircraft.TurnAcceleration);
+			var flightFacing = aircraft.FlightFacing + flightTurnSpeed;
+
+			// If we can slide, independently turn the aircraft body.
+			var bodyTurnSpeed = WAngle.Zero;
 			var bodyFacing = flightFacing;
 			if (aircraft.Info.CanSlide)
 			{
-				var bodyTurnSpeed = aircraft.Info.BodyTurnSpeed ?? flightTurnSpeed;
-				bodyFacing = Util.TickFacing(aircraft.Facing, desiredBodyFacing ?? desiredFacing, bodyTurnSpeed);
+				var bodyFacingDelta = (desiredBodyFacing ?? desiredFacing) - aircraft.Facing;
+				var desiredBodyTurnSpeed = WAngle.Zero;
+				if (Math.Abs(bodyFacingDelta.Angle2) >= aircraft.CurrentBodyTurnSpeed.Angle2 * aircraft.CurrentBodyTurnSpeed.Angle2 / aircraft.BodyTurnAcceleration.Angle2 / 2)
+					desiredBodyTurnSpeed = bodyFacingDelta.Clamp(-aircraft.BodyTurnSpeed, aircraft.BodyTurnSpeed);
+
+				bodyTurnSpeed = Util.TickFacing(aircraft.CurrentBodyTurnSpeed, desiredBodyTurnSpeed, aircraft.BodyTurnAcceleration);
+				bodyFacing = aircraft.Facing + bodyTurnSpeed;
 			}
 
 			// Determine body roll and pitch offsets depending on horizontal forward speed.
@@ -109,6 +122,7 @@ namespace OpenRA.Mods.Common.Activities
 			// Note: we assume that if move.Z is not zero, it's intentional and we want to move in that vertical direction
 			// instead of towards desiredAltitude.
 			// If that is not desired, the place that calls this should make sure moveOverride.Z is zero.
+			var dat = self.World.Map.DistanceAboveTerrain(aircraft.CenterPosition);
 			if (dat != desiredAltitude || move.Z != 0)
 			{
 				var maxDelta = move.HorizontalLength * aircraft.Info.MaximumPitch.Tan() / 1024;
@@ -117,9 +131,12 @@ namespace OpenRA.Mods.Common.Activities
 				move = new WVec(move.X, move.Y, deltaZ);
 			}
 
+			// Lock in new body and flight attitudes and velocities.
 			aircraft.FlightFacing = flightFacing;
 			aircraft.Orientation = new WRot(roll + rollOffset, pitch, bodyFacing);
 			aircraft.CurrentSpeed = speed;
+			aircraft.CurrentFlightTurnSpeed = flightTurnSpeed;
+			aircraft.CurrentBodyTurnSpeed = bodyTurnSpeed;
 			aircraft.SetPosition(self, aircraft.CenterPosition + move);
 		}
 

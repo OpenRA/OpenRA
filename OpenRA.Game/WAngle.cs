@@ -71,6 +71,23 @@ namespace OpenRA
 			return new WAngle(Angle - 512).Tan();
 		}
 
+		public WAngle Clamp(WAngle min, WAngle max)
+		{
+			// Wrap around.
+			var a = min.Angle;
+			var b = max.Angle;
+			var angle = Angle;
+			if (a > b)
+			{
+				b += 1024;
+
+				if (angle < 512)
+					angle += 1024;
+			}
+
+			return new WAngle(angle.Clamp(a, b));
+		}
+
 		public static WAngle Lerp(WAngle a, WAngle b, int mul, int div)
 		{
 			// Map 1024 <-> 0 wrapping into linear space
