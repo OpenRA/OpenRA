@@ -27,6 +27,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly Color? targetLineColor;
 		readonly WDist nearEnough;
 		readonly int finalSpeed;
+		readonly WAngle? finalFacing = null;
 
 		Target target;
 		Target lastVisibleTarget;
@@ -39,12 +40,14 @@ namespace OpenRA.Mods.Common.Activities
 			this.nearEnough = nearEnough;
 		}
 
-		public Fly(Actor self, Target t, WPos? initialTargetPosition = null, Color? targetLineColor = null, int speed = -1)
+		public Fly(Actor self, Target t, WPos? initialTargetPosition = null, Color? targetLineColor = null, int speed = -1,
+			WAngle? facing = null)
 		{
 			aircraft = self.Trait<Aircraft>();
 			target = t;
 			this.targetLineColor = targetLineColor;
 			finalSpeed = speed >= 0 ? speed : aircraft.IdleSpeed;
+			finalFacing = facing;
 
 			// The target may become hidden between the initial order request and the first tick (e.g. if queued)
 			// Moving to any position (even if quite stale) is still better than immediately giving up
@@ -233,12 +236,11 @@ namespace OpenRA.Mods.Common.Activities
 
 			var isSlider = aircraft.Info.CanSlide;
 			var desiredFacing = delta.HorizontalLengthSquared != 0 ? delta.Yaw : aircraft.FlightFacing;
-			var desiredBodyFacing = delta.HorizontalLengthSquared != 0 ? delta.Yaw : aircraft.Facing;
 
 			// Inside the minimum range, so reverse if we CanSlide, otherwise face away from the target.
 			if (insideMinRange)
 			{
-				FlyTick(self, aircraft, aircraft.Info.CruiseAltitude, desiredFacing + new WAngle(512), desiredBodyFacing: desiredBodyFacing);
+				FlyTick(self, aircraft, aircraft.Info.CruiseAltitude, desiredFacing + new WAngle(512), desiredBodyFacing: desiredFacing);
 				return false;
 			}
 
@@ -246,7 +248,19 @@ namespace OpenRA.Mods.Common.Activities
 			var speed = aircraft.CurrentSpeed;
 			var accel = aircraft.Acceleration;
 			var speedDelta = aircraft.CurrentSpeed - finalSpeed;
+			var brakeTime = speedDelta / accel;
 			var parBrakeDist = speedDelta * speedDelta / accel / 2;
+
+			// If we can slide we should start turning to reach the desired facing at the last possible moment.
+			WAngle? desiredBodyFacing = null;
+			if (aircraft.Info.CanSlide && finalFacing.HasValue)
+			{
+				var turnSpeed = aircraft.BodyTurnSpeed.Angle;
+				var turnTime = Math.Abs((finalFacing - aircraft.Facing).Value.Angle2) / turnSpeed + turnSpeed / aircraft.BodyTurnAcceleration.Angle;
+				var turnDist = speed * turnTime - (turnTime < brakeTime ? accel * turnTime * turnTime / 2 : parBrakeDist);
+				if (turnDist >= delta.HorizontalLength)
+					desiredBodyFacing = finalFacing;
+			}
 
 			// HACK: Consider ourselves blocked if we have moved by less than sqrt(15) * the smallest possible deliberate displacement
 			// in the last five ticks. Stop if we are blocked and close enough
@@ -311,7 +325,8 @@ namespace OpenRA.Mods.Common.Activities
 			if (positionBuffer.Count > 5)
 				positionBuffer.RemoveAt(0);
 
-			FlyTick(self, aircraft, aircraft.Info.CruiseAltitude, desiredFacing, desiredSpeed: desiredSpeed);
+			FlyTick(self, aircraft, aircraft.Info.CruiseAltitude, desiredFacing, desiredSpeed: desiredSpeed,
+				desiredBodyFacing: desiredBodyFacing);
 
 			return false;
 		}
