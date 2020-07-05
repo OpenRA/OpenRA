@@ -309,6 +309,28 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							slider.OnChange += value => so.OnChange(actor, value);
 							slider.OnChange += value => editorActionHandle.OnChange(value);
 
+							var valueField = sliderContainer.Get<TextFieldWidget>("VALUE");
+
+							Action<float> updateValueField = (float f) =>
+							{
+								var stringValue = ((int)f).ToString();
+								if (valueField.Text != stringValue)
+									valueField.Text = stringValue;
+							};
+
+							updateValueField(so.GetValue(actor));
+
+							slider.OnChange += updateValueField;
+
+							Action updateSliderFromValueField = () =>
+							{
+								float result;
+								if (float.TryParse(valueField.Text, out result) && ((int)slider.Value) != ((int)result))
+									slider.UpdateValue(result);
+							};
+
+							valueField.OnTextEdited = updateSliderFromValueField;
+
 							initContainer.AddChild(sliderContainer);
 						}
 						else if (o is EditorActorDropdown)
