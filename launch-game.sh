@@ -41,7 +41,7 @@ if [ $? != 0 ] && [ $? != 1 ]; then
 	elif command -v kdialog > /dev/null; then
 		kdialog --title "OpenRA" --error "${ERROR_MESSAGE}"
 	else
-		printf "%s\n" "${ERROR_MESSAGE}"
+		echo "${ERROR_MESSAGE}"
 	fi
 	exit 1
 fi
