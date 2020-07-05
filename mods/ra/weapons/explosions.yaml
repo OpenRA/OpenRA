@@ -250,6 +250,9 @@ CrateNuke:
 		ValidTargets: Ground, Infantry
 		Size: 4
 		Delay: 5
+	Warhead@7FlashEffect: FlashPaletteEffect
+		Duration: 20
+		FlashType: Nuke
 
 MiniNuke:
 	ValidTargets: Ground, GroundActor, Trees, Water, WaterActor, Underwater, Air, AirborneActor
@@ -321,3 +324,6 @@ MiniNuke:
 		ValidTargets: Ground, Infantry
 		Size: 4
 		Delay: 15
+	Warhead@14FlashEffect: FlashPaletteEffect
+		Duration: 20
+		FlashType: Nuke
