@@ -247,7 +247,7 @@ namespace OpenRA.Mods.Common.Activities
 			// Calculate intermediate variables for deceleration.
 			var speed = aircraft.CurrentSpeed;
 			var accel = aircraft.Acceleration;
-			var speedDelta = aircraft.CurrentSpeed - finalSpeed;
+			var speedDelta = speed - finalSpeed;
 			var brakeTime = speedDelta / accel;
 			var parBrakeDist = speedDelta * speedDelta / accel / 2;
 
@@ -270,7 +270,7 @@ namespace OpenRA.Mods.Common.Activities
 				return true;
 
 			// The next move would overshoot, so consider it close enough or set final position if we CanSlide
-			if (delta.HorizontalLength < aircraft.CurrentSpeed)
+			if (delta.HorizontalLength <= Math.Max(speed, accel))
 			{
 				// For VTOL landing to succeed, it must reach the exact target position,
 				// so for the final move it needs to behave as if it had CanSlide.
@@ -295,31 +295,47 @@ namespace OpenRA.Mods.Common.Activities
 				return true;
 			}
 
-			// Determine when we should start to slow down.
 			int desiredSpeed = -1;
-			if (delta.HorizontalLength < speed * speedDelta / accel - parBrakeDist)
-				desiredSpeed = finalSpeed;
-
 			var flightTurnSpeed = aircraft.TurnSpeed;
 			if (flightTurnSpeed.Angle < 512)
 			{
 				// Using the turn rate, compute a hypothetical circle traced by a continuous turn.
 				// If it contains the destination point, it's unreachable without more complex manuvering.
-				var turnRadius = CalculateTurnRadius(aircraft.CurrentSpeed, flightTurnSpeed);
+				var turnRadius = CalculateTurnRadius(speed, flightTurnSpeed);
 
 				// The current facing is a tangent of the minimal turn circle.
 				// Make a perpendicular vector, and use it to locate the turn's center.
 				var turnCenterFacing = aircraft.FlightFacing + new WAngle(Util.GetTurnDirection(aircraft.FlightFacing, desiredFacing) * 256);
-
 				var turnCenterDir = new WVec(0, -1024, 0).Rotate(WRot.FromYaw(turnCenterFacing));
-				turnCenterDir *= turnRadius;
-				turnCenterDir /= 1024;
 
-				// Compare with the target point, and keep flying away if it's inside the circle.
-				var turnCenter = aircraft.CenterPosition + turnCenterDir;
+				// Compare with the target point, and slow down if it's inside the circle.
+				var turnCenter = aircraft.CenterPosition + turnCenterDir * turnRadius / 1024;
 				if ((checkTarget.CenterPosition - turnCenter).HorizontalLengthSquared < turnRadius * turnRadius)
-					desiredFacing = aircraft.FlightFacing;
+				{
+					turnRadius = CalculateTurnRadius(finalSpeed, flightTurnSpeed);
+					turnCenter = aircraft.CenterPosition + turnCenterDir * turnRadius / 1024;
+
+					// If we are not allowed to slow down enough, we keep flying away instead.
+					if ((checkTarget.CenterPosition - turnCenter).HorizontalLengthSquared < turnRadius * turnRadius)
+						desiredFacing = aircraft.FlightFacing;
+					else
+						desiredSpeed = finalSpeed;
+				}
+				else
+				{
+					turnRadius = CalculateTurnRadius(speed + aircraft.Acceleration, flightTurnSpeed);
+					turnCenter = aircraft.CenterPosition + turnCenterDir * turnRadius / 1024;
+
+					// The next acceleration step would cause the target point to be within the turn circle
+					// So we keep our current speed instead.
+					if ((checkTarget.CenterPosition - turnCenter).HorizontalLengthSquared < turnRadius * turnRadius)
+						desiredSpeed = speed;
+				}
 			}
+
+			// Determine when we should start to slow down.
+			if (delta.HorizontalLength < speed * speedDelta / accel - parBrakeDist)
+				desiredSpeed = finalSpeed;
 
 			positionBuffer.Add(self.CenterPosition);
 			if (positionBuffer.Count > 5)
