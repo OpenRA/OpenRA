@@ -284,7 +284,7 @@ Container@EDITOR_WORLD_ROOT:
 											Y: 1
 											Width: 50
 											Height: 20
-                                            Type: Integer
+											Type: Integer
 								Container@DROPDOWN_OPTION_TEMPLATE:
 									Width: PARENT_RIGHT
 									Height: 27
