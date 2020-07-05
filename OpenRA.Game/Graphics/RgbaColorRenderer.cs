@@ -107,6 +107,20 @@ namespace OpenRA.Graphics
 			}
 		}
 
+		void DrawDisconnectedLine(float3[] points, float width, Color color)
+		{
+			if (points.Length > 1)
+			{
+				var lastPoint = points[0];
+				for (var i = 1; i < points.Length; i++)
+				{
+					var point = points[i];
+					DrawLine(lastPoint, point, width, color);
+					lastPoint = point;
+				}
+			}
+		}
+
 		void DrawConnectedLine(float3[] points, float width, Color color, bool closed)
 		{
 			// Not a line
@@ -178,9 +192,17 @@ namespace OpenRA.Graphics
 		public void DrawLine(IEnumerable<float3> points, float width, Color color, bool connectSegments = false)
 		{
 			if (!connectSegments)
-				DrawDisconnectedLine(points, width, color);
+				DrawDisconnectedLine(points as float3[] ?? points.ToArray(), width, color);
 			else
 				DrawConnectedLine(points as float3[] ?? points.ToArray(), width, color, false);
+		}
+
+		public void DrawLine(float3[] points, float width, Color color, bool connectSegments = false)
+		{
+			if (!connectSegments)
+				DrawDisconnectedLine(points, width, color);
+			else
+				DrawConnectedLine(points, width, color, false);
 		}
 
 		public void DrawPolygon(float3[] vertices, float width, Color color)
