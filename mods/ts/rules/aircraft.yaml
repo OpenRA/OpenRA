@@ -140,6 +140,8 @@ ORCA:
 	Aircraft:
 		TurnSpeed: 40
 		BodyTurnSpeed: 20
+		TurnAcceleration: 5
+		BodyTurnAcceleration: 3
 		Speed: 186
 		TakeoffSounds: orcaup1.aud
 		LandingSounds: orcadwn1.aud
@@ -363,6 +365,8 @@ SCRIN:
 		IdleTurnSpeed: 6
 		Speed: 168
 		IdleSpeed: 100
+		Pitch: 0
+		Roll: 128
 		TakeoffSounds: dropup1.aud
 		LandingSounds: dropdwn1.aud
 		CanHover: false
@@ -427,6 +431,8 @@ APACHE:
 		RollSpeed: 8
 		TurnSpeed: 40
 		BodyTurnSpeed: 20
+		TurnAcceleration: 5
+		BodyTurnAcceleration: 3
 		Speed: 130
 		TakeOffOnResupply: true
 	Health:

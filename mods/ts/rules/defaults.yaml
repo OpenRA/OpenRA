@@ -892,8 +892,9 @@
 		Pitch: -64
 		PitchSpeed: 5
 		Roll: 56
-		RollSpeed: 14
+		RollSpeed: 5
 		Acceleration: 5
+		TurnAcceleration: 1
 	Voiced:
 		VoiceSet: Heli
 	HiddenUnderFog:
