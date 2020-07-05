@@ -63,18 +63,21 @@ namespace OpenRA.Mods.Common.Activities
 			this.minRange = minRange;
 		}
 
-		public static void FlyTick(Actor self, Aircraft aircraft, WAngle desiredFacing, WDist desiredAltitude, WVec? moveOverride = null,
-			bool idleTurn = false, WAngle? desiredBodyFacing = null, int desiredSpeed = -1)
+		public static void FlyTick(Actor self, Aircraft aircraft, WDist desiredAltitude, WAngle? desiredFacing = null,
+			WVec? moveOverride = null, WAngle? desiredBodyFacing = null, int desiredSpeed = -1, WAngle? desiredTurnSpeed = null)
 		{
 			// Acceleration
 			desiredSpeed = desiredSpeed >= 0 ? desiredSpeed : aircraft.MovementSpeed;
 			var speed = Util.TickSpeed(aircraft.CurrentSpeed, desiredSpeed, aircraft.Acceleration);
 
 			// Prevent oversteering by predicting our angular deceleration curve.
-			var desiredFlightTurnSpeed = idleTurn ? (aircraft.Info.IdleTurnSpeed ?? aircraft.TurnSpeed) : WAngle.Zero;
-			var flightFacingDelta = Math.Abs((desiredFacing - aircraft.FlightFacing).Angle2);
-			if (flightFacingDelta >= aircraft.CurrentFlightTurnSpeed.Angle2 * aircraft.CurrentFlightTurnSpeed.Angle2 / aircraft.TurnAcceleration.Angle2 / 2)
-				desiredFlightTurnSpeed = (desiredFacing - aircraft.FlightFacing).Clamp(-aircraft.TurnSpeed, aircraft.TurnSpeed);
+			var desiredFlightTurnSpeed = desiredTurnSpeed ?? WAngle.Zero;
+			if (desiredFacing.HasValue)
+			{
+				var flightFacingDelta = Math.Abs((desiredFacing.Value - aircraft.FlightFacing).Angle2);
+				if (flightFacingDelta >= aircraft.CurrentFlightTurnSpeed.Angle2 * aircraft.CurrentFlightTurnSpeed.Angle2 / aircraft.TurnAcceleration.Angle2 / 2)
+					desiredFlightTurnSpeed = (desiredFacing.Value - aircraft.FlightFacing).Clamp(-aircraft.TurnSpeed, aircraft.TurnSpeed);
+			}
 
 			// Angular acceleration
 			var flightTurnSpeed = Util.TickFacing(aircraft.CurrentFlightTurnSpeed, desiredFlightTurnSpeed, aircraft.TurnAcceleration);
@@ -85,7 +88,7 @@ namespace OpenRA.Mods.Common.Activities
 			var bodyFacing = flightFacing;
 			if (aircraft.Info.CanSlide)
 			{
-				var bodyFacingDelta = (desiredBodyFacing ?? desiredFacing) - aircraft.Facing;
+				var bodyFacingDelta = (desiredBodyFacing ?? desiredFacing ?? aircraft.FlightFacing) - aircraft.Facing;
 				var desiredBodyTurnSpeed = WAngle.Zero;
 				if (Math.Abs(bodyFacingDelta.Angle2) >= aircraft.CurrentBodyTurnSpeed.Angle2 * aircraft.CurrentBodyTurnSpeed.Angle2 / aircraft.BodyTurnAcceleration.Angle2 / 2)
 					desiredBodyTurnSpeed = bodyFacingDelta.Clamp(-aircraft.BodyTurnSpeed, aircraft.BodyTurnSpeed);
@@ -235,7 +238,7 @@ namespace OpenRA.Mods.Common.Activities
 			// Inside the minimum range, so reverse if we CanSlide, otherwise face away from the target.
 			if (insideMinRange)
 			{
-				FlyTick(self, aircraft, desiredFacing + new WAngle(512), aircraft.Info.CruiseAltitude, desiredBodyFacing: desiredBodyFacing);
+				FlyTick(self, aircraft, aircraft.Info.CruiseAltitude, desiredFacing + new WAngle(512), desiredBodyFacing: desiredBodyFacing);
 				return false;
 			}
 
@@ -264,7 +267,7 @@ namespace OpenRA.Mods.Common.Activities
 					{
 						// Ensure we don't include a non-zero vertical component here that would move us away from CruiseAltitude
 						var deltaMove = new WVec(delta.X, delta.Y, 0);
-						FlyTick(self, aircraft, desiredFacing, dat, deltaMove);
+						FlyTick(self, aircraft, dat, desiredFacing, deltaMove);
 					}
 
 					// Move to CruiseAltitude, if not already there
@@ -308,7 +311,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (positionBuffer.Count > 5)
 				positionBuffer.RemoveAt(0);
 
-			FlyTick(self, aircraft, desiredFacing, aircraft.Info.CruiseAltitude, desiredSpeed: desiredSpeed);
+			FlyTick(self, aircraft, aircraft.Info.CruiseAltitude, desiredFacing, desiredSpeed: desiredSpeed);
 
 			return false;
 		}

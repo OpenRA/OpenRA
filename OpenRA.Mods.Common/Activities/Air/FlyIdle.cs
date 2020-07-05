@@ -49,9 +49,8 @@ namespace OpenRA.Mods.Common.Activities
 					tickIdle.TickIdle(self);
 
 			// We can't possibly turn this fast
-			var desiredFacing = aircraft.IdleSpeed > 0 ? aircraft.FlightFacing + new WAngle(256) : aircraft.FlightFacing;
-			Fly.FlyTick(self, aircraft, desiredFacing, aircraft.Info.CruiseAltitude, idleTurn: idleTurn,
-				desiredBodyFacing: aircraft.FlightFacing, desiredSpeed: aircraft.IdleSpeed);
+			Fly.FlyTick(self, aircraft, aircraft.Info.CruiseAltitude, desiredBodyFacing: aircraft.FlightFacing,
+				desiredSpeed: aircraft.IdleSpeed, desiredTurnSpeed: aircraft.IdleTurnSpeed);
 
 			return false;
 		}

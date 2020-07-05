@@ -253,7 +253,7 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			var landingAlt = self.World.Map.DistanceAboveTerrain(targetPosition) + aircraft.LandAltitude;
-			Fly.FlyTick(self, aircraft, d.Yaw, landingAlt);
+			Fly.FlyTick(self, aircraft, landingAlt, d.Yaw);
 
 			return false;
 		}

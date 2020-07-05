@@ -292,6 +292,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
+		public WAngle IdleTurnSpeed { get { return IdleSpeed > 0 ? (Info.IdleTurnSpeed ?? TurnSpeed) : WAngle.Zero; } }
 		public int Acceleration { get { return Info.Acceleration >= 0 ? Info.Acceleration : MovementSpeed; } }
 		public WAngle TurnAcceleration { get { return Info.TurnAcceleration ?? Info.TurnSpeed; } }
 		public WAngle BodyTurnAcceleration { get { return Info.BodyTurnAcceleration ?? TurnAcceleration; } }
