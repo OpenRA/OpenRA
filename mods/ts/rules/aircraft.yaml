@@ -138,13 +138,12 @@ ORCA:
 	Selectable:
 		Bounds: 30,24
 	Aircraft:
-		BodyTurnSpeed: 12
-		TurnSpeed: 20
+		TurnSpeed: 40
+		BodyTurnSpeed: 20
 		Speed: 186
 		TakeoffSounds: orcaup1.aud
 		LandingSounds: orcadwn1.aud
 		AltitudeVelocity: 128
-		CanSlide: false
 		TakeOffOnResupply: true
 	Health:
 		HP: 20000
@@ -201,7 +200,8 @@ ORCAB:
 		Bounds: 30,24
 	Aircraft:
 		CruiseAltitude: 5c512
-		TurnSpeed: 12
+		TurnSpeed: 20
+		BodyTurnSpeed: 12
 		IdleTurnSpeed: 4
 		Speed: 96
 		IdleSpeed: 60
@@ -209,7 +209,6 @@ ORCAB:
 		TakeoffSounds: orcaup1.aud
 		LandingSounds: orcadwn1.aud
 		CanHover: false
-		CanSlide: false
 	Health:
 		HP: 26000
 	Armor:
@@ -265,6 +264,7 @@ ORCATRAN:
 		Prerequisites: ~disabled
 	RenderSprites:
 	Aircraft:
+		TurnSpeed: 40
 		BodyTurnSpeed: 20
 		Speed: 84
 		InitialFacing: 0
@@ -307,6 +307,7 @@ TRNSPORT:
 		Prerequisites: ~gahpad, gadept
 		Description: VTOL aircraft capable of lifting\nand transporting vehicles.\n  Unarmed
 	Aircraft:
+		TurnSpeed: 40
 		BodyTurnSpeed: 20
 		Speed: 149
 		InitialFacing: 0
@@ -357,14 +358,14 @@ SCRIN:
 		VoiceSet: Scrin
 	Aircraft:
 		CruiseAltitude: 5c0
-		BodyTurnSpeed: 12
+		TurnSpeed: 12
+		BodyTurnSpeed: 20
+		IdleTurnSpeed: 6
 		Speed: 168
-		IdleTurnSpeed: 8
 		IdleSpeed: 100
 		TakeoffSounds: dropup1.aud
 		LandingSounds: dropdwn1.aud
 		CanHover: false
-		CanSlide: false
 	Health:
 		HP: 28000
 	Armor:
@@ -425,9 +426,9 @@ APACHE:
 		PitchSpeed: 8
 		Roll: 16
 		RollSpeed: 8
+		TurnSpeed: 40
 		BodyTurnSpeed: 20
 		Speed: 130
-		CanSlide: false
 		TakeOffOnResupply: true
 	Health:
 		HP: 22500
