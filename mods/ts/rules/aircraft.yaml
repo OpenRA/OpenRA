@@ -423,7 +423,6 @@ APACHE:
 		Bounds: 30,24
 	Aircraft:
 		Pitch: -32
-		PitchSpeed: 8
 		Roll: 16
 		RollSpeed: 8
 		TurnSpeed: 40
