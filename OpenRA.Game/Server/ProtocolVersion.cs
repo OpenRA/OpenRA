@@ -25,6 +25,8 @@ namespace OpenRA.Server
 		// Order types are:
 		// - 0x65: World sync hash:
 		//   - Int32 containing the sync hash value
+		//   - UInt64 containing the current defeat state (a bit set
+		//     to 1 means the corresponding player is defeated)
 		// - 0xBF: Player disconnected
 		// - 0xFE: Handshake (also used for ServerOrders for ProtocolVersion.Orders < 8)
 		//   - Length-prefixed string specifying a name or key
@@ -66,6 +68,6 @@ namespace OpenRA.Server
 		// The protocol for server and world orders
 		// This applies after the handshake has completed, and is provided to support
 		// alternative server implementations that wish to support multiple versions in parallel
-		public const int Orders = 10;
+		public const int Orders = 11;
 	}
 }
