@@ -134,19 +134,15 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			// Move towards landing location/facing
-			if (aircraft.Info.VTOL)
+			if (aircraft.Info.VTOL && !finishedApproach)
 			{
-				if ((pos - targetPosition).HorizontalLengthSquared != 0)
-				{
-					QueueChild(new Fly(self, Target.FromPos(targetPosition), speed: 0, facing: desiredFacing));
-					return false;
-				}
+				QueueChild(new Fly(self, Target.FromPos(targetPosition), speed: 0, facing: desiredFacing));
 
-				if (desiredFacing.HasValue && desiredFacing.Value != aircraft.Facing)
-				{
+				if (desiredFacing.HasValue)
 					QueueChild(new Turn(self, desiredFacing.Value));
-					return false;
-				}
+
+				finishedApproach = true;
+				return false;
 			}
 
 			if (!aircraft.Info.VTOL && !finishedApproach)
@@ -235,10 +231,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (aircraft.Info.VTOL)
 			{
 				var landAltitude = self.World.Map.DistanceAboveTerrain(targetPosition) + aircraft.LandAltitude;
-				if (Fly.VerticalTakeOffOrLandTick(self, aircraft, aircraft.Facing, landAltitude))
-					return false;
-
-				return true;
+				return Fly.VerticalTakeOffOrLandTick(self, aircraft, landAltitude);
 			}
 
 			var d = targetPosition - pos;

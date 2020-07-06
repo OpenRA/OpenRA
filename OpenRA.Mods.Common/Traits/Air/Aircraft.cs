@@ -152,6 +152,9 @@ namespace OpenRA.Mods.Common.Traits
 			" hovering towards CruiseAltitude).")]
 		public readonly WDist AltitudeVelocity = new WDist(43);
 
+		[Desc("Maximum acceleration/deceleration for vertical movement. defaults to AltitudeVelocity if undefined.")]
+		public readonly WDist? VTOLAcceleration = null;
+
 		[Desc("Sounds to play when the actor is taking off.")]
 		public readonly string[] TakeoffSounds = { };
 
@@ -267,6 +270,7 @@ namespace OpenRA.Mods.Common.Traits
 		public WRot Orientation { get { return orientation; } set { orientation = value; } }
 
 		public WAngle FlightFacing { get; set; }
+		public WAngle FlightPitch { get; set; }
 		public int CurrentSpeed { get; set; }
 		public WAngle CurrentFlightTurnSpeed { get; set; }
 		public WAngle CurrentBodyTurnSpeed { get; set; }
@@ -296,6 +300,7 @@ namespace OpenRA.Mods.Common.Traits
 		public int Acceleration { get { return Info.Acceleration >= 0 ? Info.Acceleration : MovementSpeed; } }
 		public WAngle TurnAcceleration { get { return Info.TurnAcceleration ?? Info.TurnSpeed; } }
 		public WAngle BodyTurnAcceleration { get { return Info.BodyTurnAcceleration ?? TurnAcceleration; } }
+		public WDist VTOLAcceleration { get { return Info.VTOLAcceleration ?? Info.AltitudeVelocity; } }
 
 		public Actor ReservedActor { get; private set; }
 		public bool MayYieldReservation { get; private set; }
@@ -651,6 +656,12 @@ namespace OpenRA.Mods.Common.Traits
 		public WVec FlyStep(int speed, WAngle facing)
 		{
 			var dir = new WVec(0, -1024, 0).Rotate(WRot.FromYaw(facing));
+			return speed * dir / 1024;
+		}
+
+		public WVec FlyStep(int speed, WRot attitude)
+		{
+			var dir = new WVec(1024, 0, 0).Rotate(attitude).Rotate(WRot.FromYaw(new WAngle(256)));
 			return speed * dir / 1024;
 		}
 

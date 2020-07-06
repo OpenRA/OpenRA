@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Common.Activities
 				// If we're a VTOL, rise before flying forward
 				if (aircraft.Info.VTOL)
 				{
-					Fly.VerticalTakeOffOrLandTick(self, aircraft, aircraft.Facing, aircraft.Info.CruiseAltitude);
+					Fly.VerticalTakeOffOrLandTick(self, aircraft, aircraft.Info.CruiseAltitude);
 					return false;
 				}
 
