@@ -76,7 +76,7 @@ namespace OpenRA
 			return GetEnumerator();
 		}
 
-		public sealed class ProjectedCellRegionEnumerator : IEnumerator<PPos>
+		public struct ProjectedCellRegionEnumerator : IEnumerator<PPos>
 		{
 			readonly ProjectedCellRegion r;
 
@@ -86,9 +86,11 @@ namespace OpenRA
 			PPos current;
 
 			public ProjectedCellRegionEnumerator(ProjectedCellRegion region)
+				: this()
 			{
 				r = region;
 				Reset();
+				current = new PPos(u, v);
 			}
 
 			public bool MoveNext()
