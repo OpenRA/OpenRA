@@ -264,8 +264,9 @@ namespace OpenRA.Mods.Common.Activities
 			if (delta.HorizontalLength < currentSpeed * speedDelta / accel - parBrakeDist)
 				desiredSpeed = aircraft.Info.LaunchSpeed;
 
-			var landingAlt = self.World.Map.DistanceAboveTerrain(targetPosition) + aircraft.LandAltitude;
-			Fly.FlyTick(self, aircraft, landingAlt, delta.Yaw, desiredSpeed: desiredSpeed);
+			var desiredPitch = WAngle.ArcTan(delta.Z, delta.HorizontalLength);
+
+			Fly.FlyTick(self, aircraft, desiredPitch, delta.Yaw, desiredSpeed: desiredSpeed);
 
 			return false;
 		}

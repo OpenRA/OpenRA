@@ -48,10 +48,7 @@ namespace OpenRA.Mods.Common.Activities
 				foreach (var tickIdle in tickIdles)
 					tickIdle.TickIdle(self);
 
-			// We can't possibly turn this fast
-			Fly.FlyTick(self, aircraft, aircraft.Info.CruiseAltitude, desiredBodyFacing: aircraft.FlightFacing,
-				desiredSpeed: aircraft.IdleSpeed, desiredTurnSpeed: aircraft.IdleTurnSpeed);
-
+			Fly.FlyTick(self, aircraft, desiredSpeed: aircraft.IdleSpeed, desiredTurnSpeed: aircraft.IdleTurnSpeed);
 			return false;
 		}
 	}

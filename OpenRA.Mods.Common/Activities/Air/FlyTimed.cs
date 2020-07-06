@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (IsCanceling || remainingTicks-- == 0)
 				return true;
 
-			Fly.FlyTick(self, aircraft, cruiseAltitude);
+			Fly.FlyTick(self, aircraft);
 
 			return false;
 		}

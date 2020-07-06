@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Common.Activities
 			this.minRange = minRange;
 		}
 
-		public static void FlyTick(Actor self, Aircraft aircraft, WDist desiredAltitude, WAngle? desiredFacing = null,
+		public static void FlyTick(Actor self, Aircraft aircraft, WAngle? desiredPitch = null, WAngle? desiredFacing = null,
 			WAngle? desiredBodyFacing = null, int desiredSpeed = -1, WAngle? desiredTurnSpeed = null)
 		{
 			// Acceleration
@@ -85,6 +85,15 @@ namespace OpenRA.Mods.Common.Activities
 			// Angular acceleration
 			var flightTurnSpeed = Util.TickFacing(aircraft.CurrentFlightTurnSpeed, desiredFlightTurnSpeed, aircraft.TurnAcceleration);
 			var flightFacing = aircraft.FlightFacing + flightTurnSpeed;
+
+			// Try to stay at cruising altitude unless instructed otherwise.
+			var desiredFlightPitch = aircraft.FlightPitch;
+			if (desiredPitch == null)
+				desiredFlightPitch = new WAngle(aircraft.InclineLookahead()).Clamp(-aircraft.Info.MaximumPitch, aircraft.Info.MaximumPitch);
+			else
+				desiredFlightPitch = desiredPitch.Value;
+
+			var flightPitch = Util.TickFacing(aircraft.FlightPitch, desiredFlightPitch, aircraft.Info.PitchSpeed);
 
 			// If we can slide, independently turn the aircraft body.
 			var bodyTurnSpeed = WAngle.Zero;
@@ -113,28 +122,17 @@ namespace OpenRA.Mods.Common.Activities
 			// Determine body roll and pitch offsets depending on horizontal forward speed.
 			if (aircraft.Info.Pitch != WAngle.Zero)
 			{
-				pitch += new WAngle(aircraft.Info.Pitch.Angle2 * speed * (flightFacing - bodyFacing).Cos() / (1024 * aircraft.Info.Speed));
-				roll += new WAngle(aircraft.Info.Pitch.Angle2 * speed * (flightFacing - bodyFacing).Sin() / (1024 * aircraft.Info.Speed));
+				long forw = aircraft.Info.Pitch.Angle2 * speed * flightPitch.Cos();
+				pitch += new WAngle((int)(forw * (flightFacing - bodyFacing).Cos() / (1048576 * aircraft.Info.Speed)));
+				roll += new WAngle((int)(forw * (flightFacing - bodyFacing).Sin() / (1048576 * aircraft.Info.Speed)));
 			}
 
 			// Determine new displacement vector.
-			var move = aircraft.FlyStep(aircraft.CurrentSpeed, aircraft.FlightFacing);
-
-			// Note: we assume that if move.Z is not zero, it's intentional and we want to move in that vertical direction
-			// instead of towards desiredAltitude.
-			// If that is not desired, the place that calls this should make sure moveOverride.Z is zero.
-			var dat = self.World.Map.DistanceAboveTerrain(aircraft.CenterPosition);
-			if (dat != desiredAltitude || move.Z != 0)
-			{
-				var maxDelta = move.HorizontalLength * aircraft.Info.MaximumPitch.Tan() / 1024;
-				var moveZ = move.Z != 0 ? move.Z : (desiredAltitude.Length - dat.Length);
-				var deltaZ = moveZ.Clamp(-maxDelta, maxDelta);
-				move = new WVec(move.X, move.Y, deltaZ);
-			}
+			var move = aircraft.FlyStep(aircraft.CurrentSpeed, new WRot(WAngle.Zero, aircraft.FlightPitch, aircraft.FlightFacing));
 
 			// Lock in new body and flight attitudes and velocities.
 			aircraft.FlightFacing = flightFacing;
-			aircraft.FlightPitch = WAngle.Zero;
+			aircraft.FlightPitch = flightPitch;
 			aircraft.Orientation = new WRot(roll, pitch, bodyFacing);
 			aircraft.CurrentSpeed = speed;
 			aircraft.CurrentVelocity = move;
@@ -287,7 +285,7 @@ namespace OpenRA.Mods.Common.Activities
 			// Inside the minimum range, so reverse if we CanSlide, otherwise face away from the target.
 			if (insideMinRange)
 			{
-				FlyTick(self, aircraft, aircraft.Info.CruiseAltitude, desiredFacing + new WAngle(512), desiredBodyFacing: desiredFacing);
+				FlyTick(self, aircraft, desiredFacing: desiredFacing + new WAngle(512), desiredBodyFacing: desiredFacing);
 				return false;
 			}
 
@@ -366,7 +364,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (positionBuffer.Count > 5)
 				positionBuffer.RemoveAt(0);
 
-			FlyTick(self, aircraft, aircraft.Info.CruiseAltitude, desiredFacing, desiredSpeed: desiredSpeed,
+			FlyTick(self, aircraft, desiredFacing: desiredFacing, desiredSpeed: desiredSpeed,
 				desiredBodyFacing: desiredBodyFacing);
 
 			return false;

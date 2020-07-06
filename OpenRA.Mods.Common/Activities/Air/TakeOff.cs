@@ -56,12 +56,10 @@ namespace OpenRA.Mods.Common.Activities
 			{
 				// If we're a VTOL, rise before flying forward
 				if (aircraft.Info.VTOL)
-				{
 					Fly.HoverTick(self, aircraft);
-					return false;
-				}
+				else
+					Fly.FlyTick(self, aircraft);
 
-				Fly.FlyTick(self, aircraft, aircraft.Info.CruiseAltitude);
 				return false;
 			}
 

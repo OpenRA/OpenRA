@@ -562,6 +562,54 @@ namespace OpenRA.Mods.Common.Traits
 			return (d * 1024 * 8) / (int)distSq;
 		}
 
+		public int InclineLookahead(int? minDistance = null, int? maxDistance = null, WDist? altitude = null)
+		{
+			var predictedPitch = -256;
+			if (maxDistance.HasValue && maxDistance < 0)
+				return predictedPitch;
+
+			var stepFacing = FlightFacing;
+			var stepSize = CurrentSpeed;
+			var posProbe = GetPosition();
+			var probeAltitude = altitude ?? Info.CruiseAltitude;
+
+			// We are not actually moving, instead of looking ahead we are just looking at our current height.
+			if (stepSize == 0)
+				return probeAltitude.Length - self.World.Map.DistanceAboveTerrain(posProbe).Length > 0 ? 256 : -256;
+
+			// Probe terrain ahead of the aircraft flight direction.
+			var maxLookaheadDistance = Fly.CalculateTurnRadius(CurrentSpeed, Info.PitchSpeed) * 2;
+			var probeDistance = 0;
+			var tickLimit = (maxDistance == null ? maxLookaheadDistance : Math.Min(maxLookaheadDistance, maxDistance.Value)) / stepSize;
+
+			for (var tick = 0; tick <= tickLimit; tick++)
+			{
+				// Probe along our predicted (curved) trajectory.
+				var step = new WVec(0, -stepSize, 0).Rotate(WRot.FromYaw(stepFacing));
+
+				stepFacing += CurrentFlightTurnSpeed;
+				posProbe += step;
+				probeDistance += stepSize;
+
+				if (minDistance.HasValue && probeDistance < minDistance.Value)
+					continue;
+
+				if (!self.World.Map.Contains(self.World.Map.CellContaining(posProbe)))
+				{
+					predictedPitch = predictedPitch == -256 ? 0 : predictedPitch;
+					break;
+				}
+
+				var deltaZ = probeAltitude.Length - self.World.Map.DistanceAboveTerrain(posProbe).Length;
+				var probePitch = WAngle.ArcTan(deltaZ, probeDistance).Angle2;
+
+				if (probePitch > predictedPitch)
+					predictedPitch = probePitch;
+			}
+
+			return predictedPitch;
+		}
+
 		public Actor GetActorBelow()
 		{
 			// Map.DistanceAboveTerrain(WPos pos) is called directly because Aircraft is an IPositionable trait
