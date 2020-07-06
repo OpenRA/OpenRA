@@ -894,6 +894,7 @@
 		Roll: 56
 		RollSpeed: 5
 		Acceleration: 5
+		VTOLAcceleration: 5
 		TurnAcceleration: 1
 	Voiced:
 		VoiceSet: Heli
