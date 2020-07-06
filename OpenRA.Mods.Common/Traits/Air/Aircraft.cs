@@ -274,6 +274,7 @@ namespace OpenRA.Mods.Common.Traits
 		public int CurrentSpeed { get; set; }
 		public WAngle CurrentFlightTurnSpeed { get; set; }
 		public WAngle CurrentBodyTurnSpeed { get; set; }
+		public WVec CurrentVelocity;
 
 		[Sync]
 		public WPos CenterPosition { get; private set; }
@@ -465,9 +466,6 @@ namespace OpenRA.Mods.Common.Traits
 				newMovementTypes |= MovementType.Vertical;
 
 			CurrentMovementTypes = newMovementTypes;
-
-			if (!CurrentMovementTypes.HasFlag(MovementType.Horizontal))
-				FlightFacing = Facing;
 
 			Repulse();
 		}

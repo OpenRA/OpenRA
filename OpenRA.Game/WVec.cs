@@ -26,6 +26,10 @@ namespace OpenRA
 
 		public static readonly WVec Zero = new WVec(0, 0, 0);
 
+		public static WVec FromX(WDist x) { return new WVec(x.Length, 0, 0); }
+		public static WVec FromY(WDist y) { return new WVec(0, y.Length, 0); }
+		public static WVec FromZ(WDist z) { return new WVec(0, 0, z.Length); }
+
 		public static WVec operator +(WVec a, WVec b) { return new WVec(a.X + b.X, a.Y + b.Y, a.Z + b.Z); }
 		public static WVec operator -(WVec a, WVec b) { return new WVec(a.X - b.X, a.Y - b.Y, a.Z - b.Z); }
 		public static WVec operator -(WVec a) { return new WVec(-a.X, -a.Y, -a.Z); }

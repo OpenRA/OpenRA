@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Common.Activities
 		}
 
 		public static void FlyTick(Actor self, Aircraft aircraft, WDist desiredAltitude, WAngle? desiredFacing = null,
-			WVec? moveOverride = null, WAngle? desiredBodyFacing = null, int desiredSpeed = -1, WAngle? desiredTurnSpeed = null)
+			WAngle? desiredBodyFacing = null, int desiredSpeed = -1, WAngle? desiredTurnSpeed = null)
 		{
 			// Acceleration
 			desiredSpeed = desiredSpeed >= 0 ? desiredSpeed : aircraft.MovementSpeed;
@@ -119,8 +119,6 @@ namespace OpenRA.Mods.Common.Activities
 
 			// Determine new displacement vector.
 			var move = aircraft.FlyStep(aircraft.CurrentSpeed, aircraft.FlightFacing);
-			if (moveOverride.HasValue)
-				move = moveOverride.Value;
 
 			// Note: we assume that if move.Z is not zero, it's intentional and we want to move in that vertical direction
 			// instead of towards desiredAltitude.
@@ -139,6 +137,7 @@ namespace OpenRA.Mods.Common.Activities
 			aircraft.FlightPitch = WAngle.Zero;
 			aircraft.Orientation = new WRot(roll, pitch, bodyFacing);
 			aircraft.CurrentSpeed = speed;
+			aircraft.CurrentVelocity = move;
 			aircraft.CurrentFlightTurnSpeed = flightTurnSpeed;
 			aircraft.CurrentBodyTurnSpeed = bodyTurnSpeed;
 			aircraft.SetPosition(self, aircraft.CenterPosition + move);
@@ -146,27 +145,52 @@ namespace OpenRA.Mods.Common.Activities
 
 		// Should only be used for vertical-only movement, usually VTOL take-off or land. Terrain-induced altitude changes
 		// should always be handled by FlyTick.
-		public static bool VerticalTakeOffOrLandTick(Actor self, Aircraft aircraft, WDist desiredAltitude, WAngle? desiredFacing = null)
+		public static void HoverTick(Actor self, Aircraft aircraft, WPos? destination = null, WAngle? desiredFacing = null)
 		{
+			var currentPos = aircraft.GetPosition();
 			var dat = self.World.Map.DistanceAboveTerrain(aircraft.CenterPosition);
-			if (dat == desiredAltitude)
-				return true;
 
-			var delta = (desiredAltitude - dat).Length;
-			var dist = Math.Abs(delta);
-			var flightPitch = delta == 0 ? aircraft.FlightPitch : (delta > 0 ? new WAngle(256) : new WAngle(-256));
+			var desiredPos = destination ?? currentPos + WVec.FromZ(aircraft.Info.CruiseAltitude - dat);
+			var delta = desiredPos - currentPos;
+
+			var currentVelocity = aircraft.CurrentVelocity;
+			var maxAccel = aircraft.VTOLAcceleration.Length;
 
 			// Make sure we decelerate in time.
-			var desiredSpeed = 0;
-			var speedDelta = aircraft.CurrentSpeed;
-			if (dist >= speedDelta * speedDelta / aircraft.VTOLAcceleration.Length / 2)
-				desiredSpeed = dist < aircraft.Info.AltitudeVelocity.Length ? dist : aircraft.Info.AltitudeVelocity.Length;
+			var desiredVelocity = delta;
+			if (delta != WVec.Zero)
+			{
+				var maxAccelVec = delta * maxAccel / delta.Length;
+
+				var desiredVelocityX = delta.X;
+				if (maxAccelVec.X * currentVelocity.X > 0 && Math.Abs(delta.X) < currentVelocity.X * currentVelocity.X / Math.Abs(maxAccelVec.X )/ 2)
+					desiredVelocityX = 0;
+
+				var desiredVelocityY = delta.Y;
+				if (maxAccelVec.Y * currentVelocity.Y > 0 && Math.Abs(delta.Y) < currentVelocity.Y * currentVelocity.Y / Math.Abs(maxAccelVec.Y) / 2)
+					desiredVelocityY = 0;
+
+				var desiredVelocityZ = delta.Z;
+				if (maxAccelVec.Z * currentVelocity.Z > 0 && Math.Abs(delta.Z) < currentVelocity.Z * currentVelocity.Z / Math.Abs(maxAccelVec.Z) / 2)
+					desiredVelocityZ = 0;
+
+				desiredVelocity = new WVec(desiredVelocityX, desiredVelocityY, desiredVelocityZ);
+				if (desiredVelocity != WVec.Zero)
+				{
+					var desiredSpeed = desiredVelocity.Length;
+					desiredVelocity = desiredVelocity * Math.Min(aircraft.Info.AltitudeVelocity.Length, desiredSpeed) / desiredSpeed;
+				}
+			}
 
 			// Acceleration
-			var speed = Util.TickSpeed(aircraft.CurrentSpeed, desiredSpeed, aircraft.VTOLAcceleration.Length);
+			var acceleration = desiredVelocity - currentVelocity;
+			if (acceleration != WVec.Zero)
+			{
+				var accelLength = acceleration.Length;
+				acceleration = acceleration * Math.Min(maxAccel, accelLength) / accelLength;
+			}
 
-			// Determine new displacement vector.
-			var move = aircraft.FlyStep(aircraft.CurrentSpeed, new WRot(WAngle.Zero, aircraft.FlightPitch, aircraft.FlightFacing));
+			var velocity = currentVelocity + acceleration;
 
 			// Independently turn the aircraft body. While landing, every aircraft behaves like it can slide.
 			var desiredBodyTurnSpeed = WAngle.Zero;
@@ -185,13 +209,14 @@ namespace OpenRA.Mods.Common.Activities
 			var bodyRoll = Util.TickFacing(aircraft.Roll, WAngle.Zero, aircraft.Info.RollSpeed);
 
 			// Lock in new body and flight attitudes and velocities.
-			aircraft.FlightPitch = flightPitch;
+			aircraft.FlightFacing = aircraft.Facing;
+			aircraft.FlightPitch = aircraft.Pitch;
 			aircraft.Orientation = new WRot(bodyRoll, bodyPitch, bodyFacing);
-			aircraft.CurrentSpeed = speed;
+			aircraft.CurrentVelocity = velocity;
+			aircraft.CurrentSpeed = 0;
 			aircraft.CurrentFlightTurnSpeed = WAngle.Zero;
 			aircraft.CurrentBodyTurnSpeed = bodyTurnSpeed;
-			aircraft.SetPosition(self, aircraft.CenterPosition + move);
-			return false;
+			aircraft.SetPosition(self, aircraft.CenterPosition + velocity);
 		}
 
 		public override bool Tick(Actor self)
@@ -222,7 +247,7 @@ namespace OpenRA.Mods.Common.Activities
 					if (isLanded)
 						QueueChild(new TakeOff(self));
 					else
-						VerticalTakeOffOrLandTick(self, aircraft, aircraft.Info.CruiseAltitude);
+						HoverTick(self, aircraft);
 
 					return false;
 				}
@@ -291,31 +316,9 @@ namespace OpenRA.Mods.Common.Activities
 				delta.HorizontalLengthSquared <= nearEnough.LengthSquared)
 				return true;
 
-			// The next move would overshoot, so consider it close enough or set final position if we CanSlide
-			if (delta.HorizontalLength <= Math.Max(speed, accel))
-			{
-				// For VTOL landing to succeed, it must reach the exact target position,
-				// so for the final move it needs to behave as if it had CanSlide.
-				if (isSlider || aircraft.Info.VTOL)
-				{
-					// Set final (horizontal) position
-					if (delta.HorizontalLengthSquared != 0)
-					{
-						// Ensure we don't include a non-zero vertical component here that would move us away from CruiseAltitude
-						var deltaMove = new WVec(delta.X, delta.Y, 0);
-						FlyTick(self, aircraft, dat, desiredFacing, deltaMove);
-					}
-
-					// Move to CruiseAltitude, if not already there
-					if (dat != aircraft.Info.CruiseAltitude)
-					{
-						Fly.VerticalTakeOffOrLandTick(self, aircraft, aircraft.Info.CruiseAltitude);
-						return false;
-					}
-				}
-
+			// The next move would overshoot, so consider it close enough.
+			if (delta.HorizontalLength <= aircraft.MovementSpeed)
 				return true;
-			}
 
 			int desiredSpeed = -1;
 			var flightTurnSpeed = aircraft.TurnSpeed;

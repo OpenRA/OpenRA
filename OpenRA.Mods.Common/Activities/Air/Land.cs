@@ -228,17 +228,25 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			// Final descent.
+			var delta = targetPosition - pos;
+
 			if (aircraft.Info.VTOL)
 			{
-				var landAltitude = self.World.Map.DistanceAboveTerrain(targetPosition) + aircraft.LandAltitude;
-				return Fly.VerticalTakeOffOrLandTick(self, aircraft, landAltitude);
-			}
+				Fly.HoverTick(self, aircraft, targetPosition);
+				if (delta.Z >= 0)
+				{
+					aircraft.CurrentVelocity = WVec.Zero;
+					aircraft.FlightPitch = WAngle.Zero;
+					aircraft.SetPosition(self, targetPosition + WVec.FromZ(aircraft.LandAltitude));
+					return true;
+				}
 
-			var d = targetPosition - pos;
+				return false;
+			}
 
 			// The next move would overshoot, so just set the final position
 			var move = aircraft.FlyStep(aircraft.Facing);
-			if (d.HorizontalLengthSquared < move.HorizontalLengthSquared)
+			if (delta.HorizontalLengthSquared < move.HorizontalLengthSquared)
 			{
 				var landingAltVec = new WVec(WDist.Zero, WDist.Zero, aircraft.LandAltitude);
 				aircraft.SetPosition(self, targetPosition + landingAltVec);
@@ -246,7 +254,7 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			var landingAlt = self.World.Map.DistanceAboveTerrain(targetPosition) + aircraft.LandAltitude;
-			Fly.FlyTick(self, aircraft, landingAlt, d.Yaw);
+			Fly.FlyTick(self, aircraft, landingAlt, delta.Yaw);
 
 			return false;
 		}

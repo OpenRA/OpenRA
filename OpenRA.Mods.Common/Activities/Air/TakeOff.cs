@@ -9,11 +9,8 @@
  */
 #endregion
 
-using System.Collections.Generic;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Primitives;
-using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
 {
@@ -58,7 +55,7 @@ namespace OpenRA.Mods.Common.Activities
 				// If we're a VTOL, rise before flying forward
 				if (aircraft.Info.VTOL)
 				{
-					Fly.VerticalTakeOffOrLandTick(self, aircraft, aircraft.Info.CruiseAltitude);
+					Fly.HoverTick(self, aircraft);
 					return false;
 				}
 
