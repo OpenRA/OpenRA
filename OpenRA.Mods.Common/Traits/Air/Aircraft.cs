@@ -71,6 +71,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("If non-negative, force the aircraft to move in circles at this speed when idle, ignoring CanHover.")]
 		public readonly int IdleSpeed = -1;
 
+		[Desc("Start takeoff and end landing with this speed, ignoring acceleration. Only relevant for non-VTOL craft.")]
+		public readonly int LaunchSpeed = 0;
+
 		[Desc("Maximum acceleration/deceleration for forward movement. defaults to Speed if -1.")]
 		public readonly int Acceleration = -1;
 

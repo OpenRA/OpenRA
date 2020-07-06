@@ -248,13 +248,24 @@ namespace OpenRA.Mods.Common.Activities
 			var move = aircraft.FlyStep(aircraft.Facing);
 			if (delta.HorizontalLengthSquared < move.HorizontalLengthSquared)
 			{
-				var landingAltVec = new WVec(WDist.Zero, WDist.Zero, aircraft.LandAltitude);
-				aircraft.SetPosition(self, targetPosition + landingAltVec);
+				aircraft.SetPosition(self, targetPosition + WVec.FromZ(aircraft.LandAltitude));
 				return true;
 			}
 
+			// Calculate intermediate variables for deceleration.
+			var currentSpeed = aircraft.CurrentSpeed;
+			var accel = aircraft.Acceleration;
+			var speedDelta = currentSpeed - aircraft.Info.LaunchSpeed;
+			var brakeTime = speedDelta / accel;
+			var parBrakeDist = speedDelta * speedDelta / accel / 2;
+
+			// Determine when we should start to slow down.
+			int desiredSpeed = -1;
+			if (delta.HorizontalLength < currentSpeed * speedDelta / accel - parBrakeDist)
+				desiredSpeed = aircraft.Info.LaunchSpeed;
+
 			var landingAlt = self.World.Map.DistanceAboveTerrain(targetPosition) + aircraft.LandAltitude;
-			Fly.FlyTick(self, aircraft, landingAlt, delta.Yaw);
+			Fly.FlyTick(self, aircraft, landingAlt, delta.Yaw, desiredSpeed: desiredSpeed);
 
 			return false;
 		}
