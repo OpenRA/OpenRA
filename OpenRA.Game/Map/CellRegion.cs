@@ -117,7 +117,7 @@ namespace OpenRA
 			return GetEnumerator();
 		}
 
-		public sealed class CellRegionEnumerator : IEnumerator<CPos>
+		public struct CellRegionEnumerator : IEnumerator<CPos>
 		{
 			readonly CellRegion r;
 
@@ -128,9 +128,11 @@ namespace OpenRA
 			CPos current;
 
 			public CellRegionEnumerator(CellRegion region)
+				: this()
 			{
 				r = region;
 				Reset();
+				current = new MPos(u, v).ToCPos(r.gridType);
 			}
 
 			public bool MoveNext()

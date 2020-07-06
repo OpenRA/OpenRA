@@ -216,21 +216,32 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		sealed class ActorsAtEnumerator : IEnumerator<Actor>
+		struct ActorsAtEnumerator : IEnumerator<Actor>
 		{
 			InfluenceNode node;
-			public ActorsAtEnumerator(InfluenceNode node) { this.node = node; }
+			Actor current;
+
+			public ActorsAtEnumerator(InfluenceNode node)
+			{
+				this.node = node;
+				current = null;
+			}
+
 			public void Reset() { throw new NotSupportedException(); }
-			public Actor Current { get; private set; }
-			object IEnumerator.Current { get { return Current; } }
+			public Actor Current
+			{
+				get { return current; }
+			}
+
+			object IEnumerator.Current { get { return current; } }
 			public void Dispose() { }
 			public bool MoveNext()
 			{
 				while (node != null)
 				{
-					Current = node.Actor;
+					current = node.Actor;
 					node = node.Next;
-					if (!Current.Disposed)
+					if (!current.Disposed)
 						return true;
 				}
 
@@ -238,7 +249,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		sealed class ActorsAtEnumerable : IEnumerable<Actor>
+		struct ActorsAtEnumerable : IEnumerable<Actor>
 		{
 			readonly InfluenceNode node;
 			public ActorsAtEnumerable(InfluenceNode node) { this.node = node; }
