@@ -14,8 +14,8 @@ if [ -z "$(find . -path ./IP2LOCATION-LITE-DB1.IPV6.BIN.ZIP -mtime -30 -print)" 
 	rm -f IP2LOCATION-LITE-DB1.IPV6.BIN.ZIP
 	echo "Downloading IP2Location GeoIP database."
 	if command -v curl >/dev/null 2>&1; then
-		curl -s -L -O https://download.ip2location.com/lite/IP2LOCATION-LITE-DB1.IPV6.BIN.ZIP || echo "Warning: Download failed"
+		curl -s -L -O https://github.com/OpenRA/GeoIP-Database/releases/download/monthly/IP2LOCATION-LITE-DB1.IPV6.BIN.ZIP || echo "Warning: Download failed"
 	else
-		wget -cq https://download.ip2location.com/lite/IP2LOCATION-LITE-DB1.IPV6.BIN.ZIP || echo "Warning: Download failed"
+		wget -cq https://github.com/OpenRA/GeoIP-Database/releases/download/monthly/IP2LOCATION-LITE-DB1.IPV6.BIN.ZIP || echo "Warning: Download failed"
 	fi
 fi
