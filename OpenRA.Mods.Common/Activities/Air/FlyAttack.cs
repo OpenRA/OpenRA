@@ -156,7 +156,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (self.World.Map.DistanceAboveTerrain(aircraft.CenterPosition) <= aircraft.LandAltitude)
 				QueueChild(new TakeOff(self));
 
-			var minimumRange = attackAircraft.Info.AttackType == AirAttackType.Strafe ? WDist.Zero : attackAircraft.GetMinimumRangeVersusTarget(target);
+			var minimumRange = attackAircraft.GetMinimumRangeVersusTarget(target);
 			var attackAltitude = attackAircraft.Info.AttackAltitude > WDist.Zero ? attackAircraft.Info.AttackAltitude : aircraft.Info.CruiseAltitude;
 
 			// Fly in a straight line over the target.
@@ -171,12 +171,13 @@ namespace OpenRA.Mods.Common.Activities
 			else if (!target.IsInRange(pos, lastVisibleMaximumRange) || target.IsInRange(pos, minimumRange))
 				QueueChild(aircraft.MoveWithinRange(target, minimumRange, lastVisibleMaximumRange, target.CenterPosition, Color.Red));
 
-			// Turn to face the target if required.
-			else if (!attackAircraft.TargetInFiringArc(self, target, 4 * attackAircraft.Info.FacingTolerance))
+			// Maintain position and turn to face the target if required.
+			else
 			{
 				var delta = attackAircraft.GetTargetPosition(pos, target) - pos;
 				var desiredFacing = delta.HorizontalLengthSquared != 0 ? delta.Yaw : aircraft.Facing;
-				aircraft.Facing = Util.TickFacing(aircraft.Facing, desiredFacing, aircraft.TurnSpeed);
+
+				Fly.HoverTick(self, aircraft, desiredFacing: desiredFacing);
 			}
 
 			return false;

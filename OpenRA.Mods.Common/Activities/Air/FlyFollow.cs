@@ -80,8 +80,10 @@ namespace OpenRA.Mods.Common.Activities
 			// otherwise if it is hidden or dead we give up
 			if (checkTarget.IsInRange(pos, maxRange) && !checkTarget.IsInRange(pos, minRange))
 			{
-				if (!aircraft.Info.CanHover)
-					Fly.FlyTick(self, aircraft);
+				if (aircraft.Info.CanHover)
+					Fly.HoverTick(self, aircraft);
+				else
+					Fly.FlyTick(self, aircraft, WAngle.Zero, desiredSpeed: aircraft.IdleSpeed);
 
 				return useLastVisibleTarget;
 			}
