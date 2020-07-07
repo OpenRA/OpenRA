@@ -523,7 +523,7 @@ Actors:
 	Actor153: arty
 		Location: 4,12
 		Owner: Nod
-		Facing: 127
+		Facing: 508
 	Actor154: bggy
 		Location: 20,18
 		Owner: Nod
@@ -533,80 +533,80 @@ Actors:
 	Actor156: bggy
 		Location: 10,21
 		Owner: Nod
-		Facing: 95
+		Facing: 380
 	Actor157: ltnk
 		Location: 40,35
 		Owner: Nod
-		Facing: 159
+		Facing: 636
 	Actor158: ltnk
 		Location: 45,23
 		Owner: Nod
-		Facing: 95
+		Facing: 380
 	Actor159: ltnk
 		Location: 41,14
 		Owner: Nod
-		Facing: 159
+		Facing: 636
 	Actor160: mtnk
 		Location: 42,55
 		Owner: GDI
 		Health: 35
-		Facing: 223
+		Facing: 892
 	Actor161: mtnk
 		Location: 33,52
 		Owner: GDI
 		Health: 43
-		Facing: 31
+		Facing: 124
 	Actor162: apc
 		Location: 37,50
 		Owner: GDI
 		Health: 68
-		Facing: 127
+		Facing: 508
 	Actor163: apc
 		Location: 39,48
 		Owner: GDI
 		Health: 45
-		Facing: 127
+		Facing: 508
 	Actor164: msam
 		Location: 42,49
 		Owner: GDI
 		Health: 40
-		Facing: 95
+		Facing: 380
 	Actor165: msam
 		Location: 41,51
 		Owner: GDI
 		Health: 50
-		Facing: 159
+		Facing: 636
 	Actor166: msam
 		Location: 33,48
 		Owner: GDI
 		Health: 65
-		Facing: 159
+		Facing: 636
 	Actor167: harv
 		Location: 23,23
 		Owner: Nod
-		Facing: 95
+		Facing: 380
 	Actor168: harv
 		Location: 38,53
 		Owner: GDI
 		Health: 51
-		Facing: 31
+		Facing: 124
 	Actor169: jeep
 		Location: 36,52
 		Owner: GDI
 		Health: 72
-		Facing: 95
+		Facing: 380
 	Actor170: jeep
 		Location: 34,51
 		Owner: GDI
 		Health: 31
-		Facing: 159
+		Facing: 636
 	Actor171: arty
 		Location: 19,17
 		Owner: Nod
 	Actor172: ltnk
 		Location: 22,11
 		Owner: Nod
-		Facing: 159
+		Facing: 636
 	Actor173: e1
 		Location: 45,36
 		Owner: Nod
@@ -618,74 +618,74 @@ Actors:
 	Actor175: e3
 		Location: 41,36
 		Owner: Nod
-		Facing: 159
+		Facing: 636
 		SubCell: 2
 	Actor176: e3
 		Location: 41,36
 		Owner: Nod
-		Facing: 159
+		Facing: 636
 		SubCell: 3
 	Actor177: e3
 		Location: 42,17
 		Owner: Nod
-		Facing: 159
+		Facing: 636
 		SubCell: 0
 	Actor178: e3
 		Location: 40,17
 		Owner: Nod
-		Facing: 159
+		Facing: 636
 		SubCell: 4
 	Actor179: e4
 		Location: 42,15
 		Owner: Nod
-		Facing: 159
+		Facing: 636
 		SubCell: 2
 	Actor180: e4
 		Location: 42,15
 		Owner: Nod
-		Facing: 159
+		Facing: 636
 		SubCell: 3
 	Actor181: e1
 		Location: 16,53
 		Owner: Nod
-		Facing: 191
+		Facing: 764
 		SubCell: 3
 	Actor182: e1
 		Location: 15,53
 		Owner: Nod
-		Facing: 191
+		Facing: 764
 		SubCell: 2
 	Actor183: e1
 		Location: 17,53
 		Owner: Nod
-		Facing: 191
+		Facing: 764
 		SubCell: 3
 	Actor184: e1
 		Location: 16,53
 		Owner: Nod
-		Facing: 191
+		Facing: 764
 		SubCell: 2
 	Actor185: c3
 		Location: 18,50
 		Owner: Neutral
-		Facing: 159
+		Facing: 636
 		SubCell: 1
 	Actor186: e1
 		Location: 46,51
 		Owner: GDI
-		Facing: 159
+		Facing: 636
 		SubCell: 1
 	Actor187: e1
 		Location: 44,52
 		Owner: GDI
 		Health: 87
-		Facing: 223
+		Facing: 892
 		SubCell: 2
 	Actor188: e1
 		Location: 43,53
 		Owner: GDI
 		Health: 31
-		Facing: 31
+		Facing: 124
 		SubCell: 4
 	Actor189: e1
 		Location: 42,54
@@ -696,46 +696,46 @@ Actors:
 		Location: 39,52
 		Owner: GDI
 		Health: 77
-		Facing: 159
+		Facing: 636
 		SubCell: 4
 	Actor191: e1
 		Location: 42,53
 		Owner: GDI
 		Health: 69
-		Facing: 159
+		Facing: 636
 		SubCell: 0
 	Actor192: e2
 		Location: 40,53
 		Owner: GDI
 		Health: 75
-		Facing: 31
+		Facing: 124
 		SubCell: 2
 	Actor193: e2
 		Location: 45,51
 		Owner: GDI
-		Facing: 127
+		Facing: 508
 		SubCell: 1
 	Actor194: e2
 		Location: 38,50
 		Owner: GDI
 		Health: 27
-		Facing: 223
+		Facing: 892
 		SubCell: 0
 	Actor195: e2
 		Location: 46,52
 		Owner: GDI
-		Facing: 31
+		Facing: 124
 		SubCell: 1
 	Actor196: e2
 		Location: 36,53
 		Owner: GDI
 		Health: 57
-		Facing: 159
+		Facing: 636
 		SubCell: 0
 	Actor197: e2
 		Location: 37,54
 		Owner: GDI
-		Facing: 31
+		Facing: 124
 		SubCell: 1
 	Actor198: e3
 		Location: 27,40

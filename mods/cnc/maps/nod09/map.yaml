@@ -474,7 +474,7 @@ Actors:
 	Actor154: jeep
 		Location: 52,5
 		Owner: GDI
-		Facing: 96
+		Facing: 384
 	Actor155: jeep
 		Location: 47,13
 		Owner: GDI
@@ -490,19 +490,19 @@ Actors:
 	Actor159: mtnk
 		Location: 52,12
 		Owner: GDI
-		Facing: 96
+		Facing: 384
 	Actor162: jeep
 		Location: 9,17
 		Owner: GDI
-		Facing: 64
+		Facing: 256
 	Actor163: jeep
 		Location: 23,4
 		Owner: GDI
-		Facing: 96
+		Facing: 384
 	Actor164: jeep
 		Location: 1,19
 		Owner: GDI
-		Facing: 64
+		Facing: 256
 	Actor165: e2
 		Location: 57,15
 		Owner: GDI
@@ -570,62 +570,62 @@ Actors:
 	Actor181: e2
 		Location: 21,17
 		Owner: GDI
-		Facing: 160
+		Facing: 640
 		SubCell: 1
 	Actor182: e2
 		Location: 11,16
 		Owner: GDI
-		Facing: 96
+		Facing: 384
 		SubCell: 2
 	Actor183: e2
 		Location: 21,17
 		Owner: GDI
-		Facing: 160
+		Facing: 640
 		SubCell: 4
 	Actor184: e2
 		Location: 11,16
 		Owner: GDI
-		Facing: 96
+		Facing: 384
 		SubCell: 3
 	Actor185: c3
 		Location: 6,9
 		Owner: Civilians
-		Facing: 96
+		Facing: 384
 		SubCell: 1
 	Actor186: c4
 		Location: 6,4
 		Owner: Civilians
-		Facing: 160
+		Facing: 640
 		SubCell: 3
 	Actor187: c5
 		Location: 4,11
 		Owner: Civilians
-		Facing: 32
+		Facing: 128
 		SubCell: 4
 	Actor189: e2
 		Location: 21,4
 		Owner: GDI
-		Facing: 160
+		Facing: 640
 		SubCell: 3
 	Actor190: e2
 		Location: 20,4
 		Owner: GDI
-		Facing: 160
+		Facing: 640
 		SubCell: 1
 	Actor191: e2
 		Location: 27,6
 		Owner: GDI
-		Facing: 96
+		Facing: 384
 		SubCell: 4
 	Actor192: e2
 		Location: 27,5
 		Owner: GDI
-		Facing: 64
+		Facing: 256
 		SubCell: 3
 	Actor193: e2
 		Location: 42,26
 		Owner: GDI
-		Facing: 96
+		Facing: 384
 		SubCell: 1
 	Actor194: e2
 		Location: 40,25
@@ -694,8 +694,7 @@ Actors:
 	Actor244: msam
 		Owner: GDI
 		Location: 54,6
-		Facing: 92
-		TurretFacing: 92
+		Facing: 368
 	Actor245: moneycrate
 		Location: 5,6
 		Owner: Neutral
@@ -780,11 +779,11 @@ Actors:
 	GDIBuilding4: atwr
 		Owner: GDI
 		Location: 45,7
-		TurretFacing: 92
+		TurretFacing: 368
 	GDIBuilding5: atwr
 		Owner: GDI
 		Location: 45,11
-		TurretFacing: 92
+		TurretFacing: 368
 	GDIBuilding6: silo
 		Location: 59,13
 		Owner: GDI
@@ -812,7 +811,7 @@ Actors:
 	GDIHarvester: harv
 		Owner: GDI
 		Location: 54,12
-		Facing: 92
+		Facing: 368
 	GDIHQ: hq
 		Location: 57,10
 		Owner: GDI
@@ -831,11 +830,11 @@ Actors:
 	GDIOrca1: orca
 		Owner: GDI
 		Location: 51,4
-		Facing: 92
+		Facing: 368
 	GDIOrca2: orca
 		Owner: GDI
 		Location: 53,4
-		Facing: 92
+		Facing: 368
 	GDIProc: proc
 		Owner: GDI
 		Location: 54,10
@@ -849,7 +848,7 @@ Actors:
 	Gunboat: boat
 		Location: 60,58
 		Owner: GDI
-		Facing: 192
+		Facing: 768
 	HelicopterEntryEngineer: waypoint
 		Owner: Neutral
 		Location: 1,3
@@ -881,7 +880,7 @@ Actors:
 	OutpostHarv: harv
 		Location: 8,49
 		Owner: Outpost
-		Facing: 64
+		Facing: 256
 
 Rules: cnc|rules/campaign-maprules.yaml, cnc|rules/campaign-tooltips.yaml, cnc|rules/campaign-palettes.yaml, rules.yaml
 

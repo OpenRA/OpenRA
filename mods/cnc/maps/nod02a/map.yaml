@@ -65,11 +65,11 @@ Actors:
 	Actor10: jeep
 		Location: 30,46
 		Owner: GDI
-		Facing: 128
+		Facing: 512
 	Actor11: jeep
 		Location: 31,35
 		Owner: GDI
-		Facing: 64
+		Facing: 256
 	Actor17: e1
 		Location: 34,56
 		Owner: GDI
@@ -89,12 +89,12 @@ Actors:
 	Actor32: e1
 		Location: 49,54
 		Owner: GDI
-		Facing: 224
+		Facing: 896
 		SubCell: 1
 	Actor35: e1
 		Location: 34,57
 		Owner: GDI
-		Facing: 64
+		Facing: 256
 		SubCell: 1
 	waypoint27: waypoint
 		Location: 27,51
@@ -150,37 +150,37 @@ Actors:
 	Guard1: e1
 		Location: 42,39
 		Owner: GDI
-		Facing: 64
+		Facing: 256
 		SubCell: 0
 	Guard2: e1
 		Location: 38,38
 		Owner: GDI
-		Facing: 64
+		Facing: 256
 		SubCell: 2
 	Guard3: e1
 		Location: 35,49
 		Owner: GDI
-		Facing: 96
+		Facing: 384
 		SubCell: 0
 	Guard4: e1
 		Location: 34,48
 		Owner: GDI
-		Facing: 96
+		Facing: 384
 		SubCell: 3
 	Guard5: e1
 		Location: 39,40
 		Owner: GDI
-		Facing: 64
+		Facing: 256
 		SubCell: 1
 	Guard6: e1
 		Location: 40,56
 		Owner: GDI
-		Facing: 96
+		Facing: 384
 		SubCell: 4
 	Guard7: e1
 		Location: 38,54
 		Owner: GDI
-		Facing: 32
+		Facing: 128
 		SubCell: 3
 	McvEntry: waypoint
 		Location: 62,43

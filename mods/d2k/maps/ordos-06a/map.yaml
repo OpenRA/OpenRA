@@ -96,7 +96,7 @@ Actors:
 		Owner: Ordos
 	ARock1: large_gun_turret
 		Location: 20,5
-		Facing: 160
+		Facing: 640
 		Owner: Atreides
 	Actor14: wall
 		Location: 65,5
@@ -190,7 +190,7 @@ Actors:
 		Owner: Atreides
 	ARock2: large_gun_turret
 		Location: 16,12
-		Facing: 160
+		Facing: 640
 		Owner: Atreides
 	Actor45: wall
 		Location: 70,12
@@ -251,14 +251,14 @@ Actors:
 		Owner: Atreides
 	ARock3: large_gun_turret
 		Location: 10,23
-		Facing: 192
+		Facing: 768
 		Owner: Atreides
 	Actor65: wall
 		Location: 11,23
 		Owner: Atreides
 	AGunt1: medium_gun_turret
 		Location: 12,23
-		Facing: 192
+		Facing: 768
 		Owner: Atreides
 	Actor67: wormspawner
 		Location: 26,23
@@ -450,7 +450,7 @@ Actors:
 		Owner: Neutral
 	HGunt3: medium_gun_turret
 		Location: 19,76
-		Facing: 32
+		Facing: 128
 		Owner: Harkonnen
 	Actor130: wall
 		Location: 20,76
@@ -475,7 +475,7 @@ Actors:
 		Owner: Harkonnen
 	HRock: large_gun_turret
 		Location: 38,77
-		Facing: 192
+		Facing: 768
 		Owner: Harkonnen
 	HPower8: wind_trap
 		Location: 23,78
@@ -497,7 +497,7 @@ Actors:
 		Owner: Harkonnen
 	HGunt4: medium_gun_turret
 		Location: 19,80
-		Facing: 64
+		Facing: 256
 		Owner: Harkonnen
 	Actor145: wall
 		Location: 39,80

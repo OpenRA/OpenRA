@@ -285,7 +285,7 @@ Actors:
 	Actor59: sam
 		Location: 47,60
 		Owner: Soviets
-		TurretFacing: 160
+		TurretFacing: 640
 	Actor61: apwr
 		Location: 45,49
 		Owner: Soviets
@@ -310,7 +310,7 @@ Actors:
 	Actor65: sam
 		Location: 50,37
 		Owner: Soviets
-		TurretFacing: 192
+		TurretFacing: 768
 	Actor70: spen
 		Location: 39,71
 		Owner: Soviets
@@ -320,7 +320,7 @@ Actors:
 	Actor64: sam
 		Location: 28,43
 		Owner: Soviets
-		TurretFacing: 48
+		TurretFacing: 192
 	Actor72: spen
 		Location: 23,76
 		Owner: Soviets
@@ -492,7 +492,7 @@ Actors:
 	Actor304: 3tnk
 		Location: 106,38
 		Owner: Soviets
-		Facing: 96
+		Facing: 384
 	Actor488: t02
 		Location: 110,28
 		Owner: Neutral
@@ -583,7 +583,7 @@ Actors:
 	Actor175: sam
 		Location: 30,58
 		Owner: Soviets
-		TurretFacing: 96
+		TurretFacing: 384
 	Actor181: t12
 		Location: 27,54
 		Owner: Neutral
@@ -744,7 +744,7 @@ Actors:
 	Actor229: v2rl
 		Location: 96,19
 		Owner: Soviets
-		Facing: 64
+		Facing: 256
 	Actor137: e1
 		Location: 66,34
 		Owner: Soviets
@@ -829,7 +829,7 @@ Actors:
 	Actor264: v2rl
 		Location: 50,36
 		Owner: Soviets
-		Facing: 192
+		Facing: 768
 	Actor266: 3tnk
 		Location: 88,70
 		Owner: Soviets
@@ -866,7 +866,7 @@ Actors:
 	Actor272: 3tnk
 		Location: 102,37
 		Owner: Soviets
-		Facing: 160
+		Facing: 640
 	Actor280: t16
 		Location: 87,41
 		Owner: Neutral
@@ -1215,7 +1215,7 @@ Actors:
 	Actor328: v2rl
 		Location: 27,37
 		Owner: Soviets
-		Facing: 64
+		Facing: 256
 	Actor366: powr
 		Location: 35,54
 		Owner: Soviets
@@ -1348,7 +1348,7 @@ Actors:
 	HijackTruck: truk.hijackable
 		Location: 99,34
 		Owner: Soviets
-		Facing: 160
+		Facing: 640
 	BaseGuard: e1
 		Location: 63,36
 		Owner: Soviets
@@ -1496,7 +1496,7 @@ Actors:
 	Actor415: sam
 		Location: 77,102
 		Owner: Soviets
-		TurretFacing: 128
+		TurretFacing: 512
 	Actor475: brl3
 		Location: 79,97
 		Owner: Soviets

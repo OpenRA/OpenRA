@@ -101,6 +101,18 @@ namespace OpenRA.Mods.Common.UpdateRules
 
 				manualSteps.AddRange(rule.BeforeUpdate(modData));
 
+				var mapActorsNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Actors");
+				if (mapActorsNode != null)
+				{
+					var mapActors = new YamlFileSet()
+					{
+						Tuple.Create<IReadWritePackage, string, List<MiniYamlNode>>(null, "map.yaml", mapActorsNode.Value.Nodes)
+					};
+
+					manualSteps.AddRange(ApplyTopLevelTransform(modData, mapActors, rule.UpdateMapActorNode));
+					files.AddRange(mapActors);
+				}
+
 				var mapRulesNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Rules");
 				if (mapRulesNode != null)
 				{

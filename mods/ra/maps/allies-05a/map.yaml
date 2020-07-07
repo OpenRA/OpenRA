@@ -1121,11 +1121,11 @@ Actors:
 	Actor380: v2rl
 		Location: 48,87
 		Owner: USSR
-		Facing: 224
+		Facing: 896
 	Actor381: v2rl
 		Location: 51,84
 		Owner: USSR
-		Facing: 136
+		Facing: 544
 	Actor382: v2rl
 		Location: 45,82
 		Owner: USSR
@@ -1145,11 +1145,11 @@ Actors:
 	Actor387: 3tnk
 		Location: 28,79
 		Owner: USSR
-		Facing: 160
+		Facing: 640
 	Actor388: 3tnk
 		Location: 42,84
 		Owner: USSR
-		Facing: 64
+		Facing: 256
 	Actor390: 3tnk
 		Location: 63,94
 		Owner: USSR
@@ -1209,7 +1209,7 @@ Actors:
 	Actor408: dog
 		Location: 32,85
 		Owner: USSR
-		Facing: 160
+		Facing: 640
 		SubCell: 1
 	Actor409: dog
 		Location: 46,81
@@ -1266,17 +1266,17 @@ Actors:
 	Actor427: dog
 		Location: 25,93
 		Owner: USSR
-		Facing: 160
+		Facing: 640
 		SubCell: 3
 	Actor430: e1
 		Location: 37,60
 		Owner: USSR
-		Facing: 192
+		Facing: 768
 		SubCell: 3
 	Actor431: e1
 		Location: 36,60
 		Owner: USSR
-		Facing: 192
+		Facing: 768
 		SubCell: 4
 	Actor94: brik
 		Location: 39,79
@@ -1343,20 +1343,20 @@ Actors:
 		Location: 65,83
 		Owner: USSR
 		SubCell: 4
-		Facing: 160
+		Facing: 640
 	Mammoth: 4tnk
 		Location: 41,57
 		Owner: USSR
-		Facing: 192
+		Facing: 768
 	Dog1: dog
 		Location: 24,54
 		Owner: USSR
-		Facing: 224
+		Facing: 896
 		SubCell: 0
 	Dog2: dog
 		Location: 23,55
 		Owner: USSR
-		Facing: 192
+		Facing: 768
 		SubCell: 0
 	PatrolA1: e1
 		Location: 28,56
@@ -1393,7 +1393,7 @@ Actors:
 	Truk: truk.mission
 		Location: 44,52
 		Owner: USSR
-		Facing: 160
+		Facing: 640
 	Prison: miss
 		Location: 25,106
 		Owner: USSR
@@ -1428,7 +1428,7 @@ Actors:
 	Harvester: harv
 		Location: 59,91
 		Owner: USSR
-		Facing: 224
+		Facing: 896
 	Sam1: sam
 		Location: 16,107
 		Owner: USSR

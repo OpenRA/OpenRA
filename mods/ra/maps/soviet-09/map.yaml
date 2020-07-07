@@ -762,7 +762,7 @@ Actors:
 		Location: 54,33
 		Owner: Greece
 		Health: 99
-		Facing: 63
+		Facing: 252
 	Actor258: minv
 		Location: 58,49
 		Owner: Greece
@@ -890,27 +890,27 @@ Actors:
 		Location: 54,38
 		Owner: Greece
 		Health: 99
-		Facing: 63
+		Facing: 252
 	Actor294: gun
 		Location: 101,38
 		Owner: Greece
 		Health: 99
-		Facing: 127
+		Facing: 508
 	Actor295: gun
 		Location: 96,38
 		Owner: Greece
 		Health: 99
-		Facing: 127
+		Facing: 508
 	Actor296: gun
 		Location: 70,42
 		Owner: Greece
 		Health: 99
-		Facing: 127
+		Facing: 508
 	Actor297: gun
 		Location: 61,42
 		Owner: Greece
 		Health: 99
-		Facing: 127
+		Facing: 508
 	Actor298: gap
 		Location: 64,34
 		Owner: Greece
@@ -958,23 +958,23 @@ Actors:
 	Actor309: agun
 		Location: 82,33
 		Owner: Greece
-		Facing: 127
+		Facing: 508
 	Actor310: agun
 		Location: 82,40
 		Owner: Greece
-		Facing: 159
+		Facing: 636
 	Actor311: agun
 		Location: 55,38
 		Owner: Greece
-		Facing: 95
+		Facing: 380
 	Actor312: agun
 		Location: 55,33
 		Owner: Greece
-		Facing: 127
+		Facing: 508
 	Actor313: agun
 		Location: 67,34
 		Owner: Greece
-		Facing: 127
+		Facing: 508
 	Actor314: tsla
 		Location: 89,95
 		Owner: USSR
@@ -1009,11 +1009,11 @@ Actors:
 	Actor324: agun
 		Location: 103,56
 		Owner: Germany
-		Facing: 95
+		Facing: 380
 	Actor325: agun
 		Location: 107,57
 		Owner: Germany
-		Facing: 159
+		Facing: 636
 	Actor326: syrd
 		Location: 59,30
 		Owner: Greece
@@ -1027,64 +1027,64 @@ Actors:
 	Actor329: arty
 		Location: 61,44
 		Owner: Greece
-		Facing: 127
+		Facing: 508
 	Actor330: arty
 		Location: 70,44
 		Owner: Greece
-		Facing: 127
+		Facing: 508
 	Actor331: arty
 		Location: 81,36
 		Owner: Greece
-		Facing: 159
+		Facing: 636
 	Actor333: 2tnk
 		Location: 95,36
 		Owner: Greece
 		Health: 99
-		Facing: 159
+		Facing: 636
 	Actor334: 2tnk
 		Location: 102,37
 		Owner: Greece
 		Health: 99
-		Facing: 95
+		Facing: 380
 	Actor335: 2tnk
 		Location: 82,39
 		Owner: Greece
 		Health: 99
-		Facing: 223
+		Facing: 892
 	Actor336: 2tnk
 		Location: 83,34
 		Owner: Greece
 		Health: 99
-		Facing: 191
+		Facing: 764
 	Actor337: 2tnk
 		Location: 54,36
 		Owner: Greece
 		Health: 99
-		Facing: 31
+		Facing: 124
 	Actor338: 2tnk
 		Location: 69,44
 		Owner: Greece
 		Health: 99
-		Facing: 127
+		Facing: 508
 	Actor339: 2tnk
 		Location: 62,44
 		Owner: Greece
 		Health: 99
-		Facing: 127
+		Facing: 508
 	Actor341: 4tnk
 		Location: 94,97
 		Owner: USSR
 		Health: 26
-		Facing: 223
+		Facing: 892
 	Actor342: harv
 		Location: 81,85
 		Owner: USSR
-		Facing: 63
+		Facing: 252
 	Actor343: 4tnk
 		Location: 91,98
 		Owner: USSR
 		Health: 62
-		Facing: 63
+		Facing: 252
 	Actor344: 3tnk
 		Location: 99,97
 		Owner: USSR
@@ -1092,181 +1092,181 @@ Actors:
 	Actor345: 3tnk
 		Location: 105,99
 		Owner: USSR
-		Facing: 31
+		Facing: 124
 	Actor346: 3tnk
 		Location: 91,103
 		Owner: USSR
-		Facing: 223
+		Facing: 892
 	Actor347: v2rl
 		Location: 96,97
 		Owner: USSR
-		Facing: 223
+		Facing: 892
 	Actor348: v2rl
 		Location: 91,100
 		Owner: USSR
-		Facing: 31
+		Facing: 124
 	Actor350: 1tnk
 		Location: 26,51
 		Owner: Greece
-		Facing: 159
+		Facing: 636
 	Actor351: 1tnk
 		Location: 27,50
 		Owner: Greece
-		Facing: 159
+		Facing: 636
 	Actor352: 1tnk
 		Location: 24,51
 		Owner: Greece
-		Facing: 159
+		Facing: 636
 	Actor353: arty
 		Location: 24,50
 		Owner: Greece
-		Facing: 159
+		Facing: 636
 	Actor354: arty
 		Location: 26,49
 		Owner: Greece
-		Facing: 159
+		Facing: 636
 	Actor355: arty
 		Location: 30,36
 		Owner: Greece
-		Facing: 127
+		Facing: 508
 	Actor356: arty
 		Location: 35,37
 		Owner: Greece
-		Facing: 95
+		Facing: 380
 	Actor357: 2tnk
 		Location: 30,38
 		Owner: Greece
-		Facing: 95
+		Facing: 380
 	Actor358: 2tnk
 		Location: 32,37
 		Owner: Greece
-		Facing: 95
+		Facing: 380
 	Actor359: 2tnk
 		Location: 96,92
 		Owner: Greece
 		Health: 39
-		Facing: 95
+		Facing: 380
 	Actor360: 2tnk
 		Location: 99,94
 		Owner: Greece
 		Health: 51
-		Facing: 127
+		Facing: 508
 	Actor361: 2tnk
 		Location: 102,92
 		Owner: Greece
 		Health: 41
-		Facing: 159
+		Facing: 636
 	Actor363: 2tnk
 		Location: 105,56
 		Owner: Germany
-		Facing: 127
+		Facing: 508
 	Actor364: 2tnk
 		Location: 106,55
 		Owner: Germany
-		Facing: 127
+		Facing: 508
 	Actor365: 2tnk
 		Location: 104,55
 		Owner: Germany
-		Facing: 127
+		Facing: 508
 	Actor366: arty
 		Location: 107,56
 		Owner: Germany
-		Facing: 95
+		Facing: 380
 	Actor367: arty
 		Location: 108,56
 		Owner: Germany
-		Facing: 95
+		Facing: 380
 	Actor368: arty
 		Location: 102,56
 		Owner: Germany
-		Facing: 159
+		Facing: 636
 	Actor369: arty
 		Location: 102,55
 		Owner: Germany
-		Facing: 159
+		Facing: 636
 	Actor370: 2tnk
 		Location: 44,62
 		Owner: Greece
-		Facing: 63
+		Facing: 252
 	Actor371: 2tnk
 		Location: 44,64
 		Owner: Greece
-		Facing: 63
+		Facing: 252
 	Actor372: 2tnk
 		Location: 48,62
 		Owner: Greece
-		Facing: 191
+		Facing: 764
 	Actor373: 2tnk
 		Location: 48,64
 		Owner: Greece
-		Facing: 191
+		Facing: 764
 	Actor374: 2tnk
 		Location: 65,61
 		Owner: Greece
-		Facing: 159
+		Facing: 636
 	Actor375: 2tnk
 		Location: 63,63
 		Owner: Greece
-		Facing: 159
+		Facing: 636
 	Actor376: arty
 		Location: 63,61
 		Owner: Greece
-		Facing: 159
+		Facing: 636
 	Actor377: arty
 		Location: 81,68
 		Owner: Greece
-		Facing: 159
+		Facing: 636
 	Actor378: arty
 		Location: 83,68
 		Owner: Greece
-		Facing: 159
+		Facing: 636
 	Actor379: 2tnk
 		Location: 83,69
 		Owner: Greece
-		Facing: 159
+		Facing: 636
 	Actor380: 2tnk
 		Location: 81,69
 		Owner: Greece
-		Facing: 159
+		Facing: 636
 	Actor386: gnrl
 		Location: 73,34
 		Owner: Greece
-		Facing: 63
+		Facing: 252
 		SubCell: 2
 	Actor387: chan
 		Location: 73,33
 		Owner: Greece
-		Facing: 63
+		Facing: 252
 		SubCell: 2
 	Actor388: chan
 		Location: 73,34
 		Owner: Greece
-		Facing: 63
+		Facing: 252
 		SubCell: 5
 	Actor389: ca
 		Location: 47,41
 		Owner: Greece
 		Health: 99
-		Facing: 127
+		Facing: 508
 	Actor390: dd
 		Location: 32,78
 		Owner: Greece
 		Health: 99
-		Facing: 95
+		Facing: 380
 	Actor391: dd
 		Location: 27,74
 		Owner: Greece
 		Health: 99
-		Facing: 159
+		Facing: 636
 	Actor392: ca
 		Location: 18,68
 		Owner: Greece
 		Health: 99
-		Facing: 127
+		Facing: 508
 	Actor393: pt
 		Location: 33,73
 		Owner: Greece
-		Facing: 127
+		Facing: 508
 	PinchHitter: powr
 		Owner: Greece
 		Location: 96,33
@@ -1318,39 +1318,39 @@ Actors:
 	Actor431: gun
 		Owner: Germany
 		Location: 45,88
-		TurretFacing: 92
+		TurretFacing: 368
 	Actor432: gun
 		Owner: Germany
 		Location: 42,89
-		TurretFacing: 92
+		TurretFacing: 368
 	Actor433: gun
 		Owner: Germany
 		Location: 40,91
-		TurretFacing: 92
+		TurretFacing: 368
 	Actor434: gun
 		Owner: Germany
 		Location: 59,79
-		TurretFacing: 92
+		TurretFacing: 368
 	Actor435: gun
 		Owner: Germany
 		Location: 59,75
-		TurretFacing: 93
+		TurretFacing: 372
 	Actor436: hbox
 		Owner: Germany
 		Location: 60,77
-		TurretFacing: 92
+		TurretFacing: 368
 	Actor437: hbox
 		Owner: Germany
 		Location: 47,70
-		TurretFacing: 92
+		TurretFacing: 368
 	Actor438: gun
 		Owner: Germany
 		Location: 44,69
-		TurretFacing: 92
+		TurretFacing: 368
 	Actor439: gun
 		Owner: Germany
 		Location: 50,69
-		TurretFacing: 92
+		TurretFacing: 368
 	Actor440: moneycrate
 		Owner: Germany
 		Location: 104,54
@@ -1366,23 +1366,23 @@ Actors:
 	StartAttack1tnk1: 1tnk
 		Location: 101,74
 		Owner: Greece
-		Facing: 127
+		Facing: 508
 	StartAttack1tnk2: 1tnk
 		Location: 103,74
 		Owner: Greece
-		Facing: 127
+		Facing: 508
 	StartAttackArty1: arty
 		Location: 102,74
 		Owner: Greece
-		Facing: 127
+		Facing: 508
 	StartAttackArty2: arty
 		Location: 101,73
 		Owner: Greece
-		Facing: 127
+		Facing: 508
 	StartAttackArty3: arty
 		Location: 103,73
 		Owner: Greece
-		Facing: 127
+		Facing: 508
 	StolenTruck: truk
 		Location: 99,91
 		Owner: Greece

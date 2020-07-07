@@ -894,61 +894,51 @@ Actors:
 		Location: 107,77
 		SubCell: 3
 		Facing: 0
-		TurretFacing: 0
 	Actor261: light_inf
 		Owner: Smugglers - Neutral
 		Location: 112,78
 		SubCell: 3
 		Facing: 0
-		TurretFacing: 0
 	Actor262: light_inf
 		Owner: Smugglers - Neutral
 		Location: 111,68
 		SubCell: 3
 		Facing: 0
-		TurretFacing: 0
 	Actor263: light_inf
 		Owner: Smugglers - Neutral
 		Location: 116,68
 		SubCell: 3
 		Facing: 0
-		TurretFacing: 0
 	Actor264: light_inf
 		Owner: Smugglers - Neutral
 		Location: 118,75
 		SubCell: 3
 		Facing: 0
-		TurretFacing: 0
 	Actor265: light_inf
 		Owner: Smugglers - Neutral
 		Location: 112,73
 		SubCell: 3
 		Facing: 0
-		TurretFacing: 0
 	Actor266: trooper
 		Owner: Smugglers - Neutral
 		Location: 121,73
 		SubCell: 3
 		Facing: 0
-		TurretFacing: 0
 	Actor267: trooper
 		Owner: Smugglers - Neutral
 		Location: 109,75
 		SubCell: 3
 		Facing: 0
-		TurretFacing: 0
 	Actor268: trooper
 		Owner: Smugglers - Neutral
 		Location: 110,79
 		SubCell: 3
 		Facing: 0
-		TurretFacing: 0
 	Actor269: trooper
 		Owner: Smugglers - Neutral
 		Location: 109,70
 		SubCell: 3
 		Facing: 0
-		TurretFacing: 0
 	HarkonnenRally: waypoint
 		Owner: Neutral
 		Location: 8,18

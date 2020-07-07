@@ -691,7 +691,7 @@ Actors:
 	Actor214: gun
 		Location: 41,33
 		Owner: Nod
-		Facing: 192
+		Facing: 768
 	Actor215: gun
 		Location: 53,20
 		Owner: Nod
@@ -786,7 +786,7 @@ Actors:
 	Actor243: gun
 		Location: 37,14
 		Owner: Nod
-		Facing: 160
+		Facing: 640
 	Actor244: bggy
 		Location: 46,12
 		Owner: Nod
@@ -802,19 +802,19 @@ Actors:
 	Actor248: bggy
 		Location: 20,3
 		Owner: Nod
-		Facing: 128
+		Facing: 512
 	Actor249: bggy
 		Location: 19,3
 		Owner: Nod
-		Facing: 128
+		Facing: 512
 	Actor250: harv
 		Location: 49,13
 		Owner: Nod
-		Facing: 128
+		Facing: 512
 	Actor251: ltnk
 		Location: 14,4
 		Owner: Nod
-		Facing: 128
+		Facing: 512
 	Actor252: ltnk
 		Location: 44,7
 		Owner: Nod
@@ -830,11 +830,11 @@ Actors:
 	Actor256: ltnk
 		Location: 6,16
 		Owner: Nod
-		Facing: 96
+		Facing: 384
 	Actor257: bggy
 		Location: 23,27
 		Owner: Nod
-		Facing: 192
+		Facing: 768
 	Actor258: e3
 		Location: 39,6
 		Owner: Nod
@@ -846,22 +846,22 @@ Actors:
 	Actor260: c6
 		Location: 29,32
 		Owner: Neutral
-		Facing: 96
+		Facing: 384
 		SubCell: 3
 	Actor261: c4
 		Location: 34,32
 		Owner: Neutral
-		Facing: 160
+		Facing: 640
 		SubCell: 2
 	Actor262: c3
 		Location: 29,37
 		Owner: Neutral
-		Facing: 224
+		Facing: 896
 		SubCell: 3
 	Actor263: c2
 		Location: 27,36
 		Owner: Neutral
-		Facing: 32
+		Facing: 128
 		SubCell: 1
 	Actor264: e1
 		Location: 48,20
@@ -918,17 +918,17 @@ Actors:
 	Actor277: e4
 		Location: 13,28
 		Owner: Nod
-		Facing: 160
+		Facing: 640
 		SubCell: 3
 	Actor278: e4
 		Location: 6,18
 		Owner: Nod
-		Facing: 96
+		Facing: 384
 		SubCell: 3
 	Actor279: e4
 		Location: 7,13
 		Owner: Nod
-		Facing: 96
+		Facing: 384
 		SubCell: 1
 	waypoint27: waypoint
 		Location: 32,32

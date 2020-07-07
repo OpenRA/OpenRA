@@ -74,7 +74,7 @@ Actors:
 	Actor9: light_inf
 		Location: 14,14
 		Owner: Atreides
-		Facing: 128
+		Facing: 512
 	Actor10: light_inf
 		Location: 12,19
 		Owner: Harkonnen

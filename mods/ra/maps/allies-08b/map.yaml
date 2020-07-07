@@ -411,11 +411,11 @@ Actors:
 	AAGun1: agun
 		Location: 64,45
 		Owner: Greece
-		Facing: 95
+		Facing: 380
 	AAGun2: agun
 		Location: 71,45
 		Owner: Greece
-		Facing: 159
+		Facing: 636
 	Gap1: gap
 		Location: 66,44
 		Owner: Greece
@@ -449,19 +449,19 @@ Actors:
 	Gun1: gun
 		Location: 51,48
 		Owner: Greece
-		Facing: 63
+		Facing: 252
 	Gun2: gun
 		Location: 74,56
 		Owner: Greece
-		Facing: 95
+		Facing: 380
 	Gun3: gun
 		Location: 70,56
 		Owner: Greece
-		Facing: 95
+		Facing: 380
 	Gun4: gun
 		Location: 51,52
 		Owner: Greece
-		Facing: 63
+		Facing: 252
 	Dome: dome
 		Location: 75,41
 		Owner: Greece
@@ -541,167 +541,167 @@ Actors:
 	Actor156: harv
 		Location: 60,47
 		Owner: Greece
-		Facing: 95
+		Facing: 380
 	Actor157: 3tnk
 		Location: 68,81
 		Owner: USSR
-		Facing: 159
+		Facing: 636
 	Actor158: 3tnk
 		Location: 66,82
 		Owner: USSR
-		Facing: 159
+		Facing: 636
 	Actor159: 3tnk
 		Location: 64,83
 		Owner: USSR
-		Facing: 159
+		Facing: 636
 	Actor160: 3tnk
 		Location: 65,80
 		Owner: USSR
-		Facing: 159
+		Facing: 636
 	Actor161: 3tnk
 		Location: 63,81
 		Owner: USSR
-		Facing: 159
+		Facing: 636
 	Actor162: v2rl
 		Location: 66,78
 		Owner: USSR
-		Facing: 159
+		Facing: 636
 	Actor163: v2rl
 		Location: 61,81
 		Owner: USSR
-		Facing: 159
+		Facing: 636
 	Actor164: 2tnk
 		Location: 100,86
 		Owner: Greece
-		Facing: 63
+		Facing: 252
 	Actor165: 2tnk
 		Location: 98,86
 		Owner: Greece
-		Facing: 63
+		Facing: 252
 	Actor166: 2tnk
 		Location: 98,88
 		Owner: Greece
-		Facing: 63
+		Facing: 252
 	Actor167: 2tnk
 		Location: 99,87
 		Owner: Greece
-		Facing: 63
+		Facing: 252
 	Actor168: 1tnk
 		Location: 96,85
 		Owner: Greece
-		Facing: 63
+		Facing: 252
 	Actor169: 1tnk
 		Location: 96,87
 		Owner: Greece
-		Facing: 63
+		Facing: 252
 	Actor170: jeep
 		Location: 94,87
 		Owner: Greece
-		Facing: 63
+		Facing: 252
 	Actor171: arty
 		Location: 101,87
 		Owner: Greece
-		Facing: 31
+		Facing: 124
 	Actor172: arty
 		Location: 100,88
 		Owner: Greece
-		Facing: 31
+		Facing: 124
 	Actor173: mnly
 		Location: 99,89
 		Owner: Greece
-		Facing: 31
+		Facing: 124
 	Actor174: mnly
 		Location: 102,86
 		Owner: Greece
-		Facing: 31
+		Facing: 124
 	Actor175: 3tnk
 		Location: 47,82
 		Owner: USSR
-		Facing: 191
+		Facing: 764
 	Actor176: 3tnk
 		Location: 47,85
 		Owner: USSR
-		Facing: 191
+		Facing: 764
 	Actor177: v2rl
 		Location: 36,82
 		Owner: USSR
 	Actor178: 3tnk
 		Location: 38,74
 		Owner: USSR
-		Facing: 223
+		Facing: 892
 	Actor179: 3tnk
 		Location: 41,74
 		Owner: USSR
-		Facing: 31
+		Facing: 124
 	Actor180: e1
 		Location: 67,47
 		Owner: Greece
-		Facing: 127
+		Facing: 508
 		SubCell: 1
 	Actor181: e1
 		Location: 68,47
 		Owner: Greece
-		Facing: 127
+		Facing: 508
 		SubCell: 2
 	Actor182: e1
 		Location: 70,48
 		Owner: Greece
-		Facing: 127
+		Facing: 508
 		SubCell: 1
 	Actor183: e1
 		Location: 67,48
 		Owner: Greece
-		Facing: 127
+		Facing: 508
 		SubCell: 2
 	Actor184: e1
 		Location: 64,47
 		Owner: Greece
-		Facing: 95
+		Facing: 380
 		SubCell: 4
 	Actor185: e1
 		Location: 71,47
 		Owner: Greece
-		Facing: 159
+		Facing: 636
 		SubCell: 3
 	Actor186: e1
 		Location: 71,47
 		Owner: Greece
-		Facing: 191
+		Facing: 764
 		SubCell: 2
 	Actor187: e1
 		Location: 64,47
 		Owner: Greece
-		Facing: 63
+		Facing: 252
 		SubCell: 1
 	Actor188: e1
 		Location: 68,48
 		Owner: Greece
-		Facing: 127
+		Facing: 508
 		SubCell: 1
 	Actor189: e1
 		Location: 65,48
 		Owner: Greece
-		Facing: 127
+		Facing: 508
 		SubCell: 2
 	Actor190: e1
 		Location: 70,53
 		Owner: Greece
-		Facing: 159
+		Facing: 636
 		SubCell: 4
 	Actor191: e1
 		Location: 73,53
 		Owner: Greece
-		Facing: 95
+		Facing: 380
 		SubCell: 4
 	Actor192: e1
 		Location: 40,79
 		Owner: USSR
-		Facing: 159
+		Facing: 636
 		SubCell: 0
 	Actor193: e1
 		Location: 39,79
 		Owner: USSR
-		Facing: 95
+		Facing: 380
 		SubCell: 3
 	Actor194: e2
 		Location: 46,81
@@ -710,17 +710,17 @@ Actors:
 	Actor195: e2
 		Location: 45,85
 		Owner: USSR
-		Facing: 159
+		Facing: 636
 		SubCell: 4
 	Actor196: e2
 		Location: 40,85
 		Owner: USSR
-		Facing: 159
+		Facing: 636
 		SubCell: 4
 	Actor197: c1
 		Location: 97,66
 		Owner: England
-		Facing: 95
+		Facing: 380
 		SubCell: 3
 	Actor198: c2
 		Location: 102,56
@@ -729,7 +729,7 @@ Actors:
 	Actor199: c1
 		Location: 106,53
 		Owner: England
-		Facing: 95
+		Facing: 380
 		SubCell: 4
 	Actor200: c3
 		Location: 102,60
@@ -738,7 +738,7 @@ Actors:
 	Actor201: c4
 		Location: 102,67
 		Owner: England
-		Facing: 159
+		Facing: 636
 		SubCell: 4
 	Actor202: c4
 		Location: 90,64
@@ -747,17 +747,17 @@ Actors:
 	Actor203: c5
 		Location: 104,51
 		Owner: England
-		Facing: 127
+		Facing: 508
 		SubCell: 3
 	Actor204: c6
 		Location: 98,67
 		Owner: England
-		Facing: 95
+		Facing: 380
 		SubCell: 1
 	Actor205: c8
 		Location: 104,68
 		Owner: England
-		Facing: 159
+		Facing: 636
 		SubCell: 3
 	MCVEntry: waypoint
 		Location: 102,89

@@ -677,165 +677,165 @@ Actors:
 	Actor187: mtnk
 		Location: 15,6
 		Owner: GDI
-		Facing: 95
+		Facing: 380
 	Actor188: jeep
 		Location: 4,26
 		Owner: GDI
-		Facing: 159
+		Facing: 636
 	Actor189: bggy
 		Location: 7,46
 		Owner: Nod
-		Facing: 127
+		Facing: 508
 	Actor190: bggy
 		Location: 5,46
 		Owner: Nod
-		Facing: 127
+		Facing: 508
 	Actor191: bggy
 		Location: 3,46
 		Owner: Nod
-		Facing: 127
+		Facing: 508
 	Actor192: ftnk
 		Location: 5,43
 		Owner: Nod
-		Facing: 127
+		Facing: 508
 	Actor193: ftnk
 		Location: 5,42
 		Owner: Nod
-		Facing: 127
+		Facing: 508
 	Actor194: ltnk
 		Location: 3,42
 		Owner: Nod
-		Facing: 127
+		Facing: 508
 	Actor195: ltnk
 		Location: 3,43
 		Owner: Nod
-		Facing: 127
+		Facing: 508
 	Actor196: ftnk
 		Location: 7,42
 		Owner: Nod
-		Facing: 127
+		Facing: 508
 	Actor197: ftnk
 		Location: 7,43
 		Owner: Nod
-		Facing: 127
+		Facing: 508
 	Actor198: apc
 		Location: 54,21
 		Owner: GDI
-		Facing: 127
+		Facing: 508
 	Actor199: apc
 		Location: 57,43
 		Owner: GDI
-		Facing: 127
+		Facing: 508
 	Actor200: apc
 		Location: 28,60
 		Owner: GDI
-		Facing: 31
+		Facing: 124
 	Actor201: apc
 		Location: 17,57
 		Owner: GDI
-		Facing: 31
+		Facing: 124
 	Actor202: jeep
 		Location: 31,21
 		Owner: GDI
-		Facing: 191
+		Facing: 764
 	Actor203: jeep
 		Location: 6,34
 		Owner: GDI
-		Facing: 95
+		Facing: 380
 	Actor204: mtnk
 		Location: 47,58
 		Owner: GDI
-		Facing: 63
+		Facing: 252
 	Actor205: apc
 		Location: 53,6
 		Owner: GDI
-		Facing: 159
+		Facing: 636
 	Actor206: mtnk
 		Location: 42,5
 		Owner: GDI
 	Actor207: jeep
 		Location: 56,7
 		Owner: GDI
-		Facing: 31
+		Facing: 124
 	Actor209: e1
 		Location: 33,31
 		Owner: GDI
-		Facing: 191
+		Facing: 764
 		SubCell: 1
 	Actor210: e1
 		Location: 4,27
 		Owner: GDI
-		Facing: 95
+		Facing: 380
 		SubCell: 2
 	Actor211: e1
 		Location: 3,27
 		Owner: GDI
-		Facing: 95
+		Facing: 380
 		SubCell: 4
 	Actor212: e1
 		Location: 3,27
 		Owner: GDI
-		Facing: 95
+		Facing: 380
 		SubCell: 0
 	Actor214: e4
 		Location: 7,45
 		Owner: Nod
-		Facing: 127
+		Facing: 508
 		SubCell: 1
 	Actor215: e4
 		Location: 7,45
 		Owner: Nod
-		Facing: 127
+		Facing: 508
 		SubCell: 2
 	Actor216: e3
 		Location: 5,45
 		Owner: Nod
-		Facing: 127
+		Facing: 508
 		SubCell: 1
 	Actor217: e3
 		Location: 5,45
 		Owner: Nod
-		Facing: 127
+		Facing: 508
 		SubCell: 2
 	Actor218: e3
 		Location: 5,44
 		Owner: Nod
-		Facing: 127
+		Facing: 508
 		SubCell: 4
 	Actor219: e3
 		Location: 5,44
 		Owner: Nod
-		Facing: 127
+		Facing: 508
 		SubCell: 3
 	Actor220: e1
 		Location: 3,45
 		Owner: Nod
-		Facing: 127
+		Facing: 508
 		SubCell: 2
 	Actor221: e1
 		Location: 3,45
 		Owner: Nod
-		Facing: 127
+		Facing: 508
 		SubCell: 1
 	Actor222: e1
 		Location: 3,44
 		Owner: Nod
-		Facing: 127
+		Facing: 508
 		SubCell: 2
 	Actor223: e1
 		Location: 3,44
 		Owner: Nod
-		Facing: 127
+		Facing: 508
 		SubCell: 1
 	Actor224: e1
 		Location: 3,44
 		Owner: Nod
-		Facing: 127
+		Facing: 508
 		SubCell: 3
 	Actor225: e1
 		Location: 3,44
 		Owner: Nod
-		Facing: 127
+		Facing: 508
 		SubCell: 4
 	Actor226: c4
 		Location: 4,5
@@ -844,102 +844,102 @@ Actors:
 	Actor227: c3
 		Location: 9,7
 		Owner: Neutral
-		Facing: 159
+		Facing: 636
 		SubCell: 4
 	Actor228: c3
 		Location: 6,5
 		Owner: Neutral
-		Facing: 31
+		Facing: 124
 		SubCell: 3
 	Actor229: c2
 		Location: 5,5
 		Owner: Neutral
-		Facing: 223
+		Facing: 892
 		SubCell: 4
 	Actor230: c1
 		Location: 10,5
 		Owner: Neutral
-		Facing: 95
+		Facing: 380
 		SubCell: 3
 	Actor231: e2
 		Location: 6,7
 		Owner: GDI
-		Facing: 127
+		Facing: 508
 		SubCell: 2
 	Actor232: e2
 		Location: 8,6
 		Owner: GDI
-		Facing: 95
+		Facing: 380
 		SubCell: 4
 	Actor233: e2
 		Location: 4,6
 		Owner: GDI
-		Facing: 127
+		Facing: 508
 		SubCell: 2
 	Actor234: e3
 		Location: 5,6
 		Owner: GDI
-		Facing: 127
+		Facing: 508
 		SubCell: 2
 	Actor235: e3
 		Location: 7,6
 		Owner: GDI
-		Facing: 95
+		Facing: 380
 		SubCell: 4
 	Actor236: e1
 		Location: 5,16
 		Owner: GDI
-		Facing: 127
+		Facing: 508
 		SubCell: 4
 	Actor237: e1
 		Location: 4,24
 		Owner: GDI
-		Facing: 127
+		Facing: 508
 		SubCell: 2
 	Actor238: e3
 		Location: 52,7
 		Owner: GDI
-		Facing: 159
+		Facing: 636
 		SubCell: 1
 	Actor239: e3
 		Location: 54,7
 		Owner: GDI
-		Facing: 159
+		Facing: 636
 		SubCell: 3
 	Actor240: e3
 		Location: 61,22
 		Owner: GDI
-		Facing: 127
+		Facing: 508
 		SubCell: 3
 	Actor241: e3
 		Location: 61,23
 		Owner: GDI
-		Facing: 127
+		Facing: 508
 		SubCell: 1
 	Actor242: e3
 		Location: 60,22
 		Owner: GDI
-		Facing: 127
+		Facing: 508
 		SubCell: 4
 	Actor243: e3
 		Location: 60,22
 		Owner: GDI
-		Facing: 127
+		Facing: 508
 		SubCell: 3
 	Actor244: e3
 		Location: 56,44
 		Owner: GDI
-		Facing: 127
+		Facing: 508
 		SubCell: 1
 	Actor245: e3
 		Location: 55,44
 		Owner: GDI
-		Facing: 127
+		Facing: 508
 		SubCell: 4
 	Actor246: e3
 		Location: 55,44
 		Owner: GDI
-		Facing: 127
+		Facing: 508
 		SubCell: 1
 	Actor247: e3
 		Location: 25,4
@@ -952,7 +952,7 @@ Actors:
 	Actor249: e3
 		Location: 41,37
 		Owner: GDI
-		Facing: 31
+		Facing: 124
 		SubCell: 1
 	Actor250: e3
 		Location: 42,37
@@ -965,32 +965,32 @@ Actors:
 	Actor252: e1
 		Location: 9,51
 		Owner: GDI
-		Facing: 31
+		Facing: 124
 		SubCell: 4
 	Actor253: c9
 		Location: 39,25
 		Owner: Neutral
-		Facing: 31
+		Facing: 124
 		SubCell: 4
 	Actor254: c9
 		Location: 38,28
 		Owner: Neutral
-		Facing: 95
+		Facing: 380
 		SubCell: 2
 	Actor255: c8
 		Location: 37,24
 		Owner: Neutral
-		Facing: 223
+		Facing: 892
 		SubCell: 3
 	Actor256: c8
 		Location: 38,26
 		Owner: Neutral
-		Facing: 191
+		Facing: 764
 		SubCell: 2
 	Actor257: c7
 		Location: 40,26
 		Owner: Neutral
-		Facing: 31
+		Facing: 124
 		SubCell: 0
 	Actor258: c7
 		Location: 37,25
@@ -999,27 +999,27 @@ Actors:
 	Actor259: c6
 		Location: 37,27
 		Owner: Neutral
-		Facing: 31
+		Facing: 124
 		SubCell: 3
 	Actor260: c6
 		Location: 40,32
 		Owner: Neutral
-		Facing: 31
+		Facing: 124
 		SubCell: 1
 	Actor261: c5
 		Location: 38,26
 		Owner: Neutral
-		Facing: 31
+		Facing: 124
 		SubCell: 1
 	Actor262: c5
 		Location: 38,27
 		Owner: Neutral
-		Facing: 31
+		Facing: 124
 		SubCell: 3
 	Actor263: c4
 		Location: 42,17
 		Owner: Neutral
-		Facing: 159
+		Facing: 636
 		SubCell: 2
 	Actor264: c4
 		Location: 35,33
@@ -1040,97 +1040,97 @@ Actors:
 	Actor268: c2
 		Location: 37,27
 		Owner: Neutral
-		Facing: 127
+		Facing: 508
 		SubCell: 1
 	Actor269: c1
 		Location: 39,25
 		Owner: Neutral
-		Facing: 223
+		Facing: 892
 		SubCell: 3
 	Actor270: c1
 		Location: 37,27
 		Owner: Neutral
-		Facing: 63
+		Facing: 252
 		SubCell: 2
 	Actor271: e2
 		Location: 7,12
 		Owner: GDI
-		Facing: 95
+		Facing: 380
 		SubCell: 0
 	Actor272: e1
 		Location: 56,24
 		Owner: GDI
-		Facing: 159
+		Facing: 636
 		SubCell: 3
 	Actor273: e1
 		Location: 38,22
 		Owner: GDI
-		Facing: 95
+		Facing: 380
 		SubCell: 1
 	Actor274: e1
 		Location: 38,22
 		Owner: GDI
-		Facing: 95
+		Facing: 380
 		SubCell: 2
 	Actor275: e1
 		Location: 27,20
 		Owner: GDI
-		Facing: 191
+		Facing: 764
 		SubCell: 3
 	Actor276: e1
 		Location: 26,21
 		Owner: GDI
-		Facing: 63
+		Facing: 252
 		SubCell: 0
 	Actor277: e2
 		Location: 17,58
 		Owner: GDI
-		Facing: 31
+		Facing: 124
 		SubCell: 0
 	Actor278: e2
 		Location: 25,57
 		Owner: GDI
-		Facing: 127
+		Facing: 508
 		SubCell: 3
 	Actor279: e2
 		Location: 15,59
 		Owner: GDI
-		Facing: 31
+		Facing: 124
 		SubCell: 2
 	Actor280: e2
 		Location: 22,56
 		Owner: GDI
-		Facing: 127
+		Facing: 508
 		SubCell: 0
 	Actor281: e1
 		Location: 26,55
 		Owner: GDI
-		Facing: 95
+		Facing: 380
 		SubCell: 4
 	Actor282: e1
 		Location: 14,50
 		Owner: GDI
-		Facing: 95
+		Facing: 380
 		SubCell: 4
 	Actor283: e1
 		Location: 21,58
 		Owner: GDI
-		Facing: 127
+		Facing: 508
 		SubCell: 1
 	Actor284: e1
 		Location: 22,57
 		Owner: GDI
-		Facing: 127
+		Facing: 508
 		SubCell: 4
 	Actor285: e1
 		Location: 47,52
 		Owner: GDI
-		Facing: 63
+		Facing: 252
 		SubCell: 2
 	Actor286: e1
 		Location: 54,55
 		Owner: GDI
-		Facing: 191
+		Facing: 764
 		SubCell: 2
 	Actor287: c7
 		Location: 11,52
@@ -1151,18 +1151,18 @@ Actors:
 	Actor291: c3
 		Location: 12,51
 		Owner: Neutral
-		Facing: 63
+		Facing: 252
 		SubCell: 4
 	Actor292: c2
 		Location: 8,12
 		Owner: Neutral
 		Health: 59
-		Facing: 127
+		Facing: 508
 		SubCell: 2
 	Actor293: c1
 		Location: 13,50
 		Owner: Neutral
-		Facing: 63
+		Facing: 252
 		SubCell: 0
 	Actor294: e1
 		Location: 24,4
@@ -1171,27 +1171,27 @@ Actors:
 	Actor295: e2
 		Location: 57,7
 		Owner: GDI
-		Facing: 159
+		Facing: 636
 		SubCell: 0
 	Actor296: e2
 		Location: 19,57
 		Owner: GDI
-		Facing: 31
+		Facing: 124
 		SubCell: 2
 	Actor297: e2
 		Location: 14,53
 		Owner: GDI
-		Facing: 31
+		Facing: 124
 		SubCell: 0
 	Actor298: e1
 		Location: 9,51
 		Owner: GDI
-		Facing: 31
+		Facing: 124
 		SubCell: 0
 	Actor299: e1
 		Location: 12,54
 		Owner: GDI
-		Facing: 31
+		Facing: 124
 		SubCell: 3
 	Actor300: e1
 		Location: 31,43
@@ -1216,32 +1216,32 @@ Actors:
 	Actor305: e2
 		Location: 26,20
 		Owner: GDI
-		Facing: 191
+		Facing: 764
 		SubCell: 0
 	Actor306: e2
 		Location: 55,7
 		Owner: GDI
-		Facing: 159
+		Facing: 636
 		SubCell: 2
 	Actor307: e2
 		Location: 53,7
 		Owner: GDI
-		Facing: 159
+		Facing: 636
 		SubCell: 4
 	Actor308: e2
 		Location: 56,23
 		Owner: GDI
-		Facing: 31
+		Facing: 124
 		SubCell: 0
 	Actor309: e1
 		Location: 47,52
 		Owner: GDI
-		Facing: 63
+		Facing: 252
 		SubCell: 3
 	Actor310: e1
 		Location: 48,52
 		Owner: GDI
-		Facing: 63
+		Facing: 252
 		SubCell: 2
 	Actor311: c9
 		Location: 8,13
@@ -1250,7 +1250,7 @@ Actors:
 	Actor312: c8
 		Location: 6,13
 		Owner: Neutral
-		Facing: 223
+		Facing: 892
 		SubCell: 2
 	Actor313: c6
 		Location: 4,24
@@ -1259,37 +1259,37 @@ Actors:
 	Actor314: c5
 		Location: 6,11
 		Owner: Neutral
-		Facing: 31
+		Facing: 124
 		SubCell: 4
 	Actor315: c4
 		Location: 7,15
 		Owner: Neutral
-		Facing: 31
+		Facing: 124
 		SubCell: 3
 	Actor316: e1
 		Location: 56,25
 		Owner: GDI
-		Facing: 159
+		Facing: 636
 		SubCell: 2
 	Actor317: c2
 		Location: 26,17
 		Owner: Neutral
-		Facing: 191
+		Facing: 764
 		SubCell: 3
 	Actor318: c4
 		Location: 26,17
 		Owner: Neutral
-		Facing: 63
+		Facing: 252
 		SubCell: 2
 	Actor319: c5
 		Location: 27,16
 		Owner: Neutral
-		Facing: 223
+		Facing: 892
 		SubCell: 2
 	Actor320: c6
 		Location: 27,17
 		Owner: Neutral
-		Facing: 159
+		Facing: 636
 		SubCell: 4
 	Actor321: e2
 		Location: 58,45
@@ -1314,12 +1314,12 @@ Actors:
 	Actor326: e2
 		Location: 57,23
 		Owner: GDI
-		Facing: 127
+		Facing: 508
 		SubCell: 0
 	Actor327: e2
 		Location: 56,23
 		Owner: GDI
-		Facing: 127
+		Facing: 508
 		SubCell: 0
 	DefaultChinookTarget: waypoint
 		Location: 27,46

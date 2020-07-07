@@ -272,21 +272,21 @@ Actors:
 	Actor94: jeep
 		Location: 39,48
 		Owner: GDI
-		Facing: 96
+		Facing: 384
 	Actor110: e1
 		Location: 40,49
 		Owner: GDI
-		Facing: 224
+		Facing: 896
 		SubCell: 0
 	Actor111: e2
 		Location: 38,50
 		Owner: GDI
-		Facing: 224
+		Facing: 896
 		SubCell: 2
 	Actor112: e2
 		Location: 38,49
 		Owner: GDI
-		Facing: 128
+		Facing: 512
 		SubCell: 0
 	Actor113: e2
 		Location: 35,40
@@ -389,42 +389,42 @@ Actors:
 	Civilian1: c2
 		Location: 11,50
 		Owner: GDI
-		Facing: 224
+		Facing: 896
 		SubCell: 0
 	Civilian2: c9
 		Location: 12,49
 		Owner: GDI
-		Facing: 224
+		Facing: 896
 		SubCell: 2
 	Civilian3: c8
 		Location: 14,49
 		Owner: GDI
-		Facing: 64
+		Facing: 256
 		SubCell: 3
 	Civilian4: c7
 		Location: 13,50
 		Owner: GDI
-		Facing: 224
+		Facing: 896
 		SubCell: 0
 	Civilian5: c6
 		Location: 11,49
 		Owner: GDI
-		Facing: 32
+		Facing: 128
 		SubCell: 0
 	Civilian6: c5
 		Location: 12,50
 		Owner: GDI
-		Facing: 224
+		Facing: 896
 		SubCell: 2
 	Civilian7: c4
 		Location: 10,50
 		Owner: GDI
-		Facing: 32
+		Facing: 128
 		SubCell: 1
 	Civilian8: c3
 		Location: 10,51
 		Owner: GDI
-		Facing: 32
+		Facing: 128
 		SubCell: 1
 	Actor56: t18
 		Location: 19,51
@@ -444,7 +444,7 @@ Actors:
 	NodGunner1: e1
 		Location: 41,50
 		Owner: GDI
-		Facing: 192
+		Facing: 768
 		SubCell: 2
 	NodGunner2: e1
 		Location: 39,50
@@ -453,7 +453,7 @@ Actors:
 	NodGunner3: e1
 		Location: 40,50
 		Owner: GDI
-		Facing: 64
+		Facing: 256
 		SubCell: 0
 	EntryPointVehicle: waypoint
 		Location: 33,17

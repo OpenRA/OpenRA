@@ -263,15 +263,15 @@ Actors:
 	Actor88: mtnk
 		Location: 45,20
 		Owner: GDI
-		Facing: 160
+		Facing: 640
 	Actor89: mtnk
 		Location: 50,58
 		Owner: GDI
-		Facing: 192
+		Facing: 768
 	Actor90: mtnk
 		Location: 57,28
 		Owner: GDI
-		Facing: 160
+		Facing: 640
 	Actor91: e2
 		Location: 27,60
 		Owner: GDI
@@ -375,62 +375,62 @@ Actors:
 	Actor116: e3
 		Location: 55,23
 		Owner: GDI
-		Facing: 160
+		Facing: 640
 		SubCell: 1
 	Actor117: e1
 		Location: 56,23
 		Owner: GDI
-		Facing: 160
+		Facing: 640
 		SubCell: 1
 	Actor118: e1
 		Location: 54,28
 		Owner: GDI
-		Facing: 160
+		Facing: 640
 		SubCell: 1
 	Actor119: e2
 		Location: 53,28
 		Owner: GDI
-		Facing: 96
+		Facing: 384
 		SubCell: 0
 	Actor120: e2
 		Location: 56,24
 		Owner: GDI
-		Facing: 160
+		Facing: 640
 		SubCell: 2
 	Actor121: e1
 		Location: 35,25
 		Owner: GDI
-		Facing: 160
+		Facing: 640
 		SubCell: 0
 	Actor122: e2
 		Location: 36,50
 		Owner: GDI
-		Facing: 160
+		Facing: 640
 		SubCell: 4
 	Actor123: e1
 		Location: 44,58
 		Owner: GDI
-		Facing: 224
+		Facing: 896
 		SubCell: 4
 	Actor124: e1
 		Location: 47,55
 		Owner: GDI
-		Facing: 64
+		Facing: 256
 		SubCell: 0
 	Actor135: e1
 		Location: 46,58
 		Owner: GDI
-		Facing: 32
+		Facing: 128
 		SubCell: 2
 	Actor136: e2
 		Location: 47,59
 		Owner: GDI
-		Facing: 224
+		Facing: 896
 		SubCell: 0
 	Actor137: e2
 		Location: 43,57
 		Owner: GDI
-		Facing: 160
+		Facing: 640
 		SubCell: 1
 	waypoint27: waypoint
 		Location: 33,53
@@ -534,14 +534,14 @@ Actors:
 	GDIBuilding9: atwr
 		Owner: GDI
 		Location: 47,20
-		TurretFacing: 92
+		TurretFacing: 368
 	GDICYard: fact
 		Location: 59,13
 		Owner: GDI
 	GDIHarvester: harv
 		Owner: GDI
 		Location: 50,18
-		Facing: 92
+		Facing: 368
 	GDIHQ: hq
 		Location: 51,13
 		Owner: GDI
@@ -560,11 +560,11 @@ Actors:
 	GDIOrca1: orca
 		Owner: GDI
 		Location: 41,12
-		Facing: 92
+		Facing: 368
 	GDIOrca2: orca
 		Owner: GDI
 		Location: 41,13
-		Facing: 92
+		Facing: 368
 	GDIProc: proc
 		Owner: GDI
 		Location: 50,16

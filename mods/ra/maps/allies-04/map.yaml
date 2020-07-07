@@ -269,59 +269,59 @@ Actors:
 	Actor89: 3tnk
 		Location: 42,35
 		Owner: USSR
-		Facing: 64
+		Facing: 256
 	Actor90: 3tnk
 		Location: 39,34
 		Owner: USSR
-		Facing: 64
+		Facing: 256
 	Actor91: 3tnk
 		Location: 49,31
 		Owner: USSR
-		Facing: 96
+		Facing: 384
 	Actor93: e2
 		Location: 47,40
 		Owner: USSR
-		Facing: 64
+		Facing: 256
 		SubCell: 0
 	Actor94: e2
 		Location: 47,36
 		Owner: USSR
-		Facing: 96
+		Facing: 384
 		SubCell: 4
 	Actor95: e2
 		Location: 50,40
 		Owner: USSR
-		Facing: 96
+		Facing: 384
 		SubCell: 0
 	Actor96: e2
 		Location: 48,40
 		Owner: USSR
-		Facing: 64
+		Facing: 256
 		SubCell: 0
 	Actor97: e2
 		Location: 48,36
 		Owner: USSR
-		Facing: 64
+		Facing: 256
 		SubCell: 0
 	Actor98: e2
 		Location: 46,39
 		Owner: USSR
-		Facing: 96
+		Facing: 384
 		SubCell: 2
 	Actor99: e1
 		Location: 70,59
 		Owner: Greece
-		Facing: 192
+		Facing: 768
 		SubCell: 4
 	Actor100: e1
 		Location: 44,34
 		Owner: USSR
-		Facing: 96
+		Facing: 384
 		SubCell: 4
 	Actor101: e1
 		Location: 43,37
 		Owner: USSR
-		Facing: 96
+		Facing: 384
 		SubCell: 4
 	waypoint17: waypoint
 		Location: 92,68
@@ -342,7 +342,7 @@ Actors:
 	Actor88: jeep
 		Location: 70,60
 		Owner: Greece
-		Facing: 224
+		Facing: 896
 	Actor132: jeep
 		Location: 57,65
 		Owner: Greece
@@ -413,20 +413,17 @@ Actors:
 		Owner: USSR
 		Location: 82,47
 		SubCell: 3
-		Facing: 92
-		TurretFacing: 92
+		Facing: 368
 	Actor155: e1
 		Owner: USSR
 		Location: 87,49
 		SubCell: 3
-		Facing: 92
-		TurretFacing: 92
+		Facing: 368
 	Actor156: e1
 		Owner: USSR
 		Location: 87,49
 		SubCell: 1
-		Facing: 122
-		TurretFacing: 122
+		Facing: 488
 	AlliedConyard: fact
 		Owner: Greece
 		Location: 88,49
@@ -434,7 +431,7 @@ Actors:
 	Harvester: harv
 		Location: 57,24
 		Owner: USSR
-		Facing: 64
+		Facing: 256
 	Conyard: fact
 		Location: 49,24
 		Owner: USSR

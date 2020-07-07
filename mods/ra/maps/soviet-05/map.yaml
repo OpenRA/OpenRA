@@ -227,7 +227,7 @@ Actors:
 	Actor55: gun
 		Location: 69,49
 		Owner: Greece
-		Facing: 32
+		Facing: 128
 	RadarDome: dome
 		Location: 70,45
 		Owner: France
@@ -264,11 +264,11 @@ Actors:
 	Actor67: gun
 		Location: 61,44
 		Owner: Greece
-		Facing: 192
+		Facing: 768
 	Actor68: gun
 		Location: 61,48
 		Owner: Greece
-		Facing: 160
+		Facing: 640
 	Actor69: agun
 		Location: 68,47
 		Owner: Greece
@@ -294,54 +294,50 @@ Actors:
 	startmcv: mcv
 		Location: 22,80
 		Owner: USSR
-		Facing: 192
+		Facing: 768
 	Actor77: 2tnk
 		Location: 59,43
 		Owner: Greece
-		Facing: 32
-		TurretFacing: 32
+		Facing: 128
 	Actor78: 1tnk
 		Location: 58,48
 		Owner: Greece
-		Facing: 32
-		TurretFacing: 32
+		Facing: 128
 	Actor79: 1tnk
 		Location: 57,44
 		Owner: Greece
-		Facing: 96
-		TurretFacing: 96
+		Facing: 384
 	Actor80: 1tnk
 		Location: 67,49
 		Owner: Greece
-		Facing: 224
-		TurretFacing: 224
+		Facing: 896
 	Harvester: harv
 		Location: 45,45
 		Owner: Greece
-		Facing: 96
+		Facing: 384
 	mcvGG: mcv
 		Location: 75,46
 		Owner: Greece
-		Facing: 192
+		Facing: 768
 	Actor83: 1tnk
 		Location: 43,47
 		Owner: Greece
-		Facing: 224
-		TurretFacing: 64
+		Facing: 896
+		TurretFacing: 384
 	Actor84: e1
 		Location: 61,45
 		Owner: Greece
-		Facing: 160
+		Facing: 640
 		SubCell: 1
 	Actor85: e1
 		Location: 62,46
 		Owner: Greece
-		Facing: 160
+		Facing: 640
 		SubCell: 0
 	Actor86: e1
 		Location: 61,49
 		Owner: Greece
-		Facing: 224
+		Facing: 896
 		SubCell: 2
 	Runner1: e1
 		Location: 25,75
@@ -358,22 +354,22 @@ Actors:
 	Actor90: e1
 		Location: 64,49
 		Owner: Greece
-		Facing: 96
+		Facing: 384
 		SubCell: 2
 	Actor91: e3
 		Location: 66,44
 		Owner: Greece
-		Facing: 160
+		Facing: 640
 		SubCell: 4
 	Actor92: e3
 		Location: 63,49
 		Owner: Greece
-		Facing: 160
+		Facing: 640
 		SubCell: 4
 	Actor93: e1
 		Location: 58,46
 		Owner: Greece
-		Facing: 160
+		Facing: 640
 		SubCell: 2
 	Actor94: e1
 		Location: 60,48
@@ -383,100 +379,89 @@ Actors:
 		Location: 41,45
 		Owner: Greece
 		SubCell: 4
-		Facing: 64
-		TurretFacing: 128
+		Facing: 256
+		TurretFacing: 256
 	Actor97: e3
 		Location: 41,44
 		Owner: Greece
 		SubCell: 1
-		Facing: 96
-		TurretFacing: 160
+		Facing: 384
+		TurretFacing: 256
 	Actor98: e3
 		Location: 40,45
 		Owner: Greece
 		SubCell: 4
-		Facing: 64
-		TurretFacing: 160
+		Facing: 256
+		TurretFacing: 384
 	Actor99: e3
 		Location: 40,43
 		Owner: Greece
 		SubCell: 1
-		Facing: 96
-		TurretFacing: 160
+		Facing: 384
+		TurretFacing: 256
 	Actor100: e1
 		Location: 39,45
 		Owner: Greece
-		Facing: 160
+		Facing: 640
 		SubCell: 0
 	Actor101: e1
 		Location: 39,44
 		Owner: Greece
 		SubCell: 1
-		Facing: 96
-		TurretFacing: 192
+		Facing: 384
+		TurretFacing: 384
 	Minelayer: mnly
 		Owner: Greece
 		Location: 67,45
-		Facing: 92
+		Facing: 368
 	Actor166: pt
 		Owner: Greece
 		Location: 67,54
-		Facing: 92
-		TurretFacing: 92
+		Facing: 368
 	Actor167: pt
 		Owner: Greece
 		Location: 67,59
-		Facing: 60
-		TurretFacing: 60
+		Facing: 240
 	Actor168: pt
 		Owner: Greece
 		Location: 83,56
-		Facing: 28
-		TurretFacing: 28
+		Facing: 112
 	Actor169: pt
 		Owner: Greece
 		Location: 83,51
-		Facing: 92
-		TurretFacing: 92
+		Facing: 368
 	mcvtransport: lst
 		Owner: Greece
 		Location: 80,45
-		Facing: 92
+		Facing: 368
 	Actor171: dd
 		Owner: Greece
 		Location: 91,51
-		Facing: 28
-		TurretFacing: 28
+		Facing: 112
 	Actor172: dd
 		Owner: Greece
 		Location: 84,44
-		Facing: 92
-		TurretFacing: 92
+		Facing: 368
 	Actor173: dd
 		Owner: Greece
 		Location: 96,44
-		Facing: 92
-		TurretFacing: 92
+		Facing: 368
 	Actor174: pt
 		Owner: Greece
 		Location: 96,51
-		Facing: 92
-		TurretFacing: 92
+		Facing: 368
 	Actor175: dd
 		Owner: Greece
 		Location: 101,49
-		Facing: 60
-		TurretFacing: 60
+		Facing: 240
 	Actor176: pt
 		Owner: Greece
 		Location: 107,70
-		Facing: 188
-		TurretFacing: 188
+		Facing: 752
 	Actor177: pt
 		Owner: Greece
 		Location: 58,89
-		Facing: 60
-		TurretFacing: 60
+		Facing: 240
 	Actor181: mine
 		Owner: Neutral
 		Location: 63,65

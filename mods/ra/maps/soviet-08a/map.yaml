@@ -532,7 +532,7 @@ Actors:
 	Actor159: gun
 		Location: 70,69
 		Owner: Germany
-		Facing: 159
+		Facing: 636
 	Actor160: weaf
 		Location: 71,65
 		Owner: Germany
@@ -623,135 +623,135 @@ Actors:
 	Actor189: jeep
 		Location: 85,92
 		Owner: Germany
-		Facing: 191
+		Facing: 764
 	Actor190: 2tnk
 		Location: 55,49
 		Owner: Greece
-		Facing: 159
+		Facing: 636
 	Actor191: 2tnk
 		Location: 58,47
 		Owner: Greece
-		Facing: 159
+		Facing: 636
 	Actor192: 2tnk
 		Location: 42,69
 		Owner: Greece
-		Facing: 127
+		Facing: 508
 	Actor193: 2tnk
 		Location: 44,69
 		Owner: Greece
-		Facing: 127
+		Facing: 508
 	Actor194: 2tnk
 		Location: 43,52
 		Owner: Greece
-		Facing: 127
+		Facing: 508
 	Actor195: 2tnk
 		Location: 39,52
 		Owner: Greece
-		Facing: 127
+		Facing: 508
 	Actor196: 2tnk
 		Location: 67,43
 		Owner: Greece
-		Facing: 191
+		Facing: 764
 	Actor197: 2tnk
 		Location: 67,45
 		Owner: Greece
-		Facing: 191
+		Facing: 764
 	Actor198: jeep
 		Location: 57,42
 		Owner: Greece
-		Facing: 159
+		Facing: 636
 	Actor199: jeep
 		Location: 54,46
 		Owner: Greece
-		Facing: 159
+		Facing: 636
 	Actor200: jeep
 		Location: 41,51
 		Owner: Greece
-		Facing: 127
+		Facing: 508
 	Actor201: jeep
 		Location: 61,44
 		Owner: Greece
-		Facing: 191
+		Facing: 764
 	Actor202: arty
 		Location: 42,67
 		Owner: Greece
-		Facing: 127
+		Facing: 508
 	Actor203: arty
 		Location: 45,67
 		Owner: Greece
-		Facing: 95
+		Facing: 380
 	Actor204: arty
 		Location: 63,44
 		Owner: Greece
-		Facing: 191
+		Facing: 764
 	Actor205: arty
 		Location: 56,46
 		Owner: Greece
-		Facing: 159
+		Facing: 636
 	Actor206: arty
 		Location: 40,50
 		Owner: Greece
-		Facing: 159
+		Facing: 636
 	Actor207: jeep
 		Location: 72,72
 		Owner: Germany
-		Facing: 159
+		Facing: 636
 	Actor208: jeep
 		Location: 84,70
 		Owner: Germany
-		Facing: 159
+		Facing: 636
 	Actor209: 1tnk
 		Location: 57,96
 		Owner: Germany
-		Facing: 191
+		Facing: 764
 	Actor210: 1tnk
 		Location: 73,68
 		Owner: Germany
-		Facing: 127
+		Facing: 508
 	Actor211: 2tnk
 		Location: 43,68
 		Owner: Greece
-		Facing: 127
+		Facing: 508
 	Actor212: 2tnk
 		Location: 60,65
 		Owner: Greece
-		Facing: 159
+		Facing: 636
 	Actor213: 2tnk
 		Location: 61,64
 		Owner: Greece
-		Facing: 127
+		Facing: 508
 	Actor214: 2tnk
 		Location: 63,65
 		Owner: Greece
-		Facing: 95
+		Facing: 380
 	Actor215: 2tnk
 		Location: 62,64
 		Owner: Greece
-		Facing: 127
+		Facing: 508
 	Actor216: e1
 		Location: 86,91
 		Owner: Germany
-		Facing: 159
+		Facing: 636
 		SubCell: 4
 	Actor217: e1
 		Location: 86,92
 		Owner: Germany
-		Facing: 159
+		Facing: 636
 		SubCell: 3
 	Actor218: e1
 		Location: 87,91
 		Owner: Germany
-		Facing: 191
+		Facing: 764
 		SubCell: 4
 	Actor219: e1
 		Location: 86,93
 		Owner: Germany
-		Facing: 159
+		Facing: 636
 		SubCell: 4
 	Actor220: e1
 		Location: 88,91
 		Owner: USSR
-		Facing: 95
+		Facing: 380
 		SubCell: 4
 	Actor221: e1
 		Location: 88,93
@@ -760,82 +760,82 @@ Actors:
 	Actor222: e1
 		Location: 87,92
 		Owner: USSR
-		Facing: 63
+		Facing: 252
 		SubCell: 4
 	Actor223: e1
 		Location: 78,68
 		Owner: Germany
-		Facing: 159
+		Facing: 636
 		SubCell: 1
 	Actor224: e1
 		Location: 74,69
 		Owner: Germany
-		Facing: 159
+		Facing: 636
 		SubCell: 2
 	Actor225: e3
 		Location: 70,66
 		Owner: Germany
-		Facing: 159
+		Facing: 636
 		SubCell: 2
 	Actor226: e3
 		Location: 85,72
 		Owner: Germany
-		Facing: 159
+		Facing: 636
 		SubCell: 2
 	Actor227: e3
 		Location: 88,72
 		Owner: Germany
-		Facing: 95
+		Facing: 380
 		SubCell: 4
 	Actor228: e3
 		Location: 87,72
 		Owner: Germany
-		Facing: 223
+		Facing: 892
 		SubCell: 3
 	Actor229: e3
 		Location: 66,97
 		Owner: Germany
-		Facing: 191
+		Facing: 764
 		SubCell: 2
 	Actor230: e3
 		Location: 66,99
 		Owner: Germany
-		Facing: 223
+		Facing: 892
 		SubCell: 2
 	Actor231: e1
 		Location: 60,85
 		Owner: Germany
-		Facing: 191
+		Facing: 764
 		SubCell: 3
 	Actor232: e1
 		Location: 60,84
 		Owner: Germany
-		Facing: 191
+		Facing: 764
 		SubCell: 4
 	Actor233: e3
 		Location: 72,74
 		Owner: Germany
-		Facing: 159
+		Facing: 636
 		SubCell: 3
 	Actor234: e3
 		Location: 76,74
 		Owner: Germany
-		Facing: 95
+		Facing: 380
 		SubCell: 4
 	Actor235: e3
 		Location: 57,97
 		Owner: Germany
-		Facing: 191
+		Facing: 764
 		SubCell: 1
 	Actor236: e1
 		Location: 86,63
 		Owner: Germany
-		Facing: 159
+		Facing: 636
 		SubCell: 4
 	Actor237: e1
 		Location: 92,68
 		Owner: Germany
-		Facing: 95
+		Facing: 380
 		SubCell: 2
 	Actor238: c3
 		Location: 83,64
@@ -844,12 +844,12 @@ Actors:
 	Actor239: c4
 		Location: 95,62
 		Owner: Germany
-		Facing: 159
+		Facing: 636
 		SubCell: 3
 	Actor240: c5
 		Location: 90,67
 		Owner: Germany
-		Facing: 95
+		Facing: 380
 		SubCell: 4
 	Actor241: c6
 		Location: 84,67
@@ -862,17 +862,17 @@ Actors:
 	Actor243: c1
 		Location: 90,60
 		Owner: Germany
-		Facing: 95
+		Facing: 380
 		SubCell: 3
 	Actor244: e3
 		Location: 60,64
 		Owner: Greece
-		Facing: 159
+		Facing: 636
 		SubCell: 1
 	Actor245: e3
 		Location: 63,64
 		Owner: Greece
-		Facing: 95
+		Facing: 380
 		SubCell: 0
 	Actor246: c2
 		Location: 88,61
@@ -904,51 +904,51 @@ Actors:
 	Actor253: ss
 		Location: 101,94
 		Owner: USSR
-		Facing: 191
+		Facing: 764
 	Actor254: ss
 		Location: 101,93
 		Owner: USSR
-		Facing: 223
+		Facing: 892
 	Actor255: ss
 		Location: 101,96
 		Owner: USSR
-		Facing: 191
+		Facing: 764
 	Actor256: ss
 		Location: 101,97
 		Owner: USSR
-		Facing: 159
+		Facing: 636
 	Actor257: ss
 		Location: 100,97
 		Owner: USSR
-		Facing: 127
+		Facing: 508
 	Boat1: pt
 		Location: 19,26
 		Owner: Greece
-		Facing: 191
+		Facing: 764
 	Boat2: pt
 		Location: 19,58
 		Owner: Greece
-		Facing: 159
+		Facing: 636
 	Boat3: pt
 		Location: 49,109
 		Owner: Greece
-		Facing: 223
+		Facing: 892
 	Boat4: pt
 		Location: 109,75
 		Owner: Greece
-		Facing: 31
+		Facing: 124
 	Boat5: pt
 		Location: 109,31
 		Owner: Greece
-		Facing: 63
+		Facing: 252
 	Boat6: pt
 		Location: 69,18
 		Owner: Greece
-		Facing: 63
+		Facing: 252
 	Boat7: dd
 		Location: 48,23
 		Owner: Greece
-		Facing: 159
+		Facing: 636
 	Oreref: proc
 		Owner: Greece
 		Location: 43,38

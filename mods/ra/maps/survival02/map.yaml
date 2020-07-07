@@ -305,18 +305,18 @@ Actors:
 	Actor96: e1
 		Location: 13,13
 		Owner: Soviets
-		Facing: 160
+		Facing: 640
 	Actor92: fenc
 		Location: 55,69
 		Owner: Soviets
 	Actor103: e4
 		Location: 8,12
 		Owner: Soviets
-		Facing: 160
+		Facing: 640
 	Actor102: 3tnk
 		Location: 14,11
 		Owner: Soviets
-		Facing: 160
+		Facing: 640
 	Actor105: tc04
 		Location: 23,29
 		Owner: Neutral
@@ -525,7 +525,7 @@ Actors:
 	Actor167: e1
 		Location: 35,33
 		Owner: Allies
-		Facing: 64
+		Facing: 256
 	Actor168: e1
 		Location: 43,32
 		Owner: Allies
@@ -547,7 +547,7 @@ Actors:
 	Actor174: 2tnk
 		Location: 37,46
 		Owner: Allies
-		Facing: 160
+		Facing: 640
 	Actor64: barb
 		Location: 15,15
 		Owner: Soviets
@@ -557,7 +557,7 @@ Actors:
 	Actor100: e2
 		Location: 16,10
 		Owner: Soviets
-		Facing: 160
+		Facing: 640
 	Actor180: fenc
 		Location: 53,72
 		Owner: Soviets
@@ -585,26 +585,26 @@ Actors:
 	Actor223: e2
 		Location: 37,43
 		Owner: Soviets
-		Facing: 192
+		Facing: 768
 	Actor220: e1
 		Location: 32,38
 		Owner: Soviets
-		Facing: 192
+		Facing: 768
 	Actor222: e2
 		Location: 40,35
 		Owner: Soviets
-		Facing: 192
+		Facing: 768
 	Actor221: e1
 		Location: 42,40
 		Owner: Soviets
-		Facing: 192
+		Facing: 768
 	Actor70: mine
 		Location: 38,50
 		Owner: Neutral
 	Actor175: e1
 		Location: 63,72
 		Owner: Soviets
-		Facing: 32
+		Facing: 128
 	Actor184: e2
 		Location: 61,74
 		Owner: Soviets
@@ -794,23 +794,23 @@ Actors:
 	Actor211: 3tnk
 		Location: 58,6
 		Owner: Soviets
-		Facing: 160
+		Facing: 640
 	Actor212: 3tnk
 		Location: 65,10
 		Owner: Soviets
-		Facing: 96
+		Facing: 384
 	Actor214: e1
 		Location: 73,9
 		Owner: Soviets
-		Facing: 96
+		Facing: 384
 	Actor215: e3
 		Location: 76,4
 		Owner: Soviets
-		Facing: 32
+		Facing: 128
 	Actor216: e4
 		Location: 66,3
 		Owner: Soviets
-		Facing: 96
+		Facing: 384
 	Actor234: minv
 		Location: 16,17
 		Owner: Soviets
@@ -882,23 +882,23 @@ Actors:
 	Harvester1: harv
 		Location: 61,6
 		Owner: Soviets
-		Facing: 128
+		Facing: 512
 	Harvester2: harv
 		Location: 15,5
 		Owner: Soviets
-		Facing: 150
+		Facing: 600
 	HarvGuard1: apc
 		Location: 68,7
 		Owner: Soviets
-		Facing: 100
+		Facing: 400
 	HarvGuard2: 3tnk
 		Location: 69,8
 		Owner: Soviets
-		Facing: 127
+		Facing: 508
 	HarvGuard3: 3tnk
 		Location: 67,8
 		Owner: Soviets
-		Facing: 96
+		Facing: 384
 	drum1: brl3
 		Location: 63,70
 		Owner: Soviets
@@ -920,11 +920,11 @@ Actors:
 	boom4: 3tnk
 		Location: 61,70
 		Owner: Soviets
-		Facing: 32
+		Facing: 128
 	boom5: 3tnk
 		Location: 59,74
 		Owner: Soviets
-		Facing: 224
+		Facing: 896
 	Factory: weap
 		Location: 7,6
 		Owner: Soviets

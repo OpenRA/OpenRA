@@ -458,11 +458,11 @@ Actors:
 	Actor130: gun
 		Location: 43,40
 		Owner: Greece
-		Facing: 223
+		Facing: 892
 	Actor131: gun
 		Location: 40,41
 		Owner: Greece
-		Facing: 95
+		Facing: 380
 	Actor132: gap
 		Location: 42,42
 		Owner: Greece
@@ -475,62 +475,62 @@ Actors:
 	Actor135: gun
 		Location: 44,43
 		Owner: Greece
-		Facing: 223
+		Facing: 892
 	Actor136: gun
 		Location: 40,44
 		Owner: Greece
-		Facing: 95
+		Facing: 380
 	Actor137: gun
 		Location: 44,46
 		Owner: Greece
-		Facing: 223
+		Facing: 892
 	Actor138: gun
 		Location: 41,47
 		Owner: Greece
-		Facing: 95
+		Facing: 380
 	Actor139: hbox
 		Location: 87,47
 		Owner: Greece
 	AAGun01: agun
 		Location: 53,61
 		Owner: GoodGuy
-		Facing: 95
+		Facing: 380
 	AAGun02: agun
 		Location: 67,62
 		Owner: GoodGuy
-		Facing: 95
+		Facing: 380
 	Actor142: gun
 		Location: 73,67
 		Owner: GoodGuy
-		Facing: 95
+		Facing: 380
 	AAGun03: agun
 		Location: 62,69
 		Owner: GoodGuy
-		Facing: 223
+		Facing: 892
 	AAGun04: agun
 		Location: 59,73
 		Owner: GoodGuy
-		Facing: 63
+		Facing: 252
 	Actor145: gun
 		Location: 94,73
 		Owner: GoodGuy
-		Facing: 127
+		Facing: 508
 	AAGun05: agun
 		Location: 70,75
 		Owner: GoodGuy
-		Facing: 159
+		Facing: 636
 	Actor147: gun
 		Location: 92,77
 		Owner: GoodGuy
-		Facing: 127
+		Facing: 508
 	Actor148: gun
 		Location: 97,77
 		Owner: GoodGuy
-		Facing: 127
+		Facing: 508
 	AAGun06: agun
 		Location: 39,78
 		Owner: GoodGuy
-		Facing: 159
+		Facing: 636
 	Actor150: brl3
 		Location: 77,82
 		Owner: GoodGuy
@@ -549,70 +549,70 @@ Actors:
 	Actor155: 2tnk
 		Location: 94,46
 		Owner: Greece
-		Facing: 95
+		Facing: 380
 	AlliedSquad05MTank01: 2tnk
 		Location: 57,56
 		Owner: GoodGuy
-		Facing: 31
+		Facing: 124
 	AlliedSquad05MTank02: 2tnk
 		Location: 63,56
 		Owner: GoodGuy
-		Facing: 31
+		Facing: 124
 	AlliedSquad04MGG01: mgg
 		Location: 34,61
 		Owner: Greece
-		Facing: 127
+		Facing: 508
 	AlliedSquad04MTank01: 2tnk
 		Location: 31,63
 		Owner: GoodGuy
-		Facing: 127
+		Facing: 508
 	AlliedSquad04Arty01: arty
 		Location: 33,63
 		Owner: Greece
-		Facing: 127
+		Facing: 508
 	AlliedSquad04Arty02: arty
 		Location: 35,63
 		Owner: Greece
-		Facing: 127
+		Facing: 508
 	AlliedSquad04MTank02: 2tnk
 		Location: 37,63
 		Owner: GoodGuy
-		Facing: 127
+		Facing: 508
 	AlliedSquad03LTank01: 1tnk
 		Location: 78,63
 		Owner: GoodGuy
-		Facing: 159
+		Facing: 636
 	AlliedSquad04MTank03: 2tnk
 		Location: 33,64
 		Owner: GoodGuy
-		Facing: 127
+		Facing: 508
 	AlliedSquad04Arty03: arty
 		Location: 34,64
 		Owner: GoodGuy
-		Facing: 127
+		Facing: 508
 	AlliedSquad04MTank04: 2tnk
 		Location: 35,64
 		Owner: GoodGuy
-		Facing: 127
+		Facing: 508
 	AlliedSquad04MTank05: 2tnk
 		Location: 34,65
 		Owner: GoodGuy
-		Facing: 127
+		Facing: 508
 	Actor168: 1tnk
 		Location: 66,65
 		Owner: GoodGuy
-		Facing: 127
+		Facing: 508
 	Actor169: 2tnk
 		Location: 75,78
 		Owner: GoodGuy
-		Facing: 191
+		Facing: 764
 	Actor170: 2tnk
 		Location: 78,82
 		Owner: GoodGuy
 	Actor171: 2tnk
 		Location: 55,83
 		Owner: GoodGuy
-		Facing: 95
+		Facing: 380
 	USSRHTank01: 3tnk
 		Location: 35,87
 		Owner: USSR
@@ -643,22 +643,22 @@ Actors:
 	Actor181: e3
 		Location: 47,33
 		Owner: GoodGuy
-		Facing: 63
+		Facing: 252
 		SubCell: 1
 	Actor182: e3
 		Location: 47,34
 		Owner: GoodGuy
-		Facing: 63
+		Facing: 252
 		SubCell: 1
 	AlliedSquad03RocketInf01: e3
 		Location: 78,61
 		Owner: Greece
-		Facing: 127
+		Facing: 508
 		SubCell: 1
 	AlliedSquad03RocketInf02: e3
 		Location: 84,61
 		Owner: Greece
-		Facing: 95
+		Facing: 380
 		SubCell: 3
 	Actor185: e3
 		Location: 72,62
@@ -667,27 +667,27 @@ Actors:
 	AlliedSquad03RocketInf03: e3
 		Location: 80,64
 		Owner: Greece
-		Facing: 95
+		Facing: 380
 		SubCell: 3
 	Actor187: e3
 		Location: 72,66
 		Owner: Greece
-		Facing: 95
+		Facing: 380
 		SubCell: 0
 	Actor188: e3
 		Location: 74,68
 		Owner: Greece
-		Facing: 95
+		Facing: 380
 		SubCell: 2
 	Actor189: e3
 		Location: 60,69
 		Owner: GoodGuy
-		Facing: 191
+		Facing: 764
 		SubCell: 4
 	Actor190: e3
 		Location: 60,71
 		Owner: GoodGuy
-		Facing: 191
+		Facing: 764
 		SubCell: 0
 	Actor191: e3
 		Location: 69,78
@@ -784,27 +784,27 @@ Actors:
 	AlliedSquad01RocketInf01: e3
 		Location: 90,92
 		Owner: GoodGuy
-		Facing: 31
+		Facing: 124
 		SubCell: 5
 	AlliedSquad01RocketInf02: e3
 		Location: 88,93
 		Owner: GoodGuy
-		Facing: 31
+		Facing: 124
 		SubCell: 1
 	AlliedSquad01RocketInf03: e3
 		Location: 89,93
 		Owner: GoodGuy
-		Facing: 31
+		Facing: 124
 		SubCell: 2
 	AlliedSquad01RocketInf04: e3
 		Location: 87,94
 		Owner: GoodGuy
-		Facing: 31
+		Facing: 124
 		SubCell: 4
 	AlliedSquad01RocketInf05: e3
 		Location: 88,94
 		Owner: GoodGuy
-		Facing: 31
+		Facing: 124
 		SubCell: 4
 	Actor219: e3
 		Location: 74,95

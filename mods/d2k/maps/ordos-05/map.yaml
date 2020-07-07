@@ -96,7 +96,7 @@ Actors:
 	AGunt1: medium_gun_turret
 		Location: 14,5
 		Owner: AtreidesMainBase
-		TurretFacing: 192
+		TurretFacing: 768
 	APower1: wind_trap
 		Location: 3,6
 		Owner: AtreidesMainBase
@@ -118,7 +118,7 @@ Actors:
 	AGunt2: medium_gun_turret
 		Location: 17,8
 		Owner: AtreidesMainBase
-		TurretFacing: 224
+		TurretFacing: 896
 	APower2: wind_trap
 		Location: 5,9
 		Owner: AtreidesMainBase
@@ -179,7 +179,7 @@ Actors:
 	AGunt3: medium_gun_turret
 		Location: 15,17
 		Owner: AtreidesMainBase
-		TurretFacing: 160
+		TurretFacing: 640
 	Actor34: light_inf
 		Location: 11,18
 		Owner: AtreidesMainBase
@@ -210,11 +210,11 @@ Actors:
 	Actor43: trike
 		Location: 34,20
 		Owner: AtreidesSmallBase1
-		Facing: 192
+		Facing: 768
 	AGunt6: medium_gun_turret
 		Location: 35,20
 		Owner: AtreidesSmallBase1
-		TurretFacing: 192
+		TurretFacing: 768
 	Actor45: spicebloom.spawnpoint
 		Location: 60,20
 		Owner: Neutral
@@ -233,11 +233,11 @@ Actors:
 	Actor50: trike
 		Location: 34,23
 		Owner: AtreidesSmallBase1
-		Facing: 192
+		Facing: 768
 	AGunt7: medium_gun_turret
 		Location: 35,23
 		Owner: AtreidesSmallBase1
-		TurretFacing: 192
+		TurretFacing: 768
 	Actor52: spicebloom.spawnpoint
 		Location: 78,23
 		Owner: Neutral
@@ -259,11 +259,11 @@ Actors:
 	AGunt4: medium_gun_turret
 		Location: 2,25
 		Owner: AtreidesMainBase
-		TurretFacing: 128
+		TurretFacing: 512
 	AGunt5: medium_gun_turret
 		Location: 5,25
 		Owner: AtreidesMainBase
-		TurretFacing: 128
+		TurretFacing: 512
 	Actor60: harvester
 		Location: 26,25
 		Owner: AtreidesSmallBase1
@@ -303,7 +303,6 @@ Actors:
 	AGunt8: medium_gun_turret
 		Location: 44,49
 		Owner: AtreidesSmallBase2
-		TurretFacing: 0
 	Actor73: wall
 		Location: 44,50
 		Owner: AtreidesSmallBase2
@@ -313,7 +312,7 @@ Actors:
 	AGunt9: medium_gun_turret
 		Location: 38,51
 		Owner: AtreidesSmallBase2
-		TurretFacing: 32
+		TurretFacing: 128
 	Actor76: wall
 		Location: 39,51
 		Owner: AtreidesSmallBase2
@@ -338,7 +337,7 @@ Actors:
 	AGunt10: medium_gun_turret
 		Location: 46,53
 		Owner: AtreidesSmallBase2
-		TurretFacing: 224
+		TurretFacing: 896
 	Actor84: wall
 		Location: 38,54
 		Owner: AtreidesSmallBase2
@@ -381,7 +380,6 @@ Actors:
 	AGunt11: medium_gun_turret
 		Location: 64,57
 		Owner: AtreidesSmallBase3
-		TurretFacing: 0
 	Actor98: wall
 		Location: 65,57
 		Owner: AtreidesSmallBase3
@@ -439,7 +437,7 @@ Actors:
 	AGunt12: medium_gun_turret
 		Location: 74,72
 		Owner: AtreidesSmallBase3
-		TurretFacing: 160
+		TurretFacing: 640
 	Actor117: wall
 		Location: 75,72
 		Owner: AtreidesSmallBase3

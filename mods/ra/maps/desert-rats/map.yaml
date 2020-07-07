@@ -229,7 +229,7 @@ Actors:
 		Owner: Neutral
 		Location: 23,58
 		SubCell: 3
-		Facing: 92
+		Facing: 368
 	Actor124: wood
 		Owner: Neutral
 		Location: 49,10
@@ -273,17 +273,17 @@ Actors:
 		Owner: Neutral
 		Location: 48,13
 		SubCell: 3
-		Facing: 92
+		Facing: 368
 	Actor132: c9
 		Owner: Neutral
 		Location: 22,60
 		SubCell: 3
-		Facing: 92
+		Facing: 368
 	Actor133: c5
 		Owner: Neutral
 		Location: 49,11
 		SubCell: 3
-		Facing: 92
+		Facing: 368
 	Actor135: tc01
 		Owner: Neutral
 		Location: 46,10
