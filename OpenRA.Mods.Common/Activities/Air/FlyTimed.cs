@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly WDist cruiseAltitude;
 		int remainingTicks;
 
-		public FlyTimed(int ticks, Actor self)
+		public FlyTimed(Actor self, int ticks)
 		{
 			remainingTicks = ticks;
 			aircraft = self.Trait<Aircraft>();

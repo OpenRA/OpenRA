@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Activities;
@@ -163,9 +164,9 @@ namespace OpenRA.Mods.Common.Activities
 
 			// The aircraft must keep moving forward even if it is already in an ideal position.
 			else if (attackAircraft.Info.AttackType == AirAttackType.Strafe)
-				QueueChild(new StrafeAttackRun(self, attackAircraft, target, strafeDistance != WDist.Zero ? strafeDistance : lastVisibleMaximumRange));
+				QueueChild(new StrafeAttackRun(aircraft, attackAircraft, target, strafeDistance != WDist.Zero ? strafeDistance : lastVisibleMaximumRange));
 			else if (attackAircraft.Info.AttackType == AirAttackType.Default && !aircraft.Info.CanHover)
-				QueueChild(new FlyAttackRun(self, target, lastVisibleMaximumRange));
+				QueueChild(new FlyAttackRun(aircraft, target, lastVisibleMaximumRange));
 
 			// Turn to face the target if required.
 			else if (!attackAircraft.TargetInFiringArc(self, target, 4 * attackAircraft.Info.FacingTolerance))
@@ -210,15 +211,18 @@ namespace OpenRA.Mods.Common.Activities
 
 	class FlyAttackRun : Activity
 	{
+		readonly WDist exitRange;
+		readonly Aircraft aircraft;
+
 		Target target;
-		WDist exitRange;
 		bool targetIsVisibleActor;
 
-		public FlyAttackRun(Actor self, Target t, WDist exitRange)
+		public FlyAttackRun(Aircraft aircraft, Target t, WDist exitRange)
 		{
 			ChildHasPriority = false;
 
 			target = t;
+			this.aircraft = aircraft;
 			this.exitRange = exitRange;
 		}
 
@@ -227,7 +231,8 @@ namespace OpenRA.Mods.Common.Activities
 			// The target may have died while this activity was queued
 			if (target.IsValidFor(self))
 			{
-				QueueChild(new Fly(self, target, target.CenterPosition));
+				QueueChild(new Fly(self, target, target.CenterPosition, speed: aircraft.MovementSpeed));
+				QueueChild(new FlyTimed(self, 1));
 				QueueChild(new Fly(self, target, exitRange, WDist.MaxValue, target.CenterPosition));
 			}
 			else
@@ -254,17 +259,23 @@ namespace OpenRA.Mods.Common.Activities
 
 	class StrafeAttackRun : Activity
 	{
-		Target target;
-		WDist exitRange;
+		readonly WDist exitRange;
 		readonly AttackAircraft attackAircraft;
+		readonly Aircraft aircraft;
+		readonly WDist turnLength;
 
-		public StrafeAttackRun(Actor self, AttackAircraft attackAircraft, Target t, WDist exitRange)
+		Target target;
+
+		public StrafeAttackRun(Aircraft aircraft, AttackAircraft attackAircraft, Target t, WDist exitRange)
 		{
 			ChildHasPriority = false;
 
 			target = t;
 			this.attackAircraft = attackAircraft;
+			this.aircraft = aircraft;
 			this.exitRange = exitRange;
+			turnLength = new WDist(aircraft.Info.Speed * 256 / aircraft.Info.BodyTurnSpeed.Value.Angle -
+									   aircraft.Info.Speed * 256 / aircraft.Info.TurnSpeed.Angle);
 		}
 
 		protected override void OnFirstRun(Actor self)
@@ -272,8 +283,9 @@ namespace OpenRA.Mods.Common.Activities
 			// The target may have died while this activity was queued
 			if (target.IsValidFor(self))
 			{
-				QueueChild(new Fly(self, target, target.CenterPosition));
-				QueueChild(new Fly(self, target, exitRange, WDist.MaxValue, target.CenterPosition));
+				QueueChild(new Fly(self, target, target.CenterPosition, speed: aircraft.MovementSpeed));
+				QueueChild(new FlyTimed(self, exitRange.Length / aircraft.Info.Speed));
+				QueueChild(new Fly(self, target, exitRange + new WDist(Math.Max(turnLength.Length, 0)), WDist.MaxValue, target.CenterPosition));
 			}
 			else
 				Cancel(self);
