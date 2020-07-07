@@ -223,6 +223,7 @@ ORCAB:
 		Weapon: Bomb
 		PauseOnCondition: !ammo
 	AttackAircraft:
+		AttackType: Strafe
 		Voice: Attack
 		FacingTolerance: 20
 		PersistentTargeting: false
@@ -383,6 +384,8 @@ SCRIN:
 		Weapon: Proton
 		PauseOnCondition: !ammo
 	AttackAircraft:
+		AttackType: Strafe
+		AttackAltitude: 1c280
 		Voice: Attack
 		FacingTolerance: 20
 		PersistentTargeting: false
