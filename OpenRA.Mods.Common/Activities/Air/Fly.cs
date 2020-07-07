@@ -28,6 +28,8 @@ namespace OpenRA.Mods.Common.Activities
 		readonly WDist nearEnough;
 		readonly int finalSpeed;
 		readonly WAngle? finalFacing = null;
+		readonly WAngle? finalPitch = null;
+		readonly WAngle? finalRoll = null;
 
 		Target target;
 		Target lastVisibleTarget;
@@ -41,13 +43,15 @@ namespace OpenRA.Mods.Common.Activities
 		}
 
 		public Fly(Actor self, Target t, WPos? initialTargetPosition = null, Color? targetLineColor = null, int speed = -1,
-			WAngle? facing = null)
+			WAngle? facing = null, WAngle? pitch = null, WAngle? roll = null)
 		{
 			aircraft = self.Trait<Aircraft>();
 			target = t;
 			this.targetLineColor = targetLineColor;
 			finalSpeed = speed >= 0 ? speed : aircraft.IdleSpeed;
 			finalFacing = facing;
+			finalPitch = pitch;
+			finalRoll = roll;
 
 			// The target may become hidden between the initial order request and the first tick (e.g. if queued)
 			// Moving to any position (even if quite stale) is still better than immediately giving up
@@ -67,7 +71,8 @@ namespace OpenRA.Mods.Common.Activities
 		}
 
 		public static void FlyTick(Actor self, Aircraft aircraft, WAngle? desiredPitch = null, WAngle? desiredFacing = null,
-			WAngle? desiredBodyFacing = null, int desiredSpeed = -1, WAngle? desiredTurnSpeed = null)
+			WAngle? desiredBodyFacing = null, WAngle? desiredBodyPitch = null, WAngle? desiredBodyRoll = null,
+			int desiredSpeed = -1, WAngle? desiredTurnSpeed = null)
 		{
 			// Acceleration
 			desiredSpeed = desiredSpeed >= 0 ? desiredSpeed : aircraft.MovementSpeed;
@@ -133,6 +138,10 @@ namespace OpenRA.Mods.Common.Activities
 				bodyPitch += new WAngle(flightPitch.Angle2 * (flightFacing - bodyFacing).Cos() / 1024);
 				bodyRoll += new WAngle(flightPitch.Angle2 * (flightFacing - bodyFacing).Sin() / 1024);
 			}
+
+			// Independently orient pitch and roll.
+			bodyPitch = Util.TickFacing(aircraft.Pitch, desiredBodyPitch ?? bodyPitch, aircraft.Info.PitchSpeed);
+			bodyRoll = Util.TickFacing(aircraft.Roll, desiredBodyRoll ?? bodyRoll, aircraft.Info.RollSpeed);
 
 			// Determine new displacement vector.
 			var move = aircraft.FlyStep(aircraft.CurrentSpeed, new WRot(WAngle.Zero, aircraft.FlightPitch, aircraft.FlightFacing));
@@ -265,13 +274,6 @@ namespace OpenRA.Mods.Common.Activities
 			var isSlider = aircraft.Info.CanSlide;
 			var desiredFacing = delta.HorizontalLengthSquared != 0 ? delta.Yaw : aircraft.FlightFacing;
 
-			// Inside the minimum range, so reverse if we CanSlide, otherwise face away from the target.
-			if (insideMinRange)
-			{
-				FlyTick(self, aircraft, desiredFacing: desiredFacing + new WAngle(512), desiredBodyFacing: desiredFacing);
-				return false;
-			}
-
 			// Calculate intermediate variables for deceleration.
 			var speed = aircraft.CurrentSpeed;
 			var accel = aircraft.Acceleration;
@@ -288,6 +290,35 @@ namespace OpenRA.Mods.Common.Activities
 				var turnDist = speed * turnTime - (turnTime < brakeTime ? accel * turnTime * turnTime / 2 : parBrakeDist);
 				if (turnDist >= delta.HorizontalLength)
 					desiredBodyFacing = finalFacing;
+			}
+
+			// We should start pitching to reach the desired facing at the last possible moment.
+			WAngle? desiredBodyPitch = null;
+			if (aircraft.Info.PitchSpeed != WAngle.Zero && finalPitch.HasValue)
+			{
+				var turnSpeed = aircraft.Info.PitchSpeed.Angle;
+				var turnTime = Math.Abs((finalPitch - aircraft.Pitch).Value.Angle2) / turnSpeed;
+				var turnDist = speed * turnTime - (turnTime < brakeTime ? accel * turnTime * turnTime / 2 : parBrakeDist);
+				if (turnDist >= delta.HorizontalLength)
+					desiredBodyPitch = finalPitch;
+			}
+
+			// We should start pitching to reach the desired facing at the last possible moment.
+			WAngle? desiredBodyRoll = null;
+			if (aircraft.Info.RollSpeed != WAngle.Zero && finalRoll.HasValue)
+			{
+				var turnSpeed = aircraft.Info.RollSpeed.Angle;
+				var turnTime = Math.Abs((finalRoll - aircraft.Roll).Value.Angle2) / turnSpeed;
+				var turnDist = speed * turnTime - (turnTime < brakeTime ? accel * turnTime * turnTime / 2 : parBrakeDist);
+				if (turnDist >= delta.HorizontalLength)
+					desiredBodyRoll = finalRoll;
+			}
+
+			// Inside the minimum range, so reverse if we CanSlide, otherwise face away from the target.
+			if (insideMinRange)
+			{
+				FlyTick(self, aircraft, desiredFacing: desiredFacing + new WAngle(512), desiredBodyFacing: desiredFacing);
+				return false;
 			}
 
 			// HACK: Consider ourselves blocked if we have moved by less than sqrt(15) * the smallest possible deliberate displacement
@@ -348,7 +379,7 @@ namespace OpenRA.Mods.Common.Activities
 				positionBuffer.RemoveAt(0);
 
 			FlyTick(self, aircraft, desiredFacing: desiredFacing, desiredSpeed: desiredSpeed,
-				desiredBodyFacing: desiredBodyFacing);
+				desiredBodyFacing: desiredBodyFacing, desiredBodyPitch: desiredBodyPitch, desiredBodyRoll: desiredBodyRoll);
 
 			return false;
 		}
