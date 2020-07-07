@@ -90,29 +90,29 @@ Actors:
 	Actor20: jeep
 		Location: 5,24
 		Owner: GDI
-		Facing: 96
+		Facing: 384
 	Actor21: jeep
 		Location: 6,32
 		Owner: GDI
-		Facing: 160
+		Facing: 640
 	Actor22: jeep
 		Location: 12,27
 		Owner: GDI
-		Facing: 32
+		Facing: 128
 	Actor28: e1
 		Location: 10,24
 		Owner: GDI
-		Facing: 96
+		Facing: 384
 		SubCell: 3
 	Actor29: e1
 		Location: 10,24
 		Owner: GDI
-		Facing: 96
+		Facing: 384
 		SubCell: 1
 	Actor30: e1
 		Location: 9,24
 		Owner: GDI
-		Facing: 96
+		Facing: 384
 		SubCell: 4
 	Actor31: e1
 		Location: 5,34
@@ -133,7 +133,7 @@ Actors:
 	Actor35: e1
 		Location: 10,24
 		Owner: GDI
-		Facing: 96
+		Facing: 384
 		SubCell: 2
 	Actor37: e1
 		Location: 7,40
@@ -220,7 +220,7 @@ Actors:
 		Location: 5,29
 		Owner: GDI
 		Health: 39
-		Facing: 224
+		Facing: 896
 	McvEntry: waypoint
 		Location: 33,48
 		Owner: Neutral

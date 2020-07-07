@@ -450,62 +450,62 @@ Actors:
 	Actor184: e1
 		Location: 64,41
 		Owner: Greece
-		Facing: 64
+		Facing: 256
 		SubCell: 3
 	Actor185: e1
 		Location: 64,42
 		Owner: Greece
-		Facing: 96
+		Facing: 384
 		SubCell: 0
 	Actor186: e1
 		Location: 63,42
 		Owner: Greece
-		Facing: 128
+		Facing: 512
 		SubCell: 0
 	Actor187: e1
 		Location: 59,45
 		Owner: Greece
-		Facing: 32
+		Facing: 128
 		SubCell: 2
 	Actor188: e1
 		Location: 56,44
 		Owner: Greece
-		Facing: 32
+		Facing: 128
 		SubCell: 4
 	Actor191: e1
 		Location: 56,45
 		Owner: Greece
-		Facing: 64
+		Facing: 256
 		SubCell: 4
 	Actor192: e1
 		Location: 57,44
 		Owner: Greece
-		Facing: 64
+		Facing: 256
 		SubCell: 2
 	Actor193: e1
 		Location: 60,44
 		Owner: Greece
-		Facing: 32
+		Facing: 128
 		SubCell: 1
 	Actor194: e1
 		Location: 56,46
 		Owner: Greece
-		Facing: 64
+		Facing: 256
 		SubCell: 4
 	Actor195: e1
 		Location: 53,37
 		Owner: Greece
-		Facing: 96
+		Facing: 384
 		SubCell: 2
 	Actor196: e1
 		Location: 52,38
 		Owner: Greece
-		Facing: 96
+		Facing: 384
 		SubCell: 3
 	Actor197: e1
 		Location: 52,37
 		Owner: Greece
-		Facing: 96
+		Facing: 384
 		SubCell: 4
 	Actor264: fenc
 		Owner: BadGuy
@@ -813,32 +813,32 @@ Actors:
 	BarrierSoldier1: e1
 		Location: 63,49
 		Owner: Greece
-		Facing: 160
+		Facing: 640
 		SubCell: 4
 	BarrierSoldier2: e1
 		Location: 64,50
 		Owner: Greece
-		Facing: 128
+		Facing: 512
 		SubCell: 0
 	BarrierSoldier3: e1
 		Location: 64,49
 		Owner: Greece
-		Facing: 96
+		Facing: 384
 		SubCell: 4
 	BarrierSoldier4: e1
 		Location: 66,50
 		Owner: Greece
-		Facing: 96
+		Facing: 384
 		SubCell: 4
 	BarrierSoldier5: e1
 		Location: 65,49
 		Owner: Greece
-		Facing: 160
+		Facing: 640
 		SubCell: 3
 	BarrierSoldier6: e1
 		Location: 66,49
 		Owner: Greece
-		Facing: 128
+		Facing: 512
 		SubCell: 3
 	BaseBarrel1: barl
 		Location: 72,31
@@ -929,7 +929,7 @@ Actors:
 	Farmer3: e3
 		Location: 89,37
 		Owner: Greece
-		Facing: 160
+		Facing: 640
 		SubCell: 2
 	FarmSpawn: waypoint
 		Location: 90,39
@@ -990,12 +990,12 @@ Actors:
 	RSoldier3: e3
 		Location: 36,37
 		Owner: Greece
-		Facing: 64
+		Facing: 256
 		SubCell: 1
 	RSoldier4: e3
 		Location: 36,37
 		Owner: Greece
-		Facing: 64
+		Facing: 256
 		SubCell: 4
 	RSoldierTrap: barl
 		Location: 42,38

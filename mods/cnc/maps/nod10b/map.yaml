@@ -495,7 +495,7 @@ Actors:
 	Actor148: jeep
 		Location: 56,17
 		Owner: GDI
-		Facing: 159
+		Facing: 636
 	Mammoth1: htnk
 		Location: 29,53
 		Owner: GDI
@@ -508,18 +508,18 @@ Actors:
 	PatrollingMammoth: htnk
 		Location: 59,42
 		Owner: GDI
-		Facing: 31
+		Facing: 124
 	Actor153: arty
 		Location: 27,28
 		Owner: Nod
 	MediumTank1: mtnk
 		Location: 43,28
 		Owner: GDI
-		Facing: 191
+		Facing: 764
 	MediumTank2: mtnk
 		Location: 43,29
 		Owner: GDI
-		Facing: 191
+		Facing: 764
 	Rifleman1: e1
 		Location: 16,54
 		Owner: GDI
@@ -539,22 +539,22 @@ Actors:
 	Actor160: e1
 		Location: 17,14
 		Owner: GDI
-		Facing: 191
+		Facing: 764
 		SubCell: 3
 	Actor161: e1
 		Location: 17,15
 		Owner: GDI
-		Facing: 191
+		Facing: 764
 		SubCell: 1
 	Actor162: e1
 		Location: 17,15
 		Owner: GDI
-		Facing: 191
+		Facing: 764
 		SubCell: 2
 	Actor163: e1
 		Location: 17,14
 		Owner: GDI
-		Facing: 191
+		Facing: 764
 		SubCell: 4
 	Actor164: e2
 		Location: 15,28
@@ -575,12 +575,12 @@ Actors:
 	Actor168: e2
 		Location: 36,9
 		Owner: GDI
-		Facing: 159
+		Facing: 636
 		SubCell: 4
 	Actor169: e2
 		Location: 36,9
 		Owner: GDI
-		Facing: 159
+		Facing: 636
 		SubCell: 3
 	Actor170: e2
 		Location: 32,16
@@ -593,12 +593,12 @@ Actors:
 	Actor172: e2
 		Location: 57,18
 		Owner: GDI
-		Facing: 159
+		Facing: 636
 		SubCell: 2
 	Actor173: e2
 		Location: 57,18
 		Owner: GDI
-		Facing: 159
+		Facing: 636
 		SubCell: 0
 	Actor174: c8
 		Location: 57,54
@@ -607,12 +607,12 @@ Actors:
 	Actor175: c3
 		Location: 56,49
 		Owner: Neutral
-		Facing: 95
+		Facing: 380
 		SubCell: 2
 	Actor176: c4
 		Location: 56,49
 		Owner: Neutral
-		Facing: 223
+		Facing: 892
 		SubCell: 3
 	Actor177: e3
 		Location: 26,27
@@ -661,22 +661,22 @@ Actors:
 	Grenadier1: e2
 		Location: 40,19
 		Owner: GDI
-		Facing: 191
+		Facing: 764
 		SubCell: 2
 	Grenadier2: e2
 		Location: 40,18
 		Owner: GDI
-		Facing: 191
+		Facing: 764
 		SubCell: 4
 	Grenadier3: e2
 		Location: 41,19
 		Owner: GDI
-		Facing: 191
+		Facing: 764
 		SubCell: 1
 	Grenadier4: e2
 		Location: 41,18
 		Owner: GDI
-		Facing: 191
+		Facing: 764
 		SubCell: 3
 	Actor192: e3
 		Location: 19,51
@@ -689,7 +689,7 @@ Actors:
 	Actor194: e3
 		Location: 37,52
 		Owner: GDI
-		Facing: 31
+		Facing: 124
 		SubCell: 4
 	Actor195: e3
 		Location: 33,54

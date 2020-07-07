@@ -436,56 +436,56 @@ Actors:
 	Actor136: bggy
 		Location: 58,35
 		Owner: Nod
-		Facing: 224
+		Facing: 896
 	Actor137: bggy
 		Location: 52,33
 		Owner: Nod
-		Facing: 224
+		Facing: 896
 	Actor138: bggy
 		Location: 42,17
 		Owner: Nod
-		Facing: 224
+		Facing: 896
 	Actor139: apc
 		Location: 27,15
 		Owner: GDI
-		Facing: 128
+		Facing: 512
 	Actor140: apc
 		Location: 29,15
 		Owner: GDI
-		Facing: 128
+		Facing: 512
 	Actor141: jeep
 		Location: 28,15
 		Owner: GDI
-		Facing: 128
+		Facing: 512
 	Actor142: e3
 		Location: 55,22
 		Owner: Nod
-		Facing: 224
+		Facing: 896
 		SubCell: 0
 	Actor143: e1
 		Location: 50,21
 		Owner: Nod
-		Facing: 224
+		Facing: 896
 		SubCell: 4
 	Actor144: e1
 		Location: 51,23
 		Owner: Nod
-		Facing: 224
+		Facing: 896
 		SubCell: 1
 	Actor145: e1
 		Location: 51,22
 		Owner: Nod
-		Facing: 224
+		Facing: 896
 		SubCell: 4
 	Actor146: e1
 		Location: 50,22
 		Owner: Nod
-		Facing: 224
+		Facing: 896
 		SubCell: 1
 	Actor147: e3
 		Location: 49,30
 		Owner: Nod
-		Facing: 160
+		Facing: 640
 		SubCell: 1
 	Actor148: e3
 		Location: 23,28
@@ -502,7 +502,7 @@ Actors:
 	Actor151: e3
 		Location: 22,23
 		Owner: Nod
-		Facing: 64
+		Facing: 256
 		SubCell: 0
 	Actor154: c2
 		Location: 23,56
@@ -511,12 +511,12 @@ Actors:
 	Actor155: e1
 		Location: 55,29
 		Owner: Nod
-		Facing: 160
+		Facing: 640
 		SubCell: 0
 	Actor156: e1
 		Location: 50,32
 		Owner: Nod
-		Facing: 160
+		Facing: 640
 		SubCell: 3
 	Actor157: c4
 		Location: 24,48
@@ -529,22 +529,22 @@ Actors:
 	Actor159: c9
 		Location: 22,54
 		Owner: Civilians
-		Facing: 128
+		Facing: 512
 		SubCell: 1
 	Actor160: e3
 		Location: 49,29
 		Owner: Nod
-		Facing: 160
+		Facing: 640
 		SubCell: 1
 	Actor161: e1
 		Location: 43,55
 		Owner: Nod
-		Facing: 192
+		Facing: 768
 		SubCell: 1
 	Actor162: e1
 		Location: 42,55
 		Owner: Nod
-		Facing: 192
+		Facing: 768
 		SubCell: 3
 	Actor163: e1
 		Location: 50,32
@@ -553,57 +553,57 @@ Actors:
 	Actor164: e1
 		Location: 51,33
 		Owner: Nod
-		Facing: 160
+		Facing: 640
 		SubCell: 0
 	Actor165: e3
 		Location: 43,18
 		Owner: Nod
-		Facing: 224
+		Facing: 896
 		SubCell: 3
 	Actor166: e3
 		Location: 43,18
 		Owner: Nod
-		Facing: 224
+		Facing: 896
 		SubCell: 2
 	Actor167: e1
 		Location: 27,18
 		Owner: GDI
-		Facing: 128
+		Facing: 512
 		SubCell: 2
 	Actor168: e1
 		Location: 27,17
 		Owner: GDI
-		Facing: 128
+		Facing: 512
 		SubCell: 3
 	Actor169: e1
 		Location: 27,17
 		Owner: GDI
-		Facing: 128
+		Facing: 512
 		SubCell: 4
 	Actor170: e1
 		Location: 27,18
 		Owner: GDI
-		Facing: 128
+		Facing: 512
 		SubCell: 1
 	Actor171: e2
 		Location: 29,17
 		Owner: GDI
-		Facing: 128
+		Facing: 512
 		SubCell: 3
 	Actor172: e2
 		Location: 29,17
 		Owner: GDI
-		Facing: 128
+		Facing: 512
 		SubCell: 4
 	Actor173: e2
 		Location: 29,18
 		Owner: GDI
-		Facing: 128
+		Facing: 512
 		SubCell: 2
 	Actor174: e2
 		Location: 29,18
 		Owner: GDI
-		Facing: 128
+		Facing: 512
 		SubCell: 1
 	Actor175: e1
 		Location: 26,24
@@ -632,7 +632,7 @@ Actors:
 	Actor184: e3
 		Location: 56,29
 		Owner: Nod
-		Facing: 160
+		Facing: 640
 		SubCell: 3
 	Actor185: e1
 		Location: 32,21

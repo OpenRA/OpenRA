@@ -386,15 +386,15 @@ Actors:
 	Actor125: jeep
 		Location: 59,25
 		Owner: GDI
-		Facing: 160
+		Facing: 640
 	Actor126: jeep
 		Location: 50,42
 		Owner: GDI
-		Facing: 128
+		Facing: 512
 	Actor127: mtnk
 		Location: 53,45
 		Owner: GDI
-		Facing: 160
+		Facing: 640
 	Actor128: mtnk
 		Location: 59,38
 		Owner: GDI
@@ -410,23 +410,23 @@ Actors:
 	Actor134: mtnk
 		Location: 38,38
 		Owner: GDI
-		Facing: 160
+		Facing: 640
 	Actor135: jeep
 		Location: 60,37
 		Owner: GDI
 	Actor139: mtnk
 		Location: 28,33
 		Owner: GDI
-		Facing: 224
+		Facing: 896
 	Actor140: e2
 		Location: 24,29
 		Owner: GDI
-		Facing: 224
+		Facing: 896
 		SubCell: 1
 	Actor141: e2
 		Location: 24,28
 		Owner: GDI
-		Facing: 224
+		Facing: 896
 		SubCell: 3
 	Actor142: e1
 		Location: 58,38
@@ -475,17 +475,17 @@ Actors:
 	Actor154: c3
 		Location: 40,22
 		Owner: Neutral
-		Facing: 192
+		Facing: 768
 		SubCell: 4
 	Actor155: c5
 		Location: 40,19
 		Owner: Neutral
-		Facing: 96
+		Facing: 384
 		SubCell: 1
 	Actor156: c6
 		Location: 39,21
 		Owner: Neutral
-		Facing: 96
+		Facing: 384
 		SubCell: 0
 	Actor157: e1
 		Location: 30,57
@@ -599,7 +599,7 @@ Actors:
 	Atk1Activator2: e1
 		Location: 50,46
 		Owner: GDI
-		Facing: 224
+		Facing: 896
 		SubCell: 4
 	Atk2Activator1: gtwr
 		Location: 51,46
@@ -607,7 +607,7 @@ Actors:
 	Atk2Activator2: e1
 		Location: 48,44
 		Owner: GDI
-		Facing: 160
+		Facing: 640
 		SubCell: 4
 	Atk3Activator: v25
 		Location: 41,19
@@ -645,31 +645,26 @@ Actors:
 	Actor187: jeep
 		Owner: GDI
 		Location: 40,21
-		Facing: 92
-		TurretFacing: 92
+		Facing: 368
 	Actor188: e1
 		Owner: GDI
 		Location: 41,22
 		SubCell: 3
-		Facing: 92
-		TurretFacing: 92
+		Facing: 368
 	Actor189: e1
 		Owner: GDI
 		Location: 39,20
 		SubCell: 3
-		Facing: 92
-		TurretFacing: 92
+		Facing: 368
 	Actor190: e3
 		Owner: GDI
 		Location: 40,20
 		SubCell: 3
-		Facing: 92
-		TurretFacing: 92
+		Facing: 368
 	Actor191: e3
 		Owner: GDI
 		Location: 40,20
 		SubCell: 1
-		Facing: 92
-		TurretFacing: 92
+		Facing: 368
 
 Rules: cnc|rules/campaign-maprules.yaml, cnc|rules/campaign-tooltips.yaml, cnc|rules/campaign-palettes.yaml, rules.yaml

@@ -363,7 +363,7 @@ Actors:
 	TeamOne1: e1
 		Location: 47,54
 		Owner: Turkey
-		Facing: 31
+		Facing: 124
 		SubCell: 3
 	TeamOne2: e2
 		Location: 46,54
@@ -376,12 +376,12 @@ Actors:
 	TeamTwo1: e1
 		Location: 51,71
 		Owner: Turkey
-		Facing: 31
+		Facing: 124
 		SubCell: 4
 	TeamTwo2: e1
 		Location: 51,71
 		Owner: Turkey
-		Facing: 31
+		Facing: 124
 		SubCell: 1
 	TeamTwo3: e2
 		Location: 50,70
@@ -390,52 +390,52 @@ Actors:
 	TeamThree1: e1
 		Location: 68,79
 		Owner: Turkey
-		Facing: 63
+		Facing: 252
 		SubCell: 1
 	TeamThree2: e1
 		Location: 68,79
 		Owner: Turkey
-		Facing: 63
+		Facing: 252
 		SubCell: 4
 	TeamThree3: e2
 		Location: 68,79
 		Owner: Turkey
-		Facing: 63
+		Facing: 252
 		SubCell: 5
 	TeamFour1: e1
 		Location: 66,44
 		Owner: Turkey
-		Facing: 159
+		Facing: 636
 		SubCell: 1
 	TeamFour2: e1
 		Location: 66,43
 		Owner: Turkey
-		Facing: 159
+		Facing: 636
 		SubCell: 3
 	TeamFour3: e2
 		Location: 66,44
 		Owner: Turkey
-		Facing: 159
+		Facing: 636
 		SubCell: 2
 	TeamFive1: e1
 		Location: 75,58
 		Owner: Turkey
-		Facing: 127
+		Facing: 508
 		SubCell: 4
 	TeamFive2: e2
 		Location: 75,58
 		Owner: Turkey
-		Facing: 127
+		Facing: 508
 		SubCell: 3
 	TeamFive3: e1
 		Location: 75,58
 		Owner: Turkey
-		Facing: 127
+		Facing: 508
 		SubCell: 1
 	Shok1: shok
 		Location: 54,50
 		Owner: Turkey
-		Facing: 95
+		Facing: 380
 		SubCell: 1
 	Shok2: shok
 		Location: 51,62
@@ -444,72 +444,72 @@ Actors:
 	Shok3: shok
 		Location: 63,68
 		Owner: Turkey
-		Facing: 95
+		Facing: 380
 		SubCell: 1
 	Shok4: shok
 		Location: 69,52
 		Owner: Turkey
-		Facing: 159
+		Facing: 636
 		SubCell: 0
 	Actor123: ss
 		Location: 35,34
 		Owner: USSR
-		Facing: 191
+		Facing: 764
 	Actor124: ss
 		Location: 36,35
 		Owner: USSR
-		Facing: 191
+		Facing: 764
 	Actor125: ss
 		Location: 35,36
 		Owner: USSR
-		Facing: 191
+		Facing: 764
 	MSub1: msub
 		Location: 32,35
 		Owner: USSR
-		Facing: 191
+		Facing: 764
 	MSub2: msub
 		Location: 31,36
 		Owner: USSR
-		Facing: 191
+		Facing: 764
 	MSub3: msub
 		Location: 31,34
 		Owner: USSR
-		Facing: 191
+		Facing: 764
 	MSub4: msub
 		Location: 30,35
 		Owner: USSR
-		Facing: 191
+		Facing: 764
 	Actor129: ss
 		Location: 71,36
 		Owner: Turkey
-		Facing: 31
+		Facing: 124
 	Actor130: ss
 		Location: 81,60
 		Owner: Turkey
-		Facing: 223
+		Facing: 892
 	Actor131: ss
 		Location: 59,83
 		Owner: Turkey
-		Facing: 63
+		Facing: 252
 	Actor132: ss
 		Location: 34,57
 		Owner: Turkey
-		Facing: 31
+		Facing: 124
 	Actor133: ss
 		Location: 36,81
 		Owner: Turkey
 	Actor134: ss
 		Location: 74,87
 		Owner: Turkey
-		Facing: 223
+		Facing: 892
 	Actor135: ss
 		Location: 91,39
 		Owner: Turkey
-		Facing: 95
+		Facing: 380
 	Actor137: ss
 		Location: 34,35
 		Owner: USSR
-		Facing: 191
+		Facing: 764
 	DefaultCameraPosition: waypoint
 		Location: 32,35
 		Owner: Neutral

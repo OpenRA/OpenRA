@@ -749,15 +749,15 @@ Actors:
 	HTurret01: hgun
 		Location: 53,68
 		Owner: France
-		Facing: 127
+		Facing: 508
 	HTurret02: hgun
 		Location: 55,68
 		Owner: France
-		Facing: 127
+		Facing: 508
 	HTurret03: hgun
 		Location: 57,68
 		Owner: France
-		Facing: 127
+		Facing: 508
 	Actor270: barl
 		Location: 26,75
 		Owner: Greece
@@ -863,87 +863,87 @@ Actors:
 	SupplyTruck01: truk
 		Location: 57,25
 		Owner: Greece
-		Facing: 159
+		Facing: 636
 	LightTankGuard01: 1tnk
 		Location: 32,26
 		Owner: Greece
-		Facing: 95
+		Facing: 380
 	SupplyTruck02: truk
 		Location: 56,26
 		Owner: Greece
-		Facing: 159
+		Facing: 636
 	RangerGuard04: jeep
 		Location: 52,27
 		Owner: Greece
-		Facing: 63
+		Facing: 252
 	LightTankGuard02: 1tnk
 		Location: 61,30
 		Owner: Greece
-		Facing: 63
+		Facing: 252
 	RangerGuard03: jeep
 		Location: 37,33
 		Owner: Greece
-		Facing: 31
+		Facing: 124
 	RangerGuard02: jeep
 		Location: 21,46
 		Owner: Greece
-		Facing: 223
+		Facing: 892
 	LightTankGuard03: 1tnk
 		Location: 71,56
 		Owner: Greece
-		Facing: 31
+		Facing: 124
 	MediumTankGuard01: 2tnk
 		Location: 19,62
 		Owner: Greece
-		Facing: 159
+		Facing: 636
 	RangerGuard01: jeep
 		Location: 23,72
 		Owner: Greece
-		Facing: 159
+		Facing: 636
 	PlyrHvyTnk01: 3tnk
 		Location: 68,85
 		Owner: USSR
-		Facing: 31
+		Facing: 124
 	PlyrMthTnk01: 4tnk
 		Location: 69,85
 		Owner: USSR
-		Facing: 31
+		Facing: 124
 	PlyrHvyTnk02: 3tnk
 		Location: 71,85
 		Owner: USSR
-		Facing: 31
+		Facing: 124
 	PlyrHvyTnk03: 3tnk
 		Location: 65,86
 		Owner: USSR
-		Facing: 31
+		Facing: 124
 	PlyrHvyTnk04: 3tnk
 		Location: 66,86
 		Owner: USSR
-		Facing: 31
+		Facing: 124
 	PlyrMthTnk02: 4tnk
 		Location: 67,86
 		Owner: USSR
-		Facing: 31
+		Facing: 124
 	PlyrHvyTnk05: 3tnk
 		Location: 72,86
 		Owner: USSR
-		Facing: 31
+		Facing: 124
 	PlyrV2RL01: v2rl
 		Location: 71,87
 		Owner: USSR
-		Facing: 31
+		Facing: 124
 	PlyrV2RL02: v2rl
 		Location: 69,88
 		Owner: USSR
-		Facing: 31
+		Facing: 124
 	PlyrV2RL03: v2rl
 		Location: 73,89
 		Owner: USSR
-		Facing: 31
+		Facing: 124
 	PlyrV2RL04: v2rl
 		Location: 71,90
 		Owner: USSR
-		Facing: 31
+		Facing: 124
 	Actor327: c7
 		Location: 58,23
 		Owner: Greece
@@ -971,12 +971,12 @@ Actors:
 	Actor333: e3
 		Location: 34,27
 		Owner: Greece
-		Facing: 31
+		Facing: 124
 		SubCell: 3
 	RiflemanGuard01: e1
 		Location: 39,28
 		Owner: Greece
-		Facing: 127
+		Facing: 508
 		SubCell: 1
 	InfGuardSquad03Unit01: e1
 		Location: 53,28
@@ -1001,7 +1001,7 @@ Actors:
 	Actor340: e3
 		Location: 34,35
 		Owner: Greece
-		Facing: 63
+		Facing: 252
 		SubCell: 4
 	InfGuardSquad02Unit01: e3
 		Location: 25,44
@@ -1018,7 +1018,7 @@ Actors:
 	MineSoldier01: e1
 		Location: 32,49
 		Owner: GoodGuy
-		Facing: 159
+		Facing: 636
 		SubCell: 1
 		Stance: HoldFire
 	TanyaSquadUnit01: e1
@@ -1032,7 +1032,7 @@ Actors:
 	MineSoldier02: e1
 		Location: 31,50
 		Owner: GoodGuy
-		Facing: 127
+		Facing: 508
 		SubCell: 4
 		Stance: HoldFire
 	TanyaSquadUnit03: e1
@@ -1050,13 +1050,13 @@ Actors:
 	MineSoldier03: e1
 		Location: 32,51
 		Owner: GoodGuy
-		Facing: 127
+		Facing: 508
 		SubCell: 1
 		Stance: HoldFire
 	MineSoldier04: e1
 		Location: 34,51
 		Owner: GoodGuy
-		Facing: 95
+		Facing: 380
 		SubCell: 2
 		Stance: HoldFire
 	TanyaSquadUnit05: e1
@@ -1070,24 +1070,24 @@ Actors:
 	MineSoldier05: e1
 		Location: 30,52
 		Owner: GoodGuy
-		Facing: 127
+		Facing: 508
 		SubCell: 2
 		Stance: HoldFire
 	MineSoldier06: e1
 		Location: 33,52
 		Owner: GoodGuy
-		Facing: 127
+		Facing: 508
 		SubCell: 1
 		Stance: HoldFire
 	TownMedic01: medi
 		Location: 26,57
 		Owner: Greece
-		Facing: 95
+		Facing: 380
 		SubCell: 4
 	TownMedic02: medi
 		Location: 30,57
 		Owner: Greece
-		Facing: 159
+		Facing: 636
 		SubCell: 2
 	Actor359: e1
 		Location: 75,57
@@ -1112,7 +1112,7 @@ Actors:
 	TownMedic03: medi
 		Location: 31,59
 		Owner: Greece
-		Facing: 127
+		Facing: 508
 		SubCell: 4
 	Actor365: e1
 		Location: 69,59
@@ -1129,27 +1129,27 @@ Actors:
 	InfGuardSquad01Unit01: e3
 		Location: 23,61
 		Owner: Greece
-		Facing: 127
+		Facing: 508
 		SubCell: 5
 	InfGuardSquad01Unit02: e3
 		Location: 24,61
 		Owner: Greece
-		Facing: 127
+		Facing: 508
 		SubCell: 5
 	InfGuardSquad01Unit03: e3
 		Location: 24,61
 		Owner: Greece
-		Facing: 127
+		Facing: 508
 		SubCell: 4
 	InfGuardSquad01Unit04: e3
 		Location: 24,61
 		Owner: Greece
-		Facing: 127
+		Facing: 508
 		SubCell: 1
 	InfGuardSquad01Unit05: e3
 		Location: 24,62
 		Owner: Greece
-		Facing: 127
+		Facing: 508
 		SubCell: 1
 	InitialHuntUnit01: e3
 		Location: 28,74
@@ -1166,13 +1166,13 @@ Actors:
 	InitialRifleman01: e1
 		Location: 24,76
 		Owner: Greece
-		Facing: 95
+		Facing: 380
 		SubCell: 4
 		Health: 1
 	InitialRifleman02: e1
 		Location: 24,76
 		Owner: Greece
-		Facing: 95
+		Facing: 380
 		SubCell: 5
 		Health: 1
 	InitialHuntUnit04: e3
@@ -1186,7 +1186,7 @@ Actors:
 	InitialHuntUnit06: e3
 		Location: 30,76
 		Owner: Greece
-		Facing: 95
+		Facing: 380
 		SubCell: 3
 	InitialHuntUnit07: e3
 		Location: 26,77
@@ -1203,19 +1203,19 @@ Actors:
 	TnkGrd01: 2tnk
 		Location: 54,69
 		Owner: Greece
-		Facing: 127
+		Facing: 508
 	TnkGrd02: 2tnk
 		Location: 53,71
 		Owner: Greece
-		Facing: 127
+		Facing: 508
 	TnkGrd03: 2tnk
 		Location: 57,71
 		Owner: Greece
-		Facing: 127
+		Facing: 508
 	TnkGrd04: 2tnk
 		Location: 56,69
 		Owner: Greece
-		Facing: 127
+		Facing: 508
 	waypoint13: waypoint
 		Location: 56,25
 		Owner: Neutral

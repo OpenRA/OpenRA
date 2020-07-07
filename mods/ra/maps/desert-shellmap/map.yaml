@@ -251,11 +251,11 @@ Actors:
 	Actor93: ca
 		Location: 20,86
 		Owner: Allies
-		Facing: 64
+		Facing: 256
 	Actor94: ca
 		Location: 40,90
 		Owner: Allies
-		Facing: 64
+		Facing: 256
 	Actor95: rock6
 		Location: 10,76
 		Owner: Neutral
@@ -325,7 +325,7 @@ Actors:
 	Actor136: v2rl
 		Location: 91,40
 		Owner: Soviets
-		Facing: 90
+		Facing: 360
 	Actor122: afld
 		Location: 116,49
 		Owner: Soviets
@@ -371,7 +371,7 @@ Actors:
 	Actor137: 4tnk
 		Location: 105,33
 		Owner: Soviets
-		Facing: 100
+		Facing: 400
 	Actor123: afld
 		Location: 119,49
 		Owner: Soviets
@@ -381,11 +381,11 @@ Actors:
 	Actor139: 3tnk
 		Location: 89,32
 		Owner: Soviets
-		Facing: 64
+		Facing: 256
 	Actor140: 3tnk
 		Location: 92,29
 		Owner: Soviets
-		Facing: 20
+		Facing: 80
 	Actor141: 3tnk
 		Location: 36,23
 		Owner: Soviets
@@ -416,7 +416,7 @@ Actors:
 	Actor152: 1tnk
 		Location: 69,85
 		Owner: Allies
-		Facing: 110
+		Facing: 440
 	Actor150: apwr
 		Location: 94,91
 		Owner: Allies
@@ -432,7 +432,7 @@ Actors:
 	Actor186: 3tnk
 		Location: 107,50
 		Owner: Soviets
-		Facing: 80
+		Facing: 320
 	Actor174: tc01
 		Location: 98,37
 		Owner: Neutral
@@ -478,7 +478,7 @@ Actors:
 	Actor54: agun
 		Location: 76,93
 		Owner: Allies
-		Facing: 150
+		Facing: 600
 	Actor155: apwr
 		Location: 90,88
 		Owner: Allies
@@ -488,7 +488,7 @@ Actors:
 	Actor196: pt
 		Location: 55,92
 		Owner: Allies
-		Facing: 160
+		Facing: 640
 	Actor183: rock2
 		Location: 93,41
 		Owner: Neutral
@@ -498,7 +498,7 @@ Actors:
 	Actor197: dd
 		Location: 30,88
 		Owner: Allies
-		Facing: 64
+		Facing: 256
 	Actor199: e1
 		Location: 72,83
 		Owner: Allies
@@ -559,7 +559,7 @@ Actors:
 	Actor208: e7
 		Location: 39,81
 		Owner: Allies
-		Facing: 64
+		Facing: 256
 	Actor209: e1
 		Location: 41,79
 		Owner: Allies
@@ -569,7 +569,7 @@ Actors:
 	Actor211: jeep
 		Location: 41,82
 		Owner: Allies
-		Facing: 90
+		Facing: 360
 	Actor36: brik
 		Location: 72,66
 		Owner: Allies
@@ -624,11 +624,11 @@ Actors:
 	Actor295: jeep
 		Location: 37,67
 		Owner: Allies
-		Facing: 64
+		Facing: 256
 	Actor296: 1tnk
 		Location: 58,65
 		Owner: Allies
-		Facing: 192
+		Facing: 768
 	Actor215: brik
 		Location: 58,80
 		Owner: Allies
@@ -656,11 +656,11 @@ Actors:
 	Actor249: arty
 		Location: 57,63
 		Owner: Allies
-		Facing: 240
+		Facing: 960
 	Actor248: arty
 		Location: 54,63
 		Owner: Allies
-		Facing: 16
+		Facing: 64
 	Actor250: sbag
 		Location: 44,67
 		Owner: Allies
@@ -769,22 +769,22 @@ Actors:
 	Actor226: 2tnk
 		Location: 62,60
 		Owner: Allies
-		Facing: 240
+		Facing: 960
 	Actor225: 2tnk
 		Location: 47,61
 		Owner: Allies
 	Actor239: 1tnk
 		Location: 44,65
 		Owner: Allies
-		Facing: 30
+		Facing: 120
 	Actor236: jeep
 		Location: 45,62
 		Owner: Allies
-		Facing: 16
+		Facing: 64
 	Actor238: 2tnk
 		Location: 36,65
 		Owner: Allies
-		Facing: 40
+		Facing: 160
 	Actor224: 2tnk
 		Location: 41,62
 		Owner: Allies
@@ -1139,7 +1139,7 @@ Actors:
 	Actor118: agun
 		Location: 47,70
 		Owner: Allies
-		Facing: 64
+		Facing: 256
 	SovietWarFactory1: weap
 		Location: 106,29
 		Owner: Soviets

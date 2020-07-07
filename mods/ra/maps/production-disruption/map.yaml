@@ -473,11 +473,11 @@ Actors:
 	Heavy1: 3tnk
 		Location: 70,45
 		Owner: USSR
-		Facing: 95
+		Facing: 380
 	Heavy2: 3tnk
 		Location: 58,45
 		Owner: USSR
-		Facing: 159
+		Facing: 636
 	Actor143: e2
 		Location: 67,49
 		Owner: USSR
@@ -485,47 +485,47 @@ Actors:
 	Actor144: dog
 		Location: 61,47
 		Owner: USSR
-		Facing: 95
+		Facing: 380
 		SubCell: 2
 	Actor145: e1
 		Location: 68,59
 		Owner: USSR
-		Facing: 127
+		Facing: 508
 		SubCell: 0
 	Actor146: e1
 		Location: 67,75
 		Owner: BadGuy
-		Facing: 31
+		Facing: 124
 		SubCell: 1
 	Actor147: e1
 		Location: 67,76
 		Owner: BadGuy
-		Facing: 95
+		Facing: 380
 		SubCell: 3
 	Actor148: e1
 		Location: 71,77
 		Owner: BadGuy
-		Facing: 31
+		Facing: 124
 		SubCell: 4
 	Actor149: e1
 		Location: 74,76
 		Owner: BadGuy
-		Facing: 127
+		Facing: 508
 		SubCell: 1
 	Actor150: e1
 		Location: 72,75
 		Owner: BadGuy
-		Facing: 95
+		Facing: 380
 		SubCell: 0
 	Actor151: e1
 		Location: 77,64
 		Owner: USSR
-		Facing: 159
+		Facing: 636
 		SubCell: 1
 	Actor152: e1
 		Location: 76,62
 		Owner: USSR
-		Facing: 95
+		Facing: 380
 		SubCell: 4
 	Actor153: e1
 		Location: 54,40

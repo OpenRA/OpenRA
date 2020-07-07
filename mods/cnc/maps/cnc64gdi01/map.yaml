@@ -436,11 +436,11 @@ Actors:
 	Actor129: gun
 		Location: 19,16
 		Owner: Nod
-		Facing: 96
+		Facing: 384
 	Actor130: gun
 		Location: 14,18
 		Owner: Nod
-		Facing: 96
+		Facing: 384
 	Actor131: nuk2
 		Location: 39,21
 		Owner: Nod
@@ -486,11 +486,11 @@ Actors:
 	Actor145: gun
 		Location: 45,50
 		Owner: Nod
-		Facing: 128
+		Facing: 512
 	Actor146: gun
 		Location: 42,50
 		Owner: Nod
-		Facing: 128
+		Facing: 512
 	Actor147: fact
 		Location: 34,22
 		Owner: Nod
@@ -566,23 +566,23 @@ Actors:
 	Actor171: ltnk
 		Location: 16,19
 		Owner: Nod
-		Facing: 96
+		Facing: 384
 	Actor172: ltnk
 		Location: 19,18
 		Owner: Nod
-		Facing: 96
+		Facing: 384
 	Actor173: arty
 		Location: 41,22
 		Owner: Nod
-		Facing: 128
+		Facing: 512
 	Actor174: arty
 		Location: 38,22
 		Owner: Nod
-		Facing: 128
+		Facing: 512
 	Actor175: arty
 		Location: 33,22
 		Owner: Nod
-		Facing: 128
+		Facing: 512
 	Actor176: stnk
 		Location: 30,19
 		Owner: Nod
@@ -592,34 +592,34 @@ Actors:
 	Actor178: stnk
 		Location: 24,12
 		Owner: Nod
-		Facing: 128
+		Facing: 512
 	Actor179: stnk
 		Location: 27,12
 		Owner: Nod
-		Facing: 128
+		Facing: 512
 	Actor180: ftnk
 		Location: 6,16
 		Owner: Nod
-		Facing: 96
+		Facing: 384
 	Actor181: e4
 		Location: 23,32
 		Owner: Nod
-		Facing: 128
+		Facing: 512
 		SubCell: 0
 	Actor182: e4
 		Location: 22,31
 		Owner: Nod
-		Facing: 128
+		Facing: 512
 		SubCell: 1
 	Actor183: e4
 		Location: 23,31
 		Owner: Nod
-		Facing: 128
+		Facing: 512
 		SubCell: 2
 	Actor184: e4
 		Location: 36,50
 		Owner: Nod
-		Facing: 96
+		Facing: 384
 		SubCell: 4
 	Actor185: c6
 		Location: 41,15
@@ -652,27 +652,27 @@ Actors:
 	Actor192: e4
 		Location: 20,42
 		Owner: Nod
-		Facing: 192
+		Facing: 768
 		SubCell: 4
 	Actor193: e4
 		Location: 3,45
 		Owner: Nod
-		Facing: 128
+		Facing: 512
 		SubCell: 4
 	Actor194: e4
 		Location: 2,45
 		Owner: Nod
-		Facing: 128
+		Facing: 512
 		SubCell: 4
 	Actor195: e1
 		Location: 18,40
 		Owner: Nod
-		Facing: 192
+		Facing: 768
 		SubCell: 3
 	Actor196: e1
 		Location: 16,43
 		Owner: Nod
-		Facing: 128
+		Facing: 512
 		SubCell: 4
 	Flare: waypoint
 		Location: 17,51
@@ -689,11 +689,11 @@ Actors:
 	Apache1: heli
 		Owner: Nod
 		Location: 21,11
-		Facing: 92
+		Facing: 368
 	Apache2: heli
 		Owner: Nod
 		Location: 28,11
-		Facing: 92
+		Facing: 368
 	HeliPatrol1: waypoint
 		Owner: Nod
 		Location: 15,43

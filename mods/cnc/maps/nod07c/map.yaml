@@ -410,19 +410,19 @@ Actors:
 	MediumTank3: mtnk
 		Location: 44,45
 		Owner: GDI
-		Facing: 32
+		Facing: 128
 	MediumTank2: mtnk
 		Location: 34,34
 		Owner: GDI
-		Facing: 224
+		Facing: 896
 	Jeep: jeep
 		Location: 30,41
 		Owner: GDI
-		Facing: 224
+		Facing: 896
 	Actor118: harv
 		Location: 26,43
 		Owner: GDI
-		Facing: 224
+		Facing: 896
 	Guard1: e2
 		Location: 46,57
 		Owner: GDI
@@ -474,7 +474,7 @@ Actors:
 	Actor141: e2
 		Location: 35,52
 		Owner: GDI
-		Facing: 192
+		Facing: 768
 		SubCell: 1
 	Actor150: e1
 		Location: 25,37
@@ -527,12 +527,12 @@ Actors:
 	Actor161: e2
 		Location: 17,20
 		Owner: GDI
-		Facing: 64
+		Facing: 256
 		SubCell: 1
 	Actor162: e2
 		Location: 17,19
 		Owner: GDI
-		Facing: 64
+		Facing: 256
 		SubCell: 1
 	Actor163: e1
 		Location: 24,37
@@ -541,7 +541,7 @@ Actors:
 	Actor164: e1
 		Location: 34,51
 		Owner: GDI
-		Facing: 128
+		Facing: 512
 		SubCell: 2
 	Actor165: e1
 		Location: 51,40
@@ -566,12 +566,12 @@ Actors:
 	Actor170: e1
 		Location: 22,57
 		Owner: GDI
-		Facing: 160
+		Facing: 640
 		SubCell: 2
 	Actor171: e2
 		Location: 21,58
 		Owner: GDI
-		Facing: 160
+		Facing: 640
 		SubCell: 2
 	Actor172: e1
 		Location: 44,6
@@ -740,14 +740,14 @@ Actors:
 		Owner: Target
 		Location: 56,56
 		CenterPosition: 58450,58025,0
-		Facing: 230
+		Facing: 920
 	GunboatRight: waypoint
 		Owner: Neutral
 		Location: 58,16
 	Gunboat: boat
 		Location: 32,16
 		Owner: GDI
-		Facing: 192
+		Facing: 768
 	ReinforcementsTopSpawn: waypoint
 		Owner: Neutral
 		Location: 58,24

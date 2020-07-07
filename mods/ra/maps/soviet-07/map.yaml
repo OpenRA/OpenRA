@@ -443,12 +443,12 @@ Actors:
 	Actor150: e1
 		Location: 84,67
 		Owner: Greece
-		Facing: 192
+		Facing: 768
 		SubCell: 4
 	Actor172: e1
 		Location: 77,80
 		Owner: Greece
-		Facing: 224
+		Facing: 896
 		SubCell: 2
 	Actor214: healcrate
 		Owner: Neutral
@@ -519,33 +519,33 @@ Actors:
 	CCGuard1: e1
 		Location: 87,67
 		Owner: Greece
-		Facing: 192
+		Facing: 768
 		SubCell: 3
 	CCGuard2: e1
 		Location: 88,67
 		Owner: Greece
-		Facing: 192
+		Facing: 768
 		SubCell: 4
 	CCGuard3: e1
 		Location: 88,68
 		Owner: Greece
-		Facing: 192
+		Facing: 768
 		SubCell: 1
 	CCGuard4: e1
 		Location: 87,68
 		Owner: Greece
-		Facing: 192
+		Facing: 768
 		SubCell: 3
 	Dog1: dog
 		Location: 84,84
 		Owner: Soviet
-		Facing: 224
+		Facing: 896
 		SubCell: 1
 	Dog2: dog
 		Owner: Soviet
 		Location: 84,83
 		SubCell: 3
-		Facing: 92
+		Facing: 368
 	Dog3: dog
 		Location: 82,83
 		Owner: Soviet
@@ -553,27 +553,27 @@ Actors:
 	Dog4: dog
 		Location: 80,83
 		Owner: Soviet
-		Facing: 64
+		Facing: 256
 		SubCell: 2
 	Dog5: dog
 		Location: 85,82
 		Owner: Soviet
-		Facing: 224
+		Facing: 896
 		SubCell: 1
 	Dog6: dog
 		Location: 85,79
 		Owner: Soviet
-		Facing: 192
+		Facing: 768
 		SubCell: 4
 	Dog7: dog
 		Location: 85,81
 		Owner: Soviet
-		Facing: 192
+		Facing: 768
 		SubCell: 4
 	Dog8: dog
 		Location: 86,83
 		Owner: Soviet
-		Facing: 224
+		Facing: 896
 		SubCell: 1
 	Dog9: dog
 		Location: 86,84
@@ -582,12 +582,12 @@ Actors:
 	Dog10: dog
 		Location: 86,82
 		Owner: Soviet
-		Facing: 192
+		Facing: 768
 		SubCell: 0
 	Dog11: dog
 		Location: 82,84
 		Owner: Soviet
-		Facing: 32
+		Facing: 128
 		SubCell: 1
 	Dog12: dog
 		Location: 83,84
@@ -596,7 +596,7 @@ Actors:
 	Dog13: dog
 		Location: 86,81
 		Owner: Soviet
-		Facing: 32
+		Facing: 128
 		SubCell: 1
 	Dog14: dog
 		Location: 85,83
@@ -621,7 +621,7 @@ Actors:
 	Dog19: dog
 		Location: 86,79
 		Owner: Soviet
-		Facing: 224
+		Facing: 896
 		SubCell: 0
 	EntranceGuard1: e1
 		Location: 100,57
@@ -658,27 +658,27 @@ Actors:
 	Tanya: e7
 		Location: 75,54
 		Owner: Greece
-		Facing: 128
+		Facing: 512
 		SubCell: 2
 	GoalGuard1: e1
 		Location: 74,54
 		Owner: Greece
-		Facing: 128
+		Facing: 512
 		SubCell: 2
 	GoalGuard2: e1
 		Location: 73,54
 		Owner: Greece
-		Facing: 128
+		Facing: 512
 		SubCell: 2
 	GoalGuard3: e1
 		Location: 76,54
 		Owner: Greece
-		Facing: 128
+		Facing: 512
 		SubCell: 2
 	GoalGuard4: e1
 		Location: 77,54
 		Owner: Greece
-		Facing: 128
+		Facing: 512
 		SubCell: 2
 	FTurBottom: ftur
 		Location: 62,79
@@ -707,27 +707,27 @@ Actors:
 	Prisoner1: e6
 		Location: 44,46
 		Owner: Soviet
-		Facing: 160
+		Facing: 640
 		SubCell: 4
 	Prisoner2: e6
 		Location: 44,47
 		Owner: Soviet
-		Facing: 128
+		Facing: 512
 		SubCell: 4
 	Prisoner3: e6
 		Location: 46,47
 		Owner: Soviet
-		Facing: 96
+		Facing: 384
 		SubCell: 0
 	Prisoner4: e6
 		Location: 45,47
 		Owner: Soviet
-		Facing: 96
+		Facing: 384
 		SubCell: 1
 	Prisoner5: e6
 		Location: 46,46
 		Owner: Soviet
-		Facing: 128
+		Facing: 512
 		SubCell: 3
 	Prisoner6: e1
 		Location: 46,46
@@ -737,7 +737,7 @@ Actors:
 	PrisonEntranceGuard: e1
 		Location: 46,69
 		Owner: Greece
-		Facing: 128
+		Facing: 512
 		SubCell: 1
 	PrisonerGuard1: e1
 		Location: 45,48
@@ -746,25 +746,23 @@ Actors:
 	PrisonerGuard2: e1
 		Location: 46,49
 		Owner: Greece
-		Facing: 128
+		Facing: 512
 		SubCell: 0
 	PrisonerGuard3: e1
 		Location: 44,49
 		Owner: Greece
-		Facing: 128
+		Facing: 512
 		SubCell: 0
 	RSoldier1: e3
 		Owner: Greece
 		Location: 65,72
 		SubCell: 3
-		Facing: 92
-		TurretFacing: 92
+		Facing: 368
 	RSoldier2: e3
 		Location: 65,74
 		Owner: Greece
-		Facing: 92
+		Facing: 368
 		SubCell: 2
-		TurretFacing: 92
 	RSoldierTrap1: brl3
 		Owner: Creeps
 		Location: 68,72

@@ -759,101 +759,101 @@ Actors:
 		Location: 76,66
 		Owner: USSR
 		Health: 52
-		Facing: 224
+		Facing: 896
 	Actor250: e1.autotarget
 		Location: 42,56
 		Owner: USSR
-		Facing: 32
+		Facing: 128
 		SubCell: 3
 	Actor251: e1.autotarget
 		Location: 51,53
 		Owner: USSR
-		Facing: 64
+		Facing: 256
 		SubCell: 4
 	Actor252: e1.autotarget
 		Location: 47,53
 		Owner: USSR
-		Facing: 192
+		Facing: 768
 		SubCell: 3
 	Actor253: e2
 		Location: 79,66
 		Owner: USSR
-		Facing: 160
+		Facing: 640
 		SubCell: 2
 	Actor254: e2
 		Location: 80,67
 		Owner: USSR
-		Facing: 128
+		Facing: 512
 		SubCell: 1
 	Actor255: e2
 		Location: 79,68
 		Owner: USSR
-		Facing: 96
+		Facing: 384
 		SubCell: 0
 	Actor256: e2
 		Location: 80,68
 		Owner: USSR
-		Facing: 224
+		Facing: 896
 		SubCell: 1
 	Actor259: e1.autotarget
 		Location: 54,55
 		Owner: USSR
-		Facing: 32
+		Facing: 128
 		SubCell: 2
 	Actor260: e1.autotarget
 		Location: 70,65
 		Owner: USSR
-		Facing: 160
+		Facing: 640
 		SubCell: 4
 	Actor261: e2.autotarget
 		Location: 71,65
 		Owner: USSR
-		Facing: 32
+		Facing: 128
 		SubCell: 2
 	Actor262: dog
 		Location: 69,63
 		Owner: USSR
-		Facing: 160
+		Facing: 640
 		SubCell: 1
 	Actor263: e1.autotarget
 		Location: 72,62
 		Owner: USSR
-		Facing: 32
+		Facing: 128
 		SubCell: 1
 	Actor264: e1.autotarget
 		Location: 74,62
 		Owner: USSR
-		Facing: 192
+		Facing: 768
 		SubCell: 1
 	Actor270: e1.autotarget
 		Location: 65,71
 		Owner: USSR
-		Facing: 160
+		Facing: 640
 		SubCell: 0
 	Actor271: e1.autotarget
 		Location: 64,70
 		Owner: USSR
-		Facing: 160
+		Facing: 640
 		SubCell: 0
 	Actor272: e1.autotarget
 		Location: 66,70
 		Owner: USSR
-		Facing: 128
+		Facing: 512
 		SubCell: 4
 	Actor277: e1
 		Location: 78,77
 		Owner: USSR
-		Facing: 160
+		Facing: 640
 		SubCell: 3
 	Actor281: dog
 		Location: 85,81
 		Owner: USSR
-		Facing: 224
+		Facing: 896
 		SubCell: 1
 	Actor282: dog
 		Location: 96,73
 		Owner: USSR
-		Facing: 160
+		Facing: 640
 		SubCell: 1
 	Actor287: e1.autotarget
 		Location: 84,53
@@ -862,7 +862,7 @@ Actors:
 	Actor288: e1.autotarget
 		Location: 90,53
 		Owner: USSR
-		Facing: 160
+		Facing: 640
 		SubCell: 4
 	Actor289: e1.autotarget
 		Location: 88,58
@@ -871,37 +871,37 @@ Actors:
 	Actor290: e2.autotarget
 		Location: 89,58
 		Owner: USSR
-		Facing: 96
+		Facing: 384
 		SubCell: 3
 	Actor291: e2.autotarget
 		Location: 83,55
 		Owner: USSR
-		Facing: 160
+		Facing: 640
 		SubCell: 3
 	Actor292: e2.autotarget
 		Location: 98,58
 		Owner: USSR
-		Facing: 160
+		Facing: 640
 		SubCell: 4
 	Actor293: e2.autotarget
 		Location: 96,61
 		Owner: USSR
-		Facing: 128
+		Facing: 512
 		SubCell: 4
 	Actor294: e1.autotarget
 		Location: 93,58
 		Owner: USSR
-		Facing: 64
+		Facing: 256
 		SubCell: 4
 	Actor295: e1.autotarget
 		Location: 90,59
 		Owner: USSR
-		Facing: 160
+		Facing: 640
 		SubCell: 4
 	Actor296: e1.autotarget
 		Location: 97,66
 		Owner: USSR
-		Facing: 32
+		Facing: 128
 		SubCell: 0
 	Actor297: e1.autotarget
 		Location: 94,65
@@ -910,27 +910,27 @@ Actors:
 	Actor298: e1.autotarget
 		Location: 96,65
 		Owner: USSR
-		Facing: 192
+		Facing: 768
 		SubCell: 3
 	Actor299: e2.autotarget
 		Location: 99,67
 		Owner: USSR
-		Facing: 192
+		Facing: 768
 		SubCell: 0
 	Actor300: e2.autotarget
 		Location: 99,68
 		Owner: USSR
-		Facing: 128
+		Facing: 512
 		SubCell: 4
 	Actor301: e2.autotarget
 		Location: 98,67
 		Owner: USSR
-		Facing: 160
+		Facing: 640
 		SubCell: 1
 	Actor302: e1.autotarget
 		Location: 87,61
 		Owner: USSR
-		Facing: 160
+		Facing: 640
 		SubCell: 2
 	Actor309: fenc
 		Location: 72,63
@@ -1172,12 +1172,12 @@ Actors:
 	USSRBaseGuard1: e1
 		Location: 49,66
 		Owner: USSR
-		Facing: 96
+		Facing: 384
 		SubCell: 0
 	USSRBaseGuard2: e1
 		Location: 48,67
 		Owner: USSR
-		Facing: 224
+		Facing: 896
 		SubCell: 0
 	USSRBaseGuard3: e2
 		Location: 48,70
@@ -1186,42 +1186,42 @@ Actors:
 	USSRBaseGuard4: e2
 		Location: 49,69
 		Owner: USSR
-		Facing: 160
+		Facing: 640
 		SubCell: 0
 	USSRBaseGuard5: e1
 		Location: 51,69
 		Owner: USSR
-		Facing: 160
+		Facing: 640
 		SubCell: 3
 	USSRBaseGuard6: e2
 		Location: 49,72
 		Owner: USSR
-		Facing: 128
+		Facing: 512
 		SubCell: 2
 	USSRBaseGuard7: e1
 		Location: 53,70
 		Owner: USSR
-		Facing: 160
+		Facing: 640
 		SubCell: 1
 	USSRBaseGuard8: e1
 		Location: 56,69
 		Owner: USSR
-		Facing: 96
+		Facing: 384
 		SubCell: 2
 	USSRBaseGuard10: e2
 		Location: 77,80
 		Owner: USSR
-		Facing: 64
+		Facing: 256
 		SubCell: 0
 	USSRBaseGuard11: e1
 		Location: 78,77
 		Owner: USSR
-		Facing: 128
+		Facing: 512
 		SubCell: 4
 	USSRBaseGuard12: e1
 		Location: 79,77
 		Owner: USSR
-		Facing: 96
+		Facing: 384
 		SubCell: 4
 	USSRBaseGuard13: e2
 		Location: 80,76
@@ -1230,17 +1230,17 @@ Actors:
 	USSRBaseGuard14: dog
 		Location: 81,76
 		Owner: USSR
-		Facing: 160
+		Facing: 640
 		SubCell: 3
 	PGuard1: e1
 		Location: 58,59
 		Owner: USSR
-		Facing: 224
+		Facing: 896
 		SubCell: 3
 	PGuard2: e1
 		Location: 57,68
 		Owner: USSR
-		Facing: 128
+		Facing: 512
 		SubCell: 4
 	PrisonedMedi1: medi
 		Location: 58,60
@@ -1249,12 +1249,12 @@ Actors:
 	PrisonedMedi2: medi
 		Location: 57,67
 		Owner: Greece
-		Facing: 128
+		Facing: 512
 		SubCell: 0
 	PrisonedEngi: e6
 		Location: 57,67
 		Owner: Greece
-		Facing: 96
+		Facing: 384
 		SubCell: 2
 	Jail1: prison
 		Location: 58,60

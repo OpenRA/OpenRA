@@ -688,12 +688,12 @@ Actors:
 		Location: 71,100
 		Owner: Greece
 		Health: 99
-		Facing: 191
+		Facing: 764
 	Gun4: gun
 		Location: 71,103
 		Owner: Greece
 		Health: 99
-		Facing: 191
+		Facing: 764
 	OreRef: proc
 		Location: 62,90
 		Owner: Greece
@@ -813,77 +813,77 @@ Actors:
 	Actor259: 3tnk
 		Location: 56,64
 		Owner: USSR
-		Facing: 31
+		Facing: 124
 	Actor260: 3tnk
 		Location: 52,66
 		Owner: USSR
 	Actor261: 2tnk
 		Location: 28,60
 		Owner: Greece
-		Facing: 159
+		Facing: 636
 	Actor262: 2tnk
 		Location: 28,66
 		Owner: Greece
-		Facing: 191
+		Facing: 764
 	Actor263: 2tnk
 		Location: 28,64
 		Owner: Greece
-		Facing: 191
+		Facing: 764
 	Actor264: 2tnk
 		Location: 30,66
 		Owner: Greece
-		Facing: 223
+		Facing: 892
 	Actor265: 1tnk
 		Location: 30,64
 		Owner: Greece
-		Facing: 191
+		Facing: 764
 	Actor266: 1tnk
 		Location: 29,62
 		Owner: Greece
-		Facing: 191
+		Facing: 764
 	Actor267: mnly
 		Location: 27,61
 		Owner: Greece
-		Facing: 191
+		Facing: 764
 	Actor268: mnly
 		Location: 26,60
 		Owner: Greece
-		Facing: 191
+		Facing: 764
 	Actor269: jeep
 		Location: 32,61
 		Owner: Greece
-		Facing: 223
+		Facing: 892
 	Actor270: arty
 		Location: 24,66
 		Owner: Greece
-		Facing: 223
+		Facing: 892
 	Actor271: arty
 		Location: 25,67
 		Owner: Greece
-		Facing: 223
+		Facing: 892
 	Actor272: harv
 		Location: 65,95
 		Owner: Greece
-		Facing: 95
+		Facing: 380
 	Actor273: e1
 		Location: 58,98
 		Owner: Greece
-		Facing: 31
+		Facing: 124
 		SubCell: 4
 	Actor274: e1
 		Location: 59,98
 		Owner: Greece
-		Facing: 223
+		Facing: 892
 		SubCell: 4
 	Actor275: e1
 		Location: 55,102
 		Owner: Greece
-		Facing: 31
+		Facing: 124
 		SubCell: 0
 	Actor276: e1
 		Location: 62,102
 		Owner: Greece
-		Facing: 223
+		Facing: 892
 		SubCell: 4
 	Actor277: e1
 		Location: 62,99
@@ -892,7 +892,7 @@ Actors:
 	Actor278: e1
 		Location: 55,91
 		Owner: Greece
-		Facing: 191
+		Facing: 764
 		SubCell: 0
 	Actor279: e1
 		Location: 54,103
@@ -901,12 +901,12 @@ Actors:
 	Actor280: e1
 		Location: 55,99
 		Owner: Greece
-		Facing: 31
+		Facing: 124
 		SubCell: 0
 	Actor281: e1
 		Location: 61,91
 		Owner: Greece
-		Facing: 31
+		Facing: 124
 		SubCell: 0
 	Actor282: e1
 		Location: 63,104

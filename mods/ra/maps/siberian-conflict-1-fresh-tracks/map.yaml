@@ -348,11 +348,11 @@ Actors:
 	Actor96: gun
 		Location: 48,81
 		Owner: Allies
-		Facing: 159
+		Facing: 636
 	Actor97: gun
 		Location: 34,72
 		Owner: Allies
-		Facing: 223
+		Facing: 892
 	Actor100: fix
 		Location: 39,82
 		Owner: Allies
@@ -365,7 +365,7 @@ Actors:
 	Actor104: gun
 		Location: 41,79
 		Owner: Allies
-		Facing: 191
+		Facing: 764
 	BridgeBarrel3: brl3
 		Location: 105,78
 		Owner: USSR
@@ -414,54 +414,54 @@ Actors:
 	Actor121: jeep
 		Location: 45,83
 		Owner: Allies
-		Facing: 159
+		Facing: 636
 	Actor122: jeep
 		Location: 43,83
 		Owner: Allies
-		Facing: 95
+		Facing: 380
 	Actor123: 3tnk
 		Location: 73,75
 		Owner: USSR
-		Facing: 95
+		Facing: 380
 	Actor124: 3tnk
 		Location: 89,46
 		Owner: USSR
-		Facing: 95
+		Facing: 380
 	Actor125: 3tnk
 		Location: 41,49
 		Owner: USSR
-		Facing: 95
+		Facing: 380
 	PatrolMammoth: 4tnk
 		Location: 56,59
 		Owner: USSR
-		Facing: 159
+		Facing: 636
 	Actor127: 3tnk
 		Location: 105,83
 		Owner: USSR
-		Facing: 95
+		Facing: 380
 	Actor128: 1tnk
 		Location: 44,78
 		Owner: Allies
-		Facing: 191
+		Facing: 764
 	Actor129: e1
 		Location: 38,73
 		Owner: Allies
-		Facing: 127
+		Facing: 508
 		SubCell: 1
 	Actor130: e1
 		Location: 47,77
 		Owner: Allies
-		Facing: 191
+		Facing: 764
 		SubCell: 0
 	Actor131: e1
 		Location: 39,76
 		Owner: Allies
-		Facing: 159
+		Facing: 636
 		SubCell: 4
 	Actor132: e1
 		Location: 104,83
 		Owner: USSR
-		Facing: 95
+		Facing: 380
 		SubCell: 1
 	Actor133: e2
 		Location: 106,83
@@ -470,72 +470,72 @@ Actors:
 	Actor134: e2
 		Location: 105,77
 		Owner: USSR
-		Facing: 159
+		Facing: 636
 		SubCell: 2
 	Actor135: e2
 		Location: 106,78
 		Owner: USSR
-		Facing: 223
+		Facing: 892
 		SubCell: 1
 	Actor136: e1
 		Location: 109,78
 		Owner: USSR
-		Facing: 95
+		Facing: 380
 		SubCell: 2
 	Actor137: e1
 		Location: 110,78
 		Owner: USSR
-		Facing: 159
+		Facing: 636
 		SubCell: 2
 	Actor138: e1
 		Location: 84,49
 		Owner: USSR
-		Facing: 31
+		Facing: 124
 		SubCell: 2
 	Actor139: e1
 		Location: 83,51
 		Owner: USSR
-		Facing: 95
+		Facing: 380
 		SubCell: 2
 	Actor140: e2
 		Location: 85,50
 		Owner: USSR
-		Facing: 159
+		Facing: 636
 		SubCell: 1
 	Actor141: e2
 		Location: 84,51
 		Owner: USSR
-		Facing: 31
+		Facing: 124
 		SubCell: 2
 	Actor142: e2
 		Location: 91,51
 		Owner: USSR
-		Facing: 159
+		Facing: 636
 		SubCell: 1
 	Actor143: e2
 		Location: 91,52
 		Owner: USSR
-		Facing: 223
+		Facing: 892
 		SubCell: 3
 	Actor144: e1
 		Location: 90,52
 		Owner: USSR
-		Facing: 191
+		Facing: 764
 		SubCell: 1
 	Actor145: e1
 		Location: 93,49
 		Owner: USSR
-		Facing: 159
+		Facing: 636
 		SubCell: 0
 	SecondSquad1: e1
 		Location: 59,72
 		Owner: USSR
-		Facing: 95
+		Facing: 380
 		SubCell: 4
 	SecondSquad3: e1
 		Location: 60,73
 		Owner: USSR
-		Facing: 95
+		Facing: 380
 		SubCell: 1
 	FirstSquad1: e2
 		Location: 36,63
@@ -544,7 +544,7 @@ Actors:
 	SecondSquad2: e2
 		Location: 60,72
 		Owner: USSR
-		Facing: 95
+		Facing: 380
 		SubCell: 4
 	FirstSquad3: e1
 		Location: 38,63
@@ -561,12 +561,12 @@ Actors:
 	Actor153: e1
 		Location: 47,80
 		Owner: Allies
-		Facing: 63
+		Facing: 252
 		SubCell: 2
 	Actor154: e1
 		Location: 34,73
 		Owner: Allies
-		Facing: 223
+		Facing: 892
 		SubCell: 0
 	Actor201: mine
 		Owner: Neutral
@@ -577,7 +577,7 @@ Actors:
 	Actor194: heli
 		Owner: Allies
 		Location: 34,79
-		Facing: 217
+		Facing: 868
 	AlliedBase: waypoint
 		Location: 40,79
 		Owner: Neutral

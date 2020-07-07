@@ -447,15 +447,15 @@ Actors:
 	Actor148: 3tnk
 		Location: 49,91
 		Owner: USSR
-		Facing: 127
+		Facing: 508
 	Actor158: harv
 		Location: 78,37
 		Owner: USSR
-		Facing: 223
+		Facing: 892
 	Actor161: v2rl
 		Location: 85,55
 		Owner: USSR
-		Facing: 63
+		Facing: 252
 	Actor165: e1
 		Location: 75,93
 		Owner: USSR
@@ -495,17 +495,17 @@ Actors:
 	Actor183: e1
 		Location: 53,106
 		Owner: Greece
-		Facing: 31
+		Facing: 124
 		SubCell: 2
 	Actor184: e1
 		Location: 55,105
 		Owner: Greece
-		Facing: 223
+		Facing: 892
 		SubCell: 4
 	Actor186: ss
 		Location: 67,62
 		Owner: USSR
-		Facing: 127
+		Facing: 508
 	Actor236: mine
 		Owner: Neutral
 		Location: 88,35
@@ -530,11 +530,11 @@ Actors:
 	AttackTank1: 3tnk
 		Location: 71,87
 		Owner: USSR
-		Facing: 63
+		Facing: 252
 	AttackTank2: 3tnk
 		Location: 80,84
 		Owner: USSR
-		Facing: 95
+		Facing: 380
 	AlliedEntry1: waypoint
 		Location: 49,111
 		Owner: Neutral
@@ -628,27 +628,27 @@ Actors:
 	BadGuy1: e1
 		Location: 48,95
 		Owner: USSR
-		Facing: 95
+		Facing: 380
 		SubCell: 4
 	BadGuy2: e1
 		Location: 50,98
 		Owner: USSR
-		Facing: 95
+		Facing: 380
 		SubCell: 1
 	BadGuy3: e1
 		Location: 50,96
 		Owner: USSR
-		Facing: 95
+		Facing: 380
 		SubCell: 1
 	BadGuy4: e1
 		Location: 48,97
 		Owner: USSR
-		Facing: 95
+		Facing: 380
 		SubCell: 4
 	Patrol1Sub: ss
 		Location: 96,58
 		Owner: USSR
-		Facing: 127
+		Facing: 508
 	SubPatrol1_1: waypoint
 		Location: 96,58
 		Owner: Neutral
@@ -658,7 +658,7 @@ Actors:
 	Patrol2Sub: ss
 		Location: 39,70
 		Owner: USSR
-		Facing: 95
+		Facing: 380
 	SubPatrol2_1: waypoint
 		Location: 42,63
 		Owner: Neutral
@@ -668,7 +668,7 @@ Actors:
 	Patrol3Sub: ss
 		Location: 22,64
 		Owner: USSR
-		Facing: 191
+		Facing: 764
 	SubPatrol3_1: waypoint
 		Location: 41,75
 		Owner: Neutral
@@ -678,7 +678,7 @@ Actors:
 	Patrol4Sub: ss
 		Location: 79,51
 		Owner: USSR
-		Facing: 191
+		Facing: 764
 	SubPatrol4_1: waypoint
 		Location: 79,51
 		Owner: Neutral
@@ -688,7 +688,7 @@ Actors:
 	Patrol5Sub: ss
 		Owner: USSR
 		Location: 94,75
-		Facing: 125
+		Facing: 500
 	SubPatrol5_1: waypoint
 		Location: 94,94
 		Owner: Neutral
@@ -698,15 +698,15 @@ Actors:
 	Mammoth1: 4tnk
 		Location: 69,43
 		Owner: USSR
-		Facing: 63
+		Facing: 252
 	Mammoth2: 4tnk
 		Location: 43,40
 		Owner: USSR
-		Facing: 63
+		Facing: 252
 	Mammoth3: 4tnk
 		Location: 54,37
 		Owner: USSR
-		Facing: 63
+		Facing: 252
 	TnkPatrol1: waypoint
 		Location: 69,43
 		Owner: Neutral
@@ -740,42 +740,42 @@ Actors:
 	Patrol_1_e1: e1
 		Location: 40,44
 		Owner: USSR
-		Facing: 63
+		Facing: 252
 		SubCell: 1
 	Patrol_1_dog: dog
 		Location: 40,43
 		Owner: USSR
-		Facing: 63
+		Facing: 252
 		SubCell: 1
 	Patrol_2_e1: e1
 		Location: 41,37
 		Owner: USSR
-		Facing: 63
+		Facing: 252
 		SubCell: 1
 	Patrol_2_dog: dog
 		Location: 41,37
 		Owner: USSR
-		Facing: 63
+		Facing: 252
 		SubCell: 3
 	Patrol_3_e1: e1
 		Location: 84,43
 		Owner: USSR
-		Facing: 63
+		Facing: 252
 		SubCell: 2
 	Patrol_3_dog: dog
 		Location: 86,43
 		Owner: USSR
-		Facing: 63
+		Facing: 252
 		SubCell: 0
 	Patrol_4_e1: e1
 		Location: 67,51
 		Owner: USSR
-		Facing: 95
+		Facing: 380
 		SubCell: 1
 	Patrol_4_dog: dog
 		Location: 66,50
 		Owner: USSR
-		Facing: 95
+		Facing: 380
 		SubCell: 3
 	Patrol1: waypoint
 		Location: 85,43
@@ -804,34 +804,34 @@ Actors:
 	tank1: 3tnk
 		Location: 81,56
 		Owner: USSR
-		Facing: 95
+		Facing: 380
 	tank2: 3tnk
 		Location: 77,54
 		Owner: USSR
-		Facing: 95
+		Facing: 380
 	tank3: 3tnk
 		Location: 64,43
 		Owner: USSR
-		Facing: 159
+		Facing: 636
 	tank4: 3tnk
 		Location: 45,43
 		Owner: USSR
-		Facing: 127
+		Facing: 508
 	tank5: 3tnk
 		Location: 51,56
 		Owner: USSR
 	tank6: v2rl
 		Location: 46,41
 		Owner: USSR
-		Facing: 95
+		Facing: 380
 	tank7: v2rl
 		Location: 62,42
 		Owner: USSR
-		Facing: 159
+		Facing: 636
 	BeachDog: dog
 		Location: 75,54
 		Owner: USSR
-		Facing: 95
+		Facing: 380
 		SubCell: 1
 	BeachPatrol1: waypoint
 		Owner: Neutral

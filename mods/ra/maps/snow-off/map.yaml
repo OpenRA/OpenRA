@@ -88,7 +88,7 @@ Actors:
 		Owner: Neutral
 		Location: 29,25
 		SubCell: 3
-		Facing: 93
+		Facing: 372
 	Actor71: cycl
 		Owner: Neutral
 		Location: 48,17
@@ -375,22 +375,22 @@ Actors:
 		Owner: Neutral
 		Location: 4,28
 		SubCell: 3
-		Facing: 92
+		Facing: 368
 	Actor191: c4
 		Owner: Neutral
 		Location: 55,20
 		SubCell: 3
-		Facing: 92
+		Facing: 368
 	Actor192: c9
 		Owner: Neutral
 		Location: 6,31
 		SubCell: 3
-		Facing: 92
+		Facing: 368
 	Actor193: c9
 		Owner: Neutral
 		Location: 57,23
 		SubCell: 3
-		Facing: 92
+		Facing: 368
 	Actor196: t11
 		Owner: Neutral
 		Location: 42,48
@@ -433,7 +433,7 @@ Actors:
 	Actor205: c3
 		Owner: Neutral
 		SubCell: 3
-		Facing: 92
+		Facing: 368
 		Location: 40,38
 	Actor206: tc01
 		Owner: Neutral
@@ -450,12 +450,12 @@ Actors:
 	Actor210: c9
 		Owner: Neutral
 		SubCell: 3
-		Facing: 92
+		Facing: 368
 		Location: 39,40
 	Actor211: c7
 		Owner: Neutral
 		SubCell: 3
-		Facing: 92
+		Facing: 368
 		Location: 41,40
 	Actor212: t17
 		Owner: Neutral
@@ -463,7 +463,7 @@ Actors:
 	Actor213: c10
 		Owner: Neutral
 		SubCell: 3
-		Facing: 92
+		Facing: 368
 		Location: 43,40
 	Actor214: t16
 		Owner: Neutral
@@ -489,7 +489,7 @@ Actors:
 	Actor187: c4
 		Owner: Neutral
 		SubCell: 3
-		Facing: 92
+		Facing: 368
 		Location: 21,11
 	Actor195: mine
 		Owner: Neutral
@@ -497,7 +497,7 @@ Actors:
 	Actor219: c10
 		Owner: Neutral
 		SubCell: 3
-		Facing: 92
+		Facing: 368
 		Location: 23,13
 	Actor220: v12
 		Owner: Neutral
@@ -550,7 +550,7 @@ Actors:
 	Actor239: c2
 		Owner: Neutral
 		SubCell: 3
-		Facing: 92
+		Facing: 368
 		Location: 18,11
 	Actor241: v03
 		Owner: Neutral
@@ -558,7 +558,7 @@ Actors:
 	Actor242: c10
 		Owner: Neutral
 		SubCell: 3
-		Facing: 92
+		Facing: 368
 		Location: 20,13
 	Actor243: tc02
 		Owner: Neutral
