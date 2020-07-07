@@ -137,7 +137,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (aircraft.Info.VTOL && !finishedApproach)
 			{
 				QueueChild(new Fly(self, Target.FromPos(targetPosition), speed: 0, facing: desiredFacing,
-					pitch: WAngle.Zero, roll: WAngle.Zero));
+					pitch: WAngle.Zero, roll: WAngle.Zero, altitude: aircraft.VTOLAltitude));
 
 				if (desiredFacing.HasValue)
 					QueueChild(new Turn(self, desiredFacing.Value));

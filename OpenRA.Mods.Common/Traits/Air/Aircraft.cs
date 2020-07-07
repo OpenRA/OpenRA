@@ -36,7 +36,11 @@ namespace OpenRA.Mods.Common.Traits
 			"'Land' will behave like 'None' (hover or circle) if a suitable landing site is not available.")]
 		public readonly IdleBehaviorType IdleBehavior = IdleBehaviorType.None;
 
+		[Desc("The aircraft will always try to maintain this altitude during flight unless instructed otherwise.")]
 		public readonly WDist CruiseAltitude = new WDist(1280);
+
+		[Desc("Altitude at which the aircraft will switch between horizontal and vertical flight. Defaults to CruiseAltitude if undefined.")]
+		public readonly WDist? VTOLAltitude = null;
 
 		[Desc("Whether the aircraft can be repulsed.")]
 		public readonly bool Repulsable = true;
@@ -308,6 +312,7 @@ namespace OpenRA.Mods.Common.Traits
 		public WAngle TurnAcceleration { get { return Info.TurnAcceleration ?? Info.TurnSpeed; } }
 		public WAngle BodyTurnAcceleration { get { return Info.BodyTurnAcceleration ?? TurnAcceleration; } }
 		public WDist VTOLAcceleration { get { return Info.VTOLAcceleration ?? Info.AltitudeVelocity; } }
+		public WDist VTOLAltitude { get { return Info.VTOLAltitude ?? Info.CruiseAltitude; } }
 
 		public Actor ReservedActor { get; private set; }
 		public bool MayYieldReservation { get; private set; }

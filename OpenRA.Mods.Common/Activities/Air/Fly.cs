@@ -27,6 +27,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly Color? targetLineColor;
 		readonly WDist nearEnough;
 		readonly int finalSpeed;
+		readonly WDist finalAltitude;
 		readonly WAngle? finalFacing = null;
 		readonly WAngle? finalPitch = null;
 		readonly WAngle? finalRoll = null;
@@ -43,7 +44,7 @@ namespace OpenRA.Mods.Common.Activities
 		}
 
 		public Fly(Actor self, Target t, WPos? initialTargetPosition = null, Color? targetLineColor = null, int speed = -1,
-			WAngle? facing = null, WAngle? pitch = null, WAngle? roll = null)
+			WAngle? facing = null, WAngle? pitch = null, WAngle? roll = null, WDist? altitude = null)
 		{
 			aircraft = self.Trait<Aircraft>();
 			target = t;
@@ -52,6 +53,7 @@ namespace OpenRA.Mods.Common.Activities
 			finalFacing = facing;
 			finalPitch = pitch;
 			finalRoll = roll;
+			finalAltitude = altitude ?? aircraft.Info.CruiseAltitude;
 
 			// The target may become hidden between the initial order request and the first tick (e.g. if queued)
 			// Moving to any position (even if quite stale) is still better than immediately giving up
@@ -163,7 +165,6 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			var currentPos = aircraft.GetPosition();
 			var dat = self.World.Map.DistanceAboveTerrain(aircraft.CenterPosition);
-
 			var desiredPos = destination ?? currentPos + WVec.FromZ(aircraft.Info.CruiseAltitude - dat);
 			var delta = desiredPos - currentPos;
 
@@ -262,8 +263,10 @@ namespace OpenRA.Mods.Common.Activities
 				return true;
 
 			var checkTarget = useLastVisibleTarget ? lastVisibleTarget : target;
+			var altitude = WVec.FromZ(finalAltitude);
 			var pos = aircraft.GetPosition();
-			var delta = checkTarget.CenterPosition - pos;
+			var delta = checkTarget.CenterPosition + altitude - pos;
+			var dist = delta.HorizontalLength;
 
 			// Inside the target annulus, so we're done
 			var insideMaxRange = maxRange.Length > 0 && checkTarget.IsInRange(pos, maxRange);
@@ -288,7 +291,7 @@ namespace OpenRA.Mods.Common.Activities
 				var turnSpeed = aircraft.BodyTurnSpeed.Angle;
 				var turnTime = Math.Abs((finalFacing - aircraft.Facing).Value.Angle2) / turnSpeed + turnSpeed / aircraft.BodyTurnAcceleration.Angle;
 				var turnDist = speed * turnTime - (turnTime < brakeTime ? accel * turnTime * turnTime / 2 : parBrakeDist);
-				if (turnDist >= delta.HorizontalLength)
+				if (turnDist >= dist)
 					desiredBodyFacing = finalFacing;
 			}
 
@@ -299,7 +302,7 @@ namespace OpenRA.Mods.Common.Activities
 				var turnSpeed = aircraft.Info.PitchSpeed.Angle;
 				var turnTime = Math.Abs((finalPitch - aircraft.Pitch).Value.Angle2) / turnSpeed;
 				var turnDist = speed * turnTime - (turnTime < brakeTime ? accel * turnTime * turnTime / 2 : parBrakeDist);
-				if (turnDist >= delta.HorizontalLength)
+				if (turnDist >= dist)
 					desiredBodyPitch = finalPitch;
 			}
 
@@ -310,7 +313,7 @@ namespace OpenRA.Mods.Common.Activities
 				var turnSpeed = aircraft.Info.RollSpeed.Angle;
 				var turnTime = Math.Abs((finalRoll - aircraft.Roll).Value.Angle2) / turnSpeed;
 				var turnDist = speed * turnTime - (turnTime < brakeTime ? accel * turnTime * turnTime / 2 : parBrakeDist);
-				if (turnDist >= delta.HorizontalLength)
+				if (turnDist >= dist)
 					desiredBodyRoll = finalRoll;
 			}
 
@@ -325,11 +328,11 @@ namespace OpenRA.Mods.Common.Activities
 			// in the last five ticks. Stop if we are blocked and close enough
 			// HACK: sqrt(15) is empirically determined and completely arbitrary.
 			if (positionBuffer.Count >= 5 && (positionBuffer.Last() - positionBuffer[0]).LengthSquared < 15 * accel * accel &&
-				delta.HorizontalLengthSquared <= nearEnough.LengthSquared)
+				dist <= nearEnough.Length)
 				return true;
 
 			// The next move would overshoot, so consider it close enough.
-			if (delta.HorizontalLength <= aircraft.MovementSpeed)
+			if (dist <= aircraft.MovementSpeed)
 				return true;
 
 			int desiredSpeed = -1;
@@ -371,16 +374,39 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			// Determine when we should start to slow down.
-			if (delta.HorizontalLength < speed * speedDelta / accel - parBrakeDist)
+			if (dist < speed * speedDelta / accel - parBrakeDist)
 				desiredSpeed = finalSpeed;
+
+			// If we are near enough of the target, dive towards it instead of maintaining cruise altitude.
+			// Aim for the half-way point first, to obtain an S-curve.
+			WAngle? desiredPitch = null;
+			if (delta.Z != 0)
+			{
+				var pitchRadius = CalculateTurnRadius(speed, aircraft.Info.PitchSpeed);
+				var signZ = delta.Z > 0 ? 1 : -1;
+				var nodeZ = Math.Abs(delta.Z / 2);
+
+				// When calculating the S-curve keep a bit of leeway so we stay outside the vertical turn radius.
+				var nodeDist = (nodeZ > pitchRadius ? pitchRadius : Exts.ISqrt((2 * pitchRadius - nodeZ) * nodeZ));
+
+				if (dist < nodeDist)
+					desiredPitch = WAngle.Zero;
+				else if (dist < 2 * nodeDist)
+					desiredPitch = WAngle.ArcTan(signZ * nodeZ, nodeDist);
+			}
+
+			// Make sure we don't crash into terrain while diving towards the target.
+			if (desiredPitch.HasValue)
+			{
+				var minPitch = aircraft.InclineLookahead(dist, altitude: new WDist(128));
+				desiredPitch = new WAngle(Math.Max(desiredPitch.Value.Angle2, minPitch));
+			}
 
 			positionBuffer.Add(self.CenterPosition);
 			if (positionBuffer.Count > 5)
 				positionBuffer.RemoveAt(0);
 
-			FlyTick(self, aircraft, desiredFacing: desiredFacing, desiredSpeed: desiredSpeed,
-				desiredBodyFacing: desiredBodyFacing, desiredBodyPitch: desiredBodyPitch, desiredBodyRoll: desiredBodyRoll);
-
+			FlyTick(self, aircraft, desiredPitch, desiredFacing, desiredBodyFacing, desiredBodyPitch, desiredBodyRoll, desiredSpeed);
 			return false;
 		}
 
