@@ -879,6 +879,7 @@
 		AirborneCondition: airborne
 		CruisingCondition: cruising
 		CruiseAltitude: 4c704
+		VTOLAltitude: 1c0
 		AltitudeVelocity: 96
 		Voice: Move
 		IdealSeparation: 853
@@ -889,6 +890,7 @@
 		CanHover: true
 		CanSlide: true
 		VTOL: true
+		TiltForAscent: true
 		Pitch: -64
 		PitchSpeed: 5
 		Roll: 56

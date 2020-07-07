@@ -98,6 +98,7 @@ DSHP:
 		Roll: 0
 		BodyTurnSpeed: 20
 		Speed: 168
+		TiltForAscent: false
 		InitialFacing: 0
 		TakeoffSounds: dropup1.aud
 		LandingSounds: dropdwn1.aud
@@ -269,6 +270,7 @@ ORCATRAN:
 		TurnSpeed: 40
 		BodyTurnSpeed: 20
 		Speed: 84
+		TiltForAscent: false
 		InitialFacing: 0
 		LandableTerrainTypes: Clear, Road, Rail, DirtRoad, Rough, Tiberium, BlueTiberium, Veins
 		Crushes: crate, infantry
