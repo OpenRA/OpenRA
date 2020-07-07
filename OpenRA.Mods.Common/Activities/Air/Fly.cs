@@ -110,21 +110,28 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			// Determine body roll and pitch offsets due to banking while turning.
-			var roll = WAngle.Zero;
-			var pitch = WAngle.Zero;
+			var bodyRoll = WAngle.Zero;
+			var bodyPitch = WAngle.Zero;
 			if (aircraft.Info.Roll != WAngle.Zero)
 			{
 				long cent = aircraft.Info.Roll.Angle2 * speed * flightTurnSpeed.Angle2;
-				roll = new WAngle((int)(-cent * (flightFacing - bodyFacing).Cos() / (1024 * aircraft.TurnSpeed.Angle * aircraft.Info.Speed)));
-				pitch = new WAngle((int)(cent * (flightFacing - bodyFacing).Sin() / (1024 * aircraft.TurnSpeed.Angle * aircraft.Info.Speed)));
+				bodyRoll = new WAngle((int)(-cent * (flightFacing - bodyFacing).Cos() / (1024 * aircraft.TurnSpeed.Angle * aircraft.Info.Speed)));
+				bodyPitch = new WAngle((int)(cent * (flightFacing - bodyFacing).Sin() / (1024 * aircraft.TurnSpeed.Angle * aircraft.Info.Speed)));
 			}
 
 			// Determine body roll and pitch offsets depending on horizontal forward speed.
 			if (aircraft.Info.Pitch != WAngle.Zero)
 			{
 				long forw = aircraft.Info.Pitch.Angle2 * speed * flightPitch.Cos();
-				pitch += new WAngle((int)(forw * (flightFacing - bodyFacing).Cos() / (1048576 * aircraft.Info.Speed)));
-				roll += new WAngle((int)(forw * (flightFacing - bodyFacing).Sin() / (1048576 * aircraft.Info.Speed)));
+				bodyPitch += new WAngle((int)(forw * (flightFacing - bodyFacing).Cos() / (1048576 * aircraft.Info.Speed)));
+				bodyRoll += new WAngle((int)(forw * (flightFacing - bodyFacing).Sin() / (1048576 * aircraft.Info.Speed)));
+			}
+
+			// Follow the slope of the flight trajectory.
+			if (aircraft.Info.TiltForAscent)
+			{
+				bodyPitch += new WAngle(flightPitch.Angle2 * (flightFacing - bodyFacing).Cos() / 1024);
+				bodyRoll += new WAngle(flightPitch.Angle2 * (flightFacing - bodyFacing).Sin() / 1024);
 			}
 
 			// Determine new displacement vector.
@@ -133,7 +140,7 @@ namespace OpenRA.Mods.Common.Activities
 			// Lock in new body and flight attitudes and velocities.
 			aircraft.FlightFacing = flightFacing;
 			aircraft.FlightPitch = flightPitch;
-			aircraft.Orientation = new WRot(roll, pitch, bodyFacing);
+			aircraft.Orientation = new WRot(bodyRoll, bodyPitch, bodyFacing);
 			aircraft.CurrentSpeed = speed;
 			aircraft.CurrentVelocity = move;
 			aircraft.CurrentFlightTurnSpeed = flightTurnSpeed;

@@ -127,6 +127,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Does the actor land and take off vertically?")]
 		public readonly bool VTOL = false;
 
+		[Desc("Does the actor visibly tilt when changing altitude? Only relevant for voxel aircraft.")]
+		public readonly bool TiltForAscent = false;
+
 		[Desc("Does this VTOL actor need to turn before landing (on terrain)?")]
 		public readonly bool TurnToLand = false;
 
