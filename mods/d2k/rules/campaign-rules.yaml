@@ -2,6 +2,7 @@ Player:
 	-ConquestVictoryConditions:
 	MissionObjectives:
 		EarlyGameOver: true
+		GameOverDelay: 3000
 	Shroud:
 		FogCheckboxLocked: True
 		FogCheckboxEnabled: True
