@@ -157,16 +157,19 @@ namespace OpenRA.Mods.Common.Activities
 				QueueChild(new TakeOff(self));
 
 			var minimumRange = attackAircraft.Info.AttackType == AirAttackType.Strafe ? WDist.Zero : attackAircraft.GetMinimumRangeVersusTarget(target);
+			var attackAltitude = attackAircraft.Info.AttackAltitude > WDist.Zero ? attackAircraft.Info.AttackAltitude : aircraft.Info.CruiseAltitude;
+
+			// Fly in a straight line over the target.
+			if (attackAircraft.Info.AttackType == AirAttackType.Strafe)
+				QueueChild(new StrafeAttackRun(aircraft, attackAircraft, target, strafeDistance != WDist.Zero ? strafeDistance : lastVisibleMaximumRange, attackAltitude));
+
+			// The aircraft must keep moving even if it is already in an ideal position.
+			else if (attackAircraft.Info.AttackType == AirAttackType.Default && !aircraft.Info.CanHover)
+				QueueChild(new FlyAttackRun(aircraft, target, lastVisibleMaximumRange, attackAltitude));
 
 			// Move into range of the target.
-			if (!target.IsInRange(pos, lastVisibleMaximumRange) || target.IsInRange(pos, minimumRange))
+			else if (!target.IsInRange(pos, lastVisibleMaximumRange) || target.IsInRange(pos, minimumRange))
 				QueueChild(aircraft.MoveWithinRange(target, minimumRange, lastVisibleMaximumRange, target.CenterPosition, Color.Red));
-
-			// The aircraft must keep moving forward even if it is already in an ideal position.
-			else if (attackAircraft.Info.AttackType == AirAttackType.Strafe)
-				QueueChild(new StrafeAttackRun(aircraft, attackAircraft, target, strafeDistance != WDist.Zero ? strafeDistance : lastVisibleMaximumRange));
-			else if (attackAircraft.Info.AttackType == AirAttackType.Default && !aircraft.Info.CanHover)
-				QueueChild(new FlyAttackRun(aircraft, target, lastVisibleMaximumRange));
 
 			// Turn to face the target if required.
 			else if (!attackAircraft.TargetInFiringArc(self, target, 4 * attackAircraft.Info.FacingTolerance))
@@ -213,17 +216,19 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		readonly WDist exitRange;
 		readonly Aircraft aircraft;
+		readonly WDist altitude;
 
 		Target target;
 		bool targetIsVisibleActor;
 
-		public FlyAttackRun(Aircraft aircraft, Target t, WDist exitRange)
+		public FlyAttackRun(Aircraft aircraft, Target t, WDist exitRange, WDist altitude)
 		{
 			ChildHasPriority = false;
 
 			target = t;
 			this.aircraft = aircraft;
 			this.exitRange = exitRange;
+			this.altitude = altitude;
 		}
 
 		protected override void OnFirstRun(Actor self)
@@ -231,7 +236,7 @@ namespace OpenRA.Mods.Common.Activities
 			// The target may have died while this activity was queued
 			if (target.IsValidFor(self))
 			{
-				QueueChild(new Fly(self, target, target.CenterPosition, speed: aircraft.MovementSpeed));
+				QueueChild(new Fly(self, target, target.CenterPosition, speed: aircraft.MovementSpeed, altitude: altitude));
 				QueueChild(new FlyTimed(self, 1));
 				QueueChild(new Fly(self, target, exitRange, WDist.MaxValue, target.CenterPosition));
 			}
@@ -263,10 +268,11 @@ namespace OpenRA.Mods.Common.Activities
 		readonly AttackAircraft attackAircraft;
 		readonly Aircraft aircraft;
 		readonly WDist turnLength;
+		readonly WDist altitude;
 
 		Target target;
 
-		public StrafeAttackRun(Aircraft aircraft, AttackAircraft attackAircraft, Target t, WDist exitRange)
+		public StrafeAttackRun(Aircraft aircraft, AttackAircraft attackAircraft, Target t, WDist exitRange, WDist altitude)
 		{
 			ChildHasPriority = false;
 
@@ -274,6 +280,7 @@ namespace OpenRA.Mods.Common.Activities
 			this.attackAircraft = attackAircraft;
 			this.aircraft = aircraft;
 			this.exitRange = exitRange;
+			this.altitude = altitude;
 			turnLength = new WDist(aircraft.Info.Speed * 256 / aircraft.Info.BodyTurnSpeed.Value.Angle -
 									   aircraft.Info.Speed * 256 / aircraft.Info.TurnSpeed.Angle);
 		}
@@ -283,7 +290,7 @@ namespace OpenRA.Mods.Common.Activities
 			// The target may have died while this activity was queued
 			if (target.IsValidFor(self))
 			{
-				QueueChild(new Fly(self, target, target.CenterPosition, speed: aircraft.MovementSpeed));
+				QueueChild(new Fly(self, target, target.CenterPosition, speed: aircraft.MovementSpeed, altitude: altitude));
 				QueueChild(new FlyTimed(self, exitRange.Length / aircraft.Info.Speed));
 				QueueChild(new Fly(self, target, exitRange + new WDist(Math.Max(turnLength.Length, 0)), WDist.MaxValue, target.CenterPosition));
 			}
