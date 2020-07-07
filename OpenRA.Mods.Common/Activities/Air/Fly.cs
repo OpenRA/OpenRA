@@ -223,38 +223,14 @@ namespace OpenRA.Mods.Common.Activities
 			if (aircraft.ForceLanding)
 				Cancel(self);
 
-			var dat = self.World.Map.DistanceAboveTerrain(aircraft.CenterPosition);
-			var isLanded = dat <= aircraft.LandAltitude;
-
-			// HACK: Prevent paused (for example, EMP'd) aircraft from taking off.
-			// This is necessary until the TODOs in the IsCanceling block below are adressed.
-			if (isLanded && aircraft.IsTraitPaused)
-				return false;
-
 			if (IsCanceling)
-			{
-				// We must return the actor to a sensible height before continuing.
-				// If the aircraft is on the ground we queue TakeOff to manage the influence reservation and takeoff sounds etc.
-				// TODO: It would be better to not take off at all, but we lack the plumbing to detect current airborne/landed state.
-				// If the aircraft lands when idle and is idle, we let the default idle handler manage this.
-				// TODO: Remove this after fixing all activities to work properly with arbitrary starting altitudes.
-				var landWhenIdle = aircraft.Info.IdleBehavior == IdleBehaviorType.Land;
-				var skipHeightAdjustment = landWhenIdle && self.CurrentActivity.IsCanceling && self.CurrentActivity.NextActivity == null;
-				if (aircraft.Info.CanHover && !skipHeightAdjustment && dat != aircraft.Info.CruiseAltitude)
-				{
-					if (isLanded)
-						QueueChild(new TakeOff(self));
-					else
-						HoverTick(self, aircraft);
-
-					return false;
-				}
-
 				return true;
-			}
-			else if (isLanded)
+
+			if (self.World.Map.DistanceAboveTerrain(aircraft.CenterPosition) <= aircraft.LandAltitude)
 			{
-				QueueChild(new TakeOff(self));
+				if (!aircraft.IsTraitPaused)
+					QueueChild(new TakeOff(self));
+
 				return false;
 			}
 

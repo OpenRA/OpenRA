@@ -152,7 +152,8 @@ namespace OpenRA.Mods.Common.Activities
 				return false;
 			}
 
-			QueueChild(new TakeOff(self));
+			if (self.World.Map.DistanceAboveTerrain(aircraft.CenterPosition) <= aircraft.LandAltitude)
+				QueueChild(new TakeOff(self));
 
 			var minimumRange = attackAircraft.Info.AttackType == AirAttackType.Strafe ? WDist.Zero : attackAircraft.GetMinimumRangeVersusTarget(target);
 

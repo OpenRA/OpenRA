@@ -33,6 +33,12 @@ namespace OpenRA.Mods.Common.Activities
 				tickIdles = self.TraitsImplementing<INotifyIdle>().ToArray();
 		}
 
+		protected override void OnFirstRun(Actor self)
+		{
+			if (aircraft.AtLandAltitude)
+				QueueChild(new TakeOff(self));
+		}
+
 		public override bool Tick(Actor self)
 		{
 			if (remainingTicks == 0 || (NextActivity != null && remainingTicks < 0))
@@ -48,7 +54,11 @@ namespace OpenRA.Mods.Common.Activities
 				foreach (var tickIdle in tickIdles)
 					tickIdle.TickIdle(self);
 
-			Fly.FlyTick(self, aircraft, desiredSpeed: aircraft.IdleSpeed, desiredTurnSpeed: aircraft.IdleTurnSpeed);
+			if (aircraft.IdleSpeed == 0)
+				Fly.HoverTick(self, aircraft);
+			else
+				Fly.FlyTick(self, aircraft, desiredSpeed: aircraft.IdleSpeed, desiredTurnSpeed: aircraft.IdleTurnSpeed);
+
 			return false;
 		}
 	}
