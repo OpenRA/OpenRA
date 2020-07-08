@@ -32,6 +32,8 @@ namespace OpenRA.Mods.Common.Widgets
 		Lazy<TooltipContainerWidget> tooltipContainer;
 		public Func<string> GetTooltipText;
 
+		Sprite sprite;
+
 		public ImageWidget()
 		{
 			GetImageName = () => ImageName;
@@ -59,16 +61,29 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public override Widget Clone() { return new ImageWidget(this); }
 
-		public override void Draw()
+		public override void UpdateLayout()
 		{
 			var name = GetImageName();
 			var collection = GetImageCollection();
 
-			var sprite = ChromeProvider.GetImage(collection, name);
+			if (string.IsNullOrEmpty(name))
+				return;
+
+			sprite = ChromeProvider.GetImage(collection, name);
 			if (sprite == null)
 				throw new ArgumentException("Sprite {0}/{1} was not found.".F(collection, name));
 
-			WidgetUtils.DrawRGBA(sprite, RenderOrigin);
+			if (Math.Abs(Node.Width.Value - sprite.Size.X) < 0.1 && Math.Abs(Node.Height.Value - sprite.Size.Y) < 0.1)
+				return;
+
+			Node.Width = sprite.Size.X;
+			Node.Height = sprite.Size.Y;
+		}
+
+		public override void Draw()
+		{
+			if (sprite != null)
+				WidgetUtils.DrawRGBA(sprite, RenderOrigin, new float2(Node.LayoutWidth, Node.LayoutHeight));
 		}
 
 		public override bool HandleMouseInput(MouseInput mi)

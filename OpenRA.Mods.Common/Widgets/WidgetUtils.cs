@@ -36,6 +36,11 @@ namespace OpenRA.Mods.Common.Widgets
 			return baseName + suffix;
 		}
 
+		public static void DrawRGBA(Sprite s, float2 pos, float2 size)
+		{
+			Game.Renderer.RgbaSpriteRenderer.DrawSprite(s, pos, size);
+		}
+
 		public static void DrawRGBA(Sprite s, float2 pos)
 		{
 			Game.Renderer.RgbaSpriteRenderer.DrawSprite(s, pos);
