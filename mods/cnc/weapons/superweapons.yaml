@@ -88,6 +88,8 @@ Atomic:
 		Duration: 20
 		Intensity: 5
 		Multiplier: 1,1
+	Warhead@14FlashEffect: FlashPaletteEffect
+		Duration: 20
 
 IonCannon:
 	ValidTargets: Ground, Water, Air, Trees

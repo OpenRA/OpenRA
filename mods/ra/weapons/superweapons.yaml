@@ -134,3 +134,6 @@ Atomic:
 		Duration: 20
 		Intensity: 5
 		Multiplier: 1,1
+	Warhead@22FlashEffect: FlashPaletteEffect
+		Duration: 20
+		FlashType: Nuke

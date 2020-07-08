@@ -123,6 +123,8 @@ DeathHand:
 		Duration: 20
 		Intensity: 5
 		Multiplier: 1,1
+	Warhead@FlashEffect: FlashPaletteEffect
+		Duration: 20
 
 DeathHandCluster:
 	Inherits: Debris2

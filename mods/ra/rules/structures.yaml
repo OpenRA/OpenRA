@@ -51,7 +51,6 @@ MSLO:
 		DisplayBeacon: True
 		DisplayRadarPing: True
 		BeaconPoster: atomicon
-		FlashType: Nuke
 		CameraRange: 10c0
 		ArrowSequence: arrow
 		ClockSequence: clock
