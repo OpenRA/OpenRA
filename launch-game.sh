@@ -1,5 +1,9 @@
 #!/bin/sh
-MODLAUNCHER=$(python -c "import os; print(os.path.realpath('$0'))")
+if command -v python3 >/dev/null 2>&1; then
+	 MODLAUNCHER=$(python3 -c "import os; print(os.path.realpath('$0'))")
+else
+	 MODLAUNCHER=$(python -c "import os; print(os.path.realpath('$0'))")
+fi
 
 # Prompt for a mod to launch if one is not already specified
 MODARG=''
