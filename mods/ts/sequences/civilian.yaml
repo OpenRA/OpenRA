@@ -653,9 +653,11 @@ galite:
 	lighting: alphatst
 		BlendMode: DoubleMultiplicative
 		UseTilesetCode: false
+		IgnoreWorldTint: true
 		-DepthSprite:
-		Offset: 0, 0, 0.5
+		Offset: 0, 0, 240
 		ZRamp: 1
+		ZOffset: 10240
 	emp-overlay: emp_fx01
 		Length: *
 		Offset: 0, 0
