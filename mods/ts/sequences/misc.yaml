@@ -344,6 +344,7 @@ resources:
 		ShadowStart: 12
 		Offset: 0, -12, 1.5
 		ZRamp: 1
+		IgnoreWorldTint: true
 	tib01: tib01
 	tib02: tib02
 	tib03: tib03
@@ -370,6 +371,7 @@ resources:
 		ShadowStart: -1
 		Tick: 180
 		Offset: 0, -12, 2.5
+		IgnoreWorldTint: false
 
 veins:
 	idle: veinatac
