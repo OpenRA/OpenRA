@@ -1066,7 +1066,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var overrideButton = panel.Get<ButtonWidget>("OVERRIDE_HOTKEY_BUTTON");
 			overrideButton.IsDisabled = () => isHotkeyValid;
-			overrideButton.IsVisible = () => !isHotkeyValid;
+			overrideButton.VisibilityFunction = () => !isHotkeyValid;
 			overrideButton.OnClick = OverrideHotkey;
 
 			hotkeyEntryWidget = panel.Get<HotkeyEntryWidget>("HOTKEY_ENTRY");
@@ -1077,8 +1077,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				hotkeyEntryWidget.Key = modData.Hotkeys[selectedHotkeyDefinition.Name].GetValue();
 			};
 
-			validHotkeyEntryWidth = hotkeyEntryWidget.Bounds.Width;
-			invalidHotkeyEntryWidth = validHotkeyEntryWidth - (clearButton.Bounds.X - overrideButton.Bounds.X);
+			validHotkeyEntryWidth = (int)hotkeyEntryWidget.Node.LayoutWidth;
+			invalidHotkeyEntryWidth = validHotkeyEntryWidth - ((int)clearButton.Node.LayoutX - (int)overrideButton.Node.LayoutX);
 		}
 
 		void ValidateHotkey()
@@ -1089,12 +1089,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			if (isHotkeyValid)
 			{
-				hotkeyEntryWidget.Bounds.Width = validHotkeyEntryWidth;
+				hotkeyEntryWidget.Node.Width = validHotkeyEntryWidth;
+				hotkeyEntryWidget.Node.CalculateLayout();
 				SaveHotkey();
 			}
 			else
 			{
-				hotkeyEntryWidget.Bounds.Width = invalidHotkeyEntryWidth;
+				hotkeyEntryWidget.Node.Width = invalidHotkeyEntryWidth;
+				hotkeyEntryWidget.Node.CalculateLayout();
 				hotkeyEntryWidget.TakeKeyboardFocus();
 			}
 		}
