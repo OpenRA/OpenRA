@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				for (var i = 0; pieces > i; i++)
 				{
-					var rotation = WRot.FromFacing(self.World.SharedRandom.Next(1024));
+					var rotation = WRot.FromYaw(new WAngle(self.World.SharedRandom.Next(1024)));
 					var args = new ProjectileArgs
 					{
 						Weapon = wep,
