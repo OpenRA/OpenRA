@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		protected readonly Actor Refinery;
 		protected readonly Harvester Harv;
-		protected readonly int DockAngle;
+		protected readonly WAngle DockAngle;
 		protected readonly bool IsDragRequired;
 		protected readonly WVec DragOffset;
 		protected readonly int DragLength;
@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		protected DockingState dockingState;
 
-		public HarvesterDockSequence(Actor self, Actor refinery, int dockAngle, bool isDragRequired, WVec dragOffset, int dragLength)
+		public HarvesterDockSequence(Actor self, Actor refinery, WAngle dockAngle, bool isDragRequired, WVec dragOffset, int dragLength)
 		{
 			dockingState = DockingState.Turn;
 			Refinery = refinery;
@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Activities
 
 				case DockingState.Turn:
 					dockingState = DockingState.Dock;
-					QueueChild(new Turn(self, WAngle.FromFacing(DockAngle)));
+					QueueChild(new Turn(self, DockAngle));
 					if (IsDragRequired)
 						QueueChild(new Drag(self, StartDrag, EndDrag, DragLength));
 					return false;

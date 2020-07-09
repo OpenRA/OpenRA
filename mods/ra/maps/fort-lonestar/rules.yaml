@@ -161,7 +161,7 @@ MOBILETENT:
 	Transforms:
 		IntoActor: tent
 		Offset: 0,0
-		Facing: 96
+		Facing: 384
 		TransformSounds: placbldg.aud, build5.aud
 		NoTransformNotification: BuildingCannotPlaceAudio
 	RenderSprites:
@@ -328,7 +328,7 @@ V2RL:
 	RevealsShroud:
 		Range: 14c0
 	Turreted:
-		TurnSpeed: 1
+		TurnSpeed: 4
 	Armament@PRIMARY:
 		Recoil: 8
 		RecoilRecovery: 0c7

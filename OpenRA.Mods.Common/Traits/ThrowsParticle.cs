@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int Velocity = 75;
 
 		[Desc("Speed at which the particle turns.")]
-		public readonly int TurnSpeed = 15;
+		public readonly WAngle TurnSpeed = new WAngle(60);
 
 		public override object Create(ActorInitializer init) { return new ThrowsParticle(init, this); }
 	}
@@ -80,9 +80,9 @@ namespace OpenRA.Mods.Common.Traits
 			length = (finalPos - initialPos).Length / info.Velocity;
 
 			// WAngle requires positive inputs, so track the speed and direction separately
-			var rotationSpeed = WDist.FromPDF(Game.CosmeticRandom, 2).Length * info.TurnSpeed / 1024;
+			var rotationSpeed = WDist.FromPDF(Game.CosmeticRandom, 2).Length * info.TurnSpeed.Angle / 1024;
 			direction = rotationSpeed < 0 ? -1 : 1;
-			rotation = WAngle.FromFacing(Math.Abs(rotationSpeed));
+			rotation = new WAngle(Math.Abs(rotationSpeed));
 
 			var anim = new Animation(init.World, rs.GetImage(self), () => facing);
 			anim.PlayRepeating(info.Anim);

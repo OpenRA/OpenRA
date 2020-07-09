@@ -23,16 +23,16 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly HashSet<string> AllowedTerrain = new HashSet<string>();
 
 		[Desc("Facing to use for actor previews (map editor, color picker, etc)")]
-		public readonly int PreviewFacing = 96;
+		public readonly WAngle PreviewFacing = new WAngle(384);
 
 		IEnumerable<ActorInit> IActorPreviewInitInfo.ActorPreviewInits(ActorInfo ai, ActorPreviewType type)
 		{
-			yield return new FacingInit(WAngle.FromFacing(PreviewFacing));
+			yield return new FacingInit(PreviewFacing);
 		}
 
 		public override object Create(ActorInitializer init) { return new Husk(init, this); }
 
-		public WAngle GetInitialFacing() { return WAngle.FromFacing(128); }
+		public WAngle GetInitialFacing() { return new WAngle(512); }
 
 		public IReadOnlyDictionary<CPos, SubCell> OccupiedCells(ActorInfo info, CPos location, SubCell subCell = SubCell.Any)
 		{

@@ -163,8 +163,8 @@ NALASR:
 	DetectCloaked:
 		Range: 3c0
 	Turreted:
-		TurnSpeed: 10
-		InitialFacing: 224
+		TurnSpeed: 40
+		InitialFacing: 896
 		Offset: 298,-171,288
 	AttackTurreted:
 		RequiresCondition: !build-incomplete
@@ -247,8 +247,8 @@ NASAM:
 	RenderRangeCircle:
 		RangeCircleType: aa
 	Turreted:
-		TurnSpeed: 10
-		InitialFacing: 224
+		TurnSpeed: 40
+		InitialFacing: 896
 	AttackTurreted:
 		RequiresCondition: !build-incomplete
 		PauseOnCondition: empdisable || disabled

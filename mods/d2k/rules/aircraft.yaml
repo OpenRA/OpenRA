@@ -13,13 +13,13 @@ carryall.reinforce:
 		CruisingCondition: cruising
 		InitialFacing: 0
 		Speed: 144
-		TurnSpeed: 4
+		TurnSpeed: 16
 		LandableTerrainTypes: Sand, Rock, Transition, Spice, SpiceSand, Dune, Concrete
 		Repulsable: False
 		AirborneCondition: airborne
 		CanSlide: True
 		VTOL: true
-		IdleTurnSpeed: 1
+		IdleTurnSpeed: 4
 	Targetable@GROUND:
 		TargetTypes: Ground, Vehicle
 		RequiresCondition: !airborne
@@ -78,7 +78,7 @@ frigate:
 	Aircraft:
 		IdleBehavior: LeaveMap
 		Speed: 189
-		TurnSpeed: 1
+		TurnSpeed: 4
 		Repulsable: False
 		MaximumPitch: 20
 		CruiseAltitude: 2048
@@ -101,7 +101,7 @@ ornithopter:
 		Type: light
 	Aircraft:
 		Speed: 224
-		TurnSpeed: 2
+		TurnSpeed: 8
 		Repulsable: False
 		CruiseAltitude: 1920
 	AmmoPool:
@@ -119,7 +119,7 @@ ornithopter.husk:
 	Tooltip:
 		Name: Ornithopter
 	Aircraft:
-		TurnSpeed: 5
+		TurnSpeed: 20
 		Speed: 224
 	RenderSprites:
 		Image: ornithopter
@@ -129,7 +129,7 @@ carryall.husk:
 	Tooltip:
 		Name: Carryall
 	Aircraft:
-		TurnSpeed: 4
+		TurnSpeed: 16
 		Speed: 144
 		CanSlide: True
 		VTOL: true
@@ -144,7 +144,7 @@ carryall.huskVTOL:
 		Moves: False
 		Velocity: 0c128
 	Aircraft:
-		TurnSpeed: 4
+		TurnSpeed: 16
 		CanSlide: True
 		VTOL: true
 	RenderSprites:

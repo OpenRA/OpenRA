@@ -267,7 +267,7 @@
 		Action: Kill
 	Mobile:
 		Locomotor: wheeled
-		TurnSpeed: 5
+		TurnSpeed: 20
 	Selectable:
 		Bounds: 24,24
 	Targetable:
@@ -299,7 +299,7 @@
 	Inherits: ^Vehicle
 	Mobile:
 		Locomotor: tracked
-		TurnSpeed: 5
+		TurnSpeed: 20
 	Tooltip:
 		GenericName: Tank
 
@@ -330,7 +330,7 @@
 		VTOL: true
 		LandableTerrainTypes: Clear, Rough, Road, Beach, Tiberium, BlueTiberium
 		Crushes: crate, infantry
-		InitialFacing: 224
+		InitialFacing: 896
 		CanSlide: True
 	HiddenUnderFog:
 		Type: GroundPosition

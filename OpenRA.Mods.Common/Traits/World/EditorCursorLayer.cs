@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Required for the map editor to work. Attach this to the world actor.")]
 	public class EditorCursorLayerInfo : TraitInfo, Requires<EditorActorLayerInfo>
 	{
-		public readonly int PreviewFacing = 96;
+		public readonly WAngle PreviewFacing = new WAngle(384);
 
 		public override object Create(ActorInitializer init) { return new EditorCursorLayer(init.Self, this); }
 	}
@@ -194,7 +194,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			if (actor.HasTraitInfo<IFacingInfo>())
-				reference.Add(new FacingInit(WAngle.FromFacing(info.PreviewFacing)));
+				reference.Add(new FacingInit(info.PreviewFacing));
 
 			Type = EditorCursorType.Actor;
 			Actor = new EditorActorPreview(wr, null, reference, owner);

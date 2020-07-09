@@ -84,10 +84,10 @@ namespace OpenRA.Mods.Common.Projectiles
 		public readonly int LockOnProbability = 100;
 
 		[Desc("Horizontal rate of turn.")]
-		public readonly int HorizontalRateOfTurn = 5;
+		public readonly WAngle HorizontalRateOfTurn = new WAngle(20);
 
 		[Desc("Vertical rate of turn.")]
-		public readonly int VerticalRateOfTurn = 6;
+		public readonly WAngle VerticalRateOfTurn = new WAngle(24);
 
 		[Desc("Gravity applied while in free fall.")]
 		public readonly int Gravity = 10;
@@ -288,7 +288,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			// to hit the target without passing it by (and thus having to do horizontal loops)
 			var minSpeed = ((System.Math.Min(predClfDist * 1024 / (1024 - WAngle.FromFacing(vFacing).Sin()),
 					(relTarHorDist + predClfDist) * 1024 / (2 * (2048 - WAngle.FromFacing(vFacing).Sin())))
-				* info.VerticalRateOfTurn * 157) / 6400).Clamp(minLaunchSpeed, maxLaunchSpeed);
+				* info.VerticalRateOfTurn.Facing * 157) / 6400).Clamp(minLaunchSpeed, maxLaunchSpeed);
 
 			if ((sbyte)vFacing < 0)
 				speed = minSpeed;
@@ -300,7 +300,7 @@ namespace OpenRA.Mods.Common.Projectiles
 				var vFac = vFacing;
 				speed = BisectionSearch(minSpeed, maxLaunchSpeed, spd =>
 				{
-					var lpRds = LoopRadius(spd, info.VerticalRateOfTurn);
+					var lpRds = LoopRadius(spd, info.VerticalRateOfTurn.Facing);
 					return WillClimbWithinDistance(vFac, lpRds, predClfDist, diffClfMslHgt)
 						|| WillClimbAroundInclineTop(vFac, lpRds, predClfDist, diffClfMslHgt, spd);
 				});
@@ -320,7 +320,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		void DetermineLaunchSpeedAndAngle(World world, out int speed, out int vFacing)
 		{
 			speed = maxLaunchSpeed;
-			loopRadius = LoopRadius(speed, info.VerticalRateOfTurn);
+			loopRadius = LoopRadius(speed, info.VerticalRateOfTurn.Facing);
 
 			// Compute current distance from target position
 			var tarDistVec = targetPosition + offset - pos;
@@ -440,7 +440,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			speed = (speed + sign * info.Acceleration.Length).Clamp(0, maxSpeed);
 
 			// Compute the vertical loop radius
-			loopRadius = LoopRadius(speed, info.VerticalRateOfTurn);
+			loopRadius = LoopRadius(speed, info.VerticalRateOfTurn.Facing);
 		}
 
 		WVec FreefallTick()
@@ -509,7 +509,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			// If missile is below incline top height and facing downwards, bring back
 			// its vertical facing above zero as soon as possible
 			if ((sbyte)vFacing < 0)
-				desiredVFacing = info.VerticalRateOfTurn;
+				desiredVFacing = info.VerticalRateOfTurn.Facing;
 
 			// Missile will climb around incline top if bringing vertical facing
 			// down to zero on an arc of radius loopRadius
@@ -525,7 +525,7 @@ namespace OpenRA.Mods.Common.Projectiles
 				// for which the missile will be able to climb terrAltDiff w-units
 				// within hHeightChange w-units all the while ending the ascent
 				// with vertical facing 0
-				for (var vFac = System.Math.Min(vFacing + info.VerticalRateOfTurn - 1, 63); vFac >= vFacing; vFac--)
+				for (var vFac = System.Math.Min(vFacing + info.VerticalRateOfTurn.Facing - 1, 63); vFac >= vFacing; vFac--)
 					if (!WillClimbWithinDistance(vFac, loopRadius, predClfDist, diffClfMslHgt)
 						&& !(predClfDist <= loopRadius * (1024 - WAngle.FromFacing(vFac).Sin()) / 1024
 							&& WillClimbAroundInclineTop(vFac, loopRadius, predClfDist, diffClfMslHgt, speed)))
@@ -600,7 +600,7 @@ namespace OpenRA.Mods.Common.Projectiles
 					// and thus needs smaller vertical facings so as not
 					// to hit the ground prematurely
 					if (targetPassedBy)
-						desiredVFacing = desiredVFacing.Clamp(-info.VerticalRateOfTurn, info.VerticalRateOfTurn);
+						desiredVFacing = desiredVFacing.Clamp(-info.VerticalRateOfTurn.Facing, info.VerticalRateOfTurn.Facing);
 					else if (lastHt == 0)
 					{ // Before the target is passed by, missile speed should be changed
 						// Target's height above loop's center
@@ -662,7 +662,7 @@ namespace OpenRA.Mods.Common.Projectiles
 							if (info.TerrainHeightAware && edgeVector.Length > loopRadius && lastHt > targetPosition.Z)
 							{
 								int vFac;
-								for (vFac = vFacing + 1; vFac <= vFacing + info.VerticalRateOfTurn - 1; vFac++)
+								for (vFac = vFacing + 1; vFac <= vFacing + info.VerticalRateOfTurn.Facing - 1; vFac++)
 								{
 									// Vector from missile's current position pointing to the loop's center
 									radius = new WVec(loopRadius, 0, 0)
@@ -681,7 +681,7 @@ namespace OpenRA.Mods.Common.Projectiles
 								// Aim for the target
 								var vDist = new WVec(-relTarHgt, -relTarHorDist, 0);
 								desiredVFacing = (sbyte)vDist.HorizontalLengthSquared != 0 ? vDist.Yaw.Facing : vFacing;
-								if (desiredVFacing < 0 && info.VerticalRateOfTurn < (sbyte)vFacing)
+								if (desiredVFacing < 0 && info.VerticalRateOfTurn.Facing < (sbyte)vFacing)
 									desiredVFacing = 0;
 							}
 						}
@@ -691,7 +691,7 @@ namespace OpenRA.Mods.Common.Projectiles
 						// Aim for the target
 						var vDist = new WVec(-relTarHgt, relTarHorDist, 0);
 						desiredVFacing = (sbyte)vDist.HorizontalLengthSquared != 0 ? vDist.Yaw.Facing : vFacing;
-						if (desiredVFacing < 0 && info.VerticalRateOfTurn < (sbyte)vFacing)
+						if (desiredVFacing < 0 && info.VerticalRateOfTurn.Facing < (sbyte)vFacing)
 							desiredVFacing = 0;
 					}
 				}
@@ -706,7 +706,7 @@ namespace OpenRA.Mods.Common.Projectiles
 					if (-diffClfMslHgt > info.CruiseAltitude.Length)
 						desiredVFacing = -desiredVFacing;
 
-					desiredVFacing = desiredVFacing.Clamp(-info.VerticalRateOfTurn, info.VerticalRateOfTurn);
+					desiredVFacing = desiredVFacing.Clamp(-info.VerticalRateOfTurn.Facing, info.VerticalRateOfTurn.Facing);
 
 					ChangeSpeed();
 				}
@@ -722,7 +722,7 @@ namespace OpenRA.Mods.Common.Projectiles
 				if (-diffClfMslHgt > info.CruiseAltitude.Length)
 					desiredVFacing = -desiredVFacing;
 
-				desiredVFacing = desiredVFacing.Clamp(-info.VerticalRateOfTurn, info.VerticalRateOfTurn);
+				desiredVFacing = desiredVFacing.Clamp(-info.VerticalRateOfTurn.Facing, info.VerticalRateOfTurn.Facing);
 
 				ChangeSpeed();
 			}
@@ -780,8 +780,8 @@ namespace OpenRA.Mods.Common.Projectiles
 				desiredHFacing = hFacing;
 
 			// Compute new direction the projectile will be facing
-			hFacing = Util.TickFacing(hFacing, desiredHFacing, info.HorizontalRateOfTurn);
-			vFacing = Util.TickFacing(vFacing, desiredVFacing, info.VerticalRateOfTurn);
+			hFacing = Util.TickFacing(hFacing, desiredHFacing, info.HorizontalRateOfTurn.Facing);
+			vFacing = Util.TickFacing(vFacing, desiredVFacing, info.VerticalRateOfTurn.Facing);
 
 			// Compute the projectile's guided displacement
 			return new WVec(0, -1024 * speed, 0)
@@ -803,7 +803,7 @@ namespace OpenRA.Mods.Common.Projectiles
 				speed = velocity.Length;
 
 				// Compute the vertical loop radius
-				loopRadius = LoopRadius(speed, info.VerticalRateOfTurn);
+				loopRadius = LoopRadius(speed, info.VerticalRateOfTurn.Facing);
 			}
 
 			// Switch from homing mode to freefall mode

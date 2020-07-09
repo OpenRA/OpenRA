@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly CVec SpawnOffset = CVec.Zero;
 
 		[Desc("Which direction the unit should face.")]
-		public readonly int Facing = 0;
+		public readonly WAngle Facing = WAngle.Zero;
 
 		[Desc("Whether another actor should spawn upon re-enabling the trait.")]
 		public readonly bool AllowRespawn = false;
@@ -81,7 +81,7 @@ namespace OpenRA.Mods.Common.Traits
 					new ParentActorInit(self),
 					new LocationInit(self.Location + Info.SpawnOffset),
 					new OwnerInit(self.Owner),
-					new FacingInit(WAngle.FromFacing(Info.Facing)),
+					new FacingInit(Info.Facing),
 				});
 			});
 		}

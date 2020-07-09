@@ -141,7 +141,7 @@ PBOX:
 	ExternalCondition@friendly:
 		Condition: friendly
 	Turreted:
-		TurnSpeed: 1
+		TurnSpeed: 4
 	Armament@PRIMARY:
 		Weapon: SuperTankPrimary
 		LocalOffset: 900,180,340, 900,-180,340

@@ -10,7 +10,7 @@
 		Inaccuracy: 128
 		Image: DRAGON
 		Shadow: true
-		HorizontalRateOfTurn: 15
+		HorizontalRateOfTurn: 60
 		TrailImage: smokey
 		ContrailLength: 8
 		Speed: 298
@@ -49,7 +49,7 @@ Dragon:
 	BurstDelays: 5
 	Projectile: Missile
 		Speed: 426
-		HorizontalRateOfTurn: 20
+		HorizontalRateOfTurn: 80
 		RangeLimit: 12c0
 	Warhead@1Dam: SpreadDamage
 		ValidTargets: Air
@@ -68,7 +68,7 @@ BikeRockets:
 	Burst: 2
 	BurstDelays: 10
 	Projectile: Missile
-		HorizontalRateOfTurn: 10
+		HorizontalRateOfTurn: 40
 		Speed: 213
 	Warhead@1Dam: SpreadDamage
 		Versus:
@@ -85,7 +85,7 @@ OrcaAGMissiles:
 	ValidTargets: Ground, Water
 	Projectile: Missile
 		Arm: 1
-		HorizontalRateOfTurn: 20
+		HorizontalRateOfTurn: 80
 		Speed: 256
 		RangeLimit: 6c0
 	Warhead@1Dam: SpreadDamage
@@ -117,7 +117,7 @@ MammothMissiles:
 	Burst: 2
 	BurstDelays: 15
 	Projectile: Missile
-		HorizontalRateOfTurn: 20
+		HorizontalRateOfTurn: 80
 		Speed: 341
 		RangeLimit: 6c0
 	Warhead@1Dam: SpreadDamage
@@ -174,7 +174,7 @@ MammothMissiles:
 	BurstDelays: 10
 	Projectile: Missile
 		Inaccuracy: 213
-		HorizontalRateOfTurn: 10
+		HorizontalRateOfTurn: 40
 		Speed: 213
 		RangeLimit: 8c409
 	Warhead@1Dam: SpreadDamage
@@ -194,7 +194,7 @@ BoatMissile:
 	Report: rocket2.aud
 	Projectile: Missile
 		Inaccuracy: 426
-		HorizontalRateOfTurn: 5
+		HorizontalRateOfTurn: 20
 		Speed: 170
 		RangeLimit: 9c614
 	Warhead@1Dam: SpreadDamage
@@ -218,7 +218,7 @@ TowerMissile:
 	Report: rocket2.aud
 	ValidTargets: Ground, Water
 	Projectile: Missile
-		HorizontalRateOfTurn: 20
+		HorizontalRateOfTurn: 80
 		Speed: 298
 		RangeLimit: 8c409
 	Warhead@1Dam: SpreadDamage
@@ -241,7 +241,7 @@ TowerAAMissile:
 	ValidTargets: Air
 	Projectile: Missile
 		Image: MISSILE
-		HorizontalRateOfTurn: 20
+		HorizontalRateOfTurn: 80
 		Speed: 426
 		RangeLimit: 9c614
 		Inaccuracy: 0
@@ -266,7 +266,7 @@ Patriot:
 	ValidTargets: Air
 	Projectile: Missile
 		Image: MISSILE
-		HorizontalRateOfTurn: 20
+		HorizontalRateOfTurn: 80
 		Speed: 300
 		RangeLimit: 10c819
 		Inaccuracy: 0

@@ -194,7 +194,7 @@
 	OwnerLostAction:
 		Action: Kill
 	Mobile:
-		TurnSpeed: 5
+		TurnSpeed: 20
 		Locomotor: vehicle
 		PauseOnCondition: notmobile
 	Selectable:

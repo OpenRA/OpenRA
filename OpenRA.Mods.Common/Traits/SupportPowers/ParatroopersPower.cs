@@ -105,7 +105,7 @@ namespace OpenRA.Mods.Common.Traits
 			var info = Info as ParatroopersPowerInfo;
 
 			if (!facing.HasValue)
-				facing = WAngle.FromFacing(256 * self.World.SharedRandom.Next(info.QuantizedFacings) / info.QuantizedFacings);
+				facing = new WAngle(1024 * self.World.SharedRandom.Next(info.QuantizedFacings) / info.QuantizedFacings);
 
 			var utLower = info.UnitType.ToLowerInvariant();
 			ActorInfo unitType;

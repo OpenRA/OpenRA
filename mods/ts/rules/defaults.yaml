@@ -760,7 +760,7 @@
 	Mobile:
 		PauseOnCondition: empdisable || being-captured || carried
 		Locomotor: wheeled
-		TurnSpeed: 5
+		TurnSpeed: 20
 		Voice: Move
 	Selectable:
 		Bounds: 40,24
@@ -875,7 +875,7 @@
 		RepairActors: gadept
 		Voice: Move
 	Aircraft:
-		InitialFacing: 224
+		InitialFacing: 896
 		AirborneCondition: airborne
 		CruisingCondition: cruising
 		CruiseAltitude: 4c704
@@ -951,7 +951,7 @@
 	FallsToEarth:
 		Moves: true
 		Velocity: 112
-		MaximumSpinSpeed: 10
+		MaximumSpinSpeed: 40
 	HitShape:
 
 ^Visceroid:
@@ -965,7 +965,7 @@
 		Type: Light
 	Mobile:
 		Speed: 113
-		TurnSpeed: 16
+		TurnSpeed: 64
 		Locomotor: visceroid
 	Selectable:
 		Bounds: 26,26,0,-3
@@ -1114,7 +1114,7 @@
 	RenderSprites:
 	WithVoxelBody:
 	Mobile:
-		TurnSpeed: 5
+		TurnSpeed: 20
 		Voice: Move
 		Speed: 113
 		PauseOnCondition: empdisable

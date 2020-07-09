@@ -85,7 +85,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (unitGroup.BaseActor != null)
 			{
-				var facing = unitGroup.BaseActorFacing < 0 ? new WAngle(w.SharedRandom.Next(1024)) : WAngle.FromFacing(unitGroup.BaseActorFacing);
+				var facing = unitGroup.BaseActorFacing.HasValue ? unitGroup.BaseActorFacing.Value : new WAngle(w.SharedRandom.Next(1024));
 				w.CreateActor(unitGroup.BaseActor.ToLowerInvariant(), new TypeDictionary
 				{
 					new LocationInit(sp + unitGroup.BaseActorOffset),
@@ -113,7 +113,7 @@ namespace OpenRA.Mods.Common.Traits
 				}
 
 				var subCell = ip.SharesCell ? w.ActorMap.FreeSubCell(validCell) : 0;
-				var facing = unitGroup.SupportActorsFacing < 0 ? new WAngle(w.SharedRandom.Next(1024)) : WAngle.FromFacing(unitGroup.SupportActorsFacing);
+				var facing = unitGroup.SupportActorsFacing.HasValue ? unitGroup.SupportActorsFacing.Value : new WAngle(w.SharedRandom.Next(1024));
 
 				w.CreateActor(s.ToLowerInvariant(), new TypeDictionary
 				{

@@ -13,7 +13,7 @@ TRAN:
 		Queue: Aircraft.GDI, Aircraft.Nod
 		Description: Fast Infantry Transport Helicopter.\n  Unarmed
 	Aircraft:
-		TurnSpeed: 5
+		TurnSpeed: 20
 		Speed: 150
 		AltitudeVelocity: 0c100
 	Health:
@@ -64,7 +64,7 @@ HELI:
 		Queue: Aircraft.Nod
 		Description: Helicopter Gunship with Chainguns.\n  Strong vs Infantry, Light Vehicles and\n  Aircraft\n  Weak vs Tanks
 	Aircraft:
-		TurnSpeed: 7
+		TurnSpeed: 28
 		Speed: 180
 	Health:
 		HP: 12500
@@ -132,7 +132,7 @@ ORCA:
 		Queue: Aircraft.GDI
 		Description: Helicopter Gunship with AG Missiles.\n  Strong vs Buildings, Tanks\n  Weak vs Infantry
 	Aircraft:
-		TurnSpeed: 7
+		TurnSpeed: 28
 		Speed: 186
 	Health:
 		HP: 9000
@@ -182,7 +182,7 @@ C17:
 	Valued:
 		Cost: 2000
 	Aircraft:
-		TurnSpeed: 5
+		TurnSpeed: 20
 		Speed: 700
 		Repulsable: False
 		MaximumPitch: 36
@@ -215,7 +215,7 @@ A10:
 	Valued:
 		Cost: 2000
 	Aircraft:
-		TurnSpeed: 4
+		TurnSpeed: 16
 		Speed: 373
 		Repulsable: False
 	AttackBomber:
@@ -242,7 +242,7 @@ TRAN.Husk:
 	Tooltip:
 		Name: Chinook Transport
 	Aircraft:
-		TurnSpeed: 5
+		TurnSpeed: 20
 		Speed: 140
 	RevealsShroud:
 		Range: 10c0
@@ -261,7 +261,7 @@ HELI.Husk:
 	Tooltip:
 		Name: Apache Longbow
 	Aircraft:
-		TurnSpeed: 4
+		TurnSpeed: 16
 		Speed: 186
 	RevealsShroud:
 		Range: 10c0
@@ -277,7 +277,7 @@ ORCA.Husk:
 	Tooltip:
 		Name: Orca
 	Aircraft:
-		TurnSpeed: 4
+		TurnSpeed: 16
 		Speed: 186
 	RevealsShroud:
 		Range: 10c0

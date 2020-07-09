@@ -7,7 +7,7 @@ BADR:
 		HP: 30000
 	Aircraft:
 		CruiseAltitude: 2560
-		TurnSpeed: 5
+		TurnSpeed: 20
 		Speed: 180
 		Repulsable: False
 		MaximumPitch: 56
@@ -84,8 +84,8 @@ MIG:
 		OpportunityFire: False
 	Aircraft:
 		CruiseAltitude: 2560
-		InitialFacing: 192
-		TurnSpeed: 4
+		InitialFacing: 768
+		TurnSpeed: 16
 		Speed: 223
 		RepulsionSpeed: 40
 		MaximumPitch: 56
@@ -158,8 +158,8 @@ YAK:
 		OpportunityFire: False
 	Aircraft:
 		CruiseAltitude: 2560
-		InitialFacing: 192
-		TurnSpeed: 4
+		InitialFacing: 768
+		TurnSpeed: 16
 		Speed: 178
 		RepulsionSpeed: 40
 		MaximumPitch: 56
@@ -216,7 +216,7 @@ TRAN:
 		Range: 6c0
 		Type: GroundPosition
 	Aircraft:
-		TurnSpeed: 5
+		TurnSpeed: 20
 		Speed: 128
 		AltitudeVelocity: 0c58
 	WithIdleOverlay@ROTOR1AIR:
@@ -283,7 +283,7 @@ HELI:
 		AttackType: Hover
 		OpportunityFire: False
 	Aircraft:
-		TurnSpeed: 4
+		TurnSpeed: 16
 		Speed: 149
 	AutoTarget:
 		InitialStance: HoldFire
@@ -356,7 +356,7 @@ HIND:
 		AttackType: Hover
 		OpportunityFire: False
 	Aircraft:
-		TurnSpeed: 4
+		TurnSpeed: 16
 		Speed: 112
 	AutoTarget:
 		InitialStance: HoldFire
@@ -396,7 +396,7 @@ U2:
 		Name: Spy Plane
 	Aircraft:
 		CruiseAltitude: 2560
-		TurnSpeed: 7
+		TurnSpeed: 28
 		Speed: 373
 		Repulsable: False
 		MaximumPitch: 56
@@ -458,7 +458,7 @@ MH60:
 		PersistentTargeting: false
 		AttackType: Hover
 	Aircraft:
-		TurnSpeed: 4
+		TurnSpeed: 16
 		Speed: 112
 	AutoTarget:
 		InitialStance: HoldFire

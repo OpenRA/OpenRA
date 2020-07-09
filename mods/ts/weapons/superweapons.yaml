@@ -10,7 +10,7 @@ MultiCluster:
 		MaximumLaunchAngle: 255
 		RangeLimit: 10c0
 		AllowSnapping: false
-		VerticalRateOfTurn: 16
+		VerticalRateOfTurn: 64
 	Warhead@1Dam: SpreadDamage
 		Spread: 216
 		Damage: 13000

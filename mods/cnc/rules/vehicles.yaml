@@ -28,7 +28,7 @@ MCV:
 	Transforms:
 		IntoActor: fact
 		Offset: -1,-1
-		Facing: 108
+		Facing: 432
 		TransformSounds: constru2.aud, hvydoor1.aud
 		NoTransformNotification: BuildingCannotPlaceAudio
 	MustBeDestroyed:
@@ -114,7 +114,7 @@ APC:
 		BuildDurationModifier: 40
 		Description: Armed infantry transport.\nCan attack Aircraft.\n  Strong vs Vehicles\n  Weak vs Infantry
 	Mobile:
-		TurnSpeed: 5
+		TurnSpeed: 20
 		Speed: 132
 		PauseOnCondition: notmobile
 	Health:
@@ -126,7 +126,7 @@ APC:
 	RevealsShroud:
 		Range: 6c0
 	Turreted:
-		TurnSpeed: 10
+		TurnSpeed: 40
 	Armament@PRIMARY:
 		Weapon: APCGun
 		Recoil: 48
@@ -183,7 +183,7 @@ ARTY:
 		Queue: Vehicle.Nod
 		Description: Long-range artillery.\n  Strong vs Infantry, Vehicles and Buildings
 	Mobile:
-		TurnSpeed: 4
+		TurnSpeed: 16
 		Speed: 85
 	Health:
 		HP: 7500
@@ -229,7 +229,7 @@ FTNK:
 		Queue: Vehicle.Nod
 		Description: Heavily armored flame-throwing vehicle.\n  Strong vs Infantry, Buildings and Vehicles\n  Weak vs Tanks
 	Mobile:
-		TurnSpeed: 7
+		TurnSpeed: 28
 		Speed: 99
 	Health:
 		HP: 27000
@@ -270,7 +270,7 @@ BGGY:
 		Queue: Vehicle.Nod
 		Description: Fast scout and anti-infantry vehicle.\n  Strong vs Infantry\n  Weak vs Tanks
 	Mobile:
-		TurnSpeed: 10
+		TurnSpeed: 40
 		Speed: 170
 	Health:
 		HP: 12000
@@ -281,7 +281,7 @@ BGGY:
 	RevealsShroud:
 		Range: 8c0
 	Turreted:
-		TurnSpeed: 10
+		TurnSpeed: 40
 		Offset: -43,0,128
 	Armament:
 		Weapon: MachineGun
@@ -312,7 +312,7 @@ BIKE:
 		Queue: Vehicle.Nod
 		Description: Fast scout vehicle, armed with\nrockets.\nCan attack Aircraft.\n  Strong vs Vehicles, Tanks\n  Weak vs Infantry
 	Mobile:
-		TurnSpeed: 10
+		TurnSpeed: 40
 		Speed: 213
 		Locomotor: bike
 	Health:
@@ -350,7 +350,7 @@ JEEP:
 		Queue: Vehicle.GDI
 		Description: Fast scout and anti-infantry vehicle.\n  Strong vs Infantry\n  Weak vs Tanks
 	Mobile:
-		TurnSpeed: 10
+		TurnSpeed: 40
 		Speed: 156
 	Health:
 		HP: 16000
@@ -361,7 +361,7 @@ JEEP:
 	RevealsShroud:
 		Range: 8c0
 	Turreted:
-		TurnSpeed: 10
+		TurnSpeed: 40
 		Offset: -85,0,128
 	Armament:
 		Weapon: MachineGunH
@@ -392,7 +392,7 @@ LTNK:
 		Queue: Vehicle.Nod
 		Description: Fast, light tank.\n  Strong vs Vehicles, Tanks\n  Weak vs Infantry
 	Mobile:
-		TurnSpeed: 7
+		TurnSpeed: 28
 		Speed: 110
 	Health:
 		HP: 34000
@@ -403,7 +403,7 @@ LTNK:
 	RevealsShroud:
 		Range: 6c0
 	Turreted:
-		TurnSpeed: 7
+		TurnSpeed: 28
 	Armament:
 		Weapon: 70mm
 		Recoil: 85
@@ -445,7 +445,7 @@ MTNK:
 	RevealsShroud:
 		Range: 6c0
 	Turreted:
-		TurnSpeed: 5
+		TurnSpeed: 20
 	Armament:
 		Weapon: 120mm
 		Recoil: 128
@@ -481,7 +481,7 @@ HTNK:
 	Mobile:
 		Locomotor: heavytracked
 		Speed: 56
-		TurnSpeed: 3
+		TurnSpeed: 12
 	Health:
 		HP: 87000
 	Repairable:
@@ -492,7 +492,7 @@ HTNK:
 		Range: 6c0
 	WithSpriteTurret:
 	Turreted:
-		TurnSpeed: 3
+		TurnSpeed: 12
 	Armament@PRIMARY:
 		Weapon: 120mmDual
 		LocalOffset: 900,180,340, 900,-180,340
@@ -538,7 +538,7 @@ MSAM:
 		Description: Long range rocket artillery.\n  Strong vs all Ground units.
 	Mobile:
 		Speed: 85
-		TurnSpeed: 4
+		TurnSpeed: 16
 	Health:
 		HP: 12000
 	Repairable:
@@ -548,7 +548,7 @@ MSAM:
 	RevealsShroud:
 		Range: 5c0
 	Turreted:
-		TurnSpeed: 255
+		TurnSpeed: 512
 		Offset: -256,0,128
 	Armament@PRIMARY:
 		Weapon: 227mm
@@ -586,7 +586,7 @@ MLRS:
 		Description: Powerful anti-air unit.\nCannot attack Ground units.
 	Mobile:
 		Speed: 99
-		TurnSpeed: 7
+		TurnSpeed: 28
 	Health:
 		HP: 18000
 	Repairable:
@@ -596,7 +596,7 @@ MLRS:
 	RevealsShroud:
 		Range: 8c0
 	Turreted:
-		TurnSpeed: 8
+		TurnSpeed: 32
 		Offset: -128,0,128
 		RealignDelay: 0
 	Armament:
@@ -642,7 +642,7 @@ STNK:
 		Description: Long-range missile tank that can cloak.\nCan attack Aircraft.\nHas weak armor. Can be spotted by infantry and defense structures.\n  Strong vs Vehicles, Tanks\n  Weak vs Infantry.
 	Mobile:
 		Locomotor: heavywheeled
-		TurnSpeed: 10
+		TurnSpeed: 40
 		Speed: 142
 	Health:
 		HP: 15000

@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Activities
 			this.info = info;
 			IsInterruptible = false;
 			aircraft = self.Trait<Aircraft>();
-			if (info.MaximumSpinSpeed != 0)
+			if (!info.MaximumSpinSpeed.HasValue || info.MaximumSpinSpeed.Value != WAngle.Zero)
 				acceleration = self.World.SharedRandom.Next(2) * 2 - 1;
 		}
 
@@ -49,14 +49,13 @@ namespace OpenRA.Mods.Common.Activities
 				return true;
 			}
 
-			if (info.MaximumSpinSpeed != 0)
+			if (acceleration != 0)
 			{
-				if (info.MaximumSpinSpeed < 0 || Math.Abs(spin) < info.MaximumSpinSpeed)
-					spin += acceleration; // TODO: Possibly unhardcode this
+				if (!info.MaximumSpinSpeed.HasValue || Math.Abs(spin) < info.MaximumSpinSpeed.Value.Angle)
+					spin += 4 * acceleration; // TODO: Possibly unhardcode this
 
 				// Allow for negative spin values and convert from facing to angle units
-				// TODO: Remember to convert this when removing WAngle.FromFacing
-				aircraft.Facing = new WAngle(aircraft.Facing.Angle + 4 * spin);
+				aircraft.Facing = new WAngle(aircraft.Facing.Angle + spin);
 			}
 
 			var move = info.Moves ? aircraft.FlyStep(aircraft.Facing) : WVec.Zero;

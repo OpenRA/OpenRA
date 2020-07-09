@@ -47,12 +47,13 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("The speed at which the aircraft is repulsed from other aircraft. Specify -1 for normal movement speed.")]
 		public readonly int RepulsionSpeed = -1;
 
-		public readonly int InitialFacing = 0;
+		public readonly WAngle InitialFacing = WAngle.Zero;
 
-		public readonly int TurnSpeed = 255;
+		[Desc("Speed at which the actor turns.")]
+		public readonly WAngle TurnSpeed = new WAngle(512);
 
-		[Desc("Turn speed to apply when aircraft flies in circles while idle. Defaults to TurnSpeed if negative.")]
-		public readonly int IdleTurnSpeed = -1;
+		[Desc("Turn speed to apply when aircraft flies in circles while idle. Defaults to TurnSpeed if undefined.")]
+		public readonly WAngle? IdleTurnSpeed = null;
 
 		public readonly int Speed = 1;
 
@@ -145,7 +146,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int NumberOfTicksToVerifyAvailableAirport = 150;
 
 		[Desc("Facing to use for actor previews (map editor, color picker, etc)")]
-		public readonly int PreviewFacing = 96;
+		public readonly WAngle PreviewFacing = new WAngle(384);
 
 		[Desc("Display order for the facing slider in the map editor")]
 		public readonly int EditorFacingDisplayOrder = 3;
@@ -160,14 +161,14 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Cursor to display when unable to land at target building.")]
 		public readonly string EnterBlockedCursor = "enter-blocked";
 
-		public WAngle GetInitialFacing() { return WAngle.FromFacing(InitialFacing); }
+		public WAngle GetInitialFacing() { return InitialFacing; }
 		public WDist GetCruiseAltitude() { return CruiseAltitude; }
 
 		public override object Create(ActorInitializer init) { return new Aircraft(init, this); }
 
 		IEnumerable<ActorInit> IActorPreviewInitInfo.ActorPreviewInits(ActorInfo ai, ActorPreviewType type)
 		{
-			yield return new FacingInit(WAngle.FromFacing(PreviewFacing));
+			yield return new FacingInit(PreviewFacing);
 		}
 
 		public IReadOnlyDictionary<CPos, SubCell> OccupiedCells(ActorInfo info, CPos location, SubCell subCell = SubCell.Any) { return new ReadOnlyDictionary<CPos, SubCell>(); }
@@ -200,7 +201,7 @@ namespace OpenRA.Mods.Common.Traits
 				actor =>
 				{
 					var init = actor.GetInitOrDefault<FacingInit>(this);
-					return (init != null ? init.Value : WAngle.FromFacing(InitialFacing)).Angle;
+					return (init != null ? init.Value : InitialFacing).Angle;
 				},
 				(actor, value) => actor.ReplaceInit(new FacingInit(new WAngle((int)value))));
 		}
@@ -250,8 +251,8 @@ namespace OpenRA.Mods.Common.Traits
 		public WPos CenterPosition { get; private set; }
 
 		public CPos TopLeft { get { return self.World.Map.CellContaining(CenterPosition); } }
-		public WAngle TurnSpeed { get { return !IsTraitDisabled && !IsTraitPaused ? new WAngle(4 * Info.TurnSpeed) : WAngle.Zero; } }
-		public WAngle? IdleTurnSpeed { get { return Info.IdleTurnSpeed != -1 ? new WAngle(4 * Info.IdleTurnSpeed) : (WAngle?)null; } }
+		public WAngle TurnSpeed { get { return !IsTraitDisabled && !IsTraitPaused ? Info.TurnSpeed : WAngle.Zero; } }
+		public WAngle? IdleTurnSpeed { get { return Info.IdleTurnSpeed; } }
 
 		public Actor ReservedActor { get; private set; }
 		public bool MayYieldReservation { get; private set; }
@@ -292,7 +293,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (centerPositionInit != null)
 				SetPosition(self, centerPositionInit.Value);
 
-			Facing = init.GetValue<FacingInit, WAngle>(WAngle.FromFacing(Info.InitialFacing));
+			Facing = init.GetValue<FacingInit, WAngle>(Info.InitialFacing);
 			creationActivityDelay = init.GetValue<CreationActivityDelayInit, int>(0);
 		}
 

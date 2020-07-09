@@ -73,8 +73,8 @@ GACTWR:
 	DetectCloaked:
 		RequiresCondition: !empdisable && !disabled && (tower.vulcan || tower.rocket || tower.sam)
 	Turreted:
-		TurnSpeed: 10
-		InitialFacing: 224
+		TurnSpeed: 40
+		InitialFacing: 896
 	AttackTurreted:
 		RequiresCondition: !build-incomplete && (tower.vulcan || tower.rocket || tower.sam)
 		PauseOnCondition: empdisable || disabled

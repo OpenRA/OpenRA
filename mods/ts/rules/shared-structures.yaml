@@ -32,7 +32,7 @@ GACNST:
 		PauseOnCondition: empdisable || being-demolished || build-incomplete
 		IntoActor: mcv
 		Offset: 1,1
-		Facing: 96
+		Facing: 384
 		DeployCursor: undeploy
 	TransformsIntoMobile:
 		RequiresCondition: factundeploy
@@ -105,7 +105,7 @@ PROC:
 		Range: 6c0
 		MaxHeightDelta: 3
 	TiberianSunRefinery:
-		DockAngle: 160
+		DockAngle: 640
 		DockOffset: 2,1
 		DiscardExcessResources: true
 	StoresResources:
@@ -115,7 +115,7 @@ PROC:
 	FreeActor:
 		Actor: HARV
 		SpawnOffset: 2,1
-		Facing: 160
+		Facing: 640
 	WithIdleOverlay@REDLIGHTS:
 		RequiresCondition: !build-incomplete
 		Sequence: idle-redlights

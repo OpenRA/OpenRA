@@ -87,7 +87,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var aircraft = new List<Actor>();
 			if (!facing.HasValue)
-				facing = WAngle.FromFacing(256 * self.World.SharedRandom.Next(info.QuantizedFacings) / info.QuantizedFacings);
+				facing = new WAngle(1024 * self.World.SharedRandom.Next(info.QuantizedFacings) / info.QuantizedFacings);
 
 			var altitude = self.World.Map.Rules.Actors[info.UnitType].TraitInfo<AircraftInfo>().CruiseAltitude.Length;
 			var attackRotation = WRot.FromYaw(facing.Value);

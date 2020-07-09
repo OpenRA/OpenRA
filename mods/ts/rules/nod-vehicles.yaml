@@ -15,7 +15,7 @@ BGGY:
 		Prerequisites: ~naweap, ~techlevel.low
 		Description: Fast scout and anti-infantry vehicle.\n  Strong vs Infantry, Light armor\n  Weak vs Vehicles, Aircraft
 	Mobile:
-		TurnSpeed: 8
+		TurnSpeed: 32
 		Speed: 142
 	Health:
 		HP: 22000
@@ -55,7 +55,7 @@ BIKE:
 		Prerequisites: ~naweap, ~techlevel.low
 		Description: Fast scout vehicle, armed with\nrockets.\n  Strong vs Vehicles\n  Weak vs Infantry, Aircraft
 	Mobile:
-		TurnSpeed: 8
+		TurnSpeed: 32
 		Speed: 170
 	Health:
 		HP: 15000
@@ -102,7 +102,7 @@ TTNK:
 		Prerequisites: ~naweap, ~techlevel.medium
 		Description: Nod's main battle tank.\nCan deploy to gain extra protection.\n  Strong vs Vehicles\n  Weak vs Infantry, Aircraft
 	Mobile:
-		TurnSpeed: 5
+		TurnSpeed: 20
 		Speed: 85
 		ImmovableCondition: !undeployed
 		RequireForceMoveCondition: !undeployed
@@ -137,7 +137,7 @@ TTNK:
 		UndeployedCondition: undeployed
 		UndeployOnMove: true
 		UndeployOnPickup: true
-		Facing: 160
+		Facing: 640
 		AllowedTerrainTypes: Clear, Road, DirtRoad, Rough
 		DeploySounds: place2.aud
 		UndeploySounds: clicky1.aud
@@ -159,9 +159,9 @@ TTNK:
 		RequiresCondition: undeployed
 		PauseOnCondition: empdisable
 	Turreted:
-		TurnSpeed: 6
+		TurnSpeed: 24
 		Turret: deployed
-		InitialFacing: 160
+		InitialFacing: 640
 		Offset: -20, -130, 128
 		RealignDelay: -1
 	WithVoxelBarrel:
@@ -232,7 +232,7 @@ ART2:
 		Type: Light
 	Mobile:
 		Speed: 71
-		TurnSpeed: 2
+		TurnSpeed: 8
 		ImmovableCondition: !undeployed
 		RequireForceMoveCondition: !undeployed
 	RevealsShroud:
@@ -250,7 +250,7 @@ ART2:
 		UndeployedCondition: undeployed
 		UndeployOnMove: true
 		UndeployOnPickup: true
-		Facing: 96
+		Facing: 384
 		AllowedTerrainTypes: Clear, Road, DirtRoad, Rough
 		DeploySounds: place2.aud
 		UndeploySounds: clicky1.aud
@@ -269,8 +269,8 @@ ART2:
 		RequiresCondition: !undeployed && real-actor
 	Turreted:
 		Turret: deployed
-		TurnSpeed: 5
-		InitialFacing: 96
+		TurnSpeed: 20
+		InitialFacing: 384
 		Offset: 0,0,256
 		RealignDelay: -1
 	WithVoxelBarrel:
@@ -320,7 +320,7 @@ REPAIR:
 		HP: 20000
 	Mobile:
 		Speed: 85
-		TurnSpeed: 5
+		TurnSpeed: 20
 	RevealsShroud:
 		RequiresCondition: !inside-tunnel
 		Range: 5c0
@@ -365,7 +365,7 @@ WEED:
 		DeliverVoice: Move
 	Mobile:
 		Speed: 71
-		TurnSpeed: 5
+		TurnSpeed: 20
 	Health:
 		HP: 60000
 	SelfHealing:
@@ -407,7 +407,7 @@ SAPC:
 		Prerequisites: ~naweap, natech, ~techlevel.medium
 		Description: Troop transport that can move\nunderground to avoid detection.\n  Unarmed
 	Mobile:
-		TurnSpeed: 5
+		TurnSpeed: 20
 		Speed: 71
 		PauseOnCondition: empdisable || loading || being-captured || carried
 		Locomotor: subterranean
@@ -459,7 +459,7 @@ SUBTANK:
 		Prerequisites: ~naweap, natech, ~techlevel.high
 		Description: Subterranean Flame Tank.\nIs able to move underground.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
 	Mobile:
-		TurnSpeed: 6
+		TurnSpeed: 24
 		Speed: 71
 		Locomotor: subterranean
 	Health:
@@ -509,7 +509,7 @@ STNK:
 		Queue: Vehicle
 		Description: Lightly armoured tank equipped with a personal\nstealth generator. Armed with missiles.\nCan be spotted by infantry at close range.\n  Strong vs Vehicles, Aircraft\n  Weak vs Infantry
 	Mobile:
-		TurnSpeed: 5
+		TurnSpeed: 20
 		Speed: 85
 	Health:
 		HP: 18000

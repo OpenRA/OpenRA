@@ -522,7 +522,7 @@ NAWAST:
 		Range: 6c0
 		MaxHeightDelta: 3
 	TiberianSunRefinery:
-		DockAngle: 160
+		DockAngle: 640
 		DockOffset: 2,1
 	StoresResources:
 		Capacity: 56
@@ -531,7 +531,7 @@ NAWAST:
 	FreeActor:
 		Actor: WEED
 		SpawnOffset: 3,1
-		Facing: 160
+		Facing: 640
 	WithIdleOverlay@GLOW:
 		RequiresCondition: !build-incomplete
 		Sequence: idle-glow

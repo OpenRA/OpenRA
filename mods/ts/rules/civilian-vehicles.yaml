@@ -9,7 +9,7 @@
 		Name: Mammoth Tank
 	Mobile:
 		Speed: 56
-		TurnSpeed: 5
+		TurnSpeed: 20
 	Health:
 		HP: 60000
 	Armor:
@@ -19,7 +19,7 @@
 		MaxHeightDelta: 3
 		RequiresCondition: !inside-tunnel
 	Turreted:
-		TurnSpeed: 3
+		TurnSpeed: 12
 	Armament@PRIMARY:
 		Weapon: 120mmx
 		LocalOffset: 707,85,509, 707,-120,509
@@ -77,7 +77,7 @@ ICBM:
 		Type: Light
 	Mobile:
 		Speed: 85
-		TurnSpeed: 5
+		TurnSpeed: 20
 	RevealsShroud:
 		RequiresCondition: !inside-tunnel
 		Range: 7c0
@@ -85,7 +85,7 @@ ICBM:
 	Transforms:
 		IntoActor: gaicbm
 		Offset: -1,-1
-		Facing: 96
+		Facing: 384
 		TransformSounds:
 		NoTransformSounds:
 		Voice: Move
@@ -98,7 +98,7 @@ BUS:
 	Tooltip:
 		Name: School Bus
 	Mobile:
-		TurnSpeed: 5
+		TurnSpeed: 20
 		Speed: 113
 		PauseOnCondition: empdisable || loading || being-captured || carried
 	Health:
@@ -124,7 +124,7 @@ PICK:
 	Tooltip:
 		Name: Pickup
 	Mobile:
-		TurnSpeed: 5
+		TurnSpeed: 20
 		Speed: 113
 		PauseOnCondition: empdisable || loading || being-captured || carried
 	Health:
@@ -150,7 +150,7 @@ CAR:
 	Tooltip:
 		Name: Automobile
 	Mobile:
-		TurnSpeed: 5
+		TurnSpeed: 20
 		Speed: 113
 		PauseOnCondition: empdisable || loading || being-captured || carried
 	Health:
@@ -176,7 +176,7 @@ WINI:
 	Tooltip:
 		Name: Recreational Vehicle
 	Mobile:
-		TurnSpeed: 5
+		TurnSpeed: 20
 		Speed: 113
 		PauseOnCondition: empdisable || loading || being-captured || carried
 	Health:
