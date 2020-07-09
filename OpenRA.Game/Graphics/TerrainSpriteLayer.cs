@@ -59,7 +59,7 @@ namespace OpenRA.Graphics
 			for (var i = 0; i < vertices.Length; i++)
 			{
 				var v = vertices[i];
-				vertices[i] = new Vertex(v.X, v.Y, v.Z, v.S, v.T, v.U, v.V, palette.TextureIndex, v.C);
+				vertices[i] = new Vertex(v.X, v.Y, v.Z, v.S, v.T, v.U, v.V, palette.TextureIndex, v.C, new float3(v.R, v.G, v.B));
 			}
 
 			for (var row = 0; row < map.MapSize.Y; row++)
@@ -96,7 +96,7 @@ namespace OpenRA.Graphics
 				return;
 
 			var offset = rowStride * uv.V + 6 * uv.U;
-			Util.FastCreateQuad(vertices, pos, sprite, int2.Zero, palette.TextureIndex, offset, sprite.Size);
+			Util.FastCreateQuad(vertices, pos, sprite, int2.Zero, palette.TextureIndex, offset, sprite.Size, float3.Ones);
 
 			dirtyRows.Add(uv.V);
 		}

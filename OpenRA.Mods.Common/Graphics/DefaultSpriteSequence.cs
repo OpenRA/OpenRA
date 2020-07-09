@@ -112,6 +112,7 @@ namespace OpenRA.Mods.Common.Graphics
 		public int ShadowZOffset { get; private set; }
 		public int[] Frames { get; private set; }
 		public Rectangle Bounds { get; private set; }
+		public bool IgnoreWorldTint { get; private set; }
 
 		public readonly uint[] EmbeddedPalette;
 
@@ -156,6 +157,7 @@ namespace OpenRA.Mods.Common.Graphics
 				Tick = LoadField(d, "Tick", 40);
 				transpose = LoadField(d, "Transpose", false);
 				Frames = LoadField<int[]>(d, "Frames", null);
+				IgnoreWorldTint = LoadField(d, "IgnoreWorldTint", false);
 
 				var flipX = LoadField(d, "FlipX", false);
 				var flipY = LoadField(d, "FlipY", false);

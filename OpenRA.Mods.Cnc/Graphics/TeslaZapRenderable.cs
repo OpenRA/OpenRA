@@ -148,7 +148,7 @@ namespace OpenRA.Mods.Cnc.Graphics
 					.MinBy(t => Math.Abs(float2.Dot(z + new float2(t[0], t[1]), q) + c));
 
 				var pos = wr.ProjectedPosition((z + new float2(step[2], step[3])).ToInt2());
-				rs.Add(new SpriteRenderable(s.GetSprite(step[4]), pos, WVec.Zero, 0, pal, 1f, true).PrepareRender(wr));
+				rs.Add(new SpriteRenderable(s.GetSprite(step[4]), pos, WVec.Zero, 0, pal, 1f, true, s.IgnoreWorldTint).PrepareRender(wr));
 
 				z += new float2(step[0], step[1]);
 				if (rs.Count >= 1000)

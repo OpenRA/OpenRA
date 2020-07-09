@@ -26,6 +26,7 @@ varying vec2 vTexSampler;
 varying vec4 vColorFraction;
 varying vec4 vRGBAFraction;
 varying vec4 vPalettedFraction;
+varying vec4 vTint;
 
 uniform vec2 Texture0Size;
 uniform vec2 Texture1Size;
@@ -46,6 +47,7 @@ in vec2 vTexSampler;
 in vec4 vColorFraction;
 in vec4 vRGBAFraction;
 in vec4 vPalettedFraction;
+in vec4 vTint;
 
 out vec4 fragColor;
 #endif
@@ -227,8 +229,8 @@ void main()
 	}
 	else
 	#if __VERSION__ == 120
-		gl_FragColor = c;
+		gl_FragColor = c * vTint;
 		#else
-		fragColor = c;
+		fragColor = c * vTint;
 		#endif
 }

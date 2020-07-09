@@ -54,12 +54,12 @@ namespace OpenRA.Graphics
 
 		public IRenderable[] Render(WPos pos, WVec offset, int zOffset, PaletteReference palette, float scale)
 		{
-			var imageRenderable = new SpriteRenderable(Image, pos, offset, CurrentSequence.ZOffset + zOffset, palette, scale, IsDecoration);
+			var imageRenderable = new SpriteRenderable(Image, pos, offset, CurrentSequence.ZOffset + zOffset, palette, scale, IsDecoration, CurrentSequence.IgnoreWorldTint);
 
 			if (CurrentSequence.ShadowStart >= 0)
 			{
 				var shadow = CurrentSequence.GetShadow(CurrentFrame, facingFunc());
-				var shadowRenderable = new SpriteRenderable(shadow, pos, offset, CurrentSequence.ShadowZOffset + zOffset, palette, scale, true);
+				var shadowRenderable = new SpriteRenderable(shadow, pos, offset, CurrentSequence.ShadowZOffset + zOffset, palette, scale, true, CurrentSequence.IgnoreWorldTint);
 				return new IRenderable[] { shadowRenderable, imageRenderable };
 			}
 

@@ -14,7 +14,7 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Graphics
 {
-	public struct SpriteRenderable : IRenderable, IFinalizedRenderable
+	public struct SpriteRenderable : IRenderable, ITintableRenderable, IFinalizedRenderable
 	{
 		public static readonly IEnumerable<IRenderable> None = new IRenderable[0];
 
@@ -24,9 +24,17 @@ namespace OpenRA.Graphics
 		readonly int zOffset;
 		readonly PaletteReference palette;
 		readonly float scale;
+		readonly float3 tint;
 		readonly bool isDecoration;
+		readonly bool ignoreWorldTint;
 
 		public SpriteRenderable(Sprite sprite, WPos pos, WVec offset, int zOffset, PaletteReference palette, float scale, bool isDecoration)
+			: this(sprite, pos, offset, zOffset, palette, scale, float3.Ones, isDecoration, false) { }
+
+		public SpriteRenderable(Sprite sprite, WPos pos, WVec offset, int zOffset, PaletteReference palette, float scale, bool isDecoration, bool ignoreWorldTint)
+			: this(sprite, pos, offset, zOffset, palette, scale, float3.Ones, isDecoration, ignoreWorldTint) { }
+
+		public SpriteRenderable(Sprite sprite, WPos pos, WVec offset, int zOffset, PaletteReference palette, float scale, float3 tint, bool isDecoration, bool ignoreWorldTint)
 		{
 			this.sprite = sprite;
 			this.pos = pos;
@@ -34,7 +42,9 @@ namespace OpenRA.Graphics
 			this.zOffset = zOffset;
 			this.palette = palette;
 			this.scale = scale;
+			this.tint = tint;
 			this.isDecoration = isDecoration;
+			this.ignoreWorldTint = ignoreWorldTint;
 		}
 
 		public WPos Pos { get { return pos + offset; } }
@@ -43,10 +53,12 @@ namespace OpenRA.Graphics
 		public int ZOffset { get { return zOffset; } }
 		public bool IsDecoration { get { return isDecoration; } }
 
-		public IRenderable WithPalette(PaletteReference newPalette) { return new SpriteRenderable(sprite, pos, offset, zOffset, newPalette, scale, isDecoration); }
-		public IRenderable WithZOffset(int newOffset) { return new SpriteRenderable(sprite, pos, offset, newOffset, palette, scale, isDecoration); }
-		public IRenderable OffsetBy(WVec vec) { return new SpriteRenderable(sprite, pos + vec, offset, zOffset, palette, scale, isDecoration); }
-		public IRenderable AsDecoration() { return new SpriteRenderable(sprite, pos, offset, zOffset, palette, scale, true); }
+		public IRenderable WithPalette(PaletteReference newPalette) { return new SpriteRenderable(sprite, pos, offset, zOffset, newPalette, scale, tint, isDecoration, ignoreWorldTint); }
+		public IRenderable WithZOffset(int newOffset) { return new SpriteRenderable(sprite, pos, offset, newOffset, palette, scale, tint, isDecoration, ignoreWorldTint); }
+		public IRenderable OffsetBy(WVec vec) { return new SpriteRenderable(sprite, pos + vec, offset, zOffset, palette, scale, tint, isDecoration, ignoreWorldTint); }
+		public IRenderable AsDecoration() { return new SpriteRenderable(sprite, pos, offset, zOffset, palette, scale, tint, true, ignoreWorldTint); }
+
+		public IRenderable WithTint(float3 newTint) { return new SpriteRenderable(sprite, pos, offset, zOffset, palette, scale, newTint, isDecoration, ignoreWorldTint); }
 
 		float3 ScreenPosition(WorldRenderer wr)
 		{
@@ -59,7 +71,11 @@ namespace OpenRA.Graphics
 		public IFinalizedRenderable PrepareRender(WorldRenderer wr) { return this; }
 		public void Render(WorldRenderer wr)
 		{
-			Game.Renderer.WorldSpriteRenderer.DrawSprite(sprite, ScreenPosition(wr), palette, scale * sprite.Size);
+			var wsr = Game.Renderer.WorldSpriteRenderer;
+			if (ignoreWorldTint)
+				wsr.DrawSprite(sprite, ScreenPosition(wr), palette, scale * sprite.Size);
+			else
+				wsr.DrawSpriteWithTint(sprite, ScreenPosition(wr), palette, scale * sprite.Size, tint);
 		}
 
 		public void RenderDebugGeometry(WorldRenderer wr)
