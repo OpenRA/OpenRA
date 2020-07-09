@@ -228,7 +228,6 @@ namespace OpenRA
 
 				for (var i = 0; i < actors.Count; i++)
 				{
-					last = actors[i];
 					var current = actors[i];
 					if (current == last || !predicate(traits[i]))
 						continue;
