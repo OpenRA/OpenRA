@@ -23,11 +23,24 @@ namespace OpenRA.Mods.Common.Widgets
 		public void AdjustChild(Widget w)
 		{
 			if (widget.Children.Length == 0)
+			{
 				widget.ContentHeight = 2 * widget.TopBottomSpacing - widget.ItemSpacing;
+
+				if (widget.Node.LayoutPaddingTop != 0)
+					widget.ContentHeight += (int)widget.Node.LayoutPaddingTop;
+
+				if (widget.Node.LayoutPaddingBottom != 0)
+					widget.ContentHeight += (int)widget.Node.LayoutPaddingBottom;
+			}
 
 			if (w.Node.PositionType == YogaPositionType.Absolute)
 			{
-				w.Node.Top = widget.ContentHeight - widget.TopBottomSpacing + widget.ItemSpacing;
+				var top = widget.ContentHeight - widget.TopBottomSpacing + widget.ItemSpacing;
+
+				if (widget.Node.LayoutPaddingBottom != 0)
+					top -= (int)widget.Node.LayoutPaddingBottom;
+
+				w.Node.Top = top;
 				w.Node.CalculateLayout();
 			}
 
@@ -38,6 +51,10 @@ namespace OpenRA.Mods.Common.Widgets
 		public void AdjustChildren()
 		{
 			widget.ContentHeight = widget.TopBottomSpacing;
+
+			if (widget.Node.LayoutPaddingTop != 0)
+				widget.ContentHeight += (int)widget.Node.LayoutPaddingTop;
+
 			foreach (var w in widget.Children)
 			{
 				if (w.Node.PositionType == YogaPositionType.Absolute)
@@ -53,6 +70,9 @@ namespace OpenRA.Mods.Common.Widgets
 			// The loop above appended an extra widget.ItemSpacing after the last item.
 			// Replace it with proper bottom spacing.
 			widget.ContentHeight += widget.TopBottomSpacing - widget.ItemSpacing;
+
+			if (widget.Node.LayoutPaddingBottom != 0)
+				widget.ContentHeight += (int)widget.Node.LayoutPaddingBottom;
 		}
 	}
 }
