@@ -1173,27 +1173,27 @@ Actors:
 	Actor434: car
 		Owner: Neutral
 		Location: 82,-56
-		Facing: 32
+		Facing: 128
 	Actor433: pick
 		Owner: Neutral
 		Location: 74,64
-		Facing: 92
+		Facing: 368
 	Actor432: car
 		Owner: Neutral
 		Location: 77,58
-		Facing: 32
+		Facing: 128
 	Actor435: pick
 		Owner: Neutral
 		Location: 101,-48
-		Facing: -32
+		Facing: 896
 	Actor436: bus
 		Owner: Neutral
 		Location: 29,0
-		Facing: 32
+		Facing: 128
 	Actor437: truckb
 		Owner: Neutral
 		Location: 130,1
-		Facing: 160
+		Facing: 640
 	Actor431: trock03
 		Owner: Neutral
 		Location: 29,3

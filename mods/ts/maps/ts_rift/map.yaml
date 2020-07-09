@@ -43,87 +43,87 @@ Actors:
 		Location: 156,34
 		Owner: Neutral
 		Health: 100
-		Facing: 160
+		Facing: 640
 	Actor3: ca0007
 		Location: 160,36
 		Owner: Neutral
 		Health: 100
-		Facing: 160
+		Facing: 640
 	Actor4: ca0006
 		Location: 160,32
 		Owner: Neutral
 		Health: 100
-		Facing: 160
+		Facing: 640
 	Actor5: ca0003
 		Location: 161,28
 		Owner: Neutral
 		Health: 100
-		Facing: 160
+		Facing: 640
 	Actor6: ca0018
 		Location: 164,37
 		Owner: Neutral
 		Health: 100
-		Facing: 160
+		Facing: 640
 	Actor7: ca0020
 		Location: 164,35
 		Owner: Neutral
 		Health: 100
-		Facing: 160
+		Facing: 640
 	Actor8: ca0020
 		Location: 167,35
 		Owner: Neutral
 		Health: 100
-		Facing: 160
+		Facing: 640
 	Actor9: ca0019
 		Location: 167,37
 		Owner: Neutral
 		Health: 100
-		Facing: 160
+		Facing: 640
 	Actor10: ca0015
 		Location: 164,27
 		Owner: Neutral
 		Health: 100
-		Facing: 160
+		Facing: 640
 	Actor11: ca0008
 		Location: 153,-21
 		Owner: Neutral
 		Health: 100
-		Facing: 160
+		Facing: 640
 	Actor12: ca0009
 		Location: 106,22
 		Owner: Neutral
 		Health: 100
-		Facing: 160
+		Facing: 640
 	Actor13: ca0015
 		Location: 150,-23
 		Owner: Neutral
 		Health: 100
-		Facing: 160
+		Facing: 640
 	Actor14: ca0016
 		Location: 157,-21
 		Owner: Neutral
 		Health: 100
-		Facing: 160
+		Facing: 640
 	Actor15: ca0017
 		Location: 107,28
 		Owner: Neutral
 		Health: 100
-		Facing: 160
+		Facing: 640
 	Actor16: ca0013
 		Location: 101,22
 		Owner: Neutral
 		Health: 100
-		Facing: 160
+		Facing: 640
 	Actor17: ca0012
 		Location: 110,27
 		Owner: Neutral
 		Health: 100
-		Facing: 160
+		Facing: 640
 	Actor18: ca0011
 		Location: 150,-27
 		Owner: Neutral
 		Health: 100
-		Facing: 160
+		Facing: 640
 	Actor22: tree21
 		Location: 104,-54
 		Owner: Neutral
@@ -1685,37 +1685,37 @@ Actors:
 		Owner: Neutral
 		Location: 167,30
 		SubCell: 2
-		Facing: 92
+		Facing: 368
 	Actor549: civ1
 		Owner: Neutral
 		Location: 161,41
 		SubCell: 1
-		Facing: 92
+		Facing: 368
 	Actor550: civ2
 		Owner: Neutral
 		Location: 159,34
 		SubCell: 2
-		Facing: 92
+		Facing: 368
 	Actor551: civ2
 		Owner: Neutral
 		Location: 162,31
 		SubCell: 2
-		Facing: 92
+		Facing: 368
 	Actor552: civ3
 		Owner: Neutral
 		Location: 162,33
 		SubCell: 2
-		Facing: 92
+		Facing: 368
 	Actor553: civ2
 		Owner: Neutral
 		Location: 155,-20
 		SubCell: 2
-		Facing: 92
+		Facing: 368
 	Actor554: civ2
 		Owner: Neutral
 		Location: 108,25
 		SubCell: 2
-		Facing: 92
+		Facing: 368
 	Actor555: fona11
 		Owner: Neutral
 		Location: 105,-31

@@ -52,38 +52,31 @@ Actors:
 	Actor0: cabhut
 		Location: 141,0
 		Owner: Neutral
-		Health: 100
-		Facing: 96
+		Facing: 896
 	Actor1: cabhut
 		Location: 137,-11
 		Owner: Neutral
-		Health: 100
-		Facing: 96
+		Facing: 896
 	Actor2: cabhut
 		Location: 79,25
 		Owner: Neutral
-		Health: 100
-		Facing: 96
+		Facing: 896
 	Actor3: cabhut
 		Location: 83,16
 		Owner: Neutral
-		Health: 100
-		Facing: 96
+		Facing: 896
 	Actor4: cabhut
 		Location: 81,-15
 		Owner: Neutral
-		Health: 100
-		Facing: 96
+		Facing: 896
 	Actor5: cabhut
 		Location: 77,-28
 		Owner: Neutral
-		Health: 100
-		Facing: 96
+		Facing: 896
 	Actor6: city22
 		Location: 175,8
 		Owner: Neutral
-		Health: 100
-		Facing: 96
+		Facing: 896
 	Actor7: tibtre01
 		Location: 45,0
 		Owner: Neutral
@@ -597,11 +590,23 @@ Actors:
 	Actor177: lobrdg_a
 		Location: 138,-7
 		Owner: Neutral
+	Actor178: lobrdg_r_nw
+		Location: 125,7
+		Owner: Neutral
 	Actor179: lobrdg_a
 		Location: 138,-6
 		Owner: Neutral
+	Actor180: lobrdg_b
+		Location: 126,7
+		Owner: Neutral
 	Actor181: lobrdg_a
 		Location: 138,-5
+		Owner: Neutral
+	Actor182: lobrdg_r_nw
+		Location: 125,9
+		Owner: Neutral
+	Actor183: lobrdg_b
+		Location: 127,7
 		Owner: Neutral
 	Actor184: lobrdg_a
 		Location: 138,-4
