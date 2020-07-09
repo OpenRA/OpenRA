@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public readonly int2 Drops = new int2(5, 8);
 
 		[Desc("Sets the approach direction.")]
-		public readonly int PodFacing = 32;
+		public readonly WAngle PodFacing = new WAngle(128);
 
 		[Desc("Maximum offset from targetLocation")]
 		public readonly int PodScatter = 3;
@@ -91,7 +91,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		{
 			base.Activate(self, order, manager);
 
-			SendDropPods(self, order, WAngle.FromFacing(info.PodFacing));
+			SendDropPods(self, order, info.PodFacing);
 		}
 
 		public void SendDropPods(Actor self, Order order, WAngle facing)

@@ -123,7 +123,7 @@ MNLYR:
 		Type: Heavy
 	Mobile:
 		Speed: 128
-		TurnSpeed: 900
+		TurnSpeed: 512
 	RevealsShroud:
 		Range: 40c0
 	MustBeDestroyed:
@@ -131,7 +131,7 @@ MNLYR:
 	Transforms:
 		IntoActor: ftur
 		Offset: 0,0
-		Facing: 96
+		Facing: 384
 	CashTrickler:
 		Interval: 150
 		Amount: 20
@@ -147,7 +147,7 @@ FTUR:
 	Transforms:
 		IntoActor: mnlyr
 		Offset: 0,0
-		Facing: 96
+		Facing: 384
 	MustBeDestroyed:
 		RequiredForShortGame: true
 	CashTrickler:

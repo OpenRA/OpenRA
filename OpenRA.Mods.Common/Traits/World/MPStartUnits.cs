@@ -43,11 +43,11 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Outer radius for spawning support actors")]
 		public readonly int OuterSupportRadius = 4;
 
-		[Desc("Initial facing of BaseActor. -1 means random.")]
-		public readonly int BaseActorFacing = 128;
+		[Desc("Initial facing of BaseActor. Leave undefined for random facings.")]
+		public readonly WAngle? BaseActorFacing = new WAngle(512);
 
-		[Desc("Initial facing of SupportActors. -1 means random.")]
-		public readonly int SupportActorsFacing = -1;
+		[Desc("Initial facing of SupportActors. Leave undefined for random facings.")]
+		public readonly WAngle? SupportActorsFacing = null;
 	}
 
 	public class MPStartUnits { }

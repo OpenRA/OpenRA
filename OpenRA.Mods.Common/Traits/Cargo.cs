@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly WDist LoadRange = WDist.FromCells(5);
 
 		[Desc("Which direction the passenger will face (relative to the transport) when unloading.")]
-		public readonly int PassengerFacing = 128;
+		public readonly WAngle PassengerFacing = new WAngle(512);
 
 		[Desc("Delay (in ticks) before continuing after loading a passenger.")]
 		public readonly int AfterLoadDelay = 8;
@@ -370,10 +370,10 @@ namespace OpenRA.Mods.Common.Traits
 
 			var passengerFacing = passenger.TraitOrDefault<IFacing>();
 			if (passengerFacing != null)
-				passengerFacing.Facing = facing.Value.Facing + WAngle.FromFacing(Info.PassengerFacing);
+				passengerFacing.Facing = facing.Value.Facing + Info.PassengerFacing;
 
 			foreach (var t in passenger.TraitsImplementing<Turreted>())
-				t.TurretFacing = facing.Value.Facing.Facing + Info.PassengerFacing;
+				t.TurretFacing = (facing.Value.Facing + Info.PassengerFacing).Facing;
 		}
 
 		public void Load(Actor self, Actor a)

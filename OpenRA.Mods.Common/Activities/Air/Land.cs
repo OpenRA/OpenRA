@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Activities
 			// NOTE: desiredFacing = -1 means we should not prefer any particular facing and instead just
 			// use whatever facing gives us the most direct path to the landing site.
 			if (!facing.HasValue && aircraft.Info.TurnToLand)
-				desiredFacing = WAngle.FromFacing(aircraft.Info.InitialFacing);
+				desiredFacing = aircraft.Info.InitialFacing;
 			else
 				desiredFacing = facing;
 		}

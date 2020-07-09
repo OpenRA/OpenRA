@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("How many game ticks should pass before closing the actor's turret.")]
 		public readonly int CloseDelay = 125;
 
-		public readonly int DefaultFacing = 0;
+		public readonly WAngle DefaultFacing = WAngle.Zero;
 
 		[Desc("The percentage of damage that is received while this actor is closed.")]
 		public readonly int ClosedDamageMultiplier = 50;
@@ -107,10 +107,10 @@ namespace OpenRA.Mods.Cnc.Traits
 		{
 			if (state == PopupState.Open && idleTicks++ > info.CloseDelay)
 			{
-				turret.DesiredFacing = info.DefaultFacing;
+				turret.DesiredFacing = info.DefaultFacing.Facing;
 				state = PopupState.Rotating;
 			}
-			else if (state == PopupState.Rotating && turret.TurretFacing == info.DefaultFacing)
+			else if (state == PopupState.Rotating && turret.TurretFacing == info.DefaultFacing.Facing)
 			{
 				state = PopupState.Transitioning;
 				wsb.PlayCustomAnimation(self, info.ClosingSequence, () =>

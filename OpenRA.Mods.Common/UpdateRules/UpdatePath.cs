@@ -69,6 +69,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new UpdateMapInits(),
 				new CreateFlashPaletteEffectWarhead(),
 				new ChangeTargetLineDelayToMilliseconds(),
+				new ReplaceFacingAngles(),
 			})
 		};
 

@@ -24,18 +24,18 @@ namespace OpenRA.Mods.Cnc.Traits
 		public readonly int Speed = 28;
 
 		[Desc("Facing to use when actor spawns. Only 64 and 192 supported.")]
-		public readonly int InitialFacing = 64;
+		public readonly WAngle InitialFacing = new WAngle(256);
 
 		[Desc("Facing to use for actor previews (map editor, color picker, etc). Only 64 and 192 supported.")]
-		public readonly int PreviewFacing = 64;
+		public readonly WAngle PreviewFacing = new WAngle(256);
 
 		public override object Create(ActorInitializer init) { return new TDGunboat(init, this); }
 
-		public WAngle GetInitialFacing() { return WAngle.FromFacing(InitialFacing); }
+		public WAngle GetInitialFacing() { return InitialFacing; }
 
 		IEnumerable<ActorInit> IActorPreviewInitInfo.ActorPreviewInits(ActorInfo ai, ActorPreviewType type)
 		{
-			yield return new FacingInit(WAngle.FromFacing(PreviewFacing));
+			yield return new FacingInit(PreviewFacing);
 		}
 
 		public IReadOnlyDictionary<CPos, SubCell> OccupiedCells(ActorInfo info, CPos location, SubCell subCell = SubCell.Any)

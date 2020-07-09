@@ -22,9 +22,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Explosion weapon that triggers when hitting ground.")]
 		public readonly string Explosion = "UnitExplode";
 
-		[Desc("Limit the maximum spin (in facing units per tick) that can be achieved while crashing.",
-			"0 disables spinning. Negative values imply no limit.")]
-		public readonly int MaximumSpinSpeed = -1;
+		[Desc("Limit the maximum spin (in angle units per tick) that can be achieved while crashing.",
+			"0 disables spinning. Leave undefined for no limit.")]
+		public readonly WAngle? MaximumSpinSpeed = null;
 
 		[Desc("Does the aircraft (husk) move forward at aircraft speed?")]
 		public readonly bool Moves = false;

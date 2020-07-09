@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool BaselineSpawn = false;
 
 		[Desc("Direction the aircraft should face to land.")]
-		public readonly int Facing = 64;
+		public readonly WAngle Facing = new WAngle(256);
 
 		public override object Create(ActorInitializer init) { return new ProductionAirdrop(init, this); }
 	}
@@ -77,7 +77,7 @@ namespace OpenRA.Mods.Common.Traits
 				var loc = self.Location.ToMPos(map);
 				startPos = new MPos(loc.U + map.Bounds.Width, loc.V).ToCPos(map);
 				endPos = new MPos(map.Bounds.Left, loc.V).ToCPos(map);
-				spawnFacing = WAngle.FromFacing(info.Facing);
+				spawnFacing = info.Facing;
 			}
 
 			// Assume a single exit point for simplicity
@@ -99,7 +99,7 @@ namespace OpenRA.Mods.Common.Traits
 				});
 
 				var exitCell = self.Location + exit.ExitCell;
-				actor.QueueActivity(new Land(actor, Target.FromActor(self), WDist.Zero, WVec.Zero, WAngle.FromFacing(info.Facing), clearCells: new CPos[1] { exitCell }));
+				actor.QueueActivity(new Land(actor, Target.FromActor(self), WDist.Zero, WVec.Zero, info.Facing, clearCells: new CPos[1] { exitCell }));
 				actor.QueueActivity(new CallFunc(() =>
 				{
 					if (!self.IsInWorld || self.IsDead)

@@ -30,10 +30,10 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Which Locomotor does this trait use. Must be defined on the World actor.")]
 		public readonly string Locomotor = null;
 
-		public readonly int InitialFacing = 0;
+		public readonly WAngle InitialFacing = WAngle.Zero;
 
 		[Desc("Speed at which the actor turns.")]
-		public readonly int TurnSpeed = 255;
+		public readonly WAngle TurnSpeed = new WAngle(512);
 
 		public readonly int Speed = 1;
 
@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Voice = "Action";
 
 		[Desc("Facing to use for actor previews (map editor, color picker, etc)")]
-		public readonly int PreviewFacing = 96;
+		public readonly WAngle PreviewFacing = new WAngle(384);
 
 		[Desc("Display order for the facing slider in the map editor")]
 		public readonly int EditorFacingDisplayOrder = 3;
@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		IEnumerable<ActorInit> IActorPreviewInitInfo.ActorPreviewInits(ActorInfo ai, ActorPreviewType type)
 		{
-			yield return new FacingInit(WAngle.FromFacing(PreviewFacing));
+			yield return new FacingInit(PreviewFacing);
 		}
 
 		public override object Create(ActorInitializer init) { return new Mobile(init, this); }
@@ -87,7 +87,7 @@ namespace OpenRA.Mods.Common.Traits
 			base.RulesetLoaded(rules, ai);
 		}
 
-		public WAngle GetInitialFacing() { return WAngle.FromFacing(InitialFacing); }
+		public WAngle GetInitialFacing() { return InitialFacing; }
 
 		// initialized and used by CanEnterCell
 		Locomotor locomotor;
@@ -134,7 +134,7 @@ namespace OpenRA.Mods.Common.Traits
 				actor =>
 				{
 					var init = actor.GetInitOrDefault<FacingInit>(this);
-					return (init != null ? init.Value : WAngle.FromFacing(InitialFacing)).Angle;
+					return (init != null ? init.Value : InitialFacing).Angle;
 				},
 				(actor, value) => actor.ReplaceInit(new FacingInit(new WAngle((int)value))));
 		}
@@ -206,7 +206,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public WRot Orientation { get { return orientation; } }
 
-		public WAngle TurnSpeed { get { return new WAngle(4 * Info.TurnSpeed); } }
+		public WAngle TurnSpeed { get { return Info.TurnSpeed; } }
 		#endregion
 
 		[Sync]
@@ -265,7 +265,7 @@ namespace OpenRA.Mods.Common.Traits
 				SetVisualPosition(self, init.World.Map.CenterOfSubCell(FromCell, FromSubCell));
 			}
 
-			Facing = oldFacing = init.GetValue<FacingInit, WAngle>(WAngle.FromFacing(info.InitialFacing));
+			Facing = oldFacing = init.GetValue<FacingInit, WAngle>(info.InitialFacing);
 
 			// Sets the initial visual position
 			// Unit will move into the cell grid (defined by LocationInit) as its initial activity

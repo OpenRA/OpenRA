@@ -567,6 +567,9 @@ namespace OpenRA
 			}
 			else if (fieldType.IsGenericType && fieldType.GetGenericTypeDefinition() == typeof(Nullable<>))
 			{
+				if (string.IsNullOrEmpty(value))
+					return null;
+
 				var innerType = fieldType.GetGenericArguments().First();
 				var innerValue = GetValue("Nullable<T>", innerType, value, field);
 				return fieldType.GetConstructor(new[] { innerType }).Invoke(new[] { innerValue });

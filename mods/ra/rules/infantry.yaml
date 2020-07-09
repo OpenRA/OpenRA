@@ -752,7 +752,7 @@ Ant:
 		HP: 75000
 	Mobile:
 		Speed: 99
-		TurnSpeed: 12
+		TurnSpeed: 48
 		Locomotor: lighttracked
 	-Crushable:
 	AutoTarget:

@@ -44,11 +44,11 @@
 	MinRange: 0c512
 	Projectile: Missile
 		Shadow: true
-		HorizontalRateOfTurn: 3
+		HorizontalRateOfTurn: 12
 		RangeLimit: 6c614
 		CruiseAltitude: 1c0
 		MinimumLaunchAngle: 64
-		VerticalRateOfTurn: 10
+		VerticalRateOfTurn: 40
 		Image: MISSILE2
 		TrailImage: large_trail
 		Speed: 288
@@ -104,7 +104,7 @@ TowerMissile:
 	BurstDelays: 60
 	ValidTargets: Ground, Air
 	Projectile: Missile
-		HorizontalRateOfTurn: 1
+		HorizontalRateOfTurn: 4
 	Warhead@1Dam: SpreadDamage
 		ValidTargets: Ground, Air
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath

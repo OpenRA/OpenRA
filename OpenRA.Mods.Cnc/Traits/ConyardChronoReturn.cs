@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public readonly string OriginalActor = "mcv";
 
 		[Desc("Facing of the returned actor.")]
-		public readonly int Facing = 96;
+		public readonly WAngle Facing = new WAngle(384);
 
 		public readonly string ChronoshiftSound = "chrono2.aud";
 
@@ -175,7 +175,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			{
 				new LocationInit(destination.Value),
 				new OwnerInit(self.Owner),
-				new FacingInit(WAngle.FromFacing(info.Facing)),
+				new FacingInit(info.Facing),
 				new FactionInit(faction),
 				new HealthInit((int)(health.HP * 100L / health.MaxHP))
 			};

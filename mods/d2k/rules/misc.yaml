@@ -172,7 +172,7 @@ waypoint:
 carryall.colorpicker:
 	Inherits: carryall
 	Aircraft:
-		InitialFacing: 104
+		InitialFacing: 416
 	-Buildable:
 	-MapEditorData:
 	RenderSprites:

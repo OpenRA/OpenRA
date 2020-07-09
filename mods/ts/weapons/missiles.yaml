@@ -11,7 +11,7 @@
 		Image: DRAGON
 		TrailImage: small_smoke_trail
 		TrailPalette: effectalpha75
-		HorizontalRateOfTurn: 25
+		HorizontalRateOfTurn: 100
 		RangeLimit: 15c0
 		Palette: ra
 		MinimumLaunchSpeed: 75
@@ -19,7 +19,7 @@
 		Acceleration: 96
 		MinimumLaunchAngle: 128
 		MaximumLaunchAngle: 192
-		VerticalRateOfTurn: 25
+		VerticalRateOfTurn: 100
 		CruiseAltitude: 5c512
 		AllowSnapping: true
 		TerrainHeightAware: true
@@ -128,7 +128,7 @@ RedEye2:
 	ValidTargets: Air
 	Projectile: Missile
 		Arm: 1
-		VerticalRateOfTurn: 35
+		VerticalRateOfTurn: 140
 		RangeLimit: 25c0
 		Speed: 288
 	Warhead@1Dam: SpreadDamage

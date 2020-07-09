@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Cell offset where the exiting actor enters the ActorMap relative to the topleft cell of the producing actor.")]
 		public readonly CVec ExitCell = CVec.Zero;
-		public readonly int Facing = -1;
+		public readonly WAngle? Facing = null;
 
 		[Desc("Type tags on this exit.")]
 		public readonly HashSet<string> ProductionTypes = new HashSet<string>();

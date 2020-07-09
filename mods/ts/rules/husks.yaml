@@ -3,7 +3,7 @@ DSHP.Husk:
 	Tooltip:
 		Name: Dropship
 	Aircraft:
-		TurnSpeed: 5
+		TurnSpeed: 20
 		Speed: 168
 	-RenderSprites:
 	RenderVoxels:
@@ -14,7 +14,7 @@ ORCA.Husk:
 	Tooltip:
 		Name: Orca Fighter
 	Aircraft:
-		TurnSpeed: 5
+		TurnSpeed: 20
 		Speed: 186
 	RenderSprites:
 		Image: orca
@@ -30,10 +30,10 @@ ORCAB.Husk:
 	Tooltip:
 		Name: Orca Bomber
 	Aircraft:
-		TurnSpeed: 3
+		TurnSpeed: 12
 		Speed: 96
 	FallsToEarth:
-		MaximumSpinSpeed: 6
+		MaximumSpinSpeed: 24
 	RenderSprites:
 		Image: orcab
 	RenderVoxels:
@@ -48,7 +48,7 @@ ORCATRAN.Husk:
 	Tooltip:
 		Name: Orca Transport
 	Aircraft:
-		TurnSpeed: 5
+		TurnSpeed: 20
 		Speed: 84
 	RenderSprites:
 		Image: orcatran
@@ -64,7 +64,7 @@ TRNSPORT.Husk:
 	Tooltip:
 		Name: Carryall
 	Aircraft:
-		TurnSpeed: 5
+		TurnSpeed: 20
 		Speed: 149
 	RenderSprites:
 		Image: trnsport
@@ -80,10 +80,10 @@ SCRIN.Husk:
 	Tooltip:
 		Name: Banshee Fighter
 	Aircraft:
-		TurnSpeed: 3
+		TurnSpeed: 12
 		Speed: 168
 	FallsToEarth:
-		MaximumSpinSpeed: 6
+		MaximumSpinSpeed: 24
 	RenderSprites:
 		Image: scrin
 	RenderVoxels:
@@ -98,7 +98,7 @@ APACHE.Husk:
 	Tooltip:
 		Name: Harpy
 	Aircraft:
-		TurnSpeed: 5
+		TurnSpeed: 20
 		Speed: 130
 	WithIdleOverlay:
 		Offset: 85,0,598

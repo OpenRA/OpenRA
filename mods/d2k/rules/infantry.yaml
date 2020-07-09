@@ -110,7 +110,7 @@ thumper:
 	GrantConditionOnDeploy:
 		DeployedCondition: deployed
 		UndeployedCondition: undeployed
-		Facing: 128
+		Facing: 512
 		AllowedTerrainTypes: Sand, Spice, Dune, SpiceSand
 	WithInfantryBody:
 		RequiresCondition: undeployed

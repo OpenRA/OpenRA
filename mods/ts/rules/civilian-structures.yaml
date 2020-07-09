@@ -1690,7 +1690,7 @@ GAICBM:
 	Transforms:
 		IntoActor: icbm
 		Offset: 1,1
-		Facing: 96
+		Facing: 384
 		TransformSounds: place2.aud
 		NoTransformSounds:
 	-WithDeathAnimation:

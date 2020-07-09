@@ -31,9 +31,9 @@ waypoint:
 mmch.colorpicker:
 	Inherits: MMCH
 	Mobile:
-		InitialFacing: 160
+		InitialFacing: 640
 	Turreted:
-		InitialFacing: 160
+		InitialFacing: 640
 	WithFacingSpriteBody:
 		Sequence: walk
 	-Buildable:

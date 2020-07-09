@@ -30,7 +30,7 @@ mcv:
 		Weapon: UnitExplodeLarge
 		EmptyWeapon: UnitExplodeLarge
 	Transforms:
-		Facing: 16
+		Facing: 64
 		IntoActor: construction_yard
 		Offset: -1,-1
 		TransformSounds: BUILD1.WAV
@@ -127,7 +127,7 @@ trike:
 	Armor:
 		Type: wood
 	Mobile:
-		TurnSpeed: 10
+		TurnSpeed: 40
 		Speed: 128
 	RevealsShroud:
 		Range: 4c768
@@ -168,7 +168,7 @@ quad:
 	Armor:
 		Type: light
 	Mobile:
-		TurnSpeed: 8
+		TurnSpeed: 32
 		Speed: 96
 	RevealsShroud:
 		Range: 4c768
@@ -207,11 +207,11 @@ siege_tank:
 		Type: light
 	Mobile:
 		Speed: 43
-		TurnSpeed: 3
+		TurnSpeed: 12
 	RevealsShroud:
 		Range: 6c768
 	Turreted:
-		TurnSpeed: 3
+		TurnSpeed: 12
 		Offset: 0,0,-32
 	Armament:
 		Weapon: 155mm
@@ -255,7 +255,7 @@ missile_tank:
 		Cost: 900
 	Mobile:
 		Speed: 64
-		TurnSpeed: 5
+		TurnSpeed: 20
 	Health:
 		HP: 13000
 	Armor:
@@ -302,7 +302,7 @@ sonic_tank:
 	Armor:
 		Type: light
 	Mobile:
-		TurnSpeed: 3
+		TurnSpeed: 12
 		Speed: 31
 	RevealsShroud:
 		Range: 5c768
@@ -342,7 +342,7 @@ devastator:
 	Armor:
 		Type: heavy
 	Mobile:
-		TurnSpeed: 3
+		TurnSpeed: 12
 		Speed: 31
 		Locomotor: devastator
 		RequiresCondition: !overload
@@ -414,7 +414,7 @@ raider:
 	Armor:
 		Type: wood
 	Mobile:
-		TurnSpeed: 10
+		TurnSpeed: 40
 		Speed: 149
 	RevealsShroud:
 		Range: 4c768
@@ -479,7 +479,7 @@ deviator:
 		BuildDurationModifier: 100
 		Description: Fires a warhead which changes\nthe allegiance of enemy vehicles
 	Mobile:
-		TurnSpeed: 3
+		TurnSpeed: 12
 		Speed: 53
 	Health:
 		HP: 11000
@@ -525,11 +525,11 @@ deviator:
 		Type: heavy
 	Mobile:
 		Speed: 75
-		TurnSpeed: 5
+		TurnSpeed: 20
 	RevealsShroud:
 		Range: 5c768
 	Turreted:
-		TurnSpeed: 5
+		TurnSpeed: 20
 		RealignDelay: 0
 	Armament:
 		Weapon: 80mm_A
@@ -578,7 +578,7 @@ combat_tank_o:
 	Buildable:
 		Prerequisites: ~heavy.ordos_combat
 	Turreted:
-		TurnSpeed: 5
+		TurnSpeed: 20
 	Armament:
 		Weapon: 80mm_O
 	Mobile:

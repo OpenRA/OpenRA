@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly CVec Offset = CVec.Zero;
 
 		[Desc("Facing that the actor must face before transforming.")]
-		public readonly int Facing = 96;
+		public readonly WAngle Facing = new WAngle(384);
 
 		[Desc("Sounds to play when transforming.")]
 		public readonly string[] TransformSounds = { };
@@ -91,7 +91,7 @@ namespace OpenRA.Mods.Common.Traits
 			return new Transform(self, Info.IntoActor)
 			{
 				Offset = Info.Offset,
-				Facing = WAngle.FromFacing(Info.Facing),
+				Facing = Info.Facing,
 				Sounds = Info.TransformSounds,
 				Notification = Info.TransformNotification,
 				Faction = faction

@@ -261,7 +261,7 @@ refinery:
 	RevealsShroud:
 		Range: 3c768
 	Refinery:
-		DockAngle: 160
+		DockAngle: 640
 		DockOffset: 2,1
 		TickRate: 20
 	StoresResources:
@@ -744,8 +744,8 @@ medium_gun_turret:
 		QuantizedFacings: 32
 	WithMuzzleOverlay:
 	Turreted:
-		TurnSpeed: 6
-		InitialFacing: 128
+		TurnSpeed: 24
+		InitialFacing: 512
 	Armament:
 		Weapon: 110mm_Gun
 		LocalOffset: 512,0,432
@@ -789,8 +789,8 @@ large_gun_turret:
 		Weapon: TowerMissile
 		LocalOffset: 256,384,768, 256,-384,768
 	Turreted:
-		TurnSpeed: 8
-		InitialFacing: 128
+		TurnSpeed: 32
+		InitialFacing: 512
 	Power:
 		Amount: -60
 	RevealOnDeath:

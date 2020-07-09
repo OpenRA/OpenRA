@@ -20,9 +20,11 @@ namespace OpenRA.Mods.Common.Traits
 	public class TurretedInfo : PausableConditionalTraitInfo, Requires<BodyOrientationInfo>, IActorPreviewInitInfo, IEditorActorOptions
 	{
 		public readonly string Turret = "primary";
+
 		[Desc("Speed at which the turret turns.")]
-		public readonly int TurnSpeed = 255;
-		public readonly int InitialFacing = 0;
+		public readonly WAngle TurnSpeed = new WAngle(512);
+
+		public readonly WAngle InitialFacing = WAngle.Zero;
 
 		[Desc("Number of ticks before turret is realigned. (-1 turns off realignment)")]
 		public readonly int RealignDelay = 40;
@@ -35,7 +37,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		IEnumerable<ActorInit> IActorPreviewInitInfo.ActorPreviewInits(ActorInfo ai, ActorPreviewType type)
 		{
-			yield return new TurretFacingInit(this, WAngle.FromFacing(InitialFacing));
+			yield return new TurretFacingInit(this, InitialFacing);
 		}
 
 		IEnumerable<EditorActorOption> IEditorActorOptions.ActorOptions(ActorInfo ai, World world)
@@ -47,7 +49,7 @@ namespace OpenRA.Mods.Common.Traits
 					if (init != null)
 						return init.Value.Angle;
 
-					return WAngle.FromFacing(InitialFacing).Angle;
+					return InitialFacing.Angle;
 				},
 				(actor, value) => actor.ReplaceInit(new TurretFacingInit(this, new WAngle((int)value)), this));
 		}
@@ -78,7 +80,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public static Func<WAngle> TurretFacingFromInit(IActorInitializer init, TurretedInfo info)
 		{
-			return TurretFacingFromInit(init, info, WAngle.FromFacing(info.InitialFacing));
+			return TurretFacingFromInit(init, info, info.InitialFacing);
 		}
 
 		public static Func<WAngle> TurretFacingFromInit(IActorInitializer init, TraitInfo info, WAngle defaultFacing)
@@ -155,7 +157,7 @@ namespace OpenRA.Mods.Common.Traits
 		void MoveTurret()
 		{
 			var df = DesiredFacing ?? (facing != null ? facing.Facing.Facing : TurretFacing);
-			TurretFacing = Util.TickFacing(TurretFacing, df, Info.TurnSpeed);
+			TurretFacing = Util.TickFacing(TurretFacing, df, Info.TurnSpeed.Facing);
 		}
 
 		public bool FaceTarget(Actor self, Target target)

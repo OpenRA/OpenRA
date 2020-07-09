@@ -102,7 +102,7 @@ TRAN.Husk:
 	Tooltip:
 		Name: Chinook
 	Aircraft:
-		TurnSpeed: 4
+		TurnSpeed: 16
 		Speed: 149
 	WithIdleOverlay@PRIMARY:
 		Offset: -597,0,341
@@ -146,7 +146,7 @@ BADR.Husk:
 	Tooltip:
 		Name: Badger
 	Aircraft:
-		TurnSpeed: 5
+		TurnSpeed: 20
 		Speed: 149
 	SmokeTrailWhenDamaged@0:
 		Offset: -432,560,0
@@ -169,7 +169,7 @@ MIG.Husk:
 	Contrail@2:
 		Offset: -598,683,0
 	Aircraft:
-		TurnSpeed: 5
+		TurnSpeed: 20
 		Speed: 186
 	SmokeTrailWhenDamaged:
 		Offset: -853,0,171
@@ -193,7 +193,7 @@ YAK.Husk:
 	Contrail:
 		Offset: -853,0,0
 	Aircraft:
-		TurnSpeed: 5
+		TurnSpeed: 20
 		Speed: 149
 	SmokeTrailWhenDamaged:
 		Offset: -853,0,0
@@ -215,7 +215,7 @@ HELI.Husk:
 	Tooltip:
 		Name: Longbow
 	Aircraft:
-		TurnSpeed: 4
+		TurnSpeed: 16
 		Speed: 149
 	WithIdleOverlay:
 		Offset: 0,0,85
@@ -239,7 +239,7 @@ HIND.Husk:
 	Tooltip:
 		Name: Hind
 	Aircraft:
-		TurnSpeed: 4
+		TurnSpeed: 16
 		Speed: 112
 	WithIdleOverlay:
 		Sequence: rotor
@@ -262,7 +262,7 @@ U2.Husk:
 	Tooltip:
 		Name: Husk (Spy Plane)
 	Aircraft:
-		TurnSpeed: 7
+		TurnSpeed: 28
 		Speed: 373
 	Contrail@1:
 		Offset: -725,683,0
@@ -451,7 +451,7 @@ MH60.Husk:
 	Tooltip:
 		Name: Black Hawk
 	Aircraft:
-		TurnSpeed: 4
+		TurnSpeed: 16
 		Speed: 112
 	WithIdleOverlay:
 		Sequence: rotor
