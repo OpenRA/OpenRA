@@ -244,8 +244,7 @@ namespace OpenRA.Mods.Cnc.Traits
 					else if (!movement.CanEnterCell(c, null, BlockedByActor.Immovable) || (mobile != null && !mobile.CanStayInCell(c)))
 						tile = tileBlocked;
 
-					yield return new SpriteRenderable(tile, world.Map.CenterOfCell(c),
-						WVec.Zero, -511, pal, 1f, true);
+					yield return new SpriteRenderable(tile, world.Map.CenterOfCell(c), WVec.Zero, -511, pal, 1f, true, true);
 				}
 			}
 

@@ -32,6 +32,7 @@ namespace OpenRA.Graphics
 		int ShadowZOffset { get; }
 		int[] Frames { get; }
 		Rectangle Bounds { get; }
+		bool IgnoreWorldTint { get; }
 
 		Sprite GetSprite(int frame);
 		Sprite GetSprite(int frame, WAngle facing);

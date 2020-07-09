@@ -7,6 +7,7 @@ uniform vec3 r1, r2;
 attribute vec4 aVertexPosition;
 attribute vec4 aVertexTexCoord;
 attribute vec2 aVertexTexMetadata;
+attribute vec3 aVertexTint;
 
 varying vec4 vTexCoord;
 varying vec2 vTexMetadata;
@@ -17,10 +18,12 @@ varying vec2 vTexSampler;
 varying vec4 vColorFraction;
 varying vec4 vRGBAFraction;
 varying vec4 vPalettedFraction;
+varying vec4 vTint;
 #else
 in vec4 aVertexPosition;
 in vec4 aVertexTexCoord;
 in vec2 aVertexTexMetadata;
+in vec3 aVertexTint;
 
 out vec4 vTexCoord;
 out vec2 vTexMetadata;
@@ -31,6 +34,7 @@ out vec2 vTexSampler;
 out vec4 vColorFraction;
 out vec4 vRGBAFraction;
 out vec4 vPalettedFraction;
+out vec4 vTint;
 #endif
 
 vec4 UnpackChannelAttributes(float x)
@@ -123,4 +127,5 @@ void main()
 	vPalettedFraction = SelectPalettedFraction(attrib.s);
 	vDepthMask = SelectChannelMask(attrib.t);
 	vTexSampler = attrib.pq;
+	vTint = vec4(aVertexTint, 1.0);
 }

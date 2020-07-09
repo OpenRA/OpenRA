@@ -107,7 +107,7 @@ namespace OpenRA.Graphics
 		internal void DrawSprite(Sprite s, float3 location, float paletteTextureIndex, float3 size)
 		{
 			var samplers = SetRenderStateForSprite(s);
-			Util.FastCreateQuad(vertices, location + s.FractionalOffset * size, s, samplers, paletteTextureIndex, nv, size);
+			Util.FastCreateQuad(vertices, location + s.FractionalOffset * size, s, samplers, paletteTextureIndex, nv, size, float3.Ones);
 			nv += 6;
 		}
 
@@ -124,7 +124,26 @@ namespace OpenRA.Graphics
 		public void DrawSprite(Sprite s, float3 a, float3 b, float3 c, float3 d)
 		{
 			var samplers = SetRenderStateForSprite(s);
-			Util.FastCreateQuad(vertices, a, b, c, d, s, samplers, 0, nv);
+			Util.FastCreateQuad(vertices, a, b, c, d, s, samplers, 0, float3.Ones, nv);
+			nv += 6;
+		}
+
+		internal void DrawSpriteWithTint(Sprite s, float3 location, float paletteTextureIndex, float3 size, float3 tint)
+		{
+			var samplers = SetRenderStateForSprite(s);
+			Util.FastCreateQuad(vertices, location + s.FractionalOffset * size, s, samplers, paletteTextureIndex, nv, size, tint);
+			nv += 6;
+		}
+
+		public void DrawSpriteWithTint(Sprite s, float3 location, PaletteReference pal, float3 size, float3 tint)
+		{
+			DrawSpriteWithTint(s, location, pal.TextureIndex, size, tint);
+		}
+
+		public void DrawSpriteWithTint(Sprite s, float3 a, float3 b, float3 c, float3 d, float3 tint)
+		{
+			var samplers = SetRenderStateForSprite(s);
+			Util.FastCreateQuad(vertices, a, b, c, d, s, samplers, 0, tint, nv);
 			nv += 6;
 		}
 

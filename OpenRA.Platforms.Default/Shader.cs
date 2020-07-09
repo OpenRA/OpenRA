@@ -21,6 +21,7 @@ namespace OpenRA.Platforms.Default
 		public const int VertexPosAttributeIndex = 0;
 		public const int TexCoordAttributeIndex = 1;
 		public const int TexMetadataAttributeIndex = 2;
+		public const int TintAttributeIndex = 3;
 
 		readonly Dictionary<string, int> samplers = new Dictionary<string, int>();
 		readonly Dictionary<int, int> legacySizeUniforms = new Dictionary<int, int>();
@@ -82,6 +83,8 @@ namespace OpenRA.Platforms.Default
 			OpenGL.glBindAttribLocation(program, TexCoordAttributeIndex, "aVertexTexCoord");
 			OpenGL.CheckGLError();
 			OpenGL.glBindAttribLocation(program, TexMetadataAttributeIndex, "aVertexTexMetadata");
+			OpenGL.CheckGLError();
+			OpenGL.glBindAttribLocation(program, TintAttributeIndex, "aVertexTint");
 			OpenGL.CheckGLError();
 
 			if (OpenGL.Profile != GLProfile.Legacy)

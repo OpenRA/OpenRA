@@ -53,6 +53,8 @@ namespace OpenRA.Platforms.Default
 			OpenGL.CheckGLError();
 			OpenGL.glEnableVertexAttribArray(Shader.TexMetadataAttributeIndex);
 			OpenGL.CheckGLError();
+			OpenGL.glEnableVertexAttribArray(Shader.TintAttributeIndex);
+			OpenGL.CheckGLError();
 		}
 
 		public IVertexBuffer<Vertex> CreateVertexBuffer(int size)

@@ -20,15 +20,18 @@ namespace OpenRA.Graphics
 		// yes, our channel order is nuts.
 		static readonly int[] ChannelMasks = { 2, 1, 0, 3 };
 
-		public static void FastCreateQuad(Vertex[] vertices, float3 o, Sprite r, int2 samplers, float paletteTextureIndex, int nv, float3 size)
+		public static void FastCreateQuad(Vertex[] vertices, float3 o, Sprite r, int2 samplers, float paletteTextureIndex, int nv, float3 size, float3 tint)
 		{
 			var b = new float3(o.X + size.X, o.Y, o.Z);
 			var c = new float3(o.X + size.X, o.Y + size.Y, o.Z + size.Z);
 			var d = new float3(o.X, o.Y + size.Y, o.Z + size.Z);
-			FastCreateQuad(vertices, o, b, c, d, r, samplers, paletteTextureIndex, nv);
+			FastCreateQuad(vertices, o, b, c, d, r, samplers, paletteTextureIndex, tint, nv);
 		}
 
-		public static void FastCreateQuad(Vertex[] vertices, float3 a, float3 b, float3 c, float3 d, Sprite r, int2 samplers, float paletteTextureIndex, int nv)
+		public static void FastCreateQuad(Vertex[] vertices,
+			float3 a, float3 b, float3 c, float3 d,
+			Sprite r, int2 samplers, float paletteTextureIndex,
+			float3 tint, int nv)
 		{
 			float sl = 0;
 			float st = 0;
@@ -51,12 +54,12 @@ namespace OpenRA.Graphics
 			}
 
 			var fAttribC = (float)attribC;
-			vertices[nv] = new Vertex(a, r.Left, r.Top, sl, st, paletteTextureIndex, fAttribC);
-			vertices[nv + 1] = new Vertex(b, r.Right, r.Top, sr, st, paletteTextureIndex, fAttribC);
-			vertices[nv + 2] = new Vertex(c, r.Right, r.Bottom, sr, sb, paletteTextureIndex, fAttribC);
-			vertices[nv + 3] = new Vertex(c, r.Right, r.Bottom, sr, sb, paletteTextureIndex, fAttribC);
-			vertices[nv + 4] = new Vertex(d, r.Left, r.Bottom, sl, sb, paletteTextureIndex, fAttribC);
-			vertices[nv + 5] = new Vertex(a, r.Left, r.Top, sl, st, paletteTextureIndex, fAttribC);
+			vertices[nv] = new Vertex(a, r.Left, r.Top, sl, st, paletteTextureIndex, fAttribC, tint);
+			vertices[nv + 1] = new Vertex(b, r.Right, r.Top, sr, st, paletteTextureIndex, fAttribC, tint);
+			vertices[nv + 2] = new Vertex(c, r.Right, r.Bottom, sr, sb, paletteTextureIndex, fAttribC, tint);
+			vertices[nv + 3] = new Vertex(c, r.Right, r.Bottom, sr, sb, paletteTextureIndex, fAttribC, tint);
+			vertices[nv + 4] = new Vertex(d, r.Left, r.Bottom, sl, sb, paletteTextureIndex, fAttribC, tint);
+			vertices[nv + 5] = new Vertex(a, r.Left, r.Top, sl, st, paletteTextureIndex, fAttribC, tint);
 		}
 
 		public static void FastCopyIntoChannel(Sprite dest, byte[] src)

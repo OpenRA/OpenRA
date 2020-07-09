@@ -17,7 +17,7 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.Graphics
 {
-	public struct ModelRenderable : IRenderable
+	public struct ModelRenderable : IRenderable, ITintableRenderable
 	{
 		readonly IEnumerable<ModelAnimation> models;
 		readonly WPos pos;
@@ -30,11 +30,22 @@ namespace OpenRA.Mods.Common.Graphics
 		readonly PaletteReference normalsPalette;
 		readonly PaletteReference shadowPalette;
 		readonly float scale;
+		readonly float3 tint;
 
 		public ModelRenderable(
 			IEnumerable<ModelAnimation> models, WPos pos, int zOffset, WRot camera, float scale,
 			WRot lightSource, float[] lightAmbientColor, float[] lightDiffuseColor,
 			PaletteReference color, PaletteReference normals, PaletteReference shadow)
+			: this(models, pos, zOffset, camera, scale,
+				lightSource, lightAmbientColor, lightDiffuseColor,
+				color, normals, shadow,
+				float3.Ones) { }
+
+		public ModelRenderable(
+			IEnumerable<ModelAnimation> models, WPos pos, int zOffset, WRot camera, float scale,
+			WRot lightSource, float[] lightAmbientColor, float[] lightDiffuseColor,
+			PaletteReference color, PaletteReference normals, PaletteReference shadow,
+			float3 tint)
 		{
 			this.models = models;
 			this.pos = pos;
@@ -47,6 +58,7 @@ namespace OpenRA.Mods.Common.Graphics
 			palette = color;
 			normalsPalette = normals;
 			shadowPalette = shadow;
+			this.tint = tint;
 		}
 
 		public WPos Pos { get { return pos; } }
@@ -59,7 +71,7 @@ namespace OpenRA.Mods.Common.Graphics
 			return new ModelRenderable(
 				models, pos, zOffset, camera, scale,
 				lightSource, lightAmbientColor, lightDiffuseColor,
-				newPalette, normalsPalette, shadowPalette);
+				newPalette, normalsPalette, shadowPalette, tint);
 		}
 
 		public IRenderable WithZOffset(int newOffset)
@@ -67,7 +79,7 @@ namespace OpenRA.Mods.Common.Graphics
 			return new ModelRenderable(
 				models, pos, newOffset, camera, scale,
 				lightSource, lightAmbientColor, lightDiffuseColor,
-				palette, normalsPalette, shadowPalette);
+				palette, normalsPalette, shadowPalette, tint);
 		}
 
 		public IRenderable OffsetBy(WVec vec)
@@ -75,10 +87,18 @@ namespace OpenRA.Mods.Common.Graphics
 			return new ModelRenderable(
 				models, pos + vec, zOffset, camera, scale,
 				lightSource, lightAmbientColor, lightDiffuseColor,
-				palette, normalsPalette, shadowPalette);
+				palette, normalsPalette, shadowPalette, tint);
 		}
 
 		public IRenderable AsDecoration() { return this; }
+
+		public IRenderable WithTint(float3 newTint)
+		{
+			return new ModelRenderable(
+				models, pos, zOffset, camera, scale,
+				lightSource, lightAmbientColor, lightDiffuseColor,
+				palette, normalsPalette, shadowPalette, newTint);
+		}
 
 		// This will need generalizing once we support TS/RA2 terrain
 		static readonly float[] GroundNormal = new float[] { 0, 0, 1, 1 };
@@ -122,8 +142,11 @@ namespace OpenRA.Mods.Common.Graphics
 				var sb = shadowOrigin + psb[2];
 				var sc = shadowOrigin + psb[1];
 				var sd = shadowOrigin + psb[3];
-				Game.Renderer.WorldRgbaSpriteRenderer.DrawSprite(renderProxy.ShadowSprite, sa, sb, sc, sd);
-				Game.Renderer.WorldRgbaSpriteRenderer.DrawSprite(renderProxy.Sprite, pxOrigin - 0.5f * renderProxy.Sprite.Size);
+
+				var wrsr = Game.Renderer.WorldRgbaSpriteRenderer;
+				var ti = model.tint;
+				wrsr.DrawSpriteWithTint(renderProxy.ShadowSprite, sa, sb, sc, sd, ti);
+				wrsr.DrawSpriteWithTint(renderProxy.Sprite, pxOrigin - 0.5f * renderProxy.Sprite.Size, renderProxy.Sprite.Size, ti);
 			}
 
 			public void RenderDebugGeometry(WorldRenderer wr)

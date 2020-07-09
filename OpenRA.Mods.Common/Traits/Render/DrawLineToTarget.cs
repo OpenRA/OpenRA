@@ -80,7 +80,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (!a.IsCanceling)
 					foreach (var n in a.TargetLineNodes(self))
 						if (n.Tile != null && n.Target.Type != TargetType.Invalid)
-							yield return new SpriteRenderable(n.Tile, n.Target.CenterPosition, WVec.Zero, -511, pal, 1f, true);
+							yield return new SpriteRenderable(n.Tile, n.Target.CenterPosition, WVec.Zero, -511, pal, 1f, true, true);
 		}
 
 		bool IRenderAboveShroud.SpatiallyPartitionable { get { return false; } }
