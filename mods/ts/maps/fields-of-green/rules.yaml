@@ -14,9 +14,19 @@ World:
 		BackgroundMusic: intro
 		DisableWorldSounds: true
 		AllowMuteBackgroundMusic: true
-	GlobalLightingPaletteEffect:
-		Blue: 0.7
-		Ambient: 0.7
+
+^BaseWorld:
+	TerrainLighting:
+		BlueTint: 0.7
+		Intensity: 0.6
+
+INGRNLMP:
+	TerrainLightSource:
+		RedTint: 0.01
+		GreenTint: 0.7
+		BlueTint: 0.01
+		Intensity: 0.1
+		Range: 5c0
 
 ^ExistsInWorld:
 	GivesExperience:

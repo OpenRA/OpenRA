@@ -10,13 +10,16 @@ World:
 		Height: 5
 		Orientation: Y
 		Length: 19
-	GlobalLightingPaletteEffect:
-		Red: 1.6
-		Blue: 0.9
-		Green: 1.2
-		Ambient: 0.3
 	LuaScript:
 		Scripts: sunstroke.lua
+
+^BaseWorld:
+	TerrainLighting:
+		RedTint: 1.6
+		GreenTint: 1.2
+		BlueTint: 0.9
+		Intensity: 0.3
+		HeightStep: 0.002
 
 GAOLDCC2:
 	CaptureManager:
@@ -49,3 +52,43 @@ SLAV:
 		Voice: Attack
 	Armament:
 		Weapon: Sniper
+
+GRENLAMP:
+	TerrainLightSource:
+		RedTint: -0.15
+		BlueTint: 0
+		GreenTint: 0.2
+		Intensity: 0.1
+		Range: 10c760
+
+INYELWLAMP:
+	TerrainLightSource:
+		RedTint: 0.1
+		BlueTint: 0
+		GreenTint: 0.15
+		Intensity: 0.1
+		Range: 19c544
+
+INGRNLMP:
+	TerrainLightSource:
+		RedTint: -0.1
+		BlueTint: 0
+		GreenTint: 0.25
+		Intensity: 0.15
+		Range: 15c640
+
+INREDLMP:
+	TerrainLightSource:
+		RedTint: 0.25
+		BlueTint: -0.1
+		GreenTint: 0.1
+		Intensity: 0.2
+		Range: 15c640
+
+INBLULMP:
+	TerrainLightSource:
+		RedTint: -0.25
+		BlueTint: 0.1
+		GreenTint: 0.1
+		Intensity: -0.1
+		Range: 11c736
