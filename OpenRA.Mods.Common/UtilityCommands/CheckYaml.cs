@@ -81,7 +81,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					maps = modData.MapCache.EnumerateMapsWithoutCaching().ToList();
 				}
 				else
-					maps.Add(new Map(modData, new Folder(".").OpenPackage(args[1], modData.ModFiles)));
+					maps.Add(modData.MapLoader.Load(modData, new Folder(".").OpenPackage(args[1], modData.ModFiles)));
 
 				foreach (var testMap in maps)
 				{

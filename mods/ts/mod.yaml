@@ -49,6 +49,8 @@ Packages:
 	ts|bits
 	ts|uibits
 
+DefaultMapLoader:
+
 MapFolders:
 	ts|maps: System
 	~^maps/ts/{DEV_VERSION}: User

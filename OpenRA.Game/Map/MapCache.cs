@@ -105,8 +105,8 @@ namespace OpenRA
 							if (mapPackage == null)
 								continue;
 
-							var uid = Map.ComputeUID(mapPackage);
-							previews[uid].UpdateFromMap(mapPackage, kv.Key, kv.Value, modData.Manifest.MapCompatibility, mapGrid.Type);
+							var uid = modData.MapLoader.ComputeUID(modData, mapPackage);
+							modData.MapLoader.UpdatePreview(modData, previews[uid], mapPackage, kv.Key, kv.Value, modData.Manifest.MapCompatibility, mapGrid.Type);
 						}
 					}
 					catch (Exception e)
@@ -166,7 +166,7 @@ namespace OpenRA
 		public IEnumerable<Map> EnumerateMapsWithoutCaching(MapClassification classification = MapClassification.System)
 		{
 			foreach (var mapPackage in EnumerateMapPackagesWithoutCaching(classification))
-				yield return new Map(modData, mapPackage);
+				yield return modData.MapLoader.Load(modData, mapPackage);
 		}
 
 		public void QueryRemoteMapDetails(string repositoryUrl, IEnumerable<string> uids, Action<MapPreview> mapDetailsReceived = null, Action queryFailed = null)

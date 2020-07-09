@@ -65,6 +65,8 @@ SoundFormats:
 
 SpriteFormats: PngSheet
 
+DefaultMapLoader:
+
 SpriteSequenceFormat: DefaultSpriteSequence
 
 ModelSequenceFormat: PlaceholderModelSequence

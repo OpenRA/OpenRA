@@ -67,7 +67,7 @@ namespace OpenRA
 	public class MapPreview : IDisposable, IReadOnlyFileSystem
 	{
 		/// <summary>Wrapper that enables map data to be replaced in an atomic fashion</summary>
-		class InnerData
+		public class InnerData
 		{
 			public string Title;
 			public string[] Categories;
@@ -215,118 +215,11 @@ namespace OpenRA
 			};
 		}
 
-		public void UpdateFromMap(IReadOnlyPackage p, IReadOnlyPackage parent, MapClassification classification, string[] mapCompatibility, MapGridType gridType)
+		public InnerData Init(IReadOnlyPackage p, IReadOnlyPackage parent)
 		{
-			Dictionary<string, MiniYaml> yaml;
-			using (var yamlStream = p.GetStream("map.yaml"))
-			{
-				if (yamlStream == null)
-					throw new FileNotFoundException("Required file map.yaml not present in this map");
-
-				yaml = new MiniYaml(null, MiniYaml.FromStream(yamlStream, "map.yaml")).ToDictionary();
-			}
-
 			Package = p;
 			parentPackage = parent;
-
-			var newData = innerData.Clone();
-			newData.GridType = gridType;
-			newData.Class = classification;
-
-			MiniYaml temp;
-			if (yaml.TryGetValue("MapFormat", out temp))
-			{
-				var format = FieldLoader.GetValue<int>("MapFormat", temp.Value);
-				if (format != Map.SupportedMapFormat)
-					throw new InvalidDataException("Map format {0} is not supported.".F(format));
-			}
-
-			if (yaml.TryGetValue("Title", out temp))
-				newData.Title = temp.Value;
-
-			if (yaml.TryGetValue("Categories", out temp))
-				newData.Categories = FieldLoader.GetValue<string[]>("Categories", temp.Value);
-
-			if (yaml.TryGetValue("Tileset", out temp))
-				newData.TileSet = temp.Value;
-
-			if (yaml.TryGetValue("Author", out temp))
-				newData.Author = temp.Value;
-
-			if (yaml.TryGetValue("Bounds", out temp))
-				newData.Bounds = FieldLoader.GetValue<Rectangle>("Bounds", temp.Value);
-
-			if (yaml.TryGetValue("Visibility", out temp))
-				newData.Visibility = FieldLoader.GetValue<MapVisibility>("Visibility", temp.Value);
-
-			string requiresMod = string.Empty;
-			if (yaml.TryGetValue("RequiresMod", out temp))
-				requiresMod = temp.Value;
-
-			newData.Status = mapCompatibility == null || mapCompatibility.Contains(requiresMod) ?
-				MapStatus.Available : MapStatus.Unavailable;
-
-			try
-			{
-				// Actor definitions may change if the map format changes
-				MiniYaml actorDefinitions;
-				if (yaml.TryGetValue("Actors", out actorDefinitions))
-				{
-					var spawns = new List<CPos>();
-					foreach (var kv in actorDefinitions.Nodes.Where(d => d.Value.Value == "mpspawn"))
-					{
-						var s = new ActorReference(kv.Value.Value, kv.Value.ToDictionary());
-						spawns.Add(s.Get<LocationInit>().Value);
-					}
-
-					newData.SpawnPoints = spawns.ToArray();
-				}
-				else
-					newData.SpawnPoints = new CPos[0];
-			}
-			catch (Exception)
-			{
-				newData.SpawnPoints = new CPos[0];
-				newData.Status = MapStatus.Unavailable;
-			}
-
-			try
-			{
-				// Player definitions may change if the map format changes
-				MiniYaml playerDefinitions;
-				if (yaml.TryGetValue("Players", out playerDefinitions))
-				{
-					newData.Players = new MapPlayers(playerDefinitions.Nodes);
-					newData.PlayerCount = newData.Players.Players.Count(x => x.Value.Playable);
-				}
-			}
-			catch (Exception)
-			{
-				newData.Status = MapStatus.Unavailable;
-			}
-
-			newData.SetRulesetGenerator(modData, () =>
-			{
-				var ruleDefinitions = LoadRuleSection(yaml, "Rules");
-				var weaponDefinitions = LoadRuleSection(yaml, "Weapons");
-				var voiceDefinitions = LoadRuleSection(yaml, "Voices");
-				var musicDefinitions = LoadRuleSection(yaml, "Music");
-				var notificationDefinitions = LoadRuleSection(yaml, "Notifications");
-				var sequenceDefinitions = LoadRuleSection(yaml, "Sequences");
-				var modelSequenceDefinitions = LoadRuleSection(yaml, "ModelSequences");
-				var rules = Ruleset.Load(modData, this, TileSet, ruleDefinitions, weaponDefinitions,
-					voiceDefinitions, notificationDefinitions, musicDefinitions, sequenceDefinitions, modelSequenceDefinitions);
-				var flagged = Ruleset.DefinesUnsafeCustomRules(modData, this, ruleDefinitions,
-					weaponDefinitions, voiceDefinitions, notificationDefinitions, sequenceDefinitions);
-				return Pair.New(rules, flagged);
-			});
-
-			if (p.Contains("map.png"))
-				using (var dataStream = p.GetStream("map.png"))
-					newData.Preview = new Png(dataStream);
-
-			// Assign the new data atomically
-			innerData = newData;
+			return innerData = innerData.Clone();
 		}
 
 		MiniYaml LoadRuleSection(Dictionary<string, MiniYaml> yaml, string section)
@@ -484,7 +377,7 @@ namespace OpenRA
 								innerData.Status = MapStatus.DownloadError;
 							else
 							{
-								UpdateFromMap(package, mapInstallPackage, MapClassification.User, null, GridType);
+								modData.MapLoader.UpdatePreview(modData, this, package, mapInstallPackage, MapClassification.User, null, GridType);
 								onSuccess();
 							}
 						});

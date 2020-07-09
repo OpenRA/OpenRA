@@ -29,6 +29,8 @@ SoundFormats:
 
 SpriteFormats:
 
+DefaultMapLoader:
+
 SpriteSequenceFormat: DefaultSpriteSequence
 
 ModelSequenceFormat: PlaceholderModelSequence

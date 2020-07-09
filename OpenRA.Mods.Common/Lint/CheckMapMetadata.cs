@@ -11,6 +11,7 @@
 
 using System;
 using System.Linq;
+using OpenRA.Mods.Common.MapFormats;
 
 namespace OpenRA.Mods.Common.Lint
 {
@@ -18,9 +19,11 @@ namespace OpenRA.Mods.Common.Lint
 	{
 		public void Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Map map)
 		{
-			if (map.MapFormat != Map.SupportedMapFormat)
+			var defaultMap = map as DefaultMap;
+
+			if (defaultMap != null && defaultMap.MapFormat != DefaultMap.SupportedMapFormat)
 				emitError("Map format {0} does not match the supported version {1}."
-					.F(map.MapFormat, Map.SupportedMapFormat));
+					.F(defaultMap.MapFormat, DefaultMap.SupportedMapFormat));
 
 			if (map.Author == null)
 				emitError("Map does not define a valid author.");

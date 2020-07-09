@@ -21,6 +21,8 @@ Packages:
 	d2k|bits/tex
 	d2k|uibits
 
+DefaultMapLoader:
+
 MapFolders:
 	d2k|maps: System
 	~^maps/d2k/{DEV_VERSION}: User

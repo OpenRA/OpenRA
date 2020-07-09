@@ -32,6 +32,8 @@ Packages:
 	cnc|bits/scripts
 	cnc|uibits
 
+DefaultMapLoader:
+
 MapFolders:
 	cnc|maps: System
 	~^maps/cnc/{DEV_VERSION}: User

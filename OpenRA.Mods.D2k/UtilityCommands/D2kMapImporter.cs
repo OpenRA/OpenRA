@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using OpenRA.Mods.Common.MapFormats;
 using OpenRA.Primitives;
 
 namespace OpenRA.Mods.D2k.UtilityCommands
@@ -309,7 +310,7 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 
 			tileSet = Game.ModData.DefaultTileSets["ARRAKIS"];
 
-			map = new Map(Game.ModData, tileSet, mapSize.Width + 2 * MapCordonWidth, mapSize.Height + 2 * MapCordonWidth)
+			map = new DefaultMap(Game.ModData, tileSet, mapSize.Width + 2 * MapCordonWidth, mapSize.Height + 2 * MapCordonWidth)
 			{
 				Title = Path.GetFileNameWithoutExtension(mapFile),
 				Author = "Westwood Studios"

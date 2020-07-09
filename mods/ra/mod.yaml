@@ -35,6 +35,8 @@ Packages:
 	ra|bits/scripts
 	ra|uibits
 
+DefaultMapLoader:
+
 MapFolders:
 	ra|maps: System
 	~^maps/ra/{DEV_VERSION}: User

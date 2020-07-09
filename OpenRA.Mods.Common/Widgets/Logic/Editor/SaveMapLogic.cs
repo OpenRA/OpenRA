@@ -193,7 +193,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					map.Save(package);
 
 					// Update the map cache so it can be loaded without restarting the game
-					modData.MapCache[map.Uid].UpdateFromMap(map.Package, selectedDirectory.Folder, selectedDirectory.Classification, null, map.Grid.Type);
+					modData.MapLoader.UpdatePreview(modData, modData.MapCache[map.Uid], map.Package, selectedDirectory.Folder, selectedDirectory.Classification, null, map.Grid.Type);
 
 					Console.WriteLine("Saved current map at {0}", combinedPath);
 					Ui.CloseWindow();
