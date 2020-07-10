@@ -42,6 +42,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 				case DecorationPosition.BottomLeft: return bounds.BottomLeft;
 				case DecorationPosition.BottomRight: return bounds.BottomRight;
 				case DecorationPosition.Top: return new int2(bounds.Left + bounds.Size.Width / 2, bounds.Top);
+				case DecorationPosition.Bottom: return new int2(bounds.Left + bounds.Size.Width / 2, bounds.Bottom);
+				case DecorationPosition.Left: return new int2(bounds.Left, bounds.Top + bounds.Size.Height / 2);
+				case DecorationPosition.Right: return new int2(bounds.Right, bounds.Top + bounds.Size.Height / 2);
 				default: return bounds.TopLeft + new int2(bounds.Size.Width / 2, bounds.Size.Height / 2);
 			}
 		}

@@ -647,7 +647,10 @@ namespace OpenRA.Mods.Common.Traits
 		TopRight,
 		BottomLeft,
 		BottomRight,
-		Top
+		Top,
+		Bottom,
+		Left,
+		Right
 	}
 
 	public static class DecorationExtensions
@@ -661,6 +664,9 @@ namespace OpenRA.Mods.Common.Traits
 				case DecorationPosition.BottomLeft: return new int2(margin.X, -margin.Y);
 				case DecorationPosition.BottomRight: return -margin;
 				case DecorationPosition.Top: return new int2(0, margin.Y);
+				case DecorationPosition.Bottom: return new int2(0, -margin.Y);
+				case DecorationPosition.Left: return new int2(margin.X, 0);
+				case DecorationPosition.Right: return new int2(-margin.X, 0);
 				default: return int2.Zero;
 			}
 		}
