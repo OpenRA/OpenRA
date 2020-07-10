@@ -75,7 +75,13 @@ namespace OpenRA.Graphics
 			if (ignoreWorldTint)
 				wsr.DrawSprite(sprite, ScreenPosition(wr), palette, scale * sprite.Size);
 			else
-				wsr.DrawSpriteWithTint(sprite, ScreenPosition(wr), palette, scale * sprite.Size, tint);
+			{
+				var t = tint;
+				if (wr.TerrainLighting != null)
+					t *= wr.TerrainLighting.TintAt(pos);
+
+				wsr.DrawSpriteWithTint(sprite, ScreenPosition(wr), palette, scale * sprite.Size, t);
+			}
 		}
 
 		public void RenderDebugGeometry(WorldRenderer wr)

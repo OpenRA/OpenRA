@@ -292,8 +292,8 @@ namespace OpenRA.Mods.Common.Traits
 				if (fogSprite != null)
 					fogPos += fogSprite.Offset - 0.5f * fogSprite.Size;
 
-				shroudLayer.Update(uv, shroudSprite, shroudPos);
-				fogLayer.Update(uv, fogSprite, fogPos);
+				shroudLayer.Update(uv, shroudSprite, shroudPos, true);
+				fogLayer.Update(uv, fogSprite, fogPos, true);
 			}
 		}
 

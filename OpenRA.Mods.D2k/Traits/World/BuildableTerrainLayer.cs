@@ -97,7 +97,7 @@ namespace OpenRA.Mods.D2k.Traits
 						// Terrain tiles define their origin at the topleft
 						var s = theater.TileSprite(tile.Value);
 						var ss = new Sprite(s.Sheet, s.Bounds, s.ZRamp, float2.Zero, s.Channel, s.BlendMode);
-						render.Update(kv.Key, ss);
+						render.Update(kv.Key, ss, false);
 					}
 					else
 						render.Clear(kv.Key);
