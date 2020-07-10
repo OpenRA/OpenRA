@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			var sprite = theater.TileSprite(tile);
 			foreach (var kv in spriteLayers)
-				kv.Value.Update(cell, palette == kv.Key ? sprite : null);
+				kv.Value.Update(cell, palette == kv.Key ? sprite : null, false);
 		}
 
 		void IRenderTerrain.RenderTerrain(WorldRenderer wr, Viewport viewport)

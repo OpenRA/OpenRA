@@ -144,9 +144,12 @@ namespace OpenRA.Mods.Common.Graphics
 				var sd = shadowOrigin + psb[3];
 
 				var wrsr = Game.Renderer.WorldRgbaSpriteRenderer;
-				var ti = model.tint;
-				wrsr.DrawSpriteWithTint(renderProxy.ShadowSprite, sa, sb, sc, sd, ti);
-				wrsr.DrawSpriteWithTint(renderProxy.Sprite, pxOrigin - 0.5f * renderProxy.Sprite.Size, renderProxy.Sprite.Size, ti);
+				var t = model.tint;
+				if (wr.TerrainLighting != null)
+					t *= wr.TerrainLighting.TintAt(model.pos);
+
+				wrsr.DrawSpriteWithTint(renderProxy.ShadowSprite, sa, sb, sc, sd, t);
+				wrsr.DrawSpriteWithTint(renderProxy.Sprite, pxOrigin - 0.5f * renderProxy.Sprite.Size, renderProxy.Sprite.Size, t);
 			}
 
 			public void RenderDebugGeometry(WorldRenderer wr)
