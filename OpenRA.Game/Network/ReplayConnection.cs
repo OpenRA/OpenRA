@@ -31,6 +31,8 @@ namespace OpenRA.Network
 		int ordersFrame;
 		Dictionary<int, int> lastClientsFrame = new Dictionary<int, int>();
 
+		readonly int latency = 1;
+
 		public int LocalClientId { get { return -1; } }
 		public ConnectionState ConnectionState { get { return ConnectionState.Connected; } }
 		public IPEndPoint EndPoint
@@ -102,6 +104,8 @@ namespace OpenRA.Network
 					}
 				}
 
+				latency = Math.Max(1, LobbyInfo.GlobalSettings.OrderLatency);
+
 				var lastClientToDisconnect = lastClientsFrame.MaxBy(kvp => kvp.Value).Key;
 
 				// 2nd parse : replace all disconnect packets without frame with real
@@ -128,7 +132,7 @@ namespace OpenRA.Network
 				}
 			}
 
-			ordersFrame = LobbyInfo.GlobalSettings.OrderLatency;
+			ordersFrame = latency;
 		}
 
 		// Do nothing: ignore locally generated orders
@@ -143,7 +147,7 @@ namespace OpenRA.Network
 			sync.Add(ms.GetBuffer());
 
 			// Store the current frame so Receive() can return the next chunk of orders.
-			ordersFrame = frame + LobbyInfo.GlobalSettings.OrderLatency;
+			ordersFrame = frame + latency;
 		}
 
 		public void Receive(Action<int, byte[]> packetFn)
