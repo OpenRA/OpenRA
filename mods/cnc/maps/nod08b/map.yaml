@@ -401,10 +401,10 @@ Actors:
 	Actor111: t18
 		Location: 11,43
 		Owner: Neutral
-	Actor112: split3
+	Actor112: t13.transformable
 		Location: 5,31
 		Owner: Neutral
-	Actor113: split3
+	Actor113: t13.transformable
 		Location: 58,47
 		Owner: Neutral
 	Actor142: mtnk

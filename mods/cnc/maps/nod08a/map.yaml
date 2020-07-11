@@ -489,10 +489,10 @@ Actors:
 	Actor145: waypoint
 		Location: 49,22
 		Owner: Neutral
-	Actor156: split3
+	Actor156: t13.transformable
 		Owner: Neutral
 		Location: 40,22
-	Actor157: split3
+	Actor157: t13.transformable
 		Owner: Neutral
 		Location: 57,42
 	AirstrikeTarget: waypoint

@@ -348,10 +348,10 @@ Actors:
 	Actor93: t08
 		Location: 50,55
 		Owner: Neutral
-	Actor94: split3
+	Actor94: t13.transformable
 		Location: 56,48
 		Owner: Neutral
-	Actor95: split3
+	Actor95: t13.transformable
 		Location: 6,24
 		Owner: Neutral
 	Actor96: t18
@@ -405,10 +405,10 @@ Actors:
 	Actor112: t08
 		Location: 29,15
 		Owner: Neutral
-	Actor113: split3
+	Actor113: t13.transformable
 		Location: 47,23
 		Owner: Neutral
-	Actor114: split3
+	Actor114: t13.transformable
 		Location: 38,20
 		Owner: Neutral
 	Actor115: rock4

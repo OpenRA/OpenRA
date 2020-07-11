@@ -340,10 +340,10 @@ Actors:
 	Actor97: tc04
 		Location: 45,24
 		Owner: Neutral
-	Actor98: split2
+	Actor98: t03.transformable
 		Location: 55,23
 		Owner: Neutral
-	Actor99: split2
+	Actor99: t03.transformable
 		Location: 60,28
 		Owner: Neutral
 	Actor100: tc04
