@@ -82,6 +82,50 @@ namespace OpenRA
 			return new WAngle(aa + (bb - aa) * mul / div);
 		}
 
+		public static WAngle ArcSin(int d)
+		{
+			if (d < -1024 || d > 1024)
+				throw new ArgumentException("ArcSin is only valid for values between -1024 and 1024. Received {0}".F(d));
+
+			var a = ClosestCosineIndex(Math.Abs(d));
+			return new WAngle(d < 0 ? 768 + a : 256 - a);
+		}
+
+		public static WAngle ArcCos(int d)
+		{
+			if (d < -1024 || d > 1024)
+				throw new ArgumentException("ArcCos is only valid for values between -1024 and 1024. Received {0}".F(d));
+
+			var a = ClosestCosineIndex(Math.Abs(d));
+			return new WAngle(d < 0 ? 512 - a : a);
+		}
+
+		/// <summary>
+		/// Find the index of CosineTable that has the value closest to the given value.
+		/// The first or last index will be returned for values above or below the valid range
+		/// </summary>
+		static int ClosestCosineIndex(int value)
+		{
+			var aboveIndex = 0;
+			var belowIndex = 256;
+			while (aboveIndex != belowIndex - 1)
+			{
+				var index = (aboveIndex + belowIndex) / 2;
+				var val = CosineTable[index];
+
+				if (val == value)
+					return index;
+
+				if (val < value)
+					belowIndex = index;
+				else
+					aboveIndex = index;
+			}
+
+			// Take the index with the smallest error
+			return CosineTable[aboveIndex] - value > value - CosineTable[belowIndex] ? belowIndex : aboveIndex;
+		}
+
 		public static WAngle ArcTan(int y, int x) { return ArcTan(y, x, 1); }
 		public static WAngle ArcTan(int y, int x, int stride)
 		{
