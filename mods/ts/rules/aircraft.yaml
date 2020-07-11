@@ -363,13 +363,17 @@ SCRIN:
 		VoiceSet: Scrin
 	Aircraft:
 		CruiseAltitude: 5c0
-		TurnSpeed: 12
-		BodyTurnSpeed: 20
+		TurnSpeed: 15
+		BodyTurnSpeed: 18
+		BodyTurnAcceleration: 2
 		IdleTurnSpeed: 6
-		Speed: 168
+		Speed: 200
 		IdleSpeed: 100
 		Pitch: 0
-		Roll: 128
+		PitchSpeed: 6
+		MaximumPitch: 200
+		Roll: 200
+		RollSpeed: 10
 		TakeoffSounds: dropup1.aud
 		LandingSounds: dropdwn1.aud
 		CanHover: false
