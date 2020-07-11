@@ -15,6 +15,7 @@ using System.IO;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
+using OpenRA.Mods.Common.Traits.Radar;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -28,7 +29,6 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly IReadOnlyDictionary<CPos, SubCell> Footprint;
 		public readonly Rectangle Bounds;
 		public readonly SelectionBoxAnnotationRenderable SelectionBox;
-		public readonly ActorReference Actor;
 
 		public string Tooltip
 		{
@@ -39,6 +39,8 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
+		public string Type { get { return reference.Type; } }
+
 		public string ID { get; set; }
 		public PlayerReference Owner { get; set; }
 		public SubCell SubCell { get; private set; }
@@ -47,31 +49,36 @@ namespace OpenRA.Mods.Common.Traits
 		readonly WorldRenderer worldRenderer;
 		readonly TooltipInfoBase tooltip;
 		IActorPreview[] previews;
+		readonly ActorReference reference;
+		public readonly Color RadarColor;
 
-		public EditorActorPreview(WorldRenderer worldRenderer, string id, ActorReference actor, PlayerReference owner)
+		public EditorActorPreview(WorldRenderer worldRenderer, string id, ActorReference reference, PlayerReference owner)
 		{
 			ID = id;
-			Actor = actor;
+			this.reference = reference;
 			Owner = owner;
 			this.worldRenderer = worldRenderer;
 
-			if (!actor.InitDict.Contains<FactionInit>())
-				actor.InitDict.Add(new FactionInit(owner.Faction));
+			if (!reference.Contains<FactionInit>())
+				reference.Add(new FactionInit(owner.Faction));
 
-			if (!actor.InitDict.Contains<OwnerInit>())
-				actor.InitDict.Add(new OwnerInit(owner.Name));
+			if (!reference.Contains<OwnerInit>())
+				reference.Add(new OwnerInit(owner.Name));
 
 			var world = worldRenderer.World;
-			if (!world.Map.Rules.Actors.TryGetValue(actor.Type.ToLowerInvariant(), out Info))
-				throw new InvalidDataException("Actor {0} of unknown type {1}".F(id, actor.Type.ToLowerInvariant()));
+			if (!world.Map.Rules.Actors.TryGetValue(reference.Type.ToLowerInvariant(), out Info))
+				throw new InvalidDataException("Actor {0} of unknown type {1}".F(id, reference.Type.ToLowerInvariant()));
 
-			CenterPosition = PreviewPosition(world, actor.InitDict);
+			CenterPosition = PreviewPosition(world, reference);
 
-			var location = actor.InitDict.Get<LocationInit>().Value(worldRenderer.World);
+			var location = reference.Get<LocationInit>().Value;
 			var ios = Info.TraitInfoOrDefault<IOccupySpaceInfo>();
 
-			var subCellInit = actor.InitDict.GetOrDefault<SubCellInit>();
-			var subCell = subCellInit != null ? subCellInit.Value(worldRenderer.World) : SubCell.Any;
+			var subCellInit = reference.GetOrDefault<SubCellInit>();
+			var subCell = subCellInit != null ? subCellInit.Value : SubCell.Any;
+
+			var radarColorInfo = Info.TraitInfoOrDefault<RadarColorFromTerrainInfo>();
+			RadarColor = radarColorInfo == null ? owner.Color : radarColorInfo.GetColorFromTerrain(world);
 
 			if (ios != null)
 				Footprint = ios.OccupiedCells(Info, location, subCell);
@@ -124,27 +131,66 @@ namespace OpenRA.Mods.Common.Traits
 				yield return SelectionBox;
 		}
 
-		public void ReplaceInit<T>(T init)
+		public void AddInit<T>(T init) where T : ActorInit
 		{
-			var original = Actor.InitDict.GetOrDefault<T>();
-			if (original != null)
-				Actor.InitDict.Remove(original);
-
-			Actor.InitDict.Add(init);
+			reference.Add(init);
 			GeneratePreviews();
 		}
 
-		public void RemoveInit<T>()
+		public void ReplaceInit<T>(T init, TraitInfo info) where T : ActorInit
 		{
-			var original = Actor.InitDict.GetOrDefault<T>();
+			var original = GetInitOrDefault<T>(info);
 			if (original != null)
-				Actor.InitDict.Remove(original);
+				reference.Remove(original);
+
+			reference.Add(init);
 			GeneratePreviews();
 		}
 
-		public T Init<T>()
+		public void RemoveInit<T>(TraitInfo info) where T : ActorInit
 		{
-			return Actor.InitDict.GetOrDefault<T>();
+			var original = GetInitOrDefault<T>(info);
+			if (original != null)
+				reference.Remove(original);
+			GeneratePreviews();
+		}
+
+		public int RemoveInits<T>() where T : ActorInit
+		{
+			var removed = reference.RemoveAll<T>();
+			GeneratePreviews();
+			return removed;
+		}
+
+		public T GetInitOrDefault<T>(TraitInfo info) where T : ActorInit
+		{
+			return reference.GetOrDefault<T>(info);
+		}
+
+		public IEnumerable<T> GetInits<T>() where T : ActorInit
+		{
+			return reference.GetAll<T>();
+		}
+
+		public T GetInitOrDefault<T>() where T : ActorInit, ISingleInstanceInit
+		{
+			return reference.GetOrDefault<T>();
+		}
+
+		public void ReplaceInit<T>(T init) where T : ActorInit, ISingleInstanceInit
+		{
+			var original = reference.GetOrDefault<T>();
+			if (original != null)
+				reference.Remove(original);
+
+			reference.Add(init);
+			GeneratePreviews();
+		}
+
+		public void RemoveInit<T>() where T : ActorInit, ISingleInstanceInit
+		{
+			reference.RemoveAll<T>();
+			GeneratePreviews();
 		}
 
 		public MiniYaml Save()
@@ -152,7 +198,7 @@ namespace OpenRA.Mods.Common.Traits
 			Func<object, bool> saveInit = init =>
 			{
 				var factionInit = init as FactionInit;
-				if (factionInit != null && factionInit.Faction == Owner.Faction)
+				if (factionInit != null && factionInit.Value == Owner.Faction)
 					return false;
 
 				// TODO: Other default values will need to be filtered
@@ -160,21 +206,24 @@ namespace OpenRA.Mods.Common.Traits
 				return true;
 			};
 
-			return Actor.Save(saveInit);
+			return reference.Save(saveInit);
 		}
 
-		WPos PreviewPosition(World world, TypeDictionary init)
+		WPos PreviewPosition(World world, ActorReference actor)
 		{
-			if (init.Contains<CenterPositionInit>())
-				return init.Get<CenterPositionInit>().Value(world);
+			var centerPositionInit = actor.GetOrDefault<CenterPositionInit>();
+			if (centerPositionInit != null)
+				return centerPositionInit.Value;
 
-			if (init.Contains<LocationInit>())
+			var locationInit = actor.GetOrDefault<LocationInit>();
+
+			if (locationInit != null)
 			{
-				var cell = init.Get<LocationInit>().Value(world);
+				var cell = locationInit.Value;
 				var offset = WVec.Zero;
 
-				var subCellInit = Actor.InitDict.GetOrDefault<SubCellInit>();
-				var subCell = subCellInit != null ? subCellInit.Value(worldRenderer.World) : SubCell.Any;
+				var subCellInit = reference.GetOrDefault<SubCellInit>();
+				var subCell = subCellInit != null ? subCellInit.Value : SubCell.Any;
 
 				var buildingInfo = Info.TraitInfoOrDefault<BuildingInfo>();
 				if (buildingInfo != null)
@@ -188,7 +237,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void GeneratePreviews()
 		{
-			var init = new ActorPreviewInitializer(Info, worldRenderer, Actor.InitDict);
+			var init = new ActorPreviewInitializer(reference, worldRenderer);
 			previews = Info.TraitInfos<IRenderActorPreviewInfo>()
 				.SelectMany(rpi => rpi.RenderPreview(init))
 				.ToArray();
@@ -196,7 +245,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public ActorReference Export()
 		{
-			return new ActorReference(Actor.Type, Actor.Save().ToDictionary());
+			return reference.Clone();
 		}
 
 		public override string ToString()

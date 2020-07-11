@@ -4,7 +4,7 @@ Player:
 
 World:
 	LuaScript:
-		Scripts: allies06a.lua, allies06a-AI.lua
+		Scripts: campaign-global.lua, allies06a.lua, allies06a-AI.lua
 	MissionData:
 		Briefing: Priority one is to establish a base and get your spy into one of the Soviet Tech Centers in the base across the gulf.\nData on the Iron Curtain is in there and we need it.\n\nOnce you get the data complete your mission...\nWipe out everything.
 		BriefingVideo: ally6.vqa
@@ -48,7 +48,7 @@ TRUK:
 
 STEK:
 	Targetable:
-		TargetTypes: Ground, Structure, C4, DetonateAttack, SpyInfiltrate
+		TargetTypes: GroundActor, Structure, C4, DetonateAttack, SpyInfiltrate
 
 TECH.CAM:
 	Inherits: CAMERA
@@ -91,7 +91,3 @@ CA:
 MSUB:
 	Buildable:
 		Prerequisites: ~disabled
-
-SS:
-	AutoTarget:
-		InitialStanceAI: AttackAnything

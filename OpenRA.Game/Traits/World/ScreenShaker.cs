@@ -16,12 +16,12 @@ using OpenRA.Graphics;
 
 namespace OpenRA.Traits
 {
-	public class ScreenShakerInfo : ITraitInfo
+	public class ScreenShakerInfo : TraitInfo
 	{
 		public readonly float2 MinMultiplier = new float2(-3, -3);
 		public readonly float2 MaxMultiplier = new float2(3, 3);
 
-		public object Create(ActorInitializer init) { return new ScreenShaker(this); }
+		public override object Create(ActorInitializer init) { return new ScreenShaker(this); }
 	}
 
 	public class ScreenShaker : ITick, IWorldLoaded

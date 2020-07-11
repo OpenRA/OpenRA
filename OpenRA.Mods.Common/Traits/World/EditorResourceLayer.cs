@@ -21,9 +21,9 @@ namespace OpenRA.Mods.Common.Traits
 	using CellContents = ResourceLayer.CellContents;
 
 	[Desc("Required for the map editor to work. Attach this to the world actor.")]
-	public class EditorResourceLayerInfo : ITraitInfo, Requires<ResourceTypeInfo>
+	public class EditorResourceLayerInfo : TraitInfo, Requires<ResourceTypeInfo>
 	{
-		public virtual object Create(ActorInitializer init) { return new EditorResourceLayer(init.Self); }
+		public override object Create(ActorInitializer init) { return new EditorResourceLayer(init.Self); }
 	}
 
 	public class EditorResourceLayer : IWorldLoaded, IRenderOverlay, INotifyActorDisposing

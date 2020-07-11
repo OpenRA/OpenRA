@@ -19,6 +19,7 @@ using OpenRA.Graphics;
 using OpenRA.Mods.Common.FileFormats;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
@@ -182,19 +183,19 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					switch (s.Key)
 					{
 					case "Intro":
-						videos.Add(new MiniYamlNode("BackgroundVideo", s.Value.ToLower() + ".vqa"));
+						videos.Add(new MiniYamlNode("BackgroundVideo", s.Value.ToLowerInvariant() + ".vqa"));
 						break;
 					case "Brief":
-						videos.Add(new MiniYamlNode("BriefingVideo", s.Value.ToLower() + ".vqa"));
+						videos.Add(new MiniYamlNode("BriefingVideo", s.Value.ToLowerInvariant() + ".vqa"));
 						break;
 					case "Action":
-						videos.Add(new MiniYamlNode("StartVideo", s.Value.ToLower() + ".vqa"));
+						videos.Add(new MiniYamlNode("StartVideo", s.Value.ToLowerInvariant() + ".vqa"));
 						break;
 					case "Win":
-						videos.Add(new MiniYamlNode("WinVideo", s.Value.ToLower() + ".vqa"));
+						videos.Add(new MiniYamlNode("WinVideo", s.Value.ToLowerInvariant() + ".vqa"));
 						break;
 					case "Lose":
-						videos.Add(new MiniYamlNode("LossVideo", s.Value.ToLower() + ".vqa"));
+						videos.Add(new MiniYamlNode("LossVideo", s.Value.ToLowerInvariant() + ".vqa"));
 						break;
 					}
 				}
@@ -409,14 +410,13 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						new OwnerInit(parts[0]),
 					};
 
-					var initDict = actor.InitDict;
 					if (health != 100)
-						initDict.Add(new HealthInit(health));
+						actor.Add(new HealthInit(health));
 					if (facing != 0)
-						initDict.Add(new FacingInit(255 - facing));
+						actor.Add(new FacingInit(new WAngle(1024 - 4 * facing)));
 
 					if (section == "INFANTRY")
-						actor.Add(new SubCellInit(Exts.ParseByte(parts[4])));
+						actor.Add(new SubCellInit((SubCell)Exts.ParseByte(parts[4])));
 
 					var actorCount = map.ActorDefinitions.Count;
 

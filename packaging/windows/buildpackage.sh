@@ -32,26 +32,35 @@ function makelauncher()
 	sed "s|DISPLAY_NAME|$2|" WindowsLauncher.cs.in | sed "s|MOD_ID|$3|" | sed "s|FAQ_URL|${FAQ_URL}|" > WindowsLauncher.cs
 	csc WindowsLauncher.cs -warn:4 -warnaserror -platform:"$5" -out:"$1" -t:winexe ${LAUNCHER_LIBS} -win32icon:"$4"
 	rm WindowsLauncher.cs
-	mono "${SRCDIR}/OpenRA.PostProcess.exe" "$1" -LAA > /dev/null
+
+	if [ "$5" = "x86" ]; then
+		# Enable the full 4GB address space for the 32 bit game executable
+		# The server and utility do not use enough memory to need this
+		csc MakeLAA.cs -warn:4 -warnaserror -out:"MakeLAA.exe"
+		mono "MakeLAA.exe" "$1"
+		rm MakeLAA.exe
+	fi
 }
 
 function build_platform()
 {
 	echo "Building core files ($1)"
 	if [ "$1" = "x86" ]; then
+		TARGETPLATFORM="TARGETPLATFORM=win-x86"
 		IS_WIN32="WIN32=true"
 		USE_PROGRAMFILES32="-DUSE_PROGRAMFILES32=true"
 	else
 		IS_WIN32="WIN32=false"
+		TARGETPLATFORM="TARGETPLATFORM=win-x64"
 		USE_PROGRAMFILES32=""
 	fi
 
 	pushd "${SRCDIR}" > /dev/null || exit 1
 	make clean
-	make windows-dependencies "${IS_WIN32}"
-	make core "${IS_WIN32}"
+	make core "${TARGETPLATFORM}" "${IS_WIN32}"
 	make version VERSION="${TAG}"
-	make install-core gameinstalldir="" DESTDIR="${BUILTDIR}"
+	make install-core "${TARGETPLATFORM}" gameinstalldir="" DESTDIR="${BUILTDIR}"
+	make install-dependencies "${TARGETPLATFORM}" gameinstalldir="" DESTDIR="${BUILTDIR}"
 	popd > /dev/null || exit 1
 
 	echo "Compiling Windows launchers ($1)"

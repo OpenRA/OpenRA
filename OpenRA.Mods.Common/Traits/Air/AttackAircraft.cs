@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!base.CanAttack(self, target))
 				return false;
 
-			return TargetInFiringArc(self, target, base.Info.FacingTolerance);
+			return TargetInFiringArc(self, target, 4 * base.Info.FacingTolerance);
 		}
 	}
 }

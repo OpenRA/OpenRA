@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Widgets
 	public class ViewportControllerWidget : Widget
 	{
 		readonly ModData modData;
-		readonly ResourceRenderer resourceRenderer;
+		readonly IEnumerable<ResourceRenderer> resourceRenderers;
 
 		public readonly HotkeyReference ZoomInKey = new HotkeyReference();
 		public readonly HotkeyReference ZoomOutKey = new HotkeyReference();
@@ -86,15 +86,16 @@ namespace OpenRA.Mods.Common.Widgets
 			{ ScrollDirection.Right, new float2(1, 0) },
 		};
 
-		Lazy<TooltipContainerWidget> tooltipContainer;
+		readonly Lazy<TooltipContainerWidget> tooltipContainer;
+		readonly World world;
+		readonly WorldRenderer worldRenderer;
+
 		int2? joystickScrollStart, joystickScrollEnd;
 		int2? standardScrollStart;
 		bool isStandardScrolling;
 
 		ScrollDirection keyboardDirections;
 		ScrollDirection edgeDirections;
-		World world;
-		WorldRenderer worldRenderer;
 
 		HotkeyReference[] saveBookmarkHotkeys;
 		HotkeyReference[] restoreBookmarkHotkeys;
@@ -144,7 +145,7 @@ namespace OpenRA.Mods.Common.Widgets
 			tooltipContainer = Exts.Lazy(() =>
 				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
 
-			resourceRenderer = world.WorldActor.TraitOrDefault<ResourceRenderer>();
+			resourceRenderers = world.WorldActor.TraitsImplementing<ResourceRenderer>().ToArray();
 		}
 
 		public override void Initialize(WidgetArgs args)
@@ -191,7 +192,7 @@ namespace OpenRA.Mods.Common.Widgets
 			else if (!isStandardScrolling)
 			{
 				edgeDirections = ScrollDirection.None;
-				if (Game.Settings.Game.ViewportEdgeScroll && Game.HasInputFocus)
+				if (Game.Settings.Game.ViewportEdgeScroll && Game.Renderer.WindowHasInputFocus)
 					edgeDirections = CheckForDirections();
 
 				if (keyboardDirections != ScrollDirection.None || edgeDirections != ScrollDirection.None)
@@ -266,13 +267,14 @@ namespace OpenRA.Mods.Common.Widgets
 				return;
 			}
 
-			if (resourceRenderer != null)
+			foreach (var resourceRenderer in resourceRenderers)
 			{
 				var resource = resourceRenderer.GetRenderedResourceType(cell);
 				if (resource != null)
 				{
 					TooltipType = WorldTooltipType.Resource;
 					ResourceTooltip = resource;
+					break;
 				}
 			}
 		}

@@ -65,21 +65,19 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			var map = owner.World.Map;
 			var dangerRadius = owner.SquadManager.Info.DangerScanRadius;
 			detectedEnemyTarget = null;
-			var x = (map.MapSize.X % dangerRadius) == 0 ? map.MapSize.X : map.MapSize.X + dangerRadius;
-			var y = (map.MapSize.Y % dangerRadius) == 0 ? map.MapSize.Y : map.MapSize.Y + dangerRadius;
 
-			for (var i = 0; i < x; i += dangerRadius * 2)
+			var columnCount = (map.MapSize.X + dangerRadius - 1) / dangerRadius;
+			var rowCount = (map.MapSize.Y + dangerRadius - 1) / dangerRadius;
+			var checkIndices = Exts.MakeArray(columnCount * rowCount, i => i).Shuffle(owner.World.LocalRandom);
+			foreach (var i in checkIndices)
 			{
-				for (var j = 0; j < y; j += dangerRadius * 2)
+				var pos = new CPos((i % columnCount) * dangerRadius + dangerRadius / 2, (i / columnCount) * dangerRadius + dangerRadius / 2);
+				if (NearToPosSafely(owner, map.CenterOfCell(pos), out detectedEnemyTarget))
 				{
-					var pos = new CPos(i, j);
-					if (NearToPosSafely(owner, map.CenterOfCell(pos), out detectedEnemyTarget))
-					{
-						if (needTarget && detectedEnemyTarget == null)
-							continue;
+					if (needTarget && detectedEnemyTarget == null)
+						continue;
 
-						return pos;
-					}
+					return pos;
 				}
 			}
 
@@ -97,7 +95,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			detectedEnemyTarget = null;
 			var dangerRadius = owner.SquadManager.Info.DangerScanRadius;
 			var unitsAroundPos = owner.World.FindActorsInCircle(loc, WDist.FromCells(dangerRadius))
-				.Where(owner.SquadManager.IsEnemyUnit).ToList();
+				.Where(owner.SquadManager.IsPreferredEnemyUnit).ToList();
 
 			if (!unitsAroundPos.Any())
 				return true;
@@ -107,49 +105,6 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 				detectedEnemyTarget = unitsAroundPos.Random(owner.Random);
 				return true;
 			}
-
-			return false;
-		}
-
-		protected static bool FullAmmo(Actor a)
-		{
-			var ammoPools = a.TraitsImplementing<AmmoPool>();
-			return ammoPools.All(x => x.HasFullAmmo);
-		}
-
-		protected static bool HasAmmo(Actor a)
-		{
-			var ammoPools = a.TraitsImplementing<AmmoPool>();
-			return ammoPools.All(x => x.HasAmmo);
-		}
-
-		protected static bool ReloadsAutomatically(Actor a)
-		{
-			var ammoPools = a.TraitsImplementing<AmmoPool>();
-			var rearmable = a.TraitOrDefault<Rearmable>();
-			if (rearmable == null)
-				return true;
-
-			return ammoPools.All(ap => !rearmable.Info.AmmoPools.Contains(ap.Info.Name));
-		}
-
-		protected static bool IsRearm(Actor a)
-		{
-			if (a.IsIdle)
-				return false;
-
-			var activity = a.CurrentActivity;
-			var type = activity.GetType();
-			if (type == typeof(Resupply))
-				return true;
-
-			var next = activity.NextActivity;
-			if (next == null)
-				return false;
-
-			var nextType = next.GetType();
-			if (nextType == typeof(Resupply))
-				return true;
 
 			return false;
 		}
@@ -220,12 +175,13 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 				if (BusyAttack(a))
 					continue;
 
-				if (!ReloadsAutomatically(a))
+				var ammoPools = a.TraitsImplementing<AmmoPool>().ToArray();
+				if (!ReloadsAutomatically(ammoPools, a.TraitOrDefault<Rearmable>()))
 				{
-					if (IsRearm(a))
+					if (IsRearming(a))
 						continue;
 
-					if (!HasAmmo(a))
+					if (!HasAmmo(ammoPools))
 					{
 						owner.Bot.QueueOrder(new Order("ReturnToBase", a, false));
 						continue;
@@ -251,9 +207,10 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 
 			foreach (var a in owner.Units)
 			{
-				if (!ReloadsAutomatically(a) && !FullAmmo(a))
+				var ammoPools = a.TraitsImplementing<AmmoPool>().ToArray();
+				if (!ReloadsAutomatically(ammoPools, a.TraitOrDefault<Rearmable>()) && !FullAmmo(ammoPools))
 				{
-					if (IsRearm(a))
+					if (IsRearming(a))
 						continue;
 
 					owner.Bot.QueueOrder(new Order("ReturnToBase", a, false));

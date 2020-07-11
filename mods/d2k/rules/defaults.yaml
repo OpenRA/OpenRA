@@ -5,7 +5,6 @@
 	GivesExperience:
 		PlayerExperienceModifier: 1
 	ScriptTriggers:
-	ConditionManager:
 	RenderDebugState:
 
 ^SpriteActor:
@@ -96,42 +95,44 @@
 		Image: rank
 		Sequence: rank-veteran-1
 		Palette: effect
-		ReferencePoint: Bottom, Right
+		Position: BottomRight
+		Margin: 5, 6
 		RequiresCondition: rank-veteran == 1
-		ZOffset: 256
 	WithDecoration@RANK-2:
 		Image: rank
 		Sequence: rank-veteran-2
 		Palette: effect
-		ReferencePoint: Bottom, Right
+		Position: BottomRight
+		Margin: 5, 6
 		RequiresCondition: rank-veteran == 2
-		ZOffset: 256
 	WithDecoration@RANK-3:
 		Image: rank
 		Sequence: rank-veteran-3
 		Palette: effect
-		ReferencePoint: Bottom, Right
+		Position: BottomRight
+		Margin: 5, 6
 		RequiresCondition: rank-veteran == 3
-		ZOffset: 256
 	WithDecoration@RANK-ELITE:
 		Image: rank
 		Sequence: rank-elite
 		Palette: effect
-		ReferencePoint: Bottom, Right
+		Position: BottomRight
+		Margin: 5, 6
 		RequiresCondition: rank-elite
-		ZOffset: 256
 
 ^AutoTargetGround:
 	AutoTarget:
 		AttackAnythingCondition: stance-attackanything
 	AutoTargetPriority@DEFAULT:
 		RequiresCondition: !stance-attackanything
-		ValidTargets: Infantry, Vehicle, Creep, Water, Defense
+		ValidTargets: Infantry, Vehicle, Water, Defense
 		InvalidTargets: NoAutoTarget
 	AutoTargetPriority@ATTACKANYTHING:
 		RequiresCondition: stance-attackanything
-		ValidTargets: Infantry, Vehicle, Creep, Water, Structure, Defense
+		ValidTargets: Infantry, Vehicle, Water, Structure, Defense
 		InvalidTargets: NoAutoTarget
+	AutoTargetPriority@CREEPS:
+		ValidTargets: Creep
 
 ^AutoTargetGroundAssaultMove:
 	Inherits: ^AutoTargetGround
@@ -139,7 +140,16 @@
 		RequiresCondition: !stance-attackanything && !assault-move
 	AutoTargetPriority@ATTACKANYTHING:
 		RequiresCondition: stance-attackanything || assault-move
+	GrantConditionOnBotOwner@BOTOWNER:
+		Condition: bot-owned
+		Bots: omnius, vidious, gladius
+	GrantCondition@IGNORECREEPS:
+		Condition: ignore-creeps
+		RequiresCondition: bot-owned && (attack-move || assault-move)
+	AutoTargetPriority@CREEPS:
+		RequiresCondition: !ignore-creeps
 	AttackMove:
+		AttackMoveCondition: attack-move
 		AssaultMoveCondition: assault-move
 
 ^AutoTargetAll:
@@ -147,12 +157,14 @@
 		AttackAnythingCondition: stance-attackanything
 	AutoTargetPriority@DEFAULT:
 		RequiresCondition: !stance-attackanything
-		ValidTargets: Infantry, Vehicle, Creep, Water, Air, Defense
+		ValidTargets: Infantry, Vehicle, Water, Air, Defense
 		InvalidTargets: NoAutoTarget
 	AutoTargetPriority@ATTACKANYTHING:
 		RequiresCondition: stance-attackanything
-		ValidTargets: Infantry, Vehicle, Creep, Water, Air, Structure, Defense
+		ValidTargets: Infantry, Vehicle, Water, Air, Structure, Defense
 		InvalidTargets: NoAutoTarget
+	AutoTargetPriority@CREEPS:
+		ValidTargets: Creep
 
 ^AutoTargetAllAssaultMove:
 	Inherits: ^AutoTargetAll
@@ -160,7 +172,16 @@
 		RequiresCondition: !stance-attackanything && !assault-move
 	AutoTargetPriority@ATTACKANYTHING:
 		RequiresCondition: stance-attackanything || assault-move
+	GrantConditionOnBotOwner@BOTOWNER:
+		Condition: bot-owned
+		Bots: omnius, vidious, gladius
+	GrantCondition@IGNORECREEPS:
+		Condition: ignore-creeps
+		RequiresCondition: bot-owned && (attack-move || assault-move)
+	AutoTargetPriority@CREEPS:
+		RequiresCondition: !ignore-creeps
 	AttackMove:
+		AttackMoveCondition: attack-move
 		AssaultMoveCondition: assault-move
 
 ^Vehicle:
@@ -176,8 +197,6 @@
 		TurnSpeed: 5
 		Locomotor: vehicle
 		PauseOnCondition: notmobile
-	SelectionDecorations:
-	WithSpriteControlGroupDecoration:
 	Selectable:
 		Bounds: 32,32
 	Targetable:
@@ -185,7 +204,6 @@
 	Passenger:
 		CargoType: Vehicle
 	AttackMove:
-	DrawLineToTarget:
 	HiddenUnderFog:
 	ActorLostNotification:
 	Repairable:
@@ -205,15 +223,16 @@
 		LockedCondition: notmobile
 	WithDecoration@CARRYALL:
 		Image: pips
+		Margin: 7, 9
 		Sequence: pickup-indicator
-		ReferencePoint: Top, Left
-		ZOffset: 256
 		RequiresCondition: carryall-reserved
 	RevealOnFire:
 	RevealOnDeath:
 		Duration: 100
 		Radius: 2c512
 	HitShape:
+		Type: Circle
+			Radius: 16
 	MapEditorData:
 		Categories: Vehicle
 
@@ -237,6 +256,8 @@
 	ScriptTriggers:
 	WithFacingSpriteBody:
 	HitShape:
+		Type: Circle
+			Radius: 16
 	MapEditorData:
 		Categories: Husk
 
@@ -284,9 +305,8 @@
 	RevealsShroud:
 		Range: 3c768
 	Mobile:
+		AlwaysTurnInPlace: true
 		Locomotor: foot
-	SelectionDecorations:
-	WithSpriteControlGroupDecoration:
 	Selectable:
 		Bounds: 24,24,0,-4
 		DecorationBounds: 12,20,0,-4
@@ -309,10 +329,8 @@
 			BulletDeath: 4
 		CrushedSequence: die-crushed
 	AttackMove:
-	DrawLineToTarget:
 	Passenger:
 		CargoType: Infantry
-		PipType: Green
 	HiddenUnderFog:
 	ActorLostNotification:
 	Crushable:
@@ -335,7 +353,7 @@
 		Duration: 100
 	HitShape:
 		Type: Circle
-			Radius: 96
+			Radius: 16
 	MapEditorData:
 		Categories: Infantry
 	AttackFrontal:
@@ -356,10 +374,11 @@
 		AlwaysVisibleStances: None
 	ActorLostNotification:
 	AttackMove:
-	DrawLineToTarget:
 	WithFacingSpriteBody:
 	WithShadow:
 	HitShape:
+		Type: Circle
+			Radius: 16
 	MapEditorData:
 		Categories: Aircraft
 
@@ -372,8 +391,6 @@
 	Huntable:
 	OwnerLostAction:
 		Action: Kill
-	SelectionDecorations:
-	WithSpriteControlGroupDecoration:
 	RevealsShroud:
 	Targetable:
 		TargetTypes: Ground, C4, Structure
@@ -449,7 +466,7 @@
 	WithBuildingRepairDecoration:
 		Image: allyrepair
 		Sequence: repair
-		ReferencePoint: Center
+		Position: Center
 		Palette: player
 		IsPlayerPalette: True
 
@@ -457,18 +474,23 @@
 	Inherits: ^Building
 	Inherits@selection: ^SelectableCombatBuilding
 	WithSpriteTurret:
+		RequiresCondition: !build-incomplete
 	AttackTurreted:
+		RequiresCondition: !build-incomplete
 	RenderRangeCircle:
 	DetectCloaked:
 		Range: 1c768
 	-GivesBuildableArea:
-	-WithMakeAnimation:
-	-WithCrumbleOverlay:
+	WithMakeAnimation:
+		BodyNames: make
 	-Capturable:
-	-WithSpriteBody:
+	WithSpriteBody:
+		Name: make
+		Sequence: invisible
 	Sellable:
 		RequiresCondition: !being-demolished
 	WithWallSpriteBody:
+		RequiresCondition: !build-incomplete
 	LineBuildNode:
 		Types: turret
 	ThrowsShrapnel:
@@ -510,7 +532,7 @@
 		Sequence: offline
 		Palette: chrome
 		RequiresCondition: powerdown
-		ReferencePoint: Center
+		Position: Center
 		Offsets:
 			repairing: 10, 0
 	PowerMultiplier@POWERDOWN:
@@ -522,25 +544,60 @@
 		Offsets:
 			powerdown: -10, 0
 
+^Selectable:
+	Selectable:
+	SelectionDecorations:
+	WithSpriteControlGroupDecoration:
+		Margin: -1, -1
+	DrawLineToTarget:
+
 ^SelectableCombatUnit:
+	Inherits@selectiondecorations: ^Selectable
 	Selectable:
 		Priority: 10
 		PriorityModifiers: Ctrl
 
 ^SelectableSupportUnit:
+	Inherits@selectiondecorations: ^Selectable
 	Selectable:
 		Priority: 8
 		PriorityModifiers: Ctrl, Alt
 
 ^SelectableEconomicUnit:
+	Inherits@selectiondecorations: ^Selectable
 	Selectable:
 		Priority: 6
 		PriorityModifiers: Ctrl, Alt
 
 ^SelectableCombatBuilding:
+	Inherits@selectiondecorations: ^Selectable
 	Selectable:
 		Priority: 4
 
 ^SelectableBuilding:
+	Inherits@selectiondecorations: ^Selectable
 	Selectable:
 		Priority: 2
+
+^PrimaryBuilding:
+	PrimaryBuilding:
+		PrimaryCondition: primary
+		ProductionQueues: Building
+		SelectionNotification: PrimaryBuildingSelected
+	WithTextDecoration@primary:
+		RequiresCondition: primary
+		Position: Top
+		Margin: 0, 5
+		RequiresSelection: true
+		Text: PRIMARY
+
+^Upgradeable:
+	GrantConditionOnPrerequisite@UPGRADEABLE:
+		Condition: stardecoration
+	WithDecoration@upgraded:
+		RequiresCondition: stardecoration
+		Position: TopRight
+		Margin: 6, 8
+		RequiresSelection: true
+		Image: pips
+		Sequence: tag-upgraded

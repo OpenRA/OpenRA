@@ -115,7 +115,7 @@ HarkonnenAttackWaves =
 	hard = 6
 }
 
-InitialReinforcements = 
+InitialReinforcements =
 {
 	Atreides = { "combat_tank_a", "quad", "quad", "trike", "trike" },
 	Harkonnen = { "trooper", "trooper", "trooper", "trooper", "trooper", "combat_tank_h" }

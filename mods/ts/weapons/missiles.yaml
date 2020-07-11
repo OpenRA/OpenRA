@@ -11,16 +11,16 @@
 		Image: DRAGON
 		TrailImage: small_smoke_trail
 		TrailPalette: effectalpha75
-		HorizontalRateOfTurn: 8
-		RangeLimit: 8c0
+		HorizontalRateOfTurn: 25
+		RangeLimit: 15c0
 		Palette: ra
 		MinimumLaunchSpeed: 75
 		Speed: 216
-		Acceleration: 6
+		Acceleration: 96
 		MinimumLaunchAngle: 128
 		MaximumLaunchAngle: 192
-		VerticalRateOfTurn: 11
-		CruiseAltitude: 2c124
+		VerticalRateOfTurn: 25
+		CruiseAltitude: 5c512
 		AllowSnapping: true
 		TerrainHeightAware: true
 	Warhead@1Dam: SpreadDamage
@@ -60,8 +60,6 @@ HoverMissile:
 	Burst: 2
 	Range: 8c0
 	Report: hovrmis1.aud
-	Projectile: Missile
-		RangeLimit: 11c0
 	Warhead@1Dam: SpreadDamage
 		Damage: 3000
 
@@ -71,9 +69,6 @@ MammothTusk:
 	Report: misl1.aud
 	ValidTargets: Air
 	Burst: 2
-	Projectile: Missile
-		HorizontalRateOfTurn: 10
-		RangeLimit: 9c0
 	Warhead@1Dam: SpreadDamage
 		Spread: 144
 		Damage: 4000
@@ -96,8 +91,6 @@ BikeMissile:
 	Range: 5c0
 	Report: misl1.aud
 	ValidTargets: Ground
-	Projectile: Missile
-		RangeLimit: 7c0
 	Warhead@1Dam: SpreadDamage
 		Damage: 4000
 		ValidTargets: Ground, Air
@@ -134,9 +127,8 @@ RedEye2:
 	Report: samshot1.aud
 	ValidTargets: Air
 	Projectile: Missile
-		MaximumLaunchSpeed: 144
 		Arm: 1
-		HorizontalRateOfTurn: 5
+		VerticalRateOfTurn: 35
 		RangeLimit: 25c0
 		Speed: 288
 	Warhead@1Dam: SpreadDamage

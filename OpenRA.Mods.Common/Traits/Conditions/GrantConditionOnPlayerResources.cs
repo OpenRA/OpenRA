@@ -15,7 +15,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Grants a condition to this actor when the player has stored resources.")]
-	public class GrantConditionOnPlayerResourcesInfo : ITraitInfo
+	public class GrantConditionOnPlayerResourcesInfo : TraitInfo
 	{
 		[FieldLoader.Require]
 		[GrantedConditionReference]
@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Enable condition when the amount of stored resources is greater than this.")]
 		public readonly int Threshold = 0;
 
-		public object Create(ActorInitializer init) { return new GrantConditionOnPlayerResources(this); }
+		public override object Create(ActorInitializer init) { return new GrantConditionOnPlayerResources(this); }
 	}
 
 	public class GrantConditionOnPlayerResources : INotifyCreated, INotifyOwnerChanged, ITick
@@ -33,8 +33,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly GrantConditionOnPlayerResourcesInfo info;
 		PlayerResources playerResources;
 
-		ConditionManager conditionManager;
-		int conditionToken = ConditionManager.InvalidConditionToken;
+		int conditionToken = Actor.InvalidConditionToken;
 
 		public GrantConditionOnPlayerResources(GrantConditionOnPlayerResourcesInfo info)
 		{
@@ -43,13 +42,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyCreated.Created(Actor self)
 		{
-			// Special case handling is required for the Player actor.
-			// Created is called before Player.PlayerActor is assigned,
-			// so we must query other player traits from self, knowing that
-			// it refers to the same actor as self.Owner.PlayerActor
-			var playerActor = self.Info.Name == "player" ? self : self.Owner.PlayerActor;
-			playerResources = playerActor.Trait<PlayerResources>();
-			conditionManager = self.TraitOrDefault<ConditionManager>();
+			playerResources = self.Owner.PlayerActor.Trait<PlayerResources>();
 		}
 
 		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
@@ -59,14 +52,14 @@ namespace OpenRA.Mods.Common.Traits
 
 		void ITick.Tick(Actor self)
 		{
-			if (string.IsNullOrEmpty(info.Condition) || conditionManager == null)
+			if (string.IsNullOrEmpty(info.Condition))
 				return;
 
 			var enabled = playerResources.Resources > info.Threshold;
-			if (enabled && conditionToken == ConditionManager.InvalidConditionToken)
-				conditionToken = conditionManager.GrantCondition(self, info.Condition);
-			else if (!enabled && conditionToken != ConditionManager.InvalidConditionToken)
-				conditionToken = conditionManager.RevokeCondition(self, conditionToken);
+			if (enabled && conditionToken == Actor.InvalidConditionToken)
+				conditionToken = self.GrantCondition(info.Condition);
+			else if (!enabled && conditionToken != Actor.InvalidConditionToken)
+				conditionToken = self.RevokeCondition(conditionToken);
 		}
 	}
 }

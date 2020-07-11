@@ -8,8 +8,7 @@
 ]]
 IdlingUnits = { }
 
-DDPatrol1 = { "dd", "dd" }
-DDPatrol2 = { "dd", "dd" }
+DDPatrol = { "dd", "dd" }
 DDPatrol1Path = { DDPatrol1Point1.Location, DDPatrol1Point2.Location, DDPatrol1Point3.Location, DDPatrol1Point4.Location, DDPatrol1Point5.Location, DDPatrol1Point6.Location }
 DDPatrol2Path = { DDPatrol2Point1.Location, DDPatrol2Point2.Location, DDPatrol2Point3.Location, DDPatrol2Point4.Location, DDPatrol2Point5.Location, DDPatrol2Point6.Location, DDPatrol2Point7.Location }
 ShipArrivePath = { DDEntry.Location, DDEntryStop.Location }
@@ -33,9 +32,9 @@ WTransUnits =
 
 WTransDelays =
 {
-	easy = 5,
-	normal = 3,
-	hard = 2
+	easy = DateTime.Minutes(5),
+	normal = DateTime.Minutes(3),
+	hard = DateTime.Minutes(2)
 }
 
 AttackGroup = { }
@@ -62,7 +61,7 @@ IdleHunt = function(unit) if not unit.IsDead then Trigger.OnIdle(unit, unit.Hunt
 WTransWaves = function()
 	local way = Utils.Random(WTransWays)
 	local units = Utils.Random(WTransUnits)
-	local attackUnits = Reinforcements.ReinforceWithTransport(greece, "lst", units , way, { way[2], way[1] })[2]
+	local attackUnits = Reinforcements.ReinforceWithTransport(Greece, "lst", units , way, { way[2], way[1] })[2]
 	Utils.Do(attackUnits, function(a)
 		Trigger.OnAddedToWorld(a, function()
 			a.AttackMove(SovietStart.Location)
@@ -70,7 +69,7 @@ WTransWaves = function()
 		end)
 	end)
 
-	Trigger.AfterDelay(DateTime.Minutes(WTransDelays), WTransWaves)
+	Trigger.AfterDelay(WTransDelays, WTransWaves)
 end
 
 SendAttackGroup = function()
@@ -88,11 +87,11 @@ SendAttackGroup = function()
 end
 
 ProduceInfantry = function()
-	if (GreeceTent1.IsDead or GreeceTent1.Owner ~= greece) and (GreeceTent2.IsDead or GreeceTent2.Owner ~= greece) then
+	if (GreeceTent1.IsDead or GreeceTent1.Owner ~= Greece) and (GreeceTent2.IsDead or GreeceTent2.Owner ~= Greece) then
 		return
 	end
 
-	greece.Build({ Utils.Random(AlliedInfantry) }, function(units)
+	Greece.Build({ Utils.Random(AlliedInfantry) }, function(units)
 		table.insert(AttackGroup, units[1])
 		SendAttackGroup()
 		Trigger.AfterDelay(ProductionInterval[Map.LobbyOption("difficulty")], ProduceInfantry)
@@ -100,55 +99,36 @@ ProduceInfantry = function()
 end
 
 ProduceVehicles = function()
-	if GreeceWarFactory.IsDead or GreeceWarFactory.Owner ~= greece then
+	if GreeceWarFactory.IsDead or GreeceWarFactory.Owner ~= Greece then
 		return
 	end
 
-	greece.Build({ Utils.Random(AlliedVehicles[AlliedVehicleType]) }, function(units)
+	Greece.Build({ Utils.Random(AlliedVehicles[AlliedVehicleType]) }, function(units)
 		table.insert(AttackGroup, units[1])
 		SendAttackGroup()
 		Trigger.AfterDelay(ProductionInterval[Map.LobbyOption("difficulty")], ProduceVehicles)
 	end)
 end
 
-BringDDPatrol1 = function()
-	local units = Reinforcements.Reinforce(greece, DDPatrol1, ShipArrivePath, 0)
+BringDDPatrol = function(patrolPath)
+	local units = Reinforcements.Reinforce(Greece, DDPatrol, ShipArrivePath)
 	Utils.Do(units, function(unit)
 		Trigger.OnIdle(unit, function(patrols)
-			patrols.Patrol(DDPatrol1Path, true, 200)
+			patrols.Patrol(patrolPath, true, 200)
 		end)
 	end)
-	if GreeceNavalYard.IsDead then
-		return
-	else
-		Trigger.OnAllKilled(units, function()
-			if Map.LobbyOption("difficulty") == "easy" then
-				Trigger.AfterDelay(DateTime.Minutes(7), BringDDPatrol1)
-			else
-				Trigger.AfterDelay(DateTime.Minutes(4), BringDDPatrol1)
-			end
-		end)
-	end
-end
 
-BringDDPatrol2 = function()
-	local units = Reinforcements.Reinforce(greece, DDPatrol2, ShipArrivePath, 0)
-	Utils.Do(units, function(unit)
-		Trigger.OnIdle(unit, function(patrols)
-			patrols.Patrol(DDPatrol2Path, true, 200)
-		end)
-	end)
-	if GreeceNavalYard.IsDead then
-		return
-	else
-		Trigger.OnAllKilled(units, function()
+	Trigger.OnAllKilled(units, function()
+		if GreeceNavalYard.IsDead then
+			return
+		else
 			if Map.LobbyOption("difficulty") == "easy" then
-				Trigger.AfterDelay(DateTime.Minutes(7), BringDDPatrol2)
+				Trigger.AfterDelay(DateTime.Minutes(7), function() BringDDPatrol(patrolPath) end)
 			else
-				Trigger.AfterDelay(DateTime.Minutes(4), BringDDPatrol2)
+				Trigger.AfterDelay(DateTime.Minutes(4), function() BringDDPatrol(patrolPath) end)
 			end
-		end)
-	end
+		end
+	end)
 end
 
 ActivateAI = function()
@@ -156,10 +136,10 @@ ActivateAI = function()
 	WTransUnits = WTransUnits[difficulty]
 	WTransDelays = WTransDelays[difficulty]
 
-	local buildings = Utils.Where(Map.ActorsInWorld, function(self) return self.Owner == greece and self.HasProperty("StartBuildingRepairs") end)
+	local buildings = Utils.Where(Map.ActorsInWorld, function(self) return self.Owner == Greece and self.HasProperty("StartBuildingRepairs") end)
 	Utils.Do(buildings, function(actor)
 		Trigger.OnDamaged(actor, function(building)
-			if building.Owner == greece and building.Health < building.MaxHealth * 3/4 then
+			if building.Owner == Greece and building.Health < building.MaxHealth * 3/4 then
 				building.StartBuildingRepairs()
 			end
 		end)
@@ -167,10 +147,10 @@ ActivateAI = function()
 
 	Trigger.AfterDelay(DateTime.Minutes(3), WTransWaves)
 
-	Trigger.AfterDelay(AlliedVehiclesUpgradeDelay, function() AlliedVehicleType = "Upgraded" end)	
+	Trigger.AfterDelay(AlliedVehiclesUpgradeDelay, function() AlliedVehicleType = "Upgraded" end)
 
 	ProduceInfantry()
 	ProduceVehicles()
-	BringDDPatrol1()
-	Trigger.AfterDelay(DateTime.Minutes(1), BringDDPatrol2)
+	BringDDPatrol(DDPatrol1Path)
+	Trigger.AfterDelay(DateTime.Minutes(1), function() BringDDPatrol(DDPatrol2Path) end)
 end

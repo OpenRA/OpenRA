@@ -93,15 +93,15 @@ Actors:
 	Actor15: gun
 		Location: 18,116
 		Owner: Soviets
-		Facing: 192
+		Facing: 768
 	Actor16: gun
 		Location: 19,119
 		Owner: Soviets
-		Facing: 192
+		Facing: 768
 	Actor17: sam
 		Location: 16,118
 		Owner: Soviets
-		Facing: 192
+		Facing: 768
 	Actor18: t10
 		Location: 18,117
 		Owner: Neutral
@@ -123,19 +123,19 @@ Actors:
 	Actor24: gun
 		Location: 23,110
 		Owner: Soviets
-		Facing: 92
+		Facing: 368
 	Actor25: gun
 		Location: 25,115
 		Owner: Soviets
-		Facing: 92
+		Facing: 368
 	Actor26: gun
 		Location: 24,113
 		Owner: Soviets
-		Facing: 92
+		Facing: 368
 	Actor27: sam
 		Location: 26,113
 		Owner: Soviets
-		Facing: 160
+		Facing: 640
 	Actor28: tc02
 		Location: 26,114
 		Owner: Neutral
@@ -163,7 +163,7 @@ Actors:
 	Actor43: sam
 		Location: 54,103
 		Owner: Soviets
-		Facing: 192
+		Facing: 768
 	Actor44: tc02
 		Location: 51,98
 		Owner: Neutral
@@ -182,14 +182,14 @@ Actors:
 	Actor51: gun
 		Location: 58,104
 		Owner: Soviets
-		Facing: 160
+		Facing: 640
 	Actor50: tc02
 		Location: 112,108
 		Owner: Neutral
 	Actor49: gun
 		Location: 54,107
 		Owner: Soviets
-		Facing: 160
+		Facing: 640
 	Actor52: tc05
 		Location: 113,107
 		Owner: Neutral
@@ -214,7 +214,7 @@ Actors:
 	Actor59: sam
 		Location: 80,87
 		Owner: Soviets
-		Facing: 192
+		Facing: 768
 	Actor60: tc01
 		Location: 84,90
 		Owner: Neutral
@@ -275,15 +275,15 @@ Actors:
 	Actor79: sam
 		Location: 80,100
 		Owner: Soviets
-		Facing: 192
+		Facing: 768
 	Actor80: gun
 		Location: 80,106
 		Owner: Soviets
-		Facing: 160
+		Facing: 640
 	Actor81: gun
 		Location: 85,105
 		Owner: Soviets
-		Facing: 160
+		Facing: 640
 	Actor209: tc05
 		Location: 141,47
 		Owner: Neutral
@@ -512,7 +512,7 @@ Actors:
 	Actor175: sam
 		Location: 45,88
 		Owner: Soviets
-		Facing: 224
+		Facing: 896
 	Actor173: brik
 		Location: 45,85
 		Owner: Soviets
@@ -631,7 +631,7 @@ Actors:
 	Actor206: sam
 		Location: 40,101
 		Owner: Soviets
-		Facing: 160
+		Facing: 640
 	Actor193: t13
 		Location: 130,63
 		Owner: Neutral
@@ -647,7 +647,7 @@ Actors:
 	Actor211: sam
 		Location: 35,111
 		Owner: Soviets
-		Facing: 160
+		Facing: 640
 	Actor212: tc03
 		Location: 142,52
 		Owner: Neutral
@@ -939,7 +939,7 @@ Actors:
 	Actor309: sam
 		Location: 72,77
 		Owner: Soviets
-		Facing: 192
+		Facing: 768
 	Actor246: tc02
 		Location: 24,47
 		Owner: Neutral
@@ -1227,11 +1227,11 @@ Actors:
 	Actor407: sam
 		Location: 77,61
 		Owner: Soviets
-		Facing: 192
+		Facing: 768
 	Actor408: sam
 		Location: 77,69
 		Owner: Soviets
-		Facing: 192
+		Facing: 768
 	Actor409: brik
 		Location: 59,59
 		Owner: Soviets
@@ -1427,18 +1427,18 @@ Actors:
 	Actor456: sam
 		Location: 87,35
 		Owner: Soviets
-		Facing: 160
+		Facing: 640
 	Actor457: sam
 		Location: 85,26
 		Owner: Soviets
-		Facing: 160
+		Facing: 640
 	Actor87: t11
 		Location: 63,31
 		Owner: Neutral
 	Actor459: sam
 		Location: 68,39
 		Owner: Soviets
-		Facing: 96
+		Facing: 384
 	Actor460: tc05
 		Location: 88,33
 		Owner: Neutral
@@ -1580,7 +1580,7 @@ Actors:
 	Actor506: sam
 		Location: 82,44
 		Owner: Soviets
-		Facing: 160
+		Facing: 640
 	Actor507: t11
 		Location: 86,42
 		Owner: Neutral
@@ -1656,11 +1656,11 @@ Actors:
 	Actor531: gun
 		Location: 68,30
 		Owner: Soviets
-		Facing: 160
+		Facing: 640
 	Actor532: gun
 		Location: 87,32
 		Owner: Soviets
-		Facing: 192
+		Facing: 768
 	Actor533: gun
 		Location: 83,24
 		Owner: Soviets
@@ -1808,14 +1808,14 @@ Actors:
 	Actor84: sam
 		Location: 63,28
 		Owner: Soviets
-		Facing: 64
+		Facing: 256
 	Actor88: t17
 		Location: 64,26
 		Owner: Neutral
 	Actor90: sam
 		Location: 79,53
 		Owner: Soviets
-		Facing: 160
+		Facing: 640
 	Actor91: tc02
 		Location: 81,52
 		Owner: Neutral
@@ -1831,14 +1831,14 @@ Actors:
 	Actor482: 3tnk
 		Location: 24,43
 		Owner: Soviets
-		Facing: 160
+		Facing: 640
 	Actor641: 3tnk
 		Location: 23,48
 		Owner: Soviets
 	Actor642: v2rl
 		Location: 20,45
 		Owner: Soviets
-		Facing: 160
+		Facing: 640
 	Actor593: tc01
 		Location: 97,64
 		Owner: Neutral
@@ -2040,32 +2040,32 @@ Actors:
 	Uboat1: ss
 		Location: 17,92
 		Owner: Soviets
-		Facing: 128
+		Facing: 512
 		Stance: Defend
 	Uboat2: ss
 		Location: 20,91
 		Owner: Soviets
-		Facing: 128
+		Facing: 512
 		Stance: Defend
 	Uboat3: ss
 		Location: 17,112
 		Owner: Soviets
-		Facing: 192
+		Facing: 768
 		Stance: Defend
 	Uboat4: ss
 		Location: 34,120
 		Owner: Soviets
-		Facing: 160
+		Facing: 640
 		Stance: Defend
 	Uboat5: ss
 		Location: 24,126
 		Owner: Soviets
-		Facing: 160
+		Facing: 640
 		Stance: Defend
 	Uboat6: ss
 		Location: 29,131
 		Owner: Soviets
-		Facing: 192
+		Facing: 768
 		Stance: Defend
 	WarFactory: weap
 		Location: 70,72

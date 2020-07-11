@@ -364,59 +364,59 @@ Actors:
 	Actor121: gun
 		Location: 50,27
 		Owner: Nod
-		Facing: 128
+		Facing: 512
 	Actor122: gun
 		Location: 45,27
 		Owner: Nod
-		Facing: 128
+		Facing: 512
 	Actor127: gun
 		Location: 36,24
 		Owner: Nod
-		Facing: 192
+		Facing: 768
 	Actor128: bggy
 		Location: 39,19
 		Owner: Nod
-		Facing: 128
+		Facing: 512
 	Actor129: bggy
 		Location: 38,23
 		Owner: Nod
-		Facing: 192
+		Facing: 768
 	Actor130: ltnk
 		Location: 38,24
 		Owner: Nod
-		Facing: 192
+		Facing: 768
 	Actor131: ltnk
 		Location: 45,21
 		Owner: Nod
-		Facing: 128
+		Facing: 512
 	Actor132: ltnk
 		Location: 44,21
 		Owner: Nod
-		Facing: 128
+		Facing: 512
 	Actor133: bggy
 		Location: 23,32
 		Owner: Nod
-		Facing: 224
+		Facing: 896
 	Actor134: ltnk
 		Location: 13,32
 		Owner: Nod
-		Facing: 224
+		Facing: 896
 	Actor135: ltnk
 		Location: 48,41
 		Owner: Nod
-		Facing: 96
+		Facing: 384
 	Actor142: bggy
 		Location: 53,27
 		Owner: Nod
-		Facing: 160
+		Facing: 640
 	Actor143: bggy
 		Location: 42,27
 		Owner: Nod
-		Facing: 96
+		Facing: 384
 	Actor144: e3
 		Location: 23,29
 		Owner: Nod
-		Facing: 96
+		Facing: 384
 		SubCell: 4
 	Actor145: e3
 		Location: 40,30
@@ -429,7 +429,7 @@ Actors:
 	Actor147: e3
 		Location: 43,27
 		Owner: Nod
-		Facing: 128
+		Facing: 512
 		SubCell: 0
 	Actor148: e3
 		Location: 11,39
@@ -442,37 +442,37 @@ Actors:
 	Actor150: e1
 		Location: 18,40
 		Owner: Nod
-		Facing: 96
+		Facing: 384
 		SubCell: 4
 	Actor151: e3
 		Location: 12,38
 		Owner: Nod
-		Facing: 224
+		Facing: 896
 		SubCell: 4
 	Actor152: e3
 		Location: 12,40
 		Owner: Nod
-		Facing: 224
+		Facing: 896
 		SubCell: 1
 	Actor153: e3
 		Location: 44,43
 		Owner: Nod
-		Facing: 64
+		Facing: 256
 		SubCell: 1
 	Actor154: e1
 		Location: 17,27
 		Owner: Nod
-		Facing: 160
+		Facing: 640
 		SubCell: 1
 	Actor163: e1
 		Location: 17,25
 		Owner: Nod
-		Facing: 128
+		Facing: 512
 		SubCell: 3
 	Actor164: e3
 		Location: 21,22
 		Owner: Nod
-		Facing: 96
+		Facing: 384
 		SubCell: 2
 	Actor165: e3
 		Location: 18,41
@@ -481,7 +481,7 @@ Actors:
 	Actor166: e3
 		Location: 17,41
 		Owner: Nod
-		Facing: 160
+		Facing: 640
 		SubCell: 4
 	Actor167: moneycrate
 		Location: 26,42
@@ -579,7 +579,7 @@ Actors:
 	GdiHarv: harv
 		Location: 27,55
 		Owner: AbandonedBase
-		Facing: 64
+		Facing: 256
 	GdiWeap1: weap
 		Location: 35,52
 		Owner: AbandonedBase

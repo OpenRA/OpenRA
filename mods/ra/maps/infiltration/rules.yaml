@@ -33,7 +33,7 @@ World:
 
 MISS:
 	Targetable:
-		TargetTypes: Ground, C4, DetonateAttack, Structure, MissionObjective, NoAutoTarget
+		TargetTypes: GroundActor, C4, DetonateAttack, Structure, MissionObjective, NoAutoTarget
 
 LST.Unselectable.UnloadOnly:
 	Inherits: LST
@@ -44,9 +44,8 @@ LST.Unselectable.UnloadOnly:
 		Prerequisites: ~disabled
 	Cargo:
 		MaxWeight: 0
-		PipCount: 0
 	Targetable:
-		TargetTypes: Ground, Water, Repair, NoAutoTarget
+		TargetTypes: GroundActor, Water, Repair, NoAutoTarget
 	Interactable:
 
 SPY.Strong:
@@ -80,6 +79,7 @@ DOG.Patrol:
 
 TRUK.Hijackable:
 	Inherits: TRUK
+	Inherits@CARGOPIPS: ^CargoPips
 	Buildable:
 		Prerequisites: ~disabled
 	Mobile:
@@ -87,11 +87,10 @@ TRUK.Hijackable:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 5
-		PipCount: 5
 		PassengerConditions:
 			spy.strong: mobile
 	Targetable:
-		TargetTypes: Ground, Repair, Vehicle, NoAutoTarget
+		TargetTypes: GroundActor, Repair, Vehicle, NoAutoTarget
 	-Huntable:
 	Capturable:
 		Types: MissionObjective
@@ -103,11 +102,6 @@ TRUK.Hijackable:
 		Range: 6c0
 	Voiced:
 		VoiceSet: SpyVoice
-
-HARV:
-	Harvester:
-		SearchFromProcRadius: 25
-		SearchFromHarvesterRadius: 25
 
 E7:
 	Buildable:

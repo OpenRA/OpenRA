@@ -673,11 +673,11 @@ Actors:
 	Turret1: gun
 		Location: 46,20
 		Owner: Nod
-		Facing: 128
+		Facing: 512
 	Turret2: gun
 		Location: 53,20
 		Owner: Nod
-		Facing: 128
+		Facing: 512
 	Silo1: silo
 		Location: 42,16
 		Owner: Nod
@@ -784,11 +784,11 @@ Actors:
 	Buggy1: bggy
 		Location: 49,16
 		Owner: Nod
-		Facing: 128
+		Facing: 512
 	Buggy2: bggy
 		Location: 49,17
 		Owner: Nod
-		Facing: 128
+		Facing: 512
 	Actor246: e1
 		Location: 44,7
 		Owner: Nod
@@ -812,27 +812,27 @@ Actors:
 	Actor251: e3
 		Location: 18,32
 		Owner: Nod
-		Facing: 64
+		Facing: 256
 		SubCell: 3
 	Actor252: e3
 		Location: 17,32
 		Owner: Nod
-		Facing: 224
+		Facing: 896
 		SubCell: 2
 	Actor253: e3
 		Location: 21,30
 		Owner: Nod
-		Facing: 96
+		Facing: 384
 		SubCell: 3
 	Actor254: e3.sticky
 		Location: 16,6
 		Owner: Nod
-		Facing: 160
+		Facing: 640
 		SubCell: 3
 	Actor255: e3.sticky
 		Location: 15,7
 		Owner: Nod
-		Facing: 64
+		Facing: 256
 		SubCell: 4
 	FlameGuy1: e4
 		Location: 48,15
@@ -853,7 +853,7 @@ Actors:
 	Actor260: e3.sticky
 		Location: 21,15
 		Owner: Nod
-		Facing: 160
+		Facing: 640
 		SubCell: 0
 	RocketSoldier1: e3
 		Location: 48,14
@@ -870,32 +870,32 @@ Actors:
 	Actor264: e3
 		Location: 52,17
 		Owner: Nod
-		Facing: 160
+		Facing: 640
 		SubCell: 1
 	Actor265: e3
 		Location: 52,17
 		Owner: Nod
-		Facing: 160
+		Facing: 640
 		SubCell: 2
 	Actor266: e3
 		Location: 47,17
 		Owner: Nod
-		Facing: 96
+		Facing: 384
 		SubCell: 1
 	Actor267: e3
 		Location: 46,17
 		Owner: Nod
-		Facing: 96
+		Facing: 384
 		SubCell: 2
 	AttackTrigger2: e1
 		Location: 39,6
 		Owner: Nod
-		Facing: 128
+		Facing: 512
 		SubCell: 0
 	Actor269: e3.sticky
 		Location: 40,25
 		Owner: Nod
-		Facing: 96
+		Facing: 384
 		SubCell: 0
 	Actor270: e1
 		Location: 53,42
@@ -904,32 +904,32 @@ Actors:
 	Actor271: e3
 		Location: 43,40
 		Owner: Nod
-		Facing: 96
+		Facing: 384
 		SubCell: 4
 	Actor272: e1
 		Location: 49,43
 		Owner: Nod
-		Facing: 96
+		Facing: 384
 		SubCell: 4
 	Actor273: e1
 		Location: 50,43
 		Owner: Nod
-		Facing: 128
+		Facing: 512
 		SubCell: 1
 	Actor274: e1
 		Location: 53,47
 		Owner: Nod
-		Facing: 32
+		Facing: 128
 		SubCell: 3
 	CivFleeTrigger: e1
 		Location: 23,36
 		Owner: Nod
-		Facing: 224
+		Facing: 896
 		SubCell: 3
 	Civilian: c8
 		Location: 22,36
 		Owner: Neutral
-		Facing: 96
+		Facing: 384
 		SubCell: 3
 	CivHideOut: waypoint
 		Location: 26,32

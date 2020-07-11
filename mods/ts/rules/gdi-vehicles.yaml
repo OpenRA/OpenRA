@@ -1,6 +1,7 @@
 APC:
 	Inherits: ^Tank
 	Inherits@VOXELS: ^VoxelActor
+	Inherits@CARGOPIPS: ^CargoPips
 	Valued:
 		Cost: 800
 	Tooltip:
@@ -28,7 +29,6 @@ APC:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 5
-		PipCount: 5
 		UnloadVoice: Unload
 		LoadingCondition: loading
 		EjectOnDeath: true
@@ -122,6 +122,7 @@ SMECH:
 	Mobile:
 		TurnSpeed: 5
 		Speed: 99
+		AlwaysTurnInPlace: true
 	Health:
 		HP: 17500
 	Armor:
@@ -169,6 +170,7 @@ MMCH:
 	Mobile:
 		TurnSpeed: 5
 		Speed: 56
+		AlwaysTurnInPlace: true
 	Health:
 		HP: 40000
 	Armor:
@@ -332,6 +334,7 @@ JUGG:
 	Mobile:
 		Speed: 71
 		TurnSpeed: 5
+		AlwaysTurnInPlace: true
 		ImmovableCondition: !undeployed
 		RequireForceMoveCondition: !undeployed
 	RevealsShroud:
@@ -346,7 +349,7 @@ JUGG:
 		BodyNames: body, deployedbody
 	WithFacingSpriteBody:
 		Sequence: stand
-		RequiresCondition: undeployed
+		RequiresCondition: !deployed
 	WithMoveAnimation:
 		MoveSequence: walk
 		ValidMovementTypes: Horizontal, Turn
@@ -372,7 +375,7 @@ JUGG:
 	QuantizeFacingsFromSequence:
 		Sequence: turret
 	WithSpriteBody@deployed:
-		RequiresCondition: !undeployed && real-actor
+		RequiresCondition: deployed && real-actor
 		Name: deployedbody
 	Turreted:
 		Turret: deployed
@@ -409,6 +412,5 @@ JUGG:
 	WithMuzzleOverlay:
 	RevealOnFire:
 		ArmamentNames: deployed
-	SelectionDecorations:
 	Selectable:
 		DecorationBounds: 48,40,0,-8

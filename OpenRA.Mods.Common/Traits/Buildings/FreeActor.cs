@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -41,15 +42,15 @@ namespace OpenRA.Mods.Common.Traits
 			yield return new EditorActorCheckbox("Spawn Child Actor", EditorFreeActorDisplayOrder,
 				actor =>
 				{
-					var init = actor.Init<FreeActorInit>();
+					var init = actor.GetInitOrDefault<FreeActorInit>(this);
 					if (init != null)
-						return init.Value(world);
+						return init.Value;
 
 					return true;
 				},
 				(actor, value) =>
 				{
-					actor.ReplaceInit(new FreeActorInit(value));
+					actor.ReplaceInit(new FreeActorInit(this, value), this);
 				});
 		}
 
@@ -63,7 +64,7 @@ namespace OpenRA.Mods.Common.Traits
 		public FreeActor(ActorInitializer init, FreeActorInfo info)
 			: base(info)
 		{
-			allowSpawn = !init.Contains<FreeActorInit>() || init.Get<FreeActorInit>().ActorValue;
+			allowSpawn = init.GetValue<FreeActorInit, bool>(info, true);
 		}
 
 		protected override void TraitEnabled(Actor self)
@@ -80,25 +81,21 @@ namespace OpenRA.Mods.Common.Traits
 					new ParentActorInit(self),
 					new LocationInit(self.Location + Info.SpawnOffset),
 					new OwnerInit(self.Owner),
-					new FacingInit(Info.Facing),
+					new FacingInit(WAngle.FromFacing(Info.Facing)),
 				});
 			});
 		}
 	}
 
-	public class FreeActorInit : IActorInit<bool>
+	public class FreeActorInit : ValueActorInit<bool>
 	{
-		[FieldFromYamlKey]
-		public readonly bool ActorValue = true;
-		public FreeActorInit() { }
-		public FreeActorInit(bool init) { ActorValue = init; }
-		public bool Value(World world) { return ActorValue; }
+		public FreeActorInit(TraitInfo info, bool value)
+			: base(info, value) { }
 	}
 
-	public class ParentActorInit : IActorInit<Actor>
+	public class ParentActorInit : ValueActorInit<ActorInitActorReference>, ISingleInstanceInit
 	{
-		public readonly Actor ActorValue;
-		public ParentActorInit(Actor parent) { ActorValue = parent; }
-		public Actor Value(World world) { return ActorValue; }
+		public ParentActorInit(Actor value)
+			: base(value) { }
 	}
 }

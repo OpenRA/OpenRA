@@ -52,12 +52,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		protected override void Created(Actor self)
 		{
-			// Special case handling is required for the Player actor.
-			// Created is called before Player.PlayerActor is assigned,
-			// so we must query other player traits from self, knowing that
-			// it refers to the same actor as self.Owner.PlayerActor
-			var playerActor = self.Info.Name == "player" ? self : self.Owner.PlayerActor;
-			playerResources = playerActor.Trait<PlayerResources>();
+			playerResources = self.Owner.PlayerActor.Trait<PlayerResources>();
 
 			base.Created(self);
 		}
@@ -67,7 +62,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (IsTraitDisabled)
 				return;
 
-			var cash = Util.ApplyPercentageModifiers(amount, modifier);
+			var cash = OpenRA.Mods.Common.Util.ApplyPercentageModifiers(amount, modifier);
 			playerResources.GiveCash(cash);
 
 			if (Info.ShowTicks && self.Info.HasTraitInfo<IOccupySpaceInfo>())

@@ -108,7 +108,7 @@ MoveTruckEscapeRoute = function(truck, route)
 		Utils.Do(route, function(waypoint)
 			truck.Move(waypoint.Location)
 		end)
-		
+
 		Trigger.OnIdle(truck, function()
 			if truck.Location == route[#route].Location then
 				truck.Destroy()

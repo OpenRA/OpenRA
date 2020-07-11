@@ -4,6 +4,8 @@ Sound:
 	Report: SONIC1.WAV
 	Projectile: AreaBeam
 		Speed: 0c128
+		Inaccuracy: 128
+		InaccuracyType: PerCellIncrement
 		Duration: 4 # Has a length of 0c512
 		DamageInterval: 3 # Travels 0c384 between impacts, will hit a target roughly three times
 		Width: 0c512
@@ -53,7 +55,7 @@ WormJaw:
 	ReloadDelay: 10
 	InvalidTargets: Structure, Infantry
 	Range: 1c512
-	Warhead@1Dam: TargetDamage # HACK: The warhead is needed for targeting
+	Warhead@NeededForTargeting: TargetDamage
 		InvalidTargets: Structure, Infantry
 
 OrniBomb:
@@ -67,9 +69,9 @@ OrniBomb:
 		Acceleration: 0, 0, 0
 		Shadow: true
 	Warhead@1Dam: SpreadDamage
-		Spread: 320
-		Falloff: 100, 60, 30, 15, 0
 		Damage: 7500 #400 in original, reduce when bombers can do multiple passes
+		Spread: 1c0
+		Falloff: 100, 0
 		Versus:
 			none: 90
 			wall: 50
@@ -81,6 +83,7 @@ OrniBomb:
 			cy: 25
 			harvester: 60
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
+		DamageCalculationType: ClosestTargetablePosition
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 		InvalidTargets: Vehicle, Structure
@@ -144,6 +147,7 @@ DeathHandCluster:
 			cy: 25
 			harvester: 60
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+		DamageCalculationType: ClosestTargetablePosition
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 		InvalidTargets: Vehicle, Structure
@@ -155,9 +159,9 @@ DeathHandCluster:
 
 CrateExplosion:
 	Warhead@1Dam: SpreadDamage
-		Spread: 320
-		Falloff: 100, 60, 30, 15, 0
 		Damage: 5000
+		Spread: 1c0
+		Falloff: 100, 0
 		Versus:
 			none: 90
 			wall: 5
@@ -170,6 +174,7 @@ CrateExplosion:
 			harvester: 25
 		AffectsParent: true
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
+		DamageCalculationType: ClosestTargetablePosition
 	Warhead@2Eff: CreateEffect
 		Explosions: large_explosion
 		ImpactSounds: EXPLSML4.WAV
@@ -213,13 +218,14 @@ grenade:
 		Speed: 160
 		Blockable: false
 		LaunchAngle: 128
-		Inaccuracy: 416
+		Inaccuracy: 128
+		InaccuracyType: PerCellIncrement
 		Image: grenade
 		Shadow: true
 	Warhead@1Dam: SpreadDamage
-		Spread: 320
-		Falloff: 100, 65, 35, 20, 0
 		Damage: 1500
+		Spread: 1c0
+		Falloff: 100, 0
 		Versus:
 			none: 125
 			wood: 70
@@ -229,6 +235,7 @@ grenade:
 			cy: 20
 			harvester: 25
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+		DamageCalculationType: ClosestTargetablePosition
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater
 		InvalidTargets: Vehicle, Structure
@@ -241,9 +248,9 @@ grenade:
 
 GrenDeath:
 	Warhead@1Dam: SpreadDamage
-		Spread: 320
-		Falloff: 100, 60, 30, 15, 0
 		Damage: 1500
+		Spread: 1c0
+		Falloff: 100, 0
 		Versus:
 			none: 125
 			wood: 70
@@ -253,6 +260,7 @@ GrenDeath:
 			cy: 20
 			harvester: 25
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+		DamageCalculationType: ClosestTargetablePosition
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
@@ -264,9 +272,9 @@ GrenDeath:
 
 SardDeath:
 	Warhead@1Dam: SpreadDamage
-		Spread: 256
-		Falloff: 100, 50, 25, 0
 		Damage: 3000
+		Spread: 512
+		Falloff: 100, 0
 		Versus:
 			none: 15
 			wall: 75
@@ -277,6 +285,7 @@ SardDeath:
 			cy: 30
 			harvester: 50
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+		DamageCalculationType: ClosestTargetablePosition
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
@@ -294,9 +303,9 @@ SpiceExplosion:
 		TrailImage: large_trail
 		Image: 120mm
 	Warhead@1Dam: SpreadDamage
-		Spread: 320
-		Falloff: 100, 60, 30, 15, 0
 		Damage: 750
+		Spread: 1c0
+		Falloff: 100, 0
 		Versus:
 			none: 90
 			wall: 5
@@ -308,6 +317,7 @@ SpiceExplosion:
 			cy: 20
 			harvester: 25
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+		DamageCalculationType: ClosestTargetablePosition
 		AffectsParent: true
 	Warhead@2Res: CreateResource
 		AddsResourceType: Spice
@@ -321,9 +331,9 @@ BloomExplosion:
 	Range: 0c8
 	Projectile: InstantHit
 	Warhead@1Dam: SpreadDamage
-		Spread: 320
-		Falloff: 100, 60, 30, 15, 0
 		Damage: 7500
+		Spread: 320
+		Falloff: 100, 0
 		Versus:
 			none: 90
 			wall: 5
@@ -335,13 +345,14 @@ BloomExplosion:
 			cy: 20
 			harvester: 25
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+		DamageCalculationType: ClosestTargetablePosition
 		AffectsParent: true
 
 PlasmaExplosion:
 	Warhead@1Dam: SpreadDamage
-		Spread: 2c0
-		Falloff: 100, 37, 0
 		Damage: 20000
+		Spread: 3c0
+		Falloff: 100, 0
 		Versus:
 			None: 100
 			Wood: 100
@@ -349,6 +360,7 @@ PlasmaExplosion:
 			Heavy: 100
 			Concrete: 60
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+		DamageCalculationType: ClosestTargetablePosition
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater
 	Warhead@3Eff: CreateEffect

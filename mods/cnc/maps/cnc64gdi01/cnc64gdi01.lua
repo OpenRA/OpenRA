@@ -81,9 +81,10 @@ WorldLoaded = function()
 	RepairNamedActors(Nod, 0.9)
 
 	Trigger.AfterDelay(0, function()
-		local harv = Nod.GetActorsByType("harv")[1]
 		local toBuild = function() return { "harv" } end
-		RebuildHarvesters(harv, toBuild)
+		Utils.Do(Nod.GetActorsByType("harv"), function(harv)
+			RebuildHarvesters(harv, toBuild)
+		end)
 	end)
 
 	local vehicleToBuild = function() return Utils.Random(AutocreateSquads) end
@@ -136,8 +137,8 @@ end
 
 RebuildHarvesters = function(harv, toBuild)
 	Trigger.OnRemovedFromWorld(harv, function()
-		ProduceUnits(Nod, Airfield, nil, toBuild, function(unit)
-			RebuildHarvesters(unit, toBuild)
+		ProduceUnits(Nod, Airfield, nil, toBuild, function(units)
+			RebuildHarvesters(units[1], toBuild)
 		end)
 	end)
 end

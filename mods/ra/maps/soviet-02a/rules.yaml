@@ -88,11 +88,6 @@ AFLD:
 	ParatroopersPower@paratroopers:
 		Prerequisites: ~disabled
 
-HARV:
-	Harvester:
-		SearchFromProcRadius: 50
-		SearchFromHarvesterRadius: 50
-
 powerproxy.paratroopers:
 	ParatroopersPower:
 		DropItems: E2,E2,E2,E2,E2

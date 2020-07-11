@@ -77,7 +77,7 @@ CRATE:
 	HideMapCrateAction:
 		SelectionShares: 5
 		Sequence: hide-map
-	HealUnitsCrateAction:
+	HealActorsCrateAction:
 		SelectionShares: 2
 		Sequence: heal
 	RevealMapCrateAction:

@@ -14,7 +14,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Applies a condition to the actor at when its health is between 2 specific values.")]
-	public class GrantConditionOnHealthInfo : ITraitInfo, IRulesetLoaded, Requires<IHealthInfo>
+	public class GrantConditionOnHealthInfo : TraitInfo, IRulesetLoaded, Requires<IHealthInfo>
 	{
 		[FieldLoader.Require]
 		[GrantedConditionReference]
@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Is the condition irrevokable once it has been granted?")]
 		public readonly bool GrantPermanently = false;
 
-		public object Create(ActorInitializer init) { return new GrantConditionOnHealth(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new GrantConditionOnHealth(init.Self, this); }
 
 		public void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
@@ -53,8 +53,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly IHealth health;
 		readonly int maxHP;
 
-		ConditionManager conditionManager;
-		int conditionToken = ConditionManager.InvalidConditionToken;
+		int conditionToken = Actor.InvalidConditionToken;
 
 		public GrantConditionOnHealth(Actor self, GrantConditionOnHealthInfo info)
 		{
@@ -65,16 +64,15 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyCreated.Created(Actor self)
 		{
-			conditionManager = self.Trait<ConditionManager>();
 			GrantConditionOnValidHealth(self, health.HP);
 		}
 
 		void GrantConditionOnValidHealth(Actor self, int hp)
 		{
-			if (info.MinHP > hp || maxHP < hp || conditionToken != ConditionManager.InvalidConditionToken)
+			if (info.MinHP > hp || maxHP < hp || conditionToken != Actor.InvalidConditionToken)
 				return;
 
-			conditionToken = conditionManager.GrantCondition(self, info.Condition);
+			conditionToken = self.GrantCondition(info.Condition);
 
 			var sound = info.EnabledSounds.RandomOrDefault(Game.CosmeticRandom);
 			Game.Sound.Play(SoundType.World, sound, self.CenterPosition);
@@ -82,7 +80,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyDamage.Damaged(Actor self, AttackInfo e)
 		{
-			var granted = conditionToken != ConditionManager.InvalidConditionToken;
+			var granted = conditionToken != Actor.InvalidConditionToken;
 			if (granted && info.GrantPermanently)
 				return;
 
@@ -90,7 +88,7 @@ namespace OpenRA.Mods.Common.Traits
 				GrantConditionOnValidHealth(self, health.HP);
 			else if (granted && (info.MinHP > health.HP || maxHP < health.HP))
 			{
-				conditionToken = conditionManager.RevokeCondition(self, conditionToken);
+				conditionToken = self.RevokeCondition(conditionToken);
 
 				var sound = info.DisabledSounds.RandomOrDefault(Game.CosmeticRandom);
 				Game.Sound.Play(SoundType.World, sound, self.CenterPosition);

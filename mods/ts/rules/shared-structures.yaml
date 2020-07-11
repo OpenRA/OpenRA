@@ -75,16 +75,14 @@ GACNST:
 		RequiresCondition: !build-incomplete
 	Power:
 		Amount: 0
-	Selectable:
-		Bounds: 144, 60, 0, -6
-		DecorationBounds: 144, 80, 0, -12
 	ProvidesPrerequisite@gdi:
 		Factions: gdi
 		Prerequisite: structures.gdi
 	ProvidesPrerequisite@nod:
 		Factions: nod
 		Prerequisite: structures.nod
-	SelectionDecorations:
+	IsometricSelectable:
+		Height: 36
 
 PROC:
 	Inherits: ^Building
@@ -95,15 +93,12 @@ PROC:
 		Name: Tiberium Refinery
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 50
+		BuildPaletteOrder: 30
 		Prerequisites: anypower, ~techlevel.low
 		Description: Processes raw Tiberium\ninto useable resources.
 	Building:
 		Footprint: xxX+ xx++ xxX+
 		Dimensions: 4,3
-	Selectable:
-		Bounds: 134, 96, 0, -12
-		DecorationBounds: 134, 122, 0, -18
 	Health:
 		HP: 90000
 	RevealsShroud:
@@ -114,8 +109,6 @@ PROC:
 		DockOffset: 2,1
 		DiscardExcessResources: true
 	StoresResources:
-		PipColor: Green
-		PipCount: 10
 		Capacity: 2000
 	CustomSellValue:
 		Value: 600
@@ -138,7 +131,6 @@ PROC:
 	Power:
 		Amount: -30
 	ProvidesPrerequisite@buildingname:
-	SelectionDecorations:
 	RenderSprites:
 		Image: proc.gdi
 		FactionImages:
@@ -149,13 +141,22 @@ PROC:
 	Explodes:
 		RequiresCondition: contains-tiberium
 		Weapon: TiberiumExplosion
+	WithResourceStoragePipsDecoration:
+		Position: BottomLeft
+		RequiresSelection: true
+		Margin: 8, 2
+		FullSequence: pip-green-building
+		EmptySequence: pip-empty-building
+		PipStride: 4, 2
+		PipCount: 25
+		Palette: pips
 
 GASILO:
 	Inherits: ^Building
 	Inherits@SHAPE: ^2x2Shape
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 100
+		BuildPaletteOrder: 60
 		Prerequisites: proc, ~techlevel.low
 		Description: Stores excess Tiberium.
 	Valued:
@@ -165,9 +166,6 @@ GASILO:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2, 2
-	Selectable:
-		Bounds: 80, 48, -5, 0
-		DecorationBounds: 80, 48, -5, 0
 	-GivesBuildableArea:
 	Health:
 		HP: 30000
@@ -190,17 +188,23 @@ GASILO:
 		RequiresCondition: !build-incomplete
 		Sequence: idle-lights
 	StoresResources:
-		PipColor: Green
-		PipCount: 5
 		Capacity: 1500
 	Power:
 		Amount: -10
-	SelectionDecorations:
 	GrantConditionOnPlayerResources:
 		Condition: contains-tiberium
 	Explodes:
 		RequiresCondition: contains-tiberium
 		Weapon: TiberiumExplosion
+	WithResourceStoragePipsDecoration:
+		Position: BottomLeft
+		RequiresSelection: true
+		Margin: 8, 2
+		FullSequence: pip-green-building
+		EmptySequence: pip-empty-building
+		PipStride: 4, 2
+		PipCount: 12
+		Palette: pips
 
 ANYPOWER:
 	AlwaysVisible:

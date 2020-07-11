@@ -213,7 +213,7 @@ Actors:
 		Location: 41,54
 		Owner: France
 		Health: 52
-	Actor54: v07
+	HayHouse: v07
 		Location: 54,65
 		Owner: France
 		Health: 44
@@ -339,7 +339,7 @@ Actors:
 	Actor98: barl
 		Location: 45,50
 		Owner: Germany
-	Actor99: v04
+	ParaHut: v04
 		Location: 58,54
 		Owner: France
 		Health: 41
@@ -415,20 +415,20 @@ Actors:
 		Location: 46,52
 		Owner: France
 		Health: 66
-		Facing: 96
+		Facing: 384
 	Actor125: jeep
 		Location: 55,57
 		Owner: France
-		Facing: 160
+		Facing: 640
 	Actor126: jeep
 		Location: 39,65
 		Owner: France
 		Health: 63
-		Facing: 64
+		Facing: 256
 	Actor127: c9
 		Location: 50,64
 		Owner: France
-		Facing: 192
+		Facing: 768
 		SubCell: 1
 	Actor128: c8
 		Location: 47,61
@@ -437,12 +437,12 @@ Actors:
 	Actor129: c8
 		Location: 41,50
 		Owner: France
-		Facing: 224
+		Facing: 896
 		SubCell: 3
 	Actor130: c6
 		Location: 46,61
 		Owner: France
-		Facing: 128
+		Facing: 512
 		SubCell: 2
 	Actor131: c5
 		Location: 46,61
@@ -451,57 +451,57 @@ Actors:
 	Actor132: c4
 		Location: 44,67
 		Owner: France
-		Facing: 96
+		Facing: 384
 		SubCell: 1
 	Actor133: c2
 		Location: 40,54
 		Owner: France
-		Facing: 160
+		Facing: 640
 		SubCell: 2
 	Actor134: c2
 		Location: 45,61
 		Owner: France
-		Facing: 64
+		Facing: 256
 		SubCell: 4
 	Actor135: e1
 		Location: 54,60
 		Owner: France
-		Facing: 160
+		Facing: 640
 		SubCell: 4
 	Actor136: e1
 		Location: 49,60
 		Owner: France
-		Facing: 128
+		Facing: 512
 		SubCell: 2
 	Actor137: c5
 		Location: 45,51
 		Owner: France
-		Facing: 224
+		Facing: 896
 		SubCell: 0
 	Actor138: e1
 		Location: 34,58
 		Owner: France
-		Facing: 96
+		Facing: 384
 		SubCell: 0
 	Actor139: e1
 		Location: 53,54
 		Owner: France
-		Facing: 128
+		Facing: 512
 		SubCell: 2
 	Actor140: e1
 		Location: 58,56
 		Owner: France
-		Facing: 128
+		Facing: 512
 		SubCell: 1
 	Actor141: e1
 		Location: 58,52
 		Owner: France
-		Facing: 160
+		Facing: 640
 		SubCell: 0
 	Actor142: e1
 		Location: 54,64
 		Owner: France
-		Facing: 160
+		Facing: 640
 		SubCell: 3
 	Actor143: c7
 		Location: 56,54
@@ -510,12 +510,12 @@ Actors:
 	Actor144: e1
 		Location: 40,51
 		Owner: France
-		Facing: 160
+		Facing: 640
 		SubCell: 0
 	Actor145: e1
 		Location: 35,53
 		Owner: France
-		Facing: 96
+		Facing: 384
 		SubCell: 1
 	Actor146: e1
 		Location: 35,54
@@ -524,17 +524,17 @@ Actors:
 	Actor147: e1
 		Location: 43,64
 		Owner: France
-		Facing: 96
+		Facing: 384
 		SubCell: 0
 	Actor148: e1
 		Location: 56,63
 		Owner: France
-		Facing: 192
+		Facing: 768
 		SubCell: 2
 	Actor149: e1
 		Location: 40,67
 		Owner: France
-		Facing: 32
+		Facing: 128
 		SubCell: 4
 	Church: v01
 		Location: 40,63
@@ -544,7 +544,7 @@ Actors:
 		Location: 44,76
 		Owner: France
 		Health: 52
-		Facing: 32
+		Facing: 128
 	LonelyGuard: e1
 		Location: 42,81
 		Owner: USSR
@@ -582,6 +582,9 @@ Actors:
 		Owner: France
 	YakEntry: waypoint
 		Location: 51,84
+		Owner: Neutral
+	CivSpawn: waypoint
+		Location: 55,65
 		Owner: Neutral
 
 Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, ra|rules/campaign-palettes.yaml, rules.yaml

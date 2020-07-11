@@ -208,14 +208,12 @@ Actors:
 		Location: 84,-1
 		TurretFacing: 92
 		Facing: 60
-		Plugs:
-			0,0: tower.vulcan
+		Plug: tower.vulcan
 	Actor56: gactwr
 		Owner: GDI
 		Location: 80,-3
 		Facing: 60
-		Plugs:
-			0,0: tower.vulcan
+		Plug: tower.vulcan
 	Actor57: gawall
 		Owner: GDI
 		Location: 79,-3
@@ -247,8 +245,7 @@ Actors:
 		Owner: GDI
 		Location: 84,-4
 		Facing: 60
-		Plugs:
-			0,0: tower.rocket
+		Plug: tower.rocket
 	Actor67: gawall
 		Owner: GDI
 		Location: 88,-1
@@ -295,21 +292,18 @@ Actors:
 		Owner: GDI
 		Location: 86,-3
 		Facing: 60
-		Plugs:
-			0,1: powrup
-			1,1: powrup
+		Plug@pluga: powrup
+		Plug@plugb: powrup
 	Actor82: gapowr
 		Owner: GDI
 		Location: 86,-5
-		Plugs:
-			0,1: powrup
-			1,1: powrup
+		Plug@pluga: powrup
+		Plug@plugb: powrup
 	Actor91: gactwr
 		Owner: GDI
 		Location: 85,-11
 		Facing: -40
-		Plugs:
-			0,0: tower.vulcan
+		Plug: tower.vulcan
 	Actor90: gasilo
 		Owner: GDI
 		Location: 79,-10
@@ -326,8 +320,7 @@ Actors:
 		Owner: GDI
 		Location: 81,-11
 		Facing: -40
-		Plugs:
-			0,0: tower.vulcan
+		Plug: tower.vulcan
 	Actor89: gagate_a
 		Owner: GDI
 		Location: 82,-11

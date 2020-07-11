@@ -19,9 +19,9 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Attach this to the world actor.", "Order of the layers defines the Z sorting.")]
-	public class ResourceLayerInfo : ITraitInfo, Requires<ResourceTypeInfo>, Requires<BuildingInfluenceInfo>
+	public class ResourceLayerInfo : TraitInfo, Requires<ResourceTypeInfo>, Requires<BuildingInfluenceInfo>
 	{
-		public virtual object Create(ActorInitializer init) { return new ResourceLayer(init.Self); }
+		public override object Create(ActorInitializer init) { return new ResourceLayer(init.Self); }
 	}
 
 	public class ResourceLayer : IWorldLoaded
@@ -109,15 +109,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!rt.Info.AllowUnderBuildings && buildingInfluence.GetBuildingAt(cell) != null)
 				return false;
 
-			if (!rt.Info.AllowOnRamps)
-			{
-				var tile = world.Map.Tiles[cell];
-				var tileInfo = world.Map.Rules.TileSet.GetTileInfo(tile);
-				if (tileInfo != null && tileInfo.RampType > 0)
-					return false;
-			}
-
-			return true;
+			return rt.Info.AllowOnRamps || world.Map.Ramp[cell] == 0;
 		}
 
 		public bool CanSpawnResourceAt(ResourceType newResourceType, CPos cell)

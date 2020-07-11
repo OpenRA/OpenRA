@@ -61,15 +61,15 @@ namespace OpenRA.Mods.Common.Traits
 			: base(wr, ai, info, init)
 		{
 			this.info = info;
-			var owner = init.Get<OwnerInit>().Value(wr.World);
-			var faction = init.Get<FactionInit>().Value(wr.World);
+			var ownerName = init.Get<OwnerInit>().InternalName;
+			var faction = init.Get<FactionInit>().Value;
 
 			var rsi = ai.TraitInfo<RenderSpritesInfo>();
 
 			if (!string.IsNullOrEmpty(info.SequencePalette))
-				palette = wr.Palette(info.SequencePaletteIsPlayerPalette ? info.SequencePalette + owner.InternalName : info.SequencePalette);
+				palette = wr.Palette(info.SequencePaletteIsPlayerPalette ? info.SequencePalette + ownerName : info.SequencePalette);
 			else
-				palette = wr.Palette(rsi.Palette ?? rsi.PlayerPalette + owner.InternalName);
+				palette = wr.Palette(rsi.Palette ?? rsi.PlayerPalette + ownerName);
 
 			preview = new Animation(wr.World, rsi.GetImage(ai, wr.World.Map.Rules.Sequences, faction));
 			preview.PlayRepeating(info.Sequence);

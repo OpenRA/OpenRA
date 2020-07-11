@@ -618,83 +618,83 @@ Actors:
 	Mammoth1: 4tnk
 		Location: 67,44
 		Owner: USSR
-		Facing: 127
+		Facing: 508
 	Mammoth2: 4tnk
 		Location: 73,58
 		Owner: BadGuy
 	StealMammoth: 4tnk
 		Location: 99,40
 		Owner: USSR
-		Facing: 127
+		Facing: 508
 	StartSpy: spy
 		Location: 4,62
 		Owner: Greece
-		Facing: 191
+		Facing: 764
 		SubCell: 0
 	Actor162: e1
 		Location: 6,61
 		Owner: Greece
-		Facing: 191
+		Facing: 764
 		SubCell: 4
 	Actor163: e1
 		Location: 6,62
 		Owner: Greece
-		Facing: 191
+		Facing: 764
 		SubCell: 2
 	Actor164: e1
 		Location: 6,62
 		Owner: Greece
-		Facing: 191
+		Facing: 764
 		SubCell: 4
 	Actor165: e1
 		Location: 6,64
 		Owner: Greece
-		Facing: 191
+		Facing: 764
 		SubCell: 1
 	Actor166: e1
 		Location: 6,63
 		Owner: Greece
-		Facing: 191
+		Facing: 764
 		SubCell: 2
 	Actor167: e1
 		Location: 6,60
 		Owner: Greece
-		Facing: 191
+		Facing: 764
 		SubCell: 3
 	Actor168: e1
 		Location: 5,61
 		Owner: Greece
-		Facing: 191
+		Facing: 764
 		SubCell: 1
 	Actor169: e1
 		Location: 5,63
 		Owner: Greece
-		Facing: 191
+		Facing: 764
 		SubCell: 3
 	Actor170: e1
 		Location: 5,63
 		Owner: Greece
-		Facing: 191
+		Facing: 764
 		SubCell: 2
 	Actor171: e1
 		Location: 5,61
 		Owner: Greece
-		Facing: 191
+		Facing: 764
 		SubCell: 4
 	Actor172: medi
 		Location: 3,62
 		Owner: Greece
-		Facing: 191
+		Facing: 764
 		SubCell: 0
 	Actor173: dog
 		Location: 37,62
 		Owner: USSR
-		Facing: 95
+		Facing: 380
 		SubCell: 2
 	Actor174: dog
 		Location: 33,64
 		Owner: USSR
-		Facing: 95
+		Facing: 380
 		SubCell: 2
 	Actor175: e1
 		Location: 23,61
@@ -711,117 +711,117 @@ Actors:
 	Actor178: e1
 		Location: 25,74
 		Owner: USSR
-		Facing: 95
+		Facing: 380
 		SubCell: 2
 	Actor179: e1
 		Location: 25,75
 		Owner: USSR
-		Facing: 127
+		Facing: 508
 		SubCell: 4
 	Actor180: e1
 		Location: 25,74
 		Owner: USSR
-		Facing: 63
+		Facing: 252
 		SubCell: 3
 	DogCrew3: e1
 		Location: 45,68
 		Owner: USSR
-		Facing: 159
+		Facing: 636
 		SubCell: 2
 	DogCrew2: e1
 		Location: 47,68
 		Owner: USSR
-		Facing: 95
+		Facing: 380
 		SubCell: 3
 	DogCrew1: dog
 		Location: 46,69
 		Owner: USSR
-		Facing: 159
+		Facing: 636
 		SubCell: 1
 	SarinVictim12: e2
 		Location: 48,59
 		Owner: USSR
-		Facing: 95
+		Facing: 380
 		SubCell: 0
 	SarinVictim3: e2
 		Location: 45,65
 		Owner: USSR
-		Facing: 159
+		Facing: 636
 		SubCell: 1
 	SarinVictim6: e2
 		Location: 44,62
 		Owner: USSR
-		Facing: 63
+		Facing: 252
 		SubCell: 0
 	SarinVictim9: e2
 		Location: 45,59
 		Owner: USSR
-		Facing: 223
+		Facing: 892
 		SubCell: 2
 	SarinVictim11: e2
 		Location: 50,59
 		Owner: USSR
-		Facing: 159
+		Facing: 636
 		SubCell: 1
 	SarinVictim2: e2
 		Location: 48,65
 		Owner: USSR
-		Facing: 95
+		Facing: 380
 		SubCell: 0
 	SarinVictim5: e2
 		Location: 44,63
 		Owner: USSR
-		Facing: 95
+		Facing: 380
 		SubCell: 2
 	SarinVictim8: e2
 		Location: 44,59
 		Owner: USSR
-		Facing: 31
+		Facing: 124
 		SubCell: 4
 	SarinVictim1: e2
 		Location: 50,65
 		Owner: USSR
-		Facing: 159
+		Facing: 636
 		SubCell: 0
 	Camera2Rifle1: e1
 		Location: 38,61
 		Owner: USSR
-		Facing: 95
+		Facing: 380
 		SubCell: 4
 	Camera2Rifle2: e1
 		Location: 38,63
 		Owner: USSR
-		Facing: 127
+		Facing: 508
 		SubCell: 2
 	Camera2Rifle3: e1
 		Location: 39,61
 		Owner: USSR
-		Facing: 159
+		Facing: 636
 		SubCell: 0
 	Camera2Gren1: e2
 		Location: 40,62
 		Owner: USSR
-		Facing: 159
+		Facing: 636
 		SubCell: 0
 	Camera2Gren2: e2
 		Location: 39,63
 		Owner: USSR
-		Facing: 159
+		Facing: 636
 		SubCell: 2
 	Actor198: e1
 		Location: 22,51
 		Owner: USSR
-		Facing: 95
+		Facing: 380
 		SubCell: 2
 	Actor199: e1
 		Location: 23,50
 		Owner: USSR
-		Facing: 159
+		Facing: 636
 		SubCell: 2
 	Actor200: e1
 		Location: 28,47
 		Owner: USSR
-		Facing: 95
+		Facing: 380
 		SubCell: 0
 	Scientist2: chan
 		Location: 24,47
@@ -838,7 +838,7 @@ Actors:
 	SarinVictim13: e2
 		Location: 49,65
 		Owner: USSR
-		Facing: 127
+		Facing: 508
 		SubCell: 0
 	SarinVictim10: e2
 		Location: 49,59
@@ -847,148 +847,148 @@ Actors:
 	Actor206: medi
 		Location: 53,81
 		Owner: Greece
-		Facing: 159
+		Facing: 636
 		SubCell: 2
 	Actor207: spy
 		Location: 62,81
 		Owner: Greece
-		Facing: 95
+		Facing: 380
 		SubCell: 2
 	Civ1: c6
 		Location: 53,74
 		Owner: Greece
-		Facing: 223
+		Facing: 892
 		SubCell: 4
 	Civ2: c5
 		Location: 54,78
 		Owner: Greece
-		Facing: 191
+		Facing: 764
 		SubCell: 1
 	Civ3: c6
 		Location: 54,84
 		Owner: Greece
-		Facing: 159
+		Facing: 636
 		SubCell: 1
 	Civ4: c5
 		Location: 62,84
 		Owner: Greece
-		Facing: 191
+		Facing: 764
 		SubCell: 1
 	Civ5: c6
 		Location: 62,78
 		Owner: Greece
-		Facing: 159
+		Facing: 636
 		SubCell: 3
 	Officer3: gnrl
 		Location: 61,72
 		Owner: USSR
-		Facing: 223
+		Facing: 892
 		SubCell: 3
 	Actor218: e1
 		Location: 67,72
 		Owner: USSR
-		Facing: 31
+		Facing: 124
 		SubCell: 3
 	Actor219: e2
 		Location: 68,73
 		Owner: USSR
-		Facing: 159
+		Facing: 636
 		SubCell: 3
 	Actor220: e1
 		Location: 66,73
 		Owner: USSR
-		Facing: 127
+		Facing: 508
 		SubCell: 0
 	Actor221: e1
 		Location: 96,60
 		Owner: USSR
-		Facing: 63
+		Facing: 252
 		SubCell: 3
 	Actor222: e1
 		Location: 96,63
 		Owner: USSR
-		Facing: 63
+		Facing: 252
 		SubCell: 3
 	Actor223: e1
 		Location: 95,62
 		Owner: USSR
-		Facing: 95
+		Facing: 380
 		SubCell: 2
 	Actor224: e1
 		Location: 97,60
 		Owner: USSR
-		Facing: 159
+		Facing: 636
 		SubCell: 1
 	Actor225: e1
 		Location: 97,64
 		Owner: USSR
-		Facing: 95
+		Facing: 380
 		SubCell: 2
 	Actor226: e1
 		Location: 98,61
 		Owner: USSR
-		Facing: 95
+		Facing: 380
 		SubCell: 3
 	Actor227: e1
 		Location: 96,64
 		Owner: USSR
-		Facing: 159
+		Facing: 636
 		SubCell: 4
 	Actor228: e1
 		Location: 96,62
 		Owner: USSR
-		Facing: 191
+		Facing: 764
 		SubCell: 2
 	Actor229: e1
 		Location: 66,47
 		Owner: USSR
-		Facing: 63
+		Facing: 252
 		SubCell: 3
 	Actor230: e1
 		Location: 68,47
 		Owner: USSR
-		Facing: 159
+		Facing: 636
 		SubCell: 3
 	Actor231: e1
 		Location: 96,50
 		Owner: USSR
-		Facing: 63
+		Facing: 252
 		SubCell: 2
 	Actor232: e1
 		Location: 94,49
 		Owner: USSR
-		Facing: 95
+		Facing: 380
 		SubCell: 4
 	Actor233: e1
 		Location: 95,50
 		Owner: USSR
-		Facing: 63
+		Facing: 252
 		SubCell: 2
 	Actor234: e1
 		Location: 67,53
 		Owner: USSR
 		SubCell: 4
-		Facing: 147
-		TurretFacing: -12
+		Facing: 588
+		TurretFacing: 388
 	Actor235: e1
 		Location: 95,51
 		Owner: USSR
-		Facing: 95
+		Facing: 380
 		SubCell: 1
 	Actor237: e1
 		Location: 82,76
 		Owner: USSR
-		Facing: 95
+		Facing: 380
 		SubCell: 4
 	Actor238: e1
 		Location: 80,75
 		Owner: USSR
-		Facing: 191
+		Facing: 764
 		SubCell: 3
 	Actor239: e1
 		Location: 78,75
 		Owner: USSR
-		Facing: 95
+		Facing: 380
 		SubCell: 3
 	Actor240: e1
 		Location: 79,76
@@ -1009,12 +1009,12 @@ Actors:
 	Actor245: e1
 		Location: 82,51
 		Owner: USSR
-		Facing: 159
+		Facing: 636
 		SubCell: 1
 	Scientist1: chan
 		Location: 88,50
 		Owner: USSR
-		Facing: 95
+		Facing: 380
 		SubCell: 4
 	Actor247: e1
 		Location: 98,63
@@ -1028,33 +1028,32 @@ Actors:
 		Owner: USSR
 		Location: 99,75
 		SubCell: 3
-		Facing: 92
+		Facing: 368
 	DemoRifle1: e1
 		Location: 99,76
 		Owner: USSR
-		Facing: 63
+		Facing: 252
 		SubCell: 2
 	DemoRifle2: e1
 		Location: 100,75
 		Owner: USSR
-		Facing: 95
+		Facing: 380
 		SubCell: 1
 	DemoRifle3: e1
 		Location: 101,76
 		Owner: USSR
-		Facing: 191
+		Facing: 764
 		SubCell: 1
 	DemoRifle4: e1
 		Location: 100,77
 		Owner: USSR
-		Facing: 159
+		Facing: 636
 		SubCell: 2
 	DemoFlame: e4
 		Owner: USSR
 		Location: 100,75
 		SubCell: 2
-		Facing: 92
-		TurretFacing: 92
+		Facing: 368
 	ScientistMan: chan
 		Location: 94,82
 		Owner: England
@@ -1062,77 +1061,77 @@ Actors:
 	Actor254: e1
 		Location: 92,68
 		Owner: USSR
-		Facing: 159
+		Facing: 636
 		SubCell: 1
 	Actor255: e1
 		Location: 92,69
 		Owner: USSR
-		Facing: 95
+		Facing: 380
 		SubCell: 0
 	Actor256: e1
 		Location: 93,68
 		Owner: USSR
-		Facing: 191
+		Facing: 764
 		SubCell: 3
 	FiringSquad1: e1
 		Location: 93,79
 		Owner: USSR
-		Facing: 127
+		Facing: 508
 		SubCell: 5
 	FiringSquad2: e1
 		Location: 94,79
 		Owner: USSR
-		Facing: 127
+		Facing: 508
 		SubCell: 4
 	FiringSquad3: e1
 		Location: 94,79
 		Owner: USSR
-		Facing: 127
+		Facing: 508
 		SubCell: 5
 	FiringSquad4: e1
 		Location: 95,79
 		Owner: USSR
-		Facing: 127
+		Facing: 508
 		SubCell: 4
 	FiringSquad5: e1
 		Location: 95,79
 		Owner: USSR
-		Facing: 127
+		Facing: 508
 		SubCell: 5
 	Officer2: gnrl
 		Location: 92,80
 		Owner: USSR
-		Facing: 127
+		Facing: 508
 		SubCell: 2
 	Actor263: e2
 		Location: 92,49
 		Owner: USSR
-		Facing: 95
+		Facing: 380
 		SubCell: 3
 	Actor264: dog
 		Location: 96,48
 		Owner: USSR
-		Facing: 95
+		Facing: 380
 		SubCell: 4
 	Actor265: dog
 		Location: 97,61
 		Owner: USSR
-		Facing: 95
+		Facing: 380
 		SubCell: 4
 	Actor266: dog
 		Location: 67,51
 		Owner: USSR
-		Facing: 95
+		Facing: 380
 		SubCell: 2
 	Actor267: dog
 		Location: 42,59
 		Owner: USSR
-		Facing: 159
+		Facing: 636
 		SubCell: 3
 	Actor268: dog
 		Location: 63,46
 		Owner: USSR
-		Facing: 95
+		Facing: 380
 		SubCell: 1
 	Actor269: e1
 		Location: 21,61
@@ -1152,118 +1151,105 @@ Actors:
 		Owner: USSR
 		Location: 62,73
 		SubCell: 3
-		Facing: 115
+		Facing: 460
 	PrisonDog2: dog
 		Owner: USSR
 		Location: 60,71
 		SubCell: 3
-		Facing: 58
+		Facing: 232
 	PrisonDog3: dog
 		Owner: USSR
 		Location: 63,72
 		SubCell: 3
-		Facing: 44
+		Facing: 176
 	PrisonDog4: dog
 		Owner: USSR
 		Location: 61,70
 		SubCell: 3
-		Facing: 92
+		Facing: 368
 	Actor328: e1
 		Owner: USSR
 		Location: 59,72
 		SubCell: 3
-		Facing: 12
-		TurretFacing: 12
+		Facing: 48
 	Actor329: e4
 		Owner: USSR
 		Location: 94,48
 		SubCell: 3
-		Facing: 92
-		TurretFacing: 92
+		Facing: 368
 	Actor332: e4
 		Owner: USSR
 		Location: 82,76
 		SubCell: 1
-		Facing: 92
-		TurretFacing: 92
+		Facing: 368
 	Actor333: dog
 		Owner: USSR
 		Location: 82,76
 		SubCell: 2
-		Facing: 92
-		TurretFacing: 92
+		Facing: 368
 	DemoTruck: dtrk
 		Owner: England
 		Location: 106,76
-		Facing: 63
+		Facing: 252
 	Tanya: e7
 		Owner: Germany
 		Location: 71,82
 		SubCell: 3
-		Facing: 182
-		TurretFacing: 182
+		Facing: 728
 	Officer1: gnrl
 		Owner: USSR
 		Location: 23,47
 		SubCell: 3
-		Facing: 92
+		Facing: 368
 	StealTruck: truk
 		Owner: USSR
 		Location: 23,82
-		Facing: 194
+		Facing: 776
 	StartAttacker1: e1
 		Owner: USSR
 		Location: 11,64
 		SubCell: 3
-		Facing: 92
-		TurretFacing: 92
+		Facing: 368
 	StartAttacker2: e1
 		Owner: USSR
 		Location: 13,60
 		SubCell: 3
-		Facing: 92
-		TurretFacing: 92
+		Facing: 368
 	Actor337: e1
 		Owner: USSR
 		Location: 81,51
 		SubCell: 3
-		Facing: 92
-		TurretFacing: 92
+		Facing: 368
 	Actor338: dog
 		Owner: USSR
 		Location: 81,51
 		SubCell: 1
-		Facing: 92
+		Facing: 368
 	Actor350: e1
 		Owner: USSR
 		Location: 60,62
 		SubCell: 3
-		Facing: -20
-		TurretFacing: -20
+		Facing: 944
 	Actor351: e1
 		Owner: USSR
 		Location: 61,64
 		SubCell: 3
-		Facing: 181
-		TurretFacing: 181
+		Facing: 724
 	Actor352: e1
 		Owner: USSR
 		Location: 61,60
 		SubCell: 3
-		Facing: 177
-		TurretFacing: 177
+		Facing: 708
 	Actor353: e1
 		Owner: USSR
 		Location: 61,60
 		SubCell: 1
-		Facing: 92
-		TurretFacing: 92
+		Facing: 368
 	Actor354: spy
 		Owner: Greece
 		Location: 62,84
 		SubCell: 2
-		Facing: 92
-		TurretFacing: 92
+		Facing: 368
 	DoggyCam: waypoint
 		Location: 46,72
 		Owner: Neutral

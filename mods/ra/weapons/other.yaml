@@ -1,14 +1,15 @@
 ^FireWeapon:
-	ValidTargets: Ground, Water, Trees
+	ValidTargets: Ground, Water, GroundActor, WaterActor, Trees
 	ReloadDelay: 65
 	Range: 5c0
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
 		Damage: 15000
-		ValidTargets: Ground, Water, Trees
+		ValidTargets: GroundActor, WaterActor, Trees
 		Versus:
 			None: 90
 			Wood: 50
+			Tree: 50
 			Light: 60
 			Heavy: 25
 			Concrete: 20
@@ -50,6 +51,7 @@ Flamer:
 		Versus:
 			None: 70
 			Wood: 80
+			Tree: 80
 			Light: 40
 			Heavy: 20
 			Concrete: 10
@@ -76,9 +78,11 @@ Napalm:
 	Range: 8c0
 	Report: tesla1.aud
 	Projectile: TeslaZap
+	ValidTargets: Ground, Water, GroundActor, WaterActor
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
 		Damage: 10000
+		ValidTargets: GroundActor, WaterActor
 		Versus:
 			None: 1000
 		DamageTypes: Prone50Percent, TriggerProne, ElectricityDeath
@@ -140,8 +144,10 @@ Repair:
 		ValidTargets: Repair
 
 Demolish:
+	ValidTargets: GroundActor, WaterActor
 	Warhead@1Dam: SpreadDamage
 		DamageTypes: DefaultDeath
+		ValidTargets: GroundActor, WaterActor
 	Warhead@2Eff: CreateEffect
 		Explosions: building
 		ImpactSounds: kaboom25.aud
@@ -149,11 +155,13 @@ Demolish:
 Claw:
 	ReloadDelay: 30
 	Range: 1c512
+	ValidTargets: Ground, Water, GroundActor, WaterActor
 	Projectile: Bullet
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
 		Damage: 3000
+		ValidTargets: GroundActor, WaterActor
 		Versus:
 			None: 97
 			Wood: 10
@@ -216,10 +224,12 @@ DemoTruckTargeting:
 		ValidTargets: DetonateAttack
 
 MADTankThump:
+	ValidTargets: GroundActor, WaterActor
 	InvalidTargets: MADTank, Infantry
 	Warhead@1Dam: HealthPercentageDamage
 		Spread: 7c0
 		Damage: 1
+		ValidTargets: GroundActor, WaterActor
 		InvalidTargets: MADTank, Infantry
 	Warhead@Shake: ShakeScreen
 		Duration: 10
@@ -227,10 +237,12 @@ MADTankThump:
 		Multiplier: 1,0
 
 MADTankDetonate:
+	ValidTargets: GroundActor, WaterActor
 	InvalidTargets: MADTank, Infantry
 	Warhead@1Dam: HealthPercentageDamage
 		Spread: 7c0
 		Damage: 19
+		ValidTargets: GroundActor, WaterActor
 		InvalidTargets: MADTank, Infantry
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater

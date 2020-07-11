@@ -5,7 +5,7 @@ cd "{GAME_INSTALL_DIR}"
 PROTOCOL_PREFIX="openra-{MODID}-{TAG}://"
 JOIN_SERVER=""
 if [ "${1#${PROTOCOL_PREFIX}}" != "${1}" ]; then
-  JOIN_SERVER="Launch.Connect=${1#${PROTOCOL_PREFIX}}"
+	JOIN_SERVER="Launch.Connect=${1#${PROTOCOL_PREFIX}}"
 fi
 
 # Run the game
@@ -13,13 +13,19 @@ mono {DEBUG} OpenRA.Game.exe Game.Mod={MODID} Engine.LaunchPath="{BIN_DIR}/openr
 
 # Show a crash dialog if something went wrong
 if [ $? != 0 ] && [ $? != 1 ]; then
-  ERROR_MESSAGE="{MODNAME} has encountered a fatal error.\nPlease refer to the crash logs and FAQ for more information.\n\nLog files are located in ~/.openra/Logs\nThe FAQ is available at http://wiki.openra.net/FAQ"
-  if command -v zenity > /dev/null; then
-    zenity --no-wrap --error --title "{MODNAME}" --text "${ERROR_MESSAGE}" 2> /dev/null
-  elif command -v kdialog > /dev/null; then
-    kdialog --title "{MODNAME}" --error "${ERROR_MESSAGE}"
-  else
-    printf "${ERROR_MESSAGE}\n"
-  fi
-  exit 1
+	LOGS="${XDG_CONFIG_HOME:-${HOME}/.config}/openra/Logs"
+	if [ ! -d "${LOGS}" ] && [ -d "${HOME}/.openra/Logs" ]; then
+		LOGS="${HOME}/.openra/Logs"
+	fi
+
+	test -d Support/Logs && LOGS="${PWD}/Support/Logs"
+	ERROR_MESSAGE="{MODNAME} has encountered a fatal error.\nPlease refer to the crash logs and FAQ for more information.\n\nLog files are located in ${LOGS}\nThe FAQ is available at http://wiki.openra.net/FAQ"
+	if command -v zenity > /dev/null; then
+		zenity --no-wrap --error --title "{MODNAME}" --text "${ERROR_MESSAGE}" 2> /dev/null
+	elif command -v kdialog > /dev/null; then
+		kdialog --title "{MODNAME}" --error "${ERROR_MESSAGE}"
+	else
+		printf "${ERROR_MESSAGE}\n"
+	fi
+	exit 1
 fi

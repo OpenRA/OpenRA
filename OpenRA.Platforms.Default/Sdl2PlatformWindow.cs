@@ -108,6 +108,8 @@ namespace OpenRA.Platforms.Default
 			}
 		}
 
+		public bool HasInputFocus { get; internal set; }
+
 		public GLProfile GLProfile
 		{
 			get
@@ -236,11 +238,11 @@ namespace OpenRA.Platforms.Default
 							switch (e.window.windowEvent)
 							{
 								case SDL.SDL_WindowEventID.SDL_WINDOWEVENT_FOCUS_LOST:
-									Game.HasInputFocus = false;
+									HasInputFocus = false;
 									break;
 
 								case SDL.SDL_WindowEventID.SDL_WINDOWEVENT_FOCUS_GAINED:
-									Game.HasInputFocus = true;
+									HasInputFocus = true;
 									break;
 							}
 						}

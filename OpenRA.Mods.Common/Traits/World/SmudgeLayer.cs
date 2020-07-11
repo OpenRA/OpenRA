@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	[Desc("Attach this to the world actor.", "Order of the layers defines the Z sorting.")]
-	public class SmudgeLayerInfo : ITraitInfo
+	public class SmudgeLayerInfo : TraitInfo
 	{
 		public readonly string Type = "Scorch";
 
@@ -73,7 +73,7 @@ namespace OpenRA.Mods.Common.Traits
 			return smudges;
 		}
 
-		public object Create(ActorInitializer init) { return new SmudgeLayer(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new SmudgeLayer(init.Self, this); }
 	}
 
 	public class SmudgeLayer : IRenderOverlay, IWorldLoaded, ITickRender, INotifyActorDisposing

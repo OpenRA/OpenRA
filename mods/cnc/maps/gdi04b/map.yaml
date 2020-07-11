@@ -316,27 +316,27 @@ Actors:
 	Actor92: jeep
 		Location: 49,45
 		Owner: GDI
-		Facing: 224
+		Facing: 896
 	Actor93: bggy
 		Location: 10,23
 		Owner: Nod
-		Facing: 96
+		Facing: 384
 	Actor94: apc
 		Location: 48,46
 		Owner: GDI
-		Facing: 224
+		Facing: 896
 	Actor95: apc
 		Location: 51,45
 		Owner: GDI
-		Facing: 224
+		Facing: 896
 	Actor96: bggy
 		Location: 34,18
 		Owner: Nod
-		Facing: 64
+		Facing: 256
 	Actor97: bggy
 		Location: 53,26
 		Owner: Nod
-		Facing: 128
+		Facing: 512
 	Actor99: e3
 		Location: 8,45
 		Owner: Nod
@@ -348,17 +348,17 @@ Actors:
 	Actor101: e2
 		Location: 51,46
 		Owner: GDI
-		Facing: 224
+		Facing: 896
 		SubCell: 1
 	Actor102: e3
 		Location: 36,15
 		Owner: Nod
-		Facing: 128
+		Facing: 512
 		SubCell: 2
 	Actor103: e1
 		Location: 50,47
 		Owner: GDI
-		Facing: 224
+		Facing: 896
 		SubCell: 1
 	Actor104: e3
 		Location: 25,33
@@ -367,32 +367,32 @@ Actors:
 	Actor105: e1
 		Location: 11,46
 		Owner: Nod
-		Facing: 128
+		Facing: 512
 		SubCell: 3
 	Actor106: e1
 		Location: 30,37
 		Owner: Nod
-		Facing: 32
+		Facing: 128
 		SubCell: 3
 	Actor107: e3
 		Location: 17,44
 		Owner: Nod
-		Facing: 64
+		Facing: 256
 		SubCell: 0
 	Actor108: e1
 		Location: 23,33
 		Owner: Nod
-		Facing: 128
+		Facing: 512
 		SubCell: 0
 	Actor109: e1
 		Location: 28,31
 		Owner: Nod
-		Facing: 96
+		Facing: 384
 		SubCell: 1
 	Actor110: e1
 		Location: 10,31
 		Owner: Nod
-		Facing: 160
+		Facing: 640
 		SubCell: 0
 	Actor111: e3
 		Location: 33,20
@@ -401,7 +401,7 @@ Actors:
 	Actor112: e3
 		Location: 25,18
 		Owner: Nod
-		Facing: 96
+		Facing: 384
 		SubCell: 0
 	Actor113: e1
 		Location: 49,46
@@ -410,57 +410,57 @@ Actors:
 	Actor114: e1
 		Location: 49,46
 		Owner: GDI
-		Facing: 224
+		Facing: 896
 		SubCell: 3
 	Actor115: e1
 		Location: 49,47
 		Owner: GDI
-		Facing: 224
+		Facing: 896
 		SubCell: 2
 	Actor116: e2
 		Location: 51,46
 		Owner: GDI
-		Facing: 224
+		Facing: 896
 		SubCell: 2
 	Actor117: e2
 		Location: 51,46
 		Owner: GDI
-		Facing: 224
+		Facing: 896
 		SubCell: 4
 	Actor118: e2
 		Location: 52,46
 		Owner: GDI
-		Facing: 224
+		Facing: 896
 		SubCell: 3
 	Actor119: e3
 		Location: 39,32
 		Owner: Nod
-		Facing: 96
+		Facing: 384
 		SubCell: 4
 	Actor120: e3
 		Location: 12,16
 		Owner: Nod
-		Facing: 96
+		Facing: 384
 		SubCell: 2
 	Actor121: e1
 		Location: 10,35
 		Owner: Nod
-		Facing: 64
+		Facing: 256
 		SubCell: 4
 	Actor122: e1
 		Location: 12,20
 		Owner: Nod
-		Facing: 128
+		Facing: 512
 		SubCell: 4
 	Actor123: e1
 		Location: 14,20
 		Owner: Nod
-		Facing: 128
+		Facing: 512
 		SubCell: 4
 	Actor124: e3
 		Location: 52,29
 		Owner: Nod
-		Facing: 64
+		Facing: 256
 		SubCell: 3
 	Actor125: e3
 		Location: 8,31
@@ -473,7 +473,7 @@ Actors:
 	tank: ltnk
 		Location: 8,17
 		Owner: Nod
-		Facing: 96
+		Facing: 384
 	HandOfNod: hand
 		Location: 15,15
 		Owner: Nod
@@ -483,7 +483,7 @@ Actors:
 	Hunter2: bggy
 		Location: 41,29
 		Owner: Nod
-		Facing: 128
+		Facing: 512
 	Hunter3: e3
 		Location: 37,36
 		Owner: Nod
@@ -528,5 +528,3 @@ Actors:
 		Owner: Neutral
 
 Rules: cnc|rules/campaign-maprules.yaml, cnc|rules/campaign-tooltips.yaml, cnc|rules/campaign-palettes.yaml, rules.yaml
-
-Weapons: weapons.yaml

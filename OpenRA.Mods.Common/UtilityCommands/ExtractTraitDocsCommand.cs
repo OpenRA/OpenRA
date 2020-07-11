@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			var doc = new StringBuilder();
 			var currentNamespace = "";
 
-			foreach (var t in Game.ModData.ObjectCreator.GetTypesImplementing<ITraitInfo>().OrderBy(t => t.Namespace))
+			foreach (var t in Game.ModData.ObjectCreator.GetTypesImplementing<TraitInfo>().OrderBy(t => t.Namespace))
 			{
 				if (t.ContainsGenericParameters || t.IsAbstract)
 					continue; // skip helpers like TraitInfo<T>

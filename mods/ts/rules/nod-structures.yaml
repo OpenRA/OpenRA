@@ -3,7 +3,7 @@ NAPOWR:
 	Inherits@SHAPE: ^2x2Shape
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 20
+		BuildPaletteOrder: 10
 		Prerequisites: ~structures.nod, ~techlevel.low
 		Description: Provides power for other structures.
 	Valued:
@@ -15,9 +15,6 @@ NAPOWR:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
-	Selectable:
-		Bounds: 88, 48, 2, -6
-		DecorationBounds: 88, 80, 2, -12
 	Health:
 		HP: 75000
 	Armor:
@@ -35,14 +32,15 @@ NAPOWR:
 		TargetTypes: Ground, Building, C4, SpyInfiltrate
 	ScalePowerWithHealth:
 	PowerTooltip:
-	SelectionDecorations:
+	IsometricSelectable:
+		Height: 48
 
 NAAPWR:
 	Inherits: ^Building
 	Inherits@SHAPE: ^2x3Shape
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 120
+		BuildPaletteOrder: 70
 		Prerequisites: factory, ~structures.nod, ~techlevel.medium
 		Description: Provides twice as much power as\nthe normal Power Plant.
 	Valued:
@@ -54,9 +52,6 @@ NAAPWR:
 	Building:
 		Footprint: xxx xxx
 		Dimensions: 2,3
-	Selectable:
-		Bounds: 100, 54, 0, -4
-		DecorationBounds: 100, 74, 0, -12
 	Health:
 		HP: 75000
 	Armor:
@@ -74,15 +69,17 @@ NAAPWR:
 		TargetTypes: Ground, Building, C4, SpyInfiltrate
 	ScalePowerWithHealth:
 	PowerTooltip:
-	SelectionDecorations:
 	ProvidesPrerequisite@buildingname:
+	IsometricSelectable:
+		Height: 48
 
 NAHAND:
 	Inherits: ^Building
 	Inherits@SHAPE: ^3x2Shape
+	Inherits@PRIMARY: ^PrimaryBuilding
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 40
+		BuildPaletteOrder: 20
 		Prerequisites: anypower, ~structures.nod, ~techlevel.low
 		Description: Produces infantry.
 	Valued:
@@ -94,9 +91,6 @@ NAHAND:
 	Building:
 		Footprint: xxx xxx
 		Dimensions: 3,2
-	Selectable:
-		Bounds: 116, 60, 3, -6
-		DecorationBounds: 116, 78, 3, -8
 	Health:
 		HP: 80000
 	Armor:
@@ -156,9 +150,6 @@ NAHAND:
 	Production:
 		Produces: Infantry
 		PauseOnCondition: empdisable
-	PrimaryBuilding:
-		PrimaryCondition: primary
-		SelectionNotification: PrimaryBuildingSelected
 	ProductionBar:
 		ProductionType: Infantry
 	WithIdleOverlay@LIGHTS:
@@ -170,18 +161,11 @@ NAHAND:
 	Power:
 		Amount: -20
 	ProvidesPrerequisite@buildingname:
-	SelectionDecorations:
-	WithTextDecoration@primary:
-		RequiresSelection: true
-		Text: PRIMARY
-		ReferencePoint: Top
-		Color: E0D048
-		ZOffset: 256
-		RequiresCondition: primary
 
 NAWEAP:
 	Inherits: ^Building
 	Inherits@SHAPE: ^4x3FactoryWithBibShape
+	Inherits@PRIMARY: ^PrimaryBuilding
 	Valued:
 		Cost: 2000
 	Tooltip:
@@ -190,15 +174,12 @@ NAWEAP:
 		Prerequisite: factory
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 70
+		BuildPaletteOrder: 50
 		Prerequisites: proc, ~structures.nod, ~techlevel.low
 		Description: Produces vehicles.
 	Building:
 		Footprint: xxX+ xxX+ xxX+
 		Dimensions: 4,3
-	Selectable:
-		Bounds: 149, 80, -3, -10
-		DecorationBounds: 149, 116, -3, -20
 	Health:
 		HP: 100000
 	Armor:
@@ -218,9 +199,6 @@ NAWEAP:
 	Production:
 		Produces: Vehicle
 		PauseOnCondition: empdisable
-	PrimaryBuilding:
-		PrimaryCondition: primary
-		SelectionNotification: PrimaryBuildingSelected
 	ProductionBar:
 		ProductionType: Vehicle
 	WithIdleOverlay@ROOF:
@@ -237,24 +215,19 @@ NAWEAP:
 	Power:
 		Amount: -30
 	ProvidesPrerequisite@buildingname:
-	SelectionDecorations:
-	WithTextDecoration@primary:
-		RequiresSelection: true
-		Text: PRIMARY
-		ReferencePoint: Top
-		Color: E0D048
-		ZOffset: 256
-		RequiresCondition: primary
+	IsometricSelectable:
+		Height: 48
 
 NAHPAD:
 	Inherits: ^Building
 	Inherits@SHAPE: ^2x2Shape
+	Inherits@PRIMARY: ^PrimaryBuilding
 	Valued:
 		Cost: 500
 	Tooltip:
 		Name: Helipad
 	Buildable:
-		BuildPaletteOrder: 140
+		BuildPaletteOrder: 80
 		Queue: Building
 		Prerequisites: naradr, ~structures.nod, ~techlevel.medium
 		Description: Produces, rearms and\nrepairs helicopters.
@@ -276,9 +249,6 @@ NAHPAD:
 	Production:
 		Produces: Air
 		PauseOnCondition: empdisable
-	PrimaryBuilding:
-		PrimaryCondition: primary
-		SelectionNotification: PrimaryBuildingSelected
 	Reservable:
 	RepairsUnits:
 		HpPerStep: 1000
@@ -298,18 +268,9 @@ NAHPAD:
 		UseDeathTypeSuffix: false
 	Power:
 		Amount: -10
-	Selectable:
-		Bounds: 78, 48, 0, -6
-		DecorationBounds: 78, 54, 0, -8
 	ProvidesPrerequisite@buildingname:
-	SelectionDecorations:
-	WithTextDecoration@primary:
-		RequiresSelection: true
-		Text: PRIMARY
-		ReferencePoint: Top
-		Color: E0D048
-		ZOffset: 256
-		RequiresCondition: primary
+	IsometricSelectable:
+		Height: 36
 
 NARADR:
 	Inherits: ^Building
@@ -317,7 +278,7 @@ NARADR:
 	Inherits@SHAPE: ^2x2Shape
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 90
+		BuildPaletteOrder: 40
 		Prerequisites: proc, ~structures.nod, ~techlevel.low
 		Description: Provides an overview of the battlefield.\nCan detect cloaked units.\nRequires power to operate.
 	Valued:
@@ -329,9 +290,6 @@ NARADR:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
-	Selectable:
-		Bounds: 96, 48, 0, -6
-		DecorationBounds: 96, 72, 0, -12
 	Health:
 		HP: 100000
 	Armor:
@@ -354,7 +312,8 @@ NARADR:
 	Power:
 		Amount: -40
 	ProvidesPrerequisite@buildingname:
-	SelectionDecorations:
+	IsometricSelectable:
+		Height: 72
 
 NATECH:
 	Inherits: ^Building
@@ -362,7 +321,7 @@ NATECH:
 	Inherits@SHAPE: ^2x2Shape
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 160
+		BuildPaletteOrder: 90
 		Prerequisites: naweap, naradr, ~structures.nod, ~techlevel.medium
 		Description: Provides access to advanced Nod technologies.
 	Valued:
@@ -374,9 +333,6 @@ NATECH:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
-	Selectable:
-		Bounds: 86, 48, 0, -4
-		DecorationBounds: 86, 58, 0, -4
 	Health:
 		HP: 50000
 	Armor:
@@ -390,7 +346,47 @@ NATECH:
 	Power:
 		Amount: -150
 	ProvidesPrerequisite@buildingname:
-	SelectionDecorations:
+
+NASTLH:
+	Inherits: ^Building
+	Inherits@IDISABLED: ^DisableOnLowPowerOrPowerDown
+	Inherits@SHAPE: ^3x2Shape
+	HitShape:
+		TargetableOffsets: 250,0,0, 600,-864,0
+	Valued:
+		Cost: 2500
+	Tooltip:
+		Name: Stealth Generator
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 100
+		Prerequisites: proc, natech, ~structures.nod, ~techlevel.high
+		Description: Generates a cloaking field\nto hide your forces from the enemy.
+	Building:
+		Footprint: xxx XXX
+		Dimensions: 3,2
+	Health:
+		HP: 60000
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 6c0
+		MaxHeightDelta: 3
+	WithIdleOverlay@pulse:
+		RequiresCondition: !build-incomplete && !empdisable && !disabled
+		Sequence: pulse
+	WithRangeCircle:
+		Range: 12c0
+		Type: cloakgenerator
+	Power:
+		Amount: -350
+	ProximityExternalCondition:
+		RequiresCondition: !empdisable && !disabled
+		Condition: cloakgenerator
+		Range: 12c0
+		EnableSound: cloak5.aud
+		DisableSound: cloak5.aud
+		AffectsParent: true
 
 NATMPL:
 	Inherits: ^Building
@@ -400,7 +396,7 @@ NATMPL:
 		TargetableOffsets: -1280,363,0
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 180
+		BuildPaletteOrder: 110
 		Prerequisites: natech, ~structures.nod, ~techlevel.high
 		Description: Provides access to advanced Nod technologies.
 	ProvidesPrerequisite@buildingname:
@@ -413,8 +409,6 @@ NATMPL:
 		Dimensions: 4,3
 	RequiresBuildableArea:
 		Adjacent: 3
-	Selectable:
-		Bounds: 134, 120, 12, -12
 	Health:
 		HP: 100000
 	Armor:
@@ -441,3 +435,119 @@ NATMPL:
 		PauseOnCondition: empdisable
 	Exit@1:
 	ExitsDebugOverlay:
+	IsometricSelectable:
+		Height: 60
+
+NAMISL:
+	Inherits: ^Building
+	Inherits@IDISABLE: ^DisableOnLowPowerOrPowerDown
+	Inherits@SHAPE: ^2x2Shape
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 120
+		Prerequisites: natech, ~structures.nod, ~techlevel.superweapons
+		BuildLimit: 1
+		Description: Launches a devastating missile\nat a target location.\nRequires power to operate.\nMaximum 1 can be built.
+	Valued:
+		Cost: 1300
+	Tooltip:
+		Name: Nod Missile Silo
+	ProvidesPrerequisite:
+		Prerequisite: tech
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Health:
+		HP: 100000
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 4c0
+	WithIdleOverlay@LIGHTS:
+		RequiresCondition: !build-incomplete && !disabled
+		Sequence: idle-lights
+	Power:
+		Amount: -50
+	ProvidesPrerequisite@buildingname:
+	SupportPowerChargeBar:
+	NukePower:
+		PauseOnCondition: empdisable || disabled
+		Cursor: nuke
+		Icon: clustermissile
+		ChargeInterval: 13500
+		Description: Cluster Missile
+		LongDesc: Launches an explosive cluster warhead\nat a target location.
+		EndChargeSpeechNotification: ClusterMissileReady
+		SelectTargetSpeechNotification: SelectTarget
+		IncomingSpeechNotification: MissileLaunchDetected
+		LaunchSound: icbm1.aud
+		MissileWeapon: ClusterMissile
+		MissileDelay: 10
+		DetonationAltitude: 5c0
+		SpawnOffset: 72,72,0
+		DisplayTimerStances: None
+		DisplayBeacon: False
+		DisplayRadarPing: True
+		BeaconPoster:
+		CameraRange: 10c0
+		FlightVelocity: 1c0
+		TrailImage: small_smoke_trail
+		TrailPalette: effectalpha75
+		TrailInterval: 0
+		TrailSequences: idle
+	WithSupportPowerActivationOverlay:
+
+NAWAST:
+	Inherits: ^Building
+	HitShape:
+		Type: Rectangle
+			TopLeft: -1536, -1536
+			BottomRight: 512, 1536
+	Valued:
+		Cost: 1600
+	Tooltip:
+		Name: Waste Refinery
+	Buildable:
+		Queue: Buildig
+		BuildPaletteOrder: 130
+		Prerequisites: namisl, ~structures.nod, ~techlevel.superweapons
+		BuildLimit: 1
+		Description: Processes Veins\ninto useable resources.\nMaximum 1 can be built.
+	Building:
+		Footprint: Xx+ xx+ Xx+
+		Dimensions: 3,3
+	Health:
+		HP: 40000
+	RevealsShroud:
+		Range: 6c0
+		MaxHeightDelta: 3
+	TiberianSunRefinery:
+		DockAngle: 160
+		DockOffset: 2,1
+	StoresResources:
+		Capacity: 56
+	Power:
+		Amount: -40
+	FreeActor:
+		Actor: WEED
+		SpawnOffset: 3,1
+		Facing: 160
+	WithIdleOverlay@GLOW:
+		RequiresCondition: !build-incomplete
+		Sequence: idle-glow
+	WithIdleOverlay@LIGHTS:
+		RequiresCondition: !build-incomplete
+		Sequence: idle-lights
+	WithIdleOverlay@BIB:
+		RequiresCondition: !build-incomplete
+		Sequence: bib
+	ProvidesPrerequisite@buildingname:
+	WithResourceStoragePipsDecoration:
+		Position: BottomLeft
+		RequiresSelection: true
+		Margin: 8, 2
+		FullSequence: pip-red-building
+		EmptySequence: pip-empty-building
+		PipStride: 4, 2
+		PipCount: 15
+		Palette: pips

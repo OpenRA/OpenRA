@@ -17,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("The actor stays invisible under the shroud.")]
-	public class HiddenUnderShroudInfo : ITraitInfo, IDefaultVisibilityInfo
+	public class HiddenUnderShroudInfo : TraitInfo, IDefaultVisibilityInfo
 	{
 		[Desc("Players with these stances can always see the actor.")]
 		public readonly Stance AlwaysVisibleStances = Stance.Ally;
@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 			"Footprint (reveal when any footprint cell is visible).")]
 		public readonly VisibilityType Type = VisibilityType.Footprint;
 
-		public virtual object Create(ActorInitializer init) { return new HiddenUnderShroud(this); }
+		public override object Create(ActorInitializer init) { return new HiddenUnderShroud(this); }
 	}
 
 	public class HiddenUnderShroud : IDefaultVisibility, IRenderModifier

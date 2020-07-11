@@ -16,7 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class HealthInfo : IHealthInfo, IRulesetLoaded, IEditorActorOptions
+	public class HealthInfo : TraitInfo, IHealthInfo, IRulesetLoaded, IEditorActorOptions
 	{
 		[Desc("HitPoints")]
 		public readonly int HP = 0;
@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Display order for the health slider in the map editor")]
 		public readonly int EditorHealthDisplayOrder = 2;
 
-		public virtual object Create(ActorInitializer init) { return new Health(init, this); }
+		public override object Create(ActorInitializer init) { return new Health(init, this); }
 
 		public void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
@@ -42,8 +42,8 @@ namespace OpenRA.Mods.Common.Traits
 			yield return new EditorActorSlider("Health", EditorHealthDisplayOrder, 0, 100, 5,
 				actor =>
 				{
-					var init = actor.Init<HealthInit>();
-					return init != null ? init.Value(world) : 100;
+					var init = actor.GetInitOrDefault<HealthInit>();
+					return init != null ? init.Value : 100;
 				},
 				(actor, value) => actor.ReplaceInit(new HealthInit((int)value)));
 		}
@@ -68,10 +68,12 @@ namespace OpenRA.Mods.Common.Traits
 		public Health(ActorInitializer init, HealthInfo info)
 		{
 			Info = info;
-			MaxHP = info.HP > 0 ? info.HP : 1;
+			MaxHP = hp = info.HP > 0 ? info.HP : 1;
 
 			// Cast to long to avoid overflow when multiplying by the health
-			hp = init.Contains<HealthInit>() ? (int)(init.Get<HealthInit, int>() * (long)MaxHP / 100) : MaxHP;
+			var healthInit = init.GetOrDefault<HealthInit>();
+			if (healthInit != null)
+				hp = (int)(healthInit.Value * (long)MaxHP / 100);
 
 			DisplayHP = hp;
 		}
@@ -231,28 +233,22 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class HealthInit : IActorInit<int>
+	public class HealthInit : ValueActorInit<int>, ISingleInstanceInit
 	{
-		[FieldFromYamlKey]
-		readonly int value = 100;
-
 		readonly bool allowZero;
-		public HealthInit() { }
-		public HealthInit(int init)
-			: this(init, false) { }
 
-		public HealthInit(int init, bool allowZero)
+		public HealthInit(int value, bool allowZero = false)
+			: base(value) { this.allowZero = allowZero; }
+
+		public override int Value
 		{
-			this.allowZero = allowZero;
-			value = init;
-		}
+			get
+			{
+				if (value < 0 || (value == 0 && !allowZero))
+					return 1;
 
-		public int Value(World world)
-		{
-			if (value < 0 || (value == 0 && !allowZero))
-				return 1;
-
-			return value;
+				return value;
+			}
 		}
 	}
 }

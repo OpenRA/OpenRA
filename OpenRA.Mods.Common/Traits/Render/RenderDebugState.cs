@@ -19,11 +19,11 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Displays the actor's type and ID above the actor.")]
-	class RenderDebugStateInfo : ITraitInfo
+	class RenderDebugStateInfo : TraitInfo
 	{
 		public readonly string Font = "TinyBold";
 
-		public object Create(ActorInitializer init) { return new RenderDebugState(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new RenderDebugState(init.Self, this); }
 	}
 
 	class RenderDebugState : INotifyAddedToWorld, INotifyOwnerChanged, INotifyCreated, IRenderAnnotationsWhenSelected

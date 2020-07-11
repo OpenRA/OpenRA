@@ -13,7 +13,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class GrantConditionOnLineBuildDirectionInfo : ITraitInfo, Requires<LineBuildInfo>
+	public class GrantConditionOnLineBuildDirectionInfo : TraitInfo, Requires<LineBuildInfo>
 	{
 		[FieldLoader.Require]
 		[GrantedConditionReference]
@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Line build direction to trigger the condition.")]
 		public readonly LineBuildDirection Direction = LineBuildDirection.X;
 
-		public object Create(ActorInitializer init) { return new GrantConditionOnLineBuildDirection(init, this); }
+		public override object Create(ActorInitializer init) { return new GrantConditionOnLineBuildDirection(init, this); }
 	}
 
 	public class GrantConditionOnLineBuildDirection : INotifyCreated
@@ -35,17 +35,13 @@ namespace OpenRA.Mods.Common.Traits
 		public GrantConditionOnLineBuildDirection(ActorInitializer init, GrantConditionOnLineBuildDirectionInfo info)
 		{
 			this.info = info;
-			direction = init.Get<LineBuildDirectionInit>().Value(init.World);
+			direction = init.GetValue<LineBuildDirectionInit, LineBuildDirection>();
 		}
 
 		void INotifyCreated.Created(Actor self)
 		{
-			if (direction != info.Direction)
-				return;
-
-			var conditionManager = self.TraitOrDefault<ConditionManager>();
-			if (conditionManager != null && !string.IsNullOrEmpty(info.Condition))
-				conditionManager.GrantCondition(self, info.Condition);
+			if (direction == info.Direction)
+				self.GrantCondition(info.Condition);
 		}
 	}
 }

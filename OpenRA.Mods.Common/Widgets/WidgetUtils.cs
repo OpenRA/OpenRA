@@ -12,7 +12,9 @@
 using System;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Network;
 using OpenRA.Primitives;
+using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
 {
@@ -21,6 +23,17 @@ namespace OpenRA.Mods.Common.Widgets
 		public static Sprite GetChromeImage(World world, string name)
 		{
 			return ChromeProvider.GetImage("chrome-" + world.LocalPlayer.Faction.InternalName, name);
+		}
+
+		public static string GetStatefulImageName(string baseName, bool disabled = false, bool pressed = false, bool hover = false, bool focused = false)
+		{
+			var suffix = disabled ? "-disabled" :
+				focused ? "-focused" :
+				pressed ? "-pressed" :
+				hover ? "-hover" :
+				"";
+
+			return baseName + suffix;
 		}
 
 		public static void DrawRGBA(Sprite s, float2 pos)
@@ -269,6 +282,75 @@ namespace OpenRA.Mods.Common.Widgets
 				button.GetTooltipText = () => text;
 			else
 				button.GetTooltipText = null;
+		}
+
+		public static void BindButtonIcon(ButtonWidget button)
+		{
+			var icon = button.Get<ImageWidget>("ICON");
+
+			var hasActiveImage = ChromeProvider.GetImage(icon.ImageCollection, icon.ImageName + "-active") != null;
+			var hasActiveDisabledImage = ChromeProvider.GetImage(icon.ImageCollection, icon.ImageName + "-active-disabled") != null;
+			var hasActivePressedImage = ChromeProvider.GetImage(icon.ImageCollection, icon.ImageName + "-active-pressed") != null;
+			var hasActiveHoverImage = ChromeProvider.GetImage(icon.ImageCollection, icon.ImageName + "-active-hover") != null;
+
+			var hasImage = ChromeProvider.GetImage(icon.ImageCollection, icon.ImageName) != null;
+			var hasDisabledImage = ChromeProvider.GetImage(icon.ImageCollection, icon.ImageName + "-disabled") != null;
+			var hasPressedImage = ChromeProvider.GetImage(icon.ImageCollection, icon.ImageName + "-pressed") != null;
+			var hasHoverImage = ChromeProvider.GetImage(icon.ImageCollection, icon.ImageName + "-hover") != null;
+
+			icon.GetImageName = () =>
+			{
+				var isActive = button.IsHighlighted();
+				var isDisabled = button.IsDisabled();
+				var isPressed = button.Depressed;
+				var isHovered = Ui.MouseOverWidget == button;
+
+				var baseName = button.IsHighlighted() ? icon.ImageName + "-active" : icon.ImageName;
+				var stateName = WidgetUtils.GetStatefulImageName(baseName, isDisabled, isPressed, isHovered);
+
+				if (isActive)
+				{
+					if (isDisabled)
+						return hasActiveDisabledImage ? stateName : hasActiveImage ? baseName : icon.ImageName;
+					else if (isPressed)
+						return hasActivePressedImage ? stateName : hasActiveImage ? baseName : icon.ImageName;
+					else if (isHovered)
+						return hasActiveHoverImage ? stateName : hasActiveImage ? baseName : icon.ImageName;
+					else
+						return hasActiveImage ? baseName : icon.ImageName;
+				}
+				else
+				{
+					if (isDisabled)
+						return hasDisabledImage ? stateName : baseName;
+					else if (isPressed)
+						return hasPressedImage ? stateName : baseName;
+					else if (isHovered)
+						return hasHoverImage ? stateName : baseName;
+					else
+						return baseName;
+				}
+			};
+		}
+
+		public static void BindPlayerNameAndStatus(LabelWidget label, Player p)
+		{
+			var client = p.World.LobbyInfo.ClientWithIndex(p.ClientIndex);
+			var nameFont = Game.Renderer.Fonts[label.Font];
+			var name = new CachedTransform<Tuple<string, WinState, Session.ClientState>, string>(c =>
+			{
+				var suffix = c.Item2 == WinState.Undefined ? "" : " (" + c.Item2 + ")";
+				if (c.Item3 == Session.ClientState.Disconnected)
+					suffix = " (Gone)";
+
+				return TruncateText(c.Item1, label.Bounds.Width - nameFont.Measure(suffix).X, nameFont) + suffix;
+			});
+
+			label.GetText = () =>
+			{
+				var clientState = client != null ? client.State : Session.ClientState.Ready;
+				return name.Update(Tuple.Create(p.PlayerName, p.WinState, clientState));
+			};
 		}
 	}
 

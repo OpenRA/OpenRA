@@ -23,7 +23,7 @@ namespace OpenRA.Graphics
 		public bool IsDecoration { get; set; }
 
 		readonly SequenceProvider sequenceProvider;
-		readonly Func<int> facingFunc;
+		readonly Func<WAngle> facingFunc;
 		readonly Func<bool> paused;
 
 		int frame;
@@ -33,15 +33,15 @@ namespace OpenRA.Graphics
 		Action tickFunc = () => { };
 
 		public Animation(World world, string name)
-			: this(world, name, () => 0) { }
+			: this(world, name, () => WAngle.Zero) { }
 
-		public Animation(World world, string name, Func<int> facingFunc)
+		public Animation(World world, string name, Func<WAngle> facingFunc)
 			: this(world, name, facingFunc, null) { }
 
 		public Animation(World world, string name, Func<bool> paused)
-			: this(world, name, () => 0, paused) { }
+			: this(world, name, () => WAngle.Zero, paused) { }
 
-		public Animation(World world, string name, Func<int> facingFunc, Func<bool> paused)
+		public Animation(World world, string name, Func<WAngle> facingFunc, Func<bool> paused)
 		{
 			sequenceProvider = world.Map.Rules.Sequences;
 			Name = name.ToLowerInvariant();

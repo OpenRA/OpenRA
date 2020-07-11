@@ -14,7 +14,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Eluant;
 using Eluant.ObjectBinding;
-using OpenRA.Graphics;
 using OpenRA.Network;
 using OpenRA.Primitives;
 using OpenRA.Scripting;
@@ -37,6 +36,9 @@ namespace OpenRA
 
 	public class Player : IScriptBindable, IScriptNotifyBind, ILuaTableBinding, ILuaEqualityBinding, ILuaToStringBinding
 	{
+		public const string PlayerActorType = "Player";
+		public const string EditorPlayerActorType = "EditorPlayer";
+
 		struct StanceColors
 		{
 			public Color Self;
@@ -164,13 +166,22 @@ namespace OpenRA
 			if (!Spectating)
 				PlayerMask = new LongBitSet<PlayerBitMask>(InternalName);
 
-			var playerActorType = world.Type == WorldType.Editor ? "EditorPlayer" : "Player";
-			PlayerActor = world.CreateActor(playerActorType, new TypeDictionary { new OwnerInit(this) });
+			// Set this property before running any Created callbacks on the player actor
+			IsBot = BotType != null;
+
+			// Special case handling is required for the Player actor:
+			// Since Actor.Created would be called before PlayerActor is assigned here
+			// querying player traits in INotifyCreated.Created would crash.
+			// Therefore assign the uninitialized actor and run the Created callbacks
+			// by calling Initialize ourselves.
+			var playerActorType = world.Type == WorldType.Editor ? EditorPlayerActorType : PlayerActorType;
+			PlayerActor = new Actor(world, playerActorType, new TypeDictionary { new OwnerInit(this) });
+			PlayerActor.Initialize(true);
+
 			Shroud = PlayerActor.Trait<Shroud>();
 			FrozenActorLayer = PlayerActor.TraitOrDefault<FrozenActorLayer>();
 
 			// Enable the bot logic on the host
-			IsBot = BotType != null;
 			if (IsBot && Game.IsHost)
 			{
 				var logic = PlayerActor.TraitsImplementing<IBot>().FirstOrDefault(b => b.Info.Type == BotType);

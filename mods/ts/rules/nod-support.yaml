@@ -63,8 +63,6 @@ NAPOST:
 		NodeTypes: laserfencenode
 		SegmentType: nafnce
 		SegmentsRequireNode: true
-	Selectable:
-		Bounds: 42, 44, 0, -12
 	LineBuildNode:
 		Types: laserfencenode
 	Power:
@@ -156,9 +154,6 @@ NALASR:
 		Prerequisites: nahand, ~structures.nod, ~techlevel.low
 		BuildPaletteOrder: 90
 		Description: Basic base defense.\nRequires power to operate.\n  Strong vs Ground units\n  Weak vs Aircraft
-	Selectable:
-		Bounds: 40, 30, -8, -6
-		DecorationBounds: 40, 36, -8, -8
 	Health:
 		HP: 50000
 	Armor:
@@ -182,7 +177,6 @@ NALASR:
 		RequiresCondition: !build-incomplete
 	Power:
 		Amount: -40
-	SelectionDecorations:
 	BodyOrientation:
 		QuantizedFacings: 0
 
@@ -203,9 +197,6 @@ NAOBEL:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
-	Selectable:
-		Bounds: 88, 42, 0, -6
-		DecorationBounds: 88, 72, 0, -12
 	Health:
 		HP: 72500
 	Armor:
@@ -233,7 +224,6 @@ NAOBEL:
 		Sequence: idle-lights
 	Power:
 		Amount: -150
-	SelectionDecorations:
 
 NASAM:
 	Inherits: ^Defense
@@ -248,9 +238,6 @@ NASAM:
 		Prerequisites: naradr, ~structures.nod, ~techlevel.medium
 		BuildPaletteOrder: 100
 		Description: Nod Anti-Air base defense.\nRequires power to operate.\n  Strong vs Aircraft\n  Weak vs Ground units
-	Selectable:
-		Bounds: 40, 30, -3, -8
-		DecorationBounds: 40, 36, -3, -8
 	Health:
 		HP: 60000
 	Armor:
@@ -273,164 +260,3 @@ NASAM:
 		LocalOffset: 543,0,815
 	Power:
 		Amount: -30
-	SelectionDecorations:
-
-NASTLH:
-	Inherits: ^Building
-	Inherits@IDISABLED: ^DisableOnLowPowerOrPowerDown
-	Inherits@SHAPE: ^3x2Shape
-	HitShape:
-		TargetableOffsets: 250,0,0, 600,-864,0
-	Valued:
-		Cost: 2500
-	Tooltip:
-		Name: Stealth Generator
-	Buildable:
-		Queue: Defense
-		BuildPaletteOrder: 170
-		Prerequisites: proc, natech, ~structures.nod, ~techlevel.high
-		Description: Generates a cloaking field\nto hide your forces from the enemy.
-	Building:
-		Footprint: xxx XXX
-		Dimensions: 3,2
-	Health:
-		HP: 60000
-	Armor:
-		Type: Wood
-	RevealsShroud:
-		Range: 6c0
-		MaxHeightDelta: 3
-	WithIdleOverlay@pulse:
-		RequiresCondition: !build-incomplete && !empdisable && !disabled
-		Sequence: pulse
-	WithRangeCircle:
-		Range: 12c0
-		Type: cloakgenerator
-	Power:
-		Amount: -350
-	ProximityExternalCondition:
-		RequiresCondition: !empdisable && !disabled
-		Condition: cloakgenerator
-		Range: 12c0
-		EnableSound: cloak5.aud
-		DisableSound: cloak5.aud
-		AffectsParent: true
-	Selectable:
-		Bounds: 106, 48, 8, -6
-		DecorationBounds: 106, 60, 8, -15
-	SelectionDecorations:
-
-NAMISL:
-	Inherits: ^Building
-	Inherits@IDISABLE: ^DisableOnLowPowerOrPowerDown
-	Inherits@SHAPE: ^2x2Shape
-	Buildable:
-		Queue: Defense
-		BuildPaletteOrder: 180
-		Prerequisites: natech, ~structures.nod, ~techlevel.superweapons
-		BuildLimit: 1
-		Description: Launches a devastating missile\nat a target location.\nRequires power to operate.\nMaximum 1 can be built.
-	Valued:
-		Cost: 1300
-	Tooltip:
-		Name: Nod Missile Silo
-	ProvidesPrerequisite:
-		Prerequisite: tech
-	Building:
-		Footprint: xx xx
-		Dimensions: 2,2
-	Selectable:
-		Bounds: 75,48
-		DecorationBounds: 75,48
-	Health:
-		HP: 100000
-	Armor:
-		Type: Wood
-	RevealsShroud:
-		Range: 4c0
-	WithIdleOverlay@LIGHTS:
-		RequiresCondition: !build-incomplete && !disabled
-		Sequence: idle-lights
-	Power:
-		Amount: -50
-	ProvidesPrerequisite@buildingname:
-	SupportPowerChargeBar:
-	NukePower:
-		PauseOnCondition: empdisable || disabled
-		Cursor: nuke
-		Icon: clustermissile
-		ChargeInterval: 13500
-		Description: Cluster Missile
-		LongDesc: Launches an explosive cluster warhead\nat a target location.
-		EndChargeSpeechNotification: ClusterMissileReady
-		SelectTargetSpeechNotification: SelectTarget
-		IncomingSpeechNotification: MissileLaunchDetected
-		LaunchSound: icbm1.aud
-		MissileWeapon: ClusterMissile
-		MissileDelay: 10
-		DetonationAltitude: 5c0
-		SpawnOffset: 72,72,0
-		DisplayTimerStances: None
-		DisplayBeacon: False
-		DisplayRadarPing: True
-		BeaconPoster:
-		CameraRange: 10c0
-		FlightVelocity: 1c0
-		TrailImage: small_smoke_trail
-		TrailPalette: effectalpha75
-		TrailInterval: 0
-		TrailSequences: idle
-	WithNukeLaunchOverlay:
-	SelectionDecorations:
-
-NAWAST:
-	Inherits: ^Building
-	HitShape:
-		Type: Rectangle
-			TopLeft: -1536, -1536
-			BottomRight: 512, 1536
-	Valued:
-		Cost: 1600
-	Tooltip:
-		Name: Waste Refinery
-	Buildable:
-		Queue: Defense
-		BuildPaletteOrder: 190
-		Prerequisites: namisl, ~structures.nod, ~techlevel.superweapons
-		BuildLimit: 1
-		Description: Processes Veins\ninto useable resources.\nMaximum 1 can be built.
-	Building:
-		Footprint: Xx= xx= Xx=
-		Dimensions: 3,3
-	Selectable:
-		Bounds: 100, 60, 5, -5
-		DecorationBounds: 100, 60, 5, -5
-	Health:
-		HP: 40000
-	RevealsShroud:
-		Range: 6c0
-		MaxHeightDelta: 3
-	TiberianSunRefinery:
-		DockAngle: 160
-		DockOffset: 2,1
-	StoresResources:
-		PipColor: Red
-		PipCount: 15
-		Capacity: 56
-	Power:
-		Amount: -40
-	FreeActor:
-		Actor: WEED
-		SpawnOffset: 3,1
-		Facing: 160
-	WithIdleOverlay@GLOW:
-		RequiresCondition: !build-incomplete
-		Sequence: idle-glow
-	WithIdleOverlay@LIGHTS:
-		RequiresCondition: !build-incomplete
-		Sequence: idle-lights
-	WithIdleOverlay@BIB:
-		RequiresCondition: !build-incomplete
-		Sequence: bib
-	ProvidesPrerequisite@buildingname:
-	SelectionDecorations:

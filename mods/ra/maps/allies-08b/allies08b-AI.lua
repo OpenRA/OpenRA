@@ -17,13 +17,13 @@ IdleHunt = function(unit) if not unit.IsDead then Trigger.OnIdle(unit, unit.Hunt
 
 GroundWavesUpgradeDelay = DateTime.Minutes(12)
 GroundAttackUnitType = "Normal"
-GroundAttackUnits = 
-{ 
+GroundAttackUnits =
+{
 	Normal = { {"4tnk", "3tnk", "e2", "e2", "e2" }, { "3tnk", "v2rl", "e4", "e4", "e4" } },
 	Upgraded = { {"4tnk", "3tnk", "ftrk", "apc", "apc", "e1", "e1", "e1", "e1", "e1", "e2", "e2", "e2" }, { "3tnk", "v2rl", "ftrk", "apc", "apc", "e1", "e1", "e1", "e1", "e1", "e4", "e4", "e4" } }
 }
-GroundAttackPaths = 
-{ 
+GroundAttackPaths =
+{
 	{ SovEntry1.Location, ParaLZ2.Location, AttackChrono.Location },
 	{ SovEntry2.Location, ParaLZ2.Location, AttackChrono.Location },
 	{ SovEntry3.Location, ParaLZ4.Location, AttackChrono.Location }
@@ -124,36 +124,7 @@ ProduceAircraft = function()
 			Trigger.AfterDelay(DateTime.Seconds(ProductionInterval[Map.LobbyOption("difficulty")] / 2), ProduceAircraft)
 		end
 
-		TargetAndAttack(mig)
-	end)
-end
-
-TargetAndAttack = function(mig, target)
-	if mig.IsDead then
-		return
-	end
-
-	if not target or target.IsDead or (not target.IsInWorld) then
-		local enemies = Utils.Where(greece.GetActors(), function(actor)
-			return actor.HasProperty("Health") and actor.Type ~= "brik" and mig.CanTarget(target)
-		end)
-		if #enemies > 0 then
-			target = Utils.Random(enemies)
-		end
-	end
-
-	if target and mig.AmmoCount() > 0 and mig.CanTarget(target) then
-		mig.Attack(target)
-	else
-		mig.ReturnToBase()
-	end
-
-	mig.CallFunc(function()
-		-- TODO: Replace this with an idle trigger once that works for aircraft
-		-- Add a delay of one tick to fix an endless recursive call
-		Trigger.AfterDelay(1, function()
-			TargetAndAttack(mig, target)
-		end)
+		InitializeAttackAircraft(mig, greece)
 	end)
 end
 
@@ -188,7 +159,7 @@ WTransWaves = function()
 end
 
 Paradrop = function()
-	local aircraft = PowerProxy.ActivateParatroopers(Utils.Random(ParadropLZs))
+	local aircraft = PowerProxy.TargetParatroopers(Utils.Random(ParadropLZs))
 	Utils.Do(aircraft, function(a)
 		Trigger.OnPassengerExited(a, function(t, p)
 			IdleHunt(p)
@@ -209,8 +180,8 @@ SendParabombs = function()
 	end
 
 	local targets = Utils.Where(greece.GetActors(), function(actor)
-		return 
-			actor.HasProperty("Sell") and 
+		return
+			actor.HasProperty("Sell") and
 			actor.Type ~= "brik" and
 			actor.Type ~= "sbag" or
 			actor.Type == "pdox" or
@@ -218,7 +189,7 @@ SendParabombs = function()
 	end)
 
 	if #targets > 0 then
-		airfield.SendAirstrike(Utils.Random(targets).CenterPosition, true, 0)
+		airfield.TargetAirstrike(Utils.Random(targets).CenterPosition)
 	end
 
 	Trigger.AfterDelay(DateTime.Minutes(BombDelays), SendParabombs)

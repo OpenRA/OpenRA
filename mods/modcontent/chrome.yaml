@@ -102,10 +102,10 @@ scrollpanel-button-disabled:
 scrollpanel-button-pressed:
 	Inherits: panel-thinborder-light
 
-scrollbar:
+scrollpanel-decorations:
 	Inherits: ^Chrome
 	Regions:
-		down_arrow: 453, 512, 16, 16
-		down_pressed: 453, 512, 16, 16
-		up_arrow: 470, 512, 16, 16
-		up_pressed: 470, 512, 16, 16
+		down: 453, 512, 16, 16
+		down-pressed: 453, 512, 16, 16
+		up: 470, 512, 16, 16
+		up-pressed: 470, 512, 16, 16

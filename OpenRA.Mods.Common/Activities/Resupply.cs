@@ -34,6 +34,8 @@ namespace OpenRA.Mods.Common.Activities
 		readonly Aircraft aircraft;
 		readonly bool stayOnResupplier;
 		readonly bool wasRepaired;
+		readonly PlayerResources playerResources;
+		readonly int unitCost;
 
 		int remainingTicks;
 		bool played;
@@ -54,6 +56,10 @@ namespace OpenRA.Mods.Common.Activities
 			transportCallers = self.TraitsImplementing<ICallForTransport>().ToArray();
 			move = self.Trait<IMove>();
 			aircraft = move as Aircraft;
+			playerResources = self.Owner.PlayerActor.Trait<PlayerResources>();
+
+			var valued = self.Info.TraitInfoOrDefault<ValuedInfo>();
+			unitCost = valued != null ? valued.Cost : 0;
 
 			var cannotRepairAtHost = health == null || health.DamageState == DamageState.Undamaged
 				|| !allRepairsUnits.Any()
@@ -127,7 +133,7 @@ namespace OpenRA.Mods.Common.Activities
 				// HACK: Repairable needs the actor to move to host center.
 				// TODO: Get rid of this or at least replace it with something less hacky.
 				if (repairableNear == null)
-					QueueChild(move.MoveTo(targetCell));
+					QueueChild(move.MoveTo(targetCell, targetLineColor: Color.Green));
 
 				var delta = (self.CenterPosition - host.CenterPosition).LengthSquared;
 				var transport = transportCallers.FirstOrDefault(t => t.MinimumDistance.LengthSquared < delta);
@@ -182,8 +188,16 @@ namespace OpenRA.Mods.Common.Activities
 			if (ChildActivity == null)
 				yield return new TargetLineNode(host, Color.Green);
 			else
-				foreach (var n in ChildActivity.TargetLineNodes(self))
-					yield return n;
+			{
+				var current = ChildActivity;
+				while (current != null)
+				{
+					foreach (var n in current.TargetLineNodes(self))
+						yield return n;
+
+					current = current.NextActivity;
+				}
+			}
 		}
 
 		void OnResupplyEnding(Actor self, bool isHostInvalid = false)
@@ -216,7 +230,7 @@ namespace OpenRA.Mods.Common.Activities
 				{
 					if (rp != null && rp.Path.Count > 0)
 						foreach (var cell in rp.Path)
-							QueueChild(move.MoveTo(cell, 1, repairableNear != null ? null : host.Actor, true));
+							QueueChild(move.MoveTo(cell, 1, repairableNear != null ? null : host.Actor, true, Color.Green));
 					else if (repairableNear == null)
 						QueueChild(move.MoveToTarget(self, host));
 				}
@@ -227,7 +241,6 @@ namespace OpenRA.Mods.Common.Activities
 
 		void RepairTick(Actor self)
 		{
-			// First active.
 			var repairsUnits = allRepairsUnits.FirstOrDefault(r => !r.IsTraitDisabled && !r.IsTraitPaused);
 			if (repairsUnits == null)
 			{
@@ -254,8 +267,6 @@ namespace OpenRA.Mods.Common.Activities
 
 			if (remainingTicks == 0)
 			{
-				var valued = self.Info.TraitInfoOrDefault<ValuedInfo>();
-				var unitCost = valued != null ? valued.Cost : 0;
 				var hpToRepair = repairable != null && repairable.Info.HpPerStep > 0 ? repairable.Info.HpPerStep : repairsUnits.Info.HpPerStep;
 
 				// Cast to long to avoid overflow when multiplying by the health
@@ -267,13 +278,13 @@ namespace OpenRA.Mods.Common.Activities
 					Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", repairsUnits.Info.StartRepairingNotification, self.Owner.Faction.InternalName);
 				}
 
-				if (!self.Owner.PlayerActor.Trait<PlayerResources>().TakeCash(cost, true))
+				if (!playerResources.TakeCash(cost, true))
 				{
 					remainingTicks = 1;
 					return;
 				}
 
-				self.InflictDamage(host.Actor, new Damage(-hpToRepair));
+				self.InflictDamage(host.Actor, new Damage(-hpToRepair, repairsUnits.Info.RepairDamageTypes));
 				remainingTicks = repairsUnits.Info.Interval;
 			}
 			else

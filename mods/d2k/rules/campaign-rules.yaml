@@ -32,3 +32,11 @@ World:
 		TechLevelDropdownLocked: True
 		ShortGameCheckboxLocked: True
 		ShortGameCheckboxEnabled: False
+
+^AutoTargetGroundAssaultMove:
+	GrantConditionOnBotOwner@BOTOWNER:
+		Bots: campaign
+
+^AutoTargetAllAssaultMove:
+	GrantConditionOnBotOwner@BOTOWNER:
+		Bots: campaign

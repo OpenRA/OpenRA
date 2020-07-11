@@ -16,7 +16,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Palette effect used for sprinkle \"animations\".")]
-	class RotationPaletteEffectInfo : ITraitInfo
+	class RotationPaletteEffectInfo : TraitInfo
 	{
 		[Desc("Defines to which palettes this effect should be applied to.",
 			"If none specified, it applies to all palettes not explicitly excluded.")]
@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Step towards next color index per tick.")]
 		public readonly float RotationStep = .25f;
 
-		public object Create(ActorInitializer init) { return new RotationPaletteEffect(init.World, this); }
+		public override object Create(ActorInitializer init) { return new RotationPaletteEffect(init.World, this); }
 	}
 
 	class RotationPaletteEffect : ITick, IPaletteModifier

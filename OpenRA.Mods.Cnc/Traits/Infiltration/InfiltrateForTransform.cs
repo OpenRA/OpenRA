@@ -19,7 +19,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Cnc.Traits
 {
 	[Desc("Transform into a different actor type.")]
-	class InfiltrateForTransformInfo : ITraitInfo
+	class InfiltrateForTransformInfo : TraitInfo
 	{
 		[ActorReference]
 		[FieldLoader.Require]
@@ -29,9 +29,10 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		public readonly bool SkipMakeAnims = true;
 
+		[Desc("The `TargetTypes` from `Targetable` that are allowed to enter.")]
 		public readonly BitSet<TargetableType> Types = default(BitSet<TargetableType>);
 
-		public object Create(ActorInitializer init) { return new InfiltrateForTransform(init, this); }
+		public override object Create(ActorInitializer init) { return new InfiltrateForTransform(init, this); }
 	}
 
 	class InfiltrateForTransform : INotifyInfiltrated
@@ -42,7 +43,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public InfiltrateForTransform(ActorInitializer init, InfiltrateForTransformInfo info)
 		{
 			this.info = info;
-			faction = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : init.Self.Owner.Faction.InternalName;
+			faction = init.GetValue<FactionInit, string>(init.Self.Owner.Faction.InternalName);
 		}
 
 		void INotifyInfiltrated.Infiltrated(Actor self, Actor infiltrator, BitSet<TargetableType> types)

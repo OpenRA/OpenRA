@@ -1,5 +1,6 @@
 TRAN:
 	Inherits: ^Helicopter
+	Inherits@TRANSPORT: ^Transport
 	Valued:
 		Cost: 750
 	Tooltip:
@@ -41,11 +42,9 @@ TRAN:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 10
-		PipCount: 10
 		AfterUnloadDelay: 40
 	SpawnActorOnDeath:
 		Actor: TRAN.Husk
-	SelectionDecorations:
 	Selectable:
 		DecorationBounds: 41,41
 
@@ -94,7 +93,6 @@ HELI:
 		AttackType: Hover
 	AmmoPool:
 		Ammo: 10
-		PipCount: 5
 		AmmoCondition: ammo
 	WithIdleOverlay@ROTORAIR:
 		Offset: 0,0,85
@@ -107,12 +105,16 @@ HELI:
 	WithMuzzleOverlay:
 	SpawnActorOnDeath:
 		Actor: HELI.Husk
-	SelectionDecorations:
 	ReloadAmmoPool:
 		Delay: 40
 		Count: 1
 	Selectable:
 		DecorationBounds: 30,24
+	WithAmmoPipsDecoration:
+		Position: BottomLeft
+		Margin: 4, 3
+		RequiresSelection: true
+		PipCount: 5
 
 ORCA:
 	Inherits: ^Helicopter
@@ -156,21 +158,24 @@ ORCA:
 		AttackType: Hover
 	AmmoPool:
 		Ammo: 6
-		PipCount: 6
 		AmmoCondition: ammo
 	SpawnActorOnDeath:
 		Actor: ORCA.Husk
 	WithMoveAnimation:
 		MoveSequence: move
-	SelectionDecorations:
 	ReloadAmmoPool:
 		Delay: 100
 		Count: 2
 	Selectable:
 		DecorationBounds: 30,24
+	WithAmmoPipsDecoration:
+		Position: BottomLeft
+		Margin: 4, 3
+		RequiresSelection: true
 
 C17:
 	Inherits: ^Plane
+	Inherits@TRANSPORT: ^Transport
 	Interactable:
 	Tooltip:
 		Name: Supply Aircraft
@@ -186,7 +191,6 @@ C17:
 		Type: CenterPosition
 	Cargo:
 		MaxWeight: 10
-		PipCount: 10
 	DamageMultiplier@INVULNERABLE:
 		Modifier: 0
 	Contrail@1:

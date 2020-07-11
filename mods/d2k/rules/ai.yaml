@@ -221,6 +221,7 @@ Player:
 		MaxBaseRadius: 40
 		ExcludeFromSquadsTypes: harvester, mcv
 		ConstructionYardTypes: construction_yard
+		IgnoredEnemyTargetTypes: Creep
 	UnitBuilderBotModule@omnius:
 		RequiresCondition: enable-omnius-ai
 		UnitQueues: Infantry, Vehicle, Armor, Starport, Aircraft
@@ -264,6 +265,7 @@ Player:
 		MaxBaseRadius: 40
 		ExcludeFromSquadsTypes: harvester, mcv
 		ConstructionYardTypes: construction_yard
+		IgnoredEnemyTargetTypes: Creep
 	UnitBuilderBotModule@vidious:
 		RequiresCondition: enable-vidious-ai
 		UnitQueues: Infantry, Vehicle, Armor, Starport, Aircraft
@@ -302,6 +304,7 @@ Player:
 		MaxBaseRadius: 40
 		ExcludeFromSquadsTypes: harvester, mcv
 		ConstructionYardTypes: construction_yard
+		IgnoredEnemyTargetTypes: Creep
 	UnitBuilderBotModule@gladius:
 		RequiresCondition: enable-gladius-ai
 		UnitQueues: Infantry, Vehicle, Armor, Starport, Aircraft

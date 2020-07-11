@@ -14,7 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class TerrainModifiesDamageInfo : ITraitInfo
+	public class TerrainModifiesDamageInfo : TraitInfo
 	{
 		[FieldLoader.Require]
 		[Desc("Damage percentage for specific terrain types. 120 = 120%, 80 = 80%, etc.")]
@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Modify healing damage? For example: A friendly medic.")]
 		public readonly bool ModifyHealing = false;
 
-		public object Create(ActorInitializer init) { return new TerrainModifiesDamage(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new TerrainModifiesDamage(init.Self, this); }
 	}
 
 	public class TerrainModifiesDamage : IDamageModifier

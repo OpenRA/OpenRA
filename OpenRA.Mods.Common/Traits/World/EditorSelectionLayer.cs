@@ -16,7 +16,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Required for the map editor to work. Attach this to the world actor.")]
-	public class EditorSelectionLayerInfo : ITraitInfo
+	public class EditorSelectionLayerInfo : TraitInfo
 	{
 		[PaletteReference]
 		[Desc("Palette to use for rendering the placement sprite.")]
@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Sequence to use for the paste overlay.")]
 		public readonly string PasteSequence = "paste";
 
-		public virtual object Create(ActorInitializer init) { return new EditorSelectionLayer(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new EditorSelectionLayer(init.Self, this); }
 	}
 
 	public class EditorSelectionLayer : IWorldLoaded, IRenderAboveShroud

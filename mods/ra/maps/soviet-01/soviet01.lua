@@ -24,9 +24,9 @@ end
 JeepDemolishingBridge = function()
 	StartJeep.Move(StartJeepMovePoint.Location)
 
-	Trigger.OnIdle(StartJeep, function()
-		Trigger.ClearAll(StartJeep)
-		if not BridgeBarrel.IsDead then
+	Trigger.OnEnteredFootprint({ StartJeepMovePoint.Location }, function(actor, id)
+		if actor.Owner == france and not BridgeBarrel.IsDead then
+			Trigger.RemoveFootprintTrigger(id)
 			BridgeBarrel.Kill()
 		end
 
@@ -37,6 +37,34 @@ JeepDemolishingBridge = function()
 			bridge.Kill()
 		end
 	end)
+end
+
+Paratroopers = function()
+	Trigger.OnKilled(StartJeep, function()
+		Media.PlaySpeechNotification(player, "ReinforcementsArrived")
+		Paradrop.TargetParatroopers(StartJeepMovePoint.CenterPosition, Angle.East)
+	end)
+
+	Trigger.OnKilled(Church, function()
+		Media.PlaySpeechNotification(player, "ReinforcementsArrived")
+		Paradrop.TargetParatroopers(StartJeepMovePoint.CenterPosition, Angle.East)
+	end)
+
+	Trigger.OnKilled(ParaHut, function()
+		Media.PlaySpeechNotification(player, "ReinforcementsArrived")
+		Paradrop.TargetParatroopers(StartJeepMovePoint.CenterPosition, Angle.East)
+	end)
+end
+
+PanicAttack = function()
+	if not HouseDamaged then
+		local panicTeam = Reinforcements.Reinforce(france, { "c3", "c6", "c9" }, { CivSpawn.Location }, 0)
+		Utils.Do(panicTeam, function(a)
+			a.Move(a.Location + CVec.New(-1,-1))
+			a.Panic()
+		end)
+	end
+	HouseDamaged = true
 end
 
 WorldLoaded = function()
@@ -70,7 +98,10 @@ WorldLoaded = function()
 		Media.PlaySpeechNotification(player, "MissionFailed")
 	end)
 
+	Paradrop = Actor.Create("powerproxy.paratroopers", false, { Owner = player })
 	Trigger.AfterDelay(DateTime.Seconds(2), InsertYaks)
+	Paratroopers()
+	Trigger.OnDamaged(HayHouse, PanicAttack)
 end
 
 Tick = function()

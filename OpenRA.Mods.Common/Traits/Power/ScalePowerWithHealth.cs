@@ -14,9 +14,9 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Scale power amount with the current health.")]
-	public class ScalePowerWithHealthInfo : ITraitInfo, Requires<PowerInfo>, Requires<IHealthInfo>
+	public class ScalePowerWithHealthInfo : TraitInfo, Requires<PowerInfo>, Requires<IHealthInfo>
 	{
-		public object Create(ActorInitializer init) { return new ScalePowerWithHealth(init.Self); }
+		public override object Create(ActorInitializer init) { return new ScalePowerWithHealth(init.Self); }
 	}
 
 	public class ScalePowerWithHealth : IPowerModifier, INotifyDamage, INotifyOwnerChanged

@@ -3,6 +3,7 @@
 	Range: 5c0
 	MinRange: 0c512
 	Report: missile6.aud
+	ValidTargets: Ground, Water, GroundActor, WaterActor
 	Projectile: Missile
 		Speed: 213
 		Arm: 2
@@ -16,7 +17,7 @@
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 5000
-		ValidTargets: Ground, Water, Air
+		ValidTargets: GroundActor, WaterActor, AirborneActor
 		Versus:
 			None: 10
 			Wood: 74
@@ -26,20 +27,20 @@
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
-		InvalidTargets: Vehicle, Structure, Wall, Husk, Trees
+		ValidTargets: Ground, Infantry
 	Warhead@3Eff: CreateEffect
 		Explosions: med_explosion
 		ImpactSounds: kaboom25.aud
-		ValidTargets: Ground, Air, Ship, Trees
+		ValidTargets: Ground, Air, GroundActor, AirborneActor, WaterActor, Trees
 	Warhead@4EffWater: CreateEffect
 		Explosions: med_splash
 		ImpactSounds: splash9.aud
 		ValidTargets: Water, Underwater
-		InvalidTargets: Ship, Structure, Bridge
+		InvalidTargets: Bridge
 
 ^AntiAirMissile:
 	Inherits: ^AntiGroundMissile
-	ValidTargets: Air
+	ValidTargets: AirborneActor
 	Warhead@3Eff: CreateEffect
 		ImpactActors: false
 
@@ -103,7 +104,7 @@ HellfireAA:
 		CloseEnough: 0c600
 	Warhead@1Dam: SpreadDamage
 		Damage: 4000
-		ValidTargets: Air
+		ValidTargets: AirborneActor
 		Versus:
 			Wood: 75
 			Light: 75
@@ -115,7 +116,7 @@ MammothTusk:
 	ReloadDelay: 60
 	Range: 6c512
 	Burst: 2
-	ValidTargets: Air, Infantry
+	ValidTargets: AirborneActor, Infantry
 	Projectile: Missile
 		Speed: 341
 		HorizontalRateOfTurn: 15
@@ -131,11 +132,11 @@ MammothTusk:
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@3Eff: CreateEffect
 		ImpactSounds: kaboom12.aud
-		ValidTargets: Ground, Trees
+		ValidTargets: Ground, GroundActor, Trees
 	Warhead@5EffAir: CreateEffect
 		Explosions: med_explosion_air
 		ImpactSounds: kaboom25.aud
-		ValidTargets: Air
+		ValidTargets: Air, AirborneActor
 
 Nike:
 	Inherits: ^AntiAirMissile
@@ -151,7 +152,7 @@ Nike:
 		Speed: 341
 	Warhead@1Dam: SpreadDamage
 		Damage: 5000
-		ValidTargets: Air
+		ValidTargets: AirborneActor
 		Versus:
 			Light: 90
 	Warhead@3Eff: CreateEffect
@@ -167,7 +168,7 @@ RedEye:
 		Speed: 298
 	Warhead@1Dam: SpreadDamage
 		Damage: 4000
-		ValidTargets: Air
+		ValidTargets: AirborneActor
 		Versus:
 			Light: 60
 
@@ -196,7 +197,7 @@ Stinger:
 
 StingerAA:
 	Inherits: Stinger
-	ValidTargets: Air
+	ValidTargets: AirborneActor
 	Projectile: Missile
 		Speed: 255
 		CloseEnough: 298
@@ -222,7 +223,7 @@ TorpTube:
 	ReloadDelay: 100
 	Range: 9c0
 	Report: torpedo1.aud
-	ValidTargets: Water, Underwater, Bridge
+	ValidTargets: Water, WaterActor, Underwater, Bridge
 	Burst: 2
 	BurstDelays: 20
 	Projectile: Missile
@@ -239,7 +240,7 @@ TorpTube:
 	Warhead@1Dam: SpreadDamage
 		Spread: 426
 		Damage: 18000
-		ValidTargets: Water, Underwater, Bridge
+		ValidTargets: WaterActor, Underwater, Bridge
 		Versus:
 			Wood: 75
 			Light: 75
@@ -249,12 +250,12 @@ TorpTube:
 	Warhead@3Eff: CreateEffect
 		Explosions: artillery_explosion
 		ImpactSounds: kaboom15.aud
-		ValidTargets: Ship, Structure, Underwater, Ground, Bridge
+		ValidTargets: Ground, WaterActor, Underwater, GroundActor, Bridge
 	Warhead@4EffWater: CreateEffect
 		Explosions: large_splash
 		ImpactSounds: splash9.aud
 		ValidTargets: Water
-		InvalidTargets: Ship, Structure, Underwater, Bridge
+		InvalidTargets: Bridge
 
 ^SubMissileDefault:
 	Inherits: ^AntiGroundMissile
@@ -304,7 +305,7 @@ SubMissile:
 
 SubMissileAA:
 	Inherits: ^SubMissileDefault
-	ValidTargets: Air
+	ValidTargets: AirborneActor
 	Warhead@1Dam: SpreadDamage
 		Damage: 1500
 
@@ -328,10 +329,11 @@ SCUD:
 		Spread: 341
 		Damage: 4500
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
-		ValidTargets: Ground, Water, Trees
+		ValidTargets: GroundActor, WaterActor, Trees
 		Versus:
 			None: 90
 			Wood: 75
+			Tree: 75
 			Light: 70
 			Heavy: 40
 			Concrete: 100

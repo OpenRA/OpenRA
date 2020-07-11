@@ -2,8 +2,8 @@
 # OpenRA packaging script for versioned source tarball
 
 if [ $# -ne "2" ]; then
-    echo "Usage: $(basename "$0") tag outputdir"
-    exit 1
+	echo "Usage: $(basename "$0") tag outputdir"
+	exit 1
 fi
 
 # Set the working dir to the location of this script

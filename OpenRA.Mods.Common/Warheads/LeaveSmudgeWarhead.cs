@@ -26,14 +26,14 @@ namespace OpenRA.Mods.Common.Warheads
 		[Desc("Type of smudge to apply to terrain.")]
 		public readonly HashSet<string> SmudgeType = new HashSet<string>();
 
-		[Desc("How close to ground must the impact happen to spawn smudges.")]
-		public readonly WDist AirThreshold = new WDist(128);
-
 		[Desc("Percentual chance the smudge is created.")]
 		public readonly int Chance = 100;
 
 		public override void DoImpact(Target target, WarheadArgs args)
 		{
+			if (target.Type == TargetType.Invalid)
+				return;
+
 			var firedBy = args.SourceActor;
 			var world = firedBy.World;
 

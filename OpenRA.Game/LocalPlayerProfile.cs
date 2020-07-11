@@ -80,8 +80,6 @@ namespace OpenRA
 			{
 				try
 				{
-					innerState = LinkState.Unlinked;
-
 					if (i.Error != null)
 					{
 						innerState = LinkState.ConnectionFailed;
@@ -100,6 +98,8 @@ namespace OpenRA
 						else
 							innerState = LinkState.Linked;
 					}
+					else
+						innerState = LinkState.Unlinked;
 				}
 				catch (Exception e)
 				{

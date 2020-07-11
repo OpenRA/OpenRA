@@ -16,13 +16,11 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	/// <summary>Use as base class for *Info to subclass of ConditionalTrait. (See ConditionalTrait.)</summary>
-	public abstract class ConditionalTraitInfo : IObservesVariablesInfo, IRulesetLoaded
+	public abstract class ConditionalTraitInfo : TraitInfo, IObservesVariablesInfo, IRulesetLoaded
 	{
 		[ConsumedConditionReference]
 		[Desc("Boolean expression defining the condition to enable this trait.")]
 		public readonly BooleanExpression RequiresCondition = null;
-
-		public abstract object Create(ActorInitializer init);
 
 		// HACK: A shim for all the ActorPreview code that used to query UpgradeMinEnabledLevel directly
 		// This can go away after we introduce an InitialConditions ActorInit and have the traits query the

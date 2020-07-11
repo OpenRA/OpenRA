@@ -16,7 +16,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class LoadWidgetAtGameStartInfo : ITraitInfo
+	public class LoadWidgetAtGameStartInfo : TraitInfo
 	{
 		[Desc("The widget tree to open when a shellmap is loaded (i.e. the main menu).")]
 		public readonly string ShellmapRoot = "MAINMENU";
@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Remove any existing UI when a map is loaded.")]
 		public readonly bool ClearRoot = true;
 
-		public object Create(ActorInitializer init) { return new LoadWidgetAtGameStart(this); }
+		public override object Create(ActorInitializer init) { return new LoadWidgetAtGameStart(this); }
 	}
 
 	public class LoadWidgetAtGameStart : IWorldLoaded, INotifyGameLoading, INotifyGameLoaded

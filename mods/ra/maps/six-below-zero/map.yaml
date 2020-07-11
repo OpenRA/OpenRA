@@ -2415,122 +2415,122 @@ Actors:
 		Owner: Neutral
 		Location: 72,46
 		SubCell: 3
-		Facing: 92
+		Facing: 368
 	Actor826: c7
 		Owner: Neutral
 		Location: 76,49
 		SubCell: 3
-		Facing: 92
+		Facing: 368
 	Actor827: c3
 		Owner: Neutral
 		Location: 69,42
 		SubCell: 3
-		Facing: 92
+		Facing: 368
 	Actor828: c4
 		Owner: Neutral
 		Location: 55,48
 		SubCell: 3
-		Facing: 92
+		Facing: 368
 	Actor829: c3
 		Owner: Neutral
 		Location: 72,80
 		SubCell: 3
-		Facing: 92
+		Facing: 368
 	Actor830: c3
 		Owner: Neutral
 		Location: 57,88
 		SubCell: 3
-		Facing: 92
+		Facing: 368
 	Actor831: c1
 		Owner: Neutral
 		Location: 53,82
 		SubCell: 3
-		Facing: 92
+		Facing: 368
 	Actor832: c2
 		Owner: Neutral
 		Location: 57,81
 		SubCell: 3
-		Facing: 92
+		Facing: 368
 	Actor833: c3
 		Owner: Neutral
 		Location: 106,31
 		SubCell: 3
-		Facing: 92
+		Facing: 368
 	Actor835: c1
 		Owner: Neutral
 		Location: 127,6
 		SubCell: 3
-		Facing: 92
+		Facing: 368
 	Actor836: c4
 		Owner: Neutral
 		Location: 122,2
 		SubCell: 3
-		Facing: 92
+		Facing: 368
 	Actor837: c5
 		Owner: Neutral
 		Location: 83,84
 		SubCell: 3
-		Facing: 92
+		Facing: 368
 	Actor838: c3
 		Owner: Neutral
 		Location: 60,103
 		SubCell: 1
-		Facing: 92
+		Facing: 368
 	Actor840: c4
 		Owner: Neutral
 		Location: 2,123
 		SubCell: 3
-		Facing: 92
+		Facing: 368
 	Actor841: c9
 		Owner: Neutral
 		Location: 5,126
 		SubCell: 1
-		Facing: 92
+		Facing: 368
 	Actor842: c9
 		Owner: Neutral
 		Location: 22,98
 		SubCell: 3
-		Facing: 92
+		Facing: 368
 	Actor843: c1
 		Owner: Neutral
 		Location: 119,86
 		SubCell: 3
-		Facing: 92
+		Facing: 368
 	Actor844: c2
 		Owner: Neutral
 		Location: 17,81
 		SubCell: 3
-		Facing: 92
+		Facing: 368
 	Actor845: c3
 		Owner: Neutral
 		Location: 11,45
 		SubCell: 3
-		Facing: 92
+		Facing: 368
 	Actor846: c6
 		Owner: Neutral
 		Location: 114,47
 		SubCell: 1
-		Facing: 92
+		Facing: 368
 	Actor847: c5
 		Owner: Neutral
 		Location: 45,44
 		SubCell: 3
-		Facing: 92
+		Facing: 368
 	Actor848: c5
 		Owner: Neutral
 		Location: 69,26
 		SubCell: 3
-		Facing: 92
+		Facing: 368
 	Actor849: c4
 		Owner: Neutral
 		Location: 68,124
 		SubCell: 3
-		Facing: 92
+		Facing: 368
 	Actor850: c7
 		Owner: Neutral
 		Location: 60,5
 		SubCell: 3
-		Facing: 92
+		Facing: 368
 	Actor851: railmine
 		Owner: Neutral
 		Location: 101,52
@@ -2559,7 +2559,7 @@ Actors:
 		Owner: Neutral
 		Location: 12,126
 		SubCell: 3
-		Facing: 92
+		Facing: 368
 	Actor839: tc03
 		Owner: Neutral
 		Location: 48,61

@@ -31,14 +31,18 @@ namespace OpenRA.Mods.Common.Effects
 		// Facing is last on these overloads partially for backwards compatibility with previous main ctor revision
 		// and partially because most effects don't need it. The latter is also the reason for placement of 'delay'.
 		public SpriteEffect(WPos pos, World world, string image, string sequence, string palette,
-			bool visibleThroughFog = false, int facing = 0, int delay = 0)
-			: this(() => pos, () => facing, world, image, sequence, palette, visibleThroughFog, delay) { }
+			bool visibleThroughFog = false, int delay = 0)
+			: this(() => pos, () => WAngle.Zero, world, image, sequence, palette, visibleThroughFog, delay) { }
 
 		public SpriteEffect(Actor actor, World world, string image, string sequence, string palette,
-			bool visibleThroughFog = false, int facing = 0, int delay = 0)
-			: this(() => actor.CenterPosition, () => facing, world, image, sequence, palette, visibleThroughFog, delay) { }
+			bool visibleThroughFog = false, int delay = 0)
+			: this(() => actor.CenterPosition, () => WAngle.Zero, world, image, sequence, palette, visibleThroughFog, delay) { }
 
-		public SpriteEffect(Func<WPos> posFunc, Func<int> facingFunc, World world, string image, string sequence, string palette,
+		public SpriteEffect(WPos pos, WAngle facing, World world, string image, string sequence, string palette,
+			bool visibleThroughFog = false, int delay = 0)
+			: this(() => pos, () => facing, world, image, sequence, palette, visibleThroughFog, delay) { }
+
+		public SpriteEffect(Func<WPos> posFunc, Func<WAngle> facingFunc, World world, string image, string sequence, string palette,
 			bool visibleThroughFog = false, int delay = 0)
 		{
 			this.world = world;

@@ -568,82 +568,82 @@ Actors:
 	Truck4: truk
 		Location: 67,59
 		Owner: USSR
-		Facing: 223
+		Facing: 892
 	Truck2: truk
 		Location: 65,58
 		Owner: USSR
-		Facing: 31
+		Facing: 124
 	IntroTruck1: truk
 		Location: 33,57
 		Owner: USSR
-		Facing: 63
+		Facing: 252
 	Truck1: truk
 		Location: 62,59
 		Owner: USSR
-		Facing: 31
+		Facing: 124
 	IntroTruck2: truk
 		Location: 33,59
 		Owner: USSR
-		Facing: 63
+		Facing: 252
 	Truck3: truk
 		Location: 62,83
 		Owner: USSR
-		Facing: 223
+		Facing: 892
 	Actor171: v2rl
 		Location: 55,61
 		Owner: USSR
-		Facing: 63
+		Facing: 252
 	Actor172: v2rl
 		Location: 70,68
 		Owner: USSR
-		Facing: 159
+		Facing: 636
 	Actor173: 3tnk
 		Location: 58,54
 		Owner: USSR
-		Facing: 159
+		Facing: 636
 	Actor174: 3tnk
 		Location: 60,47
 		Owner: USSR
-		Facing: 31
+		Facing: 124
 	Actor175: 3tnk
 		Location: 63,68
 		Owner: USSR
-		Facing: 127
+		Facing: 508
 	Actor176: 3tnk
 		Location: 52,53
 		Owner: USSR
-		Facing: 63
+		Facing: 252
 	Actor177: 3tnk
 		Location: 45,70
 		Owner: USSR
-		Facing: 95
+		Facing: 380
 	Actor178: 3tnk
 		Location: 59,69
 		Owner: USSR
-		Facing: 127
+		Facing: 508
 	Actor179: v2rl
 		Location: 48,59
 		Owner: BadGuy
-		Facing: 63
+		Facing: 252
 	Actor180: v2rl
 		Location: 55,81
 		Owner: USSR
-		Facing: 31
+		Facing: 124
 	PatrolMammoth: 4tnk
 		Location: 20,86
 		Owner: BadGuy
 	Actor182: ttnk
 		Location: 64,55
 		Owner: USSR
-		Facing: 95
+		Facing: 380
 	Actor183: 3tnk
 		Location: 75,43
 		Owner: USSR
-		Facing: 31
+		Facing: 124
 	StartTank: 3tnk
 		Location: 31,58
 		Owner: BadGuy
-		Facing: 63
+		Facing: 252
 	StartRifle1: e1
 		Location: 33,58
 		Owner: BadGuy
@@ -663,7 +663,7 @@ Actors:
 	StartRifle5: e1
 		Location: 23,44
 		Owner: USSR
-		Facing: 159
+		Facing: 636
 		SubCell: 4
 	StartRifle6: e1
 		Location: 24,73
@@ -676,7 +676,7 @@ Actors:
 	Truck5: truk
 		Location: 59,83
 		Owner: USSR
-		Facing: 31
+		Facing: 124
 	Actor186: e1
 		Location: 57,60
 		Owner: USSR
@@ -732,7 +732,7 @@ Actors:
 	Actor199: e2
 		Location: 63,82
 		Owner: BadGuy
-		Facing: 159
+		Facing: 636
 		SubCell: 1
 	Actor200: e4
 		Location: 58,78
@@ -741,12 +741,12 @@ Actors:
 	Actor201: e1
 		Location: 56,77
 		Owner: BadGuy
-		Facing: 95
+		Facing: 380
 		SubCell: 0
 	Actor202: e1
 		Location: 57,76
 		Owner: BadGuy
-		Facing: 191
+		Facing: 764
 		SubCell: 2
 	Actor203: e2
 		Location: 60,77
@@ -759,12 +759,12 @@ Actors:
 	Actor207: e2
 		Location: 45,60
 		Owner: BadGuy
-		Facing: 95
+		Facing: 380
 		SubCell: 2
 	Actor208: e2
 		Location: 46,57
 		Owner: BadGuy
-		Facing: 63
+		Facing: 252
 		SubCell: 3
 	Actor209: e1
 		Location: 52,60
@@ -773,12 +773,12 @@ Actors:
 	Actor210: e1
 		Location: 44,82
 		Owner: USSR
-		Facing: 159
+		Facing: 636
 		SubCell: 0
 	Actor211: e1
 		Location: 46,83
 		Owner: USSR
-		Facing: 63
+		Facing: 252
 		SubCell: 2
 	Actor212: c1
 		Location: 43,41
@@ -823,79 +823,79 @@ Actors:
 	Actor224: dog
 		Location: 49,55
 		Owner: USSR
-		Facing: 95
+		Facing: 380
 		SubCell: 3
 	Actor225: e2
 		Location: 48,57
 		Owner: USSR
-		Facing: 31
+		Facing: 124
 		SubCell: 2
 	Actor226: e2
 		Location: 50,58
 		Owner: USSR
-		Facing: 159
+		Facing: 636
 		SubCell: 2
 	Actor227: e2
 		Location: 50,55
 		Owner: USSR
-		Facing: 95
+		Facing: 380
 		SubCell: 1
 	Actor231: e1
 		Location: 72,36
 		Owner: USSR
-		Facing: 63
+		Facing: 252
 		SubCell: 3
 	Actor232: e1
 		Location: 72,37
 		Owner: USSR
-		Facing: 95
+		Facing: 380
 		SubCell: 3
 	Actor233: dog
 		Location: 73,38
 		Owner: USSR
-		Facing: 95
+		Facing: 380
 		SubCell: 1
 	Actor234: dog
 		Location: 75,41
 		Owner: USSR
-		Facing: 95
+		Facing: 380
 		SubCell: 3
 	Actor235: ss
 		Location: 72,56
 		Owner: Turkey
-		Facing: 191
+		Facing: 764
 	Actor236: ss
 		Location: 74,52
 		Owner: Turkey
-		Facing: 159
+		Facing: 636
 	Actor237: ss
 		Location: 74,89
 		Owner: Turkey
-		Facing: 63
+		Facing: 252
 	Actor238: ss
 		Location: 70,93
 		Owner: Turkey
-		Facing: 31
+		Facing: 124
 	Actor239: ss
 		Location: 47,92
 		Owner: Turkey
-		Facing: 191
+		Facing: 764
 	Actor240: ss
 		Location: 70,81
 		Owner: Turkey
-		Facing: 159
+		Facing: 636
 	Actor241: ss
 		Location: 55,94
 		Owner: Turkey
-		Facing: 159
+		Facing: 636
 	Actor242: ss
 		Location: 78,48
 		Owner: Turkey
-		Facing: 95
+		Facing: 380
 	Actor243: ss
 		Location: 75,60
 		Owner: Turkey
-		Facing: 159
+		Facing: 636
 	Actor320: apwr
 		Owner: Turkey
 		Location: 86,41
@@ -903,27 +903,27 @@ Actors:
 		Owner: Greece
 		Location: 16,57
 		SubCell: 3
-		Facing: 191
+		Facing: 764
 	GreeceRifle2: e1
 		Owner: Greece
 		Location: 16,57
 		SubCell: 1
-		Facing: 191
+		Facing: 764
 	GreeceRifle3: e1
 		Owner: Greece
 		Location: 16,57
 		SubCell: 2
-		Facing: 191
+		Facing: 764
 	GreeceRifle4: e1
 		Owner: Greece
 		Location: 16,57
 		SubCell: 4
-		Facing: 191
+		Facing: 764
 	GreeceRifle5: e1
 		Owner: Greece
 		Location: 16,57
 		SubCell: 5
-		Facing: 191
+		Facing: 764
 	AttackSouth1: waypoint
 		Location: 61,75
 		Owner: Neutral

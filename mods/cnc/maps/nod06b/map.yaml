@@ -383,19 +383,19 @@ Actors:
 	Actor115: mtnk
 		Location: 36,37
 		Owner: GDI
-		Facing: 160
+		Facing: 640
 	Actor116: jeep
 		Location: 29,24
 		Owner: GDI
-		Facing: 96
+		Facing: 384
 	Actor117: mtnk
 		Location: 24,48
 		Owner: GDI
-		Facing: 192
+		Facing: 768
 	Actor118: mtnk
 		Location: 28,42
 		Owner: GDI
-		Facing: 160
+		Facing: 640
 	Actor128: e2
 		Location: 18,41
 		Owner: GDI
@@ -435,12 +435,12 @@ Actors:
 	Actor137: e3
 		Location: 27,45
 		Owner: GDI
-		Facing: 160
+		Facing: 640
 		SubCell: 4
 	Actor138: e1
 		Location: 25,58
 		Owner: GDI
-		Facing: 160
+		Facing: 640
 		SubCell: 3
 	Actor139: c3
 		Location: 36,58
@@ -453,7 +453,7 @@ Actors:
 	Actor141: e1
 		Location: 31,59
 		Owner: GDI
-		Facing: 192
+		Facing: 768
 		SubCell: 4
 	Actor142: e2
 		Location: 31,57
@@ -466,7 +466,7 @@ Actors:
 	Actor144: e2
 		Location: 34,60
 		Owner: GDI
-		Facing: 192
+		Facing: 768
 		SubCell: 3
 	Actor157: e1
 		Location: 22,60
@@ -479,17 +479,17 @@ Actors:
 	Actor160: e3
 		Location: 27,46
 		Owner: GDI
-		Facing: 32
+		Facing: 128
 		SubCell: 1
 	Actor161: e3
 		Location: 33,45
 		Owner: GDI
-		Facing: 192
+		Facing: 768
 		SubCell: 4
 	Actor162: e2
 		Location: 34,45
 		Owner: GDI
-		Facing: 224
+		Facing: 896
 		SubCell: 0
 	waypoint27: waypoint
 		Location: 60,18
@@ -595,7 +595,6 @@ Actors:
 	Actor169: mtnk
 		Owner: GDI
 		Location: 33,54
-		Facing: 92
-		TurretFacing: 92
+		Facing: 368
 
 Rules: cnc|rules/campaign-maprules.yaml, cnc|rules/campaign-tooltips.yaml, cnc|rules/campaign-palettes.yaml, rules.yaml

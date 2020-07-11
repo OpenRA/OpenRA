@@ -20,7 +20,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Provides access to the attack-move command, which will make the actor automatically engage viable targets while moving to the destination.")]
-	class AttackMoveInfo : ITraitInfo, Requires<IMoveInfo>
+	class AttackMoveInfo : TraitInfo, Requires<IMoveInfo>
 	{
 		[VoiceReference]
 		public readonly string Voice = "Action";
@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Can the actor be ordered to move in to shroud?")]
 		public readonly bool MoveIntoShroud = true;
 
-		public object Create(ActorInitializer init) { return new AttackMove(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new AttackMove(init.Self, this); }
 	}
 
 	class AttackMove : IResolveOrder, IOrderVoice
@@ -117,8 +117,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				// Cells outside the playable area should be clamped to the edge for consistency with move orders
 				cell = world.Map.Clamp(cell);
-				foreach (var s in subjects)
-					yield return new Order(orderName, s.Actor, Target.FromCell(world, cell), queued);
+				yield return new Order(orderName, null, Target.FromCell(world, cell), queued, null, subjects.Select(s => s.Actor).ToArray());
 			}
 		}
 

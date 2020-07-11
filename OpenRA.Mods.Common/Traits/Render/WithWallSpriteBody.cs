@@ -37,15 +37,13 @@ namespace OpenRA.Mods.Common.Traits.Render
 				yield break;
 
 			var adjacent = 0;
+			var locationInit = init.GetOrDefault<LocationInit>();
+			var neighbourInit = init.GetOrDefault<RuntimeNeighbourInit>();
 
-			if (init.Contains<RuntimeNeighbourInit>())
+			if (locationInit != null && neighbourInit != null)
 			{
-				var location = CPos.Zero;
-				if (init.Contains<LocationInit>())
-					location = init.Get<LocationInit, CPos>();
-
-				var neighbours = init.Get<RuntimeNeighbourInit, Dictionary<CPos, string[]>>();
-				foreach (var kv in neighbours)
+				var location = locationInit.Value;
+				foreach (var kv in neighbourInit.Value)
 				{
 					var haveNeighbour = false;
 					foreach (var n in kv.Value)
@@ -72,7 +70,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				}
 			}
 
-			var anim = new Animation(init.World, image, () => 0);
+			var anim = new Animation(init.World, image);
 			anim.PlayFetchIndex(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), Sequence), () => adjacent);
 
 			yield return new SpriteActorPreview(anim, () => WVec.Zero, () => 0, p, rs.Scale);
@@ -99,13 +97,16 @@ namespace OpenRA.Mods.Common.Traits.Render
 		void IWallConnector.SetDirty() { dirty = true; }
 
 		public WithWallSpriteBody(ActorInitializer init, WithWallSpriteBodyInfo info)
-			: base(init, info, () => 0)
+			: base(init, info)
 		{
 			wallInfo = info;
 		}
 
 		protected override void DamageStateChanged(Actor self)
 		{
+			if (IsTraitDisabled)
+				return;
+
 			DefaultAnimation.PlayFetchIndex(NormalizeSequence(self, Info.Sequence), () => adjacent);
 		}
 
@@ -167,13 +168,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 	}
 
-	public class RuntimeNeighbourInit : IActorInit<Dictionary<CPos, string[]>>, ISuppressInitExport
+	public class RuntimeNeighbourInit : ValueActorInit<Dictionary<CPos, string[]>>, ISuppressInitExport, ISingleInstanceInit
 	{
-		[FieldFromYamlKey]
-		readonly Dictionary<CPos, string[]> value = null;
-
-		public RuntimeNeighbourInit() { }
-		public RuntimeNeighbourInit(Dictionary<CPos, string[]> init) { value = init; }
-		public Dictionary<CPos, string[]> Value(World world) { return value; }
+		public RuntimeNeighbourInit(Dictionary<CPos, string[]> value)
+			: base(value) { }
 	}
 }

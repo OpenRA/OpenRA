@@ -129,7 +129,7 @@ end
 
 SendSovietParadrops = function(table)
 	local paraproxy = Actor.Create(table.type, false, { Owner = soviets })
-	local aircraft = paraproxy.ActivateParatroopers(table.target.CenterPosition)
+	local aircraft = paraproxy.TargetParatroopers(table.target.CenterPosition)
 	Utils.Do(aircraft, function(a)
 		Trigger.OnPassengerExited(a, function(t, p)
 			IdleHunt(p)
@@ -185,9 +185,9 @@ FrenchReinforcements = function()
 	end
 
 	powerproxy = Actor.Create("powerproxy.parabombs", false, { Owner = allies })
-	powerproxy.SendAirstrike(drum1.CenterPosition, false, Facing.NorthEast + 4)
-	powerproxy.SendAirstrike(drum2.CenterPosition, false, Facing.NorthEast)
-	powerproxy.SendAirstrike(drum3.CenterPosition, false, Facing.NorthEast - 4)
+	powerproxy.TargetAirstrike(drum1.CenterPosition, Angle.NorthEast + Angle.New(16))
+	powerproxy.TargetAirstrike(drum2.CenterPosition, Angle.NorthEast)
+	powerproxy.TargetAirstrike(drum3.CenterPosition, Angle.NorthEast - Angle.New(16))
 	powerproxy.Destroy()
 
 	Trigger.AfterDelay(DateTime.Seconds(3), function()

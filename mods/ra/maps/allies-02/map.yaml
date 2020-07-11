@@ -307,122 +307,122 @@ Actors:
 	Actor97: dog
 		Location: 65,68
 		Owner: USSR
-		Facing: 64
+		Facing: 256
 		SubCell: 3
 	Actor98: dog
 		Location: 65,66
 		Owner: USSR
-		Facing: 32
+		Facing: 128
 		SubCell: 2
 	Actor99: dog
 		Location: 59,70
 		Owner: USSR
-		Facing: 160
+		Facing: 640
 		SubCell: 2
 	Actor100: e2
 		Location: 61,56
 		Owner: USSR
-		Facing: 32
+		Facing: 128
 		SubCell: 3
 	Actor101: e2
 		Location: 59,57
 		Owner: USSR
-		Facing: 224
+		Facing: 896
 		SubCell: 4
 	Actor102: e2
 		Location: 64,67
 		Owner: USSR
-		Facing: 96
+		Facing: 384
 		SubCell: 0
 	Actor103: e1
 		Location: 78,74
 		Owner: USSR
-		Facing: 128
+		Facing: 512
 		SubCell: 2
 	Actor104: e1
 		Location: 80,74
 		Owner: USSR
-		Facing: 160
+		Facing: 640
 		SubCell: 0
 	Actor105: e1
 		Location: 56,68
 		Owner: USSR
-		Facing: 160
+		Facing: 640
 		SubCell: 3
 	Actor107: e1
 		Location: 73,60
 		Owner: USSR
-		Facing: 32
+		Facing: 128
 		SubCell: 2
 	Actor108: e1
 		Location: 74,61
 		Owner: USSR
-		Facing: 224
+		Facing: 896
 		SubCell: 1
 	Actor109: e1
 		Location: 72,60
 		Owner: USSR
-		Facing: 64
+		Facing: 256
 		SubCell: 0
 	Actor115: e1
 		Location: 60,64
 		Owner: USSR
-		Facing: 224
+		Facing: 896
 		SubCell: 3
 	Actor116: e2
 		Location: 68,45
 		Owner: USSR
-		Facing: 96
+		Facing: 384
 		SubCell: 0
 	Actor118: e1
 		Location: 57,69
 		Owner: USSR
-		Facing: 96
+		Facing: 384
 		SubCell: 1
 	Actor119: e2
 		Location: 60,70
 		Owner: USSR
-		Facing: 32
+		Facing: 128
 		SubCell: 0
 	Actor120: e1
 		Location: 89,48
 		Owner: Greece
-		Facing: 160
+		Facing: 640
 		SubCell: 1
 	Actor121: e1
 		Location: 87,48
 		Owner: Greece
-		Facing: 192
+		Facing: 768
 		SubCell: 4
 	Actor122: e1
 		Location: 87,48
 		Owner: Greece
-		Facing: 192
+		Facing: 768
 		SubCell: 1
 	Actor123: e1
 		Location: 88,48
 		Owner: Greece
-		Facing: 128
+		Facing: 512
 		SubCell: 4
 	Actor124: e1
 		Location: 88,49
 		Owner: Greece
-		Facing: 128
+		Facing: 512
 		SubCell: 1
 	Actor125: dog
 		Location: 78,75
 		Owner: USSR
-		Facing: 160
+		Facing: 640
 		SubCell: 1
 	Actor126: e1
 		Location: 71,61
 		Owner: USSR
-		Facing: 160
+		Facing: 640
 		SubCell: 0
 	Actor127: dog
 		Location: 70,61
 		Owner: USSR
-		Facing: 96
+		Facing: 384
 		SubCell: 4
 	Actor136: e2
 		Location: 69,66
@@ -431,12 +431,12 @@ Actors:
 	Actor137: e2
 		Location: 73,51
 		Owner: USSR
-		Facing: 224
+		Facing: 896
 		SubCell: 4
 	Actor138: medi
 		Location: 88,48
 		Owner: Greece
-		Facing: 160
+		Facing: 640
 		SubCell: 1
 	Actor139: fenc
 		Location: 57,75
@@ -562,56 +562,56 @@ Actors:
 	Harvester: harv
 		Location: 55,65
 		Owner: USSR
-		Facing: 160
+		Facing: 640
 	PathGuard1: e1
 		Location: 50,72
 		Owner: USSR
-		Facing: 160
+		Facing: 640
 		SubCell: 4
 	PathGuard2: e1
 		Location: 49,58
 		Owner: USSR
-		Facing: 192
+		Facing: 768
 		SubCell: 0
 	PathGuard3: e1
 		Location: 51,58
 		Owner: USSR
-		Facing: 32
+		Facing: 128
 		SubCell: 1
 	PathGuard4: e1
 		Location: 60,78
 		Owner: USSR
-		Facing: 192
+		Facing: 768
 		SubCell: 4
 	PathGuard5: e2
 		Location: 62,79
 		Owner: USSR
-		Facing: 160
+		Facing: 640
 		SubCell: 4
 	PathGuard6: e1
 		Location: 48,72
 		Owner: USSR
-		Facing: 96
+		Facing: 384
 		SubCell: 0
 	PathGuard7: e1
 		Location: 50,46
 		Owner: USSR
-		Facing: 32
+		Facing: 128
 		SubCell: 1
 	PathGuard8: e1
 		Location: 49,47
 		Owner: USSR
-		Facing: 64
+		Facing: 256
 		SubCell: 0
 	PathGuard9: e2
 		Location: 49,49
 		Owner: USSR
-		Facing: 160
+		Facing: 640
 		SubCell: 1
 	PathGuard10: e2
 		Location: 47,46
 		Owner: USSR
-		Facing: 96
+		Facing: 384
 		SubCell: 3
 	PathGuard11: e2
 		Location: 48,63
@@ -620,22 +620,22 @@ Actors:
 	PathGuard12: e1
 		Location: 49,63
 		Owner: USSR
-		Facing: 96
+		Facing: 384
 		SubCell: 2
 	PathGuard13: e1
 		Location: 74,81
 		Owner: USSR
-		Facing: 64
+		Facing: 256
 		SubCell: 3
 	PathGuard14: e2
 		Location: 75,83
 		Owner: USSR
-		Facing: 96
+		Facing: 384
 		SubCell: 0
 	PathGuard15: e1
 		Location: 57,82
 		Owner: USSR
-		Facing: 160
+		Facing: 640
 		SubCell: 1
 	TruckEntryPoint: waypoint
 		Location: 49,44

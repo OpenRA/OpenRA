@@ -9,12 +9,14 @@
  */
 #endregion
 
+using System;
 using OpenRA.Mods.Common.Effects;
+using OpenRA.Mods.Common.Traits.Render;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	class SmokeTrailWhenDamagedInfo : ITraitInfo, Requires<BodyOrientationInfo>
+	class SmokeTrailWhenDamagedInfo : TraitInfo, Requires<BodyOrientationInfo>
 	{
 		[Desc("Position relative to body")]
 		public readonly WVec Offset = WVec.Zero;
@@ -30,26 +32,21 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly DamageState MinDamage = DamageState.Heavy;
 
-		public object Create(ActorInitializer init) { return new SmokeTrailWhenDamaged(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new SmokeTrailWhenDamaged(init.Self, this); }
 	}
 
 	class SmokeTrailWhenDamaged : ITick
 	{
 		readonly SmokeTrailWhenDamagedInfo info;
 		readonly BodyOrientation body;
-		readonly int getFacing;
+		readonly Func<WAngle> getFacing;
 		int ticks;
 
 		public SmokeTrailWhenDamaged(Actor self, SmokeTrailWhenDamagedInfo info)
 		{
 			this.info = info;
 			body = self.Trait<BodyOrientation>();
-			var facing = self.TraitOrDefault<IFacing>();
-
-			if (facing != null)
-				getFacing = facing.Facing;
-			else
-				getFacing = 0;
+			getFacing = RenderSprites.MakeFacingFunc(self);
 		}
 
 		void ITick.Tick(Actor self)
@@ -61,7 +58,7 @@ namespace OpenRA.Mods.Common.Traits
 				{
 					var offset = info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation));
 					var pos = position + body.LocalToWorld(offset);
-					self.World.AddFrameEndTask(w => w.Add(new SpriteEffect(pos, w, info.Sprite, info.Sequence, info.Palette, facing: getFacing)));
+					self.World.AddFrameEndTask(w => w.Add(new SpriteEffect(pos, getFacing(), w, info.Sprite, info.Sequence, info.Palette)));
 				}
 
 				ticks = info.Interval;

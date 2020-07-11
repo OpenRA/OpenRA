@@ -559,39 +559,39 @@ Actors:
 	Actor173: jeep
 		Location: 17,31
 		Owner: GDI
-		Facing: 224
+		Facing: 896
 	Actor174: mtnk
 		Location: 21,36
 		Owner: GDI
-		Facing: 224
+		Facing: 896
 	Actor175: mtnk
 		Location: 42,52
 		Owner: GDI
-		Facing: 160
+		Facing: 640
 	Actor176: jeep
 		Location: 14,26
 		Owner: GDI
-		Facing: 32
+		Facing: 128
 	Actor177: mtnk
 		Location: 50,47
 		Owner: GDI
-		Facing: 96
+		Facing: 384
 	Actor188: mtnk
 		Location: 51,53
 		Owner: GDI
-		Facing: 160
+		Facing: 640
 	Actor189: mtnk
 		Location: 24,26
 		Owner: GDI
-		Facing: 224
+		Facing: 896
 	Actor190: mtnk
 		Location: 29,36
 		Owner: GDI
-		Facing: 128
+		Facing: 512
 	Actor191: mtnk
 		Location: 27,36
 		Owner: GDI
-		Facing: 128
+		Facing: 512
 	Actor192: jeep
 		Location: 8,38
 		Owner: GDI
@@ -667,12 +667,12 @@ Actors:
 		Location: 13,40
 		Owner: GDI
 		Health: 83
-		Facing: 224
+		Facing: 896
 		SubCell: 4
 	Actor212: e3
 		Location: 13,42
 		Owner: GDI
-		Facing: 192
+		Facing: 768
 		SubCell: 4
 	Actor213: e2
 		Location: 11,37
@@ -690,17 +690,17 @@ Actors:
 	Actor222: c2
 		Location: 40,24
 		Owner: Civilians
-		Facing: 160
+		Facing: 640
 		SubCell: 2
 	Actor223: c3
 		Location: 36,25
 		Owner: Civilians
-		Facing: 224
+		Facing: 896
 		SubCell: 2
 	Actor224: c4
 		Location: 41,26
 		Owner: Civilians
-		Facing: 64
+		Facing: 256
 		SubCell: 3
 	Actor225: c5
 		Location: 44,25
@@ -709,65 +709,65 @@ Actors:
 	Actor226: c6
 		Location: 42,28
 		Owner: Civilians
-		Facing: 64
+		Facing: 256
 		SubCell: 2
 	Actor227: c7
 		Location: 38,26
 		Owner: Civilians
 		Health: 19
-		Facing: 224
+		Facing: 896
 		SubCell: 0
 	Actor228: c8
 		Location: 40,26
 		Owner: Civilians
-		Facing: 32
+		Facing: 128
 		SubCell: 3
 	Actor229: c9
 		Location: 36,22
 		Owner: Civilians
-		Facing: 64
+		Facing: 256
 		SubCell: 2
 	Actor230: c1
 		Location: 44,24
 		Owner: Civilians
 		Health: 19
-		Facing: 64
+		Facing: 256
 		SubCell: 2
 	Actor231: c2
 		Location: 36,26
 		Owner: Civilians
-		Facing: 64
+		Facing: 256
 		SubCell: 1
 	Actor232: c3
 		Location: 51,26
 		Owner: Civilians
-		Facing: 128
+		Facing: 512
 		SubCell: 2
 	Actor233: c4
 		Location: 55,23
 		Owner: Civilians
-		Facing: 32
+		Facing: 128
 		SubCell: 3
 	Actor234: c5
 		Location: 57,26
 		Owner: Civilians
-		Facing: 160
+		Facing: 640
 		SubCell: 1
 	Actor235: c6
 		Location: 48,26
 		Owner: Civilians
-		Facing: 64
+		Facing: 256
 		SubCell: 3
 	Actor236: c7
 		Location: 42,22
 		Owner: Civilians
-		Facing: 160
+		Facing: 640
 		SubCell: 2
 	Actor237: c8
 		Location: 46,30
 		Owner: Civilians
 		Health: 19
-		Facing: 128
+		Facing: 512
 		SubCell: 1
 	Actor238: c9
 		Location: 39,29

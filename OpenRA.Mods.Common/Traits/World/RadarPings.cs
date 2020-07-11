@@ -16,14 +16,14 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class RadarPingsInfo : ITraitInfo
+	public class RadarPingsInfo : TraitInfo
 	{
 		public readonly int FromRadius = 200;
 		public readonly int ToRadius = 15;
 		public readonly int ShrinkSpeed = 4;
 		public readonly float RotationSpeed = 0.12f;
 
-		public object Create(ActorInitializer init) { return new RadarPings(this); }
+		public override object Create(ActorInitializer init) { return new RadarPings(this); }
 	}
 
 	public class RadarPings : ITick

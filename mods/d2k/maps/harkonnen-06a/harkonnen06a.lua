@@ -78,7 +78,7 @@ OrdosAttackWaves =
 }
 
 InitialOrdosReinforcements =
-{ 
+{
 	{ "trooper", "trooper", "trooper", "trooper", "light_inf", "light_inf", "light_inf", "light_inf", "light_inf", "light_inf" },
 	{ "combat_tank_o", "combat_tank_o", "quad", "quad", "raider", "raider" }
 }
@@ -101,13 +101,13 @@ InitialOrdosPaths =
 	{ OrdosEntry10.Location, OrdosRally10.Location }
 }
 
-HarkonnenReinforcements = 
+HarkonnenReinforcements =
 {
 	{ "combat_tank_h", "combat_tank_h" },
 	{ "missile_tank", "missile_tank" }
 }
 
-HarkonnenPaths = 
+HarkonnenPaths =
 {
 	{ HarkonnenEntry1.Location, HarkonnenRally1.Location },
 	{ HarkonnenEntry2.Location, HarkonnenRally2.Location }

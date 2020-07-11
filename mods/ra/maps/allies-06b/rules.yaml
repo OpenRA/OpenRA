@@ -4,7 +4,7 @@ Player:
 
 World:
 	LuaScript:
-		Scripts: allies06b.lua, allies06b-AI.lua
+		Scripts: campaign-global.lua, allies06b.lua, allies06b-AI.lua
 	MissionData:
 		BriefingVideo: ally6.vqa
 		WinVideo: allymorf.vqa
@@ -50,7 +50,7 @@ TECH.CAM:
 
 STEK:
 	Targetable:
-		TargetTypes: Ground, Structure, C4, DetonateAttack, SpyInfiltrate
+		TargetTypes: GroundActor, Structure, C4, DetonateAttack, SpyInfiltrate
 
 APWR:
 	Buildable:
@@ -87,7 +87,3 @@ CA:
 MSUB:
 	Buildable:
 		Prerequisites: ~disabled
-
-SS:
-	AutoTarget:
-		InitialStanceAI: AttackAnything

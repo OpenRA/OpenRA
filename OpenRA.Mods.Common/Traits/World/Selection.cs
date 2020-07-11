@@ -17,9 +17,9 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class SelectionInfo : ITraitInfo
+	public class SelectionInfo : TraitInfo
 	{
-		public object Create(ActorInitializer init) { return new Selection(this); }
+		public override object Create(ActorInitializer init) { return new Selection(this); }
 	}
 
 	public class Selection : ISelection, INotifyCreated, INotifyOwnerChanged, ITick, IGameSaveTraitData
@@ -28,6 +28,8 @@ namespace OpenRA.Mods.Common.Traits
 		public IEnumerable<Actor> Actors { get { return actors; } }
 
 		readonly HashSet<Actor> actors = new HashSet<Actor>();
+		IEnumerable<Actor> rolloverActors;
+
 		INotifySelection[] worldNotifySelection;
 
 		public Selection(SelectionInfo info) { }
@@ -123,13 +125,12 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Play the selection voice from one of the selected actors
 			// TODO: This probably should only be considering the newly selected actors
-			// TODO: Ship this into an INotifySelection trait to remove the engine dependency on Selectable
 			foreach (var actor in actors)
 			{
 				if (actor.Owner != world.LocalPlayer || !actor.IsInWorld)
 					continue;
 
-				var selectable = actor.Info.TraitInfoOrDefault<SelectableInfo>();
+				var selectable = actor.Info.TraitInfoOrDefault<ISelectableInfo>();
 				if (selectable == null || !actor.HasVoice(selectable.Voice))
 					continue;
 
@@ -142,6 +143,16 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			actors.Clear();
 			UpdateHash();
+		}
+
+		public void SetRollover(IEnumerable<Actor> rollover)
+		{
+			rolloverActors = rollover;
+		}
+
+		public bool RolloverContains(Actor a)
+		{
+			return rolloverActors != null && rolloverActors.Contains(a);
 		}
 
 		void ITick.Tick(Actor self)
@@ -177,7 +188,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 			}
 
-			var groupActors = controlGroups[group].Where(a => !a.IsDead);
+			var groupActors = controlGroups[group].Where(a => a.IsInWorld);
 
 			if (mods.HasModifier(Modifiers.Alt) || multiTapCount >= 2)
 			{

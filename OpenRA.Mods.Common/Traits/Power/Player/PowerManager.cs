@@ -16,14 +16,14 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Attach this to the player actor.")]
-	public class PowerManagerInfo : ITraitInfo, Requires<DeveloperModeInfo>
+	public class PowerManagerInfo : TraitInfo, Requires<DeveloperModeInfo>
 	{
 		public readonly int AdviceInterval = 250;
 
 		[NotificationReference("Speech")]
 		public readonly string SpeechNotification = null;
 
-		public object Create(ActorInitializer init) { return new PowerManager(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new PowerManager(init.Self, this); }
 	}
 
 	public class PowerManager : INotifyCreated, ITick, ISync, IResolveOrder
@@ -73,20 +73,27 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void UpdateActor(Actor a)
 		{
+			// old is 0 if a is not in powerDrain
 			int old;
-			powerDrain.TryGetValue(a, out old); // old is 0 if a is not in powerDrain
+			powerDrain.TryGetValue(a, out old);
+
 			var amount = a.TraitsImplementing<Power>().Where(t => !t.IsTraitDisabled).Sum(p => p.GetEnabledPower());
 			powerDrain[a] = amount;
+
 			if (amount == old || devMode.UnlimitedPower)
 				return;
+
 			if (old > 0)
 				totalProvided -= old;
 			else if (old < 0)
 				totalDrained += old;
+
 			if (amount > 0)
 				totalProvided += amount;
 			else if (amount < 0)
 				totalDrained -= amount;
+
+			UpdatePowerState();
 		}
 
 		public void RemoveActor(Actor a)
@@ -103,6 +110,21 @@ namespace OpenRA.Mods.Common.Traits
 				totalProvided -= amount;
 			else if (amount < 0)
 				totalDrained += amount;
+
+			UpdatePowerState();
+		}
+
+		void UpdatePowerState()
+		{
+			isLowPower = ExcessPower < 0;
+
+			if (isLowPower != wasLowPower)
+				UpdatePowerRequiringActors();
+
+			if (isLowPower && !wasLowPower)
+				nextPowerAdviceTime = 0;
+
+			wasLowPower = isLowPower;
 		}
 
 		void ITick.Tick(Actor self)
@@ -113,30 +135,23 @@ namespace OpenRA.Mods.Common.Traits
 				totalDrained = 0;
 
 				if (!devMode.UnlimitedPower)
+				{
 					foreach (var kv in powerDrain)
+					{
 						if (kv.Value > 0)
 							totalProvided += kv.Value;
 						else if (kv.Value < 0)
 							totalDrained -= kv.Value;
+					}
+				}
 
 				wasHackEnabled = devMode.UnlimitedPower;
+				UpdatePowerState();
 			}
 
-			isLowPower = ExcessPower < 0;
-
-			if (isLowPower != wasLowPower)
-				UpdatePowerRequiringActors();
-
-			if (isLowPower && !wasLowPower)
-				nextPowerAdviceTime = 0;
-
-			wasLowPower = isLowPower;
-
-			if (--nextPowerAdviceTime <= 0)
+			if (isLowPower && --nextPowerAdviceTime <= 0)
 			{
-				if (isLowPower)
-					Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", info.SpeechNotification, self.Owner.Faction.InternalName);
-
+				Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", info.SpeechNotification, self.Owner.Faction.InternalName);
 				nextPowerAdviceTime = info.AdviceInterval;
 			}
 
@@ -148,8 +163,12 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			get
 			{
-				if (PowerProvided >= PowerDrained) return PowerState.Normal;
-				if (PowerProvided > PowerDrained / 2) return PowerState.Low;
+				if (PowerProvided >= PowerDrained)
+					return PowerState.Normal;
+
+				if (PowerProvided > PowerDrained / 2)
+					return PowerState.Low;
+
 				return PowerState.Critical;
 			}
 		}

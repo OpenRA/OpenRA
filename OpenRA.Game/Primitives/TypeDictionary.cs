@@ -41,6 +41,11 @@ namespace OpenRA.Primitives
 			return data.ContainsKey(typeof(T));
 		}
 
+		public bool Contains(Type t)
+		{
+			return data.ContainsKey(t);
+		}
+
 		public T Get<T>()
 		{
 			return (T)Get(typeof(T), true);

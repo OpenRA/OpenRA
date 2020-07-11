@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
@@ -32,18 +33,34 @@ namespace OpenRA.Mods.Common.Graphics
 		public readonly WorldRenderer WorldRenderer;
 		public World World { get { return WorldRenderer.World; } }
 
-		readonly TypeDictionary dict;
+		readonly ActorReference reference;
 
 		public ActorPreviewInitializer(ActorInfo actor, WorldRenderer worldRenderer, TypeDictionary dict)
 		{
 			Actor = actor;
 			WorldRenderer = worldRenderer;
-			this.dict = dict;
+			reference = new ActorReference(actor.Name, dict);
 		}
 
-		public T Get<T>() where T : IActorInit { return dict.Get<T>(); }
-		public U Get<T, U>() where T : IActorInit<U> { return dict.Get<T>().Value(World); }
-		public bool Contains<T>() where T : IActorInit { return dict.Contains<T>(); }
+		public ActorPreviewInitializer(ActorReference actor, WorldRenderer worldRenderer)
+		{
+			Actor = worldRenderer.World.Map.Rules.Actors[actor.Type];
+			reference = actor;
+			WorldRenderer = worldRenderer;
+		}
+
+		// Forward IActorInitializer queries to the actor reference
+		// ActorReference can't reference a World instance, which prevents it from implementing this directly.
+		public T GetOrDefault<T>(TraitInfo info) where T : ActorInit { return reference.GetOrDefault<T>(info); }
+		public T Get<T>(TraitInfo info) where T : ActorInit { return reference.Get<T>(info); }
+		public U GetValue<T, U>(TraitInfo info) where T : ValueActorInit<U> { return reference.GetValue<T, U>(info); }
+		public U GetValue<T, U>(TraitInfo info, U fallback) where T : ValueActorInit<U> { return reference.GetValue<T, U>(info, fallback); }
+		public bool Contains<T>(TraitInfo info) where T : ActorInit { return reference.Contains<T>(info); }
+		public T GetOrDefault<T>() where T : ActorInit, ISingleInstanceInit { return reference.GetOrDefault<T>(); }
+		public T Get<T>() where T : ActorInit, ISingleInstanceInit { return reference.Get<T>(); }
+		public U GetValue<T, U>() where T : ValueActorInit<U>, ISingleInstanceInit { return reference.GetValue<T, U>(); }
+		public U GetValue<T, U>(U fallback) where T : ValueActorInit<U>, ISingleInstanceInit { return reference.GetValue<T, U>(fallback); }
+		public bool Contains<T>() where T : ActorInit, ISingleInstanceInit { return reference.Contains<T>(); }
 
 		public Func<WRot> GetOrientation()
 		{
@@ -52,46 +69,46 @@ namespace OpenRA.Mods.Common.Graphics
 				return () => WRot.Zero;
 
 			// Dynamic facing takes priority
-			var dynamicInit = dict.GetOrDefault<DynamicFacingInit>();
+			var dynamicInit = reference.GetOrDefault<DynamicFacingInit>();
 			if (dynamicInit != null)
 			{
 				// TODO: Account for terrain slope
-				var getFacing = dynamicInit.Value(null);
-				return () => WRot.FromFacing(getFacing());
+				var getFacing = dynamicInit.Value;
+				return () => WRot.FromYaw(getFacing());
 			}
 
 			// Fall back to initial actor facing if an Init isn't available
-			var facingInit = dict.GetOrDefault<FacingInit>();
-			var facing = facingInit != null ? facingInit.Value(null) : facingInfo.GetInitialFacing();
-			var orientation = WRot.FromFacing(facing);
+			var facingInit = reference.GetOrDefault<FacingInit>();
+			var facing = facingInit != null ? facingInit.Value : facingInfo.GetInitialFacing();
+			var orientation = WRot.FromYaw(facing);
 			return () => orientation;
 		}
 
-		public Func<int> GetFacing()
+		public Func<WAngle> GetFacing()
 		{
 			var facingInfo = Actor.TraitInfoOrDefault<IFacingInfo>();
 			if (facingInfo == null)
-				return () => 0;
+				return () => WAngle.Zero;
 
 			// Dynamic facing takes priority
-			var dynamicInit = dict.GetOrDefault<DynamicFacingInit>();
+			var dynamicInit = reference.GetOrDefault<DynamicFacingInit>();
 			if (dynamicInit != null)
-				return dynamicInit.Value(null);
+				return dynamicInit.Value;
 
 			// Fall back to initial actor facing if an Init isn't available
-			var facingInit = dict.GetOrDefault<FacingInit>();
-			var facing = facingInit != null ? facingInit.Value(null) : facingInfo.GetInitialFacing();
+			var facingInit = reference.GetOrDefault<FacingInit>();
+			var facing = facingInit != null ? facingInit.Value : facingInfo.GetInitialFacing();
 			return () => facing;
 		}
 
 		public DamageState GetDamageState()
 		{
-			var health = dict.GetOrDefault<HealthInit>();
+			var health = reference.GetOrDefault<HealthInit>();
 
 			if (health == null)
 				return DamageState.Undamaged;
 
-			var hf = health.Value(null);
+			var hf = health.Value;
 
 			if (hf <= 0)
 				return DamageState.Dead;

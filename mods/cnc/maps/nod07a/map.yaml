@@ -340,11 +340,11 @@ Actors:
 	Actor115: mtnk
 		Location: 18,28
 		Owner: GDI
-		Facing: 32
+		Facing: 128
 	Actor116: mtnk
 		Location: 17,21
 		Owner: GDI
-		Facing: 96
+		Facing: 384
 	Actor117: e2
 		Location: 20,52
 		Owner: GDI
@@ -384,22 +384,22 @@ Actors:
 	Actor126: c6
 		Location: 18,51
 		Owner: Civilians
-		Facing: 32
+		Facing: 128
 		SubCell: 4
 	Actor127: c5
 		Location: 10,48
 		Owner: Civilians
-		Facing: 224
+		Facing: 896
 		SubCell: 0
 	Actor142: c8
 		Location: 48,52
 		Owner: Civilians
-		Facing: 224
+		Facing: 896
 		SubCell: 4
 	Actor143: c4
 		Location: 52,57
 		Owner: Civilians
-		Facing: 32
+		Facing: 128
 		SubCell: 1
 	Actor144: c3
 		Location: 11,46
@@ -408,7 +408,7 @@ Actors:
 	Actor145: c9
 		Location: 15,44
 		Owner: Civilians
-		Facing: 64
+		Facing: 256
 		SubCell: 0
 	Actor146: e2
 		Location: 12,57
@@ -519,7 +519,7 @@ Actors:
 	GDIHarvester: harv
 		Location: 13,55
 		Owner: GDI
-		Facing: 192
+		Facing: 768
 	GDIHQ: hq
 		Location: 20,57
 		Owner: GDI
@@ -564,7 +564,7 @@ Actors:
 	NodHarvester: harv
 		Owner: NodBase
 		Location: 46,31
-		Facing: 92
+		Facing: 368
 	ReinforcementsBottomSpawn: waypoint
 		Owner: Neutral
 		Location: 59,41

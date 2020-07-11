@@ -146,7 +146,8 @@ namespace OpenRA.Mods.Common.Widgets
 				var iconTopLeft = RenderOrigin + topLeftOffset;
 				var centerPosition = iconTopLeft + 0.5f * iconSize;
 
-				WidgetUtils.DrawSHPCentered(icon.Image, centerPosition, worldRenderer.Palette(bi.IconPalette), 0.5f);
+				var palette = bi.IconPaletteIsPlayerPalette ? bi.IconPalette + player.InternalName : bi.IconPalette;
+				WidgetUtils.DrawSHPCentered(icon.Image, centerPosition, worldRenderer.Palette(palette), 0.5f);
 
 				var rect = new Rectangle((int)iconTopLeft.X, (int)iconTopLeft.Y, (int)iconSize.X, (int)iconSize.Y);
 				productionIcons.Add(new ProductionIcon

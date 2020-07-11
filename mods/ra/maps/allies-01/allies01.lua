@@ -123,6 +123,12 @@ CiviliansKilled = function()
 	collateralDamage = true
 end
 
+LostMate = function()
+	if not Civilian2.IsDead then
+		Civilian2.Panic()
+	end
+end
+
 CreateEinstein = function()
 	player.MarkCompletedObjective(FindEinsteinObjective)
 	Media.PlaySpeechNotification(player, "ObjectiveMet")
@@ -205,6 +211,7 @@ WorldLoaded = function()
 	collateralDamage = false
 	civilianTeam = { Civilian1, Civilian2 }
 	Trigger.OnAnyKilled(civilianTeam, CiviliansKilled)
+	Trigger.OnKilled(Civilian1, LostMate)
 
 	SetUnitStances()
 

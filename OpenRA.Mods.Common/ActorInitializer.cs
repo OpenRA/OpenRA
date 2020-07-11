@@ -10,77 +10,128 @@
 #endregion
 
 using System;
+using System.ComponentModel;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common
 {
-	public class FacingInit : IActorInit<int>
+	public class FacingInit : ValueActorInit<WAngle>, ISingleInstanceInit
 	{
-		[FieldFromYamlKey]
-		readonly int value = 128;
-
-		public FacingInit() { }
-		public FacingInit(int init) { value = init; }
-		public int Value(World world) { return value; }
+		public FacingInit(WAngle value)
+			: base(value) { }
 	}
 
-	public class CreationActivityDelayInit : IActorInit<int>
+	public class CreationActivityDelayInit : ValueActorInit<int>, ISingleInstanceInit
 	{
-		[FieldFromYamlKey]
-		readonly int value = 0;
-
-		public CreationActivityDelayInit() { }
-		public CreationActivityDelayInit(int init) { value = init; }
-		public int Value(World world) { return value; }
+		public CreationActivityDelayInit(int value)
+			: base(value) { }
 	}
 
-	public class DynamicFacingInit : IActorInit<Func<int>>
+	public class DynamicFacingInit : ValueActorInit<Func<WAngle>>, ISingleInstanceInit
 	{
-		readonly Func<int> func;
-
-		public DynamicFacingInit(Func<int> func) { this.func = func; }
-		public Func<int> Value(World world) { return func; }
+		public DynamicFacingInit(Func<WAngle> value)
+			: base(value) { }
 	}
 
-	public class SubCellInit : IActorInit<SubCell>
+	public class SubCellInit : ValueActorInit<SubCell>, ISingleInstanceInit
 	{
-		[FieldFromYamlKey]
-		readonly byte value = (byte)SubCell.FullCell;
-
-		public SubCellInit() { }
-		public SubCellInit(byte init) { value = init; }
-		public SubCellInit(SubCell init) { value = (byte)init; }
-		public SubCell Value(World world) { return (SubCell)value; }
+		public SubCellInit(SubCell value)
+			: base(value) { }
 	}
 
-	public class CenterPositionInit : IActorInit<WPos>
+	public class CenterPositionInit : ValueActorInit<WPos>, ISingleInstanceInit
 	{
-		[FieldFromYamlKey]
-		readonly WPos value = WPos.Zero;
-
-		public CenterPositionInit() { }
-		public CenterPositionInit(WPos init) { value = init; }
-		public WPos Value(World world) { return value; }
+		public CenterPositionInit(WPos value)
+			: base(value) { }
 	}
 
 	// Allows maps / transformations to specify the faction variant of an actor.
-	public class FactionInit : IActorInit<string>
+	public class FactionInit : ValueActorInit<string>, ISingleInstanceInit
 	{
-		[FieldFromYamlKey]
-		public readonly string Faction;
-
-		public FactionInit() { }
-		public FactionInit(string faction) { Faction = faction; }
-		public string Value(World world) { return Faction; }
+		public FactionInit(string value)
+			: base(value) { }
 	}
 
-	public class EffectiveOwnerInit : IActorInit<Player>
+	public class EffectiveOwnerInit : ValueActorInit<Player>
 	{
-		[FieldFromYamlKey]
-		readonly Player value = null;
+		public EffectiveOwnerInit(Player value)
+			: base(value) { }
+	}
 
-		public EffectiveOwnerInit() { }
-		public EffectiveOwnerInit(Player owner) { value = owner; }
-		Player IActorInit<Player>.Value(World world) { return value; }
+	internal class ActorInitLoader : TypeConverter
+	{
+		public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
+		{
+			return sourceType == typeof(string) || base.CanConvertFrom(context, sourceType);
+		}
+
+		public override object ConvertFrom(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value)
+		{
+			return new ActorInitActorReference(value as string);
+		}
+
+		public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
+		{
+			return destinationType == typeof(string) || base.CanConvertTo(context, destinationType);
+		}
+
+		public override object ConvertTo(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value, Type destinationType)
+		{
+			if (destinationType == typeof(string))
+			{
+				var reference = value as ActorInitActorReference;
+				if (reference != null)
+					return reference.InternalName;
+			}
+
+			return base.ConvertTo(context, culture, value, destinationType);
+		}
+	}
+
+	[TypeConverter(typeof(ActorInitLoader))]
+	public class ActorInitActorReference
+	{
+		public readonly string InternalName;
+		readonly Actor actor;
+
+		public ActorInitActorReference(Actor actor)
+		{
+			this.actor = actor;
+		}
+
+		public ActorInitActorReference(string internalName)
+		{
+			InternalName = internalName;
+		}
+
+		Actor InnerValue(World world)
+		{
+			if (actor != null)
+				return actor;
+
+			var sma = world.WorldActor.Trait<SpawnMapActors>();
+			return sma.Actors[InternalName];
+		}
+
+		/// <summary>
+		/// The lazy value may reference other actors that have not been created
+		/// yet, so must not be resolved from the actor constructor or Created method.
+		/// Use a FrameEndTask or wait until it is actually needed.
+		/// </summary>
+		public Lazy<Actor> Actor(World world)
+		{
+			return new Lazy<Actor>(() => InnerValue(world));
+		}
+
+		public static implicit operator ActorInitActorReference(Actor a)
+		{
+			return new ActorInitActorReference(a);
+		}
+
+		public static implicit operator ActorInitActorReference(string mapName)
+		{
+			return new ActorInitActorReference(mapName);
+		}
 	}
 }

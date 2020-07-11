@@ -16,7 +16,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Plays an audio notification and shows a radar ping when a building is attacked.",
 		"Attach this to the player actor.")]
-	public class BaseAttackNotifierInfo : ITraitInfo
+	public class BaseAttackNotifierInfo : TraitInfo
 	{
 		[Desc("Minimum duration (in seconds) between notification events.")]
 		public readonly int NotifyInterval = 30;
@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Traits
 			"Won't play a notification to allies if this is null.")]
 		public string AllyNotification = null;
 
-		public object Create(ActorInitializer init) { return new BaseAttackNotifier(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new BaseAttackNotifier(init.Self, this); }
 	}
 
 	public class BaseAttackNotifier : INotifyDamage

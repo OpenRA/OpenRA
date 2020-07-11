@@ -27,7 +27,7 @@ SS:
 	RevealsShroud@GAPGEN:
 		Range: 5c0
 	Targetable:
-		TargetTypes: Ground, Water, Ship, Submarine, Repair
+		TargetTypes: WaterActor, Ship, Submarine, Repair
 		RequiresCondition: !underwater
 	Targetable@UNDERWATER:
 		TargetTypes: Underwater, Submarine
@@ -49,14 +49,10 @@ SS:
 		LocalOffset: 0,-171,0, 0,171,0
 		FireDelay: 2
 	AttackFrontal:
-	SelectionDecorations:
-	AutoTarget:
-		InitialStance: HoldFire
-		InitialStanceAI: ReturnFire
 	AutoTargetPriority@DEFAULT:
-		ValidTargets: Water, Underwater
+		ValidTargets: WaterActor, Underwater
 	AutoTargetPriority@ATTACKANYTHING:
-		ValidTargets: Water, Underwater
+		ValidTargets: WaterActor, Underwater
 	DetectCloaked:
 		CloakTypes: Underwater
 		Range: 4c0
@@ -97,7 +93,7 @@ MSUB:
 	RevealsShroud@GAPGEN:
 		Range: 5c0
 	Targetable:
-		TargetTypes: Ground, Water, Ship, Submarine, Repair
+		TargetTypes: WaterActor, Ship, Submarine, Repair
 		RequiresCondition: !underwater
 	Targetable@UNDERWATER:
 		TargetTypes: Underwater, Submarine
@@ -125,7 +121,6 @@ MSUB:
 	AttackFrontal:
 		TargetFrozenActors: True
 		ForceFireIgnoresActors: True
-	SelectionDecorations:
 	AutoTarget:
 		InitialStance: HoldFire
 		InitialStanceAI: ReturnFire
@@ -184,7 +179,6 @@ DD:
 		LocalOffset: 0,-100,0, 0,100,0
 		LocalYaw: 64, -64
 	AttackTurreted:
-	SelectionDecorations:
 	WithSpriteTurret:
 	DetectCloaked:
 		CloakTypes: Underwater
@@ -249,7 +243,6 @@ CA:
 		TargetFrozenActors: True
 		ForceFireIgnoresActors: True
 	WithMuzzleOverlay:
-	SelectionDecorations:
 	WithSpriteTurret@PRIMARY:
 		Turret: primary
 	WithSpriteTurret@SECONDARY:
@@ -259,6 +252,7 @@ CA:
 
 LST:
 	Inherits: ^Ship
+	Inherits@CARGOPIPS: ^CargoPips
 	Buildable:
 		Queue: Ship
 		BuildPaletteOrder: 10
@@ -284,13 +278,11 @@ LST:
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 5c0
-	SelectionDecorations:
 	WithLandingCraftAnimation:
 		OpenTerrainTypes: Clear, Rough, Road, Ore, Gems, Beach
 	Cargo:
 		Types: Infantry, Vehicle
 		MaxWeight: 5
-		PipCount: 5
 		PassengerFacing: 0
 		LoadingCondition: notmobile
 	-Chronoshiftable:
@@ -338,7 +330,6 @@ PT:
 		MuzzleSequence: muzzle
 	AttackTurreted:
 	WithMuzzleOverlay:
-	SelectionDecorations:
 	WithSpriteTurret:
 	DetectCloaked:
 		CloakTypes: Underwater

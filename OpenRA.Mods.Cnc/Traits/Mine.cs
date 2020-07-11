@@ -15,14 +15,14 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
 {
-	class MineInfo : ITraitInfo
+	class MineInfo : TraitInfo
 	{
 		public readonly BitSet<CrushClass> CrushClasses = default(BitSet<CrushClass>);
 		public readonly bool AvoidFriendly = true;
 		public readonly bool BlockFriendly = true;
 		public readonly BitSet<CrushClass> DetonateClasses = default(BitSet<CrushClass>);
 
-		public object Create(ActorInitializer init) { return new Mine(this); }
+		public override object Create(ActorInitializer init) { return new Mine(this); }
 	}
 
 	class Mine : ICrushable, INotifyCrushed

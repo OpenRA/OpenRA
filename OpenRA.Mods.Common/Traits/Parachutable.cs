@@ -18,7 +18,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Can be paradropped by a ParaDrop actor.")]
-	public class ParachutableInfo : ITraitInfo, Requires<IPositionableInfo>
+	public class ParachutableInfo : TraitInfo, Requires<IPositionableInfo>
 	{
 		[Desc("If we land on invalid terrain for my actor type should we be killed?")]
 		public readonly bool KilledOnImpassableTerrain = true;
@@ -54,18 +54,17 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("The condition to grant to self while parachuting.")]
 		public readonly string ParachutingCondition = null;
 
-		public object Create(ActorInitializer init) { return new Parachutable(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new Parachutable(init.Self, this); }
 	}
 
-	public class Parachutable : INotifyCreated, INotifyParachute
+	public class Parachutable : INotifyParachute
 	{
 		readonly ParachutableInfo info;
 		readonly IPositionable positionable;
 
 		public Actor IgnoreActor;
 
-		ConditionManager conditionManager;
-		int parachutingToken = ConditionManager.InvalidConditionToken;
+		int parachutingToken = Actor.InvalidConditionToken;
 
 		public Parachutable(Actor self, ParachutableInfo info)
 		{
@@ -75,17 +74,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool IsInAir { get; private set; }
 
-		void INotifyCreated.Created(Actor self)
-		{
-			conditionManager = self.TraitOrDefault<ConditionManager>();
-		}
-
 		void INotifyParachute.OnParachute(Actor self)
 		{
 			IsInAir = true;
 
-			if (conditionManager != null && parachutingToken == ConditionManager.InvalidConditionToken && !string.IsNullOrEmpty(info.ParachutingCondition))
-				parachutingToken = conditionManager.GrantCondition(self, info.ParachutingCondition);
+			if (parachutingToken == Actor.InvalidConditionToken)
+				parachutingToken = self.GrantCondition(info.ParachutingCondition);
 
 			self.NotifyBlocker(self.Location);
 		}
@@ -94,8 +88,8 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			IsInAir = false;
 
-			if (parachutingToken != ConditionManager.InvalidConditionToken)
-				parachutingToken = conditionManager.RevokeCondition(self, parachutingToken);
+			if (parachutingToken != Actor.InvalidConditionToken)
+				parachutingToken = self.RevokeCondition(parachutingToken);
 
 			if (!info.KilledOnImpassableTerrain)
 				return;

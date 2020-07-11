@@ -16,9 +16,9 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("This trait can be used to track player experience based on units killed with the `GivesExperience` trait.",
 		"It can also be used as a point score system in scripted maps, for example.",
 		"Attach this to the player actor.")]
-	public class PlayerExperienceInfo : ITraitInfo
+	public class PlayerExperienceInfo : TraitInfo
 	{
-		public object Create(ActorInitializer init) { return new PlayerExperience(); }
+		public override object Create(ActorInitializer init) { return new PlayerExperience(); }
 	}
 
 	public class PlayerExperience : ISync

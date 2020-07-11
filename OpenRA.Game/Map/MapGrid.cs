@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -19,6 +18,85 @@ using OpenRA.Traits;
 namespace OpenRA
 {
 	public enum MapGridType { Rectangular, RectangularIsometric }
+
+	public enum RampSplit { Flat, X, Y }
+	public enum RampCornerHeight { Low = 0, Half = 1, Full = 2 }
+
+	public struct CellRamp
+	{
+		public readonly int CenterHeightOffset;
+		public readonly WVec[] Corners;
+		public readonly WVec[][] Polygons;
+
+		public CellRamp(MapGridType type, RampCornerHeight tl = RampCornerHeight.Low, RampCornerHeight tr = RampCornerHeight.Low, RampCornerHeight br = RampCornerHeight.Low,  RampCornerHeight bl = RampCornerHeight.Low, RampSplit split = RampSplit.Flat)
+		{
+			if (type == MapGridType.RectangularIsometric)
+			{
+				Corners = new[]
+				{
+					new WVec(0, -724, 724 * (int)tl),
+					new WVec(724, 0, 724 * (int)tr),
+					new WVec(0, 724, 724 * (int)br),
+					new WVec(-724, 0, 724 * (int)bl),
+				};
+			}
+			else
+			{
+				Corners = new[]
+				{
+					new WVec(-512, -512, 512 * (int)tl),
+					new WVec(512, -512, 512 * (int)tr),
+					new WVec(512, 512, 512 * (int)br),
+					new WVec(-512, 512, 512 * (int)bl)
+				};
+			}
+
+			if (split == RampSplit.X)
+			{
+				Polygons = new[]
+				{
+					new[] { Corners[0], Corners[1], Corners[3] },
+					new[] { Corners[1], Corners[2], Corners[3] }
+				};
+			}
+			else if (split == RampSplit.Y)
+			{
+				Polygons = new[]
+				{
+					new[] { Corners[0], Corners[1], Corners[2] },
+					new[] { Corners[0], Corners[2], Corners[3] }
+				};
+			}
+			else
+				Polygons = new[] { Corners };
+
+			// Initial value must be asigned before HeightOffset can be called
+			CenterHeightOffset = 0;
+			CenterHeightOffset = HeightOffset(0, 0);
+		}
+
+		public int HeightOffset(int dX, int dY)
+		{
+			// Enumerate over the polygons, assuming that they are triangles
+			// If the ramp is not split we will take the first three vertices of the corners as a valid triangle
+			WVec[] p = null;
+			var u = 0;
+			var v = 0;
+			for (var i = 0; i < Polygons.Length; i++)
+			{
+				p = Polygons[i];
+				u = ((p[1].Y - p[2].Y) * (dX - p[2].X) - (p[1].X - p[2].X) * (dY - p[2].Y)) / 1024;
+				v = ((p[0].X - p[2].X) * (dY - p[2].Y) - (p[0].Y - p[2].Y) * (dX - p[2].X)) / 1024;
+
+				// Point is within the triangle if 0 <= u,v <= 1024
+				if (u >= 0 && u <= 1024 && v >= 0 && v <= 1024)
+					break;
+			}
+
+			// Calculate w from u,v and interpolate height
+			return (u * p[0].Z + v * p[1].Z + (1024 - u - v) * p[2].Z) / 1024;
+		}
+	}
 
 	public class MapGrid : IGlobalModData
 	{
@@ -41,43 +119,7 @@ namespace OpenRA
 			new WVec(256, 256, 0),   // bottom right - index 5
 		};
 
-		public WVec[][] CellCorners { get; private set; }
-
-		readonly int[][] cellCornerHalfHeights = new int[][]
-		{
-			// Flat
-			new[] { 0, 0, 0, 0 },
-
-			// Slopes (two corners high)
-			new[] { 0, 0, 1, 1 },
-			new[] { 1, 0, 0, 1 },
-			new[] { 1, 1, 0, 0 },
-			new[] { 0, 1, 1, 0 },
-
-			// Slopes (one corner high)
-			new[] { 0, 0, 0, 1 },
-			new[] { 1, 0, 0, 0 },
-			new[] { 0, 1, 0, 0 },
-			new[] { 0, 0, 1, 0 },
-
-			// Slopes (three corners high)
-			new[] { 1, 0, 1, 1 },
-			new[] { 1, 1, 0, 1 },
-			new[] { 1, 1, 1, 0 },
-			new[] { 0, 1, 1, 1 },
-
-			// Slopes (two corners high, one corner double high)
-			new[] { 1, 0, 1, 2 },
-			new[] { 2, 1, 0, 1 },
-			new[] { 1, 2, 1, 0 },
-			new[] { 0, 1, 2, 1 },
-
-			// Slopes (two corners high, alternating)
-			new[] { 1, 0, 1, 0 },
-			new[] { 0, 1, 0, 1 },
-			new[] { 1, 0, 1, 0 },
-			new[] { 0, 1, 0, 1 }
-		};
+		public CellRamp[] Ramps { get; private set; }
 
 		internal readonly CVec[][] TilesByDistance;
 
@@ -96,32 +138,44 @@ namespace OpenRA
 					throw new InvalidDataException("Subcell default index must be a valid index into the offset triples and must be greater than 0 for mods with subcells");
 			}
 
-			var makeCorners = Type == MapGridType.RectangularIsometric ?
-				(Func<int[], WVec[]>)IsometricCellCorners : RectangularCellCorners;
-			CellCorners = cellCornerHalfHeights.Select(makeCorners).ToArray();
+			// Slope types are hardcoded following the convention from the TS and RA2 map format
+			Ramps = new[]
+			{
+				// Flat
+				new CellRamp(Type),
+
+				// Two adjacent corners raised by half a cell
+				new CellRamp(Type, tr: RampCornerHeight.Half, br: RampCornerHeight.Half),
+				new CellRamp(Type, br: RampCornerHeight.Half, bl: RampCornerHeight.Half),
+				new CellRamp(Type, tl: RampCornerHeight.Half, bl: RampCornerHeight.Half),
+				new CellRamp(Type, tl: RampCornerHeight.Half, tr: RampCornerHeight.Half),
+
+				// One corner raised by half a cell
+				new CellRamp(Type, br: RampCornerHeight.Half, split: RampSplit.X),
+				new CellRamp(Type, bl: RampCornerHeight.Half, split: RampSplit.Y),
+				new CellRamp(Type, tl: RampCornerHeight.Half, split: RampSplit.X),
+				new CellRamp(Type, tr: RampCornerHeight.Half, split: RampSplit.Y),
+
+				// Three corners raised by half a cell
+				new CellRamp(Type, tr: RampCornerHeight.Half, br: RampCornerHeight.Half, bl: RampCornerHeight.Half, split: RampSplit.X),
+				new CellRamp(Type, tl: RampCornerHeight.Half, br: RampCornerHeight.Half, bl: RampCornerHeight.Half, split: RampSplit.Y),
+				new CellRamp(Type, tl: RampCornerHeight.Half, tr: RampCornerHeight.Half, bl: RampCornerHeight.Half, split: RampSplit.X),
+				new CellRamp(Type, tl: RampCornerHeight.Half, tr: RampCornerHeight.Half, br: RampCornerHeight.Half, split: RampSplit.Y),
+
+				// Full tile sloped (mid corners raised by half cell, far corner by full cell)
+				new CellRamp(Type, tr: RampCornerHeight.Half, br: RampCornerHeight.Full, bl: RampCornerHeight.Half),
+				new CellRamp(Type, tl: RampCornerHeight.Half, br: RampCornerHeight.Half, bl: RampCornerHeight.Full),
+				new CellRamp(Type, tl: RampCornerHeight.Full, tr: RampCornerHeight.Half, bl: RampCornerHeight.Half),
+				new CellRamp(Type, tl: RampCornerHeight.Half, tr: RampCornerHeight.Full, br: RampCornerHeight.Half),
+
+				// Two opposite corners raised by half a cell
+				new CellRamp(Type, tr: RampCornerHeight.Half, bl: RampCornerHeight.Half, split: RampSplit.Y),
+				new CellRamp(Type, tl: RampCornerHeight.Half, br: RampCornerHeight.Half, split: RampSplit.Y),
+				new CellRamp(Type, tr: RampCornerHeight.Half, bl: RampCornerHeight.Half, split: RampSplit.X),
+				new CellRamp(Type, tl: RampCornerHeight.Half, br: RampCornerHeight.Half, split: RampSplit.X),
+			};
+
 			TilesByDistance = CreateTilesByDistance();
-		}
-
-		static WVec[] IsometricCellCorners(int[] cornerHeight)
-		{
-			return new WVec[]
-			{
-				new WVec(-724, 0, 724 * cornerHeight[0]),
-				new WVec(0, -724, 724 * cornerHeight[1]),
-				new WVec(724, 0, 724 * cornerHeight[2]),
-				new WVec(0, 724, 724 * cornerHeight[3])
-			};
-		}
-
-		static WVec[] RectangularCellCorners(int[] cornerHeight)
-		{
-			return new WVec[]
-			{
-				new WVec(-512, -512, 512 * cornerHeight[0]),
-				new WVec(512, -512, 512 * cornerHeight[1]),
-				new WVec(512, 512, 512 * cornerHeight[2]),
-				new WVec(-512, 512, 512 * cornerHeight[3])
-			};
 		}
 
 		CVec[][] CreateTilesByDistance()

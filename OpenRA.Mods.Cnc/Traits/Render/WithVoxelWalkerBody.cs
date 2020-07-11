@@ -20,7 +20,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits.Render
 {
-	public class WithVoxelWalkerBodyInfo : ITraitInfo, IRenderActorPreviewVoxelsInfo,  Requires<RenderVoxelsInfo>, Requires<IMoveInfo>, Requires<IFacingInfo>
+	public class WithVoxelWalkerBodyInfo : TraitInfo, IRenderActorPreviewVoxelsInfo,  Requires<RenderVoxelsInfo>, Requires<IMoveInfo>, Requires<IFacingInfo>
 	{
 		public readonly string Sequence = "idle";
 
@@ -29,14 +29,14 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 
 		[Desc("Defines if the Voxel should have a shadow.")]
 		public readonly bool ShowShadow = true;
-		public object Create(ActorInitializer init) { return new WithVoxelWalkerBody(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new WithVoxelWalkerBody(init.Self, this); }
 
 		public IEnumerable<ModelAnimation> RenderPreviewVoxels(
 			ActorPreviewInitializer init, RenderVoxelsInfo rv, string image, Func<WRot> orientation, int facings, PaletteReference p)
 		{
 			var model = init.World.ModelCache.GetModelSequence(image, Sequence);
 			var body = init.Actor.TraitInfo<BodyOrientationInfo>();
-			var frame = init.Contains<BodyAnimationFrameInit>() ? init.Get<BodyAnimationFrameInit, uint>() : 0;
+			var frame = init.GetValue<BodyAnimationFrameInit, uint>(this, 0);
 
 			yield return new ModelAnimation(model, () => WVec.Zero,
 				() => new[] { body.QuantizeOrientation(orientation(), facings) },
@@ -95,13 +95,9 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 		}
 	}
 
-	public class BodyAnimationFrameInit : IActorInit<uint>
+	public class BodyAnimationFrameInit : ValueActorInit<uint>
 	{
-		[FieldFromYamlKey]
-		readonly uint value = 0;
-
-		public BodyAnimationFrameInit() { }
-		public BodyAnimationFrameInit(uint init) { value = init; }
-		public uint Value(World world) { return value; }
+		public BodyAnimationFrameInit(uint value)
+			: base(value) { }
 	}
 }

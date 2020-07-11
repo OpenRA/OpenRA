@@ -16,9 +16,9 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class GameSaveViewportManagerInfo : ITraitInfo
+	public class GameSaveViewportManagerInfo : TraitInfo
 	{
-		public object Create(ActorInitializer init) { return new GameSaveViewportManager(); }
+		public override object Create(ActorInitializer init) { return new GameSaveViewportManager(); }
 	}
 
 	public class GameSaveViewportManager : IWorldLoaded, IGameSaveTraitData

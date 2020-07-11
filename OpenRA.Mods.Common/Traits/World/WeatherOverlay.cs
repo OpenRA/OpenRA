@@ -18,7 +18,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Adds a particle-based overlay.")]
-	public class WeatherOverlayInfo : ITraitInfo, ILobbyCustomRulesIgnore
+	public class WeatherOverlayInfo : TraitInfo, ILobbyCustomRulesIgnore
 	{
 		[Desc("Average number of particles per 100x100 px square.")]
 		public readonly int ParticleDensityFactor = 8;
@@ -68,7 +68,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Works only with line enabled and can be used to fade out the tail of the line like a contrail.")]
 		public readonly byte LineTailAlphaValue = 200;
 
-		public object Create(ActorInitializer init) { return new WeatherOverlay(init.World, this); }
+		public override object Create(ActorInitializer init) { return new WeatherOverlay(init.World, this); }
 	}
 
 	public class WeatherOverlay : ITick, IRenderAboveWorld, INotifyViewportZoomExtentsChanged

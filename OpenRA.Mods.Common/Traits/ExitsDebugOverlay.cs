@@ -19,7 +19,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Displays `Exit` data for factories.")]
-	public class ExitsDebugOverlayInfo : ITraitInfo, Requires<ExitInfo>
+	public class ExitsDebugOverlayInfo : TraitInfo, Requires<ExitInfo>
 	{
 		[Desc("Should cell vectors be drawn for each perimeter cell?")]
 		public readonly bool DrawPerimiterCellVectors = true;
@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Should lines be drawn for each exit (from spawn offset to the center of the exit cell)?")]
 		public readonly bool DrawSpawnOffsetLines = true;
 
-		object ITraitInfo.Create(ActorInitializer init) { return new ExitsDebugOverlay(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new ExitsDebugOverlay(init.Self, this); }
 	}
 
 	public class ExitsDebugOverlay : IRenderAnnotationsWhenSelected

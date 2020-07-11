@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Traits
 			: base(info)
 		{
 			rp = Exts.Lazy(() => init.Self.IsDead ? null : init.Self.TraitOrDefault<RallyPoint>());
-			Faction = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : init.Self.Owner.Faction.InternalName;
+			Faction = init.GetValue<FactionInit, string>(init.Self.Owner.Faction.InternalName);
 		}
 
 		public virtual void DoProduction(Actor self, ActorInfo producee, ExitInfo exitinfo, string productionType, TypeDictionary inits)
@@ -56,17 +56,17 @@ namespace OpenRA.Mods.Common.Traits
 				var spawn = self.CenterPosition + exitinfo.SpawnOffset;
 				var to = self.World.Map.CenterOfCell(exit);
 
-				var initialFacing = exitinfo.Facing;
+				var initialFacing = WAngle.FromFacing(exitinfo.Facing);
 				if (exitinfo.Facing < 0)
 				{
 					var delta = to - spawn;
 					if (delta.HorizontalLengthSquared == 0)
 					{
 						var fi = producee.TraitInfoOrDefault<IFacingInfo>();
-						initialFacing = fi != null ? fi.GetInitialFacing() : 0;
+						initialFacing = fi != null ? fi.GetInitialFacing() : WAngle.Zero;
 					}
 					else
-						initialFacing = delta.Yaw.Facing;
+						initialFacing = delta.Yaw;
 				}
 
 				exitLocations = rp.Value != null && rp.Value.Path.Count > 0 ? rp.Value.Path : new List<CPos> { exit };

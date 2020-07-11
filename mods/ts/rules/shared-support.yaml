@@ -14,9 +14,6 @@ NAPULS:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
-	Selectable:
-		Bounds: 78, 54, 0, -12
-		DecorationBounds: 78, 54, 0, -12
 	Health:
 		HP: 50000
 	Armor:
@@ -37,7 +34,6 @@ NAPULS:
 		Sequence: turret
 	Power:
 		Amount: -150
-	SelectionDecorations:
 	RenderSprites:
 		Image: napuls.gdi
 		FactionImages:

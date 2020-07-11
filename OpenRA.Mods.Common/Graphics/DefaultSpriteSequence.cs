@@ -95,11 +95,11 @@ namespace OpenRA.Mods.Common.Graphics
 	{
 		static readonly WDist DefaultShadowSpriteZOffset = new WDist(-5);
 		protected Sprite[] sprites;
-		readonly bool reverseFacings, transpose, useClassicFacingFudge;
+		readonly bool reverseFacings, transpose;
+		readonly string sequence;
 
 		protected readonly ISpriteSequenceLoader Loader;
 
-		readonly string sequence;
 		public string Name { get; private set; }
 		public int Start { get; private set; }
 		public int Length { get; private set; }
@@ -156,7 +156,6 @@ namespace OpenRA.Mods.Common.Graphics
 				Tick = LoadField(d, "Tick", 40);
 				transpose = LoadField(d, "Transpose", false);
 				Frames = LoadField<int[]>(d, "Frames", null);
-				useClassicFacingFudge = LoadField(d, "UseClassicFacingFudge", false);
 
 				var flipX = LoadField(d, "FlipX", false);
 				var flipY = LoadField(d, "FlipY", false);
@@ -167,11 +166,6 @@ namespace OpenRA.Mods.Common.Graphics
 					reverseFacings = true;
 					Facings = -Facings;
 				}
-
-				if (useClassicFacingFudge && Facings != 32)
-					throw new InvalidOperationException(
-						"{0}: Sequence {1}.{2}: UseClassicFacingFudge is only valid for 32 facings"
-						.F(info.Nodes[0].Location, sequence, animation));
 
 				var offset = LoadField(d, "Offset", float3.Zero);
 				var blendMode = LoadField(d, "BlendMode", BlendMode.Alpha);
@@ -369,22 +363,22 @@ namespace OpenRA.Mods.Common.Graphics
 
 		public Sprite GetSprite(int frame)
 		{
-			return GetSprite(Start, frame, 0);
+			return GetSprite(Start, frame, WAngle.Zero);
 		}
 
-		public Sprite GetSprite(int frame, int facing)
+		public Sprite GetSprite(int frame, WAngle facing)
 		{
 			return GetSprite(Start, frame, facing);
 		}
 
-		public Sprite GetShadow(int frame, int facing)
+		public Sprite GetShadow(int frame, WAngle facing)
 		{
 			return ShadowStart >= 0 ? GetSprite(ShadowStart, frame, facing) : null;
 		}
 
-		protected virtual Sprite GetSprite(int start, int frame, int facing)
+		protected virtual Sprite GetSprite(int start, int frame, WAngle facing)
 		{
-			var f = Util.QuantizeFacing(facing, Facings, useClassicFacingFudge);
+			var f = GetFacingFrameOffset(facing);
 			if (reverseFacings)
 				f = (Facings - f) % Facings;
 
@@ -397,6 +391,11 @@ namespace OpenRA.Mods.Common.Graphics
 					" start={0} frame={1} facing={2}".F(start, frame, facing));
 
 			return sprites[j];
+		}
+
+		protected virtual int GetFacingFrameOffset(WAngle facing)
+		{
+			return Util.IndexFacing(facing, Facings);
 		}
 	}
 }

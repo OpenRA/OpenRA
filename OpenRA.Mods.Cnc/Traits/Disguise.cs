@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Cnc.Traits
 	}
 
 	[Desc("Provides access to the disguise command, which makes the actor appear to be another player's actor.")]
-	class DisguiseInfo : ITraitInfo
+	class DisguiseInfo : TraitInfo
 	{
 		[VoiceReference]
 		public readonly string Voice = "Action";
@@ -93,13 +93,16 @@ namespace OpenRA.Mods.Cnc.Traits
 			"A dictionary of [actor id]: [condition].")]
 		public readonly Dictionary<string, string> DisguisedAsConditions = new Dictionary<string, string>();
 
+		[Desc("Cursor to display when hovering over a valid actor to disguise as.")]
+		public readonly string Cursor = "ability";
+
 		[GrantedConditionReference]
 		public IEnumerable<string> LinterConditions { get { return DisguisedAsConditions.Values; } }
 
-		public object Create(ActorInitializer init) { return new Disguise(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new Disguise(init.Self, this); }
 	}
 
-	class Disguise : INotifyCreated, IEffectiveOwner, IIssueOrder, IResolveOrder, IOrderVoice, IRadarColorModifier, INotifyAttack,
+	class Disguise : IEffectiveOwner, IIssueOrder, IResolveOrder, IOrderVoice, IRadarColorModifier, INotifyAttack,
 		INotifyDamage, INotifyUnload, INotifyDemolition, INotifyInfiltration, ITick
 	{
 		public ActorInfo AsActor { get; private set; }
@@ -112,9 +115,8 @@ namespace OpenRA.Mods.Cnc.Traits
 		readonly Actor self;
 		readonly DisguiseInfo info;
 
-		ConditionManager conditionManager;
-		int disguisedToken = ConditionManager.InvalidConditionToken;
-		int disguisedAsToken = ConditionManager.InvalidConditionToken;
+		int disguisedToken = Actor.InvalidConditionToken;
+		int disguisedAsToken = Actor.InvalidConditionToken;
 		CPos? lastPos;
 
 		public Disguise(Actor self, DisguiseInfo info)
@@ -123,11 +125,6 @@ namespace OpenRA.Mods.Cnc.Traits
 			this.info = info;
 
 			AsActor = self.Info;
-		}
-
-		void INotifyCreated.Created(Actor self)
-		{
-			conditionManager = self.TraitOrDefault<ConditionManager>();
 		}
 
 		IEnumerable<IOrderTargeter> IIssueOrder.Orders
@@ -225,25 +222,22 @@ namespace OpenRA.Mods.Cnc.Traits
 			foreach (var t in self.TraitsImplementing<INotifyEffectiveOwnerChanged>())
 				t.OnEffectiveOwnerChanged(self, oldEffectiveOwner, AsPlayer);
 
-			if (conditionManager != null)
+			if (Disguised != oldDisguiseSetting)
 			{
-				if (Disguised != oldDisguiseSetting)
-				{
-					if (Disguised && disguisedToken == ConditionManager.InvalidConditionToken && !string.IsNullOrEmpty(info.DisguisedCondition))
-						disguisedToken = conditionManager.GrantCondition(self, info.DisguisedCondition);
-					else if (!Disguised && disguisedToken != ConditionManager.InvalidConditionToken)
-						disguisedToken = conditionManager.RevokeCondition(self, disguisedToken);
-				}
+				if (Disguised && disguisedToken == Actor.InvalidConditionToken)
+					disguisedToken = self.GrantCondition(info.DisguisedCondition);
+				else if (!Disguised && disguisedToken != Actor.InvalidConditionToken)
+					disguisedToken = self.RevokeCondition(disguisedToken);
+			}
 
-				if (AsActor != oldEffectiveActor)
-				{
-					if (disguisedAsToken != ConditionManager.InvalidConditionToken)
-						disguisedAsToken = conditionManager.RevokeCondition(self, disguisedAsToken);
+			if (AsActor != oldEffectiveActor)
+			{
+				if (disguisedAsToken != Actor.InvalidConditionToken)
+					disguisedAsToken = self.RevokeCondition(disguisedAsToken);
 
-					string disguisedAsCondition;
-					if (info.DisguisedAsConditions.TryGetValue(AsActor.Name, out disguisedAsCondition))
-						disguisedAsToken = conditionManager.GrantCondition(self, disguisedAsCondition);
-				}
+				string disguisedAsCondition;
+				if (info.DisguisedAsConditions.TryGetValue(AsActor.Name, out disguisedAsCondition))
+					disguisedAsToken = self.GrantCondition(disguisedAsCondition);
 			}
 		}
 
@@ -293,7 +287,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		readonly DisguiseInfo info;
 
 		public DisguiseOrderTargeter(DisguiseInfo info)
-			: base("Disguise", 7, "ability", true, true)
+			: base("Disguise", 7, info.Cursor, true, true)
 		{
 			this.info = info;
 			ForceAttack = false;

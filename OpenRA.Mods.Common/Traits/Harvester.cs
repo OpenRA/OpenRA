@@ -21,7 +21,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class HarvesterInfo : ITraitInfo, Requires<MobileInfo>
+	public class HarvesterInfo : TraitInfo, Requires<MobileInfo>
 	{
 		public readonly HashSet<string> DeliveryBuildings = new HashSet<string>();
 
@@ -41,9 +41,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("How many bales can it dump at once.")]
 		public readonly int BaleUnloadAmount = 1;
-
-		[Desc("How many squares to show the fill level.")]
-		public readonly int PipCount = 7;
 
 		public readonly int HarvestFacings = 0;
 
@@ -87,20 +84,26 @@ namespace OpenRA.Mods.Common.Traits
 		[VoiceReference]
 		public readonly string DeliverVoice = "Action";
 
-		public object Create(ActorInitializer init) { return new Harvester(init.Self, this); }
+		[Desc("Cursor to display when able to unload at target actor.")]
+		public readonly string EnterCursor = "enter";
+
+		[Desc("Cursor to display when unable to unload at target actor.")]
+		public readonly string EnterBlockedCursor = "enter-blocked";
+
+		public override object Create(ActorInitializer init) { return new Harvester(init.Self, this); }
 	}
 
-	public class Harvester : IIssueOrder, IResolveOrder, IPips, IOrderVoice,
+	public class Harvester : IIssueOrder, IResolveOrder, IOrderVoice,
 		ISpeedModifier, ISync, INotifyCreated
 	{
 		public readonly HarvesterInfo Info;
+		public readonly IReadOnlyDictionary<ResourceTypeInfo, int> Contents;
+
 		readonly Mobile mobile;
 		readonly ResourceLayer resLayer;
 		readonly ResourceClaimLayer claimLayer;
 		readonly Dictionary<ResourceTypeInfo, int> contents = new Dictionary<ResourceTypeInfo, int>();
-		INotifyHarvesterAction[] notifyHarvesterAction;
-		ConditionManager conditionManager;
-		int conditionToken = ConditionManager.InvalidConditionToken;
+		int conditionToken = Actor.InvalidConditionToken;
 		HarvesterResourceMultiplier[] resourceMultipliers;
 
 		[Sync]
@@ -127,6 +130,8 @@ namespace OpenRA.Mods.Common.Traits
 		public Harvester(Actor self, HarvesterInfo info)
 		{
 			Info = info;
+			Contents = new ReadOnlyDictionary<ResourceTypeInfo, int>(contents);
+
 			mobile = self.Trait<Mobile>();
 			resLayer = self.World.WorldActor.Trait<ResourceLayer>();
 			claimLayer = self.World.WorldActor.Trait<ResourceClaimLayer>();
@@ -134,9 +139,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyCreated.Created(Actor self)
 		{
-			notifyHarvesterAction = self.TraitsImplementing<INotifyHarvesterAction>().ToArray();
 			resourceMultipliers = self.TraitsImplementing<HarvesterResourceMultiplier>().ToArray();
-			conditionManager = self.TraitOrDefault<ConditionManager>();
 			UpdateCondition(self);
 
 			self.QueueActivity(new CallFunc(() => ChooseNewProc(self, null)));
@@ -213,15 +216,15 @@ namespace OpenRA.Mods.Common.Traits
 
 		void UpdateCondition(Actor self)
 		{
-			if (string.IsNullOrEmpty(Info.EmptyCondition) || conditionManager == null)
+			if (string.IsNullOrEmpty(Info.EmptyCondition))
 				return;
 
 			var enabled = IsEmpty;
 
-			if (enabled && conditionToken == ConditionManager.InvalidConditionToken)
-				conditionToken = conditionManager.GrantCondition(self, Info.EmptyCondition);
-			else if (!enabled && conditionToken != ConditionManager.InvalidConditionToken)
-				conditionToken = conditionManager.RevokeCondition(self, conditionToken);
+			if (enabled && conditionToken == Actor.InvalidConditionToken)
+				conditionToken = self.GrantCondition(Info.EmptyCondition);
+			else if (!enabled && conditionToken != Actor.InvalidConditionToken)
+				conditionToken = self.RevokeCondition(conditionToken);
 		}
 
 		public void AcceptResource(Actor self, ResourceType type)
@@ -281,7 +284,11 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			get
 			{
-				yield return new EnterAlliedActorTargeter<IAcceptResourcesInfo>("Deliver", 5,
+				yield return new EnterAlliedActorTargeter<IAcceptResourcesInfo>(
+					"Deliver",
+					5,
+					Info.EnterCursor,
+					Info.EnterBlockedCursor,
 					(proc, _) => IsAcceptableProcType(proc),
 					proc => proc.Trait<IAcceptResources>().AllowDocking);
 				yield return new HarvestOrderTargeter();
@@ -346,27 +353,6 @@ namespace OpenRA.Mods.Common.Traits
 				self.QueueActivity(order.Queued, new FindAndDeliverResources(self, targetActor));
 				self.ShowTargetLines();
 			}
-		}
-
-		PipType GetPipAt(int i)
-		{
-			var n = i * Info.Capacity / Info.PipCount;
-
-			foreach (var rt in contents)
-				if (n < rt.Value)
-					return rt.Key.PipColor;
-				else
-					n -= rt.Value;
-
-			return PipType.Transparent;
-		}
-
-		IEnumerable<PipType> IPips.GetPips(Actor self)
-		{
-			var numPips = Info.PipCount;
-
-			for (var i = 0; i < numPips; i++)
-				yield return GetPipAt(i);
 		}
 
 		int ISpeedModifier.GetSpeedModifier()

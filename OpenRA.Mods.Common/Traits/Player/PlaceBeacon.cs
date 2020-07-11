@@ -15,7 +15,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("A beacon that is constructed from a circle sprite that is animated once and a moving arrow sprite.")]
-	public class PlaceBeaconInfo : ITraitInfo
+	public class PlaceBeaconInfo : TraitInfo
 	{
 		public readonly int Duration = 30 * 25;
 
@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Traits
 		[SequenceReference("BeaconImage")]
 		public readonly string CircleSequence = "circles";
 
-		public object Create(ActorInitializer init) { return new PlaceBeacon(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new PlaceBeacon(init.Self, this); }
 	}
 
 	public class PlaceBeacon : IResolveOrder

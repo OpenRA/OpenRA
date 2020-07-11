@@ -17,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Replaces the sprite during construction/deploy/undeploy.")]
-	public class WithMakeAnimationInfo : ITraitInfo, Requires<WithSpriteBodyInfo>
+	public class WithMakeAnimationInfo : TraitInfo, Requires<WithSpriteBodyInfo>
 	{
 		[SequenceReference]
 		[Desc("Sequence name to use.")]
@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Apply to sprite bodies with these names.")]
 		public readonly string[] BodyNames = { "body" };
 
-		public object Create(ActorInitializer init) { return new WithMakeAnimation(init, this); }
+		public override object Create(ActorInitializer init) { return new WithMakeAnimation(init, this); }
 	}
 
 	public class WithMakeAnimation : INotifyCreated, INotifyDeployTriggered
@@ -39,28 +39,26 @@ namespace OpenRA.Mods.Common.Traits.Render
 		readonly WithSpriteBody[] wsbs;
 		readonly bool skipMakeAnimation;
 
-		ConditionManager conditionManager;
-		int token = ConditionManager.InvalidConditionToken;
+		int token = Actor.InvalidConditionToken;
 
 		public WithMakeAnimation(ActorInitializer init, WithMakeAnimationInfo info)
 		{
 			this.info = info;
 			var self = init.Self;
 			wsbs = self.TraitsImplementing<WithSpriteBody>().Where(w => info.BodyNames.Contains(w.Info.Name)).ToArray();
-			skipMakeAnimation = init.Contains<SkipMakeAnimsInit>();
+			skipMakeAnimation = init.Contains<SkipMakeAnimsInit>(info);
 		}
 
 		void INotifyCreated.Created(Actor self)
 		{
-			conditionManager = self.TraitOrDefault<ConditionManager>();
 			if (!skipMakeAnimation)
 				Forward(self, () => { });
 		}
 
 		public void Forward(Actor self, Action onComplete)
 		{
-			if (conditionManager != null && !string.IsNullOrEmpty(info.Condition) && token == ConditionManager.InvalidConditionToken)
-				token = conditionManager.GrantCondition(self, info.Condition);
+			if (token == Actor.InvalidConditionToken)
+				token = self.GrantCondition(info.Condition);
 
 			var wsb = wsbs.FirstEnabledTraitOrDefault();
 
@@ -71,8 +69,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 			{
 				self.World.AddFrameEndTask(w =>
 				{
-					if (token != ConditionManager.InvalidConditionToken)
-						token = conditionManager.RevokeCondition(self, token);
+					if (token != Actor.InvalidConditionToken)
+						token = self.RevokeCondition(token);
 
 					// TODO: Rewrite this to use a trait notification for save game support
 					onComplete();
@@ -82,8 +80,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		public void Reverse(Actor self, Action onComplete)
 		{
-			if (conditionManager != null && !string.IsNullOrEmpty(info.Condition) && token == ConditionManager.InvalidConditionToken)
-				token = conditionManager.GrantCondition(self, info.Condition);
+			if (token == Actor.InvalidConditionToken)
+				token = self.GrantCondition(info.Condition);
 
 			var wsb = wsbs.FirstEnabledTraitOrDefault();
 
@@ -94,8 +92,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 			{
 				self.World.AddFrameEndTask(w =>
 				{
-					if (token != ConditionManager.InvalidConditionToken)
-						token = conditionManager.RevokeCondition(self, token);
+					if (token != Actor.InvalidConditionToken)
+						token = self.RevokeCondition(token);
 
 					// TODO: Rewrite this to use a trait notification for save game support
 					onComplete();
@@ -116,8 +114,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				if (wsb != null)
 					wsb.DefaultAnimation.PlayFetchIndex(info.Sequence, () => 0);
 
-				if (conditionManager != null && !string.IsNullOrEmpty(info.Condition))
-					token = conditionManager.GrantCondition(self, info.Condition);
+				token = self.GrantCondition(info.Condition);
 
 				self.QueueActivity(queued, activity);
 			});

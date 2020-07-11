@@ -63,28 +63,27 @@ namespace OpenRA.Mods.Common.Traits
 					continue;
 
 				var height = (int)map.Height[uv];
-				var tile = map.Tiles[uv];
-				var ti = tileSet.GetTileInfo(tile);
-				var ramp = ti != null ? ti.RampType : 0;
-
-				var corners = map.Grid.CellCorners[ramp];
-				var pos = map.CenterOfCell(uv.ToCPos(map));
+				var r = map.Grid.Ramps[map.Ramp[uv]];
+				var pos = map.CenterOfCell(uv.ToCPos(map)) - new WVec(0, 0, r.CenterHeightOffset);
 				var width = uv == mouseCell ? 3 : 1;
 
 				// Colors change between points, so render separately
-				for (var i = 0; i < 4; i++)
+				foreach (var p in r.Polygons)
 				{
-					var j = (i + 1) % 4;
-					var start = pos + corners[i];
-					var end = pos + corners[j];
-					var startColor = colors[height + corners[i].Z / 512];
-					var endColor = colors[height + corners[j].Z / 512];
-					yield return new LineAnnotationRenderable(start, end, width, startColor, endColor);
+					for (var i = 0; i < p.Length; i++)
+					{
+						var j = (i + 1) % p.Length;
+						var start = pos + p[i];
+						var end = pos + p[j];
+						var startColor = colors[height + p[i].Z / 512];
+						var endColor = colors[height + p[j].Z / 512];
+						yield return new LineAnnotationRenderable(start, end, width, startColor, endColor);
+					}
 				}
 			}
 
 			// Projected cell coordinates for the current cell
-			var projectedCorners = map.Grid.CellCorners[0];
+			var projectedCorners = map.Grid.Ramps[0].Corners;
 			foreach (var puv in map.ProjectedCellsCovering(mouseCell))
 			{
 				var pos = map.CenterOfCell(((MPos)puv).ToCPos(map));

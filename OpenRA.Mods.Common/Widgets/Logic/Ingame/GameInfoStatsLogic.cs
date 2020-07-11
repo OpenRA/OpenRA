@@ -93,20 +93,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					LobbyUtils.SetupProfileWidget(item, client, orderManager, worldRenderer);
 
 					var nameLabel = item.Get<LabelWidget>("NAME");
-					var nameFont = Game.Renderer.Fonts[nameLabel.Font];
-
-					var suffixLength = new CachedTransform<string, int>(s => nameFont.Measure(s).X);
-					var name = new CachedTransform<Pair<string, string>, string>(c =>
-						WidgetUtils.TruncateText(c.First, nameLabel.Bounds.Width - suffixLength.Update(c.Second), nameFont) + c.Second);
-
-					nameLabel.GetText = () =>
-					{
-						var suffix = pp.WinState == WinState.Undefined ? "" : " (" + pp.WinState + ")";
-						if (client != null && client.State == Session.ClientState.Disconnected)
-							suffix = " (Gone)";
-
-						return name.Update(Pair.New(pp.PlayerName, suffix));
-					};
+					WidgetUtils.BindPlayerNameAndStatus(nameLabel, pp);
 					nameLabel.GetColor = () => pp.Color;
 
 					var flag = item.Get<ImageWidget>("FACTIONFLAG");

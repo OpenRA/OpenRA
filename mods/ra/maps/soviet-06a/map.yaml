@@ -521,11 +521,11 @@ Actors:
 	Actor158: gun
 		Location: 20,23
 		Owner: Greece
-		Facing: 128
+		Facing: 512
 	Actor159: gun
 		Location: 28,23
 		Owner: Greece
-		Facing: 128
+		Facing: 512
 	Actor163: gap
 		Location: 24,22
 		Owner: Greece
@@ -535,11 +535,11 @@ Actors:
 	Actor167: gun
 		Location: 33,5
 		Owner: Greece
-		Facing: 192
+		Facing: 768
 	Actor168: gun
 		Location: 33,9
 		Owner: Greece
-		Facing: 192
+		Facing: 768
 	Actor169: v07
 		Location: 66,4
 		Owner: Greece
@@ -566,123 +566,123 @@ Actors:
 	Actor179: 2tnk
 		Location: 73,35
 		Owner: Greece
-		Facing: 160
+		Facing: 640
 	Actor180: 2tnk
 		Location: 72,34
 		Owner: Greece
-		Facing: 160
+		Facing: 640
 	Actor181: 2tnk
 		Location: 71,33
 		Owner: Greece
-		Facing: 160
+		Facing: 640
 	Actor182: arty
 		Location: 74,33
 		Owner: Greece
-		Facing: 160
+		Facing: 640
 	Actor183: arty
 		Location: 73,32
 		Owner: Greece
-		Facing: 160
+		Facing: 640
 	Actor186: 3tnk
 		Location: 56,47
 		Owner: USSR
-		Facing: 32
+		Facing: 128
 	Actor187: 3tnk
 		Location: 60,49
 		Owner: USSR
-		Facing: 32
+		Facing: 128
 	Actor191: v2rl
 		Location: 57,49
 		Owner: USSR
-		Facing: 32
+		Facing: 128
 	Actor193: 2tnk
 		Location: 73,31
 		Owner: Greece
-		Facing: 160
+		Facing: 640
 	Actor194: 2tnk
 		Location: 75,33
 		Owner: Greece
-		Facing: 160
+		Facing: 640
 	Actor195: 2tnk
 		Location: 85,18
 		Owner: Greece
-		Facing: 160
+		Facing: 640
 	Actor196: 2tnk
 		Location: 88,20
 		Owner: Greece
-		Facing: 160
+		Facing: 640
 	Actor197: 2tnk
 		Location: 22,23
 		Owner: Greece
-		Facing: 128
+		Facing: 512
 	Actor198: 2tnk
 		Location: 26,23
 		Owner: Greece
-		Facing: 128
+		Facing: 512
 	Actor199: arty
 		Location: 18,23
 		Owner: Greece
-		Facing: 96
+		Facing: 384
 	Actor200: arty
 		Location: 30,23
 		Owner: Greece
-		Facing: 160
+		Facing: 640
 	Actor202: 1tnk
 		Location: 23,21
 		Owner: Greece
-		Facing: 128
+		Facing: 512
 	Actor203: 1tnk
 		Location: 25,21
 		Owner: Greece
-		Facing: 128
+		Facing: 512
 	Actor204: 2tnk
 		Location: 40,6
 		Owner: Greece
-		Facing: 192
+		Facing: 768
 	Actor205: 2tnk
 		Location: 40,8
 		Owner: Greece
-		Facing: 192
+		Facing: 768
 	Actor206: arty
 		Location: 40,7
 		Owner: Greece
-		Facing: 192
+		Facing: 768
 	Actor207: 1tnk
 		Location: 77,10
 		Owner: Greece
-		Facing: 192
+		Facing: 768
 	Actor208: 1tnk
 		Location: 77,11
 		Owner: Greece
-		Facing: 192
+		Facing: 768
 	Actor209: 1tnk
 		Location: 77,12
 		Owner: Greece
-		Facing: 192
+		Facing: 768
 	Actor210: ca
 		Location: 87,29
 		Owner: Greece
-		Facing: 224
+		Facing: 896
 	Actor211: ca
 		Location: 87,25
 		Owner: Greece
-		Facing: 160
+		Facing: 640
 	Actor212: ca
 		Location: 76,22
 		Owner: Greece
-		Facing: 224
+		Facing: 896
 	Actor213: pt
 		Location: 38,4
 		Owner: Greece
-		Facing: 192
+		Facing: 768
 	Actor214: pt
 		Location: 38,10
 		Owner: Greece
-		Facing: 192
+		Facing: 768
 	Actor215: dd
 		Location: 55,15
 		Owner: Greece
-		Facing: 192
+		Facing: 768
 	Actor216: waypoint
 		Location: 39,13
 		Owner: Neutral
@@ -716,7 +716,7 @@ Actors:
 	AGun: agun
 		Owner: Greece
 		Location: 25,5
-		TurretFacing: 92
+		TurretFacing: 368
 	APCWaypoint1: waypoint
 		Location: 52,50
 		Owner: Neutral
@@ -741,11 +741,11 @@ Actors:
 	BaseAttacker1: 1tnk
 		Location: 76,35
 		Owner: Greece
-		Facing: 160
+		Facing: 640
 	BaseAttacker2: 1tnk
 		Location: 71,30
 		Owner: Greece
-		Facing: 160
+		Facing: 640
 	CameraBarrier: camera
 		Location: 70,36
 		Owner: Neutral
@@ -792,21 +792,21 @@ Actors:
 		Location: 63,42
 		Owner: Greece
 		Health: 28
-		Facing: 160
+		Facing: 640
 	IntroEnemy2: jeep
 		Location: 64,42
 		Owner: Greece
 		Health: 43
-		Facing: 160
+		Facing: 640
 	IntroEnemy3: 1tnk
 		Location: 64,43
 		Owner: Greece
 		Health: 50
-		Facing: 160
+		Facing: 640
 	Mcv: mcv
 		Location: 61,45
 		Owner: USSR
-		Facing: 96
+		Facing: 384
 	McvWaypoint: waypoint
 		Location: 53,53
 		Owner: Neutral
@@ -817,11 +817,11 @@ Actors:
 	Truck1: truk
 		Location: 54,52
 		Owner: USSR
-		Facing: 32
+		Facing: 128
 	Truck2: truk
 		Location: 55,51
 		Owner: USSR
-		Facing: 32
+		Facing: 128
 	Weap: weap
 		Location: 22,15
 		Owner: Greece

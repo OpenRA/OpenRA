@@ -11,7 +11,6 @@
 
 using System;
 using System.Linq;
-using System.Net;
 using OpenRA.Network;
 using OpenRA.Primitives;
 using OpenRA.Widgets;
@@ -199,7 +198,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			// Create and join the server
 			try
 			{
-				Game.CreateServer(settings);
+				var endpoint = Game.CreateServer(settings);
+
+				Ui.CloseWindow();
+				ConnectionLogic.Connect(endpoint, password, onCreate, onExit);
 			}
 			catch (System.Net.Sockets.SocketException e)
 			{
@@ -212,11 +214,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					message += "\nError is: \"{0}\" ({1})".F(e.Message, e.ErrorCode);
 
 				ConfirmationDialogs.ButtonPrompt("Server Creation Failed", message, onCancel: () => { }, cancelText: "Back");
-				return;
 			}
-
-			Ui.CloseWindow();
-			ConnectionLogic.Connect(IPAddress.Loopback.ToString(), Game.Settings.Server.ListenPort, password, onCreate, onExit);
 		}
 	}
 }

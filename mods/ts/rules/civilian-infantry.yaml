@@ -71,12 +71,12 @@ CHAMSPY:
 	Disguise:
 		DisguisedCondition: disguise
 	WithDecoration@disguise:
+		RequiresCondition: disguise
+		Position: TopRight
+		Margin: 6, 10
 		Image: pips
 		Sequence: pip-disguise
 		Palette: pips
-		ReferencePoint: Top, Right
-		ZOffset: 256
-		RequiresCondition: disguise
 	Infiltrates:
 		Types: SpyInfiltrate
 		Notification: BuildingInfiltrated
@@ -226,16 +226,29 @@ CIV1:
 		Weapon: Pistola
 	AttackFrontal:
 		Voice: Attack
+	Voiced:
+		VoiceSet: Civilian1
 
 CIV2:
 	Inherits: ^CivilianInfantry
+	Voiced:
+		VoiceSet: Civilian2
 
 CIV3:
 	Inherits: ^CivilianInfantry
+	Voiced:
+		VoiceSet: Civilian3
+
+CTECH:
+	Inherits: CIV3
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	RenderSprites:
+		Image: civ3
 	WithInfantryBody:
 		DefaultAttackSequence: attack
 	Armament:
 		Weapon: Pistola
 	AttackFrontal:
 		Voice: Attack
+	Voiced:
+		VoiceSet: CivilianTechnician

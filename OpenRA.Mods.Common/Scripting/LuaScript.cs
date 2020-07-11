@@ -19,11 +19,11 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Scripting
 {
 	[Desc("Part of the new Lua API.")]
-	public class LuaScriptInfo : ITraitInfo, Requires<SpawnMapActorsInfo>
+	public class LuaScriptInfo : TraitInfo, Requires<SpawnMapActorsInfo>
 	{
 		public readonly HashSet<string> Scripts = new HashSet<string>();
 
-		public object Create(ActorInitializer init) { return new LuaScript(this); }
+		public override object Create(ActorInitializer init) { return new LuaScript(this); }
 	}
 
 	public class LuaScript : ITick, IWorldLoaded, INotifyActorDisposing

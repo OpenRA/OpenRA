@@ -16,7 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class ResourceTypeInfo : ITraitInfo, IMapPreviewSignatureInfo
+	public class ResourceTypeInfo : TraitInfo, IMapPreviewSignatureInfo
 	{
 		[Desc("Sequence image that holds the different variants.")]
 		public readonly string Image = "resources";
@@ -63,9 +63,6 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Allow resource to spawn on ramp tiles.")]
 		public readonly bool AllowOnRamps = false;
 
-		[Desc("Harvester content pip color.")]
-		public PipType PipColor = PipType.Yellow;
-
 		void IMapPreviewSignatureInfo.PopulateMapPreviewSignatureCells(Map map, ActorInfo ai, ActorReference s, List<Pair<MPos, Color>> destinationBuffer)
 		{
 			var tileSet = map.Rules.TileSet;
@@ -82,7 +79,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public object Create(ActorInitializer init) { return new ResourceType(this, init.World); }
+		public override object Create(ActorInitializer init) { return new ResourceType(this, init.World); }
 	}
 
 	public class ResourceType : IWorldLoaded

@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common;
@@ -23,7 +24,7 @@ namespace OpenRA.Mods.Cnc.Traits
 	[Desc("Implements the special case handling for the Chronoshiftable return on a construction yard.",
 		"If ReturnOriginalActorOnCondition evaluates true and the actor is not being sold then OriginalActor will be returned to the origin.",
 		"Otherwise, a vortex animation is played and damage is dealt each tick, ignoring modifiers.")]
-	public class ConyardChronoReturnInfo : IObservesVariablesInfo, Requires<HealthInfo>, Requires<WithSpriteBodyInfo>
+	public class ConyardChronoReturnInfo : TraitInfo, Requires<HealthInfo>, Requires<WithSpriteBodyInfo>, IObservesVariablesInfo
 	{
 		[SequenceReference]
 		[Desc("Sequence name with the baked-in vortex animation")]
@@ -58,10 +59,10 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("The color the bar of the 'return-to-origin' logic has.")]
 		public readonly Color TimeBarColor = Color.White;
 
-		public object Create(ActorInitializer init) { return new ConyardChronoReturn(init, this); }
+		public override object Create(ActorInitializer init) { return new ConyardChronoReturn(init, this); }
 	}
 
-	public class ConyardChronoReturn : INotifyCreated, ITick, ISync, IObservesVariables, ISelectionBar, INotifySold,
+	public class ConyardChronoReturn : ITick, ISync, IObservesVariables, ISelectionBar, INotifySold,
 		IDeathActorInitModifier, ITransformActorInitModifier
 	{
 		readonly ConyardChronoReturnInfo info;
@@ -70,8 +71,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		readonly Actor self;
 		readonly string faction;
 
-		ConditionManager conditionManager;
-		int conditionToken = ConditionManager.InvalidConditionToken;
+		int conditionToken = Actor.InvalidConditionToken;
 
 		Actor chronosphere;
 		int duration;
@@ -95,24 +95,19 @@ namespace OpenRA.Mods.Cnc.Traits
 			health = self.Trait<Health>();
 
 			wsb = self.TraitsImplementing<WithSpriteBody>().Single(w => w.Info.Name == info.Body);
-			faction = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : self.Owner.Faction.InternalName;
+			faction = init.GetValue<FactionInit, string>(self.Owner.Faction.InternalName);
 
-			if (init.Contains<ChronoshiftReturnInit>())
-				returnTicks = init.Get<ChronoshiftReturnInit, int>();
+			var returnInit = init.GetOrDefault<ChronoshiftReturnInit>();
+			if (returnInit != null)
+			{
+				returnTicks = returnInit.Ticks;
+				duration = returnInit.Duration;
+				origin = returnInit.Origin;
 
-			if (init.Contains<ChronoshiftDurationInit>())
-				duration = init.Get<ChronoshiftDurationInit, int>();
-
-			if (init.Contains<ChronoshiftOriginInit>())
-				origin = init.Get<ChronoshiftOriginInit, CPos>();
-
-			if (init.Contains<ChronoshiftChronosphereInit>())
-				chronosphere = init.Get<ChronoshiftChronosphereInit, Actor>();
-		}
-
-		void INotifyCreated.Created(Actor self)
-		{
-			conditionManager = self.TraitOrDefault<ConditionManager>();
+				// Defer to the end of tick as the lazy value may reference an actor that hasn't been created yet
+				if (returnInit.Chronosphere != null)
+					init.World.AddFrameEndTask(w => chronosphere = returnInit.Chronosphere.Actor(init.World).Value);
+			}
 		}
 
 		IEnumerable<VariableObserver> IObservesVariables.GetVariableObservers()
@@ -128,8 +123,8 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		void TriggerVortex()
 		{
-			if (conditionManager != null && !string.IsNullOrEmpty(info.Condition) && conditionToken == ConditionManager.InvalidConditionToken)
-				conditionToken = conditionManager.GrantCondition(self, info.Condition);
+			if (conditionToken == Actor.InvalidConditionToken)
+				conditionToken = self.GrantCondition(info.Condition);
 
 			triggered = true;
 
@@ -140,8 +135,8 @@ namespace OpenRA.Mods.Cnc.Traits
 			wsb.PlayCustomAnimation(self, info.Sequence, () =>
 			{
 				triggered = false;
-				if (conditionToken != ConditionManager.InvalidConditionToken)
-					conditionToken = conditionManager.RevokeCondition(self, conditionToken);
+				if (conditionToken != Actor.InvalidConditionToken)
+					conditionToken = self.RevokeCondition(conditionToken);
 			});
 		}
 
@@ -180,7 +175,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			{
 				new LocationInit(destination.Value),
 				new OwnerInit(self.Owner),
-				new FacingInit(info.Facing),
+				new FacingInit(WAngle.FromFacing(info.Facing)),
 				new FactionInit(faction),
 				new HealthInit((int)(health.HP * 100L / health.MaxHP))
 			};
@@ -237,11 +232,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (returnTicks <= 0)
 				return;
 
-			init.Add(new ChronoshiftOriginInit(origin));
-			init.Add(new ChronoshiftReturnInit(returnTicks));
-			init.Add(new ChronoshiftDurationInit(duration));
-			if (chronosphere != self)
-				init.Add(new ChronoshiftChronosphereInit(chronosphere));
+			init.Add(new ChronoshiftReturnInit(returnTicks, duration, origin, chronosphere));
 		}
 
 		void IDeathActorInitModifier.ModifyDeathActorInit(Actor self, TypeDictionary init) { ModifyActorInit(init); }

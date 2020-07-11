@@ -53,7 +53,7 @@ namespace OpenRA
 		public bool DiscoverNatDevices = false;
 
 		[Desc("Time in milliseconds to search for UPnP enabled NAT devices.")]
-		public int NatDiscoveryTimeout = 1000;
+		public int NatDiscoveryTimeout = 5000;
 
 		[Desc("Starts the game with a default map. Input as hash that can be obtained by the utility.")]
 		public string Map = null;

@@ -19,7 +19,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Cnc.Traits
 {
 	[Desc("Adds the hard-coded shroud palette to the game")]
-	class ShroudPaletteInfo : ITraitInfo
+	class ShroudPaletteInfo : TraitInfo
 	{
 		[PaletteDefinition]
 		[FieldLoader.Require]
@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("Palette type")]
 		public readonly bool Fog = false;
 
-		public object Create(ActorInitializer init) { return new ShroudPalette(this); }
+		public override object Create(ActorInitializer init) { return new ShroudPalette(this); }
 	}
 
 	class ShroudPalette : ILoadsPalettes, IProvidesAssetBrowserPalettes

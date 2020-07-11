@@ -15,7 +15,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Controls the build radius checkboxes in the lobby options.")]
-	public class MapBuildRadiusInfo : ITraitInfo, ILobbyOptions
+	public class MapBuildRadiusInfo : TraitInfo, ILobbyOptions
 	{
 		[Translate]
 		[Desc("Descriptive label for the ally build radius checkbox in the lobby.")]
@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Common.Traits
 				BuildRadiusCheckboxVisible, BuildRadiusCheckboxDisplayOrder, BuildRadiusCheckboxEnabled, BuildRadiusCheckboxLocked);
 		}
 
-		public object Create(ActorInitializer init) { return new MapBuildRadius(this); }
+		public override object Create(ActorInitializer init) { return new MapBuildRadius(this); }
 	}
 
 	public class MapBuildRadius : INotifyCreated

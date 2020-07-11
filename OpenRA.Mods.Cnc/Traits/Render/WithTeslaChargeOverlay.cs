@@ -17,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Cnc.Traits.Render
 {
 	[Desc("Rendered together with AttackCharge.")]
-	public class WithTeslaChargeOverlayInfo : ITraitInfo, Requires<RenderSpritesInfo>
+	public class WithTeslaChargeOverlayInfo : TraitInfo, Requires<RenderSpritesInfo>
 	{
 		[SequenceReference]
 		[Desc("Sequence name to use")]
@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 		[Desc("Custom palette is a player palette BaseName")]
 		public readonly bool IsPlayerPalette = false;
 
-		public object Create(ActorInitializer init) { return new WithTeslaChargeOverlay(init, this); }
+		public override object Create(ActorInitializer init) { return new WithTeslaChargeOverlay(init, this); }
 	}
 
 	public class WithTeslaChargeOverlay : INotifyTeslaCharging, INotifyDamageStateChanged, INotifySold

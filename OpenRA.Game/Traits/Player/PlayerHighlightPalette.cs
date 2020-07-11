@@ -16,13 +16,16 @@ using OpenRA.Primitives;
 namespace OpenRA.Traits
 {
 	[Desc("Add this to the Player actor definition.")]
-	public class PlayerHighlightPaletteInfo : ITraitInfo
+	public class PlayerHighlightPaletteInfo : TraitInfo
 	{
 		[PaletteDefinition(true)]
 		[Desc("The prefix for the resulting player palettes")]
 		public readonly string BaseName = "highlight";
 
-		public object Create(ActorInitializer init) { return new PlayerHighlightPalette(this); }
+		[Desc("Index set to be fully transparent/invisible.")]
+		public readonly int TransparentIndex = 0;
+
+		public override object Create(ActorInitializer init) { return new PlayerHighlightPalette(this); }
 	}
 
 	public class PlayerHighlightPalette : ILoadsPlayerPalettes
@@ -37,7 +40,7 @@ namespace OpenRA.Traits
 		public void LoadPlayerPalettes(WorldRenderer wr, string playerName, Color color, bool replaceExisting)
 		{
 			var argb = (uint)Color.FromArgb(128, color).ToArgb();
-			var pal = new ImmutablePalette(Enumerable.Range(0, Palette.Size).Select(i => i == 0 ? 0 : argb));
+			var pal = new ImmutablePalette(Enumerable.Range(0, Palette.Size).Select(i => i == info.TransparentIndex ? 0 : argb));
 			wr.AddPalette(info.BaseName + playerName, pal, false, replaceExisting);
 		}
 	}

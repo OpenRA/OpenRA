@@ -76,7 +76,7 @@ namespace OpenRA.Mods.Common.Traits
 				{
 					new CenterPositionInit(w.Map.CenterOfCell(startPos) + new WVec(WDist.Zero, WDist.Zero, altitude)),
 					new OwnerInit(owner),
-					new FacingInit(64)
+					new FacingInit(new WAngle(256)),
 				});
 
 				actor.QueueActivity(new Fly(actor, Target.FromCell(w, dropPos)));
@@ -124,7 +124,7 @@ namespace OpenRA.Mods.Common.Traits
 				var spawn = self.World.Map.CenterOfCell(exit) + new WVec(WDist.Zero, WDist.Zero, altitude);
 				var to = self.World.Map.CenterOfCell(exit);
 
-				var initialFacing = exitinfo == null || exitinfo.Facing < 0 ? (to - spawn).Yaw.Facing : exitinfo.Facing;
+				var initialFacing = exitinfo == null || exitinfo.Facing < 0 ? (to - spawn).Yaw : WAngle.FromFacing(exitinfo.Facing);
 
 				exitLocations = rp.Value != null && rp.Value.Path.Count > 0 ? rp.Value.Path : new List<CPos> { exit };
 

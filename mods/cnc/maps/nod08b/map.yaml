@@ -410,30 +410,30 @@ Actors:
 	Actor142: mtnk
 		Location: 8,9
 		Owner: GDI
-		Facing: 64
+		Facing: 256
 	Actor143: mtnk
 		Location: 27,34
 		Owner: GDI
-		Facing: 64
+		Facing: 256
 	Actor144: mtnk
 		Location: 14,25
 		Owner: GDI
-		Facing: 96
+		Facing: 384
 	Actor145: mtnk
 		Location: 47,3
 		Owner: GDI
-		Facing: 192
+		Facing: 768
 	Actor148: jeep
 		Location: 56,33
 		Owner: GDI
 	Actor151: mtnk
 		Location: 16,32
 		Owner: GDI
-		Facing: 224
+		Facing: 896
 	Actor152: mtnk
 		Location: 35,31
 		Owner: GDI
-		Facing: 224
+		Facing: 896
 	Actor153: jeep
 		Location: 18,55
 		Owner: GDI
@@ -457,17 +457,17 @@ Actors:
 	Actor159: e2
 		Location: 50,3
 		Owner: GDI
-		Facing: 224
+		Facing: 896
 		SubCell: 1
 	Actor160: e2
 		Location: 49,5
 		Owner: GDI
-		Facing: 192
+		Facing: 768
 		SubCell: 2
 	Actor161: e1
 		Location: 48,6
 		Owner: GDI
-		Facing: 224
+		Facing: 896
 		SubCell: 4
 	Actor162: e2
 		Location: 41,16
@@ -476,37 +476,37 @@ Actors:
 	Actor163: e2
 		Location: 35,17
 		Owner: GDI
-		Facing: 224
+		Facing: 896
 		SubCell: 2
 	Actor171: e1
 		Location: 45,5
 		Owner: GDI
-		Facing: 160
+		Facing: 640
 		SubCell: 1
 	Actor172: e1
 		Location: 44,4
 		Owner: GDI
-		Facing: 160
+		Facing: 640
 		SubCell: 1
 	Actor173: e1
 		Location: 45,4
 		Owner: GDI
-		Facing: 224
+		Facing: 896
 		SubCell: 1
 	Actor176: e1
 		Location: 58,27
 		Owner: GDI
-		Facing: 224
+		Facing: 896
 		SubCell: 4
 	Actor177: e1
 		Location: 52,22
 		Owner: GDI
-		Facing: 160
+		Facing: 640
 		SubCell: 4
 	Actor178: e1
 		Location: 50,23
 		Owner: GDI
-		Facing: 224
+		Facing: 896
 		SubCell: 3
 	Actor179: e2
 		Location: 59,30
@@ -515,12 +515,12 @@ Actors:
 	Actor180: e2
 		Location: 49,24
 		Owner: GDI
-		Facing: 64
+		Facing: 256
 		SubCell: 3
 	Actor181: e1
 		Location: 31,33
 		Owner: GDI
-		Facing: 32
+		Facing: 128
 		SubCell: 2
 	Actor182: e3
 		Location: 54,35
@@ -529,42 +529,42 @@ Actors:
 	Actor183: e3
 		Location: 55,35
 		Owner: GDI
-		Facing: 32
+		Facing: 128
 		SubCell: 4
 	Actor184: e3
 		Location: 55,35
 		Owner: GDI
-		Facing: 224
+		Facing: 896
 		SubCell: 0
 	Actor185: e3
 		Location: 47,32
 		Owner: GDI
-		Facing: 64
+		Facing: 256
 		SubCell: 0
 	Actor186: e3
 		Location: 48,35
 		Owner: GDI
-		Facing: 32
+		Facing: 128
 		SubCell: 1
 	Actor187: e3
 		Location: 43,26
 		Owner: GDI
-		Facing: 96
+		Facing: 384
 		SubCell: 0
 	Actor188: e3
 		Location: 46,22
 		Owner: GDI
-		Facing: 64
+		Facing: 256
 		SubCell: 3
 	Actor190: e2
 		Location: 31,33
 		Owner: GDI
-		Facing: 160
+		Facing: 640
 		SubCell: 3
 	Actor191: e2
 		Location: 32,33
 		Owner: GDI
-		Facing: 32
+		Facing: 128
 		SubCell: 0
 	waypoint27: waypoint
 		Location: 20,54
@@ -717,22 +717,22 @@ Actors:
 	GDIOrca1: orca
 		Owner: GDI
 		Location: 17,52
-		Facing: 92
+		Facing: 368
 	GDIOrca2: orca
 		Owner: GDI
 		Location: 12,52
-		Facing: 92
+		Facing: 368
 	GDIWeap: weap
 		Location: 8,48
 		Owner: GDI
 	Gunboat1: boat
 		Location: 31,59
 		Owner: GDI
-		Facing: 192
+		Facing: 768
 	Gunboat2: boat
 		Location: 25,60
 		Owner: GDI
-		Facing: 192
+		Facing: 768
 	MoneyCrate: MoneyCrate
 		Owner: Neutral
 		Location: 24,54
@@ -754,7 +754,7 @@ Actors:
 	OutpostHarv: harv
 		Location: 55,27
 		Owner: Outpost
-		Facing: 192
+		Facing: 768
 	OutpostNuke: nukeout.in
 		Location: 59,27
 		Owner: Outpost

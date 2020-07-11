@@ -262,17 +262,17 @@ Actors:
 	Actor89: e1
 		Location: 7,30
 		Owner: GDI
-		Facing: 128
+		Facing: 512
 		SubCell: 3
 	Actor90: e2
 		Location: 6,30
 		Owner: GDI
-		Facing: 96
+		Facing: 384
 		SubCell: 1
 	Actor91: e2
 		Location: 8,28
 		Owner: GDI
-		Facing: 160
+		Facing: 640
 		SubCell: 3
 	Actor92: e2
 		Location: 39,43

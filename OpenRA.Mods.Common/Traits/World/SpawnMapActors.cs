@@ -35,18 +35,17 @@ namespace OpenRA.Mods.Common.Traits
 				var actorReference = new ActorReference(kv.Value.Value, kv.Value.ToDictionary());
 
 				// If there is no real player associated, don't spawn it.
-				var ownerName = actorReference.InitDict.Get<OwnerInit>().PlayerName;
+				var ownerName = actorReference.Get<OwnerInit>().InternalName;
 				if (!world.Players.Any(p => p.InternalName == ownerName))
 					continue;
 
-				var initDict = actorReference.InitDict;
-				initDict.Add(new SkipMakeAnimsInit());
-				initDict.Add(new SpawnedByMapInit(kv.Key));
+				actorReference.Add(new SkipMakeAnimsInit());
+				actorReference.Add(new SpawnedByMapInit(kv.Key));
 
 				if (PreventMapSpawn(world, actorReference, preventMapSpawns))
 					continue;
 
-				var actor = world.CreateActor(actorReference.Type, initDict);
+				var actor = world.CreateActor(true, actorReference);
 				Actors[kv.Key] = actor;
 				LastMapActorID = actor.ActorID;
 			}
@@ -62,15 +61,10 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class SkipMakeAnimsInit : IActorInit, ISuppressInitExport { }
-	public class SpawnedByMapInit : IActorInit<string>, ISuppressInitExport
+	public class SkipMakeAnimsInit : RuntimeFlagInit { }
+	public class SpawnedByMapInit : ValueActorInit<string>, ISuppressInitExport, ISingleInstanceInit
 	{
-		public readonly string Name;
-		public SpawnedByMapInit(string name) { Name = name; }
-
-		public string Value(World world)
-		{
-			return Name;
-		}
+		public SpawnedByMapInit(string value)
+			: base(value) { }
 	}
 }

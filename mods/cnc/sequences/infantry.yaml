@@ -283,7 +283,7 @@ e3:
 		Start: 476
 		Length: 3
 		Facings: 8
-		Tick: 120	
+		Tick: 120
 	# Shot
 	die1:
 		Start: 397
@@ -376,7 +376,7 @@ e4:
 		Start: 588
 		Length: 3
 		Facings: 8
-		Tick: 120	
+		Tick: 120
 	# Shot
 	die1:
 		Start: 509
@@ -497,7 +497,7 @@ e5:
 		Start: 588
 		Length: 3
 		Facings: 8
-		Tick: 120	
+		Tick: 120
 	# Shot
 	die1:
 		Start: 509

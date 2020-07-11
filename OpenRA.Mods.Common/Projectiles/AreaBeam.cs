@@ -47,8 +47,11 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Ranges at which each Falloff step is defined.")]
 		public readonly WDist[] Range = { WDist.Zero, new WDist(int.MaxValue) };
 
-		[Desc("Maximum offset at the maximum range.")]
+		[Desc("The maximum/constant/incremental inaccuracy used in conjunction with the InaccuracyType property.")]
 		public readonly WDist Inaccuracy = WDist.Zero;
+
+		[Desc("Controls the way inaccuracy is calculated. Possible values are 'Maximum' - scale from 0 to max with range, 'PerCellIncrement' - scale from 0 with range and 'Absolute' - use set value regardless of range.")]
+		public readonly InaccuracyType InaccuracyType = InaccuracyType.Maximum;
 
 		[Desc("Can this projectile be blocked when hitting actors with an IBlocksProjectiles trait.")]
 		public readonly bool Blockable = false;
@@ -93,7 +96,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		WPos target;
 
 		int length;
-		int towardsTargetFacing;
+		WAngle towardsTargetFacing;
 		int headTicks;
 		int tailTicks;
 		bool isHeadTravelling = true;
@@ -128,16 +131,15 @@ namespace OpenRA.Mods.Common.Projectiles
 			target = args.PassiveTarget;
 			if (info.Inaccuracy.Length > 0)
 			{
-				var inaccuracy = Util.ApplyPercentageModifiers(info.Inaccuracy.Length, args.InaccuracyModifiers);
-				var maxOffset = inaccuracy * (target - headPos).Length / args.Weapon.Range.Length;
-				target += WVec.FromPDF(world.SharedRandom, 2) * maxOffset / 1024;
+				var maxInaccuracyOffset = Util.GetProjectileInaccuracy(info.Inaccuracy.Length, info.InaccuracyType, args);
+				target += WVec.FromPDF(world.SharedRandom, 2) * maxInaccuracyOffset / 1024;
 			}
 
-			towardsTargetFacing = (target - headPos).Yaw.Facing;
+			towardsTargetFacing = (target - headPos).Yaw;
 
 			// Update the target position with the range we shoot beyond the target by
 			// I.e. we can deliberately overshoot, so aim for that position
-			var dir = new WVec(0, -1024, 0).Rotate(WRot.FromFacing(towardsTargetFacing));
+			var dir = new WVec(0, -1024, 0).Rotate(WRot.FromYaw(towardsTargetFacing));
 			target += dir * info.BeyondTargetRange.Length / 1024;
 
 			length = Math.Max((target - headPos).Length / speed.Length, 1);
@@ -160,11 +162,11 @@ namespace OpenRA.Mods.Common.Projectiles
 				else
 				{
 					target = guidedTargetPos;
-					towardsTargetFacing = (target - args.Source).Yaw.Facing;
+					towardsTargetFacing = (target - args.Source).Yaw;
 
 					// Update the target position with the range we shoot beyond the target by
 					// I.e. we can deliberately overshoot, so aim for that position
-					var dir = new WVec(0, -1024, 0).Rotate(WRot.FromFacing(towardsTargetFacing));
+					var dir = new WVec(0, -1024, 0).Rotate(WRot.FromYaw(towardsTargetFacing));
 					target += dir * info.BeyondTargetRange.Length / 1024;
 				}
 			}

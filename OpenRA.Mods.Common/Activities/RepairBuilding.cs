@@ -21,6 +21,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		Actor enterActor;
 		IHealth enterHealth;
+		EngineerRepairable enterEngineerRepariable;
 
 		public RepairBuilding(Actor self, Target target, EngineerRepairInfo info)
 			: base(self, target, Color.Yellow)
@@ -32,11 +33,12 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			enterActor = targetActor;
 			enterHealth = targetActor.TraitOrDefault<IHealth>();
+			enterEngineerRepariable = targetActor.TraitOrDefault<EngineerRepairable>();
 
 			// Make sure we can still repair the target before entering
 			// (but not before, because this may stop the actor in the middle of nowhere)
 			var stance = self.Owner.Stances[enterActor.Owner];
-			if (enterHealth == null || enterHealth.DamageState == DamageState.Undamaged || !info.ValidStances.HasStance(stance))
+			if (enterHealth == null || enterHealth.DamageState == DamageState.Undamaged || enterEngineerRepariable == null || enterEngineerRepariable.IsTraitDisabled || !info.ValidStances.HasStance(stance))
 			{
 				Cancel(self, true);
 				return false;
@@ -50,6 +52,9 @@ namespace OpenRA.Mods.Common.Activities
 			// Make sure the target hasn't changed while entering
 			// OnEnterComplete is only called if targetActor is alive
 			if (targetActor != enterActor)
+				return;
+
+			if (enterEngineerRepariable.IsTraitDisabled)
 				return;
 
 			if (enterHealth.DamageState == DamageState.Undamaged)

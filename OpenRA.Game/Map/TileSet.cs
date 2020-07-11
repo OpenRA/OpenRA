@@ -24,9 +24,8 @@ namespace OpenRA
 		public readonly byte TerrainType = byte.MaxValue;
 		public readonly byte Height;
 		public readonly byte RampType;
-		public readonly Color LeftColor;
-		public readonly Color RightColor;
-
+		public readonly Color MinColor;
+		public readonly Color MaxColor;
 		public readonly float ZOffset = 0.0f;
 		public readonly float ZRamp = 1.0f;
 	}
@@ -106,11 +105,11 @@ namespace OpenRA
 
 			// Fall back to the terrain-type color if necessary
 			var overrideColor = tileSet.TerrainInfo[tile.TerrainType].Color;
-			if (tile.LeftColor == default(Color))
-				tile.GetType().GetField("LeftColor").SetValue(tile, overrideColor);
+			if (tile.MinColor == default(Color))
+				tile.GetType().GetField("MinColor").SetValue(tile, overrideColor);
 
-			if (tile.RightColor == default(Color))
-				tile.GetType().GetField("RightColor").SetValue(tile, overrideColor);
+			if (tile.MaxColor == default(Color))
+				tile.GetType().GetField("MaxColor").SetValue(tile, overrideColor);
 
 			return tile;
 		}
@@ -139,6 +138,8 @@ namespace OpenRA
 		public readonly string[] EditorTemplateOrder;
 		public readonly bool IgnoreTileSpriteOffsets;
 		public readonly bool EnableDepth = false;
+		public readonly float MinHeightColorBrightness = 1.0f;
+		public readonly float MaxHeightColorBrightness = 1.0f;
 
 		[FieldLoader.Ignore]
 		public readonly IReadOnlyDictionary<ushort, TerrainTemplateInfo> Templates;

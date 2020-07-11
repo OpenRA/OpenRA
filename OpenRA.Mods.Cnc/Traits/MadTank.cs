@@ -23,7 +23,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
 {
-	class MadTankInfo : ITraitInfo, IRulesetLoaded, Requires<ExplodesInfo>, Requires<WithFacingSpriteBodyInfo>
+	class MadTankInfo : TraitInfo, IRulesetLoaded, Requires<ExplodesInfo>, Requires<WithFacingSpriteBodyInfo>
 	{
 		[SequenceReference]
 		public readonly string ThumpSequence = "piston";
@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("Types of damage that this trait causes to self while self-destructing. Leave empty for no damage types.")]
 		public readonly BitSet<DamageType> DamageTypes = default(BitSet<DamageType>);
 
-		public object Create(ActorInitializer init) { return new MadTank(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new MadTank(init.Self, this); }
 
 		public void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
@@ -83,20 +83,13 @@ namespace OpenRA.Mods.Cnc.Traits
 		}
 	}
 
-	class MadTank : INotifyCreated, IIssueOrder, IResolveOrder, IOrderVoice, IIssueDeployOrder
+	class MadTank : IIssueOrder, IResolveOrder, IOrderVoice, IIssueDeployOrder
 	{
 		readonly MadTankInfo info;
-
-		ConditionManager conditionManager;
 
 		public MadTank(Actor self, MadTankInfo info)
 		{
 			this.info = info;
-		}
-
-		void INotifyCreated.Created(Actor self)
-		{
-			conditionManager = self.TraitOrDefault<ConditionManager>();
 		}
 
 		public IEnumerable<IOrderTargeter> Orders
@@ -195,8 +188,7 @@ namespace OpenRA.Mods.Cnc.Traits
 					if (target.Type == TargetType.Invalid)
 						return true;
 
-					if (mad.conditionManager != null && !string.IsNullOrEmpty(mad.info.DeployedCondition))
-						mad.conditionManager.GrantCondition(self, mad.info.DeployedCondition);
+					self.GrantCondition(mad.info.DeployedCondition);
 
 					self.World.AddFrameEndTask(w => EjectDriver());
 					if (mad.info.ThumpSequence != null)

@@ -27,8 +27,11 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Projectile speed in WDist / tick, two values indicate variable velocity.")]
 		public readonly WDist[] Speed = { new WDist(17) };
 
-		[Desc("Maximum offset at the maximum range.")]
+		[Desc("The maximum/constant/incremental inaccuracy used in conjunction with the InaccuracyType property.")]
 		public readonly WDist Inaccuracy = WDist.Zero;
+
+		[Desc("Controls the way inaccuracy is calculated. Possible values are 'Maximum' - scale from 0 to max with range, 'PerCellIncrement' - scale from 0 with range and 'Absolute' - use set value regardless of range.")]
+		public readonly InaccuracyType InaccuracyType = InaccuracyType.Maximum;
 
 		[Desc("Image to display.")]
 		public readonly string Image = null;
@@ -87,6 +90,9 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Modify distance of each bounce by this percentage of previous distance.")]
 		public readonly int BounceRangeModifier = 60;
 
+		[Desc("Sound to play when the projectile hits the ground, but not the target.")]
+		public readonly string BounceSound = null;
+
 		[Desc("If projectile touches an actor with one of these stances during or after the first bounce, trigger explosion.")]
 		public readonly Stance ValidBounceBlockerStances = Stance.Enemy | Stance.Neutral;
 
@@ -108,7 +114,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		readonly BulletInfo info;
 		readonly ProjectileArgs args;
 		readonly Animation anim;
-		readonly int facing;
+		readonly WAngle facing;
 		readonly WAngle angle;
 		readonly WDist speed;
 		readonly string trailPalette;
@@ -144,21 +150,19 @@ namespace OpenRA.Mods.Common.Projectiles
 			target = args.PassiveTarget;
 			if (info.Inaccuracy.Length > 0)
 			{
-				var inaccuracy = Util.ApplyPercentageModifiers(info.Inaccuracy.Length, args.InaccuracyModifiers);
-				var range = Util.ApplyPercentageModifiers(args.Weapon.Range.Length, args.RangeModifiers);
-				var maxOffset = inaccuracy * (target - pos).Length / range;
-				target += WVec.FromPDF(world.SharedRandom, 2) * maxOffset / 1024;
+				var maxInaccuracyOffset = Util.GetProjectileInaccuracy(info.Inaccuracy.Length, info.InaccuracyType, args);
+				target += WVec.FromPDF(world.SharedRandom, 2) * maxInaccuracyOffset / 1024;
 			}
 
 			if (info.AirburstAltitude > WDist.Zero)
 				target += new WVec(WDist.Zero, WDist.Zero, info.AirburstAltitude);
 
-			facing = (target - pos).Yaw.Facing;
+			facing = (target - pos).Yaw;
 			length = Math.Max((target - pos).Length / speed.Length, 1);
 
 			if (!string.IsNullOrEmpty(info.Image))
 			{
-				anim = new Animation(world, info.Image, new Func<int>(GetEffectiveFacing));
+				anim = new Animation(world, info.Image, new Func<WAngle>(GetEffectiveFacing));
 				anim.PlayRepeating(info.Sequences.Random(world.SharedRandom));
 			}
 
@@ -176,17 +180,19 @@ namespace OpenRA.Mods.Common.Projectiles
 			remainingBounces = info.BounceCount;
 		}
 
-		int GetEffectiveFacing()
+		WAngle GetEffectiveFacing()
 		{
 			var at = (float)ticks / (length - 1);
 			var attitude = angle.Tan() * (1 - 2 * at) / (4 * 1024);
 
-			var u = (facing % 128) / 128f;
-			var scale = 512 * u * (1 - u);
+			var u = (facing.Angle % 512) / 512f;
+			var scale = 2048 * u * (1 - u);
 
-			return (int)(facing < 128
-				? facing - scale * attitude
-				: facing + scale * attitude);
+			var effective = (int)(facing.Angle < 512
+				? facing.Angle - scale * attitude
+				: facing.Angle + scale * attitude);
+
+			return new WAngle(effective);
 		}
 
 		public void Tick(World world)
@@ -210,8 +216,8 @@ namespace OpenRA.Mods.Common.Projectiles
 			if (!string.IsNullOrEmpty(info.TrailImage) && --smokeTicks < 0)
 			{
 				var delayedPos = WPos.LerpQuadratic(source, target, angle, ticks - info.TrailDelay, length);
-				world.AddFrameEndTask(w => w.Add(new SpriteEffect(delayedPos, w, info.TrailImage, info.TrailSequences.Random(world.SharedRandom),
-					trailPalette, facing: GetEffectiveFacing())));
+				world.AddFrameEndTask(w => w.Add(new SpriteEffect(delayedPos, GetEffectiveFacing(), w,
+					info.TrailImage, info.TrailSequences.Random(world.SharedRandom), trailPalette)));
 
 				smokeTicks = info.TrailInterval;
 			}
@@ -231,6 +237,7 @@ namespace OpenRA.Mods.Common.Projectiles
 				length = Math.Max((target - pos).Length / speed.Length, 1);
 				ticks = 0;
 				source = pos;
+				Game.Sound.Play(SoundType.World, info.BounceSound, source);
 				remainingBounces--;
 			}
 

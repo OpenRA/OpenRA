@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Lint
 					}
 				}
 
-				foreach (var traitInfo in actorInfo.Value.TraitInfos<ITraitInfo>())
+				foreach (var traitInfo in actorInfo.Value.TraitInfos<TraitInfo>())
 				{
 					var fields = traitInfo.GetType().GetFields();
 					foreach (var field in fields)
@@ -152,7 +152,7 @@ namespace OpenRA.Mods.Common.Lint
 		}
 
 		void CheckDefinitions(string image, SequenceReferenceAttribute sequenceReference,
-			KeyValuePair<string, ActorInfo> actorInfo, string sequence, string faction, FieldInfo field, ITraitInfo traitInfo)
+			KeyValuePair<string, ActorInfo> actorInfo, string sequence, string faction, FieldInfo field, TraitInfo traitInfo)
 		{
 			var definitions = sequenceDefinitions.FirstOrDefault(n => n.Key == image.ToLowerInvariant());
 			if (definitions != null)

@@ -13,7 +13,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Sound
 {
-	public class SoundOnDamageTransitionInfo : ITraitInfo
+	public class SoundOnDamageTransitionInfo : TraitInfo
 	{
 		[Desc("Play a random sound from this list when damaged.")]
 		public readonly string[] DamagedSounds = { };
@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Traits.Sound
 		[Desc("Play a random sound from this list when destroyed.")]
 		public readonly string[] DestroyedSounds = { };
 
-		public object Create(ActorInitializer init) { return new SoundOnDamageTransition(this); }
+		public override object Create(ActorInitializer init) { return new SoundOnDamageTransition(this); }
 	}
 
 	public class SoundOnDamageTransition : INotifyDamageStateChanged

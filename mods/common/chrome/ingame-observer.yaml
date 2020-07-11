@@ -74,7 +74,7 @@ Container@OBSERVER_WIDGETS:
 							Y: 2
 						Label@LABEL:
 							X: 34
-							Width: 60
+							Width: PARENT_RIGHT
 							Height: 25
 							Shadow: True
 						Label@NOFLAG_LABEL:
@@ -841,7 +841,7 @@ Container@OBSERVER_WIDGETS:
 									X: PARENT_RIGHT - 200
 									Y: 0
 									Width: 200
-									Height: PARENT_BOTTOM 
+									Height: PARENT_BOTTOM
 								Image@FLAG:
 									X: 5
 									Y: 4

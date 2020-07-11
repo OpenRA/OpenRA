@@ -129,15 +129,15 @@ Section "Game" GAME
 	File "${SRCDIR}\TiberianDawn.ico"
 	File "${SRCDIR}\Dune2000.ico"
 	File "${SRCDIR}\SDL2-CS.dll"
-	File "${SRCDIR}\OpenAL-CS.dll"
+	File "${SRCDIR}\OpenAL-CS.Core.dll"
 	File "${SRCDIR}\global mix database.dat"
 	File "${SRCDIR}\IP2LOCATION-LITE-DB1.IPV6.BIN.ZIP"
 	File "${SRCDIR}\eluant.dll"
-	File "${SRCDIR}\rix0rrr.BeaconLib.dll"
-	File "${DEPSDIR}\soft_oal.dll"
-	File "${DEPSDIR}\SDL2.dll"
-	File "${DEPSDIR}\freetype6.dll"
-	File "${DEPSDIR}\lua51.dll"
+	File "${SRCDIR}\BeaconLib.dll"
+	File "${SRCDIR}\soft_oal.dll"
+	File "${SRCDIR}\SDL2.dll"
+	File "${SRCDIR}\freetype6.dll"
+	File "${SRCDIR}\lua51.dll"
 
 	!insertmacro MUI_STARTMENU_WRITE_BEGIN Application
 		CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
@@ -191,9 +191,9 @@ Section "-DotNet" DotNet
 	; https://docs.microsoft.com/en-us/dotnet/framework/migration-guide/how-to-determine-which-versions-are-installed
 	ReadRegDWORD $0 HKLM "SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full" "Release"
 	IfErrors error 0
-	IntCmp $0 394254 done error done
+	IntCmp $0 461808 done error done
 	error:
-		MessageBox MB_OK ".NET Framework v4.6.1 or later is required to run OpenRA."
+		MessageBox MB_OK ".NET Framework v4.7.2 or later is required to run OpenRA."
 		Abort
 	done:
 SectionEnd
@@ -255,8 +255,8 @@ Function ${UN}Clean
 	Delete $INSTDIR\eluant.dll
 	Delete $INSTDIR\freetype6.dll
 	Delete $INSTDIR\SDL2-CS.dll
-	Delete $INSTDIR\OpenAL-CS.dll
-	Delete $INSTDIR\rix0rrr.BeaconLib.dll
+	Delete $INSTDIR\OpenAL-CS.Core.dll
+	Delete $INSTDIR\BeaconLib.dll
 	RMDir /r $INSTDIR\Support
 
 	DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenRA${SUFFIX}"

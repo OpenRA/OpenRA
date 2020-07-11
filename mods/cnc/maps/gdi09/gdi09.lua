@@ -100,7 +100,7 @@ end
 
 SpawnGunboat = function()
 	Media.PlaySpeechNotification(GDI, "Reinforce")
-	Actor.Create("boat", true, { Owner = GDI, Facing = 0, Location = CPos.New(62,37) })
+	Actor.Create("boat", true, { Owner = GDI, Facing = Angle.North, Location = CPos.New(62,37) })
 end
 
 WorldLoaded = function()
@@ -121,9 +121,10 @@ WorldLoaded = function()
 	end)
 	Trigger.OnEnteredFootprint(BoatEscapeTrigger, function(a, id)
 		if a.Type == "boat" then
+			a.Stop()
 			a.Destroy()
 			Media.DisplayMessage("Part of Carter's convoy passed through!")
-			Media.PlaySoundNotification(GDI, "AlertBleep")
+			Media.PlaySoundNotification(GDI, "Beepy6")
 		end
 	end)
 

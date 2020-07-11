@@ -96,7 +96,7 @@ DOG:
 TRUK:
 	-Demolishable:
 	Targetable:
-		TargetTypes: Ground, Truk
+		TargetTypes: GroundActor, Truk
 	Armor:
 		Type: Truk
 

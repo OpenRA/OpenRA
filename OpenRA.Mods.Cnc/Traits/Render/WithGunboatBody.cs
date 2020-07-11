@@ -46,11 +46,11 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 		readonly IFacing facing;
 		readonly Turreted turret;
 
-		static Func<int> MakeTurretFacingFunc(Actor self)
+		static Func<WAngle> MakeTurretFacingFunc(Actor self)
 		{
 			// Turret artwork is baked into the sprite, so only the first turret makes sense.
 			var turreted = self.TraitsImplementing<Turreted>().FirstOrDefault();
-			return () => turreted.TurretFacing;
+			return () => WAngle.FromFacing(turreted.TurretFacing);
 		}
 
 		public WithGunboatBody(ActorInitializer init, WithGunboatBodyInfo info)
@@ -76,7 +76,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 
 		void ITick.Tick(Actor self)
 		{
-			if (facing.Facing <= 128)
+			if (facing.Facing.Angle <= 512)
 			{
 				var left = NormalizeSequence(self, info.LeftSequence);
 				if (DefaultAnimation.CurrentSequence.Name != left)

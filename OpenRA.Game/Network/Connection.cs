@@ -10,8 +10,11 @@
 #endregion
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using OpenRA.Server;
@@ -30,10 +33,61 @@ namespace OpenRA.Network
 	{
 		int LocalClientId { get; }
 		ConnectionState ConnectionState { get; }
+		IPEndPoint EndPoint { get; }
+		string ErrorMessage { get; }
 		void Send(int frame, List<byte[]> orders);
 		void SendImmediate(IEnumerable<byte[]> orders);
 		void SendSync(int frame, byte[] syncData);
 		void Receive(Action<int, byte[]> packetFn);
+	}
+
+	public class ConnectionTarget
+	{
+		readonly DnsEndPoint[] endpoints;
+
+		public ConnectionTarget()
+		{
+			endpoints = new[] { new DnsEndPoint("invalid", 0) };
+		}
+
+		public ConnectionTarget(string host, int port)
+		{
+			endpoints = new[] { new DnsEndPoint(host, port) };
+		}
+
+		public ConnectionTarget(IEnumerable<DnsEndPoint> endpoints)
+		{
+			this.endpoints = endpoints.ToArray();
+			if (this.endpoints.Length == 0)
+			{
+				throw new ArgumentException("ConnectionTarget must have at least one address.");
+			}
+		}
+
+		public IEnumerable<IPEndPoint> GetConnectEndPoints()
+		{
+			return endpoints
+				.SelectMany(e =>
+				{
+					try
+					{
+						return Dns.GetHostAddresses(e.Host)
+							.Select(a => new IPEndPoint(a, e.Port));
+					}
+					catch (Exception)
+					{
+						return Enumerable.Empty<IPEndPoint>();
+					}
+				})
+				.ToList();
+		}
+
+		public override string ToString()
+		{
+			return endpoints
+				.Select(e => "{0}:{1}".F(e.Host, e.Port))
+				.JoinWith("/");
+		}
 	}
 
 	class EchoConnection : IConnection
@@ -55,6 +109,16 @@ namespace OpenRA.Network
 		public virtual ConnectionState ConnectionState
 		{
 			get { return ConnectionState.PreConnecting; }
+		}
+
+		public virtual IPEndPoint EndPoint
+		{
+			get { throw new NotSupportedException("An echo connection doesn't have an endpoint"); }
+		}
+
+		public virtual string ErrorMessage
+		{
+			get { return null; }
 		}
 
 		public virtual void Send(int frame, List<byte[]> orders)
@@ -138,35 +202,100 @@ namespace OpenRA.Network
 
 	sealed class NetworkConnection : EchoConnection
 	{
-		readonly TcpClient tcp;
+		readonly ConnectionTarget target;
+		TcpClient tcp;
+		IPEndPoint endpoint;
 		readonly List<byte[]> queuedSyncPackets = new List<byte[]>();
 		volatile ConnectionState connectionState = ConnectionState.Connecting;
 		volatile int clientId;
 		bool disposed;
+		string errorMessage;
 
-		public NetworkConnection(string host, int port)
+		public override IPEndPoint EndPoint { get { return endpoint; } }
+
+		public override string ErrorMessage { get { return errorMessage; } }
+
+		public NetworkConnection(ConnectionTarget target)
 		{
-			try
+			this.target = target;
+			new Thread(NetworkConnectionConnect)
 			{
-				tcp = new TcpClient(host, port) { NoDelay = true };
+				Name = "{0} (connect to {1})".F(GetType().Name, target),
+				IsBackground = true
+			}.Start();
+		}
+
+		void NetworkConnectionConnect()
+		{
+			var queue = new BlockingCollection<TcpClient>();
+
+			var atLeastOneEndpoint = false;
+			foreach (var endpoint in target.GetConnectEndPoints())
+			{
+				atLeastOneEndpoint = true;
+				new Thread(() =>
+				{
+					try
+					{
+						var client = new TcpClient(endpoint.AddressFamily) { NoDelay = true };
+						client.Connect(endpoint.Address, endpoint.Port);
+
+						try
+						{
+							queue.Add(client);
+						}
+						catch (InvalidOperationException)
+						{
+							// Another connection was faster, close this one.
+							client.Close();
+						}
+					}
+					catch (Exception ex)
+					{
+						errorMessage = "Failed to connect";
+						Log.Write("client", "Failed to connect to {0}: {1}".F(endpoint, ex.Message));
+					}
+				})
+				{
+					Name = "{0} (connect to {1})".F(GetType().Name, endpoint),
+					IsBackground = true
+				}.Start();
+			}
+
+			if (!atLeastOneEndpoint)
+			{
+				errorMessage = "Failed to resolve address";
+				connectionState = ConnectionState.NotConnected;
+			}
+
+			// Wait up to 5s for a successful connection. This should hopefully be enough because such high latency makes the game unplayable anyway.
+			else if (queue.TryTake(out tcp, 5000))
+			{
+				// Copy endpoint here to have it even after getting disconnected.
+				endpoint = (IPEndPoint)tcp.Client.RemoteEndPoint;
+
 				new Thread(NetworkConnectionReceive)
 				{
-					Name = GetType().Name + " " + host + ":" + port,
+					Name = "{0} (receive from {1})".F(GetType().Name, tcp.Client.RemoteEndPoint),
 					IsBackground = true
-				}.Start(tcp.GetStream());
+				}.Start();
 			}
-			catch
+			else
 			{
 				connectionState = ConnectionState.NotConnected;
 			}
+
+			// Close all unneeded connections in the queue and make sure new ones are closed on the connect thread.
+			queue.CompleteAdding();
+			foreach (var client in queue)
+				client.Close();
 		}
 
-		void NetworkConnectionReceive(object networkStreamObject)
+		void NetworkConnectionReceive()
 		{
 			try
 			{
-				var networkStream = (NetworkStream)networkStreamObject;
-				var reader = new BinaryReader(networkStream);
+				var reader = new BinaryReader(tcp.GetStream());
 				var handshakeProtocol = reader.ReadInt32();
 
 				if (handshakeProtocol != ProtocolVersion.Handshake)
@@ -187,7 +316,11 @@ namespace OpenRA.Network
 					AddPacket(new ReceivedPacket { FromClient = client, Data = buf });
 				}
 			}
-			catch { }
+			catch (Exception ex)
+			{
+				errorMessage = "Connection failed";
+				Log.Write("client", "Connection to {0} failed: {1}".F(endpoint, ex.Message));
+			}
 			finally
 			{
 				connectionState = ConnectionState.NotConnected;

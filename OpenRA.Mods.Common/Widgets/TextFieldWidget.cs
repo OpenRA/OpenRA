@@ -365,7 +365,6 @@ namespace OpenRA.Mods.Common.Widgets
 						Game.Renderer.SetClipboardText(Text.Substring(lowestIndex, highestIndex - lowestIndex));
 
 						RemoveSelectedText();
-						OnTextEdited();
 					}
 
 					break;
@@ -531,6 +530,7 @@ namespace OpenRA.Mods.Common.Widgets
 				ClearSelection();
 
 				CursorPosition = lowestIndex;
+				OnTextEdited();
 			}
 		}
 
@@ -566,10 +566,8 @@ namespace OpenRA.Mods.Common.Widgets
 			var cursorPosition = font.Measure(apparentText.Substring(0, CursorPosition));
 
 			var disabled = IsDisabled();
-			var state = disabled ? "textfield-disabled" :
-				HasKeyboardFocus ? "textfield-focused" :
-				Ui.MouseOverWidget == this || Children.Any(c => c == Ui.MouseOverWidget) ? "textfield-hover" :
-				"textfield";
+			var hover = Ui.MouseOverWidget == this || Children.Any(c => c == Ui.MouseOverWidget);
+			var state = WidgetUtils.GetStatefulImageName("textfield", disabled, false, hover, HasKeyboardFocus);
 
 			WidgetUtils.DrawPanel(state,
 				new Rectangle(pos.X, pos.Y, Bounds.Width, Bounds.Height));

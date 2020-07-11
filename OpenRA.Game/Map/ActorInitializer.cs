@@ -9,17 +9,29 @@
  */
 #endregion
 
+using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using OpenRA.Primitives;
+using OpenRA.Traits;
 
 namespace OpenRA
 {
 	public interface IActorInitializer
 	{
 		World World { get; }
-		T Get<T>() where T : IActorInit;
-		U Get<T, U>() where T : IActorInit<U>;
-		bool Contains<T>() where T : IActorInit;
+		T GetOrDefault<T>(TraitInfo info) where T : ActorInit;
+		T Get<T>(TraitInfo info) where T : ActorInit;
+		U GetValue<T, U>(TraitInfo info) where T : ValueActorInit<U>;
+		U GetValue<T, U>(TraitInfo info, U fallback) where T : ValueActorInit<U>;
+		bool Contains<T>(TraitInfo info) where T : ActorInit;
+
+		T GetOrDefault<T>() where T : ActorInit, ISingleInstanceInit;
+		T Get<T>() where T : ActorInit, ISingleInstanceInit;
+		U GetValue<T, U>() where T : ValueActorInit<U>, ISingleInstanceInit;
+		U GetValue<T, U>(U fallback) where T : ValueActorInit<U>, ISingleInstanceInit;
+		bool Contains<T>() where T : ActorInit, ISingleInstanceInit;
 	}
 
 	public class ActorInitializer : IActorInitializer
@@ -35,50 +47,229 @@ namespace OpenRA
 			Dict = dict;
 		}
 
-		public T Get<T>() where T : IActorInit { return Dict.Get<T>(); }
-		public U Get<T, U>() where T : IActorInit<U> { return Dict.Get<T>().Value(World); }
-		public bool Contains<T>() where T : IActorInit { return Dict.Contains<T>(); }
-	}
-
-	public interface IActorInit { }
-
-	public interface IActorInit<T> : IActorInit
-	{
-		T Value(World world);
-	}
-
-	public class LocationInit : IActorInit<CPos>
-	{
-		[FieldFromYamlKey]
-		readonly CPos value = CPos.Zero;
-
-		public LocationInit() { }
-		public LocationInit(CPos init) { value = init; }
-		public CPos Value(World world) { return value; }
-	}
-
-	public class OwnerInit : IActorInit<Player>
-	{
-		[FieldFromYamlKey]
-		public readonly string PlayerName = "Neutral";
-
-		Player player;
-
-		public OwnerInit() { }
-		public OwnerInit(string playerName) { PlayerName = playerName; }
-
-		public OwnerInit(Player player)
+		public T GetOrDefault<T>(TraitInfo info) where T : ActorInit
 		{
-			this.player = player;
-			PlayerName = player.InternalName;
+			var inits = Dict.WithInterface<T>();
+
+			// Traits tagged with an instance name prefer inits with the same name.
+			// If a more specific init is not available, fall back to an unnamed init.
+			// If duplicate inits are defined, take the last to match standard yaml override expectations
+			if (info != null && !string.IsNullOrEmpty(info.InstanceName))
+				return inits.LastOrDefault(i => i.InstanceName == info.InstanceName) ??
+					inits.LastOrDefault(i => string.IsNullOrEmpty(i.InstanceName));
+
+			// Untagged traits will only use untagged inits
+			return inits.LastOrDefault(i => string.IsNullOrEmpty(i.InstanceName));
+		}
+
+		public T Get<T>(TraitInfo info) where T : ActorInit
+		{
+			var init = GetOrDefault<T>(info);
+			if (init == null)
+			    throw new InvalidOperationException("TypeDictionary does not contain instance of type `{0}`".F(typeof(T)));
+
+			return init;
+		}
+
+		public U GetValue<T, U>(TraitInfo info) where T : ValueActorInit<U>
+		{
+			return Get<T>(info).Value;
+		}
+
+		public U GetValue<T, U>(TraitInfo info, U fallback) where T : ValueActorInit<U>
+		{
+			var init = GetOrDefault<T>(info);
+			return init != null ? init.Value : fallback;
+		}
+
+		public bool Contains<T>(TraitInfo info) where T : ActorInit { return GetOrDefault<T>(info) != null; }
+
+		public T GetOrDefault<T>() where T : ActorInit, ISingleInstanceInit
+		{
+			return Dict.GetOrDefault<T>();
+		}
+
+		public T Get<T>() where T : ActorInit, ISingleInstanceInit
+		{
+			return Dict.Get<T>();
+		}
+
+		public U GetValue<T, U>() where T : ValueActorInit<U>, ISingleInstanceInit
+		{
+			return Get<T>().Value;
+		}
+
+		public U GetValue<T, U>(U fallback) where T : ValueActorInit<U>, ISingleInstanceInit
+		{
+			var init = GetOrDefault<T>();
+			return init != null ? init.Value : fallback;
+		}
+
+		public bool Contains<T>() where T : ActorInit, ISingleInstanceInit { return GetOrDefault<T>() != null; }
+	}
+
+	/*
+	 * Things to be aware of when writing ActorInits:
+	 *
+	 * - ActorReference and ActorGlobal can dynamically create objects without calling a constructor.
+	 *   The object will be allocated directly then the best matching Initialize() method will be called to set valid state.
+	 * - ActorReference will always attempt to call Initialize(MiniYaml). ActorGlobal will use whichever one it first
+	 *   finds with an argument type that matches the given LuaValue.
+	 * - Most ActorInits will want to inherit either ValueActorInit<T> or CompositeActorInit which hide the low-level plumbing.
+	 * - Inits that reference actors should use ActorInitActorReference which allows actors to be referenced by name in map.yaml
+	 * - Inits that should only have a single instance defined on an actor should implement ISingleInstanceInit to allow
+	 *   direct queries and runtime enforcement.
+	 * - Inits that aren't ISingleInstanceInit should expose a ctor that accepts a TraitInfo to allow per-trait targeting.
+	 */
+	public abstract class ActorInit
+	{
+		[FieldLoader.Ignore]
+		public readonly string InstanceName;
+
+		protected ActorInit(string instanceName)
+		{
+			InstanceName = instanceName;
+		}
+
+		protected ActorInit() { }
+
+		public abstract MiniYaml Save();
+	}
+
+	public interface ISingleInstanceInit { }
+
+	public abstract class ValueActorInit<T> : ActorInit
+	{
+		protected readonly T value;
+
+		protected ValueActorInit(TraitInfo info, T value)
+			: base(info.InstanceName) { this.value = value; }
+
+		protected ValueActorInit(string instanceName, T value)
+			: base(instanceName) { this.value = value; }
+
+		protected ValueActorInit(T value) { this.value = value; }
+
+		public virtual T Value { get { return value; } }
+
+		public virtual void Initialize(MiniYaml yaml)
+		{
+			Initialize((T)FieldLoader.GetValue("value", typeof(T), yaml.Value));
+		}
+
+		public virtual void Initialize(T value)
+		{
+			var field = GetType().GetField("value", BindingFlags.NonPublic | BindingFlags.Instance);
+			if (field != null)
+				field.SetValue(this, value);
+		}
+
+		public override MiniYaml Save()
+		{
+			return new MiniYaml(FieldSaver.FormatValue(value));
+		}
+	}
+
+	public abstract class CompositeActorInit : ActorInit
+	{
+		protected CompositeActorInit(TraitInfo info)
+			: base(info.InstanceName) { }
+
+		protected CompositeActorInit()
+			: base() { }
+
+		public virtual void Initialize(MiniYaml yaml)
+		{
+			FieldLoader.Load(this, yaml);
+		}
+
+		public virtual void Initialize(Dictionary<string, object> values)
+		{
+			object value;
+			foreach (var field in GetType().GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
+			{
+				var sa = field.GetCustomAttributes<FieldLoader.SerializeAttribute>(false).DefaultIfEmpty(FieldLoader.SerializeAttribute.Default).First();
+				if (!sa.Serialize)
+					continue;
+
+				if (values.TryGetValue(field.Name, out value))
+					field.SetValue(this, value);
+			}
+		}
+
+		public virtual Dictionary<string, Type> InitializeArgs()
+		{
+			var dict = new Dictionary<string, Type>();
+			foreach (var field in GetType().GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
+			{
+				var sa = field.GetCustomAttributes<FieldLoader.SerializeAttribute>(false).DefaultIfEmpty(FieldLoader.SerializeAttribute.Default).First();
+				if (!sa.Serialize)
+					continue;
+
+				dict[field.Name] = field.FieldType;
+			}
+
+			return dict;
+		}
+
+		public override MiniYaml Save()
+		{
+			return FieldSaver.Save(this);
+		}
+	}
+
+	public class LocationInit : ValueActorInit<CPos>, ISingleInstanceInit
+	{
+		public LocationInit(CPos value)
+			: base(value) { }
+	}
+
+	public class OwnerInit : ActorInit, ISingleInstanceInit
+	{
+		public readonly string InternalName;
+		protected readonly Player value;
+
+		public OwnerInit(Player value)
+		{
+			this.value = value;
+			InternalName = value.InternalName;
+		}
+
+		public OwnerInit(string value)
+		{
+			InternalName = value;
 		}
 
 		public Player Value(World world)
 		{
-			if (player != null)
-				return player;
+			return value ?? world.Players.First(x => x.InternalName == InternalName);
+		}
 
-			return world.Players.First(x => x.InternalName == PlayerName);
+		public void Initialize(MiniYaml yaml)
+		{
+			var field = GetType().GetField("InternalName", BindingFlags.Public | BindingFlags.Instance);
+			if (field != null)
+				field.SetValue(this, yaml.Value);
+		}
+
+		public void Initialize(Player player)
+		{
+			var field = GetType().GetField("value", BindingFlags.NonPublic | BindingFlags.Instance);
+			if (field != null)
+				field.SetValue(this, player);
+		}
+
+		public override MiniYaml Save()
+		{
+			return new MiniYaml(InternalName);
+		}
+	}
+
+	public abstract class RuntimeFlagInit : ActorInit, ISuppressInitExport
+	{
+		public override MiniYaml Save()
+		{
+			throw new NotImplementedException("RuntimeFlagInit cannot be saved");
 		}
 	}
 }

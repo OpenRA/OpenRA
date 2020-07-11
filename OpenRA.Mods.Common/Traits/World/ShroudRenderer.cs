@@ -19,7 +19,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class ShroudRendererInfo : ITraitInfo
+	public class ShroudRendererInfo : TraitInfo
 	{
 		public readonly string Sequence = "shroud";
 		[SequenceReference("Sequence")]
@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int OverrideFogIndex = 15;
 
 		public readonly BlendMode ShroudBlend = BlendMode.Alpha;
-		public object Create(ActorInitializer init) { return new ShroudRenderer(init.World, this); }
+		public override object Create(ActorInitializer init) { return new ShroudRenderer(init.World, this); }
 	}
 
 	public sealed class ShroudRenderer : IRenderShroud, IWorldLoaded, INotifyActorDisposing
@@ -271,7 +271,7 @@ namespace OpenRA.Mods.Common.Traits
 			UpdateShroud(new ProjectedCellRegion(map, tl, br));
 		}
 
-		void UpdateShroud(ProjectedCellRegion region)
+		void UpdateShroud(IEnumerable<PPos> region)
 		{
 			foreach (var puv in region)
 			{
@@ -299,7 +299,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void IRenderShroud.RenderShroud(WorldRenderer wr)
 		{
-			UpdateShroud(map.ProjectedCellBounds);
+			UpdateShroud(map.ProjectedCells);
 			fogLayer.Draw(wr.Viewport);
 			shroudLayer.Draw(wr.Viewport);
 		}

@@ -4,12 +4,13 @@
 	Report: MEDTANK1.WAV
 	Projectile: Bullet
 		Speed: 562
-		Inaccuracy: 380
+		Inaccuracy: 128
+		InaccuracyType: PerCellIncrement
 		Image: 120mm
 	Warhead@1Dam: SpreadDamage
-		Spread: 256
-		Falloff: 100, 50, 25, 0
 		Damage: 2700
+		Spread: 512
+		Falloff: 100, 0
 		Versus:
 			none: 20
 			wall: 50
@@ -20,6 +21,7 @@
 			cy: 20
 			harvester: 50
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
+		DamageCalculationType: ClosestTargetablePosition
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 		InvalidTargets: Vehicle, Structure
@@ -59,10 +61,8 @@ DevBullet:
 	Report: TANKHVY1.WAV
 	Projectile: Bullet
 		Speed: 281
-		Inaccuracy: 0
 		Image: doubleblastbullet
 	Warhead@1Dam: SpreadDamage
-		Spread: 384
 		Damage: 6500
 		Versus:
 			none: 50
@@ -89,13 +89,11 @@ DevBullet:
 		Blockable: false
 		Shadow: true
 		LaunchAngle: 62
-		Inaccuracy: 768
 		ContrailLength: 20
 		Image: 155mm
 	Warhead@1Dam: SpreadDamage
-		Spread: 416
-		Falloff: 100, 65, 35, 20, 0
 		Damage: 4500
+		Spread: 1c0
 		Versus:
 			none: 125
 			wall: 100

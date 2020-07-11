@@ -28,9 +28,9 @@ namespace OpenRA.Mods.Common.Scripting
 	}
 
 	[Desc("Allows map scripts to attach triggers to this actor via the Triggers global.")]
-	public class ScriptTriggersInfo : ITraitInfo
+	public class ScriptTriggersInfo : TraitInfo
 	{
-		public object Create(ActorInitializer init) { return new ScriptTriggers(init.World, init.Self); }
+		public override object Create(ActorInitializer init) { return new ScriptTriggers(init.World, init.Self); }
 	}
 
 	public sealed class ScriptTriggers : INotifyIdle, INotifyDamage, INotifyKilled, INotifyProduction, INotifyOtherProduction,
@@ -118,7 +118,8 @@ namespace OpenRA.Mods.Common.Scripting
 				try
 				{
 					using (var b = e.Attacker.ToLuaValue(f.Context))
-						f.Function.Call(f.Self, b).Dispose();
+					using (var c = e.Damage.Value.ToLuaValue(f.Context))
+						f.Function.Call(f.Self, b, c).Dispose();
 				}
 				catch (Exception ex)
 				{

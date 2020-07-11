@@ -243,7 +243,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			return relative.Clamp(0.0f, 999.0f);
 		}
 
-		static float SumOfValues<TTraitInfo>(IEnumerable<Actor> actors, Func<Actor, int> getValue) where TTraitInfo : ITraitInfo
+		static float SumOfValues<TTraitInfo>(IEnumerable<Actor> actors, Func<Actor, int> getValue) where TTraitInfo : ITraitInfoInterface
 		{
 			var sum = 0;
 			foreach (var a in actors)
@@ -253,7 +253,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			return sum;
 		}
 
-		static float Average<TTraitInfo>(IEnumerable<Actor> actors, Func<Actor, int> getValue) where TTraitInfo : ITraitInfo
+		static float Average<TTraitInfo>(IEnumerable<Actor> actors, Func<Actor, int> getValue) where TTraitInfo : ITraitInfoInterface
 		{
 			var sum = 0;
 			var countActors = 0;

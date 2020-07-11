@@ -27,7 +27,10 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Locomotor used by the transformed actor. Must be defined on the World actor.")]
 		public readonly string Locomotor = null;
 
+		[Desc("Cursor to display when a move order can be issued at target location.")]
 		public readonly string Cursor = "move";
+
+		[Desc("Cursor to display when a move order cannot be issued at target location.")]
 		public readonly string BlockedCursor = "move-blocked";
 
 		[VoiceReference]

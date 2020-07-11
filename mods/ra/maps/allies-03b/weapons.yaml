@@ -1,5 +1,5 @@
 Colt45:
-	ValidTargets: Ground, Infantry, Truk
+	ValidTargets: Ground, GroundActor, Infantry, Truk
 	Warhead@1Dam: SpreadDamage
 		ValidTargets: Barrel, Infantry, Truk
 		Versus:
@@ -7,4 +7,4 @@ Colt45:
 
 BarrelExplode:
 	Warhead@1Dam: SpreadDamage
-		ValidTargets: Ground, Prisoner
+		ValidTargets: Ground, GroundActor, Prisoner

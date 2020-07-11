@@ -74,11 +74,11 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Grant condition when new layer is Subterranean and depth is lower than transition depth,
 			// revoke condition when new layer is not Subterranean and depth is at or higher than transition depth.
-			if (newLayer == ValidLayerType && depth < transitionDepth && conditionToken == ConditionManager.InvalidConditionToken)
-				conditionToken = conditionManager.GrantCondition(self, Info.Condition);
-			else if (newLayer != ValidLayerType && depth > transitionDepth && conditionToken != ConditionManager.InvalidConditionToken)
+			if (newLayer == ValidLayerType && depth < transitionDepth && conditionToken == Actor.InvalidConditionToken)
+				conditionToken = self.GrantCondition(Info.Condition);
+			else if (newLayer != ValidLayerType && depth > transitionDepth && conditionToken != Actor.InvalidConditionToken)
 			{
-				conditionToken = conditionManager.RevokeCondition(self, conditionToken);
+				conditionToken = self.RevokeCondition(conditionToken);
 				PlayTransitionAudioVisuals(self, self.Location);
 			}
 		}

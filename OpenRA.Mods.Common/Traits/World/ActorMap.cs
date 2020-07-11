@@ -18,12 +18,12 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class ActorMapInfo : ITraitInfo
+	public class ActorMapInfo : TraitInfo
 	{
 		[Desc("Size of partition bins (cells)")]
 		public readonly int BinSize = 10;
 
-		public object Create(ActorInitializer init) { return new ActorMap(init.World, this); }
+		public override object Create(ActorInitializer init) { return new ActorMap(init.World, this); }
 	}
 
 	public class ActorMap : IActorMap, ITick, INotifyCreated

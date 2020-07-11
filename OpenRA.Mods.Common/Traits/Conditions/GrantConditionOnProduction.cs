@@ -17,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Grants a condition when this actor produces a specific actor.")]
-	public class GrantConditionOnProductionInfo : ITraitInfo
+	public class GrantConditionOnProductionInfo : TraitInfo
 	{
 		[FieldLoader.Require]
 		[GrantedConditionReference]
@@ -35,15 +35,14 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool ShowSelectionBar = true;
 		public readonly Color SelectionBarColor = Color.Magenta;
 
-		public object Create(ActorInitializer init) { return new GrantConditionOnProduction(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new GrantConditionOnProduction(init.Self, this); }
 	}
 
-	public class GrantConditionOnProduction : INotifyCreated, INotifyProduction, ITick, ISync, ISelectionBar
+	public class GrantConditionOnProduction : INotifyProduction, ITick, ISync, ISelectionBar
 	{
 		readonly GrantConditionOnProductionInfo info;
-		ConditionManager conditionManager;
 
-		int token = ConditionManager.InvalidConditionToken;
+		int token = Actor.InvalidConditionToken;
 
 		[Sync]
 		int ticks;
@@ -54,31 +53,26 @@ namespace OpenRA.Mods.Common.Traits
 			ticks = info.Duration;
 		}
 
-		void INotifyCreated.Created(Actor self)
-		{
-			conditionManager = self.TraitOrDefault<ConditionManager>();
-		}
-
 		void INotifyProduction.UnitProduced(Actor self, Actor other, CPos exit)
 		{
 			if (info.Actors.Any() && !info.Actors.Select(a => a.ToLowerInvariant()).Contains(other.Info.Name))
 				return;
 
-			if (conditionManager != null && token == ConditionManager.InvalidConditionToken)
-				token = conditionManager.GrantCondition(self, info.Condition);
+			if (token == Actor.InvalidConditionToken)
+				token = self.GrantCondition(info.Condition);
 
 			ticks = info.Duration;
 		}
 
 		void ITick.Tick(Actor self)
 		{
-			if (info.Duration >= 0 && token != ConditionManager.InvalidConditionToken && --ticks < 0)
-				token = conditionManager.RevokeCondition(self, token);
+			if (info.Duration >= 0 && token != Actor.InvalidConditionToken && --ticks < 0)
+				token = self.RevokeCondition(token);
 		}
 
 		float ISelectionBar.GetValue()
 		{
-			if (!info.ShowSelectionBar || info.Duration < 0 || token == ConditionManager.InvalidConditionToken)
+			if (!info.ShowSelectionBar || info.Duration < 0 || token == Actor.InvalidConditionToken)
 				return 0;
 
 			return (float)ticks / info.Duration;

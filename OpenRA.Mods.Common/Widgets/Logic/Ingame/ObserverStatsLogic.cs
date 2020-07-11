@@ -525,22 +525,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			flag.GetImageCollection = () => "flags";
 			flag.GetImageName = () => player.Faction.InternalName;
 
-			var client = player.World.LobbyInfo.ClientWithIndex(player.ClientIndex);
 			var playerName = template.Get<LabelWidget>("PLAYER");
-			var playerNameFont = Game.Renderer.Fonts[playerName.Font];
-			var suffixLength = new CachedTransform<string, int>(s => playerNameFont.Measure(s).X);
-			var name = new CachedTransform<Pair<string, int>, string>(c =>
-				WidgetUtils.TruncateText(c.First, playerName.Bounds.Width - c.Second, playerNameFont));
-
-			playerName.GetText = () =>
-			{
-				var suffix = player.WinState == WinState.Undefined ? "" : " (" + player.WinState + ")";
-				if (client != null && client.State == Session.ClientState.Disconnected)
-					suffix = " (Gone)";
-
-				var sl = suffixLength.Update(suffix);
-				return name.Update(Pair.New(player.PlayerName, sl)) + suffix;
-			};
+			WidgetUtils.BindPlayerNameAndStatus(playerName, player);
 
 			playerName.GetColor = () => player.Color;
 		}

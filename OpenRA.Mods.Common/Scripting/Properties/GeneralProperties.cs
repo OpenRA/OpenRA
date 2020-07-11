@@ -122,7 +122,7 @@ namespace OpenRA.Mods.Common.Scripting
 		public WPos CenterPosition { get { return Self.CenterPosition; } }
 
 		[Desc("The direction that the actor is facing.")]
-		public int Facing
+		public WAngle Facing
 		{
 			get
 			{

@@ -19,9 +19,9 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		readonly Mobile mobile;
 		readonly IFacing facing;
-		readonly int desiredFacing;
+		readonly WAngle desiredFacing;
 
-		public Turn(Actor self, int desiredFacing)
+		public Turn(Actor self, WAngle desiredFacing)
 		{
 			mobile = self.TraitOrDefault<Mobile>();
 			facing = self.Trait<IFacing>();

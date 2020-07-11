@@ -96,13 +96,18 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 		{
 			regions = new List<Rectangle>();
 			offsets = new List<float2>();
+			var pngRectangle = new Rectangle(0, 0, png.Width, png.Height);
 
 			string frame;
 			for (var i = 0; png.EmbeddedData.TryGetValue("Frame[" + i + "]", out frame); i++)
 			{
 				// Format: x,y,width,height;offsetX,offsetY
 				var coords = frame.Split(';');
-				regions.Add(FieldLoader.GetValue<Rectangle>("Region", coords[0]));
+				var region = FieldLoader.GetValue<Rectangle>("Region", coords[0]);
+				if (!pngRectangle.Contains(region))
+					throw new InvalidDataException("Invalid frame regions {0} defined.".F(region));
+
+				regions.Add(region);
 				offsets.Add(FieldLoader.GetValue<float2>("Offset", coords[1]));
 			}
 		}
@@ -122,7 +127,7 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 				if (png.EmbeddedData.ContainsKey("FrameAmount"))
 					frameAmount = FieldLoader.GetValue<int>("FrameAmount", png.EmbeddedData["FrameAmount"]);
 				else
-					frameAmount = png.Width / frameSize.Width * png.Height / frameSize.Height;
+					frameAmount = (png.Width / frameSize.Width) * (png.Height / frameSize.Height);
 			}
 			else if (png.EmbeddedData.ContainsKey("FrameAmount"))
 			{
@@ -140,6 +145,10 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 				offset = float2.Zero;
 
 			var framesPerRow = png.Width / frameSize.Width;
+
+			var rows = (frameAmount + framesPerRow - 1) / framesPerRow;
+			if (png.Width < frameSize.Width * frameAmount / rows || png.Height < frameSize.Height * rows)
+				throw new InvalidDataException("Invalid frame size {0} and frame amount {1} defined.".F(frameSize, frameAmount));
 
 			regions = new List<Rectangle>();
 			offsets = new List<float2>();

@@ -21,7 +21,7 @@ Background@CONTENT_PANEL:
 			Align: Center
 			Font: MediumBold
 		Label@HEADER_TEMPLATE:
-			Y: 66 
+			Y: 66
 			Width: PARENT_RIGHT
 			Height: 16
 			Align: Center
@@ -43,7 +43,7 @@ Background@CONTENT_PANEL:
 							Width: 275
 							Height: 23
 						Label@REQUIRED:
-							X: 185 
+							X: 185
 							Width: 90
 							Height: 23
 							Align: Center

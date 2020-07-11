@@ -1071,7 +1071,7 @@ c2:
 		Facings: 8
 		Tick: 80
 
-c3:
+c11:
 	stand:
 		Facings: 8
 	panic-stand:

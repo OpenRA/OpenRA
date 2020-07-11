@@ -24,9 +24,9 @@ namespace OpenRA.Mods.Common.Activities
 		WPos start, end;
 		int length;
 		int ticks = 0;
-		int desiredFacing;
+		WAngle? desiredFacing;
 
-		public Drag(Actor self, WPos start, WPos end, int length, int facing = -1)
+		public Drag(Actor self, WPos start, WPos end, int length, WAngle? facing = null)
 		{
 			positionable = self.Trait<IPositionable>();
 			disableable = self.TraitOrDefault<IMove>() as IDisabledTrait;
@@ -39,8 +39,8 @@ namespace OpenRA.Mods.Common.Activities
 
 		protected override void OnFirstRun(Actor self)
 		{
-			if (desiredFacing != -1)
-				QueueChild(new Turn(self, desiredFacing));
+			if (desiredFacing.HasValue)
+				QueueChild(new Turn(self, desiredFacing.Value));
 		}
 
 		public override bool Tick(Actor self)

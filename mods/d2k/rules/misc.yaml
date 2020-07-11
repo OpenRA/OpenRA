@@ -222,8 +222,8 @@ upgrade.conyard:
 		Prerequisites: construction_yard
 		Queue: Upgrade
 		BuildLimit: 1
-		BuildDuration: 590
-		BuildDurationModifier: 40
+		BuildDuration: 625
+		BuildDurationModifier: 100
 		Description: Unlocks additional construction options \n(Large Concrete Slab, Rocket Turret)
 	Valued:
 		Cost: 1000
@@ -247,8 +247,8 @@ upgrade.barracks:
 		Prerequisites: barracks
 		Queue: Upgrade
 		BuildLimit: 1
-		BuildDuration: 290
-		BuildDurationModifier: 40
+		BuildDuration: 208
+		BuildDurationModifier: 100
 		Description: Unlocks additional infantry \n(Trooper, Engineer, Thumper Infantry)    \n\nRequired to unlock faction specific infantry \n(Atreides: Grenadier, Harkonnen: Sardaukar)
 	Valued:
 		Cost: 500
@@ -272,8 +272,8 @@ upgrade.light:
 		Prerequisites: light_factory
 		Queue: Upgrade
 		BuildLimit: 1
-		BuildDuration: 215
-		BuildDurationModifier: 40
+		BuildDuration: 268
+		BuildDurationModifier: 100
 		Description: Unlocks additional light unit \n(Missile Quad) \n\nRequired to unlock faction specific light unit \n(Ordos: Stealth Raider Trike)
 	Valued:
 		Cost: 400
@@ -297,8 +297,8 @@ upgrade.heavy:
 		Prerequisites: heavy_factory
 		Queue: Upgrade
 		BuildLimit: 1
-		BuildDuration: 380
-		BuildDurationModifier: 40
+		BuildDuration: 468
+		BuildDurationModifier: 100
 		Description: Unlocks additional construction options    \n(Repair Pad, IX Research Center) \n\nUnlocks additional heavy units \n(Siege Tank, Missile Tank, MCV)
 	Valued:
 		Cost: 800
@@ -323,8 +323,8 @@ upgrade.hightech:
 		Prerequisites: ~hightech.atreides, ~techlevel.superweapons
 		Queue: Upgrade
 		BuildLimit: 1
-		BuildDuration: 720
-		BuildDurationModifier: 40
+		BuildDuration: 937
+		BuildDurationModifier: 100
 		Description: Unlocks the Atreides Air Strike superweapon
 	Valued:
 		Cost: 1500

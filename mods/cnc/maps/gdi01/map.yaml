@@ -143,71 +143,71 @@ Actors:
 		Location: 46,55
 		Owner: Nod
 		Health: 50
-		Facing: 160
+		Facing: 640
 	Actor84: gun
 		Location: 41,55
 		Owner: Nod
 		Health: 50
-		Facing: 160
+		Facing: 640
 	Actor85: gun
 		Location: 49,55
 		Owner: Nod
 		Health: 19
-		Facing: 160
+		Facing: 640
 	Actor92: e1
 		Location: 57,45
 		Owner: Nod
-		Facing: 160
+		Facing: 640
 		SubCell: 2
 	Actor93: e1
 		Location: 56,41
 		Owner: Nod
-		Facing: 192
+		Facing: 768
 		SubCell: 2
 	Actor94: e1
 		Location: 48,41
 		Owner: Nod
-		Facing: 96
+		Facing: 384
 		SubCell: 3
 	Actor95: e1
 		Location: 59,45
 		Owner: Nod
-		Facing: 160
+		Facing: 640
 		SubCell: 1
 	Actor96: e1
 		Location: 46,50
 		Owner: Nod
-		Facing: 96
+		Facing: 384
 		SubCell: 3
 	Actor97: e1
 		Location: 48,47
 		Owner: Nod
-		Facing: 96
+		Facing: 384
 		SubCell: 1
 	Actor98: e1
 		Location: 38,43
 		Owner: Nod
-		Facing: 128
+		Facing: 512
 		SubCell: 4
 	Actor99: e1
 		Location: 38,43
 		Owner: Nod
-		Facing: 128
+		Facing: 512
 		SubCell: 1
 	Actor100: e1
 		Location: 48,41
 		Owner: Nod
-		Facing: 96
+		Facing: 384
 		SubCell: 2
 	Actor101: e1
 		Location: 41,39
 		Owner: Nod
-		Facing: 96
+		Facing: 384
 		SubCell: 4
 	Gunboat: boat
 		Location: 51,59
 		Owner: GDI
-		Facing: 64
+		Facing: 256
 	nod0: waypoint
 		Location: 36,39
 		Owner: Neutral

@@ -19,9 +19,9 @@ namespace OpenRA.Mods.Cnc.Traits
 	using FrozenActorAction = Action<FrozenUnderFogUpdatedByGps, FrozenActorLayer, GpsWatcher, FrozenActor>;
 
 	[Desc("Updates frozen actors of actors that change owners, are sold or die whilst having an active GPS power.")]
-	public class FrozenUnderFogUpdatedByGpsInfo : ITraitInfo, Requires<FrozenUnderFogInfo>
+	public class FrozenUnderFogUpdatedByGpsInfo : TraitInfo, Requires<FrozenUnderFogInfo>
 	{
-		public object Create(ActorInitializer init) { return new FrozenUnderFogUpdatedByGps(init); }
+		public override object Create(ActorInitializer init) { return new FrozenUnderFogUpdatedByGps(init); }
 	}
 
 	public class FrozenUnderFogUpdatedByGps : INotifyOwnerChanged, INotifyActorDisposing, IOnGpsRefreshed

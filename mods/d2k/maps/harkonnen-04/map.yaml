@@ -42,7 +42,7 @@ Players:
 		LockColor: True
 		Color: 9191FF
 		Allies: Fremen
-		Enemies: Harkonnen
+		Enemies: Harkonnen, Creeps
 		Bot: campaign
 	PlayerReference@Fremen:
 		Name: Fremen
@@ -51,7 +51,7 @@ Players:
 		LockColor: True
 		Color: DDDDDD
 		Allies: Atreides
-		Enemies: Harkonnen
+		Enemies: Harkonnen, Creeps
 		Bot: campaign
 
 Actors:
@@ -82,7 +82,6 @@ Actors:
 	FGunt1: medium_gun_turret
 		Location: 61,14
 		Owner: Fremen
-		TurretFacing: 0
 	Actor9: wall
 		Location: 63,14
 		Owner: Fremen
@@ -209,11 +208,9 @@ Actors:
 	AGunt1: medium_gun_turret
 		Location: 23,72
 		Owner: Atreides
-		TurretFacing: 0
 	AGunt2: medium_gun_turret
 		Location: 29,72
 		Owner: Atreides
-		TurretFacing: 0
 	Actor52: wall
 		Location: 30,72
 		Owner: Atreides
@@ -301,7 +298,6 @@ Actors:
 	FGunt2: medium_gun_turret
 		Location: 21,86
 		Owner: Fremen
-		TurretFacing: 0
 	Actor81: fremen
 		Location: 14,87
 		Owner: Fremen

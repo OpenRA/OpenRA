@@ -9,6 +9,7 @@
  */
 #endregion
 
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -22,6 +23,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Time (in ticks) between two repair steps.")]
 		public readonly int Interval = 24;
+
+		[Desc("Damage types used for the repair.")]
+		public readonly BitSet<DamageType> RepairDamageTypes = default(BitSet<DamageType>);
 
 		[NotificationReference("Speech")]
 		[Desc("The sound played when starting to repair a unit.")]

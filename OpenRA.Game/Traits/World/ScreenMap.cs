@@ -18,32 +18,24 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Traits
 {
-	public struct ActorBoundsPair : IEquatable<ActorBoundsPair>
+	public struct ActorBoundsPair
 	{
 		public readonly Actor Actor;
+		public readonly Polygon Bounds;
 
-		// TODO: Replace this with an int2[] polygon
-		public readonly Rectangle Bounds;
-
-		public ActorBoundsPair(Actor actor, Rectangle bounds) { Actor = actor; Bounds = bounds; }
-
-		public static bool operator ==(ActorBoundsPair me, ActorBoundsPair other) { return me.Actor == other.Actor && Equals(me.Bounds, other.Bounds); }
-		public static bool operator !=(ActorBoundsPair me, ActorBoundsPair other) { return !(me == other); }
+		public ActorBoundsPair(Actor actor, Polygon bounds) { Actor = actor; Bounds = bounds; }
 
 		public override int GetHashCode() { return Actor.GetHashCode() ^ Bounds.GetHashCode(); }
-
-		public bool Equals(ActorBoundsPair other) { return this == other; }
-		public override bool Equals(object obj) { return obj is ActorBoundsPair && Equals((ActorBoundsPair)obj); }
 
 		public override string ToString() { return "{0}->{1}".F(Actor.Info.Name, Bounds.GetType().Name); }
 	}
 
-	public class ScreenMapInfo : ITraitInfo
+	public class ScreenMapInfo : TraitInfo
 	{
 		[Desc("Size of partition bins (world pixels)")]
 		public readonly int BinSize = 250;
 
-		public object Create(ActorInitializer init) { return new ScreenMap(init.World, this); }
+		public override object Create(ActorInitializer init) { return new ScreenMap(init.World, this); }
 	}
 
 	public class ScreenMap : IWorldLoaded
@@ -198,7 +190,7 @@ namespace OpenRA.Traits
 			return partitionedMouseActors.InBox(r)
 				.Where(actorIsInWorld)
 				.Select(selectActorAndBounds)
-				.Where(x => r.IntersectsWith(x.Bounds));
+				.Where(x => x.Bounds.IntersectsWith(r));
 		}
 
 		public IEnumerable<Actor> RenderableActorsInBox(int2 a, int2 b)
@@ -224,12 +216,12 @@ namespace OpenRA.Traits
 			foreach (var a in addOrUpdateActors)
 			{
 				var mouseBounds = a.MouseBounds(worldRenderer);
-				if (!mouseBounds.Size.IsEmpty)
+				if (!mouseBounds.IsEmpty)
 				{
 					if (partitionedMouseActors.Contains(a))
-						partitionedMouseActors.Update(a, mouseBounds);
+						partitionedMouseActors.Update(a, mouseBounds.BoundingRect);
 					else
-						partitionedMouseActors.Add(a, mouseBounds);
+						partitionedMouseActors.Add(a, mouseBounds.BoundingRect);
 
 					partitionedMouseActorBounds[a] = new ActorBoundsPair(a, mouseBounds);
 				}
@@ -263,12 +255,12 @@ namespace OpenRA.Traits
 				foreach (var fa in kv.Value)
 				{
 					var mouseBounds = fa.MouseBounds;
-					if (!mouseBounds.Size.IsEmpty)
+					if (!mouseBounds.IsEmpty)
 					{
 						if (partitionedMouseFrozenActors[kv.Key].Contains(fa))
-							partitionedMouseFrozenActors[kv.Key].Update(fa, mouseBounds);
+							partitionedMouseFrozenActors[kv.Key].Update(fa, mouseBounds.BoundingRect);
 						else
-							partitionedMouseFrozenActors[kv.Key].Add(fa, mouseBounds);
+							partitionedMouseFrozenActors[kv.Key].Add(fa, mouseBounds.BoundingRect);
 					}
 					else
 						partitionedMouseFrozenActors[kv.Key].Remove(fa);
@@ -308,11 +300,10 @@ namespace OpenRA.Traits
 			return viewer != null ? bounds.Concat(partitionedRenderableFrozenActors[viewer].ItemBounds) : bounds;
 		}
 
-		public IEnumerable<Rectangle> MouseBounds(Player viewer)
+		public IEnumerable<Polygon> MouseBounds(Player viewer)
 		{
-			var bounds = partitionedMouseActors.ItemBounds;
-
-			return viewer != null ? bounds.Concat(partitionedMouseFrozenActors[viewer].ItemBounds) : bounds;
+			var bounds = partitionedMouseActorBounds.Values.Select(a => a.Bounds);
+			return viewer != null ? bounds.Concat(partitionedMouseFrozenActors[viewer].Items.Select(fa => fa.MouseBounds)) : bounds;
 		}
 	}
 }

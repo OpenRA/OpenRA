@@ -17,9 +17,9 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class PlayerRadarTerrainInfo : ITraitInfo, Requires<ShroudInfo>
+	public class PlayerRadarTerrainInfo : TraitInfo, Requires<ShroudInfo>
 	{
-		public object Create(ActorInitializer init)
+		public override object Create(ActorInitializer init)
 		{
 			return new PlayerRadarTerrain(init.Self);
 		}
@@ -91,17 +91,14 @@ namespace OpenRA.Mods.Common.Traits
 		public static Pair<int, int> GetColor(Map map, MPos uv)
 		{
 			var custom = map.CustomTerrain[uv];
-			int leftColor, rightColor;
-			if (custom == byte.MaxValue)
+			if (custom != byte.MaxValue)
 			{
-				var type = map.Rules.TileSet.GetTileInfo(map.Tiles[uv]);
-				leftColor = type != null ? type.LeftColor.ToArgb() : Color.Black.ToArgb();
-				rightColor = type != null ? type.RightColor.ToArgb() : Color.Black.ToArgb();
+				var c = map.Rules.TileSet[custom].Color.ToArgb();
+				return Pair.New(c, c);
 			}
-			else
-				leftColor = rightColor = map.Rules.TileSet[custom].Color.ToArgb();
 
-			return Pair.New(leftColor, rightColor);
+			var tc = map.GetTerrainColorPair(uv);
+			return Pair.New(tc.First.ToArgb(), tc.Second.ToArgb());
 		}
 	}
 }

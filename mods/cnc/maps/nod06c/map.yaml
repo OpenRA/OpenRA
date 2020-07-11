@@ -256,11 +256,11 @@ Actors:
 	Actor72: jeep
 		Location: 37,40
 		Owner: GDI
-		Facing: 96
+		Facing: 384
 	Actor73: jeep
 		Location: 47,18
 		Owner: GDI
-		Facing: 160
+		Facing: 640
 	Actor74: mtnk
 		Location: 17,39
 		Owner: GDI
@@ -273,11 +273,11 @@ Actors:
 	Actor83: mtnk
 		Location: 39,27
 		Owner: GDI
-		Facing: 96
+		Facing: 384
 	Actor85: jeep
 		Location: 29,30
 		Owner: GDI
-		Facing: 224
+		Facing: 896
 	Actor86: e3
 		Location: 35,36
 		Owner: GDI
@@ -293,7 +293,7 @@ Actors:
 	Actor89: e1
 		Location: 49,22
 		Owner: GDI
-		Facing: 128
+		Facing: 512
 		SubCell: 1
 	Actor92: e2
 		Location: 16,25
@@ -306,32 +306,32 @@ Actors:
 	Actor96: e3
 		Location: 36,25
 		Owner: GDI
-		Facing: 96
+		Facing: 384
 		SubCell: 2
 	Actor99: e1
 		Location: 30,26
 		Owner: GDI
-		Facing: 96
+		Facing: 384
 		SubCell: 4
 	Actor100: e1
 		Location: 48,21
 		Owner: GDI
-		Facing: 160
+		Facing: 640
 		SubCell: 4
 	Actor101: e3
 		Location: 51,42
 		Owner: GDI
-		Facing: 128
+		Facing: 512
 		SubCell: 2
 	Actor102: e3
 		Location: 52,42
 		Owner: GDI
-		Facing: 128
+		Facing: 512
 		SubCell: 2
 	Actor103: e1
 		Location: 40,30
 		Owner: GDI
-		Facing: 96
+		Facing: 384
 		SubCell: 2
 	Actor104: e2
 		Location: 47,35
@@ -340,7 +340,7 @@ Actors:
 	Actor105: e2
 		Location: 35,46
 		Owner: GDI
-		Facing: 128
+		Facing: 512
 		SubCell: 1
 	Actor114: e2
 		Location: 43,29
@@ -357,12 +357,12 @@ Actors:
 	Actor120: e2
 		Location: 23,24
 		Owner: GDI
-		Facing: 128
+		Facing: 512
 		SubCell: 4
 	Actor121: e2
 		Location: 25,24
 		Owner: GDI
-		Facing: 128
+		Facing: 512
 		SubCell: 3
 	Actor122: e2
 		Location: 27,31
@@ -432,7 +432,7 @@ Actors:
 	Atk2Actor2: e1
 		Location: 42,29
 		Owner: GDI
-		Facing: 96
+		Facing: 384
 		SubCell: 2
 	Atk2Actor3: e3
 		Location: 41,29
@@ -441,17 +441,17 @@ Actors:
 	Atk2Actor4: e1
 		Location: 40,30
 		Owner: GDI
-		Facing: 96
+		Facing: 384
 		SubCell: 1
 	Atk2Actor5: e1
 		Location: 43,29
 		Owner: GDI
-		Facing: 96
+		Facing: 384
 		SubCell: 1
 	Atk2Actor6: mtnk
 		Location: 42,30
 		Owner: GDI
-		Facing: 96
+		Facing: 384
 	Detonator: CRATE.plain
 		Location: 24, 22
 		Owner: GDI

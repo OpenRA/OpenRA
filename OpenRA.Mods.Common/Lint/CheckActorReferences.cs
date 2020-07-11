@@ -26,11 +26,11 @@ namespace OpenRA.Mods.Common.Lint
 			this.emitError = emitError;
 
 			foreach (var actorInfo in rules.Actors)
-				foreach (var traitInfo in actorInfo.Value.TraitInfos<ITraitInfo>())
+				foreach (var traitInfo in actorInfo.Value.TraitInfos<TraitInfo>())
 					CheckTrait(actorInfo.Value, traitInfo, rules);
 		}
 
-		void CheckTrait(ActorInfo actorInfo, ITraitInfo traitInfo, Ruleset rules)
+		void CheckTrait(ActorInfo actorInfo, TraitInfo traitInfo, Ruleset rules)
 		{
 			var actualType = traitInfo.GetType();
 			foreach (var field in actualType.GetFields())
@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Lint
 		}
 
 		void CheckActorReference(ActorInfo actorInfo,
-			ITraitInfo traitInfo,
+			TraitInfo traitInfo,
 			FieldInfo fieldInfo,
 			IReadOnlyDictionary<string, ActorInfo> dict,
 			ActorReferenceAttribute attribute)
@@ -81,7 +81,7 @@ namespace OpenRA.Mods.Common.Lint
 		}
 
 		void CheckWeaponReference(ActorInfo actorInfo,
-			ITraitInfo traitInfo,
+			TraitInfo traitInfo,
 			FieldInfo fieldInfo,
 			IReadOnlyDictionary<string, WeaponInfo> dict,
 			WeaponReferenceAttribute attribute)
@@ -92,14 +92,14 @@ namespace OpenRA.Mods.Common.Lint
 				if (value == null)
 					continue;
 
-				if (!dict.ContainsKey(value.ToLower()))
+				if (!dict.ContainsKey(value.ToLowerInvariant()))
 					emitError("{0}.{1}.{2}: Missing weapon `{3}`."
 						.F(actorInfo.Name, traitInfo.GetType().Name, fieldInfo.Name, value));
 			}
 		}
 
 		void CheckVoiceReference(ActorInfo actorInfo,
-			ITraitInfo traitInfo,
+			TraitInfo traitInfo,
 			FieldInfo fieldInfo,
 			IReadOnlyDictionary<string, SoundInfo> dict,
 			VoiceSetReferenceAttribute attribute)
@@ -110,7 +110,7 @@ namespace OpenRA.Mods.Common.Lint
 				if (value == null)
 					continue;
 
-				if (!dict.ContainsKey(value.ToLower()))
+				if (!dict.ContainsKey(value.ToLowerInvariant()))
 					emitError("{0}.{1}.{2}: Missing voice `{3}`."
 						.F(actorInfo.Name, traitInfo.GetType().Name, fieldInfo.Name, value));
 			}

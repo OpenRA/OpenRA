@@ -55,11 +55,12 @@ namespace OpenRA.Mods.Common.Scripting
 			}
 
 			if (entryLocation.HasValue && nextLocation.HasValue)
-				initDict.Add(new FacingInit(Context.World.Map.FacingBetween(CPos.Zero, CPos.Zero + (nextLocation.Value - entryLocation.Value), 0)));
+			{
+				var facing = Context.World.Map.FacingBetween(CPos.Zero, CPos.Zero + (nextLocation.Value - entryLocation.Value), WAngle.Zero);
+				initDict.Add(new FacingInit(facing));
+			}
 
-			var actor = Context.World.CreateActor(addToWorld, actorType, initDict);
-
-			return actor;
+			return Context.World.CreateActor(addToWorld, actorType, initDict);
 		}
 
 		void Move(Actor actor, CPos dest)
@@ -156,7 +157,7 @@ namespace OpenRA.Mods.Common.Scripting
 				// Scripted cargo aircraft must turn to default position before unloading.
 				// TODO: pass facing through UnloadCargo instead.
 				if (aircraft != null)
-					transport.QueueActivity(new Land(transport, Target.FromCell(transport.World, entryPath.Last()), WDist.FromCells(dropRange), aircraft.Info.InitialFacing));
+					transport.QueueActivity(new Land(transport, Target.FromCell(transport.World, entryPath.Last()), WDist.FromCells(dropRange), WAngle.FromFacing(aircraft.Info.InitialFacing)));
 
 				if (cargo != null)
 					transport.QueueActivity(new UnloadCargo(transport, WDist.FromCells(dropRange)));

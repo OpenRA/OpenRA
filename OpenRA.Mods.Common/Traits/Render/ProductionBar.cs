@@ -16,13 +16,28 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Visualizes the remaining build time of actor produced here.")]
-	class ProductionBarInfo : ConditionalTraitInfo, Requires<ProductionInfo>
+	class ProductionBarInfo : ConditionalTraitInfo, Requires<ProductionInfo>, IRulesetLoaded
 	{
 		[FieldLoader.Require]
 		[Desc("Production queue type, for actors with multiple queues.")]
 		public readonly string ProductionType = null;
 
 		public readonly Color Color = Color.SkyBlue;
+
+		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
+		{
+			// Per-actor queue
+			var queue = ai.TraitInfos<ProductionQueueInfo>().FirstOrDefault(q => ProductionType == q.Type);
+
+			// No queues available - check for classic production queues
+			if (queue == null)
+				queue = rules.Actors["player"].TraitInfos<ProductionQueueInfo>().FirstOrDefault(q => ProductionType == q.Type);
+
+			if (queue == null)
+				throw new YamlException("Can't find a queue with ProductionType '{0}'".F(ProductionType));
+
+			base.RulesetLoaded(rules, ai);
+		}
 
 		public override object Create(ActorInitializer init) { return new ProductionBar(init.Self, this); }
 	}

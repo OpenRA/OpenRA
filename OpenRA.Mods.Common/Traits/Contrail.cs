@@ -18,7 +18,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Draw a colored contrail behind this actor when they move.")]
-	class ContrailInfo : ITraitInfo, Requires<BodyOrientationInfo>
+	class ContrailInfo : TraitInfo, Requires<BodyOrientationInfo>
 	{
 		[Desc("Position relative to body")]
 		public readonly WVec Offset = WVec.Zero;
@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Use player remap color instead of a custom color?")]
 		public readonly bool UsePlayerColor = true;
 
-		public object Create(ActorInitializer init) { return new Contrail(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new Contrail(init.Self, this); }
 	}
 
 	class Contrail : ITick, IRender, INotifyAddedToWorld

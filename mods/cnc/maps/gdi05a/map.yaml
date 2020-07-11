@@ -463,11 +463,11 @@ Actors:
 	Actor140: gun
 		Location: 24,23
 		Owner: Nod
-		Facing: 96
+		Facing: 384
 	Actor141: gun
 		Location: 24,28
 		Owner: Nod
-		Facing: 96
+		Facing: 384
 	Actor152: silo
 		Location: 19,22
 		Owner: Nod
@@ -492,11 +492,11 @@ Actors:
 	Actor162: ltnk
 		Location: 9,34
 		Owner: Nod
-		Facing: 192
+		Facing: 768
 	Actor164: ltnk
 		Location: 29,37
 		Owner: Nod
-		Facing: 96
+		Facing: 384
 	Actor167: bggy
 		Location: 19,27
 		Owner: Nod
@@ -506,7 +506,7 @@ Actors:
 	Actor169: bggy
 		Location: 44,34
 		Owner: Nod
-		Facing: 32
+		Facing: 128
 	Actor171: e3
 		Location: 21,28
 		Owner: Nod
@@ -534,17 +534,17 @@ Actors:
 	Actor177: e1
 		Location: 29,40
 		Owner: Nod
-		Facing: 96
+		Facing: 384
 		SubCell: 1
 	Actor178: e3
 		Location: 26,43
 		Owner: Nod
-		Facing: 64
+		Facing: 256
 		SubCell: 3
 	Actor187: e1
 		Location: 27,27
 		Owner: Nod
-		Facing: 96
+		Facing: 384
 		SubCell: 3
 	Actor188: e3
 		Location: 28,21
@@ -553,7 +553,7 @@ Actors:
 	Actor189: e3
 		Location: 26,23
 		Owner: Nod
-		Facing: 96
+		Facing: 384
 		SubCell: 2
 	Actor190: e3
 		Location: 33,56
@@ -562,12 +562,12 @@ Actors:
 	Actor191: e3
 		Location: 33,38
 		Owner: Nod
-		Facing: 160
+		Facing: 640
 		SubCell: 4
 	Actor192: e3
 		Location: 26,27
 		Owner: Nod
-		Facing: 96
+		Facing: 384
 		SubCell: 1
 	Actor193: e3
 		Location: 36,51
@@ -580,27 +580,27 @@ Actors:
 	Actor195: e3
 		Location: 23,55
 		Owner: Nod
-		Facing: 224
+		Facing: 896
 		SubCell: 3
 	Actor196: e3
 		Location: 30,44
 		Owner: Nod
-		Facing: 192
+		Facing: 768
 		SubCell: 0
 	Actor197: e3
 		Location: 32,49
 		Owner: Nod
-		Facing: 160
+		Facing: 640
 		SubCell: 4
 	Actor198: e3
 		Location: 28,48
 		Owner: Nod
-		Facing: 160
+		Facing: 640
 		SubCell: 3
 	Actor199: e1
 		Location: 24,56
 		Owner: Nod
-		Facing: 224
+		Facing: 896
 		SubCell: 4
 	Actor200: e1
 		Location: 25,55
@@ -609,17 +609,17 @@ Actors:
 	Actor201: e1
 		Location: 17,46
 		Owner: Nod
-		Facing: 96
+		Facing: 384
 		SubCell: 0
 	Actor202: e1
 		Location: 15,48
 		Owner: Nod
-		Facing: 96
+		Facing: 384
 		SubCell: 2
 	Actor203: e1
 		Location: 17,46
 		Owner: Nod
-		Facing: 96
+		Facing: 384
 		SubCell: 4
 	waypoint27: waypoint
 		Location: 32,41
@@ -674,7 +674,7 @@ Actors:
 	GdiHarv: harv
 		Location: 48,53
 		Owner: AbandonedBase
-		Facing: 64
+		Facing: 256
 	GdiWeap: weap
 		Location: 50,55
 		Owner: AbandonedBase
@@ -727,7 +727,7 @@ Actors:
 	NodHarv: harv
 		Location: 22,26
 		Owner: Nod
-		Facing: 64
+		Facing: 256
 	GuardTank1: ltnk
 		Location: 18,27
 		Owner: Nod
@@ -757,5 +757,3 @@ Actors:
 		Owner: Neutral
 
 Rules: cnc|rules/campaign-maprules.yaml, cnc|rules/campaign-tooltips.yaml, cnc|rules/campaign-palettes.yaml, rules.yaml
-
-Weapons: weapons.yaml

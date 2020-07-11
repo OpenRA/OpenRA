@@ -15,7 +15,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Cnc.Traits
 {
 	[Desc("Show an indicator revealing the actor underneath the fog when a GPSWatcher is activated.")]
-	class GpsDotInfo : ITraitInfo
+	class GpsDotInfo : TraitInfo
 	{
 		[Desc("Sprite collection for symbols.")]
 		public readonly string Image = "gpsdot";
@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		[PaletteReference(true)]
 		public readonly string IndicatorPalettePrefix = "player";
 
-		public object Create(ActorInitializer init) { return new GpsDot(this); }
+		public override object Create(ActorInitializer init) { return new GpsDot(this); }
 	}
 
 	class GpsDot : INotifyCreated, INotifyAddedToWorld, INotifyRemovedFromWorld

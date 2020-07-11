@@ -110,7 +110,7 @@ MLRS:
 CYCL:
 	Buildable:
 		Prerequisites: ~disabled
-		
+
 GTWR:
 	Buildable:
 		Prerequisites: ~disabled
@@ -118,11 +118,11 @@ GTWR:
 SBAG:
 	Buildable:
 		Queue: Defence.GDI, Defence.Nod
-		
+
 GUN:
 	Buildable:
 		Queue: Defence.GDI, Defence.Nod
-		
+
 C3:
 	Tooltip:
 		Name: Farmer Mike

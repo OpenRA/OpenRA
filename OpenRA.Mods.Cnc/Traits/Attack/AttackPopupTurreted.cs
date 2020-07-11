@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			this.info = info;
 			turret = turrets.FirstOrDefault();
 			wsb = init.Self.TraitsImplementing<WithSpriteBody>().Single(w => w.Info.Name == info.Body);
-			skippedMakeAnimation = init.Contains<SkipMakeAnimsInit>();
+			skippedMakeAnimation = init.Contains<SkipMakeAnimsInit>(info);
 		}
 
 		protected override void Created(Actor self)

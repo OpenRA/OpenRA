@@ -15,14 +15,14 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits.Conditions
 {
 	[Desc("Grants a random condition from a predefined list to the actor when created.")]
-	public class GrantRandomConditionInfo : ITraitInfo
+	public class GrantRandomConditionInfo : TraitInfo
 	{
 		[FieldLoader.Require]
 		[GrantedConditionReference]
 		[Desc("List of conditions to grant from.")]
 		public readonly string[] Conditions = null;
 
-		public object Create(ActorInitializer init) { return new GrantRandomCondition(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new GrantRandomCondition(init.Self, this); }
 	}
 
 	public class GrantRandomCondition : INotifyCreated
@@ -40,8 +40,7 @@ namespace OpenRA.Mods.Common.Traits.Conditions
 				return;
 
 			var condition = info.Conditions.Random(self.World.SharedRandom);
-			var conditionManager = self.Trait<ConditionManager>();
-			conditionManager.GrantCondition(self, condition);
+			self.GrantCondition(condition);
 		}
 	}
 }

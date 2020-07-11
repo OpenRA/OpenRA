@@ -28,19 +28,12 @@ namespace OpenRA.Test
 					for (var y = 0; y < 12; y++)
 					{
 						var cell = new CPos(x, y);
-						try
-						{
-							Assert.That(cell, Is.EqualTo(cell.ToMPos(gridType).ToCPos(gridType)));
-						}
-						catch
-						{
-							// Known problem on isometric mods that shouldn't be visible to players as these are outside the map.
-							if (gridType == MapGridType.RectangularIsometric && y > x)
-								continue;
 
-							Console.WriteLine("Coordinate {0} on grid type {1} failed to convert back.".F(cell, gridType));
-							throw;
-						}
+						// Known problem on isometric mods that shouldn't be visible to players as these are outside the map.
+						if (gridType == MapGridType.RectangularIsometric && y > x)
+							continue;
+
+						Assert.That(cell, Is.EqualTo(cell.ToMPos(gridType).ToCPos(gridType)));
 					}
 				}
 			}

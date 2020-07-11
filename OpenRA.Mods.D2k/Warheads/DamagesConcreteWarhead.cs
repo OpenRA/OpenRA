@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System.Collections.Generic;
 using OpenRA.GameRules;
 using OpenRA.Mods.Common.Warheads;
 using OpenRA.Mods.D2k.Traits;

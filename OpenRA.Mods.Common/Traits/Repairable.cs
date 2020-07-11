@@ -21,7 +21,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This actor can be sent to a structure for repairs.")]
-	public class RepairableInfo : ITraitInfo, Requires<IHealthInfo>, Requires<IMoveInfo>, IObservesVariablesInfo
+	public class RepairableInfo : TraitInfo, Requires<IHealthInfo>, Requires<IMoveInfo>, IObservesVariablesInfo
 	{
 		[ActorReference]
 		[FieldLoader.Require]
@@ -37,7 +37,13 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Boolean expression defining the condition under which the regular (non-force) enter cursor is disabled.")]
 		public readonly BooleanExpression RequireForceMoveCondition = null;
 
-		public virtual object Create(ActorInitializer init) { return new Repairable(init.Self, this); }
+		[Desc("Cursor to display when able to be repaired at target actor.")]
+		public readonly string EnterCursor = "enter";
+
+		[Desc("Cursor to display when unable to be repaired at target actor.")]
+		public readonly string EnterBlockedCursor = "enter-blocked";
+
+		public override object Create(ActorInitializer init) { return new Repairable(init.Self, this); }
 	}
 
 	public class Repairable : IIssueOrder, IResolveOrder, IOrderVoice, INotifyCreated, IObservesVariables
@@ -65,7 +71,13 @@ namespace OpenRA.Mods.Common.Traits
 			get
 			{
 				if (!isAircraft)
-					yield return new EnterAlliedActorTargeter<BuildingInfo>("Repair", 5, CanRepairAt, _ => CanRepair() || CanRearm());
+					yield return new EnterAlliedActorTargeter<BuildingInfo>(
+						"Repair",
+						5,
+						Info.EnterCursor,
+						Info.EnterBlockedCursor,
+						CanRepairAt,
+						_ => CanRepair() || CanRearm());
 			}
 		}
 

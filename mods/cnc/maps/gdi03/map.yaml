@@ -400,7 +400,7 @@ Actors:
 	Actor117: gun
 		Location: 20,34
 		Owner: Nod
-		Facing: 160
+		Facing: 640
 	Actor118: v07
 		Location: 40,55
 		Owner: Neutral
@@ -416,140 +416,140 @@ Actors:
 	Actor125: gun
 		Location: 36,30
 		Owner: Nod
-		Facing: 96
+		Facing: 384
 	Actor127: gun
 		Location: 29,34
 		Owner: Nod
-		Facing: 96
+		Facing: 384
 	Actor129: bggy
 		Location: 22,29
 		Owner: Nod
-		Facing: 128
+		Facing: 512
 	Actor134: bggy
 		Location: 21,29
 		Owner: Nod
-		Facing: 128
+		Facing: 512
 	Actor135: bggy
 		Location: 28,50
 		Owner: Nod
-		Facing: 160
+		Facing: 640
 	Actor137: bggy
 		Location: 21,30
 		Owner: Nod
-		Facing: 128
+		Facing: 512
 	Actor138: bggy
 		Location: 22,30
 		Owner: Nod
-		Facing: 128
+		Facing: 512
 	Actor139: e3
 		Location: 17,28
 		Owner: Nod
-		Facing: 96
+		Facing: 384
 		SubCell: 0
 	Actor140: e1
 		Location: 19,29
 		Owner: Nod
-		Facing: 160
+		Facing: 640
 		SubCell: 4
 	Actor141: e1
 		Location: 18,28
 		Owner: Nod
-		Facing: 160
+		Facing: 640
 		SubCell: 4
 	Actor142: e1
 		Location: 19,28
 		Owner: Nod
-		Facing: 96
+		Facing: 384
 		SubCell: 0
 	Actor143: e1
 		Location: 31,32
 		Owner: Nod
-		Facing: 160
+		Facing: 640
 		SubCell: 0
 	Actor144: e1
 		Location: 34,32
 		Owner: Nod
-		Facing: 96
+		Facing: 384
 		SubCell: 4
 	Actor145: e3
 		Location: 34,31
 		Owner: Nod
-		Facing: 96
+		Facing: 384
 		SubCell: 4
 	Actor146: e3
 		Location: 34,32
 		Owner: Nod
-		Facing: 96
+		Facing: 384
 		SubCell: 1
 	Actor147: e3
 		Location: 18,29
 		Owner: Nod
-		Facing: 160
+		Facing: 640
 		SubCell: 3
 	Actor148: e3
 		Location: 30,51
 		Owner: Nod
-		Facing: 160
+		Facing: 640
 		SubCell: 0
 	Actor149: e1
 		Location: 20,42
 		Owner: Nod
-		Facing: 160
+		Facing: 640
 		SubCell: 0
 	Actor150: e1
 		Location: 23,44
 		Owner: Nod
-		Facing: 224
+		Facing: 896
 		SubCell: 4
 	Actor151: e1
 		Location: 24,33
 		Owner: Nod
-		Facing: 192
+		Facing: 768
 		SubCell: 0
 	Actor152: e1
 		Location: 22,34
 		Owner: Nod
-		Facing: 96
+		Facing: 384
 		SubCell: 4
 	Actor153: e1
 		Location: 27,33
 		Owner: Nod
-		Facing: 96
+		Facing: 384
 		SubCell: 2
 	Actor154: e1
 		Location: 30,34
 		Owner: Nod
-		Facing: 160
+		Facing: 640
 		SubCell: 1
 	Actor155: e1
 		Location: 14,33
 		Owner: Nod
-		Facing: 96
+		Facing: 384
 		SubCell: 4
 	Actor156: e1
 		Location: 34,45
 		Owner: Nod
-		Facing: 64
+		Facing: 256
 		SubCell: 1
 	Actor157: e1
 		Location: 36,45
 		Owner: Nod
-		Facing: 160
+		Facing: 640
 		SubCell: 1
 	Actor158: e3
 		Location: 30,32
 		Owner: Nod
-		Facing: 160
+		Facing: 640
 		SubCell: 3
 	Actor159: e3
 		Location: 21,32
 		Owner: Nod
-		Facing: 96
+		Facing: 384
 		SubCell: 3
 	Actor160: e3
 		Location: 14,32
 		Owner: Nod
-		Facing: 96
+		Facing: 384
 		SubCell: 3
 	Actor163: c6
 		Location: 42,56
@@ -570,52 +570,52 @@ Actors:
 	Actor167: e3
 		Location: 19,45
 		Owner: Nod
-		Facing: 160
+		Facing: 640
 		SubCell: 2
 	Actor168: e3
 		Location: 43,33
 		Owner: Nod
-		Facing: 96
+		Facing: 384
 		SubCell: 4
 	Actor177: e3
 		Location: 14,32
 		Owner: Nod
-		Facing: 96
+		Facing: 384
 		SubCell: 1
 	Actor179: e3
 		Location: 13,36
 		Owner: Nod
-		Facing: 96
+		Facing: 384
 		SubCell: 2
 	Actor180: e3
 		Location: 11,34
 		Owner: Nod
-		Facing: 64
+		Facing: 256
 		SubCell: 4
 	Actor181: e3
 		Location: 20,45
 		Owner: Nod
-		Facing: 160
+		Facing: 640
 		SubCell: 3
 	Actor182: e1
 		Location: 25,51
 		Owner: Nod
-		Facing: 160
+		Facing: 640
 		SubCell: 0
 	Actor183: e1
 		Location: 24,52
 		Owner: Nod
-		Facing: 160
+		Facing: 640
 		SubCell: 0
 	Actor184: e3
 		Location: 33,46
 		Owner: Nod
-		Facing: 160
+		Facing: 640
 		SubCell: 0
 	Actor185: e3
 		Location: 37,47
 		Owner: Nod
-		Facing: 160
+		Facing: 640
 		SubCell: 3
 	Actor186: e3
 		Location: 37,28
@@ -632,7 +632,7 @@ Actors:
 	Actor191: e3
 		Location: 24,46
 		Owner: Nod
-		Facing: 128
+		Facing: 512
 		SubCell: 1
 	Sam1: sam
 		Location: 28,52
@@ -653,17 +653,17 @@ Actors:
 	Sam4Guard0: e1
 		Location: 9,31
 		Owner: Nod
-		Facing: 96
+		Facing: 384
 		SubCell: 1
 	Sam4Guard1: e1
 		Location: 11,31
 		Owner: Nod
-		Facing: 96
+		Facing: 384
 		SubCell: 4
 	Sam4Guard2: e1
 		Location: 10,31
 		Owner: Nod
-		Facing: 96
+		Facing: 384
 		SubCell: 2
 	Sam4Guard3: e1
 		Location: 10,31

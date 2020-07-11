@@ -115,8 +115,8 @@ end
 
 SendParabombs = function()
 	local proxy = Actor.Create("powerproxy.parabombs", false, { Owner = soviets })
-	proxy.SendAirstrikeFrom(BadgerEntryPoint2.Location, ParabombPoint1.Location)
-	proxy.SendAirstrikeFrom(BadgerEntryPoint2.Location + CVec.New(0, 3), ParabombPoint2.Location)
+	proxy.TargetAirstrike(ParabombPoint1.CenterPosition, (BadgerEntryPoint2.CenterPosition - ParabombPoint1.CenterPosition).Facing)
+	proxy.TargetAirstrike(ParabombPoint2.CenterPosition, (Map.CenterOfCell(BadgerEntryPoint2.Location + CVec.New(0, 3)) - ParabombPoint2.CenterPosition).Facing)
 	proxy.Destroy()
 end
 
@@ -125,8 +125,8 @@ SendParatroopers = function()
 		local proxy = Actor.Create(para.proxy, false, { Owner = soviets })
 		local target = Map.CenterOfCell(para.drop)
 		local dir = target - Map.CenterOfCell(para.entry)
-		
-		local aircraft = proxy.ActivateParatroopers(target, dir.facing)
+
+		local aircraft = proxy.TargetParatroopers(target, dir.Facing)
 		Utils.Do(aircraft, function(a)
 			Trigger.OnPassengerExited(a, function(t, p)
 				IdleHunt(p)

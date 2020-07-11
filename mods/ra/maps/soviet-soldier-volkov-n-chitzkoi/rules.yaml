@@ -1,6 +1,6 @@
 World:
 	LuaScript:
-		Scripts: scu35ea.lua, scu35ea-AI.lua
+		Scripts: soviet-soldier-volkov-n-chitzkoi.lua, soviet-soldier-volkov-n-chitzkoi-AI.lua
 	MissionData:
 		Briefing: The Allies have stolen a new armor plating from us. With it, they can make structures nearly invulnerable. Their processing plant must be destroyed.\n\nFor this critical mission, we are allowing you access to Soldier Volkov. Use him and his cybernetic dog to sabotage the Allied control center, allowing our units in the southeast access to the alloy facility.\n\nThe mission is a success when Volkov destroys the control center, and our units destroy the alloy facility.\n
 		WinVideo: grvestne.vqa
@@ -14,18 +14,7 @@ World:
 			hard: Hard
 		Default: easy
 
-Player:
-	LobbyPrerequisiteCheckbox@GLOBALBOUNTY:
-		Enabled: False
-		Locked: True
-
-MSLO:
-	Buildable:
-		Prerequisites: ~disabled
-
 E7:
-	Buildable:
-		Prerequisites: ~disabled
 	Health:
 		HP: 25000
 	Armor:
@@ -34,10 +23,6 @@ E7:
 2TNK:
 	Buildable:
 		Prerequisites: ~vehicles.allies, ~techlevel.medium
-
-CA:
-	Buildable:
-		Prerequisites: ~syrd, ~techlevel.high
 
 C2:
 	Inherits@2: ^ArmedCivilian
@@ -68,14 +53,12 @@ V01:
 		Actor: healcrate
 
 HOSP:
-	Tooltip:
-		GenericName: Hospital
-		GenericVisibility: Enemy, Ally, Neutral
-		GenericStancePrefix: false
-	-TooltipDescription@ally:
-	-TooltipDescription@other:
 	SpawnActorOnDeath:
 		Actor: healcrate
+
+HEALCRATE:
+	Crate:
+		Lifetime: 0
 
 ^Vehicle:
 	-Demolishable:
@@ -86,8 +69,6 @@ HOSP:
 
 AFAC:
 	Inherits: BIO
-	Buildable:
-		Prerequisites: ~disabled
 	Health:
 		HP: 400000
 	Tooltip:
@@ -95,25 +76,16 @@ AFAC:
 		GenericName: Alloy Facility
 		GenericVisibility: Enemy, Ally, Neutral
 		GenericStancePrefix: false
-	Capturable:
-		Types: ~disabled
-	-EngineerRepairable:
-	-GpsDot:
 	RenderSprites:
 		Image: BIO
 
 CCEN:
 	Inherits: ATEK
-	Buildable:
-		Prerequisites: ~disabled
 	Tooltip:
 		Name: Control Center
 		GenericName: Control Center
 		GenericVisibility: Enemy, Ally, Neutral
 		GenericStancePrefix: false
-	Capturable:
-		Types: ~disabled
-	-EngineerRepairable:
 	GpsPower:
 		Prerequisites: ~disabled
 	Power:
@@ -123,8 +95,6 @@ CCEN:
 
 HGUN:
 	Inherits: GUN
-	Buildable:
-		Prerequisites: ~disabled
 	Valued:
 		Cost: 2800
 	Tooltip:
@@ -142,8 +112,6 @@ HGUN:
 
 ZKOI:
 	Inherits: DOG
-	Buildable:
-		Prerequisites: ~disabled
 	Valued:
 		Cost: 2000
 	Tooltip:
@@ -161,8 +129,6 @@ ZKOI:
 
 VOLK:
 	Inherits: GNRL
-	Buildable:
-		Prerequisites: ~disabled
 	Valued:
 		Cost: 3000
 	Tooltip:
@@ -189,8 +155,6 @@ VOLK:
 		VoiceSet: GenericVoice
 	Armament:
 		Weapon: VolkovWeapon
-	DetectCloaked:
-		CloakTypes: Cloak, Thief
 	RenderSprites:
 		Image: GNRL
 

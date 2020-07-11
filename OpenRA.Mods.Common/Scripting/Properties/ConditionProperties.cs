@@ -10,8 +10,8 @@
 #endregion
 
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
+using Eluant;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Scripting;
 using OpenRA.Traits;
@@ -31,14 +31,14 @@ namespace OpenRA.Mods.Common.Scripting
 
 		[Desc("Grant an external condition on this actor and return the revocation token.",
 			"Conditions must be defined on an ExternalConditions trait on the actor.",
-			"If duration > 0 the condition will be automatically revoked after the defined number of ticks")]
+			"If duration > 0 the condition will be automatically revoked after the defined number of ticks.")]
 		public int GrantCondition(string condition, int duration = 0)
 		{
 			var external = externalConditions
 				.FirstOrDefault(t => t.Info.Condition == condition && t.CanGrantCondition(Self, this));
 
 			if (external == null)
-				throw new InvalidDataException("Condition `{0}` has not been listed on an enabled ExternalCondition trait".F(condition));
+				throw new LuaException("Condition `{0}` has not been listed on an enabled ExternalCondition trait".F(condition));
 
 			return external.GrantCondition(Self, this, duration);
 		}

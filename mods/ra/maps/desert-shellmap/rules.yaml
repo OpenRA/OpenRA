@@ -27,42 +27,6 @@ World:
 ^ExistsInWorld:
 	GivesExperience:
 		ActorExperienceModifier: 0
-
-^Vehicle:
-	DamageMultiplier@UNKILLABLE:
-		RequiresCondition: unkillable
-		Modifier: 0
-	ExternalCondition@UNKILLABLE:
-		Condition: unkillable
-
-^Infantry:
-	DeathSounds@NORMAL:
-		VolumeMultiplier: 0.1
-	DeathSounds@BURNED:
-		VolumeMultiplier: 0.1
-	DeathSounds@ZAPPED:
-		VolumeMultiplier: 0.1
-	DamageMultiplier@UNKILLABLE:
-		RequiresCondition: unkillable
-		Modifier: 0
-	ExternalCondition@UNKILLABLE:
-		Condition: unkillable
-
-^Ship:
-	DamageMultiplier@UNKILLABLE:
-		RequiresCondition: unkillable
-		Modifier: 0
-	ExternalCondition@UNKILLABLE:
-		Condition: unkillable
-
-^Plane:
-	DamageMultiplier@UNKILLABLE:
-		RequiresCondition: unkillable
-		Modifier: 0
-	ExternalCondition@UNKILLABLE:
-		Condition: unkillable
-
-^Building:
 	DamageMultiplier@UNKILLABLE:
 		RequiresCondition: unkillable
 		Modifier: 0
@@ -98,9 +62,6 @@ Ant:
 		Prerequisites: barr
 	Health:
 		HP: 20000
-
-E7:
-	-AnnounceOnKill:
 
 powerproxy.paratroopers:
 	ParatroopersPower:

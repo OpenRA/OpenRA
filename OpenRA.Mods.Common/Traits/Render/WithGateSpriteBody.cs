@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		bool renderOpen;
 
 		public WithGateSpriteBody(ActorInitializer init, WithGateSpriteBodyInfo info)
-			: base(init, info, () => 0)
+			: base(init, info)
 		{
 			gateBodyInfo = info;
 			gate = init.Self.Trait<Gate>();

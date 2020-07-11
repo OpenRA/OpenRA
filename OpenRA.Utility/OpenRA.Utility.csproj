@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net461</TargetFramework>
+    <TargetFramework>net472</TargetFramework>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Optimize>true</Optimize>
     <UseVSHostingProcess>false</UseVSHostingProcess>
@@ -14,8 +14,7 @@
     <ExternalConsole>false</ExternalConsole>
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
     <CodeAnalysisRuleSet>..\OpenRA.ruleset</CodeAnalysisRuleSet>
-    <Configurations>Release;Debug;Release-x86</Configurations>
-    <ManagedExeLauncher Condition="('$(OS)' != 'Windows_NT')">mono </ManagedExeLauncher>
+    <Configurations>Release;Debug</Configurations>
   </PropertyGroup>
   <ItemGroup>
     <!-- Work around an issue where Rider does not detect files in the project root using the default glob -->
@@ -25,15 +24,13 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <Optimize>false</Optimize>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)' == 'Release-x86'">
+  <PropertyGroup Condition="'$(TargetPlatform)' == 'win-x86'">
     <Prefer32bit>true</Prefer32bit>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj" />
-    <ProjectReference Include="..\OpenRA.PostProcess\OpenRA.PostProcess.csproj">
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" />
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0" PrivateAssets="All" />
     <AdditionalFiles Include="../stylecop.json" />
   </ItemGroup>
   <Target Name="DisableAnalyzers" BeforeTargets="CoreCompile" Condition="'$(Configuration)'=='Release'">
@@ -41,9 +38,5 @@
     <ItemGroup Condition="'$(Configuration)'=='Release'">
       <Analyzer Remove="@(Analyzer)" />
     </ItemGroup>
-  </Target>
-  <Target Name="PostProcess" AfterTargets="Build" Inputs="$(TargetPath)" Outputs="$(IntermediateOutputPath)\$(TargetFileName).processed">
-    <Exec Command="$(ManagedExeLauncher)&quot;$(TargetDir)OpenRA.PostProcess.exe&quot; &quot;$(TargetPath)&quot; -LAA" />
-    <Touch Files="$(IntermediateOutputPath)\$(TargetFileName).processed" AlwaysCreate="true" />
   </Target>
 </Project>

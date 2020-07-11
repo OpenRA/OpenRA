@@ -23,12 +23,12 @@ namespace OpenRA.Traits
 	}
 
 	[Desc("Required for FrozenUnderFog to work. Attach this to the player actor.")]
-	public class FrozenActorLayerInfo : Requires<ShroudInfo>, ITraitInfo
+	public class FrozenActorLayerInfo : TraitInfo, Requires<ShroudInfo>
 	{
 		[Desc("Size of partition bins (cells)")]
 		public readonly int BinSize = 10;
 
-		public object Create(ActorInitializer init) { return new FrozenActorLayer(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new FrozenActorLayer(init.Self, this); }
 	}
 
 	public class FrozenActor
@@ -68,8 +68,7 @@ namespace OpenRA.Traits
 		public IRenderable[] Renderables = NoRenderables;
 		public Rectangle[] ScreenBounds = NoBounds;
 
-		// TODO: Replace this with an int2[] polygon
-		public Rectangle MouseBounds = Rectangle.Empty;
+		public Polygon MouseBounds = Polygon.Empty;
 
 		static readonly IRenderable[] NoRenderables = new IRenderable[0];
 		static readonly Rectangle[] NoBounds = new Rectangle[0];

@@ -14,7 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class GrantConditionOnTerrainInfo : ITraitInfo
+	public class GrantConditionOnTerrainInfo : TraitInfo
 	{
 		[FieldLoader.Require]
 		[GrantedConditionReference]
@@ -25,16 +25,15 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Terrain names to trigger the condition.")]
 		public readonly string[] TerrainTypes = { };
 
-		public object Create(ActorInitializer init) { return new GrantConditionOnTerrain(init, this); }
+		public override object Create(ActorInitializer init) { return new GrantConditionOnTerrain(init, this); }
 	}
 
-	public class GrantConditionOnTerrain : INotifyCreated, ITick
+	public class GrantConditionOnTerrain : ITick
 	{
 		readonly GrantConditionOnTerrainInfo info;
 		readonly TileSet tileSet;
 
-		ConditionManager conditionManager;
-		int conditionToken = ConditionManager.InvalidConditionToken;
+		int conditionToken = Actor.InvalidConditionToken;
 		string cachedTerrain;
 
 		public GrantConditionOnTerrain(ActorInitializer init, GrantConditionOnTerrainInfo info)
@@ -43,28 +42,23 @@ namespace OpenRA.Mods.Common.Traits
 			tileSet = init.World.Map.Rules.TileSet;
 		}
 
-		void INotifyCreated.Created(Actor self)
-		{
-			conditionManager = self.TraitOrDefault<ConditionManager>();
-		}
-
 		void ITick.Tick(Actor self)
 		{
-			var loc = self.Location;
-			if (conditionManager == null)
+			var cell = self.Location;
+			if (!self.World.Map.Contains(cell))
 				return;
 
 			// The terrain type may change between ticks without the actor moving
-			var currentTerrain = loc.Layer == 0 ? self.World.Map.GetTerrainInfo(loc).Type :
-					tileSet[self.World.GetCustomMovementLayers()[loc.Layer].GetTerrainIndex(loc)].Type;
+			var currentTerrain = cell.Layer == 0 ? self.World.Map.GetTerrainInfo(cell).Type :
+					tileSet[self.World.GetCustomMovementLayers()[cell.Layer].GetTerrainIndex(cell)].Type;
 
 			var wantsGranted = info.TerrainTypes.Contains(currentTerrain);
 			if (currentTerrain != cachedTerrain)
 			{
-				if (wantsGranted && conditionToken == ConditionManager.InvalidConditionToken)
-					conditionToken = conditionManager.GrantCondition(self, info.Condition);
-				else if (!wantsGranted && conditionToken != ConditionManager.InvalidConditionToken)
-					conditionToken = conditionManager.RevokeCondition(self, conditionToken);
+				if (wantsGranted && conditionToken == Actor.InvalidConditionToken)
+					conditionToken = self.GrantCondition(info.Condition);
+				else if (!wantsGranted && conditionToken != Actor.InvalidConditionToken)
+					conditionToken = self.RevokeCondition(conditionToken);
 			}
 
 			cachedTerrain = currentTerrain;

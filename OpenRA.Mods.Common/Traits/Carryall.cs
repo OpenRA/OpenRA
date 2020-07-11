@@ -21,7 +21,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Transports actors with the `Carryable` trait.")]
-	public class CarryallInfo : ITraitInfo, Requires<BodyOrientationInfo>, Requires<AircraftInfo>
+	public class CarryallInfo : TraitInfo, Requires<BodyOrientationInfo>, Requires<AircraftInfo>
 	{
 		[Desc("Delay (in ticks) on the ground while attaching an actor to the carryall.")]
 		public readonly int BeforeLoadDelay = 0;
@@ -50,10 +50,13 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Cursor to display when unable to drop off the passengers at location.")]
 		public readonly string DropOffBlockedCursor = "move-blocked";
 
+		[Desc("Cursor to display when picking up the passengers.")]
+		public readonly string PickUpCursor = "ability";
+
 		[VoiceReference]
 		public readonly string Voice = "Action";
 
-		public virtual object Create(ActorInitializer init) { return new Carryall(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new Carryall(init.Self, this); }
 	}
 
 	public class Carryall : INotifyKilled, ISync, ITick, IRender, INotifyActorDisposing, IIssueOrder, IResolveOrder,
@@ -79,7 +82,7 @@ namespace OpenRA.Mods.Common.Traits
 		public Actor Carryable { get; private set; }
 		public CarryallState State { get; private set; }
 
-		int cachedFacing;
+		WAngle cachedFacing;
 		IActorPreview[] carryablePreview;
 		HashSet<string> landableTerrainTypes;
 
@@ -266,7 +269,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			get
 			{
-				yield return new CarryallPickupOrderTargeter();
+				yield return new CarryallPickupOrderTargeter(Info);
 				yield return new DeployOrderTargeter("Unload", 10,
 				() => CanUnload() ? Info.UnloadCursor : Info.UnloadBlockedCursor);
 				yield return new CarryallDeliverUnitTargeter(aircraftInfo, Info);
@@ -332,8 +335,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		class CarryallPickupOrderTargeter : UnitOrderTargeter
 		{
-			public CarryallPickupOrderTargeter()
-				: base("PickupUnit", 5, "ability", false, true)
+			public CarryallPickupOrderTargeter(CarryallInfo info)
+				: base("PickupUnit", 5, info.PickUpCursor, false, true)
 			{
 			}
 

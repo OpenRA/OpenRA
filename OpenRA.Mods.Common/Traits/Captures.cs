@@ -46,8 +46,13 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Stance that the structure's previous owner needs to have for the capturing player to receive Experience.")]
 		public readonly Stance PlayerExperienceStances = Stance.Enemy;
 
+		[Desc("Cursor to display when the health of the target actor is above the sabotage threshold.")]
 		public readonly string SabotageCursor = "capture";
+
+		[Desc("Cursor to display when able to capture the target actor.")]
 		public readonly string EnterCursor = "enter";
+
+		[Desc("Cursor to display when unable to capture the target actor.")]
 		public readonly string EnterBlockedCursor = "enter-blocked";
 
 		[VoiceReference]

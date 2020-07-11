@@ -15,10 +15,10 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	class ImmobileInfo : ITraitInfo, IOccupySpaceInfo
+	class ImmobileInfo : TraitInfo, IOccupySpaceInfo
 	{
 		public readonly bool OccupiesSpace = true;
-		public object Create(ActorInitializer init) { return new Immobile(init, this); }
+		public override object Create(ActorInitializer init) { return new Immobile(init, this); }
 
 		public IReadOnlyDictionary<CPos, SubCell> OccupiedCells(ActorInfo info, CPos location, SubCell subCell = SubCell.Any)
 		{
@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Immobile(ActorInitializer init, ImmobileInfo info)
 		{
-			location = init.Get<LocationInit, CPos>();
+			location = init.GetValue<LocationInit, CPos>();
 			position = init.World.Map.CenterOfCell(location);
 
 			if (info.OccupiesSpace)

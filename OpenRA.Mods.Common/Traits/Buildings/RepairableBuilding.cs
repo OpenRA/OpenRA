@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -27,6 +28,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("The maximum amount of HP to repair each step.")]
 		public readonly int RepairStep = 7;
+
+		[Desc("Damage types used for the repair.")]
+		public readonly BitSet<DamageType> RepairDamageTypes = default(BitSet<DamageType>);
 
 		[Desc("The percentage repair bonus applied with increasing numbers of repairers.")]
 		public readonly int[] RepairBonuses = { 100, 150, 175, 200, 220, 240, 260, 280, 300 };
@@ -53,7 +57,6 @@ namespace OpenRA.Mods.Common.Traits
 		readonly IHealth health;
 		readonly Predicate<Player> isNotActiveAlly;
 		readonly Stack<int> repairTokens = new Stack<int>();
-		ConditionManager conditionManager;
 		int remainingTicks;
 
 		public readonly List<Player> Repairers = new List<Player>();
@@ -64,12 +67,6 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			health = self.Trait<IHealth>();
 			isNotActiveAlly = player => player.WinState != WinState.Undefined || player.Stances[self.Owner] != Stance.Ally;
-		}
-
-		protected override void Created(Actor self)
-		{
-			base.Created(self);
-			conditionManager = self.TraitOrDefault<ConditionManager>();
 		}
 
 		[Sync]
@@ -86,15 +83,15 @@ namespace OpenRA.Mods.Common.Traits
 
 		void UpdateCondition(Actor self)
 		{
-			if (conditionManager == null || string.IsNullOrEmpty(Info.RepairCondition))
+			if (string.IsNullOrEmpty(Info.RepairCondition))
 				return;
 
 			var currentRepairers = Repairers.Count;
 			while (Repairers.Count > repairTokens.Count)
-				repairTokens.Push(conditionManager.GrantCondition(self, Info.RepairCondition));
+				repairTokens.Push(self.GrantCondition(Info.RepairCondition));
 
 			while (Repairers.Count < repairTokens.Count && repairTokens.Count > 0)
-				conditionManager.RevokeCondition(self, repairTokens.Pop());
+				self.RevokeCondition(repairTokens.Pop());
 		}
 
 		public void RepairBuilding(Actor self, Player player)
@@ -166,7 +163,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				// activePlayers won't cause IndexOutOfRange because we capped the max amount of players
 				// to the length of the array
-				self.InflictDamage(self, new Damage(-(hpToRepair * Info.RepairBonuses[activePlayers - 1] / 100)));
+				self.InflictDamage(self, new Damage(-(hpToRepair * Info.RepairBonuses[activePlayers - 1] / 100), Info.RepairDamageTypes));
 
 				if (health.DamageState == DamageState.Undamaged)
 				{

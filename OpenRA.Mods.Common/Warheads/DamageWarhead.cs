@@ -38,26 +38,6 @@ namespace OpenRA.Mods.Common.Warheads
 			return base.IsValidAgainst(victim, firedBy);
 		}
 
-		public int DamageVersus(Actor victim, HitShapeInfo shapeInfo)
-		{
-			// If no Versus values are defined, DamageVersus would return 100 anyway, so we might as well do that early.
-			if (Versus.Count == 0)
-				return 100;
-
-			var armor = victim.TraitsImplementing<Armor>()
-				.Where(a => !a.IsTraitDisabled && a.Info.Type != null && Versus.ContainsKey(a.Info.Type) &&
-					(shapeInfo.ArmorTypes == default(BitSet<ArmorType>) || shapeInfo.ArmorTypes.Contains(a.Info.Type)))
-				.Select(a => Versus[a.Info.Type]);
-
-			return Util.ApplyPercentageModifiers(100, armor);
-		}
-
-		protected virtual void InflictDamage(Actor victim, Actor firedBy, HitShapeInfo hitshapeInfo, IEnumerable<int> damageModifiers)
-		{
-			var damage = Util.ApplyPercentageModifiers(Damage, damageModifiers.Append(DamageVersus(victim, hitshapeInfo)));
-			victim.InflictDamage(firedBy, new Damage(damage, DamageTypes));
-		}
-
 		public override void DoImpact(Target target, WarheadArgs args)
 		{
 			var firedBy = args.SourceActor;
@@ -77,12 +57,32 @@ namespace OpenRA.Mods.Common.Warheads
 				if (closestActiveShape == null)
 					return;
 
-				InflictDamage(victim, firedBy, closestActiveShape.Info, args.DamageModifiers);
+				InflictDamage(victim, firedBy, closestActiveShape, args);
 			}
 			else if (target.Type != TargetType.Invalid)
-				DoImpact(target.CenterPosition, firedBy, args.DamageModifiers);
+				DoImpact(target.CenterPosition, firedBy, args);
 		}
 
-		public abstract void DoImpact(WPos pos, Actor firedBy, IEnumerable<int> damageModifiers);
+		protected virtual int DamageVersus(Actor victim, HitShape shape, WarheadArgs args)
+		{
+			// If no Versus values are defined, DamageVersus would return 100 anyway, so we might as well do that early.
+			if (Versus.Count == 0)
+				return 100;
+
+			var armor = victim.TraitsImplementing<Armor>()
+				.Where(a => !a.IsTraitDisabled && a.Info.Type != null && Versus.ContainsKey(a.Info.Type) &&
+					(shape.Info.ArmorTypes.IsEmpty || shape.Info.ArmorTypes.Contains(a.Info.Type)))
+				.Select(a => Versus[a.Info.Type]);
+
+			return Util.ApplyPercentageModifiers(100, armor);
+		}
+
+		protected virtual void InflictDamage(Actor victim, Actor firedBy, HitShape shape, WarheadArgs args)
+		{
+			var damage = Util.ApplyPercentageModifiers(Damage, args.DamageModifiers.Append(DamageVersus(victim, shape, args)));
+			victim.InflictDamage(firedBy, new Damage(damage, DamageTypes));
+		}
+
+		protected abstract void DoImpact(WPos pos, Actor firedBy, WarheadArgs args);
 	}
 }

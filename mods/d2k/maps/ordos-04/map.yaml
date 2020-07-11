@@ -44,7 +44,7 @@ Players:
 		LockColor: True
 		Color: FE0000
 		Allies: Smugglers
-		Enemies: Ordos
+		Enemies: Ordos, Creeps
 		Bot: campaign
 	PlayerReference@Smugglers:
 		Name: Smugglers
@@ -53,7 +53,7 @@ Players:
 		LockColor: True
 		Color: 542209
 		Allies: Harkonnen
-		Enemies: Ordos
+		Enemies: Ordos, Creeps
 		Bot: campaign
 
 Actors:
@@ -66,7 +66,6 @@ Actors:
 	HGunTurret1: medium_gun_turret
 		Location: 38,3
 		Owner: Harkonnen
-		TurretFacing: 0
 	Actor3: wall
 		Location: 42,3
 		Owner: Smugglers
@@ -88,7 +87,6 @@ Actors:
 	HGunTurret2: medium_gun_turret
 		Location: 38,7
 		Owner: Harkonnen
-		TurretFacing: 0
 	Actor10: trooper
 		Location: 39,7
 		Owner: Harkonnen
@@ -179,7 +177,6 @@ Actors:
 	SGunTurret1: medium_gun_turret
 		Location: 42,10
 		Owner: Smugglers
-		TurretFacing: 0
 	Actor40: wall
 		Location: 43,10
 		Owner: Smugglers
@@ -237,7 +234,6 @@ Actors:
 	SGunTurret2: medium_gun_turret
 		Location: 42,13
 		Owner: Smugglers
-		TurretFacing: 0
 	Actor59: wall
 		Location: 43,13
 		Owner: Smugglers
@@ -304,7 +300,6 @@ Actors:
 	SGunTurret3: medium_gun_turret
 		Location: 57,20
 		Owner: Smugglers
-		TurretFacing: 0
 	HPower1: wind_trap
 		Location: 44,21
 		Owner: Harkonnen
@@ -314,7 +309,6 @@ Actors:
 	SGunTurret4: medium_gun_turret
 		Location: 63,21
 		Owner: Smugglers
-		TurretFacing: 0
 	Actor90: wall
 		Location: 64,21
 		Owner: Smugglers
@@ -336,7 +330,6 @@ Actors:
 	HGunTurret4: medium_gun_turret
 		Location: 47,29
 		Owner: Harkonnen
-		TurretFacing: 0
 	Actor97: wall
 		Location: 48,29
 		Owner: Harkonnen
@@ -355,7 +348,6 @@ Actors:
 	HGunTurret5: medium_gun_turret
 		Location: 11,32
 		Owner: Harkonnen
-		TurretFacing: 0
 	Actor103: light_inf
 		Location: 12,32
 		Owner: Harkonnen

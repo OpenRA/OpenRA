@@ -190,15 +190,15 @@ Actors:
 	Actor47: jeep
 		Location: 63,50
 		Owner: Greece
-		Facing: 128
+		Facing: 512
 	Actor49: jeep
 		Location: 62,50
 		Owner: Greece
-		Facing: 128
+		Facing: 512
 	Actor50: jeep
 		Location: 64,50
 		Owner: Greece
-		Facing: 128
+		Facing: 512
 	Actor55: e2
 		Location: 73,66
 		Owner: USSR
@@ -206,47 +206,47 @@ Actors:
 	Actor56: e1
 		Location: 62,67
 		Owner: USSR
-		Facing: 128
+		Facing: 512
 		SubCell: 4
 	Actor57: e1
 		Location: 67,67
 		Owner: USSR
-		Facing: 160
+		Facing: 640
 		SubCell: 3
 	Actor58: e1
 		Location: 65,67
 		Owner: USSR
-		Facing: 160
+		Facing: 640
 		SubCell: 3
 	Actor59: e1
 		Location: 56,60
 		Owner: USSR
-		Facing: 96
+		Facing: 384
 		SubCell: 1
 	Actor63: e1
 		Location: 58,60
 		Owner: USSR
-		Facing: 64
+		Facing: 256
 		SubCell: 1
 	Actor64: e1
 		Location: 64,49
 		Owner: Greece
-		Facing: 128
+		Facing: 512
 		SubCell: 1
 	Actor65: e1
 		Location: 63,49
 		Owner: Greece
-		Facing: 128
+		Facing: 512
 		SubCell: 0
 	Actor66: e1
 		Location: 62,49
 		Owner: Greece
-		Facing: 160
+		Facing: 640
 		SubCell: 2
 	Actor69: e2
 		Location: 62,56
 		Owner: USSR
-		Facing: 32
+		Facing: 128
 		SubCell: 1
 	Actor70: e2
 		Location: 62,56
@@ -255,12 +255,12 @@ Actors:
 	Actor71: e1
 		Location: 64,49
 		Owner: Greece
-		Facing: 128
+		Facing: 512
 		SubCell: 2
 	Actor72: e1
 		Location: 62,49
 		Owner: Greece
-		Facing: 128
+		Facing: 512
 		SubCell: 1
 	Actor48: fenc
 		Location: 53,60
@@ -371,12 +371,12 @@ Actors:
 	LabGuard2: e1
 		Location: 63,63
 		Owner: USSR
-		Facing: 96
+		Facing: 384
 		SubCell: 0
 	LabGuard3: e1
 		Location: 61,63
 		Owner: USSR
-		Facing: 128
+		Facing: 512
 		SubCell: 0
 	Patrol1: dog
 		Location: 63,59

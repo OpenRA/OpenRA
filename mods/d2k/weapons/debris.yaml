@@ -11,9 +11,9 @@ Debris:
 		BounceCount: 3
 		BounceRangeModifier: 20
 	Warhead@1Dam: SpreadDamage
-		Spread: 320
-		Falloff: 100, 60, 30, 15, 0
 		Damage: 1500
+		Spread: 512
+		Falloff: 100, 0
 		Versus:
 			none: 20
 			wall: 50
@@ -26,6 +26,7 @@ Debris:
 			cy: 20
 			harvester: 50
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
+		DamageCalculationType: ClosestTargetablePosition
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater
 		InvalidTargets: Vehicle, Structure
@@ -44,6 +45,7 @@ Debris2:
 		TrailInterval: 1
 	Warhead@1Dam: SpreadDamage
 		Damage: 2500
+		Spread: 1c0
 		Versus:
 			none: 90
 			wall: 5

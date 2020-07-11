@@ -14,22 +14,27 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Radar
 {
-	public class RadarColorFromTerrainInfo : ITraitInfo
+	public class RadarColorFromTerrainInfo : TraitInfo
 	{
 		[FieldLoader.Require]
 		public readonly string Terrain;
 
-		public object Create(ActorInitializer init) { return new RadarColorFromTerrain(init.Self, Terrain); }
+		public Color GetColorFromTerrain(World world)
+		{
+			var tileSet = world.Map.Rules.TileSet;
+			return tileSet[tileSet.GetTerrainIndex(Terrain)].Color;
+		}
+
+		public override object Create(ActorInitializer init) { return new RadarColorFromTerrain(init.Self, this); }
 	}
 
 	public class RadarColorFromTerrain : IRadarColorModifier
 	{
-		Color c;
+		readonly Color c;
 
-		public RadarColorFromTerrain(Actor self, string terrain)
+		public RadarColorFromTerrain(Actor self, RadarColorFromTerrainInfo info)
 		{
-			var tileSet = self.World.Map.Rules.TileSet;
-			c = tileSet[tileSet.GetTerrainIndex(terrain)].Color;
+			c = info.GetColorFromTerrain(self.World);
 		}
 
 		public bool VisibleOnRadar(Actor self) { return true; }

@@ -16,7 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.D2k.Traits
 {
-	class D2kFogPaletteInfo : ITraitInfo
+	class D2kFogPaletteInfo : TraitInfo
 	{
 		[PaletteDefinition]
 		[FieldLoader.Require]
@@ -31,7 +31,7 @@ namespace OpenRA.Mods.D2k.Traits
 		[Desc("Allow palette modifiers to change the palette.")]
 		public readonly bool AllowModifiers = true;
 
-		public object Create(ActorInitializer init) { return new D2kFogPalette(this); }
+		public override object Create(ActorInitializer init) { return new D2kFogPalette(this); }
 	}
 
 	class D2kFogPalette : ILoadsPalettes, IProvidesAssetBrowserPalettes

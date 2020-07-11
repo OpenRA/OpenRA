@@ -15,9 +15,9 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class TerrainRendererInfo : ITraitInfo
+	public class TerrainRendererInfo : TraitInfo
 	{
-		public object Create(ActorInitializer init) { return new TerrainRenderer(init.World); }
+		public override object Create(ActorInitializer init) { return new TerrainRenderer(init.World); }
 	}
 
 	public sealed class TerrainRenderer : IRenderTerrain, IWorldLoaded, INotifyActorDisposing

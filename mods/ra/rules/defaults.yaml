@@ -4,11 +4,15 @@
 	GivesExperience:
 		PlayerExperienceModifier: 1
 	ScriptTriggers:
-	ConditionManager:
 	RenderDebugState:
 
 ^SpriteActor:
 	BodyOrientation:
+	QuantizeFacingsFromSequence:
+	RenderSprites:
+
+^ClassicFacingSpriteActor:
+	ClassicFacingBodyOrientation:
 	QuantizeFacingsFromSequence:
 	RenderSprites:
 
@@ -111,34 +115,34 @@
 		Image: rank
 		Sequence: rank-veteran-1
 		Palette: effect
-		ReferencePoint: Bottom, Right
+		Position: BottomRight
+		Margin: 5, 6
 		ValidStances: Ally, Enemy, Neutral
 		RequiresCondition: rank-veteran == 1
-		ZOffset: 256
 	WithDecoration@RANK-2:
 		Image: rank
 		Sequence: rank-veteran-2
 		Palette: effect
-		ReferencePoint: Bottom, Right
+		Position: BottomRight
+		Margin: 5, 6
 		ValidStances: Ally, Enemy, Neutral
 		RequiresCondition: rank-veteran == 2
-		ZOffset: 256
 	WithDecoration@RANK-3:
 		Image: rank
 		Sequence: rank-veteran-3
 		Palette: effect
-		ReferencePoint: Bottom, Right
+		Position: BottomRight
+		Margin: 5, 6
 		ValidStances: Ally, Enemy, Neutral
 		RequiresCondition: rank-veteran == 3
-		ZOffset: 256
 	WithDecoration@RANK-ELITE:
 		Image: rank
 		Sequence: rank-elite
 		Palette: effect
-		ReferencePoint: Bottom, Right
+		Position: BottomRight
+		Margin: 5, 6
 		ValidStances: Ally, Enemy, Neutral
 		RequiresCondition: rank-elite
-		ZOffset: 256
 
 ^InfantryExperienceHospitalOverrides:
 	WithDecoration@RANK-1:
@@ -174,11 +178,11 @@
 		AttackAnythingCondition: stance-attackanything
 	AutoTargetPriority@DEFAULT:
 		RequiresCondition: !stance-attackanything
-		ValidTargets: Infantry, Vehicle, Water, Underwater, Defense, Mine
-		InvalidTargets: NoAutoTarget, WaterStructure
+		ValidTargets: Infantry, Vehicle, Ship, Underwater, Defense, Mine
+		InvalidTargets: NoAutoTarget
 	AutoTargetPriority@ATTACKANYTHING:
 		RequiresCondition: stance-attackanything
-		ValidTargets: Infantry, Vehicle, Water, Underwater, Structure, Defense, Mine
+		ValidTargets: Infantry, Vehicle, Ship, Underwater, Structure, Defense, Mine
 		InvalidTargets: NoAutoTarget
 
 ^AutoTargetGroundAssaultMove:
@@ -193,7 +197,7 @@
 ^AutoTargetAir:
 	AutoTarget:
 	AutoTargetPriority@DEFAULT:
-		ValidTargets: Air
+		ValidTargets: AirborneActor
 		InvalidTargets: NoAutoTarget
 
 ^AutoTargetAll:
@@ -201,11 +205,11 @@
 		AttackAnythingCondition: stance-attackanything
 	AutoTargetPriority@DEFAULT:
 		RequiresCondition: !stance-attackanything
-		ValidTargets: Infantry, Vehicle, Water, Underwater, Air, Defense, Mine
-		InvalidTargets: NoAutoTarget, WaterStructure
+		ValidTargets: Infantry, Vehicle, Ship, Underwater, AirborneActor, Defense, Mine
+		InvalidTargets: NoAutoTarget
 	AutoTargetPriority@ATTACKANYTHING:
 		RequiresCondition: stance-attackanything
-		ValidTargets: Infantry, Vehicle, Water, Underwater, Air, Structure, Defense, Mine
+		ValidTargets: Infantry, Vehicle, Ship, Underwater, AirborneActor, Structure, Defense, Mine
 		InvalidTargets: NoAutoTarget
 
 ^AutoTargetAllAssaultMove:
@@ -227,25 +231,22 @@
 ^Vehicle:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^IronCurtainable
-	Inherits@3: ^SpriteActor
+	Inherits@3: ^ClassicFacingSpriteActor
 	Inherits@bounty: ^GlobalBounty
 	Inherits@selection: ^SelectableCombatUnit
 	Huntable:
 	OwnerLostAction:
 		Action: Kill
-	DrawLineToTarget:
 	UpdatesPlayerStatistics:
 	Mobile:
 		PauseOnCondition: being-captured
 		Locomotor: wheeled
 		TurnSpeed: 5
-	SelectionDecorations:
-	WithSpriteControlGroupDecoration:
 	Selectable:
 		Bounds: 24, 24
 	Targetable:
 		RequiresCondition: !parachute
-		TargetTypes: Ground, Vehicle
+		TargetTypes: GroundActor, Vehicle
 	Targetable@REPAIR:
 		RequiresCondition: !parachute && damaged
 		TargetTypes: Repair
@@ -296,8 +297,6 @@
 		OpeningSequence: open
 		Offset: 0,0,200
 		RequiresCondition: parachute
-	BodyOrientation:
-		UseClassicFacingFudge: True
 	HitShape:
 	MapEditorData:
 		Categories: Vehicle
@@ -318,7 +317,6 @@
 	OwnerLostAction:
 		Action: Kill
 		DeathTypes: DefaultDeath
-	DrawLineToTarget:
 	Health:
 		HP: 2500
 	Armor:
@@ -327,15 +325,14 @@
 		Range: 4c0
 	Mobile:
 		Speed: 56
+		AlwaysTurnInPlace: true
 		Locomotor: foot
-	SelectionDecorations:
-	WithSpriteControlGroupDecoration:
 	Selectable:
 		Bounds: 18,20,0,-6
 		DecorationBounds: 12,18,0,-8
 	Targetable:
 		RequiresCondition: !parachute
-		TargetTypes: Ground, Infantry, Disguise
+		TargetTypes: GroundActor, Infantry, Disguise
 	Targetable@HEAL:
 		RequiresCondition: !parachute && damaged
 		TargetTypes: Heal
@@ -389,7 +386,7 @@
 	WithDecoration@REDCROSS:
 		Image: pips
 		Sequence: medic
-		ReferencePoint: Bottom, Right
+		Position: BottomRight
 		RequiresCondition: hospitalheal
 		BlinkInterval: 32
 		BlinkPattern: Off, On
@@ -458,7 +455,7 @@
 	RevealsShroud:
 		Range: 3c0
 	Passenger:
-		PipType: Gray
+		CustomPipType: gray
 	ProximityCaptor:
 		Types: CivilianInfantry
 	ScaredyCat:
@@ -488,16 +485,13 @@
 	Huntable:
 	OwnerLostAction:
 		Action: Kill
-	DrawLineToTarget:
 	UpdatesPlayerStatistics:
 	Mobile:
 		Locomotor: naval
-	SelectionDecorations:
-	WithSpriteControlGroupDecoration:
 	Selectable:
 		Bounds: 24,24
 	Targetable:
-		TargetTypes: Ground, Water, Ship
+		TargetTypes: WaterActor, Ship
 	Targetable@REPAIR:
 		RequiresCondition: damaged
 		TargetTypes: Repair
@@ -540,24 +534,21 @@
 	Huntable:
 	OwnerLostAction:
 		Action: Kill
-	DrawLineToTarget:
 	Armor:
 		Type: Light
 	UpdatesPlayerStatistics:
 	AppearsOnRadar:
 		UseLocation: true
-	SelectionDecorations:
-	WithSpriteControlGroupDecoration:
 	Selectable:
 		Bounds: 24,24
 	Aircraft:
 		AirborneCondition: airborne
 	Targetable@GROUND:
 		RequiresCondition: !airborne
-		TargetTypes: Ground, Vehicle
+		TargetTypes: GroundActor, Vehicle
 	Targetable@AIRBORNE:
 		RequiresCondition: airborne
-		TargetTypes: Air
+		TargetTypes: AirborneActor
 	Targetable@REPAIR:
 		RequiresCondition: !airborne && damaged
 		TargetTypes: Repair
@@ -624,8 +615,8 @@
 		String: Helicopter
 	Hovers@CRUISING:
 		RequiresCondition: cruising
-	BodyOrientation:
-		UseClassicFacingFudge: True
+	-BodyOrientation:
+	ClassicFacingBodyOrientation:
 
 ^BasicBuilding:
 	Inherits@1: ^ExistsInWorld
@@ -634,10 +625,8 @@
 	Inherits@shape: ^1x1Shape
 	Inherits@bounty: ^GlobalBounty
 	Inherits@selection: ^SelectableBuilding
-	SelectionDecorations:
-	WithSpriteControlGroupDecoration:
 	Targetable:
-		TargetTypes: Ground, C4, DetonateAttack, Structure
+		TargetTypes: GroundActor, C4, DetonateAttack, Structure
 	Building:
 		Dimensions: 1,1
 		Footprint: x
@@ -696,7 +685,7 @@
 	CapturableProgressBar:
 	CapturableProgressBlink:
 	SpawnActorsOnSell:
-		ActorTypes: e1,e1,e1,tecn,tecn
+		ActorTypes: e1,e1,e1,tecn,tecn2
 	MustBeDestroyed:
 		RequiredForShortGame: true
 	GpsDot:
@@ -709,14 +698,14 @@
 	WithBuildingRepairDecoration:
 		Image: allyrepair
 		Sequence: repair
-		ReferencePoint: Center
+		Position: Center
 		Palette: player
 		IsPlayerPalette: True
 
 ^ScienceBuilding:
 	Inherits: ^Building
 	SpawnActorsOnSell:
-		ActorTypes: e1,e1,e1,e1,tecn,tecn,tecn,tecn,tecn,tecn,tecn,tecn,tecn,tecn,e6,e6,e6,e6,e6,chan,chan,chan,chan
+		ActorTypes: e1,e1,e1,e1,tecn,tecn2,tecn,tecn2,tecn,tecn2,tecn,tecn2,tecn,tecn2,e6,e6,e6,e6,e6,chan,chan,chan,chan
 
 ^Defense:
 	Inherits: ^Building
@@ -724,12 +713,11 @@
 	Selectable:
 		Bounds: 24,24
 	Targetable:
-		TargetTypes: Ground, C4, DetonateAttack, Structure, Defense
+		TargetTypes: GroundActor, C4, DetonateAttack, Structure, Defense
 	MustBeDestroyed:
 		RequiredForShortGame: false
 	-GivesBuildableArea:
 	-AcceptsDeliveredCash:
-	DrawLineToTarget:
 	RenderRangeCircle:
 	Explodes:
 		Weapon: SmallBuildingExplode
@@ -768,7 +756,7 @@
 	LineBuildNode:
 		Types: wall
 	Targetable:
-		TargetTypes: Ground, DetonateAttack, Wall, NoAutoTarget
+		TargetTypes: GroundActor, DetonateAttack, Wall, NoAutoTarget
 	-GivesExperience:
 	RenderSprites:
 		Palette: effect
@@ -815,11 +803,11 @@
 	RevealsShroud:
 		Range: 1c0
 	WithDecoration@fake:
-		RequiresSelection: true
+		Position: Top
+		Margin: 0, 4
+		RequiresSelection: false
 		Image: pips
 		Sequence: tag-fake
-		ReferencePoint: Top
-		ZOffset: 256
 	-SpawnActorsOnSell:
 	-MustBeDestroyed:
 	MapEditorData:
@@ -827,20 +815,18 @@
 
 ^InfiltratableFake:
 	Targetable:
-		TargetTypes: Ground, Structure, C4, DetonateAttack, SpyInfiltrate
+		TargetTypes: GroundActor, Structure, C4, DetonateAttack, SpyInfiltrate
 	InfiltrateForDecoration:
 		Types: SpyInfiltrate
+		Position: Top
+		Margin: 0, 4
 		RequiresSelection: true
 		Image: pips
 		Sequence: tag-fake
-		ReferencePoint: Top
-		ZOffset: 256
 
 ^AmmoBox:
 	Inherits: ^TechBuilding
 	-Selectable:
-	SelectionDecorations:
-		RenderSelectionBars: False
 	Health:
 		HP: 1000
 	Explodes:
@@ -848,7 +834,7 @@
 	Tooltip:
 		Name: Ammo Box
 	Targetable:
-		TargetTypes: Ground, C4, DetonateAttack, Structure, NoAutoTarget
+		TargetTypes: GroundActor, C4, DetonateAttack, Structure, NoAutoTarget
 	Armor:
 		Type: Light
 	MapEditorData:
@@ -884,7 +870,6 @@
 	-Explodes:
 	-Explodes@CIVPANIC:
 	-Selectable:
-	-SelectionDecorations:
 	Tooltip:
 		Name: Field
 	-Targetable:
@@ -914,7 +899,7 @@
 	Health:
 		HP: 50000
 	Armor:
-		Type: Wood
+		Type: Tree
 	Targetable:
 		TargetTypes: Trees
 	WithDamageOverlay@SmallBurn:
@@ -978,7 +963,6 @@
 		Categories: Decoration
 
 ^BasicHusk:
-	Inherits@1: ^SpriteActor
 	Interactable:
 	Health:
 		HP: 28000
@@ -995,6 +979,7 @@
 
 ^Husk:
 	Inherits: ^BasicHusk
+	Inherits@2: ^ClassicFacingSpriteActor
 	Husk:
 		AllowedTerrain: Clear, Rough, Road, Ore, Gems, Beach
 	Burns:
@@ -1013,16 +998,15 @@
 	WithColoredOverlay@IDISABLE:
 		Palette: disabled
 	Targetable:
-		TargetTypes: Ground, Husk, NoAutoTarget
+		TargetTypes: GroundActor, Husk, NoAutoTarget
 		RequiresForceFire: true
 	Chronoshiftable:
 	Tooltip:
 		GenericName: Destroyed Vehicle
-	BodyOrientation:
-		UseClassicFacingFudge: True
 
 ^PlaneHusk:
 	Inherits: ^BasicHusk
+	Inherits@2: ^SpriteActor
 	WithShadow:
 		Offset: 43, 128, 0
 		ZOffset: -129
@@ -1041,6 +1025,7 @@
 
 ^HelicopterHusk:
 	Inherits: ^BasicHusk
+	Inherits@2: ^ClassicFacingSpriteActor
 	WithShadow:
 		Offset: 43, 128, 0
 		ZOffset: -129
@@ -1052,8 +1037,6 @@
 		CanSlide: True
 	FallsToEarth:
 		Explosion: UnitExplodeHeli
-	BodyOrientation:
-		UseClassicFacingFudge: True
 	-MapEditorData:
 	RevealOnDeath:
 		Duration: 60
@@ -1066,7 +1049,7 @@
 		Name: Bridge
 		ShowOwnerRow: false
 	Targetable:
-		TargetTypes: Ground, Water, Bridge
+		TargetTypes: GroundActor, WaterActor, Bridge
 		RequiresForceFire: true
 	Building:
 		Footprint: ____ ____
@@ -1147,7 +1130,6 @@
 		ShadowImage: parach-shadow
 		ShadowSequence: idle
 		RequiresCondition: parachute
-	ConditionManager:
 	MapEditorData:
 		Categories: System
 
@@ -1176,7 +1158,7 @@
 	Tooltip:
 		Name: Mine
 	Targetable:
-		TargetTypes: Ground, Mine
+		TargetTypes: GroundActor, Mine
 	Immobile:
 		OccupiesSpace: true
 	HitShape:
@@ -1209,7 +1191,7 @@
 		Sequence: offline
 		Palette: chrome
 		RequiresCondition: powerdown
-		ReferencePoint: Center
+		Position: Center
 		Offsets:
 			repairing: 10, 0
 	PowerMultiplier@POWERDOWN:
@@ -1235,25 +1217,60 @@
 	Power:
 		RequiresCondition: !disabled
 
+^Selectable:
+	Selectable:
+	SelectionDecorations:
+	WithSpriteControlGroupDecoration:
+		Margin: -2, 0
+	DrawLineToTarget:
+
 ^SelectableCombatUnit:
+	Inherits@selectiondecorations: ^Selectable
 	Selectable:
 		Priority: 10
 		PriorityModifiers: Ctrl
 
 ^SelectableSupportUnit:
+	Inherits@selectiondecorations: ^Selectable
 	Selectable:
 		Priority: 8
 		PriorityModifiers: Ctrl, Alt
 
 ^SelectableEconomicUnit:
+	Inherits@selectiondecorations: ^Selectable
 	Selectable:
 		Priority: 6
 		PriorityModifiers: Ctrl, Alt
 
 ^SelectableCombatBuilding:
+	Inherits@selectiondecorations: ^Selectable
 	Selectable:
 		Priority: 4
 
 ^SelectableBuilding:
+	Inherits@selectiondecorations: ^Selectable
 	Selectable:
 		Priority: 2
+
+^CargoPips:
+	WithCargoPipsDecoration:
+		Position: BottomLeft
+		Margin: 4, 3
+		RequiresSelection: true
+		CustomPipSequences:
+			gray: pip-gray
+			yellow: pip-yellow
+			blue: pip-blue
+			red: pip-red
+
+^PrimaryBuilding:
+	PrimaryBuilding:
+		PrimaryCondition: primary
+		SelectionNotification: PrimaryBuildingSelected
+	WithDecoration@primary:
+		RequiresCondition: primary
+		Position: Top
+		Margin: 0, 4
+		RequiresSelection: true
+		Image: pips
+		Sequence: tag-primary

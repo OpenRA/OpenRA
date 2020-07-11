@@ -15,7 +15,7 @@ using OpenRA.Primitives;
 namespace OpenRA.Traits
 {
 	[Desc("Add this to the Player actor definition.")]
-	public class PlayerColorPaletteInfo : ITraitInfo
+	public class PlayerColorPaletteInfo : TraitInfo
 	{
 		[PaletteReference]
 		[Desc("The name of the palette to base off.")]
@@ -34,7 +34,7 @@ namespace OpenRA.Traits
 		[Desc("Allow palette modifiers to change the palette.")]
 		public readonly bool AllowModifiers = true;
 
-		public object Create(ActorInitializer init) { return new PlayerColorPalette(this); }
+		public override object Create(ActorInitializer init) { return new PlayerColorPalette(this); }
 	}
 
 	public class PlayerColorPalette : ILoadsPlayerPalettes

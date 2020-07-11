@@ -9,8 +9,8 @@
  */
 #endregion
 
-using System.Collections.Generic;
 using System.Linq;
+using OpenRA.GameRules;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Warheads
 		[Desc("Damage will be applied to actors in this area. A value of zero means only targeted actor will be damaged.")]
 		public readonly WDist Spread = WDist.Zero;
 
-		public override void DoImpact(WPos pos, Actor firedBy, IEnumerable<int> damageModifiers)
+		protected override void DoImpact(WPos pos, Actor firedBy, WarheadArgs args)
 		{
 			if (Spread == WDist.Zero)
 				return;
@@ -41,11 +41,15 @@ namespace OpenRA.Mods.Common.Warheads
 					.Select(s => Pair.New(s, s.DistanceFromEdge(victim, pos)))
 					.MinByOrDefault(s => s.Second);
 
-				// Cannot be damaged without an active HitShape or if HitShape is outside Spread
-				if (closestActiveShape.First == null || closestActiveShape.Second > Spread)
+				// Cannot be damaged without an active HitShape.
+				if (closestActiveShape.First == null)
 					continue;
 
-				InflictDamage(victim, firedBy, closestActiveShape.First.Info, damageModifiers);
+				// Cannot be damaged if HitShape is outside Spread.
+				if (closestActiveShape.Second > Spread)
+					continue;
+
+				InflictDamage(victim, firedBy, closestActiveShape.First, args);
 			}
 		}
 	}

@@ -230,9 +230,10 @@ namespace OpenRA
 		public CellLayer<TerrainTile> Tiles { get; private set; }
 		public CellLayer<ResourceTile> Resources { get; private set; }
 		public CellLayer<byte> Height { get; private set; }
+		public CellLayer<byte> Ramp { get; private set; }
 		public CellLayer<byte> CustomTerrain { get; private set; }
 
-		public ProjectedCellRegion ProjectedCellBounds { get; private set; }
+		public PPos[] ProjectedCells { get; private set; }
 		public CellRegion AllCells { get; private set; }
 		public List<CPos> AllEdgeCells { get; private set; }
 
@@ -301,10 +302,12 @@ namespace OpenRA
 			Tiles = new CellLayer<TerrainTile>(Grid.Type, size);
 			Resources = new CellLayer<ResourceTile>(Grid.Type, size);
 			Height = new CellLayer<byte>(Grid.Type, size);
+			Ramp = new CellLayer<byte>(Grid.Type, size);
 			if (Grid.MaximumTerrainHeight > 0)
 			{
 				Height.CellEntryChanged += UpdateProjection;
 				Tiles.CellEntryChanged += UpdateProjection;
+				Tiles.CellEntryChanged += UpdateRamp;
 			}
 
 			Tiles.Clear(tileRef);
@@ -336,6 +339,7 @@ namespace OpenRA
 			Tiles = new CellLayer<TerrainTile>(Grid.Type, size);
 			Resources = new CellLayer<ResourceTile>(Grid.Type, size);
 			Height = new CellLayer<byte>(Grid.Type, size);
+			Ramp = new CellLayer<byte>(Grid.Type, size);
 
 			using (var s = Package.GetStream("map.bin"))
 			{
@@ -384,6 +388,7 @@ namespace OpenRA
 
 			if (Grid.MaximumTerrainHeight > 0)
 			{
+				Tiles.CellEntryChanged += UpdateRamp;
 				Tiles.CellEntryChanged += UpdateProjection;
 				Height.CellEntryChanged += UpdateProjection;
 			}
@@ -422,7 +427,21 @@ namespace OpenRA
 			foreach (var uv in AllCells.MapCoords)
 				CustomTerrain[uv] = byte.MaxValue;
 
+			// Cache initial ramp state
+			var tileset = Rules.TileSet;
+			foreach (var uv in AllCells)
+			{
+				var tile = tileset.GetTileInfo(Tiles[uv]);
+				Ramp[uv] = tile != null ? tile.RampType : (byte)0;
+			}
+
 			AllEdgeCells = UpdateEdgeCells();
+		}
+
+		void UpdateRamp(CPos cell)
+		{
+			var tile = Rules.TileSet.GetTileInfo(Tiles[cell]);
+			Ramp[cell] = tile != null ? tile.RampType : (byte)0;
 		}
 
 		void InitializeCellProjection()
@@ -531,12 +550,8 @@ namespace OpenRA
 				return new[] { (PPos)uv };
 
 			// Odd-height ramps get bumped up a level to the next even height layer
-			if ((height & 1) == 1)
-			{
-				var ti = Rules.TileSet.GetTileInfo(Tiles[uv]);
-				if (ti != null && ti.RampType != 0)
-					height += 1;
-			}
+			if ((height & 1) == 1 && Ramp[uv] != 0)
+				height += 1;
 
 			var candidates = new List<PPos>();
 
@@ -647,6 +662,34 @@ namespace OpenRA
 			return dataStream.ToArray();
 		}
 
+		public Pair<Color, Color> GetTerrainColorPair(MPos uv)
+		{
+			Color left, right;
+			var tileset = Rules.TileSet;
+			var type = tileset.GetTileInfo(Tiles[uv]);
+			if (type != null)
+			{
+				if (type.MinColor != type.MaxColor)
+				{
+					left = Exts.ColorLerp(Game.CosmeticRandom.NextFloat(), type.MinColor, type.MaxColor);
+					right = Exts.ColorLerp(Game.CosmeticRandom.NextFloat(), type.MinColor, type.MaxColor);
+				}
+				else
+					left = right = type.MinColor;
+
+				if (tileset.MinHeightColorBrightness != 1.0f || tileset.MaxHeightColorBrightness != 1.0f)
+				{
+					var scale = float2.Lerp(tileset.MinHeightColorBrightness, tileset.MaxHeightColorBrightness, Height[uv] * 1f / Grid.MaximumTerrainHeight);
+					left = Color.FromArgb((int)(scale * left.R).Clamp(0, 255), (int)(scale * left.G).Clamp(0, 255), (int)(scale * left.B).Clamp(0, 255));
+					right = Color.FromArgb((int)(scale * right.R).Clamp(0, 255), (int)(scale * right.G).Clamp(0, 255), (int)(scale * right.B).Clamp(0, 255));
+				}
+			}
+			else
+				left = right = Color.Black;
+
+			return Pair.New(left, right);
+		}
+
 		public byte[] SavePreview()
 		{
 			var tileset = Rules.TileSet;
@@ -686,24 +729,18 @@ namespace OpenRA
 				var stride = bitmapWidth * 4;
 				var pxStride = 4;
 				var minimapData = new byte[stride * height];
-				Color leftColor, rightColor;
+				Pair<Color, Color> terrainColor = default(Pair<Color, Color>);
+
 				for (var y = 0; y < height; y++)
 				{
 					for (var x = 0; x < width; x++)
 					{
 						var uv = new MPos(x + Bounds.Left, y + Bounds.Top);
-						var actorsThere = positions.Where(ap => ap.First == uv);
-						if (actorsThere.Any())
-						{
-							leftColor = rightColor = actorsThere.First().Second;
-						}
-						else
-						{
-							// Cell contains terrain
-							var type = tileset.GetTileInfo(Tiles[uv]);
-							leftColor = type != null ? type.LeftColor : Color.Black;
-							rightColor = type != null ? type.RightColor : Color.Black;
-						}
+
+						// FirstOrDefault will return a Pair(MPos.Zero, Color.Transparent) if positions is empty
+						var actorColor = positions.FirstOrDefault(ap => ap.First == uv).Second;
+						if (actorColor.A == 0)
+							terrainColor = GetTerrainColorPair(uv);
 
 						if (isRectangularIsometric)
 						{
@@ -713,28 +750,31 @@ namespace OpenRA
 							if (x + dx > 0)
 							{
 								var z = y * stride + xOffset - pxStride;
-								minimapData[z++] = leftColor.R;
-								minimapData[z++] = leftColor.G;
-								minimapData[z++] = leftColor.B;
-								minimapData[z++] = leftColor.A;
+								var c = actorColor.A == 0 ? terrainColor.First : actorColor;
+								minimapData[z++] = c.R;
+								minimapData[z++] = c.G;
+								minimapData[z++] = c.B;
+								minimapData[z] = c.A;
 							}
 
 							if (xOffset < stride)
 							{
 								var z = y * stride + xOffset;
-								minimapData[z++] = rightColor.R;
-								minimapData[z++] = rightColor.G;
-								minimapData[z++] = rightColor.B;
-								minimapData[z++] = rightColor.A;
+								var c = actorColor.A == 0 ? terrainColor.Second : actorColor;
+								minimapData[z++] = c.R;
+								minimapData[z++] = c.G;
+								minimapData[z++] = c.B;
+								minimapData[z] = c.A;
 							}
 						}
 						else
 						{
 							var z = y * stride + pxStride * x;
-							minimapData[z++] = leftColor.R;
-							minimapData[z++] = leftColor.G;
-							minimapData[z++] = leftColor.B;
-							minimapData[z++] = leftColor.A;
+							var c = actorColor.A == 0 ? terrainColor.First : actorColor;
+							minimapData[z++] = c.R;
+							minimapData[z++] = c.G;
+							minimapData[z++] = c.B;
+							minimapData[z] = c.A;
 						}
 					}
 				}
@@ -770,8 +810,9 @@ namespace OpenRA
 
 		bool ContainsAllProjectedCellsCovering(MPos uv)
 		{
+			// PERF: Checking the bounds directly here is the same as calling Contains((PPos)uv) but saves an allocation
 			if (Grid.MaximumTerrainHeight == 0)
-				return Contains((PPos)uv);
+				return Bounds.Contains(uv.U, uv.V);
 
 			// If the cell has no valid projection, then we're off the map.
 			var projectedCells = ProjectedCellsCovering(uv);
@@ -781,6 +822,7 @@ namespace OpenRA
 			foreach (var puv in projectedCells)
 				if (!Contains(puv))
 					return false;
+
 			return true;
 		}
 
@@ -805,7 +847,7 @@ namespace OpenRA
 			// (c) u, v coordinates run diagonally to the cell axes, and we define
 			//     1024 as the length projected onto the primary cell axis
 			//  - 512 * sqrt(2) = 724
-			var z = Height.Contains(cell) ? 724 * Height[cell] : 0;
+			var z = Height.Contains(cell) ? 724 * Height[cell] + Grid.Ramps[Ramp[cell]].CenterHeightOffset : 0;
 			return new WPos(724 * (cell.X - cell.Y + 1), 724 * (cell.X + cell.Y + 1), z);
 		}
 
@@ -813,15 +855,42 @@ namespace OpenRA
 		{
 			var index = (int)subCell;
 			if (index >= 0 && index < Grid.SubCellOffsets.Length)
-				return CenterOfCell(cell) + Grid.SubCellOffsets[index];
+			{
+				var center = CenterOfCell(cell);
+				var offset = Grid.SubCellOffsets[index];
+				var ramp = Ramp.Contains(cell) ? Ramp[cell] : 0;
+				if (ramp != 0)
+				{
+					var r = Grid.Ramps[ramp];
+					offset += new WVec(0, 0, r.HeightOffset(offset.X, offset.Y) - r.CenterHeightOffset);
+				}
+
+				return center + offset;
+			}
+
 			return CenterOfCell(cell);
 		}
 
 		public WDist DistanceAboveTerrain(WPos pos)
 		{
+			if (Grid.Type == MapGridType.Rectangular)
+				return new WDist(pos.Z);
+
+			// Apply ramp offset
 			var cell = CellContaining(pos);
-			var delta = pos - CenterOfCell(cell);
-			return new WDist(delta.Z);
+			var offset = pos - CenterOfCell(cell);
+
+			if (!Ramp.Contains(cell))
+				return new WDist(offset.Z);
+
+			var ramp = Ramp[cell];
+			if (ramp != 0)
+			{
+				var r = Grid.Ramps[ramp];
+				return new WDist(offset.Z + r.CenterHeightOffset - r.HeightOffset(offset.X, offset.Y));
+			}
+
+			return new WDist(offset.Z);
 		}
 
 		public WVec Offset(CVec delta, int dz)
@@ -899,13 +968,13 @@ namespace OpenRA
 			return projectedHeight[(MPos)puv];
 		}
 
-		public int FacingBetween(CPos cell, CPos towards, int fallbackfacing)
+		public WAngle FacingBetween(CPos cell, CPos towards, WAngle fallbackfacing)
 		{
 			var delta = CenterOfCell(towards) - CenterOfCell(cell);
 			if (delta.HorizontalLengthSquared == 0)
 				return fallbackfacing;
 
-			return delta.Yaw.Facing;
+			return delta.Yaw;
 		}
 
 		public void Resize(int width, int height)
@@ -913,11 +982,13 @@ namespace OpenRA
 			var oldMapTiles = Tiles;
 			var oldMapResources = Resources;
 			var oldMapHeight = Height;
+			var oldMapRamp = Ramp;
 			var newSize = new Size(width, height);
 
 			Tiles = CellLayer.Resize(oldMapTiles, newSize, oldMapTiles[MPos.Zero]);
 			Resources = CellLayer.Resize(oldMapResources, newSize, oldMapResources[MPos.Zero]);
 			Height = CellLayer.Resize(oldMapHeight, newSize, oldMapHeight[MPos.Zero]);
+			Ramp = CellLayer.Resize(oldMapRamp, newSize, oldMapHeight[MPos.Zero]);
 			MapSize = new int2(newSize);
 
 			var tl = new MPos(0, 0);
@@ -947,7 +1018,8 @@ namespace OpenRA
 				ProjectedBottomRight = new WPos(br.U * 1024 - 1, (br.V + 1) * 1024 - 1, 0);
 			}
 
-			ProjectedCellBounds = new ProjectedCellRegion(this, tl, br);
+			// PERF: This enumeration isn't going to change during the game
+			ProjectedCells = new ProjectedCellRegion(this, tl, br).ToArray();
 		}
 
 		public void FixOpenAreas()

@@ -706,6 +706,12 @@ Container@SETTINGS_PANEL:
 											Font: Tiny
 											Align: Left
 											Text: This is already used for "{0}"
+								Button@OVERRIDE_HOTKEY_BUTTON:
+									X: PARENT_RIGHT - 50 - 15 - WIDTH - 20
+									Y: 20
+									Width: 70
+									Height: 25
+									Text: Override
 								Button@CLEAR_HOTKEY_BUTTON:
 									X: PARENT_RIGHT - 25 - 15 - WIDTH - 10
 									Y: 20

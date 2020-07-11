@@ -529,12 +529,12 @@ Actors:
 	Actor189: e2
 		Location: 98,91
 		Owner: USSR
-		Facing: 192
+		Facing: 768
 		SubCell: 0
 	Actor201: e1.autotarget
 		Location: 64,91
 		Owner: USSR
-		Facing: 160
+		Facing: 640
 		SubCell: 4
 	Actor202: e1.autotarget
 		Location: 61,99
@@ -551,22 +551,22 @@ Actors:
 	Actor205: e2.autotarget
 		Location: 90,92
 		Owner: USSR
-		Facing: 160
+		Facing: 640
 		SubCell: 0
 	Actor206: e1.autotarget
 		Location: 56,45
 		Owner: USSR
-		Facing: 96
+		Facing: 384
 		SubCell: 1
 	Actor207: e1.autotarget
 		Location: 57,44
 		Owner: USSR
-		Facing: 96
+		Facing: 384
 		SubCell: 3
 	Actor208: e2.autotarget
 		Location: 57,43
 		Owner: USSR
-		Facing: 96
+		Facing: 384
 		SubCell: 0
 	Actor210: e1
 		Location: 103,96
@@ -575,7 +575,7 @@ Actors:
 	Actor211: e1
 		Location: 102,95
 		Owner: USSR
-		Facing: 32
+		Facing: 128
 		SubCell: 4
 	Actor212: e1.autotarget
 		Location: 79,94
@@ -1039,80 +1039,80 @@ Actors:
 	Jeep: jeep.mission
 		Location: 101,97
 		Owner: England
-		Facing: 32
+		Facing: 128
 	Heavy1: 3tnk
 		Location: 96,66
 		Owner: USSR
 		Health: 13
-		Facing: 128
+		Facing: 512
 	Heavy2: 3tnk
 		Location: 97,65
 		Owner: USSR
 		Health: 13
-		Facing: 128
+		Facing: 512
 	Heavy3: 3tnk
 		Location: 98,66
 		Owner: USSR
 		Health: 6
-		Facing: 128
+		Facing: 512
 	USSRTruk: truk
 		Location: 56,93
 		Owner: USSR
-		Facing: 96
+		Facing: 384
 	MediGuard: e2
 		Location: 104,48
 		Owner: USSR
-		Facing: 160
+		Facing: 640
 		SubCell: 1
 	PGuard1: e1
 		Location: 89,85
 		Owner: USSR
-		Facing: 64
+		Facing: 256
 		SubCell: 3
 	PGuard2: e1
 		Location: 89,86
 		Owner: USSR
-		Facing: 64
+		Facing: 256
 		SubCell: 3
 	PGuard3: e1
 		Location: 89,86
 		Owner: USSR
-		Facing: 64
+		Facing: 256
 		SubCell: 1
 	PGuard4: e1
 		Location: 89,87
 		Owner: USSR
-		Facing: 64
+		Facing: 256
 		SubCell: 1
 	PGuard5: e1
 		Location: 91,84
 		Owner: USSR
-		Facing: 128
+		Facing: 512
 		SubCell: 4
 	USSRBaseGuard1: e2.autotarget
 		Location: 96,60
 		Owner: USSR
-		Facing: 96
+		Facing: 384
 		SubCell: 1
 	USSRBaseGuard2: e2.autotarget
 		Location: 102,49
 		Owner: USSR
-		Facing: 160
+		Facing: 640
 		SubCell: 3
 	USSRBaseGuard3: e2.autotarget
 		Location: 104,50
 		Owner: USSR
-		Facing: 160
+		Facing: 640
 		SubCell: 3
 	USSRCheckpointGuard1: e1
 		Location: 95,68
 		Owner: USSR
-		Facing: 64
+		Facing: 256
 		SubCell: 0
 	USSRCheckpointGuard2: e1
 		Location: 99,68
 		Owner: USSR
-		Facing: 192
+		Facing: 768
 		SubCell: 0
 	Jail1: prison
 		Location: 104,47
@@ -1124,27 +1124,27 @@ Actors:
 		Location: 104,47
 		Owner: Greece
 		Health: 15
-		Facing: 192
+		Facing: 768
 		SubCell: 0
 	PrisonedEngi1: e6
 		Location: 91,86
 		Owner: Greece
-		Facing: 192
+		Facing: 768
 		SubCell: 0
 	PrisonedEngi2: e6
 		Location: 91,86
 		Owner: Greece
-		Facing: 192
+		Facing: 768
 		SubCell: 1
 	PrisonedEngi3: e6
 		Location: 91,86
 		Owner: Greece
-		Facing: 192
+		Facing: 768
 		SubCell: 2
 	PrisonedEngi4: e6
 		Location: 91,86
 		Owner: Greece
-		Facing: 192
+		Facing: 768
 		SubCell: 4
 	MediHideaway: v06
 		Location: 57,93
@@ -1152,7 +1152,7 @@ Actors:
 	InsertionHeli: tran
 		Location: 55,80
 		Owner: Greece
-		Facing: 32
+		Facing: 128
 	TanyaWaypoint: waypoint
 		Location: 54,81
 		Owner: Greece

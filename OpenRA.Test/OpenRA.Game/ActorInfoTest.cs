@@ -15,8 +15,8 @@ using OpenRA.Traits;
 
 namespace OpenRA.Test
 {
-	interface IMock : ITraitInfo { }
-	class MockTraitInfo : ITraitInfo { public object Create(ActorInitializer init) { return null; } }
+	interface IMock : ITraitInfoInterface { }
+	class MockTraitInfo : TraitInfo { public override object Create(ActorInitializer init) { return null; } }
 	class MockInheritInfo : MockTraitInfo { }
 	class MockAInfo : MockInheritInfo, IMock { }
 	class MockBInfo : MockTraitInfo, Requires<MockAInfo>, Requires<IMock>, Requires<MockInheritInfo> { }
@@ -31,7 +31,7 @@ namespace OpenRA.Test
 		[TestCase(TestName = "Trait ordering sorts in dependency order correctly")]
 		public void TraitOrderingSortsCorrectly()
 		{
-			var unorderedTraits = new ITraitInfo[] { new MockBInfo(), new MockCInfo(), new MockAInfo(), new MockBInfo() };
+			var unorderedTraits = new TraitInfo[] { new MockBInfo(), new MockCInfo(), new MockAInfo(), new MockBInfo() };
 			var actorInfo = new ActorInfo("test", unorderedTraits);
 			var orderedTraits = actorInfo.TraitsInConstructOrder().ToArray();
 

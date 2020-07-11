@@ -36,6 +36,16 @@ namespace OpenRA
 
 		public static bool operator !=(WRot me, WRot other) { return !(me == other); }
 
+		public WRot WithRoll(WAngle roll)
+		{
+			return new WRot(roll, Pitch, Yaw);
+		}
+
+		public WRot WithPitch(WAngle pitch)
+		{
+			return new WRot(Roll, pitch, Yaw);
+		}
+
 		public WRot WithYaw(WAngle yaw)
 		{
 			return new WRot(Roll, Pitch, yaw);

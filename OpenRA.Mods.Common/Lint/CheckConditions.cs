@@ -12,7 +12,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Lint
@@ -26,7 +25,7 @@ namespace OpenRA.Mods.Common.Lint
 				var granted = new HashSet<string>();
 				var consumed = new HashSet<string>();
 
-				foreach (var trait in actorInfo.Value.TraitInfos<ITraitInfo>())
+				foreach (var trait in actorInfo.Value.TraitInfos<TraitInfo>())
 				{
 					var fieldConsumed = trait.GetType().GetFields()
 						.Where(x => x.HasAttribute<ConsumedConditionReferenceAttribute>())
@@ -60,9 +59,6 @@ namespace OpenRA.Mods.Common.Lint
 				var ungranted = consumed.Except(granted);
 				if (ungranted.Any())
 					emitError("Actor type `{0}` consumes conditions that are not granted: {1}".F(actorInfo.Key, ungranted.JoinWith(", ")));
-
-				if ((consumed.Any() || granted.Any()) && actorInfo.Value.TraitInfoOrDefault<ConditionManagerInfo>() == null)
-					emitError("Actor type `{0}` defines conditions but does not include a ConditionManager".F(actorInfo.Key));
 			}
 		}
 	}

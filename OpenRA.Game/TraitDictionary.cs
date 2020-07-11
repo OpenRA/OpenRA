@@ -213,10 +213,11 @@ namespace OpenRA
 				Actor last = null;
 				for (var i = 0; i < actors.Count; i++)
 				{
-					if (actors[i] == last)
+					var current = actors[i];
+					if (current == last)
 						continue;
-					yield return actors[i];
-					last = actors[i];
+					yield return current;
+					last = current;
 				}
 			}
 
@@ -227,10 +228,11 @@ namespace OpenRA
 
 				for (var i = 0; i < actors.Count; i++)
 				{
-					if (actors[i] == last || !predicate(traits[i]))
+					var current = actors[i];
+					if (current == last || !predicate(traits[i]))
 						continue;
-					yield return actors[i];
-					last = actors[i];
+					yield return current;
+					last = current;
 				}
 			}
 

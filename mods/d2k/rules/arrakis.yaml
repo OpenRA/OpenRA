@@ -10,7 +10,6 @@ spicebloom.spawnpoint:
 		Sequence: grow3
 	BodyOrientation:
 		QuantizedFacings: 1
-	ConditionManager:
 	GrantConditionOnTerrain:
 		Condition: clearsand
 		TerrainTypes: SpiceSand
@@ -64,7 +63,7 @@ spicebloom:
 		Actor: spicebloom.spawnpoint
 	HitShape:
 		Type: Circle
-			Radius: 512
+			Radius: 16
 	MapEditorData:
 		Categories: System
 	Interactable:
@@ -80,7 +79,7 @@ sandworm:
 		HP: 100000
 	HitShape:
 		Type: Circle
-			Radius: 256
+			Radius: 16
 	Armor:
 		Type: heavy
 	Mobile:
@@ -125,7 +124,6 @@ sandworm:
 		TerrainTypes: Sand, Dune, SpiceSand, Spice
 		MovingInterval: 3
 		RequiresCondition: !attacking
-	ConditionManager:
 	RevealOnFire:
 		Duration: 50
 		Radius: 2c512

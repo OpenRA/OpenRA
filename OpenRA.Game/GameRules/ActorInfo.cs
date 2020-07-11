@@ -23,6 +23,7 @@ namespace OpenRA
 	public class ActorInfo
 	{
 		public const string AbstractActorPrefix = "^";
+		public const char TraitInstanceSeparator = '@';
 
 		/// <summary>
 		/// The actor name can be anything, but the sprites used in the Render*: traits default to this one.
@@ -32,7 +33,7 @@ namespace OpenRA
 		/// </summary>
 		public readonly string Name;
 		readonly TypeDictionary traits = new TypeDictionary();
-		List<ITraitInfo> constructOrderCache = null;
+		List<TraitInfo> constructOrderCache = null;
 
 		public ActorInfo(ObjectCreator creator, string name, MiniYaml node)
 		{
@@ -46,7 +47,7 @@ namespace OpenRA
 					{
 						// HACK: The linter does not want to crash when a trait doesn't exist but only print an error instead
 						// LoadTraitInfo will only return null to signal us to abort here if the linter is running
-						var trait = LoadTraitInfo(creator, t.Key.Split('@')[0], t.Value);
+						var trait = LoadTraitInfo(creator, t.Key, t.Value);
 						if (trait != null)
 							traits.Add(trait);
 					}
@@ -64,7 +65,7 @@ namespace OpenRA
 			}
 		}
 
-		public ActorInfo(string name, params ITraitInfo[] traitInfos)
+		public ActorInfo(string name, params TraitInfo[] traitInfos)
 		{
 			Name = name;
 			foreach (var t in traitInfos)
@@ -72,7 +73,7 @@ namespace OpenRA
 			traits.TrimExcess();
 		}
 
-		static ITraitInfo LoadTraitInfo(ObjectCreator creator, string traitName, MiniYaml my)
+		static TraitInfo LoadTraitInfo(ObjectCreator creator, string traitName, MiniYaml my)
 		{
 			if (!string.IsNullOrEmpty(my.Value))
 				throw new YamlException("Junk value `{0}` on trait node {1}"
@@ -80,12 +81,16 @@ namespace OpenRA
 
 			// HACK: The linter does not want to crash when a trait doesn't exist but only print an error instead
 			// ObjectCreator will only return null to signal us to abort here if the linter is running
-			var info = creator.CreateObject<ITraitInfo>(traitName + "Info");
+			var traitInstance = traitName.Split(TraitInstanceSeparator);
+			var info = creator.CreateObject<TraitInfo>(traitInstance[0] + "Info");
 			if (info == null)
 				return null;
 
 			try
 			{
+				if (traitInstance.Length > 1)
+					info.GetType().GetField("InstanceName").SetValue(info, traitInstance[1]);
+
 				FieldLoader.Load(info, my);
 			}
 			catch (FieldLoader.MissingFieldsException e)
@@ -97,12 +102,12 @@ namespace OpenRA
 			return info;
 		}
 
-		public IEnumerable<ITraitInfo> TraitsInConstructOrder()
+		public IEnumerable<TraitInfo> TraitsInConstructOrder()
 		{
 			if (constructOrderCache != null)
 				return constructOrderCache;
 
-			var source = traits.WithInterface<ITraitInfo>().Select(i => new
+			var source = traits.WithInterface<TraitInfo>().Select(i => new
 			{
 				Trait = i,
 				Type = i.GetType(),
@@ -148,7 +153,7 @@ namespace OpenRA
 			return constructOrderCache;
 		}
 
-		public static IEnumerable<Type> PrerequisitesOf(ITraitInfo info)
+		public static IEnumerable<Type> PrerequisitesOf(TraitInfo info)
 		{
 			return info
 				.GetType()

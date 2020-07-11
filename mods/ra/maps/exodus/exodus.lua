@@ -185,7 +185,7 @@ SendSovietParadrop = function()
 	local lz = Map.CenterOfCell(randomParadropCell)
 
 	local powerproxy = Actor.Create("powerproxy.paratroopers", false, { Owner = soviets })
-	powerproxy.ActivateParatroopers(lz)
+	powerproxy.TargetParatroopers(lz)
 	powerproxy.Destroy()
 
 	Trigger.AfterDelay(sovietParadropTicks, SendSovietParadrop)

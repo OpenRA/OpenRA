@@ -616,8 +616,8 @@ Container@PLAYER_WIDGETS:
 								Image@ICON:
 									X: 5
 									Y: 5
-									ImageCollection: scrollbar
-									ImageName: up_arrow
+									ImageCollection: scrollpanel-decorations
+									ImageName: up
 						Button@SCROLL_DOWN_BUTTON:
 							Y: 248
 							Width: 25
@@ -630,5 +630,5 @@ Container@PLAYER_WIDGETS:
 								Image@ICON:
 									X: 5
 									Y: 5
-									ImageCollection: scrollbar
-									ImageName: down_arrow
+									ImageCollection: scrollpanel-decorations
+									ImageName: down

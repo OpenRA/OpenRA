@@ -18,13 +18,13 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Visualizes the state of the `ResourceLayer`.", " Attach this to the world actor.")]
-	public class ResourceRendererInfo : ITraitInfo, Requires<ResourceLayerInfo>
+	public class ResourceRendererInfo : TraitInfo, Requires<ResourceLayerInfo>
 	{
 		[FieldLoader.Require]
 		[Desc("Only render these ResourceType names.")]
 		public readonly string[] RenderTypes = null;
 
-		public virtual object Create(ActorInitializer init) { return new ResourceRenderer(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new ResourceRenderer(init.Self, this); }
 	}
 
 	public class ResourceRenderer : IWorldLoaded, IRenderOverlay, ITickRender, INotifyActorDisposing

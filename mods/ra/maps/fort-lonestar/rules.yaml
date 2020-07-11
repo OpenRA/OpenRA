@@ -67,7 +67,7 @@ FORTCRATE:
 		SelectionShares: 30
 		Proxy: powerproxy.parabombs
 		Sequence: parabombs
-	HealUnitsCrateAction:
+	HealActorsCrateAction:
 		SelectionShares: 30
 		Sound: heal2.aud
 		Sequence: heal

@@ -15,7 +15,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Tag trait for actors with `DeliversCash`.")]
-	public class AcceptsDeliveredCashInfo : ITraitInfo
+	public class AcceptsDeliveredCashInfo : TraitInfo
 	{
 		[Desc("Accepted `DeliversCash` types. Leave empty to accept all types.")]
 		public readonly HashSet<string> ValidTypes = new HashSet<string>();
@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Play a randomly selected sound from this list when accepting cash.")]
 		public readonly string[] Sounds = { };
 
-		public object Create(ActorInitializer init) { return new AcceptsDeliveredCash(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new AcceptsDeliveredCash(init.Self, this); }
 	}
 
 	public class AcceptsDeliveredCash : INotifyCashTransfer

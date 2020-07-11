@@ -13,6 +13,11 @@ V01:
 	SpawnActorOnDeath:
 		Actor: healcrate
 
+powerproxy.paratroopers:
+	ParatroopersPower:
+		DisplayBeacon: False
+		DropItems: E1,E1,E1,E2,E2
+
 ^CivBuilding:
 	MustBeDestroyed:
 
@@ -35,8 +40,7 @@ AFLD:
 	AirstrikePower@spyplane:
 		Prerequisites: ~disabled
 	ParatroopersPower@paratroopers:
-		ChargeInterval: 1500
-		DropItems: E1,E1,E1,E2,E2
+		Prerequisites: ~disabled
 	-RallyPoint:
 	-Sellable:
 	Demolishable:

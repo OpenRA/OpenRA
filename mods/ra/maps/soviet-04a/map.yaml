@@ -339,63 +339,63 @@ Actors:
 	Actor133: 2tnk
 		Location: 69,54
 		Owner: Greece
-		Facing: 64
+		Facing: 256
 	Actor136: 1tnk
 		Location: 59,68
 		Owner: Greece
-		Facing: 128
+		Facing: 512
 	Actor137: 1tnk
 		Location: 46,71
 		Owner: Greece
-		Facing: 128
+		Facing: 512
 	Actor139: jeep
 		Location: 57,54
 		Owner: Greece
-		Facing: 96
+		Facing: 384
 	Actor140: 1tnk
 		Location: 62,46
 		Owner: Greece
-		Facing: 160
+		Facing: 640
 	Actor141: 1tnk
 		Location: 60,57
 		Owner: Greece
-		Facing: 128
+		Facing: 512
 	Actor142: 1tnk
 		Location: 54,57
 		Owner: Greece
-		Facing: 128
+		Facing: 512
 	Actor143: 2tnk
 		Location: 92,53
 		Owner: Greece
-		Facing: 192
+		Facing: 768
 	Actor144: 2tnk
 		Location: 92,55
 		Owner: Greece
-		Facing: 192
+		Facing: 768
 	Actor145: 2tnk
 		Location: 86,58
 		Owner: Greece
-		Facing: 160
+		Facing: 640
 	Actor146: jeep
 		Location: 89,60
 		Owner: Greece
-		Facing: 160
+		Facing: 640
 	Actor151: 2tnk
 		Location: 40,55
 		Owner: Greece
-		Facing: 128
+		Facing: 512
 	Actor152: 2tnk
 		Location: 44,55
 		Owner: Greece
-		Facing: 128
+		Facing: 512
 	Actor154: 2tnk
 		Location: 67,64
 		Owner: Greece
-		Facing: 160
+		Facing: 640
 	Actor155: 2tnk
 		Location: 69,63
 		Owner: Greece
-		Facing: 160
+		Facing: 640
 	Actor159: mine
 		Location: 77,46
 		Owner: Neutral
@@ -427,23 +427,23 @@ Actors:
 	Gun1: gun
 		Location: 87,57
 		Owner: Greece
-		Facing: 96
+		Facing: 384
 	Gun2: gun
 		Location: 84,58
 		Owner: Greece
-		Facing: 96
+		Facing: 384
 	Gun3: gun
 		Location: 53,48
 		Owner: Greece
-		Facing: 96
+		Facing: 384
 	Gun4: gun
 		Location: 67,65
 		Owner: Greece
-		Facing: 96
+		Facing: 384
 	Gun5: gun
 		Location: 70,63
 		Owner: Greece
-		Facing: 96
+		Facing: 384
 	Pbox1: pbox
 		Location: 57,70
 		Owner: Greece
@@ -521,7 +521,7 @@ Actors:
 	civ1: c6
 		Location: 53,80
 		Owner: Spain
-		Facing: 64
+		Facing: 256
 		SubCell: 2
 	civ2: c7
 		Location: 58,79
@@ -530,19 +530,19 @@ Actors:
 	civ3: c5
 		Location: 57,81
 		Owner: Spain
-		Facing: 64
+		Facing: 256
 		SubCell: 3
 	Harvester: harv
 		Location: 76,47
 		Owner: Greece
-		Facing: 160
+		Facing: 640
 	Runner1: jeep
 		Location: 88,83
 		Owner: Greece
 	Runner2: jeep
 		Location: 84,83
 		Owner: Greece
-		Facing: 64
+		Facing: 256
 	GreeceCYard: waypoint
 		Location: 59,47
 		Owner: Neutral

@@ -63,7 +63,7 @@ AtreidesAttackWaves =
 	hard = 9
 }
 
-AtreidesHunters = 
+AtreidesHunters =
 {
 	{ "trooper", "trooper", "trooper" },
 	{ "trike", "light_inf", "light_inf", "light_inf", "light_inf" },
@@ -78,7 +78,7 @@ AtreidesPaths =
 	{ AtreidesEntry8.Location, AtreidesRally8.Location }
 }
 
-AtreidesHunterPaths = 
+AtreidesHunterPaths =
 {
 	{ AtreidesEntry6.Location, AtreidesRally6.Location },
 	{ AtreidesEntry5.Location, AtreidesRally5.Location },

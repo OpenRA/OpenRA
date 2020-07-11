@@ -17,12 +17,12 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	class LegacyBridgeLayerInfo : ITraitInfo
+	class LegacyBridgeLayerInfo : TraitInfo
 	{
 		[ActorReference]
 		public readonly string[] Bridges = { "bridge1", "bridge2" };
 
-		public object Create(ActorInitializer init) { return new LegacyBridgeLayer(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new LegacyBridgeLayer(init.Self, this); }
 	}
 
 	class LegacyBridgeLayer : IWorldLoaded
@@ -65,8 +65,9 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			// Correlate the tile "image" aka subtile with its position to find the template origin
-			var tile = w.Map.Tiles[cell].Type;
-			var index = w.Map.Tiles[cell].Index;
+			var ti = w.Map.Tiles[cell];
+			var tile = ti.Type;
+			var index = ti.Index;
 			var template = w.Map.Rules.TileSet.Templates[tile];
 			var ni = cell.X - index % template.Size.X;
 			var nj = cell.Y - index / template.Size.X;
@@ -88,8 +89,12 @@ namespace OpenRA.Mods.Common.Traits
 				// Where do we expect to find the subtile
 				var subtile = new CPos(ni + ind % template.Size.X, nj + ind / template.Size.X);
 
+				if (!mapTiles.Contains(subtile))
+					continue;
+
 				// This isn't the bridge you're looking for
-				if (!mapTiles.Contains(subtile) || mapTiles[subtile].Type != tile || mapTiles[subtile].Index != ind)
+				var subti = mapTiles[subtile];
+				if (subti.Type != tile || subti.Index != ind)
 					continue;
 
 				subTiles.Add(subtile, ind);
