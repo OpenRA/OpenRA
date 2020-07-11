@@ -120,6 +120,147 @@ namespace OpenRA
 		{
 			return uv.Clamp(new Rectangle(0, 0, Size.Width - 1, Size.Height - 1));
 		}
+
+		public IEnumerable<T> Region(ProjectedCellRegion projectedCellRegion)
+		{
+			// PERF: Direct access to cell entries. Avoiding index calculation and property item lookup.
+			if (GridType == MapGridType.Rectangular)
+			{
+				// PERF: Skip PPos to MPos conversion when possible
+				var mapCoordsRegion = new MapCoordsRegion(
+					(MPos)projectedCellRegion.TopLeft,
+					(MPos)projectedCellRegion.BottomRight);
+				return new RectangularRegionCellEnumerable(this, mapCoordsRegion);
+			}
+			else
+				return new RegionCellEnumerable(this, projectedCellRegion);
+		}
+
+		class RectangularRegionCellEnumerable : IEnumerable<T>
+		{
+			readonly CellLayer<T> layer;
+			readonly MapCoordsRegion region;
+
+			public RectangularRegionCellEnumerable(CellLayer<T> layer, MapCoordsRegion region)
+			{
+				this.layer = layer;
+				this.region = region;
+			}
+
+			public IEnumerator<T> GetEnumerator() { return new RectangularRegionCellEnumerator(layer, region); }
+			System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() { return GetEnumerator(); }
+		}
+
+		class RectangularRegionCellEnumerator : IEnumerator<T>
+		{
+			readonly CellLayer<T> layer;
+			readonly MapCoordsRegion region;
+			readonly int layerWidth;
+			readonly int regionWidth;
+			readonly int end;
+			int rowStart;
+			int rowEnd;
+			int current;
+
+			public RectangularRegionCellEnumerator(CellLayer<T> layer, MapCoordsRegion region)
+			{
+				this.layer = layer;
+				this.region = region;
+				layerWidth = layer.Size.Width;
+				regionWidth = region.BottomRight.U - region.TopLeft.U;
+				end = (region.BottomRight.V * layerWidth) + region.BottomRight.U;
+				Reset();
+			}
+
+			public void Reset()
+			{
+				rowStart = (region.TopLeft.V * layerWidth) + region.TopLeft.U;
+				rowEnd = rowStart + regionWidth;
+				current = rowStart - 1;
+			}
+
+			public bool MoveNext()
+			{
+				if (++current > rowEnd)
+				{
+					rowStart += layerWidth;
+					current = rowStart;
+					if (current > end)
+						return false;
+					rowEnd = current + regionWidth;
+				}
+
+				return true;
+			}
+
+			public T Current { get { return layer.entries[current]; } }
+			object System.Collections.IEnumerator.Current { get { return Current; } }
+			public void Dispose() { }
+		}
+
+		class RegionCellEnumerable : IEnumerable<T>
+		{
+			readonly CellLayer<T> layer;
+			readonly ProjectedCellRegion region;
+
+			public RegionCellEnumerable(CellLayer<T> layer, ProjectedCellRegion region)
+			{
+				this.layer = layer;
+				this.region = region;
+			}
+
+			public IEnumerator<T> GetEnumerator() { return new RegionCellEnumerator(layer, region); }
+			System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() { return GetEnumerator(); }
+		}
+
+		// Similar to ProjectedCellRegion enumerator
+		class RegionCellEnumerator : IEnumerator<T>
+		{
+			readonly CellLayer<T> layer;
+			readonly ProjectedCellRegion r;
+
+			// Current position, in projected map coordinates
+			int u, v;
+
+			PPos current;
+
+			public RegionCellEnumerator(CellLayer<T> layer, ProjectedCellRegion region)
+			{
+				this.layer = layer;
+				r = region;
+				Reset();
+			}
+
+			public bool MoveNext()
+			{
+				u += 1;
+
+				// Check for column overflow
+				if (u > r.BottomRight.U)
+				{
+					v += 1;
+					u = r.TopLeft.U;
+
+					// Check for row overflow
+					if (v > r.BottomRight.V)
+						return false;
+				}
+
+				current = new PPos(u, v);
+				return true;
+			}
+
+			public void Reset()
+			{
+				// Enumerator starts *before* the first element in the sequence.
+				u = r.TopLeft.U - 1;
+				v = r.TopLeft.V;
+			}
+
+			public T Current { get { return layer[(MPos)current]; } }
+			object IEnumerator.Current { get { return Current; } }
+			public void Dispose() { }
+		}
 	}
 
 	// Helper functions
