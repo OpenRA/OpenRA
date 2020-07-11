@@ -16,7 +16,7 @@ using OpenRA.Primitives;
 namespace OpenRA.Traits
 {
 	[Desc("Required for shroud and fog visibility checks. Add this to the player actor.")]
-	public class ShroudInfo : ITraitInfo, ILobbyOptions
+	public class ShroudInfo : TraitInfo, ILobbyOptions
 	{
 		[Translate]
 		[Desc("Descriptive label for the fog checkbox in the lobby.")]
@@ -66,7 +66,7 @@ namespace OpenRA.Traits
 				FogCheckboxVisible, FogCheckboxDisplayOrder, FogCheckboxEnabled, FogCheckboxLocked);
 		}
 
-		public object Create(ActorInitializer init) { return new Shroud(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new Shroud(init.Self, this); }
 	}
 
 	public class Shroud : ISync, INotifyCreated, ITick
@@ -165,7 +165,7 @@ namespace OpenRA.Traits
 			if (OnShroudChanged == null)
 				return;
 
-			foreach (var cell in layer.Region(map.ProjectedCellBounds))
+			foreach (var cell in layer.Region(map))
 			{
 				if (!cell.Touched)
 					continue;
@@ -185,9 +185,7 @@ namespace OpenRA.Traits
 				var oldResolvedType = cell.ResolvedType;
 				cell.ResolvedType = type;
 				if (type != oldResolvedType)
-				{
 					OnShroudChanged((PPos)cell.Position);
-				}
 			}
 
 			Hash = Sync.HashPlayer(self.Owner) + self.World.WorldTick;
@@ -237,6 +235,7 @@ namespace OpenRA.Traits
 
 				var uv = (MPos)puv;
 				var cell = layer[uv];
+				cell.Touched = true;
 				switch (type)
 				{
 					case SourceType.PassiveVisibility:
@@ -269,6 +268,7 @@ namespace OpenRA.Traits
 				{
 					var uv = (MPos)puv;
 					var cell = layer[uv];
+					cell.Touched = true;
 					switch (state.Type)
 					{
 						case SourceType.PassiveVisibility:
@@ -309,7 +309,7 @@ namespace OpenRA.Traits
 			if (map.Bounds != s.map.Bounds)
 				throw new ArgumentException("The map bounds of these shrouds do not match.", "s");
 
-			foreach (var puv in map.ProjectedCellBounds)
+			foreach (var puv in map.ProjectedCells)
 			{
 				var uv = (MPos)puv;
 				var cell = layer[uv];
@@ -323,7 +323,7 @@ namespace OpenRA.Traits
 
 		public void ExploreAll()
 		{
-			foreach (var puv in map.ProjectedCellBounds)
+			foreach (var puv in map.ProjectedCells)
 			{
 				var uv = (MPos)puv;
 				var cell = layer[uv];
@@ -337,7 +337,7 @@ namespace OpenRA.Traits
 
 		public void ResetExploration()
 		{
-			foreach (var puv in map.ProjectedCellBounds)
+			foreach (var puv in map.ProjectedCells)
 			{
 				var uv = (MPos)puv;
 				var cell = layer[uv];

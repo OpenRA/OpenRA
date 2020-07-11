@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using OpenRA.Primitives;
 
 namespace OpenRA
@@ -121,19 +122,25 @@ namespace OpenRA
 			return uv.Clamp(new Rectangle(0, 0, Size.Width - 1, Size.Height - 1));
 		}
 
-		public IEnumerable<T> Region(ProjectedCellRegion projectedCellRegion)
+		public IEnumerable<T> Region(Map map)
 		{
+			var btl = new PPos(map.Bounds.Left, map.Bounds.Top);
+			var bbr = new PPos(map.Bounds.Right - 1, map.Bounds.Bottom - 1);
+
 			// PERF: Direct access to cell entries. Avoiding index calculation and property item lookup.
 			if (GridType == MapGridType.Rectangular)
 			{
 				// PERF: Skip PPos to MPos conversion when possible
 				var mapCoordsRegion = new MapCoordsRegion(
-					(MPos)projectedCellRegion.TopLeft,
-					(MPos)projectedCellRegion.BottomRight);
+					(MPos)btl,
+					(MPos)bbr);
 				return new RectangularRegionCellEnumerable(this, mapCoordsRegion);
 			}
 			else
-				return new RegionCellEnumerable(this, projectedCellRegion);
+			{
+				var projectedCells = new ProjectedCellRegion(map, btl, bbr);
+				return new RegionCellEnumerable(this, projectedCells);
+			}
 		}
 
 		class RectangularRegionCellEnumerable : IEnumerable<T>
@@ -258,7 +265,7 @@ namespace OpenRA
 			}
 
 			public T Current { get { return layer[(MPos)current]; } }
-			object IEnumerator.Current { get { return Current; } }
+			object System.Collections.IEnumerator.Current { get { return Current; } }
 			public void Dispose() { }
 		}
 	}
