@@ -230,7 +230,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				Action onSysInfoComplete = () =>
 				{
-					LoadAndDisplayNews(webServices.GameNews, newsBG);
+					LoadAndDisplayNews(webServices, newsBG);
 					SwitchMenu(MenuType.Main);
 				};
 
@@ -260,11 +260,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			DiscordService.UpdateStatus(DiscordState.InMenu);
 		}
 
-		void LoadAndDisplayNews(string newsURL, Widget newsBG)
+		void LoadAndDisplayNews(WebServices webServices, Widget newsBG)
 		{
 			if (newsBG != null && Game.Settings.Game.FetchNews)
 			{
-				var cacheFile = Platform.ResolvePath(Platform.SupportDirPrefix, "news.yaml");
+				var cacheFile = Platform.ResolvePath(Platform.SupportDirPrefix, webServices.GameNewsFileName);
 				var currentNews = ParseNews(cacheFile);
 				if (currentNews != null)
 					DisplayNews(currentNews);
@@ -275,7 +275,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					if (!fetchedNews)
 					{
 						// Send the mod and engine version to support version-filtered news (update prompts)
-						newsURL += "?version={0}&mod={1}&modversion={2}".F(
+						var newsURL = "{0}?version={1}&mod={2}&modversion={3}".F(
+							webServices.GameNews,
 							Uri.EscapeUriString(Game.EngineVersion),
 							Uri.EscapeUriString(Game.ModData.Manifest.Id),
 							Uri.EscapeUriString(Game.ModData.Manifest.Metadata.Version));

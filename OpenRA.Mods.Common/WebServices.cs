@@ -23,6 +23,7 @@ namespace OpenRA.Mods.Common
 		public readonly string ServerAdvertise = "https://master.openra.net/ping";
 		public readonly string MapRepository = "https://resource.openra.net/map/";
 		public readonly string GameNews = "https://master.openra.net/gamenews";
+		public readonly string GameNewsFileName = "news.yaml";
 		public readonly string VersionCheck = "https://master.openra.net/versioncheck";
 
 		public ModVersionStatus ModVersionStatus { get; private set; }
