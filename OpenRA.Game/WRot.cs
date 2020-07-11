@@ -29,6 +29,27 @@ namespace OpenRA
 		public static WRot operator -(WRot a, WRot b) { return new WRot(a.Roll - b.Roll, a.Pitch - b.Pitch, a.Yaw - b.Yaw); }
 		public static WRot operator -(WRot a) { return new WRot(-a.Roll, -a.Pitch, -a.Yaw); }
 
+		public WRot Rotate(WRot rot)
+		{
+			if (this == None)
+				return rot;
+
+			if (rot == None)
+				return this;
+
+			int x1, y1, z1, w1;
+			int x2, y2, z2, w2;
+			rot.AsQuaternion(out x1, out y1, out z1, out w1);
+			AsQuaternion(out x2, out y2, out z2, out w2);
+
+			var x3 = ((long)w1 * x2 + (long)x1 * w2 + (long)y1 * z2 - (long)z1 * y2) / 1024;
+			var y3 = ((long)w1 * y2 - (long)x1 * z2 + (long)y1 * w2 + (long)z1 * x2) / 1024;
+			var z3 = ((long)w1 * z2 + (long)x1 * y2 - (long)y1 * x2 + (long)z1 * w2) / 1024;
+			var w3 = ((long)w1 * w2 - (long)x1 * x2 - (long)y1 * y2 - (long)z1 * z2) / 1024;
+
+			return FromQuaternion((int)x3, (int)y3, (int)z3, (int)w3);
+		}
+
 		public static bool operator ==(WRot me, WRot other)
 		{
 			return me.Roll == other.Roll && me.Pitch == other.Pitch && me.Yaw == other.Yaw;
@@ -51,7 +72,7 @@ namespace OpenRA
 			return new WRot(Roll, Pitch, yaw);
 		}
 
-		void AsQuarternion(out int x, out int y, out int z, out int w)
+		void AsQuaternion(out int x, out int y, out int z, out int w)
 		{
 			// Angles increase clockwise
 			var roll = new WAngle(-Roll.Angle / 2);
@@ -71,12 +92,29 @@ namespace OpenRA
 			w = (int)((cr * cp * cy + sr * sp * sy) / 1048576);
 		}
 
+		static WRot FromQuaternion(int x, int y, int z, int w)
+		{
+			// Theoretically 1024 squared, but may differ slightly due to rounding
+			var lsq = x * x + y * y + z * z + w * w;
+
+			var srcp = 2 * (w * x + y * z);
+			var crcp = lsq - 2 * (x * x + y * y);
+			var sp = (w * y - z * x) / 512;
+			var sycp = 2 * (w * z + x * y);
+			var cycp = lsq - 2 * (y * y + z * z);
+
+			var roll = WAngle.ArcTan(srcp, crcp);
+			var pitch = Math.Abs(sp) >= 1024 ? new WAngle(Math.Sign(sp) * 256) : WAngle.ArcSin(sp);
+			var yaw = WAngle.ArcTan(sycp, cycp);
+			return new WRot(-roll, -pitch, -yaw);
+		}
+
 		public void AsMatrix(out Int32Matrix4x4 mtx)
 		{
 			int x, y, z, w;
-			AsQuarternion(out x, out y, out z, out w);
+			AsQuaternion(out x, out y, out z, out w);
 
-			// Theoretically 1024 *  * 2, but may differ slightly due to rounding
+			// Theoretically 1024 squared, but may differ slightly due to rounding
 			var lsq = x * x + y * y + z * z + w * w;
 
 			// Quaternion components use 10 bits, so there's no risk of overflow
