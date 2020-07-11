@@ -185,9 +185,7 @@ namespace OpenRA.Traits
 				var oldResolvedType = cell.ResolvedType;
 				cell.ResolvedType = type;
 				if (type != oldResolvedType)
-				{
 					OnShroudChanged((PPos)cell.Position);
-				}
 			}
 
 			Hash = Sync.HashPlayer(self.Owner) + self.World.WorldTick;
@@ -237,6 +235,7 @@ namespace OpenRA.Traits
 
 				var uv = (MPos)puv;
 				var cell = layer[uv];
+				cell.Touched = true;
 				switch (type)
 				{
 					case SourceType.PassiveVisibility:
@@ -269,6 +268,7 @@ namespace OpenRA.Traits
 				{
 					var uv = (MPos)puv;
 					var cell = layer[uv];
+					cell.Touched = true;
 					switch (state.Type)
 					{
 						case SourceType.PassiveVisibility:
