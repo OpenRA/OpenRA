@@ -277,7 +277,7 @@ Actors:
 	Actor76: tc02
 		Location: 38,27
 		Owner: Neutral
-	Actor77: split3
+	Actor77: t13.transformable
 		Location: 31,28
 		Owner: Neutral
 	Actor78: tc01
@@ -316,13 +316,13 @@ Actors:
 	Actor89: t03
 		Location: 21,9
 		Owner: Neutral
-	Actor90: split2
+	Actor90: t03.transformable
 		Location: 19,60
 		Owner: Neutral
-	Actor91: split3
+	Actor91: t13.transformable
 		Location: 22,59
 		Owner: Neutral
-	Actor92: split3
+	Actor92: t13.transformable
 		Location: 42,57
 		Owner: Neutral
 	Actor93: tc05
@@ -412,16 +412,16 @@ Actors:
 	Actor121: t12
 		Location: 4,14
 		Owner: Neutral
-	Actor122: split3
+	Actor122: t13.transformable
 		Location: 7,29
 		Owner: Neutral
-	Actor123: split3
+	Actor123: t13.transformable
 		Location: 7,33
 		Owner: Neutral
-	Actor124: split3
+	Actor124: t13.transformable
 		Location: 3,34
 		Owner: Neutral
-	Actor125: split3
+	Actor125: t13.transformable
 		Location: 22,42
 		Owner: Neutral
 	AttackTrigger1: proc
