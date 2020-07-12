@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var body = init.Actor.TraitInfo<BodyOrientationInfo>();
 			var model = init.World.ModelCache.GetModelSequence(image, Sequence);
 			yield return new ModelAnimation(model, () => WVec.Zero,
-				() => new[] { body.QuantizeOrientation(orientation(), facings) },
+				() => body.QuantizeOrientation(orientation(), facings),
 				() => false, () => 0, ShowShadow);
 		}
 	}
@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 			var model = self.World.ModelCache.GetModelSequence(rv.Image, info.Sequence);
 			modelAnimation = new ModelAnimation(model, () => WVec.Zero,
-				() => new[] { body.QuantizeOrientation(self, self.Orientation) },
+				() => body.QuantizeOrientation(self, self.Orientation),
 				() => IsTraitDisabled, () => 0, info.ShowShadow);
 
 			rv.Add(modelAnimation);
