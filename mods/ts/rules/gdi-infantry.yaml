@@ -168,6 +168,7 @@ JUMPJET:
 		RequiresCondition: airborne
 	GrantConditionOnJumpjetLayer:
 		Condition: airborne
+	RenderAircraftLocationIndicator:
 
 JUMPJET.Husk:
 	RenderSprites:

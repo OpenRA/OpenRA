@@ -441,6 +441,7 @@ SAPC:
 		RequiresCondition: !submerged
 	WithDecoration@UNDERGROUND:
 		RequiresCondition: inside-tunnel || submerged
+	RenderAircraftLocationIndicator:
 
 SUBTANK:
 	Inherits: ^Tank
@@ -491,6 +492,7 @@ SUBTANK:
 		RequiresCondition: !submerged
 	WithDecoration@UNDERGROUND:
 		RequiresCondition: inside-tunnel || submerged
+	RenderAircraftLocationIndicator:
 
 STNK:
 	Inherits: ^Tank

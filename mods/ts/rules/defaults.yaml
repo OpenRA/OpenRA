@@ -925,6 +925,7 @@
 		RequiresCondition: cruising
 		BobDistance: -64
 		InitialHeight: 64
+	RenderAircraftLocationIndicator:
 
 ^EMPableAircraft:
 	Inherits: ^Aircraft

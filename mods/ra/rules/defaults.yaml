@@ -596,6 +596,7 @@
 	Inherits@2: ^GainsExperience
 	Repairable:
 		RepairActors: fix
+	RenderAircraftLocationIndicator:
 
 ^Helicopter:
 	Inherits: ^Plane
@@ -617,6 +618,7 @@
 		RequiresCondition: cruising
 	-BodyOrientation:
 	ClassicFacingBodyOrientation:
+	RenderAircraftLocationIndicator:
 
 ^BasicBuilding:
 	Inherits@1: ^ExistsInWorld

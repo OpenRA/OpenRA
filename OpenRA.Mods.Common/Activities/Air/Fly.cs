@@ -178,7 +178,7 @@ namespace OpenRA.Mods.Common.Activities
 				var maxAccelVec = delta * maxAccel / delta.Length;
 
 				var desiredVelocityX = delta.X;
-				if (maxAccelVec.X * currentVelocity.X > 0 && Math.Abs(delta.X) < currentVelocity.X * currentVelocity.X / Math.Abs(maxAccelVec.X )/ 2)
+				if (maxAccelVec.X * currentVelocity.X > 0 && Math.Abs(delta.X) < currentVelocity.X * currentVelocity.X / Math.Abs(maxAccelVec.X) / 2)
 					desiredVelocityX = 0;
 
 				var desiredVelocityY = delta.Y;
