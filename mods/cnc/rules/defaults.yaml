@@ -1042,9 +1042,6 @@
 	Inherits: ^CommonHuskDefaults
 	Husk:
 		AllowedTerrain: Clear, Rough, Road, Tiberium, BlueTiberium, Beach
-	Burns:
-		Damage: 100
-		Interval: 6
 	Targetable:
 		RequiresForceFire: true
 		TargetTypes: Ground, Husk
@@ -1062,6 +1059,14 @@
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
+	WithIdleOverlay@Burns:
+		Image: fire
+		Sequence: 1
+		IsDecoration: True
+	ChangesHealth:
+		Step: -100
+		StartIfBelow: 101
+		Delay: 6
 
 ^LightHusk:
 	Inherits: ^Husk

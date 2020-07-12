@@ -71,6 +71,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new ChangeTargetLineDelayToMilliseconds(),
 				new ReplaceFacingAngles(),
 				new RenameSelfHealing(),
+				new ReplaceBurns(),
 			})
 		};
 

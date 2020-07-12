@@ -983,8 +983,14 @@
 	Inherits@2: ^ClassicFacingSpriteActor
 	Husk:
 		AllowedTerrain: Clear, Rough, Road, Ore, Gems, Beach
-	Burns:
-		Damage: 200
+	WithIdleOverlay@Burns:
+		Image: fire
+		Sequence: 1
+		IsDecoration: true
+	ChangesHealth:
+		Step: -200
+		StartIfBelow: 101
+		Delay: 8
 	OwnerLostAction:
 		Action: ChangeOwner
 	CaptureManager:
