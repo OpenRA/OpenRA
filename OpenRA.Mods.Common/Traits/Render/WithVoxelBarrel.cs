@@ -57,9 +57,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 			Func<WRot> quantizedTurret = () => body.QuantizeOrientation(turretOrientation(), facings);
 			Func<WRot> quantizedBody = () => body.QuantizeOrientation(orientation(), facings);
 			Func<WVec> barrelOffset = () => body.LocalToWorld((t.Offset + LocalOffset.Rotate(quantizedTurret())).Rotate(quantizedBody()));
-
-			yield return new ModelAnimation(model, barrelOffset, () => new[] { turretOrientation(), orientation() },
-				() => false, () => 0, ShowShadow);
+			Func<WRot> barrelOrientation = () => turretOrientation().Rotate(orientation());
+			yield return new ModelAnimation(model, barrelOffset, barrelOrientation, () => false, () => 0, ShowShadow);
 		}
 	}
 
@@ -97,13 +96,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 			return body.LocalToWorld((turretLocalOffset + localOffset.Rotate(turretOrientation)).Rotate(qb));
 		}
 
-		IEnumerable<WRot> BarrelRotation()
+		WRot BarrelRotation()
 		{
 			var b = self.Orientation;
 			var qb = body.QuantizeOrientation(self, b);
-			yield return Info.LocalOrientation;
-			yield return turreted.WorldOrientation(self) - b + WRot.FromYaw(b.Yaw - qb.Yaw);
-			yield return qb;
+			var t = turreted.WorldOrientation(self) - b + WRot.FromYaw(b.Yaw - qb.Yaw);
+			return Info.LocalOrientation.Rotate(t).Rotate(qb);
 		}
 	}
 }

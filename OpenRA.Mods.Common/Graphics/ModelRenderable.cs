@@ -183,8 +183,8 @@ namespace OpenRA.Mods.Common.Graphics
 				foreach (var v in draw)
 				{
 					var bounds = v.Model.Bounds(v.FrameFunc());
-					var worldTransform = v.RotationFunc().Reverse().Aggregate(scaleTransform,
-						(x, y) => OpenRA.Graphics.Util.MatrixMultiply(x, OpenRA.Graphics.Util.MakeFloatMatrix(y.AsMatrix())));
+					var rotation = OpenRA.Graphics.Util.MakeFloatMatrix(v.RotationFunc().AsMatrix());
+					var worldTransform = OpenRA.Graphics.Util.MatrixMultiply(scaleTransform, rotation);
 
 					var pxPos = pxOrigin + wr.ScreenVectorComponents(v.OffsetFunc());
 					var screenTransform = OpenRA.Graphics.Util.MatrixMultiply(cameraTransform, worldTransform);
@@ -241,8 +241,8 @@ namespace OpenRA.Mods.Common.Graphics
 				foreach (var v in draw)
 				{
 					var bounds = v.Model.Bounds(v.FrameFunc());
-					var worldTransform = v.RotationFunc().Reverse().Aggregate(scaleTransform,
-						(x, y) => OpenRA.Graphics.Util.MatrixMultiply(x, OpenRA.Graphics.Util.MakeFloatMatrix(y.AsMatrix())));
+					var rotation = OpenRA.Graphics.Util.MakeFloatMatrix(v.RotationFunc().AsMatrix());
+					var worldTransform = OpenRA.Graphics.Util.MatrixMultiply(scaleTransform, rotation);
 
 					var pxPos = pxOrigin + wr.ScreenVectorComponents(v.OffsetFunc());
 					var screenTransform = OpenRA.Graphics.Util.MatrixMultiply(cameraTransform, worldTransform);

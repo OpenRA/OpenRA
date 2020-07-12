@@ -114,8 +114,7 @@ namespace OpenRA.Graphics
 				var offsetVec = Util.MatrixVectorMultiply(invCameraTransform, wr.ScreenVector(m.OffsetFunc()));
 				var offsetTransform = Util.TranslationMatrix(offsetVec[0], offsetVec[1], offsetVec[2]);
 
-				var worldTransform = m.RotationFunc().Aggregate(Util.IdentityMatrix(),
-					(x, y) => Util.MatrixMultiply(Util.MakeFloatMatrix(y.AsMatrix()), x));
+				var worldTransform = Util.MakeFloatMatrix(m.RotationFunc().AsMatrix());
 				worldTransform = Util.MatrixMultiply(scaleTransform, worldTransform);
 				worldTransform = Util.MatrixMultiply(offsetTransform, worldTransform);
 
@@ -189,8 +188,7 @@ namespace OpenRA.Graphics
 					var offsetVec = Util.MatrixVectorMultiply(invCameraTransform, wr.ScreenVector(m.OffsetFunc()));
 					var offsetTransform = Util.TranslationMatrix(offsetVec[0], offsetVec[1], offsetVec[2]);
 
-					var rotations = m.RotationFunc().Aggregate(Util.IdentityMatrix(),
-						(x, y) => Util.MatrixMultiply(Util.MakeFloatMatrix(y.AsMatrix()), x));
+					var rotations = Util.MakeFloatMatrix(m.RotationFunc().AsMatrix());
 					var worldTransform = Util.MatrixMultiply(scaleTransform, rotations);
 					worldTransform = Util.MatrixMultiply(offsetTransform, worldTransform);
 
