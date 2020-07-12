@@ -68,6 +68,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new UpdateTilesetColors(),
 				new UpdateMapInits(),
 				new CreateFlashPaletteEffectWarhead(),
+				new ChangeTargetLineDelayToMilliseconds(),
 			})
 		};
 
