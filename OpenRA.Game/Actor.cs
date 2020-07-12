@@ -69,7 +69,7 @@ namespace OpenRA
 		{
 			get
 			{
-				return facing != null ? facing.Orientation : WRot.Zero;
+				return facing != null ? facing.Orientation : WRot.None;
 			}
 		}
 

@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Common.Graphics
 		{
 			var facingInfo = Actor.TraitInfoOrDefault<IFacingInfo>();
 			if (facingInfo == null)
-				return () => WRot.Zero;
+				return () => WRot.None;
 
 			// Dynamic facing takes priority
 			var dynamicInit = reference.GetOrDefault<DynamicFacingInit>();

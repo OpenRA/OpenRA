@@ -159,7 +159,7 @@ namespace OpenRA.Mods.Common.Activities
 
 				// Approach landing from the opposite direction of the desired facing
 				// TODO: Calculate sensible trajectory without preferred facing.
-				var rotation = WRot.Zero;
+				var rotation = WRot.None;
 				if (desiredFacing.HasValue)
 					rotation = WRot.FromYaw(desiredFacing.Value);
 

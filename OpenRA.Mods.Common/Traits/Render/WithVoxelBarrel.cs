@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public readonly WVec LocalOffset = WVec.Zero;
 
 		[Desc("Rotate the barrel relative to the body")]
-		public readonly WRot LocalOrientation = WRot.Zero;
+		public readonly WRot LocalOrientation = WRot.None;
 
 		[Desc("Defines if the Voxel should have a shadow.")]
 		public readonly bool ShowShadow = true;
@@ -92,7 +92,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var qb = body.QuantizeOrientation(self, b);
 			var localOffset = Info.LocalOffset + new WVec(-armament.Recoil, WDist.Zero, WDist.Zero);
 			var turretLocalOffset = turreted != null ? turreted.Offset : WVec.Zero;
-			var turretOrientation = turreted != null ? turreted.WorldOrientation(self) - b + WRot.FromYaw(b.Yaw - qb.Yaw) : WRot.Zero;
+			var turretOrientation = turreted != null ? turreted.WorldOrientation(self) - b + WRot.FromYaw(b.Yaw - qb.Yaw) : WRot.None;
 
 			return body.LocalToWorld((turretLocalOffset + localOffset.Rotate(turretOrientation)).Rotate(qb));
 		}
