@@ -40,12 +40,16 @@ DOG:
 	ScriptTags:
 
 TRAN.Husk1:
-	Burns:
-		Damage: 0
+	WithIdleOverlay@Burns:
+		Image: fire
+		Sequence: 1
+		IsDecoration: True
 
 TRAN.Husk2:
-	Burns:
-		Damage: 0
+	WithIdleOverlay@Burns:
+		Image: fire
+		Sequence: 1
+		IsDecoration: True
 
 E7:
 	Passenger:

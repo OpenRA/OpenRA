@@ -265,9 +265,6 @@
 	Inherits: ^Husk
 	Husk:
 		AllowedTerrain: Sand, Rock, Transition, Concrete, Spice, SpiceSand, SpiceBlobs, Dune
-	Burns:
-		Damage: 10
-		Interval: 4
 	Targetable:
 		TargetTypes: Ground, Vehicle
 		RequiresForceFire: true
@@ -276,6 +273,14 @@
 	Explodes:
 		Weapon: UnitExplodeMed
 		EmptyWeapon: UnitExplodeMed
+	WithIdleOverlay@Burns:
+		Image: fire
+		Sequence: 1
+		IsDecoration: True
+	ChangesHealth:
+		Step: -10
+		StartIfBelow: 101
+		Delay: 4
 
 ^AircraftHusk:
 	Inherits: ^Husk
