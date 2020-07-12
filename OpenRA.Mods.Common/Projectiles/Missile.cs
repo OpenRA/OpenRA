@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Loop a randomly chosen sequence of Image from this list while this projectile is moving.")]
 		public readonly string[] Sequences = { "idle" };
 
-		[PaletteReference]
+		[PaletteReference("IsPlayerPalette")]
 		[Desc("Palette used to render the projectile sequence.")]
 		public readonly string Palette = "effect";
 
