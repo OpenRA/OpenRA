@@ -202,37 +202,6 @@ namespace OpenRA.Mods.Common.Widgets
 			return "{0:D}:{1:D2}".F(minutes, seconds % 60);
 		}
 
-    public static int FindNearestIndex(string text, int2 drawPosition, SpriteFont font, int2 position)
-    {
-      // find the line
-      var currentIndex = -1;
-      var currentPosition = drawPosition;
-      foreach (var line in text.Split('\n'))
-      {
-			  var textSize = font.Measure(line);
-
-        if (currentPosition.Y <= position.Y &&  position.Y <= currentPosition.Y + textSize.Y)
-        {
-          foreach (var character in line)
-          {
-            var characterSize = font.Measure(character.ToString());
-            if (currentPosition.X <= position.X && position.X <= currentPosition.X + characterSize.X)
-            {
-              return currentIndex;
-            }
-
-            currentIndex++;
-            currentPosition = currentPosition + new int2(characterSize.X, 0);
-          }
-        }
-
-        // + 1 for the new line character
-        currentIndex += line.Length + 1;
-        currentPosition = currentPosition + new int2(0, textSize.Y);
-      }
-
-      return currentIndex;
-    }
 
 		public static string WrapText(string text, int width, SpriteFont font)
 		{

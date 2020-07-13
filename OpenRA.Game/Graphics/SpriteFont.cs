@@ -242,6 +242,8 @@ namespace OpenRA.Graphics
 
 			foreach (var character in text)
 			{
+        currentIndex++;
+
 				if (character == '\n')
 				{
 					rowLocation += new float2(0, size);
@@ -251,14 +253,12 @@ namespace OpenRA.Graphics
 
 				var glyph = glyphs[Pair.New(character, fg)];
 
-        if (currentIndex >= selectionStart && selectionEnd >= currentIndex)
+        if (selectionStart < currentIndex && currentIndex <= selectionEnd)
 			    Game.Renderer.RgbaColorRenderer.FillRect(
               // draw highlights from the top of the line, not the baseline.
               columnLocation - new float2(0, size),
               columnLocation + new float2(glyph.Advance / deviceScale, TopOffset),
               bgHighlight);
-
-        currentIndex++;
 
 				if (glyph.Sprite != null)
 					Game.Renderer.RgbaSpriteRenderer.DrawSprite(glyph.Sprite,
