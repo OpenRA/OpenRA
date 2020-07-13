@@ -381,3 +381,5 @@ EditorWorld:
 		Palette: placefootprint
 	LoadWidgetAtGameStart:
 	EditorActionManager:
+	EditorResourceRenderer:
+		RenderTypes: Tiberium, BlueTiberium, Veins

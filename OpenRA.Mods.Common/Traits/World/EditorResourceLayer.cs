@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Traits;
@@ -26,19 +25,21 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new EditorResourceLayer(init.Self); }
 	}
 
-	public class EditorResourceLayer : IWorldLoaded, IRenderOverlay, INotifyActorDisposing
+	public class EditorResourceLayer : IWorldLoaded, INotifyActorDisposing
 	{
 		protected readonly Map Map;
 		protected readonly TileSet Tileset;
 		protected readonly Dictionary<int, ResourceType> Resources;
-		protected readonly CellLayer<EditorCellContents> Tiles;
-		protected readonly HashSet<CPos> Dirty = new HashSet<CPos>();
-
-		readonly Dictionary<PaletteReference, TerrainSpriteLayer> spriteLayers = new Dictionary<PaletteReference, TerrainSpriteLayer>();
+		protected readonly CellLayer<CellContents> Tiles;
 
 		public int NetWorth { get; protected set; }
 
 		bool disposed;
+
+		public event Action<CPos, ResourceType> CellChanged;
+
+		public ResourceType GetResourceType(CPos cell) { return Tiles[cell].Type; }
+		public CellContents GetResource(CPos cell) { return Tiles[cell]; }
 
 		public EditorResourceLayer(Actor self)
 		{
@@ -48,7 +49,7 @@ namespace OpenRA.Mods.Common.Traits
 			Map = self.World.Map;
 			Tileset = self.World.Map.Rules.TileSet;
 
-			Tiles = new CellLayer<EditorCellContents>(Map);
+			Tiles = new CellLayer<CellContents>(Map);
 			Resources = self.TraitsImplementing<ResourceType>()
 				.ToDictionary(r => r.Info.ResourceType, r => r);
 
@@ -62,81 +63,89 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var cell in Map.AllCells)
 				UpdateCell(cell);
-
-			// Build the sprite layer dictionary for rendering resources
-			// All resources that have the same palette must also share a sheet and blend mode
-			foreach (var r in Resources)
-			{
-				var res = r;
-				var layer = spriteLayers.GetOrAdd(r.Value.Palette, pal =>
-				{
-					var first = res.Value.Variants.First().Value.GetSprite(0);
-					return new TerrainSpriteLayer(w, wr, first.Sheet, first.BlendMode, pal, false);
-				});
-
-				// Validate that sprites are compatible with this layer
-				var sheet = layer.Sheet;
-				var sprites = res.Value.Variants.Values.SelectMany(v => Exts.MakeArray(v.Length, x => v.GetSprite(x)));
-				if (sprites.Any(s => s.Sheet != sheet))
-					throw new InvalidDataException("Resource sprites span multiple sheets. Try loading their sequences earlier.");
-
-				var blendMode = layer.BlendMode;
-				if (sprites.Any(s => s.BlendMode != blendMode))
-					throw new InvalidDataException("Resource sprites specify different blend modes. "
-						+ "Try using different palettes for resource types that use different blend modes.");
-			}
 		}
 
 		public void UpdateCell(CPos cell)
 		{
 			var uv = cell.ToMPos(Map);
+			if (!Map.Resources.Contains(uv))
+				return;
+
 			var tile = Map.Resources[uv];
-
-			var t = Tiles[cell];
-			if (t.Density > 0)
-				NetWorth -= (t.Density + 1) * t.Type.Info.ValuePerUnit;
-
+			var t = Tiles[uv];
 			ResourceType type;
+
+			var newTile = CellContents.Empty;
+			var newTerrain = byte.MaxValue;
 			if (Resources.TryGetValue(tile.Type, out type))
 			{
-				Tiles[uv] = new EditorCellContents
+				newTile = new CellContents
 				{
 					Type = type,
-					Variant = ChooseRandomVariant(type),
+					Density = DensityFromNeighbours(type, cell)
 				};
 
-				Map.CustomTerrain[uv] = Tileset.GetTerrainIndex(type.Info.TerrainType);
-			}
-			else
-			{
-				Tiles[uv] = EditorCellContents.Empty;
-				Map.CustomTerrain[uv] = byte.MaxValue;
+				newTerrain = Tileset.GetTerrainIndex(type.Info.TerrainType);
 			}
 
-			// Ingame resource rendering is a giant hack (#6395),
-			// so we must also touch all the neighbouring tiles
-			Dirty.Add(cell);
+			// Nothing has changed
+			if (newTile.Type == t.Type && newTile.Density == t.Density)
+				return;
+
+			UpdateNetWorth(t.Type, t.Density, newTile.Type, newTile.Density);
+			Tiles[uv] = newTile;
+			Map.CustomTerrain[uv] = newTerrain;
+			if (CellChanged != null)
+				CellChanged(cell, type);
+
+			// Neighbouring cell density depends on this cell
 			foreach (var d in CVec.Directions)
-				Dirty.Add(cell + d);
+			{
+				var neighbouringCell = cell + d;
+				if (!Tiles.Contains(neighbouringCell))
+					continue;
+
+				var neighbouringTile = Tiles[neighbouringCell];
+				var density = DensityFromNeighbours(neighbouringTile.Type, neighbouringCell);
+				if (neighbouringTile.Density == density)
+					continue;
+
+				UpdateNetWorth(neighbouringTile.Type, neighbouringTile.Density, neighbouringTile.Type, density);
+				neighbouringTile.Density = density;
+				Tiles[neighbouringCell] = neighbouringTile;
+
+				if (CellChanged != null)
+					CellChanged(neighbouringCell, type);
+			}
 		}
 
-		protected virtual string ChooseRandomVariant(ResourceType t)
+		void UpdateNetWorth(ResourceType oldType, int oldDensity, ResourceType newType, int newDensity)
 		{
-			return t.Variants.Keys.Random(Game.CosmeticRandom);
+			// Density + 1 as workaround for fixing ResourceLayer.Harvest as it would be very disruptive to balancing
+			if (oldType != null && oldDensity > 0)
+				NetWorth -= (oldDensity + 1) * oldType.Info.ValuePerUnit;
+
+			if (newType != null && newDensity > 0)
+				NetWorth += (newDensity + 1) * newType.Info.ValuePerUnit;
 		}
 
-		public int ResourceDensityAt(CPos c)
+		public int DensityFromNeighbours(ResourceType type, CPos c)
 		{
+			if (type == null)
+				return 0;
+
 			// Set density based on the number of neighboring resources
 			var adjacent = 0;
-			var type = Tiles[c].Type;
+
 			var resources = Map.Resources;
 			for (var u = -1; u < 2; u++)
 			{
 				for (var v = -1; v < 2; v++)
 				{
 					var cell = c + new CVec(u, v);
-					if (resources.Contains(cell) && resources[cell].Type == type.Info.ResourceType)
+
+					// The requested cell is assumed to contain the given resource type
+					if ((u == 0 && v == 0) || (resources.Contains(cell) && resources[cell].Type == type.Info.ResourceType))
 						adjacent++;
 				}
 			}
@@ -144,83 +153,14 @@ namespace OpenRA.Mods.Common.Traits
 			return Math.Max(int2.Lerp(0, type.Info.MaxDensity, adjacent, 9), 1);
 		}
 
-		public virtual EditorCellContents UpdateDirtyTile(CPos c)
-		{
-			var t = Tiles[c];
-			var type = t.Type;
-
-			// Empty tile
-			if (type == null)
-			{
-				t.Sequence = null;
-				return t;
-			}
-
-			// Density + 1 as workaround for fixing ResourceLayer.Harvest as it would be very disruptive to balancing
-			if (t.Density > 0)
-				NetWorth -= (t.Density + 1) * type.Info.ValuePerUnit;
-
-			// Set density based on the number of neighboring resources
-			t.Density = ResourceDensityAt(c);
-
-			NetWorth += (t.Density + 1) * type.Info.ValuePerUnit;
-
-			t.Sequence = type.Variants[t.Variant];
-			t.Frame = int2.Lerp(0, t.Sequence.Length - 1, t.Density, type.Info.MaxDensity);
-
-			return t;
-		}
-
-		void IRenderOverlay.Render(WorldRenderer wr)
-		{
-			if (wr.World.Type != WorldType.Editor)
-				return;
-
-			foreach (var c in Dirty)
-			{
-				if (Tiles.Contains(c))
-				{
-					var resource = UpdateDirtyTile(c);
-					Tiles[c] = resource;
-
-					foreach (var kv in spriteLayers)
-					{
-						// resource.Type is meaningless (and may be null) if resource.Sequence is null
-						if (resource.Sequence != null && resource.Type.Palette == kv.Key)
-							kv.Value.Update(c, resource.Sequence, resource.Frame);
-						else
-							kv.Value.Clear(c);
-					}
-				}
-			}
-
-			Dirty.Clear();
-
-			foreach (var l in spriteLayers.Values)
-				l.Draw(wr.Viewport);
-		}
-
 		void INotifyActorDisposing.Disposing(Actor self)
 		{
 			if (disposed)
 				return;
 
-			foreach (var kv in spriteLayers.Values)
-				kv.Dispose();
-
 			Map.Resources.CellEntryChanged -= UpdateCell;
 
 			disposed = true;
 		}
-	}
-
-	public struct EditorCellContents
-	{
-		public static readonly EditorCellContents Empty = default(EditorCellContents);
-		public ResourceType Type;
-		public int Density;
-		public string Variant;
-		public ISpriteSequence Sequence;
-		public int Frame;
 	}
 }

@@ -11,58 +11,55 @@
 
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Traits;
 
 namespace OpenRA.Mods.D2k.Traits
 {
 	using ClearSides = D2kResourceRenderer.ClearSides;
 
 	[Desc("Used to render spice with round borders.")]
-	public class D2kEditorResourceLayerInfo : EditorResourceLayerInfo
+	public class D2kEditorResourceRendererInfo : EditorResourceRendererInfo
 	{
-		public override object Create(ActorInitializer init) { return new D2kEditorResourceLayer(init.Self); }
+		public override object Create(ActorInitializer init) { return new D2kEditorResourceRenderer(init.Self, this); }
 	}
 
-	public class D2kEditorResourceLayer : EditorResourceLayer
+	public class D2kEditorResourceRenderer : EditorResourceRenderer
 	{
-		public D2kEditorResourceLayer(Actor self)
-			: base(self) { }
+		readonly Actor self;
 
-		public override EditorCellContents UpdateDirtyTile(CPos c)
+		public D2kEditorResourceRenderer(Actor self, D2kEditorResourceRendererInfo info)
+			: base(self, info)
 		{
-			var t = Tiles[c];
+			this.self = self;
+		}
 
-			// Empty tile
-			if (t.Type == null)
+		protected override void UpdateRenderedSprite(CPos cell, RendererCellContents content)
+		{
+			var density = content.Density;
+			if (density > 0)
 			{
-				t.Sequence = null;
-				return t;
-			}
+				var type = content.Type;
 
-			NetWorth -= t.Density * t.Type.Info.ValuePerUnit;
+				// The call chain for this method (that starts with AddDirtyCell()) guarantees
+				// that the new content type would still be suitable for this renderer,
+				// but that is a bit too fragile to rely on in case the code starts changing.
+				if (!Info.RenderTypes.Contains(type.Info.Type))
+					return;
 
-			t.Density = ResourceDensityAt(c);
-
-			NetWorth += t.Density * t.Type.Info.ValuePerUnit;
-
-			int index;
-			var clear = FindClearSides(t.Type, c);
-			if (clear == ClearSides.None)
-			{
-				var sprites = D2kResourceRenderer.Variants[t.Variant];
-				var frame = t.Density > t.Type.Info.MaxDensity / 2 ? 1 : 0;
-				t.Sequence = t.Type.Variants.First().Value;
-				t.Frame = sprites[frame];
-			}
-			else if (D2kResourceRenderer.SpriteMap.TryGetValue(clear, out index))
-			{
-				t.Sequence = t.Type.Variants.First().Value;
-				t.Frame = index;
+				int index;
+				var clear = FindClearSides(type, cell);
+				if (clear == ClearSides.None)
+				{
+					var sprites = D2kResourceRenderer.Variants[content.Variant];
+					var frame = density > type.Info.MaxDensity / 2 ? 1 : 0;
+					UpdateSpriteLayers(cell, type.Variants.First().Value, sprites[frame], type.Palette);
+				}
+				else if (D2kResourceRenderer.SpriteMap.TryGetValue(clear, out index))
+					UpdateSpriteLayers(cell, type.Variants.First().Value, index, type.Palette);
+				else
+					UpdateSpriteLayers(cell, null, 0, type.Palette);
 			}
 			else
-				t.Sequence = null;
-
-			return t;
+				UpdateSpriteLayers(cell, null, 0, null);
 		}
 
 		protected override string ChooseRandomVariant(ResourceType t)
@@ -72,7 +69,7 @@ namespace OpenRA.Mods.D2k.Traits
 
 		bool CellContains(CPos c, ResourceType t)
 		{
-			return Tiles.Contains(c) && Tiles[c].Type == t;
+			return self.World.Map.Contains(c) && ResourceLayer.GetResourceType(c) == t;
 		}
 
 		ClearSides FindClearSides(ResourceType t, CPos p)

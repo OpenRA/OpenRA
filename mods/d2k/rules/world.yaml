@@ -242,7 +242,9 @@ EditorWorld:
 	Inherits: ^BaseWorld
 	EditorActorLayer:
 	EditorCursorLayer:
-	D2kEditorResourceLayer:
+	EditorResourceLayer:
+	D2kEditorResourceRenderer:
+		RenderTypes: Spice
 	EditorSelectionLayer:
 	LoadWidgetAtGameStart:
 	EditorActionManager:
