@@ -74,7 +74,10 @@ namespace OpenRA
 				{
 					int key;
 					if (!int.TryParse(node.Key, out key) || key < 0 || key >= tileInfo.Length)
-						throw new InvalidDataException("Invalid tile key '{0}' on template '{1}' of tileset '{2}'.".F(node.Key, Id, tileSet.Id));
+					{
+						Game.ModData.SpriteSequenceLoader.OnMissingSpriteError("Invalid tile key '{0}' on template '{1}' of tileset '{2}'.".F(node.Key, Id, tileSet.Id));
+						continue;
+					}
 
 					tileInfo[key] = LoadTileInfo(tileSet, node.Value);
 				}
@@ -88,7 +91,10 @@ namespace OpenRA
 				{
 					int key;
 					if (!int.TryParse(node.Key, out key) || key != i++)
-						throw new InvalidDataException("Invalid tile key '{0}' on template '{1}' of tileset '{2}'.".F(node.Key, Id, tileSet.Id));
+					{
+						Game.ModData.SpriteSequenceLoader.OnMissingSpriteError("Invalid tile key '{0}' on template '{1}' of tileset '{2}'.".F(node.Key, Id, tileSet.Id));
+						continue;
+					}
 
 					tileInfo[key] = LoadTileInfo(tileSet, node.Value);
 				}

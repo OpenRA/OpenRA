@@ -48,16 +48,13 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					{
 						if (!modData.DefaultFileSystem.Exists(image))
 						{
-							failed = true;
-							Console.WriteLine("\t" + "Tileset file {0} not found.".F(image));
+							modData.SpriteSequenceLoader.OnMissingSpriteError("Tileset file {0} not found.".F(image));
+							continue;
 						}
 
 						var sprites = sc[image];
 						if (template.Value.TilesCount > sprites.Length)
-						{
-							failed = true;
-							Console.WriteLine("\t" + "Tileset tile {0} has frames defined without matching artwork.".F(template.Key));
-						}
+							modData.SpriteSequenceLoader.OnMissingSpriteError("Tileset tile {0} has frames defined without matching artwork.".F(template.Key));
 					}
 				}
 			}
