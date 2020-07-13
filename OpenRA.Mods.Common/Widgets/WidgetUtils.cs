@@ -202,7 +202,6 @@ namespace OpenRA.Mods.Common.Widgets
 			return "{0:D}:{1:D2}".F(minutes, seconds % 60);
 		}
 
-
 		public static string WrapText(string text, int width, SpriteFont font)
 		{
 			var textSize = font.Measure(text);

@@ -120,10 +120,10 @@ namespace OpenRA.Graphics
 
 				// Convert screen coordinates back to UI coordinates for drawing
 				if (g.Sprite != null)
-					Game.Renderer.RgbaSpriteRenderer.DrawSpriteWithTint(g.Sprite,
-					(screen + g.Offset).ToFloat2() / deviceScale,
-					g.Sprite.Size / deviceScale,
-					tint);
+					Game.Renderer.RgbaSpriteRenderer.DrawSprite(g.Sprite,
+						(screen + g.Offset).ToFloat2() / deviceScale,
+						g.Sprite.Size / deviceScale,
+						tint);
 
 				screen += new int2((int)(g.Advance + 0.5f), 0);
 			}
@@ -233,16 +233,17 @@ namespace OpenRA.Graphics
 			DrawTextWithShadow(text, location, fg, GetContrastColor(fg, bgDark, bgLight), offset, angle);
 		}
 
-    public void DrawTextWithSelection(string text, float2 location, Color fg, Color bgHighlight, int selectionStart, int selectionEnd)
-    {
-      var currentIndex = 0;
+		public void DrawTextWithSelection(string text, float2 location, Color fg, Color bgHighlight, int selectionStart, int selectionEnd)
+		{
+			var currentIndex = 0;
+
 			// Offset from the baseline position to the top-left of the glyph for rendering
 			var rowLocation = location + new float2(0, size);
-      var columnLocation = rowLocation;
+			var columnLocation = rowLocation;
 
 			foreach (var character in text)
 			{
-        currentIndex++;
+				currentIndex++;
 
 				if (character == '\n')
 				{
@@ -253,23 +254,27 @@ namespace OpenRA.Graphics
 
 				var glyph = glyphs[Pair.New(character, fg)];
 
-        if (selectionStart < currentIndex && currentIndex <= selectionEnd)
-			    Game.Renderer.RgbaColorRenderer.FillRect(
-              // draw highlights from the top of the line, not the baseline.
-              columnLocation - new float2(0, size),
-              columnLocation + new float2(glyph.Advance / deviceScale, TopOffset),
-              bgHighlight);
+				if (selectionStart < currentIndex && currentIndex <= selectionEnd)
+				{
+					// draw highlights from the top of the line, not the baseline.
+					Game.Renderer.RgbaColorRenderer.FillRect(
+							columnLocation - new float2(0, size),
+							columnLocation + new float2(glyph.Advance / deviceScale, TopOffset),
+							bgHighlight);
+				}
 
 				if (glyph.Sprite != null)
+				{
 					Game.Renderer.RgbaSpriteRenderer.DrawSprite(glyph.Sprite,
-						new float2(
-							(int)Math.Round(columnLocation.X * deviceScale + glyph.Offset.X, 0) / deviceScale,
-							columnLocation.Y + glyph.Offset.Y / deviceScale),
-						glyph.Sprite.Size / deviceScale);
+							new float2(
+								(int)Math.Round(columnLocation.X * deviceScale + glyph.Offset.X, 0) / deviceScale,
+								columnLocation.Y + glyph.Offset.Y / deviceScale),
+							glyph.Sprite.Size / deviceScale);
+				}
 
 				columnLocation += new float2(glyph.Advance / deviceScale, 0);
 			}
-    }
+		}
 
 		public int2 Measure(string text)
 		{
