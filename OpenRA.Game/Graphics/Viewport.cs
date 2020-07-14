@@ -97,6 +97,14 @@ namespace OpenRA.Graphics
 			Zoom = (zoom * (float)Math.Exp(dz)).Clamp(unlockMinZoom ? unlockedMinZoom : minZoom, maxZoom);
 		}
 
+		public void AdjustZoom(float dz, int2 center)
+		{
+			var oldCenter = worldRenderer.Viewport.ViewToWorldPx(center);
+			AdjustZoom(dz);
+			var newCenter = worldRenderer.Viewport.ViewToWorldPx(center);
+			CenterLocation += oldCenter - newCenter;
+		}
+
 		public void ToggleZoom()
 		{
 			// Unlocked zooms always reset to the default zoom
