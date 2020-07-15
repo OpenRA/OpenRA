@@ -142,7 +142,8 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			// Independently orient pitch and roll.
-			bodyPitch = Util.TickFacing(aircraft.Pitch, desiredBodyPitch ?? bodyPitch, aircraft.Info.PitchSpeed);
+			var dbp = (desiredBodyPitch ?? bodyPitch).Clamp(-aircraft.MaximumBodyPitch, aircraft.MaximumBodyPitch);
+			bodyPitch = Util.TickFacing(aircraft.Pitch, dbp, aircraft.BodyPitchSpeed);
 			bodyRoll = Util.TickFacing(aircraft.Roll, desiredBodyRoll ?? bodyRoll, aircraft.Info.RollSpeed);
 
 			// Determine new displacement vector.
@@ -220,7 +221,7 @@ namespace OpenRA.Mods.Common.Activities
 			var bodyFacing = aircraft.Facing + bodyTurnSpeed;
 
 			// Rotate body to landing position.
-			var bodyPitch = Util.TickFacing(aircraft.Pitch, WAngle.Zero, aircraft.Info.PitchSpeed);
+			var bodyPitch = Util.TickFacing(aircraft.Pitch, WAngle.Zero, aircraft.BodyPitchSpeed);
 			var bodyRoll = Util.TickFacing(aircraft.Roll, WAngle.Zero, aircraft.Info.RollSpeed);
 
 			// Lock in new body and flight attitudes and velocities.
@@ -297,9 +298,9 @@ namespace OpenRA.Mods.Common.Activities
 
 			// We should start pitching to reach the desired facing at the last possible moment.
 			WAngle? desiredBodyPitch = null;
-			if (aircraft.Info.PitchSpeed != WAngle.Zero && finalPitch.HasValue)
+			if (aircraft.BodyPitchSpeed != WAngle.Zero && finalPitch.HasValue)
 			{
-				var turnSpeed = aircraft.Info.PitchSpeed.Angle;
+				var turnSpeed = aircraft.BodyPitchSpeed.Angle;
 				var turnTime = Math.Abs((finalPitch - aircraft.Pitch).Value.Angle2) / turnSpeed;
 				var turnDist = speed * turnTime - (turnTime < brakeTime ? accel * turnTime * turnTime / 2 : parBrakeDist);
 				if (turnDist >= dist)

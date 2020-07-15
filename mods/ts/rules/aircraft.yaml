@@ -139,11 +139,16 @@ ORCA:
 	Selectable:
 		Bounds: 30,24
 	Aircraft:
-		TurnSpeed: 40
+		TurnSpeed: 20
 		BodyTurnSpeed: 20
-		TurnAcceleration: 5
+		TurnAcceleration: 6
 		BodyTurnAcceleration: 3
 		Speed: 186
+		MaximumPitch: 256
+		PitchSpeed: 20
+		BodyPitchSpeed: 3
+		MaximumBodyPitch: 64
+		TiltForAscent: true
 		TakeoffSounds: orcaup1.aud
 		LandingSounds: orcadwn1.aud
 		AltitudeVelocity: 128
@@ -203,11 +208,12 @@ ORCAB:
 		Bounds: 30,24
 	Aircraft:
 		CruiseAltitude: 5c512
-		TurnSpeed: 20
+		TurnSpeed: 14
 		BodyTurnSpeed: 12
 		IdleTurnSpeed: 4
 		Speed: 96
 		IdleSpeed: 60
+		MaximumBodyPitch: 64
 		CruisingCondition: cruising
 		TakeoffSounds: orcaup1.aud
 		LandingSounds: orcadwn1.aud
@@ -271,8 +277,12 @@ ORCATRAN:
 		TurnSpeed: 40
 		BodyTurnSpeed: 20
 		Speed: 84
-		TiltForAscent: false
-		InitialFacing: 0
+		MaximumPitch: 256
+		PitchSpeed: 12
+		Pitch: -10
+		BodyPitchSpeed: 1
+		MaximumBodyPitch: 10
+		TiltForAscent: true
 		LandableTerrainTypes: Clear, Road, Rail, DirtRoad, Rough, Tiberium, BlueTiberium, Veins
 		Crushes: crate, infantry
 		TakeoffSounds: orcaup1.aud
@@ -314,10 +324,14 @@ TRNSPORT:
 	Aircraft:
 		TurnSpeed: 40
 		BodyTurnSpeed: 20
+		TurnAcceleration: 3
 		Speed: 149
 		InitialFacing: 0
 		Pitch: 0
+		MaximumPitch: 256
+		PitchSpeed: 12
 		Roll: 0
+		TiltForAscent: false
 		TakeoffSounds: dropup1.aud
 		LandingSounds: dropdwn1.aud
 	Carryall:
@@ -364,15 +378,17 @@ SCRIN:
 	Aircraft:
 		CruiseAltitude: 5c0
 		TurnSpeed: 15
-		BodyTurnSpeed: 18
+		BodyTurnSpeed: 15
+		TurnAcceleration: 1
 		BodyTurnAcceleration: 2
 		IdleTurnSpeed: 6
 		Speed: 200
 		IdleSpeed: 100
 		Pitch: 0
-		PitchSpeed: 6
+		PitchSpeed: 10
+		BodyPitchSpeed: 6
 		MaximumPitch: 200
-		Roll: 200
+		Roll: 180
 		RollSpeed: 10
 		TakeoffSounds: dropup1.aud
 		LandingSounds: dropdwn1.aud
@@ -442,6 +458,7 @@ APACHE:
 		BodyTurnSpeed: 20
 		TurnAcceleration: 5
 		BodyTurnAcceleration: 3
+		MaximumBodyPitch: 32
 		Speed: 130
 		TakeOffOnResupply: true
 	Health:

@@ -84,8 +84,11 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Maximum pitch offset when flying forwards at maximum speed. Only relevant for voxel aircraft.")]
 		public readonly WAngle Pitch = WAngle.Zero;
 
-		[Desc("Pitch steps to apply each tick when not moving forward.")]
+		[Desc("Pitch steps to apply each tick when changing flight direction.")]
 		public readonly WAngle PitchSpeed = WAngle.Zero;
+
+		[Desc("Pitch steps to apply each tick when changing body orientation.")]
+		public readonly WAngle? BodyPitchSpeed = null;
 
 		[Desc("Body roll when turning. Only relevant for voxel aircraft.")]
 		public readonly WAngle Roll = WAngle.Zero;
@@ -157,6 +160,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("How fast this actor ascends or descends during horizontal movement.")]
 		public readonly WAngle MaximumPitch = WAngle.FromDegrees(10);
+
+		[Desc("Maximum total body pitch during flight.")]
+		public readonly WAngle? MaximumBodyPitch = null;
 
 		[Desc("How fast this actor ascends or descends when moving vertically only (vertical take off/landing or" +
 			" hovering towards CruiseAltitude).")]
@@ -292,6 +298,8 @@ namespace OpenRA.Mods.Common.Traits
 		public CPos TopLeft { get { return self.World.Map.CellContaining(CenterPosition); } }
 		public WAngle TurnSpeed { get { return !IsTraitDisabled && !IsTraitPaused ? Info.TurnSpeed : WAngle.Zero; } }
 		public WAngle BodyTurnSpeed { get { return Info.BodyTurnSpeed ?? Info.TurnSpeed; } }
+		public WAngle BodyPitchSpeed { get { return Info.BodyPitchSpeed ?? Info.PitchSpeed; } }
+		public WAngle MaximumBodyPitch { get { return Info.MaximumBodyPitch ?? Info.MaximumPitch; } }
 
 		public int IdleSpeed
 		{
