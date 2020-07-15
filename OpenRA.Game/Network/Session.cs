@@ -183,6 +183,7 @@ namespace OpenRA.Network
 		{
 			public string PlayerReference; // PlayerReference to bind against.
 			public bool Closed; // Host has explicitly closed this slot.
+			public int ClosedSpawnPoint; // Optionally closed spawn location selected by this slot
 
 			public bool AllowBots;
 			public bool LockFaction;

@@ -147,14 +147,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			dropdown.ShowDropDown("TEAM_DROPDOWN_TEMPLATE", 150, options, setupItem);
 		}
 
-		public static void ShowSpawnDropDown(DropDownButtonWidget dropdown, Session.Client client,
+		public static void ShowSpawnDropDown(DropDownButtonWidget dropdown, Session.Slot s, Session.Client client,
 			OrderManager orderManager, IEnumerable<int> spawnPoints)
 		{
 			Func<int, ScrollItemWidget, ScrollItemWidget> setupItem = (ii, itemTemplate) =>
 			{
 				var item = ScrollItemWidget.Setup(itemTemplate,
-					() => client.SpawnPoint == ii,
-					() => SetSpawnPoint(orderManager, client, ii));
+					() => (client?.SpawnPoint ?? s.ClosedSpawnPoint) == ii,
+					() => SetSpawnPoint(orderManager, s, client, ii));
 				item.Get<LabelWidget>("LABEL").GetText = () => ii == 0 ? "-" : Convert.ToChar('A' - 1 + ii).ToString();
 				return item;
 			};
@@ -230,6 +230,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		public static Dictionary<CPos, SpawnOccupant> GetSpawnOccupants(Session lobbyInfo, MapPreview preview)
 		{
+			// todo include the closed slots!
 			var spawns = preview.SpawnPoints;
 			return lobbyInfo.Clients
 				.Where(c => (c.SpawnPoint - 1 >= 0) && (c.SpawnPoint - 1 < spawns.Length))
@@ -261,11 +262,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var locals = orderManager.LobbyInfo.Clients.Where(c => c.Index == orderManager.LocalClient.Index || (Game.IsHost && c.Bot != null));
 			var playerToMove = locals.FirstOrDefault(c => ((selectedSpawn == 0) ^ (c.SpawnPoint == 0) && !c.IsObserver));
-			SetSpawnPoint(orderManager, playerToMove, selectedSpawn);
+			SetSpawnPoint(orderManager, null, playerToMove, selectedSpawn);
 		}
 
-		private static void SetSpawnPoint(OrderManager orderManager, Session.Client playerToMove, int selectedSpawn)
+		private static void SetSpawnPoint(OrderManager orderManager, Session.Slot closedSlot, Session.Client playerToMove, int selectedSpawn)
 		{
+			// we could be setting this for a closed slot or a player
+			// positive number is the client index
+			// negative number is the slot
+
 			var owned = orderManager.LobbyInfo.Clients.Any(c => c.SpawnPoint == selectedSpawn);
 			if (selectedSpawn == 0 || !owned)
 				orderManager.IssueOrder(Order.Command("spawn {0} {1}".F((playerToMove ?? orderManager.LocalClient).Index, selectedSpawn)));
@@ -552,12 +557,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			dropdown.IsDisabled = () => s.LockSpawn || orderManager.LocalClient.IsReady;
 			dropdown.OnMouseDown = _ =>
 			{
-				var spawnPoints = Enumerable.Range(0, map.SpawnPoints.Length + 1).Except(
-					orderManager.LobbyInfo.Clients.Where(
-					client => client != c && client.SpawnPoint != 0).Select(client => client.SpawnPoint));
-				ShowSpawnDropDown(dropdown, c, orderManager, spawnPoints);
+				var spawnPoints = Enumerable.Range(0, map.SpawnPoints.Length + 1)
+					.Except(orderManager.LobbyInfo.Slots.Values.Where(
+						slot => slot.Closed && slot.ClosedSpawnPoint > 0).Select(slot => slot.ClosedSpawnPoint))
+					.Except(orderManager.LobbyInfo.Clients.Where(
+						client => client != c && client.SpawnPoint != 0).Select(client => client.SpawnPoint));
+				ShowSpawnDropDown(dropdown, s, c, orderManager, spawnPoints);
 			};
-			dropdown.GetText = () => (c.SpawnPoint == 0) ? "-" : Convert.ToChar('A' - 1 + c.SpawnPoint).ToString();
+
+			// c will be null if it is a closed slot without a client
+			var spawnPoint = c != null ? c.SpawnPoint : s.ClosedSpawnPoint;
+
+			dropdown.GetText = () => (spawnPoint == 0) ? "-" : Convert.ToChar('A' - 1 + spawnPoint).ToString();
 
 			HideChildWidget(parent, "SPAWN");
 		}
@@ -566,7 +577,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var spawn = parent.Get<LabelWidget>("SPAWN");
 			spawn.IsVisible = () => true;
-			spawn.GetText = () => (c.SpawnPoint == 0) ? "-" : Convert.ToChar('A' - 1 + c.SpawnPoint).ToString();
+
+			// c will be null if it is a closed slot without a client
+			var spawnPoint = c != null ? c.SpawnPoint : s.ClosedSpawnPoint;
+
+			spawn.GetText = () => (spawnPoint == 0) ? "-" : Convert.ToChar('A' - 1 + spawnPoint).ToString();
 			HideChildWidget(parent, "SPAWN_DROPDOWN");
 		}
 
