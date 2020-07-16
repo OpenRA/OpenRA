@@ -45,6 +45,13 @@ namespace OpenRA.Mods.Common.Widgets
 			SpawnPoint = player.SpawnPoint;
 		}
 
+		public SpawnOccupant(Session.Slot closedSlot)
+		{
+			SpawnPoint = closedSlot.ClosedSpawnPoint;
+			Color = Color.White;
+			PlayerName = closedSlot.PlayerReference.Substring(closedSlot.PlayerReference.Length - 1);
+		}
+
 		public SpawnOccupant(GameClient player, bool suppressFaction)
 		{
 			Color = player.Color;

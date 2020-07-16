@@ -762,21 +762,41 @@ namespace OpenRA.Mods.Common.Server
 
 		static bool Spawn(S server, Connection conn, Session.Client client, string s)
 		{
+			Session.Client targetClient = null;
+			Session.Slot targetSlot = null;
+
 			var parts = s.Split(' ');
-			var targetClient = server.LobbyInfo.ClientWithIndex(Exts.ParseIntegerInvariant(parts[0]));
 
-			// Only the host can change other client's info
-			if (targetClient.Index != client.Index && !client.IsAdmin)
-				return true;
+			// slot is selected
+			if (s.StartsWith("Multi"))
+			{
+				if (!client.IsAdmin)
+				{
+					server.SendOrderTo(conn, "Message", "You cannot set slot spawn points as you are not lobby admin.");
+					return true;
+				}
 
-			// Spectators don't need a spawnpoint
-			if (targetClient.Slot == null)
-				return true;
+				// adjusting a slot
+				targetSlot = server.LobbyInfo.Slots[parts[0]];
+			}
+			else
+			{
+				targetClient = server.LobbyInfo.ClientWithIndex(Exts.ParseIntegerInvariant(parts[0]));
 
-			// Map has disabled spawn changes
-			if (server.LobbyInfo.Slots[targetClient.Slot].LockSpawn)
-				return true;
+				// Only the host can change other client's info
+				if (targetClient.Index != client.Index && !client.IsAdmin)
+					return true;
 
+				// Spectators don't need a spawnpoint
+				if (targetClient.Slot == null)
+					return true;
+
+				// Map has disabled spawn changes
+				if (server.LobbyInfo.Slots[targetClient.Slot].LockSpawn)
+					return true;
+			}
+
+			// verify the slot change is valid
 			int spawnPoint;
 			if (!Exts.TryParseIntegerInvariant(parts[1], out spawnPoint)
 				|| spawnPoint < 0 || spawnPoint > server.Map.SpawnPoints.Length)
@@ -807,8 +827,17 @@ namespace OpenRA.Mods.Common.Server
 				}
 			}
 
-			targetClient.SpawnPoint = spawnPoint;
-			server.SyncLobbyClients();
+			if (targetClient != null)
+			{
+				targetClient.SpawnPoint = spawnPoint;
+				server.SyncLobbyClients();
+			}
+
+			if (targetSlot != null)
+			{
+				targetSlot.ClosedSpawnPoint = spawnPoint;
+				server.SyncLobbySlots();
+			}
 
 			return true;
 		}

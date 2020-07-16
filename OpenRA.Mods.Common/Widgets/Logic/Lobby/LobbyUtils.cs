@@ -230,11 +230,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		public static Dictionary<CPos, SpawnOccupant> GetSpawnOccupants(Session lobbyInfo, MapPreview preview)
 		{
-			// todo include the closed slots!
 			var spawns = preview.SpawnPoints;
-			return lobbyInfo.Clients
+
+			var occupants = lobbyInfo.Clients
 				.Where(c => (c.SpawnPoint - 1 >= 0) && (c.SpawnPoint - 1 < spawns.Length))
 				.ToDictionary(c => spawns[c.SpawnPoint - 1], c => new SpawnOccupant(c));
+
+			foreach (var closedSlot in lobbyInfo.Slots.Values.Where(s => s.Closed && s.ClosedSpawnPoint - 1 >= 0 && s.ClosedSpawnPoint - 1 < spawns.Length))
+			{
+				occupants[spawns[closedSlot.ClosedSpawnPoint - 1]] = new SpawnOccupant(closedSlot);
+			}
+
+			return occupants;
 		}
 
 		public static Dictionary<CPos, SpawnOccupant> GetSpawnOccupants(IEnumerable<GameInformation.Player> players, MapPreview preview)
@@ -270,10 +277,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			// we could be setting this for a closed slot or a player
 			// positive number is the client index
 			// negative number is the slot
-
 			var owned = orderManager.LobbyInfo.Clients.Any(c => c.SpawnPoint == selectedSpawn);
+
 			if (selectedSpawn == 0 || !owned)
-				orderManager.IssueOrder(Order.Command("spawn {0} {1}".F((playerToMove ?? orderManager.LocalClient).Index, selectedSpawn)));
+			{
+				if (playerToMove != null)
+					orderManager.IssueOrder(Order.Command("spawn {0} {1}".F((playerToMove ?? orderManager.LocalClient).Index, selectedSpawn)));
+				else if (closedSlot != null)
+					orderManager.IssueOrder(Order.Command("spawn {0} {1}".F(closedSlot.PlayerReference, selectedSpawn)));
+			}
 		}
 
 		public static Color LatencyColor(Session.ClientPing ping)
@@ -417,6 +429,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			slot.GetText = () => truncated.Update(c != null ? c.Name : s.Closed ? "Closed" : "Open");
 			slot.OnMouseDown = _ => ShowSlotDropDown(slot, s, c, orderManager, map);
+
+			if (s.Closed)
+			{
+				SetupEditableSpawnWidget(parent, s, null, orderManager, map);
+			}
+			else
+			{
+				HideChildWidget(parent, "SPAWN_DROPDOWN");
+			}
 
 			// Ensure Name selector (if present) is hidden
 			HideChildWidget(parent, "NAME");
