@@ -289,6 +289,11 @@ Container@LOBBY_PLAYER_BIN:
 							Text: Play in this slot
 							Width: 326
 							Height: 25
+						DropDownButton@SPAWN_DROPDOWN:
+							X: 468
+							Width: 48
+							Height: 25
+							Visible: false
 				Container@TEMPLATE_EDITABLE_SPECTATOR:
 					X: 5
 					Width: 475
