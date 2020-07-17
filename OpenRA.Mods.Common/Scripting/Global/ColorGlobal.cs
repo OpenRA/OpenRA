@@ -10,7 +10,6 @@
 #endregion
 
 using Eluant;
-using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Scripting;
 

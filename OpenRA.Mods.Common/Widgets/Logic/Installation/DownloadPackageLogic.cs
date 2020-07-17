@@ -16,7 +16,6 @@ using System.IO;
 using System.Net;
 using System.Text;
 using ICSharpCode.SharpZipLib.Zip;
-using OpenRA.Primitives;
 using OpenRA.Support;
 using OpenRA.Widgets;
 

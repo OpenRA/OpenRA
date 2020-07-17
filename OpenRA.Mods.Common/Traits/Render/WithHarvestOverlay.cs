@@ -9,7 +9,6 @@
  */
 #endregion
 
-using OpenRA.Activities;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 

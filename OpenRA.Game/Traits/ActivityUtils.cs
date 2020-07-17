@@ -10,7 +10,6 @@
 #endregion
 
 using System.Diagnostics;
-using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Support;
 

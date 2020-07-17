@@ -18,8 +18,6 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	using CellContents = ResourceLayer.CellContents;
-
 	[Desc("Required for the map editor to work. Attach this to the world actor.")]
 	public class EditorResourceLayerInfo : TraitInfo, Requires<ResourceTypeInfo>
 	{

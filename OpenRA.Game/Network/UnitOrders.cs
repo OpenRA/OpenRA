@@ -9,10 +9,8 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Primitives;
 using OpenRA.Server;
 using OpenRA.Traits;
 

@@ -18,7 +18,6 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text.RegularExpressions;
-using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Support;
 

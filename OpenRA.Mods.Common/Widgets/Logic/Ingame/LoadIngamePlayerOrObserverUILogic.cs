@@ -9,7 +9,6 @@
  */
 #endregion
 
-using OpenRA.Mods.Common.Commands;
 using OpenRA.Mods.Common.Scripting;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Widgets;
