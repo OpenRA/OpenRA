@@ -11,12 +11,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
-using System.IO;
 using System.Linq;
-using System.Net;
 using OpenRA.Primitives;
 using OpenRA.Widgets;
 

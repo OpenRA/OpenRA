@@ -11,7 +11,6 @@
 
 using System;
 using System.IO;
-using OpenRA.Graphics;
 
 namespace OpenRA.Mods.Cnc.FileFormats
 {

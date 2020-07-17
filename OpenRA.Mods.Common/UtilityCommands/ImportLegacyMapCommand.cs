@@ -15,7 +15,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using OpenRA.FileSystem;
-using OpenRA.Graphics;
 using OpenRA.Mods.Common.FileFormats;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;

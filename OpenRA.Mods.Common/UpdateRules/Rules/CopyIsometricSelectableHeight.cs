@@ -9,12 +9,9 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using OpenRA.Mods.Common.FileFormats;
-using OpenRA.Mods.Common.Traits;
 
 namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
