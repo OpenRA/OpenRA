@@ -6,7 +6,7 @@ Container@SERVER_LOBBY:
 	Height: 575
 	Children:
 		ColorPreviewManager@COLOR_MANAGER:
-		Label@SERVER_NAME:
+		LabelWithSelection@SERVER_NAME:
 			Width: PARENT_RIGHT
 			Y: 0 - 22
 			Font: BigBold
@@ -105,17 +105,17 @@ Container@SERVER_LOBBY:
 									X: 2
 									Y: 0
 									Children:
-										Label@TIME:
+										LabelWithSelection@TIME:
 											X: 3
 											Width: 50
 											Height: 16
 											Shadow: True
-										Label@NAME:
+										LabelWithSelection@NAME:
 											X: 45
 											Width: 50
 											Height: 16
 											Shadow: True
-										Label@TEXT:
+										LabelWithSelection@TEXT:
 											X: 55
 											Width: PARENT_RIGHT - 60
 											Height: 16

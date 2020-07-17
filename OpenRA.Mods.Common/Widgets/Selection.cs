@@ -107,7 +107,9 @@ namespace OpenRA.Mods.Common.Widgets
 				case States.Ready:
 					State = States.Empty;
 					SelectionWidget = null;
-					return true;
+					// while we did technically handle the event, it was really a false alarm.
+					// No selection was made so let parent elements handle the interaction.
+					return false;
 				default:
 					return false;
 			}
