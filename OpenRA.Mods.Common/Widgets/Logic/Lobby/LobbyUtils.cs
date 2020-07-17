@@ -573,7 +573,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		public static void SetupEditableSpawnWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, MapPreview map)
 		{
-			var dropdown = parent.Get<DropDownButtonWidget>("SPAWN_DROPDOWN");
+			var dropdown = parent.GetOrNull<DropDownButtonWidget>("SPAWN_DROPDOWN");
+			if (dropdown == null) return;
+
 			dropdown.IsVisible = () => true;
 			dropdown.IsDisabled = () => s.LockSpawn || orderManager.LocalClient.IsReady;
 			dropdown.OnMouseDown = _ =>
