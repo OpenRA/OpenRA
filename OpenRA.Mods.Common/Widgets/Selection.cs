@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Widgets;
@@ -22,7 +23,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public States State = States.Empty;
 		public int First = -1;
 		public int Last = -1;
-		public LabelWidget SelectionWidget = null;
+		public LabelWithSelectionWidget SelectionWidget = null;
 		public int2 StartingLocation;
 
 		public int Start
@@ -57,7 +58,7 @@ namespace OpenRA.Mods.Common.Widgets
 			return SelectionWidget == widget;
 		}
 
-		public bool HandleMouseDown(LabelWidget widget, int2 location)
+		public bool HandleMouseDown(LabelWithSelectionWidget widget, int2 location)
 		{
 			if (object.ReferenceEquals(widget, null))
 				return false;
@@ -107,43 +108,17 @@ namespace OpenRA.Mods.Common.Widgets
 				case States.Ready:
 					State = States.Empty;
 					SelectionWidget = null;
-					// while we did technically handle the event, it was really a false alarm.
-					// No selection was made so let parent elements handle the interaction.
-					return false;
-				default:
-					return false;
-			}
-		}
-
-		public bool HandleMouseExit()
-		{
-			switch (State)
-			{
-				case States.Active:
-					State = States.Inactive;
-					return true;
-				case States.Ready:
-					State = States.Empty;
-					SelectionWidget = null;
 					return true;
 				default:
 					return false;
 			}
 		}
 
-		public bool HandleMouseEnter(LabelWidget widget)
+		public bool HandleLooseMouseFocus()
 		{
-			if (!OwnedBy(widget))
-				return false;
-
-			switch (State)
-			{
-				case States.Inactive:
-					State = States.Active;
-					return true;
-				default:
-					return false;
-			}
+			State = States.Empty;
+			SelectionWidget = null;
+			return true;
 		}
 
 		class Constraint
@@ -198,9 +173,10 @@ namespace OpenRA.Mods.Common.Widgets
 			var nearestIndex = -1;
 			var x = SelectionWidget.GetPosition().X;
 			var y = SelectionWidget.GetPosition().Y;
+			var lines = SelectionWidget.GetTextContent().Split('\n');
 			string startingLine = null;
 
-			foreach (var line in SelectionWidget.GetTextContent().Split('\n'))
+			foreach (var line in lines)
 			{
 				var lineTop = y;
 				var lineHeight = font.Measure(line).Y;
@@ -212,7 +188,7 @@ namespace OpenRA.Mods.Common.Widgets
 					startingLine = line;
 				}
 
-				if (isInThisLine.Check(location.Y))
+				if (isInThisLine.Check(location.Y) || line == lines.Last() && lineBottom < location.Y || line == lines.First() && location.Y < lineTop)
 				{
 					foreach (var character in line)
 					{
@@ -250,7 +226,9 @@ namespace OpenRA.Mods.Common.Widgets
 						x = characterRight;
 					}
 				}
-				else
+				// prevent awkward selection behavior where leaving bottom or top of an element causes
+				// lots of characters to be added that were never intended to be added.
+				else if (lines.First() != line && line != lines.Last())
 				{
 					nearestIndex += line.Length;
 				}

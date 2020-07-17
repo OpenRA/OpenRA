@@ -23,7 +23,6 @@ namespace OpenRA.Mods.Common.Widgets
 		public Func<Color> GetColorHighlight;
 		static Selection selection = new Selection();
 
-
 		public LabelWithSelectionWidget()
 		{
 			GetColorHighlight = () => TextColorHighlight;
@@ -56,23 +55,23 @@ namespace OpenRA.Mods.Common.Widgets
 			switch (mi.Event)
 			{
 				case MouseInputEvent.Down:
+					// clicking outside of the element should loose mouse focus and kill the selection
+					if (HasMouseFocus && (!IsVisible() || !GetEventBounds().Contains(mi.Location)))
+					{
+						selection.HandleLooseMouseFocus();
+						return YieldMouseFocus(mi);
+					}
+
+					TakeMouseFocus(mi);
 					return selection.HandleMouseDown(this, mi.Location);
 				case MouseInputEvent.Move:
 					return selection.HandleMouseMove(mi.Location);
 				case MouseInputEvent.Up:
-					// Can't copy stuff if we don't have keyboard focus!
-					if (!RenderBounds.Contains(mi.Location) || !TakeKeyboardFocus())
-						return false;
-
+					TakeKeyboardFocus();
 					return selection.HandleMouseUp();
 			}
 
 			return false;
-		}
-
-		public override void MouseExited()
-		{
-			selection.HandleMouseExit();
 		}
 
 		public override bool HandleKeyPress(KeyInput e)
