@@ -37,17 +37,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (!EnabledByDefault)
 				yield break;
 
-			var body = init.Actor.TraitInfo<BodyOrientationInfo>();
 			var t = init.Actor.TraitInfos<TurretedInfo>()
 				.First(tt => tt.Turret == Turret);
 
 			var model = init.World.ModelCache.GetModelSequence(image, Sequence);
-			Func<WVec> turretOffset = () => body.LocalToWorld(t.Offset.Rotate(orientation()));
-
-			var turretFacing = Turreted.TurretFacingFromInit(init, t);
-			Func<WRot> turretOrientation = () => WRot.FromYaw(turretFacing() - orientation().Yaw)
-				.Rotate(body.QuantizeOrientation(orientation(), facings));
-
+			var turretOffset = t.PreviewPosition(init, orientation);
+			var turretOrientation = t.PreviewOrientation(init, orientation, facings);
 			yield return new ModelAnimation(model, turretOffset, turretOrientation, () => false, () => 0, ShowShadow);
 		}
 	}
@@ -68,15 +63,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 			var rv = self.Trait<RenderVoxels>();
 			rv.Add(new ModelAnimation(self.World.ModelCache.GetModelSequence(rv.Image, Info.Sequence),
-				() => turreted.Position(self), TurretRotation,
+				() => turreted.Position(self), () => turreted.WorldOrientation,
 				() => IsTraitDisabled, () => 0, info.ShowShadow));
-		}
-
-		WRot TurretRotation()
-		{
-			var b = self.Orientation;
-			var qb = body.QuantizeOrientation(self, b);
-			return (turreted.WorldOrientation(self) - b + WRot.FromYaw(b.Yaw - qb.Yaw)).Rotate(qb);
 		}
 	}
 }

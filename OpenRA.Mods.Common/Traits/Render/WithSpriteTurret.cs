@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var t = init.Actor.TraitInfos<TurretedInfo>()
 				.First(tt => tt.Turret == Turret);
 
-			var turretFacing = Turreted.TurretFacingFromInit(init, t);
+			var turretFacing = t.WorldFacingFromInit(init);
 			var anim = new Animation(init.World, image, turretFacing);
 			anim.Play(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), Sequence));
 
@@ -90,7 +90,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			arms = self.TraitsImplementing<Armament>()
 				.Where(w => w.Info.Turret == info.Turret).ToArray();
 
-			DefaultAnimation = new Animation(self.World, rs.GetImage(self), () => WAngle.FromFacing(t.TurretFacing));
+			DefaultAnimation = new Animation(self.World, rs.GetImage(self), () => t.WorldOrientation.Yaw);
 			DefaultAnimation.PlayRepeating(NormalizeSequence(self, info.Sequence));
 			rs.Add(new AnimationWithOffset(DefaultAnimation,
 				() => TurretOffset(self),
@@ -106,10 +106,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (!Info.Recoils)
 				return t.Position(self);
 
-			var recoil = arms.Aggregate(WDist.Zero, (a, b) => a + b.Recoil);
-			var localOffset = new WVec(-recoil, WDist.Zero, WDist.Zero);
-			var quantizedWorldTurret = t.WorldOrientation(self);
-			return t.Position(self) + body.LocalToWorld(localOffset.Rotate(quantizedWorldTurret));
+			var recoilDist = arms.Aggregate(WDist.Zero, (a, b) => a + b.Recoil);
+			var recoil = new WVec(-recoilDist, WDist.Zero, WDist.Zero);
+			return t.Position(self) + body.LocalToWorld(recoil.Rotate(t.WorldOrientation));
 		}
 
 		public string NormalizeSequence(Actor self, string sequence)

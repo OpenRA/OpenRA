@@ -68,7 +68,7 @@ namespace OpenRA.Mods.Common.Traits
 			// TODO: Carry orientation over from the parent instead of just facing
 			var dynamicFacingInit = init.GetOrDefault<DynamicFacingInit>();
 			var bodyFacing = dynamicFacingInit != null ? dynamicFacingInit.Value() : init.GetValue<FacingInit, WAngle>(WAngle.Zero);
-			facing = Turreted.TurretFacingFromInit(init, info, WAngle.Zero)();
+			facing = TurretedInfo.WorldFacingFromInit(init, info, WAngle.Zero)();
 
 			// Calculate final position
 			var throwRotation = WRot.FromYaw(new WAngle(Game.CosmeticRandom.Next(1024)));

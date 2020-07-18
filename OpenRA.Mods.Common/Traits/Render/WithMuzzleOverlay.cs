@@ -52,10 +52,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 					var turreted = self.TraitsImplementing<Turreted>()
 						.FirstOrDefault(t => t.Name == arm.Info.Turret);
 
-					// Workaround for broken ternary operators in certain versions of mono (3.10 and
-					// certain versions of the 3.8 series): https://bugzilla.xamarin.com/show_bug.cgi?id=23319
 					if (turreted != null)
-						getFacing = () => WAngle.FromFacing(turreted.TurretFacing);
+						getFacing = () => turreted.WorldOrientation.Yaw;
 					else if (facing != null)
 						getFacing = () => facing.Facing;
 					else

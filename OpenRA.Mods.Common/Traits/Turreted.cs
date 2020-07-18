@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Mods.Common.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -54,36 +55,7 @@ namespace OpenRA.Mods.Common.Traits
 				(actor, value) => actor.ReplaceInit(new TurretFacingInit(this, new WAngle((int)value)), this));
 		}
 
-		public override object Create(ActorInitializer init) { return new Turreted(init, this); }
-	}
-
-	public class Turreted : PausableConditionalTrait<TurretedInfo>, ITick, IDeathActorInitModifier, IActorPreviewInitModifier
-	{
-		AttackTurreted attack;
-		IFacing facing;
-		BodyOrientation body;
-
-		[Sync]
-		public int QuantizedFacings = 0;
-
-		[Sync]
-		public int TurretFacing = 0;
-
-		public int? DesiredFacing;
-		int realignTick = 0;
-
-		// For subclasses that want to move the turret relative to the body
-		protected WVec localOffset = WVec.Zero;
-
-		public WVec Offset { get { return Info.Offset + localOffset; } }
-		public string Name { get { return Info.Turret; } }
-
-		public static Func<WAngle> TurretFacingFromInit(IActorInitializer init, TurretedInfo info)
-		{
-			return TurretFacingFromInit(init, info, info.InitialFacing);
-		}
-
-		public static Func<WAngle> TurretFacingFromInit(IActorInitializer init, TraitInfo info, WAngle defaultFacing)
+		public static Func<WAngle> WorldFacingFromInit(IActorInitializer init, TraitInfo info, WAngle defaultFacing)
 		{
 			// (Dynamic)TurretFacingInit is specified relative to the actor body.
 			// We need to add the body facing to return an absolute world angle.
@@ -102,17 +74,97 @@ namespace OpenRA.Mods.Common.Traits
 				return bodyFacing != null ? (Func<WAngle>)(() => bodyFacing() + facing) : () => facing;
 			}
 
-			var dynamicFacingInit = init.GetOrDefault<DynamicFacingInit>();
+			var dynamicFacingInit = init.GetOrDefault<DynamicTurretFacingInit>(info);
 			if (dynamicFacingInit != null)
 				return bodyFacing != null ? () => bodyFacing() + dynamicFacingInit.Value() : dynamicFacingInit.Value;
 
-			return bodyFacing ?? (Func<WAngle>)(() => defaultFacing);
+			return bodyFacing ?? (() => defaultFacing);
 		}
+
+		public Func<WAngle> WorldFacingFromInit(IActorInitializer init)
+		{
+			return WorldFacingFromInit(init, this, InitialFacing);
+		}
+
+		public Func<WAngle> LocalFacingFromInit(IActorInitializer init)
+		{
+			var turretFacingInit = init.GetOrDefault<TurretFacingInit>(this);
+			if (turretFacingInit != null)
+			{
+				var facing = turretFacingInit.Value;
+				return () => facing;
+			}
+
+			var dynamicFacingInit = init.GetOrDefault<DynamicTurretFacingInit>(this);
+			if (dynamicFacingInit != null)
+				return dynamicFacingInit.Value;
+
+			return () => InitialFacing;
+		}
+
+		// Turret offset in world-space
+		public Func<WVec> PreviewPosition(ActorPreviewInitializer init, Func<WRot> orientation)
+		{
+			var body = init.Actor.TraitInfo<BodyOrientationInfo>();
+			return () => body.LocalToWorld(Offset.Rotate(orientation()));
+		}
+
+		// Orientation in world-space
+		public Func<WRot> PreviewOrientation(ActorPreviewInitializer init, Func<WRot> orientation, int facings)
+		{
+			var body = init.Actor.TraitInfo<BodyOrientationInfo>();
+			var turretFacing = LocalFacingFromInit(init);
+
+			Func<WRot> world = () => WRot.FromYaw(turretFacing()).Rotate(orientation());
+			if (facings == 0)
+				return world;
+
+			// Quantize orientation to match a rendered sprite
+			// Implies no pitch or roll
+			return () => WRot.FromYaw(body.QuantizeFacing(world().Yaw, facings));
+		}
+
+		public override object Create(ActorInitializer init) { return new Turreted(init, this); }
+	}
+
+	public class Turreted : PausableConditionalTrait<TurretedInfo>, ITick, IDeathActorInitModifier, IActorPreviewInitModifier
+	{
+		AttackTurreted attack;
+		IFacing facing;
+		BodyOrientation body;
+
+		[Sync]
+		public int QuantizedFacings = 0;
+
+		WVec? desiredDirection = null;
+		int realignTick = 0;
+
+		public WRot WorldOrientation
+		{
+			get
+			{
+				var world = facing != null ? LocalOrientation.Rotate(facing.Orientation) : LocalOrientation;
+				if (QuantizedFacings == 0)
+					return world;
+
+				// Quantize orientation to match a rendered sprite
+				// Implies no pitch or roll
+				return WRot.FromYaw(body.QuantizeFacing(world.Yaw, QuantizedFacings));
+			}
+		}
+
+		public WRot LocalOrientation { get; private set; }
+
+		// For subclasses that want to move the turret relative to the body
+		protected WVec localOffset = WVec.Zero;
+
+		public WVec Offset { get { return Info.Offset + localOffset; } }
+		public string Name { get { return Info.Turret; } }
 
 		public Turreted(ActorInitializer init, TurretedInfo info)
 			: base(info)
 		{
-			TurretFacing = TurretFacingFromInit(init, Info)().Facing;
+			LocalOrientation = WRot.FromYaw(info.LocalFacingFromInit(init)());
 		}
 
 		protected override void Created(Actor self)
@@ -143,7 +195,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (realignTick < Info.RealignDelay)
 					realignTick++;
 				else if (Info.RealignDelay > -1)
-					DesiredFacing = null;
+					desiredDirection = null;
 
 				MoveTurret();
 			}
@@ -154,10 +206,33 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
+		WAngle? DesiredLocalFacing
+		{
+			get
+			{
+				// A null value means we don't have a target
+				if (!desiredDirection.HasValue)
+					return null;
+
+				// A zero value means that we have a target, but it is on top of us
+				if (desiredDirection.Value == WVec.Zero)
+					return LocalOrientation.Yaw;
+
+				// PERF: If the turret rotation axis is vertical we can directly take the difference in facing/yaw
+				var o = facing != null ? facing.Orientation : (WRot?)null;
+				if (o == null || (o.Value.Pitch == WAngle.Zero && o.Value.Roll == WAngle.Zero))
+					return o.HasValue ? desiredDirection.Value.Yaw - o.Value.Yaw : desiredDirection.Value.Yaw;
+
+				// If the turret rotation axis is not vertical we must transform the
+				// target direction into the turrets local coordinate system
+				return desiredDirection.Value.Rotate(-o.Value).Yaw;
+			}
+		}
+
 		void MoveTurret()
 		{
-			var df = DesiredFacing ?? (facing != null ? facing.Facing.Facing : TurretFacing);
-			TurretFacing = Util.TickFacing(TurretFacing, df, Info.TurnSpeed.Facing);
+			var desired = DesiredLocalFacing ?? Info.InitialFacing;
+			LocalOrientation = LocalOrientation.WithYaw(Util.TickFacing(LocalOrientation.Yaw, desired, Info.TurnSpeed));
 		}
 
 		public bool FaceTarget(Actor self, Target target)
@@ -165,17 +240,27 @@ namespace OpenRA.Mods.Common.Traits
 			if (IsTraitDisabled || IsTraitPaused || attack == null || attack.IsTraitDisabled || attack.IsTraitPaused)
 				return false;
 
-			var pos = self.CenterPosition;
-			var targetPos = attack.GetTargetPosition(pos, target);
-			var delta = targetPos - pos;
-			DesiredFacing = delta.HorizontalLengthSquared != 0 ? delta.Yaw.Facing : TurretFacing;
+			if (target.Type == TargetType.Invalid)
+			{
+				desiredDirection = null;
+				return false;
+			}
+
+			var turretPos = self.CenterPosition + Position(self);
+			var targetPos = attack.GetTargetPosition(turretPos, target);
+			desiredDirection = targetPos - turretPos;
+
 			MoveTurret();
 			return HasAchievedDesiredFacing;
 		}
 
 		public virtual bool HasAchievedDesiredFacing
 		{
-			get { return DesiredFacing == null || TurretFacing == DesiredFacing.Value; }
+			get
+			{
+				var desired = DesiredLocalFacing;
+				return !desired.HasValue || desired.Value == LocalOrientation.Yaw;
+			}
 		}
 
 		// Turret offset in world-space
@@ -185,42 +270,14 @@ namespace OpenRA.Mods.Common.Traits
 			return body.LocalToWorld(Offset.Rotate(bodyOrientation));
 		}
 
-		// Orientation in world-space
-		public WRot WorldOrientation(Actor self)
-		{
-			// Hack: turretFacing is relative to the world, so subtract the body yaw
-			var world = WRot.FromYaw(WAngle.FromFacing(TurretFacing));
-
-			if (QuantizedFacings == 0)
-				return world;
-
-			// Quantize orientation to match a rendered sprite
-			// Implies no pitch or yaw
-			return WRot.FromYaw(body.QuantizeFacing(world.Yaw, QuantizedFacings));
-		}
-
 		public void ModifyDeathActorInit(Actor self, TypeDictionary init)
 		{
-			var turretFacing = WAngle.FromFacing(TurretFacing);
-			if (facing != null)
-				turretFacing -= facing.Facing;
-
-			init.Add(new TurretFacingInit(Info, turretFacing));
+			init.Add(new TurretFacingInit(Info, LocalOrientation.Yaw));
 		}
 
 		void IActorPreviewInitModifier.ModifyActorPreviewInit(Actor self, TypeDictionary inits)
 		{
-			Func<WAngle> bodyFacing = () => facing.Facing;
-			var dynamicFacing = inits.GetOrDefault<DynamicFacingInit>();
-			var staticFacing = inits.GetOrDefault<FacingInit>();
-			if (dynamicFacing != null)
-				bodyFacing = dynamicFacing.Value;
-			else if (staticFacing != null)
-				bodyFacing = () => staticFacing.Value;
-
-			// Freeze the relative turret facing to its current value
-			var facingOffset = WAngle.FromFacing(TurretFacing) - bodyFacing();
-			inits.Add(new DynamicTurretFacingInit(Info, () => bodyFacing() + facingOffset));
+			inits.Add(new DynamicTurretFacingInit(Info, () => LocalOrientation.Yaw));
 		}
 
 		protected override void TraitDisabled(Actor self)

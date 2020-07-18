@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 		{
 			// Turret artwork is baked into the sprite, so only the first turret makes sense.
 			var turreted = self.TraitsImplementing<Turreted>().FirstOrDefault();
-			return () => WAngle.FromFacing(turreted.TurretFacing);
+			return () => turreted.WorldOrientation.Yaw;
 		}
 
 		public WithGunboatBody(ActorInitializer init, WithGunboatBodyInfo info)
