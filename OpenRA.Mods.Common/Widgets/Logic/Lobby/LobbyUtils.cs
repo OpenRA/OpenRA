@@ -237,9 +237,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				.ToDictionary(c => spawns[c.SpawnPoint - 1], c => new SpawnOccupant(c));
 
 			foreach (var closedSlot in lobbyInfo.Slots.Values.Where(s => s.Closed && s.ClosedSpawnPoint - 1 >= 0 && s.ClosedSpawnPoint - 1 < spawns.Length))
-			{
 				occupants[spawns[closedSlot.ClosedSpawnPoint - 1]] = new SpawnOccupant(closedSlot);
-			}
 
 			return occupants;
 		}
@@ -431,13 +429,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			slot.OnMouseDown = _ => ShowSlotDropDown(slot, s, c, orderManager, map);
 
 			if (s.Closed)
-			{
 				SetupEditableSpawnWidget(parent, s, null, orderManager, map);
-			}
 			else
-			{
 				HideChildWidget(parent, "SPAWN_DROPDOWN");
-			}
 
 			// Ensure Name selector (if present) is hidden
 			HideChildWidget(parent, "NAME");
