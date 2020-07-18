@@ -69,13 +69,24 @@ namespace OpenRA
 			Yaw = -WAngle.ArcTan(sycp, cycp);
 		}
 
+		WRot(int x, int y, int z, int w, WAngle roll, WAngle pitch, WAngle yaw)
+		{
+			this.x = x;
+			this.y = y;
+			this.z = z;
+			this.w = w;
+			Roll = roll;
+			Pitch = pitch;
+			Yaw = yaw;
+		}
+
 		public static readonly WRot None = new WRot(WAngle.Zero, WAngle.Zero, WAngle.Zero);
 
 		public static WRot FromFacing(int facing) { return new WRot(WAngle.Zero, WAngle.Zero, WAngle.FromFacing(facing)); }
 		public static WRot FromYaw(WAngle yaw) { return new WRot(WAngle.Zero, WAngle.Zero, yaw); }
 		public static WRot operator +(WRot a, WRot b) { return new WRot(a.Roll + b.Roll, a.Pitch + b.Pitch, a.Yaw + b.Yaw); }
 		public static WRot operator -(WRot a, WRot b) { return new WRot(a.Roll - b.Roll, a.Pitch - b.Pitch, a.Yaw - b.Yaw); }
-		public static WRot operator -(WRot a) { return new WRot(-a.Roll, -a.Pitch, -a.Yaw); }
+		public static WRot operator -(WRot a) { return new WRot(-a.x, -a.y, -a.z, a.w, -a.Roll, -a.Pitch, -a.Yaw); }
 
 		public WRot Rotate(WRot rot)
 		{
