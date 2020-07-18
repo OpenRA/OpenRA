@@ -85,6 +85,11 @@ namespace OpenRA.Mods.Common.Traits
 
 			var taken = world.LobbyInfo.Clients.Where(c => c.SpawnPoint != 0 && c.Slot != null)
 					.Select(c => spawns[c.SpawnPoint - 1]).ToList();
+
+			// add closed spawn locations to the taken list
+			taken.AddRange(world.LobbyInfo.Slots.Values.Where(s => s.ClosedSpawnPoint != 0 && s.Closed)
+								.Select(c => spawns[c.ClosedSpawnPoint - 1]));
+
 			var available = spawns.Except(taken).ToList();
 
 			// Set spawn
