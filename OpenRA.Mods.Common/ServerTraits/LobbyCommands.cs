@@ -258,6 +258,7 @@ namespace OpenRA.Mods.Common.Server
 			}
 
 			server.LobbyInfo.Slots[s].Closed = true;
+			server.LobbyInfo.Slots[s].ClosedSpawnPoint = 0;
 			server.SyncLobbySlots();
 
 			return true;

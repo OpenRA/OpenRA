@@ -252,7 +252,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		public static void SelectSpawnPoint(OrderManager orderManager, MapPreviewWidget mapPreview, MapPreview preview, MouseInput mi)
 		{
-			if (mi.Button != MouseButton.Left)
+			if (mi.Button != MouseButton.Left && mi.Button != MouseButton.Right)
 				return;
 
 			if (!orderManager.LocalClient.IsObserver && orderManager.LocalClient.State == Session.ClientState.Ready)
@@ -267,7 +267,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var locals = orderManager.LobbyInfo.Clients.Where(c => c.Index == orderManager.LocalClient.Index || (Game.IsHost && c.Bot != null));
 			var playerToMove = locals.FirstOrDefault(c => ((selectedSpawn == 0) ^ (c.SpawnPoint == 0) && !c.IsObserver));
-			SetSpawnPoint(orderManager, null, playerToMove, selectedSpawn);
+
+			if (playerToMove != null && mi.Button == MouseButton.Left)
+				SetSpawnPoint(orderManager, null, playerToMove, selectedSpawn);
+			else if (Game.IsHost)
+			{
+				// we don't have a slot or they used RMB and they are a game host
+				var slotToMove = orderManager.LobbyInfo.Slots.Values.FirstOrDefault(s => selectedSpawn == 0 ^ s.Closed && s.ClosedSpawnPoint == 0);
+				SetSpawnPoint(orderManager, slotToMove, null, selectedSpawn);
+			}
 		}
 
 		private static void SetSpawnPoint(OrderManager orderManager, Session.Slot closedSlot, Session.Client playerToMove, int selectedSpawn)
