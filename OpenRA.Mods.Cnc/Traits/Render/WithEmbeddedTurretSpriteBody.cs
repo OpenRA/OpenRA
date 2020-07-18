@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 			var wsb = init.Actor.TraitInfos<WithSpriteBodyInfo>().FirstOrDefault();
 
 			// Show the correct turret facing
-			var anim = new Animation(init.World, image, Turreted.TurretFacingFromInit(init, t));
+			var anim = new Animation(init.World, image, t.WorldFacingFromInit(init));
 			anim.PlayRepeating(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), wsb.Sequence));
 
 			yield return new SpriteActorPreview(anim, () => WVec.Zero, () => 0, p, rs.Scale);
@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 		{
 			// Turret artwork is baked into the sprite, so only the first turret makes sense.
 			var turreted = self.TraitsImplementing<Turreted>().FirstOrDefault();
-			return () => WAngle.FromFacing(turreted.TurretFacing);
+			return () => turreted.WorldOrientation.Yaw;
 		}
 
 		public WithEmbeddedTurretSpriteBody(ActorInitializer init, WithSpriteBodyInfo info)

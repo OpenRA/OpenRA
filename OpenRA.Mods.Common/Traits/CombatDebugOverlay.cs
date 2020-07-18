@@ -110,9 +110,15 @@ namespace OpenRA.Mods.Common.Traits
 
 				foreach (var b in a.Barrels)
 				{
+					var barrelEnd = new Barrel
+					{
+						Offset = b.Offset + new WVec(224, 0, 0),
+						Yaw = b.Yaw
+					};
+
 					var muzzle = self.CenterPosition + a.MuzzleOffset(self, b);
-					var dirOffset = new WVec(0, -224, 0).Rotate(a.MuzzleOrientation(self, b));
-					yield return new LineAnnotationRenderable(muzzle, muzzle + dirOffset, 1, Color.White);
+					var endMuzzle = self.CenterPosition + a.MuzzleOffset(self, barrelEnd);
+					yield return new LineAnnotationRenderable(muzzle, endMuzzle, 1, Color.White);
 				}
 			}
 		}
