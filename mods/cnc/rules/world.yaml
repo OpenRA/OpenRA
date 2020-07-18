@@ -189,6 +189,8 @@ World:
 	CustomTerrainDebugOverlay:
 	MapCreeps:
 		CheckboxVisible: False
+		CheckboxEnabled: True
+		CheckboxLocked: True
 	SpawnMapActors:
 	MapBuildRadius:
 		AllyBuildRadiusCheckboxDisplayOrder: 4
