@@ -632,6 +632,8 @@
 			Radius: 427
 	MapEditorData:
 		Categories: Critter
+	WithDeathAnimation:
+		UseDeathTypeSuffix: false
 
 ^Plane:
 	Inherits@1: ^ExistsInWorld
