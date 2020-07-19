@@ -39,12 +39,12 @@ namespace OpenRA.Mods.Common.Graphics
 		{
 			Actor = actor;
 			WorldRenderer = worldRenderer;
-			reference = new ActorReference(actor.Name, dict);
+			reference = new ActorReference(actor.Name.ToLowerInvariant(), dict);
 		}
 
 		public ActorPreviewInitializer(ActorReference actor, WorldRenderer worldRenderer)
 		{
-			Actor = worldRenderer.World.Map.Rules.Actors[actor.Type];
+			Actor = worldRenderer.World.Map.Rules.Actors[actor.Type.ToLowerInvariant()];
 			reference = actor;
 			WorldRenderer = worldRenderer;
 		}
