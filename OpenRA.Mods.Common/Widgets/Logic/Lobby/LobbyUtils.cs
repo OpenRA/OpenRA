@@ -267,13 +267,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var locals = orderManager.LobbyInfo.Clients.Where(c => c.Index == orderManager.LocalClient.Index || (Game.IsHost && c.Bot != null));
 			var playerToMove = locals.FirstOrDefault(c => ((selectedSpawn == 0) ^ (c.SpawnPoint == 0) && !c.IsObserver));
+			var slotToMove = orderManager.LobbyInfo.Slots.Values.FirstOrDefault(s => s.Closed && (selectedSpawn == 0 ^ s.ClosedSpawnPoint == 0));
 
-			if (playerToMove != null && mi.Button == MouseButton.Left)
+			if ((playerToMove != null || slotToMove == null) && mi.Button == MouseButton.Left)
 				SetSpawnPoint(orderManager, null, playerToMove, selectedSpawn);
-			else if (Game.IsHost)
+			else if (Game.IsHost && slotToMove != null)
 			{
 				// we don't have a slot or they used RMB and they are a game host
-				var slotToMove = orderManager.LobbyInfo.Slots.Values.FirstOrDefault(s => s.Closed && (selectedSpawn == 0 ^ s.ClosedSpawnPoint == 0));
 				SetSpawnPoint(orderManager, slotToMove, null, selectedSpawn);
 			}
 		}
@@ -288,7 +288,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			if (selectedSpawn == 0 || !owned)
 			{
-				if (playerToMove != null)
+				// Map selection may pass in a null playerToMove so we use the LocalClient index
+				if (playerToMove != null || closedSlot == null)
 					orderManager.IssueOrder(Order.Command("spawn {0} {1}".F((playerToMove ?? orderManager.LocalClient).Index, selectedSpawn)));
 				else if (closedSlot != null)
 					orderManager.IssueOrder(Order.Command("spawn {0} {1}".F(closedSlot.PlayerReference, selectedSpawn)));
