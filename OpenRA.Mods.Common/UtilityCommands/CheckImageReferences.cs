@@ -55,6 +55,14 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						var sprites = sc[image];
 						if (template.Value.TilesCount > sprites.Length)
 							modData.SpriteSequenceLoader.OnMissingSpriteError("Tileset tile {0} has frames defined without matching artwork.".F(template.Key));
+
+						var frames = template.Value.Frames;
+						if (frames == null)
+							continue;
+
+						foreach (var frame in frames)
+							if (sprites.Length < frame)
+								modData.SpriteSequenceLoader.OnMissingSpriteError("Tileset tile {0} has more frames defined than the sprite has.".F(template.Key));
 					}
 				}
 			}
