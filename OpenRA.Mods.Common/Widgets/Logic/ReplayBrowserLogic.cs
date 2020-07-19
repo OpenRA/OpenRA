@@ -87,12 +87,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return occupants;
 			});
 
+			var noSpawns = new List<int>();
+			var disabledSpawnPoints = new CachedTransform<ReplayMetadata, List<int>>(r => r.GameInfo.DisabledSpawnPoints ?? noSpawns);
+
 			Ui.LoadWidget("MAP_PREVIEW", mapPreviewRoot, new WidgetArgs
 			{
 				{ "orderManager", null },
 				{ "getMap", (Func<MapPreview>)(() => map) },
 				{ "onMouseDown",  (Action<MapPreviewWidget, MapPreview, MouseInput>)((preview, mapPreview, mi) => { }) },
 				{ "getSpawnOccupants", (Func<Dictionary<int, SpawnOccupant>>)(() => spawnOccupants.Update(selectedReplay)) },
+				{ "getDisabledSpawnPoints", (Func<List<int>>)(() => disabledSpawnPoints.Update(selectedReplay)) },
 				{ "showUnoccupiedSpawnpoints", false },
 			});
 

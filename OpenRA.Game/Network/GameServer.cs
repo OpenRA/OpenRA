@@ -56,7 +56,7 @@ namespace OpenRA.Network
 			"Mod", "Version", "ModTitle", "ModWebsite", "ModIcon32",
 
 			// Current server state
-			"Map", "State", "MaxPlayers", "Protected", "Authentication"
+			"Map", "State", "MaxPlayers", "Protected", "Authentication", "DisabledSpawnPoints"
 		};
 
 		public const int ProtocolVersion = 2;
@@ -131,6 +131,9 @@ namespace OpenRA.Network
 
 		[FieldLoader.LoadUsing("LoadClients")]
 		public readonly GameClient[] Clients;
+
+		/// <summary>The list of spawnpoints that are disabled for this game</summary>
+		public readonly int[] DisabledSpawnPoints = { };
 
 		public string ModLabel { get { return "{0} ({1})".F(ModTitle, Version); } }
 
@@ -226,6 +229,7 @@ namespace OpenRA.Network
 			Protected = !string.IsNullOrEmpty(server.Settings.Password);
 			Authentication = server.Settings.RequireAuthentication || server.Settings.ProfileIDWhitelist.Any();
 			Clients = server.LobbyInfo.Clients.Select(c => new GameClient(c)).ToArray();
+			DisabledSpawnPoints = server.LobbyInfo.DisabledSpawnPoints?.ToArray() ?? Array.Empty<int>();
 		}
 
 		public string ToPOSTData(bool lanGame)

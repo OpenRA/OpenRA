@@ -43,6 +43,7 @@ namespace OpenRA.Mods.Common.Server
 			{ "faction", Faction },
 			{ "team", Team },
 			{ "spawn", Spawn },
+			{ "clear_spawn", ClearPlayerSpawn },
 			{ "color", PlayerColor },
 			{ "sync_lobby", SyncLobby }
 		};
@@ -123,6 +124,11 @@ namespace OpenRA.Mods.Common.Server
 				if (server.LobbyInfo.Slots.Any(sl => sl.Value.Required && server.LobbyInfo.ClientInSlot(sl.Key) == null))
 					return;
 
+				// Can't have insufficient spawns
+				var availableSpawnPointCount = server.Map.SpawnPoints.Length - server.LobbyInfo.DisabledSpawnPoints.Count;
+				if (availableSpawnPointCount < server.LobbyInfo.Clients.Count(c => !c.IsObserver))
+					return;
+
 				server.StartGame();
 			}
 		}
@@ -167,6 +173,13 @@ namespace OpenRA.Mods.Common.Server
 				if (!server.LobbyInfo.GlobalSettings.EnableSingleplayer && server.LobbyInfo.NonBotPlayers.Count() < 2)
 				{
 					server.SendOrderTo(conn, "Message", server.TwoHumansRequiredText);
+					return true;
+				}
+
+				var availableSpawnPointCount = server.Map.SpawnPoints.Length - server.LobbyInfo.DisabledSpawnPoints.Count;
+				if (availableSpawnPointCount < server.LobbyInfo.Clients.Count(c => !c.IsObserver))
+				{
+					server.SendOrderTo(conn, "Message", "Unable to start the game until more spawn points are enabled.");
 					return true;
 				}
 
@@ -472,6 +485,8 @@ namespace OpenRA.Mods.Common.Server
 						foreach (var c in server.LobbyInfo.Clients)
 							if (c.Slot != null && !server.LobbyInfo.Slots[c.Slot].LockColor)
 								c.Color = c.PreferredColor = SanitizePlayerColor(server, c.Color, c.Index, conn);
+
+						server.LobbyInfo.DisabledSpawnPoints.Clear();
 
 						server.SyncLobbyInfo();
 
@@ -809,6 +824,45 @@ namespace OpenRA.Mods.Common.Server
 
 				return true;
 			}
+		}
+
+		static bool ClearPlayerSpawn(S server, Connection conn, Session.Client client, string s)
+		{
+			var spawnPoint = Exts.ParseIntegerInvariant(s);
+			if (spawnPoint == 0)
+				return true;
+
+			var existingClient = server.LobbyInfo.Clients.FirstOrDefault(cc => cc.SpawnPoint == spawnPoint);
+			if (client != existingClient && !client.IsAdmin)
+			{
+				server.SendOrderTo(conn, "Message", "Only admins can clear spawn points.");
+				return true;
+			}
+
+			// Clearing a selected spawn point removes the player
+			if (existingClient != null)
+			{
+				// Prevent a map-defined lock spawn from being affected
+				if (existingClient.Slot != null && server.LobbyInfo.Slots[existingClient.Slot].LockSpawn)
+					return true;
+
+				existingClient.SpawnPoint = 0;
+				if (existingClient.State == Session.ClientState.Ready)
+					existingClient.State = Session.ClientState.NotReady;
+
+				server.SyncLobbyClients();
+				return true;
+			}
+
+			// Clearing an empty spawn point prevents it from being selected
+			// Clearing a disabled spawn restores it for use
+			if (!server.LobbyInfo.DisabledSpawnPoints.Contains(spawnPoint))
+				server.LobbyInfo.DisabledSpawnPoints.Add(spawnPoint);
+			else
+				server.LobbyInfo.DisabledSpawnPoints.Remove(spawnPoint);
+
+			server.SyncLobbyInfo();
+			return true;
 		}
 
 		static bool Spawn(S server, Connection conn, Session.Client client, string s)

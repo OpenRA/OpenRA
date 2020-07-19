@@ -35,6 +35,7 @@ namespace OpenRA
 		/// <summary>Gets the game's duration, from the time the game started until the replay recording stopped.</summary>
 		public TimeSpan Duration { get { return EndTimeUtc > StartTimeUtc ? EndTimeUtc - StartTimeUtc : TimeSpan.Zero; } }
 		public IList<Player> Players { get; private set; }
+		public List<int> DisabledSpawnPoints = new List<int>();
 		public MapPreview MapPreview { get { return Game.ModData.MapCache[MapUid]; } }
 		public IEnumerable<Player> HumanPlayers { get { return Players.Where(p => p.IsHuman); } }
 		public bool IsSinglePlayer { get { return HumanPlayers.Count() == 1; } }

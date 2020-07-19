@@ -241,10 +241,11 @@ dialog4:
 lobby-bits:
 	Inherits: ^Glyphs
 	Regions:
-		spawn-unclaimed: 91, 119, 22, 22
-		spawn-claimed: 68, 119, 22, 22
+		spawn-claimed: 27, 119, 22, 22
+		spawn-unclaimed: 50, 119, 22, 22
+		spawn-disabled: 73, 119, 22, 22
 		admin: 170, 0, 6, 5
-		colorpicker: 68, 119, 22, 22
+		colorpicker: 27, 119, 22, 22
 		huepicker: 136, 0, 7, 15
 		kick: 153, 0, 11, 11
 		protected: 0, 17, 12, 13

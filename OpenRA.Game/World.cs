@@ -321,6 +321,8 @@ namespace OpenRA
 			foreach (var player in Players)
 				gameInfo.AddPlayer(player, OrderManager.LobbyInfo);
 
+			gameInfo.DisabledSpawnPoints = OrderManager.LobbyInfo.DisabledSpawnPoints;
+
 			var echo = OrderManager.Connection as EchoConnection;
 			var rc = echo != null ? echo.Recorder : null;
 

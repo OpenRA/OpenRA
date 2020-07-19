@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Initialize the list of unoccupied spawn points for AssignSpawnLocations to pick from
 			state.SpawnLocations = map.SpawnPoints;
-			state.AvailableSpawnPoints = Enumerable.Range(1, map.SpawnPoints.Length).ToList();
+			state.AvailableSpawnPoints = Enumerable.Range(1, map.SpawnPoints.Length).Except(lobbyInfo.DisabledSpawnPoints).ToList();
 			foreach (var kv in lobbyInfo.Slots)
 			{
 				var client = lobbyInfo.ClientInSlot(kv.Key);
@@ -130,7 +130,7 @@ namespace OpenRA.Mods.Common.Traits
 			spawnLocations = spawns.ToArray();
 
 			// Initialize the list of unoccupied spawn points for AssignSpawnLocations to pick from
-			availableSpawnPoints = Enumerable.Range(1, spawnLocations.Length).ToList();
+			availableSpawnPoints = Enumerable.Range(1, spawnLocations.Length).Except(self.World.LobbyInfo.DisabledSpawnPoints).ToList();
 			foreach (var kv in self.World.LobbyInfo.Slots)
 			{
 				var client = self.World.LobbyInfo.ClientInSlot(kv.Key);
