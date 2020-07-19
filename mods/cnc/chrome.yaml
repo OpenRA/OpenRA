@@ -306,8 +306,9 @@ music:
 lobby-bits:
 	Inherits: ^Chrome
 	Regions:
-		spawn-unclaimed: 777, 423, 19, 19
-		spawn-claimed: 777, 443, 19, 19
+		spawn-claimed: 744, 215, 18, 18
+		spawn-unclaimed: 744, 234, 18, 18
+		spawn-disabled: 744, 253, 18, 18
 		admin: 938, 0, 6, 5
 		colorpicker: 887, 0, 14, 14
 		huepicker: 904, 0, 7, 15

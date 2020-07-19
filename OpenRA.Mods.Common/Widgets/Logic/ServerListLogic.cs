@@ -427,6 +427,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					.ToDictionary(c => c.SpawnPoint, c => new SpawnOccupant(c, server.Mod != modData.Manifest.Id));
 
 				mapPreview.SpawnOccupants = () => occupants;
+				mapPreview.DisabledSpawnPoints = () => server.DisabledSpawnPoints;
 			}
 
 			if (server == null || !server.Clients.Any())
