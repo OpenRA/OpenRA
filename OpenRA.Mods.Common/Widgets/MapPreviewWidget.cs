@@ -26,6 +26,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public readonly int Team;
 		public readonly string Faction;
 		public readonly int SpawnPoint;
+		public readonly bool Closed;
 
 		public SpawnOccupant(Session.Client client)
 		{
@@ -47,9 +48,10 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public SpawnOccupant(Session.Slot closedSlot)
 		{
+			Closed = true;
 			SpawnPoint = closedSlot.ClosedSpawnPoint;
-			Color = Color.White;
-			PlayerName = closedSlot.PlayerReference.Substring(closedSlot.PlayerReference.Length - 1);
+			Color = Color.Black;
+			PlayerName = "Closed Slot";
 		}
 
 		public SpawnOccupant(GameClient player, bool suppressFaction)
@@ -64,6 +66,8 @@ namespace OpenRA.Mods.Common.Widgets
 
 	public class MapPreviewWidget : Widget
 	{
+		const string ClosedSlotLabel = "X";
+
 		public readonly bool IgnoreMouseInput = false;
 		public readonly bool ShowSpawnPoints = true;
 
@@ -73,6 +77,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		readonly Sprite spawnClaimed, spawnUnclaimed;
 		readonly SpriteFont spawnFont;
+		readonly SpriteFont spawnClosedFont;
 		readonly Color spawnColor, spawnContrastColor;
 		readonly int2 spawnLabelOffset;
 
@@ -93,6 +98,7 @@ namespace OpenRA.Mods.Common.Widgets
 			spawnClaimed = ChromeProvider.GetImage("lobby-bits", "spawn-claimed");
 			spawnUnclaimed = ChromeProvider.GetImage("lobby-bits", "spawn-unclaimed");
 			spawnFont = Game.Renderer.Fonts[ChromeMetrics.Get<string>("SpawnFont")];
+			spawnClosedFont = Game.Renderer.Fonts["BigBold"];
 			spawnColor = ChromeMetrics.Get<Color>("SpawnColor");
 			spawnContrastColor = ChromeMetrics.Get<Color>("SpawnContrastColor");
 			spawnLabelOffset = ChromeMetrics.Get<int2>("SpawnLabelOffset");
@@ -190,6 +196,7 @@ namespace OpenRA.Mods.Common.Widgets
 			if (ShowSpawnPoints)
 			{
 				var colors = SpawnOccupants().ToDictionary(c => c.Key, c => c.Value.Color);
+				var closed = SpawnOccupants().Where(a => a.Value.Closed).Select(a => a.Key);
 
 				var spawnPoints = preview.SpawnPoints;
 				var gridType = preview.GridType;
@@ -204,6 +211,14 @@ namespace OpenRA.Mods.Common.Widgets
 						WidgetUtils.FillEllipseWithColor(new Rectangle(pos.X - offset.X + 1, pos.Y - offset.Y + 1, (int)sprite.Size.X - 2, (int)sprite.Size.Y - 2), colors[p]);
 
 					Game.Renderer.RgbaSpriteRenderer.DrawSprite(sprite, pos - offset);
+
+					// draw a large X over the circle
+					if (closed.Contains(p))
+					{
+						var closedOffset = spawnClosedFont.Measure(ClosedSlotLabel) / 2 + spawnLabelOffset;
+						spawnClosedFont.DrawTextWithContrast(ClosedSlotLabel, pos - closedOffset, Color.Red, spawnContrastColor, 1);
+					}
+
 					var number = Convert.ToChar('A' + spawnPoints.IndexOf(p)).ToString();
 					var textOffset = spawnFont.Measure(number) / 2 + spawnLabelOffset;
 
