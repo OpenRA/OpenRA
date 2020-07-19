@@ -29,6 +29,9 @@ vice:
 				Offset: -3,2
 		Facings: 8
 		Length: 13
+	die: chemball
+		Length: *
+		ZOffset: 2047
 	icon: viceicnh
 
 pvice:
