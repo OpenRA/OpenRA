@@ -273,7 +273,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			else if (Game.IsHost)
 			{
 				// we don't have a slot or they used RMB and they are a game host
-				var slotToMove = orderManager.LobbyInfo.Slots.Values.FirstOrDefault(s => selectedSpawn == 0 ^ s.Closed && s.ClosedSpawnPoint == 0);
+				var slotToMove = orderManager.LobbyInfo.Slots.Values.FirstOrDefault(s => s.Closed && (selectedSpawn == 0 ^ s.ClosedSpawnPoint == 0));
 				SetSpawnPoint(orderManager, slotToMove, null, selectedSpawn);
 			}
 		}
@@ -282,8 +282,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			// we could be setting this for a closed slot or a player
 			// positive number is the client index
-			// negative number is the slot
-			var owned = orderManager.LobbyInfo.Clients.Any(c => c.SpawnPoint == selectedSpawn);
+			// Slot PlayerReference is the slot
+			var owned = orderManager.LobbyInfo.Clients.Any(c => c.SpawnPoint == selectedSpawn)
+				|| orderManager.LobbyInfo.Slots.Values.Any(s => s.Closed && s.ClosedSpawnPoint == selectedSpawn);
 
 			if (selectedSpawn == 0 || !owned)
 			{
