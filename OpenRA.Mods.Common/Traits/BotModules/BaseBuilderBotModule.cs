@@ -243,7 +243,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (!possibleRallyPoints.Any())
 			{
-				AIUtils.BotDebug("Bot Bug: No possible rallypoint near {0}", producer.Location);
+				AIUtils.BotDebug("{0} has no possible rallypoint near {1}", producer.Owner, producer.Location);
 				return producer.Location;
 			}
 
