@@ -167,8 +167,9 @@ namespace OpenRA
 		}
 
 		public readonly ISelection Selection;
+		readonly IDefaultOrderGenerator defaultOrderGenerator;
 
-		public void CancelInputMode() { OrderGenerator = new UnitOrderGenerator(); }
+		public void CancelInputMode() { OrderGenerator = defaultOrderGenerator.CreateDefaultOrderGenerator(); }
 
 		public bool ToggleInputMode<T>() where T : IOrderGenerator, new()
 		{
@@ -192,7 +193,6 @@ namespace OpenRA
 		{
 			Type = type;
 			OrderManager = orderManager;
-			orderGenerator = new UnitOrderGenerator();
 			Map = map;
 			Timestep = orderManager.LobbyInfo.GlobalSettings.Timestep;
 			SharedRandom = new MersenneTwister(orderManager.LobbyInfo.GlobalSettings.RandomSeed);
@@ -205,6 +205,8 @@ namespace OpenRA
 			ActorMap = WorldActor.Trait<IActorMap>();
 			ScreenMap = WorldActor.Trait<ScreenMap>();
 			Selection = WorldActor.Trait<ISelection>();
+			defaultOrderGenerator = WorldActor.Trait<IDefaultOrderGenerator>();
+			orderGenerator = defaultOrderGenerator.CreateDefaultOrderGenerator();
 
 			// Reset mask
 			LongBitSet<PlayerBitMask>.Reset();

@@ -4,6 +4,7 @@
 	ScreenMap:
 	ActorMap:
 	Selection:
+	DefaultOrderGenerator:
 	MusicPlaylist:
 		VictoryMusic: score
 		DefeatMusic: score
