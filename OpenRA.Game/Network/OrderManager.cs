@@ -38,7 +38,7 @@ namespace OpenRA.Network
 		public int NetFrameNumber { get; private set; }
 		public int LocalFrameNumber;
 		public int FramesAhead = 0;
-		bool isReadyForNextFrame;
+		public bool IsReadyForNextFrame { get; private set; }
 		int lastFrameSent;
 
 		public long LastTickTime = Game.RunTime;
@@ -78,7 +78,7 @@ namespace OpenRA.Network
 
 			// Technically redundant since we will attempt to send orders before the next frame
 			SendOrders();
-			isReadyForNextFrame = false;
+			IsReadyForNextFrame = false;
 		}
 
 		public OrderManager(ConnectionTarget endpoint, string password, IConnection conn)
@@ -111,8 +111,17 @@ namespace OpenRA.Network
 			chatCache.Add(new ChatLine(name, nameColor, text, textColor));
 		}
 
+		/*
+		 * Send all frame orders that are ready if we can (game is started and our next available send frame is free),
+		 * Send all immediate orders,
+		 * Receive and dispatch immediate orders, check incoming sync matchs, and buffer received frame orders,
+		 * Update our ready status for the next frame for Tick().
+		 */
 		public void TickImmediate()
 		{
+			// Send our frame orders if we should
+			SendOrders();
+
 			if (localImmediateOrders.Count != 0 && GameSaveLastFrame < NetFrameNumber + FramesAhead)
 				Connection.SendImmediate(localImmediateOrders.Select(o => o.Serialize()));
 			localImmediateOrders.Clear();
@@ -144,6 +153,9 @@ namespace OpenRA.Network
 						return;
 				}
 			}
+
+			if (!IsReadyForNextFrame)
+				IsReadyForNextFrame = NetFrameNumber >= 1 && frameData.IsReadyForFrame(NetFrameNumber);
 		}
 
 		Dictionary<int, byte[]> syncForFrame = new Dictionary<int, byte[]>();
@@ -192,24 +204,13 @@ namespace OpenRA.Network
 			}
 		}
 
-		public bool SendNetFrameOrdersAndCheckReady()
-		{
-			// Send our frame orders if we should
-			SendOrders();
-
-			if (!isReadyForNextFrame)
-				isReadyForNextFrame = NetFrameNumber >= 1 && frameData.IsReadyForFrame(NetFrameNumber);
-
-			return isReadyForNextFrame;
-		}
-
 		/*
 		 * Only available if TickImmediate() is called first and we are ready to dispatch received orders locally.
 		 * Process all incoming orders for this frame, handle sync hashes and step our net frame.
 		 */
 		public void Tick()
 		{
-			if (!isReadyForNextFrame)
+			if (!IsReadyForNextFrame)
 				throw new InvalidOperationException();
 
 			foreach (var order in frameData.OrdersForFrame(World, NetFrameNumber))
@@ -225,7 +226,7 @@ namespace OpenRA.Network
 					syncReport.UpdateSyncReport();
 
 			++NetFrameNumber;
-			isReadyForNextFrame = false;
+			IsReadyForNextFrame = false;
 		}
 
 		public void Dispose()

@@ -586,7 +586,7 @@ namespace OpenRA
 
 					var isNetTick = LocalTick % NetTickScale == 0;
 
-					if (!isNetTick || orderManager.SendNetFrameOrdersAndCheckReady())
+					if (!isNetTick || orderManager.IsReadyForNextFrame)
 					{
 						++orderManager.LocalFrameNumber;
 
