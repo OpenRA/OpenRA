@@ -84,7 +84,7 @@ namespace OpenRA.Mods.Common.Traits
 					var powerDecision = powerDecisions[sp.Info.OrderName];
 					if (powerDecision == null)
 					{
-						AIUtils.BotDebug("FindAttackLocationToSupportPower, {0} couldn't find powerDecision for {1}", player.PlayerName, sp.Info.OrderName);
+						AIUtils.BotDebug("{0} couldn't find powerDecision for {1}", player.PlayerName, sp.Info.OrderName);
 						continue;
 					}
 
@@ -130,7 +130,7 @@ namespace OpenRA.Mods.Common.Traits
 			var powerDecision = powerDecisions[readyPower.Info.OrderName];
 			if (powerDecision == null)
 			{
-				AIUtils.BotDebug("FindAttackLocationToSupportPower, {0} couldn't find powerDecision for {1}", player.PlayerName, readyPower.Info.OrderName);
+				AIUtils.BotDebug("{0} couldn't find powerDecision for {1}", player.PlayerName, readyPower.Info.OrderName);
 				return null;
 			}
 
@@ -170,7 +170,7 @@ namespace OpenRA.Mods.Common.Traits
 			var powerDecision = powerDecisions[readyPower.Info.OrderName];
 			if (powerDecision == null)
 			{
-				AIUtils.BotDebug("FindAttackLocationToSupportPower, {0} couldn't find powerDecision for {1}", player.PlayerName, readyPower.Info.OrderName);
+				AIUtils.BotDebug("{0} couldn't find powerDecision for {1}", player.PlayerName, readyPower.Info.OrderName);
 				return null;
 			}
 
