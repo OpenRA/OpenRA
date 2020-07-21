@@ -68,6 +68,9 @@ namespace OpenRA.Graphics
 					var indices = t.Value.Frames != null ? t.Value.Frames : Enumerable.Range(0, frameCount);
 					variants.Add(indices.Select(j =>
 					{
+						if (j >= allFrames.Length)
+							throw new InvalidDataException("{0} defined more frames than the sprite has on template id {1}".F(i, t.Key));
+
 						var f = allFrames[j];
 						var tile = t.Value.Contains(j) ? t.Value[j] : null;
 
