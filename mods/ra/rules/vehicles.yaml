@@ -232,10 +232,10 @@ V2RL:
 	WithSpriteTurret:
 	SpawnActorOnDeath:
 		Actor: 4TNK.Husk
-	SelfHealing:
+	ChangesHealth:
 		Step: 100
 		Delay: 3
-		HealIfBelow: 50
+		StartIfBelow: 50
 		DamageCooldown: 150
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
@@ -327,10 +327,10 @@ HARV:
 	HarvesterHuskModifier:
 		FullHuskActor: HARV.FullHusk
 		FullnessThreshold: 50
-	SelfHealing:
+	ChangesHealth:
 		Step: 100
 		Delay: 25
-		HealIfBelow: 50
+		StartIfBelow: 50
 		DamageCooldown: 500
 	Explodes:
 		RequiresCondition: !no-ore

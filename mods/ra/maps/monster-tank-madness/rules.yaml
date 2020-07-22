@@ -163,10 +163,10 @@ PBOX:
 		EmptyWeapon: MiniNuke
 	SpawnActorOnDeath:
 		Actor: 5TNK.Husk
-	SelfHealing:
+	ChangesHealth:
 		Step: 100
 		Delay: 1
-		HealIfBelow: 100
+		StartIfBelow: 100
 		DamageCooldown: 150
 	Selectable:
 		Bounds: 44,38,0,-4

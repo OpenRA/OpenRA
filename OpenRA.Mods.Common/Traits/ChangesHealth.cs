@@ -14,30 +14,34 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	[Desc("Attach this to actors which should be able to regenerate their health points.")]
-	class SelfHealingInfo : ConditionalTraitInfo, Requires<IHealthInfo>
+	[Desc("Attach this to actors which should regenerate or lose health points over time.")]
+	class ChangesHealthInfo : ConditionalTraitInfo, Requires<IHealthInfo>
 	{
-		[Desc("Absolute amount of health points added in each step.")]
+		[Desc("Absolute amount of health points added in each step.",
+			"Use negative values to apply damage.")]
 		public readonly int Step = 5;
 
 		[Desc("Relative percentages of health added in each step.",
+			"Use negative values to apply damage.",
 			"When both values are defined, their summary will be applied.")]
 		public readonly int PercentageStep = 0;
 
+		[Desc("Time in ticks to wait between each health modification.")]
 		public readonly int Delay = 5;
 
 		[Desc("Heal if current health is below this percentage of full health.")]
-		public readonly int HealIfBelow = 50;
+		public readonly int StartIfBelow = 50;
 
+		[Desc("Time in ticks to wait after taking damage.")]
 		public readonly int DamageCooldown = 0;
 
-		[Desc("Apply the selfhealing using these damagetypes.")]
+		[Desc("Apply the health change when encountering these damage types.")]
 		public readonly BitSet<DamageType> DamageTypes = default(BitSet<DamageType>);
 
-		public override object Create(ActorInitializer init) { return new SelfHealing(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new ChangesHealth(init.Self, this); }
 	}
 
-	class SelfHealing : ConditionalTrait<SelfHealingInfo>, ITick, INotifyDamage
+	class ChangesHealth : ConditionalTrait<ChangesHealthInfo>, ITick, INotifyDamage
 	{
 		readonly IHealth health;
 
@@ -47,7 +51,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Sync]
 		int damageTicks;
 
-		public SelfHealing(Actor self, SelfHealingInfo info)
+		public ChangesHealth(Actor self, ChangesHealthInfo info)
 			: base(info)
 		{
 			health = self.Trait<IHealth>();
@@ -59,7 +63,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			// Cast to long to avoid overflow when multiplying by the health
-			if (health.HP >= Info.HealIfBelow * (long)health.MaxHP / 100)
+			if (health.HP >= Info.StartIfBelow * (long)health.MaxHP / 100)
 				return;
 
 			if (damageTicks > 0)
@@ -73,7 +77,7 @@ namespace OpenRA.Mods.Common.Traits
 				ticks = Info.Delay;
 
 				// Cast to long to avoid overflow when multiplying by the health
-				self.InflictDamage(self, new Damage((int)(-(Info.Step + Info.PercentageStep * (long)health.MaxHP / 100)), Info.DamageTypes));
+				self.InflictDamage(self, new Damage((int)-(Info.Step + Info.PercentageStep * (long)health.MaxHP / 100), Info.DamageTypes));
 			}
 		}
 

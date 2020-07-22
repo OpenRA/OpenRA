@@ -41,10 +41,10 @@ mcv:
 		EffectiveOwnerFromOwner: true
 	AttractsWorms:
 		Intensity: 700
-	SelfHealing:
+	ChangesHealth:
 		Step: 50
 		Delay: 3
-		HealIfBelow: 50
+		StartIfBelow: 50
 	-RevealOnFire:
 
 harvester:
@@ -92,10 +92,10 @@ harvester:
 	WithDockingAnimation:
 	AttractsWorms:
 		Intensity: 700
-	SelfHealing:
+	ChangesHealth:
 		Step: 50
 		Delay: 3
-		HealIfBelow: 50
+		StartIfBelow: 50
 	-RevealOnFire:
 	WithHarvesterPipsDecoration:
 		Position: BottomLeft
@@ -385,10 +385,10 @@ devastator:
 		GrantsCondition: meltdown
 	AttractsWorms:
 		Intensity: 700
-	SelfHealing:
+	ChangesHealth:
 		Step: 50
 		Delay: 3
-		HealIfBelow: 50
+		StartIfBelow: 50
 	Selectable:
 		DecorationBounds: 44,38,0,0
 

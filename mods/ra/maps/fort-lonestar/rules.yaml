@@ -337,10 +337,10 @@ V2RL:
 	Explodes:
 		Weapon: napalm
 		EmptyWeapon: napalm
-	SelfHealing:
+	ChangesHealth:
 		Step: 200
 		Delay: 1
-		HealIfBelow: 40
+		StartIfBelow: 40
 
 powerproxy.parabombs:
 	AirstrikePower:
