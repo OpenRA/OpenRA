@@ -72,10 +72,10 @@ HARV:
 		Speed: 71
 	Health:
 		HP: 100000
-	SelfHealing:
+	ChangesHealth:
 		Step: 500
 		Delay: 10
-		HealIfBelow: 50
+		StartIfBelow: 50
 		DamageCooldown: 200
 	Armor:
 		Type: Heavy

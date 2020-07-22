@@ -38,10 +38,10 @@ carryall.reinforce:
 		LocalOffset: 0, 0, -128
 	RenderSprites:
 		Image: carryall
-	SelfHealing:
+	ChangesHealth:
 		Step: 50
 		Delay: 3
-		HealIfBelow: 50
+		StartIfBelow: 50
 	Buildable:
 		BuildDuration: 750
 		BuildDurationModifier: 100

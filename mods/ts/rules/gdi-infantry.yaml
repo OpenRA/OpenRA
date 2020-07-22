@@ -79,7 +79,7 @@ MEDIC:
 	AttackFrontal:
 	WithInfantryBody:
 		DefaultAttackSequence: heal
-	SelfHealing:
+	ChangesHealth:
 		Step: 500
 		Delay: 60
 	Passenger:

@@ -70,6 +70,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new CreateFlashPaletteEffectWarhead(),
 				new ChangeTargetLineDelayToMilliseconds(),
 				new ReplaceFacingAngles(),
+				new RenameSelfHealing(),
 			})
 		};
 

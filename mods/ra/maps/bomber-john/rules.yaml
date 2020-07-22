@@ -175,10 +175,10 @@ MINVV:
 	WithSpriteBody:
 	Tooltip:
 		Name: Bomb
-	SelfHealing:
+	ChangesHealth:
 		Step: -100
 		Delay: 1
-		HealIfBelow: 101
+		StartIfBelow: 101
 	Explodes:
 		Weapon: CrateNuke
 		EmptyWeapon: CrateNuke

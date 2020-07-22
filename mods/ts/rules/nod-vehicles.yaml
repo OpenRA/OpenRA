@@ -368,10 +368,10 @@ WEED:
 		TurnSpeed: 20
 	Health:
 		HP: 60000
-	SelfHealing:
+	ChangesHealth:
 		Step: 500
 		Delay: 10
-		HealIfBelow: 50
+		StartIfBelow: 50
 		DamageCooldown: 200
 	Armor:
 		Type: Heavy

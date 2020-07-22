@@ -31,10 +31,10 @@
 	AttackTurreted:
 		Voice: Attack
 		PauseOnCondition: empdisable
-	SelfHealing:
+	ChangesHealth:
 		Step: 500
 		Delay: 10
-		HealIfBelow: 50
+		StartIfBelow: 50
 		DamageCooldown: 200
 	WithVoxelTurret:
 	WithVoxelBarrel:
