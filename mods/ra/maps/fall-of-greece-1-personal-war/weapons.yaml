@@ -57,3 +57,6 @@ ParaBomb:
 		ValidTargets: Ground, Infantry
 		Size: 3
 		Delay: 10
+	Warhead@13FlashEffect: FlashPaletteEffect
+		Duration: 20
+		FlashType: Nuke
