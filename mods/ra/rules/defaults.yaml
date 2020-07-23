@@ -591,6 +591,13 @@
 	Explodes:
 		Weapon: UnitExplode
 		RequiresCondition: !airborne
+	CaptureManager:
+	Capturable:
+		Types: aircraft
+		RequiresCondition: !airborne
+	CaptureNotification:
+		Notification: UnitStolen
+		LoseNotification: UnitLost
 
 ^Plane:
 	Inherits: ^NeutralPlane
