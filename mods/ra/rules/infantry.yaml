@@ -575,7 +575,7 @@ THF:
 		CustomPipType: blue
 	CaptureManager:
 	Captures:
-		CaptureTypes: vehicle
+		CaptureTypes: vehicle, aircraft
 		PlayerExperience: 50
 	Infiltrates:
 		Types: ThiefInfiltrate
