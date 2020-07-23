@@ -28,6 +28,19 @@ namespace OpenRA.Mods.Common.Activities
 			manager = self.Trait<CaptureManager>();
 		}
 
+		protected override void TickInner(Actor self, Target target, bool targetIsDeadOrHiddenActor)
+		{
+			if (target.Type == TargetType.Actor && enterActor != target.Actor)
+			{
+				enterActor = target.Actor;
+				enterCaptureManager = target.Actor.TraitOrDefault<CaptureManager>();
+			}
+
+			if (!targetIsDeadOrHiddenActor && target.Type != TargetType.FrozenActor &&
+				(enterCaptureManager == null || !enterCaptureManager.CanBeTargetedBy(enterActor, self, manager)))
+				Cancel(self, true);
+		}
+
 		protected override bool TryStartEnter(Actor self, Actor targetActor)
 		{
 			if (enterActor != targetActor)
