@@ -51,6 +51,7 @@ SS:
 	AttackFrontal:
 	AutoTargetPriority@DEFAULT:
 		ValidTargets: WaterActor, Underwater
+		InvalidTargets: NoAutoTarget, Structure
 	AutoTargetPriority@ATTACKANYTHING:
 		ValidTargets: WaterActor, Underwater
 	DetectCloaked:
