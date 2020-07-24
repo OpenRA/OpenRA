@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		// Stored as a percentage of our value
 		[Sync]
-		int experience = 0;
+		public int Experience { get; private set; }
 
 		[Sync]
 		public int Level { get; private set; }
@@ -73,6 +73,7 @@ namespace OpenRA.Mods.Common.Traits
 			self = init.Self;
 			this.info = info;
 
+			Experience = 0;
 			MaxLevel = info.Conditions.Count;
 			initialExperience = init.GetValue<ExperienceInit, int>(info, 0);
 		}
@@ -96,7 +97,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			var newLevel = Math.Min(Level + numLevels, MaxLevel);
-			GiveExperience(nextLevel[newLevel - 1].First - experience, silent);
+			GiveExperience(nextLevel[newLevel - 1].First - Experience, silent);
 		}
 
 		public void GiveExperience(int amount, bool silent = false)
@@ -107,9 +108,9 @@ namespace OpenRA.Mods.Common.Traits
 			if (MaxLevel == 0)
 				return;
 
-			experience = (experience + amount).Clamp(0, nextLevel[MaxLevel - 1].First);
+			Experience = (Experience + amount).Clamp(0, nextLevel[MaxLevel - 1].First);
 
-			while (Level < MaxLevel && experience >= nextLevel[Level].First)
+			while (Level < MaxLevel && Experience >= nextLevel[Level].First)
 			{
 				self.GrantCondition(nextLevel[Level].Second);
 
@@ -141,7 +142,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void ITransformActorInitModifier.ModifyTransformActorInit(Actor self, TypeDictionary init)
 		{
-			init.Add(new ExperienceInit(info, experience));
+			init.Add(new ExperienceInit(info, Experience));
 		}
 	}
 
