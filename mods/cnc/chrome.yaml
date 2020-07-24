@@ -366,23 +366,18 @@ scrollpanel-decorations:
 	Inherits: ^Chrome
 	Regions:
 		down: 836, 17, 16, 16
-		down-pressed: 836, 17, 16, 16
 		down-disabled: 853, 17, 16, 16
 		up: 870, 17, 16, 16
-		up-pressed: 870, 17, 16, 16
 		up-disabled: 887, 17, 16, 16
 		right: 904, 17, 16, 16
-		right-pressed: 904, 17, 16, 16
 		right-disabled: 921, 17, 16, 16
 		left: 938, 17, 16, 16
-		left-pressed: 938, 17, 16, 16
 		left-disabled: 955, 17, 16, 16
 
 dropdown-decorations:
 	Inherits: ^Chrome
 	Regions:
 		marker: 836, 17, 16, 16
-		marker-pressed: 836, 17, 16, 16
 		marker-disabled: 853, 17, 16, 16
 
 dropdown-separators:
