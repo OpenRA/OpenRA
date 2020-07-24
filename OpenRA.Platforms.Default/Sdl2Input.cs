@@ -73,7 +73,10 @@ namespace OpenRA.Platforms.Default
 				switch (e.type)
 				{
 					case SDL.SDL_EventType.SDL_QUIT:
-						Game.Exit();
+						// On macOS, we'd like to restrict Cmd + Q from suddenly exiting the game.
+						if (Platform.CurrentPlatform != PlatformType.OSX || !mods.HasModifier(Modifiers.Meta))
+							Game.Exit();
+
 						break;
 
 					case SDL.SDL_EventType.SDL_WINDOWEVENT:
