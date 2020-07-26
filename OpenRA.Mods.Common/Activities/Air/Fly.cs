@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly Color? targetLineColor;
 		readonly WDist nearEnough;
 		readonly int finalSpeed;
-		readonly WDist finalAltitude;
+		readonly WVec finalAltitude;
 		readonly WAngle? finalFacing = null;
 		readonly WAngle? finalPitch = null;
 		readonly WAngle? finalRoll = null;
@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Activities
 			finalFacing = facing;
 			finalPitch = pitch;
 			finalRoll = roll;
-			finalAltitude = altitude ?? aircraft.Info.CruiseAltitude;
+			finalAltitude = WVec.FromZ(altitude ?? aircraft.Info.CruiseAltitude);
 
 			// The target may become hidden between the initial order request and the first tick (e.g. if queued)
 			// Moving to any position (even if quite stale) is still better than immediately giving up
@@ -147,7 +147,7 @@ namespace OpenRA.Mods.Common.Activities
 			bodyRoll = Util.TickFacing(aircraft.Roll, desiredBodyRoll ?? bodyRoll, aircraft.Info.RollSpeed);
 
 			// Determine new displacement vector.
-			var move = aircraft.FlyStep(aircraft.CurrentSpeed, new WRot(WAngle.Zero, aircraft.FlightPitch, aircraft.FlightFacing));
+			var move = aircraft.FlyStep(speed, new WRot(WAngle.Zero, aircraft.FlightPitch, aircraft.FlightFacing));
 
 			// Lock in new body and flight attitudes and velocities.
 			aircraft.FlightFacing = flightFacing;
@@ -176,18 +176,16 @@ namespace OpenRA.Mods.Common.Activities
 			var desiredVelocity = delta;
 			if (delta != WVec.Zero)
 			{
-				var maxAccelVec = delta * maxAccel / delta.Length;
-
 				var desiredVelocityX = delta.X;
-				if (maxAccelVec.X * currentVelocity.X > 0 && Math.Abs(delta.X) < currentVelocity.X * currentVelocity.X / Math.Abs(maxAccelVec.X) / 2)
+				if (delta.X * currentVelocity.X > 0 && Math.Abs(delta.X) <= currentVelocity.X * currentVelocity.X / maxAccel / 2)
 					desiredVelocityX = 0;
 
 				var desiredVelocityY = delta.Y;
-				if (maxAccelVec.Y * currentVelocity.Y > 0 && Math.Abs(delta.Y) < currentVelocity.Y * currentVelocity.Y / Math.Abs(maxAccelVec.Y) / 2)
+				if (delta.Y * currentVelocity.Y > 0 && Math.Abs(delta.Y) <= currentVelocity.Y * currentVelocity.Y / maxAccel / 2)
 					desiredVelocityY = 0;
 
 				var desiredVelocityZ = delta.Z;
-				if (maxAccelVec.Z * currentVelocity.Z > 0 && Math.Abs(delta.Z) < currentVelocity.Z * currentVelocity.Z / Math.Abs(maxAccelVec.Z) / 2)
+				if (delta.Z * currentVelocity.Z > 0 && Math.Abs(delta.Z) <= currentVelocity.Z * currentVelocity.Z / maxAccel / 2)
 					desiredVelocityZ = 0;
 
 				desiredVelocity = new WVec(desiredVelocityX, desiredVelocityY, desiredVelocityZ);
@@ -200,11 +198,9 @@ namespace OpenRA.Mods.Common.Activities
 
 			// Acceleration
 			var acceleration = desiredVelocity - currentVelocity;
-			if (acceleration != WVec.Zero)
-			{
-				var accelLength = acceleration.Length;
-				acceleration = acceleration * Math.Min(maxAccel, accelLength) / accelLength;
-			}
+			acceleration = new WVec(acceleration.X.Clamp(-maxAccel, maxAccel),
+				acceleration.Y.Clamp(-maxAccel, maxAccel),
+				acceleration.Z.Clamp(-maxAccel, maxAccel));
 
 			var velocity = currentVelocity + acceleration;
 
@@ -264,9 +260,8 @@ namespace OpenRA.Mods.Common.Activities
 				return true;
 
 			var checkTarget = useLastVisibleTarget ? lastVisibleTarget : target;
-			var altitude = WVec.FromZ(finalAltitude);
 			var pos = aircraft.GetPosition();
-			var delta = checkTarget.CenterPosition + altitude - pos;
+			var delta = checkTarget.CenterPosition + finalAltitude - pos;
 			var dist = delta.HorizontalLength;
 
 			// Inside the target annulus, so we're done
