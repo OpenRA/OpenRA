@@ -380,10 +380,12 @@ namespace OpenRA.Mods.Common.Traits
 				if (!self.Owner.Shroud.IsExplored(location))
 					return false;
 
-				var res = self.World.WorldActor.Trait<ResourceRenderer>().GetRenderedResourceType(location);
 				var info = self.Info.TraitInfo<HarvesterInfo>();
+				var res = self.World.WorldActor.TraitsImplementing<ResourceRenderer>()
+					.Select(r => r.GetRenderedResourceType(location))
+					.FirstOrDefault(r => r != null && info.Resources.Contains(r.Info.Type));
 
-				if (res == null || !info.Resources.Contains(res.Info.Type))
+				if (res == null)
 					return false;
 
 				cursor = "harvest";
