@@ -170,6 +170,8 @@
 		ValuePerUnit: 50
 		AllowedTerrainTypes: Clear,Road
 		AllowUnderActors: true
+	ResourceRenderer:
+		RenderTypes: Ore, Gems
 
 World:
 	Inherits: ^BaseWorld
@@ -203,8 +205,6 @@ World:
 		Type: Crater
 		Sequence: craters
 	ResourceLayer:
-	ResourceRenderer:
-		RenderTypes: Ore, Gems
 	ResourceClaimLayer:
 	WarheadDebugOverlay:
 	SpawnMapActors:

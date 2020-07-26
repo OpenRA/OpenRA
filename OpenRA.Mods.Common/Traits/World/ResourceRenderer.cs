@@ -18,7 +18,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Visualizes the state of the `ResourceLayer`.", " Attach this to the world actor.")]
-	public class ResourceRendererInfo : TraitInfo, Requires<ResourceLayerInfo>
+	public class ResourceRendererInfo : TraitInfo, Requires<IResourceLayerInfo>
 	{
 		[FieldLoader.Require]
 		[Desc("Only render these ResourceType names.")]
@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class ResourceRenderer : IWorldLoaded, IRenderOverlay, ITickRender, INotifyActorDisposing
 	{
-		protected readonly ResourceLayer ResourceLayer;
+		protected readonly IResourceLayer ResourceLayer;
 		protected readonly CellLayer<RendererCellContents> RenderContent;
 		protected readonly ResourceRendererInfo Info;
 
@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			Info = info;
 
-			ResourceLayer = self.Trait<ResourceLayer>();
+			ResourceLayer = self.Trait<IResourceLayer>();
 			ResourceLayer.CellChanged += AddDirtyCell;
 
 			RenderContent = new CellLayer<RendererCellContents>(self.World.Map);
@@ -84,7 +84,7 @@ namespace OpenRA.Mods.Common.Traits
 			// because the shroud may not be enabled.
 			foreach (var cell in w.Map.AllCells)
 			{
-				var type = ResourceLayer.GetResourceType(cell);
+				var type = ResourceLayer.GetResource(cell).Type;
 				if (type != null && Info.RenderTypes.Contains(type.Info.Type))
 				{
 					var resourceContent = ResourceLayer.GetResource(cell);
@@ -117,7 +117,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			foreach (var cell in dirty)
 			{
-				if (self.World.FogObscures(cell))
+				if (!ResourceLayer.IsVisible(cell))
 					continue;
 
 				var resourceContent = ResourceLayer.GetResource(cell);
