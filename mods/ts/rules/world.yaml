@@ -237,6 +237,8 @@
 	CliffBackImpassabilityLayer:
 	SubterraneanActorLayer:
 	JumpjetActorLayer:
+	ResourceRenderer:
+		RenderTypes: Tiberium, BlueTiberium, Veins
 
 World:
 	Inherits: ^BaseWorld
@@ -277,8 +279,6 @@ World:
 		SmokeType: largesmoke
 		Sequence: largecraters
 	ResourceLayer:
-	ResourceRenderer:
-		RenderTypes: Tiberium, BlueTiberium, Veins
 	BridgeLayer:
 	CustomTerrainDebugOverlay:
 	ResourceClaimLayer:

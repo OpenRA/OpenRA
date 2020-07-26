@@ -118,6 +118,8 @@
 		ValuePerUnit: 25
 		AllowedTerrainTypes: SpiceSand
 		AllowUnderActors: true
+	D2kResourceRenderer:
+		RenderTypes: Spice
 
 World:
 	Inherits: ^BaseWorld
@@ -144,8 +146,6 @@ World:
 	WarheadDebugOverlay:
 	BuildableTerrainLayer:
 	ResourceLayer:
-	D2kResourceRenderer:
-		RenderTypes: Spice
 	ResourceClaimLayer:
 	CustomTerrainDebugOverlay:
 	SmudgeLayer@Rock:
@@ -242,7 +242,7 @@ EditorWorld:
 	Inherits: ^BaseWorld
 	EditorActorLayer:
 	EditorCursorLayer:
-	D2kEditorResourceLayer:
+	EditorResourceLayer:
 	EditorSelectionLayer:
 	LoadWidgetAtGameStart:
 	EditorActionManager:

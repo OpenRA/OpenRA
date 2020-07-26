@@ -159,6 +159,8 @@
 		ValuePerUnit: 60
 		AllowedTerrainTypes: Clear,Road
 		AllowUnderActors: true
+	ResourceRenderer:
+		RenderTypes: Tiberium, BlueTiberium
 
 World:
 	Inherits: ^BaseWorld
@@ -182,8 +184,6 @@ World:
 		Type: Crater
 		Sequence: craters
 	ResourceLayer:
-	ResourceRenderer:
-		RenderTypes: Tiberium, BlueTiberium
 	ResourceClaimLayer:
 	WarheadDebugOverlay:
 	CustomTerrainDebugOverlay:
