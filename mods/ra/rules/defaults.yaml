@@ -387,6 +387,7 @@
 		Image: pips
 		Sequence: medic
 		Position: BottomRight
+		Margin: 17, 4
 		RequiresCondition: hospitalheal
 		BlinkInterval: 32
 		BlinkPattern: Off, On
