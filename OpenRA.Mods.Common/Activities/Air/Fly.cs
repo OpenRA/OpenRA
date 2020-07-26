@@ -146,18 +146,15 @@ namespace OpenRA.Mods.Common.Activities
 			bodyPitch = Util.TickFacing(aircraft.Pitch, dbp, aircraft.BodyPitchSpeed);
 			bodyRoll = Util.TickFacing(aircraft.Roll, desiredBodyRoll ?? bodyRoll, aircraft.Info.RollSpeed);
 
-			// Determine new displacement vector.
-			var move = aircraft.FlyStep(speed, new WRot(WAngle.Zero, aircraft.FlightPitch, aircraft.FlightFacing));
-
 			// Lock in new body and flight attitudes and velocities.
 			aircraft.FlightFacing = flightFacing;
 			aircraft.FlightPitch = flightPitch;
 			aircraft.Orientation = new WRot(bodyRoll, bodyPitch, bodyFacing);
 			aircraft.CurrentSpeed = speed;
-			aircraft.CurrentVelocity = move;
+			aircraft.CurrentVelocity = aircraft.FlyStep(speed, new WRot(WAngle.Zero, flightPitch, flightFacing));
 			aircraft.CurrentFlightTurnSpeed = flightTurnSpeed;
 			aircraft.CurrentBodyTurnSpeed = bodyTurnSpeed;
-			aircraft.SetPosition(self, aircraft.CenterPosition + move);
+			aircraft.SetPosition(self, aircraft.CenterPosition + aircraft.CurrentVelocity);
 		}
 
 		// Should only be used for vertical-only movement, usually VTOL take-off or land. Terrain-induced altitude changes
@@ -221,9 +218,9 @@ namespace OpenRA.Mods.Common.Activities
 			var bodyRoll = Util.TickFacing(aircraft.Roll, WAngle.Zero, aircraft.Info.RollSpeed);
 
 			// Lock in new body and flight attitudes and velocities.
+			aircraft.Orientation = new WRot(bodyRoll, bodyPitch, bodyFacing);
 			aircraft.FlightFacing = aircraft.Facing;
 			aircraft.FlightPitch = aircraft.Pitch;
-			aircraft.Orientation = new WRot(bodyRoll, bodyPitch, bodyFacing);
 			aircraft.CurrentVelocity = velocity;
 			aircraft.CurrentSpeed = 0;
 			aircraft.CurrentFlightTurnSpeed = WAngle.Zero;
@@ -383,18 +380,18 @@ namespace OpenRA.Mods.Common.Activities
 				var nodeZ = Math.Abs(delta.Z / 2);
 
 				// When calculating the S-curve keep a bit of leeway so we stay outside the vertical turn radius.
-				var nodeDist = (nodeZ > pitchRadius ? pitchRadius : Exts.ISqrt((2 * pitchRadius - nodeZ) * nodeZ));
+				var nodeDist = nodeZ > pitchRadius ? pitchRadius : Exts.ISqrt((2 * pitchRadius - nodeZ) * nodeZ);
 
 				if (dist < nodeDist)
 					desiredPitch = WAngle.Zero;
-				else if (dist < 2 * nodeDist)
-					desiredPitch = WAngle.ArcTan(signZ * nodeZ, nodeDist);
+				else if (dist < 2 * pitchRadius)
+					desiredPitch = WAngle.ArcTan(delta.Z, dist / 2);
 			}
 
 			// Make sure we don't crash into terrain while diving towards the target.
 			if (desiredPitch.HasValue)
 			{
-				var minPitch = aircraft.InclineLookahead(dist, altitude: new WDist(128));
+				var minPitch = aircraft.InclineLookahead(altitude: new WDist(128));
 				desiredPitch = new WAngle(Math.Max(desiredPitch.Value.Angle2, minPitch));
 			}
 

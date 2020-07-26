@@ -594,9 +594,17 @@ namespace OpenRA.Mods.Common.Traits
 				return probeAltitude.Length - self.World.Map.DistanceAboveTerrain(posProbe).Length > 0 ? 256 : -256;
 
 			// Probe terrain ahead of the aircraft flight direction.
-			var maxLookaheadDistance = Fly.CalculateTurnRadius(CurrentSpeed, Info.PitchSpeed) * 2;
+			var turnRadius = Fly.CalculateTurnRadius(CurrentSpeed, Info.PitchSpeed);
+
+			// The current pitch is a tangent of the minimal vertical turn circle.
+			// Make a perpendicular vector, and use it to locate the turn's center.
+			// We only care about the upper turn circle here.
+			var turnCenterPitch = FlightPitch + new WAngle(256);
+			var turnCenterDir = new WVec(1024, 0, 0).Rotate(WRot.FromPitch(turnCenterPitch));
+			var turnCenter = turnCenterDir * turnRadius / 1024;
+
 			var probeDistance = 0;
-			var tickLimit = (maxDistance == null ? maxLookaheadDistance : Math.Min(maxLookaheadDistance, maxDistance.Value)) / stepSize;
+			var tickLimit = (maxDistance == null ? turnRadius * 2 : Math.Min(turnRadius * 2, maxDistance.Value)) / stepSize;
 
 			for (var tick = 0; tick <= tickLimit; tick++)
 			{
@@ -617,8 +625,15 @@ namespace OpenRA.Mods.Common.Traits
 				}
 
 				var deltaZ = probeAltitude.Length - self.World.Map.DistanceAboveTerrain(posProbe).Length;
-				var probePitch = WAngle.ArcTan(deltaZ, probeDistance).Angle2;
 
+				// We can pitch up fast enough to not have to respond directly here, so we can safely
+				// ignore it for now.
+				var zDiff = deltaZ - turnCenter.Z;
+				var hDiff = probeDistance - turnCenter.X;
+				if (hDiff * hDiff + zDiff * zDiff > turnRadius * turnRadius && !(hDiff <= turnRadius && zDiff >= 0))
+					continue;
+
+				var probePitch = WAngle.ArcTan(deltaZ, probeDistance).Angle2;
 				if (probePitch > predictedPitch)
 					predictedPitch = probePitch;
 			}

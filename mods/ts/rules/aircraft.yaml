@@ -144,7 +144,6 @@ ORCA:
 		TurnAcceleration: 6
 		BodyTurnAcceleration: 3
 		Speed: 186
-		MaximumPitch: 256
 		PitchSpeed: 20
 		BodyPitchSpeed: 3
 		MaximumBodyPitch: 64
@@ -277,7 +276,6 @@ ORCATRAN:
 		TurnSpeed: 40
 		BodyTurnSpeed: 20
 		Speed: 84
-		MaximumPitch: 256
 		PitchSpeed: 12
 		Pitch: -10
 		BodyPitchSpeed: 1
@@ -328,7 +326,6 @@ TRNSPORT:
 		Speed: 149
 		InitialFacing: 0
 		Pitch: 0
-		MaximumPitch: 256
 		PitchSpeed: 12
 		Roll: 0
 		TiltForAscent: false
@@ -387,7 +384,6 @@ SCRIN:
 		Pitch: 0
 		PitchSpeed: 10
 		BodyPitchSpeed: 6
-		MaximumPitch: 200
 		Roll: 180
 		RollSpeed: 10
 		TakeoffSounds: dropup1.aud
