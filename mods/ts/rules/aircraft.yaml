@@ -383,7 +383,7 @@ SCRIN:
 		IdleSpeed: 100
 		Pitch: 0
 		PitchSpeed: 10
-		BodyPitchSpeed: 6
+		BodyPitchSpeed: 8
 		Roll: 180
 		RollSpeed: 10
 		TakeoffSounds: dropup1.aud
@@ -402,6 +402,7 @@ SCRIN:
 	AttackAircraft:
 		AttackType: Strafe
 		AttackAltitude: 1c280
+		AttackSpeed: 400
 		Voice: Attack
 		FacingTolerance: 20
 		PersistentTargeting: false

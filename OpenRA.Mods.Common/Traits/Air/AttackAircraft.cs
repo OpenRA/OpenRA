@@ -33,6 +33,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Altitude the aircraft will dive to when attacking. When set to WDist.Zero this defaults to the CruiseAltitude.")]
 		public readonly WDist AttackAltitude = WDist.Zero;
 
+		[Desc("When defined, Accelerate to this speed when closing in for attack.")]
+		public readonly int? AttackSpeed = null;
+
 		[Desc("Does this actor cancel its attack activity when it needs to resupply? Setting this to 'false' will make the actor resume attack after reloading.")]
 		public readonly bool AbortOnResupply = true;
 

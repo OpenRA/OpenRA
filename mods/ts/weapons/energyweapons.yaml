@@ -137,11 +137,11 @@ CyCannon:
 
 Proton:
 	Inherits: ^EnergyBlast
-	Range: 5c0
+	Range: 7c0
 	Burst: 5
 	BurstDelays: 3
 	Projectile: Bullet
-		Speed: 341
+		Speed: 600
 		Blockable: false
 		Shadow: true
 		Inaccuracy: 128

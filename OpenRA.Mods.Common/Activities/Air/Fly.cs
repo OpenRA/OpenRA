@@ -273,8 +273,9 @@ namespace OpenRA.Mods.Common.Activities
 			// Calculate intermediate variables for deceleration.
 			var speed = aircraft.CurrentSpeed;
 			var accel = aircraft.Acceleration;
-			var speedDelta = speed - finalSpeed;
-			var brakeTime = speedDelta / accel;
+			var speedDelta = finalSpeed - speed;
+			var signAccel = speedDelta > 0 ? 1 : -1;
+			var brakeTime = Math.Abs(speedDelta / accel);
 			var parBrakeDist = speedDelta * speedDelta / accel / 2;
 
 			// If we can slide we should start turning to reach the desired facing at the last possible moment.
@@ -283,7 +284,7 @@ namespace OpenRA.Mods.Common.Activities
 			{
 				var turnSpeed = aircraft.BodyTurnSpeed.Angle;
 				var turnTime = Math.Abs((finalFacing - aircraft.Facing).Value.Angle2) / turnSpeed + turnSpeed / aircraft.BodyTurnAcceleration.Angle;
-				var turnDist = speed * turnTime - (turnTime < brakeTime ? accel * turnTime * turnTime / 2 : parBrakeDist);
+				var turnDist = speed * turnTime + (turnTime < brakeTime ? signAccel * accel * turnTime * turnTime / 2 : parBrakeDist);
 				if (turnDist >= dist)
 					desiredBodyFacing = finalFacing;
 			}
@@ -294,7 +295,7 @@ namespace OpenRA.Mods.Common.Activities
 			{
 				var turnSpeed = aircraft.BodyPitchSpeed.Angle;
 				var turnTime = Math.Abs((finalPitch - aircraft.Pitch).Value.Angle2) / turnSpeed;
-				var turnDist = speed * turnTime - (turnTime < brakeTime ? accel * turnTime * turnTime / 2 : parBrakeDist);
+				var turnDist = speed * turnTime + (turnTime < brakeTime ? signAccel * accel * turnTime * turnTime / 2 : parBrakeDist);
 				if (turnDist >= dist)
 					desiredBodyPitch = finalPitch;
 			}
@@ -305,7 +306,7 @@ namespace OpenRA.Mods.Common.Activities
 			{
 				var turnSpeed = aircraft.Info.RollSpeed.Angle;
 				var turnTime = Math.Abs((finalRoll - aircraft.Roll).Value.Angle2) / turnSpeed;
-				var turnDist = speed * turnTime - (turnTime < brakeTime ? accel * turnTime * turnTime / 2 : parBrakeDist);
+				var turnDist = speed * turnTime + (turnTime < brakeTime ? signAccel * accel * turnTime * turnTime / 2 : parBrakeDist);
 				if (turnDist >= dist)
 					desiredBodyRoll = finalRoll;
 			}
@@ -366,8 +367,8 @@ namespace OpenRA.Mods.Common.Activities
 				}
 			}
 
-			// Determine when we should start to slow down.
-			if (dist < speed * speedDelta / accel - parBrakeDist)
+			// Determine when we should start to accelerate/decelerate towards the goal speed.
+			if (dist <= Math.Abs(speed * speedDelta / accel) + parBrakeDist)
 				desiredSpeed = finalSpeed;
 
 			// If we are near enough of the target, dive towards it instead of maintaining cruise altitude.
