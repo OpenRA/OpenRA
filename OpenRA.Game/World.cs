@@ -552,6 +552,15 @@ namespace OpenRA
 			}
 		}
 
+		public void OnPlayerDisconnected(Player player)
+		{
+			var pi = gameInfo.GetPlayer(player);
+			if (pi == null)
+				return;
+
+			pi.DisconnectFrame = OrderManager.NetFrameNumber;
+		}
+
 		public void RequestGameSave(string filename)
 		{
 			// Allow traits to save arbitrary data that will be passed back via IGameSaveTraitData.ResolveTraitData

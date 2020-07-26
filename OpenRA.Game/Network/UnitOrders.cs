@@ -39,7 +39,13 @@ namespace OpenRA.Network
 					{
 						var client = orderManager.LobbyInfo.ClientWithIndex(clientId);
 						if (client != null)
+						{
 							client.State = Session.ClientState.Disconnected;
+							var player = world?.FindPlayerByClient(client);
+							if (player != null)
+								world.OnPlayerDisconnected(player);
+						}
+
 						break;
 					}
 
