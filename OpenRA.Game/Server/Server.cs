@@ -1044,6 +1044,12 @@ namespace OpenRA.Server
 					// Send disconnected order, even if still in the lobby
 					DispatchOrdersToClients(toDrop, 0, Order.FromTargetString("Disconnected", "", true).Serialize());
 
+					if (gameInfo != null && !dropClient.IsObserver)
+					{
+						var disconnectedPlayer = gameInfo.Players.First(p => p.ClientIndex == toDrop.PlayerIndex);
+						disconnectedPlayer.DisconnectFrame = toDrop.MostRecentFrame;
+					}
+
 					LobbyInfo.Clients.RemoveAll(c => c.Index == toDrop.PlayerIndex);
 					LobbyInfo.ClientPings.RemoveAll(p => p.Index == toDrop.PlayerIndex);
 

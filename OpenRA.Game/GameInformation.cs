@@ -179,6 +179,9 @@ namespace OpenRA
 			/// <summary>The time when this player won or lost the game.</summary>
 			public DateTime OutcomeTimestampUtc;
 
+			/// <summary>The frame at which this player disconnected.</summary>
+			public int DisconnectFrame;
+
 			#endregion
 		}
 	}
