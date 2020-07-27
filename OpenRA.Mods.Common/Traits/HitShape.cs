@@ -35,6 +35,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly BitSet<ArmorType> ArmorTypes = default(BitSet<ArmorType>);
 
 		[FieldLoader.LoadUsing("LoadShape")]
+		[Desc("Engine comes with support for `Circle`, `Capsule`, `Polygon` and `Rectangle`. Defaults to `Circle` when left empty.")]
 		public readonly IHitShape Type;
 
 		static object LoadShape(MiniYaml yaml)
