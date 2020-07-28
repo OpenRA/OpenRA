@@ -73,7 +73,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void UpdateActor(Actor a)
 		{
-			// old is 0 if a is not in powerDrain
+			// Do not add power from actors that are not in the world
+			if (!a.IsInWorld)
+				return;
+
+			// Old is 0 if a is not in powerDrain
 			int old;
 			powerDrain.TryGetValue(a, out old);
 
@@ -98,6 +102,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void RemoveActor(Actor a)
 		{
+			// Do not remove power from actors that are still in the world
+			if (a.IsInWorld)
+				return;
+
 			int amount;
 			if (!powerDrain.TryGetValue(a, out amount))
 				return;
