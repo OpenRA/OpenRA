@@ -77,6 +77,7 @@ namespace OpenRA.Mods.Common.Warheads
 			{
 				Weapon = weapon,
 				Facing = (map.CenterOfCell(targetCell) - target.CenterPosition).Yaw,
+				CurrentMuzzleFacing = () => (map.CenterOfCell(targetCell) - target.CenterPosition).Yaw,
 
 				DamageModifiers = args.DamageModifiers,
 				InaccuracyModifiers = new int[0],
