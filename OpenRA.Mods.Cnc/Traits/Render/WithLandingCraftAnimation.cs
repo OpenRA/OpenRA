@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 
 		public bool ShouldBeOpen()
 		{
-			if (move.CurrentMovementTypes.HasFlag(MovementType.Horizontal) || self.World.Map.DistanceAboveTerrain(self.CenterPosition).Length > 0)
+			if (move.CurrentMovementTypes != MovementType.None || self.World.Map.DistanceAboveTerrain(self.CenterPosition).Length > 0)
 				return false;
 
 			return cargo.CurrentAdjacentCells.Any(c => self.World.Map.Contains(c)
