@@ -21,8 +21,11 @@ namespace OpenRA.Platforms.Default
 		uint buffer;
 		bool disposed;
 
+		public int Length { get; private set; }
+
 		public VertexBuffer(int size)
 		{
+			Length = size;
 			OpenGL.glGenBuffers(1, out buffer);
 			OpenGL.CheckGLError();
 			Bind();
@@ -62,6 +65,7 @@ namespace OpenRA.Platforms.Default
 
 		public void SetData(T[] data, int start, int length)
 		{
+			Length = length;
 			Bind();
 
 			var ptr = GCHandle.Alloc(data, GCHandleType.Pinned);
@@ -82,6 +86,7 @@ namespace OpenRA.Platforms.Default
 
 		public void SetData(IntPtr data, int start, int length)
 		{
+			Length = length;
 			Bind();
 			OpenGL.glBufferSubData(OpenGL.GL_ARRAY_BUFFER,
 				new IntPtr(VertexSize * start),

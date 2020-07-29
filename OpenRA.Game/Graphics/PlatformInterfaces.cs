@@ -10,7 +10,6 @@
 #endregion
 
 using System;
-using OpenRA.Graphics;
 using OpenRA.Primitives;
 
 namespace OpenRA
@@ -79,7 +78,7 @@ namespace OpenRA
 
 	public interface IGraphicsContext : IDisposable
 	{
-		IVertexBuffer<Vertex> CreateVertexBuffer(int size);
+		IVertexBuffer<T> CreateVertexBuffer<T>(int size) where T : struct;
 		ITexture CreateTexture();
 		IFrameBuffer CreateFrameBuffer(Size s);
 		IFrameBuffer CreateFrameBuffer(Size s, Color clearColor);
@@ -99,6 +98,7 @@ namespace OpenRA
 
 	public interface IVertexBuffer<T> : IDisposable
 	{
+		int Length { get; }
 		void Bind();
 		void SetData(T[] vertices, int length);
 		void SetData(T[] vertices, int start, int length);

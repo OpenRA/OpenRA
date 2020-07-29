@@ -31,9 +31,11 @@ namespace OpenRA.Platforms.Default
 
 		protected uint CompileShaderObject(int type, string name)
 		{
+			Stream stream;
+
 			var ext = type == OpenGL.GL_VERTEX_SHADER ? "vert" : "frag";
-			var filename = Path.Combine(Platform.GameDir, "glsl", name + "." + ext);
-			var code = File.ReadAllText(filename);
+			var filename = name + "." + ext;
+			var code = Game.ModData != null && Game.ModData.DefaultFileSystem.TryOpen(filename, out stream) ? stream.ReadAllText() : File.ReadAllText(Path.Combine(Platform.GameDir, "glsl", filename));
 
 			var version = OpenGL.Profile == GLProfile.Embedded ? "300 es" :
 				OpenGL.Profile == GLProfile.Legacy ? "120" : "140";
