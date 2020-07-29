@@ -33,7 +33,6 @@ namespace OpenRA.Mods.Cnc.FileFormats
 			s.Seek(16 * LimbCount, SeekOrigin.Current);
 			Transforms = new float[16 * FrameCount * LimbCount];
 
-			var testMatrix = new float[16];
 			for (var j = 0; j < FrameCount; j++)
 				for (var i = 0; i < LimbCount; i++)
 				{
@@ -47,11 +46,23 @@ namespace OpenRA.Mods.Cnc.FileFormats
 					for (var k = 0; k < 12; k++)
 						Transforms[c + ids[k]] = s.ReadFloat();
 
-					Array.Copy(Transforms, 16 * (LimbCount * j + i), testMatrix, 0, 16);
-					if (OpenRA.Graphics.Util.MatrixInverse(testMatrix) == null)
+					var o = 16 * (LimbCount * j + i);
+
+					try
+					{
+						new FloatMatrix4x4(
+								Transforms[o], Transforms[o + 1], Transforms[o + 2], Transforms[o + 3],
+								Transforms[o + 4], Transforms[o + 5], Transforms[o + 6], Transforms[o + 7],
+								Transforms[o + 8], Transforms[o + 9], Transforms[o + 10], Transforms[o + 11],
+								Transforms[o + 12], Transforms[o + 13], Transforms[o + 14], Transforms[o + 15])
+							.Invert();
+					}
+					catch (Exception)
+					{
 						throw new InvalidDataException(
 							"The transformation matrix for HVA file `{0}` section {1} frame {2} is invalid because it is not invertible!"
-							.F(fileName, i, j));
+								.F(fileName, i, j));
+					}
 				}
 		}
 

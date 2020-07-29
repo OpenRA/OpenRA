@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.Graphics
 			if (length - skip < 4)
 				return;
 
-			var screenWidth = wr.ScreenVector(new WVec(width, WDist.Zero, WDist.Zero))[0];
+			var screenWidth = wr.ScreenVector(new WVec(width, WDist.Zero, WDist.Zero)).X;
 			var wcr = Game.Renderer.WorldRgbaColorRenderer;
 
 			// Start of the first line segment is the tail of the list - don't smooth it.

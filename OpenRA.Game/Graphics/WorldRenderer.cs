@@ -384,10 +384,10 @@ namespace OpenRA.Graphics
 		}
 
 		// For scaling vectors to pixel sizes in the model renderer
-		public float[] ScreenVector(WVec vec)
+		public float4 ScreenVector(WVec vec)
 		{
 			var xyz = ScreenVectorComponents(vec);
-			return new[] { xyz.X, xyz.Y, xyz.Z, 1f };
+			return new float4(xyz.X, xyz.Y, xyz.Z, 1f);
 		}
 
 		public int2 ScreenPxOffset(WVec vec)

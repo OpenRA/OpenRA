@@ -38,10 +38,10 @@ namespace OpenRA.Graphics
 		static readonly float[] ShadowDiffuse = new float[] { 0, 0, 0 };
 		static readonly float[] ShadowAmbient = new float[] { 1, 1, 1 };
 		static readonly float2 SpritePadding = new float2(2, 2);
-		static readonly float[] ZeroVector = new float[] { 0, 0, 0, 1 };
-		static readonly float[] ZVector = new float[] { 0, 0, 1, 1 };
-		static readonly float[] FlipMtx = Util.ScaleMatrix(1, -1, 1);
-		static readonly float[] ShadowScaleFlipMtx = Util.ScaleMatrix(2, -2, 2);
+		static readonly float4 ZeroVector = new float4(0, 0, 0, 1);
+		static readonly float4 ZVector = new float4(0, 0, 1, 1);
+		static readonly FloatMatrix4x4 FlipMtx = FloatMatrix4x4.CreateScale(new float3(1, -1, 1));
+		static readonly FloatMatrix4x4 ShadowScaleFlipMtx = FloatMatrix4x4.CreateScale(new float3(2, -2, 2));
 
 		readonly Renderer renderer;
 		readonly IShader shader;
@@ -67,38 +67,34 @@ namespace OpenRA.Graphics
 		public void SetViewportParams(Size screen, int2 scroll)
 		{
 			var a = 2f / renderer.SheetSize;
-			var view = new[]
-			{
+			var view = new FloatMatrix4x4(
 				a, 0, 0, 0,
 				0, -a, 0, 0,
 				0, 0, -2 * a, 0,
-				-1, 1, 0, 1
-			};
+				-1, 1, 0, 1);
 
 			shader.SetMatrix("View", view);
 		}
 
 		public ModelRenderProxy RenderAsync(
 			WorldRenderer wr, IEnumerable<ModelAnimation> models, WRot camera, float scale,
-			float[] groundNormal, WRot lightSource, float[] lightAmbientColor, float[] lightDiffuseColor,
+			float4 groundNormal, WRot lightSource, float[] lightAmbientColor, float[] lightDiffuseColor,
 			PaletteReference color, PaletteReference normals, PaletteReference shadowPalette)
 		{
 			if (!isInFrame)
 				throw new InvalidOperationException("BeginFrame has not been called. You cannot render until a frame has been started.");
 
 			// Correct for inverted y-axis
-			var scaleTransform = Util.ScaleMatrix(scale, scale, scale);
+			var scaleTransform = FloatMatrix4x4.CreateScale(new float3(scale, scale, scale));
 
 			// Correct for bogus light source definition
-			var lightYaw = Util.MakeFloatMatrix(new WRot(WAngle.Zero, WAngle.Zero, -lightSource.Yaw).AsMatrix());
-			var lightPitch = Util.MakeFloatMatrix(new WRot(WAngle.Zero, -lightSource.Pitch, WAngle.Zero).AsMatrix());
-			var shadowTransform = Util.MatrixMultiply(lightPitch, lightYaw);
+			var lightYaw = (FloatMatrix4x4)new WRot(WAngle.Zero, WAngle.Zero, -lightSource.Yaw).AsMatrix();
+			var lightPitch = (FloatMatrix4x4)new WRot(WAngle.Zero, -lightSource.Pitch, WAngle.Zero).AsMatrix();
+			var shadowTransform = lightPitch * lightYaw;
 
-			var invShadowTransform = Util.MatrixInverse(shadowTransform);
-			var cameraTransform = Util.MakeFloatMatrix(camera.AsMatrix());
-			var invCameraTransform = Util.MatrixInverse(cameraTransform);
-			if (invCameraTransform == null)
-				throw new InvalidOperationException("Failed to invert the cameraTransform matrix during RenderAsync.");
+			var invShadowTransform = shadowTransform.Invert();
+			var cameraTransform = (FloatMatrix4x4)camera.AsMatrix();
+			var invCameraTransform = cameraTransform.Invert();
 
 			// Sprite rectangle
 			var tl = new float2(float.MaxValue, float.MaxValue);
@@ -111,12 +107,12 @@ namespace OpenRA.Graphics
 			foreach (var m in models)
 			{
 				// Convert screen offset back to world coords
-				var offsetVec = Util.MatrixVectorMultiply(invCameraTransform, wr.ScreenVector(m.OffsetFunc()));
-				var offsetTransform = Util.TranslationMatrix(offsetVec[0], offsetVec[1], offsetVec[2]);
+				var offsetVec = invCameraTransform * wr.ScreenVector(m.OffsetFunc());
+				var offsetTransform = FloatMatrix4x4.CreateTranslation(new float3(offsetVec.X, offsetVec.Y, offsetVec.Z));
 
-				var worldTransform = Util.MakeFloatMatrix(m.RotationFunc().AsMatrix());
-				worldTransform = Util.MatrixMultiply(scaleTransform, worldTransform);
-				worldTransform = Util.MatrixMultiply(offsetTransform, worldTransform);
+				var worldTransform = (FloatMatrix4x4)m.RotationFunc().AsMatrix();
+				worldTransform = scaleTransform * worldTransform;
+				worldTransform = offsetTransform * worldTransform;
 
 				var bounds = m.Model.Bounds(m.FrameFunc());
 				var worldBounds = Util.MatrixAABBMultiply(worldTransform, bounds);
@@ -137,26 +133,26 @@ namespace OpenRA.Graphics
 			sbr += SpritePadding;
 
 			// Corners of the shadow quad, in shadow-space
-			var corners = new float[][]
+			var corners = new float4[]
 			{
-				new[] { stl.X, stl.Y, 0, 1 },
-				new[] { sbr.X, sbr.Y, 0, 1 },
-				new[] { sbr.X, stl.Y, 0, 1 },
-				new[] { stl.X, sbr.Y, 0, 1 }
+				new float4(stl.X, stl.Y, 0, 1),
+				new float4(sbr.X, sbr.Y, 0, 1),
+				new float4(sbr.X, stl.Y, 0, 1),
+				new float4(stl.X, sbr.Y, 0, 1)
 			};
 
-			var shadowScreenTransform = Util.MatrixMultiply(cameraTransform, invShadowTransform);
-			var shadowGroundNormal = Util.MatrixVectorMultiply(shadowTransform, groundNormal);
+			var shadowScreenTransform = cameraTransform * invShadowTransform;
+			var shadowGroundNormal = shadowTransform * groundNormal;
 			var screenCorners = new float3[4];
 			for (var j = 0; j < 4; j++)
 			{
 				// Project to ground plane
-				corners[j][2] = -(corners[j][1] * shadowGroundNormal[1] / shadowGroundNormal[2] +
-								  corners[j][0] * shadowGroundNormal[0] / shadowGroundNormal[2]);
+				var z = -(corners[j].Y * shadowGroundNormal.Y / shadowGroundNormal.Z +
+					corners[j].X * shadowGroundNormal.X / shadowGroundNormal.Z);
 
 				// Rotate to camera-space
-				corners[j] = Util.MatrixVectorMultiply(shadowScreenTransform, corners[j]);
-				screenCorners[j] = new float3(corners[j][0], corners[j][1], 0);
+				corners[j] = shadowScreenTransform * new float4(corners[j].X, corners[j].Y, z, corners[j].W);
+				screenCorners[j] = new float3(corners[j].X, corners[j].Y, 0);
 			}
 
 			// Shadows are rendered at twice the resolution to reduce artifacts
@@ -175,57 +171,55 @@ namespace OpenRA.Graphics
 			var spriteCenter = new float2(sb.Left + sb.Width / 2, sb.Top + sb.Height / 2);
 			var shadowCenter = new float2(ssb.Left + ssb.Width / 2, ssb.Top + ssb.Height / 2);
 
-			var translateMtx = Util.TranslationMatrix(spriteCenter.X - spriteOffset.X, renderer.SheetSize - (spriteCenter.Y - spriteOffset.Y), 0);
-			var shadowTranslateMtx = Util.TranslationMatrix(shadowCenter.X - shadowSpriteOffset.X, renderer.SheetSize - (shadowCenter.Y - shadowSpriteOffset.Y), 0);
-			var correctionTransform = Util.MatrixMultiply(translateMtx, FlipMtx);
-			var shadowCorrectionTransform = Util.MatrixMultiply(shadowTranslateMtx, ShadowScaleFlipMtx);
+			var translateMtx = FloatMatrix4x4.CreateTranslation(new float3(spriteCenter.X - spriteOffset.X, renderer.SheetSize - (spriteCenter.Y - spriteOffset.Y), 0));
+			var shadowTranslateMtx = FloatMatrix4x4.CreateTranslation(new float3(shadowCenter.X - shadowSpriteOffset.X, renderer.SheetSize - (shadowCenter.Y - shadowSpriteOffset.Y), 0));
+			var correctionTransform = translateMtx * FlipMtx;
+			var shadowCorrectionTransform = shadowTranslateMtx * ShadowScaleFlipMtx;
 
 			doRender.Add(Pair.New<Sheet, Action>(sprite.Sheet, () =>
 			{
 				foreach (var m in models)
 				{
 					// Convert screen offset to world offset
-					var offsetVec = Util.MatrixVectorMultiply(invCameraTransform, wr.ScreenVector(m.OffsetFunc()));
-					var offsetTransform = Util.TranslationMatrix(offsetVec[0], offsetVec[1], offsetVec[2]);
+					var offsetVec = invCameraTransform * wr.ScreenVector(m.OffsetFunc());
+					var offsetTransform = FloatMatrix4x4.CreateTranslation(new float3(offsetVec.X, offsetVec.Y, offsetVec.Z));
 
-					var rotations = Util.MakeFloatMatrix(m.RotationFunc().AsMatrix());
-					var worldTransform = Util.MatrixMultiply(scaleTransform, rotations);
-					worldTransform = Util.MatrixMultiply(offsetTransform, worldTransform);
+					var rotations = (FloatMatrix4x4)m.RotationFunc().AsMatrix();
+					var worldTransform = scaleTransform * rotations;
+					worldTransform = offsetTransform * worldTransform;
 
-					var transform = Util.MatrixMultiply(cameraTransform, worldTransform);
-					transform = Util.MatrixMultiply(correctionTransform, transform);
+					var transform = cameraTransform * worldTransform;
+					transform = correctionTransform * transform;
 
-					var shadow = Util.MatrixMultiply(shadowTransform, worldTransform);
-					shadow = Util.MatrixMultiply(shadowCorrectionTransform, shadow);
+					var shadow = shadowTransform * worldTransform;
+					shadow = shadowCorrectionTransform * shadow;
 
-					var lightTransform = Util.MatrixMultiply(Util.MatrixInverse(rotations), invShadowTransform);
+					var lightTransform = rotations.Invert() * invShadowTransform;
 
 					var frame = m.FrameFunc();
 					for (uint i = 0; i < m.Model.Sections; i++)
 					{
 						var rd = m.Model.RenderData(i);
 						var t = m.Model.TransformationMatrix(i, frame);
-						var it = Util.MatrixInverse(t);
-						if (it == null)
-							throw new InvalidOperationException("Failed to invert the transformed matrix of frame {0} during RenderAsync.".F(i));
+						var it = t.Invert();
 
 						// Transform light vector from shadow -> world -> limb coords
-						var lightDirection = ExtractRotationVector(Util.MatrixMultiply(it, lightTransform));
+						var lightDirection = ExtractRotationVector(it * lightTransform);
 
-						Render(rd, wr.World.ModelCache, Util.MatrixMultiply(transform, t), lightDirection,
+						Render(rd, wr.World.ModelCache, transform * t, lightDirection,
 							lightAmbientColor, lightDiffuseColor, color.TextureMidIndex, normals.TextureMidIndex);
 
 						// Disable shadow normals by forcing zero diffuse and identity ambient light
 						if (m.ShowShadow)
-							Render(rd, wr.World.ModelCache, Util.MatrixMultiply(shadow, t), lightDirection,
+							Render(rd, wr.World.ModelCache, shadow * t, lightDirection,
 								ShadowAmbient, ShadowDiffuse, shadowPalette.TextureMidIndex, normals.TextureMidIndex);
 					}
 				}
 			}));
 
-			var screenLightVector = Util.MatrixVectorMultiply(invShadowTransform, ZVector);
-			screenLightVector = Util.MatrixVectorMultiply(cameraTransform, screenLightVector);
-			return new ModelRenderProxy(sprite, shadowSprite, screenCorners, -screenLightVector[2] / screenLightVector[1]);
+			var screenLightVector = invShadowTransform * ZVector;
+			screenLightVector = cameraTransform * screenLightVector;
+			return new ModelRenderProxy(sprite, shadowSprite, screenCorners, -screenLightVector.Z / screenLightVector.Y);
 		}
 
 		static void CalculateSpriteGeometry(float2 tl, float2 br, float scale, out Size size, out int2 offset)
@@ -243,35 +237,32 @@ namespace OpenRA.Graphics
 			size = new Size(width, height);
 		}
 
-		static float[] ExtractRotationVector(float[] mtx)
+		static float4 ExtractRotationVector(FloatMatrix4x4 mtx)
 		{
-			var tVec = Util.MatrixVectorMultiply(mtx, ZVector);
-			var tOrigin = Util.MatrixVectorMultiply(mtx, ZeroVector);
-			tVec[0] -= tOrigin[0] * tVec[3] / tOrigin[3];
-			tVec[1] -= tOrigin[1] * tVec[3] / tOrigin[3];
-			tVec[2] -= tOrigin[2] * tVec[3] / tOrigin[3];
+			var tVec = mtx * ZVector;
+			var tOrigin = mtx * ZeroVector;
+			tVec = new float4(
+				tVec.X - tOrigin.X * tVec.W / tOrigin.W,
+				tVec.Y - tOrigin.Y * tVec.W / tOrigin.W,
+				tVec.Z - tOrigin.Z * tVec.W / tOrigin.W,
+				tVec.W);
 
 			// Renormalize
-			var w = (float)Math.Sqrt(tVec[0] * tVec[0] + tVec[1] * tVec[1] + tVec[2] * tVec[2]);
-			tVec[0] /= w;
-			tVec[1] /= w;
-			tVec[2] /= w;
-			tVec[3] = 1f;
-
-			return tVec;
+			var w = (float)Math.Sqrt(tVec.X * tVec.X + tVec.Y * tVec.Y + tVec.Z * tVec.Z);
+			return new float4(tVec.X / w, tVec.Y / w, tVec.Z / w, 1f);
 		}
 
 		void Render(
 			ModelRenderData renderData,
 			IModelCache cache,
-			float[] t, float[] lightDirection,
+			FloatMatrix4x4 t, float4 lightDirection,
 			float[] ambientLight, float[] diffuseLight,
 			float colorPaletteTextureMidIndex, float normalsPaletteTextureMidIndex)
 		{
 			shader.SetTexture("DiffuseTexture", renderData.Sheet.GetTexture());
 			shader.SetVec("PaletteRows", colorPaletteTextureMidIndex, normalsPaletteTextureMidIndex);
 			shader.SetMatrix("TransformMatrix", t);
-			shader.SetVec("LightDirection", lightDirection, 4);
+			shader.SetVec("LightDirection", new[] { lightDirection.X, lightDirection.Y, lightDirection.Z, lightDirection.W }, 4);
 			shader.SetVec("AmbientLight", ambientLight, 3);
 			shader.SetVec("DiffuseLight", diffuseLight, 3);
 

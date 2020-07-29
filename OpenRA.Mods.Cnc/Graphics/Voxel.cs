@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Cnc.Graphics
 			}
 		}
 
-		public float[] TransformationMatrix(uint limb, uint frame)
+		public FloatMatrix4x4 TransformationMatrix(uint limb, uint frame)
 		{
 			if (frame >= frames)
 				throw new ArgumentOutOfRangeException("frame", "Only {0} frames exist.".F(frames));
@@ -65,17 +65,20 @@ namespace OpenRA.Mods.Cnc.Graphics
 				throw new ArgumentOutOfRangeException("limb", "Only {1} limbs exist.".F(limbs));
 
 			var l = limbData[limb];
-			var t = new float[16];
-			Array.Copy(transforms, 16 * (limbs * frame + limb), t, 0, 16);
-
-			// Fix limb position
-			t[12] *= l.Scale * (l.Bounds[3] - l.Bounds[0]) / l.Size[0];
-			t[13] *= l.Scale * (l.Bounds[4] - l.Bounds[1]) / l.Size[1];
-			t[14] *= l.Scale * (l.Bounds[5] - l.Bounds[2]) / l.Size[2];
+			var o = 16 * (limbs * frame + limb);
+			var t = new FloatMatrix4x4(
+				transforms[o], transforms[o + 1], transforms[o + 2], transforms[o + 3],
+				transforms[o + 4], transforms[o + 5], transforms[o + 6], transforms[o + 7],
+				transforms[o + 8], transforms[o + 9], transforms[o + 10], transforms[o + 11],
+				/* Fix limb position */
+				transforms[o + 12] * l.Scale * (l.Bounds[3] - l.Bounds[0]) / l.Size[0],
+				transforms[o + 13] * l.Scale * (l.Bounds[4] - l.Bounds[1]) / l.Size[1],
+				transforms[o + 14] * l.Scale * (l.Bounds[5] - l.Bounds[2]) / l.Size[2],
+				transforms[o + 15]);
 
 			// Center, flip and scale
-			t = OpenRA.Graphics.Util.MatrixMultiply(t, OpenRA.Graphics.Util.TranslationMatrix(l.Bounds[0], l.Bounds[1], l.Bounds[2]));
-			t = OpenRA.Graphics.Util.MatrixMultiply(OpenRA.Graphics.Util.ScaleMatrix(l.Scale, -l.Scale, l.Scale), t);
+			t *= FloatMatrix4x4.CreateTranslation(new float3(l.Bounds[0], l.Bounds[1], l.Bounds[2]));
+			t = FloatMatrix4x4.CreateScale(new float3(l.Scale, -l.Scale, l.Scale)) * t;
 
 			return t;
 		}

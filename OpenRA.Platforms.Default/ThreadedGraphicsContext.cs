@@ -662,7 +662,7 @@ namespace OpenRA.Platforms.Default
 			this.device = device;
 			prepareRender = shader.PrepareRender;
 			setBool = tuple => { var t = (Tuple<string, bool>)tuple; shader.SetBool(t.Item1, t.Item2); };
-			setMatrix = tuple => { var t = (Tuple<string, float[]>)tuple; shader.SetMatrix(t.Item1, t.Item2); };
+			setMatrix = tuple => { var t = (Tuple<string, FloatMatrix4x4>)tuple; shader.SetMatrix(t.Item1, t.Item2); };
 			setTexture = tuple => { var t = (Tuple<string, ITexture>)tuple; shader.SetTexture(t.Item1, t.Item2); };
 			setVec1 = tuple => { var t = (Tuple<string, float>)tuple; shader.SetVec(t.Item1, t.Item2); };
 			setVec2 = tuple => { var t = (Tuple<string, float[], int>)tuple; shader.SetVec(t.Item1, t.Item2, t.Item3); };
@@ -680,7 +680,7 @@ namespace OpenRA.Platforms.Default
 			device.Post(setBool, Tuple.Create(name, value));
 		}
 
-		public void SetMatrix(string param, float[] mtx)
+		public void SetMatrix(string param, FloatMatrix4x4 mtx)
 		{
 			device.Post(setMatrix, Tuple.Create(param, mtx));
 		}

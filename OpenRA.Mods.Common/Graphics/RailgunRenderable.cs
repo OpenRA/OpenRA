@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Graphics
 			if (railgun.ForwardStep == WVec.Zero)
 				return;
 
-			var screenWidth = wr.ScreenVector(new WVec(info.HelixThickness.Length, 0, 0))[0];
+			var screenWidth = wr.ScreenVector(new WVec(info.HelixThickness.Length, 0, 0)).X;
 
 			// Move forward from self to target to draw helix
 			var centerPos = pos;

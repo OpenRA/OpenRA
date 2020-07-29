@@ -20,7 +20,7 @@ namespace OpenRA.Graphics
 		uint Frames { get; }
 		uint Sections { get; }
 
-		float[] TransformationMatrix(uint section, uint frame);
+		FloatMatrix4x4 TransformationMatrix(uint section, uint frame);
 		float[] Size { get; }
 		float[] Bounds(uint frame);
 		ModelRenderData RenderData(uint section);

@@ -15,7 +15,10 @@ namespace OpenRA
 {
 	public struct Int32Matrix4x4 : IEquatable<Int32Matrix4x4>
 	{
-		public readonly int M11, M12, M13, M14, M21, M22, M23, M24, M31, M32, M33, M34, M41, M42, M43, M44;
+		public readonly int M11, M12, M13, M14;
+		public readonly int M21, M22, M23, M24;
+		public readonly int M31, M32, M33, M34;
+		public readonly int M41, M42, M43, M44;
 
 		public Int32Matrix4x4(
 			int m11, int m12, int m13, int m14,
@@ -63,10 +66,32 @@ namespace OpenRA
 		public override string ToString()
 		{
 			return
-				"[" + M11 + " " + M12 + " " + M13 + " " + M14 + "],[" +
-				"[" + M21 + " " + M22 + " " + M23 + " " + M24 + "],[" +
-				"[" + M31 + " " + M32 + " " + M33 + " " + M34 + "],[" +
+				"[" + M11 + " " + M12 + " " + M13 + " " + M14 + "]," +
+				"[" + M21 + " " + M22 + " " + M23 + " " + M24 + "]," +
+				"[" + M31 + " " + M32 + " " + M33 + " " + M34 + "]," +
 				"[" + M41 + " " + M42 + " " + M43 + " " + M44 + "]";
+		}
+
+		public static implicit operator FloatMatrix4x4(Int32Matrix4x4 imtx)
+		{
+			var multipler = 1f / imtx.M44;
+			return new FloatMatrix4x4(
+				imtx.M11 * multipler,
+				imtx.M12 * multipler,
+				imtx.M13 * multipler,
+				imtx.M14 * multipler,
+				imtx.M21 * multipler,
+				imtx.M22 * multipler,
+				imtx.M23 * multipler,
+				imtx.M24 * multipler,
+				imtx.M31 * multipler,
+				imtx.M32 * multipler,
+				imtx.M33 * multipler,
+				imtx.M34 * multipler,
+				imtx.M41 * multipler,
+				imtx.M42 * multipler,
+				imtx.M43 * multipler,
+				imtx.M44 * multipler);
 		}
 	}
 }

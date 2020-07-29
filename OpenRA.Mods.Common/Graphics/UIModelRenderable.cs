@@ -68,7 +68,7 @@ namespace OpenRA.Mods.Common.Graphics
 		public IRenderable OffsetBy(WVec vec) { return this; }
 		public IRenderable AsDecoration() { return this; }
 
-		static readonly float[] GroundNormal = { 0, 0, 1, 1 };
+		static readonly float4 GroundNormal = new float4(0, 0, 1, 1);
 		public IFinalizedRenderable PrepareRender(WorldRenderer wr)
 		{
 			return new FinalizedUIModelRenderable(wr, this);
@@ -116,8 +116,8 @@ namespace OpenRA.Mods.Common.Graphics
 			{
 				var pxOrigin = model.screenPos;
 				var draw = model.models.Where(v => v.IsVisible);
-				var scaleTransform = OpenRA.Graphics.Util.ScaleMatrix(model.scale, model.scale, model.scale);
-				var cameraTransform = OpenRA.Graphics.Util.MakeFloatMatrix(model.camera.AsMatrix());
+				var scaleTransform = FloatMatrix4x4.CreateScale(new float3(model.scale, model.scale, model.scale));
+				var cameraTransform = (FloatMatrix4x4)model.camera.AsMatrix();
 
 				var minX = float.MaxValue;
 				var minY = float.MaxValue;
@@ -129,22 +129,22 @@ namespace OpenRA.Mods.Common.Graphics
 				foreach (var v in draw)
 				{
 					var bounds = v.Model.Bounds(v.FrameFunc());
-					var rotation = OpenRA.Graphics.Util.MakeFloatMatrix(v.RotationFunc().AsMatrix());
-					var worldTransform = OpenRA.Graphics.Util.MatrixMultiply(scaleTransform, rotation);
+					var rotation = (FloatMatrix4x4)v.RotationFunc().AsMatrix();
+					var worldTransform = scaleTransform * rotation;
 
 					var pxPos = pxOrigin + wr.ScreenVectorComponents(v.OffsetFunc());
-					var screenTransform = OpenRA.Graphics.Util.MatrixMultiply(cameraTransform, worldTransform);
+					var screenTransform = cameraTransform * worldTransform;
 
 					for (var i = 0; i < 8; i++)
 					{
-						var vec = new float[] { bounds[CornerXIndex[i]], bounds[CornerYIndex[i]], bounds[CornerZIndex[i]], 1 };
-						var screen = OpenRA.Graphics.Util.MatrixVectorMultiply(screenTransform, vec);
-						minX = Math.Min(minX, pxPos.X + screen[0]);
-						minY = Math.Min(minY, pxPos.Y + screen[1]);
-						minZ = Math.Min(minZ, pxPos.Z + screen[2]);
-						maxX = Math.Max(maxX, pxPos.X + screen[0]);
-						maxY = Math.Max(maxY, pxPos.Y + screen[1]);
-						maxZ = Math.Max(minZ, pxPos.Z + screen[2]);
+						var vec = new float4(bounds[CornerXIndex[i]], bounds[CornerYIndex[i]], bounds[CornerZIndex[i]], 1);
+						var screen = screenTransform * vec;
+						minX = Math.Min(minX, pxPos.X + screen.X);
+						minY = Math.Min(minY, pxPos.Y + screen.Y);
+						minZ = Math.Min(minZ, pxPos.Z + screen.Z);
+						maxX = Math.Max(maxX, pxPos.X + screen.X);
+						maxY = Math.Max(maxY, pxPos.Y + screen.Y);
+						maxZ = Math.Max(minZ, pxPos.Z + screen.Z);
 					}
 				}
 

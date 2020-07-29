@@ -268,12 +268,9 @@ namespace OpenRA.Platforms.Default
 			OpenGL.CheckGLError();
 		}
 
-		public void SetMatrix(string name, float[] mtx)
+		public void SetMatrix(string name, FloatMatrix4x4 mtx)
 		{
 			VerifyThreadAffinity();
-			if (mtx.Length != 16)
-				throw new InvalidDataException("Invalid 4x4 matrix");
-
 			OpenGL.glUseProgram(program);
 			OpenGL.CheckGLError();
 			var param = OpenGL.glGetUniformLocation(program, name);
@@ -281,7 +278,7 @@ namespace OpenRA.Platforms.Default
 
 			unsafe
 			{
-				fixed (float* pMtx = mtx)
+				fixed (float* pMtx = mtx.Unpack())
 					OpenGL.glUniformMatrix4fv(param, 1, false, new IntPtr(pMtx));
 			}
 
