@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using OpenRA.Graphics;
@@ -355,6 +356,31 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					panel = PanelType.Servers;
 				};
 			}
+
+			var saveGameButton = lobby.Get<ButtonWidget>("SAVE_SETTINGS");
+			saveGameButton.OnClick = () =>
+			{
+				Ui.OpenWindow(
+					"SAVED_SETTINGS_BROWSER_PANEL", new WidgetArgs
+					{
+						{ "isSavePanel", true },
+						{ "orderManager", orderManager },
+						{ "map", map }
+					});
+			};
+
+			var loadOptionsButton = lobby.Get<ButtonWidget>("LOAD_SETTINGS");
+			loadOptionsButton.OnClick = () =>
+			{
+				Ui.OpenWindow(
+					"SAVED_SETTINGS_BROWSER_PANEL", new WidgetArgs
+					{
+						{ "isSavePanel", false },
+						{ "orderManager", orderManager },
+						{ "map", map }
+					});
+			};
+			loadOptionsButton.IsDisabled = () => configurationDisabled() || !LobbySavedSettingsBrowserLogic.IsLoadPanelEnabled(modData.Manifest);
 
 			// Force start panel
 			Action startGame = () =>

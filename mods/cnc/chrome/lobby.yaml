@@ -137,6 +137,18 @@ Container@SERVER_LOBBY:
 			Width: 140
 			Height: 35
 			Text: Leave Game
+		Button@SAVE_SETTINGS:
+			X: 160
+			Y: PARENT_BOTTOM - 36
+			Width: 140
+			Height: 35
+			Text: Save Settings
+		Button@LOAD_SETTINGS:
+			X: 320
+			Y: PARENT_BOTTOM - 36
+			Width: 140
+			Height: 35
+			Text: Load Settings
 		Button@START_GAME_BUTTON:
 			X: PARENT_RIGHT - WIDTH
 			Y: PARENT_BOTTOM - 36

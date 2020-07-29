@@ -3,7 +3,7 @@ Background@SERVER_LOBBY:
 	X: (WINDOW_RIGHT - WIDTH) / 2
 	Y: (WINDOW_BOTTOM - HEIGHT) / 2
 	Width: 808
-	Height: 600
+	Height: 630
 	Children:
 		ColorPreviewManager@COLOR_MANAGER:
 		Label@SERVER_NAME:
@@ -93,7 +93,7 @@ Background@SERVER_LOBBY:
 			Font: Bold
 		Container@LOBBYCHAT:
 			X: 20
-			Y: PARENT_BOTTOM - HEIGHT - 20
+			Y: 320
 			Width: PARENT_RIGHT - 40
 			Height: 259
 			Children:
@@ -133,8 +133,22 @@ Background@SERVER_LOBBY:
 				TextField@CHAT_TEXTFIELD:
 					X: 55
 					Y: PARENT_BOTTOM - HEIGHT
-					Width: PARENT_RIGHT - 260 - 55
+					Width: PARENT_RIGHT - 55
 					Height: 25
+		Button@SAVE_SETTINGS:
+			X: 20
+			Y: PARENT_BOTTOM - HEIGHT - 20
+			Width: 120
+			Height: 25
+			Text: Save Settings
+			Font: Bold
+		Button@LOAD_SETTINGS:
+			X: 150
+			Y: PARENT_BOTTOM - HEIGHT - 20
+			Width: 120
+			Height: 25
+			Text: Load Settings
+			Font: Bold
 		Button@START_GAME_BUTTON:
 			X: PARENT_RIGHT - WIDTH - 150
 			Y: PARENT_BOTTOM - HEIGHT - 20
