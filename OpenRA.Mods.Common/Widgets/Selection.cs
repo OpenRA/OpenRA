@@ -188,7 +188,7 @@ namespace OpenRA.Mods.Common.Widgets
 					startingLine = line;
 				}
 
-				if (isInThisLine.Check(location.Y) || line == lines.Last() && lineBottom < location.Y || line == lines.First() && location.Y < lineTop)
+				if (isInThisLine.Check(location.Y) || (line == lines.Last() && lineBottom < location.Y) || (line == lines.First() && location.Y < lineTop))
 				{
 					foreach (var character in line)
 					{
@@ -226,6 +226,7 @@ namespace OpenRA.Mods.Common.Widgets
 						x = characterRight;
 					}
 				}
+
 				// prevent awkward selection behavior where leaving bottom or top of an element causes
 				// lots of characters to be added that were never intended to be added.
 				else if (lines.First() != line && line != lines.Last())
