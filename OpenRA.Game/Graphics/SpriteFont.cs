@@ -233,7 +233,7 @@ namespace OpenRA.Graphics
 			DrawTextWithShadow(text, location, fg, GetContrastColor(fg, bgDark, bgLight), offset, angle);
 		}
 
-		public void DrawTextWithSelection(string text, float2 location, Color fg, Color bgHighlight, int selectionStart, int selectionEnd)
+		public void DrawTextWithSelection(string text, float2 location, Color normal, Color selected, Color selectedBg, int selectionStart, int selectionEnd)
 		{
 			var currentIndex = 0;
 
@@ -252,15 +252,16 @@ namespace OpenRA.Graphics
 					continue;
 				}
 
-				var glyph = glyphs[Pair.New(character, fg)];
+				var inSelection = selectionStart < currentIndex && currentIndex <= selectionEnd;
+				var glyph = glyphs[Pair.New(character, inSelection ? selected : normal)];
 
-				if (selectionStart < currentIndex && currentIndex <= selectionEnd)
+				if (inSelection)
 				{
 					// draw highlights from the top of the line, not the baseline.
 					Game.Renderer.RgbaColorRenderer.FillRect(
 							columnLocation - new float2(0, size),
 							columnLocation + new float2(glyph.Advance / deviceScale, TopOffset),
-							bgHighlight);
+							selectedBg);
 				}
 
 				if (glyph.Sprite != null)

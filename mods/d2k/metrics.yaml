@@ -7,6 +7,7 @@ Metrics:
 	FactionSuffix-smuggler: ordos
 	FactionSuffix-mercenary: ordos
 	TextfieldColorHighlight: 7f4d29
+	TextBackgroundColorSelected: 7f4d29
 	ChatLineSound: ChatLine
 	ClickDisabledSound: ClickDisabledSound
 	ClickSound: ClickSound

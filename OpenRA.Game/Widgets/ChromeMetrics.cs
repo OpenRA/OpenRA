@@ -44,5 +44,13 @@ namespace OpenRA.Widgets
 			result = FieldLoader.GetValue<T>(key, s);
 			return true;
 		}
+
+		public static T GetOrValue<T>(string key, T _value)
+		{
+			if (data.ContainsKey(key))
+				return Get<T>(key);
+			else
+				return _value;
+		}
 	}
 }

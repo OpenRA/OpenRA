@@ -18,36 +18,49 @@ namespace OpenRA.Mods.Common.Widgets
 {
 	class LabelWithSelectionWidget : LabelWidget
 	{
+		// We don't provide a metrics.yaml property for this as it should really be either (in order of preference):
+		// 1. A color explicitly given to this Widget e.g. from a chrome/**/*/yml file.
+		// 2. A color configured for all LabelWithSelectionWidgets in metrics.yml
+		// 3. A the text color given explcitly to the widget this inherits from.
 		[Translate]
-		public Color TextColorHighlight = ChromeMetrics.Get<Color>("TextfieldColorHighlight");
-		public Func<Color> GetColorHighlight;
+		public Color? TextColorSelected = ChromeMetrics.GetOrValue<Color?>("TextColorSelected", null);
+		public Color BackgroundColorSelected = ChromeMetrics.Get<Color>("TextBackgroundColorSelected");
+		public Func<Color?> GetTextColorSelected;
+		public Func<Color> GetBackgroundColorSelected;
+
 		static Selection selection = new Selection();
 
 		public LabelWithSelectionWidget()
 		{
-			GetColorHighlight = () => TextColorHighlight;
+			GetTextColorSelected = () => TextColorSelected;
+			GetBackgroundColorSelected = () => BackgroundColorSelected;
 		}
 
 		protected LabelWithSelectionWidget(LabelWithSelectionWidget other)
 			: base(other)
 		{
-			GetColorHighlight = other.GetColorHighlight;
+			TextColorSelected = other.TextColorSelected;
+			BackgroundColorSelected = other.BackgroundColorSelected;
+			GetTextColorSelected = other.GetTextColorSelected;
+			GetBackgroundColorSelected = other.GetBackgroundColorSelected;
 		}
 
 		protected override void DrawInner(string text, SpriteFont font, Color color, int2 position)
 		{
-			var bgDark = GetContrastColorDark();
-			var bgLight = GetContrastColorLight();
-			var bgHighlight = GetColorHighlight();
+			var selectedColor = GetTextColorSelected() ?? color;
+			var selectedBackgroundColor= GetBackgroundColorSelected();
 
 			if (selection.State != Selection.States.Empty && selection.OwnedBy(this))
-				font.DrawTextWithSelection(text, position, color, bgHighlight, selection.Start, selection.End);
-			else if (Contrast)
-				font.DrawTextWithContrast(text, position, color, bgDark, bgLight, 2);
-			else if (Shadow)
-				font.DrawTextWithShadow(text, position, color, bgDark, bgLight, 1);
+				font.DrawTextWithSelection(
+						text,
+						position,
+						color,
+						selectedColor,
+						selectedBackgroundColor,
+						selection.Start,
+						selection.End);
 			else
-				font.DrawText(text, position, color);
+				base.DrawInner(text, font, color, position);
 		}
 
 		public override bool HandleMouseInput(MouseInput mi)
