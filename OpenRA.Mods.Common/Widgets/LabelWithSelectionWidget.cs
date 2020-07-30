@@ -25,30 +25,22 @@ namespace OpenRA.Mods.Common.Widgets
 		[Translate]
 		public Color? TextColorSelected = ChromeMetrics.GetOrValue<Color?>("TextColorSelected", null);
 		public Color BackgroundColorSelected = ChromeMetrics.Get<Color>("TextBackgroundColorSelected");
-		public Func<Color?> GetTextColorSelected;
-		public Func<Color> GetBackgroundColorSelected;
 
 		static Selection selection = new Selection();
 
-		public LabelWithSelectionWidget()
-		{
-			GetTextColorSelected = () => TextColorSelected;
-			GetBackgroundColorSelected = () => BackgroundColorSelected;
-		}
+		public LabelWithSelectionWidget() { }
 
 		protected LabelWithSelectionWidget(LabelWithSelectionWidget other)
 			: base(other)
 		{
 			TextColorSelected = other.TextColorSelected;
 			BackgroundColorSelected = other.BackgroundColorSelected;
-			GetTextColorSelected = other.GetTextColorSelected;
-			GetBackgroundColorSelected = other.GetBackgroundColorSelected;
 		}
 
 		protected override void DrawInner(string text, SpriteFont font, Color color, int2 position)
 		{
-			var selectedColor = GetTextColorSelected() ?? color;
-			var selectedBackgroundColor= GetBackgroundColorSelected();
+			var selectedColor = TextColorSelected ?? color;
+			var selectedBackgroundColor = BackgroundColorSelected;
 
 			if (selection.State != Selection.States.Empty && selection.OwnedBy(this))
 				font.DrawTextWithSelection(
