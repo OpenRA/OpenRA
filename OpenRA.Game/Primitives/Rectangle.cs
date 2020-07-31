@@ -22,6 +22,15 @@ namespace OpenRA.Primitives
 		public int Height;
 		public static readonly Rectangle Empty;
 
+		public static Rectangle FromCorners(int2 start, int2 end)
+		{
+			return FromLTRB(
+					Math.Min(start.X, end.X),
+					Math.Min(start.Y, end.Y),
+					Math.Max(start.X, end.X),
+					Math.Max(start.Y, end.Y));
+		}
+
 		public static Rectangle FromLTRB(int left, int top, int right, int bottom)
 		{
 			return new Rectangle(left, top, right - left, bottom - top);
@@ -79,6 +88,22 @@ namespace OpenRA.Primitives
 		public bool Contains(int2 pt)
 		{
 			return Contains(pt.X, pt.Y);
+		}
+
+		public double ShortestDistanceFromEdge(int2 pt)
+		{
+			var dx = Math.Min(pt.X - X, X + Width - pt.X);
+			var dy = Math.Min(pt.Y - Y, Y + Height - pt.Y);
+			return Math.Sqrt(dx * dx + dy * dy);
+		}
+
+		public double DistanceFromCenter(int2 pt)
+		{
+			var x = X + Width / 2;
+			var y = Y + Height / 2;
+			var dx = x - pt.X;
+			var dy = y - pt.Y;
+			return Math.Sqrt(dx * dx + dy * dy);
 		}
 
 		public bool Equals(Rectangle other)

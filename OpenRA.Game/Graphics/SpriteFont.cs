@@ -243,8 +243,6 @@ namespace OpenRA.Graphics
 
 			foreach (var character in text)
 			{
-				currentIndex++;
-
 				if (character == '\n')
 				{
 					rowLocation += new float2(0, size);
@@ -252,7 +250,7 @@ namespace OpenRA.Graphics
 					continue;
 				}
 
-				var inSelection = selectionStart < currentIndex && currentIndex <= selectionEnd;
+				var inSelection = selectionStart <= currentIndex && currentIndex <= selectionEnd;
 				var glyph = glyphs[Pair.New(character, inSelection ? selected : normal)];
 
 				if (inSelection)
@@ -273,6 +271,7 @@ namespace OpenRA.Graphics
 							glyph.Sprite.Size / deviceScale);
 				}
 
+				currentIndex++;
 				columnLocation += new float2(glyph.Advance / deviceScale, 0);
 			}
 		}

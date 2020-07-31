@@ -43,6 +43,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var selectedBackgroundColor = BackgroundColorSelected;
 
 			if (selection.State != Selection.States.Empty && selection.OwnedBy(this))
+			{
 				font.DrawTextWithSelection(
 						text,
 						position,
@@ -51,6 +52,7 @@ namespace OpenRA.Mods.Common.Widgets
 						selectedBackgroundColor,
 						selection.Start,
 						selection.End);
+			}
 			else
 				base.DrawInner(text, font, color, position);
 		}
@@ -65,6 +67,8 @@ namespace OpenRA.Mods.Common.Widgets
 					{
 						selection.HandleLooseMouseFocus();
 						YieldMouseFocus(mi);
+
+						// but that yielding of focus shouldn't prevent clicks elsewhere from registering.
 						return false;
 					}
 

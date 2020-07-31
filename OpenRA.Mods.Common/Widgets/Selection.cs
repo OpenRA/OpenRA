@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
@@ -21,16 +22,28 @@ namespace OpenRA.Mods.Common.Widgets
 	{
 		public enum States { Empty, Ready, Active, Inactive }
 		public States State = States.Empty;
-		public int First = -1;
-		public int Last = -1;
 		public LabelWithSelectionWidget SelectionWidget = null;
 		public int2 StartingLocation;
+		public int2 EndingLocation;
+
+		RenderedText TextAsDrawn
+		{
+			get
+			{
+				return RenderedText.From(
+						SelectionWidget.GetTextContent(),
+						SelectionWidget.GetFont(),
+						SelectionWidget.GetPosition());
+			}
+		}
 
 		public int Start
 		{
 			get
 			{
-				return Math.Min(First, Last);
+				return Math.Min(
+						TextAsDrawn.ClosestCharacter(StartingLocation).Index,
+						TextAsDrawn.ClosestCharacter(EndingLocation).Index);
 			}
 		}
 
@@ -38,16 +51,9 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			get
 			{
-				return Math.Max(First, Last);
-			}
-		}
-
-		public string SelectedText
-		{
-			get
-			{
-				var text = SelectionWidget.GetTextContent();
-				return text.Substring(Math.Max(0, Start), Math.Min(End - Start, text.Length));
+				return Math.Max(
+						TextAsDrawn.ClosestCharacter(StartingLocation).Index,
+						TextAsDrawn.ClosestCharacter(EndingLocation).Index);
 			}
 		}
 
@@ -69,8 +75,8 @@ namespace OpenRA.Mods.Common.Widgets
 				case States.Inactive:
 					SelectionWidget = widget;
 					StartingLocation = location;
+					EndingLocation = location;
 					State = States.Ready;
-					First = Last = FindNearestIndex(location);
 					return true;
 				default:
 					return false;
@@ -82,16 +88,14 @@ namespace OpenRA.Mods.Common.Widgets
 			if (object.ReferenceEquals(SelectionWidget, null))
 				return false;
 
-			var index = FindNearestIndex(location);
-
 			switch (State)
 			{
 				case States.Ready:
-					Last = index;
+					EndingLocation = location;
 					State = States.Active;
 					return true;
 				case States.Active:
-					Last = index;
+					EndingLocation = location;
 					return true;
 				default:
 					return false;
@@ -121,125 +125,122 @@ namespace OpenRA.Mods.Common.Widgets
 			return true;
 		}
 
-		class Constraint
+		class RenderedText
 		{
-			public int Low;
-			public int High;
-			public int Threshold;
-			public bool LowToHigh;
-
-			public Constraint(int low, int high, int threshold = 0, bool lowToHigh = true)
+			public class Character
 			{
-				Low = low;
-				High = high;
-				Threshold = threshold;
-				LowToHigh = lowToHigh;
+				// NOTE: What happens when we handle unicode?
+				public char Value;
+				public int Index;
+				public int LineIndex;
+				public Rectangle Bounds;
+
+				public static Character From(char val, int index, int lineIndex, SpriteFont font, int2 topLeft)
+				{
+					var bounds = Rectangle.FromCorners(topLeft, topLeft + font.Measure(val.ToString()));
+					return new Character(val, index, lineIndex, bounds);
+				}
+
+				public Character(char val, int index, int lineIndex, Rectangle bounds)
+				{
+					Value = val;
+					Index = index;
+					LineIndex = lineIndex;
+					Bounds = bounds;
+				}
 			}
 
-			public bool Check(int val)
+			public class Line
 			{
-				if (LowToHigh)
+				public string Content;
+				public int Index;
+				public Rectangle Bounds;
+				public List<Character> Characters;
+
+				public static Line From(string content, int lineIndex, int startingCharIndex, SpriteFont font, int2 topLeft)
 				{
-					return Low <= val && val < High;
+					var bounds = Rectangle.FromCorners(topLeft, topLeft + font.Measure(content));
+					var characters = new List<Character>();
+					var left = topLeft.X;
+
+					for (var index = 0; index < content.Length; index++)
+					{
+						var character = Character.
+							From(content[index], index + startingCharIndex, index, font, new int2(left, topLeft.Y));
+						characters.Add(character);
+						left += character.Bounds.Width;
+					}
+
+					return new Line(content, lineIndex, bounds, characters);
 				}
-				else
+
+				public Line(string content, int index, Rectangle bounds, List<Character> characters)
 				{
-					return Low < val && val <= High;
+					Content = content;
+					Index = index;
+					Bounds = bounds;
+					Characters = characters;
+				}
+
+				public Character ClosestCharacter(int2 point)
+				{
+					return Characters.
+						OrderBy(character => character.Bounds.DistanceFromCenter(point)).
+						First();
 				}
 			}
 
-			public bool MeetsThreshold(int val)
+			public string Content;
+			public Rectangle Bounds;
+			public List<Line> Lines;
+
+			public static RenderedText From(string content, SpriteFont font, int2 topLeft)
 			{
-				if (LowToHigh)
+				var bounds = Rectangle.FromCorners(topLeft, topLeft + font.Measure(content));
+				var rawLines = content.Split('\n');
+				var lines = new List<Line>();
+				var top = topLeft.Y;
+				var characterIndex = 0;
+
+				for (var index = 0; index < rawLines.Count(); index++)
 				{
-					return Low + Threshold <= val;
+					var line = Line.From(rawLines[index], index, characterIndex, font, new int2(topLeft.X, top));
+					lines.Add(line);
+					top += line.Bounds.Height;
+
+					// add one for the new line
+					characterIndex += line.Content.Length;
 				}
-				else
-				{
-					return val <= High - Threshold;
-				}
+
+				return new RenderedText(content, bounds, lines);
+			}
+
+			public RenderedText(string content, Rectangle bounds, List<Line> lines)
+			{
+				Content = content;
+				Bounds = bounds;
+				Lines = lines;
+			}
+
+			public Character ClosestCharacter(int2 point)
+			{
+				var closestLine = Lines.FirstOrDefault(line => line.Bounds.Contains(point));
+
+				if (object.ReferenceEquals(closestLine, null))
+					closestLine = Lines.
+						OrderBy(line => line.Bounds.ShortestDistanceFromEdge(point)).
+						First();
+
+				return closestLine.ClosestCharacter(point);
 			}
 		}
 
-		public int FindNearestIndex(int2 location)
+		public string SelectedText
 		{
-			if (object.ReferenceEquals(SelectionWidget, null))
-				return -1;
-
-			if (object.ReferenceEquals(location, null))
-				return -1;
-
-			var font = SelectionWidget.GetFont();
-			var nearestIndex = -1;
-			var x = SelectionWidget.GetPosition().X;
-			var y = SelectionWidget.GetPosition().Y;
-			var lines = SelectionWidget.GetTextContent().Split('\n');
-			string startingLine = null;
-
-			foreach (var line in lines)
+			get
 			{
-				var lineTop = y;
-				var lineHeight = font.Measure(line).Y;
-				var lineBottom = lineTop + lineHeight;
-				var isInThisLine = new Constraint(lineTop, lineBottom);
-
-				if (isInThisLine.Check(StartingLocation.Y))
-				{
-					startingLine = line;
-				}
-
-				if (isInThisLine.Check(location.Y) || (line == lines.Last() && lineBottom < location.Y) || (line == lines.First() && location.Y < lineTop))
-				{
-					foreach (var character in line)
-					{
-						nearestIndex += 1;
-
-						// We need the direction of selection to determine how to apply the threshold
-						// of selecting the character e.g. If we're selecting left to right we want to
-						// only select the character once we're > half way through comming from the start
-						// of the character, else we want to select the character when we're > half way
-						// through comming from the end of the character.
-						var leftToRight = (startingLine == line && StartingLocation.X < location.X)
-							|| (startingLine != line && StartingLocation.Y < location.Y);
-
-						var characterLeft = x;
-						var characterWidth = font.Measure(character.ToString()).X;
-						var characterRight = characterLeft + characterWidth;
-						var isThisCharacter = new Constraint(
-								characterLeft,
-								characterRight,
-								characterWidth / 2,
-								leftToRight);
-
-						if (isThisCharacter.Check(location.X))
-						{
-							if (isThisCharacter.MeetsThreshold(location.X))
-							{
-								return leftToRight ? nearestIndex + 1 : nearestIndex;
-							}
-							else
-							{
-								return leftToRight ? nearestIndex : nearestIndex + 1;
-							}
-						}
-
-						x = characterRight;
-					}
-				}
-
-				// prevent awkward selection behavior where leaving bottom or top of an element causes
-				// lots of characters to be added that were never intended to be added.
-				else if (lines.First() != line && line != lines.Last())
-				{
-					nearestIndex += line.Length;
-				}
-
-				// for the missing "\n"
-				nearestIndex += 1;
-				y = lineBottom;
+				return SelectionWidget.GetTextContent().Substring(Start, End - Start + 1);
 			}
-
-			return nearestIndex;
 		}
 	}
 }
