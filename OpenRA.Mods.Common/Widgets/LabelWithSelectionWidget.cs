@@ -64,7 +64,8 @@ namespace OpenRA.Mods.Common.Widgets
 					if (HasMouseFocus && (!IsVisible() || !GetEventBounds().Contains(mi.Location)))
 					{
 						selection.HandleLooseMouseFocus();
-						return YieldMouseFocus(mi);
+						YieldMouseFocus(mi);
+						return false;
 					}
 
 					TakeMouseFocus(mi);
