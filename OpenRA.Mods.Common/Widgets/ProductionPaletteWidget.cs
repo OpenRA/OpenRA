@@ -532,7 +532,7 @@ namespace OpenRA.Mods.Common.Widgets
 							icon.Pos + timeOffset,
 							Color.White, Color.Black, 1);
 
-					if (first.Infinite)
+					if (first.Infinite && symbolFont != null)
 						symbolFont.DrawTextWithContrast(InfiniteSymbol,
 							icon.Pos + infiniteOffset,
 							Color.White, Color.Black, 1);
