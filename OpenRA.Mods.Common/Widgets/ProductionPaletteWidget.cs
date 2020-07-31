@@ -65,6 +65,9 @@ namespace OpenRA.Mods.Common.Widgets
 		public readonly string NotBuildableSequence = "idle";
 		public readonly string NotBuildablePalette = "chrome";
 
+		public readonly string OverlayFont = "TinyBold";
+		public readonly string SymbolsFont = "Symbols";
+
 		public readonly bool DrawTime = true;
 
 		[Translate]
@@ -149,8 +152,8 @@ namespace OpenRA.Mods.Common.Widgets
 			cantBuild.PlayFetchIndex(NotBuildableSequence, () => 0);
 			clock = new Animation(world, ClockAnimation);
 
-			overlayFont = Game.Renderer.Fonts["TinyBold"];
-			Game.Renderer.Fonts.TryGetValue("Symbols", out symbolFont);
+			overlayFont = Game.Renderer.Fonts[OverlayFont];
+			Game.Renderer.Fonts.TryGetValue(SymbolsFont, out symbolFont);
 		}
 
 		public override void Initialize(WidgetArgs args)
