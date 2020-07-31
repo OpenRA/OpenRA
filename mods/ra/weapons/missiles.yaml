@@ -58,6 +58,7 @@ Maverick:
 		CruiseAltitude: 2c0
 		RangeLimit: 14c410
 	Warhead@1Dam: SpreadDamage
+		InvalidTargets: AirborneActor
 		Damage: 7000
 		Versus:
 			None: 30
