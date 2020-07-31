@@ -555,7 +555,7 @@ MGG:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 330
-		Prerequisites: atek, ~vehicles.england, ~techlevel.high
+		Prerequisites: atek, ~vehicles.allies, ~techlevel.high
 		Description: Regenerates the shroud nearby, \nobscuring the area.\n  Unarmed
 	Valued:
 		Cost: 1000
@@ -756,7 +756,7 @@ CTNK:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 330
-		Prerequisites: atek, ~vehicles.germany, ~techlevel.high
+		Prerequisites: atek, ~vehicles.allies, ~techlevel.high
 		Description: Armed with anti-ground missiles.\nTeleports to areas within range.\n  Strong vs Vehicles, Buildings\n  Weak vs Infantry, Aircraft\n  Special ability: Can teleport
 	Valued:
 		Cost: 1350
@@ -842,7 +842,7 @@ STNK:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 330
-		Prerequisites: atek, ~vehicles.france, ~techlevel.high
+		Prerequisites: atek, ~vehicles.england, ~techlevel.high
 		Description: Lightly armored infantry transport which\ncan cloak. Armed with anti-ground missiles.\n  Strong vs Light armor\n  Weak vs Infantry, Tanks, Aircraft
 	Valued:
 		Cost: 1000

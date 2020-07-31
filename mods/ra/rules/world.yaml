@@ -104,17 +104,17 @@
 		Name: England
 		InternalName: england
 		Side: Allies
-		Description: England: Counterintelligence\nSpecial Unit: British Spy\nSpecial Unit: Mobile Gap Generator
+		Description: England: Counterintelligence\nSpecial Unit: Phase Transport
 	Faction@2:
 		Name: France
 		InternalName: france
 		Side: Allies
-		Description: France: Deception\nSpecial Ability: Can build fake structures\nSpecial Unit: Phase Transport
+		Description: France: Deception\nSpecial Ability: Can build fake structures
 	Faction@3:
 		Name: Germany
 		InternalName: germany
 		Side: Allies
-		Description: Germany: Technology\nSpecial Ability: Advanced Chronoshift\nSpecial Unit: Chrono Tank
+		Description: Germany: Technology\nSpecial Ability: Advanced Chronoshift
 	Faction@4:
 		Name: Soviet
 		InternalName: soviet
@@ -124,12 +124,12 @@
 		Name: Russia
 		InternalName: russia
 		Side: Soviet
-		Description: Russia: Tesla Weapons\nSpecial Unit: Tesla Tank\nSpecial Unit: Shock Trooper
+		Description: Russia: Tesla Weapons\nSpecial Unit: Tesla Tank
 	Faction@6:
 		Name: Ukraine
 		InternalName: ukraine
 		Side: Soviet
-		Description: Ukraine: Demolitions\nSpecial Ability: Parabombs\nSpecial Unit: Demolition Truck
+		Description: Ukraine: Demolitions\nSpecial Unit: Demolition Truck
 	Faction@random:
 		Name: Any
 		InternalName: Random
