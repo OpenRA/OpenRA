@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "Guard")
+			if (order.OrderString == "Guard" && self.AcceptsOrder("Guard"))
 				GuardTarget(self, order.Target, order.Queued);
 		}
 
