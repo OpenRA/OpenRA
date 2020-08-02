@@ -84,7 +84,6 @@ MIG:
 		OpportunityFire: False
 	Aircraft:
 		CruiseAltitude: 2560
-		InitialFacing: 768
 		TurnSpeed: 16
 		Speed: 223
 		RepulsionSpeed: 40
@@ -158,7 +157,6 @@ YAK:
 		OpportunityFire: False
 	Aircraft:
 		CruiseAltitude: 2560
-		InitialFacing: 768
 		TurnSpeed: 16
 		Speed: 178
 		RepulsionSpeed: 40

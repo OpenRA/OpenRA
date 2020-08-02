@@ -114,9 +114,6 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Does this VTOL actor need to turn before landing (on terrain)?")]
 		public readonly bool TurnToLand = false;
 
-		[Desc("Does this VTOL actor need to turn before landing on a resupplier?")]
-		public readonly bool TurnToDock = true;
-
 		[Desc("Does this actor automatically take off after resupplying?")]
 		public readonly bool TakeOffOnResupply = false;
 

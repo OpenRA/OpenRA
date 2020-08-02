@@ -329,7 +329,6 @@
 		VTOL: true
 		LandableTerrainTypes: Clear, Rough, Road, Beach, Tiberium, BlueTiberium
 		Crushes: crate, infantry
-		InitialFacing: 896
 		CanSlide: True
 	HiddenUnderFog:
 		Type: GroundPosition

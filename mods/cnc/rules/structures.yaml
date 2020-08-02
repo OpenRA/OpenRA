@@ -545,6 +545,7 @@ HPAD:
 		Range: 5c0
 	Exit@1:
 		SpawnOffset: 0,-256,0
+		Facing: 896
 	Production:
 		Produces: Aircraft.GDI, Aircraft.Nod
 	Reservable:

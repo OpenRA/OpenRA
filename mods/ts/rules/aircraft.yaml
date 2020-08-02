@@ -12,7 +12,6 @@ DPOD:
 		Roll: 0
 		TurnSpeed: 20
 		Speed: 149
-		InitialFacing: 0
 	Health:
 		HP: 6000
 	Armor:
@@ -98,7 +97,6 @@ DSHP:
 		Roll: 0
 		TurnSpeed: 20
 		Speed: 168
-		InitialFacing: 0
 		TakeoffSounds: dropup1.aud
 		LandingSounds: dropdwn1.aud
 		IdealSeparation: 1275
@@ -266,7 +264,6 @@ ORCATRAN:
 	Aircraft:
 		TurnSpeed: 20
 		Speed: 84
-		InitialFacing: 0
 		LandableTerrainTypes: Clear, Road, Rail, DirtRoad, Rough, Tiberium, BlueTiberium, Veins
 		Crushes: crate, infantry
 		TakeoffSounds: orcaup1.aud
@@ -308,7 +305,6 @@ TRNSPORT:
 	Aircraft:
 		TurnSpeed: 20
 		Speed: 149
-		InitialFacing: 0
 		Pitch: 0
 		Roll: 0
 		TakeoffSounds: dropup1.aud
