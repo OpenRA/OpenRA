@@ -30,9 +30,9 @@ namespace OpenRA.Mods.Common.Activities
 		Actor enterActor;
 		IDemolishable[] enterDemolishables;
 
-		public Demolish(Actor self, in Target target, EnterBehaviour enterBehaviour, int delay,
-			int flashes, int flashesDelay, int flashInterval, BitSet<DamageType> damageTypes)
-			: base(self, target, Color.Crimson)
+		public Demolish(Actor self, in Target target, EnterBehaviour enterBehaviour, int delay, int flashes,
+			int flashesDelay, int flashInterval, BitSet<DamageType> damageTypes, Color? targetLineColor)
+			: base(self, target, targetLineColor)
 		{
 			notifiers = self.TraitsImplementing<INotifyDemolition>().ToArray();
 			this.delay = delay;

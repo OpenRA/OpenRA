@@ -24,6 +24,9 @@ namespace OpenRA.Mods.Common.Traits
 		[VoiceReference]
 		public readonly string Voice = "Action";
 
+		[Desc("Color to use for the target line.")]
+		public readonly Color TargetLineColor = Color.OrangeRed;
+
 		[GrantedConditionReference]
 		[Desc("The condition to grant to self while an attack-move is active.")]
 		public readonly string AttackMoveCondition = null;
@@ -76,7 +79,7 @@ namespace OpenRA.Mods.Common.Traits
 				var assaultMoving = order.OrderString == "AssaultMove";
 
 				// TODO: this should scale with unit selection group size.
-				self.QueueActivity(order.Queued, new AttackMoveActivity(self, () => move.MoveTo(targetLocation, 8, targetLineColor: Color.OrangeRed), assaultMoving));
+				self.QueueActivity(order.Queued, new AttackMoveActivity(self, () => move.MoveTo(targetLocation, 8, targetLineColor: Info.TargetLineColor), assaultMoving));
 				self.ShowTargetLines();
 			}
 		}

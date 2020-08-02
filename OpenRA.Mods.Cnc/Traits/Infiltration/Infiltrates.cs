@@ -27,6 +27,9 @@ namespace OpenRA.Mods.Cnc.Traits
 		[VoiceReference]
 		public readonly string Voice = "Action";
 
+		[Desc("Color to use for the target line.")]
+		public readonly Color TargetLineColor = Color.Crimson;
+
 		[Desc("What diplomatic stances can be infiltrated by this actor.")]
 		public readonly PlayerRelationship ValidStances = PlayerRelationship.Neutral | PlayerRelationship.Enemy;
 
@@ -115,7 +118,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (!CanInfiltrateTarget(self, order.Target))
 				return;
 
-			self.QueueActivity(order.Queued, new Infiltrate(self, order.Target, this));
+			self.QueueActivity(order.Queued, new Infiltrate(self, order.Target, this, Info.TargetLineColor));
 			self.ShowTargetLines();
 		}
 	}

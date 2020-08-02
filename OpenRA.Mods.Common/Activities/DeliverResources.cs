@@ -85,9 +85,9 @@ namespace OpenRA.Mods.Common.Activities
 		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
 		{
 			if (proc != null)
-				yield return new TargetLineNode(Target.FromActor(proc), Color.Green);
+				yield return new TargetLineNode(Target.FromActor(proc), harv.Info.DeliverLineColor);
 			else
-				yield return new TargetLineNode(Target.FromActor(harv.LinkedProc), Color.Green);
+				yield return new TargetLineNode(Target.FromActor(harv.LinkedProc), harv.Info.DeliverLineColor);
 		}
 	}
 }

@@ -49,6 +49,9 @@ namespace OpenRA.Mods.Common.Traits
 		[VoiceReference]
 		public readonly string Voice = "Action";
 
+		[Desc("Color to use for the target line for regular move orders.")]
+		public readonly Color TargetLineColor = Color.Green;
+
 		[Desc("Facing to use for actor previews (map editor, color picker, etc)")]
 		public readonly WAngle PreviewFacing = new WAngle(384);
 
@@ -67,6 +70,8 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			yield return new FacingInit(PreviewFacing);
 		}
+
+		public Color GetTargetLineColor() { return TargetLineColor; }
 
 		public override object Create(ActorInitializer init) { return new Mobile(init, this); }
 
@@ -923,7 +928,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (!Info.LocomotorInfo.MoveIntoShroud && !self.Owner.Shroud.IsExplored(cell))
 					return;
 
-				self.QueueActivity(order.Queued, WrapMove(new Move(self, cell, WDist.FromCells(8), null, true, Color.Green)));
+				self.QueueActivity(order.Queued, WrapMove(new Move(self, cell, WDist.FromCells(8), null, true, Info.TargetLineColor)));
 				self.ShowTargetLines();
 			}
 

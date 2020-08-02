@@ -58,6 +58,9 @@ namespace OpenRA.Mods.Common.Traits
 		[VoiceReference]
 		public readonly string Voice = "Action";
 
+		[Desc("Color to use for the target line.")]
+		public readonly Color TargetLineColor = Color.Crimson;
+
 		public override object Create(ActorInitializer init) { return new Captures(init.Self, this); }
 	}
 
@@ -100,7 +103,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (order.OrderString != "CaptureActor" || IsTraitDisabled)
 				return;
 
-			self.QueueActivity(order.Queued, new CaptureActor(self, order.Target));
+			self.QueueActivity(order.Queued, new CaptureActor(self, order.Target, Info.TargetLineColor));
 			self.ShowTargetLines();
 		}
 

@@ -44,6 +44,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Voice string when planting explosive charges.")]
 		public readonly string Voice = "Action";
 
+		[Desc("Color to use for the target line.")]
+		public readonly Color TargetLineColor = Color.Crimson;
+
 		public readonly PlayerRelationship TargetStances = PlayerRelationship.Enemy | PlayerRelationship.Neutral;
 		public readonly PlayerRelationship ForceTargetStances = PlayerRelationship.Enemy | PlayerRelationship.Neutral | PlayerRelationship.Ally;
 
@@ -88,7 +91,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			self.QueueActivity(order.Queued, new Demolish(self, order.Target, info.EnterBehaviour, info.DetonationDelay,
-				info.Flashes, info.FlashesDelay, info.FlashInterval, info.DamageTypes));
+				info.Flashes, info.FlashesDelay, info.FlashInterval, info.DamageTypes, info.TargetLineColor));
 
 			self.ShowTargetLines();
 		}

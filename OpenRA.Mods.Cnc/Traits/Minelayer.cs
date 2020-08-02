@@ -17,6 +17,7 @@ using OpenRA.Graphics;
 using OpenRA.Mods.Cnc.Activities;
 using OpenRA.Mods.Common.Orders;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
@@ -33,6 +34,9 @@ namespace OpenRA.Mods.Cnc.Traits
 		[VoiceReference]
 		[Desc("Voice to use when ordered to lay a minefield.")]
 		public readonly string Voice = "Action";
+
+		[Desc("Color to use for the target line when laying mines.")]
+		public readonly Color TargetLineColor = Color.Crimson;
 
 		[Desc("Sprite overlay to use for valid minefield cells.")]
 		public readonly string TileValidName = "build-valid";

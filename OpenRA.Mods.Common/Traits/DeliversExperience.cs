@@ -12,6 +12,7 @@
 using System.Collections.Generic;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Orders;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -30,6 +31,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		[VoiceReference]
 		public readonly string Voice = "Action";
+
+		[Desc("Color to use for the target line.")]
+		public readonly Color TargetLineColor = Color.Yellow;
 
 		public override object Create(ActorInitializer init) { return new DeliversExperience(init, this); }
 	}
@@ -86,7 +90,7 @@ namespace OpenRA.Mods.Common.Traits
 			else if (order.Target.Type != TargetType.FrozenActor)
 				return;
 
-			self.QueueActivity(order.Queued, new DonateExperience(self, order.Target, gainsExperience.Level, info.PlayerExperience));
+			self.QueueActivity(order.Queued, new DonateExperience(self, order.Target, gainsExperience.Level, info.PlayerExperience, info.TargetLineColor));
 			self.ShowTargetLines();
 		}
 

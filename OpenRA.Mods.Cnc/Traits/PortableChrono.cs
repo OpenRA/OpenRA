@@ -68,6 +68,9 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("Range circle border width.")]
 		public readonly float CircleBorderWidth = 3;
 
+		[Desc("Color to use for the target line.")]
+		public readonly Color TargetLineColor = Color.LawnGreen;
+
 		public override object Create(ActorInitializer init) { return new PortableChrono(init.Self, this); }
 	}
 
@@ -128,10 +131,10 @@ namespace OpenRA.Mods.Cnc.Traits
 
 				var cell = self.World.Map.CellContaining(order.Target.CenterPosition);
 				if (maxDistance != null)
-					self.QueueActivity(move.MoveWithinRange(order.Target, WDist.FromCells(maxDistance.Value), targetLineColor: Color.LawnGreen));
+					self.QueueActivity(move.MoveWithinRange(order.Target, WDist.FromCells(maxDistance.Value), targetLineColor: Info.TargetLineColor));
 
 				self.QueueActivity(new Teleport(self, cell, maxDistance, Info.KillCargo, Info.FlashScreen, Info.ChronoshiftSound));
-				self.QueueActivity(move.MoveTo(cell, 5, targetLineColor: Color.LawnGreen));
+				self.QueueActivity(move.MoveTo(cell, 5, targetLineColor: Info.TargetLineColor));
 				self.ShowTargetLines();
 			}
 		}

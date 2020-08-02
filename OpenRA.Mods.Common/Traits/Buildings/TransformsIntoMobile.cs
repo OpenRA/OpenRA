@@ -34,6 +34,9 @@ namespace OpenRA.Mods.Common.Traits
 		[VoiceReference]
 		public readonly string Voice = "Action";
 
+		[Desc("Color to use for the target line for regular move orders.")]
+		public readonly Color TargetLineColor = Color.Green;
+
 		[Desc("Require the force-move modifier to display the move cursor.")]
 		public readonly bool RequiresForceMove = false;
 
@@ -113,7 +116,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (!order.Queued)
 					activity.NextActivity?.Cancel(self);
 
-				activity.Queue(new IssueOrderAfterTransform("Move", order.Target, Color.Green));
+				activity.Queue(new IssueOrderAfterTransform("Move", order.Target, Info.TargetLineColor));
 
 				if (currentTransform == null)
 					self.QueueActivity(order.Queued, activity);

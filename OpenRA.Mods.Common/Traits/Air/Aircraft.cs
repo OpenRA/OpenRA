@@ -94,6 +94,9 @@ namespace OpenRA.Mods.Common.Traits
 		[VoiceReference]
 		public readonly string Voice = "Action";
 
+		[Desc("Color to use for the target line for regular move orders.")]
+		public readonly Color TargetLineColor = Color.Green;
+
 		[GrantedConditionReference]
 		[Desc("The condition to grant to self while airborne.")]
 		public readonly string AirborneCondition = null;
@@ -165,6 +168,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public WAngle GetInitialFacing() { return InitialFacing; }
 		public WDist GetCruiseAltitude() { return CruiseAltitude; }
+		public Color GetTargetLineColor() { return TargetLineColor; }
 
 		public override object Create(ActorInitializer init) { return new Aircraft(init, this); }
 
@@ -1082,7 +1086,7 @@ namespace OpenRA.Mods.Common.Traits
 				var target = Target.FromCell(self.World, cell);
 
 				// TODO: this should scale with unit selection group size.
-				self.QueueActivity(order.Queued, new Fly(self, target, WDist.FromCells(8), targetLineColor: Color.Green));
+				self.QueueActivity(order.Queued, new Fly(self, target, WDist.FromCells(8), targetLineColor: Info.TargetLineColor));
 				self.ShowTargetLines();
 			}
 			else if (orderString == "Land")
@@ -1096,7 +1100,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				var target = Target.FromCell(self.World, cell);
 
-				self.QueueActivity(order.Queued, new Land(self, target, targetLineColor: Color.Green));
+				self.QueueActivity(order.Queued, new Land(self, target, targetLineColor: Info.TargetLineColor));
 				self.ShowTargetLines();
 			}
 			else if (orderString == "Enter" || orderString == "ForceEnter" || orderString == "Repair")
