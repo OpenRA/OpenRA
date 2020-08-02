@@ -617,7 +617,6 @@
 		VTOL: true
 		LandableTerrainTypes: Clear, Rough, Road, Ore, Beach, Gems
 		Crushes: crate, mine, infantry
-		InitialFacing: 896
 		CanSlide: True
 	GpsDot:
 		String: Helicopter

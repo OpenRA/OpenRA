@@ -13,7 +13,6 @@ carryall.reinforce:
 	Aircraft:
 		CruiseAltitude: 2160
 		CruisingCondition: cruising
-		InitialFacing: 0
 		Speed: 144
 		TurnSpeed: 16
 		LandableTerrainTypes: Sand, Rock, Transition, Spice, SpiceSand, Dune, Concrete

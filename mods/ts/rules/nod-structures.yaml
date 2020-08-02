@@ -241,6 +241,7 @@ NAHPAD:
 		MaxHeightDelta: 3
 	Exit@1:
 		SpawnOffset: 0,-256,0
+		Facing: 896
 	ExitsDebugOverlay:
 	RallyPoint:
 		Palette: mouse
