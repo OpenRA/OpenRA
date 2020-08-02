@@ -212,6 +212,7 @@ ORCAB:
 		IdleTurnSpeed: 4
 		Speed: 96
 		IdleSpeed: 60
+		MaximumIdlePitch: 20
 		MaximumBodyPitch: 64
 		CruisingCondition: cruising
 		TakeoffSounds: orcaup1.aud
@@ -384,6 +385,8 @@ SCRIN:
 		Pitch: 0
 		PitchSpeed: 10
 		BodyPitchSpeed: 8
+		MaximumPitch: 128
+		MaximumIdlePitch: 32
 		Roll: 180
 		RollSpeed: 10
 		TakeoffSounds: dropup1.aud
@@ -403,6 +406,7 @@ SCRIN:
 		AttackType: Strafe
 		AttackAltitude: 1c280
 		AttackSpeed: 400
+		AttackPitch: 256
 		Voice: Attack
 		FacingTolerance: 20
 		PersistentTargeting: false

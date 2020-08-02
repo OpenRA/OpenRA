@@ -31,6 +31,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly WAngle? finalFacing = null;
 		readonly WAngle? finalPitch = null;
 		readonly WAngle? finalRoll = null;
+		readonly WAngle finalMaxPitch;
 
 		Target target;
 		Target lastVisibleTarget;
@@ -44,7 +45,7 @@ namespace OpenRA.Mods.Common.Activities
 		}
 
 		public Fly(Actor self, Target t, WPos? initialTargetPosition = null, Color? targetLineColor = null, int speed = -1,
-			WAngle? facing = null, WAngle? pitch = null, WAngle? roll = null, WDist? altitude = null)
+			WAngle? facing = null, WAngle? pitch = null, WAngle? roll = null, WDist? altitude = null, WAngle? maxPitch = null)
 		{
 			aircraft = self.Trait<Aircraft>();
 			target = t;
@@ -54,6 +55,7 @@ namespace OpenRA.Mods.Common.Activities
 			finalPitch = pitch;
 			finalRoll = roll;
 			finalAltitude = WVec.FromZ(altitude ?? aircraft.Info.CruiseAltitude);
+			finalMaxPitch = maxPitch ?? aircraft.Info.MaximumPitch;
 
 			// The target may become hidden between the initial order request and the first tick (e.g. if queued)
 			// Moving to any position (even if quite stale) is still better than immediately giving up
@@ -74,7 +76,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		public static void FlyTick(Actor self, Aircraft aircraft, WAngle? desiredPitch = null, WAngle? desiredFacing = null,
 			WAngle? desiredBodyFacing = null, WAngle? desiredBodyPitch = null, WAngle? desiredBodyRoll = null,
-			int desiredSpeed = -1, WAngle? desiredTurnSpeed = null)
+			int desiredSpeed = -1, WAngle? desiredTurnSpeed = null, WAngle? maxPitch = null)
 		{
 			// Acceleration
 			desiredSpeed = desiredSpeed >= 0 ? desiredSpeed : aircraft.MovementSpeed;
@@ -94,12 +96,16 @@ namespace OpenRA.Mods.Common.Activities
 			var flightFacing = aircraft.FlightFacing + flightTurnSpeed;
 
 			// Try to stay at cruising altitude unless instructed otherwise.
+			if (maxPitch == null)
+				maxPitch = aircraft.Info.MaximumPitch;
+
 			var desiredFlightPitch = aircraft.FlightPitch;
 			if (desiredPitch == null)
-				desiredFlightPitch = new WAngle(aircraft.InclineLookahead()).Clamp(-aircraft.Info.MaximumPitch, aircraft.Info.MaximumPitch);
+				desiredFlightPitch = new WAngle(aircraft.InclineLookahead(maxPitch: maxPitch));
 			else
 				desiredFlightPitch = desiredPitch.Value;
 
+			desiredFlightPitch = desiredFlightPitch.Clamp(-maxPitch.Value, maxPitch.Value);
 			var flightPitch = Util.TickFacing(aircraft.FlightPitch, desiredFlightPitch, aircraft.Info.PitchSpeed);
 
 			// If we can slide, independently turn the aircraft body.
@@ -368,8 +374,12 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			// Determine when we should start to accelerate/decelerate towards the goal speed.
+			var maxPitch = aircraft.Info.MaximumPitch;
 			if (dist <= Math.Abs(speed * speedDelta / accel) + parBrakeDist)
+			{
 				desiredSpeed = finalSpeed;
+				maxPitch = finalMaxPitch;
+			}
 
 			// If we are near enough of the target, dive towards it instead of maintaining cruise altitude.
 			// Aim for the half-way point first, to obtain an S-curve.
@@ -377,22 +387,23 @@ namespace OpenRA.Mods.Common.Activities
 			if (delta.Z != 0)
 			{
 				var pitchRadius = CalculateTurnRadius(speed, aircraft.Info.PitchSpeed);
-				var signZ = delta.Z > 0 ? 1 : -1;
 				var nodeZ = Math.Abs(delta.Z / 2);
 
 				// When calculating the S-curve keep a bit of leeway so we stay outside the vertical turn radius.
-				var nodeDist = nodeZ > pitchRadius ? pitchRadius : Exts.ISqrt((2 * pitchRadius - nodeZ) * nodeZ);
+				var nodeDist = nodeZ > (1024 - finalMaxPitch.Cos()) * pitchRadius / 1024 ?
+					finalMaxPitch.Sin() * pitchRadius / 1024 :
+					Exts.ISqrt((2 * pitchRadius - nodeZ) * nodeZ);
 
 				if (dist < nodeDist)
 					desiredPitch = WAngle.Zero;
-				else if (dist < 2 * pitchRadius)
+				else if (dist < 2 * finalMaxPitch.Sin() * pitchRadius / 1024 + (nodeZ - 2 * (1024 - finalMaxPitch.Cos()) * pitchRadius / 1024) * 1024 / finalMaxPitch.Tan())
 					desiredPitch = WAngle.ArcTan(delta.Z, dist / 2);
 			}
 
 			// Make sure we don't crash into terrain while diving towards the target.
 			if (desiredPitch.HasValue)
 			{
-				var minPitch = aircraft.InclineLookahead(altitude: new WDist(128));
+				var minPitch = aircraft.InclineLookahead(altitude: new WDist(128), maxPitch: finalMaxPitch);
 				desiredPitch = new WAngle(Math.Max(desiredPitch.Value.Angle2, minPitch));
 			}
 
@@ -400,7 +411,8 @@ namespace OpenRA.Mods.Common.Activities
 			if (positionBuffer.Count > 5)
 				positionBuffer.RemoveAt(0);
 
-			FlyTick(self, aircraft, desiredPitch, desiredFacing, desiredBodyFacing, desiredBodyPitch, desiredBodyRoll, desiredSpeed);
+			FlyTick(self, aircraft, desiredPitch, desiredFacing, desiredBodyFacing, desiredBodyPitch, desiredBodyRoll, desiredSpeed,
+				maxPitch: maxPitch);
 			return false;
 		}
 

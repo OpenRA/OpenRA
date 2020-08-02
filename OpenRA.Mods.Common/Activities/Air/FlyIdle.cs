@@ -57,7 +57,8 @@ namespace OpenRA.Mods.Common.Activities
 			if (aircraft.IdleSpeed == 0)
 				Fly.HoverTick(self, aircraft);
 			else
-				Fly.FlyTick(self, aircraft, desiredSpeed: aircraft.IdleSpeed, desiredTurnSpeed: aircraft.IdleTurnSpeed);
+				Fly.FlyTick(self, aircraft, desiredSpeed: aircraft.IdleSpeed, desiredTurnSpeed: aircraft.IdleTurnSpeed,
+					maxPitch: aircraft.MaximumIdlePitch);
 
 			return false;
 		}

@@ -33,6 +33,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Altitude the aircraft will dive to when attacking. When set to WDist.Zero this defaults to the CruiseAltitude.")]
 		public readonly WDist AttackAltitude = WDist.Zero;
 
+		[Desc("When defined, this will override the maximum pitch angle when performing an attack.")]
+		public readonly WAngle? AttackPitch = null;
+
 		[Desc("When defined, Accelerate to this speed when closing in for attack.")]
 		public readonly int? AttackSpeed = null;
 

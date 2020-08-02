@@ -883,7 +883,7 @@
 		AltitudeVelocity: 96
 		Voice: Move
 		IdealSeparation: 853
-		MaximumPitch: 256
+		MaximumPitch: 200
 		LandableTerrainTypes: Clear, Road, Rail, DirtRoad, Rough, Tiberium, BlueTiberium, Veins
 		Crushes: crate, infantry
 		MoveIntoShroud: false

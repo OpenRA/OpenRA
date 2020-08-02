@@ -161,6 +161,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("How fast this actor ascends or descends during horizontal movement.")]
 		public readonly WAngle MaximumPitch = WAngle.FromDegrees(10);
 
+		[Desc("How fast this actor ascends or descends during idling.")]
+		public readonly WAngle? MaximumIdlePitch = null;
+
 		[Desc("Maximum total body pitch during flight.")]
 		public readonly WAngle? MaximumBodyPitch = null;
 
@@ -299,6 +302,7 @@ namespace OpenRA.Mods.Common.Traits
 		public WAngle TurnSpeed { get { return !IsTraitDisabled && !IsTraitPaused ? Info.TurnSpeed : WAngle.Zero; } }
 		public WAngle BodyTurnSpeed { get { return Info.BodyTurnSpeed ?? Info.TurnSpeed; } }
 		public WAngle BodyPitchSpeed { get { return Info.BodyPitchSpeed ?? Info.PitchSpeed; } }
+		public WAngle MaximumIdlePitch { get { return Info.MaximumIdlePitch ?? Info.MaximumPitch; } }
 		public WAngle MaximumBodyPitch { get { return Info.MaximumBodyPitch ?? Info.MaximumPitch; } }
 
 		public int IdleSpeed
@@ -578,7 +582,7 @@ namespace OpenRA.Mods.Common.Traits
 			return (d * 1024 * 8) / (int)distSq;
 		}
 
-		public int InclineLookahead(int? minDistance = null, int? maxDistance = null, WDist? altitude = null)
+		public int InclineLookahead(int? minDistance = null, int? maxDistance = null, WDist? altitude = null, WAngle? maxPitch = null)
 		{
 			var predictedPitch = -256;
 			if (maxDistance.HasValue && maxDistance < 0)
@@ -603,9 +607,14 @@ namespace OpenRA.Mods.Common.Traits
 			var turnCenterDir = new WVec(1024, 0, 0).Rotate(WRot.FromPitch(turnCenterPitch));
 			var turnCenter = turnCenterDir * turnRadius / 1024;
 
-			var probeDistance = 0;
-			var tickLimit = (maxDistance == null ? turnRadius * 2 : Math.Min(turnRadius * 2, maxDistance.Value)) / stepSize;
+			if (maxPitch == null)
+				maxPitch = Info.MaximumPitch;
 
+			var maxZDiff = self.World.Map.Height.Max() - self.World.Map.Height.Min() + Info.CruiseAltitude.Length;
+			var maxDist = turnRadius * 2 + maxZDiff * 1024 / maxPitch.Value.Tan();
+			var tickLimit = (maxDistance == null ? maxDist : Math.Min(maxDist, maxDistance.Value)) / stepSize;
+
+			var probeDistance = 0;
 			for (var tick = 0; tick <= tickLimit; tick++)
 			{
 				// Probe along our predicted (curved) trajectory.
@@ -630,7 +639,8 @@ namespace OpenRA.Mods.Common.Traits
 				// ignore it for now.
 				var zDiff = deltaZ - turnCenter.Z;
 				var hDiff = probeDistance - turnCenter.X;
-				if (hDiff * hDiff + zDiff * zDiff > turnRadius * turnRadius && !(hDiff <= turnRadius && zDiff >= 0))
+				if (hDiff * hDiff + zDiff * zDiff > turnRadius * turnRadius &&
+					!(hDiff <= (turnRadius + zDiff * 1024 / maxPitch.Value.Tan()) && zDiff >= 0))
 					continue;
 
 				var probePitch = WAngle.ArcTan(deltaZ, probeDistance).Angle2;
