@@ -37,7 +37,8 @@ namespace OpenRA.Mods.Cnc.Scripting
 			if (infiltrates == null)
 				throw new LuaException("{0} tried to infiltrate invalid target {1}!".F(Self, target));
 
-			Self.QueueActivity(new Infiltrate(Self, Target.FromActor(target), infiltrates));
+			// NB: Scripted actions get no visible targetlines.
+			Self.QueueActivity(new Infiltrate(Self, Target.FromActor(target), infiltrates, null));
 		}
 	}
 }

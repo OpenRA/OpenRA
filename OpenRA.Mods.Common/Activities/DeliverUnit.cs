@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
 		{
-			yield return new TargetLineNode(destination, Color.Yellow);
+			yield return new TargetLineNode(destination, carryall.Info.TargetLineColor);
 		}
 
 		class ReleaseUnit : Activity

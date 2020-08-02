@@ -31,8 +31,9 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Demolish the target actor.")]
 		public void Demolish(Actor target)
 		{
+			// NB: Scripted actions get no visible targetlines.
 			Self.QueueActivity(new Demolish(Self, Target.FromActor(target), info.EnterBehaviour, info.DetonationDelay,
-				info.Flashes, info.FlashesDelay, info.FlashInterval, info.DamageTypes));
+				info.Flashes, info.FlashesDelay, info.FlashInterval, info.DamageTypes, null));
 		}
 	}
 }

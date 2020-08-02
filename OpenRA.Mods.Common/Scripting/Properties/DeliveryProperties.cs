@@ -33,7 +33,9 @@ namespace OpenRA.Mods.Common.Scripting
 		public void DeliverCash(Actor target)
 		{
 			var t = Target.FromActor(target);
-			Self.QueueActivity(new DonateCash(Self, t, info.Payload, info.PlayerExperience));
+
+			// NB: Scripted actions get no visible targetlines.
+			Self.QueueActivity(new DonateCash(Self, t, info.Payload, info.PlayerExperience, null));
 		}
 	}
 
@@ -62,9 +64,10 @@ namespace OpenRA.Mods.Common.Scripting
 				return;
 
 			var level = gainsExperience.Level;
-
 			var t = Target.FromActor(target);
-			Self.QueueActivity(new DonateExperience(Self, t, level, deliversExperience.PlayerExperience));
+
+			// NB: Scripted actions get no visible targetlines.
+			Self.QueueActivity(new DonateExperience(Self, t, level, deliversExperience.PlayerExperience, null));
 		}
 	}
 }

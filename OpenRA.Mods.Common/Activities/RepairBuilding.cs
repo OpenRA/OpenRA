@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Activities
 		EngineerRepairable enterEngineerRepariable;
 
 		public RepairBuilding(Actor self, in Target target, EngineerRepairInfo info)
-			: base(self, target, Color.Yellow)
+			: base(self, target, info.TargetLineColor)
 		{
 			this.info = info;
 		}

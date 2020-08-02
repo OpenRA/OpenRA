@@ -116,7 +116,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
 		{
-			yield return new TargetLineNode(Target.FromActor(cargo), Color.Yellow);
+			yield return new TargetLineNode(Target.FromActor(cargo), carryall.Info.TargetLineColor);
 		}
 
 		class AttachUnit : Activity

@@ -23,8 +23,8 @@ namespace OpenRA.Mods.Common.Activities
 		Actor enterActor;
 		GainsExperience enterGainsExperience;
 
-		public DonateExperience(Actor self, in Target target, int level, int playerExperience)
-			: base(self, target, Color.Yellow)
+		public DonateExperience(Actor self, in Target target, int level, int playerExperience, Color? targetLineColor)
+			: base(self, target, targetLineColor)
 		{
 			this.level = level;
 			this.playerExperience = playerExperience;

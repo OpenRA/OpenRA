@@ -32,6 +32,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public override object Create(ActorInitializer init) { return new TDGunboat(init, this); }
 
 		public WAngle GetInitialFacing() { return InitialFacing; }
+		public Color GetTargetLineColor() { return Color.Green; }
 
 		IEnumerable<ActorInit> IActorPreviewInitInfo.ActorPreviewInits(ActorInfo ai, ActorPreviewType type)
 		{

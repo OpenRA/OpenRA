@@ -507,7 +507,10 @@ namespace OpenRA.Traits
 		bool AlwaysEnabled { get; }
 	}
 
-	public interface IMoveInfo : ITraitInfoInterface { }
+	public interface IMoveInfo : ITraitInfoInterface
+	{
+		Color GetTargetLineColor();
+	}
 
 	[RequireExplicitImplementation]
 	public interface IGameOver { void GameOver(World world); }

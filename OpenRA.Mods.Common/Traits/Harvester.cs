@@ -16,6 +16,7 @@ using OpenRA.Activities;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Orders;
 using OpenRA.Mods.Common.Pathfinder;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -82,6 +83,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		[VoiceReference]
 		public readonly string DeliverVoice = "Action";
+
+		[Desc("Color to use for the target line of harvest orders.")]
+		public readonly Color HarvestLineColor = Color.Crimson;
+
+		[Desc("Color to use for the target line of harvest orders.")]
+		public readonly Color DeliverLineColor = Color.Green;
 
 		[Desc("Cursor to display when able to unload at target actor.")]
 		public readonly string EnterCursor = "enter";

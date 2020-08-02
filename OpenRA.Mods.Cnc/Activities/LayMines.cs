@@ -26,6 +26,7 @@ namespace OpenRA.Mods.Cnc.Activities
 		readonly Minelayer minelayer;
 		readonly AmmoPool[] ammoPools;
 		readonly IMove movement;
+		readonly IMoveInfo moveInfo;
 		readonly RearmableInfo rearmableInfo;
 
 		List<CPos> minefield;
@@ -37,6 +38,7 @@ namespace OpenRA.Mods.Cnc.Activities
 			minelayer = self.Trait<Minelayer>();
 			ammoPools = self.TraitsImplementing<AmmoPool>().ToArray();
 			movement = self.Trait<IMove>();
+			moveInfo = self.Info.TraitInfo<IMoveInfo>();
 			rearmableInfo = self.Info.TraitInfoOrDefault<RearmableInfo>();
 			this.minefield = minefield;
 		}
@@ -118,17 +120,17 @@ namespace OpenRA.Mods.Cnc.Activities
 		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
 		{
 			if (returnToBase)
-				yield return new TargetLineNode(Target.FromActor(rearmTarget), Color.Green);
+				yield return new TargetLineNode(Target.FromActor(rearmTarget), moveInfo.GetTargetLineColor());
 
 			if (minefield == null || minefield.Count == 0)
 				yield break;
 
 			var nextCell = NextValidCell(self);
 			if (nextCell != null)
-				yield return new TargetLineNode(Target.FromCell(self.World, nextCell.Value), Color.Crimson);
+				yield return new TargetLineNode(Target.FromCell(self.World, nextCell.Value), minelayer.Info.TargetLineColor);
 
 			foreach (var c in minefield)
-				yield return new TargetLineNode(Target.FromCell(self.World, c), Color.Crimson, tile: minelayer.Tile);
+				yield return new TargetLineNode(Target.FromCell(self.World, c), minelayer.Info.TargetLineColor, tile: minelayer.Tile);
 		}
 
 		static bool CanLayMine(Actor self, CPos p)

@@ -60,6 +60,9 @@ namespace OpenRA.Mods.Common.Traits
 		[VoiceReference]
 		public readonly string Voice = "Action";
 
+		[Desc("Color to use for the target line.")]
+		public readonly Color TargetLineColor = Color.Yellow;
+
 		public override object Create(ActorInitializer init) { return new Carryall(init.Self, this); }
 	}
 

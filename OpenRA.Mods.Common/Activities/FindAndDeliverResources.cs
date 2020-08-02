@@ -243,9 +243,9 @@ namespace OpenRA.Mods.Common.Activities
 					yield return n;
 
 			if (orderLocation != null)
-				yield return new TargetLineNode(Target.FromCell(self.World, orderLocation.Value), Color.Crimson);
+				yield return new TargetLineNode(Target.FromCell(self.World, orderLocation.Value), harvInfo.HarvestLineColor);
 			else if (deliverActor != null)
-				yield return new TargetLineNode(Target.FromActor(deliverActor), Color.Green);
+				yield return new TargetLineNode(Target.FromActor(deliverActor), harvInfo.DeliverLineColor);
 		}
 
 		CPos? GetSearchFromProcLocation(Actor self)

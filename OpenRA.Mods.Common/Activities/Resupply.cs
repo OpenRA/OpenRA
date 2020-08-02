@@ -33,6 +33,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly ICallForTransport[] transportCallers;
 		readonly IMove move;
 		readonly Aircraft aircraft;
+		readonly IMoveInfo moveInfo;
 		readonly bool stayOnResupplier;
 		readonly bool wasRepaired;
 		readonly PlayerResources playerResources;
@@ -58,6 +59,7 @@ namespace OpenRA.Mods.Common.Activities
 			transportCallers = self.TraitsImplementing<ICallForTransport>().ToArray();
 			move = self.Trait<IMove>();
 			aircraft = move as Aircraft;
+			moveInfo = self.Info.TraitInfo<IMoveInfo>();
 			playerResources = self.Owner.PlayerActor.Trait<PlayerResources>();
 
 			var valued = self.Info.TraitInfoOrDefault<ValuedInfo>();
@@ -129,13 +131,12 @@ namespace OpenRA.Mods.Common.Activities
 			else if (activeResupplyTypes != 0 && aircraft == null && !isCloseEnough)
 			{
 				var targetCell = self.World.Map.CellContaining(host.Actor.CenterPosition);
-
-				QueueChild(move.MoveWithinRange(host, closeEnough, targetLineColor: Color.Green));
+				QueueChild(move.MoveWithinRange(host, closeEnough, targetLineColor: moveInfo.GetTargetLineColor()));
 
 				// HACK: Repairable needs the actor to move to host center.
 				// TODO: Get rid of this or at least replace it with something less hacky.
 				if (repairableNear == null)
-					QueueChild(move.MoveTo(targetCell, targetLineColor: Color.Green));
+					QueueChild(move.MoveTo(targetCell, targetLineColor: moveInfo.GetTargetLineColor()));
 
 				var delta = (self.CenterPosition - host.CenterPosition).LengthSquared;
 				transportCallers.FirstOrDefault(t => t.MinimumDistance.LengthSquared < delta)?.RequestTransport(self, targetCell);
@@ -189,7 +190,7 @@ namespace OpenRA.Mods.Common.Activities
 		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
 		{
 			if (ChildActivity == null)
-				yield return new TargetLineNode(host, Color.Green);
+				yield return new TargetLineNode(host, moveInfo.GetTargetLineColor());
 			else
 			{
 				var current = ChildActivity;
@@ -212,7 +213,7 @@ namespace OpenRA.Mods.Common.Activities
 				{
 					if (self.CurrentActivity.NextActivity == null && rp != null && rp.Path.Count > 0)
 						foreach (var cell in rp.Path)
-							QueueChild(new AttackMoveActivity(self, () => move.MoveTo(cell, 1, ignoreActor: repairableNear != null ? null : host.Actor, targetLineColor: Color.OrangeRed)));
+							QueueChild(new AttackMoveActivity(self, () => move.MoveTo(cell, 1, ignoreActor: repairableNear != null ? null : host.Actor, targetLineColor: aircraft.Info.TargetLineColor)));
 					else
 						QueueChild(new TakeOff(self));
 
@@ -233,7 +234,7 @@ namespace OpenRA.Mods.Common.Activities
 				{
 					if (rp != null && rp.Path.Count > 0)
 						foreach (var cell in rp.Path)
-							QueueChild(new AttackMoveActivity(self, () => move.MoveTo(cell, 1, repairableNear != null ? null : host.Actor, true, Color.OrangeRed)));
+							QueueChild(new AttackMoveActivity(self, () => move.MoveTo(cell, 1, repairableNear != null ? null : host.Actor, true, moveInfo.GetTargetLineColor())));
 					else if (repairableNear == null)
 						QueueChild(move.MoveToTarget(self, host));
 				}
