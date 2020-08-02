@@ -20,7 +20,7 @@ csharp_style_var_elsewhere = true:suggestion
 csharp_style_var_for_built_in_types = true:suggestion
 csharp_style_var_when_type_is_apparent = true:suggestion
 
-csharp_prefer_braces = false:error
+csharp_prefer_braces = when_multiline:suggestion
 csharp_using_directive_placement = outside_namespace:suggestion
 csharp_new_line_before_open_brace = all
 csharp_space_around_binary_operators = before_and_after
