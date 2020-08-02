@@ -94,7 +94,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (Info.UseTargetableCellsOffsets && targetableCells != null)
 				foreach (var c in targetableCells.TargetableCells())
-					yield return self.World.Map.CenterOfCell(c.First);
+					yield return self.World.Map.CenterOfCell(c.Cell);
 
 			foreach (var o in Info.TargetableOffsets)
 			{

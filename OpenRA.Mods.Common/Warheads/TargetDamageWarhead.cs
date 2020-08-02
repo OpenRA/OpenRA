@@ -38,18 +38,18 @@ namespace OpenRA.Mods.Common.Warheads
 
 				var closestActiveShape = victim.TraitsImplementing<HitShape>()
 					.Where(Exts.IsTraitEnabled)
-					.Select(s => Pair.New(s, s.DistanceFromEdge(victim, pos)))
-					.MinByOrDefault(s => s.Second);
+					.Select(s => (HitShape: s, Distance: s.DistanceFromEdge(victim, pos)))
+					.MinByOrDefault(s => s.Distance);
 
 				// Cannot be damaged without an active HitShape.
-				if (closestActiveShape.First == null)
+				if (closestActiveShape.HitShape == null)
 					continue;
 
 				// Cannot be damaged if HitShape is outside Spread.
-				if (closestActiveShape.Second > Spread)
+				if (closestActiveShape.Distance > Spread)
 					continue;
 
-				InflictDamage(victim, firedBy, closestActiveShape.First, args);
+				InflictDamage(victim, firedBy, closestActiveShape.HitShape, args);
 			}
 		}
 	}

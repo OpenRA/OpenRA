@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Cnc.Graphics
 		static readonly float[] ChannelSelect = { 0.75f, 0.25f, -0.25f, -0.75f };
 
 		readonly List<Vertex[]> vertices = new List<Vertex[]>();
-		readonly Cache<Pair<string, string>, Voxel> voxels;
+		readonly Cache<(string, string), Voxel> voxels;
 		readonly IReadOnlyFileSystem fileSystem;
 		IVertexBuffer<Vertex> vertexBuffer;
 		int totalVertexCount;
@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Cnc.Graphics
 		public VoxelLoader(IReadOnlyFileSystem fileSystem)
 		{
 			this.fileSystem = fileSystem;
-			voxels = new Cache<Pair<string, string>, Voxel>(LoadFile);
+			voxels = new Cache<(string, string), Voxel>(LoadFile);
 			vertices = new List<Vertex[]>();
 			totalVertexCount = 0;
 			cachedVertexCount = 0;
@@ -211,20 +211,20 @@ namespace OpenRA.Mods.Cnc.Graphics
 			}
 		}
 
-		Voxel LoadFile(Pair<string, string> files)
+		Voxel LoadFile((string Vxl, string Hva) files)
 		{
 			VxlReader vxl;
 			HvaReader hva;
-			using (var s = fileSystem.Open(files.First + ".vxl"))
+			using (var s = fileSystem.Open(files.Vxl + ".vxl"))
 				vxl = new VxlReader(s);
-			using (var s = fileSystem.Open(files.Second + ".hva"))
-				hva = new HvaReader(s, files.Second + ".hva");
+			using (var s = fileSystem.Open(files.Hva + ".hva"))
+				hva = new HvaReader(s, files.Hva + ".hva");
 			return new Voxel(this, vxl, hva);
 		}
 
 		public Voxel Load(string vxl, string hva)
 		{
-			return voxels[Pair.New(vxl, hva)];
+			return voxels[(vxl, hva)];
 		}
 
 		public void Finish()

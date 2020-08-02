@@ -16,8 +16,8 @@ namespace OpenRA.Platforms.Default
 {
 	static class MultiTapDetection
 	{
-		static Cache<Pair<Keycode, Modifiers>, TapHistory> keyHistoryCache =
-			new Cache<Pair<Keycode, Modifiers>, TapHistory>(_ => new TapHistory(DateTime.Now - TimeSpan.FromSeconds(1)));
+		static Cache<(Keycode Key, Modifiers Mods), TapHistory> keyHistoryCache =
+			new Cache<(Keycode, Modifiers), TapHistory>(_ => new TapHistory(DateTime.Now - TimeSpan.FromSeconds(1)));
 		static Cache<byte, TapHistory> clickHistoryCache =
 			new Cache<byte, TapHistory>(_ => new TapHistory(DateTime.Now - TimeSpan.FromSeconds(1)));
 
@@ -33,35 +33,35 @@ namespace OpenRA.Platforms.Default
 
 		public static int DetectFromKeyboard(Keycode key, Modifiers mods)
 		{
-			return keyHistoryCache[Pair.New(key, mods)].GetTapCount(int2.Zero);
+			return keyHistoryCache[(key, mods)].GetTapCount(int2.Zero);
 		}
 
 		public static int InfoFromKeyboard(Keycode key, Modifiers mods)
 		{
-			return keyHistoryCache[Pair.New(key, mods)].LastTapCount();
+			return keyHistoryCache[(key, mods)].LastTapCount();
 		}
 	}
 
 	class TapHistory
 	{
-		public Pair<DateTime, int2> FirstRelease, SecondRelease, ThirdRelease;
+		public (DateTime Time, int2 Location) FirstRelease, SecondRelease, ThirdRelease;
 
 		public TapHistory(DateTime now)
 		{
-			FirstRelease = SecondRelease = ThirdRelease = Pair.New(now, int2.Zero);
+			FirstRelease = SecondRelease = ThirdRelease = (now, int2.Zero);
 		}
 
-		static bool CloseEnough(Pair<DateTime, int2> a, Pair<DateTime, int2> b)
+		static bool CloseEnough((DateTime Time, int2 Location) a, (DateTime Time, int2 Location) b)
 		{
-			return a.First - b.First < TimeSpan.FromMilliseconds(250)
-				&& (a.Second - b.Second).Length < 4;
+			return a.Time - b.Time < TimeSpan.FromMilliseconds(250)
+				&& (a.Location - b.Location).Length < 4;
 		}
 
 		public int GetTapCount(int2 xy)
 		{
 			FirstRelease = SecondRelease;
 			SecondRelease = ThirdRelease;
-			ThirdRelease = Pair.New(DateTime.Now, xy);
+			ThirdRelease = (DateTime.Now, xy);
 
 			if (!CloseEnough(ThirdRelease, SecondRelease))
 				return 1;

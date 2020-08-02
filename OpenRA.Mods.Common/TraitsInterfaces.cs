@@ -441,7 +441,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public interface IRadarSignature
 	{
-		void PopulateRadarSignatureCells(Actor self, List<Pair<CPos, Color>> destinationBuffer);
+		void PopulateRadarSignatureCells(Actor self, List<(CPos Cell, Color Color)> destinationBuffer);
 	}
 
 	public interface IRadarColorModifier { Color RadarColorOverride(Actor self, Color color); }
@@ -476,7 +476,7 @@ namespace OpenRA.Mods.Common.Traits
 	[RequireExplicitImplementation]
 	public interface ITargetableCells
 	{
-		Pair<CPos, SubCell>[] TargetableCells();
+		(CPos Cell, SubCell SubCell)[] TargetableCells();
 	}
 
 	[RequireExplicitImplementation]

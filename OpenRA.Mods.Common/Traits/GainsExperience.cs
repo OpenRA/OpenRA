@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly GainsExperienceInfo info;
 		readonly int initialExperience;
 
-		readonly List<Pair<int, string>> nextLevel = new List<Pair<int, string>>();
+		readonly List<(int RequiredExperience, string Condition)> nextLevel = new List<(int, string)>();
 
 		// Stored as a percentage of our value
 		[Sync]
@@ -83,7 +83,7 @@ namespace OpenRA.Mods.Common.Traits
 			var valued = self.Info.TraitInfoOrDefault<ValuedInfo>();
 			var requiredExperience = info.ExperienceModifier < 0 ? (valued != null ? valued.Cost : 1) : info.ExperienceModifier;
 			foreach (var kv in info.Conditions)
-				nextLevel.Add(Pair.New(kv.Key * requiredExperience, kv.Value));
+				nextLevel.Add((kv.Key * requiredExperience, kv.Value));
 
 			if (initialExperience > 0)
 				GiveExperience(initialExperience, info.SuppressLevelupAnimation);
@@ -97,7 +97,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			var newLevel = Math.Min(Level + numLevels, MaxLevel);
-			GiveExperience(nextLevel[newLevel - 1].First - Experience, silent);
+			GiveExperience(nextLevel[newLevel - 1].RequiredExperience - Experience, silent);
 		}
 
 		public void GiveExperience(int amount, bool silent = false)
@@ -108,11 +108,11 @@ namespace OpenRA.Mods.Common.Traits
 			if (MaxLevel == 0)
 				return;
 
-			Experience = (Experience + amount).Clamp(0, nextLevel[MaxLevel - 1].First);
+			Experience = (Experience + amount).Clamp(0, nextLevel[MaxLevel - 1].RequiredExperience);
 
-			while (Level < MaxLevel && Experience >= nextLevel[Level].First)
+			while (Level < MaxLevel && Experience >= nextLevel[Level].RequiredExperience)
 			{
-				self.GrantCondition(nextLevel[Level].Second);
+				self.GrantCondition(nextLevel[Level].Condition);
 
 				Level++;
 

@@ -26,7 +26,7 @@ namespace OpenRA
 
 		readonly Cache<string, Type> typeCache;
 		readonly Cache<Type, ConstructorInfo> ctorCache;
-		readonly Pair<Assembly, string>[] assemblies;
+		readonly (Assembly Assembly, string Namespace)[] assemblies;
 
 		public ObjectCreator(Manifest manifest, InstalledMods mods)
 		{
@@ -59,7 +59,7 @@ namespace OpenRA
 			}
 
 			AppDomain.CurrentDomain.AssemblyResolve += ResolveAssembly;
-			assemblies = assemblyList.SelectMany(asm => asm.GetNamespaces().Select(ns => Pair.New(asm, ns))).ToArray();
+			assemblies = assemblyList.SelectMany(asm => asm.GetNamespaces().Select(ns => (asm, ns))).ToArray();
 		}
 
 		Assembly ResolveAssembly(object sender, ResolveEventArgs e)
@@ -71,7 +71,7 @@ namespace OpenRA
 			if (assemblies == null)
 				return null;
 
-			return assemblies.Select(a => a.First).FirstOrDefault(a => a.FullName == e.Name);
+			return assemblies.Select(a => a.Assembly).FirstOrDefault(a => a.FullName == e.Name);
 		}
 
 		// Only used by the linter to prevent exceptions from being thrown during a lint run
@@ -106,7 +106,7 @@ namespace OpenRA
 		public Type FindType(string className)
 		{
 			return assemblies
-				.Select(pair => pair.First.GetType(pair.Second + "." + className, false))
+				.Select(pair => pair.Assembly.GetType(pair.Namespace + "." + className, false))
 				.FirstOrDefault(t => t != null);
 		}
 
@@ -146,7 +146,7 @@ namespace OpenRA
 
 		public IEnumerable<Type> GetTypes()
 		{
-			return assemblies.Select(ma => ma.First).Distinct()
+			return assemblies.Select(ma => ma.Assembly).Distinct()
 				.SelectMany(ma => ma.GetTypes());
 		}
 

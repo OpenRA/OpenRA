@@ -133,7 +133,7 @@ namespace OpenRA.Mods.Common.Graphics
 
 				// HACK: We don't have enough texture channels to pass the depth data to the shader
 				// so for now just offset everything forward so that the back corner is rendered at pos.
-				pxOrigin -= new float3(0, 0, Screen3DBounds(wr).Second.X);
+				pxOrigin -= new float3(0, 0, Screen3DBounds(wr).Z.X);
 
 				var shadowOrigin = pxOrigin - groundZ * (new float2(renderProxy.ShadowDirection, 1));
 
@@ -221,10 +221,10 @@ namespace OpenRA.Mods.Common.Graphics
 
 			public Rectangle ScreenBounds(WorldRenderer wr)
 			{
-				return Screen3DBounds(wr).First;
+				return Screen3DBounds(wr).Bounds;
 			}
 
-			Pair<Rectangle, float2> Screen3DBounds(WorldRenderer wr)
+			(Rectangle Bounds, float2 Z) Screen3DBounds(WorldRenderer wr)
 			{
 				var pxOrigin = wr.ScreenPosition(model.pos);
 				var draw = model.models.Where(v => v.IsVisible);
@@ -260,7 +260,7 @@ namespace OpenRA.Mods.Common.Graphics
 					}
 				}
 
-				return Pair.New(Rectangle.FromLTRB((int)minX, (int)minY, (int)maxX, (int)maxY), new float2(minZ, maxZ));
+				return (Rectangle.FromLTRB((int)minX, (int)minY, (int)maxX, (int)maxY), new float2(minZ, maxZ));
 			}
 		}
 	}

@@ -30,19 +30,19 @@ namespace OpenRA.Mods.Common.Pathfinder
 			return LayerPoolTable.GetValue(world, CreateLayerPool);
 		}
 
-		public override IEnumerable<Pair<CPos, int>> Considered
+		public override IEnumerable<(CPos, int)> Considered
 		{
 			get { return considered; }
 		}
 
-		LinkedList<Pair<CPos, int>> considered;
+		LinkedList<(CPos, int)> considered;
 
 		#region Constructors
 
 		private PathSearch(IGraph<CellInfo> graph)
 			: base(graph)
 		{
-			considered = new LinkedList<Pair<CPos, int>>();
+			considered = new LinkedList<(CPos, int)>();
 		}
 
 		public static IPathSearch Search(World world, Locomotor locomotor, Actor self, BlockedByActor check, Func<CPos, bool> goalCondition)
@@ -94,7 +94,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			var connection = new GraphConnection(location, cost);
 			OpenQueue.Add(connection);
 			StartPoints.Add(connection);
-			considered.AddLast(new Pair<CPos, int>(location, 0));
+			considered.AddLast((location, 0));
 		}
 
 		#endregion
@@ -146,7 +146,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 					if (gCost > MaxCost)
 						MaxCost = gCost;
 
-					considered.AddLast(new Pair<CPos, int>(neighborCPos, gCost));
+					considered.AddLast((neighborCPos, gCost));
 				}
 			}
 

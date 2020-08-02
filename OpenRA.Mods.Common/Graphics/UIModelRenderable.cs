@@ -106,13 +106,13 @@ namespace OpenRA.Mods.Common.Graphics
 
 			public Rectangle ScreenBounds(WorldRenderer wr)
 			{
-				return Screen3DBounds(wr).First;
+				return Screen3DBounds(wr).Bounds;
 			}
 
 			static readonly uint[] CornerXIndex = { 0, 0, 0, 0, 3, 3, 3, 3 };
 			static readonly uint[] CornerYIndex = { 1, 1, 4, 4, 1, 1, 4, 4 };
 			static readonly uint[] CornerZIndex = { 2, 5, 2, 5, 2, 5, 2, 5 };
-			Pair<Rectangle, float2> Screen3DBounds(WorldRenderer wr)
+			(Rectangle Bounds, float2 Z) Screen3DBounds(WorldRenderer wr)
 			{
 				var pxOrigin = model.screenPos;
 				var draw = model.models.Where(v => v.IsVisible);
@@ -148,7 +148,7 @@ namespace OpenRA.Mods.Common.Graphics
 					}
 				}
 
-				return Pair.New(Rectangle.FromLTRB((int)minX, (int)minY, (int)maxX, (int)maxY), new float2(minZ, maxZ));
+				return (Rectangle.FromLTRB((int)minX, (int)minY, (int)maxX, (int)maxY), new float2(minZ, maxZ));
 			}
 		}
 	}

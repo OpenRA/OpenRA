@@ -15,7 +15,6 @@ using System.IO;
 using System.Linq;
 using OpenRA.Mods.Common.FileFormats;
 using OpenRA.Mods.Common.UtilityCommands;
-using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Cnc.UtilityCommands
 {
@@ -40,21 +39,21 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			}
 		}
 
-		static Dictionary<string, Pair<byte, byte>> overlayResourceMapping = new Dictionary<string, Pair<byte, byte>>()
+		static Dictionary<string, (byte Type, byte Index)> overlayResourceMapping = new Dictionary<string, (byte, byte)>()
 		{
 			// Tiberium
-			{ "ti1", new Pair<byte, byte>(1, 0) },
-			{ "ti2", new Pair<byte, byte>(1, 1) },
-			{ "ti3", new Pair<byte, byte>(1, 2) },
-			{ "ti4", new Pair<byte, byte>(1, 3) },
-			{ "ti5", new Pair<byte, byte>(1, 4) },
-			{ "ti6", new Pair<byte, byte>(1, 5) },
-			{ "ti7", new Pair<byte, byte>(1, 6) },
-			{ "ti8", new Pair<byte, byte>(1, 7) },
-			{ "ti9", new Pair<byte, byte>(1, 8) },
-			{ "ti10", new Pair<byte, byte>(1, 9) },
-			{ "ti11", new Pair<byte, byte>(1, 10) },
-			{ "ti12", new Pair<byte, byte>(1, 11) },
+			{ "ti1", (1, 0) },
+			{ "ti2", (1, 1) },
+			{ "ti3", (1, 2) },
+			{ "ti4", (1, 3) },
+			{ "ti5", (1, 4) },
+			{ "ti6", (1, 5) },
+			{ "ti7", (1, 6) },
+			{ "ti8", (1, 7) },
+			{ "ti9", (1, 8) },
+			{ "ti10", (1, 9) },
+			{ "ti11", (1, 10) },
+			{ "ti12", (1, 11) },
 		};
 
 		void UnpackTileData(Stream ms)
@@ -93,12 +92,12 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 				var loc = Exts.ParseIntegerInvariant(kv.Key);
 				var cell = new CPos(loc % MapSize, loc / MapSize);
 
-				var res = Pair.New((byte)0, (byte)0);
+				var res = (Type: (byte)0, Index: (byte)0);
 				var type = kv.Value.ToLowerInvariant();
 				if (overlayResourceMapping.ContainsKey(type))
 					res = overlayResourceMapping[type];
 
-				Map.Resources[cell] = new ResourceTile(res.First, res.Second);
+				Map.Resources[cell] = new ResourceTile(res.Type, res.Index);
 				if (overlayActors.Contains(type))
 				{
 					var ar = new ActorReference(type)

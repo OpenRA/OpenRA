@@ -119,16 +119,16 @@ namespace OpenRA.Mods.Common.Traits
 
 					foreach (var t in BuildingUtils.GetLineBuildCells(w, targetLocation, actorInfo, buildingInfo, order.Player))
 					{
-						if (t.First == targetLocation)
+						if (t.Cell == targetLocation)
 							continue;
 
-						w.CreateActor(t.First == targetLocation ? actorInfo.Name : segmentType, new TypeDictionary
+						w.CreateActor(t.Cell == targetLocation ? actorInfo.Name : segmentType, new TypeDictionary
 						{
-							new LocationInit(t.First),
+							new LocationInit(t.Cell),
 							new OwnerInit(order.Player),
 							new FactionInit(faction),
-							new LineBuildDirectionInit(t.First.X == targetLocation.X ? LineBuildDirection.Y : LineBuildDirection.X),
-							new LineBuildParentInit(new[] { t.Second, placed }),
+							new LineBuildDirectionInit(t.Cell.X == targetLocation.X ? LineBuildDirection.Y : LineBuildDirection.X),
+							new LineBuildParentInit(new[] { t.Actor, placed }),
 							new PlaceBuildingInit()
 						});
 					}

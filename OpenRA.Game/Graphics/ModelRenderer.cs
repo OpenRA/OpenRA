@@ -48,7 +48,7 @@ namespace OpenRA.Graphics
 
 		readonly Dictionary<Sheet, IFrameBuffer> mappedBuffers = new Dictionary<Sheet, IFrameBuffer>();
 		readonly Stack<KeyValuePair<Sheet, IFrameBuffer>> unmappedBuffers = new Stack<KeyValuePair<Sheet, IFrameBuffer>>();
-		readonly List<Pair<Sheet, Action>> doRender = new List<Pair<Sheet, Action>>();
+		readonly List<(Sheet Sheet, Action Func)> doRender = new List<(Sheet, Action)>();
 
 		SheetBuilder sheetBuilderForFrame;
 		bool isInFrame;
@@ -180,7 +180,7 @@ namespace OpenRA.Graphics
 			var correctionTransform = Util.MatrixMultiply(translateMtx, FlipMtx);
 			var shadowCorrectionTransform = Util.MatrixMultiply(shadowTranslateMtx, ShadowScaleFlipMtx);
 
-			doRender.Add(Pair.New<Sheet, Action>(sprite.Sheet, () =>
+			doRender.Add((sprite.Sheet, () =>
 			{
 				foreach (var m in models)
 				{
@@ -324,16 +324,16 @@ namespace OpenRA.Graphics
 			foreach (var v in doRender)
 			{
 				// Change sheet
-				if (v.First != currentSheet)
+				if (v.Sheet != currentSheet)
 				{
 					if (fbo != null)
 						DisableFrameBuffer(fbo);
 
-					currentSheet = v.First;
+					currentSheet = v.Sheet;
 					fbo = EnableFrameBuffer(currentSheet);
 				}
 
-				v.Second();
+				v.Func();
 			}
 
 			if (fbo != null)

@@ -115,7 +115,7 @@ namespace OpenRA.Network
 				Connection.SendImmediate(localImmediateOrders.Select(o => o.Serialize()));
 			localImmediateOrders.Clear();
 
-			var immediatePackets = new List<Pair<int, byte[]>>();
+			var immediatePackets = new List<(int ClientId, byte[] Packet)>();
 
 			Connection.Receive(
 				(clientId, packet) =>
@@ -126,16 +126,16 @@ namespace OpenRA.Network
 					else if (packet.Length >= 5 && packet[4] == (byte)OrderType.SyncHash)
 						CheckSync(packet);
 					else if (frame == 0)
-						immediatePackets.Add(Pair.New(clientId, packet));
+						immediatePackets.Add((clientId, packet));
 					else
 						frameData.AddFrameOrders(clientId, frame, packet);
 				});
 
 			foreach (var p in immediatePackets)
 			{
-				foreach (var o in p.Second.ToOrderList(World))
+				foreach (var o in p.Packet.ToOrderList(World))
 				{
-					UnitOrders.ProcessOrder(this, World, p.First, o);
+					UnitOrders.ProcessOrder(this, World, p.ClientId, o);
 
 					// A mod switch or other event has pulled the ground from beneath us
 					if (disposed)

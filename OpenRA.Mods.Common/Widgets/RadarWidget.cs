@@ -206,8 +206,8 @@ namespace OpenRA.Mods.Common.Widgets
 		void UpdateTerrainColor(MPos uv)
 		{
 			var colorPair = playerRadarTerrain != null && playerRadarTerrain.IsInitialized ? playerRadarTerrain[uv] : PlayerRadarTerrain.GetColor(world.Map, uv);
-			var leftColor = colorPair.First;
-			var rightColor = colorPair.Second;
+			var leftColor = colorPair.Left;
+			var rightColor = colorPair.Right;
 
 			var stride = radarSheet.Size.Width;
 
@@ -386,7 +386,7 @@ namespace OpenRA.Mods.Common.Widgets
 				var stride = radarSheet.Size.Width;
 				Array.Clear(radarData, 4 * actorSprite.Bounds.Top * stride, 4 * actorSprite.Bounds.Height * stride);
 
-				var cells = new List<Pair<CPos, Color>>();
+				var cells = new List<(CPos Cell, Color Color)>();
 
 				unsafe
 				{
@@ -403,11 +403,11 @@ namespace OpenRA.Mods.Common.Widgets
 							t.Trait.PopulateRadarSignatureCells(t.Actor, cells);
 							foreach (var cell in cells)
 							{
-								if (!world.Map.Contains(cell.First))
+								if (!world.Map.Contains(cell.Cell))
 									continue;
 
-								var uv = cell.First.ToMPos(world.Map.Grid.Type);
-								var color = cell.Second.ToArgb();
+								var uv = cell.Cell.ToMPos(world.Map.Grid.Type);
+								var color = cell.Color.ToArgb();
 								if (isRectangularIsometric)
 								{
 									// Odd rows are shifted right by 1px

@@ -14,7 +14,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using OpenRA.FileFormats;
-using OpenRA.Primitives;
 
 namespace OpenRA.Network
 {
@@ -23,7 +22,7 @@ namespace OpenRA.Network
 		class Chunk
 		{
 			public int Frame;
-			public Pair<int, byte[]>[] Packets;
+			public (int ClientId, byte[] Packet)[] Packets;
 		}
 
 		Queue<Chunk> chunks = new Queue<Chunk>();
@@ -55,7 +54,7 @@ namespace OpenRA.Network
 			// to avoid issues with all immediate orders being resolved on the first tick.
 			using (var rs = File.OpenRead(replayFilename))
 			{
-				var packets = new List<Pair<int, byte[]>>();
+				var packets = new List<(int ClientId, byte[] Packet)>();
 
 				var chunk = new Chunk();
 
@@ -67,7 +66,7 @@ namespace OpenRA.Network
 					var packetLen = rs.ReadInt32();
 					var packet = rs.ReadBytes(packetLen);
 					var frame = BitConverter.ToInt32(packet, 0);
-					packets.Add(Pair.New(client, packet));
+					packets.Add((client, packet));
 
 					if (frame != int.MaxValue &&
 						(!lastClientsFrame.ContainsKey(client) || frame > lastClientsFrame[client]))
@@ -111,13 +110,13 @@ namespace OpenRA.Network
 				{
 					foreach (var tmpPacketPair in tmpChunk.Packets)
 					{
-						var client = tmpPacketPair.First;
+						var client = tmpPacketPair.ClientId;
 
 						// Don't replace the final disconnection packet - we still want this to end the replay.
 						if (client == lastClientToDisconnect)
 							continue;
 
-						var packet = tmpPacketPair.Second;
+						var packet = tmpPacketPair.Packet;
 						if (packet.Length == 5 && packet[4] == (byte)OrderType.Disconnect)
 						{
 							var lastClientFrame = lastClientsFrame[client];
@@ -156,7 +155,7 @@ namespace OpenRA.Network
 
 			while (chunks.Count != 0 && chunks.Peek().Frame <= ordersFrame)
 				foreach (var o in chunks.Dequeue().Packets)
-					packetFn(o.First, o.Second);
+					packetFn(o.ClientId, o.Packet);
 		}
 
 		public void Dispose() { }

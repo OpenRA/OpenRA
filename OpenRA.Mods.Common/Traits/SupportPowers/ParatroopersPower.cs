@@ -97,7 +97,7 @@ namespace OpenRA.Mods.Common.Traits
 			SendParatroopers(self, order.Target.CenterPosition, facing);
 		}
 
-		public Pair<Actor[], Actor[]> SendParatroopers(Actor self, WPos target, WAngle? facing = null)
+		public (Actor[] Aircraft, Actor[] Units) SendParatroopers(Actor self, WPos target, WAngle? facing = null)
 		{
 			var aircraft = new List<Actor>();
 			var units = new List<Actor>();
@@ -266,7 +266,7 @@ namespace OpenRA.Mods.Common.Traits
 				}
 			});
 
-			return Pair.New(aircraft.ToArray(), units.ToArray());
+			return (aircraft.ToArray(), units.ToArray());
 		}
 
 		void RemoveCamera(Actor camera)

@@ -7,7 +7,7 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <OutputPath>..</OutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <LangVersion>5</LangVersion>
+    <LangVersion>7.3</LangVersion>
     <DebugSymbols>true</DebugSymbols>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <PlatformTarget>AnyCPU</PlatformTarget>

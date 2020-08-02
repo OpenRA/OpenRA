@@ -32,7 +32,7 @@ namespace OpenRA
 		SheetBuilder sheetBuilder;
 
 		[FieldLoader.Ignore]
-		Cache<Pair<PlayerBadge, int>, Sprite> iconCache;
+		Cache<(PlayerBadge, int), Sprite> iconCache;
 
 		Sprite LoadSprite(string url, int density)
 		{
@@ -83,15 +83,15 @@ namespace OpenRA
 			{
 				sheetBuilder = new SheetBuilder(SheetType.BGRA, CreateSheet);
 
-				iconCache = new Cache<Pair<PlayerBadge, int>, Sprite>(p =>
+				iconCache = new Cache<(PlayerBadge Badge, int Density), Sprite>(p =>
 				{
-					if (p.Second > 2 && !string.IsNullOrEmpty(p.First.Icon3x))
-						return LoadSprite(p.First.Icon3x, 3);
+					if (p.Density > 2 && !string.IsNullOrEmpty(p.Badge.Icon3x))
+						return LoadSprite(p.Badge.Icon3x, 3);
 
-					if (p.Second > 1 && !string.IsNullOrEmpty(p.First.Icon2x))
-						return LoadSprite(p.First.Icon2x, 2);
+					if (p.Density > 1 && !string.IsNullOrEmpty(p.Badge.Icon2x))
+						return LoadSprite(p.Badge.Icon2x, 2);
 
-					return LoadSprite(p.First.Icon, 1);
+					return LoadSprite(p.Badge.Icon, 1);
 				});
 			}
 
@@ -113,7 +113,7 @@ namespace OpenRA
 		{
 			var ws = Game.Renderer.WindowScale;
 			var density = ws > 2 ? 3 : ws > 1 ? 2 : 1;
-			return iconCache[Pair.New(badge, density)];
+			return iconCache[(badge, density)];
 		}
 	}
 }

@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 			"Overrides `Color` if both set.")]
 		public readonly string Terrain = null;
 
-		void IMapPreviewSignatureInfo.PopulateMapPreviewSignatureCells(Map map, ActorInfo ai, ActorReference s, List<Pair<MPos, Color>> destinationBuffer)
+		void IMapPreviewSignatureInfo.PopulateMapPreviewSignatureCells(Map map, ActorInfo ai, ActorReference s, List<(MPos, Color)> destinationBuffer)
 		{
 			var tileSet = map.Rules.TileSet;
 
@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Traits
 			var ios = ai.TraitInfo<IOccupySpaceInfo>();
 			var cells = ios.OccupiedCells(ai, s.Get<LocationInit>().Value);
 			foreach (var cell in cells)
-				destinationBuffer.Add(new Pair<MPos, Color>(cell.Key.ToMPos(map), color));
+				destinationBuffer.Add((cell.Key.ToMPos(map), color));
 		}
 	}
 

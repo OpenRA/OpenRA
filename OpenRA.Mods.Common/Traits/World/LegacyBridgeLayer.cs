@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 	class LegacyBridgeLayer : IWorldLoaded
 	{
 		readonly LegacyBridgeLayerInfo info;
-		readonly Dictionary<ushort, Pair<string, int>> bridgeTypes = new Dictionary<ushort, Pair<string, int>>();
+		readonly Dictionary<ushort, (string Template, int Health)> bridgeTypes = new Dictionary<ushort, (string, int)>();
 
 		CellLayer<Bridge> bridges;
 
@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				var bi = w.Map.Rules.Actors[bridge].TraitInfo<BridgeInfo>();
 				foreach (var template in bi.Templates)
-					bridgeTypes.Add(template.First, Pair.New(bridge, template.Second));
+					bridgeTypes.Add(template.Template, (bridge, template.Health));
 			}
 
 			// Take all templates to overlay from the map
@@ -73,11 +73,11 @@ namespace OpenRA.Mods.Common.Traits
 			var nj = cell.Y - index / template.Size.X;
 
 			// Create a new actor for this bridge and keep track of which subtiles this bridge includes
-			var bridge = w.CreateActor(bridgeTypes[tile].First, new TypeDictionary
+			var bridge = w.CreateActor(bridgeTypes[tile].Template, new TypeDictionary
 			{
 				new LocationInit(new CPos(ni, nj)),
 				new OwnerInit(w.WorldActor.Owner),
-				new HealthInit(bridgeTypes[tile].Second, true),
+				new HealthInit(bridgeTypes[tile].Health, true),
 			}).Trait<Bridge>();
 
 			var subTiles = new Dictionary<CPos, byte>();

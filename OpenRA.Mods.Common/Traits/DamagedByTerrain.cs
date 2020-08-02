@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var kv in self.OccupiesSpace.OccupiedCells())
 			{
 				totalTiles++;
-				if (!Info.Terrain.Contains(self.World.Map.GetTerrainInfo(kv.First).Type))
+				if (!Info.Terrain.Contains(self.World.Map.GetTerrainInfo(kv.Cell).Type))
 					safeTiles++;
 			}
 

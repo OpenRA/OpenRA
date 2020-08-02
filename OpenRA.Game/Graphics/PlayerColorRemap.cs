@@ -47,8 +47,8 @@ namespace OpenRA.Graphics
 					remapRamp = ramp.Select(r => r - ramp[rampMaxIndex]);
 			}
 
-			remapColors = remapRamp.Select((x, i) => Pair.New(baseIndex + i, Exts.ColorLerp(x / (float)ramp.Length, c1, c2)))
-				.ToDictionary(u => u.First, u => u.Second);
+			remapColors = remapRamp.Select((x, i) => (baseIndex + i, Exts.ColorLerp(x / (float)ramp.Length, c1, c2)))
+				.ToDictionary(u => u.Item1, u => u.Item2);
 		}
 
 		public Color GetRemappedColor(Color original, int index)

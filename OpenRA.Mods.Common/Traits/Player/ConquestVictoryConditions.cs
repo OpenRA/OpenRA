@@ -78,12 +78,12 @@ namespace OpenRA.Mods.Common.Traits
 
 			var myTeam = self.World.LobbyInfo.ClientWithIndex(self.Owner.ClientIndex).Team;
 			var teams = self.World.Players.Where(p => !p.NonCombatant && p.Playable)
-				.Select(p => new Pair<Player, PlayerStatistics>(p, p.PlayerActor.TraitOrDefault<PlayerStatistics>()))
-				.OrderByDescending(p => p.Second != null ? p.Second.Experience : 0)
-				.GroupBy(p => (self.World.LobbyInfo.ClientWithIndex(p.First.ClientIndex) ?? new Session.Client()).Team)
-				.OrderByDescending(g => g.Sum(gg => gg.Second != null ? gg.Second.Experience : 0));
+				.Select(p => (Player: p, PlayerStatistics: p.PlayerActor.TraitOrDefault<PlayerStatistics>()))
+				.OrderByDescending(p => p.PlayerStatistics != null ? p.PlayerStatistics.Experience : 0)
+				.GroupBy(p => (self.World.LobbyInfo.ClientWithIndex(p.Player.ClientIndex) ?? new Session.Client()).Team)
+				.OrderByDescending(g => g.Sum(gg => gg.PlayerStatistics != null ? gg.PlayerStatistics.Experience : 0));
 
-			if (teams.First().Key == myTeam && (myTeam != 0 || teams.First().First().First == self.Owner))
+			if (teams.First().Key == myTeam && (myTeam != 0 || teams.First().First().Player == self.Owner))
 			{
 				mo.MarkCompleted(self.Owner, objectiveID);
 				return;

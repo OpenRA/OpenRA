@@ -64,27 +64,27 @@ namespace OpenRA.Mods.Common.Traits
 			DemolishWeaponInfo = weapon;
 		}
 
-		public IEnumerable<Pair<ushort, int>> Templates
+		public IEnumerable<(ushort Template, int Health)> Templates
 		{
 			get
 			{
 				if (Template != 0)
-					yield return Pair.New(Template, 100);
+					yield return (Template, 100);
 
 				if (DamagedTemplate != 0)
-					yield return Pair.New(DamagedTemplate, 49);
+					yield return (DamagedTemplate, 49);
 
 				if (DestroyedTemplate != 0)
-					yield return Pair.New(DestroyedTemplate, 0);
+					yield return (DestroyedTemplate, 0);
 
 				if (DestroyedPlusNorthTemplate != 0)
-					yield return Pair.New(DestroyedPlusNorthTemplate, 0);
+					yield return (DestroyedPlusNorthTemplate, 0);
 
 				if (DestroyedPlusSouthTemplate != 0)
-					yield return Pair.New(DestroyedPlusSouthTemplate, 0);
+					yield return (DestroyedPlusSouthTemplate, 0);
 
 				if (DestroyedPlusBothTemplate != 0)
-					yield return Pair.New(DestroyedPlusBothTemplate, 0);
+					yield return (DestroyedPlusBothTemplate, 0);
 			}
 		}
 	}
@@ -212,7 +212,7 @@ namespace OpenRA.Mods.Common.Traits
 				var palette = wr.Palette(TileSet.TerrainPaletteInternalName);
 				renderables = new Dictionary<ushort, IRenderable[]>();
 				foreach (var t in info.Templates)
-					renderables.Add(t.First, TemplateRenderables(wr, palette, t.First));
+					renderables.Add(t.Template, TemplateRenderables(wr, palette, t.Template));
 
 				initialized = true;
 			}

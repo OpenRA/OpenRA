@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly int timestep;
 		readonly IEnumerable<SupportPowerInstance> powers;
 		readonly Color bgDark, bgLight;
-		Pair<string, Color>[] texts;
+		(string Text, Color Color)[] texts;
 
 		[ObjectCreator.UseCtor]
 		public SupportPowerTimerWidget(World world)
@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 				var color = !p.Ready || Game.LocalTick % 50 < 25 ? playerColor : Color.White;
 
-				return Pair.New(text, color);
+				return (text, color);
 			}).ToArray();
 		}
 
@@ -80,8 +80,8 @@ namespace OpenRA.Mods.Common.Widgets
 			foreach (var t in texts)
 			{
 				var font = Game.Renderer.Fonts[Font];
-				font.DrawTextWithShadow(t.First, new float2(Bounds.Location) + new float2(0, y), t.Second, bgDark, bgLight, 1);
-				y += (font.Measure(t.First).Y + 5) * (int)Order;
+				font.DrawTextWithShadow(t.Text, new float2(Bounds.Location) + new float2(0, y), t.Color, bgDark, bgLight, 1);
+				y += (font.Measure(t.Text).Y + 5) * (int)Order;
 			}
 		}
 

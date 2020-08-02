@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 		/// <summary>
 		/// Stores the analyzed nodes by the expand function
 		/// </summary>
-		IEnumerable<Pair<CPos, int>> Considered { get; }
+		IEnumerable<(CPos Cell, int Cost)> Considered { get; }
 
 		Player Owner { get; }
 
@@ -68,7 +68,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 		protected IPriorityQueue<GraphConnection> OpenQueue { get; private set; }
 
-		public abstract IEnumerable<Pair<CPos, int>> Considered { get; }
+		public abstract IEnumerable<(CPos Cell, int Cost)> Considered { get; }
 
 		public Player Owner { get { return Graph.Actor.Owner; } }
 		public int MaxCost { get; protected set; }

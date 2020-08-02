@@ -12,7 +12,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Primitives;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -182,20 +181,20 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				// Order categories alphabetically
 				var categories = categoryDict
-					.Select(kv => Pair.New(kv.Key, kv.Value))
-					.OrderBy(p => p.First)
+					.Select(kv => (Category: kv.Key, Count: kv.Value))
+					.OrderBy(p => p.Category)
 					.ToList();
 
 				// 'all game types' extra item
-				categories.Insert(0, Pair.New(null as string, tabMaps[tab].Count()));
+				categories.Insert(0, (null as string, tabMaps[tab].Count()));
 
-				Func<Pair<string, int>, string> showItem = x => "{0} ({1})".F(x.First ?? "All Maps", x.Second);
+				Func<(string Category, int Count), string> showItem = x => "{0} ({1})".F(x.Category ?? "All Maps", x.Count);
 
-				Func<Pair<string, int>, ScrollItemWidget, ScrollItemWidget> setupItem = (ii, template) =>
+				Func<(string Category, int Count), ScrollItemWidget, ScrollItemWidget> setupItem = (ii, template) =>
 				{
 					var item = ScrollItemWidget.Setup(template,
-						() => category == ii.First,
-						() => { category = ii.First; EnumerateMaps(tab, itemTemplate); });
+						() => category == ii.Category,
+						() => { category = ii.Category; EnumerateMaps(tab, itemTemplate); });
 					item.Get<LabelWidget>("LABEL").GetText = () => showItem(ii);
 					return item;
 				};
@@ -205,9 +204,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				gameModeDropdown.GetText = () =>
 				{
-					var item = categories.FirstOrDefault(m => m.First == category);
-					if (item == default(Pair<string, int>))
-						item.First = "No matches";
+					var item = categories.FirstOrDefault(m => m.Category == category);
+					if (item == default((string, int)))
+						item.Category = "No matches";
 
 					return showItem(item);
 				};

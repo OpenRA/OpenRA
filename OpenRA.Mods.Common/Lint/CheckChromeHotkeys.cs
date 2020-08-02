@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Lint
 			var checkWidgetFields = modData.ObjectCreator.GetTypesImplementing<Widget>()
 				.SelectMany(w => w.GetFields()
 					.Where(f => f.FieldType == typeof(HotkeyReference))
-					.Select(f => Pair.New(w.Name.Substring(0, w.Name.Length - 6), f.Name)))
+					.Select(f => (w.Name.Substring(0, w.Name.Length - 6), f.Name)))
 				.ToArray();
 
 			var customLintMethods = new Dictionary<string, List<string>>();
@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Common.Lint
 			}
 		}
 
-		void CheckInner(ModData modData, string[] namedKeys, Pair<string, string>[] checkWidgetFields, Dictionary<string, List<string>> customLintMethods,
+		void CheckInner(ModData modData, string[] namedKeys, (string Widget, string Field)[] checkWidgetFields, Dictionary<string, List<string>> customLintMethods,
 			List<MiniYamlNode> nodes, string filename, MiniYamlNode parent, Action<string> emitError, Action<string> emitWarning)
 		{
 			foreach (var node in nodes)
@@ -74,19 +74,17 @@ namespace OpenRA.Mods.Common.Lint
 
 				foreach (var x in checkWidgetFields)
 				{
-					if (node.Key == x.Second && parent != null && parent.Key.StartsWith(x.First, StringComparison.Ordinal))
+					if (node.Key == x.Field && parent != null && parent.Key.StartsWith(x.Widget, StringComparison.Ordinal))
 					{
 						// Keys are valid if they refer to a named key or can be parsed as a regular Hotkey.
-						Hotkey unused;
-						if (!namedKeys.Contains(node.Value.Value) && !Hotkey.TryParse(node.Value.Value, out unused))
+						if (!namedKeys.Contains(node.Value.Value) && !Hotkey.TryParse(node.Value.Value, out var unused))
 							emitError("{0} refers to a Key named `{1}` that does not exist".F(node.Location, node.Value.Value));
 					}
 				}
 
 				// Check runtime-defined hotkey names
-				List<string> checkMethods;
 				var widgetType = node.Key.Split('@')[0];
-				if (customLintMethods.TryGetValue(widgetType, out checkMethods))
+				if (customLintMethods.TryGetValue(widgetType, out var checkMethods))
 				{
 					var type = modData.ObjectCreator.FindType(widgetType + "Widget");
 					var keyNames = checkMethods.SelectMany(m => (IEnumerable<string>)type.GetMethod(m).Invoke(null, new object[] { node, emitError, emitWarning }));
@@ -111,10 +109,9 @@ namespace OpenRA.Mods.Common.Lint
 						checkArgKeys.AddRange(type.GetCustomAttributes<ChromeLogicArgsHotkeys>(true).SelectMany(x => x.LogicArgKeys));
 					}
 
-					Hotkey unused;
 					foreach (var n in node.Value.Nodes)
 						if (checkArgKeys.Contains(n.Key))
-							if (!namedKeys.Contains(n.Value.Value) && !Hotkey.TryParse(n.Value.Value, out unused))
+							if (!namedKeys.Contains(n.Value.Value) && !Hotkey.TryParse(n.Value.Value, out var unused))
 								emitError("{0} {1}:{2} refers to a Key named `{3}` that does not exist".F(filename, node.Value.Value, n.Key, n.Value.Value));
 				}
 

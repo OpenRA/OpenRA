@@ -138,25 +138,25 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (ddb != null)
 				{
 					// Using list to maintain the order
-					var options = new List<Pair<GameType, string>>
+					var options = new List<(GameType GameType, string Text)>
 					{
-						Pair.New(GameType.Any, ddb.GetText()),
-						Pair.New(GameType.Singleplayer, "Singleplayer"),
-						Pair.New(GameType.Multiplayer, "Multiplayer")
+						(GameType.Any, ddb.GetText()),
+						(GameType.Singleplayer, "Singleplayer"),
+						(GameType.Multiplayer, "Multiplayer")
 					};
 
-					var lookup = options.ToDictionary(kvp => kvp.First, kvp => kvp.Second);
+					var lookup = options.ToDictionary(kvp => kvp.GameType, kvp => kvp.Text);
 
 					ddb.GetText = () => lookup[filter.Type];
 					ddb.OnMouseDown = _ =>
 					{
-						Func<Pair<GameType, string>, ScrollItemWidget, ScrollItemWidget> setupItem = (option, tpl) =>
+						Func<(GameType GameType, string Text), ScrollItemWidget, ScrollItemWidget> setupItem = (option, tpl) =>
 						{
 							var item = ScrollItemWidget.Setup(
 								tpl,
-								() => filter.Type == option.First,
-								() => { filter.Type = option.First; ApplyFilter(); });
-							item.Get<LabelWidget>("LABEL").GetText = () => option.Second;
+								() => filter.Type == option.GameType,
+								() => { filter.Type = option.GameType; ApplyFilter(); });
+							item.Get<LabelWidget>("LABEL").GetText = () => option.Text;
 							return item;
 						};
 
@@ -171,28 +171,28 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (ddb != null)
 				{
 					// Using list to maintain the order
-					var options = new List<Pair<DateType, string>>
+					var options = new List<(DateType DateType, string Text)>
 					{
-						Pair.New(DateType.Any, ddb.GetText()),
-						Pair.New(DateType.Today, "Today"),
-						Pair.New(DateType.LastWeek, "Last 7 days"),
-						Pair.New(DateType.LastFortnight, "Last 14 days"),
-						Pair.New(DateType.LastMonth, "Last 30 days")
+						(DateType.Any, ddb.GetText()),
+						(DateType.Today, "Today"),
+						(DateType.LastWeek, "Last 7 days"),
+						(DateType.LastFortnight, "Last 14 days"),
+						(DateType.LastMonth, "Last 30 days")
 					};
 
-					var lookup = options.ToDictionary(kvp => kvp.First, kvp => kvp.Second);
+					var lookup = options.ToDictionary(kvp => kvp.DateType, kvp => kvp.Text);
 
 					ddb.GetText = () => lookup[filter.Date];
 					ddb.OnMouseDown = _ =>
 					{
-						Func<Pair<DateType, string>, ScrollItemWidget, ScrollItemWidget> setupItem = (option, tpl) =>
+						Func<(DateType DateType, string Text), ScrollItemWidget, ScrollItemWidget> setupItem = (option, tpl) =>
 						{
 							var item = ScrollItemWidget.Setup(
 								tpl,
-								() => filter.Date == option.First,
-								() => { filter.Date = option.First; ApplyFilter(); });
+								() => filter.Date == option.DateType,
+								() => { filter.Date = option.DateType; ApplyFilter(); });
 
-							item.Get<LabelWidget>("LABEL").GetText = () => option.Second;
+							item.Get<LabelWidget>("LABEL").GetText = () => option.Text;
 							return item;
 						};
 
@@ -207,27 +207,27 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (ddb != null)
 				{
 					// Using list to maintain the order
-					var options = new List<Pair<DurationType, string>>
+					var options = new List<(DurationType DurationType, string Text)>
 					{
-						Pair.New(DurationType.Any, ddb.GetText()),
-						Pair.New(DurationType.VeryShort, "Under 5 min"),
-						Pair.New(DurationType.Short, "Short (10 min)"),
-						Pair.New(DurationType.Medium, "Medium (30 min)"),
-						Pair.New(DurationType.Long, "Long (60+ min)")
+						(DurationType.Any, ddb.GetText()),
+						(DurationType.VeryShort, "Under 5 min"),
+						(DurationType.Short, "Short (10 min)"),
+						(DurationType.Medium, "Medium (30 min)"),
+						(DurationType.Long, "Long (60+ min)")
 					};
 
-					var lookup = options.ToDictionary(kvp => kvp.First, kvp => kvp.Second);
+					var lookup = options.ToDictionary(kvp => kvp.DurationType, kvp => kvp.Text);
 
 					ddb.GetText = () => lookup[filter.Duration];
 					ddb.OnMouseDown = _ =>
 					{
-						Func<Pair<DurationType, string>, ScrollItemWidget, ScrollItemWidget> setupItem = (option, tpl) =>
+						Func<(DurationType DurationType, string Text), ScrollItemWidget, ScrollItemWidget> setupItem = (option, tpl) =>
 						{
 							var item = ScrollItemWidget.Setup(
 								tpl,
-								() => filter.Duration == option.First,
-								() => { filter.Duration = option.First; ApplyFilter(); });
-							item.Get<LabelWidget>("LABEL").GetText = () => option.Second;
+								() => filter.Duration == option.DurationType,
+								() => { filter.Duration = option.DurationType; ApplyFilter(); });
+							item.Get<LabelWidget>("LABEL").GetText = () => option.Text;
 							return item;
 						};
 
@@ -244,25 +244,25 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					ddb.IsDisabled = () => string.IsNullOrEmpty(filter.PlayerName);
 
 					// Using list to maintain the order
-					var options = new List<Pair<WinState, string>>
+					var options = new List<(WinState WinState, string Text)>
 					{
-						Pair.New(WinState.Undefined, ddb.GetText()),
-						Pair.New(WinState.Lost, "Defeat"),
-						Pair.New(WinState.Won, "Victory")
+						(WinState.Undefined, ddb.GetText()),
+						(WinState.Lost, "Defeat"),
+						(WinState.Won, "Victory")
 					};
 
-					var lookup = options.ToDictionary(kvp => kvp.First, kvp => kvp.Second);
+					var lookup = options.ToDictionary(kvp => kvp.WinState, kvp => kvp.Text);
 
 					ddb.GetText = () => lookup[filter.Outcome];
 					ddb.OnMouseDown = _ =>
 					{
-						Func<Pair<WinState, string>, ScrollItemWidget, ScrollItemWidget> setupItem = (option, tpl) =>
+						Func<(WinState WinState, string Text), ScrollItemWidget, ScrollItemWidget> setupItem = (option, tpl) =>
 						{
 							var item = ScrollItemWidget.Setup(
 								tpl,
-								() => filter.Outcome == option.First,
-								() => { filter.Outcome = option.First; ApplyFilter(); });
-							item.Get<LabelWidget>("LABEL").GetText = () => option.Second;
+								() => filter.Outcome == option.WinState,
+								() => { filter.Outcome = option.WinState; ApplyFilter(); });
+							item.Get<LabelWidget>("LABEL").GetText = () => option.Text;
 							return item;
 						};
 

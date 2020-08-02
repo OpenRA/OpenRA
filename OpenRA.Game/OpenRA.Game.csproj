@@ -5,7 +5,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Optimize>true</Optimize>
     <UseVSHostingProcess>false</UseVSHostingProcess>
-    <LangVersion>5</LangVersion>
+    <LangVersion>7.3</LangVersion>
     <DebugSymbols>true</DebugSymbols>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>

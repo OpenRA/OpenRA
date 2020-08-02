@@ -92,8 +92,8 @@ namespace OpenRA.Mods.Common.Pathfinder
 		readonly bool checkTerrainHeight;
 		CellLayer<CellInfo> groundInfo;
 
-		readonly Dictionary<byte, Pair<ICustomMovementLayer, CellLayer<CellInfo>>> customLayerInfo =
-			new Dictionary<byte, Pair<ICustomMovementLayer, CellLayer<CellInfo>>>();
+		readonly Dictionary<byte, (ICustomMovementLayer Layer, CellLayer<CellInfo> Info)> customLayerInfo =
+			new Dictionary<byte, (ICustomMovementLayer, CellLayer<CellInfo>)>();
 
 		public PathGraph(CellInfoLayerPool layerPool, Locomotor locomotor, Actor actor, World world, BlockedByActor check)
 		{
@@ -105,7 +105,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 				.Where(cml => cml.EnabledForActor(actor.Info, locomotorInfo));
 
 			foreach (var cml in layers)
-				customLayerInfo[cml.Index] = Pair.New(cml, pooledLayer.GetLayer());
+				customLayerInfo[cml.Index] = (cml, pooledLayer.GetLayer());
 
 			World = world;
 			worldMovementInfo = locomotorInfo.GetWorldMovementInfo(world);
@@ -135,7 +135,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 		public List<GraphConnection> GetConnections(CPos position)
 		{
-			var info = position.Layer == 0 ? groundInfo : customLayerInfo[position.Layer].Second;
+			var info = position.Layer == 0 ? groundInfo : customLayerInfo[position.Layer].Info;
 			var previousPos = info[position].PreviousPos;
 
 			var dx = position.X - previousPos.X;
@@ -156,8 +156,8 @@ namespace OpenRA.Mods.Common.Pathfinder
 			{
 				foreach (var cli in customLayerInfo.Values)
 				{
-					var layerPosition = new CPos(position.X, position.Y, cli.First.Index);
-					var entryCost = cli.First.EntryMovementCost(Actor.Info, locomotor.Info, layerPosition);
+					var layerPosition = new CPos(position.X, position.Y, cli.Layer.Index);
+					var entryCost = cli.Layer.EntryMovementCost(Actor.Info, locomotor.Info, layerPosition);
 					if (entryCost != CostForInvalidCell)
 						validNeighbors.Add(new GraphConnection(layerPosition, entryCost));
 				}
@@ -165,7 +165,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			else
 			{
 				var layerPosition = new CPos(position.X, position.Y, 0);
-				var exitCost = customLayerInfo[position.Layer].First.ExitMovementCost(Actor.Info, locomotor.Info, layerPosition);
+				var exitCost = customLayerInfo[position.Layer].Layer.ExitMovementCost(Actor.Info, locomotor.Info, layerPosition);
 				if (exitCost != CostForInvalidCell)
 					validNeighbors.Add(new GraphConnection(layerPosition, exitCost));
 			}
@@ -224,8 +224,8 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 		public CellInfo this[CPos pos]
 		{
-			get { return (pos.Layer == 0 ? groundInfo : customLayerInfo[pos.Layer].Second)[pos]; }
-			set { (pos.Layer == 0 ? groundInfo : customLayerInfo[pos.Layer].Second)[pos] = value; }
+			get { return (pos.Layer == 0 ? groundInfo : customLayerInfo[pos.Layer].Info)[pos]; }
+			set { (pos.Layer == 0 ? groundInfo : customLayerInfo[pos.Layer].Info)[pos] = value; }
 		}
 
 		public void Dispose()

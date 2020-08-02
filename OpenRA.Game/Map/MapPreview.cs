@@ -89,7 +89,7 @@ namespace OpenRA
 			public bool DefinesUnsafeCustomRules { get; private set; }
 			public bool RulesLoaded { get; private set; }
 
-			public void SetRulesetGenerator(ModData modData, Func<Pair<Ruleset, bool>> generator)
+			public void SetRulesetGenerator(ModData modData, Func<(Ruleset Ruleset, bool DefinesUnsafeCustomRules)> generator)
 			{
 				InvalidCustomRules = false;
 				RulesLoaded = false;
@@ -106,8 +106,8 @@ namespace OpenRA
 					try
 					{
 						var ret = generator();
-						DefinesUnsafeCustomRules = ret.Second;
-						return ret.First;
+						DefinesUnsafeCustomRules = ret.DefinesUnsafeCustomRules;
+						return ret.Ruleset;
 					}
 					catch (Exception e)
 					{
@@ -318,7 +318,7 @@ namespace OpenRA
 					voiceDefinitions, notificationDefinitions, musicDefinitions, sequenceDefinitions, modelSequenceDefinitions);
 				var flagged = Ruleset.DefinesUnsafeCustomRules(modData, this, ruleDefinitions,
 					weaponDefinitions, voiceDefinitions, notificationDefinitions, sequenceDefinitions);
-				return Pair.New(rules, flagged);
+				return (rules, flagged);
 			});
 
 			if (p.Contains("map.png"))
@@ -402,7 +402,7 @@ namespace OpenRA
 							voiceDefinitions, notificationDefinitions, musicDefinitions, sequenceDefinitions, modelSequenceDefinitions);
 						var flagged = Ruleset.DefinesUnsafeCustomRules(modData, this, ruleDefinitions,
 							weaponDefinitions, voiceDefinitions, notificationDefinitions, sequenceDefinitions);
-						return Pair.New(rules, flagged);
+						return (rules, flagged);
 					});
 				}
 				catch (Exception e)

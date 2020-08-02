@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (info.DrawPerimiterCellVectors)
 			{
-				var occupiedCells = self.OccupiesSpace.OccupiedCells().Select(p => p.First).ToArray();
+				var occupiedCells = self.OccupiesSpace.OccupiedCells().Select(p => p.Cell).ToArray();
 				perimeterCells = Util.ExpandFootprint(occupiedCells, true).Except(occupiedCells).ToArray();
 
 				foreach (var perimCell in perimeterCells)

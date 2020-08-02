@@ -442,8 +442,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (powerRes != null)
 			{
 				var power = template.Get<LabelWidget>("POWER");
-				var powerText = new CachedTransform<Pair<int, int>, string>(p => p.First + "/" + p.Second);
-				power.GetText = () => powerText.Update(new Pair<int, int>(powerRes.PowerDrained, powerRes.PowerProvided));
+				var powerText = new CachedTransform<(int PowerDrained, int PowerProvided), string>(p => p.PowerDrained + "/" + p.PowerProvided);
+				power.GetText = () => powerText.Update((powerRes.PowerDrained, powerRes.PowerProvided));
 				power.GetColor = () => GetPowerColor(powerRes.PowerState);
 			}
 

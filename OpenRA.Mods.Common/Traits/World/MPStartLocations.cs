@@ -133,8 +133,8 @@ namespace OpenRA.Mods.Common.Traits
 			var n = taken.Count == 0 || !separateTeamSpawns
 				? world.SharedRandom.Next(available.Count)
 				: available // pick the most distant spawnpoint from everyone else
-					.Select((k, i) => Pair.New(k, i))
-					.MaxBy(a => taken.Sum(t => (t - a.First).LengthSquared)).Second;
+					.Select((k, i) => (Cell: k, Index: i))
+					.MaxBy(a => taken.Sum(t => (t - a.Cell).LengthSquared)).Index;
 
 			var sp = available[n];
 			available.RemoveAt(n);
