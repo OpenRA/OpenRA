@@ -11,7 +11,7 @@ Container@SAVED_SETTINGS_BROWSER_PANEL:
 			Font: BigBold
 			Contrast: true
 			Align: Center
-			Text: Load game
+			Text: Load lobby settings
 			Visible: False
 		Label@SAVE_TITLE:
 			Width: PARENT_RIGHT
@@ -19,7 +19,7 @@ Container@SAVED_SETTINGS_BROWSER_PANEL:
 			Font: BigBold
 			Contrast: true
 			Align: Center
-			Text: Save game
+			Text: Save lobby settings
 			Visible: False
 		Background@bg:
 			Width: PARENT_RIGHT

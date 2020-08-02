@@ -135,7 +135,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			deleteButton.OnClick = () =>
 			{
 				ConfirmationDialogs.ButtonPrompt(
-					title: "Delete selected game save?",
+					title: "Delete selected lobby settings save?",
 					text: "Delete '{0}'?".F(Path.GetFileNameWithoutExtension(selectedSave)),
 					onConfirm: () =>
 					{
@@ -298,7 +298,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 			catch (Exception ex)
 			{
-				Console.WriteLine(ex);
+				Game.Debug("Failed to rename '{0}' to '{1}'. See the logs for details.", oldName, newName);
 				Log.Write("debug", ex.ToString());
 			}
 		}
