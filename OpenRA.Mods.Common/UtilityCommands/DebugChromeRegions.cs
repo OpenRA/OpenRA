@@ -46,24 +46,24 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				var pr = c.Value.PanelRegion;
 				if (pr != null && pr.Length == 8)
 				{
-					var sides = new[]
+					var sides = new (PanelSides PanelSides, Rectangle Bounds)[]
 					{
-						Pair.New(PanelSides.Top | PanelSides.Left, new Rectangle(pr[0], pr[1], pr[2], pr[3])),
-						Pair.New(PanelSides.Top, new Rectangle(pr[0] + pr[2], pr[1], pr[4], pr[3])),
-						Pair.New(PanelSides.Top | PanelSides.Right, new Rectangle(pr[0] + pr[2] + pr[4], pr[1], pr[6], pr[3])),
-						Pair.New(PanelSides.Left, new Rectangle(pr[0], pr[1] + pr[3], pr[2], pr[5])),
-						Pair.New(PanelSides.Center, new Rectangle(pr[0] + pr[2], pr[1] + pr[3], pr[4], pr[5])),
-						Pair.New(PanelSides.Right, new Rectangle(pr[0] + pr[2] + pr[4], pr[1] + pr[3], pr[6], pr[5])),
-						Pair.New(PanelSides.Bottom | PanelSides.Left, new Rectangle(pr[0], pr[1] + pr[3] + pr[5], pr[2], pr[7])),
-						Pair.New(PanelSides.Bottom, new Rectangle(pr[0] + pr[2], pr[1] + pr[3] + pr[5], pr[4], pr[7])),
-						Pair.New(PanelSides.Bottom | PanelSides.Right, new Rectangle(pr[0] + pr[2] + pr[4], pr[1] + pr[3] + pr[5], pr[6], pr[7]))
+						(PanelSides.Top | PanelSides.Left, new Rectangle(pr[0], pr[1], pr[2], pr[3])),
+						(PanelSides.Top, new Rectangle(pr[0] + pr[2], pr[1], pr[4], pr[3])),
+						(PanelSides.Top | PanelSides.Right, new Rectangle(pr[0] + pr[2] + pr[4], pr[1], pr[6], pr[3])),
+						(PanelSides.Left, new Rectangle(pr[0], pr[1] + pr[3], pr[2], pr[5])),
+						(PanelSides.Center, new Rectangle(pr[0] + pr[2], pr[1] + pr[3], pr[4], pr[5])),
+						(PanelSides.Right, new Rectangle(pr[0] + pr[2] + pr[4], pr[1] + pr[3], pr[6], pr[5])),
+						(PanelSides.Bottom | PanelSides.Left, new Rectangle(pr[0], pr[1] + pr[3] + pr[5], pr[2], pr[7])),
+						(PanelSides.Bottom, new Rectangle(pr[0] + pr[2], pr[1] + pr[3] + pr[5], pr[4], pr[7])),
+						(PanelSides.Bottom | PanelSides.Right, new Rectangle(pr[0] + pr[2] + pr[4], pr[1] + pr[3] + pr[5], pr[6], pr[7]))
 					};
 
 					foreach (var s in sides)
 					{
-						var r = s.Second;
-						if (c.Value.PanelSides.HasSide(s.First))
-							regions.Add("[\"{0}.<{1}>\",{2},{3},{4},{5}]".F(c.Key, s.First, r.X, r.Y, r.Width, r.Height));
+						var r = s.Bounds;
+						if (c.Value.PanelSides.HasSide(s.PanelSides))
+							regions.Add("[\"{0}.<{1}>\",{2},{3},{4},{5}]".F(c.Key, s.PanelSides, r.X, r.Y, r.Width, r.Height));
 					}
 				}
 

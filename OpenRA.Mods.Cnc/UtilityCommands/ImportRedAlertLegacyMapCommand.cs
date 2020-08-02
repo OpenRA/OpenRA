@@ -17,7 +17,6 @@ using System.Text;
 using OpenRA.Mods.Cnc.FileFormats;
 using OpenRA.Mods.Common.FileFormats;
 using OpenRA.Mods.Common.UtilityCommands;
-using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Cnc.UtilityCommands
 {
@@ -52,17 +51,17 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			"fpls", "wcrate", "scrate", "barb", "sbag",
 		};
 
-		static Dictionary<string, Pair<byte, byte>> overlayResourceMapping = new Dictionary<string, Pair<byte, byte>>()
+		static Dictionary<string, (byte Type, byte Index)> overlayResourceMapping = new Dictionary<string, (byte, byte)>()
 		{
 			// RA ore & crystals
-			{ "gold01", new Pair<byte, byte>(1, 0) },
-			{ "gold02", new Pair<byte, byte>(1, 1) },
-			{ "gold03", new Pair<byte, byte>(1, 2) },
-			{ "gold04", new Pair<byte, byte>(1, 3) },
-			{ "gem01", new Pair<byte, byte>(2, 0) },
-			{ "gem02", new Pair<byte, byte>(2, 1) },
-			{ "gem03", new Pair<byte, byte>(2, 2) },
-			{ "gem04", new Pair<byte, byte>(2, 3) },
+			{ "gold01", (1, 0) },
+			{ "gold02", (1, 1) },
+			{ "gold03", (1, 2) },
+			{ "gold04", (1, 3) },
+			{ "gem01", (2, 0) },
+			{ "gem02", (2, 1) },
+			{ "gem03", (2, 2) },
+			{ "gem04", (2, 3) },
 		};
 
 		void UnpackTileData(MemoryStream ms)
@@ -101,13 +100,13 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 				for (var i = 0; i < MapSize; i++)
 				{
 					var o = ms.ReadUInt8();
-					var res = Pair.New((byte)0, (byte)0);
+					var res = (Type: (byte)0, Index: (byte)0);
 
 					if (o != 255 && overlayResourceMapping.ContainsKey(redAlertOverlayNames[o]))
 						res = overlayResourceMapping[redAlertOverlayNames[o]];
 
 					var cell = new CPos(i, j);
-					Map.Resources[cell] = new ResourceTile(res.First, res.Second);
+					Map.Resources[cell] = new ResourceTile(res.Type, res.Index);
 
 					if (o != 255 && overlayActors.Contains(redAlertOverlayNames[o]))
 					{

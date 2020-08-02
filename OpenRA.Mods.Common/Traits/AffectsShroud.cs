@@ -72,7 +72,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				// PERF: Reuse collection to avoid allocations.
 				footprint.UnionWith(self.OccupiesSpace.OccupiedCells()
-					.SelectMany(kv => Shroud.ProjectedCellsInRange(map, map.CenterOfCell(kv.First), minRange, maxRange, Info.MaxHeightDelta)));
+					.SelectMany(kv => Shroud.ProjectedCellsInRange(map, map.CenterOfCell(kv.Cell), minRange, maxRange, Info.MaxHeightDelta)));
 				var cells = footprint.ToArray();
 				footprint.Clear();
 				return cells;

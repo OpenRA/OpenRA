@@ -61,18 +61,18 @@ namespace OpenRA.Mods.Common.Warheads
 
 				var closestActiveShape = victim.TraitsImplementing<HitShape>()
 					.Where(Exts.IsTraitEnabled)
-					.Select(s => Pair.New(s, s.DistanceFromEdge(victim, pos)))
-					.MinByOrDefault(s => s.Second);
+					.Select(s => (HitShape: s, Distance: s.DistanceFromEdge(victim, pos)))
+					.MinByOrDefault(s => s.Distance);
 
 				// Cannot be damaged without an active HitShape.
-				if (closestActiveShape.First == null)
+				if (closestActiveShape.HitShape == null)
 					continue;
 
 				var falloffDistance = 0;
 				switch (DamageCalculationType)
 				{
 					case DamageCalculationType.HitShape:
-						falloffDistance = closestActiveShape.Second.Length;
+						falloffDistance = closestActiveShape.Distance.Length;
 						break;
 					case DamageCalculationType.ClosestTargetablePosition:
 						falloffDistance = victim.GetTargetablePositions().Select(x => (x - pos).Length).Min();
@@ -104,7 +104,7 @@ namespace OpenRA.Mods.Common.Warheads
 					ImpactOrientation = impactOrientation,
 				};
 
-				InflictDamage(victim, firedBy, closestActiveShape.First, updatedWarheadArgs);
+				InflictDamage(victim, firedBy, closestActiveShape.HitShape, updatedWarheadArgs);
 			}
 		}
 

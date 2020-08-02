@@ -13,7 +13,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
-using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -268,8 +267,8 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Actor self;
 		readonly BuildingInfluence influence;
 
-		Pair<CPos, SubCell>[] occupiedCells;
-		Pair<CPos, SubCell>[] targetableCells;
+		(CPos, SubCell)[] occupiedCells;
+		(CPos, SubCell)[] targetableCells;
 		CPos[] transitOnlyCells;
 
 		public CPos TopLeft { get { return topLeft; } }
@@ -283,21 +282,21 @@ namespace OpenRA.Mods.Common.Traits
 			influence = self.World.WorldActor.Trait<BuildingInfluence>();
 
 			occupiedCells = Info.OccupiedTiles(TopLeft)
-				.Select(c => Pair.New(c, SubCell.FullCell)).ToArray();
+				.Select(c => (c, SubCell.FullCell)).ToArray();
 
 			targetableCells = Info.FootprintTiles(TopLeft, FootprintCellType.Occupied)
-				.Select(c => Pair.New(c, SubCell.FullCell)).ToArray();
+				.Select(c => (c, SubCell.FullCell)).ToArray();
 
 			transitOnlyCells = Info.TransitOnlyTiles(TopLeft).ToArray();
 
 			CenterPosition = init.World.Map.CenterOfCell(topLeft) + Info.CenterOffset(init.World);
 		}
 
-		public Pair<CPos, SubCell>[] OccupiedCells() { return occupiedCells; }
+		public (CPos, SubCell)[] OccupiedCells() { return occupiedCells; }
 
 		public CPos[] TransitOnlyCells() { return transitOnlyCells; }
 
-		Pair<CPos, SubCell>[] ITargetableCells.TargetableCells() { return targetableCells; }
+		(CPos, SubCell)[] ITargetableCells.TargetableCells() { return targetableCells; }
 
 		void INotifyAddedToWorld.AddedToWorld(Actor self)
 		{

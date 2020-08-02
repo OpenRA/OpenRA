@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Traits
 		public bool IsInitialized { get; private set; }
 
 		readonly World world;
-		CellLayer<Pair<int, int>> terrainColor;
+		CellLayer<(int, int)> terrainColor;
 		readonly Shroud shroud;
 
 		public event Action<MPos> CellTerrainColorChanged = null;
@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void WorldLoaded(World w, WorldRenderer wr)
 		{
-			terrainColor = new CellLayer<Pair<int, int>>(w.Map);
+			terrainColor = new CellLayer<(int, int)>(w.Map);
 
 			w.AddFrameEndTask(_ =>
 			{
@@ -82,22 +82,22 @@ namespace OpenRA.Mods.Common.Traits
 			});
 		}
 
-		public Pair<int, int> this[MPos uv]
+		public (int Left, int Right) this[MPos uv]
 		{
 			get { return terrainColor[uv]; }
 		}
 
-		public static Pair<int, int> GetColor(Map map, MPos uv)
+		public static (int Left, int Right) GetColor(Map map, MPos uv)
 		{
 			var custom = map.CustomTerrain[uv];
 			if (custom != byte.MaxValue)
 			{
 				var c = map.Rules.TileSet[custom].Color.ToArgb();
-				return Pair.New(c, c);
+				return (c, c);
 			}
 
 			var tc = map.GetTerrainColorPair(uv);
-			return Pair.New(tc.First.ToArgb(), tc.Second.ToArgb());
+			return (tc.Left.ToArgb(), tc.Right.ToArgb());
 		}
 	}
 }

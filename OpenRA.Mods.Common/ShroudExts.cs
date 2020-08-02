@@ -9,18 +9,17 @@
  */
 #endregion
 
-using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common
 {
 	public static class ShroudExts
 	{
-		public static bool AnyExplored(this Shroud shroud, Pair<CPos, SubCell>[] cells)
+		public static bool AnyExplored(this Shroud shroud, (CPos Cell, SubCell SubCell)[] cells)
 		{
 			// PERF: Avoid LINQ.
 			foreach (var cell in cells)
-				if (shroud.IsExplored(cell.First))
+				if (shroud.IsExplored(cell.Cell))
 					return true;
 
 			return false;
@@ -36,11 +35,11 @@ namespace OpenRA.Mods.Common
 			return false;
 		}
 
-		public static bool AnyVisible(this Shroud shroud, Pair<CPos, SubCell>[] cells)
+		public static bool AnyVisible(this Shroud shroud, (CPos Cell, SubCell SubCell)[] cells)
 		{
 			// PERF: Avoid LINQ.
 			foreach (var cell in cells)
-				if (shroud.IsVisible(cell.First))
+				if (shroud.IsVisible(cell.Cell))
 					return true;
 
 			return false;

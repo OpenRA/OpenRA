@@ -211,7 +211,7 @@ namespace OpenRA.Mods.Common.Traits
 		INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyActorDisposing, INotifyBecomingIdle, ICreationActivity,
 		IActorPreviewInitModifier, IDeathActorInitModifier, IIssueDeployOrder, IIssueOrder, IResolveOrder, IOrderVoice
 	{
-		static readonly Pair<CPos, SubCell>[] NoCells = { };
+		static readonly (CPos, SubCell)[] NoCells = { };
 
 		readonly Actor self;
 
@@ -597,12 +597,12 @@ namespace OpenRA.Mods.Common.Traits
 			get { return !IsTraitDisabled && !IsTraitPaused ? Util.ApplyPercentageModifiers(Info.Speed, speedModifiers) : 0; }
 		}
 
-		public Pair<CPos, SubCell>[] OccupiedCells()
+		public (CPos Cell, SubCell SubCell)[] OccupiedCells()
 		{
 			if (!self.IsAtGroundLevel())
-				return landingCells.Select(c => Pair.New(c, SubCell.FullCell)).ToArray();
+				return landingCells.Select(c => (c, SubCell.FullCell)).ToArray();
 
-			return new[] { Pair.New(TopLeft, SubCell.FullCell) };
+			return new[] { (TopLeft, SubCell.FullCell) };
 		}
 
 		public WVec FlyStep(WAngle facing)

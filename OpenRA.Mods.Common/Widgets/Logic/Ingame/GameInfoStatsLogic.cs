@@ -66,10 +66,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			playerPanel.RemoveChildren();
 
 			var teams = world.Players.Where(p => !p.NonCombatant && p.Playable)
-				.Select(p => new Pair<Player, PlayerStatistics>(p, p.PlayerActor.TraitOrDefault<PlayerStatistics>()))
-				.OrderByDescending(p => p.Second != null ? p.Second.Experience : 0)
-				.GroupBy(p => (world.LobbyInfo.ClientWithIndex(p.First.ClientIndex) ?? new Session.Client()).Team)
-				.OrderByDescending(g => g.Sum(gg => gg.Second != null ? gg.Second.Experience : 0));
+				.Select(p => (Player: p, PlayerStatistics: p.PlayerActor.TraitOrDefault<PlayerStatistics>()))
+				.OrderByDescending(p => p.PlayerStatistics != null ? p.PlayerStatistics.Experience : 0)
+				.GroupBy(p => (world.LobbyInfo.ClientWithIndex(p.Player.ClientIndex) ?? new Session.Client()).Team)
+				.OrderByDescending(g => g.Sum(gg => gg.PlayerStatistics != null ? gg.PlayerStatistics.Experience : 0));
 
 			foreach (var t in teams)
 			{
@@ -79,7 +79,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					teamHeader.Get<LabelWidget>("TEAM").GetText = () => t.Key == 0 ? "No Team" : "Team {0}".F(t.Key);
 					var teamRating = teamHeader.Get<LabelWidget>("TEAM_SCORE");
 					var scoreCache = new CachedTransform<int, string>(s => s.ToString());
-					var teamMemberScores = t.Select(tt => tt.Second).Where(s => s != null).ToArray().Select(s => s.Experience);
+					var teamMemberScores = t.Select(tt => tt.PlayerStatistics).Where(s => s != null).ToArray().Select(s => s.Experience);
 					teamRating.GetText = () => scoreCache.Update(teamMemberScores.Sum());
 
 					playerPanel.AddChild(teamHeader);
@@ -87,7 +87,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				foreach (var p in t.ToList())
 				{
-					var pp = p.First;
+					var pp = p.Player;
 					var client = world.LobbyInfo.ClientWithIndex(pp.ClientIndex);
 					var item = playerTemplate.Clone();
 					LobbyUtils.SetupProfileWidget(item, client, orderManager, worldRenderer);
@@ -110,7 +110,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					}
 
 					var scoreCache = new CachedTransform<int, string>(s => s.ToString());
-					item.Get<LabelWidget>("SCORE").GetText = () => scoreCache.Update(p.Second != null ? p.Second.Experience : 0);
+					item.Get<LabelWidget>("SCORE").GetText = () => scoreCache.Update(p.PlayerStatistics != null ? p.PlayerStatistics.Experience : 0);
 
 					playerPanel.AddChild(item);
 				}
@@ -133,13 +133,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var nameFont = Game.Renderer.Fonts[nameLabel.Font];
 
 					var suffixLength = new CachedTransform<string, int>(s => nameFont.Measure(s).X);
-					var name = new CachedTransform<Pair<string, string>, string>(c =>
-						WidgetUtils.TruncateText(c.First, nameLabel.Bounds.Width - suffixLength.Update(c.Second), nameFont) + c.Second);
+					var name = new CachedTransform<(string Name, string Suffix), string>(c =>
+						WidgetUtils.TruncateText(c.Name, nameLabel.Bounds.Width - suffixLength.Update(c.Suffix), nameFont) + c.Suffix);
 
 					nameLabel.GetText = () =>
 					{
 						var suffix = client.State == Session.ClientState.Disconnected ? " (Gone)" : "";
-						return name.Update(Pair.New(client.Name, suffix));
+						return name.Update((client.Name, suffix));
 					};
 
 					var kickButton = item.Get<ButtonWidget>("KICK");

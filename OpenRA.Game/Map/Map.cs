@@ -662,7 +662,7 @@ namespace OpenRA
 			return dataStream.ToArray();
 		}
 
-		public Pair<Color, Color> GetTerrainColorPair(MPos uv)
+		public (Color Left, Color Right) GetTerrainColorPair(MPos uv)
 		{
 			Color left, right;
 			var tileset = Rules.TileSet;
@@ -687,7 +687,7 @@ namespace OpenRA
 			else
 				left = right = Color.Black;
 
-			return Pair.New(left, right);
+			return (left, right);
 		}
 
 		public byte[] SavePreview()
@@ -695,7 +695,7 @@ namespace OpenRA
 			var tileset = Rules.TileSet;
 			var actorTypes = Rules.Actors.Values.Where(a => a.HasTraitInfo<IMapPreviewSignatureInfo>());
 			var actors = ActorDefinitions.Where(a => actorTypes.Where(ai => ai.Name == a.Value.Value).Any());
-			var positions = new List<Pair<MPos, Color>>();
+			var positions = new List<(MPos Position, Color Color)>();
 			foreach (var actor in actors)
 			{
 				var s = new ActorReference(actor.Value.Value, actor.Value.ToDictionary());
@@ -729,7 +729,7 @@ namespace OpenRA
 				var stride = bitmapWidth * 4;
 				var pxStride = 4;
 				var minimapData = new byte[stride * height];
-				Pair<Color, Color> terrainColor = default(Pair<Color, Color>);
+				(Color Left, Color Right) terrainColor = default((Color, Color));
 
 				for (var y = 0; y < height; y++)
 				{
@@ -737,8 +737,8 @@ namespace OpenRA
 					{
 						var uv = new MPos(x + Bounds.Left, y + Bounds.Top);
 
-						// FirstOrDefault will return a Pair(MPos.Zero, Color.Transparent) if positions is empty
-						var actorColor = positions.FirstOrDefault(ap => ap.First == uv).Second;
+						// FirstOrDefault will return a (MPos.Zero, Color.Transparent) if positions is empty
+						var actorColor = positions.FirstOrDefault(ap => ap.Position == uv).Color;
 						if (actorColor.A == 0)
 							terrainColor = GetTerrainColorPair(uv);
 
@@ -750,7 +750,7 @@ namespace OpenRA
 							if (x + dx > 0)
 							{
 								var z = y * stride + xOffset - pxStride;
-								var c = actorColor.A == 0 ? terrainColor.First : actorColor;
+								var c = actorColor.A == 0 ? terrainColor.Left : actorColor;
 								minimapData[z++] = c.R;
 								minimapData[z++] = c.G;
 								minimapData[z++] = c.B;
@@ -760,7 +760,7 @@ namespace OpenRA
 							if (xOffset < stride)
 							{
 								var z = y * stride + xOffset;
-								var c = actorColor.A == 0 ? terrainColor.Second : actorColor;
+								var c = actorColor.A == 0 ? terrainColor.Right : actorColor;
 								minimapData[z++] = c.R;
 								minimapData[z++] = c.G;
 								minimapData[z++] = c.B;
@@ -770,7 +770,7 @@ namespace OpenRA
 						else
 						{
 							var z = y * stride + pxStride * x;
-							var c = actorColor.A == 0 ? terrainColor.First : actorColor;
+							var c = actorColor.A == 0 ? terrainColor.Left : actorColor;
 							minimapData[z++] = c.R;
 							minimapData[z++] = c.G;
 							minimapData[z++] = c.B;

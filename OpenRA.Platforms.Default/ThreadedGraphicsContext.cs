@@ -89,7 +89,7 @@ namespace OpenRA.Platforms.Default
 					getCreateFrameBuffer =
 						tuple =>
 						{
-							var t = (Tuple<Size, Color>)tuple;
+							var t = (ValueTuple<Size, Color>)tuple;
 							return new ThreadedFrameBuffer(this,
 								context.CreateFrameBuffer(t.Item1, (ITextureInternal)CreateTexture(), t.Item2));
 						};
@@ -98,13 +98,13 @@ namespace OpenRA.Platforms.Default
 					doDrawPrimitives =
 						 tuple =>
 						 {
-							 var t = (Tuple<PrimitiveType, int, int>)tuple;
+							 var t = (ValueTuple<PrimitiveType, int, int>)tuple;
 							 context.DrawPrimitives(t.Item1, t.Item2, t.Item3);
 						 };
 					doEnableScissor =
 						tuple =>
 						{
-							var t = (Tuple<int, int, int, int>)tuple;
+							var t = (ValueTuple<int, int, int, int>)tuple;
 							context.EnableScissor(t.Item1, t.Item2, t.Item3, t.Item4);
 						};
 					doSetBlendMode = mode => { context.SetBlendMode((BlendMode)mode); };
@@ -390,12 +390,12 @@ namespace OpenRA.Platforms.Default
 
 		public IFrameBuffer CreateFrameBuffer(Size s)
 		{
-			return Send(getCreateFrameBuffer, Tuple.Create(s, Color.FromArgb(0)));
+			return Send(getCreateFrameBuffer, (s, Color.FromArgb(0)));
 		}
 
 		public IFrameBuffer CreateFrameBuffer(Size s, Color clearColor)
 		{
-			return Send(getCreateFrameBuffer, Tuple.Create(s, clearColor));
+			return Send(getCreateFrameBuffer, (s, clearColor));
 		}
 
 		public IShader CreateShader(string name)
@@ -425,7 +425,7 @@ namespace OpenRA.Platforms.Default
 
 		public void DrawPrimitives(PrimitiveType type, int firstVertex, int numVertices)
 		{
-			Post(doDrawPrimitives, Tuple.Create(type, firstVertex, numVertices));
+			Post(doDrawPrimitives, (type, firstVertex, numVertices));
 		}
 
 		public void EnableDepthBuffer()
@@ -435,7 +435,7 @@ namespace OpenRA.Platforms.Default
 
 		public void EnableScissor(int left, int top, int width, int height)
 		{
-			Post(doEnableScissor, Tuple.Create(left, top, width, height));
+			Post(doEnableScissor, (left, top, width, height));
 		}
 
 		public void Present()
@@ -522,8 +522,8 @@ namespace OpenRA.Platforms.Default
 		{
 			this.device = device;
 			bind = vertexBuffer.Bind;
-			setData1 = tuple => { var t = (Tuple<Vertex[], int>)tuple; vertexBuffer.SetData(t.Item1, t.Item2); device.ReturnVertices(t.Item1); };
-			setData2 = tuple => { var t = (Tuple<IntPtr, int, int>)tuple; vertexBuffer.SetData(t.Item1, t.Item2, t.Item3); return null; };
+			setData1 = tuple => { var t = (ValueTuple<Vertex[], int>)tuple; vertexBuffer.SetData(t.Item1, t.Item2); device.ReturnVertices(t.Item1); };
+			setData2 = tuple => { var t = (ValueTuple<IntPtr, int, int>)tuple; vertexBuffer.SetData(t.Item1, t.Item2, t.Item3); return null; };
 			dispose = vertexBuffer.Dispose;
 		}
 
@@ -536,20 +536,20 @@ namespace OpenRA.Platforms.Default
 		{
 			var buffer = device.GetVertices(length);
 			Array.Copy(vertices, buffer, length);
-			device.Post(setData1, Tuple.Create(buffer, length));
+			device.Post(setData1, (buffer, length));
 		}
 
 		public void SetData(IntPtr data, int start, int length)
 		{
 			// We can't return until we are finished with the data, so we must Send here.
-			device.Send(setData2, Tuple.Create(data, start, length));
+			device.Send(setData2, (data, start, length));
 		}
 
 		public void SetData(Vertex[] vertices, int start, int length)
 		{
 			var buffer = device.GetVertices(length);
 			Array.Copy(vertices, start, buffer, 0, length);
-			device.Post(setData1, Tuple.Create(buffer, length));
+			device.Post(setData1, (buffer, length));
 		}
 
 		public void Dispose()
@@ -578,10 +578,10 @@ namespace OpenRA.Platforms.Default
 			getScaleFilter = () => texture.ScaleFilter;
 			setScaleFilter = value => texture.ScaleFilter = (TextureScaleFilter)value;
 			getSize = () => texture.Size;
-			setEmpty = tuple => { var t = (Tuple<int, int>)tuple; texture.SetEmpty(t.Item1, t.Item2); };
+			setEmpty = tuple => { var t = (ValueTuple<int, int>)tuple; texture.SetEmpty(t.Item1, t.Item2); };
 			getData = () => texture.GetData();
 			setData1 = colors => { texture.SetData((uint[,])colors); return null; };
-			setData2 = tuple => { var t = (Tuple<byte[], int, int>)tuple; texture.SetData(t.Item1, t.Item2, t.Item3); };
+			setData2 = tuple => { var t = (ValueTuple<byte[], int, int>)tuple; texture.SetData(t.Item1, t.Item2, t.Item3); };
 			dispose = texture.Dispose;
 		}
 
@@ -616,7 +616,7 @@ namespace OpenRA.Platforms.Default
 
 		public void SetEmpty(int width, int height)
 		{
-			device.Post(setEmpty, Tuple.Create(width, height));
+			device.Post(setEmpty, (width, height));
 		}
 
 		public byte[] GetData()
@@ -636,7 +636,7 @@ namespace OpenRA.Platforms.Default
 			// but allows us post a message instead of blocking the message queue by sending it.
 			var temp = new byte[colors.Length];
 			Array.Copy(colors, temp, temp.Length);
-			device.Post(setData2, Tuple.Create(temp, width, height));
+			device.Post(setData2, (temp, width, height));
 		}
 
 		public void Dispose()
@@ -661,13 +661,13 @@ namespace OpenRA.Platforms.Default
 		{
 			this.device = device;
 			prepareRender = shader.PrepareRender;
-			setBool = tuple => { var t = (Tuple<string, bool>)tuple; shader.SetBool(t.Item1, t.Item2); };
-			setMatrix = tuple => { var t = (Tuple<string, float[]>)tuple; shader.SetMatrix(t.Item1, t.Item2); };
-			setTexture = tuple => { var t = (Tuple<string, ITexture>)tuple; shader.SetTexture(t.Item1, t.Item2); };
-			setVec1 = tuple => { var t = (Tuple<string, float>)tuple; shader.SetVec(t.Item1, t.Item2); };
-			setVec2 = tuple => { var t = (Tuple<string, float[], int>)tuple; shader.SetVec(t.Item1, t.Item2, t.Item3); };
-			setVec3 = tuple => { var t = (Tuple<string, float, float>)tuple; shader.SetVec(t.Item1, t.Item2, t.Item3); };
-			setVec4 = tuple => { var t = (Tuple<string, float, float, float>)tuple; shader.SetVec(t.Item1, t.Item2, t.Item3, t.Item4); };
+			setBool = tuple => { var t = (ValueTuple<string, bool>)tuple; shader.SetBool(t.Item1, t.Item2); };
+			setMatrix = tuple => { var t = (ValueTuple<string, float[]>)tuple; shader.SetMatrix(t.Item1, t.Item2); };
+			setTexture = tuple => { var t = (ValueTuple<string, ITexture>)tuple; shader.SetTexture(t.Item1, t.Item2); };
+			setVec1 = tuple => { var t = (ValueTuple<string, float>)tuple; shader.SetVec(t.Item1, t.Item2); };
+			setVec2 = tuple => { var t = (ValueTuple<string, float[], int>)tuple; shader.SetVec(t.Item1, t.Item2, t.Item3); };
+			setVec3 = tuple => { var t = (ValueTuple<string, float, float>)tuple; shader.SetVec(t.Item1, t.Item2, t.Item3); };
+			setVec4 = tuple => { var t = (ValueTuple<string, float, float, float>)tuple; shader.SetVec(t.Item1, t.Item2, t.Item3, t.Item4); };
 		}
 
 		public void PrepareRender()
@@ -677,37 +677,37 @@ namespace OpenRA.Platforms.Default
 
 		public void SetBool(string name, bool value)
 		{
-			device.Post(setBool, Tuple.Create(name, value));
+			device.Post(setBool, (name, value));
 		}
 
 		public void SetMatrix(string param, float[] mtx)
 		{
-			device.Post(setMatrix, Tuple.Create(param, mtx));
+			device.Post(setMatrix, (param, mtx));
 		}
 
 		public void SetTexture(string param, ITexture texture)
 		{
-			device.Post(setTexture, Tuple.Create(param, texture));
+			device.Post(setTexture, (param, texture));
 		}
 
 		public void SetVec(string name, float x)
 		{
-			device.Post(setVec1, Tuple.Create(name, x));
+			device.Post(setVec1, (name, x));
 		}
 
 		public void SetVec(string name, float[] vec, int length)
 		{
-			device.Post(setVec2, Tuple.Create(name, vec, length));
+			device.Post(setVec2, (name, vec, length));
 		}
 
 		public void SetVec(string name, float x, float y)
 		{
-			device.Post(setVec3, Tuple.Create(name, x, y));
+			device.Post(setVec3, (name, x, y));
 		}
 
 		public void SetVec(string name, float x, float y, float z)
 		{
-			device.Post(setVec4, Tuple.Create(name, x, y, z));
+			device.Post(setVec4, (name, x, y, z));
 		}
 	}
 }

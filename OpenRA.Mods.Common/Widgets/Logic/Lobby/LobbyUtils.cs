@@ -162,15 +162,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		}
 
 		/// <summary>Splits a string into two parts on the first instance of a given token.</summary>
-		static Pair<string, string> SplitOnFirstToken(string input, string token = "\\n")
+		static (string First, string Second) SplitOnFirstToken(string input, string token = "\\n")
 		{
 			if (string.IsNullOrEmpty(input))
-				return Pair.New<string, string>(null, null);
+				return (null, null);
 
 			var split = input.IndexOf(token, StringComparison.Ordinal);
 			var first = split > 0 ? input.Substring(0, split) : input;
 			var second = split > 0 ? input.Substring(split + token.Length) : null;
-			return Pair.New(first, second);
+			return (first, second);
 		}
 
 		public static void ShowFactionDropDown(DropDownButtonWidget dropdown, Session.Client client,
@@ -253,9 +253,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var spawnSize = ChromeProvider.GetImage("lobby-bits", "spawn-unclaimed").Size.XY;
 			var selectedSpawn = preview.SpawnPoints
-				.Select((sp, i) => Pair.New(mapPreview.ConvertToPreview(sp, preview.GridType), i))
-				.Where(a => ((a.First - mi.Location).ToFloat2() / spawnSize * 2).LengthSquared <= 1)
-				.Select(a => a.Second + 1)
+				.Select((sp, i) => (SpawnLocation: mapPreview.ConvertToPreview(sp, preview.GridType), Index: i))
+				.Where(a => ((a.SpawnLocation - mi.Location).ToFloat2() / spawnSize * 2).LengthSquared <= 1)
+				.Select(a => a.Index + 1)
 				.FirstOrDefault();
 
 			var locals = orderManager.LobbyInfo.Clients.Where(c => c.Index == orderManager.LocalClient.Index || (Game.IsHost && c.Bot != null));

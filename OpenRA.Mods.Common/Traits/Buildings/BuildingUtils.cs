@@ -54,13 +54,13 @@ namespace OpenRA.Mods.Common.Traits
 					world.IsCellBuildable(t, ai, bi, toIgnore));
 		}
 
-		public static IEnumerable<Pair<CPos, Actor>> GetLineBuildCells(World world, CPos cell, ActorInfo ai, BuildingInfo bi, Player owner)
+		public static IEnumerable<(CPos Cell, Actor Actor)> GetLineBuildCells(World world, CPos cell, ActorInfo ai, BuildingInfo bi, Player owner)
 		{
 			var lbi = ai.TraitInfo<LineBuildInfo>();
 			var topLeft = cell;	// 1x1 assumption!
 
 			if (world.IsCellBuildable(topLeft, ai, bi))
-				yield return Pair.New<CPos, Actor>(topLeft, null);
+				yield return (topLeft, null);
 
 			// Start at place location, search outwards
 			// TODO: First make it work, then make it nice
@@ -91,7 +91,7 @@ namespace OpenRA.Mods.Common.Traits
 				// Place intermediate-line sections
 				if (dirs[d] > 0)
 					for (var i = 1; i < dirs[d]; i++)
-						yield return Pair.New(topLeft + i * vecs[d], connectors[d]);
+						yield return (topLeft + i * vecs[d], connectors[d]);
 			}
 		}
 	}

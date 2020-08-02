@@ -315,11 +315,11 @@ namespace OpenRA.Mods.Common.Traits
 			return nodes;
 		}
 
-		public void PopulateRadarSignatureCells(Actor self, List<Pair<CPos, Color>> destinationBuffer)
+		public void PopulateRadarSignatureCells(Actor self, List<(CPos Cell, Color Color)> destinationBuffer)
 		{
 			foreach (var previewsForCell in cellMap)
 				foreach (var preview in previewsForCell.Value)
-					destinationBuffer.Add(Pair.New(previewsForCell.Key, preview.RadarColor));
+					destinationBuffer.Add((previewsForCell.Key, preview.RadarColor));
 		}
 
 		public EditorActorPreview this[string id]

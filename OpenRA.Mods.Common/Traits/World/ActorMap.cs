@@ -359,20 +359,20 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			foreach (var c in ios.OccupiedCells())
 			{
-				var uv = c.First.ToMPos(map);
+				var uv = c.Cell.ToMPos(map);
 				if (!influence.Contains(uv))
 					continue;
 
-				var layer = c.First.Layer == 0 ? influence : customInfluence[c.First.Layer];
-				layer[uv] = new InfluenceNode { Next = layer[uv], SubCell = c.Second, Actor = self };
+				var layer = c.Cell.Layer == 0 ? influence : customInfluence[c.Cell.Layer];
+				layer[uv] = new InfluenceNode { Next = layer[uv], SubCell = c.SubCell, Actor = self };
 
 				List<CellTrigger> triggers;
-				if (cellTriggerInfluence.TryGetValue(c.First, out triggers))
+				if (cellTriggerInfluence.TryGetValue(c.Cell, out triggers))
 					foreach (var t in triggers)
 						t.Dirty = true;
 
 				if (CellUpdated != null)
-					CellUpdated(c.First);
+					CellUpdated(c.Cell);
 			}
 		}
 
@@ -380,22 +380,22 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			foreach (var c in ios.OccupiedCells())
 			{
-				var uv = c.First.ToMPos(map);
+				var uv = c.Cell.ToMPos(map);
 				if (!influence.Contains(uv))
 					continue;
 
-				var layer = c.First.Layer == 0 ? influence : customInfluence[c.First.Layer];
+				var layer = c.Cell.Layer == 0 ? influence : customInfluence[c.Cell.Layer];
 				var temp = layer[uv];
 				RemoveInfluenceInner(ref temp, self);
 				layer[uv] = temp;
 
 				List<CellTrigger> triggers;
-				if (cellTriggerInfluence.TryGetValue(c.First, out triggers))
+				if (cellTriggerInfluence.TryGetValue(c.Cell, out triggers))
 					foreach (var t in triggers)
 						t.Dirty = true;
 
 				if (CellUpdated != null)
-					CellUpdated(c.First);
+					CellUpdated(c.Cell);
 			}
 		}
 
@@ -416,7 +416,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			foreach (var c in ios.OccupiedCells())
-				CellUpdated(c.First);
+				CellUpdated(c.Cell);
 		}
 
 		void ITick.Tick(Actor self)

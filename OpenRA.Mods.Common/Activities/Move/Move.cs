@@ -201,16 +201,16 @@ namespace OpenRA.Mods.Common.Activities
 			if (nextCell == null)
 				return false;
 
-			var firstFacing = self.World.Map.FacingBetween(mobile.FromCell, nextCell.Value.First, mobile.Facing);
+			var firstFacing = self.World.Map.FacingBetween(mobile.FromCell, nextCell.Value.Cell, mobile.Facing);
 			if (firstFacing != mobile.Facing)
 			{
-				path.Add(nextCell.Value.First);
+				path.Add(nextCell.Value.Cell);
 				QueueChild(new Turn(self, firstFacing));
 				mobile.TurnToMove = true;
 				return false;
 			}
 
-			mobile.SetLocation(mobile.FromCell, mobile.FromSubCell, nextCell.Value.First, nextCell.Value.Second);
+			mobile.SetLocation(mobile.FromCell, mobile.FromSubCell, nextCell.Value.Cell, nextCell.Value.SubCell);
 
 			var map = self.World.Map;
 			var from = (mobile.FromCell.Layer == 0 ? map.CenterOfCell(mobile.FromCell) :
@@ -224,7 +224,7 @@ namespace OpenRA.Mods.Common.Activities
 			return false;
 		}
 
-		Pair<CPos, SubCell>? PopPath(Actor self)
+		(CPos Cell, SubCell SubCell)? PopPath(Actor self)
 		{
 			if (path.Count == 0)
 				return null;
@@ -310,7 +310,7 @@ namespace OpenRA.Mods.Common.Activities
 					var newCell = path[path.Count - 1];
 					path.RemoveAt(path.Count - 1);
 
-					return Pair.New(newCell, mobile.GetAvailableSubCell(nextCell, mobile.FromSubCell, ignoreActor));
+					return (newCell, mobile.GetAvailableSubCell(nextCell, mobile.FromSubCell, ignoreActor));
 				}
 				else if (mobile.IsBlocking)
 				{
@@ -321,7 +321,7 @@ namespace OpenRA.Mods.Common.Activities
 						if ((nextCell - newCell).Value.LengthSquared > 2)
 							path.Add(mobile.ToCell);
 
-						return Pair.New(newCell.Value, mobile.GetAvailableSubCell(newCell.Value, mobile.FromSubCell, ignoreActor));
+						return (newCell.Value, mobile.GetAvailableSubCell(newCell.Value, mobile.FromSubCell, ignoreActor));
 					}
 				}
 
@@ -331,7 +331,7 @@ namespace OpenRA.Mods.Common.Activities
 			hasWaited = false;
 			path.RemoveAt(path.Count - 1);
 
-			return Pair.New(nextCell, mobile.GetAvailableSubCell(nextCell, mobile.FromSubCell, ignoreActor));
+			return (nextCell, mobile.GetAvailableSubCell(nextCell, mobile.FromSubCell, ignoreActor));
 		}
 
 		protected override void OnLastRun(Actor self)
@@ -518,23 +518,23 @@ namespace OpenRA.Mods.Common.Activities
 				var nextCell = parent.PopPath(self);
 				if (nextCell != null)
 				{
-					if (!mobile.IsTraitPaused && !mobile.IsTraitDisabled && IsTurn(mobile, nextCell.Value.First, map))
+					if (!mobile.IsTraitPaused && !mobile.IsTraitDisabled && IsTurn(mobile, nextCell.Value.Cell, map))
 					{
-						var nextSubcellOffset = map.Grid.OffsetOfSubCell(nextCell.Value.Second);
+						var nextSubcellOffset = map.Grid.OffsetOfSubCell(nextCell.Value.SubCell);
 						var ret = new MoveFirstHalf(
 							Move,
 							Util.BetweenCells(self.World, mobile.FromCell, mobile.ToCell) + (fromSubcellOffset + toSubcellOffset) / 2,
-							Util.BetweenCells(self.World, mobile.ToCell, nextCell.Value.First) + (toSubcellOffset + nextSubcellOffset) / 2,
+							Util.BetweenCells(self.World, mobile.ToCell, nextCell.Value.Cell) + (toSubcellOffset + nextSubcellOffset) / 2,
 							mobile.Facing,
-							map.FacingBetween(mobile.ToCell, nextCell.Value.First, mobile.Facing),
+							map.FacingBetween(mobile.ToCell, nextCell.Value.Cell, mobile.Facing),
 							moveFraction - MoveFractionTotal);
 
 						mobile.FinishedMoving(self);
-						mobile.SetLocation(mobile.ToCell, mobile.ToSubCell, nextCell.Value.First, nextCell.Value.Second);
+						mobile.SetLocation(mobile.ToCell, mobile.ToSubCell, nextCell.Value.Cell, nextCell.Value.SubCell);
 						return ret;
 					}
 
-					parent.path.Add(nextCell.Value.First);
+					parent.path.Add(nextCell.Value.Cell);
 				}
 
 				var toPos = mobile.ToCell.Layer == 0 ? map.CenterOfCell(mobile.ToCell) :

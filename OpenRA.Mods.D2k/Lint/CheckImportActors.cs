@@ -21,8 +21,8 @@ namespace OpenRA.Mods.D2k.Lint
 		{
 			foreach (var actorData in D2kMapImporter.ActorDataByActorCode.Values)
 			{
-				if (!rules.Actors.ContainsKey(actorData.First))
-					emitError("Undefined actor {0} in map import code.".F(actorData.First));
+				if (!rules.Actors.ContainsKey(actorData.Actor))
+					emitError("Undefined actor {0} in map import code.".F(actorData.Actor));
 			}
 		}
 	}

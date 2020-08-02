@@ -17,7 +17,7 @@ using OpenRA.FileSystem;
 
 namespace OpenRA.Mods.Common.UpdateRules
 {
-	using YamlFileSet = List<Tuple<IReadWritePackage, string, List<MiniYamlNode>>>;
+	using YamlFileSet = List<(IReadWritePackage, string, List<MiniYamlNode>)>;
 
 	public static class UpdateUtils
 	{
@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 					continue;
 				}
 
-				yaml.Add(Tuple.Create((IReadWritePackage)package, name, MiniYaml.FromStream(package.GetStream(name), name, false)));
+				yaml.Add(((IReadWritePackage)package, name, MiniYaml.FromStream(package.GetStream(name), name, false)));
 			}
 
 			return yaml;
@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 		{
 			var fileSet = new YamlFileSet()
 			{
-				Tuple.Create<IReadWritePackage, string, List<MiniYamlNode>>(null, "map.yaml", yaml.Nodes)
+				(null, "map.yaml", yaml.Nodes)
 			};
 
 			var files = FieldLoader.GetValue<string[]>("value", yaml.Value);
@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 			{
 				// Ignore any files that aren't in the map bundle
 				if (!filename.Contains("|") && mapPackage.Contains(filename))
-					fileSet.Add(Tuple.Create(mapPackage, filename, MiniYaml.FromStream(mapPackage.GetStream(filename), filename, false)));
+					fileSet.Add((mapPackage, filename, MiniYaml.FromStream(mapPackage.GetStream(filename), filename, false)));
 				else if (modData.ModFiles.Exists(filename))
 					externalFilenames.Add(filename);
 			}
@@ -97,7 +97,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				}
 
 				var yaml = new MiniYaml(null, MiniYaml.FromStream(mapStream, mapPackage.Name, false));
-				files = new YamlFileSet() { Tuple.Create(mapPackage, "map.yaml", yaml.Nodes) };
+				files = new YamlFileSet() { (mapPackage, "map.yaml", yaml.Nodes) };
 
 				manualSteps.AddRange(rule.BeforeUpdate(modData));
 
@@ -106,7 +106,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				{
 					var mapActors = new YamlFileSet()
 					{
-						Tuple.Create<IReadWritePackage, string, List<MiniYamlNode>>(null, "map.yaml", mapActorsNode.Value.Nodes)
+						(null, "map.yaml", mapActorsNode.Value.Nodes)
 					};
 
 					manualSteps.AddRange(ApplyTopLevelTransform(modData, mapActors, rule.UpdateMapActorNode));

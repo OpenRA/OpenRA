@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Scripting
 		public Actor[] TargetParatroopers(WPos target, WAngle? facing = null)
 		{
 			var actors = pp.SendParatroopers(Self, target, facing);
-			return actors.First;
+			return actors.Aircraft;
 		}
 
 		[Desc("Activate the actor's Paratroopers Power. Returns the aircraft that will drop the reinforcements. DEPRECATED! Will be removed.")]
@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Scripting
 		{
 			Game.Debug("SendParatroopersFrom is deprecated. Use TargetParatroopers instead.");
 			var actors = pp.SendParatroopers(Self, target, facing == -1 ? (WAngle?)null : WAngle.FromFacing(facing));
-			return actors.First;
+			return actors.Aircraft;
 		}
 	}
 }

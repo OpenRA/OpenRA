@@ -14,7 +14,6 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
-using OpenRA.Primitives;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -26,22 +25,22 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		// Increment the version number when adding new stats
 		const int SystemInformationVersion = 4;
 
-		static Dictionary<string, Pair<string, string>> GetSystemInformation()
+		static Dictionary<string, (string Label, string Value)> GetSystemInformation()
 		{
 			var lang = CultureInfo.InstalledUICulture.TwoLetterISOLanguageName;
-			return new Dictionary<string, Pair<string, string>>()
+			return new Dictionary<string, (string, string)>()
 			{
-				{ "id", Pair.New("Anonymous ID", Game.Settings.Debug.UUID) },
-				{ "platform", Pair.New("OS Type", Platform.CurrentPlatform.ToString()) },
-				{ "os", Pair.New("OS Version", Environment.OSVersion.ToString()) },
-				{ "x64", Pair.New("OS is 64 bit", Environment.Is64BitOperatingSystem.ToString()) },
-				{ "x64process", Pair.New("Process is 64 bit", Environment.Is64BitProcess.ToString()) },
-				{ "runtime", Pair.New(".NET Runtime", Platform.RuntimeVersion) },
-				{ "gl", Pair.New("OpenGL Version", Game.Renderer.GLVersion) },
-				{ "windowsize", Pair.New("Window Size", "{0}x{1}".F(Game.Renderer.NativeResolution.Width, Game.Renderer.NativeResolution.Height)) },
-				{ "windowscale", Pair.New("Window Scale", Game.Renderer.NativeWindowScale.ToString("F2", CultureInfo.InvariantCulture)) },
-				{ "uiscale", Pair.New("UI Scale", Game.Settings.Graphics.UIScale.ToString("F2", CultureInfo.InvariantCulture)) },
-				{ "lang", Pair.New("System Language", lang) }
+				{ "id", ("Anonymous ID", Game.Settings.Debug.UUID) },
+				{ "platform", ("OS Type", Platform.CurrentPlatform.ToString()) },
+				{ "os", ("OS Version", Environment.OSVersion.ToString()) },
+				{ "x64", ("OS is 64 bit", Environment.Is64BitOperatingSystem.ToString()) },
+				{ "x64process", ("Process is 64 bit", Environment.Is64BitProcess.ToString()) },
+				{ "runtime", (".NET Runtime", Platform.RuntimeVersion) },
+				{ "gl", ("OpenGL Version", Game.Renderer.GLVersion) },
+				{ "windowsize", ("Window Size", "{0}x{1}".F(Game.Renderer.NativeResolution.Width, Game.Renderer.NativeResolution.Height)) },
+				{ "windowscale", ("Window Scale", Game.Renderer.NativeWindowScale.ToString("F2", CultureInfo.InvariantCulture)) },
+				{ "uiscale", ("UI Scale", Game.Settings.Graphics.UIScale.ToString("F2", CultureInfo.InvariantCulture)) },
+				{ "lang", ("System Language", lang) }
 			};
 		}
 
@@ -57,7 +56,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			return "&sysinfoversion={0}&".F(SystemInformationVersion)
 			       + GetSystemInformation()
-				       .Select(kv => kv.Key + "=" + Uri.EscapeUriString(kv.Value.Second))
+				       .Select(kv => kv.Key + "=" + Uri.EscapeUriString(kv.Value.Value))
 				       .JoinWith("&");
 		}
 
@@ -75,7 +74,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			foreach (var info in GetSystemInformation().Values)
 			{
 				var label = template.Clone() as LabelWidget;
-				var text = info.First + ": " + info.Second;
+				var text = info.Label + ": " + info.Value;
 				label.GetText = () => text;
 				sysInfoData.AddChild(label);
 			}

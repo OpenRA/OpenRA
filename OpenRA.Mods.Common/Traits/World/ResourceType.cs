@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Allow resource to spawn on ramp tiles.")]
 		public readonly bool AllowOnRamps = false;
 
-		void IMapPreviewSignatureInfo.PopulateMapPreviewSignatureCells(Map map, ActorInfo ai, ActorReference s, List<Pair<MPos, Color>> destinationBuffer)
+		void IMapPreviewSignatureInfo.PopulateMapPreviewSignatureCells(Map map, ActorInfo ai, ActorReference s, List<(MPos, Color)> destinationBuffer)
 		{
 			var tileSet = map.Rules.TileSet;
 			var color = tileSet[tileSet.GetTerrainIndex(TerrainType)].Color;
@@ -74,7 +74,7 @@ namespace OpenRA.Mods.Common.Traits
 				{
 					var cell = new MPos(i, j);
 					if (map.Resources[cell].Type == ResourceType)
-						destinationBuffer.Add(new Pair<MPos, Color>(cell, color));
+						destinationBuffer.Add((cell, color));
 				}
 			}
 		}

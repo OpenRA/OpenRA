@@ -87,12 +87,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 	public class RenderSprites : IRender, ITick, INotifyOwnerChanged, INotifyEffectiveOwnerChanged, IActorPreviewInitModifier
 	{
-		static readonly Pair<DamageState, string>[] DamagePrefixes =
+		static readonly (DamageState DamageState, string Prefix)[] DamagePrefixes =
 		{
-			Pair.New(DamageState.Critical, "critical-"),
-			Pair.New(DamageState.Heavy, "damaged-"),
-			Pair.New(DamageState.Medium, "scratched-"),
-			Pair.New(DamageState.Light, "scuffed-")
+			(DamageState.Critical, "critical-"),
+			(DamageState.Heavy, "damaged-"),
+			(DamageState.Medium, "scratched-"),
+			(DamageState.Light, "scuffed-")
 		};
 
 		class AnimationWrapper
@@ -251,9 +251,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 			// Remove existing damage prefix
 			foreach (var s in DamagePrefixes)
 			{
-				if (sequence.StartsWith(s.Second, StringComparison.Ordinal))
+				if (sequence.StartsWith(s.Prefix, StringComparison.Ordinal))
 				{
-					sequence = sequence.Substring(s.Second.Length);
+					sequence = sequence.Substring(s.Prefix.Length);
 					break;
 				}
 			}
@@ -267,8 +267,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 			sequence = UnnormalizeSequence(sequence);
 
 			foreach (var s in DamagePrefixes)
-				if (state >= s.First && anim.HasSequence(s.Second + sequence))
-					return s.Second + sequence;
+				if (state >= s.DamageState && anim.HasSequence(s.Prefix + sequence))
+					return s.Prefix + sequence;
 
 			return sequence;
 		}

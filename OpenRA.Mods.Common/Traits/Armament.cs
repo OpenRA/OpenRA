@@ -127,7 +127,7 @@ namespace OpenRA.Mods.Common.Traits
 		int currentBarrel;
 		int barrelCount;
 
-		List<Pair<int, Action>> delayedActions = new List<Pair<int, Action>>();
+		List<(int Ticks, Action Func)> delayedActions = new List<(int, Action)>();
 
 		public WDist Recoil;
 		public int FireDelay { get; protected set; }
@@ -211,12 +211,12 @@ namespace OpenRA.Mods.Common.Traits
 			for (var i = 0; i < delayedActions.Count; i++)
 			{
 				var x = delayedActions[i];
-				if (--x.First <= 0)
-					x.Second();
+				if (--x.Ticks <= 0)
+					x.Func();
 				delayedActions[i] = x;
 			}
 
-			delayedActions.RemoveAll(a => a.First <= 0);
+			delayedActions.RemoveAll(a => a.Ticks <= 0);
 		}
 
 		void ITick.Tick(Actor self)
@@ -228,7 +228,7 @@ namespace OpenRA.Mods.Common.Traits
 		protected void ScheduleDelayedAction(int t, Action a)
 		{
 			if (t > 0)
-				delayedActions.Add(Pair.New(t, a));
+				delayedActions.Add((t, a));
 			else
 				a();
 		}

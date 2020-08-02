@@ -116,7 +116,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var dest = new CellRegion(gridType, source.TopLeft + offset, source.BottomRight + offset);
 
 			var previews = new Dictionary<string, ActorReference>();
-			var tiles = new Dictionary<CPos, Tuple<TerrainTile, ResourceTile, byte>>();
+			var tiles = new Dictionary<CPos, (TerrainTile, ResourceTile, byte)>();
 			var copyFilters = getCopyFilters();
 
 			foreach (var cell in source)
@@ -124,7 +124,7 @@ namespace OpenRA.Mods.Common.Widgets
 				if (!mapTiles.Contains(cell) || !mapTiles.Contains(cell + offset))
 					continue;
 
-				tiles.Add(cell + offset, Tuple.Create(mapTiles[cell], mapResources[cell], mapHeight[cell]));
+				tiles.Add(cell + offset, (mapTiles[cell], mapResources[cell], mapHeight[cell]));
 
 				if (copyFilters.HasFlag(MapCopyFilters.Actors))
 				{
@@ -178,7 +178,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public string Text { get; private set; }
 
 		readonly MapCopyFilters copyFilters;
-		readonly Dictionary<CPos, Tuple<TerrainTile, ResourceTile, byte>> tiles;
+		readonly Dictionary<CPos, (TerrainTile Tile, ResourceTile Resource, byte Height)> tiles;
 		readonly Dictionary<string, ActorReference> previews;
 		readonly EditorActorLayer editorLayer;
 		readonly CellRegion dest;
@@ -191,7 +191,7 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly Queue<EditorActorPreview> addedActorPreviews = new Queue<EditorActorPreview>();
 
 		public CopyPasteEditorAction(MapCopyFilters copyFilters, Map map,
-			Dictionary<CPos, Tuple<TerrainTile, ResourceTile, byte>> tiles, Dictionary<string, ActorReference> previews,
+			Dictionary<CPos, (TerrainTile, ResourceTile, byte)> tiles, Dictionary<string, ActorReference> previews,
 			EditorActorLayer editorLayer, CellRegion dest)
 		{
 			this.copyFilters = copyFilters;
@@ -219,12 +219,12 @@ namespace OpenRA.Mods.Common.Widgets
 				undoCopyPastes.Enqueue(new UndoCopyPaste(kv.Key, mapTiles[kv.Key], mapResources[kv.Key], mapHeight[kv.Key]));
 
 				if (copyFilters.HasFlag(MapCopyFilters.Terrain))
-					mapTiles[kv.Key] = kv.Value.Item1;
+					mapTiles[kv.Key] = kv.Value.Tile;
 
 				if (copyFilters.HasFlag(MapCopyFilters.Resources))
-					mapResources[kv.Key] = kv.Value.Item2;
+					mapResources[kv.Key] = kv.Value.Resource;
 
-				mapHeight[kv.Key] = kv.Value.Item3;
+				mapHeight[kv.Key] = kv.Value.Height;
 			}
 
 			if (copyFilters.HasFlag(MapCopyFilters.Actors))

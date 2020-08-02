@@ -87,7 +87,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				var category = catAttr != null ? catAttr.Category : "Unsorted";
 
 				var required = RequiredTraitNames(cg);
-				return ScriptMemberWrapper.WrappableMembers(cg).Select(mi => Tuple.Create(category, mi, required));
+				return ScriptMemberWrapper.WrappableMembers(cg).Select(mi => (category, mi, required));
 			}).GroupBy(g => g.Item1).OrderBy(g => g.Key);
 
 			foreach (var kv in actorCategories)
@@ -132,7 +132,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				var category = catAttr != null ? catAttr.Category : "Unsorted";
 
 				var required = RequiredTraitNames(cg);
-				return ScriptMemberWrapper.WrappableMembers(cg).Select(mi => Tuple.Create(category, mi, required));
+				return ScriptMemberWrapper.WrappableMembers(cg).Select(mi => (category, mi, required));
 			}).GroupBy(g => g.Item1).OrderBy(g => g.Key);
 
 			foreach (var kv in playerCategories)
