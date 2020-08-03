@@ -266,7 +266,8 @@ namespace OpenRA.Mods.Common.Traits
 			get
 			{
 				// Require at least one refinery, unless we can't build it.
-				return AIUtils.CountBuildingByCommonName(Info.RefineryTypes, player) >= MinimumRefineryCount ||
+				return !Info.RefineryTypes.Any() ||
+					AIUtils.CountBuildingByCommonName(Info.RefineryTypes, player) >= MinimumRefineryCount ||
 					AIUtils.CountBuildingByCommonName(Info.PowerTypes, player) == 0 ||
 					AIUtils.CountBuildingByCommonName(Info.ConstructionYardTypes, player) == 0;
 			}
