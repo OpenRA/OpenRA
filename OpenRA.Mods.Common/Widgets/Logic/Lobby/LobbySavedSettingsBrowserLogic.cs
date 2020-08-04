@@ -183,7 +183,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			if (Directory.Exists(baseSavePath))
 			{
-				var saveFiles = Directory.GetFiles(baseSavePath, "*.yaml", SearchOption.AllDirectories)
+				var saveFiles = Directory.GetFiles(baseSavePath, "*.yaml", SearchOption.TopDirectoryOnly)
 					.OrderByDescending(p => File.GetLastWriteTime(p))
 					.ToList();
 
@@ -224,7 +224,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var globalSettings = orderManager.LobbyInfo.GlobalSettings.Serialize();
 			var options = globalSettings.Value.ToDictionary()["Options"];
-			var unlockedOptions = options.Nodes.FindAll(optionYaml => optionYaml.Value.ToDictionary()["IsLocked"].Value == "False");
+			var unlockedOptions = options.Nodes.FindAll(optionYaml => optionYaml.Value.ToDictionary()["IsLocked"].Value.ToLower() == "false");
 			var optionsYaml = new List<MiniYamlNode>()
 			{
 				new MiniYamlNode(SettingsKeyMapId, map.Uid),
