@@ -528,7 +528,7 @@ namespace OpenRA
 		{
 			// PERF: Avoid LINQ.
 			foreach (var targetable in Targetables)
-				if (targetable.IsTraitEnabled() && targetable.TargetableBy(this, byActor))
+				if (targetable.TargetableBy(this, byActor))
 					return true;
 
 			return false;
