@@ -72,6 +72,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new ReplaceFacingAngles(),
 				new RenameSelfHealing(),
 				new ReplaceBurns(),
+				new RemoveMuzzleSplitFacings(),
 			})
 		};
 

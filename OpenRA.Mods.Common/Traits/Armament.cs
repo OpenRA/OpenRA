@@ -53,15 +53,13 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Recoil recovery per-frame")]
 		public readonly WDist RecoilRecovery = new WDist(9);
 
+		[SequenceReference]
 		[Desc("Muzzle flash sequence to render")]
 		public readonly string MuzzleSequence = null;
 
 		[PaletteReference]
 		[Desc("Palette to render Muzzle flash sequence in")]
 		public readonly string MuzzlePalette = "effect";
-
-		[Desc("Use multiple muzzle images if non-zero")]
-		public readonly int MuzzleSplitFacings = 0;
 
 		[GrantedConditionReference]
 		[Desc("Condition to grant while reloading.")]

@@ -30,7 +30,6 @@ BGGY:
 		LocalOffset: 0,-61,543, 0,61,543
 		MuzzleSequence: muzzle
 		MuzzlePalette: effect-ignore-lighting
-		MuzzleSplitFacings: 8
 	AttackFrontal:
 		Voice: Attack
 		PauseOnCondition: empdisable
