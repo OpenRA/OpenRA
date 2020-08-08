@@ -105,16 +105,27 @@ bike:
 bggy:
 	Inherits: ^VehicleOverlays
 	Defaults:
-		Length: *
 		Offset: 0, 0, 24
-	muzzle0: mgun-n
-	muzzle1: mgun-nw
-	muzzle2: mgun-w
-	muzzle3: mgun-sw
-	muzzle4: mgun-s
-	muzzle5: mgun-se
-	muzzle6: mgun-e
-	muzzle7: mgun-ne
+	muzzle:
+		Combine:
+			mgun-n:
+				Length: 6
+			mgun-nw:
+				Length: 6
+			mgun-w:
+				Length: 6
+			mgun-sw:
+				Length: 6
+			mgun-s:
+				Length: 6
+			mgun-se:
+				Length: 6
+			mgun-e:
+				Length: 6
+			mgun-ne:
+				Length: 6
+		Facings: 8
+		Length: 6
 	icon: bggyicon
 		Offset: 0, 0
 

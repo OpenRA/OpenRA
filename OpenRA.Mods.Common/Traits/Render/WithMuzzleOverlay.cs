@@ -76,9 +76,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 				return;
 
 			var sequence = a.Info.MuzzleSequence;
-			if (a.Info.MuzzleSplitFacings > 0)
-				sequence += Util.IndexFacing(getFacing(), a.Info.MuzzleSplitFacings).ToString();
-
 			visible[barrel] = true;
 			anims[barrel].Animation.PlayThen(sequence, () => visible[barrel] = false);
 		}

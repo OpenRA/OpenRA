@@ -173,10 +173,6 @@ namespace OpenRA.Mods.Common.Traits
 					// Muzzle facing is fixed once the firing starts
 					var muzzleAnim = new Animation(self.World, paxRender[a.Actor].GetImage(a.Actor), () => targetYaw);
 					var sequence = a.Info.MuzzleSequence;
-
-					if (a.Info.MuzzleSplitFacings > 0)
-						sequence += Util.IndexFacing(targetYaw, a.Info.MuzzleSplitFacings).ToString();
-
 					var muzzleFlash = new AnimationWithOffset(muzzleAnim,
 						() => PortOffset(self, port),
 						() => false,

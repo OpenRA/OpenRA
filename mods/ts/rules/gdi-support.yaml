@@ -96,7 +96,6 @@ GACTWR:
 		LocalOffset: 588,120,1358
 		MuzzleSequence: muzzle
 		MuzzlePalette: effect-ignore-lighting
-		MuzzleSplitFacings: 8
 	Armament@VULCSECONDARY:
 		RequiresCondition: tower.vulcan
 		Name: secondary
@@ -104,7 +103,6 @@ GACTWR:
 		LocalOffset: 588,-120,1358
 		MuzzleSequence: muzzle
 		MuzzlePalette: effect-ignore-lighting
-		MuzzleSplitFacings: 8
 	Armament@ROCKET:
 		RequiresCondition: tower.rocket
 		Weapon: RPGTower
