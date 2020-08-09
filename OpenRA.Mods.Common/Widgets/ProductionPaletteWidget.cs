@@ -151,9 +151,6 @@ namespace OpenRA.Mods.Common.Widgets
 			cantBuild = new Animation(world, NotBuildableAnimation);
 			cantBuild.PlayFetchIndex(NotBuildableSequence, () => 0);
 			clock = new Animation(world, ClockAnimation);
-
-			overlayFont = Game.Renderer.Fonts[OverlayFont];
-			Game.Renderer.Fonts.TryGetValue(SymbolsFont, out symbolFont);
 		}
 
 		public override void Initialize(WidgetArgs args)
@@ -162,6 +159,9 @@ namespace OpenRA.Mods.Common.Widgets
 
 			hotkeys = Exts.MakeArray(HotkeyCount,
 				i => modData.Hotkeys[HotkeyPrefix + (i + 1).ToString("D2")]);
+
+			overlayFont = Game.Renderer.Fonts[OverlayFont];
+			Game.Renderer.Fonts.TryGetValue(SymbolsFont, out symbolFont);
 		}
 
 		public void ScrollDown()
