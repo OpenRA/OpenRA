@@ -101,8 +101,18 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public ProductionQueue CurrentQueue
 		{
-			get { return currentQueue; }
-			set { currentQueue = value; RefreshIcons(); }
+			get
+			{
+				return currentQueue;
+			}
+			set
+			{
+				currentQueue = value;
+				if (currentQueue != null)
+					UpdateCachedProductionIconOverlays();
+
+				RefreshIcons();
+			}
 		}
 
 		public override Rectangle EventBounds { get { return eventBounds; } }
@@ -114,6 +124,9 @@ namespace OpenRA.Mods.Common.Widgets
 
 		SpriteFont overlayFont, symbolFont;
 		float2 iconOffset, holdOffset, readyOffset, timeOffset, queuedOffset, infiniteOffset;
+
+		Player cachedQueueOwner;
+		IProductionIconOverlay[] pios;
 
 		[CustomLintableHotkeyNames]
 		public static IEnumerable<string> LinterHotkeyNames(MiniYamlNode widgetNode, Action<string> emitError, Action<string> emitWarning)
@@ -225,7 +238,12 @@ namespace OpenRA.Mods.Common.Widgets
 				CurrentQueue = null;
 
 			if (CurrentQueue != null)
+			{
+				if (CurrentQueue.Actor.Owner != cachedQueueOwner)
+					UpdateCachedProductionIconOverlays();
+
 				RefreshIcons();
+			}
 		}
 
 		public override void MouseEntered()
@@ -413,6 +431,12 @@ namespace OpenRA.Mods.Common.Widgets
 			return true;
 		}
 
+		void UpdateCachedProductionIconOverlays()
+		{
+			cachedQueueOwner = CurrentQueue.Actor.Owner;
+			pios = cachedQueueOwner.PlayerActor.TraitsImplementing<IProductionIconOverlay>().ToArray();
+		}
+
 		public void RefreshIcons()
 		{
 			icons = new Dictionary<Rectangle, ProductionIcon>();
@@ -479,8 +503,6 @@ namespace OpenRA.Mods.Common.Widgets
 				return;
 
 			var buildableItems = CurrentQueue.BuildableItems();
-
-			var pios = currentQueue.Actor.Owner.PlayerActor.TraitsImplementing<IProductionIconOverlay>();
 
 			// Icons
 			Game.Renderer.EnableAntialiasingFilter();
