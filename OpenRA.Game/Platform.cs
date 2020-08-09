@@ -12,6 +12,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 
 namespace OpenRA
@@ -221,8 +222,17 @@ namespace OpenRA
 			if (path.StartsWith(SupportDir, compare))
 				path = SupportDirPrefix + path.Substring(SupportDir.Length);
 
-			if (path.StartsWith(GameDir, compare))
-				path = "./" + path.Substring(GameDir.Length);
+			if (Game.ModData == null)
+			{
+				if (path.StartsWith(GameDir, compare))
+					path = "./" + path.Substring(GameDir.Length);
+			}
+			else
+			{
+				var modDir = Game.ModData.ModFiles.MountedPackages.First(m => m.Contains("mod.yaml")).Name;
+				if (path.StartsWith(modDir, compare))
+					path = "." + path.Substring(modDir.Length);
+			}
 
 			if (CurrentPlatform == PlatformType.Windows)
 				path = path.Replace('\\', '/');
