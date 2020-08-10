@@ -306,35 +306,26 @@ namespace OpenRA.Mods.Common.Traits
 
 		void TryToRushAttack(IBot bot)
 		{
-			var allEnemyBaseBuilder = AIUtils.FindEnemiesByCommonName(Info.ConstructionYardTypes, Player);
+			// Note that Rush Squad is almost the same as Assuslt Squad at present.
+			// The meaning of this squad now is not rushing everything to a basebuilder with bugs,
+			// instead, it keeps two squads at bay which is isolated to each other for a bot player,
+			// and performance friendly, while Rush Squad tend to aimming at basebuilder.
+			var randomizedSquadSize = Info.SquadSize + World.LocalRandom.Next(Info.SquadSizeRandomBonus);
 
-			// TODO: This should use common names & ExcludeFromSquads instead of hardcoding TraitInfo checks
-			var ownUnits = activeUnits
-				.Where(unit => unit.IsIdle && unit.Info.HasTraitInfo<AttackBaseInfo>()
-					&& !unit.Info.HasTraitInfo<AircraftInfo>() && !Info.NavalUnitsTypes.Contains(unit.Info.Name) && !unit.Info.HasTraitInfo<HarvesterInfo>()).ToList();
-
-			if (!allEnemyBaseBuilder.Any() || ownUnits.Count < Info.SquadSize)
+			if (unitsHangingAroundTheBase.Count < randomizedSquadSize)
 				return;
 
-			foreach (var b in allEnemyBaseBuilder)
-			{
-				// Don't rush enemy aircraft!
-				var enemies = World.FindActorsInCircle(b.CenterPosition, WDist.FromCells(Info.RushAttackScanRadius))
-					.Where(unit => IsPreferredEnemyUnit(unit) && unit.Info.HasTraitInfo<AttackBaseInfo>() && !unit.Info.HasTraitInfo<AircraftInfo>() && !Info.NavalUnitsTypes.Contains(unit.Info.Name)).ToList();
+			var attackForce = RegisterNewSquad(bot, SquadType.Rush);
 
-				if (AttackOrFleeFuzzy.Rush.CanAttack(ownUnits, enemies))
-				{
-					var target = enemies.Any() ? enemies.Random(World.LocalRandom) : b;
-					var rush = GetSquadOfType(SquadType.Rush);
-					if (rush == null)
-						rush = RegisterNewSquad(bot, SquadType.Rush, target);
+			foreach (var a in unitsHangingAroundTheBase)
+				if (!a.Info.HasTraitInfo<AircraftInfo>() && !Info.NavalUnitsTypes.Contains(a.Info.Name))
+					attackForce.Units.Add(a);
+			var enemybase = AIUtils.FindEnemiesByCommonName(Info.ConstructionYardTypes, Player).Random(World.LocalRandom);
+			attackForce.TargetActor = enemybase;
 
-					foreach (var a3 in ownUnits)
-						rush.Units.Add(a3);
-
-					return;
-				}
-			}
+			unitsHangingAroundTheBase.Clear();
+			foreach (var n in notifyIdleBaseUnits)
+				n.UpdatedIdleBaseUnits(unitsHangingAroundTheBase);
 		}
 
 		void ProtectOwn(IBot bot, Actor attacker)
