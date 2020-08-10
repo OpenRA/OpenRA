@@ -675,3 +675,91 @@ podring:
 	idle:
 		Frames: 0, 0, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19
 		Length: *
+
+^waterfall:
+	idle:
+		ZRamp: 1
+		UseTilesetExtension: true
+		Length: 7
+		Start: 1
+		Tick: 200
+
+wa01x:
+	Inherits: ^waterfall
+	idle:
+		Offset: -9, 54
+
+wa02x:
+	Inherits: ^waterfall
+	idle:
+		Offset: -39, 39
+
+wa03x:
+	Inherits: ^waterfall
+	idle:
+		Offset: -26, 47
+
+wa04x:
+	Inherits: ^waterfall
+	idle:
+		Offset: -38, 37
+
+wb01x:
+	Inherits: ^waterfall
+	idle:
+		Offset: 30, 43
+
+wb02x:
+	Inherits: ^waterfall
+	idle:
+		Offset: 43, 38
+
+wb03x:
+	Inherits: ^waterfall
+	idle:
+		Offset: 29, 49
+
+wb04x:
+	Inherits: ^waterfall
+	idle:
+		Offset: 9, 56
+
+wc01x:
+	Inherits: ^waterfall
+	idle:
+		Offset: -2, 19
+
+wc02x:
+	Inherits: ^waterfall
+	idle:
+		Offset: 5, -6
+
+wc03x:
+	Inherits: ^waterfall
+	idle:
+		Offset: 14, 1
+
+wc04x:
+	Inherits: ^waterfall
+	idle:
+		Offset: -41, -5
+
+wd01x:
+	Inherits: ^waterfall
+	idle:
+		Offset: -8, -4
+
+wd02x:
+	Inherits: ^waterfall
+	idle:
+		Offset: -2, -9
+
+wd03x:
+	Inherits: ^waterfall
+	idle:
+		Offset: -17, 2
+
+wd04x:
+	Inherits: ^waterfall
+	idle:
+		Offset: 2, 20

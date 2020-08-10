@@ -237,6 +237,86 @@
 	CliffBackImpassabilityLayer:
 	SubterraneanActorLayer:
 	JumpjetActorLayer:
+	TerrainTileOverlay@WA01X:
+		Tileset: TEMPERATE
+		Tile: 435
+		Index: 0
+		Image: wa01x
+	TerrainTileOverlay@WA02X:
+		Tileset: TEMPERATE
+		Tile: 436
+		Index: 0
+		Image: wa02x
+	TerrainTileOverlay@WA03X:
+		Tileset: TEMPERATE
+		Tile: 437
+		Index: 0
+		Image: wa03x
+	TerrainTileOverlay@WA04X:
+		Tileset: TEMPERATE
+		Tile: 438
+		Index: 0
+		Image: wa04x
+	TerrainTileOverlay@WB01X:
+		Tileset: TEMPERATE
+		Tile: 680
+		Index: 0
+		Image: wb01x
+	TerrainTileOverlay@WB02X:
+		Tileset: TEMPERATE
+		Tile: 681
+		Index: 0
+		Image: wb02x
+	TerrainTileOverlay@WB03X:
+		Tileset: TEMPERATE
+		Tile: 682
+		Index: 0
+		Image: wb03x
+	TerrainTileOverlay@WB04X:
+		Tileset: TEMPERATE
+		Tile: 683
+		Index: 0
+		Image: wb04x
+	TerrainTileOverlay@WC01X:
+		Tileset: TEMPERATE
+		Tile: 684
+		Index: 0
+		Image: wc01x
+	TerrainTileOverlay@WC02X:
+		Tileset: TEMPERATE
+		Tile: 685
+		Index: 0
+		Image: wc02x
+	TerrainTileOverlay@WC03X:
+		Tileset: TEMPERATE
+		Tile: 686
+		Index: 0
+		Image: wc03x
+	TerrainTileOverlay@WC04X:
+		Tileset: TEMPERATE
+		Tile: 687
+		Index: 1
+		Image: wc04x
+	TerrainTileOverlay@WD01X:
+		Tileset: TEMPERATE
+		Tile: 688
+		Index: 1
+		Image: wd01x
+	TerrainTileOverlay@WD02X:
+		Tileset: TEMPERATE
+		Tile: 689
+		Index: 0
+		Image: wd02x
+	TerrainTileOverlay@WD03X:
+		Tileset: TEMPERATE
+		Tile: 690
+		Index: 0
+		Image: wd03x
+	TerrainTileOverlay@WD04X:
+		Tileset: TEMPERATE
+		Tile: 691
+		Index: 0
+		Image: wd04x
 
 World:
 	Inherits: ^BaseWorld
