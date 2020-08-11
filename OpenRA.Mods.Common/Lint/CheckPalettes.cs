@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Lint
 		List<string> palettes = new List<string>();
 		List<string> playerPalettes = new List<string>();
 
-		public void Run(Action<string> emitError, Action<string> emitWarning, Ruleset rules)
+		public void Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Ruleset rules)
 		{
 			GetPalettes(emitError, rules);
 

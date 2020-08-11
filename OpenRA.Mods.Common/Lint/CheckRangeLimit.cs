@@ -16,7 +16,7 @@ namespace OpenRA.Mods.Common.Lint
 {
 	class CheckRangeLimit : ILintRulesPass
 	{
-		public void Run(Action<string> emitError, Action<string> emitWarning, Ruleset rules)
+		public void Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Ruleset rules)
 		{
 			foreach (var weaponInfo in rules.Weapons)
 			{

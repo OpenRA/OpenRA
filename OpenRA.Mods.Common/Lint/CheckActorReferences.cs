@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Lint
 	{
 		Action<string> emitError;
 
-		public void Run(Action<string> emitError, Action<string> emitWarning, Ruleset rules)
+		public void Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Ruleset rules)
 		{
 			this.emitError = emitError;
 

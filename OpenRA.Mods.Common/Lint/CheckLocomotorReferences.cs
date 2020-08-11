@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Lint
 {
 	public class CheckLocomotorReferences : ILintRulesPass
 	{
-		public void Run(Action<string> emitError, Action<string> emitWarning, Ruleset rules)
+		public void Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Ruleset rules)
 		{
 			var worldActor = rules.Actors["world"];
 			var locomotorInfos = worldActor.TraitInfos<LocomotorInfo>().ToArray();
