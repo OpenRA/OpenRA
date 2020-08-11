@@ -17,7 +17,7 @@ namespace OpenRA.Mods.D2k.Lint
 {
 	public class CheckImportActors : ILintRulesPass
 	{
-		public void Run(Action<string> emitError, Action<string> emitWarning, Ruleset rules)
+		public void Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Ruleset rules)
 		{
 			foreach (var actorData in D2kMapImporter.ActorDataByActorCode.Values)
 			{

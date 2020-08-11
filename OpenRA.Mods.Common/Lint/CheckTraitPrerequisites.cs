@@ -16,7 +16,7 @@ namespace OpenRA.Mods.Common.Lint
 {
 	public class CheckTraitPrerequisites : ILintRulesPass
 	{
-		public void Run(Action<string> emitError, Action<string> emitWarning, Ruleset rules)
+		public void Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Ruleset rules)
 		{
 			foreach (var actorInfo in rules.Actors)
 			{

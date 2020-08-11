@@ -134,7 +134,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				try
 				{
 					var customRulesPass = (ILintRulesPass)modData.ObjectCreator.CreateBasic(customRulesPassType);
-					customRulesPass.Run(EmitError, EmitWarning, rules);
+					customRulesPass.Run(EmitError, EmitWarning, modData, rules);
 				}
 				catch (Exception e)
 				{
