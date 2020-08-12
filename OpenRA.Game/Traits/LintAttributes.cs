@@ -13,8 +13,6 @@ using System;
 
 namespace OpenRA.Traits
 {
-	/* attributes used by OpenRA.Lint to understand the rules */
-
 	[AttributeUsage(AttributeTargets.Field)]
 	public sealed class ActorReferenceAttribute : Attribute
 	{
@@ -27,28 +25,6 @@ namespace OpenRA.Traits
 
 	[AttributeUsage(AttributeTargets.Field)]
 	public sealed class WeaponReferenceAttribute : Attribute { }
-
-	[AttributeUsage(AttributeTargets.Field)]
-	public sealed class VoiceSetReferenceAttribute : Attribute { }
-
-	[AttributeUsage(AttributeTargets.Field)]
-	public sealed class VoiceReferenceAttribute : Attribute { }
-
-	[AttributeUsage(AttributeTargets.Field)]
-	public sealed class LocomotorReferenceAttribute : Attribute { }
-
-	[AttributeUsage(AttributeTargets.Field)]
-	public sealed class NotificationReferenceAttribute : Attribute
-	{
-		public readonly string NotificationTypeFieldName = null;
-		public readonly string NotificationType = null;
-
-		public NotificationReferenceAttribute(string type = null, string typeFromField = null)
-		{
-			NotificationType = type;
-			NotificationTypeFieldName = typeFromField;
-		}
-	}
 
 	[AttributeUsage(AttributeTargets.Field)]
 	public sealed class SequenceReferenceAttribute : Attribute
