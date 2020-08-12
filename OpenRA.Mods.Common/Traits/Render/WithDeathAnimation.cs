@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 	[Desc("This actor has a death animation.")]
 	public class WithDeathAnimationInfo : ConditionalTraitInfo, Requires<RenderSpritesInfo>
 	{
-		[SequenceReference(null, true)]
+		[SequenceReference(prefix: true)]
 		[Desc("Sequence prefix to play when this actor is killed by a warhead.")]
 		public readonly string DeathSequence = "die";
 

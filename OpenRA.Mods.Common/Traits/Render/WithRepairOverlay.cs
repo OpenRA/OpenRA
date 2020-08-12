@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 	[Desc("Displays an overlay when the building is being repaired by the player.")]
 	public class WithRepairOverlayInfo : PausableConditionalTraitInfo, Requires<RenderSpritesInfo>, Requires<BodyOrientationInfo>
 	{
-		[SequenceReference("Image")]
+		[SequenceReference]
 		[Desc("Sequence to use upon repair beginning.")]
 		public readonly string StartSequence = null;
 
@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Sequence name to play once during repair intervals or repeatedly if a start sequence is set.")]
 		public readonly string Sequence = "active";
 
-		[SequenceReference("Image")]
+		[SequenceReference]
 		[Desc("Sequence to use after repairing has finished.")]
 		public readonly string EndSequence = null;
 

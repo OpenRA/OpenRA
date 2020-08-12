@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Muzzle offset modifier to apply while prone.")]
 		public readonly WVec ProneOffset = new WVec(500, 0, 0);
 
-		[SequenceReference(null, true)]
+		[SequenceReference(prefix: true)]
 		[Desc("Sequence prefix to apply while prone.")]
 		public readonly string ProneSequencePrefix = "prone-";
 
