@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Sequence used for full pips that aren't defined in ResourceSequences.")]
 		public readonly string FullSequence = "pip-green";
 
-		// TODO: [SequenceReference] isn't smart enough to use Dictionaries.
+		[SequenceReference("Image", dictionaryReference: LintDictionaryReference.Values)]
 		[Desc("Pip sequence to use for specific resource types.")]
 		public readonly Dictionary<string, string> ResourceSequences = new Dictionary<string, string>();
 

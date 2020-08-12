@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[SequenceReference]
 		public readonly string DefaultAttackSequence = null;
 
-		// TODO: [SequenceReference] isn't smart enough to use Dictionaries.
+		[SequenceReference(dictionaryReference: LintDictionaryReference.Values)]
 		[Desc("Attack sequence to use for each armament.")]
 		public readonly Dictionary<string, string> AttackSequences = new Dictionary<string, string>();
 

@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Sequence used for full pips that aren't defined in CustomPipSequences.")]
 		public readonly string FullSequence = "pip-green";
 
-		// TODO: [SequenceReference] isn't smart enough to use Dictionaries.
+		[SequenceReference("Image", dictionaryReference: LintDictionaryReference.Values)]
 		[Desc("Pip sequence to use for specific passenger actors.")]
 		public readonly Dictionary<string, string> CustomPipSequences = new Dictionary<string, string>();
 
