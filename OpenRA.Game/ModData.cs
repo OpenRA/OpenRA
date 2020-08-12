@@ -79,7 +79,6 @@ namespace OpenRA
 				throw new InvalidOperationException("Unable to find a sequence loader for type '{0}'.".F(sequenceFormat.Type));
 
 			SpriteSequenceLoader = (ISpriteSequenceLoader)sequenceCtor.Invoke(new[] { this });
-			SpriteSequenceLoader.OnMissingSpriteError = s => Log.Write("debug", s);
 
 			var modelFormat = Manifest.Get<ModelSequenceFormat>();
 			var modelLoader = ObjectCreator.FindType(modelFormat.Type + "Loader");

@@ -40,7 +40,6 @@ namespace OpenRA.Mods.Common.Graphics
 
 	public class DefaultSpriteSequenceLoader : ISpriteSequenceLoader
 	{
-		public Action<string> OnMissingSpriteError { get; set; }
 		public DefaultSpriteSequenceLoader(ModData modData) { }
 
 		public virtual ISpriteSequence CreateSequence(ModData modData, TileSet tileSet, SpriteCache cache, string sequence, string animation, MiniYaml info)
@@ -80,14 +79,43 @@ namespace OpenRA.Mods.Common.Graphics
 					}
 					catch (FileNotFoundException ex)
 					{
-						// Eat the FileNotFound exceptions from missing sprites
-						OnMissingSpriteError(ex.Message);
+						// Defer exception until something tries to access the sequence
+						// This allows the asset installer and OpenRA.Utility to load the game without having the actor assets
+						sequences.Add(kvp.Key, new FileNotFoundSequence(ex));
 					}
 				}
 			}
 
 			return new ReadOnlyDictionary<string, ISpriteSequence>(sequences);
 		}
+	}
+
+	public class FileNotFoundSequence : ISpriteSequence
+	{
+		readonly FileNotFoundException exception;
+
+		public FileNotFoundSequence(FileNotFoundException exception)
+		{
+			this.exception = exception;
+		}
+
+		public string Filename { get { return exception.FileName; } }
+
+		string ISpriteSequence.Name { get { throw exception; } }
+		int ISpriteSequence.Start { get { throw exception; } }
+		int ISpriteSequence.Length { get { throw exception; } }
+		int ISpriteSequence.Stride { get { throw exception; } }
+		int ISpriteSequence.Facings { get { throw exception; } }
+		int ISpriteSequence.Tick { get { throw exception; } }
+		int ISpriteSequence.ZOffset { get { throw exception; } }
+		int ISpriteSequence.ShadowStart { get { throw exception; } }
+		int ISpriteSequence.ShadowZOffset { get { throw exception; } }
+		int[] ISpriteSequence.Frames { get { throw exception; } }
+		Rectangle ISpriteSequence.Bounds { get { throw exception; } }
+		bool ISpriteSequence.IgnoreWorldTint { get { throw exception; } }
+		Sprite ISpriteSequence.GetSprite(int frame) { throw exception; }
+		Sprite ISpriteSequence.GetSprite(int frame, WAngle facing) { throw exception; }
+		Sprite ISpriteSequence.GetShadow(int frame, WAngle facing) { throw exception; }
 	}
 
 	public class DefaultSpriteSequence : ISpriteSequence

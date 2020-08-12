@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Impact animation.")]
 		public readonly string HitAnim = null;
 
-		[SequenceReference("HitAnim")]
+		[SequenceReference("HitAnim", allowNullImage: true)]
 		[Desc("Sequence of impact animation to use.")]
 		public readonly string HitAnimSequence = "idle";
 
@@ -88,7 +88,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Image containing launch effect sequence.")]
 		public readonly string LaunchEffectImage = null;
 
-		[SequenceReference("LaunchEffectImage")]
+		[SequenceReference("LaunchEffectImage", allowNullImage: true)]
 		[Desc("Launch effect sequence to play.")]
 		public readonly string LaunchEffectSequence = null;
 

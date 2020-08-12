@@ -41,7 +41,6 @@ namespace OpenRA.Graphics
 
 	public interface ISpriteSequenceLoader
 	{
-		Action<string> OnMissingSpriteError { get; set; }
 		IReadOnlyDictionary<string, ISpriteSequence> ParseSequences(ModData modData, TileSet tileSet, SpriteCache cache, MiniYamlNode node);
 	}
 
@@ -79,6 +78,8 @@ namespace OpenRA.Graphics
 			return seq;
 		}
 
+		public IEnumerable<string> Images { get { return sequences.Value.Keys; } }
+
 		public bool HasSequence(string unitName)
 		{
 			return sequences.Value.ContainsKey(unitName);
@@ -104,10 +105,11 @@ namespace OpenRA.Graphics
 		{
 			var nodes = MiniYaml.Load(fileSystem, modData.Manifest.Sequences, additionalSequences);
 			var items = new Dictionary<string, UnitSequences>();
-			foreach (var n in nodes)
+			foreach (var node in nodes)
 			{
-				// Work around the loop closure issue in older versions of C#
-				var node = n;
+				// Nodes starting with ^ are inheritable but never loaded directly
+				if (node.Key.StartsWith(ActorInfo.AbstractActorPrefix, StringComparison.Ordinal))
+					continue;
 
 				var key = node.Value.ToLines(node.Key).JoinWith("|");
 

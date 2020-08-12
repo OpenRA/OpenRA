@@ -24,10 +24,10 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Width (in pixels) of the rallypoint line.")]
 		public readonly int LineWidth = 1;
 
-		[SequenceReference("Image")]
+		[SequenceReference("Image", allowNullImage: true)]
 		public readonly string FlagSequence = "flag";
 
-		[SequenceReference("Image")]
+		[SequenceReference("Image", allowNullImage: true)]
 		public readonly string CirclesSequence = "circles";
 
 		[Desc("Cursor to display when rally point can be set.")]

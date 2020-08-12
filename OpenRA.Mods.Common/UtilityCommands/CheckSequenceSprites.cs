@@ -10,12 +10,11 @@
 #endregion
 
 using System;
-using System.Linq;
-using OpenRA.Graphics;
+using OpenRA.Mods.Common.Graphics;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
-	class CheckSquenceSprites : IUtilityCommand
+	class CheckSequenceSprites : IUtilityCommand
 	{
 		string IUtilityCommand.Name { get { return "--check-sequence-sprites"; } }
 
@@ -29,18 +28,22 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		{
 			// HACK: The engine code assumes that Game.modData is set.
 			var modData = Game.ModData = utility.ModData;
-
 			var failed = false;
-			modData.SpriteSequenceLoader.OnMissingSpriteError = s => { Console.WriteLine("\t" + s); failed = true; };
-
-			foreach (var t in modData.Manifest.TileSets)
+			foreach (var kv in modData.DefaultSequences)
 			{
-				var ts = new TileSet(modData.DefaultFileSystem, t);
-				Console.WriteLine("Tileset: " + ts.Name);
-				var sc = new SpriteCache(modData.DefaultFileSystem, modData.SpriteLoaders);
-				var nodes = MiniYaml.Merge(modData.Manifest.Sequences.Select(s => MiniYaml.FromStream(modData.DefaultFileSystem.Open(s), s)));
-				foreach (var n in nodes.Where(node => !node.Key.StartsWith(ActorInfo.AbstractActorPrefix, StringComparison.Ordinal)))
-					modData.SpriteSequenceLoader.ParseSequences(modData, ts, sc, n);
+				Console.WriteLine("Tileset: " + kv.Key);
+				foreach (var image in kv.Value.Images)
+				{
+					foreach (var sequence in kv.Value.Sequences(image))
+					{
+						var s = kv.Value.GetSequence(image, sequence) as FileNotFoundSequence;
+						if (s != null)
+						{
+							Console.WriteLine("\tSequence `{0}.{1}` references sprite `{2}` that does not exist.", image, sequence, s.Filename);
+							failed = true;
+						}
+					}
+				}
 			}
 
 			if (failed)
