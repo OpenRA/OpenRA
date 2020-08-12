@@ -32,8 +32,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Image for the level up sprite.")]
 		public readonly string LevelUpImage = null;
 
-		[SequenceReference("Image")]
-		[Desc("Sequence for the level up sprite. Needs to be present on Image.")]
+		[SequenceReference("LevelUpImage")]
+		[Desc("Sequence for the level up sprite. Needs to be present on LevelUpImage.")]
 		public readonly string LevelUpSequence = "levelup";
 
 		[PaletteReference]

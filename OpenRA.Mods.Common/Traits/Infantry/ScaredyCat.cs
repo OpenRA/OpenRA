@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Chance (out of 100) the unit has to enter panic mode when attacking.")]
 		public readonly int AttackPanicChance = 20;
 
-		[SequenceReference(null, true)]
+		[SequenceReference(prefix: true)]
 		public readonly string PanicSequencePrefix = "panic-";
 
 		public override object Create(ActorInitializer init) { return new ScaredyCat(init.Self, this); }

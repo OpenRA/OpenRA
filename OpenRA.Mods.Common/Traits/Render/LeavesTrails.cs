@@ -20,6 +20,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 	[Desc("Renders a sprite effect when leaving a cell.")]
 	public class LeavesTrailsInfo : ConditionalTraitInfo
 	{
+		[FieldLoader.Require]
 		public readonly string Image = null;
 
 		[SequenceReference("Image")]

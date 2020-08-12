@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public readonly string EntryEffect = "podring";
 
 		[Desc("Effect sequence to display in the air.")]
-		[SequenceReference("Effect")]
+		[SequenceReference("EntryEffect")]
 		public readonly string EntryEffectSequence = "idle";
 
 		[PaletteReference]
