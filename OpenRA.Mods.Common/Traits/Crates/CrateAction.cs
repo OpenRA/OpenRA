@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Image containing the crate effect animation sequence.")]
 		public readonly string Image = "crate-effects";
 
-		[SequenceReference("Image")]
+		[SequenceReference("Image", allowNullImage: true)]
 		[Desc("Animation sequence played when collected. Leave empty for no effect.")]
 		public readonly string Sequence = null;
 

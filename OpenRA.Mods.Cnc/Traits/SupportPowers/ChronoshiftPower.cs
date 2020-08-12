@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		public readonly string FootprintImage = "overlay";
 
-		[SequenceReference("FootprintImage", true)]
+		[SequenceReference("FootprintImage", prefix: true)]
 		public readonly string ValidFootprintSequence = "target-valid";
 
 		[SequenceReference("FootprintImage")]

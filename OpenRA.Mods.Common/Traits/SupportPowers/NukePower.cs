@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Trail animation.")]
 		public readonly string TrailImage = null;
 
-		[SequenceReference("TrailImage")]
+		[SequenceReference("TrailImage", allowNullImage: true)]
 		[Desc("Loop a randomly chosen sequence of TrailImage from this list while this projectile is moving.")]
 		public readonly string[] TrailSequences = { };
 

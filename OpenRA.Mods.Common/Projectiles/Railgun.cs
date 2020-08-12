@@ -87,7 +87,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		public readonly string HitAnim = null;
 
 		[Desc("Sequence of impact animation to use.")]
-		[SequenceReference("HitAnim")]
+		[SequenceReference("HitAnim", allowNullImage: true)]
 		public readonly string HitAnimSequence = "idle";
 
 		[PaletteReference]
