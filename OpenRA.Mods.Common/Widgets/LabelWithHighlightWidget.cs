@@ -50,12 +50,9 @@ namespace OpenRA.Mods.Common.Widgets
 
 					if (highlightStart > 0 && highlightEnd > highlightStart)
 					{
-						if (highlightStart > 0)
-						{
-							// Normal line segment before highlight
-							var lineNormal = line.Substring(0, highlightStart);
-							components.Add((lineNormal, false));
-						}
+						// Normal line segment before highlight
+						var lineNormal = line.Substring(0, highlightStart);
+						components.Add((lineNormal, false));
 
 						// Highlight line segment
 						var lineHighlight = line.Substring(highlightStart + 1, highlightEnd - highlightStart - 1);
