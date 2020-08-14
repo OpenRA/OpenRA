@@ -72,8 +72,11 @@ namespace OpenRA
 				tileInfo = new TerrainTileInfo[Size.X * Size.Y];
 				foreach (var node in nodes)
 				{
-					if (!int.TryParse(node.Key, out var key) || key < 0 || key >= tileInfo.Length)
-						throw new InvalidDataException("Invalid tile key '{0}' on template '{1}' of tileset '{2}'.".F(node.Key, Id, tileSet.Id));
+					if (!int.TryParse(node.Key, out var key))
+						throw new InvalidDataException("Tileset `{0}` template `{1}` frame `{2}` is not a valid integer.".F(tileSet.Id, Id, node.Key));
+
+					if (key < 0 || key >= tileInfo.Length)
+						throw new InvalidDataException("Tileset `{0}` template `{1}` frame `{2}` must be between 0 and {3} for a {4}x{5} Size template.".F(tileSet.Id, Id, node.Key, tileInfo.Length, Size.X, Size.Y));
 
 					tileInfo[key] = LoadTileInfo(tileSet, node.Value);
 				}
