@@ -267,6 +267,7 @@ namespace OpenRA.Traits
 	public interface ISelectionDecorations
 	{
 		IEnumerable<IRenderable> RenderSelectionAnnotations(Actor self, WorldRenderer worldRenderer, Color color);
+		int2 GetDecorationOrigin(Actor self, WorldRenderer wr, string pos, int2 margin);
 	}
 
 	public interface IMapPreviewSignatureInfo : ITraitInfoInterface

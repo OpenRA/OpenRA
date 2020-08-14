@@ -45,14 +45,14 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			Right = 8,
 		}
 
-		static readonly Dictionary<LegacyReferencePoints, DecorationPosition> PositionMap = new Dictionary<LegacyReferencePoints, DecorationPosition>()
+		static readonly Dictionary<LegacyReferencePoints, string> PositionMap = new Dictionary<LegacyReferencePoints, string>()
 		{
-			{ LegacyReferencePoints.Center, DecorationPosition.Center },
-			{ LegacyReferencePoints.Top, DecorationPosition.Top },
-			{ LegacyReferencePoints.Top | LegacyReferencePoints.Left, DecorationPosition.TopLeft },
-			{ LegacyReferencePoints.Top | LegacyReferencePoints.Right, DecorationPosition.TopRight },
-			{ LegacyReferencePoints.Bottom | LegacyReferencePoints.Left, DecorationPosition.BottomLeft },
-			{ LegacyReferencePoints.Bottom | LegacyReferencePoints.Right, DecorationPosition.BottomRight }
+			{ LegacyReferencePoints.Center, "Center" },
+			{ LegacyReferencePoints.Top, "Top" },
+			{ LegacyReferencePoints.Top | LegacyReferencePoints.Left, "TopLeft" },
+			{ LegacyReferencePoints.Top | LegacyReferencePoints.Right, "TopRight" },
+			{ LegacyReferencePoints.Bottom | LegacyReferencePoints.Left, "BottomLeft" },
+			{ LegacyReferencePoints.Bottom | LegacyReferencePoints.Right, "BottomRight" }
 		};
 
 		readonly Dictionary<string, List<string>> locations = new Dictionary<string, List<string>>();
@@ -83,9 +83,9 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 					if (positionNode != null)
 					{
 						if (!PositionMap.TryGetValue(positionNode.NodeValue<LegacyReferencePoints>(), out var value))
-							value = DecorationPosition.TopLeft;
+							value = "TopLeft";
 
-						if (value != DecorationPosition.TopLeft)
+						if (value != "TopLeft")
 						{
 							positionNode.RenameKey("Position");
 							positionNode.ReplaceValue(FieldSaver.FormatValue(value));

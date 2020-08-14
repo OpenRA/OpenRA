@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 	public abstract class WithDecorationBaseInfo : ConditionalTraitInfo
 	{
 		[Desc("Position in the actor's selection box to draw the decoration.")]
-		public readonly DecorationPosition Position = DecorationPosition.TopLeft;
+		public readonly string Position = "TopLeft";
 
 		[Desc("Player stances who can view the decoration.")]
 		public readonly Stance ValidStances = Stance.Ally;
@@ -89,20 +89,16 @@ namespace OpenRA.Mods.Common.Traits.Render
 			return true;
 		}
 
-		DecorationPosition IDecoration.Position { get { return Info.Position; } }
-
-		bool IDecoration.Enabled { get { return !IsTraitDisabled && self.IsInWorld && ShouldRender(self); } }
-
 		bool IDecoration.RequiresSelection { get { return Info.RequiresSelection; } }
 
 		protected abstract IEnumerable<IRenderable> RenderDecoration(Actor self, WorldRenderer wr, int2 pos);
 
-		IEnumerable<IRenderable> IDecoration.RenderDecoration(Actor self, WorldRenderer wr, int2 pos)
+		IEnumerable<IRenderable> IDecoration.RenderDecoration(Actor self, WorldRenderer wr, ISelectionDecorations container)
 		{
 			if (IsTraitDisabled || self.IsDead || !self.IsInWorld || !ShouldRender(self))
 				return Enumerable.Empty<IRenderable>();
 
-			var screenPos = wr.Viewport.WorldToViewPx(pos) + Info.Position.CreateMargin(Info.Margin) + conditionalOffset;
+			var screenPos = container.GetDecorationOrigin(self, wr, Info.Position, Info.Margin) + conditionalOffset;
 			return RenderDecoration(self, wr, screenPos);
 		}
 
