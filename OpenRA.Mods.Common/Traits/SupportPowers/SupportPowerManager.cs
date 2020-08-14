@@ -203,27 +203,23 @@ namespace OpenRA.Mods.Common.Traits
 			if (!Active)
 				return;
 
-			if (Active)
+			var power = Instances.First();
+			if (Manager.DevMode.FastCharge && remainingSubTicks > 2500)
+				remainingSubTicks = 2500;
+
+			if (remainingSubTicks > 0)
+				remainingSubTicks = (remainingSubTicks - 100).Clamp(0, TotalTicks * 100);
+
+			if (!notifiedCharging)
 			{
-				var power = Instances.First();
-				if (Manager.DevMode.FastCharge && remainingSubTicks > 2500)
-					remainingSubTicks = 2500;
+				power.Charging(power.Self, Key);
+				notifiedCharging = true;
+			}
 
-				if (remainingSubTicks > 0)
-					remainingSubTicks = (remainingSubTicks - 100).Clamp(0, TotalTicks * 100);
-
-				if (!notifiedCharging)
-				{
-					power.Charging(power.Self, Key);
-					notifiedCharging = true;
-				}
-
-				if (RemainingTicks == 0
-					&& !notifiedReady)
-				{
-					power.Charged(power.Self, Key);
-					notifiedReady = true;
-				}
+			if (RemainingTicks == 0 && !notifiedReady)
+			{
+				power.Charged(power.Self, Key);
+				notifiedReady = true;
 			}
 		}
 
