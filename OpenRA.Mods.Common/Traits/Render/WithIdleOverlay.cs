@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				facing = () => f;
 			}
 
-			var anim = new Animation(init.World, image, facing);
+			var anim = new Animation(init.World, Image ?? image, facing);
 			anim.IsDecoration = IsDecoration;
 			anim.PlayRepeating(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), Sequence));
 
