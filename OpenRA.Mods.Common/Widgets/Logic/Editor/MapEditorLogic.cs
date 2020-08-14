@@ -28,10 +28,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var editorViewport = widget.Get<EditorViewportControllerWidget>("MAP_EDITOR");
 
 			var gridButton = widget.GetOrNull<ButtonWidget>("GRID_BUTTON");
-			var terrainGeometryTrait = world.WorldActor.Trait<TerrainGeometryOverlay>();
-
-			if (gridButton != null && terrainGeometryTrait != null)
+			if (gridButton != null)
 			{
+				var terrainGeometryTrait = world.WorldActor.Trait<TerrainGeometryOverlay>();
 				gridButton.OnClick = () => terrainGeometryTrait.Enabled ^= true;
 				gridButton.IsHighlighted = () => terrainGeometryTrait.Enabled;
 			}
@@ -80,17 +79,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					cashLabel.GetText = () => "$ {0}".F(reslayer.NetWorth);
 			}
 
-			var actionManager = world.WorldActor.Trait<EditorActionManager>();
 			var undoButton = widget.GetOrNull<ButtonWidget>("UNDO_BUTTON");
-			if (undoButton != null)
+			var redoButton = widget.GetOrNull<ButtonWidget>("REDO_BUTTON");
+			if (undoButton != null && redoButton != null)
 			{
+				var actionManager = world.WorldActor.Trait<EditorActionManager>();
 				undoButton.IsDisabled = () => !actionManager.HasUndos();
 				undoButton.OnClick = () => actionManager.Undo();
-			}
-
-			var redoButton = widget.GetOrNull<ButtonWidget>("REDO_BUTTON");
-			if (redoButton != null)
-			{
 				redoButton.IsDisabled = () => !actionManager.HasRedos();
 				redoButton.OnClick = () => actionManager.Redo();
 			}
