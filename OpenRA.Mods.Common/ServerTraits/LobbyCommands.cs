@@ -846,16 +846,15 @@ namespace OpenRA.Mods.Common.Server
 				return true;
 			}
 
-			var lobbyInfo = Session.Deserialize(s);
-			if (lobbyInfo == null)
+			try
+			{
+				server.LobbyInfo = Session.Deserialize(s);
+				server.SyncLobbyInfo();
+			}
+			catch (Exception)
 			{
 				server.SendOrderTo(conn, "Message", "Invalid Lobby Info Sent");
-				return true;
 			}
-
-			server.LobbyInfo = lobbyInfo;
-
-			server.SyncLobbyInfo();
 
 			return true;
 		}
