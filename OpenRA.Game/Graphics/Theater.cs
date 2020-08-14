@@ -40,7 +40,7 @@ namespace OpenRA.Graphics
 		readonly MersenneTwister random;
 		TileSet tileset;
 
-		public Theater(TileSet tileset)
+		public Theater(TileSet tileset, Action<uint, string> onMissingImage = null)
 		{
 			this.tileset = tileset;
 			var allocated = false;
@@ -63,7 +63,22 @@ namespace OpenRA.Graphics
 
 				foreach (var i in t.Value.Images)
 				{
-					var allFrames = frameCache[i];
+					ISpriteFrame[] allFrames;
+					if (onMissingImage != null)
+					{
+						try
+						{
+							allFrames = frameCache[i];
+						}
+						catch (FileNotFoundException)
+						{
+							onMissingImage(t.Key, i);
+							continue;
+						}
+					}
+					else
+						allFrames = frameCache[i];
+
 					var frameCount = tileset.EnableDepth ? allFrames.Length / 2 : allFrames.Length;
 					var indices = t.Value.Frames != null ? t.Value.Frames : Enumerable.Range(0, frameCount);
 					variants.Add(indices.Select(j =>
@@ -107,6 +122,9 @@ namespace OpenRA.Graphics
 				if (tileset.IgnoreTileSpriteOffsets)
 					allSprites = allSprites.Select(s => new Sprite(s.Sheet, s.Bounds, s.ZRamp, new float3(float2.Zero, s.Offset.Z), s.Channel, s.BlendMode));
 
+				if (onMissingImage != null && !variants.Any())
+					continue;
+
 				templates.Add(t.Value.Id, new TheaterTemplate(allSprites.ToArray(), variants.First().Count(), t.Value.Images.Length));
 			}
 
@@ -114,6 +132,11 @@ namespace OpenRA.Graphics
 			missingTile = sheetBuilder.Add(new byte[sheetBuilder.Type == SheetType.BGRA ? 4 : 1], new Size(1, 1));
 
 			Sheet.ReleaseBuffer();
+		}
+
+		public bool HasTileSprite(TerrainTile r, int? variant = null)
+		{
+			return TileSprite(r, variant) != missingTile;
 		}
 
 		public Sprite TileSprite(TerrainTile r, int? variant = null)
