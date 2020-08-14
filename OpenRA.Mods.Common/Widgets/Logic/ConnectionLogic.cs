@@ -217,23 +217,23 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					return mod.Icon;
 				};
-			}
 
-			if (logo != null && mod.Icon == null)
-			{
-				// Hide the logo and center just the text
-				if (title != null)
-					title.Bounds.X = logo.Bounds.Left;
+				if (mod.Icon == null)
+				{
+					// Hide the logo and center just the text
+					if (title != null)
+						title.Bounds.X = logo.Bounds.X;
 
-				if (version != null)
-					version.Bounds.X = logo.Bounds.X;
+					if (version != null)
+						version.Bounds.X = logo.Bounds.X;
 
-				width -= logo.Bounds.Width;
-			}
-			else
-			{
-				// Add an equal logo margin on the right of the text
-				width += logo.Bounds.Width;
+					width -= logo.Bounds.Width;
+				}
+				else
+				{
+					// Add an equal logo margin on the right of the text
+					width += logo.Bounds.Width;
+				}
 			}
 
 			var container = panel.GetOrNull("MOD_CONTAINER");
