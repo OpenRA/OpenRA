@@ -101,7 +101,7 @@ SetupTriggers = function()
 	end)
 
 	Trigger.OnKilled(BioLab, function()
-		if not LabInfiltrated then	
+		if not LabInfiltrated then
 			USSR.MarkFailedObjective(InfiltrateLab)
 		end
 	end)
@@ -159,11 +159,11 @@ end
 WorldLoaded = function()
 	USSR = Player.GetPlayer("USSR")
 	Turkey = Player.GetPlayer("Turkey")
-	
+
 	Trigger.OnObjectiveAdded(USSR, function(p, id)
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
 	end)
-	
+
 	LaunchMissles = Turkey.AddObjective("Survive until time expires.")
 	KillPower = USSR.AddObjective("Bring the base to low power. Volkov will arrive\nonce the defenses are down.")
 	InfiltrateLab = USSR.AddObjective("Infiltrate the bio-weapons lab with the scientist.")

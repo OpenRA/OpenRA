@@ -76,14 +76,14 @@ WorldLoaded = function()
 	USSR = Player.GetPlayer("USSR")
 	Germany = Player.GetPlayer("Germany")
 	Greece = Player.GetPlayer("Greece")
-	
+
 	Trigger.OnObjectiveAdded(USSR, function(p, id)
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
 	end)
-	
+
 	DestroyTruck = USSR.AddObjective("Destroy the stolen convoy truck.\nDo not let it escape.")
 	DefendCommand = USSR.AddObjective("Defend our forward command center.")
-	
+
 	Trigger.OnObjectiveCompleted(USSR, function(p, id)
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
 	end)

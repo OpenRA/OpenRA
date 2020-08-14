@@ -8,7 +8,7 @@
 ]]
 AlliedScouts = { Jeep1, Jeep2, Rifle1, Rifle2, Rifle3, Rifle4 }
 
-SovReinforcements = 
+SovReinforcements =
 {
 	one =
 	{
@@ -118,15 +118,15 @@ WorldLoaded = function()
 	USSR = Player.GetPlayer("USSR")
 	Germany = Player.GetPlayer("Germany")
 	Greece = Player.GetPlayer("Greece")
-	
+
 	Trigger.OnObjectiveAdded(USSR, function(p, id)
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
 	end)
-	
+
 	KillAll = USSR.AddObjective("Destroy all Allied units and structures.")
 	DestroyVillageObjective = USSR.AddObjective("Destroy the village of Allied sympathizers.", "Secondary", false)
 	BeatUSSR = Greece.AddObjective("Defeat the Soviet forces.")
-	
+
 	Trigger.OnObjectiveCompleted(USSR, function(p, id)
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
 	end)
@@ -149,15 +149,15 @@ WorldLoaded = function()
 	SecondReinforcementTrigger()
 	AddParadropReinforcementTrigger()
 	AddRetreatTrigger()
-	
+
 	ScriptedDrop = Actor.Create("scripteddrop", false, { Owner = USSR })
-	
+
 	OnAnyDamaged(Village, ChurchAmbushTrigger)
-	
+
 	Trigger.OnAllRemovedFromWorld(Village, DestroyVillage)
-	
+
 	Camera.Position = SovietBase.CenterPosition
-	
+
 	Trigger.AfterDelay(ActivateAIDelay, ActivateAI)
 	Trigger.AfterDelay(DateTime.Minutes(2), function() BoatAttack(Gunboat1) end)
 	Trigger.AfterDelay(DateTime.Minutes(5), function() BoatAttack(Gunboat2) end)
