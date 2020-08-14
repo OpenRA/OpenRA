@@ -988,7 +988,7 @@ namespace OpenRA
 			Tiles = CellLayer.Resize(oldMapTiles, newSize, oldMapTiles[MPos.Zero]);
 			Resources = CellLayer.Resize(oldMapResources, newSize, oldMapResources[MPos.Zero]);
 			Height = CellLayer.Resize(oldMapHeight, newSize, oldMapHeight[MPos.Zero]);
-			Ramp = CellLayer.Resize(oldMapRamp, newSize, oldMapHeight[MPos.Zero]);
+			Ramp = CellLayer.Resize(oldMapRamp, newSize, oldMapRamp[MPos.Zero]);
 			MapSize = new int2(newSize);
 
 			var tl = new MPos(0, 0);
