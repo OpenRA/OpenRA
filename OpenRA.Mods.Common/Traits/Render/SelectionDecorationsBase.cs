@@ -24,8 +24,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 	public abstract class SelectionDecorationsBase : ISelectionDecorations, IRenderAnnotations, INotifyCreated
 	{
-		Dictionary<DecorationPosition, IDecoration[]> decorations;
-		Dictionary<DecorationPosition, IDecoration[]> selectedDecorations;
+		IDecoration[] decorations;
+		IDecoration[] selectedDecorations;
 
 		protected readonly SelectionDecorationsBaseInfo info;
 
@@ -36,22 +36,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		void INotifyCreated.Created(Actor self)
 		{
-			var groupedDecorations = new Dictionary<DecorationPosition, List<IDecoration>>();
-			var groupedSelectionDecorations = new Dictionary<DecorationPosition, List<IDecoration>>();
-			foreach (var d in self.TraitsImplementing<IDecoration>())
-			{
-				groupedSelectionDecorations.GetOrAdd(d.Position).Add(d);
-				if (!d.RequiresSelection)
-					groupedDecorations.GetOrAdd(d.Position).Add(d);
-			}
-
-			decorations = groupedDecorations.ToDictionary(
-				d => d.Key,
-				d => d.Value.ToArray());
-
-			selectedDecorations = groupedSelectionDecorations.ToDictionary(
-				d => d.Key,
-				d => d.Value.ToArray());
+			selectedDecorations = self.TraitsImplementing<IDecoration>().ToArray();
+			decorations = selectedDecorations.Where(d => !d.RequiresSelection).ToArray();
 		}
 
 		IEnumerable<WPos> ActivityTargetPath(Actor self)
@@ -116,13 +102,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 				yield break;
 
 			var renderDecorations = selected ? selectedDecorations : decorations;
-			foreach (var kv in renderDecorations)
-			{
-				var pos = GetDecorationPosition(self, wr, kv.Key);
-				foreach (var r in kv.Value)
-					foreach (var rr in r.RenderDecoration(self, wr, pos))
-						yield return rr;
-			}
+			foreach (var r in renderDecorations)
+				foreach (var rr in r.RenderDecoration(self, wr, this))
+					yield return rr;
 		}
 
 		IEnumerable<IRenderable> ISelectionDecorations.RenderSelectionAnnotations(Actor self, WorldRenderer worldRenderer, Color color)
@@ -130,7 +112,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 			return RenderSelectionBox(self, worldRenderer, color);
 		}
 
-		protected abstract int2 GetDecorationPosition(Actor self, WorldRenderer wr, DecorationPosition pos);
+		int2 ISelectionDecorations.GetDecorationOrigin(Actor self, WorldRenderer wr, string pos, int2 margin)
+		{
+			return GetDecorationOrigin(self, wr, pos, margin);
+		}
+
+		protected abstract int2 GetDecorationOrigin(Actor self, WorldRenderer wr, string pos, int2 margin);
 		protected abstract IEnumerable<IRenderable> RenderSelectionBox(Actor self, WorldRenderer wr, Color color);
 		protected abstract IEnumerable<IRenderable> RenderSelectionBars(Actor self, WorldRenderer wr, bool displayHealth, bool displayExtra);
 	}

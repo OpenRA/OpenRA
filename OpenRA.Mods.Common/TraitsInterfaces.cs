@@ -639,37 +639,8 @@ namespace OpenRA.Mods.Common.Traits
 
 	public interface IDecoration
 	{
-		DecorationPosition Position { get; }
 		bool RequiresSelection { get; }
 
-		bool Enabled { get; }
-
-		IEnumerable<IRenderable> RenderDecoration(Actor self, WorldRenderer wr, int2 pos);
-	}
-
-	public enum DecorationPosition
-	{
-		Center,
-		TopLeft,
-		TopRight,
-		BottomLeft,
-		BottomRight,
-		Top
-	}
-
-	public static class DecorationExtensions
-	{
-		public static int2 CreateMargin(this DecorationPosition pos, int2 margin)
-		{
-			switch (pos)
-			{
-				case DecorationPosition.TopLeft: return margin;
-				case DecorationPosition.TopRight: return new int2(-margin.X, margin.Y);
-				case DecorationPosition.BottomLeft: return new int2(margin.X, -margin.Y);
-				case DecorationPosition.BottomRight: return -margin;
-				case DecorationPosition.Top: return new int2(0, margin.Y);
-				default: return int2.Zero;
-			}
-		}
+		IEnumerable<IRenderable> RenderDecoration(Actor self, WorldRenderer wr, ISelectionDecorations container);
 	}
 }

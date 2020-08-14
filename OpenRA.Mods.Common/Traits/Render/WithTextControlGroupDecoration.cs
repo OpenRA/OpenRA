@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public readonly bool UsePlayerColor = false;
 
 		[Desc("Position in the actor's selection box to draw the decoration.")]
-		public readonly DecorationPosition Position = DecorationPosition.TopLeft;
+		public readonly string Position = "TopLeft";
 
 		[Desc("Offset text center position from the selection box edge.")]
 		public readonly int2 Margin = int2.Zero;
@@ -63,20 +63,16 @@ namespace OpenRA.Mods.Common.Traits.Render
 			label = new CachedTransform<int, string>(g => g.ToString());
 		}
 
-		DecorationPosition IDecoration.Position { get { return info.Position; } }
-
-		bool IDecoration.Enabled { get { return self.Owner == self.World.LocalPlayer && self.World.Selection.GetControlGroupForActor(self) != null; } }
-
 		bool IDecoration.RequiresSelection { get { return true; } }
 
-		IEnumerable<IRenderable> IDecoration.RenderDecoration(Actor self, WorldRenderer wr, int2 pos)
+		IEnumerable<IRenderable> IDecoration.RenderDecoration(Actor self, WorldRenderer wr, ISelectionDecorations container)
 		{
 			var group = self.World.Selection.GetControlGroupForActor(self);
 			if (group == null)
 				return Enumerable.Empty<IRenderable>();
 
 			var text = label.Update(group.Value);
-			var screenPos = wr.Viewport.WorldToViewPx(pos) + info.Position.CreateMargin(info.Margin);
+			var screenPos = container.GetDecorationOrigin(self, wr, info.Position, info.Margin);
 			return new IRenderable[]
 			{
 				new UITextRenderable(font, self.CenterPosition, screenPos, 0, color, text)
