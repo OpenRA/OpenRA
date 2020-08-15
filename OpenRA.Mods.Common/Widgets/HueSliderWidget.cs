@@ -18,6 +18,7 @@ namespace OpenRA.Mods.Common.Widgets
 	public class HueSliderWidget : SliderWidget
 	{
 		Sprite hueSprite;
+		Sprite pickerSprite;
 
 		public HueSliderWidget() { }
 		public HueSliderWidget(HueSliderWidget other)
@@ -35,6 +36,8 @@ namespace OpenRA.Mods.Common.Widgets
 				hueData[0, x] = (uint)Color.FromAhsv(x / 255f, 1, 1).ToArgb();
 
 			hueSheet.GetTexture().SetData(hueData);
+
+			pickerSprite = ChromeProvider.GetImage("lobby-bits", "huepicker");
 		}
 
 		public override void Draw()
@@ -46,9 +49,8 @@ namespace OpenRA.Mods.Common.Widgets
 			var rb = RenderBounds;
 			Game.Renderer.RgbaSpriteRenderer.DrawSprite(hueSprite, ro, new float2(rb.Size));
 
-			var sprite = ChromeProvider.GetImage("lobby-bits", "huepicker");
-			var pos = RenderOrigin + new int2(PxFromValue(Value).Clamp(0, rb.Width - 1) - (int)sprite.Size.X / 2, (rb.Height - (int)sprite.Size.Y) / 2);
-			Game.Renderer.RgbaSpriteRenderer.DrawSprite(sprite, pos);
+			var pos = RenderOrigin + new int2(PxFromValue(Value).Clamp(0, rb.Width - 1) - (int)pickerSprite.Size.X / 2, (rb.Height - (int)pickerSprite.Size.Y) / 2);
+			Game.Renderer.RgbaSpriteRenderer.DrawSprite(pickerSprite, pos);
 		}
 	}
 }
