@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Sequence prefix to play when this actor is killed by a warhead.")]
 		public readonly string DeathSequence = "die";
 
-		[PaletteReference("DeathPaletteIsPlayerPalette")]
+		[PaletteReference(nameof(DeathPaletteIsPlayerPalette))]
 		[Desc("The palette used for `DeathSequence`.")]
 		public readonly string DeathSequencePalette = "player";
 
@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Sequence to play when this actor is crushed.")]
 		public readonly string CrushedSequence = null;
 
-		[PaletteReference("CrushedPaletteIsPlayerPalette")]
+		[PaletteReference(nameof(CrushedPaletteIsPlayerPalette))]
 		[Desc("The palette used for `CrushedSequence`.")]
 		public readonly string CrushedSequencePalette = "effect";
 

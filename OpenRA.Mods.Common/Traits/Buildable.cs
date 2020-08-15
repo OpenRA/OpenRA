@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Sequence of the actor that contains the icon.")]
 		public readonly string Icon = "icon";
 
-		[PaletteReference("IconPaletteIsPlayerPalette")]
+		[PaletteReference(nameof(IconPaletteIsPlayerPalette))]
 		[Desc("Palette used for the production icon.")]
 		public readonly string IconPalette = "chrome";
 

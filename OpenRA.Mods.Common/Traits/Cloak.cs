@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string CloakSound = null;
 		public readonly string UncloakSound = null;
 
-		[PaletteReference("IsPlayerPalette")]
+		[PaletteReference(nameof(IsPlayerPalette))]
 		public readonly string Palette = "cloak";
 		public readonly bool IsPlayerPalette = false;
 

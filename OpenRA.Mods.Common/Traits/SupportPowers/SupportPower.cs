@@ -84,7 +84,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly bool BeaconPaletteIsPlayerPalette = true;
 
-		[PaletteReference("BeaconPaletteIsPlayerPalette")]
+		[PaletteReference(nameof(BeaconPaletteIsPlayerPalette))]
 		public readonly string BeaconPalette = "player";
 
 		public readonly string BeaconImage = "beacon";

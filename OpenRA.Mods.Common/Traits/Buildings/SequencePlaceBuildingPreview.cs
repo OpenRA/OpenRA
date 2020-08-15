@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Sequence name to use.")]
 		public readonly string Sequence = "idle";
 
-		[PaletteReference("SequencePaletteIsPlayerPalette")]
+		[PaletteReference(nameof(SequencePaletteIsPlayerPalette))]
 		[Desc("Custom palette name.")]
 		public readonly string SequencePalette = null;
 

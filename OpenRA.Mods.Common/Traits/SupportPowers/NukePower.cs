@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.Traits
 			"'False' will make the missile continue until it hits the ground and disappears (without triggering another explosion).")]
 		public readonly bool RemoveMissileOnDetonation = true;
 
-		[PaletteReference("IsPlayerPalette")]
+		[PaletteReference(nameof(IsPlayerPalette))]
 		[Desc("Palette to use for the missile weapon image.")]
 		public readonly string MissilePalette = "effect";
 
@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Delay in ticks until trail animation is spawned.")]
 		public readonly int TrailDelay = 1;
 
-		[PaletteReference("TrailUsePlayerPalette")]
+		[PaletteReference(nameof(TrailUsePlayerPalette))]
 		[Desc("Palette used to render the trail sequence.")]
 		public readonly string TrailPalette = "effect";
 

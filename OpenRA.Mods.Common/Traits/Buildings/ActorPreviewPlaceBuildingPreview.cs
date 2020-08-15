@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Enable the building's idle animation.")]
 		public readonly bool Animated = true;
 
-		[PaletteReference("OverridePaletteIsPlayerPalette")]
+		[PaletteReference(nameof(OverridePaletteIsPlayerPalette))]
 		[Desc("Custom palette name.")]
 		public readonly string OverridePalette = null;
 
