@@ -502,7 +502,7 @@ sam:
 		Start: 0
 	make: sammake
 		Length: 20
-		Tick: 30
+		Tick: 50
 	muzzle: samfire
 		Length: 18
 		Facings: 8

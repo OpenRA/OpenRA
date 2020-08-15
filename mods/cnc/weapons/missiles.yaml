@@ -80,7 +80,7 @@ BikeRockets:
 OrcaAGMissiles:
 	Inherits: ^MissileWeapon
 	ReloadDelay: 12
-	Range: 5c0
+	Range: 4c768
 	MinRange: 1c256
 	ValidTargets: Ground, Water
 	Projectile: Missile
@@ -112,7 +112,7 @@ OrcaAAMissiles:
 MammothMissiles:
 	Inherits: ^MissileWeapon
 	ReloadDelay: 45
-	Range: 5c0
+	Range: 4c768
 	Report: rocket1.aud
 	Burst: 2
 	BurstDelays: 15
@@ -160,7 +160,7 @@ MammothMissiles:
 		Versus:
 			None: 24
 			Wood: 60
-			Light: 100
+			Light: 90
 			Heavy: 48
 	Warhead@3Eff: CreateEffect
 		Explosions: med_frag
@@ -170,6 +170,7 @@ MammothMissiles:
 	ReloadDelay: 70
 	Range: 7c0
 	Report: rocket1.aud
+	ValidTargets: Ground, Water
 	Burst: 2
 	BurstDelays: 10
 	Projectile: Missile
@@ -184,6 +185,11 @@ MammothMissiles:
 			Wood: 75
 			Light: 100
 			Heavy: 90
+
+227mm.stnkAA:
+	Inherits: 227mm.stnk
+	MinRange: 2c512
+	ValidTargets: Air
 
 BoatMissile:
 	Inherits: ^MissileWeapon
