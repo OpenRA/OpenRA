@@ -34,6 +34,7 @@ namespace OpenRA.Mods.Common.Widgets
 		EWMA providedLerp = new EWMA(0.3f);
 		EWMA usedLerp = new EWMA(0.3f);
 		readonly World world;
+		Sprite indicator;
 
 		[ObjectCreator.UseCtor]
 		public ResourceBarWidget(World world)
@@ -41,6 +42,13 @@ namespace OpenRA.Mods.Common.Widgets
 			this.world = world;
 			tooltipContainer = Exts.Lazy(() =>
 				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
+		}
+
+		public override void Initialize(WidgetArgs args)
+		{
+			base.Initialize(args);
+
+			indicator = ChromeProvider.GetImage(IndicatorCollection, IndicatorImage);
 		}
 
 		public override void MouseEntered()
@@ -72,7 +80,6 @@ namespace OpenRA.Mods.Common.Widgets
 			var usedFrac = usedLerp.Update(used / scaleBy);
 
 			var b = RenderBounds;
-			var indicator = ChromeProvider.GetImage(IndicatorCollection, IndicatorImage);
 
 			var color = GetBarColor();
 			if (Orientation == ResourceBarOrientation.Vertical)
