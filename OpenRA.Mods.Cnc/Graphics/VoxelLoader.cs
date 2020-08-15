@@ -216,9 +216,10 @@ namespace OpenRA.Mods.Cnc.Graphics
 			HvaReader hva;
 			using (var s = fileSystem.Open(files.Vxl + ".vxl"))
 				vxl = new VxlReader(s);
+
 			using (var s = fileSystem.Open(files.Hva + ".hva"))
 				hva = new HvaReader(s, files.Hva + ".hva");
-			return new Voxel(this, vxl, hva);
+			return new Voxel(this, vxl, hva, files);
 		}
 
 		public Voxel Load(string vxl, string hva)
