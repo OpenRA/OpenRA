@@ -120,6 +120,18 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Sort order for the support power palette. Smaller numbers are presented earlier.")]
 		public readonly int SupportPowerPaletteOrder = 9999;
 
+		/* Those is for support power like Firestorm in TS,
+		 * Which superweapon can be charge and shortly relase and recharge */
+		[Desc("If it is going to be actived, it must be fully charged")]
+		public readonly bool IsSteamValveLogic = false;
+
+		[Desc("Discharging time before it is all over. Measured in ticks. Requires true in `IsSteamValveLogic` above.")]
+		public readonly int DisChargeInterval = 0;
+
+		[Desc("If it is going to be actived, it must be charged to this percentage. Requires true in `IsSteamValveLogic` above.")]
+		public readonly int ChargingPercentageBeforeActivation = 100;
+		/* I mean those surrounded by these comment block */
+
 		public SupportPowerInfo() { OrderName = GetType().Name + "Order"; }
 	}
 
@@ -180,6 +192,9 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var notify in self.TraitsImplementing<INotifySupportPower>())
 				notify.Activated(self);
 		}
+
+		// Designed for `IsSteamValveLogic = ture`.
+		public virtual void Deactivate(Actor self, Order order, SupportPowerManager manager) { }
 
 		public virtual void PlayLaunchSounds()
 		{

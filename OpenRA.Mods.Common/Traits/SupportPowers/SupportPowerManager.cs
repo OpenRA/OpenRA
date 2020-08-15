@@ -148,6 +148,15 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly List<SupportPower> Instances = new List<SupportPower>();
 		public readonly int TotalTicks;
 
+		/* Those is for support power like Firestorm in TS,
+		 * Which superweapon can be charge and shortly relase and recharge */
+		public readonly bool IsSteamValveLogic;
+		public readonly int ChargingPercentageBeforeActivation;
+		public readonly int DischargeTotalTicks;
+		bool valveSwitcher = false;
+		public bool ReachActivationCharging	{ get { return remainingSubTicks >= TotalTicks * ChargingPercentageBeforeActivation; } }
+		/* I mean those surrounded by these comment block */
+
 		protected int remainingSubTicks;
 		public int RemainingTicks { get { return remainingSubTicks / 100; } }
 		public bool Active { get; private set; }
@@ -163,7 +172,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		public SupportPowerInfo Info { get { return Instances.Select(i => i.Info).FirstOrDefault(); } }
-		public bool Ready { get { return Active && RemainingTicks == 0; } }
+		public bool Ready { get { return (Active && RemainingTicks == 0);  } }
 
 		bool instancesEnabled;
 		bool prereqsAvailable = true;
@@ -182,6 +191,17 @@ namespace OpenRA.Mods.Common.Traits
 			TotalTicks = info.ChargeInterval;
 			remainingSubTicks = info.StartFullyCharged ? 0 : TotalTicks * 100;
 
+			IsSteamValveLogic = info.IsSteamValveLogic;
+			if (IsSteamValveLogic)
+			{
+				if (info.DisChargeInterval != 0)
+					DischargeTotalTicks = info.DisChargeInterval;
+				else
+					DischargeTotalTicks = 1;
+
+				ChargingPercentageBeforeActivation = info.ChargingPercentageBeforeActivation;
+			}
+
 			Manager = manager;
 		}
 
@@ -195,41 +215,73 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual void Tick()
 		{
+			var power = Instances.First();
+			if (power == null)
+			{
+				remainingSubTicks = TotalTicks * 100;
+				return;
+			}
+
 			instancesEnabled = Instances.Any(i => !i.IsTraitDisabled);
 			if (!instancesEnabled)
+			{
 				remainingSubTicks = TotalTicks * 100;
+				power.Deactivate(power.Self, null, Manager);
+				valveSwitcher = false;
+				return;
+			}
 
 			Active = !Disabled && Instances.Any(i => !i.IsTraitPaused);
 			if (!Active)
+			{
+				power.Deactivate(power.Self, null, Manager);
+				valveSwitcher = false;
 				return;
+			}
 
 			if (Active)
 			{
-				var power = Instances.First();
 				if (Manager.DevMode.FastCharge && remainingSubTicks > 2500)
 					remainingSubTicks = 2500;
 
-				if (remainingSubTicks > 0)
-					remainingSubTicks = (remainingSubTicks - 100).Clamp(0, TotalTicks * 100);
-
-				if (!notifiedCharging)
+				if (!valveSwitcher)
 				{
-					power.Charging(power.Self, Key);
-					notifiedCharging = true;
+					if (remainingSubTicks > 0)
+					{
+						remainingSubTicks = (remainingSubTicks - 100).Clamp(0, TotalTicks * 100);
+					}
+
+					if (!notifiedCharging)
+					{
+						power.Charging(power.Self, Key);
+						notifiedCharging = true;
+					}
+
+					if (RemainingTicks == 0
+						&& !notifiedReady)
+					{
+						power.Charged(power.Self, Key);
+						notifiedReady = true;
+					}
 				}
-
-				if (RemainingTicks == 0
-					&& !notifiedReady)
+				else if (IsSteamValveLogic)
 				{
-					power.Charged(power.Self, Key);
-					notifiedReady = true;
+					remainingSubTicks = (remainingSubTicks + 100 * TotalTicks / DischargeTotalTicks).Clamp(0, TotalTicks * 100);
+
+					if (remainingSubTicks >= 100 * TotalTicks)
+					{
+						remainingSubTicks = 100 * TotalTicks;
+						valveSwitcher = false;
+						power.Deactivate(power.Self, null, Manager);
+					}
 				}
 			}
 		}
 
 		public virtual void Target()
 		{
-			if (!Ready)
+			var canBeOrdered = (!Ready && !IsSteamValveLogic) || (!Ready && IsSteamValveLogic && !valveSwitcher && !ReachActivationCharging);
+			if (canBeOrdered)
 				return;
 
 			var power = Instances.FirstOrDefault(i => !i.IsTraitPaused);
@@ -241,7 +293,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual void Activate(Order order)
 		{
-			if (!Ready)
+			var canBeOrdered = (!Ready && !IsSteamValveLogic) || (!Ready && IsSteamValveLogic && !valveSwitcher && !ReachActivationCharging);
+			if (canBeOrdered)
 				return;
 
 			var power = Instances.Where(i => !i.IsTraitPaused && !i.IsTraitDisabled)
@@ -257,9 +310,25 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			// Note: order.Subject is the *player* actor
-			power.Activate(power.Self, order, Manager);
-			remainingSubTicks = TotalTicks * 100;
-			notifiedCharging = notifiedReady = false;
+			if (!IsSteamValveLogic)
+			{
+				power.Activate(power.Self, order, Manager);
+				remainingSubTicks = TotalTicks * 100;
+				notifiedCharging = notifiedReady = false;
+			}
+			else
+			{
+				if (IsSteamValveLogic)
+				{
+					if (!valveSwitcher)
+						power.Activate(power.Self, order, Manager);
+					else
+						power.Deactivate(power.Self, null, Manager);
+					valveSwitcher = !valveSwitcher;
+				}
+
+				notifiedCharging = notifiedReady = false;
+			}
 
 			if (Info.OneShot)
 			{
