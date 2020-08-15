@@ -152,7 +152,7 @@ APCGun:
 
 APCGun.AA:
 	Inherits: APCGun
-	Range: 6c0
+	Range: 7c0
 	ValidTargets: Air
 	Projectile: Bullet
 		Speed: 2c0

@@ -76,6 +76,8 @@ HARV:
 		Type: Heavy
 	RevealsShroud:
 		Range: 4c0
+	ActorLostNotification:
+		Notification: HarvesterLost
 	SpawnActorOnDeath:
 		Actor: HARV.Husk
 		OwnerType: InternalName
@@ -110,8 +112,6 @@ APC:
 		BuildPaletteOrder: 30
 		Prerequisites: pyle
 		Queue: Vehicle.GDI
-		BuildDuration: 938
-		BuildDurationModifier: 40
 		Description: Armed infantry transport.\nCan attack Aircraft.\n  Strong vs Vehicles\n  Weak vs Infantry
 	Mobile:
 		TurnSpeed: 20
@@ -124,9 +124,12 @@ APC:
 	Armor:
 		Type: Heavy
 	RevealsShroud:
-		Range: 6c0
+		Range: 7c0
 	Turreted:
 		TurnSpeed: 40
+	AutoTargetPriority@Air:
+		ValidTargets: Air
+		Priority: 2
 	Armament@PRIMARY:
 		Weapon: APCGun
 		Recoil: 48
@@ -238,7 +241,7 @@ FTNK:
 	Armor:
 		Type: Heavy
 	RevealsShroud:
-		Range: 5c0
+		Range: 6c0
 	Armament:
 		Weapon: BigFlamer
 		LocalOffset: 512,128,42, 512,-128,42
@@ -661,8 +664,11 @@ STNK:
 	GrantConditionOnDamageState@UNCLOAK:
 		Condition: cloak-force-disabled
 		ValidDamageStates: Critical
-	Armament:
+	Armament@PRIMARY:
 		Weapon: 227mm.stnk
+		LocalOffset: 213,43,128, 213,-43,128
+	Armament@SECONDARY:
+		Weapon: 227mm.stnkAA
 		LocalOffset: 213,43,128, 213,-43,128
 	AttackFrontal:
 	AutoTarget:

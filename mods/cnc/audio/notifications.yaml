@@ -18,6 +18,7 @@ Speech:
 		EnemyStructureDestroyed: estrucx
 		EnemyPlanesApproaching: enemya
 		HarvesterAttack:
+		HarvesterLost: harvlost
 		InsufficientPower: nopower1
 		IonCannonCharging: ionchrg1
 		IonCannonReady: ionredy1
@@ -47,7 +48,7 @@ Speech:
 		UnitLost: unitlost
 		UnitReady: unitredy
 		Win: accom1
-	DisablePrefixes: AirstrikeReady, BaseAttack, Building, BuildingCannotPlaceAudio, BuildingInProgress, BuildingLost, Cancelled, CivilianBuildingCaptured, CivilianKilled, ConstructionComplete, EnemyUnitsApproaching, EnemyStructureDestroyed, EnemyPlanesApproaching, HarvesterAttack, InsufficientPower, IonCannonCharging, IonCannonReady, Leave, Lose, LowPower, MissionAccomplished, MissionFailed, NewOptions, NoBuild, NodStructureDestroyed, NotReady, NuclearWarheadApproaching, NuclearWeaponAvailable, NuclearWeaponLaunched, OnHold, PrimaryBuildingSelected, Reinforce, Repairing, SelectTarget, SilosNeeded, Training, UnitLost, UnitReady, Win
+	DisablePrefixes: AirstrikeReady, BaseAttack, Building, BuildingCannotPlaceAudio, BuildingInProgress, BuildingLost, Cancelled, CivilianBuildingCaptured, CivilianKilled, ConstructionComplete, EnemyUnitsApproaching, EnemyStructureDestroyed, EnemyPlanesApproaching, HarvesterAttack, HarvesterLost, InsufficientPower, IonCannonCharging, IonCannonReady, Leave, Lose, LowPower, MissionAccomplished, MissionFailed, NewOptions, NoBuild, NodStructureDestroyed, NotReady, NuclearWarheadApproaching, NuclearWeaponAvailable, NuclearWeaponLaunched, OnHold, PrimaryBuildingSelected, Reinforce, Repairing, SelectTarget, SilosNeeded, Training, UnitLost, UnitReady, Win
 
 Sounds:
 	Notifications:

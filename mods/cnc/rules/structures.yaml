@@ -535,7 +535,7 @@ HPAD:
 		BuildPaletteOrder: 50
 		Prerequisites: proc
 		Queue: Building.GDI, Building.Nod
-		Description: Produces, rearms and\nrepairs helicopters
+		Description: Produces and repairs helicopters
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -1024,7 +1024,7 @@ ATWR:
 		Queue: Defence.GDI
 		BuildDuration: 2880
 		BuildDurationModifier: 40
-		Description: All-purpose defensive structure.\n  Strong vs Aircraft, Tanks\n  Weak vs Infantry
+		Description: All-purpose defensive structure.\n  Strong vs Aircraft, Infantry\n  Weak vs Tanks
 	Selectable:
 		Bounds: 24,24
 		DecorationBounds: 22,48,0,-12
