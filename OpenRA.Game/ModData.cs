@@ -211,6 +211,23 @@ namespace OpenRA
 
 			Manifest.Dispose();
 		}
+
+		public string UnresolveModPath(string path)
+		{
+			var compare = Platform.CurrentPlatform == PlatformType.Windows ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal;
+
+			if (path.StartsWith(Platform.SupportDir, compare))
+				path = Platform.SupportDirPrefix + path.Substring(Platform.SupportDir.Length);
+
+			var modDir = ModFiles.MountedPackages.First(m => m.Contains("mod.yaml")).Name;
+			if (path.StartsWith(modDir, compare))
+				path = "." + path.Substring(modDir.Length);
+
+			if (Platform.CurrentPlatform == PlatformType.Windows)
+				path = path.Replace('\\', '/');
+
+			return path;
+		}
 	}
 
 	public interface ILoadScreen : IDisposable

@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			public SaveDirectory(Folder folder, MapClassification classification)
 			{
 				Folder = folder;
-				DisplayName = Platform.UnresolvePath(Folder.Name);
+				DisplayName = Game.ModData.UnresolveModPath(Folder.Name);
 				Classification = classification;
 			}
 		}
