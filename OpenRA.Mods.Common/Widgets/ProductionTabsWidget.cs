@@ -91,6 +91,7 @@ namespace OpenRA.Mods.Common.Widgets
 		float listOffset = 0;
 		bool leftPressed = false;
 		bool rightPressed = false;
+		SpriteFont font;
 		Rectangle leftButtonRect;
 		Rectangle rightButtonRect;
 		Lazy<ProductionPaletteWidget> paletteWidget;
@@ -108,6 +109,16 @@ namespace OpenRA.Mods.Common.Widgets
 			IsVisible = () => queueGroup != null && Groups[queueGroup].Tabs.Count > 0;
 
 			paletteWidget = Exts.Lazy(() => Ui.Root.Get<ProductionPaletteWidget>(PaletteWidget));
+		}
+
+		public override void Initialize(WidgetArgs args)
+		{
+			base.Initialize(args);
+
+			var rb = RenderBounds;
+			leftButtonRect = new Rectangle(rb.X, rb.Y, ArrowWidth, rb.Height);
+			rightButtonRect = new Rectangle(rb.Right - ArrowWidth, rb.Y, ArrowWidth, rb.Height);
+			font = Game.Renderer.Fonts["TinyBold"];
 		}
 
 		public bool SelectNextTab(bool reverse)
@@ -173,8 +184,6 @@ namespace OpenRA.Mods.Common.Widgets
 				return;
 
 			var rb = RenderBounds;
-			leftButtonRect = new Rectangle(rb.X, rb.Y, ArrowWidth, rb.Height);
-			rightButtonRect = new Rectangle(rb.Right - ArrowWidth, rb.Y, ArrowWidth, rb.Height);
 
 			var leftDisabled = listOffset >= 0;
 			var leftHover = Ui.MouseOverWidget == this && leftButtonRect.Contains(Viewport.LastMousePos);
@@ -198,7 +207,6 @@ namespace OpenRA.Mods.Common.Widgets
 			// Draw tab buttons
 			Game.Renderer.EnableScissor(new Rectangle(leftButtonRect.Right, rb.Y + 1, rightButtonRect.Left - leftButtonRect.Right - 1, rb.Height));
 			var origin = new int2(leftButtonRect.Right - 1 + (int)listOffset, leftButtonRect.Y);
-			var font = Game.Renderer.Fonts["TinyBold"];
 			contentWidth = 0;
 
 			foreach (var tab in tabs)
