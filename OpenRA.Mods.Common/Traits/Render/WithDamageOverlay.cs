@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[SequenceReference("Image")]
 		public readonly string EndSequence = "end";
 
-		[PaletteReference("IsPlayerPalette")]
+		[PaletteReference(nameof(IsPlayerPalette))]
 		[Desc("Custom palette name.")]
 		public readonly string Palette = null;
 

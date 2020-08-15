@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 		[Desc("Sequence name to use")]
 		public readonly string Sequence = "active";
 
-		[PaletteReference("IsPlayerPalette")]
+		[PaletteReference(nameof(IsPlayerPalette))]
 		[Desc("Custom palette name")]
 		public readonly string Palette = null;
 

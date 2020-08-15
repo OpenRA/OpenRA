@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Warheads
 		[Desc("Image containing explosion effect sequence.")]
 		public readonly string Image = "explosion";
 
-		[PaletteReference("UsePlayerPalette")]
+		[PaletteReference(nameof(UsePlayerPalette))]
 		[Desc("Palette to use for explosion effect.")]
 		public readonly string ExplosionPalette = "effect";
 

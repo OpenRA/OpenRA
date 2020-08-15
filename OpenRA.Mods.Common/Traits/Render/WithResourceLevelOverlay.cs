@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Sequence name to use")]
 		public readonly string Sequence = "resources";
 
-		[PaletteReference("IsPlayerPalette")]
+		[PaletteReference(nameof(IsPlayerPalette))]
 		[Desc("Custom palette name.")]
 		public readonly string Palette = null;
 

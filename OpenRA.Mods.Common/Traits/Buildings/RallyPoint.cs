@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Cursor to display when rally point can be set.")]
 		public readonly string Cursor = "ability";
 
-		[PaletteReference("IsPlayerPalette")]
+		[PaletteReference(nameof(IsPlayerPalette))]
 		[Desc("Custom indicator palette name")]
 		public readonly string Palette = "player";
 

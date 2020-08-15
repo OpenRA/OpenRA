@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		[SequenceReference("DoorImage")]
 		public readonly string DoorSequence = "active";
 
-		[PaletteReference("DoorPaletteIsPlayerPalette")]
+		[PaletteReference(nameof(DoorPaletteIsPlayerPalette))]
 		[Desc("Palette to use for rendering the launch animation")]
 		public readonly string DoorPalette = "player";
 
@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		[SequenceReference("SatelliteImage")]
 		public readonly string SatelliteSequence = "idle";
 
-		[PaletteReference("SatellitePaletteIsPlayerPalette")]
+		[PaletteReference(nameof(SatellitePaletteIsPlayerPalette))]
 		[Desc("Palette to use for rendering the satellite projectile")]
 		public readonly string SatellitePalette = "player";
 

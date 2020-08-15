@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Parachute closing sequence. Defaults to opening sequence played backwards.")]
 		public readonly string ClosingSequence = null;
 
-		[PaletteReference("IsPlayerPalette")]
+		[PaletteReference(nameof(IsPlayerPalette))]
 		[Desc("Palette used to render the parachute.")]
 		public readonly string Palette = "player";
 

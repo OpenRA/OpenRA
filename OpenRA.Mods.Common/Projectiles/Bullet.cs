@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Loop a randomly chosen sequence of Image from this list while this projectile is moving.")]
 		public readonly string[] Sequences = { "idle" };
 
-		[PaletteReference("IsPlayerPalette")]
+		[PaletteReference(nameof(IsPlayerPalette))]
 		[Desc("The palette used to draw this projectile.")]
 		public readonly string Palette = "effect";
 
@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Delay in ticks until trail animation is spawned.")]
 		public readonly int TrailDelay = 1;
 
-		[PaletteReference("TrailUsePlayerPalette")]
+		[PaletteReference(nameof(TrailUsePlayerPalette))]
 		[Desc("Palette used to render the trail sequence.")]
 		public readonly string TrailPalette = "effect";
 
