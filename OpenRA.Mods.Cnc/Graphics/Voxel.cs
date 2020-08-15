@@ -35,10 +35,10 @@ namespace OpenRA.Mods.Cnc.Graphics
 		uint IModel.Frames { get { return frames; } }
 		uint IModel.Sections { get { return limbs; } }
 
-		public Voxel(VoxelLoader loader, VxlReader vxl, HvaReader hva)
+		public Voxel(VoxelLoader loader, VxlReader vxl, HvaReader hva, (string Vxl, string Hva) files)
 		{
 			if (vxl.LimbCount != hva.LimbCount)
-				throw new InvalidOperationException("Voxel and hva limb counts don't match");
+				throw new InvalidOperationException("{0}.vxl and {1}.hva limb counts don't match.".F(files.Vxl, files.Hva));
 
 			transforms = hva.Transforms;
 			frames = hva.FrameCount;
