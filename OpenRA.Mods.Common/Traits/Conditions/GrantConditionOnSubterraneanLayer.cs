@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Dig animation image to play when transitioning.")]
 		public readonly string SubterraneanTransitionImage = null;
 
-		[SequenceReference("SubterraneanTransitionImage")]
+		[SequenceReference(nameof(SubterraneanTransitionImage))]
 		[Desc("Dig animation sequence to play when transitioning.")]
 		public readonly string SubterraneanTransitionSequence = null;
 

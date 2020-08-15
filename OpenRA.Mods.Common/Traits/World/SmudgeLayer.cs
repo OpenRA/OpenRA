@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Sprite sequence name")]
 		public readonly string SmokeType = "smoke_m";
 
-		[SequenceReference("SmokeType")]
+		[SequenceReference(nameof(SmokeType))]
 		public readonly string SmokeSequence = "idle";
 
 		[PaletteReference]

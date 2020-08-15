@@ -25,15 +25,15 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("The image that contains the parachute sequences.")]
 		public readonly string Image = null;
 
-		[SequenceReference("Image", allowNullImage: true)]
+		[SequenceReference(nameof(Image), allowNullImage: true)]
 		[Desc("Parachute opening sequence.")]
 		public readonly string OpeningSequence = null;
 
-		[SequenceReference("Image", allowNullImage: true)]
+		[SequenceReference(nameof(Image), allowNullImage: true)]
 		[Desc("Parachute idle sequence.")]
 		public readonly string Sequence = null;
 
-		[SequenceReference("Image", allowNullImage: true)]
+		[SequenceReference(nameof(Image), allowNullImage: true)]
 		[Desc("Parachute closing sequence. Defaults to opening sequence played backwards.")]
 		public readonly string ClosingSequence = null;
 
@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("The image that contains the shadow sequence for the paradropped unit.")]
 		public readonly string ShadowImage = null;
 
-		[SequenceReference("ShadowImage", allowNullImage: true)]
+		[SequenceReference(nameof(ShadowImage), allowNullImage: true)]
 		[Desc("Paradropped unit's shadow sequence.")]
 		public readonly string ShadowSequence = null;
 

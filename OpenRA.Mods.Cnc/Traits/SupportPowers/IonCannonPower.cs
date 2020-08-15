@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("Effect sequence sprite image")]
 		public readonly string Effect = "ionsfx";
 
-		[SequenceReference("Effect")]
+		[SequenceReference(nameof(Effect))]
 		[Desc("Effect sequence to display")]
 		public readonly string EffectSequence = "idle";
 

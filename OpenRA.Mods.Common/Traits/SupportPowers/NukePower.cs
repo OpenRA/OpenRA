@@ -27,11 +27,11 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Delay (in ticks) after launch until the missile is spawned.")]
 		public readonly int MissileDelay = 0;
 
-		[SequenceReference("MissileWeapon")]
+		[SequenceReference(nameof(MissileWeapon))]
 		[Desc("Sprite sequence for the ascending missile.")]
 		public readonly string MissileUp = "up";
 
-		[SequenceReference("MissileWeapon")]
+		[SequenceReference(nameof(MissileWeapon))]
 		[Desc("Sprite sequence for the descending missile.")]
 		public readonly string MissileDown = "down";
 
@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Trail animation.")]
 		public readonly string TrailImage = null;
 
-		[SequenceReference("TrailImage", allowNullImage: true)]
+		[SequenceReference(nameof(TrailImage), allowNullImage: true)]
 		[Desc("Loop a randomly chosen sequence of TrailImage from this list while this projectile is moving.")]
 		public readonly string[] TrailSequences = { };
 

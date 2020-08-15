@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("Sprite collection for symbols.")]
 		public readonly string Image = "gpsdot";
 
-		[SequenceReference("Image")]
+		[SequenceReference(nameof(Image))]
 		[Desc("Sprite used for this actor.")]
 		public readonly string String = "Infantry";
 

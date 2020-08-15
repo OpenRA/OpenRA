@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly string Sprite = "smokey";
 
-		[SequenceReference("Sprite")]
+		[SequenceReference(nameof(Sprite))]
 		public readonly string Sequence = "idle";
 
 		public readonly string Palette = "effect";

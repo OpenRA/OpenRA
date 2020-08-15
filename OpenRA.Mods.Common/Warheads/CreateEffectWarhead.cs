@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Warheads
 {
 	public class CreateEffectWarhead : Warhead
 	{
-		[SequenceReference("Image", allowNullImage: true)]
+		[SequenceReference(nameof(Image), allowNullImage: true)]
 		[Desc("List of explosion sequences that can be used.")]
 		public readonly string[] Explosions = new string[0];
 

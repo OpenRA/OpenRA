@@ -21,10 +21,10 @@ namespace OpenRA.Mods.Common.Traits
 	public class ShroudRendererInfo : TraitInfo
 	{
 		public readonly string Sequence = "shroud";
-		[SequenceReference("Sequence")]
+		[SequenceReference(nameof(Sequence))]
 		public readonly string[] ShroudVariants = { "shroud" };
 
-		[SequenceReference("Sequence")]
+		[SequenceReference(nameof(Sequence))]
 		public readonly string[] FogVariants = { "fog" };
 
 		[PaletteReference]
@@ -40,13 +40,13 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Use the upper four bits when calculating frame")]
 		public readonly bool UseExtendedIndex = false;
 
-		[SequenceReference("Sequence")]
+		[SequenceReference(nameof(Sequence))]
 		[Desc("Override for source art that doesn't define a fully shrouded tile")]
 		public readonly string OverrideFullShroud = null;
 
 		public readonly int OverrideShroudIndex = 15;
 
-		[SequenceReference("Sequence")]
+		[SequenceReference(nameof(Sequence))]
 		[Desc("Override for source art that doesn't define a fully fogged tile")]
 		public readonly string OverrideFullFog = null;
 
