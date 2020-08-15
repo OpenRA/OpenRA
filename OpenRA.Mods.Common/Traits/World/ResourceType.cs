@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Image = "resources";
 
 		[FieldLoader.Require]
-		[SequenceReference("Image")]
+		[SequenceReference(nameof(Image))]
 		[Desc("Randomly chosen image sequences.")]
 		public readonly string[] Sequences = { };
 

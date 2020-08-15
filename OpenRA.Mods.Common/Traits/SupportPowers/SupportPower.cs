@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly string IconImage = "icon";
 
-		[SequenceReference("IconImage")]
+		[SequenceReference(nameof(IconImage))]
 		[Desc("Icon sprite displayed in the support power palette.")]
 		public readonly string Icon = null;
 
@@ -89,22 +89,22 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly string BeaconImage = "beacon";
 
-		[SequenceReference("BeaconImage")]
+		[SequenceReference(nameof(BeaconImage))]
 		public readonly string BeaconPoster = null;
 
 		[PaletteReference]
 		public readonly string BeaconPosterPalette = "chrome";
 
-		[SequenceReference("BeaconImage")]
+		[SequenceReference(nameof(BeaconImage))]
 		public readonly string ClockSequence = null;
 
-		[SequenceReference("BeaconImage")]
+		[SequenceReference(nameof(BeaconImage))]
 		public readonly string BeaconSequence = null;
 
-		[SequenceReference("BeaconImage")]
+		[SequenceReference(nameof(BeaconImage))]
 		public readonly string ArrowSequence = null;
 
-		[SequenceReference("BeaconImage")]
+		[SequenceReference(nameof(BeaconImage))]
 		public readonly string CircleSequence = null;
 
 		[Desc("Delay after launch, measured in ticks.")]

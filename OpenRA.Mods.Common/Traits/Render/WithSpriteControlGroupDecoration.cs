@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		public readonly string Image = "pips";
 
-		[SequenceReference("Image")]
+		[SequenceReference(nameof(Image))]
 		[Desc("Sprite sequence used to render the control group 0-9 numbers.")]
 		public readonly string GroupSequence = "groups";
 

@@ -20,13 +20,13 @@ namespace OpenRA.Mods.Common.Traits.Render
 	{
 		public readonly string Image = "smoke_m";
 
-		[SequenceReference("Image")]
+		[SequenceReference(nameof(Image))]
 		public readonly string IdleSequence = "idle";
 
-		[SequenceReference("Image")]
+		[SequenceReference(nameof(Image))]
 		public readonly string LoopSequence = "loop";
 
-		[SequenceReference("Image")]
+		[SequenceReference(nameof(Image))]
 		public readonly string EndSequence = "end";
 
 		[PaletteReference(nameof(IsPlayerPalette))]

@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Name of the image containing the projectile sequence.")]
 		public readonly string Image = null;
 
-		[SequenceReference("Image", allowNullImage: true)]
+		[SequenceReference(nameof(Image), allowNullImage: true)]
 		[Desc("Loop a randomly chosen sequence of Image from this list while this projectile is moving.")]
 		public readonly string[] Sequences = { "idle" };
 
@@ -109,7 +109,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Image that contains the trail animation.")]
 		public readonly string TrailImage = null;
 
-		[SequenceReference("TrailImage", allowNullImage: true)]
+		[SequenceReference(nameof(TrailImage), allowNullImage: true)]
 		[Desc("Loop a randomly chosen sequence of TrailImage from this list while this projectile is moving.")]
 		public readonly string[] TrailSequences = { "idle" };
 

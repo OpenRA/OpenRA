@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Image where Ground/WaterCorpseSequence is looked up.")]
 		public readonly string Image = "explosion";
 
-		[SequenceReference("Image", allowNullImage: true)]
+		[SequenceReference(nameof(Image), allowNullImage: true)]
 		public readonly string GroundCorpseSequence = null;
 
 		[PaletteReference]
@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly string GroundImpactSound = null;
 
-		[SequenceReference("Image", allowNullImage: true)]
+		[SequenceReference(nameof(Image), allowNullImage: true)]
 		public readonly string WaterCorpseSequence = null;
 
 		[PaletteReference]

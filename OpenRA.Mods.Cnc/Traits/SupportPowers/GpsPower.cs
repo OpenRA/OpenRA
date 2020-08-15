@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		public readonly string DoorImage = "atek";
 
-		[SequenceReference("DoorImage")]
+		[SequenceReference(nameof(DoorImage))]
 		public readonly string DoorSequence = "active";
 
 		[PaletteReference(nameof(DoorPaletteIsPlayerPalette))]
@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		public readonly string SatelliteImage = "sputnik";
 
-		[SequenceReference("SatelliteImage")]
+		[SequenceReference(nameof(SatelliteImage))]
 		public readonly string SatelliteSequence = "idle";
 
 		[PaletteReference(nameof(SatellitePaletteIsPlayerPalette))]

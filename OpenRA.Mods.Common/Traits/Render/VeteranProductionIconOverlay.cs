@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Image used for the overlay.")]
 		public readonly string Image = null;
 
-		[SequenceReference("Image")]
+		[SequenceReference(nameof(Image))]
 		[Desc("Sequence used for the overlay (cannot be animated).")]
 		public readonly string Sequence = null;
 

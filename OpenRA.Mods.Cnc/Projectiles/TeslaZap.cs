@@ -21,10 +21,10 @@ namespace OpenRA.Mods.Cnc.Projectiles
 	{
 		public readonly string Image = "litning";
 
-		[SequenceReference("Image")]
+		[SequenceReference(nameof(Image))]
 		public readonly string BrightSequence = "bright";
 
-		[SequenceReference("Image")]
+		[SequenceReference(nameof(Image))]
 		public readonly string DimSequence = "dim";
 
 		[PaletteReference]

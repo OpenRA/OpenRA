@@ -31,13 +31,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly string BeaconImage = "beacon";
 
-		[SequenceReference("BeaconImage")]
+		[SequenceReference(nameof(BeaconImage))]
 		public readonly string BeaconSequence = null;
 
-		[SequenceReference("BeaconImage")]
+		[SequenceReference(nameof(BeaconImage))]
 		public readonly string ArrowSequence = "arrow";
 
-		[SequenceReference("BeaconImage")]
+		[SequenceReference(nameof(BeaconImage))]
 		public readonly string CircleSequence = "circles";
 
 		public override object Create(ActorInitializer init) { return new PlaceBeacon(init.Self, this); }

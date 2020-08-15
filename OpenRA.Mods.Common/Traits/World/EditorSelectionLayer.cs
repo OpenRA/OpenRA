@@ -25,11 +25,11 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Sequence image where the selection overlay types are defined.")]
 		public readonly string Image = "editor-overlay";
 
-		[SequenceReference("Image")]
+		[SequenceReference(nameof(Image))]
 		[Desc("Sequence to use for the copy overlay.")]
 		public readonly string CopySequence = "copy";
 
-		[SequenceReference("Image")]
+		[SequenceReference(nameof(Image))]
 		[Desc("Sequence to use for the paste overlay.")]
 		public readonly string PasteSequence = "paste";
 

@@ -37,13 +37,13 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		public readonly string FootprintImage = "overlay";
 
-		[SequenceReference("FootprintImage", prefix: true)]
+		[SequenceReference(nameof(FootprintImage), prefix: true)]
 		public readonly string ValidFootprintSequence = "target-valid";
 
-		[SequenceReference("FootprintImage")]
+		[SequenceReference(nameof(FootprintImage))]
 		public readonly string InvalidFootprintSequence = "target-invalid";
 
-		[SequenceReference("FootprintImage")]
+		[SequenceReference(nameof(FootprintImage))]
 		public readonly string SourceFootprintSequence = "target-select";
 
 		public readonly bool KillCargo = true;
