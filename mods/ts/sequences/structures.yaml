@@ -2025,3 +2025,40 @@ gaplug4:
 		Length: 14
 		Tick: 120
 	icon: rad1icon
+
+gafire:
+	Defaults:
+		Offset: -12, -30, 30
+		UseTilesetCode: true
+	idle:
+		ShadowStart: 3
+	damaged-idle:
+		Start: 1
+		ShadowStart: 4
+	dead:
+		Start: 2
+		ShadowStart: 5
+		Tick: 400
+	idle1: gtfire_b
+		Length: 16
+	damaged-idle1: gtfire_b
+		Length: 16
+	idle2: gtfire_c
+		Length: 6
+		Tick: 200
+	damaged-idle2: gtfire_c
+		Length: 6
+		Tick: 240
+	make: gtfiremk
+		Length: 15
+		ShadowStart: 17
+	emp-overlay: emp_fx01
+		Length: *
+		Offset: 0, 0
+		UseTilesetCode: false
+		ZOffset: 512
+		BlendMode: Additive
+	icon: fsdicon
+		Offset: 0, 0
+		UseTilesetCode: false
+

@@ -640,3 +640,53 @@ GAPLUG4:
 		Type: plug.droppod
 	Power:
 		Amount: -20
+
+GAFIRE:
+	Inherits: ^Building
+	Inherits@2: ^3x2Shape
+	Inherits@IDISABLE: ^DisableOnLowPowerOrPowerDown
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 190
+		Description: Firestorm Generator
+		Prerequisites: gatech, ~structures.gdi
+	Valued:
+		Cost: 1500
+	Tooltip:
+		Name: Firestorm Generator
+	Building:
+		Footprint: xxx xxx
+		Dimensions: 3,2
+	RevealsShroud:
+		Range: 6c0
+		MaxHeightDelta: 3
+	WithRangeCircle:
+		Range: 12c0
+		Type: cloakgenerator
+	Health:
+		HP: 150000
+	WithIdleOverlay@1:
+		Sequence: idle1
+		RequiresCondition: !Building-Buildup
+	WithIdleOverlay@2:
+		Sequence: idle2
+		RequiresCondition: !Building-Buildup
+	Power:
+		Amount: -100
+	ProvidesPrerequisite@buildingname:
+	RequiresBuildableArea:
+		AreaTypes: building
+	GrantSelfConditionPower:
+		PauseOnCondition: disabled || empdisable
+		Condition: actived
+		Description: Firestorm
+		LongDesc: Firestorm Defence System
+		Icon: firestorm
+		ChargeInterval: 500
+		IsSteamValveLogic: true
+		DisChargeInterval: 250
+		ChargingPercentageBeforeActivation: 100
+	##### used for test paused conditon ##
+	Power@Actived:
+		RequiresCondition: actived
+		Amount: -100

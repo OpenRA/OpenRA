@@ -455,6 +455,7 @@ icon:
 	hunterseeker: detnicon
 	emp: pulsicon
 	droppods: podsicon
+	firestorm: fstdicon
 
 clustermissile:
 	up: mltimisl-placeholder # TODO: use voxel
