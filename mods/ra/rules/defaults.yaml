@@ -1014,6 +1014,8 @@
 ^PlaneHusk:
 	Inherits: ^BasicHusk
 	Inherits@2: ^SpriteActor
+	Targetable:
+		TargetTypes: AirborneActor, Husk, NoAutoTarget
 	WithShadow:
 		Offset: 43, 128, 0
 		ZOffset: -129
@@ -1033,6 +1035,8 @@
 ^HelicopterHusk:
 	Inherits: ^BasicHusk
 	Inherits@2: ^ClassicFacingSpriteActor
+	Targetable:
+		TargetTypes: AirborneActor, Husk, NoAutoTarget
 	WithShadow:
 		Offset: 43, 128, 0
 		ZOffset: -129
