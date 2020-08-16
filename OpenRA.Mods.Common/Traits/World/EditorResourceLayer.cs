@@ -92,8 +92,7 @@ namespace OpenRA.Mods.Common.Traits
 			UpdateNetWorth(t.Type, t.Density, newTile.Type, newTile.Density);
 			Tiles[uv] = newTile;
 			Map.CustomTerrain[uv] = newTerrain;
-			if (CellChanged != null)
-				CellChanged(cell, type);
+			CellChanged?.Invoke(cell, type);
 
 			// Neighbouring cell density depends on this cell
 			foreach (var d in CVec.Directions)
@@ -111,8 +110,7 @@ namespace OpenRA.Mods.Common.Traits
 				neighbouringTile.Density = density;
 				Tiles[neighbouringCell] = neighbouringTile;
 
-				if (CellChanged != null)
-					CellChanged(neighbouringCell, type);
+				CellChanged?.Invoke(neighbouringCell, type);
 			}
 		}
 

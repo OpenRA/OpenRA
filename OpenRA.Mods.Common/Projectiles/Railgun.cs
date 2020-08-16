@@ -227,8 +227,7 @@ namespace OpenRA.Mods.Common.Projectiles
 				}
 			}
 
-			if (hitanim != null)
-				hitanim.Tick();
+			hitanim?.Tick();
 
 			if (ticks++ > info.Duration && animationComplete)
 				world.AddFrameEndTask(w => w.Remove(this));

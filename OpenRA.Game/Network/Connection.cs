@@ -174,23 +174,21 @@ namespace OpenRA.Network
 			foreach (var p in packets)
 			{
 				packetFn(p.FromClient, p.Data);
-				if (Recorder != null)
-					Recorder.Receive(p.FromClient, p.Data);
+				Recorder?.Receive(p.FromClient, p.Data);
 			}
 		}
 
 		public void StartRecording(Func<string> chooseFilename)
 		{
 			// If we have a previous recording then save/dispose it and start a new one.
-			if (Recorder != null)
-				Recorder.Dispose();
+			Recorder?.Dispose();
 			Recorder = new ReplayRecorder(chooseFilename);
 		}
 
 		protected virtual void Dispose(bool disposing)
 		{
-			if (disposing && Recorder != null)
-				Recorder.Dispose();
+			if (disposing)
+				Recorder?.Dispose();
 		}
 
 		public void Dispose()
@@ -372,8 +370,7 @@ namespace OpenRA.Network
 
 			// Closing the stream will cause any reads on the receiving thread to throw.
 			// This will mark the connection as no longer connected and the thread will terminate cleanly.
-			if (tcp != null)
-				tcp.Close();
+			tcp?.Close();
 
 			base.Dispose(disposing);
 		}

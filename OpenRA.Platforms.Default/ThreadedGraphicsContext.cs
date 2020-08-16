@@ -260,8 +260,7 @@ namespace OpenRA.Platforms.Default
 				var localResult = result;
 				result = null;
 
-				if (localEdi != null)
-					localEdi.Throw();
+				localEdi?.Throw();
 				return localResult;
 			}
 		}
@@ -278,8 +277,7 @@ namespace OpenRA.Platforms.Default
 		void QueueMessage(Message message)
 		{
 			var exception = messageException;
-			if (exception != null)
-				exception.Throw();
+			exception?.Throw();
 
 			lock (messages)
 			{

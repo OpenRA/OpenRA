@@ -244,10 +244,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				case "DevPlayerExperience":
 				{
-					var playerExperience = self.Owner.PlayerActor.TraitOrDefault<PlayerExperience>();
-					if (playerExperience != null)
-						playerExperience.GiveExperience((int)order.ExtraData);
-
+					self.Owner.PlayerActor.TraitOrDefault<PlayerExperience>()?.GiveExperience((int)order.ExtraData);
 					break;
 				}
 

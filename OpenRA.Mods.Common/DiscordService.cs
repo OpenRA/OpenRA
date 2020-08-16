@@ -178,37 +178,27 @@ namespace OpenRA.Mods.Common
 
 		public static void UpdateStatus(DiscordState state, string details = null, string secret = null, int? players = null, int? slots = null)
 		{
-			var service = GetService();
-			if (service != null)
-				service.SetStatus(state, details, secret, players, slots);
+			GetService()?.SetStatus(state, details, secret, players, slots);
 		}
 
 		public static void SetPlayers(int players, int slots)
 		{
-			var service = GetService();
-			if (service != null)
+			GetService()?.client.UpdateParty(new Party
 			{
-				service.client.UpdateParty(new Party
-				{
-					ID = Secrets.CreateFriendlySecret(new Random()),
-					Size = players,
-					Max = slots
-				});
-			}
+				ID = Secrets.CreateFriendlySecret(new Random()),
+				Size = players,
+				Max = slots
+			});
 		}
 
 		public static void UpdatePlayers(int players, int slots)
 		{
-			var service = GetService();
-			if (service != null)
-				service.client.UpdatePartySize(players, slots);
+			GetService()?.client.UpdatePartySize(players, slots);
 		}
 
 		public static void UpdateDetails(string details)
 		{
-			var service = GetService();
-			if (service != null)
-				service.client.UpdateDetails(details);
+			GetService()?.client.UpdateDetails(details);
 		}
 	}
 }

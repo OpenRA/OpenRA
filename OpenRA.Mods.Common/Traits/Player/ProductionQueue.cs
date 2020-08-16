@@ -465,9 +465,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected void PauseProduction(string itemName, bool paused)
 		{
-			var item = Queue.FirstOrDefault(a => a.Item == itemName);
-			if (item != null)
-				item.Pause(paused);
+			Queue.FirstOrDefault(a => a.Item == itemName)?.Pause(paused);
 		}
 
 		protected void CancelProduction(string itemName, uint numberToCancel)
@@ -646,8 +644,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (Done)
 			{
-				if (OnComplete != null)
-					OnComplete();
+				OnComplete?.Invoke();
 
 				return;
 			}

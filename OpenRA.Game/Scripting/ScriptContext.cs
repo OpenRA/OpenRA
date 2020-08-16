@@ -267,8 +267,7 @@ namespace OpenRA.Scripting
 				return;
 
 			disposed = true;
-			if (runtime != null)
-				runtime.Dispose();
+			runtime?.Dispose();
 		}
 
 		static IEnumerable<Type> ExtractRequiredTypes(Type t)

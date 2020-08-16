@@ -96,17 +96,10 @@ namespace OpenRA.Mods.Common.Effects
 				arrowSpeed *= -1;
 			}
 
-			if (arrow != null)
-				arrow.Tick();
-
-			if (beacon != null)
-				beacon.Tick();
-
-			if (circles != null)
-				circles.Tick();
-
-			if (clock != null)
-				clock.Tick();
+			arrow?.Tick();
+			beacon?.Tick();
+			circles?.Tick();
+			clock?.Tick();
 
 			if (duration > 0 && duration <= tick++)
 				owner.World.AddFrameEndTask(w => w.Remove(this));

@@ -66,9 +66,8 @@ namespace OpenRA.Mods.Common.Traits
 				killer.GiveExperience(Util.ApplyPercentageModifiers(exp, killerExperienceModifier));
 			}
 
-			var attackerExp = e.Attacker.Owner.PlayerActor.TraitOrDefault<PlayerExperience>();
-			if (attackerExp != null)
-				attackerExp.GiveExperience(Util.ApplyPercentageModifiers(exp, new[] { info.PlayerExperienceModifier }));
+			e.Attacker.Owner.PlayerActor.TraitOrDefault<PlayerExperience>()
+				?.GiveExperience(Util.ApplyPercentageModifiers(exp, new[] { info.PlayerExperienceModifier }));
 		}
 	}
 }

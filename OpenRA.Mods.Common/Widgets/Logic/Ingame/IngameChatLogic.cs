@@ -233,8 +233,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		public void AddChatLineWrapper(string name, Color nameColor, string text, Color textColor)
 		{
-			if (chatOverlayDisplay != null)
-				chatOverlayDisplay.AddLine(name, nameColor, text, textColor);
+			chatOverlayDisplay?.AddLine(name, nameColor, text, textColor);
 
 			// HACK: Force disable the chat notification sound for the in-menu chat dialog
 			// This works around our inability to disable the sounds for the in-game dialog when it is hidden

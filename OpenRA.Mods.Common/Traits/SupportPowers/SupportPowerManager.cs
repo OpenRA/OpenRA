@@ -227,10 +227,8 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			var power = Instances.FirstOrDefault(i => !i.IsTraitPaused);
-			if (power == null)
-				return;
 
-			power.SelectTarget(power.Self, Key, Manager);
+			power?.SelectTarget(power.Self, Key, Manager);
 		}
 
 		public virtual void Activate(Order order)

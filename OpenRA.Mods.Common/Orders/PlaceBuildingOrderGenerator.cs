@@ -218,8 +218,7 @@ namespace OpenRA.Mods.Common.Orders
 				world.CancelInputMode();
 
 			foreach (var v in variants)
-				if (v.Preview != null)
-					v.Preview.Tick();
+				v.Preview?.Tick();
 		}
 
 		void IOrderGenerator.SelectionChanged(World world, IEnumerable<Actor> selected) { }

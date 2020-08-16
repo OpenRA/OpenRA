@@ -71,8 +71,7 @@ namespace OpenRA.Mods.Common.Widgets
 				cancelButton.OnClick = () =>
 				{
 					Ui.CloseWindow();
-					if (onCancel != null)
-						onCancel();
+					onCancel?.Invoke();
 				};
 
 				if (!string.IsNullOrEmpty(cancelText) && cancelButton != null)
@@ -85,8 +84,7 @@ namespace OpenRA.Mods.Common.Widgets
 				otherButton.Bounds.Y += headerHeight;
 				otherButton.OnClick = () =>
 				{
-					if (onOther != null)
-						onOther();
+					onOther?.Invoke();
 				};
 
 				if (!string.IsNullOrEmpty(otherText) && otherButton != null)
@@ -156,8 +154,7 @@ namespace OpenRA.Mods.Common.Widgets
 			cancelButton.OnClick = () =>
 			{
 				Ui.CloseWindow();
-				if (onCancel != null)
-					onCancel();
+				onCancel?.Invoke();
 			};
 
 			// Validation

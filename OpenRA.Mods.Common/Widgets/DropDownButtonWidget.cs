@@ -129,9 +129,7 @@ namespace OpenRA.Mods.Common.Widgets
 				oldBounds.Height);
 			panelRoot.AddChild(panel);
 
-			var scrollPanel = panel as ScrollPanelWidget;
-			if (scrollPanel != null)
-				scrollPanel.ScrollToSelectedItem();
+			(panel as ScrollPanelWidget)?.ScrollToSelectedItem();
 		}
 
 		public void ShowDropDown<T>(string panelTemplate, int maxHeight, IEnumerable<T> options, Func<T, ScrollItemWidget, ScrollItemWidget> setupItem)

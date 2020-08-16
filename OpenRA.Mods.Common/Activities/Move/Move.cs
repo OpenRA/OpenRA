@@ -177,8 +177,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			if (IsCanceling && mobile.CanStayInCell(mobile.ToCell))
 			{
-				if (path != null)
-					path.Clear();
+				path?.Clear();
 
 				return true;
 			}

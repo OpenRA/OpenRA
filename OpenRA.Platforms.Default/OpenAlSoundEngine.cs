@@ -326,17 +326,13 @@ namespace OpenRA.Platforms.Default
 
 		public void StopSound(ISound sound)
 		{
-			if (sound == null)
-				return;
-
-			((OpenAlSound)sound).Stop();
+			((OpenAlSound)sound)?.Stop();
 		}
 
 		public void StopAllSounds()
 		{
 			foreach (var slot in sourcePool.Values)
-				if (slot.Sound != null)
-					slot.Sound.Stop();
+				slot.Sound?.Stop();
 		}
 
 		public void SetListenerPosition(WPos position)

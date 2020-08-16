@@ -375,8 +375,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void Reset()
 		{
-			if (editActorPreview != null)
-				editActorPreview.Reset();
+			editActorPreview?.Reset();
 		}
 
 		void Close()

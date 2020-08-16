@@ -73,8 +73,7 @@ namespace OpenRA
 			{
 				entries[Index(cell)] = value;
 
-				if (CellEntryChanged != null)
-					CellEntryChanged(cell);
+				CellEntryChanged?.Invoke(cell);
 			}
 		}
 
@@ -90,8 +89,7 @@ namespace OpenRA
 			{
 				entries[Index(uv)] = value;
 
-				if (CellEntryChanged != null)
-					CellEntryChanged(uv.ToCPos(GridType));
+				CellEntryChanged?.Invoke(uv.ToCPos(GridType));
 			}
 		}
 

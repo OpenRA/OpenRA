@@ -31,8 +31,7 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			try
 			{
-				if (function != null)
-					function.Call().Dispose();
+				function?.Call().Dispose();
 			}
 			catch (Exception ex)
 			{

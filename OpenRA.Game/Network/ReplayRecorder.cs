@@ -100,8 +100,7 @@ namespace OpenRA.Network
 				Metadata.Write(writer);
 			}
 
-			if (preStartBuffer != null)
-				preStartBuffer.Dispose();
+			preStartBuffer?.Dispose();
 			writer.Close();
 		}
 	}

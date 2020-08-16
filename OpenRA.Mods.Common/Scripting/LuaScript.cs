@@ -54,8 +54,7 @@ namespace OpenRA.Mods.Common.Scripting
 			if (disposed)
 				return;
 
-			if (context != null)
-				context.Dispose();
+			context?.Dispose();
 
 			disposed = true;
 		}

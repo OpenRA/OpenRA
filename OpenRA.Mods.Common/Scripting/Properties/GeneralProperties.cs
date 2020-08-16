@@ -172,10 +172,7 @@ namespace OpenRA.Mods.Common.Scripting
 		{
 			get
 			{
-				if (autotarget == null)
-					return null;
-
-				return autotarget.Stance.ToString();
+				return autotarget?.Stance.ToString();
 			}
 
 			set
@@ -197,10 +194,8 @@ namespace OpenRA.Mods.Common.Scripting
 			get
 			{
 				var tooltip = tooltips.FirstEnabledTraitOrDefault();
-				if (tooltip == null)
-					return null;
 
-				return tooltip.Info.Name;
+				return tooltip?.Info.Name;
 			}
 		}
 

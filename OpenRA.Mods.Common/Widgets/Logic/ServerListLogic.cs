@@ -541,8 +541,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				foreach (var row in rows)
 					serverList.AddChild(row);
 
-				if (nextServerRow != null)
-					nextServerRow.OnClick();
+				nextServerRow?.OnClick();
 
 				playerCount = games.Sum(g => g.Players);
 			});
@@ -744,8 +743,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (disposing && !disposed)
 			{
 				disposed = true;
-				if (lanGameProbe != null)
-					lanGameProbe.Dispose();
+				lanGameProbe?.Dispose();
 			}
 
 			base.Dispose(disposing);

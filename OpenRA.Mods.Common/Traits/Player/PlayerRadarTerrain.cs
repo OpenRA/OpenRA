@@ -61,8 +61,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			terrainColor[uv] = GetColor(world.Map, uv);
 
-			if (CellTerrainColorChanged != null)
-				CellTerrainColorChanged(uv);
+			CellTerrainColorChanged?.Invoke(uv);
 		}
 
 		public void WorldLoaded(World w, WorldRenderer wr)

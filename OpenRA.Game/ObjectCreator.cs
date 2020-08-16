@@ -67,10 +67,7 @@ namespace OpenRA
 				if (a.FullName == e.Name)
 					return a;
 
-			if (assemblies == null)
-				return null;
-
-			return assemblies.Select(a => a.Assembly).FirstOrDefault(a => a.FullName == e.Name);
+			return assemblies?.Select(a => a.Assembly).FirstOrDefault(a => a.FullName == e.Name);
 		}
 
 		// Only used by the linter to prevent exceptions from being thrown during a lint run

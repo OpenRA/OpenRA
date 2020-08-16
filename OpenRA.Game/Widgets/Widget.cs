@@ -113,11 +113,9 @@ namespace OpenRA.Widgets
 
 			if (wasMouseOver != MouseOverWidget)
 			{
-				if (wasMouseOver != null)
-					wasMouseOver.MouseExited();
+				wasMouseOver?.MouseExited();
 
-				if (MouseOverWidget != null)
-					MouseOverWidget.MouseEntered();
+				MouseOverWidget?.MouseEntered();
 			}
 
 			return handled;

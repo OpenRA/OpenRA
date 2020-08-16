@@ -90,8 +90,7 @@ namespace OpenRA
 		public void CancelAsync()
 		{
 			lock (syncObject)
-				if (wc != null)
-					wc.CancelAsync();
+				wc?.CancelAsync();
 		}
 	}
 }

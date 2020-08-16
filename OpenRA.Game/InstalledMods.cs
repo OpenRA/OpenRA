@@ -78,8 +78,7 @@ namespace OpenRA
 				Log.Write("debug", "Load mod '{0}': {1}".F(path, e));
 			}
 
-			if (package != null)
-				package.Dispose();
+			package?.Dispose();
 
 			return null;
 		}

@@ -263,8 +263,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 		public static void Save(this YamlFileSet files)
 		{
 			foreach (var file in files)
-				if (file.Item1 != null)
-					file.Item1.Update(file.Item2, Encoding.UTF8.GetBytes(file.Item3.WriteToString()));
+				file.Item1?.Update(file.Item2, Encoding.UTF8.GetBytes(file.Item3.WriteToString()));
 		}
 
 		/// <summary>Checks if node is a removal (has '-' prefix)</summary>

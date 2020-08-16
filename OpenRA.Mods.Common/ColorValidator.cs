@@ -60,8 +60,7 @@ namespace OpenRA.Mods.Common
 			askedColor.ToAhsv(out _, out _, out var s, out var v);
 			if (s < HsvSaturationRange[0] || s > HsvSaturationRange[1] || v < HsvValueRange[0] || v > HsvValueRange[1])
 			{
-				if (errorMessages != null)
-					errorMessages.Add("Color was adjusted to be inside the allowed range.");
+				errorMessages?.Add("Color was adjusted to be inside the allowed range.");
 				forbiddenColor = askedColor;
 				return false;
 			}
@@ -69,16 +68,14 @@ namespace OpenRA.Mods.Common
 			// Validate color against the current map tileset
 			if (!IsValid(askedColor, terrainColors, out forbiddenColor))
 			{
-				if (errorMessages != null)
-					errorMessages.Add("Color was adjusted to be less similar to the terrain.");
+				errorMessages?.Add("Color was adjusted to be less similar to the terrain.");
 				return false;
 			}
 
 			// Validate color against other clients
 			if (!IsValid(askedColor, playerColors, out forbiddenColor))
 			{
-				if (errorMessages != null)
-					errorMessages.Add("Color was adjusted to be less similar to another player.");
+				errorMessages?.Add("Color was adjusted to be less similar to another player.");
 				return false;
 			}
 

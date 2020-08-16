@@ -115,8 +115,7 @@ namespace OpenRA
 					font.Dispose();
 			using (new PerfTimer("SpriteFonts"))
 			{
-				if (fontSheetBuilder != null)
-					fontSheetBuilder.Dispose();
+				fontSheetBuilder?.Dispose();
 				fontSheetBuilder = new SheetBuilder(SheetType.BGRA, 512);
 				Fonts = modData.Manifest.Get<Fonts>().FontList.ToDictionary(x => x.Key,
 					x => new SpriteFont(x.Value.Font, modData.DefaultFileSystem.Open(x.Value.Font).ReadAllBytes(),
@@ -156,8 +155,7 @@ namespace OpenRA
 
 			if (screenSprite == null || screenSprite.Sheet.Size != surfaceBufferSize)
 			{
-				if (screenBuffer != null)
-					screenBuffer.Dispose();
+				screenBuffer?.Dispose();
 
 				// Render the screen into a frame buffer to simplify reading back screenshots
 				screenBuffer = Context.CreateFrameBuffer(surfaceBufferSize, Color.FromArgb(0xFF, 0, 0, 0));
@@ -195,8 +193,7 @@ namespace OpenRA
 			var worldBufferSize = worldViewport.Size.NextPowerOf2();
 			if (worldSprite == null || worldSprite.Sheet.Size != worldBufferSize)
 			{
-				if (worldBuffer != null)
-					worldBuffer.Dispose();
+				worldBuffer?.Dispose();
 
 				// Render the world into a framebuffer at 1:1 scaling to allow the depth buffer to match the artwork at all zoom levels
 				worldBuffer = Context.CreateFrameBuffer(worldBufferSize);
@@ -329,8 +326,7 @@ namespace OpenRA
 			{
 				if (currentBatchRenderer == value)
 					return;
-				if (currentBatchRenderer != null)
-					currentBatchRenderer.Flush();
+				currentBatchRenderer?.Flush();
 				currentBatchRenderer = value;
 			}
 		}
@@ -460,8 +456,7 @@ namespace OpenRA
 		{
 			WorldModelRenderer.Dispose();
 			tempBuffer.Dispose();
-			if (fontSheetBuilder != null)
-				fontSheetBuilder.Dispose();
+			fontSheetBuilder?.Dispose();
 			if (Fonts != null)
 				foreach (var font in Fonts.Values)
 					font.Dispose();

@@ -107,8 +107,7 @@ namespace OpenRA.Mods.Common.FileFormats
 						for (var i = 0; i < next; i++)
 							output.WriteByte(outBuffer[i]);
 
-						if (onProgress != null)
-							onProgress(input.Position - inputStart, output.Position - outputStart);
+						onProgress?.Invoke(input.Position - inputStart, output.Position - outputStart);
 						break;
 					}
 
@@ -155,8 +154,7 @@ namespace OpenRA.Mods.Common.FileFormats
 							next = 0;
 							first = false;
 
-							if (onProgress != null)
-								onProgress(input.Position - inputStart, output.Position - outputStart);
+							onProgress?.Invoke(input.Position - inputStart, output.Position - outputStart);
 						}
 					}
 					while (len != 0);
@@ -173,8 +171,7 @@ namespace OpenRA.Mods.Common.FileFormats
 						next = 0;
 						first = false;
 
-						if (onProgress != null)
-							onProgress(input.Position - inputStart, output.Position - outputStart);
+						onProgress?.Invoke(input.Position - inputStart, output.Position - outputStart);
 					}
 				}
 			}

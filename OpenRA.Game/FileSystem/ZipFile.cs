@@ -66,8 +66,7 @@ namespace OpenRA.FileSystem
 
 			public void Dispose()
 			{
-				if (pkg != null)
-					pkg.Close();
+				pkg?.Close();
 			}
 
 			public IReadOnlyPackage OpenPackage(string filename, FileSystem context)

@@ -146,8 +146,7 @@ namespace OpenRA.Graphics
 
 		public void Dispose()
 		{
-			if (texture != null)
-				texture.Dispose();
+			texture?.Dispose();
 		}
 	}
 }

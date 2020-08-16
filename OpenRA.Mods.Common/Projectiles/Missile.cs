@@ -792,8 +792,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		public void Tick(World world)
 		{
 			ticks++;
-			if (anim != null)
-				anim.Tick();
+			anim?.Tick();
 
 			// Switch from freefall mode to homing mode
 			if (ticks == info.HomingActivationDelay + 1)

@@ -415,8 +415,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					onConfirm: () =>
 					{
 						DeleteReplay(r);
-						if (after != null)
-							after.Invoke();
+						after?.Invoke();
 					},
 					confirmText: "Delete",
 					onCancel: () => { });

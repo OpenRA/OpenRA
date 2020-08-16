@@ -49,8 +49,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			var external = toActor.TraitsImplementing<ExternalCondition>()
 				.FirstOrDefault(t => t.Info.Condition == info.Condition && t.CanGrantCondition(toActor, this));
 
-			if (external != null)
-				external.GrantCondition(toActor, this, duration, remaining);
+			external?.GrantCondition(toActor, this, duration, remaining);
 		}
 
 		void IConditionTimerWatcher.Update(int duration, int remaining)

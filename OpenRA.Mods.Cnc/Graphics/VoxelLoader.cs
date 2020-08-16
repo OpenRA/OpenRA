@@ -194,8 +194,7 @@ namespace OpenRA.Mods.Cnc.Graphics
 
 		public void RefreshBuffer()
 		{
-			if (vertexBuffer != null)
-				vertexBuffer.Dispose();
+			vertexBuffer?.Dispose();
 			vertexBuffer = Game.Renderer.CreateVertexBuffer(totalVertexCount);
 			vertexBuffer.SetData(vertices.SelectMany(v => v).ToArray(), totalVertexCount);
 			cachedVertexCount = totalVertexCount;
@@ -234,8 +233,7 @@ namespace OpenRA.Mods.Cnc.Graphics
 
 		public void Dispose()
 		{
-			if (vertexBuffer != null)
-				vertexBuffer.Dispose();
+			vertexBuffer?.Dispose();
 			sheetBuilder.Dispose();
 		}
 	}

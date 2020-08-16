@@ -177,8 +177,7 @@ namespace OpenRA
 
 		public Map PrepareMap(string uid)
 		{
-			if (LoadScreen != null)
-				LoadScreen.Display();
+			LoadScreen?.Display();
 
 			if (MapCache[uid].Status != MapStatus.Available)
 				throw new InvalidDataException("Invalid map uid: {0}".F(uid));
@@ -202,12 +201,10 @@ namespace OpenRA
 
 		public void Dispose()
 		{
-			if (LoadScreen != null)
-				LoadScreen.Dispose();
+			LoadScreen?.Dispose();
 			MapCache.Dispose();
 
-			if (ObjectCreator != null)
-				ObjectCreator.Dispose();
+			ObjectCreator?.Dispose();
 
 			Manifest.Dispose();
 		}

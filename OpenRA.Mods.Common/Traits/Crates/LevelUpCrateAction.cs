@@ -72,9 +72,7 @@ namespace OpenRA.Mods.Common.Traits
 				var recipient = actor;	// loop variable in closure hazard
 				recipient.World.AddFrameEndTask(w =>
 				{
-					var gainsExperience = recipient.TraitOrDefault<GainsExperience>();
-					if (gainsExperience != null)
-						gainsExperience.GiveLevels(info.Levels);
+					recipient.TraitOrDefault<GainsExperience>()?.GiveLevels(info.Levels);
 				});
 			}
 

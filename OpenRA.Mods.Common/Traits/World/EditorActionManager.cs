@@ -49,8 +49,7 @@ namespace OpenRA.Mods.Common.Traits
 			ClearRedo();
 			undoStack.Push(actionContainer);
 
-			if (ItemAdded != null)
-				ItemAdded(actionContainer);
+			ItemAdded?.Invoke(actionContainer);
 		}
 
 		public void Undo()
@@ -66,8 +65,7 @@ namespace OpenRA.Mods.Common.Traits
 			editorAction.Status = EditorActionStatus.Future;
 			redoStack.Push(editorAction);
 
-			if (OnChange != null)
-				OnChange();
+			OnChange?.Invoke();
 		}
 
 		void ClearRedo()
@@ -76,8 +74,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				var item = redoStack.Pop();
 
-				if (ItemRemoved != null)
-					ItemRemoved(item);
+				ItemRemoved?.Invoke(item);
 			}
 		}
 
@@ -95,8 +92,7 @@ namespace OpenRA.Mods.Common.Traits
 			undoStack.Peek().Status = EditorActionStatus.History;
 			undoStack.Push(editorAction);
 
-			if (OnChange != null)
-				OnChange();
+			OnChange?.Invoke();
 		}
 
 		public bool HasUndos()

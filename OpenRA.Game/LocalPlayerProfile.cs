@@ -108,8 +108,7 @@ namespace OpenRA
 				}
 				finally
 				{
-					if (onComplete != null)
-						onComplete();
+					onComplete?.Invoke();
 				}
 			};
 

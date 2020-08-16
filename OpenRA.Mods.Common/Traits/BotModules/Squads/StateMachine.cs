@@ -18,8 +18,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 
 		public void Update(Squad squad)
 		{
-			if (currentState != null)
-				currentState.Tick(squad);
+			currentState?.Tick(squad);
 		}
 
 		public void ChangeState(Squad squad, IState newState, bool rememberPrevious)
@@ -27,14 +26,12 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			if (rememberPrevious)
 				previousState = currentState;
 
-			if (currentState != null)
-				currentState.Deactivate(squad);
+			currentState?.Deactivate(squad);
 
 			if (newState != null)
 				currentState = newState;
 
-			if (currentState != null)
-				currentState.Activate(squad);
+			currentState?.Activate(squad);
 		}
 
 		public void RevertToPreviousState(Squad squad, bool saveCurrentState)

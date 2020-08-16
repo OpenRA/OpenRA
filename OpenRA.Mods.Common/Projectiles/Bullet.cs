@@ -197,8 +197,7 @@ namespace OpenRA.Mods.Common.Projectiles
 
 		public void Tick(World world)
 		{
-			if (anim != null)
-				anim.Tick();
+			anim?.Tick();
 
 			lastPos = pos;
 			pos = WPos.LerpQuadratic(source, target, angle, ticks, length);

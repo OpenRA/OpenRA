@@ -112,11 +112,7 @@ namespace OpenRA.Mods.Common.Activities
 					t.OnCapture(enterActor, self, oldOwner, self.Owner, captures.Info.CaptureTypes);
 
 				if (self.Owner.Stances[oldOwner].HasStance(captures.Info.PlayerExperienceStances))
-				{
-					var exp = self.Owner.PlayerActor.TraitOrDefault<PlayerExperience>();
-					if (exp != null)
-						exp.GiveExperience(captures.Info.PlayerExperience);
-				}
+					self.Owner.PlayerActor.TraitOrDefault<PlayerExperience>()?.GiveExperience(captures.Info.PlayerExperience);
 
 				if (captures.Info.ConsumedByCapture)
 					self.Dispose();

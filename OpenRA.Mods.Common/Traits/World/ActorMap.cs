@@ -381,8 +381,7 @@ namespace OpenRA.Mods.Common.Traits
 					foreach (var t in triggers)
 						t.Dirty = true;
 
-				if (CellUpdated != null)
-					CellUpdated(c.Cell);
+				CellUpdated?.Invoke(c.Cell);
 			}
 		}
 
@@ -403,8 +402,7 @@ namespace OpenRA.Mods.Common.Traits
 					foreach (var t in triggers)
 						t.Dirty = true;
 
-				if (CellUpdated != null)
-					CellUpdated(c.Cell);
+				CellUpdated?.Invoke(c.Cell);
 			}
 		}
 
