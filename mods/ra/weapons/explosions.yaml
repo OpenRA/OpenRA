@@ -73,7 +73,7 @@ VisualExplode:
 	Inherits: ^Explosion
 	-Warhead@1Dam:
 	Warhead@2Eff: CreateEffect
-		Explosions: offseted_napalm
+		Explosions: offset_napalm
 		ImpactSounds: firebl3.aud
 
 UnitExplodeShip:
