@@ -44,7 +44,7 @@ explosion:
 	large_explosion: frag1
 		Offset: -2,0
 	small_napalm: napalm1
-	offseted_napalm: napalm1 # Used for E4 Explosion
+	offset_napalm: napalm1 # Used for E4 Explosion
 		Offset: 0, -6
 	large_napalm: napalm3
 	corpse: corpse1
