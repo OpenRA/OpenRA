@@ -2,7 +2,8 @@
 # see travis-ci.org for details
 
 language: csharp
-mono: 6.4.0
+mono: none
+dotnet: 2.2.207
 
 jobs:
   include:
@@ -23,6 +24,8 @@ addons:
     - dpkg
     - zsync
     - markdown
+    - mono-runtime
+    - libmono-*-cil
 
 # Environment variables
 env:
