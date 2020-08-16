@@ -46,8 +46,7 @@ namespace OpenRA
 
 		public WVec Rotate(WRot rot)
 		{
-			Int32Matrix4x4 mtx;
-			rot.AsMatrix(out mtx);
+			rot.AsMatrix(out var mtx);
 			return Rotate(ref mtx);
 		}
 
@@ -111,8 +110,7 @@ namespace OpenRA
 
 		public LuaValue Add(LuaRuntime runtime, LuaValue left, LuaValue right)
 		{
-			WVec a, b;
-			if (!left.TryGetClrValue(out a) || !right.TryGetClrValue(out b))
+			if (!left.TryGetClrValue(out WVec a) || !right.TryGetClrValue(out WVec b))
 				throw new LuaException("Attempted to call WVec.Add(WVec, WVec) with invalid arguments ({0}, {1})".F(left.WrappedClrType().Name, right.WrappedClrType().Name));
 
 			return new LuaCustomClrObject(a + b);
@@ -120,8 +118,7 @@ namespace OpenRA
 
 		public LuaValue Subtract(LuaRuntime runtime, LuaValue left, LuaValue right)
 		{
-			WVec a, b;
-			if (!left.TryGetClrValue(out a) || !right.TryGetClrValue(out b))
+			if (!left.TryGetClrValue(out WVec a) || !right.TryGetClrValue(out WVec b))
 				throw new LuaException("Attempted to call WVec.Subtract(WVec, WVec) with invalid arguments ({0}, {1})".F(left.WrappedClrType().Name, right.WrappedClrType().Name));
 
 			return new LuaCustomClrObject(a - b);
@@ -134,8 +131,7 @@ namespace OpenRA
 
 		public LuaValue Equals(LuaRuntime runtime, LuaValue left, LuaValue right)
 		{
-			WVec a, b;
-			if (!left.TryGetClrValue(out a) || !right.TryGetClrValue(out b))
+			if (!left.TryGetClrValue(out WVec a) || !right.TryGetClrValue(out WVec b))
 				return false;
 
 			return a == b;

@@ -66,8 +66,7 @@ namespace OpenRA.Mods.Cnc.FileSystem
 
 			public Stream GetStream(string filename)
 			{
-				Entry entry;
-				if (!index.TryGetValue(filename, out entry))
+				if (!index.TryGetValue(filename, out var entry))
 					return null;
 
 				return SegmentStream.CreateWithoutOwningStream(stream, entry.Offset, (int)entry.Length);

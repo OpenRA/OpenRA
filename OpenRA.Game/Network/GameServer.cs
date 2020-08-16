@@ -167,28 +167,22 @@ namespace OpenRA.Network
 
 			// Games advertised using the old API calculated the play time locally
 			if (State == 2 && PlayTime < 0)
-			{
-				DateTime startTime;
-				if (DateTime.TryParse(Started, out startTime))
+				if (DateTime.TryParse(Started, out var startTime))
 					PlayTime = (int)(DateTime.UtcNow - startTime).TotalSeconds;
-			}
 
-			ExternalMod external;
 			var externalKey = ExternalMod.MakeKey(Mod, Version);
-			if (Game.ExternalMods.TryGetValue(externalKey, out external) && external.Version == Version)
+			if (Game.ExternalMods.TryGetValue(externalKey, out var external) && external.Version == Version)
 				IsCompatible = true;
 
 			// Games advertised using the old API used local mod metadata
 			if (string.IsNullOrEmpty(ModTitle))
 			{
-				Manifest mod;
-
 				if (external != null && external.Version == Version)
 				{
 					// Use external mod registration to populate the section header
 					ModTitle = external.Title;
 				}
-				else if (Game.Mods.TryGetValue(Mod, out mod))
+				else if (Game.Mods.TryGetValue(Mod, out var mod))
 				{
 					// Use internal mod data to populate the section header, but
 					// on-connect switching must use the external mod plumbing.

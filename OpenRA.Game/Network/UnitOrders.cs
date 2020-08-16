@@ -190,9 +190,8 @@ namespace OpenRA.Network
 						var request = HandshakeRequest.Deserialize(order.TargetString);
 
 						var externalKey = ExternalMod.MakeKey(request.Mod, request.Version);
-						ExternalMod external;
-						if ((request.Mod != mod.Id || request.Version != mod.Metadata.Version)
-							&& Game.ExternalMods.TryGetValue(externalKey, out external))
+						if ((request.Mod != mod.Id || request.Version != mod.Metadata.Version) &&
+							Game.ExternalMods.TryGetValue(externalKey, out var external))
 						{
 							// The ConnectionFailedLogic will prompt the user to switch mods
 							orderManager.ServerExternalMod = external;

@@ -38,8 +38,7 @@ namespace OpenRA.Mods.Common.Scripting
 			"If 'Buildable.BuildAtProductionType' is not set either, a random exit will be selected.")]
 		public void Produce(string actorType, string factionVariant = null, string productionType = null)
 		{
-			ActorInfo actorInfo;
-			if (!Self.World.Map.Rules.Actors.TryGetValue(actorType, out actorInfo))
+			if (!Self.World.Map.Rules.Actors.TryGetValue(actorType, out var actorInfo))
 				throw new LuaException("Unknown actor type '{0}'".F(actorType));
 
 			var bi = actorInfo.TraitInfo<BuildableInfo>();

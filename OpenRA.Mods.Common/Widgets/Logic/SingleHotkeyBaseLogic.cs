@@ -18,10 +18,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	{
 		protected SingleHotkeyBaseLogic(Widget widget, ModData modData, string argName, string parentName, Dictionary<string, MiniYaml> logicArgs)
 		{
-			MiniYaml yaml;
-
 			var namedKey = new HotkeyReference();
-			if (logicArgs.TryGetValue(argName, out yaml))
+			if (logicArgs.TryGetValue(argName, out var yaml))
 				namedKey = modData.Hotkeys[yaml.Value];
 
 			var keyhandler = widget.Get<LogicKeyListenerWidget>(parentName);

@@ -82,9 +82,7 @@ namespace OpenRA
 
 		public LuaValue Add(LuaRuntime runtime, LuaValue left, LuaValue right)
 		{
-			WPos a;
-			WVec b;
-			if (!left.TryGetClrValue(out a) || !right.TryGetClrValue(out b))
+			if (!left.TryGetClrValue(out WPos a) || !right.TryGetClrValue(out WVec b))
 				throw new LuaException("Attempted to call WPos.Add(WPos, WVec) with invalid arguments ({0}, {1})".F(left.WrappedClrType().Name, right.WrappedClrType().Name));
 
 			return new LuaCustomClrObject(a + b);
@@ -92,21 +90,18 @@ namespace OpenRA
 
 		public LuaValue Subtract(LuaRuntime runtime, LuaValue left, LuaValue right)
 		{
-			WPos a;
 			var rightType = right.WrappedClrType();
-			if (!left.TryGetClrValue(out a))
+			if (!left.TryGetClrValue(out WPos a))
 				throw new LuaException("Attempted to call WPos.Subtract(WPos, (WPos|WVec)) with invalid arguments ({0}, {1})".F(left.WrappedClrType().Name, rightType.Name));
 
 			if (rightType == typeof(WPos))
 			{
-				WPos b;
-				right.TryGetClrValue(out b);
+				right.TryGetClrValue(out WPos b);
 				return new LuaCustomClrObject(a - b);
 			}
 			else if (rightType == typeof(WVec))
 			{
-				WVec b;
-				right.TryGetClrValue(out b);
+				right.TryGetClrValue(out WVec b);
 				return new LuaCustomClrObject(a - b);
 			}
 
@@ -115,8 +110,7 @@ namespace OpenRA
 
 		public LuaValue Equals(LuaRuntime runtime, LuaValue left, LuaValue right)
 		{
-			WPos a, b;
-			if (!left.TryGetClrValue(out a) || !right.TryGetClrValue(out b))
+			if (!left.TryGetClrValue(out WPos a) || !right.TryGetClrValue(out WPos b))
 				return false;
 
 			return a == b;

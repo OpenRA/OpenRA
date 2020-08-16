@@ -36,8 +36,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic.Ingame
 			selection = world.Selection;
 			this.world = world;
 
-			MiniYaml yaml;
-			if (logicArgs.TryGetValue("ClickSound", out yaml))
+			if (logicArgs.TryGetValue("ClickSound", out var yaml))
 				clickSound = yaml.Value;
 		}
 

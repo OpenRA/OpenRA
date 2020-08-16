@@ -46,8 +46,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			// StartCapture returns false when a capture delay is enabled
 			// We wait until it returns true before allowing entering the target
-			Captures captures;
-			if (!manager.StartCapture(self, enterActor, enterCaptureManager, out captures))
+			if (!manager.StartCapture(self, enterActor, enterCaptureManager, out var captures))
 				return false;
 
 			if (!captures.Info.ConsumedByCapture)

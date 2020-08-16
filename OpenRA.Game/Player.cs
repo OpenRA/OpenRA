@@ -253,8 +253,7 @@ namespace OpenRA
 
 		public LuaValue Equals(LuaRuntime runtime, LuaValue left, LuaValue right)
 		{
-			Player a, b;
-			if (!left.TryGetClrValue(out a) || !right.TryGetClrValue(out b))
+			if (!left.TryGetClrValue(out Player a) || !right.TryGetClrValue(out Player b))
 				return false;
 
 			return a == b;

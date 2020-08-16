@@ -32,8 +32,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 				var delayNode = dltt.LastChildMatching("Delay", false);
 				if (delayNode != null)
 				{
-					int delay;
-					if (Exts.TryParseIntegerInvariant(delayNode.Value.Value, out delay))
+					if (Exts.TryParseIntegerInvariant(delayNode.Value.Value, out var delay))
 						delayNode.ReplaceValue((delay * 1000 / 25).ToString());
 				}
 			}

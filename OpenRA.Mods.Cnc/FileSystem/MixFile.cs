@@ -48,10 +48,7 @@ namespace OpenRA.Mods.Cnc.FileSystem
 
 					List<PackageEntry> entries;
 					if (isEncrypted)
-					{
-						long unused;
-						entries = ParseHeader(DecryptHeader(s, 4, out dataStart), 0, out unused);
-					}
+						entries = ParseHeader(DecryptHeader(s, 4, out dataStart), 0, out var unused);
 					else
 						entries = ParseHeader(s, isCncMix ? 0 : 4, out dataStart);
 
@@ -93,9 +90,8 @@ namespace OpenRA.Mods.Cnc.FileSystem
 				{
 					var classicHash = PackageEntry.HashFilename(filename, PackageHashType.Classic);
 					var crcHash = PackageEntry.HashFilename(filename, PackageHashType.CRC32);
-					PackageEntry e;
 
-					if (entries.TryGetValue(classicHash, out e))
+					if (entries.TryGetValue(classicHash, out var e))
 						classicIndex.Add(filename, e);
 
 					if (entries.TryGetValue(crcHash, out e))
@@ -187,8 +183,7 @@ namespace OpenRA.Mods.Cnc.FileSystem
 
 			public Stream GetStream(string filename)
 			{
-				PackageEntry e;
-				if (!index.TryGetValue(filename, out e))
+				if (!index.TryGetValue(filename, out var e))
 					return null;
 
 				return GetContent(e);
@@ -210,12 +205,11 @@ namespace OpenRA.Mods.Cnc.FileSystem
 
 			public IReadOnlyPackage OpenPackage(string filename, FS context)
 			{
-				IReadOnlyPackage package;
 				var childStream = GetStream(filename);
 				if (childStream == null)
 					return null;
 
-				if (context.TryParsePackage(childStream, filename, out package))
+				if (context.TryParsePackage(childStream, filename, out var package))
 					return package;
 
 				childStream.Dispose();
@@ -237,9 +231,8 @@ namespace OpenRA.Mods.Cnc.FileSystem
 			}
 
 			// Load the global mix database
-			Stream mixDatabase;
 			var allPossibleFilenames = new HashSet<string>();
-			if (context.TryOpen("global mix database.dat", out mixDatabase))
+			if (context.TryOpen("global mix database.dat", out var mixDatabase))
 				using (var db = new XccGlobalDatabase(mixDatabase))
 					foreach (var e in db.Entries)
 						allPossibleFilenames.Add(e);

@@ -57,10 +57,7 @@ namespace OpenRA.Mods.Common
 		public bool IsValid(Color askedColor, out Color forbiddenColor, IEnumerable<Color> terrainColors, IEnumerable<Color> playerColors, HashSet<string> errorMessages = null)
 		{
 			// Validate color against HSV
-			float h, s, v;
-			int a;
-
-			askedColor.ToAhsv(out a, out h, out s, out v);
+			askedColor.ToAhsv(out var a, out var h, out var s, out var v);
 			if (s < HsvSaturationRange[0] || s > HsvSaturationRange[1] || v < HsvValueRange[0] || v > HsvValueRange[1])
 			{
 				if (errorMessages != null)
@@ -95,9 +92,8 @@ namespace OpenRA.Mods.Common
 		{
 			if (TeamColorPresets.Any())
 			{
-				Color forbidden;
 				foreach (var c in TeamColorPresets.Shuffle(random))
-					if (IsValid(c, out forbidden, terrainColors, playerColors))
+					if (IsValid(c, out var forbidden, terrainColors, playerColors))
 						return c;
 			}
 
@@ -107,7 +103,6 @@ namespace OpenRA.Mods.Common
 		public Color RandomValidColor(MersenneTwister random, IEnumerable<Color> terrainColors, IEnumerable<Color> playerColors)
 		{
 			Color color;
-			Color forbidden;
 			do
 			{
 				var h = random.Next(255) / 255f;
@@ -115,7 +110,7 @@ namespace OpenRA.Mods.Common
 				var v = float2.Lerp(HsvValueRange[0], HsvValueRange[1], random.NextFloat());
 				color = Color.FromAhsv(h, s, v);
 			}
-			while (!IsValid(color, out forbidden, terrainColors, playerColors));
+			while (!IsValid(color, out var forbidden, terrainColors, playerColors));
 
 			return color;
 		}
@@ -124,8 +119,7 @@ namespace OpenRA.Mods.Common
 		{
 			var errorMessages = new HashSet<string>();
 
-			Color forbiddenColor;
-			if (IsValid(askedColor, out forbiddenColor, terrainColors, playerColors, errorMessages))
+			if (IsValid(askedColor, out var forbiddenColor, terrainColors, playerColors, errorMessages))
 				return askedColor;
 
 			// Vector between the 2 colors

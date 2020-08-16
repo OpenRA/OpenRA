@@ -78,8 +78,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			// Old is 0 if a is not in powerDrain
-			int old;
-			powerDrain.TryGetValue(a, out old);
+			powerDrain.TryGetValue(a, out var old);
 
 			var amount = a.TraitsImplementing<Power>().Where(t => !t.IsTraitDisabled).Sum(p => p.GetEnabledPower());
 			powerDrain[a] = amount;
@@ -106,8 +105,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (a.IsInWorld)
 				return;
 
-			int amount;
-			if (!powerDrain.TryGetValue(a, out amount))
+			if (!powerDrain.TryGetValue(a, out var amount))
 				return;
 			powerDrain.Remove(a);
 

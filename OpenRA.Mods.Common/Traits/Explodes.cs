@@ -60,18 +60,16 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (!string.IsNullOrEmpty(Weapon))
 			{
-				WeaponInfo weapon;
 				var weaponToLower = Weapon.ToLowerInvariant();
-				if (!rules.Weapons.TryGetValue(weaponToLower, out weapon))
+				if (!rules.Weapons.TryGetValue(weaponToLower, out var weapon))
 					throw new YamlException("Weapons Ruleset does not contain an entry '{0}'".F(weaponToLower));
 				WeaponInfo = weapon;
 			}
 
 			if (!string.IsNullOrEmpty(EmptyWeapon))
 			{
-				WeaponInfo emptyWeapon;
 				var emptyWeaponToLower = EmptyWeapon.ToLowerInvariant();
-				if (!rules.Weapons.TryGetValue(emptyWeaponToLower, out emptyWeapon))
+				if (!rules.Weapons.TryGetValue(emptyWeaponToLower, out var emptyWeapon))
 					throw new YamlException("Weapons Ruleset does not contain an entry '{0}'".F(emptyWeaponToLower));
 				EmptyWeaponInfo = emptyWeapon;
 			}

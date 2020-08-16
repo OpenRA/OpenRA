@@ -45,8 +45,7 @@ namespace OpenRA.Mods.Common.Scripting.Global
 		[Desc("Create a new color with the specified red/green/blue/[alpha] hex string (rrggbb[aa]).")]
 		public Color FromHex(string value)
 		{
-			Color color;
-			if (Color.TryParse(value, out color))
+			if (Color.TryParse(value, out var color))
 				return color;
 
 			throw new LuaException("Invalid rrggbb[aa] hex string.");

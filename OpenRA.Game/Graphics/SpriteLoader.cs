@@ -76,8 +76,7 @@ namespace OpenRA.Graphics
 				var allSprites = sprites.GetOrAdd(filename);
 				var sprite = allSprites.FirstOrDefault();
 
-				ISpriteFrame[] unloaded;
-				if (!unloadedFrames.TryGetValue(filename, out unloaded))
+				if (!unloadedFrames.TryGetValue(filename, out var unloaded))
 					unloaded = null;
 
 				// This is the first time that the file has been requested
@@ -85,8 +84,7 @@ namespace OpenRA.Graphics
 				// the loaded cache (initially empty)
 				if (sprite == null)
 				{
-					TypeDictionary fileMetadata = null;
-					unloaded = FrameLoader.GetFrames(fileSystem, filename, loaders, out fileMetadata);
+					unloaded = FrameLoader.GetFrames(fileSystem, filename, loaders, out var fileMetadata);
 					unloadedFrames[filename] = unloaded;
 					metadata[filename] = fileMetadata;
 
@@ -125,8 +123,7 @@ namespace OpenRA.Graphics
 		/// </summary>
 		public TypeDictionary FrameMetadata(string filename)
 		{
-			TypeDictionary fileMetadata;
-			if (!metadata.TryGetValue(filename, out fileMetadata))
+			if (!metadata.TryGetValue(filename, out var fileMetadata))
 			{
 				FrameLoader.GetFrames(fileSystem, filename, loaders, out fileMetadata);
 				metadata[filename] = fileMetadata;
@@ -142,8 +139,7 @@ namespace OpenRA.Graphics
 
 		public FrameCache(IReadOnlyFileSystem fileSystem, ISpriteLoader[] loaders)
 		{
-			TypeDictionary metadata;
-			frames = new Cache<string, ISpriteFrame[]>(filename => FrameLoader.GetFrames(fileSystem, filename, loaders, out metadata));
+			frames = new Cache<string, ISpriteFrame[]>(filename => FrameLoader.GetFrames(fileSystem, filename, loaders, out var metadata));
 		}
 
 		public ISpriteFrame[] this[string filename] { get { return frames[filename]; } }
@@ -165,11 +161,10 @@ namespace OpenRA.Graphics
 
 		public static ISpriteFrame[] GetFrames(Stream stream, ISpriteLoader[] loaders, out TypeDictionary metadata)
 		{
-			ISpriteFrame[] frames;
 			metadata = null;
 
 			foreach (var loader in loaders)
-				if (loader.TryParseSprite(stream, out frames, out metadata))
+				if (loader.TryParseSprite(stream, out var frames, out metadata))
 					return frames;
 
 			return null;

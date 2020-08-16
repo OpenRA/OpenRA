@@ -80,8 +80,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		bool IProductionIconOverlay.IsOverlayActive(ActorInfo ai)
 		{
-			bool isActive;
-			if (!overlayActive.TryGetValue(ai, out isActive))
+			if (!overlayActive.TryGetValue(ai, out var isActive))
 				return false;
 
 			return isActive;

@@ -158,9 +158,7 @@ namespace OpenRA.Mods.Common.Projectiles
 				target = args.Weapon.TargetActorCenter ? args.GuidedTarget.CenterPosition : args.GuidedTarget.Positions.PositionClosestTo(source);
 
 			// Check for blocking actors
-			WPos blockedPos;
-			if (info.Blockable && BlocksProjectiles.AnyBlockingActorsBetween(world, source, target,
-				info.Width, out blockedPos))
+			if (info.Blockable && BlocksProjectiles.AnyBlockingActorsBetween(world, source, target, info.Width, out var blockedPos))
 			{
 				target = blockedPos;
 			}

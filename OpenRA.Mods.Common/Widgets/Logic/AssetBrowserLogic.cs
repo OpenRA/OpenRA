@@ -272,10 +272,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			// Select the first visible
 			var firstVisible = assetVisByName.FirstOrDefault(kvp => kvp.Value);
-			IReadOnlyPackage package;
-			string filename;
 
-			if (firstVisible.Key != null && modData.DefaultFileSystem.TryGetPackageContaining(firstVisible.Key, out package, out filename))
+			if (firstVisible.Key != null && modData.DefaultFileSystem.TryGetPackageContaining(firstVisible.Key, out var package, out var filename))
 				LoadAsset(package, filename);
 		}
 
@@ -290,8 +288,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			item.IsVisible = () =>
 			{
-				bool visible;
-				if (assetVisByName.TryGetValue(filepath, out visible))
+				if (assetVisByName.TryGetValue(filepath, out var visible))
 					return visible;
 
 				visible = FilterAsset(filepath);

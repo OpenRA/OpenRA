@@ -114,8 +114,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 				{
 					ammoPool.RemoveNode(pipTypeNode);
 
-					string sequence;
-					if (PipReplacements.TryGetValue(pipTypeNode.Value.Value.ToLowerInvariant(), out sequence))
+					if (PipReplacements.TryGetValue(pipTypeNode.Value.Value.ToLowerInvariant(), out var sequence))
 						ammoPips.AddNode("FullSequence", sequence);
 				}
 
@@ -124,8 +123,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 				{
 					ammoPool.RemoveNode(pipTypeEmptyNode);
 
-					string sequence;
-					if (PipReplacements.TryGetValue(pipTypeEmptyNode.Value.Value.ToLowerInvariant(), out sequence))
+					if (PipReplacements.TryGetValue(pipTypeEmptyNode.Value.Value.ToLowerInvariant(), out var sequence))
 						ammoPips.AddNode("EmptySequence", sequence);
 				}
 
@@ -252,9 +250,8 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 				{
 					storesResources.RemoveNode(pipColorNode);
 
-					string sequence;
 					var type = pipColorNode.Value.Value.ToLowerInvariant();
-					if (type != "green" && PipReplacements.TryGetValue(type, out sequence))
+					if (type != "green" && PipReplacements.TryGetValue(type, out var sequence))
 						storagePips.AddNode("FullSequence", sequence);
 				}
 				else

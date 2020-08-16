@@ -35,8 +35,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			worldRoot = Ui.Root.Get("WORLD_ROOT");
 			menuRoot = Ui.Root.Get("MENU_ROOT");
 
-			MiniYaml yaml;
-
 			// System buttons
 			var options = widget.GetOrNull<MenuButtonWidget>("OPTIONS_BUTTON");
 			if (options != null)
@@ -85,7 +83,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				});
 			}
 
-			if (logicArgs.TryGetValue("ClickSound", out yaml))
+			if (logicArgs.TryGetValue("ClickSound", out var yaml))
 				clickSound = yaml.Value;
 		}
 

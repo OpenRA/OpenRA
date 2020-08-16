@@ -120,8 +120,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void EnablePlug(Actor self, string type)
 		{
-			string condition;
-			if (!Info.Conditions.TryGetValue(type, out condition))
+			if (!Info.Conditions.TryGetValue(type, out var condition))
 				return;
 
 			if (conditionToken != Actor.InvalidConditionToken)

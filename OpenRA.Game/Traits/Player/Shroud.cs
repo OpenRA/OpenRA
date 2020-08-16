@@ -253,8 +253,7 @@ namespace OpenRA.Traits
 
 		public void RemoveSource(object key)
 		{
-			ShroudSource state;
-			if (!sources.TryGetValue(key, out state))
+			if (!sources.TryGetValue(key, out var state))
 				return;
 
 			foreach (var puv in state.ProjectedCells)

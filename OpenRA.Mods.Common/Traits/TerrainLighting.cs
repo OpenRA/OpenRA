@@ -98,8 +98,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void RemoveLightSource(int token)
 		{
-			LightSource source;
-			if (!lightSources.TryGetValue(token, out source))
+			if (!lightSources.TryGetValue(token, out var source))
 				return;
 
 			lightSources.Remove(token);

@@ -82,8 +82,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var cell in w.Map.AllCells)
 			{
-				ResourceType t;
-				if (!resources.TryGetValue(w.Map.Resources[cell].Type, out t))
+				if (!resources.TryGetValue(w.Map.Resources[cell].Type, out var t))
 					continue;
 
 				if (!AllowResourceAt(t, cell))

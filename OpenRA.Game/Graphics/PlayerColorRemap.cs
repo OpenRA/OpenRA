@@ -53,8 +53,7 @@ namespace OpenRA.Graphics
 
 		public Color GetRemappedColor(Color original, int index)
 		{
-			Color c;
-			return remapColors.TryGetValue(index, out c)
+			return remapColors.TryGetValue(index, out var c)
 				? c : original;
 		}
 	}

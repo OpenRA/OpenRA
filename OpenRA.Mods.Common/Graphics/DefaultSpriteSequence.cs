@@ -53,10 +53,9 @@ namespace OpenRA.Mods.Common.Graphics
 			var sequences = new Dictionary<string, ISpriteSequence>();
 			var nodes = node.Value.ToDictionary();
 
-			MiniYaml defaults;
 			try
 			{
-				if (nodes.TryGetValue("Defaults", out defaults))
+				if (nodes.TryGetValue("Defaults", out var defaults))
 				{
 					nodes.Remove("Defaults");
 					foreach (var n in nodes)
@@ -123,8 +122,7 @@ namespace OpenRA.Mods.Common.Graphics
 
 		protected static T LoadField<T>(Dictionary<string, MiniYaml> d, string key, T fallback)
 		{
-			MiniYaml value;
-			if (d.TryGetValue(key, out value))
+			if (d.TryGetValue(key, out var value))
 				return FieldLoader.GetValue<T>(key, value.Value);
 
 			return fallback;
@@ -174,8 +172,7 @@ namespace OpenRA.Mods.Common.Graphics
 
 				Func<int, IEnumerable<int>> getUsedFrames = frameCount =>
 				{
-					MiniYaml length;
-					if (d.TryGetValue("Length", out length) && length.Value == "*")
+					if (d.TryGetValue("Length", out var length) && length.Value == "*")
 						Length = Frames != null ? Frames.Length : frameCount - Start;
 					else
 						Length = LoadField(d, "Length", 1);
@@ -244,8 +241,7 @@ namespace OpenRA.Mods.Common.Graphics
 					return usedFrames;
 				};
 
-				MiniYaml combine;
-				if (d.TryGetValue("Combine", out combine))
+				if (d.TryGetValue("Combine", out var combine))
 				{
 					var combined = Enumerable.Empty<Sprite>();
 					foreach (var sub in combine.Nodes)
@@ -262,8 +258,7 @@ namespace OpenRA.Mods.Common.Graphics
 
 						Func<int, IEnumerable<int>> subGetUsedFrames = subFrameCount =>
 						{
-							MiniYaml subLengthYaml;
-							if (sd.TryGetValue("Length", out subLengthYaml) && subLengthYaml.Value == "*")
+							if (sd.TryGetValue("Length", out var subLengthYaml) && subLengthYaml.Value == "*")
 								subLength = subFrames != null ? subFrames.Length : subFrameCount - subStart;
 							else
 								subLength = LoadField(sd, "Length", 1);

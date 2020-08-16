@@ -205,9 +205,7 @@ namespace OpenRA.Mods.Common.Projectiles
 
 			// Check for walls or other blocking obstacles
 			var shouldExplode = false;
-			WPos blockedPos;
-			if (info.Blockable && BlocksProjectiles.AnyBlockingActorsBetween(world, lastPos, pos, info.Width,
-				out blockedPos))
+			if (info.Blockable && BlocksProjectiles.AnyBlockingActorsBetween(world, lastPos, pos, info.Width, out var blockedPos))
 			{
 				pos = blockedPos;
 				shouldExplode = true;

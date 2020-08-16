@@ -450,8 +450,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (skirmishMode)
 				addBotOnMapLoad = true;
 
-			MiniYaml yaml;
-			if (logicArgs.TryGetValue("ChatLineSound", out yaml))
+			if (logicArgs.TryGetValue("ChatLineSound", out var yaml))
 				chatLineSound = yaml.Value;
 		}
 

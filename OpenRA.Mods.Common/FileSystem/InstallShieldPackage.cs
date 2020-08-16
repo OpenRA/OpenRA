@@ -109,8 +109,7 @@ namespace OpenRA.Mods.Common.FileSystem
 
 			public Stream GetStream(string filename)
 			{
-				Entry e;
-				if (!index.TryGetValue(filename, out e))
+				if (!index.TryGetValue(filename, out var e))
 					return null;
 
 				s.Seek(dataStart + e.Offset, SeekOrigin.Begin);

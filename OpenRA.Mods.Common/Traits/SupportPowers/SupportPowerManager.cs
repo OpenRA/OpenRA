@@ -119,8 +119,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void PrerequisitesAvailable(string key)
 		{
-			SupportPowerInstance sp;
-			if (!Powers.TryGetValue(key, out sp))
+			if (!Powers.TryGetValue(key, out var sp))
 				return;
 
 			sp.PrerequisitesAvailable(true);
@@ -128,8 +127,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void PrerequisitesUnavailable(string key)
 		{
-			SupportPowerInstance sp;
-			if (!Powers.TryGetValue(key, out sp))
+			if (!Powers.TryGetValue(key, out var sp))
 				return;
 
 			sp.PrerequisitesAvailable(false);

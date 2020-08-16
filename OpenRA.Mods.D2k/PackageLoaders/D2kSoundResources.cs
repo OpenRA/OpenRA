@@ -64,8 +64,7 @@ namespace OpenRA.Mods.D2k.PackageLoaders
 
 			public Stream GetStream(string filename)
 			{
-				Entry e;
-				if (!index.TryGetValue(filename, out e))
+				if (!index.TryGetValue(filename, out var e))
 					return null;
 
 				return SegmentStream.CreateWithoutOwningStream(s, e.Offset, (int)e.Length);

@@ -35,8 +35,7 @@ namespace OpenRA.Mods.Common.Scripting
 
 		Actor CreateActor(Player owner, string actorType, bool addToWorld, CPos? entryLocation = null, CPos? nextLocation = null)
 		{
-			ActorInfo ai;
-			if (!Context.World.Map.Rules.Actors.TryGetValue(actorType, out ai))
+			if (!Context.World.Map.Rules.Actors.TryGetValue(actorType, out var ai))
 				throw new LuaException("Unknown actor type '{0}'".F(actorType));
 
 			var initDict = new TypeDictionary();

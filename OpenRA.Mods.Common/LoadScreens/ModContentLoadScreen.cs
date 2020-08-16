@@ -49,8 +49,7 @@ namespace OpenRA.Mods.Common.LoadScreens
 		public override void StartGame(Arguments args)
 		{
 			var modId = args.GetValue("Content.Mod", null);
-			Manifest selectedMod;
-			if (modId == null || !Game.Mods.TryGetValue(modId, out selectedMod))
+			if (modId == null || !Game.Mods.TryGetValue(modId, out var selectedMod))
 				throw new InvalidOperationException("Invalid or missing Content.Mod argument.");
 
 			var content = selectedMod.Get<ModContent>(Game.ModData.ObjectCreator);

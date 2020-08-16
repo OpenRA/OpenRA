@@ -67,7 +67,6 @@ namespace OpenRA.Mods.Common.Projectiles
 		public void Tick(World world)
 		{
 			// Check for blocking actors
-			WPos blockedPos;
 			if (info.Blockable)
 			{
 				// If GuidedTarget has become invalid due to getting killed the same tick,
@@ -77,7 +76,7 @@ namespace OpenRA.Mods.Common.Projectiles
 					target = Target.FromPos(args.PassiveTarget);
 
 				if (BlocksProjectiles.AnyBlockingActorsBetween(world, args.Source, target.CenterPosition,
-					info.Width, out blockedPos))
+					info.Width, out var blockedPos))
 					target = Target.FromPos(blockedPos);
 			}
 

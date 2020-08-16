@@ -107,9 +107,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (!string.IsNullOrEmpty(TrailImage) && !TrailSequences.Any())
 				throw new YamlException("At least one entry in TrailSequences must be defined when TrailImage is defined.");
 
-			WeaponInfo weapon;
 			var weaponToLower = (MissileWeapon ?? string.Empty).ToLowerInvariant();
-			if (!rules.Weapons.TryGetValue(weaponToLower, out weapon))
+			if (!rules.Weapons.TryGetValue(weaponToLower, out var weapon))
 				throw new YamlException("Weapons Ruleset does not contain an entry '{0}'".F(weaponToLower));
 
 			WeaponInfo = weapon;

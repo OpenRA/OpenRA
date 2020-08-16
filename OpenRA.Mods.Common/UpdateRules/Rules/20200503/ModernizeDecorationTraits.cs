@@ -82,8 +82,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 					var positionNode = node.LastChildMatching("ReferencePoint");
 					if (positionNode != null)
 					{
-						DecorationPosition value;
-						if (!PositionMap.TryGetValue(positionNode.NodeValue<LegacyReferencePoints>(), out value))
+						if (!PositionMap.TryGetValue(positionNode.NodeValue<LegacyReferencePoints>(), out var value))
 							value = DecorationPosition.TopLeft;
 
 						if (value != DecorationPosition.TopLeft)

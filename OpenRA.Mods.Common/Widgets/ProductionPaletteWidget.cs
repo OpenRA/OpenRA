@@ -295,8 +295,7 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				// Queue a new item
 				Game.Sound.PlayNotification(World.Map.Rules, World.LocalPlayer, "Sounds", ClickSound, null);
-				string notification;
-				var canQueue = CurrentQueue.CanQueue(buildable, out notification);
+				var canQueue = CurrentQueue.CanQueue(buildable, out var notification);
 
 				if (!CurrentQueue.AllQueued().Any())
 					Game.Sound.PlayNotification(World.Map.Rules, World.LocalPlayer, "Speech", notification, World.LocalPlayer.Faction.InternalName);

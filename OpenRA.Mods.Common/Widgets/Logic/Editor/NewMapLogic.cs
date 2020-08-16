@@ -45,9 +45,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			panel.Get<ButtonWidget>("CREATE_BUTTON").OnClick = () =>
 			{
-				int width, height;
-				int.TryParse(widthTextField.Text, out width);
-				int.TryParse(heightTextField.Text, out height);
+				int.TryParse(widthTextField.Text, out var width);
+				int.TryParse(heightTextField.Text, out var height);
 
 				// Require at least a 2x2 playable area so that the
 				// ground is visible through the edge shroud

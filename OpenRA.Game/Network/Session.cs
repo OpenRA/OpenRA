@@ -250,8 +250,7 @@ namespace OpenRA.Network
 
 			public bool OptionOrDefault(string id, bool def)
 			{
-				LobbyOptionState option;
-				if (LobbyOptions.TryGetValue(id, out option))
+				if (LobbyOptions.TryGetValue(id, out var option))
 					return option.IsEnabled;
 
 				return def;
@@ -259,8 +258,7 @@ namespace OpenRA.Network
 
 			public string OptionOrDefault(string id, string def)
 			{
-				LobbyOptionState option;
-				if (LobbyOptions.TryGetValue(id, out option))
+				if (LobbyOptions.TryGetValue(id, out var option))
 					return option.Value;
 
 				return def;

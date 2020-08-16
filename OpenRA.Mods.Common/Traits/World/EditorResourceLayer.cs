@@ -71,11 +71,10 @@ namespace OpenRA.Mods.Common.Traits
 
 			var tile = Map.Resources[uv];
 			var t = Tiles[uv];
-			ResourceType type;
 
 			var newTile = ResourceLayerContents.Empty;
 			var newTerrain = byte.MaxValue;
-			if (Resources.TryGetValue(tile.Type, out type))
+			if (Resources.TryGetValue(tile.Type, out var type))
 			{
 				newTile = new ResourceLayerContents
 				{

@@ -38,8 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 				return false;
 
 			// Remove the actor's last claim, if it has one
-			CPos lastClaim;
-			if (claimByActor.TryGetValue(claimer, out lastClaim))
+			if (claimByActor.TryGetValue(claimer, out var lastClaim))
 				claimByCell.GetOrAdd(lastClaim).Remove(claimer);
 
 			claimers.Add(claimer);
@@ -61,8 +60,7 @@ namespace OpenRA.Mods.Common.Traits
 		/// </summary>
 		public void RemoveClaim(Actor claimer)
 		{
-			CPos lastClaim;
-			if (claimByActor.TryGetValue(claimer, out lastClaim))
+			if (claimByActor.TryGetValue(claimer, out var lastClaim))
 				claimByCell.GetOrAdd(lastClaim).Remove(claimer);
 
 			claimByActor.Remove(claimer);

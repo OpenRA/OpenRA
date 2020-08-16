@@ -295,8 +295,7 @@ namespace OpenRA
 					yamlCache = MiniYaml.FromFile(settingsFile, false);
 					foreach (var yamlSection in yamlCache)
 					{
-						object settingsSection;
-						if (yamlSection.Key != null && Sections.TryGetValue(yamlSection.Key, out settingsSection))
+						if (yamlSection.Key != null && Sections.TryGetValue(yamlSection.Key, out var settingsSection))
 							LoadSectionYaml(yamlSection.Value, settingsSection);
 					}
 

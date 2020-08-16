@@ -52,16 +52,14 @@ namespace OpenRA.Mods.Common.Scripting
 					using (kv.Value)
 					{
 						var key = kv.Key.ToString();
-						Type type;
-						if (!args.TryGetValue(key, out type))
+						if (!args.TryGetValue(key, out var type))
 							throw new LuaException("Unknown initializer type '{0}.{1}'".F(initInstance[0], key));
 
-						object clrValue;
 						var isActorReference = type == typeof(ActorInitActorReference);
 						if (isActorReference)
 							type = kv.Value is LuaString ? typeof(string) : typeof(Actor);
 
-						if (!kv.Value.TryGetClrValue(type, out clrValue))
+						if (!kv.Value.TryGetClrValue(type, out var clrValue))
 							throw new LuaException("Invalid data type for '{0}.{1}' (expected {2}, got {3})".F(initInstance[0], key, type.Name, kv.Value.WrappedClrType()));
 
 						if (isActorReference)
@@ -79,8 +77,7 @@ namespace OpenRA.Mods.Common.Scripting
 			var facingInit = init as FacingInit;
 			if (facingInit != null)
 			{
-				int facing;
-				if (value.TryGetClrValue(out facing))
+				if (value.TryGetClrValue(out int facing))
 				{
 					facingInit.Initialize(WAngle.FromFacing(facing));
 					Game.Debug("Initializing Facing with integers is deprecated. Use Angle instead.");
@@ -97,8 +94,7 @@ namespace OpenRA.Mods.Common.Scripting
 				var valueType = parameterType.IsEnum ? Enum.GetUnderlyingType(parameterType) : parameterType;
 
 				// Try and coerce the table value to the required type
-				object clrValue;
-				if (!value.TryGetClrValue(valueType, out clrValue))
+				if (!value.TryGetClrValue(valueType, out var clrValue))
 					continue;
 
 				initializer.Invoke(init, new[] { clrValue });
@@ -139,8 +135,7 @@ namespace OpenRA.Mods.Common.Scripting
 			"An optional second value can be used to exactly specify the producing queue type.")]
 		public int BuildTime(string type, string queue = null)
 		{
-			ActorInfo ai;
-			if (!Context.World.Map.Rules.Actors.TryGetValue(type, out ai))
+			if (!Context.World.Map.Rules.Actors.TryGetValue(type, out var ai))
 				throw new LuaException("Unknown actor type '{0}'".F(type));
 
 			var bi = ai.TraitInfoOrDefault<BuildableInfo>();
@@ -187,8 +182,7 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Returns the cruise altitude of the requested unit type (zero if it is ground-based).")]
 		public int CruiseAltitude(string type)
 		{
-			ActorInfo ai;
-			if (!Context.World.Map.Rules.Actors.TryGetValue(type, out ai))
+			if (!Context.World.Map.Rules.Actors.TryGetValue(type, out var ai))
 				throw new LuaException("Unknown actor type '{0}'".F(type));
 
 			var pi = ai.TraitInfoOrDefault<ICruiseAltitudeInfo>();
@@ -197,8 +191,7 @@ namespace OpenRA.Mods.Common.Scripting
 
 		public int Cost(string type)
 		{
-			ActorInfo ai;
-			if (!Context.World.Map.Rules.Actors.TryGetValue(type, out ai))
+			if (!Context.World.Map.Rules.Actors.TryGetValue(type, out var ai))
 				throw new LuaException("Unknown actor type '{0}'".F(type));
 
 			var vi = ai.TraitInfoOrDefault<ValuedInfo>();

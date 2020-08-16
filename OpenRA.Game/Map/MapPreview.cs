@@ -233,8 +233,7 @@ namespace OpenRA
 			newData.GridType = gridType;
 			newData.Class = classification;
 
-			MiniYaml temp;
-			if (yaml.TryGetValue("MapFormat", out temp))
+			if (yaml.TryGetValue("MapFormat", out var temp))
 			{
 				var format = FieldLoader.GetValue<int>("MapFormat", temp.Value);
 				if (format != Map.SupportedMapFormat)
@@ -269,8 +268,7 @@ namespace OpenRA
 			try
 			{
 				// Actor definitions may change if the map format changes
-				MiniYaml actorDefinitions;
-				if (yaml.TryGetValue("Actors", out actorDefinitions))
+				if (yaml.TryGetValue("Actors", out var actorDefinitions))
 				{
 					var spawns = new List<CPos>();
 					foreach (var kv in actorDefinitions.Nodes.Where(d => d.Value.Value == "mpspawn"))
@@ -293,8 +291,7 @@ namespace OpenRA
 			try
 			{
 				// Player definitions may change if the map format changes
-				MiniYaml playerDefinitions;
-				if (yaml.TryGetValue("Players", out playerDefinitions))
+				if (yaml.TryGetValue("Players", out var playerDefinitions))
 				{
 					newData.Players = new MapPlayers(playerDefinitions.Nodes);
 					newData.PlayerCount = newData.Players.Players.Count(x => x.Value.Playable);
@@ -331,8 +328,7 @@ namespace OpenRA
 
 		MiniYaml LoadRuleSection(Dictionary<string, MiniYaml> yaml, string section)
 		{
-			MiniYaml node;
-			if (!yaml.TryGetValue(section, out node))
+			if (!yaml.TryGetValue(section, out var node))
 				return null;
 
 			return node;

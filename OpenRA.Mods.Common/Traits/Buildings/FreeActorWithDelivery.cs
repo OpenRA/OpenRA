@@ -60,10 +60,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void DoDelivery(CPos location, string actorName, string carrierActorName)
 		{
-			Actor cargo;
-			Actor carrier;
-
-			CreateActors(actorName, carrierActorName, out cargo, out carrier);
+			CreateActors(actorName, carrierActorName, out var cargo, out var carrier);
 
 			var carryable = cargo.Trait<Carryable>();
 			carryable.Reserve(cargo, carrier);

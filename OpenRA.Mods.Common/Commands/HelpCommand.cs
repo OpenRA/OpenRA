@@ -45,8 +45,7 @@ namespace OpenRA.Mods.Common.Commands
 
 			foreach (var key in console.Commands.Keys)
 			{
-				string description;
-				if (!helpDescriptions.TryGetValue(key, out description))
+				if (!helpDescriptions.TryGetValue(key, out var description))
 					description = "no description available.";
 
 				Game.Debug("{0}: {1}", key, description);

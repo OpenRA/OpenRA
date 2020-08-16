@@ -52,8 +52,7 @@ namespace OpenRA.Primitives
 
 		public bool Remove(T item)
 		{
-			Rectangle bounds;
-			if (!itemBounds.TryGetValue(item, out bounds))
+			if (!itemBounds.TryGetValue(item, out var bounds))
 				return false;
 
 			MutateBins(item, bounds, removeItem);
@@ -91,8 +90,7 @@ namespace OpenRA.Primitives
 
 		void MutateBins(T actor, Rectangle bounds, Action<Dictionary<T, Rectangle>, T, Rectangle> action)
 		{
-			int minRow, maxRow, minCol, maxCol;
-			BoundsToBinRowsAndCols(bounds, out minRow, out maxRow, out minCol, out maxCol);
+			BoundsToBinRowsAndCols(bounds, out var minRow, out var maxRow, out var minCol, out var maxCol);
 
 			for (var row = minRow; row < maxRow; row++)
 				for (var col = minCol; col < maxCol; col++)
@@ -110,8 +108,7 @@ namespace OpenRA.Primitives
 
 		public IEnumerable<T> InBox(Rectangle box)
 		{
-			int minRow, maxRow, minCol, maxCol;
-			BoundsToBinRowsAndCols(box, out minRow, out maxRow, out minCol, out maxCol);
+			BoundsToBinRowsAndCols(box, out var minRow, out var maxRow, out var minCol, out var maxCol);
 
 			// We want to return any items intersecting the box.
 			// If the box covers multiple bins, we must handle items that are contained in multiple bins and avoid

@@ -147,8 +147,7 @@ namespace OpenRA.Mods.Common.Commands
 			var orderString = toAll ? "DevGiveCashAll" : "DevGiveCash";
 			var giveCashOrder = new Order(orderString, world.LocalPlayer.PlayerActor, false);
 
-			int cash;
-			int.TryParse(arg, out cash);
+			int.TryParse(arg, out var cash);
 			giveCashOrder.ExtraData = (uint)cash;
 
 			world.IssueOrder(giveCashOrder);

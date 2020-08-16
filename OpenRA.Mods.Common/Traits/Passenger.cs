@@ -129,12 +129,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyEnteredCargo.OnEnteredCargo(Actor self, Actor cargo)
 		{
-			string specificCargoCondition;
-
 			if (anyCargoToken == Actor.InvalidConditionToken)
 				anyCargoToken = self.GrantCondition(Info.CargoCondition);
 
-			if (specificCargoToken == Actor.InvalidConditionToken && Info.CargoConditions.TryGetValue(cargo.Info.Name, out specificCargoCondition))
+			if (specificCargoToken == Actor.InvalidConditionToken && Info.CargoConditions.TryGetValue(cargo.Info.Name, out var specificCargoCondition))
 				specificCargoToken = self.GrantCondition(specificCargoCondition);
 
 			// Allow scripted / initial actors to move from the unload point back into the cell grid on unload

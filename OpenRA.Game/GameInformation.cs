@@ -133,9 +133,7 @@ namespace OpenRA
 		/// <summary>Gets the player information for the specified runtime player instance.</summary>
 		public Player GetPlayer(OpenRA.Player runtimePlayer)
 		{
-			Player player;
-
-			playersByRuntime.TryGetValue(runtimePlayer, out player);
+			playersByRuntime.TryGetValue(runtimePlayer, out var player);
 
 			return player;
 		}

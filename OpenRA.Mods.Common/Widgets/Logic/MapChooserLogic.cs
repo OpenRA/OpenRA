@@ -215,8 +215,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void EnumerateMaps(MapClassification tab, ScrollItemWidget template)
 		{
-			int playerCountFilter;
-			if (!int.TryParse(mapFilter, out playerCountFilter))
+			if (!int.TryParse(mapFilter, out var playerCountFilter))
 				playerCountFilter = -1;
 
 			var maps = tabMaps[tab]

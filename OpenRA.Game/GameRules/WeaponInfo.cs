@@ -137,8 +137,7 @@ namespace OpenRA.GameRules
 
 		static object LoadProjectile(MiniYaml yaml)
 		{
-			MiniYaml proj;
-			if (!yaml.ToDictionary().TryGetValue("Projectile", out proj))
+			if (!yaml.ToDictionary().TryGetValue("Projectile", out var proj))
 				return null;
 			var ret = Game.CreateObject<IProjectileInfo>(proj.Value + "Info");
 			FieldLoader.Load(ret, proj);

@@ -38,9 +38,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			WeaponInfos = Weapons.Select(w =>
 			{
-				WeaponInfo weapon;
 				var weaponToLower = w.ToLowerInvariant();
-				if (!rules.Weapons.TryGetValue(weaponToLower, out weapon))
+				if (!rules.Weapons.TryGetValue(weaponToLower, out var weapon))
 					throw new YamlException("Weapons Ruleset does not contain an entry '{0}'".F(weaponToLower));
 				return weapon;
 			}).ToArray();

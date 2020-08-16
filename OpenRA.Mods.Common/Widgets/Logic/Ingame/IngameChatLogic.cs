@@ -209,8 +209,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				});
 			}
 
-			MiniYaml yaml;
-			if (logicArgs.TryGetValue("ChatLineSound", out yaml))
+			if (logicArgs.TryGetValue("ChatLineSound", out var yaml))
 				chatLineSound = yaml.Value;
 		}
 

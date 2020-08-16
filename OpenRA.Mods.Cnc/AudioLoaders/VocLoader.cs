@@ -98,8 +98,7 @@ namespace OpenRA.Mods.Cnc.AudioLoaders
 			this.stream = stream;
 
 			CheckVocHeader(stream);
-			int sampleRate;
-			Preload(stream, out blocks, out totalSamples, out sampleRate);
+			Preload(stream, out blocks, out totalSamples, out var sampleRate);
 			SampleRate = sampleRate;
 			Rewind();
 		}

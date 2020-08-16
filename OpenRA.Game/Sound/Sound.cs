@@ -66,11 +66,10 @@ namespace OpenRA
 
 			using (var stream = fileSystem.Open(filename))
 			{
-				ISoundFormat soundFormat;
 				foreach (var loader in loaders)
 				{
 					stream.Position = 0;
-					if (loader.TryParseSound(stream, out soundFormat))
+					if (loader.TryParseSound(stream, out var soundFormat))
 					{
 						var source = loadFormat(soundFormat);
 						soundFormat.Dispose();

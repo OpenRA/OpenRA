@@ -394,8 +394,7 @@ namespace OpenRA.Mods.Common.FileFormats
 
 		public void ExtractFile(string filename, Stream output, Action<int> onProgress = null)
 		{
-			FileDescriptor file;
-			if (!index.TryGetValue(filename, out file))
+			if (!index.TryGetValue(filename, out var file))
 				throw new FileNotFoundException(filename);
 
 			ExtractFile(file, output, onProgress);

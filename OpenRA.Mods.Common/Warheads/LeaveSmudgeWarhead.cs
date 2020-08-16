@@ -63,8 +63,7 @@ namespace OpenRA.Mods.Common.Warheads
 				if (cellActors.Any(a => !IsValidAgainst(a, firedBy)))
 					continue;
 
-				SmudgeLayer smudgeLayer;
-				if (!smudgeLayers.TryGetValue(smudgeType, out smudgeLayer))
+				if (!smudgeLayers.TryGetValue(smudgeType, out var smudgeLayer))
 					throw new NotImplementedException("Unknown smudge type `{0}`".F(smudgeType));
 
 				smudgeLayer.AddSmudge(sc);

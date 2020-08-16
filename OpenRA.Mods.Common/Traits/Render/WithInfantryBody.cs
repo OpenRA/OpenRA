@@ -135,9 +135,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		public void Attacking(Actor self, Target target, Armament a)
 		{
-			string sequence;
 			var info = GetDisplayInfo();
-			if (!info.AttackSequences.TryGetValue(a.Info.Name, out sequence))
+			if (!info.AttackSequences.TryGetValue(a.Info.Name, out var sequence))
 				sequence = info.DefaultAttackSequence;
 
 			if (!string.IsNullOrEmpty(sequence) && DefaultAnimation.HasSequence(NormalizeInfantrySequence(self, sequence)))

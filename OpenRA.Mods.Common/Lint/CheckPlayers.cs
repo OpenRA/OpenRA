@@ -95,8 +95,7 @@ namespace OpenRA.Mods.Common.Lint
 					if (!playerNames.Contains(ownerName))
 						emitError("Actor {0} is owned by unknown player {1}.".F(kv.Key, ownerName));
 
-					RequiresSpecificOwnersInfo info;
-					if (actorsWithRequiredOwner.TryGetValue(kv.Value.Value, out info))
+					if (actorsWithRequiredOwner.TryGetValue(kv.Value.Value, out var info))
 						if (!info.ValidOwnerNames.Contains(ownerName))
 							emitError("Actor {0} owner {1} is not one of ValidOwnerNames: {2}".F(kv.Key, ownerName, info.ValidOwnerNames.JoinWith(", ")));
 				}

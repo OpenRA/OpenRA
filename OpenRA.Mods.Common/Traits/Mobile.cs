@@ -419,8 +419,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (ToCell.Layer == 0)
 				return true;
 
-			ICustomMovementLayer layer;
-			if (self.World.GetCustomMovementLayers().TryGetValue(ToCell.Layer, out layer))
+			if (self.World.GetCustomMovementLayers().TryGetValue(ToCell.Layer, out var layer))
 				return layer.InteractsWithDefaultLayer;
 
 			return true;

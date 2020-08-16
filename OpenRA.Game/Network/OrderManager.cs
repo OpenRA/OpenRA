@@ -149,8 +149,7 @@ namespace OpenRA.Network
 		void CheckSync(byte[] packet)
 		{
 			var frame = BitConverter.ToInt32(packet, 0);
-			byte[] existingSync;
-			if (syncForFrame.TryGetValue(frame, out existingSync))
+			if (syncForFrame.TryGetValue(frame, out var existingSync))
 			{
 				if (packet.Length != existingSync.Length)
 					OutOfSync(frame);

@@ -25,7 +25,6 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				return PrintUsage();
 
 			var invalid = false;
-			byte component;
 			for (int i = 1; i < args.Length; i++)
 			{
 				var parts = args[i].Split(Comma, StringSplitOptions.RemoveEmptyEntries);
@@ -38,7 +37,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				{
 					foreach (var part in parts)
 					{
-						if (!byte.TryParse(part, out component))
+						if (!byte.TryParse(part, out var component))
 						{
 							invalid = true;
 							Console.WriteLine("Invalid component in color (argument " + i + "): [" + part + "]: " + args[i]);
@@ -114,7 +113,6 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				return PrintUsage();
 
 			var invalid = false;
-			byte component;
 			for (int i = 1; i < args.Length; i++)
 			{
 				var parts = args[i].Split(Comma, StringSplitOptions.RemoveEmptyEntries);
@@ -127,7 +125,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				{
 					foreach (var part in parts)
 					{
-						if (!byte.TryParse(part, out component))
+						if (!byte.TryParse(part, out var component))
 						{
 							invalid = true;
 							Console.WriteLine("Invalid component in color (argument " + i + "): [" + part + "]: " + args[i]);

@@ -310,8 +310,7 @@ namespace OpenRA.Traits
 
 		public FrozenActor FromID(uint id)
 		{
-			FrozenActor fa;
-			if (!frozenActorsById.TryGetValue(id, out fa))
+			if (!frozenActorsById.TryGetValue(id, out var fa))
 				return null;
 
 			return fa;
