@@ -52,8 +52,7 @@ namespace OpenRA.Mods.Common.LoadScreens
 				dpiScale = scale;
 
 				// Force images to be reloaded on the next display
-				if (sheet != null)
-					sheet.Dispose();
+				sheet?.Dispose();
 
 				sheet = null;
 			}
@@ -94,8 +93,8 @@ namespace OpenRA.Mods.Common.LoadScreens
 
 		protected override void Dispose(bool disposing)
 		{
-			if (disposing && sheet != null)
-				sheet.Dispose();
+			if (disposing)
+				sheet?.Dispose();
 
 			base.Dispose(disposing);
 		}

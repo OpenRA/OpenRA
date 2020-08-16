@@ -415,8 +415,7 @@ namespace OpenRA.Platforms.Default
 
 			disposed = true;
 
-			if (context != null)
-				context.Dispose();
+			context?.Dispose();
 
 			if (Window != IntPtr.Zero)
 				SDL.SDL_DestroyWindow(Window);

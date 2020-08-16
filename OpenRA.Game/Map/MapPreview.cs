@@ -412,8 +412,7 @@ namespace OpenRA
 				if (innerData.Preview != null)
 					cache.CacheMinimap(this);
 
-				if (parseMetadata != null)
-					parseMetadata(this);
+				parseMetadata?.Invoke(this);
 			}
 
 			// Update the status and class unconditionally
@@ -522,9 +521,7 @@ namespace OpenRA
 		public void Delete()
 		{
 			Invalidate();
-			var deleteFromPackage = parentPackage as IReadWritePackage;
-			if (deleteFromPackage != null)
-				deleteFromPackage.Delete(Package.Name);
+			(parentPackage as IReadWritePackage)?.Delete(Package.Name);
 		}
 
 		Stream IReadOnlyFileSystem.Open(string filename)

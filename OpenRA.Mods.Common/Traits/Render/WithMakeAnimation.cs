@@ -105,14 +105,11 @@ namespace OpenRA.Mods.Common.Traits.Render
 		{
 			Reverse(self, () =>
 			{
-				var wsb = wsbs.FirstEnabledTraitOrDefault();
-
 				// HACK: The actor remains alive and active for one tick before the followup activity
 				// (sell/transform/etc) runs. This causes visual glitches that we attempt to minimize
 				// by forcing the animation to frame 0 and regranting the make condition.
 				// These workarounds will break the actor if the followup activity doesn't dispose it!
-				if (wsb != null)
-					wsb.DefaultAnimation.PlayFetchIndex(info.Sequence, () => 0);
+				wsbs.FirstEnabledTraitOrDefault()?.DefaultAnimation.PlayFetchIndex(info.Sequence, () => 0);
 
 				token = self.GrantCondition(info.Condition);
 

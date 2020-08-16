@@ -65,8 +65,7 @@ namespace OpenRA.Mods.Cnc.Activities
 				t.Infiltrated(targetActor, self, infiltrates.Info.Types);
 
 			var exp = self.Owner.PlayerActor.TraitOrDefault<PlayerExperience>();
-			if (exp != null)
-				exp.GiveExperience(infiltrates.Info.PlayerExperience);
+			exp?.GiveExperience(infiltrates.Info.PlayerExperience);
 
 			if (!string.IsNullOrEmpty(infiltrates.Info.Notification))
 				Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech",

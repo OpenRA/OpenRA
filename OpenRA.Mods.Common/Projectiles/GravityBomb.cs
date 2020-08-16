@@ -100,8 +100,7 @@ namespace OpenRA.Mods.Common.Projectiles
 				args.Weapon.Impact(Target.FromPos(pos), warheadArgs);
 			}
 
-			if (anim != null)
-				anim.Tick();
+			anim?.Tick();
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)

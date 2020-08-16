@@ -248,9 +248,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			self.World.AddToMaps(self, this);
 
-			var cs = self.World.WorldActor.TraitOrDefault<CrateSpawner>();
-			if (cs != null)
-				cs.IncrementCrates();
+			self.World.WorldActor.TraitOrDefault<CrateSpawner>()?.IncrementCrates();
 
 			if (self.World.Map.DistanceAboveTerrain(CenterPosition) > WDist.Zero && self.TraitOrDefault<Parachutable>() != null)
 				self.QueueActivity(new Parachute(self));
@@ -260,9 +258,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			self.World.RemoveFromMaps(self, this);
 
-			var cs = self.World.WorldActor.TraitOrDefault<CrateSpawner>();
-			if (cs != null)
-				cs.DecrementCrates();
+			self.World.WorldActor.TraitOrDefault<CrateSpawner>()?.DecrementCrates();
 		}
 	}
 }

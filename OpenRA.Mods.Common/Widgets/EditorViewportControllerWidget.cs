@@ -52,8 +52,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public void ClearBrush() { SetBrush(null); }
 		public void SetBrush(IEditorBrush brush)
 		{
-			if (CurrentBrush != null)
-				CurrentBrush.Dispose();
+			CurrentBrush?.Dispose();
 
 			CurrentBrush = brush ?? DefaultBrush;
 		}

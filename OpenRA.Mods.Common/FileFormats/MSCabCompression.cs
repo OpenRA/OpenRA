@@ -101,8 +101,7 @@ namespace OpenRA.Mods.Common.FileFormats
 			var decompressedBytes = 0;
 			for (var i = 0; i < folder.BlockCount; i++)
 			{
-				if (onProgress != null)
-					onProgress((int)(100 * output.Position / file.DecompressedLength));
+				onProgress?.Invoke((int)(100 * output.Position / file.DecompressedLength));
 
 				// Ignore checksums
 				stream.Position += 4;

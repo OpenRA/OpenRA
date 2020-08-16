@@ -145,8 +145,7 @@ namespace OpenRA.Network
 						var data = MiniYaml.FromString(order.TargetString)[0];
 						var traitIndex = int.Parse(data.Key);
 
-						if (world != null)
-							world.AddGameSaveTraitData(traitIndex, data.Value);
+						world?.AddGameSaveTraitData(traitIndex, data.Value);
 
 						break;
 					}

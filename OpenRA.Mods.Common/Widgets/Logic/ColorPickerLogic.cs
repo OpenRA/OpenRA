@@ -40,8 +40,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				foreach (var o in api.ActorPreviewInits(actor, ActorPreviewType.ColorPicker))
 					td.Add(o);
 
-			if (preview != null)
-				preview.SetPreview(actor, td);
+			preview?.SetPreview(actor, td);
 
 			var hueSlider = widget.Get<SliderWidget>("HUE");
 			var mixer = widget.Get<ColorMixerWidget>("MIXER");

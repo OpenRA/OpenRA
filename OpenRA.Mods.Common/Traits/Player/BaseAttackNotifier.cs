@@ -80,8 +80,7 @@ namespace OpenRA.Mods.Common.Traits
 						if (p != self.Owner && p.IsAlliedWith(self.Owner) && p != e.Attacker.Owner)
 							Game.Sound.PlayNotification(rules, p, "Speech", info.AllyNotification, p.Faction.InternalName);
 
-				if (radarPings != null)
-					radarPings.Add(() => self.Owner.IsAlliedWith(self.World.RenderPlayer), self.CenterPosition, info.RadarPingColor, info.RadarPingDuration);
+				radarPings?.Add(() => self.Owner.IsAlliedWith(self.World.RenderPlayer), self.CenterPosition, info.RadarPingColor, info.RadarPingDuration);
 			}
 
 			lastAttackTime = self.World.WorldTick;

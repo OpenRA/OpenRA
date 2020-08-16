@@ -245,8 +245,7 @@ namespace OpenRA
 			foreach (var module in modules)
 			{
 				var disposableModule = module as IDisposable;
-				if (disposableModule != null)
-					disposableModule.Dispose();
+				disposableModule?.Dispose();
 			}
 		}
 	}

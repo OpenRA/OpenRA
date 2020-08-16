@@ -97,8 +97,8 @@ namespace OpenRA.Graphics
 				var oldHeight = palette.Height;
 				palette.AddPalette(name, pal, allowModifiers);
 
-				if (oldHeight != palette.Height && PaletteInvalidated != null)
-					PaletteInvalidated();
+				if (oldHeight != palette.Height)
+					PaletteInvalidated?.Invoke();
 			}
 		}
 
@@ -258,8 +258,7 @@ namespace OpenRA.Graphics
 			if (enableDepthBuffer)
 				Game.Renderer.Context.EnableDepthBuffer();
 
-			if (terrainRenderer != null)
-				terrainRenderer.RenderTerrain(this, Viewport);
+			terrainRenderer?.RenderTerrain(this, Viewport);
 
 			Game.Renderer.Flush();
 

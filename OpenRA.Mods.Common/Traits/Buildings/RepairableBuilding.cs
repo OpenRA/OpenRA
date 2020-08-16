@@ -172,9 +172,7 @@ namespace OpenRA.Mods.Common.Traits
 						if (r == self.Owner)
 							return;
 
-						var exp = r.PlayerActor.TraitOrDefault<PlayerExperience>();
-						if (exp != null)
-							exp.GiveExperience(Info.PlayerExperience);
+						r.PlayerActor.TraitOrDefault<PlayerExperience>()?.GiveExperience(Info.PlayerExperience);
 					});
 
 					Repairers.Clear();

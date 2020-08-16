@@ -98,8 +98,7 @@ namespace OpenRA.Mods.Common.Server
 
 		public void GameEnded(S server)
 		{
-			if (LanGameBeacon != null)
-				LanGameBeacon.Stop();
+			LanGameBeacon?.Stop();
 
 			lastChanged = Game.RunTime;
 		}

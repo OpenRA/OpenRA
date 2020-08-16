@@ -128,8 +128,8 @@ namespace OpenRA.Mods.Common.Activities
 					return true;
 
 				// AbortOnResupply cancels the current activity (after resupplying) plus any queued activities
-				if (attackAircraft.Info.AbortOnResupply && NextActivity != null)
-					NextActivity.Cancel(self);
+				if (attackAircraft.Info.AbortOnResupply)
+					NextActivity?.Cancel(self);
 
 				QueueChild(new ReturnToBase(self));
 				returnToBase = true;

@@ -88,8 +88,7 @@ namespace OpenRA
 
 			if (sounds != null)
 				foreach (var soundSource in sounds.Values)
-					if (soundSource != null)
-						soundSource.Dispose();
+					soundSource?.Dispose();
 
 			this.loaders = loaders;
 			this.fileSystem = fileSystem;
@@ -430,8 +429,8 @@ namespace OpenRA
 			StopAudio();
 			if (sounds != null)
 				foreach (var soundSource in sounds.Values)
-					if (soundSource != null)
-						soundSource.Dispose();
+					soundSource?.Dispose();
+
 			soundEngine.Dispose();
 		}
 	}

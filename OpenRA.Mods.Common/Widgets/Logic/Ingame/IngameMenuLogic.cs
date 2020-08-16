@@ -64,8 +64,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			menu = widget.Get("INGAME_MENU");
 			mpe = world.WorldActor.TraitOrDefault<MenuPaletteEffect>();
-			if (mpe != null)
-				mpe.Fade(mpe.Info.MenuEffect);
+			mpe?.Fade(mpe.Info.MenuEffect);
 
 			menu.Get<LabelWidget>("VERSION_LABEL").Text = modData.Manifest.Metadata.Version;
 
@@ -158,8 +157,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void CloseMenu()
 		{
 			Ui.CloseWindow();
-			if (mpe != null)
-				mpe.Fade(MenuPaletteEffect.EffectType.None);
+			mpe?.Fade(MenuPaletteEffect.EffectType.None);
 			onExit();
 		}
 

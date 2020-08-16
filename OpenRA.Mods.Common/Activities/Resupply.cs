@@ -138,9 +138,7 @@ namespace OpenRA.Mods.Common.Activities
 					QueueChild(move.MoveTo(targetCell, targetLineColor: Color.Green));
 
 				var delta = (self.CenterPosition - host.CenterPosition).LengthSquared;
-				var transport = transportCallers.FirstOrDefault(t => t.MinimumDistance.LengthSquared < delta);
-				if (transport != null)
-					transport.RequestTransport(self, targetCell);
+				transportCallers.FirstOrDefault(t => t.MinimumDistance.LengthSquared < delta)?.RequestTransport(self, targetCell);
 
 				return false;
 			}
@@ -261,11 +259,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (health.DamageState == DamageState.Undamaged)
 			{
 				if (host.Actor.Owner != self.Owner)
-				{
-					var exp = host.Actor.Owner.PlayerActor.TraitOrDefault<PlayerExperience>();
-					if (exp != null)
-						exp.GiveExperience(repairsUnits.Info.PlayerExperience);
-				}
+					host.Actor.Owner.PlayerActor.TraitOrDefault<PlayerExperience>()?.GiveExperience(repairsUnits.Info.PlayerExperience);
 
 				Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", repairsUnits.Info.FinishRepairingNotification, self.Owner.Faction.InternalName);
 

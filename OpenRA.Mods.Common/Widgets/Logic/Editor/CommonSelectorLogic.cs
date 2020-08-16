@@ -71,8 +71,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			categorySelector.OnMouseDown = _ =>
 			{
-				if (SearchTextField != null)
-					SearchTextField.YieldKeyboardFocus();
+				SearchTextField?.YieldKeyboardFocus();
 
 				categorySelector.RemovePanel();
 				categorySelector.AttachPanel(CreateCategoriesPanel(Panel));

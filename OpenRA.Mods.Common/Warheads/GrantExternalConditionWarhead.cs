@@ -38,11 +38,9 @@ namespace OpenRA.Mods.Common.Warheads
 				if (!IsValidAgainst(a, firedBy))
 					continue;
 
-				var external = a.TraitsImplementing<ExternalCondition>()
-					.FirstOrDefault(t => t.Info.Condition == Condition && t.CanGrantCondition(a, firedBy));
-
-				if (external != null)
-					external.GrantCondition(a, firedBy, Duration);
+				a.TraitsImplementing<ExternalCondition>()
+					.FirstOrDefault(t => t.Info.Condition == Condition && t.CanGrantCondition(a, firedBy))
+					?.GrantCondition(a, firedBy, Duration);
 			}
 		}
 	}

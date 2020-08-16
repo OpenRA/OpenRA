@@ -206,8 +206,7 @@ namespace OpenRA.Network
 		public void Dispose()
 		{
 			disposed = true;
-			if (Connection != null)
-				Connection.Dispose();
+			Connection?.Dispose();
 		}
 	}
 

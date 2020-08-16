@@ -197,10 +197,7 @@ namespace OpenRA.FileSystem
 			var package = fileIndex[filename]
 				.LastOrDefault(x => x.Contains(filename));
 
-			if (package != null)
-				return package.GetStream(filename);
-
-			return null;
+			return package?.GetStream(filename);
 		}
 
 		public Stream Open(string filename)

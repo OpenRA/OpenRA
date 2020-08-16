@@ -170,8 +170,7 @@ namespace OpenRA.Mods.Common.Traits
 						foreach (var t in buildingInfo.Tiles(targetLocation))
 						{
 							var host = buildingInfluence.GetBuildingAt(t);
-							if (host != null)
-								host.World.Remove(host);
+							host?.World.Remove(host);
 						}
 					}
 
@@ -193,14 +192,10 @@ namespace OpenRA.Mods.Common.Traits
 
 				queue.EndProduction(item);
 
+				// FindBaseProvider may return null if the build anywhere cheat is active
+				// BuildingInfo.IsCloseEnoughToBase has already verified that this is a valid build location
 				if (buildingInfo.RequiresBaseProvider)
-				{
-					// May be null if the build anywhere cheat is active
-					// BuildingInfo.IsCloseEnoughToBase has already verified that this is a valid build location
-					var provider = buildingInfo.FindBaseProvider(w, self.Owner, targetLocation);
-					if (provider != null)
-						provider.BeginCooldown();
-				}
+					buildingInfo.FindBaseProvider(w, self.Owner, targetLocation)?.BeginCooldown();
 
 				if (GetNumBuildables(self.Owner) > prevItems)
 					triggerNotification = true;

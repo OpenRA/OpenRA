@@ -80,7 +80,7 @@ namespace OpenRA
 
 		static void JoinInner(OrderManager om)
 		{
-			if (OrderManager != null) OrderManager.Dispose();
+			OrderManager?.Dispose();
 			OrderManager = om;
 			lastConnectionState = ConnectionState.PreConnecting;
 			ConnectionStateChanged(OrderManager);
@@ -154,8 +154,7 @@ namespace OpenRA
 		internal static void StartGame(string mapUID, WorldType type)
 		{
 			// Dispose of the old world before creating a new one.
-			if (worldRenderer != null)
-				worldRenderer.Dispose();
+			worldRenderer?.Dispose();
 
 			Cursor.SetCursor(null);
 			BeforeGameStart();
@@ -330,11 +329,9 @@ namespace OpenRA
 					Log.Write("graphics", "{0}", e);
 					Console.WriteLine("Renderer initialization failed. Check graphics.log for details.");
 
-					if (Renderer != null)
-						Renderer.Dispose();
+					Renderer?.Dispose();
 
-					if (Sound != null)
-						Sound.Dispose();
+					Sound?.Dispose();
 				}
 			}
 
@@ -388,13 +385,10 @@ namespace OpenRA
 
 			Ui.ResetAll();
 
-			if (worldRenderer != null)
-				worldRenderer.Dispose();
+			worldRenderer?.Dispose();
 			worldRenderer = null;
-			if (server != null)
-				server.Shutdown();
-			if (OrderManager != null)
-				OrderManager.Dispose();
+			server?.Shutdown();
+			OrderManager?.Dispose();
 
 			if (ModData != null)
 			{
@@ -430,8 +424,7 @@ namespace OpenRA
 			var grid = ModData.Manifest.Contains<MapGrid>() ? ModData.Manifest.Get<MapGrid>() : null;
 			Renderer.InitializeDepthBuffer(grid);
 
-			if (Cursor != null)
-				Cursor.Dispose();
+			Cursor?.Dispose();
 
 			Cursor = new CursorManager(ModData.CursorProvider);
 
@@ -446,8 +439,7 @@ namespace OpenRA
 
 			try
 			{
-				if (discoverNat != null)
-					discoverNat.Wait();
+				discoverNat?.Wait();
 			}
 			catch (Exception e)
 			{
@@ -610,8 +602,7 @@ namespace OpenRA
 						Sync.RunUnsynced(Settings.Debug.SyncCheckUnsyncedCode, world, () => world.TickRender(worldRenderer));
 				}
 
-				if (benchmark != null)
-					benchmark.Tick(LocalTick);
+				benchmark?.Tick(LocalTick);
 			}
 		}
 
@@ -836,12 +827,10 @@ namespace OpenRA
 			finally
 			{
 				// Ensure that the active replay is properly saved
-				if (OrderManager != null)
-					OrderManager.Dispose();
+				OrderManager?.Dispose();
 			}
 
-			if (worldRenderer != null)
-				worldRenderer.Dispose();
+			worldRenderer?.Dispose();
 			ModData.Dispose();
 			ChromeProvider.Deinitialize();
 
@@ -880,8 +869,7 @@ namespace OpenRA
 
 		public static void Disconnect()
 		{
-			if (OrderManager.World != null)
-				OrderManager.World.TraitDict.PrintReport();
+			OrderManager.World?.TraitDict.PrintReport();
 
 			OrderManager.Dispose();
 			CloseServer();
@@ -890,8 +878,7 @@ namespace OpenRA
 
 		public static void CloseServer()
 		{
-			if (server != null)
-				server.Shutdown();
+			server?.Shutdown();
 		}
 
 		public static T CreateObject<T>(string name)

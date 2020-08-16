@@ -179,8 +179,7 @@ namespace OpenRA
 
 		public static object GetValue(string fieldName, Type fieldType, MiniYaml yaml, MemberInfo field)
 		{
-			var value = yaml.Value;
-			if (value != null) value = value.Trim();
+			var value = yaml.Value?.Trim();
 
 			if (fieldType == typeof(int))
 			{

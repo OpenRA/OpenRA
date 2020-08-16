@@ -330,8 +330,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				onConfirm: () =>
 				{
 					var newUid = DeleteMap(map);
-					if (after != null)
-						after(newUid);
+					after?.Invoke(newUid);
 				},
 				confirmText: "Delete",
 				onCancel: () => { });
@@ -345,8 +344,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				onConfirm: () =>
 				{
 					maps.Do(m => DeleteMap(m));
-					if (after != null)
-						after(Game.ModData.MapCache.ChooseInitialMap(null, Game.CosmeticRandom));
+					after?.Invoke(Game.ModData.MapCache.ChooseInitialMap(null, Game.CosmeticRandom));
 				},
 				confirmText: "Delete",
 				onCancel: () => { });

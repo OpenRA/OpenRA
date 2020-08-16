@@ -70,8 +70,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			foreach (var sequence in sequenceNode.Value.Nodes)
 			{
 				var facingFudgeNode = sequence.LastChildMatching("UseClassicFacingFudge");
-				if (facingFudgeNode != null)
-					facingFudgeNode.RenameKey("UseClassicFacings");
+				facingFudgeNode?.RenameKey("UseClassicFacings");
 			}
 
 			yield break;

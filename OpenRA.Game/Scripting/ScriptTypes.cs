@@ -168,8 +168,7 @@ namespace OpenRA.Scripting
 			{
 				// Object needs additional notification / context
 				var notify = obj as IScriptNotifyBind;
-				if (notify != null)
-					notify.OnScriptBind(context);
+				notify?.OnScriptBind(context);
 
 				return new LuaCustomClrObject(obj);
 			}

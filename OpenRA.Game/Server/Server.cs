@@ -244,8 +244,7 @@ namespace OpenRA.Server
 						}
 
 						var conn = Conns.SingleOrDefault(c => c.Socket == s);
-						if (conn != null)
-							conn.ReadData(this);
+						conn?.ReadData(this);
 					}
 
 					delayedActions.PerformActions(0);

@@ -156,7 +156,7 @@ namespace OpenRA.Graphics
 				{
 					frame = CurrentSequence.Length - 1;
 					tickFunc = () => { };
-					if (after != null) after();
+					after?.Invoke();
 				}
 			};
 		}

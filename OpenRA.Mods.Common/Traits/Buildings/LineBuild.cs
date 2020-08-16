@@ -91,10 +91,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyLineBuildSegmentsChanged.SegmentRemoved(Actor self, Actor segment)
 		{
-			if (segments == null)
-				return;
-
-			segments.Remove(segment);
+			segments?.Remove(segment);
 		}
 
 		void INotifyAddedToWorld.AddedToWorld(Actor self)

@@ -44,20 +44,16 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyCrushed.OnCrush(Actor self, Actor crusher, BitSet<CrushClass> crushClasses)
 		{
-			var external = crusher.TraitsImplementing<ExternalCondition>()
-				.FirstOrDefault(t => t.Info.Condition == Info.OnCrushCondition && t.CanGrantCondition(crusher, self));
-
-			if (external != null)
-				external.GrantCondition(crusher, self, Info.OnCrushDuration);
+			crusher.TraitsImplementing<ExternalCondition>()
+				.FirstOrDefault(t => t.Info.Condition == Info.OnCrushCondition && t.CanGrantCondition(crusher, self))
+				?.GrantCondition(crusher, self, Info.OnCrushDuration);
 		}
 
 		void INotifyCrushed.WarnCrush(Actor self, Actor crusher, BitSet<CrushClass> crushClasses)
 		{
-			var external = crusher.TraitsImplementing<ExternalCondition>()
-				.FirstOrDefault(t => t.Info.Condition == Info.WarnCrushCondition && t.CanGrantCondition(crusher, self));
-
-			if (external != null)
-				external.GrantCondition(crusher, self, Info.WarnCrushDuration);
+			crusher.TraitsImplementing<ExternalCondition>()
+				.FirstOrDefault(t => t.Info.Condition == Info.WarnCrushCondition && t.CanGrantCondition(crusher, self))
+				?.GrantCondition(crusher, self, Info.WarnCrushDuration);
 		}
 	}
 }

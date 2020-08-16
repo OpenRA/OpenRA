@@ -26,7 +26,7 @@ namespace OpenRA.Activities
 
 		public override bool Tick(Actor self)
 		{
-			if (a != null) a();
+			a?.Invoke();
 			return true;
 		}
 	}
