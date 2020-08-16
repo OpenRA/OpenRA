@@ -174,7 +174,7 @@ namespace OpenRA.Platforms.Default
 				// This is not necessary on macOS, which defines window sizes in effective units ("points").
 				if (Platform.CurrentPlatform == PlatformType.Windows)
 				{
-					if (SDL.SDL_GetDisplayDPI(videoDisplay, out var ddpi, out var hdpi, out var vdpi) == 0)
+					if (SDL.SDL_GetDisplayDPI(videoDisplay, out var ddpi, out _, out _) == 0)
 						windowScale = ddpi / 96;
 				}
 				else if (Platform.CurrentPlatform != PlatformType.OSX)

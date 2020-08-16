@@ -187,7 +187,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		static float HueFromColor(Color c)
 		{
-			c.ToAhsv(out var a, out var h, out var s, out var v);
+			c.ToAhsv(out _, out var h, out _, out _);
 			return h;
 		}
 

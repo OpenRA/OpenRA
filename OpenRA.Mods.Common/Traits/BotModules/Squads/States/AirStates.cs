@@ -85,7 +85,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 
 		protected static bool NearToPosSafely(Squad owner, WPos loc)
 		{
-			return NearToPosSafely(owner, loc, out var a);
+			return NearToPosSafely(owner, loc, out _);
 		}
 
 		protected static bool NearToPosSafely(Squad owner, WPos loc, out Actor detectedEnemyTarget)

@@ -108,7 +108,7 @@ namespace OpenRA.Mods.Common.Traits
 				// requestedTargetPresetForActivity will be cleared once the activity starts running and calls UpdateRequestedTarget
 				if (self.CurrentActivity != null && self.CurrentActivity.NextActivity == requestedTargetPresetForActivity)
 				{
-					RequestedTarget = RequestedTarget.Recalculate(self.Owner, out var targetIsHiddenActor);
+					RequestedTarget = RequestedTarget.Recalculate(self.Owner, out _);
 				}
 
 				// Requested activity has been canceled

@@ -355,7 +355,7 @@ namespace OpenRA
 
 			ExternalMods = new ExternalMods();
 
-			if (modID != null && Mods.TryGetValue(modID, out var currentMod))
+			if (modID != null && Mods.TryGetValue(modID, out _))
 			{
 				var launchPath = args.GetValue("Engine.LaunchPath", Assembly.GetEntryAssembly().Location);
 

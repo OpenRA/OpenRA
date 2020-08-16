@@ -139,7 +139,7 @@ namespace OpenRA.Graphics
 
 		public FrameCache(IReadOnlyFileSystem fileSystem, ISpriteLoader[] loaders)
 		{
-			frames = new Cache<string, ISpriteFrame[]>(filename => FrameLoader.GetFrames(fileSystem, filename, loaders, out var metadata));
+			frames = new Cache<string, ISpriteFrame[]>(filename => FrameLoader.GetFrames(fileSystem, filename, loaders, out _));
 		}
 
 		public ISpriteFrame[] this[string filename] { get { return frames[filename]; } }
