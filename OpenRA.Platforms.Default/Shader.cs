@@ -57,7 +57,7 @@ namespace OpenRA.Platforms.Default
 			{
 				OpenGL.glGetShaderiv(shader, OpenGL.GL_INFO_LOG_LENGTH, out var len);
 				var log = new StringBuilder(len);
-				OpenGL.glGetShaderInfoLog(shader, len, out var length, log);
+				OpenGL.glGetShaderInfoLog(shader, len, out _, log);
 
 				Log.Write("graphics", "GL Info Log:\n{0}", log.ToString());
 				throw new InvalidProgramException("Compile error in shader object '{0}'".F(filename));
@@ -104,7 +104,7 @@ namespace OpenRA.Platforms.Default
 				OpenGL.glGetProgramiv(program, OpenGL.GL_INFO_LOG_LENGTH, out var len);
 
 				var log = new StringBuilder(len);
-				OpenGL.glGetProgramInfoLog(program, len, out var length, log);
+				OpenGL.glGetProgramInfoLog(program, len, out _, log);
 				Log.Write("graphics", "GL Info Log:\n{0}", log.ToString());
 				throw new InvalidProgramException("Link error in shader program '{0}'".F(name));
 			}
@@ -120,7 +120,7 @@ namespace OpenRA.Platforms.Default
 			for (var i = 0; i < numUniforms; i++)
 			{
 				var sb = new StringBuilder(128);
-				OpenGL.glGetActiveUniform(program, i, 128, out var length, out var size, out var type, sb);
+				OpenGL.glGetActiveUniform(program, i, 128, out _, out _, out var type, sb);
 				var sampler = sb.ToString();
 				OpenGL.CheckGLError();
 

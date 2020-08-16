@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				{
 					foreach (var part in parts)
 					{
-						if (!byte.TryParse(part, out var component))
+						if (!byte.TryParse(part, out _))
 						{
 							invalid = true;
 							Console.WriteLine("Invalid component in color (argument " + i + "): [" + part + "]: " + args[i]);
@@ -125,7 +125,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				{
 					foreach (var part in parts)
 					{
-						if (!byte.TryParse(part, out var component))
+						if (!byte.TryParse(part, out _))
 						{
 							invalid = true;
 							Console.WriteLine("Invalid component in color (argument " + i + "): [" + part + "]: " + args[i]);

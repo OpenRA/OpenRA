@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Cnc.FileSystem
 
 					List<PackageEntry> entries;
 					if (isEncrypted)
-						entries = ParseHeader(DecryptHeader(s, 4, out dataStart), 0, out var unused);
+						entries = ParseHeader(DecryptHeader(s, 4, out dataStart), 0, out _);
 					else
 						entries = ParseHeader(s, isCncMix ? 0 : 4, out dataStart);
 
