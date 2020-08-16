@@ -65,15 +65,13 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		public void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
-			WeaponInfo thumpDamageWeapon;
-			WeaponInfo detonationWeapon;
 			var thumpDamageWeaponToLower = (ThumpDamageWeapon ?? string.Empty).ToLowerInvariant();
 			var detonationWeaponToLower = (DetonationWeapon ?? string.Empty).ToLowerInvariant();
 
-			if (!rules.Weapons.TryGetValue(thumpDamageWeaponToLower, out thumpDamageWeapon))
+			if (!rules.Weapons.TryGetValue(thumpDamageWeaponToLower, out var thumpDamageWeapon))
 				throw new YamlException("Weapons Ruleset does not contain an entry '{0}'".F(thumpDamageWeaponToLower));
 
-			if (!rules.Weapons.TryGetValue(detonationWeaponToLower, out detonationWeapon))
+			if (!rules.Weapons.TryGetValue(detonationWeaponToLower, out var detonationWeapon))
 				throw new YamlException("Weapons Ruleset does not contain an entry '{0}'".F(detonationWeaponToLower));
 
 			ThumpDamageWeaponInfo = thumpDamageWeapon;

@@ -35,8 +35,7 @@ namespace OpenRA.Widgets
 
 		public static bool TryGet<T>(string key, out T result)
 		{
-			string s;
-			if (!data.TryGetValue(key, out s))
+			if (!data.TryGetValue(key, out var s))
 			{
 				result = default(T);
 				return false;

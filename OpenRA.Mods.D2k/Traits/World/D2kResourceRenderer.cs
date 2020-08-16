@@ -166,7 +166,6 @@ namespace OpenRA.Mods.D2k.Traits
 					return;
 
 				var clear = FindClearSides(renderType, cell);
-				int index;
 
 				if (clear == ClearSides.None)
 				{
@@ -175,7 +174,7 @@ namespace OpenRA.Mods.D2k.Traits
 
 					UpdateSpriteLayers(cell, renderType.Variants.First().Value, sprites[frame], renderType.Palette);
 				}
-				else if (SpriteMap.TryGetValue(clear, out index))
+				else if (SpriteMap.TryGetValue(clear, out var index))
 				{
 					UpdateSpriteLayers(cell, renderType.Variants.First().Value, index, renderType.Palette);
 				}

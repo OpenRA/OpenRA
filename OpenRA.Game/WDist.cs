@@ -114,9 +114,7 @@ namespace OpenRA
 		#region Scripting interface
 		public LuaValue Add(LuaRuntime runtime, LuaValue left, LuaValue right)
 		{
-			WDist a;
-			WDist b;
-			if (!left.TryGetClrValue(out a) || !right.TryGetClrValue(out b))
+			if (!left.TryGetClrValue(out WDist a) || !right.TryGetClrValue(out WDist b))
 				throw new LuaException("Attempted to call WDist.Add(WDist, WDist) with invalid arguments.");
 
 			return new LuaCustomClrObject(a + b);
@@ -124,9 +122,7 @@ namespace OpenRA
 
 		public LuaValue Subtract(LuaRuntime runtime, LuaValue left, LuaValue right)
 		{
-			WDist a;
-			WDist b;
-			if (!left.TryGetClrValue(out a) || !right.TryGetClrValue(out b))
+			if (!left.TryGetClrValue(out WDist a) || !right.TryGetClrValue(out WDist b))
 				throw new LuaException("Attempted to call WDist.Subtract(WDist, WDist) with invalid arguments.");
 
 			return new LuaCustomClrObject(a - b);
@@ -134,9 +130,7 @@ namespace OpenRA
 
 		public LuaValue Equals(LuaRuntime runtime, LuaValue left, LuaValue right)
 		{
-			WDist a;
-			WDist b;
-			if (!left.TryGetClrValue(out a) || !right.TryGetClrValue(out b))
+			if (!left.TryGetClrValue(out WDist a) || !right.TryGetClrValue(out WDist b))
 				throw new LuaException("Attempted to call WDist.Equals(WDist, WDist) with invalid arguments.");
 
 			return a == b;

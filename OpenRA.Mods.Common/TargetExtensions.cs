@@ -21,8 +21,7 @@ namespace OpenRA.Mods.Common
 		/// /// </summary>
 		public static Target RecalculateInvalidatingHiddenTargets(this Target t, Player viewer)
 		{
-			bool targetIsHiddenActor;
-			var updated = t.Recalculate(viewer, out targetIsHiddenActor);
+			var updated = t.Recalculate(viewer, out bool targetIsHiddenActor);
 			return targetIsHiddenActor ? Target.Invalid : updated;
 		}
 

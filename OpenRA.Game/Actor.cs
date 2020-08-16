@@ -560,8 +560,7 @@ namespace OpenRA
 		/// <returns>The invalid token ID.</returns>
 		public int RevokeCondition(int token)
 		{
-			string condition;
-			if (!conditionTokens.TryGetValue(token, out condition))
+			if (!conditionTokens.TryGetValue(token, out var condition))
 				throw new InvalidOperationException("Attempting to revoke condition with invalid token {0} for {1}.".F(token, this));
 
 			conditionTokens.Remove(token);
@@ -594,8 +593,7 @@ namespace OpenRA
 
 		public LuaValue Equals(LuaRuntime runtime, LuaValue left, LuaValue right)
 		{
-			Actor a, b;
-			if (!left.TryGetClrValue(out a) || !right.TryGetClrValue(out b))
+			if (!left.TryGetClrValue(out Actor a) || !right.TryGetClrValue(out Actor b))
 				return false;
 
 			return a == b;

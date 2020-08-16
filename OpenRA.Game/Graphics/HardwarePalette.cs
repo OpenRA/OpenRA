@@ -38,19 +38,16 @@ namespace OpenRA.Graphics
 
 		public IPalette GetPalette(string name)
 		{
-			MutablePalette mutable;
-			if (modifiablePalettes.TryGetValue(name, out mutable))
+			if (modifiablePalettes.TryGetValue(name, out var mutable))
 				return mutable.AsReadOnly();
-			ImmutablePalette immutable;
-			if (palettes.TryGetValue(name, out immutable))
+			if (palettes.TryGetValue(name, out var immutable))
 				return immutable;
 			throw new InvalidOperationException("Palette `{0}` does not exist".F(name));
 		}
 
 		public int GetPaletteIndex(string name)
 		{
-			int ret;
-			if (!indices.TryGetValue(name, out ret))
+			if (!indices.TryGetValue(name, out var ret))
 				throw new InvalidOperationException("Palette `{0}` does not exist".F(name));
 			return ret;
 		}

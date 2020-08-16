@@ -88,9 +88,8 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override bool Tick(Actor self)
 		{
-			bool targetIsHiddenActor;
 			var oldTargetLocation = lastVisibleTargetLocation;
-			target = target.Recalculate(self.Owner, out targetIsHiddenActor);
+			target = target.Recalculate(self.Owner, out var targetIsHiddenActor);
 			if (!targetIsHiddenActor && target.Type == TargetType.Actor)
 			{
 				lastVisibleTarget = Target.FromTargetPositions(target);

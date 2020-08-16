@@ -171,11 +171,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (cargo.Any())
 			{
 				foreach (var c in cargo)
-				{
-					string passengerCondition;
-					if (Info.PassengerConditions.TryGetValue(c.Info.Name, out passengerCondition))
+					if (Info.PassengerConditions.TryGetValue(c.Info.Name, out var passengerCondition))
 						passengerTokens.GetOrAdd(c.Info.Name).Push(self.GrantCondition(passengerCondition));
-				}
 
 				if (!string.IsNullOrEmpty(Info.LoadedCondition))
 					loadedTokens.Push(self.GrantCondition(Info.LoadedCondition));
@@ -353,8 +350,7 @@ namespace OpenRA.Mods.Common.Traits
 			var p = passenger.Trait<Passenger>();
 			p.Transport = null;
 
-			Stack<int> passengerToken;
-			if (passengerTokens.TryGetValue(passenger.Info.Name, out passengerToken) && passengerToken.Any())
+			if (passengerTokens.TryGetValue(passenger.Info.Name, out var passengerToken) && passengerToken.Any())
 				self.RevokeCondition(passengerToken.Pop());
 
 			if (loadedTokens.Any())
@@ -400,8 +396,7 @@ namespace OpenRA.Mods.Common.Traits
 					npe.OnPassengerEntered(self, a);
 			}
 
-			string passengerCondition;
-			if (Info.PassengerConditions.TryGetValue(a.Info.Name, out passengerCondition))
+			if (Info.PassengerConditions.TryGetValue(a.Info.Name, out var passengerCondition))
 				passengerTokens.GetOrAdd(a.Info.Name).Push(self.GrantCondition(passengerCondition));
 
 			if (!string.IsNullOrEmpty(Info.LoadedCondition))

@@ -99,8 +99,7 @@ namespace OpenRA.Server
 			// Non-blocking sends are free to send only part of the data
 			while (start < length)
 			{
-				SocketError error;
-				var sent = s.Send(data, start, length - start, SocketFlags.None, out error);
+				var sent = s.Send(data, start, length - start, SocketFlags.None, out var error);
 				if (error == SocketError.WouldBlock)
 				{
 					Log.Write("server", "Non-blocking send of {0} bytes failed. Falling back to blocking send.", length - start);
@@ -716,8 +715,7 @@ namespace OpenRA.Server
 					break;
 				case "Pong":
 					{
-						long pingSent;
-						if (!OpenRA.Exts.TryParseInt64Invariant(o.TargetString, out pingSent))
+						if (!OpenRA.Exts.TryParseInt64Invariant(o.TargetString, out var pingSent))
 						{
 							Log.Write("server", "Invalid order pong payload: {0}", o.TargetString);
 							break;

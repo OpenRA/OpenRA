@@ -76,11 +76,8 @@ namespace OpenRA.Mods.Common.Traits
 			// Timed tokens do not count towards the source cap: the condition with the shortest
 			// remaining duration can always be revoked to make room.
 			if (Info.SourceCap > 0)
-			{
-				HashSet<int> permanentTokensForSource;
-				if (permanentTokens.TryGetValue(source, out permanentTokensForSource) && permanentTokensForSource.Count >= Info.SourceCap)
+				if (permanentTokens.TryGetValue(source, out var permanentTokensForSource) && permanentTokensForSource.Count >= Info.SourceCap)
 					return false;
-			}
 
 			if (Info.TotalCap > 0 && permanentTokens.Values.Sum(t => t.Count) >= Info.TotalCap)
 				return false;
@@ -94,8 +91,7 @@ namespace OpenRA.Mods.Common.Traits
 				return Actor.InvalidConditionToken;
 
 			var token = self.GrantCondition(Info.Condition);
-			HashSet<int> permanent;
-			permanentTokens.TryGetValue(source, out permanent);
+			permanentTokens.TryGetValue(source, out var permanent);
 
 			// Callers can override the amount of time remaining by passing a value
 			// between 1 and the duration
@@ -167,8 +163,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (source == null)
 				return false;
 
-			HashSet<int> permanentTokensForSource;
-			if (permanentTokens.TryGetValue(source, out permanentTokensForSource))
+			if (permanentTokens.TryGetValue(source, out var permanentTokensForSource))
 			{
 				if (!permanentTokensForSource.Remove(token))
 					return false;

@@ -92,8 +92,7 @@ namespace OpenRA.Mods.Common.Server
 			var cmdName = cmd.Split(' ').First();
 			var cmdValue = cmd.Split(' ').Skip(1).JoinWith(" ");
 
-			Func<S, Connection, Session.Client, string, bool> a;
-			if (!commandHandlers.TryGetValue(cmdName, out a))
+			if (!commandHandlers.TryGetValue(cmdName, out var a))
 				return false;
 
 			return a(server, conn, client, cmdValue);
@@ -304,8 +303,7 @@ namespace OpenRA.Mods.Common.Server
 
 			var slot = server.LobbyInfo.Slots[parts[0]];
 			var bot = server.LobbyInfo.ClientInSlot(parts[0]);
-			int controllerClientIndex;
-			if (!Exts.TryParseIntegerInvariant(parts[1], out controllerClientIndex))
+			if (!Exts.TryParseIntegerInvariant(parts[1], out var controllerClientIndex))
 			{
 				Log.Write("server", "Invalid bot controller client index: {0}", parts[1]);
 				return false;
@@ -496,8 +494,7 @@ namespace OpenRA.Mods.Common.Server
 				options[o.Id] = o;
 
 			var split = s.Split(' ');
-			LobbyOption option;
-			if (split.Length < 2 || !options.TryGetValue(split[0], out option) ||
+			if (split.Length < 2 || !options.TryGetValue(split[0], out var option) ||
 				!option.Values.ContainsKey(split[1]))
 			{
 				server.SendOrderTo(conn, "Message", "Invalid configuration command.");
@@ -537,8 +534,7 @@ namespace OpenRA.Mods.Common.Server
 				return true;
 			}
 
-			int teamCount;
-			if (!Exts.TryParseIntegerInvariant(s, out teamCount))
+			if (!Exts.TryParseIntegerInvariant(s, out var teamCount))
 			{
 				server.SendOrderTo(conn, "Message", "Number of teams could not be parsed: {0}".F(s));
 				return true;
@@ -585,8 +581,7 @@ namespace OpenRA.Mods.Common.Server
 				return true;
 			}
 
-			int kickClientID;
-			Exts.TryParseIntegerInvariant(split[0], out kickClientID);
+			Exts.TryParseIntegerInvariant(split[0], out var kickClientID);
 
 			var kickConn = server.Conns.SingleOrDefault(c => server.GetClient(c) != null && server.GetClient(c).Index == kickClientID);
 			if (kickConn == null)
@@ -607,8 +602,7 @@ namespace OpenRA.Mods.Common.Server
 			server.SendOrderTo(kickConn, "ServerError", "You have been kicked from the server.");
 			server.DropClient(kickConn);
 
-			bool tempBan;
-			bool.TryParse(split[1], out tempBan);
+			bool.TryParse(split[1], out var tempBan);
 
 			if (tempBan)
 			{
@@ -631,8 +625,7 @@ namespace OpenRA.Mods.Common.Server
 				return true;
 			}
 
-			int newAdminId;
-			Exts.TryParseIntegerInvariant(s, out newAdminId);
+			Exts.TryParseIntegerInvariant(s, out var newAdminId);
 			var newAdminConn = server.Conns.SingleOrDefault(c => server.GetClient(c) != null && server.GetClient(c).Index == newAdminId);
 
 			if (newAdminConn == null)
@@ -666,8 +659,7 @@ namespace OpenRA.Mods.Common.Server
 				return true;
 			}
 
-			int targetId;
-			Exts.TryParseIntegerInvariant(s, out targetId);
+			Exts.TryParseIntegerInvariant(s, out var targetId);
 			var targetConn = server.Conns.SingleOrDefault(c => server.GetClient(c) != null && server.GetClient(c).Index == targetId);
 
 			if (targetConn == null)
@@ -746,8 +738,7 @@ namespace OpenRA.Mods.Common.Server
 			if (server.LobbyInfo.Slots[targetClient.Slot].LockTeam)
 				return true;
 
-			int team;
-			if (!Exts.TryParseIntegerInvariant(parts[1], out team))
+			if (!Exts.TryParseIntegerInvariant(parts[1], out var team))
 			{
 				Log.Write("server", "Invalid team: {0}", s);
 				return false;
@@ -776,9 +767,8 @@ namespace OpenRA.Mods.Common.Server
 			if (server.LobbyInfo.Slots[targetClient.Slot].LockSpawn)
 				return true;
 
-			int spawnPoint;
-			if (!Exts.TryParseIntegerInvariant(parts[1], out spawnPoint)
-				|| spawnPoint < 0 || spawnPoint > server.Map.SpawnPoints.Length)
+			if (!Exts.TryParseIntegerInvariant(parts[1], out var spawnPoint)
+			    || spawnPoint < 0 || spawnPoint > server.Map.SpawnPoints.Length)
 			{
 				Log.Write("server", "Invalid spawn point: {0}", parts[1]);
 				return true;
@@ -901,8 +891,7 @@ namespace OpenRA.Mods.Common.Server
 			{
 				var value = o.DefaultValue;
 				var preferredValue = o.DefaultValue;
-				Session.LobbyOptionState state;
-				if (gs.LobbyOptions.TryGetValue(o.Id, out state))
+				if (gs.LobbyOptions.TryGetValue(o.Id, out var state))
 				{
 					// Propagate old state on map change
 					if (!o.IsLocked)

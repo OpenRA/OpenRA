@@ -51,16 +51,13 @@ namespace OpenRA.Platforms.Default
 			OpenGL.CheckGLError();
 			OpenGL.glCompileShader(shader);
 			OpenGL.CheckGLError();
-			int success;
-			OpenGL.glGetShaderiv(shader, OpenGL.GL_COMPILE_STATUS, out success);
+			OpenGL.glGetShaderiv(shader, OpenGL.GL_COMPILE_STATUS, out var success);
 			OpenGL.CheckGLError();
 			if (success == OpenGL.GL_FALSE)
 			{
-				int len;
-				OpenGL.glGetShaderiv(shader, OpenGL.GL_INFO_LOG_LENGTH, out len);
+				OpenGL.glGetShaderiv(shader, OpenGL.GL_INFO_LOG_LENGTH, out var len);
 				var log = new StringBuilder(len);
-				int length;
-				OpenGL.glGetShaderInfoLog(shader, len, out length, log);
+				OpenGL.glGetShaderInfoLog(shader, len, out var length, log);
 
 				Log.Write("graphics", "GL Info Log:\n{0}", log.ToString());
 				throw new InvalidProgramException("Compile error in shader object '{0}'".F(filename));
@@ -100,17 +97,14 @@ namespace OpenRA.Platforms.Default
 
 			OpenGL.glLinkProgram(program);
 			OpenGL.CheckGLError();
-			int success;
-			OpenGL.glGetProgramiv(program, OpenGL.GL_LINK_STATUS, out success);
+			OpenGL.glGetProgramiv(program, OpenGL.GL_LINK_STATUS, out var success);
 			OpenGL.CheckGLError();
 			if (success == OpenGL.GL_FALSE)
 			{
-				int len;
-				OpenGL.glGetProgramiv(program, OpenGL.GL_INFO_LOG_LENGTH, out len);
+				OpenGL.glGetProgramiv(program, OpenGL.GL_INFO_LOG_LENGTH, out var len);
 
 				var log = new StringBuilder(len);
-				int length;
-				OpenGL.glGetProgramInfoLog(program, len, out length, log);
+				OpenGL.glGetProgramInfoLog(program, len, out var length, log);
 				Log.Write("graphics", "GL Info Log:\n{0}", log.ToString());
 				throw new InvalidProgramException("Link error in shader program '{0}'".F(name));
 			}
@@ -118,18 +112,15 @@ namespace OpenRA.Platforms.Default
 			OpenGL.glUseProgram(program);
 			OpenGL.CheckGLError();
 
-			int numUniforms;
-			OpenGL.glGetProgramiv(program, OpenGL.GL_ACTIVE_UNIFORMS, out numUniforms);
+			OpenGL.glGetProgramiv(program, OpenGL.GL_ACTIVE_UNIFORMS, out var numUniforms);
 
 			OpenGL.CheckGLError();
 
 			var nextTexUnit = 0;
 			for (var i = 0; i < numUniforms; i++)
 			{
-				int length, size;
-				int type;
 				var sb = new StringBuilder(128);
-				OpenGL.glGetActiveUniform(program, i, 128, out length, out size, out type, sb);
+				OpenGL.glGetActiveUniform(program, i, 128, out var length, out var size, out var type, sb);
 				var sampler = sb.ToString();
 				OpenGL.CheckGLError();
 
@@ -172,8 +163,7 @@ namespace OpenRA.Platforms.Default
 					OpenGL.glBindTexture(OpenGL.GL_TEXTURE_2D, texture.ID);
 
 					// Work around missing textureSize GLSL function by explicitly tracking sizes in a uniform
-					int param;
-					if (OpenGL.Profile == GLProfile.Legacy && legacySizeUniforms.TryGetValue(kv.Key, out param))
+					if (OpenGL.Profile == GLProfile.Legacy && legacySizeUniforms.TryGetValue(kv.Key, out var param))
 					{
 						OpenGL.glUniform2f(param, texture.Size.Width, texture.Size.Height);
 						OpenGL.CheckGLError();
@@ -195,8 +185,7 @@ namespace OpenRA.Platforms.Default
 			if (t == null)
 				return;
 
-			int texUnit;
-			if (samplers.TryGetValue(name, out texUnit))
+			if (samplers.TryGetValue(name, out var texUnit))
 				textures[texUnit] = t;
 		}
 

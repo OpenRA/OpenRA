@@ -26,9 +26,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			musicPlaylist = world.WorldActor.Trait<MusicPlaylist>();
 
-			MiniYaml yaml;
 			var stopKey = new HotkeyReference();
-			if (logicArgs.TryGetValue("StopMusicKey", out yaml))
+			if (logicArgs.TryGetValue("StopMusicKey", out var yaml))
 				stopKey = modData.Hotkeys[yaml.Value];
 
 			var pauseKey = new HotkeyReference();

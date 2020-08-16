@@ -61,12 +61,11 @@ namespace OpenRA.Mods.Common.Traits.Render
 		{
 			var n = i * harvester.Info.Capacity / Info.PipCount;
 
-			string sequence;
 			foreach (var rt in harvester.Contents)
 			{
 				if (n < rt.Value)
 				{
-					if (!Info.ResourceSequences.TryGetValue(rt.Key.Type, out sequence))
+					if (!Info.ResourceSequences.TryGetValue(rt.Key.Type, out var sequence))
 						sequence = Info.FullSequence;
 
 					return sequence;

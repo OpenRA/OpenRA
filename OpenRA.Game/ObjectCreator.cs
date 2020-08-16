@@ -48,8 +48,7 @@ namespace OpenRA
 				// We can't check the internal name of the assembly, so we'll work off the data instead
 				var hash = CryptoUtil.SHA1Hash(File.ReadAllBytes(resolvedPath));
 
-				Assembly assembly;
-				if (!ResolvedAssemblies.TryGetValue(hash, out assembly))
+				if (!ResolvedAssemblies.TryGetValue(hash, out var assembly))
 				{
 					assembly = Assembly.LoadFile(resolvedPath);
 					ResolvedAssemblies.Add(hash, assembly);

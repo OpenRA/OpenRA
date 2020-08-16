@@ -40,8 +40,7 @@ namespace OpenRA.Platforms.Default
 
 			if (OpenGL.Profile != GLProfile.Legacy)
 			{
-				uint vao;
-				OpenGL.glGenVertexArrays(1, out vao);
+				OpenGL.glGenVertexArrays(1, out var vao);
 				OpenGL.CheckGLError();
 				OpenGL.glBindVertexArray(vao);
 				OpenGL.CheckGLError();

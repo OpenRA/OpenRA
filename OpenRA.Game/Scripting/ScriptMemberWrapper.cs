@@ -111,8 +111,7 @@ namespace OpenRA.Scripting
 			if (IsSetProperty)
 			{
 				var pi = (PropertyInfo)Member;
-				object clrValue;
-				if (!value.TryGetClrValue(pi.PropertyType, out clrValue))
+				if (!value.TryGetClrValue(pi.PropertyType, out var clrValue))
 					throw new LuaException("Unable to convert '{0}' to Clr type '{1}'".F(value.WrappedClrType().Name, pi.PropertyType));
 
 				pi.SetValue(Target, clrValue, null);

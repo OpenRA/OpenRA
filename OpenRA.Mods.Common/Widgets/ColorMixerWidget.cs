@@ -235,9 +235,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public void Set(Color color)
 		{
-			float h, s, v;
-			int a;
-			color.ToAhsv(out a, out h, out s, out v);
+			color.ToAhsv(out var a, out var h, out var s, out var v);
 
 			if (H != h || S != s || V != v)
 			{

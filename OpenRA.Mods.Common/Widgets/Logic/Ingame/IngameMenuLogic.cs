@@ -74,20 +74,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			buttonContainer.RemoveChild(buttonTemplate);
 			buttonContainer.IsVisible = () => !hideMenu;
 
-			MiniYaml buttonStrideNode;
-			if (logicArgs.TryGetValue("ButtonStride", out buttonStrideNode))
+			if (logicArgs.TryGetValue("ButtonStride", out var buttonStrideNode))
 				buttonStride = FieldLoader.GetValue<int2>("ButtonStride", buttonStrideNode.Value);
 
 			var scriptContext = world.WorldActor.TraitOrDefault<LuaScript>();
 			hasError = scriptContext != null && scriptContext.FatalErrorOccurred;
 
-			MiniYaml buttonsNode;
-			if (logicArgs.TryGetValue("Buttons", out buttonsNode))
+			if (logicArgs.TryGetValue("Buttons", out var buttonsNode))
 			{
-				Action createHandler;
 				var buttonIds = FieldLoader.GetValue<string[]>("Buttons", buttonsNode.Value);
 				foreach (var button in buttonIds)
-					if (buttonHandlers.TryGetValue(button, out createHandler))
+					if (buttonHandlers.TryGetValue(button, out var createHandler))
 						createHandler();
 			}
 

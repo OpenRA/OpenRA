@@ -107,8 +107,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var kvp in TerrainSpeeds)
 			{
-				byte index;
-				if (tileSet.TryGetTerrainIndex(kvp.Key, out index))
+				if (tileSet.TryGetTerrainIndex(kvp.Key, out var index))
 					info[index] = kvp.Value;
 			}
 

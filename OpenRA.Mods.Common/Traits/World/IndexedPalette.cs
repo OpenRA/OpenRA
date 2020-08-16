@@ -83,8 +83,7 @@ namespace OpenRA.Mods.Common
 
 		public Color GetRemappedColor(Color original, int index)
 		{
-			int c;
-			return replacements.TryGetValue(index, out c)
+			return replacements.TryGetValue(index, out var c)
 				? basePalette.GetColor(c) : original;
 		}
 	}

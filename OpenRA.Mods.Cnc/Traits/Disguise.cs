@@ -235,8 +235,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				if (disguisedAsToken != Actor.InvalidConditionToken)
 					disguisedAsToken = self.RevokeCondition(disguisedAsToken);
 
-				string disguisedAsCondition;
-				if (info.DisguisedAsConditions.TryGetValue(AsActor.Name, out disguisedAsCondition))
+				if (info.DisguisedAsConditions.TryGetValue(AsActor.Name, out var disguisedAsCondition))
 					disguisedAsToken = self.GrantCondition(disguisedAsCondition);
 			}
 		}

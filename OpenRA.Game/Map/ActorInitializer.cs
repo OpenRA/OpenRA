@@ -185,14 +185,13 @@ namespace OpenRA
 
 		public virtual void Initialize(Dictionary<string, object> values)
 		{
-			object value;
 			foreach (var field in GetType().GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
 			{
 				var sa = field.GetCustomAttributes<FieldLoader.SerializeAttribute>(false).DefaultIfEmpty(FieldLoader.SerializeAttribute.Default).First();
 				if (!sa.Serialize)
 					continue;
 
-				if (values.TryGetValue(field.Name, out value))
+				if (values.TryGetValue(field.Name, out var value))
 					field.SetValue(this, value);
 			}
 		}

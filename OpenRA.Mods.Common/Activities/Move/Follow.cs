@@ -51,8 +51,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (IsCanceling)
 				return true;
 
-			bool targetIsHiddenActor;
-			target = target.Recalculate(self.Owner, out targetIsHiddenActor);
+			target = target.Recalculate(self.Owner, out var targetIsHiddenActor);
 			if (!targetIsHiddenActor && target.Type == TargetType.Actor)
 				lastVisibleTarget = Target.FromTargetPositions(target);
 

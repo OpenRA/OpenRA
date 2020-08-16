@@ -355,8 +355,7 @@ namespace OpenRA
 
 			ExternalMods = new ExternalMods();
 
-			Manifest currentMod;
-			if (modID != null && Mods.TryGetValue(modID, out currentMod))
+			if (modID != null && Mods.TryGetValue(modID, out var currentMod))
 			{
 				var launchPath = args.GetValue("Engine.LaunchPath", Assembly.GetEntryAssembly().Location);
 
@@ -367,8 +366,7 @@ namespace OpenRA
 
 				ExternalMods.Register(Mods[modID], launchPath, ModRegistration.User);
 
-				ExternalMod activeMod;
-				if (ExternalMods.TryGetValue(ExternalMod.MakeKey(Mods[modID]), out activeMod))
+				if (ExternalMods.TryGetValue(ExternalMod.MakeKey(Mods[modID]), out var activeMod))
 					ExternalMods.ClearInvalidRegistrations(activeMod, ModRegistration.User);
 			}
 

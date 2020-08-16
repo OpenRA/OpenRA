@@ -18,8 +18,7 @@ namespace OpenRA.Scripting
 	{
 		public static Type WrappedClrType(this LuaValue value)
 		{
-			object inner;
-			if (value.TryGetClrObject(out inner))
+			if (value.TryGetClrObject(out var inner))
 				return inner.GetType();
 
 			return value.GetType();
@@ -27,16 +26,13 @@ namespace OpenRA.Scripting
 
 		public static bool TryGetClrValue<T>(this LuaValue value, out T clrObject)
 		{
-			object temp;
-			var ret = value.TryGetClrValue(typeof(T), out temp);
+			var ret = value.TryGetClrValue(typeof(T), out object temp);
 			clrObject = ret ? (T)temp : default(T);
 			return ret;
 		}
 
 		public static bool TryGetClrValue(this LuaValue value, Type t, out object clrObject)
 		{
-			object temp;
-
 			// Is t a nullable?
 			// If yes, get the underlying type
 			var nullable = Nullable.GetUnderlyingType(t);
@@ -44,7 +40,7 @@ namespace OpenRA.Scripting
 				t = nullable;
 
 			// Value wraps a CLR object
-			if (value.TryGetClrObject(out temp))
+			if (value.TryGetClrObject(out var temp))
 			{
 				if (temp.GetType() == t)
 				{

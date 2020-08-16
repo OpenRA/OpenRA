@@ -49,8 +49,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			for (var i = 0; i < Palette.Size; i++)
 				palColors[i] = palette.GetColor(i);
 
-			TypeDictionary metadata;
-			var frames = FrameLoader.GetFrames(File.OpenRead(src), modData.SpriteLoaders, out metadata);
+			var frames = FrameLoader.GetFrames(File.OpenRead(src), modData.SpriteLoaders, out var metadata);
 
 			var usePadding = !args.Contains("--nopadding");
 			var count = 0;

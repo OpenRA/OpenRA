@@ -404,8 +404,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 				if (overlayType == 0xFF)
 					continue;
 
-				string actorType;
-				if (OverlayToActor.TryGetValue(overlayType, out actorType))
+				if (OverlayToActor.TryGetValue(overlayType, out var actorType))
 				{
 					if (string.IsNullOrEmpty(actorType))
 						continue;
@@ -416,19 +415,13 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 						// Only import the top-left cell of multi-celled overlays
 						var aboveType = overlayPack[overlayIndex[cell - new CVec(1, 0)]];
 						if (shape.Width > 1 && aboveType != 0xFF)
-						{
-							string a;
-							if (OverlayToActor.TryGetValue(aboveType, out a) && a == actorType)
+							if (OverlayToActor.TryGetValue(aboveType, out var a) && a == actorType)
 								continue;
-						}
 
 						var leftType = overlayPack[overlayIndex[cell - new CVec(0, 1)]];
 						if (shape.Height > 1 && leftType != 0xFF)
-						{
-							string a;
-							if (OverlayToActor.TryGetValue(leftType, out a) && a == actorType)
+							if (OverlayToActor.TryGetValue(leftType, out var a) && a == actorType)
 								continue;
-						}
 					}
 
 					var ar = new ActorReference(actorType)
@@ -437,8 +430,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 						new OwnerInit("Neutral")
 					};
 
-					DamageState damageState;
-					if (OverlayToHealth.TryGetValue(overlayType, out damageState))
+					if (OverlayToHealth.TryGetValue(overlayType, out var damageState))
 					{
 						var health = 100;
 						if (damageState == DamageState.Critical)
@@ -484,8 +476,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 				var dy = rx + ry - fullSize.X - 1;
 				var cell = new MPos(dx / 2, dy).ToCPos(map);
 
-				int wpindex;
-				var ar = new ActorReference((!int.TryParse(kv.Key, out wpindex) || wpindex > 7) ? "waypoint" : "mpspawn");
+				var ar = new ActorReference((!int.TryParse(kv.Key, out var wpindex) || wpindex > 7) ? "waypoint" : "mpspawn");
 				ar.Add(new LocationInit(cell));
 				ar.Add(new OwnerInit("Neutral"));
 
@@ -598,8 +589,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 
 			foreach (var node in lightingTypes)
 			{
-				float val;
-				if (node.Value != null && parsed.TryGetValue(node.Key, out val) && ((node.Key == "Level" && val != 0) || (node.Key != "Level" && val != 1.0f)))
+				if (node.Value != null && parsed.TryGetValue(node.Key, out var val) && ((node.Key == "Level" && val != 0) || (node.Key != "Level" && val != 1.0f)))
 					lightingNodes.Add(new MiniYamlNode(node.Value, FieldSaver.FormatValue(val)));
 			}
 

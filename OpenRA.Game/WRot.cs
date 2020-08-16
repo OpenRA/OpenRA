@@ -158,8 +158,7 @@ namespace OpenRA
 
 		public Int32Matrix4x4 AsMatrix()
 		{
-			Int32Matrix4x4 mtx;
-			AsMatrix(out mtx);
+			AsMatrix(out var mtx);
 			return mtx;
 		}
 

@@ -37,10 +37,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 			foreach (var filename in modData.Manifest.ChromeLayout)
 			{
-				string name;
-				OpenRA.FileSystem.IReadOnlyPackage package;
-
-				modData.ModFiles.TryGetPackageContaining(filename, out package, out name);
+				modData.ModFiles.TryGetPackageContaining(filename, out var package, out var name);
 				name = package.Name + "/" + name;
 				Console.WriteLine("# {0}:", name);
 

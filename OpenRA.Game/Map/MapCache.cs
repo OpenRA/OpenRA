@@ -131,8 +131,7 @@ namespace OpenRA
 			// Enumerate map directories
 			foreach (var kv in modData.Manifest.MapFolders)
 			{
-				MapClassification packageClassification;
-				if (!Enum.TryParse(kv.Value, out packageClassification))
+				if (!Enum.TryParse(kv.Value, out MapClassification packageClassification))
 					continue;
 
 				if (!classification.HasFlag(packageClassification))

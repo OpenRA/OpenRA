@@ -265,9 +265,8 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 				else
 					Console.WriteLine("\t\tFacings: 8");
 
-				int length, stride;
-				int.TryParse(splitting[2], out stride);
-				int.TryParse(splitting[1], out length);
+				int.TryParse(splitting[2], out var stride);
+				int.TryParse(splitting[1], out var length);
 				if (stride != 0 && stride != length)
 					Console.WriteLine("\t\tStride: " + stride);
 			}

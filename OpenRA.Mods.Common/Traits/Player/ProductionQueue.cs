@@ -270,8 +270,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool CanBuild(ActorInfo actor)
 		{
-			ProductionState ps;
-			if (!Producible.TryGetValue(actor, out ps))
+			if (!Producible.TryGetValue(actor, out var ps))
 				return false;
 
 			return ps.Buildable || developerMode.AllTech;

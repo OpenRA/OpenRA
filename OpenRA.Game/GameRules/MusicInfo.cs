@@ -41,8 +41,7 @@ namespace OpenRA.GameRules
 
 		public void Load(IReadOnlyFileSystem fileSystem)
 		{
-			Stream stream;
-			if (!fileSystem.TryOpen(Filename, out stream))
+			if (!fileSystem.TryOpen(Filename, out var stream))
 				return;
 
 			try
@@ -50,8 +49,7 @@ namespace OpenRA.GameRules
 				Exists = true;
 				foreach (var loader in Game.ModData.SoundLoaders)
 				{
-					ISoundFormat soundFormat;
-					if (loader.TryParseSound(stream, out soundFormat))
+					if (loader.TryParseSound(stream, out var soundFormat))
 					{
 						Length = (int)soundFormat.LengthInSeconds;
 						soundFormat.Dispose();

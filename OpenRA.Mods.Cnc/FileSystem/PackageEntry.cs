@@ -49,8 +49,7 @@ namespace OpenRA.Mods.Cnc.FileSystem
 
 		public override string ToString()
 		{
-			string filename;
-			if (names.TryGetValue(Hash, out filename))
+			if (names.TryGetValue(Hash, out var filename))
 				return "{0} - offset 0x{1:x8} - length 0x{2:x8}".F(filename, Offset, Length);
 			else
 				return "0x{0:x8} - offset 0x{1:x8} - length 0x{2:x8}".F(Hash, Offset, Length);

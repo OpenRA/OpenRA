@@ -89,9 +89,8 @@ namespace OpenRA.Mods.Common.Lint
 					var type = modData.ObjectCreator.FindType(widgetType + "Widget");
 					var keyNames = checkMethods.SelectMany(m => (IEnumerable<string>)type.GetMethod(m).Invoke(null, new object[] { node, emitError, emitWarning }));
 
-					Hotkey unused;
 					foreach (var name in keyNames)
-						if (!namedKeys.Contains(name) && !Hotkey.TryParse(name, out unused))
+						if (!namedKeys.Contains(name) && !Hotkey.TryParse(name, out var unused))
 							emitError("{0} refers to a Key named `{1}` that does not exist".F(node.Location, name));
 				}
 

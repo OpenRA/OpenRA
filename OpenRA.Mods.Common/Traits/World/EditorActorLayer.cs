@@ -163,8 +163,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var cell in footprint)
 			{
-				List<EditorActorPreview> list;
-				if (!cellMap.TryGetValue(cell, out list))
+				if (!cellMap.TryGetValue(cell, out var list))
 					continue;
 
 				list.Remove(preview);
@@ -228,8 +227,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void AddPreviewLocation(EditorActorPreview preview, CPos location)
 		{
-			List<EditorActorPreview> list;
-			if (!cellMap.TryGetValue(location, out list))
+			if (!cellMap.TryGetValue(location, out var list))
 			{
 				list = new List<EditorActorPreview>();
 				cellMap.Add(location, list);
@@ -256,8 +254,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public IEnumerable<EditorActorPreview> PreviewsAt(CPos cell)
 		{
-			List<EditorActorPreview> list;
-			if (cellMap.TryGetValue(cell, out list))
+			if (cellMap.TryGetValue(cell, out var list))
 				return list;
 
 			return Enumerable.Empty<EditorActorPreview>();
@@ -274,8 +271,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				var blocked = previews.Any(p =>
 				{
-					SubCell s;
-					return p.Footprint.TryGetValue(cell, out s) && s == (SubCell)i;
+					return p.Footprint.TryGetValue(cell, out var s) && s == (SubCell)i;
 				});
 
 				if (!blocked)

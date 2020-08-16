@@ -121,8 +121,7 @@ namespace OpenRA
 		{
 			ret = null;
 
-			MiniYaml yaml;
-			if (!md.TryGetValue(yamlName, out yaml))
+			if (!md.TryGetValue(yamlName, out var yaml))
 				return false;
 
 			ret = GetValue(field.Name, field.FieldType, yaml, field);
@@ -185,37 +184,32 @@ namespace OpenRA
 
 			if (fieldType == typeof(int))
 			{
-				int res;
-				if (Exts.TryParseIntegerInvariant(value, out res))
+				if (Exts.TryParseIntegerInvariant(value, out var res))
 					return res;
 				return InvalidValueAction(value, fieldType, fieldName);
 			}
 			else if (fieldType == typeof(ushort))
 			{
-				ushort res;
-				if (ushort.TryParse(value, NumberStyles.Integer, NumberFormatInfo.InvariantInfo, out res))
+				if (ushort.TryParse(value, NumberStyles.Integer, NumberFormatInfo.InvariantInfo, out var res))
 					return res;
 				return InvalidValueAction(value, fieldType, fieldName);
 			}
 
 			if (fieldType == typeof(long))
 			{
-				long res;
-				if (long.TryParse(value, NumberStyles.Integer, NumberFormatInfo.InvariantInfo, out res))
+				if (long.TryParse(value, NumberStyles.Integer, NumberFormatInfo.InvariantInfo, out var res))
 					return res;
 				return InvalidValueAction(value, fieldType, fieldName);
 			}
 			else if (fieldType == typeof(float))
 			{
-				float res;
-				if (value != null && float.TryParse(value.Replace("%", ""), NumberStyles.Float, NumberFormatInfo.InvariantInfo, out res))
+				if (value != null && float.TryParse(value.Replace("%", ""), NumberStyles.Float, NumberFormatInfo.InvariantInfo, out var res))
 					return res * (value.Contains('%') ? 0.01f : 1f);
 				return InvalidValueAction(value, fieldType, fieldName);
 			}
 			else if (fieldType == typeof(decimal))
 			{
-				decimal res;
-				if (value != null && decimal.TryParse(value.Replace("%", ""), NumberStyles.Float, NumberFormatInfo.InvariantInfo, out res))
+				if (value != null && decimal.TryParse(value.Replace("%", ""), NumberStyles.Float, NumberFormatInfo.InvariantInfo, out var res))
 					return res * (value.Contains('%') ? 0.01m : 1m);
 				return InvalidValueAction(value, fieldType, fieldName);
 			}
@@ -227,16 +221,14 @@ namespace OpenRA
 			}
 			else if (fieldType == typeof(Color))
 			{
-				Color color;
-				if (value != null && Color.TryParse(value, out color))
+				if (value != null && Color.TryParse(value, out var color))
 					return color;
 
 				return InvalidValueAction(value, fieldType, fieldName);
 			}
 			else if (fieldType == typeof(Hotkey))
 			{
-				Hotkey res;
-				if (Hotkey.TryParse(value, out res))
+				if (Hotkey.TryParse(value, out var res))
 					return res;
 
 				return InvalidValueAction(value, fieldType, fieldName);
@@ -247,8 +239,7 @@ namespace OpenRA
 			}
 			else if (fieldType == typeof(WDist))
 			{
-				WDist res;
-				if (WDist.TryParse(value, out res))
+				if (WDist.TryParse(value, out var res))
 					return res;
 
 				return InvalidValueAction(value, fieldType, fieldName);
@@ -260,8 +251,7 @@ namespace OpenRA
 					var parts = value.Split(',');
 					if (parts.Length == 3)
 					{
-						WDist rx, ry, rz;
-						if (WDist.TryParse(parts[0], out rx) && WDist.TryParse(parts[1], out ry) && WDist.TryParse(parts[2], out rz))
+						if (WDist.TryParse(parts[0], out var rx) && WDist.TryParse(parts[1], out var ry) && WDist.TryParse(parts[2], out var rz))
 							return new WVec(rx, ry, rz);
 					}
 				}
@@ -281,8 +271,7 @@ namespace OpenRA
 
 					for (var i = 0; i < vecs.Length; ++i)
 					{
-						WDist rx, ry, rz;
-						if (WDist.TryParse(parts[3 * i], out rx) && WDist.TryParse(parts[3 * i + 1], out ry) && WDist.TryParse(parts[3 * i + 2], out rz))
+						if (WDist.TryParse(parts[3 * i], out var rx) && WDist.TryParse(parts[3 * i + 1], out var ry) && WDist.TryParse(parts[3 * i + 2], out var rz))
 							vecs[i] = new WVec(rx, ry, rz);
 					}
 
@@ -298,8 +287,7 @@ namespace OpenRA
 					var parts = value.Split(',');
 					if (parts.Length == 3)
 					{
-						WDist rx, ry, rz;
-						if (WDist.TryParse(parts[0], out rx) && WDist.TryParse(parts[1], out ry) && WDist.TryParse(parts[2], out rz))
+						if (WDist.TryParse(parts[0], out var rx) && WDist.TryParse(parts[1], out var ry) && WDist.TryParse(parts[2], out var rz))
 							return new WPos(rx, ry, rz);
 					}
 				}
@@ -308,8 +296,7 @@ namespace OpenRA
 			}
 			else if (fieldType == typeof(WAngle))
 			{
-				int res;
-				if (Exts.TryParseIntegerInvariant(value, out res))
+				if (Exts.TryParseIntegerInvariant(value, out var res))
 					return new WAngle(res);
 				return InvalidValueAction(value, fieldType, fieldName);
 			}
@@ -320,8 +307,7 @@ namespace OpenRA
 					var parts = value.Split(',');
 					if (parts.Length == 3)
 					{
-						int rr, rp, ry;
-						if (Exts.TryParseIntegerInvariant(parts[0], out rr) && Exts.TryParseIntegerInvariant(parts[1], out rp) && Exts.TryParseIntegerInvariant(parts[2], out ry))
+						if (Exts.TryParseIntegerInvariant(parts[0], out var rr) && Exts.TryParseIntegerInvariant(parts[1], out var rp) && Exts.TryParseIntegerInvariant(parts[2], out var ry))
 							return new WRot(new WAngle(rr), new WAngle(rp), new WAngle(ry));
 					}
 				}
@@ -360,8 +346,7 @@ namespace OpenRA
 					var vecs = new CVec[parts.Length / 2];
 					for (var i = 0; i < vecs.Length; i++)
 					{
-						int rx, ry;
-						if (int.TryParse(parts[2 * i], out rx) && int.TryParse(parts[2 * i + 1], out ry))
+						if (int.TryParse(parts[2 * i], out var rx) && int.TryParse(parts[2 * i + 1], out var ry))
 							vecs[i] = new CVec(rx, ry);
 					}
 
@@ -415,8 +400,7 @@ namespace OpenRA
 			}
 			else if (fieldType == typeof(bool))
 			{
-				bool result;
-				if (bool.TryParse(value.ToLowerInvariant(), out result))
+				if (bool.TryParse(value.ToLowerInvariant(), out var result))
 					return result;
 
 				return InvalidValueAction(value, fieldType, fieldName);
@@ -509,8 +493,7 @@ namespace OpenRA
 					var parts = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 					float xx = 0;
 					float yy = 0;
-					float res;
-					if (float.TryParse(parts[0].Replace("%", ""), NumberStyles.Float, NumberFormatInfo.InvariantInfo, out res))
+					if (float.TryParse(parts[0].Replace("%", ""), NumberStyles.Float, NumberFormatInfo.InvariantInfo, out var res))
 						xx = res * (parts[0].Contains('%') ? 0.01f : 1f);
 					if (float.TryParse(parts[1].Replace("%", ""), NumberStyles.Float, NumberFormatInfo.InvariantInfo, out res))
 						yy = res * (parts[1].Contains('%') ? 0.01f : 1f);
@@ -524,13 +507,11 @@ namespace OpenRA
 				if (value != null)
 				{
 					var parts = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-					float x = 0;
-					float y = 0;
-					float z = 0;
-					float.TryParse(parts[0], NumberStyles.Float, NumberFormatInfo.InvariantInfo, out x);
-					float.TryParse(parts[1], NumberStyles.Float, NumberFormatInfo.InvariantInfo, out y);
+					float.TryParse(parts[0], NumberStyles.Float, NumberFormatInfo.InvariantInfo, out var x);
+					float.TryParse(parts[1], NumberStyles.Float, NumberFormatInfo.InvariantInfo, out var y);
 
 					// z component is optional for compatibility with older float2 definitions
+					float z = 0;
 					if (parts.Length > 2)
 						float.TryParse(parts[2], NumberStyles.Float, NumberFormatInfo.InvariantInfo, out z);
 
@@ -575,8 +556,7 @@ namespace OpenRA
 			}
 			else if (fieldType == typeof(DateTime))
 			{
-				DateTime dt;
-				if (DateTime.TryParseExact(value, "yyyy-MM-dd HH-mm-ss", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out dt))
+				if (DateTime.TryParseExact(value, "yyyy-MM-dd HH-mm-ss", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out var dt))
 					return dt;
 				return InvalidValueAction(value, fieldType, fieldName);
 			}
@@ -726,8 +706,7 @@ namespace OpenRA
 				if (translations == null)
 					return key;
 
-				string value;
-				if (!translations.TryGetValue(key, out value))
+				if (!translations.TryGetValue(key, out var value))
 					return key;
 
 				return value;

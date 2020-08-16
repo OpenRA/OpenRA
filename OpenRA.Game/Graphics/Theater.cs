@@ -118,8 +118,7 @@ namespace OpenRA.Graphics
 
 		public Sprite TileSprite(TerrainTile r, int? variant = null)
 		{
-			TheaterTemplate template;
-			if (!templates.TryGetValue(r.Type, out template))
+			if (!templates.TryGetValue(r.Type, out var template))
 				return missingTile;
 
 			if (r.Index >= template.Stride)

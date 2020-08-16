@@ -202,8 +202,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					{
 						try
 						{
-							YamlFileSet mapFiles;
-							var mapSteps = UpdateUtils.UpdateMap(modData, package, rule, out mapFiles, mapExternalFilenames);
+							var mapSteps = UpdateUtils.UpdateMap(modData, package, rule, out var mapFiles, mapExternalFilenames);
 							allFiles.AddRange(mapFiles);
 
 							if (mapSteps.Any())

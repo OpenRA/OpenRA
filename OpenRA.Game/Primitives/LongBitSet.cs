@@ -50,14 +50,9 @@ namespace OpenRA.Primitives
 			long bits = 0;
 
 			lock (Bits)
-			{
 				foreach (var value in values)
-				{
-					long valueBit;
-					if (Bits.TryGetValue(value, out valueBit))
+					if (Bits.TryGetValue(value, out var valueBit))
 						bits |= valueBit;
-				}
-			}
 
 			return bits;
 		}

@@ -76,8 +76,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			this.world = world;
 
-			MiniYaml yaml;
-			if (logicArgs.TryGetValue("CombinedViewKey", out yaml))
+			if (logicArgs.TryGetValue("CombinedViewKey", out var yaml))
 				combinedViewKey = modData.Hotkeys[yaml.Value];
 
 			if (logicArgs.TryGetValue("WorldViewKey", out yaml))

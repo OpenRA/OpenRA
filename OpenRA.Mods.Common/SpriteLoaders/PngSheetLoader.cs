@@ -98,8 +98,7 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 			offsets = new List<float2>();
 			var pngRectangle = new Rectangle(0, 0, png.Width, png.Height);
 
-			string frame;
-			for (var i = 0; png.EmbeddedData.TryGetValue("Frame[" + i + "]", out frame); i++)
+			for (var i = 0; png.EmbeddedData.TryGetValue("Frame[" + i + "]", out var frame); i++)
 			{
 				// Format: x,y,width,height;offsetX,offsetY
 				var coords = frame.Split(';');

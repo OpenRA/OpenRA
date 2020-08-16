@@ -32,11 +32,9 @@ namespace OpenRA
 
 			var parts = s.Split(' ');
 
-			Keycode key;
-			if (!Enum<Keycode>.TryParse(parts[0], true, out key))
+			if (!Enum<Keycode>.TryParse(parts[0], true, out var key))
 			{
-				int c;
-				if (!int.TryParse(parts[0], out c))
+				if (!int.TryParse(parts[0], out var c))
 					return false;
 				key = (Keycode)c;
 			}

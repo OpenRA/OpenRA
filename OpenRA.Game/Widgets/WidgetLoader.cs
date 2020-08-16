@@ -37,8 +37,7 @@ namespace OpenRA
 
 		public Widget LoadWidget(WidgetArgs args, Widget parent, string w)
 		{
-			MiniYamlNode ret;
-			if (!widgets.TryGetValue(w, out ret))
+			if (!widgets.TryGetValue(w, out var ret))
 				throw new InvalidDataException("Cannot find widget with Id `{0}`".F(w));
 
 			return LoadWidget(args, parent, ret);

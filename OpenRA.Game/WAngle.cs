@@ -221,19 +221,16 @@ namespace OpenRA
 
 		public LuaValue Add(LuaRuntime runtime, LuaValue left, LuaValue right)
 		{
-			WAngle a, b;
-			int c;
-
-			if (!left.TryGetClrValue(out a))
+			if (!left.TryGetClrValue(out WAngle a))
 				throw new LuaException("Attempted to call WAngle.Add(WAngle, WAngle) with invalid arguments ({0}, {1})".F(left.WrappedClrType().Name, right.WrappedClrType().Name));
 
-			if (right.TryGetClrValue(out c))
+			if (right.TryGetClrValue(out int c))
 			{
 				Game.Debug("Support for facing calculations mixing Angle with integers is deprecated. Make sure all facing calculations use Angle");
 				return new LuaCustomClrObject(a + FromFacing(c));
 			}
 
-			if (right.TryGetClrValue(out b))
+			if (right.TryGetClrValue(out WAngle b))
 				return new LuaCustomClrObject(a + b);
 
 			throw new LuaException("Attempted to call WAngle.Add(WAngle, WAngle) with invalid arguments ({0}, {1})".F(left.WrappedClrType().Name, right.WrappedClrType().Name));
@@ -241,19 +238,16 @@ namespace OpenRA
 
 		public LuaValue Subtract(LuaRuntime runtime, LuaValue left, LuaValue right)
 		{
-			WAngle a, b;
-			int c;
-
-			if (!left.TryGetClrValue(out a))
+			if (!left.TryGetClrValue(out WAngle a))
 				throw new LuaException("Attempted to call WAngle.Subtract(WAngle, WAngle) with invalid arguments ({0}, {1})".F(left.WrappedClrType().Name, right.WrappedClrType().Name));
 
-			if (right.TryGetClrValue(out c))
+			if (right.TryGetClrValue(out int c))
 			{
 				Game.Debug("Support for facing calculations mixing Angle with integers is deprecated. Make sure all facing calculations use Angle");
 				return new LuaCustomClrObject(a - FromFacing(c));
 			}
 
-			if (right.TryGetClrValue(out b))
+			if (right.TryGetClrValue(out WAngle b))
 				return new LuaCustomClrObject(a - b);
 
 			throw new LuaException("Attempted to call WAngle.Subtract(WAngle, WAngle) with invalid arguments ({0}, {1})".F(left.WrappedClrType().Name, right.WrappedClrType().Name));
@@ -261,8 +255,7 @@ namespace OpenRA
 
 		public LuaValue Equals(LuaRuntime runtime, LuaValue left, LuaValue right)
 		{
-			WAngle a, b;
-			if (!left.TryGetClrValue(out a) || !right.TryGetClrValue(out b))
+			if (!left.TryGetClrValue(out WAngle a) || !right.TryGetClrValue(out WAngle b))
 				return false;
 
 			return a == b;

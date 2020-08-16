@@ -486,8 +486,7 @@ namespace OpenRA
 
 		public Actor GetActorById(uint actorId)
 		{
-			Actor a;
-			if (actors.TryGetValue(actorId, out a))
+			if (actors.TryGetValue(actorId, out var a))
 				return a;
 			return null;
 		}

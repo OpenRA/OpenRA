@@ -108,8 +108,7 @@ namespace OpenRA.Mods.Common.Traits
 				// requestedTargetPresetForActivity will be cleared once the activity starts running and calls UpdateRequestedTarget
 				if (self.CurrentActivity != null && self.CurrentActivity.NextActivity == requestedTargetPresetForActivity)
 				{
-					bool targetIsHiddenActor;
-					RequestedTarget = RequestedTarget.Recalculate(self.Owner, out targetIsHiddenActor);
+					RequestedTarget = RequestedTarget.Recalculate(self.Owner, out var targetIsHiddenActor);
 				}
 
 				// Requested activity has been canceled
@@ -271,8 +270,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (attack.IsTraitPaused)
 					return false;
 
-				bool targetIsHiddenActor;
-				target = target.Recalculate(self.Owner, out targetIsHiddenActor);
+				target = target.Recalculate(self.Owner, out var targetIsHiddenActor);
 				attack.SetRequestedTarget(self, target, forceAttack);
 				hasTicked = true;
 

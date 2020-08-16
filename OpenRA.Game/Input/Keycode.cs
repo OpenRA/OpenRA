@@ -498,8 +498,7 @@ namespace OpenRA
 
 		public static string DisplayString(Keycode k)
 		{
-			string ret;
-			if (!KeyNames.TryGetValue(k, out ret))
+			if (!KeyNames.TryGetValue(k, out var ret))
 				return k.ToString();
 
 			return ret;

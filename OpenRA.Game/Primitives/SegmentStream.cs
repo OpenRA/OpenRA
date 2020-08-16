@@ -120,8 +120,7 @@ namespace OpenRA.Primitives
 		/// <param name="count">The length of the segment.</param>
 		public static Stream CreateWithoutOwningStream(Stream stream, long offset, int count)
 		{
-			Stream parentStream;
-			var nestedOffset = offset + GetOverallNestedOffset(stream, out parentStream);
+			var nestedOffset = offset + GetOverallNestedOffset(stream, out var parentStream);
 
 			// Special case FileStream - instead of creating an in-memory copy,
 			// just reference the portion of the on-disk file that we need to save memory.

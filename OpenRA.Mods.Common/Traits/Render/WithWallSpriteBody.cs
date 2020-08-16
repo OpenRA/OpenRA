@@ -122,9 +122,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 			adjacent = 0;
 			foreach (var a in adjacentActors)
 			{
-				CVec facing;
 				var wc = a.TraitsImplementing<IWallConnector>().FirstEnabledTraitOrDefault();
-				if (wc == null || !wc.AdjacentWallCanConnect(a, self.Location, wallInfo.Type, out facing))
+				if (wc == null || !wc.AdjacentWallCanConnect(a, self.Location, wallInfo.Type, out var facing))
 					continue;
 
 				if (facing.Y > 0)

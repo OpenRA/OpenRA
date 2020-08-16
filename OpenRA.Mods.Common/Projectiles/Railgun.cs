@@ -148,9 +148,8 @@ namespace OpenRA.Mods.Common.Projectiles
 		void CalculateVectors()
 		{
 			// Check for blocking actors
-			WPos blockedPos;
 			if (info.Blockable && BlocksProjectiles.AnyBlockingActorsBetween(args.SourceActor.World, target, args.Source,
-					info.BeamWidth, out blockedPos))
+					info.BeamWidth, out var blockedPos))
 				target = blockedPos;
 
 			// Note: WAngle.Sin(x) = 1024 * Math.Sin(2pi/1024 * x)

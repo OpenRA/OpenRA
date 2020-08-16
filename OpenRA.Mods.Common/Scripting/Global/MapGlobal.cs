@@ -128,9 +128,7 @@ namespace OpenRA.Mods.Common.Scripting
 			"the map file (or nil, if the actor is dead or not found).")]
 		public Actor NamedActor(string actorName)
 		{
-			Actor ret;
-
-			if (!sma.Actors.TryGetValue(actorName, out ret))
+			if (!sma.Actors.TryGetValue(actorName, out var ret))
 				return null;
 
 			if (ret.Disposed)

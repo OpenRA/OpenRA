@@ -223,8 +223,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				foreach (var n in waitingPowersNode.Value.Nodes)
 				{
-					SupportPowerInstance instance;
-					if (supportPowerManager.Powers.TryGetValue(n.Key, out instance))
+					if (supportPowerManager.Powers.TryGetValue(n.Key, out var instance))
 						waitingPowers[instance] = FieldLoader.GetValue<int>("WaitingPowers", n.Value.Value);
 				}
 			}

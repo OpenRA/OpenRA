@@ -85,8 +85,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 				if (projectileNode.Value.Value == null)
 					continue;
 
-				string[] fieldNames;
-				if (ProjectileFields.TryGetValue(projectileNode.Value.Value, out fieldNames))
+				if (ProjectileFields.TryGetValue(projectileNode.Value.Value, out var fieldNames))
 				{
 					foreach (var fieldName in fieldNames)
 					{

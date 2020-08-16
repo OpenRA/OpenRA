@@ -339,8 +339,7 @@ namespace OpenRA
 			{
 				if (n.Key == "Inherits" || n.Key.StartsWith("Inherits@", StringComparison.Ordinal))
 				{
-					MiniYaml parent;
-					if (!tree.TryGetValue(n.Value.Value, out parent))
+					if (!tree.TryGetValue(n.Value.Value, out var parent))
 						throw new YamlException(
 							"{0}: Parent type `{1}` not found".F(n.Location, n.Value.Value));
 
@@ -428,9 +427,8 @@ namespace OpenRA
 
 			foreach (var key in allKeys)
 			{
-				MiniYamlNode existingNode, overrideNode;
-				existingDict.TryGetValue(key, out existingNode);
-				overrideDict.TryGetValue(key, out overrideNode);
+				existingDict.TryGetValue(key, out var existingNode);
+				overrideDict.TryGetValue(key, out var overrideNode);
 
 				var loc = overrideNode == null ? default(MiniYamlNode.SourceLocation) : overrideNode.Location;
 				var comment = (overrideNode ?? existingNode).Comment;

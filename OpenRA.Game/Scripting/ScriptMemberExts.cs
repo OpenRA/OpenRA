@@ -28,8 +28,7 @@ namespace OpenRA.Scripting
 
 		public static string LuaDocString(this Type t)
 		{
-			string ret;
-			if (!LuaTypeNameReplacements.TryGetValue(t.Name, out ret))
+			if (!LuaTypeNameReplacements.TryGetValue(t.Name, out var ret))
 				ret = t.Name;
 			return ret;
 		}

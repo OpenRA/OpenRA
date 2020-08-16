@@ -25,8 +25,7 @@ namespace OpenRA.Mods.Common.Graphics
 			: base(modData)
 		{
 			var metadata = modData.Manifest.Get<SpriteSequenceFormat>().Metadata;
-			MiniYaml yaml;
-			if (metadata.TryGetValue("DefaultSpriteExtension", out yaml))
+			if (metadata.TryGetValue("DefaultSpriteExtension", out var yaml))
 				DefaultSpriteExtension = yaml.Value;
 
 			if (metadata.TryGetValue("TilesetExtensions", out yaml))
@@ -51,8 +50,7 @@ namespace OpenRA.Mods.Common.Graphics
 		{
 			var tsId = tileSet.Id;
 
-			MiniYaml yaml;
-			if (d.TryGetValue("TilesetOverrides", out yaml))
+			if (d.TryGetValue("TilesetOverrides", out var yaml))
 			{
 				var tsNode = yaml.Nodes.FirstOrDefault(n => n.Key == tsId);
 				if (tsNode != null)
@@ -70,8 +68,7 @@ namespace OpenRA.Mods.Common.Graphics
 
 			if (LoadField(d, "UseTilesetCode", false))
 			{
-				string code;
-				if (loader.TilesetCodes.TryGetValue(ResolveTilesetId(tileSet, d), out code))
+				if (loader.TilesetCodes.TryGetValue(ResolveTilesetId(tileSet, d), out var code))
 					spriteName = spriteName.Substring(0, 1) + code + spriteName.Substring(2, spriteName.Length - 2);
 			}
 
@@ -79,8 +76,7 @@ namespace OpenRA.Mods.Common.Graphics
 			{
 				var useTilesetExtension = LoadField(d, "UseTilesetExtension", false);
 
-				string tilesetExtension;
-				if (useTilesetExtension && loader.TilesetExtensions.TryGetValue(ResolveTilesetId(tileSet, d), out tilesetExtension))
+				if (useTilesetExtension && loader.TilesetExtensions.TryGetValue(ResolveTilesetId(tileSet, d), out var tilesetExtension))
 					return spriteName + tilesetExtension;
 
 				return spriteName + loader.DefaultSpriteExtension;

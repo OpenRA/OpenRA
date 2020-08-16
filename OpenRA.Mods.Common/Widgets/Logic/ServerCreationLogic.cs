@@ -177,8 +177,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void CreateAndJoin()
 		{
 			var name = Settings.SanitizedServerName(panel.Get<TextFieldWidget>("SERVER_NAME").Text);
-			int listenPort;
-			if (!Exts.TryParseIntegerInvariant(panel.Get<TextFieldWidget>("LISTEN_PORT").Text, out listenPort))
+			if (!Exts.TryParseIntegerInvariant(panel.Get<TextFieldWidget>("LISTEN_PORT").Text, out var listenPort))
 				listenPort = 1234;
 
 			var passwordField = panel.GetOrNull<PasswordFieldWidget>("PASSWORD");

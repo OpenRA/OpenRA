@@ -50,8 +50,7 @@ namespace OpenRA
 				return () => keys[name];
 
 			// Try and parse as a hardcoded definition
-			Hotkey key;
-			if (!Hotkey.TryParse(name, out key))
+			if (!Hotkey.TryParse(name, out var key))
 				key = Hotkey.Invalid;
 
 			return () => key;
@@ -59,8 +58,7 @@ namespace OpenRA
 
 		public void Set(string name, Hotkey value)
 		{
-			HotkeyDefinition definition;
-			if (!definitions.TryGetValue(name, out definition))
+			if (!definitions.TryGetValue(name, out var definition))
 				return;
 
 			keys[name] = value;

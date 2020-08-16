@@ -719,8 +719,7 @@ namespace OpenRA.Platforms.Default
 
 			if (Profile != GLProfile.Legacy)
 			{
-				int extensionCount;
-				glGetIntegerv(GL_NUM_EXTENSIONS, out extensionCount);
+				glGetIntegerv(GL_NUM_EXTENSIONS, out var extensionCount);
 				for (var i = 0; i < extensionCount; i++)
 					Log.Write("graphics", glGetStringi(GL_EXTENSIONS, (uint)i));
 			}

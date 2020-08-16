@@ -668,8 +668,7 @@ namespace OpenRA.Support
 
 		static int ParseSymbol(string symbol, IReadOnlyDictionary<string, int> symbols)
 		{
-			int value;
-			symbols.TryGetValue(symbol, out value);
+			symbols.TryGetValue(symbol, out var value);
 			return value;
 		}
 

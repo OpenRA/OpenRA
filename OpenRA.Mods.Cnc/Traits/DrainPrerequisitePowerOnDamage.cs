@@ -53,8 +53,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			{
 				var damageSubTicks = (int)(damage.Value * 100L * Info.DamageMultiplier / Info.DamageDivisor);
 
-				SupportPowerInstance spi;
-				if (spm.Powers.TryGetValue(Info.OrderName, out spi))
+				if (spm.Powers.TryGetValue(Info.OrderName, out var spi))
 				{
 					var dspi = spi as GrantPrerequisiteChargeDrainPower.DischargeableSupportPowerInstance;
 					if (dspi != null)

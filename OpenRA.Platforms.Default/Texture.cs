@@ -122,11 +122,9 @@ namespace OpenRA.Platforms.Default
 			if (OpenGL.Profile == GLProfile.Embedded)
 			{
 				// Query the active framebuffer so we can restore it afterwards
-				int lastFramebuffer;
-				OpenGL.glGetIntegerv(OpenGL.GL_FRAMEBUFFER_BINDING, out lastFramebuffer);
+				OpenGL.glGetIntegerv(OpenGL.GL_FRAMEBUFFER_BINDING, out var lastFramebuffer);
 
-				uint framebuffer;
-				OpenGL.glGenFramebuffers(1, out framebuffer);
+				OpenGL.glGenFramebuffers(1, out var framebuffer);
 				OpenGL.glBindFramebuffer(OpenGL.GL_FRAMEBUFFER, framebuffer);
 				OpenGL.CheckGLError();
 

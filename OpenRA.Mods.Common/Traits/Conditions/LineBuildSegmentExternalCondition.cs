@@ -47,8 +47,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void RevokeCondition(Actor self, Actor segment)
 		{
-			int token;
-			if (!tokens.TryGetValue(segment, out token))
+			if (!tokens.TryGetValue(segment, out var token))
 				return;
 
 			tokens.Remove(segment);

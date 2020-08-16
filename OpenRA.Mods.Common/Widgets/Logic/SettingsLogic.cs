@@ -370,9 +370,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			return () =>
 			{
-				int x, y;
-				Exts.TryParseIntegerInvariant(windowWidth.Text, out x);
-				Exts.TryParseIntegerInvariant(windowHeight.Text, out y);
+				Exts.TryParseIntegerInvariant(windowWidth.Text, out var x);
+				Exts.TryParseIntegerInvariant(windowHeight.Text, out var y);
 				ds.WindowedSize = new int2(x, y);
 				nameTextfield.YieldKeyboardFocus();
 			};
@@ -590,8 +589,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			Func<bool> returnTrue = () => true;
 			Action doNothing = () => { };
 
-			MiniYaml hotkeyGroups;
-			if (logicArgs.TryGetValue("HotkeyGroups", out hotkeyGroups))
+			if (logicArgs.TryGetValue("HotkeyGroups", out var hotkeyGroups))
 			{
 				InitHotkeyRemapDialog(panel);
 

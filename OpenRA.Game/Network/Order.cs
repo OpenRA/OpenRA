@@ -107,8 +107,7 @@ namespace OpenRA
 							{
 								case TargetType.Actor:
 									{
-										Actor targetActor;
-										if (world != null && TryGetActorFromUInt(world, r.ReadUInt32(), out targetActor))
+										if (world != null && TryGetActorFromUInt(world, r.ReadUInt32(), out var targetActor))
 											target = Target.FromActor(targetActor);
 										break;
 									}
@@ -118,8 +117,7 @@ namespace OpenRA
 										var playerActorID = r.ReadUInt32();
 										var frozenActorID = r.ReadUInt32();
 
-										Actor playerActor;
-										if (world == null || !TryGetActorFromUInt(world, playerActorID, out playerActor))
+										if (world == null || !TryGetActorFromUInt(world, playerActorID, out var playerActor))
 											break;
 
 										if (playerActor.Owner.FrozenActorLayer == null)

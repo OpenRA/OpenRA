@@ -125,8 +125,7 @@ namespace OpenRA
 
 		public static V GetOrAdd<K, V>(this Dictionary<K, V> d, K k, Func<K, V> createFn)
 		{
-			V ret;
-			if (!d.TryGetValue(k, out ret))
+			if (!d.TryGetValue(k, out var ret))
 				d.Add(k, ret = createFn(k));
 			return ret;
 		}
@@ -353,8 +352,7 @@ namespace OpenRA
 
 		public static int IntegerDivisionRoundingAwayFromZero(int dividend, int divisor)
 		{
-			int remainder;
-			var quotient = Math.DivRem(dividend, divisor, out remainder);
+			var quotient = Math.DivRem(dividend, divisor, out var remainder);
 			if (remainder == 0)
 				return quotient;
 			return quotient + (Math.Sign(dividend) == Math.Sign(divisor) ? 1 : -1);
@@ -405,8 +403,7 @@ namespace OpenRA
 				// Check for a key conflict:
 				if (d.ContainsKey(key))
 				{
-					List<string> dupKeyMessages;
-					if (!dupKeys.TryGetValue(key, out dupKeyMessages))
+					if (!dupKeys.TryGetValue(key, out var dupKeyMessages))
 					{
 						// Log the initial conflicting value already inserted:
 						dupKeyMessages = new List<string>();

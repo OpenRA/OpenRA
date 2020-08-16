@@ -47,14 +47,9 @@ namespace OpenRA.Primitives
 			BitSetIndex bits = 0;
 
 			lock (Bits)
-			{
 				foreach (var value in values)
-				{
-					BitSetIndex valueBit;
-					if (Bits.TryGetValue(value, out valueBit))
+					if (Bits.TryGetValue(value, out var valueBit))
 						bits |= valueBit;
-				}
-			}
 
 			return bits;
 		}

@@ -171,8 +171,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (conditionToken != Actor.InvalidConditionToken)
 				conditionToken = self.RevokeCondition(conditionToken);
 
-			string condition;
-			if (Info.ConditionByStance.TryGetValue(stance, out condition))
+			if (Info.ConditionByStance.TryGetValue(stance, out var condition))
 				conditionToken = self.GrantCondition(condition);
 		}
 

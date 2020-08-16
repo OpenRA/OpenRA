@@ -40,9 +40,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (string.IsNullOrEmpty(Explosion))
 				return;
 
-			WeaponInfo weapon;
 			var weaponToLower = Explosion.ToLowerInvariant();
-			if (!rules.Weapons.TryGetValue(weaponToLower, out weapon))
+			if (!rules.Weapons.TryGetValue(weaponToLower, out var weapon))
 				throw new YamlException("Weapons Ruleset does not contain an entry '{0}'".F(weaponToLower));
 
 			ExplosionWeapon = weapon;

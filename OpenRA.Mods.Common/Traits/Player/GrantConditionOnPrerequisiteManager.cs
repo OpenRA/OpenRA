@@ -69,8 +69,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void PrerequisitesAvailable(string key)
 		{
-			List<(Actor Actor, GrantConditionOnPrerequisite GrantConditionOnPrerequisite)> list;
-			if (!upgradables.TryGetValue(key, out list))
+			if (!upgradables.TryGetValue(key, out var list))
 				return;
 
 			foreach (var u in list)
@@ -79,8 +78,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void PrerequisitesUnavailable(string key)
 		{
-			List<(Actor Actor, GrantConditionOnPrerequisite GrantConditionOnPrerequisite)> list;
-			if (!upgradables.TryGetValue(key, out list))
+			if (!upgradables.TryGetValue(key, out var list))
 				return;
 
 			foreach (var u in list)

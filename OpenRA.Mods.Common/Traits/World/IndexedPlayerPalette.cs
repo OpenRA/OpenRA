@@ -58,9 +58,8 @@ namespace OpenRA.Mods.Common
 		{
 			var basePalette = wr.Palette(info.BasePalette).Palette;
 			ImmutablePalette pal;
-			int[] remap;
 
-			if (info.PlayerIndex.TryGetValue(playerName, out remap))
+			if (info.PlayerIndex.TryGetValue(playerName, out var remap))
 				pal = new ImmutablePalette(basePalette, new IndexedColorRemap(basePalette, info.RemapIndex, remap));
 			else
 				pal = new ImmutablePalette(basePalette);

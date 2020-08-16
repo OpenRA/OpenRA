@@ -96,8 +96,7 @@ namespace OpenRA.Mods.Common.Activities
 				return false;
 			}
 
-			bool targetIsHiddenActor;
-			target = RecalculateTarget(self, out targetIsHiddenActor);
+			target = RecalculateTarget(self, out var targetIsHiddenActor);
 
 			if (!targetIsHiddenActor && target.Type == TargetType.Actor)
 			{

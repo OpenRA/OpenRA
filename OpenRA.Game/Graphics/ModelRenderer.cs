@@ -160,10 +160,8 @@ namespace OpenRA.Graphics
 			}
 
 			// Shadows are rendered at twice the resolution to reduce artifacts
-			Size spriteSize, shadowSpriteSize;
-			int2 spriteOffset, shadowSpriteOffset;
-			CalculateSpriteGeometry(tl, br, 1, out spriteSize, out spriteOffset);
-			CalculateSpriteGeometry(stl, sbr, 2, out shadowSpriteSize, out shadowSpriteOffset);
+			CalculateSpriteGeometry(tl, br, 1, out var spriteSize, out var spriteOffset);
+			CalculateSpriteGeometry(stl, sbr, 2, out var shadowSpriteSize, out var shadowSpriteOffset);
 
 			if (sheetBuilderForFrame == null)
 				sheetBuilderForFrame = new SheetBuilder(SheetType.BGRA, AllocateSheet);

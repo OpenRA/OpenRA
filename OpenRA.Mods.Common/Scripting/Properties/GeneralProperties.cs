@@ -183,8 +183,7 @@ namespace OpenRA.Mods.Common.Scripting
 				if (autotarget == null)
 					return;
 
-				UnitStance stance;
-				if (!Enum<UnitStance>.TryParse(value, true, out stance))
+				if (!Enum<UnitStance>.TryParse(value, true, out var stance))
 					throw new LuaException("Unknown stance type '{0}'".F(value));
 
 				autotarget.PredictedStance = stance;

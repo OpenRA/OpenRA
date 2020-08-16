@@ -52,8 +52,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 		public List<CPos> Retrieve(string key)
 		{
-			CachedPath cached;
-			if (cachedPaths.TryGetValue(key, out cached))
+			if (cachedPaths.TryGetValue(key, out var cached))
 			{
 				if (IsExpired(cached))
 				{

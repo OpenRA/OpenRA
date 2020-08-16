@@ -160,8 +160,7 @@ namespace OpenRA.Graphics
 				return null;
 			}
 
-			Rectangle mi;
-			if (!collection.Regions.TryGetValue(imageName, out mi))
+			if (!collection.Regions.TryGetValue(imageName, out var mi))
 				return null;
 
 			// Cache the sprite

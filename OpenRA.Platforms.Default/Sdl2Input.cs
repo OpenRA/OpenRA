@@ -67,8 +67,7 @@ namespace OpenRA.Platforms.Default
 			inputHandler.ModifierKeys(mods);
 			MouseInput? pendingMotion = null;
 
-			SDL.SDL_Event e;
-			while (SDL.SDL_PollEvent(out e) != 0)
+			while (SDL.SDL_PollEvent(out var e) != 0)
 			{
 				switch (e.type)
 				{
@@ -160,8 +159,7 @@ namespace OpenRA.Platforms.Default
 
 					case SDL.SDL_EventType.SDL_MOUSEWHEEL:
 						{
-							int x, y;
-							SDL.SDL_GetMouseState(out x, out y);
+							SDL.SDL_GetMouseState(out var x, out var y);
 
 							var pos = EventPosition(device, x, y);
 							inputHandler.OnMouseInput(new MouseInput(MouseInputEvent.Scroll, MouseButton.None, pos, new int2(0, e.wheel.y), mods, 0));
