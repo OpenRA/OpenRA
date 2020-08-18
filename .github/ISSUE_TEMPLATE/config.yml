@@ -1,5 +1,8 @@
 blank_issues_enabled: false
 contact_links:
+  - name: Frequently Asked Questions
+    url: https://github.com/OpenRA/OpenRA/wiki/FAQ#frequently-asked-questions
+    about: Explanations for common problems and questions.
   - name: OpenRA Forum
     url: https://forum.openra.net/
     about: "Please ask questions about modding here."
