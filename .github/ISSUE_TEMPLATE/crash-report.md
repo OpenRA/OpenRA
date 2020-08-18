@@ -1,6 +1,6 @@
 ---
 name: Crash report
-about: Report a game crash.
+about: Report a game crash. Check the FAQ first https://github.com/OpenRA/OpenRA/wiki/FAQ#common-issues
 title: My game crashed
 labels: Crash
 assignees: ''
