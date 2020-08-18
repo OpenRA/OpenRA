@@ -1,5 +1,12 @@
-^ExistsInWorld:
+^ReflectsWaves:
 	AppearsOnRadar:
+		ValidStances: Neutral, Ally
+	AppearsOnRadar@ENEMY:
+		ValidStances: Enemy
+		RequiresCondition: !radarabsorbed
+
+^ExistsInWorld:
+	Inherits: ^ReflectsWaves
 	CombatDebugOverlay:
 	GivesExperience:
 		PlayerExperienceModifier: 1
@@ -173,6 +180,10 @@
 	ExternalCondition@INVULNERABILITY:
 		Condition: invulnerability
 
+^RadarAbsorbable:
+	ExternalCondition@RADABSORBED:
+		Condition: radarabsorbed
+
 ^AutoTargetGround:
 	AutoTarget:
 		AttackAnythingCondition: stance-attackanything
@@ -234,6 +245,7 @@
 	Inherits@3: ^ClassicFacingSpriteActor
 	Inherits@bounty: ^GlobalBounty
 	Inherits@selection: ^SelectableCombatUnit
+	Inherits@radarabsorbed: ^RadarAbsorbable
 	Huntable:
 	OwnerLostAction:
 		Action: Kill
@@ -313,6 +325,7 @@
 	Inherits@4: ^SpriteActor
 	Inherits@bounty: ^GlobalBounty
 	Inherits@selection: ^SelectableCombatUnit
+	Inherits@radarabsorbed: ^RadarAbsorbable
 	Huntable:
 	OwnerLostAction:
 		Action: Kill
@@ -483,6 +496,7 @@
 	Inherits@4: ^SpriteActor
 	Inherits@bounty: ^GlobalBounty
 	Inherits@selection: ^SelectableCombatUnit
+	Inherits@radarabsorbed: ^RadarAbsorbable
 	Huntable:
 	OwnerLostAction:
 		Action: Kill
@@ -540,6 +554,8 @@
 	UpdatesPlayerStatistics:
 	AppearsOnRadar:
 		UseLocation: true
+	AppearsOnRadar@ENEMY:
+		UseLocation: true
 	Selectable:
 		Bounds: 24,24
 	Aircraft:
@@ -595,11 +611,13 @@
 ^Plane:
 	Inherits: ^NeutralPlane
 	Inherits@2: ^GainsExperience
+	Inherits@radarabsorbed: ^RadarAbsorbable
 	Repairable:
 		RepairActors: fix
 
 ^Helicopter:
 	Inherits: ^Plane
+	Inherits@radarabsorbed: ^RadarAbsorbable
 	Tooltip:
 		GenericName: Helicopter
 	Aircraft:
@@ -626,6 +644,7 @@
 	Inherits@shape: ^1x1Shape
 	Inherits@bounty: ^GlobalBounty
 	Inherits@selection: ^SelectableBuilding
+	Inherits@radarabsorbed: ^RadarAbsorbable
 	Targetable:
 		TargetTypes: GroundActor, C4, DetonateAttack, Structure
 	Building:

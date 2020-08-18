@@ -619,6 +619,11 @@ MRJ:
 	JamsMissiles:
 		Range: 5c0
 		DeflectionStances: Neutral, Enemy
+	ProximityExternalCondition@RADARABSORBER:
+		Range: 5c0
+		ValidStances: Ally
+		Condition: radarabsorbed
+		AffectsParent: true
 	RenderJammerCircle:
 
 TTNK:
