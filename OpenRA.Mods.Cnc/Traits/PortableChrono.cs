@@ -100,7 +100,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			}
 		}
 
-		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
+		public Order IssueOrder(Actor self, IOrderTargeter order, in Target target, bool queued)
 		{
 			if (order.OrderID == "PortableChronoDeploy")
 			{
@@ -172,9 +172,9 @@ namespace OpenRA.Mods.Cnc.Traits
 		public string OrderID { get { return "PortableChronoTeleport"; } }
 		public int OrderPriority { get { return 5; } }
 		public bool IsQueued { get; protected set; }
-		public bool TargetOverridesSelection(Actor self, Target target, List<Actor> actorsAt, CPos xy, TargetModifiers modifiers) { return true; }
+		public bool TargetOverridesSelection(Actor self, in Target target, List<Actor> actorsAt, CPos xy, TargetModifiers modifiers) { return true; }
 
-		public bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor)
+		public bool CanTarget(Actor self, in Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor)
 		{
 			if (modifiers.HasModifier(TargetModifiers.ForceMove))
 			{

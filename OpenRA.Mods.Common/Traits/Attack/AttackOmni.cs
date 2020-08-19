@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 		public AttackOmni(Actor self, AttackOmniInfo info)
 			: base(self, info) { }
 
-		public override Activity GetAttackActivity(Actor self, AttackSource source, Target newTarget, bool allowMove, bool forceAttack, Color? targetLineColor = null)
+		public override Activity GetAttackActivity(Actor self, AttackSource source, in Target newTarget, bool allowMove, bool forceAttack, Color? targetLineColor = null)
 		{
 			return new SetTarget(this, newTarget, allowMove, forceAttack, targetLineColor);
 		}
@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Traits
 			readonly Color? targetLineColor;
 			Target target;
 
-			public SetTarget(AttackOmni attack, Target target, bool allowMove, bool forceAttack, Color? targetLineColor = null)
+			public SetTarget(AttackOmni attack, in Target target, bool allowMove, bool forceAttack, Color? targetLineColor = null)
 			{
 				this.target = target;
 				this.targetLineColor = targetLineColor;

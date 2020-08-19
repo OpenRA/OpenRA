@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Activities
 		bool hasTicked;
 		bool returnToBase;
 
-		public FlyAttack(Actor self, AttackSource source, Target target, bool forceAttack, Color? targetLineColor)
+		public FlyAttack(Actor self, AttackSource source, in Target target, bool forceAttack, Color? targetLineColor)
 		{
 			this.source = source;
 			this.target = target;
@@ -211,7 +211,7 @@ namespace OpenRA.Mods.Common.Activities
 		WDist exitRange;
 		bool targetIsVisibleActor;
 
-		public FlyAttackRun(Actor self, Target t, WDist exitRange)
+		public FlyAttackRun(Actor self, in Target t, WDist exitRange)
 		{
 			ChildHasPriority = false;
 
@@ -254,7 +254,7 @@ namespace OpenRA.Mods.Common.Activities
 		WDist exitRange;
 		readonly AttackAircraft attackAircraft;
 
-		public StrafeAttackRun(Actor self, AttackAircraft attackAircraft, Target t, WDist exitRange)
+		public StrafeAttackRun(Actor self, AttackAircraft attackAircraft, in Target t, WDist exitRange)
 		{
 			ChildHasPriority = false;
 

@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			}
 		}
 
-		void INotifyAttack.Attacking(Actor self, Target target, Armament a, Barrel barrel)
+		void INotifyAttack.Attacking(Actor self, in Target target, Armament a, Barrel barrel)
 		{
 			if (a == null || barrel == null || !armaments.Contains(a))
 				return;
@@ -80,7 +80,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			anims[barrel].Animation.PlayThen(sequence, () => visible[barrel] = false);
 		}
 
-		void INotifyAttack.PreparingAttack(Actor self, Target target, Armament a, Barrel barrel) { }
+		void INotifyAttack.PreparingAttack(Actor self, in Target target, Armament a, Barrel barrel) { }
 
 		IEnumerable<IRenderable> IRender.Render(Actor self, WorldRenderer wr)
 		{

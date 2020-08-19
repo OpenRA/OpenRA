@@ -162,7 +162,7 @@ namespace OpenRA.Mods.Common
 			return cells.SelectMany(c => Neighbours(c, allowDiagonal)).Distinct();
 		}
 
-		public static IEnumerable<CPos> AdjacentCells(World w, Target target)
+		public static IEnumerable<CPos> AdjacentCells(World w, in Target target)
 		{
 			var cells = target.Positions.Select(p => w.Map.CellContaining(p)).Distinct();
 			return ExpandFootprint(cells, true);

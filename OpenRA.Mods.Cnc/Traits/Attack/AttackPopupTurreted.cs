@@ -80,7 +80,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			}
 		}
 
-		protected override bool CanAttack(Actor self, Target target)
+		protected override bool CanAttack(Actor self, in Target target)
 		{
 			if (state == PopupState.Closed)
 			{

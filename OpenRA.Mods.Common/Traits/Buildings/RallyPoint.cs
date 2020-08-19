@@ -97,7 +97,7 @@ namespace OpenRA.Mods.Common.Traits
 			get { yield return new RallyPointOrderTargeter(Info.Cursor); }
 		}
 
-		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
+		public Order IssueOrder(Actor self, IOrderTargeter order, in Target target, bool queued)
 		{
 			if (order.OrderID == OrderID)
 			{
@@ -140,11 +140,11 @@ namespace OpenRA.Mods.Common.Traits
 
 			public string OrderID { get { return "SetRallyPoint"; } }
 			public int OrderPriority { get { return 0; } }
-			public bool TargetOverridesSelection(Actor self, Target target, List<Actor> actorsAt, CPos xy, TargetModifiers modifiers) { return true; }
+			public bool TargetOverridesSelection(Actor self, in Target target, List<Actor> actorsAt, CPos xy, TargetModifiers modifiers) { return true; }
 			public bool ForceSet { get; private set; }
 			public bool IsQueued { get; protected set; }
 
-			public bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor)
+			public bool CanTarget(Actor self, in Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor)
 			{
 				if (target.Type != TargetType.Terrain)
 					return false;

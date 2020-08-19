@@ -31,13 +31,13 @@ namespace OpenRA.Mods.Common.Activities
 		bool useLastVisibleTarget;
 		readonly List<WPos> positionBuffer = new List<WPos>();
 
-		public Fly(Actor self, Target t, WDist nearEnough, WPos? initialTargetPosition = null, Color? targetLineColor = null)
+		public Fly(Actor self, in Target t, WDist nearEnough, WPos? initialTargetPosition = null, Color? targetLineColor = null)
 			: this(self, t, initialTargetPosition, targetLineColor)
 		{
 			this.nearEnough = nearEnough;
 		}
 
-		public Fly(Actor self, Target t, WPos? initialTargetPosition = null, Color? targetLineColor = null)
+		public Fly(Actor self, in Target t, WPos? initialTargetPosition = null, Color? targetLineColor = null)
 		{
 			aircraft = self.Trait<Aircraft>();
 			target = t;
@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.Activities
 				lastVisibleTarget = Target.FromPos(initialTargetPosition.Value);
 		}
 
-		public Fly(Actor self, Target t, WDist minRange, WDist maxRange,
+		public Fly(Actor self, in Target t, WDist minRange, WDist maxRange,
 			WPos? initialTargetPosition = null, Color? targetLineColor = null)
 			: this(self, t, initialTargetPosition, targetLineColor)
 		{

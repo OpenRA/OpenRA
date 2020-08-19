@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Warheads
 		[Desc("Duration of the flashing, measured in ticks. Set to -1 to default to the `Length` of the `FlashPaletteEffect`.")]
 		public readonly int Duration = 0;
 
-		public override void DoImpact(Target target, WarheadArgs args)
+		public override void DoImpact(in Target target, WarheadArgs args)
 		{
 			foreach (var flash in args.SourceActor.World.WorldActor.TraitsImplementing<FlashPaletteEffect>())
 				if (flash.Info.Type == FlashType)

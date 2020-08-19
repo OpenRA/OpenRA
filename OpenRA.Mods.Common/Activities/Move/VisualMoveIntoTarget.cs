@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly WDist targetMovementThreshold;
 		WPos targetStartPos;
 
-		public VisualMoveIntoTarget(Actor self, Target target, WDist targetMovementThreshold, Color? targetLineColor = null)
+		public VisualMoveIntoTarget(Actor self, in Target target, WDist targetMovementThreshold, Color? targetLineColor = null)
 		{
 			mobile = self.Trait<Mobile>();
 			this.target = target;

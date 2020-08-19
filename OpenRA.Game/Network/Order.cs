@@ -55,7 +55,7 @@ namespace OpenRA
 		public readonly string OrderString;
 		public readonly Actor Subject;
 		public readonly bool Queued;
-		public readonly Target Target;
+		public ref readonly Target Target => ref target;
 		public readonly Actor[] GroupedActors;
 
 		public string TargetString;
@@ -66,15 +66,18 @@ namespace OpenRA
 		public OrderType Type = OrderType.Fields;
 
 		public bool SuppressVisualFeedback;
-		public Target VisualFeedbackTarget;
+		public ref readonly Target VisualFeedbackTarget => ref visualFeedbackTarget;
 
 		public Player Player { get { return Subject != null ? Subject.Owner : null; } }
 
-		Order(string orderString, Actor subject, Target target, string targetString, bool queued, Actor[] extraActors, CPos extraLocation, uint extraData, Actor[] groupedActors = null)
+		readonly Target target;
+		readonly Target visualFeedbackTarget;
+
+		Order(string orderString, Actor subject, in Target target, string targetString, bool queued, Actor[] extraActors, CPos extraLocation, uint extraData, Actor[] groupedActors = null)
 		{
 			OrderString = orderString ?? "";
 			Subject = subject;
-			Target = target;
+			this.target = target;
 			TargetString = targetString;
 			Queued = queued;
 			ExtraActors = extraActors;
@@ -278,8 +281,14 @@ namespace OpenRA
 		public Order(string orderString, Actor subject, bool queued, Actor[] extraActors = null, Actor[] groupedActors = null)
 			: this(orderString, subject, Target.Invalid, null, queued, extraActors, CPos.Zero, 0, groupedActors) { }
 
-		public Order(string orderString, Actor subject, Target target, bool queued, Actor[] extraActors = null, Actor[] groupedActors = null)
+		public Order(string orderString, Actor subject, in Target target, bool queued, Actor[] extraActors = null, Actor[] groupedActors = null)
 			: this(orderString, subject, target, null, queued, extraActors, CPos.Zero, 0, groupedActors) { }
+
+		public Order(string orderString, Actor subject, Target target, Target visualFeedbackTarget, bool queued)
+			: this(orderString, subject, target, null, queued, null, CPos.Zero, 0, null)
+		{
+			this.visualFeedbackTarget = visualFeedbackTarget;
+		}
 
 		public byte[] Serialize()
 		{

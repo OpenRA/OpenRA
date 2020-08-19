@@ -26,7 +26,7 @@ namespace OpenRA.Activities
 		public readonly Color Color;
 		public readonly Sprite Tile;
 
-		public TargetLineNode(Target target, Color color, Sprite tile = null)
+		public TargetLineNode(in Target target, Color color, Sprite tile = null)
 		{
 			// Note: Not all activities are drawable. In that case, pass Target.Invalid as target,
 			// if "yield break" in TargetLineNode(Actor self) is not feasible.

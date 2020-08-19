@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			}
 		}
 
-		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
+		public Order IssueOrder(Actor self, IOrderTargeter order, in Target target, bool queued)
 		{
 			if (order.OrderID != "Infiltrate")
 				return null;
@@ -92,7 +92,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				? Info.Voice : null;
 		}
 
-		public bool CanInfiltrateTarget(Actor self, Target target)
+		public bool CanInfiltrateTarget(Actor self, in Target target)
 		{
 			switch (target.Type)
 			{

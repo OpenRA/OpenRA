@@ -48,12 +48,12 @@ namespace OpenRA.Mods.Common.Traits
 			aircraftInfo = self.Info.TraitInfo<AircraftInfo>();
 		}
 
-		public override Activity GetAttackActivity(Actor self, AttackSource source, Target newTarget, bool allowMove, bool forceAttack, Color? targetLineColor = null)
+		public override Activity GetAttackActivity(Actor self, AttackSource source, in Target newTarget, bool allowMove, bool forceAttack, Color? targetLineColor = null)
 		{
 			return new FlyAttack(self, source, newTarget, forceAttack, targetLineColor);
 		}
 
-		protected override bool CanAttack(Actor self, Target target)
+		protected override bool CanAttack(Actor self, in Target target)
 		{
 			// Don't fire while landed or when outside the map.
 			if (self.World.Map.DistanceAboveTerrain(self.CenterPosition).Length < aircraftInfo.MinAirborneAltitude

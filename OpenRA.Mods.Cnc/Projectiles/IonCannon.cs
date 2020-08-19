@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Cnc.Effects
 		int weaponDelay;
 		bool impacted = false;
 
-		public IonCannon(Player firedBy, WeaponInfo weapon, World world, WPos launchPos, Target target, string effect, string sequence, string palette, int delay)
+		public IonCannon(Player firedBy, WeaponInfo weapon, World world, WPos launchPos, in Target target, string effect, string sequence, string palette, int delay)
 		{
 			this.target = target;
 			this.firedBy = firedBy;

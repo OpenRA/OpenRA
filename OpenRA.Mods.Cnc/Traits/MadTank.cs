@@ -97,7 +97,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			}
 		}
 
-		Order IIssueOrder.IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
+		Order IIssueOrder.IssueOrder(Actor self, IOrderTargeter order, in Target target, bool queued)
 		{
 			if (order.OrderID != "DetonateAttack" && order.OrderID != "Detonate")
 				return null;
@@ -150,7 +150,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				assignTargetOnFirstRun = true;
 			}
 
-			public DetonationSequence(Actor self, MadTank mad, Target target)
+			public DetonationSequence(Actor self, MadTank mad, in Target target)
 			{
 				this.self = self;
 				this.mad = mad;

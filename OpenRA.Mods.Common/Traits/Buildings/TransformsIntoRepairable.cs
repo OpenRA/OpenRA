@@ -95,7 +95,7 @@ namespace OpenRA.Mods.Common.Traits
 			return Info.RepairActors.Contains(target.Info.Name);
 		}
 
-		Order IIssueOrder.IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
+		Order IIssueOrder.IssueOrder(Actor self, IOrderTargeter order, in Target target, bool queued)
 		{
 			if (order.OrderID == "Repair")
 				return new Order(order.OrderID, self, target, queued);

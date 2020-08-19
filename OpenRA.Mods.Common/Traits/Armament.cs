@@ -229,7 +229,7 @@ namespace OpenRA.Mods.Common.Traits
 				a();
 		}
 
-		protected virtual bool CanFire(Actor self, Target target)
+		protected virtual bool CanFire(Actor self, in Target target)
 		{
 			if (IsReloading || IsTraitPaused)
 				return false;
@@ -249,7 +249,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		// Note: facing is only used by the legacy positioning code
 		// The world coordinate model uses Actor.Orientation
-		public virtual Barrel CheckFire(Actor self, IFacing facing, Target target)
+		public virtual Barrel CheckFire(Actor self, IFacing facing, in Target target)
 		{
 			if (!CanFire(self, target))
 				return null;
@@ -271,7 +271,7 @@ namespace OpenRA.Mods.Common.Traits
 			return barrel;
 		}
 
-		protected virtual void FireBarrel(Actor self, IFacing facing, Target target, Barrel barrel)
+		protected virtual void FireBarrel(Actor self, IFacing facing, in Target target, Barrel barrel)
 		{
 			foreach (var na in notifyAttacks)
 				na.PreparingAttack(self, target, this, barrel);
@@ -316,6 +316,8 @@ namespace OpenRA.Mods.Common.Traits
 				GuidedTarget = target
 			};
 
+			// Lambdas can't use 'in' variables, so capture a copy for later
+			var delayedTarget = target;
 			ScheduleDelayedAction(Info.FireDelay, () =>
 			{
 				if (args.Weapon.Projectile != null)
@@ -331,14 +333,14 @@ namespace OpenRA.Mods.Common.Traits
 						Game.Sound.Play(SoundType.World, args.Weapon.StartBurstReport, self.World, self.CenterPosition);
 
 					foreach (var na in notifyAttacks)
-						na.Attacking(self, target, this, barrel);
+						na.Attacking(self, delayedTarget, this, barrel);
 
 					Recoil = Info.Recoil;
 				}
 			});
 		}
 
-		protected virtual void UpdateBurst(Actor self, Target target)
+		protected virtual void UpdateBurst(Actor self, in Target target)
 		{
 			if (--Burst > 0)
 			{

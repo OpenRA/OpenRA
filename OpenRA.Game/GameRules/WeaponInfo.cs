@@ -163,7 +163,7 @@ namespace OpenRA.GameRules
 		}
 
 		/// <summary>Checks if the weapon is valid against (can target) the target.</summary>
-		public bool IsValidAgainst(Target target, World world, Actor firedBy)
+		public bool IsValidAgainst(in Target target, World world, Actor firedBy)
 		{
 			if (target.Type == TargetType.Actor)
 				return IsValidAgainst(target.Actor, firedBy);
@@ -220,20 +220,24 @@ namespace OpenRA.GameRules
 		}
 
 		/// <summary>Applies all the weapon's warheads to the target.</summary>
-		public void Impact(Target target, WarheadArgs args)
+		public void Impact(in Target target, WarheadArgs args)
 		{
 			var world = args.SourceActor.World;
 			foreach (var warhead in Warheads)
 			{
 				if (warhead.Delay > 0)
-					world.AddFrameEndTask(w => w.Add(new DelayedImpact(warhead.Delay, warhead, target, args)));
+				{
+					// Lambdas can't use 'in' variables, so capture a copy for later
+					var delayedTarget = target;
+					world.AddFrameEndTask(w => w.Add(new DelayedImpact(warhead.Delay, warhead, delayedTarget, args)));
+				}
 				else
 					warhead.DoImpact(target, args);
 			}
 		}
 
 		/// <summary>Applies all the weapon's warheads to the target. Only use for projectile-less, special-case impacts.</summary>
-		public void Impact(Target target, Actor firedBy)
+		public void Impact(in Target target, Actor firedBy)
 		{
 			// The impact will happen immediately at target.CenterPosition.
 			var args = new WarheadArgs

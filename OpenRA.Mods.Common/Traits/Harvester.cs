@@ -294,7 +294,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		Order IIssueOrder.IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
+		Order IIssueOrder.IssueOrder(Actor self, IOrderTargeter order, in Target target, bool queued)
 		{
 			if (order.OrderID == "Deliver" || order.OrderID == "Harvest")
 				return new Order(order.OrderID, self, target, queued);
@@ -364,9 +364,9 @@ namespace OpenRA.Mods.Common.Traits
 			public string OrderID { get { return "Harvest"; } }
 			public int OrderPriority { get { return 10; } }
 			public bool IsQueued { get; protected set; }
-			public bool TargetOverridesSelection(Actor self, Target target, List<Actor> actorsAt, CPos xy, TargetModifiers modifiers) { return true; }
+			public bool TargetOverridesSelection(Actor self, in Target target, List<Actor> actorsAt, CPos xy, TargetModifiers modifiers) { return true; }
 
-			public bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor)
+			public bool CanTarget(Actor self, in Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor)
 			{
 				if (target.Type != TargetType.Terrain)
 					return false;

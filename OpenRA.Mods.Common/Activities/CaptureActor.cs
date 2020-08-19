@@ -22,13 +22,13 @@ namespace OpenRA.Mods.Common.Activities
 		Actor enterActor;
 		CaptureManager enterCaptureManager;
 
-		public CaptureActor(Actor self, Target target)
+		public CaptureActor(Actor self, in Target target)
 			: base(self, target, Color.Crimson)
 		{
 			manager = self.Trait<CaptureManager>();
 		}
 
-		protected override void TickInner(Actor self, Target target, bool targetIsDeadOrHiddenActor)
+		protected override void TickInner(Actor self, in Target target, bool targetIsDeadOrHiddenActor)
 		{
 			if (target.Type == TargetType.Actor && enterActor != target.Actor)
 			{

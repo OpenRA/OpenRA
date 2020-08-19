@@ -63,14 +63,14 @@ namespace OpenRA.Mods.Common.Traits
 			base.Tick(self);
 		}
 
-		protected override bool CanAttack(Actor self, Target target)
+		protected override bool CanAttack(Actor self, in Target target)
 		{
 			charging = base.CanAttack(self, target) && IsReachableTarget(target, true);
 			return ChargeLevel >= info.ChargeLevel && charging;
 		}
 
-		void INotifyAttack.Attacking(Actor self, Target target, Armament a, Barrel barrel) { ChargeLevel = 0; }
-		void INotifyAttack.PreparingAttack(Actor self, Target target, Armament a, Barrel barrel) { }
+		void INotifyAttack.Attacking(Actor self, in Target target, Armament a, Barrel barrel) { ChargeLevel = 0; }
+		void INotifyAttack.PreparingAttack(Actor self, in Target target, Armament a, Barrel barrel) { }
 		void INotifySold.Selling(Actor self) { ChargeLevel = 0; }
 		void INotifySold.Sold(Actor self) { }
 	}

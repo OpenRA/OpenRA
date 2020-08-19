@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Activities
 		protected CPos lastVisibleTargetLocation;
 		bool useLastVisibleTarget;
 
-		public MoveAdjacentTo(Actor self, Target target, WPos? initialTargetPosition = null, Color? targetLineColor = null)
+		public MoveAdjacentTo(Actor self, in Target target, WPos? initialTargetPosition = null, Color? targetLineColor = null)
 		{
 			this.target = target;
 			this.targetLineColor = targetLineColor;

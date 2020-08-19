@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				wsb.PlayCustomAnimation(self, Info.Sequence);
 		}
 
-		void INotifyAttack.Attacking(Actor self, Target target, Armament a, Barrel barrel)
+		void INotifyAttack.Attacking(Actor self, in Target target, Armament a, Barrel barrel)
 		{
 			if (a == armament && Info.DelayRelativeTo == AttackDelayType.Attack)
 			{
@@ -76,7 +76,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			}
 		}
 
-		void INotifyAttack.PreparingAttack(Actor self, Target target, Armament a, Barrel barrel)
+		void INotifyAttack.PreparingAttack(Actor self, in Target target, Armament a, Barrel barrel)
 		{
 			if (a == armament && Info.DelayRelativeTo == AttackDelayType.Preparation)
 			{

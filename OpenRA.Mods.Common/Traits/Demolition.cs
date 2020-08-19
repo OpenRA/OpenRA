@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Common.Traits
 			get { yield return new DemolitionOrderTargeter(info); }
 		}
 
-		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
+		public Order IssueOrder(Actor self, IOrderTargeter order, in Target target, bool queued)
 		{
 			if (order.OrderID != "C4")
 				return null;

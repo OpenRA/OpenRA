@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			overlay.PlayThen(info.Sequence, () => attacking = false);
 		}
 
-		void INotifyAttack.Attacking(Actor self, Target target, Armament a, Barrel barrel)
+		void INotifyAttack.Attacking(Actor self, in Target target, Armament a, Barrel barrel)
 		{
 			if (info.DelayRelativeTo == AttackDelayType.Attack)
 			{
@@ -76,7 +76,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			}
 		}
 
-		void INotifyAttack.PreparingAttack(Actor self, Target target, Armament a, Barrel barrel)
+		void INotifyAttack.PreparingAttack(Actor self, in Target target, Armament a, Barrel barrel)
 		{
 			if (info.DelayRelativeTo == AttackDelayType.Preparation)
 			{

@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Traits
 			get { yield return new DeliversCashOrderTargeter(info); }
 		}
 
-		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
+		public Order IssueOrder(Actor self, IOrderTargeter order, in Target target, bool queued)
 		{
 			if (order.OrderID != "DeliverCash")
 				return null;

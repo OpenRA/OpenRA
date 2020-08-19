@@ -151,7 +151,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly Target target;
 		readonly Color? targetLineColor;
 
-		public IssueOrderAfterTransform(string orderString, Target target, Color? targetLineColor = null)
+		public IssueOrderAfterTransform(string orderString, in Target target, Color? targetLineColor = null)
 		{
 			this.orderString = orderString;
 			this.target = target;

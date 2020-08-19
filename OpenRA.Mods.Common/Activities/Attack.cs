@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.Activities
 		WDist maxRange;
 		AttackStatus attackStatus = AttackStatus.UnableToAttack;
 
-		public Attack(Actor self, Target target, bool allowMovement, bool forceAttack, Color? targetLineColor = null)
+		public Attack(Actor self, in Target target, bool allowMovement, bool forceAttack, Color? targetLineColor = null)
 		{
 			this.target = target;
 			this.targetLineColor = targetLineColor;
@@ -64,8 +64,11 @@ namespace OpenRA.Mods.Common.Activities
 			    || target.Type == TargetType.FrozenActor || target.Type == TargetType.Terrain)
 			{
 				lastVisibleTarget = Target.FromPos(target.CenterPosition);
+
+				// Lambdas can't use 'in' variables, so capture a copy for later
+				var rangeTarget = target;
 				lastVisibleMaximumRange = attackTraits.Where(x => !x.IsTraitDisabled)
-					.Min(x => x.GetMaximumRangeVersusTarget(target));
+					.Min(x => x.GetMaximumRangeVersusTarget(rangeTarget));
 
 				if (target.Type == TargetType.Actor)
 				{

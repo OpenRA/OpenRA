@@ -875,20 +875,20 @@ namespace OpenRA.Mods.Common.Traits
 			return new Fly(self, Target.FromCell(self.World, cell), WDist.FromCells(nearEnough), targetLineColor: targetLineColor);
 		}
 
-		public Activity MoveWithinRange(Target target, WDist range,
+		public Activity MoveWithinRange(in Target target, WDist range,
 			WPos? initialTargetPosition = null, Color? targetLineColor = null)
 		{
 			return new Fly(self, target, WDist.Zero, range, initialTargetPosition, targetLineColor);
 		}
 
-		public Activity MoveWithinRange(Target target, WDist minRange, WDist maxRange,
+		public Activity MoveWithinRange(in Target target, WDist minRange, WDist maxRange,
 			WPos? initialTargetPosition = null, Color? targetLineColor = null)
 		{
 			return new Fly(self, target, minRange, maxRange,
 				initialTargetPosition, targetLineColor);
 		}
 
-		public Activity MoveFollow(Actor self, Target target, WDist minRange, WDist maxRange,
+		public Activity MoveFollow(Actor self, in Target target, WDist minRange, WDist maxRange,
 			WPos? initialTargetPosition = null, Color? targetLineColor = null)
 		{
 			return new FlyFollow(self, target, minRange, maxRange,
@@ -934,13 +934,13 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public Activity MoveToTarget(Actor self, Target target,
+		public Activity MoveToTarget(Actor self, in Target target,
 			WPos? initialTargetPosition = null, Color? targetLineColor = null)
 		{
 			return new Fly(self, target, initialTargetPosition, targetLineColor);
 		}
 
-		public Activity MoveIntoTarget(Actor self, Target target)
+		public Activity MoveIntoTarget(Actor self, in Target target)
 		{
 			return new Land(self, target);
 		}
@@ -978,9 +978,11 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public bool CanEnterTargetNow(Actor self, Target target)
+		public bool CanEnterTargetNow(Actor self, in Target target)
 		{
-			if (target.Positions.Any(p => self.World.ActorMap.GetActorsAt(self.World.Map.CellContaining(p)).Any(a => a != self && a != target.Actor)))
+			// Lambdas can't use 'in' variables, so capture a copy for later
+			var targetActor = target;
+			if (target.Positions.Any(p => self.World.ActorMap.GetActorsAt(self.World.Map.CellContaining(p)).Any(a => a != self && a != targetActor.Actor)))
 				return false;
 
 			MakeReservation(target.Actor);
@@ -1015,7 +1017,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
+		public Order IssueOrder(Actor self, IOrderTargeter order, in Target target, bool queued)
 		{
 			if (!IsTraitDisabled &&
 				(order.OrderID == "Enter" || order.OrderID == "Move" || order.OrderID == "Land" || order.OrderID == "ForceEnter"))
@@ -1250,7 +1252,7 @@ namespace OpenRA.Mods.Common.Traits
 				OrderID = "Move";
 			}
 
-			public bool TargetOverridesSelection(Actor self, Target target, List<Actor> actorsAt, CPos xy, TargetModifiers modifiers)
+			public bool TargetOverridesSelection(Actor self, in Target target, List<Actor> actorsAt, CPos xy, TargetModifiers modifiers)
 			{
 				// Always prioritise orders over selecting other peoples actors or own actors that are already selected
 				if (target.Type == TargetType.Actor && (target.Actor.Owner != self.Owner || self.World.Selection.Contains(target.Actor)))
@@ -1259,7 +1261,7 @@ namespace OpenRA.Mods.Common.Traits
 				return modifiers.HasModifier(TargetModifiers.ForceMove);
 			}
 
-			public virtual bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor)
+			public virtual bool CanTarget(Actor self, in Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor)
 			{
 				if (target.Type != TargetType.Terrain || (aircraft.requireForceMove && !modifiers.HasModifier(TargetModifiers.ForceMove)))
 					return false;

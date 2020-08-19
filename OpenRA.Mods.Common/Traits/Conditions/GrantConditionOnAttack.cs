@@ -90,7 +90,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		bool TargetChanged(Target lastTarget, Target target)
+		bool TargetChanged(in Target lastTarget, in Target target)
 		{
 			// Invalidate reveal changing the target.
 			if (lastTarget.Type == TargetType.FrozenActor && target.Type == TargetType.Actor)
@@ -120,7 +120,7 @@ namespace OpenRA.Mods.Common.Traits
 			return false;
 		}
 
-		void INotifyAttack.Attacking(Actor self, Target target, Armament a, Barrel barrel)
+		void INotifyAttack.Attacking(Actor self, in Target target, Armament a, Barrel barrel)
 		{
 			if (IsTraitDisabled || IsTraitPaused)
 				return;
@@ -157,7 +157,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		void INotifyAttack.PreparingAttack(Actor self, Target target, Armament a, Barrel barrel) { }
+		void INotifyAttack.PreparingAttack(Actor self, in Target target, Armament a, Barrel barrel) { }
 
 		protected override void TraitDisabled(Actor self)
 		{

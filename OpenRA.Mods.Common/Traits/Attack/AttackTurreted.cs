@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Traits
 			turrets = self.TraitsImplementing<Turreted>().Where(t => info.Turrets.Contains(t.Info.Turret)).ToArray();
 		}
 
-		protected override bool CanAttack(Actor self, Target target)
+		protected override bool CanAttack(Actor self, in Target target)
 		{
 			if (target.Type == TargetType.Invalid)
 				return false;

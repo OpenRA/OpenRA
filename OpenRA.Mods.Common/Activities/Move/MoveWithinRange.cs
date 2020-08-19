@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly WDist maxRange;
 		readonly WDist minRange;
 
-		public MoveWithinRange(Actor self, Target target, WDist minRange, WDist maxRange,
+		public MoveWithinRange(Actor self, in Target target, WDist minRange, WDist maxRange,
 			WPos? initialTargetPosition = null, Color? targetLineColor = null)
 			: base(self, target, initialTargetPosition, targetLineColor)
 		{

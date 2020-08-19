@@ -96,13 +96,13 @@ namespace OpenRA.Mods.Common.Traits
 			RemainingTicks = Info.ReloadDelay;
 		}
 
-		void INotifyAttack.Attacking(Actor self, Target target, Armament a, Barrel barrel)
+		void INotifyAttack.Attacking(Actor self, in Target target, Armament a, Barrel barrel)
 		{
 			if (a != null && Info.Armaments.Contains(a.Info.Name))
 				TakeAmmo(self, 1);
 		}
 
-		void INotifyAttack.PreparingAttack(Actor self, Target target, Armament a, Barrel barrel) { }
+		void INotifyAttack.PreparingAttack(Actor self, in Target target, Armament a, Barrel barrel) { }
 
 		void UpdateCondition(Actor self)
 		{

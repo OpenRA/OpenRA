@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Common.Traits
 			return !requireForceMove || modifiers.HasModifier(TargetModifiers.ForceMove);
 		}
 
-		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
+		public Order IssueOrder(Actor self, IOrderTargeter order, in Target target, bool queued)
 		{
 			if (order.OrderID != "EnterTunnel")
 				return null;

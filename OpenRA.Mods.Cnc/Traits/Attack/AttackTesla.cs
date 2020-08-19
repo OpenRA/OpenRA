@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				charges = info.MaxCharges;
 		}
 
-		protected override bool CanAttack(Actor self, Target target)
+		protected override bool CanAttack(Actor self, in Target target)
 		{
 			if (!IsReachableTarget(target, true))
 				return false;
@@ -70,15 +70,15 @@ namespace OpenRA.Mods.Cnc.Traits
 			return base.CanAttack(self, target);
 		}
 
-		void INotifyAttack.Attacking(Actor self, Target target, Armament a, Barrel barrel)
+		void INotifyAttack.Attacking(Actor self, in Target target, Armament a, Barrel barrel)
 		{
 			--charges;
 			timeToRecharge = info.ReloadDelay;
 		}
 
-		void INotifyAttack.PreparingAttack(Actor self, Target target, Armament a, Barrel barrel) { }
+		void INotifyAttack.PreparingAttack(Actor self, in Target target, Armament a, Barrel barrel) { }
 
-		public override Activity GetAttackActivity(Actor self, AttackSource source, Target newTarget, bool allowMove, bool forceAttack, Color? targetLineColor = null)
+		public override Activity GetAttackActivity(Actor self, AttackSource source, in Target newTarget, bool allowMove, bool forceAttack, Color? targetLineColor = null)
 		{
 			return new ChargeAttack(this, newTarget, forceAttack, targetLineColor);
 		}
@@ -90,7 +90,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			readonly bool forceAttack;
 			readonly Color? targetLineColor;
 
-			public ChargeAttack(AttackTesla attack, Target target, bool forceAttack, Color? targetLineColor = null)
+			public ChargeAttack(AttackTesla attack, in Target target, bool forceAttack, Color? targetLineColor = null)
 			{
 				this.attack = attack;
 				this.target = target;
@@ -149,7 +149,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			readonly AttackTesla attack;
 			readonly Target target;
 
-			public ChargeFire(AttackTesla attack, Target target)
+			public ChargeFire(AttackTesla attack, in Target target)
 			{
 				this.attack = attack;
 				this.target = target;

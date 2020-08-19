@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Traits.Sound
 				Game.Sound.Play(SoundType.World, info.Sounds, self.World, self.CenterPosition);
 		}
 
-		void INotifyAttack.Attacking(Actor self, Target target, Armament a, Barrel barrel)
+		void INotifyAttack.Attacking(Actor self, in Target target, Armament a, Barrel barrel)
 		{
 			if (info.DelayRelativeTo == AttackDelayType.Attack)
 			{
@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Traits.Sound
 			}
 		}
 
-		void INotifyAttack.PreparingAttack(Actor self, Target target, Armament a, Barrel barrel)
+		void INotifyAttack.PreparingAttack(Actor self, in Target target, Armament a, Barrel barrel)
 		{
 			if (info.DelayRelativeTo == AttackDelayType.Preparation)
 			{

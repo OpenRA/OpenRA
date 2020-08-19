@@ -128,7 +128,7 @@ namespace OpenRA.Traits
 	public interface IIssueOrder
 	{
 		IEnumerable<IOrderTargeter> Orders { get; }
-		Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued);
+		Order IssueOrder(Actor self, IOrderTargeter order, in Target target, bool queued);
 	}
 
 	[Flags]
@@ -147,9 +147,9 @@ namespace OpenRA.Traits
 	{
 		string OrderID { get; }
 		int OrderPriority { get; }
-		bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor);
+		bool CanTarget(Actor self, in Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor);
 		bool IsQueued { get; }
-		bool TargetOverridesSelection(Actor self, Target target, List<Actor> actorsAt, CPos xy, TargetModifiers modifiers);
+		bool TargetOverridesSelection(Actor self, in Target target, List<Actor> actorsAt, CPos xy, TargetModifiers modifiers);
 	}
 
 	public interface IResolveOrder { void ResolveOrder(Actor self, Order order); }
@@ -517,7 +517,7 @@ namespace OpenRA.Traits
 		int Delay { get; }
 		bool IsValidAgainst(Actor victim, Actor firedBy);
 		bool IsValidAgainst(FrozenActor victim, Actor firedBy);
-		void DoImpact(Target target, WarheadArgs args);
+		void DoImpact(in Target target, WarheadArgs args);
 	}
 
 	public interface IRulesetLoaded<TInfo> { void RulesetLoaded(Ruleset rules, TInfo info); }
