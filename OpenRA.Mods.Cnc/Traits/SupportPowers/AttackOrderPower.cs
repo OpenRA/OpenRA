@@ -69,7 +69,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			base.Created(self);
 		}
 
-		void INotifyBurstComplete.FiredBurst(Actor self, Target target, Armament a)
+		void INotifyBurstComplete.FiredBurst(Actor self, in Target target, Armament a)
 		{
 			self.World.IssueOrder(new Order("Stop", self, false));
 		}

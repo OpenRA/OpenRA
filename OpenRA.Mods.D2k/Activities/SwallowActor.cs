@@ -40,7 +40,7 @@ namespace OpenRA.Mods.D2k.Activities
 		AttackState stance;
 		int attackingToken = Actor.InvalidConditionToken;
 
-		public SwallowActor(Actor self, Target target, Armament a, IFacing facing)
+		public SwallowActor(Actor self, in Target target, Armament a, IFacing facing)
 		{
 			this.target = target;
 			this.facing = facing;

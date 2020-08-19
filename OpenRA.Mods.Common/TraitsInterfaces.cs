@@ -110,8 +110,8 @@ namespace OpenRA.Mods.Common.Traits
 	[RequireExplicitImplementation]
 	public interface INotifyAttack
 	{
-		void Attacking(Actor self, Target target, Armament a, Barrel barrel);
-		void PreparingAttack(Actor self, Target target, Armament a, Barrel barrel);
+		void Attacking(Actor self, in Target target, Armament a, Barrel barrel);
+		void PreparingAttack(Actor self, in Target target, Armament a, Barrel barrel);
 	}
 
 	[RequireExplicitImplementation]
@@ -143,7 +143,7 @@ namespace OpenRA.Mods.Common.Traits
 	public interface INotifySupportPower { void Charged(Actor self); void Activated(Actor self); }
 
 	public interface INotifyBuildingPlaced { void BuildingPlaced(Actor self); }
-	public interface INotifyBurstComplete { void FiredBurst(Actor self, Target target, Armament a); }
+	public interface INotifyBurstComplete { void FiredBurst(Actor self, in Target target, Armament a); }
 	public interface INotifyChat { bool OnChat(string from, string message); }
 	public interface INotifyProduction { void UnitProduced(Actor self, Actor other, CPos exit); }
 	public interface INotifyOtherProduction { void UnitProducedByOther(Actor self, Actor producer, Actor produced, string productionType, TypeDictionary init); }
@@ -414,21 +414,21 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		Activity MoveTo(CPos cell, int nearEnough = 0, Actor ignoreActor = null,
 		 	bool evaluateNearestMovableCell = false, Color? targetLineColor = null);
-		Activity MoveWithinRange(Target target, WDist range,
+		Activity MoveWithinRange(in Target target, WDist range,
 			WPos? initialTargetPosition = null, Color? targetLineColor = null);
-		Activity MoveWithinRange(Target target, WDist minRange, WDist maxRange,
+		Activity MoveWithinRange(in Target target, WDist minRange, WDist maxRange,
 			WPos? initialTargetPosition = null, Color? targetLineColor = null);
-		Activity MoveFollow(Actor self, Target target, WDist minRange, WDist maxRange,
+		Activity MoveFollow(Actor self, in Target target, WDist minRange, WDist maxRange,
 			WPos? initialTargetPosition = null, Color? targetLineColor = null);
-		Activity MoveToTarget(Actor self, Target target,
+		Activity MoveToTarget(Actor self, in Target target,
 			WPos? initialTargetPosition = null, Color? targetLineColor = null);
 		Activity ReturnToCell(Actor self);
-		Activity MoveIntoTarget(Actor self, Target target);
+		Activity MoveIntoTarget(Actor self, in Target target);
 		Activity VisualMove(Actor self, WPos fromPos, WPos toPos);
 		int EstimatedMoveDuration(Actor self, WPos fromPos, WPos toPos);
 		CPos NearestMoveableCell(CPos target);
 		MovementType CurrentMovementTypes { get; set; }
-		bool CanEnterTargetNow(Actor self, Target target);
+		bool CanEnterTargetNow(Actor self, in Target target);
 	}
 
 	public interface IWrapMove

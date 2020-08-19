@@ -250,7 +250,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public bool FaceTarget(Actor self, Target target)
+		public bool FaceTarget(Actor self, in Target target)
 		{
 			if (IsTraitDisabled || IsTraitPaused || attack == null || attack.IsTraitDisabled || attack.IsTraitPaused)
 				return false;

@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Activities
 			this.endingDelay = endingDelay;
 		}
 
-		public FlyOffMap(Actor self, Target target, int endingDelay = 25)
+		public FlyOffMap(Actor self, in Target target, int endingDelay = 25)
 			: this(self, endingDelay)
 		{
 			this.target = target;

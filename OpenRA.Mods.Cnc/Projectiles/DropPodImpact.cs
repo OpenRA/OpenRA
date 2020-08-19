@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Cnc.Effects
 		int weaponDelay;
 		bool impacted = false;
 
-		public DropPodImpact(Player firedBy, WeaponInfo weapon, World world, WPos launchPos, Target target,
+		public DropPodImpact(Player firedBy, WeaponInfo weapon, World world, WPos launchPos, in Target target,
 			int delay, string entryEffect, string entrySequence, string entryPalette)
 		{
 			this.target = target;

@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 				info.Palette, info.IsPlayerPalette);
 		}
 
-		void INotifyTeslaCharging.Charging(Actor self, Target target)
+		void INotifyTeslaCharging.Charging(Actor self, in Target target)
 		{
 			charging = true;
 			overlay.PlayThen(RenderSprites.NormalizeSequence(overlay, self.GetDamageState(), info.Sequence), () => charging = false);

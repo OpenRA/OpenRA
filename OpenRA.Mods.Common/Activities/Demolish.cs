@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Activities
 		Actor enterActor;
 		IDemolishable[] enterDemolishables;
 
-		public Demolish(Actor self, Target target, EnterBehaviour enterBehaviour, int delay,
+		public Demolish(Actor self, in Target target, EnterBehaviour enterBehaviour, int delay,
 			int flashes, int flashesDelay, int flashInterval, BitSet<DamageType> damageTypes)
 			: base(self, target, Color.Crimson)
 		{

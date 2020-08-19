@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Activities
 		bool useLastVisibleTarget;
 		EnterState lastState = EnterState.Approaching;
 
-		protected Enter(Actor self, Target target, Color? targetLineColor = null)
+		protected Enter(Actor self, in Target target, Color? targetLineColor = null)
 		{
 			move = self.Trait<IMove>();
 			this.target = target;
@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Activities
 		/// Called early in the activity tick to allow subclasses to update state.
 		/// Call Cancel(self, true) if it is no longer valid to enter
 		/// </summary>
-		protected virtual void TickInner(Actor self, Target target, bool targetIsDeadOrHiddenActor) { }
+		protected virtual void TickInner(Actor self, in Target target, bool targetIsDeadOrHiddenActor) { }
 
 		/// <summary>
 		/// Called when the actor is ready to transition from approaching to entering the target actor.

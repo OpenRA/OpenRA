@@ -64,13 +64,13 @@ namespace OpenRA.Mods.Common.Traits.Render
 				PlayAttackAnimation(self);
 		}
 
-		void INotifyAttack.Attacking(Actor self, Target target, Armament a, Barrel barrel)
+		void INotifyAttack.Attacking(Actor self, in Target target, Armament a, Barrel barrel)
 		{
 			if (!IsTraitDisabled && a == armament && Info.DelayRelativeTo == AttackDelayType.Attack)
 				NotifyAttack(self);
 		}
 
-		void INotifyAttack.PreparingAttack(Actor self, Target target, Armament a, Barrel barrel)
+		void INotifyAttack.PreparingAttack(Actor self, in Target target, Armament a, Barrel barrel)
 		{
 			if (!IsTraitDisabled && a == armament && Info.DelayRelativeTo == AttackDelayType.Preparation)
 				NotifyAttack(self);

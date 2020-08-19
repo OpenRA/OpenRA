@@ -196,15 +196,17 @@ namespace OpenRA.Orders
 			public readonly IOrderTargeter Order;
 			public readonly IIssueOrder Trait;
 			public readonly string Cursor;
-			public readonly Target Target;
+			public ref readonly Target Target => ref target;
 
-			public UnitOrderResult(Actor actor, IOrderTargeter order, IIssueOrder trait, string cursor, Target target)
+			readonly Target target;
+
+			public UnitOrderResult(Actor actor, IOrderTargeter order, IIssueOrder trait, string cursor, in Target target)
 			{
 				Actor = actor;
 				Order = order;
 				Trait = trait;
 				Cursor = cursor;
-				Target = target;
+				this.target = target;
 			}
 		}
 

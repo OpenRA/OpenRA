@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Activities
 		bool useLastVisibleTarget;
 		bool wasMovingWithinRange;
 
-		public Follow(Actor self, Target target, WDist minRange, WDist maxRange,
+		public Follow(Actor self, in Target target, WDist minRange, WDist maxRange,
 			WPos? initialTargetPosition, Color? targetLineColor = null)
 		{
 			this.target = target;

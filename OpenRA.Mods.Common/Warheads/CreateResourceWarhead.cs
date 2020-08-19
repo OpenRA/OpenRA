@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Warheads
 		}
 
 		// TODO: Allow maximum resource splatter to be defined. (Per tile, and in total).
-		public override void DoImpact(Target target, WarheadArgs args)
+		public override void DoImpact(in Target target, WarheadArgs args)
 		{
 			if (target.Type == TargetType.Invalid)
 				return;

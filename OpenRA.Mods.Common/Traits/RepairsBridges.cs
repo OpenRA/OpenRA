@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Traits
 			get { yield return new RepairBridgeOrderTargeter(info); }
 		}
 
-		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
+		public Order IssueOrder(Actor self, IOrderTargeter order, in Target target, bool queued)
 		{
 			if (order.OrderID == "RepairBridge")
 				return new Order(order.OrderID, self, target, queued);

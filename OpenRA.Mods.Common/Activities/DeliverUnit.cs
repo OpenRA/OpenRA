@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Activities
 			assignTargetOnFirstRun = true;
 		}
 
-		public DeliverUnit(Actor self, Target destination, WDist deliverRange)
+		public DeliverUnit(Actor self, in Target destination, WDist deliverRange)
 		{
 			this.destination = destination;
 			this.deliverRange = deliverRange;

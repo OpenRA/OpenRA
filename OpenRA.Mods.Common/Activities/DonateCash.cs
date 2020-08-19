@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly int payload;
 		readonly int playerExperience;
 
-		public DonateCash(Actor self, Target target, int payload, int playerExperience)
+		public DonateCash(Actor self, in Target target, int payload, int playerExperience)
 			: base(self, target, Color.Yellow)
 		{
 			this.payload = payload;

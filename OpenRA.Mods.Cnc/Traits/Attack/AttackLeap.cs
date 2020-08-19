@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			this.info = info;
 		}
 
-		protected override bool CanAttack(Actor self, Target target)
+		protected override bool CanAttack(Actor self, in Target target)
 		{
 			if (target.Type != TargetType.Actor)
 				return false;
@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				leapToken = self.RevokeCondition(leapToken);
 		}
 
-		public override Activity GetAttackActivity(Actor self, AttackSource source, Target newTarget, bool allowMove, bool forceAttack, Color? targetLineColor)
+		public override Activity GetAttackActivity(Actor self, AttackSource source, in Target newTarget, bool allowMove, bool forceAttack, Color? targetLineColor)
 		{
 			return new LeapAttack(self, newTarget, allowMove, forceAttack, this, info, targetLineColor);
 		}

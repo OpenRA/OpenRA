@@ -14,5 +14,5 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Cnc.Traits
 {
 	[RequireExplicitImplementation]
-	public interface INotifyTeslaCharging { void Charging(Actor self, Target target); }
+	public interface INotifyTeslaCharging { void Charging(Actor self, in Target target); }
 }

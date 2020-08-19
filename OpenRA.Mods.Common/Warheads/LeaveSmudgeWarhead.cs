@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Warheads
 		[Desc("Percentual chance the smudge is created.")]
 		public readonly int Chance = 100;
 
-		public override void DoImpact(Target target, WarheadArgs args)
+		public override void DoImpact(in Target target, WarheadArgs args)
 		{
 			if (target.Type == TargetType.Invalid)
 				return;

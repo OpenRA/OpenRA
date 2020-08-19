@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 		}
 
-		void INotifyAttack.Attacking(Actor self, Target target, Armament a, Barrel barrel)
+		void INotifyAttack.Attacking(Actor self, in Target target, Armament a, Barrel barrel)
 		{
 			if (IsTraitDisabled)
 				return;
@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		Player GetTargetPlayer(Target target)
+		Player GetTargetPlayer(in Target target)
 		{
 			if (target.Type == TargetType.Actor)
 				return target.Actor.Owner;
@@ -74,6 +74,6 @@ namespace OpenRA.Mods.Common.Traits
 			return null;
 		}
 
-		void INotifyAttack.PreparingAttack(Actor self, OpenRA.Traits.Target target, Armament a, Barrel barrel) { }
+		void INotifyAttack.PreparingAttack(Actor self, in Target target, Armament a, Barrel barrel) { }
 	}
 }

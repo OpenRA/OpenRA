@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 			wsb = init.Self.TraitsImplementing<WithSpriteBody>().Single(w => w.Info.Name == info.Body);
 		}
 
-		void INotifyTeslaCharging.Charging(Actor self, Target target)
+		void INotifyTeslaCharging.Charging(Actor self, in Target target)
 		{
 			wsb.PlayCustomAnimation(self, info.ChargeSequence, () => wsb.CancelCustomAnimation(self));
 		}

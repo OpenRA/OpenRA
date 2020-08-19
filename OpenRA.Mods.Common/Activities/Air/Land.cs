@@ -40,16 +40,16 @@ namespace OpenRA.Mods.Common.Activities
 			assignTargetOnFirstRun = true;
 		}
 
-		public Land(Actor self, Target target, WAngle? facing = null, Color? targetLineColor = null)
+		public Land(Actor self, in Target target, WAngle? facing = null, Color? targetLineColor = null)
 			: this(self, target, new WDist(-1), WVec.Zero, facing, targetLineColor: targetLineColor) { }
 
-		public Land(Actor self, Target target, WDist landRange, WAngle? facing = null, Color? targetLineColor = null)
+		public Land(Actor self, in Target target, WDist landRange, WAngle? facing = null, Color? targetLineColor = null)
 			: this(self, target, landRange, WVec.Zero, facing, targetLineColor: targetLineColor) { }
 
-		public Land(Actor self, Target target, WVec offset, WAngle? facing = null, Color? targetLineColor = null)
+		public Land(Actor self, in Target target, WVec offset, WAngle? facing = null, Color? targetLineColor = null)
 			: this(self, target, WDist.Zero, offset, facing, targetLineColor: targetLineColor) { }
 
-		public Land(Actor self, Target target, WDist landRange, WVec offset, WAngle? facing = null, CPos[] clearCells = null, Color? targetLineColor = null)
+		public Land(Actor self, in Target target, WDist landRange, WVec offset, WAngle? facing = null, CPos[] clearCells = null, Color? targetLineColor = null)
 		{
 			aircraft = self.Trait<Aircraft>();
 			this.target = target;

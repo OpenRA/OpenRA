@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Cnc.Activities
 		BitSet<TargetableType> lastVisibleTargetTypes;
 		Player lastVisibleOwner;
 
-		public LeapAttack(Actor self, Target target, bool allowMovement, bool forceAttack, AttackLeap attack, AttackLeapInfo info, Color? targetLineColor = null)
+		public LeapAttack(Actor self, in Target target, bool allowMovement, bool forceAttack, AttackLeap attack, AttackLeapInfo info, Color? targetLineColor = null)
 		{
 			this.target = target;
 			this.targetLineColor = targetLineColor;

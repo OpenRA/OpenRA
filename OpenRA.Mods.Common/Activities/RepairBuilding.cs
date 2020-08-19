@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Activities
 		IHealth enterHealth;
 		EngineerRepairable enterEngineerRepariable;
 
-		public RepairBuilding(Actor self, Target target, EngineerRepairInfo info)
+		public RepairBuilding(Actor self, in Target target, EngineerRepairInfo info)
 			: base(self, target, Color.Yellow)
 		{
 			this.info = info;

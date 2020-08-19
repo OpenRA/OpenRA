@@ -87,7 +87,7 @@ namespace OpenRA.Mods.Common.Warheads
 			return true;
 		}
 
-		public override void DoImpact(Target target, WarheadArgs args)
+		public override void DoImpact(in Target target, WarheadArgs args)
 		{
 			if (target.Type == TargetType.Invalid)
 				return;

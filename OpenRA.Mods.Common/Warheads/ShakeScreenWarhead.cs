@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Warheads
 		[Desc("Shake multipliers by the X and Y axis, comma-separated.")]
 		public readonly float2 Multiplier = new float2(0, 0);
 
-		public override void DoImpact(Target target, WarheadArgs args)
+		public override void DoImpact(in Target target, WarheadArgs args)
 		{
 			args.SourceActor.World.WorldActor.Trait<ScreenShaker>().AddEffect(Duration, target.CenterPosition, Intensity, Multiplier);
 		}

@@ -133,7 +133,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			}
 		}
 
-		public void Attacking(Actor self, Target target, Armament a)
+		public void Attacking(Actor self, in Target target, Armament a)
 		{
 			var info = GetDisplayInfo();
 			if (!info.AttackSequences.TryGetValue(a.Info.Name, out var sequence))
@@ -146,12 +146,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 			}
 		}
 
-		void INotifyAttack.PreparingAttack(Actor self, Target target, Armament a, Barrel barrel)
+		void INotifyAttack.PreparingAttack(Actor self, in Target target, Armament a, Barrel barrel)
 		{
 			Attacking(self, target, a);
 		}
 
-		void INotifyAttack.Attacking(Actor self, Target target, Armament a, Barrel barrel) { }
+		void INotifyAttack.Attacking(Actor self, in Target target, Armament a, Barrel barrel) { }
 
 		void ITick.Tick(Actor self)
 		{

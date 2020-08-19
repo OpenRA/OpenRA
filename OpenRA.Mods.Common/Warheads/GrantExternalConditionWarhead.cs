@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Warheads
 
 		public readonly WDist Range = WDist.FromCells(1);
 
-		public override void DoImpact(Target target, WarheadArgs args)
+		public override void DoImpact(in Target target, WarheadArgs args)
 		{
 			var firedBy = args.SourceActor;
 			var actors = target.Type == TargetType.Actor ? new[] { target.Actor } :

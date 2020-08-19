@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Activities
 			assignTargetOnFirstRun = true;
 		}
 
-		public UnloadCargo(Actor self, Target destination, WDist unloadRange, bool unloadAll = true)
+		public UnloadCargo(Actor self, in Target destination, WDist unloadRange, bool unloadAll = true)
 		{
 			this.self = self;
 			cargo = self.Trait<Cargo>();

@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Warheads
 			return base.IsValidAgainst(victim, firedBy);
 		}
 
-		public override void DoImpact(Target target, WarheadArgs args)
+		public override void DoImpact(in Target target, WarheadArgs args)
 		{
 			var firedBy = args.SourceActor;
 

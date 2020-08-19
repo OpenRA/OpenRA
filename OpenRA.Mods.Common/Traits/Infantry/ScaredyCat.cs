@@ -88,13 +88,13 @@ namespace OpenRA.Mods.Common.Traits
 				Panic();
 		}
 
-		void INotifyAttack.Attacking(Actor self, Target target, Armament a, Barrel barrel)
+		void INotifyAttack.Attacking(Actor self, in Target target, Armament a, Barrel barrel)
 		{
 			if (self.World.SharedRandom.Next(100) < info.AttackPanicChance)
 				Panic();
 		}
 
-		void INotifyAttack.PreparingAttack(Actor self, Target target, Armament a, Barrel barrel) { }
+		void INotifyAttack.PreparingAttack(Actor self, in Target target, Armament a, Barrel barrel) { }
 
 		int ISpeedModifier.GetSpeedModifier()
 		{

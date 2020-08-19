@@ -89,7 +89,7 @@ namespace OpenRA.Mods.Common.Traits
 			OnRemovedFromWorld(self);
 		}
 
-		public override Activity GetAttackActivity(Actor self, AttackSource source, Target newTarget, bool allowMove, bool forceAttack, Color? targetLineColor)
+		public override Activity GetAttackActivity(Actor self, AttackSource source, in Target newTarget, bool allowMove, bool forceAttack, Color? targetLineColor)
 		{
 			throw new NotImplementedException("AttackBomber requires a scripted target");
 		}

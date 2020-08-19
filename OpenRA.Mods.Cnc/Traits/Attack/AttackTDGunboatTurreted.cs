@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public AttackTDGunboatTurreted(Actor self, AttackTDGunboatTurretedInfo info)
 			: base(self, info) { }
 
-		public override Activity GetAttackActivity(Actor self, AttackSource source, Target newTarget, bool allowMove, bool forceAttack, Color? targetLineColor)
+		public override Activity GetAttackActivity(Actor self, AttackSource source, in Target newTarget, bool allowMove, bool forceAttack, Color? targetLineColor)
 		{
 			return new AttackTDGunboatTurretedActivity(self, newTarget, allowMove, forceAttack, targetLineColor);
 		}
@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			readonly Color? targetLineColor;
 			bool hasTicked;
 
-			public AttackTDGunboatTurretedActivity(Actor self, Target target, bool allowMove, bool forceAttack, Color? targetLineColor = null)
+			public AttackTDGunboatTurretedActivity(Actor self, in Target target, bool allowMove, bool forceAttack, Color? targetLineColor = null)
 			{
 				attack = self.Trait<AttackTDGunboatTurreted>();
 				this.target = target;

@@ -312,7 +312,7 @@ namespace OpenRA.Mods.Common.Traits
 				Attack(self, target, allowMove);
 		}
 
-		void Attack(Actor self, Target target, bool allowMove)
+		void Attack(Actor self, in Target target, bool allowMove)
 		{
 			foreach (var ab in ActiveAttackBases)
 				ab.AttackTarget(target, AttackSource.AutoTarget, false, allowMove);
