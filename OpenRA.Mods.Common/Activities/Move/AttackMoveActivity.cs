@@ -21,8 +21,9 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		readonly Func<Activity> getInner;
 		readonly bool isAssaultMove;
-		AutoTarget autoTarget;
-		AttackMove attackMove;
+		readonly AutoTarget autoTarget;
+		readonly AttackMove attackMove;
+
 		int token = Actor.InvalidConditionToken;
 
 		public AttackMoveActivity(Actor self, Func<Activity> getInner, bool assaultMoving = false)
