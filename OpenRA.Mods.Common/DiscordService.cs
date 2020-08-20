@@ -36,16 +36,19 @@ namespace OpenRA.Mods.Common
 		DiscordState currentState;
 
 		static DiscordService instance;
-		static DiscordService GetService()
+		static DiscordService Service
 		{
-			if (instance != null)
+			get
+			{
+				if (instance != null)
+					return instance;
+
+				if (!Game.ModData.Manifest.Contains<DiscordService>())
+					return null;
+
+				instance = Game.ModData.Manifest.Get<DiscordService>();
 				return instance;
-
-			if (!Game.ModData.Manifest.Contains<DiscordService>())
-				return null;
-
-			instance = Game.ModData.Manifest.Get<DiscordService>();
-			return instance;
+			}
 		}
 
 		public DiscordService(MiniYaml yaml)
@@ -178,12 +181,12 @@ namespace OpenRA.Mods.Common
 
 		public static void UpdateStatus(DiscordState state, string details = null, string secret = null, int? players = null, int? slots = null)
 		{
-			GetService()?.SetStatus(state, details, secret, players, slots);
+			Service?.SetStatus(state, details, secret, players, slots);
 		}
 
 		public static void SetPlayers(int players, int slots)
 		{
-			GetService()?.client.UpdateParty(new Party
+			Service?.client.UpdateParty(new Party
 			{
 				ID = Secrets.CreateFriendlySecret(new Random()),
 				Size = players,
@@ -193,12 +196,12 @@ namespace OpenRA.Mods.Common
 
 		public static void UpdatePlayers(int players, int slots)
 		{
-			GetService()?.client.UpdatePartySize(players, slots);
+			Service?.client.UpdatePartySize(players, slots);
 		}
 
 		public static void UpdateDetails(string details)
 		{
-			GetService()?.client.UpdateDetails(details);
+			Service?.client.UpdateDetails(details);
 		}
 	}
 }
