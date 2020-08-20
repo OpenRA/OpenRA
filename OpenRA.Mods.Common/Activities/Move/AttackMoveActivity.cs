@@ -24,7 +24,9 @@ namespace OpenRA.Mods.Common.Activities
 		readonly AutoTarget autoTarget;
 		readonly AttackMove attackMove;
 
+		bool runningInnerActivity = false;
 		int token = Actor.InvalidConditionToken;
+		Target target = Target.Invalid;
 
 		public AttackMoveActivity(Actor self, Func<Activity> getInner, bool assaultMoving = false)
 		{
@@ -37,9 +39,6 @@ namespace OpenRA.Mods.Common.Activities
 
 		protected override void OnFirstRun(Actor self)
 		{
-			// Start moving.
-			QueueChild(getInner());
-
 			if (attackMove == null)
 				return;
 
@@ -51,27 +50,35 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override bool Tick(Actor self)
 		{
-			// We are not currently attacking a target, so scan for new targets.
-			if (!IsCanceling && ChildActivity != null && ChildActivity.NextActivity == null && autoTarget != null)
+			if (IsCanceling)
+				return TickChild(self);
+
+			// We are currently not attacking, so scan for new targets.
+			if (autoTarget != null && (ChildActivity == null || runningInnerActivity))
 			{
 				// ScanForTarget already limits the scanning rate for performance so we don't need to do that here.
-				var target = autoTarget.ScanForTarget(self, false, true);
+				target = autoTarget.ScanForTarget(self, false, true);
+
+				// Cancel the current inner activity and queue attack activities if we find a new target.
 				if (target.Type != TargetType.Invalid)
 				{
-					// We have found a target so cancel the current move activity and queue attack activities.
-					ChildActivity.Cancel(self);
-					var attackBases = autoTarget.ActiveAttackBases;
-					foreach (var ab in attackBases)
-						QueueChild(ab.GetAttackActivity(self, AttackSource.AttackMove, target, false, false));
+					runningInnerActivity = false;
+					ChildActivity?.Cancel(self);
 
-					// Make sure to continue moving when the attack activities have finished.
+					foreach (var ab in autoTarget.ActiveAttackBases)
+						QueueChild(ab.GetAttackActivity(self, AttackSource.AttackMove, target, false, false));
+				}
+
+				// Continue with the inner activity (or queue a new one) when there are no targets.
+				if (ChildActivity == null)
+				{
+					runningInnerActivity = true;
 					QueueChild(getInner());
 				}
 			}
 
-			// The last queued childactivity is guaranteed to be the inner move, so if the childactivity
-			// queue is empty it means we have reached our destination and there are no more enemies on our path.
-			return TickChild(self);
+			// If the inner activity finished, we have reached our destination and there are no more enemies on our path.
+			return TickChild(self) && runningInnerActivity;
 		}
 
 		protected override void OnLastRun(Actor self)
