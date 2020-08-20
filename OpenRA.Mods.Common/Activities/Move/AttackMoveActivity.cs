@@ -56,8 +56,9 @@ namespace OpenRA.Mods.Common.Activities
 			// We are currently not attacking, so scan for new targets.
 			if (autoTarget != null && (ChildActivity == null || runningInnerActivity))
 			{
-				// ScanForTarget already limits the scanning rate for performance so we don't need to do that here.
-				target = autoTarget.ScanForTarget(self, false, true);
+				// Use the standard ScanForTarget rate limit while we are running the inner move activity to save performance.
+				// Override the rate limit if our attack activity has completed so we can immediately acquire a new target instead of moving.
+				target = autoTarget.ScanForTarget(self, false, true, !runningInnerActivity);
 
 				// Cancel the current inner activity and queue attack activities if we find a new target.
 				if (target.Type != TargetType.Invalid)
