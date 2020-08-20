@@ -37,7 +37,7 @@ Check our [Playing the Game](https://github.com/OpenRA/OpenRA/wiki/Playing-the-g
 
 * Download a copy of the [OpenRA Mod SDK](https://github.com/OpenRA/OpenRAModSDK/) to start your own mod.
 * Check the [Modding Guide](http://wiki.openra.net/Modding-Guide) to create your own classic RTS.
-* There exists an auto-generated [Trait documentation](http://wiki.openra.net/Traits) to get started with yaml files.
+* There exists an auto-generated [Trait documentation](https://docs.openra.net/en/latest/release/traits/) to get started with yaml files.
 * Some hints on how to create new OpenRA compatible [Pixelart](http://wiki.openra.net/Pixelart).
 * Upload total conversions at [our ModDB profile](http://www.moddb.com/games/openra/mods).
 
