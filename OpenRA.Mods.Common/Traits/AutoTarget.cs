@@ -279,15 +279,16 @@ namespace OpenRA.Mods.Common.Traits
 				--nextScanTime;
 		}
 
-		public Target ScanForTarget(Actor self, bool allowMove, bool allowTurn)
+		public Target ScanForTarget(Actor self, bool allowMove, bool allowTurn, bool ignoreScanInterval = false)
 		{
-			if (nextScanTime <= 0 && ActiveAttackBases.Any())
+			if ((ignoreScanInterval || nextScanTime <= 0) && ActiveAttackBases.Any())
 			{
 				foreach (var dat in disableAutoTarget)
 					if (dat.DisableAutoTarget(self))
 						return Target.Invalid;
 
-				nextScanTime = self.World.SharedRandom.Next(Info.MinimumScanTimeInterval, Info.MaximumScanTimeInterval);
+				if (!ignoreScanInterval)
+					nextScanTime = self.World.SharedRandom.Next(Info.MinimumScanTimeInterval, Info.MaximumScanTimeInterval);
 
 				foreach (var ab in ActiveAttackBases)
 				{
