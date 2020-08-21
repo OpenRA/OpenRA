@@ -14,7 +14,7 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Graphics
 {
-	public struct SpriteRenderable : IRenderable, ITintableRenderable, IFinalizedRenderable
+	public struct SpriteRenderable : IPalettedRenderable, ITintableRenderable, IFinalizedRenderable
 	{
 		public static readonly IEnumerable<IRenderable> None = new IRenderable[0];
 
@@ -53,7 +53,7 @@ namespace OpenRA.Graphics
 		public int ZOffset { get { return zOffset; } }
 		public bool IsDecoration { get { return isDecoration; } }
 
-		public IRenderable WithPalette(PaletteReference newPalette) { return new SpriteRenderable(sprite, pos, offset, zOffset, newPalette, scale, tint, isDecoration, ignoreWorldTint); }
+		public IPalettedRenderable WithPalette(PaletteReference newPalette) { return new SpriteRenderable(sprite, pos, offset, zOffset, newPalette, scale, tint, isDecoration, ignoreWorldTint); }
 		public IRenderable WithZOffset(int newOffset) { return new SpriteRenderable(sprite, pos, offset, newOffset, palette, scale, tint, isDecoration, ignoreWorldTint); }
 		public IRenderable OffsetBy(WVec vec) { return new SpriteRenderable(sprite, pos + vec, offset, zOffset, palette, scale, tint, isDecoration, ignoreWorldTint); }
 		public IRenderable AsDecoration() { return new SpriteRenderable(sprite, pos, offset, zOffset, palette, scale, tint, true, ignoreWorldTint); }

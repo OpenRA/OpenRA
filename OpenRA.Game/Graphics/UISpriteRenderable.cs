@@ -13,7 +13,7 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Graphics
 {
-	public struct UISpriteRenderable : IRenderable, IFinalizedRenderable
+	public struct UISpriteRenderable : IRenderable, IPalettedRenderable, IFinalizedRenderable
 	{
 		readonly Sprite sprite;
 		readonly WPos effectiveWorldPos;
@@ -40,7 +40,7 @@ namespace OpenRA.Graphics
 		public PaletteReference Palette { get { return palette; } }
 		public int ZOffset { get { return zOffset; } }
 
-		public IRenderable WithPalette(PaletteReference newPalette) { return new UISpriteRenderable(sprite, effectiveWorldPos, screenPos, zOffset, newPalette, scale); }
+		public IPalettedRenderable WithPalette(PaletteReference newPalette) { return new UISpriteRenderable(sprite, effectiveWorldPos, screenPos, zOffset, newPalette, scale); }
 		public IRenderable WithZOffset(int newOffset) { return this; }
 		public IRenderable OffsetBy(WVec vec) { return this; }
 		public IRenderable AsDecoration() { return this; }

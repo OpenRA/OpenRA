@@ -17,7 +17,7 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.Graphics
 {
-	public struct ModelRenderable : IRenderable, ITintableRenderable
+	public struct ModelRenderable : IPalettedRenderable, ITintableRenderable
 	{
 		readonly IEnumerable<ModelAnimation> models;
 		readonly WPos pos;
@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Common.Graphics
 		public int ZOffset { get { return zOffset; } }
 		public bool IsDecoration { get { return false; } }
 
-		public IRenderable WithPalette(PaletteReference newPalette)
+		public IPalettedRenderable WithPalette(PaletteReference newPalette)
 		{
 			return new ModelRenderable(
 				models, pos, zOffset, camera, scale,

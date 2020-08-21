@@ -40,11 +40,9 @@ namespace OpenRA.Mods.Common.Graphics
 		}
 
 		public WPos Pos { get { return start; } }
-		public PaletteReference Palette { get { return null; } }
 		public int ZOffset { get { return 0; } }
 		public bool IsDecoration { get { return true; } }
 
-		public IRenderable WithPalette(PaletteReference newPalette) { return new LineAnnotationRenderable(start, end, width, startColor, endColor); }
 		public IRenderable WithZOffset(int newOffset) { return new LineAnnotationRenderable(start, end, width, startColor, endColor); }
 		public IRenderable OffsetBy(WVec vec) { return new LineAnnotationRenderable(start + vec, end + vec, width, startColor, endColor); }
 		public IRenderable AsDecoration() { return this; }

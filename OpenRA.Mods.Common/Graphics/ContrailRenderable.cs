@@ -46,11 +46,9 @@ namespace OpenRA.Mods.Common.Graphics
 		}
 
 		public WPos Pos { get { return trail[Index(next - 1)]; } }
-		public PaletteReference Palette { get { return null; } }
 		public int ZOffset { get { return zOffset; } }
 		public bool IsDecoration { get { return true; } }
 
-		public IRenderable WithPalette(PaletteReference newPalette) { return new ContrailRenderable(world, (WPos[])trail.Clone(), width, next, length, skip, color, zOffset); }
 		public IRenderable WithZOffset(int newOffset) { return new ContrailRenderable(world, (WPos[])trail.Clone(), width, next, length, skip, color, newOffset); }
 		public IRenderable OffsetBy(WVec vec) { return new ContrailRenderable(world, trail.Select(pos => pos + vec).ToArray(), width, next, length, skip, color, zOffset); }
 		public IRenderable AsDecoration() { return this; }

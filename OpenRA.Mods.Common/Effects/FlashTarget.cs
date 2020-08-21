@@ -51,8 +51,8 @@ namespace OpenRA.Mods.Common.Effects
 			{
 				var palette = wr.Palette(player == null ? "highlight" : "highlight" + player.InternalName);
 				return target.Render(wr)
-					.Where(r => !r.IsDecoration)
-					.Select(r => r.WithPalette(palette));
+					.Where(r => !r.IsDecoration && r is IPalettedRenderable)
+					.Select(r => ((IPalettedRenderable)r).WithPalette(palette));
 			}
 
 			return SpriteRenderable.None;

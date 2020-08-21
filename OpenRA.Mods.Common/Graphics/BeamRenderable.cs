@@ -35,11 +35,9 @@ namespace OpenRA.Mods.Common.Graphics
 		}
 
 		public WPos Pos { get { return pos; } }
-		public PaletteReference Palette { get { return null; } }
 		public int ZOffset { get { return zOffset; } }
 		public bool IsDecoration { get { return true; } }
 
-		public IRenderable WithPalette(PaletteReference newPalette) { return new BeamRenderable(pos, zOffset, length, shape, width, color); }
 		public IRenderable WithZOffset(int newOffset) { return new BeamRenderable(pos, zOffset, length, shape, width, color); }
 		public IRenderable OffsetBy(WVec vec) { return new BeamRenderable(pos + vec, zOffset, length, shape, width, color); }
 		public IRenderable AsDecoration() { return this; }

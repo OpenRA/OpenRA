@@ -31,11 +31,9 @@ namespace OpenRA.Mods.Common.Graphics
 		}
 
 		public WPos Pos { get { return effectivePos; } }
-		public PaletteReference Palette { get { return null; } }
 		public int ZOffset { get { return 0; } }
 		public bool IsDecoration { get { return true; } }
 
-		public IRenderable WithPalette(PaletteReference newPalette) { return new PolygonAnnotationRenderable(vertices, effectivePos, width, color); }
 		public IRenderable WithZOffset(int newOffset) { return new PolygonAnnotationRenderable(vertices, effectivePos, width, color); }
 		public IRenderable OffsetBy(WVec vec) { return new PolygonAnnotationRenderable(vertices.Select(v => v + vec).ToArray(), effectivePos + vec, width, color); }
 		public IRenderable AsDecoration() { return this; }

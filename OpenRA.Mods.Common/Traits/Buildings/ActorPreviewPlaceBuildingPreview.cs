@@ -89,7 +89,7 @@ namespace OpenRA.Mods.Common.Traits
 				.SelectMany(p => p.Render(wr, centerPosition));
 
 			if (palette != null)
-				previewRenderables = previewRenderables.Select(a => a.IsDecoration ? a : a.WithPalette(palette));
+				previewRenderables = previewRenderables.Select(a => !a.IsDecoration && a is IPalettedRenderable ? ((IPalettedRenderable)a).WithPalette(palette) : a);
 
 			if (info.FootprintUnderPreview != PlaceBuildingCellType.None)
 				foreach (var r in RenderFootprint(wr, topLeft, footprint, info.FootprintUnderPreview))
