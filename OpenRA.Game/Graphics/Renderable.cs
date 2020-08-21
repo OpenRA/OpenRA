@@ -16,16 +16,20 @@ namespace OpenRA.Graphics
 	public interface IRenderable
 	{
 		WPos Pos { get; }
-		PaletteReference Palette { get; }
 		int ZOffset { get; }
 		bool IsDecoration { get; }
 
-		IRenderable WithPalette(PaletteReference newPalette);
 		IRenderable WithZOffset(int newOffset);
 		IRenderable OffsetBy(WVec offset);
 		IRenderable AsDecoration();
 
 		IFinalizedRenderable PrepareRender(WorldRenderer wr);
+	}
+
+	public interface IPalettedRenderable : IRenderable
+	{
+		PaletteReference Palette { get; }
+		IPalettedRenderable WithPalette(PaletteReference newPalette);
 	}
 
 	public interface ITintableRenderable

@@ -32,11 +32,9 @@ namespace OpenRA.Mods.Common.Graphics
 
 		public WPos Pos { get { return pos; } }
 
-		public PaletteReference Palette { get { return null; } }
 		public int ZOffset { get { return 0; } }
 		public bool IsDecoration { get { return true; } }
 
-		public IRenderable WithPalette(PaletteReference newPalette) { return this; }
 		public IRenderable WithZOffset(int newOffset) { return this; }
 		public IRenderable OffsetBy(WVec vec) { return new SelectionBoxAnnotationRenderable(pos + vec, decorationBounds, color); }
 		public IRenderable AsDecoration() { return this; }

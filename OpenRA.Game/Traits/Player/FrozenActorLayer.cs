@@ -188,8 +188,8 @@ namespace OpenRA.Traits
 			if (flashTicks > 0 && flashTicks % 2 == 0)
 			{
 				var highlight = wr.Palette("highlight");
-				return Renderables.Concat(Renderables.Where(r => !r.IsDecoration)
-					.Select(r => r.WithPalette(highlight)));
+				return Renderables.Concat(Renderables.Where(r => !r.IsDecoration && r is IPalettedRenderable)
+					.Select(r => ((IPalettedRenderable)r).WithPalette(highlight)));
 			}
 
 			return Renderables;

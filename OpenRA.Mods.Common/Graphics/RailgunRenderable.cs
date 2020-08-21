@@ -41,11 +41,9 @@ namespace OpenRA.Mods.Common.Graphics
 		}
 
 		public WPos Pos { get { return pos; } }
-		public PaletteReference Palette { get { return null; } }
 		public int ZOffset { get { return zOffset; } }
 		public bool IsDecoration { get { return true; } }
 
-		public IRenderable WithPalette(PaletteReference newPalette) { return new RailgunHelixRenderable(pos, zOffset, railgun, info, ticks); }
 		public IRenderable WithZOffset(int newOffset) { return new RailgunHelixRenderable(pos, newOffset, railgun, info, ticks); }
 		public IRenderable OffsetBy(WVec vec) { return new RailgunHelixRenderable(pos + vec, zOffset, railgun, info, ticks); }
 		public IRenderable AsDecoration() { return this; }

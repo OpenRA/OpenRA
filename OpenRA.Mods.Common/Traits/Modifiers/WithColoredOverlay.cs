@@ -45,8 +45,8 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				yield return a;
 
-				if (!a.IsDecoration)
-					yield return a.WithPalette(wr.Palette(Info.Palette))
+				if (!a.IsDecoration && a is IPalettedRenderable)
+					yield return ((IPalettedRenderable)a).WithPalette(wr.Palette(Info.Palette))
 						.WithZOffset(a.ZOffset + 1)
 						.AsDecoration();
 			}

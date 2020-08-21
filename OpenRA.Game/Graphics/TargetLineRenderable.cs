@@ -31,11 +31,9 @@ namespace OpenRA.Graphics
 		}
 
 		public WPos Pos { get { return waypoints.First(); } }
-		public PaletteReference Palette { get { return null; } }
 		public int ZOffset { get { return 0; } }
 		public bool IsDecoration { get { return true; } }
 
-		public IRenderable WithPalette(PaletteReference newPalette) { return new TargetLineRenderable(waypoints, color); }
 		public IRenderable WithZOffset(int newOffset) { return new TargetLineRenderable(waypoints, color); }
 		public IRenderable OffsetBy(WVec vec) { return new TargetLineRenderable(waypoints.Select(w => w + vec), color); }
 		public IRenderable AsDecoration() { return this; }

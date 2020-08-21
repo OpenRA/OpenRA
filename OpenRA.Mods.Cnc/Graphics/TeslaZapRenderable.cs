@@ -17,7 +17,7 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Cnc.Graphics
 {
-	struct TeslaZapRenderable : IRenderable, IFinalizedRenderable
+	struct TeslaZapRenderable : IPalettedRenderable, IFinalizedRenderable
 	{
 		static int[][] steps = new[]
 		{
@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Cnc.Graphics
 		public int ZOffset { get { return zOffset; } }
 		public bool IsDecoration { get { return true; } }
 
-		public IRenderable WithPalette(PaletteReference newPalette)
+		public IPalettedRenderable WithPalette(PaletteReference newPalette)
 		{
 			return new TeslaZapRenderable(pos, zOffset, length, image, brightSequence, brightZaps, dimSequence, dimZaps, palette);
 		}
