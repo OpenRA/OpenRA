@@ -184,16 +184,6 @@ namespace OpenRA.Mods.Common
 			Service?.SetStatus(state, details, secret, players, slots);
 		}
 
-		public static void SetPlayers(int players, int slots)
-		{
-			Service?.client.UpdateParty(new Party
-			{
-				ID = Secrets.CreateFriendlySecret(new Random()),
-				Size = players,
-				Max = slots
-			});
-		}
-
 		public static void UpdatePlayers(int players, int slots)
 		{
 			Service?.client.UpdatePartySize(players, slots);
