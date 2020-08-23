@@ -23,8 +23,8 @@ namespace OpenRA.Graphics
 		readonly SheetBuilder builder;
 		readonly Func<string, float> lineWidth;
 		readonly IFont font;
-		readonly Cache<(char C, Color Color), GlyphInfo> glyphs;
-		readonly Cache<(char, Color, int), Sprite> contrastGlyphs;
+		readonly Cache<char, GlyphInfo> glyphs;
+		readonly Cache<(char C, int Radius), Sprite> contrastGlyphs;
 		readonly Cache<int, float[]> dilationElements;
 
 		float deviceScale;
@@ -39,17 +39,20 @@ namespace OpenRA.Graphics
 			this.builder = builder;
 
 			font = Game.Renderer.CreateFont(data);
-
-			glyphs = new Cache<(char, Color), GlyphInfo>(CreateGlyph);
-			contrastGlyphs = new Cache<(char, Color, int), Sprite>(CreateContrastGlyph);
+			glyphs = new Cache<char, GlyphInfo>(CreateGlyph);
+			contrastGlyphs = new Cache<(char, int), Sprite>(CreateContrastGlyph);
 			dilationElements = new Cache<int, float[]>(CreateCircularWeightMap);
 
 			// PERF: Cache these delegates for Measure calls.
-			Func<char, float> characterWidth = character => glyphs[(character, Color.White)].Advance;
+			Func<char, float> characterWidth = character => glyphs[character].Advance;
 			lineWidth = line => line.Sum(characterWidth) / deviceScale;
 
+			// Pre-cache small font sizes so glyphs are immediately available when we need them
 			if (size <= 24)
-				PrecacheColor(Color.White, name);
+				using (new PerfTimer("Precache {0} {1}px".F(name, size)))
+					for (var n = (char)0x20; n < (char)0x7f; n++)
+						if (glyphs[n] == null)
+							throw new InvalidOperationException();
 
 			TopOffset = size - ascender;
 		}
@@ -61,14 +64,6 @@ namespace OpenRA.Graphics
 			contrastGlyphs.Clear();
 		}
 
-		void PrecacheColor(Color c, string name)
-		{
-			using (new PerfTimer("PrecacheColor {0} {1}px {2}".F(name, size, c)))
-				for (var n = (char)0x20; n < (char)0x7f; n++)
-					if (glyphs[(n, c)] == null)
-						throw new InvalidOperationException();
-		}
-
 		void DrawTextContrast(string text, float2 location, Color contrastColor, int contrastOffset)
 		{
 			// Offset from the baseline position to the top-left of the glyph for rendering
@@ -78,6 +73,7 @@ namespace OpenRA.Graphics
 			var screenContrast = (int)(contrastOffset * deviceScale);
 			var screen = new int2((int)(location.X * deviceScale + 0.5f), (int)(location.Y * deviceScale + 0.5f));
 			var contrastVector = new float2(screenContrast, screenContrast);
+			var tint = new float3(contrastColor.R / 255f, contrastColor.G / 255f, contrastColor.B / 255f);
 			foreach (var s in text)
 			{
 				if (s == '\n')
@@ -87,15 +83,16 @@ namespace OpenRA.Graphics
 					continue;
 				}
 
-				var g = glyphs[(s, Color.Black)];
+				var g = glyphs[s];
 
 				// Convert screen coordinates back to UI coordinates for drawing
 				if (g.Sprite != null)
 				{
-					var contrastSprite = contrastGlyphs[(s, contrastColor, screenContrast)];
-					Game.Renderer.RgbaSpriteRenderer.DrawSprite(contrastSprite,
+					var contrastSprite = contrastGlyphs[(s, screenContrast)];
+					Game.Renderer.RgbaSpriteRenderer.DrawSpriteWithTint(contrastSprite,
 						(screen + g.Offset - contrastVector) / deviceScale,
-						contrastSprite.Size / deviceScale);
+						contrastSprite.Size / deviceScale,
+						tint);
 				}
 
 				screen += new int2((int)(g.Advance + 0.5f), 0);
@@ -109,6 +106,7 @@ namespace OpenRA.Graphics
 
 			// Calculate positions in screen pixel coordinates
 			var screen = new int2((int)(location.X * deviceScale + 0.5f), (int)(location.Y * deviceScale + 0.5f));
+			var tint = new float3(c.R / 255f, c.G / 255f, c.B / 255f);
 			foreach (var s in text)
 			{
 				if (s == '\n')
@@ -118,13 +116,14 @@ namespace OpenRA.Graphics
 					continue;
 				}
 
-				var g = glyphs[(s, c)];
+				var g = glyphs[s];
 
 				// Convert screen coordinates back to UI coordinates for drawing
 				if (g.Sprite != null)
-					Game.Renderer.RgbaSpriteRenderer.DrawSprite(g.Sprite,
+					Game.Renderer.RgbaSpriteRenderer.DrawSpriteWithTint(g.Sprite,
 					(screen + g.Offset).ToFloat2() / deviceScale,
-					g.Sprite.Size / deviceScale);
+					g.Sprite.Size / deviceScale,
+					tint);
 
 				screen += new int2((int)(g.Advance + 0.5f), 0);
 			}
@@ -144,6 +143,7 @@ namespace OpenRA.Graphics
 			var offset = new float2(0, size);
 			var cosa = (float)Math.Cos(-angle);
 			var sina = (float)Math.Sin(-angle);
+			var tint = new float3(c.R / 255f, c.G / 255f, c.B / 255f);
 
 			var p = offset;
 			foreach (var s in text)
@@ -155,7 +155,7 @@ namespace OpenRA.Graphics
 					continue;
 				}
 
-				var g = glyphs[(s, c)];
+				var g = glyphs[s];
 				if (g.Sprite != null)
 				{
 					var tl = new float2(
@@ -172,11 +172,12 @@ namespace OpenRA.Graphics
 
 					// Offset rotated glyph to align the top-left corner with the screen pixel grid
 					var screenOffset = new float2((int)(ra.X * deviceScale + 0.5f), (int)(ra.Y * deviceScale + 0.5f)) / deviceScale - ra;
-					Game.Renderer.RgbaSpriteRenderer.DrawSprite(g.Sprite,
+					Game.Renderer.RgbaSpriteRenderer.DrawSpriteWithTint(g.Sprite,
 						ra + screenOffset,
 						rb + screenOffset,
 						rc + screenOffset,
-						rd + screenOffset);
+						rd + screenOffset,
+						tint);
 				}
 
 				p += new float2(g.Advance / deviceScale, 0);
@@ -241,10 +242,9 @@ namespace OpenRA.Graphics
 			return new int2((int)Math.Ceiling(lines.Max(lineWidth)), lines.Length * size);
 		}
 
-		GlyphInfo CreateGlyph((char C, Color Color) c)
+		GlyphInfo CreateGlyph(char c)
 		{
-			var glyph = font.CreateGlyph(c.C, size, deviceScale);
-
+			var glyph = font.CreateGlyph(c, size, deviceScale);
 			if (glyph.Data == null)
 			{
 				return new GlyphInfo
@@ -274,12 +274,10 @@ namespace OpenRA.Graphics
 					if (p != 0)
 					{
 						var q = destStride * (j + s.Bounds.Top) + 4 * (i + s.Bounds.Left);
-						var pmc = Util.PremultiplyAlpha(Color.FromArgb(p, c.Color));
-
-						dest[q] = pmc.B;
-						dest[q + 1] = pmc.G;
-						dest[q + 2] = pmc.R;
-						dest[q + 3] = pmc.A;
+						dest[q] = p;
+						dest[q + 1] = p;
+						dest[q + 2] = p;
+						dest[q + 3] = p;
 					}
 				}
 			}
@@ -347,16 +345,12 @@ namespace OpenRA.Graphics
 			return elem;
 		}
 
-		Sprite CreateContrastGlyph((char, Color, int) c)
+		Sprite CreateContrastGlyph((char C, int Radius) c)
 		{
-			// Source glyph color doesn't matter, so use black
-			var glyph = glyphs[(c.Item1, Color.Black)];
-			var color = c.Item2;
-			var r = c.Item3;
+			var glyph = glyphs[c.C];
+			var r = c.Radius;
 
-			var size = new Size(glyph.Sprite.Bounds.Width + 2 * r, glyph.Sprite.Bounds.Height + 2 * r);
-
-			var s = builder.Allocate(size);
+			var s = builder.Allocate(new Size(glyph.Sprite.Bounds.Width + 2 * r, glyph.Sprite.Bounds.Height + 2 * r));
 			var dest = s.Sheet.GetData();
 			var destStride = s.Sheet.Size.Width * 4;
 
@@ -398,11 +392,10 @@ namespace OpenRA.Graphics
 					if (alpha > 0)
 					{
 						var q = destStride * (j + s.Bounds.Top) + 4 * (i + s.Bounds.Left);
-						var pmc = Util.PremultiplyAlpha(Color.FromArgb(alpha, color));
-						dest[q] = pmc.B;
-						dest[q + 1] = pmc.G;
-						dest[q + 2] = pmc.R;
-						dest[q + 3] = pmc.A;
+						dest[q] = alpha;
+						dest[q + 1] = alpha;
+						dest[q + 2] = alpha;
+						dest[q + 3] = alpha;
 					}
 				}
 			}
