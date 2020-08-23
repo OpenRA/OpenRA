@@ -784,6 +784,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				if (!skirmishMode)
 					DiscordService.UpdatePlayers(numberOfPlayers, slots);
+
 				DiscordService.UpdateDetails(mapTitle);
 			}
 		}
