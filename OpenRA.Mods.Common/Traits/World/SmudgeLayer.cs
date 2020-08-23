@@ -36,6 +36,10 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Chance of smoke rising from the ground")]
 		public readonly int SmokeChance = 0;
 
+		[Desc("By how much (in each direction) can the smoke appearance offset stray from the center of the cell?",
+			"Note: Limit this to half a cell for square and 1/3 a cell for isometric cells to avoid straying into neighbour cells.")]
+		public readonly WDist MaxSmokeOffsetDistance = WDist.Zero;
+
 		[Desc("Smoke sprite image name")]
 		public readonly string SmokeImage = null;
 
@@ -150,8 +154,14 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			if (hasSmoke && Game.CosmeticRandom.Next(0, 100) <= Info.SmokeChance)
+			{
+				var maxOffsetDistance = Info.MaxSmokeOffsetDistance.Length;
+				var x = world.SharedRandom.Next(-maxOffsetDistance, maxOffsetDistance);
+				var y = world.SharedRandom.Next(-maxOffsetDistance, maxOffsetDistance);
+				var offset = new WVec(x, y, 0);
 				world.AddFrameEndTask(w => w.Add(new SpriteEffect(
-					w.Map.CenterOfCell(loc), w, Info.SmokeImage, Info.SmokeSequences.Random(w.SharedRandom), Info.SmokePalette)));
+					w.Map.CenterOfCell(loc) + offset, w, Info.SmokeImage, Info.SmokeSequences.Random(w.SharedRandom), Info.SmokePalette)));
+			}
 
 			// A null Sequence indicates a deleted smudge.
 			if ((!dirty.ContainsKey(loc) || dirty[loc].Sequence == null) && !tiles.ContainsKey(loc))
