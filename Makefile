@@ -103,6 +103,7 @@ check-scripts:
 	@echo "Checking for Lua syntax errors..."
 	@luac -p $(shell find mods/*/maps/* -iname '*.lua')
 	@luac -p $(shell find lua/* -iname '*.lua')
+	@luac -p $(shell find mods/*/bits/scripts/* -iname '*.lua')
 
 check:
 	@echo

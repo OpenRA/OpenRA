@@ -149,6 +149,10 @@ function Check-Scripts-Command
 		{
 			luac -p $script
 		}
+		foreach ($script in ls "mods/*/bits/scripts/*.lua")
+		{
+			luac -p $script
+		}
 		Write-Host "Check completed!" -ForegroundColor Green
 	}
 	else
