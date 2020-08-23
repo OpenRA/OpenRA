@@ -117,7 +117,7 @@ namespace OpenRA.Mods.Common.Traits
 				throw new InvalidDataException("Smudges specify different blend modes. "
 					+ "Try using different smudge types for smudges that use different blend modes.");
 
-			render = new TerrainSpriteLayer(w, wr, sheet, blendMode, wr.Palette(Info.Palette), wr.World.Type != WorldType.Editor);
+			render = new TerrainSpriteLayer(w, wr, sheet, blendMode, wr.Palette(Info.Palette), w.Type != WorldType.Editor);
 
 			// Add map smudges
 			foreach (var kv in Info.InitialSmudges)
@@ -184,7 +184,7 @@ namespace OpenRA.Mods.Common.Traits
 			var remove = new List<CPos>();
 			foreach (var kv in dirty)
 			{
-				if (!self.World.FogObscures(kv.Key))
+				if (!world.FogObscures(kv.Key))
 				{
 					// A null Sequence
 					if (kv.Value.Sequence == null)
