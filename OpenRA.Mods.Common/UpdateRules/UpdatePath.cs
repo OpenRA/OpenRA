@@ -74,6 +74,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new ReplaceBurns(),
 				new RemoveMuzzleSplitFacings(),
 				new RemoveTurnToDock(),
+				new RenameSmudgeSmokeFields(),
 			})
 		};
 

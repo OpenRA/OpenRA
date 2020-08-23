@@ -32,13 +32,15 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Sprite sequence name")]
 		public readonly string Sequence = "scorch";
 
-		public readonly int SmokePercentage = 25;
+		[Desc("Chance of smoke rising from the ground")]
+		public readonly int SmokeChance = 0;
 
-		[Desc("Sprite sequence name")]
-		public readonly string SmokeType = "smoke_m";
+		[Desc("Smoke sprite image name")]
+		public readonly string SmokeImage = null;
 
-		[SequenceReference(nameof(SmokeType))]
-		public readonly string SmokeSequence = "idle";
+		[SequenceReference(nameof(SmokeImage))]
+		[Desc("Smoke sprite sequences randomly chosen from")]
+		public readonly string[] SmokeSequences = { };
 
 		[PaletteReference]
 		public readonly string SmokePalette = "effect";
@@ -89,6 +91,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Dictionary<CPos, Smudge> dirty = new Dictionary<CPos, Smudge>();
 		readonly Dictionary<string, ISpriteSequence> smudges = new Dictionary<string, ISpriteSequence>();
 		readonly World world;
+		readonly bool hasSmoke;
 
 		TerrainSpriteLayer render;
 		bool disposed;
@@ -97,6 +100,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			Info = info;
 			world = self.World;
+			hasSmoke = !string.IsNullOrEmpty(info.SmokeImage) && info.SmokeSequences.Any();
 
 			var sequenceProvider = world.Map.Rules.Sequences;
 			var types = sequenceProvider.Sequences(Info.Sequence);
@@ -144,8 +148,9 @@ namespace OpenRA.Mods.Common.Traits
 			if (!world.Map.Contains(loc))
 				return;
 
-			if (Game.CosmeticRandom.Next(0, 100) <= Info.SmokePercentage)
-				world.AddFrameEndTask(w => w.Add(new SpriteEffect(world.Map.CenterOfCell(loc), w, Info.SmokeType, Info.SmokeSequence, Info.SmokePalette)));
+			if (hasSmoke && Game.CosmeticRandom.Next(0, 100) <= Info.SmokeChance)
+				world.AddFrameEndTask(w => w.Add(new SpriteEffect(
+					w.Map.CenterOfCell(loc), w, Info.SmokeImage, Info.SmokeSequences.Random(w.SharedRandom), Info.SmokePalette)));
 
 			// A null Sequence indicates a deleted smudge.
 			if ((!dirty.ContainsKey(loc) || dirty[loc].Sequence == null) && !tiles.ContainsKey(loc))
