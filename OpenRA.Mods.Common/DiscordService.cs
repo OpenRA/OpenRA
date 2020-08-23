@@ -169,6 +169,22 @@ namespace OpenRA.Mods.Common
 			currentState = state;
 		}
 
+		void UpdateParty(int players, int slots)
+		{
+			if (client.CurrentPresence.Party != null)
+			{
+				client.UpdatePartySize(players, slots);
+				return;
+			}
+
+			client.UpdateParty(new Party
+			{
+				ID = Secrets.CreateFriendlySecret(new Random()),
+				Size = players,
+				Max = slots
+			});
+		}
+
 		public void Dispose()
 		{
 			if (client != null)
@@ -186,7 +202,7 @@ namespace OpenRA.Mods.Common
 
 		public static void UpdatePlayers(int players, int slots)
 		{
-			Service?.client.UpdatePartySize(players, slots);
+			Service?.UpdateParty(players, slots);
 		}
 
 		public static void UpdateDetails(string details)
