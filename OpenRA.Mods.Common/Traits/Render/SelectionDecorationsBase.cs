@@ -115,7 +115,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (wr.Viewport.Zoom < wr.Viewport.MinZoom)
 				yield break;
 
-			var renderDecorations = self.World.Selection.Contains(self) ? selectedDecorations : decorations;
+			var renderDecorations = selected ? selectedDecorations : decorations;
 			foreach (var kv in renderDecorations)
 			{
 				var pos = GetDecorationPosition(self, wr, kv.Key);
