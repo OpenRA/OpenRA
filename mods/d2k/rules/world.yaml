@@ -151,11 +151,9 @@ World:
 	SmudgeLayer@Rock:
 		Type: RockCrater
 		Sequence: rockcraters
-		SmokePercentage: 0
 	SmudgeLayer@Sand:
 		Type: SandCrater
 		Sequence: sandcraters
-		SmokePercentage: 0
 	MapCreeps:
 		CheckboxLabel: Worms
 		CheckboxDescription: Worms roam the map and devour unprepared forces

@@ -254,29 +254,29 @@ World:
 	SmudgeLayer@SMALLSCORCH:
 		Type: SmallScorch
 		Sequence: smallscorches
-		SmokeType: smallfire
-		SmokePercentage: 50
+		SmokeImage: smallfire
+		SmokeSequences: idle
+		SmokeChance: 50
 	SmudgeLayer@MEDIUMSCORCH:
 		Type: MediumScorch
 		Sequence: mediumscorches
-		SmokeType: mediumfire
-		SmokePercentage: 75
+		SmokeImage: mediumfire
+		SmokeSequences: idle
+		SmokeChance: 75
 	SmudgeLayer@LARGESCORCH:
 		Type: LargeScorch
 		Sequence: largescorches
-		SmokeType: largefire
-		SmokePercentage: 100
+		SmokeImage: largefire
+		SmokeSequences: idle
+		SmokeChance: 100
 	SmudgeLayer@SMALLCRATER:
 		Type: SmallCrater
-		SmokeType: smallsmoke
 		Sequence: smallcraters
 	SmudgeLayer@MEDIUMCRATER:
 		Type: MediumCrater
-		SmokeType: smallsmoke
 		Sequence: mediumcraters
 	SmudgeLayer@LARGECRATER:
 		Type: LargeCrater
-		SmokeType: largesmoke
 		Sequence: largecraters
 	ResourceLayer:
 	BridgeLayer:

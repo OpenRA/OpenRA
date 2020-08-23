@@ -200,10 +200,15 @@ World:
 	SmudgeLayer@SCORCH:
 		Type: Scorch
 		Sequence: scorches
-		SmokePercentage: 50
+		SmokeChance: 50
+		SmokeImage: smoke_m
+		SmokeSequences: idle
 	SmudgeLayer@CRATER:
 		Type: Crater
 		Sequence: craters
+		SmokeChance: 25
+		SmokeImage: smoke_m
+		SmokeSequences: idle
 	ResourceLayer:
 	ResourceClaimLayer:
 	WarheadDebugOverlay:
