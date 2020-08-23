@@ -27,6 +27,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Keep firing on targets even after attack order is cancelled")]
 		public readonly bool PersistentTargeting = true;
 
+		[Desc("Range to stay away from min and max ranges to give some leeway if the target starts moving.")]
+		public readonly WDist RangeMargin = WDist.FromCells(1);
+
 		public override object Create(ActorInitializer init) { return new AttackFollow(init.Self, this); }
 	}
 
@@ -282,12 +285,12 @@ namespace OpenRA.Mods.Common.Traits
 					lastVisibleOwner = target.Actor.Owner;
 					lastVisibleTargetTypes = target.Actor.GetEnabledTargetTypes();
 
-					// Try and sit at least one cell away from the min or max ranges to give some leeway if the target starts moving.
-					if (move != null && target.Actor.Info.HasTraitInfo<IMoveInfo>())
+					var leeway = attack.Info.RangeMargin.Length;
+					if (leeway != 0 && move != null && target.Actor.Info.HasTraitInfo<IMoveInfo>())
 					{
-						var preferMinRange = Math.Min(lastVisibleMinimumRange.Length + 1024, lastVisibleMaximumRange.Length);
-						var preferMaxRange = Math.Max(lastVisibleMaximumRange.Length - 1024, lastVisibleMinimumRange.Length);
-						lastVisibleMaximumRange = new WDist((lastVisibleMaximumRange.Length - 1024).Clamp(preferMinRange, preferMaxRange));
+						var preferMinRange = Math.Min(lastVisibleMinimumRange.Length + leeway, lastVisibleMaximumRange.Length);
+						var preferMaxRange = Math.Max(lastVisibleMaximumRange.Length - leeway, lastVisibleMinimumRange.Length);
+						lastVisibleMaximumRange = new WDist((lastVisibleMaximumRange.Length - leeway).Clamp(preferMinRange, preferMaxRange));
 					}
 				}
 
