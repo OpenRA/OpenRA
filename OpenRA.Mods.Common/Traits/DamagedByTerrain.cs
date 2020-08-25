@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyAddedToWorld.AddedToWorld(Actor self)
 		{
-			if (!Info.StartOnThreshold)
+			if (!Info.StartOnThreshold || IsTraitDisabled)
 				return;
 
 			var safeTiles = 0;
