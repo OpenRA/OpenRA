@@ -34,6 +34,7 @@ concretea:
 		Cost: 20
 	Buildable:
 		BuildPaletteOrder: 110
+		Prerequisites: ~!global-auto-concrete
 		BuildDuration: 62
 		BuildDurationModifier: 100
 
@@ -48,7 +49,7 @@ concreteb:
 		Cost: 50
 	Buildable:
 		BuildPaletteOrder: 210
-		Prerequisites: upgrade.conyard
+		Prerequisites: upgrade.conyard, ~!global-auto-concrete
 		BuildDuration: 94
 		BuildDurationModifier: 100
 
@@ -64,8 +65,7 @@ construction_yard:
 		Dimensions: 3,3
 		LocalCenterOffset: 0,-512,0
 	LaysTerrain:
-		TerrainTypes: Rock
-		Template: 88
+		-RequiresCondition:
 	WithBuildingBib:
 	Selectable:
 		Bounds: 96,64

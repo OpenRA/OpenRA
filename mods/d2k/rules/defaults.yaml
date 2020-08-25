@@ -410,6 +410,7 @@
 		TerrainTypes: Rock, Concrete
 		BuildSounds: BUILD1.WAV
 	D2kActorPreviewPlaceBuildingPreview:
+		RequiresPrerequisites: !global-auto-concrete
 		OverridePalette: placebuilding
 	RequiresBuildableArea:
 		AreaTypes: building
@@ -447,12 +448,20 @@
 		SellSounds: BUILD1.WAV
 	Guardable:
 		Range: 3c0
+	GrantConditionOnPrerequisite@AUTOCONCRETE:
+		Condition: auto-concrete
+		Prerequisites: global-auto-concrete
 	DamagedByTerrain:
+		RequiresCondition: !auto-concrete
 		Damage: 500
 		DamageInterval: 100
 		Terrain: Rock
 		DamageThreshold: 50
 		StartOnThreshold: true
+	LaysTerrain:
+		RequiresCondition: auto-concrete
+		TerrainTypes: Rock
+		Template: 88
 	ThrowsShrapnel:
 		Weapons: Debris, Debris2, Debris3, Debris4
 		Pieces: 2, 5
