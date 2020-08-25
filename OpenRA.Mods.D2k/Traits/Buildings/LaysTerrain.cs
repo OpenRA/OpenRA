@@ -15,7 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.D2k.Traits
 {
-	public class LaysTerrainInfo : TraitInfo, Requires<BuildingInfo>
+	public class LaysTerrainInfo : ConditionalTraitInfo, Requires<BuildingInfo>
 	{
 		[Desc("The terrain template to place. If the template is PickAny, then " +
 			"the actor footprint will be filled with this tile.")]
@@ -32,17 +32,16 @@ namespace OpenRA.Mods.D2k.Traits
 		public override object Create(ActorInitializer init) { return new LaysTerrain(init.Self, this); }
 	}
 
-	public class LaysTerrain : INotifyAddedToWorld
+	public class LaysTerrain : ConditionalTrait<LaysTerrainInfo>, INotifyAddedToWorld
 	{
-		readonly LaysTerrainInfo info;
 		readonly BuildableTerrainLayer layer;
 		readonly BuildingInfluence bi;
 		readonly TerrainTemplateInfo template;
 		readonly BuildingInfo buildingInfo;
 
 		public LaysTerrain(Actor self, LaysTerrainInfo info)
+			: base(info)
 		{
-			this.info = info;
 			layer = self.World.WorldActor.Trait<BuildableTerrainLayer>();
 			bi = self.World.WorldActor.Trait<BuildingInfluence>();
 			template = self.World.Map.Rules.TileSet.Templates[info.Template];
@@ -51,6 +50,9 @@ namespace OpenRA.Mods.D2k.Traits
 
 		void INotifyAddedToWorld.AddedToWorld(Actor self)
 		{
+			if (IsTraitDisabled)
+				return;
+
 			var map = self.World.Map;
 
 			if (template.PickAny)
@@ -59,7 +61,7 @@ namespace OpenRA.Mods.D2k.Traits
 				foreach (var c in buildingInfo.Tiles(self.Location))
 				{
 					// Only place on allowed terrain types
-					if (!map.Contains(c) || !info.TerrainTypes.Contains(map.GetTerrainInfo(c).Type))
+					if (!map.Contains(c) || !Info.TerrainTypes.Contains(map.GetTerrainInfo(c).Type))
 						continue;
 
 					// Don't place under other buildings or custom terrain
@@ -73,13 +75,13 @@ namespace OpenRA.Mods.D2k.Traits
 				return;
 			}
 
-			var origin = self.Location + info.Offset;
+			var origin = self.Location + Info.Offset;
 			for (var i = 0; i < template.TilesCount; i++)
 			{
 				var c = origin + new CVec(i % template.Size.X, i / template.Size.X);
 
 				// Only place on allowed terrain types
-				if (!info.TerrainTypes.Contains(map.GetTerrainInfo(c).Type))
+				if (!Info.TerrainTypes.Contains(map.GetTerrainInfo(c).Type))
 					continue;
 
 				// Don't place under other buildings or custom terrain
