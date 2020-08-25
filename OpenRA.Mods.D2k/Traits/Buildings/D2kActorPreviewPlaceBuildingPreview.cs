@@ -25,6 +25,9 @@ namespace OpenRA.Mods.D2k.Traits
 		[Desc("Terrain types that should show the 'unsafe' footprint tile.")]
 		public readonly HashSet<string> UnsafeTerrainTypes = new HashSet<string> { "Rock" };
 
+		[Desc("Only check for 'unsafe' footprint tiles when you have these prerequisites.")]
+		public readonly string[] RequiresPrerequisites = { };
+
 		protected override IPlaceBuildingPreview CreatePreview(WorldRenderer wr, ActorInfo ai, TypeDictionary init)
 		{
 			return new D2kActorPreviewPlaceBuildingPreviewPreview(wr, ai, this, init);
@@ -41,6 +44,7 @@ namespace OpenRA.Mods.D2k.Traits
 	class D2kActorPreviewPlaceBuildingPreviewPreview : ActorPreviewPlaceBuildingPreviewPreview
 	{
 		readonly D2kActorPreviewPlaceBuildingPreviewInfo info;
+		readonly bool checkUnsafeTiles;
 		readonly Sprite buildOk;
 		readonly Sprite buildUnsafe;
 		readonly Sprite buildBlocked;
@@ -53,6 +57,9 @@ namespace OpenRA.Mods.D2k.Traits
 
 			var world = wr.World;
 			var sequences = world.Map.Rules.Sequences;
+
+			var techTree = init.Get<OwnerInit>().Value(world).PlayerActor.Trait<TechTree>();
+			checkUnsafeTiles = info.RequiresPrerequisites.Any() && techTree.HasPrerequisites(info.RequiresPrerequisites);
 
 			buildOk = sequences.GetSequence("overlay", "build-valid").GetSprite(0);
 			buildUnsafe = sequences.GetSequence("overlay", "build-unsafe").GetSprite(0);
@@ -76,7 +83,7 @@ namespace OpenRA.Mods.D2k.Traits
 					continue;
 
 				var tile = HasFlag(c.Value, PlaceBuildingCellType.Invalid) ? buildBlocked :
-					candidateSafeTiles.Contains(c.Key) && info.UnsafeTerrainTypes.Contains(wr.World.Map.GetTerrainInfo(c.Key).Type)
+					(checkUnsafeTiles && candidateSafeTiles.Contains(c.Key) && info.UnsafeTerrainTypes.Contains(wr.World.Map.GetTerrainInfo(c.Key).Type))
 					? buildUnsafe : buildOk;
 
 				var pal = HasFlag(c.Value, PlaceBuildingCellType.LineBuild) ? linePalette : cellPalette;

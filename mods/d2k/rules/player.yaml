@@ -98,10 +98,17 @@ Player:
 		CashTickUpNotification: CashTickUp
 		CashTickDownNotification: CashTickDown
 	DeveloperMode:
-		CheckboxDisplayOrder: 7
+		CheckboxDisplayOrder: 8
 	BaseAttackNotifier:
 	Shroud:
 		FogCheckboxDisplayOrder: 3
+	LobbyPrerequisiteCheckbox@AUTOCONCRETE:
+		ID: autoconcrete
+		Label: Automatic Concrete
+		Description: Concrete foundations are automatically created beneath buildings
+		Enabled: False
+		DisplayOrder: 7
+		Prerequisites: global-auto-concrete
 	FrozenActorLayer:
 	HarvesterAttackNotifier:
 	PlayerStatistics:
