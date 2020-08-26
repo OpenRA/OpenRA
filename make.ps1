@@ -10,7 +10,7 @@ function All-Command
 		return
 	}
 
-	dotnet build /p:Configuration=Release /nologo
+	dotnet build -c Release --nologo -p:TargetPlatform=win-x64
 	if ($lastexitcode -ne 0)
 	{
 		Write-Host "Build failed. If just the development tools failed to build, try installing Visual Studio. You may also still be able to run the game." -ForegroundColor Red
@@ -111,7 +111,7 @@ function Test-Command
 function Check-Command
 {
 	Write-Host "Compiling in debug configuration..." -ForegroundColor Cyan
-	dotnet build /p:Configuration=Debug /nologo
+	dotnet build -c Debug --nologo -p:TargetPlatform=win-x64
 	if ($lastexitcode -ne 0)
 	{
 		Write-Host "Build failed." -ForegroundColor Red

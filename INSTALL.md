@@ -8,18 +8,16 @@ Windows
 
 Compiling OpenRA requires the following dependencies:
 * [Windows PowerShell >= 4.0](http://microsoft.com/powershell) (included by default in recent Windows 10 versions)
-* [.NET Framework 4.7.2 (Developer Pack)](https://dotnet.microsoft.com/download/dotnet-framework/net472) (or via Visual Studio 2017)
-* [.NET Core 2.2 SDK](https://dotnet.microsoft.com/download/dotnet-core/2.2) (or via Visual Studio 2017)
+* [.NET 5 SDK](https://dotnet.microsoft.com/download/dotnet/5.0) (or via Visual Studio)
 
-
-To compile OpenRA, open the `OpenRA.sln` solution in the main folder, build it from the command-line with MSBuild or use the Makefile analogue command `make all` scripted in PowerShell syntax.
+To compile OpenRA, open the `OpenRA.sln` solution in the main folder, build it from the command-line with `dotnet` or use the Makefile analogue command `make all` scripted in PowerShell syntax.
 
 Run the game with `launch-game.cmd`. It can be handed arguments that specify the exact mod one wishes to run, for example, run `launch-game.cmd Game.Mod=ra` to launch Red Alert, `launch-game.cmd Game.Mod=cnc` to start Tiberian dawn or `launch-game.cmd Game.Mod=d2k` to launch Dune 2000.
 
 Linux
 =====
 
-Mono, version 5.18 or later, is required to compile OpenRA. You can add the [upstream mono repository](https://www.mono-project.com/download/stable/#download-lin) for your distro to obtain the latest version if your system packages are not sufficient.
+Mono, version 6.4 or later, is required to compile OpenRA. You can add the [upstream mono repository](https://www.mono-project.com/download/stable/#download-lin) for your distro to obtain the latest version if your system packages are not sufficient.
 
 To compile OpenRA, run `make` from the command line. After this one can run the game with `./launch-game.sh`. It is also possible to specify the mod you wish to run from the command line, e.g. with `./launch-game.sh Game.Mod=ts` if you wish to try the experimental Tiberian Sun mod.
 
@@ -99,7 +97,7 @@ macOS
 =====
 
 Before compiling OpenRA you must install the following dependencies:
-* [Mono >= 5.18](https://www.mono-project.com/download/stable/#download-mac)
+* [Mono >= 6.4](https://www.mono-project.com/download/stable/#download-mac)
 
 To compile OpenRA, run `make` from the command line. Run with `./launch-game.sh`.
 

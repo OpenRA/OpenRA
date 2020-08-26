@@ -18,7 +18,6 @@
 #   Makefile (install target for local installs and downstream packaging)
 #   Linux AppImage packaging
 #   macOS packaging
-#   Windows packaging
 #   Mod SDK Linux AppImage packaging
 #   Mod SDK macOS packaging
 #   Mod SDK Windows packaging
@@ -33,26 +32,27 @@ install_assemblies_mono() {
 	echo "Building assemblies"
 	ORIG_PWD=$(pwd)
 	cd "${SRC_PATH}" || exit 1
-	msbuild -verbosity:m -nologo -t:Clean
+
+	rm -rf "${SRC_PATH}/OpenRA."*/obj
 	rm -rf "${SRC_PATH:?}/bin"
-	msbuild -verbosity:m -nologo -t:Build -restore -p:Configuration=Release -p:TargetPlatform="${TARGETPLATFORM}"
+
+	msbuild -verbosity:m -nologo -t:Build -restore -p:Configuration=Release -p:TargetPlatform="${TARGETPLATFORM}" -p:Mono=true -p:DefineConstants="MONO"
 	if [ "${TARGETPLATFORM}" = "unix-generic" ]; then
 		./configure-system-libraries.sh
 	fi
 
-	./fetch-geoip.sh
 	cd "${ORIG_PWD}" || exit 1
 
 	echo "Installing engine to ${DEST_PATH}"
 	install -d "${DEST_PATH}"
 
 	# Core engine
-	install -m755 "${SRC_PATH}/bin/OpenRA.Server.exe" "${DEST_PATH}"
-	install -m755 "${SRC_PATH}/bin/OpenRA.Utility.exe" "${DEST_PATH}"
+	install -m755 "${SRC_PATH}/bin/OpenRA.Server.dll" "${DEST_PATH}"
+	install -m755 "${SRC_PATH}/bin/OpenRA.Utility.dll" "${DEST_PATH}"
 	install -m644 "${SRC_PATH}/bin/OpenRA.Game.dll" "${DEST_PATH}"
 	install -m644 "${SRC_PATH}/bin/OpenRA.Platforms.Default.dll" "${DEST_PATH}"
 	if [ "${COPY_GENERIC_LAUNCHER}" = "True" ]; then
-		install -m755 "${SRC_PATH}/bin/OpenRA.exe" "${DEST_PATH}"
+		install -m755 "${SRC_PATH}/bin/OpenRA.dll" "${DEST_PATH}"
 	fi
 
 	# Mod dlls
@@ -97,6 +97,32 @@ install_assemblies_mono() {
 	fi
 }
 
+# Compile and publish the core engine and specified mod assemblies to the target directory
+# Arguments:
+#   SRC_PATH: Path to the root OpenRA directory
+#   DEST_PATH: Path to the root of the install destination (will be created if necessary)
+#   TARGETPLATFORM: Platform type (win-x86, win-x64, osx-x64, linux-x64, unix-generic)
+#   COPY_GENERIC_LAUNCHER: If set to True the OpenRA.exe will also be copied (True, False)
+#   COPY_CNC_DLL: If set to True the OpenRA.Mods.Cnc.dll will also be copied (True, False)
+#   COPY_D2K_DLL: If set to True the OpenRA.Mods.D2k.dll will also be copied (True, False)
+# Used by:
+#   Windows packaging
+install_assemblies() {
+	SRC_PATH="${1}"
+	DEST_PATH="${2}"
+	TARGETPLATFORM="${3}"
+	COPY_GENERIC_LAUNCHER="${4}"
+	COPY_CNC_DLL="${5}"
+	COPY_D2K_DLL="${6}"
+
+	ORIG_PWD=$(pwd)
+	cd "${SRC_PATH}" || exit 1
+
+	dotnet publish -c Release -p:TargetPlatform="${TARGETPLATFORM}" -p:CopyGenericLauncher="${COPY_GENERIC_LAUNCHER}" -p:CopyCncDll="${COPY_CNC_DLL}" -p:CopyD2kDll="${COPY_D2K_DLL}" -r "${TARGETPLATFORM}" -o "${DEST_PATH}"
+
+	cd "${ORIG_PWD}" || exit 1
+}
+
 # Copy the core engine and specified mod data to the target directory
 # Arguments:
 #   SRC_PATH: Path to the root OpenRA directory
@@ -114,6 +140,8 @@ install_data() {
 	SRC_PATH="${1}"
 	DEST_PATH="${2}"
 	shift 2
+
+	"${SRC_PATH}"/fetch-geoip.sh
 
 	echo "Installing engine files to ${DEST_PATH}"
 	for FILE in VERSION AUTHORS COPYING IP2LOCATION-LITE-DB1.IPV6.BIN.ZIP "global mix database.dat"; do
@@ -160,20 +188,15 @@ install_windows_launcher()
 	MOD_ID="${4}"
 	LAUNCHER_NAME="${5}"
 	MOD_NAME="${6}"
-	ICON_PATH="${7}"
-	FAQ_URL="${8}"
+	FAQ_URL="${7}"
 
-	msbuild -verbosity:m -nologo -t:Clean "${SRC_PATH}/OpenRA.WindowsLauncher/OpenRA.WindowsLauncher.csproj"
-	rm -rf "${SRC_PATH:?}/bin"
-	msbuild -t:Build "${SRC_PATH}/OpenRA.WindowsLauncher/OpenRA.WindowsLauncher.csproj" -restore -p:Configuration=Release -p:TargetPlatform="${TARGETPLATFORM}" -p:LauncherName="${LAUNCHER_NAME}" -p:LauncherIcon="${ICON_PATH}" -p:ModID="${MOD_ID}" -p:DisplayName="${MOD_NAME}" -p:FaqUrl="${FAQ_URL}"
-	install -m755 "${SRC_PATH}/bin/${LAUNCHER_NAME}.exe" "${DEST_PATH}"
-	install -m644 "${SRC_PATH}/bin/${LAUNCHER_NAME}.exe.config" "${DEST_PATH}"
+	rm -rf "${SRC_PATH}/OpenRA.WindowsLauncher/obj"
+	dotnet publish "${SRC_PATH}/OpenRA.WindowsLauncher/OpenRA.WindowsLauncher.csproj" -c Release -r "${TARGETPLATFORM}" -p:LauncherName="${LAUNCHER_NAME}" -p:TargetPlatform="${TARGETPLATFORM}" -p:ModID="${MOD_ID}" -p:DisplayName="${MOD_NAME}" -p:FaqUrl="${FAQ_URL}" -o "${DEST_PATH}"
 
-	# Enable the full 4GB address space for the 32 bit game executable
-	# The server and utility do not use enough memory to need this
-	if [ "${TARGETPLATFORM}" = "win-x86" ]; then
-		python3 "${SRC_PATH}/packaging/windows/MakeLAA.py" "${DEST_PATH}/${LAUNCHER_NAME}.exe"
-	fi
+	# NET 5 is unable to customize the application host for windows when compiling from Linux,
+	# so we must patch the properties we need in the PE header.
+	# Setting the application icon requires an external tool, so is left to the calling code
+	python3 "${SRC_PATH}/packaging/windows/fixlauncher.py" "${DEST_PATH}/${LAUNCHER_NAME}.exe"
 }
 
 # Write a version string to the engine VERSION file

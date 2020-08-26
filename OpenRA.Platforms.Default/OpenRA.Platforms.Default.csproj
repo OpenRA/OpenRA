@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-      <TargetFramework>net472</TargetFramework>
+      <TargetFramework>netstandard2.1</TargetFramework>
       <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
       <Optimize>true</Optimize>
       <LangVersion>7.3</LangVersion>
@@ -11,6 +11,7 @@
       <PlatformTarget>AnyCPU</PlatformTarget>
       <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
       <CodeAnalysisRuleSet>..\OpenRA.ruleset</CodeAnalysisRuleSet>
+      <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     </PropertyGroup>
   <PropertyGroup>
     <TargetPlatform Condition="$([MSBuild]::IsOsPlatform('Windows'))">win-x64</TargetPlatform>
