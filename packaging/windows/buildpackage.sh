@@ -32,6 +32,12 @@ elif [[ ${TAG} == playtest* ]]; then
 	SUFFIX=" (playtest)"
 fi
 
+if command -v curl >/dev/null 2>&1; then
+	curl -s -L -O https://github.com/electron/rcedit/releases/download/v1.1.1/rcedit-x64.exe || exit 3
+else
+	wget -cq https://github.com/electron/rcedit/releases/download/v1.1.1/rcedit-x64.exe || exit 3
+fi
+
 function makelauncher()
 {
 	LAUNCHER_NAME="${1}"
@@ -40,7 +46,9 @@ function makelauncher()
 	PLATFORM="${4}"
 
 	convert "${ARTWORK_DIR}/${MOD_ID}_16x16.png" "${ARTWORK_DIR}/${MOD_ID}_24x24.png" "${ARTWORK_DIR}/${MOD_ID}_32x32.png" "${ARTWORK_DIR}/${MOD_ID}_48x48.png" "${ARTWORK_DIR}/${MOD_ID}_256x256.png" "${BUILTDIR}/${MOD_ID}.ico"
-	install_windows_launcher "${SRCDIR}" "${BUILTDIR}" "win-${PLATFORM}" "${MOD_ID}" "${LAUNCHER_NAME}"  "${DISPLAY_NAME}" "${BUILTDIR}/${MOD_ID}.ico" "${FAQ_URL}"
+	install_windows_launcher "${SRCDIR}" "${BUILTDIR}" "win-${PLATFORM}" "${MOD_ID}" "${LAUNCHER_NAME}" "${DISPLAY_NAME}" "${FAQ_URL}"
+
+	wine64 rcedit-x64.exe "${BUILTDIR}/${LAUNCHER_NAME}.exe" --set-icon "${BUILTDIR}/${MOD_ID}.ico"
 }
 
 function build_platform()
@@ -54,7 +62,7 @@ function build_platform()
 		USE_PROGRAMFILES32=""
 	fi
 
-	install_assemblies_mono "${SRCDIR}" "${BUILTDIR}" "win-${PLATFORM}" "False" "True" "True"
+	install_assemblies "${SRCDIR}" "${BUILTDIR}" "win-${PLATFORM}" "False" "True" "True"
 	install_data "${SRCDIR}" "${BUILTDIR}" "cnc" "d2k" "ra"
 	set_engine_version "${TAG}" "${BUILTDIR}"
 	set_mod_version "${TAG}" "${BUILTDIR}/mods/cnc/mod.yaml" "${BUILTDIR}/mods/d2k/mod.yaml" "${BUILTDIR}/mods/ra/mod.yaml"  "${BUILTDIR}/mods/modcontent/mod.yaml"

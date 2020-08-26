@@ -9,7 +9,7 @@ if [ "${1#${PROTOCOL_PREFIX}}" != "${1}" ]; then
 fi
 
 # Run the game
-mono {DEBUG} OpenRA.exe Game.Mod={MODID} Engine.LaunchPath="{BIN_DIR}/openra-{MODID}" "${JOIN_SERVER}" "$@"
+mono {DEBUG} OpenRA.dll Game.Mod={MODID} Engine.LaunchPath="{BIN_DIR}/openra-{MODID}" "${JOIN_SERVER}" "$@"
 
 # Show a crash dialog if something went wrong
 if [ $? != 0 ] && [ $? != 1 ]; then

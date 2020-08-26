@@ -297,6 +297,7 @@ namespace OpenRA
 				EngineVersion = "Unknown";
 
 			Console.WriteLine("Engine version is {0}", EngineVersion);
+			Console.WriteLine("Runtime: {0}", Platform.RuntimeVersion);
 
 			// Special case handling of Game.Mod argument: if it matches a real filesystem path
 			// then we use this to override the mod search path, and replace it with the mod id
@@ -329,9 +330,16 @@ namespace OpenRA
 				try
 				{
 					var rendererPath = Path.Combine(Platform.BinDir, "OpenRA.Platforms." + p + ".dll");
-					var assembly = Assembly.LoadFile(rendererPath);
 
+#if !MONO
+					var loader = new AssemblyLoader(rendererPath);
+					var platformType = loader.LoadDefaultAssembly().GetTypes().SingleOrDefault(t => typeof(IPlatform).IsAssignableFrom(t));
+
+#else
+					var assembly = Assembly.LoadFile(rendererPath);
 					var platformType = assembly.GetTypes().SingleOrDefault(t => typeof(IPlatform).IsAssignableFrom(t));
+#endif
+
 					if (platformType == null)
 						throw new InvalidOperationException("Platform dll must include exactly one IPlatform implementation.");
 
