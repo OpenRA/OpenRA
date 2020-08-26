@@ -59,7 +59,6 @@ namespace OpenRA.Platforms.Default
 				Name = "ThreadedGraphicsContext RenderThread",
 				IsBackground = true
 			};
-			renderThread.SetApartmentState(ApartmentState.STA);
 			lock (syncObject)
 			{
 				// Start and wait for the rendering thread to have initialized before returning.

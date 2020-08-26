@@ -1,6 +1,3 @@
-[[prereqs]]
-name = "net-4.7.2"
-
 [[actions]]
 os = "windows"
 name = "Red Alert"

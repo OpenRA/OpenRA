@@ -9,11 +9,21 @@ import struct
 import sys
 
 if __name__ == "__main__":
-    print(sys.argv[1] + ': Enabling /LARGEADDRESSAWARE')
+    print('Patching ' + sys.argv[1] + ':')
     with open(sys.argv[1], 'r+b') as assembly:
         assembly.seek(0x3c)
-        peOffset = struct.unpack('i', assembly.read(4))[0]
+        peOffset = struct.unpack('H', assembly.read(2))[0]
+
+        assembly.seek(peOffset)
+        peSignature = struct.unpack('I', assembly.read(4))[0]
+        if peSignature != 0x4550:
+            print("   ERROR: Invalid PE signature")
+
+        print(' - Setting /LARGEADDRESSAWARE')
         assembly.seek(peOffset + 4 + 18)
         flags = struct.unpack('B', assembly.read(1))[0] | 0x20
         assembly.seek(peOffset + 4 + 18)
         assembly.write(struct.pack('B', flags))
+        print(' - Setting /subsystem:windows')
+        assembly.seek(peOffset + 0x5C)
+        assembly.write(struct.pack("H", 0x02))

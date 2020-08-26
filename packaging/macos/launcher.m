@@ -131,7 +131,7 @@ NSTask *gameTask;
 	launched = YES;
 
 	// Default values - can be overriden by setting certain keys Info.plist
-	NSString *gameName = @"OpenRA.exe";
+	NSString *gameName = @"OpenRA.dll";
 	NSString *modId = nil;
 
 	NSDictionary *plist = [[NSBundle mainBundle] infoDictionary];
