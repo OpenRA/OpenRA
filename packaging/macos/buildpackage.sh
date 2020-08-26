@@ -15,7 +15,7 @@
 #
 set -e
 
-MONO_TAG="osx-launcher-20200830"
+MONO_TAG="osx-launcher-20201222"
 
 if [ $# -ne "2" ]; then
 	echo "Usage: $(basename "$0") tag outputdir"

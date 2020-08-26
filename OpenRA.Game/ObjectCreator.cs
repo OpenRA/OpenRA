@@ -15,6 +15,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using OpenRA.Primitives;
+using OpenRA.Support;
 
 namespace OpenRA
 {
@@ -42,23 +43,46 @@ namespace OpenRA
 				if (resolvedPath == null)
 					throw new FileNotFoundException("Assembly `{0}` not found.".F(path));
 
-				// .NET doesn't provide any way of querying the metadata of an assembly without either:
-				//   (a) loading duplicate data into the application domain, breaking the world.
-				//   (b) crashing if the assembly has already been loaded.
-				// We can't check the internal name of the assembly, so we'll work off the data instead
-				var hash = CryptoUtil.SHA1Hash(File.ReadAllBytes(resolvedPath));
-
-				if (!ResolvedAssemblies.TryGetValue(hash, out var assembly))
-				{
-					assembly = Assembly.LoadFile(resolvedPath);
-					ResolvedAssemblies.Add(hash, assembly);
-				}
-
-				assemblyList.Add(assembly);
+				LoadAssembly(assemblyList, resolvedPath);
 			}
 
 			AppDomain.CurrentDomain.AssemblyResolve += ResolveAssembly;
 			assemblies = assemblyList.SelectMany(asm => asm.GetNamespaces().Select(ns => (asm, ns))).ToArray();
+		}
+
+		void LoadAssembly(List<Assembly> assemblyList, string resolvedPath)
+		{
+			// .NET doesn't provide any way of querying the metadata of an assembly without either:
+			//   (a) loading duplicate data into the application domain, breaking the world.
+			//   (b) crashing if the assembly has already been loaded.
+			// We can't check the internal name of the assembly, so we'll work off the data instead
+			var hash = CryptoUtil.SHA1Hash(File.ReadAllBytes(resolvedPath));
+
+			if (!ResolvedAssemblies.TryGetValue(hash, out var assembly))
+			{
+#if MONO
+				assembly = Assembly.LoadFile(resolvedPath);
+				ResolvedAssemblies.Add(hash, assembly);
+
+				// Allow mods to use libraries.
+				var assemblyPath = Path.GetDirectoryName(resolvedPath);
+				if (assemblyPath != null)
+				{
+					foreach (var referencedAssembly in assembly.GetReferencedAssemblies())
+					{
+						var depedencyPath = Path.Combine(assemblyPath, referencedAssembly.Name + ".dll");
+						if (File.Exists(depedencyPath))
+							LoadAssembly(assemblyList, depedencyPath);
+					}
+				}
+#else
+				var loader = new AssemblyLoader(resolvedPath);
+				assembly = loader.LoadDefaultAssembly();
+				ResolvedAssemblies.Add(hash, assembly);
+#endif
+			}
+
+			assemblyList.Add(assembly);
 		}
 
 		Assembly ResolveAssembly(object sender, ResolveEventArgs e)
