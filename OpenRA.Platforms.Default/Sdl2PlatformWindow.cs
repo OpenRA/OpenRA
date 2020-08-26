@@ -145,8 +145,6 @@ namespace OpenRA.Platforms.Default
 				if (Platform.CurrentPlatform == PlatformType.Windows)
 					SetProcessDPIAware();
 
-				SDL.SDL_Init(SDL.SDL_INIT_NOPARACHUTE | SDL.SDL_INIT_VIDEO);
-
 				// Decide which OpenGL profile to use.
 				// We first need to query the available profiles on Windows/Linux.
 				// On macOS, known/consistent OpenGL support is provided by the OS.
@@ -161,6 +159,10 @@ namespace OpenRA.Platforms.Default
 					throw new InvalidOperationException("No supported OpenGL profiles were found.");
 
 				profile = supportedProfiles.Contains(requestProfile) ? requestProfile : supportedProfiles.First();
+
+				// Note: This must be called after the CanCreateGLWindow checks above,
+				// which needs to create and destroy its own SDL contexts as a workaround for specific buggy drivers
+				SDL.SDL_Init(SDL.SDL_INIT_VIDEO);
 				SetSDLAttributes(profile);
 
 				Console.WriteLine("Using SDL 2 with OpenGL ({0}) renderer", profile);
@@ -487,6 +489,9 @@ namespace OpenRA.Platforms.Default
 		static bool CanCreateGLWindow(GLProfile profile)
 		{
 			// Implementation inspired by TestIndividualGLVersion from Veldrid
+
+			// Need to create and destroy its own SDL contexts as a workaround for specific buggy drivers
+			SDL.SDL_Init(SDL.SDL_INIT_VIDEO);
 			SetSDLAttributes(profile);
 
 			var flags = SDL.SDL_WindowFlags.SDL_WINDOW_HIDDEN | SDL.SDL_WindowFlags.SDL_WINDOW_OPENGL;
@@ -494,6 +499,7 @@ namespace OpenRA.Platforms.Default
 			if (window == IntPtr.Zero || !string.IsNullOrEmpty(SDL.SDL_GetError()))
 			{
 				SDL.SDL_ClearError();
+				SDL.SDL_Quit();
 				return false;
 			}
 
@@ -502,11 +508,13 @@ namespace OpenRA.Platforms.Default
 			{
 				SDL.SDL_ClearError();
 				SDL.SDL_DestroyWindow(window);
+				SDL.SDL_Quit();
 				return false;
 			}
 
 			SDL.SDL_GL_DeleteContext(context);
 			SDL.SDL_DestroyWindow(window);
+			SDL.SDL_Quit();
 			return true;
 		}
 
