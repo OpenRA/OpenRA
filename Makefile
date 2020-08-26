@@ -28,14 +28,14 @@
 ############################## TOOLCHAIN ###############################
 #
 # List of .NET assemblies that we can guarantee exist
-WHITELISTED_OPENRA_ASSEMBLIES = OpenRA.exe OpenRA.Utility.exe OpenRA.Server.exe OpenRA.Platforms.Default.dll OpenRA.Game.dll OpenRA.Mods.Common.dll OpenRA.Mods.Cnc.dll OpenRA.Mods.D2k.dll
+WHITELISTED_OPENRA_ASSEMBLIES = OpenRA.dll OpenRA.Utility.dll OpenRA.Server.dll OpenRA.Platforms.Default.dll OpenRA.Game.dll OpenRA.Mods.Common.dll OpenRA.Mods.Cnc.dll OpenRA.Mods.D2k.dll
 
 # These are explicitly shipped alongside our core files by the packaging script
 WHITELISTED_THIRDPARTY_ASSEMBLIES = ICSharpCode.SharpZipLib.dll FuzzyLogicLibrary.dll Eluant.dll BeaconLib.dll Open.Nat.dll SDL2-CS.dll OpenAL-CS.Core.dll DiscordRPC.dll Newtonsoft.Json.dll
 
 # These are shipped in our custom minimal mono runtime and also available in the full system-installed .NET/mono stack
 # This list *must* be kept in sync with the files packaged by the AppImageSupport and OpenRALauncherOSX repositories
-WHITELISTED_CORE_ASSEMBLIES = mscorlib.dll System.dll System.Configuration.dll System.Core.dll System.Numerics.dll System.Security.dll System.Xml.dll Mono.Security.dll netstandard.dll
+WHITELISTED_CORE_ASSEMBLIES = mscorlib.dll System.dll System.Configuration.dll System.Core.dll System.Numerics.dll System.Security.dll System.Xml.dll Mono.Security.dll netstandard.dll Microsoft.Win32.Registry.dll System.Security.AccessControl.dll System.Security.Principal.Windows.dll System.Security.AccessControl.dll System.Xml.Linq.dll System.Runtime.Serialization.dll System.Security.Principal.Windows.dll
 
 ######################### UTILITIES/SETTINGS ###########################
 #
@@ -78,13 +78,13 @@ endif
 endif
 endif
 
-OPENRA_UTILITY = ENGINE_DIR=".." $(MONO) --debug bin/OpenRA.Utility.exe
+OPENRA_UTILITY = ENGINE_DIR=".." $(MONO) --debug bin/OpenRA.Utility.dll
 
 ##################### DEVELOPMENT BUILDS AND TESTS #####################
 #
 all:
 	@command -v $(firstword $(MSBUILD)) >/dev/null || (echo "OpenRA requires the '$(MSBUILD)' tool provided by Mono >= 5.18."; exit 1)
-	@$(MSBUILD) -t:Build -restore -p:Configuration=Release -p:TargetPlatform=$(TARGETPLATFORM)
+	@$(MSBUILD) -t:Build -restore -p:Configuration=Release -p:TargetPlatform=$(TARGETPLATFORM) -p:TargetFramework=netstandard2.1 -p:Mono=true -p:DefineConstants="MONO"
 ifeq ($(TARGETPLATFORM), unix-generic)
 	@./configure-system-libraries.sh
 endif
@@ -98,7 +98,7 @@ clean:
 check:
 	@echo
 	@echo "Compiling in debug mode..."
-	@$(MSBUILD) -t:build -restore -p:Configuration=Debug
+	@$(MSBUILD) -t:build -restore -p:Configuration=Debug -p:TargetPlatform=$(TARGETPLATFORM) -p:TargetFramework=netstandard2.1 -p:Mono=true -p:DefineConstants="MONO"
 	@echo
 	@echo "Checking runtime assemblies..."
 	@$(OPENRA_UTILITY) all --check-runtime-assemblies $(WHITELISTED_OPENRA_ASSEMBLIES) $(WHITELISTED_THIRDPARTY_ASSEMBLIES) $(WHITELISTED_CORE_ASSEMBLIES)

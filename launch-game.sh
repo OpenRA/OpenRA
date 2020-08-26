@@ -25,7 +25,7 @@ then
 fi
 
 # Launch the engine with the appropriate arguments
-mono --debug bin/OpenRA.exe Engine.EngineDir=".." Engine.LaunchPath="$MODLAUNCHER" $MODARG "$@"
+mono --debug bin/OpenRA.dll Engine.EngineDir=".." Engine.LaunchPath="$MODLAUNCHER" $MODARG "$@"
 
 # Show a crash dialog if something went wrong
 if [ $? != 0 ] && [ $? != 1 ]; then

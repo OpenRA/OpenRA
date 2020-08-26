@@ -18,7 +18,6 @@ jobs:
         run: |
           mono --version
           make check
-          mono ~/.nuget/packages/nunit.consolerunner/3.11.1/tools/nunit3-console.exe --noresult bin/OpenRA.Test.dll
 
       - name: Check Mods
         run: |
@@ -27,7 +26,7 @@ jobs:
           make test
 
   windows:
-    name: Windows (Framework 4.7)
+    name: Windows (Net 5.0)
     runs-on: windows-2019
 
     steps:
@@ -38,7 +37,8 @@ jobs:
         shell: powershell
         run: |
           .\make.ps1 check
-          Invoke-Expression "$home\.nuget\packages\nunit.consolerunner\3.11.1\tools\nunit3-console.exe --noresult bin/OpenRA.Test.dll"
+          dotnet build OpenRA.Test\OpenRA.Test.csproj -c Debug --nologo -p:TargetPlatform=win-x64
+          dotnet test bin\OpenRA.Test.dll --test-adapter-path:.
 
       - name: Check Mods
         run: |

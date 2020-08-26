@@ -2,7 +2,6 @@
 # OpenRA packaging script for Linux (AppImage)
 set -e
 
-command -v make >/dev/null 2>&1 || { echo >&2 "Linux packaging requires make."; exit 1; }
 command -v tar >/dev/null 2>&1 || { echo >&2 "Linux packaging requires tar."; exit 1; }
 command -v curl >/dev/null 2>&1 || command -v wget > /dev/null 2>&1 || { echo >&2 "Linux packaging requires curl or wget."; exit 1; }
 
