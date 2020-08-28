@@ -75,6 +75,7 @@ namespace OpenRA.Mods.Common.Traits
 			"Condition can stack with multiple passengers.")]
 		public readonly string LoadedCondition = null;
 
+		[ActorReference(dictionaryReference: LintDictionaryReference.Keys)]
 		[Desc("Conditions to grant when specified actors are loaded inside the transport.",
 			"A dictionary of [actor id]: [condition].")]
 		public readonly Dictionary<string, string> PassengerConditions = new Dictionary<string, string>();

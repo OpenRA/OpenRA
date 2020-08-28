@@ -89,6 +89,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			"Unload, Infiltrate, Demolish, Move.")]
 		public readonly RevealDisguiseType RevealDisguiseOn = RevealDisguiseType.Attack;
 
+		[ActorReference(dictionaryReference: LintDictionaryReference.Keys)]
 		[Desc("Conditions to grant when disguised as specified actor.",
 			"A dictionary of [actor id]: [condition].")]
 		public readonly Dictionary<string, string> DisguisedAsConditions = new Dictionary<string, string>();
