@@ -179,6 +179,9 @@ E3:
 		LocalOffset: 0,0,555
 	Armament@GARRISONED:
 		Name: garrisoned
+		Weapon: RedEye
+	Armament@GARRISONEDSECONDARY:
+		Name: garrisoned
 		Weapon: Dragon
 	TakeCover:
 		ProneOffset: 384,0,-395
@@ -337,6 +340,9 @@ SPY:
 		RequiresCondition: disguise
 	IgnoresDisguise:
 	Armament:
+		Weapon: SilencedPPK
+	Armament@GARRISONED:
+		Name: garrisoned
 		Weapon: SilencedPPK
 	AttackMove:
 		Voice: Move
