@@ -23,10 +23,21 @@ namespace OpenRA.Traits
 	[AttributeUsage(AttributeTargets.Field)]
 	public sealed class ActorReferenceAttribute : Attribute
 	{
-		public Type[] RequiredTraits;
-		public ActorReferenceAttribute(params Type[] requiredTraits)
+		public readonly Type[] RequiredTraits;
+		public readonly LintDictionaryReference DictionaryReference;
+
+		public ActorReferenceAttribute(Type[] requiredTraits,
+			LintDictionaryReference dictionaryReference = LintDictionaryReference.None)
 		{
 			RequiredTraits = requiredTraits;
+			DictionaryReference = dictionaryReference;
+		}
+
+		public ActorReferenceAttribute(Type requiredTrait = null,
+			LintDictionaryReference dictionaryReference = LintDictionaryReference.None)
+		{
+			RequiredTraits = requiredTrait != null ? new[] { requiredTrait } : new Type[0];
+			DictionaryReference = dictionaryReference;
 		}
 	}
 
