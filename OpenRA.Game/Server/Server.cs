@@ -1013,7 +1013,7 @@ namespace OpenRA.Server
 
 			foreach (var c in Conns)
 				foreach (var d in Conns)
-					DispatchOrdersToClient(c, d.PlayerIndex, 0x7FFFFFFF, new[] { (byte)OrderType.Disconnect });
+					DispatchOrdersToClient(c, d.PlayerIndex, int.MaxValue, new[] { (byte)OrderType.Disconnect });
 
 			if (GameSave == null && LobbyInfo.GlobalSettings.GameSavesEnabled)
 				GameSave = new GameSave();
