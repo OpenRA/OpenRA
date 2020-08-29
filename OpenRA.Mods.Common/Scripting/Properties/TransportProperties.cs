@@ -29,6 +29,9 @@ namespace OpenRA.Mods.Common.Scripting
 			cargo = self.Trait<Cargo>();
 		}
 
+		[Desc("Returns references to passengers inside the transport.")]
+		public Actor[] Passengers { get { return cargo.Passengers.ToArray(); } }
+
 		[Desc("Specifies whether transport has any passengers.")]
 		public bool HasPassengers { get { return cargo.Passengers.Any(); } }
 
