@@ -45,11 +45,9 @@ status_cmd="${name}_status"
 : ${openra_AdvertiseOnline="True"}
 
 openra_Dedicated="True"
-openra_DedicatedLoop="True"
 
 : ${openra_runflags="Game.Mod=${openra_Mod} \
                    Server.Dedicated=${openra_Dedicated} \
-                   Server.DedicatedLoop=${openra_DedicatedLoop} \
                    Server.Name=\"${openra_ServerName}\" \
                    Server.ListenPort=${openra_ListenPort} \
                    Server.AdvertiseOnline=${openra_AdvertiseOnline}\
