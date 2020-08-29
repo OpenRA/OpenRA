@@ -66,11 +66,13 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Sync]
 		WPos pos, lastPos;
 
+		WPos nextPos;
+
 		public GravityBomb(GravityBombInfo info, ProjectileArgs args)
 		{
 			this.info = info;
 			this.args = args;
-			pos = args.Source;
+			pos = nextPos = args.Source;
 			var convertedVelocity = new WVec(info.Velocity.Y, -info.Velocity.X, info.Velocity.Z);
 			velocity = convertedVelocity.Rotate(WRot.FromYaw(args.Facing));
 			acceleration = new WVec(info.Acceleration.Y, -info.Acceleration.X, info.Acceleration.Z);
@@ -98,6 +100,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			if (pos.Z <= args.PassiveTarget.Z)
 			{
 				pos += new WVec(0, 0, args.PassiveTarget.Z - pos.Z);
+				nextPos = pos;
 				world.AddFrameEndTask(w => w.Remove(this));
 
 				var warheadArgs = new WarheadArgs(args)
@@ -108,6 +111,8 @@ namespace OpenRA.Mods.Common.Projectiles
 
 				args.Weapon.Impact(Target.FromPos(pos), warheadArgs);
 			}
+			else
+				nextPos = pos + velocity;
 
 			anim?.Tick();
 		}
@@ -120,10 +125,11 @@ namespace OpenRA.Mods.Common.Projectiles
 			var world = args.SourceActor.World;
 			if (!world.FogObscures(pos))
 			{
+				var visualPos = WPos.Lerp(pos, nextPos, Game.RenderInterpolatedTimestepProgress, world.Timestep);
 				if (info.Shadow)
 				{
-					var dat = world.Map.DistanceAboveTerrain(pos);
-					var shadowPos = pos - new WVec(0, 0, dat.Length);
+					var dat = world.Map.DistanceAboveTerrain(visualPos);
+					var shadowPos = visualPos - new WVec(0, 0, dat.Length);
 					foreach (var r in anim.Render(shadowPos, wr.Palette(info.Palette)))
 						yield return ((IModifyableRenderable)r)
 							.WithTint(shadowColor, ((IModifyableRenderable)r).TintModifiers | TintModifiers.ReplaceColor)
@@ -131,7 +137,7 @@ namespace OpenRA.Mods.Common.Projectiles
 				}
 
 				var palette = wr.Palette(info.Palette + (info.IsPlayerPalette ? args.SourceActor.Owner.InternalName : ""));
-				foreach (var r in anim.Render(pos, palette))
+				foreach (var r in anim.Render(visualPos, palette))
 					yield return r;
 			}
 		}
