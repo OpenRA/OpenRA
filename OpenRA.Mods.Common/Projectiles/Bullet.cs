@@ -129,6 +129,8 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Sync]
 		WPos pos, lastPos, target, source;
 
+		WPos nextPos;
+
 		int length;
 		int ticks, smokeTicks;
 		int remainingBounces;
@@ -137,7 +139,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		{
 			this.info = info;
 			this.args = args;
-			pos = args.Source;
+			pos = nextPos = args.Source;
 			source = args.Source;
 
 			var world = args.SourceActor.World;
@@ -211,7 +213,15 @@ namespace OpenRA.Mods.Common.Projectiles
 			pos = WPos.LerpQuadratic(source, target, angle, ticks, length);
 
 			if (ShouldExplode(world))
+			{
+				nextPos = pos;
 				Explode(world);
+			}
+			else
+			{
+				// ShouldExplode == false increments ticks, so this is not identical to pos and we mustn't use ticks + 1 here
+				nextPos = WPos.LerpQuadratic(source, target, angle, ticks, length);
+			}
 		}
 
 		bool ShouldExplode(World world)
@@ -285,12 +295,13 @@ namespace OpenRA.Mods.Common.Projectiles
 				yield break;
 
 			var world = args.SourceActor.World;
-			if (!world.FogObscures(pos))
+			var visualPos = WPos.Lerp(pos, nextPos, Game.RenderInterpolatedTimestepProgress, world.Timestep);
+			if (!world.FogObscures(visualPos))
 			{
 				if (info.Shadow)
 				{
-					var dat = world.Map.DistanceAboveTerrain(pos);
-					var shadowPos = pos - new WVec(0, 0, dat.Length);
+					var dat = world.Map.DistanceAboveTerrain(visualPos);
+					var shadowPos = visualPos - new WVec(0, 0, dat.Length);
 					foreach (var r in anim.Render(shadowPos, wr.Palette(info.Palette)))
 						yield return ((IModifyableRenderable)r)
 							.WithTint(shadowColor, ((IModifyableRenderable)r).TintModifiers | TintModifiers.ReplaceColor)
@@ -302,7 +313,7 @@ namespace OpenRA.Mods.Common.Projectiles
 					paletteName += args.SourceActor.Owner.InternalName;
 
 				var palette = wr.Palette(paletteName);
-				foreach (var r in anim.Render(pos, palette))
+				foreach (var r in anim.Render(visualPos, palette))
 					yield return r;
 			}
 		}
