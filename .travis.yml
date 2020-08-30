@@ -75,7 +75,7 @@ before_deploy:
  - cd packaging
  - mkdir build
  - ./package-all.sh ${TRAVIS_TAG} ${PWD}/build/
- - cd itch && ./upload.sh ${TRAVIS_TAG} ${PWD}/build/
+ - ./upload-itch.sh ${TRAVIS_TAG} ${PWD}/build/
 deploy:
   provider: releases
   api_key:
