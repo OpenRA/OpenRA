@@ -23,6 +23,7 @@ addons:
     - dpkg
     - zsync
     - markdown
+    - imagemagick
 
 # Environment variables
 env:
