@@ -13,7 +13,7 @@
 #   MACOS_DEVELOPER_PASSWORD: App-specific password for the developer account
 #
 
-LAUNCHER_TAG="osx-launcher-20200525"
+MONO_TAG="osx-launcher-20200830"
 
 if [ $# -ne "2" ]; then
 	echo "Usage: $(basename "$0") tag outputdir"
@@ -56,6 +56,7 @@ populate_bundle() {
 	MOD_ID=${2}
 	MOD_NAME=${3}
 	DISCORD_APPID=${4}
+
 	cp -r "${BUILTDIR}/OpenRA.app" "${TEMPLATE_DIR}"
 
 	# Assemble multi-resolution icon
@@ -76,7 +77,7 @@ populate_bundle() {
 	modify_plist "{MOD_ID}" "${MOD_ID}" "${TEMPLATE_DIR}/Contents/Info.plist"
 	modify_plist "{MOD_NAME}" "${MOD_NAME}" "${TEMPLATE_DIR}/Contents/Info.plist"
 	modify_plist "{JOIN_SERVER_URL_SCHEME}" "openra-${MOD_ID}-${TAG}" "${TEMPLATE_DIR}/Contents/Info.plist"
-	modify_plist "{ADDITIONAL_URL_SCHEMES}" "<string>discord-${DISCORD_APPID}</string>" "${TEMPLATE_DIR}/Contents/Info.plist"
+	modify_plist "{DISCORD_URL_SCHEME}" "discord-${DISCORD_APPID}" "${TEMPLATE_DIR}/Contents/Info.plist"
 }
 
 # Deletes from the first argument's mod dirs all the later arguments
@@ -95,124 +96,145 @@ sign_bundle() {
 	fi
 }
 
-echo "Building launchers"
-curl -s -L -O https://github.com/OpenRA/OpenRALauncherOSX/releases/download/${LAUNCHER_TAG}/launcher.zip || exit 3
-unzip -qq -d "${BUILTDIR}" launcher.zip
-rm launcher.zip
+build_platform() {
+	PLATFORM="${1}"
+	DMG_PATH="${2}"
+	echo "Building launchers (${PLATFORM})"
 
-modify_plist "{DEV_VERSION}" "${TAG}" "${BUILTDIR}/OpenRA.app/Contents/Info.plist"
-modify_plist "{FAQ_URL}" "http://wiki.openra.net/FAQ" "${BUILTDIR}/OpenRA.app/Contents/Info.plist"
-echo "Building core files"
+	mkdir -p "${BUILTDIR}/OpenRA.app/Contents/Resources"
+	mkdir -p "${BUILTDIR}/OpenRA.app/Contents/MacOS"
+	echo "APPL????" > "${BUILTDIR}/OpenRA.app/Contents/PkgInfo"
+	cp Eluant.dll.config "${BUILTDIR}/OpenRA.app/Contents/Resources"
+	cp Info.plist.in "${BUILTDIR}/OpenRA.app/Contents/Info.plist"
+	modify_plist "{DEV_VERSION}" "${TAG}" "${BUILTDIR}/OpenRA.app/Contents/Info.plist"
+	modify_plist "{FAQ_URL}" "http://wiki.openra.net/FAQ" "${BUILTDIR}/OpenRA.app/Contents/Info.plist"
 
-pushd "${SRCDIR}" > /dev/null || exit 1
-make clean
-make core TARGETPLATFORM=osx-x64
-make version VERSION="${TAG}"
-make install-core gameinstalldir="/Contents/Resources/" DESTDIR="${BUILTDIR}/OpenRA.app"
-make install-dependencies TARGETPLATFORM=osx-x64 gameinstalldir="/Contents/Resources/"  DESTDIR="${BUILTDIR}/OpenRA.app"
-popd > /dev/null || exit 1
+	if [ "${PLATFORM}" = "compat" ]; then
+		modify_plist "{MINIMUM_SYSTEM_VERSION}" "10.9" "${BUILTDIR}/OpenRA.app/Contents/Info.plist"
+		clang -m64 launcher-mono.m -o "${BUILTDIR}/OpenRA.app/Contents/MacOS/OpenRA" -framework AppKit -mmacosx-version-min=10.9
+	else
+		modify_plist "{MINIMUM_SYSTEM_VERSION}" "10.13" "${BUILTDIR}/OpenRA.app/Contents/Info.plist"
+		clang -m64 launcher.m -o "${BUILTDIR}/OpenRA.app/Contents/MacOS/OpenRA" -framework AppKit -mmacosx-version-min=10.13
 
-populate_bundle "OpenRA - Red Alert.app" "ra" "Red Alert" "699222659766026240"
-delete_mods "OpenRA - Red Alert.app" "cnc" "d2k"
-sign_bundle "OpenRA - Red Alert.app"
+		curl -s -L -O https://github.com/OpenRA/OpenRALauncherOSX/releases/download/${MONO_TAG}/mono.zip || exit 3
+		unzip -qq -d "${BUILTDIR}/mono" mono.zip
+		mv "${BUILTDIR}/mono/mono" "${BUILTDIR}/OpenRA.app/Contents/MacOS/"
+		mv "${BUILTDIR}/mono/etc" "${BUILTDIR}/OpenRA.app/Contents/Resources"
+		mv "${BUILTDIR}/mono/lib" "${BUILTDIR}/OpenRA.app/Contents/Resources"
+		rm mono.zip
+		rmdir "${BUILTDIR}/mono"
+	fi
 
-populate_bundle "OpenRA - Tiberian Dawn.app" "cnc" "Tiberian Dawn" "699223250181292033"
-delete_mods "OpenRA - Tiberian Dawn.app" "ra" "d2k"
-sign_bundle "OpenRA - Tiberian Dawn.app"
+	echo "Building core files"
 
-populate_bundle "OpenRA - Dune 2000.app" "d2k" "Dune 2000" "712711732770111550"
-delete_mods "OpenRA - Dune 2000.app" "ra" "cnc"
-sign_bundle "OpenRA - Dune 2000.app"
+	pushd "${SRCDIR}" > /dev/null || exit 1
+	make clean
+	make core TARGETPLATFORM=osx-x64
+	make version VERSION="${TAG}"
+	make install-core gameinstalldir="/Contents/Resources/" DESTDIR="${BUILTDIR}/OpenRA.app"
+	make install-dependencies TARGETPLATFORM=osx-x64 gameinstalldir="/Contents/Resources/"  DESTDIR="${BUILTDIR}/OpenRA.app"
+	popd > /dev/null || exit 1
 
-rm -rf "${BUILTDIR}/OpenRA.app"
+	populate_bundle "OpenRA - Red Alert.app" "ra" "Red Alert" "699222659766026240"
+	delete_mods "OpenRA - Red Alert.app" "cnc" "d2k"
+	sign_bundle "OpenRA - Red Alert.app"
 
-if [ -n "${MACOS_DEVELOPER_CERTIFICATE_BASE64}" ] && [ -n "${MACOS_DEVELOPER_CERTIFICATE_PASSWORD}" ] && [ -n "${MACOS_DEVELOPER_IDENTITY}" ]; then
-	security delete-keychain build.keychain
-fi
+	populate_bundle "OpenRA - Tiberian Dawn.app" "cnc" "Tiberian Dawn" "699223250181292033"
+	delete_mods "OpenRA - Tiberian Dawn.app" "ra" "d2k"
+	sign_bundle "OpenRA - Tiberian Dawn.app"
 
-echo "Packaging disk image"
-hdiutil create build.dmg -format UDRW -volname "OpenRA" -fs HFS+ -srcfolder build
-DMG_DEVICE=$(hdiutil attach -readwrite -noverify -noautoopen "build.dmg" | egrep '^/dev/' | sed 1q | awk '{print $1}')
-sleep 2
+	populate_bundle "OpenRA - Dune 2000.app" "d2k" "Dune 2000" "712711732770111550"
+	delete_mods "OpenRA - Dune 2000.app" "ra" "cnc"
+	sign_bundle "OpenRA - Dune 2000.app"
 
-# Background image is created from source svg in artsrc repository
-mkdir "/Volumes/OpenRA/.background/"
-tiffutil -cathidpicheck "${ARTWORK_DIR}/macos-background.png" "${ARTWORK_DIR}/macos-background-2x.png" -out "/Volumes/OpenRA/.background/background.tiff"
+	rm -rf "${BUILTDIR}/OpenRA.app"
 
-cp "${BUILTDIR}/OpenRA - Red Alert.app/Contents/Resources/ra.icns" "/Volumes/OpenRA/.VolumeIcon.icns"
+	echo "Packaging disk image"
+	hdiutil create "${DMG_PATH}" -format UDRW -volname "OpenRA" -fs HFS+ -srcfolder build
+	DMG_DEVICE=$(hdiutil attach -readwrite -noverify -noautoopen "${DMG_PATH}" | egrep '^/dev/' | sed 1q | awk '{print $1}')
+	sleep 2
 
-echo '
-   tell application "Finder"
-     tell disk "'OpenRA'"
-           open
-           set current view of container window to icon view
-           set toolbar visible of container window to false
-           set statusbar visible of container window to false
-           set the bounds of container window to {400, 100, 1040, 580}
-           set theViewOptions to the icon view options of container window
-           set arrangement of theViewOptions to not arranged
-           set icon size of theViewOptions to 72
-           set background picture of theViewOptions to file ".background:background.tiff"
-           make new alias file at container window to POSIX file "/Applications" with properties {name:"Applications"}
-           set position of item "'OpenRA - Tiberian Dawn.app'" of container window to {160, 106}
-           set position of item "'OpenRA - Red Alert.app'" of container window to {320, 106}
-           set position of item "'OpenRA - Dune 2000.app'" of container window to {480, 106}
-           set position of item "Applications" of container window to {320, 298}
-           set position of item ".background" of container window to {160, 298}
-           set position of item ".fseventsd" of container window to {160, 298}
-           set position of item ".VolumeIcon.icns" of container window to {160, 298}
-           update without registering applications
-           delay 5
-           close
-     end tell
-   end tell
-' | osascript
+	# Background image is created from source svg in artsrc repository
+	mkdir "/Volumes/OpenRA/.background/"
+	tiffutil -cathidpicheck "${ARTWORK_DIR}/macos-background.png" "${ARTWORK_DIR}/macos-background-2x.png" -out "/Volumes/OpenRA/.background/background.tiff"
 
-# HACK: Copy the volume icon again - something in the previous step seems to delete it...?
-cp "${BUILTDIR}/OpenRA - Red Alert.app/Contents/Resources/ra.icns" "/Volumes/OpenRA/.VolumeIcon.icns"
-SetFile -c icnC "/Volumes/OpenRA/.VolumeIcon.icns"
-SetFile -a C "/Volumes/OpenRA"
+	cp "${BUILTDIR}/OpenRA - Red Alert.app/Contents/Resources/ra.icns" "/Volumes/OpenRA/.VolumeIcon.icns"
 
-chmod -Rf go-w /Volumes/OpenRA
-sync
-sync
+	echo '
+	   tell application "Finder"
+	     tell disk "'OpenRA'"
+	           open
+	           set current view of container window to icon view
+	           set toolbar visible of container window to false
+	           set statusbar visible of container window to false
+	           set the bounds of container window to {400, 100, 1040, 580}
+	           set theViewOptions to the icon view options of container window
+	           set arrangement of theViewOptions to not arranged
+	           set icon size of theViewOptions to 72
+	           set background picture of theViewOptions to file ".background:background.tiff"
+	           make new alias file at container window to POSIX file "/Applications" with properties {name:"Applications"}
+	           set position of item "'OpenRA - Tiberian Dawn.app'" of container window to {160, 106}
+	           set position of item "'OpenRA - Red Alert.app'" of container window to {320, 106}
+	           set position of item "'OpenRA - Dune 2000.app'" of container window to {480, 106}
+	           set position of item "Applications" of container window to {320, 298}
+	           set position of item ".background" of container window to {160, 298}
+	           set position of item ".fseventsd" of container window to {160, 298}
+	           set position of item ".VolumeIcon.icns" of container window to {160, 298}
+	           update without registering applications
+	           delay 5
+	           close
+	     end tell
+	   end tell
+	' | osascript
 
-hdiutil detach "${DMG_DEVICE}"
+	# HACK: Copy the volume icon again - something in the previous step seems to delete it...?
+	cp "${BUILTDIR}/OpenRA - Red Alert.app/Contents/Resources/ra.icns" "/Volumes/OpenRA/.VolumeIcon.icns"
+	SetFile -c icnC "/Volumes/OpenRA/.VolumeIcon.icns"
+	SetFile -a C "/Volumes/OpenRA"
 
-# Submit for notarization
-if [ -n "${MACOS_DEVELOPER_USERNAME}" ] && [ -n "${MACOS_DEVELOPER_PASSWORD}" ]; then
-	echo "Submitting disk image for notarization"
+	chmod -Rf go-w /Volumes/OpenRA
+	sync
+	sync
+
+	hdiutil detach "${DMG_DEVICE}"
+	rm -rf "${BUILTDIR}"
+}
+
+notarize_package() {
+	DMG_PATH="${1}"
+	NOTARIZE_DMG_PATH="${DMG_PATH%.*}"-notarization.dmg
+	echo "Submitting ${PACKAGE_NAME} for notarization"
 
 	# Reset xcode search path to fix xcrun not finding altool
 	sudo xcode-select -r
 
 	# Create a temporary read-only dmg for submission (notarization service rejects read/write images)
-	hdiutil convert build.dmg -format UDZO -imagekey zlib-level=9 -ov -o notarization.dmg
+	hdiutil convert "${DMG_PATH}" -format UDZO -imagekey zlib-level=9 -ov -o "${NOTARIZE_DMG_PATH}"
 
-	NOTARIZATION_UUID=$(xcrun altool --notarize-app --primary-bundle-id "net.openra.packaging" -u "${MACOS_DEVELOPER_USERNAME}" -p "${MACOS_DEVELOPER_PASSWORD}" --file notarization.dmg 2>&1 | awk -F' = ' '/RequestUUID/ { print $2; exit }')
+	NOTARIZATION_UUID=$(xcrun altool --notarize-app --primary-bundle-id "net.openra.packaging" -u "${MACOS_DEVELOPER_USERNAME}" -p "${MACOS_DEVELOPER_PASSWORD}" --file "${NOTARIZE_DMG_PATH}" 2>&1 | awk -F' = ' '/RequestUUID/ { print $2; exit }')
 	if [ -z "${NOTARIZATION_UUID}" ]; then
 		echo "Submission failed"
 		exit 1
 	fi
 
-	echo "Submission UUID is ${NOTARIZATION_UUID}"
-	rm notarization.dmg
+	echo "${DMG_PATH} submission UUID is ${NOTARIZATION_UUID}"
+	rm "${NOTARIZE_DMG_PATH}"
 
 	while :; do
 		sleep 30
 		NOTARIZATION_RESULT=$(xcrun altool --notarization-info "${NOTARIZATION_UUID}" -u "${MACOS_DEVELOPER_USERNAME}" -p "${MACOS_DEVELOPER_PASSWORD}" 2>&1 | awk -F': ' '/Status/ { print $2; exit }')
-		echo "Submission status: ${NOTARIZATION_RESULT}"
+		echo "${DMG_PATH}: ${NOTARIZATION_RESULT}"
 
 		if [ "${NOTARIZATION_RESULT}" == "invalid" ]; then
 			NOTARIZATION_LOG_URL=$(xcrun altool --notarization-info "${NOTARIZATION_UUID}" -u "${MACOS_DEVELOPER_USERNAME}" -p "${MACOS_DEVELOPER_PASSWORD}" 2>&1 | awk -F': ' '/LogFileURL/ { print $2; exit }')
-			echo "Notarization failed with error:"
+			echo "${NOTARIZATION_UUID} failed notarization with error:"
 			curl -s "${NOTARIZATION_LOG_URL}" -w "\n"
 			exit 1
 		fi
 
 		if [ "${NOTARIZATION_RESULT}" == "success" ]; then
-			echo "Stapling notarization tickets"
-			DMG_DEVICE=$(hdiutil attach -readwrite -noverify -noautoopen "build.dmg" | egrep '^/dev/' | sed 1q | awk '{print $1}')
+			echo "${DMG_PATH}: Stapling tickets"
+			DMG_DEVICE=$(hdiutil attach -readwrite -noverify -noautoopen "${DMG_PATH}" | egrep '^/dev/' | sed 1q | awk '{print $1}')
 			sleep 2
 
 			xcrun stapler staple "/Volumes/OpenRA/OpenRA - Red Alert.app"
@@ -226,9 +248,29 @@ if [ -n "${MACOS_DEVELOPER_USERNAME}" ] && [ -n "${MACOS_DEVELOPER_PASSWORD}" ];
 			break
 		fi
 	done
+}
+
+finalize_package() {
+	INPUT_PATH="${1}"
+	OUTPUT_PATH="${2}"
+
+	hdiutil convert "${INPUT_PATH}" -format UDZO -imagekey zlib-level=9 -ov -o "${OUTPUT_PATH}"
+	rm "${INPUT_PATH}"
+}
+
+build_platform "standard" "build.dmg"
+build_platform "compat" "build-compat.dmg"
+
+if [ -n "${MACOS_DEVELOPER_CERTIFICATE_BASE64}" ] && [ -n "${MACOS_DEVELOPER_CERTIFICATE_PASSWORD}" ] && [ -n "${MACOS_DEVELOPER_IDENTITY}" ]; then
+	security delete-keychain build.keychain
 fi
 
-hdiutil convert build.dmg -format UDZO -imagekey zlib-level=9 -ov -o "${OUTPUTDIR}/OpenRA-${TAG}.dmg"
+if [ -n "${MACOS_DEVELOPER_USERNAME}" ] && [ -n "${MACOS_DEVELOPER_PASSWORD}" ]; then
+	# Parallelize processing
+	(notarize_package "build.dmg") &
+	(notarize_package "build-compat.dmg") &
+	wait
+fi
 
-# Clean up
-rm -rf "${BUILTDIR}" build.dmg
+finalize_package "build.dmg" "${OUTPUTDIR}/OpenRA-${TAG}.dmg"
+finalize_package "build-compat.dmg" "${OUTPUTDIR}/OpenRA-${TAG}-compat.dmg"
