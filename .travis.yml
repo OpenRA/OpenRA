@@ -3,6 +3,8 @@
 
 language: csharp
 mono: 6.4.0
+os: linux
+dist: xenial
 
 jobs:
   include:
@@ -11,10 +13,6 @@ jobs:
     - os: osx
       if: tag IS present
       osx_image: xcode10
-
-cache:
-  directories:
-  - thirdparty/download
 
 addons:
   apt:
@@ -48,13 +46,14 @@ branches:
  only:
    - /^release-.*$/
    - /^playtest-.*$/
-   - /^pkgtest-.*$/
+   - /^devtest-.*$/
    - /^prep-.*$/
    - bleed
 
 # Notify developers when build passed/failed.
 notifications:
   irc:
+    if: repo = OpenRA/OpenRA
     template:
       - "%{repository}#%{build_number} %{commit} %{author}: %{message} %{build_url}"
     channels:
@@ -63,27 +62,31 @@ notifications:
     skip_join: true
 
 before_deploy:
- - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+ - if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
      wget https://mirrors.edge.kernel.org/ubuntu/pool/universe/n/nsis/nsis-common_3.04-1_all.deb;
      wget https://mirrors.edge.kernel.org/ubuntu/pool/universe/n/nsis/nsis_3.04-1_amd64.deb;
      sudo dpkg -i nsis-common_3.04-1_all.deb;
      sudo dpkg -i nsis_3.04-1_amd64.deb;
-     cd packaging && ./update-wiki.sh ${TRAVIS_TAG} && cd ..;
-   fi;
- - export PATH=$PATH:$HOME/usr/bin
+     echo ${TRAVIS_REPO_SLUG};
+     if [[ "${TRAVIS_REPO_SLUG}" == "OpenRA/OpenRA" ]]; then
+       cd packaging && ./update-wiki.sh ${TRAVIS_TAG} && cd ..;
+     fi;
+   fi
+ - export PATH=${PATH}:${HOME}/usr/bin
  - DOTVERSION=`echo ${TRAVIS_TAG} | sed "s/-/\\./g"`
  - cd packaging
  - mkdir build
  - ./package-all.sh ${TRAVIS_TAG} ${PWD}/build/
- - ./upload-itch.sh ${TRAVIS_TAG} ${PWD}/build/
+ - if [[ "${TRAVIS_REPO_SLUG}" == "OpenRA/OpenRA" ]]; then
+     ./upload-itch.sh ${TRAVIS_TAG} ${PWD}/build/;
+   fi
+
 deploy:
   provider: releases
-  api_key:
-    secure: "g/LU11f+mjqv+lj0sR1UliHwogXL4ofJUwoG5Dbqlvdf5UTLWytw/OWSCv8RGyuh10miyWeaoqHh1cn2C1IFhUEqN1sSeKKKOWOTvJ2FR5mzi9uH3d/MOBzG5icQ7Qh0fZ1YPz5RaJJhYu6bmfvA/1gD49GoaX2kxQL4J5cEBgg="
+  token: ${GH_DEPLOY_API_KEY}
   file_glob: true
   file: build/*
   skip_cleanup: true
   on:
     all_branches: true
     tags: true
-    repo: OpenRA/OpenRA
