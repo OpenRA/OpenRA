@@ -1,7 +1,6 @@
 #!/bin/bash
 
 command -v curl >/dev/null 2>&1 || { echo >&2 "Windows packaging requires curl."; exit 1; }
-command -v markdown >/dev/null 2>&1 || { echo >&2 "Windows packaging requires markdown."; exit 1; }
 command -v makensis >/dev/null 2>&1 || { echo >&2 "Windows packaging requires makensis."; exit 1; }
 command -v convert >/dev/null 2>&1 || { echo >&2 "Windows packaging requires ImageMagick."; exit 1; }
 
@@ -80,13 +79,6 @@ function build_platform()
 	makelauncher "TiberianDawn.exe" "Tiberian Dawn" "cnc" ${PLATFORM}
 	makelauncher "Dune2000.exe" "Dune 2000" "d2k" ${PLATFORM}
 	cp "${SRCDIR}/OpenRA.Game.exe.config" "${BUILTDIR}"
-
-	curl -s -L -O https://raw.githubusercontent.com/wiki/OpenRA/OpenRA/Changelog.md
-	markdown Changelog.md > "${BUILTDIR}/CHANGELOG.html"
-	rm Changelog.md
-
-	markdown "${SRCDIR}/README.md" > "${BUILTDIR}/README.html"
-	markdown "${SRCDIR}/CONTRIBUTING.md" > "${BUILTDIR}/CONTRIBUTING.html"
 
 	echo "Building Windows setup.exe ($1)"
 	makensis -V2 -DSRCDIR="${BUILTDIR}" -DTAG="${TAG}" -DSUFFIX="${SUFFIX}" ${USE_PROGRAMFILES32} OpenRA.nsi

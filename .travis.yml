@@ -22,7 +22,6 @@ addons:
     - lua5.1
     - dpkg
     - zsync
-    - markdown
     - imagemagick
 
 # Environment variables

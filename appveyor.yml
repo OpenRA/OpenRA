@@ -17,9 +17,6 @@ test_script:
 
 after_test:
   - appveyor DownloadFile "https://download.ip2location.com/lite/IP2LOCATION-LITE-DB1.IPV6.BIN.ZIP" -FileName IP2LOCATION-LITE-DB1.IPV6.BIN.ZIP
-  - appveyor DownloadFile "https://raw.githubusercontent.com/wiki/OpenRA/OpenRA/Changelog.md" -FileName Changelog.md
-  - make docs
-  - ps: dir *.md | % {gc $_ -Raw | .\ConvertFrom-Markdown.ps1 | Out-File -FilePath "$($_.Name.TrimEnd(".md")).html"}
   - pip install Pillow
   - python -c "from PIL import Image; i = Image.open('packaging/artwork/ra_256x256.png'); i.save('ra.ico')"
   - python -c "from PIL import Image; i = Image.open('packaging/artwork/cnc_256x256.png'); i.save('cnc.ico')"
