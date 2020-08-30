@@ -236,13 +236,13 @@ install-core: install-engine install-common-mod-files install-default-mods
 install-linux-icons:
 	for SIZE in 16x16 32x32 48x48 64x64 128x128; do \
 		$(INSTALL_DIR) "$(DESTDIR)$(datadir)/icons/hicolor/$$SIZE/apps"; \
-		$(INSTALL_DATA) packaging/linux/icons/ra_$$SIZE.png "$(DESTDIR)$(datadir)/icons/hicolor/$$SIZE/apps/openra-ra.png"; \
-		$(INSTALL_DATA) packaging/linux/icons/cnc_$$SIZE.png "$(DESTDIR)$(datadir)/icons/hicolor/$$SIZE/apps/openra-cnc.png"; \
-		$(INSTALL_DATA) packaging/linux/icons/d2k_$$SIZE.png "$(DESTDIR)$(datadir)/icons/hicolor/$$SIZE/apps/openra-d2k.png"; \
+		$(INSTALL_DATA) packaging/artwork/ra_$$SIZE.png "$(DESTDIR)$(datadir)/icons/hicolor/$$SIZE/apps/openra-ra.png"; \
+		$(INSTALL_DATA) packaging/artwork/cnc_$$SIZE.png "$(DESTDIR)$(datadir)/icons/hicolor/$$SIZE/apps/openra-cnc.png"; \
+		$(INSTALL_DATA) packaging/artwork/d2k_$$SIZE.png "$(DESTDIR)$(datadir)/icons/hicolor/$$SIZE/apps/openra-d2k.png"; \
 	done
 	$(INSTALL_DIR) "$(DESTDIR)$(datadir)/icons/hicolor/scalable/apps"
-	$(INSTALL_DATA) packaging/linux/icons/ra_scalable.svg "$(DESTDIR)$(datadir)/icons/hicolor/scalable/apps/openra-ra.svg"
-	$(INSTALL_DATA) packaging/linux/icons/cnc_scalable.svg "$(DESTDIR)$(datadir)/icons/hicolor/scalable/apps/openra-cnc.svg"
+	$(INSTALL_DATA) packaging/artwork/ra_scalable.svg "$(DESTDIR)$(datadir)/icons/hicolor/scalable/apps/openra-ra.svg"
+	$(INSTALL_DATA) packaging/artwork/cnc_scalable.svg "$(DESTDIR)$(datadir)/icons/hicolor/scalable/apps/openra-cnc.svg"
 
 install-linux-desktop:
 	@$(INSTALL_DIR) "$(DESTDIR)$(datadir)/applications"

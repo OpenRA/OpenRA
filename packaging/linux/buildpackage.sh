@@ -21,6 +21,7 @@ TAG="$1"
 OUTPUTDIR="$2"
 SRCDIR="$(pwd)/../.."
 BUILTDIR="$(pwd)/build"
+ARTWORK_DIR="$(pwd)/../artwork/"
 
 UPDATE_CHANNEL=""
 SUFFIX="-devel"
@@ -117,14 +118,14 @@ build_appimage() {
 	sed "s/{MODID}/${MOD_ID}/g" openra-mimeinfo.xml.in | sed "s/{TAG}/${TAG}/g" > temp.xml
 	install -Dm 0755 temp.xml "${APPDIR}/usr/share/mime/packages/openra-${MOD_ID}.xml"
 
-	if [ -f "icons/${MOD_ID}_scalable.svg" ]; then
-		install -Dm644 "icons/${MOD_ID}_scalable.svg" "${APPDIR}/usr/share/icons/hicolor/scalable/apps/openra-${MOD_ID}.svg"
+	if [ -f "${ARTWORK_DIR}/${MOD_ID}_scalable.svg" ]; then
+		install -Dm644 "${ARTWORK_DIR}/${MOD_ID}_scalable.svg" "${APPDIR}/usr/share/icons/hicolor/scalable/apps/openra-${MOD_ID}.svg"
 	fi
 
 	for i in 16x16 32x32 48x48 64x64 128x128 256x256 512x512 1024x1024; do
-		if [ -f "icons/${MOD_ID}_${i}.png" ]; then
-			install -Dm644 "icons/${MOD_ID}_${i}.png" "${APPDIR}/usr/share/icons/hicolor/${i}/apps/openra-${MOD_ID}.png"
-			install -m644 "icons/${MOD_ID}_${i}.png" "${APPDIR}/openra-${MOD_ID}.png"
+		if [ -f "${ARTWORK_DIR}/${MOD_ID}_${i}.png" ]; then
+			install -Dm644 "${ARTWORK_DIR}/${MOD_ID}_${i}.png" "${APPDIR}/usr/share/icons/hicolor/${i}/apps/openra-${MOD_ID}.png"
+			install -m644 "${ARTWORK_DIR}/${MOD_ID}_${i}.png" "${APPDIR}/openra-${MOD_ID}.png"
 		fi
 	done
 

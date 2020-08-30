@@ -44,6 +44,7 @@ TAG="$1"
 OUTPUTDIR="$2"
 SRCDIR="$(pwd)/../.."
 BUILTDIR="$(pwd)/build"
+ARTWORK_DIR="$(pwd)/../artwork/"
 
 modify_plist() {
 	sed "s|$1|$2|g" "$3" > "$3.tmp" && mv "$3.tmp" "$3"
@@ -58,7 +59,18 @@ populate_bundle() {
 	cp -r "${BUILTDIR}/OpenRA.app" "${TEMPLATE_DIR}"
 
 	# Assemble multi-resolution icon
-	iconutil --convert icns ${MOD_ID}.iconset -o "${TEMPLATE_DIR}/Contents/Resources/${MOD_ID}.icns"
+	mkdir "${MOD_ID}.iconset"
+	cp "${ARTWORK_DIR}/${MOD_ID}_16x16.png" "${MOD_ID}.iconset/icon_16x16.png"
+	cp "${ARTWORK_DIR}/${MOD_ID}_32x32.png" "${MOD_ID}.iconset/icon_16x16@2.png"
+	cp "${ARTWORK_DIR}/${MOD_ID}_32x32.png" "${MOD_ID}.iconset/icon_32x32.png"
+	cp "${ARTWORK_DIR}/${MOD_ID}_64x64.png" "${MOD_ID}.iconset/icon_32x32@2x.png"
+	cp "${ARTWORK_DIR}/${MOD_ID}_128x128.png" "${MOD_ID}.iconset/icon_128x128.png"
+	cp "${ARTWORK_DIR}/${MOD_ID}_256x256.png" "${MOD_ID}.iconset/icon_128x128@2x.png"
+	cp "${ARTWORK_DIR}/${MOD_ID}_256x256.png" "${MOD_ID}.iconset/icon_256x256.png"
+	cp "${ARTWORK_DIR}/${MOD_ID}_512x512.png" "${MOD_ID}.iconset/icon_256x256@2x.png"
+	cp "${ARTWORK_DIR}/${MOD_ID}_1024x1024.png" "${MOD_ID}.iconset/icon_512x512@2x.png"
+	iconutil --convert icns "${MOD_ID}.iconset" -o "${TEMPLATE_DIR}/Contents/Resources/${MOD_ID}.icns"
+	rm -rf "${MOD_ID}.iconset"
 
 	# Copy macOS specific files
 	modify_plist "{MOD_ID}" "${MOD_ID}" "${TEMPLATE_DIR}/Contents/Info.plist"
@@ -125,7 +137,7 @@ sleep 2
 
 # Background image is created from source svg in artsrc repository
 mkdir "/Volumes/OpenRA/.background/"
-tiffutil -cathidpicheck background.png background-2x.png -out "/Volumes/OpenRA/.background/background.tiff"
+tiffutil -cathidpicheck "${ARTWORK_DIR}/macos-background.png" "${ARTWORK_DIR}/macos-background-2x.png" -out "/Volumes/OpenRA/.background/background.tiff"
 
 cp "${BUILTDIR}/OpenRA - Red Alert.app/Contents/Resources/ra.icns" "/Volumes/OpenRA/.VolumeIcon.icns"
 
