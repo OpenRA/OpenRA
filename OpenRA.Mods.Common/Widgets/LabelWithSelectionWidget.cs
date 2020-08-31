@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public Color? TextColorSelected = ChromeMetrics.GetOrValue<Color?>("TextColorSelected", null);
 		public Color BackgroundColorSelected = ChromeMetrics.Get<Color>("TextBackgroundColorSelected");
 
-		static Selection selection = new Selection();
+		static readonly Selection Selection = new Selection();
 
 		public LabelWithSelectionWidget() { }
 
@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var selectedColor = TextColorSelected ?? color;
 			var selectedBackgroundColor = BackgroundColorSelected;
 
-			if (selection.State != Selection.States.Empty && selection.OwnedBy(this))
+			if (Selection.State != Selection.States.Empty && Selection.OwnedBy(this))
 			{
 				font.DrawTextWithSelection(
 						text,
@@ -49,8 +49,8 @@ namespace OpenRA.Mods.Common.Widgets
 						color,
 						selectedColor,
 						selectedBackgroundColor,
-						selection.Start,
-						selection.End);
+						Selection.Start,
+						Selection.End);
 			}
 			else
 				base.DrawInner(text, font, color, position);
@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Common.Widgets
 					// clicking outside of the element should loose mouse focus and kill the selection
 					if (HasMouseFocus && (!IsVisible() || !GetEventBounds().Contains(mi.Location)))
 					{
-						selection.HandleLooseMouseFocus();
+						Selection.HandleLooseMouseFocus();
 						YieldMouseFocus(mi);
 
 						// but that yielding of focus shouldn't prevent clicks elsewhere from registering.
@@ -72,12 +72,12 @@ namespace OpenRA.Mods.Common.Widgets
 					}
 
 					TakeMouseFocus(mi);
-					return selection.HandleMouseDown(this, mi.Location);
+					return Selection.HandleMouseDown(this, mi.Location);
 				case MouseInputEvent.Move:
-					return selection.HandleMouseMove(mi.Location);
+					return Selection.HandleMouseMove(mi.Location);
 				case MouseInputEvent.Up:
 					TakeKeyboardFocus();
-					return selection.HandleMouseUp();
+					return Selection.HandleMouseUp();
 			}
 
 			return false;
@@ -96,16 +96,16 @@ namespace OpenRA.Mods.Common.Widgets
 			if (e.Key != Keycode.C)
 				return false;
 
-			if (!selection.OwnedBy(this))
+			if (!Selection.OwnedBy(this))
 				return false;
 
-			if (selection.State == Selection.States.Empty)
+			if (Selection.State == Selection.States.Empty)
 				return false;
 
-			if (string.IsNullOrEmpty(selection.SelectedText))
+			if (string.IsNullOrEmpty(Selection.SelectedText))
 				return false;
 
-			Game.Renderer.SetClipboardText(selection.SelectedText);
+			Game.Renderer.SetClipboardText(Selection.SelectedText);
 
 			return true;
 		}
