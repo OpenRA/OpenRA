@@ -66,7 +66,6 @@ namespace OpenRA.Mods.Common.Widgets
 			GetContrastColorLight = other.GetContrastColorLight;
 		}
 
-		// Allow same checks when ever we get thee font, should this be cached?
 		public SpriteFont GetFont()
 		{
 			SpriteFont font;
@@ -76,7 +75,6 @@ namespace OpenRA.Mods.Common.Widgets
 			return font;
 		}
 
-		// allow getting the content with the same checks elsewhere, should this be cached?
 		public string GetTextContent()
 		{
 			var text = GetText();
@@ -88,7 +86,6 @@ namespace OpenRA.Mods.Common.Widgets
 			return text;
 		}
 
-		// Allow access to the position elsewhere, should this be cached?
 		public int2 GetPosition()
 		{
 			var font = GetFont();
