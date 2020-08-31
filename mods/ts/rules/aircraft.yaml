@@ -472,6 +472,9 @@ APACHE:
 		FullSequence: pip-ammo
 		EmptySequence: pip-ammoempty
 		Palette: pips
+	WithShadow:
+	WithVoxelBody:
+		ShowShadow: False
 
 HUNTER:
 	Inherits@2: ^ExistsInWorld
