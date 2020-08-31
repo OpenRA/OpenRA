@@ -120,7 +120,7 @@ namespace OpenRA.Graphics
 
 				// Convert screen coordinates back to UI coordinates for drawing
 				if (g.Sprite != null)
-					Game.Renderer.RgbaSpriteRenderer.DrawSprite(g.Sprite,
+					Game.Renderer.RgbaSpriteRenderer.DrawSpriteWithTint(g.Sprite,
 						(screen + g.Offset).ToFloat2() / deviceScale,
 						g.Sprite.Size / deviceScale,
 						tint);
@@ -250,8 +250,10 @@ namespace OpenRA.Graphics
 					continue;
 				}
 
+				var glyph = glyphs[character];
 				var inSelection = selectionStart <= currentIndex && currentIndex <= selectionEnd;
-				var glyph = glyphs[Pair.New(character, inSelection ? selected : normal)];
+				var tintColor = inSelection ? selected : normal;
+				var tint = new float3(tintColor.R / 256f, tintColor.G / 256f, tintColor.B / 256f);
 
 				if (inSelection)
 				{
@@ -264,11 +266,12 @@ namespace OpenRA.Graphics
 
 				if (glyph.Sprite != null)
 				{
-					Game.Renderer.RgbaSpriteRenderer.DrawSprite(glyph.Sprite,
+					Game.Renderer.RgbaSpriteRenderer.DrawSpriteWithTint(glyph.Sprite,
 							new float2(
 								(int)Math.Round(columnLocation.X * deviceScale + glyph.Offset.X, 0) / deviceScale,
 								columnLocation.Y + glyph.Offset.Y / deviceScale),
-							glyph.Sprite.Size / deviceScale);
+							glyph.Sprite.Size / deviceScale,
+							tint);
 				}
 
 				currentIndex++;
