@@ -1,12 +1,6 @@
 version: 1.0.{build}
 image: Visual Studio 2017
 
-environment:
-  CoverityProjectToken:
-    secure: BYP5qnptMazSCwTwgiFHlfqZd7BM3bwTRq2Cbs++ofg=
-  CoverityNotificationEmail:
-    secure: 0kyu0t8QwQYUQzqguVJP3N+VpEDfET2ArP+JNnOsUELJQvH8qbeQzPTM0ga0ek5G
-
 install:
 
 build_script:
@@ -35,7 +29,3 @@ after_test:
 artifacts:
   - path: OpenRA-$(VERSION).exe
     name: Installer
-  - path: coverity.zip
-    name: Coverity Build
-  - path: dupReport.html
-    name: dupFinder Report
