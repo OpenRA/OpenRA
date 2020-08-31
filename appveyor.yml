@@ -16,7 +16,7 @@ test_script:
   - nunit3-console OpenRA.Test.dll --result=myresults.xml;format=AppVeyor
 
 after_test:
-  - appveyor DownloadFile "https://download.ip2location.com/lite/IP2LOCATION-LITE-DB1.IPV6.BIN.ZIP" -FileName IP2LOCATION-LITE-DB1.IPV6.BIN.ZIP
+  - appveyor DownloadFile "https://github.com/OpenRA/GeoIP-Database/releases/download/monthly/IP2LOCATION-LITE-DB1.IPV6.BIN.ZIP" -FileName IP2LOCATION-LITE-DB1.IPV6.BIN.ZIP
   - pip install Pillow
   - python -c "from PIL import Image; i = Image.open('packaging/artwork/ra_256x256.png'); i.save('ra.ico')"
   - python -c "from PIL import Image; i = Image.open('packaging/artwork/cnc_256x256.png'); i.save('cnc.ico')"
