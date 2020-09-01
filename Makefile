@@ -158,7 +158,8 @@ version: VERSION mods/ra/mod.yaml mods/cnc/mod.yaml mods/d2k/mod.yaml mods/ts/mo
 		rm $${i}.tmp; \
 	done
 
-install: core install-core
+install: core install-engine install-common-mod-files install-default-mods
+	@$(CP) *.sh "$(DATA_INSTALL_DIR)"
 
 install-linux-shortcuts: install-linux-scripts install-linux-icons install-linux-desktop
 
@@ -229,9 +230,6 @@ install-default-mods:
 	@$(CP_R) mods/d2k "$(DATA_INSTALL_DIR)/mods/"
 	@$(INSTALL_PROGRAM) mods/d2k/OpenRA.Mods.D2k.dll "$(DATA_INSTALL_DIR)/mods/d2k"
 	@$(CP_R) mods/modcontent "$(DATA_INSTALL_DIR)/mods/"
-
-install-core: install-engine install-common-mod-files install-default-mods
-	@$(CP) *.sh "$(DATA_INSTALL_DIR)"
 
 install-linux-icons:
 	for SIZE in 16x16 32x32 48x48 64x64 128x128; do \
@@ -370,4 +368,4 @@ help:
 
 .SUFFIXES:
 
-.PHONY: check-scripts check test all core clean version install install-linux-shortcuts install-dependencies install-engine install-common-mod-files install-default-mods install-core install-linux-icons install-linux-desktop install-linux-mime install-linux-appdata install-man-page install-linux-scripts uninstall help
+.PHONY: check-scripts check test all core clean version install install-linux-shortcuts install-dependencies install-engine install-common-mod-files install-default-mods install-linux-icons install-linux-desktop install-linux-mime install-linux-appdata install-man-page install-linux-scripts uninstall help

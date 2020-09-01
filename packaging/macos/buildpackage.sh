@@ -59,6 +59,11 @@ populate_bundle() {
 
 	cp -r "${BUILTDIR}/OpenRA.app" "${TEMPLATE_DIR}"
 
+	# Add mod files
+	pushd "${SRCDIR}" > /dev/null || exit 1
+	cp -r "mods/${MOD_ID}" mods/modcontent "${TEMPLATE_DIR}/Contents/Resources/mods"
+	popd > /dev/null || exit 1
+
 	# Assemble multi-resolution icon
 	mkdir "${MOD_ID}.iconset"
 	cp "${ARTWORK_DIR}/${MOD_ID}_16x16.png" "${MOD_ID}.iconset/icon_16x16.png"
@@ -78,18 +83,8 @@ populate_bundle() {
 	modify_plist "{MOD_NAME}" "${MOD_NAME}" "${TEMPLATE_DIR}/Contents/Info.plist"
 	modify_plist "{JOIN_SERVER_URL_SCHEME}" "openra-${MOD_ID}-${TAG}" "${TEMPLATE_DIR}/Contents/Info.plist"
 	modify_plist "{DISCORD_URL_SCHEME}" "discord-${DISCORD_APPID}" "${TEMPLATE_DIR}/Contents/Info.plist"
-}
 
-# Deletes from the first argument's mod dirs all the later arguments
-delete_mods() {
-	pushd "${BUILTDIR}/${1}/Contents/Resources/mods" > /dev/null || exit 1
-	shift
-	rm -rf "$@"
-	pushd > /dev/null || exit 1
-}
-
-# Sign binaries with developer certificate
-sign_bundle() {
+	# Sign binaries with developer certificate
 	if [ -n "${MACOS_DEVELOPER_IDENTITY}" ]; then
 		codesign -s "${MACOS_DEVELOPER_IDENTITY}" --timestamp --options runtime -f --entitlements entitlements.plist "${BUILTDIR}/${1}/Contents/Resources/"*.dylib
 		codesign -s "${MACOS_DEVELOPER_IDENTITY}" --timestamp --options runtime -f --entitlements entitlements.plist --deep "${BUILTDIR}/${1}"
@@ -131,21 +126,15 @@ build_platform() {
 	make clean
 	make core TARGETPLATFORM=osx-x64
 	make version VERSION="${TAG}"
-	make install-core gameinstalldir="/Contents/Resources/" DESTDIR="${BUILTDIR}/OpenRA.app"
-	make install-dependencies TARGETPLATFORM=osx-x64 gameinstalldir="/Contents/Resources/"  DESTDIR="${BUILTDIR}/OpenRA.app"
+
+	make install-engine gameinstalldir="/Contents/Resources/" DESTDIR="${BUILTDIR}/OpenRA.app"
+	make install-common-mod-files gameinstalldir="/Contents/Resources/" DESTDIR="${BUILTDIR}/OpenRA.app"
+	make install-dependencies TARGETPLATFORM=osx-x64 gameinstalldir="/Contents/Resources/" DESTDIR="${BUILTDIR}/OpenRA.app"
 	popd > /dev/null || exit 1
 
 	populate_bundle "OpenRA - Red Alert.app" "ra" "Red Alert" "699222659766026240"
-	delete_mods "OpenRA - Red Alert.app" "cnc" "d2k"
-	sign_bundle "OpenRA - Red Alert.app"
-
 	populate_bundle "OpenRA - Tiberian Dawn.app" "cnc" "Tiberian Dawn" "699223250181292033"
-	delete_mods "OpenRA - Tiberian Dawn.app" "ra" "d2k"
-	sign_bundle "OpenRA - Tiberian Dawn.app"
-
 	populate_bundle "OpenRA - Dune 2000.app" "d2k" "Dune 2000" "712711732770111550"
-	delete_mods "OpenRA - Dune 2000.app" "ra" "cnc"
-	sign_bundle "OpenRA - Dune 2000.app"
 
 	rm -rf "${BUILTDIR}/OpenRA.app"
 
