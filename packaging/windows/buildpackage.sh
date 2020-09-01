@@ -70,7 +70,9 @@ function build_platform()
 	make clean
 	make core "${TARGETPLATFORM}" "${IS_WIN32}"
 	make version VERSION="${TAG}"
-	make install-core "${TARGETPLATFORM}" gameinstalldir="" DESTDIR="${BUILTDIR}"
+	make install-engine "${TARGETPLATFORM}" gameinstalldir="" DESTDIR="${BUILTDIR}"
+	make install-common-mod-files gameinstalldir="" DESTDIR="${BUILTDIR}"
+	make install-default-mods gameinstalldir="" DESTDIR="${BUILTDIR}"
 	make install-dependencies "${TARGETPLATFORM}" gameinstalldir="" DESTDIR="${BUILTDIR}"
 	popd > /dev/null || exit 1
 
