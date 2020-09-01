@@ -42,6 +42,10 @@ function makelauncher()
 	csc WindowsLauncher.cs -warn:4 -warnaserror -platform:"${PLATFORM}" -out:"${BUILTDIR}/${LAUNCHER_NAME}" -t:winexe ${LAUNCHER_LIBS} -win32icon:"${BUILTDIR}/${MOD_ID}.ico"
 	rm WindowsLauncher.cs
 
+	# We need to set the loadFromRemoteSources flag for the launcher, but only for the "portable" zip package.
+	# Windows automatically un-trusts executables that are extracted from a downloaded zip file
+	cp "${BUILTDIR}/OpenRA.Game.exe.config" "${BUILTDIR}/${LAUNCHER_NAME}.config"
+
 	if [ "${PLATFORM}" = "x86" ]; then
 		# Enable the full 4GB address space for the 32 bit game executable
 		# The server and utility do not use enough memory to need this
@@ -76,11 +80,12 @@ function build_platform()
 	make install-dependencies "${TARGETPLATFORM}" gameinstalldir="" DESTDIR="${BUILTDIR}"
 	popd > /dev/null || exit 1
 
+	cp "${SRCDIR}/OpenRA.Game.exe.config" "${BUILTDIR}"
+
 	echo "Compiling Windows launchers (${PLATFORM})"
 	makelauncher "RedAlert.exe" "Red Alert" "ra" ${PLATFORM}
 	makelauncher "TiberianDawn.exe" "Tiberian Dawn" "cnc" ${PLATFORM}
 	makelauncher "Dune2000.exe" "Dune 2000" "d2k" ${PLATFORM}
-	cp "${SRCDIR}/OpenRA.Game.exe.config" "${BUILTDIR}"
 
 	echo "Building Windows setup.exe ($1)"
 	makensis -V2 -DSRCDIR="${BUILTDIR}" -DTAG="${TAG}" -DSUFFIX="${SUFFIX}" ${USE_PROGRAMFILES32} OpenRA.nsi
@@ -89,6 +94,12 @@ function build_platform()
 	else
 		exit 1
 	fi
+
+	echo "Packaging zip archive ($1)"
+	pushd "${BUILTDIR}" > /dev/null
+	zip "OpenRA-${TAG}-${1}-winportable.zip" -r -9 * --quiet
+	mv "OpenRA-${TAG}-${1}-winportable.zip" "${OUTPUTDIR}"
+	popd > /dev/null
 
 	rm -rf "${BUILTDIR}"
 }
