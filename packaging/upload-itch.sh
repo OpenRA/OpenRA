@@ -29,10 +29,11 @@ chmod +x butler
 
 ./butler -V
 ./butler login
-./butler push "${BUILD_OUTPUT_DIR}/OpenRA-${GIT_TAG}-x64.exe" "openra/openra:win" --userversion-file ../VERSION
+zip -u ${BUILD_OUTPUT_DIR}/OpenRA-${GIT_TAG}-x64-winportable.zip .itch.toml
+./butler push "${BUILD_OUTPUT_DIR}/OpenRA-${GIT_TAG}-x64-winportable.zip" "openra/openra:win" --userversion-file ../VERSION
 ./butler push --fix-permissions "${BUILD_OUTPUT_DIR}/OpenRA-${GIT_TAG}.dmg" "openra/openra:osx" --userversion-file ../VERSION
 ./butler push --fix-permissions "${BUILD_OUTPUT_DIR}/OpenRA-Dune-2000-x86_64.AppImage" "openra/openra:linux-d2k" --userversion-file ../VERSION
 ./butler push --fix-permissions "${BUILD_OUTPUT_DIR}/OpenRA-Red-Alert-x86_64.AppImage" "openra/openra:linux-ra" --userversion-file ../VERSION
 ./butler push --fix-permissions "${BUILD_OUTPUT_DIR}/OpenRA-Tiberian-Dawn-x86_64.AppImage" "openra/openra:linux-td" --userversion-file ../VERSION
 
-rm butler butler-linux-amd64.zip
+rm butler butler-linux-amd64.zip 7z.so libc7zip.so
