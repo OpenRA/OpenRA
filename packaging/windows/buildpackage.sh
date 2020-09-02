@@ -18,7 +18,7 @@ SRCDIR="$(pwd)/../.."
 BUILTDIR="$(pwd)/build"
 ARTWORK_DIR="$(pwd)/../artwork/"
 
-LAUNCHER_LIBS="-r:System.dll -r:System.Drawing.dll -r:System.Windows.Forms.dll -r:${BUILTDIR}/OpenRA.Game.exe"
+LAUNCHER_LIBS="-r:System.dll -r:${BUILTDIR}/OpenRA.Game.exe"
 FAQ_URL="http://wiki.openra.net/FAQ"
 
 SUFFIX=" (dev)"
@@ -39,7 +39,7 @@ function makelauncher()
 	convert "${ARTWORK_DIR}/${MOD_ID}_16x16.png" "${ARTWORK_DIR}/${MOD_ID}_24x24.png" "${ARTWORK_DIR}/${MOD_ID}_32x32.png" "${ARTWORK_DIR}/${MOD_ID}_48x48.png" "${ARTWORK_DIR}/${MOD_ID}_256x256.png" "${BUILTDIR}/${MOD_ID}.ico"
 
 	sed "s|DISPLAY_NAME|${DISPLAY_NAME}|" WindowsLauncher.cs.in | sed "s|MOD_ID|${MOD_ID}|" | sed "s|FAQ_URL|${FAQ_URL}|" > WindowsLauncher.cs
-	csc WindowsLauncher.cs -warn:4 -warnaserror -platform:"${PLATFORM}" -out:"${BUILTDIR}/${LAUNCHER_NAME}" -t:winexe ${LAUNCHER_LIBS} -win32icon:"${BUILTDIR}/${MOD_ID}.ico"
+	csc WindowsLauncher.cs -warn:4 -warnaserror -platform:"${PLATFORM}" -out:"${BUILTDIR}/${LAUNCHER_NAME}" -t:winexe ${LAUNCHER_LIBS} -win32icon:"${BUILTDIR}/${MOD_ID}.ico" -unsafe
 	rm WindowsLauncher.cs
 
 	if [ "${PLATFORM}" = "x86" ]; then

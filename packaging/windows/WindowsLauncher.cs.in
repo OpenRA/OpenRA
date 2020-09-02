@@ -11,15 +11,126 @@
 
 using System;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Media;
 using System.Reflection;
-using System.Windows.Forms;
+using System.Runtime.InteropServices;
+using System.Text;
 
 namespace OpenRA
 {
+	// Minimal SDL wrapper to work around SDL2-CS requiring netstandard2.0
+	static class SDL
+	{
+		struct INTERNAL_SDL_MessageBoxButtonData
+		{
+			public SDL_MessageBoxButtonFlags flags;
+			public int buttonid;
+			public IntPtr text;
+		}
+
+		struct INTERNAL_SDL_MessageBoxData
+		{
+			public SDL_MessageBoxFlags flags;
+			public IntPtr window;
+			public IntPtr title;
+			public IntPtr message;
+			public int numbuttons;
+			public IntPtr buttons;
+			public IntPtr colorScheme;
+		}
+
+		[Flags]
+		public enum SDL_MessageBoxButtonFlags : uint
+		{
+			SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT = 1,
+			SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT = 2,
+		}
+
+		public struct SDL_MessageBoxButtonData
+		{
+			public SDL_MessageBoxButtonFlags flags;
+			public int buttonid;
+			public string text;
+		}
+
+		[Flags]
+		public enum SDL_MessageBoxFlags : uint
+		{
+			SDL_MESSAGEBOX_ERROR = 16,
+			SDL_MESSAGEBOX_WARNING = 32,
+			SDL_MESSAGEBOX_INFORMATION = 64,
+		}
+
+		public struct SDL_MessageBoxData
+		{
+			public SDL_MessageBoxFlags flags;
+			public string title;
+			public string message;
+			public int numbuttons;
+			public SDL_MessageBoxButtonData[] buttons;
+		}
+
+		public static unsafe int SDL_ShowMessageBox(ref SDL_MessageBoxData messageboxdata, out int buttonid)
+		{
+			var messageboxdata1 = new INTERNAL_SDL_MessageBoxData
+			{
+				flags = messageboxdata.flags,
+				window = IntPtr.Zero,
+				title = INTERNAL_AllocUTF8(messageboxdata.title),
+				message = INTERNAL_AllocUTF8(messageboxdata.message),
+				numbuttons = messageboxdata.numbuttons
+			};
+
+			var messageBoxButtonDataArray = new INTERNAL_SDL_MessageBoxButtonData[messageboxdata.numbuttons];
+			for (var index = 0; index < messageboxdata.numbuttons; ++index)
+			{
+				messageBoxButtonDataArray[index] = new INTERNAL_SDL_MessageBoxButtonData()
+				{
+					flags = messageboxdata.buttons[index].flags,
+					buttonid = messageboxdata.buttons[index].buttonid,
+					text = INTERNAL_AllocUTF8(messageboxdata.buttons[index].text)
+				};
+			}
+
+			int num;
+			fixed (INTERNAL_SDL_MessageBoxButtonData* messageBoxButtonDataPtr = &messageBoxButtonDataArray[0])
+			{
+				messageboxdata1.buttons = (IntPtr) (void*) messageBoxButtonDataPtr;
+				num = INTERNAL_SDL_ShowMessageBox(ref messageboxdata1, out buttonid);
+			}
+
+			Marshal.FreeHGlobal(messageboxdata1.colorScheme);
+			for (var index = 0; index < messageboxdata.numbuttons; ++index)
+				SDL_free(messageBoxButtonDataArray[index].text);
+
+			SDL_free(messageboxdata1.message);
+			SDL_free(messageboxdata1.title);
+			return num;
+		}
+
+		static IntPtr INTERNAL_AllocUTF8(string str)
+		{
+			if (string.IsNullOrEmpty(str))
+				return IntPtr.Zero;
+
+			byte[] bytes = Encoding.UTF8.GetBytes(str + "\0");
+			IntPtr destination = SDL_malloc((IntPtr) bytes.Length);
+			Marshal.Copy(bytes, 0, destination, bytes.Length);
+			return destination;
+		}
+
+		[DllImport("SDL2", EntryPoint = "SDL_ShowMessageBox", CallingConvention = CallingConvention.Cdecl)]
+		static extern int INTERNAL_SDL_ShowMessageBox(ref INTERNAL_SDL_MessageBoxData messageboxdata, out int buttonid);
+
+		[DllImport("SDL2", CallingConvention = CallingConvention.Cdecl)]
+		static extern IntPtr SDL_malloc(IntPtr size);
+
+		[DllImport("SDL2", CallingConvention = CallingConvention.Cdecl)]
+		static extern void SDL_free(IntPtr memblock);
+	}
+
 	class WindowsLauncher
 	{
 		static Process gameProcess;
@@ -84,86 +195,67 @@ namespace OpenRA
 
 			gameProcess.EnableRaisingEvents = true;
 			gameProcess.Exited += GameProcessExited;
-
-			Application.Run();
-
+			gameProcess.WaitForExit();
 			return 0;
 		}
 
 		static void ShowErrorDialog()
 		{
-			var headerLabel = new Label
+			var viewLogs = new SDL.SDL_MessageBoxButtonData
 			{
-				Location = new Point(0, 10),
-				Height = 15,
-				Text = DisplayName + " has encountered a fatal error and must close.",
-				TextAlign = ContentAlignment.TopCenter
+				buttonid = 2,
+				text = "View Logs",
+				flags = SDL.SDL_MessageBoxButtonFlags.SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT
 			};
 
-			var docsLabel = new Label
+			var viewFaq = new SDL.SDL_MessageBoxButtonData
 			{
-				Location = new Point(0, 25),
-				Height = 15,
-				Text = "Refer to the crash logs and FAQ for more information.",
-				TextAlign = ContentAlignment.TopCenter
+				buttonid = 1,
+				text = "View FAQ"
 			};
 
-			int formWidth;
-			using (var g = headerLabel.CreateGraphics())
+			var quit = new SDL.SDL_MessageBoxButtonData
 			{
-				var headerWidth = (int)g.MeasureString(headerLabel.Text, headerLabel.Font).Width + 60;
-				var docsWidth = (int)g.MeasureString(docsLabel.Text, docsLabel.Font).Width + 60;
-				formWidth = Math.Max(headerWidth, docsWidth);
-				headerLabel.Width = formWidth;
-				docsLabel.Width = formWidth;
+				buttonid = 0,
+				text = "Quit",
+				flags = SDL.SDL_MessageBoxButtonFlags.SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT
+			};
+
+			var dialog = new SDL.SDL_MessageBoxData
+			{
+				flags = SDL.SDL_MessageBoxFlags.SDL_MESSAGEBOX_ERROR,
+				title = "Fatal Error",
+				message = DisplayName + " has encountered a fatal error and must close.\nRefer to the crash logs and FAQ for more information.",
+				buttons = new[] { quit, viewFaq, viewLogs },
+				numbuttons = 3
+			};
+
+			int buttonid = 0;
+			if (SDL.SDL_ShowMessageBox(ref dialog, out buttonid) < 0)
+				Exit();
+
+			switch (buttonid)
+			{
+				case 0: Exit(); break;
+				case 1:
+				{
+					try
+					{
+						Process.Start(FaqUrl);
+					}
+					catch { }
+					break;
+				}
+				case 2:
+				{
+					try
+					{
+						Process.Start(Platform.ResolvePath("^", "Logs"));
+					}
+					catch { }
+					break;
+				}
 			}
-
-			var form = new Form
-			{
-				Size = new Size(formWidth, 110),
-				Text = "Fatal Error",
-				MinimizeBox = false,
-				MaximizeBox = false,
-				FormBorderStyle = FormBorderStyle.FixedDialog,
-				StartPosition = FormStartPosition.CenterScreen,
-				TopLevel = true,
-				Icon = Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location)
-			};
-
-			var viewLogs = new Button
-			{
-				Location = new Point(10, 50),
-				Size = new Size(75, 23),
-				Text = "View Logs"
-			};
-
-			var viewFaq = new Button
-			{
-				Location = new Point(90, 50),
-				Size = new Size(75, 23),
-				Text = "View FAQ"
-			};
-
-			var quit = new Button
-			{
-				Location = new Point(formWidth - 90, 50),
-				Size = new Size(75, 23),
-				Text = "Quit",
-				DialogResult = DialogResult.Cancel
-			};
-
-			form.Controls.Add(headerLabel);
-			form.Controls.Add(docsLabel);
-			form.Controls.Add(viewLogs);
-			form.Controls.Add(viewFaq);
-			form.Controls.Add(quit);
-
-			viewLogs.Click += ViewLogsClicked;
-			viewFaq.Click += ViewFaqClicked;
-			form.FormClosed += FormClosed;
-
-			SystemSounds.Exclamation.Play();
-			form.ShowDialog();
 		}
 
 		static void GameProcessExited(object sender, EventArgs e)
@@ -171,29 +263,6 @@ namespace OpenRA
 			if (gameProcess.ExitCode != (int)RunStatus.Success)
 				ShowErrorDialog();
 
-			Exit();
-		}
-
-		static void ViewLogsClicked(object sender, EventArgs e)
-		{
-			try
-			{
-				Process.Start(Platform.ResolvePath("^", "Logs"));
-			}
-			catch { }
-		}
-
-		static void ViewFaqClicked(object sender, EventArgs e)
-		{
-			try
-			{
-				Process.Start(FaqUrl);
-			}
-			catch { }
-		}
-
-		static void FormClosed(object sender, EventArgs e)
-		{
 			Exit();
 		}
 
