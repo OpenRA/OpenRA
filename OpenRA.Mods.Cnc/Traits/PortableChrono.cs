@@ -62,7 +62,11 @@ namespace OpenRA.Mods.Cnc.Traits
 	class PortableChrono : IIssueOrder, IResolveOrder, ITick, ISelectionBar, IOrderVoice, ISync
 	{
 		public readonly PortableChronoInfo Info;
+		public readonly string ChronoOrderName = "PortableChronoTeleport";
+		public readonly string ForceChronoOrderName = "ForcePortableChronoTeleport";
+
 		readonly IMove move;
+
 		[Sync]
 		int chargeTick = 0;
 
@@ -82,7 +86,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		{
 			get
 			{
-				yield return new PortableChronoOrderTargeter(Info.TargetCursor);
+				yield return new PortableChronoOrderTargeter(this);
 				yield return new DeployOrderTargeter("PortableChronoDeploy", 5,
 					() => CanTeleport ? Info.DeployCursor : Info.DeployBlockedCursor);
 			}
@@ -100,7 +104,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				return new Order(order.OrderID, self, Target.Invalid, queued);
 			}
 
-			if (order.OrderID == "PortableChronoTeleport")
+			if (order.OrderID == ChronoOrderName || order.OrderID == ForceChronoOrderName)
 				return new Order(order.OrderID, self, target, queued);
 
 			return null;
@@ -108,14 +112,15 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "PortableChronoTeleport" && order.Target.Type != TargetType.Invalid)
+			var forceMove = order.OrderString == ForceChronoOrderName;
+			if ((forceMove || order.OrderString == ChronoOrderName) && order.Target.Type != TargetType.Invalid)
 			{
 				var maxDistance = Info.HasDistanceLimit ? Info.MaxDistance : (int?)null;
 				if (!order.Queued)
 					self.CancelActivity();
 
 				var cell = self.World.Map.CellContaining(order.Target.CenterPosition);
-				if (maxDistance != null)
+				if (maxDistance != null && !forceMove)
 					self.QueueActivity(move.MoveWithinRange(order.Target, WDist.FromCells(maxDistance.Value), targetLineColor: Color.LawnGreen));
 
 				self.QueueActivity(new Teleport(self, cell, maxDistance, Info.KillCargo, Info.FlashScreen, Info.ChronoshiftSound));
@@ -126,7 +131,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		string IOrderVoice.VoicePhraseForOrder(Actor self, Order order)
 		{
-			return order.OrderString == "PortableChronoTeleport" ? Info.Voice : null;
+			return order.OrderString == ChronoOrderName || order.OrderString == ForceChronoOrderName ? Info.Voice : null;
 		}
 
 		public void ResetChargeTime()
@@ -150,14 +155,15 @@ namespace OpenRA.Mods.Cnc.Traits
 
 	class PortableChronoOrderTargeter : IOrderTargeter
 	{
-		readonly string targetCursor;
+		readonly PortableChrono portableChrono;
 
-		public PortableChronoOrderTargeter(string targetCursor)
+		public PortableChronoOrderTargeter(PortableChrono portableChrono)
 		{
-			this.targetCursor = targetCursor;
+			this.portableChrono = portableChrono;
+			OrderID = portableChrono.ForceChronoOrderName;
 		}
 
-		public string OrderID { get { return "PortableChronoTeleport"; } }
+		public string OrderID { get; private set; }
 		public int OrderPriority { get { return 5; } }
 		public bool IsQueued { get; protected set; }
 		public bool TargetOverridesSelection(Actor self, Target target, List<Actor> actorsAt, CPos xy, TargetModifiers modifiers) { return true; }
@@ -171,7 +177,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				var xy = self.World.Map.CellContaining(target.CenterPosition);
 				if (self.IsInWorld && self.Owner.Shroud.IsExplored(xy))
 				{
-					cursor = targetCursor;
+					cursor = portableChrono.Info.TargetCursor;
 					return true;
 				}
 			}
@@ -202,7 +208,9 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (self.IsInWorld && self.Location != cell && portableChrono.CanTeleport && self.Owner.Shroud.IsExplored(cell))
 			{
 				world.CancelInputMode();
-				yield return new Order("PortableChronoTeleport", self, Target.FromCell(world, cell), mi.Modifiers.HasModifier(Modifiers.Shift));
+
+				var orderString = mi.Modifiers.HasModifier(Modifiers.Alt) ? portableChrono.ForceChronoOrderName : portableChrono.ChronoOrderName;
+				yield return new Order(orderString, self, Target.FromCell(world, cell), mi.Modifiers.HasModifier(Modifiers.Shift));
 			}
 		}
 
