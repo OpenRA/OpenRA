@@ -235,23 +235,22 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			var attackerStats = e.Attacker.Owner.PlayerActor.Trait<PlayerStatistics>();
-			var defenderStats = self.Owner.PlayerActor.Trait<PlayerStatistics>();
 			if (self.Info.HasTraitInfo<BuildingInfo>())
 			{
 				attackerStats.BuildingsKilled++;
-				defenderStats.BuildingsDead++;
+				playerStats.BuildingsDead++;
 			}
 			else if (self.Info.HasTraitInfo<IPositionableInfo>())
 			{
 				attackerStats.UnitsKilled++;
-				defenderStats.UnitsDead++;
+				playerStats.UnitsDead++;
 			}
 
 			attackerStats.KillsCost += cost;
-			defenderStats.DeathsCost += cost;
+			playerStats.DeathsCost += cost;
 			if (includedInArmyValue)
 			{
-				defenderStats.ArmyValue -= cost;
+				playerStats.ArmyValue -= cost;
 				includedInArmyValue = false;
 				playerStats.Units[actorName].Count--;
 			}
