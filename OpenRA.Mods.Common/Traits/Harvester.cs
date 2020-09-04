@@ -148,8 +148,6 @@ namespace OpenRA.Mods.Common.Traits
 			resourceMultipliers = self.TraitsImplementing<HarvesterResourceMultiplier>().ToArray();
 			UpdateCondition(self);
 
-			self.QueueActivity(new CallFunc(() => ChooseNewProc(self, null)));
-
 			// Note: This is queued in a FrameEndTask because otherwise the activity is dropped/overridden while moving out of a factory.
 			if (Info.SearchOnCreation)
 				self.World.AddFrameEndTask(w => self.QueueActivity(new FindAndDeliverResources(self)));
