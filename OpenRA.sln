@@ -19,6 +19,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenRA.Mods.Common", "OpenR
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenRA.Test", "OpenRA.Test\OpenRA.Test.csproj", "{6CB8E1B7-6B36-4D93-8633-7C573E194AC4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.XUnitTests", "OpenRA.XUnitTests\OpenRA.XUnitTests.csproj", "{1D06ACA7-28DE-4D89-9B35-C27455BC28D0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +59,10 @@ Global
 		{6CB8E1B7-6B36-4D93-8633-7C573E194AC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6CB8E1B7-6B36-4D93-8633-7C573E194AC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6CB8E1B7-6B36-4D93-8633-7C573E194AC4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D06ACA7-28DE-4D89-9B35-C27455BC28D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D06ACA7-28DE-4D89-9B35-C27455BC28D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D06ACA7-28DE-4D89-9B35-C27455BC28D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D06ACA7-28DE-4D89-9B35-C27455BC28D0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
