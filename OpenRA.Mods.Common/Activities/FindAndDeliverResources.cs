@@ -179,13 +179,8 @@ namespace OpenRA.Mods.Common.Activities
 
 			// Determine where to search from and how far to search:
 			var procLoc = GetSearchFromProcLocation(self);
-			var searchFromLoc = lastHarvestedCell ?? procLoc;
+			var searchFromLoc = lastHarvestedCell ?? procLoc ?? self.Location;
 			var searchRadius = lastHarvestedCell.HasValue ? harvInfo.SearchFromHarvesterRadius : harvInfo.SearchFromProcRadius;
-			if (!searchFromLoc.HasValue)
-			{
-				searchFromLoc = self.Location;
-				searchRadius = harvInfo.SearchFromHarvesterRadius;
-			}
 
 			var searchRadiusSquared = searchRadius * searchRadius;
 
@@ -198,7 +193,7 @@ namespace OpenRA.Mods.Common.Activities
 					domainIndex.IsPassable(self.Location, loc, locomotorInfo) && harv.CanHarvestCell(self, loc) && claimLayer.CanClaimCell(self, loc))
 				.WithCustomCost(loc =>
 				{
-					if ((loc - searchFromLoc.Value).LengthSquared > searchRadiusSquared)
+					if ((loc - searchFromLoc).LengthSquared > searchRadiusSquared)
 						return int.MaxValue;
 
 					// Add a cost modifier to harvestable cells to prefer resources that are closer to the refinery.
@@ -223,7 +218,7 @@ namespace OpenRA.Mods.Common.Activities
 
 					return 0;
 				})
-				.FromPoint(searchFromLoc.Value)
+				.FromPoint(searchFromLoc)
 				.FromPoint(self.Location))
 				path = pathFinder.FindPath(search);
 
