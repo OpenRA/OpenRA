@@ -4,7 +4,6 @@
 	CombatDebugOverlay:
 	GivesExperience:
 		PlayerExperienceModifier: 1
-	ScriptTriggers:
 	RenderDebugState:
 
 ^SpriteActor:
@@ -794,7 +793,6 @@
 		GenericStancePrefix: false
 		ShowOwnerRow: false
 	FrozenUnderFog:
-	ScriptTriggers:
 	MapEditorData:
 		Categories: Husk
 
@@ -895,7 +893,6 @@
 		SellSounds: cashturn.aud
 	Guardable:
 	FrozenUnderFog:
-	ScriptTriggers:
 	Health:
 		HP: 10000
 	AppearsOnMapPreview:
@@ -1051,7 +1048,6 @@
 		GenericName: Destroyed Vehicle
 	WithColoredOverlay@IDISABLE:
 		Palette: disabled
-	ScriptTriggers:
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
@@ -1101,7 +1097,6 @@
 	SoundOnDamageTransition:
 		DamagedSounds: xplos.aud
 		DestroyedSounds: xplobig4.aud
-	ScriptTriggers:
 	BodyOrientation:
 		QuantizedFacings: 1
 	ShakeOnDeath:

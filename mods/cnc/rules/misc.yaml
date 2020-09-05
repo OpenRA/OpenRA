@@ -1,7 +1,3 @@
-CRATE.plain:
-	Inherits: ^Crate
-	ScriptTriggers:
-
 CRATE:
 	Inherits: ^Crate
 	Crate:

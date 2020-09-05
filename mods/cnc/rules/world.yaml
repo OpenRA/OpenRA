@@ -260,7 +260,6 @@ World:
 	RadarPings:
 	LoadWidgetAtGameStart:
 		ShellmapRoot: MENU_BACKGROUND
-	ScriptTriggers:
 	TimeLimitManager:
 
 EditorWorld:

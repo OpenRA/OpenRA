@@ -12,7 +12,6 @@ Player:
 		CannotPlaceNotification: BuildingCannotPlaceAudio
 	TechTree:
 	SupportPowerManager:
-	ScriptTriggers:
 	MissionObjectives:
 		WinNotification: Win
 		LoseNotification: Lose
