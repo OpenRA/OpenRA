@@ -855,7 +855,6 @@
 		Palette: terrain
 	WithSpriteBody:
 	FrozenUnderFog:
-	ScriptTriggers:
 	MapEditorData:
 		Categories: Husk
 
@@ -945,7 +944,6 @@
 		MinimumDamageState: Heavy
 		MaximumDamageState: Dead
 	HiddenUnderShroud:
-	ScriptTriggers:
 	HitShape:
 	MapEditorData:
 		Categories: Tree
@@ -968,7 +966,6 @@
 		Name: Tree (Burnt)
 		ShowOwnerRow: false
 	HiddenUnderShroud:
-	ScriptTriggers:
 	MapEditorData:
 		Categories: Tree
 	RequiresSpecificOwners:
@@ -1016,7 +1013,6 @@
 	AppearsOnMapPreview:
 		Terrain: Tree
 	HiddenUnderShroud:
-	ScriptTriggers:
 	MapEditorData:
 		RequireTilesets: DESERT
 		Categories: Decoration
