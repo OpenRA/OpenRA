@@ -890,6 +890,7 @@
 	-Explodes:
 	-Explodes@CIVPANIC:
 	-Selectable:
+	-ScriptTriggers:
 	Tooltip:
 		Name: Field
 	-Targetable:
@@ -941,7 +942,6 @@
 		MinimumDamageState: Heavy
 		MaximumDamageState: Dead
 	HiddenUnderShroud:
-	ScriptTriggers:
 	MapEditorData:
 		ExcludeTilesets: INTERIOR
 		Categories: Tree
@@ -966,7 +966,6 @@
 		Name: Tree (Burnt)
 		ShowOwnerRow: false
 	HiddenUnderShroud:
-	ScriptTriggers:
 	MapEditorData:
 		Categories: Tree
 	RequiresSpecificOwners:
@@ -1115,7 +1114,6 @@
 	AppearsOnMapPreview:
 		Terrain: Tree
 	HiddenUnderShroud:
-	ScriptTriggers:
 	MapEditorData:
 		RequireTilesets: DESERT
 		Categories: Decoration
