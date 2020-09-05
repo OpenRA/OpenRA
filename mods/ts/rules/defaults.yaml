@@ -4,7 +4,6 @@
 	CombatDebugOverlay:
 	GivesExperience:
 		PlayerExperienceModifier: 1
-	ScriptTriggers:
 	RenderDebugState:
 
 ^SpriteActor:
@@ -500,7 +499,6 @@
 	Sellable:
 		RequiresCondition: !being-demolished
 		SellSounds: cashturn.aud
-	ScriptTriggers:
 	Health:
 	HitShape:
 		Type: Rectangle
@@ -944,7 +942,6 @@
 	HiddenUnderFog:
 		Type: GroundPosition
 		AlwaysVisibleStances: None
-	ScriptTriggers:
 	Interactable:
 	Tooltip:
 		GenericName: Destroyed Aircraft

@@ -1414,4 +1414,4 @@ Actors:
 		Owner: Neutral
 		Location: 58,16
 
-Rules: rules.yaml
+Rules: rules.yaml, ts|rules/enable-scripttriggers.yaml

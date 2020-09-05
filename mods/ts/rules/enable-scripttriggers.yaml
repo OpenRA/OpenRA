@@ -1,0 +1,11 @@
+World:
+	ScriptTriggers:
+
+Player:
+	ScriptTriggers:
+
+^ExistsInWorld:
+	ScriptTriggers:
+
+^Wall:
+	ScriptTriggers:
