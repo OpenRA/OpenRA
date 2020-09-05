@@ -754,4 +754,4 @@ Actors:
 
 Rules: rules.yaml
 
-Sequences: sequences.yaml
+Sequences: sequences.yaml, ra|rules/enable-mp-coop-scripttriggers.yaml

@@ -79,7 +79,6 @@ Player:
 		NewOptionsNotification: NewOptions
 		CannotPlaceNotification: BuildingCannotPlaceAudio
 	SupportPowerManager:
-	ScriptTriggers:
 	MissionObjectives:
 		WinNotification: Win
 		LoseNotification: Lose

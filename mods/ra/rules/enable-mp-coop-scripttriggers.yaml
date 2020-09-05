@@ -1,0 +1,14 @@
+^ExistsInWorld:
+	ScriptTriggers:
+
+^BasicHusk:
+	ScriptTriggers:
+
+^Bridge:
+	ScriptTriggers:
+
+World:
+	ScriptTriggers:
+
+Player:
+	ScriptTriggers:

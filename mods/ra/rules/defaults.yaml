@@ -3,7 +3,6 @@
 	CombatDebugOverlay:
 	GivesExperience:
 		PlayerExperienceModifier: 1
-	ScriptTriggers:
 	RenderDebugState:
 
 ^SpriteActor:
@@ -871,7 +870,6 @@
 	-Explodes:
 	-Explodes@CIVPANIC:
 	-Selectable:
-	-ScriptTriggers:
 	Tooltip:
 		Name: Field
 	-Targetable:
@@ -971,7 +969,6 @@
 	HiddenUnderFog:
 		Type: CenterPosition
 		AlwaysVisibleStances: None
-	ScriptTriggers:
 	WithFacingSpriteBody:
 	HitShape:
 	MapEditorData:
@@ -1068,7 +1065,6 @@
 		HP: 100000
 	Armor:
 		Type: Concrete
-	ScriptTriggers:
 	BodyOrientation:
 		QuantizedFacings: 1
 	Interactable:

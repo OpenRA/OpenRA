@@ -461,7 +461,7 @@ Actors:
 		Location: 46,32
 		Owner: Neutral
 
-Rules: rules.yaml
+Rules: rules.yaml, ra|rules/enable-mp-coop-scripttriggers.yaml
 
 Weapons: weapons.yaml
 

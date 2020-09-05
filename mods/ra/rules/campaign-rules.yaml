@@ -1,4 +1,5 @@
 Player:
+	ScriptTriggers:
 	-ConquestVictoryConditions:
 	MissionObjectives:
 		EarlyGameOver: true
@@ -16,6 +17,7 @@ Player:
 		Type: campaign
 
 World:
+	ScriptTriggers:
 	CrateSpawner:
 		CheckboxEnabled: False
 		CheckboxLocked: True
@@ -32,6 +34,15 @@ World:
 		TechLevelDropdownLocked: True
 		ShortGameCheckboxLocked: True
 		ShortGameCheckboxEnabled: False
+
+^ExistsInWorld:
+	ScriptTriggers:
+
+^BasicHusk:
+	ScriptTriggers:
+
+^Bridge:
+	ScriptTriggers:
 
 E7:
 	-Crushable:
