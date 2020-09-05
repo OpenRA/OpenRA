@@ -4,7 +4,6 @@
 	CombatDebugOverlay:
 	GivesExperience:
 		PlayerExperienceModifier: 1
-	ScriptTriggers:
 	RenderDebugState:
 
 ^SpriteActor:
