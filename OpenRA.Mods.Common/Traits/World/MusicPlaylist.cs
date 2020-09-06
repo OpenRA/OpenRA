@@ -69,9 +69,6 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 			this.world = world;
 
-			if (info.DisableWorldSounds)
-				Game.Sound.DisableWorldSounds = true;
-
 			IsMusicInstalled = world.Map.Rules.InstalledMusic.Any();
 			if (!IsMusicInstalled)
 				return;
@@ -105,6 +102,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		void IWorldLoaded.WorldLoaded(World world, WorldRenderer wr)
 		{
+			// Reset any bogus pre-existing state
+			Game.Sound.DisableWorldSounds = info.DisableWorldSounds;
+
 			if (!world.IsLoadingGameSave)
 				Play();
 		}
