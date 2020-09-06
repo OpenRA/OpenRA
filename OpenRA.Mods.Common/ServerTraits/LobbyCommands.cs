@@ -523,6 +523,11 @@ namespace OpenRA.Mods.Common.Server
 			server.SyncLobbyGlobalSettings();
 			server.SendMessage(option.ValueChangedMessage(client.Name, split[1]));
 
+			foreach (var c in server.LobbyInfo.Clients)
+				c.State = Session.ClientState.NotReady;
+
+			server.SyncLobbyClients();
+
 			return true;
 		}
 
