@@ -295,10 +295,7 @@ namespace OpenRA.Network
 						{
 							var strings = node.Key.Split('@');
 							if (strings[0] == "GlobalSettings")
-							{
 								orderManager.LobbyInfo.GlobalSettings = Session.Global.Deserialize(node.Value);
-								orderManager.IssueOrder(Order.Command("state {0}".F(Session.ClientState.NotReady)));
-							}
 						}
 
 						SetOrderLag(orderManager);
