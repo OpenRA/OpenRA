@@ -56,6 +56,7 @@ namespace OpenRA.Mods.Common.Traits
 		public int BuildingsDead;
 
 		public int ArmyValue;
+		public int AssetsValue;
 
 		// High resolution (every second) record of earnings, limited to the last minute
 		readonly Queue<int> earnedSeconds = new Queue<int>(60);
@@ -186,6 +187,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Add to army value in statistics")]
 		public bool AddToArmyValue = false;
 
+		[Desc("Add to assets value in statistics")]
+		public bool AddToAssetsValue = true;
+
 		[ActorReference]
 		[Desc("Count this actor as a different type in the spectator army display.")]
 		public string OverrideActor = null;
@@ -201,6 +205,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		PlayerStatistics playerStats;
 		bool includedInArmyValue = false;
+		bool includedInAssetsValue = false;
 
 		public UpdatesPlayerStatistics(UpdatesPlayerStatisticsInfo info, Actor self)
 		{
@@ -236,17 +241,26 @@ namespace OpenRA.Mods.Common.Traits
 				includedInArmyValue = false;
 				playerStats.Units[actorName].Count--;
 			}
+
+			if (includedInAssetsValue)
+			{
+				playerStats.AssetsValue -= cost;
+				includedInAssetsValue = false;
+			}
 		}
 
 		void INotifyCreated.Created(Actor self)
 		{
 			includedInArmyValue = info.AddToArmyValue;
-
 			if (includedInArmyValue)
 			{
 				playerStats.ArmyValue += cost;
 				playerStats.Units[actorName].Count++;
 			}
+
+			includedInAssetsValue = info.AddToAssetsValue;
+			if (includedInAssetsValue)
+				playerStats.AssetsValue += cost;
 		}
 
 		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
@@ -260,6 +274,12 @@ namespace OpenRA.Mods.Common.Traits
 				newOwnerStats.Units[actorName].Count++;
 			}
 
+			if (includedInAssetsValue)
+			{
+				playerStats.AssetsValue -= cost;
+				newOwnerStats.AssetsValue += cost;
+			}
+
 			playerStats = newOwnerStats;
 		}
 
@@ -270,6 +290,12 @@ namespace OpenRA.Mods.Common.Traits
 				playerStats.ArmyValue -= cost;
 				includedInArmyValue = false;
 				playerStats.Units[actorName].Count--;
+			}
+
+			if (includedInAssetsValue)
+			{
+				playerStats.AssetsValue -= cost;
+				includedInAssetsValue = false;
 			}
 		}
 	}

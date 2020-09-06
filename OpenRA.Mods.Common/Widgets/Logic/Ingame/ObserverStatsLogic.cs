@@ -386,11 +386,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			SetupPlayerColor(player, template, playerColor, playerGradient);
 
-			var res = player.PlayerActor.Trait<PlayerResources>();
 			var stats = player.PlayerActor.TraitOrDefault<PlayerStatistics>();
 			if (stats == null)
 				return template;
 
+			var res = player.PlayerActor.Trait<PlayerResources>();
 			var cashText = new CachedTransform<int, string>(i => "$" + i);
 			template.Get<LabelWidget>("CASH").GetText = () => cashText.Update(res.Cash + res.Resources);
 
@@ -404,10 +404,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			template.Get<LabelWidget>("SPENT").GetText = () => spentText.Update(res.Spent);
 
 			var assetsText = new CachedTransform<int, string>(i => "$" + i);
-			var assets = template.Get<LabelWidget>("ASSETS");
-			assets.GetText = () => assetsText.Update(world.ActorsHavingTrait<Valued>()
-				.Where(a => a.Owner == player && !a.IsDead)
-				.Sum(a => a.Info.TraitInfos<ValuedInfo>().First().Cost));
+			template.Get<LabelWidget>("ASSETS").GetText = () => assetsText.Update(stats.AssetsValue);
 
 			var harvesters = template.Get<LabelWidget>("HARVESTERS");
 			harvesters.GetText = () => world.ActorsHavingTrait<Harvester>().Count(a => a.Owner == player && !a.IsDead).ToString();
