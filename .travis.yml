@@ -69,7 +69,7 @@ before_deploy:
      sudo dpkg -i nsis_3.04-1_amd64.deb;
      echo ${TRAVIS_REPO_SLUG};
      if [[ "${TRAVIS_REPO_SLUG}" == "OpenRA/OpenRA" ]]; then
-       cd packaging && ./update-wiki.sh ${TRAVIS_TAG} && cd ..;
+       cd packaging && ./update-wiki.sh ${TRAVIS_TAG} && ./update-docs.sh ${TRAVIS_TAG} && cd ..;
      fi;
    fi
  - export PATH=${PATH}:${HOME}/usr/bin
