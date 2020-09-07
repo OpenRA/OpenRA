@@ -665,6 +665,8 @@ wall:
 		Cost: 20
 	CustomSellValue:
 		Value: 0
+	UpdatesPlayerStatistics:
+		AddToAssetsValue: false
 	Tooltip:
 		Name: Concrete Wall
 		GenericName: Structure
