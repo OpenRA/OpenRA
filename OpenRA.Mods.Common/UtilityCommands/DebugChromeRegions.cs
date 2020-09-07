@@ -104,6 +104,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			"		for (var j = 0; j < ctx.canvas.height / 4; j++)",
 			"			for (var i = j % 2; i < ctx.canvas.width / 4; i += 2)",
 			"				ctx.fillRect(4 * i, 4 * j, 4, 4);",
+			"		ctx.imageSmoothingEnabled = false;",
 			"		ctx.drawImage(image, 0, 0, c.width, c.height);",
 			"		ctx.strokeStyle = \"#ffff00\";",
 			"		ctx.lineWidth = 1;",
