@@ -11,6 +11,7 @@
 
 using System;
 using System.ComponentModel;
+using System.Reflection;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
@@ -34,10 +35,33 @@ namespace OpenRA.Mods.Common
 			: base(value) { }
 	}
 
-	public class SubCellInit : ValueActorInit<SubCell>, ISingleInstanceInit
+	// Cannot use ValueInit because map.yaml is expected to use the numeric value instead of enum name
+	public class SubCellInit : ActorInit, ISingleInstanceInit
 	{
+		readonly int value;
 		public SubCellInit(SubCell value)
-			: base(value) { }
+		{
+			this.value = (int)value;
+		}
+
+		public virtual SubCell Value { get { return (SubCell)value; } }
+
+		public void Initialize(MiniYaml yaml)
+		{
+			Initialize((int)FieldLoader.GetValue("value", typeof(int), yaml.Value));
+		}
+
+		public void Initialize(int value)
+		{
+			var field = GetType().GetField("value", BindingFlags.NonPublic | BindingFlags.Instance);
+			if (field != null)
+				field.SetValue(this, value);
+		}
+
+		public override MiniYaml Save()
+		{
+			return new MiniYaml(FieldSaver.FormatValue(value));
+		}
 	}
 
 	public class CenterPositionInit : ValueActorInit<WPos>, ISingleInstanceInit
