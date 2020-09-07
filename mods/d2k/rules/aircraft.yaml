@@ -2,6 +2,8 @@ carryall.reinforce:
 	Inherits: ^Plane
 	Valued:
 		Cost: 1100
+	UpdatesPlayerStatistics:
+		AddToAssetsValue: false
 	Tooltip:
 		Name: Carryall
 	Health:
@@ -49,6 +51,8 @@ carryall.reinforce:
 
 carryall:
 	Inherits: carryall.reinforce
+	UpdatesPlayerStatistics:
+		AddToAssetsValue: true
 	-Carryall:
 	AutoCarryall:
 		BeforeLoadDelay: 10

@@ -181,6 +181,8 @@ C17:
 		Name: Supply Aircraft
 	Valued:
 		Cost: 2000
+	UpdatesPlayerStatistics:
+		AddToAssetsValue: false
 	Aircraft:
 		TurnSpeed: 20
 		Speed: 700
@@ -214,6 +216,8 @@ A10:
 		Name: A10 Bomber
 	Valued:
 		Cost: 2000
+	UpdatesPlayerStatistics:
+		AddToAssetsValue: false
 	Aircraft:
 		TurnSpeed: 16
 		Speed: 373
