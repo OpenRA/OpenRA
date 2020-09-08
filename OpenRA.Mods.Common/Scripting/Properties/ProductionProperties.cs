@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Scripting
 						new FactionInit(factionVariant ?? BuildableInfo.GetInitialFaction(actorInfo, p.Faction))
 					};
 
-					if (p.Produce(Self, actorInfo, type, inits))
+					if (p.Produce(Self, actorInfo, type, inits, 0))
 						return true;
 				}
 

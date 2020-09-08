@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Traits
 		public ProductionAirdrop(ActorInitializer init, ProductionAirdropInfo info)
 			: base(init, info) { }
 
-		public override bool Produce(Actor self, ActorInfo producee, string productionType, TypeDictionary inits)
+		public override bool Produce(Actor self, ActorInfo producee, string productionType, TypeDictionary inits, int refundableValue)
 		{
 			if (IsTraitDisabled || IsTraitPaused)
 				return false;

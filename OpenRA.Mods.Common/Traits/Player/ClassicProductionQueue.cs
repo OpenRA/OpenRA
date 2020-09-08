@@ -124,9 +124,10 @@ namespace OpenRA.Mods.Common.Traits
 					new FactionInit(BuildableInfo.GetInitialFaction(unit, p.Trait.Faction))
 				};
 
-				if (p.Trait.Produce(p.Actor, unit, type, inits))
+				var item = Queue.First(i => i.Done && i.Item == unit.Name);
+				if (p.Trait.Produce(p.Actor, unit, type, inits, item.TotalCost))
 				{
-					EndProduction(Queue.FirstOrDefault(i => i.Done && i.Item == unit.Name));
+					EndProduction(item);
 					return true;
 				}
 			}

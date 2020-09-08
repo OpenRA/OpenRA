@@ -68,7 +68,7 @@ namespace OpenRA.Mods.Cnc.Traits
 					factionInit ?? new FactionInit(BuildableInfo.GetInitialFaction(produced.Info, p.Faction))
 				};
 
-				if (p.Produce(self, produced.Info, Info.ProductionType, inits))
+				if (p.Produce(self, produced.Info, Info.ProductionType, inits, 0))
 					return;
 			}
 		}
