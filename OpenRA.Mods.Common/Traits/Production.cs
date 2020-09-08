@@ -109,18 +109,16 @@ namespace OpenRA.Mods.Common.Traits
 			return SelectExit(self, producee, productionType, e => CanUseExit(self, producee, e.Info));
 		}
 
-		public virtual bool Produce(Actor self, ActorInfo producee, string productionType, TypeDictionary inits)
+		public virtual bool Produce(Actor self, ActorInfo producee, string productionType, TypeDictionary inits, int refundableValue)
 		{
 			if (IsTraitDisabled || IsTraitPaused || Reservable.IsReserved(self))
 				return false;
 
 			// Pick a spawn/exit point pair
 			var exit = SelectExit(self, producee, productionType);
-
 			if (exit != null || self.OccupiesSpace == null || !producee.HasTraitInfo<IOccupySpaceInfo>())
 			{
-				DoProduction(self, producee, exit == null ? null : exit.Info, productionType, inits);
-
+				DoProduction(self, producee, exit?.Info, productionType, inits);
 				return true;
 			}
 

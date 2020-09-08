@@ -570,10 +570,10 @@ namespace OpenRA.Mods.Common.Traits
 
 			var bi = unit.TraitInfo<BuildableInfo>();
 			var type = developerMode.AllTech ? Info.Type : (bi.BuildAtProductionType ?? Info.Type);
-
-			if (!mostLikelyProducerTrait.IsTraitPaused && mostLikelyProducerTrait.Produce(self, unit, type, inits))
+			var item = Queue.First(i => i.Done && i.Item == unit.Name);
+			if (!mostLikelyProducerTrait.IsTraitPaused && mostLikelyProducerTrait.Produce(self, unit, type, inits, item.TotalCost))
 			{
-				EndProduction(Queue.FirstOrDefault(i => i.Done && i.Item == unit.Name));
+				EndProduction(item);
 				return true;
 			}
 
