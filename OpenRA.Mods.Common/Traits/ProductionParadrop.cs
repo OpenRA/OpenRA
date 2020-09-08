@@ -69,7 +69,10 @@ namespace OpenRA.Mods.Common.Traits
 			owner.World.AddFrameEndTask(w =>
 			{
 				if (!self.IsInWorld || self.IsDead)
+				{
+					owner.PlayerActor.Trait<PlayerResources>().GiveCash(refundableValue);
 					return;
+				}
 
 				var altitude = self.World.Map.Rules.Actors[actorType].TraitInfo<AircraftInfo>().CruiseAltitude;
 				var actor = w.CreateActor(actorType, new TypeDictionary
@@ -83,7 +86,10 @@ namespace OpenRA.Mods.Common.Traits
 				actor.QueueActivity(new CallFunc(() =>
 				{
 					if (!self.IsInWorld || self.IsDead)
+					{
+						owner.PlayerActor.Trait<PlayerResources>().GiveCash(refundableValue);
 						return;
+					}
 
 					foreach (var cargo in self.TraitsImplementing<INotifyDelivery>())
 						cargo.Delivered(self);
