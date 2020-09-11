@@ -323,7 +323,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			var button = AddButton("RESTART", RestartButton);
-			button.IsDisabled = () => hasError || leaving;
+			button.IsDisabled = () => leaving;
 			button.OnClick = () =>
 			{
 				hideMenu = true;
