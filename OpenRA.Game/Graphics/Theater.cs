@@ -80,7 +80,14 @@ namespace OpenRA.Graphics
 						allFrames = frameCache[i];
 
 					var frameCount = tileset.EnableDepth ? allFrames.Length / 2 : allFrames.Length;
-					var indices = t.Value.Frames != null ? t.Value.Frames : Enumerable.Range(0, frameCount);
+					var indices = t.Value.Frames != null ? t.Value.Frames : Exts.MakeArray(t.Value.TilesCount, j => j);
+
+					var start = indices.Min();
+					var end = indices.Max();
+					if (start < 0 || end >= frameCount)
+						throw new YamlException("Template `{0}` uses frames [{1}..{2}] of {3}, but only [0..{4}] actually exist"
+							.F(t.Key, start, end, i, frameCount - 1));
+
 					variants.Add(indices.Select(j =>
 					{
 						var f = allFrames[j];
@@ -97,7 +104,7 @@ namespace OpenRA.Graphics
 						if (sheetBuilder == null)
 							sheetBuilder = new SheetBuilder(SheetBuilder.FrameTypeToSheetType(f.Type), allocate);
 						else if (type != sheetBuilder.Type)
-							throw new InvalidDataException("Sprite type mismatch. Terrain sprites must all be either Indexed or RGBA.");
+							throw new YamlException("Sprite type mismatch. Terrain sprites must all be either Indexed or RGBA.");
 
 						var s = sheetBuilder.Allocate(f.Size, zRamp, offset);
 						Util.FastCopyIntoChannel(s, f.Data);

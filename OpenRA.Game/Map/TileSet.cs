@@ -73,10 +73,10 @@ namespace OpenRA
 				foreach (var node in nodes)
 				{
 					if (!int.TryParse(node.Key, out var key))
-						throw new InvalidDataException("Tileset `{0}` template `{1}` frame `{2}` is not a valid integer.".F(tileSet.Id, Id, node.Key));
+						throw new YamlException("Tileset `{0}` template `{1}` defines a frame `{2}` that is not a valid integer.".F(tileSet.Id, Id, node.Key));
 
 					if (key < 0 || key >= tileInfo.Length)
-						throw new InvalidDataException("Tileset `{0}` template `{1}` frame `{2}` must be between 0 and {3} for a {4}x{5} Size template.".F(tileSet.Id, Id, node.Key, tileInfo.Length, Size.X, Size.Y));
+						throw new YamlException("Tileset `{0}` template `{1}` references frame {2}, but only [0..{3}] are valid for a {4}x{5} Size template.".F(tileSet.Id, Id, key, tileInfo.Length - 1, Size.X, Size.Y));
 
 					tileInfo[key] = LoadTileInfo(tileSet, node.Value);
 				}
@@ -88,8 +88,11 @@ namespace OpenRA
 				var i = 0;
 				foreach (var node in nodes)
 				{
-					if (!int.TryParse(node.Key, out var key) || key != i++)
-						throw new InvalidDataException("Invalid tile key '{0}' on template '{1}' of tileset '{2}'.".F(node.Key, Id, tileSet.Id));
+					if (!int.TryParse(node.Key, out var key))
+						throw new YamlException("Tileset `{0}` template `{1}` defines a frame `{2}` that is not a valid integer.".F(tileSet.Id, Id, node.Key));
+
+					if (key != i++)
+						throw new YamlException("Tileset `{0}` template `{1}` is missing a definition for frame {2}.".F(tileSet.Id, Id, i - 1));
 
 					tileInfo[key] = LoadTileInfo(tileSet, node.Value);
 				}
@@ -165,14 +168,14 @@ namespace OpenRA
 				.ToArray();
 
 			if (TerrainInfo.Length >= byte.MaxValue)
-				throw new InvalidDataException("Too many terrain types.");
+				throw new YamlException("Too many terrain types.");
 
 			for (byte i = 0; i < TerrainInfo.Length; i++)
 			{
 				var tt = TerrainInfo[i].Type;
 
 				if (terrainIndexByType.ContainsKey(tt))
-					throw new InvalidDataException("Duplicate terrain type '{0}' in '{1}'.".F(tt, filepath));
+					throw new YamlException("Duplicate terrain type '{0}' in '{1}'.".F(tt, filepath));
 
 				terrainIndexByType.Add(tt, i);
 			}
