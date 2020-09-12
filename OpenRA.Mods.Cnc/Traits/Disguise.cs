@@ -189,7 +189,10 @@ namespace OpenRA.Mods.Cnc.Traits
 				}
 				else
 				{
-					var tooltip = target.TraitsImplementing<ITooltip>().FirstOrDefault();
+					var tooltip = target.TraitsImplementing<ITooltip>().FirstEnabledTraitOrDefault();
+					if (tooltip == null)
+						throw new ArgumentNullException("tooltip", "Missing tooltip or invalid target.");
+
 					AsPlayer = tooltip.Owner;
 					AsActor = target.Info;
 					AsTooltipInfo = tooltip.TooltipInfo;
@@ -213,7 +216,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 			AsPlayer = newOwner;
 			AsActor = actorInfo;
-			AsTooltipInfo = actorInfo.TraitInfos<TooltipInfo>().FirstOrDefault();
+			AsTooltipInfo = actorInfo.TraitInfos<TooltipInfo>().FirstOrDefault(info => info.EnabledByDefault);
 
 			HandleDisguise(oldEffectiveActor, oldEffectiveOwner, oldDisguiseSetting);
 		}
