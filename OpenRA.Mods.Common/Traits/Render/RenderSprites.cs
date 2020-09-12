@@ -74,12 +74,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		public string GetImage(ActorInfo actor, SequenceProvider sequenceProvider, string faction)
 		{
-			if (FactionImages != null && !string.IsNullOrEmpty(faction))
-			{
-				string factionImage = null;
-				if (FactionImages.TryGetValue(faction, out factionImage) && sequenceProvider.HasSequence(factionImage))
-					return factionImage;
-			}
+			if (FactionImages != null && !string.IsNullOrEmpty(faction) && FactionImages.TryGetValue(faction, out var factionImage))
+				return factionImage.ToLowerInvariant();
 
 			return (Image ?? actor.Name).ToLowerInvariant();
 		}
