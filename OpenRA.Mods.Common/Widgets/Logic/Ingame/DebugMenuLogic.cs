@@ -85,7 +85,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				showScreenMapCheckbox.OnClick = () => debugVis.ScreenMap ^= true;
 			}
 
-			var terrainGeometryTrait = world.WorldActor.Trait<TerrainGeometryOverlay>();
+			var terrainGeometryTrait = world.WorldActor.TraitOrDefault<TerrainGeometryOverlay>();
 			var showTerrainGeometryCheckbox = widget.GetOrNull<CheckboxWidget>("SHOW_TERRAIN_OVERLAY");
 			if (showTerrainGeometryCheckbox != null && terrainGeometryTrait != null)
 			{

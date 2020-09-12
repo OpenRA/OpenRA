@@ -124,7 +124,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				frameContainer.IsVisible = () => (currentSprites != null && currentSprites.Length > 1) ||
 					(isVideoLoaded && player != null && player.Video != null && player.Video.Frames > 1);
 
-			frameSlider = panel.Get<SliderWidget>("FRAME_SLIDER");
+			frameSlider = panel.GetOrNull<SliderWidget>("FRAME_SLIDER");
 			if (frameSlider != null)
 			{
 				frameSlider.OnChange += x =>
@@ -183,7 +183,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						player.Stop();
 					else
 					{
-						frameSlider.Value = 0;
+						if (frameSlider != null)
+							frameSlider.Value = 0;
+
 						currentFrame = 0;
 						animateFrames = false;
 					}
@@ -336,15 +338,23 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					player.Load(prefix + filename);
 					player.DrawOverlay = false;
 					isVideoLoaded = true;
-					frameSlider.MaximumValue = (float)player.Video.Frames - 1;
-					frameSlider.Ticks = 0;
+
+					if (frameSlider != null)
+					{
+						frameSlider.MaximumValue = (float)player.Video.Frames - 1;
+						frameSlider.Ticks = 0;
+					}
+
 					return true;
 				}
 
 				currentSprites = world.Map.Rules.Sequences.SpriteCache[prefix + filename];
 				currentFrame = 0;
-				frameSlider.MaximumValue = (float)currentSprites.Length - 1;
-				frameSlider.Ticks = currentSprites.Length;
+				if (frameSlider != null)
+				{
+					frameSlider.MaximumValue = (float)currentSprites.Length - 1;
+					frameSlider.Ticks = currentSprites.Length;
+				}
 			}
 			catch (Exception ex)
 			{
