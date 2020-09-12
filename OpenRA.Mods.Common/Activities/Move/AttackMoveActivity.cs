@@ -39,8 +39,11 @@ namespace OpenRA.Mods.Common.Activities
 
 		protected override void OnFirstRun(Actor self)
 		{
-			if (attackMove == null)
+			if (attackMove == null || autoTarget == null)
+			{
+				QueueChild(getMove());
 				return;
+			}
 
 			if (isAssaultMove)
 				token = self.GrantCondition(attackMove.Info.AssaultMoveCondition);
@@ -50,11 +53,11 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override bool Tick(Actor self)
 		{
-			if (IsCanceling)
+			if (IsCanceling || attackMove == null || autoTarget == null)
 				return TickChild(self);
 
 			// We are currently not attacking, so scan for new targets.
-			if (autoTarget != null && (ChildActivity == null || runningMoveActivity))
+			if (ChildActivity == null || runningMoveActivity)
 			{
 				// Use the standard ScanForTarget rate limit while we are running the move activity to save performance.
 				// Override the rate limit if our attack activity has completed so we can immediately acquire a new target instead of moving.
