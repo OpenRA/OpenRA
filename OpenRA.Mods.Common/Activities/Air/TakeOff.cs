@@ -17,12 +17,10 @@ namespace OpenRA.Mods.Common.Activities
 	public class TakeOff : Activity
 	{
 		readonly Aircraft aircraft;
-		readonly IMove move;
 
 		public TakeOff(Actor self)
 		{
 			aircraft = self.Trait<Aircraft>();
-			move = self.Trait<IMove>();
 		}
 
 		protected override void OnFirstRun(Actor self)
