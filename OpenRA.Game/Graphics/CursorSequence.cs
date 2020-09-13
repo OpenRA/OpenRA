@@ -31,8 +31,10 @@ namespace OpenRA.Graphics
 			Palette = palette;
 			Name = name;
 
+			Frames = cache[cursorSrc].Skip(Start).ToArray();
+
 			if ((d.ContainsKey("Length") && d["Length"].Value == "*") || (d.ContainsKey("End") && d["End"].Value == "*"))
-				Length = Frames.Length - Start;
+				Length = Frames.Length;
 			else if (d.ContainsKey("Length"))
 				Length = Exts.ParseIntegerInvariant(d["Length"].Value);
 			else if (d.ContainsKey("End"))
@@ -40,10 +42,7 @@ namespace OpenRA.Graphics
 			else
 				Length = 1;
 
-			Frames = cache[cursorSrc]
-				.Skip(Start)
-				.Take(Length)
-				.ToArray();
+			Frames = Frames.Take(Length).ToArray();
 
 			if (d.ContainsKey("X"))
 			{
