@@ -33,7 +33,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			// Width specified in YAML is used as the margin between flag / label and label / border
 			var labelMargin = widget.Bounds.Width;
 
-			var cachedWidth = 0;
 			var labelText = "";
 			string playerFaction = null;
 			var playerTeam = -1;
@@ -67,13 +66,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				}
 
 				label.Bounds.X = playerFaction != null ? flag.Bounds.Right + labelMargin : labelMargin;
-
-				var textWidth = ownerFont.Measure(labelText).X;
-				if (textWidth != cachedWidth)
-				{
-					label.Bounds.Width = textWidth;
-					widget.Bounds.Width = 2 * label.Bounds.X + textWidth;
-				}
+				label.Bounds.Width = ownerFont.Measure(labelText).X;
 
 				widget.Bounds.Width = Math.Max(teamWidth + 2 * labelMargin, label.Bounds.Right + labelMargin);
 				team.Bounds.Width = widget.Bounds.Width;
