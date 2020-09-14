@@ -1,0 +1,14 @@
+PERMA.BURN.MCV.HUSK:
+	Inherits: MCV.Husk
+	-Targetable:
+	-ChangesHealth:
+
+PERMA.BURN.4TNK.HUSK:
+	Inherits: 4TNK.Husk
+	-Targetable:
+	-ChangesHealth:
+
+PERMA.BURN.CHK1.HUSK:
+	Inherits: TRAN.Husk1
+	-Targetable:
+	-ChangesHealth:

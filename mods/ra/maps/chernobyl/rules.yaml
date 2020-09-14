@@ -1,0 +1,36 @@
+World:
+	GlobalLightingPaletteEffect:
+		Red: 1
+		Green: 0.90
+		Blue: 0.83
+		Ambient: 1.00
+
+^Palettes:
+	PaletteFromFile@terrain-temperat:
+		Name: terrain
+		Tileset: TEMPERAT
+		Filename: plains.pal
+		ShadowIndex: 3, 4
+	PaletteFromFile@player:
+		Name: player
+		Filename: temperat.pal
+		ShadowIndex: 4
+	PaletteFromFile@chrome:
+		Name: chrome
+		Filename: temperat.pal
+		ShadowIndex: 3
+		AllowModifiers: false
+	PaletteFromFile@cursor:
+		Name: cursor
+		Filename: temperat.pal
+		AllowModifiers: false
+		CursorPalette: true
+	PaletteFromFile@effect:
+		Name: effect
+		Filename: temperat.pal
+		ShadowIndex: 4
+	PaletteFromFile@colorpicker:
+		Name: colorpicker
+		Filename: temperat.pal
+		ShadowIndex: 4
+		AllowModifiers: false
