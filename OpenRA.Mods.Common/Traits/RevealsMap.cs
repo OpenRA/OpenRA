@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected void AddCellsToPlayerShroud(Actor self, Player p, PPos[] uv)
 		{
-			if (!Info.ValidStances.HasStance(p.Stances[self.Owner]))
+			if (!Info.ValidStances.HasStance(self.Owner.Stances[p]))
 				return;
 
 			p.Shroud.AddSource(this, type, uv);
@@ -63,7 +63,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected override void TraitEnabled(Actor self)
 		{
-			AddCellsToPlayerShroud(self, self.Owner, ProjectedCells(self));
+			foreach (var player in self.World.Players)
+				AddCellsToPlayerShroud(self, player, ProjectedCells(self));
 		}
 
 		protected override void TraitDisabled(Actor self)
