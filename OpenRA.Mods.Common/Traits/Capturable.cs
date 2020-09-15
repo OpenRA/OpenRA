@@ -43,11 +43,7 @@ namespace OpenRA.Mods.Common.Traits
 		void INotifyCapture.OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner, BitSet<CaptureType> captureTypes)
 		{
 			if (Info.CancelActivity)
-			{
-				var stop = new Order("Stop", self, false);
-				foreach (var t in self.TraitsImplementing<IResolveOrder>())
-					t.ResolveOrder(self, stop);
-			}
+				self.CancelActivity();
 		}
 
 		protected override void TraitEnabled(Actor self) { captureManager.RefreshCapturable(self); }
