@@ -102,6 +102,7 @@ namespace OpenRA
 
 		readonly IFacing facing;
 		readonly IHealth health;
+		readonly IResolveOrder[] resolveOrders;
 		readonly IRenderModifier[] renderModifiers;
 		readonly IRender[] renders;
 		readonly IMouseBounds[] mouseBounds;
@@ -156,6 +157,7 @@ namespace OpenRA
 			EffectiveOwner = TraitOrDefault<IEffectiveOwner>();
 			facing = TraitOrDefault<IFacing>();
 			health = TraitOrDefault<IHealth>();
+			resolveOrders = TraitsImplementing<IResolveOrder>().ToArray();
 			renderModifiers = TraitsImplementing<IRenderModifier>().ToArray();
 			renders = TraitsImplementing<IRender>().ToArray();
 			mouseBounds = TraitsImplementing<IMouseBounds>().ToArray();
@@ -402,6 +404,12 @@ namespace OpenRA
 
 				luaInterface?.Value.OnActorDestroyed();
 			});
+		}
+
+		public void ResolveOrder(Order order)
+		{
+			foreach (var r in resolveOrders)
+				r.ResolveOrder(this, order);
 		}
 
 		// TODO: move elsewhere.

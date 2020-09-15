@@ -352,8 +352,7 @@ namespace OpenRA.Network
 				return;
 
 			if (world.OrderValidators.All(vo => vo.OrderValidation(orderManager, world, clientId, order)))
-				foreach (var t in order.Subject.TraitsImplementing<IResolveOrder>())
-					t.ResolveOrder(order.Subject, order);
+				order.Subject.ResolveOrder(order);
 		}
 
 		static void SetOrderLag(OrderManager o)
