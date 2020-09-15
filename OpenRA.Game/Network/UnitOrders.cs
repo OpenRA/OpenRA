@@ -336,22 +336,22 @@ namespace OpenRA.Network
 							break;
 
 						if (order.GroupedActors == null)
-							ResolveOrder(order, world.OrderValidators, orderManager, clientId);
+							ResolveOrder(order, world, orderManager, clientId);
 						else
 							foreach (var subject in order.GroupedActors)
-								ResolveOrder(Order.FromGroupedOrder(order, subject), world.OrderValidators, orderManager, clientId);
+								ResolveOrder(Order.FromGroupedOrder(order, subject), world, orderManager, clientId);
 
 						break;
 					}
 			}
 		}
 
-		static void ResolveOrder(Order order, IEnumerable<IValidateOrder> validateOrders, OrderManager orderManager, int clientId)
+		static void ResolveOrder(Order order, World world, OrderManager orderManager, int clientId)
 		{
 			if (order.Subject == null || order.Subject.IsDead)
 				return;
 
-			if (validateOrders.All(vo => vo.OrderValidation(orderManager, order.Subject.World, clientId, order)))
+			if (world.OrderValidators.All(vo => vo.OrderValidation(orderManager, world, clientId, order)))
 				foreach (var t in order.Subject.TraitsImplementing<IResolveOrder>())
 					t.ResolveOrder(order.Subject, order);
 		}
