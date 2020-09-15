@@ -376,7 +376,8 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
 		{
-			if (targetLineColor != null)
+			// destination might be initialized with null, but will be set in a subsequent tick
+			if (targetLineColor != null && destination != null)
 				yield return new TargetLineNode(Target.FromCell(self.World, destination.Value), targetLineColor.Value);
 		}
 
