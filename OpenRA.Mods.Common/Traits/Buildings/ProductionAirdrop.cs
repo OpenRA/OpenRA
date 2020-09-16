@@ -53,21 +53,20 @@ namespace OpenRA.Mods.Common.Traits
 			var map = owner.World.Map;
 			var aircraftInfo = self.World.Map.Rules.Actors[info.ActorType].TraitInfo<AircraftInfo>();
 
-			CPos startPos;
-			CPos endPos;
+			WPos startPos;
+			WPos endPos;
 			WAngle spawnFacing;
 
 			var bounds = map.Bounds;
-			var diagonal = Exts.ISqrt(bounds.Height * bounds.Height + bounds.Width * bounds.Width);
+			var diagonalVec = map.ProjectedBottomRight - map.ProjectedTopLeft;
 
 			if (info.BaselineSpawn)
 			{
-				var spawn = owner.HomeLocation;
-				var center = new MPos(bounds.Left + bounds.Width / 2, bounds.Top + bounds.Height / 2).ToCPos(map);
-				var spawnVec = spawn - center;
-				startPos = spawn + spawnVec * diagonal / (2 * spawnVec.Length);
+				var spawnPos = map.CenterOfCell(owner.HomeLocation);
+				var spawnVec = spawnPos - (map.ProjectedTopLeft + diagonalVec / 2);
+				startPos = spawnPos + map.DistanceToEdge(spawnPos, spawnVec).Length * spawnVec / spawnVec.Length;
 				endPos = startPos;
-				spawnFacing = map.FacingBetween(startPos, self.Location, WAngle.Zero);
+				spawnFacing = (self.CenterPosition - startPos).Yaw;
 			}
 			else
 			{
@@ -75,21 +74,10 @@ namespace OpenRA.Mods.Common.Traits
 				// map at a given angle. This makes the production timing independent
 				// of spawnpoint.
 				spawnFacing = info.Facing;
-				var diagonalAngle = WAngle.ArcTan(bounds.Width, bounds.Height);
-				var angle = Math.Abs(spawnFacing.Angle2);
-
-				if (angle > 256)
-					angle = 512 - angle;
-
-				int longestApproach;
-				if (angle < Math.Abs(diagonalAngle.Angle2))
-					longestApproach = bounds.Height * 1024 / spawnFacing.Cos();
-				else
-					longestApproach = bounds.Width * 1024 / spawnFacing.Sin();
-
-				var spawnVec = new MPos(spawnFacing.Sin() * longestApproach / 1024, spawnFacing.Cos() * longestApproach / 1024).ToCPos(map) - CPos.Zero;
-				startPos = self.Location + spawnVec;
-				endPos = self.Location - spawnVec;
+				var longestApproach = Math.Min(diagonalVec.Y * 1024 / spawnFacing.Cos(), diagonalVec.X * 1024 / spawnFacing.Sin());
+				var spawnVec = new WVec(0, -longestApproach, 0).Rotate(WRot.FromYaw(spawnFacing));
+				startPos = self.CenterPosition + spawnVec;
+				endPos = self.CenterPosition - spawnVec;
 			}
 
 			// Assume a single exit point for simplicity
@@ -108,7 +96,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				var actor = w.CreateActor(info.ActorType, new TypeDictionary
 				{
-					new CenterPositionInit(w.Map.CenterOfCell(startPos) + new WVec(WDist.Zero, WDist.Zero, aircraftInfo.CruiseAltitude)),
+					new CenterPositionInit(startPos + new WVec(WDist.Zero, WDist.Zero, aircraftInfo.CruiseAltitude)),
 					new OwnerInit(owner),
 					new FacingInit(spawnFacing)
 				});
@@ -130,7 +118,7 @@ namespace OpenRA.Mods.Common.Traits
 					Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", info.ReadyAudio, self.Owner.Faction.InternalName);
 				}));
 
-				actor.QueueActivity(new FlyOffMap(actor, Target.FromCell(w, endPos)));
+				actor.QueueActivity(new FlyOffMap(actor, Target.FromPos(endPos)));
 				actor.QueueActivity(new RemoveSelf());
 			});
 
