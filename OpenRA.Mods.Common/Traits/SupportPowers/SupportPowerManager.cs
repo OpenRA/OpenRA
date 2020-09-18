@@ -258,7 +258,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!HasSufficientFunds(power))
 				return;
 
-			if (Manager.PlayerResources != null)
+			if (Manager.PlayerResources.IsValueCreated)
 				Manager.PlayerResources.Value.TakeCash(power.Info.Cost);
 
 			// Note: order.Subject is the *player* actor

@@ -169,7 +169,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual void Activate(Actor self, Order order, SupportPowerManager manager)
 		{
-			if (Info.DisplayRadarPing && manager.RadarPings != null)
+			if (Info.DisplayRadarPing && manager.RadarPings.IsValueCreated)
 			{
 				ping = manager.RadarPings.Value.Add(
 					() => order.Player.IsAlliedWith(self.World.RenderPlayer),
