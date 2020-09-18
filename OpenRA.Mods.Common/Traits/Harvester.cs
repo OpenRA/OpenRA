@@ -174,25 +174,25 @@ namespace OpenRA.Mods.Common.Traits
 		public Actor ClosestProc(Actor self, Actor ignore)
 		{
 			// Find all refineries and their occupancy count:
-			var refs = self.World.ActorsWithTrait<IAcceptResources>()
+			var refineries = self.World.ActorsWithTrait<IAcceptResources>()
 				.Where(r => r.Actor != ignore && r.Actor.Owner == self.Owner && IsAcceptableProcType(r.Actor))
 				.Select(r => new
 				{
 					Location = r.Actor.Location + r.Trait.DeliveryOffset,
 					Actor = r.Actor,
 					Occupancy = self.World.ActorsHavingTrait<Harvester>(h => h.LinkedProc == r.Actor).Count()
-				}).ToDictionary(r => r.Location);
+				}).ToLookup(r => r.Location);
 
 			// Start a search from each refinery's delivery location:
 			List<CPos> path;
 
-			using (var search = PathSearch.FromPoints(self.World, mobile.Locomotor, self, refs.Values.Select(r => r.Location), self.Location, BlockedByActor.None)
-				.WithCustomCost(loc =>
+			using (var search = PathSearch.FromPoints(self.World, mobile.Locomotor, self, refineries.Select(r => r.Key), self.Location, BlockedByActor.None)
+				.WithCustomCost(location =>
 				{
-					if (!refs.ContainsKey(loc))
+					if (!refineries.Contains(location))
 						return 0;
 
-					var occupancy = refs[loc].Occupancy;
+					var occupancy = refineries[location].First().Occupancy;
 
 					// Too many harvesters clogs up the refinery's delivery location:
 					if (occupancy >= Info.MaxUnloadQueue)
@@ -204,7 +204,7 @@ namespace OpenRA.Mods.Common.Traits
 				path = self.World.WorldActor.Trait<IPathFinder>().FindPath(search);
 
 			if (path.Count != 0)
-				return refs[path.Last()].Actor;
+				return refineries[path.Last()].First().Actor;
 
 			return null;
 		}
