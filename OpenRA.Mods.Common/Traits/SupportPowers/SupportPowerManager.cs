@@ -32,6 +32,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly DeveloperMode DevMode;
 		public readonly TechTree TechTree;
 		public readonly Lazy<RadarPings> RadarPings;
+		public readonly Lazy<PlayerResources> PlayerResources;
 
 		public SupportPowerManager(ActorInitializer init)
 		{
@@ -39,6 +40,7 @@ namespace OpenRA.Mods.Common.Traits
 			DevMode = Self.Trait<DeveloperMode>();
 			TechTree = Self.Trait<TechTree>();
 			RadarPings = Exts.Lazy(() => init.World.WorldActor.TraitOrDefault<RadarPings>());
+			PlayerResources = Exts.Lazy(() => Self.TraitOrDefault<PlayerResources>());
 
 			init.World.ActorAdded += ActorAdded;
 			init.World.ActorRemoved += ActorRemoved;
@@ -227,8 +229,13 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			var power = Instances.FirstOrDefault(i => !i.IsTraitPaused);
+			if (power == null)
+				return;
 
-			power?.SelectTarget(power.Self, Key, Manager);
+			if (!HasSufficientFunds(power))
+				return;
+
+			power.SelectTarget(power.Self, Key, Manager);
 		}
 
 		public virtual void Activate(Order order)
@@ -247,6 +254,12 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (power == null)
 				return;
+
+			if (!HasSufficientFunds(power))
+				return;
+
+			if (Manager.PlayerResources != null)
+				Manager.PlayerResources.Value.TakeCash(power.Info.Cost);
 
 			// Note: order.Subject is the *player* actor
 			power.Activate(power.Self, order, Manager);
@@ -268,6 +281,24 @@ namespace OpenRA.Mods.Common.Traits
 		public virtual string TooltipTimeTextOverride()
 		{
 			return null;
+		}
+
+		bool HasSufficientFunds(SupportPower power)
+		{
+			if (power.Info.Cost != 0 && Manager.PlayerResources != null)
+			{
+				var player = Manager.Self;
+				var playerResources = Manager.PlayerResources.Value;
+				if (playerResources.Cash + playerResources.Resources < power.Info.Cost)
+				{
+					Game.Sound.PlayNotification(player.World.Map.Rules, player.Owner, "Speech",
+						playerResources.Info.InsufficientFundsNotification, player.Owner.Faction.InternalName);
+
+					return false;
+				}
+			}
+
+			return true;
 		}
 	}
 

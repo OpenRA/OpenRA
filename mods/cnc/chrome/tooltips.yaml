@@ -317,6 +317,7 @@ Background@SUPPORT_POWER_TOOLTIP:
 			TextColor: FFFF00
 			Font: Bold
 		Label@TIME:
+			X: 5
 			Y: 6
 			Font: TinyBold
 			VAlign: Top
@@ -325,6 +326,12 @@ Background@SUPPORT_POWER_TOOLTIP:
 			Y: 20
 			Font: TinyBold
 			VAlign: Top
+		Label@COST:
+			X: 5
+			Y: 10
+			Font: TinyBold
+			VAlign: Top
+			Text: $
 
 Background@SUPPORT_POWER_TOOLTIP_FACTIONSUFFIX:
 	Logic: SupportPowerTooltipLogic, AddFactionSuffixLogic
@@ -344,6 +351,7 @@ Background@SUPPORT_POWER_TOOLTIP_FACTIONSUFFIX:
 			TextColor: FFFF00
 			Font: Bold
 		Label@TIME:
+			X: 5
 			Y: 8
 			Font: TinyBold
 			VAlign: Top
@@ -352,6 +360,12 @@ Background@SUPPORT_POWER_TOOLTIP_FACTIONSUFFIX:
 			Y: 22
 			Font: TinyBold
 			VAlign: Top
+		Label@COST:
+			X: 5
+			Y: 10
+			Font: TinyBold
+			VAlign: Top
+			Text: $
 
 Background@ARMY_TOOLTIP:
 	Logic: ArmyTooltipLogic

@@ -311,6 +311,7 @@ Background@SUPPORT_POWER_TOOLTIP:
 			TextColor: FFFF00
 			Font: Bold
 		Label@TIME:
+			X: 5
 			Y: 10
 			Font: TinyBold
 			VAlign: Top
@@ -319,6 +320,12 @@ Background@SUPPORT_POWER_TOOLTIP:
 			Y: 24
 			Font: TinyBold
 			VAlign: Top
+		Label@COST:
+			X: 5
+			Y: 10
+			Font: TinyBold
+			VAlign: Top
+			Text: $
 
 Background@ARMY_TOOLTIP:
 	Logic: ArmyTooltipLogic

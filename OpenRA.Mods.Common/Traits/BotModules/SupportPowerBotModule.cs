@@ -16,7 +16,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Manages bot support power handling.")]
-	public class SupportPowerBotModuleInfo : ConditionalTraitInfo, Requires<SupportPowerManagerInfo>
+	public class SupportPowerBotModuleInfo : ConditionalTraitInfo, Requires<SupportPowerManagerInfo>, Requires<PlayerResourcesInfo>
 	{
 		[Desc("Tells the AI how to use its support powers.")]
 		[FieldLoader.LoadUsing("LoadDecisions")]
@@ -43,6 +43,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Dictionary<SupportPowerInstance, int> waitingPowers = new Dictionary<SupportPowerInstance, int>();
 		readonly Dictionary<string, SupportPowerDecision> powerDecisions = new Dictionary<string, SupportPowerDecision>();
 		readonly List<SupportPowerInstance> stalePowers = new List<SupportPowerInstance>();
+		PlayerResources playerResources;
 		SupportPowerManager supportPowerManager;
 
 		public SupportPowerBotModule(Actor self, SupportPowerBotModuleInfo info)
@@ -55,6 +56,7 @@ namespace OpenRA.Mods.Common.Traits
 		protected override void Created(Actor self)
 		{
 			supportPowerManager = self.Owner.PlayerActor.Trait<SupportPowerManager>();
+			playerResources = self.Owner.PlayerActor.Trait<PlayerResources>();
 		}
 
 		protected override void TraitEnabled(Actor self)
@@ -85,6 +87,14 @@ namespace OpenRA.Mods.Common.Traits
 					if (powerDecision == null)
 					{
 						AIUtils.BotDebug("{0} couldn't find powerDecision for {1}", player.PlayerName, sp.Info.OrderName);
+						continue;
+					}
+
+					if (sp.Info.Cost != 0 && playerResources.Cash + playerResources.Resources < sp.Info.Cost)
+					{
+						AIUtils.BotDebug("AI: {1} can't afford the activation of support power {0}. Delaying rescan.", sp.Info.OrderName, player.PlayerName);
+						waitingPowers[sp] += powerDecision.GetNextScanTime(world);
+
 						continue;
 					}
 

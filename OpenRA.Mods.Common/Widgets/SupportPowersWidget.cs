@@ -16,6 +16,7 @@ using OpenRA.Graphics;
 using OpenRA.Mods.Common.Lint;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
+using OpenRA.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
@@ -53,6 +54,8 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly ModData modData;
 		readonly WorldRenderer worldRenderer;
 		readonly SupportPowerManager spm;
+
+		readonly Lazy<PlayerResources> playerResources;
 
 		Animation icon;
 		Animation clock;
@@ -97,6 +100,7 @@ namespace OpenRA.Mods.Common.Widgets
 			this.worldRenderer = worldRenderer;
 			GetTooltipIcon = () => TooltipIcon;
 			spm = world.LocalPlayer.PlayerActor.Trait<SupportPowerManager>();
+			playerResources = Exts.Lazy(() => world.LocalPlayer.PlayerActor.TraitOrDefault<PlayerResources>());
 			tooltipContainer = Exts.Lazy(() =>
 				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
 
@@ -256,7 +260,11 @@ namespace OpenRA.Mods.Common.Widgets
 				return;
 
 			tooltipContainer.Value.SetTooltip(TooltipTemplate,
-				new WidgetArgs() { { "world", worldRenderer.World }, { "player", spm.Self.Owner }, { "getTooltipIcon", GetTooltipIcon } });
+				new WidgetArgs()
+				{
+					{ "world", worldRenderer.World }, { "player", spm.Self.Owner }, { "getTooltipIcon", GetTooltipIcon },
+					{ "playerResources", playerResources }
+				});
 		}
 
 		public override void MouseExited()

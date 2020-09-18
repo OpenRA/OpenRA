@@ -29,6 +29,7 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly int timestep;
 
 		readonly Lazy<TooltipContainerWidget> tooltipContainer;
+		readonly Lazy<PlayerResources> playerResources;
 
 		public Func<SupportPowersWidget.SupportPowerIcon> GetTooltipIcon;
 		public SupportPowersWidget.SupportPowerIcon TooltipIcon { get; private set; }
@@ -62,6 +63,8 @@ namespace OpenRA.Mods.Common.Widgets
 
 			tooltipContainer = Exts.Lazy(() =>
 				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
+
+			playerResources = Exts.Lazy(() => GetPlayer().PlayerActor.TraitOrDefault<PlayerResources>());
 		}
 
 		protected ObserverSupportPowerIconsWidget(ObserverSupportPowerIconsWidget other)
@@ -193,7 +196,7 @@ namespace OpenRA.Mods.Common.Widgets
 				lastIconIdx = i;
 				TooltipIcon = supportPowerIconsIcons[i];
 				currentTooltipToken = tooltipContainer.Value.SetTooltip(TooltipTemplate,
-					new WidgetArgs() { { "world", worldRenderer.World }, { "player", GetPlayer() }, { "getTooltipIcon", GetTooltipIcon } });
+					new WidgetArgs() { { "world", worldRenderer.World }, { "player", GetPlayer() }, { "getTooltipIcon", GetTooltipIcon }, { "playerResources", playerResources } });
 				return;
 			}
 
