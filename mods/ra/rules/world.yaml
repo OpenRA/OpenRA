@@ -101,10 +101,10 @@
 		Side: Allies
 		Selectable: False
 	Faction@1:
-		Name: England
+		Name: Britain
 		InternalName: england
 		Side: Allies
-		Description: England: Counterintelligence\nSpecial Unit: British Spy\nSpecial Unit: Mobile Gap Generator
+		Description: Britain: Counterintelligence\nSpecial Unit: British Spy\nSpecial Unit: Mobile Gap Generator
 	Faction@2:
 		Name: France
 		InternalName: france
