@@ -74,7 +74,7 @@ namespace OpenRA.Mods.Common.Widgets
 					video.Height),
 				TextureChannel.RGBA);
 
-			var scale = Math.Min((float)RenderBounds.Width / video.Width, (float)RenderBounds.Height / video.Height * AspectRatio);
+			var scale = Math.Min((float)RenderBounds.Width / video.Width, RenderBounds.Height / (video.Height * AspectRatio));
 			videoOrigin = new float2(
 				RenderBounds.X + (RenderBounds.Width - scale * video.Width) / 2,
 				RenderBounds.Y + (RenderBounds.Height - scale * video.Height * AspectRatio) / 2);
