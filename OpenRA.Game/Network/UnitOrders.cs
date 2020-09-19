@@ -261,7 +261,16 @@ namespace OpenRA.Network
 						{
 							var strings = node.Key.Split('@');
 							if (strings[0] == "Client")
-								clients.Add(Session.Client.Deserialize(node.Value));
+							{
+								var client = Session.Client.Deserialize(node.Value);
+								if (clients.Any(c => c.Slot == client.Slot))
+								{
+									Game.Debug("Slot {0} is already taken. Resetting.".F(client.Slot));
+									client.Slot = null;
+								}
+
+								clients.Add(client);
+							}
 						}
 
 						orderManager.LobbyInfo.Clients = clients;
