@@ -28,11 +28,13 @@ namespace OpenRA.Mods.Common.Widgets
 		public VqaReader Video { get { return video; } }
 
 		Sprite videoSprite, overlaySprite;
+		Sheet overlaySheet;
 		VqaReader video = null;
 		string cachedVideo;
 		float invLength;
 		float2 videoOrigin, videoSize;
-		uint[,] overlay;
+		float2 overlayOrigin, overlaySize;
+		float overlayScale;
 		bool stopped;
 		bool paused;
 
@@ -81,19 +83,6 @@ namespace OpenRA.Mods.Common.Widgets
 
 			// Round size to integer pixels. Round up to be consistent with the scale calculation.
 			videoSize = new float2((int)Math.Ceiling(video.Width * scale), (int)Math.Ceiling(video.Height * AspectRatio * scale));
-
-			if (!DrawOverlay)
-				return;
-
-			var scaledHeight = (int)videoSize.Y;
-			overlay = new uint[Exts.NextPowerOf2(scaledHeight), 1];
-			var black = 255U << 24;
-			for (var y = 0; y < scaledHeight; y += 2)
-				overlay[y, 0] = black;
-
-			var overlaySheet = new Sheet(SheetType.BGRA, new Size(1, Exts.NextPowerOf2(scaledHeight)));
-			overlaySheet.GetTexture().SetData(overlay);
-			overlaySprite = new Sprite(overlaySheet, new Rectangle(0, 0, 1, scaledHeight), TextureChannel.RGBA);
 		}
 
 		public override void Draw()
@@ -134,7 +123,45 @@ namespace OpenRA.Mods.Common.Widgets
 				videoSize);
 
 			if (DrawOverlay)
-				Game.Renderer.RgbaSpriteRenderer.DrawSprite(overlaySprite, videoOrigin, videoSize);
+			{
+				// Create the scan line grid to render over the video
+				// To avoid aliasing, this must be an integer number of screen pixels.
+				// A few complications to be aware of:
+				// - The video may have a different aspect ratio to the widget RenderBounds
+				// - The RenderBounds coordinates may be a non-integer scale of the screen pixel size
+				// - The screen pixel size may change while the video is playing back
+				//   (user moves a window between displays with different DPI on macOS)
+				var scale = Game.Renderer.WindowScale;
+				if (overlaySheet == null || overlayScale != scale)
+				{
+					overlaySheet?.Dispose();
+
+					// Calculate the scan line height by converting the video scale (copied from Open()) to screen
+					// pixels, halving it (scan lines cover half the pixel height), and rounding to the nearest integer.
+					var videoScale = Math.Min((float)RenderBounds.Width / video.Width, RenderBounds.Height / (video.Height * AspectRatio));
+					var halfRowHeight = (int)(videoScale * scale / 2 + 0.5f);
+
+					// The overlay can be minimally stored in a 1px column which is stretched to cover the full screen
+					var overlayHeight = (int)(RenderBounds.Height * scale / halfRowHeight);
+					var overlaySheetSize = new Size(1, Exts.NextPowerOf2(overlayHeight));
+					var overlay = new byte[4 * Exts.NextPowerOf2(overlayHeight)];
+					overlaySheet = new Sheet(SheetType.BGRA, overlaySheetSize);
+
+					// Every second pixel is the scan line - set alpha to 128 to make the lines less harsh
+					for (var i = 3; i < 4 * overlayHeight; i += 8)
+						overlay[i] = 128;
+
+					overlaySheet.GetTexture().SetData(overlay, overlaySheetSize.Width, overlaySheetSize.Height);
+					overlaySprite = new Sprite(overlaySheet, new Rectangle(0, 0, 1, overlayHeight), TextureChannel.RGBA);
+
+					// Overlay origin must be rounded to the nearest screen pixel to prevent aliasing
+					overlayOrigin = new float2((int)(RenderBounds.X * scale + 0.5f), (int)(RenderBounds.Y * scale + 0.5f)) / scale;
+					overlaySize = new float2(RenderBounds.Width, overlayHeight * halfRowHeight / scale);
+					overlayScale = scale;
+				}
+
+				Game.Renderer.RgbaSpriteRenderer.DrawSprite(overlaySprite, overlayOrigin, overlaySize);
+			}
 		}
 
 		public override bool HandleKeyPress(KeyInput e)
