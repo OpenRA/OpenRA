@@ -71,10 +71,10 @@ namespace OpenRA.Mods.Common.Widgets
 				cancelButton.OnClick = () =>
 				{
 					Ui.CloseWindow();
-					onCancel?.Invoke();
+					onCancel();
 				};
 
-				if (!string.IsNullOrEmpty(cancelText) && cancelButton != null)
+				if (!string.IsNullOrEmpty(cancelText))
 					cancelButton.GetText = () => cancelText;
 			}
 
@@ -84,10 +84,10 @@ namespace OpenRA.Mods.Common.Widgets
 				otherButton.Bounds.Y += headerHeight;
 				otherButton.OnClick = () =>
 				{
-					onOther?.Invoke();
+					onOther();
 				};
 
-				if (!string.IsNullOrEmpty(otherText) && otherButton != null)
+				if (!string.IsNullOrEmpty(otherText))
 					otherButton.GetText = () => otherText;
 			}
 		}
