@@ -21,25 +21,28 @@ namespace OpenRA.Mods.Common.Server
 	{
 		public void ClientJoined(OpenRA.Server.Server server, Connection conn)
 		{
-			if (server.LobbyInfo.ClientWithIndex(conn.PlayerIndex).IsAdmin)
-				return;
-
-			var defaults = new Session.Global();
-			LobbyCommands.LoadMapSettings(server, defaults, server.Map.Rules);
-
-			var options = server.Map.Rules.Actors["player"].TraitInfos<ILobbyOptions>()
-				.Concat(server.Map.Rules.Actors["world"].TraitInfos<ILobbyOptions>())
-				.SelectMany(t => t.LobbyOptions(server.Map.Rules));
-
-			var optionNames = new Dictionary<string, string>();
-			foreach (var o in options)
-				optionNames[o.Id] = o.Name;
-
-			foreach (var kv in server.LobbyInfo.GlobalSettings.LobbyOptions)
+			lock (server.LobbyInfo)
 			{
-				if (!defaults.LobbyOptions.TryGetValue(kv.Key, out var def) || kv.Value.Value != def.Value)
-					if (optionNames.TryGetValue(kv.Key, out var optionName))
-						server.SendOrderTo(conn, "Message", optionName + ": " + kv.Value.Value);
+				if (server.LobbyInfo.ClientWithIndex(conn.PlayerIndex).IsAdmin)
+					return;
+
+				var defaults = new Session.Global();
+				LobbyCommands.LoadMapSettings(server, defaults, server.Map.Rules);
+
+				var options = server.Map.Rules.Actors["player"].TraitInfos<ILobbyOptions>()
+					.Concat(server.Map.Rules.Actors["world"].TraitInfos<ILobbyOptions>())
+					.SelectMany(t => t.LobbyOptions(server.Map.Rules));
+
+				var optionNames = new Dictionary<string, string>();
+				foreach (var o in options)
+					optionNames[o.Id] = o.Name;
+
+				foreach (var kv in server.LobbyInfo.GlobalSettings.LobbyOptions)
+				{
+					if (!defaults.LobbyOptions.TryGetValue(kv.Key, out var def) || kv.Value.Value != def.Value)
+						if (optionNames.TryGetValue(kv.Key, out var optionName))
+							server.SendOrderTo(conn, "Message", optionName + ": " + kv.Value.Value);
+				}
 			}
 		}
 	}
