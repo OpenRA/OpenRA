@@ -431,69 +431,72 @@ namespace OpenRA.Server
 
 				Action completeConnection = () =>
 				{
-					client.Slot = LobbyInfo.FirstEmptySlot();
-					client.IsAdmin = !LobbyInfo.Clients.Any(c1 => c1.IsAdmin);
-
-					if (client.IsObserver && !LobbyInfo.GlobalSettings.AllowSpectators)
+					lock (LobbyInfo)
 					{
-						SendOrderTo(newConn, "ServerError", "The game is full");
-						DropClient(newConn);
-						return;
+						client.Slot = LobbyInfo.FirstEmptySlot();
+						client.IsAdmin = !LobbyInfo.Clients.Any(c1 => c1.IsAdmin);
+
+						if (client.IsObserver && !LobbyInfo.GlobalSettings.AllowSpectators)
+						{
+							SendOrderTo(newConn, "ServerError", "The game is full");
+							DropClient(newConn);
+							return;
+						}
+
+						if (client.Slot != null)
+							SyncClientToPlayerReference(client, Map.Players.Players[client.Slot]);
+						else
+							client.Color = Color.White;
+
+						// Promote connection to a valid client
+						PreConns.Remove(newConn);
+						Conns.Add(newConn);
+						LobbyInfo.Clients.Add(client);
+						newConn.Validated = true;
+
+						var clientPing = new Session.ClientPing { Index = client.Index };
+						LobbyInfo.ClientPings.Add(clientPing);
+
+						Log.Write("server", "Client {0}: Accepted connection from {1}.",
+							newConn.PlayerIndex, newConn.Socket.RemoteEndPoint);
+
+						if (client.Fingerprint != null)
+							Log.Write("server", "Client {0}: Player fingerprint is {1}.",
+								newConn.PlayerIndex, client.Fingerprint);
+
+						foreach (var t in serverTraits.WithInterface<IClientJoined>())
+							t.ClientJoined(this, newConn);
+
+						SyncLobbyInfo();
+
+						Log.Write("server", "{0} ({1}) has joined the game.",
+							client.Name, newConn.Socket.RemoteEndPoint);
+
+						// Report to all other players
+						SendMessage("{0} has joined the game.".F(client.Name), newConn);
+
+						// Send initial ping
+						SendOrderTo(newConn, "Ping", Game.RunTime.ToString(CultureInfo.InvariantCulture));
+
+						if (Type == ServerType.Dedicated)
+						{
+							var motdFile = Platform.ResolvePath(Platform.SupportDirPrefix, "motd.txt");
+							if (!File.Exists(motdFile))
+								File.WriteAllText(motdFile, "Welcome, have fun and good luck!");
+
+							var motd = File.ReadAllText(motdFile);
+							if (!string.IsNullOrEmpty(motd))
+								SendOrderTo(newConn, "Message", motd);
+						}
+
+						if (Map.DefinesUnsafeCustomRules)
+							SendOrderTo(newConn, "Message", "This map contains custom rules. Game experience may change.");
+
+						if (!LobbyInfo.GlobalSettings.EnableSingleplayer)
+							SendOrderTo(newConn, "Message", TwoHumansRequiredText);
+						else if (Map.Players.Players.Where(p => p.Value.Playable).All(p => !p.Value.AllowBots))
+							SendOrderTo(newConn, "Message", "Bots have been disabled on this map.");
 					}
-
-					if (client.Slot != null)
-						SyncClientToPlayerReference(client, Map.Players.Players[client.Slot]);
-					else
-						client.Color = Color.White;
-
-					// Promote connection to a valid client
-					PreConns.Remove(newConn);
-					Conns.Add(newConn);
-					LobbyInfo.Clients.Add(client);
-					newConn.Validated = true;
-
-					var clientPing = new Session.ClientPing { Index = client.Index };
-					LobbyInfo.ClientPings.Add(clientPing);
-
-					Log.Write("server", "Client {0}: Accepted connection from {1}.",
-						newConn.PlayerIndex, newConn.Socket.RemoteEndPoint);
-
-					if (client.Fingerprint != null)
-						Log.Write("server", "Client {0}: Player fingerprint is {1}.",
-							newConn.PlayerIndex, client.Fingerprint);
-
-					foreach (var t in serverTraits.WithInterface<IClientJoined>())
-						t.ClientJoined(this, newConn);
-
-					SyncLobbyInfo();
-
-					Log.Write("server", "{0} ({1}) has joined the game.",
-						client.Name, newConn.Socket.RemoteEndPoint);
-
-					// Report to all other players
-					SendMessage("{0} has joined the game.".F(client.Name), newConn);
-
-					// Send initial ping
-					SendOrderTo(newConn, "Ping", Game.RunTime.ToString(CultureInfo.InvariantCulture));
-
-					if (Type == ServerType.Dedicated)
-					{
-						var motdFile = Platform.ResolvePath(Platform.SupportDirPrefix, "motd.txt");
-						if (!File.Exists(motdFile))
-							File.WriteAllText(motdFile, "Welcome, have fun and good luck!");
-
-						var motd = File.ReadAllText(motdFile);
-						if (!string.IsNullOrEmpty(motd))
-							SendOrderTo(newConn, "Message", motd);
-					}
-
-					if (Map.DefinesUnsafeCustomRules)
-						SendOrderTo(newConn, "Message", "This map contains custom rules. Game experience may change.");
-
-					if (!LobbyInfo.GlobalSettings.EnableSingleplayer)
-						SendOrderTo(newConn, "Message", TwoHumansRequiredText);
-					else if (Map.Players.Players.Where(p => p.Value.Playable).All(p => !p.Value.AllowBots))
-						SendOrderTo(newConn, "Message", "Bots have been disabled on this map.");
 				};
 
 				if (Type == ServerType.Local)
@@ -676,89 +679,119 @@ namespace OpenRA.Server
 
 		void InterpretServerOrder(Connection conn, Order o)
 		{
-			// Only accept handshake responses from unvalidated clients
-			// Anything else may be an attempt to exploit the server
-			if (!conn.Validated)
+			lock (LobbyInfo)
 			{
-				if (o.OrderString == "HandshakeResponse")
-					ValidateClient(conn, o.TargetString);
-				else
+				// Only accept handshake responses from unvalidated clients
+				// Anything else may be an attempt to exploit the server
+				if (!conn.Validated)
 				{
-					Log.Write("server", "Rejected connection from {0}; Order `{1}` is not a `HandshakeResponse`.",
-						conn.Socket.RemoteEndPoint, o.OrderString);
-
-					DropClient(conn);
-				}
-
-				return;
-			}
-
-			switch (o.OrderString)
-			{
-				case "Command":
+					if (o.OrderString == "HandshakeResponse")
+						ValidateClient(conn, o.TargetString);
+					else
 					{
-						var handledBy = serverTraits.WithInterface<IInterpretCommand>()
-							.FirstOrDefault(t => t.InterpretCommand(this, conn, GetClient(conn), o.TargetString));
+						Log.Write("server", "Rejected connection from {0}; Order `{1}` is not a `HandshakeResponse`.",
+							conn.Socket.RemoteEndPoint, o.OrderString);
 
-						if (handledBy == null)
-						{
-							Log.Write("server", "Unknown server command: {0}", o.TargetString);
-							SendOrderTo(conn, "Message", "Unknown server command: {0}".F(o.TargetString));
-						}
-
-						break;
+						DropClient(conn);
 					}
 
-				case "Chat":
-					DispatchOrdersToClients(conn, 0, o.Serialize());
-					break;
-				case "Pong":
-					{
-						if (!OpenRA.Exts.TryParseInt64Invariant(o.TargetString, out var pingSent))
+					return;
+				}
+
+				switch (o.OrderString)
+				{
+					case "Command":
 						{
-							Log.Write("server", "Invalid order pong payload: {0}", o.TargetString);
+							var handledBy = serverTraits.WithInterface<IInterpretCommand>()
+								.FirstOrDefault(t => t.InterpretCommand(this, conn, GetClient(conn), o.TargetString));
+
+							if (handledBy == null)
+							{
+								Log.Write("server", "Unknown server command: {0}", o.TargetString);
+								SendOrderTo(conn, "Message", "Unknown server command: {0}".F(o.TargetString));
+							}
+
 							break;
 						}
 
-						var client = GetClient(conn);
-						if (client == null)
-							return;
-
-						var pingFromClient = LobbyInfo.PingFromClient(client);
-						if (pingFromClient == null)
-							return;
-
-						var history = pingFromClient.LatencyHistory.ToList();
-						history.Add(Game.RunTime - pingSent);
-
-						// Cap ping history at 5 values (25 seconds)
-						if (history.Count > 5)
-							history.RemoveRange(0, history.Count - 5);
-
-						pingFromClient.Latency = history.Sum() / history.Count;
-						pingFromClient.LatencyJitter = (history.Max() - history.Min()) / 2;
-						pingFromClient.LatencyHistory = history.ToArray();
-
-						SyncClientPing();
-
+					case "Chat":
+						DispatchOrdersToClients(conn, 0, o.Serialize());
 						break;
-					}
-
-				case "GameSaveTraitData":
-					{
-						if (GameSave != null)
+					case "Pong":
 						{
-							var data = MiniYaml.FromString(o.TargetString)[0];
-							GameSave.AddTraitData(int.Parse(data.Key), data.Value);
+							if (!OpenRA.Exts.TryParseInt64Invariant(o.TargetString, out var pingSent))
+							{
+								Log.Write("server", "Invalid order pong payload: {0}", o.TargetString);
+								break;
+							}
+
+							var client = GetClient(conn);
+							if (client == null)
+								return;
+
+							var pingFromClient = LobbyInfo.PingFromClient(client);
+							if (pingFromClient == null)
+								return;
+
+							var history = pingFromClient.LatencyHistory.ToList();
+							history.Add(Game.RunTime - pingSent);
+
+							// Cap ping history at 5 values (25 seconds)
+							if (history.Count > 5)
+								history.RemoveRange(0, history.Count - 5);
+
+							pingFromClient.Latency = history.Sum() / history.Count;
+							pingFromClient.LatencyJitter = (history.Max() - history.Min()) / 2;
+							pingFromClient.LatencyHistory = history.ToArray();
+
+							SyncClientPing();
+
+							break;
 						}
 
-						break;
-					}
-
-				case "CreateGameSave":
-					{
-						if (GameSave != null)
+					case "GameSaveTraitData":
 						{
+							if (GameSave != null)
+							{
+								var data = MiniYaml.FromString(o.TargetString)[0];
+								GameSave.AddTraitData(int.Parse(data.Key), data.Value);
+							}
+
+							break;
+						}
+
+					case "CreateGameSave":
+						{
+							if (GameSave != null)
+							{
+								// Sanitize potentially malicious input
+								var filename = o.TargetString;
+								var invalidIndex = -1;
+								var invalidChars = Path.GetInvalidFileNameChars();
+								while ((invalidIndex = filename.IndexOfAny(invalidChars)) != -1)
+									filename = filename.Remove(invalidIndex, 1);
+
+								var baseSavePath = Platform.ResolvePath(
+									Platform.SupportDirPrefix,
+									"Saves",
+									ModData.Manifest.Id,
+									ModData.Manifest.Metadata.Version);
+
+								if (!Directory.Exists(baseSavePath))
+									Directory.CreateDirectory(baseSavePath);
+
+								GameSave.Save(Path.Combine(baseSavePath, filename));
+								DispatchOrdersToClients(null, 0, Order.FromTargetString("GameSaved", filename, true).Serialize());
+							}
+
+							break;
+						}
+
+					case "LoadGameSave":
+						{
+							if (Type == ServerType.Dedicated || State >= ServerState.GameStarted)
+								break;
+
 							// Sanitize potentially malicious input
 							var filename = o.TargetString;
 							var invalidIndex = -1;
@@ -766,96 +799,69 @@ namespace OpenRA.Server
 							while ((invalidIndex = filename.IndexOfAny(invalidChars)) != -1)
 								filename = filename.Remove(invalidIndex, 1);
 
-							var baseSavePath = Platform.ResolvePath(
+							var savePath = Platform.ResolvePath(
 								Platform.SupportDirPrefix,
 								"Saves",
 								ModData.Manifest.Id,
-								ModData.Manifest.Metadata.Version);
+								ModData.Manifest.Metadata.Version,
+								filename);
 
-							if (!Directory.Exists(baseSavePath))
-								Directory.CreateDirectory(baseSavePath);
+							GameSave = new GameSave(savePath);
+							LobbyInfo.GlobalSettings = GameSave.GlobalSettings;
+							LobbyInfo.Slots = GameSave.Slots;
 
-							GameSave.Save(Path.Combine(baseSavePath, filename));
-							DispatchOrdersToClients(null, 0, Order.FromTargetString("GameSaved", filename, true).Serialize());
-						}
+							// Reassign clients to slots
+							//  - Bot ordering is preserved
+							//  - Humans are assigned on a first-come-first-serve basis
+							//  - Leftover humans become spectators
 
-						break;
-					}
-
-				case "LoadGameSave":
-					{
-						if (Type == ServerType.Dedicated || State >= ServerState.GameStarted)
-							break;
-
-						// Sanitize potentially malicious input
-						var filename = o.TargetString;
-						var invalidIndex = -1;
-						var invalidChars = Path.GetInvalidFileNameChars();
-						while ((invalidIndex = filename.IndexOfAny(invalidChars)) != -1)
-							filename = filename.Remove(invalidIndex, 1);
-
-						var savePath = Platform.ResolvePath(
-							Platform.SupportDirPrefix,
-							"Saves",
-							ModData.Manifest.Id,
-							ModData.Manifest.Metadata.Version,
-							filename);
-
-						GameSave = new GameSave(savePath);
-						LobbyInfo.GlobalSettings = GameSave.GlobalSettings;
-						LobbyInfo.Slots = GameSave.Slots;
-
-						// Reassign clients to slots
-						//  - Bot ordering is preserved
-						//  - Humans are assigned on a first-come-first-serve basis
-						//  - Leftover humans become spectators
-
-						// Start by removing all bots and assigning all players as spectators
-						foreach (var c in LobbyInfo.Clients)
-						{
-							if (c.Bot != null)
+							// Start by removing all bots and assigning all players as spectators
+							foreach (var c in LobbyInfo.Clients)
 							{
-								LobbyInfo.Clients.Remove(c);
-								var ping = LobbyInfo.PingFromClient(c);
-								if (ping != null)
-									LobbyInfo.ClientPings.Remove(ping);
-							}
-							else
-								c.Slot = null;
-						}
-
-						// Rebuild/remap the saved client state
-						// TODO: Multiplayer saves should leave all humans as spectators so they can manually pick slots
-						var adminClientIndex = LobbyInfo.Clients.First(c => c.IsAdmin).Index;
-						foreach (var kv in GameSave.SlotClients)
-						{
-							if (kv.Value.Bot != null)
-							{
-								var bot = new Session.Client()
+								if (c.Bot != null)
 								{
-									Index = ChooseFreePlayerIndex(),
-									State = Session.ClientState.NotReady,
-									BotControllerClientIndex = adminClientIndex
-								};
-
-								kv.Value.ApplyTo(bot);
-								LobbyInfo.Clients.Add(bot);
+									LobbyInfo.Clients.Remove(c);
+									var ping = LobbyInfo.PingFromClient(c);
+									if (ping != null)
+										LobbyInfo.ClientPings.Remove(ping);
+								}
+								else
+									c.Slot = null;
 							}
-							else
+
+							// Rebuild/remap the saved client state
+							// TODO: Multiplayer saves should leave all humans as spectators so they can manually pick slots
+							var adminClientIndex = LobbyInfo.Clients.First(c => c.IsAdmin).Index;
+							foreach (var kv in GameSave.SlotClients)
 							{
-								// This will throw if the server doesn't have enough human clients to fill all player slots
-								// See TODO above - this isn't a problem in practice because MP saves won't use this
-								var client = LobbyInfo.Clients.First(c => c.Slot == null);
-								kv.Value.ApplyTo(client);
+								if (kv.Value.Bot != null)
+								{
+									var bot = new Session.Client()
+									{
+										Index = ChooseFreePlayerIndex(),
+										State = Session.ClientState.NotReady,
+										BotControllerClientIndex = adminClientIndex
+									};
+
+									kv.Value.ApplyTo(bot);
+									LobbyInfo.Clients.Add(bot);
+								}
+								else
+								{
+									// This will throw if the server doesn't have enough human clients to fill all player slots
+									// See TODO above - this isn't a problem in practice because MP saves won't use this
+									var client = LobbyInfo.Clients.First(c => c.Slot == null);
+									kv.Value.ApplyTo(client);
+								}
 							}
+
+							SyncLobbyInfo();
+							SyncLobbyClients();
+							SyncClientPing();
+
+							break;
 						}
-
-						SyncLobbyInfo();
-						SyncLobbyClients();
-						SyncClientPing();
-
-						break;
-					}
+				}
 			}
 		}
 
@@ -866,54 +872,57 @@ namespace OpenRA.Server
 
 		public void DropClient(Connection toDrop)
 		{
-			if (!PreConns.Remove(toDrop))
+			lock (LobbyInfo)
 			{
-				Conns.Remove(toDrop);
-
-				var dropClient = LobbyInfo.Clients.FirstOrDefault(c1 => c1.Index == toDrop.PlayerIndex);
-				if (dropClient == null)
-					return;
-
-				var suffix = "";
-				if (State == ServerState.GameStarted)
-					suffix = dropClient.IsObserver ? " (Spectator)" : dropClient.Team != 0 ? " (Team {0})".F(dropClient.Team) : "";
-				SendMessage("{0}{1} has disconnected.".F(dropClient.Name, suffix));
-
-				// Send disconnected order, even if still in the lobby
-				DispatchOrdersToClients(toDrop, 0, Order.FromTargetString("Disconnected", "", true).Serialize());
-
-				LobbyInfo.Clients.RemoveAll(c => c.Index == toDrop.PlayerIndex);
-				LobbyInfo.ClientPings.RemoveAll(p => p.Index == toDrop.PlayerIndex);
-
-				// Client was the server admin
-				// TODO: Reassign admin for game in progress via an order
-				if (Type == ServerType.Dedicated && dropClient.IsAdmin && State == ServerState.WaitingPlayers)
+				if (!PreConns.Remove(toDrop))
 				{
-					// Remove any bots controlled by the admin
-					LobbyInfo.Clients.RemoveAll(c => c.Bot != null && c.BotControllerClientIndex == toDrop.PlayerIndex);
+					Conns.Remove(toDrop);
 
-					var nextAdmin = LobbyInfo.Clients.Where(c1 => c1.Bot == null)
-						.MinByOrDefault(c => c.Index);
+					var dropClient = LobbyInfo.Clients.FirstOrDefault(c1 => c1.Index == toDrop.PlayerIndex);
+					if (dropClient == null)
+						return;
 
-					if (nextAdmin != null)
+					var suffix = "";
+					if (State == ServerState.GameStarted)
+						suffix = dropClient.IsObserver ? " (Spectator)" : dropClient.Team != 0 ? " (Team {0})".F(dropClient.Team) : "";
+					SendMessage("{0}{1} has disconnected.".F(dropClient.Name, suffix));
+
+					// Send disconnected order, even if still in the lobby
+					DispatchOrdersToClients(toDrop, 0, Order.FromTargetString("Disconnected", "", true).Serialize());
+
+					LobbyInfo.Clients.RemoveAll(c => c.Index == toDrop.PlayerIndex);
+					LobbyInfo.ClientPings.RemoveAll(p => p.Index == toDrop.PlayerIndex);
+
+					// Client was the server admin
+					// TODO: Reassign admin for game in progress via an order
+					if (Type == ServerType.Dedicated && dropClient.IsAdmin && State == ServerState.WaitingPlayers)
 					{
-						nextAdmin.IsAdmin = true;
-						SendMessage("{0} is now the admin.".F(nextAdmin.Name));
+						// Remove any bots controlled by the admin
+						LobbyInfo.Clients.RemoveAll(c => c.Bot != null && c.BotControllerClientIndex == toDrop.PlayerIndex);
+
+						var nextAdmin = LobbyInfo.Clients.Where(c1 => c1.Bot == null)
+							.MinByOrDefault(c => c.Index);
+
+						if (nextAdmin != null)
+						{
+							nextAdmin.IsAdmin = true;
+							SendMessage("{0} is now the admin.".F(nextAdmin.Name));
+						}
 					}
+
+					DispatchOrders(toDrop, toDrop.MostRecentFrame, new[] { (byte)OrderType.Disconnect });
+
+					// All clients have left: clean up
+					if (!Conns.Any())
+						foreach (var t in serverTraits.WithInterface<INotifyServerEmpty>())
+							t.ServerEmpty(this);
+
+					if (Conns.Any() || Type == ServerType.Dedicated)
+						SyncLobbyClients();
+
+					if (Type != ServerType.Dedicated && dropClient.IsAdmin)
+						Shutdown();
 				}
-
-				DispatchOrders(toDrop, toDrop.MostRecentFrame, new[] { (byte)OrderType.Disconnect });
-
-				// All clients have left: clean up
-				if (!Conns.Any())
-					foreach (var t in serverTraits.WithInterface<INotifyServerEmpty>())
-						t.ServerEmpty(this);
-
-				if (Conns.Any() || Type == ServerType.Dedicated)
-					SyncLobbyClients();
-
-				if (Type != ServerType.Dedicated && dropClient.IsAdmin)
-					Shutdown();
 			}
 
 			try
@@ -925,11 +934,14 @@ namespace OpenRA.Server
 
 		public void SyncLobbyInfo()
 		{
-			if (State == ServerState.WaitingPlayers) // Don't do this while the game is running, it breaks things!
-				DispatchOrders(null, 0, Order.FromTargetString("SyncInfo", LobbyInfo.Serialize(), true).Serialize());
+			lock (LobbyInfo)
+			{
+				if (State == ServerState.WaitingPlayers) // Don't do this while the game is running, it breaks things!
+					DispatchOrders(null, 0, Order.FromTargetString("SyncInfo", LobbyInfo.Serialize(), true).Serialize());
 
-			foreach (var t in serverTraits.WithInterface<INotifySyncLobbyInfo>())
-				t.LobbyInfoSynced(this);
+				foreach (var t in serverTraits.WithInterface<INotifySyncLobbyInfo>())
+					t.LobbyInfoSynced(this);
+			}
 		}
 
 		public void SyncLobbyClients()
@@ -937,13 +949,16 @@ namespace OpenRA.Server
 			if (State != ServerState.WaitingPlayers)
 				return;
 
-			// TODO: Only need to sync the specific client that has changed to avoid conflicts!
-			var clientData = LobbyInfo.Clients.Select(client => client.Serialize()).ToList();
+			lock (LobbyInfo)
+			{
+				// TODO: Only need to sync the specific client that has changed to avoid conflicts!
+				var clientData = LobbyInfo.Clients.Select(client => client.Serialize()).ToList();
 
-			DispatchOrders(null, 0, Order.FromTargetString("SyncLobbyClients", clientData.WriteToString(), true).Serialize());
+				DispatchOrders(null, 0, Order.FromTargetString("SyncLobbyClients", clientData.WriteToString(), true).Serialize());
 
-			foreach (var t in serverTraits.WithInterface<INotifySyncLobbyInfo>())
-				t.LobbyInfoSynced(this);
+				foreach (var t in serverTraits.WithInterface<INotifySyncLobbyInfo>())
+					t.LobbyInfoSynced(this);
+			}
 		}
 
 		public void SyncLobbySlots()
@@ -951,13 +966,16 @@ namespace OpenRA.Server
 			if (State != ServerState.WaitingPlayers)
 				return;
 
-			// TODO: Don't sync all the slots if just one changed!
-			var slotData = LobbyInfo.Slots.Select(slot => slot.Value.Serialize()).ToList();
+			lock (LobbyInfo)
+			{
+				// TODO: Don't sync all the slots if just one changed!
+				var slotData = LobbyInfo.Slots.Select(slot => slot.Value.Serialize()).ToList();
 
-			DispatchOrders(null, 0, Order.FromTargetString("SyncLobbySlots", slotData.WriteToString(), true).Serialize());
+				DispatchOrders(null, 0, Order.FromTargetString("SyncLobbySlots", slotData.WriteToString(), true).Serialize());
 
-			foreach (var t in serverTraits.WithInterface<INotifySyncLobbyInfo>())
-				t.LobbyInfoSynced(this);
+				foreach (var t in serverTraits.WithInterface<INotifySyncLobbyInfo>())
+					t.LobbyInfoSynced(this);
+			}
 		}
 
 		public void SyncLobbyGlobalSettings()
@@ -965,86 +983,95 @@ namespace OpenRA.Server
 			if (State != ServerState.WaitingPlayers)
 				return;
 
-			var sessionData = new List<MiniYamlNode> { LobbyInfo.GlobalSettings.Serialize() };
+			lock (LobbyInfo)
+			{
+				var sessionData = new List<MiniYamlNode> { LobbyInfo.GlobalSettings.Serialize() };
 
-			DispatchOrders(null, 0, Order.FromTargetString("SyncLobbyGlobalSettings", sessionData.WriteToString(), true).Serialize());
+				DispatchOrders(null, 0, Order.FromTargetString("SyncLobbyGlobalSettings", sessionData.WriteToString(), true).Serialize());
 
-			foreach (var t in serverTraits.WithInterface<INotifySyncLobbyInfo>())
-				t.LobbyInfoSynced(this);
+				foreach (var t in serverTraits.WithInterface<INotifySyncLobbyInfo>())
+					t.LobbyInfoSynced(this);
+			}
 		}
 
 		public void SyncClientPing()
 		{
-			// TODO: Split this further into per client ping orders
-			var clientPings = LobbyInfo.ClientPings.Select(ping => ping.Serialize()).ToList();
+			lock (LobbyInfo)
+			{
+				// TODO: Split this further into per client ping orders
+				var clientPings = LobbyInfo.ClientPings.Select(ping => ping.Serialize()).ToList();
 
-			// Note that syncing pings doesn't trigger INotifySyncLobbyInfo
-			DispatchOrders(null, 0, Order.FromTargetString("SyncClientPings", clientPings.WriteToString(), true).Serialize());
+				// Note that syncing pings doesn't trigger INotifySyncLobbyInfo
+				DispatchOrders(null, 0, Order.FromTargetString("SyncClientPings", clientPings.WriteToString(), true).Serialize());
+			}
 		}
 
 		public void StartGame()
 		{
-			foreach (var listener in listeners)
-				listener.Stop();
-
-			Console.WriteLine("[{0}] Game started", DateTime.Now.ToString(Settings.TimestampFormat));
-
-			// Drop any unvalidated clients
-			foreach (var c in PreConns.ToArray())
-				DropClient(c);
-
-			// Drop any players who are not ready
-			foreach (var c in Conns.Where(c => GetClient(c).IsInvalid).ToArray())
+			lock (LobbyInfo)
 			{
-				SendOrderTo(c, "ServerError", "You have been kicked from the server!");
-				DropClient(c);
-			}
+				foreach (var listener in listeners)
+					listener.Stop();
 
-			// HACK: Turn down the latency if there is only one real player
-			if (LobbyInfo.NonBotClients.Count() == 1)
-				LobbyInfo.GlobalSettings.OrderLatency = 1;
+				Console.WriteLine("[{0}] Game started", DateTime.Now.ToString(Settings.TimestampFormat));
 
-			// Enable game saves for singleplayer missions only
-			// TODO: Enable for multiplayer (non-dedicated servers only) once the lobby UI has been created
-			LobbyInfo.GlobalSettings.GameSavesEnabled = Type != ServerType.Dedicated && LobbyInfo.NonBotClients.Count() == 1;
+				// Drop any unvalidated clients
+				foreach (var c in PreConns.ToArray())
+					DropClient(c);
 
-			SyncLobbyInfo();
-			State = ServerState.GameStarted;
-
-			foreach (var c in Conns)
-				foreach (var d in Conns)
-					DispatchOrdersToClient(c, d.PlayerIndex, int.MaxValue, new[] { (byte)OrderType.Disconnect });
-
-			if (GameSave == null && LobbyInfo.GlobalSettings.GameSavesEnabled)
-				GameSave = new GameSave();
-
-			var startGameData = "";
-			if (GameSave != null)
-			{
-				GameSave.StartGame(LobbyInfo, Map);
-				if (GameSave.LastOrdersFrame >= 0)
+				// Drop any players who are not ready
+				foreach (var c in Conns.Where(c => GetClient(c).IsInvalid).ToArray())
 				{
-					startGameData = new List<MiniYamlNode>()
-					{
-						new MiniYamlNode("SaveLastOrdersFrame", GameSave.LastOrdersFrame.ToString()),
-						new MiniYamlNode("SaveSyncFrame", GameSave.LastSyncFrame.ToString())
-					}.WriteToString();
+					SendOrderTo(c, "ServerError", "You have been kicked from the server!");
+					DropClient(c);
 				}
-			}
 
-			DispatchOrders(null, 0,
-				Order.FromTargetString("StartGame", startGameData, true).Serialize());
+				// HACK: Turn down the latency if there is only one real player
+				if (LobbyInfo.NonBotClients.Count() == 1)
+					LobbyInfo.GlobalSettings.OrderLatency = 1;
 
-			foreach (var t in serverTraits.WithInterface<IStartGame>())
-				t.GameStarted(this);
+				// Enable game saves for singleplayer missions only
+				// TODO: Enable for multiplayer (non-dedicated servers only) once the lobby UI has been created
+				LobbyInfo.GlobalSettings.GameSavesEnabled = Type != ServerType.Dedicated && LobbyInfo.NonBotClients.Count() == 1;
 
-			if (GameSave != null && GameSave.LastOrdersFrame >= 0)
-			{
-				GameSave.ParseOrders(LobbyInfo, (frame, client, data) =>
+				SyncLobbyInfo();
+				State = ServerState.GameStarted;
+
+				foreach (var c in Conns)
+					foreach (var d in Conns)
+						DispatchOrdersToClient(c, d.PlayerIndex, int.MaxValue, new[] { (byte)OrderType.Disconnect });
+
+				if (GameSave == null && LobbyInfo.GlobalSettings.GameSavesEnabled)
+					GameSave = new GameSave();
+
+				var startGameData = "";
+				if (GameSave != null)
 				{
-					foreach (var c in Conns)
-						DispatchOrdersToClient(c, client, frame, data);
-				});
+					GameSave.StartGame(LobbyInfo, Map);
+					if (GameSave.LastOrdersFrame >= 0)
+					{
+						startGameData = new List<MiniYamlNode>()
+						{
+							new MiniYamlNode("SaveLastOrdersFrame", GameSave.LastOrdersFrame.ToString()),
+							new MiniYamlNode("SaveSyncFrame", GameSave.LastSyncFrame.ToString())
+						}.WriteToString();
+					}
+				}
+
+				DispatchOrders(null, 0,
+					Order.FromTargetString("StartGame", startGameData, true).Serialize());
+
+				foreach (var t in serverTraits.WithInterface<IStartGame>())
+					t.GameStarted(this);
+
+				if (GameSave != null && GameSave.LastOrdersFrame >= 0)
+				{
+					GameSave.ParseOrders(LobbyInfo, (frame, client, data) =>
+					{
+						foreach (var c in Conns)
+							DispatchOrdersToClient(c, client, frame, data);
+					});
+				}
 			}
 		}
 
