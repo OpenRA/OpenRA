@@ -941,7 +941,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (farRange.X < windowHeight)
 				validSizes.Add(WorldViewport.Far);
 
-			if (farRange.Y < windowHeight)
+			if (viewportSizes.AllowNativeZoom && farRange.Y < windowHeight)
 				validSizes.Add(WorldViewport.Native);
 
 			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, validSizes, setupItem);
