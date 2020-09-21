@@ -7,8 +7,3 @@ Metrics:
 	ColorPickerActorType: fact.colorpicker
 	ColorPickerRemapIndices: 176, 178, 180, 182, 184, 186, 189, 191, 177, 179, 181, 183, 185, 187, 188, 190
 	TextfieldColorHighlight: 800000
-	ChatMessageColor: FFFFFF
-	SystemMessageColor: FFFF00
-	NormalSelectionColor: FFFFFF
-	AltSelectionColor: 00FFFF
-	CtrlSelectionColor: FFFF00
