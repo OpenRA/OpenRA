@@ -46,3 +46,6 @@ Metrics:
 	NoticeWarningColor: FFA500
 	NoticeSuccessColor: 00FF00
 	NoticeErrorColor: FF0000
+	ChatLineSound: ChatLine
+	ClickDisabledSound: ClickDisabledSound
+	ClickSound: ClickSound
