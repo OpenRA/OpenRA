@@ -86,9 +86,11 @@ namespace OpenRA.Scripting
 				{
 					foreach (var arg in clrArgs)
 					{
-						if (!(arg is LuaValue[]))
+						var table = arg as LuaValue[];
+						if (table == null)
 							continue;
-						foreach (var value in (LuaValue[])arg)
+
+						foreach (var value in table)
 							value.Dispose();
 					}
 				}
