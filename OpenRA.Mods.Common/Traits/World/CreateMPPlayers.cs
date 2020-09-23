@@ -18,7 +18,54 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Attach this to the world actor.")]
-	public class CreateMPPlayersInfo : TraitInfo<CreateMPPlayers> { }
+	public class CreateMPPlayersInfo : TraitInfo<CreateMPPlayers>, ICreatePlayersInfo
+	{
+		/// <summary>
+		/// Returns a list of GameInformation.Players that matches the indexing of ICreatePlayers.CreatePlayers.
+		/// Non-playable players appear as null in the list.
+		/// </summary>
+		void ICreatePlayersInfo.CreateServerPlayers(MapPreview map, Session lobbyInfo, List<GameInformation.Player> players)
+		{
+			// Create the unplayable map players -- neutral, shellmap, scripted, etc.
+			foreach (var p in map.Players.Players.Where(p => !p.Value.Playable))
+				players.Add(null);
+
+			// Create the regular playable players.
+			var factions = map.Rules.Actors["world"].TraitInfos<FactionInfo>().ToArray();
+			var bots = map.Rules.Actors["player"].TraitInfos<IBotInfo>().ToArray();
+
+			foreach (var kv in lobbyInfo.Slots)
+			{
+				var client = lobbyInfo.ClientInSlot(kv.Key);
+				if (client == null)
+					continue;
+
+				var clientFaction = factions.First(f => client.Faction == f.InternalName);
+
+				// TODO: Resolve random SpawnPoint and Faction to real values
+				var player = new GameInformation.Player
+				{
+					ClientIndex = client.Index,
+					Name = Player.ResolvePlayerName(client, lobbyInfo.Clients, bots),
+					IsHuman = client.Bot == null,
+					IsBot = client.Bot != null,
+					FactionName = clientFaction.Name,
+					FactionId = clientFaction.InternalName,
+					Color = client.Color,
+					Team = client.Team,
+					SpawnPoint = client.SpawnPoint,
+					IsRandomFaction = clientFaction.RandomFactionMembers.Any(),
+					IsRandomSpawnPoint = client.SpawnPoint == 0,
+					Fingerprint = client.Fingerprint,
+				};
+
+				players.Add(player);
+			}
+
+			// Create a player that is allied with everyone for shared observer shroud.
+			players.Add(null);
+		}
+	}
 
 	public class CreateMPPlayers : ICreatePlayers
 	{
