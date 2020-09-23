@@ -367,6 +367,12 @@ namespace OpenRA.Traits
 	[RequireExplicitImplementation]
 	public interface ICreatePlayers { void CreatePlayers(World w); }
 
+	[RequireExplicitImplementation]
+	public interface ICreatePlayersInfo : ITraitInfoInterface
+	{
+		void CreateServerPlayers(MapPreview map, Session lobbyInfo, List<GameInformation.Player> players);
+	}
+
 	public interface IBotInfo : ITraitInfoInterface
 	{
 		string Type { get; }

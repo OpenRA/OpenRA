@@ -14,16 +14,22 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits.Render;
+using OpenRA.Network;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Required for the map editor to work. Attach this to the world actor.")]
-	public class EditorActorLayerInfo : TraitInfo
+	public class EditorActorLayerInfo : TraitInfo, ICreatePlayersInfo
 	{
 		[Desc("Size of partition bins (world pixels)")]
 		public readonly int BinSize = 250;
+
+		void ICreatePlayersInfo.CreateServerPlayers(MapPreview map, Session lobbyInfo, List<GameInformation.Player> players)
+		{
+			throw new NotImplementedException("EditorActorLayer must not be defined on the world actor");
+		}
 
 		public override object Create(ActorInitializer init) { return new EditorActorLayer(init.Self, this); }
 	}
