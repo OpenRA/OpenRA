@@ -123,6 +123,18 @@ namespace OpenRA
 			return factions.FirstOrDefault(f => f.InternalName == factionName) ?? factions.First();
 		}
 
+		public static string ResolvePlayerName(Session.Client client, IEnumerable<Session.Client> clients, IEnumerable<IBotInfo> botInfos)
+		{
+			if (client.Bot != null)
+			{
+				var botInfo = botInfos.First(b => b.Type == client.Bot);
+				var botsOfSameType = clients.Where(c => c.Bot == client.Bot).ToArray();
+				return botsOfSameType.Length == 1 ? botInfo.Name : "{0} {1}".F(botInfo.Name, botsOfSameType.IndexOf(client) + 1);
+			}
+
+			return client.Name;
+		}
+
 		public Player(World world, Session.Client client, PlayerReference pr)
 		{
 			World = world;
@@ -136,14 +148,7 @@ namespace OpenRA
 			{
 				ClientIndex = client.Index;
 				Color = client.Color;
-				if (client.Bot != null)
-				{
-					var botInfo = world.Map.Rules.Actors["player"].TraitInfos<IBotInfo>().First(b => b.Type == client.Bot);
-					var botsOfSameType = world.LobbyInfo.Clients.Where(c => c.Bot == client.Bot).ToArray();
-					PlayerName = botsOfSameType.Length == 1 ? botInfo.Name : "{0} {1}".F(botInfo.Name, botsOfSameType.IndexOf(client) + 1);
-				}
-				else
-					PlayerName = client.Name;
+				PlayerName = ResolvePlayerName(client, world.LobbyInfo.Clients, world.Map.Rules.Actors["player"].TraitInfos<IBotInfo>());
 
 				BotType = client.Bot;
 				Faction = ChooseFaction(world, client.Faction, !pr.LockFaction);
