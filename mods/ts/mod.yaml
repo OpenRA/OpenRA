@@ -293,7 +293,7 @@ ColorValidator:
 	TeamColorPresets: f70606, ff7a22, f8d3b3, f8e947, 94b319, f335a0, a64d6c, ce08f9, f5b2db, 12b572, 4A1948, 1d06f7, 328dff, 78dbf8, cef6b1, 391d1d
 
 ModContent:
-	InstallPromptMessage: Tiberian Sun requires artwork and audio from the original game.\n\nQuick Install will automatically download this content (without music\nor videos) from a mirror of the 2012 Tiberian Sun freeware release.\n\nAdvanced Install includes options for downloading the music and for\ncopying the videos and other content from an original game disc.
+	InstallPromptMessage: Tiberian Sun requires artwork and audio from the original game.\n\nQuick Install will automatically download this content (without music\nor videos) from a mirror of the 2012 Tiberian Sun freeware release.\n\nAdvanced Install includes options for copying the music, videos, and\nother content from an original game disc or digital installation.
 	QuickDownload: quickinstall
 	HeaderMessage: Game content may be extracted from the original game discs or an\nexisting digital install. OpenRA can also download the base game\nfiles from an online mirror of the 2012 freeware release of TS.
 	Packages:
@@ -305,7 +305,6 @@ ModContent:
 		tibsun-music: Base Game Music
 			TestFiles: ^Content/ts/scores.mix
 			Sources: tibsun, tibsun-linux, tfd, origin
-			Download: tibsun-music
 		fstorm: Expansion Freeware Content
 			TestFiles: ^Content/ts/firestorm/e01sc01.mix, ^Content/ts/firestorm/e01sc02.mix, ^Content/ts/firestorm/e01vox01.mix, ^Content/ts/firestorm/e01vox02.mix
 			Sources: tfd, origin, fstorm
@@ -314,7 +313,6 @@ ModContent:
 		fstorm-music: Expansion Freeware Music
 			Sources: tfd, origin, fstorm
 			TestFiles: ^Content/ts/firestorm/linkup.aud, ^Content/ts/firestorm/hacker.aud
-			Download: fstorm-music
 	Downloads:
 		ts|installer/downloads.yaml
 	Sources:
