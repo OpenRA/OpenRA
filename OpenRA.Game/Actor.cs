@@ -46,6 +46,7 @@ namespace OpenRA
 		public bool Disposed { get; private set; }
 
 		Activity currentActivity;
+		
 		public Activity CurrentActivity
 		{
 			get { return Activity.SkipDoneActivities(currentActivity); }
@@ -165,6 +166,7 @@ namespace OpenRA
 			tickIdles = TraitsImplementing<INotifyIdle>().ToArray();
 			Targetables = TraitsImplementing<ITargetable>().ToArray();
 			targetablePositions = TraitsImplementing<ITargetablePositions>().ToArray();
+			
 			world.AddFrameEndTask(w =>
 			{
 				// Caching this in a AddFrameEndTask, because trait construction order might cause problems if done directly at creation time.
@@ -183,9 +185,12 @@ namespace OpenRA
 
 			// Make sure traits are usable for condition notifiers
 			foreach (var t in TraitsImplementing<INotifyCreated>())
+			{
 				t.Created(this);
-
+			}
+			
 			var allObserverNotifiers = new HashSet<VariableObserverNotifier>();
+			
 			foreach (var provider in TraitsImplementing<IObservesVariables>())
 			{
 				foreach (var variableUser in provider.GetVariableObservers())
@@ -206,7 +211,9 @@ namespace OpenRA
 
 			// Update all traits with their initial condition state
 			foreach (var notify in allObserverNotifiers)
+			{
 				notify(this, readOnlyConditionCache);
+			}
 
 			// TODO: Some traits may need initialization after being notified of initial condition state.
 
@@ -244,7 +251,9 @@ namespace OpenRA
 			if (!wasIdle && IsIdle)
 			{
 				foreach (var n in becomingIdles)
+				{
 					n.OnBecomingIdle(this);
+				}
 
 				// If IsIdle is true, it means the last CurrentActivity.Tick returned null.
 				// If a next activity has been queued via OnBecomingIdle, we need to start running it now,
@@ -252,16 +261,24 @@ namespace OpenRA
 				CurrentActivity = ActivityUtils.RunActivity(this, CurrentActivity);
 			}
 			else if (wasIdle)
+			{
 				foreach (var tickIdle in tickIdles)
+				{
 					tickIdle.TickIdle(this);
+				}
+			}
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
 			// PERF: Avoid LINQ.
 			var renderables = Renderables(wr);
+			
 			foreach (var modifier in renderModifiers)
+			{
 				renderables = modifier.ModifyRender(this, wr, renderables);
+			}
+			
 			return renderables;
 		}
 
@@ -275,15 +292,23 @@ namespace OpenRA
 			// For small amounts of renderables, allocating a small collection can often be faster and require less
 			// memory than creating the objects needed to represent a sequence.
 			foreach (var render in renders)
+			{
 				foreach (var renderable in render.Render(this, wr))
+				{
 					yield return renderable;
+				}
+			}
 		}
 
 		public IEnumerable<Rectangle> ScreenBounds(WorldRenderer wr)
 		{
 			var bounds = Bounds(wr);
+			
 			foreach (var modifier in renderModifiers)
+			{
 				bounds = modifier.ModifyScreenBounds(this, wr, bounds);
+			}
+			
 			return bounds;
 		}
 
@@ -291,9 +316,12 @@ namespace OpenRA
 		{
 			// PERF: Avoid LINQ. See comments for Renderables
 			foreach (var render in renders)
+			{
 				foreach (var r in render.ScreenBounds(this, wr))
-					if (!r.IsEmpty)
-						yield return r;
+				{
+					if (!r.IsEmpty) yield return r;
+				}
+			}
 		}
 
 		public Polygon MouseBounds(WorldRenderer wr)
@@ -301,8 +329,7 @@ namespace OpenRA
 			foreach (var mb in mouseBounds)
 			{
 				var bounds = mb.MouseoverBounds(this, wr);
-				if (!bounds.IsEmpty)
-					return bounds;
+				if (!bounds.IsEmpty) return bounds;
 			}
 
 			return Polygon.Empty;
@@ -310,9 +337,7 @@ namespace OpenRA
 
 		public void QueueActivity(bool queued, Activity nextActivity)
 		{
-			if (!queued)
-				CancelActivity();
-
+			if (!queued) CancelActivity();
 			QueueActivity(nextActivity);
 		}
 
@@ -322,9 +347,13 @@ namespace OpenRA
 				throw new InvalidOperationException("An activity was queued before the actor was created. Queue it inside the INotifyCreated.Created callback instead.");
 
 			if (CurrentActivity == null)
+			{
 				CurrentActivity = nextActivity;
+			}
 			else
+			{
 				CurrentActivity.Queue(nextActivity);
+			}
 		}
 
 		public void CancelActivity()
@@ -352,8 +381,12 @@ namespace OpenRA
 		{
 			// PERF: Avoid format strings.
 			var name = Info.Name + " " + ActorID;
+			
 			if (!IsInWorld)
+			{
 				name += " (not in world)";
+			}
+			
 			return name;
 		}
 
@@ -388,14 +421,14 @@ namespace OpenRA
 
 			World.AddFrameEndTask(w =>
 			{
-				if (Disposed)
-					return;
+				if (Disposed) return;
 
-				if (IsInWorld)
-					World.Remove(this);
+				if (IsInWorld) World.Remove(this);
 
 				foreach (var t in TraitsImplementing<INotifyActorDisposing>())
+				{
 					t.Disposing(this);
+				}
 
 				World.TraitDict.RemoveActor(this);
 				Disposed = true;
@@ -416,49 +449,47 @@ namespace OpenRA
 		/// </summary>
 		public void ChangeOwnerSync(Player newOwner)
 		{
-			if (Disposed)
-				return;
+			if (Disposed) return;
 
 			var oldOwner = Owner;
 			var wasInWorld = IsInWorld;
 
 			// momentarily remove from world so the ownership queries don't get confused
-			if (wasInWorld)
-				World.Remove(this);
+			if (wasInWorld)	World.Remove(this);
 
 			Owner = newOwner;
 			Generation++;
 
 			foreach (var t in TraitsImplementing<INotifyOwnerChanged>())
+			{
 				t.OnOwnerChanged(this, oldOwner, newOwner);
+			}
 
 			foreach (var t in World.WorldActor.TraitsImplementing<INotifyOwnerChanged>())
+			{
 				t.OnOwnerChanged(this, oldOwner, newOwner);
+			}
 
-			if (wasInWorld)
-				World.Add(this);
+			if (wasInWorld)	World.Add(this);
 		}
 
 		public DamageState GetDamageState()
 		{
-			if (Disposed)
-				return DamageState.Dead;
-
+			if (Disposed) return DamageState.Dead;
+			
 			return (health == null) ? DamageState.Undamaged : health.DamageState;
 		}
 
 		public void InflictDamage(Actor attacker, Damage damage)
 		{
-			if (Disposed || health == null)
-				return;
+			if (Disposed || health == null)	return;
 
 			health.InflictDamage(this, attacker, damage, false);
 		}
 
 		public void Kill(Actor attacker, BitSet<DamageType> damageTypes = default(BitSet<DamageType>))
 		{
-			if (Disposed || health == null)
-				return;
+			if (Disposed || health == null)	return;
 
 			health.Kill(this, attacker, damageTypes);
 		}
@@ -467,8 +498,9 @@ namespace OpenRA
 		{
 			// PERF: Avoid LINQ.
 			foreach (var visibilityModifier in visibilityModifiers)
-				if (!visibilityModifier.IsVisible(this, player))
-					return false;
+			{
+				if (!visibilityModifier.IsVisible(this, player)) return false;
+			}
 
 			return defaultVisibility.IsVisible(this, player);
 		}
@@ -477,8 +509,12 @@ namespace OpenRA
 		{
 			// PERF: Avoid LINQ.
 			var targetTypes = default(BitSet<TargetableType>);
+			
 			foreach (var targetable in Targetables)
+			{
 				targetTypes = targetTypes.Union(targetable.TargetTypes);
+			}
+			
 			return targetTypes;
 		}
 
@@ -486,9 +522,12 @@ namespace OpenRA
 		{
 			// PERF: Avoid LINQ.
 			var targetTypes = default(BitSet<TargetableType>);
+			
 			foreach (var targetable in Targetables)
-				if (targetable.IsTraitEnabled())
-					targetTypes = targetTypes.Union(targetable.TargetTypes);
+			{
+				if (targetable.IsTraitEnabled()) targetTypes = targetTypes.Union(targetable.TargetTypes);
+			}
+			
 			return targetTypes;
 		}
 
@@ -496,20 +535,20 @@ namespace OpenRA
 		{
 			// PERF: Avoid LINQ.
 			foreach (var targetable in Targetables)
-				if (targetable.IsTraitEnabled() && targetable.TargetableBy(this, byActor))
-					return true;
+			{
+				if (targetable.IsTraitEnabled() && targetable.TargetableBy(this, byActor)) return true;
+			}
 
 			return false;
 		}
 
 		public IEnumerable<WPos> GetTargetablePositions()
 		{
-			if (staticTargetablePositions != null)
-				return staticTargetablePositions;
+			if (staticTargetablePositions != null) return staticTargetablePositions;
 
 			var enabledTargetablePositionTraits = targetablePositions.Where(Exts.IsTraitEnabled);
-			if (enabledTargetablePositionTraits.Any())
-				return enabledTargetablePositionTraits.SelectMany(tp => tp.TargetablePositions(this));
+			
+			if (enabledTargetablePositionTraits.Any()) return enabledTargetablePositionTraits.SelectMany(tp => tp.TargetablePositions(this));
 
 			return new[] { CenterPosition };
 		}
@@ -521,17 +560,25 @@ namespace OpenRA
 			ConditionState conditionState = conditionStates.GetOrAdd(condition);
 
 			if (isRevoke)
+			{
 				conditionState.Tokens.Remove(token);
+			}
 			else
+			{
 				conditionState.Tokens.Add(token);
+			}
 
 			conditionCache[condition] = conditionState.Tokens.Count;
 
 			// Conditions may be granted or revoked before the state is initialized.
 			// These notifications will be processed after INotifyCreated.Created.
 			if (created)
+			{
 				foreach (var notify in conditionState.Notifiers)
+				{
 					notify(this, readOnlyConditionCache);
+				}
+			}
 		}
 
 		/// <summary>
@@ -541,8 +588,7 @@ namespace OpenRA
 		/// <returns>The token that is used to revoke this condition.</returns>
 		public int GrantCondition(string condition)
 		{
-			if (string.IsNullOrEmpty(condition))
-				return InvalidConditionToken;
+			if (string.IsNullOrEmpty(condition)) return InvalidConditionToken;
 
 			var token = nextConditionToken++;
 			conditionTokens.Add(token, condition);
@@ -558,7 +604,9 @@ namespace OpenRA
 		public int RevokeCondition(int token)
 		{
 			if (!conditionTokens.TryGetValue(token, out var condition))
+			{
 				throw new InvalidOperationException("Attempting to revoke condition with invalid token {0} for {1}.".F(token, this));
+			}
 
 			conditionTokens.Remove(token);
 			UpdateConditionState(condition, token, true);
@@ -578,8 +626,7 @@ namespace OpenRA
 		Lazy<ScriptActorInterface> luaInterface;
 		public void OnScriptBind(ScriptContext context)
 		{
-			if (luaInterface == null)
-				luaInterface = Exts.Lazy(() => new ScriptActorInterface(context, this));
+			if (luaInterface == null) luaInterface = Exts.Lazy(() => new ScriptActorInterface(context, this));
 		}
 
 		public LuaValue this[LuaRuntime runtime, LuaValue keyValue]
@@ -590,9 +637,7 @@ namespace OpenRA
 
 		public LuaValue Equals(LuaRuntime runtime, LuaValue left, LuaValue right)
 		{
-			if (!left.TryGetClrValue(out Actor a) || !right.TryGetClrValue(out Actor b))
-				return false;
-
+			if (!left.TryGetClrValue(out Actor a) || !right.TryGetClrValue(out Actor b)) return false;
 			return a == b;
 		}
 
