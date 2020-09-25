@@ -52,10 +52,10 @@ namespace OpenRA.Mods.Common.Orders
 			var owner = type == TargetType.FrozenActor ? target.FrozenActor.Owner : target.Actor.Owner;
 			var playerRelationship = self.Owner.Stances[owner];
 
-			if (!modifiers.HasModifier(TargetModifiers.ForceAttack) && playerRelationship == Stance.Ally && !targetAllyUnits)
+			if (!modifiers.HasModifier(TargetModifiers.ForceAttack) && playerRelationship == PlayerRelationship.Ally && !targetAllyUnits)
 				return false;
 
-			if (!modifiers.HasModifier(TargetModifiers.ForceAttack) && playerRelationship == Stance.Enemy && !targetEnemyUnits)
+			if (!modifiers.HasModifier(TargetModifiers.ForceAttack) && playerRelationship == PlayerRelationship.Enemy && !targetEnemyUnits)
 				return false;
 
 			return type == TargetType.FrozenActor ?

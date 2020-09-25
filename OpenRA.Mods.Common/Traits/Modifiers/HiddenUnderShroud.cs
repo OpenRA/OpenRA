@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class HiddenUnderShroudInfo : TraitInfo, IDefaultVisibilityInfo
 	{
 		[Desc("Players with these stances can always see the actor.")]
-		public readonly Stance AlwaysVisibleStances = Stance.Ally;
+		public readonly PlayerRelationship AlwaysVisibleStances = PlayerRelationship.Ally;
 
 		[Desc("Possible values are CenterPosition (reveal when the center is visible) and ",
 			"Footprint (reveal when any footprint cell is visible).")]

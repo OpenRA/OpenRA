@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							o = viewport.ActorTooltip.Owner;
 							showOwner = o != null && !o.NonCombatant && viewport.ActorTooltip.TooltipInfo.IsOwnerRowVisible;
 
-							var stance = o == null || world.RenderPlayer == null ? Stance.None : o.Stances[world.RenderPlayer];
+							var stance = o == null || world.RenderPlayer == null ? PlayerRelationship.None : o.Stances[world.RenderPlayer];
 							labelText = viewport.ActorTooltip.TooltipInfo.TooltipForPlayerStance(stance);
 							break;
 						}
@@ -74,7 +74,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							o = viewport.FrozenActorTooltip.TooltipOwner;
 							showOwner = o != null && !o.NonCombatant && viewport.FrozenActorTooltip.TooltipInfo.IsOwnerRowVisible;
 
-							var stance = o == null || world.RenderPlayer == null ? Stance.None : o.Stances[world.RenderPlayer];
+							var stance = o == null || world.RenderPlayer == null ? PlayerRelationship.None : o.Stances[world.RenderPlayer];
 							labelText = viewport.FrozenActorTooltip.TooltipInfo.TooltipForPlayerStance(stance);
 							break;
 						}

@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 	class CashTricklerBarInfo : TraitInfo, Requires<CashTricklerInfo>
 	{
 		[Desc("Defines to which players the bar is to be shown.")]
-		public readonly Stance DisplayStances = Stance.Ally;
+		public readonly PlayerRelationship DisplayStances = PlayerRelationship.Ally;
 
 		public readonly Color Color = Color.Magenta;
 

@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public readonly string Position = "TopLeft";
 
 		[Desc("Player stances who can view the decoration.")]
-		public readonly Stance ValidStances = Stance.Ally;
+		public readonly PlayerRelationship ValidStances = PlayerRelationship.Ally;
 
 		[Desc("Should this be visible only when selected?")]
 		public readonly bool RequiresSelection = false;

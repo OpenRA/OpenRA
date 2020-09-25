@@ -229,11 +229,11 @@ namespace OpenRA
 			return "{0} ({1})".F(PlayerName, ClientIndex);
 		}
 
-		public Dictionary<Player, Stance> Stances = new Dictionary<Player, Stance>();
+		public Dictionary<Player, PlayerRelationship> Stances = new Dictionary<Player, PlayerRelationship>();
 		public bool IsAlliedWith(Player p)
 		{
 			// Observers are considered allies to active combatants
-			return p == null || Stances[p] == Stance.Ally || (p.Spectating && !NonCombatant);
+			return p == null || Stances[p] == PlayerRelationship.Ally || (p.Spectating && !NonCombatant);
 		}
 
 		public Color PlayerStanceColor(Actor a)

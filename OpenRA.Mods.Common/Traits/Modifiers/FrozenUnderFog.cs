@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class FrozenUnderFogInfo : TraitInfo, Requires<BuildingInfo>, IDefaultVisibilityInfo
 	{
 		[Desc("Players with these stances can always see the actor.")]
-		public readonly Stance AlwaysVisibleStances = Stance.Ally;
+		public readonly PlayerRelationship AlwaysVisibleStances = PlayerRelationship.Ally;
 
 		public override object Create(ActorInitializer init) { return new FrozenUnderFog(init, this); }
 	}

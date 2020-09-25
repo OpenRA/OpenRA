@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly HashSet<string> ValidTypes = new HashSet<string>();
 
 		[Desc("Stance the delivering actor needs to enter.")]
-		public readonly Stance ValidStances = Stance.Ally;
+		public readonly PlayerRelationship ValidStances = PlayerRelationship.Ally;
 
 		[Desc("Play a randomly selected sound from this list when accepting cash.")]
 		public readonly string[] Sounds = { };

@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Traits.Radar
 		public readonly bool UseLocation = false;
 
 		[Desc("Player stances who can view this actor on radar.")]
-		public readonly Stance ValidStances = Stance.Ally | Stance.Neutral | Stance.Enemy;
+		public readonly PlayerRelationship ValidStances = PlayerRelationship.Ally | PlayerRelationship.Neutral | PlayerRelationship.Enemy;
 
 		public override object Create(ActorInitializer init) { return new AppearsOnRadar(this); }
 	}

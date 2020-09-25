@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public readonly string Voice = "Action";
 
 		[Desc("What diplomatic stances can be infiltrated by this actor.")]
-		public readonly Stance ValidStances = Stance.Neutral | Stance.Enemy;
+		public readonly PlayerRelationship ValidStances = PlayerRelationship.Neutral | PlayerRelationship.Enemy;
 
 		[Desc("Behaviour when entering the target.",
 			"Possible values are Exit, Suicide, Dispose.")]

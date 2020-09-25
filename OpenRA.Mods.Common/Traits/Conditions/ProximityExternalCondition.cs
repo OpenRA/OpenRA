@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly WDist MaximumVerticalOffset = WDist.Zero;
 
 		[Desc("What diplomatic stances are affected.")]
-		public readonly Stance ValidStances = Stance.Ally;
+		public readonly PlayerRelationship ValidStances = PlayerRelationship.Ally;
 
 		[Desc("Condition is applied permanently to this actor.")]
 		public readonly bool AffectsParent = false;

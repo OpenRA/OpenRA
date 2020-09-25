@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly BitSet<CaptureType> Types = default(BitSet<CaptureType>);
 
 		[Desc("What diplomatic stances can be captured by this actor.")]
-		public readonly Stance ValidStances = Stance.Neutral | Stance.Enemy;
+		public readonly PlayerRelationship ValidStances = PlayerRelationship.Neutral | PlayerRelationship.Enemy;
 
 		[Desc("Cancel the actor's current activity when getting captured.")]
 		public readonly bool CancelActivity = false;

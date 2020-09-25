@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string[] ArmamentNames = { "primary", "secondary" };
 
 		[Desc("Stances relative to the target player this actor will be revealed to during firing.")]
-		public readonly Stance RevealForStancesRelativeToTarget = Stance.Ally;
+		public readonly PlayerRelationship RevealForStancesRelativeToTarget = PlayerRelationship.Ally;
 
 		[Desc("Duration of the reveal.")]
 		public readonly int Duration = 25;

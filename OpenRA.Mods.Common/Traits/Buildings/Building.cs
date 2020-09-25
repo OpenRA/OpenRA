@@ -167,7 +167,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var bp in world.ActorsWithTrait<BaseProvider>())
 			{
-				var validOwner = bp.Actor.Owner == p || (allyBuildEnabled && bp.Actor.Owner.Stances[p] == Stance.Ally);
+				var validOwner = bp.Actor.Owner == p || (allyBuildEnabled && bp.Actor.Owner.Stances[p] == PlayerRelationship.Ally);
 				if (!validOwner || !bp.Trait.Ready())
 					continue;
 
@@ -217,7 +217,7 @@ namespace OpenRA.Mods.Common.Traits
 						if (!a.IsInWorld)
 							continue;
 
-						if (a.Owner != p && (!allyBuildEnabled || a.Owner.Stances[p] != Stance.Ally))
+						if (a.Owner != p && (!allyBuildEnabled || a.Owner.Stances[p] != PlayerRelationship.Ally))
 							continue;
 
 						if (ActorGrantsValidArea(a, requiresBuildableArea))

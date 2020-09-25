@@ -227,7 +227,7 @@ namespace OpenRA
 					SetUpPlayerMask(p, q);
 
 					if (!p.Stances.ContainsKey(q))
-						p.Stances[q] = Stance.Neutral;
+						p.Stances[q] = PlayerRelationship.Neutral;
 				}
 			}
 
@@ -254,11 +254,11 @@ namespace OpenRA
 
 			switch (p.Stances[q])
 			{
-				case Stance.Enemy:
-				case Stance.Neutral:
+				case PlayerRelationship.Enemy:
+				case PlayerRelationship.Neutral:
 					p.EnemyPlayersMask = p.EnemyPlayersMask.Union(bitSet);
 					break;
-				case Stance.Ally:
+				case PlayerRelationship.Ally:
 					p.AlliedPlayersMask = p.AlliedPlayersMask.Union(bitSet);
 					break;
 			}

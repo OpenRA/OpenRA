@@ -49,25 +49,25 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string EnemyPrefix = "Enemy";
 
 		[Desc("Player stances that the generic name should be shown to.")]
-		public readonly Stance GenericVisibility = Stance.None;
+		public readonly PlayerRelationship GenericVisibility = PlayerRelationship.None;
 
 		[Desc("Show the actor's owner and their faction flag")]
 		public readonly bool ShowOwnerRow = true;
 
 		public override object Create(ActorInitializer init) { return new Tooltip(init.Self, this); }
 
-		public string TooltipForPlayerStance(Stance stance)
+		public string TooltipForPlayerStance(PlayerRelationship stance)
 		{
-			if (stance == Stance.None || !GenericVisibility.HasStance(stance))
+			if (stance == PlayerRelationship.None || !GenericVisibility.HasStance(stance))
 				return Name;
 
-			if (GenericStancePrefix && !string.IsNullOrEmpty(AllyPrefix) && stance == Stance.Ally)
+			if (GenericStancePrefix && !string.IsNullOrEmpty(AllyPrefix) && stance == PlayerRelationship.Ally)
 				return AllyPrefix + " " + GenericName;
 
-			if (GenericStancePrefix && !string.IsNullOrEmpty(NeutralPrefix) && stance == Stance.Neutral)
+			if (GenericStancePrefix && !string.IsNullOrEmpty(NeutralPrefix) && stance == PlayerRelationship.Neutral)
 				return NeutralPrefix + " " + GenericName;
 
-			if (GenericStancePrefix && !string.IsNullOrEmpty(EnemyPrefix) && stance == Stance.Enemy)
+			if (GenericStancePrefix && !string.IsNullOrEmpty(EnemyPrefix) && stance == PlayerRelationship.Enemy)
 				return EnemyPrefix + " " + GenericName;
 
 			return GenericName;

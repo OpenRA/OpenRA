@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		[Desc("Stances of players which will be able to see the circle.",
 			"Valid values are combinations of `None`, `Ally`, `Enemy` and `Neutral`.")]
-		public readonly Stance ValidStances = Stance.Ally;
+		public readonly PlayerRelationship ValidStances = PlayerRelationship.Ally;
 
 		[Desc("When to show the range circle. Valid values are `Always`, and `WhenSelected`")]
 		public readonly RangeCircleVisibility Visible = RangeCircleVisibility.WhenSelected;

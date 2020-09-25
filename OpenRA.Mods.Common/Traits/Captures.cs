@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int PlayerExperience = 0;
 
 		[Desc("Stance that the structure's previous owner needs to have for the capturing player to receive Experience.")]
-		public readonly Stance PlayerExperienceStances = Stance.Enemy;
+		public readonly PlayerRelationship PlayerExperienceStances = PlayerRelationship.Enemy;
 
 		[Desc("Cursor to display when the health of the target actor is above the sabotage threshold.")]
 		public readonly string SabotageCursor = "capture";

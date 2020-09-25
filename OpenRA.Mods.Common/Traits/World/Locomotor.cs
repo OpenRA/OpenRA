@@ -301,7 +301,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			// If the check allows: We are not blocked by units that we can force to move out of the way.
 			if (check <= BlockedByActor.Immovable && cellFlag.HasCellFlag(CellFlag.HasMovableActor) &&
-				actor.Owner.Stances[otherActor.Owner] == Stance.Ally)
+				actor.Owner.Stances[otherActor.Owner] == PlayerRelationship.Ally)
 			{
 				var mobile = otherActor.OccupiesSpace as Mobile;
 				if (mobile != null && !mobile.IsTraitDisabled && !mobile.IsTraitPaused && !mobile.IsImmovable)

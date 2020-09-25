@@ -37,11 +37,11 @@ namespace OpenRA.Mods.Common
 		public static bool AppearsFriendlyTo(this Actor self, Actor toActor)
 		{
 			var stance = toActor.Owner.Stances[self.Owner];
-			if (stance == Stance.Ally)
+			if (stance == PlayerRelationship.Ally)
 				return true;
 
 			if (self.EffectiveOwner != null && self.EffectiveOwner.Disguised && !toActor.Info.HasTraitInfo<IgnoresDisguiseInfo>())
-				return toActor.Owner.Stances[self.EffectiveOwner.Owner] == Stance.Ally;
+				return toActor.Owner.Stances[self.EffectiveOwner.Owner] == PlayerRelationship.Ally;
 
 			return false;
 		}
@@ -49,13 +49,13 @@ namespace OpenRA.Mods.Common
 		public static bool AppearsHostileTo(this Actor self, Actor toActor)
 		{
 			var stance = toActor.Owner.Stances[self.Owner];
-			if (stance == Stance.Ally)
+			if (stance == PlayerRelationship.Ally)
 				return false;		/* otherwise, we'll hate friendly disguised spies */
 
 			if (self.EffectiveOwner != null && self.EffectiveOwner.Disguised && !toActor.Info.HasTraitInfo<IgnoresDisguiseInfo>())
-				return toActor.Owner.Stances[self.EffectiveOwner.Owner] == Stance.Enemy;
+				return toActor.Owner.Stances[self.EffectiveOwner.Owner] == PlayerRelationship.Enemy;
 
-			return stance == Stance.Enemy;
+			return stance == PlayerRelationship.Enemy;
 		}
 
 		public static void NotifyBlocker(this Actor self, IEnumerable<Actor> blockers)

@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int Percentage = 10;
 
 		[Desc("Stance the attacking player needs to receive the bounty.")]
-		public readonly Stance ValidStances = Stance.Neutral | Stance.Enemy;
+		public readonly PlayerRelationship ValidStances = PlayerRelationship.Neutral | PlayerRelationship.Enemy;
 
 		[Desc("Whether to show a floating text announcing the won bounty.")]
 		public readonly bool ShowBounty = true;

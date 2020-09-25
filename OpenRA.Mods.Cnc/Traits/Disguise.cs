@@ -80,7 +80,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public readonly string DisguisedCondition = null;
 
 		[Desc("What diplomatic stances can this actor disguise as.")]
-		public readonly Stance ValidStances = Stance.Ally | Stance.Neutral | Stance.Enemy;
+		public readonly PlayerRelationship ValidStances = PlayerRelationship.Ally | PlayerRelationship.Neutral | PlayerRelationship.Enemy;
 
 		[Desc("Target types of actors that this actor disguise as.")]
 		public readonly BitSet<TargetableType> TargetTypes = new BitSet<TargetableType>("Disguise");

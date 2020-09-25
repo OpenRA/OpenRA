@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits.Sound
 		public readonly string Voice = null;
 
 		[Desc("Player stances who can hear this voice.")]
-		public readonly Stance ValidStances = Stance.Ally | Stance.Neutral | Stance.Enemy;
+		public readonly PlayerRelationship ValidStances = PlayerRelationship.Ally | PlayerRelationship.Neutral | PlayerRelationship.Enemy;
 
 		[Desc("Play the voice to the owning player even if Stance.Ally is not included in ValidStances.")]
 		public readonly bool PlayToOwner = true;

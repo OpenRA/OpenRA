@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly WDist Range = WDist.Zero;
 
 		[Desc("What diplomatic stances are affected.")]
-		public readonly Stance DeflectionStances = Stance.Ally | Stance.Neutral | Stance.Enemy;
+		public readonly PlayerRelationship DeflectionStances = PlayerRelationship.Ally | PlayerRelationship.Neutral | PlayerRelationship.Enemy;
 
 		[Desc("Chance of deflecting missiles.")]
 		public readonly int Chance = 100;
@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class JamsMissiles : ConditionalTrait<JamsMissilesInfo>
 	{
 		public WDist Range { get { return IsTraitDisabled ? WDist.Zero : Info.Range; } }
-		public Stance DeflectionStances { get { return Info.DeflectionStances; } }
+		public PlayerRelationship DeflectionStances { get { return Info.DeflectionStances; } }
 		public int Chance { get { return Info.Chance; } }
 
 		public JamsMissiles(JamsMissilesInfo info)

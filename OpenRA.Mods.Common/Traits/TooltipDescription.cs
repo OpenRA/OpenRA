@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Description = "";
 
 		[Desc("Player stances who can view the description.")]
-		public readonly Stance ValidStances = Stance.Ally | Stance.Neutral | Stance.Enemy;
+		public readonly PlayerRelationship ValidStances = PlayerRelationship.Ally | PlayerRelationship.Neutral | PlayerRelationship.Enemy;
 
 		public override object Create(ActorInitializer init) { return new TooltipDescription(init.Self, this); }
 	}

@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Widgets
 			powers = world.ActorsWithTrait<SupportPowerManager>()
 				.Where(p => !p.Actor.IsDead && !p.Actor.Owner.NonCombatant)
 				.SelectMany(s => s.Trait.Powers.Values)
-				.Where(p => p.Instances.Any() && p.Info.DisplayTimerStances != Stance.None && !p.Disabled);
+				.Where(p => p.Instances.Any() && p.Info.DisplayTimerStances != PlayerRelationship.None && !p.Disabled);
 
 			// Timers in replays should be synced to the effective game time, not the playback time.
 			timestep = world.Timestep;
