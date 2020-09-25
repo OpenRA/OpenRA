@@ -109,13 +109,13 @@ namespace OpenRA.Mods.Common.Traits
 			allyCapturableTypes = neutralCapturableTypes = enemyCapturableTypes = default(BitSet<CaptureType>);
 			foreach (var c in enabledCapturable)
 			{
-				if (c.Info.ValidStances.HasStance(Stance.Ally))
+				if (c.Info.ValidStances.HasStance(PlayerRelationship.Ally))
 					allyCapturableTypes = allyCapturableTypes.Union(c.Info.Types);
 
-				if (c.Info.ValidStances.HasStance(Stance.Neutral))
+				if (c.Info.ValidStances.HasStance(PlayerRelationship.Neutral))
 					neutralCapturableTypes = neutralCapturableTypes.Union(c.Info.Types);
 
-				if (c.Info.ValidStances.HasStance(Stance.Enemy))
+				if (c.Info.ValidStances.HasStance(PlayerRelationship.Enemy))
 					enemyCapturableTypes = enemyCapturableTypes.Union(c.Info.Types);
 			}
 		}
@@ -130,13 +130,13 @@ namespace OpenRA.Mods.Common.Traits
 		public bool CanBeTargetedBy(Actor self, Actor captor, CaptureManager captorManager)
 		{
 			var stance = self.Owner.Stances[captor.Owner];
-			if (stance.HasStance(Stance.Enemy))
+			if (stance.HasStance(PlayerRelationship.Enemy))
 				return captorManager.capturesTypes.Overlaps(enemyCapturableTypes);
 
-			if (stance.HasStance(Stance.Neutral))
+			if (stance.HasStance(PlayerRelationship.Neutral))
 				return captorManager.capturesTypes.Overlaps(neutralCapturableTypes);
 
-			if (stance.HasStance(Stance.Ally))
+			if (stance.HasStance(PlayerRelationship.Ally))
 				return captorManager.capturesTypes.Overlaps(allyCapturableTypes);
 
 			return false;
@@ -148,13 +148,13 @@ namespace OpenRA.Mods.Common.Traits
 				return false;
 
 			var stance = self.Owner.Stances[captor.Owner];
-			if (stance.HasStance(Stance.Enemy))
+			if (stance.HasStance(PlayerRelationship.Enemy))
 				return captures.Info.CaptureTypes.Overlaps(enemyCapturableTypes);
 
-			if (stance.HasStance(Stance.Neutral))
+			if (stance.HasStance(PlayerRelationship.Neutral))
 				return captures.Info.CaptureTypes.Overlaps(neutralCapturableTypes);
 
-			if (stance.HasStance(Stance.Ally))
+			if (stance.HasStance(PlayerRelationship.Ally))
 				return captures.Info.CaptureTypes.Overlaps(allyCapturableTypes);
 
 			return false;

@@ -136,19 +136,19 @@ namespace OpenRA.Mods.Common.Traits
 						p.Stances[q] = ChooseInitialStance(p, q);
 		}
 
-		static Stance ChooseInitialStance(Player p, Player q)
+		static PlayerRelationship ChooseInitialStance(Player p, Player q)
 		{
 			if (p == q)
-				return Stance.Ally;
+				return PlayerRelationship.Ally;
 
 			if (q.Spectating && !p.NonCombatant && p.Playable)
-				return Stance.Ally;
+				return PlayerRelationship.Ally;
 
 			// Stances set via PlayerReference
 			if (p.PlayerReference.Allies.Contains(q.InternalName))
-				return Stance.Ally;
+				return PlayerRelationship.Ally;
 			if (p.PlayerReference.Enemies.Contains(q.InternalName))
-				return Stance.Enemy;
+				return PlayerRelationship.Enemy;
 
 			// HACK: Map players share a ClientID with the host, so would
 			// otherwise take the host's team stance instead of being neutral
@@ -159,11 +159,11 @@ namespace OpenRA.Mods.Common.Traits
 				var qc = GetClientForPlayer(q);
 				if (pc != null && qc != null)
 					return pc.Team != 0 && pc.Team == qc.Team
-						? Stance.Ally : Stance.Enemy;
+						? PlayerRelationship.Ally : PlayerRelationship.Enemy;
 			}
 
 			// Otherwise, default to neutral
-			return Stance.Neutral;
+			return PlayerRelationship.Neutral;
 		}
 
 		static Session.Client GetClientForPlayer(Player p)

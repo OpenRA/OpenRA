@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class CreatesShroudInfo : AffectsShroudInfo
 	{
 		[Desc("Stance the watching player needs to see the generated shroud.")]
-		public readonly Stance ValidStances = Stance.Neutral | Stance.Enemy;
+		public readonly PlayerRelationship ValidStances = PlayerRelationship.Neutral | PlayerRelationship.Enemy;
 
 		public override object Create(ActorInitializer init) { return new CreatesShroud(init.Self, this); }
 	}

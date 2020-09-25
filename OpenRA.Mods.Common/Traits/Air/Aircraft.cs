@@ -670,7 +670,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			// We are not blocked by actors we can nudge out of the way
 			// TODO: Generalize blocker checks and handling here and in Locomotor
-			if (!blockedByMobile && self.Owner.Stances[otherActor.Owner] == Stance.Ally &&
+			if (!blockedByMobile && self.Owner.Stances[otherActor.Owner] == PlayerRelationship.Ally &&
 				otherActor.TraitOrDefault<Mobile>() != null && otherActor.CurrentActivity == null)
 				return false;
 

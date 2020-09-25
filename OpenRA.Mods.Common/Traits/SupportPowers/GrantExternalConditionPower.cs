@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string OnFireSound = null;
 
 		[Desc("Player stances which condition can be applied to.")]
-		public readonly Stance ValidStances = Stance.Ally;
+		public readonly PlayerRelationship ValidStances = PlayerRelationship.Ally;
 
 		[SequenceReference]
 		[Desc("Sequence to play for granting actor when activated.",

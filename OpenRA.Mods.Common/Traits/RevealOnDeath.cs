@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class RevealOnDeathInfo : ConditionalTraitInfo
 	{
 		[Desc("Stances relative to the actors' owner that shroud will be revealed for.")]
-		public readonly Stance RevealForStances = Stance.Ally;
+		public readonly PlayerRelationship RevealForStances = PlayerRelationship.Ally;
 
 		[Desc("Duration of the reveal.")]
 		public readonly int Duration = 25;

@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly HashSet<string> ValidTypes = new HashSet<string>();
 
 		[Desc("Stance the delivering actor needs to enter.")]
-		public readonly Stance ValidStances = Stance.Ally;
+		public readonly PlayerRelationship ValidStances = PlayerRelationship.Ally;
 
 		public override object Create(ActorInitializer init) { return new AcceptsDeliveredExperience(init.Self, this); }
 	}

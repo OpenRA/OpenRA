@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly EnterBehaviour EnterBehaviour = EnterBehaviour.Dispose;
 
 		[Desc("What diplomatic stances allow target to be repaired by this actor.")]
-		public readonly Stance ValidStances = Stance.Ally;
+		public readonly PlayerRelationship ValidStances = PlayerRelationship.Ally;
 
 		[Desc("Sound to play when repairing is done.")]
 		public readonly string RepairSound = null;

@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (!info.CrushClasses.Overlaps(crushClasses))
 				return;
 
-			if (crusher.Info.HasTraitInfo<MineImmuneInfo>() || (self.Owner.Stances[crusher.Owner] == Stance.Ally && info.AvoidFriendly))
+			if (crusher.Info.HasTraitInfo<MineImmuneInfo>() || (self.Owner.Stances[crusher.Owner] == PlayerRelationship.Ally && info.AvoidFriendly))
 				return;
 
 			var mobile = crusher.TraitOrDefault<Mobile>();
@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		bool ICrushable.CrushableBy(Actor self, Actor crusher, BitSet<CrushClass> crushClasses)
 		{
-			if (info.BlockFriendly && !crusher.Info.HasTraitInfo<MineImmuneInfo>() && self.Owner.Stances[crusher.Owner] == Stance.Ally)
+			if (info.BlockFriendly && !crusher.Info.HasTraitInfo<MineImmuneInfo>() && self.Owner.Stances[crusher.Owner] == PlayerRelationship.Ally)
 				return false;
 
 			return info.CrushClasses.Overlaps(crushClasses);

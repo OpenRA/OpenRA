@@ -44,8 +44,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Voice string when planting explosive charges.")]
 		public readonly string Voice = "Action";
 
-		public readonly Stance TargetStances = Stance.Enemy | Stance.Neutral;
-		public readonly Stance ForceTargetStances = Stance.Enemy | Stance.Neutral | Stance.Ally;
+		public readonly PlayerRelationship TargetStances = PlayerRelationship.Enemy | PlayerRelationship.Neutral;
+		public readonly PlayerRelationship ForceTargetStances = PlayerRelationship.Enemy | PlayerRelationship.Neutral | PlayerRelationship.Ally;
 
 		[Desc("Cursor to display when hovering over a demolishable target.")]
 		public readonly string Cursor = "c4";

@@ -68,7 +68,7 @@ namespace OpenRA.Traits
 	}
 
 	[Flags]
-	public enum Stance
+	public enum PlayerRelationship
 	{
 		None = 0,
 		Enemy = 1,
@@ -78,7 +78,7 @@ namespace OpenRA.Traits
 
 	public static class StanceExts
 	{
-		public static bool HasStance(this Stance s, Stance stance)
+		public static bool HasStance(this PlayerRelationship s, PlayerRelationship stance)
 		{
 			// PERF: Enum.HasFlag is slower and requires allocations.
 			return (s & stance) == stance;
@@ -196,7 +196,7 @@ namespace OpenRA.Traits
 
 	public interface ITooltipInfo : ITraitInfoInterface
 	{
-		string TooltipForPlayerStance(Stance stance);
+		string TooltipForPlayerStance(PlayerRelationship stance);
 		bool IsOwnerRowVisible { get; }
 	}
 

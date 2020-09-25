@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly BitSet<TargetableType> InvalidTargets;
 
 		[Desc("Stances between actor's and target's owner which can be AutoTargeted.")]
-		public readonly Stance ValidStances = Stance.Ally | Stance.Neutral | Stance.Enemy;
+		public readonly PlayerRelationship ValidStances = PlayerRelationship.Ally | PlayerRelationship.Neutral | PlayerRelationship.Enemy;
 
 		[Desc("ValidTargets with larger priorities will be AutoTargeted before lower priorities.")]
 		public readonly int Priority = 1;

@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool CheckCaptureTargetsForVisibility = true;
 
 		[Desc("Player stances that capturers should attempt to target.")]
-		public readonly Stance CapturableStances = Stance.Enemy | Stance.Neutral;
+		public readonly PlayerRelationship CapturableStances = PlayerRelationship.Enemy | PlayerRelationship.Neutral;
 
 		public override object Create(ActorInitializer init) { return new CaptureManagerBotModule(init.Self, this); }
 	}
@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			isEnemyUnit = unit =>
-				player.Stances[unit.Owner] == Stance.Enemy
+				player.Stances[unit.Owner] == PlayerRelationship.Enemy
 					&& !unit.Info.HasTraitInfo<HuskInfo>()
 					&& unit.Info.HasTraitInfo<ITargetableInfo>();
 

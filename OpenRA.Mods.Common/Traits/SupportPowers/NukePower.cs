@@ -95,7 +95,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool RevealGeneratedShroud = true;
 
 		[Desc("Reveal cells to players with these stances only.")]
-		public readonly Stance CameraStances = Stance.Ally;
+		public readonly PlayerRelationship CameraStances = PlayerRelationship.Ally;
 
 		[Desc("Amount of time before detonation to spawn the camera.")]
 		public readonly int CameraSpawnAdvance = 25;
