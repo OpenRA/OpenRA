@@ -94,22 +94,28 @@ namespace OpenRA.Mods.Common.Traits
 
 			public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 			{
-				var type = self.Info.TraitInfo<DeliversCashInfo>().Type;
 				var targetInfo = target.Info.TraitInfoOrDefault<AcceptsDeliveredCashInfo>();
-				return targetInfo != null
-					&& targetInfo.ValidStances.HasStance(target.Owner.RelationshipWith(self.Owner))
-					&& (targetInfo.ValidTypes.Count == 0
-						|| (!string.IsNullOrEmpty(type) && targetInfo.ValidTypes.Contains(type)));
+				if (targetInfo == null || !targetInfo.ValidStances.HasStance(target.Owner.RelationshipWith(self.Owner)))
+					return false;
+
+				if (targetInfo.ValidTypes.Count == 0)
+					return true;
+
+				var type = self.Info.TraitInfo<DeliversCashInfo>().Type;
+				return !string.IsNullOrEmpty(type) && targetInfo.ValidTypes.Contains(type);
 			}
 
 			public override bool CanTargetFrozenActor(Actor self, FrozenActor target, TargetModifiers modifiers, ref string cursor)
 			{
-				var type = self.Info.TraitInfo<DeliversCashInfo>().Type;
 				var targetInfo = target.Info.TraitInfoOrDefault<AcceptsDeliveredCashInfo>();
-				return targetInfo != null
-					&& targetInfo.ValidStances.HasStance(target.Owner.RelationshipWith(self.Owner))
-					&& (targetInfo.ValidTypes.Count == 0
-						|| (!string.IsNullOrEmpty(type) && targetInfo.ValidTypes.Contains(type)));
+				if (targetInfo == null || !targetInfo.ValidStances.HasStance(target.Owner.RelationshipWith(self.Owner)))
+					return false;
+
+				if (targetInfo.ValidTypes.Count == 0)
+					return true;
+
+				var type = self.Info.TraitInfo<DeliversCashInfo>().Type;
+				return !string.IsNullOrEmpty(type) && targetInfo.ValidTypes.Contains(type);
 			}
 		}
 	}
