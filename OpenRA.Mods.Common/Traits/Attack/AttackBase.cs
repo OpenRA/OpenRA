@@ -377,8 +377,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			return Armaments.Where(a =>
 				!a.IsTraitDisabled
-				&& (owner == null || (forceAttack ? a.Info.ForceTargetStances : a.Info.TargetStances)
-					.HasStance(self.Owner.Stances[owner]))
+				&& (owner == null || (forceAttack ? a.Info.ForceTargetStances : a.Info.TargetStances).HasStance(self.Owner.RelationshipWith(owner)))
 				&& a.Weapon.IsValidAgainst(t, self.World, self));
 		}
 
@@ -444,7 +443,7 @@ namespace OpenRA.Mods.Common.Traits
 				// targeting and attacking logic (which should be logically separate)
 				// to use the same code
 				if (target.Type == TargetType.Actor && target.Actor.EffectiveOwner != null &&
-						target.Actor.EffectiveOwner.Disguised && self.Owner.Stances[target.Actor.Owner] == PlayerRelationship.Enemy)
+						target.Actor.EffectiveOwner.Disguised && self.Owner.RelationshipWith(target.Actor.Owner) == PlayerRelationship.Enemy)
 					modifiers |= TargetModifiers.ForceAttack;
 
 				var forceAttack = modifiers.HasModifier(TargetModifiers.ForceAttack);

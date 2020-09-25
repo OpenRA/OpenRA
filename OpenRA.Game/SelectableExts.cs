@@ -36,7 +36,7 @@ namespace OpenRA.Traits
 			if (a.Owner == viewer || viewer == null)
 				return basePriority;
 
-			switch (viewer.Stances[a.Owner])
+			switch (viewer.RelationshipWith(a.Owner))
 			{
 				case PlayerRelationship.Ally: return basePriority - PriorityRange;
 				case PlayerRelationship.Neutral: return basePriority - 2 * PriorityRange;

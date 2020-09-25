@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected void AddCellsToPlayerShroud(Actor self, Player p, PPos[] uv)
 		{
-			if (!Info.ValidStances.HasStance(self.Owner.Stances[p]))
+			if (!Info.ValidStances.HasStance(self.Owner.RelationshipWith(p)))
 				return;
 
 			p.Shroud.AddSource(this, type, uv);

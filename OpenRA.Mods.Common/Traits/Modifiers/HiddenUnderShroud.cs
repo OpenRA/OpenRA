@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (byPlayer == null)
 				return true;
 
-			var stance = self.Owner.Stances[byPlayer];
+			var stance = self.Owner.RelationshipWith(byPlayer);
 			return Info.AlwaysVisibleStances.HasStance(stance) || IsVisibleInner(self, byPlayer);
 		}
 

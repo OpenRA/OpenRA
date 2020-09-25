@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.Warheads
 			if (!AffectsParent && victim == firedBy)
 				return false;
 
-			var stance = firedBy.Owner.Stances[victim.Owner];
+			var stance = firedBy.Owner.RelationshipWith(victim.Owner);
 			if (!ValidStances.HasStance(stance))
 				return false;
 
@@ -80,7 +80,7 @@ namespace OpenRA.Mods.Common.Warheads
 				return false;
 
 			// AffectsParent checks do not make sense for FrozenActors, so skip to stance checks
-			var stance = firedBy.Owner.Stances[victim.Owner];
+			var stance = firedBy.Owner.RelationshipWith(victim.Owner);
 			if (!ValidStances.HasStance(stance))
 				return false;
 

@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				var owner = p.Instances[0].Self.Owner;
 				var viewer = owner.World.RenderPlayer ?? owner.World.LocalPlayer;
-				return viewer == null || p.Info.DisplayTimerStances.HasStance(owner.Stances[viewer]);
+				return viewer == null || p.Info.DisplayTimerStances.HasStance(owner.RelationshipWith(viewer));
 			});
 
 			texts = displayedPowers.Select(p =>

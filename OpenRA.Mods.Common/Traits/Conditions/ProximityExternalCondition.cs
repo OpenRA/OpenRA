@@ -110,7 +110,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (tokens.ContainsKey(a))
 				return;
 
-			var stance = self.Owner.Stances[a.Owner];
+			var stance = self.Owner.RelationshipWith(a.Owner);
 			if (!Info.ValidStances.HasStance(stance))
 				return;
 
@@ -134,7 +134,7 @@ namespace OpenRA.Mods.Common.Traits
 			// Work around for actors produced within the region not triggering until the second tick
 			if ((produced.CenterPosition - self.CenterPosition).HorizontalLengthSquared <= Info.Range.LengthSquared)
 			{
-				var stance = self.Owner.Stances[produced.Owner];
+				var stance = self.Owner.RelationshipWith(produced.Owner);
 				if (!Info.ValidStances.HasStance(stance))
 					return;
 

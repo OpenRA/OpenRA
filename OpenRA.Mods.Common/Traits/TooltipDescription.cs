@@ -53,10 +53,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (Owner == null || forPlayer == null)
 				return false;
 
-			if (!Info.ValidStances.HasStance(Owner.Stances[forPlayer]))
-				return false;
-
-			return true;
+			return Info.ValidStances.HasStance(Owner.RelationshipWith(forPlayer));
 		}
 
 		public string TooltipText

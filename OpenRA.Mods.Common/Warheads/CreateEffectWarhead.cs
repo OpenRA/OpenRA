@@ -76,7 +76,7 @@ namespace OpenRA.Mods.Common.Warheads
 		// (and to prevent returning ImpactActorType.Invalid on AffectsParent=false)
 		public override bool IsValidAgainst(Actor victim, Actor firedBy)
 		{
-			var stance = firedBy.Owner.Stances[victim.Owner];
+			var stance = firedBy.Owner.RelationshipWith(victim.Owner);
 			if (!ValidStances.HasStance(stance))
 				return false;
 
