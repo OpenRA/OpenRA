@@ -77,6 +77,7 @@ namespace OpenRA.Mods.Common.Traits
 				var hash = 0;
 				foreach (var player in Repairers)
 					hash ^= Sync.HashPlayer(player);
+
 				return hash;
 			}
 		}
@@ -86,7 +87,6 @@ namespace OpenRA.Mods.Common.Traits
 			if (string.IsNullOrEmpty(Info.RepairCondition))
 				return;
 
-			var currentRepairers = Repairers.Count;
 			while (Repairers.Count > repairTokens.Count)
 				repairTokens.Push(self.GrantCondition(Info.RepairCondition));
 
