@@ -326,7 +326,7 @@ namespace OpenRA.Mods.Common.Traits
 			return activeTargetPriorities.Any(ati =>
 			{
 				// Incompatible stances
-				if (!ati.ValidStances.HasStance(self.Owner.Stances[owner]))
+				if (!ati.ValidStances.HasStance(self.Owner.RelationshipWith(owner)))
 					return false;
 
 				// Incompatible target types
@@ -362,7 +362,7 @@ namespace OpenRA.Mods.Common.Traits
 					// can bail early and avoid the more expensive targeting checks and armament selection. For groups of
 					// allied units, this helps significantly reduce the cost of auto target scans. This is important as
 					// these groups will continuously rescan their allies until an enemy finally comes into range.
-					if (attackStances == OpenRA.Traits.PlayerRelationship.Enemy && !target.Actor.AppearsHostileTo(self))
+					if (attackStances == PlayerRelationship.Enemy && !target.Actor.AppearsHostileTo(self))
 						continue;
 
 					// Check whether we can auto-target this actor
@@ -375,7 +375,7 @@ namespace OpenRA.Mods.Common.Traits
 				}
 				else if (target.Type == TargetType.FrozenActor)
 				{
-					if (attackStances == OpenRA.Traits.PlayerRelationship.Enemy && self.Owner.Stances[target.FrozenActor.Owner] == OpenRA.Traits.PlayerRelationship.Ally)
+					if (attackStances == PlayerRelationship.Enemy && self.Owner.RelationshipWith(target.FrozenActor.Owner) == PlayerRelationship.Ally)
 						continue;
 
 					targetTypes = target.FrozenActor.TargetTypes;
@@ -391,7 +391,7 @@ namespace OpenRA.Mods.Common.Traits
 						return false;
 
 					// Incompatible stances
-					if (!ati.ValidStances.HasStance(self.Owner.Stances[owner]))
+					if (!ati.ValidStances.HasStance(self.Owner.RelationshipWith(owner)))
 						return false;
 
 					// Incompatible target types

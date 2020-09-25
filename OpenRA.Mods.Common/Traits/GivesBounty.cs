@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (e.Attacker == null || e.Attacker.Disposed || IsTraitDisabled)
 				return;
 
-			if (!Info.ValidStances.HasStance(e.Attacker.Owner.Stances[self.Owner]))
+			if (!Info.ValidStances.HasStance(e.Attacker.Owner.RelationshipWith(self.Owner)))
 				return;
 
 			if (!Info.DeathTypes.IsEmpty && !e.Damage.DamageTypes.Overlaps(Info.DeathTypes))

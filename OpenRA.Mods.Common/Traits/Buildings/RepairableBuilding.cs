@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Common.Traits
 			: base(info)
 		{
 			health = self.Trait<IHealth>();
-			isNotActiveAlly = player => player.WinState != WinState.Undefined || player.Stances[self.Owner] != PlayerRelationship.Ally;
+			isNotActiveAlly = player => player.WinState != WinState.Undefined || self.Owner.RelationshipWith(player) != PlayerRelationship.Ally;
 		}
 
 		[Sync]

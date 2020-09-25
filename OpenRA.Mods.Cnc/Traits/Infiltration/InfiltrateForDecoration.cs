@@ -48,8 +48,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		protected override bool ShouldRender(Actor self)
 		{
-			return self.World.RenderPlayer == null || infiltrators.Any(i =>
-				Info.ValidStances.HasStance(i.Stances[self.World.RenderPlayer]));
+			return infiltrators.Any(i => Info.ValidStances.HasStance(i.RelationshipWith(self.World.RenderPlayer)));
 		}
 	}
 }

@@ -298,8 +298,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 		{
-			var stance = self.Owner.Stances[target.Owner];
-
+			var stance = self.Owner.RelationshipWith(target.Owner);
 			if (!info.ValidStances.HasStance(stance))
 				return false;
 
@@ -308,8 +307,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		public override bool CanTargetFrozenActor(Actor self, FrozenActor target, TargetModifiers modifiers, ref string cursor)
 		{
-			var stance = self.Owner.Stances[target.Owner];
-
+			var stance = self.Owner.RelationshipWith(target.Owner);
 			if (!info.ValidStances.HasStance(stance))
 				return false;
 

@@ -41,7 +41,11 @@ namespace OpenRA.Mods.Common.Effects
 			ticks = -delay;
 		}
 
-		void AddCellsToPlayerShroud(Player p, PPos[] uv) { if (!validStances.HasStance(p.Stances[player])) return; p.Shroud.AddSource(this, sourceType, uv); }
+		void AddCellsToPlayerShroud(Player p, PPos[] uv)
+		{
+			if (validStances.HasStance(player.RelationshipWith(p)))
+				p.Shroud.AddSource(this, sourceType, uv);
+		}
 
 		void RemoveCellsFromPlayerShroud(Player p) { p.Shroud.RemoveSource(this); }
 
@@ -52,8 +56,7 @@ namespace OpenRA.Mods.Common.Effects
 			if (range == WDist.Zero)
 				return NoCells;
 
-			return Shroud.ProjectedCellsInRange(map, pos, WDist.Zero, range)
-				.ToArray();
+			return Shroud.ProjectedCellsInRange(map, pos, WDist.Zero, range).ToArray();
 		}
 
 		public void Tick(World world)

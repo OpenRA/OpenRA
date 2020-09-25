@@ -230,10 +230,22 @@ namespace OpenRA
 		}
 
 		public Dictionary<Player, PlayerRelationship> Stances = new Dictionary<Player, PlayerRelationship>();
+
+		public PlayerRelationship RelationshipWith(Player other)
+		{
+			if (this == other)
+				return PlayerRelationship.Ally;
+
+			// Observers are considered allies to active combatants
+			if (other == null || other.Spectating)
+				return NonCombatant ? PlayerRelationship.Neutral : PlayerRelationship.Ally;
+
+			return Stances[other];
+		}
+
 		public bool IsAlliedWith(Player p)
 		{
-			// Observers are considered allies to active combatants
-			return p == null || Stances[p] == PlayerRelationship.Ally || (p.Spectating && !NonCombatant);
+			return RelationshipWith(p) == PlayerRelationship.Ally;
 		}
 
 		public Color PlayerStanceColor(Actor a)

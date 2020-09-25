@@ -71,7 +71,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				var checkActors = world.FindActorsInCircle(pos, radiusToUse);
 				foreach (var scrutinized in checkActors)
-					answer += consideration.GetAttractiveness(scrutinized, firedBy.Stances[scrutinized.Owner], firedBy);
+					answer += consideration.GetAttractiveness(scrutinized, firedBy.RelationshipWith(scrutinized.Owner), firedBy);
 
 				var delta = new WVec(radiusToUse, radiusToUse, WDist.Zero);
 				var tl = world.Map.CellContaining(pos - delta);
@@ -80,7 +80,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				// IsValid check filters out Frozen Actors that have not initizialized their Owner
 				foreach (var scrutinized in checkFrozen)
-					answer += consideration.GetAttractiveness(scrutinized, firedBy.Stances[scrutinized.Owner], firedBy);
+					answer += consideration.GetAttractiveness(scrutinized, firedBy.RelationshipWith(scrutinized.Owner), firedBy);
 			}
 
 			return answer;
@@ -93,7 +93,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var consideration in Considerations)
 				foreach (var scrutinized in actors)
-					answer += consideration.GetAttractiveness(scrutinized, firedBy.Stances[scrutinized.Owner], firedBy);
+					answer += consideration.GetAttractiveness(scrutinized, firedBy.RelationshipWith(scrutinized.Owner), firedBy);
 
 			return answer;
 		}
@@ -105,7 +105,7 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var consideration in Considerations)
 				foreach (var scrutinized in frozenActors)
 					if (scrutinized.IsValid && scrutinized.Visible)
-						answer += consideration.GetAttractiveness(scrutinized, firedBy.Stances[scrutinized.Owner], firedBy);
+						answer += consideration.GetAttractiveness(scrutinized, firedBy.RelationshipWith(scrutinized.Owner), firedBy);
 
 			return answer;
 		}

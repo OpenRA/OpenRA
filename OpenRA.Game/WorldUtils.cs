@@ -90,8 +90,7 @@ namespace OpenRA
 
 		public static bool AreMutualAllies(Player a, Player b)
 		{
-			return a.Stances[b] == PlayerRelationship.Ally &&
-				b.Stances[a] == PlayerRelationship.Ally;
+			return a.RelationshipWith(b) == PlayerRelationship.Ally && b.RelationshipWith(a) == PlayerRelationship.Ally;
 		}
 	}
 }

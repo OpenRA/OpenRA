@@ -103,16 +103,14 @@ namespace OpenRA.Mods.Common.Traits
 				var type = self.Info.TraitInfo<DeliversExperienceInfo>().Type;
 				var targetInfo = target.Info.TraitInfoOrDefault<AcceptsDeliveredExperienceInfo>();
 				var targetGainsExperience = target.TraitOrDefault<GainsExperience>();
-
 				if (targetGainsExperience == null || targetInfo == null)
 					return false;
 
 				if (targetGainsExperience.Level == targetGainsExperience.MaxLevel)
 					return false;
 
-				return targetInfo.ValidStances.HasStance(target.Owner.Stances[self.Owner])
-					&& (targetInfo.ValidTypes.Count == 0
-						|| (!string.IsNullOrEmpty(type) && targetInfo.ValidTypes.Contains(type)));
+				return targetInfo.ValidStances.HasStance(target.Owner.RelationshipWith(self.Owner))
+					&& (targetInfo.ValidTypes.Count == 0 || (!string.IsNullOrEmpty(type) && targetInfo.ValidTypes.Contains(type)));
 			}
 
 			public override bool CanTargetFrozenActor(Actor self, FrozenActor target, TargetModifiers modifiers, ref string cursor)
@@ -130,9 +128,8 @@ namespace OpenRA.Mods.Common.Traits
 				if (targetGainsExperience.Level == targetGainsExperience.MaxLevel)
 					return false;
 
-				return targetInfo.ValidStances.HasStance(target.Owner.Stances[self.Owner])
-					&& (targetInfo.ValidTypes.Count == 0
-						|| (!string.IsNullOrEmpty(type) && targetInfo.ValidTypes.Contains(type)));
+				return targetInfo.ValidStances.HasStance(target.Owner.RelationshipWith(self.Owner))
+					&& (targetInfo.ValidTypes.Count == 0 || (!string.IsNullOrEmpty(type) && targetInfo.ValidTypes.Contains(type)));
 			}
 		}
 	}

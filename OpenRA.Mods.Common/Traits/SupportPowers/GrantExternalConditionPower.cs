@@ -96,7 +96,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			return units.Distinct().Where(a =>
 			{
-				if (!info.ValidStances.HasStance(a.Owner.Stances[Self.Owner]))
+				if (!info.ValidStances.HasStance(Self.Owner.RelationshipWith(a.Owner)))
 					return false;
 
 				return a.TraitsImplementing<ExternalCondition>()
