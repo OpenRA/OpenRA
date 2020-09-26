@@ -99,12 +99,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				Action closeAndExit = () => { Ui.CloseWindow(); onExit(); };
 				if (current.Sound.Device != OriginalSoundDevice ||
-				    current.Graphics.Mode != OriginalGraphicsMode ||
+					current.Graphics.Mode != OriginalGraphicsMode ||
 					current.Graphics.VideoDisplay != OriginalVideoDisplay ||
-				    current.Graphics.WindowedSize != OriginalGraphicsWindowedSize ||
+					current.Graphics.WindowedSize != OriginalGraphicsWindowedSize ||
 					current.Graphics.FullscreenSize != OriginalGraphicsFullscreenSize ||
-				    current.Graphics.GLProfile != OriginalGLProfile ||
 					current.Server.DiscoverNatDevices != OriginalServerDiscoverNatDevices)
+					current.Graphics.GLProfile != OriginalGLProfile ||
 				{
 					Action restart = () =>
 					{
