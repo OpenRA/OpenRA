@@ -31,6 +31,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		static readonly int2 OriginalGraphicsFullscreenSize;
 		static readonly GLProfile OriginalGLProfile;
 		static readonly bool OriginalServerDiscoverNatDevices;
+		static readonly string OriginalLanguage;
 
 		readonly Dictionary<PanelType, Action> leavePanelActions = new Dictionary<PanelType, Action>();
 		readonly Dictionary<PanelType, Action> resetPanelActions = new Dictionary<PanelType, Action>();
@@ -63,6 +64,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			OriginalGraphicsFullscreenSize = original.Graphics.FullscreenSize;
 			OriginalGLProfile = original.Graphics.GLProfile;
 			OriginalServerDiscoverNatDevices = original.Server.DiscoverNatDevices;
+			OriginalLanguage = original.Graphics.Language;
 		}
 
 		[ObjectCreator.UseCtor]
@@ -103,8 +105,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					current.Graphics.VideoDisplay != OriginalVideoDisplay ||
 					current.Graphics.WindowedSize != OriginalGraphicsWindowedSize ||
 					current.Graphics.FullscreenSize != OriginalGraphicsFullscreenSize ||
-					current.Server.DiscoverNatDevices != OriginalServerDiscoverNatDevices)
 					current.Graphics.GLProfile != OriginalGLProfile ||
+					current.Graphics.Language != OriginalLanguage ||
+					current.Server.DiscoverNatDevices != OriginalServerDiscoverNatDevices)
 				{
 					Action restart = () =>
 					{
@@ -319,7 +322,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var restartDesc = panel.Get("RESTART_REQUIRED_DESC");
 			restartDesc.IsVisible = () => ds.Mode != OriginalGraphicsMode || ds.VideoDisplay != OriginalVideoDisplay || ds.GLProfile != OriginalGLProfile ||
-				(ds.Mode == WindowMode.Windowed && (origWidthText != windowWidth.Text || origHeightText != windowHeight.Text));
+				(ds.Mode == WindowMode.Windowed && (origWidthText != windowWidth.Text || origHeightText != windowHeight.Text)) ||
+				ds.Language != OriginalLanguage;
 
 			var frameLimitCheckbox = panel.Get<CheckboxWidget>("FRAME_LIMIT_CHECKBOX");
 			var frameLimitOrigLabel = frameLimitCheckbox.Text;
