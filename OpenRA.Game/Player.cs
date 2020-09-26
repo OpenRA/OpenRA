@@ -229,8 +229,6 @@ namespace OpenRA
 			return "{0} ({1})".F(PlayerName, ClientIndex);
 		}
 
-		public Dictionary<Player, PlayerRelationship> Stances = new Dictionary<Player, PlayerRelationship>();
-
 		public PlayerRelationship RelationshipWith(Player other)
 		{
 			if (this == other)
@@ -240,7 +238,13 @@ namespace OpenRA
 			if (other == null || other.Spectating)
 				return NonCombatant ? PlayerRelationship.Neutral : PlayerRelationship.Ally;
 
-			return Stances[other];
+			if (AlliedPlayersMask.Overlaps(other.PlayerMask))
+				return PlayerRelationship.Ally;
+
+			if (EnemyPlayersMask.Overlaps(other.PlayerMask))
+				return PlayerRelationship.Enemy;
+
+			return PlayerRelationship.Neutral;
 		}
 
 		public bool IsAlliedWith(Player p)
