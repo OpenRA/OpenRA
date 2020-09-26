@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			{
 				modData.ModFiles.TryGetPackageContaining(filename, out var package, out var name);
 				name = package.Name + "/" + name;
-				Console.WriteLine("# {0}:", name);
+				Console.WriteLine("# {0}:", Platform.UnresolvePath(name));
 
 				var yaml = MiniYaml.FromFile(name, false);
 				FromChromeLayout(ref yaml, null,
