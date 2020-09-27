@@ -29,7 +29,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var font = Game.Renderer.Fonts[label.Font];
 			var ownerFont = Game.Renderer.Fonts[owner.Font];
-			var cachedWidth = 0;
 			var labelText = "";
 			var showOwner = false;
 			var flagFaction = "";
@@ -96,12 +95,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				}
 
 				var textWidth = Math.Max(font.Measure(labelText).X, font.Measure(extraText).X);
-
-				if (textWidth != cachedWidth)
-				{
-					label.Bounds.Width = textWidth;
-					widget.Bounds.Width = 2 * label.Bounds.X + textWidth;
-				}
+				label.Bounds.Width = textWidth;
+				widget.Bounds.Width = 2 * label.Bounds.X + textWidth;
 
 				if (showOwner)
 				{
