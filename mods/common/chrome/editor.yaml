@@ -271,8 +271,14 @@ Container@EDITOR_WORLD_ROOT:
 										Slider@OPTION:
 											X: 75
 											Y: 1
-											Width: 210
+											Width: 149
 											Height: 20
+										TextField@VALUE:
+											X: 226
+											Y: 1
+											Width: 50
+											Height: 20
+											Type: Integer
 								Container@DROPDOWN_OPTION_TEMPLATE:
 									Width: PARENT_RIGHT
 									Height: 27

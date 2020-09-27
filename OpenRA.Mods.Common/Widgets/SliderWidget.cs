@@ -48,10 +48,12 @@ namespace OpenRA.Mods.Common.Widgets
 			GetValue = other.GetValue;
 		}
 
-		void UpdateValue(float newValue)
+		public void UpdateValue(float newValue)
 		{
+			var oldValue = Value;
 			Value = newValue.Clamp(MinimumValue, MaximumValue);
-			OnChange(Value);
+			if (oldValue != Value)
+				OnChange(Value);
 		}
 
 		public override bool HandleMouseInput(MouseInput mi)
@@ -114,7 +116,7 @@ namespace OpenRA.Mods.Common.Widgets
 			if (!IsVisible())
 				return;
 
-			Value = GetValue();
+			UpdateValue(GetValue());
 
 			var tr = ThumbRect;
 			var rb = RenderBounds;
