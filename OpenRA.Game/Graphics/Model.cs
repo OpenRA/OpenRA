@@ -45,6 +45,7 @@ namespace OpenRA.Graphics
 
 	public interface IModelCache : IDisposable
 	{
+		IModel GetModel(string model);
 		IModel GetModelSequence(string model, string sequence);
 		bool HasModelSequence(string model, string sequence);
 		IVertexBuffer<Vertex> VertexBuffer { get; }
@@ -65,6 +66,11 @@ namespace OpenRA.Graphics
 			public IVertexBuffer<Vertex> VertexBuffer { get { throw new NotImplementedException(); } }
 
 			public void Dispose() { }
+
+			public IModel GetModel(string model)
+			{
+				throw new NotImplementedException();
+			}
 
 			public IModel GetModelSequence(string model, string sequence)
 			{

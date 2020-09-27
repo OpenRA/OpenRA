@@ -43,10 +43,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		string currentFilename;
 		IReadOnlyPackage currentPackage;
 		Sprite[] currentSprites;
+		IModel currentVoxel;
 		VqaPlayerWidget player = null;
 		bool isVideoLoaded = false;
 		bool isLoadError = false;
 		int currentFrame;
+		WRot modelOrientation;
 
 		[ObjectCreator.UseCtor]
 		public AssetBrowserLogic(Widget widget, Action onExit, ModData modData, World world, Dictionary<string, MiniYaml> logicArgs)
@@ -79,12 +81,23 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				spriteWidget.GetSprite = () => currentSprites != null ? currentSprites[currentFrame] : null;
 				currentPalette = spriteWidget.Palette;
 				spriteWidget.GetPalette = () => currentPalette;
-				spriteWidget.IsVisible = () => !isVideoLoaded && !isLoadError;
+				spriteWidget.IsVisible = () => !isVideoLoaded && !isLoadError && currentSprites != null;
 			}
 
 			var playerWidget = panel.GetOrNull<VqaPlayerWidget>("PLAYER");
 			if (playerWidget != null)
 				playerWidget.IsVisible = () => isVideoLoaded && !isLoadError;
+
+			var modelWidget = panel.GetOrNull<ModelWidget>("VOXEL");
+			if (modelWidget != null)
+			{
+				modelWidget.GetVoxel = () => currentVoxel;
+				currentPalette = modelWidget.Palette;
+				modelWidget.GetPalette = () => currentPalette;
+				modelWidget.GetPlayerPalette = () => currentPalette;
+				modelWidget.GetRotation = () => modelOrientation;
+				modelWidget.IsVisible = () => !isVideoLoaded && !isLoadError && currentVoxel != null;
+			}
 
 			var errorLabelWidget = panel.GetOrNull("ERROR");
 			if (errorLabelWidget != null)
@@ -208,6 +221,46 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				};
 
 				prevButton.IsVisible = () => !isVideoLoaded;
+			}
+
+			var voxelContainer = panel.GetOrNull("VOXEL_SELECTOR");
+			if (voxelContainer != null)
+				voxelContainer.IsVisible = () => currentVoxel != null;
+
+			var rollSlider = panel.GetOrNull<SliderWidget>("ROLL_SLIDER");
+			if (rollSlider != null)
+			{
+				rollSlider.OnChange += x =>
+				{
+					var roll = (int)x;
+					modelOrientation = modelOrientation.WithRoll(new WAngle(roll));
+				};
+
+				rollSlider.GetValue = () => modelOrientation.Roll.Angle;
+			}
+
+			var pitchSlider = panel.GetOrNull<SliderWidget>("PITCH_SLIDER");
+			if (pitchSlider != null)
+			{
+				pitchSlider.OnChange += x =>
+				{
+					var pitch = (int)x;
+					modelOrientation = modelOrientation.WithPitch(new WAngle(pitch));
+				};
+
+				pitchSlider.GetValue = () => modelOrientation.Pitch.Angle;
+			}
+
+			var yawSlider = panel.GetOrNull<SliderWidget>("YAW_SLIDER");
+			if (yawSlider != null)
+			{
+				yawSlider.OnChange += x =>
+				{
+					var yaw = (int)x;
+					modelOrientation = modelOrientation.WithYaw(new WAngle(yaw));
+				};
+
+				yawSlider.GetValue = () => modelOrientation.Yaw.Angle;
 			}
 
 			var assetBrowserModData = modData.Manifest.Get<AssetBrowser>();
@@ -342,12 +395,24 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					return true;
 				}
 
-				currentSprites = world.Map.Rules.Sequences.SpriteCache[prefix + filename];
-				currentFrame = 0;
-				if (frameSlider != null)
+				if (Path.GetExtension(filename.ToLowerInvariant()) == ".vxl")
 				{
-					frameSlider.MaximumValue = (float)currentSprites.Length - 1;
-					frameSlider.Ticks = currentSprites.Length;
+					var voxelName = Path.GetFileNameWithoutExtension(filename);
+					currentVoxel = world.ModelCache.GetModel(voxelName);
+					currentSprites = null;
+				}
+				else
+				{
+					currentSprites = world.Map.Rules.Sequences.SpriteCache[prefix + filename];
+					currentFrame = 0;
+
+					if (frameSlider != null)
+					{
+						frameSlider.MaximumValue = (float)currentSprites.Length - 1;
+						frameSlider.Ticks = currentSprites.Length;
+					}
+
+					currentVoxel = null;
 				}
 			}
 			catch (Exception ex)

@@ -103,6 +103,11 @@ Background@ASSETBROWSER_PANEL:
 					Width: PARENT_RIGHT
 					Height: PARENT_BOTTOM
 					AspectRatio: 1
+				Model@VOXEL:
+					Width: PARENT_RIGHT
+					Height: PARENT_BOTTOM
+					Palette: colorpicker
+					PlayerPalette: colorpicker
 				Label@ERROR:
 					Y: 1
 					X: 5
@@ -189,6 +194,55 @@ Background@ASSETBROWSER_PANEL:
 					Height: 25
 					Font: TinyBold
 					Align: Left
+		Container@VOXEL_SELECTOR:
+			X: 60
+			Y: 425
+			Children:
+				Label@ROLL:
+					X: 140
+					Y: 1
+					Width: 40
+					Height: 25
+					Font: TinyBold
+					Align: Left
+					Text: Roll
+				Slider@ROLL_SLIDER:
+					X: 165
+					Y: 3
+					Width: 100
+					Height: 20
+					MinimumValue: 1
+					MaximumValue: 1023
+				Label@PITCH:
+					X: 310
+					Y: 1
+					Width: 40
+					Height: 25
+					Font: TinyBold
+					Align: Left
+					Text: Pitch
+				Slider@PITCH_SLIDER:
+					X: 335
+					Y: 3
+					Width: 100
+					Height: 20
+					MinimumValue: 1
+					MaximumValue: 1023
+				Label@YAW:
+					X: 480
+					Y: 1
+					Width: 40
+					Height: 25
+					Font: TinyBold
+					Align: Left
+					Text: Yaw
+				Slider@YAW_SLIDER:
+					X: 505
+					Y: 3
+					Width: 100
+					Height: 20
+					MinimumValue: 1
+					MaximumValue: 1023
 		Button@CLOSE_BUTTON:
 			Key: escape
 			X: PARENT_RIGHT - 180

@@ -86,6 +86,11 @@ namespace OpenRA.Mods.Cnc.Graphics
 			return loader.Load(vxl, hva);
 		}
 
+		public IModel GetModel(string model)
+		{
+			return loader.Load(model, model);
+		}
+
 		public IModel GetModelSequence(string model, string sequence)
 		{
 			try { return models[model][sequence]; }
