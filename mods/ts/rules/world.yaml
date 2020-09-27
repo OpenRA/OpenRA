@@ -412,3 +412,7 @@ EditorWorld:
 		FootprintAlpha: 0.7
 	LoadWidgetAtGameStart:
 	EditorActionManager:
+	BuildableTerrainOverlay:
+		AllowedTerrainTypes: Clear, Rough, Road, DirtRoad, Green, Sand, Pavement
+		Palette: ra
+		Alpha: 0.35

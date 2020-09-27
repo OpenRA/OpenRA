@@ -35,6 +35,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				gridButton.IsHighlighted = () => terrainGeometryTrait.Enabled;
 			}
 
+			var lockButton = widget.GetOrNull<ButtonWidget>("BUILDABLE_BUTTON");
+			if (lockButton != null)
+			{
+				var buildableTerrainTrait = world.WorldActor.TraitOrDefault<BuildableTerrainOverlay>();
+				if (buildableTerrainTrait != null)
+				{
+					lockButton.OnClick = () => buildableTerrainTrait.Enabled ^= true;
+					lockButton.IsHighlighted = () => buildableTerrainTrait.Enabled;
+				}
+				else
+					lockButton.Disabled = true;
+			}
+
 			var copypasteButton = widget.GetOrNull<ButtonWidget>("COPYPASTE_BUTTON");
 			if (copypasteButton != null)
 			{

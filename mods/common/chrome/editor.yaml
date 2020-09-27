@@ -610,6 +610,16 @@ Container@EDITOR_WORLD_ROOT:
 			TooltipTemplate: BUTTON_TOOLTIP
 			TooltipText: Redo last step
 			TooltipContainer: TOOLTIP_CONTAINER
+		Button@BUILDABLE_BUTTON:
+			X: 700
+			Width: 90
+			Height: 25
+			Text: Buildable
+			Font: Bold
+			Key: f2
+			TooltipTemplate: BUTTON_TOOLTIP
+			TooltipText: Toggle unbuildable cells
+			TooltipContainer: TOOLTIP_CONTAINER
 		Label@COORDINATE_LABEL:
 			X: 835
 			Width: 50

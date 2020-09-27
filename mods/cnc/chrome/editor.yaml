@@ -584,6 +584,17 @@ Container@EDITOR_WORLD_ROOT:
 					Height: 25
 					Text: History
 					Font: Bold
+		Button@BUILDABLE_BUTTON:
+			X: WINDOW_RIGHT - 1020
+			Y: 5
+			Width: 100
+			Height: 25
+			Text: Buildable
+			Font: Bold
+			Key: f2
+			TooltipTemplate: BUTTON_TOOLTIP
+			TooltipText: Toggle unbuildable cells
+			TooltipContainer: TOOLTIP_CONTAINER
 		Button@UNDO_BUTTON:
 			X: WINDOW_RIGHT - 910
 			Y: 5

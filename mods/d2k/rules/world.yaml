@@ -255,3 +255,5 @@ EditorWorld:
 	EditorSelectionLayer:
 	LoadWidgetAtGameStart:
 	EditorActionManager:
+	BuildableTerrainOverlay:
+		AllowedTerrainTypes: Rock, Concrete
