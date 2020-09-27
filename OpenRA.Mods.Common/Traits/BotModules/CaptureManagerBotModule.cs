@@ -37,8 +37,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Should visibility (Shroud, Fog, Cloak, etc) be considered when searching for capturable targets?")]
 		public readonly bool CheckCaptureTargetsForVisibility = true;
 
-		[Desc("Player stances that capturers should attempt to target.")]
-		public readonly PlayerRelationship CapturableStances = PlayerRelationship.Enemy | PlayerRelationship.Neutral;
+		[Desc("Player relationships that capturers should attempt to target.")]
+		public readonly PlayerRelationship CapturableRelationships = PlayerRelationship.Enemy | PlayerRelationship.Neutral;
 
 		public override object Create(ActorInitializer init) { return new CaptureManagerBotModule(init.Self, this); }
 	}
@@ -133,7 +133,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			var randPlayer = world.Players.Where(p => !p.Spectating
-				&& Info.CapturableStances.HasStance(player.RelationshipWith(p))).Random(world.LocalRandom);
+				&& Info.CapturableRelationships.HasStance(player.RelationshipWith(p))).Random(world.LocalRandom);
 
 			var targetOptions = Info.CheckCaptureTargetsForVisibility
 				? GetVisibleActorsBelongingToPlayer(randPlayer)

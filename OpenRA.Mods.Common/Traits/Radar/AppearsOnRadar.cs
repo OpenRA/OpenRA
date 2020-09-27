@@ -20,8 +20,8 @@ namespace OpenRA.Mods.Common.Traits.Radar
 	{
 		public readonly bool UseLocation = false;
 
-		[Desc("Player stances who can view this actor on radar.")]
-		public readonly PlayerRelationship ValidStances = PlayerRelationship.Ally | PlayerRelationship.Neutral | PlayerRelationship.Enemy;
+		[Desc("Player relationships who can view this actor on radar.")]
+		public readonly PlayerRelationship ValidRelationships = PlayerRelationship.Ally | PlayerRelationship.Neutral | PlayerRelationship.Enemy;
 
 		public override object Create(ActorInitializer init) { return new AppearsOnRadar(this); }
 	}
@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Traits.Radar
 		public void PopulateRadarSignatureCells(Actor self, List<(CPos Cell, Color Color)> destinationBuffer)
 		{
 			var viewer = self.World.RenderPlayer ?? self.World.LocalPlayer;
-			if (IsTraitDisabled || (viewer != null && !Info.ValidStances.HasStance(self.Owner.RelationshipWith(viewer))))
+			if (IsTraitDisabled || (viewer != null && !Info.ValidRelationships.HasStance(self.Owner.RelationshipWith(viewer))))
 				return;
 
 			var color = Game.Settings.Game.UsePlayerStanceColors ? self.Owner.PlayerStanceColor(self) : self.Owner.Color;

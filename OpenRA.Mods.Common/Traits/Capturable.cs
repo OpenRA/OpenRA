@@ -22,8 +22,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("CaptureTypes (from the Captures trait) that are able to capture this.")]
 		public readonly BitSet<CaptureType> Types = default(BitSet<CaptureType>);
 
-		[Desc("What diplomatic stances can be captured by this actor.")]
-		public readonly PlayerRelationship ValidStances = PlayerRelationship.Neutral | PlayerRelationship.Enemy;
+		[Desc("What player relationships the target's owner needs to be captured by this actor.")]
+		public readonly PlayerRelationship ValidRelationships = PlayerRelationship.Neutral | PlayerRelationship.Enemy;
 
 		[Desc("Cancel the actor's current activity when getting captured.")]
 		public readonly bool CancelActivity = false;

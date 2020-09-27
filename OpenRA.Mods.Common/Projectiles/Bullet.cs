@@ -96,8 +96,8 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Terrain where the projectile explodes instead of bouncing.")]
 		public readonly HashSet<string> InvalidBounceTerrain = new HashSet<string>();
 
-		[Desc("If projectile touches an actor with one of these stances during or after the first bounce, trigger explosion.")]
-		public readonly PlayerRelationship ValidBounceBlockerStances = PlayerRelationship.Enemy | PlayerRelationship.Neutral;
+		[Desc("Trigger the explosion if the projectile touches an actor thats owner has these player relationships.")]
+		public readonly PlayerRelationship ValidBounceBlockerRelationships = PlayerRelationship.Enemy | PlayerRelationship.Neutral;
 
 		[Desc("Altitude above terrain below which to explode. Zero effectively deactivates airburst.")]
 		public readonly WDist AirburstAltitude = WDist.Zero;
@@ -319,7 +319,7 @@ namespace OpenRA.Mods.Common.Projectiles
 				if (checkTargetType && !Target.FromActor(victim).IsValidFor(firedBy))
 					continue;
 
-				if (!info.ValidBounceBlockerStances.HasStance(firedBy.Owner.RelationshipWith(victim.Owner)))
+				if (!info.ValidBounceBlockerRelationships.HasStance(firedBy.Owner.RelationshipWith(victim.Owner)))
 					continue;
 
 				// If the impact position is within any actor's HitShape, we have a direct hit

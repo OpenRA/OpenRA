@@ -18,8 +18,8 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Reveal this actor's last position when killed.")]
 	public class RevealOnDeathInfo : ConditionalTraitInfo
 	{
-		[Desc("Stances relative to the actors' owner that shroud will be revealed for.")]
-		public readonly PlayerRelationship RevealForStances = PlayerRelationship.Ally;
+		[Desc("Relationships relative to the actors' owner that shroud will be revealed for.")]
+		public readonly PlayerRelationship RevealForRelationships = PlayerRelationship.Ally;
 
 		[Desc("Duration of the reveal.")]
 		public readonly int Duration = 25;
@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Common.Traits
 
 					w.Add(new RevealShroudEffect(self.CenterPosition, info.Radius,
 						info.RevealGeneratedShroud ? Shroud.SourceType.Visibility : Shroud.SourceType.PassiveVisibility,
-						owner, info.RevealForStances, duration: info.Duration));
+						owner, info.RevealForRelationships, duration: info.Duration));
 				});
 			}
 		}

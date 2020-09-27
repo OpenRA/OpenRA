@@ -109,7 +109,7 @@ namespace OpenRA.Mods.Common.Traits
 					return false;
 
 				var targetInfo = target.Info.TraitInfoOrDefault<AcceptsDeliveredExperienceInfo>();
-				if (targetInfo == null || !targetInfo.ValidStances.HasStance(target.Owner.RelationshipWith(self.Owner)))
+				if (targetInfo == null || !targetInfo.ValidRelationships.HasStance(target.Owner.RelationshipWith(self.Owner)))
 					return false;
 
 				if (targetInfo.ValidTypes.Count == 0)
@@ -129,7 +129,7 @@ namespace OpenRA.Mods.Common.Traits
 					return false;
 
 				var targetInfo = target.Info.TraitInfoOrDefault<AcceptsDeliveredExperienceInfo>();
-				if (targetInfo == null || !targetInfo.ValidStances.HasStance(target.Owner.RelationshipWith(self.Owner)))
+				if (targetInfo == null || !targetInfo.ValidRelationships.HasStance(target.Owner.RelationshipWith(self.Owner)))
 					return false;
 
 				if (targetInfo.ValidTypes.Count == 0)

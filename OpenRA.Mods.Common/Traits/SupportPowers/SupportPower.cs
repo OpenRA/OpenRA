@@ -77,7 +77,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string IncomingSpeechNotification = null;
 
 		[Desc("Defines to which players the timer is shown.")]
-		public readonly PlayerRelationship DisplayTimerStances = PlayerRelationship.None;
+		public readonly PlayerRelationship DisplayTimerRelationships = PlayerRelationship.None;
 
 		[Desc("Beacons are only supported on the Airstrike, Paratroopers, and Nuke powers")]
 		public readonly bool DisplayBeacon = false;
