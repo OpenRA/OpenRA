@@ -79,8 +79,8 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("The condition to grant to self while disguised.")]
 		public readonly string DisguisedCondition = null;
 
-		[Desc("What diplomatic stances can this actor disguise as.")]
-		public readonly PlayerRelationship ValidStances = PlayerRelationship.Ally | PlayerRelationship.Neutral | PlayerRelationship.Enemy;
+		[Desc("Player relationships the owner of the disguise target needs.")]
+		public readonly PlayerRelationship ValidRelationships = PlayerRelationship.Ally | PlayerRelationship.Neutral | PlayerRelationship.Enemy;
 
 		[Desc("Target types of actors that this actor disguise as.")]
 		public readonly BitSet<TargetableType> TargetTypes = new BitSet<TargetableType>("Disguise");
@@ -299,7 +299,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 		{
 			var stance = self.Owner.RelationshipWith(target.Owner);
-			if (!info.ValidStances.HasStance(stance))
+			if (!info.ValidRelationships.HasStance(stance))
 				return false;
 
 			return info.TargetTypes.Overlaps(target.GetAllTargetTypes());
@@ -308,7 +308,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public override bool CanTargetFrozenActor(Actor self, FrozenActor target, TargetModifiers modifiers, ref string cursor)
 		{
 			var stance = self.Owner.RelationshipWith(target.Owner);
-			if (!info.ValidStances.HasStance(stance))
+			if (!info.ValidRelationships.HasStance(stance))
 				return false;
 
 			return info.TargetTypes.Overlaps(target.Info.GetAllTargetTypes());

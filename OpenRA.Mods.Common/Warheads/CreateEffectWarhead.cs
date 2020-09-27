@@ -80,7 +80,7 @@ namespace OpenRA.Mods.Common.Warheads
 		public override bool IsValidAgainst(Actor victim, Actor firedBy)
 		{
 			var stance = firedBy.Owner.RelationshipWith(victim.Owner);
-			if (!ValidStances.HasStance(stance))
+			if (!ValidRelationships.HasStance(stance))
 				return false;
 
 			// A target type is valid if it is in the valid targets list, and not in the invalid targets list.

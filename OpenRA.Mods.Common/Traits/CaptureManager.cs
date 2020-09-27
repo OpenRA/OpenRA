@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Traits
 			// Actors with FrozenUnderFog should therefore not disable the Capturable trait.
 			var stance = captor.Owner.RelationshipWith(frozenActor.Owner);
 			return frozenActor.Info.TraitInfos<CapturableInfo>()
-				.Any(c => c.ValidStances.HasStance(stance) && captures.Info.CaptureTypes.Overlaps(c.Types));
+				.Any(c => c.ValidRelationships.HasStance(stance) && captures.Info.CaptureTypes.Overlaps(c.Types));
 		}
 	}
 
@@ -108,13 +108,13 @@ namespace OpenRA.Mods.Common.Traits
 			allyCapturableTypes = neutralCapturableTypes = enemyCapturableTypes = default(BitSet<CaptureType>);
 			foreach (var c in enabledCapturable)
 			{
-				if (c.Info.ValidStances.HasStance(PlayerRelationship.Ally))
+				if (c.Info.ValidRelationships.HasStance(PlayerRelationship.Ally))
 					allyCapturableTypes = allyCapturableTypes.Union(c.Info.Types);
 
-				if (c.Info.ValidStances.HasStance(PlayerRelationship.Neutral))
+				if (c.Info.ValidRelationships.HasStance(PlayerRelationship.Neutral))
 					neutralCapturableTypes = neutralCapturableTypes.Union(c.Info.Types);
 
-				if (c.Info.ValidStances.HasStance(PlayerRelationship.Enemy))
+				if (c.Info.ValidRelationships.HasStance(PlayerRelationship.Enemy))
 					enemyCapturableTypes = enemyCapturableTypes.Union(c.Info.Types);
 			}
 		}

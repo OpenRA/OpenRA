@@ -20,8 +20,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Accepted `DeliversCash` types. Leave empty to accept all types.")]
 		public readonly HashSet<string> ValidTypes = new HashSet<string>();
 
-		[Desc("Stance the delivering actor needs to enter.")]
-		public readonly PlayerRelationship ValidStances = PlayerRelationship.Ally;
+		[Desc("Player relationships the owner of the delivering actor needs.")]
+		public readonly PlayerRelationship ValidRelationships = PlayerRelationship.Ally;
 
 		[Desc("Play a randomly selected sound from this list when accepting cash.")]
 		public readonly string[] Sounds = { };
@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class AcceptsDeliveredCash : INotifyCashTransfer
 	{
-		AcceptsDeliveredCashInfo info;
+		readonly AcceptsDeliveredCashInfo info;
 
 		public AcceptsDeliveredCash(Actor self, AcceptsDeliveredCashInfo info)
 		{

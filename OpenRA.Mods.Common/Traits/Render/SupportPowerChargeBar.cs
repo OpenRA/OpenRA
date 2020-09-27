@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 	class SupportPowerChargeBarInfo : ConditionalTraitInfo
 	{
 		[Desc("Defines to which players the bar is to be shown.")]
-		public readonly PlayerRelationship DisplayStances = PlayerRelationship.Ally;
+		public readonly PlayerRelationship DisplayRelationships = PlayerRelationship.Ally;
 
 		public readonly Color Color = Color.Magenta;
 
@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				return 0;
 
 			var viewer = self.World.RenderPlayer ?? self.World.LocalPlayer;
-			if (viewer != null && !Info.DisplayStances.HasStance(self.Owner.RelationshipWith(viewer)))
+			if (viewer != null && !Info.DisplayRelationships.HasStance(self.Owner.RelationshipWith(viewer)))
 				return 0;
 
 			return 1 - (float)power.RemainingTicks / power.TotalTicks;

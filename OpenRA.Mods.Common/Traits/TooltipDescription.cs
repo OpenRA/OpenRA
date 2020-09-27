@@ -20,8 +20,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Translate]
 		public readonly string Description = "";
 
-		[Desc("Player stances who can view the description.")]
-		public readonly PlayerRelationship ValidStances = PlayerRelationship.Ally | PlayerRelationship.Neutral | PlayerRelationship.Enemy;
+		[Desc("Player relationships who can view the description.")]
+		public readonly PlayerRelationship ValidRelationships = PlayerRelationship.Ally | PlayerRelationship.Neutral | PlayerRelationship.Enemy;
 
 		public override object Create(ActorInitializer init) { return new TooltipDescription(init.Self, this); }
 	}
@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (Owner == null || forPlayer == null)
 				return false;
 
-			return Info.ValidStances.HasStance(Owner.RelationshipWith(forPlayer));
+			return Info.ValidRelationships.HasStance(Owner.RelationshipWith(forPlayer));
 		}
 
 		public string TooltipText

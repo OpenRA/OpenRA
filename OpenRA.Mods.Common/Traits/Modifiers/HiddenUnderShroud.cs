@@ -19,8 +19,8 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("The actor stays invisible under the shroud.")]
 	public class HiddenUnderShroudInfo : TraitInfo, IDefaultVisibilityInfo
 	{
-		[Desc("Players with these stances can always see the actor.")]
-		public readonly PlayerRelationship AlwaysVisibleStances = PlayerRelationship.Ally;
+		[Desc("Players with these relationships can always see the actor.")]
+		public readonly PlayerRelationship AlwaysVisibleRelationships = PlayerRelationship.Ally;
 
 		[Desc("Possible values are CenterPosition (reveal when the center is visible) and ",
 			"Footprint (reveal when any footprint cell is visible).")]
@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Traits
 				return true;
 
 			var stance = self.Owner.RelationshipWith(byPlayer);
-			return Info.AlwaysVisibleStances.HasStance(stance) || IsVisibleInner(self, byPlayer);
+			return Info.AlwaysVisibleRelationships.HasStance(stance) || IsVisibleInner(self, byPlayer);
 		}
 
 		IEnumerable<IRenderable> IRenderModifier.ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)

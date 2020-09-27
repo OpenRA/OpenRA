@@ -39,8 +39,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Sound to instantly play at the targeted area.")]
 		public readonly string OnFireSound = null;
 
-		[Desc("Player stances which condition can be applied to.")]
-		public readonly PlayerRelationship ValidStances = PlayerRelationship.Ally;
+		[Desc("Player relationships which condition can be applied to.")]
+		public readonly PlayerRelationship ValidRelationships = PlayerRelationship.Ally;
 
 		[SequenceReference]
 		[Desc("Sequence to play for granting actor when activated.",
@@ -96,7 +96,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			return units.Distinct().Where(a =>
 			{
-				if (!info.ValidStances.HasStance(Self.Owner.RelationshipWith(a.Owner)))
+				if (!info.ValidRelationships.HasStance(Self.Owner.RelationshipWith(a.Owner)))
 					return false;
 
 				return a.TraitsImplementing<ExternalCondition>()
