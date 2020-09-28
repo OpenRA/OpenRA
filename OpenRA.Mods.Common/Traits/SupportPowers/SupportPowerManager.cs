@@ -24,26 +24,31 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new SupportPowerManager(init); }
 	}
 
-	public class SupportPowerManager : ITick, IResolveOrder, ITechTreeElement
+	public class SupportPowerManager : ITick, IResolveOrder, ITechTreeElement, INotifyCreated
 	{
 		public readonly Actor Self;
 		public readonly Dictionary<string, SupportPowerInstance> Powers = new Dictionary<string, SupportPowerInstance>();
 
 		public readonly DeveloperMode DevMode;
 		public readonly TechTree TechTree;
-		public readonly Lazy<RadarPings> RadarPings;
-		public readonly Lazy<PlayerResources> PlayerResources;
+
+		public RadarPings RadarPings;
+		public PlayerResources PlayerResources;
 
 		public SupportPowerManager(ActorInitializer init)
 		{
 			Self = init.Self;
 			DevMode = Self.Trait<DeveloperMode>();
 			TechTree = Self.Trait<TechTree>();
-			RadarPings = Exts.Lazy(() => init.World.WorldActor.TraitOrDefault<RadarPings>());
-			PlayerResources = Exts.Lazy(() => Self.TraitOrDefault<PlayerResources>());
 
 			init.World.ActorAdded += ActorAdded;
 			init.World.ActorRemoved += ActorRemoved;
+		}
+
+		void INotifyCreated.Created(Actor self)
+		{
+			RadarPings = self.World.WorldActor.TraitOrDefault<RadarPings>();
+			PlayerResources = self.TraitOrDefault<PlayerResources>();
 		}
 
 		static string MakeKey(SupportPower sp)
@@ -258,8 +263,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (!HasSufficientFunds(power))
 				return;
 
-			if (Manager.PlayerResources.IsValueCreated)
-				Manager.PlayerResources.Value.TakeCash(power.Info.Cost);
+			if (Manager.PlayerResources != null)
+				Manager.PlayerResources.TakeCash(power.Info.Cost);
 
 			// Note: order.Subject is the *player* actor
 			power.Activate(power.Self, order, Manager);
@@ -288,7 +293,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (power.Info.Cost != 0 && Manager.PlayerResources != null)
 			{
 				var player = Manager.Self;
-				var playerResources = Manager.PlayerResources.Value;
+				var playerResources = Manager.PlayerResources;
 				if (playerResources.Cash + playerResources.Resources < power.Info.Cost)
 				{
 					Game.Sound.PlayNotification(player.World.Map.Rules, player.Owner, "Speech",
