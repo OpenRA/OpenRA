@@ -25,25 +25,6 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 		{
 			return owner.SquadManager.FindClosestEnemy(owner.Units.First().CenterPosition);
 		}
-
-		protected Actor GetRandomValuableTarget(Squad owner)
-		{
-			var manager = owner.SquadManager;
-			var mustDestroyedEnemy = manager.World.ActorsHavingTrait<MustBeDestroyed>(t => t.Info.RequiredForShortGame)
-					.Where(a => manager.IsPreferredEnemyUnit(a) && manager.IsNotHiddenUnit(a)).ToArray();
-
-			if (!mustDestroyedEnemy.Any())
-				return FindClosestEnemy(owner);
-
-			return mustDestroyedEnemy.Random(owner.World.LocalRandom);
-		}
-
-		protected Actor ThreatScan(Squad owner, Actor teamLeader, WDist scanRadius)
-		{
-			var enemies = owner.World.FindActorsInCircle(teamLeader.CenterPosition, scanRadius)
-					.Where(a => owner.SquadManager.IsPreferredEnemyUnit(a) && owner.SquadManager.IsNotHiddenUnit(a));
-			return enemies.ClosestTo(teamLeader.CenterPosition);
-		}
 	}
 
 	class GroundUnitsIdleState : GroundStateBase, IState
@@ -155,18 +136,17 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			if (!owner.IsValid)
 				return;
 
-			var teamLeader = owner.Units.FirstOrDefault();
-			if (teamLeader == null)
+			var leader = owner.Units.FirstOrDefault();
+			if (leader == null)
 				return;
 
-			// Rescan target to prevent being ambushed and die without fight
+			// Rescan target to prevent being ambushed and die without a fight
 			// If there is no threat around, return to AttackMove state for formation
-			var attackScanRadius = WDist.FromCells(owner.SquadManager.Info.AttackScanRadius);
-			var targetActor = ThreatScan(owner, teamLeader, attackScanRadius);
+			var scanRadius = WDist.FromCells(owner.SquadManager.Info.AttackScanRadius);
+			var targetActor = owner.SquadManager.FindClosestEnemy(leader.CenterPosition, scanRadius);
 
 			if (targetActor == null)
 			{
-				owner.TargetActor = GetRandomValuableTarget(owner);
 				owner.FuzzyStateMachine.ChangeState(owner, new GroundUnitsAttackMoveState(), true);
 				return;
 			}
@@ -185,7 +165,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 							cannotRetaliate = false;
 						}
 						else
-							owner.Bot.QueueOrder(new Order("AttackMove", a, Target.FromCell(owner.World, teamLeader.Location), false));
+							owner.Bot.QueueOrder(new Order("AttackMove", a, Target.FromCell(owner.World, leader.Location), false));
 					}
 					else
 						cannotRetaliate = false;
@@ -194,7 +174,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 
 			// Because ShouldFlee(owner) cannot retreat units while they cannot even fight
 			// a unit that they cannot target. Therefore, use `cannotRetaliate` here to solve this bug.
-			if (ShouldFlee(owner) || cannotRetaliate)
+			if (cannotRetaliate || ShouldFlee(owner))
 				owner.FuzzyStateMachine.ChangeState(owner, new GroundUnitsFleeState(), true);
 		}
 
