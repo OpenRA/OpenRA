@@ -1,6 +1,6 @@
 # OpenRA
 
-A Libre/Free Real Time Strategy game engine supporting early Westwood classics.
+**OpenRA is an Open Source port of Westwood’s Red Alert game engine, updated to use the hardware acceleration of modern video cards, high screen resolution and a modernized GUI. The result is a highly moddable RTS game engine which comes with support for Command & Conquer: Tiberian Dawn, Red Alert and Dune 2000**
 
 * Website: [http://www.openra.net](http://www.openra.net)
 * IRC: \#openra on irc.freenode.net
