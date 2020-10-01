@@ -267,9 +267,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var glProfileLabel = new CachedTransform<GLProfile, string>(p => p.ToString());
 			var glProfileDropdown = panel.Get<DropDownButtonWidget>("GL_PROFILE_DROPDOWN");
+			var disableProfile = Game.Renderer.SupportedGLProfiles.Length < 2 && ds.GLProfile == GLProfile.Automatic;
 			glProfileDropdown.OnMouseDown = _ => ShowGLProfileDropdown(glProfileDropdown, ds);
 			glProfileDropdown.GetText = () => glProfileLabel.Update(ds.GLProfile);
-			glProfileDropdown.IsDisabled = () => Game.Renderer.SupportedGLProfiles.Length < 2;
+			glProfileDropdown.IsDisabled = () => disableProfile;
 
 			var statusBarsDropDown = panel.Get<DropDownButtonWidget>("STATUS_BAR_DROPDOWN");
 			statusBarsDropDown.OnMouseDown = _ => ShowStatusBarsDropdown(statusBarsDropDown, gs);
@@ -893,7 +894,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return item;
 			};
 
-			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, Game.Renderer.SupportedGLProfiles, setupItem);
+			var profiles = new[] { GLProfile.Automatic }.Concat(Game.Renderer.SupportedGLProfiles);
+			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, profiles, setupItem);
 		}
 
 		static void ShowTargetLinesDropdown(DropDownButtonWidget dropdown, GameSettings s)

@@ -181,8 +181,9 @@ namespace OpenRA
 		[Desc("Preferred OpenGL profile to use.",
 			"Modern: OpenGL Core Profile 3.2 or greater.",
 			"Embedded: OpenGL ES 3.0 or greater.",
-			"Legacy: OpenGL 2.1 with framebuffer_object extension.")]
-		public GLProfile GLProfile = GLProfile.Modern;
+			"Legacy: OpenGL 2.1 with framebuffer_object extension.",
+			"Automatic: Use the first supported profile.")]
+		public GLProfile GLProfile = GLProfile.Automatic;
 
 		public int BatchSize = 8192;
 		public int SheetSize = 2048;
