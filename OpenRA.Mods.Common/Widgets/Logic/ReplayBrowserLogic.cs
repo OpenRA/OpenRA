@@ -76,15 +76,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			mapPreviewRoot.IsVisible = () => selectedReplay != null;
 			panel.Get("REPLAY_INFO").IsVisible = () => selectedReplay != null;
 
+			var spawnOccupants = new CachedTransform<ReplayMetadata, Dictionary<int, SpawnOccupant>>(r =>
+				r.GameInfo.Players.ToDictionary(c => c.SpawnPoint, c => new SpawnOccupant(c)));
+
 			Ui.LoadWidget("MAP_PREVIEW", mapPreviewRoot, new WidgetArgs
 			{
 				{ "orderManager", null },
 				{ "getMap", (Func<MapPreview>)(() => map) },
 				{ "onMouseDown",  (Action<MapPreviewWidget, MapPreview, MouseInput>)((preview, mapPreview, mi) => { }) },
-				{
-					"getSpawnOccupants", (Func<MapPreview, Dictionary<CPos, SpawnOccupant>>)(mapPreview =>
-						LobbyUtils.GetSpawnOccupants(selectedReplay.GameInfo.Players, mapPreview))
-				},
+				{ "getSpawnOccupants", (Func<Dictionary<int, SpawnOccupant>>)(() => spawnOccupants.Update(selectedReplay)) },
 				{ "showUnoccupiedSpawnpoints", false },
 			});
 

@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		[ObjectCreator.UseCtor]
 		internal MapPreviewLogic(Widget widget, ModData modData, OrderManager orderManager, Func<MapPreview> getMap,
-			Action<MapPreviewWidget, MapPreview, MouseInput> onMouseDown, Func<MapPreview, Dictionary<CPos, SpawnOccupant>> getSpawnOccupants, bool showUnoccupiedSpawnpoints)
+			Action<MapPreviewWidget, MapPreview, MouseInput> onMouseDown, Func<Dictionary<int, SpawnOccupant>> getSpawnOccupants, bool showUnoccupiedSpawnpoints)
 		{
 			var mapRepository = modData.Manifest.Get<WebServices>().MapRepository;
 
@@ -172,12 +172,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		}
 
 		void SetupWidgets(Widget parent, Func<MapPreview> getMap,
-			Action<MapPreviewWidget, MapPreview, MouseInput> onMouseDown, Func<MapPreview, Dictionary<CPos, SpawnOccupant>> getSpawnOccupants, bool showUnoccupiedSpawnpoints)
+			Action<MapPreviewWidget, MapPreview, MouseInput> onMouseDown, Func<Dictionary<int, SpawnOccupant>> getSpawnOccupants, bool showUnoccupiedSpawnpoints)
 		{
 			var preview = parent.Get<MapPreviewWidget>("MAP_PREVIEW");
 			preview.Preview = () => getMap();
 			preview.OnMouseDown = mi => onMouseDown(preview, getMap(), mi);
-			preview.SpawnOccupants = () => getSpawnOccupants(getMap());
+			preview.SpawnOccupants = getSpawnOccupants;
 			preview.ShowUnoccupiedSpawnpoints = showUnoccupiedSpawnpoints;
 
 			var titleLabel = parent.GetOrNull<LabelWithTooltipWidget>("MAP_TITLE");

@@ -62,6 +62,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		bool disableTeamChat;
 		bool teamChat;
 		bool updateDiscordStatus = true;
+		Dictionary<int, SpawnOccupant> spawnOccupants = new Dictionary<int, SpawnOccupant>();
 
 		readonly string chatLineSound = ChromeMetrics.Get<string>("ChatLineSound");
 
@@ -118,6 +119,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			Game.LobbyInfoChanged += UpdateCurrentMap;
 			Game.LobbyInfoChanged += UpdatePlayerList;
 			Game.LobbyInfoChanged += UpdateDiscordStatus;
+			Game.LobbyInfoChanged += UpdateSpawnOccupants;
 			Game.BeforeGameStart += OnGameStart;
 			Game.ConnectionStateChanged += ConnectionStateChanged;
 
@@ -133,10 +135,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					"onMouseDown", (Action<MapPreviewWidget, MapPreview, MouseInput>)((preview, mapPreview, mi) =>
 						LobbyUtils.SelectSpawnPoint(orderManager, preview, mapPreview, mi))
 				},
-				{
-					"getSpawnOccupants", (Func<MapPreview, Dictionary<CPos, SpawnOccupant>>)(mapPreview =>
-						LobbyUtils.GetSpawnOccupants(orderManager.LobbyInfo, mapPreview))
-				},
+				{ "getSpawnOccupants", (Func<Dictionary<int, SpawnOccupant>>)(() => spawnOccupants) },
 				{ "showUnoccupiedSpawnpoints", true },
 			});
 
@@ -464,6 +463,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				Game.LobbyInfoChanged -= UpdateCurrentMap;
 				Game.LobbyInfoChanged -= UpdatePlayerList;
 				Game.LobbyInfoChanged -= UpdateDiscordStatus;
+				Game.LobbyInfoChanged -= UpdateSpawnOccupants;
 				Game.BeforeGameStart -= OnGameStart;
 				Game.ConnectionStateChanged -= ConnectionStateChanged;
 			}
@@ -787,6 +787,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				DiscordService.UpdateDetails(mapTitle);
 			}
+		}
+
+		void UpdateSpawnOccupants()
+		{
+			spawnOccupants = orderManager.LobbyInfo.Clients
+				.Where(c => c.SpawnPoint != 0)
+				.ToDictionary(c => c.SpawnPoint, c => new SpawnOccupant(c));
 		}
 
 		void OnGameStart()

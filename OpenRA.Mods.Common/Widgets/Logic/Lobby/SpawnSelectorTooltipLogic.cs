@@ -40,10 +40,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			tooltipContainer.BeforeRender = () =>
 			{
 				showTooltip = true;
-				var occupant = preview.SpawnOccupants().Values.FirstOrDefault(c => c.SpawnPoint == preview.TooltipSpawnIndex);
 
 				var teamWidth = 0;
-				if (occupant == null)
+				if (preview.SpawnOccupants().TryGetValue(preview.TooltipSpawnIndex, out var occupant))
+				{
+					labelText = occupant.PlayerName;
+					playerFaction = occupant.Faction;
+					playerTeam = occupant.Team;
+					widget.Bounds.Height = playerTeam > 0 ? doubleHeight : singleHeight;
+					teamWidth = teamFont.Measure(team.GetText()).X;
+				}
+				else
 				{
 					if (!showUnoccupiedSpawnpoints)
 					{
@@ -55,14 +62,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					playerFaction = null;
 					playerTeam = 0;
 					widget.Bounds.Height = singleHeight;
-				}
-				else
-				{
-					labelText = occupant.PlayerName;
-					playerFaction = occupant.Faction;
-					playerTeam = occupant.Team;
-					widget.Bounds.Height = playerTeam > 0 ? doubleHeight : singleHeight;
-					teamWidth = teamFont.Measure(team.GetText()).X;
 				}
 
 				label.Bounds.X = playerFaction != null ? flag.Bounds.Right + labelMargin : labelMargin;
