@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly int2 spawnLabelOffset;
 
 		public Func<MapPreview> Preview = () => null;
-		public Func<Dictionary<CPos, SpawnOccupant>> SpawnOccupants = () => new Dictionary<CPos, SpawnOccupant>();
+		public Func<Dictionary<int, SpawnOccupant>> SpawnOccupants = () => new Dictionary<int, SpawnOccupant>();
 		public Action<MouseInput> OnMouseDown = _ => { };
 		public int TooltipSpawnIndex = -1;
 		public bool ShowUnoccupiedSpawnpoints = true;
@@ -182,19 +182,21 @@ namespace OpenRA.Mods.Common.Widgets
 			TooltipSpawnIndex = -1;
 			if (ShowSpawnPoints)
 			{
-				var colors = SpawnOccupants().ToDictionary(c => c.Key, c => c.Value.Color);
-
 				var spawnPoints = preview.SpawnPoints;
+				var occupants = SpawnOccupants();
 				var gridType = preview.GridType;
-				foreach (var p in spawnPoints)
+				for (var i = 0; i < spawnPoints.Length; i++)
 				{
-					var owned = colors.ContainsKey(p);
+					var p = spawnPoints[i];
+
+					// Spawn numbers are 1 indexed with 0 meaning "random spawn".
+					var occupied = occupants.TryGetValue(i + 1, out var occupant);
 					var pos = ConvertToPreview(p, gridType);
-					var sprite = owned ? spawnClaimed : spawnUnclaimed;
+					var sprite = occupied ? spawnClaimed : spawnUnclaimed;
 					var offset = sprite.Size.XY.ToInt2() / 2;
 
-					if (owned)
-						WidgetUtils.FillEllipseWithColor(new Rectangle(pos.X - offset.X + 1, pos.Y - offset.Y + 1, (int)sprite.Size.X - 2, (int)sprite.Size.Y - 2), colors[p]);
+					if (occupied)
+						WidgetUtils.FillEllipseWithColor(new Rectangle(pos.X - offset.X + 1, pos.Y - offset.Y + 1, (int)sprite.Size.X - 2, (int)sprite.Size.Y - 2), occupant.Color);
 
 					Game.Renderer.RgbaSpriteRenderer.DrawSprite(sprite, pos - offset);
 					var number = Convert.ToChar('A' + spawnPoints.IndexOf(p)).ToString();
