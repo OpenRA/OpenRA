@@ -39,6 +39,7 @@ namespace OpenRA.Mods.Common.FileFormats
 		byte[] cbf;
 		byte[] cbp;
 		byte[] cbfBuffer;
+		bool cbpIsCompressed;
 
 		// Buffer for loading file subchunks, the maximum chunk size of a file is not defined
 		// and the header definition for the size of the biggest chunks (color data) isn't accurate.
@@ -314,6 +315,20 @@ namespace OpenRA.Mods.Common.FileFormats
 		// VQA Frame
 		public void DecodeVQFR(Stream s, string parentType = "VQFR")
 		{
+			// The CBP chunks each contain 1/8th of the full lookup table
+			// Annoyingly, the complete table is not applied until the frame
+			// *after* the one that contains the 8th chunk.
+			// Do we have a set of partial lookup tables ready to apply?
+			if (currentChunkBuffer == chunkBufferParts)
+			{
+				if (!cbpIsCompressed)
+					cbf = (byte[])cbp.Clone();
+				else
+					LCWDecodeInto(cbp, cbf);
+
+				chunkBufferOffset = currentChunkBuffer = 0;
+			}
+
 			while (true)
 			{
 				// Chunks are aligned on even bytes; may be padded with a single null
@@ -360,21 +375,11 @@ namespace OpenRA.Mods.Common.FileFormats
 					// frame-modifier chunk
 					case "CBP0":
 					case "CBPZ":
-						// Partial buffer is full; dump and recreate
-						if (currentChunkBuffer == chunkBufferParts)
-						{
-							if (type == "CBP0")
-								cbf = (byte[])cbp.Clone();
-							else
-								LCWDecodeInto(cbp, cbf);
-
-							chunkBufferOffset = currentChunkBuffer = 0;
-						}
-
 						var bytes = s.ReadBytes(subchunkLength);
 						bytes.CopyTo(cbp, chunkBufferOffset);
 						chunkBufferOffset += subchunkLength;
 						currentChunkBuffer++;
+						cbpIsCompressed = type == "CBPZ";
 						break;
 
 					// Palette
