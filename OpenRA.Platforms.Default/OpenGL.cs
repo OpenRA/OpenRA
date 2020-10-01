@@ -543,6 +543,7 @@ namespace OpenRA.Platforms.Default
 				}
 			}
 
+			Console.WriteLine("OpenGL renderer: " + glGetString(GL_RENDERER));
 			Console.WriteLine("OpenGL version: " + glGetString(GL_VERSION));
 
 			try
