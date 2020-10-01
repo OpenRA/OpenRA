@@ -172,13 +172,16 @@ namespace OpenRA
 		[Desc("Disable operating-system provided cursor rendering.")]
 		public bool DisableHardwareCursors = false;
 
+		[Desc("Disable legacy OpenGL 2.1 support.")]
+		public bool DisableLegacyGL = true;
+
 		[Desc("Display index to use in a multi-monitor fullscreen setup.")]
 		public int VideoDisplay = 0;
 
 		[Desc("Preferred OpenGL profile to use.",
 			"Modern: OpenGL Core Profile 3.2 or greater.",
 			"Embedded: OpenGL ES 3.0 or greater.",
-			"Legacy: OpenGL 2.1 with framebuffer_object extension.",
+			"Legacy: OpenGL 2.1 with framebuffer_object extension (requires DisableLegacyGL: False)",
 			"Automatic: Use the first supported profile.")]
 		public GLProfile GLProfile = GLProfile.Automatic;
 
