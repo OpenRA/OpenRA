@@ -84,7 +84,7 @@ namespace OpenRA.Platforms.Default
 			OpenGL.glBindAttribLocation(program, TintAttributeIndex, "aVertexTint");
 			OpenGL.CheckGLError();
 
-			if (OpenGL.Profile != GLProfile.Legacy)
+			if (OpenGL.Profile == GLProfile.Modern)
 			{
 				OpenGL.glBindFragDataLocation(program, 0, "fragColor");
 				OpenGL.CheckGLError();

@@ -596,15 +596,24 @@ namespace OpenRA.Platforms.Default
 				glBindTexture = Bind<BindTexture>("glBindTexture");
 				glActiveTexture = Bind<ActiveTexture>("glActiveTexture");
 				glTexImage2D = Bind<TexImage2D>("glTexImage2D");
-				glGetTexImage = Bind<GetTexImage>("glGetTexImage");
 				glTexParameteri = Bind<TexParameteri>("glTexParameteri");
 				glTexParameterf = Bind<TexParameterf>("glTexParameterf");
 
 				if (Profile != GLProfile.Legacy)
 				{
+					if (Profile != GLProfile.Embedded)
+					{
+						glGetTexImage = Bind<GetTexImage>("glGetTexImage");
+						glBindFragDataLocation = Bind<BindFragDataLocation>("glBindFragDataLocation");
+					}
+					else
+					{
+						glGetTexImage = null;
+						glBindFragDataLocation = null;
+					}
+
 					glGenVertexArrays = Bind<GenVertexArrays>("glGenVertexArrays");
 					glBindVertexArray = Bind<BindVertexArray>("glBindVertexArray");
-					glBindFragDataLocation = Bind<BindFragDataLocation>("glBindFragDataLocation");
 					glGenFramebuffers = Bind<GenFramebuffers>("glGenFramebuffers");
 					glBindFramebuffer = Bind<BindFramebuffer>("glBindFramebuffer");
 					glFramebufferTexture2D = Bind<FramebufferTexture2D>("glFramebufferTexture2D");
