@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
@@ -146,14 +147,11 @@ namespace OpenRA.Platforms.Default
 					SetProcessDPIAware();
 
 				// Decide which OpenGL profile to use.
-				// We first need to query the available profiles on Windows/Linux.
-				// On macOS, known/consistent OpenGL support is provided by the OS.
-				if (Platform.CurrentPlatform == PlatformType.OSX)
-					supportedProfiles = new[] { GLProfile.Modern, GLProfile.Legacy };
-				else
-					supportedProfiles = new[] { GLProfile.Modern, GLProfile.Embedded, GLProfile.Legacy }
-						.Where(CanCreateGLWindow)
-						.ToArray();
+				// Prefer standard GL over GLES provided by the native driver
+				var testProfiles = new List<GLProfile> { GLProfile.ANGLE, GLProfile.Modern, GLProfile.Embedded, GLProfile.Legacy };
+				supportedProfiles = testProfiles
+					.Where(CanCreateGLWindow)
+					.ToArray();
 
 				if (!supportedProfiles.Any())
 					throw new InvalidOperationException("No supported OpenGL profiles were found.");
@@ -471,6 +469,9 @@ namespace OpenRA.Platforms.Default
 			SDL.SDL_GL_SetAttribute(SDL.SDL_GLattr.SDL_GL_BLUE_SIZE, 8);
 			SDL.SDL_GL_SetAttribute(SDL.SDL_GLattr.SDL_GL_ALPHA_SIZE, 0);
 
+			var useAngle = profile == GLProfile.ANGLE ? "1" : "0";
+			SDL.SDL_SetHint("SDL_OPENGL_ES_DRIVER", useAngle);
+
 			switch (profile)
 			{
 				case GLProfile.Modern:
@@ -478,6 +479,7 @@ namespace OpenRA.Platforms.Default
 					SDL.SDL_GL_SetAttribute(SDL.SDL_GLattr.SDL_GL_CONTEXT_MINOR_VERSION, 2);
 					SDL.SDL_GL_SetAttribute(SDL.SDL_GLattr.SDL_GL_CONTEXT_PROFILE_MASK, (int)SDL.SDL_GLprofile.SDL_GL_CONTEXT_PROFILE_CORE);
 					break;
+				case GLProfile.ANGLE:
 				case GLProfile.Embedded:
 					SDL.SDL_GL_SetAttribute(SDL.SDL_GLattr.SDL_GL_CONTEXT_MAJOR_VERSION, 3);
 					SDL.SDL_GL_SetAttribute(SDL.SDL_GLattr.SDL_GL_CONTEXT_MINOR_VERSION, 0);
@@ -516,10 +518,18 @@ namespace OpenRA.Platforms.Default
 				return false;
 			}
 
+			// Distinguish between ANGLE and native GLES
+			var success = true;
+			if (profile == GLProfile.ANGLE || profile == GLProfile.Embedded)
+			{
+				var isAngle = SDL.SDL_GL_ExtensionSupported("GL_ANGLE_texture_usage") == SDL.SDL_bool.SDL_TRUE;
+				success = isAngle ^ (profile != GLProfile.ANGLE);
+			}
+
 			SDL.SDL_GL_DeleteContext(context);
 			SDL.SDL_DestroyWindow(window);
 			SDL.SDL_Quit();
-			return true;
+			return success;
 		}
 
 		public void SetScaleModifier(float scale)
