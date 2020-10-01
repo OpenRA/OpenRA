@@ -135,7 +135,7 @@ namespace OpenRA.Platforms.Default
 		static extern bool SetProcessDPIAware();
 
 		public Sdl2PlatformWindow(Size requestEffectiveWindowSize, WindowMode windowMode,
-			float scaleModifier, int batchSize, int videoDisplay, GLProfile requestProfile)
+			float scaleModifier, int batchSize, int videoDisplay, GLProfile requestProfile, bool enableLegacyGL)
 		{
 			// Lock the Window/Surface properties until initialization is complete
 			lock (syncObject)
@@ -148,7 +148,10 @@ namespace OpenRA.Platforms.Default
 
 				// Decide which OpenGL profile to use.
 				// Prefer standard GL over GLES provided by the native driver
-				var testProfiles = new List<GLProfile> { GLProfile.ANGLE, GLProfile.Modern, GLProfile.Embedded, GLProfile.Legacy };
+				var testProfiles = new List<GLProfile> { GLProfile.ANGLE, GLProfile.Modern, GLProfile.Embedded };
+				if (enableLegacyGL)
+					testProfiles.Add(GLProfile.Legacy);
+
 				supportedProfiles = testProfiles
 					.Where(CanCreateGLWindow)
 					.ToArray();
