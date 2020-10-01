@@ -171,6 +171,9 @@ ifeq ($(TARGETPLATFORM), $(filter $(TARGETPLATFORM),win-x86 win-x64))
 	@$(INSTALL_PROGRAM) SDL2.dll "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) freetype6.dll "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) lua51.dll "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) libEGL.dll "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) libGLESv2.dll "$(DATA_INSTALL_DIR)"
+
 endif
 ifeq ($(TARGETPLATFORM), linux-x64)
 	@-echo "Installing OpenRA dependencies to $(DATA_INSTALL_DIR)"

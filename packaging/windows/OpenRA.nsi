@@ -153,6 +153,8 @@ Section "Game" GAME
 	File "${SRCDIR}\DiscordRPC.dll"
 	File "${SRCDIR}\Newtonsoft.Json.dll"
 	File "${SRCDIR}\SDL2.dll"
+	File "${SRCDIR}\libEGL.dll"
+	File "${SRCDIR}\libGLESv2.dll"
 	File "${SRCDIR}\freetype6.dll"
 	File "${SRCDIR}\lua51.dll"
 
@@ -263,6 +265,8 @@ Function ${UN}Clean
 	Delete $INSTDIR\IP2LOCATION-LITE-DB1.IPV6.BIN.ZIP
 	Delete $INSTDIR\soft_oal.dll
 	Delete $INSTDIR\SDL2.dll
+	Delete $INSTDIR\libEGL.dll
+	Delete $INSTDIR\libGLESv2.dll
 	Delete $INSTDIR\lua51.dll
 	Delete $INSTDIR\eluant.dll
 	Delete $INSTDIR\freetype6.dll

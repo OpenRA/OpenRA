@@ -18,6 +18,7 @@ namespace OpenRA
 	public enum GLProfile
 	{
 		Automatic,
+		ANGLE,
 		Modern,
 		Embedded,
 		Legacy
