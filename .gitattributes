@@ -7,4 +7,5 @@
 * text=lf
 
 # Custom for Visual Studio
-*.cs     diff=csharp
+*.cs    
+   /n diff=csharp
