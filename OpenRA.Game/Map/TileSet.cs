@@ -54,13 +54,6 @@ namespace OpenRA
 
 		readonly TerrainTileInfo[] tileInfo;
 
-		public TerrainTemplateInfo(ushort id, string[] images, int2 size, byte[] tiles)
-		{
-			Id = id;
-			Images = images;
-			Size = size;
-		}
-
 		public TerrainTemplateInfo(TileSet tileSet, MiniYaml my)
 		{
 			FieldLoader.Load(this, my);
