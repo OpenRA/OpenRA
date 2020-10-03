@@ -257,8 +257,6 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var a in newUnits)
 			{
-				unitsHangingAroundTheBase.Add(a);
-
 				if (a.Info.HasTraitInfo<AircraftInfo>() && a.Info.HasTraitInfo<AttackBaseInfo>())
 				{
 					var air = GetSquadOfType(SquadType.Air);
@@ -275,6 +273,8 @@ namespace OpenRA.Mods.Common.Traits
 
 					ships.Units.Add(a);
 				}
+				else
+					unitsHangingAroundTheBase.Add(a);
 
 				activeUnits.Add(a);
 			}
@@ -295,8 +295,7 @@ namespace OpenRA.Mods.Common.Traits
 				var attackForce = RegisterNewSquad(bot, SquadType.Assault);
 
 				foreach (var a in unitsHangingAroundTheBase)
-					if (!a.Info.HasTraitInfo<AircraftInfo>() && !Info.NavalUnitsTypes.Contains(a.Info.Name))
-						attackForce.Units.Add(a);
+					attackForce.Units.Add(a);
 
 				unitsHangingAroundTheBase.Clear();
 				foreach (var n in notifyIdleBaseUnits)
