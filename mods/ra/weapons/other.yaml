@@ -55,6 +55,8 @@ Flamer:
 			Light: 40
 			Heavy: 20
 			Concrete: 10
+	Warhead@2Smu: LeaveSmudge
+		Chance: 15
 	Warhead@3Eff: CreateEffect
 		Explosions: small_napalm
 
