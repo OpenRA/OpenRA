@@ -136,8 +136,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Sync]
 		public int QuantizedFacings = 0;
 
-		WVec? desiredDirection = null;
+		WVec desiredDirection;
 		int realignTick = 0;
+		bool realignDesired;
 
 		public WRot WorldOrientation
 		{
@@ -190,12 +191,18 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				// Only realign while not attacking anything
 				if (attack.IsAiming)
+				{
+					realignTick = 0;
 					return;
+				}
 
 				if (realignTick < Info.RealignDelay)
 					realignTick++;
 				else if (Info.RealignDelay > -1)
-					desiredDirection = null;
+				{
+					realignDesired = true;
+					desiredDirection = WVec.Zero;
+				}
 
 				MoveTurret();
 			}
@@ -206,33 +213,38 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		WAngle? DesiredLocalFacing
+		WAngle DesiredLocalFacing
 		{
 			get
 			{
-				// A null value means we don't have a target
-				if (!desiredDirection.HasValue)
-					return null;
-
 				// A zero value means that we have a target, but it is on top of us
-				if (desiredDirection.Value == WVec.Zero)
+				if (desiredDirection == WVec.Zero)
 					return LocalOrientation.Yaw;
 
 				// PERF: If the turret rotation axis is vertical we can directly take the difference in facing/yaw
 				var o = facing != null ? facing.Orientation : (WRot?)null;
 				if (o == null || (o.Value.Pitch == WAngle.Zero && o.Value.Roll == WAngle.Zero))
-					return o.HasValue ? desiredDirection.Value.Yaw - o.Value.Yaw : desiredDirection.Value.Yaw;
+					return o.HasValue ? desiredDirection.Yaw - o.Value.Yaw : desiredDirection.Yaw;
 
 				// If the turret rotation axis is not vertical we must transform the
 				// target direction into the turrets local coordinate system
-				return desiredDirection.Value.Rotate(-o.Value).Yaw;
+				return desiredDirection.Rotate(-o.Value).Yaw;
 			}
 		}
 
 		void MoveTurret()
 		{
-			var desired = DesiredLocalFacing ?? Info.InitialFacing;
+			var desired = realignDesired ? Info.InitialFacing : DesiredLocalFacing;
+			if (desired == LocalOrientation.Yaw)
+				return;
+
 			LocalOrientation = LocalOrientation.WithYaw(Util.TickFacing(LocalOrientation.Yaw, desired, Info.TurnSpeed));
+
+			if (desired == LocalOrientation.Yaw)
+			{
+				realignDesired = false;
+				desiredDirection = WVec.Zero;
+			}
 		}
 
 		public bool FaceTarget(Actor self, Target target)
@@ -242,13 +254,14 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (target.Type == TargetType.Invalid)
 			{
-				desiredDirection = null;
+				desiredDirection = WVec.Zero;
 				return false;
 			}
 
 			var turretPos = self.CenterPosition + Position(self);
 			var targetPos = attack.GetTargetPosition(turretPos, target);
 			desiredDirection = targetPos - turretPos;
+			realignDesired = false;
 
 			MoveTurret();
 			return HasAchievedDesiredFacing;
@@ -258,8 +271,8 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			get
 			{
-				var desired = DesiredLocalFacing;
-				return !desired.HasValue || desired.Value == LocalOrientation.Yaw;
+				var desired = realignDesired ? Info.InitialFacing : DesiredLocalFacing;
+				return desired == LocalOrientation.Yaw;
 			}
 		}
 
