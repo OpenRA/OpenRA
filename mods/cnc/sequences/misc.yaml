@@ -72,6 +72,177 @@ smoke_m:
 		Offset: 2, -5
 		ZOffset: 512
 
+scorch_flames:
+	large_flame:
+		Length: *
+		Combine:
+			fire1:
+				Length: *
+				Offset: 0,-3
+			fire1:
+				Length: *
+				Offset: 0,-3
+			fire1:
+				Length: *
+				Offset: 0,-3
+			fire1:
+				Length: *
+				Offset: 0,-3
+			fire2:
+				Length: *
+				Offset: 0,-3
+			fire2:
+				Length: *
+				Offset: 0,-3
+			fire2:
+				Length: *
+				Offset: 0,-3
+			smoke_m:
+				Length: *
+				Offset: 2, -5
+			smoke_m:
+				Start: 49
+				Length: 42
+				Offset: 2, -5
+			smoke_m:
+				Start: 49
+				Length: 42
+				Offset: 2, -5
+				Scale: 0.75
+			smoke_m:
+				Start: 49
+				Length: 42
+				Offset: 2, -5
+				Scale: 0.5
+			smoke_m:
+				Start: 49
+				Length: 42
+				Offset: 2, -5
+				Scale: 0.25
+	medium_flame:
+		Length: *
+		Combine:
+			fire2:
+				Length: *
+				Offset: 0,-3
+			fire2:
+				Length: *
+				Offset: 0,-3
+			fire2:
+				Length: *
+				Offset: 0,-3
+			fire2:
+				Length: *
+				Offset: 0,-3
+			fire2:
+				Length: *
+				Offset: 0,-3
+			smoke_m:
+				Length: *
+				Offset: 2, -5
+			smoke_m:
+				Start: 49
+				Length: 42
+				Offset: 2, -5
+				Scale: 0.75
+			smoke_m:
+				Start: 49
+				Length: 42
+				Offset: 2, -5
+				Scale: 0.5
+			smoke_m:
+				Start: 49
+				Length: 42
+				Offset: 2, -5
+				Scale: 0.25
+	small_flame:
+		Combine:
+			fire3:
+				Length: *
+				Offset: 0,-3
+			fire3:
+				Length: *
+				Offset: 0,-3
+			fire3:
+				Length: *
+				Offset: 0,-3
+			fire3:
+				Length: *
+				Offset: 0,-3
+			fire3:
+				Length: *
+				Offset: 0,-3
+			smoke_m:
+				Length: *
+				Offset: 2, -5
+				Scale: 0.75
+			smoke_m:
+				Start: 49
+				Length: 42
+				Offset: 2, -5
+				Scale: 0.5
+			smoke_m:
+				Start: 49
+				Length: 42
+				Offset: 2, -5
+				Scale: 0.25
+		Length: *
+		Offset: 0,-3
+	tiny_flame:
+		Combine:
+			fire4:
+				Length: *
+				Offset: 0,-3
+			fire4:
+				Length: *
+				Offset: 0,-3
+			fire4:
+				Length: *
+				Offset: 0,-3
+			fire4:
+				Length: *
+				Offset: 0,-3
+			smoke_m:
+				Length: *
+				Offset: 2, -5
+				Scale: 0.3
+			smoke_m:
+				Start: 49
+				Length: 42
+				Offset: 2, -5
+				Scale: 0.2
+		Length: *
+		Offset: 0,-3
+	smoke:
+		Combine:
+			smoke_m:
+				Length: *
+				Offset: 2, -5
+			smoke_m:
+				Start: 49
+				Length: 42
+				Offset: 2, -5
+			smoke_m:
+				Start: 49
+				Length: 42
+				Offset: 2, -5
+				Scale: 0.8
+			smoke_m:
+				Start: 49
+				Length: 42
+				Offset: 2, -5
+				Scale: 0.6
+			smoke_m:
+				Start: 49
+				Length: 42
+				Offset: 2, -5
+				Scale: 0.4
+			smoke_m:
+				Start: 49
+				Length: 42
+				Offset: 2, -5
+				Scale: 0.2
+
 laserfire:
 	idle: veh-hit3
 		Length: *
