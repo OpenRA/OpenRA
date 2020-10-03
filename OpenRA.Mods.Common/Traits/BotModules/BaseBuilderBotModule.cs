@@ -151,6 +151,7 @@ namespace OpenRA.Mods.Common.Traits
 		PowerManager playerPower;
 		PlayerResources playerResources;
 		IBotPositionsUpdated[] positionsUpdatedModules;
+		DomainIndex domainIndex;
 		BitArray resourceTypeIndices;
 		CPos initialBaseCenter;
 		CPos defenseCenter;
@@ -169,6 +170,7 @@ namespace OpenRA.Mods.Common.Traits
 			playerPower = self.Owner.PlayerActor.TraitOrDefault<PowerManager>();
 			playerResources = self.Owner.PlayerActor.Trait<PlayerResources>();
 			positionsUpdatedModules = self.Owner.PlayerActor.TraitsImplementing<IBotPositionsUpdated>().ToArray();
+			domainIndex = self.World.WorldActor.Trait<DomainIndex>();
 		}
 
 		protected override void TraitEnabled(Actor self)
@@ -231,21 +233,44 @@ namespace OpenRA.Mods.Common.Traits
 				if (rp.Actor.Owner != player)
 					continue;
 
-				if (rp.Trait.Path.Count == 0 || !IsRallyPointValid(rp.Trait.Path[0], rp.Actor.Info.TraitInfoOrDefault<BuildingInfo>()))
+				var production = rp.Actor.TraitsImplementing<Production>().FirstEnabledTraitOrDefault();
+				if (production == null)
+					continue;
+
+				var queue = AIUtils.FindQueues(player, production.Info.Produces.First()).FirstOrDefault();
+				if (queue == null)
+					continue;
+
+				var buildableThings = queue.BuildableItems();
+				if (!buildableThings.Any())
+					continue;
+
+				var mobileInfos = buildableThings.Select(s => s.TraitInfoOrDefault<MobileInfo>());
+				foreach (var mobileInfo in mobileInfos)
 				{
-					bot.QueueOrder(new Order("SetRallyPoint", rp.Actor, Target.FromCell(world, ChooseRallyLocationNear(rp.Actor)), false)
+					if (rp.Trait.Path.Count == 0 || !IsRallyPointValid(rp.Trait.Path[0], rp.Actor, mobileInfo))
 					{
-						SuppressVisualFeedback = true
-					});
+						bot.QueueOrder(new Order("SetRallyPoint", rp.Actor, Target.FromCell(world, ChooseRallyLocationNear(rp.Actor, buildableThings)), false)
+						{
+							SuppressVisualFeedback = true
+						});
+					}
 				}
 			}
 		}
 
-		// Won't work for shipyards...
-		CPos ChooseRallyLocationNear(Actor producer)
+		CPos ChooseRallyLocationNear(Actor producer, IEnumerable<ActorInfo> buildableThings)
 		{
-			var possibleRallyPoints = world.Map.FindTilesInCircle(producer.Location, Info.RallyPointScanRadius)
-				.Where(c => IsRallyPointValid(c, producer.Info.TraitInfoOrDefault<BuildingInfo>()));
+			var possibleRallyPoints = world.Map.FindTilesInCircle(producer.Location, Info.RallyPointScanRadius).ToList();
+
+			var mobileInfos = buildableThings.Select(s => s.TraitInfoOrDefault<MobileInfo>());
+			foreach (var mobileInfo in mobileInfos)
+			{
+				if (mobileInfo == null)
+					continue;
+
+				possibleRallyPoints.RemoveAll(c => !IsRallyPointValid(c, producer, mobileInfo));
+			}
 
 			if (!possibleRallyPoints.Any())
 			{
@@ -256,9 +281,13 @@ namespace OpenRA.Mods.Common.Traits
 			return possibleRallyPoints.Random(world.LocalRandom);
 		}
 
-		bool IsRallyPointValid(CPos x, BuildingInfo info)
+		bool IsRallyPointValid(CPos destination, Actor producer, MobileInfo mobileInfo)
 		{
-			return info != null && world.IsCellBuildable(x, null, info);
+			if (mobileInfo == null)
+				return true;
+
+			return domainIndex.IsPassable(producer.Location, destination, mobileInfo.LocomotorInfo)
+				&& mobileInfo.CanStayInCell(producer.World, destination);
 		}
 
 		public bool HasAdequateRefineryCount
