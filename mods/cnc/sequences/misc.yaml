@@ -83,6 +83,218 @@ smoke_m:
 		Offset: 2, -5
 		ZOffset: 512
 
+scorch_flames:
+	large_flame:
+		Length: *
+		Combine:
+			0:
+				Filename: fire1.shp
+				Length: *
+				Offset: 0,-3
+			1:
+				Filename: fire1.shp
+				Length: *
+				Offset: 0,-3
+			2:
+				Filename: fire1.shp
+				Length: *
+				Offset: 0,-3
+			3:
+				Filename: fire1.shp
+				Length: *
+				Offset: 0,-3
+			4:
+				Filename: fire2.shp
+				Length: *
+				Offset: 0,-3
+			5:
+				Filename: fire2.shp
+				Length: *
+				Offset: 0,-3
+			6:
+				Filename: fire2.shp
+				Length: *
+				Offset: 0,-3
+			7:
+				Filename: smoke_m.shp
+				Length: *
+				Offset: 2, -5
+			8:
+				Filename: smoke_m.shp
+				Start: 49
+				Length: 42
+				Offset: 2, -5
+			9:
+				Filename: smoke_m.shp
+				Start: 49
+				Length: 42
+				Offset: 2, -5
+				Scale: 0.75
+			10:
+				Filename: smoke_m.shp
+				Start: 49
+				Length: 42
+				Offset: 2, -5
+				Scale: 0.5
+			11:
+				Filename: smoke_m.shp
+				Start: 49
+				Length: 42
+				Offset: 2, -5
+				Scale: 0.25
+	medium_flame:
+		Length: *
+		Combine:
+			0:
+				Filename: fire2.shp
+				Length: *
+				Offset: 0,-3
+			1:
+				Filename: fire2.shp
+				Length: *
+				Offset: 0,-3
+			2:
+				Filename: fire2.shp
+				Length: *
+				Offset: 0,-3
+			3:
+				Filename: fire2.shp
+				Length: *
+				Offset: 0,-3
+			4:
+				Filename: fire2.shp
+				Length: *
+				Offset: 0,-3
+			5:
+				Filename: smoke_m.shp
+				Length: *
+				Offset: 2, -5
+			6:
+				Filename: smoke_m.shp
+				Start: 49
+				Length: 42
+				Offset: 2, -5
+				Scale: 0.75
+			7:
+				Filename: smoke_m.shp
+				Start: 49
+				Length: 42
+				Offset: 2, -5
+				Scale: 0.5
+			8:
+				Filename: smoke_m.shp
+				Start: 49
+				Length: 42
+				Offset: 2, -5
+				Scale: 0.25
+	small_flame:
+		Combine:
+			0:
+				Filename: fire3.shp
+				Length: *
+				Offset: 0,-3
+			1:
+				Filename: fire3.shp
+				Length: *
+				Offset: 0,-3
+			2:
+				Filename: fire3.shp
+				Length: *
+				Offset: 0,-3
+			3:
+				Filename: fire3.shp
+				Length: *
+				Offset: 0,-3
+			4:
+				Filename: fire3.shp
+				Length: *
+				Offset: 0,-3
+			5:
+				Filename: smoke_m.shp
+				Length: *
+				Offset: 2, -5
+				Scale: 0.75
+			6:
+				Filename: smoke_m.shp
+				Start: 49
+				Length: 42
+				Offset: 2, -5
+				Scale: 0.5
+			7:
+				Filename: smoke_m.shp
+				Start: 49
+				Length: 42
+				Offset: 2, -5
+				Scale: 0.25
+		Length: *
+		Offset: 0,-3
+	tiny_flame:
+		Combine:
+			0:
+				Filename: fire4.shp
+				Length: *
+				Offset: 0,-3
+			1:
+				Filename: fire4.shp
+				Length: *
+				Offset: 0,-3
+			2:
+				Filename: fire4.shp
+				Length: *
+				Offset: 0,-3
+			3:
+				Filename: fire4.shp
+				Length: *
+				Offset: 0,-3
+			4:
+				Filename: smoke_m.shp
+				Length: *
+				Offset: 2, -5
+				Scale: 0.3
+			5:
+				Filename: smoke_m.shp
+				Start: 49
+				Length: 42
+				Offset: 2, -5
+				Scale: 0.2
+		Length: *
+		Offset: 0,-3
+	smoke:
+		Combine:
+			0:
+				Filename: smoke_m.shp
+				Length: *
+				Offset: 2, -5
+			1:
+				Filename: smoke_m.shp
+				Start: 49
+				Length: 42
+				Offset: 2, -5
+			2:
+				Filename: smoke_m.shp
+				Start: 49
+				Length: 42
+				Offset: 2, -5
+				Scale: 0.8
+			3:
+				Filename: smoke_m.shp
+				Start: 49
+				Length: 42
+				Offset: 2, -5
+				Scale: 0.6
+			4:
+				Filename: smoke_m.shp
+				Start: 49
+				Length: 42
+				Offset: 2, -5
+				Scale: 0.4
+			5:
+				Filename: smoke_m.shp
+				Start: 49
+				Length: 42
+				Offset: 2, -5
+				Scale: 0.2
+
 laserfire:
 	idle:
 		Filename: veh-hit3.shp
