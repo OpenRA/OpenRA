@@ -66,6 +66,17 @@ namespace OpenRA.Mods.Common.Traits
 			Path = Info.Path.Select(p => self.Location + p).ToList();
 		}
 
+		public void AddIndicator(Actor self)
+		{
+			// Display only the first level of priority
+			var priorityExits = self.Info.TraitInfos<ExitInfo>()
+				.GroupBy(e => e.Priority)
+				.FirstOrDefault();
+
+			var exits = priorityExits != null ? priorityExits.ToArray() : new ExitInfo[0];
+			self.World.Add(new RallyPointIndicator(self, this, exits));
+		}
+
 		public RallyPoint(Actor self, RallyPointInfo info)
 		{
 			Info = info;
@@ -75,13 +86,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyCreated.Created(Actor self)
 		{
-			// Display only the first level of priority
-			var priorityExits = self.Info.TraitInfos<ExitInfo>()
-				.GroupBy(e => e.Priority)
-				.FirstOrDefault();
-
-			var exits = priorityExits != null ? priorityExits.ToArray() : new ExitInfo[0];
-			self.World.Add(new RallyPointIndicator(self, this, exits));
+			AddIndicator(self);
 		}
 
 		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
