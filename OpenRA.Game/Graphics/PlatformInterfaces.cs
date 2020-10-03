@@ -59,6 +59,7 @@ namespace OpenRA
 		int DisplayCount { get; }
 		int CurrentDisplay { get; }
 		bool HasInputFocus { get; }
+		bool IsSuspended { get; }
 
 		event Action<float, float, float, float> OnWindowScaleChanged;
 

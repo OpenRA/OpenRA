@@ -99,6 +99,8 @@ namespace OpenRA.Platforms.Default
 
 		public bool HasInputFocus { get; internal set; }
 
+		public bool IsSuspended { get; internal set; }
+
 		public GLProfile GLProfile
 		{
 			get
