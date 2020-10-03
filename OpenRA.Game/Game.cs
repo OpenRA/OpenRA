@@ -828,8 +828,7 @@ namespace OpenRA
 
 					var haveSomeTimeUntilNextLogic = now < nextLogic;
 					var isTimeToRender = now >= nextRender;
-
-					if ((isTimeToRender && haveSomeTimeUntilNextLogic) || forceRender)
+					if (!Renderer.WindowIsSuspended && ((isTimeToRender && haveSomeTimeUntilNextLogic) || forceRender))
 					{
 						nextRender = now + renderInterval;
 
@@ -842,6 +841,19 @@ namespace OpenRA
 						forcedNextRender = now + maxRenderInterval;
 
 						RenderTick();
+						renderBeforeNextTick = false;
+					}
+
+					// Simulate a render tick if it was time to render but we skip actually rendering
+					if (Renderer.WindowIsSuspended && isTimeToRender)
+					{
+						// Make sure that nextUpdate is set to a proper minimum interval
+						nextRender = now + renderInterval;
+
+						// Still process SDL events to allow a restore to come through
+						Renderer.Window.PumpInput(new NullInputHandler());
+
+						// Ensure that we still logic tick despite not rendering
 						renderBeforeNextTick = false;
 					}
 				}

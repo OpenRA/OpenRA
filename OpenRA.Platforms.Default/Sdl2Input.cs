@@ -94,6 +94,18 @@ namespace OpenRA.Platforms.Default
 								case SDL.SDL_WindowEventID.SDL_WINDOWEVENT_SIZE_CHANGED:
 									device.WindowSizeChanged();
 									break;
+
+								case SDL.SDL_WindowEventID.SDL_WINDOWEVENT_HIDDEN:
+								case SDL.SDL_WindowEventID.SDL_WINDOWEVENT_MINIMIZED:
+									device.IsSuspended = true;
+									break;
+
+								case SDL.SDL_WindowEventID.SDL_WINDOWEVENT_EXPOSED:
+								case SDL.SDL_WindowEventID.SDL_WINDOWEVENT_SHOWN:
+								case SDL.SDL_WindowEventID.SDL_WINDOWEVENT_MAXIMIZED:
+								case SDL.SDL_WindowEventID.SDL_WINDOWEVENT_RESTORED:
+									device.IsSuspended = false;
+									break;
 							}
 
 							break;

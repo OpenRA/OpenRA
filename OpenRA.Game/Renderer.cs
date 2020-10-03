@@ -33,6 +33,7 @@ namespace OpenRA
 		public RgbaSpriteRenderer RgbaSpriteRenderer { get; private set; }
 
 		public bool WindowHasInputFocus => Window.HasInputFocus;
+		public bool WindowIsSuspended => Window.IsSuspended;
 
 		public IReadOnlyDictionary<string, SpriteFont> Fonts;
 
