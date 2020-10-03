@@ -192,12 +192,14 @@ World:
 		SmokeChance: 50
 		SmokeImage: smoke_m
 		SmokeSequences: idle
+		MaxSmokeOffsetDistance: 341
 	SmudgeLayer@CRATER:
 		Type: Crater
 		Sequence: craters
 		SmokeChance: 25
 		SmokeImage: smoke_m
 		SmokeSequences: idle
+		MaxSmokeOffsetDistance: 213
 	ResourceLayer:
 		RecalculateResourceDensity: true
 		ResourceTypes:

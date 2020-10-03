@@ -250,18 +250,21 @@ World:
 		SmokeImage: smallfire
 		SmokeSequences: idle
 		SmokeChance: 50
+		MaxSmokeOffsetDistance: 256
 	SmudgeLayer@MEDIUMSCORCH:
 		Type: MediumScorch
 		Sequence: mediumscorches
 		SmokeImage: mediumfire
 		SmokeSequences: idle
 		SmokeChance: 75
+		MaxSmokeOffsetDistance: 192
 	SmudgeLayer@LARGESCORCH:
 		Type: LargeScorch
 		Sequence: largescorches
 		SmokeImage: largefire
 		SmokeSequences: idle
 		SmokeChance: 100
+		MaxSmokeOffsetDistance: 128
 	SmudgeLayer@SMALLCRATER:
 		Type: SmallCrater
 		Sequence: smallcraters
