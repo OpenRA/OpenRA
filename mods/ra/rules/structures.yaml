@@ -47,7 +47,7 @@ MSLO:
 		MissileWeapon: atomic
 		MissileDelay: 5
 		SpawnOffset: 1c0,427,0
-		DisplayTimerStances: Ally, Neutral, Enemy
+		DisplayTimerRelationships: Ally, Neutral, Enemy
 		DisplayBeacon: True
 		DisplayRadarPing: True
 		BeaconPoster: atomicon
@@ -985,7 +985,7 @@ ATEK:
 		LongDesc: Reveals map terrain and provides tactical\ninformation. Requires power and active radar.
 		RevealDelay: 375
 		LaunchSpeechNotification: SatelliteLaunched
-		DisplayTimerStances: Ally, Neutral, Enemy
+		DisplayTimerRelationships: Ally, Neutral, Enemy
 		SupportPowerPaletteOrder: 90
 	SupportPowerChargeBar:
 	InfiltrateForSupportPowerReset:

@@ -93,7 +93,7 @@
 		Palette: effect
 		Position: BottomRight
 		Margin: 5, 6
-		ValidStances: Ally, Enemy, Neutral
+		ValidRelationships: Ally, Enemy, Neutral
 		RequiresCondition: rank-veteran == 1
 	WithDecoration@RANK-2:
 		Image: rank
@@ -101,7 +101,7 @@
 		Palette: effect
 		Position: BottomRight
 		Margin: 5, 6
-		ValidStances: Ally, Enemy, Neutral
+		ValidRelationships: Ally, Enemy, Neutral
 		RequiresCondition: rank-veteran == 2
 	WithDecoration@RANK-ELITE:
 		Image: rank
@@ -109,7 +109,7 @@
 		Palette: effect
 		Position: BottomRight
 		Margin: 5, 6
-		ValidStances: Ally, Enemy, Neutral
+		ValidRelationships: Ally, Enemy, Neutral
 		RequiresCondition: rank-elite
 
 ^InfantryExperienceHospitalHazmatOverrides:
@@ -606,7 +606,7 @@
 		UseLocation: true
 	HiddenUnderFog:
 		Type: GroundPosition
-		AlwaysVisibleStances: None
+		AlwaysVisibleRelationships: None
 	ActorLostNotification:
 	AttackMove:
 	WithShadow:
@@ -995,7 +995,7 @@
 		Type: Light
 	HiddenUnderFog:
 		Type: CenterPosition
-		AlwaysVisibleStances: None
+		AlwaysVisibleRelationships: None
 	WithFacingSpriteBody:
 	HitShape:
 	MapEditorData:
@@ -1011,7 +1011,7 @@
 	CaptureManager:
 	Capturable:
 		Types: husk
-		ValidStances: Enemy, Neutral, Ally
+		ValidRelationships: Enemy, Neutral, Ally
 	TransformOnCapture:
 		ForceHealthPercentage: 25
 	Tooltip:

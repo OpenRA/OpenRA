@@ -19,7 +19,7 @@ Sound:
 		Falloff: 100, 100
 		Damage: 860
 		AffectsParent: false
-		ValidStances: Neutral, Enemy
+		ValidRelationships: Neutral, Enemy
 		Versus:
 			none: 200
 			wall: 50
@@ -36,7 +36,7 @@ Sound:
 		Falloff: 100, 100
 		Damage: 430 # Only does half damage to friendly units
 		AffectsParent: false
-		ValidStances: Ally
+		ValidRelationships: Ally
 		Versus:
 			none: 200
 			wall: 50

@@ -117,7 +117,7 @@
 		Palette: effect
 		Position: BottomRight
 		Margin: 5, 6
-		ValidStances: Ally, Enemy, Neutral
+		ValidRelationships: Ally, Enemy, Neutral
 		RequiresCondition: rank-veteran == 1
 	WithDecoration@RANK-2:
 		Image: rank
@@ -125,7 +125,7 @@
 		Palette: effect
 		Position: BottomRight
 		Margin: 5, 6
-		ValidStances: Ally, Enemy, Neutral
+		ValidRelationships: Ally, Enemy, Neutral
 		RequiresCondition: rank-veteran == 2
 	WithDecoration@RANK-3:
 		Image: rank
@@ -133,7 +133,7 @@
 		Palette: effect
 		Position: BottomRight
 		Margin: 5, 6
-		ValidStances: Ally, Enemy, Neutral
+		ValidRelationships: Ally, Enemy, Neutral
 		RequiresCondition: rank-veteran == 3
 	WithDecoration@RANK-ELITE:
 		Image: rank
@@ -141,7 +141,7 @@
 		Palette: effect
 		Position: BottomRight
 		Margin: 5, 6
-		ValidStances: Ally, Enemy, Neutral
+		ValidRelationships: Ally, Enemy, Neutral
 		RequiresCondition: rank-elite
 
 ^InfantryExperienceHospitalOverrides:
@@ -979,7 +979,7 @@
 		Type: Heavy
 	HiddenUnderFog:
 		Type: CenterPosition
-		AlwaysVisibleStances: None
+		AlwaysVisibleRelationships: None
 	ScriptTriggers:
 	WithFacingSpriteBody:
 	HitShape:
@@ -1004,7 +1004,7 @@
 	CaptureManager:
 	Capturable:
 		Types: husk
-		ValidStances: Enemy, Neutral
+		ValidRelationships: Enemy, Neutral
 	TransformOnCapture:
 		ForceHealthPercentage: 25
 	InfiltrateForTransform:

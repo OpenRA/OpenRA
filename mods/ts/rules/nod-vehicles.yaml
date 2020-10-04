@@ -328,8 +328,8 @@ REPAIR:
 		Weapon: Repair
 		Cursor: repair
 		OutsideRangeCursor: repair
-		TargetStances: Ally
-		ForceTargetStances: None
+		TargetRelationships: Ally
+		ForceTargetRelationships: None
 	AttackFrontal:
 		Voice: Attack
 		PauseOnCondition: empdisable

@@ -68,7 +68,7 @@ TRUK.mission:
 	-SpawnActorOnDeath:
 	RevealsShroud:
 		Range: 4c0
-		ValidStances: Ally, Enemy
+		ValidRelationships: Ally, Enemy
 		RequiresCondition: hijacked
 	ExternalCondition@hijacked:
 		Condition: hijacked
