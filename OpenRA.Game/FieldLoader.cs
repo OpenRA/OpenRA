@@ -435,7 +435,7 @@ namespace OpenRA
 					ret.SetValue(GetValue(fieldName, fieldType.GetElementType(), parts[i].Trim(), field), i);
 				return ret;
 			}
-			else if (fieldType.IsGenericType && fieldType.GetGenericTypeDefinition() == typeof(HashSet<>))
+			else if (fieldType.IsGenericType && (fieldType.GetGenericTypeDefinition() == typeof(HashSet<>) || fieldType.GetGenericTypeDefinition() == typeof(List<>)))
 			{
 				var set = Activator.CreateInstance(fieldType);
 				if (value == null)
