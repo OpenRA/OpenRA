@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				"These scripts run in a sandbox that prevents access to unsafe functions (e.g. OS or file access), " +
 				"and limits the memory and CPU usage of the scripts.");
 			Console.WriteLine();
-			Console.WriteLine("You can access this interface by adding the [LuaScript](Traits#luascript) trait to the world actor in your map rules " +
+			Console.WriteLine("You can access this interface by adding the [LuaScript](../traits/#luascript) trait to the world actor in your map rules " +
 				"(note, you must replace the spaces in the snippet below with a single tab for each level of indentation):");
 			Console.WriteLine("```\nRules:\n\tWorld:\n\t\tLuaScript:\n\t\t\tScripts: myscript.lua\n```");
 			Console.WriteLine();
