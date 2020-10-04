@@ -94,7 +94,7 @@ namespace OpenRA
 				return ((Array)v).Cast<object>().Select(FormatValue).JoinWith(", ");
 			}
 
-			if (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(HashSet<>))
+			if (t.IsGenericType && (t.GetGenericTypeDefinition() == typeof(HashSet<>) || t.GetGenericTypeDefinition() == typeof(List<>)))
 			{
 				return ((System.Collections.IEnumerable)v).Cast<object>().Select(FormatValue).JoinWith(", ");
 			}
