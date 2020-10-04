@@ -137,7 +137,7 @@ PBOX:
 	RevealsShroud@friendly:
 		Range: 6c0
 		RequiresCondition: friendly
-		ValidStances: Ally, Enemy
+		ValidRelationships: Ally, Enemy
 	ExternalCondition@friendly:
 		Condition: friendly
 	Turreted:

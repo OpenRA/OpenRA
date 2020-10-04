@@ -486,7 +486,7 @@ NAMISL:
 		MissileDelay: 10
 		DetonationAltitude: 5c0
 		SpawnOffset: 72,72,0
-		DisplayTimerStances: None
+		DisplayTimerRelationships: None
 		DisplayBeacon: False
 		DisplayRadarPing: True
 		BeaconPoster:

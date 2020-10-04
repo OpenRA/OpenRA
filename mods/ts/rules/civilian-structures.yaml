@@ -809,10 +809,10 @@ CAHOSP:
 		Name: Civilian Hospital
 	TooltipDescription@ally:
 		Description: Provides infantry with self-healing.
-		ValidStances: Ally
+		ValidRelationships: Ally
 	TooltipDescription@other:
 		Description: Capture to enable self-healing for infantry.
-		ValidStances: Neutral, Enemy
+		ValidRelationships: Neutral, Enemy
 	Building:
 		Footprint: XxX xxx xxx xxx
 		Dimensions: 3, 4

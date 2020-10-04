@@ -435,8 +435,8 @@ MEDI:
 		Weapon: Heal
 		Cursor: heal
 		OutsideRangeCursor: heal
-		TargetStances: Ally
-		ForceTargetStances: None
+		TargetRelationships: Ally
+		ForceTargetRelationships: None
 	WithInfantryBody:
 		IdleSequences: idle
 		StandSequences: stand
@@ -475,8 +475,8 @@ MECH:
 		Weapon: Repair
 		Cursor: repair
 		OutsideRangeCursor: repair
-		TargetStances: Ally
-		ForceTargetStances: None
+		TargetRelationships: Ally
+		ForceTargetRelationships: None
 	AttackFrontal:
 		Voice: Action
 	CaptureManager:
@@ -485,7 +485,7 @@ MECH:
 		PlayerExperience: 25
 	Infiltrates:
 		Types: Husk
-		ValidStances: Ally
+		ValidRelationships: Ally
 		EnterCursor: goldwrench
 		PlayerExperience: 25
 	WithInfantryBody:
