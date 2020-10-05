@@ -23,6 +23,7 @@ NAPULS:
 	Turreted:
 		TurnSpeed: 40
 		InitialFacing: 896
+		RealignDelay: -1
 	AttackTurreted:
 		RequiresCondition: !build-incomplete && !empdisable && !disabled
 	Armament:

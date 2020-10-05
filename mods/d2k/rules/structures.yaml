@@ -748,6 +748,7 @@ medium_gun_turret:
 	Turreted:
 		TurnSpeed: 24
 		InitialFacing: 512
+		RealignDelay: -1
 	Armament:
 		Weapon: 110mm_Gun
 		LocalOffset: 512,0,432
@@ -793,6 +794,7 @@ large_gun_turret:
 	Turreted:
 		TurnSpeed: 32
 		InitialFacing: 512
+		RealignDelay: -1
 	Power:
 		Amount: -60
 	RevealOnDeath:
