@@ -45,8 +45,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				"(note, you must replace the spaces in the snippet below with a single tab for each level of indentation):");
 			Console.WriteLine("```\nRules:\n\tWorld:\n\t\tLuaScript:\n\t\t\tScripts: myscript.lua\n```");
 			Console.WriteLine();
-			Console.WriteLine("Map scripts can interact with the game engine in three ways:\n" +
-				"* Global tables provide functions for interacting with the global world state, or performing general helper tasks.\n" +
+			Console.WriteLine("Map scripts can interact with the game engine in three ways:\n");
+			Console.WriteLine("* Global tables provide functions for interacting with the global world state, or performing general helper tasks.\n" +
 				"They exist in the global namespace, and can be called directly using ```<table name>.<function name>```.\n" +
 				"* Individual actors expose a collection of properties and commands that query information or modify their state.\n" +
 				"  * Some commands, marked as <em>queued activity</em>, are asynchronous. Activities are queued on the actor, and will run in " +
