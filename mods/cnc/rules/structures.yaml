@@ -853,6 +853,7 @@ GUN:
 	Turreted:
 		TurnSpeed: 48
 		InitialFacing: 224
+		RealignDelay: -1
 	-WithSpriteBody:
 	WithEmbeddedTurretSpriteBody:
 	Armament:

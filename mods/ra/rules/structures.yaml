@@ -603,6 +603,7 @@ AGUN:
 	Turreted:
 		TurnSpeed: 60
 		InitialFacing: 896
+		RealignDelay: -1
 	-WithSpriteBody:
 	WithEmbeddedTurretSpriteBody:
 	Armament:
@@ -817,6 +818,7 @@ GUN:
 	Turreted:
 		TurnSpeed: 48
 		InitialFacing: 224
+		RealignDelay: -1
 	-WithSpriteBody:
 	WithEmbeddedTurretSpriteBody:
 	Armament:
@@ -916,6 +918,7 @@ SAM:
 	Turreted:
 		TurnSpeed: 120
 		InitialFacing: 0
+		RealignDelay: -1
 	-WithSpriteBody:
 	WithEmbeddedTurretSpriteBody:
 	Armament:
