@@ -22,6 +22,7 @@ namespace OpenRA.Mods.Common.Widgets
 	{
 		public readonly string Font = "Bold";
 		public readonly string Format = "{0}: {1}";
+		public readonly TextAlign Align = TextAlign.Left;
 		public readonly TimerOrder Order = TimerOrder.Descending;
 
 		readonly int timestep;
@@ -80,7 +81,16 @@ namespace OpenRA.Mods.Common.Widgets
 			foreach (var t in texts)
 			{
 				var font = Game.Renderer.Fonts[Font];
-				font.DrawTextWithShadow(t.Text, new float2(Bounds.Location) + new float2(0, y), t.Color, bgDark, bgLight, 1);
+				var textSize = font.Measure(t.Text);
+				var location = new float2(Bounds.Location) + new float2(0, y);
+
+				if (Align == TextAlign.Center)
+					location += new int2((Bounds.Width - textSize.X) / 2, 0);
+
+				if (Align == TextAlign.Right)
+					location += new int2(Bounds.Width - textSize.X, 0);
+
+				font.DrawTextWithShadow(t.Text, location, t.Color, bgDark, bgLight, 1);
 				y += (font.Measure(t.Text).Y + 5) * (int)Order;
 			}
 		}
