@@ -50,11 +50,19 @@ namespace OpenRA.Mods.D2k.Traits
 
 		void INotifyAddedToWorld.AddedToWorld(Actor self)
 		{
-			if (IsTraitDisabled)
-				return;
+			if (!IsTraitDisabled)
+				LayTerrain(self);
+		}
 
+		protected override void TraitEnabled(Actor self)
+		{
+			if (self.IsInWorld)
+				LayTerrain(self);
+		}
+
+		void LayTerrain(Actor self)
+		{
 			var map = self.World.Map;
-
 			if (template.PickAny)
 			{
 				// Fill the footprint with random variants
