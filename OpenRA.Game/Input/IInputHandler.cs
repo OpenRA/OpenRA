@@ -58,6 +58,7 @@ namespace OpenRA
 		Shift = 1,
 		Alt = 2,
 		Ctrl = 4,
+		Fn = 6,
 		Meta = 8,
 	}
 
