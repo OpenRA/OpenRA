@@ -4,6 +4,7 @@ V19:
 		Bounds: 24,24
 	CashTrickler:
 		Amount: 10
+		RequiresCondition: enabled
 	Building:
 		Footprint: x
 		Dimensions: 1,1
@@ -20,6 +21,8 @@ V19:
 	SpawnActorOnDeath:
 		Actor: V19.Husk
 	UpdatesDerrickCount:
+	GrantConditionOnCombatantOwner:
+		Condition: enabled
 
 V19.Husk:
 	Inherits: ^CivBuildingHusk

@@ -545,6 +545,7 @@ OILB:
 	CashTrickler:
 		Interval: 375
 		Amount: 100
+		RequiresCondition: enabled
 	Tooltip:
 		Name: Oil Derrick
 	TooltipDescription@ally:
@@ -561,6 +562,8 @@ OILB:
 	GivesCashOnCapture:
 		Amount: 100
 	UpdatesDerrickCount:
+	GrantConditionOnCombatantOwner:
+		Condition: enabled
 
 BR1:
 	Inherits: ^Bridge
