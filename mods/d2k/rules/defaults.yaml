@@ -459,9 +459,13 @@
 		DamageThreshold: 50
 		StartOnThreshold: true
 	LaysTerrain:
-		RequiresCondition: auto-concrete
+		RequiresCondition: auto-concrete2
 		TerrainTypes: Rock
 		Template: 88
+	ExternalCondition@Lua:
+		Condition: auto-concrete
+	ExternalCondition@Lua2:
+		Condition: auto-concrete2
 	ThrowsShrapnel:
 		Weapons: Debris, Debris2, Debris3, Debris4
 		Pieces: 2, 5

@@ -141,7 +141,29 @@ WorldLoaded = function()
 	end)
 
 	WavesLeft = HarkonnenAttackWaves[Difficulty]
-	SendReinforcements()
+	--SendReinforcements()
+
+	Actor.Create("wind_trap", true, { Owner = player, Location = AtreidesEntryPath[1] + CVec.New(1, 0) })
+	Actor.Create("wind_trap", true, { Owner = player, Location = AtreidesEntryPath[1] + CVec.New(3, 0) })
+	Actor.Create("wind_trap", true, { Owner = player, Location = AtreidesEntryPath[1] + CVec.New(3, -3) })
+
+	Trigger.AfterDelay(DateTime.Seconds(1), function()
+		-- Start with the trait enabled, but only get added to the world later
+		local testA = Actor.Create("outpost", false, { Owner = player, Location = AtreidesEntryPath[1] + CVec.New(5, -3) })
+		Trigger.AfterDelay(DateTime.Seconds(2), function()
+			testA.IsInWorld = true
+		end)
+		-- Activate LaysTerrain delayed, concrete should appear now
+		-- Note: Visually bugged. You can only see the full concrete after selling
+		Trigger.AfterDelay(DateTime.Seconds(6), function()
+			testA.GrantCondition("auto-concrete2")
+		end)
+
+		-- Start with the trait disabled when added to the world, enable it later
+		local testB = Actor.Create("outpost", false, { Owner = player, Location = AtreidesEntryPath[1] + CVec.New(5, 0) })
+		testB.GrantCondition("auto-concrete", DateTime.Seconds(4))
+		testB.IsInWorld = true
+	end)
 end
 
 SendReinforcements = function()
