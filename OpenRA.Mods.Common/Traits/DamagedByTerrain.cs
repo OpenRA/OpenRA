@@ -16,7 +16,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This actor receives damage from the given weapon when on the specified terrain type.")]
-	class DamagedByTerrainInfo : ConditionalTraitInfo, Requires<IHealthInfo>, Requires<IOccupySpaceInfo>
+	public class DamagedByTerrainInfo : ConditionalTraitInfo, Requires<IHealthInfo>, Requires<IOccupySpaceInfo>
 	{
 		[FieldLoader.Require]
 		[Desc("Amount of damage received per DamageInterval ticks.")]
@@ -32,60 +32,19 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Terrain types where the actor will take damage.")]
 		public readonly string[] Terrain = { };
 
-		[Desc("Percentage health below which the actor will not receive further damage.")]
-		public readonly int DamageThreshold = 0;
-
-		[Desc("Inflict damage down to the DamageThreshold when the actor gets created on damaging terrain.")]
-		public readonly bool StartOnThreshold = false;
-
-		public override object Create(ActorInitializer init) { return new DamagedByTerrain(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new DamagedByTerrain(this); }
 	}
 
-	class DamagedByTerrain : ConditionalTrait<DamagedByTerrainInfo>, ITick, ISync, INotifyAddedToWorld
+	public class DamagedByTerrain : ConditionalTrait<DamagedByTerrainInfo>, ITick, ISync
 	{
-		readonly IHealth health;
-
-		[Sync]
 		int damageTicks;
 
-		[Sync]
-		int damageThreshold;
-
-		public DamagedByTerrain(Actor self, DamagedByTerrainInfo info)
-			: base(info)
-		{
-			health = self.Trait<IHealth>();
-		}
-
-		void INotifyAddedToWorld.AddedToWorld(Actor self)
-		{
-			if (!Info.StartOnThreshold || IsTraitDisabled)
-				return;
-
-			var safeTiles = 0;
-			var totalTiles = 0;
-			foreach (var kv in self.OccupiesSpace.OccupiedCells())
-			{
-				totalTiles++;
-				if (!Info.Terrain.Contains(self.World.Map.GetTerrainInfo(kv.Cell).Type))
-					safeTiles++;
-			}
-
-			if (totalTiles == 0)
-				return;
-
-			// Cast to long to avoid overflow when multiplying by the health
-			damageThreshold = (int)((Info.DamageThreshold * (long)health.MaxHP + (100 - Info.DamageThreshold) * safeTiles * (long)health.MaxHP / totalTiles) / 100);
-
-			// Actors start with maximum damage applied
-			var delta = health.HP - damageThreshold;
-			if (delta > 0)
-				self.InflictDamage(self.World.WorldActor, new Damage(delta, Info.DamageTypes));
-		}
+		public DamagedByTerrain(DamagedByTerrainInfo info)
+			: base(info) { }
 
 		void ITick.Tick(Actor self)
 		{
-			if (IsTraitDisabled || health.HP <= damageThreshold || --damageTicks > 0)
+			if (IsTraitDisabled || --damageTicks > 0)
 				return;
 
 			// Prevents harming cargo.

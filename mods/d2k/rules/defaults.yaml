@@ -456,8 +456,6 @@
 		Damage: 500
 		DamageInterval: 100
 		Terrain: Rock
-		DamageThreshold: 50
-		StartOnThreshold: true
 	LaysTerrain:
 		RequiresCondition: auto-concrete
 		TerrainTypes: Rock
