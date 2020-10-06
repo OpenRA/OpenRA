@@ -66,6 +66,7 @@ construction_yard:
 		LocalCenterOffset: 0,-512,0
 	LaysTerrain:
 		-RequiresCondition:
+	-GrantConditionOnPrerequisite@AUTOCONCRETE:
 	WithBuildingBib:
 	Selectable:
 		Bounds: 96,64
