@@ -16,7 +16,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This actor receives damage from the given weapon when on the specified terrain type.")]
-	class DamagedByTerrainInfo : ConditionalTraitInfo, Requires<IHealthInfo>
+	class DamagedByTerrainInfo : ConditionalTraitInfo, Requires<IHealthInfo>, Requires<IOccupySpaceInfo>
 	{
 		[FieldLoader.Require]
 		[Desc("Amount of damage received per DamageInterval ticks.")]
