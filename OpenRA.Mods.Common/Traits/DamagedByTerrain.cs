@@ -59,9 +59,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyAddedToWorld.AddedToWorld(Actor self)
 		{
-			if (!Info.StartOnThreshold || IsTraitDisabled)
-				return;
-
 			var safeTiles = 0;
 			var totalTiles = 0;
 			foreach (var kv in self.OccupiesSpace.OccupiedCells())
@@ -77,7 +74,21 @@ namespace OpenRA.Mods.Common.Traits
 			// Cast to long to avoid overflow when multiplying by the health
 			damageThreshold = (int)((Info.DamageThreshold * (long)health.MaxHP + (100 - Info.DamageThreshold) * safeTiles * (long)health.MaxHP / totalTiles) / 100);
 
-			// Actors start with maximum damage applied
+			// TraitEnabled will deal damage if the trait starts disabled and gets enabled later on
+			if (Info.StartOnThreshold && !IsTraitDisabled)
+				InflictStartDamage(self);
+		}
+
+		protected override void TraitEnabled(Actor self)
+		{
+			// If the trait starts enabled this will be called while the actor still isn't in the world
+			// Only handle cases where the trait gets enabled after being added to the world
+			if (self.IsInWorld && Info.StartOnThreshold)
+				InflictStartDamage(self);
+		}
+
+		void InflictStartDamage(Actor self)
+		{
 			var delta = health.HP - damageThreshold;
 			if (delta > 0)
 				self.InflictDamage(self.World.WorldActor, new Damage(delta, Info.DamageTypes));
