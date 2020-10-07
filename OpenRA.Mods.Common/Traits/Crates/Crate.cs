@@ -63,9 +63,6 @@ namespace OpenRA.Mods.Common.Traits
 			if (!CanExistInCell(world, cell))
 				return SubCell.Invalid;
 
-			if (world.WorldActor.Trait<BuildingInfluence>().GetBuildingAt(cell) != null)
-				return SubCell.Invalid;
-
 			if (check == BlockedByActor.None)
 				return SubCell.FullCell;
 
