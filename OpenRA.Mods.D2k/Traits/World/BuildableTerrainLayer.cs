@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
@@ -32,10 +33,9 @@ namespace OpenRA.Mods.D2k.Traits
 	{
 		readonly BuildableTerrainLayerInfo info;
 		readonly Dictionary<CPos, TerrainTile?> dirty = new Dictionary<CPos, TerrainTile?>();
-		readonly Map map;
+		readonly World world;
 		readonly CellLayer<int> strength;
 
-		BuildingInfluence bi;
 		TerrainSpriteLayer render;
 		Theater theater;
 		bool disposed;
@@ -43,14 +43,13 @@ namespace OpenRA.Mods.D2k.Traits
 		public BuildableTerrainLayer(Actor self, BuildableTerrainLayerInfo info)
 		{
 			this.info = info;
-			map = self.World.Map;
-			strength = new CellLayer<int>(self.World.Map);
+			world = self.World;
+			strength = new CellLayer<int>(world.Map);
 		}
 
 		public void WorldLoaded(World w, WorldRenderer wr)
 		{
 			theater = wr.Theater;
-			bi = w.WorldActor.Trait<BuildingInfluence>();
 			render = new TerrainSpriteLayer(w, wr, theater.Sheet, BlendMode.Alpha, wr.Palette(info.Palette), wr.World.Type != WorldType.Editor);
 		}
 
@@ -59,14 +58,18 @@ namespace OpenRA.Mods.D2k.Traits
 			if (!strength.Contains(cell))
 				return;
 
-			map.CustomTerrain[cell] = map.Rules.TileSet.GetTerrainIndex(tile);
+			world.Map.CustomTerrain[cell] = world.Map.Rules.TileSet.GetTerrainIndex(tile);
 			strength[cell] = info.MaxStrength;
 			dirty[cell] = tile;
 		}
 
 		public void HitTile(CPos cell, int damage)
 		{
-			if (!strength.Contains(cell) || strength[cell] == 0 || bi.GetBuildingAt(cell) != null)
+			if (!strength.Contains(cell) || strength[cell] == 0)
+				return;
+
+			// Buildings (but not other actors) block damage to cells under their footprint
+			if (world.ActorMap.GetActorsAt(cell).Any(a => a.TraitOrDefault<Building>() != null))
 				return;
 
 			strength[cell] = strength[cell] - damage;
@@ -79,7 +82,7 @@ namespace OpenRA.Mods.D2k.Traits
 			if (!strength.Contains(cell))
 				return;
 
-			map.CustomTerrain[cell] = byte.MaxValue;
+			world.Map.CustomTerrain[cell] = byte.MaxValue;
 			strength[cell] = 0;
 			dirty[cell] = null;
 		}
