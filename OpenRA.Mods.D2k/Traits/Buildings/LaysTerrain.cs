@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
@@ -35,7 +36,6 @@ namespace OpenRA.Mods.D2k.Traits
 	public class LaysTerrain : ConditionalTrait<LaysTerrainInfo>, INotifyAddedToWorld
 	{
 		readonly BuildableTerrainLayer layer;
-		readonly BuildingInfluence bi;
 		readonly TerrainTemplateInfo template;
 		readonly BuildingInfo buildingInfo;
 
@@ -43,7 +43,6 @@ namespace OpenRA.Mods.D2k.Traits
 			: base(info)
 		{
 			layer = self.World.WorldActor.Trait<BuildableTerrainLayer>();
-			bi = self.World.WorldActor.Trait<BuildingInfluence>();
 			template = self.World.Map.Rules.TileSet.Templates[info.Template];
 			buildingInfo = self.Info.TraitInfo<BuildingInfo>();
 		}
@@ -64,8 +63,12 @@ namespace OpenRA.Mods.D2k.Traits
 					if (!map.Contains(c) || !Info.TerrainTypes.Contains(map.GetTerrainInfo(c).Type))
 						continue;
 
-					// Don't place under other buildings or custom terrain
-					if (bi.GetBuildingAt(c) != self || map.CustomTerrain[c] != byte.MaxValue)
+					// Don't override any existing custom terrain
+					if (map.CustomTerrain[c] != byte.MaxValue)
+						continue;
+
+					// Don't place under other buildings
+					if (self.World.ActorMap.GetActorsAt(c).Any(a => a != self && a.TraitOrDefault<Building>() != null))
 						continue;
 
 					var index = Game.CosmeticRandom.Next(template.TilesCount);
@@ -84,8 +87,12 @@ namespace OpenRA.Mods.D2k.Traits
 				if (!Info.TerrainTypes.Contains(map.GetTerrainInfo(c).Type))
 					continue;
 
-				// Don't place under other buildings or custom terrain
-				if (bi.GetBuildingAt(c) != self || map.CustomTerrain[c] != byte.MaxValue)
+				// Don't override any existing custom terrain
+				if (map.CustomTerrain[c] != byte.MaxValue)
+					continue;
+
+				// Don't place under other buildings
+				if (self.World.ActorMap.GetActorsAt(c).Any(a => a != self && a.TraitOrDefault<Building>() != null))
 					continue;
 
 				layer.AddTile(c, new TerrainTile(template.Id, (byte)i));
