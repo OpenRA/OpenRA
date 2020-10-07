@@ -43,6 +43,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("When to show the detection circle. Valid values are `Always`, and `WhenSelected`")]
 		public readonly DetectionCircleVisibility Visible = DetectionCircleVisibility.WhenSelected;
 
+		[Desc("Render the circle on the ground regardless of actors height.")]
+		public readonly bool RenderOnGround = false;
+
 		public override object Create(ActorInitializer init) { return new RenderDetectionCircle(init.Self, this); }
 	}
 
@@ -70,8 +73,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (range == WDist.Zero)
 				yield break;
 
+			var position = self.CenterPosition;
+			if (info.RenderOnGround)
+				position -= new WVec(0, 0, self.World.Map.DistanceAboveTerrain(position).Length);
+
 			yield return new DetectionCircleAnnotationRenderable(
-				self.CenterPosition,
+				position,
 				range,
 				0,
 				info.TrailCount,
