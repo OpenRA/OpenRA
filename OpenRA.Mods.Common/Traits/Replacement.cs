@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class ReplacementInfo : TraitInfo<Replacement>
 	{
 		[FieldLoader.Require]
-		[Desc("Replacement type (matched against Conditions in Replaceable).")]
+		[Desc("Replacement type (matched against Types in Replaceable).")]
 		public readonly HashSet<string> ReplaceableTypes = new HashSet<string>();
 	}
 
