@@ -1,0 +1,102 @@
+#region Copyright & License Information
+/*
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
+ * This file is part of OpenRA, which is free software. It is made
+ * available to you under the terms of the GNU General Public License
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
+ */
+#endregion
+
+using System.IO;
+using System.Linq;
+using OpenRA.Graphics;
+using OpenRA.Primitives;
+using Pfim;
+
+namespace OpenRA.Mods.Common.SpriteLoaders
+{
+	public class TgaLoader : ISpriteLoader
+	{
+		public static bool IsTga(Stream s)
+		{
+			var start = s.Position;
+			try
+			{
+				// Require true-color images
+				s.Position += 1;
+				var colorMapType = s.ReadUInt8();
+				if (colorMapType != 0)
+					return false;
+
+				var imageType = s.ReadUInt8();
+				if (imageType != 2)
+					return false;
+
+				var colorMapOffsetAndSize = s.ReadUInt32();
+				if (colorMapOffsetAndSize != 0)
+					return false;
+
+				var colorMapBits = s.ReadUInt8();
+				if (colorMapBits != 0)
+					return false;
+
+				return true;
+			}
+			finally
+			{
+				s.Position = start;
+			}
+		}
+
+		public bool TryParseSprite(Stream s, out ISpriteFrame[] frames, out TypeDictionary metadata)
+		{
+			metadata = null;
+			if (!IsTga(s))
+			{
+				frames = null;
+				return false;
+			}
+
+			frames = new TgaSprite(s).Frames.ToArray();
+			return true;
+		}
+	}
+
+	public class TgaSprite
+	{
+		public class TgaFrame : ISpriteFrame
+		{
+			public SpriteFrameType Type { get; private set; }
+			public Size Size { get; private set; }
+			public Size FrameSize { get; private set; }
+			public float2 Offset { get; private set; }
+			public byte[] Data { get; private set; }
+			public bool DisableExportPadding { get { return false; } }
+
+			public TgaFrame(Stream stream)
+			{
+				using (var tga = Targa.Create(stream, new PfimConfig()))
+				{
+					Size = FrameSize = new Size(tga.Width, tga.Height);
+					Data = tga.Data;
+					switch (tga.Format)
+					{
+						// SpriteFrameType refers to the channel byte order, which is reversed from the little-endian bit order
+						case ImageFormat.Rgba32: Type = SpriteFrameType.Bgra32; break;
+						case ImageFormat.Rgb24: Type = SpriteFrameType.Bgr24; break;
+						default: throw new InvalidDataException("Unhandled ImageFormat {0}".F(tga.Format));
+					}
+				}
+			}
+		}
+
+		public IReadOnlyList<ISpriteFrame> Frames { get; private set; }
+
+		public TgaSprite(Stream stream)
+		{
+			Frames = new ISpriteFrame[] { new TgaFrame(stream) }.AsReadOnly();
+		}
+	}
+}
