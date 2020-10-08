@@ -247,7 +247,6 @@ World:
 	DebugVisualizationCommands:
 	PlayerCommands:
 	HelpCommand:
-	BuildingInfluence:
 	ProductionQueueFromSelection:
 		ProductionPaletteWidget: PRODUCTION_PALETTE
 	DomainIndex:

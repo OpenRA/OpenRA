@@ -159,7 +159,6 @@ World:
 	PlayerCommands:
 	HelpCommand:
 	ScreenShaker:
-	BuildingInfluence:
 	LegacyBridgeLayer:
 		Bridges: bridge1, bridge2, bridge3, bridge4
 	ProductionQueueFromSelection:
