@@ -78,8 +78,7 @@ namespace OpenRA.Network
 					{
 						return Enumerable.Empty<IPEndPoint>();
 					}
-				})
-				.ToList();
+				});
 		}
 
 		public override string ToString()
@@ -227,10 +226,17 @@ namespace OpenRA.Network
 		{
 			var queue = new BlockingCollection<TcpClient>();
 
-			var atLeastOneEndpoint = false;
-			foreach (var endpoint in target.GetConnectEndPoints())
+			var endpoints = target.GetConnectEndPoints();
+
+			if (!endpoints.Any())
 			{
-				atLeastOneEndpoint = true;
+				errorMessage = "Failed to resolve address";
+				connectionState = ConnectionState.NotConnected;
+				return;
+			}
+
+			foreach (var endpoint in endpoints)
+			{
 				new Thread(() =>
 				{
 					try
@@ -260,14 +266,8 @@ namespace OpenRA.Network
 				}.Start();
 			}
 
-			if (!atLeastOneEndpoint)
-			{
-				errorMessage = "Failed to resolve address";
-				connectionState = ConnectionState.NotConnected;
-			}
-
 			// Wait up to 5s for a successful connection. This should hopefully be enough because such high latency makes the game unplayable anyway.
-			else if (queue.TryTake(out tcp, 5000))
+			if (queue.TryTake(out tcp, 5000))
 			{
 				// Copy endpoint here to have it even after getting disconnected.
 				endpoint = (IPEndPoint)tcp.Client.RemoteEndPoint;
