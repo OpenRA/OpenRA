@@ -75,6 +75,11 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 			public byte[] Data { get; private set; }
 			public bool DisableExportPadding { get { return false; } }
 
+			public TgaFrame()
+			{
+				Data = new byte[0];
+			}
+
 			public TgaFrame(Stream stream)
 			{
 				using (var tga = Targa.Create(stream, new PfimConfig()))
@@ -89,6 +94,13 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 						default: throw new InvalidDataException("Unhandled ImageFormat {0}".F(tga.Format));
 					}
 				}
+			}
+
+			public TgaFrame(Stream stream, Size frameSize, Rectangle frameWindow)
+				: this(stream)
+			{
+				FrameSize = frameSize;
+				Offset = 0.5f * new float2(frameWindow.Left + frameWindow.Right - FrameSize.Width, frameWindow.Top + frameWindow.Bottom - FrameSize.Height);
 			}
 		}
 
