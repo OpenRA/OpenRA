@@ -62,14 +62,14 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			var tables = utility.ModData.ObjectCreator.GetTypesImplementing<ScriptGlobal>()
 				.OrderBy(t => t.Name);
 
-			Console.WriteLine("### Global Tables");
+			Console.WriteLine("## Global Tables");
 
 			foreach (var t in tables)
 			{
 				var name = t.GetCustomAttributes<ScriptGlobalAttribute>(true).First().Name;
 				var members = ScriptMemberWrapper.WrappableMembers(t);
 
-				Console.WriteLine("#### " + name);
+				Console.WriteLine("### " + name);
 				Console.WriteLine("<table>");
 				foreach (var m in members.OrderBy(m => m.Name))
 				{
@@ -93,7 +93,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 			foreach (var kv in actorCategories)
 			{
-				Console.WriteLine("#### " + kv.Key);
+				Console.WriteLine("### " + kv.Key);
 				Console.WriteLine("<table>");
 
 				foreach (var property in kv.OrderBy(p => p.Item2.Name))
@@ -126,7 +126,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				Console.WriteLine("</table>");
 			}
 
-			Console.WriteLine("### Player Properties / Commands");
+			Console.WriteLine("## Player Properties / Commands");
 
 			var playerCategories = utility.ModData.ObjectCreator.GetTypesImplementing<ScriptPlayerProperties>().SelectMany(cg =>
 			{
