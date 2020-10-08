@@ -22,22 +22,52 @@ namespace OpenRA.Mods.Common.Traits
 			if (!world.Map.Contains(cell))
 				return false;
 
-			var building = world.WorldActor.Trait<BuildingInfluence>().GetBuildingAt(cell);
-			if (building != null)
+			if (!bi.AllowInvalidPlacement)
 			{
-				if (ai == null)
-					return false;
+				// Replaceable actors are rare, so avoid initializing state unless we have to
+				var checkReplacements = ai != null && ai.HasTraitInfo<ReplacementInfo>();
+				HashSet<string> acceptedReplacements = null;
 
-				var replacementInfo = ai.TraitInfoOrDefault<ReplacementInfo>();
-				if (replacementInfo == null)
-					return false;
+				var foundActors = false;
+				foreach (var a in world.ActorMap.GetActorsAt(cell))
+				{
+					if (a == toIgnore)
+						continue;
 
-				if (!building.TraitsImplementing<Replaceable>().Any(p => !p.IsTraitDisabled &&
-					p.Info.Types.Overlaps(replacementInfo.ReplaceableTypes)))
-					return false;
+					// If this is potentially a replacement actor we must check *all* cell occupants
+					// before we know the placement is invalid
+					// Otherwise, we can bail immediately
+					if (!checkReplacements)
+						return false;
+
+					foundActors = true;
+					foreach (var r in a.TraitsImplementing<Replaceable>())
+					{
+						if (r.IsTraitDisabled)
+							continue;
+
+						if (acceptedReplacements == null)
+							acceptedReplacements = new HashSet<string>();
+
+						acceptedReplacements.UnionWith(r.Info.Types);
+					}
+				}
+
+				// Replacements are enabled and the cell contained at least one (not ignored) actor
+				if (foundActors)
+				{
+					// The cell contains at least one actor, and none were replaceable
+					if (acceptedReplacements == null)
+						return false;
+
+					// The cell contains at least one replaceable actor, but not of the types we accept
+					var foundReplacement = ai.TraitInfos<ReplacementInfo>()
+						.Any(r => r.ReplaceableTypes.Overlaps(acceptedReplacements));
+
+					if (!foundReplacement)
+						return false;
+				}
 			}
-			else if (!bi.AllowInvalidPlacement && world.ActorMap.GetActorsAt(cell).Any(a => a != toIgnore))
-				return false;
 
 			// Buildings can never be placed on ramps
 			return world.Map.Ramp[cell] == 0 && bi.TerrainTypes.Contains(world.Map.GetTerrainInfo(cell).Type);
