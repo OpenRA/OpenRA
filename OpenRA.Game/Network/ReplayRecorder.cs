@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using OpenRA.FileFormats;
@@ -83,6 +84,14 @@ namespace OpenRA.Network
 			writer.Write(clientID);
 			writer.Write(data.Length);
 			writer.Write(data);
+		}
+
+		public void ReceiveFrame(int clientID, int frame, byte[] data)
+		{
+			var ms = new MemoryStream(4 + data.Length);
+			ms.WriteArray(BitConverter.GetBytes(frame));
+			ms.WriteArray(data);
+			Receive(clientID, ms.GetBuffer());
 		}
 
 		bool disposed;
