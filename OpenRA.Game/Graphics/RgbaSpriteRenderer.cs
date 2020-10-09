@@ -46,20 +46,20 @@ namespace OpenRA.Graphics
 			parent.DrawSprite(s, a, b, c, d);
 		}
 
-		public void DrawSpriteWithTint(Sprite s, in float3 location, in float3 size, in float3 tint)
+		public void DrawSprite(Sprite s, in float3 location, in float3 size, in float3 tint, float alpha)
 		{
 			if (s.Channel != TextureChannel.RGBA)
 				throw new InvalidOperationException("DrawRGBASprite requires a RGBA sprite.");
 
-			parent.DrawSpriteWithTint(s, location, 0, size, tint);
+			parent.DrawSprite(s, location, 0, size, tint, alpha);
 		}
 
-		public void DrawSpriteWithTint(Sprite s, in float3 a, in float3 b, in float3 c, in float3 d, in float3 tint)
+		public void DrawSprite(Sprite s, in float3 a, in float3 b, in float3 c, in float3 d, in float3 tint, float alpha)
 		{
 			if (s.Channel != TextureChannel.RGBA)
 				throw new InvalidOperationException("DrawRGBASprite requires a RGBA sprite.");
 
-			parent.DrawSpriteWithTint(s, a, b, c, d, tint);
+			parent.DrawSprite(s, a, b, c, d, tint, alpha);
 		}
 	}
 }

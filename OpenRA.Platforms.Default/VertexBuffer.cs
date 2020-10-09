@@ -91,7 +91,7 @@ namespace OpenRA.Platforms.Default
 			OpenGL.CheckGLError();
 			OpenGL.glVertexAttribPointer(Shader.TexMetadataAttributeIndex, 2, OpenGL.GL_FLOAT, false, VertexSize, new IntPtr(28));
 			OpenGL.CheckGLError();
-			OpenGL.glVertexAttribPointer(Shader.TintAttributeIndex, 3, OpenGL.GL_FLOAT, false, VertexSize, new IntPtr(36));
+			OpenGL.glVertexAttribPointer(Shader.TintAttributeIndex, 4, OpenGL.GL_FLOAT, false, VertexSize, new IntPtr(36));
 			OpenGL.CheckGLError();
 		}
 

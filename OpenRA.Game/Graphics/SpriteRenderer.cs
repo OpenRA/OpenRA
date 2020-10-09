@@ -111,7 +111,7 @@ namespace OpenRA.Graphics
 		internal void DrawSprite(Sprite s, in float3 location, float paletteTextureIndex, in float3 size)
 		{
 			var samplers = SetRenderStateForSprite(s);
-			Util.FastCreateQuad(vertices, location + s.FractionalOffset * size, s, samplers, paletteTextureIndex, nv, size, float3.Ones);
+			Util.FastCreateQuad(vertices, location + s.FractionalOffset * size, s, samplers, paletteTextureIndex, nv, size, float3.Ones, 1f);
 			nv += 6;
 		}
 
@@ -128,26 +128,26 @@ namespace OpenRA.Graphics
 		public void DrawSprite(Sprite s, in float3 a, in float3 b, in float3 c, in float3 d)
 		{
 			var samplers = SetRenderStateForSprite(s);
-			Util.FastCreateQuad(vertices, a, b, c, d, s, samplers, 0, float3.Ones, nv);
+			Util.FastCreateQuad(vertices, a, b, c, d, s, samplers, 0, float3.Ones, 1f, nv);
 			nv += 6;
 		}
 
-		internal void DrawSpriteWithTint(Sprite s, in float3 location, float paletteTextureIndex, in float3 size, in float3 tint)
+		internal void DrawSprite(Sprite s, in float3 location, float paletteTextureIndex, in float3 size, in float3 tint, float alpha)
 		{
 			var samplers = SetRenderStateForSprite(s);
-			Util.FastCreateQuad(vertices, location + s.FractionalOffset * size, s, samplers, paletteTextureIndex, nv, size, tint);
+			Util.FastCreateQuad(vertices, location + s.FractionalOffset * size, s, samplers, paletteTextureIndex, nv, size, tint, alpha);
 			nv += 6;
 		}
 
-		public void DrawSpriteWithTint(Sprite s, in float3 location, PaletteReference pal, in float3 size, in float3 tint)
+		public void DrawSprite(Sprite s, in float3 location, PaletteReference pal, in float3 size, in float3 tint, float alpha)
 		{
-			DrawSpriteWithTint(s, location, pal.TextureIndex, size, tint);
+			DrawSprite(s, location, pal.TextureIndex, size, tint, alpha);
 		}
 
-		public void DrawSpriteWithTint(Sprite s, in float3 a, in float3 b, in float3 c, in float3 d, in float3 tint)
+		public void DrawSprite(Sprite s, in float3 a, in float3 b, in float3 c, in float3 d, in float3 tint, float alpha)
 		{
 			var samplers = SetRenderStateForSprite(s);
-			Util.FastCreateQuad(vertices, a, b, c, d, s, samplers, 0, tint, nv);
+			Util.FastCreateQuad(vertices, a, b, c, d, s, samplers, 0, tint, alpha, nv);
 			nv += 6;
 		}
 
