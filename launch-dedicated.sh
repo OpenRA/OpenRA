@@ -11,6 +11,7 @@ Mod="${Mod:-"ra"}"
 ListenPort="${ListenPort:-"1234"}"
 AdvertiseOnline="${AdvertiseOnline:-"True"}"
 Password="${Password:-""}"
+RecordReplays="${RecordReplays:-"False"}"
 
 RequireAuthentication="${RequireAuthentication:-"False"}"
 ProfileIDBlacklist="${ProfileIDBlacklist:-""}"
@@ -30,6 +31,7 @@ while true; do
      Server.AdvertiseOnline="$AdvertiseOnline" \
      Server.EnableSingleplayer="$EnableSingleplayer" \
      Server.Password="$Password" \
+     Server.RecordReplays="$RecordReplays" \
      Server.GeoIPDatabase="$GeoIPDatabase" \
      Server.RequireAuthentication="$RequireAuthentication" \
      Server.ProfileIDBlacklist="$ProfileIDBlacklist" \

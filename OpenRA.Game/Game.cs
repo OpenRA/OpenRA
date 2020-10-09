@@ -72,10 +72,10 @@ namespace OpenRA
 			return om;
 		}
 
-		static string TimestampedFilename(bool includemilliseconds = false)
+		public static string TimestampedFilename(bool includemilliseconds = false, string extra = "")
 		{
 			var format = includemilliseconds ? "yyyy-MM-ddTHHmmssfffZ" : "yyyy-MM-ddTHHmmssZ";
-			return ModData.Manifest.Id + "-" + DateTime.UtcNow.ToString(format, CultureInfo.InvariantCulture);
+			return ModData.Manifest.Id + extra + "-" + DateTime.UtcNow.ToString(format, CultureInfo.InvariantCulture);
 		}
 
 		static void JoinInner(OrderManager om)

@@ -18,9 +18,11 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
+using OpenRA.FileFormats;
 using OpenRA.Network;
 using OpenRA.Primitives;
 using OpenRA.Support;
+using OpenRA.Traits;
 
 namespace OpenRA.Server
 {
@@ -69,6 +71,10 @@ namespace OpenRA.Server
 
 		volatile ActionQueue delayedActions = new ActionQueue();
 		int waitingForAuthenticationCallback = 0;
+
+		ReplayRecorder recorder;
+		GameInformation gameInfo;
+		readonly List<GameInformation.Player> worldPlayers = new List<GameInformation.Player>();
 
 		public ServerState State
 		{
@@ -123,6 +129,42 @@ namespace OpenRA.Server
 		{
 			foreach (var t in serverTraits.WithInterface<IEndGame>())
 				t.GameEnded(this);
+
+			recorder?.Dispose();
+			recorder = null;
+		}
+
+		// Craft a fake handshake request/response because that's the
+		// only way to expose the Version and OrdersProtocol.
+		public void RecordFakeHandshake()
+		{
+			var request = new HandshakeRequest
+			{
+				Mod = ModData.Manifest.Id,
+				Version = ModData.Manifest.Metadata.Version,
+			};
+
+			recorder.ReceiveFrame(0, 0, new Order("HandshakeRequest", null, false)
+			{
+				Type = OrderType.Handshake,
+				IsImmediate = true,
+				TargetString = request.Serialize(),
+			}.Serialize());
+
+			var response = new HandshakeResponse()
+			{
+				Mod = ModData.Manifest.Id,
+				Version = ModData.Manifest.Metadata.Version,
+				OrdersProtocol = ProtocolVersion.Orders,
+				Client = new Session.Client(),
+			};
+
+			recorder.ReceiveFrame(0, 0, new Order("HandshakeResponse", null, false)
+			{
+				Type = OrderType.Handshake,
+				IsImmediate = true,
+				TargetString = response.Serialize(),
+			}.Serialize());
 		}
 
 		public Server(List<IPEndPoint> endpoints, ServerSettings settings, ModData modData, ServerType type)
@@ -197,6 +239,15 @@ namespace OpenRA.Server
 					Dedicated = Type == ServerType.Dedicated
 				}
 			};
+
+			if (Settings.RecordReplays && Type == ServerType.Dedicated)
+			{
+				recorder = new ReplayRecorder(() => { return Game.TimestampedFilename(extra: "-Server"); });
+
+				// We only need one handshake to initialize the replay.
+				// Add it now, then ignore the redundant handshakes from each client
+				RecordFakeHandshake();
+			}
 
 			new Thread(_ =>
 			{
@@ -633,6 +684,9 @@ namespace OpenRA.Server
 			var from = conn != null ? conn.PlayerIndex : 0;
 			foreach (var c in Conns.Except(conn).ToList())
 				DispatchOrdersToClient(c, from, frame, data);
+
+			if (recorder != null)
+				recorder.ReceiveFrame(from, frame, data);
 		}
 
 		public void DispatchOrders(Connection conn, int frame, byte[] data)
@@ -1034,12 +1088,44 @@ namespace OpenRA.Server
 				// TODO: Enable for multiplayer (non-dedicated servers only) once the lobby UI has been created
 				LobbyInfo.GlobalSettings.GameSavesEnabled = Type != ServerType.Dedicated && LobbyInfo.NonBotClients.Count() == 1;
 
+				// Player list for win/loss tracking
+				// HACK: NonCombatant and non-Playable players are set to null to simplify replay tracking
+				// The null padding is needed to keep the player indexes in sync with world.Players on the clients
+				// This will need to change if future code wants to use worldPlayers for other purposes
+				foreach (var cmpi in Map.Rules.Actors["world"].TraitInfos<ICreatePlayersInfo>())
+					cmpi.CreateServerPlayers(Map, LobbyInfo, worldPlayers);
+
+				if (recorder != null)
+				{
+					gameInfo = new GameInformation
+					{
+						Mod = Game.ModData.Manifest.Id,
+						Version = Game.ModData.Manifest.Metadata.Version,
+						MapUid = Map.Uid,
+						MapTitle = Map.Title,
+						StartTimeUtc = DateTime.UtcNow,
+					};
+
+					// Replay metadata should only include the playable players
+					foreach (var p in worldPlayers)
+						if (p != null)
+							gameInfo.Players.Add(p);
+
+					recorder.Metadata = new ReplayMetadata(gameInfo);
+				}
+
 				SyncLobbyInfo();
 				State = ServerState.GameStarted;
 
+				var disconnectData = new[] { (byte)OrderType.Disconnect };
 				foreach (var c in Conns)
+				{
 					foreach (var d in Conns)
-						DispatchOrdersToClient(c, d.PlayerIndex, int.MaxValue, new[] { (byte)OrderType.Disconnect });
+						DispatchOrdersToClient(c, d.PlayerIndex, int.MaxValue, disconnectData);
+
+					if (recorder != null)
+						recorder.ReceiveFrame(c.PlayerIndex, int.MaxValue, disconnectData);
+				}
 
 				if (GameSave == null && LobbyInfo.GlobalSettings.GameSavesEnabled)
 					GameSave = new GameSave();
