@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common
 {
 	public enum BuildingType { Building, Defense, Refinery }
 
-	public enum WaterCheck { NotChecked, EnoughWater, NotEnoughWater }
+	public enum WaterCheck { NotChecked, EnoughWater, NotEnoughWater, DontCheck }
 
 	public static class AIUtils
 	{

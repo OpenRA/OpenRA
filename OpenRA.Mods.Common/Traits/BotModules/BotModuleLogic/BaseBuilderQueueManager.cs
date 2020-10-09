@@ -51,6 +51,8 @@ namespace OpenRA.Mods.Common.Traits
 			failRetryTicks = baseBuilder.Info.StructureProductionResumeDelay;
 			minimumExcessPower = baseBuilder.Info.MinimumExcessPower;
 			this.resourceTypeIndices = resourceTypeIndices;
+			if (!baseBuilder.Info.NavalProductionTypes.Any())
+				waterState = WaterCheck.DontCheck;
 		}
 
 		public void Tick(IBot bot)
