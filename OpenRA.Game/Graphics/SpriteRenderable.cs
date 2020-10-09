@@ -80,7 +80,7 @@ namespace OpenRA.Graphics
 				if (wr.TerrainLighting != null)
 					t *= wr.TerrainLighting.TintAt(pos);
 
-				wsr.DrawSpriteWithTint(sprite, ScreenPosition(wr), palette, scale * sprite.Size, t);
+				wsr.DrawSprite(sprite, ScreenPosition(wr), palette, scale * sprite.Size, t, 1f);
 			}
 		}
 

@@ -148,8 +148,8 @@ namespace OpenRA.Mods.Common.Graphics
 				if (wr.TerrainLighting != null)
 					t *= wr.TerrainLighting.TintAt(model.pos);
 
-				wrsr.DrawSpriteWithTint(renderProxy.ShadowSprite, sa, sb, sc, sd, t);
-				wrsr.DrawSpriteWithTint(renderProxy.Sprite, pxOrigin - 0.5f * renderProxy.Sprite.Size, renderProxy.Sprite.Size, t);
+				wrsr.DrawSprite(renderProxy.ShadowSprite, sa, sb, sc, sd, t, 1f);
+				wrsr.DrawSprite(renderProxy.Sprite, pxOrigin - 0.5f * renderProxy.Sprite.Size, renderProxy.Sprite.Size, t, 1f);
 			}
 
 			public void RenderDebugGeometry(WorldRenderer wr)
