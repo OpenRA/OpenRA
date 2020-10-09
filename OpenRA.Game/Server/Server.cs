@@ -679,6 +679,101 @@ namespace OpenRA.Server
 			}
 		}
 
+		bool AnyUndefinedWinStates()
+		{
+			var lastTeam = -1;
+			var remainingPlayers = gameInfo.Players.Where(p => p.Outcome == WinState.Undefined);
+			foreach (var player in remainingPlayers)
+			{
+				if (lastTeam >= 0 && (player.Team != lastTeam || player.Team == 0))
+					return true;
+
+				lastTeam = player.Team;
+			}
+
+			return false;
+		}
+
+		void SetPlayerDefeat(int playerIndex)
+		{
+			var defeatedPlayer = worldPlayers[playerIndex];
+			if (defeatedPlayer == null || defeatedPlayer.Outcome != WinState.Undefined)
+				return;
+
+			defeatedPlayer.Outcome = WinState.Lost;
+			defeatedPlayer.OutcomeTimestampUtc = DateTime.UtcNow;
+
+			// Set remaining players as winners if only one side remains
+			if (!AnyUndefinedWinStates())
+			{
+				var now = DateTime.UtcNow;
+				var remainingPlayers = gameInfo.Players.Where(p => p.Outcome == WinState.Undefined);
+				foreach (var winner in remainingPlayers)
+				{
+					winner.Outcome = WinState.Won;
+					winner.OutcomeTimestampUtc = now;
+				}
+			}
+		}
+
+		void OutOfSync(int frame)
+		{
+			Log.Write("server", "Out of sync detected at frame {0}, cancel replay recording", frame);
+
+			// Make sure the written file is not valid
+			// TODO: storing a serverside replay on desync would be extremely useful
+			recorder.Metadata = null;
+
+			recorder.Dispose();
+
+			// Stop the recording
+			recorder = null;
+		}
+
+		readonly Dictionary<int, byte[]> syncForFrame = new Dictionary<int, byte[]>();
+		int lastDefeatStateFrame;
+		ulong lastDefeatState;
+
+		void HandleSyncOrder(int frame, byte[] packet)
+		{
+			if (syncForFrame.TryGetValue(frame, out var existingSync))
+			{
+				if (packet.Length != existingSync.Length)
+				{
+					OutOfSync(frame);
+					return;
+				}
+
+				for (var i = 0; i < packet.Length; i++)
+				{
+					if (packet[i] != existingSync[i])
+					{
+						OutOfSync(frame);
+						return;
+					}
+				}
+			}
+			else
+			{
+				// Update player losses based on the new defeat state.
+				// Do this once for the first player, the check above
+				// guarantees a desync if any other player disagrees.
+				var playerDefeatState = BitConverter.ToUInt64(packet, 1 + 4);
+				if (frame > lastDefeatStateFrame && lastDefeatState != playerDefeatState)
+				{
+					var newDefeats = playerDefeatState & ~lastDefeatState;
+					for (var i = 0; i < worldPlayers.Count; i++)
+						if ((newDefeats & (1UL << i)) != 0)
+							SetPlayerDefeat(i);
+
+					lastDefeatState = playerDefeatState;
+					lastDefeatStateFrame = frame;
+				}
+
+				syncForFrame.Add(frame, packet);
+			}
+		}
+
 		public void DispatchOrdersToClients(Connection conn, int frame, byte[] data)
 		{
 			var from = conn != null ? conn.PlayerIndex : 0;
@@ -686,7 +781,12 @@ namespace OpenRA.Server
 				DispatchOrdersToClient(c, from, frame, data);
 
 			if (recorder != null)
+			{
 				recorder.ReceiveFrame(from, frame, data);
+
+				if (data.Length == 1 + 4 + 8 && data[0] == (byte)OrderType.SyncHash)
+					HandleSyncOrder(frame, data);
+			}
 		}
 
 		public void DispatchOrders(Connection conn, int frame, byte[] data)
