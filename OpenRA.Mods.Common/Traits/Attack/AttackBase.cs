@@ -371,20 +371,9 @@ namespace OpenRA.Mods.Common.Traits
 			// (short-circuiting in the logical expression below)
 			Player owner = null;
 			if (t.Type == TargetType.FrozenActor)
-			{
 				owner = t.FrozenActor.Owner;
-			}
 			else if (t.Type == TargetType.Actor)
-			{
-				owner = t.Actor.EffectiveOwner != null && t.Actor.EffectiveOwner.Owner != null
-					? t.Actor.EffectiveOwner.Owner
-					: t.Actor.Owner;
-
-				// Special cases for spies so we don't kill friendly disguised spies
-				// and enable dogs to kill enemy disguised spies.
-				if (self.Owner.Stances[t.Actor.Owner] == Stance.Ally || self.Info.HasTraitInfo<IgnoresDisguiseInfo>())
-					owner = t.Actor.Owner;
-			}
+				owner = t.Actor.Owner;
 
 			return Armaments.Where(a =>
 				!a.IsTraitDisabled
