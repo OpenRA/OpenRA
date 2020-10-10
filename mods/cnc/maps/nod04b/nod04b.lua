@@ -12,19 +12,19 @@ NodUnitsRocket = { "e3", "e3", "e3", "e3", "e3", "e3" }
 NodUnitsGunner = { "e1", "e1", "e1", "e1", "e1", "e1" }
 
 Apc3Trigger = { CPos.New(28,58), CPos.New(27,58), CPos.New(28,57), CPos.New(27,57), CPos.New(28,56), CPos.New(27,56), CPos.New(28,55), CPos.New(27,55), CPos.New(28,54), CPos.New(27,54), CPos.New(28,53), CPos.New(27,53) }
-Civ1CellTriggerActivator = { CPos.New(24,52), CPos.New(23,52), CPos.New(22,52), CPos.New(23,51), CPos.New(22,51), CPos.New(21,51) }
-Civ2CellTriggerActivator = { CPos.New(26,54), CPos.New(25,54), CPos.New(24,54), CPos.New(25,53), CPos.New(24,53), CPos.New(23,53) }
+SouthernBridgeTrigger = { CPos.New(26,54), CPos.New(25,54), CPos.New(24,54), CPos.New(25,53), CPos.New(24,53), CPos.New(23,53) }
 
 Apc1Units = { "c2", "c3", "c4", "c5" }
 
+Civilians = { Civilian1, Civilian2, Civilian3, Civilian4, Civilian5, Civilian6, Civilian7, Civilian8 }
 TargetActors = { Civilian1, Civilian2, Civilian3, Civilian4, Civilian5, Civilian6, Civilian7, Civilian8, CivBuilding1, CivBuilding2, CivBuilding3, CivBuilding4, CivBuilding5, CivBuilding6, CivBuilding7, CivBuilding8, CivBuilding9, CivBuilding10, CivBuilding11, CivBuilding12, CivBuilding13, CivBuilding14 }
 Apc2Trigger = { NodGunner1, NodGunner2, NodGunner3 }
 
 Apc1Waypoints = { waypoint0.Location, waypoint11.Location, waypoint10.Location, waypoint8.Location, waypoint9.Location }
 Apc2Waypoints = { waypoint8, waypoint7, waypoint6, waypoint5, waypoint4 }
 Apc3Waypoints = { waypoint3, waypoint2, waypoint1, waypoint0, waypoint11, waypoint10, waypoint8, waypoint9 }
-Civ1Waypoints = { waypoint3, waypoint2, waypoint3, waypoint1, waypoint2, waypoint11, waypoint10, waypoint8, waypoint9 }
-Civ2Waypoints = { waypoint3, waypoint2, waypoint1, waypoint11, waypoint10, waypoint8, waypoint9 }
+FlightRouteTop = { waypoint4, waypoint5, waypoint6, waypoint7, waypoint8, waypoint9 }
+FlightRouteBottom = { waypoint3, waypoint2, waypoint1, waypoint11, waypoint10, waypoint8, waypoint9 }
 Hummer1Waypoints = { waypoint8, waypoint7, waypoint6, waypoint5, waypoint4, waypoint3, waypoint2, waypoint1, waypoint0, waypoint11, waypoint10, waypoint8 }
 
 WorldLoaded = function()
@@ -38,20 +38,9 @@ WorldLoaded = function()
 			end)
 	end)
 
-	Trigger.OnEnteredFootprint(Civ2CellTriggerActivator, function(a, id)
+	Trigger.OnEnteredFootprint(SouthernBridgeTrigger, function(a, id)
 		if a.Owner == Nod then
-			for type, count in pairs({ ["c6"] = 1, ["c7"] = 1, ["c8"] = 1, ["c9"] = 1 }) do
-				MoveAndHunt(Utils.Take(count, GDI.GetActorsByType(type)), Civ2Waypoints)
-			end
-			Trigger.RemoveFootprintTrigger(id)
-		end
-	end)
-
-	Trigger.OnEnteredFootprint(Civ1CellTriggerActivator, function(a, id)
-		if a.Owner == Nod then
-			for type, count in pairs({ ["c2"] = 1, ["c3"] = 1, ["c4"] = 1, ["c5"] = 1 }) do
-				MoveAndHunt(Utils.Take(count, GDI.GetActorsByType(type)), Civ1Waypoints)
-			end
+			MoveAndHunt(Civilians, FlightRouteTop)
 			Trigger.RemoveFootprintTrigger(id)
 		end
 	end)
