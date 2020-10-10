@@ -32,10 +32,17 @@ WorldLoaded = function()
 	GDI = Player.GetPlayer("GDI")
 
 	Trigger.AfterDelay(DateTime.Seconds(3), function()
-		Reinforcements.ReinforceWithTransport(GDI, "apc", Apc1Units, Apc1Waypoints, nil,
-			function(transport, cargo)
-				Utils.Do(cargo, IdleHunt)
-			end)
+		local apc = Actor.Create("apc", true, { Owner = GDI, Location = Apc1Waypoints[1], Cargo = Apc1Units })
+		Utils.Do(Apc1Waypoints, function(waypoint)
+			apc.AttackMove(waypoint)
+		end)
+
+		Trigger.OnEnteredFootprint(Apc3Trigger, function(a, id)
+			if a.Owner == Nod then
+				MoveAndHunt({ apc }, Apc3Waypoints)
+				Trigger.RemoveFootprintTrigger(id)
+			end
+		end)
 	end)
 
 	Trigger.OnEnteredFootprint(SouthernBridgeTrigger, function(a, id)
@@ -46,18 +53,11 @@ WorldLoaded = function()
 	end)
 
 	Trigger.OnDiscovered(Convoi, function()
-		MoveAndHunt(Utils.Take(2, GDI.GetActorsByType("jeep")), Hummer1Waypoints)
+		MoveAndHunt({ Jeep1, Jeep2 }, Hummer1Waypoints)
 	end)
 
 	Trigger.OnAllRemovedFromWorld(Apc2Trigger, function()
-		MoveAndHunt(Utils.Take(1, GDI.GetActorsByType("apc")), Apc2Waypoints)
-	end)
-
-	Trigger.OnEnteredFootprint(Apc3Trigger, function(a, id)
-		if a.Owner == Nod then
-			MoveAndHunt(Utils.Take(1, GDI.GetActorsByType("apc")), Apc3Waypoints)
-			Trigger.RemoveFootprintTrigger(id)
-		end
+		MoveAndHunt({ Convoi }, Apc2Waypoints)
 	end)
 
 	Trigger.OnAllRemovedFromWorld(TargetActors, function()

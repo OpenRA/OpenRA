@@ -263,10 +263,10 @@ Actors:
 	Actor87: v23
 		Location: 9,59
 		Owner: Neutral
-	Actor92: jeep
+	Jeep1: jeep
 		Location: 51,25
 		Owner: GDI
-	Actor93: jeep
+	Jeep2: jeep
 		Location: 50,25
 		Owner: GDI
 	Actor94: jeep
