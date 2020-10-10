@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Traits
 			map = self.World.Map;
 			cellCenters = new CellLayer<WPos>(map);
 			terrainIndices = new CellLayer<byte>(map);
-			terrainIndices.Clear(map.Rules.TileSet.GetTerrainIndex(info.ImpassableTerrainType));
+			terrainIndices.Clear(map.Rules.TerrainInfo.GetTerrainIndex(info.ImpassableTerrainType));
 		}
 
 		public void WorldLoaded(World world, WorldRenderer wr)
@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				enabled = true;
 
-				var terrain = map.Rules.TileSet.GetTerrainIndex(tti.TerrainType);
+				var terrain = map.Rules.TerrainInfo.GetTerrainIndex(tti.TerrainType);
 				foreach (var c in tti.BridgeCells())
 				{
 					var uv = c.ToMPos(map);

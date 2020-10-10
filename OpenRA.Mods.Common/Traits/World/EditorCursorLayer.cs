@@ -80,7 +80,7 @@ namespace OpenRA.Mods.Common.Traits
 							for (var x = 0; x < TerrainTemplate.Size.X; x++)
 							{
 								var tile = new TerrainTile(TerrainTemplate.Id, (byte)i++);
-								if (!world.Map.Rules.TileSet.TryGetTileInfo(tile, out var tileInfo))
+								if (!world.Map.Rules.TerrainInfo.TryGetTerrainInfo(tile, out var tileInfo))
 									continue;
 
 								var sprite = terrainRenderer.TileSprite(tile, 0);

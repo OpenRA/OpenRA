@@ -28,14 +28,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		void IMapPreviewSignatureInfo.PopulateMapPreviewSignatureCells(Map map, ActorInfo ai, ActorReference s, List<(MPos, Color)> destinationBuffer)
 		{
-			var tileSet = map.Rules.TileSet;
-
 			Color color;
 			if (!string.IsNullOrEmpty(Terrain))
 			{
-				color = tileSet[tileSet.GetTerrainIndex(Terrain)].Color;
+				var terrainInfo = map.Rules.TerrainInfo;
+				color = terrainInfo.TerrainTypes[terrainInfo.GetTerrainIndex(Terrain)].Color;
 			}
-			else if (Color != default(Color))
+			else if (Color != default)
 			{
 				color = Color;
 			}

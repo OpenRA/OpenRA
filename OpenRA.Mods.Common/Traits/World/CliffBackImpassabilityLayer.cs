@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void WorldLoaded(World w, WorldRenderer wr)
 		{
-			var tileType = w.Map.Rules.TileSet.GetTerrainIndex(info.TerrainType);
+			var tileType = w.Map.Rules.TerrainInfo.GetTerrainIndex(info.TerrainType);
 
 			// Units are allowed behind cliffs *only* if they are part of a tunnel portal
 			var tunnelPortals = w.WorldActor.Info.TraitInfos<TerrainTunnelInfo>()

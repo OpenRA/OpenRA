@@ -161,10 +161,10 @@ namespace OpenRA.Mods.Common.Traits
 			sharesCell = info.SharesCell;
 			world = self.World;
 
-			var tileSet = world.Map.Rules.TileSet;
-			terrainInfos = new LocomotorInfo.TerrainInfo[tileSet.TerrainInfo.Length];
+			var terrainInfo = world.Map.Rules.TerrainInfo;
+			terrainInfos = new LocomotorInfo.TerrainInfo[terrainInfo.TerrainTypes.Length];
 			for (var i = 0; i < terrainInfos.Length; i++)
-				if (!info.TerrainSpeeds.TryGetValue(tileSet.TerrainInfo[i].Type, out terrainInfos[i]))
+				if (!info.TerrainSpeeds.TryGetValue(terrainInfo.TerrainTypes[i].Type, out terrainInfos[i]))
 					terrainInfos[i] = LocomotorInfo.TerrainInfo.Impassable;
 
 			MovementClass = (uint)terrainInfos.Select(ti => ti.Cost < short.MaxValue).ToBits();

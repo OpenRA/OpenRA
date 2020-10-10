@@ -91,7 +91,7 @@ namespace OpenRA.Mods.Common.Traits
 			var custom = map.CustomTerrain[uv];
 			if (custom != byte.MaxValue)
 			{
-				var c = map.Rules.TileSet[custom].Color.ToArgb();
+				var c = map.Rules.TerrainInfo.TerrainTypes[custom].Color.ToArgb();
 				return (c, c);
 			}
 

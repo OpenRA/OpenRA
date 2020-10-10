@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 		public SubterraneanActorLayer(Actor self, SubterraneanActorLayerInfo info)
 		{
 			map = self.World.Map;
-			terrainIndex = self.World.Map.Rules.TileSet.GetTerrainIndex(info.TerrainType);
+			terrainIndex = self.World.Map.Rules.TerrainInfo.GetTerrainIndex(info.TerrainType);
 			height = new CellLayer<int>(map);
 			foreach (var c in map.AllCells)
 			{

@@ -173,10 +173,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected override void TraitEnabled(Actor self)
 		{
-			var tileset = world.Map.Rules.TileSet;
-			resourceTypeIndices = new BitArray(tileset.TerrainInfo.Length); // Big enough
+			var terrainInfo = world.Map.Rules.TerrainInfo;
+			resourceTypeIndices = new BitArray(terrainInfo.TerrainTypes.Length); // Big enough
 			foreach (var t in world.Map.Rules.Actors["world"].TraitInfos<ResourceTypeInfo>())
-				resourceTypeIndices.Set(tileset.GetTerrainIndex(t.TerrainType), true);
+				resourceTypeIndices.Set(terrainInfo.GetTerrainIndex(t.TerrainType), true);
 
 			foreach (var building in Info.BuildingQueues)
 				builders.Add(new BaseBuilderQueueManager(this, building, player, playerPower, playerResources, resourceTypeIndices));

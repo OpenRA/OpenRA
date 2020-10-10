@@ -80,7 +80,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			ownersDropDown.Text = selectedOwner.Name;
 			ownersDropDown.TextColor = selectedOwner.Color;
 
-			var tileSetId = world.Map.Rules.TileSet.Id;
+			var tileSetId = world.Map.Rules.TerrainInfo.Id;
 			var allActorsTemp = new List<ActorSelectorActor>();
 			foreach (var a in mapRules.Actors.Values)
 			{
@@ -209,7 +209,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				catch
 				{
 					Log.Write("debug", "Map editor ignoring actor {0}, because of missing sprites for tileset {1}.",
-						actor.Name, World.Map.Rules.TileSet.Id);
+						actor.Name, World.Map.Rules.TerrainInfo.Id);
 					continue;
 				}
 			}

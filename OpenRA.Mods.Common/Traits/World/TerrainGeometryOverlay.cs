@@ -52,8 +52,7 @@ namespace OpenRA.Mods.Common.Traits
 				yield break;
 
 			var map = wr.World.Map;
-			var tileSet = wr.World.Map.Rules.TileSet;
-			var colors = tileSet.HeightDebugColors;
+			var colors = wr.World.Map.Rules.TerrainInfo.HeightDebugColors;
 			var mouseCell = wr.Viewport.ViewToWorld(Viewport.LastMousePos).ToMPos(wr.World.Map);
 
 			foreach (var uv in wr.Viewport.AllVisibleCells.CandidateMapCoords)

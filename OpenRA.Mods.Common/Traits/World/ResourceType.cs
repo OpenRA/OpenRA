@@ -65,8 +65,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		void IMapPreviewSignatureInfo.PopulateMapPreviewSignatureCells(Map map, ActorInfo ai, ActorReference s, List<(MPos, Color)> destinationBuffer)
 		{
-			var tileSet = map.Rules.TileSet;
-			var color = tileSet[tileSet.GetTerrainIndex(TerrainType)].Color;
+			var terrainInfo = map.Rules.TerrainInfo;
+			var color = terrainInfo.TerrainTypes[terrainInfo.GetTerrainIndex(TerrainType)].Color;
 
 			for (var i = 0; i < map.MapSize.X; i++)
 			{

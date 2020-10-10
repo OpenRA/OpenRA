@@ -18,6 +18,22 @@ using OpenRA.Traits;
 
 namespace OpenRA
 {
+	public interface ITerrainInfo
+	{
+		string Id { get; }
+		TerrainTypeInfo[] TerrainTypes { get; }
+		TerrainTileInfo GetTerrainInfo(TerrainTile r);
+		bool TryGetTerrainInfo(TerrainTile r, out TerrainTileInfo info);
+		byte GetTerrainIndex(string type);
+		byte GetTerrainIndex(TerrainTile r);
+		TerrainTile DefaultTerrainTile { get; }
+
+		Color[] HeightDebugColors { get; }
+		IEnumerable<Color> RestrictedPlayerColors { get; }
+		float MinHeightColorBrightness { get; }
+		float MaxHeightColorBrightness { get; }
+	}
+
 	public class TerrainTileInfo
 	{
 		[FieldLoader.Ignore]
@@ -54,7 +70,7 @@ namespace OpenRA
 
 		readonly TerrainTileInfo[] tileInfo;
 
-		public TerrainTemplateInfo(TileSet tileSet, MiniYaml my)
+		public TerrainTemplateInfo(ITerrainInfo terrainInfo, MiniYaml my)
 		{
 			FieldLoader.Load(this, my);
 
@@ -66,12 +82,12 @@ namespace OpenRA
 				foreach (var node in nodes)
 				{
 					if (!int.TryParse(node.Key, out var key))
-						throw new YamlException("Tileset `{0}` template `{1}` defines a frame `{2}` that is not a valid integer.".F(tileSet.Id, Id, node.Key));
+						throw new YamlException("Tileset `{0}` template `{1}` defines a frame `{2}` that is not a valid integer.".F(terrainInfo.Id, Id, node.Key));
 
 					if (key < 0 || key >= tileInfo.Length)
-						throw new YamlException("Tileset `{0}` template `{1}` references frame {2}, but only [0..{3}] are valid for a {4}x{5} Size template.".F(tileSet.Id, Id, key, tileInfo.Length - 1, Size.X, Size.Y));
+						throw new YamlException("Tileset `{0}` template `{1}` references frame {2}, but only [0..{3}] are valid for a {4}x{5} Size template.".F(terrainInfo.Id, Id, key, tileInfo.Length - 1, Size.X, Size.Y));
 
-					tileInfo[key] = LoadTileInfo(tileSet, node.Value);
+					tileInfo[key] = LoadTileInfo(terrainInfo, node.Value);
 				}
 			}
 			else
@@ -82,30 +98,30 @@ namespace OpenRA
 				foreach (var node in nodes)
 				{
 					if (!int.TryParse(node.Key, out var key))
-						throw new YamlException("Tileset `{0}` template `{1}` defines a frame `{2}` that is not a valid integer.".F(tileSet.Id, Id, node.Key));
+						throw new YamlException("Tileset `{0}` template `{1}` defines a frame `{2}` that is not a valid integer.".F(terrainInfo.Id, Id, node.Key));
 
 					if (key != i++)
-						throw new YamlException("Tileset `{0}` template `{1}` is missing a definition for frame {2}.".F(tileSet.Id, Id, i - 1));
+						throw new YamlException("Tileset `{0}` template `{1}` is missing a definition for frame {2}.".F(terrainInfo.Id, Id, i - 1));
 
-					tileInfo[key] = LoadTileInfo(tileSet, node.Value);
+					tileInfo[key] = LoadTileInfo(terrainInfo, node.Value);
 				}
 			}
 		}
 
-		static TerrainTileInfo LoadTileInfo(TileSet tileSet, MiniYaml my)
+		static TerrainTileInfo LoadTileInfo(ITerrainInfo terrainInfo, MiniYaml my)
 		{
 			var tile = new TerrainTileInfo();
 			FieldLoader.Load(tile, my);
 
 			// Terrain type must be converted from a string to an index
-			tile.GetType().GetField("TerrainType").SetValue(tile, tileSet.GetTerrainIndex(my.Value));
+			tile.GetType().GetField("TerrainType").SetValue(tile, terrainInfo.GetTerrainIndex(my.Value));
 
 			// Fall back to the terrain-type color if necessary
-			var overrideColor = tileSet.TerrainInfo[tile.TerrainType].Color;
-			if (tile.MinColor == default(Color))
+			var overrideColor = terrainInfo.TerrainTypes[tile.TerrainType].Color;
+			if (tile.MinColor == default)
 				tile.GetType().GetField("MinColor").SetValue(tile, overrideColor);
 
-			if (tile.MaxColor == default(Color))
+			if (tile.MaxColor == default)
 				tile.GetType().GetField("MaxColor").SetValue(tile, overrideColor);
 
 			return tile;
@@ -124,7 +140,7 @@ namespace OpenRA
 		}
 	}
 
-	public class TileSet
+	public class TileSet : ITerrainInfo
 	{
 		public const string TerrainPaletteInternalName = "terrain";
 
@@ -245,6 +261,14 @@ namespace OpenRA
 			return info != null;
 		}
 
-		public TerrainTile DefaultTerrainTile { get { return new TerrainTile(Templates.First().Key, 0); } }
+		string ITerrainInfo.Id { get { return Id; } }
+		TerrainTypeInfo[] ITerrainInfo.TerrainTypes { get { return TerrainInfo; } }
+		TerrainTileInfo ITerrainInfo.GetTerrainInfo(TerrainTile r) { return GetTileInfo(r); }
+		bool ITerrainInfo.TryGetTerrainInfo(TerrainTile r, out TerrainTileInfo info) { return TryGetTileInfo(r, out info); }
+		Color[] ITerrainInfo.HeightDebugColors { get { return HeightDebugColors; } }
+		IEnumerable<Color> ITerrainInfo.RestrictedPlayerColors { get { return TerrainInfo.Where(ti => ti.RestrictPlayerColor).Select(ti => ti.Color); } }
+		float ITerrainInfo.MinHeightColorBrightness { get { return MinHeightColorBrightness; } }
+		float ITerrainInfo.MaxHeightColorBrightness { get { return MaxHeightColorBrightness; } }
+		TerrainTile ITerrainInfo.DefaultTerrainTile { get { return new TerrainTile(Templates.First().Key, 0); } }
 	}
 }
