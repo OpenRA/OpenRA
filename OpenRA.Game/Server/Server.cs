@@ -218,7 +218,7 @@ namespace OpenRA.Server
 			if (type != ServerType.Local && settings.EnableGeoIP)
 				GeoIP.Initialize();
 
-			if (UPnP.Status == UPnPStatus.Enabled)
+			if (type != ServerType.Local && UPnP.Status == UPnPStatus.Enabled)
 				UPnP.ForwardPort(Settings.ListenPort, Settings.ListenPort).Wait();
 
 			foreach (var trait in modData.Manifest.ServerTraits)
@@ -310,7 +310,7 @@ namespace OpenRA.Server
 					if (State == ServerState.ShuttingDown)
 					{
 						EndGame();
-						if (UPnP.Status == UPnPStatus.Enabled)
+						if (type != ServerType.Local && UPnP.Status == UPnPStatus.Enabled)
 							UPnP.RemovePortForward().Wait();
 						break;
 					}
