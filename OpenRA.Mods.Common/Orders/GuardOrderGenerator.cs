@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Orders
 		public override void SelectionChanged(World world, IEnumerable<Actor> selected)
 		{
 			// Guarding doesn't work without AutoTarget, so require at least one unit in the selection to have it
-			subjects = selected.Where(s => s.Info.HasTraitInfo<GuardInfo>());
+			subjects = selected.Where(s => !s.IsDead && s.Info.HasTraitInfo<GuardInfo>());
 			if (!subjects.Any(s => s.Info.HasTraitInfo<AutoTargetInfo>()))
 				world.CancelInputMode();
 		}
