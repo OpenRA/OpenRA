@@ -12,6 +12,7 @@ NodUnitsRocket = { "e3", "e3", "e3", "e3", "e3", "e3" }
 NodUnitsGunner = { "e1", "e1", "e1", "e1", "e1", "e1" }
 
 Apc3Trigger = { CPos.New(28,58), CPos.New(27,58), CPos.New(28,57), CPos.New(27,57), CPos.New(28,56), CPos.New(27,56), CPos.New(28,55), CPos.New(27,55), CPos.New(28,54), CPos.New(27,54), CPos.New(28,53), CPos.New(27,53) }
+NorthernBridgeTrigger = { CPos.New(13,41), CPos.New(14,41), CPos.New(15,41), CPos.New(14,42), CPos.New(15,42), CPos.New(16,42) }
 SouthernBridgeTrigger = { CPos.New(26,54), CPos.New(25,54), CPos.New(24,54), CPos.New(25,53), CPos.New(24,53), CPos.New(23,53) }
 
 Apc1Units = { "c2", "c3", "c4", "c5" }
@@ -45,9 +46,24 @@ WorldLoaded = function()
 		end)
 	end)
 
+	Trigger.OnEnteredFootprint(NorthernBridgeTrigger, function(a, id)
+		if a.Owner == Nod then
+			if not CiviliansEvacuated then
+				CiviliansEvacuated = true
+				MoveAndHunt(Civilians, FlightRouteBottom)
+			end
+
+			Trigger.RemoveFootprintTrigger(id)
+		end
+	end)
+
 	Trigger.OnEnteredFootprint(SouthernBridgeTrigger, function(a, id)
 		if a.Owner == Nod then
-			MoveAndHunt(Civilians, FlightRouteTop)
+			if not CiviliansEvacuated then
+				CiviliansEvacuated = true
+				MoveAndHunt(Civilians, FlightRouteTop)
+			end
+
 			Trigger.RemoveFootprintTrigger(id)
 		end
 	end)
