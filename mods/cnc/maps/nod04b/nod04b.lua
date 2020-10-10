@@ -18,7 +18,7 @@ Apc1Units = { "c2", "c3", "c4", "c5" }
 
 Civilians = { Civilian1, Civilian2, Civilian3, Civilian4, Civilian5, Civilian6, Civilian7, Civilian8 }
 TargetActors = { Civilian1, Civilian2, Civilian3, Civilian4, Civilian5, Civilian6, Civilian7, Civilian8, CivBuilding1, CivBuilding2, CivBuilding3, CivBuilding4, CivBuilding5, CivBuilding6, CivBuilding7, CivBuilding8, CivBuilding9, CivBuilding10, CivBuilding11, CivBuilding12, CivBuilding13, CivBuilding14 }
-Apc2Trigger = { NodGunner1, NodGunner2, NodGunner3 }
+Apc2Trigger = { GDIGunner1, GDIGunner2, GDIGunner3 }
 
 Apc1Waypoints = { waypoint0.Location, waypoint11.Location, waypoint10.Location, waypoint8.Location, waypoint9.Location }
 Apc2Waypoints = { waypoint8, waypoint7, waypoint6, waypoint5, waypoint4 }
