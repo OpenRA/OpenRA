@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common
 			return cells.Select(a => map.FindTilesInCircle(a.Location, radius)
 				.Count(c => map.Contains(c) && terrainTypes.Contains(map.GetTerrainInfo(c).Type) &&
 					Util.AdjacentCells(world, Target.FromCell(world, c))
-						.All(ac => terrainTypes.Contains(map.GetTerrainInfo(ac).Type))))
+						.All(ac => map.Contains(ac) && terrainTypes.Contains(map.GetTerrainInfo(ac).Type))))
 							.Any(availableCells => availableCells > 0);
 		}
 
