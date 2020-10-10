@@ -218,7 +218,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			protected override void SelectionChanged(World world, IEnumerable<Actor> selected)
 			{
 				minelayers.Clear();
-				minelayers.AddRange(selected.Where(s => s.Info.HasTraitInfo<MinelayerInfo>()));
+				minelayers.AddRange(selected.Where(s => !s.IsDead && s.Info.HasTraitInfo<MinelayerInfo>()));
 				if (!minelayers.Any())
 					world.CancelInputMode();
 			}

@@ -123,7 +123,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override void SelectionChanged(World world, IEnumerable<Actor> selected)
 		{
-			subjects = selected.SelectMany(a => a.TraitsImplementing<AttackMove>()
+			subjects = selected.Where(s => !s.IsDead).SelectMany(a => a.TraitsImplementing<AttackMove>()
 					.Select(am => new TraitPair<AttackMove>(a, am)))
 				.ToArray();
 
