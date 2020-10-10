@@ -26,7 +26,6 @@ namespace OpenRA.Mods.Common.Traits
 	public class EditorResourceLayer : IResourceLayer, IWorldLoaded, INotifyActorDisposing
 	{
 		protected readonly Map Map;
-		protected readonly TileSet Tileset;
 		protected readonly Dictionary<int, ResourceType> Resources;
 		protected readonly CellLayer<ResourceLayerContents> Tiles;
 
@@ -45,8 +44,6 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			Map = self.World.Map;
-			Tileset = self.World.Map.Rules.TileSet;
-
 			Tiles = new CellLayer<ResourceLayerContents>(Map);
 			Resources = self.TraitsImplementing<ResourceType>()
 				.ToDictionary(r => r.Info.ResourceType, r => r);
@@ -82,7 +79,7 @@ namespace OpenRA.Mods.Common.Traits
 					Density = CalculateCellDensity(type, cell)
 				};
 
-				newTerrain = Tileset.GetTerrainIndex(type.Info.TerrainType);
+				newTerrain = Map.Rules.TerrainInfo.GetTerrainIndex(type.Info.TerrainType);
 			}
 
 			// Nothing has changed

@@ -283,7 +283,7 @@ namespace OpenRA
 		/// Initializes a new map created by the editor or importer.
 		/// The map will not receive a valid UID until after it has been saved and reloaded.
 		/// </summary>
-		public Map(ModData modData, TileSet tileset, int width, int height)
+		public Map(ModData modData, ITerrainInfo terrainInfo, int width, int height)
 		{
 			this.modData = modData;
 			var size = new Size(width, height);
@@ -293,7 +293,7 @@ namespace OpenRA
 			Author = "Your name here";
 
 			MapSize = new int2(size);
-			Tileset = tileset.Id;
+			Tileset = terrainInfo.Id;
 
 			// Empty rules that can be added to by the importers.
 			// Will be dropped on save if nothing is added to it
@@ -310,7 +310,7 @@ namespace OpenRA
 				Tiles.CellEntryChanged += UpdateRamp;
 			}
 
-			Tiles.Clear(tileset.DefaultTerrainTile);
+			Tiles.Clear(terrainInfo.DefaultTerrainTile);
 
 			PostInit();
 		}
@@ -431,14 +431,14 @@ namespace OpenRA
 				CustomTerrain[uv] = byte.MaxValue;
 
 			// Replace invalid tiles and cache ramp state
-			var tileset = Rules.TileSet;
+			var terrainInfo = Rules.TerrainInfo;
 			foreach (var uv in AllCells.MapCoords)
 			{
-				if (!tileset.TryGetTileInfo(Tiles[uv], out var info))
+				if (!terrainInfo.TryGetTerrainInfo(Tiles[uv], out var info))
 				{
 					ReplacedInvalidTerrainTiles[uv.ToCPos(this)] = Tiles[uv];
-					Tiles[uv] = tileset.DefaultTerrainTile;
-					info = tileset.GetTileInfo(tileset.DefaultTerrainTile);
+					Tiles[uv] = terrainInfo.DefaultTerrainTile;
+					info = terrainInfo.GetTerrainInfo(terrainInfo.DefaultTerrainTile);
 				}
 
 				Ramp[uv] = info.RampType;
@@ -449,7 +449,7 @@ namespace OpenRA
 
 		void UpdateRamp(CPos cell)
 		{
-			Ramp[cell] = Rules.TileSet.GetTileInfo(Tiles[cell]).RampType;
+			Ramp[cell] = Rules.TerrainInfo.GetTerrainInfo(Tiles[cell]).RampType;
 		}
 
 		void InitializeCellProjection()
@@ -536,8 +536,7 @@ namespace OpenRA
 					// The original games treat the top of cliffs the same way as the bottom
 					// This information isn't stored in the map data, so query the offset from the tileset
 					var temp = inverse.MaxBy(uv => uv.V);
-					var terrain = Tiles[temp];
-					return (byte)(Height[temp] - Rules.TileSet.Templates[terrain.Type][terrain.Index].Height);
+					return (byte)(Height[temp] - Rules.TerrainInfo.GetTerrainInfo(Tiles[temp]).Height);
 				}
 
 				// Try the next cell down if this is a cliff face
@@ -673,8 +672,8 @@ namespace OpenRA
 		public (Color Left, Color Right) GetTerrainColorPair(MPos uv)
 		{
 			Color left, right;
-			var tileset = Rules.TileSet;
-			var type = tileset.GetTileInfo(Tiles[uv]);
+			var terrainInfo = Rules.TerrainInfo;
+			var type = terrainInfo.GetTerrainInfo(Tiles[uv]);
 			if (type.MinColor != type.MaxColor)
 			{
 				left = Exts.ColorLerp(Game.CosmeticRandom.NextFloat(), type.MinColor, type.MaxColor);
@@ -683,9 +682,9 @@ namespace OpenRA
 			else
 				left = right = type.MinColor;
 
-			if (tileset.MinHeightColorBrightness != 1.0f || tileset.MaxHeightColorBrightness != 1.0f)
+			if (terrainInfo.MinHeightColorBrightness != 1.0f || terrainInfo.MaxHeightColorBrightness != 1.0f)
 			{
-				var scale = float2.Lerp(tileset.MinHeightColorBrightness, tileset.MaxHeightColorBrightness, Height[uv] * 1f / Grid.MaximumTerrainHeight);
+				var scale = float2.Lerp(terrainInfo.MinHeightColorBrightness, terrainInfo.MaxHeightColorBrightness, Height[uv] * 1f / Grid.MaximumTerrainHeight);
 				left = Color.FromArgb((int)(scale * left.R).Clamp(0, 255), (int)(scale * left.G).Clamp(0, 255), (int)(scale * left.B).Clamp(0, 255));
 				right = Color.FromArgb((int)(scale * right.R).Clamp(0, 255), (int)(scale * right.G).Clamp(0, 255), (int)(scale * right.B).Clamp(0, 255));
 			}
@@ -1071,8 +1070,7 @@ namespace OpenRA
 			if (terrainIndex == InvalidCachedTerrainIndex)
 			{
 				var custom = CustomTerrain[uv];
-				terrainIndex = cachedTerrainIndexes[uv] =
-					custom != byte.MaxValue ? custom : Rules.TileSet.GetTerrainIndex(Tiles[uv]);
+				terrainIndex = cachedTerrainIndexes[uv] = custom != byte.MaxValue ? custom : Rules.TerrainInfo.GetTerrainInfo(Tiles[uv]).TerrainType;
 			}
 
 			return (byte)terrainIndex;
@@ -1080,7 +1078,7 @@ namespace OpenRA
 
 		public TerrainTypeInfo GetTerrainInfo(CPos cell)
 		{
-			return Rules.TileSet[GetTerrainIndex(cell)];
+			return Rules.TerrainInfo.TerrainTypes[GetTerrainIndex(cell)];
 		}
 
 		public CPos Clamp(CPos cell)

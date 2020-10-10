@@ -23,13 +23,11 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class DomainIndex : IWorldLoaded
 	{
-		TileSet tileSet;
 		Dictionary<uint, MovementClassDomainIndex> domainIndexes;
 
 		public void WorldLoaded(World world, WorldRenderer wr)
 		{
 			domainIndexes = new Dictionary<uint, MovementClassDomainIndex>();
-			tileSet = world.Map.Rules.TileSet;
 			var locomotors = world.WorldActor.TraitsImplementing<Locomotor>().Where(l => !string.IsNullOrEmpty(l.Info.Name));
 			var movementClasses = locomotors.Select(t => t.MovementClass).Distinct();
 

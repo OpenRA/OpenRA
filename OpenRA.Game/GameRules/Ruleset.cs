@@ -27,6 +27,7 @@ namespace OpenRA
 		public readonly IReadOnlyDictionary<string, SoundInfo> Voices;
 		public readonly IReadOnlyDictionary<string, SoundInfo> Notifications;
 		public readonly IReadOnlyDictionary<string, MusicInfo> Music;
+		public readonly ITerrainInfo TerrainInfo;
 		public readonly TileSet TileSet;
 		public readonly SequenceProvider Sequences;
 		public readonly IReadOnlyDictionary<string, MiniYamlNode> ModelSequences;
@@ -46,6 +47,7 @@ namespace OpenRA
 			Voices = voices;
 			Notifications = notifications;
 			Music = music;
+			TerrainInfo = tileSet;
 			TileSet = tileSet;
 			Sequences = sequences;
 			ModelSequences = modelSequences;

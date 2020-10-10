@@ -21,8 +21,8 @@ namespace OpenRA.Mods.Common.Traits.Radar
 
 		public Color GetColorFromTerrain(World world)
 		{
-			var tileSet = world.Map.Rules.TileSet;
-			return tileSet[tileSet.GetTerrainIndex(Terrain)].Color;
+			var terrainInfo = world.Map.Rules.TerrainInfo;
+			return terrainInfo.TerrainTypes[terrainInfo.GetTerrainIndex(Terrain)].Color;
 		}
 
 		public override object Create(ActorInitializer init) { return new RadarColorFromTerrain(init.Self, this); }

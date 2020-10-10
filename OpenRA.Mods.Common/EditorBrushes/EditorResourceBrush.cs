@@ -88,8 +88,8 @@ namespace OpenRA.Mods.Common.Widgets
 				return false;
 
 			var tile = world.Map.Tiles[cell];
-			var tileInfo = world.Map.Rules.TileSet.GetTileInfo(tile);
-			var terrainType = world.Map.Rules.TileSet.TerrainInfo[tileInfo.TerrainType];
+			var tileInfo = world.Map.Rules.TerrainInfo.GetTerrainInfo(tile);
+			var terrainType = world.Map.Rules.TerrainInfo.TerrainTypes[tileInfo.TerrainType];
 
 			if (mapResources[cell].Type == ResourceType.ResourceType)
 				return false;

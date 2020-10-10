@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class GrantConditionOnTerrain : ITick
 	{
 		readonly GrantConditionOnTerrainInfo info;
-		readonly TileSet tileSet;
+		readonly TerrainTypeInfo[] terrainTypes;
 
 		int conditionToken = Actor.InvalidConditionToken;
 		string cachedTerrain;
@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Traits
 		public GrantConditionOnTerrain(ActorInitializer init, GrantConditionOnTerrainInfo info)
 		{
 			this.info = info;
-			tileSet = init.World.Map.Rules.TileSet;
+			terrainTypes = init.World.Map.Rules.TerrainInfo.TerrainTypes;
 		}
 
 		void ITick.Tick(Actor self)
@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			// The terrain type may change between ticks without the actor moving
 			var currentTerrain = cell.Layer == 0 ? self.World.Map.GetTerrainInfo(cell).Type :
-					tileSet[self.World.GetCustomMovementLayers()[cell.Layer].GetTerrainIndex(cell)].Type;
+				terrainTypes[self.World.GetCustomMovementLayers()[cell.Layer].GetTerrainIndex(cell)].Type;
 
 			var wantsGranted = info.TerrainTypes.Contains(currentTerrain);
 			if (currentTerrain != cachedTerrain)

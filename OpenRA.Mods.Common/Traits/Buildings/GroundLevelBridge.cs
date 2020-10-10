@@ -77,8 +77,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			bridgeLayer.Add(self);
 
-			var tileSet = self.World.Map.Rules.TileSet;
-			var terrainIndex = tileSet.GetTerrainIndex(Info.TerrainType);
+			var terrainIndex = self.World.Map.Rules.TerrainInfo.GetTerrainIndex(Info.TerrainType);
 			UpdateTerrain(self, terrainIndex);
 			KillInvalidActorsInFootprint(self);
 		}

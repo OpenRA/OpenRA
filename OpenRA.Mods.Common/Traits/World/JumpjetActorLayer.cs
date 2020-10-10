@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 		public JumpjetActorLayer(Actor self, JumpjetActorLayerInfo info)
 		{
 			map = self.World.Map;
-			terrainIndex = self.World.Map.Rules.TileSet.GetTerrainIndex(info.TerrainType);
+			terrainIndex = self.World.Map.Rules.TerrainInfo.GetTerrainIndex(info.TerrainType);
 			height = new CellLayer<int>(map);
 			var cellHeight = self.World.Map.CellHeightStep.Length;
 			foreach (var c in map.AllCells)

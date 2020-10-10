@@ -386,8 +386,7 @@ namespace OpenRA.Mods.Common.Server
 
 					// Pick a random color for the bot
 					var validator = server.ModData.Manifest.Get<ColorValidator>();
-					var tileset = server.Map.Rules.TileSet;
-					var terrainColors = tileset.TerrainInfo.Where(ti => ti.RestrictPlayerColor).Select(ti => ti.Color);
+					var terrainColors = server.Map.Rules.TerrainInfo.RestrictedPlayerColors;
 					var playerColors = server.LobbyInfo.Clients.Select(c => c.Color)
 						.Concat(server.Map.Players.Players.Values.Select(p => p.Color));
 					bot.Color = bot.PreferredColor = validator.RandomPresetColor(server.Random, terrainColors, playerColors);
@@ -1105,8 +1104,7 @@ namespace OpenRA.Mods.Common.Server
 						server.SendOrderTo(connectionToEcho, "Message", message);
 				};
 
-				var tileset = server.Map.Rules.TileSet;
-				var terrainColors = tileset.TerrainInfo.Where(ti => ti.RestrictPlayerColor).Select(ti => ti.Color).ToList();
+				var terrainColors = server.Map.Rules.TerrainInfo.RestrictedPlayerColors;
 				var playerColors = server.LobbyInfo.Clients.Where(c => c.Index != playerIndex).Select(c => c.Color)
 					.Concat(server.Map.Players.Players.Values.Select(p => p.Color)).ToList();
 

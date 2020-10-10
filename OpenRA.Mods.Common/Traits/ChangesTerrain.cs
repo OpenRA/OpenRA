@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var cell = self.Location;
 			var map = self.World.Map;
-			var terrain = map.Rules.TileSet.GetTerrainIndex(info.TerrainType);
+			var terrain = map.Rules.TerrainInfo.GetTerrainIndex(info.TerrainType);
 			previousTerrain = map.CustomTerrain[cell];
 			map.CustomTerrain[cell] = terrain;
 		}

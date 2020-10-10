@@ -58,7 +58,7 @@ namespace OpenRA.Mods.D2k.Traits
 			if (!strength.Contains(cell))
 				return;
 
-			world.Map.CustomTerrain[cell] = world.Map.Rules.TileSet.GetTerrainIndex(tile);
+			world.Map.CustomTerrain[cell] = world.Map.Rules.TerrainInfo.GetTerrainIndex(tile);
 			strength[cell] = info.MaxStrength;
 			dirty[cell] = tile;
 		}
