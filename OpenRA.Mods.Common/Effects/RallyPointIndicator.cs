@@ -17,7 +17,7 @@ using OpenRA.Mods.Common.Traits;
 
 namespace OpenRA.Mods.Common.Effects
 {
-	class RallyPointIndicator : IEffect, IEffectAboveShroud, IEffectAnnotation
+	public class RallyPointIndicator : IEffect, IEffectAboveShroud, IEffectAnnotation
 	{
 		readonly Actor building;
 		readonly RallyPoint rp;
