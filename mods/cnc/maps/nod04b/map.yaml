@@ -21,10 +21,10 @@ LockPreview: True
 Players:
 	PlayerReference@GDI:
 		Name: GDI
+		Bot: campaign
 		Faction: gdi
 		Color: F5D378
 		Enemies: Nod
-		Bot: campaign
 	PlayerReference@Neutral:
 		Name: Neutral
 		OwnsWorld: True
@@ -32,8 +32,8 @@ Players:
 		Faction: gdi
 	PlayerReference@Nod:
 		Name: Nod
-		Playable: True
 		AllowBots: False
+		Playable: True
 		Required: True
 		LockFaction: True
 		Faction: nod
@@ -441,16 +441,16 @@ Actors:
 	Actor54: t18
 		Location: 11,51
 		Owner: Neutral
-	NodGunner1: e1
+	GDIGunner1: e1
 		Location: 41,50
 		Owner: GDI
 		Facing: 768
 		SubCell: 2
-	NodGunner2: e1
+	GDIGunner2: e1
 		Location: 39,50
 		Owner: GDI
 		SubCell: 0
-	NodGunner3: e1
+	GDIGunner3: e1
 		Location: 40,50
 		Owner: GDI
 		Facing: 256
