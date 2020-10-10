@@ -72,7 +72,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			// If a water-land transition is required, bail early
-			if (domainIndex != null && !domainIndex.IsPassable(source, target, locomotor.Info))
+			if (domainIndex != null && !domainIndex.IsPassable(source, target, locomotor))
 				return EmptyPath;
 
 			var distance = source - target;
@@ -119,7 +119,7 @@ namespace OpenRA.Mods.Common.Traits
 			// Really, we only need to check the circle perimeter, but it's not clear that would be a performance win
 			if (domainIndex != null)
 			{
-				tilesInRange = new List<CPos>(tilesInRange.Where(t => domainIndex.IsPassable(source, t, locomotor.Info)));
+				tilesInRange = new List<CPos>(tilesInRange.Where(t => domainIndex.IsPassable(source, t, locomotor)));
 				if (!tilesInRange.Any())
 					return EmptyPath;
 			}
