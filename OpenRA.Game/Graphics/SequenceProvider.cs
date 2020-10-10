@@ -41,20 +41,20 @@ namespace OpenRA.Graphics
 
 	public interface ISpriteSequenceLoader
 	{
-		IReadOnlyDictionary<string, ISpriteSequence> ParseSequences(ModData modData, TileSet tileSet, SpriteCache cache, MiniYamlNode node);
+		IReadOnlyDictionary<string, ISpriteSequence> ParseSequences(ModData modData, string tileSet, SpriteCache cache, MiniYamlNode node);
 	}
 
 	public class SequenceProvider : IDisposable
 	{
 		readonly ModData modData;
-		readonly TileSet tileSet;
+		readonly string tileSet;
 		readonly Lazy<Sequences> sequences;
 		readonly Lazy<SpriteCache> spriteCache;
 		public SpriteCache SpriteCache { get { return spriteCache.Value; } }
 
 		readonly Dictionary<string, UnitSequences> sequenceCache = new Dictionary<string, UnitSequences>();
 
-		public SequenceProvider(IReadOnlyFileSystem fileSystem, ModData modData, TileSet tileSet, MiniYaml additionalSequences)
+		public SequenceProvider(IReadOnlyFileSystem fileSystem, ModData modData, string tileSet, MiniYaml additionalSequences)
 		{
 			this.modData = modData;
 			this.tileSet = tileSet;

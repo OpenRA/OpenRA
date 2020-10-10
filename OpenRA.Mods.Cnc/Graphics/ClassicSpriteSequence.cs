@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Cnc.Graphics
 		public ClassicSpriteSequenceLoader(ModData modData)
 			: base(modData) { }
 
-		public override ISpriteSequence CreateSequence(ModData modData, TileSet tileSet, SpriteCache cache, string sequence, string animation, MiniYaml info)
+		public override ISpriteSequence CreateSequence(ModData modData, string tileSet, SpriteCache cache, string sequence, string animation, MiniYaml info)
 		{
 			return new ClassicSpriteSequence(modData, tileSet, cache, this, sequence, animation, info);
 		}
@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Cnc.Graphics
 	{
 		readonly bool useClassicFacings;
 
-		public ClassicSpriteSequence(ModData modData, TileSet tileSet, SpriteCache cache, ISpriteSequenceLoader loader, string sequence, string animation, MiniYaml info)
+		public ClassicSpriteSequence(ModData modData, string tileSet, SpriteCache cache, ISpriteSequenceLoader loader, string sequence, string animation, MiniYaml info)
 			: base(modData, tileSet, cache, loader, sequence, animation, info)
 		{
 			var d = info.ToDictionary();

@@ -208,7 +208,7 @@ namespace OpenRA
 
 				// TODO: Top-level dictionary should be moved into the Ruleset instead of in its own object
 				var sequences = mapSequences == null ? modData.DefaultSequences[tileSet] :
-					new SequenceProvider(fileSystem, modData, ts, mapSequences);
+					new SequenceProvider(fileSystem, modData, tileSet, mapSequences);
 
 				var modelSequences = dr.ModelSequences;
 				if (mapModelSequences != null)
