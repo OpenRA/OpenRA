@@ -133,7 +133,7 @@ namespace OpenRA.Mods.Common.Activities
 				searchCells.Clear();
 				searchCellsTick = self.World.WorldTick;
 				foreach (var cell in CandidateMovementCells(self))
-					if (domainIndex.IsPassable(loc, cell, Mobile.Info.LocomotorInfo) && Mobile.CanEnterCell(cell))
+					if (domainIndex.IsPassable(loc, cell, Mobile.Locomotor) && Mobile.CanEnterCell(cell))
 						searchCells.Add(cell);
 			}
 

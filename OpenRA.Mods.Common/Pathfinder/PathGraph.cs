@@ -87,7 +87,6 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 		readonly BlockedByActor checkConditions;
 		readonly Locomotor locomotor;
-		readonly LocomotorInfo.WorldMovementInfo worldMovementInfo;
 		readonly CellInfoLayerPool.PooledCellInfoLayer pooledLayer;
 		readonly bool checkTerrainHeight;
 		CellLayer<CellInfo> groundInfo;
@@ -108,7 +107,6 @@ namespace OpenRA.Mods.Common.Pathfinder
 				customLayerInfo[cml.Index] = (cml, pooledLayer.GetLayer());
 
 			World = world;
-			worldMovementInfo = locomotorInfo.GetWorldMovementInfo(world);
 			Actor = actor;
 			LaneBias = 1;
 			checkConditions = check;

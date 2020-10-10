@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -62,9 +63,9 @@ namespace OpenRA.Mods.Common.Traits
 
 				if (mobileInfo != null)
 				{
-					var locomotorInfo = mobileInfo.LocomotorInfo;
+					var locomotor = self.World.WorldActor.TraitsImplementing<Locomotor>().First(l => l.Info.Name == mobileInfo.Locomotor);
 					location = self.World.Map.ChooseClosestMatchingEdgeCell(self.Location,
-						c => mobileInfo.CanEnterCell(self.World, null, c) && domainIndex.IsPassable(c, destinations[0], locomotorInfo));
+						c => mobileInfo.CanEnterCell(self.World, null, c) && domainIndex.IsPassable(c, destinations[0], locomotor));
 				}
 			}
 

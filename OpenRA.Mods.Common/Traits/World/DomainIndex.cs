@@ -31,24 +31,23 @@ namespace OpenRA.Mods.Common.Traits
 			domainIndexes = new Dictionary<uint, MovementClassDomainIndex>();
 			tileSet = world.Map.Rules.TileSet;
 			var locomotors = world.WorldActor.TraitsImplementing<Locomotor>().Where(l => !string.IsNullOrEmpty(l.Info.Name));
-			var movementClasses = locomotors.Select(t => (uint)t.Info.GetMovementClass(tileSet)).Distinct();
+			var movementClasses = locomotors.Select(t => t.MovementClass).Distinct();
 
 			foreach (var mc in movementClasses)
 				domainIndexes[mc] = new MovementClassDomainIndex(world, mc);
 		}
 
-		public bool IsPassable(CPos p1, CPos p2, LocomotorInfo li)
+		public bool IsPassable(CPos p1, CPos p2, Locomotor locomotor)
 		{
 			// HACK: Work around units in other movement layers from being blocked
 			// when the point in the main layer is not pathable
 			if (p1.Layer != 0 || p2.Layer != 0)
 				return true;
 
-			if (li.DisableDomainPassabilityCheck)
+			if (locomotor.Info.DisableDomainPassabilityCheck)
 				return true;
 
-			var movementClass = li.GetMovementClass(tileSet);
-			return domainIndexes[movementClass].IsPassable(p1, p2);
+			return domainIndexes[locomotor.MovementClass].IsPassable(p1, p2);
 		}
 
 		/// <summary>Regenerate the domain index for a group of cells.</summary>

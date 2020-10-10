@@ -145,7 +145,7 @@ namespace OpenRA.Mods.Common.Traits
 		Target FindNextResource(Actor actor, HarvesterTraitWrapper harv)
 		{
 			Func<CPos, bool> isValidResource = cell =>
-				domainIndex.IsPassable(actor.Location, cell, harv.Locomotor.Info) &&
+				domainIndex.IsPassable(actor.Location, cell, harv.Locomotor) &&
 				harv.Harvester.CanHarvestCell(actor, cell) &&
 				claimLayer.CanClaimCell(actor, cell);
 
