@@ -42,12 +42,12 @@ namespace OpenRA.Mods.Common.Graphics
 	{
 		public DefaultSpriteSequenceLoader(ModData modData) { }
 
-		public virtual ISpriteSequence CreateSequence(ModData modData, TileSet tileSet, SpriteCache cache, string sequence, string animation, MiniYaml info)
+		public virtual ISpriteSequence CreateSequence(ModData modData, string tileSet, SpriteCache cache, string sequence, string animation, MiniYaml info)
 		{
 			return new DefaultSpriteSequence(modData, tileSet, cache, this, sequence, animation, info);
 		}
 
-		public IReadOnlyDictionary<string, ISpriteSequence> ParseSequences(ModData modData, TileSet tileSet, SpriteCache cache, MiniYamlNode node)
+		public IReadOnlyDictionary<string, ISpriteSequence> ParseSequences(ModData modData, string tileSet, SpriteCache cache, MiniYamlNode node)
 		{
 			var sequences = new Dictionary<string, ISpriteSequence>();
 			var nodes = node.Value.ToDictionary();
@@ -143,7 +143,7 @@ namespace OpenRA.Mods.Common.Graphics
 
 		public readonly uint[] EmbeddedPalette;
 
-		protected virtual string GetSpriteSrc(ModData modData, TileSet tileSet, string sequence, string animation, string sprite, Dictionary<string, MiniYaml> d)
+		protected virtual string GetSpriteSrc(ModData modData, string tileSet, string sequence, string animation, string sprite, Dictionary<string, MiniYaml> d)
 		{
 			return sprite ?? sequence;
 		}
@@ -166,7 +166,7 @@ namespace OpenRA.Mods.Common.Graphics
 			return Rectangle.FromLTRB(left, top, right, bottom);
 		}
 
-		public DefaultSpriteSequence(ModData modData, TileSet tileSet, SpriteCache cache, ISpriteSequenceLoader loader, string sequence, string animation, MiniYaml info)
+		public DefaultSpriteSequence(ModData modData, string tileSet, SpriteCache cache, ISpriteSequenceLoader loader, string sequence, string animation, MiniYaml info)
 		{
 			this.sequence = sequence;
 			Name = animation;
