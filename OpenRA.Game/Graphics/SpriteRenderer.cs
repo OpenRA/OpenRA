@@ -10,17 +10,21 @@
 #endregion
 
 using System;
+using System.Linq;
 using OpenRA.Primitives;
 
 namespace OpenRA.Graphics
 {
 	public class SpriteRenderer : Renderer.IBatchRenderer
 	{
+		const int SheetCount = 7;
+		static readonly string[] SheetIndexToTextureName = Exts.MakeArray(SheetCount, i => "Texture{0}".F(i));
+
 		readonly Renderer renderer;
 		readonly IShader shader;
 
 		readonly Vertex[] vertices;
-		readonly Sheet[] sheets = new Sheet[7];
+		readonly Sheet[] sheets = new Sheet[SheetCount];
 
 		BlendMode currentBlend = BlendMode.Alpha;
 		int nv = 0;
@@ -39,7 +43,7 @@ namespace OpenRA.Graphics
 			{
 				for (var i = 0; i < ns; i++)
 				{
-					shader.SetTexture("Texture{0}".F(i), sheets[i].GetTexture());
+					shader.SetTexture(SheetIndexToTextureName[i], sheets[i].GetTexture());
 					sheets[i] = null;
 				}
 
