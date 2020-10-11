@@ -81,16 +81,6 @@ HeliAAGun:
 		Versus:
 			Light: 50
 
-Pistol:
-	Inherits: ^LightMG
-	ReloadDelay: 7
-	Range: 3c0
-	Report: gun18.aud
-	Warhead@1Dam: SpreadDamage
-		Damage: 100
-		Versus:
-			None: 100
-
 ^LightMG:
 	Inherits: ^HeavyMG
 	ReloadDelay: 20
@@ -109,6 +99,16 @@ Pistol:
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: piff
+
+Pistol:
+	Inherits: ^LightMG
+	ReloadDelay: 7
+	Range: 3c0
+	Report: gun18.aud
+	Warhead@1Dam: SpreadDamage
+		Damage: 100
+		Versus:
+			None: 100
 
 M16:
 	Inherits: ^LightMG
