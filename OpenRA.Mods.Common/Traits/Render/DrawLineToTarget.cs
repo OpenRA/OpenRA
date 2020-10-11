@@ -63,17 +63,27 @@ namespace OpenRA.Mods.Common.Traits
 			ShowTargetLines(self);
 		}
 
-		IEnumerable<IRenderable> IRenderAboveShroud.RenderAboveShroud(Actor self, WorldRenderer wr)
+		bool ShouldRender(Actor self)
 		{
 			if (!self.Owner.IsAlliedWith(self.World.LocalPlayer) || Game.Settings.Game.TargetLines == TargetLinesType.Disabled)
-				yield break;
+				return false;
 
 			// Players want to see the lines when in waypoint mode.
 			var force = Game.GetModifierKeys().HasModifier(Modifiers.Shift) || self.World.OrderGenerator is ForceModifiersOrderGenerator;
 
-			if (Game.RunTime > lifetime && !force)
-				yield break;
+			return force || Game.RunTime <= lifetime;
+		}
 
+		IEnumerable<IRenderable> IRenderAboveShroud.RenderAboveShroud(Actor self, WorldRenderer wr)
+		{
+			if (!ShouldRender(self))
+				return Enumerable.Empty<IRenderable>();
+
+			return RenderAboveShroud(self, wr);
+		}
+
+		IEnumerable<IRenderable> RenderAboveShroud(Actor self, WorldRenderer wr)
+		{
 			var pal = wr.Palette(TileSet.TerrainPaletteInternalName);
 			var a = self.CurrentActivity;
 			for (; a != null; a = a.NextActivity)
@@ -87,13 +97,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		IEnumerable<IRenderable> IRenderAnnotationsWhenSelected.RenderAnnotations(Actor self, WorldRenderer wr)
 		{
-			if (!self.Owner.IsAlliedWith(self.World.LocalPlayer) || Game.Settings.Game.TargetLines == TargetLinesType.Disabled)
-				return Enumerable.Empty<IRenderable>();
-
-			// Players want to see the lines when in waypoint mode.
-			var force = Game.GetModifierKeys().HasModifier(Modifiers.Shift) || self.World.OrderGenerator is ForceModifiersOrderGenerator;
-
-			if (Game.RunTime > lifetime && !force)
+			if (!ShouldRender(self))
 				return Enumerable.Empty<IRenderable>();
 
 			renderableCache.Clear();
@@ -108,8 +112,8 @@ namespace OpenRA.Mods.Common.Traits
 				{
 					if (n.Target.Type != TargetType.Invalid && n.Tile == null)
 					{
-						var lineWidth = renderableCache.Any() ? info.QueuedLineWidth : info.LineWidth;
-						var markerWidth = renderableCache.Any() ? info.QueuedMarkerWidth : info.MarkerWidth;
+						var lineWidth = renderableCache.Count > 0 ? info.QueuedLineWidth : info.LineWidth;
+						var markerWidth = renderableCache.Count > 0 ? info.QueuedMarkerWidth : info.MarkerWidth;
 
 						var pos = n.Target.CenterPosition;
 						renderableCache.Add(new TargetLineRenderable(new[] { prev, pos }, n.Color, lineWidth, markerWidth));
@@ -118,9 +122,12 @@ namespace OpenRA.Mods.Common.Traits
 				}
 			}
 
+			if (renderableCache.Count == 0)
+				return Enumerable.Empty<IRenderable>();
+
 			// Reverse draw order so target markers are drawn on top of the next line
 			renderableCache.Reverse();
-			return renderableCache;
+			return renderableCache.ToArray();
 		}
 
 		bool IRenderAnnotationsWhenSelected.SpatiallyPartitionable { get { return false; } }
