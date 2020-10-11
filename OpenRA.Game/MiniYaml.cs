@@ -270,6 +270,9 @@ namespace OpenRA
 				}
 			}
 
+			foreach (var nodes in levels)
+				nodes.TrimExcess();
+
 			return levels[0];
 		}
 
@@ -361,6 +364,7 @@ namespace OpenRA
 					MergeIntoResolved(n, resolved, tree, inherited);
 			}
 
+			resolved.TrimExcess();
 			return resolved;
 		}
 
@@ -397,6 +401,7 @@ namespace OpenRA
 				}
 			}
 
+			ret.TrimExcess();
 			return ret;
 		}
 
@@ -437,6 +442,7 @@ namespace OpenRA
 				ret.Add(merged);
 			}
 
+			ret.TrimExcess();
 			return ret;
 		}
 
