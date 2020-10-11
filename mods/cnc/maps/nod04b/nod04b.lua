@@ -113,10 +113,10 @@ WorldLoaded = function()
 
 	Media.PlaySpeechNotification(Nod, "Reinforce")
 	Trigger.AfterDelay(DateTime.Seconds(1), function()
-		Reinforcements.ReinforceWithTransport(Nod, "tran", NodUnitsBuggy, { EntryPointVehicle.Location, RallyPointVehicle.Location }, { EntryPointVehicle.Location }, nil, nil)
+		Reinforcements.ReinforceWithTransport(Nod, "tran", NodUnitsBuggy, { EntryPointVehicle.Location, RallyPointVehicle.Location }, { EntryPointVehicle.Location })
 	end)
-	Reinforcements.ReinforceWithTransport(Nod, "tran", NodUnitsRocket, { EntryPointRocket.Location, RallyPointRocket.Location }, { EntryPointRocket.Location }, nil, nil)
-	Reinforcements.ReinforceWithTransport(Nod, "tran", NodUnitsGunner, { EntryPointGunner.Location, RallyPointGunner.Location }, { EntryPointGunner.Location }, nil, nil)
+	Reinforcements.ReinforceWithTransport(Nod, "tran", NodUnitsRocket, { EntryPointRocket.Location, RallyPointRocket.Location }, { EntryPointRocket.Location })
+	Reinforcements.ReinforceWithTransport(Nod, "tran", NodUnitsGunner, { EntryPointGunner.Location, RallyPointGunner.Location }, { EntryPointGunner.Location })
 end
 
 Tick = function()
