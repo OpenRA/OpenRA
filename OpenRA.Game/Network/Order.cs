@@ -49,6 +49,9 @@ namespace OpenRA
 
 	public sealed class Order
 	{
+		// Length of orders with type OrderType.SyncHash
+		public const int SyncHashOrderLength = 13;
+
 		public readonly string OrderString;
 		public readonly Actor Subject;
 		public readonly bool Queued;
