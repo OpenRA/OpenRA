@@ -67,10 +67,12 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 
 			var columnCount = (map.MapSize.X + dangerRadius - 1) / dangerRadius;
 			var rowCount = (map.MapSize.Y + dangerRadius - 1) / dangerRadius;
+
 			var checkIndices = Exts.MakeArray(columnCount * rowCount, i => i).Shuffle(owner.World.LocalRandom);
 			foreach (var i in checkIndices)
 			{
-				var pos = new CPos((i % columnCount) * dangerRadius + dangerRadius / 2, (i / columnCount) * dangerRadius + dangerRadius / 2);
+				var pos = new MPos((i % columnCount) * dangerRadius + dangerRadius / 2, (i / columnCount) * dangerRadius + dangerRadius / 2).ToCPos(map);
+
 				if (NearToPosSafely(owner, map.CenterOfCell(pos), out detectedEnemyTarget))
 				{
 					if (needTarget && detectedEnemyTarget == null)
