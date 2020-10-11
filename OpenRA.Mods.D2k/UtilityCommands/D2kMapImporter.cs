@@ -306,7 +306,7 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 		void Initialize(string mapFile)
 		{
 			mapSize = new Size(stream.ReadUInt16(), stream.ReadUInt16());
-			terrainInfo = Game.ModData.DefaultTileSets["ARRAKIS"];
+			terrainInfo = (ITemplatedTerrainInfo)Game.ModData.DefaultTerrainInfo["ARRAKIS"];
 
 			map = new Map(Game.ModData, terrainInfo, mapSize.Width + 2 * MapCordonWidth, mapSize.Height + 2 * MapCordonWidth)
 			{

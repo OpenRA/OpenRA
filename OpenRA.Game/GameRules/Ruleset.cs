@@ -28,7 +28,6 @@ namespace OpenRA
 		public readonly IReadOnlyDictionary<string, SoundInfo> Notifications;
 		public readonly IReadOnlyDictionary<string, MusicInfo> Music;
 		public readonly ITerrainInfo TerrainInfo;
-		public readonly TileSet TileSet;
 		public readonly SequenceProvider Sequences;
 		public readonly IReadOnlyDictionary<string, MiniYamlNode> ModelSequences;
 
@@ -38,7 +37,7 @@ namespace OpenRA
 			IReadOnlyDictionary<string, SoundInfo> voices,
 			IReadOnlyDictionary<string, SoundInfo> notifications,
 			IReadOnlyDictionary<string, MusicInfo> music,
-			TileSet tileSet,
+			ITerrainInfo terrainInfo,
 			SequenceProvider sequences,
 			IReadOnlyDictionary<string, MiniYamlNode> modelSequences)
 		{
@@ -47,8 +46,7 @@ namespace OpenRA
 			Voices = voices;
 			Notifications = notifications;
 			Music = music;
-			TerrainInfo = tileSet;
-			TileSet = tileSet;
+			TerrainInfo = terrainInfo;
 			Sequences = sequences;
 			ModelSequences = modelSequences;
 
@@ -173,10 +171,10 @@ namespace OpenRA
 		public static Ruleset LoadDefaultsForTileSet(ModData modData, string tileSet)
 		{
 			var dr = modData.DefaultRules;
-			var ts = modData.DefaultTileSets[tileSet];
+			var terrainInfo = modData.DefaultTerrainInfo[tileSet];
 			var sequences = modData.DefaultSequences[tileSet];
 
-			return new Ruleset(dr.Actors, dr.Weapons, dr.Voices, dr.Notifications, dr.Music, ts, sequences, dr.ModelSequences);
+			return new Ruleset(dr.Actors, dr.Weapons, dr.Voices, dr.Notifications, dr.Music, terrainInfo, sequences, dr.ModelSequences);
 		}
 
 		public static Ruleset Load(ModData modData, IReadOnlyFileSystem fileSystem, string tileSet,
@@ -205,8 +203,8 @@ namespace OpenRA
 				var music = MergeOrDefault("Music", fileSystem, m.Music, mapMusic, dr.Music,
 					k => new MusicInfo(k.Key, k.Value));
 
-				// TODO: Add support for merging custom tileset modifications
-				var ts = modData.DefaultTileSets[tileSet];
+				// TODO: Add support for merging custom terrain modifications
+				var terrainInfo = modData.DefaultTerrainInfo[tileSet];
 
 				// TODO: Top-level dictionary should be moved into the Ruleset instead of in its own object
 				var sequences = mapSequences == null ? modData.DefaultSequences[tileSet] :
@@ -217,7 +215,7 @@ namespace OpenRA
 					modelSequences = MergeOrDefault("ModelSequences", fileSystem, m.ModelSequences, mapModelSequences, dr.ModelSequences,
 						k => k);
 
-				ruleset = new Ruleset(actors, weapons, voices, notifications, music, ts, sequences, modelSequences);
+				ruleset = new Ruleset(actors, weapons, voices, notifications, music, terrainInfo, sequences, modelSequences);
 			};
 
 			if (modData.IsOnMainThread)

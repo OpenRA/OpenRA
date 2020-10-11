@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			panel.Get<ButtonWidget>("CANCEL_BUTTON").OnClick = () => { Ui.CloseWindow(); onExit(); };
 
 			var tilesetDropDown = panel.Get<DropDownButtonWidget>("TILESET");
-			var tilesets = modData.DefaultTileSets.Select(t => t.Key).ToList();
+			var tilesets = modData.DefaultTerrainInfo.Keys;
 			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (option, template) =>
 			{
 				var item = ScrollItemWidget.Setup(template,
@@ -36,6 +36,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				item.Get<LabelWidget>("LABEL").GetText = () => option;
 				return item;
 			};
+
 			tilesetDropDown.Text = tilesets.First();
 			tilesetDropDown.OnClick = () =>
 				tilesetDropDown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 210, tilesets, setupItem);
@@ -54,7 +55,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				height = Math.Max(2, height);
 
 				var maxTerrainHeight = world.Map.Grid.MaximumTerrainHeight;
-				var tileset = modData.DefaultTileSets[tilesetDropDown.Text];
+				var tileset = modData.DefaultTerrainInfo[tilesetDropDown.Text];
 				var map = new Map(Game.ModData, tileset, width + 2, height + maxTerrainHeight + 2);
 
 				var tl = new PPos(1, 1 + maxTerrainHeight);
