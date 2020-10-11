@@ -21,11 +21,11 @@ Civilians = { Civilian1, Civilian2, Civilian3, Civilian4, Civilian5, Civilian6, 
 TargetActors = { Civilian1, Civilian2, Civilian3, Civilian4, Civilian5, Civilian6, Civilian7, Civilian8, CivBuilding1, CivBuilding2, CivBuilding3, CivBuilding4, CivBuilding5, CivBuilding6, CivBuilding7, CivBuilding8, CivBuilding9, CivBuilding10, CivBuilding11, CivBuilding12, CivBuilding13, CivBuilding14 }
 Apc2Trigger = { GDIGunner1, GDIGunner2, GDIGunner3 }
 
-Apc1Waypoints = { waypoint0.Location, waypoint11.Location, waypoint10.Location, waypoint8.Location, waypoint9.Location }
+Apc1Waypoints = { waypoint0.Location, waypoint11.Location, waypoint10.Location, waypoint8.Location, GDIBase.Location }
 Apc2Waypoints = { waypoint8, waypoint7, waypoint6, waypoint5, waypoint4 }
-Apc3Waypoints = { waypoint3, waypoint2, waypoint1, waypoint0, waypoint11, waypoint10, waypoint8, waypoint9 }
-FlightRouteTop = { waypoint4, waypoint5, waypoint6, waypoint7, waypoint8, waypoint9 }
-FlightRouteBottom = { waypoint3, waypoint2, waypoint1, waypoint11, waypoint10, waypoint8, waypoint9 }
+Apc3Waypoints = { waypoint3, waypoint2, waypoint1, waypoint0, waypoint11, waypoint10, waypoint8, GDIBase }
+FlightRouteTop = { waypoint4, waypoint5, waypoint6, waypoint7, waypoint8, GDIBase }
+FlightRouteBottom = { waypoint3, waypoint2, waypoint1, waypoint11, waypoint10, waypoint8, GDIBase }
 Hummer1Waypoints = { waypoint8, waypoint7, waypoint6, waypoint5, waypoint4, waypoint3, waypoint2, waypoint1, waypoint0, waypoint11, waypoint10, waypoint8 }
 
 WorldLoaded = function()
@@ -50,7 +50,19 @@ WorldLoaded = function()
 		if a.Owner == Nod then
 			if not CiviliansEvacuated then
 				CiviliansEvacuated = true
-				MoveAndHunt(Civilians, FlightRouteBottom)
+				Utils.Do(Civilians, function(civ)
+					Utils.Do(FlightRouteBottom, function(waypoint)
+						civ.Move(waypoint.Location)
+					end)
+
+					Trigger.OnIdle(civ, function()
+						if civ.Location == GDIBase.Location then
+							Trigger.Clear(civ, "OnIdle")
+						else
+							civ.Move(GDIBase.Location)
+						end
+					end)
+				end)
 			end
 
 			Trigger.RemoveFootprintTrigger(id)
@@ -61,7 +73,19 @@ WorldLoaded = function()
 		if a.Owner == Nod then
 			if not CiviliansEvacuated then
 				CiviliansEvacuated = true
-				MoveAndHunt(Civilians, FlightRouteTop)
+				Utils.Do(Civilians, function(civ)
+					Utils.Do(FlightRouteTop, function(waypoint)
+						civ.Move(waypoint.Location)
+					end)
+
+					Trigger.OnIdle(civ, function()
+						if civ.Location == GDIBase.Location then
+							Trigger.Clear(civ, "OnIdle")
+						else
+							civ.Move(GDIBase.Location)
+						end
+					end)
+				end)
 			end
 
 			Trigger.RemoveFootprintTrigger(id)
