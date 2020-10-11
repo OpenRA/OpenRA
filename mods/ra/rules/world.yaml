@@ -209,6 +209,11 @@ World:
 				AllowedTerrainTypes: Clear, Road
 				MaxDensity: 3
 	ResourceClaimLayer:
+	WithResourceAnimation@GEMS:
+		Types: Gems
+		Image: twinkle
+		Sequences: twinkle1, twinkle2, twinkle3
+		Palette: effect
 	WarheadDebugOverlay:
 	SpawnMapActors:
 	MapBuildRadius:
