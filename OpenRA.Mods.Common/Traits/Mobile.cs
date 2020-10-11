@@ -402,10 +402,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool IsLeaving()
 		{
-			if (CurrentMovementTypes.HasFlag(MovementType.Horizontal))
+			if (CurrentMovementTypes.HasMovementType(MovementType.Horizontal))
 				return true;
 
-			if (CurrentMovementTypes.HasFlag(MovementType.Turn))
+			if (CurrentMovementTypes.HasMovementType(MovementType.Turn))
 				return TurnToMove;
 
 			return false;

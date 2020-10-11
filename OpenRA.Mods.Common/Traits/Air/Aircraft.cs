@@ -419,7 +419,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			CurrentMovementTypes = newMovementTypes;
 
-			if (!CurrentMovementTypes.HasFlag(MovementType.Horizontal))
+			if (!CurrentMovementTypes.HasMovementType(MovementType.Horizontal))
 			{
 				if (Info.Roll != WAngle.Zero && Roll != WAngle.Zero)
 					Roll = Util.TickFacing(Roll, WAngle.Zero, Info.RollSpeed);
