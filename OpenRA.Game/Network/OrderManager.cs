@@ -47,10 +47,10 @@ namespace OpenRA.Network
 		internal int GameSaveLastFrame = -1;
 		internal int GameSaveLastSyncFrame = -1;
 
-		List<Order> localOrders = new List<Order>();
-		List<Order> localImmediateOrders = new List<Order>();
+		readonly List<Order> localOrders = new List<Order>();
+		readonly List<Order> localImmediateOrders = new List<Order>();
 
-		List<ChatLine> chatCache = new List<ChatLine>();
+		readonly List<ChatLine> chatCache = new List<ChatLine>();
 
 		public readonly ReadOnlyList<ChatLine> ChatCache;
 
