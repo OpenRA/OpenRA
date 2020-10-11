@@ -93,6 +93,12 @@ FLAK-23-AG:
 			Heavy: 10
 			Concrete: 10
 		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
+	Warhead@2Eff: CreateEffect
+		Explosions: piff
+		Inaccuracy: 171
+	Warhead@3EffWater: CreateEffect
+		Explosions: water_piff
+		Inaccuracy: 171
 
 Vulcan:
 	Inherits: ^HeavyMG
@@ -252,9 +258,9 @@ Pistol:
 		Versus:
 			None: 100
 	Warhead@2Eff: CreateEffect
-		Explosions: piff
+		Inaccuracy: 128
 	Warhead@3EffWater: CreateEffect
-		Explosions: water_piff
+		Inaccuracy: 128
 
 M1Carbine:
 	Inherits: ^LightMG
@@ -264,6 +270,26 @@ M1Carbine:
 	Warhead@1Dam: SpreadDamage
 		Versus:
 			Wood: 30
+	Warhead@2Eff2: CreateEffect
+		Delay: 2
+		Explosions: piff
+		Inaccuracy: 171
+	Warhead@3EffWater2: CreateEffect
+		Delay: 2
+		ValidTargets: Water, Underwater
+		InvalidTargets: Bridge
+		Explosions: water_piff
+		Inaccuracy: 171
+	Warhead@2Eff3: CreateEffect
+		Delay: 4
+		Explosions: piff
+		Inaccuracy: 171
+	Warhead@3EffWater3: CreateEffect
+		Delay: 4
+		ValidTargets: Water, Underwater
+		InvalidTargets: Bridge
+		Explosions: water_piff
+		Inaccuracy: 171
 
 M60mg:
 	Inherits: ^LightMG
@@ -274,6 +300,10 @@ M60mg:
 	Warhead@1Dam: SpreadDamage
 		Versus:
 			Light: 30
+	Warhead@2Eff: CreateEffect
+		Inaccuracy: 213
+	Warhead@3EffWater: CreateEffect
+		Inaccuracy: 213
 
 ^SnipeWeapon:
 	ReloadDelay: 80
