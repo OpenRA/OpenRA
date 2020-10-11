@@ -784,8 +784,13 @@ namespace OpenRA.Server
 			{
 				recorder.ReceiveFrame(from, frame, data);
 
-				if (data.Length == Order.SyncHashOrderLength && data[0] == (byte)OrderType.SyncHash)
-					HandleSyncOrder(frame, data);
+				if (data.Length > 0 && data[0] == (byte)OrderType.SyncHash)
+				{
+					if (data.Length == Order.SyncHashOrderLength)
+						HandleSyncOrder(frame, data);
+					else
+						Log.Write("server", "Dropped sync order with length {0} from client {1}. Expected length {2}.".F(data.Length, from, Order.SyncHashOrderLength));
+				}
 			}
 		}
 
