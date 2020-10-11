@@ -95,7 +95,7 @@ namespace OpenRA.Mods.Common.Traits
 				foreach (var r in RenderFootprint(wr, topLeft, footprint, info.FootprintUnderPreview))
 					yield return r;
 
-			foreach (var r in previewRenderables.OrderBy(WorldRenderer.RenderableScreenZPositionComparisonKey))
+			foreach (var r in previewRenderables.OrderBy(WorldRenderer.RenderableZPositionComparisonKey))
 				yield return r;
 
 			if (info.FootprintOverPreview != PlaceBuildingCellType.None)

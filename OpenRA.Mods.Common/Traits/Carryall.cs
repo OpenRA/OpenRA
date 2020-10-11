@@ -249,7 +249,7 @@ namespace OpenRA.Mods.Common.Traits
 				var offset = body.LocalToWorld(CarryableOffset.Rotate(body.QuantizeOrientation(self, self.Orientation)));
 				var previewRenderables = carryablePreview
 					.SelectMany(p => p.Render(wr, self.CenterPosition + offset))
-					.OrderBy(WorldRenderer.RenderableScreenZPositionComparisonKey);
+					.OrderBy(WorldRenderer.RenderableZPositionComparisonKey);
 
 				foreach (var r in previewRenderables)
 					yield return r;
