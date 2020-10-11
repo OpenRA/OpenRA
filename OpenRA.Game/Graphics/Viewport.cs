@@ -282,7 +282,7 @@ namespace OpenRA.Graphics
 			// Try and find the closest cell
 			if (candidates.Count > 0)
 			{
-				return candidates.OrderBy(uv =>
+				return candidates.MinBy(uv =>
 				{
 					var p = map.CenterOfCell(uv.ToCPos(map.Grid.Type));
 					var s = worldRenderer.ScreenPxPosition(p);
@@ -290,7 +290,7 @@ namespace OpenRA.Graphics
 					var dy = Math.Abs(s.Y - world.Y);
 
 					return dx * dx + dy * dy;
-				}).First().ToCPos(map);
+				}).ToCPos(map);
 			}
 
 			// Something is very wrong, but lets return something that isn't completely bogus and hope the caller can recover

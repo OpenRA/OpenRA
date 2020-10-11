@@ -80,7 +80,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (IsTraitDisabled)
 				return;
 
-			var current = queue.AllQueued().Where(i => i.Started).OrderBy(i => i.RemainingTime).FirstOrDefault();
+			var current = queue.AllQueued().Where(i => i.Started).MinByOrDefault(i => i.RemainingTime);
 			value = current != null ? 1 - (float)current.RemainingCost / current.TotalCost : 0;
 		}
 
