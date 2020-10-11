@@ -90,8 +90,13 @@ namespace OpenRA.Mods.Common.Traits
 		IEnumerable<WPos> ITargetablePositions.TargetablePositions(Actor self)
 		{
 			if (IsTraitDisabled)
-				yield break;
+				return Enumerable.Empty<WPos>();
 
+			return TargetablePositions(self);
+		}
+
+		IEnumerable<WPos> TargetablePositions(Actor self)
+		{
 			if (Info.UseTargetableCellsOffsets && targetableCells != null)
 				foreach (var c in targetableCells.TargetableCells())
 					yield return self.World.Map.CenterOfCell(c.Cell);

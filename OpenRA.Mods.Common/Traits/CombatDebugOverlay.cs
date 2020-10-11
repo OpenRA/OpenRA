@@ -55,13 +55,18 @@ namespace OpenRA.Mods.Common.Traits
 		IEnumerable<IRenderable> IRenderAnnotations.RenderAnnotations(Actor self, WorldRenderer wr)
 		{
 			if (debugVis == null || !debugVis.CombatGeometry || self.World.FogObscures(self))
-				yield break;
+				return Enumerable.Empty<IRenderable>();
 
+			return RenderAnnotations(self, wr);
+		}
+
+		IEnumerable<IRenderable> RenderAnnotations(Actor self, WorldRenderer wr)
+		{
 			var blockers = allBlockers.Where(Exts.IsTraitEnabled).ToList();
 			if (blockers.Count > 0)
 			{
 				var height = new WVec(0, 0, blockers.Max(b => b.BlockingHeight.Length));
-				yield return new LineAnnotationRenderable(self.CenterPosition, self.CenterPosition + height, 1,  Color.Orange);
+				yield return new LineAnnotationRenderable(self.CenterPosition, self.CenterPosition + height, 1, Color.Orange);
 			}
 
 			var activeShapes = shapes.Where(Exts.IsTraitEnabled);
