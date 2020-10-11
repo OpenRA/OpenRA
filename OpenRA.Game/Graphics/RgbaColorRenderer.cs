@@ -46,13 +46,14 @@ namespace OpenRA.Graphics
 			var eb = endColor.B / 255.0f;
 			var ea = endColor.A / 255.0f;
 
-			vertices[0] = new Vertex(start - corner + Offset, sr, sg, sb, sa, 0, 0);
+			var vs = new Vertex(start - corner + Offset, sr, sg, sb, sa, 0, 0);
+			vertices[0] = vs;
 			vertices[1] = new Vertex(start + corner + Offset, sr, sg, sb, sa, 0, 0);
-			vertices[2] = new Vertex(end + corner + Offset, er, eg, eb, ea, 0, 0);
-			vertices[3] = new Vertex(end + corner + Offset, er, eg, eb, ea, 0, 0);
+			var ve = new Vertex(end + corner + Offset, er, eg, eb, ea, 0, 0);
+			vertices[2] = ve;
+			vertices[3] = ve;
 			vertices[4] = new Vertex(end - corner + Offset, er, eg, eb, ea, 0, 0);
-			vertices[5] = new Vertex(start - corner + Offset, sr, sg, sb, sa, 0, 0);
-
+			vertices[5] = vs;
 			parent.DrawRGBAVertices(vertices);
 		}
 
@@ -68,12 +69,14 @@ namespace OpenRA.Graphics
 			var b = color.B / 255.0f;
 			var a = color.A / 255.0f;
 
-			vertices[0] = new Vertex(start - corner + Offset, r, g, b, a, 0, 0);
+			var vs = new Vertex(start - corner + Offset, r, g, b, a, 0, 0);
+			vertices[0] = vs;
 			vertices[1] = new Vertex(start + corner + Offset, r, g, b, a, 0, 0);
-			vertices[2] = new Vertex(end + corner + Offset, r, g, b, a, 0, 0);
-			vertices[3] = new Vertex(end + corner + Offset, r, g, b, a, 0, 0);
+			var ve = new Vertex(end + corner + Offset, r, g, b, a, 0, 0);
+			vertices[2] = ve;
+			vertices[3] = ve;
 			vertices[4] = new Vertex(end - corner + Offset, r, g, b, a, 0, 0);
-			vertices[5] = new Vertex(start - corner + Offset, r, g, b, a, 0, 0);
+			vertices[5] = vs;
 			parent.DrawRGBAVertices(vertices);
 		}
 
