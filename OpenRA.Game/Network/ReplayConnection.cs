@@ -70,10 +70,7 @@ namespace OpenRA.Network
 					if (frame != int.MaxValue && (!lastClientsFrame.ContainsKey(client) || frame > lastClientsFrame[client]))
 						lastClientsFrame[client] = frame;
 
-					if (packet.Length == 5 && packet[4] == (byte)OrderType.Disconnect)
-						continue;
-
-					if (packet.Length == 4 + Order.SyncHashOrderLength && packet[4] == (byte)OrderType.SyncHash)
+					if (packet.Length > 4 && (packet[4] == (byte)OrderType.Disconnect || packet[4] == (byte)OrderType.SyncHash))
 						continue;
 
 					if (frame == 0)
