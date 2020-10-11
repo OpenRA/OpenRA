@@ -147,7 +147,7 @@ namespace OpenRA.Mods.Common.Traits
 				return terrainOrResourcePreview;
 
 			if (Type == EditorCursorType.Actor)
-				return Actor.Render().OrderBy(WorldRenderer.RenderableScreenZPositionComparisonKey);
+				return Actor.Render().OrderBy(WorldRenderer.RenderableZPositionComparisonKey);
 
 			return NoRenderables;
 		}
