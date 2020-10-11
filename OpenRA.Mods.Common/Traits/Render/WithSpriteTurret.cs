@@ -106,8 +106,10 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (!Info.Recoils)
 				return t.Position(self);
 
-			var recoilDist = arms.Aggregate(WDist.Zero, (a, b) => a + b.Recoil);
-			var recoil = new WVec(-recoilDist, WDist.Zero, WDist.Zero);
+			var recoilDist = 0;
+			foreach (var arm in arms)
+				recoilDist += arm.Recoil.Length;
+			var recoil = new WVec(new WDist(-recoilDist), WDist.Zero, WDist.Zero);
 			return t.Position(self) + body.LocalToWorld(recoil.Rotate(t.WorldOrientation));
 		}
 
