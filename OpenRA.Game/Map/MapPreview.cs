@@ -223,7 +223,7 @@ namespace OpenRA
 				if (yamlStream == null)
 					throw new FileNotFoundException("Required file map.yaml not present in this map");
 
-				yaml = new MiniYaml(null, MiniYaml.FromStream(yamlStream, "map.yaml")).ToDictionary();
+				yaml = new MiniYaml(null, MiniYaml.FromStream(yamlStream, "map.yaml", stringPool: cache.StringPool)).ToDictionary();
 			}
 
 			Package = p;

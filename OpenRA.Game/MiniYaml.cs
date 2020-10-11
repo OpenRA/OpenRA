@@ -148,8 +148,11 @@ namespace OpenRA
 			return nd.ContainsKey(s) ? nd[s].Nodes : new List<MiniYamlNode>();
 		}
 
-		static List<MiniYamlNode> FromLines(IEnumerable<string> lines, string filename, bool discardCommentsAndWhitespace)
+		static List<MiniYamlNode> FromLines(IEnumerable<string> lines, string filename, bool discardCommentsAndWhitespace, Dictionary<string, string> stringPool)
 		{
+			if (stringPool == null)
+				stringPool = new Dictionary<string, string>();
+
 			var levels = new List<List<MiniYamlNode>>();
 			levels.Add(new List<MiniYamlNode>());
 
@@ -263,6 +266,10 @@ namespace OpenRA
 
 				if (key != null || !discardCommentsAndWhitespace)
 				{
+					key = key == null ? null : stringPool.GetOrAdd(key, key);
+					value = value == null ? null : stringPool.GetOrAdd(value, value);
+					comment = comment == null ? null : stringPool.GetOrAdd(comment, comment);
+
 					var nodes = new List<MiniYamlNode>();
 					levels[level].Add(new MiniYamlNode(key, value, comment, nodes, location));
 
@@ -276,20 +283,20 @@ namespace OpenRA
 			return levels[0];
 		}
 
-		public static List<MiniYamlNode> FromFile(string path, bool discardCommentsAndWhitespace = true)
+		public static List<MiniYamlNode> FromFile(string path, bool discardCommentsAndWhitespace = true, Dictionary<string, string> stringPool = null)
 		{
-			return FromLines(File.ReadAllLines(path), path, discardCommentsAndWhitespace);
+			return FromLines(File.ReadAllLines(path), path, discardCommentsAndWhitespace, stringPool);
 		}
 
-		public static List<MiniYamlNode> FromStream(Stream s, string fileName = "<no filename available>", bool discardCommentsAndWhitespace = true)
+		public static List<MiniYamlNode> FromStream(Stream s, string fileName = "<no filename available>", bool discardCommentsAndWhitespace = true, Dictionary<string, string> stringPool = null)
 		{
 			using (var reader = new StreamReader(s))
-				return FromString(reader.ReadToEnd(), fileName, discardCommentsAndWhitespace);
+				return FromString(reader.ReadToEnd(), fileName, discardCommentsAndWhitespace, stringPool);
 		}
 
-		public static List<MiniYamlNode> FromString(string text, string fileName = "<no filename available>", bool discardCommentsAndWhitespace = true)
+		public static List<MiniYamlNode> FromString(string text, string fileName = "<no filename available>", bool discardCommentsAndWhitespace = true, Dictionary<string, string> stringPool = null)
 		{
-			return FromLines(text.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None), fileName, discardCommentsAndWhitespace);
+			return FromLines(text.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None), fileName, discardCommentsAndWhitespace, stringPool);
 		}
 
 		public static List<MiniYamlNode> Merge(IEnumerable<List<MiniYamlNode>> sources)

@@ -38,6 +38,8 @@ namespace OpenRA
 		object syncRoot = new object();
 		Queue<MapPreview> generateMinimap = new Queue<MapPreview>();
 
+		public Dictionary<string, string> StringPool { get; } = new Dictionary<string, string>();
+
 		public MapCache(ModData modData)
 		{
 			this.modData = modData;

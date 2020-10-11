@@ -120,7 +120,14 @@ namespace OpenRA
 		public static V GetOrAdd<K, V>(this Dictionary<K, V> d, K k)
 			where V : new()
 		{
-			return d.GetOrAdd(k, _ => new V());
+			return d.GetOrAdd(k, new V());
+		}
+
+		public static V GetOrAdd<K, V>(this Dictionary<K, V> d, K k, V v)
+		{
+			if (!d.TryGetValue(k, out var ret))
+				d.Add(k, ret = v);
+			return ret;
 		}
 
 		public static V GetOrAdd<K, V>(this Dictionary<K, V> d, K k, Func<K, V> createFn)
