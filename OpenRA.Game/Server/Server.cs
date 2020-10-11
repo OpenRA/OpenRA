@@ -784,7 +784,7 @@ namespace OpenRA.Server
 			{
 				recorder.ReceiveFrame(from, frame, data);
 
-				if (data.Length == 1 + 4 + 8 && data[0] == (byte)OrderType.SyncHash)
+				if (data.Length == Order.SyncHashOrderLength && data[0] == (byte)OrderType.SyncHash)
 					HandleSyncOrder(frame, data);
 			}
 		}

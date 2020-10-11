@@ -33,7 +33,7 @@ namespace OpenRA.Network
 
 		public static byte[] SerializeSync(int sync, ulong defeatState)
 		{
-			var ms = new MemoryStream(1 + 4 + 8);
+			var ms = new MemoryStream(Order.SyncHashOrderLength);
 			using (var writer = new BinaryWriter(ms))
 			{
 				writer.Write((byte)OrderType.SyncHash);

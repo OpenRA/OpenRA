@@ -74,7 +74,7 @@ namespace OpenRA.Network
 
 					if (packet.Length == 5 && packet[4] == (byte)OrderType.Disconnect)
 						continue; // disconnect
-					else if (packet.Length >= 5 && packet[4] == (byte)OrderType.SyncHash)
+					else if (packet.Length == 4 + Order.SyncHashOrderLength && packet[4] == (byte)OrderType.SyncHash)
 						continue; // sync
 					else if (frame == 0)
 					{
