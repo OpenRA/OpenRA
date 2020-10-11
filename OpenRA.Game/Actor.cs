@@ -110,7 +110,7 @@ namespace OpenRA
 		readonly IDefaultVisibility defaultVisibility;
 		readonly INotifyBecomingIdle[] becomingIdles;
 		readonly INotifyIdle[] tickIdles;
-		readonly ITargetablePositions[] targetablePositions;
+		readonly IEnumerable<ITargetablePositions> enabledTargetablePositions;
 		WPos[] staticTargetablePositions;
 		bool created;
 
@@ -166,7 +166,8 @@ namespace OpenRA
 			becomingIdles = TraitsImplementing<INotifyBecomingIdle>().ToArray();
 			tickIdles = TraitsImplementing<INotifyIdle>().ToArray();
 			Targetables = TraitsImplementing<ITargetable>().ToArray();
-			targetablePositions = TraitsImplementing<ITargetablePositions>().ToArray();
+			var targetablePositions = TraitsImplementing<ITargetablePositions>().ToArray();
+			enabledTargetablePositions = targetablePositions.Where(Exts.IsTraitEnabled);
 			world.AddFrameEndTask(w =>
 			{
 				// Caching this in a AddFrameEndTask, because trait construction order might cause problems if done directly at creation time.
@@ -515,9 +516,8 @@ namespace OpenRA
 			if (staticTargetablePositions != null)
 				return staticTargetablePositions;
 
-			var enabledTargetablePositionTraits = targetablePositions.Where(Exts.IsTraitEnabled);
-			if (enabledTargetablePositionTraits.Any())
-				return enabledTargetablePositionTraits.SelectMany(tp => tp.TargetablePositions(this));
+			if (enabledTargetablePositions.Any())
+				return enabledTargetablePositions.SelectMany(tp => tp.TargetablePositions(this));
 
 			return new[] { CenterPosition };
 		}

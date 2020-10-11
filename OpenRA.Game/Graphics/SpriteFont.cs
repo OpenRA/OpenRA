@@ -239,7 +239,15 @@ namespace OpenRA.Graphics
 				return new int2(0, size);
 
 			var lines = text.Split('\n');
-			return new int2((int)Math.Ceiling(lines.Max(lineWidth)), lines.Length * size);
+			return new int2((int)Math.Ceiling(MaxLineWidth(lines, lineWidth)), lines.Length * size);
+		}
+
+		static float MaxLineWidth(string[] lines, Func<string, float> lineWidth)
+		{
+			var maxWidth = 0f;
+			foreach (var line in lines)
+				maxWidth = Math.Max(maxWidth, lineWidth(line));
+			return maxWidth;
 		}
 
 		GlyphInfo CreateGlyph(char c)

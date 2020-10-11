@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (IsTraitDisabled)
 				return;
 
-			if (!captorOwners.Any())
+			if (captorOwners.Count == 0)
 			{
 				tick = 0;
 				return;

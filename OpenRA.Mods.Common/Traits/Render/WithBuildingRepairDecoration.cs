@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		protected override bool ShouldRender(Actor self)
 		{
-			if (!rb.Repairers.Any())
+			if (rb.Repairers.Count == 0)
 				return false;
 
 			return base.ShouldRender(self);
