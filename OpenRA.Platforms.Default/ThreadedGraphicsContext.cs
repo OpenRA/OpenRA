@@ -29,9 +29,9 @@ namespace OpenRA.Platforms.Default
 		readonly Stack<Message> messagePool = new Stack<Message>();
 		readonly Queue<Message> messages = new Queue<Message>();
 
+		public readonly int BatchSize;
 		readonly object syncObject = new object();
 		readonly Thread renderThread;
-		readonly int batchSize;
 		volatile ExceptionDispatchInfo messageException;
 
 		// Delegates that perform actions on the real device.
@@ -53,7 +53,7 @@ namespace OpenRA.Platforms.Default
 
 		public ThreadedGraphicsContext(Sdl2GraphicsContext context, int batchSize)
 		{
-			this.batchSize = batchSize;
+			BatchSize = batchSize;
 			renderThread = new Thread(RenderThread)
 			{
 				Name = "ThreadedGraphicsContext RenderThread",
@@ -143,15 +143,15 @@ namespace OpenRA.Platforms.Default
 		internal Vertex[] GetVertices(int size)
 		{
 			lock (verticesPool)
-				if (size <= batchSize && verticesPool.Count > 0)
+				if (size <= BatchSize && verticesPool.Count > 0)
 					return verticesPool.Pop();
 
-			return new Vertex[size < batchSize ? batchSize : size];
+			return new Vertex[size < BatchSize ? BatchSize : size];
 		}
 
 		internal void ReturnVertices(Vertex[] vertices)
 		{
-			if (vertices.Length == batchSize)
+			if (vertices.Length == BatchSize)
 				lock (verticesPool)
 					verticesPool.Push(vertices);
 		}
@@ -513,7 +513,8 @@ namespace OpenRA.Platforms.Default
 		readonly ThreadedGraphicsContext device;
 		readonly Action bind;
 		readonly Action<object> setData1;
-		readonly Func<object, object> setData2;
+		readonly Action<object> setData2;
+		readonly Func<object, object> setData3;
 		readonly Action dispose;
 
 		public ThreadedVertexBuffer(ThreadedGraphicsContext device, IVertexBuffer<Vertex> vertexBuffer)
@@ -521,7 +522,8 @@ namespace OpenRA.Platforms.Default
 			this.device = device;
 			bind = vertexBuffer.Bind;
 			setData1 = tuple => { var t = (ValueTuple<Vertex[], int>)tuple; vertexBuffer.SetData(t.Item1, t.Item2); device.ReturnVertices(t.Item1); };
-			setData2 = tuple => { var t = (ValueTuple<IntPtr, int, int>)tuple; vertexBuffer.SetData(t.Item1, t.Item2, t.Item3); return null; };
+			setData2 = tuple => { var t = (ValueTuple<Vertex[], int, int, int>)tuple; vertexBuffer.SetData(t.Item1, t.Item2, t.Item3, t.Item4); device.ReturnVertices(t.Item1); };
+			setData3 = tuple => { setData2(tuple); return null; };
 			dispose = vertexBuffer.Dispose;
 		}
 
@@ -537,17 +539,20 @@ namespace OpenRA.Platforms.Default
 			device.Post(setData1, (buffer, length));
 		}
 
-		public void SetData(IntPtr data, int start, int length)
+		public void SetData(Vertex[] vertices, int offset, int start, int length)
 		{
-			// We can't return until we are finished with the data, so we must Send here.
-			device.Send(setData2, (data, start, length));
-		}
-
-		public void SetData(Vertex[] vertices, int start, int length)
-		{
-			var buffer = device.GetVertices(length);
-			Array.Copy(vertices, start, buffer, 0, length);
-			device.Post(setData1, (buffer, length));
+			if (length <= device.BatchSize)
+			{
+				// If we are able to use a buffer without allocation, post a message to avoid blocking.
+				var buffer = device.GetVertices(length);
+				Array.Copy(vertices, offset, buffer, 0, length);
+				device.Post(setData2, (buffer, 0, start, length));
+			}
+			else
+			{
+				// If the length is too large for a buffer, send a message and block to avoid allocations.
+				device.Send(setData3, (vertices, offset, start, length));
+			}
 		}
 
 		public void Dispose()
@@ -567,6 +572,7 @@ namespace OpenRA.Platforms.Default
 		readonly Func<byte[]> getData;
 		readonly Func<object, object> setData1;
 		readonly Action<object> setData2;
+		readonly Func<object, object> setData3;
 		readonly Action dispose;
 
 		public ThreadedTexture(ThreadedGraphicsContext device, ITextureInternal texture)
@@ -580,6 +586,7 @@ namespace OpenRA.Platforms.Default
 			getData = () => texture.GetData();
 			setData1 = colors => { texture.SetData((uint[,])colors); return null; };
 			setData2 = tuple => { var t = (ValueTuple<byte[], int, int>)tuple; texture.SetData(t.Item1, t.Item2, t.Item3); };
+			setData3 = tuple => { setData2(tuple); return null; };
 			dispose = texture.Dispose;
 		}
 
@@ -630,11 +637,21 @@ namespace OpenRA.Platforms.Default
 
 		public void SetData(byte[] colors, int width, int height)
 		{
-			// This creates some garbage for the GC to clean up,
-			// but allows us post a message instead of blocking the message queue by sending it.
-			var temp = new byte[colors.Length];
-			Array.Copy(colors, temp, temp.Length);
-			device.Post(setData2, (temp, width, height));
+			// Objects 85000 bytes or more will be directly allocated in the Large Object Heap (LOH).
+			// https://docs.microsoft.com/en-us/dotnet/standard/garbage-collection/large-object-heap
+			if (colors.Length < 85000)
+			{
+				// If we are able to create a small array the GC can collect easily, post a message to avoid blocking.
+				var temp = new byte[colors.Length];
+				Array.Copy(colors, temp, temp.Length);
+				device.Post(setData2, (temp, width, height));
+			}
+			else
+			{
+				// If the length is large and would result in an array on the Large Object Heap (LOH),
+				// send a message and block to avoid LOH allocation as this requires a Gen2 collection.
+				device.Send(setData3, (colors, width, height));
+			}
 		}
 
 		public void Dispose()

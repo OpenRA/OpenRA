@@ -57,10 +57,10 @@ namespace OpenRA.Platforms.Default
 
 		public void SetData(T[] data, int length)
 		{
-			SetData(data, 0, length);
+			SetData(data, 0, 0, length);
 		}
 
-		public void SetData(T[] data, int start, int length)
+		public void SetData(T[] data, int offset, int start, int length)
 		{
 			Bind();
 
@@ -70,23 +70,13 @@ namespace OpenRA.Platforms.Default
 				OpenGL.glBufferSubData(OpenGL.GL_ARRAY_BUFFER,
 					new IntPtr(VertexSize * start),
 					new IntPtr(VertexSize * length),
-					ptr.AddrOfPinnedObject());
+					ptr.AddrOfPinnedObject() + VertexSize * offset);
 			}
 			finally
 			{
 				ptr.Free();
 			}
 
-			OpenGL.CheckGLError();
-		}
-
-		public void SetData(IntPtr data, int start, int length)
-		{
-			Bind();
-			OpenGL.glBufferSubData(OpenGL.GL_ARRAY_BUFFER,
-				new IntPtr(VertexSize * start),
-				new IntPtr(VertexSize * length),
-				data);
 			OpenGL.CheckGLError();
 		}
 

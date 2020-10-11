@@ -183,15 +183,7 @@ namespace OpenRA.Graphics
 					continue;
 
 				var rowOffset = rowStride * row;
-
-				unsafe
-				{
-					// The compiler / language spec won't let us calculate a pointer to
-					// an offset inside a generic array T[], and so we are forced to
-					// calculate the start-of-row pointer here to pass in to SetData.
-					fixed (Vertex* vPtr = &vertices[0])
-						vertexBuffer.SetData((IntPtr)(vPtr + rowOffset), rowOffset, rowStride);
-				}
+				vertexBuffer.SetData(vertices, rowOffset, rowOffset, rowStride);
 			}
 
 			Game.Renderer.WorldSpriteRenderer.DrawVertexBuffer(
