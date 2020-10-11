@@ -30,7 +30,8 @@ namespace OpenRA.Graphics
 
 		public void DrawLine(float3 start, float3 end, float width, Color startColor, Color endColor)
 		{
-			var delta = (end - start) / (end - start).XY.Length;
+			var diff = end - start;
+			var delta = diff / diff.XY.Length;
 			var corner = width / 2 * new float3(-delta.Y, delta.X, delta.Z);
 
 			startColor = Util.PremultiplyAlpha(startColor);
@@ -57,7 +58,8 @@ namespace OpenRA.Graphics
 
 		public void DrawLine(float3 start, float3 end, float width, Color color)
 		{
-			var delta = (end - start) / (end - start).XY.Length;
+			var diff = end - start;
+			var delta = diff / diff.XY.Length;
 			var corner = width / 2 * new float2(-delta.Y, delta.X);
 
 			color = Util.PremultiplyAlpha(color);
