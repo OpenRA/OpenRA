@@ -117,7 +117,7 @@ namespace OpenRA.Network
 
 				LastOrdersFrame = rs.ReadInt32();
 				LastSyncFrame = rs.ReadInt32();
-				lastSyncPacket = rs.ReadBytes(5);
+				lastSyncPacket = rs.ReadBytes(Order.SyncHashOrderLength);
 
 				var globalSettings = MiniYaml.FromString(rs.ReadString(Encoding.UTF8, Connection.MaxOrderLength));
 				GlobalSettings = Session.Global.Deserialize(globalSettings[0].Value);
@@ -282,7 +282,7 @@ namespace OpenRA.Network
 			file.Write(BitConverter.GetBytes(MetadataMarker), 0, 4);
 			file.Write(BitConverter.GetBytes(LastOrdersFrame), 0, 4);
 			file.Write(BitConverter.GetBytes(LastSyncFrame), 0, 4);
-			file.Write(lastSyncPacket, 0, 5);
+			file.Write(lastSyncPacket, 0, Order.SyncHashOrderLength);
 
 			var globalSettingsNodes = new List<MiniYamlNode>() { GlobalSettings.Serialize() };
 			file.WriteString(Encoding.UTF8, globalSettingsNodes.WriteToString());
