@@ -108,6 +108,7 @@ Vulcan:
 		Spread: 128
 		Damage: 1000
 		Delay: 2
+		ValidTargets: GroundActor, WaterActor
 		Versus:
 			None: 200
 			Wood: 50
@@ -129,6 +130,7 @@ Vulcan:
 		Spread: 128
 		Damage: 1000
 		Delay: 4
+		ValidTargets: GroundActor, WaterActor
 		Versus:
 			None: 200
 			Wood: 50
@@ -150,6 +152,7 @@ Vulcan:
 		Spread: 128
 		Damage: 1000
 		Delay: 6
+		ValidTargets: GroundActor, WaterActor
 		Versus:
 			None: 200
 			Wood: 50
@@ -171,6 +174,7 @@ Vulcan:
 		Spread: 128
 		Damage: 1000
 		Delay: 8
+		ValidTargets: GroundActor, WaterActor
 		Versus:
 			None: 200
 			Wood: 50
@@ -192,6 +196,7 @@ Vulcan:
 		Spread: 128
 		Damage: 1000
 		Delay: 10
+		ValidTargets: GroundActor, WaterActor
 		Versus:
 			None: 200
 			Wood: 50
