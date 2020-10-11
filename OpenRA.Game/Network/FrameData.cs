@@ -43,7 +43,7 @@ namespace OpenRA.Network
 			if (lastClientFrame == -1)
 				lastClientFrame = framePackets
 					.Where(x => x.Value.ContainsKey(clientId))
-					.Select(x => x.Key).OrderBy(x => x).LastOrDefault();
+					.Select(x => x.Key).MaxByOrDefault(x => x);
 
 			clientQuitTimes[clientId] = lastClientFrame;
 		}
