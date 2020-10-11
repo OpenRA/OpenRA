@@ -39,10 +39,11 @@ namespace OpenRA.Traits
 		readonly ICreatesFrozenActors frozenTrait;
 		readonly Player viewer;
 		readonly Shroud shroud;
+		readonly List<WPos> targetablePositions = new List<WPos>();
 
 		public Player Owner { get; private set; }
 		public BitSet<TargetableType> TargetTypes { get; private set; }
-		public WPos[] TargetablePositions { get; private set; }
+		public IEnumerable<WPos> TargetablePositions { get { return targetablePositions; } }
 
 		public ITooltipInfo TooltipInfo { get; private set; }
 		public Player TooltipOwner { get; private set; }
@@ -117,7 +118,8 @@ namespace OpenRA.Traits
 		{
 			Owner = actor.Owner;
 			TargetTypes = actor.GetEnabledTargetTypes();
-			TargetablePositions = actor.GetTargetablePositions().ToArray();
+			targetablePositions.Clear();
+			targetablePositions.AddRange(actor.GetTargetablePositions());
 			Hidden = !actor.CanBeViewedByPlayer(viewer);
 
 			if (health != null)
