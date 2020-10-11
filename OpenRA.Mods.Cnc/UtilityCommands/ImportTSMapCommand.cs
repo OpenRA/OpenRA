@@ -265,7 +265,10 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			var iniBounds = mapSection.GetValue("LocalSize", "0, 0, 0, 0").Split(',').Select(int.Parse).ToArray();
 			var size = new Size(iniSize[2], 2 * iniSize[3]);
 
-			var map = new Map(Game.ModData, utility.ModData.DefaultTileSets[tileset], size.Width, size.Height)
+			if (!utility.ModData.DefaultTerrainInfo.TryGetValue(tileset, out var terrainInfo))
+				throw new InvalidDataException("Unknown tileset {0}".F(tileset));
+
+			var map = new Map(Game.ModData, terrainInfo, size.Width, size.Height)
 			{
 				Title = basic.GetValue("Name", Path.GetFileNameWithoutExtension(filename)),
 				Author = "Westwood Studios",
@@ -328,7 +331,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 
 		static void ReadTiles(Map map, IniFile file, int2 fullSize)
 		{
-			var tileset = Game.ModData.DefaultTileSets[map.Tileset];
+			var terrainInfo = (ITemplatedTerrainInfo)Game.ModData.DefaultTerrainInfo[map.Tileset];
 			var mapSection = file.GetSection("IsoMapPack5");
 
 			var data = Convert.FromBase64String(string.Concat(mapSection.Select(kvp => kvp.Value)));
@@ -355,7 +358,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 
 				if (map.Tiles.Contains(cell))
 				{
-					if (!tileset.Templates.ContainsKey(tilenum))
+					if (!terrainInfo.Templates.ContainsKey(tilenum))
 						tilenum = subtile = 0;
 
 					map.Tiles[cell] = new TerrainTile(tilenum, subtile);

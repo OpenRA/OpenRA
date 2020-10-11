@@ -65,10 +65,10 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 				// The original game isn't case sensitive, but we are.
 				var tileset = GetTileset(mapSection).ToUpperInvariant();
-				if (!ModData.DefaultTileSets.ContainsKey(tileset))
+				if (!ModData.DefaultTerrainInfo.TryGetValue(tileset, out var terrainInfo))
 					throw new InvalidDataException("Unknown tileset {0}".F(tileset));
 
-				Map = new Map(ModData, ModData.DefaultTileSets[tileset], MapSize, MapSize)
+				Map = new Map(ModData, terrainInfo, MapSize, MapSize)
 				{
 					Title = basic.GetValue("Name", Path.GetFileNameWithoutExtension(filename)),
 					Author = "Westwood Studios",

@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					try
 					{
 						Console.WriteLine("Tileset: " + kv.Key);
-						var terrainInfo = modData.DefaultTileSets[kv.Key];
+						var terrainInfo = modData.DefaultTerrainInfo[kv.Key];
 
 						if (terrainInfo is ITemplatedTerrainInfo templatedTerrainInfo)
 							foreach (var r in modData.DefaultRules.Actors["world"].TraitInfos<ITiledTerrainRendererInfo>())
