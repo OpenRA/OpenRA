@@ -17,6 +17,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
+using System.Runtime;
 using System.Threading;
 using System.Threading.Tasks;
 using OpenRA.Graphics;
@@ -170,11 +171,13 @@ namespace OpenRA
 
 			worldRenderer = new WorldRenderer(ModData, OrderManager.World);
 
+			// Proactively collect memory during loading to reduce peak memory.
 			GC.Collect();
 
 			using (new PerfTimer("LoadComplete"))
 				OrderManager.World.LoadComplete(worldRenderer);
 
+			// Proactively collect memory during loading to reduce peak memory.
 			GC.Collect();
 
 			if (OrderManager.GameStarted)
@@ -189,6 +192,14 @@ namespace OpenRA
 			worldRenderer.RefreshPalette();
 			Cursor.SetCursor("default");
 
+			// Now loading is completed, now is the ideal time to run a GC and compact the LOH.
+			// - All the temporary garbage created during loading can be collected.
+			// - Live objects are likely to live for the length of the game or longer,
+			//   thus promoting them into a higher generation is not an issue.
+			// - We can remove any fragmentation in the LOH caused by temporary loading garbage.
+			// - A loading screen is visible, so a delay won't matter to the user.
+			//   Much better to clean up now then to drop frames during gameplay for GC pauses.
+			GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
 			GC.Collect();
 		}
 
@@ -257,6 +268,8 @@ namespace OpenRA
 		public static RunStatus InitializeAndRun(string[] args)
 		{
 			Initialize(new Arguments(args));
+
+			// Proactively collect memory during loading to reduce peak memory.
 			GC.Collect();
 			return Run();
 		}
