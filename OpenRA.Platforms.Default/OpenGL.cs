@@ -740,7 +740,7 @@ namespace OpenRA.Platforms.Default
 		public static void CheckGLError()
 		{
 			// Let the debug message handler log the errors instead.
-			if (Features.HasFlag(GLFeatures.DebugMessagesCallback))
+			if ((Features & GLFeatures.DebugMessagesCallback) == GLFeatures.DebugMessagesCallback)
 				return;
 
 			var type = glGetError();

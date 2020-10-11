@@ -309,7 +309,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected void CancelUnbuildableItems()
 		{
-			var buildableNames = BuildableItems().Select(b => b.Name).ToList();
+			if (Queue.Count == 0)
+				return;
+
+			var buildableNames = BuildableItems().Select(b => b.Name).ToHashSet();
 
 			// EndProduction removes the item from the queue, so we enumerate
 			// by index in reverse to avoid issues with index reassignment
