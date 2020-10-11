@@ -99,6 +99,7 @@ HeliAAGun:
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: piff
+		Inaccuracy: 171
 
 Pistol:
 	Inherits: ^LightMG
@@ -109,9 +110,19 @@ Pistol:
 		Damage: 100
 		Versus:
 			None: 100
+	Warhead@2Eff: CreateEffect
+		Inaccuracy: 128
 
 M16:
 	Inherits: ^LightMG
+	Warhead@2Eff2: CreateEffect
+		Delay: 2
+		Explosions: piff
+		Inaccuracy: 171
+	Warhead@2Eff3: CreateEffect
+		Delay: 4
+		Explosions: piff
+		Inaccuracy: 171
 
 MachineGun:
 	Inherits: ^LightMG
@@ -122,7 +133,7 @@ MachineGun:
 			Wood: 10
 			Light: 70
 	Warhead@2Eff: CreateEffect
-		Explosions: piffs
+		Inaccuracy: 213
 
 MachineGunH:
 	Inherits: MachineGun
