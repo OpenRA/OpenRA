@@ -62,7 +62,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				map.SetBounds(tl, br);
 
 				map.PlayerDefinitions = new MapPlayers(map.Rules, 0).ToMiniYaml();
-				map.FixOpenAreas();
+
+				if (map.Rules.TerrainInfo is ITerrainInfoNotifyMapCreated notifyMapCreated)
+					notifyMapCreated.MapCreated(map);
 
 				Action<string> afterSave = uid =>
 				{

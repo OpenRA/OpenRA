@@ -1020,33 +1020,6 @@ namespace OpenRA
 			ProjectedCells = new ProjectedCellRegion(this, tl, br).ToArray();
 		}
 
-		public void FixOpenAreas()
-		{
-			var r = new Random();
-			var tileset = Rules.TileSet;
-
-			for (var j = Bounds.Top; j < Bounds.Bottom; j++)
-			{
-				for (var i = Bounds.Left; i < Bounds.Right; i++)
-				{
-					var type = Tiles[new MPos(i, j)].Type;
-					var index = Tiles[new MPos(i, j)].Index;
-					if (!tileset.Templates.ContainsKey(type))
-					{
-						Console.WriteLine("Unknown Tile ID {0}".F(type));
-						continue;
-					}
-
-					var template = tileset.Templates[type];
-					if (!template.PickAny)
-						continue;
-
-					index = (byte)r.Next(0, template.TilesCount);
-					Tiles[new MPos(i, j)] = new TerrainTile(type, index);
-				}
-			}
-		}
-
 		public byte GetTerrainIndex(CPos cell)
 		{
 			const short InvalidCachedTerrainIndex = -1;

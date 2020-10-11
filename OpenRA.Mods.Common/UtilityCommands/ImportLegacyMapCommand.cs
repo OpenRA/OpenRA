@@ -99,7 +99,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				Map.PlayerDefinitions = MapPlayers.ToMiniYaml();
 			}
 
-			Map.FixOpenAreas();
+			if (Map.Rules.TerrainInfo is ITerrainInfoNotifyMapCreated notifyMapCreated)
+				notifyMapCreated.MapCreated(Map);
 
 			var dest = Path.GetFileNameWithoutExtension(args[1]) + ".oramap";
 

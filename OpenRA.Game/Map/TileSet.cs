@@ -14,6 +14,7 @@ using System.IO;
 using System.Linq;
 using OpenRA.FileSystem;
 using OpenRA.Primitives;
+using OpenRA.Support;
 using OpenRA.Traits;
 
 namespace OpenRA
@@ -32,6 +33,11 @@ namespace OpenRA
 		IEnumerable<Color> RestrictedPlayerColors { get; }
 		float MinHeightColorBrightness { get; }
 		float MaxHeightColorBrightness { get; }
+	}
+
+	public interface ITerrainInfoNotifyMapCreated : ITerrainInfo
+	{
+		void MapCreated(Map map);
 	}
 
 	public class TerrainTileInfo
@@ -140,7 +146,7 @@ namespace OpenRA
 		}
 	}
 
-	public class TileSet : ITerrainInfo
+	public class TileSet : ITerrainInfo, ITerrainInfoNotifyMapCreated
 	{
 		public const string TerrainPaletteInternalName = "terrain";
 
@@ -270,5 +276,22 @@ namespace OpenRA
 		float ITerrainInfo.MinHeightColorBrightness { get { return MinHeightColorBrightness; } }
 		float ITerrainInfo.MaxHeightColorBrightness { get { return MaxHeightColorBrightness; } }
 		TerrainTile ITerrainInfo.DefaultTerrainTile { get { return new TerrainTile(Templates.First().Key, 0); } }
+
+		void ITerrainInfoNotifyMapCreated.MapCreated(Map map)
+		{
+			// Randomize PickAny tile variants
+			var r = new MersenneTwister();
+			for (var j = map.Bounds.Top; j < map.Bounds.Bottom; j++)
+			{
+				for (var i = map.Bounds.Left; i < map.Bounds.Right; i++)
+				{
+					var type = map.Tiles[new MPos(i, j)].Type;
+					if (!Templates.TryGetValue(type, out var template) || !template.PickAny)
+						continue;
+
+					map.Tiles[new MPos(i, j)] = new TerrainTile(type, (byte)r.Next(0, template.TilesCount));
+				}
+			}
+		}
 	}
 }
