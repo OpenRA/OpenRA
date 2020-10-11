@@ -662,3 +662,10 @@ paradirection:
 		X: -6
 		y: 5
 		Offset: -15, -15, 0
+
+twinkle:
+	Defaults:
+		Length: *
+	twinkle1: twinkle1
+	twinkle2: twinkle2
+	twinkle3: twinkle3
