@@ -55,28 +55,28 @@ namespace OpenRA.Network
 			using (var rs = File.OpenRead(replayFilename))
 			{
 				var packets = new List<(int ClientId, byte[] Packet)>();
-
 				var chunk = new Chunk();
-
 				while (rs.Position < rs.Length)
 				{
 					var client = rs.ReadInt32();
 					if (client == ReplayMetadata.MetaStartMarker)
 						break;
+
 					var packetLen = rs.ReadInt32();
 					var packet = rs.ReadBytes(packetLen);
 					var frame = BitConverter.ToInt32(packet, 0);
 					packets.Add((client, packet));
 
-					if (frame != int.MaxValue &&
-						(!lastClientsFrame.ContainsKey(client) || frame > lastClientsFrame[client]))
+					if (frame != int.MaxValue && (!lastClientsFrame.ContainsKey(client) || frame > lastClientsFrame[client]))
 						lastClientsFrame[client] = frame;
 
 					if (packet.Length == 5 && packet[4] == (byte)OrderType.Disconnect)
-						continue; // disconnect
-					else if (packet.Length == 4 + Order.SyncHashOrderLength && packet[4] == (byte)OrderType.SyncHash)
-						continue; // sync
-					else if (frame == 0)
+						continue;
+
+					if (packet.Length == 4 + Order.SyncHashOrderLength && packet[4] == (byte)OrderType.SyncHash)
+						continue;
+
+					if (frame == 0)
 					{
 						// Parse replay metadata from orders stream
 						var orders = packet.ToOrderList(null);
