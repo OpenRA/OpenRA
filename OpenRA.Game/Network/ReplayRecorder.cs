@@ -26,9 +26,7 @@ namespace OpenRA.Network
 
 		static bool IsGameStart(byte[] data)
 		{
-			if (data.Length == 5 && data[4] == (byte)OrderType.Disconnect)
-				return false;
-			if (data.Length == 4 + Order.SyncHashOrderLength && data[4] == (byte)OrderType.SyncHash)
+			if (data.Length > 4 && (data[4] == (byte)OrderType.Disconnect || data[4] == (byte)OrderType.SyncHash))
 				return false;
 
 			var frame = BitConverter.ToInt32(data, 0);
