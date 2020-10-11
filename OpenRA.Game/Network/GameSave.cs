@@ -188,8 +188,14 @@ namespace OpenRA.Network
 		public void DispatchOrders(Connection conn, int frame, byte[] data)
 		{
 			// Sync packet - we only care about the last value
-			if (data.Length == Order.SyncHashOrderLength && data[0] == (byte)OrderType.SyncHash && frame > LastSyncFrame)
+			if (data.Length > 0 && data[0] == (byte)OrderType.SyncHash && frame > LastSyncFrame)
 			{
+				if (data.Length != Order.SyncHashOrderLength)
+				{
+					Log.Write("debug", "Dropped sync order with length {0}. Expected length {1}.".F(data.Length, Order.SyncHashOrderLength));
+					return;
+				}
+
 				LastSyncFrame = frame;
 				lastSyncPacket = data;
 			}

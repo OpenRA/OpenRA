@@ -123,8 +123,16 @@ namespace OpenRA.Network
 					var frame = BitConverter.ToInt32(packet, 0);
 					if (packet.Length == 5 && packet[4] == (byte)OrderType.Disconnect)
 						frameData.ClientQuit(clientId, frame);
-					else if (packet.Length == 4 + Order.SyncHashOrderLength && packet[4] == (byte)OrderType.SyncHash)
+					else if (packet.Length > 4 && packet[4] == (byte)OrderType.SyncHash)
+					{
+						if (packet.Length != 4 + Order.SyncHashOrderLength)
+						{
+							Log.Write("debug", "Dropped sync order with length {0}. Expected length {1}.".F(packet.Length, 4 + Order.SyncHashOrderLength));
+							return;
+						}
+
 						CheckSync(packet);
+					}
 					else if (frame == 0)
 						immediatePackets.Add((clientId, packet));
 					else
