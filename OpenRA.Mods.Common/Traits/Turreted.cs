@@ -221,14 +221,17 @@ namespace OpenRA.Mods.Common.Traits
 				if (desiredDirection == WVec.Zero)
 					return LocalOrientation.Yaw;
 
+				if (facing == null)
+					return desiredDirection.Yaw;
+
 				// PERF: If the turret rotation axis is vertical we can directly take the difference in facing/yaw
-				var o = facing != null ? facing.Orientation : (WRot?)null;
-				if (o == null || (o.Value.Pitch == WAngle.Zero && o.Value.Roll == WAngle.Zero))
-					return o.HasValue ? desiredDirection.Yaw - o.Value.Yaw : desiredDirection.Yaw;
+				var orientation = facing.Orientation;
+				if (orientation.Pitch == WAngle.Zero && orientation.Roll == WAngle.Zero)
+					return desiredDirection.Yaw - orientation.Yaw;
 
 				// If the turret rotation axis is not vertical we must transform the
 				// target direction into the turrets local coordinate system
-				return desiredDirection.Rotate(-o.Value).Yaw;
+				return desiredDirection.Rotate(-orientation).Yaw;
 			}
 		}
 
