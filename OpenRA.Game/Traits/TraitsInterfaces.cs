@@ -548,8 +548,8 @@ namespace OpenRA.Traits
 	{
 		static readonly Dictionary<string, string> BoolValues = new Dictionary<string, string>()
 		{
-			{ true.ToString(), "enabled" },
-			{ false.ToString(), "disabled" }
+			{ true.ToString(), "Enabled" },
+			{ false.ToString(), "Disabled" }
 		};
 
 		public LobbyBooleanOption(string id, string name, string description, bool visible, int displayorder, bool defaultValue, bool locked)
@@ -557,7 +557,7 @@ namespace OpenRA.Traits
 
 		public override string ValueChangedMessage(string playerName, string newValue)
 		{
-			return playerName + " " + BoolValues[newValue] + " " + Name + ".";
+			return playerName + " " + BoolValues[newValue].ToLowerInvariant() + " " + Name + ".";
 		}
 	}
 
