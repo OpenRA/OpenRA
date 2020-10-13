@@ -57,11 +57,12 @@ namespace OpenRA.Network
 
 		public ConnectionTarget(IEnumerable<DnsEndPoint> endpoints)
 		{
-			this.endpoints = endpoints.ToArray();
-			if (this.endpoints.Length == 0)
+			if (!endpoints.Any())
 			{
 				throw new ArgumentException("ConnectionTarget must have at least one address.");
 			}
+
+			this.endpoints = endpoints.ToArray();
 		}
 
 		public IEnumerable<IPEndPoint> GetConnectEndPoints()
@@ -78,7 +79,8 @@ namespace OpenRA.Network
 					{
 						return Enumerable.Empty<IPEndPoint>();
 					}
-				});
+				})
+				.ToArray();
 		}
 
 		public override string ToString()
@@ -225,7 +227,6 @@ namespace OpenRA.Network
 		void NetworkConnectionConnect()
 		{
 			var endpoints = target.GetConnectEndPoints();
-
 			if (!endpoints.Any())
 			{
 				errorMessage = "Failed to resolve address";
