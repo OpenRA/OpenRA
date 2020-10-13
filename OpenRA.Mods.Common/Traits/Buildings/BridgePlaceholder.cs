@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.Traits
 			});
 		}
 
-		void IBridgeSegment.Demolish(Actor saboteur)
+		void IBridgeSegment.Demolish(Actor saboteur, BitSet<DamageType> damageTypes)
 		{
 			// Do nothing
 		}
