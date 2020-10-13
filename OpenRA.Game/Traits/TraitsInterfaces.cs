@@ -373,6 +373,13 @@ namespace OpenRA.Traits
 		void CreateServerPlayers(MapPreview map, Session lobbyInfo, List<GameInformation.Player> players);
 	}
 
+	[RequireExplicitImplementation]
+	public interface IAssignSpawnPoints
+	{
+		CPos AssignHomeLocation(World world, Session.Client client);
+		int SpawnPointForPlayer(Player player);
+	}
+
 	public interface IBotInfo : ITraitInfoInterface
 	{
 		string Type { get; }

@@ -51,19 +51,17 @@ namespace OpenRA.Mods.Common.Traits
 			var owner = self.Owner;
 			var map = owner.World.Map;
 			var aircraftInfo = self.World.Map.Rules.Actors[info.ActorType].TraitInfo<AircraftInfo>();
-			var mpStart = owner.World.WorldActor.TraitOrDefault<MPStartLocations>();
 
 			CPos startPos;
 			CPos endPos;
 			WAngle spawnFacing;
 
-			if (info.BaselineSpawn && mpStart != null)
+			if (info.BaselineSpawn)
 			{
-				var spawn = mpStart.Start[owner];
 				var bounds = map.Bounds;
 				var center = new MPos(bounds.Left + bounds.Width / 2, bounds.Top + bounds.Height / 2).ToCPos(map);
-				var spawnVec = spawn - center;
-				startPos = spawn + spawnVec * (Exts.ISqrt((bounds.Height * bounds.Height + bounds.Width * bounds.Width) / (4 * spawnVec.LengthSquared)));
+				var spawnVec = owner.HomeLocation - center;
+				startPos = owner.HomeLocation + spawnVec * (Exts.ISqrt((bounds.Height * bounds.Height + bounds.Width * bounds.Width) / (4 * spawnVec.LengthSquared)));
 				endPos = startPos;
 				var spawnDirection = new WVec((self.Location - startPos).X, (self.Location - startPos).Y, 0);
 				spawnFacing = spawnDirection.Yaw;

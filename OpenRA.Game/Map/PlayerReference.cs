@@ -32,7 +32,19 @@ namespace OpenRA
 		public bool LockColor = false;
 		public Color Color = Game.ModData.Manifest.Get<DefaultPlayer>().Color;
 
+		/// <summary>
+		/// Sets the "Home" location, which can be used by traits and scripts to e.g. set the initial camera
+		/// location or choose the map edge for reinforcements.
+		/// This will usually be overridden for client (lobby slot) players with a location based on the Spawn index
+		/// </summary>
+		public CPos HomeLocation = CPos.Zero;
+
 		public bool LockSpawn = false;
+
+		/// <summary>
+		/// Sets the initial spawn point index that is used to override the "Home" location for client (lobby slot) players.
+		/// Map players always ignore this and use HomeLocation directly.
+		/// </summary>
 		public int Spawn = 0;
 
 		public bool LockTeam = false;

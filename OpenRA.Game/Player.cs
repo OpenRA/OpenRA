@@ -56,6 +56,7 @@ namespace OpenRA
 		public readonly bool NonCombatant = false;
 		public readonly bool Playable = true;
 		public readonly int ClientIndex;
+		public readonly CPos HomeLocation;
 		public readonly PlayerReference PlayerReference;
 		public readonly bool IsBot;
 		public readonly string BotType;
@@ -65,8 +66,13 @@ namespace OpenRA
 		/// <summary>The faction (including Random, etc) that was selected in the lobby.</summary>
 		public readonly FactionInfo DisplayFaction;
 
+		/// <summary>The spawn point index that was assigned for client-based players.</summary>
+		public readonly int SpawnPoint;
+
+		/// <summary>The spawn point index (including 0 for Random) that was selected in the lobby for client-based players.</summary>
+		public readonly int DisplaySpawnPoint;
+
 		public WinState WinState = WinState.Undefined;
-		public int SpawnPoint;
 		public bool HasObjectives = false;
 		public bool Spectating;
 
@@ -153,6 +159,11 @@ namespace OpenRA
 				BotType = client.Bot;
 				Faction = ChooseFaction(world, client.Faction, !pr.LockFaction);
 				DisplayFaction = ChooseDisplayFaction(world, client.Faction);
+
+				var assignSpawnPoints = world.WorldActor.TraitOrDefault<IAssignSpawnPoints>();
+				HomeLocation = assignSpawnPoints?.AssignHomeLocation(world, client) ?? pr.HomeLocation;
+				SpawnPoint = assignSpawnPoints?.SpawnPointForPlayer(this) ?? client.SpawnPoint;
+				DisplaySpawnPoint = client.SpawnPoint;
 			}
 			else
 			{
@@ -166,6 +177,8 @@ namespace OpenRA
 				BotType = pr.Bot;
 				Faction = ChooseFaction(world, pr.Faction, false);
 				DisplayFaction = ChooseDisplayFaction(world, pr.Faction);
+				HomeLocation = pr.HomeLocation;
+				SpawnPoint = DisplaySpawnPoint = 0;
 			}
 
 			if (!Spectating)
