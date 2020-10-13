@@ -368,7 +368,7 @@ namespace OpenRA.Mods.Common.Traits
 			return damage;
 		}
 
-		public void Demolish(Actor saboteur, int direction)
+		public void Demolish(Actor saboteur, int direction, BitSet<DamageType> damageTypes)
 		{
 			var initialDamage = health.DamageState;
 			self.World.AddFrameEndTask(w =>
@@ -376,7 +376,7 @@ namespace OpenRA.Mods.Common.Traits
 				// Use .FromPos since this actor is killed. Cannot use Target.FromActor
 				info.DemolishWeaponInfo.Impact(Target.FromPos(self.CenterPosition), saboteur);
 
-				self.Kill(saboteur);
+				self.Kill(saboteur, damageTypes);
 			});
 
 			// Destroy adjacent spans between (including) huts
@@ -386,7 +386,7 @@ namespace OpenRA.Mods.Common.Traits
 					0 : info.RepairPropagationDelay;
 
 				self.World.AddFrameEndTask(w => w.Add(new DelayedAction(delay, () =>
-					neighbours[direction].Demolish(saboteur, direction))));
+					neighbours[direction].Demolish(saboteur, direction, damageTypes))));
 			}
 		}
 	}

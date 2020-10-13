@@ -11,6 +11,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -34,12 +35,14 @@ namespace OpenRA.Mods.Common.Traits
 			public readonly Actor Saboteur;
 			public readonly int Token;
 			public int Delay;
+			public readonly BitSet<DamageType> DamageTypes;
 
-			public DemolishAction(Actor saboteur, int delay, int token)
+			public DemolishAction(Actor saboteur, int delay, int token, BitSet<DamageType> damageTypes)
 			{
 				Saboteur = saboteur;
 				Delay = delay;
 				Token = token;
+				DamageTypes = damageTypes;
 			}
 		}
 
@@ -54,13 +57,13 @@ namespace OpenRA.Mods.Common.Traits
 			return !IsTraitDisabled;
 		}
 
-		void IDemolishable.Demolish(Actor self, Actor saboteur, int delay)
+		void IDemolishable.Demolish(Actor self, Actor saboteur, int delay, BitSet<DamageType> damageTypes)
 		{
 			if (IsTraitDisabled)
 				return;
 
 			var token = self.GrantCondition(Info.Condition);
-			actions.Add(new DemolishAction(saboteur, delay, token));
+			actions.Add(new DemolishAction(saboteur, delay, token, damageTypes));
 		}
 
 		void ITick.Tick(Actor self)
@@ -77,7 +80,7 @@ namespace OpenRA.Mods.Common.Traits
 						.Select(t => t.GetDamageModifier(self, null));
 
 					if (Util.ApplyPercentageModifiers(100, modifiers) > 0)
-						self.Kill(a.Saboteur);
+						self.Kill(a.Saboteur, a.DamageTypes);
 					else if (a.Token != Actor.InvalidConditionToken)
 					{
 						self.RevokeCondition(a.Token);

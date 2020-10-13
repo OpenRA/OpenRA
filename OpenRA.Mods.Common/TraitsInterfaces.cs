@@ -80,7 +80,7 @@ namespace OpenRA.Mods.Common.Traits
 	public interface IDemolishable
 	{
 		bool IsValidTarget(Actor self, Actor saboteur);
-		void Demolish(Actor self, Actor saboteur, int delay);
+		void Demolish(Actor self, Actor saboteur, int delay, BitSet<DamageType> damageTypes);
 	}
 
 	// Type tag for crush class bits

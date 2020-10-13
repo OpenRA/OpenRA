@@ -104,7 +104,7 @@ namespace OpenRA.Mods.Common.Traits
 			health.InflictDamage(self, repairer, new Damage(-health.MaxHP), true);
 		}
 
-		void IBridgeSegment.Demolish(Actor saboteur)
+		void IBridgeSegment.Demolish(Actor saboteur, BitSet<DamageType> damageTypes)
 		{
 			self.World.AddFrameEndTask(w =>
 			{
@@ -114,7 +114,7 @@ namespace OpenRA.Mods.Common.Traits
 				// Use .FromPos since this actor is dead. Cannot use Target.FromActor
 				Info.DemolishWeaponInfo.Impact(Target.FromPos(self.CenterPosition), saboteur);
 
-				self.Kill(saboteur);
+				self.Kill(saboteur, damageTypes);
 			});
 		}
 

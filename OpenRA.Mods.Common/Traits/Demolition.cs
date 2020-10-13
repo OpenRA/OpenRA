@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Orders;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -35,6 +36,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Behaviour when entering the structure.",
 			"Possible values are Exit, Suicide, Dispose.")]
 		public readonly EnterBehaviour EnterBehaviour = EnterBehaviour.Exit;
+
+		[Desc("Types of damage that this trait causes. Leave empty for no damage types.")]
+		public readonly BitSet<DamageType> DamageTypes = default(BitSet<DamageType>);
 
 		[VoiceReference]
 		[Desc("Voice string when planting explosive charges.")]
@@ -84,7 +88,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			self.QueueActivity(order.Queued, new Demolish(self, order.Target, info.EnterBehaviour, info.DetonationDelay,
-				info.Flashes, info.FlashesDelay, info.FlashInterval));
+				info.Flashes, info.FlashesDelay, info.FlashInterval, info.DamageTypes));
 
 			self.ShowTargetLines();
 		}

@@ -11,6 +11,7 @@
 
 using System.Linq;
 using OpenRA.Effects;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -53,7 +54,7 @@ namespace OpenRA.Mods.Common.Traits
 			return BridgeDamageState != DamageState.Dead;
 		}
 
-		void IDemolishable.Demolish(Actor self, Actor saboteur, int delay)
+		void IDemolishable.Demolish(Actor self, Actor saboteur, int delay, BitSet<DamageType> damageTypes)
 		{
 			// TODO: Handle using ITick
 			self.World.Add(new DelayedAction(delay, () =>
@@ -66,7 +67,7 @@ namespace OpenRA.Mods.Common.Traits
 					.Select(t => t.GetDamageModifier(self, null));
 
 				if (Util.ApplyPercentageModifiers(100, modifiers) > 0)
-					Bridge.Do((b, d) => b.Demolish(saboteur, d));
+					Bridge.Do((b, d) => b.Demolish(saboteur, d, damageTypes));
 			}));
 		}
 	}
