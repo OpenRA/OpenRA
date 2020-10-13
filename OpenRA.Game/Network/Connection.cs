@@ -224,8 +224,6 @@ namespace OpenRA.Network
 
 		void NetworkConnectionConnect()
 		{
-			var queue = new BlockingCollection<TcpClient>();
-
 			var endpoints = target.GetConnectEndPoints();
 
 			if (!endpoints.Any())
@@ -235,6 +233,7 @@ namespace OpenRA.Network
 				return;
 			}
 
+			var queue = new BlockingCollection<TcpClient>();
 			foreach (var endpoint in endpoints)
 			{
 				new Thread(() =>
