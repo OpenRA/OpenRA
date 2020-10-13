@@ -314,6 +314,11 @@ namespace OpenRA.Network
 					AddPacket(new ReceivedPacket { FromClient = client, Data = buf });
 				}
 			}
+			catch (InvalidOperationException ex)
+			{
+				errorMessage = "Connection failed";
+				Log.Write("client", ex.Message);
+			}
 			catch (Exception ex)
 			{
 				errorMessage = "Connection failed";
