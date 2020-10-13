@@ -9,11 +9,10 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
-using OpenRA.Primitives;
+using OpenRA.Network;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -58,13 +57,13 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class MPStartLocations : IWorldLoaded, INotifyCreated
+	public class MPStartLocations : IWorldLoaded, INotifyCreated, IAssignSpawnPoints
 	{
 		readonly MPStartLocationsInfo info;
-
-		public readonly Dictionary<Player, CPos> Start = new Dictionary<Player, CPos>();
-
+		readonly Dictionary<int, Session.Client> occupiedSpawnPoints = new Dictionary<int, Session.Client>();
 		bool separateTeamSpawns;
+		CPos[] spawnLocations;
+		List<int> availableSpawnPoints;
 
 		public MPStartLocations(MPStartLocationsInfo info)
 		{
@@ -75,71 +74,69 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			separateTeamSpawns = self.World.LobbyInfo.GlobalSettings
 				.OptionOrDefault("separateteamspawns", info.SeparateTeamSpawnsCheckboxEnabled);
+
+			var spawns = new List<CPos>();
+			foreach (var n in self.World.Map.ActorDefinitions)
+				if (n.Value.Value == "mpspawn")
+					spawns.Add(new ActorReference(n.Key, n.Value.ToDictionary()).GetValue<LocationInit, CPos>());
+
+			spawnLocations = spawns.ToArray();
+
+			// Initialize the list of unoccupied spawn points for AssignSpawnLocations to pick from
+			availableSpawnPoints = Enumerable.Range(1, spawnLocations.Length).ToList();
+			foreach (var kv in self.World.LobbyInfo.Slots)
+			{
+				var client = self.World.LobbyInfo.ClientInSlot(kv.Key);
+				if (client == null || client.SpawnPoint == 0)
+					continue;
+
+				availableSpawnPoints.Remove(client.SpawnPoint);
+				occupiedSpawnPoints.Add(client.SpawnPoint, client);
+			}
 		}
 
-		public void WorldLoaded(World world, WorldRenderer wr)
+		CPos IAssignSpawnPoints.AssignHomeLocation(World world, Session.Client client)
 		{
-			var spawns = world.Actors.Where(a => a.Info.Name == "mpspawn")
-				.Select(a => a.Location)
-				.ToArray();
+			if (client.SpawnPoint > 0 && client.SpawnPoint <= spawnLocations.Length)
+				return spawnLocations[client.SpawnPoint - 1];
 
-			var taken = world.LobbyInfo.Clients.Where(c => c.SpawnPoint != 0 && c.Slot != null)
-					.Select(c => spawns[c.SpawnPoint - 1]).ToList();
-			var available = spawns.Except(taken).ToList();
+			var spawnPoint = occupiedSpawnPoints.Count == 0 || !separateTeamSpawns
+				? availableSpawnPoints.Random(world.SharedRandom)
+				: availableSpawnPoints // pick the most distant spawnpoint from everyone else
+					.Select(s => (Cell: spawnLocations[s - 1], Index: s))
+					.MaxBy(s => occupiedSpawnPoints.Sum(kv => (spawnLocations[kv.Key - 1] - s.Cell).LengthSquared)).Index;
 
-			// Set spawn
-			foreach (var kv in world.LobbyInfo.Slots)
+			availableSpawnPoints.Remove(spawnPoint);
+			occupiedSpawnPoints.Add(spawnPoint, client);
+			return spawnLocations[spawnPoint - 1];
+		}
+
+		int IAssignSpawnPoints.SpawnPointForPlayer(Player player)
+		{
+			foreach (var kv in occupiedSpawnPoints)
+				if (kv.Value.Index == player.ClientIndex)
+					return kv.Key;
+
+			return 0;
+		}
+
+		void IWorldLoaded.WorldLoaded(World world, WorldRenderer wr)
+		{
+			foreach (var p in world.Players)
 			{
-				var player = FindPlayerInSlot(world, kv.Key);
-				if (player == null) continue;
+				if (!p.Playable)
+					continue;
 
-				var client = world.LobbyInfo.ClientInSlot(kv.Key);
-				var spid = (client == null || client.SpawnPoint == 0)
-					? ChooseSpawnPoint(world, available, taken)
-					: spawns[client.SpawnPoint - 1];
+				if (p == world.LocalPlayer)
+					wr.Viewport.Center(world.Map.CenterOfCell(p.HomeLocation));
 
-				Start.Add(player, spid);
+				var cells = Shroud.ProjectedCellsInRange(world.Map, p.HomeLocation, info.InitialExploreRange)
+					.ToList();
 
-				player.SpawnPoint = (client == null || client.SpawnPoint == 0)
-					? spawns.IndexOf(spid) + 1
-					: client.SpawnPoint;
-			}
-
-			// Explore allied shroud
-			var map = world.Map;
-			foreach (var p in Start.Keys)
-			{
-				var cells = Shroud.ProjectedCellsInRange(map, Start[p], info.InitialExploreRange);
 				foreach (var q in world.Players)
 					if (p.IsAlliedWith(q))
 						q.Shroud.ExploreProjectedCells(world, cells);
 			}
-
-			// Set viewport
-			if (world.LocalPlayer != null && Start.ContainsKey(world.LocalPlayer))
-				wr.Viewport.Center(map.CenterOfCell(Start[world.LocalPlayer]));
-		}
-
-		static Player FindPlayerInSlot(World world, string pr)
-		{
-			return world.Players.FirstOrDefault(p => p.PlayerReference.Name == pr);
-		}
-
-		CPos ChooseSpawnPoint(World world, List<CPos> available, List<CPos> taken)
-		{
-			if (available.Count == 0)
-				throw new InvalidOperationException("No free spawnpoint.");
-
-			var n = taken.Count == 0 || !separateTeamSpawns
-				? world.SharedRandom.Next(available.Count)
-				: available // pick the most distant spawnpoint from everyone else
-					.Select((k, i) => (Cell: k, Index: i))
-					.MaxBy(a => taken.Sum(t => (t - a.Cell).LengthSquared)).Index;
-
-			var sp = available[n];
-			available.RemoveAt(n);
-			taken.Add(sp);
-			return sp;
 		}
 	}
 }

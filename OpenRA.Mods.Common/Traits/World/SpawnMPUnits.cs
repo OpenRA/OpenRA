@@ -19,7 +19,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Spawn base actor at the spawnpoint and support units in an annulus around the base actor. Both are defined at MPStartUnits. Attach this to the world actor.")]
-	public class SpawnMPUnitsInfo : TraitInfo, Requires<MPStartLocationsInfo>, Requires<MPStartUnitsInfo>, ILobbyOptions
+	public class SpawnMPUnitsInfo : TraitInfo, Requires<MPStartUnitsInfo>, ILobbyOptions
 	{
 		public readonly string StartingUnitsClass = "none";
 
@@ -67,11 +67,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void WorldLoaded(World world, WorldRenderer wr)
 		{
-			foreach (var s in world.WorldActor.Trait<MPStartLocations>().Start)
-				SpawnUnitsForPlayer(world, s.Key, s.Value);
+			foreach (var p in world.Players)
+				if (p.Playable)
+					SpawnUnitsForPlayer(world, p);
 		}
 
-		void SpawnUnitsForPlayer(World w, Player p, CPos sp)
+		void SpawnUnitsForPlayer(World w, Player p)
 		{
 			var spawnClass = p.PlayerReference.StartingUnitsClass ?? w.LobbyInfo.GlobalSettings
 				.OptionOrDefault("startingunits", info.StartingUnitsClass);
@@ -88,7 +89,7 @@ namespace OpenRA.Mods.Common.Traits
 				var facing = unitGroup.BaseActorFacing.HasValue ? unitGroup.BaseActorFacing.Value : new WAngle(w.SharedRandom.Next(1024));
 				w.CreateActor(unitGroup.BaseActor.ToLowerInvariant(), new TypeDictionary
 				{
-					new LocationInit(sp + unitGroup.BaseActorOffset),
+					new LocationInit(p.HomeLocation + unitGroup.BaseActorOffset),
 					new OwnerInit(p),
 					new SkipMakeAnimsInit(),
 					new FacingInit(facing),
@@ -98,7 +99,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!unitGroup.SupportActors.Any())
 				return;
 
-			var supportSpawnCells = w.Map.FindTilesInAnnulus(sp, unitGroup.InnerSupportRadius + 1, unitGroup.OuterSupportRadius);
+			var supportSpawnCells = w.Map.FindTilesInAnnulus(p.HomeLocation, unitGroup.InnerSupportRadius + 1, unitGroup.OuterSupportRadius);
 
 			foreach (var s in unitGroup.SupportActors)
 			{
