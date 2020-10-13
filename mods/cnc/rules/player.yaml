@@ -27,7 +27,7 @@ Player:
 		SelectableCash: 2500, 5000, 7500, 10000, 20000
 		DefaultCash: 7500
 	DeveloperMode:
-		CheckboxDisplayOrder: 8
+		CheckboxDisplayOrder: 9
 	BaseAttackNotifier:
 	Shroud:
 		FogCheckboxDisplayOrder: 3
@@ -38,6 +38,13 @@ Player:
 		Enabled: True
 		DisplayOrder: 7
 		Prerequisites: global-factundeploy
+	LobbyPrerequisiteCheckbox@GLOBALC17STEALTH:
+		ID: C17-Stealth
+		Label: Stealth Deliveries
+		Description: Nod's delivery plane is cloaked
+		Enabled: False
+		DisplayOrder: 8
+		Prerequisites: global-C17-stealth
 	PlayerStatistics:
 	FrozenActorLayer:
 	PlaceBeacon:
