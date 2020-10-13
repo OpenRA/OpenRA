@@ -184,7 +184,7 @@ namespace OpenRA.Network
 				throw new InvalidOperationException();
 
 			if (GameSaveLastFrame < NetFrameNumber + FramesAhead)
-				Connection.Send(NetFrameNumber + FramesAhead, localOrders.Select(o => o.Serialize()).ToList());
+				Connection.Send(NetFrameNumber + FramesAhead, localOrders.Select(o => o.Serialize()));
 
 			localOrders.Clear();
 

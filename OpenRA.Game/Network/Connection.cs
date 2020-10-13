@@ -35,7 +35,7 @@ namespace OpenRA.Network
 		ConnectionState ConnectionState { get; }
 		IPEndPoint EndPoint { get; }
 		string ErrorMessage { get; }
-		void Send(int frame, List<byte[]> orders);
+		void Send(int frame, IEnumerable<byte[]> orders);
 		void SendImmediate(IEnumerable<byte[]> orders);
 		void SendSync(int frame, byte[] syncData);
 		void Receive(Action<int, byte[]> packetFn);
@@ -120,7 +120,7 @@ namespace OpenRA.Network
 			get { return null; }
 		}
 
-		public virtual void Send(int frame, List<byte[]> orders)
+		public virtual void Send(int frame, IEnumerable<byte[]> orders)
 		{
 			var ms = new MemoryStream();
 			ms.WriteArray(BitConverter.GetBytes(frame));
