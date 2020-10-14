@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using OpenRA.Effects;
 using OpenRA.GameRules;
@@ -97,6 +98,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Bridge[] neighbours = new Bridge[2];
 		readonly LegacyBridgeHut[] huts = new LegacyBridgeHut[2]; // Huts before this / first & after this / last
 		readonly ITiledTerrainRenderer terrainRenderer;
+		readonly ITemplatedTerrainInfo terrainInfo;
 		readonly Health health;
 		readonly Actor self;
 		readonly BridgeInfo info;
@@ -118,7 +120,11 @@ namespace OpenRA.Mods.Common.Traits
 			type = self.Info.Name;
 			isDangling = new Lazy<bool>(() => huts[0] == huts[1] && (neighbours[0] == null || neighbours[1] == null));
 			buildingInfo = self.Info.TraitInfo<BuildingInfo>();
+
 			terrainRenderer = self.World.WorldActor.Trait<ITiledTerrainRenderer>();
+			terrainInfo = self.World.Map.Rules.TerrainInfo as ITemplatedTerrainInfo;
+			if (terrainInfo == null)
+				throw new InvalidDataException("Bridge requires a template-based tileset.");
 		}
 
 		public Bridge Neighbour(int direction) { return neighbours[direction]; }
@@ -149,9 +155,8 @@ namespace OpenRA.Mods.Common.Traits
 		byte GetTerrainType(CPos cell)
 		{
 			var dx = cell - self.Location;
-			var tileSet = self.World.Map.Rules.TileSet;
-			var index = dx.X + tileSet.Templates[template].Size.X * dx.Y;
-			return tileSet.GetTerrainIndex(new TerrainTile(template, (byte)index));
+			var index = dx.X + terrainInfo.Templates[template].Size.X * dx.Y;
+			return terrainInfo.GetTerrainIndex(new TerrainTile(template, (byte)index));
 		}
 
 		public void LinkNeighbouringBridges(World world, LegacyBridgeLayer bridges)

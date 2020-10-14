@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.IO;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
@@ -36,7 +37,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 		}
 
-		readonly TileSet tileset;
+		readonly ITemplatedTerrainInfo terrainInfo;
 		readonly ITiledTerrainRenderer terrainRenderer;
 		readonly TileSelectorTemplate[] allTemplates;
 		readonly EditorCursorLayer editorCursor;
@@ -45,12 +46,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		public TileSelectorLogic(Widget widget, World world, WorldRenderer worldRenderer)
 			: base(widget, world, worldRenderer, "TILETEMPLATE_LIST", "TILEPREVIEW_TEMPLATE")
 		{
-			tileset = world.Map.Rules.TileSet;
+			terrainInfo = world.Map.Rules.TerrainInfo as ITemplatedTerrainInfo;
+			if (terrainInfo == null)
+				throw new InvalidDataException("TileSelectorLogic requires a template-based tileset.");
+
 			terrainRenderer = world.WorldActor.TraitOrDefault<ITiledTerrainRenderer>();
 			if (terrainRenderer == null)
-				throw new YamlException("TileSelectorLogic requires a tile-based terrain renderer.");
+				throw new InvalidDataException("TileSelectorLogic requires a tile-based terrain renderer.");
 
-			allTemplates = tileset.Templates.Values.Select(t => new TileSelectorTemplate(t)).ToArray();
+			allTemplates = terrainInfo.Templates.Values.Select(t => new TileSelectorTemplate(t)).ToArray();
 			editorCursor = world.WorldActor.Trait<EditorCursorLayer>();
 
 			allCategories = allTemplates.SelectMany(t => t.Categories)
@@ -87,7 +91,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		int CategoryOrder(string category)
 		{
-			var i = tileset.EditorTemplateOrder.IndexOf(category);
+			var i = terrainInfo.EditorTemplateOrder.IndexOf(category);
 			return i >= 0 ? i : int.MaxValue;
 		}
 
@@ -111,7 +115,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					() => Editor.SetBrush(new EditorTileBrush(Editor, tileId, WorldRenderer)));
 
 				var preview = item.Get<TerrainTemplatePreviewWidget>("TILE_PREVIEW");
-				var template = tileset.Templates[tileId];
+				var template = terrainInfo.Templates[tileId];
 				var bounds = terrainRenderer.TemplateBounds(template);
 
 				// Scale templates to fit within the panel

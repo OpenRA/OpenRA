@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
@@ -29,12 +30,16 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly LegacyBridgeLayerInfo info;
 		readonly Dictionary<ushort, (string Template, int Health)> bridgeTypes = new Dictionary<ushort, (string, int)>();
+		readonly ITemplatedTerrainInfo terrainInfo;
 
 		CellLayer<Bridge> bridges;
 
 		public LegacyBridgeLayer(Actor self, LegacyBridgeLayerInfo info)
 		{
 			this.info = info;
+			terrainInfo = self.World.Map.Rules.TerrainInfo as ITemplatedTerrainInfo;
+			if (terrainInfo == null)
+				throw new InvalidDataException("LegacyBridgeLayer requires a template-based tileset.");
 		}
 
 		public void WorldLoaded(World w, WorldRenderer wr)
@@ -68,7 +73,7 @@ namespace OpenRA.Mods.Common.Traits
 			var ti = w.Map.Tiles[cell];
 			var tile = ti.Type;
 			var index = ti.Index;
-			var template = w.Map.Rules.TileSet.Templates[tile];
+			var template = terrainInfo.Templates[tile];
 			var ni = cell.X - index % template.Size.X;
 			var nj = cell.Y - index / template.Size.X;
 

@@ -35,6 +35,12 @@ namespace OpenRA
 		float MaxHeightColorBrightness { get; }
 	}
 
+	public interface ITemplatedTerrainInfo : ITerrainInfo
+	{
+		string[] EditorTemplateOrder { get; }
+		IReadOnlyDictionary<ushort, TerrainTemplateInfo> Templates { get; }
+	}
+
 	public interface ITerrainInfoNotifyMapCreated : ITerrainInfo
 	{
 		void MapCreated(Map map);
@@ -146,7 +152,7 @@ namespace OpenRA
 		}
 	}
 
-	public class TileSet : ITerrainInfo, ITerrainInfoNotifyMapCreated
+	public class TileSet : ITemplatedTerrainInfo, ITerrainInfoNotifyMapCreated
 	{
 		public const string TerrainPaletteInternalName = "terrain";
 
@@ -276,6 +282,9 @@ namespace OpenRA
 		float ITerrainInfo.MinHeightColorBrightness { get { return MinHeightColorBrightness; } }
 		float ITerrainInfo.MaxHeightColorBrightness { get { return MaxHeightColorBrightness; } }
 		TerrainTile ITerrainInfo.DefaultTerrainTile { get { return new TerrainTile(Templates.First().Key, 0); } }
+
+		string[] ITemplatedTerrainInfo.EditorTemplateOrder { get { return EditorTemplateOrder; } }
+		IReadOnlyDictionary<ushort, TerrainTemplateInfo> ITemplatedTerrainInfo.Templates { get { return Templates; } }
 
 		void ITerrainInfoNotifyMapCreated.MapCreated(Map map)
 		{

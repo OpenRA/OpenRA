@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.IO;
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
@@ -80,7 +81,12 @@ namespace OpenRA.Mods.D2k.Traits.Buildings
 			if (layer != null && (!info.ConcretePrerequisites.Any() || techTree == null || techTree.HasPrerequisites(info.ConcretePrerequisites)))
 			{
 				var map = self.World.Map;
-				var template = map.Rules.TileSet.Templates[info.ConcreteTemplate];
+
+				var terrainInfo = self.World.Map.Rules.TerrainInfo as ITemplatedTerrainInfo;
+				if (terrainInfo == null)
+					throw new InvalidDataException("D2kBuilding requires a template-based tileset.");
+
+				var template = terrainInfo.Templates[info.ConcreteTemplate];
 				if (template.PickAny)
 				{
 					// Fill the footprint with random variants
