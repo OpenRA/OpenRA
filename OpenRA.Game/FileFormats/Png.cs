@@ -44,8 +44,9 @@ namespace OpenRA.FileFormats
 
 			while (true)
 			{
-				var length = IPAddress.NetworkToHostOrder(s.ReadInt32());
-				var type = Encoding.UTF8.GetString(s.ReadBytes(4));
+				var lengthAndTypeBytes = s.ReadBytes(8);
+				var length = IPAddress.NetworkToHostOrder(BitConverter.ToInt32(lengthAndTypeBytes, 0));
+				var type = Encoding.UTF8.GetString(lengthAndTypeBytes, 4, 4);
 				var content = s.ReadBytes(length);
 				/*var crc = */s.ReadInt32();
 
