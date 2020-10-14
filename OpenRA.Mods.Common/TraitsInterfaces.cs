@@ -645,7 +645,10 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	[RequireExplicitImplementation]
-	public interface ITiledTerrainRendererInfo : ITraitInfoInterface { }
+	public interface ITiledTerrainRendererInfo : ITraitInfoInterface
+	{
+		bool ValidateTileSprites(ITemplatedTerrainInfo terrainInfo, Action<string> onError);
+	}
 
 	[RequireExplicitImplementation]
 	public interface ITiledTerrainRenderer

@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
+using OpenRA.Mods.Common.Traits;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
@@ -45,33 +46,11 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					try
 					{
 						Console.WriteLine("Tileset: " + kv.Key);
-						var tileset = modData.DefaultTileSets[kv.Key];
-						var missingImages = new HashSet<string>();
-						Action<uint, string> onMissingImage = (id, f) =>
-						{
-							Console.WriteLine("\tTemplate `{0}` references sprite `{1}` that does not exist.", id, f);
-							missingImages.Add(f);
-							failed = true;
-						};
+						var terrainInfo = modData.DefaultTileSets[kv.Key];
 
-						var theater = new Theater(tileset, onMissingImage);
-						foreach (var t in tileset.Templates)
-						{
-							for (var v = 0; v < t.Value.Images.Length; v++)
-							{
-								if (!missingImages.Contains(t.Value.Images[v]))
-								{
-									for (var i = 0; i < t.Value.TilesCount; i++)
-									{
-										if (t.Value[i] == null || theater.HasTileSprite(new TerrainTile(t.Key, (byte)i), v))
-											continue;
-
-										Console.WriteLine("\tTemplate `{0}` references frame {1} that does not exist in sprite `{2}`.", t.Key, i, t.Value.Images[v]);
-										failed = true;
-									}
-								}
-							}
-						}
+						if (terrainInfo is ITemplatedTerrainInfo templatedTerrainInfo)
+							foreach (var r in modData.DefaultRules.Actors["world"].TraitInfos<ITiledTerrainRendererInfo>())
+								failed |= r.ValidateTileSprites(templatedTerrainInfo, Console.WriteLine);
 
 						foreach (var image in kv.Value.Images)
 						{

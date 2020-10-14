@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using OpenRA.Graphics;
@@ -19,6 +20,39 @@ namespace OpenRA.Mods.Common.Traits
 {
 	public class TerrainRendererInfo : TraitInfo, ITiledTerrainRendererInfo
 	{
+		bool ITiledTerrainRendererInfo.ValidateTileSprites(ITemplatedTerrainInfo terrainInfo, Action<string> onError)
+		{
+			var missingImages = new HashSet<string>();
+			var failed = false;
+			Action<uint, string> onMissingImage = (id, f) =>
+			{
+				onError("\tTemplate `{0}` references sprite `{1}` that does not exist.".F(id, f));
+				missingImages.Add(f);
+				failed = true;
+			};
+
+			var tileCache = new Theater((TileSet)terrainInfo, onMissingImage);
+			foreach (var t in terrainInfo.Templates)
+			{
+				for (var v = 0; v < t.Value.Images.Length; v++)
+				{
+					if (!missingImages.Contains(t.Value.Images[v]))
+					{
+						for (var i = 0; i < t.Value.TilesCount; i++)
+						{
+							if (t.Value[i] == null || tileCache.HasTileSprite(new TerrainTile(t.Key, (byte)i), v))
+								continue;
+
+							onError("\tTemplate `{0}` references frame {1} that does not exist in sprite `{2}`.".F(t.Key, i, t.Value.Images[v]));
+							failed = true;
+						}
+					}
+				}
+			}
+
+			return failed;
+		}
+
 		public override object Create(ActorInitializer init) { return new TerrainRenderer(init.World); }
 	}
 
@@ -27,15 +61,17 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Map map;
 		readonly Dictionary<string, TerrainSpriteLayer> spriteLayers = new Dictionary<string, TerrainSpriteLayer>();
 		readonly TileSet terrainInfo;
-		readonly Theater theater;
+		readonly Theater tileCache;
 		bool disposed;
 
 		public TerrainRenderer(World world)
 		{
 			map = world.Map;
+			terrainInfo = map.Rules.TerrainInfo as TileSet;
+			if (terrainInfo == null)
+				throw new InvalidDataException("TerrainRenderer can only be used with the default TileSet");
 
-			terrainInfo = map.Rules.TileSet;
-			theater = new Theater(terrainInfo);
+			tileCache = new Theater(terrainInfo);
 		}
 
 		void IWorldLoaded.WorldLoaded(World world, WorldRenderer wr)
@@ -44,7 +80,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				var palette = template.Value.Palette ?? TileSet.TerrainPaletteInternalName;
 				spriteLayers.GetOrAdd(palette, pal =>
-					new TerrainSpriteLayer(world, wr, theater.Sheet, BlendMode.Alpha, wr.Palette(palette), world.Type != WorldType.Editor));
+					new TerrainSpriteLayer(world, wr, tileCache.Sheet, BlendMode.Alpha, wr.Palette(palette), world.Type != WorldType.Editor));
 			}
 
 			foreach (var cell in map.AllCells)
@@ -62,7 +98,7 @@ namespace OpenRA.Mods.Common.Traits
 				palette = template.Palette ?? palette;
 
 			foreach (var kv in spriteLayers)
-				kv.Value.Update(cell, palette == kv.Key ? theater.TileSprite(tile) : null, false);
+				kv.Value.Update(cell, palette == kv.Key ? tileCache.TileSprite(tile) : null, false);
 		}
 
 		void IRenderTerrain.RenderTerrain(WorldRenderer wr, Viewport viewport)
@@ -85,15 +121,15 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var kv in spriteLayers.Values)
 				kv.Dispose();
 
-			theater.Dispose();
+			tileCache.Dispose();
 			disposed = true;
 		}
 
-		Sheet ITiledTerrainRenderer.Sheet { get { return theater.Sheet; } }
+		Sheet ITiledTerrainRenderer.Sheet { get { return tileCache.Sheet; } }
 
 		Sprite ITiledTerrainRenderer.TileSprite(TerrainTile r, int? variant)
 		{
-			return theater.TileSprite(r, variant);
+			return tileCache.TileSprite(r, variant);
 		}
 
 		Rectangle ITiledTerrainRenderer.TemplateBounds(TerrainTemplateInfo template)
@@ -110,7 +146,7 @@ namespace OpenRA.Mods.Common.Traits
 					if (!terrainInfo.TryGetTileInfo(tile, out var tileInfo))
 						continue;
 
-					var sprite = theater.TileSprite(tile);
+					var sprite = tileCache.TileSprite(tile);
 					var u = map.Grid.Type == MapGridType.Rectangular ? x : (x - y) / 2f;
 					var v = map.Grid.Type == MapGridType.Rectangular ? y : (x + y) / 2f;
 
