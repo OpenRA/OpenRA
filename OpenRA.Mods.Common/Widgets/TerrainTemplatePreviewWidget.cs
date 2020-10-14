@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.IO;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
@@ -24,7 +25,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		readonly ITiledTerrainRenderer terrainRenderer;
 		readonly WorldRenderer worldRenderer;
-		readonly TileSet tileset;
+		readonly ITerrainInfo terrainInfo;
 
 		TerrainTemplateInfo template;
 		Rectangle bounds;
@@ -50,7 +51,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public TerrainTemplatePreviewWidget(WorldRenderer worldRenderer, World world)
 		{
 			this.worldRenderer = worldRenderer;
-			tileset = world.Map.Rules.TileSet;
+			terrainInfo = world.Map.Rules.TerrainInfo;
 			terrainRenderer = world.WorldActor.TraitOrDefault<ITiledTerrainRenderer>();
 			if (terrainRenderer == null)
 				throw new YamlException("TerrainTemplatePreviewWidget requires a tile-based terrain renderer.");
@@ -60,7 +61,7 @@ namespace OpenRA.Mods.Common.Widgets
 			: base(other)
 		{
 			worldRenderer = other.worldRenderer;
-			tileset = other.worldRenderer.World.Map.Rules.TileSet;
+			terrainInfo = other.worldRenderer.World.Map.Rules.TerrainInfo;
 			terrainRenderer = other.terrainRenderer;
 			Template = other.Template;
 			GetScale = other.GetScale;
@@ -87,7 +88,7 @@ namespace OpenRA.Mods.Common.Widgets
 				for (var x = 0; x < Template.Size.X; x++)
 				{
 					var tile = new TerrainTile(Template.Id, (byte)(i++));
-					if (!tileset.TryGetTileInfo(tile, out var tileInfo))
+					if (!terrainInfo.TryGetTerrainInfo(tile, out var tileInfo))
 						continue;
 
 					var sprite = terrainRenderer.TileSprite(tile, 0);

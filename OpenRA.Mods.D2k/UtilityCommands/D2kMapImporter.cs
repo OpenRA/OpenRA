@@ -260,7 +260,7 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 
 		Map map;
 		Size mapSize;
-		TileSet tileSet;
+		ITemplatedTerrainInfo terrainInfo;
 		List<TerrainTemplateInfo> tileSetsFromYaml;
 		int playerCount;
 
@@ -306,10 +306,9 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 		void Initialize(string mapFile)
 		{
 			mapSize = new Size(stream.ReadUInt16(), stream.ReadUInt16());
+			terrainInfo = Game.ModData.DefaultTileSets["ARRAKIS"];
 
-			tileSet = Game.ModData.DefaultTileSets["ARRAKIS"];
-
-			map = new Map(Game.ModData, tileSet, mapSize.Width + 2 * MapCordonWidth, mapSize.Height + 2 * MapCordonWidth)
+			map = new Map(Game.ModData, terrainInfo, mapSize.Width + 2 * MapCordonWidth, mapSize.Height + 2 * MapCordonWidth)
 			{
 				Title = Path.GetFileNameWithoutExtension(mapFile),
 				Author = "Westwood Studios"
@@ -321,7 +320,7 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 
 			// Get all templates from the tileset YAML file that have at least one frame and an Image property corresponding to the requested tileset
 			// Each frame is a tile from the Dune 2000 tileset files, with the Frame ID being the index of the tile in the original file
-			tileSetsFromYaml = tileSet.Templates.Where(t => t.Value.Frames != null
+			tileSetsFromYaml = terrainInfo.Templates.Where(t => t.Value.Frames != null
 				&& t.Value.Images[0].ToLowerInvariant() == tilesetName.ToLowerInvariant()).Select(ts => ts.Value).ToList();
 
 			var players = new MapPlayers(map.Rules, playerCount);
@@ -469,7 +468,7 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 			if (template == null)
 			{
 				// Just get a template that contains a tile with the same ID as requested
-				var templates = tileSet.Templates.Where(t => t.Value.Frames != null && t.Value.Frames.Contains(tileIndex));
+				var templates = terrainInfo.Templates.Where(t => t.Value.Frames != null && t.Value.Frames.Contains(tileIndex));
 				if (templates.Any())
 					template = templates.First().Value;
 			}

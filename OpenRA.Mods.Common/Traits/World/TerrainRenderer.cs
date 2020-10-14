@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.IO;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -25,18 +26,21 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly Map map;
 		readonly Dictionary<string, TerrainSpriteLayer> spriteLayers = new Dictionary<string, TerrainSpriteLayer>();
+		readonly TileSet terrainInfo;
 		readonly Theater theater;
 		bool disposed;
 
 		public TerrainRenderer(World world)
 		{
 			map = world.Map;
-			theater = new Theater(world.Map.Rules.TileSet);
+
+			terrainInfo = map.Rules.TileSet;
+			theater = new Theater(terrainInfo);
 		}
 
 		void IWorldLoaded.WorldLoaded(World world, WorldRenderer wr)
 		{
-			foreach (var template in map.Rules.TileSet.Templates)
+			foreach (var template in terrainInfo.Templates)
 			{
 				var palette = template.Value.Palette ?? TileSet.TerrainPaletteInternalName;
 				spriteLayers.GetOrAdd(palette, pal =>
@@ -54,8 +58,8 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var tile = map.Tiles[cell];
 			var palette = TileSet.TerrainPaletteInternalName;
-			if (map.Rules.TileSet.Templates.ContainsKey(tile.Type))
-				palette = map.Rules.TileSet.Templates[tile.Type].Palette ?? palette;
+			if (terrainInfo.Templates.TryGetValue(tile.Type, out var template))
+				palette = template.Palette ?? palette;
 
 			foreach (var kv in spriteLayers)
 				kv.Value.Update(cell, palette == kv.Key ? theater.TileSprite(tile) : null, false);
@@ -103,7 +107,7 @@ namespace OpenRA.Mods.Common.Traits
 				for (var x = 0; x < template.Size.X; x++)
 				{
 					var tile = new TerrainTile(template.Id, (byte)(i++));
-					if (!map.Rules.TileSet.TryGetTileInfo(tile, out var tileInfo))
+					if (!terrainInfo.TryGetTileInfo(tile, out var tileInfo))
 						continue;
 
 					var sprite = theater.TileSprite(tile);

@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
@@ -23,6 +24,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		readonly WorldRenderer worldRenderer;
 		readonly World world;
+		readonly ITemplatedTerrainInfo terrainInfo;
 		readonly EditorViewportControllerWidget editorWidget;
 		readonly EditorActionManager editorActionManager;
 		readonly EditorCursorLayer editorCursor;
@@ -35,6 +37,10 @@ namespace OpenRA.Mods.Common.Widgets
 			this.editorWidget = editorWidget;
 			worldRenderer = wr;
 			world = wr.World;
+			terrainInfo = world.Map.Rules.TerrainInfo as ITemplatedTerrainInfo;
+			if (terrainInfo == null)
+				throw new InvalidDataException("EditorTileBrush can only be used with template-based tilesets");
+
 			editorActionManager = world.WorldActor.Trait<EditorActionManager>();
 			editorCursor = world.WorldActor.Trait<EditorCursorLayer>();
 
@@ -42,7 +48,7 @@ namespace OpenRA.Mods.Common.Widgets
 			worldRenderer = wr;
 			world = wr.World;
 
-			var template = world.Map.Rules.TileSet.Templates.First(t => t.Value.Id == id).Value;
+			var template = terrainInfo.Templates.First(t => t.Value.Id == id).Value;
 			cursorToken = editorCursor.SetTerrainTemplate(wr, template);
 		}
 
@@ -96,14 +102,11 @@ namespace OpenRA.Mods.Common.Widgets
 
 		void PaintCell(CPos cell, bool isMoving)
 		{
-			var map = world.Map;
-			var tileset = map.Rules.TileSet;
-			var template = tileset.Templates[Template];
-
+			var template = terrainInfo.Templates[Template];
 			if (isMoving && PlacementOverlapsSameTemplate(template, cell))
 				return;
 
-			editorActionManager.Add(new PaintTileEditorAction(Template, map, cell));
+			editorActionManager.Add(new PaintTileEditorAction(Template, world.Map, cell));
 		}
 
 		void FloodFillWithBrush(CPos cell, bool isMoving)
@@ -164,8 +167,8 @@ namespace OpenRA.Mods.Common.Widgets
 			this.map = map;
 			this.cell = cell;
 
-			var tileset = map.Rules.TileSet;
-			terrainTemplate = tileset.Templates[template];
+			var terrainInfo = (ITemplatedTerrainInfo)map.Rules.TerrainInfo;
+			terrainTemplate = terrainInfo.Templates[template];
 			Text = "Added tile {0}".F(terrainTemplate.Id);
 		}
 
@@ -233,8 +236,8 @@ namespace OpenRA.Mods.Common.Widgets
 			this.map = map;
 			this.cell = cell;
 
-			var tileset = map.Rules.TileSet;
-			terrainTemplate = tileset.Templates[template];
+			var terrainInfo = (ITemplatedTerrainInfo)map.Rules.TerrainInfo;
+			terrainTemplate = terrainInfo.Templates[template];
 			Text = "Filled with tile {0}".F(terrainTemplate.Id);
 		}
 
