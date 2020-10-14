@@ -52,7 +52,7 @@ namespace OpenRA.FileFormats
 				if (!headerParsed && type != "IHDR")
 					throw new InvalidDataException("Invalid PNG file - header does not appear first.");
 
-				using (var ms = new MemoryStream(content))
+				using (var ms = MemoryStreamManager.GetMemoryStream(content))
 				{
 					switch (type)
 					{
@@ -129,7 +129,7 @@ namespace OpenRA.FileFormats
 
 						case "IEND":
 						{
-							using (var ns = new MemoryStream(data.ToArray()))
+							using (var ns = MemoryStreamManager.GetMemoryStream(data.ToArray()))
 							{
 								using (var ds = new InflaterInputStream(ns))
 								{
@@ -265,10 +265,10 @@ namespace OpenRA.FileFormats
 
 		public byte[] Save()
 		{
-			using (var output = new MemoryStream())
+			using (var output = MemoryStreamManager.GetMemoryStream())
 			{
 				output.WriteArray(Signature);
-				using (var header = new MemoryStream())
+				using (var header = MemoryStreamManager.GetMemoryStream())
 				{
 					header.Write(IPAddress.HostToNetworkOrder(Width));
 					header.Write(IPAddress.HostToNetworkOrder(Height));
@@ -289,7 +289,7 @@ namespace OpenRA.FileFormats
 				bool alphaPalette = false;
 				if (Palette != null)
 				{
-					using (var palette = new MemoryStream())
+					using (var palette = MemoryStreamManager.GetMemoryStream())
 					{
 						foreach (var c in Palette)
 						{
@@ -305,7 +305,7 @@ namespace OpenRA.FileFormats
 
 				if (alphaPalette)
 				{
-					using (var alpha = new MemoryStream())
+					using (var alpha = MemoryStreamManager.GetMemoryStream())
 					{
 						foreach (var c in Palette)
 							alpha.WriteByte(c.A);
@@ -314,7 +314,7 @@ namespace OpenRA.FileFormats
 					}
 				}
 
-				using (var data = new MemoryStream())
+				using (var data = MemoryStreamManager.GetMemoryStream())
 				{
 					using (var compressed = new DeflaterOutputStream(data))
 					{
@@ -335,14 +335,15 @@ namespace OpenRA.FileFormats
 
 				foreach (var kv in EmbeddedData)
 				{
-					using (var text = new MemoryStream())
+					using (var text = MemoryStreamManager.GetMemoryStream())
 					{
 						text.WriteArray(Encoding.ASCII.GetBytes(kv.Key + (char)0 + kv.Value));
 						WritePngChunk(output, "tEXt", text);
 					}
 				}
 
-				WritePngChunk(output, "IEND", new MemoryStream());
+				using (var stream = MemoryStreamManager.GetMemoryStream())
+					WritePngChunk(output, "IEND", stream);
 				return output.ToArray();
 			}
 		}
