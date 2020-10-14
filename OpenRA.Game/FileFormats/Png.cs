@@ -47,18 +47,18 @@ namespace OpenRA.FileFormats
 				var lengthAndTypeBytes = s.ReadBytes(8);
 				var length = IPAddress.NetworkToHostOrder(BitConverter.ToInt32(lengthAndTypeBytes, 0));
 				var type = Encoding.UTF8.GetString(lengthAndTypeBytes, 4, 4);
-				var content = s.ReadBytes(length);
-				/*var crc = */s.ReadInt32();
 
 				if (!headerParsed && type != "IHDR")
 					throw new InvalidDataException("Invalid PNG file - header does not appear first.");
 
-				using (var ms = MemoryStreamManager.GetMemoryStream(content))
+				MemoryStream ms = null;
+				try
 				{
 					switch (type)
 					{
 						case "IHDR":
 						{
+							ms = PrepareMemoryStream(s, length);
 							if (headerParsed)
 								throw new InvalidDataException("Invalid PNG file - duplicate header.");
 							Width = IPAddress.NetworkToHostOrder(ms.ReadInt32());
@@ -92,6 +92,7 @@ namespace OpenRA.FileFormats
 
 						case "PLTE":
 						{
+							ms = PrepareMemoryStream(s, length);
 							Palette = new Color[256];
 							for (var i = 0; i < length / 3; i++)
 							{
@@ -104,6 +105,7 @@ namespace OpenRA.FileFormats
 
 						case "tRNS":
 						{
+							ms = PrepareMemoryStream(s, length);
 							if (Palette == null)
 								throw new InvalidDataException("Non-Palette indexed PNG are not supported.");
 
@@ -115,6 +117,8 @@ namespace OpenRA.FileFormats
 
 						case "IDAT":
 						{
+							var content = s.ReadBytes(length);
+							/*var crc = */s.ReadInt32();
 							data.AddRange(content);
 
 							break;
@@ -122,6 +126,7 @@ namespace OpenRA.FileFormats
 
 						case "tEXt":
 						{
+							ms = PrepareMemoryStream(s, length);
 							var key = ms.ReadASCIIZ();
 							EmbeddedData.Add(key, ms.ReadASCII(length - key.Length - 1));
 
@@ -169,11 +174,39 @@ namespace OpenRA.FileFormats
 							if (isPaletted && Palette == null)
 								throw new InvalidDataException("Non-Palette indexed PNG are not supported.");
 
+							// Must compensate for the unread crc only
+							SkipRead(s, 0);
 							return;
+						}
+
+						default:
+						{
+							SkipRead(s, length);
+							continue;
 						}
 					}
 				}
+				finally
+				{
+					if (ms != null)
+					{
+						ms.Dispose();
+					}
+				}
 			}
+		}
+
+		private static MemoryStream PrepareMemoryStream(Stream s, int length)
+		{
+			var content = s.ReadBytes(length);
+			/*var crc = */s.ReadInt32();
+			return MemoryStreamManager.GetMemoryStream(content);
+		}
+
+		void SkipRead(Stream s, int length)
+		{
+			// The +4 adjusts for the crc, which is a int
+			s.Position += length + 4;
 		}
 
 		public Png(byte[] data, int width, int height, Color[] palette = null,
