@@ -59,6 +59,7 @@
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0" PrivateAssets="All" />
     <AdditionalFiles Include="../stylecop.json" />
     <AdditionalFiles Include="Properties/launchSettings.json" />
+    <PackageReference Include="Microsoft.IO.RecyclableMemoryStream" Version="1.3.5" />
   </ItemGroup>
   <Target Name="DisableAnalyzers" BeforeTargets="CoreCompile" Condition="'$(Configuration)'=='Release'">
     <!-- Disable code style analysis on Release builds to improve compile-time performance -->
