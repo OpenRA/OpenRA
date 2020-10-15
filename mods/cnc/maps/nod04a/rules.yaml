@@ -5,8 +5,8 @@ World:
 		StartingMusic: warfare
 		VictoryMusic: nod_win1
 	MissionData:
-		Briefing: A small village friendly to our cause has been increasingly harassed by GDI, and the Brotherhood wishes you to assist them in their efforts.\n\nSeek out the enemy village and destroy it. The event will be disguised as a GDI attack.
-		BriefingVideo: nod4b.vqa
+		Briefing: GDI is attempting to relocate a village of sympathetic civilians. Intercept the convoy and destroy it. It is imperative that the villagers be totally destroyed as a lesson to any other natives who may oppose us.
+		BriefingVideo: nod4a.vqa
 		LossVideo: nodlose.vqa
 
 Player:
