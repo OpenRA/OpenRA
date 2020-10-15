@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using Microsoft.IO;
 
@@ -15,7 +16,7 @@ namespace OpenRA
 		{
 			if (singletonManager == null)
 			{
-				singletonManager = new RecyclableMemoryStreamManager();
+				Initialize();
 			}
 
 			return singletonManager.GetStream();
@@ -25,10 +26,19 @@ namespace OpenRA
 		{
 			if (singletonManager == null)
 			{
-				singletonManager = new RecyclableMemoryStreamManager();
+				Initialize();
 			}
 
 			return singletonManager.GetStream(buffer);
+		}
+
+		static void Initialize()
+		{
+			var blockSize = 4096;
+			var maxBufferSize = blockSize * 1024 * 5;
+			singletonManager = new RecyclableMemoryStreamManager(blockSize, blockSize * 512, maxBufferSize);
+			singletonManager.AggressiveBufferReturn = true;
+			singletonManager.MaximumFreeSmallPoolBytes = blockSize * 1024;
 		}
 	}
 }
