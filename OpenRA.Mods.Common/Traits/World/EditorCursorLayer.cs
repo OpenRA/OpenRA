@@ -73,24 +73,7 @@ namespace OpenRA.Mods.Common.Traits
 					var pos = world.Map.CenterOfCell(cell);
 
 					if (Type == EditorCursorType.TerrainTemplate)
-					{
-						var i = 0;
-						for (var y = 0; y < TerrainTemplate.Size.Y; y++)
-						{
-							for (var x = 0; x < TerrainTemplate.Size.X; x++)
-							{
-								var tile = new TerrainTile(TerrainTemplate.Id, (byte)i++);
-								if (!world.Map.Rules.TerrainInfo.TryGetTerrainInfo(tile, out var tileInfo))
-									continue;
-
-								var sprite = terrainRenderer.TileSprite(tile, 0);
-								var offset = world.Map.Offset(new CVec(x, y), tileInfo.Height);
-								var palette = wr.Palette(TerrainTemplate.Palette ?? TileSet.TerrainPaletteInternalName);
-
-								terrainOrResourcePreview.Add(new SpriteRenderable(sprite, pos, offset, 0, palette, 1, false));
-							}
-						}
-					}
+						terrainOrResourcePreview.AddRange(terrainRenderer.RenderPreview(wr, TerrainTemplate, pos));
 					else
 					{
 						var variant = Resource.Sequences.FirstOrDefault();

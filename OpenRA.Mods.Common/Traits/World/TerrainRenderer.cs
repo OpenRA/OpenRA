@@ -158,5 +158,53 @@ namespace OpenRA.Mods.Common.Traits
 
 			return templateRect ?? Rectangle.Empty;
 		}
+
+		IEnumerable<IRenderable> ITiledTerrainRenderer.RenderUIPreview(WorldRenderer wr, TerrainTemplateInfo template, int2 origin, float scale)
+		{
+			if (template == null)
+				yield break;
+
+			var ts = map.Grid.TileSize;
+			var gridType = map.Grid.Type;
+
+			var i = 0;
+			for (var y = 0; y < template.Size.Y; y++)
+			{
+				for (var x = 0; x < template.Size.X; x++)
+				{
+					var tile = new TerrainTile(template.Id, (byte)i++);
+					if (!terrainInfo.TryGetTileInfo(tile, out var tileInfo))
+						continue;
+
+					var sprite = tileCache.TileSprite(tile, 0);
+					var u = gridType == MapGridType.Rectangular ? x : (x - y) / 2f;
+					var v = gridType == MapGridType.Rectangular ? y : (x + y) / 2f;
+					var offset = (new float2(u * ts.Width, (v - 0.5f * tileInfo.Height) * ts.Height) - 0.5f * sprite.Size.XY).ToInt2();
+					var palette = template.Palette ?? TileSet.TerrainPaletteInternalName;
+
+					yield return new UISpriteRenderable(sprite, WPos.Zero, origin + offset, 0, wr.Palette(palette), scale);
+				}
+			}
+		}
+
+		IEnumerable<IRenderable> ITiledTerrainRenderer.RenderPreview(WorldRenderer wr, TerrainTemplateInfo template, WPos origin)
+		{
+			var i = 0;
+			for (var y = 0; y < template.Size.Y; y++)
+			{
+				for (var x = 0; x < template.Size.X; x++)
+				{
+					var tile = new TerrainTile(template.Id, (byte)i++);
+					if (!terrainInfo.TryGetTileInfo(tile, out var tileInfo))
+						continue;
+
+					var sprite = tileCache.TileSprite(tile, 0);
+					var offset = map.Offset(new CVec(x, y), tileInfo.Height);
+					var palette = wr.Palette(template.Palette ?? TileSet.TerrainPaletteInternalName);
+
+					yield return new SpriteRenderable(sprite, origin, offset, 0, palette, 1, false);
+				}
+			}
+		}
 	}
 }

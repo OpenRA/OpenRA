@@ -656,5 +656,7 @@ namespace OpenRA.Mods.Common.Traits
 		Sheet Sheet { get; }
 		Sprite TileSprite(TerrainTile r, int? variant = null);
 		Rectangle TemplateBounds(TerrainTemplateInfo template);
+		IEnumerable<IRenderable> RenderUIPreview(WorldRenderer wr, TerrainTemplateInfo template, int2 origin, float scale);
+		IEnumerable<IRenderable> RenderPreview(WorldRenderer wr, TerrainTemplateInfo template, WPos origin);
 	}
 }
