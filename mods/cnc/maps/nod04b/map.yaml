@@ -2,7 +2,7 @@ MapFormat: 11
 
 RequiresMod: cnc
 
-Title: 04b: Oum Hadjer
+Title: 04b: Mao Civil War
 
 Author: Westwood Studios
 
@@ -10,7 +10,7 @@ Tileset: DESERT
 
 MapSize: 64,64
 
-Bounds: 7,17,52,44
+Bounds: 11,6,46,34
 
 Visibility: MissionSelector
 
@@ -19,21 +19,26 @@ Categories: Campaign
 LockPreview: True
 
 Players:
-	PlayerReference@GDI:
-		Name: GDI
-		Bot: campaign
-		Faction: gdi
-		Color: F5D378
-		Enemies: Nod
 	PlayerReference@Neutral:
 		Name: Neutral
 		OwnsWorld: True
 		NonCombatant: True
 		Faction: gdi
+	PlayerReference@NodSupporter:
+		Name: NodSupporter
+		NonCombatant: True
+		Faction: nod
+		Bot: campaign
+	PlayerReference@GDI:
+		Name: GDI
+		Faction: gdi
+		Color: F5D378
+		Enemies: Nod
+		Bot: campaign
 	PlayerReference@Nod:
 		Name: Nod
-		AllowBots: False
 		Playable: True
+		AllowBots: False
 		Required: True
 		LockFaction: True
 		Faction: nod
@@ -44,437 +49,491 @@ Players:
 		Enemies: GDI
 
 Actors:
-	Actor0: sbag
-		Location: 58,26
+	Actor0: t08
+		Location: 34,20
 		Owner: Neutral
-	Actor1: sbag
-		Location: 57,26
+	Actor1: t18
+		Location: 33,18
 		Owner: Neutral
-	Actor2: sbag
-		Location: 56,26
+	Actor2: t18
+		Location: 33,9
 		Owner: Neutral
-	Actor3: sbag
-		Location: 55,26
+	Actor3: t08
+		Location: 41,5
 		Owner: Neutral
-	Actor4: sbag
-		Location: 54,26
+	Actor4: t18
+		Location: 42,15
 		Owner: Neutral
-	Actor5: sbag
-		Location: 53,26
+	Actor5: t08
+		Location: 45,26
 		Owner: Neutral
-	Actor6: sbag
-		Location: 52,26
+	Actor6: t08
+		Location: 56,29
 		Owner: Neutral
-	Actor7: sbag
+	Actor7: t08
+		Location: 55,29
+		Owner: Neutral
+	Actor8: t08
 		Location: 51,26
 		Owner: Neutral
-	Actor8: sbag
-		Location: 50,26
+	Actor9: t08
+		Location: 56,18
 		Owner: Neutral
-	Actor9: sbag
-		Location: 49,26
+	Actor10: t08
+		Location: 52,16
 		Owner: Neutral
-	Actor10: sbag
-		Location: 48,26
+	Actor11: t08
+		Location: 45,21
 		Owner: Neutral
-	Actor11: sbag
-		Location: 47,26
+	Actor12: t08
+		Location: 38,19
 		Owner: Neutral
-	Actor12: sbag
-		Location: 58,25
+	Actor13: t08
+		Location: 23,16
 		Owner: Neutral
-	Actor13: sbag
-		Location: 47,25
+	Actor14: t08
+		Location: 14,22
 		Owner: Neutral
-	Actor14: sbag
-		Location: 58,24
+	Actor15: t08
+		Location: 26,22
 		Owner: Neutral
-	Actor15: sbag
-		Location: 47,24
+	Actor16: t08
+		Location: 21,26
 		Owner: Neutral
-	Actor16: sbag
-		Location: 58,23
+	Actor17: t08
+		Location: 48,6
 		Owner: Neutral
-	Actor17: sbag
-		Location: 58,22
+	Actor18: t08
+		Location: 15,19
 		Owner: Neutral
-	Actor18: sbag
-		Location: 58,21
+	Actor19: t08
+		Location: 31,15
 		Owner: Neutral
-	Actor19: sbag
-		Location: 47,21
+	Actor20: t18
+		Location: 49,34
 		Owner: Neutral
-	Actor20: sbag
-		Location: 58,20
+	Actor21: t18
+		Location: 48,38
 		Owner: Neutral
-	Actor21: sbag
-		Location: 47,20
+	Actor22: t18
+		Location: 42,35
 		Owner: Neutral
-	Actor22: sbag
-		Location: 58,19
+	Actor23: t18
+		Location: 54,37
 		Owner: Neutral
-	Actor23: sbag
-		Location: 47,19
+	Actor24: t08
+		Location: 51,35
 		Owner: Neutral
-	Actor24: sbag
-		Location: 58,18
+	Actor25: t08
+		Location: 45,37
 		Owner: Neutral
-	Actor25: sbag
-		Location: 57,18
+	Actor26: t08
+		Location: 47,33
 		Owner: Neutral
-	Actor26: sbag
-		Location: 48,18
+	Actor27: t18
+		Location: 13,10
 		Owner: Neutral
-	Actor27: sbag
-		Location: 47,18
+	Actor28: t18
+		Location: 20,7
 		Owner: Neutral
-	Actor28: sbag
-		Location: 58,17
+	Actor30: t08
+		Location: 12,8
 		Owner: Neutral
-	Actor29: sbag
-		Location: 57,17
+	Actor31: t08
+		Location: 23,9
 		Owner: Neutral
-	Actor30: sbag
-		Location: 56,17
-		Owner: Neutral
-	Actor31: sbag
-		Location: 55,17
-		Owner: Neutral
-	Actor32: sbag
-		Location: 54,17
-		Owner: Neutral
-	Actor33: sbag
-		Location: 53,17
-		Owner: Neutral
-	Actor34: sbag
-		Location: 52,17
-		Owner: Neutral
-	Actor35: sbag
-		Location: 51,17
-		Owner: Neutral
-	Actor36: sbag
-		Location: 50,17
-		Owner: Neutral
-	Actor37: sbag
-		Location: 49,17
-		Owner: Neutral
-	Actor38: sbag
-		Location: 48,17
-		Owner: Neutral
-	Actor39: sbag
-		Location: 47,17
-		Owner: Neutral
-	Actor40: t18
-		Location: 47,50
-		Owner: Neutral
-	Actor41: t18
-		Location: 46,31
-		Owner: Neutral
-	Actor42: t08
-		Location: 39,26
-		Owner: Neutral
-	Actor43: t18
-		Location: 37,25
-		Owner: Neutral
-	Actor44: t18
-		Location: 27,28
-		Owner: Neutral
-	Actor45: t18
-		Location: 54,26
-		Owner: Neutral
-	Actor46: t18
-		Location: 49,18
-		Owner: Neutral
-	Actor47: t18
-		Location: 23,54
-		Owner: Neutral
-	Actor48: t18
-		Location: 34,40
-		Owner: Neutral
-	Actor49: t08
-		Location: 16,45
-		Owner: Neutral
-	Actor50: t08
-		Location: 14,53
-		Owner: Neutral
-	Actor52: t18
-		Location: 13,44
-		Owner: Neutral
-	Actor57: t18
-		Location: 36,49
-		Owner: Neutral
-	Actor58: t18
-		Location: 44,59
-		Owner: Neutral
-	Actor59: t18
-		Location: 11,37
-		Owner: Neutral
-	Actor60: t18
-		Location: 25,20
-		Owner: Neutral
-	Actor61: gtwr
-		Location: 46,21
+	Actor32: v35
+		Location: 48,38
+		Owner: NodSupporter
+	Actor33: v34
+		Location: 46,33
+		Owner: NodSupporter
+	Actor35: v32
+		Location: 54,35
+		Owner: NodSupporter
+	Actor36: v30
+		Location: 48,32
+		Owner: NodSupporter
+	Actor37: v30
+		Location: 52,34
+		Owner: NodSupporter
+	Actor38: v31
+		Location: 52,35
+		Owner: NodSupporter
+	Actor39: v32
+		Location: 46,37
+		Owner: NodSupporter
+		Health: 73
+	Actor41: v34
+		Location: 49,38
+		Owner: NodSupporter
+	Actor42: v35
+		Location: 46,32
+		Owner: NodSupporter
+	Actor43: v36
+		Location: 48,37
+		Owner: NodSupporter
+	Actor44: v32
+		Location: 49,33
+		Owner: NodSupporter
+	Actor45: v34
+		Location: 50,34
+		Owner: NodSupporter
+	Actor46: v20
+		Location: 15,10
 		Owner: GDI
-	Actor62: gtwr
-		Location: 46,24
+	Actor47: v21
+		Location: 12,10
 		Owner: GDI
-	Actor63: hosp
-		Location: 48,19
+	Actor48: v22
+		Location: 21,11
 		Owner: GDI
-	Actor64: pyle
-		Location: 50,20
+	Actor49: v23
+		Location: 22,8
 		Owner: GDI
-	Actor65: nuke
-		Location: 53,21
+	Actor50: v24
+		Location: 18,8
 		Owner: GDI
-	Actor66: nuke
-		Location: 52,23
+	Actor51: v25
+		Location: 13,7
 		Owner: GDI
-	Actor67: silo
-		Location: 56,24
+	Actor52: v26
+		Location: 20,9
 		Owner: GDI
-	Actor68: silo
-		Location: 55,22
+	Actor53: v27
+		Location: 15,9
 		Owner: GDI
-	Actor69: fact
-		Location: 53,18
+	Actor54: v27
+		Location: 14,9
 		Owner: GDI
-	Actor70: hq
-		Location: 56,19
+	Actor55: v27
+		Location: 13,9
 		Owner: GDI
-	Actor72: v36
-		Location: 12,54
-		Owner: Neutral
-	Actor73: v35
-		Location: 10,54
-		Owner: Neutral
-	Actor74: v34
-		Location: 11,53
-		Owner: Neutral
-	Actor75: v33
-		Location: 15,53
-		Owner: Neutral
-	Actor76: v32
-		Location: 12,53
-		Owner: Neutral
-	Actor77: v31
-		Location: 10,52
-		Owner: Neutral
-	Actor87: v23
-		Location: 9,59
-		Owner: Neutral
-	Jeep1: jeep
-		Location: 51,25
+	Actor56: v28
+		Location: 21,7
 		Owner: GDI
-	Jeep2: jeep
-		Location: 50,25
+	Actor57: v29
+		Location: 22,7
 		Owner: GDI
-	Actor94: jeep
-		Location: 39,48
+	Actor58: v30
+		Location: 21,10
+		Owner: GDI
+	Actor59: v30
+		Location: 23,8
+		Owner: GDI
+	Actor61: jeep
+		Location: 15,23
+		Owner: GDI
+		Facing: 640
+	Actor62: jeep
+		Location: 36,6
 		Owner: GDI
 		Facing: 384
-	Actor110: e1
-		Location: 40,49
+	Actor65: mtnk
+		Location: 29,10
 		Owner: GDI
-		Facing: 896
-		SubCell: 0
-	Actor111: e2
-		Location: 38,50
+		Facing: 256
+	Actor71: jeep
+		Location: 24,26
 		Owner: GDI
-		Facing: 896
+		Facing: 384
+	Actor72: jeep
+		Location: 37,19
+		Owner: GDI
+		Facing: 128
+	Actor73: jeep
+		Location: 27,33
+		Owner: GDI
+		Facing: 384
+	Actor86: e1
+		Location: 43,15
+		Owner: GDI
+		Health: 88
+		Facing: 128
+		SubCell: 3
+	Actor99: e1
+		Location: 45,15
+		Owner: GDI
+		SubCell: 3
+	Actor100: e1
+		Location: 43,15
+		Owner: GDI
+		Health: 94
+		Facing: 128
+		SubCell: 4
+	Actor105: e1
+		Location: 46,14
+		Owner: GDI
 		SubCell: 2
-	Actor112: e2
-		Location: 38,49
+	Actor106: e1
+		Location: 18,29
 		Owner: GDI
-		Facing: 512
-		SubCell: 0
-	Actor113: e2
-		Location: 35,40
-		Owner: GDI
-		SubCell: 0
-	Actor114: e2
-		Location: 35,40
+		Facing: 384
+		SubCell: 4
+	Actor107: e1
+		Location: 12,20
 		Owner: GDI
 		SubCell: 1
-	waypoint27: waypoint
-		Location: 31,36
-		Owner: Neutral
-	waypoint25: waypoint
-		Location: 40,43
-		Owner: Neutral
-	waypoint26: waypoint
-		Location: 28,27
-		Owner: Neutral
-	waypoint11: waypoint
-		Location: 54,29
-		Owner: Neutral
-	waypoint10: waypoint
-		Location: 45,28
-		Owner: Neutral
-	GDIBase: waypoint
-		Location: 52,22
-		Owner: Neutral
-	waypoint8: waypoint
-		Location: 43,22
-		Owner: Neutral
-	waypoint7: waypoint
-		Location: 31,22
-		Owner: Neutral
-	waypoint6: waypoint
-		Location: 21,25
-		Owner: Neutral
-	waypoint5: waypoint
-		Location: 18,39
-		Owner: Neutral
-	waypoint4: waypoint
-		Location: 10,48
-		Owner: Neutral
-	waypoint3: waypoint
-		Location: 19,48
-		Owner: Neutral
-	waypoint2: waypoint
-		Location: 27,55
-		Owner: Neutral
-	waypoint1: waypoint
-		Location: 48,56
-		Owner: Neutral
-	waypoint0: waypoint
-		Location: 54,42
-		Owner: Neutral
-	Convoi: apc
-		Location: 24,53
+	Actor108: e1
+		Location: 39,23
 		Owner: GDI
-	CivBuilding1: v26
-		Location: 8,51
+		SubCell: 1
+	Actor119: e2
+		Location: 18,8
 		Owner: GDI
-	CivBuilding2: v30
-		Location: 17,46
+		Facing: 512
+		SubCell: 3
+	Actor120: e2
+		Location: 16,10
 		Owner: GDI
-	CivBuilding3: v29
-		Location: 16,46
-		Owner: GDI
-	CivBuilding4: v28
-		Location: 15,45
-		Owner: GDI
-	CivBuilding5: v27
-		Location: 14,51
-		Owner: GDI
-	CivBuilding6: v27
-		Location: 13,51
-		Owner: GDI
-	CivBuilding7: v27
-		Location: 12,51
-		Owner: GDI
-	CivBuilding8: v26
-		Location: 14,46
-		Owner: GDI
-	CivBuilding9: v25
-		Location: 19,46
-		Owner: GDI
-	CivBuilding10: v24
-		Location: 8,47
-		Owner: GDI
-	CivBuilding11: v22
-		Location: 9,45
-		Owner: GDI
-	CivBuilding12: v22
-		Location: 18,52
-		Owner: GDI
-	CivBuilding13: v21
-		Location: 16,51
-		Owner: GDI
-	CivBuilding14: v20
-		Location: 8,45
-		Owner: GDI
-	Civilian1: c2
-		Location: 11,50
-		Owner: GDI
-		Facing: 896
-		SubCell: 0
-	Civilian2: c9
-		Location: 12,49
-		Owner: GDI
-		Facing: 896
+		Facing: 384
 		SubCell: 2
-	Civilian3: c8
-		Location: 14,49
+	Actor121: e2
+		Location: 27,19
+		Owner: GDI
+		Facing: 512
+		SubCell: 1
+	Actor122: e2
+		Location: 25,34
+		Owner: GDI
+		SubCell: 4
+	Actor123: e1
+		Location: 13,13
+		Owner: GDI
+		Facing: 512
+		SubCell: 1
+	Actor124: e1
+		Location: 13,13
+		Owner: GDI
+		Facing: 512
+		SubCell: 2
+	Actor125: e2
+		Location: 13,13
+		Owner: GDI
+		Facing: 512
+		SubCell: 4
+	Actor126: e2
+		Location: 13,13
+		Owner: GDI
+		Facing: 512
+		SubCell: 3
+	Actor127: e2
+		Location: 29,18
 		Owner: GDI
 		Facing: 256
 		SubCell: 3
-	Civilian4: c7
-		Location: 13,50
-		Owner: GDI
-		Facing: 896
-		SubCell: 0
-	Civilian5: c6
-		Location: 11,49
-		Owner: GDI
-		Facing: 128
-		SubCell: 0
-	Civilian6: c5
-		Location: 12,50
-		Owner: GDI
-		Facing: 896
-		SubCell: 2
-	Civilian7: c4
-		Location: 10,50
-		Owner: GDI
-		Facing: 128
-		SubCell: 1
-	Civilian8: c3
-		Location: 10,51
-		Owner: GDI
-		Facing: 128
-		SubCell: 1
-	Actor56: t18
-		Location: 19,51
-		Owner: Neutral
-	Actor55: t18
-		Location: 20,46
-		Owner: Neutral
-	Actor51: t08
-		Location: 13,46
-		Owner: Neutral
-	Actor53: t18
-		Location: 7,46
-		Owner: Neutral
-	Actor54: t18
-		Location: 11,51
-		Owner: Neutral
-	GDIGunner1: e1
-		Location: 41,50
-		Owner: GDI
-		Facing: 768
-		SubCell: 2
-	GDIGunner2: e1
-		Location: 39,50
-		Owner: GDI
-		SubCell: 0
-	GDIGunner3: e1
-		Location: 40,50
+	Actor128: e2
+		Location: 27,22
 		Owner: GDI
 		Facing: 256
+		SubCell: 1
+	Actor129: e2
+		Location: 36,10
+		Owner: GDI
+		Health: 38
+		Facing: 256
 		SubCell: 0
-	EntryPointVehicle: waypoint
-		Location: 33,17
+	Actor131: e1
+		Location: 21,12
+		Owner: GDI
+		Facing: 512
+		SubCell: 4
+	Actor132: e1
+		Location: 22,12
+		Owner: GDI
+		Facing: 512
+		SubCell: 3
+	Actor29: t18
+		Location: 14,7
 		Owner: Neutral
-	RallyPointVehicle: waypoint
-		Location: 33,30
+	waypoint27: waypoint
+		Location: 35,25
 		Owner: Neutral
-	EntryPointRocket: waypoint
-		Location: 35,17
+	waypoint26: waypoint
+		Location: 44,6
 		Owner: Neutral
-	RallyPointRocket: waypoint
-		Location: 35,32
+	waypoint9: waypoint
+		Location: 26,19
 		Owner: Neutral
-	EntryPointGunner: waypoint
-		Location: 31,17
+	waypoint8: waypoint
+		Location: 53,37
 		Owner: Neutral
-	RallyPointGunner: waypoint
-		Location: 31,32
+	waypoint7: waypoint
+		Location: 47,35
 		Owner: Neutral
-	CameraPoint: waypoint
-		Location: 32,22
+	waypoint6: waypoint
+		Location: 45,11
 		Owner: Neutral
+	waypoint5: waypoint
+		Location: 40,17
+		Owner: Neutral
+	waypoint4: waypoint
+		Location: 39,34
+		Owner: Neutral
+	waypoint3: waypoint
+		Location: 21,38
+		Owner: Neutral
+	waypoint2: waypoint
+		Location: 20,28
+		Owner: Neutral
+	waypoint1: waypoint
+		Location: 13,26
+		Owner: Neutral
+	waypoint0: waypoint
+		Location: 13,14
+		Owner: Neutral
+	Civilian1: v33
+		Location: 48,34
+		Owner: Neutral
+		Health: 62
+	Civilian2: v33
+		Location: 54,37
+		Owner: Neutral
+	Soldier1: e2
+		Location: 22,15
+		Owner: GDI
+		Facing: 384
+		SubCell: 2
+	Soldier2: e1
+		Location: 17,14
+		Owner: GDI
+		Facing: 384
+		SubCell: 4
+	Soldier3: e2
+		Location: 13,16
+		Owner: GDI
+		Facing: 384
+		SubCell: 1
+	GDICiv1: c9
+		Location: 20,12
+		Owner: GDI
+		SubCell: 3
+	GDICiv2: c4
+		Location: 18,7
+		Owner: GDI
+		SubCell: 0
+	GDICiv3: c9
+		Location: 19,12
+		Owner: GDI
+		SubCell: 1
+	GDICiv4: c8
+		Location: 16,8
+		Owner: GDI
+		SubCell: 3
+	GDICiv5: c7
+		Location: 17,9
+		Owner: GDI
+		SubCell: 1
+	GDICiv6: c6
+		Location: 24,13
+		Owner: GDI
+		SubCell: 2
+	GDICiv7: c5
+		Location: 20,7
+		Owner: GDI
+		SubCell: 4
+	GDICiv8: c4
+		Location: 14,12
+		Owner: GDI
+		SubCell: 1
+	GDICiv9: c3
+		Location: 15,10
+		Owner: GDI
+		SubCell: 2
+	GDICiv10: c2
+		Location: 14,10
+		Owner: GDI
+		SubCell: 1
+	GDICiv11: c1
+		Location: 17,7
+		Owner: GDI
+		SubCell: 2
+	GDICiv12: c1
+		Location: 20,10
+		Owner: GDI
+		SubCell: 1
+	GDICiv13: c1
+		Location: 20,11
+		Owner: GDI
+		SubCell: 3
+	UnitsEntryBuggy: waypoint
+		Location: 52,6
+		Owner: Neutral
+	UnitsRallyBuggy: waypoint
+		Location: 52,10
+		Owner: Neutral
+	UnitsEntryBikes: waypoint
+		Location: 50,6
+		Owner: Neutral
+	UnitsRallyBikes: waypoint
+		Location: 50,10
+		Owner: Neutral
+	UnitsEntryGunner: waypoint
+		Location: 54,6
+		Owner: Neutral
+	UnitsRallyGunner: waypoint
+		Location: 54,10
+		Owner: Neutral
+	UnitsEntryRocket: waypoint
+		Location: 56,12
+		Owner: Neutral
+	UnitsRallyRocket: waypoint
+		Location: 54,12
+		Owner: Neutral
+	NodCiv1: c8
+		Location: 46,36
+		Owner: NodSupporter
+		Facing: 512
+		SubCell: 2
+	NodCiv2: e3
+		Location: 48,36
+		Owner: NodSupporter
+		Facing: 768
+		SubCell: 4
+	NodCiv3: c4
+		Location: 52,38
+		Owner: NodSupporter
+		Facing: 768
+		SubCell: 1
+	NodCiv4: c3
+		Location: 45,35
+		Owner: NodSupporter
+		Facing: 128
+		SubCell: 4
+	NodCiv5: c1
+		Location: 51,36
+		Owner: NodSupporter
+		Facing: 896
+		SubCell: 2
+	NodCiv6: c2
+		Location: 45,34
+		Owner: NodSupporter
+		Facing: 0
+		SubCell: 1
+	NodCiv7: c4
+		Location: 54,36
+		Owner: NodSupporter
+		Facing: 640
+		SubCell: 0
+	NodCiv8: c5
+		Location: 50,37
+		Owner: NodSupporter
+		Facing: 384
+		SubCell: 2
+	NodCiv9: c9
+		Location: 47,34
+		Owner: NodSupporter
+		Facing: 768
+		SubCell: 2
+	Gciv1: e1
+		Location: 38,9
+		Owner: GDI
+		Facing: 512
+		SubCell: 0
+	Gciv2: e1
+		Location: 18,10
+		Owner: GDI
+		Facing: 640
+		SubCell: 2
 
 Rules: cnc|rules/campaign-maprules.yaml, cnc|rules/campaign-tooltips.yaml, cnc|rules/campaign-palettes.yaml, rules.yaml
