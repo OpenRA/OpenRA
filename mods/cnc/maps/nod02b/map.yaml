@@ -10,7 +10,7 @@ Tileset: DESERT
 
 MapSize: 64,64
 
-Bounds: 3,23,36,26
+Bounds: 27,34,36,26
 
 Visibility: MissionSelector
 
@@ -23,7 +23,6 @@ Players:
 		Name: GDI
 		Faction: gdi
 		Color: F5D378
-		Allies: GDI
 		Enemies: Nod
 		Bot: campaign
 	PlayerReference@Nod:
@@ -46,192 +45,154 @@ Players:
 
 Actors:
 	Actor0: t08
-		Location: 34,38
+		Location: 30,52
 		Owner: Neutral
 	Actor1: t18
-		Location: 34,36
+		Location: 34,52
 		Owner: Neutral
 	Actor2: t08
-		Location: 25,31
+		Location: 57,47
 		Owner: Neutral
 	Actor3: t08
-		Location: 26,31
+		Location: 38,59
 		Owner: Neutral
-	Actor4: t08
-		Location: 21,40
+	Actor4: silo
+		Location: 33,40
+		Owner: GDI
+	Actor9: silo
+		Location: 32,42
+		Owner: GDI
+	Actor10: jeep
+		Location: 30,46
+		Owner: GDI
+		Facing: 512
+	Actor11: jeep
+		Location: 31,35
+		Owner: GDI
+		Facing: 256
+	Actor17: e1
+		Location: 34,56
+		Owner: GDI
+		SubCell: 3
+	Actor18: e1
+		Location: 43,35
+		Owner: GDI
+		SubCell: 3
+	Actor19: e1
+		Location: 43,36
+		Owner: GDI
+		SubCell: 3
+	Actor31: e1
+		Location: 47,53
+		Owner: GDI
+		SubCell: 4
+	Actor32: e1
+		Location: 49,54
+		Owner: GDI
+		Facing: 896
+		SubCell: 1
+	Actor35: e1
+		Location: 34,57
+		Owner: GDI
+		Facing: 256
+		SubCell: 1
+	waypoint27: waypoint
+		Location: 27,51
 		Owner: Neutral
-	Actor5: t08
-		Location: 3,24
+	waypoint26: waypoint
+		Location: 49,35
 		Owner: Neutral
-	Actor6: t08
-		Location: 3,42
+	waypoint10: waypoint
+		Location: 30,44
 		Owner: Neutral
-	Actor7: t08
-		Location: 4,42
+	waypoint9: waypoint
+		Location: 55,40
 		Owner: Neutral
-	Actor8: t08
-		Location: 6,48
+	waypoint8: waypoint
+		Location: 48,41
 		Owner: Neutral
-	Actor9: t08
-		Location: 16,43
+	waypoint7: waypoint
+		Location: 60,58
 		Owner: Neutral
-	Actor10: t08
-		Location: 26,48
+	waypoint6: waypoint
+		Location: 61,47
 		Owner: Neutral
-	Actor11: t08
-		Location: 13,27
+	waypoint5: waypoint
+		Location: 48,55
 		Owner: Neutral
-	Actor12: t08
-		Location: 6,40
+	waypoint4: waypoint
+		Location: 41,51
 		Owner: Neutral
-	Actor13: rock1
-		Location: 22,32
+	waypoint3: waypoint
+		Location: 28,36
 		Owner: Neutral
-	Actor20: jeep
-		Location: 5,24
+	waypoint2: waypoint
+		Location: 28,51
+		Owner: Neutral
+	waypoint1: waypoint
+		Location: 40,43
+		Owner: Neutral
+	waypoint0: waypoint
+		Location: 40,35
+		Owner: Neutral
+	Refinery: proc
+		Location: 30,38
+		Owner: GDI
+	Barracks: pyle
+		Location: 34,43
+		Owner: GDI
+	Powerplant: nuke
+		Location: 35,40
+		Owner: GDI
+	Yard: fact
+		Location: 33,37
+		Owner: GDI
+	Guard1: e1
+		Location: 42,39
+		Owner: GDI
+		Facing: 256
+		SubCell: 0
+	Guard2: e1
+		Location: 38,38
+		Owner: GDI
+		Facing: 256
+		SubCell: 2
+	Guard3: e1
+		Location: 35,49
 		Owner: GDI
 		Facing: 384
-	Actor21: jeep
-		Location: 6,32
-		Owner: GDI
-		Facing: 640
-	Actor22: jeep
-		Location: 12,27
-		Owner: GDI
-		Facing: 128
-	Actor28: e1
-		Location: 10,24
+		SubCell: 0
+	Guard4: e1
+		Location: 34,48
 		Owner: GDI
 		Facing: 384
 		SubCell: 3
-	Actor29: e1
-		Location: 10,24
+	Guard5: e1
+		Location: 39,40
 		Owner: GDI
-		Facing: 384
+		Facing: 256
 		SubCell: 1
-	Actor30: e1
-		Location: 9,24
+	Guard6: e1
+		Location: 40,56
 		Owner: GDI
 		Facing: 384
 		SubCell: 4
-	Actor31: e1
-		Location: 5,34
+	Guard7: e1
+		Location: 38,54
 		Owner: GDI
+		Facing: 128
 		SubCell: 3
-	Actor32: e1
-		Location: 5,35
-		Owner: GDI
-		SubCell: 2
-	Actor33: e1
-		Location: 10,27
-		Owner: GDI
-		SubCell: 2
-	Actor34: e1
-		Location: 11,27
-		Owner: GDI
-		SubCell: 1
-	Actor35: e1
-		Location: 10,24
-		Owner: GDI
-		Facing: 384
-		SubCell: 2
-	Actor37: e1
-		Location: 7,40
-		Owner: GDI
-		SubCell: 2
-	waypoint26: waypoint
-		Location: 26,41
-		Owner: Neutral
-	waypoint23: waypoint
-		Location: 33,45
-		Owner: Neutral
-	waypoint21: waypoint
-		Location: 32,42
-		Owner: Neutral
-	waypoint17: waypoint
-		Location: 32,26
-		Owner: Neutral
-	waypoint9: waypoint
-		Location: 29,47
-		Owner: Neutral
-	waypoint8: waypoint
-		Location: 16,28
-		Owner: Neutral
-	waypoint7: waypoint
-		Location: 23,40
-		Owner: Neutral
-	waypoint6: waypoint
-		Location: 20,47
-		Owner: Neutral
-	waypoint5: waypoint
-		Location: 10,44
-		Owner: Neutral
-	waypoint4: waypoint
-		Location: 13,36
-		Owner: Neutral
-	waypoint3: waypoint
-		Location: 36,41
-		Owner: Neutral
-	waypoint2: waypoint
-		Location: 31,28
-		Owner: Neutral
-	waypoint1: waypoint
-		Location: 18,25
-		Owner: Neutral
-	waypoint0: waypoint
-		Location: 4,26
-		Owner: Neutral
-	Refinery: proc
-		Location: 7,27
-		Owner: GDI
-		FreeActor: false
-	Yard: fact
-		Location: 10,28
-		Owner: GDI
-	Barracks: pyle
-		Location: 7,32
-		Owner: GDI
-	Plant: nuke
-		Location: 11,31
-		Owner: GDI
-	Silo1: silo
-		Location: 9,31
-		Owner: GDI
-	Silo2: silo
-		Location: 9,33
-		Owner: GDI
-	Guard1: e1
-		Location: 8,40
-		Owner: GDI
-		SubCell: 1
-	Guard2: e1
-		Location: 37,24
-		Owner: GDI
-		SubCell: 3
-	Guard3: e1
-		Location: 36,24
-		Owner: GDI
-		SubCell: 2
-	Guard4: e1
-		Location: 27,31
-		Owner: GDI
-		SubCell: 1
-	Harvester: harv
-		Location: 5,29
-		Owner: GDI
-		Health: 39
-		Facing: 896
 	McvEntry: waypoint
-		Location: 33,48
+		Location: 62,43
 		Owner: Neutral
 	McvRally: waypoint
-		Location: 33,46
+		Location: 57,41
 		Owner: Neutral
 	UnitsEntry: waypoint
-		Location: 30,48
+		Location: 62,38
 		Owner: Neutral
 	UnitsRally: waypoint
-		Location: 30,44
+		Location: 56,38
 		Owner: Neutral
 
 Rules: cnc|rules/campaign-maprules.yaml, cnc|rules/campaign-tooltips.yaml, cnc|rules/campaign-palettes.yaml, rules.yaml

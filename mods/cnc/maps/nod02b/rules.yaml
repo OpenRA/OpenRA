@@ -1,3 +1,7 @@
+Player:
+	PlayerResources:
+		DefaultCash: 4000
+
 World:
 	LuaScript:
 		Scripts: campaign-global.lua, nod02b.lua
@@ -11,9 +15,60 @@ World:
 		WinVideo: airstrk.vqa
 		LossVideo: deskill.vqa
 
-Player:
-	PlayerResources:
-		DefaultCash: 4000
+^Vehicle:
+	Tooltip:
+		GenericVisibility: Enemy
+		ShowOwnerRow: false
+	RenderSprites:
+		PlayerPalette: player-units
+
+^Tank:
+	Tooltip:
+		GenericVisibility: Enemy
+		ShowOwnerRow: false
+	RenderSprites:
+		PlayerPalette: player-units
+
+^Helicopter:
+	Tooltip:
+		GenericVisibility: Enemy
+		ShowOwnerRow: false
+	RenderSprites:
+		PlayerPalette: player-units
+
+^Infantry:
+	Tooltip:
+		GenericVisibility: Enemy
+		ShowOwnerRow: false
+	RenderSprites:
+		PlayerPalette: player-units
+
+^Plane:
+	Tooltip:
+		GenericVisibility: Enemy
+		ShowOwnerRow: false
+
+^Ship:
+	Tooltip:
+		GenericVisibility: Enemy
+		ShowOwnerRow: false
+
+^Building:
+	Tooltip:
+		GenericVisibility: Enemy
+		ShowOwnerRow: false
+
+^Wall:
+	Tooltip:
+		ShowOwnerRow: false
+
+^CommonHuskDefaults:
+	Tooltip:
+		GenericVisibility: Enemy, Ally, Neutral
+		GenericStancePrefix: false
+		ShowOwnerRow: false
+	RenderSprites:
+		PlayerPalette: player-units
 
 NUK2:
 	Buildable:
@@ -74,6 +129,20 @@ MLRS:
 MCV:
 	Buildable:
 		Prerequisites: ~disabled
+	RenderSprites:
+		PlayerPalette: player
+
+MCV.Husk:
+	RenderSprites:
+		PlayerPalette: player
+
+HARV:
+	RenderSprites:
+		PlayerPalette: player
+
+HARV.Husk:
+	RenderSprites:
+		PlayerPalette: player
 
 SAM:
 	Buildable:
