@@ -25,7 +25,6 @@ namespace OpenRA.Mods.Common.Widgets
 
 		readonly ITiledTerrainRenderer terrainRenderer;
 		readonly WorldRenderer worldRenderer;
-		readonly ITerrainInfo terrainInfo;
 
 		TerrainTemplateInfo template;
 		Rectangle bounds;
@@ -51,7 +50,6 @@ namespace OpenRA.Mods.Common.Widgets
 		public TerrainTemplatePreviewWidget(WorldRenderer worldRenderer, World world)
 		{
 			this.worldRenderer = worldRenderer;
-			terrainInfo = world.Map.Rules.TerrainInfo;
 			terrainRenderer = world.WorldActor.TraitOrDefault<ITiledTerrainRenderer>();
 			if (terrainRenderer == null)
 				throw new YamlException("TerrainTemplatePreviewWidget requires a tile-based terrain renderer.");
@@ -61,7 +59,6 @@ namespace OpenRA.Mods.Common.Widgets
 			: base(other)
 		{
 			worldRenderer = other.worldRenderer;
-			terrainInfo = other.worldRenderer.World.Map.Rules.TerrainInfo;
 			terrainRenderer = other.terrainRenderer;
 			Template = other.Template;
 			GetScale = other.GetScale;
@@ -74,33 +71,11 @@ namespace OpenRA.Mods.Common.Widgets
 			if (template == null)
 				return;
 
-			var grid = Game.ModData.Manifest.Get<MapGrid>();
-			var ts = grid.TileSize;
-			var gridType = grid.Type;
 			var scale = GetScale();
-
 			var sb = new Rectangle((int)(scale * bounds.X), (int)(scale * bounds.Y), (int)(scale * bounds.Width), (int)(scale * bounds.Height));
 			var origin = RenderOrigin + new int2((RenderBounds.Size.Width - sb.Width) / 2 - sb.X, (RenderBounds.Size.Height - sb.Height) / 2 - sb.Y);
-
-			var i = 0;
-			for (var y = 0; y < Template.Size.Y; y++)
-			{
-				for (var x = 0; x < Template.Size.X; x++)
-				{
-					var tile = new TerrainTile(Template.Id, (byte)(i++));
-					if (!terrainInfo.TryGetTerrainInfo(tile, out var tileInfo))
-						continue;
-
-					var sprite = terrainRenderer.TileSprite(tile, 0);
-					var size = new float2(sprite.Size.X * scale, sprite.Size.Y * scale);
-
-					var u = gridType == MapGridType.Rectangular ? x : (x - y) / 2f;
-					var v = gridType == MapGridType.Rectangular ? y : (x + y) / 2f;
-					var pos = origin + scale * (new float2(u * ts.Width, (v - 0.5f * tileInfo.Height) * ts.Height) - 0.5f * sprite.Size);
-					var palette = Template.Palette ?? TileSet.TerrainPaletteInternalName;
-					Game.Renderer.SpriteRenderer.DrawSprite(sprite, pos, worldRenderer.Palette(palette), size);
-				}
-			}
+			foreach (var r in terrainRenderer.RenderUIPreview(worldRenderer, template, origin, scale))
+				r.PrepareRender(worldRenderer).Render(worldRenderer);
 		}
 	}
 }
