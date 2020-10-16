@@ -20,6 +20,17 @@ namespace OpenRA
 {
 	public interface IGlobalModData { }
 
+	public sealed class TerrainFormat : IGlobalModData
+	{
+		public readonly string Type;
+		public readonly IReadOnlyDictionary<string, MiniYaml> Metadata;
+		public TerrainFormat(MiniYaml yaml)
+		{
+			Type = yaml.Value;
+			Metadata = new ReadOnlyDictionary<string, MiniYaml>(yaml.ToDictionary());
+		}
+	}
+
 	public sealed class SpriteSequenceFormat : IGlobalModData
 	{
 		public readonly string Type;

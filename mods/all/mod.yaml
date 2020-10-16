@@ -29,6 +29,8 @@ SoundFormats:
 
 SpriteFormats:
 
+TerrainFormat: DefaultTerrain
+
 SpriteSequenceFormat: DefaultSpriteSequence
 
 ModelSequenceFormat: PlaceholderModelSequence

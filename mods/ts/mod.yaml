@@ -249,6 +249,8 @@ SpriteFormats: ShpTS, TmpTS, ShpTD
 
 VideoFormats: Vqa
 
+TerrainFormat: DefaultTerrain
+
 SpriteSequenceFormat: TilesetSpecificSpriteSequence
 	TilesetExtensions:
 		TEMPERATE: .tem

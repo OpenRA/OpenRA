@@ -196,6 +196,8 @@ SpriteFormats: R8, ShpTD, TmpRA
 
 VideoFormats: Vqa
 
+TerrainFormat: DefaultTerrain
+
 SpriteSequenceFormat: DefaultSpriteSequence
 
 ModelSequenceFormat: PlaceholderModelSequence

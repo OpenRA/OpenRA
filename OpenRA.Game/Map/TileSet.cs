@@ -19,6 +19,11 @@ using OpenRA.Traits;
 
 namespace OpenRA
 {
+	public interface ITerrainLoader
+	{
+		ITerrainInfo ParseTerrain(IReadOnlyFileSystem fileSystem, string path);
+	}
+
 	public interface ITerrainInfo
 	{
 		string Id { get; }
