@@ -52,17 +52,6 @@
 			Tiberium: 50
 			BlueTiberium: 50
 			Beach: 50
-	Locomotor@BIKE:
-		Name: bike
-		Crushes: crate
-		TerrainSpeeds:
-			Clear: 70
-			Rough: 35
-			Road: 100
-			Bridge: 100
-			Tiberium: 35
-			BlueTiberium: 35
-			Beach: 35
 	Locomotor@HEAVYWHEELED:
 		Name: heavywheeled
 		Crushes: crate, infantry

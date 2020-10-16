@@ -198,7 +198,7 @@ RMBO:
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Inherits@DECORATIONS: ^InfantryExperienceHospitalHazmatOverrides
 	Valued:
-		Cost: 2000
+		Cost: 1800
 	Tooltip:
 		Name: Commando
 	UpdatesPlayerStatistics:
@@ -207,8 +207,6 @@ RMBO:
 		BuildPaletteOrder: 50
 		Prerequisites: eye, ~techlevel.high
 		Queue: Infantry.GDI
-		BuildDuration: 2000
-		BuildDurationModifier: 40
 		Description: Elite sniper infantry unit.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles
 	Mobile:
 		Speed: 71

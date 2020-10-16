@@ -4,7 +4,7 @@ FACT:
 	Selectable:
 		Bounds: 72,48
 	Valued:
-		Cost: 3500
+		Cost: 3000
 	Tooltip:
 		Name: Construction Yard
 	Building:
@@ -47,7 +47,7 @@ FACT:
 		DisplayOrder: 0
 		Factions: gdi
 		Group: Building
-		LowPowerModifier: 200
+		LowPowerModifier: 150
 		ReadyAudio: ConstructionComplete
 		BlockedAudio: NoBuild
 		LimitedAudio: BuildingInProgress
@@ -59,7 +59,7 @@ FACT:
 		DisplayOrder: 0
 		Factions: nod
 		Group: Building
-		LowPowerModifier: 200
+		LowPowerModifier: 150
 		ReadyAudio: ConstructionComplete
 		BlockedAudio: NoBuild
 		LimitedAudio: BuildingInProgress
@@ -71,7 +71,7 @@ FACT:
 		DisplayOrder: 1
 		Factions: gdi
 		Group: Defence
-		LowPowerModifier: 300
+		LowPowerModifier: 150
 		ReadyAudio: ConstructionComplete
 		BlockedAudio: NoBuild
 		LimitedAudio: BuildingInProgress
@@ -83,7 +83,7 @@ FACT:
 		DisplayOrder: 1
 		Factions: nod
 		Group: Defence
-		LowPowerModifier: 300
+		LowPowerModifier: 150
 		ReadyAudio: ConstructionComplete
 		BlockedAudio: NoBuild
 		LimitedAudio: BuildingInProgress
@@ -153,7 +153,6 @@ NUKE:
 		BuildPaletteOrder: 10
 		Prerequisites: fact
 		Queue: Building.GDI, Building.Nod
-		BuildDuration: 330
 		Description: Generates power
 	Building:
 		Footprint: xX xx ==
@@ -240,7 +239,7 @@ PROC:
 		Bounds: 72,56
 		DecorationBounds: 73,72
 	CustomSellValue:
-		Value: 500
+		Value: 400
 	FreeActor:
 		Actor: HARV
 		SpawnOffset: 1,2
@@ -333,7 +332,7 @@ PYLE:
 		Type: Infantry.GDI
 		DisplayOrder: 2
 		Group: Infantry
-		LowPowerModifier: 300
+		LowPowerModifier: 150
 		ReadyAudio: UnitReady
 		BlockedAudio: NoBuild
 		LimitedAudio: BuildingInProgress
@@ -384,7 +383,7 @@ HAND:
 		Type: Infantry.Nod
 		DisplayOrder: 2
 		Group: Infantry
-		LowPowerModifier: 300
+		LowPowerModifier: 150
 		ReadyAudio: UnitReady
 		BlockedAudio: NoBuild
 		LimitedAudio: BuildingInProgress
@@ -445,7 +444,7 @@ AFLD:
 		Type: Vehicle.Nod
 		DisplayOrder: 3
 		Group: Vehicle
-		LowPowerModifier: 300
+		LowPowerModifier: 150
 		BlockedAudio: NoBuild
 		LimitedAudio: BuildingInProgress
 		QueuedAudio: Training
@@ -502,7 +501,7 @@ WEAP:
 		Type: Vehicle.GDI
 		DisplayOrder: 3
 		Group: Vehicle
-		LowPowerModifier: 300
+		LowPowerModifier: 150
 		ReadyAudio: UnitReady
 		BlockedAudio: NoBuild
 		LimitedAudio: BuildingInProgress
@@ -561,7 +560,7 @@ HPAD:
 		DisplayOrder: 4
 		Factions: gdi
 		Group: Aircraft
-		LowPowerModifier: 300
+		LowPowerModifier: 150
 		ReadyAudio: UnitReady
 		BlockedAudio: NoBuild
 		LimitedAudio: BuildingInProgress
@@ -573,7 +572,7 @@ HPAD:
 		DisplayOrder: 4
 		Factions: nod
 		Group: Aircraft
-		LowPowerModifier: 300
+		LowPowerModifier: 150
 		ReadyAudio: UnitReady
 		BlockedAudio: NoBuild
 		LimitedAudio: BuildingInProgress
@@ -585,7 +584,7 @@ HPAD:
 	ProductionBar@Nod:
 		ProductionType: Aircraft.Nod
 	Power:
-		Amount: -10
+		Amount: -20
 	ProvidesPrerequisite@buildingname:
 
 HQ:
@@ -631,7 +630,7 @@ HQ:
 		PauseOnCondition: lowpower
 		Prerequisites: ~techlevel.superweapons
 		Icon: airstrike
-		ChargeInterval: 6000
+		ChargeInterval: 7500
 		SquadSize: 3
 		QuantizedFacings: 8
 		Description: Air Strike
@@ -740,7 +739,7 @@ EYE:
 		Prerequisites: ~techlevel.superweapons
 		Icon: ioncannon
 		Cursor: ioncannon
-		ChargeInterval: 6750
+		ChargeInterval: 9000
 		Description: Ion Cannon
 		LongDesc: Initiate an Ion Cannon strike.\nApplies instant damage to a small area.
 		BeginChargeSpeechNotification: IonCannonCharging
@@ -794,7 +793,7 @@ TMPL:
 		Prerequisites: ~techlevel.superweapons
 		Icon: abomb
 		Cursor: nuke
-		ChargeInterval: 9000
+		ChargeInterval: 11250
 		Description: Nuclear Strike
 		LongDesc: Launch a tactical nuclear warhead.\nApplies heavy damage over a large area.
 		EndChargeSpeechNotification: NuclearWeaponAvailable
@@ -901,7 +900,7 @@ SAM:
 	Armor:
 		Type: Heavy
 	RevealsShroud:
-		Range: 6c0
+		Range: 8c0
 	Turreted:
 		TurnSpeed: 40
 		InitialFacing: 0
@@ -1131,8 +1130,6 @@ BRIK:
 	Crushable:
 		CrushClasses: heavywall
 		-CrushSound:
-	SoundOnDamageTransition:
-		DestroyedSounds: crumble.aud
 	LineBuild:
 		NodeTypes: concrete
 	LineBuildNode:
