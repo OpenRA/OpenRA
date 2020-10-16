@@ -49,65 +49,41 @@
 	GainsExperience:
 		LevelUpNotification: LevelUp
 		Conditions:
-			200: rank-veteran
-			400: rank-veteran
+			250: rank-veteran
+			500: rank-veteran
 			800: rank-veteran
-			1600: rank-veteran
 		LevelUpImage: crate-effects
 	GrantCondition@RANK-ELITE:
-		RequiresCondition: rank-veteran >= 4
+		RequiresCondition: rank-veteran >= 3
 		Condition: rank-elite
-	DamageMultiplier@RANK-1:
-		RequiresCondition: rank-veteran == 1
-		Modifier: 95
-	DamageMultiplier@RANK-2:
-		RequiresCondition: rank-veteran == 2
-		Modifier: 90
-	DamageMultiplier@RANK-3:
-		RequiresCondition: rank-veteran == 3
-		Modifier: 85
-	DamageMultiplier@RANK-ELITE:
-		RequiresCondition: rank-elite
-		Modifier: 75
 	FirepowerMultiplier@RANK-1:
 		RequiresCondition: rank-veteran == 1
-		Modifier: 105
+		Modifier: 125
 	FirepowerMultiplier@RANK-2:
 		RequiresCondition: rank-veteran == 2
-		Modifier: 110
-	FirepowerMultiplier@RANK-3:
-		RequiresCondition: rank-veteran == 3
-		Modifier: 120
+		Modifier: 125
 	FirepowerMultiplier@RANK-ELITE:
 		RequiresCondition: rank-elite
-		Modifier: 130
-	SpeedMultiplier@RANK-1:
-		RequiresCondition: rank-veteran == 1
-		Modifier: 105
-	SpeedMultiplier@RANK-2:
+		Modifier: 125
+	DamageMultiplier@RANK-2:
 		RequiresCondition: rank-veteran == 2
-		Modifier: 110
-	SpeedMultiplier@RANK-3:
-		RequiresCondition: rank-veteran == 3
-		Modifier: 120
+		Modifier: 80
+	DamageMultiplier@RANK-ELITE:
+		RequiresCondition: rank-elite
+		Modifier: 80
 	SpeedMultiplier@RANK-ELITE:
 		RequiresCondition: rank-elite
-		Modifier: 140
-	ReloadDelayMultiplier@RANK-1:
-		RequiresCondition: rank-veteran == 1
-		Modifier: 95
-	ReloadDelayMultiplier@RANK-2:
-		RequiresCondition: rank-veteran == 2
-		Modifier: 90
-	ReloadDelayMultiplier@RANK-3:
-		RequiresCondition: rank-veteran == 3
-		Modifier: 85
-	ReloadDelayMultiplier@RANK-ELITE:
+		Modifier: 125
+	RangeMultiplier@RANK-ELITE:
 		RequiresCondition: rank-elite
-		Modifier: 75
+		Modifier: 125
+	RevealsShroudMultiplier@RANK-ELITE:
+		RequiresCondition: rank-elite
+		Modifier: 125
 	ChangesHealth@ELITE:
-		Step: 200
-		Delay: 100
+		Step: 0
+		PercentageStep: 5
+		Delay: 75
 		StartIfBelow: 100
 		DamageCooldown: 125
 		RequiresCondition: rank-elite
@@ -127,14 +103,6 @@
 		Margin: 5, 6
 		ValidStances: Ally, Enemy, Neutral
 		RequiresCondition: rank-veteran == 2
-	WithDecoration@RANK-3:
-		Image: rank
-		Sequence: rank-veteran-3
-		Palette: effect
-		Position: BottomRight
-		Margin: 5, 6
-		ValidStances: Ally, Enemy, Neutral
-		RequiresCondition: rank-veteran == 3
 	WithDecoration@RANK-ELITE:
 		Image: rank
 		Sequence: rank-elite
@@ -151,11 +119,6 @@
 			hospitalheal && hazmatsuits: On, Off, Off
 			hospitalheal || hazmatsuits: On, Off
 	WithDecoration@RANK-2:
-		BlinkInterval: 32
-		BlinkPatterns:
-			hospitalheal && hazmatsuits: On, Off, Off
-			hospitalheal || hazmatsuits: On, Off
-	WithDecoration@RANK-3:
 		BlinkInterval: 32
 		BlinkPatterns:
 			hospitalheal && hazmatsuits: On, Off, Off
@@ -890,7 +853,6 @@
 	RenderSprites:
 		Palette: staticterrain
 	WithWallSpriteBody:
-	GivesExperience:
 	Sellable:
 		SellSounds: cashturn.aud
 	Guardable:

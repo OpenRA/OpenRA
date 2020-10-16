@@ -67,7 +67,7 @@ HELI:
 		TurnSpeed: 28
 		Speed: 180
 	Health:
-		HP: 12500
+		HP: 12000
 	Armor:
 		Type: Light
 	RevealsShroud:

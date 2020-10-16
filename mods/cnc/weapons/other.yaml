@@ -1,13 +1,13 @@
 ^FlameWeapon:
 	ValidTargets: Ground, Water, Trees
 	ReloadDelay: 55
-	Range: 2c512
+	Range: 3c0
 	InvalidTargets: Wall
 	Report: flamer2.aud
 	Projectile: Bullet
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
-		Spread: 468
+		Spread: 256
 		Damage: 4000
 		ValidTargets: Ground, Water, Trees
 		InvalidTargets: Wall
@@ -26,8 +26,6 @@
 
 Flamethrower:
 	Inherits: ^FlameWeapon
-	Warhead@1Dam: SpreadDamage
-		Spread: 256
 
 BigFlamer:
 	Inherits: ^FlameWeapon
@@ -51,10 +49,8 @@ BigFlamer:
 Chemspray:
 	Inherits: ^FlameWeapon
 	ReloadDelay: 65
-	Range: 3c0
 	-InvalidTargets:
 	Warhead@1Dam: SpreadDamage
-		Spread: 256
 		Damage: 8000
 		-InvalidTargets:
 		Versus:

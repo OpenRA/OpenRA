@@ -2,15 +2,13 @@ MCV:
 	Inherits: ^Vehicle
 	Inherits@selection: ^SelectableSupportUnit
 	Valued:
-		Cost: 3500
+		Cost: 3000
 	Tooltip:
 		Name: Mobile Construction Vehicle
 	Buildable:
 		BuildPaletteOrder: 100
 		Prerequisites: anyhq, ~techlevel.medium, fix
 		Queue: Vehicle.GDI, Vehicle.Nod
-		BuildDuration: 3750
-		BuildDurationModifier: 40
 		Description: Deploys into another Construction Yard.\n  Unarmed
 	Selectable:
 		DecorationBounds: 36,36
@@ -44,7 +42,7 @@ HARV:
 	Inherits@CLOAK: ^AcceptsCloakCrate
 	Inherits@selection: ^SelectableEconomicUnit
 	Valued:
-		Cost: 1000
+		Cost: 1100
 	Tooltip:
 		Name: Harvester
 		GenericName: Harvester
@@ -52,8 +50,6 @@ HARV:
 		BuildPaletteOrder: 10
 		Prerequisites: proc
 		Queue: Vehicle.GDI, Vehicle.Nod
-		BuildDuration: 1680
-		BuildDurationModifier: 40
 		Description: Collects Tiberium for processing.\n  Unarmed
 	Selectable:
 		DecorationBounds: 36,36
@@ -316,8 +312,8 @@ BIKE:
 		Description: Fast scout vehicle, armed with\nrockets.\nCan attack Aircraft.\n  Strong vs Vehicles, Tanks\n  Weak vs Infantry
 	Mobile:
 		TurnSpeed: 40
-		Speed: 213
-		Locomotor: bike
+		Speed: 184
+		Locomotor: wheeled
 	Health:
 		HP: 11000
 	Repairable:
@@ -633,7 +629,7 @@ STNK:
 	Inherits@EXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
 	Valued:
-		Cost: 900
+		Cost: 1000
 	Tooltip:
 		Name: Stealth Tank
 	UpdatesPlayerStatistics:
@@ -660,6 +656,7 @@ STNK:
 		CloakDelay: 90
 		CloakSound: trans1.aud
 		UncloakSound: trans1.aud
+		UncloakOn: Attack, Unload, Dock, Damage, Heal
 		PauseOnCondition: cloak-force-disabled
 	GrantConditionOnDamageState@UNCLOAK:
 		Condition: cloak-force-disabled
@@ -707,9 +704,10 @@ TRUCK:
 		Queue: Vehicle.GDI, Vehicle.Nod
 		BuildPaletteOrder: 35
 		Prerequisites: vehicleproduction
-		Description: Transports cash to other players.\n  Unarmed
+		BuildDuration: 500
+		Description: Transports cash to other players.\n  Builds fast\n  Unarmed
 	Valued:
-		Cost: 500
+		Cost: 1000
 	Tooltip:
 		Name: Supply Truck
 	Health:
@@ -721,8 +719,8 @@ TRUCK:
 	RevealsShroud:
 		Range: 4c0
 	DeliversCash:
-		Payload: 500
-		PlayerExperience: 50
+		Payload: 1000
+		PlayerExperience: 100
 	SpawnActorOnDeath:
 		Actor: TRUCK.Husk
 		OwnerType: InternalName

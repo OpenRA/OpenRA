@@ -17,7 +17,7 @@ HARV.Husk:
 		Image: harv.destroyed
 
 APC.Husk:
-	Inherits: ^LightHusk
+	Inherits: ^Husk
 	Tooltip:
 		Name: APC (Destroyed)
 	TransformOnCapture:
@@ -35,7 +35,7 @@ FTNK.Husk:
 		Image: ftnk.destroyed
 
 ARTY.Husk:
-	Inherits: ^Husk
+	Inherits: ^LightHusk
 	Tooltip:
 		Name: Artillery (Destroyed)
 	TransformOnCapture:
@@ -104,7 +104,7 @@ HTNK.Husk:
 		Image: htnk.destroyed
 
 MSAM.Husk:
-	Inherits: ^Husk
+	Inherits: ^LightHusk
 	Tooltip:
 		Name: Rocket Launcher (Destroyed)
 	ThrowsParticle@turret:
@@ -115,7 +115,7 @@ MSAM.Husk:
 		Image: msam.destroyed
 
 MLRS.Husk:
-	Inherits: ^Husk
+	Inherits: ^LightHusk
 	Tooltip:
 		Name: Mobile S.A.M. (Destroyed)
 	ThrowsParticle@turret:
@@ -135,7 +135,7 @@ STNK.Husk:
 		Image: stnk.destroyed
 
 TRUCK.Husk:
-	Inherits: ^Husk
+	Inherits: ^LightHusk
 	Tooltip:
 		Name: Supply Truck (Destroyed)
 	TransformOnCapture:

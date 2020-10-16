@@ -160,7 +160,7 @@ MammothMissiles:
 		Versus:
 			None: 24
 			Wood: 60
-			Light: 90
+			Light: 100
 			Heavy: 48
 	Warhead@3Eff: CreateEffect
 		Explosions: med_frag

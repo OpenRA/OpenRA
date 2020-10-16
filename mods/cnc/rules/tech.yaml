@@ -3,6 +3,7 @@ V19:
 	Selectable:
 		Bounds: 24,24
 	CashTrickler:
+		Amount: 10
 	Building:
 		Footprint: x
 		Dimensions: 1,1
@@ -83,10 +84,10 @@ BIO:
 	Tooltip:
 		Name: Biological Lab
 	TooltipDescription@ally:
-		Description: Produces Bio-Lab units.
+		Description: Provides infantry with Tiberium immunity. Produces Visceroids.
 		ValidStances: Ally
 	TooltipDescription@other:
-		Description: Capture to produce Bio-Lab units.
+		Description: Capture to enable Tiberium immunity for infantry. Produces Visceroids.
 		ValidStances: Neutral, Enemy
 	Exit@1:
 		SpawnOffset: 0,-426,0

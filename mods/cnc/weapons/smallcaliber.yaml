@@ -48,8 +48,9 @@ Vulcan:
 		Spread: 426
 		Damage: 10000
 		Versus:
+			None: 90
 			Wood: 15
-			Light: 30
+			Light: 35
 			Heavy: 35
 
 HeliAGGun:
@@ -63,7 +64,7 @@ HeliAGGun:
 	Projectile: Bullet
 		Blockable: false
 	Warhead@1Dam: SpreadDamage
-		Spread: 256
+		Spread: 128
 		Damage: 2000
 		Versus:
 			None: 100
@@ -76,7 +77,6 @@ HeliAAGun:
 	Inherits: HeliAGGun
 	ValidTargets: Air
 	Warhead@1Dam: SpreadDamage
-		Spread: 128
 		ValidTargets: Air
 		Versus:
 			Light: 50
@@ -162,7 +162,7 @@ APCGun.AA:
 		Versus:
 			None: 60
 			Wood: 60
-			Light: 125
+			Light: 140
 			Heavy: 60
 	Warhead@2Eff: CreateEffect
 		Explosions: small_poof
