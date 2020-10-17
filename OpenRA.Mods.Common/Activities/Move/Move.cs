@@ -415,7 +415,13 @@ namespace OpenRA.Mods.Common.Activities
 					var u = new WVec(1024, 0, 0).Rotate(WRot.FromYaw(fromFacing));
 					var v = new WVec(1024, 0, 0).Rotate(WRot.FromYaw(toFacing));
 					var w = from - to;
-					var s = (v.Y * w.X - v.X * w.Y) * 1024 / (v.X * u.Y - v.Y * u.X);
+					var s1 = (v.Y * w.X - v.X * w.Y);
+					var s2 = (v.X * u.Y - v.Y * u.X);
+					if (s2 == 0)
+						throw new InvalidOperationException("Move.cs L419 was zero. from: {0}, to: {1}, fromFacing: {2}, toFacing: {3}, startingFraction: {4}".F(
+							from, to, fromFacing, toFacing, startingFraction));
+
+					var s = s1 * 1024 / s2;
 					var x = from.X + s * u.X / 1024;
 					var y = from.Y + s * u.Y / 1024;
 
