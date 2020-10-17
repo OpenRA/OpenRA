@@ -602,7 +602,7 @@ AGUN:
 		HasMinibib: true
 	Turreted:
 		TurnSpeed: 60
-		InitialFacing: 896
+		InitialFacing: 832
 		RealignDelay: -1
 	-WithSpriteBody:
 	WithEmbeddedTurretSpriteBody:
@@ -817,7 +817,7 @@ GUN:
 		HasMinibib: true
 	Turreted:
 		TurnSpeed: 48
-		InitialFacing: 224
+		InitialFacing: 192
 		RealignDelay: -1
 	-WithSpriteBody:
 	WithEmbeddedTurretSpriteBody:

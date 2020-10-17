@@ -851,7 +851,7 @@ GUN:
 		HasMinibib: true
 	Turreted:
 		TurnSpeed: 48
-		InitialFacing: 224
+		InitialFacing: 192
 		RealignDelay: -1
 	-WithSpriteBody:
 	WithEmbeddedTurretSpriteBody:
