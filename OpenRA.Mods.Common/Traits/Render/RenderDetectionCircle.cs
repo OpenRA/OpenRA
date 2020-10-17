@@ -29,8 +29,14 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Color of the circle and scanner update line.")]
 		public readonly Color Color = Color.FromArgb(128, Color.LimeGreen);
 
-		[Desc("Contrast color of the circle and scanner update line.")]
-		public readonly Color ContrastColor = Color.FromArgb(96, Color.Black);
+		[Desc("Range circle line width.")]
+		public readonly float Width = 1;
+
+		[Desc("Border color of the circle and scanner update line.")]
+		public readonly Color BorderColor = Color.FromArgb(96, Color.Black);
+
+		[Desc("Range circle border width.")]
+		public readonly float BorderWidth = 3;
 
 		public override object Create(ActorInitializer init) { return new RenderDetectionCircle(init.Self, this); }
 	}
@@ -65,7 +71,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 				info.UpdateLineTick,
 				lineAngle,
 				info.Color,
-				info.ContrastColor);
+				info.Width,
+				info.BorderColor,
+				info.BorderWidth);
 		}
 
 		bool IRenderAnnotationsWhenSelected.SpatiallyPartitionable { get { return false; } }

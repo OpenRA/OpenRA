@@ -24,15 +24,19 @@ namespace OpenRA.Mods.Common.Graphics
 		readonly WDist radius;
 		readonly int zOffset;
 		readonly Color color;
-		readonly Color contrastColor;
+		readonly float width;
+		readonly Color borderColor;
+		readonly float borderWidth;
 
-		public RangeCircleAnnotationRenderable(WPos centerPosition, WDist radius, int zOffset, Color color, Color contrastColor)
+		public RangeCircleAnnotationRenderable(WPos centerPosition, WDist radius, int zOffset, Color color, float width, Color borderColor, float borderWidth)
 		{
 			this.centerPosition = centerPosition;
 			this.radius = radius;
 			this.zOffset = zOffset;
 			this.color = color;
-			this.contrastColor = contrastColor;
+			this.width = width;
+			this.borderColor = borderColor;
+			this.borderWidth = borderWidth;
 		}
 
 		public WPos Pos { get { return centerPosition; } }
@@ -40,19 +44,19 @@ namespace OpenRA.Mods.Common.Graphics
 		public int ZOffset { get { return zOffset; } }
 		public bool IsDecoration { get { return true; } }
 
-		public IRenderable WithPalette(PaletteReference newPalette) { return new RangeCircleAnnotationRenderable(centerPosition, radius, zOffset, color, contrastColor); }
-		public IRenderable WithZOffset(int newOffset) { return new RangeCircleAnnotationRenderable(centerPosition, radius, newOffset, color, contrastColor); }
-		public IRenderable OffsetBy(WVec vec) { return new RangeCircleAnnotationRenderable(centerPosition + vec, radius, zOffset, color, contrastColor); }
+		public IRenderable WithPalette(PaletteReference newPalette) { return new RangeCircleAnnotationRenderable(centerPosition, radius, zOffset, color, width, borderColor, borderWidth); }
+		public IRenderable WithZOffset(int newOffset) { return new RangeCircleAnnotationRenderable(centerPosition, radius, newOffset, color, width, borderColor, borderWidth); }
+		public IRenderable OffsetBy(WVec vec) { return new RangeCircleAnnotationRenderable(centerPosition + vec, radius, zOffset, color, width, borderColor, borderWidth); }
 		public IRenderable AsDecoration() { return this; }
 
 		public IFinalizedRenderable PrepareRender(WorldRenderer wr) { return this; }
 		public void Render(WorldRenderer wr)
 		{
-			DrawRangeCircle(wr, centerPosition, radius, 1, color, 3, contrastColor);
+			DrawRangeCircle(wr, centerPosition, radius, width, color, borderWidth, borderColor);
 		}
 
 		public static void DrawRangeCircle(WorldRenderer wr, WPos centerPosition, WDist radius,
-			float width, Color color, float contrastWidth, Color contrastColor)
+			float width, Color color, float borderWidth, Color borderColor)
 		{
 			var cr = Game.Renderer.RgbaColorRenderer;
 			var offset = new WVec(radius.Length, 0, 0);
@@ -61,8 +65,8 @@ namespace OpenRA.Mods.Common.Graphics
 				var a = wr.Viewport.WorldToViewPx(wr.ScreenPosition(centerPosition + offset.Rotate(ref RangeCircleStartRotations[i])));
 				var b = wr.Viewport.WorldToViewPx(wr.ScreenPosition(centerPosition + offset.Rotate(ref RangeCircleEndRotations[i])));
 
-				if (contrastWidth > 0)
-					cr.DrawLine(a, b, contrastWidth, contrastColor);
+				if (borderWidth > 0)
+					cr.DrawLine(a, b, borderWidth, borderColor);
 
 				if (width > 0)
 					cr.DrawLine(a, b, width, color);
