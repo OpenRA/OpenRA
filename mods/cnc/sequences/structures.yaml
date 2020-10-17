@@ -435,14 +435,15 @@ wood:
 		Length: 16
 
 gun:
-	idle:
+	idle: gunmake # Empty first frame. We need WithSpriteBody for the make anim, and WSB needs at least a placeholder default sequence to work
+	turret:
 		Facings: 32
 		UseClassicFacings: True
 	recoil:
 		Start: 32
 		Facings: 32
 		UseClassicFacings: True
-	damaged-idle:
+	damaged-turret:
 		Start: 64
 		Facings: 32
 		UseClassicFacings: True

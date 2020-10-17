@@ -378,16 +378,17 @@ fix:
 	fake-icon: fixficon
 
 gun:
-	idle:
+	idle: gunmake # Empty first frame. We need WithSpriteBody for the make anim, and WSB needs at least a placeholder default sequence to work
+	make: gunmake
+		Length: *
+	turret:
 		Facings: 32
 		UseClassicFacings: True
 	recoil:
 		Start: 32
 		Facings: 32
 		UseClassicFacings: True
-	make: gunmake
-		Length: *
-	damaged-idle:
+	damaged-turret:
 		Start: 64
 		Facings: 32
 		UseClassicFacings: True
@@ -404,7 +405,11 @@ gun:
 	icon: gunicon
 
 agun:
-	idle:
+	idle: gunmake # Empty first frame (agunmake has no empty frames). We need WithSpriteBody for the make anim, and WSB needs at least a placeholder default sequence to work
+	make: agunmake
+		Length: *
+		Offset: 0,-13
+	turret:
 		Facings: 32
 		UseClassicFacings: True
 		Offset: 0,-13
@@ -413,10 +418,7 @@ agun:
 		Facings: 32
 		UseClassicFacings: True
 		Offset: 0,-13
-	make: agunmake
-		Length: *
-		Offset: 0,-13
-	damaged-idle:
+	damaged-turret:
 		Start: 64
 		Facings: 32
 		UseClassicFacings: True
@@ -435,11 +437,12 @@ agun:
 	icon: agunicon
 
 sam:
-	idle: sam2
+	idle: gunmake # Empty first frame (sammake has no empty frames). We need WithSpriteBody for the make anim, and WSB needs at least a placeholder default sequence to work
+	turret: sam2
 		Facings: 32
 		UseClassicFacings: True
 		Offset: -1,-2
-	damaged-idle: sam2
+	damaged-turret: sam2
 		Start: 34
 		Facings: 32
 		UseClassicFacings: True

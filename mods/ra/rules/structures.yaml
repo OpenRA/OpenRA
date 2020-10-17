@@ -604,8 +604,10 @@ AGUN:
 		TurnSpeed: 60
 		InitialFacing: 832
 		RealignDelay: -1
-	-WithSpriteBody:
-	WithEmbeddedTurretSpriteBody:
+		RequiresCondition: !build-incomplete
+	WithSpriteTurret:
+		RequiresCondition: !build-incomplete
+		Recoils: false
 	Armament:
 		Weapon: ZSU-23
 		LocalOffset: 520,100,450, 520,-150,450
@@ -819,8 +821,10 @@ GUN:
 		TurnSpeed: 48
 		InitialFacing: 192
 		RealignDelay: -1
-	-WithSpriteBody:
-	WithEmbeddedTurretSpriteBody:
+		RequiresCondition: !build-incomplete
+	WithSpriteTurret:
+		RequiresCondition: !build-incomplete
+		Recoils: false
 	Armament:
 		Weapon: TurretGun
 		LocalOffset: 512,0,112
@@ -919,8 +923,10 @@ SAM:
 		TurnSpeed: 120
 		InitialFacing: 0
 		RealignDelay: -1
-	-WithSpriteBody:
-	WithEmbeddedTurretSpriteBody:
+		RequiresCondition: !build-incomplete
+	WithSpriteTurret:
+		RequiresCondition: !build-incomplete
+		Recoils: false
 	Armament:
 		Weapon: Nike
 		LocalOffset: 0,0,320
