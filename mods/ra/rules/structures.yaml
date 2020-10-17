@@ -825,6 +825,8 @@ GUN:
 	WithSpriteTurret:
 		RequiresCondition: !build-incomplete
 		Recoils: false
+	WithTurretAttackAnimation:
+		Sequence: recoil
 	Armament:
 		Weapon: TurretGun
 		LocalOffset: 512,0,112
