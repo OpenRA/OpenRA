@@ -317,26 +317,6 @@ M60mg:
 		Damage: 15000
 		ValidTargets: Barrel, Infantry
 		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
-
-SilencedPPK:
-	Inherits: ^SnipeWeapon
-	Report: silppk.aud
-	Warhead@1Dam: SpreadDamage
-		Spread: 128
-	Warhead@2Eff: CreateEffect
-		Explosions: piffs
-		ValidTargets: Ground, Ship, Air, Trees
-	Warhead@3EffWater: CreateEffect
-		Explosions: water_piffs
-		ValidTargets: Water, Underwater
-		InvalidTargets: Ship, Structure, Bridge
-
-Colt45:
-	Inherits: ^SnipeWeapon
-	ReloadDelay: 5
-	Range: 7c0
-	Warhead@1Dam: SpreadDamage
-		Damage: 5000
 	Warhead@2Eff: CreateEffect
 		Explosions: piff
 		ValidTargets: Ground, Ship, Air, Trees
@@ -344,6 +324,19 @@ Colt45:
 		Explosions: water_piff
 		ValidTargets: Water, Underwater
 		InvalidTargets: Ship, Structure, Bridge
+
+SilencedPPK:
+	Inherits: ^SnipeWeapon
+	Report: silppk.aud
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+
+Colt45:
+	Inherits: ^SnipeWeapon
+	ReloadDelay: 5
+	Range: 7c0
+	Warhead@1Dam: SpreadDamage
+		Damage: 5000
 
 Sniper:
 	Inherits: ^SnipeWeapon

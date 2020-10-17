@@ -11,6 +11,10 @@ Sniper:
 		Damage: 10000
 		ValidTargets: Infantry
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
+	Warhead@2Eff: CreateEffect
+		Explosions: piff
+		ImpactActors: false
+		ValidTargets: Ground, Water, Air
 
 ^HeavyMG:
 	ReloadDelay: 25
