@@ -75,8 +75,7 @@ FLAK-23-AG:
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: piffs
-		ValidTargets: Ground, Air
-		ImpactActors: false
+		ValidTargets: Ground, GroundActor, Air, AirborneActor, WaterActor, Trees
 	Warhead@3EffWater: CreateEffect
 		Explosions: water_piffs
 		ValidTargets: Water, Underwater
@@ -124,8 +123,7 @@ Vulcan:
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@4Eff_2: CreateEffect
 		Explosions: piffs
-		ValidTargets: Ground
-		ImpactActors: false
+		ValidTargets: Ground, GroundActor, Air, AirborneActor, WaterActor, Trees
 		Delay: 2
 	Warhead@4Eff_2Water: CreateEffect
 		Explosions: water_piffs
@@ -146,8 +144,7 @@ Vulcan:
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@6Eff_3: CreateEffect
 		Explosions: piffs
-		ValidTargets: Ground
-		ImpactActors: false
+		ValidTargets: Ground, GroundActor, Air, AirborneActor, WaterActor, Trees
 		Delay: 4
 	Warhead@6Eff_3Water: CreateEffect
 		Explosions: water_piffs
@@ -168,8 +165,7 @@ Vulcan:
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@8Eff_4: CreateEffect
 		Explosions: piffs
-		ValidTargets: Ground
-		ImpactActors: false
+		ValidTargets: Ground, GroundActor, Air, AirborneActor, WaterActor, Trees
 		Delay: 6
 	Warhead@8Eff_4Water: CreateEffect
 		Explosions: water_piffs
@@ -190,8 +186,7 @@ Vulcan:
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@10Eff_5: CreateEffect
 		Explosions: piffs
-		ValidTargets: Ground
-		ImpactActors: false
+		ValidTargets: Ground, GroundActor, Air, AirborneActor, WaterActor, Trees
 		Delay: 8
 	Warhead@10Eff_5Water: CreateEffect
 		Explosions: water_piffs
@@ -212,8 +207,7 @@ Vulcan:
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@12Eff_6: CreateEffect
 		Explosions: piffs
-		ValidTargets: Ground
-		ImpactActors: false
+		ValidTargets: Ground, GroundActor, Air, AirborneActor, WaterActor, Trees
 		Delay: 10
 	Warhead@12Eff_6Water: CreateEffect
 		Explosions: water_piffs
@@ -273,6 +267,7 @@ M1Carbine:
 	Warhead@2Eff2: CreateEffect
 		Delay: 2
 		Explosions: piff
+		ValidTargets: Ground, GroundActor, Air, AirborneActor, WaterActor, Trees
 		Inaccuracy: 171
 	Warhead@3EffWater2: CreateEffect
 		Delay: 2
@@ -283,6 +278,7 @@ M1Carbine:
 	Warhead@2Eff3: CreateEffect
 		Delay: 4
 		Explosions: piff
+		ValidTargets: Ground, GroundActor, Air, AirborneActor, WaterActor, Trees
 		Inaccuracy: 171
 	Warhead@3EffWater3: CreateEffect
 		Delay: 4
@@ -319,7 +315,7 @@ M60mg:
 		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: piff
-		ValidTargets: Ground, Ship, Air, Trees
+		ValidTargets: Ground, GroundActor, Air, AirborneActor, WaterActor, Trees
 	Warhead@3EffWater: CreateEffect
 		Explosions: water_piff
 		ValidTargets: Water, Underwater
