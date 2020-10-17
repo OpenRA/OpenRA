@@ -23,8 +23,14 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Color of the circle.")]
 		public readonly Color Color = Color.FromArgb(128, Color.Cyan);
 
-		[Desc("Contrast color of the circle.")]
-		public readonly Color ContrastColor = Color.FromArgb(96, Color.Black);
+		[Desc("Range circle line width.")]
+		public readonly float Width = 1;
+
+		[Desc("Border color of the circle.")]
+		public readonly Color BorderColor = Color.FromArgb(96, Color.Black);
+
+		[Desc("Range circle border width.")]
+		public readonly float BorderWidth = 3;
 
 		public IEnumerable<IRenderable> RenderAnnotations(WorldRenderer wr, World w, ActorInfo ai, WPos centerPosition)
 		{
@@ -39,7 +45,9 @@ namespace OpenRA.Mods.Common.Traits
 				localRange,
 				0,
 				Color,
-				ContrastColor);
+				Width,
+				BorderColor,
+				BorderWidth);
 
 			var otherRangeRenderables = w.ActorsWithTrait<RenderShroudCircle>()
 				.SelectMany(a => a.Trait.RangeCircleRenderables(a.Actor, wr));
@@ -78,7 +86,9 @@ namespace OpenRA.Mods.Common.Traits
 				range,
 				0,
 				info.Color,
-				info.ContrastColor);
+				info.Width,
+				info.BorderColor,
+				info.BorderWidth);
 		}
 
 		IEnumerable<IRenderable> IRenderAnnotationsWhenSelected.RenderAnnotations(Actor self, WorldRenderer wr)

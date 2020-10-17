@@ -23,10 +23,12 @@ namespace OpenRA.Mods.Common.Graphics
 		readonly WAngle trailSeparation;
 		readonly WAngle trailAngle;
 		readonly Color color;
-		readonly Color contrastColor;
+		readonly float width;
+		readonly Color borderColor;
+		readonly float borderWidth;
 
 		public DetectionCircleAnnotationRenderable(WPos centerPosition, WDist radius, int zOffset,
-			int lineTrails, WAngle trailSeparation, WAngle trailAngle, Color color, Color contrastColor)
+			int lineTrails, WAngle trailSeparation, WAngle trailAngle, Color color, float width, Color borderColor, float borderWidth)
 		{
 			this.centerPosition = centerPosition;
 			this.radius = radius;
@@ -35,7 +37,9 @@ namespace OpenRA.Mods.Common.Graphics
 			this.trailSeparation = trailSeparation;
 			this.trailAngle = trailAngle;
 			this.color = color;
-			this.contrastColor = contrastColor;
+			this.width = width;
+			this.borderColor = borderColor;
+			this.borderWidth = borderWidth;
 		}
 
 		public WPos Pos { get { return centerPosition; } }
@@ -46,19 +50,19 @@ namespace OpenRA.Mods.Common.Graphics
 		public IRenderable WithPalette(PaletteReference newPalette)
 		{
 			return new DetectionCircleAnnotationRenderable(centerPosition, radius, zOffset,
-				trailCount, trailSeparation, trailAngle, color, contrastColor);
+				trailCount, trailSeparation, trailAngle, color, width, borderColor, borderWidth);
 		}
 
 		public IRenderable WithZOffset(int newOffset)
 		{
 			return new DetectionCircleAnnotationRenderable(centerPosition, radius, newOffset,
-				trailCount, trailSeparation, trailAngle, color, contrastColor);
+				trailCount, trailSeparation, trailAngle, color, width, borderColor, borderWidth);
 		}
 
 		public IRenderable OffsetBy(WVec vec)
 		{
 			return new DetectionCircleAnnotationRenderable(centerPosition + vec, radius, zOffset,
-				trailCount, trailSeparation, trailAngle, color, contrastColor);
+				trailCount, trailSeparation, trailAngle, color, width, borderColor, borderWidth);
 		}
 
 		public IRenderable AsDecoration() { return this; }
@@ -75,11 +79,11 @@ namespace OpenRA.Mods.Common.Graphics
 				var length = radius.Length * new WVec(angle.Cos(), angle.Sin(), 0) / 1024;
 				var end = wr.Viewport.WorldToViewPx(wr.Screen3DPosition(centerPosition + length));
 				var alpha = color.A - i * color.A / trailCount;
-				cr.DrawLine(center, end, 3, Color.FromArgb(alpha, contrastColor));
-				cr.DrawLine(center, end, 1, Color.FromArgb(alpha, color));
+				cr.DrawLine(center, end, borderWidth, Color.FromArgb(alpha, borderColor));
+				cr.DrawLine(center, end, width, Color.FromArgb(alpha, color));
 			}
 
-			RangeCircleAnnotationRenderable.DrawRangeCircle(wr, centerPosition, radius, 1, color, 3, contrastColor);
+			RangeCircleAnnotationRenderable.DrawRangeCircle(wr, centerPosition, radius, width, color, borderWidth, borderColor);
 		}
 
 		public void RenderDebugGeometry(WorldRenderer wr) { }

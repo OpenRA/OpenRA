@@ -56,6 +56,18 @@ namespace OpenRA.Mods.Cnc.Traits
 		[VoiceReference]
 		public readonly string Voice = "Action";
 
+		[Desc("Range circle color.")]
+		public readonly Color CircleColor = Color.FromArgb(128, Color.LawnGreen);
+
+		[Desc("Range circle line width.")]
+		public readonly float CircleWidth = 1;
+
+		[Desc("Range circle border color.")]
+		public readonly Color CircleBorderColor = Color.FromArgb(96, Color.Black);
+
+		[Desc("Range circle border width.")]
+		public readonly float CircleBorderWidth = 3;
+
 		public override object Create(ActorInitializer init) { return new PortableChrono(init.Self, this); }
 	}
 
@@ -232,8 +244,10 @@ namespace OpenRA.Mods.Cnc.Traits
 				self.CenterPosition,
 				WDist.FromCells(self.Trait<PortableChrono>().Info.MaxDistance),
 				0,
-				Color.FromArgb(128, Color.LawnGreen),
-				Color.FromArgb(96, Color.Black));
+				info.CircleColor,
+				info.CircleWidth,
+				info.CircleBorderColor,
+				info.CircleBorderWidth);
 		}
 
 		protected override string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)

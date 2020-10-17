@@ -18,8 +18,20 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	// TODO: remove all the Render*Circle duplication
-	class RenderJammerCircleInfo : TraitInfo<RenderJammerCircle>, IPlaceBuildingDecorationInfo
+	class RenderJammerCircleInfo : TraitInfo, IPlaceBuildingDecorationInfo
 	{
+		[Desc("Range circle color.")]
+		public readonly Color Color = Color.FromArgb(128, Color.Red);
+
+		[Desc("Range circle line width.")]
+		public readonly float Width = 1;
+
+		[Desc("Range circle border color.")]
+		public readonly Color BorderColor = Color.FromArgb(96, Color.Black);
+
+		[Desc("Range circle border width.")]
+		public readonly float BorderWidth = 3;
+
 		public IEnumerable<IRenderable> RenderAnnotations(WorldRenderer wr, World w, ActorInfo ai, WPos centerPosition)
 		{
 			var jamsMissiles = ai.TraitInfoOrDefault<JamsMissilesInfo>();
@@ -29,8 +41,10 @@ namespace OpenRA.Mods.Common.Traits
 					centerPosition,
 					jamsMissiles.Range,
 					0,
-					Color.FromArgb(128, Color.Red),
-					Color.FromArgb(96, Color.Black));
+					Color,
+					Width,
+					BorderColor,
+					BorderWidth);
 			}
 
 			foreach (var a in w.ActorsWithTrait<RenderJammerCircle>())
@@ -38,10 +52,19 @@ namespace OpenRA.Mods.Common.Traits
 					foreach (var r in a.Trait.RenderAnnotations(a.Actor, wr))
 						yield return r;
 		}
+
+		public override object Create(ActorInitializer init) { return new RenderJammerCircle(this); }
 	}
 
 	class RenderJammerCircle : IRenderAnnotationsWhenSelected
 	{
+		readonly RenderJammerCircleInfo info;
+
+		public RenderJammerCircle(RenderJammerCircleInfo info)
+		{
+			this.info = info;
+		}
+
 		public IEnumerable<IRenderable> RenderAnnotations(Actor self, WorldRenderer wr)
 		{
 			if (!self.Owner.IsAlliedWith(self.World.RenderPlayer))
@@ -54,8 +77,10 @@ namespace OpenRA.Mods.Common.Traits
 					self.CenterPosition,
 					jamsMissiles.Range,
 					0,
-					Color.FromArgb(128, Color.Red),
-					Color.FromArgb(96, Color.Black));
+					info.Color,
+					info.Width,
+					info.BorderColor,
+					info.BorderWidth);
 			}
 		}
 
