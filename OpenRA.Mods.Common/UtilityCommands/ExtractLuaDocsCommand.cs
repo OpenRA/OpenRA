@@ -37,24 +37,25 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 			Console.WriteLine("This is an automatically generated listing of the Lua map scripting API for version {0} of OpenRA.", version);
 			Console.WriteLine();
-			Console.WriteLine("OpenRA allows custom maps and missions to be scripted using Lua 5.1.\n" +
-				"These scripts run in a sandbox that prevents access to unsafe functions (e.g. OS or file access), " +
+			Console.WriteLine("OpenRA allows custom maps and missions to be scripted using Lua 5.1.");
+			Console.WriteLine("These scripts run in a sandbox that prevents access to unsafe functions (e.g. OS or file access), " +
 				"and limits the memory and CPU usage of the scripts.");
 			Console.WriteLine();
 			Console.WriteLine("You can access this interface by adding the [LuaScript](../traits/#luascript) trait to the world actor in your map rules " +
 				"(note, you must replace the spaces in the snippet below with a single tab for each level of indentation):");
 			Console.WriteLine("```\nRules:\n\tWorld:\n\t\tLuaScript:\n\t\t\tScripts: myscript.lua\n```");
 			Console.WriteLine();
-			Console.WriteLine("Map scripts can interact with the game engine in three ways:\n");
-			Console.WriteLine("* Global tables provide functions for interacting with the global world state, or performing general helper tasks.\n" +
-				"They exist in the global namespace, and can be called directly using ```<table name>.<function name>```.\n" +
-				"* Individual actors expose a collection of properties and commands that query information or modify their state.\n" +
-				"  * Some commands, marked as <em>queued activity</em>, are asynchronous. Activities are queued on the actor, and will run in " +
+			Console.WriteLine("Map scripts can interact with the game engine in three ways:");
+			Console.WriteLine();
+			Console.WriteLine("* Global tables provide functions for interacting with the global world state, or performing general helper tasks.");
+			Console.WriteLine("They exist in the global namespace, and can be called directly using ```<table name>.<function name>```.");
+			Console.WriteLine("* Individual actors expose a collection of properties and commands that query information or modify their state.");
+			Console.WriteLine("  * Some commands, marked as <em>queued activity</em>, are asynchronous. Activities are queued on the actor, and will run in " +
 				"sequence until the queue is empty or the Stop command is called. Actors that are not performing an activity are Idle " +
 				"(actor.IsIdle will return true). The properties and commands available on each actor depends on the traits that the actor " +
-				"specifies in its rule definitions.\n" +
-				"* Individual players expose a collection of properties and commands that query information or modify their state.\n" +
-				"The properties and commands available on each actor depends on the traits that the actor specifies in its rule definitions.\n");
+				"specifies in its rule definitions.");
+			Console.WriteLine("* Individual players expose a collection of properties and commands that query information or modify their state.");
+			Console.WriteLine("The properties and commands available on each actor depends on the traits that the actor specifies in its rule definitions.");
 			Console.WriteLine();
 			Console.WriteLine("For a basic guide about map scripts see the [`Map Scripting` wiki page](https://github.com/OpenRA/OpenRA/wiki/Map-scripting).");
 			Console.WriteLine();
