@@ -414,17 +414,23 @@ namespace OpenRA.Mods.Common.Activities
 					// The center of rotation is where the normal vectors cross
 					var u = new WVec(1024, 0, 0).Rotate(WRot.FromYaw(fromFacing));
 					var v = new WVec(1024, 0, 0).Rotate(WRot.FromYaw(toFacing));
-					var w = from - to;
-					var s = (v.Y * w.X - v.X * w.Y) * 1024 / (v.X * u.Y - v.Y * u.X);
-					var x = from.X + s * u.X / 1024;
-					var y = from.Y + s * u.Y / 1024;
 
-					ArcCenter = new WPos(x, y, 0);
-					ArcFromLength = (ArcCenter - from).HorizontalLength;
-					ArcFromAngle = (ArcCenter - from).Yaw;
-					ArcToLength = (ArcCenter - to).HorizontalLength;
-					ArcToAngle = (ArcCenter - to).Yaw;
-					EnableArc = true;
+					// Make sure that u and v aren't parallel, which may happen due to rounding
+					// in WVec.Rotate if delta is close but not necessarily equal to 0 or 512
+					if (v.X * u.Y != v.Y * u.X)
+					{
+						var w = from - to;
+						var s = (v.Y * w.X - v.X * w.Y) * 1024 / (v.X * u.Y - v.Y * u.X);
+						var x = from.X + s * u.X / 1024;
+						var y = from.Y + s * u.Y / 1024;
+
+						ArcCenter = new WPos(x, y, 0);
+						ArcFromLength = (ArcCenter - from).HorizontalLength;
+						ArcFromAngle = (ArcCenter - from).Yaw;
+						ArcToLength = (ArcCenter - to).HorizontalLength;
+						ArcToAngle = (ArcCenter - to).Yaw;
+						EnableArc = true;
+					}
 				}
 			}
 
