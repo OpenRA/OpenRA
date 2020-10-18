@@ -99,7 +99,10 @@ namespace OpenRA
 
 		public MiniYaml Clone()
 		{
-			return new MiniYaml(Value, Nodes.Select(n => n.Clone()).ToList());
+			var clonedNodes = new MiniYamlNodes(Nodes.Count);
+			foreach (var node in Nodes)
+				clonedNodes.Add(node.Clone());
+			return new MiniYaml(Value, clonedNodes);
 		}
 
 		public Dictionary<string, MiniYaml> ToDictionary()
@@ -290,8 +293,15 @@ namespace OpenRA
 
 		public static List<MiniYamlNode> FromStream(Stream s, string fileName = "<no filename available>", bool discardCommentsAndWhitespace = true, Dictionary<string, string> stringPool = null)
 		{
+			IEnumerable<string> Lines(StreamReader reader)
+			{
+				string line;
+				while ((line = reader.ReadLine()) != null)
+					yield return line;
+			}
+
 			using (var reader = new StreamReader(s))
-				return FromString(reader.ReadToEnd(), fileName, discardCommentsAndWhitespace, stringPool);
+				return FromLines(Lines(reader), fileName, discardCommentsAndWhitespace, stringPool);
 		}
 
 		public static List<MiniYamlNode> FromString(string text, string fileName = "<no filename available>", bool discardCommentsAndWhitespace = true, Dictionary<string, string> stringPool = null)
@@ -340,7 +350,7 @@ namespace OpenRA
 
 		static List<MiniYamlNode> ResolveInherits(string key, MiniYaml node, Dictionary<string, MiniYaml> tree, Dictionary<string, MiniYamlNode.SourceLocation> inherited)
 		{
-			var resolved = new List<MiniYamlNode>();
+			var resolved = new List<MiniYamlNode>(node.Nodes.Count);
 
 			// Inheritance is tracked from parent->child, but not from child->parentsiblings.
 			inherited = new Dictionary<string, MiniYamlNode.SourceLocation>(inherited);
