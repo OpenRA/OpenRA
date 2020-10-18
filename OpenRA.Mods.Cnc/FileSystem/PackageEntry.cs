@@ -65,16 +65,16 @@ namespace OpenRA.Mods.Cnc.FileSystem
 						if (name.Length % 4 != 0)
 							name = name.PadRight(name.Length + (4 - name.Length % 4), '\0');
 
-						using (var ms = new MemoryStream(Encoding.ASCII.GetBytes(name)))
+						var result = 0u;
+						var data = Encoding.ASCII.GetBytes(name);
+						var i = 0;
+						while (i < data.Length)
 						{
-							var len = name.Length >> 2;
-							uint result = 0;
-
-							while (len-- != 0)
-								result = ((result << 1) | (result >> 31)) + ms.ReadUInt32();
-
-							return result;
+							var next = (uint)(data[i++] | data[i++] << 8 | data[i++] << 16 | data[i++] << 24);
+							result = ((result << 1) | (result >> 31)) + next;
 						}
+
+						return result;
 					}
 
 				case PackageHashType.CRC32:
