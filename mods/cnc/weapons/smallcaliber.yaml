@@ -160,9 +160,6 @@ APCGun.AA:
 	Warhead@1Dam: SpreadDamage
 		ValidTargets: Air
 		Versus:
-			None: 60
-			Wood: 60
 			Light: 140
-			Heavy: 60
 	Warhead@2Eff: CreateEffect
 		Explosions: small_poof
