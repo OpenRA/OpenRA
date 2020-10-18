@@ -61,22 +61,22 @@ namespace OpenRA
 
 		public static ushort ReadUInt16(this Stream s)
 		{
-			return BitConverter.ToUInt16(s.ReadBytes(2), 0);
+			return (ushort)(s.ReadUInt8() | s.ReadUInt8() << 8);
 		}
 
 		public static short ReadInt16(this Stream s)
 		{
-			return BitConverter.ToInt16(s.ReadBytes(2), 0);
+			return (short)(s.ReadUInt8() | s.ReadUInt8() << 8);
 		}
 
 		public static uint ReadUInt32(this Stream s)
 		{
-			return BitConverter.ToUInt32(s.ReadBytes(4), 0);
+			return (uint)(s.ReadUInt8() | s.ReadUInt8() << 8 | s.ReadUInt8() << 16 | s.ReadUInt8() << 24);
 		}
 
 		public static int ReadInt32(this Stream s)
 		{
-			return BitConverter.ToInt32(s.ReadBytes(4), 0);
+			return s.ReadUInt8() | s.ReadUInt8() << 8 | s.ReadUInt8() << 16 | s.ReadUInt8() << 24;
 		}
 
 		public static void Write(this Stream s, int value)
