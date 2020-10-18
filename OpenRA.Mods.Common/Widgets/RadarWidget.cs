@@ -38,6 +38,7 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly int cellWidth;
 		readonly int previewWidth;
 		readonly int previewHeight;
+		readonly string worldDefaultCursor = ChromeMetrics.Get<string>("WorldDefaultCursor");
 
 		float radarMinimapHeight;
 		int frame;
@@ -283,7 +284,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var cursor = world.OrderGenerator.GetCursor(world, cell, worldPixel, mi);
 			if (cursor == null)
-				return "default";
+				return worldDefaultCursor;
 
 			return Game.ModData.CursorProvider.HasCursorSequence(cursor + "-minimap") ? cursor + "-minimap" : cursor;
 		}

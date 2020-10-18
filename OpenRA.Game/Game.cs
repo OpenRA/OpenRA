@@ -190,7 +190,7 @@ namespace OpenRA
 			OrderManager.LastTickTime = RunTime;
 			OrderManager.StartGame();
 			worldRenderer.RefreshPalette();
-			Cursor.SetCursor("default");
+			Cursor.SetCursor(ChromeMetrics.Get<string>("DefaultCursor"));
 
 			// Now loading is completed, now is the ideal time to run a GC and compact the LOH.
 			// - All the temporary garbage created during loading can be collected.
