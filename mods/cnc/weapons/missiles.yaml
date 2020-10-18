@@ -106,7 +106,6 @@ OrcaAAMissiles:
 		ValidTargets: Air
 		Versus:
 			Light: 84
-			Heavy: 56
 	-Warhead@2Smu:
 
 MammothMissiles:
@@ -255,10 +254,7 @@ TowerAAMissile:
 		Spread: 682
 		ValidTargets: Air
 		Versus:
-			None: 140
-			Wood: 140
 			Light: 140
-			Heavy: 104
 	-Warhead@2Smu:
 	Warhead@4EffAir: CreateEffect
 		Explosions: small_building
