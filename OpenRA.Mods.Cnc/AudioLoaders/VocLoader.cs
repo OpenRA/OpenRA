@@ -150,7 +150,7 @@ namespace OpenRA.Mods.Cnc.AudioLoaders
 				var block = default(VocBlock);
 				try
 				{
-					block.Code = stream.ReadByte();
+					block.Code = stream.ReadUInt8();
 					block.Length = 0;
 				}
 				catch (EndOfStreamException)
@@ -162,9 +162,9 @@ namespace OpenRA.Mods.Cnc.AudioLoaders
 				if (block.Code == 0 || block.Code > 9)
 					break;
 
-				block.Length = stream.ReadByte();
-				block.Length |= stream.ReadByte() << 8;
-				block.Length |= stream.ReadByte() << 16;
+				block.Length = stream.ReadUInt8();
+				block.Length |= stream.ReadUInt8() << 8;
+				block.Length |= stream.ReadUInt8() << 16;
 
 				var skip = 0;
 				switch (block.Code)
@@ -174,9 +174,9 @@ namespace OpenRA.Mods.Cnc.AudioLoaders
 						{
 							if (block.Length < 2)
 								throw new InvalidDataException("Invalid sound data block length in voc file");
-							var freqDiv = stream.ReadByte();
+							var freqDiv = stream.ReadUInt8();
 							block.SampleBlock.Rate = GetSampleRateFromVocRate(freqDiv);
-							var codec = stream.ReadByte();
+							var codec = stream.ReadUInt8();
 							if (codec != 0)
 								throw new InvalidDataException("Unhandled codec used in voc file");
 							skip = block.Length - 2;
@@ -205,7 +205,7 @@ namespace OpenRA.Mods.Cnc.AudioLoaders
 								throw new InvalidDataException("Invalid silence block length in voc file");
 							block.SampleBlock.Offset = 0;
 							block.SampleBlock.Samples = stream.ReadUInt16() + 1;
-							var freqDiv = stream.ReadByte();
+							var freqDiv = stream.ReadUInt8();
 							block.SampleBlock.Rate = GetSampleRateFromVocRate(freqDiv);
 							break;
 						}
@@ -231,10 +231,10 @@ namespace OpenRA.Mods.Cnc.AudioLoaders
 							int freqDiv = stream.ReadUInt16();
 							if (freqDiv == 65536)
 								throw new InvalidDataException("Invalid frequency divisor 65536 in voc file");
-							var codec = stream.ReadByte();
+							var codec = stream.ReadUInt8();
 							if (codec != 0)
 								throw new InvalidDataException("Unhandled codec used in voc file");
-							var channels = stream.ReadByte() + 1;
+							var channels = stream.ReadUInt8() + 1;
 							if (channels != 1)
 								throw new InvalidDataException("Unhandled number of channels in voc file");
 							block.SampleBlock.Offset = 0;

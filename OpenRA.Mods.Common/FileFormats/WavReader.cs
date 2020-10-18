@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.FileFormats
 {
 	public static class WavReader
 	{
-		enum WaveType { Pcm = 0x1, MsAdpcm = 0x2, ImaAdpcm = 0x11 }
+		enum WaveType : short { Pcm = 0x1, MsAdpcm = 0x2, ImaAdpcm = 0x11 }
 
 		public static bool LoadSound(Stream s, out Func<Stream> result, out short channels, out int sampleBits, out int sampleRate, out float lengthInSeconds)
 		{
@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.FileFormats
 			while (s.Position < s.Length)
 			{
 				if ((s.Position & 1) == 1)
-					s.ReadByte(); // Alignment
+					s.ReadUInt8(); // Alignment
 
 				if (s.Position == s.Length)
 					break; // Break if we aligned with end of stream

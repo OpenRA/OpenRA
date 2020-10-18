@@ -63,9 +63,9 @@ namespace OpenRA.Mods.Cnc.FileFormats
 				paletteBytes = new byte[1024];
 				for (var i = 0; i < paletteBytes.Length;)
 				{
-					var r = (byte)(stream.ReadByte() << 2);
-					var g = (byte)(stream.ReadByte() << 2);
-					var b = (byte)(stream.ReadByte() << 2);
+					var r = (byte)(stream.ReadUInt8() << 2);
+					var g = (byte)(stream.ReadUInt8() << 2);
+					var b = (byte)(stream.ReadUInt8() << 2);
 
 					// Replicate high bits into the (currently zero) low bits.
 					r |= (byte)(r >> 6);

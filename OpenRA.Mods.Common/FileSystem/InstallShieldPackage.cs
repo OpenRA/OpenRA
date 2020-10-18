@@ -97,7 +97,7 @@ namespace OpenRA.Mods.Common.FileSystem
 				s.Position += 12;
 				var chunkSize = s.ReadUInt16();
 				s.Position += 4;
-				var nameLength = s.ReadByte();
+				var nameLength = s.ReadUInt8();
 				var fileName = dirName + "\\" + s.ReadASCII(nameLength);
 
 				// Use index syntax to overwrite any duplicate entries with the last value

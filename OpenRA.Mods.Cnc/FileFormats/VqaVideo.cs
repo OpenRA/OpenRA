@@ -93,8 +93,8 @@ namespace OpenRA.Mods.Cnc.FileFormats
 
 			// Audio
 			SampleRate = stream.ReadUInt16();
-			AudioChannels = stream.ReadByte();
-			SampleBits = stream.ReadByte();
+			AudioChannels = stream.ReadUInt8();
+			SampleBits = stream.ReadUInt8();
 
 			/*var unknown3 =*/stream.ReadUInt32();
 			/*var unknown4 =*/stream.ReadUInt16();
@@ -221,7 +221,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 					}
 
 					// Chunks are aligned on even bytes; advance by a byte if the next one is null
-					if (stream.Peek() == 0) stream.ReadByte();
+					if (stream.Peek() == 0) stream.ReadUInt8();
 				}
 			}
 
@@ -300,7 +300,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 						DecodeVQFR(stream);
 						break;
 					case "\0VQF":
-						stream.ReadByte();
+						stream.ReadUInt8();
 						DecodeVQFR(stream);
 						break;
 					case "VQFL":
@@ -313,7 +313,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 				}
 
 				// Chunks are aligned on even bytes; advance by a byte if the next one is null
-				if (stream.Peek() == 0) stream.ReadByte();
+				if (stream.Peek() == 0) stream.ReadUInt8();
 			}
 
 			// Now that the frame data has been loaded (in the relevant private fields), decode it into CurrentFrameData.
@@ -340,7 +340,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 			while (true)
 			{
 				// Chunks are aligned on even bytes; may be padded with a single null
-				if (s.Peek() == 0) s.ReadByte();
+				if (s.Peek() == 0) s.ReadUInt8();
 				var type = s.ReadASCII(4);
 				var subchunkLength = (int)int2.Swap(s.ReadUInt32());
 
