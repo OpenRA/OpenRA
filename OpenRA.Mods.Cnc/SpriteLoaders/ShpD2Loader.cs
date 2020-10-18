@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 	public class ShpD2Loader : ISpriteLoader
 	{
 		[Flags]
-		enum FormatFlags : int
+		enum FormatFlags : ushort
 		{
 			PaletteTable = 1,
 			NotLCWCompressed = 2,

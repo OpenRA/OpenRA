@@ -15,7 +15,7 @@ using System.IO;
 
 namespace OpenRA.Mods.Cnc.FileFormats
 {
-	public enum NormalType { TiberianSun = 2, RedAlert2 = 4 }
+	public enum NormalType : byte { TiberianSun = 2, RedAlert2 = 4 }
 	public readonly struct VxlElement
 	{
 		public readonly byte Color;
@@ -148,7 +148,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 				for (var j = 0; j < 6; j++)
 					Limbs[i].Bounds[j] = s.ReadFloat();
 				Limbs[i].Size = s.ReadBytes(3);
-				Limbs[i].Type = (NormalType)s.ReadByte();
+				Limbs[i].Type = (NormalType)s.ReadUInt8();
 			}
 
 			for (var i = 0; i < LimbCount; i++)

@@ -18,13 +18,13 @@ using OpenRA.Primitives;
 namespace OpenRA.Mods.Cnc.FileFormats
 {
 	[Flags]
-	enum SoundFlags
+	enum SoundFlags : byte
 	{
 		Stereo = 0x1,
 		_16Bit = 0x2,
 	}
 
-	enum SoundFormat
+	enum SoundFormat : byte
 	{
 		WestwoodCompressed = 1,
 		ImaAdpcm = 99,
@@ -59,12 +59,12 @@ namespace OpenRA.Mods.Cnc.FileFormats
 				sampleRate = s.ReadUInt16();
 				var dataSize = s.ReadInt32();
 				var outputSize = s.ReadInt32();
-				var audioFlags = (SoundFlags)s.ReadByte();
+				var audioFlags = (SoundFlags)s.ReadUInt8();
 				sampleBits = (audioFlags & SoundFlags._16Bit) == 0 ? 8 : 16;
 				channels = (audioFlags & SoundFlags.Stereo) == 0 ? 1 : 2;
 				lengthInSeconds = (float)(outputSize * 8) / (channels * sampleBits * sampleRate);
 
-				var readFormat = s.ReadByte();
+				var readFormat = s.ReadUInt8();
 				if (!Enum.IsDefined(typeof(SoundFormat), readFormat))
 					return false;
 

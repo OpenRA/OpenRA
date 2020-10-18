@@ -73,7 +73,7 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 
 	public class ShpTDSprite
 	{
-		enum Format { XORPrev = 0x20, XORLCW = 0x40, LCW = 0x80 }
+		enum Format : ushort { XORPrev = 0x20, XORLCW = 0x40, LCW = 0x80 }
 
 		sealed class ImageHeader : ISpriteFrame
 		{

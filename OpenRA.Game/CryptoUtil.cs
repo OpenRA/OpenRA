@@ -53,33 +53,33 @@ namespace OpenRA
 				using (var s = new MemoryStream(data))
 				{
 					// SEQUENCE
-					s.ReadByte();
+					s.ReadUInt8();
 					ReadTLVLength(s);
 
 					// SEQUENCE -> fixed header junk
-					s.ReadByte();
+					s.ReadUInt8();
 					var headerLength = ReadTLVLength(s);
 					s.Position += headerLength;
 
 					// SEQUENCE -> BIT_STRING
-					s.ReadByte();
+					s.ReadUInt8();
 					ReadTLVLength(s);
-					s.ReadByte();
+					s.ReadUInt8();
 
 					// SEQUENCE -> BIT_STRING -> SEQUENCE
-					s.ReadByte();
+					s.ReadUInt8();
 					ReadTLVLength(s);
 
 					// SEQUENCE -> BIT_STRING -> SEQUENCE -> INTEGER (modulus)
-					s.ReadByte();
+					s.ReadUInt8();
 					var modulusLength = ReadTLVLength(s);
-					s.ReadByte();
+					s.ReadUInt8();
 					var modulus = s.ReadBytes(modulusLength - 1);
 
 					// SEQUENCE -> BIT_STRING -> SEQUENCE -> INTEGER (exponent)
-					s.ReadByte();
+					s.ReadUInt8();
 					var exponentLength = ReadTLVLength(s);
-					s.ReadByte();
+					s.ReadUInt8();
 					var exponent = s.ReadBytes(exponentLength - 1);
 
 					return new RSAParameters
@@ -158,7 +158,7 @@ namespace OpenRA
 
 		static int ReadTLVLength(Stream s)
 		{
-			var length = s.ReadByte();
+			var length = s.ReadUInt8();
 			if (length < 0x80)
 				return length;
 
