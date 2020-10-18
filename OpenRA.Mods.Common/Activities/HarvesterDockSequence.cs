@@ -62,10 +62,15 @@ namespace OpenRA.Mods.Common.Activities
 
 				case DockingState.Dock:
 					if (Refinery.IsInWorld && !Refinery.IsDead)
+					{
 						foreach (var nd in Refinery.TraitsImplementing<INotifyDocking>())
 							nd.Docked(Refinery, self);
 
-					OnStateDock(self);
+						OnStateDock(self);
+					}
+					else
+						dockingState = DockingState.Undock;
+
 					return false;
 
 				case DockingState.Loop:
