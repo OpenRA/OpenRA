@@ -13,11 +13,15 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Traits;
+using OpenRA.Widgets;
 
 namespace OpenRA.Orders
 {
 	public class UnitOrderGenerator : IOrderGenerator
 	{
+		readonly string worldSelectCursor = ChromeMetrics.Get<string>("WorldSelectCursor");
+		readonly string worldDefaultCursor = ChromeMetrics.Get<string>("WorldDefaultCursor");
+
 		static Target TargetForInput(World world, CPos cell, int2 worldPixel, MouseInput mi)
 		{
 			var actor = world.ScreenMap.ActorsAtMouse(mi)
@@ -85,7 +89,7 @@ namespace OpenRA.Orders
 				    (mi.Modifiers.HasModifier(Modifiers.Shift) || !world.Selection.Actors.Any());
 			}
 
-			return useSelect ? "select" : "default";
+			return useSelect ? worldSelectCursor : worldDefaultCursor;
 		}
 
 		public void Deactivate() { }

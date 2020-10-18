@@ -68,6 +68,8 @@ namespace OpenRA.Mods.Common.Widgets
 		public Action OnDoubleClick = () => { };
 		public Action<KeyInput> OnKeyPress = _ => { };
 
+		public string Cursor = ChromeMetrics.Get<string>("ButtonCursor");
+
 		protected readonly Ruleset ModRules;
 
 		[ObjectCreator.UseCtor]
@@ -220,6 +222,8 @@ namespace OpenRA.Mods.Common.Widgets
 
 			tooltipContainer.Value.RemoveTooltip();
 		}
+
+		public override string GetCursor(int2 pos) { return Cursor; }
 
 		public override int2 ChildOrigin
 		{

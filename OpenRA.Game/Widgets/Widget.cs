@@ -167,6 +167,8 @@ namespace OpenRA.Widgets
 
 	public abstract class Widget
 	{
+		string defaultCursor = null;
+
 		public readonly List<Widget> Children = new List<Widget>();
 
 		// Info defined in YAML
@@ -235,6 +237,8 @@ namespace OpenRA.Widgets
 
 		public virtual void Initialize(WidgetArgs args)
 		{
+			defaultCursor = ChromeMetrics.Get<string>("DefaultCursor");
+
 			// Parse the YAML equations to find the widget bounds
 			var parentBounds = (Parent == null)
 				? new Rectangle(0, 0, Game.Renderer.Resolution.Width, Game.Renderer.Resolution.Height)
@@ -347,7 +351,7 @@ namespace OpenRA.Widgets
 				Ui.KeyboardFocusWidget = null;
 		}
 
-		public virtual string GetCursor(int2 pos) { return "default"; }
+		public virtual string GetCursor(int2 pos) { return defaultCursor; }
 		public string GetCursorOuter(int2 pos)
 		{
 			// Is the cursor on top of us?

@@ -16,6 +16,7 @@ using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Traits;
+using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Orders
 {
@@ -38,6 +39,8 @@ namespace OpenRA.Mods.Common.Orders
 
 	public class PlaceBuildingOrderGenerator : IOrderGenerator
 	{
+		readonly string worldDefaultCursor = ChromeMetrics.Get<string>("WorldDefaultCursor");
+
 		class VariantWrapper
 		{
 			public readonly ActorInfo ActorInfo;
@@ -288,7 +291,10 @@ namespace OpenRA.Mods.Common.Orders
 			return preview != null ? preview.RenderAnnotations(wr, TopLeft) : Enumerable.Empty<IRenderable>();
 		}
 
-		string IOrderGenerator.GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi) { return "default"; }
+		string IOrderGenerator.GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
+		{
+			return worldDefaultCursor;
+		}
 
 		bool IOrderGenerator.HandleKeyPress(KeyInput e)
 		{
