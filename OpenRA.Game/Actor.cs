@@ -113,6 +113,7 @@ namespace OpenRA
 		readonly IEnumerable<ITargetablePositions> enabledTargetablePositions;
 		WPos[] staticTargetablePositions;
 		bool created;
+		bool setStaticTargetablePositions;
 
 		internal Actor(World world, string name, TypeDictionary initDict)
 		{
@@ -140,44 +141,61 @@ namespace OpenRA
 					throw new NotImplementedException("No rules definition for unit " + name);
 
 				Info = world.Map.Rules.Actors[name];
-				foreach (var trait in Info.TraitsInConstructOrder())
+
+				IPositionable positionable = null;
+				var resolveOrdersList = new List<IResolveOrder>();
+				var renderModifiersList = new List<IRenderModifier>();
+				var rendersList = new List<IRender>();
+				var mouseBoundsList = new List<IMouseBounds>();
+				var visibilityModifiersList = new List<IVisibilityModifier>();
+				var becomingIdlesList = new List<INotifyBecomingIdle>();
+				var tickIdlesList = new List<INotifyIdle>();
+				var targetablesList = new List<ITargetable>();
+				var targetablePositionsList = new List<ITargetablePositions>();
+				var syncHashesList = new List<SyncHash>();
+
+				foreach (var traitInfo in Info.TraitsInConstructOrder())
 				{
-					AddTrait(trait.Create(init));
+					var trait = traitInfo.Create(init);
+					AddTrait(trait);
 
-					// Some traits rely on properties provided by IOccupySpace in their initialization,
-					// so we must ready it now, we cannot wait until all traits have finished construction.
-					if (trait is IOccupySpaceInfo)
-						OccupiesSpace = Trait<IOccupySpace>();
+					// PERF: Cache all these traits as soon as the actor is created. This is a fairly cheap one-off cost per
+					// actor that allows us to provide some fast implementations of commonly used methods that are relied on by
+					// performance-sensitive parts of the core game engine, such as pathfinding, visibility and rendering.
+					// Note: The blocks are required to limit the scope of the t's, so we make an exception to our normal style
+					// rules for spacing in order to keep these assignments compact and readable.
+					{ if (trait is IPositionable t) positionable = t; }
+					{ if (trait is IOccupySpace t) OccupiesSpace = t; }
+					{ if (trait is IEffectiveOwner t) EffectiveOwner = t; }
+					{ if (trait is IFacing t) facing = t; }
+					{ if (trait is IHealth t) health = t; }
+					{ if (trait is IResolveOrder t) resolveOrdersList.Add(t); }
+					{ if (trait is IRenderModifier t) renderModifiersList.Add(t); }
+					{ if (trait is IRender t) rendersList.Add(t); }
+					{ if (trait is IMouseBounds t) mouseBoundsList.Add(t); }
+					{ if (trait is IVisibilityModifier t) visibilityModifiersList.Add(t); }
+					{ if (trait is IDefaultVisibility t) defaultVisibility = t; }
+					{ if (trait is INotifyBecomingIdle t) becomingIdlesList.Add(t); }
+					{ if (trait is INotifyIdle t) tickIdlesList.Add(t); }
+					{ if (trait is ITargetable t) targetablesList.Add(t); }
+					{ if (trait is ITargetablePositions t) targetablePositionsList.Add(t); }
+					{ if (trait is ISync t) syncHashesList.Add(new SyncHash(t)); }
 				}
+
+				resolveOrders = resolveOrdersList.ToArray();
+				renderModifiers = renderModifiersList.ToArray();
+				renders = rendersList.ToArray();
+				mouseBounds = mouseBoundsList.ToArray();
+				visibilityModifiers = visibilityModifiersList.ToArray();
+				becomingIdles = becomingIdlesList.ToArray();
+				tickIdles = tickIdlesList.ToArray();
+				Targetables = targetablesList.ToArray();
+				var targetablePositions = targetablePositionsList.ToArray();
+				enabledTargetablePositions = targetablePositions.Where(Exts.IsTraitEnabled);
+				SyncHashes = syncHashesList.ToArray();
+
+				setStaticTargetablePositions = positionable == null && targetablePositions.Any() && targetablePositions.All(tp => tp.AlwaysEnabled);
 			}
-
-			// PERF: Cache all these traits as soon as the actor is created. This is a fairly cheap one-off cost per
-			// actor that allows us to provide some fast implementations of commonly used methods that are relied on by
-			// performance-sensitive parts of the core game engine, such as pathfinding, visibility and rendering.
-			EffectiveOwner = TraitOrDefault<IEffectiveOwner>();
-			facing = TraitOrDefault<IFacing>();
-			health = TraitOrDefault<IHealth>();
-			resolveOrders = TraitsImplementing<IResolveOrder>().ToArray();
-			renderModifiers = TraitsImplementing<IRenderModifier>().ToArray();
-			renders = TraitsImplementing<IRender>().ToArray();
-			mouseBounds = TraitsImplementing<IMouseBounds>().ToArray();
-			visibilityModifiers = TraitsImplementing<IVisibilityModifier>().ToArray();
-			defaultVisibility = Trait<IDefaultVisibility>();
-			becomingIdles = TraitsImplementing<INotifyBecomingIdle>().ToArray();
-			tickIdles = TraitsImplementing<INotifyIdle>().ToArray();
-			Targetables = TraitsImplementing<ITargetable>().ToArray();
-			var targetablePositions = TraitsImplementing<ITargetablePositions>().ToArray();
-			enabledTargetablePositions = targetablePositions.Where(Exts.IsTraitEnabled);
-			world.AddFrameEndTask(w =>
-			{
-				// Caching this in a AddFrameEndTask, because trait construction order might cause problems if done directly at creation time.
-				// All actors that can move or teleport should have IPositionable, if not it's pretty safe to assume the actor is completely immobile and
-				// all targetable positions can be cached if all ITargetablePositions have no conditional requirements.
-				if (!Info.HasTraitInfo<IPositionableInfo>() && targetablePositions.Any() && targetablePositions.All(tp => tp.AlwaysEnabled))
-					staticTargetablePositions = targetablePositions.SelectMany(tp => tp.TargetablePositions(this)).ToArray();
-			});
-
-			SyncHashes = TraitsImplementing<ISync>().Select(sync => new SyncHash(sync)).ToArray();
 		}
 
 		internal void Initialize(bool addToWorld = true)
@@ -211,7 +229,12 @@ namespace OpenRA
 			foreach (var notify in allObserverNotifiers)
 				notify(this, readOnlyConditionCache);
 
-			// TODO: Some traits may need initialization after being notified of initial condition state.
+			// All actors that can move or teleport should have IPositionable, if not it's pretty safe to assume the actor is completely immobile and
+			// all targetable positions can be cached if all ITargetablePositions have no conditional requirements.
+			if (setStaticTargetablePositions)
+				staticTargetablePositions = enabledTargetablePositions.SelectMany(tp => tp.TargetablePositions(this)).ToArray();
+
+			// TODO: Other traits may need initialization after being notified of initial condition state.
 
 			// TODO: A post condition initialization notification phase may allow queueing activities instead.
 			// The initial activity should run before any activities queued by INotifyCreated.Created
