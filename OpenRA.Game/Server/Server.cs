@@ -436,8 +436,8 @@ namespace OpenRA.Server
 			{
 				// Send handshake and client index.
 				var ms = new MemoryStream(8);
-				ms.WriteArray(BitConverter.GetBytes(ProtocolVersion.Handshake));
-				ms.WriteArray(BitConverter.GetBytes(newConn.PlayerIndex));
+				ms.Write(ProtocolVersion.Handshake);
+				ms.Write(newConn.PlayerIndex);
 				newConn.TrySendData(ms.ToArray());
 
 				// Dispatch a handshake order
@@ -704,9 +704,9 @@ namespace OpenRA.Server
 		static byte[] CreateFrame(int client, int frame, byte[] data)
 		{
 			var ms = new MemoryStream(data.Length + 12);
-			ms.WriteArray(BitConverter.GetBytes(data.Length + 4));
-			ms.WriteArray(BitConverter.GetBytes(client));
-			ms.WriteArray(BitConverter.GetBytes(frame));
+			ms.Write(data.Length + 4);
+			ms.Write(client);
+			ms.Write(frame);
 			ms.WriteArray(data);
 			return ms.GetBuffer();
 		}
@@ -714,9 +714,9 @@ namespace OpenRA.Server
 		static byte[] CreateAckFrame(int frame, byte count)
 		{
 			var ms = new MemoryStream(14);
-			ms.WriteArray(BitConverter.GetBytes(6));
-			ms.WriteArray(BitConverter.GetBytes(0));
-			ms.WriteArray(BitConverter.GetBytes(frame));
+			ms.Write(6);
+			ms.Write(0);
+			ms.Write(frame);
 			ms.WriteByte((byte)OrderType.Ack);
 			ms.WriteByte(count);
 			return ms.GetBuffer();
@@ -725,9 +725,9 @@ namespace OpenRA.Server
 		static byte[] CreateTickScaleFrame(float scale)
 		{
 			var ms = new MemoryStream(17);
-			ms.WriteArray(BitConverter.GetBytes(9));
-			ms.WriteArray(BitConverter.GetBytes(0));
-			ms.WriteArray(BitConverter.GetBytes(0));
+			ms.Write(9);
+			ms.Write(0);
+			ms.Write(0);
 			ms.WriteByte((byte)OrderType.TickScale);
 			ms.Write(scale);
 			return ms.GetBuffer();

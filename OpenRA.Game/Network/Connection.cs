@@ -260,14 +260,14 @@ namespace OpenRA.Network
 			try
 			{
 				var ms = new MemoryStream();
-				ms.WriteArray(BitConverter.GetBytes(packet.Length));
+				ms.Write(packet.Length);
 				ms.WriteArray(packet);
 
 				foreach (var s in queuedSyncPackets)
 				{
 					var q = OrderIO.SerializeSync(s);
 
-					ms.WriteArray(BitConverter.GetBytes(q.Length));
+					ms.Write(q.Length);
 					ms.WriteArray(q);
 
 					sentSync.Enqueue(s);

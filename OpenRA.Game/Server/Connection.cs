@@ -60,9 +60,9 @@ namespace OpenRA.Server
 		static byte[] CreatePingFrame()
 		{
 			var ms = new MemoryStream(21);
-			ms.WriteArray(BitConverter.GetBytes(13));
-			ms.WriteArray(BitConverter.GetBytes(0));
-			ms.WriteArray(BitConverter.GetBytes(0));
+			ms.Write(13);
+			ms.Write(0);
+			ms.Write(0);
 			ms.WriteByte((byte)OrderType.Ping);
 			ms.WriteArray(BitConverter.GetBytes(Game.RunTime));
 			return ms.GetBuffer();
