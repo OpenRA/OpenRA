@@ -236,15 +236,14 @@ namespace OpenRA.Graphics
 			{
 				for (var i = 0; i < width; i++)
 				{
-					var bytes = BitConverter.GetBytes(palette[frame.Data[j * width + i]]);
-					var c = palette[frame.Data[j * width + i]];
+					var rgba = palette[frame.Data[j * width + i]];
 					var k = 4 * (j * width + i);
 
 					// Convert RGBA to BGRA
-					data[k] = bytes[2];
-					data[k + 1] = bytes[1];
-					data[k + 2] = bytes[0];
-					data[k + 3] = bytes[3];
+					data[k] = (byte)(rgba >> 16);
+					data[k + 1] = (byte)(rgba >> 8);
+					data[k + 2] = (byte)(rgba >> 0);
+					data[k + 3] = (byte)(rgba >> 24);
 				}
 			}
 
