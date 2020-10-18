@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Cnc.Activities
 			// If body.Docked wasn't set, we didn't actually dock and have to skip the undock overlay
 			if (!body.Docked)
 				dockingState = DockingState.Complete;
-			else if (spriteOverlay != null && !spriteOverlay.Visible)
+			else if (Refinery.IsInWorld && !Refinery.IsDead && spriteOverlay != null && !spriteOverlay.Visible)
 			{
 				dockingState = DockingState.Wait;
 				spriteOverlay.Visible = true;
