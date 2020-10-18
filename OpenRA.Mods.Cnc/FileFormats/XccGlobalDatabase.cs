@@ -15,7 +15,7 @@ using System.IO;
 
 namespace OpenRA.Mods.Cnc.FileFormats
 {
-	public class XccGlobalDatabase : IDisposable
+	public sealed class XccGlobalDatabase : IDisposable
 	{
 		public readonly string[] Entries;
 		readonly Stream s;
@@ -25,22 +25,27 @@ namespace OpenRA.Mods.Cnc.FileFormats
 			s = stream;
 
 			var entries = new List<string>();
+			var chars = new char[32];
 			while (s.Peek() > -1)
 			{
 				var count = s.ReadInt32();
-				var chars = new List<char>();
+				entries.Capacity += count;
 				for (var i = 0; i < count; i++)
 				{
-					byte c;
-
 					// Read filename
+					byte c;
+					var charsIndex = 0;
 					while ((c = s.ReadUInt8()) != 0)
-						chars.Add((char)c);
-					entries.Add(new string(chars.ToArray()));
-					chars.Clear();
+					{
+						if (charsIndex >= chars.Length)
+							Array.Resize(ref chars, chars.Length * 2);
+						chars[charsIndex++] = (char)c;
+					}
+
+					entries.Add(new string(chars, 0, charsIndex));
 
 					// Skip comment
-					while ((c = s.ReadUInt8()) != 0) { }
+					while (s.ReadUInt8() != 0) { }
 				}
 			}
 
