@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Common.Activities
 					return false;
 
 				case DockingState.Drag:
-					if (!Refinery.IsInWorld || Refinery.IsDead)
+					if (IsCanceling || !Refinery.IsInWorld || Refinery.IsDead)
 						return true;
 
 					dockingState = DockingState.Dock;
@@ -69,7 +69,7 @@ namespace OpenRA.Mods.Common.Activities
 					return false;
 
 				case DockingState.Dock:
-					if (Refinery.IsInWorld && !Refinery.IsDead)
+					if (!IsCanceling && Refinery.IsInWorld && !Refinery.IsDead)
 					{
 						foreach (var nd in Refinery.TraitsImplementing<INotifyDocking>())
 							nd.Docked(Refinery, self);
@@ -82,7 +82,7 @@ namespace OpenRA.Mods.Common.Activities
 					return false;
 
 				case DockingState.Loop:
-					if (!Refinery.IsInWorld || Refinery.IsDead || Harv.TickUnload(self, Refinery))
+					if (IsCanceling || !Refinery.IsInWorld || Refinery.IsDead || Harv.TickUnload(self, Refinery))
 						dockingState = DockingState.Undock;
 
 					return false;
@@ -105,12 +105,6 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			throw new InvalidOperationException("Invalid harvester dock state");
-		}
-
-		public override void Cancel(Actor self, bool keepQueue = false)
-		{
-			dockingState = DockingState.Undock;
-			base.Cancel(self);
 		}
 
 		public override IEnumerable<Target> GetTargets(Actor self)
