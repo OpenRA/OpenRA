@@ -226,9 +226,9 @@ namespace OpenRA.Network
 				clientSlot = firstBotSlotIndex;
 			}
 
-			ordersStream.WriteArray(BitConverter.GetBytes(data.Length + 8));
-			ordersStream.WriteArray(BitConverter.GetBytes(frame));
-			ordersStream.WriteArray(BitConverter.GetBytes(clientSlot));
+			ordersStream.Write(data.Length + 8);
+			ordersStream.Write(frame);
+			ordersStream.Write(clientSlot);
 			ordersStream.WriteArray(data);
 			LastOrdersFrame = frame;
 		}
@@ -288,9 +288,9 @@ namespace OpenRA.Network
 			{
 				ordersStream.Seek(0, SeekOrigin.Begin);
 				ordersStream.CopyTo(file);
-				file.Write(BitConverter.GetBytes(MetadataMarker), 0, 4);
-				file.Write(BitConverter.GetBytes(LastOrdersFrame), 0, 4);
-				file.Write(BitConverter.GetBytes(LastSyncFrame), 0, 4);
+				file.Write(MetadataMarker);
+				file.Write(LastOrdersFrame);
+				file.Write(LastSyncFrame);
 				file.Write(lastSyncPacket, 0, Order.SyncHashOrderLength);
 
 				var globalSettingsNodes = new List<MiniYamlNode>() { GlobalSettings.Serialize() };
@@ -307,16 +307,16 @@ namespace OpenRA.Network
 				file.WriteString(Encoding.UTF8, slotClientNodes.WriteToString());
 
 				var traitDataOffset = file.Length;
-				file.Write(BitConverter.GetBytes(TraitDataMarker), 0, 4);
+				file.Write(TraitDataMarker);
 
 				var traitDataNodes = TraitData
 					.Select(kv => new MiniYamlNode(kv.Key.ToStringInvariant(), kv.Value))
 					.ToList();
 				file.WriteString(Encoding.UTF8, traitDataNodes.WriteToString());
 
-				file.Write(BitConverter.GetBytes(ordersStream.Length), 0, 4);
-				file.Write(BitConverter.GetBytes(traitDataOffset), 0, 4);
-				file.Write(BitConverter.GetBytes(EOFMarker), 0, 4);
+				file.Write((int)ordersStream.Length);
+				file.Write((int)traitDataOffset);
+				file.Write(EOFMarker);
 			}
 		}
 	}

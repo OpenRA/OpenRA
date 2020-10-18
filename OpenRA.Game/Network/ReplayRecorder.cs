@@ -92,7 +92,7 @@ namespace OpenRA.Network
 		public void ReceiveFrame(int clientID, int frame, byte[] data)
 		{
 			var ms = new MemoryStream(4 + data.Length);
-			ms.WriteArray(BitConverter.GetBytes(frame));
+			ms.Write(frame);
 			ms.WriteArray(data);
 			Receive(clientID, ms.GetBuffer());
 		}
