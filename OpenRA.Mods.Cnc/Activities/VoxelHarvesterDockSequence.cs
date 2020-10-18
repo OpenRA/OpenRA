@@ -45,10 +45,12 @@ namespace OpenRA.Mods.Cnc.Activities
 
 		public override void OnStateUndock(Actor self)
 		{
-			dockingState = DockingState.Wait;
-
-			if (spriteOverlay != null && !spriteOverlay.Visible)
+			// If body.Docked wasn't set, we didn't actually dock and have to skip the undock overlay
+			if (!body.Docked)
+				dockingState = DockingState.Complete;
+			else if (spriteOverlay != null && !spriteOverlay.Visible)
 			{
+				dockingState = DockingState.Wait;
 				spriteOverlay.Visible = true;
 				spriteOverlay.WithOffset.Animation.PlayBackwardsThen(spriteOverlay.Info.Sequence, () =>
 				{

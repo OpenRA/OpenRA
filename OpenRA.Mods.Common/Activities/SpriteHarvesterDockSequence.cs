@@ -18,6 +18,7 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		readonly WithSpriteBody wsb;
 		readonly WithDockingAnimationInfo wda;
+		protected bool dockAnimPlayed;
 
 		public SpriteHarvesterDockSequence(Actor self, Actor refinery, WAngle dockAngle, bool isDragRequired, WVec dragOffset, int dragLength)
 			: base(self, refinery, dockAngle, isDragRequired, dragOffset, dragLength)
@@ -32,11 +33,20 @@ namespace OpenRA.Mods.Common.Activities
 				trait.Docked();
 
 			wsb.PlayCustomAnimation(self, wda.DockSequence, () => wsb.PlayCustomAnimationRepeating(self, wda.DockLoopSequence));
+			dockAnimPlayed = true;
 			dockingState = DockingState.Loop;
 		}
 
 		public override void OnStateUndock(Actor self)
 		{
+			// If dock animation hasn't played, we didn't actually dock and have to skip the undock anim and notification
+			if (!dockAnimPlayed)
+			{
+				dockingState = DockingState.Complete;
+				return;
+			}
+
+			dockingState = DockingState.Wait;
 			wsb.PlayCustomAnimationBackwards(self, wda.DockSequence,
 				() =>
 				{
@@ -44,7 +54,6 @@ namespace OpenRA.Mods.Common.Activities
 					foreach (var trait in self.TraitsImplementing<INotifyHarvesterAction>())
 						trait.Undocked();
 				});
-			dockingState = DockingState.Wait;
 		}
 	}
 }
