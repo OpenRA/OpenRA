@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.IO;
 
 namespace OpenRA.Primitives
@@ -18,7 +19,7 @@ namespace OpenRA.Primitives
 		public Stream Stream1 { get; set; }
 		public Stream Stream2 { get; set; }
 
-		long VirtualLength { get; set; }
+		long VirtualLength { get; }
 		long position;
 
 		public MergedStream(Stream stream1, Stream stream2)
@@ -61,7 +62,21 @@ namespace OpenRA.Primitives
 
 		public override void SetLength(long value)
 		{
-			VirtualLength = value;
+			throw new NotSupportedException();
+		}
+
+		public override int ReadByte()
+		{
+			int value;
+
+			if (position >= Stream1.Length)
+				value = Stream2.ReadByte();
+			else
+				value = Stream1.ReadByte();
+
+			position++;
+
+			return value;
 		}
 
 		public override int Read(byte[] buffer, int offset, int count)
@@ -83,12 +98,14 @@ namespace OpenRA.Primitives
 			return bytesRead;
 		}
 
+		public override void WriteByte(byte value)
+		{
+			throw new NotSupportedException();
+		}
+
 		public override void Write(byte[] buffer, int offset, int count)
 		{
-			if (position >= Stream1.Length)
-				Stream2.Write(buffer, offset - (int)Stream1.Length, count);
-			else
-				Stream1.Write(buffer, offset, count);
+			throw new NotSupportedException();
 		}
 
 		public override bool CanRead
@@ -103,7 +120,7 @@ namespace OpenRA.Primitives
 
 		public override bool CanWrite
 		{
-			get { return Stream1.CanWrite && Stream2.CanWrite; }
+			get { return false; }
 		}
 
 		public override long Length

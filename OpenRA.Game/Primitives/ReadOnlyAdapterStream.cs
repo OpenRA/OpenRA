@@ -48,8 +48,24 @@ namespace OpenRA.Primitives
 
 		public sealed override long Seek(long offset, SeekOrigin origin) { throw new NotSupportedException(); }
 		public sealed override void SetLength(long value) { throw new NotSupportedException(); }
+		public sealed override void WriteByte(byte value) { throw new NotSupportedException(); }
 		public sealed override void Write(byte[] buffer, int offset, int count) { throw new NotSupportedException(); }
 		public sealed override void Flush() { throw new NotSupportedException(); }
+
+		public sealed override int ReadByte()
+		{
+			if (data.Count > 0)
+				return data.Dequeue();
+
+			while (!baseStreamEmpty)
+			{
+				baseStreamEmpty = BufferData(baseStream, data);
+				if (data.Count > 0)
+					return data.Dequeue();
+			}
+
+			return -1;
+		}
 
 		public sealed override int Read(byte[] buffer, int offset, int count)
 		{
@@ -66,7 +82,8 @@ namespace OpenRA.Primitives
 		}
 
 		/// <summary>
-		/// Reads data into a buffer, which will be used to satisfy <see cref="Read(byte[], int, int)"/> calls.
+		/// Reads data into a buffer, which will be used to satisfy <see cref="ReadByte()"/> and
+		/// <see cref="Read(byte[], int, int)"/> calls.
 		/// </summary>
 		/// <param name="baseStream">The source stream from which bytes should be read.</param>
 		/// <param name="data">The queue where bytes should be enqueued. Do not dequeue from this buffer.</param>
