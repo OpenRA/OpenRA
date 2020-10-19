@@ -272,7 +272,8 @@ namespace OpenRA.Mods.Common.Activities
 				var hpToRepair = repairable != null && repairable.Info.HpPerStep > 0 ? repairable.Info.HpPerStep : repairsUnits.Info.HpPerStep;
 
 				// Cast to long to avoid overflow when multiplying by the health
-				var cost = Math.Max(1, (int)(((long)hpToRepair * unitCost * repairsUnits.Info.ValuePercentage) / (health.MaxHP * 100L)));
+				var value = (long)unitCost * repairsUnits.Info.ValuePercentage;
+				var cost = value == 0 ? 0 : Math.Max(1, (int)(hpToRepair * value / (health.MaxHP * 100L)));
 
 				if (!played)
 				{
