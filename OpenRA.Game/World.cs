@@ -211,8 +211,10 @@ namespace OpenRA
 			LongBitSet<PlayerBitMask>.Reset();
 
 			// Add players
+			// Create an isolated RNG to simplify synchronization between client and server player faction/spawn assignments
+			var playerRandom = new MersenneTwister(orderManager.LobbyInfo.GlobalSettings.RandomSeed);
 			foreach (var cmp in WorldActor.TraitsImplementing<ICreatePlayers>())
-				cmp.CreatePlayers(this);
+				cmp.CreatePlayers(this, playerRandom);
 
 			// Set defaults for any unset stances
 			foreach (var p in Players)

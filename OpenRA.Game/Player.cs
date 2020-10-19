@@ -17,6 +17,7 @@ using Eluant.ObjectBinding;
 using OpenRA.Network;
 using OpenRA.Primitives;
 using OpenRA.Scripting;
+using OpenRA.Support;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 
@@ -100,19 +101,19 @@ namespace OpenRA
 
 		readonly StanceColors stanceColors;
 
-		static FactionInfo ChooseFaction(World world, string name, bool requireSelectable = true)
+		public static FactionInfo ResolveFaction(string factionName, IEnumerable<FactionInfo> factionInfos, MersenneTwister playerRandom, bool requireSelectable = true)
 		{
-			var selectableFactions = world.Map.Rules.Actors["world"].TraitInfos<FactionInfo>()
+			var selectableFactions = factionInfos
 				.Where(f => !requireSelectable || f.Selectable)
 				.ToList();
 
-			var selected = selectableFactions.FirstOrDefault(f => f.InternalName == name)
-				?? selectableFactions.Random(world.SharedRandom);
+			var selected = selectableFactions.FirstOrDefault(f => f.InternalName == factionName)
+				?? selectableFactions.Random(playerRandom);
 
 			// Don't loop infinite
 			for (var i = 0; i <= 10 && selected.RandomFactionMembers.Any(); i++)
 			{
-				var faction = selected.RandomFactionMembers.Random(world.SharedRandom);
+				var faction = selected.RandomFactionMembers.Random(playerRandom);
 				selected = selectableFactions.FirstOrDefault(f => f.InternalName == faction);
 
 				if (selected == null)
@@ -122,7 +123,13 @@ namespace OpenRA
 			return selected;
 		}
 
-		static FactionInfo ChooseDisplayFaction(World world, string factionName)
+		static FactionInfo ResolveFaction(World world, string factionName, MersenneTwister playerRandom, bool requireSelectable)
+		{
+			var factionInfos = world.Map.Rules.Actors["world"].TraitInfos<FactionInfo>();
+			return ResolveFaction(factionName, factionInfos, playerRandom, requireSelectable);
+		}
+
+		static FactionInfo ResolveDisplayFaction(World world, string factionName)
 		{
 			var factions = world.Map.Rules.Actors["world"].TraitInfos<FactionInfo>().ToArray();
 
@@ -141,7 +148,7 @@ namespace OpenRA
 			return client.Name;
 		}
 
-		public Player(World world, Session.Client client, PlayerReference pr)
+		public Player(World world, Session.Client client, PlayerReference pr, MersenneTwister playerRandom)
 		{
 			World = world;
 			InternalName = pr.Name;
@@ -157,11 +164,11 @@ namespace OpenRA
 				PlayerName = ResolvePlayerName(client, world.LobbyInfo.Clients, world.Map.Rules.Actors["player"].TraitInfos<IBotInfo>());
 
 				BotType = client.Bot;
-				Faction = ChooseFaction(world, client.Faction, !pr.LockFaction);
-				DisplayFaction = ChooseDisplayFaction(world, client.Faction);
+				Faction = ResolveFaction(world, client.Faction, playerRandom, !pr.LockFaction);
+				DisplayFaction = ResolveDisplayFaction(world, client.Faction);
 
 				var assignSpawnPoints = world.WorldActor.TraitOrDefault<IAssignSpawnPoints>();
-				HomeLocation = assignSpawnPoints?.AssignHomeLocation(world, client) ?? pr.HomeLocation;
+				HomeLocation = assignSpawnPoints?.AssignHomeLocation(world, client, playerRandom) ?? pr.HomeLocation;
 				SpawnPoint = assignSpawnPoints?.SpawnPointForPlayer(this) ?? client.SpawnPoint;
 				DisplaySpawnPoint = client.SpawnPoint;
 			}
@@ -175,8 +182,8 @@ namespace OpenRA
 				Playable = pr.Playable;
 				Spectating = pr.Spectating;
 				BotType = pr.Bot;
-				Faction = ChooseFaction(world, pr.Faction, false);
-				DisplayFaction = ChooseDisplayFaction(world, pr.Faction);
+				Faction = ResolveFaction(world, pr.Faction, playerRandom, false);
+				DisplayFaction = ResolveDisplayFaction(world, pr.Faction);
 				HomeLocation = pr.HomeLocation;
 				SpawnPoint = DisplaySpawnPoint = 0;
 			}

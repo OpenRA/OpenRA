@@ -18,6 +18,7 @@ using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Network;
 using OpenRA.Primitives;
+using OpenRA.Support;
 
 namespace OpenRA.Traits
 {
@@ -365,19 +366,26 @@ namespace OpenRA.Traits
 	}
 
 	[RequireExplicitImplementation]
-	public interface ICreatePlayers { void CreatePlayers(World w); }
+	public interface ICreatePlayers { void CreatePlayers(World w, MersenneTwister playerRandom); }
 
 	[RequireExplicitImplementation]
 	public interface ICreatePlayersInfo : ITraitInfoInterface
 	{
-		void CreateServerPlayers(MapPreview map, Session lobbyInfo, List<GameInformation.Player> players);
+		void CreateServerPlayers(MapPreview map, Session lobbyInfo, List<GameInformation.Player> players, MersenneTwister playerRandom);
 	}
 
 	[RequireExplicitImplementation]
 	public interface IAssignSpawnPoints
 	{
-		CPos AssignHomeLocation(World world, Session.Client client);
+		CPos AssignHomeLocation(World world, Session.Client client, MersenneTwister playerRandom);
 		int SpawnPointForPlayer(Player player);
+	}
+
+	[RequireExplicitImplementation]
+	public interface IAssignSpawnPointsInfo : ITraitInfoInterface
+	{
+		object InitializeState(MapPreview map, Session lobbyInfo);
+		int AssignSpawnPoint(object state, Session lobbyInfo, Session.Client client, MersenneTwister playerRandom);
 	}
 
 	public interface IBotInfo : ITraitInfoInterface
