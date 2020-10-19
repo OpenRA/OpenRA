@@ -16,6 +16,7 @@ using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits.Render;
 using OpenRA.Network;
 using OpenRA.Primitives;
+using OpenRA.Support;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -26,7 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Size of partition bins (world pixels)")]
 		public readonly int BinSize = 250;
 
-		void ICreatePlayersInfo.CreateServerPlayers(MapPreview map, Session lobbyInfo, List<GameInformation.Player> players)
+		void ICreatePlayersInfo.CreateServerPlayers(MapPreview map, Session lobbyInfo, List<GameInformation.Player> players, MersenneTwister playerRandom)
 		{
 			throw new NotImplementedException("EditorActorLayer must not be defined on the world actor");
 		}
@@ -50,7 +51,7 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 		}
 
-		void ICreatePlayers.CreatePlayers(World w)
+		void ICreatePlayers.CreatePlayers(World w, MersenneTwister playerRandom)
 		{
 			if (w.Type != WorldType.Editor)
 				return;
@@ -58,7 +59,7 @@ namespace OpenRA.Mods.Common.Traits
 			Players = new MapPlayers(w.Map.PlayerDefinitions);
 
 			var worldOwner = Players.Players.Select(kvp => kvp.Value).First(p => !p.Playable && p.OwnsWorld);
-			w.SetWorldOwner(new Player(w, null, worldOwner));
+			w.SetWorldOwner(new Player(w, null, worldOwner, playerRandom));
 		}
 
 		public void WorldLoaded(World world, WorldRenderer wr)

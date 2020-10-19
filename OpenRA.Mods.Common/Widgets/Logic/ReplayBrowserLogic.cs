@@ -77,7 +77,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			panel.Get("REPLAY_INFO").IsVisible = () => selectedReplay != null;
 
 			var spawnOccupants = new CachedTransform<ReplayMetadata, Dictionary<int, SpawnOccupant>>(r =>
-				r.GameInfo.Players.ToDictionary(c => c.SpawnPoint, c => new SpawnOccupant(c)));
+			{
+				// Avoid using .ToDictionary to improve robustness against replays defining duplicate spawn assignments
+				var occupants = new Dictionary<int, SpawnOccupant>();
+				foreach (var p in r.GameInfo.Players)
+					if (p.SpawnPoint != 0)
+						occupants[p.SpawnPoint] = new SpawnOccupant(p);
+
+				return occupants;
+			});
 
 			Ui.LoadWidget("MAP_PREVIEW", mapPreviewRoot, new WidgetArgs
 			{

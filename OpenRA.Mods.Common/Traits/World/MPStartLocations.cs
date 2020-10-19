@@ -13,12 +13,13 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Network;
+using OpenRA.Support;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Allows the map to have working spawnpoints. Also controls the 'Separate Team Spawns' checkbox in the lobby options.")]
-	public class MPStartLocationsInfo : TraitInfo, ILobbyOptions
+	public class MPStartLocationsInfo : TraitInfo, ILobbyOptions, IAssignSpawnPointsInfo
 	{
 		public readonly WDist InitialExploreRange = WDist.FromCells(5);
 
@@ -54,6 +55,52 @@ namespace OpenRA.Mods.Common.Traits
 				SeparateTeamSpawnsCheckboxDisplayOrder,
 				SeparateTeamSpawnsCheckboxEnabled,
 				SeparateTeamSpawnsCheckboxLocked);
+		}
+
+		class AssignSpawnLocationsState
+		{
+			public CPos[] SpawnLocations;
+			public List<int> AvailableSpawnPoints;
+			public readonly Dictionary<int, Session.Client> OccupiedSpawnPoints = new Dictionary<int, Session.Client>();
+		}
+
+		object IAssignSpawnPointsInfo.InitializeState(MapPreview map, Session lobbyInfo)
+		{
+			var state = new AssignSpawnLocationsState();
+
+			// Initialize the list of unoccupied spawn points for AssignSpawnLocations to pick from
+			state.SpawnLocations = map.SpawnPoints;
+			state.AvailableSpawnPoints = Enumerable.Range(1, map.SpawnPoints.Length).ToList();
+			foreach (var kv in lobbyInfo.Slots)
+			{
+				var client = lobbyInfo.ClientInSlot(kv.Key);
+				if (client == null || client.SpawnPoint == 0)
+					continue;
+
+				state.AvailableSpawnPoints.Remove(client.SpawnPoint);
+				state.OccupiedSpawnPoints.Add(client.SpawnPoint, client);
+			}
+
+			return state;
+		}
+
+		int IAssignSpawnPointsInfo.AssignSpawnPoint(object stateObject, Session lobbyInfo, Session.Client client, MersenneTwister playerRandom)
+		{
+			var state = (AssignSpawnLocationsState)stateObject;
+			var separateTeamSpawns = lobbyInfo.GlobalSettings.OptionOrDefault("separateteamspawns", SeparateTeamSpawnsCheckboxEnabled);
+
+			if (client.SpawnPoint > 0 && client.SpawnPoint <= state.SpawnLocations.Length)
+				return client.SpawnPoint;
+
+			var spawnPoint = state.OccupiedSpawnPoints.Count == 0 || !separateTeamSpawns
+				? state.AvailableSpawnPoints.Random(playerRandom)
+				: state.AvailableSpawnPoints // pick the most distant spawnpoint from everyone else
+					.Select(s => (Cell: state.SpawnLocations[s - 1], Index: s))
+					.MaxBy(s => state.OccupiedSpawnPoints.Sum(kv => (state.SpawnLocations[kv.Key - 1] - s.Cell).LengthSquared)).Index;
+
+			state.AvailableSpawnPoints.Remove(spawnPoint);
+			state.OccupiedSpawnPoints.Add(spawnPoint, client);
+			return spawnPoint;
 		}
 	}
 
@@ -95,13 +142,13 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		CPos IAssignSpawnPoints.AssignHomeLocation(World world, Session.Client client)
+		CPos IAssignSpawnPoints.AssignHomeLocation(World world, Session.Client client, MersenneTwister playerRandom)
 		{
 			if (client.SpawnPoint > 0 && client.SpawnPoint <= spawnLocations.Length)
 				return spawnLocations[client.SpawnPoint - 1];
 
 			var spawnPoint = occupiedSpawnPoints.Count == 0 || !separateTeamSpawns
-				? availableSpawnPoints.Random(world.SharedRandom)
+				? availableSpawnPoints.Random(playerRandom)
 				: availableSpawnPoints // pick the most distant spawnpoint from everyone else
 					.Select(s => (Cell: spawnLocations[s - 1], Index: s))
 					.MaxBy(s => occupiedSpawnPoints.Sum(kv => (spawnLocations[kv.Key - 1] - s.Cell).LengthSquared)).Index;
