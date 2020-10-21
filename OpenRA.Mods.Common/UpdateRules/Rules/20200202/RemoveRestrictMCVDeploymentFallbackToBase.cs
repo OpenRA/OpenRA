@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 		{
 			get
 			{
-				return "The RestrictMCVDeploymentFallbackToBase trait has been removed, and is replaced by a an AI \n" +
+				return "The RestrictMCVDeploymentFallbackToBase property has been removed, and is replaced by an AI \n" +
 					   "which will place new bases at resource locations, away from enemies and its own previous bases.\n" +
 					   "It will not place any bases within the MaxBaseRadius of its own MCVs, con yards or any enemy.";
 			}
