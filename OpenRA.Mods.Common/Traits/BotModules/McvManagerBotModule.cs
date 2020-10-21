@@ -54,12 +54,6 @@ namespace OpenRA.Mods.Common.Traits
 			if (!distanceToBaseIsImportant)
 				return initialBaseCenter;
 
-			var tileset = world.Map.Rules.TileSet;
-			var resourceTypeIndices = new BitArray(tileset.TerrainInfo.Length);
-
-			foreach (var t in world.WorldActor.Info.TraitInfos<ResourceTypeInfo>())
-				resourceTypeIndices.Set(tileset.GetTerrainIndex(t.TerrainType), true);
-
 			var randomConstructionYard = world.Actors.Where(a => a.Owner == player &&
 				Info.ConstructionYardTypes.Contains(a.Info.Name))
 				.RandomOrDefault(world.LocalRandom);
@@ -79,6 +73,7 @@ namespace OpenRA.Mods.Common.Traits
 		IBotPositionsUpdated[] notifyPositionsUpdated;
 		IBotRequestUnitProduction[] requestUnitProduction;
 
+		BitArray resourceTypeIndices;
 		CPos initialBaseCenter;
 		int scanInterval;
 		bool firstTick = true;
@@ -89,6 +84,9 @@ namespace OpenRA.Mods.Common.Traits
 			world = self.World;
 			player = self.Owner;
 			unitCannotBeOrdered = a => a.Owner != player || a.IsDead || !a.IsInWorld;
+			resourceTypeIndices = new BitArray(world.Map.Rules.TileSet.TerrainInfo.Length);
+			foreach (var t in world.WorldActor.Info.TraitInfos<ResourceTypeInfo>())
+				resourceTypeIndices.Set(world.Map.Rules.TileSet.GetTerrainIndex(t.TerrainType), true);
 		}
 
 		protected override void Created(Actor self)
@@ -231,10 +229,10 @@ namespace OpenRA.Mods.Common.Traits
 			if (enemies)
 				return null;
 
-			var self = actors.Any(a => a.Owner == player
+			var anyOwnBaseActorsNearbyDesiredCell = actors.Any(a => a.Owner == player
 					&& (Info.McvTypes.Contains(a.Info.Name) || Info.ConstructionYardTypes.Contains(a.Info.Name)));
 
-			if (self)
+			if (anyOwnBaseActorsNearbyDesiredCell)
 				return null;
 
 			return baseCenter;
