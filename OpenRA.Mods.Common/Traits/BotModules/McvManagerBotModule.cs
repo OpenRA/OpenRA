@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Traits
 			"AI will not send MCVs to locations containing enemies within the MaxBaseRadius of that location.",
 			"AI will not send MCVs to locations containing its own MCVs or construction yards within the MaxBaseRadius of that location.",
 			"In the case of less than 1 construction yard, the AI will choose a random new base center and place the MCV within the MaxBaseRadius of that location.",
-			"In the case of at least 1 construction yard, the AI will choose a location nearer resource fields outside of all bases MaxBaseRadius up to world.Map.Grid.MaximumTileSearchRange.")]
+			"In the case of at least 1 construction yard, the AI will choose a location nearer resource fields outside of all bases `MaxBaseRadius` up to `MapGrid.MaximumTileSearchRange` (from the mod's manifest).")]
 		public readonly int MaxBaseRadius = 20;
 
 		public override object Create(ActorInitializer init) { return new McvManagerBotModule(init.Self, this); }
