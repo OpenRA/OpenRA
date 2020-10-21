@@ -16,7 +16,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
 	public class RemoveRestrictMCVDeploymentFallbackToBase : UpdateRule
 	{
-		public override string Name { get { return "RestrictMCVDeploymentFallbackToBase trait has been removed from McvManagerBotModule."; } }
+		public override string Name { get { return "RestrictMCVDeploymentFallbackToBase has been removed from McvManagerBotModule."; } }
 		public override string Description
 		{
 			get
