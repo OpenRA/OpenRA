@@ -22,9 +22,22 @@ namespace OpenRA
 			: base(gridType, size) { }
 
 		// Resolve an array index from map coordinates.
-		int Index(PPos uv)
+		public int Index(PPos uv)
 		{
 			return uv.V * Size.Width + uv.U;
+		}
+
+		public T this[int index]
+		{
+			get
+			{
+				return entries[index];
+			}
+
+			set
+			{
+				entries[index] = value;
+			}
 		}
 
 		/// <summary>Gets or sets the layer contents using projected map coordinates.</summary>
