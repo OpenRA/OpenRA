@@ -9,14 +9,18 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.GameRules;
+using OpenRA.Graphics;
 using OpenRA.Mods.Common.Effects;
+using OpenRA.Mods.Common.Graphics;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	class NukePowerInfo : SupportPowerInfo
+	public class NukePowerInfo : SupportPowerInfo
 	{
 		[WeaponReference]
 		[FieldLoader.Require]
@@ -98,6 +102,21 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Amount of time after detonation to remove the camera.")]
 		public readonly int CameraRemoveDelay = 25;
+
+		[Desc("Range circle color.")]
+		public readonly Color CircleColor = Color.FromArgb(128, Color.Red);
+
+		[Desc("Range circle width in pixel.")]
+		public readonly float CircleWidth = 1;
+
+		[Desc("Range circle border color.")]
+		public readonly Color CircleBorderColor = Color.FromArgb(64, Color.Red);
+
+		[Desc("Range circle border width in pixel.")]
+		public readonly float CircleBorderWidth = 3;
+
+		[Desc("Render circles based on these distance ranges while targeting.")]
+		public readonly WDist[] CircleRanges = null;
 
 		public WeaponInfo WeaponInfo { get; private set; }
 
@@ -188,6 +207,42 @@ namespace OpenRA.Mods.Common.Traits
 					w.Add(beacon);
 				});
 			}
+		}
+
+		public override void SelectTarget(Actor self, string order, SupportPowerManager manager)
+		{
+			Game.Sound.PlayToPlayer(SoundType.UI, manager.Self.Owner, Info.SelectTargetSound);
+			Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech",
+				Info.SelectTargetSpeechNotification, self.Owner.Faction.InternalName);
+			self.World.OrderGenerator = new SelectNukePowerTarget(order, manager, info, MouseButton.Left);
+		}
+	}
+
+	public class SelectNukePowerTarget : SelectGenericPowerTarget
+	{
+		readonly NukePowerInfo info;
+
+		public SelectNukePowerTarget(string order, SupportPowerManager manager, NukePowerInfo info, MouseButton button)
+			: base(order, manager, info.Cursor, button)
+		{
+			this.info = info;
+		}
+
+		protected override IEnumerable<IRenderable> RenderAnnotations(WorldRenderer wr, World world)
+		{
+			if (info.CircleRanges == null)
+				yield break;
+
+			var centerPosition = wr.World.Map.CenterOfCell(wr.Viewport.ViewToWorld(Viewport.LastMousePos));
+			foreach (var range in info.CircleRanges)
+				yield return new RangeCircleAnnotationRenderable(
+					centerPosition,
+					range,
+					0,
+					info.CircleColor,
+					info.CircleWidth,
+					info.CircleBorderColor,
+					info.CircleBorderWidth);
 		}
 	}
 }
