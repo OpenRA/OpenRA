@@ -41,7 +41,7 @@ namespace OpenRA.FileFormats
 			var isPaletted = false;
 			var is24Bit = false;
 			var data = new List<byte>();
-			byte[] lengthAndTypeBytes = new byte[8];
+			var lengthAndTypeBytes = new byte[8];
 
 			while (true)
 			{
@@ -60,13 +60,15 @@ namespace OpenRA.FileFormats
 						case "IHDR":
 						{
 							ms = PrepareMemoryStream(s, length);
+							var width_Height_Depth_Type_Compresseion_SKIP_Interlace = new byte[13];
+							ms.Read(width_Height_Depth_Type_Compresseion_SKIP_Interlace, 0, 13);
 							if (headerParsed)
 								throw new InvalidDataException("Invalid PNG file - duplicate header.");
-							Width = IPAddress.NetworkToHostOrder(ms.ReadInt32());
-							Height = IPAddress.NetworkToHostOrder(ms.ReadInt32());
+							Width = IPAddress.NetworkToHostOrder(BitConverter.ToInt32(width_Height_Depth_Type_Compresseion_SKIP_Interlace, 0));
+							Height = IPAddress.NetworkToHostOrder(BitConverter.ToInt32(width_Height_Depth_Type_Compresseion_SKIP_Interlace, 4));
 
-							var bitDepth = ms.ReadUInt8();
-							var colorType = (PngColorType)ms.ReadByte();
+							var bitDepth = width_Height_Depth_Type_Compresseion_SKIP_Interlace[8];
+							var colorType = (PngColorType)width_Height_Depth_Type_Compresseion_SKIP_Interlace[9];
 							isPaletted = IsPaletted(bitDepth, colorType);
 							is24Bit = colorType == PngColorType.Color;
 
@@ -76,9 +78,9 @@ namespace OpenRA.FileFormats
 
 							Data = new byte[dataLength];
 
-							var compression = ms.ReadByte();
-							/*var filter = */ms.ReadByte();
-							var interlace = ms.ReadByte();
+							var compression = width_Height_Depth_Type_Compresseion_SKIP_Interlace[10];
+							/*var filter = ms.ReadByte();*/
+							var interlace = width_Height_Depth_Type_Compresseion_SKIP_Interlace[12];
 
 							if (compression != 0)
 								throw new InvalidDataException("Compression method not supported");
