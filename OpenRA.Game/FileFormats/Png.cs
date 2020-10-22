@@ -117,10 +117,22 @@ namespace OpenRA.FileFormats
 
 						case "IDAT":
 						{
-							var content = s.ReadBytes(length);
-							/*var crc = */s.ReadInt32();
-							data.AddRange(content);
+							if (s is MemoryStream)
+							{
+								// This is a instantiation-free implementation
+								for (int i = 0; i < length; i++)
+								{
+									data.Add((byte)s.ReadByte());
+								}
+							}
+							else
+							{
+								// Required because some streams are FileStreams and IO is expensive
+								var content = s.ReadBytes(length);
+								data.AddRange(content);
+							}
 
+							SkipRead(s, 0);
 							break;
 						}
 
@@ -135,8 +147,15 @@ namespace OpenRA.FileFormats
 
 						case "IEND":
 						{
-							using (var ns = MemoryStreamManager.GetMemoryStream(data.ToArray()))
+							using (var ns = MemoryStreamManager.GetMemoryStream(data.Count(), true))
 							{
+								// This is a instantiation-free implementation
+								for (int i = 0; i < data.Count(); i++)
+								{
+									ns.WriteByte(data[i]);
+								}
+
+								ns.Position = 0;
 								using (var ds = new InflaterInputStream(ns))
 								{
 									var pxStride = isPaletted ? 1 : is24Bit ? 3 : 4;
@@ -198,12 +217,31 @@ namespace OpenRA.FileFormats
 
 		private static MemoryStream PrepareMemoryStream(Stream s, int length)
 		{
-			var content = s.ReadBytes(length);
-			/*var crc = */s.ReadInt32();
-			return MemoryStreamManager.GetMemoryStream(content);
+			MemoryStream result;
+			var aux = s as MemoryStream;
+			if (aux != null)
+			{
+				// This is a instantiation-free implementation
+				result = MemoryStreamManager.GetMemoryStream(length, true);
+				for (int i = 0; i < length; i++)
+				{
+					result.WriteByte((byte)s.ReadByte());
+				}
+
+				result.Position = 0;
+			}
+			else
+			{
+				// Required because some streams are FileStreams and IO is expensive
+				var content = s.ReadBytes(length);
+				result = MemoryStreamManager.GetMemoryStream(content);
+			}
+
+			SkipRead(s, 0);
+			return result;
 		}
 
-		void SkipRead(Stream s, int length)
+		static void SkipRead(Stream s, int length)
 		{
 			// The +4 adjusts for the crc, which is a int
 			s.Position += length + 4;
