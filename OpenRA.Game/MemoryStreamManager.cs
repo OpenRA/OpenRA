@@ -41,6 +41,16 @@ namespace OpenRA
 			return singletonManager.GetStream(buffer);
 		}
 
+		public static MemoryStream GetMemoryStream(int minSizeRequired, bool tryContiguosBuffer, string tag = null)
+		{
+			if (singletonManager == null)
+			{
+				Initialize();
+			}
+
+			return singletonManager.GetStream(tag, minSizeRequired, tryContiguosBuffer);
+		}
+
 		static void Initialize()
 		{
 			var blockSize = 4096;
