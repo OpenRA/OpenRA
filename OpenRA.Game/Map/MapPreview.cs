@@ -320,7 +320,16 @@ namespace OpenRA
 
 			if (p.Contains("map.png"))
 				using (var dataStream = p.GetStream("map.png"))
-					newData.Preview = new Png(dataStream);
+				{
+					var workStream = dataStream;
+					if (dataStream is FileStream)
+					{
+						var buffer = dataStream.ReadAllBytes();
+						workStream = MemoryStreamManager.GetMemoryStream(buffer);
+					}
+
+					newData.Preview = new Png(workStream);
+				}
 
 			// Assign the new data atomically
 			innerData = newData;
