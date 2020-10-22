@@ -372,7 +372,7 @@ namespace OpenRA
 					newData.GridType = r.map_grid_type;
 					try
 					{
-						newData.Preview = new Png(new MemoryStream(Convert.FromBase64String(r.minimap)));
+						newData.Preview = new Png(MemoryStreamManager.GetMemoryStream(Convert.FromBase64String(r.minimap)));
 					}
 					catch (Exception e)
 					{

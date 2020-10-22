@@ -46,7 +46,7 @@ namespace OpenRA
 
 				try
 				{
-					var icon = new Png(new MemoryStream(i.Result));
+					var icon = new Png(MemoryStreamManager.GetMemoryStream(i.Result));
 					if (icon.Width == spriteSize && icon.Height == spriteSize)
 					{
 						Game.RunAfterTick(() =>
