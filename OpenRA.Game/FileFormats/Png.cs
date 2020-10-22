@@ -41,10 +41,11 @@ namespace OpenRA.FileFormats
 			var isPaletted = false;
 			var is24Bit = false;
 			var data = new List<byte>();
+			byte[] lengthAndTypeBytes = new byte[8];
 
 			while (true)
 			{
-				var lengthAndTypeBytes = s.ReadBytes(8);
+				s.Read(lengthAndTypeBytes, 0, 8);
 				var length = IPAddress.NetworkToHostOrder(BitConverter.ToInt32(lengthAndTypeBytes, 0));
 				var type = Encoding.UTF8.GetString(lengthAndTypeBytes, 4, 4);
 
