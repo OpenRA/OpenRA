@@ -100,6 +100,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		readonly CellLayer<TileInfo> tileInfos;
 		readonly CellLayer<bool> cellsDirty;
+		bool anyCellDirty;
 		readonly Sprite[] fogSprites, shroudSprites;
 
 		Shroud shroud;
@@ -128,6 +129,7 @@ namespace OpenRA.Mods.Common.Traits
 			tileInfos = new CellLayer<TileInfo>(map);
 
 			cellsDirty = new CellLayer<bool>(map);
+			anyCellDirty = true;
 
 			// Load sprite variants
 			var variantCount = info.ShroudVariants.Length;
@@ -265,6 +267,7 @@ namespace OpenRA.Mods.Common.Traits
 			// Dirty the full projected space so the cells outside
 			// the map bounds can be initialized as fully shrouded.
 			cellsDirty.Clear(true);
+			anyCellDirty = true;
 			var tl = new PPos(0, 0);
 			var br = new PPos(map.MapSize.X - 1, map.MapSize.Y - 1);
 			UpdateShroud(new ProjectedCellRegion(map, tl, br));
@@ -272,6 +275,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		void UpdateShroud(IEnumerable<PPos> region)
 		{
+			if (!anyCellDirty)
+				return;
+
 			foreach (var puv in region)
 			{
 				var uv = (MPos)puv;
@@ -294,6 +300,8 @@ namespace OpenRA.Mods.Common.Traits
 				shroudLayer.Update(uv, shroudSprite, shroudPos, true);
 				fogLayer.Update(uv, fogSprite, fogPos, true);
 			}
+
+			anyCellDirty = false;
 		}
 
 		void IRenderShroud.RenderShroud(WorldRenderer wr)
@@ -307,6 +315,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var uv = (MPos)puv;
 			cellsDirty[uv] = true;
+			anyCellDirty = true;
 			var cell = uv.ToCPos(map);
 			foreach (var direction in CVec.Directions)
 				if (map.Contains((PPos)(cell + direction).ToMPos(map)))
