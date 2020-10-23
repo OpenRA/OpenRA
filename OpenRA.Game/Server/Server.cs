@@ -18,6 +18,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using OpenRA.FileFormats;
 using OpenRA.Network;
 using OpenRA.Primitives;
@@ -115,6 +116,28 @@ namespace OpenRA.Server
 				}
 				else if (error != SocketError.Success)
 					throw new SocketException((int)error);
+
+				start += sent;
+			}
+		}
+
+		static async Task SendDataAsync(Socket s, byte[] data)
+		{
+			var start = 0;
+			var length = data.Length;
+
+			// Non-blocking sends are free to send only part of the data
+			while (start < length)
+			{
+				int sent = 0;
+				try
+				{
+					sent = await s.SendAsync(new ArraySegment<byte>(data, start, length), SocketFlags.None);
+				}
+				catch (SocketException ex)
+				{
+					Log.Write("server", "Non-blocking send of {0} bytes failed. Exception message is: ", length - start, ex.ToString());
+				}
 
 				start += sent;
 			}
@@ -679,6 +702,25 @@ namespace OpenRA.Server
 			}
 		}
 
+		async Task DispatchOrdersToClientAsync(Connection c, int client, int frame, byte[] data)
+		{
+			try
+			{
+				var ms = new MemoryStream(data.Length + 12);
+				ms.WriteArray(BitConverter.GetBytes(data.Length + 4));
+				ms.WriteArray(BitConverter.GetBytes(client));
+				ms.WriteArray(BitConverter.GetBytes(frame));
+				ms.WriteArray(data);
+				await SendDataAsync(c.Socket, ms.ToArray());
+			}
+			catch (Exception e)
+			{
+				DropClient(c);
+				Log.Write("server", "Dropping client {0} because dispatching orders failed: {1}",
+					client.ToString(CultureInfo.InvariantCulture), e);
+			}
+		}
+
 		bool AnyUndefinedWinStates()
 		{
 			var lastTeam = -1;
@@ -777,8 +819,15 @@ namespace OpenRA.Server
 		public void DispatchOrdersToClients(Connection conn, int frame, byte[] data)
 		{
 			var from = conn != null ? conn.PlayerIndex : 0;
+
+			List<Task> tasks = new List<Task>();
+
 			foreach (var c in Conns.Except(conn).ToList())
-				DispatchOrdersToClient(c, from, frame, data);
+			{
+				tasks.Add(DispatchOrdersToClientAsync(c, from, frame, data));
+			}
+
+			Task.WhenAll(tasks).Wait();
 
 			if (recorder != null)
 			{
