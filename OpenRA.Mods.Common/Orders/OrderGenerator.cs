@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Common.Orders
 {
 	public abstract class OrderGenerator : IOrderGenerator
 	{
-		public IEnumerable<Order> Order(World world, CPos cell, int2 worldPixel, MouseInput mi)
+		public virtual IEnumerable<Order> Order(World world, CPos cell, int2 worldPixel, MouseInput mi)
 		{
 			if ((mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Down) || (mi.Button == MouseButton.Right && mi.Event == MouseInputEvent.Up))
 				return OrderInner(world, cell, worldPixel, mi);
