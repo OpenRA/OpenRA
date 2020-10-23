@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Diagnostics;
 using System.IO;
 using Microsoft.IO;
 
@@ -53,11 +54,24 @@ namespace OpenRA
 
 		static void Initialize()
 		{
-			var blockSize = 4096;
-			var maxBufferSize = blockSize * 1024 * 5;
-			singletonManager = new RecyclableMemoryStreamManager(blockSize, blockSize * 512, maxBufferSize);
+			var blockSize = 8192;
+			var maxBufferSize = blockSize * 128;
+			singletonManager = new RecyclableMemoryStreamManager(blockSize, blockSize * 16, maxBufferSize);
 			singletonManager.AggressiveBufferReturn = true;
 			singletonManager.MaximumFreeSmallPoolBytes = blockSize * 1024;
+
+			// singletonManager.BlockCreated += SingletonManager_BlockCreated;
+			// singletonManager.LargeBufferCreated += SingletonManager_LargeBufferCreated;
+		}
+
+		private static void SingletonManager_LargeBufferCreated()
+		{
+			Debug.Print("Large BUFFER");
+		}
+
+		private static void SingletonManager_BlockCreated()
+		{
+			Debug.Print("BUFFER");
 		}
 	}
 }

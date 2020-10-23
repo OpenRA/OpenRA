@@ -101,15 +101,12 @@ namespace OpenRA
 					IReadOnlyPackage mapPackage = null;
 					try
 					{
-						using (new Support.PerfTimer(map))
-						{
-							mapPackage = kv.Key.OpenPackage(map, modData.ModFiles);
-							if (mapPackage == null)
-								continue;
+						mapPackage = kv.Key.OpenPackage(map, modData.ModFiles);
+						if (mapPackage == null)
+							continue;
 
-							var uid = Map.ComputeUID(mapPackage);
-							previews[uid].UpdateFromMap(mapPackage, kv.Key, kv.Value, modData.Manifest.MapCompatibility, mapGrid.Type);
-						}
+						var uid = Map.ComputeUID(mapPackage);
+						previews[uid].UpdateFromMap(mapPackage, kv.Key, kv.Value, modData.Manifest.MapCompatibility, mapGrid.Type);
 					}
 					catch (Exception e)
 					{
