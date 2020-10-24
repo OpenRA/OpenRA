@@ -86,7 +86,7 @@ namespace OpenRA.Mods.Common.Scripting
 				if (rp.Path.Count > 0)
 					return rp.Path.Last();
 
-				var exit = Self.FirstExitOrDefault();
+				var exit = Self.NearestExitOrDefault(Self.CenterPosition);
 				if (exit != null)
 					return Self.Location + exit.Info.ExitCell;
 

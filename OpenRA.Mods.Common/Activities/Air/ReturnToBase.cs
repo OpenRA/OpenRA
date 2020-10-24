@@ -110,7 +110,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			if (ShouldLandAtBuilding(self, dest))
 			{
-				var exit = dest.FirstExitOrDefault();
+				var exit = dest.NearestExitOrDefault(self.CenterPosition);
 				var offset = WVec.Zero;
 				if (exit != null)
 				{

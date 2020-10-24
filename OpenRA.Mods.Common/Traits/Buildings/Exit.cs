@@ -46,16 +46,13 @@ namespace OpenRA.Mods.Common.Traits
 
 	public static class ExitExts
 	{
-		public static Exit FirstExitOrDefault(this Actor actor, string productionType = null)
+		public static Exit NearestExitOrDefault(this Actor actor, WPos pos, string productionType = null, Func<Exit, bool> p = null)
 		{
-			var all = actor.TraitsImplementing<Exit>()
-				.Where(Exts.IsTraitEnabled)
-				.OrderBy(e => e.Info.Priority);
+			var all = Exits(actor, productionType)
+				.OrderBy(e => e.Info.Priority)
+				.ThenBy(e => (actor.CenterPosition + e.Info.SpawnOffset - pos).Length);
 
-			if (string.IsNullOrEmpty(productionType))
-				return all.FirstOrDefault();
-
-			return all.FirstOrDefault(e => e.Info.ProductionTypes.Count == 0 || e.Info.ProductionTypes.Contains(productionType));
+			return p != null ? all.FirstOrDefault(p) : all.FirstOrDefault();
 		}
 
 		public static IEnumerable<Exit> Exits(this Actor actor, string productionType = null)

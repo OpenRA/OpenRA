@@ -101,7 +101,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected virtual Exit SelectExit(Actor self, ActorInfo producee, string productionType, Func<Exit, bool> p)
 		{
-			return self.RandomExitOrDefault(self.World, productionType, p);
+			if (!rp.IsValueCreated || rp.Value.Path.Count == 0)
+				return self.RandomExitOrDefault(self.World, productionType, p);
+
+			return self.NearestExitOrDefault(self.World.Map.CenterOfCell(rp.Value.Path[0]), productionType, p);
 		}
 
 		protected Exit SelectExit(Actor self, ActorInfo producee, string productionType)
