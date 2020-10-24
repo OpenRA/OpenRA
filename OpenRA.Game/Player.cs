@@ -74,11 +74,19 @@ namespace OpenRA
 
 		public WinState WinState = WinState.Undefined;
 		public bool HasObjectives = false;
-		public bool Spectating;
+
+		public bool Spectating
+		{
+			get
+			{
+				return spectating || WinState != WinState.Undefined;
+			}
+		}
 
 		public World World { get; private set; }
 
 		readonly bool inMissionMap;
+		readonly bool spectating;
 		readonly IUnlocksRenderPlayer[] unlockRenderPlayer;
 
 		// Each player is identified with a unique bit in the set
@@ -173,7 +181,7 @@ namespace OpenRA
 				PlayerName = pr.Name;
 				NonCombatant = pr.NonCombatant;
 				Playable = pr.Playable;
-				Spectating = pr.Spectating;
+				spectating = pr.Spectating;
 				BotType = pr.Bot;
 				Faction = ChooseFaction(world, pr.Faction, false);
 				DisplayFaction = ChooseDisplayFaction(world, pr.Faction);
@@ -181,7 +189,7 @@ namespace OpenRA
 				SpawnPoint = DisplaySpawnPoint = 0;
 			}
 
-			if (!Spectating)
+			if (!spectating)
 				PlayerMask = new LongBitSet<PlayerBitMask>(InternalName);
 
 			// Set this property before running any Created callbacks on the player actor
