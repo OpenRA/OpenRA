@@ -159,6 +159,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			Ui.CloseWindow();
 			mpe?.Fade(MenuPaletteEffect.EffectType.None);
 			onExit();
+			Ui.ResetTooltips();
 		}
 
 		ButtonWidget AddButton(string id, string text)
