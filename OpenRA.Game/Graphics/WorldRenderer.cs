@@ -133,7 +133,26 @@ namespace OpenRA.Graphics
 			foreach (var e in World.ScreenMap.RenderableEffectsInBox(Viewport.TopLeft, Viewport.BottomRight))
 				renderablesBuffer.AddRange(e.Render(this));
 
-			renderablesBuffer.Sort((x, y) => RenderableZPositionComparisonKey(x).CompareTo(RenderableZPositionComparisonKey(y)));
+			renderablesBuffer.Sort((a, b) =>
+			{
+				// Sort is an unstable sort, so elements with the same Z position may get sorted differently each frame.
+				// This leads to flickering when rendering several frames as the elements get swapped at random.
+				// To combat this, use a series of arbitrary tie-breaks to determine the "top-most" element.
+				// This ensures a consistent decision for which one is on top, preventing flicker.
+				var compared = RenderableZPositionComparisonKey(a).CompareTo(RenderableZPositionComparisonKey(b));
+				if (compared != 0)
+					return compared;
+
+				compared = a.Pos.X.CompareTo(b.Pos.X);
+				if (compared != 0)
+					return compared;
+
+				compared = a.Pos.Y.CompareTo(b.Pos.Y);
+				if (compared != 0)
+					return compared;
+
+				return a.Pos.Z.CompareTo(b.Pos.Z);
+			});
 
 			foreach (var renderable in renderablesBuffer)
 				preparedRenderables.Add(renderable.PrepareRender(this));
