@@ -81,9 +81,9 @@ namespace OpenRA.Mods.Common.Orders
 			}
 		}
 
+		readonly World world;
 		readonly ProductionQueue queue;
 		readonly PlaceBuildingInfo placeBuildingInfo;
-		readonly BuildingInfluence buildingInfluence;
 		readonly ResourceLayer resourceLayer;
 		readonly Viewport viewport;
 		readonly VariantWrapper[] variants;
@@ -91,10 +91,9 @@ namespace OpenRA.Mods.Common.Orders
 
 		public PlaceBuildingOrderGenerator(ProductionQueue queue, string name, WorldRenderer worldRenderer)
 		{
-			var world = queue.Actor.World;
 			this.queue = queue;
+			world = queue.Actor.World;
 			placeBuildingInfo = queue.Actor.Owner.PlayerActor.Info.TraitInfo<PlaceBuildingInfo>();
-			buildingInfluence = world.WorldActor.Trait<BuildingInfluence>();
 			resourceLayer = world.WorldActor.TraitOrDefault<ResourceLayer>();
 			viewport = worldRenderer.Viewport;
 
@@ -225,12 +224,12 @@ namespace OpenRA.Mods.Common.Orders
 
 		bool AcceptsPlug(CPos cell, PlugInfo plug)
 		{
-			var host = buildingInfluence.GetBuildingAt(cell);
-			if (host == null)
-				return false;
+			foreach (var a in world.ActorMap.GetActorsAt(cell))
+				foreach (var p in a.TraitsImplementing<Pluggable>())
+					if (p.AcceptsPlug(a, plug.Type))
+						return true;
 
-			var location = host.Location;
-			return host.TraitsImplementing<Pluggable>().Any(p => p.AcceptsPlug(host, plug.Type));
+			return false;
 		}
 
 		IEnumerable<IRenderable> IOrderGenerator.Render(WorldRenderer wr, World world) { yield break; }
