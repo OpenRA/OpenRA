@@ -135,27 +135,26 @@ namespace OpenRA.Mods.Common.Traits
 				}
 				else if (os == "PlacePlug")
 				{
-					var host = self.World.WorldActor.Trait<BuildingInfluence>().GetBuildingAt(targetLocation);
-					if (host == null)
-						return;
-
 					var plugInfo = actorInfo.TraitInfoOrDefault<PlugInfo>();
 					if (plugInfo == null)
 						return;
 
-					var location = host.Location;
-					var pluggableLocations = host.TraitsImplementing<Pluggable>()
-						.Where(p => p.AcceptsPlug(host, plugInfo.Type));
+					foreach (var a in self.World.ActorMap.GetActorsAt(targetLocation))
+					{
+						var pluggables = a.TraitsImplementing<Pluggable>()
+							.Where(p => p.AcceptsPlug(a, plugInfo.Type))
+							.ToList();
 
-					var pluggable = pluggableLocations.FirstOrDefault(p => location + p.Info.Offset == targetLocation)
-						?? pluggableLocations.FirstOrDefault();
+						var pluggable = pluggables.FirstOrDefault(p => a.Location + p.Info.Offset == targetLocation)
+							?? pluggables.FirstOrDefault();
 
-					if (pluggable == null)
-						return;
+						if (pluggable == null)
+							return;
 
-					pluggable.EnablePlug(host, plugInfo.Type);
-					foreach (var s in buildingInfo.BuildSounds)
-						Game.Sound.PlayToPlayer(SoundType.World, order.Player, s, host.CenterPosition);
+						pluggable.EnablePlug(a, plugInfo.Type);
+						foreach (var s in buildingInfo.BuildSounds)
+							Game.Sound.PlayToPlayer(SoundType.World, order.Player, s, a.CenterPosition);
+					}
 				}
 				else
 				{
