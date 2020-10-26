@@ -9,7 +9,9 @@
  */
 #endregion
 
+using System.Linq;
 using OpenRA.GameRules;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -44,6 +46,11 @@ namespace OpenRA.Mods.Common.Warheads
 		public readonly int Delay = 0;
 
 		int IWarhead.Delay { get { return Delay; } }
+
+		static readonly BitSet<TargetableType> TargetTypeAir = new BitSet<TargetableType>("Air");
+
+		[Desc("Whether to consider actors in determining whether the explosion should happen. If false, only terrain will be considered.")]
+		public readonly bool ImpactActors = true;
 
 		[Desc("The color used for this warhead's visualization in the world's `WarheadDebugOverlay` trait.")]
 		public readonly Color DebugOverlayColor = Color.Red;
@@ -89,6 +96,42 @@ namespace OpenRA.Mods.Common.Warheads
 				return false;
 
 			return true;
+		}
+
+		/// <summary>Checks if there are any actors at impact position and if the warhead is valid against any of them.</summary>
+		protected ImpactActorType ActorTypeAtImpact(World world, WPos pos, Actor firedBy)
+		{
+			var anyInvalidActor = false;
+
+			// Check whether the impact position overlaps with an actor's hitshape
+			var potentialVictims = world.FindActorsOnCircle(pos, WDist.Zero);
+			foreach (var victim in potentialVictims)
+			{
+				if (!AffectsParent && victim == firedBy)
+					continue;
+
+				var activeShapes = victim.TraitsImplementing<HitShape>().Where(Exts.IsTraitEnabled);
+				if (!activeShapes.Any(s => s.DistanceFromEdge(victim, pos).Length <= 0))
+					continue;
+
+				if (IsValidAgainst(victim, firedBy))
+					return ImpactActorType.Valid;
+
+				anyInvalidActor = true;
+			}
+
+			return anyInvalidActor ? ImpactActorType.Invalid : ImpactActorType.None;
+		}
+
+		/// <summary>Checks if the warhead is valid against the terrain at impact position.</summary>
+		protected bool IsValidAgainstTerrain(World world, WPos pos)
+		{
+			var cell = world.Map.CellContaining(pos);
+			if (!world.Map.Contains(cell))
+				return false;
+
+			var dat = world.Map.DistanceAboveTerrain(pos);
+			return IsValidTarget(dat > AirThreshold ? TargetTypeAir : world.Map.GetTerrainInfo(cell).TargetTypes);
 		}
 	}
 }
