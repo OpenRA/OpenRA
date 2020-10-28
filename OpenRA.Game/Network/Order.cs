@@ -288,7 +288,7 @@ namespace OpenRA
 				minLength += TargetString.Length + 2; // dont know exctaly why +2, but it is 2
 			else if (Type == OrderType.Fields)
 			{
-				minLength += 4 + 2 + 13 + (TargetString != null ? TargetString.Length + 1 : 0) + 4 + 4 + 4;
+				minLength += 1 + 2 + 13 + (TargetString != null ? TargetString.Length + 1 : 0); // The smallest order is "Building Placement"
 
 				if (ExtraActors != null)
 					minLength += ExtraActors.Length * 4;
