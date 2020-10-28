@@ -123,30 +123,36 @@ namespace OpenRA.Network
 
 		public virtual void Send(int frame, List<byte[]> orders)
 		{
-			var ms = new MemoryStream(orders.Sum(i => i.Length) + 4);
-			ms.WriteArray(BitConverter.GetBytes(frame));
-			foreach (var o in orders)
-				ms.WriteArray(o);
-			Send(ms.GetBuffer());
+			using (var ms = new MemoryStream(orders.Sum(i => i.Length) + 4))
+			{
+				ms.WriteArray(BitConverter.GetBytes(frame));
+				foreach (var o in orders)
+					ms.WriteArray(o);
+				Send(ms.GetBuffer());
+			}
 		}
 
 		public virtual void SendImmediate(IEnumerable<byte[]> orders)
 		{
 			foreach (var o in orders)
 			{
-				var ms = new MemoryStream();
-				ms.WriteArray(BitConverter.GetBytes(0));
-				ms.WriteArray(o);
-				Send(ms.ToArray());
+				using (var ms = new MemoryStream())
+				{
+					ms.WriteArray(BitConverter.GetBytes(0));
+					ms.WriteArray(o);
+					Send(ms.ToArray());
+				}
 			}
 		}
 
 		public virtual void SendSync(int frame, byte[] syncData)
 		{
-			var ms = new MemoryStream(4 + syncData.Length);
-			ms.WriteArray(BitConverter.GetBytes(frame));
-			ms.WriteArray(syncData);
-			Send(ms.GetBuffer());
+			using (var ms = new MemoryStream(4 + syncData.Length))
+			{
+				ms.WriteArray(BitConverter.GetBytes(frame));
+				ms.WriteArray(syncData);
+				Send(ms.GetBuffer());
+			}
 		}
 
 		protected virtual void Send(byte[] packet)
@@ -330,10 +336,12 @@ namespace OpenRA.Network
 
 		public override void SendSync(int frame, byte[] syncData)
 		{
-			var ms = new MemoryStream(4 + syncData.Length);
-			ms.WriteArray(BitConverter.GetBytes(frame));
-			ms.WriteArray(syncData);
-			queuedSyncPackets.Add(ms.GetBuffer());
+			using (var ms = new MemoryStream(4 + syncData.Length))
+			{
+				ms.WriteArray(BitConverter.GetBytes(frame));
+				ms.WriteArray(syncData);
+				queuedSyncPackets.Add(ms.GetBuffer());
+			}
 		}
 
 		protected override void Send(byte[] packet)
@@ -342,19 +350,21 @@ namespace OpenRA.Network
 
 			try
 			{
-				var ms = new MemoryStream();
-				ms.WriteArray(BitConverter.GetBytes(packet.Length));
-				ms.WriteArray(packet);
-
-				foreach (var q in queuedSyncPackets)
+				using (var ms = new MemoryStream())
 				{
-					ms.WriteArray(BitConverter.GetBytes(q.Length));
-					ms.WriteArray(q);
-					base.Send(q);
-				}
+					ms.WriteArray(BitConverter.GetBytes(packet.Length));
+					ms.WriteArray(packet);
 
-				queuedSyncPackets.Clear();
-				ms.WriteTo(tcp.GetStream());
+					foreach (var q in queuedSyncPackets)
+					{
+						ms.WriteArray(BitConverter.GetBytes(q.Length));
+						ms.WriteArray(q);
+						base.Send(q);
+					}
+
+					queuedSyncPackets.Clear();
+					ms.WriteTo(tcp.GetStream());
+				}
 			}
 			catch (SocketException) { /* drop this on the floor; we'll pick up the disconnect from the reader thread */ }
 			catch (ObjectDisposedException) { /* ditto */ }
