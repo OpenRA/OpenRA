@@ -285,12 +285,17 @@ namespace OpenRA
 		{
 			var minLength = 1 + OrderString.Length + 1;
 			if (Type == OrderType.Handshake)
-				minLength += TargetString.Length + 1;
+				minLength += TargetString.Length + 2; // dont know exctaly why +2, but it is 2
 			else if (Type == OrderType.Fields)
+			{
 				minLength += 4 + 2 + 13 + (TargetString != null ? TargetString.Length + 1 : 0) + 4 + 4 + 4;
 
-			if (ExtraActors != null)
-				minLength += ExtraActors.Length * 4;
+				if (ExtraActors != null)
+					minLength += ExtraActors.Length * 4;
+
+				if (GroupedActors != null)
+					minLength += GroupedActors.Length * 4;
+			}
 
 			// ProtocolVersion.Orders and the associated documentation MUST be updated if the serialized format changes
 			var ret = new MemoryStream(minLength);
@@ -399,7 +404,7 @@ namespace OpenRA
 					throw new InvalidDataException("Cannot serialize order type {0}".F(Type));
 			}
 
-			return ret.ToArray();
+			return ret.Capacity == ret.Length ? ret.GetBuffer() : ret.ToArray();
 		}
 
 		public override string ToString()
