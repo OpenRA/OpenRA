@@ -288,7 +288,7 @@ namespace OpenRA
 				minLength += TargetString.Length + 2; // dont know exctaly why +2, but it is 2
 			else if (Type == OrderType.Fields)
 			{
-				minLength += 1 + 2 + 13 + (TargetString != null ? TargetString.Length + 1 : 0); // The smallest order is "Building Placement"
+				minLength += 1; // 6 The smallest order is "Building Placement"
 
 				if (ExtraActors != null)
 					minLength += ExtraActors.Length * 4;
@@ -298,16 +298,19 @@ namespace OpenRA
 			}
 
 			// ProtocolVersion.Orders and the associated documentation MUST be updated if the serialized format changes
-			var ret = new MemoryStream(minLength);
-			var w = new BinaryWriter(ret);
-
-			w.Write((byte)Type);
-			w.Write(OrderString);
+			MemoryStream ret;
+			BinaryWriter w;
 
 			switch (Type)
 			{
 				case OrderType.Handshake:
 				{
+					ret = new MemoryStream(minLength);
+					w = new BinaryWriter(ret);
+
+					w.Write((byte)Type);
+					w.Write(OrderString);
+
 					// Changing the Handshake order format will break cross-version switching
 					// Don't do this unless you really have to!
 					w.Write(TargetString ?? "");
@@ -319,16 +322,42 @@ namespace OpenRA
 				{
 					var fields = OrderFields.None;
 					if (Subject != null)
+					{
 						fields |= OrderFields.Subject;
+						minLength += 4;
+					}
 
 					if (TargetString != null)
+					{
 						fields |= OrderFields.TargetString;
+						minLength += (TargetString.Length + 2); // one trayling byte on each side
+					}
 
 					if (ExtraData != 0)
+					{
 						fields |= OrderFields.ExtraData;
+						minLength += 4;
+					}
 
 					if (Target.SerializableType != TargetType.Invalid)
+					{
 						fields |= OrderFields.Target;
+						switch (Target.SerializableType)
+						{
+							case TargetType.Actor:
+								minLength += 4;
+								break;
+							case TargetType.FrozenActor:
+								minLength += 8;
+								break;
+							case TargetType.Terrain:
+								minLength += 12;
+								if (fields.HasField(OrderFields.TargetIsCell))
+									minLength++;
+
+								break;
+						}
+					}
 
 					if (Queued)
 						fields |= OrderFields.Queued;
@@ -344,6 +373,12 @@ namespace OpenRA
 
 					if (Target.SerializableCell != null)
 						fields |= OrderFields.TargetIsCell;
+
+					ret = new MemoryStream(minLength);
+					w = new BinaryWriter(ret);
+
+					w.Write((byte)Type);
+					w.Write(OrderString);
 
 					w.Write((short)fields);
 
