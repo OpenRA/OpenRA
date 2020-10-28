@@ -93,6 +93,9 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Sound to play when the projectile hits the ground, but not the target.")]
 		public readonly string BounceSound = null;
 
+		[Desc("Terrain where the projectile explodes instead of bouncing.")]
+		public readonly HashSet<string> InvalidBounceTerrain = new HashSet<string>();
+
 		[Desc("If projectile touches an actor with one of these stances during or after the first bounce, trigger explosion.")]
 		public readonly Stance ValidBounceBlockerStances = Stance.Enemy | Stance.Neutral;
 
@@ -227,11 +230,16 @@ namespace OpenRA.Mods.Common.Projectiles
 
 			if (flightLengthReached && shouldBounce)
 			{
+				var terrainPos = world.Map.CellContaining(pos);
+				shouldExplode |= info.InvalidBounceTerrain.Contains(world.Map.GetTerrainInfo(terrainPos).Type);
+
 				shouldExplode |= AnyValidTargetsInRadius(world, pos, info.Width, args.SourceActor, true);
+
 				target += (pos - source) * info.BounceRangeModifier / 100;
 				var dat = world.Map.DistanceAboveTerrain(target);
 				target += new WVec(0, 0, -dat.Length);
 				length = Math.Max((target - pos).Length / speed.Length, 1);
+
 				ticks = 0;
 				source = pos;
 				Game.Sound.Play(SoundType.World, info.BounceSound, source);
