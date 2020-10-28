@@ -342,7 +342,7 @@ namespace OpenRA
 						switch (Target.SerializableType)
 						{
 							case TargetType.Actor:
-								minLength += 4;
+								minLength += 6;
 								break;
 							case TargetType.FrozenActor:
 								minLength += 8;
