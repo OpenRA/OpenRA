@@ -285,13 +285,10 @@ namespace OpenRA
 		{
 			var minLength = 1 + OrderString.Length + 1;
 			if (Type == OrderType.Handshake)
-				minLength += TargetString.Length + 2; // dont know exctaly why +2, but it is 2
+				minLength += TargetString.Length + 2; // +2 are the trayling bytes
 			else if (Type == OrderType.Fields)
 			{
-				minLength += 1; // 6 The smallest order is "Building Placement"
-
-				if (ExtraActors != null)
-					minLength += ExtraActors.Length * 4;
+				minLength += 1;
 
 				if (GroupedActors != null)
 					minLength += GroupedActors.Length * 4;
@@ -366,7 +363,10 @@ namespace OpenRA
 						fields |= OrderFields.Grouped;
 
 					if (ExtraActors != null)
+					{
 						fields |= OrderFields.ExtraActors;
+						minLength += (ExtraActors.Length * 4) + 5;
+					}
 
 					if (ExtraLocation != CPos.Zero)
 						fields |= OrderFields.ExtraLocation;
