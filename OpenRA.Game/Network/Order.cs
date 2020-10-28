@@ -440,7 +440,22 @@ namespace OpenRA
 					throw new InvalidDataException("Cannot serialize order type {0}".F(Type));
 			}
 
-			return ret.Capacity == ret.Length ? ret.GetBuffer() : ret.ToArray();
+			byte[] result;
+
+			// capacity being equal to the length means that whatever iteration
+			// like a for or foreach is safe and wont yield problems. Safe coding
+			// approaches could make use of the buffer whatever the delta though.
+			// I left the ToArray just in case.
+			if (ret.Capacity == ret.Length)
+			{
+				result = ret.GetBuffer();
+			}
+			else
+			{
+				result = ret.ToArray();
+			}
+
+			return result;
 		}
 
 		public override string ToString()
