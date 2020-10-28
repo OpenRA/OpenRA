@@ -327,7 +327,7 @@ namespace OpenRA
 					if (TargetString != null)
 					{
 						fields |= OrderFields.TargetString;
-						minLength += (TargetString.Length + 2); // one trayling byte on each side
+						minLength += TargetString.Length + (OrderString == "PlaceBuilding" ? 1 : 2);
 					}
 
 					if (ExtraData != 0)
@@ -348,9 +348,10 @@ namespace OpenRA
 								minLength += 8;
 								break;
 							case TargetType.Terrain:
-								minLength += 12;
 								if (fields.HasField(OrderFields.TargetIsCell))
-									minLength++;
+									minLength += 4;
+								else
+									minLength += 7;
 
 								break;
 						}
