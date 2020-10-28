@@ -123,11 +123,11 @@ namespace OpenRA.Network
 
 		public virtual void Send(int frame, List<byte[]> orders)
 		{
-			var ms = new MemoryStream();
+			var ms = new MemoryStream(orders.Sum(i => i.Length) + 4);
 			ms.WriteArray(BitConverter.GetBytes(frame));
 			foreach (var o in orders)
 				ms.WriteArray(o);
-			Send(ms.ToArray());
+			Send(ms.GetBuffer());
 		}
 
 		public virtual void SendImmediate(IEnumerable<byte[]> orders)
