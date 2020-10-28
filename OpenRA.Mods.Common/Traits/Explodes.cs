@@ -52,6 +52,9 @@ namespace OpenRA.Mods.Common.Traits
 			"Footprint (explosion on each occupied cell).")]
 		public readonly ExplosionType Type = ExplosionType.CenterPosition;
 
+		[Desc("Offset of the explosion from the center of the exploding actor (or cell).")]
+		public readonly WVec Offset = WVec.Zero;
+
 		public WeaponInfo WeaponInfo { get; private set; }
 		public WeaponInfo EmptyWeaponInfo { get; private set; }
 
@@ -121,13 +124,13 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				var cells = buildingInfo.OccupiedTiles(self.Location);
 				foreach (var c in cells)
-					weapon.Impact(Target.FromPos(self.World.Map.CenterOfCell(c)), source);
+					weapon.Impact(Target.FromPos(self.World.Map.CenterOfCell(c) + Info.Offset), source);
 
 				return;
 			}
 
 			// Use .FromPos since this actor is killed. Cannot use Target.FromActor
-			weapon.Impact(Target.FromPos(self.CenterPosition), source);
+			weapon.Impact(Target.FromPos(self.CenterPosition + Info.Offset), source);
 		}
 
 		WeaponInfo ChooseWeaponForExplosion(Actor self)
