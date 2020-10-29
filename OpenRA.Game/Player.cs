@@ -225,11 +225,7 @@ namespace OpenRA
 		public Dictionary<Player, Stance> Stances = new Dictionary<Player, Stance>();
 		public bool IsAlliedWith(Player p)
 		{
-			// Current shroud selection is used to determine stance for spectators
-			if (p != null && p.Spectating && !NonCombatant && p.World.RenderPlayer != null)
-				return Stances[p.World.RenderPlayer] == Stance.Ally;
-
-			// Observers are considered allies if RenderPlayer property is null
+			// Observers are considered allies to active combatants
 			return p == null || Stances[p] == Stance.Ally || (p.Spectating && !NonCombatant);
 		}
 
