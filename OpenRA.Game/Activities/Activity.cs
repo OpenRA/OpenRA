@@ -74,7 +74,7 @@ namespace OpenRA.Activities
 			// drop valid activities queued after it. Walk the queue until we find a valid activity or
 			// (more likely) run out of activities.
 			while (first != null && first.State == ActivityState.Done)
-				first = first.NextActivity;
+				first = first.nextActivity;
 
 			return first;
 		}
@@ -120,7 +120,8 @@ namespace OpenRA.Activities
 				lastRun = Tick(self);
 
 			// Avoid a single tick delay if the childactivity was just queued.
-			if (ChildActivity != null && ChildActivity.State == ActivityState.Queued)
+			var ca = ChildActivity;
+			if (ca != null && ca.State == ActivityState.Queued)
 			{
 				if (ChildHasPriority)
 					lastRun = TickChild(self) && finishing;
@@ -206,18 +207,18 @@ namespace OpenRA.Activities
 
 		public void Queue(Activity activity)
 		{
-			if (NextActivity != null)
-				NextActivity.Queue(activity);
-			else
-				NextActivity = activity;
+			var it = this;
+			while (it.nextActivity != null)
+				it = it.nextActivity;
+			it.nextActivity = activity;
 		}
 
 		public void QueueChild(Activity activity)
 		{
-			if (ChildActivity != null)
-				ChildActivity.Queue(activity);
+			if (childActivity != null)
+				childActivity.Queue(activity);
 			else
-				ChildActivity = activity;
+				childActivity = activity;
 		}
 
 		/// <summary>
@@ -269,15 +270,21 @@ namespace OpenRA.Activities
 
 		public IEnumerable<T> ActivitiesImplementing<T>(bool includeChildren = true) where T : IActivityInterface
 		{
-			if (includeChildren && ChildActivity != null)
-				foreach (var a in ChildActivity.ActivitiesImplementing<T>())
-					yield return a;
+			// Skips Done child and next activities
+			if (includeChildren)
+			{
+				var ca = ChildActivity;
+				if (ca != null)
+					foreach (var a in ca.ActivitiesImplementing<T>())
+						yield return a;
+			}
 
 			if (this is T)
 				yield return (T)(object)this;
 
-			if (NextActivity != null)
-				foreach (var a in NextActivity.ActivitiesImplementing<T>())
+			var na = NextActivity;
+			if (na != null)
+				foreach (var a in na.ActivitiesImplementing<T>())
 					yield return a;
 		}
 	}
