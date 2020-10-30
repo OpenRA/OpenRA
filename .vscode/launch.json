@@ -13,7 +13,8 @@
 			"request": "launch",
 			"program": "${workspaceRoot}/OpenRA.Game.exe",
 			"cwd": "${workspaceRoot}",
-			"args": ["Game.Mod=cnc"]
+			"args": ["Game.Mod=cnc"],
+			"preLaunchTask": "build",
 		},
 		{
 			"name": "Launch (RA)",
@@ -27,7 +28,8 @@
 			"request": "launch",
 			"program": "${workspaceRoot}/OpenRA.Game.exe",
 			"cwd": "${workspaceRoot}",
-			"args": ["Game.Mod=ra"]
+			"args": ["Game.Mod=ra"],
+			"preLaunchTask": "build",
 		},
 		{
 			"name": "Launch (D2k)",
@@ -41,7 +43,8 @@
 			"request": "launch",
 			"program": "${workspaceRoot}/OpenRA.Game.exe",
 			"cwd": "${workspaceRoot}",
-			"args": ["Game.Mod=d2k"]
+			"args": ["Game.Mod=d2k"],
+			"preLaunchTask": "build",
 		},
 		{
 			"name": "Launch (TS)",
@@ -55,7 +58,8 @@
 			"request": "launch",
 			"program": "${workspaceRoot}/OpenRA.Game.exe",
 			"cwd": "${workspaceRoot}",
-			"args": ["Game.Mod=ts"]
+			"args": ["Game.Mod=ts"],
+			"preLaunchTask": "build",
 		},
 	]
 }
