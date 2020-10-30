@@ -205,12 +205,17 @@ namespace OpenRA.Mods.Common.Projectiles
 			lastPos = pos;
 			pos = WPos.LerpQuadratic(source, target, angle, ticks, length);
 
+			if (ShouldExplode(world))
+				Explode(world);
+		}
+
+		bool ShouldExplode(World world)
+		{
 			// Check for walls or other blocking obstacles
-			var shouldExplode = false;
 			if (info.Blockable && BlocksProjectiles.AnyBlockingActorsBetween(world, lastPos, pos, info.Width, out var blockedPos))
 			{
 				pos = blockedPos;
-				shouldExplode = true;
+				return true;
 			}
 
 			if (!string.IsNullOrEmpty(info.TrailImage) && --smokeTicks < 0)
@@ -231,9 +236,11 @@ namespace OpenRA.Mods.Common.Projectiles
 			if (flightLengthReached && shouldBounce)
 			{
 				var terrainPos = world.Map.CellContaining(pos);
-				shouldExplode |= info.InvalidBounceTerrain.Contains(world.Map.GetTerrainInfo(terrainPos).Type);
+				if (info.InvalidBounceTerrain.Contains(world.Map.GetTerrainInfo(terrainPos).Type))
+					return true;
 
-				shouldExplode |= AnyValidTargetsInRadius(world, pos, info.Width, args.SourceActor, true);
+				if (AnyValidTargetsInRadius(world, pos, info.Width, args.SourceActor, true))
+					return true;
 
 				target += (pos - source) * info.BounceRangeModifier / 100;
 				var dat = world.Map.DistanceAboveTerrain(target);
@@ -247,17 +254,18 @@ namespace OpenRA.Mods.Common.Projectiles
 			}
 
 			// Flight length reached / exceeded
-			shouldExplode |= flightLengthReached && !shouldBounce;
+			if (flightLengthReached && !shouldBounce)
+				return true;
 
 			// Driving into cell with higher height level
-			shouldExplode |= world.Map.DistanceAboveTerrain(pos).Length < 0;
+			if (world.Map.DistanceAboveTerrain(pos).Length < 0)
+				return true;
 
 			// After first bounce, check for targets each tick
-			if (remainingBounces < info.BounceCount)
-				shouldExplode |= AnyValidTargetsInRadius(world, pos, info.Width, args.SourceActor, true);
+			if (remainingBounces < info.BounceCount && AnyValidTargetsInRadius(world, pos, info.Width, args.SourceActor, true))
+				return true;
 
-			if (shouldExplode)
-				Explode(world);
+			return false;
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
