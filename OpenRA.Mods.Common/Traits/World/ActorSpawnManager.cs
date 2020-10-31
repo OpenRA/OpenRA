@@ -11,6 +11,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Mods.Common;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -25,8 +26,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Maximum number of actors.")]
 		public readonly int Maximum = 4;
 
-		[Desc("Time (in ticks) between actor spawn.")]
-		public readonly int SpawnInterval = 6000;
+		[Desc("Time (in ticks) between actor spawn. Supports 1 or 2 values.\nIf 2 values are provided they are used as a range from which a value is randomly selected.")]
+		public readonly int[] SpawnInterval = { 6000 };
 
 		[FieldLoader.Require]
 		[ActorReference]
@@ -37,6 +38,20 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Type of ActorSpawner with which it connects.")]
 		public readonly HashSet<string> Types = new HashSet<string>() { };
+
+		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
+		{
+			base.RulesetLoaded(rules, ai);
+
+			if (SpawnInterval.Length == 0 || SpawnInterval.Length > 2)
+				throw new YamlException("{0}.{1} must be either 1 or 2 values".F(nameof(ActorSpawnManager), nameof(SpawnInterval)));
+
+			if (SpawnInterval.Length == 2 && SpawnInterval[0] >= SpawnInterval[1])
+				throw new YamlException("{0}.{1}'s first value must be less than the second value".F(nameof(ActorSpawnManager), nameof(SpawnInterval)));
+
+			if (SpawnInterval.Any(it => it < 0))
+				throw new YamlException("{0}.{1}'s value(s) must not be less than 0".F(nameof(ActorSpawnManager), nameof(SpawnInterval)));
+		}
 
 		public override object Create(ActorInitializer init) { return new ActorSpawnManager(init.Self, this); }
 	}
@@ -77,7 +92,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (spawnPoint == null)
 				return;
 
-			spawnCountdown = info.SpawnInterval;
+			spawnCountdown = Util.RandomDelay(self.World, info.SpawnInterval);
 
 			do
 			{
