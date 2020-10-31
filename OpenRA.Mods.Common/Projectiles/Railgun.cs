@@ -148,7 +148,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		void CalculateVectors()
 		{
 			// Check for blocking actors
-			if (info.Blockable && BlocksProjectiles.AnyBlockingActorsBetween(args.SourceActor.World, target, args.Source,
+			if (info.Blockable && BlocksProjectiles.AnyBlockingActorsBetween(args.SourceActor.World, args.SourceActor.Owner, target, args.Source,
 					info.BeamWidth, out var blockedPos))
 				target = blockedPos;
 
