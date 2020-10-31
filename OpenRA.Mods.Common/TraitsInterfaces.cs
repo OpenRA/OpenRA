@@ -47,6 +47,8 @@ namespace OpenRA.Mods.Common.Traits
 	public interface IBlocksProjectiles
 	{
 		WDist BlockingHeight { get; }
+
+		PlayerRelationship ValidRelationships { get; }
 	}
 
 	[RequireExplicitImplementation]
