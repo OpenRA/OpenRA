@@ -82,7 +82,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (reservedForAircraft != null)
 			{
-				if (reservedForAircraft.GetActorBelow() == self)
+				if (reservedForAircraft.GetActorBelow() == self && reservedFor != null)
 				{
 					if (rallyPoint != null && rallyPoint.Path.Count > 0)
 						foreach (var cell in rallyPoint.Path)
