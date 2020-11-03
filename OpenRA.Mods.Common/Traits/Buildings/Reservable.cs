@@ -84,9 +84,11 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				if (reservedForAircraft.GetActorBelow() == self)
 				{
+					// HACK: Cache this in a local var, such that the inner activity of AttackMoveActivity can access the trait easily after reservedForAircraft was nulled
+					var aircraft = reservedForAircraft;
 					if (rallyPoint != null && rallyPoint.Path.Count > 0)
 						foreach (var cell in rallyPoint.Path)
-							reservedFor.QueueActivity(new AttackMoveActivity(reservedFor, () => reservedForAircraft.MoveTo(cell, 1, targetLineColor: Color.OrangeRed)));
+							reservedFor.QueueActivity(new AttackMoveActivity(reservedFor, () => aircraft.MoveTo(cell, 1, targetLineColor: Color.OrangeRed)));
 					else
 						reservedFor.QueueActivity(new TakeOff(reservedFor));
 				}
