@@ -75,7 +75,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 
 			if (enemyUnits.Count == 0)
 			{
-				Retreat(owner, false, true, true);
+				Retreat(owner, flee: false, rearm: true, repair: true);
 				return;
 			}
 
@@ -193,7 +193,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			if (!owner.IsValid)
 				return;
 
-			Retreat(owner, true, true, true);
+			Retreat(owner, flee: true, rearm: true, repair: true);
 			owner.FuzzyStateMachine.ChangeState(owner, new NavyUnitsIdleState(), true);
 		}
 

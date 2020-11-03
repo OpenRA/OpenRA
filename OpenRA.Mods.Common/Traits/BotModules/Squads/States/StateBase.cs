@@ -154,7 +154,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 		// Retreat units from combat, or for supply only in idle
 		protected void Retreat(Squad squad, bool flee, bool rearm, bool repair)
 		{
-			var loc = new CPos(0, 0, 0);
+			var loc = CPos.Zero;
 
 			// HACK: "alreadyRepair" is to solve AI repair orders performance,
 			// which is only allow one goes to repairpad at the same time to avoid queueing too many orders.
