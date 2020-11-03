@@ -235,8 +235,11 @@ namespace OpenRA.Mods.Common.Projectiles
 
 			if (flightLengthReached && shouldBounce)
 			{
-				var terrainPos = world.Map.CellContaining(pos);
-				if (info.InvalidBounceTerrain.Contains(world.Map.GetTerrainInfo(terrainPos).Type))
+				var cell = world.Map.CellContaining(pos);
+				if (!world.Map.Contains(cell))
+					return true;
+
+				if (info.InvalidBounceTerrain.Contains(world.Map.GetTerrainInfo(cell).Type))
 					return true;
 
 				if (AnyValidTargetsInRadius(world, pos, info.Width, args.SourceActor, true))
