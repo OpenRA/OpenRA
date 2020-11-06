@@ -30,6 +30,10 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Palette used for rendering the resource sprites.")]
 		public readonly string Palette = TileSet.TerrainPaletteInternalName;
 
+		[PaletteReference]
+		[Desc("Palette used for rendering the resource shadows.")]
+		public readonly string ShadowPalette = "shadow";
+
 		[Desc("Resource index used in the binary map data.")]
 		public readonly int ResourceType = 1;
 
@@ -85,8 +89,10 @@ namespace OpenRA.Mods.Common.Traits
 	public class ResourceType : IWorldLoaded
 	{
 		public readonly ResourceTypeInfo Info;
-		public PaletteReference Palette { get; private set; }
 		public readonly Dictionary<string, ISpriteSequence> Variants;
+
+		public PaletteReference Palette { get; private set; }
+		public PaletteReference ShadowPalette { get; private set; }
 
 		public ResourceType(ResourceTypeInfo info, World world)
 		{
@@ -102,6 +108,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void WorldLoaded(World w, WorldRenderer wr)
 		{
 			Palette = wr.Palette(Info.Palette);
+			ShadowPalette = wr.Palette(Info.ShadowPalette);
 		}
 	}
 }

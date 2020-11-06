@@ -37,6 +37,8 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Queue<CPos> cleanDirty = new Queue<CPos>();
 		readonly Dictionary<PaletteReference, TerrainSpriteLayer> spriteLayers = new Dictionary<PaletteReference, TerrainSpriteLayer>();
 
+		Dictionary<int, ResourceType> resources;
+
 		public ResourceRenderer(Actor self, ResourceRendererInfo info)
 		{
 			Info = info;
@@ -55,17 +57,18 @@ namespace OpenRA.Mods.Common.Traits
 
 		void IWorldLoaded.WorldLoaded(World w, WorldRenderer wr)
 		{
-			var resources = w.WorldActor.TraitsImplementing<ResourceType>()
+			resources = w.WorldActor.TraitsImplementing<ResourceType>()
 				.ToDictionary(r => r.Info.ResourceType, r => r);
 
 			// Build the sprite layer dictionary for rendering resources
 			// All resources that have the same palette must also share a sheet and blend mode
 			foreach (var r in resources)
 			{
+				var spriteSequence = r.Value.Variants.First().Value;
 				var layer = spriteLayers.GetOrAdd(r.Value.Palette, pal =>
 				{
-					var first = r.Value.Variants.First().Value.GetSprite(0);
-					return new TerrainSpriteLayer(w, wr, first.Sheet, first.BlendMode, pal, wr.World.Type != WorldType.Editor);
+					var sprite = spriteSequence.GetSprite(0);
+					return new TerrainSpriteLayer(w, wr, sprite.Sheet, sprite.BlendMode, pal, wr.World.Type != WorldType.Editor);
 				});
 
 				// Validate that sprites are compatible with this layer
@@ -78,6 +81,15 @@ namespace OpenRA.Mods.Common.Traits
 				if (sprites.Any(s => s.BlendMode != blendMode))
 					throw new InvalidDataException("Resource sprites specify different blend modes. "
 						+ "Try using different palettes for resource types that use different blend modes.");
+
+				if (spriteSequence.ShadowStart > 0)
+				{
+					var shadowLayer = spriteLayers.GetOrAdd(r.Value.ShadowPalette, pal =>
+					{
+						var shadow = spriteSequence.GetShadow(0, WAngle.Zero);
+						return new TerrainSpriteLayer(w, wr, shadow.Sheet, shadow.BlendMode, pal, wr.World.Type != WorldType.Editor);
+					});
+				}
 			}
 
 			// Initialize the RenderContent with the initial map state
@@ -100,10 +112,15 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var kv in spriteLayers)
 			{
 				// resource.Type is meaningless (and may be null) if resource.Sequence is null
-				if (sequence != null && palette == kv.Key)
-					kv.Value.Update(cell, sequence, frame);
-				else
+				if (sequence == null || palette == null)
 					kv.Value.Clear(cell);
+				else if (palette == kv.Key)
+				{
+					if (sequence.ShadowStart > 0 && resources.Any(r => r.Value.ShadowPalette == kv.Key))
+						kv.Value.Update(cell, sequence.GetShadow(frame, WAngle.Zero), sequence.IgnoreWorldTint);
+					else
+						kv.Value.Update(cell, sequence.GetSprite(frame), sequence.IgnoreWorldTint);
+				}
 			}
 		}
 
@@ -164,6 +181,9 @@ namespace OpenRA.Mods.Common.Traits
 				var frame = int2.Lerp(0, sprites.Length - 1, density, maxDensity);
 
 				UpdateSpriteLayers(cell, sprites, frame, type.Palette);
+
+				if (sprites.ShadowStart > 0)
+					UpdateSpriteLayers(cell, sprites, frame, type.ShadowPalette);
 			}
 			else
 				UpdateSpriteLayers(cell, null, 0, null);
