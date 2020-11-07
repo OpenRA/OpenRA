@@ -23,10 +23,10 @@ namespace OpenRA.Mods.Cnc.Traits
 	{
 		public readonly int Speed = 28;
 
-		[Desc("Facing to use when actor spawns. Only 64 and 192 supported.")]
+		[Desc("Facing to use when actor spawns. Only 256 and 768 supported.")]
 		public readonly WAngle InitialFacing = new WAngle(256);
 
-		[Desc("Facing to use for actor previews (map editor, color picker, etc). Only 64 and 192 supported.")]
+		[Desc("Facing to use for actor previews (map editor, color picker, etc). Only 256 and 768 supported.")]
 		public readonly WAngle PreviewFacing = new WAngle(256);
 
 		public override object Create(ActorInitializer init) { return new TDGunboat(init, this); }
