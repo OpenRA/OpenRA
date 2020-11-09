@@ -17,16 +17,31 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Orders
 {
-	public class GuardOrderGenerator : GenericSelectTarget
+	public class GuardOrderGenerator : UnitOrderGenerator
 	{
+		readonly string orderName;
+		readonly string cursor;
+		readonly MouseButton expectedButton;
+		IEnumerable<Actor> subjects;
+
 		public GuardOrderGenerator(IEnumerable<Actor> subjects, string order, string cursor, MouseButton button)
-			: base(subjects, order, cursor, button) { }
-
-		protected override IEnumerable<Order> OrderInner(World world, CPos xy, MouseInput mi)
 		{
-			if (mi.Button != ExpectedButton)
-				yield break;
+			orderName = order;
+			this.cursor = cursor;
+			expectedButton = button;
+			this.subjects = subjects;
+		}
 
+		public override IEnumerable<Order> Order(World world, CPos cell, int2 worldPixel, MouseInput mi)
+		{
+			if (mi.Button != expectedButton)
+				world.CancelInputMode();
+
+			return OrderInner(world, mi);
+		}
+
+		IEnumerable<Order> OrderInner(World world, MouseInput mi)
+		{
 			var target = FriendlyGuardableUnits(world, mi).FirstOrDefault();
 			if (target == null)
 				yield break;
@@ -34,7 +49,7 @@ namespace OpenRA.Mods.Common.Orders
 			world.CancelInputMode();
 
 			var queued = mi.Modifiers.HasModifier(Modifiers.Shift);
-			yield return new Order(OrderName, null, Target.FromActor(target), queued, null, subjects.Where(s => s != target).ToArray());
+			yield return new Order(orderName, null, Target.FromActor(target), queued, null, subjects.Where(s => s != target).ToArray());
 		}
 
 		public override void SelectionChanged(World world, IEnumerable<Actor> selected)
@@ -54,8 +69,16 @@ namespace OpenRA.Mods.Common.Orders
 			var canGuard = FriendlyGuardableUnits(world, mi)
 				.Any(a => multiple || a != subjects.First());
 
-			return canGuard ? Cursor : "move-blocked";
+			return canGuard ? cursor : "move-blocked";
 		}
+
+		public override bool InputOverridesSelection(World world, int2 xy, MouseInput mi)
+		{
+			// Custom order generators always override selection
+			return true;
+		}
+
+		public override bool ClearSelectionOnLeftClick { get { return false; } }
 
 		static IEnumerable<Actor> FriendlyGuardableUnits(World world, MouseInput mi)
 		{
