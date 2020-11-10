@@ -123,6 +123,8 @@ namespace OpenRA.Mods.Common.Traits
 
 				var targetActor = order.Target.Actor;
 			}
+			else
+				return;
 
 			var currentTransform = self.CurrentActivity as Transform;
 			var transform = transforms.FirstOrDefault(t => !t.IsTraitDisabled && !t.IsTraitPaused);
