@@ -12,6 +12,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Widgets.Logic;
 using OpenRA.Network;
 using OpenRA.Support;
 using OpenRA.Traits;
@@ -70,7 +71,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Initialize the list of unoccupied spawn points for AssignSpawnLocations to pick from
 			state.SpawnLocations = map.SpawnPoints;
-			state.AvailableSpawnPoints = Enumerable.Range(1, map.SpawnPoints.Length).Except(lobbyInfo.DisabledSpawnPoints).ToList();
+			state.AvailableSpawnPoints = LobbyUtils.AvailableSpawnPoints(map.SpawnPoints.Length, lobbyInfo);
 			foreach (var kv in lobbyInfo.Slots)
 			{
 				var client = lobbyInfo.ClientInSlot(kv.Key);
@@ -130,7 +131,7 @@ namespace OpenRA.Mods.Common.Traits
 			spawnLocations = spawns.ToArray();
 
 			// Initialize the list of unoccupied spawn points for AssignSpawnLocations to pick from
-			availableSpawnPoints = Enumerable.Range(1, spawnLocations.Length).Except(self.World.LobbyInfo.DisabledSpawnPoints).ToList();
+			availableSpawnPoints = LobbyUtils.AvailableSpawnPoints(spawnLocations.Length, self.World.LobbyInfo);
 			foreach (var kv in self.World.LobbyInfo.Slots)
 			{
 				var client = self.World.LobbyInfo.ClientInSlot(kv.Key);

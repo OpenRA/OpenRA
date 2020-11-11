@@ -273,6 +273,21 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				orderManager.IssueOrder(Order.Command("spawn {0} {1}".F((playerToMove ?? orderManager.LocalClient).Index, selectedSpawnPoint)));
 		}
 
+		public static List<int> AvailableSpawnPoints(int spawnPoints, Session lobbyInfo)
+		{
+			return Enumerable.Range(1, spawnPoints).Except(lobbyInfo.DisabledSpawnPoints).ToList();
+		}
+
+		public static bool InsufficientEnabledSpawnPoints(MapPreview map, Session lobbyInfo)
+		{
+			// If a map doesn't define spawn points we always have enough space
+			var spawnPoints = map.SpawnPoints.Length;
+			if (spawnPoints == 0)
+				return false;
+
+			return AvailableSpawnPoints(spawnPoints, lobbyInfo).Count < lobbyInfo.Clients.Count(c => !c.IsObserver);
+		}
+
 		public static Color LatencyColor(Session.ClientPing ping)
 		{
 			if (ping == null)
