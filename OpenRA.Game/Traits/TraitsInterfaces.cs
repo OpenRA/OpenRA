@@ -239,6 +239,10 @@ namespace OpenRA.Traits
 
 		void UpdateOccupiedCells(IOccupySpace ios);
 		event Action<CPos> CellUpdated;
+
+		bool IsBuildingBlocked(CPos cell);
+		void AddBuildingBlocker(object blocker, IEnumerable<CPos> footprint);
+		void RemoveBuildingBlocker(object blocker);
 	}
 
 	[RequireExplicitImplementation]

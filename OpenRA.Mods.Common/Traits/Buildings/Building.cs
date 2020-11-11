@@ -305,11 +305,13 @@ namespace OpenRA.Mods.Common.Traits
 				RemoveSmudges();
 
 			self.World.AddToMaps(self, this);
+			self.World.ActorMap.AddBuildingBlocker(this, Info.Tiles(self.Location));
 		}
 
 		void INotifyRemovedFromWorld.RemovedFromWorld(Actor self)
 		{
 			self.World.RemoveFromMaps(self, this);
+			self.World.ActorMap.RemoveBuildingBlocker(this);
 		}
 
 		void INotifySold.Selling(Actor self)

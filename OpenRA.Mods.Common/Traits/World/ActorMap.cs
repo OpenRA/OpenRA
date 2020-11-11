@@ -168,6 +168,8 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Dictionary<int, CellTrigger> cellTriggers = new Dictionary<int, CellTrigger>();
 		readonly Dictionary<CPos, List<CellTrigger>> cellTriggerInfluence = new Dictionary<CPos, List<CellTrigger>>();
 		readonly Dictionary<int, ProximityTrigger> proximityTriggers = new Dictionary<int, ProximityTrigger>();
+		readonly Dictionary<CPos, List<object>> buildingBlocked = new Dictionary<CPos, List<object>>();
+		readonly Dictionary<object, CPos[]> buildingBlockers = new Dictionary<object, CPos[]>();
 		int nextTriggerId;
 
 		readonly CellLayer<InfluenceNode> influence;
@@ -614,6 +616,39 @@ namespace OpenRA.Mods.Common.Traits
 						}
 					}
 				}
+			}
+		}
+
+		public bool IsBuildingBlocked(CPos cell)
+		{
+			return buildingBlocked.ContainsKey(cell);
+		}
+
+		public void AddBuildingBlocker(object blocker, IEnumerable<CPos> footprint)
+		{
+			// Take a read-only copy of the footprint cells
+			var cells = footprint.ToArray();
+			buildingBlockers.Add(blocker, cells);
+			foreach (var c in cells)
+			{
+				if (!buildingBlocked.TryGetValue(c, out var blockers))
+					blockers = buildingBlocked[c] = new List<object>();
+
+				blockers.Add(blocker);
+			}
+		}
+
+		public void RemoveBuildingBlocker(object blocker)
+		{
+			var footprint = buildingBlockers[blocker];
+			buildingBlockers.Remove(blocker);
+
+			foreach (var c in footprint)
+			{
+				var blockers = buildingBlocked[c];
+				blockers.Remove(blocker);
+				if (blockers.Count == 0)
+					buildingBlocked.Remove(c);
 			}
 		}
 	}
