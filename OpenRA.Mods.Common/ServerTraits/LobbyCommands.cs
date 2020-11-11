@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Mods.Common.Widgets.Logic;
 using OpenRA.Network;
 using OpenRA.Primitives;
 using OpenRA.Server;
@@ -124,9 +125,7 @@ namespace OpenRA.Mods.Common.Server
 				if (server.LobbyInfo.Slots.Any(sl => sl.Value.Required && server.LobbyInfo.ClientInSlot(sl.Key) == null))
 					return;
 
-				// Can't have insufficient spawns
-				var availableSpawnPointCount = server.Map.SpawnPoints.Length - server.LobbyInfo.DisabledSpawnPoints.Count;
-				if (availableSpawnPointCount < server.LobbyInfo.Clients.Count(c => !c.IsObserver))
+				if (LobbyUtils.InsufficientEnabledSpawnPoints(server.Map, server.LobbyInfo))
 					return;
 
 				server.StartGame();
@@ -176,8 +175,7 @@ namespace OpenRA.Mods.Common.Server
 					return true;
 				}
 
-				var availableSpawnPointCount = server.Map.SpawnPoints.Length - server.LobbyInfo.DisabledSpawnPoints.Count;
-				if (availableSpawnPointCount < server.LobbyInfo.Clients.Count(c => !c.IsObserver))
+				if (LobbyUtils.InsufficientEnabledSpawnPoints(server.Map, server.LobbyInfo))
 				{
 					server.SendOrderTo(conn, "Message", "Unable to start the game until more spawn points are enabled.");
 					return true;

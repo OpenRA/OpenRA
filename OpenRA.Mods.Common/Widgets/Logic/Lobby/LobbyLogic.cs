@@ -573,8 +573,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					c.Bot == null &&
 					c.Team == orderManager.LocalClient.Team);
 
-			var availableSpawnPointCount = map.SpawnPoints.Length - orderManager.LobbyInfo.DisabledSpawnPoints.Count;
-			insufficientPlayerSpawns = availableSpawnPointCount < orderManager.LobbyInfo.Clients.Count(c => !c.IsObserver);
+			insufficientPlayerSpawns = LobbyUtils.InsufficientEnabledSpawnPoints(map, orderManager.LobbyInfo);
 
 			if (disableTeamChat)
 				teamChat = false;
