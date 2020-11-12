@@ -70,7 +70,8 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			// Buildings can never be placed on ramps
-			return world.Map.Ramp[cell] == 0 && bi.TerrainTypes.Contains(world.Map.GetTerrainInfo(cell).Type);
+			return world.Map.Ramp[cell] == 0 && bi.TerrainTypes.Contains(world.Map.GetTerrainInfo(cell).Type) &&
+				!world.ActorMap.IsBuildingBlocked(cell);
 		}
 
 		public static bool CanPlaceBuilding(this World world, CPos cell, ActorInfo ai, BuildingInfo bi, Actor toIgnore)
