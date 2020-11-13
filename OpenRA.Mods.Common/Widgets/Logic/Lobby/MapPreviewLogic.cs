@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		[ObjectCreator.UseCtor]
 		internal MapPreviewLogic(Widget widget, ModData modData, OrderManager orderManager, Func<MapPreview> getMap, Action<MapPreviewWidget, MapPreview, MouseInput> onMouseDown,
-			Func<Dictionary<int, SpawnOccupant>> getSpawnOccupants, Func<List<int>> getDisabledSpawnPoints, bool showUnoccupiedSpawnpoints)
+			Func<Dictionary<int, SpawnOccupant>> getSpawnOccupants, Func<HashSet<int>> getDisabledSpawnPoints, bool showUnoccupiedSpawnpoints)
 		{
 			var mapRepository = modData.Manifest.Get<WebServices>().MapRepository;
 
@@ -172,7 +172,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		}
 
 		void SetupWidgets(Widget parent, Func<MapPreview> getMap,
-			Action<MapPreviewWidget, MapPreview, MouseInput> onMouseDown, Func<Dictionary<int, SpawnOccupant>> getSpawnOccupants, Func<List<int>> getDisabledSpawnPoints, bool showUnoccupiedSpawnpoints)
+			Action<MapPreviewWidget, MapPreview, MouseInput> onMouseDown, Func<Dictionary<int, SpawnOccupant>> getSpawnOccupants, Func<HashSet<int>> getDisabledSpawnPoints, bool showUnoccupiedSpawnpoints)
 		{
 			var preview = parent.Get<MapPreviewWidget>("MAP_PREVIEW");
 			preview.Preview = () => getMap();

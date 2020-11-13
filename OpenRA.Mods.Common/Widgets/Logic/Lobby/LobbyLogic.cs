@@ -137,7 +137,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						LobbyUtils.SelectSpawnPoint(orderManager, preview, mapPreview, mi))
 				},
 				{ "getSpawnOccupants", (Func<Dictionary<int, SpawnOccupant>>)(() => spawnOccupants) },
-				{ "getDisabledSpawnPoints", (Func<List<int>>)(() => orderManager.LobbyInfo.DisabledSpawnPoints) },
+				{ "getDisabledSpawnPoints", (Func<HashSet<int>>)(() => orderManager.LobbyInfo.DisabledSpawnPoints) },
 				{ "showUnoccupiedSpawnpoints", true },
 			});
 

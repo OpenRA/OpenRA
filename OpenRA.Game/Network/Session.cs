@@ -26,7 +26,7 @@ namespace OpenRA.Network
 		// Keyed by the PlayerReference id that the slot corresponds to
 		public Dictionary<string, Slot> Slots = new Dictionary<string, Slot>();
 
-		public List<int> DisabledSpawnPoints = new List<int>();
+		public HashSet<int> DisabledSpawnPoints = new HashSet<int>();
 
 		public Global GlobalSettings = new Global();
 
@@ -72,7 +72,7 @@ namespace OpenRA.Network
 							session.Slots.Add(s.PlayerReference, s);
 							break;
 						case "DisabledSpawnPoints":
-							session.DisabledSpawnPoints = FieldLoader.GetValue<List<int>>("DisabledSpawnPoints", node.Value.Value);
+							session.DisabledSpawnPoints = FieldLoader.GetValue<HashSet<int>>("DisabledSpawnPoints", node.Value.Value);
 							break;
 					}
 				}
