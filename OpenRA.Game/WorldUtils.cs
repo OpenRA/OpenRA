@@ -87,10 +87,5 @@ namespace OpenRA
 				}
 			}
 		}
-
-		public static bool AreMutualAllies(Player a, Player b)
-		{
-			return a.RelationshipWith(b) == PlayerRelationship.Ally && b.RelationshipWith(a) == PlayerRelationship.Ally;
-		}
 	}
 }

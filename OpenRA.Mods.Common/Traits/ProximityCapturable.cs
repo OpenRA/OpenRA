@@ -120,12 +120,6 @@ namespace OpenRA.Mods.Common.Traits
 			return pc != null && pc.Types.Overlaps(Info.CaptorTypes);
 		}
 
-		bool IsClear(Actor self, Player captorOwner)
-		{
-			return actorsInRange
-				.All(a => a.Owner == captorOwner || WorldUtils.AreMutualAllies(a.Owner, captorOwner));
-		}
-
 		void UpdateOwnership()
 		{
 			if (Captured && Info.Permanent)
@@ -153,7 +147,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				if (Info.MustBeClear)
 				{
-					var isClear = IsClear(Self, captor.Owner);
+					var isClear = actorsInRange.All(a => captor.Owner.RelationshipWith(a.Owner) == PlayerRelationship.Ally);
 
 					// An enemy unit has wandered into the area, so we've lost control of it.
 					if (Captured && !isClear)
