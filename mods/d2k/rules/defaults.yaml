@@ -404,7 +404,7 @@
 		Type: Rectangle
 			TopLeft: -512, -512
 			BottomRight: 512, 512
-	Building:
+	D2kBuilding:
 		Dimensions: 1,1
 		Footprint: x
 		TerrainTypes: Rock, Concrete
@@ -451,11 +451,6 @@
 	GrantConditionOnPrerequisite@AUTOCONCRETE:
 		Condition: auto-concrete
 		Prerequisites: global-auto-concrete
-	DamagedByTerrain:
-		RequiresCondition: !auto-concrete
-		Damage: 500
-		DamageInterval: 100
-		Terrain: Rock
 	LaysTerrain:
 		RequiresCondition: auto-concrete
 		TerrainTypes: Rock
