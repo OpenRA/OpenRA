@@ -31,6 +31,8 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			foreach (var trait in self.TraitsImplementing<INotifyHarvesterAction>())
 				trait.Docked();
+			foreach (var nd in Refinery.TraitsImplementing<INotifyDocking>())
+				nd.Docked(Refinery, self);
 
 			wsb.PlayCustomAnimation(self, wda.DockSequence, () => wsb.PlayCustomAnimationRepeating(self, wda.DockLoopSequence));
 			dockAnimPlayed = true;
@@ -53,6 +55,10 @@ namespace OpenRA.Mods.Common.Activities
 					dockingState = DockingState.Complete;
 					foreach (var trait in self.TraitsImplementing<INotifyHarvesterAction>())
 						trait.Undocked();
+
+					if (Refinery.IsInWorld && !Refinery.IsDead)
+						foreach (var nd in Refinery.TraitsImplementing<INotifyDocking>())
+							nd.Undocked(Refinery, self);
 				});
 		}
 	}
