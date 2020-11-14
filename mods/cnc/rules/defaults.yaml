@@ -51,7 +51,7 @@
 		Conditions:
 			250: rank-veteran
 			500: rank-veteran
-			800: rank-veteran
+			750: rank-veteran
 		LevelUpImage: crate-effects
 	GrantCondition@RANK-ELITE:
 		RequiresCondition: rank-veteran >= 3
