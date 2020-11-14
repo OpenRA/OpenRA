@@ -13,6 +13,7 @@ using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
+using OpenRA.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
@@ -48,7 +49,7 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				WidgetUtils.DrawRGBA(ChromeProvider.GetImage("strategic", "critical_unowned"), offset + new float2(rb.Left + curX, rb.Top));
 
-				if (world.LocalPlayer != null && WorldUtils.AreMutualAllies(a.Owner, world.LocalPlayer))
+				if (world.LocalPlayer != null && a.Owner.RelationshipWith(world.LocalPlayer) == PlayerRelationship.Ally)
 					WidgetUtils.DrawRGBA(ChromeProvider.GetImage("strategic", "player_owned"), offset + new float2(rb.Left + curX, rb.Top));
 				else if (!a.Owner.NonCombatant)
 					WidgetUtils.DrawRGBA(ChromeProvider.GetImage("strategic", "enemy_owned"), offset + new float2(rb.Left + curX, rb.Top));
@@ -63,7 +64,7 @@ namespace OpenRA.Mods.Common.Widgets
 			if (pendingWinner == null) return;
 			var winnerSvc = pendingWinner.PlayerActor.Trait<StrategicVictoryConditions>();
 
-			var isVictory = pendingWinner == world.LocalPlayer || !WorldUtils.AreMutualAllies(pendingWinner, world.LocalPlayer);
+			var isVictory = pendingWinner.RelationshipWith(world.LocalPlayer) == PlayerRelationship.Ally;
 			var tc = "Strategic {0} in {1}".F(
 				isVictory ? "victory" : "defeat",
 				WidgetUtils.FormatTime(winnerSvc.TicksLeft, world.Timestep));

@@ -73,7 +73,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		public int Total { get { return AllPoints.Count(); } }
-		int Owned { get { return AllPoints.Count(a => WorldUtils.AreMutualAllies(player, a.Owner)); } }
+		int Owned { get { return AllPoints.Count(a => a.Owner.RelationshipWith(player) == PlayerRelationship.Ally); } }
 
 		public bool Holding { get { return Owned >= info.RatioRequired * Total / 100; } }
 
