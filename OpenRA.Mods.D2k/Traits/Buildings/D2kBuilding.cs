@@ -36,17 +36,27 @@ namespace OpenRA.Mods.D2k.Traits.Buildings
 		[Desc("Inflict damage down to the DamageThreshold when the actor gets created on damaging terrain.")]
 		public readonly bool StartOnThreshold = true;
 
+		[Desc("The terrain template to place when adding a concrete foundation. " +
+			"If the template is PickAny, then the actor footprint will be filled with this tile.")]
+		public readonly ushort ConcreteTemplate = 88;
+
+		[Desc("List of required prerequisites to place a terrain template.")]
+		public readonly string[] ConcretePrerequisites = { };
+
 		public override object Create(ActorInitializer init) { return new D2kBuilding(init, this); }
 	}
 
 	public class D2kBuilding : Building, ITick, INotifyCreated
 	{
 		readonly D2kBuildingInfo info;
+
+		BuildableTerrainLayer layer;
 		IHealth health;
 		int safeTiles;
 		int totalTiles;
 		int damageThreshold;
 		int damageTicks;
+		TechTree techTree;
 
 		public D2kBuilding(ActorInitializer init, D2kBuildingInfo info)
 			: base(init, info)
@@ -57,11 +67,50 @@ namespace OpenRA.Mods.D2k.Traits.Buildings
 		void INotifyCreated.Created(Actor self)
 		{
 			health = self.TraitOrDefault<IHealth>();
+			layer = self.World.WorldActor.TraitOrDefault<BuildableTerrainLayer>();
+			techTree = self.Owner.PlayerActor.TraitOrDefault<TechTree>();
 		}
 
 		protected override void AddedToWorld(Actor self)
 		{
 			base.AddedToWorld(self);
+
+			if (layer != null && (!info.ConcretePrerequisites.Any() || techTree == null || techTree.HasPrerequisites(info.ConcretePrerequisites)))
+			{
+				var map = self.World.Map;
+				var template = map.Rules.TileSet.Templates[info.ConcreteTemplate];
+				if (template.PickAny)
+				{
+					// Fill the footprint with random variants
+					foreach (var c in info.Tiles(self.Location))
+					{
+						if (!map.Contains(c) || map.CustomTerrain[c] != byte.MaxValue)
+							continue;
+
+						// Don't place under other buildings
+						if (self.World.ActorMap.GetActorsAt(c).Any(a => a != self && a.TraitOrDefault<Building>() != null))
+							continue;
+
+						var index = Game.CosmeticRandom.Next(template.TilesCount);
+						layer.AddTile(c, new TerrainTile(template.Id, (byte)index));
+					}
+				}
+				else
+				{
+					for (var i = 0; i < template.TilesCount; i++)
+					{
+						var c = self.Location + new CVec(i % template.Size.X, i / template.Size.X);
+						if (!map.Contains(c) || map.CustomTerrain[c] != byte.MaxValue)
+							continue;
+
+						// Don't place under other buildings
+						if (self.World.ActorMap.GetActorsAt(c).Any(a => a != self && a.TraitOrDefault<Building>() != null))
+							continue;
+
+						layer.AddTile(c, new TerrainTile(template.Id, (byte)i));
+					}
+				}
+			}
 
 			if (health == null)
 				return;

@@ -9,9 +9,6 @@
 	RequiresBuildableArea:
 		AreaTypes: building
 		Adjacent: 4
-	LaysTerrain:
-		Template: 88
-		TerrainTypes: Rock
 	Tooltip:
 		Name: Concrete
 		GenericName: Structure
@@ -63,9 +60,7 @@ construction_yard:
 		Footprint: xxx xxx ===
 		Dimensions: 3,3
 		LocalCenterOffset: 0,-512,0
-	LaysTerrain:
-		-RequiresCondition:
-	-GrantConditionOnPrerequisite@AUTOCONCRETE:
+		-ConcretePrerequisites:
 	WithBuildingBib:
 	Selectable:
 		Bounds: 96,64

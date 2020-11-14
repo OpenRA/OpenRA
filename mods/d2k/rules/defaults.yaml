@@ -409,6 +409,7 @@
 		Footprint: x
 		TerrainTypes: Rock, Concrete
 		BuildSounds: BUILD1.WAV
+		ConcretePrerequisites: global-auto-concrete
 	D2kActorPreviewPlaceBuildingPreview:
 		RequiresPrerequisites: !global-auto-concrete
 		OverridePalette: placebuilding
@@ -448,13 +449,6 @@
 		SellSounds: BUILD1.WAV
 	Guardable:
 		Range: 3c0
-	GrantConditionOnPrerequisite@AUTOCONCRETE:
-		Condition: auto-concrete
-		Prerequisites: global-auto-concrete
-	LaysTerrain:
-		RequiresCondition: auto-concrete
-		TerrainTypes: Rock
-		Template: 88
 	ThrowsShrapnel:
 		Weapons: Debris, Debris2, Debris3, Debris4
 		Pieces: 2, 5
