@@ -18,7 +18,7 @@ MCV:
 	Health:
 		HP: 120000
 	Repairable:
-		HpPerStep: 2182
+		HpPerStep: 1819
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -67,7 +67,7 @@ HARV:
 	Health:
 		HP: 62500
 	Repairable:
-		HpPerStep: 2537
+		HpPerStep: 2584
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -187,7 +187,7 @@ ARTY:
 	Health:
 		HP: 7500
 	Repairable:
-		HpPerStep: 569
+		HpPerStep: 568
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -396,7 +396,7 @@ LTNK:
 	Health:
 		HP: 34000
 	Repairable:
-		HpPerStep: 2273
+		HpPerStep: 2062
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -438,7 +438,7 @@ MTNK:
 	Health:
 		HP: 45000
 	Repairable:
-		HpPerStep: 2557
+		HpPerStep: 2274
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -484,7 +484,7 @@ HTNK:
 	Health:
 		HP: 87000
 	Repairable:
-		HpPerStep: 2637
+		HpPerStep: 2198
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -541,7 +541,7 @@ MSAM:
 	Health:
 		HP: 12000
 	Repairable:
-		HpPerStep: 546
+		HpPerStep: 606
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -646,7 +646,7 @@ STNK:
 	Health:
 		HP: 15000
 	Repairable:
-		HpPerStep: 758
+		HpPerStep: 682
 	Armor:
 		Type: Light
 	RevealsShroud:
