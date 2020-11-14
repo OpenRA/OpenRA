@@ -77,6 +77,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new RenameSmudgeSmokeFields(),
 				new RenameCircleContrast(),
 				new SplitDamagedByTerrain(),
+				new RemoveLaysTerrain(),
 				new RemoveBuildingInfluence(),
 			})
 		};
