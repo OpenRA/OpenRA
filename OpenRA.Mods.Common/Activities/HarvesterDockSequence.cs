@@ -70,12 +70,7 @@ namespace OpenRA.Mods.Common.Activities
 
 				case DockingState.Dock:
 					if (!IsCanceling && Refinery.IsInWorld && !Refinery.IsDead)
-					{
-						foreach (var nd in Refinery.TraitsImplementing<INotifyDocking>())
-							nd.Docked(Refinery, self);
-
 						OnStateDock(self);
-					}
 					else
 						dockingState = DockingState.Undock;
 
@@ -92,10 +87,6 @@ namespace OpenRA.Mods.Common.Activities
 					return false;
 
 				case DockingState.Complete:
-					if (Refinery.IsInWorld && !Refinery.IsDead)
-						foreach (var nd in Refinery.TraitsImplementing<INotifyDocking>())
-							nd.Undocked(Refinery, self);
-
 					Harv.LastLinkedProc = Harv.LinkedProc;
 					Harv.LinkProc(self, null);
 					if (IsDragRequired)
