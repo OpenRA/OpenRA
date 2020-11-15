@@ -111,8 +111,6 @@ namespace OpenRA.Mods.Common.Traits
 				var cell = self.World.Map.Clamp(self.World.Map.CellContaining(order.Target.CenterPosition));
 				if (!Info.MoveIntoShroud && !self.Owner.Shroud.IsExplored(cell))
 					return;
-
-				var target = Target.FromCell(self.World, cell);
 			}
 			else if (order.OrderString == "Enter")
 			{
@@ -121,7 +119,8 @@ namespace OpenRA.Mods.Common.Traits
 				if (order.Target.Type != TargetType.Actor)
 					return;
 
-				var targetActor = order.Target.Actor;
+				if (!AircraftCanEnter(order.Target.Actor))
+					return;
 			}
 			else
 				return;
