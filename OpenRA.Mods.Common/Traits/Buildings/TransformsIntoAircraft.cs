@@ -40,6 +40,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Cursor to display when unable to land at target building.")]
 		public readonly string EnterBlockedCursor = "enter-blocked";
 
+		[Desc("Color to use for the target line for regular move orders.")]
+		public readonly Color TargetLineColor = Color.Green;
+
 		public override object Create(ActorInitializer init) { return new TransformsIntoAircraft(init, this); }
 	}
 
@@ -135,7 +138,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!order.Queued)
 				activity.NextActivity?.Cancel(self);
 
-			activity.Queue(new IssueOrderAfterTransform(order.OrderString, order.Target, Color.Green));
+			activity.Queue(new IssueOrderAfterTransform(order.OrderString, order.Target, Info.TargetLineColor));
 
 			if (currentTransform == null)
 				self.QueueActivity(order.Queued, activity);
