@@ -28,6 +28,9 @@ namespace OpenRA.Mods.Common.Traits
 		[VoiceReference]
 		public readonly string Voice = "Action";
 
+		[Desc("Color to use for the target line.")]
+		public readonly Color TargetLineColor = Color.Green;
+
 		[Desc("Require the force-move modifier to display the enter cursor.")]
 		public readonly bool RequiresForceMove = false;
 
@@ -126,7 +129,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!order.Queued)
 				activity.NextActivity?.Cancel(self);
 
-			activity.Queue(new IssueOrderAfterTransform(order.OrderString, order.Target, Color.Green));
+			activity.Queue(new IssueOrderAfterTransform(order.OrderString, order.Target, Info.TargetLineColor));
 
 			if (currentTransform == null)
 				self.QueueActivity(order.Queued, activity);

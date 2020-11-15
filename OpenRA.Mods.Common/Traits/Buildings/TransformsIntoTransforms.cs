@@ -10,7 +10,6 @@
 #endregion
 
 using OpenRA.Mods.Common.Activities;
-using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -44,7 +43,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!order.Queued)
 				currentTransform.NextActivity?.Cancel(self);
 
-			currentTransform.Queue(new IssueOrderAfterTransform("DeployTransform", order.Target, Color.Green));
+			currentTransform.Queue(new IssueOrderAfterTransform("DeployTransform", order.Target));
 
 			self.ShowTargetLines();
 		}
