@@ -37,13 +37,6 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 
 			return preferredTargets.Random(owner.World.LocalRandom);
 		}
-
-		protected Actor ScanThreat(Squad owner, Actor teamLeader, WDist scanRadius)
-		{
-			var enemies = owner.World.FindActorsInCircle(teamLeader.CenterPosition, scanRadius)
-					.Where(a => owner.SquadManager.IsPreferredEnemyUnit(a) && owner.SquadManager.IsNotHiddenUnit(a));
-			return enemies.ClosestTo(teamLeader.CenterPosition);
-		}
 	}
 
 	class GroundUnitsIdleState : GroundStateBase, IState
@@ -88,7 +81,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 		const int MakeWayTicks = 2;
 
 		// Give tolerance for AI grouping team at start
-		int attemptsToAdvance = MaxAttemptsToAdvance * 3;
+		int failedAttempts = -(MaxAttemptsToAdvance * 2);
 		int makeWay = MakeWayTicks;
 		WPos lastPos = WPos.Zero;
 
@@ -112,15 +105,19 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 				}
 			}
 
-			// Initialize leader. Optimaze pathfinding by using leader.
+			// Initialize leader. Optimize pathfinding by using leader.
+			// Drop former "owner.Units.ClosestTo(owner.TargetActor.CenterPosition)",
+			// which is the shortest geometric distance, but it has no relation to pathfinding distance in map.
 			var leader = owner.Units.FirstOrDefault();
 			if (leader == null)
 				return;
 
-			// 1. Scanning if there is enemy around and switch to GroundUnitsAttackState if any.
+			// Switch to "GroundUnitsAttackState" if we encounter enemy units.
+			// This makes sure that the entire squad will stay together and fight, instead of splitting
+			// into two groups based on whether they were close enough for AttackMove to acquire the target.
 			var attackScanRadius = WDist.FromCells(owner.SquadManager.Info.AttackScanRadius);
 
-			var enemyActor = ScanThreat(owner, leader, attackScanRadius);
+			var enemyActor = owner.SquadManager.FindClosestEnemy(leader.CenterPosition, attackScanRadius);
 			if (enemyActor != null)
 			{
 				owner.TargetActor = enemyActor;
@@ -128,63 +125,63 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 				return;
 			}
 
-			// 2. Make sure the guide unit has not been blocked by the rest of the squad
-			if (attemptsToAdvance <= 0)
+			// Make sure the guide unit has not been blocked by the rest of the squad
+			if (failedAttempts >= MaxAttemptsToAdvance)
 			{
 				if (makeWay > 0)
 				{
 					owner.Bot.QueueOrder(new Order("AttackMove", leader, Target.FromCell(owner.World, owner.TargetActor.Location), false));
 
 					foreach (var a in owner.Units)
-					{
 						if (a != leader)
 							owner.Bot.QueueOrder(new Order("Scatter", a, false));
-					}
 
 					makeWay--;
 				}
 				else
 				{
-					// When going through is over, restore the check
-					attemptsToAdvance = MaxAttemptsToAdvance + MakeWayTicks;
+					// Give some tolerance for AI regrouping
+					failedAttempts = 0 - MakeWayTicks;
 					makeWay = MakeWayTicks;
 				}
 
 				return;
 			}
 
-			// 3. Check if the squad is stuck due to the map having a very twisted path
+			// Check if the squad is stuck due to the map having a very twisted path
 			// or currently bridge and tunnel from TS mod
-			if ((leader.CenterPosition - lastPos).LengthSquared <= 4)
-				attemptsToAdvance--;
+			if (leader.CenterPosition == lastPos)
+				failedAttempts++;
 			else
-				attemptsToAdvance = MaxAttemptsToAdvance;
+				failedAttempts = 0;
 
 			lastPos = leader.CenterPosition;
 
-			// 4. Since units have different movement speeds, they get separated while approaching the target.
-
+			// Since units have different movement speeds, they get separated while approaching the target.
 			// Let them regroup into tighter formation towards "leader".
 			//
-			// "groupArea" means the space the squad units will occupy (if 1 per Cell).
+			// "occupiedArea" means the space the squad units will occupy (if 1 per Cell).
 			// leader only stop when scope of "lookAround" is not covered all units;
 			// units in "unitsHurryUp"  will catch up, which keep the team tight while not stuck.
 			//
-			// Imagining "groupArea" takes up a a place shape like square, we need to draw a circle
-			// to cover the the enitire circle.
+			// Imagining "occupiedArea" takes up a a place shape like square,
+			// we need to draw a circle to cover the the enitire circle.
 			//
-			// PathGuide will check how many squad members are around
-			// to decide if it needs to continue. And units that need hurry up will try
-			// catch up before guide waiting.
+			// "Leader" will check how many squad members are around
+			// to decide if it needs to continue.
 			//
 			// However in practice because of the poor PF, squad tend to PF to a ellipse.
-			// "guideWaitCheck" now has the radius of two times of the circle mentioned before.
+			// "Leader" will have to check a circle with 5 x "occupiedArea" mentioned before
+			// to get the best regrouping gameplay, which is the "leaderWaitCheck".
+			//
+			// Units that need hurry up ("unitsHurryUp") will try catch up before Leader waiting,
+			// which can make squad members follows relatively tight without stucking "Leader".
 			var occupiedArea = (long)WDist.FromCells(owner.Units.Count).Length * 1024;
 
 			var unitsHurryUp = owner.Units.Where(a => (a.CenterPosition - leader.CenterPosition).LengthSquared >= occupiedArea * 2);
-			var guideWaitCheck = owner.Units.Any(a => (a.CenterPosition - leader.CenterPosition).LengthSquared > occupiedArea * 5);
+			var leaderWaitCheck = owner.Units.Any(a => (a.CenterPosition - leader.CenterPosition).LengthSquared > occupiedArea * 5);
 
-			if (guideWaitCheck)
+			if (leaderWaitCheck)
 				owner.Bot.QueueOrder(new Order("Stop", leader, false));
 			else
 				owner.Bot.QueueOrder(new Order("AttackMove", leader, Target.FromCell(owner.World, owner.TargetActor.Location), false));
