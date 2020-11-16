@@ -220,13 +220,13 @@ World:
 		ShortGameCheckboxDisplayOrder: 2
 		TechLevelDropdownDisplayOrder: 2
 		GameSpeedDropdownDisplayOrder: 3
-	CreateMPPlayers:
-	MPStartUnits@mcvonly:
+	CreateMapPlayers:
+	StartingUnits@mcvonly:
 		Class: none
 		ClassName: MCV Only
 		Factions: allies, england, france, germany, soviet, russia, ukraine
 		BaseActor: mcv
-	MPStartUnits@lightallies:
+	StartingUnits@lightallies:
 		Class: light
 		ClassName: Light Support
 		Factions: allies, england, france, germany
@@ -234,7 +234,7 @@ World:
 		SupportActors: e1,e1,e1,e3,e3,jeep,1tnk
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
-	MPStartUnits@lightsoviet:
+	StartingUnits@lightsoviet:
 		Class: light
 		ClassName: Light Support
 		Factions: soviet, russia, ukraine
@@ -242,7 +242,7 @@ World:
 		SupportActors: e1,e1,e1,e3,e3,apc,ftrk
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
-	MPStartUnits@heavyallies:
+	StartingUnits@heavyallies:
 		Class: heavy
 		ClassName: Heavy Support
 		Factions: allies, england, france, germany
@@ -250,7 +250,7 @@ World:
 		SupportActors: e1,e1,e1,e3,e3,jeep,1tnk,2tnk,2tnk,2tnk
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
-	MPStartUnits@heavysoviet:
+	StartingUnits@heavysoviet:
 		Class: heavy
 		ClassName: Heavy Support
 		Factions: soviet, russia, ukraine
@@ -258,9 +258,9 @@ World:
 		SupportActors: e1,e1,e1,e3,e3,apc,ftrk,3tnk,3tnk
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
-	MPStartLocations:
+	MapStartingLocations:
 		SeparateTeamSpawnsCheckboxDisplayOrder: 6
-	SpawnMPUnits:
+	SpawnStartingUnits:
 		DropdownDisplayOrder: 1
 	PathFinder:
 	ValidateOrder:

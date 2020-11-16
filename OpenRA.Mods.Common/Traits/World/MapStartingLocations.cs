@@ -20,7 +20,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Allows the map to have working spawnpoints. Also controls the 'Separate Team Spawns' checkbox in the lobby options.")]
-	public class MPStartLocationsInfo : TraitInfo, ILobbyOptions, IAssignSpawnPointsInfo
+	public class MapStartingLocationsInfo : TraitInfo, ILobbyOptions, IAssignSpawnPointsInfo
 	{
 		public readonly WDist InitialExploreRange = WDist.FromCells(5);
 
@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Display order for the spawn positions checkbox in the lobby.")]
 		public readonly int SeparateTeamSpawnsCheckboxDisplayOrder = 0;
 
-		public override object Create(ActorInitializer init) { return new MPStartLocations(this); }
+		public override object Create(ActorInitializer init) { return new MapStartingLocations(this); }
 
 		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(Ruleset rules)
 		{
@@ -103,15 +103,15 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class MPStartLocations : IWorldLoaded, INotifyCreated, IAssignSpawnPoints
+	public class MapStartingLocations : IWorldLoaded, INotifyCreated, IAssignSpawnPoints
 	{
-		readonly MPStartLocationsInfo info;
+		readonly MapStartingLocationsInfo info;
 		readonly Dictionary<int, Session.Client> occupiedSpawnPoints = new Dictionary<int, Session.Client>();
 		bool separateTeamSpawns;
 		CPos[] spawnLocations;
 		List<int> availableSpawnPoints;
 
-		public MPStartLocations(MPStartLocationsInfo info)
+		public MapStartingLocations(MapStartingLocationsInfo info)
 		{
 			this.info = info;
 		}

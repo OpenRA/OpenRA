@@ -4,8 +4,8 @@ Player:
 
 World:
 	-CrateSpawner:
-	-SpawnMPUnits:
-	-MPStartLocations:
+	-SpawnStartingUnits:
+	-MapStartingLocations:
 	ResourceType@Spice:
 		ValuePerUnit: 0
 	ActorSpawnManager:

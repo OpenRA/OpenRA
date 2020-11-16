@@ -166,15 +166,15 @@ World:
 		ShortGameCheckboxDisplayOrder: 2
 		TechLevelDropdownDisplayOrder: 2
 		GameSpeedDropdownDisplayOrder: 3
-	CreateMPPlayers:
-	MPStartLocations:
+	CreateMapPlayers:
+	MapStartingLocations:
 		SeparateTeamSpawnsCheckboxDisplayOrder: 6
-	MPStartUnits@mcv:
+	StartingUnits@mcv:
 		Class: none
 		ClassName: MCV Only
 		BaseActor: mcv
 		Factions: atreides, ordos, harkonnen
-	MPStartUnits@lightatreides:
+	StartingUnits@lightatreides:
 		Class: light
 		ClassName: Light Support
 		Factions: atreides
@@ -182,7 +182,7 @@ World:
 		SupportActors: light_inf, light_inf, light_inf, trooper, grenadier, trike, quad
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
-	MPStartUnits@lightharkonnen:
+	StartingUnits@lightharkonnen:
 		Class: light
 		ClassName: Light Support
 		Factions: harkonnen
@@ -190,7 +190,7 @@ World:
 		SupportActors: light_inf, light_inf, light_inf, trooper, trooper, trike, quad
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
-	MPStartUnits@lightordos:
+	StartingUnits@lightordos:
 		Class: light
 		ClassName: Light Support
 		Factions: ordos
@@ -198,7 +198,7 @@ World:
 		SupportActors: light_inf, light_inf, light_inf, trooper, engineer, raider, quad
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
-	MPStartUnits@heavyatreides:
+	StartingUnits@heavyatreides:
 		Class: heavy
 		ClassName: Heavy Support
 		Factions: atreides
@@ -206,7 +206,7 @@ World:
 		SupportActors: light_inf, light_inf, light_inf, trooper, grenadier, trike, combat_tank_a, missile_tank
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
-	MPStartUnits@heavyharkonnen:
+	StartingUnits@heavyharkonnen:
 		Class: heavy
 		ClassName: Heavy Support
 		Factions: harkonnen
@@ -214,7 +214,7 @@ World:
 		SupportActors: light_inf, light_inf, light_inf, trooper, engineer, quad, combat_tank_h, siege_tank
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
-	MPStartUnits@heavyordos:
+	StartingUnits@heavyordos:
 		Class: heavy
 		ClassName: Heavy Support
 		Factions: ordos
@@ -222,7 +222,7 @@ World:
 		SupportActors: light_inf, light_inf, light_inf, trooper, engineer, raider, combat_tank_o, missile_tank
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
-	SpawnMPUnits:
+	SpawnStartingUnits:
 		DropdownDisplayOrder: 1
 	PathFinder:
 	ValidateOrder:

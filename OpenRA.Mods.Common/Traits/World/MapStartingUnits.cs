@@ -14,8 +14,8 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	[Desc("Used by SpawnMPUnits. Attach these to the world actor. You can have multiple variants by adding @suffixes.")]
-	public class MPStartUnitsInfo : TraitInfo<MPStartUnits>
+	[Desc("Used by SpawnStartingUnits. Attach these to the world actor. You can have multiple variants by adding @suffixes.")]
+	public class StartingUnitsInfo : TraitInfo<StartingUnits>
 	{
 		[Desc("Internal class ID.")]
 		public readonly string Class = "none";
@@ -50,5 +50,5 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly WAngle? SupportActorsFacing = null;
 	}
 
-	public class MPStartUnits { }
+	public class StartingUnits { }
 }

@@ -3,7 +3,7 @@ World:
 		CheckboxEnabled: False
 		CheckboxLocked: True
 		CheckboxVisible: False
-	-SpawnMPUnits:
+	-SpawnStartingUnits:
 	MapBuildRadius:
 		AllyBuildRadiusCheckboxLocked: True
 		AllyBuildRadiusCheckboxEnabled: False
@@ -15,7 +15,7 @@ World:
 		TechLevelDropdownLocked: True
 		TechLevelDropdownVisible: False
 		TechLevel: unrestricted
-	MPStartLocations:
+	MapStartingLocations:
 		SeparateTeamSpawnsCheckboxVisible: false
 	Locomotor@LIGHTTRACKED:
 		WaitAverage: 1

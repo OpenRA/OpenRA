@@ -4,8 +4,8 @@ Player:
 World:
 	-CrateSpawner:
 	-StartGameNotification:
-	-SpawnMPUnits:
-	-MPStartLocations:
+	-SpawnStartingUnits:
+	-MapStartingLocations:
 	LuaScript:
 		Scripts: fields-of-green.lua
 	ResourceType@Tiberium:

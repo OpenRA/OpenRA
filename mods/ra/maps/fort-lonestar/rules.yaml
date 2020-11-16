@@ -4,7 +4,7 @@ World:
 		Maximum: 4
 		SpawnInterval: 1000
 		CrateActors: fortcrate
-	MPStartUnits@mcvonly:
+	StartingUnits@mcvonly:
 		BaseActor: tent
 	WeatherOverlay:
 		WindTick: 150, 550
@@ -31,7 +31,7 @@ World:
 	MapBuildRadius:
 		AllyBuildRadiusCheckboxVisible: False
 		BuildRadiusCheckboxVisible: False
-	SpawnMPUnits:
+	SpawnStartingUnits:
 		DropdownVisible: False
 	MapOptions:
 		TechLevelDropdownLocked: True
@@ -53,7 +53,7 @@ World:
 			endless: Endless mode
 		Default: hard
 		DisplayOrder: 5
-	MPStartLocations:
+	MapStartingLocations:
 		SeparateTeamSpawnsCheckboxEnabled: False
 		SeparateTeamSpawnsCheckboxLocked: True
 		SeparateTeamSpawnsCheckboxVisible: False

@@ -19,7 +19,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Attach this to the world actor.")]
-	public class CreateMPPlayersInfo : TraitInfo<CreateMPPlayers>, ICreatePlayersInfo
+	public class CreateMapPlayersInfo : TraitInfo<CreateMapPlayers>, ICreatePlayersInfo
 	{
 		/// <summary>
 		/// Returns a list of GameInformation.Players that matches the indexing of ICreatePlayers.CreatePlayers.
@@ -80,7 +80,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class CreateMPPlayers : ICreatePlayers
+	public class CreateMapPlayers : ICreatePlayers
 	{
 		void ICreatePlayers.CreatePlayers(World w, MersenneTwister playerRandom)
 		{

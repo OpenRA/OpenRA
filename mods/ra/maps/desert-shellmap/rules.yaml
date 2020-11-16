@@ -6,8 +6,8 @@ Player:
 
 World:
 	-CrateSpawner:
-	-SpawnMPUnits:
-	-MPStartLocations:
+	-SpawnStartingUnits:
+	-MapStartingLocations:
 	MusicPlaylist:
 		BackgroundMusic: intro
 		AllowMuteBackgroundMusic: true

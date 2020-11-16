@@ -1,9 +1,9 @@
 World:
 	LuaScript:
 		Scripts: oil-spill.lua
-	SpawnMPUnits:
+	SpawnStartingUnits:
 		DropdownVisible: False
-	MPStartUnits@mcvonly:
+	StartingUnits@mcvonly:
 		BaseActor: fcom
 
 FCOM:

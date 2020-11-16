@@ -7,8 +7,8 @@ World:
 		SpawnInterval: 125
 		CrateActors: unitcrate
 		InitialSpawnDelay: 0
-	-SpawnMPUnits:
-	-MPStartLocations:
+	-SpawnStartingUnits:
+	-MapStartingLocations:
 	MapBuildRadius:
 		AllyBuildRadiusCheckboxLocked: True
 		AllyBuildRadiusCheckboxEnabled: False
