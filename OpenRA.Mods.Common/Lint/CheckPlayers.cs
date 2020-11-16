@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.Lint
 				if (!string.IsNullOrWhiteSpace(player.Faction) && !factions.Contains(player.Faction))
 					emitError("Invalid faction {0} chosen for player {1}.".F(player.Faction, player.Name));
 
-			if (worldActor.HasTraitInfo<MPStartLocationsInfo>())
+			if (worldActor.HasTraitInfo<MapStartingLocationsInfo>())
 			{
 				var playerCount = players.Count(p => p.Value.Playable);
 				var spawns = new List<CPos>();

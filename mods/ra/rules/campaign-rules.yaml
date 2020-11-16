@@ -19,8 +19,8 @@ World:
 	CrateSpawner:
 		CheckboxEnabled: False
 		CheckboxLocked: True
-	-SpawnMPUnits:
-	-MPStartLocations:
+	-SpawnStartingUnits:
+	-MapStartingLocations:
 	ObjectivesPanel:
 		PanelName: MISSION_OBJECTIVES
 	MapBuildRadius:

@@ -1,6 +1,6 @@
 World:
-	-SpawnMPUnits:
-	-MPStartLocations:
+	-SpawnStartingUnits:
+	-MapStartingLocations:
 	-CrateSpawner:
 	ObjectivesPanel:
 		PanelName: MISSION_OBJECTIVES

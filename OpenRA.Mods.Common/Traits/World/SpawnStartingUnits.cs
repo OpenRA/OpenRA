@@ -19,7 +19,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Spawn base actor at the spawnpoint and support units in an annulus around the base actor. Both are defined at MPStartUnits. Attach this to the world actor.")]
-	public class SpawnMPUnitsInfo : TraitInfo, Requires<MPStartUnitsInfo>, ILobbyOptions
+	public class SpawnStartingUnitsInfo : TraitInfo, Requires<StartingUnitsInfo>, ILobbyOptions
 	{
 		public readonly string StartingUnitsClass = "none";
 
@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Traits
 			var startingUnits = new Dictionary<string, string>();
 
 			// Duplicate classes are defined for different race variants
-			foreach (var t in rules.Actors["world"].TraitInfos<MPStartUnitsInfo>())
+			foreach (var t in rules.Actors["world"].TraitInfos<StartingUnitsInfo>())
 				startingUnits[t.Class] = t.ClassName;
 
 			if (startingUnits.Any())
@@ -51,14 +51,14 @@ namespace OpenRA.Mods.Common.Traits
 					new ReadOnlyDictionary<string, string>(startingUnits), StartingUnitsClass, DropdownLocked);
 		}
 
-		public override object Create(ActorInitializer init) { return new SpawnMPUnits(this); }
+		public override object Create(ActorInitializer init) { return new SpawnStartingUnits(this); }
 	}
 
-	public class SpawnMPUnits : IWorldLoaded
+	public class SpawnStartingUnits : IWorldLoaded
 	{
-		readonly SpawnMPUnitsInfo info;
+		readonly SpawnStartingUnitsInfo info;
 
-		public SpawnMPUnits(SpawnMPUnitsInfo info)
+		public SpawnStartingUnits(SpawnStartingUnitsInfo info)
 		{
 			this.info = info;
 		}
@@ -75,7 +75,7 @@ namespace OpenRA.Mods.Common.Traits
 			var spawnClass = p.PlayerReference.StartingUnitsClass ?? w.LobbyInfo.GlobalSettings
 				.OptionOrDefault("startingunits", info.StartingUnitsClass);
 
-			var unitGroup = w.Map.Rules.Actors["world"].TraitInfos<MPStartUnitsInfo>()
+			var unitGroup = w.Map.Rules.Actors["world"].TraitInfos<StartingUnitsInfo>()
 				.Where(g => g.Class == spawnClass && g.Factions != null && g.Factions.Contains(p.Faction.InternalName))
 				.RandomOrDefault(w.SharedRandom);
 

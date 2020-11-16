@@ -293,13 +293,13 @@ World:
 		ShortGameCheckboxDisplayOrder: 2
 		TechLevelDropdownDisplayOrder: 2
 		GameSpeedDropdownDisplayOrder: 3
-	CreateMPPlayers:
-	MPStartUnits@MCV:
+	CreateMapPlayers:
+	StartingUnits@MCV:
 		Class: none
 		ClassName: MCV Only
 		Factions: gdi, nod
 		BaseActor: mcv
-	MPStartUnits@light.gdi:
+	StartingUnits@light.gdi:
 		Class: light
 		ClassName: Light
 		Factions: gdi
@@ -307,7 +307,7 @@ World:
 		SupportActors: e1,e1,e1,smech
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
-	MPStartUnits@light.nod:
+	StartingUnits@light.nod:
 		Class: light
 		ClassName: Light
 		Factions: nod
@@ -315,7 +315,7 @@ World:
 		SupportActors: e1,e1,e1,bggy
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
-	MPStartUnits@med.gdi:
+	StartingUnits@med.gdi:
 		Class: medium
 		ClassName: Medium
 		Factions: gdi
@@ -323,7 +323,7 @@ World:
 		SupportActors: e1,e1,e2,e2,jumpjet,smech
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
-	MPStartUnits@med.nod:
+	StartingUnits@med.nod:
 		Class: medium
 		ClassName: Medium
 		Factions: nod
@@ -331,7 +331,7 @@ World:
 		SupportActors: e1,e1,e3,e3,cyborg,bggy
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
-	MPStartUnits@heavy.gdi:
+	StartingUnits@heavy.gdi:
 		Class: heavy
 		ClassName: Heavy
 		Factions: gdi
@@ -339,7 +339,7 @@ World:
 		SupportActors: e1,e1,e2,e2,jumpjet,smech,smech,mmch
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
-	MPStartUnits@heavy.nod:
+	StartingUnits@heavy.nod:
 		Class: heavy
 		ClassName: Heavy
 		Factions: nod
@@ -347,9 +347,9 @@ World:
 		SupportActors: e1,e1,e3,e3,cyborg,bggy,bike,ttnk
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
-	MPStartLocations:
+	MapStartingLocations:
 		SeparateTeamSpawnsCheckboxDisplayOrder: 6
-	SpawnMPUnits:
+	SpawnStartingUnits:
 		DropdownDisplayOrder: 1
 	CrateSpawner:
 		Minimum: 1
