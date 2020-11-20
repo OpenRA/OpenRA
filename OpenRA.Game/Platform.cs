@@ -203,12 +203,6 @@ namespace OpenRA
 			return path;
 		}
 
-		/// <summary>Replace special character prefixes with full paths.</summary>
-		public static string ResolvePath(params string[] path)
-		{
-			return ResolvePath(Path.Combine(path));
-		}
-
 		/// <summary>
 		/// Replace the full path prefix with the special notation characters ^ or .
 		/// and transforms \ path separators to / on Windows
