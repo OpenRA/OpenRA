@@ -45,18 +45,5 @@ namespace OpenRA.Test
 			Assert.That(Platform.ResolvePath("testpath"),
 				Is.EqualTo("testpath"));
 		}
-
-		[TestCase(TestName = "Returns encoded paths")]
-		public void UnresolvePath()
-		{
-			Assert.That(Platform.UnresolvePath(Path.Combine(supportDir, "testpath")),
-				Is.EqualTo("^testpath"));
-
-			Assert.That(Platform.UnresolvePath(Path.Combine(gameDir, "testpath")),
-				Is.EqualTo("./testpath"));
-
-			Assert.That(Platform.UnresolvePath("testpath"),
-				Is.EqualTo("testpath"));
-		}
 	}
 }

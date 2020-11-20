@@ -201,26 +201,5 @@ namespace OpenRA
 
 			return path;
 		}
-
-		/// <summary>
-		/// Replace the full path prefix with the special notation characters ^ or .
-		/// and transforms \ path separators to / on Windows
-		/// </summary>
-		public static string UnresolvePath(string path)
-		{
-			// Use a case insensitive comparison on windows to avoid problems
-			// with inconsistent drive letter case
-			var compare = CurrentPlatform == PlatformType.Windows ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal;
-			if (path.StartsWith(SupportDir, compare))
-				path = "^" + path.Substring(SupportDir.Length);
-
-			if (path.StartsWith(GameDir, compare))
-				path = "./" + path.Substring(GameDir.Length);
-
-			if (CurrentPlatform == PlatformType.Windows)
-				path = path.Replace('\\', '/');
-
-			return path;
-		}
 	}
 }
