@@ -34,10 +34,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			public readonly string DisplayName;
 			public readonly MapClassification Classification;
 
-			public SaveDirectory(Folder folder, MapClassification classification)
+			public SaveDirectory(Folder folder, string displayName, MapClassification classification)
 			{
 				Folder = folder;
-				DisplayName = Platform.UnresolvePath(Folder.Name);
+				DisplayName = displayName;
 				Classification = classification;
 			}
 		}
@@ -103,7 +103,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							// Do nothing: we just want to test whether we can create the file
 						}
 
-						writableDirectories.Add(new SaveDirectory(folder, kv.Value));
+						writableDirectories.Add(new SaveDirectory(folder, kv.Value.ToString(), kv.Value));
 					}
 					catch
 					{
