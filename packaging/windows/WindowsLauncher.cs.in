@@ -178,7 +178,7 @@ namespace OpenRA
 		{
 			try
 			{
-				Process.Start(Platform.ResolvePath("^", "Logs"));
+				Process.Start(Path.Combine(Platform.SupportDir, "Logs"));
 			}
 			catch { }
 		}

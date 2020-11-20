@@ -531,7 +531,7 @@ namespace OpenRA.Server
 
 						if (Type == ServerType.Dedicated)
 						{
-							var motdFile = Platform.ResolvePath(Platform.SupportDirPrefix, "motd.txt");
+							var motdFile = Path.Combine(Platform.SupportDir, "motd.txt");
 							if (!File.Exists(motdFile))
 								File.WriteAllText(motdFile, "Welcome, have fun and good luck!");
 
@@ -930,8 +930,8 @@ namespace OpenRA.Server
 								while ((invalidIndex = filename.IndexOfAny(invalidChars)) != -1)
 									filename = filename.Remove(invalidIndex, 1);
 
-								var baseSavePath = Platform.ResolvePath(
-									Platform.SupportDirPrefix,
+								var baseSavePath = Path.Combine(
+									Platform.SupportDir,
 									"Saves",
 									ModData.Manifest.Id,
 									ModData.Manifest.Metadata.Version);
@@ -958,8 +958,8 @@ namespace OpenRA.Server
 							while ((invalidIndex = filename.IndexOfAny(invalidChars)) != -1)
 								filename = filename.Remove(invalidIndex, 1);
 
-							var savePath = Platform.ResolvePath(
-								Platform.SupportDirPrefix,
+							var savePath = Path.Combine(
+								Platform.SupportDir,
 								"Saves",
 								ModData.Manifest.Id,
 								ModData.Manifest.Metadata.Version,
