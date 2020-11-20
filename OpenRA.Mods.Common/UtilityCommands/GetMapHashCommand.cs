@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		[Desc("MAPFILE", "Generate hash of specified oramap file.")]
 		void IUtilityCommand.Run(Utility utility, string[] args)
 		{
-			using (var package = new Folder(".").OpenPackage(args[1], utility.ModData.ModFiles))
+			using (var package = new Folder(Platform.GameDir).OpenPackage(args[1], utility.ModData.ModFiles))
 				Console.WriteLine(Map.ComputeUID(package));
 		}
 	}
