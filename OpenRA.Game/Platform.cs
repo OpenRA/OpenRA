@@ -22,7 +22,6 @@ namespace OpenRA
 
 	public static class Platform
 	{
-		public const string SupportDirPrefix = "^";
 		public static PlatformType CurrentPlatform { get { return currentPlatform.Value; } }
 		public static readonly Guid SessionGUID = Guid.NewGuid();
 
@@ -190,7 +189,7 @@ namespace OpenRA
 			path = path.TrimEnd(' ', '\t');
 
 			// Paths starting with ^ are relative to the support dir
-			if (IsPathRelativeToSupportDirectory(path))
+			if (path.StartsWith("^", StringComparison.Ordinal))
 				path = SupportDir + path.Substring(1);
 
 			// Paths starting with . are relative to the game dir
@@ -213,7 +212,7 @@ namespace OpenRA
 			// with inconsistent drive letter case
 			var compare = CurrentPlatform == PlatformType.Windows ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal;
 			if (path.StartsWith(SupportDir, compare))
-				path = SupportDirPrefix + path.Substring(SupportDir.Length);
+				path = "^" + path.Substring(SupportDir.Length);
 
 			if (path.StartsWith(GameDir, compare))
 				path = "./" + path.Substring(GameDir.Length);
@@ -222,11 +221,6 @@ namespace OpenRA
 				path = path.Replace('\\', '/');
 
 			return path;
-		}
-
-		public static bool IsPathRelativeToSupportDirectory(string path)
-		{
-			return path.StartsWith(SupportDirPrefix, StringComparison.Ordinal);
 		}
 	}
 }
