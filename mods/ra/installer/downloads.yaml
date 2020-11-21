@@ -2,96 +2,96 @@ quickinstall: Quick Install Package
 	SHA1: 44241f68e69db9511db82cf83c174737ccda300b
 	MirrorList: http://www.openra.net/packages/ra-quickinstall-mirrors.txt
 	Extract:
-		^Content/ra/v2/allies.mix: allies.mix
-		^Content/ra/v2/conquer.mix: conquer.mix
-		^Content/ra/v2/hires.mix: hires.mix
-		^Content/ra/v2/interior.mix: interior.mix
-		^Content/ra/v2/local.mix: local.mix
-		^Content/ra/v2/lores.mix: lores.mix
-		^Content/ra/v2/russian.mix: russian.mix
-		^Content/ra/v2/snow.mix: snow.mix
-		^Content/ra/v2/sounds.mix: sounds.mix
-		^Content/ra/v2/speech.mix: speech.mix
-		^Content/ra/v2/temperat.mix: temperat.mix
-		^Content/ra/v2/expand/chrotnk1.aud: expand/chrotnk1.aud
-		^Content/ra/v2/expand/expand2.mix: expand/expand2.mix
-		^Content/ra/v2/expand/fixit1.aud: expand/fixit1.aud
-		^Content/ra/v2/expand/hires1.mix: expand/hires1.mix
-		^Content/ra/v2/expand/jburn1.aud: expand/jburn1.aud
-		^Content/ra/v2/expand/jchrge1.aud: expand/jchrge1.aud
-		^Content/ra/v2/expand/jcrisp1.aud: expand/jcrisp1.aud
-		^Content/ra/v2/expand/jdance1.aud: expand/jdance1.aud
-		^Content/ra/v2/expand/jjuice1.aud: expand/jjuice1.aud
-		^Content/ra/v2/expand/jjump1.aud: expand/jjump1.aud
-		^Content/ra/v2/expand/jlight1.aud: expand/jlight1.aud
-		^Content/ra/v2/expand/jpower1.aud: expand/jpower1.aud
-		^Content/ra/v2/expand/jshock1.aud: expand/jshock1.aud
-		^Content/ra/v2/expand/jyes1.aud: expand/jyes1.aud
-		^Content/ra/v2/expand/lores1.mix: expand/lores1.mix
-		^Content/ra/v2/expand/madchrg2.aud: expand/madchrg2.aud
-		^Content/ra/v2/expand/madexplo.aud: expand/madexplo.aud
-		^Content/ra/v2/expand/mboss1.aud: expand/mboss1.aud
-		^Content/ra/v2/expand/mhear1.aud: expand/mhear1.aud
-		^Content/ra/v2/expand/mhotdig1.aud: expand/mhotdig1.aud
-		^Content/ra/v2/expand/mhowdy1.aud: expand/mhowdy1.aud
-		^Content/ra/v2/expand/mhuh1.aud: expand/mhuh1.aud
-		^Content/ra/v2/expand/mlaff1.aud: expand/mlaff1.aud
-		^Content/ra/v2/expand/mrise1.aud: expand/mrise1.aud
-		^Content/ra/v2/expand/mwrench1.aud: expand/mwrench1.aud
-		^Content/ra/v2/expand/myeehaw1.aud: expand/myeehaw1.aud
-		^Content/ra/v2/expand/myes1.aud: expand/myes1.aud
-		^Content/ra/v2/cnc/desert.mix: cnc/desert.mix
+		^SupportDir|Content/ra/v2/allies.mix: allies.mix
+		^SupportDir|Content/ra/v2/conquer.mix: conquer.mix
+		^SupportDir|Content/ra/v2/hires.mix: hires.mix
+		^SupportDir|Content/ra/v2/interior.mix: interior.mix
+		^SupportDir|Content/ra/v2/local.mix: local.mix
+		^SupportDir|Content/ra/v2/lores.mix: lores.mix
+		^SupportDir|Content/ra/v2/russian.mix: russian.mix
+		^SupportDir|Content/ra/v2/snow.mix: snow.mix
+		^SupportDir|Content/ra/v2/sounds.mix: sounds.mix
+		^SupportDir|Content/ra/v2/speech.mix: speech.mix
+		^SupportDir|Content/ra/v2/temperat.mix: temperat.mix
+		^SupportDir|Content/ra/v2/expand/chrotnk1.aud: expand/chrotnk1.aud
+		^SupportDir|Content/ra/v2/expand/expand2.mix: expand/expand2.mix
+		^SupportDir|Content/ra/v2/expand/fixit1.aud: expand/fixit1.aud
+		^SupportDir|Content/ra/v2/expand/hires1.mix: expand/hires1.mix
+		^SupportDir|Content/ra/v2/expand/jburn1.aud: expand/jburn1.aud
+		^SupportDir|Content/ra/v2/expand/jchrge1.aud: expand/jchrge1.aud
+		^SupportDir|Content/ra/v2/expand/jcrisp1.aud: expand/jcrisp1.aud
+		^SupportDir|Content/ra/v2/expand/jdance1.aud: expand/jdance1.aud
+		^SupportDir|Content/ra/v2/expand/jjuice1.aud: expand/jjuice1.aud
+		^SupportDir|Content/ra/v2/expand/jjump1.aud: expand/jjump1.aud
+		^SupportDir|Content/ra/v2/expand/jlight1.aud: expand/jlight1.aud
+		^SupportDir|Content/ra/v2/expand/jpower1.aud: expand/jpower1.aud
+		^SupportDir|Content/ra/v2/expand/jshock1.aud: expand/jshock1.aud
+		^SupportDir|Content/ra/v2/expand/jyes1.aud: expand/jyes1.aud
+		^SupportDir|Content/ra/v2/expand/lores1.mix: expand/lores1.mix
+		^SupportDir|Content/ra/v2/expand/madchrg2.aud: expand/madchrg2.aud
+		^SupportDir|Content/ra/v2/expand/madexplo.aud: expand/madexplo.aud
+		^SupportDir|Content/ra/v2/expand/mboss1.aud: expand/mboss1.aud
+		^SupportDir|Content/ra/v2/expand/mhear1.aud: expand/mhear1.aud
+		^SupportDir|Content/ra/v2/expand/mhotdig1.aud: expand/mhotdig1.aud
+		^SupportDir|Content/ra/v2/expand/mhowdy1.aud: expand/mhowdy1.aud
+		^SupportDir|Content/ra/v2/expand/mhuh1.aud: expand/mhuh1.aud
+		^SupportDir|Content/ra/v2/expand/mlaff1.aud: expand/mlaff1.aud
+		^SupportDir|Content/ra/v2/expand/mrise1.aud: expand/mrise1.aud
+		^SupportDir|Content/ra/v2/expand/mwrench1.aud: expand/mwrench1.aud
+		^SupportDir|Content/ra/v2/expand/myeehaw1.aud: expand/myeehaw1.aud
+		^SupportDir|Content/ra/v2/expand/myes1.aud: expand/myes1.aud
+		^SupportDir|Content/ra/v2/cnc/desert.mix: cnc/desert.mix
 
 basefiles: Base Freeware Content
 	SHA1: aa022b208a3b45b4a45c00fdae22ccf3c6de3e5c
 	MirrorList: http://www.openra.net/packages/ra-base-mirrors.txt
 	Extract:
-		^Content/ra/v2/allies.mix: allies.mix
-		^Content/ra/v2/conquer.mix: conquer.mix
-		^Content/ra/v2/hires.mix: hires.mix
-		^Content/ra/v2/interior.mix: interior.mix
-		^Content/ra/v2/local.mix: local.mix
-		^Content/ra/v2/lores.mix: lores.mix
-		^Content/ra/v2/russian.mix: russian.mix
-		^Content/ra/v2/snow.mix: snow.mix
-		^Content/ra/v2/sounds.mix: sounds.mix
-		^Content/ra/v2/speech.mix: speech.mix
-		^Content/ra/v2/temperat.mix: temperat.mix
+		^SupportDir|Content/ra/v2/allies.mix: allies.mix
+		^SupportDir|Content/ra/v2/conquer.mix: conquer.mix
+		^SupportDir|Content/ra/v2/hires.mix: hires.mix
+		^SupportDir|Content/ra/v2/interior.mix: interior.mix
+		^SupportDir|Content/ra/v2/local.mix: local.mix
+		^SupportDir|Content/ra/v2/lores.mix: lores.mix
+		^SupportDir|Content/ra/v2/russian.mix: russian.mix
+		^SupportDir|Content/ra/v2/snow.mix: snow.mix
+		^SupportDir|Content/ra/v2/sounds.mix: sounds.mix
+		^SupportDir|Content/ra/v2/speech.mix: speech.mix
+		^SupportDir|Content/ra/v2/temperat.mix: temperat.mix
 
 aftermath: Aftermath Expansion Files
 	SHA1: d511d4363b485e11c63eecf96d4365d42ec4ef5e
 	MirrorList: http://www.openra.net/packages/ra-aftermath-mirrors.txt
 	Extract:
-		^Content/ra/v2/expand/chrotnk1.aud: expand/chrotnk1.aud
-		^Content/ra/v2/expand/expand2.mix: expand/expand2.mix
-		^Content/ra/v2/expand/fixit1.aud: expand/fixit1.aud
-		^Content/ra/v2/expand/hires1.mix: expand/hires1.mix
-		^Content/ra/v2/expand/jburn1.aud: expand/jburn1.aud
-		^Content/ra/v2/expand/jchrge1.aud: expand/jchrge1.aud
-		^Content/ra/v2/expand/jcrisp1.aud: expand/jcrisp1.aud
-		^Content/ra/v2/expand/jdance1.aud: expand/jdance1.aud
-		^Content/ra/v2/expand/jjuice1.aud: expand/jjuice1.aud
-		^Content/ra/v2/expand/jjump1.aud: expand/jjump1.aud
-		^Content/ra/v2/expand/jlight1.aud: expand/jlight1.aud
-		^Content/ra/v2/expand/jpower1.aud: expand/jpower1.aud
-		^Content/ra/v2/expand/jshock1.aud: expand/jshock1.aud
-		^Content/ra/v2/expand/jyes1.aud: expand/jyes1.aud
-		^Content/ra/v2/expand/lores1.mix: expand/lores1.mix
-		^Content/ra/v2/expand/madchrg2.aud: expand/madchrg2.aud
-		^Content/ra/v2/expand/madexplo.aud: expand/madexplo.aud
-		^Content/ra/v2/expand/mboss1.aud: expand/mboss1.aud
-		^Content/ra/v2/expand/mhear1.aud: expand/mhear1.aud
-		^Content/ra/v2/expand/mhotdig1.aud: expand/mhotdig1.aud
-		^Content/ra/v2/expand/mhowdy1.aud: expand/mhowdy1.aud
-		^Content/ra/v2/expand/mhuh1.aud: expand/mhuh1.aud
-		^Content/ra/v2/expand/mlaff1.aud: expand/mlaff1.aud
-		^Content/ra/v2/expand/mrise1.aud: expand/mrise1.aud
-		^Content/ra/v2/expand/mwrench1.aud: expand/mwrench1.aud
-		^Content/ra/v2/expand/myeehaw1.aud: expand/myeehaw1.aud
-		^Content/ra/v2/expand/myes1.aud: expand/myes1.aud
+		^SupportDir|Content/ra/v2/expand/chrotnk1.aud: expand/chrotnk1.aud
+		^SupportDir|Content/ra/v2/expand/expand2.mix: expand/expand2.mix
+		^SupportDir|Content/ra/v2/expand/fixit1.aud: expand/fixit1.aud
+		^SupportDir|Content/ra/v2/expand/hires1.mix: expand/hires1.mix
+		^SupportDir|Content/ra/v2/expand/jburn1.aud: expand/jburn1.aud
+		^SupportDir|Content/ra/v2/expand/jchrge1.aud: expand/jchrge1.aud
+		^SupportDir|Content/ra/v2/expand/jcrisp1.aud: expand/jcrisp1.aud
+		^SupportDir|Content/ra/v2/expand/jdance1.aud: expand/jdance1.aud
+		^SupportDir|Content/ra/v2/expand/jjuice1.aud: expand/jjuice1.aud
+		^SupportDir|Content/ra/v2/expand/jjump1.aud: expand/jjump1.aud
+		^SupportDir|Content/ra/v2/expand/jlight1.aud: expand/jlight1.aud
+		^SupportDir|Content/ra/v2/expand/jpower1.aud: expand/jpower1.aud
+		^SupportDir|Content/ra/v2/expand/jshock1.aud: expand/jshock1.aud
+		^SupportDir|Content/ra/v2/expand/jyes1.aud: expand/jyes1.aud
+		^SupportDir|Content/ra/v2/expand/lores1.mix: expand/lores1.mix
+		^SupportDir|Content/ra/v2/expand/madchrg2.aud: expand/madchrg2.aud
+		^SupportDir|Content/ra/v2/expand/madexplo.aud: expand/madexplo.aud
+		^SupportDir|Content/ra/v2/expand/mboss1.aud: expand/mboss1.aud
+		^SupportDir|Content/ra/v2/expand/mhear1.aud: expand/mhear1.aud
+		^SupportDir|Content/ra/v2/expand/mhotdig1.aud: expand/mhotdig1.aud
+		^SupportDir|Content/ra/v2/expand/mhowdy1.aud: expand/mhowdy1.aud
+		^SupportDir|Content/ra/v2/expand/mhuh1.aud: expand/mhuh1.aud
+		^SupportDir|Content/ra/v2/expand/mlaff1.aud: expand/mlaff1.aud
+		^SupportDir|Content/ra/v2/expand/mrise1.aud: expand/mrise1.aud
+		^SupportDir|Content/ra/v2/expand/mwrench1.aud: expand/mwrench1.aud
+		^SupportDir|Content/ra/v2/expand/myeehaw1.aud: expand/myeehaw1.aud
+		^SupportDir|Content/ra/v2/expand/myes1.aud: expand/myes1.aud
 
 cncdesert: C&C Desert Tileset
 	SHA1: 039849f16e39e4722e8c838a393c8a0d6529fd59
 	MirrorList: http://www.openra.net/packages/ra-cncdesert-mirrors.txt
 	Extract:
-		^Content/ra/v2/cnc/desert.mix: cnc/desert.mix
+		^SupportDir|Content/ra/v2/cnc/desert.mix: cnc/desert.mix

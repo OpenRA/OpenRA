@@ -7,13 +7,13 @@ Metadata:
 PackageFormats: D2kSoundResources
 
 Packages:
-	~^Content/d2k/v2/
-	~^Content/d2k/v2/GAMESFX
-	~^Content/d2k/v2/Movies
-	~^Content/d2k/v2/Music
-	.
+	~^SupportDir|Content/d2k/v2/
+	~^SupportDir|Content/d2k/v2/GAMESFX
+	~^SupportDir|Content/d2k/v2/Movies
+	~^SupportDir|Content/d2k/v2/Music
+	^EngineDir
 	$d2k: d2k
-	./mods/common: common
+	^EngineDir|mods/common: common
 
 	~SOUND.RS
 	d2k|bits
@@ -23,7 +23,7 @@ Packages:
 
 MapFolders:
 	d2k|maps: System
-	~^maps/d2k/{DEV_VERSION}: User
+	~^SupportDir|maps/d2k/{DEV_VERSION}: User
 
 Rules:
 	d2k|rules/misc.yaml
@@ -239,20 +239,20 @@ ModContent:
 	QuickDownload: quickinstall
 	Packages:
 		base: Base Game Files
-			TestFiles: ^Content/d2k/v2/BLOXBASE.R8, ^Content/d2k/v2/BLOXBAT.R8, ^Content/d2k/v2/BLOXBGBS.R8, ^Content/d2k/v2/BLOXICE.R8, ^Content/d2k/v2/BLOXTREE.R8, ^Content/d2k/v2/BLOXWAST.R8, ^Content/d2k/v2/SOUND.RS, ^Content/d2k/v2/PALETTE.BIN, ^Content/d2k/v2/FONT.BIN,  ^Content/d2k/v2/FONTCOL.FNT,  ^Content/d2k/v2/FONTCOL.FPL
+			TestFiles: ^SupportDir|Content/d2k/v2/BLOXBASE.R8, ^SupportDir|Content/d2k/v2/BLOXBAT.R8, ^SupportDir|Content/d2k/v2/BLOXBGBS.R8, ^SupportDir|Content/d2k/v2/BLOXICE.R8, ^SupportDir|Content/d2k/v2/BLOXTREE.R8, ^SupportDir|Content/d2k/v2/BLOXWAST.R8, ^SupportDir|Content/d2k/v2/SOUND.RS, ^SupportDir|Content/d2k/v2/PALETTE.BIN, ^SupportDir|Content/d2k/v2/FONT.BIN,  ^SupportDir|Content/d2k/v2/FONTCOL.FNT,  ^SupportDir|Content/d2k/v2/FONTCOL.FPL
 			Sources: d2k-a, d2k-a-linux, d2k-b, d2k-b-linux, d2k-c, d2k-c-linux, d2k-d, d2k-d-linux, d2k-e, d2k-e-linux, gruntmods
 			Required: true
 			Download: basefiles
 		patch: 1.06 Patch Content
-			TestFiles: ^Content/d2k/v2/DATA.R8, ^Content/d2k/v2/BLOXXMAS.R8
+			TestFiles: ^SupportDir|Content/d2k/v2/DATA.R8, ^SupportDir|Content/d2k/v2/BLOXXMAS.R8
 			Sources: gruntmods
 			Required: true
 			Download: patch106
 		music: Game Music
-			TestFiles: ^Content/d2k/v2/Music/AMBUSH.AUD
+			TestFiles: ^SupportDir|Content/d2k/v2/Music/AMBUSH.AUD
 			Sources: d2k-a, d2k-a-linux, d2k-b, d2k-b-linux, d2k-c, d2k-c-linux, d2k-d, d2k-d-linux, d2k-e, d2k-e-linux, gruntmods
 		movies: Campaign Briefings
-			TestFiles: ^Content/d2k/v2/Movies/A_BR01_E.VQA
+			TestFiles: ^SupportDir|Content/d2k/v2/Movies/A_BR01_E.VQA
 			Sources: d2k-a, d2k-a-linux, d2k-b, d2k-b-linux, d2k-c, d2k-c-linux, d2k-d, d2k-d-linux, d2k-e, d2k-e-linux
 	Downloads:
 		d2k|installer/downloads.yaml
