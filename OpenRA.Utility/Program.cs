@@ -40,6 +40,10 @@ namespace OpenRA
 	{
 		static void Main(string[] args)
 		{
+			var engineDir = Environment.GetEnvironmentVariable("ENGINE_DIR");
+			if (!string.IsNullOrEmpty(engineDir))
+				Platform.OverrideEngineDir(engineDir);
+
 			Log.AddChannel("perf", null);
 			Log.AddChannel("debug", null);
 

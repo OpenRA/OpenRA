@@ -121,7 +121,7 @@ namespace OpenRA
 				mods[key] = mod;
 		}
 
-		internal void Register(Manifest mod, string launchPath, ModRegistration registration)
+		internal void Register(Manifest mod, string launchPath, IEnumerable<string> launchArgs, ModRegistration registration)
 		{
 			if (mod.Metadata.Hidden)
 				return;
@@ -133,7 +133,7 @@ namespace OpenRA
 				new MiniYamlNode("Version", mod.Metadata.Version),
 				new MiniYamlNode("Title", mod.Metadata.Title),
 				new MiniYamlNode("LaunchPath", launchPath),
-				new MiniYamlNode("LaunchArgs", "Game.Mod=" + mod.Id)
+				new MiniYamlNode("LaunchArgs", new[] { "Game.Mod=" + mod.Id }.Concat(launchArgs).JoinWith(", "))
 			}));
 
 			using (var stream = mod.Package.GetStream("icon.png"))
