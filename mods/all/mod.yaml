@@ -4,16 +4,16 @@ Metadata:
 	Hidden: true
 
 Packages:
-	.
+	^EngineDir
 
 Cursors:
 
 Chrome:
 
 Assemblies:
-	./mods/common/OpenRA.Mods.Common.dll
-	./mods/common/OpenRA.Mods.Cnc.dll
-	./mods/d2k/OpenRA.Mods.D2k.dll
+	^EngineDir|mods/common/OpenRA.Mods.Common.dll
+	^EngineDir|mods/common/OpenRA.Mods.Cnc.dll
+	^EngineDir|mods/d2k/OpenRA.Mods.D2k.dll
 
 ChromeLayout:
 

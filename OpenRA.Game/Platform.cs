@@ -188,16 +188,17 @@ namespace OpenRA
 		{
 			path = path.TrimEnd(' ', '\t');
 
-			// Paths starting with ^ are relative to the support dir
-			if (path.StartsWith("^", StringComparison.Ordinal))
-				path = SupportDir + path.Substring(1);
+			if (path == "^SupportDir")
+				return SupportDir;
 
-			// Paths starting with . are relative to the game dir
-			if (path == ".")
+			if (path == "^EngineDir")
 				return EngineDir;
 
-			if (path.StartsWith("./", StringComparison.Ordinal) || path.StartsWith(".\\", StringComparison.Ordinal))
-				path = EngineDir + path.Substring(2);
+			if (path.StartsWith("^SupportDir|", StringComparison.Ordinal))
+				path = SupportDir + path.Substring(12);
+
+			if (path.StartsWith("^EngineDir|", StringComparison.Ordinal))
+				path = EngineDir + path.Substring(11);
 
 			return path;
 		}

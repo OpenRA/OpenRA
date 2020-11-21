@@ -4,9 +4,9 @@ Metadata:
 	Hidden: true
 
 Packages:
-	.
-	./mods/modcontent: modcontent
-	./mods/common: common
+	^EngineDir
+	^EngineDir|mods/modcontent: modcontent
+	^EngineDir|mods/common: common
 
 Rules:
 	modcontent|rules.yaml
@@ -27,9 +27,9 @@ Notifications:
 	modcontent|notifications.yaml
 
 LoadScreen: ModContentLoadScreen
-	Image: ./mods/modcontent/chrome.png
-	Image2x: ./mods/modcontent/chrome-2x.png
-	Image3x: ./mods/modcontent/chrome-3x.png
+	Image: ^EngineDir|mods/modcontent/chrome.png
+	Image2x: ^EngineDir|mods/modcontent/chrome-2x.png
+	Image3x: ^EngineDir|mods/modcontent/chrome-3x.png
 
 ChromeMetrics:
 	common|metrics.yaml

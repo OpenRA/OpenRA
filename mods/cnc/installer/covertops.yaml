@@ -4,11 +4,11 @@ covertops: Covert Operations Expansion (English)
 		CONQUER.MIX: 713b53fa4c188ca9619c6bbeadbfc86513704266
 	Install:
 		copy: .
-			^Content/cnc/scores-covertops.mix: SCORES.MIX
+			^SupportDir|Content/cnc/scores-covertops.mix: SCORES.MIX
 covertops-linux: Covert Operations Expansion (English)
 	IDFiles:
 		game/game.dat: be5a6c4c0a581da09e8f34a3bbf7bd17e525085c
 		conquer.mix: 713b53fa4c188ca9619c6bbeadbfc86513704266
 	Install:
 		copy: .
-			^Content/cnc/scores-covertops.mix: scores.mix
+			^SupportDir|Content/cnc/scores-covertops.mix: scores.mix

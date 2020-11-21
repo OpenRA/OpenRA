@@ -2,12 +2,12 @@ basefiles: Base Freeware Content
 	SHA1: 72f337464963fa37d3688eb03e80eefd33669a3d
 	MirrorList: http://www.openra.net/packages/cnc-mirrors.txt
 	Extract:
-		^Content/cnc/conquer.mix: conquer.mix
-		^Content/cnc/desert.mix: desert.mix
-		^Content/cnc/general.mix: general.mix
-		^Content/cnc/sounds.mix: sounds.mix
-		^Content/cnc/speech.mix: speech.mix
-		^Content/cnc/temperat.mix: temperat.mix
-		^Content/cnc/tempicnh.mix: tempicnh.mix
-		^Content/cnc/transit.mix: transit.mix
-		^Content/cnc/winter.mix: winter.mix
+		^SupportDir|Content/cnc/conquer.mix: conquer.mix
+		^SupportDir|Content/cnc/desert.mix: desert.mix
+		^SupportDir|Content/cnc/general.mix: general.mix
+		^SupportDir|Content/cnc/sounds.mix: sounds.mix
+		^SupportDir|Content/cnc/speech.mix: speech.mix
+		^SupportDir|Content/cnc/temperat.mix: temperat.mix
+		^SupportDir|Content/cnc/tempicnh.mix: tempicnh.mix
+		^SupportDir|Content/cnc/transit.mix: transit.mix
+		^SupportDir|Content/cnc/winter.mix: winter.mix

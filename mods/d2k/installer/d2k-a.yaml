@@ -4,854 +4,854 @@ d2k-a: Dune 2000 (English)
 		SETUP/SETUP.Z: 937f5ceb1236bf3f3d4e43929305ffe5004078e7
 	Install:
 		copy: MOVIES
-			^Content/d2k/v2/Movies/A_BR01_E.VQA: A_BR01_E.VQA
-			^Content/d2k/v2/Movies/A_BR02_E.VQA: A_BR02_E.VQA
-			^Content/d2k/v2/Movies/A_BR03_E.VQA: A_BR03_E.VQA
-			^Content/d2k/v2/Movies/A_BR04_E.VQA: A_BR04_E.VQA
-			^Content/d2k/v2/Movies/A_BR05_E.VQA: A_BR05_E.VQA
-			^Content/d2k/v2/Movies/A_BR06_E.VQA: A_BR06_E.VQA
-			^Content/d2k/v2/Movies/A_BR07_E.VQA: A_BR07_E.VQA
-			^Content/d2k/v2/Movies/A_BR08_E.VQA: A_BR08_E.VQA
-			^Content/d2k/v2/Movies/A_BR09_E.VQA: A_BR09_E.VQA
-			^Content/d2k/v2/Movies/A_FINL_E.VQA: A_FINL_E.VQA
-			^Content/d2k/v2/Movies/A_LOSE_E.VQA: A_LOSE_E.VQA
-			^Content/d2k/v2/Movies/A_MNTG_E.VQA: A_MNTG_E.VQA
-			^Content/d2k/v2/Movies/H_BR01_E.VQA: H_BR01_E.VQA
-			^Content/d2k/v2/Movies/H_BR02_E.VQA: H_BR02_E.VQA
-			^Content/d2k/v2/Movies/H_BR03_E.VQA: H_BR03_E.VQA
-			^Content/d2k/v2/Movies/H_BR04_E.VQA: H_BR04_E.VQA
-			^Content/d2k/v2/Movies/H_BR05_E.VQA: H_BR05_E.VQA
-			^Content/d2k/v2/Movies/H_BR06_E.VQA: H_BR06_E.VQA
-			^Content/d2k/v2/Movies/H_BR07_E.VQA: H_BR07_E.VQA
-			^Content/d2k/v2/Movies/H_BR08_E.VQA: H_BR08_E.VQA
-			^Content/d2k/v2/Movies/H_BR09_E.VQA: H_BR09_E.VQA
-			^Content/d2k/v2/Movies/H_FINL_E.VQA: H_FINL_E.VQA
-			^Content/d2k/v2/Movies/H_LOSE_E.VQA: H_LOSE_E.VQA
-			^Content/d2k/v2/Movies/H_MNTG_E.VQA: H_MNTG_E.VQA
-			^Content/d2k/v2/Movies/O_BR01_E.VQA: O_BR01_E.VQA
-			^Content/d2k/v2/Movies/O_BR02_E.VQA: O_BR02_E.VQA
-			^Content/d2k/v2/Movies/O_BR03_E.VQA: O_BR03_E.VQA
-			^Content/d2k/v2/Movies/O_BR04_E.VQA: O_BR04_E.VQA
-			^Content/d2k/v2/Movies/O_BR05_E.VQA: O_BR05_E.VQA
-			^Content/d2k/v2/Movies/O_BR06_E.VQA: O_BR06_E.VQA
-			^Content/d2k/v2/Movies/O_BR07_E.VQA: O_BR07_E.VQA
-			^Content/d2k/v2/Movies/O_BR08_E.VQA: O_BR08_E.VQA
-			^Content/d2k/v2/Movies/O_BR09_E.VQA: O_BR09_E.VQA
-			^Content/d2k/v2/Movies/O_FINL_E.VQA: O_FINL_E.VQA
-			^Content/d2k/v2/Movies/O_LOSE_E.VQA: O_LOSE_E.VQA
-			^Content/d2k/v2/Movies/O_MNTG_E.VQA: O_MNTG_E.VQA
-			^Content/d2k/v2/Movies/G_INT1_E.VQA: G_INT1_E.VQA
-			^Content/d2k/v2/Movies/G_INT2_E.VQA: G_INT2_E.VQA
-			^Content/d2k/v2/Movies/G_MAPS_E.VQA: G_MAPS_E.VQA
-			^Content/d2k/v2/Movies/G_PLN2_E.VQA: G_PLN2_E.VQA
-			^Content/d2k/v2/Movies/G_PLNT_E.VQA: G_PLNT_E.VQA
-			^Content/d2k/v2/Movies/T_TITL_E.VQA: T_TITL_E.VQA
+			^SupportDir|Content/d2k/v2/Movies/A_BR01_E.VQA: A_BR01_E.VQA
+			^SupportDir|Content/d2k/v2/Movies/A_BR02_E.VQA: A_BR02_E.VQA
+			^SupportDir|Content/d2k/v2/Movies/A_BR03_E.VQA: A_BR03_E.VQA
+			^SupportDir|Content/d2k/v2/Movies/A_BR04_E.VQA: A_BR04_E.VQA
+			^SupportDir|Content/d2k/v2/Movies/A_BR05_E.VQA: A_BR05_E.VQA
+			^SupportDir|Content/d2k/v2/Movies/A_BR06_E.VQA: A_BR06_E.VQA
+			^SupportDir|Content/d2k/v2/Movies/A_BR07_E.VQA: A_BR07_E.VQA
+			^SupportDir|Content/d2k/v2/Movies/A_BR08_E.VQA: A_BR08_E.VQA
+			^SupportDir|Content/d2k/v2/Movies/A_BR09_E.VQA: A_BR09_E.VQA
+			^SupportDir|Content/d2k/v2/Movies/A_FINL_E.VQA: A_FINL_E.VQA
+			^SupportDir|Content/d2k/v2/Movies/A_LOSE_E.VQA: A_LOSE_E.VQA
+			^SupportDir|Content/d2k/v2/Movies/A_MNTG_E.VQA: A_MNTG_E.VQA
+			^SupportDir|Content/d2k/v2/Movies/H_BR01_E.VQA: H_BR01_E.VQA
+			^SupportDir|Content/d2k/v2/Movies/H_BR02_E.VQA: H_BR02_E.VQA
+			^SupportDir|Content/d2k/v2/Movies/H_BR03_E.VQA: H_BR03_E.VQA
+			^SupportDir|Content/d2k/v2/Movies/H_BR04_E.VQA: H_BR04_E.VQA
+			^SupportDir|Content/d2k/v2/Movies/H_BR05_E.VQA: H_BR05_E.VQA
+			^SupportDir|Content/d2k/v2/Movies/H_BR06_E.VQA: H_BR06_E.VQA
+			^SupportDir|Content/d2k/v2/Movies/H_BR07_E.VQA: H_BR07_E.VQA
+			^SupportDir|Content/d2k/v2/Movies/H_BR08_E.VQA: H_BR08_E.VQA
+			^SupportDir|Content/d2k/v2/Movies/H_BR09_E.VQA: H_BR09_E.VQA
+			^SupportDir|Content/d2k/v2/Movies/H_FINL_E.VQA: H_FINL_E.VQA
+			^SupportDir|Content/d2k/v2/Movies/H_LOSE_E.VQA: H_LOSE_E.VQA
+			^SupportDir|Content/d2k/v2/Movies/H_MNTG_E.VQA: H_MNTG_E.VQA
+			^SupportDir|Content/d2k/v2/Movies/O_BR01_E.VQA: O_BR01_E.VQA
+			^SupportDir|Content/d2k/v2/Movies/O_BR02_E.VQA: O_BR02_E.VQA
+			^SupportDir|Content/d2k/v2/Movies/O_BR03_E.VQA: O_BR03_E.VQA
+			^SupportDir|Content/d2k/v2/Movies/O_BR04_E.VQA: O_BR04_E.VQA
+			^SupportDir|Content/d2k/v2/Movies/O_BR05_E.VQA: O_BR05_E.VQA
+			^SupportDir|Content/d2k/v2/Movies/O_BR06_E.VQA: O_BR06_E.VQA
+			^SupportDir|Content/d2k/v2/Movies/O_BR07_E.VQA: O_BR07_E.VQA
+			^SupportDir|Content/d2k/v2/Movies/O_BR08_E.VQA: O_BR08_E.VQA
+			^SupportDir|Content/d2k/v2/Movies/O_BR09_E.VQA: O_BR09_E.VQA
+			^SupportDir|Content/d2k/v2/Movies/O_FINL_E.VQA: O_FINL_E.VQA
+			^SupportDir|Content/d2k/v2/Movies/O_LOSE_E.VQA: O_LOSE_E.VQA
+			^SupportDir|Content/d2k/v2/Movies/O_MNTG_E.VQA: O_MNTG_E.VQA
+			^SupportDir|Content/d2k/v2/Movies/G_INT1_E.VQA: G_INT1_E.VQA
+			^SupportDir|Content/d2k/v2/Movies/G_INT2_E.VQA: G_INT2_E.VQA
+			^SupportDir|Content/d2k/v2/Movies/G_MAPS_E.VQA: G_MAPS_E.VQA
+			^SupportDir|Content/d2k/v2/Movies/G_PLN2_E.VQA: G_PLN2_E.VQA
+			^SupportDir|Content/d2k/v2/Movies/G_PLNT_E.VQA: G_PLNT_E.VQA
+			^SupportDir|Content/d2k/v2/Movies/T_TITL_E.VQA: T_TITL_E.VQA
 		copy: MUSIC
-			^Content/d2k/v2/Music/AMBUSH.AUD: AMBUSH.AUD
-			^Content/d2k/v2/Music/ARAKATAK.AUD: ARAKATAK.AUD
-			^Content/d2k/v2/Music/ATREGAIN.AUD: ATREGAIN.AUD
-			^Content/d2k/v2/Music/ENTORDOS.AUD: ENTORDOS.AUD
-			^Content/d2k/v2/Music/FIGHTPWR.AUD: FIGHTPWR.AUD
-			^Content/d2k/v2/Music/FREMEN.AUD: FREMEN.AUD
-			^Content/d2k/v2/Music/HARK_BAT.AUD: HARK_BAT.AUD
-			^Content/d2k/v2/Music/LANDSAND.AUD: LANDSAND.AUD
-			^Content/d2k/v2/Music/OPTIONS.AUD: OPTIONS.AUD
-			^Content/d2k/v2/Music/PLOTTING.AUD: PLOTTING.AUD
-			^Content/d2k/v2/Music/RISEHARK.AUD: RISEHARK.AUD
-			^Content/d2k/v2/Music/ROBOTIX.AUD: ROBOTIX.AUD
-			^Content/d2k/v2/Music/SCORE.AUD: SCORE.AUD
-			^Content/d2k/v2/Music/SOLDAPPR.AUD: SOLDAPPR.AUD
-			^Content/d2k/v2/Music/SPICESCT.AUD: SPICESCT.AUD
-			^Content/d2k/v2/Music/UNDERCON.AUD: UNDERCON.AUD
-			^Content/d2k/v2/Music/WAITGAME.A: WAITGAME.AUD
+			^SupportDir|Content/d2k/v2/Music/AMBUSH.AUD: AMBUSH.AUD
+			^SupportDir|Content/d2k/v2/Music/ARAKATAK.AUD: ARAKATAK.AUD
+			^SupportDir|Content/d2k/v2/Music/ATREGAIN.AUD: ATREGAIN.AUD
+			^SupportDir|Content/d2k/v2/Music/ENTORDOS.AUD: ENTORDOS.AUD
+			^SupportDir|Content/d2k/v2/Music/FIGHTPWR.AUD: FIGHTPWR.AUD
+			^SupportDir|Content/d2k/v2/Music/FREMEN.AUD: FREMEN.AUD
+			^SupportDir|Content/d2k/v2/Music/HARK_BAT.AUD: HARK_BAT.AUD
+			^SupportDir|Content/d2k/v2/Music/LANDSAND.AUD: LANDSAND.AUD
+			^SupportDir|Content/d2k/v2/Music/OPTIONS.AUD: OPTIONS.AUD
+			^SupportDir|Content/d2k/v2/Music/PLOTTING.AUD: PLOTTING.AUD
+			^SupportDir|Content/d2k/v2/Music/RISEHARK.AUD: RISEHARK.AUD
+			^SupportDir|Content/d2k/v2/Music/ROBOTIX.AUD: ROBOTIX.AUD
+			^SupportDir|Content/d2k/v2/Music/SCORE.AUD: SCORE.AUD
+			^SupportDir|Content/d2k/v2/Music/SOLDAPPR.AUD: SOLDAPPR.AUD
+			^SupportDir|Content/d2k/v2/Music/SPICESCT.AUD: SPICESCT.AUD
+			^SupportDir|Content/d2k/v2/Music/UNDERCON.AUD: UNDERCON.AUD
+			^SupportDir|Content/d2k/v2/Music/WAITGAME.A: WAITGAME.AUD
 		extract-blast: SETUP/SETUP.Z
-			^Content/d2k/v2/BLOXBAT.R8:
+			^SupportDir|Content/d2k/v2/BLOXBAT.R8:
 				Offset: 1156652
 				Length: 512750
-			^Content/d2k/v2/BLOXBASE.R8:
+			^SupportDir|Content/d2k/v2/BLOXBASE.R8:
 				Offset: 1669402
 				Length: 497092
-			^Content/d2k/v2/BLOXBGBS.R8:
+			^SupportDir|Content/d2k/v2/BLOXBGBS.R8:
 				Offset: 4055223
 				Length: 499135
-			^Content/d2k/v2/BLOXICE.R8:
+			^SupportDir|Content/d2k/v2/BLOXICE.R8:
 				Offset: 5524509
 				Length: 514963
-			^Content/d2k/v2/BLOXTREE.R8:
+			^SupportDir|Content/d2k/v2/BLOXTREE.R8:
 				Offset: 6994370
 				Length: 509867
-			^Content/d2k/v2/BLOXWAST.R8:
+			^SupportDir|Content/d2k/v2/BLOXWAST.R8:
 				Offset: 8455018
 				Length: 508567
-			^Content/d2k/v2/MOUSE.R8:
+			^SupportDir|Content/d2k/v2/MOUSE.R8:
 				Offset: 14012491
 				Length: 16996
-			^Content/d2k/v2/PALETTE.BIN:
+			^SupportDir|Content/d2k/v2/PALETTE.BIN:
 				Offset: 22938401
 				Length: 815
-			^Content/d2k/v2/FONT.BIN:
+			^SupportDir|Content/d2k/v2/FONT.BIN:
 				Offset: 22927461
 				Length: 199
-			^Content/d2k/v2/FONTCOL.FNT:
+			^SupportDir|Content/d2k/v2/FONTCOL.FNT:
 				Offset: 13985176
 				Length: 3011
-			^Content/d2k/v2/FONTCOL.FPL:
+			^SupportDir|Content/d2k/v2/FONTCOL.FPL:
 				Offset: 13988187
 				Length: 238
-			^Content/d2k/v2/GAMESFX/A_ECONF2.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/A_ECONF2.AUD:
 				Offset: 15560305
 				Length: 9647
-			^Content/d2k/v2/GAMESFX/A_ECONF1.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/A_ECONF1.AUD:
 				Offset: 15569952
 				Length: 8676
-			^Content/d2k/v2/GAMESFX/A_ECONF3.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/A_ECONF3.AUD:
 				Offset: 15578628
 				Length: 9641
-			^Content/d2k/v2/GAMESFX/A_ESEL1.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/A_ESEL1.AUD:
 				Offset: 15588269
 				Length: 7371
-			^Content/d2k/v2/GAMESFX/A_ESEL2.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/A_ESEL2.AUD:
 				Offset: 15595640
 				Length: 11326
-			^Content/d2k/v2/GAMESFX/A_ESEL3.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/A_ESEL3.AUD:
 				Offset: 15606966
 				Length: 11329
-			^Content/d2k/v2/GAMESFX/A_FCONF1.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/A_FCONF1.AUD:
 				Offset: 15618295
 				Length: 8964
-			^Content/d2k/v2/GAMESFX/A_FCONF2.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/A_FCONF2.AUD:
 				Offset: 15627259
 				Length: 11336
-			^Content/d2k/v2/GAMESFX/A_FCONF3.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/A_FCONF3.AUD:
 				Offset: 15638595
 				Length: 14606
-			^Content/d2k/v2/GAMESFX/OI_ENEMY.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_ENEMY.AUD:
 				Offset: 15653201
 				Length: 27230
-			^Content/d2k/v2/GAMESFX/AI_POWER.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_POWER.AUD:
 				Offset: 15680431
 				Length: 19621
-			^Content/d2k/v2/GAMESFX/AI_PREP.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_PREP.AUD:
 				Offset: 15700052
 				Length: 28781
-			^Content/d2k/v2/GAMESFX/AI_PRMRY.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_PRMRY.AUD:
 				Offset: 15728833
 				Length: 29703
-			^Content/d2k/v2/GAMESFX/AI_REINF.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_REINF.AUD:
 				Offset: 15758536
 				Length: 29555
-			^Content/d2k/v2/GAMESFX/AI_GANEW.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_GANEW.AUD:
 				Offset: 15788091
 				Length: 27961
-			^Content/d2k/v2/GAMESFX/HI_SPORT.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_SPORT.AUD:
 				Offset: 15816052
 				Length: 20925
-			^Content/d2k/v2/GAMESFX/OI_GSAVE.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_GSAVE.AUD:
 				Offset: 15836977
 				Length: 10925
-			^Content/d2k/v2/GAMESFX/OI_GUARD.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_GUARD.AUD:
 				Offset: 15847902
 				Length: 8125
-			^Content/d2k/v2/GAMESFX/HI_MAP3B.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_MAP3B.AUD:
 				Offset: 15856027
 				Length: 26212
-			^Content/d2k/v2/GAMESFX/HI_MAP4A.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_MAP4A.AUD:
 				Offset: 15882239
 				Length: 27166
-			^Content/d2k/v2/GAMESFX/HI_MAP5A.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_MAP5A.AUD:
 				Offset: 15909405
 				Length: 31126
-			^Content/d2k/v2/GAMESFX/HI_MAP6A.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_MAP6A.AUD:
 				Offset: 15940531
 				Length: 33481
-			^Content/d2k/v2/GAMESFX/O_ECONF3.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/O_ECONF3.AUD:
 				Offset: 15974012
 				Length: 17265
-			^Content/d2k/v2/GAMESFX/O_SCONF3.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/O_SCONF3.AUD:
 				Offset: 15991277
 				Length: 14523
-			^Content/d2k/v2/GAMESFX/O_SSEL1.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/O_SSEL1.AUD:
 				Offset: 16005800
 				Length: 18266
-			^Content/d2k/v2/GAMESFX/O_SSEL2.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/O_SSEL2.AUD:
 				Offset: 16024066
 				Length: 8467
-			^Content/d2k/v2/GAMESFX/O_SSEL3.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/O_SSEL3.AUD:
 				Offset: 16032533
 				Length: 9748
-			^Content/d2k/v2/GAMESFX/O_VCONF1.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/O_VCONF1.AUD:
 				Offset: 16042281
 				Length: 14264
-			^Content/d2k/v2/GAMESFX/O_VCONF2.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/O_VCONF2.AUD:
 				Offset: 16056545
 				Length: 12087
-			^Content/d2k/v2/GAMESFX/O_VCONF3.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/O_VCONF3.AUD:
 				Offset: 16068632
 				Length: 14428
-			^Content/d2k/v2/GAMESFX/OI_MWIN.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_MWIN.AUD:
 				Offset: 16083060
 				Length: 16985
-			^Content/d2k/v2/GAMESFX/O_ECONF1.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/O_ECONF1.AUD:
 				Offset: 16100045
 				Length: 12638
-			^Content/d2k/v2/GAMESFX/O_ECONF2.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/O_ECONF2.AUD:
 				Offset: 16112683
 				Length: 13229
-			^Content/d2k/v2/GAMESFX/OI_NROOM.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_NROOM.AUD:
 				Offset: 16125912
 				Length: 26572
-			^Content/d2k/v2/GAMESFX/O_ESEL1.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/O_ESEL1.AUD:
 				Offset: 16152484
 				Length: 12085
-			^Content/d2k/v2/GAMESFX/O_ESEL2.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/O_ESEL2.AUD:
 				Offset: 16164569
 				Length: 18232
-			^Content/d2k/v2/GAMESFX/O_ESEL3.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/O_ESEL3.AUD:
 				Offset: 16182801
 				Length: 8328
-			^Content/d2k/v2/GAMESFX/O_ICONF1.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/O_ICONF1.AUD:
 				Offset: 16191129
 				Length: 12497
-			^Content/d2k/v2/GAMESFX/O_ICONF2.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/O_ICONF2.AUD:
 				Offset: 16203626
 				Length: 9546
-			^Content/d2k/v2/GAMESFX/O_ICONF3.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/O_ICONF3.AUD:
 				Offset: 16213172
 				Length: 17135
-			^Content/d2k/v2/GAMESFX/HI_MAP4B.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_MAP4B.AUD:
 				Offset: 16230307
 				Length: 26937
-			^Content/d2k/v2/GAMESFX/O_ISEL2.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/O_ISEL2.AUD:
 				Offset: 16257244
 				Length: 17940
-			^Content/d2k/v2/GAMESFX/HI_BLOST.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_BLOST.AUD:
 				Offset: 16275184
 				Length: 14985
-			^Content/d2k/v2/GAMESFX/HI_BUILD.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_BUILD.AUD:
 				Offset: 16290169
 				Length: 9089
-			^Content/d2k/v2/GAMESFX/HI_MAP6B.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_MAP6B.AUD:
 				Offset: 16299258
 				Length: 28401
-			^Content/d2k/v2/GAMESFX/HI_MAP7A.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_MAP7A.AUD:
 				Offset: 16327659
 				Length: 23949
-			^Content/d2k/v2/GAMESFX/HI_MAP9.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_MAP9.AUD:
 				Offset: 16351608
 				Length: 29489
-			^Content/d2k/v2/GAMESFX/A_VSEL3.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/A_VSEL3.AUD:
 				Offset: 16381097
 				Length: 11016
-			^Content/d2k/v2/GAMESFX/AI_1MIN.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_1MIN.AUD:
 				Offset: 16392113
 				Length: 27566
-			^Content/d2k/v2/GAMESFX/AI_2MIN.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_2MIN.AUD:
 				Offset: 16419679
 				Length: 26539
-			^Content/d2k/v2/GAMESFX/AI_3MIN.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_3MIN.AUD:
 				Offset: 16446218
 				Length: 30821
-			^Content/d2k/v2/GAMESFX/O_VSEL1.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/O_VSEL1.AUD:
 				Offset: 16477039
 				Length: 7978
-			^Content/d2k/v2/GAMESFX/HI_RUN.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_RUN.AUD:
 				Offset: 16485017
 				Length: 11880
-			^Content/d2k/v2/GAMESFX/A_FSEL1.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/A_FSEL1.AUD:
 				Offset: 16496897
 				Length: 8995
-			^Content/d2k/v2/GAMESFX/A_FSEL2.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/A_FSEL2.AUD:
 				Offset: 16505892
 				Length: 10120
-			^Content/d2k/v2/GAMESFX/A_FSEL3.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/A_FSEL3.AUD:
 				Offset: 16516012
 				Length: 8999
-			^Content/d2k/v2/GAMESFX/A_FSEL4.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/A_FSEL4.AUD:
 				Offset: 16525011
 				Length: 6593
-			^Content/d2k/v2/GAMESFX/OI_MAP8A.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_MAP8A.AUD:
 				Offset: 16531604
 				Length: 34790
-			^Content/d2k/v2/GAMESFX/OI_MAP9A.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_MAP9A.AUD:
 				Offset: 16566394
 				Length: 35606
-			^Content/d2k/v2/GAMESFX/OI_MEND.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_MEND.AUD:
 				Offset: 16602000
 				Length: 10303
-			^Content/d2k/v2/GAMESFX/OI_MFAIL.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_MFAIL.AUD:
 				Offset: 16612303
 				Length: 22969
-			^Content/d2k/v2/GAMESFX/AI_4MIN.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_4MIN.AUD:
 				Offset: 16635272
 				Length: 31816
-			^Content/d2k/v2/GAMESFX/AI_CANCL.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_CANCL.AUD:
 				Offset: 16667088
 				Length: 19585
-			^Content/d2k/v2/GAMESFX/OI_ULOST.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_ULOST.AUD:
 				Offset: 16686673
 				Length: 14563
-			^Content/d2k/v2/GAMESFX/OI_UNRDY.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_UNRDY.AUD:
 				Offset: 16701236
 				Length: 13353
-			^Content/d2k/v2/GAMESFX/O_VSEL3.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/O_VSEL3.AUD:
 				Offset: 16714589
 				Length: 9671
-			^Content/d2k/v2/GAMESFX/OI_1MIN.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_1MIN.AUD:
 				Offset: 16724260
 				Length: 15031
-			^Content/d2k/v2/GAMESFX/OI_MAP7A.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_MAP7A.AUD:
 				Offset: 16739291
 				Length: 28368
-			^Content/d2k/v2/GAMESFX/HI_TRAIN.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_TRAIN.AUD:
 				Offset: 16767659
 				Length: 9649
-			^Content/d2k/v2/GAMESFX/HI_ULOST.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_ULOST.AUD:
 				Offset: 16777308
 				Length: 17157
-			^Content/d2k/v2/GAMESFX/HI_UNRDY.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_UNRDY.AUD:
 				Offset: 16794465
 				Length: 13407
-			^Content/d2k/v2/GAMESFX/OI_MAP2A.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_MAP2A.AUD:
 				Offset: 16807872
 				Length: 29910
-			^Content/d2k/v2/GAMESFX/HI_REINF.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_REINF.AUD:
 				Offset: 16837782
 				Length: 22890
-			^Content/d2k/v2/GAMESFX/OI_MAP2C.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_MAP2C.AUD:
 				Offset: 16860672
 				Length: 22923
-			^Content/d2k/v2/GAMESFX/OI_MAP3A.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_MAP3A.AUD:
 				Offset: 16883595
 				Length: 34017
-			^Content/d2k/v2/GAMESFX/OI_MAP4A.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_MAP4A.AUD:
 				Offset: 16917612
 				Length: 56714
-			^Content/d2k/v2/GAMESFX/OI_SPORT.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_SPORT.AUD:
 				Offset: 16974326
 				Length: 27200
-			^Content/d2k/v2/GAMESFX/OI_UPGOP.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_UPGOP.AUD:
 				Offset: 17001526
 				Length: 19828
-			^Content/d2k/v2/GAMESFX/OI_UPGRD.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_UPGRD.AUD:
 				Offset: 17021354
 				Length: 13869
-			^Content/d2k/v2/GAMESFX/OI_WATTK.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_WATTK.AUD:
 				Offset: 17035223
 				Length: 14197
-			^Content/d2k/v2/GAMESFX/AI_MONEY.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_MONEY.AUD:
 				Offset: 17049420
 				Length: 29136
-			^Content/d2k/v2/GAMESFX/AI_SELL.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_SELL.AUD:
 				Offset: 17078556
 				Length: 26204
-			^Content/d2k/v2/GAMESFX/HI_NEWOP.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_NEWOP.AUD:
 				Offset: 17104760
 				Length: 24264
-			^Content/d2k/v2/GAMESFX/AI_5MIN.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_5MIN.AUD:
 				Offset: 17129024
 				Length: 43921
-			^Content/d2k/v2/GAMESFX/OI_HATTK.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_HATTK.AUD:
 				Offset: 17172945
 				Length: 22151
-			^Content/d2k/v2/GAMESFX/H_VSEL2.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/H_VSEL2.AUD:
 				Offset: 17195096
 				Length: 12300
-			^Content/d2k/v2/GAMESFX/OI_MAP1B.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_MAP1B.AUD:
 				Offset: 17207396
 				Length: 21971
-			^Content/d2k/v2/GAMESFX/OI_MAP1C.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_MAP1C.AUD:
 				Offset: 17229367
 				Length: 22041
-			^Content/d2k/v2/GAMESFX/AI_GSAVE.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_GSAVE.AUD:
 				Offset: 17251408
 				Length: 21545
-			^Content/d2k/v2/GAMESFX/AI_GUARD.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_GUARD.AUD:
 				Offset: 17272953
 				Length: 14344
-			^Content/d2k/v2/GAMESFX/AI_HATTK.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_HATTK.AUD:
 				Offset: 17287297
 				Length: 28156
-			^Content/d2k/v2/GAMESFX/AI_HOLD.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_HOLD.AUD:
 				Offset: 17315453
 				Length: 16983
-			^Content/d2k/v2/GAMESFX/HI_UPGOP.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_UPGOP.AUD:
 				Offset: 17332436
 				Length: 19583
-			^Content/d2k/v2/GAMESFX/HI_UPGRD.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_UPGRD.AUD:
 				Offset: 17352019
 				Length: 12875
-			^Content/d2k/v2/GAMESFX/OI_MAP2B.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_MAP2B.AUD:
 				Offset: 17364894
 				Length: 20974
-			^Content/d2k/v2/GAMESFX/HI_WSIGN.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_WSIGN.AUD:
 				Offset: 17385868
 				Length: 14699
-			^Content/d2k/v2/GAMESFX/HI_HATTK.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_HATTK.AUD:
 				Offset: 17400567
 				Length: 20919
-			^Content/d2k/v2/GAMESFX/O_SCONF2.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/O_SCONF2.AUD:
 				Offset: 17421486
 				Length: 18984
-			^Content/d2k/v2/GAMESFX/HI_HOLD.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_HOLD.AUD:
 				Offset: 17440470
 				Length: 11779
-			^Content/d2k/v2/GAMESFX/A_VSEL2.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/A_VSEL2.AUD:
 				Offset: 17452249
 				Length: 13980
-			^Content/d2k/v2/GAMESFX/AI_ATACK.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_ATACK.AUD:
 				Offset: 17466229
 				Length: 33483
-			^Content/d2k/v2/GAMESFX/AI_BDRDY.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_BDRDY.AUD:
 				Offset: 17499712
 				Length: 26566
-			^Content/d2k/v2/GAMESFX/AI_BLOST.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_BLOST.AUD:
 				Offset: 17526278
 				Length: 25237
-			^Content/d2k/v2/GAMESFX/AI_BUILD.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_BUILD.AUD:
 				Offset: 17551515
 				Length: 16072
-			^Content/d2k/v2/GAMESFX/HI_GLOAD.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_GLOAD.AUD:
 				Offset: 17567587
 				Length: 12037
-			^Content/d2k/v2/GAMESFX/AI_CAPT.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_CAPT.AUD:
 				Offset: 17579624
 				Length: 30243
-			^Content/d2k/v2/GAMESFX/AI_DHRDY.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_DHRDY.AUD:
 				Offset: 17609867
 				Length: 31710
-			^Content/d2k/v2/GAMESFX/AI_DPLOY.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_DPLOY.AUD:
 				Offset: 17641577
 				Length: 27450
-			^Content/d2k/v2/GAMESFX/AI_ENEMY.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_ENEMY.AUD:
 				Offset: 17669027
 				Length: 30854
-			^Content/d2k/v2/GAMESFX/A_VCONF1.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/A_VCONF1.AUD:
 				Offset: 17699881
 				Length: 10860
-			^Content/d2k/v2/GAMESFX/HI_PLACE.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_PLACE.AUD:
 				Offset: 17710741
 				Length: 19337
-			^Content/d2k/v2/GAMESFX/HI_POWER.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_POWER.AUD:
 				Offset: 17730078
 				Length: 15004
-			^Content/d2k/v2/GAMESFX/HI_PREP.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_PREP.AUD:
 				Offset: 17745082
 				Length: 23023
-			^Content/d2k/v2/GAMESFX/HI_PRMRY.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_PRMRY.AUD:
 				Offset: 17768105
 				Length: 22321
-			^Content/d2k/v2/GAMESFX/OI_MONEY.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_MONEY.AUD:
 				Offset: 17790426
 				Length: 21698
-			^Content/d2k/v2/GAMESFX/O_ISEL1.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/O_ISEL1.AUD:
 				Offset: 17812124
 				Length: 10282
-			^Content/d2k/v2/GAMESFX/OI_NEWOP.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_NEWOP.AUD:
 				Offset: 17822406
 				Length: 28615
-			^Content/d2k/v2/GAMESFX/A_VCONF3.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/A_VCONF3.AUD:
 				Offset: 17851021
 				Length: 12771
-			^Content/d2k/v2/GAMESFX/A_VSEL1.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/A_VSEL1.AUD:
 				Offset: 17863792
 				Length: 9917
-			^Content/d2k/v2/GAMESFX/OI_PLACE.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_PLACE.AUD:
 				Offset: 17873709
 				Length: 18502
-			^Content/d2k/v2/GAMESFX/OI_POWER.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_POWER.AUD:
 				Offset: 17892211
 				Length: 12832
-			^Content/d2k/v2/GAMESFX/OI_PREP.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_PREP.AUD:
 				Offset: 17905043
 				Length: 22413
-			^Content/d2k/v2/GAMESFX/OI_PRMRY.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_PRMRY.AUD:
 				Offset: 17927456
 				Length: 29577
-			^Content/d2k/v2/GAMESFX/OI_REINF.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_REINF.AUD:
 				Offset: 17957033
 				Length: 24798
-			^Content/d2k/v2/GAMESFX/OI_RUN.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_RUN.AUD:
 				Offset: 17981831
 				Length: 14784
-			^Content/d2k/v2/GAMESFX/OI_CAPT.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_CAPT.AUD:
 				Offset: 17996615
 				Length: 18526
-			^Content/d2k/v2/GAMESFX/H_ECONF1.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/H_ECONF1.AUD:
 				Offset: 18015141
 				Length: 12390
-			^Content/d2k/v2/GAMESFX/O_VSEL2.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/O_VSEL2.AUD:
 				Offset: 18027531
 				Length: 11851
-			^Content/d2k/v2/GAMESFX/H_VSEL3.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/H_VSEL3.AUD:
 				Offset: 18039382
 				Length: 9867
-			^Content/d2k/v2/GAMESFX/HI_1MIN.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_1MIN.AUD:
 				Offset: 18049249
 				Length: 16907
-			^Content/d2k/v2/GAMESFX/HI_2MIN.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_2MIN.AUD:
 				Offset: 18066156
 				Length: 17659
-			^Content/d2k/v2/GAMESFX/HI_3MIN.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_3MIN.AUD:
 				Offset: 18083815
 				Length: 20337
-			^Content/d2k/v2/GAMESFX/HI_4MIN.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_4MIN.AUD:
 				Offset: 18104152
 				Length: 18877
-			^Content/d2k/v2/GAMESFX/HI_5MIN.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_5MIN.AUD:
 				Offset: 18123029
 				Length: 30788
-			^Content/d2k/v2/GAMESFX/HI_ABORT.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_ABORT.AUD:
 				Offset: 18153817
 				Length: 18322
-			^Content/d2k/v2/GAMESFX/HI_ATACK.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_ATACK.AUD:
 				Offset: 18172139
 				Length: 22178
-			^Content/d2k/v2/GAMESFX/HI_NROOM.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_NROOM.AUD:
 				Offset: 18194317
 				Length: 24878
-			^Content/d2k/v2/GAMESFX/OI_SILOS.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_SILOS.AUD:
 				Offset: 18219195
 				Length: 15741
-			^Content/d2k/v2/GAMESFX/A_FCONF4.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/A_FCONF4.AUD:
 				Offset: 18234936
 				Length: 14892
-			^Content/d2k/v2/GAMESFX/OI_MAP5A.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_MAP5A.AUD:
 				Offset: 18249828
 				Length: 23026
-			^Content/d2k/v2/GAMESFX/OI_MAP6A.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_MAP6A.AUD:
 				Offset: 18272854
 				Length: 43938
-			^Content/d2k/v2/GAMESFX/HI_CANCL.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_CANCL.AUD:
 				Offset: 18316792
 				Length: 10992
-			^Content/d2k/v2/GAMESFX/HI_CAPT.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_CAPT.AUD:
 				Offset: 18327784
 				Length: 19514
-			^Content/d2k/v2/GAMESFX/HI_DHRDY.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_DHRDY.AUD:
 				Offset: 18347298
 				Length: 23895
-			^Content/d2k/v2/GAMESFX/HI_DPLOY.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_DPLOY.AUD:
 				Offset: 18371193
 				Length: 18626
-			^Content/d2k/v2/GAMESFX/HI_ENEMY.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_ENEMY.AUD:
 				Offset: 18389819
 				Length: 22564
-			^Content/d2k/v2/GAMESFX/HI_GANEW.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_GANEW.AUD:
 				Offset: 18412383
 				Length: 18445
-			^Content/d2k/v2/GAMESFX/OI_DHRDY.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_DHRDY.AUD:
 				Offset: 18430828
 				Length: 19492
-			^Content/d2k/v2/GAMESFX/HI_GSAVE.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_GSAVE.AUD:
 				Offset: 18450320
 				Length: 14194
-			^Content/d2k/v2/GAMESFX/HI_GUARD.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_GUARD.AUD:
 				Offset: 18464514
 				Length: 8310
-			^Content/d2k/v2/GAMESFX/H_VSEL1.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/H_VSEL1.AUD:
 				Offset: 18472824
 				Length: 8332
-			^Content/d2k/v2/GAMESFX/OI_ORDER.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_ORDER.AUD:
 				Offset: 18481156
 				Length: 15789
-			^Content/d2k/v2/GAMESFX/G_SCONF1.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/G_SCONF1.AUD:
 				Offset: 18496945
 				Length: 9791
-			^Content/d2k/v2/GAMESFX/G_SCONF2.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/G_SCONF2.AUD:
 				Offset: 18506736
 				Length: 15099
-			^Content/d2k/v2/GAMESFX/G_SCONF3.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/G_SCONF3.AUD:
 				Offset: 18521835
 				Length: 14863
-			^Content/d2k/v2/GAMESFX/G_SSEL1.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/G_SSEL1.AUD:
 				Offset: 18536698
 				Length: 9753
-			^Content/d2k/v2/GAMESFX/G_SSEL2.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/G_SSEL2.AUD:
 				Offset: 18546451
 				Length: 9329
-			^Content/d2k/v2/GAMESFX/G_SSEL3.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/G_SSEL3.AUD:
 				Offset: 18555780
 				Length: 9449
-			^Content/d2k/v2/GAMESFX/OI_SELL.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_SELL.AUD:
 				Offset: 18565229
 				Length: 15600
-			^Content/d2k/v2/GAMESFX/H_ECONF2.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/H_ECONF2.AUD:
 				Offset: 18580829
 				Length: 16157
-			^Content/d2k/v2/GAMESFX/H_ECONF3.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/H_ECONF3.AUD:
 				Offset: 18596986
 				Length: 13149
-			^Content/d2k/v2/GAMESFX/H_ESEL1.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/H_ESEL1.AUD:
 				Offset: 18610135
 				Length: 13928
-			^Content/d2k/v2/GAMESFX/H_ESEL2.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/H_ESEL2.AUD:
 				Offset: 18624063
 				Length: 16430
-			^Content/d2k/v2/GAMESFX/AI_MAP2C.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_MAP2C.AUD:
 				Offset: 18640493
 				Length: 41640
-			^Content/d2k/v2/GAMESFX/AI_MAP3A.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_MAP3A.AUD:
 				Offset: 18682133
 				Length: 41809
-			^Content/d2k/v2/GAMESFX/AI_MAP4A.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_MAP4A.AUD:
 				Offset: 18723942
 				Length: 29117
-			^Content/d2k/v2/GAMESFX/AI_MAP5A.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_MAP5A.AUD:
 				Offset: 18753059
 				Length: 36982
-			^Content/d2k/v2/GAMESFX/AI_MAP6A.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_MAP6A.AUD:
 				Offset: 18790041
 				Length: 60681
-			^Content/d2k/v2/GAMESFX/HI_BDRDY.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_BDRDY.AUD:
 				Offset: 18850722
 				Length: 21396
-			^Content/d2k/v2/GAMESFX/AI_MAP8A.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_MAP8A.AUD:
 				Offset: 18872118
 				Length: 37995
-			^Content/d2k/v2/GAMESFX/AI_MAP9A.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_MAP9A.AUD:
 				Offset: 18910113
 				Length: 32674
-			^Content/d2k/v2/GAMESFX/AI_MEND.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_MEND.AUD:
 				Offset: 18942787
 				Length: 18399
-			^Content/d2k/v2/GAMESFX/AI_MFAIL.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_MFAIL.AUD:
 				Offset: 18961186
 				Length: 26359
-			^Content/d2k/v2/GAMESFX/AI_GLOAD.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_GLOAD.AUD:
 				Offset: 18987545
 				Length: 21335
-			^Content/d2k/v2/GAMESFX/HI_MAP9A.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_MAP9A.AUD:
 				Offset: 19008880
 				Length: 28418
-			^Content/d2k/v2/GAMESFX/HI_MEND.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_MEND.AUD:
 				Offset: 19037298
 				Length: 9269
-			^Content/d2k/v2/GAMESFX/HI_MFAIL.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_MFAIL.AUD:
 				Offset: 19046567
 				Length: 19854
-			^Content/d2k/v2/GAMESFX/HI_MONEY.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_MONEY.AUD:
 				Offset: 19066421
 				Length: 20038
-			^Content/d2k/v2/GAMESFX/HI_MWIN.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_MWIN.AUD:
 				Offset: 19086459
 				Length: 16073
-			^Content/d2k/v2/GAMESFX/HI_WATTK.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_WATTK.AUD:
 				Offset: 19102532
 				Length: 14873
-			^Content/d2k/v2/GAMESFX/AI_MAP1A.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_MAP1A.AUD:
 				Offset: 19117405
 				Length: 41683
-			^Content/d2k/v2/GAMESFX/AI_MAP1B.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_MAP1B.AUD:
 				Offset: 19159088
 				Length: 34475
-			^Content/d2k/v2/GAMESFX/AI_MAP1C.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_MAP1C.AUD:
 				Offset: 19193563
 				Length: 34903
-			^Content/d2k/v2/GAMESFX/AI_MAP2A.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_MAP2A.AUD:
 				Offset: 19228466
 				Length: 59613
-			^Content/d2k/v2/GAMESFX/AI_ABORT.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_ABORT.AUD:
 				Offset: 19288079
 				Length: 22150
-			^Content/d2k/v2/GAMESFX/H_ESEL3.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/H_ESEL3.AUD:
 				Offset: 19310229
 				Length: 9090
-			^Content/d2k/v2/GAMESFX/AI_SILOS.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_SILOS.AUD:
 				Offset: 19319319
 				Length: 21350
-			^Content/d2k/v2/GAMESFX/AI_SPORT.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_SPORT.AUD:
 				Offset: 19340669
 				Length: 31478
-			^Content/d2k/v2/GAMESFX/AI_TRAIN.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_TRAIN.AUD:
 				Offset: 19372147
 				Length: 19876
-			^Content/d2k/v2/GAMESFX/AI_ULOST.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_ULOST.AUD:
 				Offset: 19392023
 				Length: 22359
-			^Content/d2k/v2/GAMESFX/AI_MAP7A.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_MAP7A.AUD:
 				Offset: 19414382
 				Length: 28902
-			^Content/d2k/v2/GAMESFX/AI_UPGOP.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_UPGOP.AUD:
 				Offset: 19443284
 				Length: 26855
-			^Content/d2k/v2/GAMESFX/AI_UPGRD.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_UPGRD.AUD:
 				Offset: 19470139
 				Length: 19104
-			^Content/d2k/v2/GAMESFX/AI_WATTK.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_WATTK.AUD:
 				Offset: 19489243
 				Length: 24655
-			^Content/d2k/v2/GAMESFX/AI_WSIGN.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_WSIGN.AUD:
 				Offset: 19513898
 				Length: 23032
-			^Content/d2k/v2/GAMESFX/AI_MAP2B.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_MAP2B.AUD:
 				Offset: 19536930
 				Length: 35588
-			^Content/d2k/v2/GAMESFX/A_ICONF1.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/A_ICONF1.AUD:
 				Offset: 19572518
 				Length: 8945
-			^Content/d2k/v2/GAMESFX/A_ICONF2.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/A_ICONF2.AUD:
 				Offset: 19581463
 				Length: 9005
-			^Content/d2k/v2/GAMESFX/A_ICONF3.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/A_ICONF3.AUD:
 				Offset: 19590468
 				Length: 9606
-			^Content/d2k/v2/GAMESFX/A_ISEL1.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/A_ISEL1.AUD:
 				Offset: 19600074
 				Length: 11671
-			^Content/d2k/v2/GAMESFX/OI_CANCL.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_CANCL.AUD:
 				Offset: 19611745
 				Length: 10644
-			^Content/d2k/v2/GAMESFX/H_ISEL2.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/H_ISEL2.AUD:
 				Offset: 19622389
 				Length: 10387
-			^Content/d2k/v2/GAMESFX/H_ISEL3.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/H_ISEL3.AUD:
 				Offset: 19632776
 				Length: 17225
-			^Content/d2k/v2/GAMESFX/H_VCONF1.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/H_VCONF1.AUD:
 				Offset: 19650001
 				Length: 10077
-			^Content/d2k/v2/GAMESFX/H_VCONF2.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/H_VCONF2.AUD:
 				Offset: 19660078
 				Length: 13616
-			^Content/d2k/v2/GAMESFX/H_VCONF3.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/H_VCONF3.AUD:
 				Offset: 19673694
 				Length: 11251
-			^Content/d2k/v2/GAMESFX/OI_TRAIN.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_TRAIN.AUD:
 				Offset: 19684945
 				Length: 8144
-			^Content/d2k/v2/GAMESFX/HI_ORDER.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_ORDER.AUD:
 				Offset: 19693089
 				Length: 14865
-			^Content/d2k/v2/GAMESFX/OI_WSIGN.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_WSIGN.AUD:
 				Offset: 19707954
 				Length: 11912
-			^Content/d2k/v2/GAMESFX/OI_BLOST.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_BLOST.AUD:
 				Offset: 19719866
 				Length: 19540
-			^Content/d2k/v2/GAMESFX/OI_BUILD.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_BUILD.AUD:
 				Offset: 19739406
 				Length: 10246
-			^Content/d2k/v2/GAMESFX/AI_LAUNC.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_LAUNC.AUD:
 				Offset: 19749652
 				Length: 31148
-			^Content/d2k/v2/GAMESFX/A_ISEL3.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/A_ISEL3.AUD:
 				Offset: 19780800
 				Length: 8307
-			^Content/d2k/v2/GAMESFX/A_VCONF2.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/A_VCONF2.AUD:
 				Offset: 19789107
 				Length: 14331
-			^Content/d2k/v2/GAMESFX/OI_HOLD.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_HOLD.AUD:
 				Offset: 19803438
 				Length: 11295
-			^Content/d2k/v2/GAMESFX/OI_LAUNC.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_LAUNC.AUD:
 				Offset: 19814733
 				Length: 20437
-			^Content/d2k/v2/GAMESFX/OI_MAP1A.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_MAP1A.AUD:
 				Offset: 19835170
 				Length: 27739
-			^Content/d2k/v2/GAMESFX/HI_LAUNC.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_LAUNC.AUD:
 				Offset: 19862909
 				Length: 22200
-			^Content/d2k/v2/GAMESFX/H_ICONF1.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/H_ICONF1.AUD:
 				Offset: 19885109
 				Length: 9620
-			^Content/d2k/v2/GAMESFX/H_ICONF2.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/H_ICONF2.AUD:
 				Offset: 19894729
 				Length: 13368
-			^Content/d2k/v2/GAMESFX/H_ICONF3.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/H_ICONF3.AUD:
 				Offset: 19908097
 				Length: 15612
-			^Content/d2k/v2/GAMESFX/H_ISEL1.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/H_ISEL1.AUD:
 				Offset: 19923709
 				Length: 8279
-			^Content/d2k/v2/GAMESFX/A_ISEL2.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/A_ISEL2.AUD:
 				Offset: 19931988
 				Length: 11383
-			^Content/d2k/v2/GAMESFX/AI_RUN.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_RUN.AUD:
 				Offset: 19943371
 				Length: 18511
-			^Content/d2k/v2/GAMESFX/HI_SILOS.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_SILOS.AUD:
 				Offset: 19961882
 				Length: 14244
-			^Content/d2k/v2/GAMESFX/HI_MAP1A.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_MAP1A.AUD:
 				Offset: 19976126
 				Length: 24075
-			^Content/d2k/v2/GAMESFX/HI_MAP1B.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_MAP1B.AUD:
 				Offset: 20000201
 				Length: 26716
-			^Content/d2k/v2/GAMESFX/HI_MAP1C.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_MAP1C.AUD:
 				Offset: 20026917
 				Length: 21716
-			^Content/d2k/v2/GAMESFX/HI_MAP2A.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_MAP2A.AUD:
 				Offset: 20048633
 				Length: 32417
-			^Content/d2k/v2/GAMESFX/HI_MAP2B.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_MAP2B.AUD:
 				Offset: 20081050
 				Length: 33724
-			^Content/d2k/v2/GAMESFX/HI_MAP2C.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_MAP2C.AUD:
 				Offset: 20114774
 				Length: 21828
-			^Content/d2k/v2/GAMESFX/HI_MAP3A.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_MAP3A.AUD:
 				Offset: 20136602
 				Length: 30404
-			^Content/d2k/v2/GAMESFX/O_ISEL3.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/O_ISEL3.AUD:
 				Offset: 20167006
 				Length: 9862
-			^Content/d2k/v2/GAMESFX/O_SCONF1.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/O_SCONF1.AUD:
 				Offset: 20176868
 				Length: 18149
-			^Content/d2k/v2/GAMESFX/OI_2MIN.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_2MIN.AUD:
 				Offset: 20195017
 				Length: 14697
-			^Content/d2k/v2/GAMESFX/OI_3MIN.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_3MIN.AUD:
 				Offset: 20209714
 				Length: 17316
-			^Content/d2k/v2/GAMESFX/OI_4MIN.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_4MIN.AUD:
 				Offset: 20227030
 				Length: 14869
-			^Content/d2k/v2/GAMESFX/OI_5MIN.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_5MIN.AUD:
 				Offset: 20241899
 				Length: 29873
-			^Content/d2k/v2/GAMESFX/OI_ABORT.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_ABORT.AUD:
 				Offset: 20271772
 				Length: 16335
-			^Content/d2k/v2/GAMESFX/OI_ATACK.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_ATACK.AUD:
 				Offset: 20288107
 				Length: 20565
-			^Content/d2k/v2/GAMESFX/OI_BDRDY.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_BDRDY.AUD:
 				Offset: 20308672
 				Length: 25497
-			^Content/d2k/v2/GAMESFX/HI_SELL.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_SELL.AUD:
 				Offset: 20334169
 				Length: 17142
-			^Content/d2k/v2/GAMESFX/OI_DPLOY.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_DPLOY.AUD:
 				Offset: 20351311
 				Length: 20120
-			^Content/d2k/v2/GAMESFX/AI_PLACE.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_PLACE.AUD:
 				Offset: 20371431
 				Length: 29921
-			^Content/d2k/v2/GAMESFX/OI_GANEW.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_GANEW.AUD:
 				Offset: 20401352
 				Length: 14467
-			^Content/d2k/v2/GAMESFX/OI_GLOAD.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_GLOAD.AUD:
 				Offset: 20415819
 				Length: 10906
-			^Content/d2k/v2/GAMESFX/AI_MWIN.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_MWIN.AUD:
 				Offset: 20426725
 				Length: 25959
-			^Content/d2k/v2/GAMESFX/AI_NEWOP.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_NEWOP.AUD:
 				Offset: 20452684
 				Length: 34175
-			^Content/d2k/v2/GAMESFX/AI_NROOM.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_NROOM.AUD:
 				Offset: 20486859
 				Length: 30124
-			^Content/d2k/v2/GAMESFX/AI_ORDER.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_ORDER.AUD:
 				Offset: 20516983
 				Length: 21881
-			^Content/d2k/v2/GAMESFX/AI_UNRDY.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_UNRDY.AUD:
 				Offset: 20538864
 				Length: 20567
-			^Content/d2k/v2/SOUND.RS:
+			^SupportDir|Content/d2k/v2/SOUND.RS:
 				Offset: 20559431
 				Length: 1929247
 d2k-a-linux: Dune 2000 (English)
@@ -860,853 +860,853 @@ d2k-a-linux: Dune 2000 (English)
 		setup/setup.z: 937f5ceb1236bf3f3d4e43929305ffe5004078e7
 	Install:
 		copy: movies
-			^Content/d2k/v2/Movies/A_BR01_E.VQA: a_br01_e.vqa
-			^Content/d2k/v2/Movies/A_BR02_E.VQA: a_br02_e.vqa
-			^Content/d2k/v2/Movies/A_BR03_E.VQA: a_br03_e.vqa
-			^Content/d2k/v2/Movies/A_BR04_E.VQA: a_br04_e.vqa
-			^Content/d2k/v2/Movies/A_BR05_E.VQA: a_br05_e.vqa
-			^Content/d2k/v2/Movies/A_BR06_E.VQA: a_br06_e.vqa
-			^Content/d2k/v2/Movies/A_BR07_E.VQA: a_br07_e.vqa
-			^Content/d2k/v2/Movies/A_BR08_E.VQA: a_br08_e.vqa
-			^Content/d2k/v2/Movies/A_BR09_E.VQA: a_br09_e.vqa
-			^Content/d2k/v2/Movies/A_FINL_E.VQA: a_finl_e.vqa
-			^Content/d2k/v2/Movies/A_LOSE_E.VQA: a_lose_e.vqa
-			^Content/d2k/v2/Movies/A_MNTG_E.VQA: a_mntg_e.vqa
-			^Content/d2k/v2/Movies/H_BR01_E.VQA: h_br01_e.vqa
-			^Content/d2k/v2/Movies/H_BR02_E.VQA: h_br02_e.vqa
-			^Content/d2k/v2/Movies/H_BR03_E.VQA: h_br03_e.vqa
-			^Content/d2k/v2/Movies/H_BR04_E.VQA: h_br04_e.vqa
-			^Content/d2k/v2/Movies/H_BR05_E.VQA: h_br05_e.vqa
-			^Content/d2k/v2/Movies/H_BR06_E.VQA: h_br06_e.vqa
-			^Content/d2k/v2/Movies/H_BR07_E.VQA: h_br07_e.vqa
-			^Content/d2k/v2/Movies/H_BR08_E.VQA: h_br08_e.vqa
-			^Content/d2k/v2/Movies/H_BR09_E.VQA: h_br09_e.vqa
-			^Content/d2k/v2/Movies/H_FINL_E.VQA: h_finl_e.vqa
-			^Content/d2k/v2/Movies/H_LOSE_E.VQA: h_lose_e.vqa
-			^Content/d2k/v2/Movies/H_MNTG_E.VQA: h_mntg_e.vqa
-			^Content/d2k/v2/Movies/O_BR01_E.VQA: o_br01_e.vqa
-			^Content/d2k/v2/Movies/O_BR02_E.VQA: o_br02_e.vqa
-			^Content/d2k/v2/Movies/O_BR03_E.VQA: o_br03_e.vqa
-			^Content/d2k/v2/Movies/O_BR04_E.VQA: o_br04_e.vqa
-			^Content/d2k/v2/Movies/O_BR05_E.VQA: o_br05_e.vqa
-			^Content/d2k/v2/Movies/O_BR06_E.VQA: o_br06_e.vqa
-			^Content/d2k/v2/Movies/O_BR07_E.VQA: o_br07_e.vqa
-			^Content/d2k/v2/Movies/O_BR08_E.VQA: o_br08_e.vqa
-			^Content/d2k/v2/Movies/O_BR09_E.VQA: o_br09_e.vqa
-			^Content/d2k/v2/Movies/O_FINL_E.VQA: o_finl_e.vqa
-			^Content/d2k/v2/Movies/O_LOSE_E.VQA: o_lose_e.vqa
-			^Content/d2k/v2/Movies/O_MNTG_E.VQA: o_mntg_e.vqa
-			^Content/d2k/v2/Movies/G_INT1_E.VQA: g_int1_e.vqa
-			^Content/d2k/v2/Movies/G_INT2_E.VQA: g_int2_e.vqa
-			^Content/d2k/v2/Movies/G_MAPS_E.VQA: g_maps_e.vqa
-			^Content/d2k/v2/Movies/G_PLN2_E.VQA: g_pln2_e.vqa
-			^Content/d2k/v2/Movies/G_PLNT_E.VQA: g_plnt_e.vqa
-			^Content/d2k/v2/Movies/T_TITL_E.VQA: t_titl_e.vqa
+			^SupportDir|Content/d2k/v2/Movies/A_BR01_E.VQA: a_br01_e.vqa
+			^SupportDir|Content/d2k/v2/Movies/A_BR02_E.VQA: a_br02_e.vqa
+			^SupportDir|Content/d2k/v2/Movies/A_BR03_E.VQA: a_br03_e.vqa
+			^SupportDir|Content/d2k/v2/Movies/A_BR04_E.VQA: a_br04_e.vqa
+			^SupportDir|Content/d2k/v2/Movies/A_BR05_E.VQA: a_br05_e.vqa
+			^SupportDir|Content/d2k/v2/Movies/A_BR06_E.VQA: a_br06_e.vqa
+			^SupportDir|Content/d2k/v2/Movies/A_BR07_E.VQA: a_br07_e.vqa
+			^SupportDir|Content/d2k/v2/Movies/A_BR08_E.VQA: a_br08_e.vqa
+			^SupportDir|Content/d2k/v2/Movies/A_BR09_E.VQA: a_br09_e.vqa
+			^SupportDir|Content/d2k/v2/Movies/A_FINL_E.VQA: a_finl_e.vqa
+			^SupportDir|Content/d2k/v2/Movies/A_LOSE_E.VQA: a_lose_e.vqa
+			^SupportDir|Content/d2k/v2/Movies/A_MNTG_E.VQA: a_mntg_e.vqa
+			^SupportDir|Content/d2k/v2/Movies/H_BR01_E.VQA: h_br01_e.vqa
+			^SupportDir|Content/d2k/v2/Movies/H_BR02_E.VQA: h_br02_e.vqa
+			^SupportDir|Content/d2k/v2/Movies/H_BR03_E.VQA: h_br03_e.vqa
+			^SupportDir|Content/d2k/v2/Movies/H_BR04_E.VQA: h_br04_e.vqa
+			^SupportDir|Content/d2k/v2/Movies/H_BR05_E.VQA: h_br05_e.vqa
+			^SupportDir|Content/d2k/v2/Movies/H_BR06_E.VQA: h_br06_e.vqa
+			^SupportDir|Content/d2k/v2/Movies/H_BR07_E.VQA: h_br07_e.vqa
+			^SupportDir|Content/d2k/v2/Movies/H_BR08_E.VQA: h_br08_e.vqa
+			^SupportDir|Content/d2k/v2/Movies/H_BR09_E.VQA: h_br09_e.vqa
+			^SupportDir|Content/d2k/v2/Movies/H_FINL_E.VQA: h_finl_e.vqa
+			^SupportDir|Content/d2k/v2/Movies/H_LOSE_E.VQA: h_lose_e.vqa
+			^SupportDir|Content/d2k/v2/Movies/H_MNTG_E.VQA: h_mntg_e.vqa
+			^SupportDir|Content/d2k/v2/Movies/O_BR01_E.VQA: o_br01_e.vqa
+			^SupportDir|Content/d2k/v2/Movies/O_BR02_E.VQA: o_br02_e.vqa
+			^SupportDir|Content/d2k/v2/Movies/O_BR03_E.VQA: o_br03_e.vqa
+			^SupportDir|Content/d2k/v2/Movies/O_BR04_E.VQA: o_br04_e.vqa
+			^SupportDir|Content/d2k/v2/Movies/O_BR05_E.VQA: o_br05_e.vqa
+			^SupportDir|Content/d2k/v2/Movies/O_BR06_E.VQA: o_br06_e.vqa
+			^SupportDir|Content/d2k/v2/Movies/O_BR07_E.VQA: o_br07_e.vqa
+			^SupportDir|Content/d2k/v2/Movies/O_BR08_E.VQA: o_br08_e.vqa
+			^SupportDir|Content/d2k/v2/Movies/O_BR09_E.VQA: o_br09_e.vqa
+			^SupportDir|Content/d2k/v2/Movies/O_FINL_E.VQA: o_finl_e.vqa
+			^SupportDir|Content/d2k/v2/Movies/O_LOSE_E.VQA: o_lose_e.vqa
+			^SupportDir|Content/d2k/v2/Movies/O_MNTG_E.VQA: o_mntg_e.vqa
+			^SupportDir|Content/d2k/v2/Movies/G_INT1_E.VQA: g_int1_e.vqa
+			^SupportDir|Content/d2k/v2/Movies/G_INT2_E.VQA: g_int2_e.vqa
+			^SupportDir|Content/d2k/v2/Movies/G_MAPS_E.VQA: g_maps_e.vqa
+			^SupportDir|Content/d2k/v2/Movies/G_PLN2_E.VQA: g_pln2_e.vqa
+			^SupportDir|Content/d2k/v2/Movies/G_PLNT_E.VQA: g_plnt_e.vqa
+			^SupportDir|Content/d2k/v2/Movies/T_TITL_E.VQA: t_titl_e.vqa
 		copy: music
-			^Content/d2k/v2/Music/AMBUSH.AUD: ambush.aud
-			^Content/d2k/v2/Music/ARAKATAK.AUD: arakatak.aud
-			^Content/d2k/v2/Music/ATREGAIN.AUD: atregain.aud
-			^Content/d2k/v2/Music/ENTORDOS.AUD: entordos.aud
-			^Content/d2k/v2/Music/FIGHTPWR.AUD: fightpwr.aud
-			^Content/d2k/v2/Music/FREMEN.AUD: fremen.aud
-			^Content/d2k/v2/Music/HARK_BAT.AUD: hark_bat.aud
-			^Content/d2k/v2/Music/LANDSAND.AUD: landsand.aud
-			^Content/d2k/v2/Music/OPTIONS.AUD: options.aud
-			^Content/d2k/v2/Music/PLOTTING.AUD: plotting.aud
-			^Content/d2k/v2/Music/RISEHARK.AUD: risehark.aud
-			^Content/d2k/v2/Music/ROBOTIX.AUD: robotix.aud
-			^Content/d2k/v2/Music/SCORE.AUD: score.aud
-			^Content/d2k/v2/Music/SOLDAPPR.AUD: soldappr.aud
-			^Content/d2k/v2/Music/SPICESCT.AUD: spicesct.aud
-			^Content/d2k/v2/Music/UNDERCON.AUD: undercon.aud
-			^Content/d2k/v2/Music/WAITGAME.A: waitgame.aud
+			^SupportDir|Content/d2k/v2/Music/AMBUSH.AUD: ambush.aud
+			^SupportDir|Content/d2k/v2/Music/ARAKATAK.AUD: arakatak.aud
+			^SupportDir|Content/d2k/v2/Music/ATREGAIN.AUD: atregain.aud
+			^SupportDir|Content/d2k/v2/Music/ENTORDOS.AUD: entordos.aud
+			^SupportDir|Content/d2k/v2/Music/FIGHTPWR.AUD: fightpwr.aud
+			^SupportDir|Content/d2k/v2/Music/FREMEN.AUD: fremen.aud
+			^SupportDir|Content/d2k/v2/Music/HARK_BAT.AUD: hark_bat.aud
+			^SupportDir|Content/d2k/v2/Music/LANDSAND.AUD: landsand.aud
+			^SupportDir|Content/d2k/v2/Music/OPTIONS.AUD: options.aud
+			^SupportDir|Content/d2k/v2/Music/PLOTTING.AUD: plotting.aud
+			^SupportDir|Content/d2k/v2/Music/RISEHARK.AUD: risehark.aud
+			^SupportDir|Content/d2k/v2/Music/ROBOTIX.AUD: robotix.aud
+			^SupportDir|Content/d2k/v2/Music/SCORE.AUD: score.aud
+			^SupportDir|Content/d2k/v2/Music/SOLDAPPR.AUD: soldappr.aud
+			^SupportDir|Content/d2k/v2/Music/SPICESCT.AUD: spicesct.aud
+			^SupportDir|Content/d2k/v2/Music/UNDERCON.AUD: undercon.aud
+			^SupportDir|Content/d2k/v2/Music/WAITGAME.A: waitgame.aud
 		extract-blast: setup/setup.z
-			^Content/d2k/v2/BLOXBAT.R8:
+			^SupportDir|Content/d2k/v2/BLOXBAT.R8:
 				Offset: 1156652
 				Length: 512750
-			^Content/d2k/v2/BLOXBASE.R8:
+			^SupportDir|Content/d2k/v2/BLOXBASE.R8:
 				Offset: 1669402
 				Length: 497092
-			^Content/d2k/v2/BLOXBGBS.R8:
+			^SupportDir|Content/d2k/v2/BLOXBGBS.R8:
 				Offset: 4055223
 				Length: 499135
-			^Content/d2k/v2/BLOXICE.R8:
+			^SupportDir|Content/d2k/v2/BLOXICE.R8:
 				Offset: 5524509
 				Length: 514963
-			^Content/d2k/v2/BLOXTREE.R8:
+			^SupportDir|Content/d2k/v2/BLOXTREE.R8:
 				Offset: 6994370
 				Length: 509867
-			^Content/d2k/v2/BLOXWAST.R8:
+			^SupportDir|Content/d2k/v2/BLOXWAST.R8:
 				Offset: 8455018
 				Length: 508567
-			^Content/d2k/v2/MOUSE.R8:
+			^SupportDir|Content/d2k/v2/MOUSE.R8:
 				Offset: 14012491
 				Length: 16996
-			^Content/d2k/v2/PALETTE.BIN:
+			^SupportDir|Content/d2k/v2/PALETTE.BIN:
 				Offset: 22938401
 				Length: 815
-			^Content/d2k/v2/FONT.BIN:
+			^SupportDir|Content/d2k/v2/FONT.BIN:
 				Offset: 22927461
 				Length: 199
-			^Content/d2k/v2/FONTCOL.FNT:
+			^SupportDir|Content/d2k/v2/FONTCOL.FNT:
 				Offset: 13985176
 				Length: 3011
-			^Content/d2k/v2/FONTCOL.FPL:
+			^SupportDir|Content/d2k/v2/FONTCOL.FPL:
 				Offset: 13988187
 				Length: 238
-			^Content/d2k/v2/GAMESFX/A_ECONF2.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/A_ECONF2.AUD:
 				Offset: 15560305
 				Length: 9647
-			^Content/d2k/v2/GAMESFX/A_ECONF1.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/A_ECONF1.AUD:
 				Offset: 15569952
 				Length: 8676
-			^Content/d2k/v2/GAMESFX/A_ECONF3.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/A_ECONF3.AUD:
 				Offset: 15578628
 				Length: 9641
-			^Content/d2k/v2/GAMESFX/A_ESEL1.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/A_ESEL1.AUD:
 				Offset: 15588269
 				Length: 7371
-			^Content/d2k/v2/GAMESFX/A_ESEL2.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/A_ESEL2.AUD:
 				Offset: 15595640
 				Length: 11326
-			^Content/d2k/v2/GAMESFX/A_ESEL3.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/A_ESEL3.AUD:
 				Offset: 15606966
 				Length: 11329
-			^Content/d2k/v2/GAMESFX/A_FCONF1.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/A_FCONF1.AUD:
 				Offset: 15618295
 				Length: 8964
-			^Content/d2k/v2/GAMESFX/A_FCONF2.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/A_FCONF2.AUD:
 				Offset: 15627259
 				Length: 11336
-			^Content/d2k/v2/GAMESFX/A_FCONF3.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/A_FCONF3.AUD:
 				Offset: 15638595
 				Length: 14606
-			^Content/d2k/v2/GAMESFX/OI_ENEMY.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_ENEMY.AUD:
 				Offset: 15653201
 				Length: 27230
-			^Content/d2k/v2/GAMESFX/AI_POWER.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_POWER.AUD:
 				Offset: 15680431
 				Length: 19621
-			^Content/d2k/v2/GAMESFX/AI_PREP.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_PREP.AUD:
 				Offset: 15700052
 				Length: 28781
-			^Content/d2k/v2/GAMESFX/AI_PRMRY.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_PRMRY.AUD:
 				Offset: 15728833
 				Length: 29703
-			^Content/d2k/v2/GAMESFX/AI_REINF.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_REINF.AUD:
 				Offset: 15758536
 				Length: 29555
-			^Content/d2k/v2/GAMESFX/AI_GANEW.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_GANEW.AUD:
 				Offset: 15788091
 				Length: 27961
-			^Content/d2k/v2/GAMESFX/HI_SPORT.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_SPORT.AUD:
 				Offset: 15816052
 				Length: 20925
-			^Content/d2k/v2/GAMESFX/OI_GSAVE.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_GSAVE.AUD:
 				Offset: 15836977
 				Length: 10925
-			^Content/d2k/v2/GAMESFX/OI_GUARD.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_GUARD.AUD:
 				Offset: 15847902
 				Length: 8125
-			^Content/d2k/v2/GAMESFX/HI_MAP3B.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_MAP3B.AUD:
 				Offset: 15856027
 				Length: 26212
-			^Content/d2k/v2/GAMESFX/HI_MAP4A.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_MAP4A.AUD:
 				Offset: 15882239
 				Length: 27166
-			^Content/d2k/v2/GAMESFX/HI_MAP5A.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_MAP5A.AUD:
 				Offset: 15909405
 				Length: 31126
-			^Content/d2k/v2/GAMESFX/HI_MAP6A.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_MAP6A.AUD:
 				Offset: 15940531
 				Length: 33481
-			^Content/d2k/v2/GAMESFX/O_ECONF3.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/O_ECONF3.AUD:
 				Offset: 15974012
 				Length: 17265
-			^Content/d2k/v2/GAMESFX/O_SCONF3.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/O_SCONF3.AUD:
 				Offset: 15991277
 				Length: 14523
-			^Content/d2k/v2/GAMESFX/O_SSEL1.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/O_SSEL1.AUD:
 				Offset: 16005800
 				Length: 18266
-			^Content/d2k/v2/GAMESFX/O_SSEL2.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/O_SSEL2.AUD:
 				Offset: 16024066
 				Length: 8467
-			^Content/d2k/v2/GAMESFX/O_SSEL3.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/O_SSEL3.AUD:
 				Offset: 16032533
 				Length: 9748
-			^Content/d2k/v2/GAMESFX/O_VCONF1.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/O_VCONF1.AUD:
 				Offset: 16042281
 				Length: 14264
-			^Content/d2k/v2/GAMESFX/O_VCONF2.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/O_VCONF2.AUD:
 				Offset: 16056545
 				Length: 12087
-			^Content/d2k/v2/GAMESFX/O_VCONF3.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/O_VCONF3.AUD:
 				Offset: 16068632
 				Length: 14428
-			^Content/d2k/v2/GAMESFX/OI_MWIN.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_MWIN.AUD:
 				Offset: 16083060
 				Length: 16985
-			^Content/d2k/v2/GAMESFX/O_ECONF1.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/O_ECONF1.AUD:
 				Offset: 16100045
 				Length: 12638
-			^Content/d2k/v2/GAMESFX/O_ECONF2.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/O_ECONF2.AUD:
 				Offset: 16112683
 				Length: 13229
-			^Content/d2k/v2/GAMESFX/OI_NROOM.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_NROOM.AUD:
 				Offset: 16125912
 				Length: 26572
-			^Content/d2k/v2/GAMESFX/O_ESEL1.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/O_ESEL1.AUD:
 				Offset: 16152484
 				Length: 12085
-			^Content/d2k/v2/GAMESFX/O_ESEL2.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/O_ESEL2.AUD:
 				Offset: 16164569
 				Length: 18232
-			^Content/d2k/v2/GAMESFX/O_ESEL3.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/O_ESEL3.AUD:
 				Offset: 16182801
 				Length: 8328
-			^Content/d2k/v2/GAMESFX/O_ICONF1.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/O_ICONF1.AUD:
 				Offset: 16191129
 				Length: 12497
-			^Content/d2k/v2/GAMESFX/O_ICONF2.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/O_ICONF2.AUD:
 				Offset: 16203626
 				Length: 9546
-			^Content/d2k/v2/GAMESFX/O_ICONF3.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/O_ICONF3.AUD:
 				Offset: 16213172
 				Length: 17135
-			^Content/d2k/v2/GAMESFX/HI_MAP4B.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_MAP4B.AUD:
 				Offset: 16230307
 				Length: 26937
-			^Content/d2k/v2/GAMESFX/O_ISEL2.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/O_ISEL2.AUD:
 				Offset: 16257244
 				Length: 17940
-			^Content/d2k/v2/GAMESFX/HI_BLOST.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_BLOST.AUD:
 				Offset: 16275184
 				Length: 14985
-			^Content/d2k/v2/GAMESFX/HI_BUILD.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_BUILD.AUD:
 				Offset: 16290169
 				Length: 9089
-			^Content/d2k/v2/GAMESFX/HI_MAP6B.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_MAP6B.AUD:
 				Offset: 16299258
 				Length: 28401
-			^Content/d2k/v2/GAMESFX/HI_MAP7A.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_MAP7A.AUD:
 				Offset: 16327659
 				Length: 23949
-			^Content/d2k/v2/GAMESFX/HI_MAP9.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_MAP9.AUD:
 				Offset: 16351608
 				Length: 29489
-			^Content/d2k/v2/GAMESFX/A_VSEL3.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/A_VSEL3.AUD:
 				Offset: 16381097
 				Length: 11016
-			^Content/d2k/v2/GAMESFX/AI_1MIN.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_1MIN.AUD:
 				Offset: 16392113
 				Length: 27566
-			^Content/d2k/v2/GAMESFX/AI_2MIN.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_2MIN.AUD:
 				Offset: 16419679
 				Length: 26539
-			^Content/d2k/v2/GAMESFX/AI_3MIN.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_3MIN.AUD:
 				Offset: 16446218
 				Length: 30821
-			^Content/d2k/v2/GAMESFX/O_VSEL1.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/O_VSEL1.AUD:
 				Offset: 16477039
 				Length: 7978
-			^Content/d2k/v2/GAMESFX/HI_RUN.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_RUN.AUD:
 				Offset: 16485017
 				Length: 11880
-			^Content/d2k/v2/GAMESFX/A_FSEL1.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/A_FSEL1.AUD:
 				Offset: 16496897
 				Length: 8995
-			^Content/d2k/v2/GAMESFX/A_FSEL2.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/A_FSEL2.AUD:
 				Offset: 16505892
 				Length: 10120
-			^Content/d2k/v2/GAMESFX/A_FSEL3.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/A_FSEL3.AUD:
 				Offset: 16516012
 				Length: 8999
-			^Content/d2k/v2/GAMESFX/A_FSEL4.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/A_FSEL4.AUD:
 				Offset: 16525011
 				Length: 6593
-			^Content/d2k/v2/GAMESFX/OI_MAP8A.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_MAP8A.AUD:
 				Offset: 16531604
 				Length: 34790
-			^Content/d2k/v2/GAMESFX/OI_MAP9A.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_MAP9A.AUD:
 				Offset: 16566394
 				Length: 35606
-			^Content/d2k/v2/GAMESFX/OI_MEND.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_MEND.AUD:
 				Offset: 16602000
 				Length: 10303
-			^Content/d2k/v2/GAMESFX/OI_MFAIL.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_MFAIL.AUD:
 				Offset: 16612303
 				Length: 22969
-			^Content/d2k/v2/GAMESFX/AI_4MIN.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_4MIN.AUD:
 				Offset: 16635272
 				Length: 31816
-			^Content/d2k/v2/GAMESFX/AI_CANCL.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_CANCL.AUD:
 				Offset: 16667088
 				Length: 19585
-			^Content/d2k/v2/GAMESFX/OI_ULOST.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_ULOST.AUD:
 				Offset: 16686673
 				Length: 14563
-			^Content/d2k/v2/GAMESFX/OI_UNRDY.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_UNRDY.AUD:
 				Offset: 16701236
 				Length: 13353
-			^Content/d2k/v2/GAMESFX/O_VSEL3.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/O_VSEL3.AUD:
 				Offset: 16714589
 				Length: 9671
-			^Content/d2k/v2/GAMESFX/OI_1MIN.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_1MIN.AUD:
 				Offset: 16724260
 				Length: 15031
-			^Content/d2k/v2/GAMESFX/OI_MAP7A.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_MAP7A.AUD:
 				Offset: 16739291
 				Length: 28368
-			^Content/d2k/v2/GAMESFX/HI_TRAIN.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_TRAIN.AUD:
 				Offset: 16767659
 				Length: 9649
-			^Content/d2k/v2/GAMESFX/HI_ULOST.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_ULOST.AUD:
 				Offset: 16777308
 				Length: 17157
-			^Content/d2k/v2/GAMESFX/HI_UNRDY.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_UNRDY.AUD:
 				Offset: 16794465
 				Length: 13407
-			^Content/d2k/v2/GAMESFX/OI_MAP2A.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_MAP2A.AUD:
 				Offset: 16807872
 				Length: 29910
-			^Content/d2k/v2/GAMESFX/HI_REINF.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_REINF.AUD:
 				Offset: 16837782
 				Length: 22890
-			^Content/d2k/v2/GAMESFX/OI_MAP2C.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_MAP2C.AUD:
 				Offset: 16860672
 				Length: 22923
-			^Content/d2k/v2/GAMESFX/OI_MAP3A.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_MAP3A.AUD:
 				Offset: 16883595
 				Length: 34017
-			^Content/d2k/v2/GAMESFX/OI_MAP4A.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_MAP4A.AUD:
 				Offset: 16917612
 				Length: 56714
-			^Content/d2k/v2/GAMESFX/OI_SPORT.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_SPORT.AUD:
 				Offset: 16974326
 				Length: 27200
-			^Content/d2k/v2/GAMESFX/OI_UPGOP.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_UPGOP.AUD:
 				Offset: 17001526
 				Length: 19828
-			^Content/d2k/v2/GAMESFX/OI_UPGRD.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_UPGRD.AUD:
 				Offset: 17021354
 				Length: 13869
-			^Content/d2k/v2/GAMESFX/OI_WATTK.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_WATTK.AUD:
 				Offset: 17035223
 				Length: 14197
-			^Content/d2k/v2/GAMESFX/AI_MONEY.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_MONEY.AUD:
 				Offset: 17049420
 				Length: 29136
-			^Content/d2k/v2/GAMESFX/AI_SELL.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_SELL.AUD:
 				Offset: 17078556
 				Length: 26204
-			^Content/d2k/v2/GAMESFX/HI_NEWOP.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_NEWOP.AUD:
 				Offset: 17104760
 				Length: 24264
-			^Content/d2k/v2/GAMESFX/AI_5MIN.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_5MIN.AUD:
 				Offset: 17129024
 				Length: 43921
-			^Content/d2k/v2/GAMESFX/OI_HATTK.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_HATTK.AUD:
 				Offset: 17172945
 				Length: 22151
-			^Content/d2k/v2/GAMESFX/H_VSEL2.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/H_VSEL2.AUD:
 				Offset: 17195096
 				Length: 12300
-			^Content/d2k/v2/GAMESFX/OI_MAP1B.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_MAP1B.AUD:
 				Offset: 17207396
 				Length: 21971
-			^Content/d2k/v2/GAMESFX/OI_MAP1C.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_MAP1C.AUD:
 				Offset: 17229367
 				Length: 22041
-			^Content/d2k/v2/GAMESFX/AI_GSAVE.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_GSAVE.AUD:
 				Offset: 17251408
 				Length: 21545
-			^Content/d2k/v2/GAMESFX/AI_GUARD.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_GUARD.AUD:
 				Offset: 17272953
 				Length: 14344
-			^Content/d2k/v2/GAMESFX/AI_HATTK.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_HATTK.AUD:
 				Offset: 17287297
 				Length: 28156
-			^Content/d2k/v2/GAMESFX/AI_HOLD.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_HOLD.AUD:
 				Offset: 17315453
 				Length: 16983
-			^Content/d2k/v2/GAMESFX/HI_UPGOP.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_UPGOP.AUD:
 				Offset: 17332436
 				Length: 19583
-			^Content/d2k/v2/GAMESFX/HI_UPGRD.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_UPGRD.AUD:
 				Offset: 17352019
 				Length: 12875
-			^Content/d2k/v2/GAMESFX/OI_MAP2B.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_MAP2B.AUD:
 				Offset: 17364894
 				Length: 20974
-			^Content/d2k/v2/GAMESFX/HI_WSIGN.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_WSIGN.AUD:
 				Offset: 17385868
 				Length: 14699
-			^Content/d2k/v2/GAMESFX/HI_HATTK.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_HATTK.AUD:
 				Offset: 17400567
 				Length: 20919
-			^Content/d2k/v2/GAMESFX/O_SCONF2.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/O_SCONF2.AUD:
 				Offset: 17421486
 				Length: 18984
-			^Content/d2k/v2/GAMESFX/HI_HOLD.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_HOLD.AUD:
 				Offset: 17440470
 				Length: 11779
-			^Content/d2k/v2/GAMESFX/A_VSEL2.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/A_VSEL2.AUD:
 				Offset: 17452249
 				Length: 13980
-			^Content/d2k/v2/GAMESFX/AI_ATACK.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_ATACK.AUD:
 				Offset: 17466229
 				Length: 33483
-			^Content/d2k/v2/GAMESFX/AI_BDRDY.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_BDRDY.AUD:
 				Offset: 17499712
 				Length: 26566
-			^Content/d2k/v2/GAMESFX/AI_BLOST.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_BLOST.AUD:
 				Offset: 17526278
 				Length: 25237
-			^Content/d2k/v2/GAMESFX/AI_BUILD.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_BUILD.AUD:
 				Offset: 17551515
 				Length: 16072
-			^Content/d2k/v2/GAMESFX/HI_GLOAD.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_GLOAD.AUD:
 				Offset: 17567587
 				Length: 12037
-			^Content/d2k/v2/GAMESFX/AI_CAPT.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_CAPT.AUD:
 				Offset: 17579624
 				Length: 30243
-			^Content/d2k/v2/GAMESFX/AI_DHRDY.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_DHRDY.AUD:
 				Offset: 17609867
 				Length: 31710
-			^Content/d2k/v2/GAMESFX/AI_DPLOY.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_DPLOY.AUD:
 				Offset: 17641577
 				Length: 27450
-			^Content/d2k/v2/GAMESFX/AI_ENEMY.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_ENEMY.AUD:
 				Offset: 17669027
 				Length: 30854
-			^Content/d2k/v2/GAMESFX/A_VCONF1.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/A_VCONF1.AUD:
 				Offset: 17699881
 				Length: 10860
-			^Content/d2k/v2/GAMESFX/HI_PLACE.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_PLACE.AUD:
 				Offset: 17710741
 				Length: 19337
-			^Content/d2k/v2/GAMESFX/HI_POWER.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_POWER.AUD:
 				Offset: 17730078
 				Length: 15004
-			^Content/d2k/v2/GAMESFX/HI_PREP.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_PREP.AUD:
 				Offset: 17745082
 				Length: 23023
-			^Content/d2k/v2/GAMESFX/HI_PRMRY.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_PRMRY.AUD:
 				Offset: 17768105
 				Length: 22321
-			^Content/d2k/v2/GAMESFX/OI_MONEY.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_MONEY.AUD:
 				Offset: 17790426
 				Length: 21698
-			^Content/d2k/v2/GAMESFX/O_ISEL1.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/O_ISEL1.AUD:
 				Offset: 17812124
 				Length: 10282
-			^Content/d2k/v2/GAMESFX/OI_NEWOP.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_NEWOP.AUD:
 				Offset: 17822406
 				Length: 28615
-			^Content/d2k/v2/GAMESFX/A_VCONF3.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/A_VCONF3.AUD:
 				Offset: 17851021
 				Length: 12771
-			^Content/d2k/v2/GAMESFX/A_VSEL1.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/A_VSEL1.AUD:
 				Offset: 17863792
 				Length: 9917
-			^Content/d2k/v2/GAMESFX/OI_PLACE.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_PLACE.AUD:
 				Offset: 17873709
 				Length: 18502
-			^Content/d2k/v2/GAMESFX/OI_POWER.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_POWER.AUD:
 				Offset: 17892211
 				Length: 12832
-			^Content/d2k/v2/GAMESFX/OI_PREP.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_PREP.AUD:
 				Offset: 17905043
 				Length: 22413
-			^Content/d2k/v2/GAMESFX/OI_PRMRY.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_PRMRY.AUD:
 				Offset: 17927456
 				Length: 29577
-			^Content/d2k/v2/GAMESFX/OI_REINF.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_REINF.AUD:
 				Offset: 17957033
 				Length: 24798
-			^Content/d2k/v2/GAMESFX/OI_RUN.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_RUN.AUD:
 				Offset: 17981831
 				Length: 14784
-			^Content/d2k/v2/GAMESFX/OI_CAPT.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_CAPT.AUD:
 				Offset: 17996615
 				Length: 18526
-			^Content/d2k/v2/GAMESFX/H_ECONF1.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/H_ECONF1.AUD:
 				Offset: 18015141
 				Length: 12390
-			^Content/d2k/v2/GAMESFX/O_VSEL2.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/O_VSEL2.AUD:
 				Offset: 18027531
 				Length: 11851
-			^Content/d2k/v2/GAMESFX/H_VSEL3.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/H_VSEL3.AUD:
 				Offset: 18039382
 				Length: 9867
-			^Content/d2k/v2/GAMESFX/HI_1MIN.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_1MIN.AUD:
 				Offset: 18049249
 				Length: 16907
-			^Content/d2k/v2/GAMESFX/HI_2MIN.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_2MIN.AUD:
 				Offset: 18066156
 				Length: 17659
-			^Content/d2k/v2/GAMESFX/HI_3MIN.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_3MIN.AUD:
 				Offset: 18083815
 				Length: 20337
-			^Content/d2k/v2/GAMESFX/HI_4MIN.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_4MIN.AUD:
 				Offset: 18104152
 				Length: 18877
-			^Content/d2k/v2/GAMESFX/HI_5MIN.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_5MIN.AUD:
 				Offset: 18123029
 				Length: 30788
-			^Content/d2k/v2/GAMESFX/HI_ABORT.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_ABORT.AUD:
 				Offset: 18153817
 				Length: 18322
-			^Content/d2k/v2/GAMESFX/HI_ATACK.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_ATACK.AUD:
 				Offset: 18172139
 				Length: 22178
-			^Content/d2k/v2/GAMESFX/HI_NROOM.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_NROOM.AUD:
 				Offset: 18194317
 				Length: 24878
-			^Content/d2k/v2/GAMESFX/OI_SILOS.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_SILOS.AUD:
 				Offset: 18219195
 				Length: 15741
-			^Content/d2k/v2/GAMESFX/A_FCONF4.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/A_FCONF4.AUD:
 				Offset: 18234936
 				Length: 14892
-			^Content/d2k/v2/GAMESFX/OI_MAP5A.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_MAP5A.AUD:
 				Offset: 18249828
 				Length: 23026
-			^Content/d2k/v2/GAMESFX/OI_MAP6A.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_MAP6A.AUD:
 				Offset: 18272854
 				Length: 43938
-			^Content/d2k/v2/GAMESFX/HI_CANCL.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_CANCL.AUD:
 				Offset: 18316792
 				Length: 10992
-			^Content/d2k/v2/GAMESFX/HI_CAPT.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_CAPT.AUD:
 				Offset: 18327784
 				Length: 19514
-			^Content/d2k/v2/GAMESFX/HI_DHRDY.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_DHRDY.AUD:
 				Offset: 18347298
 				Length: 23895
-			^Content/d2k/v2/GAMESFX/HI_DPLOY.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_DPLOY.AUD:
 				Offset: 18371193
 				Length: 18626
-			^Content/d2k/v2/GAMESFX/HI_ENEMY.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_ENEMY.AUD:
 				Offset: 18389819
 				Length: 22564
-			^Content/d2k/v2/GAMESFX/HI_GANEW.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_GANEW.AUD:
 				Offset: 18412383
 				Length: 18445
-			^Content/d2k/v2/GAMESFX/OI_DHRDY.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_DHRDY.AUD:
 				Offset: 18430828
 				Length: 19492
-			^Content/d2k/v2/GAMESFX/HI_GSAVE.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_GSAVE.AUD:
 				Offset: 18450320
 				Length: 14194
-			^Content/d2k/v2/GAMESFX/HI_GUARD.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_GUARD.AUD:
 				Offset: 18464514
 				Length: 8310
-			^Content/d2k/v2/GAMESFX/H_VSEL1.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/H_VSEL1.AUD:
 				Offset: 18472824
 				Length: 8332
-			^Content/d2k/v2/GAMESFX/OI_ORDER.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_ORDER.AUD:
 				Offset: 18481156
 				Length: 15789
-			^Content/d2k/v2/GAMESFX/G_SCONF1.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/G_SCONF1.AUD:
 				Offset: 18496945
 				Length: 9791
-			^Content/d2k/v2/GAMESFX/G_SCONF2.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/G_SCONF2.AUD:
 				Offset: 18506736
 				Length: 15099
-			^Content/d2k/v2/GAMESFX/G_SCONF3.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/G_SCONF3.AUD:
 				Offset: 18521835
 				Length: 14863
-			^Content/d2k/v2/GAMESFX/G_SSEL1.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/G_SSEL1.AUD:
 				Offset: 18536698
 				Length: 9753
-			^Content/d2k/v2/GAMESFX/G_SSEL2.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/G_SSEL2.AUD:
 				Offset: 18546451
 				Length: 9329
-			^Content/d2k/v2/GAMESFX/G_SSEL3.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/G_SSEL3.AUD:
 				Offset: 18555780
 				Length: 9449
-			^Content/d2k/v2/GAMESFX/OI_SELL.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_SELL.AUD:
 				Offset: 18565229
 				Length: 15600
-			^Content/d2k/v2/GAMESFX/H_ECONF2.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/H_ECONF2.AUD:
 				Offset: 18580829
 				Length: 16157
-			^Content/d2k/v2/GAMESFX/H_ECONF3.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/H_ECONF3.AUD:
 				Offset: 18596986
 				Length: 13149
-			^Content/d2k/v2/GAMESFX/H_ESEL1.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/H_ESEL1.AUD:
 				Offset: 18610135
 				Length: 13928
-			^Content/d2k/v2/GAMESFX/H_ESEL2.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/H_ESEL2.AUD:
 				Offset: 18624063
 				Length: 16430
-			^Content/d2k/v2/GAMESFX/AI_MAP2C.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_MAP2C.AUD:
 				Offset: 18640493
 				Length: 41640
-			^Content/d2k/v2/GAMESFX/AI_MAP3A.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_MAP3A.AUD:
 				Offset: 18682133
 				Length: 41809
-			^Content/d2k/v2/GAMESFX/AI_MAP4A.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_MAP4A.AUD:
 				Offset: 18723942
 				Length: 29117
-			^Content/d2k/v2/GAMESFX/AI_MAP5A.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_MAP5A.AUD:
 				Offset: 18753059
 				Length: 36982
-			^Content/d2k/v2/GAMESFX/AI_MAP6A.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_MAP6A.AUD:
 				Offset: 18790041
 				Length: 60681
-			^Content/d2k/v2/GAMESFX/HI_BDRDY.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_BDRDY.AUD:
 				Offset: 18850722
 				Length: 21396
-			^Content/d2k/v2/GAMESFX/AI_MAP8A.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_MAP8A.AUD:
 				Offset: 18872118
 				Length: 37995
-			^Content/d2k/v2/GAMESFX/AI_MAP9A.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_MAP9A.AUD:
 				Offset: 18910113
 				Length: 32674
-			^Content/d2k/v2/GAMESFX/AI_MEND.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_MEND.AUD:
 				Offset: 18942787
 				Length: 18399
-			^Content/d2k/v2/GAMESFX/AI_MFAIL.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_MFAIL.AUD:
 				Offset: 18961186
 				Length: 26359
-			^Content/d2k/v2/GAMESFX/AI_GLOAD.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_GLOAD.AUD:
 				Offset: 18987545
 				Length: 21335
-			^Content/d2k/v2/GAMESFX/HI_MAP9A.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_MAP9A.AUD:
 				Offset: 19008880
 				Length: 28418
-			^Content/d2k/v2/GAMESFX/HI_MEND.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_MEND.AUD:
 				Offset: 19037298
 				Length: 9269
-			^Content/d2k/v2/GAMESFX/HI_MFAIL.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_MFAIL.AUD:
 				Offset: 19046567
 				Length: 19854
-			^Content/d2k/v2/GAMESFX/HI_MONEY.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_MONEY.AUD:
 				Offset: 19066421
 				Length: 20038
-			^Content/d2k/v2/GAMESFX/HI_MWIN.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_MWIN.AUD:
 				Offset: 19086459
 				Length: 16073
-			^Content/d2k/v2/GAMESFX/HI_WATTK.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_WATTK.AUD:
 				Offset: 19102532
 				Length: 14873
-			^Content/d2k/v2/GAMESFX/AI_MAP1A.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_MAP1A.AUD:
 				Offset: 19117405
 				Length: 41683
-			^Content/d2k/v2/GAMESFX/AI_MAP1B.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_MAP1B.AUD:
 				Offset: 19159088
 				Length: 34475
-			^Content/d2k/v2/GAMESFX/AI_MAP1C.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_MAP1C.AUD:
 				Offset: 19193563
 				Length: 34903
-			^Content/d2k/v2/GAMESFX/AI_MAP2A.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_MAP2A.AUD:
 				Offset: 19228466
 				Length: 59613
-			^Content/d2k/v2/GAMESFX/AI_ABORT.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_ABORT.AUD:
 				Offset: 19288079
 				Length: 22150
-			^Content/d2k/v2/GAMESFX/H_ESEL3.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/H_ESEL3.AUD:
 				Offset: 19310229
 				Length: 9090
-			^Content/d2k/v2/GAMESFX/AI_SILOS.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_SILOS.AUD:
 				Offset: 19319319
 				Length: 21350
-			^Content/d2k/v2/GAMESFX/AI_SPORT.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_SPORT.AUD:
 				Offset: 19340669
 				Length: 31478
-			^Content/d2k/v2/GAMESFX/AI_TRAIN.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_TRAIN.AUD:
 				Offset: 19372147
 				Length: 19876
-			^Content/d2k/v2/GAMESFX/AI_ULOST.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_ULOST.AUD:
 				Offset: 19392023
 				Length: 22359
-			^Content/d2k/v2/GAMESFX/AI_MAP7A.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_MAP7A.AUD:
 				Offset: 19414382
 				Length: 28902
-			^Content/d2k/v2/GAMESFX/AI_UPGOP.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_UPGOP.AUD:
 				Offset: 19443284
 				Length: 26855
-			^Content/d2k/v2/GAMESFX/AI_UPGRD.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_UPGRD.AUD:
 				Offset: 19470139
 				Length: 19104
-			^Content/d2k/v2/GAMESFX/AI_WATTK.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_WATTK.AUD:
 				Offset: 19489243
 				Length: 24655
-			^Content/d2k/v2/GAMESFX/AI_WSIGN.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_WSIGN.AUD:
 				Offset: 19513898
 				Length: 23032
-			^Content/d2k/v2/GAMESFX/AI_MAP2B.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_MAP2B.AUD:
 				Offset: 19536930
 				Length: 35588
-			^Content/d2k/v2/GAMESFX/A_ICONF1.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/A_ICONF1.AUD:
 				Offset: 19572518
 				Length: 8945
-			^Content/d2k/v2/GAMESFX/A_ICONF2.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/A_ICONF2.AUD:
 				Offset: 19581463
 				Length: 9005
-			^Content/d2k/v2/GAMESFX/A_ICONF3.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/A_ICONF3.AUD:
 				Offset: 19590468
 				Length: 9606
-			^Content/d2k/v2/GAMESFX/A_ISEL1.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/A_ISEL1.AUD:
 				Offset: 19600074
 				Length: 11671
-			^Content/d2k/v2/GAMESFX/OI_CANCL.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_CANCL.AUD:
 				Offset: 19611745
 				Length: 10644
-			^Content/d2k/v2/GAMESFX/H_ISEL2.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/H_ISEL2.AUD:
 				Offset: 19622389
 				Length: 10387
-			^Content/d2k/v2/GAMESFX/H_ISEL3.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/H_ISEL3.AUD:
 				Offset: 19632776
 				Length: 17225
-			^Content/d2k/v2/GAMESFX/H_VCONF1.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/H_VCONF1.AUD:
 				Offset: 19650001
 				Length: 10077
-			^Content/d2k/v2/GAMESFX/H_VCONF2.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/H_VCONF2.AUD:
 				Offset: 19660078
 				Length: 13616
-			^Content/d2k/v2/GAMESFX/H_VCONF3.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/H_VCONF3.AUD:
 				Offset: 19673694
 				Length: 11251
-			^Content/d2k/v2/GAMESFX/OI_TRAIN.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_TRAIN.AUD:
 				Offset: 19684945
 				Length: 8144
-			^Content/d2k/v2/GAMESFX/HI_ORDER.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_ORDER.AUD:
 				Offset: 19693089
 				Length: 14865
-			^Content/d2k/v2/GAMESFX/OI_WSIGN.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_WSIGN.AUD:
 				Offset: 19707954
 				Length: 11912
-			^Content/d2k/v2/GAMESFX/OI_BLOST.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_BLOST.AUD:
 				Offset: 19719866
 				Length: 19540
-			^Content/d2k/v2/GAMESFX/OI_BUILD.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_BUILD.AUD:
 				Offset: 19739406
 				Length: 10246
-			^Content/d2k/v2/GAMESFX/AI_LAUNC.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_LAUNC.AUD:
 				Offset: 19749652
 				Length: 31148
-			^Content/d2k/v2/GAMESFX/A_ISEL3.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/A_ISEL3.AUD:
 				Offset: 19780800
 				Length: 8307
-			^Content/d2k/v2/GAMESFX/A_VCONF2.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/A_VCONF2.AUD:
 				Offset: 19789107
 				Length: 14331
-			^Content/d2k/v2/GAMESFX/OI_HOLD.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_HOLD.AUD:
 				Offset: 19803438
 				Length: 11295
-			^Content/d2k/v2/GAMESFX/OI_LAUNC.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_LAUNC.AUD:
 				Offset: 19814733
 				Length: 20437
-			^Content/d2k/v2/GAMESFX/OI_MAP1A.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_MAP1A.AUD:
 				Offset: 19835170
 				Length: 27739
-			^Content/d2k/v2/GAMESFX/HI_LAUNC.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_LAUNC.AUD:
 				Offset: 19862909
 				Length: 22200
-			^Content/d2k/v2/GAMESFX/H_ICONF1.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/H_ICONF1.AUD:
 				Offset: 19885109
 				Length: 9620
-			^Content/d2k/v2/GAMESFX/H_ICONF2.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/H_ICONF2.AUD:
 				Offset: 19894729
 				Length: 13368
-			^Content/d2k/v2/GAMESFX/H_ICONF3.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/H_ICONF3.AUD:
 				Offset: 19908097
 				Length: 15612
-			^Content/d2k/v2/GAMESFX/H_ISEL1.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/H_ISEL1.AUD:
 				Offset: 19923709
 				Length: 8279
-			^Content/d2k/v2/GAMESFX/A_ISEL2.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/A_ISEL2.AUD:
 				Offset: 19931988
 				Length: 11383
-			^Content/d2k/v2/GAMESFX/AI_RUN.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_RUN.AUD:
 				Offset: 19943371
 				Length: 18511
-			^Content/d2k/v2/GAMESFX/HI_SILOS.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_SILOS.AUD:
 				Offset: 19961882
 				Length: 14244
-			^Content/d2k/v2/GAMESFX/HI_MAP1A.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_MAP1A.AUD:
 				Offset: 19976126
 				Length: 24075
-			^Content/d2k/v2/GAMESFX/HI_MAP1B.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_MAP1B.AUD:
 				Offset: 20000201
 				Length: 26716
-			^Content/d2k/v2/GAMESFX/HI_MAP1C.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_MAP1C.AUD:
 				Offset: 20026917
 				Length: 21716
-			^Content/d2k/v2/GAMESFX/HI_MAP2A.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_MAP2A.AUD:
 				Offset: 20048633
 				Length: 32417
-			^Content/d2k/v2/GAMESFX/HI_MAP2B.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_MAP2B.AUD:
 				Offset: 20081050
 				Length: 33724
-			^Content/d2k/v2/GAMESFX/HI_MAP2C.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_MAP2C.AUD:
 				Offset: 20114774
 				Length: 21828
-			^Content/d2k/v2/GAMESFX/HI_MAP3A.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_MAP3A.AUD:
 				Offset: 20136602
 				Length: 30404
-			^Content/d2k/v2/GAMESFX/O_ISEL3.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/O_ISEL3.AUD:
 				Offset: 20167006
 				Length: 9862
-			^Content/d2k/v2/GAMESFX/O_SCONF1.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/O_SCONF1.AUD:
 				Offset: 20176868
 				Length: 18149
-			^Content/d2k/v2/GAMESFX/OI_2MIN.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_2MIN.AUD:
 				Offset: 20195017
 				Length: 14697
-			^Content/d2k/v2/GAMESFX/OI_3MIN.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_3MIN.AUD:
 				Offset: 20209714
 				Length: 17316
-			^Content/d2k/v2/GAMESFX/OI_4MIN.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_4MIN.AUD:
 				Offset: 20227030
 				Length: 14869
-			^Content/d2k/v2/GAMESFX/OI_5MIN.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_5MIN.AUD:
 				Offset: 20241899
 				Length: 29873
-			^Content/d2k/v2/GAMESFX/OI_ABORT.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_ABORT.AUD:
 				Offset: 20271772
 				Length: 16335
-			^Content/d2k/v2/GAMESFX/OI_ATACK.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_ATACK.AUD:
 				Offset: 20288107
 				Length: 20565
-			^Content/d2k/v2/GAMESFX/OI_BDRDY.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_BDRDY.AUD:
 				Offset: 20308672
 				Length: 25497
-			^Content/d2k/v2/GAMESFX/HI_SELL.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/HI_SELL.AUD:
 				Offset: 20334169
 				Length: 17142
-			^Content/d2k/v2/GAMESFX/OI_DPLOY.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_DPLOY.AUD:
 				Offset: 20351311
 				Length: 20120
-			^Content/d2k/v2/GAMESFX/AI_PLACE.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_PLACE.AUD:
 				Offset: 20371431
 				Length: 29921
-			^Content/d2k/v2/GAMESFX/OI_GANEW.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_GANEW.AUD:
 				Offset: 20401352
 				Length: 14467
-			^Content/d2k/v2/GAMESFX/OI_GLOAD.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/OI_GLOAD.AUD:
 				Offset: 20415819
 				Length: 10906
-			^Content/d2k/v2/GAMESFX/AI_MWIN.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_MWIN.AUD:
 				Offset: 20426725
 				Length: 25959
-			^Content/d2k/v2/GAMESFX/AI_NEWOP.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_NEWOP.AUD:
 				Offset: 20452684
 				Length: 34175
-			^Content/d2k/v2/GAMESFX/AI_NROOM.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_NROOM.AUD:
 				Offset: 20486859
 				Length: 30124
-			^Content/d2k/v2/GAMESFX/AI_ORDER.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_ORDER.AUD:
 				Offset: 20516983
 				Length: 21881
-			^Content/d2k/v2/GAMESFX/AI_UNRDY.AUD:
+			^SupportDir|Content/d2k/v2/GAMESFX/AI_UNRDY.AUD:
 				Offset: 20538864
 				Length: 20567
-			^Content/d2k/v2/SOUND.RS:
+			^SupportDir|Content/d2k/v2/SOUND.RS:
 				Offset: 20559431
 				Length: 1929247
