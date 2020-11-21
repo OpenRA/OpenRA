@@ -27,6 +27,9 @@ namespace OpenRA
 
 		static Lazy<PlatformType> currentPlatform = Exts.Lazy(GetCurrentPlatform);
 
+		static bool engineDirAccessed;
+		static string engineDir;
+
 		static bool supportDirInitialized;
 		static string systemSupportPath;
 		static string legacyUserSupportPath;
@@ -173,6 +176,44 @@ namespace OpenRA
 		{
 			get
 			{
+				// Engine directory defaults to the location of the binaries,
+				// unless OverrideGameDir is called during startup.
+				if (!engineDirAccessed)
+					engineDir = BinDir;
+
+				engineDirAccessed = true;
+				return engineDir;
+			}
+		}
+
+		/// <summary>
+		/// Specify a custom engine directory that already exists on the filesystem.
+		/// Cannot be called after Platform.EngineDir has been accessed.
+		/// </summary>
+		public static void OverrideEngineDir(string path)
+		{
+			if (engineDirAccessed)
+				throw new InvalidOperationException("Attempted to override engine directory after it has already been accessed.");
+
+			// Note: Relative paths are interpreted as being relative to BinDir, not the current working dir.
+			if (!Path.IsPathRooted(path))
+				path = Path.Combine(BinDir, path);
+
+			if (!Directory.Exists(path))
+				throw new DirectoryNotFoundException(path);
+
+			if (!path.EndsWith(Path.DirectorySeparatorChar.ToString(), StringComparison.Ordinal) &&
+			    !path.EndsWith(Path.AltDirectorySeparatorChar.ToString(), StringComparison.Ordinal))
+				path += Path.DirectorySeparatorChar;
+
+			engineDirAccessed = true;
+			engineDir = path;
+		}
+
+		public static string BinDir
+		{
+			get
+			{
 				var dir = AppDomain.CurrentDomain.BaseDirectory;
 
 				// Add trailing DirectorySeparator for some buggy AppPool hosts
@@ -194,11 +235,17 @@ namespace OpenRA
 			if (path == "^EngineDir")
 				return EngineDir;
 
+			if (path == "^BinDir")
+				return BinDir;
+
 			if (path.StartsWith("^SupportDir|", StringComparison.Ordinal))
 				path = SupportDir + path.Substring(12);
 
 			if (path.StartsWith("^EngineDir|", StringComparison.Ordinal))
 				path = EngineDir + path.Substring(11);
+
+			if (path.StartsWith("^BinDir|", StringComparison.Ordinal))
+				path = BinDir + path.Substring(8);
 
 			return path;
 		}

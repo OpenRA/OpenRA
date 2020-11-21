@@ -276,6 +276,10 @@ namespace OpenRA
 
 		static void Initialize(Arguments args)
 		{
+			var engineDirArg = args.GetValue("Engine.EngineDir", null);
+			if (!string.IsNullOrEmpty(engineDirArg))
+				Platform.OverrideEngineDir(engineDirArg);
+
 			var supportDirArg = args.GetValue("Engine.SupportDir", null);
 			if (!string.IsNullOrEmpty(supportDirArg))
 				Platform.OverrideSupportDir(supportDirArg);
@@ -324,7 +328,7 @@ namespace OpenRA
 				Settings.Game.Platform = p;
 				try
 				{
-					var rendererPath = Path.Combine(Platform.EngineDir, "OpenRA.Platforms." + p + ".dll");
+					var rendererPath = Path.Combine(Platform.BinDir, "OpenRA.Platforms." + p + ".dll");
 					var assembly = Assembly.LoadFile(rendererPath);
 
 					var platformType = assembly.GetTypes().SingleOrDefault(t => typeof(IPlatform).IsAssignableFrom(t));
@@ -367,14 +371,24 @@ namespace OpenRA
 
 			if (modID != null && Mods.TryGetValue(modID, out _))
 			{
-				var launchPath = args.GetValue("Engine.LaunchPath", Assembly.GetEntryAssembly().Location);
+				var launchPath = args.GetValue("Engine.LaunchPath", null);
+				var launchArgs = new List<string>();
 
 				// Sanitize input from platform-specific launchers
 				// Process.Start requires paths to not be quoted, even if they contain spaces
-				if (launchPath.First() == '"' && launchPath.Last() == '"')
+				if (launchPath != null && launchPath.First() == '"' && launchPath.Last() == '"')
 					launchPath = launchPath.Substring(1, launchPath.Length - 2);
 
-				ExternalMods.Register(Mods[modID], launchPath, ModRegistration.User);
+				if (launchPath == null)
+				{
+					// When launching the assembly directly we must propagate the Engine.EngineDir argument if defined
+					// Platform-specific launchers are expected to manage this internally.
+					launchPath = Assembly.GetEntryAssembly().Location;
+					if (!string.IsNullOrEmpty(engineDirArg))
+						launchArgs.Add("Engine.EngineDir=\"" + engineDirArg + "\"");
+				}
+
+				ExternalMods.Register(Mods[modID], launchPath, launchArgs, ModRegistration.User);
 
 				if (ExternalMods.TryGetValue(ExternalMod.MakeKey(Mods[modID]), out var activeMod))
 					ExternalMods.ClearInvalidRegistrations(activeMod, ModRegistration.User);

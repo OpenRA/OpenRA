@@ -23,6 +23,11 @@ namespace OpenRA.Server
 		static void Main(string[] args)
 		{
 			var arguments = new Arguments(args);
+
+			var engineDirArg = arguments.GetValue("Engine.EngineDir", null);
+			if (!string.IsNullOrEmpty(engineDirArg))
+				Platform.OverrideEngineDir(engineDirArg);
+
 			var supportDirArg = arguments.GetValue("Engine.SupportDir", null);
 			if (!string.IsNullOrEmpty(supportDirArg))
 				Platform.OverrideSupportDir(supportDirArg);

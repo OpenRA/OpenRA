@@ -31,7 +31,7 @@ namespace OpenRA.UtilityCommands
 			if (args[2] == "user" || args[2] == "both")
 				type |= ModRegistration.User;
 
-			new ExternalMods().Register(utility.ModData.Manifest, args[1], type);
+			new ExternalMods().Register(utility.ModData.Manifest, args[1], Enumerable.Empty<string>(), type);
 		}
 	}
 }
