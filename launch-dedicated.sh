@@ -25,7 +25,7 @@ ShareAnonymizedIPs="${ShareAnonymizedIPs:-"True"}"
 SupportDir="${SupportDir:-""}"
 
 while true; do
-     mono --debug OpenRA.Server.exe Game.Mod="$Mod" \
+     mono --debug bin/OpenRA.Server.exe Engine.EngineDir=".." Game.Mod="$Mod" \
      Server.Name="$Name" \
      Server.ListenPort="$ListenPort" \
      Server.AdvertiseOnline="$AdvertiseOnline" \

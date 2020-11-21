@@ -36,18 +36,9 @@ function Clean-Command
 	}
 
 	dotnet clean /nologo
-	rm *.dll
-	rm mods/*/*.dll
-	rm *.config
-	rm *.pdb
-	rm mods/*/*.pdb
-	rm *.exe
+	rm ./bin -r
 	rm ./*/bin -r
 	rm ./*/obj -r
-	if (Test-Path thirdparty/download/)
-	{
-		rmdir thirdparty/download -Recurse -Force
-	}
 	Write-Host "Clean complete." -ForegroundColor Green
 }
 
@@ -108,13 +99,13 @@ function Test-Command
 
 	Write-Host "Testing mods..." -ForegroundColor Cyan
 	Write-Host "Testing Tiberian Sun mod MiniYAML..." -ForegroundColor Cyan
-	./OpenRA.Utility.exe ts --check-yaml
+	Invoke-Expression "$utilityPath ts --check-yaml"
 	Write-Host "Testing Dune 2000 mod MiniYAML..." -ForegroundColor Cyan
-	./OpenRA.Utility.exe d2k --check-yaml
+	Invoke-Expression "$utilityPath d2k --check-yaml"
 	Write-Host "Testing Tiberian Dawn mod MiniYAML..." -ForegroundColor Cyan
-	./OpenRA.Utility.exe cnc --check-yaml
+	Invoke-Expression "$utilityPath cnc --check-yaml"
 	Write-Host "Testing Red Alert mod MiniYAML..." -ForegroundColor Cyan
-	./OpenRA.Utility.exe ra --check-yaml
+	Invoke-Expression "$utilityPath ra --check-yaml"
 }
 
 function Check-Command
@@ -129,10 +120,10 @@ function Check-Command
 	if ((CheckForUtility) -eq 0)
 	{
 		Write-Host "Checking for explicit interface violations..." -ForegroundColor Cyan
-		./OpenRA.Utility.exe all --check-explicit-interfaces
+		Invoke-Expression "$utilityPath all --check-explicit-interfaces"
 
 		Write-Host "Checking for incorrect conditional trait interface overrides..." -ForegroundColor Cyan
-		./OpenRA.Utility.exe all --check-conditional-trait-interface-overrides
+		Invoke-Expression "$utilityPath all --check-conditional-trait-interface-overrides"
 	}
 }
 
@@ -169,15 +160,15 @@ function Docs-Command
 	}
 
 	./make.ps1 version
-	./OpenRA.Utility.exe all --docs | Out-File -Encoding "UTF8" DOCUMENTATION.md
-	./OpenRA.Utility.exe all --weapon-docs | Out-File -Encoding "UTF8" WEAPONS.md
-	./OpenRA.Utility.exe all --lua-docs | Out-File -Encoding "UTF8" Lua-API.md
-	./OpenRA.Utility.exe all --settings-docs | Out-File -Encoding "UTF8" Settings.md
+	Invoke-Expression "$utilityPath all --docs" | Out-File -Encoding "UTF8" DOCUMENTATION.md
+	Invoke-Expression "$utilityPath all --weapon-docs" | Out-File -Encoding "UTF8" WEAPONS.md
+	Invoke-Expression "$utilityPath all --lua-docs" | Out-File -Encoding "UTF8" Lua-API.md
+	Invoke-Expression "$utilityPath all --settings-docs" | Out-File -Encoding "UTF8" Settings.md
 }
 
 function CheckForUtility
 {
-	if (Test-Path OpenRA.Utility.exe)
+	if (Test-Path $utilityPath)
 	{
 		return 0
 	}
@@ -240,6 +231,9 @@ else
 {
 	$command = $args
 }
+
+$env:ENGINE_DIR = ".."
+$utilityPath = "bin\OpenRA.Utility.exe"
 
 $execute = $command
 if ($command.Length -gt 1)

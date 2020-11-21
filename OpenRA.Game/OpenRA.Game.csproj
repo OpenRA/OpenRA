@@ -10,7 +10,7 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
     <RootNamespace>OpenRA</RootNamespace>
-    <OutputPath>..</OutputPath>
+    <OutputPath>../bin</OutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ExternalConsole>false</ExternalConsole>
@@ -36,19 +36,19 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(RunConfiguration)' == 'Red Alert'">
     <StartAction>Project</StartAction>
-    <StartArguments>Game.Mod=ra</StartArguments>
+    <StartArguments>Engine.EngineDir=".." Game.Mod=ra</StartArguments>
   </PropertyGroup>
   <PropertyGroup Condition="'$(RunConfiguration)' == 'Dune 2000'">
     <StartAction>Project</StartAction>
-    <StartArguments>Game.Mod=d2k</StartArguments>
+    <StartArguments>Engine.EngineDir=".." Game.Mod=d2k</StartArguments>
   </PropertyGroup>
   <PropertyGroup Condition="'$(RunConfiguration)' == 'Tiberian Dawn'">
     <StartAction>Project</StartAction>
-    <StartArguments>Game.Mod=cnc</StartArguments>
+    <StartArguments>Engine.EngineDir=".." Game.Mod=cnc</StartArguments>
   </PropertyGroup>
   <PropertyGroup Condition="'$(RunConfiguration)' == 'Tiberian Sun'">
     <StartAction>Project</StartAction>
-    <StartArguments>Game.Mod=ts</StartArguments>
+    <StartArguments>Engine.EngineDir=".." Game.Mod=ts</StartArguments>
   </PropertyGroup>
   <ItemGroup>
     <None Include="App.config" />

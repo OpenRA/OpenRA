@@ -11,9 +11,9 @@ Cursors:
 Chrome:
 
 Assemblies:
-	^EngineDir|mods/common/OpenRA.Mods.Common.dll
-	^EngineDir|mods/common/OpenRA.Mods.Cnc.dll
-	^EngineDir|mods/d2k/OpenRA.Mods.D2k.dll
+	^BinDir|OpenRA.Mods.Common.dll
+	^BinDir|OpenRA.Mods.Cnc.dll
+	^BinDir|OpenRA.Mods.D2k.dll
 
 ChromeLayout:
 

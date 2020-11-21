@@ -62,6 +62,11 @@ populate_bundle() {
 	# Add mod files
 	pushd "${SRCDIR}" > /dev/null || exit 1
 	cp -r "mods/${MOD_ID}" mods/modcontent "${TEMPLATE_DIR}/Contents/Resources/mods"
+
+	# HACK: The D2k dll is not copied by install-common-mod-files so we must do this ourselves
+	if [ "${MOD_ID}" = "d2k" ]; then
+		cp "bin/OpenRA.Mods.D2k.dll" "${TEMPLATE_DIR}/Contents/Resources"
+	fi
 	popd > /dev/null || exit 1
 
 	# Assemble multi-resolution icon
