@@ -51,6 +51,8 @@ namespace OpenRA.Mods.Common.Widgets
 		public readonly string Decorations = "scrollpanel-decorations";
 		public readonly string DecorationScrollUp = "up";
 		public readonly string DecorationScrollDown = "down";
+		readonly CachedTransform<(bool Disabled, bool Pressed, bool Hover, bool Focused), Sprite> getUpArrowImage;
+		readonly CachedTransform<(bool Disabled, bool Pressed, bool Hover, bool Focused), Sprite> getDownArrowImage;
 		public int ContentHeight;
 		public ILayout Layout;
 		public int MinimumThumbSize = 10;
@@ -110,6 +112,9 @@ namespace OpenRA.Mods.Common.Widgets
 			modRules = modData.DefaultRules;
 
 			Layout = new ListLayout(this);
+
+			getUpArrowImage = WidgetUtils.GetCachedStatefulImage(Decorations, DecorationScrollUp);
+			getDownArrowImage = WidgetUtils.GetCachedStatefulImage(Decorations, DecorationScrollDown);
 		}
 
 		public override void RemoveChildren()
@@ -204,13 +209,11 @@ namespace OpenRA.Mods.Common.Widgets
 				var upOffset = !upPressed || upDisabled ? 4 : 4 + ButtonDepth;
 				var downOffset = !downPressed || downDisabled ? 4 : 4 + ButtonDepth;
 
-				var upArrowImageName = WidgetUtils.GetStatefulImageName(DecorationScrollUp, upDisabled, upPressed, upHover);
-				var upArrowImage = ChromeProvider.GetImage(Decorations, upArrowImageName) ?? ChromeProvider.GetImage(Decorations, DecorationScrollUp);
+				var upArrowImage = getUpArrowImage.Update((upDisabled, upPressed, upHover, false));
 				WidgetUtils.DrawRGBA(upArrowImage,
 					new float2(upButtonRect.Left + upOffset, upButtonRect.Top + upOffset));
 
-				var downArrowImageName = WidgetUtils.GetStatefulImageName(DecorationScrollDown, downDisabled, downPressed, downHover);
-				var downArrowImage = ChromeProvider.GetImage(Decorations, downArrowImageName) ?? ChromeProvider.GetImage(Decorations, DecorationScrollDown);
+				var downArrowImage = getDownArrowImage.Update((downDisabled, downPressed, downHover, false));
 				WidgetUtils.DrawRGBA(downArrowImage,
 					new float2(downButtonRect.Left + downOffset, downButtonRect.Top + downOffset));
 			}

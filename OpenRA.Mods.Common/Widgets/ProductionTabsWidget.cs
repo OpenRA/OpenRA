@@ -86,6 +86,8 @@ namespace OpenRA.Mods.Common.Widgets
 		public readonly string Decorations = "scrollpanel-decorations";
 		public readonly string DecorationScrollLeft = "left";
 		public readonly string DecorationScrollRight = "right";
+		readonly CachedTransform<(bool Disabled, bool Pressed, bool Hover, bool Focused), Sprite> getLeftArrowImage;
+		readonly CachedTransform<(bool Disabled, bool Pressed, bool Hover, bool Focused), Sprite> getRightArrowImage;
 
 		int contentWidth = 0;
 		float listOffset = 0;
@@ -109,6 +111,9 @@ namespace OpenRA.Mods.Common.Widgets
 			IsVisible = () => queueGroup != null && Groups[queueGroup].Tabs.Count > 0;
 
 			paletteWidget = Exts.Lazy(() => Ui.Root.Get<ProductionPaletteWidget>(PaletteWidget));
+
+			getLeftArrowImage = WidgetUtils.GetCachedStatefulImage(Decorations, DecorationScrollLeft);
+			getRightArrowImage = WidgetUtils.GetCachedStatefulImage(Decorations, DecorationScrollRight);
 		}
 
 		public override void Initialize(WidgetArgs args)
@@ -188,13 +193,11 @@ namespace OpenRA.Mods.Common.Widgets
 			ButtonWidget.DrawBackground(Button, leftButtonRect, leftDisabled, leftPressed, leftHover, false);
 			ButtonWidget.DrawBackground(Button, rightButtonRect, rightDisabled, rightPressed, rightHover, false);
 
-			var leftArrowImageName = WidgetUtils.GetStatefulImageName(DecorationScrollLeft, leftDisabled, leftPressed, leftHover);
-			var leftArrowImage = ChromeProvider.GetImage(Decorations, leftArrowImageName) ?? ChromeProvider.GetImage(Decorations, DecorationScrollLeft);
+			var leftArrowImage = getLeftArrowImage.Update((leftDisabled, leftPressed, leftHover, false));
 			WidgetUtils.DrawRGBA(leftArrowImage,
 				new float2(leftButtonRect.Left + 2, leftButtonRect.Top + 2));
 
-			var rightArrowImageName = WidgetUtils.GetStatefulImageName(DecorationScrollRight, rightDisabled, rightPressed, rightHover);
-			var rightArrowImage = ChromeProvider.GetImage(Decorations, rightArrowImageName) ?? ChromeProvider.GetImage(Decorations, DecorationScrollRight);
+			var rightArrowImage = getRightArrowImage.Update((rightDisabled, rightPressed, rightHover, false));
 			WidgetUtils.DrawRGBA(rightArrowImage,
 				new float2(rightButtonRect.Left + 2, rightButtonRect.Top + 2));
 
