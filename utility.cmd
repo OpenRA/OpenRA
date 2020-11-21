@@ -1,9 +1,10 @@
 @echo off
 title OpenRA.Utility.exe
+set ENGINE_DIR=..
 :choosemod
 echo ----------------------------------------
 echo.
-call OpenRA.Utility.exe
+call bin\OpenRA.Utility.exe
 echo Enter --exit to exit
 set /P mod="Please enter a modname: OpenRA.Utility.exe "
 if /I "%mod%" EQU "--exit" (exit /b)
@@ -20,7 +21,7 @@ echo.
 echo ----------------------------------------
 echo.
 echo OpenRA.Utility.exe %mod%
-call OpenRA.Utility.exe %mod%
+call bin\OpenRA.Utility.exe %mod%
 :start
 echo.
 echo ----------------------------------------
@@ -38,5 +39,5 @@ echo.
 echo ----------------------------------------
 echo.
 echo OpenRA.Utility.exe %mod% %command%
-call OpenRA.Utility.exe %mod% %command%
+call bin\OpenRA.Utility.exe %mod% %command%
 goto start

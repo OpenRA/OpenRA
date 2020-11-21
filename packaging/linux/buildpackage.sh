@@ -103,6 +103,11 @@ build_appimage() {
 	# Add mod files
 	pushd "${SRCDIR}" > /dev/null || exit 1
 	cp -r "mods/${MOD_ID}" mods/modcontent "${APPDIR}/usr/lib/openra/mods"
+
+	# HACK: The D2k dll is not copied by install-common-mod-files so we must do this ourselves
+	if [ "${MOD_ID}" = "d2k" ]; then
+		cp "bin/OpenRA.Mods.D2k.dll" "${APPDIR}/usr/lib/openra"
+	fi
 	popd > /dev/null || exit 1
 
 	# Add launcher and icons

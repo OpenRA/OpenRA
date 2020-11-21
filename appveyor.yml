@@ -7,7 +7,7 @@ build_script:
   - make all
 
 test_script:
-  - nunit3-console OpenRA.Test.dll --result=myresults.xml;format=AppVeyor
+  - nunit3-console bin/OpenRA.Test.dll --result=myresults.xml;format=AppVeyor
 
 after_test:
   - appveyor DownloadFile "https://github.com/OpenRA/GeoIP-Database/releases/download/monthly/IP2LOCATION-LITE-DB1.IPV6.BIN.ZIP" -FileName IP2LOCATION-LITE-DB1.IPV6.BIN.ZIP
@@ -15,6 +15,7 @@ after_test:
   - python -c "from PIL import Image; i = Image.open('packaging/artwork/ra_256x256.png'); i.save('ra.ico')"
   - python -c "from PIL import Image; i = Image.open('packaging/artwork/cnc_256x256.png'); i.save('cnc.ico')"
   - python -c "from PIL import Image; i = Image.open('packaging/artwork/d2k_256x256.png'); i.save('d2k.ico')"
+  - move  /Y %APPVEYOR_BUILD_FOLDER%\bin\* %APPVEYOR_BUILD_FOLDER%
   - ps: (Get-Content "${env:APPVEYOR_BUILD_FOLDER}\packaging\windows\WindowsLauncher.cs.in").replace('DISPLAY_NAME', 'Red Alert').replace('MOD_ID', 'ra').replace('FAQ_URL', 'http://wiki.openra.net/FAQ') | Set-Content "${env:APPVEYOR_BUILD_FOLDER}\packaging\windows\WindowsLauncher.cs"
   - ps: C:\"Program Files (x86)"\"Microsoft Visual Studio"\2017\Community\MSBuild\15.0\Bin\Roslyn\csc.exe /noconfig /platform:x64 /reference:System.dll /reference:System.Core.dll /reference:System.Drawing.dll /reference:System.Windows.Forms.dll /reference:"${env:APPVEYOR_BUILD_FOLDER}\OpenRA.Game.exe" /out:"${env:APPVEYOR_BUILD_FOLDER}\RedAlert.exe" /win32icon:"${env:APPVEYOR_BUILD_FOLDER}\ra.ico" /target:winexe ${env:APPVEYOR_BUILD_FOLDER}\packaging\windows\WindowsLauncher.cs
   - ps: (Get-Content "${env:APPVEYOR_BUILD_FOLDER}\packaging\windows\WindowsLauncher.cs.in").replace('DISPLAY_NAME', 'Tiberian Dawn').replace('MOD_ID', 'cnc').replace('FAQ_URL', 'http://wiki.openra.net/FAQ') | Set-Content "${env:APPVEYOR_BUILD_FOLDER}\packaging\windows\WindowsLauncher.cs"

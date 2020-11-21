@@ -80,7 +80,7 @@ function build_platform()
 	make install-dependencies "${TARGETPLATFORM}" gameinstalldir="" DESTDIR="${BUILTDIR}"
 	popd > /dev/null || exit 1
 
-	cp "${SRCDIR}/OpenRA.Game.exe.config" "${BUILTDIR}"
+	cp "${SRCDIR}/bin/OpenRA.Game.exe.config" "${BUILTDIR}"
 
 	echo "Compiling Windows launchers (${PLATFORM})"
 	makelauncher "RedAlert.exe" "Red Alert" "ra" ${PLATFORM}

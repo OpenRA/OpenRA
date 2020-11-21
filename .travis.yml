@@ -38,7 +38,7 @@ script:
       make check || travis_terminate 1;
       make check-scripts || travis_terminate 1;
       make test || travis_terminate 1;
-      mono ~/.nuget/packages/nunit.consolerunner/3.11.1/tools/nunit3-console.exe --noresult OpenRA.Test.dll || travis_terminate 1;
+      mono ~/.nuget/packages/nunit.consolerunner/3.11.1/tools/nunit3-console.exe --noresult bin/OpenRA.Test.dll || travis_terminate 1;
    fi
 
 # Only watch the development branch and tagged release.

@@ -17,10 +17,10 @@ echo.
 goto choosemod
 
 :launchmod
-OpenRA.Game.exe Game.Mod=%mod% %*
+bin\OpenRA.Game.exe Engine.EngineDir=".." Game.Mod=%mod% %*
 goto end
 :launch
-OpenRA.Game.exe %*
+bin\OpenRA.Game.exe Engine.EngineDir=".." %*
 
 :end
 if %errorlevel% neq 0 goto crashdialog

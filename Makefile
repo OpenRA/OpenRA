@@ -111,27 +111,27 @@ check:
 	@$(MSBUILD) -t:build -p:Configuration=Debug
 	@echo
 	@echo "Checking runtime assemblies..."
-	@mono --debug OpenRA.Utility.exe all --check-runtime-assemblies $(WHITELISTED_OPENRA_ASSEMBLIES) $(WHITELISTED_THIRDPARTY_ASSEMBLIES) $(WHITELISTED_CORE_ASSEMBLIES)
+	@ENGINE_DIR=".." mono --debug bin/OpenRA.Utility.exe all --check-runtime-assemblies $(WHITELISTED_OPENRA_ASSEMBLIES) $(WHITELISTED_THIRDPARTY_ASSEMBLIES) $(WHITELISTED_CORE_ASSEMBLIES)
 	@echo
 	@echo "Checking for explicit interface violations..."
-	@mono --debug OpenRA.Utility.exe all --check-explicit-interfaces
+	@ENGINE_DIR=".." mono --debug bin/OpenRA.Utility.exe all --check-explicit-interfaces
 	@echo
 	@echo "Checking for incorrect conditional trait interface overrides..."
-	@mono --debug OpenRA.Utility.exe all --check-conditional-trait-interface-overrides
+	@ENGINE_DIR=".." mono --debug bin/OpenRA.Utility.exe all --check-conditional-trait-interface-overrides
 
 test: core
 	@echo
 	@echo "Testing Tiberian Sun mod MiniYAML..."
-	@mono --debug OpenRA.Utility.exe ts --check-yaml
+	@ENGINE_DIR=".." mono --debug bin/OpenRA.Utility.exe ts --check-yaml
 	@echo
 	@echo "Testing Dune 2000 mod MiniYAML..."
-	@mono --debug OpenRA.Utility.exe d2k --check-yaml
+	@ENGINE_DIR=".." mono --debug bin/OpenRA.Utility.exe d2k --check-yaml
 	@echo
 	@echo "Testing Tiberian Dawn mod MiniYAML..."
-	@mono --debug OpenRA.Utility.exe cnc --check-yaml
+	@ENGINE_DIR=".." mono --debug bin/OpenRA.Utility.exe cnc --check-yaml
 	@echo
 	@echo "Testing Red Alert mod MiniYAML..."
-	@mono --debug OpenRA.Utility.exe ra --check-yaml
+	@ENGINE_DIR=".." mono --debug bin/OpenRA.Utility.exe ra --check-yaml
 
 ########################## MAKE/INSTALL RULES ##########################
 #
@@ -147,8 +147,7 @@ endif
 
 clean:
 	@-$(RM_F) *.config IP2LOCATION-LITE-DB1.IPV6.BIN.ZIP
-	@-$(RM_F) *.exe *.dll *.dll.config *.so *.dylib ./OpenRA*/*.dll *.pdb mods/**/*.dll mods/**/*.pdb *.resources
-	@-$(RM_RF) ./*/bin ./*/obj
+	@-$(RM_RF) ./bin ./*/bin ./*/obj
 	@ $(MSBUILD) -t:clean
 
 version: VERSION mods/ra/mod.yaml mods/cnc/mod.yaml mods/d2k/mod.yaml mods/ts/mod.yaml mods/modcontent/mod.yaml mods/all/mod.yaml
@@ -167,39 +166,39 @@ install-linux-shortcuts: install-linux-scripts install-linux-icons install-linux
 install-dependencies:
 ifeq ($(TARGETPLATFORM), $(filter $(TARGETPLATFORM),win-x86 win-x64))
 	@-echo "Installing OpenRA dependencies to $(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) soft_oal.dll "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) SDL2.dll "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) freetype6.dll "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) lua51.dll "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) libEGL.dll "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) libGLESv2.dll "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) bin/soft_oal.dll "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) bin/SDL2.dll "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) bin/freetype6.dll "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) bin/lua51.dll "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) bin/libEGL.dll "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) bin/libGLESv2.dll "$(DATA_INSTALL_DIR)"
 
 endif
 ifeq ($(TARGETPLATFORM), linux-x64)
 	@-echo "Installing OpenRA dependencies to $(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) soft_oal.so "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) SDL2.so "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) freetype6.so "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) lua51.so "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) bin/soft_oal.so "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) bin/SDL2.so "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) bin/freetype6.so "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) bin/lua51.so "$(DATA_INSTALL_DIR)"
 endif
 ifeq ($(TARGETPLATFORM), osx-x64)
 	@-echo "Installing OpenRA dependencies to $(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) soft_oal.dylib "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) SDL2.dylib "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) freetype6.dylib "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) lua51.dylib "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) bin/soft_oal.dylib "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) bin/SDL2.dylib "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) bin/freetype6.dylib "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) bin/lua51.dylib "$(DATA_INSTALL_DIR)"
 endif
 
 install-engine:
 	@-echo "Installing OpenRA engine to $(DATA_INSTALL_DIR)"
 	@$(INSTALL_DIR) "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) OpenRA.Game.exe "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) OpenRA.Server.exe "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) OpenRA.Utility.exe "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) OpenRA.Platforms.Default.dll "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) bin/OpenRA.Game.exe "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) bin/OpenRA.Server.exe "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) bin/OpenRA.Utility.exe "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) bin/OpenRA.Platforms.Default.dll "$(DATA_INSTALL_DIR)"
 
 ifneq ($(TARGETPLATFORM), $(filter $(TARGETPLATFORM),win-x86 win-x64))
-	@$(INSTALL_DATA) OpenRA.Platforms.Default.dll.config "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_DATA) bin/OpenRA.Platforms.Default.dll.config "$(DATA_INSTALL_DIR)"
 endif
 	@$(INSTALL_DATA) VERSION "$(DATA_INSTALL_DIR)/VERSION"
 	@$(INSTALL_DATA) AUTHORS "$(DATA_INSTALL_DIR)/AUTHORS"
@@ -208,22 +207,22 @@ endif
 
 	@$(CP_R) glsl "$(DATA_INSTALL_DIR)"
 	@$(CP_R) lua "$(DATA_INSTALL_DIR)"
-	@$(CP) SDL2-CS* "$(DATA_INSTALL_DIR)"
-	@$(CP) OpenAL-CS* "$(DATA_INSTALL_DIR)"
-	@$(CP) Eluant* "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) ICSharpCode.SharpZipLib.dll "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) FuzzyLogicLibrary.dll "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) Open.Nat.dll "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) BeaconLib.dll "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) DiscordRPC.dll "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) Newtonsoft.Json.dll "$(DATA_INSTALL_DIR)"
+	@$(CP) bin/SDL2-CS* "$(DATA_INSTALL_DIR)"
+	@$(CP) bin/OpenAL-CS* "$(DATA_INSTALL_DIR)"
+	@$(CP) bin/Eluant* "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) bin/ICSharpCode.SharpZipLib.dll "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) bin/FuzzyLogicLibrary.dll "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) bin/Open.Nat.dll "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) bin/BeaconLib.dll "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) bin/DiscordRPC.dll "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) bin/Newtonsoft.Json.dll "$(DATA_INSTALL_DIR)"
 
 install-common-mod-files:
 	@-echo "Installing OpenRA common mod files to $(DATA_INSTALL_DIR)"
 	@$(INSTALL_DIR) "$(DATA_INSTALL_DIR)/mods"
 	@$(CP_R) mods/common "$(DATA_INSTALL_DIR)/mods/"
-	@$(INSTALL_PROGRAM) mods/common/OpenRA.Mods.Common.dll "$(DATA_INSTALL_DIR)/mods/common"
-	@$(INSTALL_PROGRAM) mods/common/OpenRA.Mods.Cnc.dll "$(DATA_INSTALL_DIR)/mods/common"
+	@$(INSTALL_PROGRAM) bin/OpenRA.Mods.Common.dll "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) bin/OpenRA.Mods.Cnc.dll "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_DATA) "global mix database.dat" "$(DATA_INSTALL_DIR)/global mix database.dat"
 
 install-default-mods:
@@ -232,7 +231,7 @@ install-default-mods:
 	@$(CP_R) mods/cnc "$(DATA_INSTALL_DIR)/mods/"
 	@$(CP_R) mods/ra "$(DATA_INSTALL_DIR)/mods/"
 	@$(CP_R) mods/d2k "$(DATA_INSTALL_DIR)/mods/"
-	@$(INSTALL_PROGRAM) mods/d2k/OpenRA.Mods.D2k.dll "$(DATA_INSTALL_DIR)/mods/d2k"
+	@$(INSTALL_PROGRAM) bin/OpenRA.Mods.D2k.dll "$(DATA_INSTALL_DIR)"
 	@$(CP_R) mods/modcontent "$(DATA_INSTALL_DIR)/mods/"
 
 install-linux-icons:
@@ -277,7 +276,7 @@ install-linux-appdata:
 
 install-man-page:
 	@$(INSTALL_DIR) "$(DESTDIR)$(mandir)/man6/"
-	@mono --debug OpenRA.Utility.exe all --man-page > openra.6
+	@ENGINE_DIR=".." mono --debug bin/OpenRA.Utility.exe all --man-page > openra.6
 	@$(INSTALL_DATA) openra.6 "$(DESTDIR)$(mandir)/man6/"
 	@-$(RM) openra.6
 
