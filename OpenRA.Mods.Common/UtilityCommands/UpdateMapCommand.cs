@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			var modData = Game.ModData = utility.ModData;
 
 			// HACK: We know that maps can only be oramap or folders, which are ReadWrite
-			var package = new Folder(Platform.GameDir).OpenPackage(args[1], modData.ModFiles) as IReadWritePackage;
+			var package = new Folder(Platform.EngineDir).OpenPackage(args[1], modData.ModFiles) as IReadWritePackage;
 			if (package == null)
 				throw new FileNotFoundException(args[1]);
 

@@ -285,7 +285,7 @@ namespace OpenRA
 			// Load the engine version as early as possible so it can be written to exception logs
 			try
 			{
-				EngineVersion = File.ReadAllText(Path.Combine(Platform.GameDir, "VERSION")).Trim();
+				EngineVersion = File.ReadAllText(Path.Combine(Platform.EngineDir, "VERSION")).Trim();
 			}
 			catch { }
 
@@ -324,7 +324,7 @@ namespace OpenRA
 				Settings.Game.Platform = p;
 				try
 				{
-					var rendererPath = Path.Combine(Platform.GameDir, "OpenRA.Platforms." + p + ".dll");
+					var rendererPath = Path.Combine(Platform.EngineDir, "OpenRA.Platforms." + p + ".dll");
 					var assembly = Assembly.LoadFile(rendererPath);
 
 					var platformType = assembly.GetTypes().SingleOrDefault(t => typeof(IPlatform).IsAssignableFrom(t));
@@ -354,7 +354,7 @@ namespace OpenRA
 			var modSearchArg = args.GetValue("Engine.ModSearchPaths", null);
 			var modSearchPaths = modSearchArg != null ?
 				FieldLoader.GetValue<string[]>("Engine.ModsPath", modSearchArg) :
-				new[] { Path.Combine(Platform.GameDir, "mods") };
+				new[] { Path.Combine(Platform.EngineDir, "mods") };
 
 			Mods = new InstalledMods(modSearchPaths, explicitModPaths);
 			Console.WriteLine("Internal mods:");

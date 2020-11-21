@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				.ToArray();
 
 			// Load the renderer assembly so we can check its dependencies
-			Assembly.LoadFile(Path.Combine(Platform.GameDir, "OpenRA.Platforms.Default.dll"));
+			Assembly.LoadFile(Path.Combine(Platform.EngineDir, "OpenRA.Platforms.Default.dll"));
 
 			var missing = new List<string>();
 			foreach (var a in AppDomain.CurrentDomain.GetAssemblies())

@@ -136,7 +136,7 @@ namespace OpenRA
 			}
 
 			// Use a local directory in the game root if it exists (shared with the system support dir)
-			var localSupportDir = Path.Combine(GameDir, "Support");
+			var localSupportDir = Path.Combine(EngineDir, "Support");
 			if (Directory.Exists(localSupportDir))
 				userSupportPath = systemSupportPath = localSupportDir + Path.DirectorySeparatorChar;
 
@@ -169,7 +169,7 @@ namespace OpenRA
 			userSupportPath = path;
 		}
 
-		public static string GameDir
+		public static string EngineDir
 		{
 			get
 			{
@@ -194,10 +194,10 @@ namespace OpenRA
 
 			// Paths starting with . are relative to the game dir
 			if (path == ".")
-				return GameDir;
+				return EngineDir;
 
 			if (path.StartsWith("./", StringComparison.Ordinal) || path.StartsWith(".\\", StringComparison.Ordinal))
-				path = GameDir + path.Substring(2);
+				path = EngineDir + path.Substring(2);
 
 			return path;
 		}
