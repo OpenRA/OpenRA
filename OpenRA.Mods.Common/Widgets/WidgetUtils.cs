@@ -31,6 +31,16 @@ namespace OpenRA.Mods.Common.Widgets
 			return baseName + suffix;
 		}
 
+		public static CachedTransform<(bool Disabled, bool Pressed, bool Hover, bool Focused), Sprite> GetCachedStatefulImage(string collection, string baseName)
+		{
+			return new CachedTransform<(bool, bool, bool, bool), Sprite>(
+				((bool Disabled, bool Pressed, bool Hover, bool Focused) args) =>
+					{
+						var imageName = GetStatefulImageName(baseName, args.Disabled, args.Pressed, args.Hover, args.Focused);
+						return ChromeProvider.GetImage(collection, imageName) ?? ChromeProvider.GetImage(collection, baseName);
+					});
+		}
+
 		public static void DrawRGBA(Sprite s, float2 pos)
 		{
 			Game.Renderer.RgbaSpriteRenderer.DrawSprite(s, pos);
