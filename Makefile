@@ -35,8 +35,7 @@
 ############################## TOOLCHAIN ###############################
 #
 # List of .NET assemblies that we can guarantee exist
-# OpenRA.Game.dll is a harmless false positive that we can ignore
-WHITELISTED_OPENRA_ASSEMBLIES = OpenRA.Game.exe OpenRA.Utility.exe OpenRA.Platforms.Default.dll OpenRA.Mods.Common.dll OpenRA.Mods.Cnc.dll OpenRA.Mods.D2k.dll OpenRA.Game.dll
+WHITELISTED_OPENRA_ASSEMBLIES = OpenRA.exe OpenRA.Utility.exe OpenRA.Server.exe OpenRA.Platforms.Default.dll OpenRA.Game.dll OpenRA.Mods.Common.dll OpenRA.Mods.Cnc.dll OpenRA.Mods.D2k.dll
 
 # These are explicitly shipped alongside our core files by the packaging script
 WHITELISTED_THIRDPARTY_ASSEMBLIES = ICSharpCode.SharpZipLib.dll FuzzyLogicLibrary.dll Eluant.dll BeaconLib.dll Open.Nat.dll SDL2-CS.dll OpenAL-CS.Core.dll DiscordRPC.dll Newtonsoft.Json.dll
@@ -192,9 +191,10 @@ endif
 install-engine:
 	@-echo "Installing OpenRA engine to $(DATA_INSTALL_DIR)"
 	@$(INSTALL_DIR) "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) bin/OpenRA.Game.exe "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) bin/OpenRA.exe "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) bin/OpenRA.Server.exe "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) bin/OpenRA.Utility.exe "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) bin/OpenRA.Game.dll "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) bin/OpenRA.Platforms.Default.dll "$(DATA_INSTALL_DIR)"
 
 ifneq ($(TARGETPLATFORM), $(filter $(TARGETPLATFORM),win-x86 win-x64))

@@ -18,7 +18,7 @@ SRCDIR="$(pwd)/../.."
 BUILTDIR="$(pwd)/build"
 ARTWORK_DIR="$(pwd)/../artwork/"
 
-LAUNCHER_LIBS="-r:System.dll -r:System.Drawing.dll -r:System.Windows.Forms.dll -r:${BUILTDIR}/OpenRA.Game.exe"
+LAUNCHER_LIBS="-r:System.dll -r:System.Drawing.dll -r:System.Windows.Forms.dll -r:${BUILTDIR}/OpenRA.Game.dll"
 FAQ_URL="http://wiki.openra.net/FAQ"
 
 SUFFIX=" (dev)"
@@ -44,7 +44,7 @@ function makelauncher()
 
 	# We need to set the loadFromRemoteSources flag for the launcher, but only for the "portable" zip package.
 	# Windows automatically un-trusts executables that are extracted from a downloaded zip file
-	cp "${BUILTDIR}/OpenRA.Game.exe.config" "${BUILTDIR}/${LAUNCHER_NAME}.config"
+	cp "${BUILTDIR}/OpenRA.exe.config" "${BUILTDIR}/${LAUNCHER_NAME}.config"
 
 	if [ "${PLATFORM}" = "x86" ]; then
 		# Enable the full 4GB address space for the 32 bit game executable
@@ -80,7 +80,7 @@ function build_platform()
 	make install-dependencies "${TARGETPLATFORM}" gameinstalldir="" DESTDIR="${BUILTDIR}"
 	popd > /dev/null || exit 1
 
-	cp "${SRCDIR}/bin/OpenRA.Game.exe.config" "${BUILTDIR}"
+	cp "${SRCDIR}/bin/OpenRA.exe.config" "${BUILTDIR}"
 
 	echo "Compiling Windows launchers (${PLATFORM})"
 	makelauncher "RedAlert.exe" "Red Alert" "ra" ${PLATFORM}
