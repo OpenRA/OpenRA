@@ -10,8 +10,8 @@
 # openra_user="<run server as this user>" (default: openra)
 # openra_chdir="<home directory of openra_user>"
 #    (default: /usr/home/${openra_user})
-# openra_path="<path to OpenRA.Game.exe>"
-#    (default: ${openra_chdir}/OpenRA/OpenRA.Game.exe)
+# openra_path="<path to OpenRA.exe>"
+#    (default: ${openra_chdir}/OpenRA/OpenRA.exe)
 # openra_ServerName="<ServerName>" (default: "Dedicated Server")
 # openra_Mod="<Mod>" (default: ra)
 # openra_ListenPort="<number>" (default: 1234)
