@@ -76,9 +76,6 @@ INSTALL_DATA = $(INSTALL) -m644
 # Toolchain
 MSBUILD = msbuild -verbosity:m -nologo
 
-# Enable 32 bit builds while generating the windows installer
-WIN32 = false
-
 # dependencies
 ifndef TARGETPLATFORM
 UNAME_S := $(shell uname -s)
