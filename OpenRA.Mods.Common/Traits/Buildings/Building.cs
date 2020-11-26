@@ -263,6 +263,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly CPos topLeft;
 
 		readonly Actor self;
+		readonly BuildingInfluence influence;
 
 		(CPos, SubCell)[] occupiedCells;
 		(CPos, SubCell)[] targetableCells;
@@ -276,6 +277,7 @@ namespace OpenRA.Mods.Common.Traits
 			self = init.Self;
 			topLeft = init.GetValue<LocationInit, CPos>();
 			Info = info;
+			influence = self.World.WorldActor.Trait<BuildingInfluence>();
 
 			occupiedCells = Info.OccupiedTiles(TopLeft)
 				.Select(c => (c, SubCell.FullCell)).ToArray();
@@ -305,11 +307,13 @@ namespace OpenRA.Mods.Common.Traits
 				RemoveSmudges();
 
 			self.World.AddToMaps(self, this);
+			influence.AddInfluence(self, Info.Tiles(self.Location));
 		}
 
 		void INotifyRemovedFromWorld.RemovedFromWorld(Actor self)
 		{
 			self.World.RemoveFromMaps(self, this);
+			influence.RemoveInfluence(self, Info.Tiles(self.Location));
 		}
 
 		void INotifySold.Selling(Actor self)
