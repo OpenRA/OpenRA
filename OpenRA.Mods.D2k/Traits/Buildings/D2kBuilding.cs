@@ -57,6 +57,7 @@ namespace OpenRA.Mods.D2k.Traits.Buildings
 		int damageThreshold;
 		int damageTicks;
 		TechTree techTree;
+		BuildingInfluence bi;
 
 		public D2kBuilding(ActorInitializer init, D2kBuildingInfo info)
 			: base(init, info)
@@ -68,6 +69,7 @@ namespace OpenRA.Mods.D2k.Traits.Buildings
 		{
 			health = self.TraitOrDefault<IHealth>();
 			layer = self.World.WorldActor.TraitOrDefault<BuildableTerrainLayer>();
+			bi = self.World.WorldActor.Trait<BuildingInfluence>();
 			techTree = self.Owner.PlayerActor.TraitOrDefault<TechTree>();
 		}
 
@@ -87,8 +89,8 @@ namespace OpenRA.Mods.D2k.Traits.Buildings
 						if (!map.Contains(c) || map.CustomTerrain[c] != byte.MaxValue)
 							continue;
 
-						// Don't place under other buildings
-						if (self.World.ActorMap.GetActorsAt(c).Any(a => a != self && a.TraitOrDefault<Building>() != null))
+						// Don't place under other buildings (or their bib)
+						if (bi.GetBuildingAt(c) != self)
 							continue;
 
 						var index = Game.CosmeticRandom.Next(template.TilesCount);
@@ -103,8 +105,8 @@ namespace OpenRA.Mods.D2k.Traits.Buildings
 						if (!map.Contains(c) || map.CustomTerrain[c] != byte.MaxValue)
 							continue;
 
-						// Don't place under other buildings
-						if (self.World.ActorMap.GetActorsAt(c).Any(a => a != self && a.TraitOrDefault<Building>() != null))
+						// Don't place under other buildings (or their bib)
+						if (bi.GetBuildingAt(c) != self)
 							continue;
 
 						layer.AddTile(c, new TerrainTile(template.Id, (byte)i));
