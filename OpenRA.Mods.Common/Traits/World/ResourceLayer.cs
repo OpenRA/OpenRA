@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	[Desc("Attach this to the world actor.", "Order of the layers defines the Z sorting.")]
-	public class ResourceLayerInfo : TraitInfo, IResourceLayerInfo, Requires<ResourceTypeInfo>
+	public class ResourceLayerInfo : TraitInfo, IResourceLayerInfo, Requires<ResourceTypeInfo>, Requires<BuildingInfluenceInfo>
 	{
 		public override object Create(ActorInitializer init) { return new ResourceLayer(init.Self); }
 	}
@@ -43,6 +43,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class ResourceLayer : IResourceLayer, IWorldLoaded
 	{
 		readonly World world;
+		readonly BuildingInfluence buildingInfluence;
 
 		protected readonly CellLayer<ResourceLayerContents> Content;
 
@@ -55,6 +56,7 @@ namespace OpenRA.Mods.Common.Traits
 		public ResourceLayer(Actor self)
 		{
 			world = self.World;
+			buildingInfluence = self.Trait<BuildingInfluence>();
 
 			Content = new CellLayer<ResourceLayerContents>(world.Map);
 		}
@@ -114,14 +116,11 @@ namespace OpenRA.Mods.Common.Traits
 			if (!rt.Info.AllowedTerrainTypes.Contains(world.Map.GetTerrainInfo(cell).Type))
 				return false;
 
-			foreach (var a in world.ActorMap.GetActorsAt(cell))
-			{
-				if (!rt.Info.AllowUnderActors)
-					return false;
+			if (!rt.Info.AllowUnderActors && world.ActorMap.AnyActorsAt(cell))
+				return false;
 
-				if (!rt.Info.AllowUnderBuildings && a.TraitOrDefault<Building>() != null)
-					return false;
-			}
+			if (!rt.Info.AllowUnderBuildings && buildingInfluence.GetBuildingAt(cell) != null)
+				return false;
 
 			return rt.Info.AllowOnRamps || world.Map.Ramp[cell] == 0;
 		}
