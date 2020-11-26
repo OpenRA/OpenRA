@@ -78,7 +78,6 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new RenameCircleContrast(),
 				new SplitDamagedByTerrain(),
 				new RemoveLaysTerrain(),
-				new RemoveBuildingInfluence(),
 			})
 		};
 
