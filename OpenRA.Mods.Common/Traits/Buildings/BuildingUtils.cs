@@ -53,8 +53,9 @@ namespace OpenRA.Mods.Common.Traits
 					}
 				}
 
-				// Replacements are enabled and the cell contained at least one (not ignored) actor
-				if (foundActors)
+				// Replacements are enabled and the cell contained at least one (not ignored) actor or building bib
+				var building = world.WorldActor.Trait<BuildingInfluence>().GetBuildingAt(cell);
+				if (foundActors || building != null)
 				{
 					// The cell contains at least one actor, and none were replaceable
 					if (acceptedReplacements == null)
@@ -67,6 +68,14 @@ namespace OpenRA.Mods.Common.Traits
 					if (!foundReplacement)
 						return false;
 				}
+			}
+			else
+			{
+				// HACK: To preserve legacy behaviour, AllowInvalidPlacement should display red placement indicators
+				// if (and only if) there is a building or bib in the cell
+				var building = world.WorldActor.Trait<BuildingInfluence>().GetBuildingAt(cell);
+				if (building != null)
+					return false;
 			}
 
 			// Buildings can never be placed on ramps
