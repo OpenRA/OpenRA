@@ -1,0 +1,309 @@
+MapFormat: 11
+
+RequiresMod: ra
+
+Title: Oil Spill
+
+Author: Super Newbie
+
+Tileset: DESERT
+
+MapSize: 120,120
+
+Bounds: 1,1,118,118
+
+Visibility: Lobby
+
+Categories: Minigame
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Faction: england
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Faction: england
+		Enemies: Multi0, Multi1, Multi2, Multi3
+	PlayerReference@Multi0:
+		Name: Multi0
+		Playable: True
+		AllowBots: False
+		LockFaction: True
+		Faction: allies
+		Enemies: Creeps
+	PlayerReference@Multi1:
+		Name: Multi1
+		Playable: True
+		AllowBots: False
+		LockFaction: True
+		Faction: allies
+		Enemies: Creeps
+	PlayerReference@Multi2:
+		Name: Multi2
+		Playable: True
+		AllowBots: False
+		LockFaction: True
+		Faction: allies
+		Enemies: Creeps
+	PlayerReference@Multi3:
+		Name: Multi3
+		Playable: True
+		AllowBots: False
+		LockFaction: True
+		Faction: allies
+		Enemies: Creeps
+
+Actors:
+	Actor1: rock1
+		Owner: Neutral
+		Location: 112,21
+	Actor2: tc01
+		Owner: Neutral
+		Location: 50,4
+	Actor3: tc01
+		Owner: Neutral
+		Location: 117,23
+	Actor4: tc01
+		Owner: Neutral
+		Location: 115,31
+	Actor5: tc01
+		Owner: Neutral
+		Location: 113,13
+	Actor6: tc01
+		Owner: Neutral
+		Location: 108,3
+	Actor7: v37
+		Owner: Neutral
+		Location: 66,3
+	Actor8: v30
+		Owner: Neutral
+		Location: 69,2
+	Actor9: v31
+		Owner: Neutral
+		Location: 48,3
+	Actor10: v24
+		Owner: Neutral
+		Location: 46,3
+	Actor12: v24
+		Owner: Neutral
+		Location: 117,102
+	Actor13: tc01
+		Owner: Neutral
+		Location: 94,116
+	Actor14: tc01
+		Owner: Neutral
+		Location: 102,111
+	Actor15: t08
+		Owner: Neutral
+		Location: 105,4
+	Actor18: rock6
+		Owner: Neutral
+		Location: 15,114
+	Actor19: rock7
+		Owner: Neutral
+		Location: 41,112
+	Actor20: rock6
+		Owner: Neutral
+		Location: 74,113
+	Actor21: tc01
+		Owner: Neutral
+		Location: 31,113
+	Actor22: tc01
+		Owner: Neutral
+		Location: 62,113
+	Actor23: t08
+		Owner: Neutral
+		Location: 74,112
+	Actor24: v25
+		Owner: Neutral
+		Location: 116,99
+	Actor26: tc01
+		Owner: Neutral
+		Location: 3,30
+	Actor25: tc01
+		Owner: Neutral
+		Location: 4,36
+	Actor27: rock2
+		Owner: Neutral
+		Location: 5,81
+	Actor28: v21
+		Owner: Neutral
+		Location: 3,88
+	Actor29: v30
+		Owner: Neutral
+		Location: 2,91
+	Actor30: t08
+		Owner: Neutral
+		Location: 5,41
+	Actor31: tc01
+		Owner: Neutral
+		Location: 72,34
+	Actor32: t08
+		Owner: Neutral
+		Location: 71,34
+	Actor33: tc01
+		Owner: Neutral
+		Location: 82,44
+	Actor36: oilb
+		Owner: Neutral
+		Location: 51,51
+	Actor37: oilb
+		Owner: Neutral
+		Location: 67,51
+	Actor38: oilb
+		Owner: Neutral
+		Location: 51,67
+	Actor39: oilb
+		Owner: Neutral
+		Location: 67,67
+	Actor44: oilb
+		Owner: Neutral
+		Location: 46,82
+	Actor45: oilb
+		Owner: Neutral
+		Location: 36,72
+	Actor46: oilb
+		Owner: Neutral
+		Location: 72,82
+	Actor47: oilb
+		Owner: Neutral
+		Location: 36,46
+	Actor48: oilb
+		Owner: Neutral
+		Location: 46,36
+	Actor49: oilb
+		Owner: Neutral
+		Location: 82,46
+	Actor50: oilb
+		Owner: Neutral
+		Location: 72,36
+	Actor53: oilb
+		Owner: Neutral
+		Location: 59,34
+	Actor54: oilb
+		Owner: Neutral
+		Location: 34,59
+	Actor55: oilb
+		Owner: Neutral
+		Location: 59,84
+	Actor56: oilb
+		Owner: Neutral
+		Location: 84,59
+	OilBottomLeft2: oilb
+		Location: 18,96
+		Owner: Neutral
+	OilBottomLeft1: oilb
+		Location: 22,100
+		Owner: Neutral
+	OilBottomRight2: oilb
+		Owner: Neutral
+		Location: 96,100
+	OilBottomRight1: oilb
+		Owner: Neutral
+		Location: 100,96
+	OilTopLeft2: oilb
+		Owner: Neutral
+		Location: 22,18
+	OilTopLeft1: oilb
+		Owner: Neutral
+		Location: 18,22
+	OilTopRight2: oilb
+		Location: 100,22
+		Owner: Neutral
+	OilTopRight1: oilb
+		Location: 96,18
+		Owner: Neutral
+	Actor65: fcom
+		Owner: Neutral
+		Location: 48,96
+	Actor69: fcom
+		Owner: Neutral
+		Location: 70,96
+	Actor70: fcom
+		Owner: Neutral
+		Location: 22,70
+	Actor72: fcom
+		Owner: Neutral
+		Location: 22,48
+	Actor73: fcom
+		Owner: Neutral
+		Location: 48,22
+	Actor71: fcom
+		Owner: Neutral
+		Location: 70,22
+	Actor74: fcom
+		Owner: Neutral
+		Location: 96,48
+	Actor75: fcom
+		Owner: Neutral
+		Location: 96,70
+	Actor77: oilb
+		Owner: Neutral
+		Location: 82,72
+	Actor80: oilb
+		Owner: Neutral
+		Location: 46,20
+	Actor81: oilb
+		Owner: Neutral
+		Location: 72,20
+	Actor82: oilb
+		Owner: Neutral
+		Location: 46,98
+	Actor83: oilb
+		Owner: Neutral
+		Location: 72,98
+	Actor84: oilb
+		Owner: Neutral
+		Location: 20,72
+	Actor85: oilb
+		Owner: Neutral
+		Location: 20,46
+	Actor86: oilb
+		Owner: Neutral
+		Location: 98,46
+	Actor87: oilb
+		Owner: Neutral
+		Location: 98,72
+	OilTopLeft3: oilb
+		Owner: Neutral
+		Location: 29,29
+	OilBottomLeft3: oilb
+		Location: 29,89
+		Owner: Neutral
+	OilTopRight3: oilb
+		Location: 89,29
+		Owner: Neutral
+	OilBottomRight3: oilb
+		Owner: Neutral
+		Location: 89,89
+	Spawn0: mpspawn
+		Owner: Neutral
+		Location: 31,31
+	Spawn1: mpspawn
+		Owner: Neutral
+		Location: 87,31
+	Spawn2: mpspawn
+		Owner: Neutral
+		Location: 31,87
+	Spawn3: mpspawn
+		Owner: Neutral
+		Location: 87,87
+	FCOMTopLeft: fcom
+		Owner: Neutral
+		Location: 31,31
+	FCOMTopRight: fcom
+		Owner: Neutral
+		Location: 87,31
+	FCOMBottomLeft: fcom
+		Owner: Neutral
+		Location: 31,87
+	FCOMBottomRight: fcom
+		Owner: Neutral
+		Location: 87,87
+
+Rules: rules.yaml
+
+Sequences: sequences.yaml
