@@ -231,6 +231,9 @@ namespace OpenRA.Network
 			public bool GameSavesEnabled;
 
 			[FieldLoader.Ignore]
+			public static Dictionary<string, LobbyOptionState> PersistedLobbyOptions = new Dictionary<string, LobbyOptionState>();
+
+			[FieldLoader.Ignore]
 			public Dictionary<string, LobbyOptionState> LobbyOptions = new Dictionary<string, LobbyOptionState>();
 
 			public static Global Deserialize(MiniYaml data)

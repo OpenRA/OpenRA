@@ -559,6 +559,19 @@ namespace OpenRA.Mods.Common.Server
 				if (oo.Value == split[1])
 					return true;
 
+				if (server.Type != ServerType.Dedicated)
+				{
+					Session.LobbyOptionState persistedState;
+					Session.Global.PersistedLobbyOptions.TryGetValue(option.Id, out persistedState);
+					if (persistedState == null)
+					{
+						persistedState = new Session.LobbyOptionState();
+						Session.Global.PersistedLobbyOptions.Add(option.Id, persistedState);
+					}
+
+					persistedState.Value = persistedState.PreferredValue = split[1];
+				}
+
 				oo.Value = oo.PreferredValue = split[1];
 
 				if (option.Id == "gamespeed")
@@ -1034,7 +1047,17 @@ namespace OpenRA.Mods.Common.Server
 						preferredValue = state.PreferredValue;
 					}
 					else
+					{
 						state = new Session.LobbyOptionState();
+						if (server.Type != ServerType.Dedicated)
+						{
+							if (Session.Global.PersistedLobbyOptions.TryGetValue(o.Id, out var persistedState))
+							{
+								preferredValue = persistedState.PreferredValue;
+								value = persistedState.Value;
+							}
+						}
+					}
 
 					state.IsLocked = o.IsLocked;
 					state.Value = value;
