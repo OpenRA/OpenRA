@@ -1,0 +1,4 @@
+oilb.husk: oilb
+	idle: oilb
+		Start: 1
+		Offset: 0,-6
