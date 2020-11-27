@@ -48,9 +48,14 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public static Exit NearestExitOrDefault(this Actor actor, WPos pos, string productionType = null, Func<Exit, bool> p = null)
 		{
+			// The .ToList() is required to work around a bug/unexpected behaviour in mono, where
+			// the ThenBy clause makes the FirstOrDefault behave differently than under .NET.
+			// This is important because p may have side-effects that trigger a desync if not
+			// called on the same exits in the same order!
 			var all = Exits(actor, productionType)
 				.OrderBy(e => e.Info.Priority)
-				.ThenBy(e => (actor.CenterPosition + e.Info.SpawnOffset - pos).Length);
+				.ThenBy(e => (actor.CenterPosition + e.Info.SpawnOffset - pos).Length)
+				.ToList();
 
 			return p != null ? all.FirstOrDefault(p) : all.FirstOrDefault();
 		}
