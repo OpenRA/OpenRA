@@ -39,13 +39,13 @@ function makelauncher()
 	convert "${ARTWORK_DIR}/${MOD_ID}_16x16.png" "${ARTWORK_DIR}/${MOD_ID}_24x24.png" "${ARTWORK_DIR}/${MOD_ID}_32x32.png" "${ARTWORK_DIR}/${MOD_ID}_48x48.png" "${ARTWORK_DIR}/${MOD_ID}_256x256.png" "${BUILTDIR}/${MOD_ID}.ico"
 
 	# Create mod-specific launcher
-	msbuild -t:Build "${SRCDIR}/OpenRA.WindowsLauncher/OpenRA.WindowsLauncher.csproj" -restore -p:Configuration=Release -p:TargetPlatform="${PLATFORM}" -p:LauncherName="${LAUNCHER_NAME}" -p:LauncherIcon="${BUILTDIR}/${MOD_ID}.ico" -p:ModID="${MOD_ID}" -p:DisplayName="${DISPLAY_NAME}" -p:FaqUrl="${FAQ_URL}"
+	msbuild -t:Build "${SRCDIR}/OpenRA.WindowsLauncher/OpenRA.WindowsLauncher.csproj" -restore -p:Configuration=Release -p:TargetPlatform="win-${PLATFORM}" -p:LauncherName="${LAUNCHER_NAME}" -p:LauncherIcon="${BUILTDIR}/${MOD_ID}.ico" -p:ModID="${MOD_ID}" -p:DisplayName="${DISPLAY_NAME}" -p:FaqUrl="${FAQ_URL}"
 	cp "${SRCDIR}/bin/${LAUNCHER_NAME}.exe" "${BUILTDIR}"
 	cp "${SRCDIR}/bin/${LAUNCHER_NAME}.exe.config" "${BUILTDIR}"
 
 	# Enable the full 4GB address space for the 32 bit game executable
 	# The server and utility do not use enough memory to need this
-	if [ "${PLATFORM}" = "win-x86" ]; then
+	if [ "${PLATFORM}" = "x86" ]; then
 		python3 MakeLAA.py "${BUILTDIR}/${LAUNCHER_NAME}.exe"
 	fi
 }
@@ -63,12 +63,12 @@ function build_platform()
 
 	pushd "${SRCDIR}" > /dev/null || exit 1
 	make clean
-	make core TARGETPLATFORM="${PLATFORM}"
+	make core TARGETPLATFORM="win-${PLATFORM}"
 	make version VERSION="${TAG}"
-	make install-engine TARGETPLATFORM="${PLATFORM}" gameinstalldir="" DESTDIR="${BUILTDIR}"
+	make install-engine TARGETPLATFORM="win-${PLATFORM}" gameinstalldir="" DESTDIR="${BUILTDIR}"
 	make install-common-mod-files gameinstalldir="" DESTDIR="${BUILTDIR}"
 	make install-default-mods gameinstalldir="" DESTDIR="${BUILTDIR}"
-	make install-dependencies TARGETPLATFORM="${PLATFORM}" gameinstalldir="" DESTDIR="${BUILTDIR}"
+	make install-dependencies TARGETPLATFORM="win-${PLATFORM}" gameinstalldir="" DESTDIR="${BUILTDIR}"
 	popd > /dev/null || exit 1
 
 	echo "Compiling Windows launchers (${PLATFORM})"
@@ -82,19 +82,19 @@ function build_platform()
 	echo "Building Windows setup.exe ($1)"
 	makensis -V2 -DSRCDIR="${BUILTDIR}" -DTAG="${TAG}" -DSUFFIX="${SUFFIX}" ${USE_PROGRAMFILES32} OpenRA.nsi
 	if [ $? -eq 0 ]; then
-		mv OpenRA.Setup.exe "${OUTPUTDIR}/OpenRA-$TAG-$1.exe"
+		mv OpenRA.Setup.exe "${OUTPUTDIR}/OpenRA-${TAG}-${PLATFORM}.exe"
 	else
 		exit 1
 	fi
 
 	echo "Packaging zip archive ($1)"
 	pushd "${BUILTDIR}" > /dev/null
-	zip "OpenRA-${TAG}-${1}-winportable.zip" -r -9 * --quiet
-	mv "OpenRA-${TAG}-${1}-winportable.zip" "${OUTPUTDIR}"
+	zip "OpenRA-${TAG}-${PLATFORM}-winportable.zip" -r -9 * --quiet
+	mv "OpenRA-${TAG}-${PLATFORM}-winportable.zip" "${OUTPUTDIR}"
 	popd > /dev/null
 
 	rm -rf "${BUILTDIR}"
 }
 
-build_platform "win-x86"
-build_platform "win-x64"
+build_platform "x86"
+build_platform "x64"
