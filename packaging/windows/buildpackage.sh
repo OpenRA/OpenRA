@@ -19,7 +19,6 @@ SRCDIR="$(pwd)/../.."
 BUILTDIR="$(pwd)/build"
 ARTWORK_DIR="$(pwd)/../artwork/"
 
-LAUNCHER_LIBS="-r:System.dll -r:System.Drawing.dll -r:System.Windows.Forms.dll -r:${BUILTDIR}/OpenRA.Game.dll"
 FAQ_URL="http://wiki.openra.net/FAQ"
 
 SUFFIX=" (dev)"
