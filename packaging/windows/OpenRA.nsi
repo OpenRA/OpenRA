@@ -23,6 +23,8 @@ OutFile "OpenRA.Setup.exe"
 
 ManifestDPIAware true
 
+Unicode True
+
 Function .onInit
 	!ifndef USE_PROGRAMFILES32
 		SetRegView 64
