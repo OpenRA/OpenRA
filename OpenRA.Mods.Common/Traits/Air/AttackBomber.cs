@@ -19,8 +19,8 @@ namespace OpenRA.Mods.Common.Traits
 {
 	public class AttackBomberInfo : AttackBaseInfo
 	{
-		[Desc("Tolerance for attack angle. Range [0, 128], 128 covers 360 degrees.")]
-		public readonly new int FacingTolerance = 2;
+		[Desc("Tolerance for attack angle. Range [0, 512], 512 covers 360 degrees.")]
+		public readonly new WAngle FacingTolerance = new WAngle(8);
 
 		public override object Create(ActorInitializer init) { return new AttackBomber(init.Self, this); }
 	}
@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Common.Traits
 				target = Target.FromPos(target.CenterPosition - new WVec(WDist.Zero, WDist.Zero, dat));
 
 				var wasFacingTarget = facingTarget;
-				facingTarget = TargetInFiringArc(self, target, 4 * info.FacingTolerance);
+				facingTarget = TargetInFiringArc(self, target, info.FacingTolerance);
 
 				foreach (var a in Armaments)
 				{

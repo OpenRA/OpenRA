@@ -154,7 +154,7 @@ ORCA:
 		Weapon: Hellfire
 		PauseOnCondition: !ammo
 	AttackAircraft:
-		FacingTolerance: 20
+		FacingTolerance: 80
 		PersistentTargeting: false
 		Voice: Attack
 		PauseOnCondition: empdisable
@@ -219,7 +219,7 @@ ORCAB:
 		PauseOnCondition: !ammo
 	AttackAircraft:
 		Voice: Attack
-		FacingTolerance: 20
+		FacingTolerance: 80
 		PersistentTargeting: false
 		PauseOnCondition: empdisable
 	AmmoPool:
@@ -372,7 +372,7 @@ SCRIN:
 		PauseOnCondition: !ammo
 	AttackAircraft:
 		Voice: Attack
-		FacingTolerance: 20
+		FacingTolerance: 80
 		PersistentTargeting: false
 		PauseOnCondition: empdisable
 	AmmoPool:
@@ -435,7 +435,7 @@ APACHE:
 		Weapon: HarpyClaw
 		PauseOnCondition: !ammo
 	AttackAircraft:
-		FacingTolerance: 20
+		FacingTolerance: 80
 		PersistentTargeting: false
 		Voice: Attack
 		PauseOnCondition: empdisable
@@ -491,7 +491,7 @@ HUNTER:
 		CruisingCondition: cruising
 		MoveIntoShroud: true
 	AttackAircraft:
-		FacingTolerance: 128
+		FacingTolerance: 512
 		AttackType: Hover
 	Armament@PRIMARY:
 		Weapon: SuicideBomb

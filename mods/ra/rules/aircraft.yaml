@@ -79,7 +79,7 @@ MIG:
 		LocalYaw: -40, 24
 		PauseOnCondition: !ammo
 	AttackAircraft:
-		FacingTolerance: 20
+		FacingTolerance: 80
 		PersistentTargeting: false
 		OpportunityFire: False
 	Aircraft:
@@ -152,7 +152,7 @@ YAK:
 		MuzzleSequence: muzzle
 		PauseOnCondition: !ammo
 	AttackAircraft:
-		FacingTolerance: 20
+		FacingTolerance: 80
 		PersistentTargeting: false
 		OpportunityFire: False
 	Aircraft:
@@ -276,7 +276,7 @@ HELI:
 		LocalOffset: 0,213,-85, 0,-213,-85
 		PauseOnCondition: !ammo
 	AttackAircraft:
-		FacingTolerance: 20
+		FacingTolerance: 80
 		PersistentTargeting: false
 		AttackType: Hover
 		OpportunityFire: False
@@ -349,7 +349,7 @@ HIND:
 		MuzzleSequence: muzzle
 		PauseOnCondition: !ammo
 	AttackAircraft:
-		FacingTolerance: 20
+		FacingTolerance: 80
 		PersistentTargeting: false
 		AttackType: Hover
 		OpportunityFire: False
@@ -452,7 +452,7 @@ MH60:
 		MuzzleSequence: muzzle
 		PauseOnCondition: !ammo
 	AttackAircraft:
-		FacingTolerance: 20
+		FacingTolerance: 80
 		PersistentTargeting: false
 		AttackType: Hover
 	Aircraft:

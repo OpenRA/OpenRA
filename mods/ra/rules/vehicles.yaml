@@ -735,7 +735,7 @@ DTRK:
 		EmptyWeapon: MiniNuke
 		DamageSource: Killer
 	AttackFrontal:
-		FacingTolerance: 128
+		FacingTolerance: 512
 	Armament@PRIMARY:
 		Weapon: DemoTruckTargeting
 	GrantConditionOnAttack:

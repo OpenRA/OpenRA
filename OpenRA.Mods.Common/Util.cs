@@ -88,13 +88,13 @@ namespace OpenRA.Mods.Common
 			return negative == 0 ? 0 : 256 - negative;
 		}
 
-		public static bool FacingWithinTolerance(WAngle facing, WAngle desiredFacing, int facingTolerance)
+		public static bool FacingWithinTolerance(WAngle facing, WAngle desiredFacing, WAngle facingTolerance)
 		{
-			if (facingTolerance == 0 && facing == desiredFacing)
+			if (facingTolerance.Angle == 0 && facing == desiredFacing)
 				return true;
 
 			var delta = (desiredFacing - facing).Angle;
-			return delta <= facingTolerance || delta >= 1024 - facingTolerance;
+			return delta <= facingTolerance.Angle || delta >= 1024 - facingTolerance.Angle;
 		}
 
 		public static WPos BetweenCells(World w, CPos from, CPos to)
