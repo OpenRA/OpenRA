@@ -35,9 +35,20 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			{ "FallsToEarth", new[] { "MaximumSpinSpeed" } },
 			{ "ConyardChronoReturn", new[] { "Facing" } },
 			{ "TDGunboat", new[] { "InitialFacing", "PreviewFacing" } },
-			{ "AttackPopupTurreted", new[] { "DefaultFacing" } },
 			{ "DropPodsPower", new[] { "PodFacing" } },
 			{ "TiberianSunRefinery", new[] { "DockAngle" } },
+			{ "AttackAircraft", new[] { "FacingTolerance" } },
+			{ "AttackBomber", new[] { "FacingTolerance" } },
+			{ "AttackCharges", new[] { "FacingTolerance" } },
+			{ "AttackFollow", new[] { "FacingTolerance" } },
+			{ "AttackFrontal", new[] { "FacingTolerance" } },
+			{ "AttackGarrisoned", new[] { "FacingTolerance" } },
+			{ "AttackOmni", new[] { "FacingTolerance" } },
+			{ "AttackTurreted", new[] { "FacingTolerance" } },
+			{ "AttackLeap", new[] { "FacingTolerance" } },
+			{ "AttackPopupTurreted", new[] { "DefaultFacing", "FacingTolerance" } },
+			{ "AttackTDGunboatTurreted", new[] { "FacingTolerance" } },
+			{ "AttackTesla", new[] { "FacingTolerance" } },
 		};
 
 		static readonly Dictionary<string, string[]> ProjectileFields = new Dictionary<string, string[]>()

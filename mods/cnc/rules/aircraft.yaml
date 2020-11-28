@@ -87,7 +87,7 @@ HELI:
 	AutoTarget:
 		ScanRadius: 4
 	AttackAircraft:
-		FacingTolerance: 20
+		FacingTolerance: 80
 		OpportunityFire: false
 		PersistentTargeting: false
 		AttackType: Hover
@@ -152,7 +152,7 @@ ORCA:
 	AutoTarget:
 		ScanRadius: 5
 	AttackAircraft:
-		FacingTolerance: 20
+		FacingTolerance: 80
 		OpportunityFire: false
 		PersistentTargeting: false
 		AttackType: Hover
