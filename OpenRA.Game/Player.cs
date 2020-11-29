@@ -64,7 +64,7 @@ namespace OpenRA
 		public readonly Shroud Shroud;
 		public readonly FrozenActorLayer FrozenActorLayer;
 
-		/// <summary>The faction (including Random, etc) that was selected in the lobby.</summary>
+		/// <summary>The faction (including Random, etc.) that was selected in the lobby.</summary>
 		public readonly FactionInfo DisplayFaction;
 
 		/// <summary>The spawn point index that was assigned for client-based players.</summary>
