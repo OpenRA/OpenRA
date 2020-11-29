@@ -60,6 +60,8 @@ namespace OpenRA.Mods.Common.Traits
 					IsBot = client.Bot != null,
 					FactionName = resolvedFaction.Name,
 					FactionId = resolvedFaction.InternalName,
+					DisplayFactionName = clientFaction.Name,
+					DisplayFactionId = clientFaction.InternalName,
 					Color = client.Color,
 					Team = client.Team,
 					SpawnPoint = resolvedSpawnPoint,
