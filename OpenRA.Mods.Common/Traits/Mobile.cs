@@ -662,7 +662,7 @@ namespace OpenRA.Mods.Common.Traits
 				subCell = mobile.ToSubCell;
 
 				if (recalculateSubCell)
-					subCell = mobile.Info.LocomotorInfo.SharesCell ? self.World.ActorMap.FreeSubCell(cell, subCell) : SubCell.FullCell;
+					subCell = mobile.Info.LocomotorInfo.SharesCell ? self.World.ActorMap.FreeSubCell(cell, subCell, a => a != self) : SubCell.FullCell;
 
 				// TODO: solve/reduce cell is full problem
 				if (subCell == SubCell.Invalid)
