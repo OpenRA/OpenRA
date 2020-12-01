@@ -33,8 +33,8 @@ namespace OpenRA.Mods.Common.Graphics
 		readonly float3 tint;
 
 		public ModelRenderable(
-			IEnumerable<ModelAnimation> models, WPos pos, int zOffset, WRot camera, float scale,
-			WRot lightSource, float[] lightAmbientColor, float[] lightDiffuseColor,
+			IEnumerable<ModelAnimation> models, WPos pos, int zOffset, in WRot camera, float scale,
+			in WRot lightSource, float[] lightAmbientColor, float[] lightDiffuseColor,
 			PaletteReference color, PaletteReference normals, PaletteReference shadow)
 			: this(models, pos, zOffset, camera, scale,
 				lightSource, lightAmbientColor, lightDiffuseColor,
@@ -42,8 +42,8 @@ namespace OpenRA.Mods.Common.Graphics
 				float3.Ones) { }
 
 		public ModelRenderable(
-			IEnumerable<ModelAnimation> models, WPos pos, int zOffset, WRot camera, float scale,
-			WRot lightSource, float[] lightAmbientColor, float[] lightDiffuseColor,
+			IEnumerable<ModelAnimation> models, WPos pos, int zOffset, in WRot camera, float scale,
+			in WRot lightSource, float[] lightAmbientColor, float[] lightDiffuseColor,
 			PaletteReference color, PaletteReference normals, PaletteReference shadow,
 			float3 tint)
 		{

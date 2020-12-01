@@ -16,7 +16,7 @@ namespace OpenRA
 	/// <summary>
 	/// 3d World rotation.
 	/// </summary>
-	public struct WRot : IEquatable<WRot>
+	public readonly struct WRot : IEquatable<WRot>
 	{
 		// The Euler angle representation is a lot more intuitive for public use
 		public readonly WAngle Roll, Pitch, Yaw;
@@ -84,11 +84,11 @@ namespace OpenRA
 
 		public static WRot FromFacing(int facing) { return new WRot(WAngle.Zero, WAngle.Zero, WAngle.FromFacing(facing)); }
 		public static WRot FromYaw(WAngle yaw) { return new WRot(WAngle.Zero, WAngle.Zero, yaw); }
-		public static WRot operator +(WRot a, WRot b) { return new WRot(a.Roll + b.Roll, a.Pitch + b.Pitch, a.Yaw + b.Yaw); }
-		public static WRot operator -(WRot a, WRot b) { return new WRot(a.Roll - b.Roll, a.Pitch - b.Pitch, a.Yaw - b.Yaw); }
-		public static WRot operator -(WRot a) { return new WRot(-a.x, -a.y, -a.z, a.w, -a.Roll, -a.Pitch, -a.Yaw); }
+		public static WRot operator +(in WRot a, in WRot b) { return new WRot(a.Roll + b.Roll, a.Pitch + b.Pitch, a.Yaw + b.Yaw); }
+		public static WRot operator -(in WRot a, in WRot b) { return new WRot(a.Roll - b.Roll, a.Pitch - b.Pitch, a.Yaw - b.Yaw); }
+		public static WRot operator -(in WRot a) { return new WRot(-a.x, -a.y, -a.z, a.w, -a.Roll, -a.Pitch, -a.Yaw); }
 
-		public WRot Rotate(WRot rot)
+		public WRot Rotate(in WRot rot)
 		{
 			if (this == None)
 				return rot;
@@ -104,12 +104,12 @@ namespace OpenRA
 			return new WRot((int)rx, (int)ry, (int)rz, (int)rw);
 		}
 
-		public static bool operator ==(WRot me, WRot other)
+		public static bool operator ==(in WRot me, in WRot other)
 		{
 			return me.Roll == other.Roll && me.Pitch == other.Pitch && me.Yaw == other.Yaw;
 		}
 
-		public static bool operator !=(WRot me, WRot other) { return !(me == other); }
+		public static bool operator !=(in WRot me, in WRot other) { return !(me == other); }
 
 		public WRot WithRoll(WAngle roll)
 		{
