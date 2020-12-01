@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Traits
 			// called on the same exits in the same order!
 			var all = Exits(actor, productionType)
 				.OrderBy(e => e.Info.Priority)
-				.ThenBy(e => (actor.CenterPosition + e.Info.SpawnOffset - pos).Length)
+				.ThenBy(e => (actor.World.Map.CenterOfCell(actor.Location + e.Info.ExitCell) - pos).LengthSquared)
 				.ToList();
 
 			return p != null ? all.FirstOrDefault(p) : all.FirstOrDefault();
