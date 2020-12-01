@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Graphics
 
 		public UIModelRenderable(
 			IEnumerable<ModelAnimation> models, WPos effectiveWorldPos, int2 screenPos, int zOffset,
-			WRot camera, float scale, WRot lightSource, float[] lightAmbientColor, float[] lightDiffuseColor,
+			in WRot camera, float scale, in WRot lightSource, float[] lightAmbientColor, float[] lightDiffuseColor,
 			PaletteReference color, PaletteReference normals, PaletteReference shadow)
 		{
 			this.models = models;

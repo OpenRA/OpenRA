@@ -79,8 +79,8 @@ namespace OpenRA.Graphics
 		}
 
 		public ModelRenderProxy RenderAsync(
-			WorldRenderer wr, IEnumerable<ModelAnimation> models, WRot camera, float scale,
-			float[] groundNormal, WRot lightSource, float[] lightAmbientColor, float[] lightDiffuseColor,
+			WorldRenderer wr, IEnumerable<ModelAnimation> models, in WRot camera, float scale,
+			float[] groundNormal, in WRot lightSource, float[] lightAmbientColor, float[] lightDiffuseColor,
 			PaletteReference color, PaletteReference normals, PaletteReference shadowPalette)
 		{
 			if (!isInFrame)

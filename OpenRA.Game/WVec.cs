@@ -44,7 +44,7 @@ namespace OpenRA
 		public long VerticalLengthSquared { get { return (long)Z * Z; } }
 		public int VerticalLength { get { return (int)Exts.ISqrt(VerticalLengthSquared); } }
 
-		public WVec Rotate(WRot rot)
+		public WVec Rotate(in WRot rot)
 		{
 			rot.AsMatrix(out var mtx);
 			return Rotate(ref mtx);

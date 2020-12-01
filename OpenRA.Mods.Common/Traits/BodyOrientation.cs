@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Traits
 			return new WVec(vec.Y, -CameraPitch.Sin() * vec.X / 1024, vec.Z);
 		}
 
-		public WRot QuantizeOrientation(WRot orientation, int facings)
+		public WRot QuantizeOrientation(in WRot orientation, int facings)
 		{
 			// Quantization disabled
 			if (facings == 0)
@@ -101,7 +101,7 @@ namespace OpenRA.Mods.Common.Traits
 			return info.LocalToWorld(vec);
 		}
 
-		public WRot QuantizeOrientation(Actor self, WRot orientation)
+		public WRot QuantizeOrientation(Actor self, in WRot orientation)
 		{
 			return info.QuantizeOrientation(orientation, quantizedFacings.Value);
 		}
