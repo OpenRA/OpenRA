@@ -29,7 +29,7 @@ namespace OpenRA.Graphics
 		public Sprite(Sheet sheet, Rectangle bounds, TextureChannel channel, float scale = 1)
 			: this(sheet, bounds, 0, float2.Zero, channel, BlendMode.Alpha, scale) { }
 
-		public Sprite(Sheet sheet, Rectangle bounds, float zRamp, float3 offset, TextureChannel channel, BlendMode blendMode = BlendMode.Alpha, float scale = 1f)
+		public Sprite(Sheet sheet, Rectangle bounds, float zRamp, in float3 offset, TextureChannel channel, BlendMode blendMode = BlendMode.Alpha, float scale = 1f)
 		{
 			Sheet = sheet;
 			Bounds = bounds;

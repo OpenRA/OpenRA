@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.Graphics
 			IEnumerable<ModelAnimation> models, WPos pos, int zOffset, in WRot camera, float scale,
 			in WRot lightSource, float[] lightAmbientColor, float[] lightDiffuseColor,
 			PaletteReference color, PaletteReference normals, PaletteReference shadow,
-			float3 tint)
+			in float3 tint)
 		{
 			this.models = models;
 			this.pos = pos;
@@ -92,7 +92,7 @@ namespace OpenRA.Mods.Common.Graphics
 
 		public IRenderable AsDecoration() { return this; }
 
-		public IRenderable WithTint(float3 newTint)
+		public IRenderable WithTint(in float3 newTint)
 		{
 			return new ModelRenderable(
 				models, pos, zOffset, camera, scale,
@@ -195,7 +195,7 @@ namespace OpenRA.Mods.Common.Graphics
 			static readonly uint[] CornerXIndex = new uint[] { 0, 0, 0, 0, 3, 3, 3, 3 };
 			static readonly uint[] CornerYIndex = new uint[] { 1, 1, 4, 4, 1, 1, 4, 4 };
 			static readonly uint[] CornerZIndex = new uint[] { 2, 5, 2, 5, 2, 5, 2, 5 };
-			static void DrawBoundsBox(WorldRenderer wr, float3 pxPos, float[] transform, float[] bounds, float width, Color c)
+			static void DrawBoundsBox(WorldRenderer wr, in float3 pxPos, float[] transform, float[] bounds, float width, Color c)
 			{
 				var cr = Game.Renderer.RgbaColorRenderer;
 				var corners = new float2[8];

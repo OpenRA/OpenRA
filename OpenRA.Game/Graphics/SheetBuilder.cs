@@ -76,7 +76,7 @@ namespace OpenRA.Graphics
 
 		public Sprite Add(ISpriteFrame frame) { return Add(frame.Data, frame.Size, 0, frame.Offset); }
 		public Sprite Add(byte[] src, Size size) { return Add(src, size, 0, float3.Zero); }
-		public Sprite Add(byte[] src, Size size, float zRamp, float3 spriteOffset)
+		public Sprite Add(byte[] src, Size size, float zRamp, in float3 spriteOffset)
 		{
 			// Don't bother allocating empty sprites
 			if (size.Width == 0 || size.Height == 0)
@@ -115,7 +115,7 @@ namespace OpenRA.Graphics
 		}
 
 		public Sprite Allocate(Size imageSize, float scale = 1f) { return Allocate(imageSize, 0, float3.Zero, scale); }
-		public Sprite Allocate(Size imageSize, float zRamp, float3 spriteOffset, float scale = 1f)
+		public Sprite Allocate(Size imageSize, float zRamp, in float3 spriteOffset, float scale = 1f)
 		{
 			if (imageSize.Width + p.X + margin > current.Size.Width)
 			{

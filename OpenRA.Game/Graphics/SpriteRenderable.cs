@@ -58,7 +58,7 @@ namespace OpenRA.Graphics
 		public IRenderable OffsetBy(WVec vec) { return new SpriteRenderable(sprite, pos + vec, offset, zOffset, palette, scale, tint, isDecoration, ignoreWorldTint); }
 		public IRenderable AsDecoration() { return new SpriteRenderable(sprite, pos, offset, zOffset, palette, scale, tint, true, ignoreWorldTint); }
 
-		public IRenderable WithTint(float3 newTint) { return new SpriteRenderable(sprite, pos, offset, zOffset, palette, scale, newTint, isDecoration, ignoreWorldTint); }
+		public IRenderable WithTint(in float3 newTint) { return new SpriteRenderable(sprite, pos, offset, zOffset, palette, scale, newTint, isDecoration, ignoreWorldTint); }
 
 		float3 ScreenPosition(WorldRenderer wr)
 		{

@@ -28,7 +28,7 @@ namespace OpenRA.Graphics
 			this.parent = parent;
 		}
 
-		public void DrawLine(float3 start, float3 end, float width, Color startColor, Color endColor)
+		public void DrawLine(in float3 start, in float3 end, float width, Color startColor, Color endColor)
 		{
 			var delta = (end - start) / (end - start).XY.Length;
 			var corner = width / 2 * new float3(-delta.Y, delta.X, delta.Z);
@@ -55,7 +55,7 @@ namespace OpenRA.Graphics
 			parent.DrawRGBAVertices(vertices);
 		}
 
-		public void DrawLine(float3 start, float3 end, float width, Color color)
+		public void DrawLine(in float3 start, in float3 end, float width, Color color)
 		{
 			var delta = (end - start) / (end - start).XY.Length;
 			var corner = width / 2 * new float2(-delta.Y, delta.X);
@@ -80,7 +80,7 @@ namespace OpenRA.Graphics
 		/// Will behave badly if the lines are parallel.
 		/// Z position is the average of a and b (ignores actual intersection point if it exists)
 		/// </summary>
-		float3 IntersectionOf(float3 a, float3 da, float3 b, float3 db)
+		float3 IntersectionOf(in float3 a, in float3 da, in float3 b, in float3 db)
 		{
 			var crossA = a.X * (a.Y + da.Y) - a.Y * (a.X + da.X);
 			var crossB = b.X * (b.Y + db.Y) - b.Y * (b.X + db.X);
@@ -193,14 +193,14 @@ namespace OpenRA.Graphics
 			DrawConnectedLine(vertices.Select(v => new float3(v, 0)).ToArray(), width, color, true);
 		}
 
-		public void DrawRect(float3 tl, float3 br, float width, Color color)
+		public void DrawRect(in float3 tl, in float3 br, float width, Color color)
 		{
 			var tr = new float3(br.X, tl.Y, tl.Z);
 			var bl = new float3(tl.X, br.Y, br.Z);
 			DrawPolygon(new[] { tl, tr, br, bl }, width, color);
 		}
 
-		public void FillTriangle(float3 a, float3 b, float3 c, Color color)
+		public void FillTriangle(in float3 a, in float3 b, in float3 c, Color color)
 		{
 			color = Util.PremultiplyAlpha(color);
 			var cr = color.R / 255.0f;
@@ -214,14 +214,14 @@ namespace OpenRA.Graphics
 			parent.DrawRGBAVertices(vertices);
 		}
 
-		public void FillRect(float3 tl, float3 br, Color color)
+		public void FillRect(in float3 tl, in float3 br, Color color)
 		{
 			var tr = new float3(br.X, tl.Y, tl.Z);
 			var bl = new float3(tl.X, br.Y, br.Z);
 			FillRect(tl, tr, br, bl, color);
 		}
 
-		public void FillRect(float3 a, float3 b, float3 c, float3 d, Color color)
+		public void FillRect(in float3 a, in float3 b, in float3 c, in float3 d, Color color)
 		{
 			color = Util.PremultiplyAlpha(color);
 			var cr = color.R / 255.0f;
@@ -238,7 +238,7 @@ namespace OpenRA.Graphics
 			parent.DrawRGBAVertices(vertices);
 		}
 
-		public void FillRect(float3 a, float3 b, float3 c, float3 d, Color topLeftColor, Color topRightColor, Color bottomRightColor, Color bottomLeftColor)
+		public void FillRect(in float3 a, in float3 b, in float3 c, in float3 d, Color topLeftColor, Color topRightColor, Color bottomRightColor, Color bottomLeftColor)
 		{
 			vertices[0] = VertexWithColor(a + Offset, topLeftColor);
 			vertices[1] = VertexWithColor(b + Offset, topRightColor);
@@ -250,7 +250,7 @@ namespace OpenRA.Graphics
 			parent.DrawRGBAVertices(vertices);
 		}
 
-		static Vertex VertexWithColor(float3 xyz, Color color)
+		static Vertex VertexWithColor(in float3 xyz, Color color)
 		{
 			color = Util.PremultiplyAlpha(color);
 			var cr = color.R / 255.0f;
@@ -261,7 +261,7 @@ namespace OpenRA.Graphics
 			return new Vertex(xyz, cr, cg, cb, ca, 0, 0);
 		}
 
-		public void FillEllipse(float3 tl, float3 br, Color color, int vertices = 32)
+		public void FillEllipse(in float3 tl, in float3 br, Color color, int vertices = 32)
 		{
 			// TODO: Create an ellipse polygon instead
 			var a = (br.X - tl.X) / 2;
