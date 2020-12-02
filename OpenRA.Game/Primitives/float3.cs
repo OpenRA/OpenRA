@@ -17,7 +17,7 @@ namespace OpenRA
 {
 	[SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Mimic a built-in type alias.")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct float3 : IEquatable<float3>
+	public readonly struct float3 : IEquatable<float3>
 	{
 		public readonly float X, Y, Z;
 		public float2 XY { get { return new float2(X, Y); } }
@@ -28,13 +28,13 @@ namespace OpenRA
 		public static implicit operator float3(int2 src) { return new float3(src.X, src.Y, 0); }
 		public static implicit operator float3(float2 src) { return new float3(src.X, src.Y, 0); }
 
-		public static float3 operator +(float3 a, float3 b) { return new float3(a.X + b.X, a.Y + b.Y, a.Z + b.Z); }
-		public static float3 operator -(float3 a, float3 b) { return new float3(a.X - b.X, a.Y - b.Y, a.Z - b.Z); }
-		public static float3 operator -(float3 a) { return new float3(-a.X, -a.Y, -a.Z); }
-		public static float3 operator *(float3 a, float3 b) { return new float3(a.X * b.X, a.Y * b.Y, a.Z * b.Z); }
-		public static float3 operator *(float a, float3 b) { return new float3(a * b.X, a * b.Y, a * b.Z); }
-		public static float3 operator /(float3 a, float3 b) { return new float3(a.X / b.X, a.Y / b.Y, a.Z / b.Z); }
-		public static float3 operator /(float3 a, float b) { return new float3(a.X / b, a.Y / b, a.Z / b); }
+		public static float3 operator +(in float3 a, in float3 b) { return new float3(a.X + b.X, a.Y + b.Y, a.Z + b.Z); }
+		public static float3 operator -(in float3 a, in float3 b) { return new float3(a.X - b.X, a.Y - b.Y, a.Z - b.Z); }
+		public static float3 operator -(in float3 a) { return new float3(-a.X, -a.Y, -a.Z); }
+		public static float3 operator *(in float3 a, in float3 b) { return new float3(a.X * b.X, a.Y * b.Y, a.Z * b.Z); }
+		public static float3 operator *(float a, in float3 b) { return new float3(a * b.X, a * b.Y, a * b.Z); }
+		public static float3 operator /(in float3 a, in float3 b) { return new float3(a.X / b.X, a.Y / b.Y, a.Z / b.Z); }
+		public static float3 operator /(in float3 a, float b) { return new float3(a.X / b, a.Y / b, a.Z / b); }
 
 		public static float3 Lerp(float3 a, float3 b, float t)
 		{
@@ -44,8 +44,8 @@ namespace OpenRA
 				float2.Lerp(a.Z, b.Z, t));
 		}
 
-		public static bool operator ==(float3 me, float3 other) { return me.X == other.X && me.Y == other.Y && me.Z == other.Z; }
-		public static bool operator !=(float3 me, float3 other) { return !(me == other); }
+		public static bool operator ==(in float3 me, in float3 other) { return me.X == other.X && me.Y == other.Y && me.Z == other.Z; }
+		public static bool operator !=(in float3 me, in float3 other) { return !(me == other); }
 		public override int GetHashCode() { return X.GetHashCode() ^ Y.GetHashCode() ^ Z.GetHashCode(); }
 
 		public bool Equals(float3 other)

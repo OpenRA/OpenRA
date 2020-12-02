@@ -137,7 +137,7 @@ namespace OpenRA.Graphics
 			dirtyRows.Add(uv.V);
 		}
 
-		public void Update(MPos uv, Sprite sprite, float3 pos, bool ignoreTint)
+		public void Update(MPos uv, Sprite sprite, in float3 pos, bool ignoreTint)
 		{
 			if (sprite != null)
 			{

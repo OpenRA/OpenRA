@@ -30,7 +30,7 @@ namespace OpenRA.Graphics
 
 	public interface ITintableRenderable
 	{
-		IRenderable WithTint(float3 newTint);
+		IRenderable WithTint(in float3 newTint);
 	}
 
 	public interface IFinalizedRenderable

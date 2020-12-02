@@ -20,7 +20,7 @@ namespace OpenRA.Graphics
 		// yes, our channel order is nuts.
 		static readonly int[] ChannelMasks = { 2, 1, 0, 3 };
 
-		public static void FastCreateQuad(Vertex[] vertices, float3 o, Sprite r, int2 samplers, float paletteTextureIndex, int nv, float3 size, float3 tint)
+		public static void FastCreateQuad(Vertex[] vertices, in float3 o, Sprite r, int2 samplers, float paletteTextureIndex, int nv, in float3 size, in float3 tint)
 		{
 			var b = new float3(o.X + size.X, o.Y, o.Z);
 			var c = new float3(o.X + size.X, o.Y + size.Y, o.Z + size.Z);
@@ -29,9 +29,9 @@ namespace OpenRA.Graphics
 		}
 
 		public static void FastCreateQuad(Vertex[] vertices,
-			float3 a, float3 b, float3 c, float3 d,
+			in float3 a, in float3 b, in float3 c, in float3 d,
 			Sprite r, int2 samplers, float paletteTextureIndex,
-			float3 tint, int nv)
+			in float3 tint, int nv)
 		{
 			float sl = 0;
 			float st = 0;

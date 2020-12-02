@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Traits
 			public readonly float Intensity;
 			public readonly float3 Tint;
 
-			public LightSource(WPos pos, CPos cell, WDist range, float intensity, float3 tint)
+			public LightSource(WPos pos, CPos cell, WDist range, float intensity, in float3 tint)
 			{
 				Pos = pos;
 				Cell = cell;
@@ -81,7 +81,7 @@ namespace OpenRA.Mods.Common.Traits
 			return new Rectangle(c.X - r, c.Y - r, 2 * r, 2 * r);
 		}
 
-		public int AddLightSource(WPos pos, WDist range, float intensity, float3 tint)
+		public int AddLightSource(WPos pos, WDist range, float intensity, in float3 tint)
 		{
 			var token = nextLightSourceToken++;
 			var source = new LightSource(pos, map.CellContaining(pos), range, intensity, tint);
