@@ -39,6 +39,9 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("The player's spawnpoint ID.")]
 		public int Spawn { get { return Player.SpawnPoint; } }
 
+		[Desc("The player's home/starting location.")]
+		public CPos HomeLocation { get { return Player.HomeLocation; } }
+
 		[Desc("The player's team ID.")]
 		public int Team
 		{
