@@ -44,7 +44,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		public void Delivered(Actor self)
 		{
-			wsb.CancelCustomAnimation(self);
+			// Animation has already been cancelled by TraitDisabled below
+			if (!IsTraitDisabled)
+				wsb.CancelCustomAnimation(self);
 		}
 
 		protected override void TraitDisabled(Actor self)
