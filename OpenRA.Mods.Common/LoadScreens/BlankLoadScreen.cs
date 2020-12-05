@@ -24,6 +24,8 @@ namespace OpenRA.Mods.Common.LoadScreens
 		public LaunchArguments Launch;
 		protected ModData ModData { get; private set; }
 
+		bool initialized;
+
 		public virtual void Init(ModData modData, Dictionary<string, string> info)
 		{
 			ModData = modData;
@@ -31,12 +33,15 @@ namespace OpenRA.Mods.Common.LoadScreens
 
 		public virtual void Display()
 		{
-			if (Game.Renderer == null)
+			if (Game.Renderer == null || initialized)
 				return;
 
 			// Draw a black screen
 			Game.Renderer.BeginUI();
 			Game.Renderer.EndFrame(new NullInputHandler());
+
+			// PERF: draw the screen only once
+			initialized = true;
 		}
 
 		public virtual void StartGame(Arguments args)
