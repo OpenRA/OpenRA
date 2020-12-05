@@ -643,6 +643,8 @@ STNK:
 		Locomotor: heavywheeled
 		TurnSpeed: 40
 		Speed: 142
+	Targetable:
+		TargetTypes: Ground, Vehicle, StealthTank
 	Health:
 		HP: 15000
 	Repairable:
@@ -671,6 +673,9 @@ STNK:
 	AutoTarget:
 		InitialStance: HoldFire
 		InitialStanceAI: ReturnFire
+	Explodes:
+		Weapon: UnitExplodeStealthTank
+		EmptyWeapon: UnitExplodeStealthTank
 	SpawnActorOnDeath:
 		Actor: STNK.Husk
 		OwnerType: InternalName
