@@ -74,6 +74,11 @@ UnitExplodeSmall:
 		Explosions: big_frag
 		ImpactSounds: xplobig4.aud
 
+UnitExplodeStealthTank:
+	Inherits: UnitExplodeSmall
+	Warhead@1Dam: SpreadDamage
+		InvalidTargets: StealthTank
+
 GrenadierExplode:
 	Inherits: ^DamagingExplosionHE
 	Warhead@1Dam: SpreadDamage
