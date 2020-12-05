@@ -19,7 +19,7 @@
 !include "WordFunc.nsh"
 
 Name "OpenRA"
-OutFile "OpenRA.Setup.exe"
+OutFile "${OUTFILE}"
 
 ManifestDPIAware true
 

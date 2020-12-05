@@ -21,8 +21,7 @@ after_test:
   - move  /Y %APPVEYOR_BUILD_FOLDER%\bin\* %APPVEYOR_BUILD_FOLDER%
   - if defined APPVEYOR_REPO_TAG_NAME set VERSION=%APPVEYOR_REPO_TAG_NAME%
   - if not defined APPVEYOR_REPO_TAG_NAME set VERSION=%APPVEYOR_REPO_COMMIT:~0,7%
-  - '"C:\Program Files (x86)\NSIS\makensis.exe" /DSRCDIR="%APPVEYOR_BUILD_FOLDER%" /DTAG="git-%VERSION%" /DSUFFIX=" (dev)" /V3 packaging/windows/OpenRA.nsi'
-  - move /Y %APPVEYOR_BUILD_FOLDER%\packaging\windows\OpenRA.Setup.exe %APPVEYOR_BUILD_FOLDER%\OpenRA-%VERSION%.exe
+  - '"C:\Program Files (x86)\NSIS\makensis.exe" /DSRCDIR="%APPVEYOR_BUILD_FOLDER%" /DTAG="git-%VERSION%" /DSUFFIX=" (dev)" /V3 /DOUTFILE="OpenRA-$(VERSION).exe" packaging/windows/OpenRA.nsi'
 
 artifacts:
   - path: OpenRA-$(VERSION).exe

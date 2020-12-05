@@ -15,6 +15,7 @@ fi
 
 # Set the working dir to the location of this script
 cd "$(dirname "$0")" || exit 1
+. ../functions.sh
 
 TAG="$1"
 OUTPUTDIR="$2"
@@ -42,20 +43,6 @@ if [ ! -d "${OUTPUTDIR}" ]; then
 	exit 1
 fi
 
-echo "Building core files"
-
-pushd "${SRCDIR}" > /dev/null || exit 1
-
-make clean
-
-make core TARGETPLATFORM=linux-x64
-make version VERSION="${TAG}"
-make install-engine prefix="usr" DESTDIR="${BUILTDIR}/"
-make install-common-mod-files prefix="usr" DESTDIR="${BUILTDIR}/"
-make install-dependencies TARGETPLATFORM=linux-x64 prefix="usr" DESTDIR="${BUILTDIR}/"
-
-popd > /dev/null || exit 1
-
 # Add native libraries
 echo "Downloading dependencies"
 if command -v curl >/dev/null 2>&1; then
@@ -66,29 +53,21 @@ else
 	wget -cq https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage || exit 3
 fi
 
+# travis-ci doesn't support mounting FUSE filesystems so extract and run the contents manually
 chmod a+x appimagetool-x86_64.AppImage
+./appimagetool-x86_64.AppImage --appimage-extract
 
 echo "Building AppImage"
-mkdir libs
-pushd libs
-tar xf ../mono.tar.bz2
+mkdir "${BUILTDIR}"
+tar xf mono.tar.bz2 -C "${BUILTDIR}"
+chmod 0755 "${BUILTDIR}/usr/bin/mono"
+chmod 0644 "${BUILTDIR}/etc/mono/config"
+chmod 0644 "${BUILTDIR}/etc/mono/4.5/machine.config"
+chmod 0644 "${BUILTDIR}/usr/lib/mono/4.5/Facades/"*.dll
+chmod 0644 "${BUILTDIR}/usr/lib/mono/4.5/"*.dll "${BUILTDIR}/usr/lib/mono/4.5/"*.exe
+chmod 0755 "${BUILTDIR}/usr/lib/"*.so
 
-install -d "${BUILTDIR}/usr/bin"
-install -d "${BUILTDIR}/etc/mono/4.5"
-install -d "${BUILTDIR}/usr/lib/mono/4.5/Facades"
-
-install -Dm 0755 usr/bin/mono "${BUILTDIR}/usr/bin/"
-
-install -Dm 0644 /etc/mono/config "${BUILTDIR}/etc/mono/"
-install -Dm 0644 /etc/mono/4.5/machine.config "${BUILTDIR}/etc/mono/4.5"
-
-for f in $(ls usr/lib/mono/4.5/Facades/*.dll); do install -Dm 0644 "$f" "${BUILTDIR}/usr/lib/mono/4.5/Facades/"; done
-for f in $(ls usr/lib/mono/4.5/*.dll usr/lib/mono/4.5/*.exe); do install -Dm 0644 "$f" "${BUILTDIR}/usr/lib/mono/4.5/"; done
-for f in $(ls usr/lib/*.so); do install -Dm 0755 "$f" "${BUILTDIR}/usr/lib/"; done
-
-popd
-
-rm -rf libs mono.tar.bz2
+rm -rf mono.tar.bz2
 
 build_appimage() {
 	MOD_ID=${1}
@@ -99,28 +78,30 @@ build_appimage() {
 
 	cp -r "${BUILTDIR}" "${APPDIR}"
 
-	# Add mod files
-	pushd "${SRCDIR}" > /dev/null || exit 1
-	cp -r "mods/${MOD_ID}" mods/modcontent "${APPDIR}/usr/lib/openra/mods"
-
-	# HACK: The D2k dll is not copied by install-common-mod-files so we must do this ourselves
+	IS_D2K="False"
 	if [ "${MOD_ID}" = "d2k" ]; then
-		cp "bin/OpenRA.Mods.D2k.dll" "${APPDIR}/usr/lib/openra"
+		IS_D2K="True"
 	fi
-	popd > /dev/null || exit 1
+
+	install_assemblies_mono "${SRCDIR}" "${APPDIR}/usr/lib/openra" "linux-x64" "True" "True" "${IS_D2K}"
+	install_data "${SRCDIR}" "${APPDIR}/usr/lib/openra" "${MOD_ID}"
+	set_engine_version "${TAG}" "${APPDIR}/usr/lib/openra"
+	set_mod_version "${TAG}" "${APPDIR}/usr/lib/openra/mods/${MOD_ID}/mod.yaml" "${APPDIR}/usr/lib/openra/mods/modcontent/mod.yaml"
 
 	# Add launcher and icons
-	sed "s/{MODID}/${MOD_ID}/g" AppRun.in | sed "s/{MODNAME}/${DISPLAY_NAME}/g" > AppRun.temp
-	install -m 0755 AppRun.temp "${APPDIR}/AppRun"
+	sed "s/{MODID}/${MOD_ID}/g" AppRun.in | sed "s/{MODNAME}/${DISPLAY_NAME}/g" > "${APPDIR}/AppRun"
+	chmod 0755 "${APPDIR}/AppRun"
 
-	sed "s/{MODID}/${MOD_ID}/g" openra.desktop.in | sed "s/{MODNAME}/${DISPLAY_NAME}/g" | sed "s/{TAG}/${TAG}/g" | sed "s/{DISCORDAPPID}/${DISCORD_ID}/g" > temp.desktop
-	echo "StartupWMClass=openra-${MOD_ID}-${TAG}" >> temp.desktop
+	mkdir -p "${APPDIR}/usr/share/applications"
+	# Note that the non-discord version of the desktop file is used by the Mod SDK and must be maintained in parallel with the discord version!
+	sed "s/{MODID}/${MOD_ID}/g" openra.desktop.discord.in | sed "s/{MODNAME}/${DISPLAY_NAME}/g" | sed "s/{TAG}/${TAG}/g" | sed "s/{DISCORDAPPID}/${DISCORD_ID}/g" > "${APPDIR}/usr/share/applications/openra-${MOD_ID}.desktop"
+	chmod 0755 "${APPDIR}/usr/share/applications/openra-${MOD_ID}.desktop"
+	cp "${APPDIR}/usr/share/applications/openra-${MOD_ID}.desktop" "${APPDIR}/openra-${MOD_ID}.desktop"
 
-	install -Dm 0755 temp.desktop "${APPDIR}/usr/share/applications/openra-${MOD_ID}.desktop"
-	install -m 0755 temp.desktop "${APPDIR}/openra-${MOD_ID}.desktop"
-
-	sed "s/{MODID}/${MOD_ID}/g" openra-mimeinfo.xml.in | sed "s/{TAG}/${TAG}/g" > temp.xml
-	install -Dm 0755 temp.xml "${APPDIR}/usr/share/mime/packages/openra-${MOD_ID}.xml"
+	mkdir -p "${APPDIR}/usr/share/mime/packages"
+	# Note that the non-discord version of the mimeinfo file is used by the Mod SDK and must be maintained in parallel with the discord version!
+	sed "s/{MODID}/${MOD_ID}/g" openra-mimeinfo.xml.discord.in | sed "s/{TAG}/${TAG}/g" | sed "s/{DISCORDAPPID}/${DISCORD_ID}/g" > "${APPDIR}/usr/share/mime/packages/openra-${MOD_ID}.xml"
+	chmod 0755 "${APPDIR}/usr/share/mime/packages/openra-${MOD_ID}.xml"
 
 	if [ -f "${ARTWORK_DIR}/${MOD_ID}_scalable.svg" ]; then
 		install -Dm644 "${ARTWORK_DIR}/${MOD_ID}_scalable.svg" "${APPDIR}/usr/share/icons/hicolor/scalable/apps/openra-${MOD_ID}.svg"
@@ -133,24 +114,20 @@ build_appimage() {
 		fi
 	done
 
-	sed "s/{MODID}/${MOD_ID}/g" openra.appimage.in | sed "s/{TAG}/${TAG}/g" | sed "s/{MODNAME}/${DISPLAY_NAME}/g" > openra-mod.temp
-	install -m 0755 openra-mod.temp "${APPDIR}/usr/bin/openra-${MOD_ID}"
+	sed "s/{MODID}/${MOD_ID}/g" openra.appimage.in | sed "s/{TAG}/${TAG}/g" | sed "s/{MODNAME}/${DISPLAY_NAME}/g" > "${APPDIR}/usr/bin/openra-${MOD_ID}"
+	chmod 0755 "${APPDIR}/usr/bin/openra-${MOD_ID}"
 
-	sed "s/{MODID}/${MOD_ID}/g" openra-server.appimage.in > openra-mod-server.temp
-	install -m 0755 openra-mod-server.temp "${APPDIR}/usr/bin/openra-${MOD_ID}-server"
+	sed "s/{MODID}/${MOD_ID}/g" openra-server.appimage.in > "${APPDIR}/usr/bin/openra-${MOD_ID}-server"
+	chmod 0755 "${APPDIR}/usr/bin/openra-${MOD_ID}-server"
 
-	sed "s/{MODID}/${MOD_ID}/g" openra-utility.appimage.in > openra-mod-utility.temp
-	install -m 0755 openra-mod-utility.temp "${APPDIR}/usr/bin/openra-${MOD_ID}-utility"
+	sed "s/{MODID}/${MOD_ID}/g" openra-utility.appimage.in > "${APPDIR}/usr/bin/openra-${MOD_ID}-utility"
+	chmod 0755 "${APPDIR}/usr/bin/openra-${MOD_ID}-utility"
 
 	install -m 0755 gtk-dialog.py "${APPDIR}/usr/bin/gtk-dialog.py"
-
 	install -m 0755 restore-environment.sh "${APPDIR}/usr/bin/restore-environment.sh"
 
-	# travis-ci doesn't support mounting FUSE filesystems so extract and run the contents manually
-	./appimagetool-x86_64.AppImage --appimage-extract
-
 	# Embed update metadata if (and only if) compiled on travis
-	if [ ! -z "${TRAVIS_REPO_SLUG}" ]; then
+	if [ -n "${TRAVIS_REPO_SLUG}" ]; then
 		ARCH=x86_64 ./squashfs-root/AppRun --no-appstream -u "zsync|https://master.openra.net/appimagecheck?mod=${MOD_ID}&channel=${UPDATE_CHANNEL}" "${APPDIR}" "${OUTPUTDIR}/${APPIMAGE}"
 		zsyncmake -u "https://github.com/${TRAVIS_REPO_SLUG}/releases/download/${TAG}/${APPIMAGE}" -o "${OUTPUTDIR}/${APPIMAGE}.zsync" "${OUTPUTDIR}/${APPIMAGE}"
 	else
@@ -165,4 +142,4 @@ build_appimage "cnc" "Tiberian Dawn" "699223250181292033"
 build_appimage "d2k" "Dune 2000" "712711732770111550"
 
 # Clean up
-rm -rf openra-mod.temp openra-mod-server.temp openra-mod-utility.temp temp.desktop temp.xml AppRun.temp appimagetool-x86_64.AppImage squashfs-root "${BUILTDIR}"
+rm -rf appimagetool-x86_64.AppImage squashfs-root "${BUILTDIR}"
