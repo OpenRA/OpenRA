@@ -160,6 +160,10 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		protected virtual void Tick(Actor self)
 		{
+			// Attacking takes care of reverting back to PlayStandAnimation
+			if (state == AnimationState.Attacking)
+				return;
+
 			if (rsm != null)
 			{
 				if (wasModifying != rsm.IsModifyingSequence)
