@@ -909,6 +909,7 @@ SAM:
 		RealignDelay: -1
 	-WithSpriteBody:
 	WithEmbeddedTurretSpriteBody:
+		QuantizedFacings: 32
 	Armament:
 		Weapon: Dragon
 		MuzzleSequence: muzzle
