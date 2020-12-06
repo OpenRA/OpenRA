@@ -23,6 +23,9 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 	[Desc("This actor has turret art with facings baked into the sprite.")]
 	public class WithEmbeddedTurretSpriteBodyInfo : WithSpriteBodyInfo, Requires<TurretedInfo>, Requires<BodyOrientationInfo>
 	{
+		[Desc("Number of facings for gameplay calculations. -1 indicates auto-detection from the sequence.")]
+		public readonly int QuantizedFacings = -1;
+
 		public override object Create(ActorInitializer init) { return new WithEmbeddedTurretSpriteBody(init, this); }
 
 		public override IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p)
@@ -43,6 +46,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 
 	public class WithEmbeddedTurretSpriteBody : WithSpriteBody
 	{
+		readonly WithEmbeddedTurretSpriteBodyInfo info;
 		readonly Turreted turreted;
 
 		static Func<WAngle> MakeTurretFacingFunc(Actor self)
@@ -52,22 +56,23 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 			return () => turreted.WorldOrientation.Yaw;
 		}
 
-		public WithEmbeddedTurretSpriteBody(ActorInitializer init, WithSpriteBodyInfo info)
+		public WithEmbeddedTurretSpriteBody(ActorInitializer init, WithEmbeddedTurretSpriteBodyInfo info)
 			: base(init, info, MakeTurretFacingFunc(init.Self))
 		{
+			this.info = info;
 			turreted = init.Self.TraitsImplementing<Turreted>().FirstOrDefault();
 		}
 
 		protected override void TraitEnabled(Actor self)
 		{
 			base.TraitEnabled(self);
-			turreted.QuantizedFacings = DefaultAnimation.CurrentSequence.Facings;
+			turreted.QuantizedFacings = info.QuantizedFacings >= 0 ? info.QuantizedFacings : DefaultAnimation.CurrentSequence.Facings;
 		}
 
 		protected override void DamageStateChanged(Actor self)
 		{
 			base.DamageStateChanged(self);
-			turreted.QuantizedFacings = DefaultAnimation.CurrentSequence.Facings;
+			turreted.QuantizedFacings = info.QuantizedFacings >= 0 ? info.QuantizedFacings : DefaultAnimation.CurrentSequence.Facings;
 		}
 	}
 }
