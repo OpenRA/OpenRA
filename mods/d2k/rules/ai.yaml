@@ -219,7 +219,7 @@ Player:
 		RequiresCondition: enable-omnius-ai
 		SquadSize: 8
 		MaxBaseRadius: 40
-		ExcludeFromSquadsTypes: harvester, mcv
+		ExcludeFromSquadsTypes: harvester, mcv, carryall
 		ConstructionYardTypes: construction_yard
 		IgnoredEnemyTargetTypes: Creep
 	UnitBuilderBotModule@omnius:
