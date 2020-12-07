@@ -80,7 +80,7 @@ namespace OpenRA
 		{
 			get
 			{
-				return spectating || WinState != WinState.Undefined;
+				return !inMissionMap && (spectating || WinState != WinState.Undefined);
 			}
 		}
 
