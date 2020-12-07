@@ -99,7 +99,7 @@ namespace OpenRA.Mods.Common.Traits
 			public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 			{
 				var targetInfo = target.Info.TraitInfoOrDefault<AcceptsDeliveredCashInfo>();
-				if (targetInfo == null || !targetInfo.ValidStances.HasStance(target.Owner.RelationshipWith(self.Owner)))
+				if (targetInfo == null || !targetInfo.ValidRelationships.HasStance(target.Owner.RelationshipWith(self.Owner)))
 					return false;
 
 				if (targetInfo.ValidTypes.Count == 0)
@@ -112,7 +112,7 @@ namespace OpenRA.Mods.Common.Traits
 			public override bool CanTargetFrozenActor(Actor self, FrozenActor target, TargetModifiers modifiers, ref string cursor)
 			{
 				var targetInfo = target.Info.TraitInfoOrDefault<AcceptsDeliveredCashInfo>();
-				if (targetInfo == null || !targetInfo.ValidStances.HasStance(target.Owner.RelationshipWith(self.Owner)))
+				if (targetInfo == null || !targetInfo.ValidRelationships.HasStance(target.Owner.RelationshipWith(self.Owner)))
 					return false;
 
 				if (targetInfo.ValidTypes.Count == 0)

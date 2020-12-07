@@ -20,8 +20,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Accepted `DeliversExperience` types. Leave empty to accept all types.")]
 		public readonly HashSet<string> ValidTypes = new HashSet<string>();
 
-		[Desc("Stance the delivering actor needs to enter.")]
-		public readonly PlayerRelationship ValidStances = PlayerRelationship.Ally;
+		[Desc("Player relationships the owner of the delivering actor needs.")]
+		public readonly PlayerRelationship ValidRelationships = PlayerRelationship.Ally;
 
 		public override object Create(ActorInitializer init) { return new AcceptsDeliveredExperience(init.Self, this); }
 	}

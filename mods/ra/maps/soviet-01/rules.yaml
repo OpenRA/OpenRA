@@ -25,7 +25,7 @@ JEEP:
 	Explodes:
 	ProximityExternalCondition@JAMMER:
 		Range: 10c0
-		ValidStances: Enemy, Neutral
+		ValidRelationships: Enemy, Neutral
 		Condition: jammed
 
 YAK:

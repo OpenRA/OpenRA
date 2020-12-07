@@ -21,8 +21,8 @@ namespace OpenRA.Mods.Common.Traits.Sound
 		[Desc("Voice to play.")]
 		public readonly string Voice = null;
 
-		[Desc("Player stances who can hear this voice.")]
-		public readonly PlayerRelationship ValidStances = PlayerRelationship.Ally | PlayerRelationship.Neutral | PlayerRelationship.Enemy;
+		[Desc("Player relationships who can hear this voice.")]
+		public readonly PlayerRelationship ValidRelationships = PlayerRelationship.Ally | PlayerRelationship.Neutral | PlayerRelationship.Enemy;
 
 		[Desc("Play the voice to the owning player even if Stance.Ally is not included in ValidStances.")]
 		public readonly bool PlayToOwner = true;
@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Traits.Sound
 			if (player == null)
 				return;
 
-			if (Info.ValidStances.HasStance(self.Owner.RelationshipWith(player)))
+			if (Info.ValidRelationships.HasStance(self.Owner.RelationshipWith(player)))
 				self.PlayVoice(Info.Voice);
 			else if (Info.PlayToOwner && self.Owner == player)
 				self.PlayVoice(Info.Voice);

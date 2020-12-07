@@ -137,7 +137,7 @@ BOAT:
 	RejectsOrders:
 		Except: Attack
 	RevealsShroud:
-		ValidStances: Ally, Neutral, Enemy
+		ValidRelationships: Ally, Neutral, Enemy
 		Range: 4c0
 
 TRAN.IN:

@@ -14,10 +14,10 @@ V19:
 		Name: Oil Derrick
 	TooltipDescription@ally:
 		Description: Provides additional funds.
-		ValidStances: Ally
+		ValidRelationships: Ally
 	TooltipDescription@other:
 		Description: Capture to receive additional funds.
-		ValidStances: Neutral, Enemy
+		ValidRelationships: Neutral, Enemy
 	SpawnActorOnDeath:
 		Actor: V19.Husk
 	UpdatesDerrickCount:
@@ -52,10 +52,10 @@ HOSP:
 		Name: Hospital
 	TooltipDescription@ally:
 		Description: Provides infantry with self-healing.
-		ValidStances: Ally
+		ValidRelationships: Ally
 	TooltipDescription@other:
 		Description: Capture to enable self-healing for infantry.
-		ValidStances: Neutral, Enemy
+		ValidRelationships: Neutral, Enemy
 	SpawnActorOnDeath:
 		Actor: HOSP.Husk
 	WithBuildingBib:
@@ -88,10 +88,10 @@ BIO:
 		Name: Biological Lab
 	TooltipDescription@ally:
 		Description: Provides infantry with Tiberium immunity. Produces Visceroids.
-		ValidStances: Ally
+		ValidRelationships: Ally
 	TooltipDescription@other:
 		Description: Capture to enable Tiberium immunity for infantry. Produces Visceroids.
-		ValidStances: Neutral, Enemy
+		ValidRelationships: Neutral, Enemy
 	Exit@1:
 		SpawnOffset: 0,-426,0
 		ExitCell: 0,-1

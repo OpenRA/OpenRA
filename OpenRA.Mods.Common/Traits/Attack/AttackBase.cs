@@ -377,7 +377,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			return Armaments.Where(a =>
 				!a.IsTraitDisabled
-				&& (owner == null || (forceAttack ? a.Info.ForceTargetStances : a.Info.TargetStances).HasStance(self.Owner.RelationshipWith(owner)))
+				&& (owner == null || (forceAttack ? a.Info.ForceTargetRelationships : a.Info.TargetRelationships).HasStance(self.Owner.RelationshipWith(owner)))
 				&& a.Weapon.IsValidAgainst(t, self.World, self));
 		}
 
@@ -408,7 +408,7 @@ namespace OpenRA.Mods.Common.Traits
 			var stances = PlayerRelationship.None;
 			foreach (var armament in Armaments)
 				if (!armament.IsTraitDisabled)
-					stances |= armament.Info.TargetStances;
+					stances |= armament.Info.TargetRelationships;
 
 			return stances;
 		}

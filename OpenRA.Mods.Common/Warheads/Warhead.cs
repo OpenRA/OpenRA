@@ -31,8 +31,8 @@ namespace OpenRA.Mods.Common.Warheads
 		[Desc("What types of targets are unaffected.", "Overrules ValidTargets.")]
 		public readonly BitSet<TargetableType> InvalidTargets;
 
-		[Desc("What diplomatic stances are affected.")]
-		public readonly PlayerRelationship ValidStances = PlayerRelationship.Ally | PlayerRelationship.Neutral | PlayerRelationship.Enemy;
+		[Desc("What player relationships are affected.")]
+		public readonly PlayerRelationship ValidRelationships = PlayerRelationship.Ally | PlayerRelationship.Neutral | PlayerRelationship.Enemy;
 
 		[Desc("Can this warhead affect the actor that fired it.")]
 		public readonly bool AffectsParent = false;
@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Common.Warheads
 				return false;
 
 			var stance = firedBy.Owner.RelationshipWith(victim.Owner);
-			if (!ValidStances.HasStance(stance))
+			if (!ValidRelationships.HasStance(stance))
 				return false;
 
 			// A target type is valid if it is in the valid targets list, and not in the invalid targets list.
@@ -81,7 +81,7 @@ namespace OpenRA.Mods.Common.Warheads
 
 			// AffectsParent checks do not make sense for FrozenActors, so skip to stance checks
 			var stance = firedBy.Owner.RelationshipWith(victim.Owner);
-			if (!ValidStances.HasStance(stance))
+			if (!ValidRelationships.HasStance(stance))
 				return false;
 
 			// A target type is valid if it is in the valid targets list, and not in the invalid targets list.

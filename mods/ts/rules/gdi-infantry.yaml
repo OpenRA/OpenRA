@@ -69,8 +69,8 @@ MEDIC:
 		CrushSound: squishy2.aud
 	Armament:
 		Weapon: Heal
-		TargetStances: Ally
-		ForceTargetStances: None
+		TargetRelationships: Ally
+		ForceTargetRelationships: None
 		Cursor: heal
 		OutsideRangeCursor: heal
 	AutoTarget:
