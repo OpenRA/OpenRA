@@ -119,6 +119,8 @@ namespace OpenRA
 				IsBot = runtimePlayer.IsBot,
 				FactionName = runtimePlayer.Faction.Name,
 				FactionId = runtimePlayer.Faction.InternalName,
+				DisplayFactionName = runtimePlayer.DisplayFaction.Name,
+				DisplayFactionId = runtimePlayer.DisplayFaction.InternalName,
 				Color = runtimePlayer.Color,
 				Team = client.Team,
 				SpawnPoint = runtimePlayer.SpawnPoint,
@@ -156,6 +158,10 @@ namespace OpenRA
 			/// <summary>The faction ID, a.k.a. the faction's internal name.</summary>
 			public string FactionId;
 			public Color Color;
+
+			/// <summary>The faction (including Random, etc.) that was selected in the lobby.</summary>
+			public string DisplayFactionName;
+			public string DisplayFactionId;
 
 			/// <summary>The team ID on start-up, or 0 if the player is not part of a team.</summary>
 			public int Team;
