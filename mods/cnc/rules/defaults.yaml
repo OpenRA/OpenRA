@@ -468,6 +468,7 @@
 		Notification: CivilianKilled
 		NotifyAll: true
 	ScaredyCat:
+		AvoidTerrainTypes: Tiberium, BlueTiberium
 	Crushable:
 		CrushSound: squish2.aud
 	Voiced:
@@ -475,6 +476,7 @@
 	Wanders:
 		MinMoveDelay: 150
 		MaxMoveDelay: 750
+		AvoidTerrainTypes: Tiberium, BlueTiberium
 	MapEditorData:
 		Categories: Civilian infantry
 
