@@ -32,11 +32,6 @@ namespace OpenRA.Mods.Cnc.FileFormats
 
 	public static class AudReader
 	{
-		public static byte[] LoadSound(byte[] raw, ref int index)
-		{
-			return ImaAdpcmReader.LoadImaAdpcmSound(raw, ref index);
-		}
-
 		public static float SoundLength(Stream s)
 		{
 			var sampleRate = s.ReadUInt16();
