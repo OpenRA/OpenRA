@@ -934,9 +934,11 @@ namespace OpenRA
 				AdvertiseOnline = false
 			};
 
+			// Always connect to local games using the same loopback connection
+			// Exposing multiple endpoints introduces a race condition on the client's PlayerIndex (sometimes 0, sometimes 1)
+			// This would break the Restart button, which relies on the PlayerIndex always being the same for local servers
 			var endpoints = new List<IPEndPoint>
 			{
-				new IPEndPoint(IPAddress.IPv6Loopback, 0),
 				new IPEndPoint(IPAddress.Loopback, 0)
 			};
 			server = new Server.Server(endpoints, settings, ModData, ServerType.Local);
