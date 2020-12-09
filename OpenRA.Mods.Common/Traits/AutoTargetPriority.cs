@@ -23,8 +23,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Target types that can't be AutoTargeted.", "Overrules ValidTargets.")]
 		public readonly BitSet<TargetableType> InvalidTargets;
 
-		[Desc("Stances between actor's and target's owner which can be AutoTargeted.")]
-		public readonly PlayerRelationship ValidStances = PlayerRelationship.Ally | PlayerRelationship.Neutral | PlayerRelationship.Enemy;
+		[Desc("Relationships between actor's and target's owner needed for AutoTargeting.")]
+		public readonly PlayerRelationship ValidRelationships = PlayerRelationship.Ally | PlayerRelationship.Neutral | PlayerRelationship.Enemy;
 
 		[Desc("ValidTargets with larger priorities will be AutoTargeted before lower priorities.")]
 		public readonly int Priority = 1;

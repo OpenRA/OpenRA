@@ -21,8 +21,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("The armament types which trigger revealing.")]
 		public readonly string[] ArmamentNames = { "primary", "secondary" };
 
-		[Desc("Stances relative to the target player this actor will be revealed to during firing.")]
-		public readonly PlayerRelationship RevealForStancesRelativeToTarget = PlayerRelationship.Ally;
+		[Desc("Player relationships relative to the target player this actor will be revealed to during firing.")]
+		public readonly PlayerRelationship RevealForRelationships = PlayerRelationship.Ally;
 
 		[Desc("Duration of the reveal.")]
 		public readonly int Duration = 25;
@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				self.World.AddFrameEndTask(w => w.Add(new RevealShroudEffect(self.CenterPosition, info.Radius,
 					info.RevealGeneratedShroud ? Shroud.SourceType.Visibility : Shroud.SourceType.PassiveVisibility,
-					targetPlayer, info.RevealForStancesRelativeToTarget, duration: info.Duration)));
+					targetPlayer, info.RevealForRelationships, duration: info.Duration)));
 			}
 		}
 

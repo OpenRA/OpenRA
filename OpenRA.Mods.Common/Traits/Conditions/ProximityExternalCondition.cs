@@ -30,8 +30,8 @@ namespace OpenRA.Mods.Common.Traits
 		"Ignored if 0 (actors are selected regardless of vertical distance).")]
 		public readonly WDist MaximumVerticalOffset = WDist.Zero;
 
-		[Desc("What diplomatic stances are affected.")]
-		public readonly PlayerRelationship ValidStances = PlayerRelationship.Ally;
+		[Desc("What player relationships are affected.")]
+		public readonly PlayerRelationship ValidRelationships = PlayerRelationship.Ally;
 
 		[Desc("Condition is applied permanently to this actor.")]
 		public readonly bool AffectsParent = false;
@@ -111,7 +111,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			var stance = self.Owner.RelationshipWith(a.Owner);
-			if (!Info.ValidStances.HasStance(stance))
+			if (!Info.ValidRelationships.HasStance(stance))
 				return;
 
 			var external = a.TraitsImplementing<ExternalCondition>()
@@ -135,7 +135,7 @@ namespace OpenRA.Mods.Common.Traits
 			if ((produced.CenterPosition - self.CenterPosition).HorizontalLengthSquared <= Info.Range.LengthSquared)
 			{
 				var stance = self.Owner.RelationshipWith(produced.Owner);
-				if (!Info.ValidStances.HasStance(stance))
+				if (!Info.ValidRelationships.HasStance(stance))
 					return;
 
 				var external = produced.TraitsImplementing<ExternalCondition>()

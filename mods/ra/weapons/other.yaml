@@ -131,7 +131,7 @@ Heal:
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
 		Damage: -5000
-		ValidStances: Ally
+		ValidRelationships: Ally
 		ValidTargets: Heal
 		DebugOverlayColor: 00FF00
 

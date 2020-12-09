@@ -139,10 +139,10 @@ FCOM:
 		Name: Forward Command
 	TooltipDescription@ally:
 		Description: Provides buildable area.
-		ValidStances: Ally
+		ValidRelationships: Ally
 	TooltipDescription@other:
 		Description: Capture to give buildable area.
-		ValidStances: Neutral, Enemy
+		ValidRelationships: Neutral, Enemy
 	RevealsShroud:
 		MinRange: 4c0
 		Range: 5c0
@@ -192,10 +192,10 @@ HOSP:
 		Name: Hospital
 	TooltipDescription@ally:
 		Description: Provides infantry with self-healing.
-		ValidStances: Ally
+		ValidRelationships: Ally
 	TooltipDescription@other:
 		Description: Capture to enable self-healing for infantry.
-		ValidStances: Neutral, Enemy
+		ValidRelationships: Neutral, Enemy
 	RevealsShroud:
 		Range: 4c0
 	WithBuildingBib:
@@ -465,10 +465,10 @@ MISS:
 		Name: Communications Center
 	TooltipDescription@ally:
 		Description: Provides range of vision.
-		ValidStances: Ally
+		ValidRelationships: Ally
 	TooltipDescription@other:
 		Description: Capture to give visual range.
-		ValidStances: Neutral, Enemy
+		ValidRelationships: Neutral, Enemy
 	WithBuildingBib:
 	CaptureManager:
 	Capturable:
@@ -506,10 +506,10 @@ BIO:
 		Name: Biological Lab
 	TooltipDescription@ally:
 		Description: Provides prerequisite for Bio-Lab units.
-		ValidStances: Ally
+		ValidRelationships: Ally
 	TooltipDescription@other:
 		Description: Capture to produce Bio-Lab units.
-		ValidStances: Neutral, Enemy
+		ValidRelationships: Neutral, Enemy
 	WithDeathAnimation:
 		DeathSequence: dead
 		UseDeathTypeSuffix: false
@@ -550,10 +550,10 @@ OILB:
 		Name: Oil Derrick
 	TooltipDescription@ally:
 		Description: Provides additional funds.
-		ValidStances: Ally
+		ValidRelationships: Ally
 	TooltipDescription@other:
 		Description: Capture to receive additional funds.
-		ValidStances: Neutral, Enemy
+		ValidRelationships: Neutral, Enemy
 	Explodes:
 		Weapon: BarrelExplode
 	GpsDot:

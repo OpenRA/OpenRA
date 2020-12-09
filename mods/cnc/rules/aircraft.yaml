@@ -189,7 +189,7 @@ C17:
 		Repulsable: False
 		MaximumPitch: 36
 	HiddenUnderFog:
-		AlwaysVisibleStances: None
+		AlwaysVisibleRelationships: None
 		Type: CenterPosition
 	Cargo:
 		MaxWeight: 10

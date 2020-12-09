@@ -117,7 +117,7 @@ BOAT:
 	Health:
 		HP: 150000
 	RevealsShroud:
-		ValidStances: Ally, Neutral, Enemy
+		ValidRelationships: Ally, Neutral, Enemy
 		Range: 4c0
 
 TRAN.IN:

@@ -21,8 +21,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("If -1, use the value of the unit cost.")]
 		public readonly int Experience = -1;
 
-		[Desc("Stance the attacking player needs to receive the experience.")]
-		public readonly PlayerRelationship ValidStances = PlayerRelationship.Neutral | PlayerRelationship.Enemy;
+		[Desc("Player relationships the attacking player needs to receive the experience.")]
+		public readonly PlayerRelationship ValidRelationships = PlayerRelationship.Neutral | PlayerRelationship.Enemy;
 
 		[Desc("Percentage of the `Experience` value that is being granted to the killing actor.")]
 		public readonly int ActorExperienceModifier = 10000;
@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (exp == 0 || e.Attacker == null || e.Attacker.Disposed)
 				return;
 
-			if (!info.ValidStances.HasStance(e.Attacker.Owner.RelationshipWith(self.Owner)))
+			if (!info.ValidRelationships.HasStance(e.Attacker.Owner.RelationshipWith(self.Owner)))
 				return;
 
 			exp = Util.ApplyPercentageModifiers(exp, experienceModifiers);

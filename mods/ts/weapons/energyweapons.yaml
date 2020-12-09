@@ -23,13 +23,13 @@
 LtRail:
 	Inherits: ^Railgun
 	Warhead@1Dam: SpreadDamage
-		ValidStances: Neutral, Enemy
+		ValidRelationships: Neutral, Enemy
 	Warhead@2Dam: SpreadDamage
 		Range: 0, 32
 		Falloff: 50, 50 # Only does half damage to friendly units
 		Damage: 15000
 		AffectsParent: false
-		ValidStances: Ally
+		ValidRelationships: Ally
 		Versus:
 			None: 100
 			Wood: 130
@@ -73,7 +73,7 @@ SonicZap:
 		Falloff: 100, 100
 		Damage: 800
 		AffectsParent: false
-		ValidStances: Neutral, Enemy
+		ValidRelationships: Neutral, Enemy
 		Versus:
 			Heavy: 80
 			Concrete: 60
@@ -84,7 +84,7 @@ SonicZap:
 		Damage: 800
 		InvalidTargets: Disruptor # Does not affect friendly disruptors at all
 		AffectsParent: false
-		ValidStances: Ally
+		ValidRelationships: Ally
 		Versus:
 			Heavy: 80
 			Concrete: 60
