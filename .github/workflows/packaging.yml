@@ -1,0 +1,244 @@
+name: Release Packaging
+
+on:
+  push:
+    tags:
+    - 'release-*'
+    - 'playtest-*'
+    - 'devtest-*'
+
+jobs:
+  linux:
+    name: Linux AppImages
+    runs-on: ubuntu-16.04
+    steps:
+      - name: Clone Repository
+        uses: actions/checkout@v2
+
+      - name: Prepare Environment
+        run: echo "GIT_TAG=${GITHUB_REF#refs/tags/}" >> ${GITHUB_ENV}
+
+      - name: Package AppImages
+        run: |
+          mkdir -p build/linux
+          ./packaging/linux/buildpackage.sh "${GIT_TAG}" "${PWD}/build/linux"
+
+      - name: Upload Packages
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ github.ref }}
+          overwrite: true
+          file_glob: true
+          file: build/linux/*
+
+  macos:
+    name: macOS Disk Images
+    runs-on: macos-10.15
+    steps:
+      - name: Clone Repository
+        uses: actions/checkout@v2
+
+      - name: Prepare Environment
+        run: echo "GIT_TAG=${GITHUB_REF#refs/tags/}" >> ${GITHUB_ENV}
+
+      - name: Package Disk Images
+        env:
+          MACOS_DEVELOPER_IDENTITY: ${{ secrets.MACOS_DEVELOPER_IDENTITY }}
+          MACOS_DEVELOPER_CERTIFICATE_BASE64: ${{ secrets.MACOS_DEVELOPER_CERTIFICATE_BASE64 }}
+          MACOS_DEVELOPER_CERTIFICATE_PASSWORD: ${{ secrets.MACOS_DEVELOPER_CERTIFICATE_PASSWORD }}
+          MACOS_DEVELOPER_USERNAME: ${{ secrets.MACOS_DEVELOPER_USERNAME }}
+          MACOS_DEVELOPER_PASSWORD: ${{ secrets.MACOS_DEVELOPER_PASSWORD }}
+        run: |
+          mkdir -p build/macos
+          ./packaging/macos/buildpackage.sh "${GIT_TAG}" "${PWD}/build/macos"
+
+      - name: Upload Packages
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ github.ref }}
+          overwrite: true
+          file_glob: true
+          file: build/macos/*
+
+  windows:
+    name: Windows Installers
+    runs-on: ubuntu-16.04
+    steps:
+      - name: Clone Repository
+        uses: actions/checkout@v2
+
+      - name: Prepare Environment
+        run: |
+          echo "GIT_TAG=${GITHUB_REF#refs/tags/}" >> ${GITHUB_ENV}
+          wget https://mirrors.edge.kernel.org/ubuntu/pool/universe/n/nsis/nsis-common_3.04-1_all.deb
+          wget https://mirrors.edge.kernel.org/ubuntu/pool/universe/n/nsis/nsis_3.04-1_amd64.deb
+          sudo dpkg -i nsis-common_3.04-1_all.deb
+          sudo dpkg -i nsis_3.04-1_amd64.deb
+
+      - name: Package Installers
+        run: |
+          mkdir -p build/windows
+          ./packaging/windows/buildpackage.sh "${GIT_TAG}" "${PWD}/build/windows"
+
+      - name: Upload Packages
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ github.ref }}
+          overwrite: true
+          file_glob: true
+          file: build/windows/*
+
+  itch:
+    name: Deploy to itch.io
+    runs-on: ubuntu-16.04
+    if: github.repository == 'openra/openra' && startsWith(github.ref, 'refs/tags/release-')
+    needs: [linux, macos, windows]
+    steps:
+      - name: Prepare Environment
+        run: |
+          echo "GIT_TAG=${GITHUB_REF#refs/tags/}" >> ${GITHUB_ENV}
+
+      - name: Download Packages
+        run: |
+          wget -q "https://github.com/${{ github.repository }}/releases/download/${GIT_TAG}/OpenRA-${GIT_TAG}-x64.exe"
+          wget -q "https://github.com/${{ github.repository }}/releases/download/${GIT_TAG}/OpenRA-${GIT_TAG}-x64-winportable.zip" -O "OpenRA-${GIT_TAG}-x64-win-itch.zip"
+          wget -q "https://github.com${{ github.repository }}/releases/download/${GIT_TAG}/OpenRA-${GIT_TAG}.dmg"
+          wget -q "https://github.com/${{ github.repository }}/releases/download/${GIT_TAG}/OpenRA-Dune-2000-x86_64.AppImage"
+          wget -q "https://github.com/${{ github.repository }}/releases/download/${GIT_TAG}/OpenRA-Red-Alert-x86_64.AppImage"
+          wget -q "https://github.com/${{ github.repository }}/releases/download/${GIT_TAG}/OpenRA-Tiberian-Dawn-x86_64.AppImage"
+          wget -q "https://raw.githubusercontent.com/${{ github.repository }}/${GIT_TAG}/packaging/.itch.toml"
+          zip -u "OpenRA-${GIT_TAG}-x64-win-itch.zip" .itch.toml
+
+      - name: Publish Windows Installer
+        uses: josephbmanley/butler-publish-itchio-action@master
+        env:
+          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
+          CHANNEL: win
+          ITCH_GAME: openra
+          ITCH_USER: openra-developers
+          VERSION: ${{ env.GIT_TAG }}
+          PACKAGE: OpenRA-${{ env.GIT_TAG }}}-x64.exe"
+
+      - name: Publish Windows Itch Bundle
+        uses: josephbmanley/butler-publish-itchio-action@master
+        env:
+          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
+          CHANNEL: itch
+          ITCH_GAME: openra
+          ITCH_USER: openra-developers
+          VERSION: ${{ env.GIT_TAG }}
+          PACKAGE: OpenRA-${{ env.GIT_TAG }}-x64-win-itch.zip
+
+      - name: Publish macOS Package
+        uses: josephbmanley/butler-publish-itchio-action@master
+        env:
+          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
+          CHANNEL: macos
+          ITCH_GAME: openra
+          ITCH_USER: openra-developers
+          VERSION: ${{ env.GIT_TAG }}
+          PACKAGE: OpenRA-${{ env.GIT_TAG }}}.dmg"
+
+      - name: Publish RA AppImage
+        uses: josephbmanley/butler-publish-itchio-action@master
+        env:
+          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
+          CHANNEL: linux-ra
+          ITCH_GAME: openra
+          ITCH_USER: openra-developers
+          VERSION: ${{ env.GIT_TAG }}
+          PACKAGE: OpenRA-Red-Alert-x86_64.AppImage
+
+      - name: Publish TD AppImage
+        uses: josephbmanley/butler-publish-itchio-action@master
+        env:
+          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
+          CHANNEL: linux-cnc
+          ITCH_GAME: openra
+          ITCH_USER: openra-developers
+          VERSION: ${{ env.GIT_TAG }}
+          PACKAGE: OpenRA-Tiberian-Dawn-x86_64.AppImage
+
+      - name: Publish D2k AppImage
+        uses: josephbmanley/butler-publish-itchio-action@master
+        env:
+          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
+          CHANNEL: linux-d2k
+          ITCH_GAME: openra
+          ITCH_USER: openra-developers
+          VERSION: ${{ env.GIT_TAG }}
+          PACKAGE: OpenRA-Dune-2000-x86_64.AppImage
+
+  docs:
+    name: Update Docs
+    if: github.repository == 'openra/openra' && (startsWith(github.ref, 'refs/tags/playtest-') || startsWith(github.ref, 'refs/tags/release-'))
+    runs-on: ubuntu-16.04
+    needs: [linux, macos, windows]
+    steps:
+      - name: Clone Repository
+        uses: actions/checkout@v2
+
+      - name: Prepare Environment
+        run: |
+          echo "GIT_TAG=${GITHUB_REF#refs/tags/}" >> ${GITHUB_ENV}
+          make all
+
+      - name: Clone Wiki
+        uses: actions/checkout@v2
+        with:
+          repository: openra/openra.wiki
+          token: ${{ secrets.DOCS_TOKEN }}
+          path: wiki
+
+      - name: Update Wiki (Playtest)
+        if: startsWith(github.ref, 'refs/tags/playtest-')
+        run: |
+          ./utility.sh all --settings-docs "${GIT_TAG}" > "wiki/Settings (playtest).md"
+
+      - name: Update Wiki (Release)
+        if: startsWith(github.ref, 'refs/tags/release-')
+        run: |
+          ./utility.sh all --settings-docs "${GIT_TAG}" > "wiki/Settings.md"
+
+      - name: Push Wiki
+        run: |
+          cd wiki
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
+          git add --all
+          git commit -m "Update auto-generated documentation for ${GIT_TAG}"
+          git push origin master
+
+      - name: Clone docs.openra.net
+        uses: actions/checkout@v2
+        with:
+          repository: openra/docs.git
+          token: ${{ secrets.DOCS_TOKEN }}
+          path: docs
+
+      - name: Update docs.openra.net (Playtest)
+        if: startsWith(github.ref, 'refs/tags/playtest-')
+        run: |
+          ./utility.sh all --docs "${GIT_TAG}" > "docs/playtest/traits.md"
+          ./utility.sh all --weapon-docs "${GIT_TAG}" > "docs/playtest/weapons.md"
+          ./utility.sh all --lua-docs "${GIT_TAG}" > "docs/playtest/lua.md"
+
+      - name: Update docs.openra.net (Release)
+        if: startsWith(github.ref, 'refs/tags/release-')
+        run: |
+          ./utility.sh all --docs "${GIT_TAG}" > "docs/release/traits.md"
+          ./utility.sh all --weapon-docs "${GIT_TAG}" > "docs/release/weapons.md"
+          ./utility.sh all --lua-docs "${GIT_TAG}" > "docs/release/lua.md"
+
+      - name: Push docs.openra.net
+        run: |
+          cd docs
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
+          git add --all
+          git commit -m "Update auto-generated documentation for ${GIT_TAG}"
+          git push origin master
+

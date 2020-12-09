@@ -126,10 +126,10 @@ build_appimage() {
 	install -m 0755 gtk-dialog.py "${APPDIR}/usr/bin/gtk-dialog.py"
 	install -m 0755 restore-environment.sh "${APPDIR}/usr/bin/restore-environment.sh"
 
-	# Embed update metadata if (and only if) compiled on travis
-	if [ -n "${TRAVIS_REPO_SLUG}" ]; then
+	# Embed update metadata if (and only if) compiled on GitHub Actions
+	if [ -n "${GITHUB_REPOSITORY}" ]; then
 		ARCH=x86_64 ./squashfs-root/AppRun --no-appstream -u "zsync|https://master.openra.net/appimagecheck?mod=${MOD_ID}&channel=${UPDATE_CHANNEL}" "${APPDIR}" "${OUTPUTDIR}/${APPIMAGE}"
-		zsyncmake -u "https://github.com/${TRAVIS_REPO_SLUG}/releases/download/${TAG}/${APPIMAGE}" -o "${OUTPUTDIR}/${APPIMAGE}.zsync" "${OUTPUTDIR}/${APPIMAGE}"
+		zsyncmake -u "https://github.com/${GITHUB_REPOSITORY}/releases/download/${TAG}/${APPIMAGE}" -o "${OUTPUTDIR}/${APPIMAGE}.zsync" "${OUTPUTDIR}/${APPIMAGE}"
 	else
 		ARCH=x86_64 ./squashfs-root/AppRun --no-appstream "${APPDIR}" "${OUTPUTDIR}/${APPIMAGE}"
 	fi
