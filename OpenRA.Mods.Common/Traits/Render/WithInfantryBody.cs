@@ -148,7 +148,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		void INotifyAttack.PreparingAttack(Actor self, in Target target, Armament a, Barrel barrel)
 		{
-			Attacking(self, target, a);
+			// Lambdas can't use 'in' variables, so capture a copy for later
+			var attackTarget = target;
+
+			// HACK: The FrameEndTask makes sure that this runs after Tick(), preventing that from
+			// overriding the animation when an infantry unit stops to attack
+			self.World.AddFrameEndTask(_ => Attacking(self, attackTarget, a));
 		}
 
 		void INotifyAttack.Attacking(Actor self, in Target target, Armament a, Barrel barrel) { }
@@ -160,10 +165,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		protected virtual void Tick(Actor self)
 		{
-			// Attacking takes care of reverting back to PlayStandAnimation
-			if (state == AnimationState.Attacking)
-				return;
-
 			if (rsm != null)
 			{
 				if (wasModifying != rsm.IsModifyingSequence)
