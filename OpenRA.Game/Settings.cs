@@ -37,7 +37,8 @@ namespace OpenRA
 	public enum TextNotificationPoolFilters
 	{
 		None = 0,
-		Feedback = 1
+		Feedback = 1,
+		Transcriptions = 2
 	}
 
 	public enum WorldViewport { Native, Close, Medium, Far }

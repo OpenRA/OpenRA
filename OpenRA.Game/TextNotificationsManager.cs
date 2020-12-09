@@ -28,6 +28,11 @@ namespace OpenRA
 				systemMessageLabel = "Battlefield Control";
 		}
 
+		public static void AddTranscribedLine(string text)
+		{
+			AddTextNotification(TextNotificationPool.Transcriptions, systemMessageLabel, text, systemMessageColor, systemMessageColor);
+		}
+
 		public static void AddFeedbackLine(string text)
 		{
 			AddTextNotification(TextNotificationPool.Feedback, systemMessageLabel, text, systemMessageColor, systemMessageColor);
@@ -69,7 +74,8 @@ namespace OpenRA
 			return pool == TextNotificationPool.Chat ||
 				pool == TextNotificationPool.System ||
 				pool == TextNotificationPool.Mission ||
-				(pool == TextNotificationPool.Feedback && filters.HasFlag(TextNotificationPoolFilters.Feedback));
+				(pool == TextNotificationPool.Feedback && filters.HasFlag(TextNotificationPoolFilters.Feedback)) ||
+				(pool == TextNotificationPool.Transcriptions && filters.HasFlag(TextNotificationPoolFilters.Transcriptions));
 		}
 	}
 }

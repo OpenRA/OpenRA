@@ -116,6 +116,13 @@ Container@DISPLAY_PANEL:
 			Height: 20
 			Font: Regular
 			Text: UI Feedback in Chat
+		Checkbox@TRANSCRIPTIONS_CHECKBOX:
+			X: 310
+			Y: 163
+			Width: 200
+			Height: 20
+			Font: Regular
+			Text: Transcriptions in Chat
 		Label@VIDEO_TITLE:
 			Y: 190
 			Width: PARENT_RIGHT

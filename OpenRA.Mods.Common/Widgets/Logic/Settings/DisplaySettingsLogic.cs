@@ -274,6 +274,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				Game.Settings.Save();
 			};
 
+			var transcriptionsCheckbox = panel.GetOrNull<CheckboxWidget>("TRANSCRIPTIONS_CHECKBOX");
+			if (transcriptionsCheckbox != null)
+			{
+				transcriptionsCheckbox.IsChecked = () => gs.TextNotificationPoolFilters.HasFlag(TextNotificationPoolFilters.Transcriptions);
+				transcriptionsCheckbox.OnClick = () => toggleFilterFlag(TextNotificationPoolFilters.Transcriptions);
+			}
+
 			var feedbackCheckbox = panel.GetOrNull<CheckboxWidget>("UI_FEEDBACK_CHECKBOX");
 			if (feedbackCheckbox != null)
 			{
