@@ -23,16 +23,14 @@ namespace OpenRA.Mods.Common.Effects
 		readonly RallyPoint rp;
 		readonly Animation flag;
 		readonly Animation circles;
-		readonly ExitInfo[] exits;
 
 		List<WPos> targetLineNodes = new List<WPos> { };
 		List<CPos> cachedLocations;
 
-		public RallyPointIndicator(Actor building, RallyPoint rp, ExitInfo[] exits)
+		public RallyPointIndicator(Actor building, RallyPoint rp)
 		{
 			this.building = building;
 			this.rp = rp;
-			this.exits = exits;
 
 			if (rp.Info.Image != null)
 			{
@@ -73,21 +71,8 @@ namespace OpenRA.Mods.Common.Effects
 			if (targetLineNodes.Count == 0)
 				return;
 
-			var exitPos = building.CenterPosition;
-
-			// Find closest exit
-			var dist = int.MaxValue;
-			foreach (var exit in exits)
-			{
-				var ep = building.CenterPosition + exit.SpawnOffset;
-				var len = (targetLineNodes[0] - ep).Length;
-				if (len < dist)
-				{
-					dist = len;
-					exitPos = ep;
-				}
-			}
-
+			var exit = building.NearestExitOrDefault(targetLineNodes[0]);
+			var exitPos = exit != null ? building.World.Map.CenterOfCell(building.Location + exit.Info.ExitCell) : building.CenterPosition;
 			targetLineNodes.Insert(0, exitPos);
 		}
 
