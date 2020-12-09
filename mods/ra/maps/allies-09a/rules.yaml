@@ -1,0 +1,148 @@
+Player:
+	PlayerResources:
+		DefaultCash: 10000
+
+World:
+	LuaScript:
+		Scripts: campaign-global.lua, allies09a.lua, allies09a-AI.lua
+	MissionData:
+		Briefing: One of Stalin's top atomic strategists, Vladimir Kosygin, wishes to defect. His knowledge of Stalin's atomic strategies is invaluable to us. We will extract him from the Riga compound where he is stationed.\n\nUse a spy to infiltrate the Soviet command center and contact Kosygin. Once he is out of the building, guide him back to your base any way you can.
+		StartVideo: 
+		WinVideo: 
+		LossVideo: 
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			easy: Easy
+			normal: Normal
+			hard: Hard
+		Default: normal
+
+LST.Reinforcement:
+	Inherits: LST
+	RejectsOrders:
+	-Buildable:
+	-Selectable:
+	RenderSprites:
+		Image: lst
+	Interactable:
+
+TRAN.Extraction:
+	Inherits: TRAN
+	RejectsOrders:
+	-Selectable:
+	RenderSprites:
+		Image: tran
+	Interactable:
+
+powerproxy.paratroopers:
+	ParatroopersPower:
+		DropItems: E1,E1,E1,E2,E2
+
+MCV:
+	Buildable:
+		Prerequisites: ~disabled
+
+TRUK:
+	Buildable:
+		Prerequisites: ~disabled
+
+MRJ:
+	Buildable:
+		Prerequisites: ~disabled
+
+3TNK:
+	Buildable:
+		Prerequisites: ~vehicles.soviet
+
+V2RL:
+	Buildable:
+		Prerequisites: ~vehicles.soviet
+
+4TNK:
+	Buildable:
+		Prerequisites: ~vehicles.soviet
+
+QTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+AFLD:
+	Buildable:
+		Prerequisites: ~disabled
+
+HPAD:
+	Buildable:
+		Prerequisites: ~disabled
+
+ATEK:
+	Buildable:
+		Prerequisites: ~disabled
+
+STEK:
+	Buildable:
+		Prerequisites: ~disabled
+
+PDOX:
+	Buildable:
+		Prerequisites: ~disabled
+
+IRON:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSLO:
+	Buildable:
+		Prerequisites: ~disabled
+
+GAP:
+	Buildable:
+		Prerequisites: ~disabled
+
+BRIK:
+	Buildable:
+		Prerequisites: ~disabled
+
+MECH:
+	Buildable:
+		Prerequisites: ~disabled
+
+THF:
+	Buildable:
+		Prerequisites: ~disabled
+
+E7:
+	Buildable:
+		Prerequisites: ~disabled
+
+E7.noautotarget:
+	Buildable:
+		Prerequisites: ~disabled
+
+MIG:
+	Buildable:
+		Prerequisites: ~disabled
+
+CA:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSUB:
+	Buildable:
+		Prerequisites: ~disabled
+
+FCOM:
+	Targetable:
+		TargetTypes: GroundActor, Structure, C4, DetonateAttack, SpyInfiltrate
+
+GNRL:
+	Targetable:
+		TargetTypes: Kosygin
+	AutoTarget:
+		InitialStance: HoldFire
+		InitialStanceAI: HoldFire
+
+DOG:
+	AutoTargetPriority@DEFAULT:
+		ValidTargets: Infantry, Kosygin
