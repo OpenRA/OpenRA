@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using OpenRA.Primitives;
 
 namespace OpenRA.Graphics
@@ -32,9 +33,22 @@ namespace OpenRA.Graphics
 		IPalettedRenderable WithPalette(PaletteReference newPalette);
 	}
 
-	public interface ITintableRenderable
+	[Flags]
+	public enum TintModifiers
 	{
-		IRenderable WithTint(in float3 newTint);
+		None = 0,
+		IgnoreWorldTint = 1,
+		ReplaceColor = 2
+	}
+
+	public interface IModifyableRenderable : IRenderable
+	{
+		float Alpha { get; }
+		float3 Tint { get; }
+		TintModifiers TintModifiers { get; }
+
+		IModifyableRenderable WithAlpha(float newAlpha);
+		IModifyableRenderable WithTint(in float3 newTint, TintModifiers newTintModifiers);
 	}
 
 	public interface IFinalizedRenderable

@@ -85,7 +85,7 @@ namespace OpenRA.Mods.Common.Traits
 								var offset = world.Map.Offset(new CVec(x, y), tileInfo.Height);
 								var palette = wr.Palette(TerrainTemplate.Palette ?? TileSet.TerrainPaletteInternalName);
 
-								terrainOrResourcePreview.Add(new SpriteRenderable(sprite, pos, offset, 0, palette, 1, false, false));
+								terrainOrResourcePreview.Add(new SpriteRenderable(sprite, pos, offset, 0, palette, 1, false));
 							}
 						}
 					}
@@ -96,7 +96,8 @@ namespace OpenRA.Mods.Common.Traits
 						var sprite = sequence.GetSprite(Resource.MaxDensity - 1);
 						var palette = wr.Palette(Resource.Palette);
 
-						terrainOrResourcePreview.Add(new SpriteRenderable(sprite, pos, WVec.Zero, 0, palette, 1, false, sequence.IgnoreWorldTint));
+						var tintModifiers = sequence.IgnoreWorldTint ? TintModifiers.IgnoreWorldTint : TintModifiers.None;
+						terrainOrResourcePreview.Add(new SpriteRenderable(sprite, pos, WVec.Zero, 0, palette, 1, false, tintModifiers));
 					}
 				}
 			}

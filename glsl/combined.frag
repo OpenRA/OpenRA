@@ -228,9 +228,17 @@ void main()
 		#endif
 	}
 	else
-	#if __VERSION__ == 120
-		gl_FragColor = c * vTint;
+	{
+		// A negative tint alpha indicates that the tint should replace the colour instead of multiplying it
+		if (vTint.a < 0.0)
+			c = vec4(vTint.rgb, -vTint.a);
+		else
+			c *= vTint;
+
+		#if __VERSION__ == 120
+		gl_FragColor = c;
 		#else
-		fragColor = c * vTint;
+		fragColor = c;
 		#endif
+	}
 }
