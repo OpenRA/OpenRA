@@ -63,8 +63,8 @@ notifications:
 
 before_deploy:
  - if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
-     wget https://mirrors.edge.kernel.org/ubuntu/pool/universe/n/nsis/nsis-common_3.04-1_all.deb;
-     wget https://mirrors.edge.kernel.org/ubuntu/pool/universe/n/nsis/nsis_3.04-1_amd64.deb;
+     wget http://ftp.debian.org/debian/pool/main/n/nsis/nsis-common_3.04-1_all.deb;
+     wget http://ftp.debian.org/debian/pool/main/n/nsis/nsis_3.04-1_amd64.deb;
      sudo dpkg -i nsis-common_3.04-1_all.deb;
      sudo dpkg -i nsis_3.04-1_amd64.deb;
      echo ${TRAVIS_REPO_SLUG};
