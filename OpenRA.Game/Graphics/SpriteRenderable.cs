@@ -14,7 +14,7 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Graphics
 {
-	public struct SpriteRenderable : IPalettedRenderable, ITintableRenderable, IFinalizedRenderable
+	public struct SpriteRenderable : IPalettedRenderable, IModifyableRenderable, IFinalizedRenderable
 	{
 		public static readonly IEnumerable<IRenderable> None = new IRenderable[0];
 
@@ -25,16 +25,17 @@ namespace OpenRA.Graphics
 		readonly PaletteReference palette;
 		readonly float scale;
 		readonly float3 tint;
+		readonly TintModifiers tintModifiers;
+		readonly float alpha;
 		readonly bool isDecoration;
-		readonly bool ignoreWorldTint;
 
 		public SpriteRenderable(Sprite sprite, WPos pos, WVec offset, int zOffset, PaletteReference palette, float scale, bool isDecoration)
-			: this(sprite, pos, offset, zOffset, palette, scale, float3.Ones, isDecoration, false) { }
+			: this(sprite, pos, offset, zOffset, palette, scale, 1f, float3.Ones, TintModifiers.None, isDecoration) { }
 
-		public SpriteRenderable(Sprite sprite, WPos pos, WVec offset, int zOffset, PaletteReference palette, float scale, bool isDecoration, bool ignoreWorldTint)
-			: this(sprite, pos, offset, zOffset, palette, scale, float3.Ones, isDecoration, ignoreWorldTint) { }
+		public SpriteRenderable(Sprite sprite, WPos pos, WVec offset, int zOffset, PaletteReference palette, float scale, bool isDecoration, TintModifiers tintModifiers)
+			: this(sprite, pos, offset, zOffset, palette, scale, 1f, float3.Ones, tintModifiers, isDecoration) { }
 
-		public SpriteRenderable(Sprite sprite, WPos pos, WVec offset, int zOffset, PaletteReference palette, float scale, float3 tint, bool isDecoration, bool ignoreWorldTint)
+		public SpriteRenderable(Sprite sprite, WPos pos, WVec offset, int zOffset, PaletteReference palette, float scale, float alpha, float3 tint, TintModifiers tintModifiers, bool isDecoration)
 		{
 			this.sprite = sprite;
 			this.pos = pos;
@@ -44,7 +45,8 @@ namespace OpenRA.Graphics
 			this.scale = scale;
 			this.tint = tint;
 			this.isDecoration = isDecoration;
-			this.ignoreWorldTint = ignoreWorldTint;
+			this.tintModifiers = tintModifiers;
+			this.alpha = alpha;
 		}
 
 		public WPos Pos { get { return pos + offset; } }
@@ -53,12 +55,24 @@ namespace OpenRA.Graphics
 		public int ZOffset { get { return zOffset; } }
 		public bool IsDecoration { get { return isDecoration; } }
 
-		public IPalettedRenderable WithPalette(PaletteReference newPalette) { return new SpriteRenderable(sprite, pos, offset, zOffset, newPalette, scale, tint, isDecoration, ignoreWorldTint); }
-		public IRenderable WithZOffset(int newOffset) { return new SpriteRenderable(sprite, pos, offset, newOffset, palette, scale, tint, isDecoration, ignoreWorldTint); }
-		public IRenderable OffsetBy(WVec vec) { return new SpriteRenderable(sprite, pos + vec, offset, zOffset, palette, scale, tint, isDecoration, ignoreWorldTint); }
-		public IRenderable AsDecoration() { return new SpriteRenderable(sprite, pos, offset, zOffset, palette, scale, tint, true, ignoreWorldTint); }
+		public float Alpha { get { return alpha; } }
+		public float3 Tint { get { return tint; } }
+		public TintModifiers TintModifiers { get { return tintModifiers; } }
 
-		public IRenderable WithTint(in float3 newTint) { return new SpriteRenderable(sprite, pos, offset, zOffset, palette, scale, newTint, isDecoration, ignoreWorldTint); }
+		public IPalettedRenderable WithPalette(PaletteReference newPalette) { return new SpriteRenderable(sprite, pos, offset, zOffset, newPalette, scale, alpha, tint, tintModifiers, isDecoration); }
+		public IRenderable WithZOffset(int newOffset) { return new SpriteRenderable(sprite, pos, offset, newOffset, palette, scale, alpha, tint, tintModifiers, isDecoration); }
+		public IRenderable OffsetBy(WVec vec) { return new SpriteRenderable(sprite, pos + vec, offset, zOffset, palette, scale, alpha, tint, tintModifiers, isDecoration); }
+		public IRenderable AsDecoration() { return new SpriteRenderable(sprite, pos, offset, zOffset, palette, scale, alpha, tint, tintModifiers, true); }
+
+		public IModifyableRenderable WithAlpha(float newAlpha)
+		{
+			return new SpriteRenderable(sprite, pos, offset, zOffset, palette, scale, newAlpha, tint, tintModifiers, isDecoration);
+		}
+
+		public IModifyableRenderable WithTint(in float3 newTint, TintModifiers newTintModifiers)
+		{
+			return new SpriteRenderable(sprite, pos, offset, zOffset, palette, scale, alpha, newTint, newTintModifiers, isDecoration);
+		}
 
 		float3 ScreenPosition(WorldRenderer wr)
 		{
@@ -72,16 +86,16 @@ namespace OpenRA.Graphics
 		public void Render(WorldRenderer wr)
 		{
 			var wsr = Game.Renderer.WorldSpriteRenderer;
-			if (ignoreWorldTint)
-				wsr.DrawSprite(sprite, ScreenPosition(wr), palette, scale * sprite.Size);
-			else
-			{
-				var t = tint;
-				if (wr.TerrainLighting != null)
-					t *= wr.TerrainLighting.TintAt(pos);
+			var t = alpha * tint;
+			if (wr.TerrainLighting != null && (tintModifiers & TintModifiers.IgnoreWorldTint) == 0)
+				t *= wr.TerrainLighting.TintAt(pos);
 
-				wsr.DrawSprite(sprite, ScreenPosition(wr), palette, scale * sprite.Size, t, 1f);
-			}
+			// Shader interprets negative alpha as a flag to use the tint colour directly instead of multiplying the sprite colour
+			var a = alpha;
+			if ((tintModifiers & TintModifiers.ReplaceColor) != 0)
+				a *= -1;
+
+			wsr.DrawSprite(sprite, ScreenPosition(wr), palette, scale * sprite.Size, t, a);
 		}
 
 		public void RenderDebugGeometry(WorldRenderer wr)

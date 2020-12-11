@@ -89,7 +89,7 @@ namespace OpenRA.Mods.D2k.Traits
 				var pal = HasFlag(c.Value, PlaceBuildingCellType.LineBuild) ? linePalette : cellPalette;
 				var pos = wr.World.Map.CenterOfCell(c.Key);
 				var offset = new WVec(0, 0, topLeftPos.Z - pos.Z);
-				yield return new SpriteRenderable(tile, pos, offset, -511, pal, 1f, true, true);
+				yield return new SpriteRenderable(tile, pos, offset, -511, pal, 1f, true, TintModifiers.IgnoreWorldTint);
 			}
 		}
 	}

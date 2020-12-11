@@ -89,12 +89,12 @@ namespace OpenRA.Mods.Common.Traits
 			if (CopyRegion != null)
 				foreach (var c in CopyRegion)
 					yield return new SpriteRenderable(copySprite, wr.World.Map.CenterOfCell(c),
-						WVec.Zero, -511, palette, 1f, true, true);
+						WVec.Zero, -511, palette, 1f, true, TintModifiers.IgnoreWorldTint);
 
 			if (PasteRegion != null)
 				foreach (var c in PasteRegion)
 					yield return new SpriteRenderable(pasteSprite, wr.World.Map.CenterOfCell(c),
-						WVec.Zero, -511, palette, 1f, true, true);
+						WVec.Zero, -511, palette, 1f, true, TintModifiers.IgnoreWorldTint);
 		}
 
 		bool IRenderAboveShroud.SpatiallyPartitionable { get { return false; } }
