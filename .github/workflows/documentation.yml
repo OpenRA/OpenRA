@@ -60,13 +60,21 @@ jobs:
     if: github.repository == 'openra/openra'
     runs-on: ubuntu-20.04
     steps:
+      - name: Clone Repository
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.inputs.tag }}
+
+      - name: Prepare Environment
+        run: |
+          make all
+
       - name: Clone docs.openra.net
         uses: actions/checkout@v2
         with:
           repository: openra/docs.git
           token: ${{ secrets.DOCS_TOKEN }}
           path: docs
-          ref: ${{ github.event.inputs.tag }}
 
       - name: Update docs.openra.net (Playtest)
         if: startsWith(github.event.inputs.tag, 'playtest-')
