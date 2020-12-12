@@ -1,5 +1,5 @@
 ra-origin: C&C The Ultimate Collection (Origin version, English)
-	Type: Install
+	Type: RegistryDirectory
 	RegistryPrefixes: HKEY_LOCAL_MACHINE\Software\, HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\
 	RegistryKey: EA Games\Command and Conquer Red Alert
 	RegistryValue: Install Dir
@@ -457,7 +457,7 @@ ra-origin: C&C The Ultimate Collection (Origin version, English)
 				Length: 9073
 
 cnc-origin: Command & Conquer (Origin version, English)
-	Type: Install
+	Type: RegistryDirectory
 	RegistryPrefixes: HKEY_LOCAL_MACHINE\Software\, HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\
 	RegistryKey: EA Games\CNC and The Covert Operations
 	RegistryValue: Install Dir
