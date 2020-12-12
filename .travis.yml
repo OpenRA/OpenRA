@@ -67,19 +67,12 @@ before_deploy:
      wget http://ftp.debian.org/debian/pool/main/n/nsis/nsis_3.04-1_amd64.deb;
      sudo dpkg -i nsis-common_3.04-1_all.deb;
      sudo dpkg -i nsis_3.04-1_amd64.deb;
-     echo ${TRAVIS_REPO_SLUG};
-     if [[ "${TRAVIS_REPO_SLUG}" == "OpenRA/OpenRA" ]]; then
-       cd packaging && ./update-wiki.sh ${TRAVIS_TAG} && ./update-docs.sh ${TRAVIS_TAG} && cd ..;
-     fi;
    fi
  - export PATH=${PATH}:${HOME}/usr/bin
  - DOTVERSION=`echo ${TRAVIS_TAG} | sed "s/-/\\./g"`
  - cd packaging
  - mkdir build
  - ./package-all.sh ${TRAVIS_TAG} ${PWD}/build/
- - if [[ "${TRAVIS_REPO_SLUG}" == "OpenRA/OpenRA" ]]; then
-     ./upload-itch.sh ${TRAVIS_TAG} ${PWD}/build/;
-   fi
 
 deploy:
   provider: releases
