@@ -1,0 +1,88 @@
+name: Deploy itch.io Packages
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Git Tag'
+        required: true
+        default: 'release-xxxxxxxx'
+
+jobs:
+  itch:
+    name: Deploy to itch.io
+    runs-on: ubuntu-20.04
+    if: github.repository == 'openra/openra'
+    steps:
+      - name: Download Packages
+        env:
+          GIT_TAG: ${{ github.event.inputs.tag }}
+        run: |
+          wget -q "https://github.com/${{ github.repository }}/releases/download/${GIT_TAG}/OpenRA-${GIT_TAG}-x64.exe"
+          wget -q "https://github.com/${{ github.repository }}/releases/download/${GIT_TAG}/OpenRA-${GIT_TAG}-x64-winportable.zip" -O "OpenRA-${GIT_TAG}-x64-win-itch.zip"
+          wget -q "https://github.com${{ github.repository }}/releases/download/${GIT_TAG}/OpenRA-${GIT_TAG}.dmg"
+          wget -q "https://github.com/${{ github.repository }}/releases/download/${GIT_TAG}/OpenRA-Dune-2000-x86_64.AppImage"
+          wget -q "https://github.com/${{ github.repository }}/releases/download/${GIT_TAG}/OpenRA-Red-Alert-x86_64.AppImage"
+          wget -q "https://github.com/${{ github.repository }}/releases/download/${GIT_TAG}/OpenRA-Tiberian-Dawn-x86_64.AppImage"
+          wget -q "https://raw.githubusercontent.com/${{ github.repository }}/${GIT_TAG}/packaging/.itch.toml"
+          zip -u "OpenRA-${GIT_TAG}-x64-win-itch.zip" .itch.toml
+
+      - name: Publish Windows Installer
+        uses: josephbmanley/butler-publish-itchio-action@master
+        env:
+          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
+          CHANNEL: win
+          ITCH_GAME: openra
+          ITCH_USER: openra-developers
+          VERSION: ${{ github.event.inputs.tag }}
+          PACKAGE: OpenRA-${{ github.event.inputs.tag }}}-x64.exe"
+
+      - name: Publish Windows Itch Bundle
+        uses: josephbmanley/butler-publish-itchio-action@master
+        env:
+          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
+          CHANNEL: itch
+          ITCH_GAME: openra
+          ITCH_USER: openra-developers
+          VERSION: ${{ github.event.inputs.tag }}
+          PACKAGE: OpenRA-${{ github.event.inputs.tag }}-x64-win-itch.zip
+
+      - name: Publish macOS Package
+        uses: josephbmanley/butler-publish-itchio-action@master
+        env:
+          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
+          CHANNEL: macos
+          ITCH_GAME: openra
+          ITCH_USER: openra-developers
+          VERSION: ${{ github.event.inputs.tag }}
+          PACKAGE: OpenRA-${{ github.event.inputs.tag }}}.dmg"
+
+      - name: Publish RA AppImage
+        uses: josephbmanley/butler-publish-itchio-action@master
+        env:
+          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
+          CHANNEL: linux-ra
+          ITCH_GAME: openra
+          ITCH_USER: openra-developers
+          VERSION: ${{ github.event.inputs.tag }}
+          PACKAGE: OpenRA-Red-Alert-x86_64.AppImage
+
+      - name: Publish TD AppImage
+        uses: josephbmanley/butler-publish-itchio-action@master
+        env:
+          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
+          CHANNEL: linux-cnc
+          ITCH_GAME: openra
+          ITCH_USER: openra-developers
+          VERSION: ${{ github.event.inputs.tag }}
+          PACKAGE: OpenRA-Tiberian-Dawn-x86_64.AppImage
+
+      - name: Publish D2k AppImage
+        uses: josephbmanley/butler-publish-itchio-action@master
+        env:
+          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
+          CHANNEL: linux-d2k
+          ITCH_GAME: openra
+          ITCH_USER: openra-developers
+          VERSION: ${{ github.event.inputs.tag }}
+          PACKAGE: OpenRA-Dune-2000-x86_64.AppImage
