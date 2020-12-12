@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -58,14 +59,18 @@ namespace OpenRA.Mods.Common.Traits
 		[NotificationReference("Speech")]
 		public readonly string LeaveNotification = null;
 
-		public override object Create(ActorInitializer init) { return new MissionObjectives(init.World, this); }
+		public override object Create(ActorInitializer init) { return new MissionObjectives(init.Self.Owner, this); }
 	}
 
-	public class MissionObjectives : INotifyWinStateChanged, ISync, IResolveOrder
+	public class MissionObjectives : INotifyWinStateChanged, ISync, IResolveOrder, IWorldLoaded
 	{
 		public readonly MissionObjectivesInfo Info;
 		readonly List<MissionObjective> objectives = new List<MissionObjective>();
+		readonly Player player;
 		public ReadOnlyList<MissionObjective> Objectives;
+
+		Player[] enemies;
+		Player[] allies;
 
 		[Sync]
 		public int ObjectivesHash
@@ -83,10 +88,19 @@ namespace OpenRA.Mods.Common.Traits
 		// The player's WinState is only updated when his allies have all completed their objective as well.
 		public WinState WinStateCooperative { get; private set; }
 
-		public MissionObjectives(World world, MissionObjectivesInfo info)
+		public MissionObjectives(Player player, MissionObjectivesInfo info)
 		{
 			Info = info;
+			this.player = player;
 			Objectives = new ReadOnlyList<MissionObjective>(objectives);
+		}
+
+		void IWorldLoaded.WorldLoaded(World w, WorldRenderer wr)
+		{
+			// Players and NonCombatants are fixed once the game starts, but the result of IsAlliedWith
+			// may change once players are marked as spectators, so cache these
+			allies = player.World.Players.Where(p => !p.NonCombatant && player.IsAlliedWith(p)).ToArray();
+			enemies = player.World.Players.Where(p => !p.NonCombatant && player.RelationshipWith(p) == PlayerRelationship.Enemy).ToArray();
 		}
 
 		public int Add(Player player, string description, string type, bool required = true, bool inhibitAnnouncement = false)
@@ -140,10 +154,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		void CheckIfGameIsOver(Player player)
 		{
-			var players = player.World.Players.Where(p => !p.NonCombatant);
-
-			var gameOver = players.All(p => p.WinState != WinState.Undefined || !p.HasObjectives);
+			var gameOver = player.World.Players.All(p => p.NonCombatant || p.WinState != WinState.Undefined || !p.HasObjectives);
 			if (gameOver)
+			{
 				Game.RunAfterDelay(Info.GameOverDelay, () =>
 				{
 					if (!Game.IsCurrentWorld(player.World))
@@ -153,17 +166,14 @@ namespace OpenRA.Mods.Common.Traits
 					player.World.SetPauseState(true);
 					player.World.PauseStateLocked = true;
 				});
+			}
 		}
 
 		void INotifyWinStateChanged.OnPlayerWon(Player player)
 		{
-			var players = player.World.Players.Where(p => !p.NonCombatant);
-			var enemies = players.Where(p => !p.IsAlliedWith(player));
-
 			if (Info.Cooperative)
 			{
 				WinStateCooperative = WinState.Won;
-				var allies = players.Where(p => p.IsAlliedWith(player));
 
 				if (allies.All(p => p.PlayerActor.Trait<MissionObjectives>().WinStateCooperative == WinState.Won))
 				{
@@ -193,13 +203,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyWinStateChanged.OnPlayerLost(Player player)
 		{
-			var players = player.World.Players.Where(p => !p.NonCombatant);
-			var enemies = players.Where(p => !p.IsAlliedWith(player));
-
 			if (Info.Cooperative)
 			{
 				WinStateCooperative = WinState.Lost;
-				var allies = players.Where(p => p.IsAlliedWith(player));
 
 				if (allies.Any(p => p.PlayerActor.Trait<MissionObjectives>().WinStateCooperative == WinState.Lost))
 				{
