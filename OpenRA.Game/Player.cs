@@ -80,7 +80,8 @@ namespace OpenRA
 		{
 			get
 			{
-				return spectating || WinState != WinState.Undefined;
+				// Players in mission maps must not leave the player view
+				return !inMissionMap && (spectating || WinState != WinState.Undefined);
 			}
 		}
 
