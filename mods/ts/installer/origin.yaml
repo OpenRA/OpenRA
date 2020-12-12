@@ -1,5 +1,5 @@
 origin: C&C The Ultimate Collection (Origin version, English)
-	Type: Install
+	Type: RegistryDirectory
 	RegistryPrefixes: HKEY_LOCAL_MACHINE\Software\, HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\
 	RegistryKey: EA Games\Command and Conquer Tiberian Sun
 	RegistryValue: Install Dir

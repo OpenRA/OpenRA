@@ -17,7 +17,7 @@ namespace OpenRA
 {
 	public class ModContent : IGlobalModData
 	{
-		public enum SourceType { Disc, Install }
+		public enum SourceType { Disc, RegistryDirectory, RegistryDirectoryFromFile }
 		public class ModPackage
 		{
 			public readonly string Title;

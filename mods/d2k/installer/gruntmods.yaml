@@ -1,5 +1,5 @@
 gruntmods: Dune 2000: GruntMods Edition
-	Type: Install
+	Type: RegistryDirectory
 	RegistryPrefixes: HKEY_LOCAL_MACHINE\Software\, HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\
 	RegistryKey: Dune 2000: Gruntmods Edition
 	IDFiles:
