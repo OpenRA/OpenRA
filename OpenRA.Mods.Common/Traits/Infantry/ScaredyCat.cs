@@ -9,6 +9,8 @@
  */
 #endregion
 
+using System;
+using System.Collections.Generic;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -28,6 +30,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Chance (out of 100) the unit has to enter panic mode when attacking.")]
 		public readonly int AttackPanicChance = 20;
 
+		[Desc("The terrain types that this actor should avoid running on to while panicking.")]
+		public readonly HashSet<string> AvoidTerrainTypes = new HashSet<string>();
+
 		[SequenceReference(prefix: true)]
 		public readonly string PanicSequencePrefix = "panic-";
 
@@ -39,6 +44,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly ScaredyCatInfo info;
 		readonly Mobile mobile;
 		readonly Actor self;
+		readonly Func<CPos, bool> avoidTerrainFilter;
 
 		[Sync]
 		int panicStartedTick;
@@ -52,6 +58,9 @@ namespace OpenRA.Mods.Common.Traits
 			this.self = self;
 			this.info = info;
 			mobile = self.Trait<Mobile>();
+
+			if (info.AvoidTerrainTypes.Count > 0)
+				avoidTerrainFilter = c => info.AvoidTerrainTypes.Contains(self.World.Map.GetTerrainInfo(c).Type);
 		}
 
 		public void Panic()
@@ -79,7 +88,10 @@ namespace OpenRA.Mods.Common.Traits
 			if (!Panicking)
 				return;
 
-			mobile.Nudge(self);
+			// Note: This is just a modified copy of Mobile.Nudge
+			var cell = mobile.GetAdjacentCell(self.Location, avoidTerrainFilter);
+			if (cell != null)
+				self.QueueActivity(false, mobile.MoveTo(cell.Value, 0));
 		}
 
 		void INotifyDamage.Damaged(Actor self, AttackInfo e)
