@@ -9,6 +9,8 @@
  */
 #endregion
 
+using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -26,6 +28,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Maximum amount of ticks the actor will sit idly before starting to wander.")]
 		public readonly int MaxMoveDelay = 0;
+
+		[Desc("The terrain types that this actor should avoid wandering on to.")]
+		public readonly HashSet<string> AvoidTerrainTypes = new HashSet<string>();
 
 		public override object Create(ActorInitializer init) { return new Wanders(init.Self, this); }
 	}
@@ -75,8 +80,8 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			var targetCell = PickTargetLocation();
-			if (targetCell != CPos.Zero)
-				DoAction(self, targetCell);
+			if (targetCell.HasValue)
+				DoAction(self, targetCell.Value);
 		}
 
 		void INotifyIdle.TickIdle(Actor self)
@@ -84,7 +89,7 @@ namespace OpenRA.Mods.Common.Traits
 			TickIdle(self);
 		}
 
-		CPos PickTargetLocation()
+		CPos? PickTargetLocation()
 		{
 			var target = self.CenterPosition + new WVec(0, -1024 * effectiveMoveRadius, 0).Rotate(WRot.FromFacing(self.World.SharedRandom.Next(255)));
 			var targetCell = self.World.Map.CellContaining(target);
@@ -95,7 +100,15 @@ namespace OpenRA.Mods.Common.Traits
 				if (++ticksIdle % info.ReduceMoveRadiusDelay == 0)
 					effectiveMoveRadius--;
 
-				return CPos.Zero; // We'll be back the next tick; better to sit idle for a few seconds than prolong this tick indefinitely with a loop
+				// We'll be back the next tick; better to sit idle for a few seconds than prolong this tick indefinitely with a loop
+				return null;
+			}
+
+			if (info.AvoidTerrainTypes.Count > 0)
+			{
+				var terrainType = self.World.Map.GetTerrainInfo(targetCell).Type;
+				if (Info.AvoidTerrainTypes.Contains(terrainType))
+					return null;
 			}
 
 			ticksIdle = 0;
