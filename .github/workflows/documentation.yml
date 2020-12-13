@@ -81,18 +81,18 @@ jobs:
         env:
           GIT_TAG: ${{ github.event.inputs.tag }}
         run: |
-          ./utility.sh all --docs "${GIT_TAG}" > "docs/playtest/traits.md"
-          ./utility.sh all --weapon-docs "${GIT_TAG}" > "docs/playtest/weapons.md"
-          ./utility.sh all --lua-docs "${GIT_TAG}" > "docs/playtest/lua.md"
+          ./utility.sh all --docs "${GIT_TAG}" > "docs/api/playtest/traits.md"
+          ./utility.sh all --weapon-docs "${GIT_TAG}" > "docs/api/playtest/weapons.md"
+          ./utility.sh all --lua-docs "${GIT_TAG}" > "docs/api/playtest/lua.md"
 
       - name: Update docs.openra.net (Release)
         if: startsWith(github.event.inputs.tag, 'release-')
         env:
           GIT_TAG: ${{ github.event.inputs.tag }}
         run: |
-          ./utility.sh all --docs "${GIT_TAG}" > "docs/release/traits.md"
-          ./utility.sh all --weapon-docs "${GIT_TAG}" > "docs/release/weapons.md"
-          ./utility.sh all --lua-docs "${GIT_TAG}" > "docs/release/lua.md"
+          ./utility.sh all --docs "${GIT_TAG}" > "docs/api/release/traits.md"
+          ./utility.sh all --weapon-docs "${GIT_TAG}" > "docs/api/release/weapons.md"
+          ./utility.sh all --lua-docs "${GIT_TAG}" > "docs/api/release/lua.md"
 
       - name: Push docs.openra.net
         env:
