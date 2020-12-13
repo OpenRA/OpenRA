@@ -72,7 +72,7 @@ jobs:
       - name: Clone docs.openra.net
         uses: actions/checkout@v2
         with:
-          repository: openra/docs.git
+          repository: openra/docs
           token: ${{ secrets.DOCS_TOKEN }}
           path: docs
 
