@@ -23,6 +23,8 @@ namespace OpenRA
 		}
 
 		public override int GetHashCode() { return Type.GetHashCode() ^ Index.GetHashCode(); }
+
+		public override string ToString() { return Type + "," + Index; }
 	}
 
 	public struct ResourceTile

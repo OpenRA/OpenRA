@@ -206,6 +206,8 @@ namespace OpenRA
 		public readonly MiniYaml NotificationDefinitions;
 		public readonly MiniYaml TranslationDefinitions;
 
+		public readonly Dictionary<CPos, TerrainTile> ReplacedInvalidTerrainTiles = new Dictionary<CPos, TerrainTile>();
+
 		// Generated data
 		public readonly MapGrid Grid;
 		public IReadOnlyPackage Package { get; private set; }
@@ -435,6 +437,7 @@ namespace OpenRA
 			{
 				if (!tileset.TryGetTileInfo(Tiles[uv], out var info))
 				{
+					ReplacedInvalidTerrainTiles[uv.ToCPos(this)] = Tiles[uv];
 					Tiles[uv] = tileset.DefaultTerrainTile;
 					info = tileset.GetTileInfo(tileset.DefaultTerrainTile);
 				}
