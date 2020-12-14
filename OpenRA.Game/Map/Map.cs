@@ -696,7 +696,6 @@ namespace OpenRA
 
 		public byte[] SavePreview()
 		{
-			var tileset = Rules.TileSet;
 			var actorTypes = Rules.Actors.Values.Where(a => a.HasTraitInfo<IMapPreviewSignatureInfo>());
 			var actors = ActorDefinitions.Where(a => actorTypes.Where(ai => ai.Name == a.Value.Value).Any());
 			var positions = new List<(MPos Position, Color Color)>();
@@ -716,76 +715,73 @@ namespace OpenRA
 			foreach (var worldimpsi in worldimpsis)
 				worldimpsi.PopulateMapPreviewSignatureCells(this, worldActorInfo, null, positions);
 
-			using (var stream = new MemoryStream())
+			var isRectangularIsometric = Grid.Type == MapGridType.RectangularIsometric;
+
+			// Fudge the heightmap offset by adding as much extra as we need / can.
+			// This tries to correct for our incorrect assumption that MPos == PPos
+			var heightOffset = Math.Min(Grid.MaximumTerrainHeight, MapSize.Y - Bounds.Bottom);
+			var width = Bounds.Width;
+			var height = Bounds.Height + heightOffset;
+
+			var bitmapWidth = width;
+			if (isRectangularIsometric)
+				bitmapWidth = 2 * bitmapWidth - 1;
+
+			var stride = bitmapWidth * 4;
+			var pxStride = 4;
+			var minimapData = new byte[stride * height];
+			(Color Left, Color Right) terrainColor = default((Color, Color));
+
+			for (var y = 0; y < height; y++)
 			{
-				var isRectangularIsometric = Grid.Type == MapGridType.RectangularIsometric;
-
-				// Fudge the heightmap offset by adding as much extra as we need / can.
-				// This tries to correct for our incorrect assumption that MPos == PPos
-				var heightOffset = Math.Min(Grid.MaximumTerrainHeight, MapSize.Y - Bounds.Bottom);
-				var width = Bounds.Width;
-				var height = Bounds.Height + heightOffset;
-
-				var bitmapWidth = width;
-				if (isRectangularIsometric)
-					bitmapWidth = 2 * bitmapWidth - 1;
-
-				var stride = bitmapWidth * 4;
-				var pxStride = 4;
-				var minimapData = new byte[stride * height];
-				(Color Left, Color Right) terrainColor = default((Color, Color));
-
-				for (var y = 0; y < height; y++)
+				for (var x = 0; x < width; x++)
 				{
-					for (var x = 0; x < width; x++)
+					var uv = new MPos(x + Bounds.Left, y + Bounds.Top);
+
+					// FirstOrDefault will return a (MPos.Zero, Color.Transparent) if positions is empty
+					var actorColor = positions.FirstOrDefault(ap => ap.Position == uv).Color;
+					if (actorColor.A == 0)
+						terrainColor = GetTerrainColorPair(uv);
+
+					if (isRectangularIsometric)
 					{
-						var uv = new MPos(x + Bounds.Left, y + Bounds.Top);
-
-						// FirstOrDefault will return a (MPos.Zero, Color.Transparent) if positions is empty
-						var actorColor = positions.FirstOrDefault(ap => ap.Position == uv).Color;
-						if (actorColor.A == 0)
-							terrainColor = GetTerrainColorPair(uv);
-
-						if (isRectangularIsometric)
+						// Odd rows are shifted right by 1px
+						var dx = uv.V & 1;
+						var xOffset = pxStride * (2 * x + dx);
+						if (x + dx > 0)
 						{
-							// Odd rows are shifted right by 1px
-							var dx = uv.V & 1;
-							var xOffset = pxStride * (2 * x + dx);
-							if (x + dx > 0)
-							{
-								var z = y * stride + xOffset - pxStride;
-								var c = actorColor.A == 0 ? terrainColor.Left : actorColor;
-								minimapData[z++] = c.R;
-								minimapData[z++] = c.G;
-								minimapData[z++] = c.B;
-								minimapData[z] = c.A;
-							}
-
-							if (xOffset < stride)
-							{
-								var z = y * stride + xOffset;
-								var c = actorColor.A == 0 ? terrainColor.Right : actorColor;
-								minimapData[z++] = c.R;
-								minimapData[z++] = c.G;
-								minimapData[z++] = c.B;
-								minimapData[z] = c.A;
-							}
-						}
-						else
-						{
-							var z = y * stride + pxStride * x;
+							var z = y * stride + xOffset - pxStride;
 							var c = actorColor.A == 0 ? terrainColor.Left : actorColor;
 							minimapData[z++] = c.R;
 							minimapData[z++] = c.G;
 							minimapData[z++] = c.B;
 							minimapData[z] = c.A;
 						}
+
+						if (xOffset < stride)
+						{
+							var z = y * stride + xOffset;
+							var c = actorColor.A == 0 ? terrainColor.Right : actorColor;
+							minimapData[z++] = c.R;
+							minimapData[z++] = c.G;
+							minimapData[z++] = c.B;
+							minimapData[z] = c.A;
+						}
+					}
+					else
+					{
+						var z = y * stride + pxStride * x;
+						var c = actorColor.A == 0 ? terrainColor.Left : actorColor;
+						minimapData[z++] = c.R;
+						minimapData[z++] = c.G;
+						minimapData[z++] = c.B;
+						minimapData[z] = c.A;
 					}
 				}
-
-				var png = new Png(minimapData, bitmapWidth, height);
-				return png.Save();
 			}
+
+			var png = new Png(minimapData, bitmapWidth, height);
+			return png.Save();
 		}
 
 		public bool Contains(CPos cell)
