@@ -81,10 +81,7 @@ namespace OpenRA.Mods.Common.Widgets
 				for (var x = 0; x < Template.Size.X; x++)
 				{
 					var tile = new TerrainTile(Template.Id, (byte)(i++));
-					var tileInfo = tileset.GetTileInfo(tile);
-
-					// Empty tile
-					if (tileInfo == null)
+					if (!tileset.TryGetTileInfo(tile, out var tileInfo))
 						continue;
 
 					var sprite = worldRenderer.Theater.TileSprite(tile, 0);

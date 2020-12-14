@@ -450,8 +450,7 @@ namespace OpenRA
 
 		void UpdateRamp(CPos cell)
 		{
-			var tile = Rules.TileSet.GetTileInfo(Tiles[cell]);
-			Ramp[cell] = tile != null ? tile.RampType : (byte)0;
+			Ramp[cell] = Rules.TileSet.GetTileInfo(Tiles[cell]).RampType;
 		}
 
 		void InitializeCellProjection()
@@ -677,25 +676,20 @@ namespace OpenRA
 			Color left, right;
 			var tileset = Rules.TileSet;
 			var type = tileset.GetTileInfo(Tiles[uv]);
-			if (type != null)
+			if (type.MinColor != type.MaxColor)
 			{
-				if (type.MinColor != type.MaxColor)
-				{
-					left = Exts.ColorLerp(Game.CosmeticRandom.NextFloat(), type.MinColor, type.MaxColor);
-					right = Exts.ColorLerp(Game.CosmeticRandom.NextFloat(), type.MinColor, type.MaxColor);
-				}
-				else
-					left = right = type.MinColor;
-
-				if (tileset.MinHeightColorBrightness != 1.0f || tileset.MaxHeightColorBrightness != 1.0f)
-				{
-					var scale = float2.Lerp(tileset.MinHeightColorBrightness, tileset.MaxHeightColorBrightness, Height[uv] * 1f / Grid.MaximumTerrainHeight);
-					left = Color.FromArgb((int)(scale * left.R).Clamp(0, 255), (int)(scale * left.G).Clamp(0, 255), (int)(scale * left.B).Clamp(0, 255));
-					right = Color.FromArgb((int)(scale * right.R).Clamp(0, 255), (int)(scale * right.G).Clamp(0, 255), (int)(scale * right.B).Clamp(0, 255));
-				}
+				left = Exts.ColorLerp(Game.CosmeticRandom.NextFloat(), type.MinColor, type.MaxColor);
+				right = Exts.ColorLerp(Game.CosmeticRandom.NextFloat(), type.MinColor, type.MaxColor);
 			}
 			else
-				left = right = Color.Black;
+				left = right = type.MinColor;
+
+			if (tileset.MinHeightColorBrightness != 1.0f || tileset.MaxHeightColorBrightness != 1.0f)
+			{
+				var scale = float2.Lerp(tileset.MinHeightColorBrightness, tileset.MaxHeightColorBrightness, Height[uv] * 1f / Grid.MaximumTerrainHeight);
+				left = Color.FromArgb((int)(scale * left.R).Clamp(0, 255), (int)(scale * left.G).Clamp(0, 255), (int)(scale * left.B).Clamp(0, 255));
+				right = Color.FromArgb((int)(scale * right.R).Clamp(0, 255), (int)(scale * right.G).Clamp(0, 255), (int)(scale * right.B).Clamp(0, 255));
+			}
 
 			return (left, right);
 		}
