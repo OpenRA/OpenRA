@@ -168,10 +168,7 @@ namespace OpenRA.Graphics
 				for (var x = 0; x < template.Size.X; x++)
 				{
 					var tile = new TerrainTile(template.Id, (byte)(i++));
-					var tileInfo = tileset.GetTileInfo(tile);
-
-					// Empty tile
-					if (tileInfo == null)
+					if (!tileset.TryGetTileInfo(tile, out var tileInfo))
 						continue;
 
 					var sprite = TileSprite(tile);
