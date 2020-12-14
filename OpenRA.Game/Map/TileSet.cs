@@ -241,5 +241,19 @@ namespace OpenRA
 
 			return tpl.Contains(r.Index) ? tpl[r.Index] : null;
 		}
+
+		public bool TryGetTileInfo(TerrainTile r, out TerrainTileInfo info)
+		{
+			if (!Templates.TryGetValue(r.Type, out var tpl) || !tpl.Contains(r.Index))
+			{
+				info = null;
+				return false;
+			}
+
+			info = tpl[r.Index];
+			return info != null;
+		}
+
+		public TerrainTile DefaultTerrainTile { get { return new TerrainTile(Templates.First().Key, 0); } }
 	}
 }

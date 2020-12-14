@@ -287,7 +287,6 @@ namespace OpenRA
 			this.modData = modData;
 			var size = new Size(width, height);
 			Grid = modData.Manifest.Get<MapGrid>();
-			var tileRef = new TerrainTile(tileset.Templates.First().Key, 0);
 
 			Title = "Name your map here";
 			Author = "Your name here";
@@ -310,7 +309,7 @@ namespace OpenRA
 				Tiles.CellEntryChanged += UpdateRamp;
 			}
 
-			Tiles.Clear(tileRef);
+			Tiles.Clear(tileset.DefaultTerrainTile);
 
 			PostInit();
 		}
@@ -430,12 +429,17 @@ namespace OpenRA
 			foreach (var uv in AllCells.MapCoords)
 				CustomTerrain[uv] = byte.MaxValue;
 
-			// Cache initial ramp state
+			// Replace invalid tiles and cache ramp state
 			var tileset = Rules.TileSet;
-			foreach (var uv in AllCells)
+			foreach (var uv in AllCells.MapCoords)
 			{
-				var tile = tileset.GetTileInfo(Tiles[uv]);
-				Ramp[uv] = tile != null ? tile.RampType : (byte)0;
+				if (!tileset.TryGetTileInfo(Tiles[uv], out var info))
+				{
+					Tiles[uv] = tileset.DefaultTerrainTile;
+					info = tileset.GetTileInfo(tileset.DefaultTerrainTile);
+				}
+
+				Ramp[uv] = info.RampType;
 			}
 
 			AllEdgeCells = UpdateEdgeCells();
