@@ -28,7 +28,7 @@ jobs:
 
   windows:
     name: Windows (Framework 4.7)
-    runs-on: windows-2019
+    runs-on: windows-2016
 
     steps:
       - name: Clone Repository
