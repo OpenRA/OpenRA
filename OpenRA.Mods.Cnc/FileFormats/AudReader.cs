@@ -66,6 +66,9 @@ namespace OpenRA.Mods.Cnc.FileFormats
 				if (!Enum.IsDefined(typeof(SoundFormat), readFormat))
 					return false;
 
+				if (readFormat == (int)SoundFormat.WestwoodCompressed)
+					throw new NotImplementedException();
+
 				var offsetPosition = s.Position;
 
 				result = () =>
