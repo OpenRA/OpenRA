@@ -107,12 +107,13 @@ namespace OpenRA.Graphics
 							throw new YamlException("Sprite type mismatch. Terrain sprites must all be either Indexed or RGBA.");
 
 						var s = sheetBuilder.Allocate(f.Size, zRamp, offset);
-						Util.FastCopyIntoChannel(s, f.Data);
+						Util.FastCopyIntoChannel(s, f.Data, f.Type);
 
 						if (tileset.EnableDepth)
 						{
 							var ss = sheetBuilder.Allocate(f.Size, zRamp, offset);
-							Util.FastCopyIntoChannel(ss, allFrames[j + frameCount].Data);
+							var depthFrame = allFrames[j + frameCount];
+							Util.FastCopyIntoChannel(ss, depthFrame.Data, depthFrame.Type);
 
 							// s and ss are guaranteed to use the same sheet
 							// because of the custom terrain sheet allocation
@@ -136,7 +137,10 @@ namespace OpenRA.Graphics
 			}
 
 			// 1x1px transparent tile
-			missingTile = sheetBuilder.Add(new byte[sheetBuilder.Type == SheetType.BGRA ? 4 : 1], new Size(1, 1));
+			if (sheetBuilder.Type == SheetType.BGRA)
+				missingTile = sheetBuilder.Add(new byte[4], SpriteFrameType.BGRA, new Size(1, 1));
+			else
+				missingTile = sheetBuilder.Add(new byte[1], SpriteFrameType.Indexed, new Size(1, 1));
 
 			Sheet.ReleaseBuffer();
 		}

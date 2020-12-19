@@ -61,24 +61,22 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 				RegionsFromSlices(png, out frameRegions, out frameOffsets);
 
 			frames = new ISpriteFrame[frameRegions.Count];
-
+			var stride = png.PixelStride;
 			for (var i = 0; i < frames.Length; i++)
 			{
 				var frameStart = frameRegions[i].X + frameRegions[i].Y * png.Width;
 				var frameSize = new Size(frameRegions[i].Width, frameRegions[i].Height);
-				var pixelLength = png.Palette == null ? 4 : 1;
-
 				frames[i] = new PngSheetFrame()
 				{
 					Size = frameSize,
 					FrameSize = frameSize,
 					Offset = frameOffsets[i],
-					Data = new byte[frameRegions[i].Width * frameRegions[i].Height * pixelLength],
-					Type = png.Palette == null ? SpriteFrameType.BGRA : SpriteFrameType.Indexed
+					Data = new byte[frameRegions[i].Width * frameRegions[i].Height * stride],
+					Type = png.Type
 				};
 
 				for (var y = 0; y < frames[i].Size.Height; y++)
-					Array.Copy(png.Data, (frameStart + y * png.Width) * pixelLength, frames[i].Data, y * frames[i].Size.Width * pixelLength, frames[i].Size.Width * pixelLength);
+					Array.Copy(png.Data, (frameStart + y * png.Width) * stride, frames[i].Data, y * frames[i].Size.Width * stride, frames[i].Size.Width * stride);
 			}
 
 			metadata = new TypeDictionary

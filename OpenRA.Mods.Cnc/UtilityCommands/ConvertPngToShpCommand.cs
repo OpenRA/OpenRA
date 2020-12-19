@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using OpenRA.FileFormats;
+using OpenRA.Graphics;
 using OpenRA.Mods.Cnc.SpriteLoaders;
 using OpenRA.Primitives;
 
@@ -35,7 +36,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			var dest = inputFiles[0].Split('-').First() + ".shp";
 
 			var frames = inputFiles.Select(a => new Png(File.OpenRead(a))).ToList();
-			if (frames.Any(f => f.Palette == null))
+			if (frames.Any(f => f.Type != SpriteFrameType.Indexed))
 				throw new InvalidOperationException("All frames must be paletted");
 
 			var size = new Size(frames[0].Width, frames[0].Height);

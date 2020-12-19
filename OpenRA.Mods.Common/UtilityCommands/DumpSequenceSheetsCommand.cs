@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 			var count = 0;
 
-			var sb = sequences.SpriteCache.SheetBuilders[SpriteFrameType.Indexed];
+			var sb = sequences.SpriteCache.SheetBuilders[SheetType.Indexed];
 			foreach (var s in sb.AllSheets)
 			{
 				var max = s == sb.Current ? (int)sb.CurrentChannel + 1 : 4;
@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					s.AsPng((TextureChannel)ChannelMasks[i], palette).Save("{0}.png".F(count++));
 			}
 
-			sb = sequences.SpriteCache.SheetBuilders[SpriteFrameType.BGRA];
+			sb = sequences.SpriteCache.SheetBuilders[SheetType.BGRA];
 			foreach (var s in sb.AllSheets)
 				s.AsPng().Save("{0}.png".F(count++));
 

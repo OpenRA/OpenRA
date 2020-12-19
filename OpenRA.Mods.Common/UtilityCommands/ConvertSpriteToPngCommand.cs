@@ -78,16 +78,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 							frame.Size.Width);
 				}
 
-				if (frame.Type == SpriteFrameType.BGRA)
-				{
-					var png = new Png(pngData, frameSize.Width, frameSize.Height);
-					png.Save("{0}-{1:D4}.png".F(prefix, count++));
-				}
-				else
-				{
-					var png = new Png(pngData, frameSize.Width, frameSize.Height, palColors);
-					png.Save("{0}-{1:D4}.png".F(prefix, count++));
-				}
+				var png = new Png(pngData, SpriteFrameType.Indexed, frameSize.Width, frameSize.Height, palColors);
+				png.Save("{0}-{1:D4}.png".F(prefix, count++));
 			}
 
 			Console.WriteLine("Saved {0}-[0..{1}].png", prefix, count - 1);

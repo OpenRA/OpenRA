@@ -69,9 +69,16 @@ namespace OpenRA.Graphics
 					// Hotspot is specified relative to the center of the frame
 					var hotspot = f.Offset.ToInt2() - kv.Value.Hotspot - new int2(f.Size) / 2;
 
-					// SheetBuilder expects data in BGRA
-					var data = FrameToBGRA(kv.Key, f, palette);
-					c.Sprites[c.Length++] = sheetBuilder.Add(data, f.Size, 0, hotspot);
+					// Resolve indexed data to real colours
+					var data = f.Data;
+					var type = f.Type;
+					if (type == SpriteFrameType.Indexed)
+					{
+						data = ConvertIndexedToBgra(kv.Key, f, palette);
+						type = SpriteFrameType.BGRA;
+					}
+
+					c.Sprites[c.Length++] = sheetBuilder.Add(data, type, f.Size, 0, hotspot);
 
 					// Bounds relative to the hotspot
 					c.Bounds = Rectangle.Union(c.Bounds, new Rectangle(hotspot, f.Size));
@@ -217,33 +224,27 @@ namespace OpenRA.Graphics
 			Update();
 		}
 
-		public static byte[] FrameToBGRA(string name, ISpriteFrame frame, ImmutablePalette palette)
+		public static byte[] ConvertIndexedToBgra(string name, ISpriteFrame frame, ImmutablePalette palette)
 		{
-			// Data is already in BGRA format
-			if (frame.Type == SpriteFrameType.BGRA)
-				return frame.Data;
+			if (frame.Type != SpriteFrameType.Indexed)
+				throw new ArgumentException("ConvertIndexedToBgra requires input frames to be indexed.", nameof(frame));
 
-			// Cursors may be either native BGRA or Indexed.
-			// Indexed sprites are converted to BGRA using the referenced palette.
 			// All palettes must be explicitly referenced, even if they are embedded in the sprite.
-			if (frame.Type == SpriteFrameType.Indexed && palette == null)
+			if (palette == null)
 				throw new InvalidOperationException("Cursor sequence `{0}` attempted to load an indexed sprite but does not define Palette".F(name));
 
 			var width = frame.Size.Width;
 			var height = frame.Size.Height;
 			var data = new byte[4 * width * height];
-			for (var j = 0; j < height; j++)
+			unsafe
 			{
-				for (var i = 0; i < width; i++)
+				// Cast the data to an int array so we can copy the src data directly
+				fixed (byte* bd = &data[0])
 				{
-					var rgba = palette[frame.Data[j * width + i]];
-					var k = 4 * (j * width + i);
-
-					// Convert RGBA to BGRA
-					data[k] = (byte)(rgba >> 16);
-					data[k + 1] = (byte)(rgba >> 8);
-					data[k + 2] = (byte)(rgba >> 0);
-					data[k + 3] = (byte)(rgba >> 24);
+					var rgba = (uint*)bd;
+					for (var j = 0; j < height; j++)
+						for (var i = 0; i < width; i++)
+							rgba[j * width + i] = palette[frame.Data[j * width + i]];
 				}
 			}
 

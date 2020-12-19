@@ -62,7 +62,7 @@ namespace OpenRA.Graphics
 			vertices[nv + 5] = new Vertex(a, r.Left, r.Top, sl, st, paletteTextureIndex, fAttribC, tint);
 		}
 
-		public static void FastCopyIntoChannel(Sprite dest, byte[] src)
+		public static void FastCopyIntoChannel(Sprite dest, byte[] src, SpriteFrameType srcType)
 		{
 			var destData = dest.Sheet.GetData();
 			var width = dest.Bounds.Width;
@@ -85,12 +85,34 @@ namespace OpenRA.Graphics
 						{
 							for (var i = 0; i < width; i++)
 							{
-								var r = src[k++];
-								var g = src[k++];
-								var b = src[k++];
-								var a = src[k++];
-								var cc = Color.FromArgb(a, r, g, b);
+								byte r, g, b, a;
+								switch (srcType)
+								{
+									case SpriteFrameType.BGRA:
+									case SpriteFrameType.BGR:
+									{
+										b = src[k++];
+										g = src[k++];
+										r = src[k++];
+										a = srcType == SpriteFrameType.BGRA ? src[k++] : (byte)255;
+										break;
+									}
 
+									case SpriteFrameType.RGBA:
+									case SpriteFrameType.RGB:
+									{
+										r = src[k++];
+										g = src[k++];
+										b = src[k++];
+										a = srcType == SpriteFrameType.RGBA ? src[k++] : (byte)255;
+										break;
+									}
+
+									default:
+										throw new InvalidOperationException("Unknown SpriteFrameType {0}".F(srcType));
+								}
+
+								var cc = Color.FromArgb(a, r, g, b);
 								data[(y + j) * destStride + x + i] = PremultiplyAlpha(cc).ToArgb();
 							}
 						}
@@ -139,16 +161,29 @@ namespace OpenRA.Graphics
 						for (var i = 0; i < width; i++)
 						{
 							Color cc;
-							if (src.Palette == null)
+							switch (src.Type)
 							{
-								var r = src.Data[k++];
-								var g = src.Data[k++];
-								var b = src.Data[k++];
-								var a = src.Data[k++];
-								cc = Color.FromArgb(a, r, g, b);
+								case SpriteFrameType.Indexed:
+								{
+									cc = src.Palette[src.Data[k++]];
+									break;
+								}
+
+								case SpriteFrameType.RGBA:
+								case SpriteFrameType.RGB:
+								{
+									var r = src.Data[k++];
+									var g = src.Data[k++];
+									var b = src.Data[k++];
+									var a = src.Type == SpriteFrameType.RGBA ? src.Data[k++] : (byte)255;
+									cc = Color.FromArgb(a, r, g, b);
+									break;
+								}
+
+								// Pngs don't support BGR[A], so no need to include them here
+								default:
+									throw new InvalidOperationException("Unknown SpriteFrameType {0}".F(src.Type));
 							}
-							else
-								cc = src.Palette[src.Data[k++]];
 
 							data[(y + j) * destStride + x + i] = PremultiplyAlpha(cc).ToArgb();
 						}
