@@ -52,8 +52,15 @@ namespace OpenRA.Graphics
 		{
 			switch (t)
 			{
-				case SpriteFrameType.Indexed: return SheetType.Indexed;
-				case SpriteFrameType.BGRA: return SheetType.BGRA;
+				case SpriteFrameType.Indexed:
+					return SheetType.Indexed;
+
+				// Util.FastCopyIntoChannel will automatically convert these to BGRA
+				case SpriteFrameType.BGRA:
+				case SpriteFrameType.BGR:
+				case SpriteFrameType.RGBA:
+				case SpriteFrameType.RGB:
+					return SheetType.BGRA;
 				default: throw new NotImplementedException("Unknown SpriteFrameType {0}".F(t));
 			}
 		}
@@ -74,16 +81,16 @@ namespace OpenRA.Graphics
 			this.margin = margin;
 		}
 
-		public Sprite Add(ISpriteFrame frame) { return Add(frame.Data, frame.Size, 0, frame.Offset); }
-		public Sprite Add(byte[] src, Size size) { return Add(src, size, 0, float3.Zero); }
-		public Sprite Add(byte[] src, Size size, float zRamp, in float3 spriteOffset)
+		public Sprite Add(ISpriteFrame frame) { return Add(frame.Data, frame.Type, frame.Size, 0, frame.Offset); }
+		public Sprite Add(byte[] src, SpriteFrameType type, Size size) { return Add(src, type, size, 0, float3.Zero); }
+		public Sprite Add(byte[] src, SpriteFrameType type, Size size, float zRamp, in float3 spriteOffset)
 		{
 			// Don't bother allocating empty sprites
 			if (size.Width == 0 || size.Height == 0)
 				return new Sprite(current, Rectangle.Empty, 0, spriteOffset, channel, BlendMode.Alpha);
 
 			var rect = Allocate(size, zRamp, spriteOffset);
-			Util.FastCopyIntoChannel(rect, src);
+			Util.FastCopyIntoChannel(rect, src, type);
 			current.CommitBufferedData();
 			return rect;
 		}
@@ -94,15 +101,6 @@ namespace OpenRA.Graphics
 			Util.FastCopyIntoSprite(rect, src);
 			current.CommitBufferedData();
 			return rect;
-		}
-
-		public Sprite Add(Size size, byte paletteIndex)
-		{
-			var data = new byte[size.Width * size.Height];
-			for (var i = 0; i < data.Length; i++)
-				data[i] = paletteIndex;
-
-			return Add(data, size);
 		}
 
 		TextureChannel? NextChannel(TextureChannel t)

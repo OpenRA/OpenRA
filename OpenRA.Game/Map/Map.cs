@@ -17,6 +17,7 @@ using System.Reflection;
 using System.Text;
 using OpenRA.FileFormats;
 using OpenRA.FileSystem;
+using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Support;
 using OpenRA.Traits;
@@ -778,7 +779,7 @@ namespace OpenRA
 				}
 			}
 
-			var png = new Png(minimapData, bitmapWidth, height);
+			var png = new Png(minimapData, SpriteFrameType.BGRA, bitmapWidth, height);
 			return png.Save();
 		}
 

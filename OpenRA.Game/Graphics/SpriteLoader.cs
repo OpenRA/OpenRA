@@ -18,7 +18,29 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Graphics
 {
-	public enum SpriteFrameType { Indexed, BGRA }
+	/// <summary>
+	/// Describes the format of the pixel data in a ISpriteFrame.
+	/// Note that the channel order is defined for little-endian bytes, so BGRA corresponds
+	/// to a 32bit ARGB value, such as that returned by Color.ToArgb()!
+	/// </summary>
+	public enum SpriteFrameType
+	{
+		// 8 bit index into an external palette
+		Indexed,
+
+		// 32 bit color such as returned by Color.ToArgb() or the bmp file format
+		// (remember that little-endian systems place the little bits in the first byte!)
+		BGRA,
+
+		// Like BGRA, but without an alpha channel
+		BGR,
+
+		// 32 bit color in big-endian format, like png
+		RGBA,
+
+		// Like RGBA, but without an alpha channel
+		RGB
+	}
 
 	public interface ISpriteLoader
 	{
@@ -47,7 +69,7 @@ namespace OpenRA.Graphics
 
 	public class SpriteCache
 	{
-		public readonly Cache<SpriteFrameType, SheetBuilder> SheetBuilders;
+		public readonly Cache<SheetType, SheetBuilder> SheetBuilders;
 		readonly ISpriteLoader[] loaders;
 		readonly IReadOnlyFileSystem fileSystem;
 
@@ -57,7 +79,7 @@ namespace OpenRA.Graphics
 
 		public SpriteCache(IReadOnlyFileSystem fileSystem, ISpriteLoader[] loaders)
 		{
-			SheetBuilders = new Cache<SpriteFrameType, SheetBuilder>(t => new SheetBuilder(SheetBuilder.FrameTypeToSheetType(t)));
+			SheetBuilders = new Cache<SheetType, SheetBuilder>(t => new SheetBuilder(t));
 
 			this.fileSystem = fileSystem;
 			this.loaders = loaders;
@@ -103,7 +125,7 @@ namespace OpenRA.Graphics
 					{
 						if (unloaded[i] != null)
 						{
-							sprite[i] = SheetBuilders[unloaded[i].Type].Add(unloaded[i]);
+							sprite[i] = SheetBuilders[SheetBuilder.FrameTypeToSheetType(unloaded[i].Type)].Add(unloaded[i]);
 							unloaded[i] = null;
 						}
 					}

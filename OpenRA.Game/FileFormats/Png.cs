@@ -17,6 +17,7 @@ using System.Net;
 using System.Text;
 using ICSharpCode.SharpZipLib.Checksum;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
+using OpenRA.Graphics;
 using OpenRA.Primitives;
 
 namespace OpenRA.FileFormats
@@ -25,11 +26,14 @@ namespace OpenRA.FileFormats
 	{
 		static readonly byte[] Signature = { 0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a };
 
-		public int Width { get; set; }
-		public int Height { get; set; }
-		public Color[] Palette { get; set; }
-		public byte[] Data { get; set; }
+		public int Width { get; private set; }
+		public int Height { get; private set; }
+		public Color[] Palette { get; private set; }
+		public byte[] Data { get; private set; }
+		public SpriteFrameType Type { get; private set; }
 		public Dictionary<string, string> EmbeddedData = new Dictionary<string, string>();
+
+		public int PixelStride { get { return Type == SpriteFrameType.Indexed ? 1 : Type == SpriteFrameType.RGB ? 3 : 4; } }
 
 		public Png(Stream s)
 		{
@@ -38,9 +42,8 @@ namespace OpenRA.FileFormats
 
 			s.Position += 8;
 			var headerParsed = false;
-			var isPaletted = false;
-			var is24Bit = false;
 			var data = new List<byte>();
+			Type = SpriteFrameType.RGBA;
 
 			while (true)
 			{
@@ -65,14 +68,12 @@ namespace OpenRA.FileFormats
 
 							var bitDepth = ms.ReadUInt8();
 							var colorType = (PngColorType)ms.ReadByte();
-							isPaletted = IsPaletted(bitDepth, colorType);
-							is24Bit = colorType == PngColorType.Color;
+							if (IsPaletted(bitDepth, colorType))
+								Type = SpriteFrameType.Indexed;
+							else if (colorType == PngColorType.Color)
+								Type = SpriteFrameType.RGB;
 
-							var dataLength = Width * Height;
-							if (!isPaletted)
-								dataLength *= 4;
-
-							Data = new byte[dataLength];
+							Data = new byte[Width * Height * PixelStride];
 
 							var compression = ms.ReadByte();
 							/*var filter = */ms.ReadByte();
@@ -133,39 +134,28 @@ namespace OpenRA.FileFormats
 							{
 								using (var ds = new InflaterInputStream(ns))
 								{
-									var pxStride = isPaletted ? 1 : is24Bit ? 3 : 4;
-									var srcStride = Width * pxStride;
-									var destStride = Width * (isPaletted ? 1 : 4);
+									var pxStride = PixelStride;
+									var rowStride = Width * pxStride;
 
-									var prevLine = new byte[srcStride];
+									var prevLine = new byte[rowStride];
 									for (var y = 0; y < Height; y++)
 									{
 										var filter = (PngFilter)ds.ReadByte();
-										var line = ds.ReadBytes(srcStride);
+										var line = ds.ReadBytes(rowStride);
 
-										for (var i = 0; i < srcStride; i++)
+										for (var i = 0; i < rowStride; i++)
 											line[i] = i < pxStride
 												? UnapplyFilter(filter, line[i], 0, prevLine[i], 0)
 												: UnapplyFilter(filter, line[i], line[i - pxStride], prevLine[i], prevLine[i - pxStride]);
 
-										if (is24Bit)
-										{
-											// Fold alpha channel into RGB data
-											for (var i = 0; i < line.Length / 3; i++)
-											{
-												Array.Copy(line, 3 * i, Data, y * destStride + 4 * i, 3);
-												Data[y * destStride + 4 * i + 3] = 255;
-											}
-										}
-										else
-											Array.Copy(line, 0, Data, y * destStride, line.Length);
+										Array.Copy(line, 0, Data, y * rowStride, rowStride);
 
 										prevLine = line;
 									}
 								}
 							}
 
-							if (isPaletted && Palette == null)
+							if (Type == SpriteFrameType.Indexed && Palette == null)
 								throw new InvalidDataException("Non-Palette indexed PNG are not supported.");
 
 							return;
@@ -175,7 +165,7 @@ namespace OpenRA.FileFormats
 			}
 		}
 
-		public Png(byte[] data, int width, int height, Color[] palette = null,
+		public Png(byte[] data, SpriteFrameType type, int width, int height, Color[] palette = null,
 			Dictionary<string, string> embeddedData = null)
 		{
 			var expectLength = width * height;
@@ -185,11 +175,46 @@ namespace OpenRA.FileFormats
 			if (data.Length != expectLength)
 				throw new InvalidDataException("Input data does not match expected length");
 
+			Type = type;
 			Width = width;
 			Height = height;
 
-			Palette = palette;
-			Data = data;
+			switch (type)
+			{
+				case SpriteFrameType.Indexed:
+				case SpriteFrameType.RGBA:
+				case SpriteFrameType.RGB:
+				{
+					// Data is already in a compatible format
+					Data = data;
+					if (type == SpriteFrameType.Indexed)
+						Palette = palette;
+
+					break;
+				}
+
+				case SpriteFrameType.BGRA:
+				case SpriteFrameType.BGR:
+				{
+					// Convert to big endian
+					Data = new byte[data.Length];
+					var stride = PixelStride;
+					for (var i = 0; i < width * height; i++)
+					{
+						Data[stride * i] = data[stride * i + 2];
+						Data[stride * i + 1] = data[stride * i + 1];
+						Data[stride * i + 2] = data[stride * i + 0];
+
+						if (type == SpriteFrameType.BGRA)
+							Data[stride * i + 3] = data[stride * i + 3];
+					}
+
+					break;
+				}
+
+				default:
+					throw new InvalidDataException("Unhandled SpriteFrameType {0}".F(type));
+			}
 
 			if (embeddedData != null)
 				EmbeddedData = embeddedData;
@@ -274,9 +299,8 @@ namespace OpenRA.FileFormats
 					header.Write(IPAddress.HostToNetworkOrder(Height));
 					header.WriteByte(8); // Bit depth
 
-					var colorType = Palette != null
-						? PngColorType.Indexed | PngColorType.Color
-						: PngColorType.Color | PngColorType.Alpha;
+					var colorType = Type == SpriteFrameType.Indexed ? PngColorType.Indexed | PngColorType.Color :
+						Type == SpriteFrameType.RGB ? PngColorType.Color : PngColorType.Color | PngColorType.Alpha;
 					header.WriteByte((byte)colorType);
 
 					header.WriteByte(0); // Compression
@@ -286,7 +310,7 @@ namespace OpenRA.FileFormats
 					WritePngChunk(output, "IHDR", header);
 				}
 
-				bool alphaPalette = false;
+				var alphaPalette = false;
 				if (Palette != null)
 				{
 					using (var palette = new MemoryStream())
@@ -318,12 +342,12 @@ namespace OpenRA.FileFormats
 				{
 					using (var compressed = new DeflaterOutputStream(data))
 					{
-						var stride = Width * (Palette != null ? 1 : 4);
+						var rowStride = Width * PixelStride;
 						for (var y = 0; y < Height; y++)
 						{
 							// Write uncompressed scanlines for simplicity
 							compressed.WriteByte(0);
-							compressed.Write(Data, y * stride, stride);
+							compressed.Write(Data, y * rowStride, rowStride);
 						}
 
 						compressed.Flush();
