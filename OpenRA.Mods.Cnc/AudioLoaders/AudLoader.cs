@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Cnc.AudioLoaders
 			var readFormat = s.ReadByte();
 			s.Position = start;
 
-			return Enum.IsDefined(typeof(SoundFormat), readFormat);
+			return readFormat == (int)SoundFormat.ImaAdpcm;
 		}
 
 		bool ISoundLoader.TryParseSound(Stream stream, out ISoundFormat sound)
