@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 			return (float)samples / sampleRate;
 		}
 
-		public static bool LoadSound(Stream s, out Func<Stream> result, out int sampleRate, out int sampleBits)
+		public static bool LoadSound(Stream s, out Func<Stream> result, out int sampleRate, out int sampleBits, out int channels)
 		{
 			result = null;
 			var startPosition = s.Position;
@@ -60,6 +60,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 				var outputSize = s.ReadInt32();
 				var readFlag = s.ReadByte();
 				sampleBits = (readFlag & (int)SoundFlags._16Bit) == 0 ? 8 : 16;
+				channels = (readFlag & (int)SoundFlags.Stereo) == 0 ? 1 : 2;
 
 				var readFormat = s.ReadByte();
 				if (!Enum.IsDefined(typeof(SoundFormat), readFormat))
