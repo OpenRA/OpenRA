@@ -138,9 +138,9 @@ namespace OpenRA.Graphics
 
 			// 1x1px transparent tile
 			if (sheetBuilder.Type == SheetType.BGRA)
-				missingTile = sheetBuilder.Add(new byte[4], SpriteFrameType.BGRA, new Size(1, 1));
+				missingTile = sheetBuilder.Add(new byte[4], SpriteFrameType.Bgra32, new Size(1, 1));
 			else
-				missingTile = sheetBuilder.Add(new byte[1], SpriteFrameType.Indexed, new Size(1, 1));
+				missingTile = sheetBuilder.Add(new byte[1], SpriteFrameType.Indexed8, new Size(1, 1));
 
 			Sheet.ReleaseBuffer();
 		}

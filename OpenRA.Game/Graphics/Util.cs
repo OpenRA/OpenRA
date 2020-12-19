@@ -88,23 +88,23 @@ namespace OpenRA.Graphics
 								byte r, g, b, a;
 								switch (srcType)
 								{
-									case SpriteFrameType.BGRA:
-									case SpriteFrameType.BGR:
+									case SpriteFrameType.Bgra32:
+									case SpriteFrameType.Bgr24:
 									{
 										b = src[k++];
 										g = src[k++];
 										r = src[k++];
-										a = srcType == SpriteFrameType.BGRA ? src[k++] : (byte)255;
+										a = srcType == SpriteFrameType.Bgra32 ? src[k++] : (byte)255;
 										break;
 									}
 
-									case SpriteFrameType.RGBA:
-									case SpriteFrameType.RGB:
+									case SpriteFrameType.Rgba32:
+									case SpriteFrameType.Rgb24:
 									{
 										r = src[k++];
 										g = src[k++];
 										b = src[k++];
-										a = srcType == SpriteFrameType.RGBA ? src[k++] : (byte)255;
+										a = srcType == SpriteFrameType.Rgba32 ? src[k++] : (byte)255;
 										break;
 									}
 
@@ -163,19 +163,19 @@ namespace OpenRA.Graphics
 							Color cc;
 							switch (src.Type)
 							{
-								case SpriteFrameType.Indexed:
+								case SpriteFrameType.Indexed8:
 								{
 									cc = src.Palette[src.Data[k++]];
 									break;
 								}
 
-								case SpriteFrameType.RGBA:
-								case SpriteFrameType.RGB:
+								case SpriteFrameType.Rgba32:
+								case SpriteFrameType.Rgb24:
 								{
 									var r = src.Data[k++];
 									var g = src.Data[k++];
 									var b = src.Data[k++];
-									var a = src.Type == SpriteFrameType.RGBA ? src.Data[k++] : (byte)255;
+									var a = src.Type == SpriteFrameType.Rgba32 ? src.Data[k++] : (byte)255;
 									cc = Color.FromArgb(a, r, g, b);
 									break;
 								}

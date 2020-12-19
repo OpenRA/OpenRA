@@ -439,7 +439,7 @@ namespace OpenRA
 				for (var y = 0; y < destHeight; y++)
 					Array.Copy(src, 4 * y * srcWidth, dest, 4 * y * destWidth, 4 * destWidth);
 
-				new Png(dest, SpriteFrameType.BGRA, destWidth, destHeight).Save(path);
+				new Png(dest, SpriteFrameType.Bgra32, destWidth, destHeight).Save(path);
 			});
 		}
 

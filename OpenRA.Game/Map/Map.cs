@@ -781,7 +781,7 @@ namespace OpenRA
 				}
 			}
 
-			var png = new Png(minimapData, SpriteFrameType.BGRA, bitmapWidth, height);
+			var png = new Png(minimapData, SpriteFrameType.Bgra32, bitmapWidth, height);
 			return png.Save();
 		}
 

@@ -52,14 +52,14 @@ namespace OpenRA.Graphics
 		{
 			switch (t)
 			{
-				case SpriteFrameType.Indexed:
+				case SpriteFrameType.Indexed8:
 					return SheetType.Indexed;
 
 				// Util.FastCopyIntoChannel will automatically convert these to BGRA
-				case SpriteFrameType.BGRA:
-				case SpriteFrameType.BGR:
-				case SpriteFrameType.RGBA:
-				case SpriteFrameType.RGB:
+				case SpriteFrameType.Bgra32:
+				case SpriteFrameType.Bgr24:
+				case SpriteFrameType.Rgba32:
+				case SpriteFrameType.Rgb24:
 					return SheetType.BGRA;
 				default: throw new NotImplementedException("Unknown SpriteFrameType {0}".F(t));
 			}

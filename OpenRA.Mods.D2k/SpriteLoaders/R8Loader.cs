@@ -22,7 +22,7 @@ namespace OpenRA.Mods.D2k.SpriteLoaders
 	{
 		class R8Frame : ISpriteFrame
 		{
-			public SpriteFrameType Type { get { return SpriteFrameType.Indexed; } }
+			public SpriteFrameType Type { get { return SpriteFrameType.Indexed8; } }
 			public Size Size { get; private set; }
 			public Size FrameSize { get; private set; }
 			public float2 Offset { get; private set; }
