@@ -72,10 +72,10 @@ namespace OpenRA.Graphics
 					// Resolve indexed data to real colours
 					var data = f.Data;
 					var type = f.Type;
-					if (type == SpriteFrameType.Indexed)
+					if (type == SpriteFrameType.Indexed8)
 					{
 						data = ConvertIndexedToBgra(kv.Key, f, palette);
-						type = SpriteFrameType.BGRA;
+						type = SpriteFrameType.Bgra32;
 					}
 
 					c.Sprites[c.Length++] = sheetBuilder.Add(data, type, f.Size, 0, hotspot);
@@ -226,7 +226,7 @@ namespace OpenRA.Graphics
 
 		public static byte[] ConvertIndexedToBgra(string name, ISpriteFrame frame, ImmutablePalette palette)
 		{
-			if (frame.Type != SpriteFrameType.Indexed)
+			if (frame.Type != SpriteFrameType.Indexed8)
 				throw new ArgumentException("ConvertIndexedToBgra requires input frames to be indexed.", nameof(frame));
 
 			// All palettes must be explicitly referenced, even if they are embedded in the sprite.

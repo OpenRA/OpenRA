@@ -82,7 +82,7 @@ namespace OpenRA.Graphics
 			if (Type == SheetType.Indexed)
 				throw new InvalidOperationException("AsPng() cannot be called on Indexed sheets.");
 
-			return new Png(GetData(), SpriteFrameType.BGRA, Size.Width, Size.Height);
+			return new Png(GetData(), SpriteFrameType.Bgra32, Size.Width, Size.Height);
 		}
 
 		public Png AsPng(TextureChannel channel, IPalette pal)
@@ -103,7 +103,7 @@ namespace OpenRA.Graphics
 			for (var i = 0; i < Palette.Size; i++)
 				palColors[i] = pal.GetColor(i);
 
-			return new Png(plane, SpriteFrameType.BGRA, Size.Width, Size.Height, palColors);
+			return new Png(plane, SpriteFrameType.Bgra32, Size.Width, Size.Height, palColors);
 		}
 
 		public void CreateBuffer()

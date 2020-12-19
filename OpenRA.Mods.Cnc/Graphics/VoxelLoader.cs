@@ -77,8 +77,8 @@ namespace OpenRA.Mods.Cnc.Graphics
 			var size = new Size(su, sv);
 			var s = sheetBuilder.Allocate(size);
 			var t = sheetBuilder.Allocate(size);
-			OpenRA.Graphics.Util.FastCopyIntoChannel(s, colors, SpriteFrameType.Indexed);
-			OpenRA.Graphics.Util.FastCopyIntoChannel(t, normals, SpriteFrameType.Indexed);
+			OpenRA.Graphics.Util.FastCopyIntoChannel(s, colors, SpriteFrameType.Indexed8);
+			OpenRA.Graphics.Util.FastCopyIntoChannel(t, normals, SpriteFrameType.Indexed8);
 
 			// s and t are guaranteed to use the same sheet because
 			// of the custom voxel sheet allocation implementation

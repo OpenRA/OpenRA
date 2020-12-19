@@ -33,7 +33,7 @@ namespace OpenRA.FileFormats
 		public SpriteFrameType Type { get; private set; }
 		public Dictionary<string, string> EmbeddedData = new Dictionary<string, string>();
 
-		public int PixelStride { get { return Type == SpriteFrameType.Indexed ? 1 : Type == SpriteFrameType.RGB ? 3 : 4; } }
+		public int PixelStride { get { return Type == SpriteFrameType.Indexed8 ? 1 : Type == SpriteFrameType.Rgb24 ? 3 : 4; } }
 
 		public Png(Stream s)
 		{
@@ -43,7 +43,7 @@ namespace OpenRA.FileFormats
 			s.Position += 8;
 			var headerParsed = false;
 			var data = new List<byte>();
-			Type = SpriteFrameType.RGBA;
+			Type = SpriteFrameType.Rgba32;
 
 			while (true)
 			{
@@ -69,9 +69,9 @@ namespace OpenRA.FileFormats
 							var bitDepth = ms.ReadUInt8();
 							var colorType = (PngColorType)ms.ReadByte();
 							if (IsPaletted(bitDepth, colorType))
-								Type = SpriteFrameType.Indexed;
+								Type = SpriteFrameType.Indexed8;
 							else if (colorType == PngColorType.Color)
-								Type = SpriteFrameType.RGB;
+								Type = SpriteFrameType.Rgb24;
 
 							Data = new byte[Width * Height * PixelStride];
 
@@ -155,7 +155,7 @@ namespace OpenRA.FileFormats
 								}
 							}
 
-							if (Type == SpriteFrameType.Indexed && Palette == null)
+							if (Type == SpriteFrameType.Indexed8 && Palette == null)
 								throw new InvalidDataException("Non-Palette indexed PNG are not supported.");
 
 							return;
@@ -181,20 +181,20 @@ namespace OpenRA.FileFormats
 
 			switch (type)
 			{
-				case SpriteFrameType.Indexed:
-				case SpriteFrameType.RGBA:
-				case SpriteFrameType.RGB:
+				case SpriteFrameType.Indexed8:
+				case SpriteFrameType.Rgba32:
+				case SpriteFrameType.Rgb24:
 				{
 					// Data is already in a compatible format
 					Data = data;
-					if (type == SpriteFrameType.Indexed)
+					if (type == SpriteFrameType.Indexed8)
 						Palette = palette;
 
 					break;
 				}
 
-				case SpriteFrameType.BGRA:
-				case SpriteFrameType.BGR:
+				case SpriteFrameType.Bgra32:
+				case SpriteFrameType.Bgr24:
 				{
 					// Convert to big endian
 					Data = new byte[data.Length];
@@ -205,7 +205,7 @@ namespace OpenRA.FileFormats
 						Data[stride * i + 1] = data[stride * i + 1];
 						Data[stride * i + 2] = data[stride * i + 0];
 
-						if (type == SpriteFrameType.BGRA)
+						if (type == SpriteFrameType.Bgra32)
 							Data[stride * i + 3] = data[stride * i + 3];
 					}
 
@@ -299,8 +299,8 @@ namespace OpenRA.FileFormats
 					header.Write(IPAddress.HostToNetworkOrder(Height));
 					header.WriteByte(8); // Bit depth
 
-					var colorType = Type == SpriteFrameType.Indexed ? PngColorType.Indexed | PngColorType.Color :
-						Type == SpriteFrameType.RGB ? PngColorType.Color : PngColorType.Color | PngColorType.Alpha;
+					var colorType = Type == SpriteFrameType.Indexed8 ? PngColorType.Indexed | PngColorType.Color :
+						Type == SpriteFrameType.Rgb24 ? PngColorType.Color : PngColorType.Color | PngColorType.Alpha;
 					header.WriteByte((byte)colorType);
 
 					header.WriteByte(0); // Compression

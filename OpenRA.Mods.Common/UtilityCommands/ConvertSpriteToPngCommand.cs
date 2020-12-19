@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 							frame.Size.Width);
 				}
 
-				var png = new Png(pngData, SpriteFrameType.Indexed, frameSize.Width, frameSize.Height, palColors);
+				var png = new Png(pngData, SpriteFrameType.Indexed8, frameSize.Width, frameSize.Height, palColors);
 				png.Save("{0}-{1:D4}.png".F(prefix, count++));
 			}
 
