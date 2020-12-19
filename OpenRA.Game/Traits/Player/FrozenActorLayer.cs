@@ -187,9 +187,12 @@ namespace OpenRA.Traits
 
 			if (flashTicks > 0 && flashTicks % 2 == 0)
 			{
-				var highlight = wr.Palette("highlight");
-				return Renderables.Concat(Renderables.Where(r => !r.IsDecoration && r is IPalettedRenderable)
-					.Select(r => ((IPalettedRenderable)r).WithPalette(highlight)));
+				return Renderables.Concat(Renderables.Where(r => !r.IsDecoration && r is IModifyableRenderable)
+					.Select(r =>
+					{
+						var mr = (IModifyableRenderable)r;
+						return mr.WithTint(float3.Ones, mr.TintModifiers | TintModifiers.ReplaceColor).WithAlpha(0.5f);
+					}));
 			}
 
 			return Renderables;

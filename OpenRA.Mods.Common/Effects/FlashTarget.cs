@@ -49,10 +49,14 @@ namespace OpenRA.Mods.Common.Effects
 		{
 			if (target.IsInWorld && tick >= 0 && tick % interval == 0)
 			{
-				var palette = wr.Palette(player == null ? "highlight" : "highlight" + player.InternalName);
+				var color = player == null ? float3.Ones : new float3(player.Color.R, player.Color.G, player.Color.B) / 255f;
 				return target.Render(wr)
-					.Where(r => !r.IsDecoration && r is IPalettedRenderable)
-					.Select(r => ((IPalettedRenderable)r).WithPalette(palette));
+					.Where(r => !r.IsDecoration && r is IModifyableRenderable)
+					.Select(r =>
+					{
+						var mr = (IModifyableRenderable)r;
+						return mr.WithTint(color, mr.TintModifiers | TintModifiers.ReplaceColor).WithAlpha(0.5f);
+					});
 			}
 
 			return SpriteRenderable.None;

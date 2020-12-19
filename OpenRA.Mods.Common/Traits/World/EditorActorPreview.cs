@@ -117,9 +117,13 @@ namespace OpenRA.Mods.Common.Traits
 			var items = previews.SelectMany(p => p.Render(worldRenderer, CenterPosition));
 			if (Selected)
 			{
-				var highlight = worldRenderer.Palette("highlight");
-				var overlay = items.Where(r => !r.IsDecoration && r is IPalettedRenderable)
-					.Select(r => ((IPalettedRenderable)r).WithPalette(highlight));
+				var overlay = items.Where(r => !r.IsDecoration && r is IModifyableRenderable)
+					.Select(r =>
+					{
+						var mr = (IModifyableRenderable)r;
+						return mr.WithTint(float3.Ones, mr.TintModifiers | TintModifiers.ReplaceColor).WithAlpha(0.5f);
+					});
+
 				return items.Concat(overlay);
 			}
 

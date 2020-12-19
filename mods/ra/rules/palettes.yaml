@@ -58,12 +58,6 @@
 		G: 0
 		B: 0
 		A: 140
-	PaletteFromRGBA@highlight:
-		Name: highlight
-		R: 255
-		G: 255
-		B: 255
-		A: 128
 	PaletteFromRGBA@moveflash:
 		Name: moveflash
 		R: 255
@@ -100,7 +94,6 @@
 		BaseName: cloak
 		BasePalette: player
 		Alpha: 0.55
-	PlayerHighlightPalette:
 	MenuPaletteEffect:
 	RotationPaletteEffect@defaultwater:
 		Palettes: terrain

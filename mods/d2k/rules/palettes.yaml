@@ -28,12 +28,6 @@
 		G: 0
 		B: 0
 		A: 140
-	PaletteFromRGBA@highlight:
-		Name: highlight
-		R: 255
-		G: 255
-		B: 255
-		A: 128
 	PaletteFromEmbeddedSpritePalette@moveflash-base:
 		Name: moveflash-base
 		Image: moveflsh
@@ -78,7 +72,6 @@
 		BasePalette: player
 		Alpha: 0.68
 		Premultiply: false
-	PlayerHighlightPalette:
 	FlashPaletteEffect:
 	PaletteFromPlayerPaletteWithAlpha@cloak:
 		BaseName: cloak

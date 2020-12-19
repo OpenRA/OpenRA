@@ -84,12 +84,6 @@
 		G: 0
 		B: 0
 		A: 140
-	PaletteFromRGBA@highlight:
-		Name: highlight
-		R: 255
-		G: 255
-		B: 255
-		A: 128
 	PaletteFromRGBA@moveflash:
 		Name: moveflash
 		R: 255
@@ -115,7 +109,6 @@
 	PlayerColorPalette:
 		BasePalette: terrain
 		RemapIndex: 176, 178, 180, 182, 184, 186, 189, 191, 177, 179, 181, 183, 185, 187, 188, 190
-	PlayerHighlightPalette:
 	MenuPaletteEffect:
 		MenuEffect: Desaturated
 	CloakPaletteEffect:

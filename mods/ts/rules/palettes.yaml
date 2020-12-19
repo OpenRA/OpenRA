@@ -105,12 +105,6 @@
 		G: 0
 		B: 0
 		A: 140
-	PaletteFromRGBA@highlight:
-		Name: highlight
-		R: 255
-		G: 255
-		B: 255
-		A: 128
 	PaletteFromRGBA@moveflash:
 		Name: moveflash
 		R: 255
@@ -161,7 +155,6 @@
 		BasePalette: terraindecoration
 		Name: terrainalpha
 		Alpha: 0.55
-	PlayerHighlightPalette:
 	MenuPaletteEffect:
 	GlobalLightingPaletteEffect:
 		ExcludePalettes: cursor, chrome, colorpicker, fog, shroud, alpha, effect-ignore-lighting, effect-ignore-lighting-alpha25, effect-ignore-lighting-alpha50, effect-ignore-lighting-alpha75, greentiberium, bluetiberium
