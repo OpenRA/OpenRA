@@ -1,0 +1,30 @@
+World:
+	LuaScript:
+		Scripts: shock-therapy.lua
+	MissionData:
+		WinVideo: sovtstar.vqa
+		LossVideo: sovcemet.vqa
+		Briefing: A small border town has been voicing support for the Allied cause. These people are no longer soviets, but enemies to our great empire. As enemies, they must be destroyed.\n\nTake Stalin's elite shock troopers and show them the iron might of the Soviet army. No doubt, the rabble will seek help from the minute allied influence in the area.\n\nWhatever pathetic support they can muster, it will not be enough. Crush them all -- let nothing stop you.
+
+SHOCKDROP:
+	ParatroopersPower:
+		DisplayBeacon: False
+		DropItems: SHOK, SHOK, SHOK, SHOK, SHOK
+	AlwaysVisible:
+
+LST.Reinforcement:
+	Inherits: LST
+	RejectsOrders:
+	-Buildable:
+	-Selectable:
+	RenderSprites:
+		Image: lst
+	Interactable:
+
+powerproxy.parabombs:
+	AirstrikePower:
+		DisplayBeacon: False
+
+HEALCRATE:
+	Crate:
+		Lifetime: 0
