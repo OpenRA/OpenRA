@@ -1,0 +1,117 @@
+Container@ADVANCED_PANEL:
+	Logic: AdvancedSettingsLogic
+	Width: PARENT_RIGHT - 10
+	Height: PARENT_BOTTOM
+	Children:
+		Checkbox@NAT_DISCOVERY:
+			X: 15
+			Y: 43
+			Width: 200
+			Height: 20
+			Font: Regular
+			Text: Enable Network Discovery (UPnP)
+		Checkbox@PERFTEXT_CHECKBOX:
+			X: 15
+			Y: 73
+			Width: 300
+			Height: 20
+			Font: Regular
+			Text: Show Performance Text
+		Checkbox@PERFGRAPH_CHECKBOX:
+			X: 15
+			Y: 103
+			Width: 300
+			Height: 20
+			Font: Regular
+			Text: Show Performance Graph
+		Checkbox@FETCH_NEWS_CHECKBOX:
+			X: 310
+			Y: 43
+			Width: 300
+			Height: 20
+			Font: Regular
+			Text: Fetch Community News
+		Checkbox@CHECK_VERSION_CHECKBOX:
+			X: 310
+			Y: 73
+			Width: 300
+			Height: 20
+			Font: Regular
+			Text: Check for Updates
+		Checkbox@SENDSYSINFO_CHECKBOX:
+			X: 310
+			Y: 103
+			Width: 300
+			Height: 20
+			Font: Regular
+			Text: Send System Information
+		Label@SENDSYSINFO_DESC:
+			X: 310
+			Y: 118
+			Width: 255
+			Height: 30
+			Font: Tiny
+			WordWrap: True
+			Text: Your Operating System, OpenGL and .NET runtime versions, and language settings will be sent along with an anonymous ID to help prioritize future development.
+		Label@DEBUG_TITLE:
+			Y: 190
+			Width: PARENT_RIGHT
+			Font: Bold
+			Text: Developer
+			Align: Center
+		Container@DEBUG_HIDDEN_LABEL:
+			Y: 245
+			Width: PARENT_RIGHT
+			Children:
+				Label@A:
+					Width: PARENT_RIGHT
+					Height: 20
+					Font: Regular
+					Text: Additional developer-specific options can be enabled via the
+					Align: Center
+				Label@B:
+					Y: 20
+					Width: PARENT_RIGHT
+					Height: 20
+					Font: Regular
+					Text: Debug.DisplayDeveloperSettings setting or launch flag
+					Align: Center
+		Container@DEBUG_OPTIONS:
+			Width: PARENT_RIGHT
+			Height: PARENT_BOTTOM
+			Children:
+				Checkbox@BOTDEBUG_CHECKBOX:
+					X: 15
+					Y: 213
+					Width: 300
+					Height: 20
+					Font: Regular
+					Text: Show Bot Debug Messages
+				Checkbox@CHECKUNSYNCED_CHECKBOX:
+					X: 15
+					Y: 243
+					Width: 300
+					Height: 20
+					Font: Regular
+					Text: Check Sync around Unsynced Code
+				Checkbox@CHECKBOTSYNC_CHECKBOX:
+					X: 15
+					Y: 273
+					Width: 300
+					Height: 20
+					Font: Regular
+					Text: Check Sync around BotModule Code
+				Checkbox@LUADEBUG_CHECKBOX:
+					X: 310
+					Y: 213
+					Width: 300
+					Height: 20
+					Font: Regular
+					Text: Show Map Debug Messages
+				Checkbox@REPLAY_COMMANDS_CHECKBOX:
+					X: 310
+					Y: 243
+					Width: 300
+					Height: 20
+					Font: Regular
+					Text: Enable Debug Commands in Replays

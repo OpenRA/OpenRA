@@ -73,7 +73,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			mouseControlDescModern.IsVisible = () => !gs.UseClassicMouseStyle;
 
 			var mouseControlDropdown = widget.Get<DropDownButtonWidget>("MOUSE_CONTROL_DROPDOWN");
-			mouseControlDropdown.OnMouseDown = _ => SettingsLogic.ShowMouseControlDropdown(mouseControlDropdown, gs);
+			mouseControlDropdown.OnMouseDown = _ => InputSettingsLogic.ShowMouseControlDropdown(mouseControlDropdown, gs);
 			mouseControlDropdown.GetText = () => gs.UseClassicMouseStyle ? "Classic" : "Modern";
 
 			foreach (var container in new[] { mouseControlDescClassic, mouseControlDescModern })
@@ -99,7 +99,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				edgescrollDesc.IsVisible = () => gs.ViewportEdgeScroll;
 			}
 
-			SettingsLogic.BindCheckboxPref(widget, "EDGESCROLL_CHECKBOX", gs, "ViewportEdgeScroll");
+			SettingsUtils.BindCheckboxPref(widget, "EDGESCROLL_CHECKBOX", gs, "ViewportEdgeScroll");
 
 			var colorDropdown = widget.Get<DropDownButtonWidget>("PLAYERCOLOR");
 			colorDropdown.IsDisabled = () => worldRenderer.World.Type != WorldType.Shellmap;
@@ -108,13 +108,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var viewportSizes = modData.Manifest.Get<WorldViewportSizes>();
 			var battlefieldCameraDropDown = widget.Get<DropDownButtonWidget>("BATTLEFIELD_CAMERA_DROPDOWN");
-			var battlefieldCameraLabel = new CachedTransform<WorldViewport, string>(vs => SettingsLogic.ViewportSizeNames[vs]);
-			battlefieldCameraDropDown.OnMouseDown = _ => SettingsLogic.ShowBattlefieldCameraDropdown(battlefieldCameraDropDown, viewportSizes, ds);
+			var battlefieldCameraLabel = new CachedTransform<WorldViewport, string>(vs => DisplaySettingsLogic.ViewportSizeNames[vs]);
+			battlefieldCameraDropDown.OnMouseDown = _ => DisplaySettingsLogic.ShowBattlefieldCameraDropdown(battlefieldCameraDropDown, viewportSizes, ds);
 			battlefieldCameraDropDown.GetText = () => battlefieldCameraLabel.Update(ds.ViewportDistance);
 
 			var uiScaleDropdown = widget.Get<DropDownButtonWidget>("UI_SCALE_DROPDOWN");
 			var uiScaleLabel = new CachedTransform<float, string>(s => "{0}%".F((int)(100 * s)));
-			uiScaleDropdown.OnMouseDown = _ => SettingsLogic.ShowUIScaleDropdown(uiScaleDropdown, ds);
+			uiScaleDropdown.OnMouseDown = _ => DisplaySettingsLogic.ShowUIScaleDropdown(uiScaleDropdown, ds);
 			uiScaleDropdown.GetText = () => uiScaleLabel.Update(ds.UIScale);
 
 			var minResolution = viewportSizes.MinEffectiveResolution;
@@ -125,7 +125,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			uiScaleDropdown.IsDisabled = () => disableUIScale;
 
-			SettingsLogic.BindCheckboxPref(widget, "CURSORDOUBLE_CHECKBOX", ds, "CursorDouble");
+			SettingsUtils.BindCheckboxPref(widget, "CURSORDOUBLE_CHECKBOX", ds, "CursorDouble");
 
 			widget.Get<ButtonWidget>("CONTINUE_BUTTON").OnClick = () =>
 			{

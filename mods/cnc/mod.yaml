@@ -124,6 +124,11 @@ ChromeLayout:
 	cnc|chrome/ingame-debuginfo.yaml
 	cnc|chrome/music.yaml
 	cnc|chrome/settings.yaml
+	cnc|chrome/settings-display.yaml
+	cnc|chrome/settings-audio.yaml
+	cnc|chrome/settings-input.yaml
+	cnc|chrome/settings-hotkeys.yaml
+	cnc|chrome/settings-advanced.yaml
 	cnc|chrome/credits.yaml
 	cnc|chrome/dialogs.yaml
 	cnc|chrome/tooltips.yaml
