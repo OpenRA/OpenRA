@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using BeaconLib;
 using OpenRA.Network;
 using OpenRA.Server;
@@ -107,7 +108,7 @@ namespace OpenRA.Mods.Common.Server
 		{
 			isBusy = true;
 
-			Action a = () =>
+			Task.Run(() =>
 			{
 				try
 				{
@@ -160,9 +161,7 @@ namespace OpenRA.Mods.Common.Server
 				}
 
 				isBusy = false;
-			};
-
-			a.BeginInvoke(null, null);
+			});
 		}
 	}
 }
