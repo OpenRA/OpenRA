@@ -35,7 +35,7 @@ WHITELISTED_THIRDPARTY_ASSEMBLIES = ICSharpCode.SharpZipLib.dll FuzzyLogicLibrar
 
 # These are shipped in our custom minimal mono runtime and also available in the full system-installed .NET/mono stack
 # This list *must* be kept in sync with the files packaged by the AppImageSupport and OpenRALauncherOSX repositories
-WHITELISTED_CORE_ASSEMBLIES = mscorlib.dll System.dll System.Configuration.dll System.Core.dll System.Numerics.dll System.Security.dll System.Xml.dll Mono.Security.dll netstandard.dll
+WHITELISTED_CORE_ASSEMBLIES = mscorlib.dll System.dll System.Configuration.dll System.Core.dll System.Numerics.dll System.Security.dll System.Xml.dll Mono.Security.dll netstandard.dll Microsoft.Win32.Registry.dll System.Security.AccessControl.dll System.Security.Principal.Windows.dll System.Security.AccessControl.dll System.Xml.Linq.dll System.Runtime.Serialization.dll System.Security.Principal.Windows.dll
 
 ######################### UTILITIES/SETTINGS ###########################
 #
