@@ -59,7 +59,7 @@ MissionStart = function()
 	FlareBoy.Move(LightFlare.Location)
 
 	Trigger.OnEnteredFootprint({ LightFlare.Location }, function(actor, id)
-		if actor.Owner == Greece then
+		if actor.Owner == England then
 			Trigger.RemoveFootprintTrigger(id)
 			local insertionFlare = Actor.Create("flare", true, { Owner = Allies, Location = LightFlare.Location })
 			Trigger.AfterDelay(DateTime.Seconds(2), function()
@@ -117,7 +117,7 @@ FootprintTriggers = function()
 				end
 			end)
 
-			DoomedHeli = Reinforcements.ReinforceWithTransport(Greece, ExtractionHelicopterType, nil, DoomedHeliPath)[1]
+			DoomedHeli = Reinforcements.ReinforceWithTransport(England, ExtractionHelicopterType, nil, DoomedHeliPath)[1]
 		end
 	end)
 
@@ -152,7 +152,7 @@ FootprintTriggers = function()
 			end)
 
 			if not GuideHut.IsDead then
-				local guide = Actor.Create("c6", true, { Owner = Greece, Location = GuideSpawn.Location })
+				local guide = Actor.Create("c6", true, { Owner = England, Location = GuideSpawn.Location })
 				guide.Move(SafePath1.Location)
 				guide.Move(SafePath2.Location)
 				guide.Move(CivilianRally.Location)
@@ -174,8 +174,8 @@ FootprintTriggers = function()
 			foot4Triggered = true
 
 			Trig4House.Owner = Civilians
-			Reinforcements.Reinforce(Greece, CivilianSquad1, { CivFlee1.Location, CivilianRally.Location }, 0)
-			Reinforcements.Reinforce(Greece, CivilianSquad2, { CivFlee2.Location, CivilianRally.Location }, 0)
+			Reinforcements.Reinforce(England, CivilianSquad1, { CivFlee1.Location, CivilianRally.Location }, 0)
+			Reinforcements.Reinforce(England, CivilianSquad2, { CivFlee2.Location, CivilianRally.Location }, 0)
 		end
 	end)
 
@@ -208,7 +208,7 @@ FootprintTriggers = function()
 			Trigger.AfterDelay(DateTime.Seconds(20), function()
 				Media.PlaySoundNotification(Allies, "AlertBuzzer")
 				Media.DisplayMessage("Extraction point is compromised. Evacuate the base!", "Headquarters")
-				local defenders = Reinforcements.Reinforce(Greece, TentTeam, { Tent.Location, TentMove.Location }, 0)
+				local defenders = Reinforcements.Reinforce(England, TentTeam, { Tent.Location, TentMove.Location }, 0)
 				Utils.Do(defenders, IdleHunt)
 				if Map.LobbyOption("difficulty") == "hard" then
 					Trigger.AfterDelay(DateTime.Seconds(30), function()
@@ -276,10 +276,10 @@ FootprintTriggers = function()
 			end)
 
 			Trigger.AfterDelay(DateTime.Seconds(26), function()
-				Reinforcements.Reinforce(Greece, CivilianSquad1, { House1.Location, TacticalNuke3.Location }, 0)
-				Reinforcements.Reinforce(Greece, CivilianSquad2, { House2.Location, TacticalNuke3.Location }, 0)
-				Reinforcements.Reinforce(Greece, CivilianSquad1, { House3.Location, TacticalNuke3.Location }, 0)
-				Reinforcements.Reinforce(Greece, CivilianSquad2, { House4.Location, TacticalNuke3.Location }, 0)
+				Reinforcements.Reinforce(England, CivilianSquad1, { House1.Location, TacticalNuke3.Location }, 0)
+				Reinforcements.Reinforce(England, CivilianSquad2, { House2.Location, TacticalNuke3.Location }, 0)
+				Reinforcements.Reinforce(England, CivilianSquad1, { House3.Location, TacticalNuke3.Location }, 0)
+				Reinforcements.Reinforce(England, CivilianSquad2, { House4.Location, TacticalNuke3.Location }, 0)
 			end)
 
 			Trigger.AfterDelay(DateTime.Seconds(15), function()
@@ -404,7 +404,7 @@ end
 
 ChurchAttack = function()
 	if not ChurchDamaged then
-		local churchPanicTeam = Reinforcements.Reinforce(Greece, CivilianSquad1, { ChurchSpawn.Location }, 0)
+		local churchPanicTeam = Reinforcements.Reinforce(England, CivilianSquad1, { ChurchSpawn.Location }, 0)
 		Utils.Do(churchPanicTeam, function(a)
 			a.Move(a.Location + CVec.New(-1,-1))
 			a.Panic()
@@ -489,7 +489,7 @@ WorldLoaded = function()
 	Allies = Player.GetPlayer("Allies")
 	USSR = Player.GetPlayer("USSR")
 	BadGuy = Player.GetPlayer("BadGuy")
-	Greece = Player.GetPlayer("Greece")
+	England = Player.GetPlayer("England")
 	Civilians = Player.GetPlayer("GreekCivilians")
 
 	Trigger.OnObjectiveAdded(Allies, function(p, id)
