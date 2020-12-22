@@ -35,7 +35,7 @@ WHITELISTED_THIRDPARTY_ASSEMBLIES = ICSharpCode.SharpZipLib.dll FuzzyLogicLibrar
 
 # These are shipped in our custom minimal mono runtime and also available in the full system-installed .NET/mono stack
 # This list *must* be kept in sync with the files packaged by the AppImageSupport and OpenRALauncherOSX repositories
-WHITELISTED_CORE_ASSEMBLIES = mscorlib.dll System.dll System.Configuration.dll System.Core.dll System.Numerics.dll System.Security.dll System.Xml.dll Mono.Security.dll netstandard.dll Microsoft.Win32.Registry.dll System.Security.AccessControl.dll System.Security.Principal.Windows.dll System.Security.AccessControl.dll System.Xml.Linq.dll System.Runtime.Serialization.dll System.Security.Principal.Windows.dll
+WHITELISTED_CORE_ASSEMBLIES = mscorlib.dll System.dll System.Configuration.dll System.Core.dll System.Numerics.dll System.Security.dll System.Xml.dll Mono.Security.dll netstandard.dll
 
 ######################### UTILITIES/SETTINGS ###########################
 #
@@ -84,7 +84,7 @@ OPENRA_UTILITY = ENGINE_DIR=".." $(MONO) --debug bin/OpenRA.Utility.dll
 #
 all:
 	@command -v $(firstword $(MSBUILD)) >/dev/null || (echo "OpenRA requires the '$(MSBUILD)' tool provided by Mono >= 5.18."; exit 1)
-	@$(MSBUILD) -t:Build -restore -p:Configuration=Release -p:TargetPlatform=$(TARGETPLATFORM) -p:TargetFramework=netstandard2.1 -p:Mono=true -p:DefineConstants="MONO"
+	@$(MSBUILD) -t:Build -restore -p:Configuration=Release -p:TargetPlatform=$(TARGETPLATFORM) -p:Mono=true -p:DefineConstants="MONO"
 ifeq ($(TARGETPLATFORM), unix-generic)
 	@./configure-system-libraries.sh
 endif
@@ -98,7 +98,7 @@ clean:
 check:
 	@echo
 	@echo "Compiling in debug mode..."
-	@$(MSBUILD) -t:build -restore -p:Configuration=Debug -p:TargetPlatform=$(TARGETPLATFORM) -p:TargetFramework=netstandard2.1 -p:Mono=true -p:DefineConstants="MONO"
+	@$(MSBUILD) -t:build -restore -p:Configuration=Debug -p:TargetPlatform=$(TARGETPLATFORM) -p:Mono=true -p:DefineConstants="MONO"
 	@echo
 	@echo "Checking runtime assemblies..."
 	@$(OPENRA_UTILITY) all --check-runtime-assemblies $(WHITELISTED_OPENRA_ASSEMBLIES) $(WHITELISTED_THIRDPARTY_ASSEMBLIES) $(WHITELISTED_CORE_ASSEMBLIES)
