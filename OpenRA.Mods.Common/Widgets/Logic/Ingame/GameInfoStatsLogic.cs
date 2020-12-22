@@ -101,7 +101,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					if (player == null || player.RelationshipWith(pp) == PlayerRelationship.Ally || player.WinState != WinState.Undefined)
 					{
 						flag.GetImageName = () => pp.Faction.InternalName;
-						item.Get<LabelWidget>("FACTION").GetText = () => pp.Faction.Name;
+						var factionName = pp.Faction.Name != pp.DisplayFaction.Name ? "{0} ({1})".F(pp.DisplayFaction.Name, pp.Faction.Name) : pp.Faction.Name;
+						item.Get<LabelWidget>("FACTION").GetText = () => factionName;
 					}
 					else
 					{
