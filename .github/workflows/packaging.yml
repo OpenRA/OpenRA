@@ -72,7 +72,7 @@ jobs:
       - name: Prepare Environment
         run: |
           echo "GIT_TAG=${GITHUB_REF#refs/tags/}" >> ${GITHUB_ENV}
-          sudo apt install nsis
+          sudo apt install nsis wine64
 
       - name: Package Installers
         run: |
