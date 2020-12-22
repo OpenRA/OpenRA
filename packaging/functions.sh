@@ -13,7 +13,7 @@
 #   TARGETPLATFORM: Platform type (win-x86, win-x64, osx-x64, linux-x64, unix-generic)
 #   COPY_GENERIC_LAUNCHER: If set to True the OpenRA.exe will also be copied (True, False)
 #   COPY_CNC_DLL: If set to True the OpenRA.Mods.Cnc.dll will also be copied (True, False)
-#   COPY_D2K_DLL: If set to True the OpenRA.Mods.D2k.dll and OpenRA.Mods.Cnc.dll will also be copied (True, False)
+#   COPY_D2K_DLL: If set to True the OpenRA.Mods.D2k.dll will also be copied (True, False)
 # Used by:
 #   Makefile (install target for local installs and downstream packaging)
 #   Linux AppImage packaging
