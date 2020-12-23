@@ -33,9 +33,16 @@ jobs:
       - name: Clone Repository
         uses: actions/checkout@v2
 
+      - name: Install .NET 5
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '5.0.x'
+
       - name: Check Code
         shell: powershell
         run: |
+          # Work around runtime failures on the GH Actions runner
+          dotnet nuget locals all --clear
           .\make.ps1 check
           dotnet build OpenRA.Test\OpenRA.Test.csproj -c Debug --nologo -p:TargetPlatform=win-x64
           dotnet test bin\OpenRA.Test.dll --test-adapter-path:.

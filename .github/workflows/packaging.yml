@@ -69,6 +69,11 @@ jobs:
       - name: Clone Repository
         uses: actions/checkout@v2
 
+      - name: Install .NET 5
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '5.0.x'
+
       - name: Prepare Environment
         run: |
           echo "GIT_TAG=${GITHUB_REF#refs/tags/}" >> ${GITHUB_ENV}
