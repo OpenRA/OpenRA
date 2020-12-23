@@ -217,7 +217,7 @@ notarize_package() {
 	sudo xcode-select -r
 
 	# Create a temporary read-only dmg for submission (notarization service rejects read/write images)
-	hdiutil convert "${DMG_PATH}" -format UDZO -imagekey zlib-level=9 -ov -o "${NOTARIZE_DMG_PATH}"
+	hdiutil convert "${DMG_PATH}" -format ULFO -ov -o "${NOTARIZE_DMG_PATH}"
 
 	NOTARIZATION_UUID=$(xcrun altool --notarize-app --primary-bundle-id "net.openra.packaging" -u "${MACOS_DEVELOPER_USERNAME}" -p "${MACOS_DEVELOPER_PASSWORD}" --file "${NOTARIZE_DMG_PATH}" 2>&1 | awk -F' = ' '/RequestUUID/ { print $2; exit }')
 	if [ -z "${NOTARIZATION_UUID}" ]; then
@@ -259,10 +259,17 @@ notarize_package() {
 }
 
 finalize_package() {
-	INPUT_PATH="${1}"
-	OUTPUT_PATH="${2}"
+	PLATFORM="${1}"
+	INPUT_PATH="${2}"
+	OUTPUT_PATH="${3}"
 
-	hdiutil convert "${INPUT_PATH}" -format UDZO -imagekey zlib-level=9 -ov -o "${OUTPUT_PATH}"
+	if [ "${PLATFORM}" = "compat" ]; then
+		hdiutil convert "${INPUT_PATH}" -format UDZO -imagekey zlib-level=9 -ov -o "${OUTPUT_PATH}"
+	else
+		# ULFO offers better compression and faster decompression speeds, but is only supported by 10.11+
+		hdiutil convert "${INPUT_PATH}" -format ULFO -ov -o "${OUTPUT_PATH}"
+	fi
+
 	rm "${INPUT_PATH}"
 }
 
@@ -280,5 +287,5 @@ if [ -n "${MACOS_DEVELOPER_USERNAME}" ] && [ -n "${MACOS_DEVELOPER_PASSWORD}" ];
 	wait
 fi
 
-finalize_package "build.dmg" "${OUTPUTDIR}/OpenRA-${TAG}.dmg"
-finalize_package "build-compat.dmg" "${OUTPUTDIR}/OpenRA-${TAG}-compat.dmg"
+finalize_package "standard" "build.dmg" "${OUTPUTDIR}/OpenRA-${TAG}.dmg"
+finalize_package "compat" "build-compat.dmg" "${OUTPUTDIR}/OpenRA-${TAG}-compat.dmg"
