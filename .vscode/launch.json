@@ -11,9 +11,8 @@
 				"type": "mono"
 			},
 			"request": "launch",
-			"program": "${workspaceRoot}/OpenRA.Game.exe",
-			"cwd": "${workspaceRoot}",
-			"args": ["Game.Mod=cnc"],
+			"program": "${workspaceRoot}/bin/OpenRA.exe",
+			"args": ["Game.Mod=cnc", "Engine.EngineDir=.."],
 			"preLaunchTask": "build",
 		},
 		{
@@ -26,9 +25,8 @@
 				"type": "mono"
 			},
 			"request": "launch",
-			"program": "${workspaceRoot}/OpenRA.Game.exe",
-			"cwd": "${workspaceRoot}",
-			"args": ["Game.Mod=ra"],
+			"program": "${workspaceRoot}/bin/OpenRA.exe",
+			"args": ["Game.Mod=ra", "Engine.EngineDir=.."],
 			"preLaunchTask": "build",
 		},
 		{
@@ -41,9 +39,8 @@
 				"type": "mono"
 			},
 			"request": "launch",
-			"program": "${workspaceRoot}/OpenRA.Game.exe",
-			"cwd": "${workspaceRoot}",
-			"args": ["Game.Mod=d2k"],
+			"program": "${workspaceRoot}/bin/OpenRA.exe",
+			"args": ["Game.Mod=d2k", "Engine.EngineDir=.."],
 			"preLaunchTask": "build",
 		},
 		{
@@ -56,9 +53,8 @@
 				"type": "mono"
 			},
 			"request": "launch",
-			"program": "${workspaceRoot}/OpenRA.Game.exe",
-			"cwd": "${workspaceRoot}",
-			"args": ["Game.Mod=ts"],
+			"program": "${workspaceRoot}/bin/OpenRA.exe",
+			"args": ["Game.Mod=ts", "Engine.EngineDir=.."],
 			"preLaunchTask": "build",
 		},
 	]
