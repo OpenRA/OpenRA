@@ -7,7 +7,7 @@
 	<key>CFBundleDisplayName</key>
 	<string>{MOD_NAME}</string>
 	<key>CFBundleExecutable</key>
-	<string>OpenRA</string>
+	<string>Launcher</string>
 	<key>CFBundleIconFile</key>
 	<string>{MOD_ID}.icns</string>
 	<key>CFBundleIdentifier</key>

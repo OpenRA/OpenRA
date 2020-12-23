@@ -55,13 +55,15 @@ modify_plist() {
 
 # Copies the game files and sets metadata
 build_app() {
-	TEMPLATE_DIR="${1}"
-	LAUNCHER_DIR="${2}"
-	MOD_ID="${3}"
-	MOD_NAME="${4}"
-	DISCORD_APPID="${5}"
+	PLATFORM="${1}"
+	TEMPLATE_DIR="${2}"
+	LAUNCHER_DIR="${3}"
+	MOD_ID="${4}"
+	MOD_NAME="${5}"
+	DISCORD_APPID="${6}"
 
 	LAUNCHER_CONTENTS_DIR="${LAUNCHER_DIR}/Contents"
+	LAUNCHER_ASSEMBLY_DIR="${LAUNCHER_CONTENTS_DIR}/MacOS"
 	LAUNCHER_RESOURCES_DIR="${LAUNCHER_CONTENTS_DIR}/Resources"
 
 	cp -r "${TEMPLATE_DIR}" "${LAUNCHER_DIR}"
@@ -72,7 +74,12 @@ build_app() {
 	fi
 
 	# Install engine and mod files
-	install_assemblies_mono "${SRCDIR}" "${LAUNCHER_RESOURCES_DIR}" "osx-x64" "True" "True" "${IS_D2K}"
+	if [ "${PLATFORM}" = "compat" ]; then
+		install_assemblies_mono "${SRCDIR}" "${LAUNCHER_ASSEMBLY_DIR}" "osx-x64" "True" "True" "${IS_D2K}"
+	else
+		install_assemblies "${SRCDIR}" "${LAUNCHER_ASSEMBLY_DIR}" "osx-x64" "True" "True" "${IS_D2K}"
+	fi
+
 	install_data "${SRCDIR}" "${LAUNCHER_RESOURCES_DIR}" "${MOD_ID}"
 	set_engine_version "${TAG}" "${LAUNCHER_RESOURCES_DIR}"
 	set_mod_version "${TAG}" "${LAUNCHER_RESOURCES_DIR}/mods/${MOD_ID}/mod.yaml" "${LAUNCHER_RESOURCES_DIR}/mods/modcontent/mod.yaml"
@@ -99,7 +106,6 @@ build_app() {
 
 	# Sign binaries with developer certificate
 	if [ -n "${MACOS_DEVELOPER_IDENTITY}" ]; then
-		codesign -s "${MACOS_DEVELOPER_IDENTITY}" --timestamp --options runtime -f --entitlements entitlements.plist "${LAUNCHER_RESOURCES_DIR}/"*.dylib
 		codesign -s "${MACOS_DEVELOPER_IDENTITY}" --timestamp --options runtime -f --entitlements entitlements.plist --deep "${LAUNCHER_DIR}"
 	fi
 }
@@ -120,23 +126,15 @@ build_platform() {
 
 	if [ "${PLATFORM}" = "compat" ]; then
 		modify_plist "{MINIMUM_SYSTEM_VERSION}" "10.9" "${TEMPLATE_DIR}/Contents/Info.plist"
-		clang -m64 launcher-mono.m -o "${TEMPLATE_DIR}/Contents/MacOS/OpenRA" -framework AppKit -mmacosx-version-min=10.9
+		clang -m64 launcher-mono.m -o "${TEMPLATE_DIR}/Contents/MacOS/Launcher" -framework AppKit -mmacosx-version-min=10.9
 	else
 		modify_plist "{MINIMUM_SYSTEM_VERSION}" "10.13" "${TEMPLATE_DIR}/Contents/Info.plist"
-		clang -m64 launcher.m -o "${TEMPLATE_DIR}/Contents/MacOS/OpenRA" -framework AppKit -mmacosx-version-min=10.13
-
-		curl -s -L -O https://github.com/OpenRA/OpenRALauncherOSX/releases/download/${MONO_TAG}/mono.zip || exit 3
-		unzip -qq -d "${BUILTDIR}/mono" mono.zip
-		mv "${BUILTDIR}/mono/mono" "${TEMPLATE_DIR}/Contents/MacOS/"
-		mv "${BUILTDIR}/mono/etc" "${TEMPLATE_DIR}/Contents/Resources"
-		mv "${BUILTDIR}/mono/lib" "${TEMPLATE_DIR}/Contents/Resources"
-		rm mono.zip
-		rmdir "${BUILTDIR}/mono"
+		clang -m64 launcher.m -o "${TEMPLATE_DIR}/Contents/MacOS/Launcher" -framework AppKit -mmacosx-version-min=10.13
 	fi
 
-	build_app "${TEMPLATE_DIR}" "${BUILTDIR}/OpenRA - Red Alert.app" "ra" "Red Alert" "699222659766026240"
-	build_app "${TEMPLATE_DIR}" "${BUILTDIR}/OpenRA - Tiberian Dawn.app" "cnc" "Tiberian Dawn" "699223250181292033"
-	build_app "${TEMPLATE_DIR}" "${BUILTDIR}/OpenRA - Dune 2000.app" "d2k" "Dune 2000" "712711732770111550"
+	build_app "${PLATFORM}" "${TEMPLATE_DIR}" "${BUILTDIR}/OpenRA - Red Alert.app" "ra" "Red Alert" "699222659766026240"
+	build_app "${PLATFORM}" "${TEMPLATE_DIR}" "${BUILTDIR}/OpenRA - Tiberian Dawn.app" "cnc" "Tiberian Dawn" "699223250181292033"
+	build_app "${PLATFORM}" "${TEMPLATE_DIR}" "${BUILTDIR}/OpenRA - Dune 2000.app" "d2k" "Dune 2000" "712711732770111550"
 
 	rm -rf "${TEMPLATE_DIR}"
 
