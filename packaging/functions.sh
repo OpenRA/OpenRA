@@ -118,7 +118,7 @@ install_assemblies() {
 	ORIG_PWD=$(pwd)
 	cd "${SRC_PATH}" || exit 1
 
-	dotnet publish -c Release -p:TargetPlatform="${TARGETPLATFORM}" -p:CopyGenericLauncher="${COPY_GENERIC_LAUNCHER}" -p:CopyCncDll="${COPY_CNC_DLL}" -p:CopyD2kDll="${COPY_D2K_DLL}" -r "${TARGETPLATFORM}" -o "${DEST_PATH}"
+	dotnet publish -c Release -p:TargetPlatform="${TARGETPLATFORM}" -p:PublishTrimmed=true -p:CopyGenericLauncher="${COPY_GENERIC_LAUNCHER}" -p:CopyCncDll="${COPY_CNC_DLL}" -p:CopyD2kDll="${COPY_D2K_DLL}" -r "${TARGETPLATFORM}" -o "${DEST_PATH}"
 
 	cd "${ORIG_PWD}" || exit 1
 }
