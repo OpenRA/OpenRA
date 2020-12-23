@@ -58,4 +58,9 @@
       <Analyzer Remove="@(Analyzer)" />
     </ItemGroup>
   </Target>
+  <ItemGroup>
+    <TrimmerRootAssembly Include="mscorlib" />
+    <TrimmerRootAssembly Include="netstandard" />
+    <TrimmerRootAssembly Include="System.IO.Pipes" />
+  </ItemGroup>
 </Project>
