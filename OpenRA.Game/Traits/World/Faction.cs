@@ -28,7 +28,6 @@ namespace OpenRA.Traits
 		[Desc("The side that the faction belongs to. For example, England belongs to the 'Allies' side.")]
 		public readonly string Side = null;
 
-		[Translate]
 		public readonly string Description = null;
 
 		public readonly bool Selectable = true;

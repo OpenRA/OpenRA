@@ -21,7 +21,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 	[Desc("Displays a text overlay relative to the selection box.")]
 	public class WithTextDecorationInfo : WithDecorationBaseInfo
 	{
-		[Translate]
 		[FieldLoader.Require]
 		public readonly string Text = null;
 

@@ -173,7 +173,6 @@ namespace OpenRA
 			new MapField("Voices", "VoiceDefinitions", required: false),
 			new MapField("Music", "MusicDefinitions", required: false),
 			new MapField("Notifications", "NotificationDefinitions", required: false),
-			new MapField("Translations", "TranslationDefinitions", required: false)
 		};
 
 		// Format versions
@@ -204,7 +203,6 @@ namespace OpenRA
 		public readonly MiniYaml VoiceDefinitions;
 		public readonly MiniYaml MusicDefinitions;
 		public readonly MiniYaml NotificationDefinitions;
-		public readonly MiniYaml TranslationDefinitions;
 
 		public readonly Dictionary<CPos, TerrainTile> ReplacedInvalidTerrainTiles = new Dictionary<CPos, TerrainTile>();
 

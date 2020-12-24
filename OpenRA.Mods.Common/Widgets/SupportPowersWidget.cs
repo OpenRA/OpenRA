@@ -22,10 +22,8 @@ namespace OpenRA.Mods.Common.Widgets
 {
 	public class SupportPowersWidget : Widget
 	{
-		[Translate]
 		public readonly string ReadyText = "";
 
-		[Translate]
 		public readonly string HoldText = "";
 
 		public readonly string OverlayFont = "TinyBold";

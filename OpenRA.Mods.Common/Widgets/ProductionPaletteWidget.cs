@@ -70,13 +70,10 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public readonly bool DrawTime = true;
 
-		[Translate]
 		public readonly string ReadyText = "";
 
-		[Translate]
 		public readonly string HoldText = "";
 
-		[Translate]
 		public readonly string InfiniteSymbol = "\u221E";
 
 		public int DisplayedIconCount { get; private set; }

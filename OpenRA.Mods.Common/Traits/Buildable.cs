@@ -54,7 +54,6 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Sort order for the production palette. Smaller numbers are presented earlier.")]
 		public readonly int BuildPaletteOrder = 9999;
 
-		[Translate]
 		[Desc("Text shown in the production tooltip.")]
 		public readonly string Description = "";
 

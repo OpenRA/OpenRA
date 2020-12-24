@@ -26,11 +26,9 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("The prerequisite type that this provides.")]
 		public readonly string Prerequisite = null;
 
-		[Translate]
 		[Desc("Label to display over the support power icon and in its tooltip while the power is active.")]
 		public readonly string ActiveText = "ACTIVE";
 
-		[Translate]
 		[Desc("Label to display over the support power icon and in its tooltip while the power is available but not active.")]
 		public readonly string AvailableText = "READY";
 

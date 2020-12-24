@@ -21,12 +21,10 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Internal id for this option.")]
 		public readonly string ID = null;
 
-		[Translate]
 		[FieldLoader.Require]
 		[Desc("Descriptive label for this option.")]
 		public readonly string Label = null;
 
-		[Translate]
 		[Desc("Tooltip description for this option.")]
 		public readonly string Description = null;
 

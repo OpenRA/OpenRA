@@ -21,7 +21,6 @@ namespace OpenRA.Mods.Common.Widgets
 
 	public class LabelWidget : Widget
 	{
-		[Translate]
 		public string Text = null;
 		public TextAlign Align = TextAlign.Left;
 		public TextVAlign VAlign = TextVAlign.Middle;

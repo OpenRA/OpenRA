@@ -15,7 +15,6 @@ namespace OpenRA
 {
 	public class GameSpeed
 	{
-		[Translate]
 		public readonly string Name = "Default";
 		public readonly int Timestep = 40;
 		public readonly int OrderLatency = 3;

@@ -17,11 +17,9 @@ namespace OpenRA.Traits
 	[Desc("Required for shroud and fog visibility checks. Add this to the player actor.")]
 	public class ShroudInfo : TraitInfo, ILobbyOptions
 	{
-		[Translate]
 		[Desc("Descriptive label for the fog checkbox in the lobby.")]
 		public readonly string FogCheckboxLabel = "Fog of War";
 
-		[Translate]
 		[Desc("Tooltip description for the fog checkbox in the lobby.")]
 		public readonly string FogCheckboxDescription = "Line of sight is required to view enemy forces";
 
@@ -37,11 +35,9 @@ namespace OpenRA.Traits
 		[Desc("Display order for the fog checkbox in the lobby.")]
 		public readonly int FogCheckboxDisplayOrder = 0;
 
-		[Translate]
 		[Desc("Descriptive label for the explored map checkbox in the lobby.")]
 		public readonly string ExploredMapCheckboxLabel = "Explored Map";
 
-		[Translate]
 		[Desc("Tooltip description for the explored map checkbox in the lobby.")]
 		public readonly string ExploredMapCheckboxDescription = "Initial map shroud is revealed";
 

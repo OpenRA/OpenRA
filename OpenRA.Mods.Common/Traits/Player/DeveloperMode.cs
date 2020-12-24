@@ -19,11 +19,9 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Attach this to the player actor.")]
 	public class DeveloperModeInfo : TraitInfo, ILobbyOptions
 	{
-		[Translate]
 		[Desc("Descriptive label for the developer mode checkbox in the lobby.")]
 		public readonly string CheckboxLabel = "Debug Menu";
 
-		[Translate]
 		[Desc("Tooltip description for the developer mode checkbox in the lobby.")]
 		public readonly string CheckboxDescription = "Enables cheats and developer commands";
 

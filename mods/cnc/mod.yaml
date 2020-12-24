@@ -140,9 +140,6 @@ Notifications:
 Music:
 	cnc|audio/music.yaml
 
-Translations:
-	cnc|languages/english.yaml
-
 Hotkeys:
 	common|hotkeys/game.yaml
 	common|hotkeys/observer.yaml
