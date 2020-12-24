@@ -17,7 +17,6 @@ namespace OpenRA.Mods.Common.Traits
 	public class TooltipDescriptionInfo : ConditionalTraitInfo
 	{
 		[Desc("Text shown in tooltip.")]
-		[Translate]
 		public readonly string Description = "";
 
 		[Desc("Player relationships who can view the description.")]

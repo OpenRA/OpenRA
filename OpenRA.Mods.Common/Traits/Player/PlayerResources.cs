@@ -18,11 +18,9 @@ namespace OpenRA.Mods.Common.Traits
 {
 	public class PlayerResourcesInfo : TraitInfo, ILobbyOptions
 	{
-		[Translate]
 		[Desc("Descriptive label for the starting cash option in the lobby.")]
 		public readonly string DefaultCashDropdownLabel = "Starting Cash";
 
-		[Translate]
 		[Desc("Tooltip description for the starting cash option in the lobby.")]
 		public readonly string DefaultCashDropdownDescription = "Change the amount of cash that players start with";
 

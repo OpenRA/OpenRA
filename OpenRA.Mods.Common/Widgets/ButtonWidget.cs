@@ -26,7 +26,6 @@ namespace OpenRA.Mods.Common.Widgets
 		public bool DisableKeyRepeat = false;
 		public bool DisableKeySound = false;
 
-		[Translate]
 		public string Text = "";
 		public TextAlign Align = TextAlign.Center;
 		public int LeftMargin = 5;
@@ -58,11 +57,9 @@ namespace OpenRA.Mods.Common.Widgets
 
 		protected Lazy<TooltipContainerWidget> tooltipContainer;
 
-		[Translate]
 		public string TooltipText;
 		public Func<string> GetTooltipText;
 
-		[Translate]
 		public string TooltipDesc;
 		public Func<string> GetTooltipDesc;
 

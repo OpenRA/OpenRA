@@ -66,16 +66,10 @@ namespace OpenRA
 
 		static readonly ConcurrentCache<Type, FieldLoadInfo[]> TypeLoadInfo =
 			new ConcurrentCache<Type, FieldLoadInfo[]>(BuildTypeLoadInfo);
-		static readonly ConcurrentCache<MemberInfo, bool> MemberHasTranslateAttribute =
-			new ConcurrentCache<MemberInfo, bool>(member => member.HasAttribute<TranslateAttribute>());
-
 		static readonly ConcurrentCache<string, BooleanExpression> BooleanExpressionCache =
 			new ConcurrentCache<string, BooleanExpression>(expression => new BooleanExpression(expression));
 		static readonly ConcurrentCache<string, IntegerExpression> IntegerExpressionCache =
 			new ConcurrentCache<string, IntegerExpression>(expression => new IntegerExpression(expression));
-
-		static readonly object TranslationsLock = new object();
-		static Dictionary<string, string> translations;
 
 		public static void Load(object self, MiniYaml my)
 		{
@@ -213,11 +207,7 @@ namespace OpenRA
 				return InvalidValueAction(value, fieldType, fieldName);
 			}
 			else if (fieldType == typeof(string))
-			{
-				if (field != null && MemberHasTranslateAttribute[field] && value != null)
-					return Regex.Replace(value, "@[^@]+@", m => Translate(m.Value.Substring(1, m.Value.Length - 2)), RegexOptions.Compiled);
 				return value;
-			}
 			else if (fieldType == typeof(Color))
 			{
 				if (value != null && Color.TryParse(value, out var color))
@@ -694,33 +684,7 @@ namespace OpenRA
 				return null;
 			}
 		}
-
-		public static string Translate(string key)
-		{
-			if (string.IsNullOrEmpty(key))
-				return key;
-
-			lock (TranslationsLock)
-			{
-				if (translations == null)
-					return key;
-
-				if (!translations.TryGetValue(key, out var value))
-					return key;
-
-				return value;
-			}
-		}
-
-		public static void SetTranslations(IDictionary<string, string> translations)
-		{
-			lock (TranslationsLock)
-				FieldLoader.translations = new Dictionary<string, string>(translations);
-		}
 	}
-
-	[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
-	public sealed class TranslateAttribute : Attribute { }
 
 	[AttributeUsage(AttributeTargets.Field)]
 	public sealed class FieldFromYamlKeyAttribute : FieldLoader.SerializeAttribute

@@ -15,7 +15,6 @@ namespace OpenRA.Mods.Common.Traits
 {
 	public abstract class TooltipInfoBase : ConditionalTraitInfo, Requires<IMouseBoundsInfo>
 	{
-		[Translate]
 		public readonly string Name = "";
 	}
 
@@ -28,7 +27,6 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Shown in the build palette widget.")]
 	public class TooltipInfo : TooltipInfoBase, ITooltipInfo
 	{
-		[Translate]
 		[Desc("An optional generic name (i.e. \"Soldier\" or \"Structure\")" +
 			"to be shown to chosen players.")]
 		public readonly string GenericName = null;
@@ -36,15 +34,12 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Prefix generic tooltip name with 'Ally/Neutral/EnemyPrefix'.")]
 		public readonly bool GenericStancePrefix = true;
 
-		[Translate]
 		[Desc("Prefix to display in the tooltip for allied units.")]
 		public readonly string AllyPrefix = "Allied";
 
-		[Translate]
 		[Desc("Prefix to display in the tooltip for neutral units.")]
 		public readonly string NeutralPrefix = null;
 
-		[Translate]
 		[Desc("Prefix to display in the tooltip for enemy units.")]
 		public readonly string EnemyPrefix = "Enemy";
 

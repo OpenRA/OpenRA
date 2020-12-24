@@ -185,9 +185,6 @@ Notifications:
 Music:
 	ts|audio/music.yaml
 
-Translations:
-	ts|languages/english.yaml
-
 Hotkeys:
 	common|hotkeys/game.yaml
 	common|hotkeys/observer.yaml

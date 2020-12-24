@@ -127,9 +127,6 @@ Notifications:
 Music:
 	d2k|audio/music.yaml
 
-Translations:
-	d2k|languages/english.yaml
-
 Hotkeys:
 	common|hotkeys/game.yaml
 	common|hotkeys/observer.yaml

@@ -19,7 +19,6 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Internal id for this tech level.")]
 		public readonly string Id;
 
-		[Translate]
 		[Desc("Name shown in the lobby options.")]
 		public readonly string Name;
 

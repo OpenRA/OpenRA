@@ -24,11 +24,9 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public readonly WDist InitialExploreRange = WDist.FromCells(5);
 
-		[Translate]
 		[Desc("Descriptive label for the spawn positions checkbox in the lobby.")]
 		public readonly string SeparateTeamSpawnsCheckboxLabel = "Separate Team Spawns";
 
-		[Translate]
 		[Desc("Tooltip description for the spawn positions checkbox in the lobby.")]
 		public readonly string SeparateTeamSpawnsCheckboxDescription = "Players without assigned spawn points will start as far as possible from enemy players";
 

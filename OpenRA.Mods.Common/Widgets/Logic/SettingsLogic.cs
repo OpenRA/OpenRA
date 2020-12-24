@@ -247,13 +247,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			BindIntSliderPref(panel, "FRAME_LIMIT_SLIDER", ds, "MaxFramerate");
 			BindCheckboxPref(panel, "PLAYER_STANCE_COLORS_CHECKBOX", gs, "UsePlayerStanceColors");
 
-			var languageDropDownButton = panel.GetOrNull<DropDownButtonWidget>("LANGUAGE_DROPDOWNBUTTON");
-			if (languageDropDownButton != null)
-			{
-				languageDropDownButton.OnMouseDown = _ => ShowLanguageDropdown(languageDropDownButton, modData.Languages);
-				languageDropDownButton.GetText = () => FieldLoader.Translate(ds.Language);
-			}
-
 			var windowModeDropdown = panel.Get<DropDownButtonWidget>("MODE_DROPDOWN");
 			windowModeDropdown.OnMouseDown = _ => ShowWindowModeDropdown(windowModeDropdown, ds);
 			windowModeDropdown.GetText = () => ds.Mode == WindowMode.Windowed ?
@@ -388,7 +381,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				ds.CapFramerate = dds.CapFramerate;
 				ds.MaxFramerate = dds.MaxFramerate;
-				ds.Language = dds.Language;
 				ds.GLProfile = dds.GLProfile;
 				ds.Mode = dds.Mode;
 				ds.VideoDisplay = dds.VideoDisplay;
@@ -826,21 +818,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, options.Keys, setupItem);
-		}
-
-		static void ShowLanguageDropdown(DropDownButtonWidget dropdown, IEnumerable<string> languages)
-		{
-			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
-			{
-				var item = ScrollItemWidget.Setup(itemTemplate,
-					() => Game.Settings.Graphics.Language == o,
-					() => Game.Settings.Graphics.Language = o);
-
-				item.Get<LabelWidget>("LABEL").GetText = () => FieldLoader.Translate(o);
-				return item;
-			};
-
-			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, languages, setupItem);
 		}
 
 		static void ShowStatusBarsDropdown(DropDownButtonWidget dropdown, GameSettings s)

@@ -138,42 +138,6 @@ namespace OpenRA
 
 		public IEnumerable<string> Languages { get; private set; }
 
-		void LoadTranslations(Map map)
-		{
-			var selectedTranslations = new Dictionary<string, string>();
-			var defaultTranslations = new Dictionary<string, string>();
-
-			if (!Manifest.Translations.Any())
-			{
-				Languages = new string[0];
-				return;
-			}
-
-			var yaml = MiniYaml.Load(map, Manifest.Translations, map.TranslationDefinitions);
-			Languages = yaml.Select(t => t.Key).ToArray();
-
-			foreach (var y in yaml)
-			{
-				if (y.Key == Game.Settings.Graphics.Language)
-					selectedTranslations = y.Value.ToDictionary(my => my.Value ?? "");
-				else if (y.Key == Game.Settings.Graphics.DefaultLanguage)
-					defaultTranslations = y.Value.ToDictionary(my => my.Value ?? "");
-			}
-
-			var translations = new Dictionary<string, string>();
-			foreach (var tkv in defaultTranslations.Concat(selectedTranslations))
-			{
-				if (translations.ContainsKey(tkv.Key))
-					continue;
-				if (selectedTranslations.ContainsKey(tkv.Key))
-					translations.Add(tkv.Key, selectedTranslations[tkv.Key]);
-				else
-					translations.Add(tkv.Key, tkv.Value);
-			}
-
-			FieldLoader.SetTranslations(translations);
-		}
-
 		public Map PrepareMap(string uid)
 		{
 			LoadScreen?.Display();
@@ -184,8 +148,6 @@ namespace OpenRA
 			Map map;
 			using (new Support.PerfTimer("Map"))
 				map = new Map(this, MapCache[uid].Package);
-
-			LoadTranslations(map);
 
 			// Reinitialize all our assets
 			InitializeLoaders(map);

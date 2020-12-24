@@ -21,7 +21,6 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Delay for the end game notification in milliseconds.")]
 		public readonly int NotificationDelay = 1500;
 
-		[Translate]
 		[Desc("Description of the objective.")]
 		public readonly string Objective = "Destroy all opposition!";
 
