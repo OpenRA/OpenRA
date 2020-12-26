@@ -37,6 +37,7 @@ jobs:
       - name: Check Code
         shell: powershell
         run: |
+          dotnet nuget locals all --clear
           .\make.ps1 check
           Invoke-Expression "$home\.nuget\packages\nunit.consolerunner\3.11.1\tools\nunit3-console.exe --noresult bin/OpenRA.Test.dll"
 
