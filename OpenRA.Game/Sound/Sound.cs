@@ -336,6 +336,21 @@ namespace OpenRA
 			}
 		}
 
+		public float NotificationVolume
+		{
+			get
+			{
+				return Game.Settings.Sound.NotificationVolume;
+			}
+
+			set
+			{
+				Game.Settings.Sound.NotificationVolume = value;
+				if (video != null)
+					video.Volume = value;
+			}
+		}
+
 		public float MusicSeekPosition
 		{
 			get { return music != null ? music.SeekPosition : 0; }
@@ -422,8 +437,9 @@ namespace OpenRA
 
 			if (type == null || notification == null)
 				return false;
+			var volume = Game.Settings.Sound.NotificationVolume;
 
-			return PlayPredefined(SoundType.UI, rules, player, null, type.ToLowerInvariant(), notification, variant, true, WPos.Zero, 1f, false);
+			return PlayPredefined(SoundType.UI, rules, player, null, type.ToLowerInvariant(), notification, variant, true, WPos.Zero, volume, false);
 		}
 
 		public void Dispose()

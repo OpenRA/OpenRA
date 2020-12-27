@@ -363,6 +363,18 @@ Container@SETTINGS_PANEL:
 									Y: 105
 									Width: 250
 									Height: 20
+								Label@NOTIFICATION_LABEL:
+									X: PARENT_RIGHT - WIDTH - 270
+									Y: 130
+									Width: 95
+									Height: 25
+									Align: Right
+									Text: Notification Volume:
+								ExponentialSlider@NOTIFICATION_VOLUME:
+									X: PARENT_RIGHT - WIDTH - 15
+									Y: 135
+									Width: 250
+									Height: 20
 									Ticks: 7
 						Label@AUDIO_DEVICE_LABEL:
 							X: 190 - WIDTH - 5

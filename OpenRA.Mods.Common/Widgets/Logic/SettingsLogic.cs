@@ -419,6 +419,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			BindSliderPref(panel, "SOUND_VOLUME", ss, "SoundVolume");
 			BindSliderPref(panel, "MUSIC_VOLUME", ss, "MusicVolume");
 			BindSliderPref(panel, "VIDEO_VOLUME", ss, "VideoVolume");
+			BindSliderPref(panel, "NOTIFICATION_VOLUME", ss, "NotificationVolume");
 
 			var muteCheckbox = panel.Get<CheckboxWidget>("MUTE_SOUND");
 			var muteCheckboxOnClick = muteCheckbox.OnClick;
@@ -466,6 +467,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var videoVolumeSlider = panel.Get<SliderWidget>("VIDEO_VOLUME");
 			videoVolumeSlider.OnChange += x => Game.Sound.VideoVolume = x;
 
+			var notificationVolumeSlider = panel.Get<SliderWidget>("NOTIFICATION_VOLUME");
+			videoVolumeSlider.OnChange += x => Game.Sound.VideoVolume = x;
+
 			var devices = Game.Sound.AvailableDevices();
 			soundDevice = devices.FirstOrDefault(d => d.Device == ss.Device) ?? devices.First();
 
@@ -492,6 +496,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				ss.SoundVolume = dss.SoundVolume;
 				ss.MusicVolume = dss.MusicVolume;
 				ss.VideoVolume = dss.VideoVolume;
+				ss.NotificationVolume = dss.NotificationVolume;
+
 				ss.CashTicks = dss.CashTicks;
 				ss.Mute = dss.Mute;
 				ss.MuteBackgroundMusic = dss.MuteBackgroundMusic;
@@ -503,6 +509,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				Game.Sound.MusicVolume = ss.MusicVolume;
 				panel.Get<SliderWidget>("VIDEO_VOLUME").Value = ss.VideoVolume;
 				Game.Sound.VideoVolume = ss.VideoVolume;
+				panel.Get<SliderWidget>("NOTIFICATION_VOLUME").Value = ss.NotificationVolume;
+				Game.Sound.NotificationVolume = ss.NotificationVolume;
 				Game.Sound.UnmuteAudio();
 				soundDevice = Game.Sound.AvailableDevices().First();
 			};
