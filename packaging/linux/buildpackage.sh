@@ -52,9 +52,7 @@ else
 	wget -cq https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage || exit 3
 fi
 
-# travis-ci doesn't support mounting FUSE filesystems so extract and run the contents manually
 chmod a+x appimagetool-x86_64.AppImage
-./appimagetool-x86_64.AppImage --appimage-extract
 
 echo "Building AppImage"
 mkdir "${BUILTDIR}"
@@ -127,10 +125,10 @@ build_appimage() {
 
 	# Embed update metadata if (and only if) compiled on GitHub Actions
 	if [ -n "${GITHUB_REPOSITORY}" ]; then
-		ARCH=x86_64 ./squashfs-root/AppRun --no-appstream -u "zsync|https://master.openra.net/appimagecheck?mod=${MOD_ID}&channel=${UPDATE_CHANNEL}" "${APPDIR}" "${OUTPUTDIR}/${APPIMAGE}"
+		ARCH=x86_64 ./appimagetool-x86_64.AppImage --no-appstream -u "zsync|https://master.openra.net/appimagecheck?mod=${MOD_ID}&channel=${UPDATE_CHANNEL}" "${APPDIR}" "${OUTPUTDIR}/${APPIMAGE}"
 		zsyncmake -u "https://github.com/${GITHUB_REPOSITORY}/releases/download/${TAG}/${APPIMAGE}" -o "${OUTPUTDIR}/${APPIMAGE}.zsync" "${OUTPUTDIR}/${APPIMAGE}"
 	else
-		ARCH=x86_64 ./squashfs-root/AppRun --no-appstream "${APPDIR}" "${OUTPUTDIR}/${APPIMAGE}"
+		ARCH=x86_64 ./appimagetool-x86_64.AppImage --no-appstream "${APPDIR}" "${OUTPUTDIR}/${APPIMAGE}"
 	fi
 
 	rm -rf "${APPDIR}"
@@ -141,4 +139,4 @@ build_appimage "cnc" "Tiberian Dawn" "699223250181292033"
 build_appimage "d2k" "Dune 2000" "712711732770111550"
 
 # Clean up
-rm -rf appimagetool-x86_64.AppImage squashfs-root "${BUILTDIR}"
+rm -rf appimagetool-x86_64.AppImage "${BUILTDIR}"
