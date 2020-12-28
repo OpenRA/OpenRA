@@ -38,12 +38,6 @@
 		Scale: -1
 		Offset: 255
 		AllowModifiers: false
-	PaletteFromRGBA@disabled:
-		Name: disabled
-		R: 0
-		G: 0
-		B: 0
-		A: 180
 	PaletteFromPaletteWithAlpha@effect75alpha:
 		Name: effect75alpha
 		BasePalette: effect

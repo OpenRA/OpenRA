@@ -101,7 +101,7 @@
 
 ^EmpVisualEffects:
 	WithColoredOverlay@EMPDISABLE:
-		Palette: disabled
+		Color: 000000B4
 	WithIdleOverlay@EMPDISABLE:
 		Sequence: emp-overlay
 		Palette: effect
@@ -1284,7 +1284,7 @@
 ^DisableOnLowPower:
 	WithColoredOverlay@IDISABLE:
 		RequiresCondition: disabled
-		Palette: disabled
+		Color: 000000B4
 	GrantConditionOnPowerState@LOWPOWER:
 		Condition: lowpower
 		ValidPowerStates: Low, Critical
@@ -1295,7 +1295,7 @@
 ^DisableOnPowerDown:
 	WithColoredOverlay@IDISABLE:
 		RequiresCondition: disabled
-		Palette: disabled
+		Color: 000000B4
 	GrantCondition@IDISABLE:
 		RequiresCondition: powerdown
 		Condition: disabled
