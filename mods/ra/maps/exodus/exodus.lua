@@ -73,16 +73,9 @@ SovietAirfields =
 	SovietAirfield5, SovietAirfield6, SovietAirfield7, SovietAirfield8
 }
 
-MountainEntry =
-{
-	MountainEntry1.Location, MountainEntry2.Location, MountainEntry3.Location, MountainEntry4.Location,
-	MountainEntry5.Location, MountainEntry6.Location, MountainEntry7.Location, MountainEntry8.Location
-}
+MountainEntry = { CPos.New(25, 45), CPos.New(25, 46), CPos.New(25, 47), CPos.New(25, 48), CPos.New(25, 49) }
 
-BridgeEntry =
-{
-	BridgeEntry1.Location, BridgeEntry2.Location, BridgeEntry3.Location, BridgeEntry4.Location
-}
+BridgeEntry = { CPos.New(25, 29), CPos.New(26, 29), CPos.New(27, 29), CPos.New(28, 29) }
 
 MobileConstructionVehicle = { "mcv" }
 Yak = { "yak" }
