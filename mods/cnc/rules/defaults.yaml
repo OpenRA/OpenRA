@@ -668,8 +668,8 @@
 	ActorPreviewPlaceBuildingPreview:
 		OverridePalette: placebuilding
 	SoundOnDamageTransition:
-		DamagedSounds: xplos.aud
-		DestroyedSounds: crumble.aud
+		DamagedSounds: xplobig4.aud
+		DestroyedSounds: crumble.aud, xplobig4.aud
 	WithSpriteBody:
 	Explodes:
 		Type: Footprint
