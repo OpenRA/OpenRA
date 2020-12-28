@@ -1011,7 +1011,7 @@
 		Types: Husk
 		ForceHealthPercentage: 25
 	WithColoredOverlay@IDISABLE:
-		Palette: disabled
+		Color: 000000B4
 	Targetable:
 		TargetTypes: GroundActor, Husk, NoAutoTarget
 		RequiresForceFire: true
@@ -1187,7 +1187,7 @@
 ^DisableOnLowPower:
 	WithColoredOverlay@IDISABLE:
 		RequiresCondition: disabled
-		Palette: disabled
+		Color: 000000B4
 	GrantConditionOnPowerState@LOWPOWER:
 		Condition: lowpower
 		ValidPowerStates: Low, Critical
@@ -1225,7 +1225,7 @@
 ^DisabledByPowerOutage:
 	WithColoredOverlay@IDISABLE:
 		RequiresCondition: disabled
-		Palette: disabled
+		Color: 000000B4
 	GrantCondition@IDISABLE:
 		RequiresCondition: power-outage
 		Condition: disabled

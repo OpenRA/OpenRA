@@ -86,6 +86,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				// Bleed only changes here
 				new RenameMPTraits(),
 				new RemovePlayerHighlightPalette(),
+				new ReplaceWithColoredOverlayPalette(),
 			})
 		};
 
