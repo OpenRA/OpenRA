@@ -19,7 +19,6 @@ cd "$(dirname "$0")" || exit 1
 TAG="$1"
 OUTPUTDIR="$2"
 SRCDIR="$(pwd)/../.."
-BUILTDIR="$(pwd)/build"
 ARTWORK_DIR="$(pwd)/../artwork/"
 
 UPDATE_CHANNEL=""
@@ -43,28 +42,16 @@ if [ ! -d "${OUTPUTDIR}" ]; then
 fi
 
 # Add native libraries
-echo "Downloading dependencies"
+echo "Downloading appimagetool"
 if command -v curl >/dev/null 2>&1; then
-	curl -s -L -O https://github.com/OpenRA/AppImageSupport/releases/download/${DEPENDENCIES_TAG}/mono.tar.bz2 || exit 3
 	curl -s -L -O https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage || exit 3
 else
-	wget -cq https://github.com/OpenRA/AppImageSupport/releases/download/${DEPENDENCIES_TAG}/mono.tar.bz2 || exit 3
 	wget -cq https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage || exit 3
 fi
 
 chmod a+x appimagetool-x86_64.AppImage
 
-echo "Building AppImage"
-mkdir "${BUILTDIR}"
-tar xf mono.tar.bz2 -C "${BUILTDIR}"
-chmod 0755 "${BUILTDIR}/usr/bin/mono"
-chmod 0644 "${BUILTDIR}/etc/mono/config"
-chmod 0644 "${BUILTDIR}/etc/mono/4.5/machine.config"
-chmod 0644 "${BUILTDIR}/usr/lib/mono/4.5/Facades/"*.dll
-chmod 0644 "${BUILTDIR}/usr/lib/mono/4.5/"*.dll "${BUILTDIR}/usr/lib/mono/4.5/"*.exe
-chmod 0755 "${BUILTDIR}/usr/lib/"*.so
-
-rm -rf mono.tar.bz2
+echo "Building AppImages"
 
 build_appimage() {
 	MOD_ID=${1}
@@ -73,14 +60,12 @@ build_appimage() {
 	APPDIR="$(pwd)/${MOD_ID}.appdir"
 	APPIMAGE="OpenRA-$(echo "${DISPLAY_NAME}" | sed 's/ /-/g')${SUFFIX}-x86_64.AppImage"
 
-	cp -r "${BUILTDIR}" "${APPDIR}"
-
 	IS_D2K="False"
 	if [ "${MOD_ID}" = "d2k" ]; then
 		IS_D2K="True"
 	fi
 
-	install_assemblies_mono "${SRCDIR}" "${APPDIR}/usr/lib/openra" "linux-x64" "True" "True" "${IS_D2K}"
+	install_assemblies "${SRCDIR}" "${APPDIR}/usr/lib/openra" "linux-x64" "True" "True" "${IS_D2K}"
 	install_data "${SRCDIR}" "${APPDIR}/usr/lib/openra" "${MOD_ID}"
 	set_engine_version "${TAG}" "${APPDIR}/usr/lib/openra"
 	set_mod_version "${TAG}" "${APPDIR}/usr/lib/openra/mods/${MOD_ID}/mod.yaml" "${APPDIR}/usr/lib/openra/mods/modcontent/mod.yaml"
@@ -111,6 +96,7 @@ build_appimage() {
 		fi
 	done
 
+	mkdir -p "${APPDIR}/usr/bin"
 	sed "s/{MODID}/${MOD_ID}/g" openra.appimage.in | sed "s/{TAG}/${TAG}/g" | sed "s/{MODNAME}/${DISPLAY_NAME}/g" > "${APPDIR}/usr/bin/openra-${MOD_ID}"
 	chmod 0755 "${APPDIR}/usr/bin/openra-${MOD_ID}"
 
@@ -121,7 +107,6 @@ build_appimage() {
 	chmod 0755 "${APPDIR}/usr/bin/openra-${MOD_ID}-utility"
 
 	install -m 0755 gtk-dialog.py "${APPDIR}/usr/bin/gtk-dialog.py"
-	install -m 0755 restore-environment.sh "${APPDIR}/usr/bin/restore-environment.sh"
 
 	# Embed update metadata if (and only if) compiled on GitHub Actions
 	if [ -n "${GITHUB_REPOSITORY}" ]; then
