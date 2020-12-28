@@ -80,6 +80,9 @@ HARV:
 		EffectiveOwnerFromOwner: true
 	WithHarvestAnimation:
 	WithDockingAnimation:
+	Explodes@EMPTY:
+		Weapon: UnitExplodeHarvEmpty
+		EmptyWeapon: UnitExplodeHarvEmpty
 	Explodes:
 		RequiresCondition: !no-tiberium
 		Weapon: TiberiumExplosion
@@ -160,6 +163,9 @@ APC:
 		Types: Infantry
 		MaxWeight: 5
 		LoadingCondition: notmobile
+	Explodes:
+		Weapon: UnitExplodeBig
+		EmptyWeapon: UnitExplodeBig
 	SpawnActorOnDeath:
 		Actor: APC.Husk
 		OwnerType: InternalName
@@ -454,6 +460,9 @@ MTNK:
 	AttackTurreted:
 	WithMuzzleOverlay:
 	WithSpriteTurret:
+	Explodes:
+		Weapon: UnitExplodeBig
+		EmptyWeapon: UnitExplodeBig
 	SpawnActorOnDeath:
 		Actor: MTNK.Husk
 		OwnerType: InternalName
@@ -512,6 +521,9 @@ HTNK:
 		Delay: 10
 		StartIfBelow: 50
 		DamageCooldown: 200
+	Explodes:
+		Weapon: UnitExplodeMech
+		EmptyWeapon: UnitExplodeMech
 	SpawnActorOnDeath:
 		Actor: HTNK.Husk
 		OwnerType: InternalName
@@ -560,6 +572,9 @@ MSAM:
 		TargetFrozenActors: True
 		ForceFireIgnoresActors: True
 	WithSpriteTurret:
+	Explodes:
+		Weapon: UnitExplodeMech
+		EmptyWeapon: UnitExplodeMech
 	SpawnActorOnDeath:
 		Actor: MSAM.Husk
 		OwnerType: InternalName
