@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -63,14 +64,12 @@ namespace OpenRA.Mods.Common.Traits
 				if (spriteLayer == null)
 				{
 					var first = r.Value.Variants.First().Value.GetSprite(0);
-					spriteLayer = new TerrainSpriteLayer(w, wr, first.Sheet, first.BlendMode, wr.World.Type != WorldType.Editor);
+					var emptySprite = new Sprite(first.Sheet, Rectangle.Empty, TextureChannel.Alpha);
+					spriteLayer = new TerrainSpriteLayer(w, wr, emptySprite, first.BlendMode, wr.World.Type != WorldType.Editor);
 				}
 
 				// All resources must share a sheet and blend mode
 				var sprites = r.Value.Variants.Values.SelectMany(v => Exts.MakeArray(v.Length, x => v.GetSprite(x)));
-				if (sprites.Any(s => s.Sheet != spriteLayer.Sheet))
-					throw new InvalidDataException("Resource sprites span multiple sheets. Try loading their sequences earlier.");
-
 				if (sprites.Any(s => s.BlendMode != spriteLayer.BlendMode))
 					throw new InvalidDataException("Resource sprites specify different blend modes. "
 						+ "Try using different ResourceRenderer traits for resource types that use different blend modes.");

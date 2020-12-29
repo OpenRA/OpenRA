@@ -14,6 +14,7 @@ using System.IO;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Effects;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -114,16 +115,14 @@ namespace OpenRA.Mods.Common.Traits
 			var sprites = smudges.Values.SelectMany(v => Exts.MakeArray(v.Length, x => v.GetSprite(x))).ToList();
 			var sheet = sprites[0].Sheet;
 			var blendMode = sprites[0].BlendMode;
-
-			if (sprites.Any(s => s.Sheet != sheet))
-				throw new InvalidDataException("Resource sprites span multiple sheets. Try loading their sequences earlier.");
+			var emptySprite = new Sprite(sheet, Rectangle.Empty, TextureChannel.Alpha);
 
 			if (sprites.Any(s => s.BlendMode != blendMode))
 				throw new InvalidDataException("Smudges specify different blend modes. "
 					+ "Try using different smudge types for smudges that use different blend modes.");
 
 			paletteReference = wr.Palette(Info.Palette);
-			render = new TerrainSpriteLayer(w, wr, sheet, blendMode, w.Type != WorldType.Editor);
+			render = new TerrainSpriteLayer(w, wr, emptySprite, blendMode, w.Type != WorldType.Editor);
 
 			// Add map smudges
 			foreach (var kv in Info.InitialSmudges)

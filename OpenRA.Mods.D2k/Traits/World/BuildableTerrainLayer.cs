@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.D2k.Traits
@@ -51,7 +52,8 @@ namespace OpenRA.Mods.D2k.Traits
 
 		void IWorldLoaded.WorldLoaded(World w, WorldRenderer wr)
 		{
-			render = new TerrainSpriteLayer(w, wr, terrainRenderer.Sheet, BlendMode.Alpha, wr.World.Type != WorldType.Editor);
+			var emptySprite = new Sprite(terrainRenderer.Sheet, Rectangle.Empty, TextureChannel.Alpha);
+			render = new TerrainSpriteLayer(w, wr, emptySprite, BlendMode.Alpha, wr.World.Type != WorldType.Editor);
 			paletteReference = wr.Palette(info.Palette);
 		}
 

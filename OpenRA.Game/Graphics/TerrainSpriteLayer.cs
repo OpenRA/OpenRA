@@ -20,9 +20,9 @@ namespace OpenRA.Graphics
 	{
 		static readonly int[] CornerVertexMap = { 0, 1, 2, 2, 3, 0 };
 
-		public readonly Sheet Sheet;
 		public readonly BlendMode BlendMode;
 
+		readonly Sheet[] sheets;
 		readonly Sprite emptySprite;
 
 		readonly IVertexBuffer<Vertex> vertexBuffer;
@@ -37,11 +37,12 @@ namespace OpenRA.Graphics
 
 		readonly PaletteReference[] palettes;
 
-		public TerrainSpriteLayer(World world, WorldRenderer wr, Sheet sheet, BlendMode blendMode, bool restrictToBounds)
+		public TerrainSpriteLayer(World world, WorldRenderer wr, Sprite emptySprite, BlendMode blendMode, bool restrictToBounds)
 		{
 			worldRenderer = wr;
 			this.restrictToBounds = restrictToBounds;
-			Sheet = sheet;
+			this.emptySprite = emptySprite;
+			sheets = new Sheet[SpriteRenderer.SheetCount];
 			BlendMode = blendMode;
 
 			map = world.Map;
@@ -50,7 +51,6 @@ namespace OpenRA.Graphics
 			vertices = new Vertex[rowStride * map.MapSize.Y];
 			palettes = new PaletteReference[map.MapSize.X * map.MapSize.Y];
 			vertexBuffer = Game.Renderer.Context.CreateVertexBuffer(vertices.Length);
-			emptySprite = new Sprite(sheet, Rectangle.Empty, TextureChannel.Alpha);
 
 			wr.PaletteInvalidated += UpdatePaletteIndices;
 
@@ -136,25 +136,48 @@ namespace OpenRA.Graphics
 			dirtyRows.Add(uv.V);
 		}
 
+		int GetOrAddSheetIndex(Sheet sheet)
+		{
+			if (sheet == null)
+				return 0;
+
+			for (var i = 0; i < sheets.Length; i++)
+			{
+				if (sheets[i] == sheet)
+					return i;
+
+				if (sheets[i] == null)
+				{
+					sheets[i] = sheet;
+					return i;
+				}
+			}
+
+			throw new InvalidDataException("Sheet overflow");
+		}
+
 		public void Update(MPos uv, Sprite sprite, PaletteReference palette, in float3 pos, bool ignoreTint)
 		{
+			int2 samplers;
 			if (sprite != null)
 			{
-				if (sprite.Sheet != Sheet)
-					throw new InvalidDataException("Attempted to add sprite from a different sheet");
-
 				if (sprite.BlendMode != BlendMode)
 					throw new InvalidDataException("Attempted to add sprite with a different blend mode");
+
+				samplers = new int2(GetOrAddSheetIndex(sprite.Sheet), GetOrAddSheetIndex((sprite as SpriteWithSecondaryData)?.SecondarySheet));
 			}
 			else
+			{
 				sprite = emptySprite;
+				samplers = int2.Zero;
+			}
 
 			// The vertex buffer does not have geometry for cells outside the map
 			if (!map.Tiles.Contains(uv))
 				return;
 
 			var offset = rowStride * uv.V + 6 * uv.U;
-			Util.FastCreateQuad(vertices, pos, sprite, int2.Zero, palette?.TextureIndex ?? 0, offset, sprite.Size, float3.Ones, 1f);
+			Util.FastCreateQuad(vertices, pos, sprite, samplers, palette?.TextureIndex ?? 0, offset, sprite.Size, float3.Ones, 1f);
 			palettes[uv.V * map.MapSize.X + uv.U] = palette;
 
 			if (worldRenderer.TerrainLighting != null)
@@ -188,7 +211,7 @@ namespace OpenRA.Graphics
 
 			Game.Renderer.WorldSpriteRenderer.DrawVertexBuffer(
 				vertexBuffer, rowStride * firstRow, rowStride * (lastRow - firstRow),
-				PrimitiveType.TriangleList, Sheet, BlendMode);
+				PrimitiveType.TriangleList, sheets, BlendMode);
 
 			Game.Renderer.Flush();
 		}

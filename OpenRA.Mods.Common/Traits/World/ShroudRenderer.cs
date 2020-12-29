@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -190,26 +191,19 @@ namespace OpenRA.Mods.Common.Traits
 
 			visibleUnderFog = puv => map.Contains(puv);
 
-			var shroudSheet = shroudSprites[0].Sheet;
-			if (shroudSprites.Any(s => s.Sheet != shroudSheet))
-				throw new InvalidDataException("Shroud sprites span multiple sheets. Try loading their sequences earlier.");
-
 			var shroudBlend = shroudSprites[0].BlendMode;
 			if (shroudSprites.Any(s => s.BlendMode != shroudBlend))
 				throw new InvalidDataException("Shroud sprites must all use the same blend mode.");
-
-			var fogSheet = fogSprites[0].Sheet;
-			if (fogSprites.Any(s => s.Sheet != fogSheet))
-				throw new InvalidDataException("Fog sprites span multiple sheets. Try loading their sequences earlier.");
 
 			var fogBlend = fogSprites[0].BlendMode;
 			if (fogSprites.Any(s => s.BlendMode != fogBlend))
 				throw new InvalidDataException("Fog sprites must all use the same blend mode.");
 
+			var emptySprite = new Sprite(shroudSprites[0].Sheet, Rectangle.Empty, TextureChannel.Alpha);
 			shroudPaletteReference = wr.Palette(info.ShroudPalette);
 			fogPaletteReference = wr.Palette(info.FogPalette);
-			shroudLayer = new TerrainSpriteLayer(w, wr, shroudSheet, shroudBlend, false);
-			fogLayer = new TerrainSpriteLayer(w, wr, fogSheet, fogBlend, false);
+			shroudLayer = new TerrainSpriteLayer(w, wr, emptySprite, shroudBlend, false);
+			fogLayer = new TerrainSpriteLayer(w, wr, emptySprite, fogBlend, false);
 
 			WorldOnRenderPlayerChanged(world.RenderPlayer);
 		}

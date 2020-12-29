@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Primitives;
 
@@ -17,7 +18,7 @@ namespace OpenRA.Graphics
 {
 	public class SpriteRenderer : Renderer.IBatchRenderer
 	{
-		const int SheetCount = 7;
+		public const int SheetCount = 7;
 		static readonly string[] SheetIndexToTextureName = Exts.MakeArray(SheetCount, i => "Texture{0}".F(i));
 
 		readonly Renderer renderer;
@@ -151,13 +152,28 @@ namespace OpenRA.Graphics
 			nv += 6;
 		}
 
-		public void DrawVertexBuffer(IVertexBuffer<Vertex> buffer, int start, int length, PrimitiveType type, Sheet sheet, BlendMode blendMode)
+		public void DrawVertexBuffer(IVertexBuffer<Vertex> buffer, int start, int length, PrimitiveType type, IEnumerable<Sheet> sheets, BlendMode blendMode)
 		{
-			shader.SetTexture("Texture0", sheet.GetTexture());
+			var i = 0;
+			foreach (var s in sheets)
+			{
+				if (i >= SheetCount)
+					ThrowSheetOverflow(nameof(sheets));
+
+				if (s != null)
+					shader.SetTexture(SheetIndexToTextureName[i++], s.GetTexture());
+			}
+
 			renderer.Context.SetBlendMode(blendMode);
 			shader.PrepareRender();
 			renderer.DrawBatch(buffer, start, length, type);
 			renderer.Context.SetBlendMode(BlendMode.None);
+		}
+
+		// PERF: methods that throw won't be inlined by the JIT, so extract a static helper for use on hot paths
+		static void ThrowSheetOverflow(string paramName)
+		{
+			throw new ArgumentException("SpriteRenderer only supports {0} simultaneous textures".F(SheetCount), paramName);
 		}
 
 		// For RGBAColorRenderer
