@@ -35,20 +35,20 @@ namespace OpenRA.Graphics
 		readonly WorldRenderer worldRenderer;
 		readonly Map map;
 
-		readonly PaletteReference palette;
+		readonly PaletteReference[] palettes;
 
-		public TerrainSpriteLayer(World world, WorldRenderer wr, Sheet sheet, BlendMode blendMode, PaletteReference palette, bool restrictToBounds)
+		public TerrainSpriteLayer(World world, WorldRenderer wr, Sheet sheet, BlendMode blendMode, bool restrictToBounds)
 		{
 			worldRenderer = wr;
 			this.restrictToBounds = restrictToBounds;
 			Sheet = sheet;
 			BlendMode = blendMode;
-			this.palette = palette;
 
 			map = world.Map;
 			rowStride = 6 * map.MapSize.X;
 
 			vertices = new Vertex[rowStride * map.MapSize.Y];
+			palettes = new PaletteReference[map.MapSize.X * map.MapSize.Y];
 			vertexBuffer = Game.Renderer.Context.CreateVertexBuffer(vertices.Length);
 			emptySprite = new Sprite(sheet, Rectangle.Empty, TextureChannel.Alpha);
 
@@ -63,12 +63,11 @@ namespace OpenRA.Graphics
 
 		void UpdatePaletteIndices()
 		{
-			// Everything in the layer uses the same palette,
-			// so we can fix the indices in one pass
 			for (var i = 0; i < vertices.Length; i++)
 			{
 				var v = vertices[i];
-				vertices[i] = new Vertex(v.X, v.Y, v.Z, v.S, v.T, v.U, v.V, palette.TextureIndex, v.C, v.R, v.G, v.B, v.A);
+				var p = palettes[i / 6]?.TextureIndex ?? 0;
+				vertices[i] = new Vertex(v.X, v.Y, v.Z, v.S, v.T, v.U, v.V, p, v.C, v.R, v.G, v.B, v.A);
 			}
 
 			for (var row = 0; row < map.MapSize.Y; row++)
@@ -77,15 +76,15 @@ namespace OpenRA.Graphics
 
 		public void Clear(CPos cell)
 		{
-			Update(cell, null, true);
+			Update(cell, null, null, true);
 		}
 
-		public void Update(CPos cell, ISpriteSequence sequence, int frame)
+		public void Update(CPos cell, ISpriteSequence sequence, PaletteReference palette, int frame)
 		{
-			Update(cell, sequence.GetSprite(frame), sequence.IgnoreWorldTint);
+			Update(cell, sequence.GetSprite(frame), palette, sequence.IgnoreWorldTint);
 		}
 
-		public void Update(CPos cell, Sprite sprite, bool ignoreTint)
+		public void Update(CPos cell, Sprite sprite, PaletteReference palette, bool ignoreTint)
 		{
 			var xyz = float3.Zero;
 			if (sprite != null)
@@ -94,7 +93,7 @@ namespace OpenRA.Graphics
 				xyz = worldRenderer.Screen3DPosition(cellOrigin) + sprite.Offset - 0.5f * sprite.Size;
 			}
 
-			Update(cell.ToMPos(map.Grid.Type), sprite, xyz, ignoreTint);
+			Update(cell.ToMPos(map.Grid.Type), sprite, palette, xyz, ignoreTint);
 		}
 
 		void UpdateTint(MPos uv)
@@ -106,7 +105,7 @@ namespace OpenRA.Graphics
 				for (var i = 0; i < 6; i++)
 				{
 					var v = vertices[offset + i];
-					vertices[offset + i] = new Vertex(v.X, v.Y, v.Z, v.S, v.T, v.U, v.V, palette.TextureIndex, v.C, noTint, 1f);
+					vertices[offset + i] = new Vertex(v.X, v.Y, v.Z, v.S, v.T, v.U, v.V, v.P, v.C, noTint, 1f);
 				}
 
 				return;
@@ -131,13 +130,13 @@ namespace OpenRA.Graphics
 			for (var i = 0; i < 6; i++)
 			{
 				var v = vertices[offset + i];
-				vertices[offset + i] = new Vertex(v.X, v.Y, v.Z, v.S, v.T, v.U, v.V, palette.TextureIndex, v.C, weights[CornerVertexMap[i]], 1f);
+				vertices[offset + i] = new Vertex(v.X, v.Y, v.Z, v.S, v.T, v.U, v.V, v.P, v.C, weights[CornerVertexMap[i]], 1f);
 			}
 
 			dirtyRows.Add(uv.V);
 		}
 
-		public void Update(MPos uv, Sprite sprite, in float3 pos, bool ignoreTint)
+		public void Update(MPos uv, Sprite sprite, PaletteReference palette, in float3 pos, bool ignoreTint)
 		{
 			if (sprite != null)
 			{
@@ -155,7 +154,8 @@ namespace OpenRA.Graphics
 				return;
 
 			var offset = rowStride * uv.V + 6 * uv.U;
-			Util.FastCreateQuad(vertices, pos, sprite, int2.Zero, palette.TextureIndex, offset, sprite.Size, float3.Ones, 1f);
+			Util.FastCreateQuad(vertices, pos, sprite, int2.Zero, palette?.TextureIndex ?? 0, offset, sprite.Size, float3.Ones, 1f);
+			palettes[uv.V * map.MapSize.X + uv.U] = palette;
 
 			if (worldRenderer.TerrainLighting != null)
 			{

@@ -106,6 +106,7 @@ namespace OpenRA.Mods.Common.Traits
 		Shroud shroud;
 		Func<PPos, bool> visibleUnderShroud, visibleUnderFog;
 		TerrainSpriteLayer shroudLayer, fogLayer;
+		PaletteReference shroudPaletteReference, fogPaletteReference;
 		bool disposed;
 
 		public ShroudRenderer(World world, ShroudRendererInfo info)
@@ -205,8 +206,10 @@ namespace OpenRA.Mods.Common.Traits
 			if (fogSprites.Any(s => s.BlendMode != fogBlend))
 				throw new InvalidDataException("Fog sprites must all use the same blend mode.");
 
-			shroudLayer = new TerrainSpriteLayer(w, wr, shroudSheet, shroudBlend, wr.Palette(info.ShroudPalette), false);
-			fogLayer = new TerrainSpriteLayer(w, wr, fogSheet, fogBlend, wr.Palette(info.FogPalette), false);
+			shroudPaletteReference = wr.Palette(info.ShroudPalette);
+			fogPaletteReference = wr.Palette(info.FogPalette);
+			shroudLayer = new TerrainSpriteLayer(w, wr, shroudSheet, shroudBlend, false);
+			fogLayer = new TerrainSpriteLayer(w, wr, fogSheet, fogBlend, false);
 
 			WorldOnRenderPlayerChanged(world.RenderPlayer);
 		}
@@ -297,8 +300,8 @@ namespace OpenRA.Mods.Common.Traits
 				if (fogSprite != null)
 					fogPos += fogSprite.Offset - 0.5f * fogSprite.Size;
 
-				shroudLayer.Update(uv, shroudSprite, shroudPos, true);
-				fogLayer.Update(uv, fogSprite, fogPos, true);
+				shroudLayer.Update(uv, shroudSprite, shroudPaletteReference, shroudPos, true);
+				fogLayer.Update(uv, fogSprite, fogPaletteReference, fogPos, true);
 			}
 
 			anyCellDirty = false;

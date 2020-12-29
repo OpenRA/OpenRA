@@ -61,9 +61,10 @@ namespace OpenRA.Mods.Common.Traits
 	public sealed class TerrainRenderer : IRenderTerrain, IWorldLoaded, INotifyActorDisposing, ITiledTerrainRenderer
 	{
 		readonly Map map;
-		readonly Dictionary<string, TerrainSpriteLayer> spriteLayers = new Dictionary<string, TerrainSpriteLayer>();
+		TerrainSpriteLayer spriteLayer;
 		readonly DefaultTerrain terrainInfo;
 		readonly DefaultTileCache tileCache;
+		WorldRenderer worldRenderer;
 		bool disposed;
 
 		public TerrainRenderer(World world)
@@ -78,14 +79,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		void IWorldLoaded.WorldLoaded(World world, WorldRenderer wr)
 		{
-			foreach (var template in terrainInfo.Templates)
-			{
-				var templateInfo = (DefaultTerrainTemplateInfo)template.Value;
-				var palette = templateInfo.Palette ?? TileSet.TerrainPaletteInternalName;
-				spriteLayers.GetOrAdd(palette, pal =>
-					new TerrainSpriteLayer(world, wr, tileCache.Sheet, BlendMode.Alpha, wr.Palette(palette), world.Type != WorldType.Editor));
-			}
-
+			worldRenderer = wr;
+			spriteLayer = new TerrainSpriteLayer(world, wr, tileCache.Sheet, BlendMode.Alpha, world.Type != WorldType.Editor);
 			foreach (var cell in map.AllCells)
 				UpdateCell(cell);
 
@@ -100,14 +95,14 @@ namespace OpenRA.Mods.Common.Traits
 			if (terrainInfo.Templates.TryGetValue(tile.Type, out var template))
 				palette = ((DefaultTerrainTemplateInfo)template).Palette ?? palette;
 
-			foreach (var kv in spriteLayers)
-				kv.Value.Update(cell, palette == kv.Key ? tileCache.TileSprite(tile) : null, false);
+			var sprite = tileCache.TileSprite(tile);
+			var paletteReference = worldRenderer.Palette(palette);
+			spriteLayer.Update(cell, sprite, paletteReference, false);
 		}
 
 		void IRenderTerrain.RenderTerrain(WorldRenderer wr, Viewport viewport)
 		{
-			foreach (var kv in spriteLayers.Values)
-				kv.Draw(wr.Viewport);
+			spriteLayer.Draw(wr.Viewport);
 
 			foreach (var r in wr.World.WorldActor.TraitsImplementing<IRenderOverlay>())
 				r.Render(wr);
@@ -121,8 +116,7 @@ namespace OpenRA.Mods.Common.Traits
 			map.Tiles.CellEntryChanged -= UpdateCell;
 			map.Height.CellEntryChanged -= UpdateCell;
 
-			foreach (var kv in spriteLayers.Values)
-				kv.Dispose();
+			spriteLayer.Dispose();
 
 			tileCache.Dispose();
 			disposed = true;

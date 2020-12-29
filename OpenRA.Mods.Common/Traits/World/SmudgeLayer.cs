@@ -94,6 +94,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly bool hasSmoke;
 
 		TerrainSpriteLayer render;
+		PaletteReference paletteReference;
 		bool disposed;
 
 		public SmudgeLayer(Actor self, SmudgeLayerInfo info)
@@ -121,7 +122,8 @@ namespace OpenRA.Mods.Common.Traits
 				throw new InvalidDataException("Smudges specify different blend modes. "
 					+ "Try using different smudge types for smudges that use different blend modes.");
 
-			render = new TerrainSpriteLayer(w, wr, sheet, blendMode, wr.Palette(Info.Palette), w.Type != WorldType.Editor);
+			paletteReference = wr.Palette(Info.Palette);
+			render = new TerrainSpriteLayer(w, wr, sheet, blendMode, w.Type != WorldType.Editor);
 
 			// Add map smudges
 			foreach (var kv in Info.InitialSmudges)
@@ -139,7 +141,7 @@ namespace OpenRA.Mods.Common.Traits
 				};
 
 				tiles.Add(kv.Key, smudge);
-				render.Update(kv.Key, seq, s.Depth);
+				render.Update(kv.Key, seq, paletteReference, s.Depth);
 			}
 		}
 
@@ -201,7 +203,7 @@ namespace OpenRA.Mods.Common.Traits
 					{
 						var smudge = kv.Value;
 						tiles[kv.Key] = smudge;
-						render.Update(kv.Key, smudge.Sequence, smudge.Depth);
+						render.Update(kv.Key, smudge.Sequence, paletteReference, smudge.Depth);
 					}
 
 					remove.Add(kv.Key);
