@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		readonly HashSet<CPos> dirty = new HashSet<CPos>();
 		readonly Queue<CPos> cleanDirty = new Queue<CPos>();
-		readonly Dictionary<PaletteReference, TerrainSpriteLayer> spriteLayers = new Dictionary<PaletteReference, TerrainSpriteLayer>();
+		TerrainSpriteLayer spriteLayer;
 
 		public ResourceRenderer(Actor self, ResourceRendererInfo info)
 		{
@@ -58,26 +58,22 @@ namespace OpenRA.Mods.Common.Traits
 			var resources = w.WorldActor.TraitsImplementing<ResourceType>()
 				.ToDictionary(r => r.Info.ResourceType, r => r);
 
-			// Build the sprite layer dictionary for rendering resources
-			// All resources that have the same palette must also share a sheet and blend mode
 			foreach (var r in resources)
 			{
-				var layer = spriteLayers.GetOrAdd(r.Value.Palette, pal =>
+				if (spriteLayer == null)
 				{
 					var first = r.Value.Variants.First().Value.GetSprite(0);
-					return new TerrainSpriteLayer(w, wr, first.Sheet, first.BlendMode, pal, wr.World.Type != WorldType.Editor);
-				});
+					spriteLayer = new TerrainSpriteLayer(w, wr, first.Sheet, first.BlendMode, wr.World.Type != WorldType.Editor);
+				}
 
-				// Validate that sprites are compatible with this layer
-				var sheet = layer.Sheet;
+				// All resources must share a sheet and blend mode
 				var sprites = r.Value.Variants.Values.SelectMany(v => Exts.MakeArray(v.Length, x => v.GetSprite(x)));
-				if (sprites.Any(s => s.Sheet != sheet))
+				if (sprites.Any(s => s.Sheet != spriteLayer.Sheet))
 					throw new InvalidDataException("Resource sprites span multiple sheets. Try loading their sequences earlier.");
 
-				var blendMode = layer.BlendMode;
-				if (sprites.Any(s => s.BlendMode != blendMode))
+				if (sprites.Any(s => s.BlendMode != spriteLayer.BlendMode))
 					throw new InvalidDataException("Resource sprites specify different blend modes. "
-						+ "Try using different palettes for resource types that use different blend modes.");
+						+ "Try using different ResourceRenderer traits for resource types that use different blend modes.");
 			}
 
 			// Initialize the RenderContent with the initial map state
@@ -97,20 +93,16 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected void UpdateSpriteLayers(CPos cell, ISpriteSequence sequence, int frame, PaletteReference palette)
 		{
-			foreach (var kv in spriteLayers)
-			{
-				// resource.Type is meaningless (and may be null) if resource.Sequence is null
-				if (sequence != null && palette == kv.Key)
-					kv.Value.Update(cell, sequence, frame);
-				else
-					kv.Value.Clear(cell);
-			}
+			// resource.Type is meaningless (and may be null) if resource.Sequence is null
+			if (sequence != null)
+				spriteLayer.Update(cell, sequence, palette, frame);
+			else
+				spriteLayer.Clear(cell);
 		}
 
 		void IRenderOverlay.Render(WorldRenderer wr)
 		{
-			foreach (var kv in spriteLayers.Values)
-				kv.Draw(wr.Viewport);
+			spriteLayer.Draw(wr.Viewport);
 		}
 
 		void ITickRender.TickRender(WorldRenderer wr, Actor self)
@@ -175,8 +167,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (disposed)
 				return;
 
-			foreach (var kv in spriteLayers.Values)
-				kv.Dispose();
+			spriteLayer.Dispose();
 
 			ResourceLayer.CellChanged -= AddDirtyCell;
 

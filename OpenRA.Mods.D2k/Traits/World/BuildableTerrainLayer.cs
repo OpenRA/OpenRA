@@ -38,6 +38,7 @@ namespace OpenRA.Mods.D2k.Traits
 		readonly CellLayer<int> strength;
 
 		TerrainSpriteLayer render;
+		PaletteReference paletteReference;
 		bool disposed;
 
 		public BuildableTerrainLayer(Actor self, BuildableTerrainLayerInfo info)
@@ -48,9 +49,10 @@ namespace OpenRA.Mods.D2k.Traits
 			terrainRenderer = self.Trait<ITiledTerrainRenderer>();
 		}
 
-		public void WorldLoaded(World w, WorldRenderer wr)
+		void IWorldLoaded.WorldLoaded(World w, WorldRenderer wr)
 		{
-			render = new TerrainSpriteLayer(w, wr, terrainRenderer.Sheet, BlendMode.Alpha, wr.Palette(info.Palette), wr.World.Type != WorldType.Editor);
+			render = new TerrainSpriteLayer(w, wr, terrainRenderer.Sheet, BlendMode.Alpha, wr.World.Type != WorldType.Editor);
+			paletteReference = wr.Palette(info.Palette);
 		}
 
 		public void AddTile(CPos cell, TerrainTile tile)
@@ -100,7 +102,7 @@ namespace OpenRA.Mods.D2k.Traits
 						// Terrain tiles define their origin at the topleft
 						var s = terrainRenderer.TileSprite(tile.Value);
 						var ss = new Sprite(s.Sheet, s.Bounds, s.ZRamp, float2.Zero, s.Channel, s.BlendMode);
-						render.Update(kv.Key, ss, false);
+						render.Update(kv.Key, ss, paletteReference, false);
 					}
 					else
 						render.Clear(kv.Key);
