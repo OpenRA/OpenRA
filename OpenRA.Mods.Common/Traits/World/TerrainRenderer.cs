@@ -80,7 +80,9 @@ namespace OpenRA.Mods.Common.Traits
 		void IWorldLoaded.WorldLoaded(World world, WorldRenderer wr)
 		{
 			worldRenderer = wr;
-			spriteLayer = new TerrainSpriteLayer(world, wr, tileCache.Sheet, BlendMode.Alpha, world.Type != WorldType.Editor);
+			var emptySprite = new Sprite(tileCache.Sheet, Rectangle.Empty, TextureChannel.Alpha);
+			spriteLayer = new TerrainSpriteLayer(world, wr, emptySprite, BlendMode.Alpha, world.Type != WorldType.Editor);
+
 			foreach (var cell in map.AllCells)
 				UpdateCell(cell);
 
