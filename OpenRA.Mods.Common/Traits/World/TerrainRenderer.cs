@@ -80,9 +80,7 @@ namespace OpenRA.Mods.Common.Traits
 		void IWorldLoaded.WorldLoaded(World world, WorldRenderer wr)
 		{
 			worldRenderer = wr;
-			var emptySprite = new Sprite(tileCache.Sheet, Rectangle.Empty, TextureChannel.Alpha);
-			spriteLayer = new TerrainSpriteLayer(world, wr, emptySprite, BlendMode.Alpha, world.Type != WorldType.Editor);
-
+			spriteLayer = new TerrainSpriteLayer(world, wr, tileCache.MissingTile, BlendMode.Alpha, world.Type != WorldType.Editor);
 			foreach (var cell in map.AllCells)
 				UpdateCell(cell);
 
@@ -124,7 +122,7 @@ namespace OpenRA.Mods.Common.Traits
 			disposed = true;
 		}
 
-		Sheet ITiledTerrainRenderer.Sheet { get { return tileCache.Sheet; } }
+		Sprite ITiledTerrainRenderer.MissingTile { get { return tileCache.MissingTile; } }
 
 		Sprite ITiledTerrainRenderer.TileSprite(TerrainTile r, int? variant)
 		{
