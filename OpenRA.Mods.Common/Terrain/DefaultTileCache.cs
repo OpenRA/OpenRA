@@ -52,9 +52,13 @@ namespace OpenRA.Mods.Common.Terrain
 				var variants = new List<Sprite[]>();
 				var templateInfo = (DefaultTerrainTemplateInfo)t.Value;
 
-				foreach (var i in templateInfo.Images)
+				for (var ii = 0; ii < templateInfo.Images.Length; ii++)
 				{
+					var i = templateInfo.Images[ii];
+
 					ISpriteFrame[] allFrames;
+					ISpriteFrame[] depthFrames = null;
+
 					if (onMissingImage != null)
 					{
 						try
@@ -70,7 +74,26 @@ namespace OpenRA.Mods.Common.Terrain
 					else
 						allFrames = frameCache[i];
 
-					var frameCount = terrainInfo.EnableDepth ? allFrames.Length / 2 : allFrames.Length;
+					if (terrainInfo.EnableDepth && templateInfo.DepthImages != null && templateInfo.DepthImages.Length == templateInfo.Images.Length)
+					{
+						var di = templateInfo.DepthImages[ii];
+						if (onMissingImage != null)
+						{
+							try
+							{
+								depthFrames = frameCache[di];
+							}
+							catch (FileNotFoundException)
+							{
+								onMissingImage(t.Key, di);
+								continue;
+							}
+						}
+						else
+							depthFrames = frameCache[di];
+					}
+
+					var frameCount = terrainInfo.EnableDepth && depthFrames == null ? allFrames.Length / 2 : allFrames.Length;
 					var indices = templateInfo.Frames != null ? templateInfo.Frames : Exts.MakeArray(t.Value.TilesCount, j => j);
 
 					var start = indices.Min();
@@ -95,7 +118,7 @@ namespace OpenRA.Mods.Common.Terrain
 
 						if (terrainInfo.EnableDepth)
 						{
-							var depthFrame = allFrames[j + frameCount];
+							var depthFrame = depthFrames != null ? depthFrames[j] : allFrames[j + frameCount];
 							var depthType = SheetBuilder.FrameTypeToSheetType(depthFrame.Type);
 							var ss = sheetBuilders[depthType].Allocate(depthFrame.Size, zRamp, offset);
 							OpenRA.Graphics.Util.FastCopyIntoChannel(ss, depthFrame.Data, depthFrame.Type);

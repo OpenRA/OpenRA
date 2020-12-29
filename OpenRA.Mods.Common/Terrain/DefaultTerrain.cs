@@ -37,6 +37,7 @@ namespace OpenRA.Mods.Common.Terrain
 	public class DefaultTerrainTemplateInfo : TerrainTemplateInfo
 	{
 		public readonly string[] Images;
+		public readonly string[] DepthImages;
 		public readonly int[] Frames;
 		public readonly string Palette;
 
