@@ -184,10 +184,16 @@
 		AttackMoveCondition: attack-move
 		AssaultMoveCondition: assault-move
 
+^PlayerHandicaps:
+	HandicapFirepowerMultiplier:
+	HandicapDamageMultiplier:
+	HandicapProductionTimeMultiplier:
+
 ^Vehicle:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
 	Inherits@selection: ^SelectableCombatUnit
+	Inherits@handicaps: ^PlayerHandicaps
 	Tooltip:
 		GenericName: Unit
 	Huntable:
@@ -298,6 +304,7 @@
 	Inherits@2: ^GainsExperience
 	Inherits@3: ^SpriteActor
 	Inherits@selection: ^SelectableCombatUnit
+	Inherits@handicaps: ^PlayerHandicaps
 	Tooltip:
 		GenericName: Unit
 	Huntable:
@@ -366,6 +373,7 @@
 ^Plane:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
+	Inherits@handicaps: ^PlayerHandicaps
 	Interactable:
 	Tooltip:
 		GenericName: Unit
@@ -391,6 +399,7 @@
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
 	Inherits@selection: ^SelectableBuilding
+	Inherits@handicaps: ^PlayerHandicaps
 	Tooltip:
 		GenericName: Structure
 	Huntable:

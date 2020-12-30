@@ -58,6 +58,7 @@ namespace OpenRA
 		public readonly bool Playable = true;
 		public readonly int ClientIndex;
 		public readonly CPos HomeLocation;
+		public readonly int Handicap;
 		public readonly PlayerReference PlayerReference;
 		public readonly bool IsBot;
 		public readonly string BotType;
@@ -180,6 +181,8 @@ namespace OpenRA
 				HomeLocation = assignSpawnPoints?.AssignHomeLocation(world, client, playerRandom) ?? pr.HomeLocation;
 				SpawnPoint = assignSpawnPoints?.SpawnPointForPlayer(this) ?? client.SpawnPoint;
 				DisplaySpawnPoint = client.SpawnPoint;
+
+				Handicap = client.Handicap;
 			}
 			else
 			{
@@ -195,6 +198,7 @@ namespace OpenRA
 				DisplayFaction = ResolveDisplayFaction(world, pr.Faction);
 				HomeLocation = pr.HomeLocation;
 				SpawnPoint = DisplaySpawnPoint = 0;
+				Handicap = pr.Handicap;
 			}
 
 			if (!spectating)

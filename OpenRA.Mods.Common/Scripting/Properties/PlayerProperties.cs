@@ -52,6 +52,16 @@ namespace OpenRA.Mods.Common.Scripting
 			}
 		}
 
+		[Desc("The player's handicap level.")]
+		public int Handicap
+		{
+			get
+			{
+				var c = Player.World.LobbyInfo.Clients.FirstOrDefault(i => i.Index == Player.ClientIndex);
+				return c?.Handicap ?? 0;
+			}
+		}
+
 		[Desc("Returns true if the player is a bot.")]
 		public bool IsBot { get { return Player.IsBot; } }
 
