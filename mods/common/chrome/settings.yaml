@@ -188,12 +188,19 @@ Background@SETTINGS_PANEL:
 					Font: Regular
 					Text: Increase Cursor Size
 				Checkbox@PLAYER_STANCE_COLORS_CHECKBOX:
-					X: 310
+					X: 195
 					Y: 133
 					Width: 200
 					Height: 20
 					Font: Regular
 					Text: Player Stance Colors
+				Checkbox@PAUSE_SHELLMAP_CHECKBOX:
+					X: 375
+					Y: 133
+					Width: 200
+					Height: 20
+					Font: Regular
+					Text: Pause Menu Background
 				Label@VIDEO_TITLE:
 					Y: 190
 					Width: PARENT_RIGHT
