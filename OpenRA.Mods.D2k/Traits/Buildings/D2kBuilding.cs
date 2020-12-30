@@ -11,6 +11,7 @@
 
 using System.IO;
 using System.Linq;
+using OpenRA.Mods.Common.Terrain;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Traits;
