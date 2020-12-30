@@ -11,7 +11,9 @@
 
 using System;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
+using OpenRA.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
@@ -20,6 +22,7 @@ namespace OpenRA.Mods.Common.Widgets
 	{
 		public Func<float> GetScale = () => 1f;
 
+		readonly ITiledTerrainRenderer terrainRenderer;
 		readonly WorldRenderer worldRenderer;
 		readonly TileSet tileset;
 
@@ -39,8 +42,7 @@ namespace OpenRA.Mods.Common.Widgets
 				if (template == null)
 					return;
 
-				var grid = Game.ModData.Manifest.Get<MapGrid>();
-				bounds = worldRenderer.Theater.TemplateBounds(template, grid.TileSize, grid.Type);
+				bounds = terrainRenderer.TemplateBounds(template);
 			}
 		}
 
@@ -49,6 +51,9 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			this.worldRenderer = worldRenderer;
 			tileset = world.Map.Rules.TileSet;
+			terrainRenderer = world.WorldActor.TraitOrDefault<ITiledTerrainRenderer>();
+			if (terrainRenderer == null)
+				throw new YamlException("TerrainTemplatePreviewWidget requires a tile-based terrain renderer.");
 		}
 
 		protected TerrainTemplatePreviewWidget(TerrainTemplatePreviewWidget other)
@@ -56,6 +61,7 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			worldRenderer = other.worldRenderer;
 			tileset = other.worldRenderer.World.Map.Rules.TileSet;
+			terrainRenderer = other.terrainRenderer;
 			Template = other.Template;
 			GetScale = other.GetScale;
 		}
@@ -84,7 +90,7 @@ namespace OpenRA.Mods.Common.Widgets
 					if (!tileset.TryGetTileInfo(tile, out var tileInfo))
 						continue;
 
-					var sprite = worldRenderer.Theater.TileSprite(tile, 0);
+					var sprite = terrainRenderer.TileSprite(tile, 0);
 					var size = new float2(sprite.Size.X * scale, sprite.Size.Y * scale);
 
 					var u = gridType == MapGridType.Rectangular ? x : (x - y) / 2f;

@@ -53,6 +53,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
+			if (!rules.Actors["world"].HasTraitInfo<ITiledTerrainRendererInfo>())
+				throw new YamlException("Bridge requires a tile-based terrain renderer.");
+
 			if (string.IsNullOrEmpty(DemolishWeapon))
 				throw new YamlException("A value for DemolishWeapon of a Bridge trait is missing.");
 
@@ -93,6 +96,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly BuildingInfo buildingInfo;
 		readonly Bridge[] neighbours = new Bridge[2];
 		readonly LegacyBridgeHut[] huts = new LegacyBridgeHut[2]; // Huts before this / first & after this / last
+		readonly ITiledTerrainRenderer terrainRenderer;
 		readonly Health health;
 		readonly Actor self;
 		readonly BridgeInfo info;
@@ -114,6 +118,7 @@ namespace OpenRA.Mods.Common.Traits
 			type = self.Info.Name;
 			isDangling = new Lazy<bool>(() => huts[0] == huts[1] && (neighbours[0] == null || neighbours[1] == null));
 			buildingInfo = self.Info.TraitInfo<BuildingInfo>();
+			terrainRenderer = self.World.WorldActor.Trait<ITiledTerrainRenderer>();
 		}
 
 		public Bridge Neighbour(int direction) { return neighbours[direction]; }
@@ -198,7 +203,7 @@ namespace OpenRA.Mods.Common.Traits
 			var offset = buildingInfo.CenterOffset(self.World).Y + 1024;
 
 			return footprint.Select(c => (IRenderable)(new SpriteRenderable(
-				wr.Theater.TileSprite(new TerrainTile(template, c.Value)),
+				terrainRenderer.TileSprite(new TerrainTile(template, c.Value)),
 				wr.World.Map.CenterOfCell(c.Key), WVec.Zero, -offset, palette, 1f, true))).ToArray();
 		}
 
@@ -224,7 +229,7 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var kv in footprint)
 			{
 				var xy = wr.ScreenPxPosition(wr.World.Map.CenterOfCell(kv.Key));
-				var size = wr.Theater.TileSprite(new TerrainTile(template, kv.Value)).Bounds.Size;
+				var size = terrainRenderer.TileSprite(new TerrainTile(template, kv.Value)).Bounds.Size;
 
 				// Add an extra pixel padding to avoid issues with odd-sized sprites
 				var halfWidth = size.Width / 2 + 1;

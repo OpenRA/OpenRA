@@ -26,7 +26,6 @@ namespace OpenRA.Graphics
 		public readonly Size TileSize;
 		public readonly int TileScale;
 		public readonly World World;
-		public readonly Theater Theater;
 		public Viewport Viewport { get; private set; }
 		public readonly ITerrainLighting TerrainLighting;
 
@@ -68,7 +67,6 @@ namespace OpenRA.Graphics
 
 			palette.Initialize();
 
-			Theater = new Theater(world.Map.Rules.TileSet);
 			TerrainLighting = world.WorldActor.TraitOrDefault<ITerrainLighting>();
 			terrainRenderer = world.WorldActor.TraitOrDefault<IRenderTerrain>();
 
@@ -425,7 +423,6 @@ namespace OpenRA.Graphics
 			World.Dispose();
 
 			palette.Dispose();
-			Theater.Dispose();
 		}
 	}
 }

@@ -162,32 +162,6 @@ namespace OpenRA.Graphics
 			return template.Sprites[start * template.Stride + r.Index];
 		}
 
-		public Rectangle TemplateBounds(TerrainTemplateInfo template, Size tileSize, MapGridType mapGrid)
-		{
-			Rectangle? templateRect = null;
-
-			var i = 0;
-			for (var y = 0; y < template.Size.Y; y++)
-			{
-				for (var x = 0; x < template.Size.X; x++)
-				{
-					var tile = new TerrainTile(template.Id, (byte)(i++));
-					if (!tileset.TryGetTileInfo(tile, out var tileInfo))
-						continue;
-
-					var sprite = TileSprite(tile);
-					var u = mapGrid == MapGridType.Rectangular ? x : (x - y) / 2f;
-					var v = mapGrid == MapGridType.Rectangular ? y : (x + y) / 2f;
-
-					var tl = new float2(u * tileSize.Width, (v - 0.5f * tileInfo.Height) * tileSize.Height) - 0.5f * sprite.Size;
-					var rect = new Rectangle((int)(tl.X + sprite.Offset.X), (int)(tl.Y + sprite.Offset.Y), (int)sprite.Size.X, (int)sprite.Size.Y);
-					templateRect = templateRect.HasValue ? Rectangle.Union(templateRect.Value, rect) : rect;
-				}
-			}
-
-			return templateRect.HasValue ? templateRect.Value : Rectangle.Empty;
-		}
-
 		public Sheet Sheet { get { return sheetBuilder.Current; } }
 
 		public void Dispose()

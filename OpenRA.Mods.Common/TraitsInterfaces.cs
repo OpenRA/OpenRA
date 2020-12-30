@@ -643,4 +643,15 @@ namespace OpenRA.Mods.Common.Traits
 
 		IEnumerable<IRenderable> RenderDecoration(Actor self, WorldRenderer wr, ISelectionDecorations container);
 	}
+
+	[RequireExplicitImplementation]
+	public interface ITiledTerrainRendererInfo : ITraitInfoInterface { }
+
+	[RequireExplicitImplementation]
+	public interface ITiledTerrainRenderer
+	{
+		Sheet Sheet { get; }
+		Sprite TileSprite(TerrainTile r, int? variant = null);
+		Rectangle TemplateBounds(TerrainTemplateInfo template);
+	}
 }
