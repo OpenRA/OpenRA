@@ -21,12 +21,14 @@ namespace OpenRA.Mods.Common.Scripting
 	{
 		readonly SpawnMapActors sma;
 		readonly World world;
+		readonly GameSettings gameSettings;
 
 		public MapGlobal(ScriptContext context)
 			: base(context)
 		{
 			sma = context.World.WorldActor.Trait<SpawnMapActors>();
 			world = context.World;
+			gameSettings = Game.Settings.Game;
 
 			// Register map actors as globals (yuck!)
 			foreach (var kv in sma.Actors)
@@ -108,6 +110,9 @@ namespace OpenRA.Mods.Common.Scripting
 
 		[Desc("Returns true if there is only one human player.")]
 		public bool IsSinglePlayer { get { return Context.World.LobbyInfo.NonBotPlayers.Count() == 1; } }
+
+		[Desc("Returns true if this is a shellmap and the player has paused animations.")]
+		public bool IsPausedShellmap { get { return Context.World.Type == WorldType.Shellmap && gameSettings.PauseShellmap; } }
 
 		[Desc("Returns the value of a `ScriptLobbyDropdown` selected in the game lobby.")]
 		public LuaValue LobbyOption(string id)
