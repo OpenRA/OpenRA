@@ -146,6 +146,25 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			dropdown.ShowDropDown("TEAM_DROPDOWN_TEMPLATE", 150, options, setupItem);
 		}
 
+		public static void ShowHandicapDropDown(DropDownButtonWidget dropdown, Session.Client client,
+			OrderManager orderManager)
+		{
+			Func<int, ScrollItemWidget, ScrollItemWidget> setupItem = (ii, itemTemplate) =>
+			{
+				var item = ScrollItemWidget.Setup(itemTemplate,
+					() => client.Handicap == ii,
+					() => orderManager.IssueOrder(Order.Command("handicap {0} {1}".F(client.Index, ii))));
+
+				var label = "{0}%".F(ii);
+				item.Get<LabelWidget>("LABEL").GetText = () => label;
+				return item;
+			};
+
+			// Handicaps may be set between 0 - 95% in steps of 5%
+			var options = Enumerable.Range(0, 20).Select(i => 5 * i);
+			dropdown.ShowDropDown("TEAM_DROPDOWN_TEMPLATE", 150, options, setupItem);
+		}
+
 		public static void ShowSpawnDropDown(DropDownButtonWidget dropdown, Session.Client client,
 			OrderManager orderManager, IEnumerable<int> spawnPoints)
 		{
@@ -560,6 +579,29 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			team.IsVisible = () => true;
 			team.GetText = () => (c.Team == 0) ? "-" : c.Team.ToString();
 			HideChildWidget(parent, "TEAM_DROPDOWN");
+		}
+
+		public static void SetupEditableHandicapWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, MapPreview map)
+		{
+			var dropdown = parent.Get<DropDownButtonWidget>("HANDICAP_DROPDOWN");
+			dropdown.IsVisible = () => true;
+			dropdown.IsDisabled = () => s.LockTeam || orderManager.LocalClient.IsReady;
+			dropdown.OnMouseDown = _ => ShowHandicapDropDown(dropdown, c, orderManager);
+
+			var handicapLabel = new CachedTransform<int, string>(h => "{0}%".F(h));
+			dropdown.GetText = () => handicapLabel.Update(c.Handicap);
+
+			HideChildWidget(parent, "HANDICAP");
+		}
+
+		public static void SetupHandicapWidget(Widget parent, Session.Slot s, Session.Client c)
+		{
+			var team = parent.Get<LabelWidget>("HANDICAP");
+			team.IsVisible = () => true;
+
+			var handicapLabel = new CachedTransform<int, string>(h => "{0}%".F(h));
+			team.GetText = () => handicapLabel.Update(c.Handicap);
+			HideChildWidget(parent, "HANDICAP_DROPDOWN");
 		}
 
 		public static void SetupEditableSpawnWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, MapPreview map)

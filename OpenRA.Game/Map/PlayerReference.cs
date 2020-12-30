@@ -50,6 +50,9 @@ namespace OpenRA
 		public bool LockTeam = false;
 		public int Team = 0;
 
+		public bool LockHandicap = false;
+		public int Handicap = 0;
+
 		public string[] Allies = { };
 		public string[] Enemies = { };
 

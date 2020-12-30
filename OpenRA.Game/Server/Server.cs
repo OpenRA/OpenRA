@@ -93,6 +93,8 @@ namespace OpenRA.Server
 				c.SpawnPoint = pr.Spawn;
 			if (pr.LockTeam)
 				c.Team = pr.Team;
+			if (pr.LockHandicap)
+				c.Team = pr.Handicap;
 
 			c.Color = pr.LockColor ? pr.Color : c.PreferredColor;
 		}
@@ -437,6 +439,7 @@ namespace OpenRA.Server
 					Faction = "Random",
 					SpawnPoint = 0,
 					Team = 0,
+					Handicap = 0,
 					State = Session.ClientState.Invalid,
 				};
 

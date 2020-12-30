@@ -144,6 +144,7 @@ namespace OpenRA.Network
 
 			public ClientState State = ClientState.Invalid;
 			public int Team;
+			public int Handicap;
 			public string Slot; // Slot ID, or null for observer
 			public string Bot; // Bot type, null for real clients
 			public int BotControllerClientIndex; // who added the bot to the slot
@@ -193,6 +194,7 @@ namespace OpenRA.Network
 			public bool LockFaction;
 			public bool LockColor;
 			public bool LockTeam;
+			public bool LockHandicap;
 			public bool LockSpawn;
 			public bool Required;
 

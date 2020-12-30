@@ -106,6 +106,8 @@ namespace OpenRA.Mods.Common.Traits
 			return ret;
 		}
 
+		public Player Owner { get { return player; } }
+
 		class Watcher
 		{
 			public readonly string Key;
