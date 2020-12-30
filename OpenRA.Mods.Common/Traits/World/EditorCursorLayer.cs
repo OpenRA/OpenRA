@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 	public enum EditorCursorType { None, Actor, TerrainTemplate, Resource }
 
 	[Desc("Required for the map editor to work. Attach this to the world actor.")]
-	public class EditorCursorLayerInfo : TraitInfo, Requires<EditorActorLayerInfo>
+	public class EditorCursorLayerInfo : TraitInfo, Requires<EditorActorLayerInfo>, Requires<ITiledTerrainRendererInfo>
 	{
 		public readonly WAngle PreviewFacing = new WAngle(384);
 
@@ -30,6 +30,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly EditorCursorLayerInfo info;
 		readonly EditorActorLayer editorLayer;
+		readonly ITiledTerrainRenderer terrainRenderer;
 		readonly World world;
 
 		public int CurrentToken { get; private set; }
@@ -51,6 +52,7 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 			world = self.World;
 			editorLayer = self.Trait<EditorActorLayer>();
+			terrainRenderer = self.Trait<ITiledTerrainRenderer>();
 
 			Type = EditorCursorType.None;
 		}
@@ -81,7 +83,7 @@ namespace OpenRA.Mods.Common.Traits
 								if (!world.Map.Rules.TileSet.TryGetTileInfo(tile, out var tileInfo))
 									continue;
 
-								var sprite = wr.Theater.TileSprite(tile, 0);
+								var sprite = terrainRenderer.TileSprite(tile, 0);
 								var offset = world.Map.Offset(new CVec(x, y), tileInfo.Height);
 								var palette = wr.Palette(TerrainTemplate.Palette ?? TileSet.TerrainPaletteInternalName);
 

@@ -18,7 +18,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.D2k.Traits
 {
 	[Desc("Attach this to the world actor. Required for LaysTerrain to work.")]
-	public class BuildableTerrainLayerInfo : TraitInfo
+	public class BuildableTerrainLayerInfo : TraitInfo, Requires<ITiledTerrainRendererInfo>
 	{
 		[Desc("Palette to render the layer sprites in.")]
 		public readonly string Palette = TileSet.TerrainPaletteInternalName;
@@ -33,11 +33,11 @@ namespace OpenRA.Mods.D2k.Traits
 	{
 		readonly BuildableTerrainLayerInfo info;
 		readonly Dictionary<CPos, TerrainTile?> dirty = new Dictionary<CPos, TerrainTile?>();
+		readonly ITiledTerrainRenderer terrainRenderer;
 		readonly World world;
 		readonly CellLayer<int> strength;
 
 		TerrainSpriteLayer render;
-		Theater theater;
 		bool disposed;
 
 		public BuildableTerrainLayer(Actor self, BuildableTerrainLayerInfo info)
@@ -45,12 +45,12 @@ namespace OpenRA.Mods.D2k.Traits
 			this.info = info;
 			world = self.World;
 			strength = new CellLayer<int>(world.Map);
+			terrainRenderer = self.Trait<ITiledTerrainRenderer>();
 		}
 
 		public void WorldLoaded(World w, WorldRenderer wr)
 		{
-			theater = wr.Theater;
-			render = new TerrainSpriteLayer(w, wr, theater.Sheet, BlendMode.Alpha, wr.Palette(info.Palette), wr.World.Type != WorldType.Editor);
+			render = new TerrainSpriteLayer(w, wr, terrainRenderer.Sheet, BlendMode.Alpha, wr.Palette(info.Palette), wr.World.Type != WorldType.Editor);
 		}
 
 		public void AddTile(CPos cell, TerrainTile tile)
@@ -98,7 +98,7 @@ namespace OpenRA.Mods.D2k.Traits
 					if (tile.HasValue)
 					{
 						// Terrain tiles define their origin at the topleft
-						var s = theater.TileSprite(tile.Value);
+						var s = terrainRenderer.TileSprite(tile.Value);
 						var ss = new Sprite(s.Sheet, s.Bounds, s.ZRamp, float2.Zero, s.Channel, s.BlendMode);
 						render.Update(kv.Key, ss, false);
 					}

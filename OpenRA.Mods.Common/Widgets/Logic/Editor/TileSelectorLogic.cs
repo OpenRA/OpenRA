@@ -13,6 +13,7 @@ using System;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -36,6 +37,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		}
 
 		readonly TileSet tileset;
+		readonly ITiledTerrainRenderer terrainRenderer;
 		readonly TileSelectorTemplate[] allTemplates;
 		readonly EditorCursorLayer editorCursor;
 
@@ -44,6 +46,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			: base(widget, world, worldRenderer, "TILETEMPLATE_LIST", "TILEPREVIEW_TEMPLATE")
 		{
 			tileset = world.Map.Rules.TileSet;
+			terrainRenderer = world.WorldActor.TraitOrDefault<ITiledTerrainRenderer>();
+			if (terrainRenderer == null)
+				throw new YamlException("TileSelectorLogic requires a tile-based terrain renderer.");
+
 			allTemplates = tileset.Templates.Values.Select(t => new TileSelectorTemplate(t)).ToArray();
 			editorCursor = world.WorldActor.Trait<EditorCursorLayer>();
 
@@ -106,8 +112,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				var preview = item.Get<TerrainTemplatePreviewWidget>("TILE_PREVIEW");
 				var template = tileset.Templates[tileId];
-				var grid = WorldRenderer.World.Map.Grid;
-				var bounds = WorldRenderer.Theater.TemplateBounds(template, grid.TileSize, grid.Type);
+				var bounds = terrainRenderer.TemplateBounds(template);
 
 				// Scale templates to fit within the panel
 				var scale = 1f;

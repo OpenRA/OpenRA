@@ -11,31 +11,31 @@
 
 using System.Collections.Generic;
 using OpenRA.Graphics;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class TerrainRendererInfo : TraitInfo
+	public class TerrainRendererInfo : TraitInfo, ITiledTerrainRendererInfo
 	{
 		public override object Create(ActorInitializer init) { return new TerrainRenderer(init.World); }
 	}
 
-	public sealed class TerrainRenderer : IRenderTerrain, IWorldLoaded, INotifyActorDisposing
+	public sealed class TerrainRenderer : IRenderTerrain, IWorldLoaded, INotifyActorDisposing, ITiledTerrainRenderer
 	{
 		readonly Map map;
 		readonly Dictionary<string, TerrainSpriteLayer> spriteLayers = new Dictionary<string, TerrainSpriteLayer>();
-		Theater theater;
+		readonly Theater theater;
 		bool disposed;
 
 		public TerrainRenderer(World world)
 		{
 			map = world.Map;
+			theater = new Theater(world.Map.Rules.TileSet);
 		}
 
 		void IWorldLoaded.WorldLoaded(World world, WorldRenderer wr)
 		{
-			theater = wr.Theater;
-
 			foreach (var template in map.Rules.TileSet.Templates)
 			{
 				var palette = template.Value.Palette ?? TileSet.TerrainPaletteInternalName;
@@ -57,9 +57,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (map.Rules.TileSet.Templates.ContainsKey(tile.Type))
 				palette = map.Rules.TileSet.Templates[tile.Type].Palette ?? palette;
 
-			var sprite = theater.TileSprite(tile);
 			foreach (var kv in spriteLayers)
-				kv.Value.Update(cell, palette == kv.Key ? sprite : null, false);
+				kv.Value.Update(cell, palette == kv.Key ? theater.TileSprite(tile) : null, false);
 		}
 
 		void IRenderTerrain.RenderTerrain(WorldRenderer wr, Viewport viewport)
@@ -82,7 +81,42 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var kv in spriteLayers.Values)
 				kv.Dispose();
 
+			theater.Dispose();
 			disposed = true;
+		}
+
+		Sheet ITiledTerrainRenderer.Sheet { get { return theater.Sheet; } }
+
+		Sprite ITiledTerrainRenderer.TileSprite(TerrainTile r, int? variant)
+		{
+			return theater.TileSprite(r, variant);
+		}
+
+		Rectangle ITiledTerrainRenderer.TemplateBounds(TerrainTemplateInfo template)
+		{
+			Rectangle? templateRect = null;
+			var tileSize = map.Grid.TileSize;
+
+			var i = 0;
+			for (var y = 0; y < template.Size.Y; y++)
+			{
+				for (var x = 0; x < template.Size.X; x++)
+				{
+					var tile = new TerrainTile(template.Id, (byte)(i++));
+					if (!map.Rules.TileSet.TryGetTileInfo(tile, out var tileInfo))
+						continue;
+
+					var sprite = theater.TileSprite(tile);
+					var u = map.Grid.Type == MapGridType.Rectangular ? x : (x - y) / 2f;
+					var v = map.Grid.Type == MapGridType.Rectangular ? y : (x + y) / 2f;
+
+					var tl = new float2(u * tileSize.Width, (v - 0.5f * tileInfo.Height) * tileSize.Height) - 0.5f * sprite.Size;
+					var rect = new Rectangle((int)(tl.X + sprite.Offset.X), (int)(tl.Y + sprite.Offset.Y), (int)sprite.Size.X, (int)sprite.Size.Y);
+					templateRect = templateRect.HasValue ? Rectangle.Union(templateRect.Value, rect) : rect;
+				}
+			}
+
+			return templateRect ?? Rectangle.Empty;
 		}
 	}
 }
