@@ -39,58 +39,36 @@ install_assemblies_mono() {
 		./configure-system-libraries.sh
 	fi
 
+	if [ "${COPY_GENERIC_LAUNCHER}" != "True" ]; then
+		rm "${SRC_PATH}/bin/OpenRA.dll"
+	fi
+
+	if [ "${COPY_CNC_DLL}" != "True" ]; then
+		rm "${SRC_PATH}/bin/OpenRA.Mods.Cnc.dll"
+	fi
+
+	if [ "${COPY_D2K_DLL}" != "True" ]; then
+		rm "${SRC_PATH}/bin/OpenRA.Mods.D2k.dll"
+	fi
+
 	cd "${ORIG_PWD}" || exit 1
 
 	echo "Installing engine to ${DEST_PATH}"
 	install -d "${DEST_PATH}"
 
-	# Core engine
-	install -m755 "${SRC_PATH}/bin/OpenRA.Server.dll" "${DEST_PATH}"
-	install -m755 "${SRC_PATH}/bin/OpenRA.Utility.dll" "${DEST_PATH}"
-	install -m644 "${SRC_PATH}/bin/OpenRA.Game.dll" "${DEST_PATH}"
-	install -m644 "${SRC_PATH}/bin/OpenRA.Platforms.Default.dll" "${DEST_PATH}"
-	if [ "${COPY_GENERIC_LAUNCHER}" = "True" ]; then
-		install -m755 "${SRC_PATH}/bin/OpenRA.dll" "${DEST_PATH}"
-	fi
-
-	# Mod dlls
-	install -m644 "${SRC_PATH}/bin/OpenRA.Mods.Common.dll" "${DEST_PATH}"
-	if [ "${COPY_CNC_DLL}" = "True" ]; then
-		install -m644 "${SRC_PATH}/bin/OpenRA.Mods.Cnc.dll" "${DEST_PATH}"
-	fi
-
-	if [ "${COPY_D2K_DLL}" = "True" ]; then
-		install -m644 "${SRC_PATH}/bin/OpenRA.Mods.D2k.dll" "${DEST_PATH}"
-	fi
-
-	# Managed Dependencies
-	for LIB in ICSharpCode.SharpZipLib.dll FuzzyLogicLibrary.dll Open.Nat.dll BeaconLib.dll DiscordRPC.dll Newtonsoft.Json.dll SDL2-CS.dll OpenAL-CS.Core.dll Eluant.dll; do
-		install -m644 "${SRC_PATH}/bin/${LIB}" "${DEST_PATH}"
+	for LIB in "${SRC_PATH}/bin/"*.dll "${SRC_PATH}/bin/"*.dll.config; do
+		install -m644 "${LIB}" "${DEST_PATH}"
 	done
 
-	# Native dependencies
-	if [ "${TARGETPLATFORM}" = "win-x86" ] || [ "${TARGETPLATFORM}" = "win-x64" ]; then
-		echo "Installing dependencies for ${TARGETPLATFORM} to ${DEST_PATH}"
-		for LIB in soft_oal.dll SDL2.dll freetype6.dll lua51.dll libEGL.dll libGLESv2.dll; do
-			install -m644 "${SRC_PATH}/bin/${LIB}" "${DEST_PATH}"
-		done
-	else
-		for LIB in OpenRA.Platforms.Default.dll.config SDL2-CS.dll.config OpenAL-CS.Core.dll.config Eluant.dll.config; do
-			install -m644 "${SRC_PATH}/bin/${LIB}" "${DEST_PATH}"
-		done
-	fi
-
 	if [ "${TARGETPLATFORM}" = "linux-x64" ]; then
-		echo "Installing dependencies for ${TARGETPLATFORM} to ${DEST_PATH}"
-		for LIB in soft_oal.so SDL2.so freetype6.so lua51.so; do
-			install -m755 "${SRC_PATH}/bin/${LIB}" "${DEST_PATH}"
+		for LIB in "${SRC_PATH}/bin/"*.so; do
+			install -m755 "${LIB}" "${DEST_PATH}"
 		done
 	fi
 
 	if [ "${TARGETPLATFORM}" = "osx-x64" ]; then
-		echo "Installing dependencies for ${TARGETPLATFORM} to ${DEST_PATH}"
-		for LIB in soft_oal.dylib SDL2.dylib freetype6.dylib lua51.dylib; do
-			install -m755 "${SRC_PATH}/bin/${LIB}" "${DEST_PATH}"
+		for LIB in "${SRC_PATH}/bin/"*.dylib; do
+			install -m755 "${LIB}" "${DEST_PATH}"
 		done
 	fi
 }
