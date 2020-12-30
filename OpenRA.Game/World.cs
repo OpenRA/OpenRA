@@ -32,6 +32,7 @@ namespace OpenRA
 		readonly List<IEffect> effects = new List<IEffect>();
 		readonly List<IEffect> unpartitionedEffects = new List<IEffect>();
 		readonly List<ISync> syncedEffects = new List<ISync>();
+		readonly GameSettings gameSettings;
 
 		readonly Queue<Action<World>> frameEndActions = new Queue<Action<World>>();
 
@@ -226,6 +227,7 @@ namespace OpenRA
 			};
 
 			RulesContainTemporaryBlocker = map.Rules.Actors.Any(a => a.Value.HasTraitInfo<ITemporaryBlockerInfo>());
+			gameSettings = Game.Settings.Game;
 		}
 
 		public void AddToMaps(Actor self, IOccupySpace ios)
@@ -424,7 +426,9 @@ namespace OpenRA
 				wasLoadingGameSave = false;
 			}
 
-			if (!Paused)
+			// Allow users to pause the shellmap via the settings menu
+			// Some traits initialize important state during the first tick, so we must allow it to tick at least once
+			if (!Paused && (Type != WorldType.Shellmap || !gameSettings.PauseShellmap || WorldTick == 0))
 			{
 				WorldTick++;
 

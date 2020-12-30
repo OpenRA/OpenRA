@@ -147,8 +147,10 @@ speed = 5
 Tick = function()
 	ticks = ticks + 1
 
-	local t = (ticks + 45) % (360 * speed) * (math.pi / 180) / speed;
-	Camera.Position = viewportOrigin + WVec.New(19200 * math.sin(t), 28800 * math.cos(t), 0)
+	if ticks > 1 or not Map.IsPausedShellmap then
+		local t = (ticks + 45) % (360 * speed) * (math.pi / 180) / speed;
+		Camera.Position = viewportOrigin + WVec.New(19200 * math.sin(t), 28800 * math.cos(t), 0)
+	end
 end
 
 WorldLoaded = function()
