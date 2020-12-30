@@ -35,6 +35,13 @@ Container@LOBBY_PLAYER_BIN:
 					Text: Team
 					Align: Center
 					Font: Bold
+				Label@HANDICAP:
+					X: 491
+					Width: 75
+					Height: 25
+					Text: Handicap
+					Align: Center
+					Font: Bold
 				Label@SPAWN:
 					X: 571
 					Width: 50
@@ -142,6 +149,13 @@ Container@LOBBY_PLAYER_BIN:
 							Width: 50
 							Height: 25
 							Font: Regular
+						DropDownButton@HANDICAP_DROPDOWN:
+							X: 491
+							Width: 75
+							Height: 25
+							Font: Regular
+							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipText: A handicap decreases the combat effectiveness of the player's forces
 						DropDownButton@SPAWN_DROPDOWN:
 							X: 571
 							Width: 50
@@ -252,6 +266,18 @@ Container@LOBBY_PLAYER_BIN:
 							Height: 25
 							Font: Regular
 							Visible: false
+						Label@HANDICAP:
+							X: 491
+							Width: 50
+							Height: 25
+							Align: Center
+						DropDownButton@HANDICAP_DROPDOWN:
+							X: 491
+							Width: 75
+							Height: 25
+							Font: Regular
+							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipText: A handicap decreases the combat effectiveness of the player's forces
 						Label@SPAWN:
 							X: 571
 							Width: 25

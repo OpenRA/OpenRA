@@ -187,6 +187,11 @@
 	AttackMove:
 		AssaultMoveCondition: assault-move
 
+^PlayerHandicaps:
+	HandicapFirepowerMultiplier:
+	HandicapDamageMultiplier:
+	HandicapProductionTimeMultiplier:
+
 ^AcceptsCloakCrate:
 	Cloak:
 		InitialDelay: 15
@@ -224,6 +229,7 @@
 	Inherits@1: ^ExistsInWorld
 	Inherits@3: ^ClassicFacingSpriteActor
 	Inherits@selection: ^SelectableCombatUnit
+	Inherits@handicaps: ^PlayerHandicaps
 	Huntable:
 	OwnerLostAction:
 		Action: Kill
@@ -269,6 +275,7 @@
 	Inherits@1: ^ExistsInWorld
 	Inherits@3: ^ClassicFacingSpriteActor
 	Inherits@selection: ^SelectableCombatUnit
+	Inherits@handicaps: ^PlayerHandicaps
 	Huntable:
 	OwnerLostAction:
 		Action: Kill
@@ -323,6 +330,7 @@
 	Inherits@1: ^ExistsInWorld
 	Inherits@3: ^SpriteActor
 	Inherits@selection: ^SelectableCombatUnit
+	Inherits@handicaps: ^PlayerHandicaps
 	Huntable:
 	OwnerLostAction:
 		Action: Kill
@@ -492,6 +500,7 @@
 	Inherits@2: ^SpriteActor
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Inherits@selection: ^SelectableCombatUnit
+	Inherits@handicaps: ^PlayerHandicaps
 	Huntable:
 	OwnerLostAction:
 		Action: Kill
@@ -546,6 +555,7 @@
 	Inherits@2: ^SpriteActor
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Inherits@selection: ^SelectableCombatUnit
+	Inherits@handicaps: ^PlayerHandicaps
 	Huntable:
 	Health:
 		HP: 30000
@@ -601,6 +611,7 @@
 ^Plane:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^ClassicFacingSpriteActor
+	Inherits@handicaps: ^PlayerHandicaps
 	Huntable:
 	OwnerLostAction:
 		Action: Kill
@@ -626,6 +637,7 @@
 	Inherits@1: ^ExistsInWorld
 	Inherits@3: ^SpriteActor
 	Inherits@selection: ^SelectableCombatUnit
+	Inherits@handicaps: ^PlayerHandicaps
 	Huntable:
 	OwnerLostAction:
 		Action: Kill
@@ -653,6 +665,7 @@
 	Inherits@2: ^SpriteActor
 	Inherits@shape: ^1x1Shape
 	Inherits@selection: ^SelectableBuilding
+	Inherits@handicaps: ^PlayerHandicaps
 	Huntable:
 	OwnerLostAction:
 		Action: Kill

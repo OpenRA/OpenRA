@@ -64,6 +64,7 @@ namespace OpenRA.Mods.Common.Traits
 					DisplayFactionId = clientFaction.InternalName,
 					Color = client.Color,
 					Team = client.Team,
+					Handicap = client.Handicap,
 					SpawnPoint = resolvedSpawnPoint,
 					IsRandomFaction = clientFaction.RandomFactionMembers.Any(),
 					IsRandomSpawnPoint = client.SpawnPoint == 0,

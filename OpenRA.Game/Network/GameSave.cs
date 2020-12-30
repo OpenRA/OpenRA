@@ -25,6 +25,7 @@ namespace OpenRA.Network
 		public readonly string Faction;
 		public readonly int SpawnPoint;
 		public readonly int Team;
+		public readonly int Handicap;
 		public readonly string Slot;
 		public readonly string Bot;
 		public readonly bool IsAdmin;
@@ -39,6 +40,7 @@ namespace OpenRA.Network
 			Faction = client.Faction;
 			SpawnPoint = client.SpawnPoint;
 			Team = client.Team;
+			Handicap = client.Handicap;
 			Slot = client.Slot;
 			Bot = client.Bot;
 			IsAdmin = client.IsAdmin;
@@ -53,6 +55,7 @@ namespace OpenRA.Network
 			client.Faction = Faction;
 			client.SpawnPoint = SpawnPoint;
 			client.Team = Team;
+			client.Handicap = Handicap;
 			client.Slot = Slot;
 			client.Bot = Bot;
 			client.IsAdmin = IsAdmin;

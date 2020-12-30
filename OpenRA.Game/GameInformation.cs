@@ -123,6 +123,7 @@ namespace OpenRA
 				DisplayFactionId = runtimePlayer.DisplayFaction.InternalName,
 				Color = runtimePlayer.Color,
 				Team = client.Team,
+				Handicap = client.Handicap,
 				SpawnPoint = runtimePlayer.SpawnPoint,
 				IsRandomFaction = runtimePlayer.Faction.InternalName != client.Faction,
 				IsRandomSpawnPoint = runtimePlayer.DisplaySpawnPoint == 0,
@@ -166,6 +167,7 @@ namespace OpenRA
 			/// <summary>The team ID on start-up, or 0 if the player is not part of a team.</summary>
 			public int Team;
 			public int SpawnPoint;
+			public int Handicap;
 
 			/// <summary>True if the faction was chosen at random; otherwise, false.</summary>
 			public bool IsRandomFaction;
