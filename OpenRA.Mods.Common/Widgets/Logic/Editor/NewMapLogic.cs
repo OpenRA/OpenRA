@@ -11,6 +11,7 @@
 
 using System;
 using System.Linq;
+using OpenRA.Mods.Common.Terrain;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic

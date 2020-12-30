@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using OpenRA.Mods.Common.Terrain;
 using OpenRA.Primitives;
 
 namespace OpenRA.Mods.D2k.UtilityCommands
@@ -260,7 +261,7 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 
 		Map map;
 		Size mapSize;
-		ITemplatedTerrainInfo terrainInfo;
+		DefaultTerrain terrainInfo;
 		List<TerrainTemplateInfo> tileSetsFromYaml;
 		int playerCount;
 
@@ -306,7 +307,10 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 		void Initialize(string mapFile)
 		{
 			mapSize = new Size(stream.ReadUInt16(), stream.ReadUInt16());
-			terrainInfo = (ITemplatedTerrainInfo)Game.ModData.DefaultTerrainInfo["ARRAKIS"];
+			terrainInfo = Game.ModData.DefaultTerrainInfo["ARRAKIS"] as DefaultTerrain;
+
+			if (terrainInfo == null)
+				throw new InvalidDataException("The D2k map importer requires the DefaultTerrain parser.");
 
 			map = new Map(Game.ModData, terrainInfo, mapSize.Width + 2 * MapCordonWidth, mapSize.Height + 2 * MapCordonWidth)
 			{
@@ -320,8 +324,11 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 
 			// Get all templates from the tileset YAML file that have at least one frame and an Image property corresponding to the requested tileset
 			// Each frame is a tile from the Dune 2000 tileset files, with the Frame ID being the index of the tile in the original file
-			tileSetsFromYaml = terrainInfo.Templates.Where(t => t.Value.Frames != null
-				&& t.Value.Images[0].ToLowerInvariant() == tilesetName.ToLowerInvariant()).Select(ts => ts.Value).ToList();
+			tileSetsFromYaml = terrainInfo.Templates.Where(t =>
+			{
+				var templateInfo = (DefaultTerrainTemplateInfo)t.Value;
+				return templateInfo.Frames != null && templateInfo.Images[0].ToLowerInvariant() == tilesetName.ToLowerInvariant();
+			}).Select(ts => ts.Value).ToList();
 
 			var players = new MapPlayers(map.Rules, playerCount);
 			map.PlayerDefinitions = players.ToMiniYaml();
@@ -461,14 +468,18 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 			}
 
 			// Get the first tileset template that contains the Frame ID of the original map's tile with the requested index
-			var template = tileSetsFromYaml.FirstOrDefault(x => x.Frames.Contains(tileIndex));
+			var template = tileSetsFromYaml.FirstOrDefault(x => ((DefaultTerrainTemplateInfo)x).Frames.Contains(tileIndex));
 
 			// HACK: The arrakis.yaml tileset file seems to be missing some tiles, so just get a replacement for them
 			// Also used for duplicate tiles that are taken from only tileset
 			if (template == null)
 			{
 				// Just get a template that contains a tile with the same ID as requested
-				var templates = terrainInfo.Templates.Where(t => t.Value.Frames != null && t.Value.Frames.Contains(tileIndex));
+				var templates = terrainInfo.Templates.Where(t =>
+				{
+					var templateInfo = (DefaultTerrainTemplateInfo)t.Value;
+					return templateInfo.Frames != null && templateInfo.Frames.Contains(tileIndex);
+				});
 				if (templates.Any())
 					template = templates.First().Value;
 			}
@@ -482,7 +493,7 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 			}
 
 			var templateIndex = template.Id;
-			var frameIndex = Array.IndexOf(template.Frames, tileIndex);
+			var frameIndex = Array.IndexOf(((DefaultTerrainTemplateInfo)template).Frames, tileIndex);
 
 			return new TerrainTile(templateIndex, (byte)((frameIndex == -1) ? 0 : frameIndex));
 		}

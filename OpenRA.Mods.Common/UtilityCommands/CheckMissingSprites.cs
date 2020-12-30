@@ -10,9 +10,8 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
+using OpenRA.Mods.Common.Terrain;
 using OpenRA.Mods.Common.Traits;
 
 namespace OpenRA.Mods.Common.UtilityCommands
