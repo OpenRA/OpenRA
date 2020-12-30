@@ -17,7 +17,6 @@
 # Used by:
 #   Makefile (install target for local installs and downstream packaging)
 #   Linux AppImage packaging
-#   macOS packaging
 #   Mod SDK Linux AppImage packaging
 #   Mod SDK macOS packaging
 #   Mod SDK Windows packaging
@@ -107,6 +106,7 @@ install_assemblies_mono() {
 #   COPY_D2K_DLL: If set to True the OpenRA.Mods.D2k.dll will also be copied (True, False)
 # Used by:
 #   Windows packaging
+#   macOS packaging
 install_assemblies() {
 	SRC_PATH="${1}"
 	DEST_PATH="${2}"

@@ -131,16 +131,11 @@ NSTask *gameTask;
 	launched = YES;
 
 	// Default values - can be overriden by setting certain keys Info.plist
-	NSString *gameName = @"OpenRA.dll";
 	NSString *modId = nil;
 
 	NSDictionary *plist = [[NSBundle mainBundle] infoDictionary];
 	if (plist)
 	{
-		NSString *exeValue = [plist objectForKey:@"MonoGameExe"];
-		if (exeValue && [exeValue length] > 0)
-			gameName = exeValue;
-
 		NSString *modIdValue = [plist objectForKey:@"ModId"];
 		if (modIdValue && [modIdValue length] > 0)
 			modId = modIdValue;
@@ -149,21 +144,20 @@ NSTask *gameTask;
 	NSString *exePath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent: @"Contents/MacOS/"];
 	NSString *gamePath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent: @"Contents/Resources/"];
 
-	NSString *launchPath = [exePath stringByAppendingPathComponent: @"mono"];
-	NSString *appPath = [exePath stringByAppendingPathComponent: @"OpenRA"];
+	NSString *launchPath = [exePath stringByAppendingPathComponent: @"OpenRA"];
+	NSString *appPath = [exePath stringByAppendingPathComponent: @"Launcher"];
 	NSString *engineLaunchPath = [self resolveTranslocatedPath: appPath];
 
 	NSMutableArray *launchArgs = [NSMutableArray arrayWithCapacity: [gameArgs count] + 2];
-	[launchArgs addObject: @"--debug"];
-	[launchArgs addObject: [gamePath stringByAppendingPathComponent: gameName]];
 	[launchArgs addObject: [NSString stringWithFormat:@"Engine.LaunchPath=\"%@\"", engineLaunchPath]];
+	[launchArgs addObject: [NSString stringWithFormat:@"Engine.EngineDir=../Resources"]];
 
 	if (modId)
 		[launchArgs addObject: [NSString stringWithFormat:@"Game.Mod=%@", modId]];
 
 	[launchArgs addObjectsFromArray: gameArgs];
 
-	NSLog(@"Running mono with arguments:");
+	NSLog(@"Running OpenRA with arguments:");
 	for (size_t i = 0; i < [launchArgs count]; i++)
 		NSLog(@"%@", [launchArgs objectAtIndex: i]);
 
@@ -171,12 +165,6 @@ NSTask *gameTask;
 	[gameTask setCurrentDirectoryPath: gamePath];
 	[gameTask setLaunchPath: launchPath];
 	[gameTask setArguments: launchArgs];
-
-	NSMutableDictionary *environment = [NSMutableDictionary dictionaryWithDictionary: [[NSProcessInfo processInfo] environment]];
-	[environment setObject: [gamePath stringByAppendingPathComponent: @"lib/mono/4.5"] forKey: @"MONO_PATH"];
-	[environment setObject: [gamePath stringByAppendingPathComponent: @"etc"] forKey: @"MONO_CFG_DIR"];
-	[environment setObject: [gamePath stringByAppendingPathComponent: @"etc/mono/config"] forKey: @"MONO_CONFIG"];
-	[gameTask setEnvironment: environment];
 
 	[[NSNotificationCenter defaultCenter]
 		addObserver: self
