@@ -43,7 +43,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			this.modData = modData;
 			this.onSelect = onSelect;
 
-			var approving = new Action(() => { Ui.CloseWindow(); onSelect(selectedUid); });
+			var approving = new Action(() =>
+			{
+				Ui.CloseWindow();
+				onSelect?.Invoke(selectedUid);
+			});
+
 			var canceling = new Action(() => { Ui.CloseWindow(); onExit(); });
 
 			var okButton = widget.Get<ButtonWidget>("BUTTON_OK");
