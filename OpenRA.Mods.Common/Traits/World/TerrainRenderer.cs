@@ -97,7 +97,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			var sprite = tileCache.TileSprite(tile);
 			var paletteReference = worldRenderer.Palette(palette);
-			spriteLayer.Update(cell, sprite, paletteReference, false);
+			spriteLayer.Update(cell, sprite, paletteReference);
 		}
 
 		void IRenderTerrain.RenderTerrain(WorldRenderer wr, Viewport viewport)

@@ -33,6 +33,7 @@ namespace OpenRA.Graphics
 		int[] Frames { get; }
 		Rectangle Bounds { get; }
 		bool IgnoreWorldTint { get; }
+		float Scale { get; }
 
 		Sprite GetSprite(int frame);
 		Sprite GetSprite(int frame, WAngle facing);

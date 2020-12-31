@@ -76,24 +76,24 @@ namespace OpenRA.Graphics
 
 		public void Clear(CPos cell)
 		{
-			Update(cell, null, null, true);
+			Update(cell, null, null, 1f, true);
 		}
 
 		public void Update(CPos cell, ISpriteSequence sequence, PaletteReference palette, int frame)
 		{
-			Update(cell, sequence.GetSprite(frame), palette, sequence.IgnoreWorldTint);
+			Update(cell, sequence.GetSprite(frame), palette, sequence.Scale, sequence.IgnoreWorldTint);
 		}
 
-		public void Update(CPos cell, Sprite sprite, PaletteReference palette, bool ignoreTint)
+		public void Update(CPos cell, Sprite sprite, PaletteReference palette, float scale = 1f, bool ignoreTint = false)
 		{
 			var xyz = float3.Zero;
 			if (sprite != null)
 			{
 				var cellOrigin = map.CenterOfCell(cell) - new WVec(0, 0, map.Grid.Ramps[map.Ramp[cell]].CenterHeightOffset);
-				xyz = worldRenderer.Screen3DPosition(cellOrigin) + sprite.Offset - 0.5f * sprite.Size;
+				xyz = worldRenderer.Screen3DPosition(cellOrigin) + scale * (sprite.Offset - 0.5f * sprite.Size);
 			}
 
-			Update(cell.ToMPos(map.Grid.Type), sprite, palette, xyz, ignoreTint);
+			Update(cell.ToMPos(map.Grid.Type), sprite, palette, xyz, scale, ignoreTint);
 		}
 
 		void UpdateTint(MPos uv)
@@ -156,7 +156,7 @@ namespace OpenRA.Graphics
 			throw new InvalidDataException("Sheet overflow");
 		}
 
-		public void Update(MPos uv, Sprite sprite, PaletteReference palette, in float3 pos, bool ignoreTint)
+		public void Update(MPos uv, Sprite sprite, PaletteReference palette, in float3 pos, float scale, bool ignoreTint)
 		{
 			int2 samplers;
 			if (sprite != null)
@@ -177,7 +177,7 @@ namespace OpenRA.Graphics
 				return;
 
 			var offset = rowStride * uv.V + 6 * uv.U;
-			Util.FastCreateQuad(vertices, pos, sprite, samplers, palette?.TextureIndex ?? 0, offset, sprite.Size, float3.Ones, 1f);
+			Util.FastCreateQuad(vertices, pos, sprite, samplers, palette?.TextureIndex ?? 0, offset, scale * sprite.Size, float3.Ones, 1f);
 			palettes[uv.V * map.MapSize.X + uv.U] = palette;
 
 			if (worldRenderer.TerrainLighting != null)

@@ -54,6 +54,7 @@ namespace OpenRA.Graphics
 
 		public IRenderable[] Render(WPos pos, WVec offset, int zOffset, PaletteReference palette, float scale)
 		{
+			scale *= CurrentSequence.Scale;
 			var tintModifiers = CurrentSequence.IgnoreWorldTint ? TintModifiers.IgnoreWorldTint : TintModifiers.None;
 			var imageRenderable = new SpriteRenderable(Image, pos, offset, CurrentSequence.ZOffset + zOffset, palette, scale, IsDecoration, tintModifiers);
 
@@ -69,6 +70,7 @@ namespace OpenRA.Graphics
 
 		public IRenderable[] RenderUI(WorldRenderer wr, int2 pos, WVec offset, int zOffset, PaletteReference palette, float scale)
 		{
+			scale *= CurrentSequence.Scale;
 			var screenOffset = (scale * wr.ScreenVectorComponents(offset)).XY.ToInt2();
 			var imagePos = pos + screenOffset - new int2((int)(scale * Image.Size.X / 2), (int)(scale * Image.Size.Y / 2));
 			var imageRenderable = new UISpriteRenderable(Image, WPos.Zero + offset, imagePos, CurrentSequence.ZOffset + zOffset, palette, scale);
@@ -86,6 +88,7 @@ namespace OpenRA.Graphics
 
 		public Rectangle ScreenBounds(WorldRenderer wr, WPos pos, WVec offset, float scale)
 		{
+			scale *= CurrentSequence.Scale;
 			var xy = wr.ScreenPxPosition(pos) + wr.ScreenPxOffset(offset);
 			var cb = CurrentSequence.Bounds;
 			return Rectangle.FromLTRB(
