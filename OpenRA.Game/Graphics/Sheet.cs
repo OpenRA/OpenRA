@@ -103,7 +103,7 @@ namespace OpenRA.Graphics
 			for (var i = 0; i < Palette.Size; i++)
 				palColors[i] = pal.GetColor(i);
 
-			return new Png(plane, SpriteFrameType.Bgra32, Size.Width, Size.Height, palColors);
+			return new Png(plane, SpriteFrameType.Indexed8, Size.Width, Size.Height, palColors);
 		}
 
 		public void CreateBuffer()
