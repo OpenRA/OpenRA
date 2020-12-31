@@ -113,6 +113,7 @@ namespace OpenRA.Mods.Common.Graphics
 		int[] ISpriteSequence.Frames { get { throw exception; } }
 		Rectangle ISpriteSequence.Bounds { get { throw exception; } }
 		bool ISpriteSequence.IgnoreWorldTint { get { throw exception; } }
+		float ISpriteSequence.Scale { get { throw exception; } }
 		Sprite ISpriteSequence.GetSprite(int frame) { throw exception; }
 		Sprite ISpriteSequence.GetSprite(int frame, WAngle facing) { throw exception; }
 		Sprite ISpriteSequence.GetShadow(int frame, WAngle facing) { throw exception; }
@@ -140,6 +141,7 @@ namespace OpenRA.Mods.Common.Graphics
 		public int[] Frames { get; private set; }
 		public Rectangle Bounds { get; private set; }
 		public bool IgnoreWorldTint { get; private set; }
+		public float Scale { get; private set; }
 
 		public readonly uint[] EmbeddedPalette;
 
@@ -184,6 +186,7 @@ namespace OpenRA.Mods.Common.Graphics
 				transpose = LoadField(d, "Transpose", false);
 				Frames = LoadField<int[]>(d, "Frames", null);
 				IgnoreWorldTint = LoadField(d, "IgnoreWorldTint", false);
+				Scale = LoadField(d, "Scale", 1f);
 
 				var flipX = LoadField(d, "FlipX", false);
 				var flipY = LoadField(d, "FlipY", false);
