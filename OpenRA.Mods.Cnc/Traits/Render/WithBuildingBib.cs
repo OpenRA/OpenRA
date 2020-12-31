@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		public override object Create(ActorInitializer init) { return new WithBuildingBib(init.Self, this); }
 
-		public IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p)
+		public IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, string image, int facings, PaletteReference p)
 		{
 			if (init.Contains<HideBibPreviewInit>(this))
 				yield break;
@@ -69,7 +69,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 				// Z-order is one set to the top of the footprint
 				var offset = map.CenterOfCell(cell) - map.CenterOfCell(location) - centerOffset;
-				yield return new SpriteActorPreview(anim, () => offset, () => -(offset.Y + centerOffset.Y + 512), p, rs.Scale);
+				yield return new SpriteActorPreview(anim, () => offset, () => -(offset.Y + centerOffset.Y + 512), p);
 			}
 		}
 

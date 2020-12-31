@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		public override object Create(ActorInitializer init) { return new WithDeadBridgeSpriteBody(init, this); }
 
-		public override IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p)
+		public override IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, string image, int facings, PaletteReference p)
 		{
 			if (!EnabledByDefault)
 				yield break;
@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var sequence = init.World.Type == WorldType.Editor ? EditorSequence : Sequence;
 			var palette = init.World.Type == WorldType.Editor ? init.WorldRenderer.Palette(EditorPalette) : p;
 			anim.PlayFetchIndex(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), sequence), () => 0);
-			yield return new SpriteActorPreview(anim, () => WVec.Zero, () => 0, palette, rs.Scale);
+			yield return new SpriteActorPreview(anim, () => WVec.Zero, () => 0, palette);
 		}
 	}
 

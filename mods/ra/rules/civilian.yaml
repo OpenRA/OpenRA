@@ -918,8 +918,6 @@ SNOWHUT:
 	Building:
 		Footprint: x x
 		Dimensions: 1,2
-	RenderSprites:
-		Scale: 0.7
 	HitShape:
 		UseTargetableCellsOffsets: false
 

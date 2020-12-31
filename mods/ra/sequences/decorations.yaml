@@ -959,6 +959,7 @@ v37:
 snowhut:
 	Defaults:
 		Offset: 0,-5
+		Scale: 0.7
 	idle:
 		Length: 3
 		Tick: 360

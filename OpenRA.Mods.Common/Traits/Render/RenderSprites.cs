@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 {
 	public interface IRenderActorPreviewSpritesInfo : ITraitInfoInterface
 	{
-		IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p);
+		IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, string image, int facings, PaletteReference p);
 	}
 
 	[Desc("Render trait fundament that won't work without additional With* render traits.")]
@@ -40,9 +40,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[PaletteReference(true)]
 		[Desc("Custom PlayerColorPalette: BaseName")]
 		public readonly string PlayerPalette = "player";
-
-		[Desc("Change the sprite image size.")]
-		public readonly float Scale = 1f;
 
 		public override object Create(ActorInitializer init) { return new RenderSprites(init, this); }
 
@@ -68,7 +65,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			}
 
 			foreach (var spi in init.Actor.TraitInfos<IRenderActorPreviewSpritesInfo>())
-				foreach (var preview in spi.RenderPreviewSprites(init, this, image, facings, palette))
+				foreach (var preview in spi.RenderPreviewSprites(init, image, facings, palette))
 					yield return preview;
 		}
 
@@ -198,7 +195,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 					a.CachePalette(wr, owner);
 				}
 
-				foreach (var r in a.Animation.Render(self, wr, a.PaletteReference, Info.Scale))
+				foreach (var r in a.Animation.Render(self, wr, a.PaletteReference))
 					yield return r;
 			}
 		}
@@ -207,7 +204,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		{
 			foreach (var a in anims)
 				if (a.IsVisible)
-					yield return a.Animation.ScreenBounds(self, wr, Info.Scale);
+					yield return a.Animation.ScreenBounds(self, wr);
 		}
 
 		void ITick.Tick(Actor self)
@@ -280,7 +277,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		{
 			return anims.Where(b => b.IsVisible
 				&& b.Animation.Animation.CurrentSequence != null)
-					.Select(a => (a.Animation.Animation.Image.Size.XY * a.Animation.Animation.CurrentSequence.Scale * Info.Scale).ToInt2())
+					.Select(a => (a.Animation.Animation.Image.Size.XY * a.Animation.Animation.CurrentSequence.Scale).ToInt2())
 					.FirstOrDefault();
 		}
 

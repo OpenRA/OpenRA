@@ -87,7 +87,7 @@ namespace OpenRA.Mods.Common.Traits
 					yield return r;
 
 			var centerPosition = wr.World.Map.CenterOfCell(topLeft) + centerOffset;
-			foreach (var r in preview.Render(centerPosition, WVec.Zero, 0, palette, 1.0f))
+			foreach (var r in preview.Render(centerPosition, WVec.Zero, 0, palette))
 				yield return r;
 
 			if (info.FootprintOverPreview != PlaceBuildingCellType.None)
