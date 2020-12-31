@@ -22,15 +22,13 @@ namespace OpenRA.Mods.Common.Graphics
 		readonly Func<WVec> offset;
 		readonly Func<int> zOffset;
 		readonly PaletteReference pr;
-		readonly float scale;
 
-		public SpriteActorPreview(Animation animation, Func<WVec> offset, Func<int> zOffset, PaletteReference pr, float scale)
+		public SpriteActorPreview(Animation animation, Func<WVec> offset, Func<int> zOffset, PaletteReference pr)
 		{
 			this.animation = animation;
 			this.offset = offset;
 			this.zOffset = zOffset;
 			this.pr = pr;
-			this.scale = scale;
 		}
 
 		void IActorPreview.Tick() { animation.Tick(); }
@@ -42,12 +40,12 @@ namespace OpenRA.Mods.Common.Graphics
 
 		IEnumerable<IRenderable> IActorPreview.Render(WorldRenderer wr, WPos pos)
 		{
-			return animation.Render(pos, offset(), zOffset(), pr, scale);
+			return animation.Render(pos, offset(), zOffset(), pr);
 		}
 
 		IEnumerable<Rectangle> IActorPreview.ScreenBounds(WorldRenderer wr, WPos pos)
 		{
-			yield return animation.ScreenBounds(wr, pos, offset(), scale);
+			yield return animation.ScreenBounds(wr, pos, offset());
 		}
 	}
 }

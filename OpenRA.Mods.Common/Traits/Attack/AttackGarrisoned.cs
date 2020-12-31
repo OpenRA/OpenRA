@@ -193,7 +193,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Display muzzle flashes
 			foreach (var m in muzzles)
-				foreach (var r in m.Render(self, wr, pal, 1f))
+				foreach (var r in m.Render(self, wr, pal))
 					yield return r;
 		}
 

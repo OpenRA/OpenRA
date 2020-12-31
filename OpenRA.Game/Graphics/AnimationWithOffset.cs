@@ -35,21 +35,21 @@ namespace OpenRA.Graphics
 			ZOffset = zOffset;
 		}
 
-		public IRenderable[] Render(Actor self, WorldRenderer wr, PaletteReference pal, float scale)
+		public IRenderable[] Render(Actor self, WorldRenderer wr, PaletteReference pal)
 		{
 			var center = self.CenterPosition;
 			var offset = OffsetFunc != null ? OffsetFunc() : WVec.Zero;
 
 			var z = (ZOffset != null) ? ZOffset(center + offset) : 0;
-			return Animation.Render(center, offset, z, pal, scale);
+			return Animation.Render(center, offset, z, pal);
 		}
 
-		public Rectangle ScreenBounds(Actor self, WorldRenderer wr, float scale)
+		public Rectangle ScreenBounds(Actor self, WorldRenderer wr)
 		{
 			var center = self.CenterPosition;
 			var offset = OffsetFunc != null ? OffsetFunc() : WVec.Zero;
 
-			return Animation.ScreenBounds(wr, center, offset, scale);
+			return Animation.ScreenBounds(wr, center, offset);
 		}
 
 		public static implicit operator AnimationWithOffset(Animation a)

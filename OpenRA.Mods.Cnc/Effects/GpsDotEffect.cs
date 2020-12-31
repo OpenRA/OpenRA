@@ -107,7 +107,7 @@ namespace OpenRA.Mods.Cnc.Effects
 
 			var palette = wr.Palette(info.IndicatorPalettePrefix + effectiveOwner.InternalName);
 			var screenPos = wr.Viewport.WorldToViewPx(wr.ScreenPxPosition(actor.CenterPosition));
-			return anim.RenderUI(wr, screenPos, WVec.Zero, 0, palette, 1f);
+			return anim.RenderUI(wr, screenPos, WVec.Zero, 0, palette);
 		}
 	}
 }

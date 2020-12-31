@@ -87,6 +87,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new RenameMPTraits(),
 				new RemovePlayerHighlightPalette(),
 				new ReplaceWithColoredOverlayPalette(),
+				new RemoveRenderSpritesScale(),
 			})
 		};
 
