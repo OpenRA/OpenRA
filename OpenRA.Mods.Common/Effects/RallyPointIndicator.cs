@@ -72,8 +72,7 @@ namespace OpenRA.Mods.Common.Effects
 				return;
 
 			var exit = building.NearestExitOrDefault(targetLineNodes[0]);
-			var exitPos = exit != null ? building.World.Map.CenterOfCell(building.Location + exit.Info.ExitCell) : building.CenterPosition;
-			targetLineNodes.Insert(0, exitPos);
+			targetLineNodes.Insert(0, building.CenterPosition + (exit?.Info.SpawnOffset ?? WVec.Zero));
 		}
 
 		IEnumerable<IRenderable> IEffect.Render(WorldRenderer wr) { return SpriteRenderable.None; }
