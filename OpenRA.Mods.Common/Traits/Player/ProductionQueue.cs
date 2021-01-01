@@ -423,7 +423,10 @@ namespace OpenRA.Mods.Common.Traits
 							else if (!isBuilding)
 							{
 								if (BuildUnit(unit))
-									Game.Sound.PlayNotification(rules, self.Owner, "Speech", Info.ReadyAudio, self.Owner.Faction.InternalName);
+								{
+									if (!Game.Settings.Sound.MuteUnitReady)
+										Game.Sound.PlayNotification(rules, self.Owner, "Speech", Info.ReadyAudio, self.Owner.Faction.InternalName);
+								}
 								else if (!hasPlayedSound && time > 0)
 									hasPlayedSound = Game.Sound.PlayNotification(rules, self.Owner, "Speech", Info.BlockedAudio, self.Owner.Faction.InternalName);
 							}

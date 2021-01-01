@@ -415,6 +415,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			BindCheckboxPref(panel, "CASH_TICKS", ss, "CashTicks");
 			BindCheckboxPref(panel, "MUTE_SOUND", ss, "Mute");
 			BindCheckboxPref(panel, "MUTE_BACKGROUND_MUSIC", ss, "MuteBackgroundMusic");
+			BindCheckboxPref(panel, "MUTE_UNIT_READY", ss, "MuteUnitReady");
 
 			BindSliderPref(panel, "SOUND_VOLUME", ss, "SoundVolume");
 			BindSliderPref(panel, "MUSIC_VOLUME", ss, "MusicVolume");
@@ -446,6 +447,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				if (musicPlaylist.CurrentSongIsBackground)
 					musicPlaylist.Stop();
+			};
+
+			var muteUnitReadyCheckBox = panel.Get<CheckboxWidget>("MUTE_UNIT_READY");
+			var muteUnitReadyCheckBoxOnClick = muteUnitReadyCheckBox.OnClick;
+			muteUnitReadyCheckBox.OnClick = () =>
+			{
+				muteUnitReadyCheckBoxOnClick();
 			};
 
 			// Replace controls with a warning label if sound is disabled
