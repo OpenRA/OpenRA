@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Traits
 			// This is important because p may have side-effects that trigger a desync if not
 			// called on the same exits in the same order!
 			var all = Exits(actor, productionType)
-				.OrderBy(e => e.Info.Priority)
+				.OrderByDescending(e => e.Info.Priority)
 				.ThenBy(e => (actor.World.Map.CenterOfCell(actor.Location + e.Info.ExitCell) - pos).LengthSquared)
 				.ToList();
 
