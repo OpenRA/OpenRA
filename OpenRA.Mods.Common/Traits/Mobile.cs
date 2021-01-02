@@ -177,6 +177,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		WAngle oldFacing;
 		WRot orientation;
+		public WRot RampOrientation { get; set; }
 		WPos oldPos;
 		CPos fromCell, toCell;
 		public SubCell FromSubCell, ToSubCell;
@@ -203,7 +204,7 @@ namespace OpenRA.Mods.Common.Traits
 			set => orientation = orientation.WithYaw(value);
 		}
 
-		public WRot Orientation => orientation;
+		public WRot Orientation => orientation.Rotate(RampOrientation);
 
 		public WAngle TurnSpeed => Info.TurnSpeed;
 

@@ -518,6 +518,10 @@ namespace OpenRA.Mods.Common.Activities
 			protected override MovePart OnComplete(Actor self, Mobile mobile, Move parent)
 			{
 				var map = self.World.Map;
+
+				var rampType = self.World.Map.Rules.TerrainInfo.GetTerrainInfo(self.World.Map.Tiles[mobile.ToCell]).RampType;
+				mobile.RampOrientation = map.Grid.RampsRots[rampType];
+
 				var fromSubcellOffset = map.Grid.OffsetOfSubCell(mobile.FromSubCell);
 				var toSubcellOffset = map.Grid.OffsetOfSubCell(mobile.ToSubCell);
 

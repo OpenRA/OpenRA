@@ -120,6 +120,7 @@ namespace OpenRA
 		};
 
 		public CellRamp[] Ramps { get; private set; }
+		public WRot[] RampsRots { get; private set; }
 
 		internal readonly CVec[][] TilesByDistance;
 
@@ -174,6 +175,15 @@ namespace OpenRA
 				new CellRamp(Type, tr: RampCornerHeight.Half, bl: RampCornerHeight.Half, split: RampSplit.X),
 				new CellRamp(Type, tl: RampCornerHeight.Half, br: RampCornerHeight.Half, split: RampSplit.X),
 			};
+
+			RampsRots = new WRot[Ramps.Length];
+			for (var i = 0; i < Ramps.Length; i++)
+			{
+				RampsRots[i] = new WRot(
+					WAngle.ArcTan(Ramps[i].Corners[3].Z - Ramps[i].Corners[1].Z, Ramps[i].Corners[1].X - Ramps[i].Corners[3].X),
+					WAngle.ArcTan(Ramps[i].Corners[0].Z - Ramps[i].Corners[2].Z, Ramps[i].Corners[2].Y - Ramps[i].Corners[0].Y),
+					WAngle.Zero);
+			}
 
 			TilesByDistance = CreateTilesByDistance();
 		}
