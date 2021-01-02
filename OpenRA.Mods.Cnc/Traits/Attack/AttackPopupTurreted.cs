@@ -82,6 +82,9 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		protected override bool CanAttack(Actor self, in Target target)
 		{
+			if (IsTraitPaused)
+				return false;
+
 			if (state == PopupState.Closed)
 			{
 				state = PopupState.Transitioning;
@@ -103,6 +106,9 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		void INotifyIdle.TickIdle(Actor self)
 		{
+			if (IsTraitPaused)
+				return;
+
 			if (state == PopupState.Open && idleTicks++ > info.CloseDelay)
 			{
 				var facingOffset = new WVec(0, -1024, 0).Rotate(WRot.FromYaw(info.DefaultFacing));
