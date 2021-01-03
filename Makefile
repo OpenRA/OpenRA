@@ -15,6 +15,10 @@
 # to compile and install Red Alert, Tiberian Dawn, and Dune 2000, run:
 #   make [prefix=/foo] [bindir=/bar/bin] install
 #
+# to compile and install Red Alert, Tiberian Dawn, and Dune 2000
+# using system libraries for native dependencies, run:
+#   make [prefix=/foo] [bindir=/bar/bin] TARGETPLATFORM=unix-generic install
+#
 # to install Linux startup scripts, desktop files, icons, and MIME metadata
 #   make install-linux-shortcuts
 #
@@ -141,7 +145,11 @@ help:
 	@echo '  make test'
 	@echo
 	@echo 'to compile and install Red Alert, Tiberian Dawn, and Dune 2000 run:'
-	@echo '  make [prefix=/foo] install'
+	@echo '  make [prefix=/foo] [TARGETPLATFORM=unix-generic] install'
+	@echo
+	@echo 'to compile and install Red Alert, Tiberian Dawn, and Dune 2000'
+	@echo 'using system libraries for native dependencies, run:'
+	@echo '   make [prefix=/foo] [bindir=/bar/bin] TARGETPLATFORM=unix-generic install'
 	@echo
 	@echo 'to install Linux startup scripts, desktop files, icons, and MIME metadata'
 	@echo '  make install-linux-shortcuts'
