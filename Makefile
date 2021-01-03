@@ -36,7 +36,6 @@ bindir ?= $(prefix)/bin
 libdir ?= $(prefix)/lib
 gameinstalldir ?= $(libdir)/openra
 
-BIN_INSTALL_DIR = $(DESTDIR)$(bindir)
 DATA_INSTALL_DIR = $(DESTDIR)$(datadir)
 OPENRA_INSTALL_DIR = $(DESTDIR)$(gameinstalldir)
 
@@ -126,7 +125,7 @@ install:
 	@sh -c '. ./packaging/functions.sh; install_data $(CWD) $(OPENRA_INSTALL_DIR) cnc d2k ra'
 
 install-linux-shortcuts:
-	@sh -c '. ./packaging/functions.sh; install_linux_shortcuts $(CWD) $(OPENRA_INSTALL_DIR) $(BIN_INSTALL_DIR) $(DATA_INSTALL_DIR) $(VERSION) cnc d2k ra'
+	@sh -c '. ./packaging/functions.sh; install_linux_shortcuts $(CWD) "$(DESTDIR)" "$(gameinstalldir)" "$(bindir)" "$(datadir)" $(VERSION) cnc d2k ra'
 
 install-linux-appdata:
 	@sh -c '. ./packaging/functions.sh; install_linux_appdata $(CWD) $(DATA_INSTALL_DIR) cnc d2k ra'
