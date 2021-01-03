@@ -1,0 +1,114 @@
+World:
+	LuaScript:
+		Scripts: campaign-global.lua, wasteland.lua, wasteland-AI.lua
+	MissionData:
+		WinVideo: masasslt.vqa
+		LossVideo: frozen.vqa
+		Briefing: The last of the Soviet's Siberian forces have wandered out onto the ice wastes, where they've established a base. Finish off their fortifications so our Allied forces will have no trouble moving through this area on their way to Moscow.\n\nThe mission is complete when all Soviet forces and structures are destroyed.
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			easy: Easy
+			normal: Normal
+			hard: Hard
+		Default: normal
+
+Player:
+	PlayerResources:
+		DefaultCash: 5200
+
+MONEYCRATE:
+	GiveCashCrateAction:
+		Amount: 2000
+		SelectionShares: 1
+		UseCashTick: true
+
+PARATROOPERS:
+	ParatroopersPower:
+		DropItems: E1,E1,E1,E2,E2
+	AlwaysVisible:
+
+MCV:
+	Buildable:
+		Prerequisites: ~disabled
+
+TRUK:
+	Buildable:
+		Prerequisites: ~disabled
+
+MRJ:
+	Buildable:
+		Prerequisites: ~disabled
+
+3TNK:
+	Buildable:
+		Prerequisites: ~vehicles.soviet
+
+V2RL:
+	Buildable:
+		Prerequisites: ~vehicles.soviet
+
+4TNK:
+	Buildable:
+		Prerequisites: ~vehicles.soviet
+
+QTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+ATEK:
+	Buildable:
+		Prerequisites: ~disabled
+
+STEK:
+	Buildable:
+		Prerequisites: ~disabled
+
+PDOX:
+	Buildable:
+		Prerequisites: ~disabled
+
+IRON:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSLO:
+	Buildable:
+		Prerequisites: ~disabled
+
+GAP:
+	Buildable:
+		Prerequisites: ~disabled
+
+MECH:
+	Buildable:
+		Prerequisites: ~disabled
+
+THF:
+	Buildable:
+		Prerequisites: ~disabled
+
+E7:
+	Buildable:
+		Prerequisites: ~disabled
+
+E7.noautotarget:
+	Buildable:
+		Prerequisites: ~disabled
+
+SYRD:
+	Buildable:
+		Prerequisites: ~disabled
+
+SPEN:
+	Buildable:
+		Prerequisites: ~disabled
+
+MH60:
+	Buildable:
+		Prerequisites: ~disabled
+
+HELI:
+	Buildable:
+		Prerequisites: ~hpad
