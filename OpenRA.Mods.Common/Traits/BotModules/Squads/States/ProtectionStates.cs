@@ -55,10 +55,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 				Backoff--;
 			}
 			else
-			{
-				foreach (var a in owner.Units)
-					owner.Bot.QueueOrder(new Order("AttackMove", a, Target.FromCell(owner.World, owner.TargetActor.Location), false));
-			}
+				owner.Bot.QueueOrder(new Order("AttackMove", null, Target.FromCell(owner.World, owner.TargetActor.Location), false, groupedActors: owner.Units.ToArray()));
 		}
 
 		public void Deactivate(Squad owner) { }
