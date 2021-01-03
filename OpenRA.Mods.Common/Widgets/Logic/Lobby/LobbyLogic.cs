@@ -773,6 +773,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				}
 			}
 
+			// Add extra slots to keep the join button active for spectators
+			if (numberOfPlayers == slots && orderManager.LobbyInfo.GlobalSettings.AllowSpectators)
+				slots = numberOfPlayers + 1;
+
 			var details = map.Title + " - " + orderManager.LobbyInfo.GlobalSettings.ServerName;
 			if (updateDiscordStatus)
 			{
