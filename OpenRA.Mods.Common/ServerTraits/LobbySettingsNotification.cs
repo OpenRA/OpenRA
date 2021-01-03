@@ -22,9 +22,6 @@ namespace OpenRA.Mods.Common.Server
 		{
 			lock (server.LobbyInfo)
 			{
-				if (server.LobbyInfo.ClientWithIndex(conn.PlayerIndex).IsAdmin)
-					return;
-
 				var defaults = new Session.Global();
 				LobbyCommands.LoadMapSettings(server, defaults, server.Map.Rules);
 
