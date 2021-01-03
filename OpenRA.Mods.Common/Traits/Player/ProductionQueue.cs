@@ -412,8 +412,11 @@ namespace OpenRA.Mods.Common.Traits
 						var hasPlayedSound = false;
 						BeginProduction(new ProductionItem(this, order.TargetString, cost, playerPower, () => self.World.AddFrameEndTask(_ =>
 						{
-							var isBuilding = unit.HasTraitInfo<BuildingInfo>();
+							// Make sure the item hasn't been invalidated between the ProductionItem ticking and this FrameEndTask running
+							if (!Queue.Any(i => i.Done && i.Item == unit.Name))
+								return;
 
+							var isBuilding = unit.HasTraitInfo<BuildingInfo>();
 							if (isBuilding && !hasPlayedSound)
 								hasPlayedSound = Game.Sound.PlayNotification(rules, self.Owner, "Speech", Info.ReadyAudio, self.Owner.Faction.InternalName);
 							else if (!isBuilding)
