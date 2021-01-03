@@ -1,7 +1,7 @@
 --[[
    The MIT License
 
-   Copyright (c) 2010 Ignacio Burgueño
+   Copyright (c) 2010 Ignacio Burgueï¿½o
 
    Permission is hereby granted, free of charge, to any person obtaining a copy
    of this software and associated documentation files (the "Software"), to deal
@@ -123,7 +123,7 @@ local function safe_tostring (value)
 end
 
 -- Private:
--- Parses a line, looking for possible function definitions (in a very naïve way)
+-- Parses a line, looking for possible function definitions (in a very naï¿½ve way)
 -- Returns '(anonymous)' if no function name was found in the line
 local function ParseLine(line)
 	assert(type(line) == "string")
