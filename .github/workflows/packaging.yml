@@ -8,6 +8,30 @@ on:
     - 'devtest-*'
 
 jobs:
+  source:
+    name: Source Tarball
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Clone Repository
+        uses: actions/checkout@v2
+
+      - name: Prepare Environment
+        run: echo "GIT_TAG=${GITHUB_REF#refs/tags/}" >> ${GITHUB_ENV}
+
+      - name: Package Source
+        run: |
+          mkdir -p build/source
+          ./packaging/source/buildpackage.sh "${GIT_TAG}" "${PWD}/build/source"
+
+      - name: Upload Packages
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ github.ref }}
+          overwrite: true
+          file_glob: true
+          file: build/source/*
+
   linux:
     name: Linux AppImages
     runs-on: ubuntu-20.04
