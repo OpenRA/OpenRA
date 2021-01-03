@@ -222,6 +222,7 @@ set_mod_version() {
 # Copy launch wrappers, application icons, desktop, and MIME files to the target directory
 # Arguments:
 #   SRC_PATH: Path to the root OpenRA directory
+#   BUILD_PATH: Path to packaging filesystem root (e.g. /tmp/openra-build/ or "" for a local install)
 #   OPENRA_PATH: Path to the OpenRA installation (e.g. /usr/local/lib/openra)
 #   BIN_PATH: Path to install wrapper scripts (e.g. /usr/local/bin)
 #   SHARE_PATH: Parent path to the icons and applications directory (e.g. /usr/local/share)
@@ -231,11 +232,12 @@ set_mod_version() {
 #   Makefile (install-linux-shortcuts target for local installs and downstream packaging)
 install_linux_shortcuts() {
 	SRC_PATH="${1}"
-	OPENRA_PATH="${2}"
-	BIN_PATH="${3}"
-	SHARE_PATH="${4}"
-	VERSION="${5}"
-	shift 5
+	BUILD_PATH="${2}"
+	OPENRA_PATH="${3}"
+	BIN_PATH="${4}"
+	SHARE_PATH="${5}"
+	VERSION="${6}"
+	shift 6
 
 	while [ -n "${1}" ]; do
 		MOD_ID="${1}"
@@ -252,37 +254,35 @@ install_linux_shortcuts() {
 				MOD_NAME="Red Alert"
 			fi
 
-			# bin wrappers
-			install -d "${DEST_PATH}/bin"
-
-			sed 's/{DEBUG}/--debug/' "${SRC_PATH}/packaging/linux/openra.in" | sed "s|{GAME_INSTALL_DIR}|${OPENRA_PATH}|" | sed "s|{BIN_DIR}|${DEST_PATH}/bin)|" | sed "s/{MODID}/${MOD_ID}/g" | sed "s/{TAG}/${VERSION}/g" | sed "s/{MODNAME}/${MOD_NAME}/g" > "${SRC_PATH}/packaging/linux/openra-${MOD_ID}"
+			# wrapper scripts
+			install -d "${BUILD_PATH}/${BIN_PATH}"
+			sed 's/{DEBUG}/--debug/' "${SRC_PATH}/packaging/linux/openra.in" | sed "s|{GAME_INSTALL_DIR}|${OPENRA_PATH}|" | sed "s|{BIN_DIR}|${BIN_PATH}|" | sed "s/{MODID}/${MOD_ID}/g" | sed "s/{TAG}/${VERSION}/g" | sed "s/{MODNAME}/${MOD_NAME}/g" > "${SRC_PATH}/packaging/linux/openra-${MOD_ID}"
 			sed 's/{DEBUG}/--debug/' "${SRC_PATH}/packaging/linux/openra-server.in" | sed "s|{GAME_INSTALL_DIR}|${OPENRA_PATH}|" | sed "s/{MODID}/${MOD_ID}/g" > "${SRC_PATH}/packaging/linux/openra-${MOD_ID}-server"
-			mkdir -p ${BIN_PATH}
-			install -m755 "${SRC_PATH}/packaging/linux/openra-${MOD_ID}" "${BIN_PATH}"
-			install -m755 "${SRC_PATH}/packaging/linux/openra-${MOD_ID}-server" "${BIN_PATH}"
+			install -m755 "${SRC_PATH}/packaging/linux/openra-${MOD_ID}" "${BUILD_PATH}/${BIN_PATH}"
+			install -m755 "${SRC_PATH}/packaging/linux/openra-${MOD_ID}-server" "${BUILD_PATH}/${BIN_PATH}"
 			rm "${SRC_PATH}/packaging/linux/openra-${MOD_ID}" "${SRC_PATH}/packaging/linux/openra-${MOD_ID}-server"
 
 			# desktop files
-			install -d "${SHARE_PATH}/applications"
+			install -d "${BUILD_PATH}${SHARE_PATH}/applications"
 			sed "s/{MODID}/${MOD_ID}/g" "${SRC_PATH}/packaging/linux/openra.desktop.in" | sed "s/{MODNAME}/${MOD_NAME}/g" | sed "s/{TAG}/${VERSION}/g" > "${SRC_PATH}/packaging/linux/openra-${MOD_ID}.desktop"
-			install -m644 "${SRC_PATH}/packaging/linux/openra-${MOD_ID}.desktop" "${SHARE_PATH}/applications"
+			install -m644 "${SRC_PATH}/packaging/linux/openra-${MOD_ID}.desktop" "${BUILD_PATH}${SHARE_PATH}/applications"
 			rm "${SRC_PATH}/packaging/linux/openra-${MOD_ID}.desktop"
 
 			# icons
 			for SIZE in 16x16 32x32 48x48 64x64 128x128; do
-				install -d "${SHARE_PATH}/icons/hicolor/${SIZE}/apps"
-				install -m644 "${SRC_PATH}/packaging/artwork/${MOD_ID}_${SIZE}.png" "${SHARE_PATH}/icons/hicolor/${SIZE}/apps/openra-${MOD_ID}.png"
+				install -d "${BUILD_PATH}${SHARE_PATH}/icons/hicolor/${SIZE}/apps"
+				install -m644 "${SRC_PATH}/packaging/artwork/${MOD_ID}_${SIZE}.png" "${BUILD_PATH}${SHARE_PATH}/icons/hicolor/${SIZE}/apps/openra-${MOD_ID}.png"
 			done
 
 			if [ "${MOD_ID}" = "ra" ] || [ "${MOD_ID}" = "cnc" ]; then
-				install -d "${SHARE_PATH}/icons/hicolor/scalable/apps"
-				install -m644 "${SRC_PATH}/packaging/artwork/${MOD_ID}_scalable.svg" "${SHARE_PATH}/icons/hicolor/scalable/apps/openra-${MOD_ID}.svg"
+				install -d "${BUILD_PATH}${SHARE_PATH}/icons/hicolor/scalable/apps"
+				install -m644 "${SRC_PATH}/packaging/artwork/${MOD_ID}_scalable.svg" "${BUILD_PATH}${SHARE_PATH}/icons/hicolor/scalable/apps/openra-${MOD_ID}.svg"
 			fi
 
 			# MIME info
-			install -d "${SHARE_PATH}/mime/packages"
+			install -d "${BUILD_PATH}${SHARE_PATH}/mime/packages"
 			sed "s/{MODID}/${MOD_ID}/g" "${SRC_PATH}/packaging/linux/openra-mimeinfo.xml.in" | sed "s/{TAG}/${VERSION}/g" > "${SRC_PATH}/packaging/linux/openra-${MOD_ID}.xml"
-			install -m644 "${SRC_PATH}/packaging/linux/openra-${MOD_ID}.xml" "${SHARE_PATH}/mime/packages/openra-${MOD_ID}.xml"
+			install -m644 "${SRC_PATH}/packaging/linux/openra-${MOD_ID}.xml" "${BUILD_PATH}${SHARE_PATH}/mime/packages/openra-${MOD_ID}.xml"
 			rm "${SRC_PATH}/packaging/linux/openra-${MOD_ID}.xml"
 		fi
 
