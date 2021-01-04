@@ -16,8 +16,14 @@ namespace OpenRA.Network
 {
 	public static class OrderIO
 	{
+		static readonly List<Order> EmptyOrderList = new List<Order>(0);
+
 		public static List<Order> ToOrderList(this byte[] bytes, World world)
 		{
+			// PERF: Skip empty order frames, often per client each frame
+			if (bytes.Length == 4)
+				return EmptyOrderList;
+
 			var ms = new MemoryStream(bytes, 4, bytes.Length - 4);
 			var reader = new BinaryReader(ms);
 			var ret = new List<Order>();
