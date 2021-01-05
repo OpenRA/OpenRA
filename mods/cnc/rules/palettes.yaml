@@ -72,12 +72,6 @@
 		Filename: temperat.pal
 		ShadowIndex: 4
 		AllowModifiers: false
-	PaletteFromRGBA@shadow:
-		Name: shadow
-		R: 0
-		G: 0
-		B: 0
-		A: 140
 	PaletteFromRGBA@cloak:
 		Name: cloak
 		R: 0
