@@ -40,6 +40,8 @@ namespace OpenRA
 	{
 		static void Main(string[] args)
 		{
+			Console.WriteLine("::error file=CONTRIBUTING.md,line=1::Testing");
+
 			var engineDir = Environment.GetEnvironmentVariable("ENGINE_DIR");
 			if (!string.IsNullOrEmpty(engineDir))
 				Platform.OverrideEngineDir(engineDir);
