@@ -548,9 +548,9 @@
 	Inherits@selection: ^SelectableCombatUnit
 	Huntable:
 	Health:
-		HP: 30000
+		HP: 40000
 	Armor:
-		Type: Wood
+		Type: Light
 	RevealsShroud:
 		Range: 6c0
 	Mobile:
@@ -992,9 +992,9 @@
 	Inherits@1: ^ClassicFacingSpriteActor
 	Interactable:
 	Health:
-		HP: 14000
+		HP: 28000
 	Armor:
-		Type: Light
+		Type: Heavy
 	HiddenUnderFog:
 		Type: CenterPosition
 		AlwaysVisibleRelationships: None
@@ -1029,14 +1029,14 @@
 		Sequence: 1
 		IsDecoration: True
 	ChangesHealth:
-		Step: -100
+		Step: -200
 		StartIfBelow: 101
 		Delay: 6
 
 ^LightHusk:
 	Inherits: ^Husk
 	Health:
-		HP: 2000
+		HP: 4000
 
 ^HelicopterHusk:
 	Inherits: ^CommonHuskDefaults

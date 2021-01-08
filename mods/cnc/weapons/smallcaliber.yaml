@@ -1,7 +1,7 @@
 Sniper:
 	Report: ramgun2.aud
 	ValidTargets: Ground, Infantry
-	InvalidTargets: Vehicle, Water, Structure, Wall, Husk
+	InvalidTargets: Vehicle, Water, Structure, Wall, Husk, Creep
 	ReloadDelay: 40
 	Range: 8c0
 	Projectile: Bullet
@@ -72,7 +72,7 @@ HeliAGGun:
 		Damage: 2000
 		Versus:
 			None: 100
-			Wood: 50
+			Wood: 75
 			Light: 75
 			Heavy: 25
 		DamageTypes: Prone80Percent, TriggerProne, RippedApartDeath
@@ -175,6 +175,6 @@ APCGun.AA:
 	Warhead@1Dam: SpreadDamage
 		ValidTargets: Air
 		Versus:
-			Light: 140
+			Light: 125
 	Warhead@2Eff: CreateEffect
 		Explosions: small_poof
