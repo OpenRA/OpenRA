@@ -126,7 +126,7 @@ namespace OpenRA.Primitives
 
 		public override string ToString()
 		{
-			return string.Format("{{X={0},Y={1},Width={2},Height={3}}}", X, Y, Width, Height);
+			return "{0},{1},{2},{3}".F(X, Y, Width, Height);
 		}
 	}
 }
