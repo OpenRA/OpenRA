@@ -65,6 +65,7 @@ Rockets:
 
 BikeRockets:
 	Inherits: ^MissileWeapon
+	ReloadDelay: 60
 	Burst: 2
 	BurstDelays: 10
 	Projectile: Missile

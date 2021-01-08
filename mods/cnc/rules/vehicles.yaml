@@ -110,7 +110,7 @@ APC:
 		Queue: Vehicle.GDI
 		Description: Armed infantry transport.\nCan attack Aircraft.\n  Strong vs Vehicles\n  Weak vs Infantry
 	Mobile:
-		TurnSpeed: 20
+		TurnSpeed: 28
 		Speed: 132
 		PauseOnCondition: notmobile
 	Health:
@@ -629,7 +629,7 @@ STNK:
 	Inherits@EXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
 	Valued:
-		Cost: 1000
+		Cost: 900
 	Tooltip:
 		Name: Stealth Tank
 	UpdatesPlayerStatistics:
@@ -648,7 +648,7 @@ STNK:
 	Health:
 		HP: 15000
 	Repairable:
-		HpPerStep: 682
+		HpPerStep: 758
 	Armor:
 		Type: Light
 	RevealsShroud:
