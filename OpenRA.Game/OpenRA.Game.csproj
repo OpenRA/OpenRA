@@ -31,6 +31,9 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <Optimize>false</Optimize>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Mono)' != ''">
+    <DefineConstants>MONO</DefineConstants>
+  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="OpenRA-Eluant" Version="1.0.17" />
     <PackageReference Include="OpenRA-Open.NAT" Version="1.0.0" />

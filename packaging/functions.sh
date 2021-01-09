@@ -34,7 +34,7 @@ install_assemblies_mono() {
 	rm -rf "${SRC_PATH}/OpenRA."*/obj
 	rm -rf "${SRC_PATH:?}/bin"
 
-	msbuild -verbosity:m -nologo -t:Build -restore -p:Configuration=Release -p:TargetPlatform="${TARGETPLATFORM}" -p:Mono=true -p:DefineConstants="MONO"
+	msbuild -verbosity:m -nologo -t:Build -restore -p:Configuration=Release -p:TargetPlatform="${TARGETPLATFORM}" -p:Mono=true
 	if [ "${TARGETPLATFORM}" = "unix-generic" ]; then
 		./configure-system-libraries.sh
 	fi
