@@ -38,6 +38,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			// Advanced
 			SettingsUtils.BindCheckboxPref(panel, "NAT_DISCOVERY", ss, "DiscoverNatDevices");
+			SettingsUtils.BindCheckboxPref(panel, "USE_NEW_NETCODE_CHECKBOX", ss, "UseNewNetcode");
 			SettingsUtils.BindCheckboxPref(panel, "PERFTEXT_CHECKBOX", ds, "PerfText");
 			SettingsUtils.BindCheckboxPref(panel, "PERFGRAPH_CHECKBOX", ds, "PerfGraph");
 			SettingsUtils.BindCheckboxPref(panel, "FETCH_NEWS_CHECKBOX", gs, "FetchNews");
@@ -70,6 +71,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			return () =>
 			{
 				ss.DiscoverNatDevices = dss.DiscoverNatDevices;
+				ss.UseNewNetcode = dss.UseNewNetcode;
 				ds.PerfText = dds.PerfText;
 				ds.PerfGraph = dds.PerfGraph;
 				ds.SyncCheckUnsyncedCode = dds.SyncCheckUnsyncedCode;

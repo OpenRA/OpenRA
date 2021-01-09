@@ -16,16 +16,23 @@ Container@ADVANCED_PANEL:
 			Height: 20
 			Font: Regular
 			Text: Enable Network Discovery (UPnP)
+		Checkbox@USE_NEW_NETCODE_CHECKBOX:
+			X: 15
+			Y: 72
+			Width: 300
+			Height: 20
+			Font: Regular
+			Text: Use New Netcode (Experimental)
 		Checkbox@PERFTEXT_CHECKBOX:
 			X: 15
-			Y: 73
+			Y: 103
 			Width: 300
 			Height: 20
 			Font: Regular
 			Text: Show Performance Text
 		Checkbox@PERFGRAPH_CHECKBOX:
 			X: 15
-			Y: 103
+			Y: 133
 			Width: 300
 			Height: 20
 			Font: Regular
