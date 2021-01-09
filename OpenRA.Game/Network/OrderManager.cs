@@ -35,9 +35,18 @@ namespace OpenRA.Network
 		public bool AuthenticationFailed = false;
 		public ExternalMod ServerExternalMod = null;
 
+		public int NetTickScale { get { return LobbyInfo.GlobalSettings.UseNewNetcode ? Game.NewNetcodeNetTickScale : Game.DefaultNetTickScale; } }
+		public bool IsNetTick { get { return LocalFrameNumber % NetTickScale == 0; } }
 		public int NetFrameNumber { get; private set; }
 		public int LocalFrameNumber;
-		public int FramesAhead = 0;
+
+		public int SyncFrameScale = 1; // TODO make this based on actual time, I would suggest once per second
+
+		public int LastSlowDownRequestTick;
+		public bool ShouldUseCatchUp;
+		public int OrderLatency; // Set during lobby by a "SyncInfo" packet, see UnitOrders
+		public int NextOrderFrame;
+		public bool IsCatchingUp { get; private set; }
 
 		public long LastTickTime = Game.RunTime;
 
@@ -49,6 +58,7 @@ namespace OpenRA.Network
 
 		readonly List<Order> localOrders = new List<Order>();
 		readonly List<Order> localImmediateOrders = new List<Order>();
+		readonly List<(int ClientId, byte[] Packet)> immediatePackets = new List<(int ClientId, byte[] Packet)>();
 
 		readonly List<ChatLine> chatCache = new List<ChatLine>();
 
@@ -59,7 +69,7 @@ namespace OpenRA.Network
 
 		void OutOfSync(int frame)
 		{
-			syncReport.DumpSyncReport(frame, frameData.OrdersForFrame(World, frame));
+			syncReport.DumpSyncReport(frame);
 			throw new InvalidOperationException("Out of sync in frame {0}.\n Compare syncreport.log with other players.".F(frame));
 		}
 
@@ -68,15 +78,38 @@ namespace OpenRA.Network
 			if (GameStarted)
 				return;
 
+			if (LobbyInfo.Clients.Count == 0)
+			{
+				frameData.AddClient(Connection.LocalClientId);
+			}
+
+			foreach (var client in LobbyInfo.Clients)
+			{
+				if (!client.IsBot)
+					frameData.AddClient(client.Index);
+			}
+
 			// Generating sync reports is expensive, so only do it if we have
 			// other players to compare against if a desync did occur
 			generateSyncReport = !(Connection is ReplayConnection) && LobbyInfo.GlobalSettings.EnableSyncReports;
 
 			NetFrameNumber = 1;
+			NextOrderFrame = 1;
 
-			if (GameSaveLastFrame < 0)
-				for (var i = NetFrameNumber; i <= FramesAhead; i++)
-					Connection.Send(i, new List<byte[]>());
+			// HACK: FramesAhead is only ever 0 in singleplayer, so we increase the rate of apparent net ticks to decrease latency
+			// if (OrderLatency == 0)
+			// 	NetTickScale = 1;
+			if (LobbyInfo.GlobalSettings.UseNewNetcode)
+			{
+				// Technically redundant since we will attempt to send orders before the next frame
+				// but gets our framesahead orders out sooner
+				SendOrders();
+			}
+			else
+			{
+				for (var i = 0; i <= OrderLatency; ++i)
+					SendOrders();
+			}
 		}
 
 		public OrderManager(ConnectionTarget endpoint, string password, IConnection conn)
@@ -87,6 +120,10 @@ namespace OpenRA.Network
 			syncReport = new SyncReport(this);
 			ChatCache = new ReadOnlyList<ChatLine>(chatCache);
 			AddChatLine += CacheChatLine;
+
+			// HACK: should not rely on this
+			if (conn is NetworkConnection)
+				ShouldUseCatchUp = true;
 		}
 
 		public void IssueOrders(Order[] orders)
@@ -109,36 +146,32 @@ namespace OpenRA.Network
 			chatCache.Add(new ChatLine(name, nameColor, text, textColor));
 		}
 
-		public void TickImmediate()
+		void SendImmediateOrders()
 		{
-			if (localImmediateOrders.Count != 0 && GameSaveLastFrame < NetFrameNumber + FramesAhead)
+			if (localImmediateOrders.Count != 0 && GameSaveLastFrame < NetFrameNumber)
 				Connection.SendImmediate(localImmediateOrders.Select(o => o.Serialize()));
 			localImmediateOrders.Clear();
+		}
 
-			var immediatePackets = new List<(int ClientId, byte[] Packet)>();
-
+		void ReceiveAllOrdersAndCheckSync()
+		{
 			Connection.Receive(
 				(clientId, packet) =>
 				{
 					var frame = BitConverter.ToInt32(packet, 0);
 					if (packet.Length == 5 && packet[4] == (byte)OrderType.Disconnect)
-						frameData.ClientQuit(clientId, frame);
-					else if (packet.Length > 4 && packet[4] == (byte)OrderType.SyncHash)
-					{
-						if (packet.Length != 4 + Order.SyncHashOrderLength)
-						{
-							Log.Write("debug", "Dropped sync order with length {0}. Expected length {1}.".F(packet.Length, 4 + Order.SyncHashOrderLength));
-							return;
-						}
-
+						frameData.ClientQuit(clientId);
+					else if (packet.Length >= 5 && packet[4] == (byte)OrderType.SyncHash)
 						CheckSync(packet);
-					}
 					else if (frame == 0)
 						immediatePackets.Add((clientId, packet));
 					else
-						frameData.AddFrameOrders(clientId, frame, packet);
+						frameData.AddFrameOrders(clientId, packet);
 				});
+		}
 
+		void ProcessImmediateOrders()
+		{
 			foreach (var p in immediatePackets)
 			{
 				foreach (var o in p.Packet.ToOrderList(World))
@@ -150,6 +183,8 @@ namespace OpenRA.Network
 						return;
 				}
 			}
+
+			immediatePackets.Clear();
 		}
 
 		Dictionary<int, byte[]> syncForFrame = new Dictionary<int, byte[]>();
@@ -170,58 +205,150 @@ namespace OpenRA.Network
 				syncForFrame.Add(frame, packet);
 		}
 
-		public bool IsReadyForNextFrame
+		void CompensateForLatency()
 		{
-			get { return GameStarted && frameData.IsReadyForFrame(NetFrameNumber); }
+			var catchUpNetFrames = frameData.BufferSizeForClient(Connection.LocalClientId) - 1;
+			if (catchUpNetFrames < 0)
+				catchUpNetFrames = 0;
+
+			IsCatchingUp = ShouldUseCatchUp && catchUpNetFrames > 0;
+
+			if (LastSlowDownRequestTick + 5 < NetFrameNumber && (catchUpNetFrames > 5))
+			{
+				localImmediateOrders.Add(Order.FromTargetString("SlowDown", catchUpNetFrames.ToString(), true));
+				LastSlowDownRequestTick = NetFrameNumber;
+			}
 		}
 
-		public IEnumerable<Session.Client> GetClientsNotReadyForNextFrame
+		IEnumerable<Session.Client> GetClientsNotReadyForNextFrame
 		{
 			get
 			{
-				return GameStarted
-					? frameData.ClientsNotReadyForFrame(NetFrameNumber)
+				return GameStarted // TODO review, compare to bleed
+					? frameData.ClientsNotReadyForFrame()
 						.Select(a => LobbyInfo.ClientWithIndex(a))
 					: NoClients;
 			}
 		}
 
-		public void Tick()
+		void SendOrders()
 		{
-			if (!IsReadyForNextFrame)
-				throw new InvalidOperationException();
+			if (!GameStarted)
+				return;
 
-			if (GameSaveLastFrame < NetFrameNumber + FramesAhead)
-				Connection.Send(NetFrameNumber + FramesAhead, localOrders.Select(o => o.Serialize()).ToList());
-
-			localOrders.Clear();
-
-			foreach (var order in frameData.OrdersForFrame(World, NetFrameNumber))
-				UnitOrders.ProcessOrder(this, World, order.Client, order.Order);
-
-			if (NetFrameNumber + FramesAhead >= GameSaveLastSyncFrame)
+			if (GameSaveLastFrame < NextOrderFrame)
 			{
-				var defeatState = 0UL;
-				for (var i = 0; i < World.Players.Length; i++)
-					if (World.Players[i].WinState == WinState.Lost)
-						defeatState |= 1UL << i;
-
-				Connection.SendSync(NetFrameNumber, OrderIO.SerializeSync(World.SyncHash(), defeatState));
+				Connection.Send(NextOrderFrame, localOrders.Select(o => o.Serialize()).ToList());
+				localOrders.Clear();
 			}
-			else
-				Connection.SendSync(NetFrameNumber, OrderIO.SerializeSync(0, 0));
 
-			if (generateSyncReport)
-				using (new PerfSample("sync_report"))
-					syncReport.UpdateSyncReport();
+			NextOrderFrame++;
+		}
+
+		/*
+		 * Only available if TickImmediate() is called first and we are ready to dispatch received orders locally.
+		 * Process all incoming orders for this frame, handle sync hashes and step our net frame.
+		 */
+		void ProcessOrders()
+		{
+			var orders = frameData.OrdersForFrame(World).ToList();
+			foreach (var order in orders)
+			{
+				UnitOrders.ProcessOrder(this, World, order.Client, order.Order);
+			}
+
+			if (NetFrameNumber % SyncFrameScale == 0)
+			{
+				if (NetFrameNumber >= GameSaveLastSyncFrame)
+				{
+					var defeatState = 0UL;
+					for (var i = 0; i < World.Players.Length; i++)
+						if (World.Players[i].WinState == WinState.Lost)
+							defeatState |= 1UL << i;
+
+					Connection.SendSync(NetFrameNumber, OrderIO.SerializeSync(World.SyncHash(), defeatState));
+				}
+				else
+					Connection.SendSync(NetFrameNumber, OrderIO.SerializeSync(0, 0));
+
+				if (generateSyncReport)
+					using (new PerfSample("sync_report"))
+						syncReport.UpdateSyncReport(orders);
+			}
 
 			++NetFrameNumber;
+		}
+
+		public void TickPreGame()
+		{
+			SendImmediateOrders();
+
+			ReceiveAllOrdersAndCheckSync();
+
+			Sync.RunUnsynced(Game.Settings.Debug.SyncCheckUnsyncedCode, World, ProcessImmediateOrders);
+		}
+
+		public bool TryTick()
+		{
+			var shouldTick = true;
+
+			if (IsNetTick)
+			{
+				// Check whether or not we will be ready for a tick next frame
+				// We don't need to include ourselves in the equation because we can always generate orders this frame
+				shouldTick = !GetClientsNotReadyForNextFrame.Except(new[] { LocalClient }).Any();
+
+				// Send orders only if we are currently ready, this prevents us sending orders too soon if we are
+				// stalling
+				if (shouldTick)
+					SendOrders();
+			}
+
+			if (LobbyInfo.GlobalSettings.UseNewNetcode)
+			{
+				// Sets catchup frames and asks server to slow down if they are too high
+				CompensateForLatency();
+			}
+
+			SendImmediateOrders();
+
+			ReceiveAllOrdersAndCheckSync();
+
+			// Always send immediate orders
+			Sync.RunUnsynced(Game.Settings.Debug.SyncCheckUnsyncedCode, World, ProcessImmediateOrders);
+
+			var willTick = shouldTick;
+			if (willTick && IsNetTick)
+			{
+				willTick = frameData.IsReadyForFrame();
+				if (willTick)
+					ProcessOrders();
+			}
+
+			if (willTick)
+				LocalFrameNumber++;
+
+			return willTick;
 		}
 
 		public void Dispose()
 		{
 			disposed = true;
 			Connection?.Dispose();
+		}
+
+		public void SyncLobbyInfo()
+		{
+			if (OrderLatency != LobbyInfo.GlobalSettings.OrderLatency && !GameStarted)
+			{
+				OrderLatency = LobbyInfo.GlobalSettings.OrderLatency;
+				Log.Write("server", "Order lag is now {0} frames.", LobbyInfo.GlobalSettings.OrderLatency);
+			}
+
+			if (Connection is NetworkConnection c)
+			{
+				c.UseNewNetcode = LobbyInfo.GlobalSettings.UseNewNetcode;
+			}
 		}
 	}
 

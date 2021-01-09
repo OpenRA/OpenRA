@@ -31,7 +31,8 @@ namespace OpenRA
 {
 	public static class Game
 	{
-		public const int NetTickScale = 3; // 120 ms net tick for 40 ms local tick
+		public const int DefaultNetTickScale = 3; // 120ms net tick for 40ms timestep
+		public const int NewNetcodeNetTickScale = 1; // Net tick every world frame
 		public const int Timestep = 40;
 		public const int TimestepJankThreshold = 250; // Don't catch up for delays larger than 250ms
 
@@ -594,55 +595,61 @@ namespace OpenRA
 				Cursor.Tick();
 			}
 
-			var worldTimestep = world == null ? Timestep : world.IsLoadingGameSave ? 1 : world.Timestep;
+			int worldTimestep;
+			if (world == null)
+				worldTimestep = Timestep;
+			else if (world.IsLoadingGameSave)
+				worldTimestep = 1;
+			else if (orderManager.IsCatchingUp)
+				worldTimestep = Timestep / 4;
+			else
+				worldTimestep = world.Timestep;
 			var worldTickDelta = tick - orderManager.LastTickTime;
-			if (worldTimestep != 0 && worldTickDelta >= worldTimestep)
+			if (worldTimestep == 0 || worldTickDelta < worldTimestep)
 			{
-				using (new PerfSample("tick_time"))
+				return;
+			}
+
+			using (new PerfSample("tick_time"))
+			{
+				// Tick the world to advance the world time to match real time:
+				//    If dt < TickJankThreshold then we should try and catch up by repeatedly ticking
+				//    If dt >= TickJankThreshold then we should accept the jank and progress at the normal rate
+				// dt is rounded down to an integer tick count in order to preserve fractional tick components.
+				var integralTickTimestep = (worldTickDelta / worldTimestep) * worldTimestep;
+				orderManager.LastTickTime += integralTickTimestep >= TimestepJankThreshold ? integralTickTimestep : worldTimestep;
+
+				Sound.Tick();
+
+				if (world == null)
 				{
-					// Tick the world to advance the world time to match real time:
-					//    If dt < TickJankThreshold then we should try and catch up by repeatedly ticking
-					//    If dt >= TickJankThreshold then we should accept the jank and progress at the normal rate
-					// dt is rounded down to an integer tick count in order to preserve fractional tick components.
-					var integralTickTimestep = (worldTickDelta / worldTimestep) * worldTimestep;
-					orderManager.LastTickTime += integralTickTimestep >= TimestepJankThreshold ? integralTickTimestep : worldTimestep;
-
-					Sound.Tick();
-					Sync.RunUnsynced(Settings.Debug.SyncCheckUnsyncedCode, world, orderManager.TickImmediate);
-
-					if (world == null)
-						return;
-
-					var isNetTick = LocalTick % NetTickScale == 0;
-
-					if (!isNetTick || orderManager.IsReadyForNextFrame)
-					{
-						++orderManager.LocalFrameNumber;
-
-						Log.Write("debug", "--Tick: {0} ({1})", LocalTick, isNetTick ? "net" : "local");
-
-						if (isNetTick)
-							orderManager.Tick();
-
-						Sync.RunUnsynced(Settings.Debug.SyncCheckUnsyncedCode, world, () =>
-						{
-							world.OrderGenerator.Tick(world);
-						});
-
-						world.Tick();
-
-						PerfHistory.Tick();
-					}
-					else if (orderManager.NetFrameNumber == 0)
-						orderManager.LastTickTime = RunTime;
-
-					// Wait until we have done our first world Tick before TickRendering
-					if (orderManager.LocalFrameNumber > 0)
-						Sync.RunUnsynced(Settings.Debug.SyncCheckUnsyncedCode, world, () => world.TickRender(worldRenderer));
+					orderManager.TickPreGame();
+					return;
 				}
 
-				benchmark?.Tick(LocalTick);
+				// Collect orders first, we will dispatch them if we can this frame
+				Sync.RunUnsynced(Settings.Debug.SyncCheckUnsyncedCode, world, () =>
+				{
+					world.OrderGenerator.Tick(world);
+				});
+
+				if (orderManager.TryTick())
+				{
+					Log.Write("debug", "--Tick: {0} ({1})", LocalTick, orderManager.IsNetTick ? "net" : "local");
+
+					world.Tick();
+
+					PerfHistory.Tick();
+				}
+				else if (orderManager.NetFrameNumber == 0)
+					orderManager.LastTickTime = RunTime;
+
+				// Wait until we have done our first world Tick before TickRendering
+				if (orderManager.LocalFrameNumber > 0)
+					Sync.RunUnsynced(Settings.Debug.SyncCheckUnsyncedCode, world, () => world.TickRender(worldRenderer));
 			}
+
+			benchmark?.Tick(LocalTick);
 		}
 
 		static void LogicTick()
@@ -797,6 +804,13 @@ namespace OpenRA
 				var maxFramerate = Settings.Graphics.CapFramerate ? Settings.Graphics.MaxFramerate.Clamp(1, 1000) : 1000;
 				var renderInterval = 1000 / maxFramerate;
 
+				// Halve framerate and double logic when catching up
+				if (OrderManager.IsCatchingUp)
+				{
+					logicInterval /= 4;
+					renderInterval *= 2;
+				}
+
 				// Tick as fast as possible while restoring game saves, capping rendering at 5 FPS
 				if (OrderManager.World != null && OrderManager.World.IsLoadingGameSave)
 				{
@@ -823,7 +837,7 @@ namespace OpenRA
 						LogicTick();
 
 						// Force at least one render per tick during regular gameplay
-						if (OrderManager.World != null && !OrderManager.World.IsLoadingGameSave && !OrderManager.World.IsReplay)
+						if (!OrderManager.IsCatchingUp && OrderManager.World != null && !OrderManager.World.IsLoadingGameSave && !OrderManager.World.IsReplay)
 							renderBeforeNextTick = true;
 					}
 

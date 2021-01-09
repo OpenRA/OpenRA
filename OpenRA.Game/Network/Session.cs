@@ -148,6 +148,7 @@ namespace OpenRA.Network
 			public string Slot; // Slot ID, or null for observer
 			public string Bot; // Bot type, null for real clients
 			public int BotControllerClientIndex; // who added the bot to the slot
+			public bool IsBot { get { return Bot != null; } }
 			public bool IsAdmin;
 			public bool IsReady { get { return State == ClientState.Ready; } }
 			public bool IsInvalid { get { return State == ClientState.Invalid; } }
@@ -229,6 +230,7 @@ namespace OpenRA.Network
 			public string GameUid;
 			public bool EnableSingleplayer;
 			public bool EnableSyncReports;
+			public bool UseNewNetcode;
 			public bool Dedicated;
 			public bool GameSavesEnabled;
 

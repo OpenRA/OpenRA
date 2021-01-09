@@ -25,6 +25,7 @@ ProfileIDWhitelist="${ProfileIDWhitelist:-""}"
 
 EnableSingleplayer="${EnableSingleplayer:-"False"}"
 EnableSyncReports="${EnableSyncReports:-"False"}"
+UseNewNetcode="${UseNewNetcode:-"False"}"
 EnableGeoIP="${EnableGeoIP:-"True"}"
 ShareAnonymizedIPs="${ShareAnonymizedIPs:-"True"}"
 
@@ -42,6 +43,7 @@ while true; do
      Server.ProfileIDBlacklist="$ProfileIDBlacklist" \
      Server.ProfileIDWhitelist="$ProfileIDWhitelist" \
      Server.EnableSyncReports="$EnableSyncReports" \
+     Server.UseNewNetcode="$UseNewNetcode" \
      Server.EnableGeoIP="$EnableGeoIP" \
      Server.ShareAnonymizedIPs="$ShareAnonymizedIPs" \
      Engine.SupportDir="$SupportDir"

@@ -21,7 +21,8 @@ namespace OpenRA
 		SyncHash = 0x65,
 		Disconnect = 0xBF,
 		Handshake = 0xFE,
-		Fields = 0xFF
+		Fields = 0xFF,
+		Ack = 0x10
 	}
 
 	[Flags]

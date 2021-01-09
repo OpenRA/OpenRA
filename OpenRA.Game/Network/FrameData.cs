@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -27,55 +28,59 @@ namespace OpenRA.Network
 			}
 		}
 
-		readonly Dictionary<int, int> clientQuitTimes = new Dictionary<int, int>();
-		readonly Dictionary<int, Dictionary<int, byte[]>> framePackets = new Dictionary<int, Dictionary<int, byte[]>>();
+		readonly HashSet<int> quitClients = new HashSet<int>();
+		readonly Dictionary<int, Queue<byte[]>> framePackets = new Dictionary<int, Queue<byte[]>>();
 
-		public IEnumerable<int> ClientsPlayingInFrame(int frame)
+		public IEnumerable<int> ClientsPlayingInFrame()
 		{
-			return clientQuitTimes
-				.Where(x => frame <= x.Value)
-				.Select(x => x.Key)
-				.OrderBy(x => x);
+			return framePackets.Keys.Where(x => !quitClients.Contains(x)).OrderBy(x => x);
 		}
 
-		public void ClientQuit(int clientId, int lastClientFrame)
+		public void AddClient(int clientId)
 		{
-			if (lastClientFrame == -1)
-				lastClientFrame = framePackets
-					.Where(x => x.Value.ContainsKey(clientId))
-					.Select(x => x.Key).MaxByOrDefault(x => x);
-
-			clientQuitTimes[clientId] = lastClientFrame;
+			if (!framePackets.ContainsKey(clientId))
+				framePackets.Add(clientId, new Queue<byte[]>());
 		}
 
-		public void AddFrameOrders(int clientId, int frame, byte[] orders)
+		public void ClientQuit(int clientId)
 		{
-			var frameData = framePackets.GetOrAdd(frame);
-			frameData.Add(clientId, orders);
+			// TODO review whether we need to specify quit frame
+			quitClients.Add(clientId);
 		}
 
-		public bool IsReadyForFrame(int frame)
+		public void AddFrameOrders(int clientId, byte[] orders)
 		{
-			return !ClientsNotReadyForFrame(frame).Any();
+			// HACK: Due to design we can actually receive client orders before the game start order
+			// has been acted on, since immediate orders are buffered, so not all clients will have
+			// been added yet. However, all clients are guaranteed to be added before the first
+			// frame is stepped since they are added in OrderManager.StartGame()
+			AddClient(clientId);
+
+			var frameData = framePackets[clientId];
+			frameData.Enqueue(orders);
 		}
 
-		public IEnumerable<int> ClientsNotReadyForFrame(int frame)
+		public bool IsReadyForFrame()
 		{
-			var frameData = framePackets.GetOrAdd(frame);
-			return ClientsPlayingInFrame(frame)
-				.Where(client => !frameData.ContainsKey(client));
+			return !ClientsNotReadyForFrame().Any();
 		}
 
-		public IEnumerable<ClientOrder> OrdersForFrame(World world, int frame)
+		public IEnumerable<int> ClientsNotReadyForFrame()
 		{
-			var frameData = framePackets[frame];
-			var clientData = ClientsPlayingInFrame(frame)
-				.ToDictionary(k => k, v => frameData[v]);
+			return ClientsPlayingInFrame()
+				.Where(client => framePackets[client].Count == 0);
+		}
 
-			return clientData
-				.SelectMany(x => x.Value
-					.ToOrderList(world)
-					.Select(o => new ClientOrder { Client = x.Key, Order = o }));
+		public IEnumerable<ClientOrder> OrdersForFrame(World world)
+		{
+			return ClientsPlayingInFrame()
+				.SelectMany(x => framePackets[x].Dequeue().ToOrderList(world)
+					.Select(y => new ClientOrder { Client = x, Order = y }));
+		}
+
+		public int BufferSizeForClient(int client)
+		{
+			return framePackets[client].Count;
 		}
 	}
 }

@@ -79,6 +79,9 @@ namespace OpenRA
 		[Desc("Enable client-side report generation to help debug desync errors.")]
 		public bool EnableSyncReports = false;
 
+		[Desc("Use the new server-sync netcode (experimental).")]
+		public bool UseNewNetcode = false;
+
 		[Desc("Sets the timestamp format. Defaults to the ISO 8601 standard.")]
 		public string TimestampFormat = "yyyy-MM-ddTHH:mm:ss";
 

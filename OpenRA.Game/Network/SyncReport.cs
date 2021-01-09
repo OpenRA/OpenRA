@@ -51,19 +51,20 @@ namespace OpenRA.Network
 				syncReports[i] = new Report();
 		}
 
-		internal void UpdateSyncReport()
+		internal void UpdateSyncReport(List<FrameData.ClientOrder> orders)
 		{
-			GenerateSyncReport(syncReports[curIndex]);
+			GenerateSyncReport(syncReports[curIndex], orders);
 			curIndex = ++curIndex % NumSyncReports;
 		}
 
-		void GenerateSyncReport(Report report)
+		void GenerateSyncReport(Report report, List<FrameData.ClientOrder> orders)
 		{
 			report.Frame = orderManager.NetFrameNumber;
 			report.SyncedRandom = orderManager.World.SharedRandom.Last;
 			report.TotalCount = orderManager.World.SharedRandom.TotalCount;
 			report.Traits.Clear();
 			report.Effects.Clear();
+			report.Orders = orders;
 
 			foreach (var actor in orderManager.World.ActorsHavingTrait<ISync>())
 			{
@@ -100,7 +101,7 @@ namespace OpenRA.Network
 			}
 		}
 
-		internal void DumpSyncReport(int frame, IEnumerable<FrameData.ClientOrder> orders)
+		internal void DumpSyncReport(int frame)
 		{
 			var reportName = "syncreport-" + DateTime.UtcNow.ToString("yyyy-MM-ddTHHmmssZ", CultureInfo.InvariantCulture) + ".log";
 			Log.AddChannel("sync", reportName);
@@ -137,7 +138,7 @@ namespace OpenRA.Network
 					}
 
 					Log.Write("sync", "Orders Issued:");
-					foreach (var o in orders)
+					foreach (var o in r.Orders)
 						Log.Write("sync", "\t {0}", o.ToString());
 
 					return;
@@ -154,6 +155,7 @@ namespace OpenRA.Network
 			public int TotalCount;
 			public List<TraitReport> Traits = new List<TraitReport>();
 			public List<EffectReport> Effects = new List<EffectReport>();
+			public List<FrameData.ClientOrder> Orders = new List<FrameData.ClientOrder>();
 		}
 
 		struct TraitReport

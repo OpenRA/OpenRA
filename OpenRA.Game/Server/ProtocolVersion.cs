@@ -36,6 +36,11 @@ namespace OpenRA.Server
 		//   - OrderFields enum encoded as a byte: specifies the data included in the rest of the order
 		//   - Order-specific data - see OpenRA.Game/Server/Order.cs for details
 		//
+		// When the frame of a packet is 0, it is an immediate order, and may or may not be relayed to clients e.g. chat
+		//
+		// When the frame is not 0, it will always be relayed to all clients
+		// and in UseNewNetcode mode, a packet with a number of orders messages to ack is returned to the sender
+		//
 		// A connection handshake begins when a client opens a connection to the server:
 		// - Server sends:
 		//   - Int32 specifying the handshake protocol version
