@@ -257,45 +257,72 @@ namespace OpenRA.Server
 				Log.Write("server", "Initial mod: {0}", ModData.Manifest.Id);
 				Log.Write("server", "Initial map: {0}", LobbyInfo.GlobalSettings.Map);
 
+				var checkRead = new List<Socket>();
+
+				// PERF: Assume ITick traits are cacheable once started.
+				var traitsITick = serverTraits.WithInterface<ITick>().ToArray();
 				while (true)
 				{
-					var checkRead = new List<Socket>();
+					checkRead.Clear();
+					var socketCount = checkReadServer.Count + Conns.Count + PreConns.Count;
+					if (checkRead.Capacity < socketCount)
+						checkRead.Capacity = socketCount;
+
 					if (State == ServerState.WaitingPlayers)
 						checkRead.AddRange(checkReadServer);
 
 					checkRead.AddRange(Conns.Select(c => c.Socket));
 					checkRead.AddRange(PreConns.Select(c => c.Socket));
 
-					// Block for at most 1 second in order to guarantee a minimum tick rate for ServerTraits
-					// Decrease this to 100ms to improve responsiveness if we are waiting for an authentication query
-					var localTimeout = waitingForAuthenticationCallback > 0 ? 100000 : 1000000;
 					if (checkRead.Count > 0)
+					{
+						// Block for at most 1 second in order to guarantee a minimum tick rate for ServerTraits
+						// Decrease this to 100ms to improve responsiveness if we are waiting for an authentication query
+						var localTimeout = waitingForAuthenticationCallback > 0 ? 100000 : 1000000;
 						Socket.Select(checkRead, null, null, localTimeout);
 
-					if (State == ServerState.ShuttingDown)
-					{
-						EndGame();
-						break;
-					}
-
-					foreach (var s in checkRead)
-					{
-						var serverIndex = checkReadServer.IndexOf(s);
-						if (serverIndex >= 0)
+						if (State == ServerState.ShuttingDown)
 						{
-							AcceptConnection(listeners[serverIndex]);
-							continue;
+							EndGame();
+							break;
 						}
 
-						var preConn = PreConns.SingleOrDefault(c => c.Socket == s);
-						if (preConn != null)
+						foreach (var s in checkRead)
 						{
-							preConn.ReadData(this);
-							continue;
-						}
+							if (State == ServerState.WaitingPlayers)
+							{
+								var serverIndex = checkReadServer.IndexOf(s);
+								if (serverIndex >= 0)
+								{
+									AcceptConnection(listeners[serverIndex]);
+									continue;
+								}
+							}
 
-						var conn = Conns.SingleOrDefault(c => c.Socket == s);
-						conn?.ReadData(this);
+							// PERF: Avoid LINQ. Search Conns before PreConns.
+							var match = false;
+							foreach (var c in Conns)
+							{
+								if (c.Socket == s)
+								{
+									c.ReadData(this);
+									match = true;
+									break;
+								}
+							}
+
+							if (!match)
+							{
+								foreach (var pc in PreConns)
+								{
+									if (pc.Socket == s)
+									{
+										pc.ReadData(this);
+										break;
+									}
+								}
+							}
+						}
 					}
 
 					delayedActions.PerformActions(0);
@@ -304,7 +331,7 @@ namespace OpenRA.Server
 					if (Type == ServerType.Dedicated)
 						Game.PerformDelayedActions();
 
-					foreach (var t in serverTraits.WithInterface<ITick>())
+					foreach (var t in traitsITick)
 						t.Tick(this);
 
 					if (State == ServerState.ShuttingDown)
