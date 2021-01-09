@@ -5,10 +5,12 @@
 			"name": "Launch (TD)",
 			"type": "clr",
 			"linux": {
-				"type": "mono"
+				"type": "mono",
+				"program": "${workspaceRoot}/bin/OpenRA.dll",
 			},
 			"osx": {
-				"type": "mono"
+				"type": "mono",
+				"program": "${workspaceRoot}/bin/OpenRA.dll",
 			},
 			"request": "launch",
 			"program": "${workspaceRoot}/bin/OpenRA.exe",
@@ -19,10 +21,12 @@
 			"name": "Launch (RA)",
 			"type": "clr",
 			"linux": {
-				"type": "mono"
+				"type": "mono",
+				"program": "${workspaceRoot}/bin/OpenRA.dll",
 			},
 			"osx": {
-				"type": "mono"
+				"type": "mono",
+				"program": "${workspaceRoot}/bin/OpenRA.dll",
 			},
 			"request": "launch",
 			"program": "${workspaceRoot}/bin/OpenRA.exe",
@@ -33,10 +37,12 @@
 			"name": "Launch (D2k)",
 			"type": "clr",
 			"linux": {
-				"type": "mono"
+				"type": "mono",
+				"program": "${workspaceRoot}/bin/OpenRA.dll",
 			},
 			"osx": {
-				"type": "mono"
+				"type": "mono",
+				"program": "${workspaceRoot}/bin/OpenRA.dll",
 			},
 			"request": "launch",
 			"program": "${workspaceRoot}/bin/OpenRA.exe",
@@ -47,10 +53,12 @@
 			"name": "Launch (TS)",
 			"type": "clr",
 			"linux": {
-				"type": "mono"
+				"type": "mono",
+				"program": "${workspaceRoot}/bin/OpenRA.dll",
 			},
 			"osx": {
-				"type": "mono"
+				"type": "mono",
+				"program": "${workspaceRoot}/bin/OpenRA.dll",
 			},
 			"request": "launch",
 			"program": "${workspaceRoot}/bin/OpenRA.exe",
