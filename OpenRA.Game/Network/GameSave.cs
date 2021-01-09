@@ -119,10 +119,10 @@ namespace OpenRA.Network
 				LastSyncFrame = rs.ReadInt32();
 				lastSyncPacket = rs.ReadBytes(Order.SyncHashOrderLength);
 
-				var globalSettings = MiniYaml.FromString(rs.ReadString(Encoding.UTF8, Connection.MaxOrderLength));
+				var globalSettings = MiniYaml.FromString(rs.ReadString(Encoding.UTF8, Connection.MaxOrderFrameLength));
 				GlobalSettings = Session.Global.Deserialize(globalSettings[0].Value);
 
-				var slots = MiniYaml.FromString(rs.ReadString(Encoding.UTF8, Connection.MaxOrderLength));
+				var slots = MiniYaml.FromString(rs.ReadString(Encoding.UTF8, Connection.MaxOrderFrameLength));
 				Slots = new Dictionary<string, Session.Slot>();
 				foreach (var s in slots)
 				{
@@ -130,7 +130,7 @@ namespace OpenRA.Network
 					Slots.Add(slot.PlayerReference, slot);
 				}
 
-				var slotClients = MiniYaml.FromString(rs.ReadString(Encoding.UTF8, Connection.MaxOrderLength));
+				var slotClients = MiniYaml.FromString(rs.ReadString(Encoding.UTF8, Connection.MaxOrderFrameLength));
 				SlotClients = new Dictionary<string, SlotClient>();
 				foreach (var s in slotClients)
 				{
@@ -141,7 +141,7 @@ namespace OpenRA.Network
 				if (rs.Position != traitDataOffset || rs.ReadInt32() != TraitDataMarker)
 					throw new InvalidDataException("Invalid orasav file");
 
-				var traitData = MiniYaml.FromString(rs.ReadString(Encoding.UTF8, Connection.MaxOrderLength));
+				var traitData = MiniYaml.FromString(rs.ReadString(Encoding.UTF8, Connection.MaxOrderFrameLength));
 				foreach (var td in traitData)
 					TraitData.Add(int.Parse(td.Key), td.Value);
 
@@ -185,26 +185,28 @@ namespace OpenRA.Network
 			}
 		}
 
-		public void DispatchOrders(Connection conn, int frame, byte[] data)
+		public void DispatchFrame(Connection conn, Frame frame)
 		{
 			// Sync packet - we only care about the last value
-			if (data.Length > 0 && data[0] == (byte)OrderType.SyncHash && frame > LastSyncFrame)
+			if (frame.Data.Count > 0
+				&& frame.Data.Array[frame.Data.Offset] == (byte)OrderType.SyncHash
+				&& frame.Index > LastSyncFrame)
 			{
-				if (data.Length != Order.SyncHashOrderLength)
+				if (frame.Data.Count != Order.SyncHashOrderLength)
 				{
-					Log.Write("debug", "Dropped sync order with length {0}. Expected length {1}.".F(data.Length, Order.SyncHashOrderLength));
+					Log.Write("debug", "Dropped sync order with length {0}. Expected length {1}.".F(frame.Data.Count, Order.SyncHashOrderLength));
 					return;
 				}
 
-				LastSyncFrame = frame;
-				lastSyncPacket = data;
+				LastSyncFrame = frame.Index;
+				lastSyncPacket = frame.Data.ToArray();
 			}
 
-			if (frame <= LastOrdersFrame)
+			if (frame.Index <= LastOrdersFrame)
 				return;
 
 			// Ignore immediate orders
-			if (data.Length > 0 && data[0] == 0xFE)
+			if (frame.Data.Count > 0 && frame.Data.Array[frame.Data.Offset] == 0xFE)
 				return;
 
 			var clientSlot = clientsBySlotIndex.IndexOf(conn.PlayerIndex);
@@ -223,11 +225,11 @@ namespace OpenRA.Network
 				clientSlot = firstBotSlotIndex;
 			}
 
-			ordersStream.WriteArray(BitConverter.GetBytes(data.Length + 8));
-			ordersStream.WriteArray(BitConverter.GetBytes(frame));
+			ordersStream.WriteArray(BitConverter.GetBytes(frame.Data.Count + 8));
+			ordersStream.WriteArray(BitConverter.GetBytes(frame.Index));
 			ordersStream.WriteArray(BitConverter.GetBytes(clientSlot));
-			ordersStream.WriteArray(data);
-			LastOrdersFrame = frame;
+			ordersStream.Write(frame.Data.Array, frame.Data.Offset, frame.Data.Count);
+			LastOrdersFrame = frame.Index;
 		}
 
 		public void ParseOrders(Session lobbyInfo, Action<int, int, byte[]> packetFn)

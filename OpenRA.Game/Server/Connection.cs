@@ -13,17 +13,20 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
+using OpenRA.Network;
 
 namespace OpenRA.Server
 {
 	public class Connection
 	{
-		public const int MaxOrderLength = 131072;
+		public const int MaxOrderFrameLength = 131072;
+		public const int OrderHeaderLength = 8;
 		public Socket Socket;
-		public List<byte> Data = new List<byte>();
-		public ReceiveState State = ReceiveState.Header;
-		public int ExpectLength = 8;
-		public int Frame = 0;
+		byte[] data = new byte[MaxOrderFrameLength + OrderHeaderLength];
+		int dataCount = 0;
+		ReceiveState state = ReceiveState.Header;
+		int expectLength = 8;
+		int frameIndex = 0;
 		public int MostRecentFrame = 0;
 		public bool Validated;
 
@@ -35,20 +38,26 @@ namespace OpenRA.Server
 		public int PlayerIndex;
 		public string AuthToken;
 
-		public byte[] PopBytes(int n)
+		void RemoveProcessedFrames(int lastFrameLength)
 		{
-			var result = Data.GetRange(0, n);
-			Data.RemoveRange(0, n);
-			return result.ToArray();
+			if (dataCount > lastFrameLength)
+			{
+				var tailSize = dataCount - lastFrameLength;
+				Array.Copy(data, lastFrameLength, data, 0, tailSize);
+				dataCount = tailSize;
+			}
+			else
+				dataCount = 0;
 		}
 
 		bool ReadDataInner(Server server)
 		{
-			var rx = new byte[1024];
-			var len = 0;
-
 			while (true)
 			{
+				var size = data.Length - dataCount;
+				if (size == 0)
+					break;
+
 				try
 				{
 					// Poll the socket first to see if there's anything there.
@@ -56,8 +65,9 @@ namespace OpenRA.Server
 					// from `socket.Receive(rx)`.
 					if (!Socket.Poll(0, SelectMode.SelectRead)) break;
 
-					if ((len = Socket.Receive(rx)) > 0)
-						Data.AddRange(rx.Take(len));
+					var len = Socket.Receive(data, dataCount, size, SocketFlags.None);
+					if (len > 0)
+						dataCount += len;
 					else
 					{
 						if (len == 0)
@@ -82,38 +92,86 @@ namespace OpenRA.Server
 			return true;
 		}
 
+		int ParseNextFrames(Server server)
+		{
+			// PERF: process all frames received in full, i.e. cached Sync frames
+			var count = 0;
+			var frameStartOffset = expectLength;
+			while (true)
+			{
+				var tailSize = dataCount - frameStartOffset;
+				if (tailSize >= OrderHeaderLength)
+				{
+					var dataSize = BitConverter.ToInt32(data, frameStartOffset) - 4;
+					var frameSize = OrderHeaderLength + dataSize;
+					if (tailSize >= frameSize)
+					{
+						frameIndex = BitConverter.ToInt32(data, frameStartOffset + 4);
+
+						// TODO: Replace data with Span in future
+						var frame = new Frame(frameIndex,
+							new ArraySegment<byte>(data,
+								frameStartOffset + OrderHeaderLength,
+								dataSize));
+						server.DispatchFrame(this, frame);
+
+						frameStartOffset += frameSize;
+						expectLength += frameSize;
+						count++;
+					}
+					else
+						break;
+				}
+				else
+					break;
+			}
+
+			return count;
+		}
+
 		public void ReadData(Server server)
 		{
 			if (ReadDataInner(server))
-				while (Data.Count >= ExpectLength)
+				while (dataCount >= expectLength)
 				{
-					var bytes = PopBytes(ExpectLength);
-					switch (State)
+					switch (state)
 					{
 						case ReceiveState.Header:
 							{
-								ExpectLength = BitConverter.ToInt32(bytes, 0) - 4;
-								Frame = BitConverter.ToInt32(bytes, 4);
-								State = ReceiveState.Data;
+								expectLength = BitConverter.ToInt32(data, 0) - 4;
+								frameIndex = BitConverter.ToInt32(data, 4);
+								state = ReceiveState.Data;
 
-								if (ExpectLength < 0 || ExpectLength > MaxOrderLength)
+								if (expectLength < 0 || expectLength > MaxOrderFrameLength)
 								{
 									server.DropClient(this);
-									Log.Write("server", "Dropping client {0} for excessive order length = {1}", PlayerIndex, ExpectLength);
+									Log.Write("server", "Dropping client {0} for excessive order frame length = {1}", PlayerIndex, expectLength);
 									return;
 								}
+
+								expectLength += OrderHeaderLength;
 
 								break;
 							}
 
 						case ReceiveState.Data:
 							{
-								if (MostRecentFrame < Frame)
-									MostRecentFrame = Frame;
+								if (MostRecentFrame < frameIndex)
+									MostRecentFrame = frameIndex;
 
-								server.DispatchOrders(this, Frame, bytes);
-								ExpectLength = 8;
-								State = ReceiveState.Header;
+								var dataSize = expectLength - OrderHeaderLength;
+
+								// TODO: Replace data with Span in future
+								var frame = new Frame(frameIndex,
+									new ArraySegment<byte>(data,
+										OrderHeaderLength,
+										dataSize));
+								server.DispatchFrame(this, frame);
+								ParseNextFrames(server);
+
+								RemoveProcessedFrames(expectLength);
+								expectLength = OrderHeaderLength;
+								state = ReceiveState.Header;
 
 								break;
 							}

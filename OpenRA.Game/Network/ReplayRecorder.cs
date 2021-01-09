@@ -84,11 +84,12 @@ namespace OpenRA.Network
 			writer.Write(data);
 		}
 
-		public void ReceiveFrame(int clientID, int frame, byte[] data)
+		public void ReceiveFrame(int clientID, Frame frame)
 		{
-			var ms = new MemoryStream(4 + data.Length);
-			ms.WriteArray(BitConverter.GetBytes(frame));
-			ms.WriteArray(data);
+			var ms = new MemoryStream(4 + frame.Data.Count);
+			ms.WriteArray(BitConverter.GetBytes(frame.Index));
+			var data = frame.Data;
+			ms.Write(data.Array, data.Offset, data.Count);
 			Receive(clientID, ms.GetBuffer());
 		}
 

@@ -144,12 +144,12 @@ namespace OpenRA.Server
 				Version = ModData.Manifest.Metadata.Version,
 			};
 
-			recorder.ReceiveFrame(0, 0, new Order("HandshakeRequest", null, false)
+			recorder.ReceiveFrame(0, new Frame(0, new Order("HandshakeRequest", null, false)
 			{
 				Type = OrderType.Handshake,
 				IsImmediate = true,
 				TargetString = request.Serialize(),
-			}.Serialize());
+			}.Serialize()));
 
 			var response = new HandshakeResponse()
 			{
@@ -159,12 +159,12 @@ namespace OpenRA.Server
 				Client = new Session.Client(),
 			};
 
-			recorder.ReceiveFrame(0, 0, new Order("HandshakeResponse", null, false)
+			recorder.ReceiveFrame(0, new Frame(0, new Order("HandshakeResponse", null, false)
 			{
 				Type = OrderType.Handshake,
 				IsImmediate = true,
 				TargetString = response.Serialize(),
-			}.Serialize());
+			}.Serialize()));
 		}
 
 		public Server(List<IPEndPoint> endpoints, ServerSettings settings, ModData modData, ServerType type)
@@ -391,7 +391,7 @@ namespace OpenRA.Server
 					Type = OrderType.Handshake,
 					IsImmediate = true,
 					TargetString = request.Serialize()
-				}.Serialize());
+				});
 			}
 			catch (Exception e)
 			{
@@ -660,24 +660,29 @@ namespace OpenRA.Server
 			}
 		}
 
-		byte[] CreateFrame(int client, int frame, byte[] data)
+		byte[] CreateFrameData(int client, Frame frame)
 		{
-			using (var ms = new MemoryStream(data.Length + 12))
+			using (var ms = new MemoryStream(frame.Data.Count + 12))
 			{
-				ms.WriteArray(BitConverter.GetBytes(data.Length + 4));
+				ms.WriteArray(BitConverter.GetBytes(frame.Data.Count + 4));
 				ms.WriteArray(BitConverter.GetBytes(client));
-				ms.WriteArray(BitConverter.GetBytes(frame));
-				ms.WriteArray(data);
+				ms.WriteArray(BitConverter.GetBytes(frame.Index));
+				ms.Write(frame.Data.Array, frame.Data.Offset, frame.Data.Count);
 				return ms.GetBuffer();
 			}
 		}
 
-		void DispatchOrdersToClient(Connection c, int client, int frame, byte[] data)
+		void DispatchOrdersToClient(Connection c, int client, int frame, Order order)
 		{
-			DispatchFrameToClient(c, client, CreateFrame(client, frame, data));
+			DispatchFrameToClient(c, client, new Frame(frame, order.Serialize()));
 		}
 
-		void DispatchFrameToClient(Connection c, int client, byte[] frameData)
+		void DispatchFrameToClient(Connection c, int fromClient, Frame frame)
+		{
+			DispatchFrameDataToClient(c, CreateFrameData(fromClient, frame));
+		}
+
+		void DispatchFrameDataToClient(Connection c, byte[] frameData)
 		{
 			try
 			{
@@ -687,7 +692,7 @@ namespace OpenRA.Server
 			{
 				DropClient(c);
 				Log.Write("server", "Dropping client {0} because dispatching orders failed: {1}",
-					client.ToString(CultureInfo.InvariantCulture), e);
+					c.ToString(), e);
 			}
 		}
 
@@ -786,41 +791,56 @@ namespace OpenRA.Server
 			}
 		}
 
-		public void DispatchOrdersToClients(Connection conn, int frame, byte[] data)
+		void DispatchOrdersToClients(Connection conn, int frameIndex, Order order)
+		{
+			DispatchFrameToClients(conn, new Frame(frameIndex, order.Serialize()));
+		}
+
+		void DispatchFrameToClients(Connection conn, Frame frame)
 		{
 			var from = conn != null ? conn.PlayerIndex : 0;
-			var frameData = CreateFrame(from, frame, data);
-			foreach (var c in Conns.Except(conn).ToList())
-				DispatchFrameToClient(c, from, frameData);
+			var frameData = CreateFrameData(from, frame);
+
+			// PERF: Avoid LINQ
+			foreach (var c in Conns)
+				if (c != conn)
+					DispatchFrameDataToClient(c, frameData);
 
 			if (recorder != null)
 			{
-				recorder.ReceiveFrame(from, frame, data);
+				recorder.ReceiveFrame(from, frame);
 
-				if (data.Length > 0 && data[0] == (byte)OrderType.SyncHash)
+				if (frame.Data.Count > 0
+					&& frame.Data.Array[frame.Data.Offset] == (byte)OrderType.SyncHash)
 				{
-					if (data.Length == Order.SyncHashOrderLength)
-						HandleSyncOrder(frame, data);
+					if (frame.Data.Count == Order.SyncHashOrderLength)
+						HandleSyncOrder(frame.Index, frame.Data.ToArray());
 					else
-						Log.Write("server", "Dropped sync order with length {0} from client {1}. Expected length {2}.".F(data.Length, from, Order.SyncHashOrderLength));
+						Log.Write("server", "Dropped sync order with length {0} from client {1}. Expected length {2}.".F(frame.Data.Count, from, Order.SyncHashOrderLength));
 				}
 			}
 		}
 
-		public void DispatchOrders(Connection conn, int frame, byte[] data)
+		void DispatchOrders(Connection conn, int frameIndex, Order order)
 		{
-			if (frame == 0 && conn != null)
-				InterpretServerOrders(conn, data);
-			else
-				DispatchOrdersToClients(conn, frame, data);
-
-			if (GameSave != null && conn != null)
-				GameSave.DispatchOrders(conn, frame, data);
+			DispatchFrame(conn, new Frame(frameIndex, order.Serialize()));
 		}
 
-		void InterpretServerOrders(Connection conn, byte[] data)
+		public void DispatchFrame(Connection conn, Frame frame)
 		{
-			var ms = new MemoryStream(data);
+			if (frame.Index == 0 && conn != null)
+				InterpretServerOrders(conn, frame);
+			else
+				DispatchFrameToClients(conn, frame);
+
+			if (GameSave != null && conn != null)
+				GameSave.DispatchFrame(conn, frame);
+		}
+
+		void InterpretServerOrders(Connection conn, Frame frame)
+		{
+			var data = frame.Data;
+			var ms = new MemoryStream(data.Array, data.Offset, data.Count);
 			var br = new BinaryReader(ms);
 
 			try
@@ -838,12 +858,12 @@ namespace OpenRA.Server
 
 		public void SendOrderTo(Connection conn, string order, string data)
 		{
-			DispatchOrdersToClient(conn, 0, 0, Order.FromTargetString(order, data, true).Serialize());
+			DispatchOrdersToClient(conn, 0, 0, Order.FromTargetString(order, data, true));
 		}
 
 		public void SendMessage(string text, Connection conn = null)
 		{
-			DispatchOrdersToClients(conn, 0, Order.FromTargetString("Message", text, true).Serialize());
+			DispatchOrdersToClients(conn, 0, Order.FromTargetString("Message", text, true));
 
 			if (Type == ServerType.Dedicated)
 				Console.WriteLine("[{0}] {1}".F(DateTime.Now.ToString(Settings.TimestampFormat), text));
@@ -887,7 +907,7 @@ namespace OpenRA.Server
 						}
 
 					case "Chat":
-						DispatchOrdersToClients(conn, 0, o.Serialize());
+						DispatchOrdersToClients(conn, 0, o);
 						break;
 					case "Pong":
 						{
@@ -953,7 +973,7 @@ namespace OpenRA.Server
 									Directory.CreateDirectory(baseSavePath);
 
 								GameSave.Save(Path.Combine(baseSavePath, filename));
-								DispatchOrdersToClients(null, 0, Order.FromTargetString("GameSaved", filename, true).Serialize());
+								DispatchOrdersToClients(null, 0, Order.FromTargetString("GameSaved", filename, true));
 							}
 
 							break;
@@ -1060,7 +1080,7 @@ namespace OpenRA.Server
 					SendMessage("{0}{1} has disconnected.".F(dropClient.Name, suffix));
 
 					// Send disconnected order, even if still in the lobby
-					DispatchOrdersToClients(toDrop, 0, Order.FromTargetString("Disconnected", "", true).Serialize());
+					DispatchOrdersToClients(toDrop, 0, Order.FromTargetString("Disconnected", "", true));
 
 					if (gameInfo != null && !dropClient.IsObserver)
 					{
@@ -1088,7 +1108,7 @@ namespace OpenRA.Server
 						}
 					}
 
-					DispatchOrders(toDrop, toDrop.MostRecentFrame, new[] { (byte)OrderType.Disconnect });
+					DispatchFrame(toDrop, new Frame(toDrop.MostRecentFrame, new[] { (byte)OrderType.Disconnect }));
 
 					// All clients have left: clean up
 					if (!Conns.Any())
@@ -1115,7 +1135,7 @@ namespace OpenRA.Server
 			lock (LobbyInfo)
 			{
 				if (State == ServerState.WaitingPlayers) // Don't do this while the game is running, it breaks things!
-					DispatchOrders(null, 0, Order.FromTargetString("SyncInfo", LobbyInfo.Serialize(), true).Serialize());
+					DispatchOrders(null, 0, Order.FromTargetString("SyncInfo", LobbyInfo.Serialize(), true));
 
 				foreach (var t in serverTraits.WithInterface<INotifySyncLobbyInfo>())
 					t.LobbyInfoSynced(this);
@@ -1132,7 +1152,7 @@ namespace OpenRA.Server
 				// TODO: Only need to sync the specific client that has changed to avoid conflicts!
 				var clientData = LobbyInfo.Clients.Select(client => client.Serialize()).ToList();
 
-				DispatchOrders(null, 0, Order.FromTargetString("SyncLobbyClients", clientData.WriteToString(), true).Serialize());
+				DispatchOrders(null, 0, Order.FromTargetString("SyncLobbyClients", clientData.WriteToString(), true));
 
 				foreach (var t in serverTraits.WithInterface<INotifySyncLobbyInfo>())
 					t.LobbyInfoSynced(this);
@@ -1149,7 +1169,7 @@ namespace OpenRA.Server
 				// TODO: Don't sync all the slots if just one changed!
 				var slotData = LobbyInfo.Slots.Select(slot => slot.Value.Serialize()).ToList();
 
-				DispatchOrders(null, 0, Order.FromTargetString("SyncLobbySlots", slotData.WriteToString(), true).Serialize());
+				DispatchOrders(null, 0, Order.FromTargetString("SyncLobbySlots", slotData.WriteToString(), true));
 
 				foreach (var t in serverTraits.WithInterface<INotifySyncLobbyInfo>())
 					t.LobbyInfoSynced(this);
@@ -1165,7 +1185,7 @@ namespace OpenRA.Server
 			{
 				var sessionData = new List<MiniYamlNode> { LobbyInfo.GlobalSettings.Serialize() };
 
-				DispatchOrders(null, 0, Order.FromTargetString("SyncLobbyGlobalSettings", sessionData.WriteToString(), true).Serialize());
+				DispatchOrders(null, 0, Order.FromTargetString("SyncLobbyGlobalSettings", sessionData.WriteToString(), true));
 
 				foreach (var t in serverTraits.WithInterface<INotifySyncLobbyInfo>())
 					t.LobbyInfoSynced(this);
@@ -1180,7 +1200,7 @@ namespace OpenRA.Server
 				var clientPings = LobbyInfo.ClientPings.Select(ping => ping.Serialize()).ToList();
 
 				// Note that syncing pings doesn't trigger INotifySyncLobbyInfo
-				DispatchOrders(null, 0, Order.FromTargetString("SyncClientPings", clientPings.WriteToString(), true).Serialize());
+				DispatchOrders(null, 0, Order.FromTargetString("SyncClientPings", clientPings.WriteToString(), true));
 			}
 		}
 
@@ -1242,14 +1262,14 @@ namespace OpenRA.Server
 				SyncLobbyInfo();
 				State = ServerState.GameStarted;
 
-				var disconnectData = new[] { (byte)OrderType.Disconnect };
+				var disconnectFrame = new Frame(int.MaxValue, new[] { (byte)OrderType.Disconnect });
 				foreach (var c in Conns)
 				{
 					foreach (var d in Conns)
-						DispatchOrdersToClient(c, d.PlayerIndex, int.MaxValue, disconnectData);
+						DispatchFrameToClient(c, d.PlayerIndex, disconnectFrame);
 
 					if (recorder != null)
-						recorder.ReceiveFrame(c.PlayerIndex, int.MaxValue, disconnectData);
+						recorder.ReceiveFrame(c.PlayerIndex, disconnectFrame);
 				}
 
 				if (GameSave == null && LobbyInfo.GlobalSettings.GameSavesEnabled)
@@ -1270,17 +1290,17 @@ namespace OpenRA.Server
 				}
 
 				DispatchOrders(null, 0,
-					Order.FromTargetString("StartGame", startGameData, true).Serialize());
+					Order.FromTargetString("StartGame", startGameData, true));
 
 				foreach (var t in serverTraits.WithInterface<IStartGame>())
 					t.GameStarted(this);
 
 				if (GameSave != null && GameSave.LastOrdersFrame >= 0)
 				{
-					GameSave.ParseOrders(LobbyInfo, (frame, client, data) =>
+					GameSave.ParseOrders(LobbyInfo, (frameIndex, client, data) =>
 					{
 						foreach (var c in Conns)
-							DispatchOrdersToClient(c, client, frame, data);
+							DispatchFrameToClient(c, client, new Frame(frameIndex, data));
 					});
 				}
 			}
