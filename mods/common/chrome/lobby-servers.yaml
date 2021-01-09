@@ -9,32 +9,32 @@ Container@LOBBY_SERVERS_BIN:
 			Children:
 				Label@NAME:
 					X: 5
-					Width: 255
+					Width: 347
 					Height: 25
 					Text: Server
 					Align: Center
 					Font: Bold
 				Label@PLAYERS:
-					X: 290
+					X: 382
 					Width: 85
 					Height: 25
 					Text: Players
 					Font: Bold
 				Label@LOCATION:
-					X: 380
+					X: 472
 					Width: 110
 					Height: 25
 					Text: Location
 					Font: Bold
 				Label@STATUS:
-					X: 495
+					X: 587
 					Width: 50
 					Height: 25
 					Text: Status
 					Font: Bold
 		LogicTicker@NOTICE_WATCHER:
 		Background@NOTICE_CONTAINER:
-			Width: 583
+			Width: PARENT_RIGHT
 			Height: 20
 			Background: dialog2
 			Children:
@@ -83,12 +83,12 @@ Container@LOBBY_SERVERS_BIN:
 					Children:
 						LabelWithTooltip@TITLE:
 							X: 5
-							Width: 245
+							Width: 337
 							Height: 25
 							TooltipContainer: TOOLTIP_CONTAINER
 							TooltipTemplate: SIMPLE_TOOLTIP
 						Image@PASSWORD_PROTECTED:
-							X: 272
+							X: 364
 							Y: 6
 							Width: 12
 							Height: 13
@@ -97,7 +97,7 @@ Container@LOBBY_SERVERS_BIN:
 							TooltipTemplate: SIMPLE_TOOLTIP
 							TooltipText: Requires Password
 						Image@REQUIRES_AUTHENTICATION:
-							X: 272
+							X: 364
 							Y: 6
 							Width: 12
 							Height: 13
@@ -106,17 +106,17 @@ Container@LOBBY_SERVERS_BIN:
 							TooltipTemplate: SIMPLE_TOOLTIP
 							TooltipText: Requires OpenRA forum account
 						LabelWithTooltip@PLAYERS:
-							X: 290
+							X: 382
 							Width: 85
 							Height: 25
 							TooltipContainer: TOOLTIP_CONTAINER
 							TooltipTemplate: SIMPLE_TOOLTIP
 						Label@LOCATION:
-							X: 380
+							X: 472
 							Width: 110
 							Height: 25
 						Label@STATUS:
-							X: 495
+							X: 587
 							Width: 50
 							Height: 25
 		Label@PROGRESS_LABEL:
@@ -128,12 +128,12 @@ Container@LOBBY_SERVERS_BIN:
 			Visible: false
 		DropDownButton@FILTERS_DROPDOWNBUTTON:
 			Y: PARENT_BOTTOM + 5
-			Width: 147
+			Width: 154
 			Height: 25
 			Text: Filter Games
 			Font: Bold
 		Button@RELOAD_BUTTON:
-			X: 152
+			X: 159
 			Y: PARENT_BOTTOM + 5
 			Width: 26
 			Height: 25
