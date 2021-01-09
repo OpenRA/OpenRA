@@ -9,16 +9,28 @@
  */
 #endregion
 
-using System.Collections.Generic;
-using System.Linq;
+using System;
 
-namespace OpenRA.Server
+namespace OpenRA.Network
 {
-	static class Exts
+	public struct Frame
 	{
-		public static IEnumerable<T> Except<T>(this IEnumerable<T> ts, T t)
+		public readonly int Index;
+
+		// A frame contains one or multiple serialized orders
+		// TODO: replace with Span<byte> once available
+		public readonly ArraySegment<byte> Data;
+
+		public Frame(int index, byte[] data)
 		{
-			return ts.Except(new[] { t });
+			Index = index;
+			Data = new ArraySegment<byte>(data);
+		}
+
+		public Frame(int index, ArraySegment<byte> data)
+		{
+			Index = index;
+			Data = data;
 		}
 	}
 }
