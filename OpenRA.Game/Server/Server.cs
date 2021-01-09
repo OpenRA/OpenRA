@@ -274,40 +274,37 @@ namespace OpenRA.Server
 					if (checkRead.Count > 0)
 						Socket.Select(checkRead, null, null, localTimeout);
 
-					if (State == ServerState.ShuttingDown)
+					if (State != ServerState.ShuttingDown)
 					{
-						EndGame();
-						break;
-					}
-
-					foreach (var s in checkRead)
-					{
-						var serverIndex = checkReadServer.IndexOf(s);
-						if (serverIndex >= 0)
+						foreach (var s in checkRead)
 						{
-							AcceptConnection(listeners[serverIndex]);
-							continue;
+							var serverIndex = checkReadServer.IndexOf(s);
+							if (serverIndex >= 0)
+							{
+								AcceptConnection(listeners[serverIndex]);
+								continue;
+							}
+
+							var preConn = PreConns.SingleOrDefault(c => c.Socket == s);
+							if (preConn != null)
+							{
+								preConn.ReadData(this);
+								continue;
+							}
+
+							var conn = Conns.SingleOrDefault(c => c.Socket == s);
+							conn?.ReadData(this);
 						}
 
-						var preConn = PreConns.SingleOrDefault(c => c.Socket == s);
-						if (preConn != null)
-						{
-							preConn.ReadData(this);
-							continue;
-						}
+						delayedActions.PerformActions(0);
 
-						var conn = Conns.SingleOrDefault(c => c.Socket == s);
-						conn?.ReadData(this);
+						// PERF: Dedicated servers need to drain the action queue to remove references blocking the GC from cleaning up disposed objects.
+						if (Type == ServerType.Dedicated)
+							Game.PerformDelayedActions();
+
+						foreach (var t in serverTraits.WithInterface<ITick>())
+							t.Tick(this);
 					}
-
-					delayedActions.PerformActions(0);
-
-					// PERF: Dedicated servers need to drain the action queue to remove references blocking the GC from cleaning up disposed objects.
-					if (Type == ServerType.Dedicated)
-						Game.PerformDelayedActions();
-
-					foreach (var t in serverTraits.WithInterface<ITick>())
-						t.Tick(this);
 
 					if (State == ServerState.ShuttingDown)
 					{
