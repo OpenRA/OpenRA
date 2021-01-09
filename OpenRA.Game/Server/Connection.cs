@@ -27,6 +27,7 @@ namespace OpenRA.Server
 		public int Frame = 0;
 		public int MostRecentFrame = 0;
 		public bool Validated;
+		public bool Loaded;
 
 		public long TimeSinceLastResponse { get { return Game.RunTime - lastReceivedTime; } }
 		public bool TimeoutMessageShown = false;

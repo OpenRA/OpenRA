@@ -29,8 +29,9 @@ namespace OpenRA.Server
 	public enum ServerState
 	{
 		WaitingPlayers = 1,
-		GameStarted = 2,
-		ShuttingDown = 3
+		GameLoading = 2,
+		GameStarted = 3,
+		ShuttingDown = 4
 	}
 
 	public enum ServerType
@@ -291,6 +292,9 @@ namespace OpenRA.Server
 
 						foreach (var t in serverTraits.WithInterface<ITick>())
 							t.Tick(this);
+
+						if (State == ServerState.GameLoading && Conns.All(c => c.Loaded))
+							State = ServerState.GameStarted;
 
 						bool shouldFlush;
 
@@ -843,7 +847,7 @@ namespace OpenRA.Server
 				// TODO: Find a less hacky way to deal with synchash relaying
 				DispatchOrdersToOtherClients(conn, frame, data, true);
 			}
-			else if (conn != null && LobbyInfo.GlobalSettings.UseNewNetcode && State == ServerState.GameStarted)
+			else if (conn != null && LobbyInfo.GlobalSettings.UseNewNetcode && State >= ServerState.GameLoading)
 			{
 				serverGame.OrderBuffer.BufferOrders(conn.PlayerIndex, data);
 			}
@@ -1113,6 +1117,20 @@ namespace OpenRA.Server
 
 							break;
 						}
+
+					case "Loaded":
+						{
+							if (LobbyInfo.GlobalSettings.UseNewNetcode)
+							{
+								conn.Loaded = true;
+							}
+							else
+							{
+								Log.Write("server", "Received Loaded message from client {0} but not using new netcode!", conn.PlayerIndex);
+							}
+
+							break;
+						}
 				}
 			}
 		}
@@ -1330,9 +1348,13 @@ namespace OpenRA.Server
 					serverGame = new ServerGame(LobbyInfo.GlobalSettings.Timestep);
 					foreach (var c in Conns)
 						serverGame.OrderBuffer.AddClient(c.PlayerIndex);
-				}
 
-				State = ServerState.GameStarted;
+					State = ServerState.GameLoading;
+				}
+				else
+				{
+					State = ServerState.GameStarted;
+				}
 
 				// TODO remove: this "pre-disconnecting" method adds unnecessary complexity just for the sake of the replay stream
 				/*var disconnectData = new[] { (byte)OrderType.Disconnect };

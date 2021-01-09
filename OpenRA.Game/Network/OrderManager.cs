@@ -101,9 +101,7 @@ namespace OpenRA.Network
 			// 	NetTickScale = 1;
 			if (LobbyInfo.GlobalSettings.UseNewNetcode)
 			{
-				// Technically redundant since we will attempt to send orders before the next frame
-				// but gets our framesahead orders out sooner
-				SendOrders();
+				localImmediateOrders.Add(Order.FromTargetString("Loaded", "", true));
 			}
 			else
 			{

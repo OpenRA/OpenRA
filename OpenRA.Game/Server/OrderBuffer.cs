@@ -36,7 +36,6 @@ namespace OpenRA.Server
 		// The count of the byte[] queue is used as the number of frames to ack.
 		// Since the connection is reliable, clients will understand what the ack count means.
 		readonly Dictionary<int, List<byte[]>> clientOrdersBuffer = new Dictionary<int, List<byte[]>>();
-
 		public void BufferOrders(int client, byte[] serializedOrderList)
 		{
 			if (!clientOrdersBuffer.TryGetValue(client, out var orderQueue))
