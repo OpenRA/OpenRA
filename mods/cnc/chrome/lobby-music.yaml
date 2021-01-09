@@ -20,12 +20,13 @@ Container@LOBBY_MUSIC_BIN:
 					Height: 25
 					Text: Track
 					Font: Bold
-				Label@TYPE:
-					X: PARENT_RIGHT - 63
+				Label@LENGTH:
+					X: PARENT_RIGHT - 80
 					Height: 25
 					Width: 50
 					Text: Length
 					Font: Bold
+					Align: Right
 		Background@CONTROLS:
 			Background: panel-transparent
 			Width: 308
