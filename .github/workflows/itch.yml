@@ -18,7 +18,7 @@ jobs:
         run: |
           wget -q "https://github.com/${{ github.repository }}/releases/download/${{ github.event.inputs.tag }}/OpenRA-${{ github.event.inputs.tag }}-x64.exe"
           wget -q "https://github.com/${{ github.repository }}/releases/download/${{ github.event.inputs.tag }}/OpenRA-${{ github.event.inputs.tag }}-x64-winportable.zip" -O "OpenRA-${{ github.event.inputs.tag }}-x64-win-itch.zip"
-          wget -q "https://github.com${{ github.repository }}/releases/download/${{ github.event.inputs.tag }}/OpenRA-${{ github.event.inputs.tag }}.dmg"
+          wget -q "https://github.com/${{ github.repository }}/releases/download/${{ github.event.inputs.tag }}/OpenRA-${{ github.event.inputs.tag }}.dmg"
           wget -q "https://github.com/${{ github.repository }}/releases/download/${{ github.event.inputs.tag }}/OpenRA-Dune-2000-x86_64.AppImage"
           wget -q "https://github.com/${{ github.repository }}/releases/download/${{ github.event.inputs.tag }}/OpenRA-Red-Alert-x86_64.AppImage"
           wget -q "https://github.com/${{ github.repository }}/releases/download/${{ github.event.inputs.tag }}/OpenRA-Tiberian-Dawn-x86_64.AppImage"
@@ -33,7 +33,7 @@ jobs:
           ITCH_GAME: openra
           ITCH_USER: openra-developers
           VERSION: ${{ github.event.inputs.tag }}
-          PACKAGE: OpenRA-${{ github.event.inputs.tag }}}-x64.exe"
+          PACKAGE: OpenRA-${{ github.event.inputs.tag }}}-x64.exe
 
       - name: Publish Windows Itch Bundle
         uses: josephbmanley/butler-publish-itchio-action@master
@@ -53,7 +53,7 @@ jobs:
           ITCH_GAME: openra
           ITCH_USER: openra-developers
           VERSION: ${{ github.event.inputs.tag }}
-          PACKAGE: OpenRA-${{ github.event.inputs.tag }}}.dmg"
+          PACKAGE: OpenRA-${{ github.event.inputs.tag }}}.dmg
 
       - name: Publish RA AppImage
         uses: josephbmanley/butler-publish-itchio-action@master
