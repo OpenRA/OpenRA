@@ -16,34 +16,34 @@ Container@LOBBY_PLAYER_BIN:
 					Font: Bold
 				Label@COLOR:
 					X: 210
-					Width: 76
+					Width: 94
 					Height: 25
 					Text: Color
 					Align: Center
 					Font: Bold
 				Label@FACTION:
-					X: 291
+					X: 309
 					Width: 120
 					Height: 25
 					Text: Faction
 					Align: Center
 					Font: Bold
 				Label@TEAM:
-					X: 416
+					X: 460-25
 					Width: 50
 					Height: 25
 					Text: Team
 					Align: Center
 					Font: Bold
 				Label@SPAWN:
-					X: 471
+					X: 571
 					Width: 50
 					Height: 25
 					Text: Spawn
 					Align: Left
 					Font: Bold
 				Label@STATUS:
-					X: 527
+					X: 627
 					Width: 20
 					Height: 25
 					Text: Ready
@@ -108,7 +108,7 @@ Container@LOBBY_PLAYER_BIN:
 							Visible: false
 						DropDownButton@COLOR:
 							X: 210
-							Width: 76
+							Width: 94
 							Height: 25
 							Font: Regular
 							IgnoreChildMouseOver: true
@@ -119,7 +119,7 @@ Container@LOBBY_PLAYER_BIN:
 									Width: PARENT_RIGHT - 35
 									Height: PARENT_BOTTOM - 12
 						DropDownButton@FACTION:
-							X: 291
+							X: 309
 							Width: 120
 							Height: 25
 							Font: Regular
@@ -138,17 +138,17 @@ Container@LOBBY_PLAYER_BIN:
 									Height: 25
 									Text: Faction
 						DropDownButton@TEAM_DROPDOWN:
-							X: 416
+							X: 435
 							Width: 50
 							Height: 25
 							Font: Regular
 						DropDownButton@SPAWN_DROPDOWN:
-							X: 471
+							X: 571
 							Width: 50
 							Height: 25
 							Font: Regular
 						Image@STATUS_IMAGE:
-							X: 529
+							X: 629
 							Y: 4
 							Width: 20
 							Height: 20
@@ -156,7 +156,7 @@ Container@LOBBY_PLAYER_BIN:
 							ImageName: checked
 							Visible: false
 						Checkbox@STATUS_CHECKBOX:
-							X: 527
+							X: 627
 							Y: 2
 							Width: 20
 							Height: 20
@@ -224,10 +224,10 @@ Container@LOBBY_PLAYER_BIN:
 						ColorBlock@COLORBLOCK:
 							X: 215
 							Y: 6
-							Width: 41
+							Width: 59
 							Height: 13
 						Container@FACTION:
-							X: 291
+							X: 309
 							Width: 120
 							Height: 25
 							Children:
@@ -242,29 +242,29 @@ Container@LOBBY_PLAYER_BIN:
 									Height: 25
 									Text: Faction
 						Label@TEAM:
-							X: 416
-							Width: 25
-							Height: 25
-							Align: Center
-						Label@SPAWN:
-							X: 471
+							X: 435
 							Width: 25
 							Height: 25
 							Align: Center
 						DropDownButton@TEAM_DROPDOWN:
-							X: 416
+							X: 435
 							Width: 50
 							Height: 25
 							Font: Regular
 							Visible: false
+						Label@SPAWN:
+							X: 571
+							Width: 25
+							Height: 25
+							Align: Center
 						DropDownButton@SPAWN_DROPDOWN:
-							X: 471
+							X: 571
 							Width: 50
 							Height: 25
 							Font: Regular
 							Visible: false
 						Image@STATUS_IMAGE:
-							X: 529
+							X: 629
 							Y: 4
 							Width: 20
 							Height: 20
@@ -291,7 +291,7 @@ Container@LOBBY_PLAYER_BIN:
 							Visible: false
 						Button@JOIN:
 							X: 210
-							Width: 338
+							Width: 438
 							Height: 25
 							Text: Play in this slot
 							Font: Regular
@@ -340,13 +340,13 @@ Container@LOBBY_PLAYER_BIN:
 									Template: ANONYMOUS_PLAYER_TOOLTIP
 						Label@SPECTATOR:
 							X: 210
-							Width: 341
+							Width: 441
 							Height: 25
 							Text: Spectator
 							Align: Center
 							Font: Bold
 						Image@STATUS_IMAGE:
-							X: 529
+							X: 629
 							Y: 4
 							Width: 20
 							Height: 20
@@ -354,7 +354,7 @@ Container@LOBBY_PLAYER_BIN:
 							ImageName: checked
 							Visible: false
 						Checkbox@STATUS_CHECKBOX:
-							X: 527
+							X: 627
 							Y: 2
 							Width: 20
 							Height: 20
@@ -421,13 +421,13 @@ Container@LOBBY_PLAYER_BIN:
 									Template: ANONYMOUS_PLAYER_TOOLTIP
 						Label@SPECTATOR:
 							X: 210
-							Width: 341
+							Width: 441
 							Height: 25
 							Text: Spectator
 							Align: Center
 							Font: Bold
 						Image@STATUS_IMAGE:
-							X: 527
+							X: 627
 							Y: 4
 							Width: 20
 							Height: 20
@@ -448,7 +448,7 @@ Container@LOBBY_PLAYER_BIN:
 							Text: Allow Spectators?
 						Button@SPECTATE:
 							X: 210
-							Width: 338
+							Width: 438
 							Height: 25
 							Text: Spectate
 							Font: Regular

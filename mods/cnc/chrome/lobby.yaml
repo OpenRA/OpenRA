@@ -2,7 +2,7 @@ Container@SERVER_LOBBY:
 	Logic: LobbyLogic
 	X: (WINDOW_RIGHT - WIDTH) / 2
 	Y: (WINDOW_BOTTOM - 560) / 2
-	Width: 800
+	Width: 900
 	Height: 575
 	Children:
 		ColorPreviewManager@COLOR_MANAGER:
@@ -25,55 +25,57 @@ Container@SERVER_LOBBY:
 				DropDownButton@SLOTS_DROPDOWNBUTTON:
 					X: 15
 					Y: 254
-					Width: 182
+					Width: 211
 					Height: 25
 					Text: Slot Admin
 				Container@SKIRMISH_TABS:
+					X: 697 - WIDTH
+					Width: 465
 					Visible: False
 					Children:
 						Button@PLAYERS_TAB:
-							X: 202
 							Y: 248
-							Width: 129
+							Width: 151
 							Height: 31
 							Text: Players
 						Button@OPTIONS_TAB:
-							X: 336
+							X: 157
 							Y: 248
-							Width: 128
+							Width: 151
 							Height: 31
 							Text: Options
 						Button@MUSIC_TAB:
-							X: 469
+							X: 314
 							Y: 248
-							Width: 128
+							Width: 151
 							Height: 31
 							Text: Music
 				Container@MULTIPLAYER_TABS:
+					X: 697 - WIDTH
+					Width: 465
 					Visible: False
 					Children:
 						Button@PLAYERS_TAB:
-							X: 202
 							Y: 248
-							Width: 95
+							Width: 112
 							Height: 31
 							Text: Players
 						Button@OPTIONS_TAB:
-							X: 302
+							X: 118
 							Y: 248
-							Width: 95
+							Width: 112
 							Height: 31
 							Text: Options
 						Button@MUSIC_TAB:
-							X: 402
+							X: 236
 							Y: 248
-							Width: 95
+							Width: 112
 							Height: 31
 							Text: Music
 						Button@SERVERS_TAB:
-							X: 502
+							X: 354
 							Y: 248
-							Width: 95
+							Width: 111
 							Height: 31
 							Text: Servers
 				Button@CHANGEMAP_BUTTON:
@@ -85,7 +87,7 @@ Container@SERVER_LOBBY:
 				Container@TOP_PANELS_ROOT:
 					X: 15
 					Y: 30
-					Width: 582
+					Width: 682
 					Height: 219
 				Container@LOBBYCHAT:
 					X: 15
