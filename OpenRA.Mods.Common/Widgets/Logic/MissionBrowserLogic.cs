@@ -17,6 +17,7 @@ using System.Threading;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Network;
+using OpenRA.Video;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -36,7 +37,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly ButtonWidget stopBriefingVideoButton;
 		readonly ButtonWidget startInfoVideoButton;
 		readonly ButtonWidget stopInfoVideoButton;
-		readonly VqaPlayerWidget videoPlayer;
+		readonly VideoPlayerWidget videoPlayer;
 		readonly BackgroundWidget fullscreenVideoPlayer;
 
 		readonly ScrollPanelWidget missionList;
@@ -71,7 +72,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			previewWidget.Preview = () => selectedMap;
 			previewWidget.IsVisible = () => playingVideo == PlayingVideo.None;
 
-			videoPlayer = widget.Get<VqaPlayerWidget>("MISSION_VIDEO");
+			videoPlayer = widget.Get<VideoPlayerWidget>("MISSION_VIDEO");
 			widget.Get("MISSION_BIN").IsVisible = () => playingVideo != PlayingVideo.None;
 			fullscreenVideoPlayer = Ui.LoadWidget<BackgroundWidget>("FULLSCREEN_PLAYER", Ui.Root, new WidgetArgs { { "world", world } });
 
@@ -329,7 +330,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				Game.Sound.MusicVolume = cachedMusicVolume;
 		}
 
-		void PlayVideo(VqaPlayerWidget player, string video, PlayingVideo pv, Action onComplete = null)
+		void PlayVideo(VideoPlayerWidget player, string video, PlayingVideo pv, Action onComplete = null)
 		{
 			if (!modData.DefaultFileSystem.Exists(video))
 			{
@@ -358,7 +359,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 		}
 
-		void StopVideo(VqaPlayerWidget player)
+		void StopVideo(VideoPlayerWidget player)
 		{
 			if (playingVideo == PlayingVideo.None)
 				return;
@@ -385,7 +386,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var missionData = selectedMap.Rules.Actors["world"].TraitInfoOrDefault<MissionDataInfo>();
 			if (missionData != null && missionData.StartVideo != null && modData.DefaultFileSystem.Exists(missionData.StartVideo))
 			{
-				var fsPlayer = fullscreenVideoPlayer.Get<VqaPlayerWidget>("PLAYER");
+				var fsPlayer = fullscreenVideoPlayer.Get<VideoPlayerWidget>("PLAYER");
 				fullscreenVideoPlayer.Visible = true;
 				PlayVideo(fsPlayer, missionData.StartVideo, PlayingVideo.GameStart, () =>
 				{

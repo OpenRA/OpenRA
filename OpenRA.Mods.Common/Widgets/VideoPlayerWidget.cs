@@ -11,13 +11,13 @@
 
 using System;
 using OpenRA.Graphics;
-using OpenRA.Mods.Common.FileFormats;
 using OpenRA.Primitives;
+using OpenRA.Video;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
 {
-	public class VqaPlayerWidget : Widget
+	public class VideoPlayerWidget : Widget
 	{
 		public Hotkey CancelKey = new Hotkey(Keycode.ESCAPE, Modifiers.None);
 		public float AspectRatio = 1.2f;
@@ -25,11 +25,11 @@ namespace OpenRA.Mods.Common.Widgets
 		public bool Skippable = true;
 
 		public bool Paused { get { return paused; } }
-		public VqaReader Video { get { return video; } }
+		public IVideo Video { get { return video; } }
 
 		Sprite videoSprite, overlaySprite;
 		Sheet overlaySheet;
-		VqaReader video = null;
+		IVideo video = null;
 		string cachedVideo;
 		float invLength;
 		float2 videoOrigin, videoSize;
@@ -44,13 +44,14 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			if (filename == cachedVideo)
 				return;
-			var video = new VqaReader(Game.ModData.DefaultFileSystem.Open(filename));
+
+			var video = VideoLoader.GetVideo(Game.ModData.DefaultFileSystem.Open(filename), Game.ModData.VideoLoaders);
+			Open(video);
 
 			cachedVideo = filename;
-			Open(video);
 		}
 
-		public void Open(VqaReader video)
+		public void Open(IVideo video)
 		{
 			this.video = video;
 

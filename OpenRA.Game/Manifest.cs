@@ -70,13 +70,14 @@ namespace OpenRA
 		public readonly string[] SoundFormats = { };
 		public readonly string[] SpriteFormats = { };
 		public readonly string[] PackageFormats = { };
+		public readonly string[] VideoFormats = { };
 
 		readonly string[] reservedModuleNames =
 		{
 			"Include", "Metadata", "Folders", "MapFolders", "Packages", "Rules",
 			"Sequences", "ModelSequences", "Cursors", "Chrome", "Assemblies", "ChromeLayout", "Weapons",
 			"Voices", "Notifications", "Music", "Translations", "TileSets", "ChromeMetrics", "Missions", "Hotkeys",
-			"ServerTraits", "LoadScreen", "SupportsMapsFrom", "SoundFormats", "SpriteFormats",
+			"ServerTraits", "LoadScreen", "SupportsMapsFrom", "SoundFormats", "SpriteFormats", "VideoFormats",
 			"RequiresMods", "PackageFormats"
 		};
 
@@ -154,6 +155,9 @@ namespace OpenRA
 
 			if (yaml.ContainsKey("SpriteFormats"))
 				SpriteFormats = FieldLoader.GetValue<string[]>("SpriteFormats", yaml["SpriteFormats"].Value);
+
+			if (yaml.ContainsKey("VideoFormats"))
+				VideoFormats = FieldLoader.GetValue<string[]>("VideoFormats", yaml["VideoFormats"].Value);
 		}
 
 		public void LoadCustomData(ObjectCreator oc)

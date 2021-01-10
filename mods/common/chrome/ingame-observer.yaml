@@ -44,7 +44,7 @@ Container@OBSERVER_WIDGETS:
 					Width: PARENT_RIGHT - 19
 					Height: PARENT_BOTTOM - 19
 					WorldInteractionController: INTERACTION_CONTROLLER
-				VqaPlayer@PLAYER:
+				VideoPlayer@PLAYER:
 					X: 10
 					Y: 10
 					Width: PARENT_RIGHT - 20

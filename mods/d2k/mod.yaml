@@ -194,6 +194,8 @@ SoundFormats: Aud, Wav
 
 SpriteFormats: R8, ShpTD, TmpRA
 
+VideoFormats: Vqa
+
 SpriteSequenceFormat: DefaultSpriteSequence
 
 ModelSequenceFormat: PlaceholderModelSequence
