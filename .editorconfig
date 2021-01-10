@@ -55,6 +55,8 @@ dotnet_naming_symbols.types.applicable_accessibilities = public, internal, priva
 dotnet_naming_symbols.non_field_members.applicable_kinds = property, event, method
 dotnet_naming_symbols.non_field_members.applicable_accessibilities = public, internal, private, protected, protected_internal
 
+dotnet_naming_symbols.parameters.applicable_kinds = parameter
+
 # Naming rules
 
 dotnet_naming_rule.non_field_members_should_be_pascal_case.severity = warning
@@ -77,6 +79,10 @@ dotnet_naming_rule.const_private_or_internal_field_should_be_pascal_case.style =
 dotnet_naming_rule.private_or_internal_field_should_be_camel_case.severity = warning
 dotnet_naming_rule.private_or_internal_field_should_be_camel_case.symbols = private_or_internal_field
 dotnet_naming_rule.private_or_internal_field_should_be_camel_case.style = camel_case
+
+dotnet_naming_rule.parameters.severity = warning
+dotnet_naming_rule.parameters.symbols = parameters
+dotnet_naming_rule.parameters.style = camel_case
 
 # Naming rules
 
