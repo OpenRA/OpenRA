@@ -786,6 +786,7 @@ namespace OpenRA
 			var nextRender = RunTime;
 			var forcedNextRender = RunTime;
 			var renderBeforeNextTick = false;
+			var renderDurationExeedsRenderInterval = 0;
 
 			while (state == RunStatus.Running)
 			{
@@ -843,6 +844,24 @@ namespace OpenRA
 						forcedNextRender = now + maxRenderInterval;
 
 						RenderTick();
+
+						// Consider actual render time. Do not assume theoretical maximum
+						// frame rate of 60 fps can also be met as minimal frame rate.
+						// Protect against contineous forced renders causing full CPU usage
+						// on systems with (temporary) slow graphics.
+						// Drop to minimal frame rate if render took longer than renderInterval.
+						var renderEnd = RunTime;
+						if (renderEnd >= forcedNextRender)
+						{
+							renderDurationExeedsRenderInterval++;
+							if (renderDurationExeedsRenderInterval % 30 == 0)
+								PerfTimer.LogLongTick(now, renderEnd, "Render", now);
+
+							forcedNextRender = now + (1000 / MinReplayFps);
+							if (forcedNextRender <= renderEnd)
+								forcedNextRender = renderEnd + (1000 / MinReplayFps);
+						}
+
 						renderBeforeNextTick = false;
 					}
 				}
