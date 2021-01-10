@@ -9,6 +9,8 @@
  */
 #endregion
 
+using Eluant;
+using OpenRA.Primitives;
 using OpenRA.Scripting;
 using OpenRA.Traits;
 
@@ -34,10 +36,18 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Maximum health of the actor.")]
 		public int MaxHealth { get { return health.MaxHP; } }
 
-		[Desc("Kill the actor.")]
-		public void Kill()
+		[Desc("Kill the actor. damageTypes may be omitted, specified as a string, or as table of strings.")]
+		public void Kill(object damageTypes = null)
 		{
-			health.InflictDamage(Self, Self, new Damage(health.MaxHP), true);
+			Damage damage;
+			if (damageTypes is string d)
+				damage = new Damage(health.MaxHP, new BitSet<DamageType>(new[] { d }));
+			else if (damageTypes is LuaTable t && t.TryGetClrValue(out string[] ds))
+				damage = new Damage(health.MaxHP, new BitSet<DamageType>(ds));
+			else
+				damage = new Damage(health.MaxHP);
+
+			health.InflictDamage(Self, Self, damage, true);
 		}
 	}
 }
