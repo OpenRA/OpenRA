@@ -285,59 +285,59 @@ WorldLoaded = function()
 --Units Death Setup
 	Trigger.AfterDelay(DateTime.Seconds(660), function()
 		Utils.Do(USSRDie01, function(actor)
-			if not actor.IsDead then actor.Kill() end
+			if not actor.IsDead then actor.Kill("DefaultDeath") end
 		end)
 	end)
 
 	Trigger.AfterDelay(DateTime.Seconds(744), function()
 		Utils.Do(USSRDie02, function(actor)
-			if not actor.IsDead then actor.Kill() end
+			if not actor.IsDead then actor.Kill("DefaultDeath") end
 		end)
 	end)
 
 	Trigger.AfterDelay(DateTime.Seconds(1122), function()
-		if not USSRHTank03.IsDead then USSRHTank03.Kill() end
+		if not USSRHTank03.IsDead then USSRHTank03.Kill("DefaultDeath") end
 	end)
 
 	Trigger.AfterDelay(DateTime.Seconds(1230), function()
 		Utils.Do(USSRDie03, function(actor)
-			if not actor.IsDead then actor.Kill() end
+			if not actor.IsDead then actor.Kill("DefaultDeath") end
 		end)
 	end)
 
 	Trigger.AfterDelay(DateTime.Seconds(1338), function()
 		Utils.Do(USSRDie04, function(actor)
-			if not actor.IsDead then actor.Kill() end
+			if not actor.IsDead then actor.Kill("DefaultDeath") end
 		end)
 	end)
 
 	Trigger.AfterDelay(DateTime.Seconds(1416), function()
 		Utils.Do(USSRDie05, function(actor)
-			if not actor.IsDead then actor.Kill() end
+			if not actor.IsDead then actor.Kill("DefaultDeath") end
 		end)
 	end)
 
 	Trigger.AfterDelay(DateTime.Seconds(1668), function()
-		if not USSRV201.IsDead then USSRV201.Kill() end
+		if not USSRV201.IsDead then USSRV201.Kill("DefaultDeath") end
 	end)
 
 	Trigger.AfterDelay(DateTime.Seconds(1746), function()
 		Utils.Do(USSRDie06, function(actor)
-			if not actor.IsDead then actor.Kill() end
+			if not actor.IsDead then actor.Kill("DefaultDeath") end
 		end)
 	end)
 
 	Trigger.AfterDelay(DateTime.Seconds(2034), function()
-		if not USSRMTank02.IsDead then USSRMTank02.Kill() end
+		if not USSRMTank02.IsDead then USSRMTank02.Kill("DefaultDeath") end
 	end)
 
 	Trigger.AfterDelay(DateTime.Seconds(2142), function()
-		if not USSRMTank01.IsDead then USSRMTank01.Kill() end
+		if not USSRMTank01.IsDead then USSRMTank01.Kill("DefaultDeath") end
 	end)
 
 	Trigger.OnTimerExpired(function()
 		if not ObjectiveTruck01.IsDead then
-			ObjectiveTruck01.Kill()
+			ObjectiveTruck01.Kill("DefaultDeath")
 
 			-- Set the limit to one so that the timer displays 0 and never ends
 			-- (which would display the game time instead of 0)
