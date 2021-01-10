@@ -142,6 +142,13 @@ namespace OpenRA.Mods.Common.Activities
 			// We don't know where the target actually is, so move to where we last saw it
 			if (useLastVisibleTarget)
 			{
+				// HACK: Bot players ignore the standard visibility checks in target.Recalculate,
+				// which means that targetIsHiddenActor is always false, allowing lastVisibleMaximumRange
+				// to be assigned zero range by attackAircraft.GetMaximumRangeVersusTarget for e.g. cloaked actors.
+				// Catch and cancel this edge case to avoid the aircraft stopping mid-air!
+				if (self.Owner.IsBot && lastVisibleMaximumRange == WDist.Zero)
+					return true;
+
 				// We've reached the assumed position but it is not there - give up
 				if (checkTarget.IsInRange(pos, lastVisibleMaximumRange))
 					return true;
