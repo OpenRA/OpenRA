@@ -325,11 +325,11 @@ install_linux_appdata() {
 			fi
 		fi
 
-		install -d "${BUILD_PATH}${SHARE_PATH}/appdata"
+		install -d "${BUILD_PATH}${SHARE_PATH}/metainfo"
 
-		sed "s/{MODID}/${MOD_ID}/g" "${SRC_PATH}/packaging/linux/openra.appdata.xml.in" | sed "s/{MOD_NAME}/${MOD_NAME}/g" | sed "s/{SCREENSHOT_RA}/${SCREENSHOT_RA}/g" | sed "s/{SCREENSHOT_CNC}/${SCREENSHOT_CNC}/g" | sed "s/{SCREENSHOT_D2K}/${SCREENSHOT_D2K}/g"> "${SRC_PATH}/packaging/linux/openra-${MOD_ID}.appdata.xml"
-		install -m644 "${SRC_PATH}/packaging/linux/openra-${MOD_ID}.appdata.xml" "${BUILD_PATH}${SHARE_PATH}/appdata"
-		rm "${SRC_PATH}/packaging/linux/openra-${MOD_ID}.appdata.xml"
+		sed "s/{MODID}/${MOD_ID}/g" "${SRC_PATH}/packaging/linux/openra.metainfo.xml.in" | sed "s/{MOD_NAME}/${MOD_NAME}/g" | sed "s/{SCREENSHOT_RA}/${SCREENSHOT_RA}/g" | sed "s/{SCREENSHOT_CNC}/${SCREENSHOT_CNC}/g" | sed "s/{SCREENSHOT_D2K}/${SCREENSHOT_D2K}/g"> "${SRC_PATH}/packaging/linux/openra-${MOD_ID}.metainfo.xml"
+		install -m644 "${SRC_PATH}/packaging/linux/openra-${MOD_ID}.metainfo.xml" "${BUILD_PATH}${SHARE_PATH}/metainfo"
+		rm "${SRC_PATH}/packaging/linux/openra-${MOD_ID}.metainfo.xml"
 
 		shift
 	done
