@@ -34,6 +34,10 @@ namespace OpenRA.Launcher
 				ExceptionHandler.HandleFatalError(e);
 				return (int)RunStatus.Error;
 			}
+			finally
+			{
+				Log.Dispose();
+			}
 		}
 	}
 }

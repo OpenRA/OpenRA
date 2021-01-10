@@ -10,8 +10,11 @@
 #endregion
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
+using System.Threading.Channels;
 
 namespace OpenRA
 {
@@ -22,90 +25,154 @@ namespace OpenRA
 		public TextWriter Writer;
 	}
 
+	readonly struct ChannelData
+	{
+		public readonly string Channel;
+		public readonly string Text;
+
+		public ChannelData(string channel, string text)
+		{
+			Text = text;
+			Channel = channel;
+		}
+	}
+
 	public static class Log
 	{
-		static readonly Dictionary<string, ChannelInfo> Channels = new Dictionary<string, ChannelInfo>();
+		const int CreateLogFileMaxRetryCount = 128;
 
-		static IEnumerable<string> FilenamesForChannel(string channelName, string baseFilename)
+		static readonly ConcurrentDictionary<string, ChannelInfo> Channels = new ConcurrentDictionary<string, ChannelInfo>();
+		static readonly Channel<ChannelData> Channel;
+		static readonly ChannelWriter<ChannelData> ChannelWriter;
+		static readonly CancellationTokenSource CancellationToken = new CancellationTokenSource();
+
+		static readonly TimeSpan FlushInterval = TimeSpan.FromSeconds(5);
+		static readonly Timer Timer;
+		static readonly Thread Thread;
+
+		static Log()
+		{
+			Channel = System.Threading.Channels.Channel.CreateUnbounded<ChannelData>();
+			ChannelWriter = Channel.Writer;
+
+			Thread = new Thread(DoWork);
+			var cancellationTokenToken = CancellationToken.Token;
+			Thread.Start(cancellationTokenToken);
+
+			Timer = new Timer(FlushToDisk, cancellationTokenToken, FlushInterval, Timeout.InfiniteTimeSpan);
+		}
+
+		static void FlushToDisk(object state)
+		{
+			FlushToDisk();
+
+			var token = (CancellationToken)state;
+			if (!token.IsCancellationRequested)
+				Timer.Change(FlushInterval, Timeout.InfiniteTimeSpan);
+		}
+
+		static void FlushToDisk()
+		{
+			foreach (var (_, channel) in Channels)
+				channel.Writer?.Flush();
+		}
+
+		static void DoWork(object obj)
+		{
+			var token = (CancellationToken)obj;
+			var reader = Channel.Reader;
+
+			while (!token.IsCancellationRequested)
+				if (reader.TryRead(out var item))
+					WriteValue(item);
+
+			while (reader.TryRead(out var item))
+				WriteValue(item);
+
+			FlushToDisk();
+		}
+
+		static void WriteValue(ChannelData item)
+		{
+			var channel = GetChannel(item.Channel);
+			var writer = channel.Writer;
+			if (writer == null)
+				return;
+
+			if (!channel.IsTimestamped)
+				writer.WriteLine(item.Text);
+			else
+			{
+				var timestamp = DateTime.Now.ToString(Game.Settings.Server.TimestampFormat);
+				writer.WriteLine("[{0}] {1}", timestamp, item.Text);
+			}
+		}
+
+		static IEnumerable<string> FilenamesForChannel(string baseFilename)
 		{
 			var path = Platform.SupportDir + "Logs";
 			Directory.CreateDirectory(path);
 
-			for (var i = 0; ; i++)
+			for (var i = 0; i < CreateLogFileMaxRetryCount; i++)
 				yield return Path.Combine(path, i > 0 ? "{0}.{1}".F(baseFilename, i) : baseFilename);
+
+			throw new ApplicationException("Error creating log file \"{0}\"".F(baseFilename));
 		}
 
-		public static ChannelInfo Channel(string channelName)
+		static ChannelInfo GetChannel(string channelName)
 		{
-			ChannelInfo info;
-			lock (Channels)
-				if (!Channels.TryGetValue(channelName, out info))
-					throw new ArgumentException("Tried logging to non-existent channel " + channelName, nameof(channelName));
+			if (!Channels.TryGetValue(channelName, out var info))
+				throw new ArgumentException("Tried logging to non-existent channel " + channelName, nameof(channelName));
 
 			return info;
 		}
 
 		public static void AddChannel(string channelName, string baseFilename, bool isTimestamped = false)
 		{
-			lock (Channels)
-			{
-				if (Channels.ContainsKey(channelName)) return;
+			if (Channels.ContainsKey(channelName))
+				return;
 
-				if (string.IsNullOrEmpty(baseFilename))
+			if (string.IsNullOrEmpty(baseFilename))
+			{
+				Channels.TryAdd(channelName, default);
+				return;
+			}
+
+			foreach (var filename in FilenamesForChannel(baseFilename))
+			{
+				try
 				{
-					Channels.Add(channelName, default(ChannelInfo));
+					var writer = File.CreateText(filename);
+					writer.AutoFlush = false;
+
+					Channels.TryAdd(channelName,
+						new ChannelInfo
+						{
+							Filename = filename,
+							IsTimestamped = isTimestamped,
+							Writer = TextWriter.Synchronized(writer)
+						});
+
 					return;
 				}
-
-				foreach (var filename in FilenamesForChannel(channelName, baseFilename))
-					try
-					{
-						var writer = File.CreateText(filename);
-						writer.AutoFlush = true;
-
-						Channels.Add(channelName,
-							new ChannelInfo
-							{
-								Filename = filename,
-								IsTimestamped = isTimestamped,
-								Writer = TextWriter.Synchronized(writer)
-							});
-
-						return;
-					}
-					catch (IOException) { }
+				catch (IOException) { }
 			}
 		}
 
 		public static void Write(string channelName, string value)
 		{
-			var channel = Channel(channelName);
-			var writer = channel.Writer;
-			if (writer == null)
-				return;
-
-			if (!channel.IsTimestamped)
-				writer.WriteLine(value);
-			else
-			{
-				var timestamp = DateTime.Now.ToString(Game.Settings.Server.TimestampFormat);
-				writer.WriteLine("[{0}] {1}", timestamp, value);
-			}
+			ChannelWriter.TryWrite(new ChannelData(channelName, value));
 		}
 
 		public static void Write(string channelName, string format, params object[] args)
 		{
-			var channel = Channel(channelName);
-			if (channel.Writer == null)
-				return;
+            ChannelWriter.TryWrite(new ChannelData(channelName, format.F(args)));
+		}
 
-			if (!channel.IsTimestamped)
-				channel.Writer.WriteLine(format, args);
-			else
-			{
-				var timestamp = DateTime.Now.ToString(Game.Settings.Server.TimestampFormat);
-				channel.Writer.WriteLine("[{0}] {1}", timestamp, format.F(args));
-			}
+		public static void Dispose()
+		{
+			CancellationToken.Cancel();
+			Timer.Dispose();
 		}
 	}
 }
