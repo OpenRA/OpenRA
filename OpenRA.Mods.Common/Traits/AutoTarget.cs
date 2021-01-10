@@ -348,8 +348,11 @@ namespace OpenRA.Mods.Common.Traits
 				return chosenTarget;
 
 			var targetsInRange = self.World.FindActorsInCircle(self.CenterPosition, scanRange)
-				.Select(Target.FromActor)
-				.Concat(self.Owner.FrozenActorLayer.FrozenActorsInCircle(self.World, self.CenterPosition, scanRange)
+				.Select(Target.FromActor);
+
+			if (allowMove || ab.Info.TargetFrozenActors)
+				targetsInRange = targetsInRange
+					.Concat(self.Owner.FrozenActorLayer.FrozenActorsInCircle(self.World, self.CenterPosition, scanRange)
 					.Select(Target.FromFrozenActor));
 
 			foreach (var target in targetsInRange)
