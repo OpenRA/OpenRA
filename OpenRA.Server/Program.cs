@@ -23,6 +23,18 @@ namespace OpenRA.Server
 	{
 		static void Main(string[] args)
 		{
+			try
+			{
+				Run(args);
+			}
+			finally
+			{
+				Log.Dispose();
+			}
+		}
+
+		static void Run(string[] args)
+		{
 			var arguments = new Arguments(args);
 
 			var engineDirArg = arguments.GetValue("Engine.EngineDir", null);
