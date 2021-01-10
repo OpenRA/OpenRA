@@ -147,7 +147,7 @@ Background@MISSIONBROWSER_PANEL:
 			Height: 377
 			Background: dialog3
 			Children:
-				VqaPlayer@MISSION_VIDEO:
+				VideoPlayer@MISSION_VIDEO:
 					X: 1
 					Y: 1
 					Width: 640
@@ -160,7 +160,7 @@ Background@FULLSCREEN_PLAYER:
 	Background: dialog5
 	Visible: False
 	Children:
-		VqaPlayer@PLAYER:
+		VideoPlayer@PLAYER:
 			X: 0
 			Y: 0
 			Width: WINDOW_RIGHT

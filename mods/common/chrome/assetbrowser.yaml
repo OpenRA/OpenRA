@@ -99,7 +99,7 @@ Background@ASSETBROWSER_PANEL:
 				Sprite@SPRITE:
 					Width: PARENT_RIGHT
 					Height: PARENT_BOTTOM
-				VqaPlayer@PLAYER:
+				VideoPlayer@PLAYER:
 					Width: PARENT_RIGHT
 					Height: PARENT_BOTTOM
 					AspectRatio: 1

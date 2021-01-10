@@ -160,7 +160,7 @@ Container@OBSERVER_WIDGETS:
 					Y: 1
 					Width: PARENT_RIGHT - 2
 					Height: PARENT_BOTTOM - 2
-				VqaPlayer@PLAYER:
+				VideoPlayer@PLAYER:
 					X: 1
 					Y: 1
 					Width: PARENT_RIGHT - 2
@@ -1632,7 +1632,7 @@ Container@PLAYER_WIDGETS:
 							Height: 194
 							SoundUp: RadarUp
 							SoundDown: RadarDown
-						VqaPlayer@PLAYER:
+						VideoPlayer@PLAYER:
 							Width: 194
 							Height: 194
 							Skippable: false
@@ -1856,7 +1856,7 @@ Background@FMVPLAYER:
 	Height: WINDOW_BOTTOM
 	Background: panel-allblack
 	Children:
-		VqaPlayer@PLAYER:
+		VideoPlayer@PLAYER:
 			X: 0
 			Y: 0
 			Width: WINDOW_RIGHT

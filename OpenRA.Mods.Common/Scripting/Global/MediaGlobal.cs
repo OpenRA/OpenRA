@@ -15,10 +15,10 @@ using Eluant;
 using OpenRA.Effects;
 using OpenRA.GameRules;
 using OpenRA.Mods.Common.Effects;
-using OpenRA.Mods.Common.FileFormats;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Scripting;
+using OpenRA.Video;
 
 namespace OpenRA.Mods.Common.Scripting
 {
@@ -175,12 +175,12 @@ namespace OpenRA.Mods.Common.Scripting
 				return false;
 			}
 
-			AsyncLoader l = new AsyncLoader(Media.LoadVqa);
+			AsyncLoader l = new AsyncLoader(Media.LoadVideo);
 			IAsyncResult ar = l.BeginInvoke(s, null, null);
 			Action onLoadComplete = () =>
 			{
 				Media.StopFMVInRadar();
-				world.AddFrameEndTask(_ => Media.PlayFMVInRadar(world, l.EndInvoke(ar), onCompleteRadar));
+				world.AddFrameEndTask(_ => Media.PlayFMVInRadar(l.EndInvoke(ar), onCompleteRadar));
 			};
 
 			world.AddFrameEndTask(w => w.Add(new AsyncAction(ar, onLoadComplete)));
@@ -228,6 +228,6 @@ namespace OpenRA.Mods.Common.Scripting
 			world.AddFrameEndTask(w => w.Add(new FloatingText(position, c, text, duration)));
 		}
 
-		public delegate VqaReader AsyncLoader(Stream s);
+		public delegate IVideo AsyncLoader(Stream s);
 	}
 }

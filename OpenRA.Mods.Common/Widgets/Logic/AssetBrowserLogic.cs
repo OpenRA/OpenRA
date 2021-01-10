@@ -17,6 +17,7 @@ using System.Linq;
 using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Video;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -44,7 +45,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		IReadOnlyPackage currentPackage;
 		Sprite[] currentSprites;
 		IModel currentVoxel;
-		VqaPlayerWidget player = null;
+		VideoPlayerWidget player = null;
 		bool isVideoLoaded = false;
 		bool isLoadError = false;
 		int currentFrame;
@@ -84,7 +85,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				spriteWidget.IsVisible = () => !isVideoLoaded && !isLoadError && currentSprites != null;
 			}
 
-			var playerWidget = panel.GetOrNull<VqaPlayerWidget>("PLAYER");
+			var playerWidget = panel.GetOrNull<VideoPlayerWidget>("PLAYER");
 			if (playerWidget != null)
 				playerWidget.IsVisible = () => isVideoLoaded && !isLoadError;
 
@@ -379,9 +380,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						prefix += "|";
 				}
 
-				if (Path.GetExtension(filename.ToLowerInvariant()) == ".vqa")
+				var video = VideoLoader.GetVideo(Game.ModData.DefaultFileSystem.Open(filename), Game.ModData.VideoLoaders);
+				if (video != null)
 				{
-					player = panel.Get<VqaPlayerWidget>("PLAYER");
+					player = panel.Get<VideoPlayerWidget>("PLAYER");
 					player.Load(prefix + filename);
 					player.DrawOverlay = false;
 					isVideoLoaded = true;

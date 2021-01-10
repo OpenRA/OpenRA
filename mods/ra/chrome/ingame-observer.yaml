@@ -81,7 +81,7 @@ Container@OBSERVER_WIDGETS:
 							Y: 41
 							Width: 220
 							Height: 220
-						VqaPlayer@PLAYER:
+						VideoPlayer@PLAYER:
 							X: 9
 							Y: 41
 							Width: 220

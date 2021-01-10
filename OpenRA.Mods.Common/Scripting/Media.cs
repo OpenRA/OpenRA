@@ -11,8 +11,8 @@
 
 using System;
 using System.IO;
-using OpenRA.Mods.Common.FileFormats;
 using OpenRA.Mods.Common.Widgets;
+using OpenRA.Video;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Scripting
@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Scripting
 		public static void PlayFMVFullscreen(World w, string movie, Action onComplete)
 		{
 			var playerRoot = Game.OpenWindow(w, "FMVPLAYER");
-			var player = playerRoot.Get<VqaPlayerWidget>("PLAYER");
+			var player = playerRoot.Get<VideoPlayerWidget>("PLAYER");
 
 			try
 			{
@@ -60,9 +60,9 @@ namespace OpenRA.Mods.Common.Scripting
 			});
 		}
 
-		public static void PlayFMVInRadar(World w, VqaReader movie, Action onComplete)
+		public static void PlayFMVInRadar(IVideo movie, Action onComplete)
 		{
-			var player = Ui.Root.Get<VqaPlayerWidget>("PLAYER");
+			var player = Ui.Root.Get<VideoPlayerWidget>("PLAYER");
 			player.Open(movie);
 
 			player.PlayThen(() =>
@@ -74,13 +74,13 @@ namespace OpenRA.Mods.Common.Scripting
 
 		public static void StopFMVInRadar()
 		{
-			var player = Ui.Root.Get<VqaPlayerWidget>("PLAYER");
+			var player = Ui.Root.Get<VideoPlayerWidget>("PLAYER");
 			player.Stop();
 		}
 
-		public static VqaReader LoadVqa(Stream s)
+		public static IVideo LoadVideo(Stream s)
 		{
-			return new VqaReader(s);
+			return VideoLoader.GetVideo(s, Game.ModData.VideoLoaders);
 		}
 	}
 }

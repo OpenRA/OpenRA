@@ -3,7 +3,7 @@ Background@FMVPLAYER:
 	Height: WINDOW_BOTTOM
 	Background: dialog5
 	Children:
-		VqaPlayer@PLAYER:
+		VideoPlayer@PLAYER:
 			X: 0
 			Y: 0
 			Width: WINDOW_RIGHT
