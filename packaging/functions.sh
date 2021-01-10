@@ -293,14 +293,16 @@ install_linux_shortcuts() {
 # Copy AppStream metadata to the target directory
 # Arguments:
 #   SRC_PATH: Path to the root OpenRA directory
+#   BUILD_PATH: Path to packaging filesystem root (e.g. /tmp/openra-build/ or "" for a local install)
 #   SHARE_PATH: Parent path to the appdata directory (e.g. /usr/local/share)
 #   MOD [MOD...]: One or more mod ids to copy (cnc, d2k, ra)
 # Used by:
 #   Makefile (install-linux-appdata target for local installs and downstream packaging)
 install_linux_appdata() {
 	SRC_PATH="${1}"
-	SHARE_PATH="${2}"
-	shift 2
+	BUILD_PATH="${2}"
+	SHARE_PATH="${3}"
+	shift 3
 	while [ -n "${1}" ]; do
 		MOD_ID="${1}"
 		SCREENSHOT_CNC=
@@ -323,10 +325,10 @@ install_linux_appdata() {
 			fi
 		fi
 
-		install -d "${SHARE_PATH}/appdata"
+		install -d "${BUILD_PATH}${SHARE_PATH}/appdata"
 
 		sed "s/{MODID}/${MOD_ID}/g" "${SRC_PATH}/packaging/linux/openra.appdata.xml.in" | sed "s/{MOD_NAME}/${MOD_NAME}/g" | sed "s/{SCREENSHOT_RA}/${SCREENSHOT_RA}/g" | sed "s/{SCREENSHOT_CNC}/${SCREENSHOT_CNC}/g" | sed "s/{SCREENSHOT_D2K}/${SCREENSHOT_D2K}/g"> "${SRC_PATH}/packaging/linux/openra-${MOD_ID}.appdata.xml"
-		install -m644 "${SRC_PATH}/packaging/linux/openra-${MOD_ID}.appdata.xml" "${SHARE_PATH}/appdata"
+		install -m644 "${SRC_PATH}/packaging/linux/openra-${MOD_ID}.appdata.xml" "${BUILD_PATH}${SHARE_PATH}/appdata"
 		rm "${SRC_PATH}/packaging/linux/openra-${MOD_ID}.appdata.xml"
 
 		shift

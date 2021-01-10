@@ -36,9 +36,6 @@ bindir ?= $(prefix)/bin
 libdir ?= $(prefix)/lib
 gameinstalldir ?= $(libdir)/openra
 
-DATA_INSTALL_DIR = $(DESTDIR)$(datadir)
-OPENRA_INSTALL_DIR = $(DESTDIR)$(gameinstalldir)
-
 # Toolchain
 CWD = $(shell pwd)
 MSBUILD = msbuild -verbosity:m -nologo
@@ -121,14 +118,14 @@ version: VERSION mods/ra/mod.yaml mods/cnc/mod.yaml mods/d2k/mod.yaml mods/ts/mo
 	@sh -c '. ./packaging/functions.sh; set_mod_version $(VERSION) mods/ra/mod.yaml mods/cnc/mod.yaml mods/d2k/mod.yaml mods/ts/mod.yaml mods/modcontent/mod.yaml mods/all/mod.yaml'
 
 install:
-	@sh -c '. ./packaging/functions.sh; install_assemblies_mono $(CWD) $(OPENRA_INSTALL_DIR) $(TARGETPLATFORM) True True True'
-	@sh -c '. ./packaging/functions.sh; install_data $(CWD) $(OPENRA_INSTALL_DIR) cnc d2k ra'
+	@sh -c '. ./packaging/functions.sh; install_assemblies_mono $(CWD) $(DESTDIR)$(gameinstalldir) $(TARGETPLATFORM) True True True'
+	@sh -c '. ./packaging/functions.sh; install_data $(CWD) $(DESTDIR)$(gameinstalldir) cnc d2k ra'
 
 install-linux-shortcuts:
 	@sh -c '. ./packaging/functions.sh; install_linux_shortcuts $(CWD) "$(DESTDIR)" "$(gameinstalldir)" "$(bindir)" "$(datadir)" $(VERSION) cnc d2k ra'
 
 install-linux-appdata:
-	@sh -c '. ./packaging/functions.sh; install_linux_appdata $(CWD) $(DATA_INSTALL_DIR) cnc d2k ra'
+	@sh -c '. ./packaging/functions.sh; install_linux_appdata $(CWD) "$(DESTDIR)" "$(datadir)" cnc d2k ra'
 
 help:
 	@echo 'to compile, run:'
