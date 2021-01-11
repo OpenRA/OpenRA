@@ -147,7 +147,9 @@ namespace OpenRA.Mods.Common.Traits
 					var possibleBuilding = world.ActorsWithTrait<Pluggable>().FirstOrDefault(a =>
 						a.Actor.Owner == player && a.Trait.AcceptsPlug(a.Actor, plugInfo.Type));
 
+#pragma warning disable CS8073 // The result of the expression is always the same since a value of this type is never equal to 'null'
 					if (possibleBuilding != null)
+#pragma warning restore CS8073 // The result of the expression is always the same since a value of this type is never equal to 'null'
 					{
 						orderString = "PlacePlug";
 						location = possibleBuilding.Actor.Location + possibleBuilding.Trait.Info.Offset;

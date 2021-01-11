@@ -14,9 +14,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
-using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
@@ -178,24 +177,16 @@ namespace OpenRA
 
 			var url = repositoryUrl + "hash/" + string.Join(",", maps.Keys) + "/yaml";
 
-			Action<DownloadDataCompletedEventArgs> onInfoComplete = i =>
+			Task.Run(async () =>
 			{
-				if (i.Error != null)
-				{
-					Log.Write("debug", "Remote map query failed with error: {0}", Download.FormatErrorMessage(i.Error));
-					Log.Write("debug", "URL was: {0}", url);
-					foreach (var p in maps.Values)
-						p.UpdateRemoteSearch(MapStatus.Unavailable, null);
+				var client = HttpClientFactory.Create();
 
-					queryFailed?.Invoke();
+				var httpResponseMessage = await client.GetAsync(url);
+				var result = await httpResponseMessage.Content.ReadAsStringAsync();
 
-					return;
-				}
-
-				var data = Encoding.UTF8.GetString(i.Result);
 				try
 				{
-					var yaml = MiniYaml.FromString(data);
+					var yaml = MiniYaml.FromString(result);
 					foreach (var kv in yaml)
 						maps[kv.Key].UpdateRemoteSearch(MapStatus.DownloadAvailable, kv.Value, mapDetailsReceived);
 
@@ -205,13 +196,15 @@ namespace OpenRA
 				}
 				catch (Exception e)
 				{
-					Log.Write("debug", "Can't parse remote map search data:\n{0}", data);
-					Log.Write("debug", "Exception: {0}", e);
+					Log.Write("debug", "Remote map query failed with error: {0}", e);
+					Log.Write("debug", "URL was: {0}", url);
+
+					foreach (var p in maps.Values)
+						p.UpdateRemoteSearch(MapStatus.Unavailable, null);
+
 					queryFailed?.Invoke();
 				}
-			};
-
-			new Download(url, _ => { }, onInfoComplete);
+			});
 		}
 
 		void LoadAsyncInternal()

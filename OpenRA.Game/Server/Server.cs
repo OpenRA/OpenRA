@@ -18,6 +18,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using OpenRA.FileFormats;
 using OpenRA.Network;
 using OpenRA.Primitives;
@@ -563,53 +564,50 @@ namespace OpenRA.Server
 				{
 					waitingForAuthenticationCallback++;
 
-					Action<DownloadDataCompletedEventArgs> onQueryComplete = i =>
+					Task.Run(async () =>
 					{
+						var httpClient = HttpClientFactory.Create();
+						var httpResponseMessage = await httpClient.GetAsync(playerDatabase.Profile + handshake.Fingerprint);
+						var result = await httpResponseMessage.Content.ReadAsStringAsync();
 						PlayerProfile profile = null;
 
-						if (i.Error == null)
+						try
 						{
-							try
+							var yaml = MiniYaml.FromString(result).First();
+							if (yaml.Key == "Player")
 							{
-								var yaml = MiniYaml.FromString(Encoding.UTF8.GetString(i.Result)).First();
-								if (yaml.Key == "Player")
-								{
-									profile = FieldLoader.Load<PlayerProfile>(yaml.Value);
+								profile = FieldLoader.Load<PlayerProfile>(yaml.Value);
 
-									var publicKey = Encoding.ASCII.GetString(Convert.FromBase64String(profile.PublicKey));
-									var parameters = CryptoUtil.DecodePEMPublicKey(publicKey);
-									if (!profile.KeyRevoked && CryptoUtil.VerifySignature(parameters, newConn.AuthToken, handshake.AuthSignature))
-									{
-										client.Fingerprint = handshake.Fingerprint;
-										Log.Write("server", "{0} authenticated as {1} (UID {2})", newConn.Socket.RemoteEndPoint,
-											profile.ProfileName, profile.ProfileID);
-									}
-									else if (profile.KeyRevoked)
-									{
-										profile = null;
-										Log.Write("server", "{0} failed to authenticate as {1} (key revoked)", newConn.Socket.RemoteEndPoint, handshake.Fingerprint);
-									}
-									else
-									{
-										profile = null;
-										Log.Write("server", "{0} failed to authenticate as {1} (signature verification failed)",
-											newConn.Socket.RemoteEndPoint, handshake.Fingerprint);
-									}
+								var publicKey = Encoding.ASCII.GetString(Convert.FromBase64String(profile.PublicKey));
+								var parameters = CryptoUtil.DecodePEMPublicKey(publicKey);
+								if (!profile.KeyRevoked && CryptoUtil.VerifySignature(parameters, newConn.AuthToken, handshake.AuthSignature))
+								{
+									client.Fingerprint = handshake.Fingerprint;
+									Log.Write("server", "{0} authenticated as {1} (UID {2})", newConn.Socket.RemoteEndPoint,
+										profile.ProfileName, profile.ProfileID);
+								}
+								else if (profile.KeyRevoked)
+								{
+									profile = null;
+									Log.Write("server", "{0} failed to authenticate as {1} (key revoked)", newConn.Socket.RemoteEndPoint, handshake.Fingerprint);
 								}
 								else
-									Log.Write("server", "{0} failed to authenticate as {1} (invalid server response: `{2}` is not `Player`)",
-										newConn.Socket.RemoteEndPoint, handshake.Fingerprint, yaml.Key);
+								{
+									profile = null;
+									Log.Write("server", "{0} failed to authenticate as {1} (signature verification failed)",
+										newConn.Socket.RemoteEndPoint, handshake.Fingerprint);
+								}
 							}
-							catch (Exception ex)
-							{
-								Log.Write("server", "{0} failed to authenticate as {1} (exception occurred)",
-									newConn.Socket.RemoteEndPoint, handshake.Fingerprint);
-								Log.Write("server", ex.ToString());
-							}
+							else
+								Log.Write("server", "{0} failed to authenticate as {1} (invalid server response: `{2}` is not `Player`)",
+									newConn.Socket.RemoteEndPoint, handshake.Fingerprint, yaml.Key);
 						}
-						else
-							Log.Write("server", "{0} failed to authenticate as {1} (server error: `{2}`)",
-								newConn.Socket.RemoteEndPoint, handshake.Fingerprint, i.Error);
+						catch (Exception ex)
+						{
+							Log.Write("server", "{0} failed to authenticate as {1} (exception occurred)",
+								newConn.Socket.RemoteEndPoint, handshake.Fingerprint);
+							Log.Write("server", ex.ToString());
+						}
 
 						delayedActions.Add(() =>
 						{
@@ -639,9 +637,7 @@ namespace OpenRA.Server
 
 							waitingForAuthenticationCallback--;
 						}, 0);
-					};
-
-					new Download(playerDatabase.Profile + handshake.Fingerprint, _ => { }, onQueryComplete);
+					});
 				}
 				else
 				{
