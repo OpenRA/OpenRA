@@ -1,0 +1,137 @@
+World:
+	LuaScript:
+		Scripts: ant-03.lua, ant-03-AI.lua, campaign-global.lua
+	MissionData:
+		Briefing: The source of the ant's activity has been pinpointed in this area. We suspect that their nests are in this area -- they must be destroyed!\n\nA team of civilian specialists are en-route to your location. Use them to gas all the ant nests in the area. In addition, destroy all ants that you encounter.\n\nBe careful -- these things can chew through anything. Good luck.
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			easy: Easy
+			normal: Normal
+			hard: Hard
+		Default: normal
+
+Player:
+	PlayerResources:
+		DefaultCash: 5500
+
+WarriorAnt:
+	MustBeDestroyed:
+	Health:
+		HP: 25000
+
+CHAN:
+	-Wanders:
+
+APC.grens:
+	Inherits: APC
+	RenderSprites:
+		Image: APC
+	Selectable:
+		Class: APC
+	Cargo:
+		InitialUnits: e2, e2, e1, e1, e1
+	Buildable:
+		Prerequisites: ~disabled
+
+APC.rockets:
+	Inherits: APC
+	RenderSprites:
+		Image: APC
+	Selectable:
+		Class: APC
+	Cargo:
+		InitialUnits: e3, e3, e3, e3, e3
+	Buildable:
+		Prerequisites: ~disabled
+
+APC:
+	Buildable:
+		Prerequisites: ~vehicles.allies
+	Selectable:
+		Class: APC
+
+E2:
+	Buildable:
+		Prerequisites: ~tent
+
+E4:
+	Buildable:
+		Prerequisites: stek, ~barr
+
+V2RL:
+	Buildable:
+		Prerequisites: dome, ~vehicles.allies
+
+4TNK:
+	Buildable:
+		Prerequisites: fix, dome, ~vehicles.allies
+
+SPY:
+	Buildable:
+		Prerequisites: ~disabled
+
+MECH:
+	Buildable:
+		Prerequisites: ~disabled
+
+3TNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+FTRK:
+	Buildable:
+		Prerequisites: ~disabled
+
+QTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+THF:
+	Buildable:
+		Prerequisites: ~disabled
+
+GAP:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSLO:
+	Buildable:
+		Prerequisites: ~disabled
+
+PDOX:
+	Buildable:
+		Prerequisites: ~disabled
+
+E7:
+	Buildable:
+		Prerequisites: ~disabled
+
+E7.noautotarget:
+	Buildable:
+		Prerequisites: ~disabled
+
+MCV:
+	Buildable:
+		Prerequisites: ~disabled
+
+TRUK:
+	Buildable:
+		Prerequisites: ~disabled
+
+MRJ:
+	Buildable:
+		Prerequisites: ~disabled
+
+ARTY:
+	Buildable:
+		Prerequisites: ~disabled
+
+ATEK:
+	Buildable:
+		Prerequisites: ~disabled
+
+HPAD:
+	Buildable:
+		Prerequisites: ~disabled
