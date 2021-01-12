@@ -390,6 +390,7 @@
 	Sellable:
 		RequiresCondition: !build-incomplete && !being-demolished
 		SellSounds: cashturn.aud
+		Notification: StructureSold
 	WithMakeAnimation:
 		Condition: build-incomplete
 	ThrowsShrapnel@SMALL:

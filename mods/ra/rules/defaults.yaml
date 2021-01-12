@@ -712,6 +712,7 @@
 	Sellable:
 		RequiresCondition: !build-incomplete && !being-captured && !being-demolished
 		SellSounds: cashturn.aud
+		Notification: StructureSold
 	WithBuildingRepairDecoration:
 		Image: allyrepair
 		Sequence: repair
