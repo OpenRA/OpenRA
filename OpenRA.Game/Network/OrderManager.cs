@@ -46,7 +46,7 @@ namespace OpenRA.Network
 		public bool ShouldUseCatchUp;
 		public int OrderLatency; // Set during lobby by a "SyncInfo" packet, see UnitOrders
 		public int NextOrderFrame;
-		public bool IsCatchingUp { get; private set; }
+		public int CatchUpFrames { get; private set; }
 
 		public long LastTickTime = Game.RunTime;
 
@@ -201,7 +201,7 @@ namespace OpenRA.Network
 			if (catchUpNetFrames < 0)
 				catchUpNetFrames = 0;
 
-			IsCatchingUp = ShouldUseCatchUp && catchUpNetFrames > 0;
+			CatchUpFrames = ShouldUseCatchUp ? catchUpNetFrames : 0;
 
 			if (LastSlowDownRequestTick + 5 < NetFrameNumber && (catchUpNetFrames > 5))
 			{
