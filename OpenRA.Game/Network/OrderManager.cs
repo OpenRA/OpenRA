@@ -82,10 +82,8 @@ namespace OpenRA.Network
 				frameData.AddClient(Connection.LocalClientId);
 
 			foreach (var client in LobbyInfo.Clients)
-			{
 				if (!client.IsBot)
 					frameData.AddClient(client.Index);
-			}
 
 			// Generating sync reports is expensive, so only do it if we have
 			// other players to compare against if a desync did occur
@@ -245,9 +243,7 @@ namespace OpenRA.Network
 		{
 			var orders = frameData.OrdersForFrame(World).ToList();
 			foreach (var order in orders)
-			{
 				UnitOrders.ProcessOrder(this, World, order.Client, order.Order);
-			}
 
 			if (NetFrameNumber % SyncFrameScale == 0)
 			{
@@ -296,11 +292,9 @@ namespace OpenRA.Network
 					SendOrders();
 			}
 
+			// Sets catchup frames and asks server to slow down if they are too high
 			if (LobbyInfo.GlobalSettings.UseNewNetcode)
-			{
-				// Sets catchup frames and asks server to slow down if they are too high
 				CompensateForLatency();
-			}
 
 			SendImmediateOrders();
 

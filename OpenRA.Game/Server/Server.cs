@@ -29,9 +29,14 @@ namespace OpenRA.Server
 	public enum ServerState
 	{
 		WaitingPlayers = 1,
-		GameLoading = 2,
-		GameStarted = 3,
-		ShuttingDown = 4
+		GameStarted = 2,
+		ShuttingDown = 3
+	}
+
+	public enum GameState
+	{
+		Loading = 1,
+		Playing = 2
 	}
 
 	public enum ServerType
@@ -69,6 +74,7 @@ namespace OpenRA.Server
 		readonly PlayerDatabase playerDatabase;
 
 		protected volatile ServerState internalState = ServerState.WaitingPlayers;
+		protected volatile GameState internalGameState = GameState.Loading;
 
 		volatile ActionQueue delayedActions = new ActionQueue();
 		int waitingForAuthenticationCallback = 0;
@@ -83,6 +89,12 @@ namespace OpenRA.Server
 		{
 			get { return internalState; }
 			protected set { internalState = value; }
+		}
+
+		public GameState GameState
+		{
+			get { return internalGameState; }
+			protected set { internalGameState = value; }
 		}
 
 		public static void SyncClientToPlayerReference(Session.Client c, PlayerReference pr)
@@ -256,7 +268,7 @@ namespace OpenRA.Server
 						// If game is running, use ServerGame's remaining tick time as socket select timeout
 						// Block for at most 1 second in order to guarantee a minimum tick rate for ServerTraits
 						// Decrease this to 100ms to improve responsiveness if we are waiting for an authentication query
-						if (LobbyInfo.GlobalSettings.UseNewNetcode && State == ServerState.GameStarted)
+						if (LobbyInfo.GlobalSettings.UseNewNetcode && State == ServerState.GameStarted && GameState == GameState.Playing)
 							selectTimeout = serverGame.MillisToNextNetFrame * 1000;
 						else
 							selectTimeout = waitingForAuthenticationCallback > 0 ? 100000 : 1000000;
@@ -293,12 +305,12 @@ namespace OpenRA.Server
 						foreach (var t in serverTraits.WithInterface<ITick>())
 							t.Tick(this);
 
-						if (State == ServerState.GameLoading && Conns.All(c => c.Loaded))
-							State = ServerState.GameStarted;
+						if (State == ServerState.GameStarted && GameState == GameState.Loading && Conns.All(c => c.Loaded))
+							GameState = GameState.Playing;
 
 						bool shouldFlush;
 
-						if (LobbyInfo.GlobalSettings.UseNewNetcode && State == ServerState.GameStarted)
+						if (LobbyInfo.GlobalSettings.UseNewNetcode && State == ServerState.GameStarted && GameState == GameState.Playing)
 							shouldFlush = serverGame.TryTick(this);
 						else
 							shouldFlush = true;
@@ -842,20 +854,16 @@ namespace OpenRA.Server
 				if (GameSave != null)
 					GameSave.DispatchOrders(conn, frame, data);
 			}
+
+			// TODO: Find a less hacky way to deal with synchash relaying
 			else if (conn != null && data.Length != 0 && (OrderType)data[0] == OrderType.SyncHash)
-			{
-				// TODO: Find a less hacky way to deal with synchash relaying
 				DispatchOrdersToOtherClients(conn, frame, data, true);
-			}
-			else if (conn != null && LobbyInfo.GlobalSettings.UseNewNetcode && State >= ServerState.GameLoading)
-			{
+			else if (conn != null && LobbyInfo.GlobalSettings.UseNewNetcode && State >= ServerState.GameStarted)
 				serverGame.OrderBuffer.BufferOrders(conn.PlayerIndex, data);
-			}
+
+			// TODO: Remove frame-based order relaying unless game is running
 			else
-			{
-				// TODO: Remove frame-based order relaying unless game is running
 				DispatchOrdersToOtherClients(conn, frame, data);
-			}
 		}
 
 		public void DispatchBufferedOrdersToOtherClients(int fromClient, List<byte[]> allData)
@@ -1343,10 +1351,14 @@ namespace OpenRA.Server
 					foreach (var c in Conns)
 						serverGame.OrderBuffer.AddClient(c.PlayerIndex);
 
-					State = ServerState.GameLoading;
+					State = ServerState.GameStarted;
+					GameState = GameState.Loading;
 				}
 				else
+				{
 					State = ServerState.GameStarted;
+					GameState = GameState.Playing;
+				}
 
 				// TODO remove: this "pre-disconnecting" method adds unnecessary complexity just for the sake of the replay stream
 				/*var disconnectData = new[] { (byte)OrderType.Disconnect };
