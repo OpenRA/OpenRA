@@ -79,9 +79,7 @@ namespace OpenRA.Network
 				return;
 
 			if (LobbyInfo.Clients.Count == 0)
-			{
 				frameData.AddClient(Connection.LocalClientId);
-			}
 
 			foreach (var client in LobbyInfo.Clients)
 			{
@@ -100,14 +98,10 @@ namespace OpenRA.Network
 			// if (OrderLatency == 0)
 			// 	NetTickScale = 1;
 			if (LobbyInfo.GlobalSettings.UseNewNetcode)
-			{
 				localImmediateOrders.Add(Order.FromTargetString("Loaded", "", true));
-			}
 			else
-			{
 				for (var i = 0; i <= OrderLatency; ++i)
 					SendOrders();
-			}
 		}
 
 		public OrderManager(ConnectionTarget endpoint, string password, IConnection conn)
@@ -344,9 +338,7 @@ namespace OpenRA.Network
 			}
 
 			if (Connection is NetworkConnection c)
-			{
 				c.UseNewNetcode = LobbyInfo.GlobalSettings.UseNewNetcode;
-			}
 		}
 	}
 

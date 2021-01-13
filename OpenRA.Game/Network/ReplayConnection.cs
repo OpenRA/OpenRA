@@ -147,9 +147,7 @@ namespace OpenRA.Network
 		public void Receive(Action<int, byte[]> packetFn)
 		{
 			while (sync.Count != 0)
-			{
 				packetFn(LocalClientId, sync.Dequeue());
-			}
 
 			while (chunks.Count != 0 && chunks.Peek().Frame <= ordersFrame)
 				foreach (var o in chunks.Dequeue().Packets)
