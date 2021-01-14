@@ -93,9 +93,6 @@ namespace OpenRA.Network
 			NetFrameNumber = 1;
 			NextOrderFrame = 1;
 
-			// HACK: FramesAhead is only ever 0 in singleplayer, so we increase the rate of apparent net ticks to decrease latency
-			// if (OrderLatency == 0)
-			// 	NetTickScale = 1;
 			if (LobbyInfo.GlobalSettings.UseNewNetcode)
 				localImmediateOrders.Add(Order.FromTargetString("Loaded", "", true));
 			else

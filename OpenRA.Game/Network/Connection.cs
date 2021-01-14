@@ -353,7 +353,7 @@ namespace OpenRA.Network
 				byte[] queuedPacket = default;
 				if (awaitingAckPackets.Count > 0 && !awaitingAckPackets.TryDequeue(out queuedPacket))
 				{
-					// The dequeing failed because of concurrency, so we retry
+					// The dequeuing failed because of concurrency, so we retry
 					for (var c = 0; c < 5; c++)
 					{
 						if (awaitingAckPackets.TryDequeue(out queuedPacket))
@@ -384,7 +384,7 @@ namespace OpenRA.Network
 				ms.WriteArray(BitConverter.GetBytes(frame));
 				ms.WriteArray(syncData);
 
-				queuedSyncPackets.Add(ms.GetBuffer()); // TODO: re-add sync packets
+				queuedSyncPackets.Add(ms.GetBuffer());
 			}
 		}
 
@@ -402,16 +402,14 @@ namespace OpenRA.Network
 				using (var ackMs = new MemoryStream(ordersLength))
 				{
 					foreach (var o in orders)
-					{
 						ackMs.WriteArray(o);
-					}
 
 					ackArray = ackMs.GetBuffer();
 				}
 
 				if (UseNewNetcode)
 				{
-					awaitingAckPackets.Enqueue(ackArray); // TODO fix having to write byte buffer twice
+					awaitingAckPackets.Enqueue(ackArray);
 				}
 				else
 				{

@@ -609,9 +609,7 @@ namespace OpenRA
 
 			var worldTickDelta = tick - orderManager.LastTickTime;
 			if (worldTimestep == 0 || worldTickDelta < worldTimestep)
-			{
 				return;
-			}
 
 			using (new PerfSample("tick_time"))
 			{
@@ -840,7 +838,6 @@ namespace OpenRA
 						LogicTick();
 
 						// Force at least one render per tick during regular gameplay
-						// TODO: Have OrderManager tell us when we should force render
 						if (!OrderManager.IsStalling && !(OrderManager.CatchUpFrames > 2) && OrderManager.World != null && !OrderManager.World.IsLoadingGameSave && !OrderManager.World.IsReplay)
 							renderBeforeNextTick = true;
 					}

@@ -162,11 +162,6 @@ namespace OpenRA.Network
 			}
 		}
 
-		public int LastAckedFrame
-		{
-			get { return ordersFrame;  }
-		}
-
 		public void Dispose() { }
 	}
 }

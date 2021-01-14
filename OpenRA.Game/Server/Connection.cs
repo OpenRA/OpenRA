@@ -153,7 +153,7 @@ namespace OpenRA.Server
 			}
 		}
 
-		private void InnerSend(byte[] data)
+		void InnerSend(byte[] data)
 		{
 			var start = 0;
 			var length = data.Length;

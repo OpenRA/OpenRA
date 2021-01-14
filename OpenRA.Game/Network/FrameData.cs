@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -44,7 +43,6 @@ namespace OpenRA.Network
 
 		public void ClientQuit(int clientId)
 		{
-			// TODO review whether we need to specify quit frame
 			quitClients.Add(clientId);
 		}
 
