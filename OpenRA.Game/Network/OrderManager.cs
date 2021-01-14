@@ -47,6 +47,7 @@ namespace OpenRA.Network
 		public int OrderLatency; // Set during lobby by a "SyncInfo" packet, see UnitOrders
 		public int NextOrderFrame;
 		public int CatchUpFrames { get; private set; }
+		public bool IsStalling { get; private set; }
 
 		public long LastTickTime = Game.RunTime;
 
@@ -197,6 +198,7 @@ namespace OpenRA.Network
 
 		void CompensateForLatency()
 		{
+			// NOTE: subtract 1 because we are only interested in *excess* frames
 			var catchUpNetFrames = frameData.BufferSizeForClient(Connection.LocalClientId) - 1;
 			if (catchUpNetFrames < 0)
 				catchUpNetFrames = 0;
@@ -309,6 +311,8 @@ namespace OpenRA.Network
 				willTick = frameData.IsReadyForFrame();
 				if (willTick)
 					ProcessOrders();
+
+				IsStalling = !willTick;
 			}
 
 			if (willTick)
