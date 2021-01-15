@@ -269,7 +269,11 @@ namespace OpenRA.Server
 						// Block for at most 1 second in order to guarantee a minimum tick rate for ServerTraits
 						// Decrease this to 100ms to improve responsiveness if we are waiting for an authentication query
 						if (LobbyInfo.GlobalSettings.UseNewNetcode && State == ServerState.GameStarted && GameState == GameState.Playing)
+						{
 							selectTimeout = serverGame.MillisToNextNetFrame * 1000;
+							if (selectTimeout < 0)
+								selectTimeout = 0;
+						}
 						else
 							selectTimeout = waitingForAuthenticationCallback > 0 ? 100000 : 1000000;
 
