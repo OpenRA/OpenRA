@@ -498,9 +498,6 @@
 	WithSpriteBody:
 		Name: make
 		Sequence: invisible
-	Sellable:
-		RequiresCondition: !being-demolished
-		Notification: StructureSold
 	WithWallSpriteBody:
 		RequiresCondition: !build-incomplete
 	LineBuildNode:
