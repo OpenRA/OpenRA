@@ -6,6 +6,12 @@
 #  $ Mod="d2k" ./launch-dedicated.sh # Launch a dedicated server with default settings but override the Mod
 #  Read the file to see which settings you can override
 
+if command -v mono >/dev/null 2>&1 && [ "$(grep -c .NETCoreApp,Version= bin/OpenRA.Server.dll)" = "0" ]; then
+	RUNTIME_LAUNCHER="mono --debug"
+else
+	RUNTIME_LAUNCHER="dotnet"
+fi
+
 Name="${Name:-"Dedicated Server"}"
 Mod="${Mod:-"ra"}"
 ListenPort="${ListenPort:-"1234"}"
@@ -25,14 +31,13 @@ ShareAnonymizedIPs="${ShareAnonymizedIPs:-"True"}"
 SupportDir="${SupportDir:-""}"
 
 while true; do
-     mono --debug bin/OpenRA.Server.dll Engine.EngineDir=".." Game.Mod="$Mod" \
+     ${RUNTIME_LAUNCHER} bin/OpenRA.Server.dll Engine.EngineDir=".." Game.Mod="$Mod" \
      Server.Name="$Name" \
      Server.ListenPort="$ListenPort" \
      Server.AdvertiseOnline="$AdvertiseOnline" \
      Server.EnableSingleplayer="$EnableSingleplayer" \
      Server.Password="$Password" \
      Server.RecordReplays="$RecordReplays" \
-     Server.GeoIPDatabase="$GeoIPDatabase" \
      Server.RequireAuthentication="$RequireAuthentication" \
      Server.ProfileIDBlacklist="$ProfileIDBlacklist" \
      Server.ProfileIDWhitelist="$ProfileIDWhitelist" \

@@ -1,8 +1,14 @@
 #!/bin/sh
-if command -v python3 >/dev/null 2>&1; then
-	 MODLAUNCHER=$(python3 -c "import os; print(os.path.realpath('$0'))")
+if command -v mono >/dev/null 2>&1 && [ "$(grep -c .NETCoreApp,Version= bin/OpenRA.dll)" = "0" ]; then
+	RUNTIME_LAUNCHER="mono --debug"
 else
-	 MODLAUNCHER=$(python -c "import os; print(os.path.realpath('$0'))")
+	RUNTIME_LAUNCHER="dotnet"
+fi
+
+if command -v python3 >/dev/null 2>&1; then
+	 LAUNCHPATH=$(python3 -c "import os; print(os.path.realpath('$0'))")
+else
+	 LAUNCHPATH=$(python -c "import os; print(os.path.realpath('$0'))")
 fi
 
 # Prompt for a mod to launch if one is not already specified
@@ -25,7 +31,7 @@ then
 fi
 
 # Launch the engine with the appropriate arguments
-mono --debug bin/OpenRA.dll Engine.EngineDir=".." Engine.LaunchPath="$MODLAUNCHER" $MODARG "$@"
+${RUNTIME_LAUNCHER} bin/OpenRA.dll Engine.EngineDir=".." Engine.LaunchPath="${LAUNCHPATH}" ${MODARG} "$@"
 
 # Show a crash dialog if something went wrong
 if [ $? != 0 ] && [ $? != 1 ]; then

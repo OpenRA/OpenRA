@@ -14,20 +14,39 @@ patch_config()
 	REPLACE=$4
 	SEARCH=$5
 
-	# Exit early if the file has already been patched
-	grep -q "target=\"${REPLACE}\"" "${CONFIG}" || return 0
+	if command -v mono >/dev/null 2>&1 && [ "$(grep -c .NETCoreApp,Version= bin/OpenRA.dll)" = "0" ]; then
+		# Exit early if the file has already been patched
+		grep -q "target=\"${REPLACE}\"" "${CONFIG}" || return 0
 
-	printf "Searching for %s... " "${LABEL}"
-	for DIR in ${SEARCHDIRS} ; do
-		for LIB in ${SEARCH}; do
-			if [ -f "${DIR}/${LIB}" ]; then
-				echo "${LIB}"
-				sed "s|target=\"${REPLACE}\"|target=\"${DIR}/${LIB}\"|" "${CONFIG}" > "${CONFIG}.temp"
-				mv "${CONFIG}.temp" "${CONFIG}"
-				return 0
-			fi
+		printf "Searching for %s... " "${LABEL}"
+		for DIR in ${SEARCHDIRS} ; do
+			for LIB in ${SEARCH}; do
+				if [ -f "${DIR}/${LIB}" ]; then
+					echo "${LIB}"
+					sed "s|target=\"${REPLACE}\"|target=\"${DIR}/${LIB}\"|" "${CONFIG}" > "${CONFIG}.temp"
+					mv "${CONFIG}.temp" "${CONFIG}"
+					return 0
+				fi
+			done
 		done
-	done
+	else
+		# NET 5 does not support .config files, so we must use symlinks instead
+		# Exit early if the symlink already exists
+		if [ -L "bin/${REPLACE}" ]; then
+			return 0
+		fi
+
+		printf "Searching for %s... " "${LABEL}"
+		for DIR in ${SEARCHDIRS} ; do
+			for LIB in ${SEARCH}; do
+				if [ -f "${DIR}/${LIB}" ]; then
+					echo "${LIB}"
+					ln -s "${DIR}/${LIB}" "bin/${REPLACE}"
+					return 0
+				fi
+			done
+		done
+	fi
 
 	echo "FAILED"
 
