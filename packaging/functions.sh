@@ -82,6 +82,7 @@ install_assemblies_mono() {
 #   COPY_CNC_DLL: If set to True the OpenRA.Mods.Cnc.dll will also be copied (True, False)
 #   COPY_D2K_DLL: If set to True the OpenRA.Mods.D2k.dll will also be copied (True, False)
 # Used by:
+#   Makefile (install target for local installs and downstream packaging)
 #   Windows packaging
 #   macOS packaging
 #   Linux AppImage packaging
