@@ -106,6 +106,9 @@ dotnet_style_predefined_type_for_member_access = true:suggestion
 #prefer the language keyword for local variables, method parameters, and class members, instead of the type name, for types that have a keyword to represent them
 dotnet_style_predefined_type_for_locals_parameters_members = true:suggestion
 
+#don't prefer braces (for one liners)
+dotnet_diagnostic.IDE0011.severity = none
+
 ; 4-column tab indentation
 [*.yaml]
 indent_style = tab
