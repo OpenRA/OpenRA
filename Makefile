@@ -98,7 +98,10 @@ clean:
 check:
 	@echo
 	@echo "Compiling in debug mode..."
-	@$(MSBUILD) -t:build -restore -p:Configuration=Debug
+	@$(MSBUILD) -t:build -restore -p:Configuration=Debug -p:TargetPlatform=$(TARGETPLATFORM)
+ifeq ($(TARGETPLATFORM), unix-generic)
+	@./configure-system-libraries.sh
+endif
 	@echo
 	@echo "Checking runtime assemblies..."
 	@$(OPENRA_UTILITY) all --check-runtime-assemblies $(WHITELISTED_OPENRA_ASSEMBLIES) $(WHITELISTED_THIRDPARTY_ASSEMBLIES) $(WHITELISTED_CORE_ASSEMBLIES)
