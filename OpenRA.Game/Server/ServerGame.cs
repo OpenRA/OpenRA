@@ -17,7 +17,7 @@ namespace OpenRA.Server
 	{
 		const int JankThreshold = 250;
 
-		Stopwatch gameTimer;
+		readonly Stopwatch gameTimer;
 		public long RunTime
 		{
 			get { return gameTimer.ElapsedMilliseconds; }
@@ -30,7 +30,7 @@ namespace OpenRA.Server
 
 		int slowdownHold;
 		int slowdownAmount;
-		public int AdjustedTimestep { get { return NetTimestep + slowdownAmount; } }
+		public int AdjustedTimestep { get { return (NetTimestep + slowdownAmount).Clamp(1, 1000); } }
 
 		public int MillisToNextNetFrame
 		{
@@ -53,13 +53,15 @@ namespace OpenRA.Server
 			if (now < NextFrameTick)
 				return false;
 
-			OrderBuffer.DispatchOrders(dispatcher);
+			var timestep = AdjustedTimestep;
+
+			OrderBuffer.DispatchOrders(dispatcher, timestep);
 
 			CurrentNetFrame++;
 			if (now - NextFrameTick > JankThreshold)
-				NextFrameTick = now + AdjustedTimestep;
+				NextFrameTick = now + timestep;
 			else
-				NextFrameTick += AdjustedTimestep;
+				NextFrameTick += timestep;
 
 			if (slowdownHold > 0)
 				slowdownHold--;
@@ -75,7 +77,7 @@ namespace OpenRA.Server
 			if (slowdownAmount < amount)
 			{
 				slowdownAmount = amount;
-				slowdownHold = amount;
+				slowdownHold = 5;
 			}
 		}
 	}

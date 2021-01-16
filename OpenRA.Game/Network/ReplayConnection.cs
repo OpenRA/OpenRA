@@ -144,21 +144,21 @@ namespace OpenRA.Network
 			ordersFrame = frame + 1;
 		}
 
-		public void Receive(Action<int, byte[]> packetFn)
+		public void Receive(Action<int, byte[], int> packetFn)
 		{
 			while (sync.Count != 0)
-				packetFn(LocalClientId, sync.Dequeue());
+				packetFn(LocalClientId, sync.Dequeue(), 0);
 
 			while (chunks.Count != 0 && chunks.Peek().Frame <= ordersFrame)
 				foreach (var o in chunks.Dequeue().Packets)
-					packetFn(o.ClientId, o.Packet);
+					packetFn(o.ClientId, o.Packet, 0);
 
 			// Stream ended, disconnect everyone
 			if (chunks.Count == 0)
 			{
 				var disconnectPacket = new byte[] { 0, 0, 0, 0, (byte)OrderType.Disconnect };
 				foreach (var client in LobbyInfo.Clients)
-					packetFn(client.Index, disconnectPacket);
+					packetFn(client.Index, disconnectPacket, 0);
 			}
 		}
 

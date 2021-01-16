@@ -877,15 +877,16 @@ namespace OpenRA.Server
 			DispatchOrdersToOtherClients(conn, serverGame.CurrentNetFrame, ms.ToArray(), true);
 		}
 
-		public void DispatchBufferedOrderAcks(int forClient, int acks)
+		public void DispatchBufferedOrderAcks(int forClient, int acks, int timestep)
 		{
 			if (acks > 0xFFFF)
 				throw new InvalidOperationException("Acks too great");
 
-			var ms = new MemoryStream(3);
+			var ms = new MemoryStream(5);
 			var writer = new BinaryWriter(ms);
 			writer.Write((byte)OrderType.Ack);
 			writer.Write((short)acks);
+			writer.Write((short)timestep);
 
 			var conn = Conns.FirstOrDefault(c => c.PlayerIndex == forClient);
 

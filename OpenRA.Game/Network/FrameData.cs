@@ -29,6 +29,7 @@ namespace OpenRA.Network
 
 		readonly HashSet<int> quitClients = new HashSet<int>();
 		readonly Dictionary<int, Queue<byte[]>> framePackets = new Dictionary<int, Queue<byte[]>>();
+		readonly Queue<int> timestepData = new Queue<int>();
 
 		public IEnumerable<int> ClientsPlayingInFrame()
 		{
@@ -46,7 +47,7 @@ namespace OpenRA.Network
 			quitClients.Add(clientId);
 		}
 
-		public void AddFrameOrders(int clientId, byte[] orders)
+		public void AddFrameOrders(int clientId, byte[] orders, int timestep)
 		{
 			// HACK: Due to design we can actually receive client orders before the game start order
 			// has been acted on, since immediate orders are buffered, so not all clients will have
@@ -56,6 +57,9 @@ namespace OpenRA.Network
 
 			var frameData = framePackets[clientId];
 			frameData.Enqueue(orders);
+
+			if (timestep != 0)
+				timestepData.Enqueue(timestep);
 		}
 
 		public bool IsReadyForFrame()
@@ -79,6 +83,21 @@ namespace OpenRA.Network
 		public int BufferSizeForClient(int client)
 		{
 			return framePackets[client].Count;
+		}
+
+		public bool TryPeekTimestep(out int timestep)
+		{
+			return timestepData.TryPeek(out timestep);
+		}
+
+		public void AdvanceFrame()
+		{
+			timestepData.TryDequeue(out _);
+		}
+
+		public int BufferTimeRemaining()
+		{
+			return timestepData.Sum();
 		}
 	}
 }

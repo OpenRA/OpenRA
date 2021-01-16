@@ -38,7 +38,7 @@ namespace OpenRA.Network
 		void Send(int frame, IEnumerable<byte[]> orders);
 		void SendImmediate(IEnumerable<byte[]> orders);
 		void SendSync(int frame, byte[] syncData);
-		void Receive(Action<int, byte[]> packetFn);
+		void Receive(Action<int, byte[], int> packetFn);
 	}
 
 	public class ConnectionTarget
@@ -96,6 +96,7 @@ namespace OpenRA.Network
 		{
 			public int FromClient;
 			public byte[] Data;
+			public int Timestep;
 		}
 
 		readonly ConcurrentBag<ReceivedPacket> receivedPackets = new ConcurrentBag<ReceivedPacket>();
@@ -162,7 +163,7 @@ namespace OpenRA.Network
 			receivedPackets.Add(packet);
 		}
 
-		public virtual void Receive(Action<int, byte[]> packetFn)
+		public virtual void Receive(Action<int, byte[], int> packetFn)
 		{
 			var packets = new List<ReceivedPacket>(receivedPackets.Count);
 
@@ -173,7 +174,7 @@ namespace OpenRA.Network
 
 			foreach (var p in packets)
 			{
-				packetFn(p.FromClient, p.Data);
+				packetFn(p.FromClient, p.Data, p.Timestep);
 				Recorder?.Receive(p.FromClient, p.Data);
 			}
 		}
@@ -313,7 +314,7 @@ namespace OpenRA.Network
 					var client = reader.ReadInt32();
 					var buf = reader.ReadBytes(len);
 
-					if (UseNewNetcode && client == LocalClientId && len == 7 && buf[4] == (byte)OrderType.Ack)
+					if (UseNewNetcode && client == LocalClientId && len == 9 && buf[4] == (byte)OrderType.Ack)
 					{
 						Ack(buf);
 					}
@@ -336,34 +337,18 @@ namespace OpenRA.Network
 
 		void Ack(byte[] buf)
 		{
-			int frameReceived;
-			short framesToAck;
-			using (var reader = new BinaryReader(new MemoryStream(buf)))
-			{
-				frameReceived = reader.ReadInt32();
-				reader.ReadByte();
-				framesToAck = reader.ReadInt16();
-			}
+			var reader = new BinaryReader(new MemoryStream(buf));
+			var frameReceived = reader.ReadInt32();
+			reader.ReadByte();
+			var framesToAck = reader.ReadInt16();
+			var timestep = reader.ReadInt16();
 
 			var ms = new MemoryStream(4 + awaitingAckPackets.Take(framesToAck).Sum(i => i.Length));
 			ms.WriteArray(BitConverter.GetBytes(frameReceived));
 
 			for (var i = 0; i < framesToAck; i++)
 			{
-				byte[] queuedPacket = default;
-				if (awaitingAckPackets.Count > 0 && !awaitingAckPackets.TryDequeue(out queuedPacket))
-				{
-					// The dequeuing failed because of concurrency, so we retry
-					for (var c = 0; c < 5; c++)
-					{
-						if (awaitingAckPackets.TryDequeue(out queuedPacket))
-						{
-							break;
-						}
-					}
-				}
-
-				if (queuedPacket == default)
+				if (!awaitingAckPackets.TryDequeue(out var queuedPacket))
 				{
 					throw new InvalidOperationException("Received acks for unknown frames");
 				}
@@ -371,7 +356,7 @@ namespace OpenRA.Network
 				ms.WriteArray(queuedPacket);
 			}
 
-			AddPacket(new ReceivedPacket { FromClient = LocalClientId, Data = ms.GetBuffer() });
+			AddPacket(new ReceivedPacket { FromClient = LocalClientId, Data = ms.GetBuffer(), Timestep = timestep });
 		}
 
 		public override int LocalClientId { get { return clientId; } }

@@ -56,7 +56,7 @@ namespace OpenRA.Server
 		// From, To, EnumerableData
 		// Then clears the buffer
 		// TODO allow server to optionally store buffered frames and enable client joins and re-connects
-		public void DispatchOrders(IFrameOrderDispatcher dispatcher)
+		public void DispatchOrders(IFrameOrderDispatcher dispatcher, int timestep)
 		{
 			foreach (var fromPair in clientOrdersBuffer)
 			{
@@ -64,7 +64,7 @@ namespace OpenRA.Server
 				var orders = fromPair.Value;
 
 				// Ack the frames sent to be applied on this frame
-				dispatcher.DispatchBufferedOrderAcks(fromClient, orders.Count);
+				dispatcher.DispatchBufferedOrderAcks(fromClient, orders.Count, timestep);
 
 				// Send each client's order buffer (because they were queued, order is preserved)
 				dispatcher.DispatchBufferedOrdersToOtherClients(fromClient, orders);
@@ -77,6 +77,6 @@ namespace OpenRA.Server
 	public interface IFrameOrderDispatcher
 	{
 		void DispatchBufferedOrdersToOtherClients(int fromClient, List<byte[]> allData);
-		void DispatchBufferedOrderAcks(int forClient, int ackCount);
+		void DispatchBufferedOrderAcks(int forClient, int ackCount, int timestep);
 	}
 }
