@@ -36,6 +36,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		readonly HashSet<CPos> dirty = new HashSet<CPos>();
 		readonly Queue<CPos> cleanDirty = new Queue<CPos>();
+		TerrainSpriteLayer shadowLayer;
 		TerrainSpriteLayer spriteLayer;
 
 		public ResourceRenderer(Actor self, ResourceRendererInfo info)
@@ -68,6 +69,17 @@ namespace OpenRA.Mods.Common.Traits
 					spriteLayer = new TerrainSpriteLayer(w, wr, emptySprite, first.BlendMode, wr.World.Type != WorldType.Editor);
 				}
 
+				if (shadowLayer == null)
+				{
+					var firstWithShadow = r.Value.Variants.Values.FirstOrDefault(v => v.ShadowStart > 0);
+					if (firstWithShadow != null)
+					{
+						var first = firstWithShadow.GetShadow(0, WAngle.Zero);
+						var emptySprite = new Sprite(first.Sheet, Rectangle.Empty, TextureChannel.Alpha);
+						shadowLayer = new TerrainSpriteLayer(w, wr, emptySprite, first.BlendMode, wr.World.Type != WorldType.Editor);
+					}
+				}
+
 				// All resources must share a sheet and blend mode
 				var sprites = r.Value.Variants.Values.SelectMany(v => Exts.MakeArray(v.Length, x => v.GetSprite(x)));
 				if (sprites.Any(s => s.BlendMode != spriteLayer.BlendMode))
@@ -94,13 +106,20 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			// resource.Type is meaningless (and may be null) if resource.Sequence is null
 			if (sequence != null)
+			{
+				shadowLayer?.Update(cell, sequence.GetShadow(frame, WAngle.Zero), palette, sequence.IgnoreWorldTint);
 				spriteLayer.Update(cell, sequence, palette, frame);
+			}
 			else
+			{
+				shadowLayer?.Clear(cell);
 				spriteLayer.Clear(cell);
+			}
 		}
 
 		void IRenderOverlay.Render(WorldRenderer wr)
 		{
+			shadowLayer?.Draw(wr.Viewport);
 			spriteLayer.Draw(wr.Viewport);
 		}
 
@@ -166,6 +185,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (disposed)
 				return;
 
+			shadowLayer?.Dispose();
 			spriteLayer.Dispose();
 
 			ResourceLayer.CellChanged -= AddDirtyCell;
