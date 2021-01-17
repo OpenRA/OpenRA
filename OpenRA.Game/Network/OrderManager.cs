@@ -261,6 +261,11 @@ namespace OpenRA.Network
 			LastTickTime = RealTickTime - SimLag;
 
 			OldRealTickTime = RealTickTime;
+
+			PerfHistory.Increment("net_buffer", bufferRemaining);
+			PerfHistory.Increment("net_slowdown", slowDownRequired < 0 ? slowDownRequired : 0);
+			PerfHistory.Increment("net_simlag", 100.0 * (double)SimLag / (double)SimLagLimit);
+			PerfHistory.Increment("net_speed", 100.0 * (double)World.Timestep / (double)ActualTimestep);
 		}
 
 		IEnumerable<Session.Client> GetClientsNotReadyForNextFrame
