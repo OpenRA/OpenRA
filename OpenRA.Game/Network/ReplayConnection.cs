@@ -124,7 +124,7 @@ namespace OpenRA.Network
 				}
 			}
 
-			ordersFrame = LobbyInfo.GlobalSettings.OrderLatency; // TODO Fix when adaptive order latency is on
+			ordersFrame = LobbyInfo.GlobalSettings.UseNewNetcode ? 1 : LobbyInfo.GlobalSettings.OrderLatency;
 		}
 
 		// Do nothing: ignore locally generated orders

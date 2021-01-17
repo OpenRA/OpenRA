@@ -59,6 +59,9 @@ namespace OpenRA.Network
 				if (World == null)
 					return Game.Timestep;
 
+				if (!ShouldUseCatchUp)
+					return World.Timestep;
+
 				if (IsStalling || World.IsLoadingGameSave)
 					return 1;
 
