@@ -39,6 +39,7 @@ Fremen_S:
 M_LMG:
 	Inherits: ^MG
 	ReloadDelay: 40
+	ValidTargets: Infantry
 
 M_LMG_H:
 	Inherits: M_LMG
@@ -49,6 +50,7 @@ M_HMG:
 	ReloadDelay: 40
 	Range: 3c512
 	Report: 20MMGUN1.WAV
+	InvalidTargets: Infantry
 	Warhead@1Dam: SpreadDamage
 		Damage: 2500
 		Spread: 512
