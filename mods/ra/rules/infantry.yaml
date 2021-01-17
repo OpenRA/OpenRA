@@ -389,14 +389,17 @@ E7:
 		Voice: Move
 	Armament@PRIMARY:
 		Weapon: Colt45
+		LocalOffset: 0,0,0, 0,0,0
 	Armament@SECONDARY:
 		Weapon: Colt45
+		LocalOffset: 0,0,0, 0,0,0
 	Armament@GARRISONED:
 		Name: garrisoned
 		Weapon: Colt45
 		MuzzleSequence: garrison-muzzle
 	WithInfantryBody:
-		DefaultAttackSequence: shoot
+		AttackSequences:
+			primary: shoot-left, shoot-right
 		StandSequences: stand
 	ExternalCondition@PRODUCED:
 		Condition: produced
