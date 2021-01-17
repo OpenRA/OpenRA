@@ -29,8 +29,10 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public readonly string DefaultAttackSequence = null;
 
 		[SequenceReference(dictionaryReference: LintDictionaryReference.Values)]
-		[Desc("Attack sequence to use for each armament.")]
-		public readonly Dictionary<string, string> AttackSequences = new Dictionary<string, string>();
+		[Desc("Attack sequence to use for each armament.",
+			"A dictionary of [armament name]: [sequence name(s)].",
+			"Multiple sequence names can be defined to specify per-burst animations.")]
+		public readonly Dictionary<string, string[]> AttackSequences = new Dictionary<string, string[]>();
 
 		[SequenceReference]
 		public readonly string[] IdleSequences = { };
@@ -133,11 +135,21 @@ namespace OpenRA.Mods.Common.Traits.Render
 			}
 		}
 
-		public void Attacking(Actor self, in Target target, Armament a)
+		void Attacking(Actor self, Armament a, Barrel barrel)
 		{
 			var info = GetDisplayInfo();
-			if (!info.AttackSequences.TryGetValue(a.Info.Name, out var sequence))
-				sequence = info.DefaultAttackSequence;
+			var sequence = info.DefaultAttackSequence;
+
+			if (info.AttackSequences.TryGetValue(a.Info.Name, out var sequences) && sequences.Length > 0)
+			{
+				sequence = sequences[0];
+
+				// Find the sequence corresponding to this barrel/burst.
+				if (barrel != null && sequences.Length > 1)
+					for (var i = 0; i < sequences.Length; i++)
+						if (a.Barrels[i] == barrel)
+							sequence = sequences[i];
+			}
 
 			if (!string.IsNullOrEmpty(sequence) && DefaultAnimation.HasSequence(NormalizeInfantrySequence(self, sequence)))
 			{
@@ -148,12 +160,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		void INotifyAttack.PreparingAttack(Actor self, in Target target, Armament a, Barrel barrel)
 		{
-			// Lambdas can't use 'in' variables, so capture a copy for later
-			var attackTarget = target;
-
 			// HACK: The FrameEndTask makes sure that this runs after Tick(), preventing that from
 			// overriding the animation when an infantry unit stops to attack
-			self.World.AddFrameEndTask(_ => Attacking(self, attackTarget, a));
+			self.World.AddFrameEndTask(_ => Attacking(self, a, barrel));
 		}
 
 		void INotifyAttack.Attacking(Actor self, in Target target, Armament a, Barrel barrel) { }
