@@ -717,9 +717,49 @@ e7:
 		Length: 6
 		Facings: 8
 		Tick: 80
-	shoot:
-		Start: 56
-		Length: 7
+	shoot-left:
+		Combine:
+			e7:
+				Length: 8
+				Frames: 58, 56, 64, 63, 71, 70, 79, 77
+			e7:
+				Length: 2
+				Frames: 85, 84
+				Offset: 1, 0
+			e7:
+				Length: 2
+				Frames: 92, 91
+			e7:
+				Length: 2
+				Frames: 99, 98
+				Offset: 1, -2
+			e7:
+				Length: 2
+				Frames: 107, 105
+				Offset: 0, -2
+		Length: 2
+		Facings: 8
+	shoot-right:
+		Combine:
+			e7:
+				Length: 8
+				Frames: 57, 56, 65, 63, 72, 70, 78, 77
+			e7:
+				Length: 2
+				Frames: 86, 84
+				Offset: 1, 0
+			e7:
+				Length: 2
+				Frames: 93, 91
+			e7:
+				Length: 2
+				Frames: 100, 98
+				Offset: 1, -2
+			e7:
+				Length: 2
+				Frames: 106, 105
+				Offset: 0, -2
+		Length: 2
 		Facings: 8
 	idle1:
 		Start: 233
