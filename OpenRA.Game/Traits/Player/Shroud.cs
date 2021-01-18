@@ -165,9 +165,14 @@ namespace OpenRA.Traits
 			if (OnShroudChanged == null)
 				return;
 
-			foreach (var puv in map.ProjectedCells)
+			// PERF: Parts of this loop are very hot.
+			// We loop over the direct index that represents the PPos in
+			// the ProjectedCellLayers, converting to a PPos only if
+			// it is needed (which is the uncommon case.)
+			var maxIndex = touched.MaxIndex;
+			for (var index = 0; index < maxIndex; index++)
 			{
-				var index = touched.Index(puv);
+				// PERF: Most cells are not touched
 				if (!touched[index])
 					continue;
 
@@ -187,11 +192,14 @@ namespace OpenRA.Traits
 					}
 				}
 
+				// PERF: Most cells are unchanged
 				var oldResolvedType = resolvedType[index];
 				if (type != oldResolvedType)
 				{
 					resolvedType[index] = type;
-					OnShroudChanged(puv);
+					var uv = touched.PPosFromIndex(index);
+					if (map.Contains(uv))
+						OnShroudChanged(uv);
 				}
 			}
 
