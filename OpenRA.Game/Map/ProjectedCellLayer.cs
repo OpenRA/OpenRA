@@ -15,6 +15,8 @@ namespace OpenRA
 {
 	public sealed class ProjectedCellLayer<T> : CellLayerBase<T>
 	{
+		public int MaxIndex { get { return Size.Width * Size.Height; } }
+
 		public ProjectedCellLayer(Map map)
 			: base(map) { }
 
@@ -25,6 +27,11 @@ namespace OpenRA
 		public int Index(PPos uv)
 		{
 			return uv.V * Size.Width + uv.U;
+		}
+
+		public PPos PPosFromIndex(int index)
+		{
+			return new PPos(index % Size.Width, index / Size.Width);
 		}
 
 		public T this[int index]
