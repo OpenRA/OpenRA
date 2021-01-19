@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Warheads
 
 			// Destroy all resources in the selected tiles
 			foreach (var cell in allCells)
-				resLayer.Destroy(cell);
+				resLayer.ClearResources(cell);
 		}
 	}
 }

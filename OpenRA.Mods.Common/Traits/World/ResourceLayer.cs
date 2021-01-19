@@ -18,9 +18,15 @@ namespace OpenRA.Mods.Common.Traits
 {
 	public struct ResourceLayerContents
 	{
-		public static readonly ResourceLayerContents Empty = default(ResourceLayerContents);
-		public ResourceType Type;
-		public int Density;
+		public static readonly ResourceLayerContents Empty = default;
+		public readonly ResourceType Type;
+		public readonly int Density;
+
+		public ResourceLayerContents(ResourceType type, int density)
+		{
+			Type = type;
+			Density = density;
+		}
 	}
 
 	public interface IResourceLayerInfo : ITraitInfoInterface { }
@@ -30,6 +36,10 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		event Action<CPos, ResourceType> CellChanged;
 		ResourceLayerContents GetResource(CPos cell);
+		bool CanAddResource(ResourceType resourceType, CPos cell, int amount = 1);
+		int AddResource(ResourceType resourceType, CPos cell, int amount = 1);
+		int RemoveResource(ResourceType resourceType, CPos cell, int amount = 1);
+		void ClearResources(CPos cell);
 
 		bool IsVisible(CPos cell);
 	}
@@ -100,10 +110,7 @@ namespace OpenRA.Mods.Common.Traits
 					// Adjacent includes the current cell, so is always >= 1
 					var adjacent = GetAdjacentCellsWith(type, cell);
 					var density = int2.Lerp(0, type.Info.MaxDensity, adjacent, 9);
-					var temp = Content[cell];
-					temp.Density = Math.Max(density, 1);
-
-					Content[cell] = temp;
+					Content[cell] = new ResourceLayerContents(Content[cell].Type, Math.Max(density, 1));
 				}
 			}
 		}
@@ -125,40 +132,94 @@ namespace OpenRA.Mods.Common.Traits
 			return rt.Info.AllowOnRamps || world.Map.Ramp[cell] == 0;
 		}
 
-		public bool CanSpawnResourceAt(ResourceType newResourceType, CPos cell)
-		{
-			if (!world.Map.Contains(cell))
-				return false;
-
-			var currentResourceType = GetResourceType(cell);
-			return (currentResourceType == newResourceType && !IsFull(cell))
-				|| (currentResourceType == null && AllowResourceAt(newResourceType, cell));
-		}
-
 		ResourceLayerContents CreateResourceCell(ResourceType t, CPos cell)
 		{
 			world.Map.CustomTerrain[cell] = world.Map.Rules.TerrainInfo.GetTerrainIndex(t.Info.TerrainType);
 			++resCells;
 
-			return new ResourceLayerContents
-			{
-				Type = t
-			};
+			return new ResourceLayerContents(t, 0);
 		}
 
-		public void AddResource(ResourceType t, CPos p, int n)
+		public bool CanAddResource(ResourceType resourceType, CPos cell, int amount = 1)
 		{
-			var cell = Content[p];
-			if (cell.Type == null)
-				cell = CreateResourceCell(t, p);
+			if (!world.Map.Contains(cell))
+				return false;
 
-			if (cell.Type != t)
+			var content = Content[cell];
+			if (content.Type == null)
+				return amount <= resourceType.Info.MaxDensity && AllowResourceAt(resourceType, cell);
+
+			if (content.Type != resourceType)
+				return false;
+
+			return content.Density + amount <= resourceType.Info.MaxDensity;
+		}
+
+		public int AddResource(ResourceType resourceType, CPos cell, int amount = 1)
+		{
+			if (!Content.Contains(cell))
+				return 0;
+
+			var content = Content[cell];
+			if (content.Type == null)
+				content = CreateResourceCell(resourceType, cell);
+
+			if (content.Type != resourceType)
+				return 0;
+
+			var oldDensity = content.Density;
+			var density = Math.Min(content.Type.Info.MaxDensity, oldDensity + amount);
+			Content[cell] = new ResourceLayerContents(content.Type, density);
+
+			CellChanged?.Invoke(cell, content.Type);
+
+			return density - oldDensity;
+		}
+
+		public int RemoveResource(ResourceType resourceType, CPos cell, int amount = 1)
+		{
+			if (!Content.Contains(cell))
+				return 0;
+
+			var content = Content[cell];
+			if (content.Type == null || content.Type != resourceType)
+				return 0;
+
+			var oldDensity = content.Density;
+			var density = Math.Max(0, oldDensity - amount);
+
+			if (density == 0)
+			{
+				Content[cell] = ResourceLayerContents.Empty;
+				world.Map.CustomTerrain[cell] = byte.MaxValue;
+				--resCells;
+
+				CellChanged?.Invoke(cell, null);
+			}
+			else
+			{
+				Content[cell] = new ResourceLayerContents(content.Type, density);
+				CellChanged?.Invoke(cell, content.Type);
+			}
+
+			return oldDensity - density;
+		}
+
+		public void ClearResources(CPos cell)
+		{
+			if (!Content.Contains(cell))
 				return;
 
-			cell.Density = Math.Min(cell.Type.Info.MaxDensity, cell.Density + n);
-			Content[p] = cell;
+			// Don't break other users of CustomTerrain if there are no resources
+			var content = Content[cell];
+			if (content.Type == null)
+				return;
 
-			CellChanged?.Invoke(p, cell.Type);
+			Content[cell] = ResourceLayerContents.Empty;
+			world.Map.CustomTerrain[cell] = byte.MaxValue;
+			--resCells;
+
+			CellChanged?.Invoke(cell, null);
 		}
 
 		public bool IsFull(CPos cell)
@@ -167,47 +228,16 @@ namespace OpenRA.Mods.Common.Traits
 			return cellContents.Density == cellContents.Type.Info.MaxDensity;
 		}
 
-		public ResourceType Harvest(CPos cell)
-		{
-			var c = Content[cell];
-			if (c.Type == null)
-				return null;
-
-			if (--c.Density < 0)
-			{
-				Content[cell] = ResourceLayerContents.Empty;
-				world.Map.CustomTerrain[cell] = byte.MaxValue;
-				--resCells;
-			}
-			else
-				Content[cell] = c;
-
-			CellChanged?.Invoke(cell, c.Type);
-
-			return c.Type;
-		}
-
-		public void Destroy(CPos cell)
-		{
-			// Don't break other users of CustomTerrain if there are no resources
-			var c = Content[cell];
-			if (c.Type == null)
-				return;
-
-			--resCells;
-
-			// Clear cell
-			Content[cell] = ResourceLayerContents.Empty;
-			world.Map.CustomTerrain[cell] = byte.MaxValue;
-
-			CellChanged?.Invoke(cell, c.Type);
-		}
-
 		public ResourceType GetResourceType(CPos cell) { return Content[cell].Type; }
 
 		public int GetResourceDensity(CPos cell) { return Content[cell].Density; }
 
 		ResourceLayerContents IResourceLayer.GetResource(CPos cell) { return Content[cell]; }
+
+		bool IResourceLayer.CanAddResource(ResourceType resourceType, CPos cell, int amount) { return CanAddResource(resourceType, cell, amount); }
+		int IResourceLayer.AddResource(ResourceType resourceType, CPos cell, int amount) { return AddResource(resourceType, cell, amount); }
+		int IResourceLayer.RemoveResource(ResourceType resourceType, CPos cell, int amount) { return RemoveResource(resourceType, cell, amount); }
+		void IResourceLayer.ClearResources(CPos cell) { ClearResources(cell); }
 		bool IResourceLayer.IsVisible(CPos cell) { return !world.FogObscures(cell); }
 	}
 }
