@@ -68,8 +68,8 @@ namespace OpenRA.Mods.Common.Traits
 					(resLayer.GetResourceType(p) == resourceType && resLayer.IsFull(p)))
 				.Cast<CPos?>().FirstOrDefault();
 
-			if (cell != null && resLayer.CanSpawnResourceAt(resourceType, cell.Value))
-				resLayer.AddResource(resourceType, cell.Value, 1);
+			if (cell != null && resLayer.CanAddResource(resourceType, cell.Value))
+				resLayer.AddResource(resourceType, cell.Value);
 		}
 	}
 }

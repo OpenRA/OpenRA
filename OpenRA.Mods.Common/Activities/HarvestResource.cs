@@ -81,14 +81,14 @@ namespace OpenRA.Mods.Common.Activities
 				}
 			}
 
-			var resource = resLayer.Harvest(self.Location);
-			if (resource == null)
+			var resourceType = resLayer.GetResourceType(self.Location);
+			if (resourceType == null || resLayer.RemoveResource(resourceType, self.Location) != 1)
 				return true;
 
-			harv.AcceptResource(self, resource);
+			harv.AcceptResource(self, resourceType);
 
 			foreach (var t in notifyHarvesterActions)
-				t.Harvested(self, resource);
+				t.Harvested(self, resourceType);
 
 			QueueChild(new Wait(harvInfo.BaleLoadDelay));
 			return false;

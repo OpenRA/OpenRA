@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Common.Warheads
 			var resLayer = world.WorldActor.Trait<ResourceLayer>();
 			foreach (var cell in allCells)
 			{
-				if (!resLayer.CanSpawnResourceAt(resourceType, cell))
+				if (!resLayer.CanAddResource(resourceType, cell))
 					continue;
 
 				var splash = world.SharedRandom.Next(1, resourceType.Info.MaxDensity - resLayer.GetResourceDensity(cell));

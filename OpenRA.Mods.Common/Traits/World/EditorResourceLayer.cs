@@ -36,6 +36,10 @@ namespace OpenRA.Mods.Common.Traits
 		public event Action<CPos, ResourceType> CellChanged;
 
 		ResourceLayerContents IResourceLayer.GetResource(CPos cell) { return Tiles[cell]; }
+		bool IResourceLayer.CanAddResource(ResourceType resourceType, CPos cell, int amount) { return CanAddResource(resourceType, cell, amount); }
+		int IResourceLayer.AddResource(ResourceType resourceType, CPos cell, int amount) { return AddResource(resourceType, cell, amount); }
+		int IResourceLayer.RemoveResource(ResourceType resourceType, CPos cell, int amount) { return RemoveResource(resourceType, cell, amount); }
+		void IResourceLayer.ClearResources(CPos cell) { ClearResources(cell); }
 		bool IResourceLayer.IsVisible(CPos cell) { return Map.Contains(cell); }
 
 		public EditorResourceLayer(Actor self)
@@ -73,12 +77,7 @@ namespace OpenRA.Mods.Common.Traits
 			var newTerrain = byte.MaxValue;
 			if (Resources.TryGetValue(tile.Type, out var type))
 			{
-				newTile = new ResourceLayerContents
-				{
-					Type = type,
-					Density = CalculateCellDensity(type, cell)
-				};
-
+				newTile = new ResourceLayerContents(type, CalculateCellDensity(type, cell));
 				newTerrain = Map.Rules.TerrainInfo.GetTerrainIndex(type.Info.TerrainType);
 			}
 
@@ -104,8 +103,7 @@ namespace OpenRA.Mods.Common.Traits
 					continue;
 
 				UpdateNetWorth(neighbouringTile.Type, neighbouringTile.Density, neighbouringTile.Type, density);
-				neighbouringTile.Density = density;
-				Tiles[neighbouringCell] = neighbouringTile;
+				Tiles[neighbouringCell] = new ResourceLayerContents(neighbouringTile.Type, density);
 
 				CellChanged?.Invoke(neighbouringCell, type);
 			}
@@ -140,6 +138,74 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			return Math.Max(int2.Lerp(0, type.Info.MaxDensity, adjacent, 9), 1);
+		}
+
+		bool AllowResourceAt(ResourceType rt, CPos cell)
+		{
+			var mapResources = Map.Resources;
+			if (!mapResources.Contains(cell))
+				return false;
+
+			if (!rt.Info.AllowedTerrainTypes.Contains(Map.GetTerrainInfo(cell).Type))
+				return false;
+
+			// TODO: Check against actors in the EditorActorLayer
+			return rt.Info.AllowOnRamps || Map.Ramp[cell] == 0;
+		}
+
+		bool CanAddResource(ResourceType resourceType, CPos cell, int amount = 1)
+		{
+			var resources = Map.Resources;
+			if (!resources.Contains(cell))
+				return false;
+
+			var content = resources[cell];
+			if (content.Type == 0)
+				return amount <= resourceType.Info.MaxDensity && AllowResourceAt(resourceType, cell);
+
+			if (content.Type != resourceType.Info.ResourceType)
+				return false;
+
+			return content.Index + amount <= resourceType.Info.MaxDensity;
+		}
+
+		int AddResource(ResourceType resourceType, CPos cell, int amount = 1)
+		{
+			var resources = Map.Resources;
+			if (!resources.Contains(cell))
+				return 0;
+
+			var content = resources[cell];
+			if (content.Type != 0 && content.Type != resourceType.Info.ResourceType)
+				return 0;
+
+			var oldDensity = content.Index;
+			var density = (byte)Math.Min(resourceType.Info.MaxDensity, oldDensity + amount);
+			Map.Resources[cell] = new ResourceTile((byte)resourceType.Info.ResourceType, density);
+
+			return density - oldDensity;
+		}
+
+		int RemoveResource(ResourceType resourceType, CPos cell, int amount = 1)
+		{
+			var resources = Map.Resources;
+			if (!resources.Contains(cell))
+				return 0;
+
+			var content = resources[cell];
+			if (content.Type == 0 || content.Type != resourceType.Info.ResourceType)
+				return 0;
+
+			var oldDensity = content.Index;
+			var density = (byte)Math.Max(0, oldDensity - amount);
+			resources[cell] = density > 0 ? new ResourceTile((byte)resourceType.Info.ResourceType, density) : default;
+
+			return oldDensity - density;
+		}
+
+		void ClearResources(CPos cell)
+		{
+			Map.Resources[cell] = default;
 		}
 
 		void INotifyActorDisposing.Disposing(Actor self)
