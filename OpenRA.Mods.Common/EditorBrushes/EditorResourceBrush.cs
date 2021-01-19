@@ -17,13 +17,14 @@ namespace OpenRA.Mods.Common.Widgets
 {
 	public sealed class EditorResourceBrush : IEditorBrush
 	{
-		public readonly ResourceTypeInfo ResourceType;
+		public readonly ResourceType ResourceType;
 
 		readonly WorldRenderer worldRenderer;
 		readonly World world;
 		readonly EditorViewportControllerWidget editorWidget;
 		readonly EditorActionManager editorActionManager;
 		readonly EditorCursorLayer editorCursor;
+		readonly IResourceLayer resourceLayer;
 		readonly int cursorToken;
 
 		AddResourcesEditorAction action;
@@ -37,9 +38,10 @@ namespace OpenRA.Mods.Common.Widgets
 			world = wr.World;
 			editorActionManager = world.WorldActor.Trait<EditorActionManager>();
 			editorCursor = world.WorldActor.Trait<EditorCursorLayer>();
-			action = new AddResourcesEditorAction(world.Map, ResourceType);
+			resourceLayer = world.WorldActor.Trait<IResourceLayer>();
+			action = new AddResourcesEditorAction(world.Map, resourceLayer, resource);
 
-			cursorToken = editorCursor.SetResource(wr, resource);
+			cursorToken = editorCursor.SetResource(wr, resource.Info);
 		}
 
 		public bool HandleMouseInput(MouseInput mi)
@@ -64,40 +66,19 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var cell = worldRenderer.Viewport.ViewToWorld(mi.Location);
 
-			if (mi.Button == MouseButton.Left && mi.Event != MouseInputEvent.Up && AllowResourceAt(cell))
+			if (mi.Button == MouseButton.Left && mi.Event != MouseInputEvent.Up && resourceLayer.CanAddResource(ResourceType, cell))
 			{
-				var type = (byte)ResourceType.ResourceType;
-				var index = (byte)ResourceType.MaxDensity;
-				action.Add(new CellResource(cell, world.Map.Resources[cell], new ResourceTile(type, index)));
+				action.Add(new CellResource(cell, resourceLayer.GetResource(cell), ResourceType));
 				resourceAdded = true;
 			}
 			else if (resourceAdded && mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Up)
 			{
 				editorActionManager.Add(action);
-				action = new AddResourcesEditorAction(world.Map, ResourceType);
+				action = new AddResourcesEditorAction(world.Map, resourceLayer, ResourceType);
 				resourceAdded = false;
 			}
 
 			return true;
-		}
-
-		public bool AllowResourceAt(CPos cell)
-		{
-			var mapResources = world.Map.Resources;
-			if (!mapResources.Contains(cell))
-				return false;
-
-			var tile = world.Map.Tiles[cell];
-			var tileInfo = world.Map.Rules.TerrainInfo.GetTerrainInfo(tile);
-			var terrainType = world.Map.Rules.TerrainInfo.TerrainTypes[tileInfo.TerrainType];
-
-			if (mapResources[cell].Type == ResourceType.ResourceType)
-				return false;
-
-			if (!ResourceType.AllowedTerrainTypes.Contains(terrainType.Type))
-				return false;
-
-			return ResourceType.AllowOnRamps || tileInfo.RampType == 0;
 		}
 
 		public void Tick() { }
@@ -111,14 +92,14 @@ namespace OpenRA.Mods.Common.Widgets
 	readonly struct CellResource
 	{
 		public readonly CPos Cell;
-		public readonly ResourceTile ResourceTile;
-		public readonly ResourceTile NewResourceTile;
+		public readonly ResourceLayerContents OldResourceTile;
+		public readonly ResourceType NewResourceType;
 
-		public CellResource(CPos cell, ResourceTile resourceTile, ResourceTile newResourceTile)
+		public CellResource(CPos cell, ResourceLayerContents oldResourceTile, ResourceType newResourceType)
 		{
 			Cell = cell;
-			ResourceTile = resourceTile;
-			NewResourceTile = newResourceTile;
+			OldResourceTile = oldResourceTile;
+			NewResourceType = newResourceType;
 		}
 	}
 
@@ -127,12 +108,14 @@ namespace OpenRA.Mods.Common.Widgets
 		public string Text { get; private set; }
 
 		readonly Map map;
-		readonly ResourceTypeInfo resourceType;
+		readonly IResourceLayer resourceLayer;
+		readonly ResourceType resourceType;
 		readonly List<CellResource> cellResources = new List<CellResource>();
 
-		public AddResourcesEditorAction(Map map, ResourceTypeInfo resourceType)
+		public AddResourcesEditorAction(Map map, IResourceLayer resourceLayer, ResourceType resourceType)
 		{
 			this.map = map;
+			this.resourceLayer = resourceLayer;
 			this.resourceType = resourceType;
 		}
 
@@ -143,27 +126,30 @@ namespace OpenRA.Mods.Common.Widgets
 		public void Do()
 		{
 			foreach (var resourceCell in cellResources)
-				SetTile(resourceCell.Cell, resourceCell.NewResourceTile);
-		}
-
-		void SetTile(CPos cell, ResourceTile tile)
-		{
-			map.Resources[cell] = tile;
+			{
+				resourceLayer.ClearResources(resourceCell.Cell);
+				resourceLayer.AddResource(resourceCell.NewResourceType, resourceCell.Cell, resourceCell.NewResourceType.Info.MaxDensity);
+			}
 		}
 
 		public void Undo()
 		{
 			foreach (var resourceCell in cellResources)
-				SetTile(resourceCell.Cell, resourceCell.ResourceTile);
+			{
+				resourceLayer.ClearResources(resourceCell.Cell);
+				if (resourceCell.OldResourceTile.Type != null)
+					resourceLayer.AddResource(resourceCell.OldResourceTile.Type, resourceCell.Cell, resourceCell.OldResourceTile.Density);
+			}
 		}
 
-		public void Add(CellResource cellResource)
+		public void Add(CellResource resourceCell)
 		{
-			SetTile(cellResource.Cell, cellResource.NewResourceTile);
-			cellResources.Add(cellResource);
+			resourceLayer.ClearResources(resourceCell.Cell);
+			resourceLayer.AddResource(resourceCell.NewResourceType, resourceCell.Cell, resourceCell.NewResourceType.Info.MaxDensity);
+			cellResources.Add(resourceCell);
 
 			var cellText = cellResources.Count != 1 ? "cells" : "cell";
-			Text = "Added {0} {1} of {2}".F(cellResources.Count, cellText, resourceType.TerrainType);
+			Text = "Added {0} {1} of {2}".F(cellResources.Count, cellText, resourceType.Info.TerrainType);
 		}
 	}
 }

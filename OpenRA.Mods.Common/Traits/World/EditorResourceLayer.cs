@@ -146,7 +146,10 @@ namespace OpenRA.Mods.Common.Traits
 			if (!mapResources.Contains(cell))
 				return false;
 
-			if (!rt.Info.AllowedTerrainTypes.Contains(Map.GetTerrainInfo(cell).Type))
+			// Ignore custom terrain types when spawning resources in the editor
+			var terrainInfo = Map.Rules.TerrainInfo;
+			var terrainType = terrainInfo.TerrainTypes[terrainInfo.GetTerrainInfo(Map.Tiles[cell]).TerrainType].Type;
+			if (!rt.Info.AllowedTerrainTypes.Contains(terrainType))
 				return false;
 
 			// TODO: Check against actors in the EditorActorLayer
@@ -159,14 +162,13 @@ namespace OpenRA.Mods.Common.Traits
 			if (!resources.Contains(cell))
 				return false;
 
+			// The editor allows the user to replace one resource type with another, so treat mismatching resource type as an empty cell
 			var content = resources[cell];
-			if (content.Type == 0)
+			if (content.Type != resourceType.Info.ResourceType)
 				return amount <= resourceType.Info.MaxDensity && AllowResourceAt(resourceType, cell);
 
-			if (content.Type != resourceType.Info.ResourceType)
-				return false;
-
-			return content.Index + amount <= resourceType.Info.MaxDensity;
+			var oldDensity = content.Type == resourceType.Info.ResourceType ? content.Index : 0;
+			return oldDensity + amount <= resourceType.Info.MaxDensity;
 		}
 
 		int AddResource(ResourceType resourceType, CPos cell, int amount = 1)
@@ -175,11 +177,9 @@ namespace OpenRA.Mods.Common.Traits
 			if (!resources.Contains(cell))
 				return 0;
 
+			// The editor allows the user to replace one resource type with another, so treat mismatching resource type as an empty cell
 			var content = resources[cell];
-			if (content.Type != 0 && content.Type != resourceType.Info.ResourceType)
-				return 0;
-
-			var oldDensity = content.Index;
+			var oldDensity = content.Type == resourceType.Info.ResourceType ? content.Index : 0;
 			var density = (byte)Math.Min(resourceType.Info.MaxDensity, oldDensity + amount);
 			Map.Resources[cell] = new ResourceTile((byte)resourceType.Info.ResourceType, density);
 
