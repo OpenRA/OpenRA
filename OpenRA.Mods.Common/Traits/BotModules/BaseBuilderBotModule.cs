@@ -150,8 +150,8 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Player player;
 		PowerManager playerPower;
 		PlayerResources playerResources;
+		IResourceLayer resourceLayer;
 		IBotPositionsUpdated[] positionsUpdatedModules;
-		BitArray resourceTypeIndices;
 		CPos initialBaseCenter;
 		CPos defenseCenter;
 
@@ -168,20 +168,16 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			playerPower = self.Owner.PlayerActor.TraitOrDefault<PowerManager>();
 			playerResources = self.Owner.PlayerActor.Trait<PlayerResources>();
+			resourceLayer = self.World.WorldActor.TraitOrDefault<IResourceLayer>();
 			positionsUpdatedModules = self.Owner.PlayerActor.TraitsImplementing<IBotPositionsUpdated>().ToArray();
 		}
 
 		protected override void TraitEnabled(Actor self)
 		{
-			var terrainInfo = world.Map.Rules.TerrainInfo;
-			resourceTypeIndices = new BitArray(terrainInfo.TerrainTypes.Length); // Big enough
-			foreach (var t in world.Map.Rules.Actors["world"].TraitInfos<ResourceTypeInfo>())
-				resourceTypeIndices.Set(terrainInfo.GetTerrainIndex(t.TerrainType), true);
-
 			foreach (var building in Info.BuildingQueues)
-				builders.Add(new BaseBuilderQueueManager(this, building, player, playerPower, playerResources, resourceTypeIndices));
+				builders.Add(new BaseBuilderQueueManager(this, building, player, playerPower, playerResources, resourceLayer));
 			foreach (var defense in Info.DefenseQueues)
-				builders.Add(new BaseBuilderQueueManager(this, defense, player, playerPower, playerResources, resourceTypeIndices));
+				builders.Add(new BaseBuilderQueueManager(this, defense, player, playerPower, playerResources, resourceLayer));
 		}
 
 		void IBotPositionsUpdated.UpdatedBaseCenter(CPos newLocation)

@@ -26,6 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Player player;
 		readonly PowerManager playerPower;
 		readonly PlayerResources playerResources;
+		readonly IResourceLayer resourceLayer;
 
 		int waitTicks;
 		Actor[] playerBuildings;
@@ -35,22 +36,21 @@ namespace OpenRA.Mods.Common.Traits
 		int cachedBases;
 		int cachedBuildings;
 		int minimumExcessPower;
-		BitArray resourceTypeIndices;
 
 		WaterCheck waterState = WaterCheck.NotChecked;
 
 		public BaseBuilderQueueManager(BaseBuilderBotModule baseBuilder, string category, Player p, PowerManager pm,
-			PlayerResources pr, BitArray resourceTypeIndices)
+			PlayerResources pr, IResourceLayer rl)
 		{
 			this.baseBuilder = baseBuilder;
 			world = p.World;
 			player = p;
 			playerPower = pm;
 			playerResources = pr;
+			resourceLayer = rl;
 			this.category = category;
 			failRetryTicks = baseBuilder.Info.StructureProductionResumeDelay;
 			minimumExcessPower = baseBuilder.Info.MinimumExcessPower;
-			this.resourceTypeIndices = resourceTypeIndices;
 			if (!baseBuilder.Info.NavalProductionTypes.Any())
 				waterState = WaterCheck.DontCheck;
 		}
@@ -418,15 +418,18 @@ namespace OpenRA.Mods.Common.Traits
 				case BuildingType.Refinery:
 
 					// Try and place the refinery near a resource field
-					var nearbyResources = world.Map.FindTilesInAnnulus(baseCenter, baseBuilder.Info.MinBaseRadius, baseBuilder.Info.MaxBaseRadius)
-						.Where(a => resourceTypeIndices.Get(world.Map.GetTerrainIndex(a)))
-						.Shuffle(world.LocalRandom).Take(baseBuilder.Info.MaxResourceCellsToCheck);
-
-					foreach (var r in nearbyResources)
+					if (resourceLayer != null)
 					{
-						var found = findPos(baseCenter, r, baseBuilder.Info.MinBaseRadius, baseBuilder.Info.MaxBaseRadius);
-						if (found != null)
-							return found;
+						var nearbyResources = world.Map.FindTilesInAnnulus(baseCenter, baseBuilder.Info.MinBaseRadius, baseBuilder.Info.MaxBaseRadius)
+							.Where(a => resourceLayer.GetResource(a).Type != null)
+							.Shuffle(world.LocalRandom).Take(baseBuilder.Info.MaxResourceCellsToCheck);
+
+						foreach (var r in nearbyResources)
+						{
+							var found = findPos(baseCenter, r, baseBuilder.Info.MinBaseRadius, baseBuilder.Info.MaxBaseRadius);
+							if (found != null)
+								return found;
+						}
 					}
 
 					// Try and find a free spot somewhere else in the base
