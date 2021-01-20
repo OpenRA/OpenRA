@@ -23,6 +23,10 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Transports actors with the `Carryable` trait.")]
 	public class CarryallInfo : TraitInfo, Requires<BodyOrientationInfo>, Requires<AircraftInfo>
 	{
+		[ActorReference(typeof(CarryableInfo))]
+		[Desc("Actor type that is initially spawned into this actor.")]
+		public readonly string InitialActor = null;
+
 		[Desc("Delay (in ticks) on the ground while attaching an actor to the carryall.")]
 		public readonly int BeforeLoadDelay = 0;
 
@@ -110,6 +114,18 @@ namespace OpenRA.Mods.Common.Traits
 			move = self.Trait<IMove>();
 			facing = self.Trait<IFacing>();
 			this.self = self;
+
+			if (!string.IsNullOrEmpty(info.InitialActor))
+			{
+				var unit = self.World.CreateActor(false, info.InitialActor.ToLowerInvariant(), new TypeDictionary
+				{
+					new ParentActorInit(self),
+					new OwnerInit(self.Owner)
+				});
+
+				unit.Trait<Carryable>().Attached(self);
+				AttachCarryable(self, unit);
+			}
 		}
 
 		void ITick.Tick(Actor self)
