@@ -26,9 +26,6 @@ World:
 	Explodes:
 		Weapon: BarrelExplode
 		EmptyWeapon: BarrelExplode
-	-SpawnActorOnDeath@1:
-	-SpawnActorOnDeath@2:
-	-SpawnActorOnDeath@3:
 
 V01.exploding:
 	Inherits: ^ExplodingCivBuilding
