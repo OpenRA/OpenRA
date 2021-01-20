@@ -42,6 +42,7 @@ TRAN:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 10
+		UnloadVoice: Unload
 		AfterUnloadDelay: 40
 	SpawnActorOnDeath:
 		Actor: TRAN.Husk
@@ -84,6 +85,10 @@ HELI:
 		LocalOffset: 128,-213,-85, 128,213,-85
 		MuzzleSequence: muzzle
 		PauseOnCondition: !ammo
+	AttackFrontal:
+		Voice: Attack
+	AttackMove:
+		Voice: Attack
 	AutoTarget:
 		ScanRadius: 4
 	AttackAircraft:
@@ -149,6 +154,10 @@ ORCA:
 		Weapon: OrcaAAMissiles
 		LocalOffset: 427,-171,-213, 427,171,-213
 		PauseOnCondition: !ammo
+	AttackFrontal:
+		Voice: Attack
+	AttackMove:
+		Voice: Attack
 	AutoTarget:
 		ScanRadius: 5
 	AttackAircraft:
