@@ -29,6 +29,7 @@ MCV:
 		Facing: 432
 		TransformSounds: constru2.aud, hvydoor1.aud
 		NoTransformNotification: BuildingCannotPlaceAudio
+		Voice: Unload
 	MustBeDestroyed:
 		RequiredForShortGame: true
 	BaseBuilding:
@@ -152,6 +153,10 @@ APC:
 		RevokeDelay: 18
 		RevokeOnNewTarget: False
 		RevokeAll: True
+	AttackFrontal:
+		Voice: Attack
+	AttackMove:
+		Voice: Attack
 	AttackTurreted:
 	WithMuzzleOverlay:
 	WithSpriteTurret:
@@ -162,6 +167,7 @@ APC:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 5
+		UnloadVoice: Unload
 		LoadingCondition: notmobile
 	Explodes:
 		Weapon: UnitExplodeBig
@@ -205,6 +211,9 @@ ARTY:
 	AttackFrontal:
 		TargetFrozenActors: True
 		ForceFireIgnoresActors: True
+		Voice: Attack
+	AttackMove:
+		Voice: Attack
 	WithMuzzleOverlay:
 	AutoTarget:
 		InitialStanceAI: Defend
@@ -249,6 +258,9 @@ FTNK:
 		LocalOffset: 512,128,42, 512,-128,42
 		MuzzleSequence: muzzle
 	AttackFrontal:
+		Voice: Attack
+	AttackMove:
+		Voice: Attack
 	WithMuzzleOverlay:
 	Explodes:
 		Weapon: FlametankExplode
@@ -292,6 +304,10 @@ BGGY:
 		Weapon: MachineGun
 		LocalOffset: 171,0,43
 		MuzzleSequence: muzzle
+	AttackFrontal:
+		Voice: Attack
+	AttackMove:
+		Voice: Attack
 	AttackTurreted:
 	WithMuzzleOverlay:
 	WithSpriteTurret:
@@ -333,6 +349,9 @@ BIKE:
 		LocalOffset: -128, -170, 170, -128, 170, 170
 		LocalYaw: 100, -100
 	AttackFrontal:
+		Voice: Attack
+	AttackMove:
+		Voice: Attack
 	SpawnActorOnDeath:
 		Actor: BIKE.Husk
 		OwnerType: InternalName
@@ -372,6 +391,10 @@ JEEP:
 		Weapon: MachineGunH
 		LocalOffset: 171,0,85
 		MuzzleSequence: muzzle
+	AttackFrontal:
+		Voice: Attack
+	AttackMove:
+		Voice: Attack
 	AttackTurreted:
 	WithMuzzleOverlay:
 	WithSpriteTurret:
@@ -415,6 +438,10 @@ LTNK:
 		RecoilRecovery: 17
 		LocalOffset: 720,0,90
 		MuzzleSequence: muzzle
+	AttackFrontal:
+		Voice: Attack
+	AttackMove:
+		Voice: Attack
 	AttackTurreted:
 	WithMuzzleOverlay:
 	WithSpriteTurret:
@@ -457,6 +484,10 @@ MTNK:
 		RecoilRecovery: 26
 		LocalOffset: 768,0,90
 		MuzzleSequence: muzzle
+	AttackFrontal:
+		Voice: Attack
+	AttackMove:
+		Voice: Attack
 	AttackTurreted:
 	WithMuzzleOverlay:
 	WithSpriteTurret:
@@ -514,6 +545,10 @@ HTNK:
 		LocalYaw: -100, 100
 		Recoil: 10
 		MuzzleSequence: muzzle
+	AttackFrontal:
+		Voice: Attack
+	AttackMove:
+		Voice: Attack
 	AttackTurreted:
 	WithMuzzleOverlay:
 	ChangesHealth:
@@ -571,6 +606,9 @@ MSAM:
 	AttackFrontal:
 		TargetFrozenActors: True
 		ForceFireIgnoresActors: True
+		Voice: Attack
+	AttackMove:
+		Voice: Attack
 	WithSpriteTurret:
 	Explodes:
 		Weapon: UnitExplodeMech
@@ -685,6 +723,9 @@ STNK:
 		Weapon: 227mm.stnkAA
 		LocalOffset: 213,43,128, 213,-43,128
 	AttackFrontal:
+		Voice: Attack
+	AttackMove:
+		Voice: Attack
 	AutoTarget:
 		InitialStance: HoldFire
 		InitialStanceAI: ReturnFire

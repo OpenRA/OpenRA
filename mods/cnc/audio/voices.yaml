@@ -1,11 +1,12 @@
 GenericVoice:
 	Variants:
-		nod: .v01,.v03
-		gdi: .v01,.v03
+		nod: .v01, .v03
+		gdi: .v01, .v03
 	Voices:
-		Select: await1,ready,report1,yessir1
-		Action: ackno,affirm1,noprob,ritaway,roger,ugotit
-		Die: nuyell1,nuyell4,nuyell5,nuyell6
+		Select: ackno, await1, ready, report1, yessir1
+		Action: affirm1, ritaway, ugotit, roger, movout1
+		Attack: affirm1, ritaway, ugotit, noprob, yessir1
+		Die: nuyell1, nuyell3, nuyell4, nuyell5, nuyell6
 		Burned: yell1
 		Zapped: nuyell3
 		Poisoned: nuyell12
@@ -13,18 +14,19 @@ GenericVoice:
 
 VehicleVoice:
 	Variants:
-		nod: .v00,.v02
-		gdi: .v00,.v02
+		nod: .v00, .v02
+		gdi: .v00, .v02
 	Voices:
-		Select: vehic1,yessir1,report1,await1,unit1
-		Action: ackno,affirm1,movout1
-		Unload: movout1
+		Select: vehic1, yessir1, await1, unit1, report1
+		Action: ackno, affirm1, movout1
+		Attack: ackno, affirm1, yessir1
+		Unload: movout1, affirm1
 
 CivilianMaleVoice:
 	Voices:
 		Select: guyyeah1
 		Action: guyokay1
-		Die: nuyell1,nuyell4,nuyell5,nuyell6
+		Die: nuyell1, nuyell3, nuyell4, nuyell5, nuyell6
 		Burned: yell1
 		Zapped: nuyell3
 		Poisoned: nuyell12
@@ -33,33 +35,31 @@ CivilianFemaleVoice:
 	Voices:
 		Select: girlyeah
 		Action: girlokay
-		Die: nuyell1,nuyell4,nuyell5,nuyell6
+		Die: nuyell1, nuyell3, nuyell4, nuyell5, nuyell6
 		Burned: yell1
 		Zapped: nuyell3
 		Poisoned: nuyell12
 
 MoebiusVoice:
 	Voices:
-		Select: mcomnd1,mhello1,myes1,mhmmm1,mthanks1
-		Move: myesyes1,mplan3,mtiber1,mcourse1
-		Action: myesyes1,mplan3,mtiber1,mcourse1
-		Die: nuyell1,nuyell4,nuyell5,nuyell6
+		Select: mcomnd1, mhello1, myes1, mhmmm1
+		Action: myesyes1, mcourse1, mthanks1, mtiber1, mplan3
+		Die: nuyell1, nuyell3, nuyell4, nuyell5, nuyell6
 		Burned: yell1
 		Zapped: nuyell3
 		Poisoned: nuyell12
 
 CommandoVoice:
 	Voices:
-		Select: yeah1,yes1,yo1
-		Move: cmon1,onit1,gotit1
-		Attack: onit1,gotit1,noprblm1
+		Select: yeah1, yes1, yo1
+		Action: onit1, gotit1, noprblm1
 		Demolish: bombit1
 		Die: ramyell1
 		Burned: ramyell1
 		Zapped: ramyell1
 		Poisoned: ramyell1
-		Build: rokroll1
-		Kill: keepem1,laugh1,lefty1,tuffguy1
+		Build: rokroll1, cmon1
+		Kill: keepem1, laugh1, lefty1, tuffguy1
 
 DinoVoice:
 	Voices:
