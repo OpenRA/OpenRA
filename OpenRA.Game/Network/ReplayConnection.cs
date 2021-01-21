@@ -27,7 +27,7 @@ namespace OpenRA.Network
 
 		Queue<Chunk> chunks = new Queue<Chunk>();
 		Queue<byte[]> sync = new Queue<byte[]>();
-		int ordersFrame;
+		int ordersFrame = 1;
 		Dictionary<int, int> lastClientsFrame = new Dictionary<int, int>();
 
 		public int LocalClientId { get { return -1; } }
@@ -123,8 +123,6 @@ namespace OpenRA.Network
 					}
 				}
 			}
-
-			ordersFrame = LobbyInfo.GlobalSettings.UseNewNetcode ? 1 : LobbyInfo.GlobalSettings.OrderLatency;
 		}
 
 		// Do nothing: ignore locally generated orders
