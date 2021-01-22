@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Primitives;
@@ -18,7 +19,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Draw a colored contrail behind this actor when they move.")]
-	class ContrailInfo : TraitInfo, Requires<BodyOrientationInfo>
+	public class ContrailInfo : ConditionalTraitInfo, Requires<BodyOrientationInfo>
 	{
 		[Desc("Position relative to body")]
 		public readonly WVec Offset = WVec.Zero;
@@ -41,7 +42,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new Contrail(init.Self, this); }
 	}
 
-	class Contrail : ITick, IRender, INotifyAddedToWorld
+	public class Contrail : ConditionalTrait<ContrailInfo>, ITick, IRender, INotifyAddedToWorld
 	{
 		readonly ContrailInfo info;
 		readonly BodyOrientation body;
@@ -51,6 +52,7 @@ namespace OpenRA.Mods.Common.Traits
 		ContrailRenderable trail;
 
 		public Contrail(Actor self, ContrailInfo info)
+			: base(info)
 		{
 			this.info = info;
 
@@ -62,12 +64,17 @@ namespace OpenRA.Mods.Common.Traits
 
 		void ITick.Tick(Actor self)
 		{
+			// We want to update the trails' position even while the trait is disabled,
+			// otherwise we might get visual 'jumps' when the trait is re-enabled.
 			var local = info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation));
 			trail.Update(self.CenterPosition + body.LocalToWorld(local));
 		}
 
 		IEnumerable<IRenderable> IRender.Render(Actor self, WorldRenderer wr)
 		{
+			if (IsTraitDisabled)
+				return Enumerable.Empty<IRenderable>();
+
 			return new IRenderable[] { trail };
 		}
 
