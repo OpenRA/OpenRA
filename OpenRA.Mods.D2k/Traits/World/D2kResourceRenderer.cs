@@ -41,17 +41,8 @@ namespace OpenRA.Mods.D2k.Traits
 			All = 0xFF
 		}
 
-		public static readonly Dictionary<string, int[]> Variants = new Dictionary<string, int[]>()
-		{
-			{ "cleara", new[] { 0, 50 } },
-			{ "clearb", new[] { 1, 51 } },
-			{ "clearc", new[] { 43, 52 } },
-			{ "cleard", new[] { 0, 53 } },
-		};
-
 		public static readonly Dictionary<ClearSides, int> SpriteMap = new Dictionary<ClearSides, int>()
 		{
-			{ ClearSides.None, 0 },
 			{ ClearSides.Left | ClearSides.Top | ClearSides.TopLeft | ClearSides.TopRight | ClearSides.BottomLeft | ClearSides.BottomRight, 2 },
 			{ ClearSides.Top | ClearSides.Right | ClearSides.TopLeft | ClearSides.TopRight | ClearSides.BottomLeft | ClearSides.BottomRight, 3 },
 			{ ClearSides.Left | ClearSides.Bottom | ClearSides.TopLeft | ClearSides.TopRight | ClearSides.BottomLeft | ClearSides.BottomRight, 4 },
@@ -169,10 +160,10 @@ namespace OpenRA.Mods.D2k.Traits
 
 				if (clear == ClearSides.None)
 				{
-					var sprites = Variants[content.Variant];
+					var sprites = renderType.Variants[content.Variant];
 					var frame = density > renderType.Info.MaxDensity / 2 ? 1 : 0;
 
-					UpdateSpriteLayers(cell, renderType.Variants.First().Value, sprites[frame], renderType.Palette);
+					UpdateSpriteLayers(cell, sprites, frame, renderType.Palette);
 				}
 				else if (SpriteMap.TryGetValue(clear, out var index))
 				{
@@ -183,11 +174,6 @@ namespace OpenRA.Mods.D2k.Traits
 			}
 			else
 				UpdateSpriteLayers(cell, null, 0, null);
-		}
-
-		protected override string ChooseRandomVariant(ResourceType t)
-		{
-			return Variants.Keys.Random(Game.CosmeticRandom);
 		}
 	}
 }
