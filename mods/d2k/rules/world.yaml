@@ -113,7 +113,7 @@
 		ResourceType: 1
 		Palette: d2k
 		TerrainType: Spice
-		Sequences: spice
+		Sequences: spicea, spiceb, spicec, spiced
 		MaxDensity: 20
 		ValuePerUnit: 25
 		AllowedTerrainTypes: SpiceSand
