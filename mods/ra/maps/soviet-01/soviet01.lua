@@ -102,6 +102,16 @@ WorldLoaded = function()
 	Trigger.AfterDelay(DateTime.Seconds(2), InsertYaks)
 	Paratroopers()
 	Trigger.OnDamaged(HayHouse, PanicAttack)
+	Trigger.OnKilled(PillboxBarrel1, function()
+		if not Pillbox1.IsDead then
+			Pillbox1.Kill()
+		end
+	end)
+	Trigger.OnKilled(PillboxBarrel2, function()
+		if not Pillbox2.IsDead then
+			Pillbox2.Kill()
+		end
+	end)
 end
 
 Tick = function()

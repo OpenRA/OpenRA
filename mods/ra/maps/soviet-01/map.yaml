@@ -21,23 +21,23 @@ LockPreview: True
 Players:
 	PlayerReference@France:
 		Name: France
+		Bot: campaign
 		Faction: allies
 		Color: 5CC1A3
 		Allies: Germany
 		Enemies: USSR
-		Bot: campaign
 	PlayerReference@Germany:
 		Name: Germany
+		Bot: campaign
 		NonCombatant: True
 		Faction: allies
 		Color: 505050
 		Allies: France
 		Enemies: USSR
-		Bot: campaign
 	PlayerReference@USSR:
 		Name: USSR
-		Playable: True
 		AllowBots: False
+		Playable: True
 		Required: True
 		LockFaction: True
 		Faction: soviet
@@ -389,19 +389,19 @@ Actors:
 	Actor114: brl3
 		Location: 49,55
 		Owner: Germany
-	Actor115: barl
+	PillboxBarrel2: barl
 		Location: 48,55
 		Owner: Germany
 	Actor116: barl
 		Location: 47,56
 		Owner: Germany
-	Actor117: brl3
+	PillboxBarrel1: brl3
 		Location: 46,56
 		Owner: Germany
-	Actor118: pbox
+	Pillbox1: pbox
 		Location: 46,55
 		Owner: France
-	Actor119: pbox
+	Pillbox2: pbox
 		Location: 48,54
 		Owner: France
 	Actor120: barl
