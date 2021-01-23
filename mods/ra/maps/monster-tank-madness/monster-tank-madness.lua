@@ -29,7 +29,6 @@ BeachTrigger = { CPos.New(19, 44), CPos.New(20, 44), CPos.New(21, 44), CPos.New(
 DemitriAreaTrigger = { CPos.New(32, 98), CPos.New(32, 99), CPos.New(33, 99), CPos.New(33, 100), CPos.New(33, 101), CPos.New(33, 102), CPos.New(32, 102), CPos.New(32, 103) }
 HospitalAreaTrigger = { CPos.New(43, 41), CPos.New(44, 41), CPos.New(45, 41), CPos.New(46, 41), CPos.New(46, 42), CPos.New(46, 43), CPos.New(46, 44), CPos.New(46, 45), CPos.New(46, 46), CPos.New(45, 46), CPos.New(44, 46), CPos.New(43, 46) }
 
-
 EvacuateCivilians = function()
 	local evacuees = Reinforcements.Reinforce(neutral, CivilianEvacuees, { HospitalCivilianSpawnPoint.Location }, 0)
 
@@ -435,10 +434,7 @@ InitTriggers = function()
 end
 
 WorldLoaded = function()
-
 	InitPlayers()
 	InitTriggers()
-
 	SetupMission()
 end
-
