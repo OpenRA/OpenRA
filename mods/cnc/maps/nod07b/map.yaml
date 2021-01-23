@@ -552,7 +552,7 @@ Actors:
 		Health: 99
 	Actor171: hosp
 		Location: 55,28
-		Owner: Civilians
+		Owner: GDI
 	Actor172: mtnk
 		Location: 51,40
 		Owner: GDI
