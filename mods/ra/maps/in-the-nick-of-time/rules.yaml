@@ -1,0 +1,91 @@
+World:
+	LuaScript:
+		Scripts: campaign-global.lua, in-the-nick-of-time.lua
+	MissionData:
+		WinVideo: cronfail.vqa
+		LossVideo: sfrozen.vqa
+		Briefing: The situation is critical! The Soviets have taken over a small research base in the north. During the conflict, a chronosphere was badly damaged. We fear it could explode.\n\nInside the base is a group of scientists that were captured during the takeover. They must be rescued before the chronosphere explodes. Fight your way back into the base and retrieve them.\n\nBe careful -- there is only one way in and out of the base, a lone bridge. It must be protected to ensure evacuation.
+
+LST.Reinforcement:
+	Inherits: LST
+	RejectsOrders:
+	-Buildable:
+	-Selectable:
+	RenderSprites:
+		Image: lst
+	Interactable:
+
+TRAN.Reinforcement:
+	Inherits: TRAN
+	RevealsShroud:
+		Range: 0c0
+	-RevealsShroud@GAPGEN:
+	RejectsOrders:
+	-Selectable:
+	RenderSprites:
+		Image: tran
+	Interactable:
+
+PARADROP1:
+	ParatroopersPower:
+		DropItems: E2, E2, E2, E3, E3
+	AlwaysVisible:
+
+PARADROP2:
+	ParatroopersPower:
+		DropItems: E1, E1, SHOK, E4, E4
+	AlwaysVisible:
+
+PARADROP3:
+	ParatroopersPower:
+		DisplayBeacon: False
+		DropItems: 1TNK, 2TNK
+	AlwaysVisible:
+
+V01:
+	SpawnActorOnDeath:
+		Actor: healcrate
+
+1TNK:
+	Buildable:
+		Prerequisites: ~vehicles.soviet
+
+2TNK:
+	Buildable:
+		Prerequisites: ~vehicles.soviet
+
+4TNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+TRUK:
+	Buildable:
+		Prerequisites: ~disabled
+
+QTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+MCV:
+	Buildable:
+		Prerequisites: ~disabled
+
+FTRK:
+	Buildable:
+		Prerequisites: ~disabled
+
+APC:
+	Buildable:
+		Prerequisites: ~disabled
+
+E7:
+	Buildable:
+		Prerequisites: ~disabled
+
+E7.noautotarget:
+	Buildable:
+		Prerequisites: ~disabled
+
+MIG:
+	Buildable:
+		Prerequisites: ~disabled
