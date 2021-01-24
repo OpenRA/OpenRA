@@ -516,8 +516,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					name = "$" + modData.Manifest.Id + "/" + name.Substring(modData.Manifest.Package.Name.Length + 1);
 				else if (name.StartsWith(Platform.EngineDir, compare))
 					name = "./" + name.Substring(Platform.EngineDir.Length);
-				else if (name.StartsWith(Platform.SupportDir, compare))
-					name = "^" + name.Substring(Platform.SupportDir.Length);
+				else if (name.StartsWith(Platform.UserDataDir, compare))
+					name = "^" + name.Substring(Platform.UserDataDir.Length);
 			}
 
 			if (name.Length > 18)

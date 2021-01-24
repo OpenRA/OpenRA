@@ -23,7 +23,7 @@ namespace OpenRA.Test
 		[SetUp]
 		public void SetUp()
 		{
-			supportDir = Platform.SupportDir;
+			supportDir = Platform.UserConfigDir;
 			engineDir = Platform.EngineDir;
 		}
 

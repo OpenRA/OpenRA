@@ -28,7 +28,7 @@ namespace OpenRA
 
 		static IEnumerable<string> FilenamesForChannel(string channelName, string baseFilename)
 		{
-			var path = Platform.SupportDir + "Logs";
+			var path = Path.Combine(Platform.UserCacheDir, "Logs");
 			Directory.CreateDirectory(path);
 
 			for (var i = 0; ; i++)

@@ -173,7 +173,7 @@ namespace OpenRA.WindowsLauncher
 				{
 					try
 					{
-						Process.Start(Path.Combine(Platform.SupportDir, "Logs"));
+						Process.Start(Path.Combine(Platform.UserCacheDir, "Logs"));
 					}
 					catch { }
 					break;

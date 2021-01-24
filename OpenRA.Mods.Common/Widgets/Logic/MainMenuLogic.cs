@@ -264,7 +264,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			if (newsBG != null && Game.Settings.Game.FetchNews)
 			{
-				var cacheFile = Path.Combine(Platform.SupportDir, webServices.GameNewsFileName);
+				var cacheFile = Path.Combine(Platform.UserCacheDir, webServices.GameNewsFileName);
 				var currentNews = ParseNews(cacheFile);
 				if (currentNews != null)
 					DisplayNews(currentNews);

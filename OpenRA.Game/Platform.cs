@@ -18,7 +18,7 @@ namespace OpenRA
 {
 	public enum PlatformType { Unknown, Windows, OSX, Linux }
 
-	public enum SupportDirType { System, ModernUser, LegacyUser, User }
+	public enum SupportDirType { System, ModernUser, LegacyUser, UserConfig, UserData, UserCache }
 
 	public static class Platform
 	{
@@ -35,6 +35,8 @@ namespace OpenRA
 		static string legacyUserSupportPath;
 		static string modernUserSupportPath;
 		static string userSupportPath;
+		static string userDataSupportPath;
+		static string userCacheSupportPath;
 
 		static PlatformType GetCurrentPlatform()
 		{
@@ -75,9 +77,19 @@ namespace OpenRA
 		}
 
 		/// <summary>
-		/// Directory containing user-specific support files (settings, maps, replays, game data, etc).
+		/// Directory containing user-specific support files (settings).
 		/// </summary>
-		public static string SupportDir { get { return GetSupportDir(SupportDirType.User); } }
+		public static string UserConfigDir { get { return GetSupportDir(SupportDirType.UserConfig); } }
+
+		/// <summary>
+		/// Directory containing user-specific data files (maps, replays, game assets, etc).
+		/// </summary>
+		public static string UserDataDir { get { return GetSupportDir(SupportDirType.UserData); } }
+
+		/// <summary>
+		/// Directory containing non essential user-specific support files (logs etc).
+		/// </summary>
+		public static string UserCacheDir { get { return GetSupportDir(SupportDirType.UserCache); } }
 
 		public static string GetSupportDir(SupportDirType type)
 		{
@@ -89,6 +101,8 @@ namespace OpenRA
 				case SupportDirType.System: return systemSupportPath;
 				case SupportDirType.LegacyUser: return legacyUserSupportPath;
 				case SupportDirType.ModernUser: return modernUserSupportPath;
+				case SupportDirType.UserData: return userDataSupportPath;
+				case SupportDirType.UserCache: return userCacheSupportPath;
 				default: return userSupportPath;
 			}
 		}
@@ -100,7 +114,7 @@ namespace OpenRA
 			{
 				case PlatformType.Windows:
 				{
-					modernUserSupportPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "OpenRA");
+					modernUserSupportPath = userDataSupportPath = userCacheSupportPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "OpenRA");
 					legacyUserSupportPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "OpenRA");
 					systemSupportPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "OpenRA") + Path.DirectorySeparatorChar;
 					break;
@@ -108,7 +122,7 @@ namespace OpenRA
 
 				case PlatformType.OSX:
 				{
-					modernUserSupportPath = legacyUserSupportPath = Path.Combine(
+					modernUserSupportPath = userDataSupportPath = userCacheSupportPath = legacyUserSupportPath = Path.Combine(
 						Environment.GetFolderPath(Environment.SpecialFolder.Personal),
 						"Library", "Application Support", "OpenRA");
 
@@ -126,6 +140,18 @@ namespace OpenRA
 
 					modernUserSupportPath = Path.Combine(xdgConfigHome, "openra");
 					systemSupportPath = "/var/games/openra/";
+
+					var xdgDataHome = Environment.GetEnvironmentVariable("XDG_DATA_HOME");
+					if (string.IsNullOrEmpty(xdgDataHome))
+						xdgDataHome = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), ".local", "share");
+
+					userDataSupportPath = Path.Combine(xdgDataHome, "openra");
+
+					var xdgCacheHome = Environment.GetEnvironmentVariable("XDG_CACHE_HOME");
+					if (string.IsNullOrEmpty(xdgCacheHome))
+						xdgCacheHome = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), ".cache");
+
+					userCacheSupportPath = Path.Combine(xdgCacheHome, "openra");
 
 					break;
 				}
@@ -230,7 +256,10 @@ namespace OpenRA
 			path = path.TrimEnd(' ', '\t');
 
 			if (path == "^SupportDir")
-				return SupportDir;
+				return UserConfigDir;
+
+			if (path == "^UserDataDir")
+				return UserDataDir;
 
 			if (path == "^EngineDir")
 				return EngineDir;
@@ -239,7 +268,10 @@ namespace OpenRA
 				return BinDir;
 
 			if (path.StartsWith("^SupportDir|", StringComparison.Ordinal))
-				path = SupportDir + path.Substring(12);
+				path = UserConfigDir + path.Substring(12);
+
+			if (path.StartsWith("^UserDataDir|", StringComparison.Ordinal))
+				path = Path.Combine(UserDataDir, path.Substring(13));
 
 			if (path.StartsWith("^EngineDir|", StringComparison.Ordinal))
 				path = EngineDir + path.Substring(11);

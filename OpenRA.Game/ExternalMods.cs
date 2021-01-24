@@ -154,7 +154,7 @@ namespace OpenRA
 
 			if (registration.HasFlag(ModRegistration.User))
 			{
-				sources.Add(Platform.GetSupportDir(SupportDirType.User));
+				sources.Add(Platform.GetSupportDir(SupportDirType.UserConfig));
 
 				// If using the modern support dir we must also write the registration
 				// to the legacy support dir for older engine versions, but ONLY if it exists
@@ -201,7 +201,7 @@ namespace OpenRA
 			{
 				// User support dir may be using the modern or legacy value, or overridden by the user
 				// Add all the possibilities and let the .Distinct() below ignore the duplicates
-				sources.Add(Platform.GetSupportDir(SupportDirType.User));
+				sources.Add(Platform.GetSupportDir(SupportDirType.UserConfig));
 				sources.Add(Platform.GetSupportDir(SupportDirType.ModernUser));
 				sources.Add(Platform.GetSupportDir(SupportDirType.LegacyUser));
 			}
@@ -266,7 +266,7 @@ namespace OpenRA
 			{
 				// User support dir may be using the modern or legacy value, or overridden by the user
 				// Add all the possibilities and let the .Distinct() below ignore the duplicates
-				sources.Add(Platform.GetSupportDir(SupportDirType.User));
+				sources.Add(Platform.GetSupportDir(SupportDirType.UserConfig));
 				sources.Add(Platform.GetSupportDir(SupportDirType.ModernUser));
 				sources.Add(Platform.GetSupportDir(SupportDirType.LegacyUser));
 			}

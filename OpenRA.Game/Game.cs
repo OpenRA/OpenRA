@@ -262,7 +262,7 @@ namespace OpenRA
 
 		public static void InitializeSettings(Arguments args)
 		{
-			Settings = new Settings(Path.Combine(Platform.SupportDir, "settings.yaml"), args);
+			Settings = new Settings(Path.Combine(Platform.UserConfigDir, "settings.yaml"), args);
 		}
 
 		public static RunStatus InitializeAndRun(string[] args)
@@ -445,7 +445,7 @@ namespace OpenRA
 
 			ModData = new ModData(Mods[mod], Mods, true);
 
-			LocalPlayerProfile = new LocalPlayerProfile(Path.Combine(Platform.SupportDir, Settings.Game.AuthProfile), ModData.Manifest.Get<PlayerDatabase>());
+			LocalPlayerProfile = new LocalPlayerProfile(Path.Combine(Platform.UserConfigDir, Settings.Game.AuthProfile), ModData.Manifest.Get<PlayerDatabase>());
 
 			if (!ModData.LoadScreen.BeforeLoad())
 				return;
@@ -565,7 +565,7 @@ namespace OpenRA
 			using (new PerfTimer("Renderer.SaveScreenshot"))
 			{
 				var mod = ModData.Manifest.Metadata;
-				var directory = Path.Combine(Platform.SupportDir, "Screenshots", ModData.Manifest.Id, mod.Version);
+				var directory = Path.Combine(Platform.UserDataDir, "Screenshots", ModData.Manifest.Id, mod.Version);
 				Directory.CreateDirectory(directory);
 
 				var filename = TimestampedFilename(true);

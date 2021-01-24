@@ -7,8 +7,8 @@ Metadata:
 PackageFormats: Mix
 
 Packages:
-	~^SupportDir|Content/ts
-	~^SupportDir|Content/ts/firestorm
+	~^UserDataDir|Content/ts
+	~^UserDataDir|Content/ts/firestorm
 	^EngineDir
 	$ts: ts
 	^EngineDir|mods/common: common
@@ -51,7 +51,7 @@ Packages:
 
 MapFolders:
 	ts|maps: System
-	~^SupportDir|maps/ts/{DEV_VERSION}: User
+	~^UserDataDir|maps/ts/{DEV_VERSION}: User
 
 Rules:
 	ts|rules/ai.yaml
@@ -299,21 +299,21 @@ ModContent:
 	HeaderMessage: Game content may be extracted from the original game discs or an\nexisting digital install. OpenRA can also download the base game\nfiles from an online mirror of the 2012 freeware release of TS.
 	Packages:
 		tibsun: Base Game Files
-			TestFiles: ^SupportDir|Content/ts/cache.mix, ^SupportDir|Content/ts/conquer.mix, ^SupportDir|Content/ts/isosnow.mix, ^SupportDir|Content/ts/isotemp.mix, ^SupportDir|Content/ts/local.mix, ^SupportDir|Content/ts/sidec01.mix, ^SupportDir|Content/ts/sidec02.mix, ^SupportDir|Content/ts/sno.mix, ^SupportDir|Content/ts/snow.mix, ^SupportDir|Content/ts/sounds.mix, ^SupportDir|Content/ts/speech01.mix, ^SupportDir|Content/ts/tem.mix, ^SupportDir|Content/ts/temperat.mix
+			TestFiles: ^UserDataDir|Content/ts/cache.mix, ^UserDataDir|Content/ts/conquer.mix, ^UserDataDir|Content/ts/isosnow.mix, ^UserDataDir|Content/ts/isotemp.mix, ^UserDataDir|Content/ts/local.mix, ^UserDataDir|Content/ts/sidec01.mix, ^UserDataDir|Content/ts/sidec02.mix, ^UserDataDir|Content/ts/sno.mix, ^UserDataDir|Content/ts/snow.mix, ^UserDataDir|Content/ts/sounds.mix, ^UserDataDir|Content/ts/speech01.mix, ^UserDataDir|Content/ts/tem.mix, ^UserDataDir|Content/ts/temperat.mix
 			Sources: tibsun, tibsun-linux, tfd, origin
 			Required: true
 			Download: basefiles
 		tibsun-music: Base Game Music
-			TestFiles: ^SupportDir|Content/ts/scores.mix
+			TestFiles: ^UserDataDir|Content/ts/scores.mix
 			Sources: tibsun, tibsun-linux, tfd, origin
 		fstorm: Expansion Freeware Content
-			TestFiles: ^SupportDir|Content/ts/firestorm/e01sc01.mix, ^SupportDir|Content/ts/firestorm/e01sc02.mix, ^SupportDir|Content/ts/firestorm/e01vox01.mix, ^SupportDir|Content/ts/firestorm/e01vox02.mix
+			TestFiles: ^UserDataDir|Content/ts/firestorm/e01sc01.mix, ^UserDataDir|Content/ts/firestorm/e01sc02.mix, ^UserDataDir|Content/ts/firestorm/e01vox01.mix, ^UserDataDir|Content/ts/firestorm/e01vox02.mix
 			Sources: tfd, origin, fstorm
 			Required: true
 			Download: fstorm
 		fstorm-music: Expansion Freeware Music
 			Sources: tfd, origin, fstorm
-			TestFiles: ^SupportDir|Content/ts/firestorm/linkup.aud, ^SupportDir|Content/ts/firestorm/hacker.aud
+			TestFiles: ^UserDataDir|Content/ts/firestorm/linkup.aud, ^UserDataDir|Content/ts/firestorm/hacker.aud
 	Downloads:
 		ts|installer/downloads.yaml
 	Sources:

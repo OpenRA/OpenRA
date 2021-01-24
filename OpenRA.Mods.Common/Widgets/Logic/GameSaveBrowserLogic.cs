@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var newTemplate = panel.Get<ScrollItemWidget>("NEW_TEMPLATE");
 
 			var mod = modData.Manifest;
-			baseSavePath = Path.Combine(Platform.SupportDir, "Saves", mod.Id, mod.Metadata.Version);
+			baseSavePath = Path.Combine(Platform.UserDataDir, "Saves", mod.Id, mod.Metadata.Version);
 
 			// Avoid filename conflicts when creating new saves
 			if (isSavePanel)
@@ -305,7 +305,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var filename = saveTextField.Text + ".orasav";
 			var testPath = Path.Combine(
-				Platform.SupportDir,
+				Platform.UserDataDir,
 				"Saves",
 				modData.Manifest.Id,
 				modData.Manifest.Metadata.Version,
@@ -351,7 +351,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		public static bool IsLoadPanelEnabled(Manifest mod)
 		{
-			var baseSavePath = Path.Combine(Platform.SupportDir, "Saves", mod.Id, mod.Metadata.Version);
+			var baseSavePath = Path.Combine(Platform.UserDataDir, "Saves", mod.Id, mod.Metadata.Version);
 			if (!Directory.Exists(baseSavePath))
 				return false;
 

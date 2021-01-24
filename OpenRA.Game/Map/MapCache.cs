@@ -74,7 +74,7 @@ namespace OpenRA
 					// HACK: If the path is inside the the support directory then we may need to create it
 					// Assume that the path is a directory if there is not an existing file with the same name
 					var resolved = Platform.ResolvePath(name);
-					if (resolved.StartsWith(Platform.SupportDir) && !File.Exists(resolved))
+					if (resolved.StartsWith(Platform.UserDataDir) && !File.Exists(resolved))
 						Directory.CreateDirectory(resolved);
 
 					package = modData.ModFiles.OpenPackage(name);
@@ -142,7 +142,7 @@ namespace OpenRA
 
 				// Don't try to open the map directory in the support directory if it doesn't exist
 				var resolved = Platform.ResolvePath(name);
-				if (resolved.StartsWith(Platform.SupportDir) && (!Directory.Exists(resolved) || !File.Exists(resolved)))
+				if (resolved.StartsWith(Platform.UserDataDir) && (!Directory.Exists(resolved) || !File.Exists(resolved)))
 					continue;
 
 				using (var package = (IReadWritePackage)modData.ModFiles.OpenPackage(name))
