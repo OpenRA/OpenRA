@@ -2,7 +2,7 @@ Background@MAPCHOOSER_PANEL:
 	X: (WINDOW_RIGHT - WIDTH) / 2
 	Y: (WINDOW_BOTTOM - HEIGHT) / 2
 	Logic: MapChooserLogic
-	Width: 808
+	Width: 900
 	Height: 600
 	Children:
 		Label@MAPCHOOSER_TITLE:
@@ -47,16 +47,16 @@ Background@MAPCHOOSER_PANEL:
 					Height: PARENT_BOTTOM
 					Children:
 		ScrollItem@MAP_TEMPLATE:
-			Width: 185
-			Height: 243
+			Width: 208
+			Height: 266
 			X: 2
 			Visible: false
 			Children:
 				MapPreview@PREVIEW:
 					X: (PARENT_RIGHT - WIDTH) / 2
 					Y: 3
-					Width: 179
-					Height: 179
+					Width: 202
+					Height: 202
 					IgnoreMouseOver: true
 					IgnoreMouseInput: true
 				Label@TITLE:

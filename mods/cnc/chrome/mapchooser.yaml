@@ -2,7 +2,7 @@ Container@MAPCHOOSER_PANEL:
 	Logic: MapChooserLogic
 	X: (WINDOW_RIGHT - WIDTH) / 2
 	Y: (WINDOW_BOTTOM - 560) / 2
-	Width: 800
+	Width: 900
 	Height: 575
 	Children:
 		Label@TITLE:
@@ -64,7 +64,7 @@ Container@MAPCHOOSER_PANEL:
 						ScrollPanel@MAP_LIST:
 							Width: PARENT_RIGHT
 							Height: PARENT_BOTTOM
-							Children:
+							ItemSpacing: 1
 				Container@USER_MAPS_TAB:
 					X: 15
 					Y: 45
@@ -74,18 +74,18 @@ Container@MAPCHOOSER_PANEL:
 						ScrollPanel@MAP_LIST:
 							Width: PARENT_RIGHT
 							Height: PARENT_BOTTOM
-							Children:
+							ItemSpacing: 1
 				ScrollItem@MAP_TEMPLATE:
-					Width: 183
-					Height: 232
-					X: 2
+					Width: 210
+					Height: 262
+					X: 1
 					Visible: false
 					Children:
 						MapPreview@PREVIEW:
 							X: (PARENT_RIGHT - WIDTH) / 2
-							Y: 4
-							Width: 173
-							Height: 173
+							Y: 3
+							Width: 204
+							Height: 204
 							IgnoreMouseOver: true
 							IgnoreMouseInput: true
 						Label@TITLE:
