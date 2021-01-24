@@ -36,9 +36,8 @@ function Clean-Command
 	}
 
 	dotnet clean /nologo
-	rm ./bin -r
-	rm ./*/bin -r
-	rm ./*/obj -r
+	Remove-Item ./bin -Recurse -ErrorAction Ignore
+	Remove-Item ./*/obj -Recurse -ErrorAction Ignore
 	Write-Host "Clean complete." -ForegroundColor Green
 }
 
