@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Offset for Z sorting.")]
 		public readonly int ZOffset = 0;
 
-		[Desc("Length of the trail (in ticks).")]
+		[Desc("Length of the trail (in ticks). Note: Trails are only smoothed for TrailLength 4 or higher.")]
 		public readonly int TrailLength = 25;
 
 		[Desc("Width of the trail.")]
@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 
 			color = info.UsePlayerColor ? ContrailRenderable.ChooseColor(self) : info.Color;
-			trail = new ContrailRenderable(self.World, color, info.TrailWidth, info.TrailLength, 0, info.ZOffset);
+			trail = new ContrailRenderable(self.World, color, info.TrailWidth, info.TrailLength, 0, info.ZOffset, info.TrailLength > 3);
 
 			body = self.Trait<BodyOrientation>();
 		}
@@ -79,7 +79,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyAddedToWorld.AddedToWorld(Actor self)
 		{
-			trail = new ContrailRenderable(self.World, color, info.TrailWidth, info.TrailLength, 0, info.ZOffset);
+			trail = new ContrailRenderable(self.World, color, info.TrailWidth, info.TrailLength, 0, info.ZOffset, info.TrailLength > 3);
 		}
 	}
 }

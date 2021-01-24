@@ -26,14 +26,15 @@ namespace OpenRA.Mods.Common.Graphics
 		// Store trail positions in a circular buffer
 		readonly WPos[] trail;
 		readonly WDist width;
+		readonly bool enableSmoothing;
 		int next;
 		int length;
 		int skip;
 
-		public ContrailRenderable(World world, Color color, WDist width, int length, int skip, int zOffset)
-			: this(world, new WPos[length], width, 0, 0, skip, color, zOffset) { }
+		public ContrailRenderable(World world, Color color, WDist width, int length, int skip, int zOffset, bool enableSmoothing)
+			: this(world, new WPos[length], width, 0, 0, skip, color, zOffset, enableSmoothing) { }
 
-		ContrailRenderable(World world, WPos[] trail, WDist width, int next, int length, int skip, Color color, int zOffset)
+		ContrailRenderable(World world, WPos[] trail, WDist width, int next, int length, int skip, Color color, int zOffset, bool enableSmoothing)
 		{
 			this.world = world;
 			this.trail = trail;
@@ -43,21 +44,30 @@ namespace OpenRA.Mods.Common.Graphics
 			this.skip = skip;
 			this.color = color;
 			this.zOffset = zOffset;
+			this.enableSmoothing = enableSmoothing;
 		}
 
 		public WPos Pos { get { return trail[Index(next - 1)]; } }
 		public int ZOffset { get { return zOffset; } }
 		public bool IsDecoration { get { return true; } }
 
-		public IRenderable WithZOffset(int newOffset) { return new ContrailRenderable(world, (WPos[])trail.Clone(), width, next, length, skip, color, newOffset); }
-		public IRenderable OffsetBy(WVec vec) { return new ContrailRenderable(world, trail.Select(pos => pos + vec).ToArray(), width, next, length, skip, color, zOffset); }
+		public IRenderable WithZOffset(int newOffset)
+		{
+			return new ContrailRenderable(world, (WPos[])trail.Clone(), width, next, length, skip, color, newOffset, enableSmoothing);
+		}
+
+		public IRenderable OffsetBy(WVec vec)
+		{
+			return new ContrailRenderable(world, trail.Select(pos => pos + vec).ToArray(), width, next, length, skip, color, zOffset, enableSmoothing);
+		}
+
 		public IRenderable AsDecoration() { return this; }
 
 		public IFinalizedRenderable PrepareRender(WorldRenderer wr) { return this; }
 		public void Render(WorldRenderer wr)
 		{
 			// Need at least 4 points to smooth the contrail over
-			if (length - skip < 4)
+			if (enableSmoothing && length - skip < 4)
 				return;
 
 			var screenWidth = wr.ScreenVector(new WVec(width, WDist.Zero, WDist.Zero))[0];
@@ -66,11 +76,12 @@ namespace OpenRA.Mods.Common.Graphics
 			// Start of the first line segment is the tail of the list - don't smooth it.
 			var curPos = trail[Index(next - skip - 1)];
 			var curColor = color;
-			for (var i = 0; i < length - skip - 4; i++)
+			var smoothingLengthModifier = enableSmoothing ? 4 : 1;
+			for (var i = 0; i < length - skip - smoothingLengthModifier; i++)
 			{
 				var j = next - skip - i - 2;
-				var nextPos = Average(trail[Index(j)], trail[Index(j - 1)], trail[Index(j - 2)], trail[Index(j - 3)]);
-				var nextColor = Exts.ColorLerp(i * 1f / (length - 4), color, Color.Transparent);
+				var nextPos = enableSmoothing ? Average(trail[Index(j)], trail[Index(j - 1)], trail[Index(j - 2)], trail[Index(j - 3)]) : trail[Index(j)];
+				var nextColor = Exts.ColorLerp(i * 1f / (length - smoothingLengthModifier), color, Color.Transparent);
 
 				if (!world.FogObscures(curPos) && !world.FogObscures(nextPos))
 					wcr.DrawLine(wr.Screen3DPosition(curPos), wr.Screen3DPosition(nextPos), screenWidth, curColor, nextColor);

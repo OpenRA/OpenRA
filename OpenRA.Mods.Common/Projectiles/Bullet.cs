@@ -102,11 +102,18 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Altitude above terrain below which to explode. Zero effectively deactivates airburst.")]
 		public readonly WDist AirburstAltitude = WDist.Zero;
 
+		[Desc("Length of contrail render effect (in ticks, so actual length will depend on speed as well).")]
 		public readonly int ContrailLength = 0;
-		public readonly int ContrailZOffset = 2047;
-		public readonly Color ContrailColor = Color.White;
-		public readonly bool ContrailUsePlayerColor = false;
+
+		[Desc("Contrail point spawn delay in ticks.")]
 		public readonly int ContrailDelay = 1;
+
+		public readonly int ContrailZOffset = 2047;
+
+		public readonly Color ContrailColor = Color.White;
+
+		public readonly bool ContrailUsePlayerColor = false;
+
 		public readonly WDist ContrailWidth = new WDist(64);
 
 		public IProjectile Create(ProjectileArgs args) { return new Bullet(this, args); }
@@ -172,7 +179,9 @@ namespace OpenRA.Mods.Common.Projectiles
 			if (info.ContrailLength > 0)
 			{
 				var color = info.ContrailUsePlayerColor ? ContrailRenderable.ChooseColor(args.SourceActor) : info.ContrailColor;
-				contrail = new ContrailRenderable(world, color, info.ContrailWidth, info.ContrailLength, info.ContrailDelay, info.ContrailZOffset);
+
+				// Bullets don't benefit from contrail smoothing, so disable it to support ContrailLength shorter than 4 + ContrailDelay.
+				contrail = new ContrailRenderable(world, color, info.ContrailWidth, info.ContrailLength, info.ContrailDelay, info.ContrailZOffset, false);
 			}
 
 			trailPalette = info.TrailPalette;

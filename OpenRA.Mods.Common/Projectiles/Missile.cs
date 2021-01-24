@@ -126,17 +126,19 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Should trail animation be spawned when the propulsion is not activated.")]
 		public readonly bool TrailWhenDeactivated = false;
 
+		[Desc("Length of contrail render effect (in ticks, so actual length will depend on speed as well).")]
 		public readonly int ContrailLength = 0;
 
-		public readonly int ContrailZOffset = 2047;
+		[Desc("Contrail point spawn delay in ticks.")]
+		public readonly int ContrailDelay = 1;
 
-		public readonly WDist ContrailWidth = new WDist(64);
+		public readonly int ContrailZOffset = 2047;
 
 		public readonly Color ContrailColor = Color.White;
 
 		public readonly bool ContrailUsePlayerColor = false;
 
-		public readonly int ContrailDelay = 1;
+		public readonly WDist ContrailWidth = new WDist(64);
 
 		[Desc("Should missile targeting be thrown off by nearby actors with JamsMissiles.")]
 		public readonly bool Jammable = true;
@@ -258,7 +260,10 @@ namespace OpenRA.Mods.Common.Projectiles
 			if (info.ContrailLength > 0)
 			{
 				var color = info.ContrailUsePlayerColor ? ContrailRenderable.ChooseColor(args.SourceActor) : info.ContrailColor;
-				contrail = new ContrailRenderable(world, color, info.ContrailWidth, info.ContrailLength, info.ContrailDelay, info.ContrailZOffset);
+
+				// Missiles don't benefit from contrail smoothing as long as we don't add a ContrailOffset,
+				// so disable smoothing for now to support contrail lengths shorter than 4 + ContrailDelay.
+				contrail = new ContrailRenderable(world, color, info.ContrailWidth, info.ContrailLength, info.ContrailDelay, info.ContrailZOffset, false);
 			}
 
 			trailPalette = info.TrailPalette;
