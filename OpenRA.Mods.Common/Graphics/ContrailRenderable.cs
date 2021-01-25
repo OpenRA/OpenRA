@@ -17,6 +17,8 @@ namespace OpenRA.Mods.Common.Graphics
 {
 	public class ContrailRenderable : IRenderable, IFinalizedRenderable
 	{
+		const int MaxSmoothLength = 4;
+
 		public int Length => trail.Length;
 
 		readonly World world;
@@ -63,8 +65,10 @@ namespace OpenRA.Mods.Common.Graphics
 		public IFinalizedRenderable PrepareRender(WorldRenderer wr) { return this; }
 		public void Render(WorldRenderer wr)
 		{
-			// Need at least 4 points to smooth the contrail over
-			if (length - skip < 4)
+			// Note: The length of contrail is now actually the number of the points to draw the contrail
+			// and we require at least two points to draw a tail
+			var renderLength = length - skip;
+			if (renderLength <= 1)
 				return;
 
 			var screenWidth = wr.ScreenVector(new WVec(width, WDist.Zero, WDist.Zero))[0];
@@ -73,11 +77,26 @@ namespace OpenRA.Mods.Common.Graphics
 			// Start of the first line segment is the tail of the list - don't smooth it.
 			var curPos = trail[Index(next - skip - 1)];
 			var curColor = color;
-			for (var i = 0; i < length - skip - 4; i++)
+
+			for (var i = 1; i < renderLength; i++)
 			{
-				var j = next - skip - i - 2;
-				var nextPos = Average(trail[Index(j)], trail[Index(j - 1)], trail[Index(j - 2)], trail[Index(j - 3)]);
-				var nextColor = Exts.ColorLerp(i * 1f / (length - 4), color, Color.Transparent);
+				var j = next - skip - 1 - i;
+				var alpha = ((renderLength - i) * color.A + renderLength - 1) / renderLength;
+				var nextColor = Color.FromArgb(alpha, color);
+
+				var nextX = 0L;
+				var nextY = 0L;
+				var nextZ = 0L;
+				var k = 0;
+				for (; k < renderLength - i && k < MaxSmoothLength; k++)
+				{
+					var prepos = trail[Index(j - k)];
+					nextX += prepos.X;
+					nextY += prepos.Y;
+					nextZ += prepos.Z;
+				}
+
+				var nextPos = new WPos((int)(nextX / k), (int)(nextY / k), (int)(nextZ / k));
 
 				if (!world.FogObscures(curPos) && !world.FogObscures(nextPos))
 					wcr.DrawLine(wr.Screen3DPosition(curPos), wr.Screen3DPosition(nextPos), screenWidth, curColor, nextColor);
@@ -95,11 +114,6 @@ namespace OpenRA.Mods.Common.Graphics
 		{
 			var j = i % trail.Length;
 			return j < 0 ? j + trail.Length : j;
-		}
-
-		static WPos Average(params WPos[] list)
-		{
-			return list.Average();
 		}
 
 		public void Update(WPos pos)
