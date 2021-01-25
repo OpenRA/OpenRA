@@ -152,7 +152,7 @@ namespace OpenRA.Mods.Common.Traits
 	public interface INotifyDocking { void Docked(Actor self, Actor harvester); void Undocked(Actor self, Actor harvester); }
 
 	[RequireExplicitImplementation]
-	public interface INotifyResourceAccepted { void OnResourceAccepted(Actor self, Actor refinery, ResourceTypeInfo resourceType, int count, int value); }
+	public interface INotifyResourceAccepted { void OnResourceAccepted(Actor self, Actor refinery, string resourceType, int count, int value); }
 	public interface INotifyParachute { void OnParachute(Actor self); void OnLanded(Actor self); }
 
 	[RequireExplicitImplementation]
@@ -188,7 +188,7 @@ namespace OpenRA.Mods.Common.Traits
 		void MovingToResources(Actor self, CPos targetCell);
 		void MovingToRefinery(Actor self, Actor refineryActor);
 		void MovementCancelled(Actor self);
-		void Harvested(Actor self, ResourceType resource);
+		void Harvested(Actor self, string resourceType);
 		void Docked();
 		void Undocked();
 	}
@@ -260,7 +260,7 @@ namespace OpenRA.Mods.Common.Traits
 	public interface IAcceptResources
 	{
 		void OnDock(Actor harv, DeliverResources dockOrder);
-		int AcceptResources(ResourceTypeInfo resourceType, int count = 1);
+		int AcceptResources(string resourceType, int count = 1);
 		CVec DeliveryOffset { get; }
 		bool AllowDocking { get; }
 	}
@@ -668,11 +668,12 @@ namespace OpenRA.Mods.Common.Traits
 	[RequireExplicitImplementation]
 	public interface IResourceLayer
 	{
-		event Action<CPos, ResourceType> CellChanged;
+		event Action<CPos, string> CellChanged;
 		ResourceLayerContents GetResource(CPos cell);
-		bool CanAddResource(ResourceType resourceType, CPos cell, int amount = 1);
-		int AddResource(ResourceType resourceType, CPos cell, int amount = 1);
-		int RemoveResource(ResourceType resourceType, CPos cell, int amount = 1);
+		int GetMaxDensity(string resourceType);
+		bool CanAddResource(string resourceType, CPos cell, int amount = 1);
+		int AddResource(string resourceType, CPos cell, int amount = 1);
+		int RemoveResource(string resourceType, CPos cell, int amount = 1);
 		void ClearResources(CPos cell);
 
 		bool IsVisible(CPos cell);
@@ -682,10 +683,10 @@ namespace OpenRA.Mods.Common.Traits
 	[RequireExplicitImplementation]
 	public interface IResourceRenderer
 	{
-		IEnumerable<ResourceType> ResourceTypes { get; }
-		ResourceType GetRenderedResourceType(CPos cell);
+		IEnumerable<string> ResourceTypes { get; }
+		string GetRenderedResourceType(CPos cell);
 		string GetRenderedResourceTooltip(CPos cell);
-		IEnumerable<IRenderable> RenderUIPreview(WorldRenderer wr, ResourceType resourceType, int2 origin, float scale);
-		IEnumerable<IRenderable> RenderPreview(WorldRenderer wr, ResourceType resourceType, WPos origin);
+		IEnumerable<IRenderable> RenderUIPreview(WorldRenderer wr, string resourceType, int2 origin, float scale);
+		IEnumerable<IRenderable> RenderPreview(WorldRenderer wr, string resourceType, WPos origin);
 	}
 }

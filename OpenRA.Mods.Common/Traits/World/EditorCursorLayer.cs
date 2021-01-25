@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Traits
 		bool actorSharesCell;
 
 		public TerrainTemplateInfo TerrainTemplate { get; private set; }
-		public ResourceType Resource { get; private set; }
+		public string ResourceType { get; private set; }
 		CPos terrainOrResourceCell;
 		bool terrainOrResourceDirty;
 		readonly List<IRenderable> terrainOrResourcePreview = new List<IRenderable>();
@@ -82,7 +82,7 @@ namespace OpenRA.Mods.Common.Traits
 					if (Type == EditorCursorType.TerrainTemplate)
 						terrainOrResourcePreview.AddRange(terrainRenderer.RenderPreview(wr, TerrainTemplate, pos));
 					else
-						terrainOrResourcePreview.AddRange(resourceRenderers.SelectMany(r => r.RenderPreview(wr, Resource, pos)));
+						terrainOrResourcePreview.AddRange(resourceRenderers.SelectMany(r => r.RenderPreview(wr, ResourceType, pos)));
 				}
 			}
 			else if (Type == EditorCursorType.Actor)
@@ -181,7 +181,7 @@ namespace OpenRA.Mods.Common.Traits
 			Type = EditorCursorType.Actor;
 			Actor = new EditorActorPreview(wr, null, reference, owner);
 			TerrainTemplate = null;
-			Resource = null;
+			ResourceType = null;
 
 			return ++CurrentToken;
 		}
@@ -193,18 +193,18 @@ namespace OpenRA.Mods.Common.Traits
 			Type = EditorCursorType.TerrainTemplate;
 			TerrainTemplate = template;
 			Actor = null;
-			Resource = null;
+			ResourceType = null;
 			terrainOrResourceDirty = true;
 
 			return ++CurrentToken;
 		}
 
-		public int SetResource(WorldRenderer wr, ResourceType resource)
+		public int SetResource(WorldRenderer wr, string resourceType)
 		{
 			terrainOrResourceCell = wr.Viewport.ViewToWorld(wr.Viewport.WorldToViewPx(Viewport.LastMousePos));
 
 			Type = EditorCursorType.Resource;
-			Resource = resource;
+			ResourceType = resourceType;
 			Actor = null;
 			TerrainTemplate = null;
 			terrainOrResourceDirty = true;
@@ -220,7 +220,7 @@ namespace OpenRA.Mods.Common.Traits
 			Type = EditorCursorType.None;
 			Actor = null;
 			TerrainTemplate = null;
-			Resource = null;
+			ResourceType = null;
 		}
 	}
 }

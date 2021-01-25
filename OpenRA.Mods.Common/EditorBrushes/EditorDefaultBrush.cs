@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Common.Widgets
 			if (underCursor != null)
 				editorWidget.SetTooltip(underCursor.Tooltip);
 			else if (resourceUnderCursor != null)
-				editorWidget.SetTooltip(resourceUnderCursor.Info.Type);
+				editorWidget.SetTooltip(resourceUnderCursor);
 			else
 				editorWidget.SetTooltip(null);
 
@@ -150,12 +150,12 @@ namespace OpenRA.Mods.Common.Widgets
 
 		ResourceLayerContents resourceContents;
 
-		public RemoveResourceAction(IResourceLayer resourceLayer, CPos cell, ResourceType type)
+		public RemoveResourceAction(IResourceLayer resourceLayer, CPos cell, string resourceType)
 		{
 			this.resourceLayer = resourceLayer;
 			this.cell = cell;
 
-			Text = "Removed {0}".F(type.Info.TerrainType);
+			Text = "Removed {0}".F(resourceType);
 		}
 
 		public void Execute()

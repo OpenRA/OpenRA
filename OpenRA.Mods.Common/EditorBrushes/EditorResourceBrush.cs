@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Common.Widgets
 {
 	public sealed class EditorResourceBrush : IEditorBrush
 	{
-		public readonly ResourceType ResourceType;
+		public readonly string ResourceType;
 
 		readonly WorldRenderer worldRenderer;
 		readonly World world;
@@ -30,18 +30,18 @@ namespace OpenRA.Mods.Common.Widgets
 		AddResourcesEditorAction action;
 		bool resourceAdded;
 
-		public EditorResourceBrush(EditorViewportControllerWidget editorWidget, ResourceType resource, WorldRenderer wr)
+		public EditorResourceBrush(EditorViewportControllerWidget editorWidget, string resourceType, WorldRenderer wr)
 		{
 			this.editorWidget = editorWidget;
-			ResourceType = resource;
+			ResourceType = resourceType;
 			worldRenderer = wr;
 			world = wr.World;
 			editorActionManager = world.WorldActor.Trait<EditorActionManager>();
 			editorCursor = world.WorldActor.Trait<EditorCursorLayer>();
 			resourceLayer = world.WorldActor.Trait<IResourceLayer>();
-			action = new AddResourcesEditorAction(world.Map, resourceLayer, resource);
+			action = new AddResourcesEditorAction(world.Map, resourceType, resourceLayer);
 
-			cursorToken = editorCursor.SetResource(wr, resource);
+			cursorToken = editorCursor.SetResource(wr, resourceType);
 		}
 
 		public bool HandleMouseInput(MouseInput mi)
@@ -74,7 +74,7 @@ namespace OpenRA.Mods.Common.Widgets
 			else if (resourceAdded && mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Up)
 			{
 				editorActionManager.Add(action);
-				action = new AddResourcesEditorAction(world.Map, resourceLayer, ResourceType);
+				action = new AddResourcesEditorAction(world.Map, ResourceType, resourceLayer);
 				resourceAdded = false;
 			}
 
@@ -93,9 +93,9 @@ namespace OpenRA.Mods.Common.Widgets
 	{
 		public readonly CPos Cell;
 		public readonly ResourceLayerContents OldResourceTile;
-		public readonly ResourceType NewResourceType;
+		public readonly string NewResourceType;
 
-		public CellResource(CPos cell, ResourceLayerContents oldResourceTile, ResourceType newResourceType)
+		public CellResource(CPos cell, ResourceLayerContents oldResourceTile, string newResourceType)
 		{
 			Cell = cell;
 			OldResourceTile = oldResourceTile;
@@ -109,14 +109,14 @@ namespace OpenRA.Mods.Common.Widgets
 
 		readonly Map map;
 		readonly IResourceLayer resourceLayer;
-		readonly ResourceType resourceType;
+		readonly string resourceType;
 		readonly List<CellResource> cellResources = new List<CellResource>();
 
-		public AddResourcesEditorAction(Map map, IResourceLayer resourceLayer, ResourceType resourceType)
+		public AddResourcesEditorAction(Map map, string resourceType, IResourceLayer resourceLayer)
 		{
 			this.map = map;
-			this.resourceLayer = resourceLayer;
 			this.resourceType = resourceType;
+			this.resourceLayer = resourceLayer;
 		}
 
 		public void Execute()
@@ -128,7 +128,7 @@ namespace OpenRA.Mods.Common.Widgets
 			foreach (var resourceCell in cellResources)
 			{
 				resourceLayer.ClearResources(resourceCell.Cell);
-				resourceLayer.AddResource(resourceCell.NewResourceType, resourceCell.Cell, resourceCell.NewResourceType.Info.MaxDensity);
+				resourceLayer.AddResource(resourceCell.NewResourceType, resourceCell.Cell, resourceLayer.GetMaxDensity(resourceCell.NewResourceType));
 			}
 		}
 
@@ -145,11 +145,11 @@ namespace OpenRA.Mods.Common.Widgets
 		public void Add(CellResource resourceCell)
 		{
 			resourceLayer.ClearResources(resourceCell.Cell);
-			resourceLayer.AddResource(resourceCell.NewResourceType, resourceCell.Cell, resourceCell.NewResourceType.Info.MaxDensity);
+			resourceLayer.AddResource(resourceCell.NewResourceType, resourceCell.Cell, resourceLayer.GetMaxDensity(resourceCell.NewResourceType));
 			cellResources.Add(resourceCell);
 
 			var cellText = cellResources.Count != 1 ? "cells" : "cell";
-			Text = "Added {0} {1} of {2}".F(cellResources.Count, cellText, resourceType.Info.TerrainType);
+			Text = "Added {0} {1} of {2}".F(cellResources.Count, cellText, resourceType);
 		}
 	}
 }

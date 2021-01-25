@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				foreach (var resourceType in resourceRenderer.ResourceTypes)
 				{
 					var newResourcePreviewTemplate = ScrollItemWidget.Setup(layerPreviewTemplate,
-						() => editorCursor.Type == EditorCursorType.Resource && editorCursor.Resource == resourceType,
+						() => editorCursor.Type == EditorCursorType.Resource && editorCursor.ResourceType == resourceType,
 						() => editor.SetBrush(new EditorResourceBrush(editor, resourceType, worldRenderer)));
 
 					newResourcePreviewTemplate.Bounds.X = 0;
@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					newResourcePreviewTemplate.Bounds.Width = tileSize.Width + (layerPreview.Bounds.X * 2);
 					newResourcePreviewTemplate.Bounds.Height = tileSize.Height + (layerPreview.Bounds.Y * 2);
 					newResourcePreviewTemplate.IsVisible = () => true;
-					newResourcePreviewTemplate.GetTooltipText = () => resourceType.Info.Type;
+					newResourcePreviewTemplate.GetTooltipText = () => resourceType;
 
 					layerTemplateList.AddChild(newResourcePreviewTemplate);
 				}
