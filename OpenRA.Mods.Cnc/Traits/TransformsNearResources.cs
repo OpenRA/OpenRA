@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				var location = self.Location + direction;
 
 				var resource = resourceLayer.GetResource(location);
-				if (resource.Type == null || resource.Type.Info.Type != info.Type)
+				if (resource.Type == null || resource.Type != info.Type)
 					continue;
 
 				if (resource.Density < info.Density)

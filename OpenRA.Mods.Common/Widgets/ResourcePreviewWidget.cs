@@ -28,10 +28,10 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly IResourceRenderer[] resourceRenderers;
 		readonly Size tileSize;
 
-		ResourceType resourceType;
+		string resourceType;
 		IResourceRenderer resourceRenderer;
 
-		public ResourceType ResourceType
+		public string ResourceType
 		{
 			get => resourceType;
 

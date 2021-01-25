@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			base.Created(self);
 		}
 
-		void INotifyResourceAccepted.OnResourceAccepted(Actor self, Actor refinery, ResourceTypeInfo resourceType, int count, int value)
+		void INotifyResourceAccepted.OnResourceAccepted(Actor self, Actor refinery, string resourceType, int count, int value)
 		{
 			if (IsTraitDisabled)
 				return;

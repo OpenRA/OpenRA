@@ -103,12 +103,12 @@ namespace OpenRA.Mods.Common.Traits
 		ISpeedModifier, ISync, INotifyCreated
 	{
 		public readonly HarvesterInfo Info;
-		public readonly IReadOnlyDictionary<ResourceTypeInfo, int> Contents;
+		public readonly IReadOnlyDictionary<string, int> Contents;
 
 		readonly Mobile mobile;
 		readonly IResourceLayer resourceLayer;
 		readonly ResourceClaimLayer claimLayer;
-		readonly Dictionary<ResourceTypeInfo, int> contents = new Dictionary<ResourceTypeInfo, int>();
+		readonly Dictionary<string, int> contents = new Dictionary<string, int>();
 		int conditionToken = Actor.InvalidConditionToken;
 
 		[Sync]
@@ -121,13 +121,13 @@ namespace OpenRA.Mods.Common.Traits
 		int currentUnloadTicks;
 
 		[Sync]
-		public int ContentValue
+		public int ContentHash
 		{
 			get
 			{
 				var value = 0;
 				foreach (var c in contents)
-					value += c.Key.ValuePerUnit * c.Value;
+					value += c.Value << c.Key.Length;
 				return value;
 			}
 		}
@@ -135,8 +135,7 @@ namespace OpenRA.Mods.Common.Traits
 		public Harvester(Actor self, HarvesterInfo info)
 		{
 			Info = info;
-			Contents = new ReadOnlyDictionary<ResourceTypeInfo, int>(contents);
-
+			Contents = new ReadOnlyDictionary<string, int>(contents);
 			mobile = self.Trait<Mobile>();
 			resourceLayer = self.World.WorldActor.Trait<IResourceLayer>();
 			claimLayer = self.World.WorldActor.Trait<ResourceClaimLayer>();
@@ -229,12 +228,12 @@ namespace OpenRA.Mods.Common.Traits
 				conditionToken = self.RevokeCondition(conditionToken);
 		}
 
-		public void AcceptResource(Actor self, ResourceType type)
+		public void AcceptResource(Actor self, string resourceType)
 		{
-			if (!contents.ContainsKey(type.Info))
-				contents[type.Info] = 1;
+			if (!contents.ContainsKey(resourceType))
+				contents[resourceType] = 1;
 			else
-				contents[type.Info]++;
+				contents[resourceType]++;
 
 			UpdateCondition(self);
 		}
@@ -281,7 +280,7 @@ namespace OpenRA.Mods.Common.Traits
 				return false;
 
 			// Can the harvester collect this kind of resource?
-			return Info.Resources.Contains(resourceType.Info.Type);
+			return Info.Resources.Contains(resourceType);
 		}
 
 		IEnumerable<IOrderTargeter> IIssueOrder.Orders
@@ -388,7 +387,7 @@ namespace OpenRA.Mods.Common.Traits
 				var info = self.Info.TraitInfo<HarvesterInfo>();
 				var res = self.World.WorldActor.TraitsImplementing<IResourceRenderer>()
 					.Select(r => r.GetRenderedResourceType(location))
-					.FirstOrDefault(r => r != null && info.Resources.Contains(r.Info.Type));
+					.FirstOrDefault(r => r != null && info.Resources.Contains(r));
 
 				if (res == null)
 					return false;

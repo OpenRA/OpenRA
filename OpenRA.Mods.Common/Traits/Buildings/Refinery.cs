@@ -57,6 +57,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly Actor self;
 		readonly RefineryInfo info;
+		readonly Dictionary<string, int> resourceValues;
 		PlayerResources playerResources;
 		IEnumerable<int> resourceValueModifiers;
 
@@ -82,6 +83,8 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 			playerResources = self.Owner.PlayerActor.Trait<PlayerResources>();
 			currentDisplayTick = info.TickRate;
+			resourceValues = self.World.WorldActor.TraitsImplementing<ResourceType>()
+				.ToDictionary(r => r.Info.Type, r => r.Info.ValuePerUnit);
 		}
 
 		void INotifyCreated.Created(Actor self)
@@ -100,9 +103,12 @@ namespace OpenRA.Mods.Common.Traits
 				.Where(a => a.Trait.LinkedProc == self);
 		}
 
-		int IAcceptResources.AcceptResources(ResourceTypeInfo resourceType, int count)
+		int IAcceptResources.AcceptResources(string resourceType, int count)
 		{
-			var value = Util.ApplyPercentageModifiers(count * resourceType.ValuePerUnit, resourceValueModifiers);
+			if (!resourceValues.TryGetValue(resourceType, out var resourceValue))
+				return 0;
+
+			var value = Util.ApplyPercentageModifiers(count * resourceValue, resourceValueModifiers);
 
 			if (info.UseStorage)
 			{
@@ -111,7 +117,7 @@ namespace OpenRA.Mods.Common.Traits
 				{
 					// Reduce amount if needed until it will fit the available storage
 					while (value > storageLimit)
-						value = Util.ApplyPercentageModifiers(--count * resourceType.ValuePerUnit, resourceValueModifiers);
+						value = Util.ApplyPercentageModifiers(--count * resourceValue, resourceValueModifiers);
 				}
 				else
 					value = Math.Min(value, playerResources.ResourceCapacity - playerResources.Resources);

@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				p => ZOffsetFromCenter(self, p, 0)), info.Palette);
 		}
 
-		void INotifyHarvesterAction.Harvested(Actor self, ResourceType resource)
+		void INotifyHarvesterAction.Harvested(Actor self, string resourceType)
 		{
 			if (visible)
 				return;
