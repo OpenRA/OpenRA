@@ -14,7 +14,7 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.Graphics
 {
-	public struct DetectionCircleAnnotationRenderable : IRenderable, IFinalizedRenderable
+	public class DetectionCircleAnnotationRenderable : IRenderable, IFinalizedRenderable
 	{
 		readonly WPos centerPosition;
 		readonly WDist radius;

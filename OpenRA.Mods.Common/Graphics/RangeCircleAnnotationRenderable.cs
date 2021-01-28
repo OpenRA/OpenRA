@@ -14,7 +14,7 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.Graphics
 {
-	public struct RangeCircleAnnotationRenderable : IRenderable, IFinalizedRenderable
+	public class RangeCircleAnnotationRenderable : IRenderable, IFinalizedRenderable
 	{
 		const int RangeCircleSegments = 32;
 		static readonly Int32Matrix4x4[] RangeCircleStartRotations = Exts.MakeArray(RangeCircleSegments, i => WRot.FromFacing(8 * i).AsMatrix());

@@ -14,7 +14,7 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Graphics
 {
-	public struct SpriteRenderable : IPalettedRenderable, IModifyableRenderable, IFinalizedRenderable
+	public class SpriteRenderable : IPalettedRenderable, IModifyableRenderable, IFinalizedRenderable
 	{
 		public static readonly IEnumerable<IRenderable> None = new IRenderable[0];
 

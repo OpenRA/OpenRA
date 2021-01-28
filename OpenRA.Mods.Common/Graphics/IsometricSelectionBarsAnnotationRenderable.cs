@@ -15,7 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Graphics
 {
-	public struct IsometricSelectionBarsAnnotationRenderable : IRenderable, IFinalizedRenderable
+	public class IsometricSelectionBarsAnnotationRenderable : IRenderable, IFinalizedRenderable
 	{
 		const int BarWidth = 3;
 		const int BarHeight = 4;
@@ -40,7 +40,6 @@ namespace OpenRA.Mods.Common.Graphics
 		}
 
 		public IsometricSelectionBarsAnnotationRenderable(WPos pos, Actor actor, Polygon bounds)
-			: this()
 		{
 			this.pos = pos;
 			this.actor = actor;

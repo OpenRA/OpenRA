@@ -15,7 +15,7 @@ using OpenRA.Primitives;
 namespace OpenRA.Mods.Common.Graphics
 {
 	public enum BeamRenderableShape { Cylindrical, Flat }
-	public struct BeamRenderable : IRenderable, IFinalizedRenderable
+	public class BeamRenderable : IRenderable, IFinalizedRenderable
 	{
 		readonly WPos pos;
 		readonly int zOffset;

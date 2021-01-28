@@ -15,7 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Graphics
 {
-	public struct SelectionBarsAnnotationRenderable : IRenderable, IFinalizedRenderable
+	public class SelectionBarsAnnotationRenderable : IRenderable, IFinalizedRenderable
 	{
 		readonly WPos pos;
 		readonly Actor actor;
@@ -31,7 +31,6 @@ namespace OpenRA.Mods.Common.Graphics
 		}
 
 		public SelectionBarsAnnotationRenderable(WPos pos, Actor actor, Rectangle decorationBounds)
-			: this()
 		{
 			this.pos = pos;
 			this.actor = actor;

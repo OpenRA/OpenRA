@@ -14,7 +14,7 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.Graphics
 {
-	public struct CircleAnnotationRenderable : IRenderable, IFinalizedRenderable
+	public class CircleAnnotationRenderable : IRenderable, IFinalizedRenderable
 	{
 		const int CircleSegments = 32;
 		static readonly WVec[] FacingOffsets = Exts.MakeArray(CircleSegments, i => new WVec(1024, 0, 0).Rotate(WRot.FromFacing(i * 256 / CircleSegments)));

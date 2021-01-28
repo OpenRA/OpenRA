@@ -14,7 +14,7 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.Graphics
 {
-	public struct LineAnnotationRenderable : IRenderable, IFinalizedRenderable
+	public class LineAnnotationRenderable : IRenderable, IFinalizedRenderable
 	{
 		readonly WPos start;
 		readonly WPos end;

@@ -15,7 +15,7 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.Graphics
 {
-	public struct PolygonAnnotationRenderable : IRenderable, IFinalizedRenderable
+	public class PolygonAnnotationRenderable : IRenderable, IFinalizedRenderable
 	{
 		readonly WPos[] vertices;
 		readonly WPos effectivePos;
