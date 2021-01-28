@@ -15,7 +15,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Graphics
 {
-	public struct UITextRenderable : IRenderable, IFinalizedRenderable
+	public class UITextRenderable : IRenderable, IFinalizedRenderable
 	{
 		readonly SpriteFont font;
 		readonly WPos effectiveWorldPos;

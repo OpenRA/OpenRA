@@ -15,7 +15,7 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Graphics
 {
-	public struct TargetLineRenderable : IRenderable, IFinalizedRenderable
+	public class TargetLineRenderable : IRenderable, IFinalizedRenderable
 	{
 		readonly IEnumerable<WPos> waypoints;
 		readonly Color color;

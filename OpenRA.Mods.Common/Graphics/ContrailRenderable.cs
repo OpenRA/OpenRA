@@ -15,7 +15,7 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.Graphics
 {
-	public struct ContrailRenderable : IRenderable, IFinalizedRenderable
+	public class ContrailRenderable : IRenderable, IFinalizedRenderable
 	{
 		public int Length { get { return trail.Length; } }
 

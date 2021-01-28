@@ -15,7 +15,7 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.Graphics
 {
-	public struct RailgunHelixRenderable : IRenderable, IFinalizedRenderable
+	public class RailgunHelixRenderable : IRenderable, IFinalizedRenderable
 	{
 		readonly WPos pos;
 		readonly int zOffset;

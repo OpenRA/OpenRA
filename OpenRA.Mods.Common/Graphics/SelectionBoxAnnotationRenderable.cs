@@ -14,7 +14,7 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.Graphics
 {
-	public struct SelectionBoxAnnotationRenderable : IRenderable, IFinalizedRenderable
+	public class SelectionBoxAnnotationRenderable : IRenderable, IFinalizedRenderable
 	{
 		readonly WPos pos;
 		readonly Rectangle decorationBounds;

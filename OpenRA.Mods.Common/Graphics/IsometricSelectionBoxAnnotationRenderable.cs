@@ -15,7 +15,7 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.Graphics
 {
-	public struct IsometricSelectionBoxAnnotationRenderable : IRenderable, IFinalizedRenderable
+	public class IsometricSelectionBoxAnnotationRenderable : IRenderable, IFinalizedRenderable
 	{
 		static readonly float2 TLOffset = new float2(-12, -6);
 		static readonly float2 TROffset = new float2(12, -6);

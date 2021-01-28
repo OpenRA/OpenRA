@@ -17,7 +17,7 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.Graphics
 {
-	public struct ModelRenderable : IPalettedRenderable, IModifyableRenderable
+	public class ModelRenderable : IPalettedRenderable, IModifyableRenderable
 	{
 		readonly IEnumerable<ModelAnimation> models;
 		readonly WPos pos;
@@ -123,7 +123,7 @@ namespace OpenRA.Mods.Common.Graphics
 			return new FinalizedModelRenderable(wr, this);
 		}
 
-		struct FinalizedModelRenderable : IFinalizedRenderable
+		class FinalizedModelRenderable : IFinalizedRenderable
 		{
 			readonly ModelRenderable model;
 			readonly ModelRenderProxy renderProxy;
