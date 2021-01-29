@@ -106,7 +106,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		void INotifyIdle.TickIdle(Actor self)
 		{
-			if (IsTraitPaused)
+			if (IsTraitDisabled || IsTraitPaused)
 				return;
 
 			if (state == PopupState.Open && idleTicks++ > info.CloseDelay)
