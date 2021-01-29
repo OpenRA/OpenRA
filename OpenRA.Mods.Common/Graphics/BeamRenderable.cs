@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Graphics
 		readonly WDist width;
 		readonly Color color;
 
-		public BeamRenderable(WPos pos, int zOffset, WVec length, BeamRenderableShape shape, WDist width, Color color)
+		public BeamRenderable(WPos pos, int zOffset, in WVec length, BeamRenderableShape shape, WDist width, Color color)
 		{
 			this.pos = pos;
 			this.zOffset = zOffset;
@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Graphics
 		public bool IsDecoration => true;
 
 		public IRenderable WithZOffset(int newOffset) { return new BeamRenderable(pos, zOffset, length, shape, width, color); }
-		public IRenderable OffsetBy(WVec vec) { return new BeamRenderable(pos + vec, zOffset, length, shape, width, color); }
+		public IRenderable OffsetBy(in WVec vec) { return new BeamRenderable(pos + vec, zOffset, length, shape, width, color); }
 		public IRenderable AsDecoration() { return this; }
 
 		public IFinalizedRenderable PrepareRender(WorldRenderer wr) { return this; }

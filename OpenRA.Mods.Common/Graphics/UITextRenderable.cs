@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.Graphics
 		public bool IsDecoration => true;
 
 		public IRenderable WithZOffset(int newOffset) { return new UITextRenderable(font, effectiveWorldPos, screenPos, zOffset, color, text); }
-		public IRenderable OffsetBy(WVec vec) { return new UITextRenderable(font, effectiveWorldPos + vec, screenPos, zOffset, color, text); }
+		public IRenderable OffsetBy(in WVec vec) { return new UITextRenderable(font, effectiveWorldPos + vec, screenPos, zOffset, color, text); }
 		public IRenderable AsDecoration() { return this; }
 
 		public IFinalizedRenderable PrepareRender(WorldRenderer wr) { return this; }

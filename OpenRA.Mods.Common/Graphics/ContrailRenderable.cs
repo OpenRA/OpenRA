@@ -50,7 +50,14 @@ namespace OpenRA.Mods.Common.Graphics
 		public bool IsDecoration => true;
 
 		public IRenderable WithZOffset(int newOffset) { return new ContrailRenderable(world, (WPos[])trail.Clone(), width, next, length, skip, color, newOffset); }
-		public IRenderable OffsetBy(WVec vec) { return new ContrailRenderable(world, trail.Select(pos => pos + vec).ToArray(), width, next, length, skip, color, zOffset); }
+
+		public IRenderable OffsetBy(in WVec vec)
+		{
+			// Lambdas can't use 'in' variables, so capture a copy for later
+			var offset = vec;
+			return new ContrailRenderable(world, trail.Select(pos => pos + offset).ToArray(), width, next, length, skip, color, zOffset);
+		}
+
 		public IRenderable AsDecoration() { return this; }
 
 		public IFinalizedRenderable PrepareRender(WorldRenderer wr) { return this; }

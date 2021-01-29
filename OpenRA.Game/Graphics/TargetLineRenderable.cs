@@ -35,7 +35,14 @@ namespace OpenRA.Graphics
 		public bool IsDecoration => true;
 
 		public IRenderable WithZOffset(int newOffset) { return new TargetLineRenderable(waypoints, color); }
-		public IRenderable OffsetBy(WVec vec) { return new TargetLineRenderable(waypoints.Select(w => w + vec), color); }
+
+		public IRenderable OffsetBy(in WVec vec)
+		{
+			// Lambdas can't use 'in' variables, so capture a copy for later
+			var offset = vec;
+			return new TargetLineRenderable(waypoints.Select(w => w + offset), color);
+		}
+
 		public IRenderable AsDecoration() { return this; }
 
 		public IFinalizedRenderable PrepareRender(WorldRenderer wr) { return this; }

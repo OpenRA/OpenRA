@@ -14,7 +14,7 @@ using System.Collections.Generic;
 
 namespace OpenRA
 {
-	public struct MapCoordsRegion : IEnumerable<MPos>
+	public readonly struct MapCoordsRegion : IEnumerable<MPos>
 	{
 		public struct MapCoordsEnumerator : IEnumerator<MPos>
 		{

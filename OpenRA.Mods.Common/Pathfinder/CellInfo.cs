@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 	/// <summary>
 	/// Stores information about nodes in the pathfinding graph
 	/// </summary>
-	public struct CellInfo
+	public readonly struct CellInfo
 	{
 		/// <summary>
 		/// The cost to move from the start up to this node

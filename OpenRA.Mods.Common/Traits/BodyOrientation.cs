@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Fudge the coordinate system angles to simulate non-top-down perspective in mods with square cells.")]
 		public readonly bool UseClassicPerspectiveFudge = true;
 
-		public WVec LocalToWorld(WVec vec)
+		public WVec LocalToWorld(in WVec vec)
 		{
 			// Rotate by 90 degrees
 			if (!UseClassicPerspectiveFudge)
@@ -96,7 +96,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public WAngle CameraPitch => info.CameraPitch;
 
-		public WVec LocalToWorld(WVec vec)
+		public WVec LocalToWorld(in WVec vec)
 		{
 			return info.LocalToWorld(vec);
 		}

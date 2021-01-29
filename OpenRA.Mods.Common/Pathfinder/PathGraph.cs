@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 		Actor Actor { get; }
 	}
 
-	public struct GraphConnection
+	public readonly struct GraphConnection
 	{
 		public static readonly CostComparer ConnectionCostComparer = CostComparer.Instance;
 

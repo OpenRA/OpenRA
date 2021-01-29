@@ -24,7 +24,7 @@ using OpenRA.Traits;
 
 namespace OpenRA
 {
-	struct BinaryDataHeader
+	readonly struct BinaryDataHeader
 	{
 		public readonly byte Format;
 		public readonly uint TilesOffset;
@@ -1225,7 +1225,7 @@ namespace OpenRA
 			return AllEdgeCells.Random(rand);
 		}
 
-		public WDist DistanceToEdge(WPos pos, WVec dir)
+		public WDist DistanceToEdge(WPos pos, in WVec dir)
 		{
 			var projectedPos = pos - new WVec(0, pos.Z, pos.Z);
 			var x = dir.X == 0 ? int.MaxValue : ((dir.X < 0 ? ProjectedTopLeft.X : ProjectedBottomRight.X) - projectedPos.X) / dir.X;

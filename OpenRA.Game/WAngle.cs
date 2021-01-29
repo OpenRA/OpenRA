@@ -19,7 +19,7 @@ namespace OpenRA
 	/// <summary>
 	/// 1D angle - 1024 units = 360 degrees.
 	/// </summary>
-	public struct WAngle : IScriptBindable, ILuaAdditionBinding, ILuaSubtractionBinding, ILuaEqualityBinding, IEquatable<WAngle>
+	public readonly struct WAngle : IScriptBindable, ILuaAdditionBinding, ILuaSubtractionBinding, ILuaEqualityBinding, IEquatable<WAngle>
 	{
 		public readonly int Angle;
 		public int AngleSquared => (int)Angle * Angle;

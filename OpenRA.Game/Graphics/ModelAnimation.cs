@@ -14,7 +14,7 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Graphics
 {
-	public struct ModelAnimation
+	public readonly struct ModelAnimation
 	{
 		public readonly IModel Model;
 		public readonly Func<WVec> OffsetFunc;

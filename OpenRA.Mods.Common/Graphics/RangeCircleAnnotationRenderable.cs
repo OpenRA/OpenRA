@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Graphics
 		public bool IsDecoration => true;
 
 		public IRenderable WithZOffset(int newOffset) { return new RangeCircleAnnotationRenderable(centerPosition, radius, newOffset, color, width, borderColor, borderWidth); }
-		public IRenderable OffsetBy(WVec vec) { return new RangeCircleAnnotationRenderable(centerPosition + vec, radius, zOffset, color, width, borderColor, borderWidth); }
+		public IRenderable OffsetBy(in WVec vec) { return new RangeCircleAnnotationRenderable(centerPosition + vec, radius, zOffset, color, width, borderColor, borderWidth); }
 		public IRenderable AsDecoration() { return this; }
 
 		public IFinalizedRenderable PrepareRender(WorldRenderer wr) { return this; }

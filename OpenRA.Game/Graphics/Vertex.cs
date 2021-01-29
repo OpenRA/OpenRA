@@ -14,7 +14,7 @@ using System.Runtime.InteropServices;
 namespace OpenRA.Graphics
 {
 	[StructLayout(LayoutKind.Sequential)]
-	public struct Vertex
+	public readonly struct Vertex
 	{
 		// 3d position
 		public readonly float X, Y, Z;

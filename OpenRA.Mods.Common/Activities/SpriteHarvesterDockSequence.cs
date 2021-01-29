@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly WithDockingAnimationInfo wda;
 		protected bool dockAnimPlayed;
 
-		public SpriteHarvesterDockSequence(Actor self, Actor refinery, WAngle dockAngle, bool isDragRequired, WVec dragOffset, int dragLength)
+		public SpriteHarvesterDockSequence(Actor self, Actor refinery, WAngle dockAngle, bool isDragRequired, in WVec dragOffset, int dragLength)
 			: base(self, refinery, dockAngle, isDragRequired, dragOffset, dragLength)
 		{
 			wsb = self.Trait<WithSpriteBody>();

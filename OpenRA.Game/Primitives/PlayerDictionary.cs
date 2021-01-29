@@ -17,7 +17,7 @@ namespace OpenRA.Primitives
 	/// <summary>
 	/// Provides a mapping of players to values, as well as fast lookup by player index.
 	/// </summary>
-	public struct PlayerDictionary<T> : IReadOnlyList<T>, IReadOnlyDictionary<Player, T> where T : class
+	public readonly struct PlayerDictionary<T> : IReadOnlyList<T>, IReadOnlyDictionary<Player, T> where T : class
 	{
 		readonly T[] valueByPlayerIndex;
 		readonly Dictionary<Player, T> valueByPlayer;

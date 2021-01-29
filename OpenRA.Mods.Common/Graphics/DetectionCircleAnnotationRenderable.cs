@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.Graphics
 				trailCount, trailSeparation, trailAngle, color, width, borderColor, borderWidth);
 		}
 
-		public IRenderable OffsetBy(WVec vec)
+		public IRenderable OffsetBy(in WVec vec)
 		{
 			return new DetectionCircleAnnotationRenderable(centerPosition + vec, radius, zOffset,
 				trailCount, trailSeparation, trailAngle, color, width, borderColor, borderWidth);

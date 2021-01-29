@@ -15,7 +15,7 @@ using OpenRA.Scripting;
 
 namespace OpenRA.Primitives
 {
-	public struct Color : IEquatable<Color>, IScriptBindable
+	public readonly struct Color : IEquatable<Color>, IScriptBindable
 	{
 		readonly long argb;
 

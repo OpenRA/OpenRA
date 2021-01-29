@@ -373,7 +373,7 @@ namespace OpenRA.Graphics
 		}
 
 		// For scaling vectors to pixel sizes in the model renderer
-		public float3 ScreenVectorComponents(WVec vec)
+		public float3 ScreenVectorComponents(in WVec vec)
 		{
 			return new float3(
 				(float)TileSize.Width * vec.X / TileScale,
@@ -382,13 +382,13 @@ namespace OpenRA.Graphics
 		}
 
 		// For scaling vectors to pixel sizes in the model renderer
-		public float[] ScreenVector(WVec vec)
+		public float[] ScreenVector(in WVec vec)
 		{
 			var xyz = ScreenVectorComponents(vec);
 			return new[] { xyz.X, xyz.Y, xyz.Z, 1f };
 		}
 
-		public int2 ScreenPxOffset(WVec vec)
+		public int2 ScreenPxOffset(in WVec vec)
 		{
 			// Round to nearest pixel
 			var xyz = ScreenVectorComponents(vec);

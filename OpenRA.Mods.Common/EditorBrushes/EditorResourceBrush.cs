@@ -108,7 +108,7 @@ namespace OpenRA.Mods.Common.Widgets
 		}
 	}
 
-	struct CellResource
+	readonly struct CellResource
 	{
 		public readonly CPos Cell;
 		public readonly ResourceTile ResourceTile;

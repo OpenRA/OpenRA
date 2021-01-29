@@ -108,7 +108,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		WVec CalculateTargetableOffset(Actor self, WVec offset)
+		WVec CalculateTargetableOffset(Actor self, in WVec offset)
 		{
 			var localOffset = offset;
 			var quantizedBodyOrientation = orientation.QuantizeOrientation(self, self.Orientation);

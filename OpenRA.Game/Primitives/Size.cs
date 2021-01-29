@@ -13,7 +13,7 @@ using System;
 
 namespace OpenRA.Primitives
 {
-	public struct Size : IEquatable<Size>
+	public readonly struct Size : IEquatable<Size>
 	{
 		public readonly int Width;
 		public readonly int Height;

@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.HitShapes
 			OuterRadius = Radius + new WDist(Math.Max(PointA.Length, PointB.Length));
 		}
 
-		public WDist DistanceFromEdge(WVec v)
+		public WDist DistanceFromEdge(in WVec v)
 		{
 			var p = new int2(v.X, v.Y);
 

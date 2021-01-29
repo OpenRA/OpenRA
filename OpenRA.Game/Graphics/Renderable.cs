@@ -21,7 +21,7 @@ namespace OpenRA.Graphics
 		bool IsDecoration { get; }
 
 		IRenderable WithZOffset(int newOffset);
-		IRenderable OffsetBy(WVec offset);
+		IRenderable OffsetBy(in WVec offset);
 		IRenderable AsDecoration();
 
 		IFinalizedRenderable PrepareRender(WorldRenderer wr);

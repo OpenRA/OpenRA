@@ -739,7 +739,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			return desiredVFacing;
 		}
 
-		WVec HomingTick(World world, WVec tarDistVec, int relTarHorDist)
+		WVec HomingTick(World world, in WVec tarDistVec, int relTarHorDist)
 		{
 			int predClfHgt = 0;
 			int predClfDist = 0;

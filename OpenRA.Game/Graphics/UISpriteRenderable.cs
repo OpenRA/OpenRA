@@ -44,7 +44,7 @@ namespace OpenRA.Graphics
 
 		public IPalettedRenderable WithPalette(PaletteReference newPalette) { return new UISpriteRenderable(sprite, effectiveWorldPos, screenPos, zOffset, newPalette, scale, alpha); }
 		public IRenderable WithZOffset(int newOffset) { return this; }
-		public IRenderable OffsetBy(WVec vec) { return this; }
+		public IRenderable OffsetBy(in WVec vec) { return this; }
 		public IRenderable AsDecoration() { return this; }
 
 		public IFinalizedRenderable PrepareRender(WorldRenderer wr) { return this; }

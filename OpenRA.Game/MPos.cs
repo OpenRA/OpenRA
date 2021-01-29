@@ -14,7 +14,7 @@ using OpenRA.Primitives;
 
 namespace OpenRA
 {
-	public struct MPos : IEquatable<MPos>
+	public readonly struct MPos : IEquatable<MPos>
 	{
 		public readonly int U, V;
 
@@ -66,7 +66,7 @@ namespace OpenRA
 	/// <summary>
 	/// Projected map position
 	/// </summary>
-	public struct PPos : IEquatable<PPos>
+	public readonly struct PPos : IEquatable<PPos>
 	{
 		public readonly int U, V;
 

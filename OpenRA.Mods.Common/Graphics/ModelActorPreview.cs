@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Graphics
 		readonly WVec offset;
 		readonly int zOffset;
 
-		public ModelPreview(ModelAnimation[] components, WVec offset, int zOffset, float scale, WAngle lightPitch, WAngle lightYaw,
+		public ModelPreview(ModelAnimation[] components, in WVec offset, int zOffset, float scale, WAngle lightPitch, WAngle lightYaw,
 			float[] lightAmbientColor, float[] lightDiffuseColor, WAngle cameraPitch,
 			PaletteReference colorPalette, PaletteReference normalsPalette, PaletteReference shadowPalette)
 		{
