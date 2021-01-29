@@ -80,7 +80,7 @@ namespace OpenRA.Mods.Common.Traits
 			All = Top | Right | Bottom | Left
 		}
 
-		struct TileInfo
+		readonly struct TileInfo
 		{
 			public readonly float3 ScreenPosition;
 			public readonly byte Variant;

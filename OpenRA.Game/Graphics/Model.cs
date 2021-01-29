@@ -29,7 +29,7 @@ namespace OpenRA.Graphics
 		Rectangle AggregateBounds { get; }
 	}
 
-	public struct ModelRenderData
+	public readonly struct ModelRenderData
 	{
 		public readonly int Start;
 		public readonly int Count;

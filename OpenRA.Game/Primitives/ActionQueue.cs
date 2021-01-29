@@ -65,7 +65,7 @@ namespace OpenRA.Primitives
 		}
 	}
 
-	struct DelayedAction : IComparable<DelayedAction>
+	readonly struct DelayedAction : IComparable<DelayedAction>
 	{
 		public readonly long Time;
 		public readonly Action Action;

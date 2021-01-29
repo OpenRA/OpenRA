@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.Scripting
 
 		readonly List<Triggerable>[] triggerables = Exts.MakeArray(Enum.GetValues(typeof(Trigger)).Length, _ => new List<Triggerable>());
 
-		struct Triggerable : IDisposable
+		readonly struct Triggerable : IDisposable
 		{
 			public readonly LuaFunction Function;
 			public readonly ScriptContext Context;

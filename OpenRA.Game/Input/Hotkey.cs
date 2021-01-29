@@ -13,7 +13,7 @@ using System;
 
 namespace OpenRA
 {
-	public struct Hotkey : IEquatable<Hotkey>
+	public readonly struct Hotkey : IEquatable<Hotkey>
 	{
 		public static Hotkey Invalid = new Hotkey(Keycode.UNKNOWN, Modifiers.None);
 		public bool IsValid()

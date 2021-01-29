@@ -157,7 +157,7 @@ namespace OpenRA.Support
 			Invalid = ~0
 		}
 
-		struct TokenTypeInfo
+		readonly struct TokenTypeInfo
 		{
 			public readonly string Symbol;
 			public readonly Precedence Precedence;

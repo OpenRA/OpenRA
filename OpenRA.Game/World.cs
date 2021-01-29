@@ -576,7 +576,7 @@ namespace OpenRA
 		}
 	}
 
-	public struct TraitPair<T> : IEquatable<TraitPair<T>>
+	public readonly struct TraitPair<T> : IEquatable<TraitPair<T>>
 	{
 		public readonly Actor Actor;
 		public readonly T Trait;

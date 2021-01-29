@@ -34,14 +34,14 @@ namespace OpenRA.Mods.Common.Graphics
 		readonly Polygon bounds;
 		readonly Color color;
 
-		public IsometricSelectionBoxAnnotationRenderable(Actor actor, Polygon bounds, Color color)
+		public IsometricSelectionBoxAnnotationRenderable(Actor actor, in Polygon bounds, Color color)
 		{
 			pos = actor.CenterPosition;
 			this.bounds = bounds;
 			this.color = color;
 		}
 
-		public IsometricSelectionBoxAnnotationRenderable(WPos pos, Polygon bounds, Color color)
+		public IsometricSelectionBoxAnnotationRenderable(WPos pos, in Polygon bounds, Color color)
 		{
 			this.pos = pos;
 			this.bounds = bounds;
@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Graphics
 		public bool IsDecoration => true;
 
 		public IRenderable WithZOffset(int newOffset) { return this; }
-		public IRenderable OffsetBy(WVec vec) { return new IsometricSelectionBoxAnnotationRenderable(pos + vec, bounds, color); }
+		public IRenderable OffsetBy(in WVec vec) { return new IsometricSelectionBoxAnnotationRenderable(pos + vec, bounds, color); }
 		public IRenderable AsDecoration() { return this; }
 
 		public IFinalizedRenderable PrepareRender(WorldRenderer wr) { return this; }

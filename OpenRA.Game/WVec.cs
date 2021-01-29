@@ -17,7 +17,7 @@ using OpenRA.Support;
 
 namespace OpenRA
 {
-	public struct WVec : IScriptBindable, ILuaAdditionBinding, ILuaSubtractionBinding, ILuaUnaryMinusBinding, ILuaEqualityBinding, ILuaTableBinding, IEquatable<WVec>
+	public readonly struct WVec : IScriptBindable, ILuaAdditionBinding, ILuaSubtractionBinding, ILuaUnaryMinusBinding, ILuaEqualityBinding, ILuaTableBinding, IEquatable<WVec>
 	{
 		public readonly int X, Y, Z;
 
@@ -26,17 +26,17 @@ namespace OpenRA
 
 		public static readonly WVec Zero = new WVec(0, 0, 0);
 
-		public static WVec operator +(WVec a, WVec b) { return new WVec(a.X + b.X, a.Y + b.Y, a.Z + b.Z); }
-		public static WVec operator -(WVec a, WVec b) { return new WVec(a.X - b.X, a.Y - b.Y, a.Z - b.Z); }
-		public static WVec operator -(WVec a) { return new WVec(-a.X, -a.Y, -a.Z); }
-		public static WVec operator /(WVec a, int b) { return new WVec(a.X / b, a.Y / b, a.Z / b); }
-		public static WVec operator *(int a, WVec b) { return new WVec(a * b.X, a * b.Y, a * b.Z); }
-		public static WVec operator *(WVec a, int b) { return b * a; }
+		public static WVec operator +(in WVec a, in WVec b) { return new WVec(a.X + b.X, a.Y + b.Y, a.Z + b.Z); }
+		public static WVec operator -(in WVec a, in WVec b) { return new WVec(a.X - b.X, a.Y - b.Y, a.Z - b.Z); }
+		public static WVec operator -(in WVec a) { return new WVec(-a.X, -a.Y, -a.Z); }
+		public static WVec operator /(in WVec a, int b) { return new WVec(a.X / b, a.Y / b, a.Z / b); }
+		public static WVec operator *(int a, in WVec b) { return new WVec(a * b.X, a * b.Y, a * b.Z); }
+		public static WVec operator *(in WVec a, int b) { return b * a; }
 
-		public static bool operator ==(WVec me, WVec other) { return me.X == other.X && me.Y == other.Y && me.Z == other.Z; }
-		public static bool operator !=(WVec me, WVec other) { return !(me == other); }
+		public static bool operator ==(in WVec me, in WVec other) { return me.X == other.X && me.Y == other.Y && me.Z == other.Z; }
+		public static bool operator !=(in WVec me, in WVec other) { return !(me == other); }
 
-		public static int Dot(WVec a, WVec b) { return a.X * b.X + a.Y * b.Y + a.Z * b.Z; }
+		public static int Dot(in WVec a, in WVec b) { return a.X * b.X + a.Y * b.Y + a.Z * b.Z; }
 		public long LengthSquared => (long)X * X + (long)Y * Y + (long)Z * Z;
 		public int Length => (int)Exts.ISqrt(LengthSquared);
 		public long HorizontalLengthSquared => (long)X * X + (long)Y * Y;
@@ -73,9 +73,9 @@ namespace OpenRA
 			}
 		}
 
-		public static WVec Lerp(WVec a, WVec b, int mul, int div) { return a + (b - a) * mul / div; }
+		public static WVec Lerp(in WVec a, in WVec b, int mul, int div) { return a + (b - a) * mul / div; }
 
-		public static WVec LerpQuadratic(WVec a, WVec b, WAngle pitch, int mul, int div)
+		public static WVec LerpQuadratic(in WVec a, in WVec b, WAngle pitch, int mul, int div)
 		{
 			// Start with a linear lerp between the points
 			var ret = Lerp(a, b, mul, div);

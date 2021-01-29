@@ -92,7 +92,7 @@ namespace OpenRA.Primitives
 	}
 
 	// Opitmized BitSet to be used only when guaranteed to be no more than 64 values.
-	public struct LongBitSet<T> : IEnumerable<string>, IEquatable<LongBitSet<T>> where T : class
+	public readonly struct LongBitSet<T> : IEnumerable<string>, IEquatable<LongBitSet<T>> where T : class
 	{
 		readonly long bits;
 

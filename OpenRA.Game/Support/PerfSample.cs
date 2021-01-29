@@ -14,7 +14,7 @@ using System.Diagnostics;
 
 namespace OpenRA.Support
 {
-	public struct PerfSample : IDisposable
+	public readonly struct PerfSample : IDisposable
 	{
 		readonly string item;
 		readonly long ticks;

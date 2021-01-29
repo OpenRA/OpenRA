@@ -25,7 +25,7 @@ namespace OpenRA
 {
 	public sealed class Actor : IScriptBindable, IScriptNotifyBind, ILuaTableBinding, ILuaEqualityBinding, ILuaToStringBinding, IEquatable<Actor>, IDisposable
 	{
-		internal struct SyncHash
+		internal readonly struct SyncHash
 		{
 			public readonly ISync Trait;
 			readonly Func<object, int> hashFunction;

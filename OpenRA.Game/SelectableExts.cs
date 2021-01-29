@@ -73,7 +73,7 @@ namespace OpenRA.Traits
 			return actors.MaxByOrDefault(a => CalculateActorSelectionPriority(a.Info, a.MouseBounds, selectionPixel, modifiers));
 		}
 
-		static long CalculateActorSelectionPriority(ActorInfo info, Polygon bounds, int2 selectionPixel, Modifiers modifiers)
+		static long CalculateActorSelectionPriority(ActorInfo info, in Polygon bounds, int2 selectionPixel, Modifiers modifiers)
 		{
 			if (bounds.IsEmpty)
 				return info.SelectionPriority(modifiers);

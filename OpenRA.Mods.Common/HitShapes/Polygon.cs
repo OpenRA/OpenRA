@@ -81,7 +81,7 @@ namespace OpenRA.Mods.Common.HitShapes
 			return (ac - ap).LengthSquared;
 		}
 
-		public WDist DistanceFromEdge(WVec v)
+		public WDist DistanceFromEdge(in WVec v)
 		{
 			var p = new int2(v.X, v.Y);
 			var z = Math.Abs(v.Z);

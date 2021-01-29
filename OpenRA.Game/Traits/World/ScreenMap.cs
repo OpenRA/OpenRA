@@ -18,7 +18,7 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Traits
 {
-	public struct ActorBoundsPair
+	public readonly struct ActorBoundsPair
 	{
 		public readonly Actor Actor;
 		public readonly Polygon Bounds;

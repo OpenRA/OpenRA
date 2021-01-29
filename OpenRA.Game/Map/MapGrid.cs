@@ -22,7 +22,7 @@ namespace OpenRA
 	public enum RampSplit { Flat, X, Y }
 	public enum RampCornerHeight { Low = 0, Half = 1, Full = 2 }
 
-	public struct CellRamp
+	public readonly struct CellRamp
 	{
 		public readonly int CenterHeightOffset;
 		public readonly WVec[] Corners;

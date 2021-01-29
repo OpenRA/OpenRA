@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class ExternalCondition : ITick, INotifyCreated
 	{
-		struct TimedToken
+		readonly struct TimedToken
 		{
 			public readonly int Expires;
 			public readonly int Token;

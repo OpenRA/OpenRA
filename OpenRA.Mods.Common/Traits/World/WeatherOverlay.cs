@@ -73,7 +73,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class WeatherOverlay : ITick, IRenderAboveWorld, INotifyViewportZoomExtentsChanged
 	{
-		struct Particle
+		readonly struct Particle
 		{
 			public readonly float2 Pos;
 			public readonly int Size;
@@ -103,7 +103,7 @@ namespace OpenRA.Mods.Common.Traits
 				TailColor = Color.FromArgb(info.LineTailAlphaValue, Color.R, Color.G, Color.B);
 			}
 
-			Particle(Particle source)
+			Particle(in Particle source)
 			{
 				Pos = source.Pos;
 				Size = source.Size;
@@ -117,13 +117,13 @@ namespace OpenRA.Mods.Common.Traits
 				TailColor = source.TailColor;
 			}
 
-			public Particle(Particle source, float2 pos)
+			public Particle(in Particle source, float2 pos)
 				: this(source)
 			{
 				Pos = pos;
 			}
 
-			public Particle(Particle source, float2 pos, int swingDirection, float swingOffset)
+			public Particle(in Particle source, float2 pos, int swingDirection, float swingOffset)
 				: this(source)
 			{
 				Pos = pos;

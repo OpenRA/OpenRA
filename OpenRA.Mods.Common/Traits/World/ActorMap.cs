@@ -246,7 +246,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		struct ActorsAtEnumerable : IEnumerable<Actor>
+		readonly struct ActorsAtEnumerable : IEnumerable<Actor>
 		{
 			readonly InfluenceNode node;
 			public ActorsAtEnumerable(InfluenceNode node) { this.node = node; }

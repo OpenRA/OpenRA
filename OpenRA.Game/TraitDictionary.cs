@@ -249,7 +249,7 @@ namespace OpenRA
 				}
 			}
 
-			struct AllEnumerable : IEnumerable<TraitPair<T>>
+			readonly struct AllEnumerable : IEnumerable<TraitPair<T>>
 			{
 				readonly TraitContainer<T> container;
 				public AllEnumerable(TraitContainer<T> container) { this.container = container; }

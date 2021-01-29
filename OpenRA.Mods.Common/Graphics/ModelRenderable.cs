@@ -90,7 +90,7 @@ namespace OpenRA.Mods.Common.Graphics
 				palette, normalsPalette, shadowPalette, alpha, tint, tintModifiers);
 		}
 
-		public IRenderable OffsetBy(WVec vec)
+		public IRenderable OffsetBy(in WVec vec)
 		{
 			return new ModelRenderable(
 				models, pos + vec, zOffset, camera, scale,

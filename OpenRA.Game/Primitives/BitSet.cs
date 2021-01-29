@@ -75,7 +75,7 @@ namespace OpenRA.Primitives
 		}
 	}
 
-	public struct BitSet<T> : IEnumerable<string>, IEquatable<BitSet<T>> where T : class
+	public readonly struct BitSet<T> : IEnumerable<string>, IEquatable<BitSet<T>> where T : class
 	{
 		readonly BitSetIndex bits;
 

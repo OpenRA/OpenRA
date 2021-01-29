@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.HitShapes
 				throw new YamlException("VerticalTopOffset must be equal to or higher than VerticalBottomOffset.");
 		}
 
-		public WDist DistanceFromEdge(WVec v)
+		public WDist DistanceFromEdge(in WVec v)
 		{
 			return new WDist(Math.Max(0, v.Length - Radius.Length));
 		}

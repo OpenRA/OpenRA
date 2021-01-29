@@ -103,7 +103,7 @@ namespace OpenRA.Mods.Common.HitShapes
 			};
 		}
 
-		public WDist DistanceFromEdge(WVec v)
+		public WDist DistanceFromEdge(in WVec v)
 		{
 			var r = new WVec(
 				Math.Max(Math.Abs(v.X - center.X) - quadrantSize.X, 0),

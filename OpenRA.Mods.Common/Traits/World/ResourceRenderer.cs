@@ -200,7 +200,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public ResourceType GetRenderedResourceType(CPos cell) { return RenderContent[cell].Type; }
 
-		public struct RendererCellContents
+		public readonly struct RendererCellContents
 		{
 			public readonly string Variant;
 			public readonly ResourceType Type;

@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.FileFormats
 			Next = 0x2
 		}
 
-		struct FileGroup
+		readonly struct FileGroup
 		{
 			public readonly string Name;
 			public readonly uint FirstFile;
@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.FileFormats
 			}
 		}
 
-		struct CabDescriptor
+		readonly struct CabDescriptor
 		{
 			public readonly long FileTableOffset;
 			public readonly uint FileTableSize;
@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Common.FileFormats
 			}
 		}
 
-		struct DirectoryDescriptor
+		readonly struct DirectoryDescriptor
 		{
 			public readonly string Name;
 
@@ -94,7 +94,7 @@ namespace OpenRA.Mods.Common.FileFormats
 			}
 		}
 
-		struct FileDescriptor
+		readonly struct FileDescriptor
 		{
 			public readonly uint Index;
 			public readonly CABFlags Flags;
@@ -142,7 +142,7 @@ namespace OpenRA.Mods.Common.FileFormats
 			}
 		}
 
-		struct CommonHeader
+		readonly struct CommonHeader
 		{
 			public const long Size = 16;
 			public readonly uint Version;
@@ -159,7 +159,7 @@ namespace OpenRA.Mods.Common.FileFormats
 			}
 		}
 
-		struct VolumeHeader
+		readonly struct VolumeHeader
 		{
 			public readonly uint DataOffset;
 			public readonly uint DataOffsetHigh;

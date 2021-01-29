@@ -18,7 +18,7 @@ namespace OpenRA
 {
 	[SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Mimic a built-in type alias.")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct float2 : IEquatable<float2>
+	public readonly struct float2 : IEquatable<float2>
 	{
 		public readonly float X, Y;
 

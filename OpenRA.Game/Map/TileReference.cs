@@ -11,7 +11,7 @@
 
 namespace OpenRA
 {
-	public struct TerrainTile
+	public readonly struct TerrainTile
 	{
 		public readonly ushort Type;
 		public readonly byte Index;
@@ -27,7 +27,7 @@ namespace OpenRA
 		public override string ToString() { return Type + "," + Index; }
 	}
 
-	public struct ResourceTile
+	public readonly struct ResourceTile
 	{
 		public readonly byte Type;
 		public readonly byte Index;
