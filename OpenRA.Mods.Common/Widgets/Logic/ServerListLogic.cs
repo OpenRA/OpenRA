@@ -334,14 +334,24 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				List<GameServer> games = null;
 				if (i.Error == null)
 				{
+					games = new List<GameServer>();
 					try
 					{
 						var data = Encoding.UTF8.GetString(i.Result);
 						var yaml = MiniYaml.FromString(data);
-
-						games = yaml.Select(a => new GameServer(a.Value))
-							.Where(gs => gs.Address != null)
-							.ToList();
+						foreach (var node in yaml)
+						{
+							try
+							{
+								var gs = new GameServer(node.Value);
+								if (gs.Address != null)
+									games.Add(gs);
+							}
+							catch
+							{
+								// Ignore any invalid games advertised.
+							}
+						}
 					}
 					catch
 					{
