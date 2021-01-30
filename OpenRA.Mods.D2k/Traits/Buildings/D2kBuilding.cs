@@ -86,7 +86,8 @@ namespace OpenRA.Mods.D2k.Traits.Buildings
 					// Fill the footprint with random variants
 					foreach (var c in info.Tiles(self.Location))
 					{
-						if (!map.Contains(c) || map.CustomTerrain[c] != byte.MaxValue)
+						// Only place on allowed terrain types
+						if (!map.Contains(c) || map.CustomTerrain[c] != byte.MaxValue || !info.TerrainTypes.Contains(map.GetTerrainInfo(c).Type))
 							continue;
 
 						// Don't place under other buildings (or their bib)
@@ -102,7 +103,9 @@ namespace OpenRA.Mods.D2k.Traits.Buildings
 					for (var i = 0; i < template.TilesCount; i++)
 					{
 						var c = self.Location + new CVec(i % template.Size.X, i / template.Size.X);
-						if (!map.Contains(c) || map.CustomTerrain[c] != byte.MaxValue)
+
+						// Only place on allowed terrain types
+						if (!map.Contains(c) || map.CustomTerrain[c] != byte.MaxValue || !info.TerrainTypes.Contains(map.GetTerrainInfo(c).Type))
 							continue;
 
 						// Don't place under other buildings (or their bib)
