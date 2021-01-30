@@ -329,7 +329,11 @@ InitTriggers = function()
 		end
 	end)
 
-	Trigger.OnKilled(SamBarrel, Sam1.Kill)
+	Trigger.OnKilled(SamBarrel, function()
+		if not Sam1.IsDead then
+			Sam1.Kill()
+		end
+	end)
 
 	Trigger.OnAllKilled(SamSites, function()
 		greece.MarkCompletedObjective(KillSams)
