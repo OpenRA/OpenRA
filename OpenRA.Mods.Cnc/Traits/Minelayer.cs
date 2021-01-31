@@ -200,9 +200,8 @@ namespace OpenRA.Mods.Cnc.Traits
 		{
 			readonly List<Actor> minelayers;
 			readonly Minelayer minelayer;
-			readonly Sprite tileOk;
-			readonly Sprite tileUnknown;
-			readonly Sprite tileBlocked;
+			readonly Sprite validTile, unknownTile, blockedTile;
+			readonly float validAlpha, unknownAlpha, blockedAlpha;
 			readonly CPos minefieldStart;
 			readonly bool queued;
 
@@ -215,19 +214,43 @@ namespace OpenRA.Mods.Cnc.Traits
 				minelayer = a.Trait<Minelayer>();
 				var tileset = a.World.Map.Tileset.ToLowerInvariant();
 				if (a.World.Map.Rules.Sequences.HasSequence("overlay", "{0}-{1}".F(minelayer.Info.TileValidName, tileset)))
-					tileOk = a.World.Map.Rules.Sequences.GetSequence("overlay", "{0}-{1}".F(minelayer.Info.TileValidName, tileset)).GetSprite(0);
+				{
+					var validSequence = a.World.Map.Rules.Sequences.GetSequence("overlay", "{0}-{1}".F(minelayer.Info.TileValidName, tileset));
+					validTile = validSequence.GetSprite(0);
+					validAlpha = validSequence.GetAlpha(0);
+				}
 				else
-					tileOk = a.World.Map.Rules.Sequences.GetSequence("overlay", minelayer.Info.TileValidName).GetSprite(0);
+				{
+					var validSequence = a.World.Map.Rules.Sequences.GetSequence("overlay", minelayer.Info.TileValidName);
+					validTile = validSequence.GetSprite(0);
+					validAlpha = validSequence.GetAlpha(0);
+				}
 
 				if (a.World.Map.Rules.Sequences.HasSequence("overlay", "{0}-{1}".F(minelayer.Info.TileUnknownName, tileset)))
-					tileUnknown = a.World.Map.Rules.Sequences.GetSequence("overlay", "{0}-{1}".F(minelayer.Info.TileUnknownName, tileset)).GetSprite(0);
+				{
+					var unknownSequence = a.World.Map.Rules.Sequences.GetSequence("overlay", "{0}-{1}".F(minelayer.Info.TileUnknownName, tileset));
+					unknownTile = unknownSequence.GetSprite(0);
+					unknownAlpha = unknownSequence.GetAlpha(0);
+				}
 				else
-					tileUnknown = a.World.Map.Rules.Sequences.GetSequence("overlay", minelayer.Info.TileUnknownName).GetSprite(0);
+				{
+					var unknownSequence = a.World.Map.Rules.Sequences.GetSequence("overlay", minelayer.Info.TileUnknownName);
+					unknownTile = unknownSequence.GetSprite(0);
+					unknownAlpha = unknownSequence.GetAlpha(0);
+				}
 
 				if (a.World.Map.Rules.Sequences.HasSequence("overlay", "{0}-{1}".F(minelayer.Info.TileInvalidName, tileset)))
-					tileBlocked = a.World.Map.Rules.Sequences.GetSequence("overlay", "{0}-{1}".F(minelayer.Info.TileInvalidName, tileset)).GetSprite(0);
+				{
+					var blockedSequence = a.World.Map.Rules.Sequences.GetSequence("overlay", "{0}-{1}".F(minelayer.Info.TileInvalidName, tileset));
+					blockedTile = blockedSequence.GetSprite(0);
+					blockedAlpha = blockedSequence.GetAlpha(0);
+				}
 				else
-					tileBlocked = a.World.Map.Rules.Sequences.GetSequence("overlay", minelayer.Info.TileInvalidName).GetSprite(0);
+				{
+					var blockedSequence = a.World.Map.Rules.Sequences.GetSequence("overlay", minelayer.Info.TileInvalidName);
+					blockedTile = blockedSequence.GetSprite(0);
+					blockedAlpha = blockedSequence.GetAlpha(0);
+				}
 			}
 
 			public void AddMinelayer(Actor a, CPos xy)
@@ -276,18 +299,31 @@ namespace OpenRA.Mods.Cnc.Traits
 				var pal = wr.Palette(TileSet.TerrainPaletteInternalName);
 				foreach (var c in minefield)
 				{
-					var tile = tileOk;
+					var tile = validTile;
+					var alpha = validAlpha;
 					if (!world.Map.Contains(c))
-						tile = tileBlocked;
+					{
+						tile = blockedTile;
+						alpha = blockedAlpha;
+					}
 					else if (world.ShroudObscures(c))
-						tile = tileBlocked;
+					{
+						tile = blockedTile;
+						alpha = blockedAlpha;
+					}
 					else if (world.FogObscures(c))
-						tile = tileUnknown;
+					{
+						tile = unknownTile;
+						alpha = unknownAlpha;
+					}
 					else if (!this.minelayer.IsCellAcceptable(minelayer, c)
 						|| !movement.CanEnterCell(c, null, BlockedByActor.Immovable) || (mobile != null && !mobile.CanStayInCell(c)))
-						tile = tileBlocked;
+					{
+						tile = blockedTile;
+						alpha = blockedAlpha;
+					}
 
-					yield return new SpriteRenderable(tile, world.Map.CenterOfCell(c), WVec.Zero, -511, pal, 1f, true, TintModifiers.IgnoreWorldTint);
+					yield return new SpriteRenderable(tile, world.Map.CenterOfCell(c), WVec.Zero, -511, pal, 1f, alpha, float3.Ones, TintModifiers.IgnoreWorldTint, true);
 				}
 			}
 

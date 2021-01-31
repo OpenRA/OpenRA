@@ -110,6 +110,7 @@ namespace OpenRA.Mods.Common.Traits
 			readonly char[] footprint;
 			readonly CVec dimensions;
 			readonly Sprite tile;
+			readonly float alpha;
 			readonly SupportPowerManager manager;
 			readonly string order;
 
@@ -124,7 +125,10 @@ namespace OpenRA.Mods.Common.Traits
 				this.power = power;
 				footprint = power.info.Footprint.Where(c => !char.IsWhiteSpace(c)).ToArray();
 				dimensions = power.info.Dimensions;
-				tile = world.Map.Rules.Sequences.GetSequence("overlay", "target-select").GetSprite(0);
+
+				var sequence = world.Map.Rules.Sequences.GetSequence("overlay", "target-select");
+				tile = sequence.GetSprite(0);
+				alpha = sequence.GetAlpha(0);
 			}
 
 			protected override IEnumerable<Order> OrderInner(World world, CPos cell, int2 worldPixel, MouseInput mi)
@@ -161,7 +165,7 @@ namespace OpenRA.Mods.Common.Traits
 				var pal = wr.Palette(TileSet.TerrainPaletteInternalName);
 
 				foreach (var t in power.CellsMatching(xy, footprint, dimensions))
-					yield return new SpriteRenderable(tile, wr.World.Map.CenterOfCell(t), WVec.Zero, -511, pal, 1f, true, TintModifiers.IgnoreWorldTint);
+					yield return new SpriteRenderable(tile, wr.World.Map.CenterOfCell(t), WVec.Zero, -511, pal, 1f, alpha, float3.Ones, TintModifiers.IgnoreWorldTint, true);
 			}
 
 			protected override string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)

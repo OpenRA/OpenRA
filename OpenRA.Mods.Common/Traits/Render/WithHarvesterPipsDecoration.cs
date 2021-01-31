@@ -89,7 +89,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			for (var i = 0; i < Info.PipCount; i++)
 			{
 				pips.PlayRepeating(GetPipSequence(i));
-				yield return new UISpriteRenderable(pips.Image, self.CenterPosition, screenPos, 0, palette, 1f);
+				yield return new UISpriteRenderable(pips.Image, self.CenterPosition, screenPos, 0, palette);
 
 				screenPos += pipStride;
 			}

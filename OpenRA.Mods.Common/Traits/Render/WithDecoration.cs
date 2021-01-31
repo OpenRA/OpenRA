@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 			return new IRenderable[]
 			{
-				new UISpriteRenderable(anim.Image, self.CenterPosition, screenPos - (0.5f * anim.Image.Size.XY).ToInt2(), 0, GetPalette(self, wr), 1f)
+				new UISpriteRenderable(anim.Image, self.CenterPosition, screenPos - (0.5f * anim.Image.Size.XY).ToInt2(), 0, GetPalette(self, wr))
 			};
 		}
 

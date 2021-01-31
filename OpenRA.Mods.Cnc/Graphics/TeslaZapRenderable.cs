@@ -149,7 +149,7 @@ namespace OpenRA.Mods.Cnc.Graphics
 
 				var pos = wr.ProjectedPosition((z + new float2(step[2], step[3])).ToInt2());
 				var tintModifiers = s.IgnoreWorldTint ? TintModifiers.IgnoreWorldTint : TintModifiers.None;
-				rs.Add(new SpriteRenderable(s.GetSprite(step[4]), pos, WVec.Zero, 0, pal, 1f, true, tintModifiers).PrepareRender(wr));
+				rs.Add(new SpriteRenderable(s.GetSprite(step[4]), pos, WVec.Zero, 0, pal, 1f, s.GetAlpha(step[4]), float3.Ones, tintModifiers, true).PrepareRender(wr));
 
 				z += new float2(step[0], step[1]);
 				if (rs.Count >= 1000)

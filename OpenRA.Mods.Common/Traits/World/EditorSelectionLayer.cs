@@ -43,8 +43,8 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly EditorSelectionLayerInfo info;
 		readonly Map map;
-		readonly Sprite copySprite;
-		readonly Sprite pasteSprite;
+		readonly Sprite copyTile, pasteTile;
+		readonly float copyAlpha, pasteAlpha;
 		PaletteReference palette;
 
 		public CellRegion CopyRegion { get; private set; }
@@ -57,8 +57,14 @@ namespace OpenRA.Mods.Common.Traits
 
 			this.info = info;
 			map = self.World.Map;
-			copySprite = map.Rules.Sequences.GetSequence(info.Image, info.CopySequence).GetSprite(0);
-			pasteSprite = map.Rules.Sequences.GetSequence(info.Image, info.PasteSequence).GetSprite(0);
+
+			var copySequence = map.Rules.Sequences.GetSequence(info.Image, info.CopySequence);
+			copyTile = copySequence.GetSprite(0);
+			copyAlpha = copySequence.GetAlpha(0);
+
+			var pasteSequence = map.Rules.Sequences.GetSequence(info.Image, info.PasteSequence);
+			pasteTile = pasteSequence.GetSprite(0);
+			pasteAlpha = pasteSequence.GetAlpha(0);
 		}
 
 		void IWorldLoaded.WorldLoaded(World w, WorldRenderer wr)
@@ -91,13 +97,13 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (CopyRegion != null)
 				foreach (var c in CopyRegion)
-					yield return new SpriteRenderable(copySprite, wr.World.Map.CenterOfCell(c),
-						WVec.Zero, -511, palette, 1f, info.FootprintAlpha, float3.Ones, TintModifiers.IgnoreWorldTint, true);
+					yield return new SpriteRenderable(copyTile, wr.World.Map.CenterOfCell(c),
+							WVec.Zero, -511, palette, 1f, copyAlpha * info.FootprintAlpha, float3.Ones, TintModifiers.IgnoreWorldTint, true);
 
 			if (PasteRegion != null)
 				foreach (var c in PasteRegion)
-					yield return new SpriteRenderable(pasteSprite, wr.World.Map.CenterOfCell(c),
-						WVec.Zero, -511, palette, 1f, info.FootprintAlpha, float3.Ones, TintModifiers.IgnoreWorldTint, true);
+					yield return new SpriteRenderable(pasteTile, wr.World.Map.CenterOfCell(c),
+						WVec.Zero, -511, palette, 1f, pasteAlpha * info.FootprintAlpha, float3.Ones, TintModifiers.IgnoreWorldTint, true);
 		}
 
 		bool IRenderAboveShroud.SpatiallyPartitionable { get { return false; } }

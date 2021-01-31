@@ -45,9 +45,8 @@ namespace OpenRA.Mods.D2k.Traits
 	{
 		readonly D2kActorPreviewPlaceBuildingPreviewInfo info;
 		readonly bool checkUnsafeTiles;
-		readonly Sprite buildOk;
-		readonly Sprite buildUnsafe;
-		readonly Sprite buildBlocked;
+		readonly Sprite validTile, unsafeTile, blockedTile;
+		readonly float validAlpha, unsafeAlpha, blockedAlpha;
 		readonly CachedTransform<CPos, List<CPos>> unpathableCells;
 
 		public D2kActorPreviewPlaceBuildingPreviewPreview(WorldRenderer wr, ActorInfo ai, D2kActorPreviewPlaceBuildingPreviewInfo info, TypeDictionary init)
@@ -61,9 +60,17 @@ namespace OpenRA.Mods.D2k.Traits
 			var techTree = init.Get<OwnerInit>().Value(world).PlayerActor.Trait<TechTree>();
 			checkUnsafeTiles = info.RequiresPrerequisites.Any() && techTree.HasPrerequisites(info.RequiresPrerequisites);
 
-			buildOk = sequences.GetSequence("overlay", "build-valid").GetSprite(0);
-			buildUnsafe = sequences.GetSequence("overlay", "build-unsafe").GetSprite(0);
-			buildBlocked = sequences.GetSequence("overlay", "build-invalid").GetSprite(0);
+			var validSequence = sequences.GetSequence("overlay", "build-valid");
+			validTile = validSequence.GetSprite(0);
+			validAlpha = validSequence.GetAlpha(0);
+
+			var unsafeSequence = sequences.GetSequence("overlay", "build-unsafe");
+			unsafeTile = unsafeSequence.GetSprite(0);
+			unsafeAlpha = unsafeSequence.GetAlpha(0);
+
+			var blockedSequence = sequences.GetSequence("overlay", "build-invalid");
+			blockedTile = blockedSequence.GetSprite(0);
+			blockedAlpha = blockedSequence.GetAlpha(0);
 
 			var buildingInfo = ai.TraitInfo<BuildingInfo>();
 			unpathableCells = new CachedTransform<CPos, List<CPos>>(topLeft => buildingInfo.OccupiedTiles(topLeft).ToList());
@@ -81,14 +88,14 @@ namespace OpenRA.Mods.D2k.Traits
 				if ((c.Value & filter) == 0)
 					continue;
 
-				var tile = (c.Value & PlaceBuildingCellType.Invalid) != 0 ? buildBlocked :
-					(checkUnsafeTiles && candidateSafeTiles.Contains(c.Key) && info.UnsafeTerrainTypes.Contains(wr.World.Map.GetTerrainInfo(c.Key).Type))
-					? buildUnsafe : buildOk;
+				var isUnsafe = checkUnsafeTiles && candidateSafeTiles.Contains(c.Key) && info.UnsafeTerrainTypes.Contains(wr.World.Map.GetTerrainInfo(c.Key).Type);
+				var tile = (c.Value & PlaceBuildingCellType.Invalid) != 0 ? blockedTile : isUnsafe ? unsafeTile : validTile;
+				var sequenceAlpha = (c.Value & PlaceBuildingCellType.Invalid) != 0 ? blockedAlpha : isUnsafe ? unsafeAlpha : validAlpha;
 
 				var pos = wr.World.Map.CenterOfCell(c.Key);
 				var offset = new WVec(0, 0, topLeftPos.Z - pos.Z);
-				var alpha = (c.Value & PlaceBuildingCellType.LineBuild) != 0 ? info.LineBuildFootprintAlpha : info.FootprintAlpha;
-				yield return new SpriteRenderable(tile, pos, offset, -511, palette, 1f, alpha, float3.Ones, TintModifiers.IgnoreWorldTint, true);
+				var traitAlpha = (c.Value & PlaceBuildingCellType.LineBuild) != 0 ? info.LineBuildFootprintAlpha : info.FootprintAlpha;
+				yield return new SpriteRenderable(tile, pos, offset, -511, palette, 1f, sequenceAlpha * traitAlpha, float3.Ones, TintModifiers.IgnoreWorldTint, true);
 			}
 		}
 	}

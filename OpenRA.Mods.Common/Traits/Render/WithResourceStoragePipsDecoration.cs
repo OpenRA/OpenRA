@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			for (var i = 0; i < Info.PipCount; i++)
 			{
 				pips.PlayRepeating(player.Resources * Info.PipCount > i * player.ResourceCapacity ? Info.FullSequence : Info.EmptySequence);
-				yield return new UISpriteRenderable(pips.Image, self.CenterPosition, screenPos, 0, palette, 1f);
+				yield return new UISpriteRenderable(pips.Image, self.CenterPosition, screenPos, 0, palette);
 
 				screenPos += pipStride;
 			}

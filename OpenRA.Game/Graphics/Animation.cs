@@ -55,12 +55,13 @@ namespace OpenRA.Graphics
 		public IRenderable[] Render(WPos pos, WVec offset, int zOffset, PaletteReference palette)
 		{
 			var tintModifiers = CurrentSequence.IgnoreWorldTint ? TintModifiers.IgnoreWorldTint : TintModifiers.None;
-			var imageRenderable = new SpriteRenderable(Image, pos, offset, CurrentSequence.ZOffset + zOffset, palette, CurrentSequence.Scale, IsDecoration, tintModifiers);
+			var alpha = CurrentSequence.GetAlpha(CurrentFrame);
+			var imageRenderable = new SpriteRenderable(Image, pos, offset, CurrentSequence.ZOffset + zOffset, palette, CurrentSequence.Scale, alpha, float3.Ones, tintModifiers, IsDecoration);
 
 			if (CurrentSequence.ShadowStart >= 0)
 			{
 				var shadow = CurrentSequence.GetShadow(CurrentFrame, facingFunc());
-				var shadowRenderable = new SpriteRenderable(shadow, pos, offset, CurrentSequence.ShadowZOffset + zOffset, palette, CurrentSequence.Scale, true, tintModifiers);
+				var shadowRenderable = new SpriteRenderable(shadow, pos, offset, CurrentSequence.ShadowZOffset + zOffset, palette, CurrentSequence.Scale, 1f, float3.Ones, tintModifiers, true);
 				return new IRenderable[] { shadowRenderable, imageRenderable };
 			}
 
@@ -72,7 +73,8 @@ namespace OpenRA.Graphics
 			scale *= CurrentSequence.Scale;
 			var screenOffset = (scale * wr.ScreenVectorComponents(offset)).XY.ToInt2();
 			var imagePos = pos + screenOffset - new int2((int)(scale * Image.Size.X / 2), (int)(scale * Image.Size.Y / 2));
-			var imageRenderable = new UISpriteRenderable(Image, WPos.Zero + offset, imagePos, CurrentSequence.ZOffset + zOffset, palette, scale);
+			var alpha = CurrentSequence.GetAlpha(CurrentFrame);
+			var imageRenderable = new UISpriteRenderable(Image, WPos.Zero + offset, imagePos, CurrentSequence.ZOffset + zOffset, palette, scale, alpha);
 
 			if (CurrentSequence.ShadowStart >= 0)
 			{
