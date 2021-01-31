@@ -186,9 +186,28 @@ namespace OpenRA.Mods.Common.Activities
 			if (armaments.Count == 0)
 				return AttackStatus.UnableToAttack;
 
-			// Update ranges
-			minRange = armaments.Max(a => a.Weapon.MinRange);
-			maxRange = armaments.Min(a => a.MaxRange());
+			// Determine whether the actor needs to move before it can fire:
+			// * The first entry in Attack*.Info.Armaments defines the actor's "primary" armament(s),
+			//   which are used for determining the ideal attack range for the actor.
+			//   Additional entries are treated as secondary armaments which will be used if they are in
+			//   range, but do not influence the actor's movement.
+			// * If the actor can move, the ideal location is calculated as the intersection of the ranges
+			//   of the primary armaments. This ensures the actor is able to attack using all of its
+			//   primary armaments.
+			// * If the actor cannot move, the ideal location check simplifies to whether *any* primary
+			//   armament is able to fire, calculated using the union of ranges, since attacking using
+			//   a subset of weapons is better than sitting idle.
+			var primaryArmaments = armaments.Where(a => a.Info.Name == attack.Info.Armaments.First());
+			if (move != null)
+			{
+				minRange = primaryArmaments.Max(a => a.Weapon.MinRange);
+				maxRange = primaryArmaments.Min(a => a.MaxRange());
+			}
+			else
+			{
+				minRange = primaryArmaments.Min(a => a.Weapon.MinRange);
+				maxRange = primaryArmaments.Max(a => a.MaxRange());
+			}
 
 			var pos = self.CenterPosition;
 			var mobile = move as Mobile;
