@@ -38,6 +38,7 @@ namespace OpenRA.Graphics
 		Sprite GetSprite(int frame);
 		Sprite GetSprite(int frame, WAngle facing);
 		Sprite GetShadow(int frame, WAngle facing);
+		float GetAlpha(int frame);
 	}
 
 	public interface ISpriteSequenceLoader

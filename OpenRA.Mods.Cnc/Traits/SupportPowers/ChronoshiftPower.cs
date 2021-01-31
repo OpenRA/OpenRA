@@ -143,6 +143,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			readonly char[] footprint;
 			readonly CVec dimensions;
 			readonly Sprite tile;
+			readonly float alpha;
 			readonly SupportPowerManager manager;
 			readonly string order;
 
@@ -157,9 +158,11 @@ namespace OpenRA.Mods.Cnc.Traits
 				this.power = power;
 
 				var info = (ChronoshiftPowerInfo)power.Info;
+				var s = world.Map.Rules.Sequences.GetSequence(info.FootprintImage, info.SourceFootprintSequence);
 				footprint = info.Footprint.Where(c => !char.IsWhiteSpace(c)).ToArray();
 				dimensions = info.Dimensions;
-				tile = world.Map.Rules.Sequences.GetSequence(info.FootprintImage, info.SourceFootprintSequence).GetSprite(0);
+				tile = s.GetSprite(0);
+				alpha = s.GetAlpha(0);
 			}
 
 			protected override IEnumerable<Order> OrderInner(World world, CPos cell, int2 worldPixel, MouseInput mi)
@@ -203,7 +206,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				var tiles = power.CellsMatching(xy, footprint, dimensions);
 				var palette = wr.Palette(((ChronoshiftPowerInfo)power.Info).TargetOverlayPalette);
 				foreach (var t in tiles)
-					yield return new SpriteRenderable(tile, wr.World.Map.CenterOfCell(t), WVec.Zero, -511, palette, 1f, true, TintModifiers.IgnoreWorldTint);
+					yield return new SpriteRenderable(tile, wr.World.Map.CenterOfCell(t), WVec.Zero, -511, palette, 1f, alpha, float3.Ones, TintModifiers.IgnoreWorldTint, true);
 			}
 
 			protected override string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
@@ -219,6 +222,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			readonly char[] footprint;
 			readonly CVec dimensions;
 			readonly Sprite validTile, invalidTile, sourceTile;
+			readonly float validAlpha, invalidAlpha, sourceAlpha;
 			readonly SupportPowerManager manager;
 			readonly string order;
 
@@ -236,12 +240,25 @@ namespace OpenRA.Mods.Cnc.Traits
 				var sequences = world.Map.Rules.Sequences;
 				var tilesetValid = info.ValidFootprintSequence + "-" + world.Map.Tileset.ToLowerInvariant();
 				if (sequences.HasSequence(info.FootprintImage, tilesetValid))
-					validTile = sequences.GetSequence(info.FootprintImage, tilesetValid).GetSprite(0);
+				{
+					var validSequence = sequences.GetSequence(info.FootprintImage, tilesetValid);
+					validTile = validSequence.GetSprite(0);
+					validAlpha = validSequence.GetAlpha(0);
+				}
 				else
-					validTile = sequences.GetSequence(info.FootprintImage, info.ValidFootprintSequence).GetSprite(0);
+				{
+					var validSequence = sequences.GetSequence(info.FootprintImage, info.ValidFootprintSequence);
+					validTile = validSequence.GetSprite(0);
+					validAlpha = validSequence.GetAlpha(0);
+				}
 
-				invalidTile = sequences.GetSequence(info.FootprintImage, info.InvalidFootprintSequence).GetSprite(0);
-				sourceTile = sequences.GetSequence(info.FootprintImage, info.SourceFootprintSequence).GetSprite(0);
+				var invalidSequence = sequences.GetSequence(info.FootprintImage, info.InvalidFootprintSequence);
+				invalidTile = invalidSequence.GetSprite(0);
+				invalidAlpha = invalidSequence.GetAlpha(0);
+
+				var sourceSequence = sequences.GetSequence(info.FootprintImage, info.SourceFootprintSequence);
+				sourceTile = sourceSequence.GetSprite(0);
+				sourceAlpha = sourceSequence.GetAlpha(0);
 			}
 
 			protected override IEnumerable<Order> OrderInner(World world, CPos cell, int2 worldPixel, MouseInput mi)
@@ -287,8 +304,10 @@ namespace OpenRA.Mods.Cnc.Traits
 				var delta = xy - sourceLocation;
 				foreach (var t in power.CellsMatching(sourceLocation, footprint, dimensions))
 				{
-					var tile = manager.Self.Owner.Shroud.IsExplored(t + delta) ? validTile : invalidTile;
-					yield return new SpriteRenderable(tile, wr.World.Map.CenterOfCell(t + delta), WVec.Zero, -511, palette, 1f, true, TintModifiers.IgnoreWorldTint);
+					var isValid = manager.Self.Owner.Shroud.IsExplored(t + delta);
+					var tile = isValid ? validTile : invalidTile;
+					var alpha = isValid ? validAlpha : invalidAlpha;
+					yield return new SpriteRenderable(tile, wr.World.Map.CenterOfCell(t + delta), WVec.Zero, -511, palette, 1f, alpha, float3.Ones, TintModifiers.IgnoreWorldTint, true);
 				}
 
 				// Unit previews
@@ -300,7 +319,8 @@ namespace OpenRA.Mods.Cnc.Traits
 						var canEnter = manager.Self.Owner.Shroud.IsExplored(targetCell) &&
 							unit.Trait<Chronoshiftable>().CanChronoshiftTo(unit, targetCell);
 						var tile = canEnter ? validTile : invalidTile;
-						yield return new SpriteRenderable(tile, wr.World.Map.CenterOfCell(targetCell), WVec.Zero, -511, palette, 1f, true, TintModifiers.IgnoreWorldTint);
+						var alpha = canEnter ? validAlpha : invalidAlpha;
+						yield return new SpriteRenderable(tile, wr.World.Map.CenterOfCell(targetCell), WVec.Zero, -511, palette, 1f, alpha, float3.Ones, TintModifiers.IgnoreWorldTint, true);
 					}
 
 					var offset = world.Map.CenterOfCell(xy) - world.Map.CenterOfCell(sourceLocation);
@@ -330,7 +350,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 				// Source tiles
 				foreach (var t in power.CellsMatching(sourceLocation, footprint, dimensions))
-					yield return new SpriteRenderable(sourceTile, wr.World.Map.CenterOfCell(t), WVec.Zero, -511, palette, 1f, true, TintModifiers.IgnoreWorldTint);
+					yield return new SpriteRenderable(sourceTile, wr.World.Map.CenterOfCell(t), WVec.Zero, -511, palette, 1f, sourceAlpha, float3.Ones, TintModifiers.IgnoreWorldTint, true);
 			}
 
 			bool IsValidTarget(CPos xy)

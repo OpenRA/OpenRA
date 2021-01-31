@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var palette = wr.Palette(Info.Palette);
 			return new IRenderable[]
 			{
-				new UISpriteRenderable(anim.Image, self.CenterPosition, screenPos, 0, palette, 1f)
+				new UISpriteRenderable(anim.Image, self.CenterPosition, screenPos, 0, palette)
 			};
 		}
 	}

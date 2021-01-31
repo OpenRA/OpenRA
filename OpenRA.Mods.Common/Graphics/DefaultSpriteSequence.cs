@@ -117,6 +117,7 @@ namespace OpenRA.Mods.Common.Graphics
 		Sprite ISpriteSequence.GetSprite(int frame) { throw exception; }
 		Sprite ISpriteSequence.GetSprite(int frame, WAngle facing) { throw exception; }
 		Sprite ISpriteSequence.GetShadow(int frame, WAngle facing) { throw exception; }
+		float ISpriteSequence.GetAlpha(int frame) { throw exception; }
 	}
 
 	public class DefaultSpriteSequence : ISpriteSequence
@@ -125,6 +126,7 @@ namespace OpenRA.Mods.Common.Graphics
 		protected Sprite[] sprites;
 		readonly bool reverseFacings, transpose;
 		readonly string sequence;
+		readonly float[] alpha;
 
 		protected readonly ISpriteSequenceLoader Loader;
 
@@ -316,6 +318,23 @@ namespace OpenRA.Mods.Common.Graphics
 							s.Channel, blendMode) : null).ToArray();
 				}
 
+				alpha = LoadField(d, "Alpha", (float[])null);
+				if (alpha != null)
+				{
+					if (alpha.Length == 1)
+						alpha = Exts.MakeArray(Length, _ => alpha[0]);
+					else if (alpha.Length != Length)
+						throw new YamlException("Sequence {0}.{1} must define either 1 or {2} Alpha values.".F(sequence, animation, Length));
+				}
+
+				if (LoadField(d, "AlphaFade", false))
+				{
+					if (alpha != null)
+						throw new YamlException("Sequence {0}.{1} cannot define both AlphaFade and Alpha.".F(sequence, animation));
+
+					alpha = Exts.MakeArray(Length, i => float2.Lerp(1f, 0f, i / (Length - 1f)));
+				}
+
 				var depthSprite = LoadField<string>(d, "DepthSprite", null);
 				if (!string.IsNullOrEmpty(depthSprite))
 				{
@@ -417,6 +436,11 @@ namespace OpenRA.Mods.Common.Graphics
 		protected virtual int GetFacingFrameOffset(WAngle facing)
 		{
 			return Util.IndexFacing(facing, Facings);
+		}
+
+		public virtual float GetAlpha(int frame)
+		{
+			return alpha?[frame] ?? 1f;
 		}
 	}
 }

@@ -81,9 +81,10 @@ namespace OpenRA.Mods.Common.Traits
 						var sequence = wr.World.Map.Rules.Sequences.GetSequence("resources", variant);
 						var sprite = sequence.GetSprite(Resource.MaxDensity - 1);
 						var palette = wr.Palette(Resource.Palette);
+						var alpha = sequence.GetAlpha(Resource.MaxDensity - 1);
 
 						var tintModifiers = sequence.IgnoreWorldTint ? TintModifiers.IgnoreWorldTint : TintModifiers.None;
-						terrainOrResourcePreview.Add(new SpriteRenderable(sprite, pos, WVec.Zero, 0, palette, 1, false, tintModifiers));
+						terrainOrResourcePreview.Add(new SpriteRenderable(sprite, pos, WVec.Zero, 0, palette, 1f, alpha, float3.Ones, tintModifiers, false));
 					}
 				}
 			}

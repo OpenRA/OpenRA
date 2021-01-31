@@ -51,8 +51,8 @@ namespace OpenRA.Mods.Common.Traits
 		readonly FootprintPlaceBuildingPreviewInfo info;
 		readonly IPlaceBuildingDecorationInfo[] decorations;
 		readonly int2 topLeftScreenOffset;
-		readonly Sprite buildOk;
-		readonly Sprite buildBlocked;
+		readonly Sprite validTile, blockedTile;
+		readonly float validAlpha, blockedAlpha;
 
 		public FootprintPlaceBuildingPreviewPreview(WorldRenderer wr, ActorInfo ai, FootprintPlaceBuildingPreviewInfo info, TypeDictionary init)
 		{
@@ -66,10 +66,21 @@ namespace OpenRA.Mods.Common.Traits
 
 			var tileset = world.Map.Tileset.ToLowerInvariant();
 			if (world.Map.Rules.Sequences.HasSequence("overlay", "build-valid-{0}".F(tileset)))
-				buildOk = world.Map.Rules.Sequences.GetSequence("overlay", "build-valid-{0}".F(tileset)).GetSprite(0);
+			{
+				var validSequence = world.Map.Rules.Sequences.GetSequence("overlay", "build-valid-{0}".F(tileset));
+				validTile = validSequence.GetSprite(0);
+				validAlpha = validSequence.GetAlpha(0);
+			}
 			else
-				buildOk = world.Map.Rules.Sequences.GetSequence("overlay", "build-valid").GetSprite(0);
-			buildBlocked = world.Map.Rules.Sequences.GetSequence("overlay", "build-invalid").GetSprite(0);
+			{
+				var validSequence = world.Map.Rules.Sequences.GetSequence("overlay", "build-valid");
+				validTile = validSequence.GetSprite(0);
+				validAlpha = validSequence.GetAlpha(0);
+			}
+
+			var blockedSequence = world.Map.Rules.Sequences.GetSequence("overlay", "build-invalid");
+			blockedTile = blockedSequence.GetSprite(0);
+			blockedAlpha = blockedSequence.GetAlpha(0);
 		}
 
 		protected virtual void TickInner() { }
@@ -84,11 +95,12 @@ namespace OpenRA.Mods.Common.Traits
 				if ((c.Value & filter) == 0)
 					continue;
 
-				var tile = (c.Value & PlaceBuildingCellType.Invalid) != 0 ? buildBlocked : buildOk;
+				var tile = (c.Value & PlaceBuildingCellType.Invalid) != 0 ? blockedTile : validTile;
+				var sequenceAlpha = (c.Value & PlaceBuildingCellType.Invalid) != 0 ? blockedAlpha : validAlpha;
 				var pos = wr.World.Map.CenterOfCell(c.Key);
 				var offset = new WVec(0, 0, topLeftPos.Z - pos.Z);
-				var alpha = (c.Value & PlaceBuildingCellType.LineBuild) != 0 ? info.LineBuildFootprintAlpha : info.FootprintAlpha;
-				yield return new SpriteRenderable(tile, pos, offset, -511, palette, 1f, alpha, float3.Ones, TintModifiers.IgnoreWorldTint, true);
+				var traitAlpha = (c.Value & PlaceBuildingCellType.LineBuild) != 0 ? info.LineBuildFootprintAlpha : info.FootprintAlpha;
+				yield return new SpriteRenderable(tile, pos, offset, -511, palette, 1f, sequenceAlpha * traitAlpha, float3.Ones, TintModifiers.IgnoreWorldTint, true);
 			}
 		}
 

@@ -29,12 +29,6 @@ namespace OpenRA.Graphics
 		readonly float alpha;
 		readonly bool isDecoration;
 
-		public SpriteRenderable(Sprite sprite, WPos pos, WVec offset, int zOffset, PaletteReference palette, float scale, bool isDecoration)
-			: this(sprite, pos, offset, zOffset, palette, scale, 1f, float3.Ones, TintModifiers.None, isDecoration) { }
-
-		public SpriteRenderable(Sprite sprite, WPos pos, WVec offset, int zOffset, PaletteReference palette, float scale, bool isDecoration, TintModifiers tintModifiers)
-			: this(sprite, pos, offset, zOffset, palette, scale, 1f, float3.Ones, tintModifiers, isDecoration) { }
-
 		public SpriteRenderable(Sprite sprite, WPos pos, WVec offset, int zOffset, PaletteReference palette, float scale, float alpha, float3 tint, TintModifiers tintModifiers, bool isDecoration)
 		{
 			this.sprite = sprite;
