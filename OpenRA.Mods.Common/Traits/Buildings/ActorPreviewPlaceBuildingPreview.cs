@@ -25,12 +25,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Enable the building's idle animation.")]
 		public readonly bool Animated = true;
 
-		[PaletteReference(nameof(OverridePaletteIsPlayerPalette))]
-		[Desc("Custom palette name.")]
-		public readonly string OverridePalette = null;
-
-		[Desc("Custom palette is a player palette BaseName.")]
-		public readonly bool OverridePaletteIsPlayerPalette = true;
+		[Desc("Custom opacity to apply to the actor preview.")]
+		public readonly float PreviewAlpha = 1f;
 
 		[Desc("Footprint types to draw underneath the actor preview.")]
 		public readonly PlaceBuildingCellType FootprintUnderPreview = PlaceBuildingCellType.Valid | PlaceBuildingCellType.LineBuild;
@@ -54,7 +50,6 @@ namespace OpenRA.Mods.Common.Traits
 	public class ActorPreviewPlaceBuildingPreviewPreview : FootprintPlaceBuildingPreviewPreview
 	{
 		readonly ActorPreviewPlaceBuildingPreviewInfo info;
-		readonly PaletteReference palette;
 		readonly IActorPreview[] preview;
 
 		public ActorPreviewPlaceBuildingPreviewPreview(WorldRenderer wr, ActorInfo ai, ActorPreviewPlaceBuildingPreviewInfo info, TypeDictionary init)
@@ -65,12 +60,6 @@ namespace OpenRA.Mods.Common.Traits
 			preview = actorInfo.TraitInfos<IRenderActorPreviewInfo>()
 				.SelectMany(rpi => rpi.RenderPreview(previewInit))
 				.ToArray();
-
-			if (!string.IsNullOrEmpty(info.OverridePalette))
-			{
-				var ownerName = init.Get<OwnerInit>().InternalName;
-				palette = wr.Palette(info.OverridePaletteIsPlayerPalette ? info.OverridePalette + ownerName : info.OverridePalette);
-			}
 		}
 
 		protected override void TickInner()
@@ -88,15 +77,17 @@ namespace OpenRA.Mods.Common.Traits
 			var previewRenderables = preview
 				.SelectMany(p => p.Render(wr, centerPosition));
 
-			if (palette != null)
-				previewRenderables = previewRenderables.Select(a => !a.IsDecoration && a is IPalettedRenderable ? ((IPalettedRenderable)a).WithPalette(palette) : a);
-
 			if (info.FootprintUnderPreview != PlaceBuildingCellType.None)
 				foreach (var r in RenderFootprint(wr, topLeft, footprint, info.FootprintUnderPreview))
 					yield return r;
 
 			foreach (var r in previewRenderables.OrderBy(WorldRenderer.RenderableZPositionComparisonKey))
-				yield return r;
+			{
+				if (info.PreviewAlpha < 1f && r is IModifyableRenderable mr)
+					yield return mr.WithAlpha(mr.Alpha * info.PreviewAlpha);
+				else
+					yield return r;
+			}
 
 			if (info.FootprintOverPreview != PlaceBuildingCellType.None)
 				foreach (var r in RenderFootprint(wr, topLeft, footprint, info.FootprintOverPreview))

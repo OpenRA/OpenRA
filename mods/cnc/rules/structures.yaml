@@ -516,7 +516,7 @@ WEAP:
 	-ActorPreviewPlaceBuildingPreview:
 	SequencePlaceBuildingPreview:
 		Sequence: place
-		SequencePalette: placebuilding
+		SequenceAlpha: 0.65
 
 HPAD:
 	Inherits: ^BaseBuilding
@@ -925,7 +925,7 @@ SAM:
 	-ActorPreviewPlaceBuildingPreview:
 	SequencePlaceBuildingPreview:
 		Sequence: place
-		SequencePalette: placebuilding
+		SequenceAlpha: 0.65
 
 OBLI:
 	Inherits: ^Defense

@@ -25,9 +25,11 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Palette to use for rendering the placement sprite.")]
 		public readonly string Palette = TileSet.TerrainPaletteInternalName;
 
-		[PaletteReference]
-		[Desc("Palette to use for rendering the placement sprite for line build segments.")]
-		public readonly string LineBuildSegmentPalette = TileSet.TerrainPaletteInternalName;
+		[Desc("Custom opacity to apply to the placement sprite.")]
+		public readonly float FootprintAlpha = 1f;
+
+		[Desc("Custom opacity to apply to the line-build placement sprite.")]
+		public readonly float LineBuildFootprintAlpha = 1f;
 
 		protected virtual IPlaceBuildingPreview CreatePreview(WorldRenderer wr, ActorInfo ai, TypeDictionary init)
 		{
@@ -52,12 +54,6 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Sprite buildOk;
 		readonly Sprite buildBlocked;
 
-		protected static bool HasFlag(PlaceBuildingCellType value, PlaceBuildingCellType flag)
-		{
-			// PERF: Enum.HasFlag is slower and requires allocations.
-			return (value & flag) == value;
-		}
-
 		public FootprintPlaceBuildingPreviewPreview(WorldRenderer wr, ActorInfo ai, FootprintPlaceBuildingPreviewInfo info, TypeDictionary init)
 		{
 			actorInfo = ai;
@@ -81,19 +77,18 @@ namespace OpenRA.Mods.Common.Traits
 		protected virtual IEnumerable<IRenderable> RenderFootprint(WorldRenderer wr, CPos topLeft, Dictionary<CPos, PlaceBuildingCellType> footprint,
 			PlaceBuildingCellType filter = PlaceBuildingCellType.Invalid | PlaceBuildingCellType.Valid | PlaceBuildingCellType.LineBuild)
 		{
-			var cellPalette = wr.Palette(info.Palette);
-			var linePalette = wr.Palette(info.LineBuildSegmentPalette);
+			var palette = wr.Palette(info.Palette);
 			var topLeftPos = wr.World.Map.CenterOfCell(topLeft);
 			foreach (var c in footprint)
 			{
 				if ((c.Value & filter) == 0)
 					continue;
 
-				var tile = HasFlag(c.Value, PlaceBuildingCellType.Invalid) ? buildBlocked : buildOk;
-				var pal = HasFlag(c.Value, PlaceBuildingCellType.LineBuild) ? linePalette : cellPalette;
+				var tile = (c.Value & PlaceBuildingCellType.Invalid) != 0 ? buildBlocked : buildOk;
 				var pos = wr.World.Map.CenterOfCell(c.Key);
 				var offset = new WVec(0, 0, topLeftPos.Z - pos.Z);
-				yield return new SpriteRenderable(tile, pos, offset, -511, pal, 1f, true, TintModifiers.IgnoreWorldTint);
+				var alpha = (c.Value & PlaceBuildingCellType.LineBuild) != 0 ? info.LineBuildFootprintAlpha : info.FootprintAlpha;
+				yield return new SpriteRenderable(tile, pos, offset, -511, palette, 1f, alpha, float3.Ones, TintModifiers.IgnoreWorldTint, true);
 			}
 		}
 
@@ -107,8 +102,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected virtual IEnumerable<IRenderable> RenderInner(WorldRenderer wr, CPos topLeft, Dictionary<CPos, PlaceBuildingCellType> footprint)
 		{
-			foreach (var r in RenderFootprint(wr, topLeft, footprint))
-				yield return r;
+			return RenderFootprint(wr, topLeft, footprint);
 		}
 
 		IEnumerable<IRenderable> IPlaceBuildingPreview.Render(WorldRenderer wr, CPos topLeft, Dictionary<CPos, PlaceBuildingCellType> footprint)

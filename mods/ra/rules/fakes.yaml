@@ -191,7 +191,7 @@ WEAF:
 	-ActorPreviewPlaceBuildingPreview:
 	SequencePlaceBuildingPreview:
 		Sequence: place
-		SequencePalette: placebuilding
+		SequenceAlpha: 0.65
 
 DOMF:
 	Inherits: ^FakeBuilding
