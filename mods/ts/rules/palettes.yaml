@@ -129,18 +129,6 @@
 	PlayerColorPalette:
 		BasePalette: player
 		RemapIndex: 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31
-	PaletteFromPaletteWithAlpha@placebuilding:
-		Name: placefootprint
-		BasePalette: ra
-		Alpha: 0.7
-	PaletteFromPaletteWithAlpha@placelinesegment:
-		Name: placelinesegment
-		BasePalette: ra
-		Alpha: 0.5
-	PaletteFromPlayerPaletteWithAlpha@placebuilding:
-		BaseName: placebuilding
-		BasePalette: player
-		Alpha: 0.55
 	PaletteFromPlayerPaletteWithAlpha@cloak:
 		BaseName: cloak
 		BasePalette: player

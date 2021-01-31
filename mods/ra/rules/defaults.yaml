@@ -652,7 +652,7 @@
 		BuildSounds: placbldg.aud, build5.aud
 		UndeploySounds: cashturn.aud
 	ActorPreviewPlaceBuildingPreview:
-		OverridePalette: placebuilding
+		PreviewAlpha: 0.65
 	RequiresBuildableArea:
 		AreaTypes: building
 	SoundOnDamageTransition:
@@ -760,7 +760,7 @@
 		TerrainTypes: Clear,Road
 		UndeploySounds: cashturn.aud
 	FootprintPlaceBuildingPreview:
-		LineBuildSegmentPalette: placelinesegment
+		LineBuildFootprintAlpha: 0.65
 	RequiresBuildableArea:
 		AreaTypes: building
 		Adjacent: 7

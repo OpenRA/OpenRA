@@ -25,12 +25,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Sequence name to use.")]
 		public readonly string Sequence = "idle";
 
-		[PaletteReference(nameof(SequencePaletteIsPlayerPalette))]
-		[Desc("Custom palette name.")]
-		public readonly string SequencePalette = null;
-
-		[Desc("Custom palette is a player palette BaseName.")]
-		public readonly bool SequencePaletteIsPlayerPalette = true;
+		[Desc("Custom opacity to apply to the sequence sprite.")]
+		public readonly float SequenceAlpha = 1f;
 
 		[Desc("Footprint types to draw underneath the actor preview.")]
 		public readonly PlaceBuildingCellType FootprintUnderPreview = PlaceBuildingCellType.Valid | PlaceBuildingCellType.LineBuild;
@@ -65,12 +61,7 @@ namespace OpenRA.Mods.Common.Traits
 			var faction = init.Get<FactionInit>().Value;
 
 			var rsi = ai.TraitInfo<RenderSpritesInfo>();
-
-			if (!string.IsNullOrEmpty(info.SequencePalette))
-				palette = wr.Palette(info.SequencePaletteIsPlayerPalette ? info.SequencePalette + ownerName : info.SequencePalette);
-			else
-				palette = wr.Palette(rsi.Palette ?? rsi.PlayerPalette + ownerName);
-
+			palette = wr.Palette(rsi.Palette ?? rsi.PlayerPalette + ownerName);
 			preview = new Animation(wr.World, rsi.GetImage(ai, wr.World.Map.Rules.Sequences, faction));
 			preview.PlayRepeating(info.Sequence);
 		}
@@ -88,7 +79,12 @@ namespace OpenRA.Mods.Common.Traits
 
 			var centerPosition = wr.World.Map.CenterOfCell(topLeft) + centerOffset;
 			foreach (var r in preview.Render(centerPosition, WVec.Zero, 0, palette))
-				yield return r;
+			{
+				if (info.SequenceAlpha < 1f && r is IModifyableRenderable mr)
+					yield return mr.WithAlpha(mr.Alpha * info.SequenceAlpha);
+				else
+					yield return r;
+			}
 
 			if (info.FootprintOverPreview != PlaceBuildingCellType.None)
 				foreach (var r in RenderFootprint(wr, topLeft, footprint, info.FootprintOverPreview))

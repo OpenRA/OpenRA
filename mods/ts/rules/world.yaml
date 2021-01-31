@@ -378,6 +378,7 @@ EditorWorld:
 	EditorCursorLayer:
 	EditorResourceLayer:
 	EditorSelectionLayer:
-		Palette: placefootprint
+		Palette: ra
+		FootprintAlpha: 0.7
 	LoadWidgetAtGameStart:
 	EditorActionManager:

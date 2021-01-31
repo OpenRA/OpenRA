@@ -421,7 +421,7 @@
 		ConcretePrerequisites: global-auto-concrete
 	D2kActorPreviewPlaceBuildingPreview:
 		RequiresPrerequisites: !global-auto-concrete
-		OverridePalette: placebuilding
+		PreviewAlpha: 0.65
 	RequiresBuildableArea:
 		AreaTypes: building
 		Adjacent: 3

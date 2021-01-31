@@ -22,6 +22,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Palette to use for rendering the placement sprite.")]
 		public readonly string Palette = TileSet.TerrainPaletteInternalName;
 
+		[Desc("Custom opacity to apply to the placement sprite.")]
+		public readonly float FootprintAlpha = 1f;
+
 		[Desc("Sequence image where the selection overlay types are defined.")]
 		public readonly string Image = "editor-overlay";
 
@@ -89,12 +92,12 @@ namespace OpenRA.Mods.Common.Traits
 			if (CopyRegion != null)
 				foreach (var c in CopyRegion)
 					yield return new SpriteRenderable(copySprite, wr.World.Map.CenterOfCell(c),
-						WVec.Zero, -511, palette, 1f, true, TintModifiers.IgnoreWorldTint);
+						WVec.Zero, -511, palette, 1f, info.FootprintAlpha, float3.Ones, TintModifiers.IgnoreWorldTint, true);
 
 			if (PasteRegion != null)
 				foreach (var c in PasteRegion)
 					yield return new SpriteRenderable(pasteSprite, wr.World.Map.CenterOfCell(c),
-						WVec.Zero, -511, palette, 1f, true, TintModifiers.IgnoreWorldTint);
+						WVec.Zero, -511, palette, 1f, info.FootprintAlpha, float3.Ones, TintModifiers.IgnoreWorldTint, true);
 		}
 
 		bool IRenderAboveShroud.SpatiallyPartitionable { get { return false; } }

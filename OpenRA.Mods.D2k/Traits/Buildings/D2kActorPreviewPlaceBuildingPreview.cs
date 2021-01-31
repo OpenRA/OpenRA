@@ -72,8 +72,7 @@ namespace OpenRA.Mods.D2k.Traits
 		protected override IEnumerable<IRenderable> RenderFootprint(WorldRenderer wr, CPos topLeft, Dictionary<CPos, PlaceBuildingCellType> footprint,
 			PlaceBuildingCellType filter = PlaceBuildingCellType.Invalid | PlaceBuildingCellType.Valid | PlaceBuildingCellType.LineBuild)
 		{
-			var cellPalette = wr.Palette(info.Palette);
-			var linePalette = wr.Palette(info.LineBuildSegmentPalette);
+			var palette = wr.Palette(info.Palette);
 			var topLeftPos = wr.World.Map.CenterOfCell(topLeft);
 
 			var candidateSafeTiles = unpathableCells.Update(topLeft);
@@ -82,14 +81,14 @@ namespace OpenRA.Mods.D2k.Traits
 				if ((c.Value & filter) == 0)
 					continue;
 
-				var tile = HasFlag(c.Value, PlaceBuildingCellType.Invalid) ? buildBlocked :
+				var tile = (c.Value & PlaceBuildingCellType.Invalid) != 0 ? buildBlocked :
 					(checkUnsafeTiles && candidateSafeTiles.Contains(c.Key) && info.UnsafeTerrainTypes.Contains(wr.World.Map.GetTerrainInfo(c.Key).Type))
 					? buildUnsafe : buildOk;
 
-				var pal = HasFlag(c.Value, PlaceBuildingCellType.LineBuild) ? linePalette : cellPalette;
 				var pos = wr.World.Map.CenterOfCell(c.Key);
 				var offset = new WVec(0, 0, topLeftPos.Z - pos.Z);
-				yield return new SpriteRenderable(tile, pos, offset, -511, pal, 1f, true, TintModifiers.IgnoreWorldTint);
+				var alpha = (c.Value & PlaceBuildingCellType.LineBuild) != 0 ? info.LineBuildFootprintAlpha : info.FootprintAlpha;
+				yield return new SpriteRenderable(tile, pos, offset, -511, palette, 1f, alpha, float3.Ones, TintModifiers.IgnoreWorldTint, true);
 			}
 		}
 	}
