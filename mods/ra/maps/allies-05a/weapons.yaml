@@ -5,3 +5,4 @@ PrisonColt:
 	Projectile: InstantHit
 	Warhead@1Dam: SpreadDamage
 		AffectsParent: true
+		ValidTargets: Ground, GroundActor
