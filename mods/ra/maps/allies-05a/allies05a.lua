@@ -358,7 +358,9 @@ InitTriggers = function()
 
 					Media.PlaySpeechNotification(greece, "TanyaRescued")
 					greece.MarkCompletedObjective(mainObj)
-					SendReinforcements()
+					Trigger.AfterDelay(DateTime.Seconds(2), function()
+						SendReinforcements()
+					end)
 
 					if PrisonCamera and PrisonCamera.IsInWorld then
 						PrisonCamera.Destroy()
