@@ -19,8 +19,8 @@ namespace OpenRA.Mods.Common
 
 	public class WebServices : IGlobalModData
 	{
-		public readonly string ServerList = "https://master.openra.net/games";
-		public readonly string ServerAdvertise = "https://master.openra.net/ping";
+		public readonly string ServerList = "https://localhost:5001/api/Server";
+		public readonly string ServerAdvertise = "https://localhost:5001/api/Server";
 		public readonly string MapRepository = "https://resource.openra.net/map/";
 		public readonly string GameNews = "https://master.openra.net/gamenews";
 		public readonly string GameNewsFileName = "news.yaml";

@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using BeaconLib;
@@ -69,10 +70,12 @@ namespace OpenRA.Mods.Common.Server
 			{
 				var gs = new GameServer(server);
 				if (server.Settings.AdvertiseOnline)
-					UpdateMasterServer(server, gs.ToPOSTData(false));
+					UpdateMasterServer(server, gs.ToJson());
 
+				/*
 				if (LanGameBeacon != null)
 					LanGameBeacon.BeaconData = gs.ToPOSTData(true);
+				*/
 
 				lastPing = Game.RunTime;
 			}
@@ -116,7 +119,7 @@ namespace OpenRA.Mods.Common.Server
 					var endpoint = server.ModData.Manifest.Get<WebServices>().ServerAdvertise;
 
 					var client = HttpClientFactory.Create();
-					var response = await client.PostAsync(endpoint, new StringContent(postData));
+					var response = await client.PostAsync(endpoint, new StringContent(postData, Encoding.UTF8,  mediaType: "application/json"));
 
 					var masterResponseText = await response.Content.ReadAsStringAsync();
 

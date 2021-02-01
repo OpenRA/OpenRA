@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using BeaconLib;
 using OpenRA.Network;
@@ -346,11 +347,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				List<GameServer> games = null;
 				try
 				{
-					var yaml = MiniYaml.FromString(result);
-
-					games = yaml.Select(a => new GameServer(a.Value))
-						.Where(gs => gs.Address != null)
-						.ToList();
+					var jsonSerializerOptions = new JsonSerializerOptions
+					{
+						PropertyNameCaseInsensitive = true
+					};
+					games = System.Text.Json.JsonSerializer.Deserialize<List<GameServer>>(result, jsonSerializerOptions);
 				}
 				catch
 				{

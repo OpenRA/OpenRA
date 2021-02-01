@@ -19,15 +19,15 @@ namespace OpenRA.Network
 {
 	public class GameClient
 	{
-		public readonly string Name;
-		public readonly string Fingerprint;
-		public readonly Color Color;
-		public readonly string Faction;
-		public readonly int Team;
-		public readonly int SpawnPoint;
-		public readonly bool IsAdmin;
-		public readonly bool IsSpectator;
-		public readonly bool IsBot;
+		public string Name { get; set; }
+		public string Fingerprint { get; set; }
+		public Color Color { get; set; }
+		public string Faction { get; set; }
+		public int Team { get; set; }
+		public int SpawnPoint { get; set; }
+		public bool IsAdmin { get; set; }
+		public bool IsSpectator { get; set; }
+		public bool IsBot { get; set; }
 
 		public GameClient() { }
 
@@ -65,7 +65,7 @@ namespace OpenRA.Network
 		public readonly int Id = -1;
 
 		/// <summary>Name of the server</summary>
-		public readonly string Name = null;
+		public string Name { get; set; }
 
 		/// <summary>ip:port string to connect to.</summary>
 		public readonly string Address = null;
@@ -152,6 +152,10 @@ namespace OpenRA.Network
 			return clients.ToArray();
 		}
 
+		public GameServer()
+		{
+		}
+
 		public GameServer(MiniYaml yaml)
 		{
 			FieldLoader.Load(this, yaml);
@@ -218,6 +222,7 @@ namespace OpenRA.Network
 
 			// IP address will be replaced with a real value by the master server / receiving LAN client
 			Address = "0.0.0.0:" + server.Settings.ListenPort.ToString();
+			Port = server.Settings.ListenPort;
 			State = (int)server.State;
 			MaxPlayers = server.LobbyInfo.Slots.Count(s => !s.Value.Closed) - server.LobbyInfo.Clients.Count(c1 => c1.Bot != null);
 			Map = server.Map.Uid;
@@ -260,6 +265,30 @@ namespace OpenRA.Network
 			return new MiniYaml("", root)
 				.ToLines("Game")
 				.JoinWith("\n");
+		}
+
+		public string ToJson()
+		{
+			var obj = new
+			{
+				Protocol = ProtocolVersion,
+				Name = Name,
+				Port,
+				Mod,
+				Version,
+				ModTitle,
+				ModWebsite,
+				ModIcon32,
+				Map,
+				State,
+				MaxPlayers,
+				Protected,
+				Authentication,
+				DisabledSpawnPoints,
+				Clients = Clients
+			};
+
+			return System.Text.Json.JsonSerializer.Serialize(obj);
 		}
 	}
 }
