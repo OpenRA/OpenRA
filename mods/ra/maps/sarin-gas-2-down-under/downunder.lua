@@ -51,6 +51,7 @@ ObjectiveTriggers = function()
 	Trigger.OnAllKilled(TanyaTowers, function()
 		TanyaFreed = true
 		if not Tanya.IsDead then
+			Media.PlaySpeechNotification(greece, "TanyaRescued")
 			Tanya.Owner = greece
 		end
 	end)
