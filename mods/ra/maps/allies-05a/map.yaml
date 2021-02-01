@@ -43,748 +43,748 @@ Players:
 Actors:
 	Actor0: cycl
 		Location: 35,48
-		Owner: Neutral
+		Owner: USSR
 	Actor1: cycl
 		Location: 36,48
-		Owner: Neutral
+		Owner: USSR
 	Actor2: cycl
 		Location: 37,48
-		Owner: Neutral
+		Owner: USSR
 	Actor3: cycl
 		Location: 38,48
-		Owner: Neutral
+		Owner: USSR
 	Actor4: cycl
 		Location: 39,48
-		Owner: Neutral
+		Owner: USSR
 	Actor5: cycl
 		Location: 40,48
-		Owner: Neutral
+		Owner: USSR
 	Actor6: cycl
 		Location: 41,48
-		Owner: Neutral
+		Owner: USSR
 	Actor7: cycl
 		Location: 42,48
-		Owner: Neutral
+		Owner: USSR
 	Actor8: cycl
 		Location: 43,48
-		Owner: Neutral
+		Owner: USSR
 	Actor9: cycl
 		Location: 44,48
-		Owner: Neutral
+		Owner: USSR
 	Actor10: cycl
 		Location: 45,48
-		Owner: Neutral
+		Owner: USSR
 	Actor11: cycl
 		Location: 46,48
-		Owner: Neutral
+		Owner: USSR
 	Actor12: cycl
 		Location: 47,48
-		Owner: Neutral
+		Owner: USSR
 	Actor13: cycl
 		Location: 48,48
-		Owner: Neutral
+		Owner: USSR
 	Actor14: cycl
 		Location: 49,48
-		Owner: Neutral
+		Owner: USSR
 	Actor15: cycl
 		Location: 50,48
-		Owner: Neutral
+		Owner: USSR
 	Actor16: cycl
 		Location: 51,48
-		Owner: Neutral
+		Owner: USSR
 	Actor17: cycl
 		Location: 35,49
-		Owner: Neutral
+		Owner: USSR
 	Actor18: cycl
 		Location: 51,49
-		Owner: Neutral
+		Owner: USSR
 	Actor19: cycl
 		Location: 52,49
-		Owner: Neutral
+		Owner: USSR
 	Actor20: cycl
 		Location: 35,50
-		Owner: Neutral
+		Owner: USSR
 	Actor21: cycl
 		Location: 35,51
-		Owner: Neutral
+		Owner: USSR
 	Actor22: cycl
 		Location: 35,52
-		Owner: Neutral
+		Owner: USSR
 	Actor23: cycl
 		Location: 35,53
-		Owner: Neutral
+		Owner: USSR
 	Actor24: cycl
 		Location: 36,53
-		Owner: Neutral
+		Owner: USSR
 	Actor25: cycl
 		Location: 35,54
-		Owner: Neutral
+		Owner: USSR
 	Actor26: cycl
 		Location: 36,54
-		Owner: Neutral
+		Owner: USSR
 	Actor27: cycl
 		Location: 51,57
-		Owner: Neutral
+		Owner: USSR
 	Actor28: cycl
 		Location: 52,57
-		Owner: Neutral
+		Owner: USSR
 	Actor29: cycl
 		Location: 35,58
-		Owner: Neutral
+		Owner: USSR
 	Actor30: cycl
 		Location: 36,58
-		Owner: Neutral
+		Owner: USSR
 	Actor31: cycl
 		Location: 47,58
-		Owner: Neutral
+		Owner: USSR
 	Actor32: cycl
 		Location: 48,58
-		Owner: Neutral
+		Owner: USSR
 	Actor33: cycl
 		Location: 49,58
-		Owner: Neutral
+		Owner: USSR
 	Actor34: cycl
 		Location: 50,58
-		Owner: Neutral
+		Owner: USSR
 	Actor35: cycl
 		Location: 51,58
-		Owner: Neutral
+		Owner: USSR
 	Actor36: cycl
 		Location: 35,59
-		Owner: Neutral
+		Owner: USSR
 	Actor37: cycl
 		Location: 36,59
-		Owner: Neutral
+		Owner: USSR
 	Actor38: cycl
 		Location: 37,59
-		Owner: Neutral
+		Owner: USSR
 	Actor39: cycl
 		Location: 38,59
-		Owner: Neutral
+		Owner: USSR
 	Actor40: cycl
 		Location: 39,59
-		Owner: Neutral
+		Owner: USSR
 	Actor41: cycl
 		Location: 40,59
-		Owner: Neutral
+		Owner: USSR
 	Actor42: cycl
 		Location: 41,59
-		Owner: Neutral
+		Owner: USSR
 	Actor43: cycl
 		Location: 42,59
-		Owner: Neutral
+		Owner: USSR
 	Actor44: cycl
 		Location: 46,59
-		Owner: Neutral
+		Owner: USSR
 	Actor45: cycl
 		Location: 47,59
-		Owner: Neutral
+		Owner: USSR
 	Actor46: brik
 		Location: 39,73
-		Owner: Neutral
+		Owner: USSR
 	Actor47: brik
 		Location: 40,73
-		Owner: Neutral
+		Owner: USSR
 	Actor48: brik
 		Location: 41,73
-		Owner: Neutral
+		Owner: USSR
 	Actor49: brik
 		Location: 42,73
-		Owner: Neutral
+		Owner: USSR
 	Actor50: brik
 		Location: 46,73
-		Owner: Neutral
+		Owner: USSR
 	Actor51: brik
 		Location: 47,73
-		Owner: Neutral
+		Owner: USSR
 	Actor52: brik
 		Location: 48,73
-		Owner: Neutral
+		Owner: USSR
 	Actor53: brik
 		Location: 49,73
-		Owner: Neutral
+		Owner: USSR
 	Actor54: brik
 		Location: 39,74
-		Owner: Neutral
+		Owner: USSR
 	Actor55: brik
 		Location: 41,74
-		Owner: Neutral
+		Owner: USSR
 	Actor56: brik
 		Location: 42,74
-		Owner: Neutral
+		Owner: USSR
 	Actor57: brik
 		Location: 46,74
-		Owner: Neutral
+		Owner: USSR
 	Actor58: brik
 		Location: 47,74
-		Owner: Neutral
+		Owner: USSR
 	Actor59: brik
 		Location: 49,74
-		Owner: Neutral
+		Owner: USSR
 	Actor60: brik
 		Location: 39,75
-		Owner: Neutral
+		Owner: USSR
 	Actor61: brik
 		Location: 49,75
-		Owner: Neutral
+		Owner: USSR
 	Actor62: brik
 		Location: 39,76
-		Owner: Neutral
+		Owner: USSR
 	Actor63: brik
 		Location: 49,76
-		Owner: Neutral
+		Owner: USSR
 	Actor64: brik
 		Location: 13,77
-		Owner: Neutral
+		Owner: USSR
 	Actor65: brik
 		Location: 14,77
-		Owner: Neutral
+		Owner: USSR
 	Actor66: brik
 		Location: 15,77
-		Owner: Neutral
+		Owner: USSR
 	Actor67: brik
 		Location: 16,77
-		Owner: Neutral
+		Owner: USSR
 	Actor68: brik
 		Location: 17,77
-		Owner: Neutral
+		Owner: USSR
 	Actor69: brik
 		Location: 18,77
-		Owner: Neutral
+		Owner: USSR
 	Actor70: brik
 		Location: 19,77
-		Owner: Neutral
+		Owner: USSR
 	Actor71: brik
 		Location: 20,77
-		Owner: Neutral
+		Owner: USSR
 	Actor72: brik
 		Location: 21,77
-		Owner: Neutral
+		Owner: USSR
 	Actor73: brik
 		Location: 22,77
-		Owner: Neutral
+		Owner: USSR
 	Actor74: brik
 		Location: 23,77
-		Owner: Neutral
+		Owner: USSR
 	Actor75: brik
 		Location: 24,77
-		Owner: Neutral
+		Owner: USSR
 	Actor76: brik
 		Location: 25,77
-		Owner: Neutral
+		Owner: USSR
 	Actor77: brik
 		Location: 26,77
-		Owner: Neutral
+		Owner: USSR
 	Actor78: brik
 		Location: 27,77
-		Owner: Neutral
+		Owner: USSR
 	Actor79: brik
 		Location: 28,77
-		Owner: Neutral
+		Owner: USSR
 	Actor80: brik
 		Location: 29,77
-		Owner: Neutral
+		Owner: USSR
 	Actor81: brik
 		Location: 30,77
-		Owner: Neutral
+		Owner: USSR
 	Actor82: brik
 		Location: 31,77
-		Owner: Neutral
+		Owner: USSR
 	Actor83: brik
 		Location: 32,77
-		Owner: Neutral
+		Owner: USSR
 	Actor84: brik
 		Location: 33,77
-		Owner: Neutral
+		Owner: USSR
 	Actor85: brik
 		Location: 39,77
-		Owner: Neutral
+		Owner: USSR
 	Actor86: brik
 		Location: 49,77
-		Owner: Neutral
+		Owner: USSR
 	Actor87: brik
 		Location: 13,78
-		Owner: Neutral
+		Owner: USSR
 	Actor88: brik
 		Location: 14,78
-		Owner: Neutral
+		Owner: USSR
 	Actor89: brik
 		Location: 33,78
-		Owner: Neutral
+		Owner: USSR
 	Actor90: brik
 		Location: 39,78
-		Owner: Neutral
+		Owner: USSR
 	Actor91: brik
 		Location: 49,78
-		Owner: Neutral
+		Owner: USSR
 	Actor92: brik
 		Location: 13,79
-		Owner: Neutral
+		Owner: USSR
 	Actor93: brik
 		Location: 33,79
-		Owner: Neutral
+		Owner: USSR
 	Actor95: brik
 		Location: 49,79
-		Owner: Neutral
+		Owner: USSR
 	Actor96: brik
 		Location: 13,80
-		Owner: Neutral
+		Owner: USSR
 	Actor97: brik
 		Location: 33,80
-		Owner: Neutral
+		Owner: USSR
 	Actor98: brik
 		Location: 39,80
-		Owner: Neutral
+		Owner: USSR
 	Actor99: brik
 		Location: 49,80
-		Owner: Neutral
+		Owner: USSR
 	Actor100: brik
 		Location: 13,81
-		Owner: Neutral
+		Owner: USSR
 	Actor101: brik
 		Location: 33,81
-		Owner: Neutral
+		Owner: USSR
 	Actor102: brik
 		Location: 39,81
-		Owner: Neutral
+		Owner: USSR
 	Actor103: brik
 		Location: 49,81
-		Owner: Neutral
+		Owner: USSR
 	Actor104: brik
 		Location: 50,81
-		Owner: Neutral
+		Owner: USSR
 	Actor105: brik
 		Location: 51,81
-		Owner: Neutral
+		Owner: USSR
 	Actor106: brik
 		Location: 52,81
-		Owner: Neutral
+		Owner: USSR
 	Actor107: brik
 		Location: 53,81
-		Owner: Neutral
+		Owner: USSR
 	Actor108: brik
 		Location: 54,81
-		Owner: Neutral
+		Owner: USSR
 	Actor109: brik
 		Location: 55,81
-		Owner: Neutral
+		Owner: USSR
 	Actor110: brik
 		Location: 56,81
-		Owner: Neutral
+		Owner: USSR
 	Actor111: brik
 		Location: 57,81
-		Owner: Neutral
+		Owner: USSR
 	Actor112: brik
 		Location: 58,81
-		Owner: Neutral
+		Owner: USSR
 	Actor113: brik
 		Location: 59,81
-		Owner: Neutral
+		Owner: USSR
 	Actor114: brik
 		Location: 60,81
-		Owner: Neutral
+		Owner: USSR
 	Actor115: brik
 		Location: 61,81
-		Owner: Neutral
+		Owner: USSR
 	Actor116: brik
 		Location: 62,81
-		Owner: Neutral
+		Owner: USSR
 	Actor117: brik
 		Location: 66,81
-		Owner: Neutral
+		Owner: USSR
 	Actor118: brik
 		Location: 67,81
-		Owner: Neutral
+		Owner: USSR
 	Actor119: brik
 		Location: 68,81
-		Owner: Neutral
+		Owner: USSR
 	Actor120: brik
 		Location: 69,81
-		Owner: Neutral
+		Owner: USSR
 	Actor121: brik
 		Location: 70,81
-		Owner: Neutral
+		Owner: USSR
 	Actor122: brik
 		Location: 71,81
-		Owner: Neutral
+		Owner: USSR
 	Actor123: brik
 		Location: 13,82
-		Owner: Neutral
+		Owner: USSR
 	Actor124: brik
 		Location: 33,82
-		Owner: Neutral
+		Owner: USSR
 	Actor125: brik
 		Location: 34,82
-		Owner: Neutral
+		Owner: USSR
 	Actor126: brik
 		Location: 38,82
-		Owner: Neutral
+		Owner: USSR
 	Actor127: brik
 		Location: 39,82
-		Owner: Neutral
+		Owner: USSR
 	Actor128: brik
 		Location: 61,82
-		Owner: Neutral
+		Owner: USSR
 	Actor129: brik
 		Location: 62,82
-		Owner: Neutral
+		Owner: USSR
 	Actor130: brik
 		Location: 66,82
-		Owner: Neutral
+		Owner: USSR
 	Actor131: brik
 		Location: 67,82
-		Owner: Neutral
+		Owner: USSR
 	Actor132: brik
 		Location: 71,82
-		Owner: Neutral
+		Owner: USSR
 	Actor133: brik
 		Location: 13,83
-		Owner: Neutral
+		Owner: USSR
 	Actor134: brik
 		Location: 33,83
-		Owner: Neutral
+		Owner: USSR
 	Actor135: brik
 		Location: 34,83
-		Owner: Neutral
+		Owner: USSR
 	Actor136: brik
 		Location: 35,83
-		Owner: Neutral
+		Owner: USSR
 	Actor137: brik
 		Location: 36,83
-		Owner: Neutral
+		Owner: USSR
 	Actor138: brik
 		Location: 37,83
-		Owner: Neutral
+		Owner: USSR
 	Actor139: brik
 		Location: 38,83
-		Owner: Neutral
+		Owner: USSR
 	Actor140: brik
 		Location: 39,83
-		Owner: Neutral
+		Owner: USSR
 	Actor141: brik
 		Location: 71,83
-		Owner: Neutral
+		Owner: USSR
 	Actor142: brik
 		Location: 13,84
-		Owner: Neutral
+		Owner: USSR
 	Actor143: brik
 		Location: 34,84
-		Owner: Neutral
+		Owner: USSR
 	Actor144: brik
 		Location: 71,84
-		Owner: Neutral
+		Owner: USSR
 	Actor145: brik
 		Location: 13,85
-		Owner: Neutral
+		Owner: USSR
 	Actor146: brik
 		Location: 33,85
-		Owner: Neutral
+		Owner: USSR
 	Actor147: brik
 		Location: 34,85
-		Owner: Neutral
+		Owner: USSR
 	Actor148: brik
 		Location: 71,85
-		Owner: Neutral
+		Owner: USSR
 	Actor149: brik
 		Location: 13,86
-		Owner: Neutral
+		Owner: USSR
 	Actor150: brik
 		Location: 33,86
-		Owner: Neutral
+		Owner: USSR
 	Actor151: brik
 		Location: 34,86
-		Owner: Neutral
+		Owner: USSR
 	Actor152: brik
 		Location: 71,86
-		Owner: Neutral
+		Owner: USSR
 	Actor153: brik
 		Location: 13,87
-		Owner: Neutral
+		Owner: USSR
 	Actor154: brik
 		Location: 71,87
-		Owner: Neutral
+		Owner: USSR
 	Actor155: brik
 		Location: 13,88
-		Owner: Neutral
+		Owner: USSR
 	Actor156: brik
 		Location: 33,88
-		Owner: Neutral
+		Owner: USSR
 	Actor157: brik
 		Location: 34,88
-		Owner: Neutral
+		Owner: USSR
 	Actor158: brik
 		Location: 71,88
-		Owner: Neutral
+		Owner: USSR
 	Actor159: brik
 		Location: 13,89
-		Owner: Neutral
+		Owner: USSR
 	Actor160: brik
 		Location: 33,89
-		Owner: Neutral
+		Owner: USSR
 	Actor161: brik
 		Location: 34,89
-		Owner: Neutral
+		Owner: USSR
 	Actor162: brik
 		Location: 65,89
-		Owner: Neutral
+		Owner: USSR
 	Actor163: brik
 		Location: 66,89
-		Owner: Neutral
+		Owner: USSR
 	Actor164: brik
 		Location: 67,89
-		Owner: Neutral
+		Owner: USSR
 	Actor165: brik
 		Location: 68,89
-		Owner: Neutral
+		Owner: USSR
 	Actor166: brik
 		Location: 69,89
-		Owner: Neutral
+		Owner: USSR
 	Actor167: brik
 		Location: 70,89
-		Owner: Neutral
+		Owner: USSR
 	Actor168: brik
 		Location: 71,89
-		Owner: Neutral
+		Owner: USSR
 	Actor169: brik
 		Location: 13,90
-		Owner: Neutral
+		Owner: USSR
 	Actor170: brik
 		Location: 34,90
-		Owner: Neutral
+		Owner: USSR
 	Actor171: brik
 		Location: 65,90
-		Owner: Neutral
+		Owner: USSR
 	Actor172: brik
 		Location: 13,91
-		Owner: Neutral
+		Owner: USSR
 	Actor173: brik
 		Location: 34,91
-		Owner: Neutral
+		Owner: USSR
 	Actor174: brik
 		Location: 65,91
-		Owner: Neutral
+		Owner: USSR
 	Actor175: brik
 		Location: 13,92
-		Owner: Neutral
+		Owner: USSR
 	Actor176: brik
 		Location: 34,92
-		Owner: Neutral
+		Owner: USSR
 	Actor177: brik
 		Location: 64,92
-		Owner: Neutral
+		Owner: USSR
 	Actor178: brik
 		Location: 65,92
-		Owner: Neutral
+		Owner: USSR
 	Actor179: brik
 		Location: 13,93
-		Owner: Neutral
+		Owner: USSR
 	Actor180: brik
 		Location: 34,93
-		Owner: Neutral
+		Owner: USSR
 	Actor181: brik
 		Location: 64,93
-		Owner: Neutral
+		Owner: USSR
 	Actor182: brik
 		Location: 65,93
-		Owner: Neutral
+		Owner: USSR
 	Actor183: brik
 		Location: 13,94
-		Owner: Neutral
+		Owner: USSR
 	Actor184: brik
 		Location: 14,94
-		Owner: Neutral
+		Owner: USSR
 	Actor185: brik
 		Location: 33,94
-		Owner: Neutral
+		Owner: USSR
 	Actor186: brik
 		Location: 34,94
-		Owner: Neutral
+		Owner: USSR
 	Actor187: brik
 		Location: 64,94
-		Owner: Neutral
+		Owner: USSR
 	Actor188: brik
 		Location: 13,95
-		Owner: Neutral
+		Owner: USSR
 	Actor189: brik
 		Location: 14,95
-		Owner: Neutral
+		Owner: USSR
 	Actor190: brik
 		Location: 15,95
-		Owner: Neutral
+		Owner: USSR
 	Actor191: brik
 		Location: 16,95
-		Owner: Neutral
+		Owner: USSR
 	Actor192: brik
 		Location: 17,95
-		Owner: Neutral
+		Owner: USSR
 	Actor193: brik
 		Location: 18,95
-		Owner: Neutral
+		Owner: USSR
 	Actor194: brik
 		Location: 19,95
-		Owner: Neutral
+		Owner: USSR
 	Actor195: brik
 		Location: 20,95
-		Owner: Neutral
+		Owner: USSR
 	Actor196: brik
 		Location: 26,95
-		Owner: Neutral
+		Owner: USSR
 	Actor197: brik
 		Location: 27,95
-		Owner: Neutral
+		Owner: USSR
 	Actor198: brik
 		Location: 28,95
-		Owner: Neutral
+		Owner: USSR
 	Actor199: brik
 		Location: 29,95
-		Owner: Neutral
+		Owner: USSR
 	Actor200: brik
 		Location: 30,95
-		Owner: Neutral
+		Owner: USSR
 	Actor201: brik
 		Location: 31,95
-		Owner: Neutral
+		Owner: USSR
 	Actor202: brik
 		Location: 32,95
-		Owner: Neutral
+		Owner: USSR
 	Actor203: brik
 		Location: 33,95
-		Owner: Neutral
+		Owner: USSR
 	Actor204: brik
 		Location: 34,95
-		Owner: Neutral
+		Owner: USSR
 	Actor205: brik
 		Location: 64,95
-		Owner: Neutral
+		Owner: USSR
 	Actor206: brik
 		Location: 19,96
-		Owner: Neutral
+		Owner: USSR
 	Actor207: brik
 		Location: 20,96
-		Owner: Neutral
+		Owner: USSR
 	Actor208: brik
 		Location: 26,96
-		Owner: Neutral
+		Owner: USSR
 	Actor209: brik
 		Location: 27,96
-		Owner: Neutral
+		Owner: USSR
 	Actor210: brik
 		Location: 33,96
-		Owner: Neutral
+		Owner: USSR
 	Actor211: brik
 		Location: 63,96
-		Owner: Neutral
+		Owner: USSR
 	Actor212: brik
 		Location: 64,96
-		Owner: Neutral
+		Owner: USSR
 	Actor213: brik
 		Location: 33,97
-		Owner: Neutral
+		Owner: USSR
 	Actor214: brik
 		Location: 34,97
-		Owner: Neutral
+		Owner: USSR
 	Actor215: brik
 		Location: 35,97
-		Owner: Neutral
+		Owner: USSR
 	Actor216: brik
 		Location: 36,97
-		Owner: Neutral
+		Owner: USSR
 	Actor217: brik
 		Location: 37,97
-		Owner: Neutral
+		Owner: USSR
 	Actor218: brik
 		Location: 38,97
-		Owner: Neutral
+		Owner: USSR
 	Actor219: brik
 		Location: 39,97
-		Owner: Neutral
+		Owner: USSR
 	Actor220: brik
 		Location: 40,97
-		Owner: Neutral
+		Owner: USSR
 	Actor221: brik
 		Location: 41,97
-		Owner: Neutral
+		Owner: USSR
 	Actor222: brik
 		Location: 42,97
-		Owner: Neutral
+		Owner: USSR
 	Actor223: brik
 		Location: 43,97
-		Owner: Neutral
+		Owner: USSR
 	Actor224: brik
 		Location: 44,97
-		Owner: Neutral
+		Owner: USSR
 	Actor225: brik
 		Location: 45,97
-		Owner: Neutral
+		Owner: USSR
 	Actor226: brik
 		Location: 46,97
-		Owner: Neutral
+		Owner: USSR
 	Actor227: brik
 		Location: 47,97
-		Owner: Neutral
+		Owner: USSR
 	Actor228: brik
 		Location: 48,97
-		Owner: Neutral
+		Owner: USSR
 	Actor229: brik
 		Location: 49,97
-		Owner: Neutral
+		Owner: USSR
 	Actor230: brik
 		Location: 50,97
-		Owner: Neutral
+		Owner: USSR
 	Actor231: brik
 		Location: 51,97
-		Owner: Neutral
+		Owner: USSR
 	Actor232: brik
 		Location: 52,97
-		Owner: Neutral
+		Owner: USSR
 	Actor233: brik
 		Location: 53,97
-		Owner: Neutral
+		Owner: USSR
 	Actor234: brik
 		Location: 54,97
-		Owner: Neutral
+		Owner: USSR
 	Actor235: brik
 		Location: 55,97
-		Owner: Neutral
+		Owner: USSR
 	Actor236: brik
 		Location: 56,97
-		Owner: Neutral
+		Owner: USSR
 	Actor237: brik
 		Location: 57,97
-		Owner: Neutral
+		Owner: USSR
 	Actor238: brik
 		Location: 58,97
-		Owner: Neutral
+		Owner: USSR
 	Actor239: brik
 		Location: 59,97
-		Owner: Neutral
+		Owner: USSR
 	Actor240: brik
 		Location: 60,97
-		Owner: Neutral
+		Owner: USSR
 	Actor241: brik
 		Location: 61,97
-		Owner: Neutral
+		Owner: USSR
 	Actor242: brik
 		Location: 62,97
-		Owner: Neutral
+		Owner: USSR
 	Actor243: brik
 		Location: 63,97
-		Owner: Neutral
+		Owner: USSR
 	Actor244: brik
 		Location: 64,97
-		Owner: Neutral
+		Owner: USSR
 	Actor245: sbag
 		Location: 20,98
-		Owner: Neutral
+		Owner: USSR
 	Actor246: sbag
 		Location: 26,98
-		Owner: Neutral
+		Owner: USSR
 	Actor247: sbag
 		Location: 20,99
-		Owner: Neutral
+		Owner: USSR
 	Actor248: sbag
 		Location: 26,99
-		Owner: Neutral
+		Owner: USSR
 	Actor249: t16
 		Location: 64,90
 		Owner: Neutral
@@ -1280,7 +1280,7 @@ Actors:
 		SubCell: 4
 	Actor94: brik
 		Location: 39,79
-		Owner: Neutral
+		Owner: USSR
 	Actor360: brl3
 		Location: 21,108
 		Owner: USSR
