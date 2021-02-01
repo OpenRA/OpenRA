@@ -1,0 +1,175 @@
+World:
+	LuaScript:
+		Scripts: allies05b.lua, allies05b-AI.lua, campaign-global.lua
+	MissionData:
+		BriefingVideo: ally5.vqa
+		WinVideo: tanya2.vqa
+		LossVideo: grvestne.vqa
+		StartVideo: tanya1.vqa
+		Briefing: Rescue Tanya.\n\nOnce disguised, your spy can move past any enemy unit, except dogs, without being detected. Direct him into the weapons factory located at a nearby Soviet Base where he will hijack a truck and free Tanya.\n\nWith Tanya's help, take out the air defenses on the island and a Chinook will arrive to rescue her.\n\nThen destroy all remaining Soviet buildings and units.
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			easy: Easy
+			normal: Normal
+			hard: Hard
+		Default: easy
+
+Camera.Small:
+	Inherits: CAMERA
+	RevealsShroud:
+		Range: 4c0
+
+TSLA:
+	Buildable:
+		Prerequisites: ~disabled
+
+SAM:
+	Buildable:
+		Prerequisites: ~disabled
+
+LST.IN:
+	Inherits: LST
+	RejectsOrders:
+	-Buildable:
+	-Selectable:
+	RenderSprites:
+		Image: lst
+	Interactable:
+
+TRAN:
+	-Selectable:
+	RevealsShroud:
+		Range: 4c0
+	Targetable@GROUND:
+		TargetTypes: GroundActor
+	Interactable:
+
+TRAN.IN:
+	Inherits: TRAN
+	RenderSprites:
+		Image: TRAN
+	Cargo:
+		Types: disabled
+
+TRUK.mission:
+	Inherits: TRUK
+	Buildable:
+		Prerequisites: ~disabled
+	WithFacingSpriteBody:
+	-SpawnActorOnDeath:
+	RevealsShroud:
+		Range: 4c0
+		ValidRelationships: Ally, Enemy
+		RequiresCondition: hijacked
+	ExternalCondition@hijacked:
+		Condition: hijacked
+	RenderSprites:
+		Image: TRUK
+
+TRUK:
+	Buildable:
+		Prerequisites: ~disabled
+
+SPY:
+	Infiltrates:
+		Types: Mission Objectives
+
+WEAP:
+	-InfiltrateForSupportPower:
+	Targetable:
+		TargetTypes: GroundActor, C4, DetonateAttack, Structure
+
+WEAP.infiltratable:
+	Inherits: WEAP
+	Buildable:
+		Prerequisites: ~disabled
+	Targetable@Spy:
+		TargetTypes: GroundActor, C4, DetonateAttack, Structure, Mission Objectives
+	RenderSprites:
+		Image: WEAP
+	ProvidesPrerequisite:
+		Prerequisite: weap
+
+MISS:
+	Tooltip:
+		Name: Prison
+	Targetable:
+		TargetTypes: GroundActor, C4, DetonateAttack, Structure, Mission Objectives
+	AttackOmni:
+	Armament:
+		Weapon: PrisonColt
+
+AFLD:
+	AirstrikePower@spyplane:
+		Prerequisites: ~disabled
+	ParatroopersPower@paratroopers:
+		Prerequisites: ~disabled
+
+FCOM:
+	MustBeDestroyed:
+
+4TNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+MCV:
+	Buildable:
+		Prerequisites: ~disabled
+
+MNLY:
+	Buildable:
+		Prerequisites: ~disabled
+
+TTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+FTRK:
+	Buildable:
+		Prerequisites: ~disabled
+
+DTRK:
+	Buildable:
+		Prerequisites: ~disabled
+
+QTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSLO:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSUB:
+	Buildable:
+		Prerequisites: ~disabled
+
+SS:
+	Buildable:
+		Prerequisites: ~disabled
+
+IRON:
+	Buildable:
+		Prerequisites: ~disabled
+
+STEK:
+	Buildable:
+		Prerequisites: ~disabled
+
+E6:
+	Buildable:
+		Prerequisites: ~disabled
+
+THF:
+	Buildable:
+		Prerequisites: ~disabled
+
+SHOK:
+	Buildable:
+		Prerequisites: ~disabled
+
+MIG:
+	Buildable:
+		Prerequisites: ~disabled
