@@ -58,8 +58,8 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 					= PlayerColorRemap.GetRemapIndex(destRemapIndex, i);
 
 			// map everything else to the best match based on channel-wise distance
-			var srcPalette = new ImmutablePalette(args[1].Split(':')[1], shadowIndex);
-			var destPalette = new ImmutablePalette(args[2].Split(':')[1], shadowIndex);
+			var srcPalette = new ImmutablePalette(args[1].Split(':')[1], new[] { 0 }, shadowIndex);
+			var destPalette = new ImmutablePalette(args[2].Split(':')[1], new[] { 0 }, shadowIndex);
 
 			for (var i = 0; i < Palette.Size; i++)
 				if (!remap.ContainsKey(i))

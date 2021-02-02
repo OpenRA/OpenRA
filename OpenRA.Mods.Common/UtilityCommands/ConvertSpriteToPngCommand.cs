@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				shadowIndex[shadowIndex.Length - 3] = 4;
 			}
 
-			var palette = new ImmutablePalette(args[2], shadowIndex);
+			var palette = new ImmutablePalette(args[2], new[] { 0 }, shadowIndex);
 			var palColors = new Color[Palette.Size];
 			for (var i = 0; i < Palette.Size; i++)
 				palColors[i] = palette.GetColor(i);
