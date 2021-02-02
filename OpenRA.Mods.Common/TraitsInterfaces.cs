@@ -330,7 +330,7 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	[RequireExplicitImplementation]
-	public interface IProductionCostModifierInfo : ITraitInfoInterface { int GetProductionCostModifier(TechTree techTree, string queue); }
+	public interface IProductionCostModifierInfo : ITraitInfoInterface { int GetProductionCostModifier(World world, ActorInfo actorInfo, TechTree techTree, string queue); }
 
 	[RequireExplicitImplementation]
 	public interface IProductionTimeModifierInfo : ITraitInfoInterface { int GetProductionTimeModifier(TechTree techTree, string queue); }

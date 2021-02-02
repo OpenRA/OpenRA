@@ -572,7 +572,7 @@ starport:
 		BuildPaletteOrder: 530
 		BuildDuration: 625
 		BuildDurationModifier: 100
-		Description: Dropzone for quick reinforcements, at a price.
+		Description: Allows buying units on the free market.
 	Valued:
 		Cost: 1500
 	D2kBuilding:

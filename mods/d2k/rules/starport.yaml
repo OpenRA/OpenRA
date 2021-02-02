@@ -3,8 +3,8 @@ mcv.starport:
 	Buildable:
 		Prerequisites: starport
 		Queue: Starport
-	Valued:
-		Cost: 2500
+	VariedCostMultiplier:
+		Queues: Starport
 	-MapEditorData:
 	RenderSprites:
 		Image: mcv
@@ -16,8 +16,8 @@ harvester.starport:
 	Buildable:
 		Prerequisites: starport
 		Queue: Starport
-	Valued:
-		Cost: 1500
+	VariedCostMultiplier:
+		Queues: Starport
 	-MapEditorData:
 	RenderSprites:
 		Image: harvester
@@ -29,8 +29,8 @@ trike.starport:
 	Buildable:
 		Prerequisites: starport
 		Queue: Starport
-	Valued:
-		Cost: 315
+	VariedCostMultiplier:
+		Queues: Starport
 	-MapEditorData:
 	RenderSprites:
 		Image: trike
@@ -42,8 +42,8 @@ quad.starport:
 	Buildable:
 		Prerequisites: starport
 		Queue: Starport
-	Valued:
-		Cost: 500
+	VariedCostMultiplier:
+		Queues: Starport
 	-MapEditorData:
 	RenderSprites:
 		Image: quad
@@ -55,8 +55,8 @@ siege_tank.starport:
 	Buildable:
 		Prerequisites: starport
 		Queue: Starport
-	Valued:
-		Cost: 1075
+	VariedCostMultiplier:
+		Queues: Starport
 	-MapEditorData:
 	RenderSprites:
 		Image: siege_tank
@@ -68,8 +68,8 @@ missile_tank.starport:
 	Buildable:
 		Prerequisites: starport
 		Queue: Starport
-	Valued:
-		Cost: 1250
+	VariedCostMultiplier:
+		Queues: Starport
 	-MapEditorData:
 	RenderSprites:
 		Image: missile_tank
@@ -81,8 +81,9 @@ combat_tank_a.starport:
 	Buildable:
 		Prerequisites: ~starport.atreides_combat
 		Queue: Starport
-	Valued:
-		Cost: 875
+	VariedCostMultiplier:
+		Queues: Starport
+		Group: CombatTank
 	-MapEditorData:
 	RenderSprites:
 		Image: combat_tank_a
@@ -94,8 +95,9 @@ combat_tank_h.starport:
 	Buildable:
 		Prerequisites: ~starport.harkonnen_combat
 		Queue: Starport
-	Valued:
-		Cost: 875
+	VariedCostMultiplier:
+		Queues: Starport
+		Group: CombatTank
 	-MapEditorData:
 	RenderSprites:
 		Image: combat_tank_h
@@ -107,8 +109,9 @@ combat_tank_o.starport:
 	Buildable:
 		Prerequisites: ~starport.ordos_combat
 		Queue: Starport
-	Valued:
-		Cost: 875
+	VariedCostMultiplier:
+		Queues: Starport
+		Group: CombatTank
 	-MapEditorData:
 	RenderSprites:
 		Image: combat_tank_o
@@ -120,8 +123,8 @@ carryall.starport:
 	Buildable:
 		Prerequisites: starport
 		Queue: Starport
-	Valued:
-		Cost: 1500
+	VariedCostMultiplier:
+		Queues: Starport
 	-MapEditorData:
 	UpdatesPlayerStatistics:
 		OverrideActor: carryall

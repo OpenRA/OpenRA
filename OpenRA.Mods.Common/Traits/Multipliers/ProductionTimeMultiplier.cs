@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Only apply this time change if owner has these prerequisites.")]
 		public readonly string[] Prerequisites = { };
 
-		[Desc("Queues that this time will apply.")]
+		[Desc("Production queues that this time will apply to.")]
 		public readonly HashSet<string> Queue = new HashSet<string>();
 
 		int IProductionTimeModifierInfo.GetProductionTimeModifier(TechTree techTree, string queue)

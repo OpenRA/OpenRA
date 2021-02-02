@@ -464,7 +464,7 @@ namespace OpenRA.Mods.Common.Traits
 				return 0;
 
 			var modifiers = unit.TraitInfos<IProductionCostModifierInfo>()
-				.Select(t => t.GetProductionCostModifier(techTree, Info.Type));
+				.Select(t => t.GetProductionCostModifier(self.World, unit, techTree, Info.Type));
 
 			return Util.ApplyPercentageModifiers(valued.Cost, modifiers);
 		}
