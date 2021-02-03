@@ -61,65 +61,62 @@ namespace OpenRA.Network
 
 		public const int ProtocolVersion = 2;
 
-		/// <summary>Online game number or -1 for LAN games</summary>
-		public readonly int Id = -1;
-
 		/// <summary>Name of the server</summary>
 		public string Name { get; set; }
 
 		/// <summary>ip:port string to connect to.</summary>
-		public readonly string Address = null;
+		public string Address { get; set; }
 
 		/// <summary>Port of the server</summary>
-		public readonly int Port = 0;
+		public int Port { get; set; }
 
 		/// <summary>The current state of the server (waiting/playing/completed)</summary>
-		public readonly int State = 0;
+		public int State { get; set; }
 
 		/// <summary>The number of slots available for non-bot players</summary>
-		public readonly int MaxPlayers = 0;
+		public int MaxPlayers { get; set; }
 
 		/// <summary>UID of the map</summary>
-		public readonly string Map = null;
+		public string Map { get; set; }
 
 		/// <summary>Mod ID</summary>
-		public readonly string Mod = "";
+		public string Mod { get; set; }
 
 		/// <summary>Mod Version</summary>
-		public readonly string Version = "";
+		public string Version { get; set; }
 
 		/// <summary>Human-readable mod title</summary>
-		public readonly string ModTitle = "";
+		public string ModTitle { get; set; }
 
 		/// <summary>URL to show in game listings for custom/unknown mods.</summary>
-		public readonly string ModWebsite = "";
+		public string ModWebsite { get; set; }
 
 		/// <summary>URL to a 32x32 px icon for the mod.</summary>
-		public readonly string ModIcon32 = "";
+		public string ModIcon32 { get; set; }
 
 		/// <summary>GeoIP resolved server location.</summary>
-		public readonly string Location = "";
+		public string Location { get; set; }
 
 		/// <summary>Password protected</summary>
-		public readonly bool Protected = false;
+		public bool Protected { get; set; }
 
 		/// <summary>Players must be authenticated with the OpenRA forum</summary>
-		public readonly bool Authentication = false;
+		public bool Authentication { get; set; }
 
 		/// <summary>UTC datetime string when the game changed to the Playing state</summary>
-		public readonly string Started = null;
+		public string Started { get; set; }
 
 		/// <summary>Number of non-spectator, non-bot players. Only defined if GameServer is parsed from yaml.</summary>
-		public readonly int Players = 0;
+		public int Players { get; set; }
 
 		/// <summary>Number of bot players. Only defined if GameServer is parsed from yaml.</summary>
-		public readonly int Bots = 0;
+		public int Bots { get; set; }
 
 		/// <summary>Number of spectators. Only defined if GameServer is parsed from yaml.</summary>
-		public readonly int Spectators = 0;
+		public int Spectators { get; set; }
 
 		/// <summary>Number of seconds that the game has been in the Playing state. Only defined if GameServer is parsed from yaml.</summary>
-		public readonly int PlayTime = -1;
+		public int PlayTime = -1;
 
 		/// <summary>Can we join this server (after switching mods if required)? Only defined if GameServer is parsed from yaml.</summary>
 		[FieldLoader.Ignore]
@@ -129,8 +126,7 @@ namespace OpenRA.Network
 		[FieldLoader.Ignore]
 		public readonly bool IsJoinable = false;
 
-		[FieldLoader.LoadUsing("LoadClients")]
-		public readonly GameClient[] Clients;
+		public GameClient[] Clients { get; set; }
 
 		/// <summary>The list of spawnpoints that are disabled for this game</summary>
 		public readonly int[] DisabledSpawnPoints = { };
