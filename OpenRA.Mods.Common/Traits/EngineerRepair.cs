@@ -117,7 +117,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (!engineerRepairable.Info.Types.IsEmpty && !engineerRepairable.Info.Types.Overlaps(info.Types))
 					return false;
 
-				if (!info.ValidRelationships.HasStance(target.Owner.RelationshipWith(self.Owner)))
+				if (!info.ValidRelationships.HasRelationship(target.Owner.RelationshipWith(self.Owner)))
 					return false;
 
 				if (target.GetDamageState() == DamageState.Undamaged)
@@ -139,7 +139,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (!engineerRepairable.Types.IsEmpty && !engineerRepairable.Types.Overlaps(info.Types))
 					return false;
 
-				if (!info.ValidRelationships.HasStance(target.Owner.RelationshipWith(self.Owner)))
+				if (!info.ValidRelationships.HasRelationship(target.Owner.RelationshipWith(self.Owner)))
 					return false;
 
 				if (target.DamageState == DamageState.Undamaged)

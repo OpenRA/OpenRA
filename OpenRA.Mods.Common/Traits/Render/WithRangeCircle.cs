@@ -91,7 +91,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 					return false;
 
 				var p = self.World.RenderPlayer;
-				return p == null || Info.ValidRelationships.HasStance(self.Owner.RelationshipWith(p)) || (p.Spectating && !p.NonCombatant);
+				return p == null || Info.ValidRelationships.HasRelationship(self.Owner.RelationshipWith(p)) || (p.Spectating && !p.NonCombatant);
 			}
 		}
 

@@ -325,8 +325,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			return activeTargetPriorities.Any(ati =>
 			{
-				// Incompatible stances
-				if (!ati.ValidRelationships.HasStance(self.Owner.RelationshipWith(owner)))
+				// Incompatible relationship
+				if (!ati.ValidRelationships.HasRelationship(self.Owner.RelationshipWith(owner)))
 					return false;
 
 				// Incompatible target types
@@ -393,8 +393,8 @@ namespace OpenRA.Mods.Common.Traits
 					if (ati.Priority < chosenTargetPriority)
 						return false;
 
-					// Incompatible stances
-					if (!ati.ValidRelationships.HasStance(self.Owner.RelationshipWith(owner)))
+					// Incompatible relationship
+					if (!ati.ValidRelationships.HasRelationship(self.Owner.RelationshipWith(owner)))
 						return false;
 
 					// Incompatible target types

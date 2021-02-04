@@ -76,12 +76,12 @@ namespace OpenRA.Traits
 		Ally = 4,
 	}
 
-	public static class StanceExts
+	public static class PlayerRelationshipExts
 	{
-		public static bool HasStance(this PlayerRelationship s, PlayerRelationship stance)
+		public static bool HasRelationship(this PlayerRelationship r, PlayerRelationship relationship)
 		{
 			// PERF: Enum.HasFlag is slower and requires allocations.
-			return (s & stance) == stance;
+			return (r & relationship) == relationship;
 		}
 	}
 

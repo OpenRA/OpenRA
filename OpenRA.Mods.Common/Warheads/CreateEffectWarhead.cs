@@ -79,8 +79,8 @@ namespace OpenRA.Mods.Common.Warheads
 		// (and to prevent returning ImpactActorType.Invalid on AffectsParent=false)
 		public override bool IsValidAgainst(Actor victim, Actor firedBy)
 		{
-			var stance = firedBy.Owner.RelationshipWith(victim.Owner);
-			if (!ValidRelationships.HasStance(stance))
+			var relationship = firedBy.Owner.RelationshipWith(victim.Owner);
+			if (!ValidRelationships.HasRelationship(relationship))
 				return false;
 
 			// A target type is valid if it is in the valid targets list, and not in the invalid targets list.

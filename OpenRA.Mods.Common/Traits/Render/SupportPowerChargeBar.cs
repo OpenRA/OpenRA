@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				return 0;
 
 			var viewer = self.World.RenderPlayer ?? self.World.LocalPlayer;
-			if (viewer != null && !Info.DisplayRelationships.HasStance(self.Owner.RelationshipWith(viewer)))
+			if (viewer != null && !Info.DisplayRelationships.HasRelationship(self.Owner.RelationshipWith(viewer)))
 				return 0;
 
 			return 1 - (float)power.RemainingTicks / power.TotalTicks;

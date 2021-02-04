@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Traits
 			// Actors with FrozenUnderFog should therefore not disable the Capturable trait.
 			var stance = captor.Owner.RelationshipWith(frozenActor.Owner);
 			return frozenActor.Info.TraitInfos<CapturableInfo>()
-				.Any(c => c.ValidRelationships.HasStance(stance) && captures.Info.CaptureTypes.Overlaps(c.Types));
+				.Any(c => c.ValidRelationships.HasRelationship(stance) && captures.Info.CaptureTypes.Overlaps(c.Types));
 		}
 	}
 
@@ -108,13 +108,13 @@ namespace OpenRA.Mods.Common.Traits
 			allyCapturableTypes = neutralCapturableTypes = enemyCapturableTypes = default(BitSet<CaptureType>);
 			foreach (var c in enabledCapturable)
 			{
-				if (c.Info.ValidRelationships.HasStance(PlayerRelationship.Ally))
+				if (c.Info.ValidRelationships.HasRelationship(PlayerRelationship.Ally))
 					allyCapturableTypes = allyCapturableTypes.Union(c.Info.Types);
 
-				if (c.Info.ValidRelationships.HasStance(PlayerRelationship.Neutral))
+				if (c.Info.ValidRelationships.HasRelationship(PlayerRelationship.Neutral))
 					neutralCapturableTypes = neutralCapturableTypes.Union(c.Info.Types);
 
-				if (c.Info.ValidRelationships.HasStance(PlayerRelationship.Enemy))
+				if (c.Info.ValidRelationships.HasRelationship(PlayerRelationship.Enemy))
 					enemyCapturableTypes = enemyCapturableTypes.Union(c.Info.Types);
 			}
 		}
@@ -128,14 +128,14 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool CanBeTargetedBy(Actor self, Actor captor, CaptureManager captorManager)
 		{
-			var stance = captor.Owner.RelationshipWith(self.Owner);
-			if (stance.HasStance(PlayerRelationship.Enemy))
+			var relationship = captor.Owner.RelationshipWith(self.Owner);
+			if (relationship.HasRelationship(PlayerRelationship.Enemy))
 				return captorManager.capturesTypes.Overlaps(enemyCapturableTypes);
 
-			if (stance.HasStance(PlayerRelationship.Neutral))
+			if (relationship.HasRelationship(PlayerRelationship.Neutral))
 				return captorManager.capturesTypes.Overlaps(neutralCapturableTypes);
 
-			if (stance.HasStance(PlayerRelationship.Ally))
+			if (relationship.HasRelationship(PlayerRelationship.Ally))
 				return captorManager.capturesTypes.Overlaps(allyCapturableTypes);
 
 			return false;
@@ -146,14 +146,14 @@ namespace OpenRA.Mods.Common.Traits
 			if (captures.IsTraitDisabled)
 				return false;
 
-			var stance = captor.Owner.RelationshipWith(self.Owner);
-			if (stance.HasStance(PlayerRelationship.Enemy))
+			var relationship = captor.Owner.RelationshipWith(self.Owner);
+			if (relationship.HasRelationship(PlayerRelationship.Enemy))
 				return captures.Info.CaptureTypes.Overlaps(enemyCapturableTypes);
 
-			if (stance.HasStance(PlayerRelationship.Neutral))
+			if (relationship.HasRelationship(PlayerRelationship.Neutral))
 				return captures.Info.CaptureTypes.Overlaps(neutralCapturableTypes);
 
-			if (stance.HasStance(PlayerRelationship.Ally))
+			if (relationship.HasRelationship(PlayerRelationship.Ally))
 				return captures.Info.CaptureTypes.Overlaps(allyCapturableTypes);
 
 			return false;

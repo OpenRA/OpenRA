@@ -51,18 +51,18 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override object Create(ActorInitializer init) { return new Tooltip(init.Self, this); }
 
-		public string TooltipForPlayerStance(PlayerRelationship stance)
+		public string TooltipForPlayerStance(PlayerRelationship relationship)
 		{
-			if (stance == PlayerRelationship.None || !GenericVisibility.HasStance(stance))
+			if (relationship == PlayerRelationship.None || !GenericVisibility.HasRelationship(relationship))
 				return Name;
 
-			if (GenericStancePrefix && !string.IsNullOrEmpty(AllyPrefix) && stance == PlayerRelationship.Ally)
+			if (GenericStancePrefix && !string.IsNullOrEmpty(AllyPrefix) && relationship == PlayerRelationship.Ally)
 				return AllyPrefix + " " + GenericName;
 
-			if (GenericStancePrefix && !string.IsNullOrEmpty(NeutralPrefix) && stance == PlayerRelationship.Neutral)
+			if (GenericStancePrefix && !string.IsNullOrEmpty(NeutralPrefix) && relationship == PlayerRelationship.Neutral)
 				return NeutralPrefix + " " + GenericName;
 
-			if (GenericStancePrefix && !string.IsNullOrEmpty(EnemyPrefix) && stance == PlayerRelationship.Enemy)
+			if (GenericStancePrefix && !string.IsNullOrEmpty(EnemyPrefix) && relationship == PlayerRelationship.Enemy)
 				return EnemyPrefix + " " + GenericName;
 
 			return GenericName;

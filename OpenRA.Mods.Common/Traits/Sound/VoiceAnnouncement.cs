@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Traits.Sound
 			if (player == null)
 				return;
 
-			if (Info.ValidRelationships.HasStance(self.Owner.RelationshipWith(player)))
+			if (Info.ValidRelationships.HasRelationship(self.Owner.RelationshipWith(player)))
 				self.PlayVoice(Info.Voice);
 			else if (Info.PlayToOwner && self.Owner == player)
 				self.PlayVoice(Info.Voice);

@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (exp == 0 || e.Attacker == null || e.Attacker.Disposed)
 				return;
 
-			if (!info.ValidRelationships.HasStance(e.Attacker.Owner.RelationshipWith(self.Owner)))
+			if (!info.ValidRelationships.HasRelationship(e.Attacker.Owner.RelationshipWith(self.Owner)))
 				return;
 
 			exp = Util.ApplyPercentageModifiers(exp, experienceModifiers);

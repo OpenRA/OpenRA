@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Effects
 
 		void AddCellsToPlayerShroud(Player p, PPos[] uv)
 		{
-			if (validStances.HasStance(player.RelationshipWith(p)))
+			if (validStances.HasRelationship(player.RelationshipWith(p)))
 				p.Shroud.AddSource(this, sourceType, uv);
 		}
 

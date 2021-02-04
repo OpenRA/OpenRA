@@ -42,10 +42,10 @@ namespace OpenRA.Mods.Common.Traits.Radar
 		public void PopulateRadarSignatureCells(Actor self, List<(CPos Cell, Color Color)> destinationBuffer)
 		{
 			var viewer = self.World.RenderPlayer ?? self.World.LocalPlayer;
-			if (IsTraitDisabled || (viewer != null && !Info.ValidRelationships.HasStance(self.Owner.RelationshipWith(viewer))))
+			if (IsTraitDisabled || (viewer != null && !Info.ValidRelationships.HasRelationship(self.Owner.RelationshipWith(viewer))))
 				return;
 
-			var color = Game.Settings.Game.UsePlayerStanceColors ? self.Owner.PlayerStanceColor(self) : self.Owner.Color;
+			var color = Game.Settings.Game.UsePlayerStanceColors ? self.Owner.PlayerRelationshipColor(self) : self.Owner.Color;
 			if (modifier != null)
 				color = modifier.RadarColorOverride(self, color);
 

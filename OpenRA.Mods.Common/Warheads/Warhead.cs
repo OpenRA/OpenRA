@@ -62,8 +62,8 @@ namespace OpenRA.Mods.Common.Warheads
 			if (!AffectsParent && victim == firedBy)
 				return false;
 
-			var stance = firedBy.Owner.RelationshipWith(victim.Owner);
-			if (!ValidRelationships.HasStance(stance))
+			var relationship = firedBy.Owner.RelationshipWith(victim.Owner);
+			if (!ValidRelationships.HasRelationship(relationship))
 				return false;
 
 			// A target type is valid if it is in the valid targets list, and not in the invalid targets list.
@@ -79,9 +79,9 @@ namespace OpenRA.Mods.Common.Warheads
 			if (!victim.IsValid)
 				return false;
 
-			// AffectsParent checks do not make sense for FrozenActors, so skip to stance checks
-			var stance = firedBy.Owner.RelationshipWith(victim.Owner);
-			if (!ValidRelationships.HasStance(stance))
+			// AffectsParent checks do not make sense for FrozenActors, so skip to relationship checks
+			var relationship = firedBy.Owner.RelationshipWith(victim.Owner);
+			if (!ValidRelationships.HasRelationship(relationship))
 				return false;
 
 			// A target type is valid if it is in the valid targets list, and not in the invalid targets list.
