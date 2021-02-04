@@ -265,7 +265,7 @@ namespace OpenRA
 			return RelationshipWith(p) == PlayerRelationship.Ally;
 		}
 
-		public Color PlayerStanceColor(Actor a)
+		public Color PlayerRelationshipColor(Actor a)
 		{
 			var player = a.World.RenderPlayer ?? a.World.LocalPlayer;
 			if (player != null && !player.Spectating)

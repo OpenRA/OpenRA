@@ -133,7 +133,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			var randPlayer = world.Players.Where(p => !p.Spectating
-				&& Info.CapturableRelationships.HasStance(player.RelationshipWith(p))).Random(world.LocalRandom);
+				&& Info.CapturableRelationships.HasRelationship(player.RelationshipWith(p))).Random(world.LocalRandom);
 
 			var targetOptions = Info.CheckCaptureTargetsForVisibility
 				? GetVisibleActorsBelongingToPlayer(randPlayer)

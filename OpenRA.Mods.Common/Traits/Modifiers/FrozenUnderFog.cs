@@ -105,8 +105,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (byPlayer == null)
 				return true;
 
-			var stance = self.Owner.RelationshipWith(byPlayer);
-			return info.AlwaysVisibleRelationships.HasStance(stance) || IsVisibleInner(self, byPlayer);
+			var relationship = self.Owner.RelationshipWith(byPlayer);
+			return info.AlwaysVisibleRelationships.HasRelationship(relationship) || IsVisibleInner(self, byPlayer);
 		}
 
 		void ITick.Tick(Actor self)

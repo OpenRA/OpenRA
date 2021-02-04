@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				var owner = p.Instances[0].Self.Owner;
 				var viewer = owner.World.RenderPlayer ?? owner.World.LocalPlayer;
-				return viewer == null || p.Info.DisplayTimerRelationships.HasStance(owner.RelationshipWith(viewer));
+				return viewer == null || p.Info.DisplayTimerRelationships.HasRelationship(owner.RelationshipWith(viewer));
 			});
 
 			texts = displayedPowers.Select(p =>
@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Common.Widgets
 				var playerColor = self.Owner.Color;
 
 				if (Game.Settings.Game.UsePlayerStanceColors)
-					playerColor = self.Owner.PlayerStanceColor(self);
+					playerColor = self.Owner.PlayerRelationshipColor(self);
 
 				var color = !p.Ready || Game.LocalTick % 50 < 25 ? playerColor : Color.White;
 

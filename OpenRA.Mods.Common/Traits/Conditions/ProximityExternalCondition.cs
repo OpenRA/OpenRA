@@ -110,8 +110,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (tokens.ContainsKey(a))
 				return;
 
-			var stance = self.Owner.RelationshipWith(a.Owner);
-			if (!Info.ValidRelationships.HasStance(stance))
+			var relationship = self.Owner.RelationshipWith(a.Owner);
+			if (!Info.ValidRelationships.HasRelationship(relationship))
 				return;
 
 			var external = a.TraitsImplementing<ExternalCondition>()
@@ -135,7 +135,7 @@ namespace OpenRA.Mods.Common.Traits
 			if ((produced.CenterPosition - self.CenterPosition).HorizontalLengthSquared <= Info.Range.LengthSquared)
 			{
 				var stance = self.Owner.RelationshipWith(produced.Owner);
-				if (!Info.ValidRelationships.HasStance(stance))
+				if (!Info.ValidRelationships.HasRelationship(stance))
 					return;
 
 				var external = produced.TraitsImplementing<ExternalCondition>()

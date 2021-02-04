@@ -167,7 +167,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (!Disguised || self.Owner.IsAlliedWith(self.World.RenderPlayer))
 				return color;
 
-			return color = Game.Settings.Game.UsePlayerStanceColors ? AsPlayer.PlayerStanceColor(self) : AsPlayer.Color;
+			return color = Game.Settings.Game.UsePlayerStanceColors ? AsPlayer.PlayerRelationshipColor(self) : AsPlayer.Color;
 		}
 
 		public void DisguiseAs(Actor target)
@@ -298,8 +298,8 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 		{
-			var stance = self.Owner.RelationshipWith(target.Owner);
-			if (!info.ValidRelationships.HasStance(stance))
+			var relationship = self.Owner.RelationshipWith(target.Owner);
+			if (!info.ValidRelationships.HasRelationship(relationship))
 				return false;
 
 			return info.TargetTypes.Overlaps(target.GetAllTargetTypes());
@@ -307,8 +307,8 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		public override bool CanTargetFrozenActor(Actor self, FrozenActor target, TargetModifiers modifiers, ref string cursor)
 		{
-			var stance = self.Owner.RelationshipWith(target.Owner);
-			if (!info.ValidRelationships.HasStance(stance))
+			var relationship = self.Owner.RelationshipWith(target.Owner);
+			if (!info.ValidRelationships.HasRelationship(relationship))
 				return false;
 
 			return info.TargetTypes.Overlaps(target.Info.GetAllTargetTypes());

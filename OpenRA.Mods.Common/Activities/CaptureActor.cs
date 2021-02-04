@@ -124,7 +124,7 @@ namespace OpenRA.Mods.Common.Activities
 				foreach (var t in enterActor.TraitsImplementing<INotifyCapture>())
 					t.OnCapture(enterActor, self, oldOwner, self.Owner, captures.Info.CaptureTypes);
 
-				if (self.Owner.RelationshipWith(oldOwner).HasStance(captures.Info.PlayerExperienceRelationships))
+				if (self.Owner.RelationshipWith(oldOwner).HasRelationship(captures.Info.PlayerExperienceRelationships))
 					self.Owner.PlayerActor.TraitOrDefault<PlayerExperience>()?.GiveExperience(captures.Info.PlayerExperience);
 
 				if (captures.Info.ConsumedByCapture)

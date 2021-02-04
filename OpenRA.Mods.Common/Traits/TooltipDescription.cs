@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (Owner == null || forPlayer == null)
 				return false;
 
-			return Info.ValidRelationships.HasStance(Owner.RelationshipWith(forPlayer));
+			return Info.ValidRelationships.HasRelationship(Owner.RelationshipWith(forPlayer));
 		}
 
 		public string TooltipText

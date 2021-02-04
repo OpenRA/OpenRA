@@ -81,8 +81,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 			if (self.World.RenderPlayer != null)
 			{
-				var stance = self.Owner.RelationshipWith(self.World.RenderPlayer);
-				if (!Info.ValidRelationships.HasStance(stance))
+				var relationship = self.Owner.RelationshipWith(self.World.RenderPlayer);
+				if (!Info.ValidRelationships.HasRelationship(relationship))
 					return false;
 			}
 

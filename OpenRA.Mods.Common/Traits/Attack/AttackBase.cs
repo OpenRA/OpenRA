@@ -377,7 +377,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			return Armaments.Where(a =>
 				!a.IsTraitDisabled
-				&& (owner == null || (forceAttack ? a.Info.ForceTargetRelationships : a.Info.TargetRelationships).HasStance(self.Owner.RelationshipWith(owner)))
+				&& (owner == null || (forceAttack ? a.Info.ForceTargetRelationships : a.Info.TargetRelationships).HasRelationship(self.Owner.RelationshipWith(owner)))
 				&& a.Weapon.IsValidAgainst(t, self.World, self));
 		}
 

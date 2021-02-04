@@ -55,8 +55,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (byPlayer == null)
 				return true;
 
-			var stance = self.Owner.RelationshipWith(byPlayer);
-			return Info.AlwaysVisibleRelationships.HasStance(stance) || IsVisibleInner(self, byPlayer);
+			var relationship = self.Owner.RelationshipWith(byPlayer);
+			return Info.AlwaysVisibleRelationships.HasRelationship(relationship) || IsVisibleInner(self, byPlayer);
 		}
 
 		IEnumerable<IRenderable> IRenderModifier.ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)
