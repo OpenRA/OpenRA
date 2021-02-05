@@ -337,9 +337,19 @@ caaray:
 	idle-scanner: ctaray_c
 		Length: 16
 		Tick: 100
-	idle-light: ctaray_d
-		Length: 24
+	damaged-idle-scanner: ctaray_c
+		Start: 16
+		Length: 16
 		Tick: 100
+	idle-light-bright: ctaray_d
+		Length: 12
+		Tick: 100
+		IgnoreWorldTint: True
+	damaged-idle-light-bright: ctaray_d
+		Start: 12
+		Length: 12
+		Tick: 100
+		IgnoreWorldTint: True
 
 cabhut:
 	idle:
@@ -515,21 +525,32 @@ city22:
 
 ctdam:
 	Defaults:
-		Offset: 36,-42
+		Offset: 36,-42, 42
 	idle:
 	damaged-idle:
 		Start: 1
-	idle-lights: ctdam_a
+	idle-lights-bright: ctdam_a
+		Length: 10
+		Tick: 200
+		IgnoreWorldTint: True
+	damaged-idle-lights-bright: ctdam_a
+		Start: 10
+		Length: 10
+		Tick: 200
+		IgnoreWorldTint: True
+	idle-water-a: ctdam_b
 		Length: 8
 		Tick: 200
-	damaged-idle-lights: ctdam_a
+	damaged-idle-water-a: ctdam_b
 		Start: 8
 		Length: 8
 		Tick: 200
-	idle-water: ctdam_b
+	idle-water-b: ctdam_b
+		Start: 16
 		Length: 8
 		Tick: 200
-	damaged-idle-water: ctdam_b
+	damaged-idle-water-b: ctdam_b
+		Start: 24
 		Start: 8
 		Length: 8
 		Tick: 200
@@ -589,20 +610,42 @@ gakodk:
 	large-lights: gakodk_a
 		Length: 12
 		Tick: 200
+	large-lights-bright: gakodk_a
+		Length: 12
+		Tick: 200
+		IgnoreWorldTint: True
 	damaged-large-lights: gakodk_a
 		Start: 12
 		Length: 12
 		Tick: 200
+	damaged-large-lights-bright: gakodk_a
+		Start: 12
+		Length: 12
+		Tick: 200
+		IgnoreWorldTint: True
 	small-light: gakodk_b
 		Length: 22
 		Tick: 200
+	small-light-bright: gakodk_b
+		Length: 22
+		Tick: 200
+		IgnoreWorldTint: True
 	small-lights: gakodk_c
 		Length: 12
 		Tick: 200
+	small-lights-bright: gakodk_c
+		Length: 12
+		Tick: 200
+		IgnoreWorldTint: True
 	damaged-small-lights: gakodk_c
 		Start: 12
 		Length: 12
 		Tick: 200
+	damaged-small-lights-bright: gakodk_c
+		Start: 12
+		Length: 12
+		Tick: 200
+		IgnoreWorldTint: True
 
 gaspot:
 	Defaults:
@@ -618,13 +661,15 @@ gaspot:
 		Start: 2
 		ShadowStart: 5
 		Tick: 400
-	idle-lights: gaspot_a
+	idle-lights-bright: gaspot_a
 		Length: 8
 		Tick: 200
-	damaged-idle-lights: gaspot_a
+		IgnoreWorldTint: True
+	damaged-idle-lights-bright: gaspot_a
 		Start: 8
 		Length: 8
 		Tick: 200
+		IgnoreWorldTint: True
 	make: gaspotmk
 		Length: 14
 		ShadowStart: 14
@@ -689,6 +734,10 @@ namntk:
 	idle-lights: namntk_a
 		Length: 8
 		Tick: 200
+	idle-lights-bright: namntk_a
+		Length: 8
+		Tick: 200
+		IgnoreWorldTint: True
 
 ntpyra:
 	Defaults:

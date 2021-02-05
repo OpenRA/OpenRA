@@ -25,6 +25,12 @@ NAPOWR:
 	WithIdleOverlay@LIGHTS:
 		RequiresCondition: !build-incomplete && !empdisable
 		Sequence: idle-lights
+		Palette: player-nobright
+		IsPlayerPalette: True
+	WithIdleOverlay@LIGHTS-BRIGHT:
+		RequiresCondition: !build-incomplete && !empdisable
+		Sequence: idle-lights-bright
+		Palette: bright
 	Power:
 		Amount: 100
 		RequiresCondition: !empdisable
@@ -62,6 +68,12 @@ NAAPWR:
 	WithIdleOverlay@LIGHTS:
 		RequiresCondition: !build-incomplete && !empdisable
 		Sequence: idle-lights
+		Palette: player-nobright
+		IsPlayerPalette: True
+	WithIdleOverlay@LIGHTS-BRIGHT:
+		RequiresCondition: !build-incomplete && !empdisable
+		Sequence: idle-lights-bright
+		Palette: bright
 	Power:
 		Amount: 200
 		RequiresCondition: !empdisable
@@ -152,12 +164,14 @@ NAHAND:
 		PauseOnCondition: empdisable
 	ProductionBar:
 		ProductionType: Infantry
-	WithIdleOverlay@LIGHTS:
-		RequiresCondition: !build-incomplete
-		Sequence: idle-lights
-	WithIdleOverlay@LIGHT:
-		RequiresCondition: !build-incomplete
-		Sequence: idle-light
+	WithIdleOverlay@LIGHTS-BRIGHT:
+		RequiresCondition: !build-incomplete && !empdisable
+		Sequence: idle-lights-bright
+		Palette: bright
+	WithIdleOverlay@LIGHT-BRIGHT:
+		RequiresCondition: !build-incomplete && !empdisable
+		Sequence: idle-light-bright
+		Palette: bright
 	Power:
 		Amount: -20
 	ProvidesPrerequisite@buildingname:
@@ -209,6 +223,12 @@ NAWEAP:
 	WithIdleOverlay@LIGHTS:
 		RequiresCondition: !build-incomplete
 		Sequence: idle-lights
+		Palette: player-nobright
+		IsPlayerPalette: True
+	WithIdleOverlay@LIGHTS-BRIGHT:
+		RequiresCondition: !build-incomplete && !empdisable
+		Sequence: idle-lights-bright
+		Palette: bright
 	WithIdleOverlay@BIB:
 		RequiresCondition: !build-incomplete
 		Sequence: bib
@@ -262,8 +282,14 @@ NAHPAD:
 		RequiresCondition: !build-incomplete
 		Sequence: idle-platform
 	WithIdleOverlay@LIGHTS:
-		RequiresCondition: !build-incomplete
+		RequiresCondition: !build-incomplete && !empdisable
 		Sequence: idle-lights
+		Palette: player-nobright
+		IsPlayerPalette: True
+	WithIdleOverlay@LIGHTS-BRIGHT:
+		RequiresCondition: !build-incomplete && !empdisable
+		Sequence: idle-lights-bright
+		Palette: bright
 	WithDeathAnimation@BIB:
 		DeathSequence: dead-platform
 		UseDeathTypeSuffix: false
@@ -344,6 +370,12 @@ NATECH:
 	WithIdleOverlay@LIGHTS:
 		RequiresCondition: !build-incomplete && !disabled
 		Sequence: idle-lights
+		Palette: player-nobright
+		IsPlayerPalette: True
+	WithIdleOverlay@LIGHTS-BRIGHT:
+		RequiresCondition: !build-incomplete && !empdisable
+		Sequence: idle-lights-bright
+		Palette: bright
 	Power:
 		Amount: -150
 	ProvidesPrerequisite@buildingname:
@@ -422,6 +454,12 @@ NATMPL:
 	WithIdleOverlay@LIGHTS:
 		RequiresCondition: !build-incomplete && !disabled
 		Sequence: idle-lights
+		Palette: player-nobright
+		IsPlayerPalette: True
+	WithIdleOverlay@LIGHTS-BRIGHT:
+		RequiresCondition: !build-incomplete && !disabled
+		Sequence: idle-lights-bright
+		Palette: bright
 	ProduceActorPower:
 		PauseOnCondition: empdisable || disabled
 		Description: Hunter Seeker
@@ -467,6 +505,12 @@ NAMISL:
 	WithIdleOverlay@LIGHTS:
 		RequiresCondition: !build-incomplete && !disabled
 		Sequence: idle-lights
+		Palette: player-nobright
+		IsPlayerPalette: True
+	WithIdleOverlay@LIGHTS-BRIGHT:
+		RequiresCondition: !build-incomplete && !disabled
+		Sequence: idle-lights-bright
+		Palette: bright
 	Power:
 		Amount: -50
 	ProvidesPrerequisite@buildingname:
@@ -483,9 +527,9 @@ NAMISL:
 		IncomingSpeechNotification: MissileLaunchDetected
 		LaunchSound: icbm1.aud
 		MissileWeapon: ClusterMissile
-		MissileDelay: 10
+		MissileDelay: 18
 		DetonationAltitude: 5c0
-		SpawnOffset: 72,72,0
+		SpawnOffset: 0, 0c128, 0c512
 		DisplayTimerRelationships: None
 		DisplayBeacon: False
 		DisplayRadarPing: True
@@ -496,6 +540,12 @@ NAMISL:
 		TrailInterval: 0
 		TrailSequences: idle
 	WithSupportPowerActivationOverlay:
+		Palette: player-nobright
+		IsPlayerPalette: True
+	WithSupportPowerActivationOverlay@BRIGHT:
+		RequiresCondition: !build-incomplete && !disabled
+		Sequence: idle-lights-bright
+		Palette: bright
 
 NAWAST:
 	Inherits: ^Building
@@ -537,7 +587,8 @@ NAWAST:
 		Sequence: idle-glow
 	WithIdleOverlay@LIGHTS:
 		RequiresCondition: !build-incomplete
-		Sequence: idle-lights
+		Sequence: idle-lights-bright
+		Palette: bright
 	WithIdleOverlay@BIB:
 		RequiresCondition: !build-incomplete
 		Sequence: bib
