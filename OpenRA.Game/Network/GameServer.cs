@@ -119,12 +119,27 @@ namespace OpenRA.Network
 		public int PlayTime = -1;
 
 		/// <summary>Can we join this server (after switching mods if required)? Only defined if GameServer is parsed from yaml.</summary>
-		[FieldLoader.Ignore]
-		public readonly bool IsCompatible = false;
+		public bool IsCompatible
+		{
+			get
+			{
+				var externalKey = ExternalMod.MakeKey(Mod, Version);
+				if (Game.ExternalMods.TryGetValue(externalKey, out var external) && external.Version == Version)
+					return true;
+
+				return false;
+			}
+		}
 
 		/// <summary>Can we join this server (after switching mods if required)? Only defined if GameServer is parsed from yaml.</summary>
-		[FieldLoader.Ignore]
-		public readonly bool IsJoinable = false;
+		public bool IsJoinable
+		{
+			get
+			{
+				var mapAvailable = Game.Settings.Game.AllowDownloading || Game.ModData.MapCache[Map].Status == MapStatus.Available;
+				return IsCompatible && State == 1 && mapAvailable;
+			}
+		}
 
 		public GameClient[] Clients { get; set; }
 
