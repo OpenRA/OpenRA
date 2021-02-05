@@ -250,6 +250,12 @@ smech:
 		Facings: -8
 		ShadowStart: 240
 		Tick: 80
+	shoot-muzzle:
+		Start: 104
+		Length: 4
+		Facings: -8
+		Tick: 80
+		IgnoreWorldTint: True
 	icon: smchicon
 
 trucka:

@@ -91,3 +91,9 @@ floater:
 		ShadowStart: 48
 		Tick: 100
 		Offset: 0, 0, 16
+	attack-shock:
+		Length: 16
+		Start: 16
+		Tick: 100
+		Offset: 0, 0, 16
+		IgnoreWorldTint: True
