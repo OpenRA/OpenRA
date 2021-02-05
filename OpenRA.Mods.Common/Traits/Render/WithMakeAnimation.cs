@@ -38,6 +38,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		readonly WithMakeAnimationInfo info;
 		readonly WithSpriteBody[] wsbs;
 		readonly bool skipMakeAnimation;
+		WithMakeOverlay[] overlays;
 
 		int token = Actor.InvalidConditionToken;
 
@@ -51,6 +52,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		void INotifyCreated.Created(Actor self)
 		{
+			overlays = self.TraitsImplementing<WithMakeOverlay>().ToArray();
 			if (!skipMakeAnimation)
 				Forward(self, () => { });
 		}
@@ -76,6 +78,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 					onComplete();
 				});
 			});
+
+			foreach (var overlay in overlays)
+				overlay.Forward(self);
 		}
 
 		public void Reverse(Actor self, Action onComplete)
@@ -99,6 +104,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 					onComplete();
 				});
 			});
+
+			foreach (var overlay in overlays)
+				overlay.Reverse(self);
 		}
 
 		public void Reverse(Actor self, Activity activity, bool queued = true)
@@ -115,6 +123,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 				self.QueueActivity(queued, activity);
 			});
+
+			foreach (var overlay in overlays)
+				overlay.Reverse(self);
 		}
 
 		// TODO: Make this use Forward instead
@@ -148,6 +159,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 					}
 				});
 			}
+
+			foreach (var overlay in overlays)
+				overlay.Forward(self);
 		}
 
 		// TODO: Make this use Reverse instead
@@ -181,6 +195,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 					}
 				});
 			}
+
+			foreach (var overlay in overlays)
+				overlay.Reverse(self);
 		}
 	}
 }
