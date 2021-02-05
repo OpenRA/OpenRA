@@ -131,8 +131,12 @@ JFISH:
 		MaxMoveDelay: 600
 	WithAttackAnimation:
 		Sequence: attack
+	WithAttackOverlay@muzzle:
+		Sequence: attack-shock
+		Palette: bright
 	RenderSprites:
 		Image: floater
+		Palette: player-nobright
 	Selectable:
 		Bounds: 32,32,0,-5
 	AmbientSound:

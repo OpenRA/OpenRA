@@ -74,7 +74,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		bool dirty;
 		string idleSequence;
 		int idleDelay;
-		AnimationState state;
+		protected AnimationState state;
 		IRenderInfantrySequenceModifier rsm;
 
 		bool IsModifyingSequence => rsm != null && rsm.IsModifyingSequence;
@@ -135,7 +135,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			}
 		}
 
-		void Attacking(Actor self, Armament a, Barrel barrel)
+		protected virtual void Attacking(Actor self, Armament a, Barrel barrel)
 		{
 			var info = GetDisplayInfo();
 			var sequence = info.DefaultAttackSequence;
@@ -213,7 +213,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			}
 		}
 
-		enum AnimationState
+		protected enum AnimationState
 		{
 			Idle,
 			Attacking,
