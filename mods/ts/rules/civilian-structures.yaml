@@ -752,8 +752,9 @@ CAARAY:
 		Sequence: idle-radar
 	WithIdleOverlay@SCANNER:
 		Sequence: idle-scanner
-	WithIdleOverlay@LIGHT:
-		Sequence: idle-light
+	WithIdleOverlay@LIGHT-bright:
+		Sequence: idle-light-bright
+		Palette: bright
 	ThrowsShrapnel@SMALL:
 		Pieces: 5, 7
 	ThrowsShrapnel@LARGE:
@@ -1319,10 +1320,13 @@ CTDAM:
 		Prerequisite: anypower
 	MapEditorData:
 		ExcludeTilesets: SNOW
-	WithIdleOverlay@LIGHTS:
-		Sequence: idle-lights
-	WithIdleOverlay@WATER:
-		Sequence: idle-water
+	WithIdleOverlay@LIGHT-BRIGHT:
+		Sequence: idle-lights-bright
+		Palette: bright
+	WithIdleOverlay@WATER-A:
+		Sequence: idle-water-a
+	WithIdleOverlay@WATER-B:
+		Sequence: idle-water-b
 	ThrowsShrapnel@SMALL:
 		Pieces: 5, 9
 	ThrowsShrapnel@LARGE:
@@ -1367,10 +1371,25 @@ GAKODK:
 		Palette: player
 	WithIdleOverlay@LARGELIGHTS:
 		Sequence: large-lights
+		Palette: player-nobright
+		IsPlayerPalette: True
+	WithIdleOverlay@LIGHT-BRIGHT:
+		Sequence: large-lights-bright
+		Palette: bright
 	WithIdleOverlay@SMALLLIGHT:
 		Sequence: small-light
+		Palette: player-nobright
+		IsPlayerPalette: True
+	WithIdleOverlay@SMALLLIGHT-BRIGHT:
+		Sequence: small-light-bright
+		Palette: bright
 	WithIdleOverlay@SMALLLIGHTS:
 		Sequence: small-lights
+		Palette: player-nobright
+		IsPlayerPalette: True
+	WithIdleOverlay@SMALLLIGHTS-BRIGHT:
+		Sequence: small-lights-bright
+		Palette: bright
 
 GAOLDCC1:
 	Inherits: ^OldBase
@@ -1456,8 +1475,9 @@ GASPOT:
 	RevealsShroud:
 		Range: 6c0
 		MaxHeightDelta: 3
-	WithIdleOverlay@LIGHTS:
-		Sequence: idle-lights
+	WithIdleOverlay@LIGHTS-BRIGHT:
+		Sequence: idle-lights-bright
+		Palette: bright
 	MapEditorData:
 		Categories: Civilian building
 	IsometricSelectable:
@@ -1715,6 +1735,11 @@ NAMNTK:
 		Palette: player
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
+		Palette: player-nobright
+		IsPlayerPalette: True
+	WithIdleOverlay@LIGHT-BRIGHT:
+		Sequence: idle-lights-bright
+		Palette: bright
 	IsometricSelectable:
 		Height: 36
 
