@@ -661,15 +661,15 @@ v12:
 		TilesetOverrides:
 			DESERT: TEMPERAT
 	idle:
-		ZOffset: -512
+		ZOffset: -2c512
 	damaged-idle:
 		Start: 1
-		ZOffset: -512
+		ZOffset: -2c512
 
 v12.husk:
 	idle: v12
 		Start: 2
-		ZOffset: -512
+		ZOffset: -2c512
 		UseTilesetExtension: true
 		TilesetOverrides:
 			DESERT: TEMPERAT
@@ -680,15 +680,15 @@ v13:
 		TilesetOverrides:
 			DESERT: TEMPERAT
 	idle:
-		ZOffset: -512
+		ZOffset: -2c512
 	damaged-idle:
 		Start: 1
-		ZOffset: -512
+		ZOffset: -2c512
 
 v13.husk:
 	idle: v13
 		Start: 2
-		ZOffset: -512
+		ZOffset: -2c512
 		UseTilesetExtension: true
 		TilesetOverrides:
 			DESERT: TEMPERAT
@@ -699,15 +699,15 @@ v14:
 		TilesetOverrides:
 			DESERT: TEMPERAT
 	idle:
-		ZOffset: -512
+		ZOffset: -2c512
 	damaged-idle:
 		Start: 1
-		ZOffset: -512
+		ZOffset: -2c512
 
 v14.husk:
 	idle: v14
 		Start: 2
-		ZOffset: -512
+		ZOffset: -2c512
 		UseTilesetExtension: true
 		TilesetOverrides:
 			DESERT: TEMPERAT
@@ -718,15 +718,15 @@ v15:
 		TilesetOverrides:
 			DESERT: TEMPERAT
 	idle:
-		ZOffset: -512
+		ZOffset: -2c512
 	damaged-idle:
 		Start: 1
-		ZOffset: -512
+		ZOffset: -2c512
 
 v15.husk:
 	idle: v15
 		Start: 2
-		ZOffset: -512
+		ZOffset: -2c512
 		UseTilesetExtension: true
 		TilesetOverrides:
 			DESERT: TEMPERAT
@@ -737,15 +737,15 @@ v16:
 		TilesetOverrides:
 			DESERT: TEMPERAT
 	idle:
-		ZOffset: -512
+		ZOffset: -2c512
 	damaged-idle:
 		Start: 1
-		ZOffset: -512
+		ZOffset: -2c512
 
 v16.husk:
 	idle: v16
 		Start: 2
-		ZOffset: -512
+		ZOffset: -2c512
 		UseTilesetExtension: true
 		TilesetOverrides:
 			DESERT: TEMPERAT
@@ -756,15 +756,15 @@ v17:
 		TilesetOverrides:
 			DESERT: TEMPERAT
 	idle:
-		ZOffset: -512
+		ZOffset: -2c512
 	damaged-idle:
 		Start: 1
-		ZOffset: -512
+		ZOffset: -2c512
 
 v17.husk:
 	idle: v17
 		Start: 2
-		ZOffset: -512
+		ZOffset: -2c512
 		UseTilesetExtension: true
 		TilesetOverrides:
 			DESERT: TEMPERAT
@@ -775,15 +775,15 @@ v18:
 		TilesetOverrides:
 			DESERT: TEMPERAT
 	idle:
-		ZOffset: -512
+		ZOffset: -2c512
 	damaged-idle:
 		Start: 1
-		ZOffset: -512
+		ZOffset: -2c512
 
 v18.husk:
 	idle: v18
 		Start: 2
-		ZOffset: -512
+		ZOffset: -2c512
 		UseTilesetExtension: true
 		TilesetOverrides:
 			DESERT: TEMPERAT
