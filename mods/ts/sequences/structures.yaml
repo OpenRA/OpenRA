@@ -463,7 +463,7 @@ naweap:
 
 naradr:
 	Defaults:
-		Offset: 0, -24, 24
+		Offset: 0, -24, 30
 		UseTilesetCode: true
 		DepthSprite: isodepth.shp
 	idle:
@@ -571,7 +571,7 @@ natmpl:
 
 garadr:
 	Defaults:
-		Offset: 0, -24, 24
+		Offset: 0, -24, 28
 		UseTilesetCode: true
 		DepthSprite: isodepth.shp
 	idle:
