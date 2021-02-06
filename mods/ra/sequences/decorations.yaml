@@ -560,8 +560,10 @@ v12:
 			DESERT: TEMPERAT
 			INTERIOR: TEMPERAT
 	idle:
+		ZOffset: -2c512
 	damaged-idle:
 		Start: 1
+		ZOffset: -2c512
 
 v13:
 	Defaults:
@@ -580,10 +582,10 @@ v14:
 			DESERT: TEMPERAT
 			INTERIOR: TEMPERAT
 	idle:
-		ZOffset: -512
+		ZOffset: -2c512
 	damaged-idle:
 		Start: 1
-		ZOffset: -512
+		ZOffset: -2c512
 
 v15:
 	Defaults:
@@ -592,10 +594,10 @@ v15:
 			DESERT: TEMPERAT
 			INTERIOR: TEMPERAT
 	idle:
-		ZOffset: -512
+		ZOffset: -2c512
 	damaged-idle:
 		Start: 1
-		ZOffset: -512
+		ZOffset: -2c512
 
 v16:
 	Defaults:
@@ -604,10 +606,10 @@ v16:
 			DESERT: TEMPERAT
 			INTERIOR: TEMPERAT
 	idle:
-		ZOffset: -512
+		ZOffset: -2c512
 	damaged-idle:
 		Start: 1
-		ZOffset: -512
+		ZOffset: -2c512
 
 v17:
 	Defaults:
@@ -616,10 +618,10 @@ v17:
 			DESERT: TEMPERAT
 			INTERIOR: TEMPERAT
 	idle:
-		ZOffset: -512
+		ZOffset: -2c512
 	damaged-idle:
 		Start: 1
-		ZOffset: -512
+		ZOffset: -2c512
 
 v18:
 	Defaults:
@@ -628,19 +630,19 @@ v18:
 			DESERT: TEMPERAT
 			INTERIOR: TEMPERAT
 	idle:
-		ZOffset: -512
+		ZOffset: -2c512
 	damaged-idle:
 		Start: 1
-		ZOffset: -512
+		ZOffset: -2c512
 
 rice:
 	Defaults:
 		AddExtension: false
 	idle: rice.tem
-		ZOffset: -512
+		ZOffset: -2c512
 	damaged-idle: rice.tem
 		Start: 1
-		ZOffset: -512
+		ZOffset: -2c512
 
 v19:
 	idle:
