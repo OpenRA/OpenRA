@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public string PlayerPalette = "player";
 		public string NormalsPalette = "normals";
 		public string ShadowPalette = "shadow";
-		public float Scale = 12f;
+		public float Scale = 10f;
 		public int LightPitch = 142;
 		public int LightYaw = 682;
 		public float[] LightAmbientColor = new float[] { 0.6f, 0.6f, 0.6f };
