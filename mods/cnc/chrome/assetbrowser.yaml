@@ -195,6 +195,21 @@ Container@ASSETBROWSER_PANEL:
 							Height: 25
 							Font: TinyBold
 							Align: Left
+						Label@SPRITE_SCALE:
+							X: 0
+							Y: 32
+							Width: 40
+							Height: 25
+							Font: TinyBold
+							Align: Left
+							Text: Scale
+						Slider@SPRITE_SCALE_SLIDER:
+							X: 35
+							Y: 35
+							Width: 100
+							Height: 20
+							MinimumValue: 0.5
+							MaximumValue: 4
 		Button@CLOSE_BUTTON:
 			Key: escape
 			Y: PARENT_BOTTOM - 1

@@ -185,6 +185,21 @@ Background@ASSETBROWSER_PANEL:
 					Height: 25
 					Font: TinyBold
 					Align: Left
+				Label@SPRITE_SCALE:
+					X: 0
+					Y: 30
+					Width: 40
+					Height: 25
+					Font: TinyBold
+					Align: Left
+					Text: Scale
+				Slider@SPRITE_SCALE_SLIDER:
+					X: 35
+					Y: 32
+					Width: 100
+					Height: 20
+					MinimumValue: 0.5
+					MaximumValue: 4
 		Container@VOXEL_SELECTOR:
 			X: 226
 			Y: PARENT_BOTTOM - 75
