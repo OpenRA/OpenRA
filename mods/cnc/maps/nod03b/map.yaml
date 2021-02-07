@@ -26,15 +26,15 @@ Players:
 		Faction: gdi
 	PlayerReference@GDI:
 		Name: GDI
+		Bot: campaign
 		Faction: gdi
 		Color: F5D378
 		Allies: GDI
 		Enemies: Nod
-		Bot: campaign
 	PlayerReference@Nod:
 		Name: Nod
-		Playable: True
 		AllowBots: False
+		Playable: True
 		Required: True
 		LockFaction: True
 		Faction: nod
@@ -121,8 +121,8 @@ Actors:
 	Actor89: e1
 		Location: 19,21
 		Owner: GDI
-		Facing: 512
 		SubCell: 1
+		Facing: 512
 	Actor90: e1
 		Location: 30,43
 		Owner: GDI
@@ -324,22 +324,22 @@ Actors:
 	Actor50: t18
 		Location: 13,37
 		Owner: Neutral
-	Actor51: silo
+	Base4: silo
 		Location: 23,17
 		Owner: GDI
-	Actor52: silo
+	Base1: silo
 		Location: 18,17
 		Owner: GDI
-	Actor53: pyle
+	Base3: pyle
 		Location: 23,19
 		Owner: GDI
-	Actor54: nuke
+	Base5: nuke
 		Location: 25,17
 		Owner: GDI
-	Actor55: fact
+	Base6: fact
 		Location: 27,17
 		Owner: GDI
-	Actor56: gtwr
+	Base7: gtwr
 		Location: 18,23
 		Owner: GDI
 	Actor57: v20
@@ -360,7 +360,7 @@ Actors:
 	Actor62: v19
 		Location: 28,41
 		Owner: Neutral
-	Actor63: proc
+	Base2: proc
 		Location: 20,17
 		Owner: GDI
 	Actor65: v19
@@ -372,7 +372,7 @@ Actors:
 	Actor68: v19
 		Location: 29,42
 		Owner: Neutral
-	Actor72: jeep
+	Humvee1: jeep
 		Location: 28,21
 		Owner: GDI
 		Facing: 512
@@ -384,7 +384,7 @@ Actors:
 		Location: 32,36
 		Owner: GDI
 		Facing: 384
-	Actor75: jeep
+	Humvee2: jeep
 		Location: 29,21
 		Owner: GDI
 		Facing: 512
