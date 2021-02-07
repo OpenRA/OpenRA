@@ -53,6 +53,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		bool isLoadError = false;
 		int currentFrame;
 		WRot modelOrientation;
+		float modelScale;
 
 		[ObjectCreator.UseCtor]
 		public AssetBrowserLogic(Widget widget, Action onExit, ModData modData, WorldRenderer worldRenderer)
@@ -106,10 +107,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				modelWidget.GetVoxel = () => currentVoxel;
 				currentPalette = modelWidget.Palette;
+				modelScale = modelWidget.Scale;
 				modelWidget.GetPalette = () => currentPalette;
 				modelWidget.GetPlayerPalette = () => currentPalette;
 				modelWidget.GetRotation = () => modelOrientation;
 				modelWidget.IsVisible = () => !isVideoLoaded && !isLoadError && currentVoxel != null;
+				modelWidget.GetScale = () => modelScale;
 			}
 
 			var errorLabelWidget = panel.GetOrNull("ERROR");
@@ -283,6 +286,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				};
 
 				yawSlider.GetValue = () => modelOrientation.Yaw.Angle;
+			}
+
+			var modelScaleSlider = panel.GetOrNull<SliderWidget>("MODEL_SCALE_SLIDER");
+			if (modelScaleSlider != null)
+			{
+				modelScaleSlider.OnChange += x => modelScale = x;
+				modelScaleSlider.GetValue = () => modelScale;
 			}
 
 			var assetBrowserModData = modData.Manifest.Get<AssetBrowser>();
