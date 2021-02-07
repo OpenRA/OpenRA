@@ -10,10 +10,14 @@
 NodUnits = { "bike", "e3", "e1", "bggy", "e1", "e3", "bike", "bggy" }
 FirstAttackWave = { "e1", "e1", "e1", "e2", }
 SecondThirdAttackWave = { "e1", "e1", "e2", }
+GDIBase = { Base1, Base2, Base3, Base4, Base5, Base6, Base7 }
+Humvees = { Humvee1, Humvee2 }
+PatrolTeam = { Patrol1, Patrol2, Patrol3, Patrol4 }
+PatrolRoute = { PatrolA.Location, PatrolB.Location }
 
 SendAttackWave = function(units, spawnPoint)
 	Reinforcements.Reinforce(GDI, units, { spawnPoint }, DateTime.Seconds(1), function(actor)
-		actor.AttackMove(PlayerBase.Location)
+		IdleHunt(actor)
 	end)
 end
 
@@ -36,6 +40,10 @@ WorldLoaded = function()
 		Nod.MarkFailedObjective(CapturePrison)
 	end)
 
+	Utils.Do(PatrolTeam, function(a)
+		a.Patrol(PatrolRoute, true)
+	end)
+
 	Media.PlaySpeechNotification(Nod, "Reinforce")
 	Reinforcements.Reinforce(Nod, NodUnits, { NodEntry.Location, NodRallyPoint.Location })
 	Trigger.AfterDelay(DateTime.Seconds(9), function()
@@ -45,6 +53,26 @@ WorldLoaded = function()
 	Trigger.AfterDelay(DateTime.Seconds(20), function() SendAttackWave(FirstAttackWave, AttackWaveSpawnA.Location) end)
 	Trigger.AfterDelay(DateTime.Seconds(50), function() SendAttackWave(SecondThirdAttackWave, AttackWaveSpawnB.Location) end)
 	Trigger.AfterDelay(DateTime.Seconds(100), function() SendAttackWave(SecondThirdAttackWave, AttackWaveSpawnC.Location) end)
+
+	Trigger.OnDamaged(GuardTower, function()
+		if not TowerDamaged then
+			TowerDamaged = true
+			Utils.Do(Humvees, function(unit)
+				IdleHunt(unit)
+			end)
+		end
+	end)
+
+	Trigger.OnAnyKilled(GDIBase, function()
+		if not BaseAttacked then
+			BaseAttacked = true
+			Utils.Do(GDI.GetGroundAttackers(), function(unit)
+				if not unit.IsDead then
+					IdleHunt(unit)
+				end
+			end)
+		end
+	end)
 end
 
 Tick = function()

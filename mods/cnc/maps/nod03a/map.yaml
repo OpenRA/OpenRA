@@ -26,15 +26,15 @@ Players:
 		Faction: gdi
 	PlayerReference@GDI:
 		Name: GDI
+		Bot: campaign
 		Faction: gdi
 		Color: F5D378
 		Allies: GDI
 		Enemies: Nod
-		Bot: campaign
 	PlayerReference@Nod:
 		Name: Nod
-		Playable: True
 		AllowBots: False
+		Playable: True
 		Required: True
 		LockFaction: True
 		Faction: nod
@@ -214,28 +214,28 @@ Actors:
 	Actor55: t18
 		Location: 38,31
 		Owner: Neutral
-	Actor56: pyle
+	Base2: pyle
 		Location: 25,20
 		Owner: GDI
-	Actor57: fact
+	Base1: fact
 		Location: 27,20
 		Owner: GDI
-	Actor58: silo
+	Base5: silo
 		Location: 23,17
 		Owner: GDI
-	Actor59: silo
+	Base4: silo
 		Location: 23,19
 		Owner: GDI
-	Actor60: proc
+	Base3: proc
 		Location: 20,17
 		Owner: GDI
-	Actor61: nuke
+	Base6: nuke
 		Location: 25,17
 		Owner: GDI
-	Actor62: nuke
+	Base7: nuke
 		Location: 27,17
 		Owner: GDI
-	Actor63: gtwr
+	GuardTower: gtwr
 		Location: 28,24
 		Owner: GDI
 	Actor64: v24
@@ -283,11 +283,11 @@ Actors:
 	Actor79: v26
 		Location: 37,19
 		Owner: Neutral
-	Actor82: jeep
+	Humvee2: jeep
 		Location: 21,22
 		Owner: GDI
 		Facing: 512
-	Actor83: jeep
+	Humvee1: jeep
 		Location: 20,22
 		Owner: GDI
 		Facing: 512
@@ -318,11 +318,11 @@ Actors:
 		Owner: GDI
 		Facing: 384
 		SubCell: 4
-	Actor101: e1
+	Patrol3: e1
 		Location: 34,23
 		Owner: GDI
-		Facing: 384
 		SubCell: 2
+		Facing: 384
 	Actor102: c1
 		Location: 19,40
 		Owner: Neutral
@@ -354,11 +354,11 @@ Actors:
 		Owner: GDI
 		Facing: 384
 		SubCell: 3
-	Actor109: e1
+	Patrol1: e1
 		Location: 34,25
 		Owner: GDI
-		Facing: 640
 		SubCell: 2
+		Facing: 640
 	Actor111: e1
 		Location: 39,31
 		Owner: GDI
@@ -368,16 +368,16 @@ Actors:
 		Owner: GDI
 		Facing: 384
 		SubCell: 0
-	Actor116: e2
+	Patrol4: e2
 		Location: 34,22
 		Owner: GDI
-		Facing: 384
 		SubCell: 3
-	Actor117: e2
+		Facing: 384
+	Patrol2: e2
 		Location: 34,23
 		Owner: GDI
-		Facing: 640
 		SubCell: 4
+		Facing: 640
 	Actor118: e2
 		Location: 42,18
 		Owner: GDI
@@ -427,7 +427,10 @@ Actors:
 	AttackWaveSpawnC: waypoint
 		Location: 33,16
 		Owner: Neutral
-	CellTrig: waypoint
+	PatrolA: waypoint
+		Location: 24,26
+		Owner: Neutral
+	PatrolB: waypoint
 		Location: 32,47
 		Owner: Neutral
 
