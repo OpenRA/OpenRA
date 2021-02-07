@@ -53,6 +53,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		bool isLoadError = false;
 		int currentFrame;
 		WRot modelOrientation;
+		float spriteScale;
 		float modelScale;
 
 		[ObjectCreator.UseCtor]
@@ -94,8 +95,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				spriteWidget.GetSprite = () => currentSprites != null ? currentSprites[currentFrame] : null;
 				currentPalette = spriteWidget.Palette;
+				spriteScale = spriteWidget.Scale;
 				spriteWidget.GetPalette = () => currentPalette;
 				spriteWidget.IsVisible = () => !isVideoLoaded && !isLoadError && currentSprites != null;
+				spriteWidget.GetScale = () => spriteScale;
 			}
 
 			var playerWidget = panel.GetOrNull<VideoPlayerWidget>("PLAYER");
@@ -246,6 +249,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				};
 
 				prevButton.IsVisible = () => !isVideoLoaded;
+			}
+
+			var spriteScaleSlider = panel.GetOrNull<SliderWidget>("SPRITE_SCALE_SLIDER");
+			if (spriteScaleSlider != null)
+			{
+				spriteScaleSlider.OnChange += x => spriteScale = x;
+				spriteScaleSlider.GetValue = () => spriteScale;
+				spriteScaleSlider.IsVisible = () => !isVideoLoaded;
+				panel.GetOrNull<LabelWidget>("SPRITE_SCALE").IsVisible = () => !isVideoLoaded;
 			}
 
 			var voxelContainer = panel.GetOrNull("VOXEL_SELECTOR");

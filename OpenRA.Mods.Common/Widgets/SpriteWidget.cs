@@ -17,7 +17,8 @@ namespace OpenRA.Mods.Common.Widgets
 {
 	public class SpriteWidget : Widget
 	{
-		public Func<float> GetScale = () => 1f;
+		public float Scale = 1f;
+		public Func<float> GetScale;
 		public string Palette = "chrome";
 		public Func<string> GetPalette;
 		public Func<Sprite> GetSprite;
@@ -28,6 +29,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public SpriteWidget(WorldRenderer worldRenderer)
 		{
 			GetPalette = () => Palette;
+			GetScale = () => Scale;
 
 			WorldRenderer = worldRenderer;
 		}
@@ -59,22 +61,17 @@ namespace OpenRA.Mods.Common.Widgets
 			if (sprite == null || palette == null)
 				return;
 
-			if (sprite != cachedSprite)
+			if (sprite != cachedSprite || scale != cachedScale)
 			{
-				offset = 0.5f * (new float2(RenderBounds.Size) - sprite.Size.XY);
+				offset = 0.5f * (new float2(RenderBounds.Size) - scale * sprite.Size.XY);
 				cachedSprite = sprite;
+				cachedScale = scale;
 			}
 
 			if (palette != cachedPalette)
 			{
 				pr = WorldRenderer.Palette(palette);
 				cachedPalette = palette;
-			}
-
-			if (scale != cachedScale)
-			{
-				offset *= scale;
-				cachedScale = scale;
 			}
 
 			Game.Renderer.EnableAntialiasingFilter();
