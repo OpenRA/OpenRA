@@ -307,6 +307,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					if (isVideoLoaded)
 						player.Stop();
+
+					UnMuteSounds();
 					Ui.CloseWindow();
 					onExit();
 				};
@@ -419,18 +421,26 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					}
 
 					currentVoxel = null;
+
+					// Just in case we're switching away from a type of asset that forced the music to pause.
+					UnMuteSounds();
 				}
 				else if (allowedModelExtensions.Contains(fileExtension))
 				{
 					var voxelName = Path.GetFileNameWithoutExtension(filename);
 					currentVoxel = world.ModelCache.GetModel(voxelName);
 					currentSprites = null;
+
+					// Just in case we're switching away from a type of asset that forced the music to pause.
+					UnMuteSounds();
 				}
 				else if (allowedVideoExtensions.Contains(fileExtension))
 				{
 					var video = VideoLoader.GetVideo(Game.ModData.DefaultFileSystem.Open(filename), Game.ModData.VideoLoaders);
 					if (video != null)
 					{
+						// Pause music so it doesn't interfere with current asset.
+						MuteSounds();
 
 						player = panel.Get<VideoPlayerWidget>("PLAYER");
 						player.Load(prefix + filename);
@@ -552,6 +562,23 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				name = "..." + name.Substring(name.Length - 15);
 
 			return name;
+		}
+
+		// Mute/UnMute code copied from MissionBrowserLogic.
+		float cachedMusicVolume;
+		void MuteSounds()
+		{
+			if (Game.Sound.MusicVolume > 0)
+			{
+				cachedMusicVolume = Game.Sound.MusicVolume;
+				Game.Sound.MusicVolume = 0;
+			}
+		}
+
+		void UnMuteSounds()
+		{
+			if (cachedMusicVolume > 0)
+				Game.Sound.MusicVolume = cachedMusicVolume;
 		}
 	}
 }
