@@ -113,7 +113,7 @@ APC:
 		Queue: Vehicle.GDI
 		Description: Armed infantry transport.\nCan attack Aircraft.\n  Strong vs Vehicles\n  Weak vs Infantry
 	Mobile:
-		TurnSpeed: 28
+		TurnSpeed: 20
 		Speed: 132
 		PauseOnCondition: notmobile
 	Health:
