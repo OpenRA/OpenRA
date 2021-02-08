@@ -8,20 +8,20 @@ Container@SKIRMISH_STATS:
 			Children:
 				Label@MISSION:
 					X: 15
-					Y: 12
-					Width: 85
-					Height: 25
+					Y: 17
+					Width: 80
+					Height: 20
 					Font: MediumBold
 					Text: Mission:
 				Label@STATS_STATUS:
-					X: 100
-					Y: 12
-					Width: PARENT_RIGHT - 10
-					Height: 25
+					X: 95
+					Y: 17
+					Width: PARENT_RIGHT - 110
+					Height: 20
 					Font: MediumBold
 				Checkbox@STATS_CHECKBOX:
 					X: 15
-					Y: 45
+					Y: 50
 					Width: 482
 					Height: 20
 					Font: Bold
