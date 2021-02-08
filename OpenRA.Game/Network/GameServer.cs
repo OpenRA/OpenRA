@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using OpenRA.Primitives;
+using OpenRA.Server;
 
 namespace OpenRA.Network
 {
@@ -71,7 +72,7 @@ namespace OpenRA.Network
 		public int Port { get; set; }
 
 		/// <summary>The current state of the server (waiting/playing/completed)</summary>
-		public int State { get; set; }
+		public ServerState State { get; set; }
 
 		/// <summary>The number of slots available for non-bot players</summary>
 		public int MaxPlayers { get; set; }
@@ -107,13 +108,31 @@ namespace OpenRA.Network
 		public string Started { get; set; }
 
 		/// <summary>Number of non-spectator, non-bot players. Only defined if GameServer is parsed from yaml.</summary>
-		public int Players { get; set; }
+		public int Players
+		{
+			get
+			{
+				return Clients.Count(c => !c.IsBot && !c.IsSpectator);
+			}
+		}
 
 		/// <summary>Number of bot players. Only defined if GameServer is parsed from yaml.</summary>
-		public int Bots { get; set; }
+		public int Bots
+		{
+			get
+			{
+				return Clients.Count(c => c.IsBot);
+			}
+		}
 
 		/// <summary>Number of spectators. Only defined if GameServer is parsed from yaml.</summary>
-		public int Spectators { get; set; }
+		public int Spectators
+		{
+			get
+			{
+				return Clients.Count(c => c.IsSpectator);
+			}
+		}
 
 		/// <summary>Number of seconds that the game has been in the Playing state. Only defined if GameServer is parsed from yaml.</summary>
 		public int PlayTime = -1;
@@ -137,7 +156,7 @@ namespace OpenRA.Network
 			get
 			{
 				var mapAvailable = Game.Settings.Game.AllowDownloading || Game.ModData.MapCache[Map].Status == MapStatus.Available;
-				return IsCompatible && State == 1 && mapAvailable;
+				return IsCompatible && State == ServerState.WaitingPlayers && mapAvailable;
 			}
 		}
 
@@ -147,6 +166,14 @@ namespace OpenRA.Network
 		public readonly int[] DisabledSpawnPoints = { };
 
 		public string ModLabel { get { return "{0} ({1})".F(ModTitle, Version); } }
+
+		public string Id
+		{
+			get
+			{
+				return Platform.SessionGUID.ToString();
+			}
+		}
 
 		static object LoadClients(MiniYaml yaml)
 		{
@@ -167,6 +194,7 @@ namespace OpenRA.Network
 		{
 		}
 
+		/*
 		public GameServer(MiniYaml yaml)
 		{
 			FieldLoader.Load(this, yaml);
@@ -189,8 +217,6 @@ namespace OpenRA.Network
 					PlayTime = (int)(DateTime.UtcNow - startTime).TotalSeconds;
 
 			var externalKey = ExternalMod.MakeKey(Mod, Version);
-			if (Game.ExternalMods.TryGetValue(externalKey, out var external) && external.Version == Version)
-				IsCompatible = true;
 
 			// Games advertised using the old API used local mod metadata
 			if (string.IsNullOrEmpty(ModTitle))
@@ -224,6 +250,7 @@ namespace OpenRA.Network
 			var mapAvailable = Game.Settings.Game.AllowDownloading || Game.ModData.MapCache[Map].Status == MapStatus.Available;
 			IsJoinable = IsCompatible && State == 1 && mapAvailable;
 		}
+		*/
 
 		public GameServer(Server.Server server)
 		{
@@ -232,9 +259,8 @@ namespace OpenRA.Network
 			Name = server.Settings.Name;
 
 			// IP address will be replaced with a real value by the master server / receiving LAN client
-			Address = "0.0.0.0:" + server.Settings.ListenPort.ToString();
 			Port = server.Settings.ListenPort;
-			State = (int)server.State;
+			State = server.State;
 			MaxPlayers = server.LobbyInfo.Slots.Count(s => !s.Value.Closed) - server.LobbyInfo.Clients.Count(c1 => c1.Bot != null);
 			Map = server.Map.Uid;
 			Mod = manifest.Id;
@@ -283,7 +309,7 @@ namespace OpenRA.Network
 			var obj = new
 			{
 				Protocol = ProtocolVersion,
-				Name = Name,
+				Name,
 				Port,
 				Mod,
 				Version,
@@ -296,7 +322,7 @@ namespace OpenRA.Network
 				Protected,
 				Authentication,
 				DisabledSpawnPoints,
-				Clients = Clients
+				Clients
 			};
 
 			return System.Text.Json.JsonSerializer.Serialize(obj);

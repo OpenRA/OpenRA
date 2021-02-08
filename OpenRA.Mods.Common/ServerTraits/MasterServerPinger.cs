@@ -72,10 +72,8 @@ namespace OpenRA.Mods.Common.Server
 				if (server.Settings.AdvertiseOnline)
 					UpdateMasterServer(server, gs.ToJson());
 
-				/*
 				if (LanGameBeacon != null)
-					LanGameBeacon.BeaconData = gs.ToPOSTData(true);
-				*/
+					LanGameBeacon.BeaconData = gs.ToJson();
 
 				lastPing = Game.RunTime;
 			}

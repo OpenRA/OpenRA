@@ -338,20 +338,20 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			Task.Run(async () =>
 			{
-				var client = HttpClientFactory.Create();
-				var httpResponseMessage = await client.GetAsync(queryURL);
-				var result = await httpResponseMessage.Content.ReadAsStringAsync();
-
 				activeQuery = false;
 
 				List<GameServer> games = null;
 				try
 				{
+					var client = HttpClientFactory.Create();
+					var httpResponseMessage = await client.GetAsync(queryURL);
+					var result = await httpResponseMessage.Content.ReadAsStringAsync();
+
 					var jsonSerializerOptions = new JsonSerializerOptions
 					{
 						PropertyNameCaseInsensitive = true
 					};
-					games = System.Text.Json.JsonSerializer.Deserialize<List<GameServer>>(result, jsonSerializerOptions);
+					games = JsonSerializer.Deserialize<List<GameServer>>(result, jsonSerializerOptions);
 				}
 				catch
 				{
@@ -366,22 +366,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						if (string.IsNullOrEmpty(bl.Data))
 							continue;
 
-						var game = MiniYaml.FromString(bl.Data)[0].Value;
-						var idNode = game.Nodes.FirstOrDefault(n => n.Key == "Id");
+						var jsonSerializerOptions = new JsonSerializerOptions
+						{
+							PropertyNameCaseInsensitive = true
+						};
+						var game = JsonSerializer.Deserialize<GameServer>(bl.Data, jsonSerializerOptions);
 
 						// Skip beacons created by this instance and replace Id by expected int value
-						if (idNode != null && idNode.Value.Value != Platform.SessionGUID.ToString())
+						if (game != null && game.Id != Platform.SessionGUID.ToString())
 						{
-							idNode.Value.Value = "-1";
+							game.Location = "Local Network";
 
-							// Rewrite the server address with the correct IP
-							var addressNode = game.Nodes.FirstOrDefault(n => n.Key == "Address");
-							if (addressNode != null)
-								addressNode.Value.Value = bl.Address.ToString().Split(':')[0] + ":" + addressNode.Value.Value.Split(':')[1];
-
-							game.Nodes.Add(new MiniYamlNode("Location", "Local Network"));
-
-							lanGames.Add(new GameServer(game));
+							lanGames.Add((game));
 						}
 					}
 					catch
@@ -573,15 +569,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				Func<GameServer, int> listOrder = g =>
 				{
 					// Servers waiting for players are always first
-					if (g.State == (int)ServerState.WaitingPlayers && g.Players > 0)
+					if (g.State == ServerState.WaitingPlayers && g.Players > 0)
 						return 0;
 
 					// Then servers with spectators
-					if (g.State == (int)ServerState.WaitingPlayers && g.Spectators > 0)
+					if (g.State == ServerState.WaitingPlayers && g.Spectators > 0)
 						return 1;
 
 					// Then active games
-					if (g.State >= (int)ServerState.GameStarted)
+					if (g.State >= ServerState.GameStarted)
 						return 2;
 
 					// Empty servers are shown at the end because a flood of empty servers
@@ -651,7 +647,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						var state = item.GetOrNull<LabelWidget>("STATUS");
 						if (state != null)
 						{
-							var label = game.State >= (int)ServerState.GameStarted ?
+							var label = game.State == ServerState.GameStarted ?
 								"Playing" : "Waiting";
 							state.GetText = () => label;
 
@@ -684,7 +680,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (game == null)
 				return "";
 
-			if (game.State == (int)ServerState.GameStarted)
+			if (game.State == ServerState.GameStarted)
 			{
 				var label = "In progress";
 
@@ -697,10 +693,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return label;
 			}
 
-			if (game.State == (int)ServerState.WaitingPlayers)
+			if (game.State == ServerState.WaitingPlayers)
 				return game.Protected ? "Password protected" : "Waiting for players";
 
-			if (game.State == (int)ServerState.ShuttingDown)
+			if (game.State == ServerState.ShuttingDown)
 				return "Server shutting down";
 
 			return "Unknown server state";
@@ -708,13 +704,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		Color GetStateColor(GameServer game, LabelWidget label, bool darkened = false)
 		{
-			if (!game.Protected && game.State == (int)ServerState.WaitingPlayers)
+			if (!game.Protected && game.State == ServerState.WaitingPlayers)
 				return darkened ? incompatibleWaitingGameColor : waitingGameColor;
 
-			if (game.Protected && game.State == (int)ServerState.WaitingPlayers)
+			if (game.Protected && game.State == ServerState.WaitingPlayers)
 				return darkened ? incompatibleProtectedGameColor : protectedGameColor;
 
-			if (game.State == (int)ServerState.GameStarted)
+			if (game.State == ServerState.GameStarted)
 				return darkened ? incompatibleGameStartedColor : gameStartedColor;
 
 			return label.TextColor;
@@ -723,10 +719,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		bool Filtered(GameServer game)
 		{
 			var filters = Game.Settings.Game.MPGameFilters;
-			if (game.State == (int)ServerState.GameStarted && !filters.HasFlag(MPGameFilters.Started))
+			if (game.State == ServerState.GameStarted && !filters.HasFlag(MPGameFilters.Started))
 				return true;
 
-			if (game.State == (int)ServerState.WaitingPlayers && !filters.HasFlag(MPGameFilters.Waiting) && game.Players != 0)
+			if (game.State == ServerState.WaitingPlayers && !filters.HasFlag(MPGameFilters.Waiting) && game.Players != 0)
 				return true;
 
 			if ((game.Players + game.Spectators) == 0 && !filters.HasFlag(MPGameFilters.Empty))
