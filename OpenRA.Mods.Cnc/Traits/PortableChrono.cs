@@ -238,7 +238,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		protected override IEnumerable<IRenderable> RenderAnnotations(WorldRenderer wr, World world)
 		{
-			if (!self.IsInWorld || self.Owner != self.World.LocalPlayer)
+			if (!self.IsInWorld || !world.LocalPlayer.CanControlUnitsOf(self.Owner))
 				yield break;
 
 			if (!self.Trait<PortableChrono>().Info.HasDistanceLimit)

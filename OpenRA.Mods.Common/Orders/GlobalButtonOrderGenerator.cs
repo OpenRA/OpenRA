@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Orders
 			{
 				var underCursor = world.ScreenMap.ActorsAtMouse(mi)
 					.Select(a => a.Actor)
-					.FirstOrDefault(a => a.Owner == world.LocalPlayer && a.TraitsImplementing<T>()
+					.FirstOrDefault(a => world.LocalPlayer.CanControlUnitsOf(a.Owner) && a.TraitsImplementing<T>()
 						.Any(IsValidTrait));
 
 				if (underCursor == null)

@@ -130,7 +130,10 @@ namespace OpenRA.Mods.Common.Traits
 			// TODO: This probably should only be considering the newly selected actors
 			foreach (var actor in actors)
 			{
-				if (actor.Owner != world.LocalPlayer || !actor.IsInWorld)
+				if (world.LocalPlayer == null)
+					continue;
+
+				if (!world.LocalPlayer.CanControlUnitsOf(actor.Owner) || !actor.IsInWorld)
 					continue;
 
 				var selectable = actor.Info.TraitInfoOrDefault<ISelectableInfo>();

@@ -170,6 +170,8 @@ World:
 	CreateMapPlayers:
 	MapStartingLocations:
 		SeparateTeamSpawnsCheckboxDisplayOrder: 6
+	TeamTogether:
+		CommandAlliedUnitsCheckboxDisplayOrder: 7
 	StartingUnits@mcv:
 		Class: none
 		ClassName: MCV Only

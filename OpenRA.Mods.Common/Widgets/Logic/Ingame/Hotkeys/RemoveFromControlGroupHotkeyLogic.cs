@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic.Ingame
 		protected override bool OnHotkeyActivated(KeyInput e)
 		{
 			var selectedActors = selection.Actors
-				.Where(a => a.Owner == world.LocalPlayer && a.IsInWorld && !a.IsDead)
+				.Where(a => world.LocalPlayer.CanControlUnitsOf(a.Owner) && a.IsInWorld && !a.IsDead)
 				.ToArray();
 
 			foreach (var a in selectedActors)

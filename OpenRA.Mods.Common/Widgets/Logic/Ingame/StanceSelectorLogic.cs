@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Widgets
 				return;
 
 			actorStances = world.Selection.Actors
-				.Where(a => a.Owner == world.LocalPlayer && a.IsInWorld)
+				.Where(a => world.LocalPlayer.CanControlUnitsOf(a.Owner) && a.IsInWorld)
 				.SelectMany(a => a.TraitsImplementing<AutoTarget>()
 					.Where(at => at.Info.EnableStances)
 					.Select(at => new TraitPair<AutoTarget>(a, at)))
