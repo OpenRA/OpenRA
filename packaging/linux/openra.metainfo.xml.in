@@ -49,6 +49,7 @@
   <content_rating type="oars-1.1">
     <content_attribute id="violence-realistic">moderate</content_attribute>
     <content_attribute id="violence-bloodshed">moderate</content_attribute>
+    <content_attribute id="violence-worship">moderate</content_attribute>
     <content_attribute id="drugs-tobacco">moderate</content_attribute>
     <content_attribute id="language-profanity">mild</content_attribute>
     <content_attribute id="language-humor">mild</content_attribute>
