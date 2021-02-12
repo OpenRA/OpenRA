@@ -635,6 +635,7 @@ gaspot:
 		UseTilesetCode: false
 		ZOffset: 512
 		BlendMode: Additive
+		IgnoreWorldTint: True
 	icon: spoticon
 		Offset: 0, 0
 		UseTilesetCode: false
@@ -665,6 +666,7 @@ galite:
 		UseTilesetCode: false
 		ZOffset: 512
 		BlendMode: Additive
+		IgnoreWorldTint: True
 	icon: liteicon
 		Offset: 0, 0
 		-DepthSprite:

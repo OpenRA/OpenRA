@@ -473,7 +473,6 @@ GAPLUG:
 		Icon: ioncannon
 		Effect: explosion
 		EffectSequence: ionring
-		EffectPalette: effectalpha75
 		WeaponDelay: 0
 		ChargeInterval: 12750
 		Description: Ion Cannon

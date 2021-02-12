@@ -99,7 +99,6 @@ SonicZap:
 		ValidTargets: Ground
 	Warhead@2Eff: CreateEffect
 		Explosions: large_explosion
-		ExplosionPalette: effect-ignore-lighting-alpha75
 		ImpactSounds: expnew12.aud
 		ValidTargets: Ground, Air
 	Warhead@3EffWater: CreateEffect

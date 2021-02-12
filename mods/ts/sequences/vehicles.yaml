@@ -3,6 +3,7 @@
 		Offset: 0, 0, 24
 		Length: *
 		BlendMode: Additive
+		IgnoreWorldTint: True
 
 mcv.gdi:
 	Inherits: ^VehicleOverlays
@@ -40,6 +41,7 @@ hvr:
 	Inherits: ^VehicleOverlays
 	muzzle: gunfire
 		Length: *
+		IgnoreWorldTint: True
 
 lpst.gdi:
 	Inherits: ^VehicleOverlays
@@ -89,6 +91,7 @@ art2:
 	muzzle: gunfire
 		Length: *
 		Offset: 0, 0, 24
+		IgnoreWorldTint: True
 
 weed:
 	Inherits: ^VehicleOverlays
@@ -126,6 +129,7 @@ bggy:
 				Length: 6
 		Facings: 8
 		Length: 6
+		IgnoreWorldTint: True
 	icon: bggyicon
 		Offset: 0, 0
 
@@ -157,6 +161,7 @@ ttnk:
 	muzzle: gunfire
 		Length: *
 		Offset: 0, 0, 24
+		IgnoreWorldTint: True
 	icon: tickicon
 
 stnk:
@@ -183,6 +188,7 @@ mmch:
 	muzzle: gunfire
 		Length: *
 		Offset: 0, 0, 12
+		IgnoreWorldTint: True
 	icon: mmchicon
 
 jugg:
@@ -216,6 +222,7 @@ jugg:
 	muzzle: gunfire
 		Length: *
 		Offset: 0, 0, 24
+		IgnoreWorldTint: True
 
 gghunt:
 	Inherits: ^VehicleOverlays

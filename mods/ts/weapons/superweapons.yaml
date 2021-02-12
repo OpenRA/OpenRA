@@ -44,7 +44,6 @@ ClusterMissile:
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@SoundEffect: CreateEffect
 		Explosions: large_twlt
-		ExplosionPalette: effect-ignore-lighting-alpha75
 		ImpactSounds: expnew19.aud
 		ImpactActors: false
 		ValidTargets: Ground, Water, Air
@@ -91,28 +90,22 @@ IonCannon:
 		Delay: 3
 	Warhead@4Effect: CreateEffect
 		Explosions: ionbeam
-		ExplosionPalette: effect-ignore-lighting-alpha75
 		ImpactSounds: ion1.aud
 		ImpactActors: false
 	Warhead@5Effect: CreateEffect
 		Explosions: ionbeam2
-		ExplosionPalette: effect-ignore-lighting-alpha75
 		ImpactActors: false
 	Warhead@6Effect: CreateEffect
 		Explosions: ionbeam3
-		ExplosionPalette: effect-ignore-lighting-alpha75
 		ImpactActors: false
 	Warhead@7Effect: CreateEffect
 		Explosions: ionbeam4
-		ExplosionPalette: effect-ignore-lighting-alpha75
 		ImpactActors: false
 	Warhead@8Effect: CreateEffect
 		Explosions: ionbeam5
-		ExplosionPalette: effect-ignore-lighting-alpha75
 		ImpactActors: false
 	Warhead@9Effect: CreateEffect
 		Explosions: ionbeam6
-		ExplosionPalette: effect-ignore-lighting-alpha75
 		ImpactActors: false
 
 EMPulseCannon:
@@ -127,7 +120,6 @@ EMPulseCannon:
 		Image: pulsball
 	Warhead@1Eff: CreateEffect
 		Explosions: pulse_explosion
-		ExplosionPalette: effect-ignore-lighting-alpha75
 		ImpactActors: false
 	Warhead@emp: GrantExternalCondition
 		Range: 6c0

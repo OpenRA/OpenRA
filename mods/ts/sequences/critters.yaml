@@ -46,6 +46,7 @@ doggie:
 		Start: 109
 		Length: 10
 		ShadowStart: 228
+		IgnoreWorldTint: True
 	die-melting:
 		Start: 109
 		Length: 10

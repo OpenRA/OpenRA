@@ -96,14 +96,12 @@ GACTWR:
 		Weapon: VulcanTower
 		LocalOffset: 588,120,1358
 		MuzzleSequence: muzzle
-		MuzzlePalette: effect-ignore-lighting
 	Armament@VULCSECONDARY:
 		RequiresCondition: tower.vulcan
 		Name: secondary
 		Weapon: VulcanTower
 		LocalOffset: 588,-120,1358
 		MuzzleSequence: muzzle
-		MuzzlePalette: effect-ignore-lighting
 	Armament@ROCKET:
 		RequiresCondition: tower.rocket
 		Weapon: RPGTower

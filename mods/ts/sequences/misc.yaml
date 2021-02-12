@@ -134,46 +134,65 @@ explosion:
 		Length: *
 		ZOffset: 511
 		Offset: 0, 0, 24
+		AlphaFade: True
+		IgnoreWorldTint: True
 	building: twlt070
 		Offset: 0, 0, 36
 	ionring: ring1
 		ZRamp: 1
 		Tick: 100
+		IgnoreWorldTint: False
 	ionbeam: ionbeam
 		Offset: 0, -60, 60
 		ZRamp: 1
 		Tick: 100
+		IgnoreWorldTint: False
 	ionbeam2: ionbeam
 		Offset: 0, -180, 60
 		ZRamp: 1
 		Tick: 100
+		IgnoreWorldTint: False
 	ionbeam3: ionbeam
 		Offset: 0, -300, 60
 		ZRamp: 1
 		Tick: 100
+		IgnoreWorldTint: False
 	ionbeam4: ionbeam
 		Offset: 0, -420, 60
 		ZRamp: 1
 		Tick: 100
+		IgnoreWorldTint: False
 	ionbeam5: ionbeam
 		Offset: 0, -540, 60
 		ZRamp: 1
 		Tick: 100
+		IgnoreWorldTint: False
 	ionbeam6: ionbeam
 		Offset: 0, -660, 60
 		ZRamp: 1
 		Tick: 100
+		IgnoreWorldTint: False
 	pulse_explosion: pulsefx2
 		BlendMode: Additive
 		ZRamp: 1
 		Tick: 80
 	small_watersplash: h2o_exp2
+		IgnoreWorldTint: False
+		AlphaFade: False
+		Alpha: 0.5
 	large_watersplash: h2o_exp1
 		Offset: 0, 0, 39
+		IgnoreWorldTint: False
+		AlphaFade: False
+		Alpha: 0.5
 	water_piff: w_piff
+		IgnoreWorldTint: False
 	water_piffs: w_piffs
+		IgnoreWorldTint: False
 	piff: piff
+		IgnoreWorldTint: False
 	piffs: piffpiff
+		IgnoreWorldTint: False
 	small_explosion: explosml
 	medium_explosion: explomed
 		Offset: 0, 0, 27
@@ -208,21 +227,29 @@ explosion:
 	verylarge_twlt: twlt100
 		Offset: 0, 0, 51
 	tiny_grey_explosion: xgrysml1
+		IgnoreWorldTint: False
 	small_grey_explosion: xgrysml2
+		IgnoreWorldTint: False
 	medium_grey_explosion: xgrymed1
+		IgnoreWorldTint: False
 	large_grey_explosion: xgrymed2
+		IgnoreWorldTint: False
 	droppod_explosion: droppod
 		Length: 8
 		Tick: 360
+		IgnoreWorldTint: False
 	droppod2_explosion: droppod2
 		Length: 8
 		Tick: 360
+		IgnoreWorldTint: False
 	droppody_explosion: droppody
 		Length: 8
 		Tick: 360
+		IgnoreWorldTint: False
 	droppody2_explosion: droppody2
 		Length: 8
 		Tick: 360
+		IgnoreWorldTint: False
 
 discus:
 	idle:
@@ -267,6 +294,7 @@ torpedo:
 		Length: *
 		ZOffset: 1023
 		Offset: 0, 0, 8
+		IgnoreWorldTint: True
 
 flameall:
 	idle:
@@ -275,50 +303,64 @@ flameall:
 		Tick: 160
 		ZOffset: 1023
 		Offset: 0, 0, 24
+		IgnoreWorldTint: True
+		Alpha: 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1
 
 largesmoke:
 	idle: lgrysmk1
 		Length: *
 		ZOffset: 1023
 		Offset: 0, 0, 24
+		AlphaFade: True
 
 smallsmoke:
 	idle: sgrysmk1
 		Length: *
 		ZOffset: 1023
 		Offset: 0, 0, 24
+		AlphaFade: True
 
 large_smoke_trail:
 	idle: smokey
 		Length: *
 		ZOffset: 1023
 		Offset: 0, 0, 24
+		AlphaFade: True
 
 small_smoke_trail:
 	idle: smokey2
 		Length: *
 		ZOffset: 1023
 		Offset: 0, 0, 24
+		AlphaFade: True
 
 largefire:
 	idle: fire1
 		Length: *
 		Offset: 0, 0, 36
+		Alpha: 0.5
+		IgnoreWorldTint: True
 
 mediumfire:
 	idle: fire2
 		Length: *
 		Offset: 0, 0, 24
+		Alpha: 0.5
+		IgnoreWorldTint: True
 
 smallfire:
 	idle: fire3
 		Length: *
 		Offset: 0, 0, 24
+		Alpha: 0.5
+		IgnoreWorldTint: True
 
 tinyfire:
 	idle: fire4
 		Length: *
 		Offset: 0, 0, 24
+		Alpha: 0.75
+		IgnoreWorldTint: True
 
 moveflsh:
 	idle: ring
@@ -327,6 +369,7 @@ moveflsh:
 		ZOffset: 2047
 		Offset: 0, 0, 48
 		ZRamp: 1
+		AlphaFade: True
 
 wake:
 	idle: wake2
@@ -335,7 +378,7 @@ wake:
 		ZOffset: -512
 		ZRamp: 1
 		Offset: 0, 0, 1
-		BlendMode: Translucent
+		AlphaFade: True
 
 resources:
 	Defaults:
@@ -675,3 +718,4 @@ podring:
 	idle:
 		Frames: 0, 0, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19
 		Length: *
+		AlphaFade: True

@@ -48,7 +48,6 @@ Bomb:
 		DamageTypes: Prone100Percent, TriggerProne, ExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: large_explosion
-		ExplosionPalette: effect-ignore-lighting-alpha75
 		ImpactSounds: expnew09.aud
 		ValidTargets: Ground, Air
 	Warhead@3EffWater: CreateEffect
@@ -152,7 +151,6 @@ Veins:
 		DamageTypes: Prone100Percent, TriggerProne, ExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: tiny_twlt
-		ExplosionPalette: effect-ignore-lighting-alpha75
 		ValidTargets: Ground, Air
 	Warhead@3EffWater: CreateEffect
 		Explosions: small_watersplash

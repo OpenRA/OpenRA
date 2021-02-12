@@ -221,6 +221,7 @@ cyborg:
 		Length: *
 		ZOffset: 512
 		BlendMode: Additive
+		IgnoreWorldTint: True
 	icon: cybiicon
 
 cyc2:
@@ -267,6 +268,7 @@ cyc2:
 		Length: *
 		ZOffset: 512
 		BlendMode: Additive
+		IgnoreWorldTint: True
 	icon: cybcicon
 
 medic:
@@ -482,6 +484,7 @@ flameguy:
 		Tick: 80
 		ShadowStart: 148
 		Offset: 0, 0, 16
+		IgnoreWorldTint: True
 	idle:
 	stand:
 	run:
@@ -491,3 +494,4 @@ flameguy:
 		Facings: 1
 		Length: 104
 		ShadowStart: 192
+		AlphaFade: True
