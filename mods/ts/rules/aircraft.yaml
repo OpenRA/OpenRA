@@ -63,9 +63,11 @@ DPOD2:
 	HitShape:
 	Interactable:
 	WithShadow:
-	SmokeTrailWhenDamaged:
-		Sprite: largesmoke
-		MinDamage: Undamaged
+	LeavesTrails:
+		Image: largesmoke
+		MovingInterval: 3
+		SpawnAtLastPosition: False
+		Type: CenterPosition
 	FallsToEarth:
 		Explosion: DropPodExplode
 		Moves: true
