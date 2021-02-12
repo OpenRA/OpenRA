@@ -1256,9 +1256,9 @@ Actors:
 		Location: 94,-51
 
 Rules:
-	World:
-		GlobalLightingPaletteEffect:
-			Red: 1.2
-			Green: 1.2
-			Blue: 0.8
-			Ambient: 0.7
+	^BaseWorld:
+		TerrainLighting:
+			RedTint: 1.2
+			GreenTint: 1.2
+			BlueTint: 0.8
+			Intensity: 0.7
