@@ -53,9 +53,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Paradropped unit's shadow sequence.")]
 		public readonly string ShadowSequence = null;
 
-		[PaletteReference(false)]
-		[Desc("Palette used to render the paradropped unit's shadow.")]
-		public readonly string ShadowPalette = "shadow";
+		[Desc("Color to render the paradropped unit's shadow.")]
+		public readonly Color ShadowColor = Color.FromArgb(140, 0, 0, 0);
 
 		[Desc("Shadow position relative to the paradropped unit's intended landing position.")]
 		public readonly WVec ShadowOffset = new WVec(0, 128, 0);
@@ -108,6 +107,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 		readonly Animation shadow;
 		readonly AnimationWithOffset anim;
 		readonly WithParachuteInfo info;
+		readonly float3 shadowColor;
+		readonly float shadowAlpha;
 
 		bool renderProlonged = false;
 
@@ -135,6 +136,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 			var rs = self.Trait<RenderSprites>();
 			rs.Add(anim, info.Palette, info.IsPlayerPalette);
+
+			shadowColor = new float3(info.ShadowColor.R, info.ShadowColor.G, info.ShadowColor.B) / 255f;
+			shadowAlpha = info.ShadowColor.A / 255f;
 		}
 
 		protected override void TraitEnabled(Actor self)
@@ -175,9 +179,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 			var dat = self.World.Map.DistanceAboveTerrain(self.CenterPosition);
 			var pos = self.CenterPosition - new WVec(0, 0, dat.Length);
-			var palette = wr.Palette(info.ShadowPalette);
-			var tintModifiers = shadow.CurrentSequence.IgnoreWorldTint ? TintModifiers.IgnoreWorldTint : TintModifiers.None;
-			return new IRenderable[] { new SpriteRenderable(shadow.Image, pos, info.ShadowOffset, info.ShadowZOffset, palette, shadow.CurrentSequence.Scale, true, tintModifiers) };
+			var palette = wr.Palette(info.Palette);
+			var tintModifiers = shadow.CurrentSequence.IgnoreWorldTint ? TintModifiers.ReplaceColor | TintModifiers.IgnoreWorldTint : TintModifiers.ReplaceColor;
+			return new IRenderable[] { new SpriteRenderable(shadow.Image, pos, info.ShadowOffset, info.ShadowZOffset, palette, 1, shadowAlpha, shadowColor, tintModifiers, true) };
 		}
 
 		IEnumerable<Rectangle> IRender.ScreenBounds(Actor self, WorldRenderer wr)
