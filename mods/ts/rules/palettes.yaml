@@ -111,5 +111,3 @@
 		Name: terrainalpha
 		Alpha: 0.55
 	MenuPaletteEffect:
-	GlobalLightingPaletteEffect:
-		ExcludePalettes: cursor, chrome, colorpicker, fog, shroud, alpha, greentiberium, bluetiberium
