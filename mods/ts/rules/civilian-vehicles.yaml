@@ -24,7 +24,6 @@
 		Weapon: 120mmx
 		LocalOffset: 707,85,509, 707,-120,509
 		MuzzleSequence: muzzle
-		MuzzlePalette: effect-ignore-lighting
 	Armament@SECONDARY:
 		Weapon: MammothTusk
 		LocalOffset: 0,283,580, 0,-283,580

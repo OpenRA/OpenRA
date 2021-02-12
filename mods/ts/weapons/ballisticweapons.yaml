@@ -21,7 +21,6 @@
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: medium_clsn
-		ExplosionPalette: effect-ignore-lighting-alpha75
 		ImpactSounds: expnew14.aud
 		ValidTargets: Ground, Air
 	Warhead@3EffWater: CreateEffect

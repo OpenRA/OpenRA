@@ -10,7 +10,6 @@
 		Inaccuracy: 128
 		Image: DRAGON
 		TrailImage: small_smoke_trail
-		TrailPalette: effectalpha75
 		HorizontalRateOfTurn: 100
 		RangeLimit: 15c0
 		Palette: ra
@@ -37,7 +36,6 @@
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: small_clsn
-		ExplosionPalette: effect-ignore-lighting-alpha75
 		ImpactSounds: expnew12.aud
 		ValidTargets: Ground, Air
 	Warhead@3EffWater: CreateEffect

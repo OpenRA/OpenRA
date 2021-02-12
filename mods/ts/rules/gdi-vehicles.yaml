@@ -197,7 +197,6 @@ MMCH:
 	Armament:
 		Weapon: 120mm
 		MuzzleSequence: muzzle
-		MuzzlePalette: effect-ignore-lighting
 		Recoil: 128
 		RecoilRecovery: 32
 		LocalOffset: 1024,272,1216
@@ -408,7 +407,6 @@ JUGG:
 		LocalOffset: 820,203,1386, 820,0,1386, 820,-203,1386
 		RequiresCondition: deployed
 		MuzzleSequence: muzzle
-		MuzzlePalette: effect-ignore-lighting
 	WithMuzzleOverlay:
 	RevealOnFire:
 		ArmamentNames: deployed
