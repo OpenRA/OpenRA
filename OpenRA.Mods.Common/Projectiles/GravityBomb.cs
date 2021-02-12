@@ -12,6 +12,7 @@
 using System.Collections.Generic;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Projectiles
@@ -35,10 +36,11 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Palette is a player palette BaseName")]
 		public readonly bool IsPlayerPalette = false;
 
+		[Desc("Does this projectile have a shadow?")]
 		public readonly bool Shadow = false;
 
-		[PaletteReference]
-		public readonly string ShadowPalette = "shadow";
+		[Desc("Color to draw shadow if Shadow is true.")]
+		public readonly Color ShadowColor = Color.FromArgb(140, 0, 0, 0);
 
 		[Desc("Projectile movement vector per tick (forward, right, up), use negative values for opposite directions.")]
 		public readonly WVec Velocity = WVec.Zero;
@@ -55,6 +57,10 @@ namespace OpenRA.Mods.Common.Projectiles
 		readonly Animation anim;
 		readonly ProjectileArgs args;
 		readonly WVec acceleration;
+
+		readonly float3 shadowColor;
+		readonly float shadowAlpha;
+
 		WVec velocity;
 
 		[Sync]
@@ -78,6 +84,9 @@ namespace OpenRA.Mods.Common.Projectiles
 				else
 					anim.PlayRepeating(info.Sequences.Random(args.SourceActor.World.SharedRandom));
 			}
+
+			shadowColor = new float3(info.ShadowColor.R, info.ShadowColor.G, info.ShadowColor.B) / 255f;
+			shadowAlpha = info.ShadowColor.A;
 		}
 
 		public void Tick(World world)
@@ -115,8 +124,10 @@ namespace OpenRA.Mods.Common.Projectiles
 				{
 					var dat = world.Map.DistanceAboveTerrain(pos);
 					var shadowPos = pos - new WVec(0, 0, dat.Length);
-					foreach (var r in anim.Render(shadowPos, wr.Palette(info.ShadowPalette)))
-						yield return r;
+					foreach (var r in anim.Render(shadowPos, wr.Palette(info.Palette)))
+						yield return ((IModifyableRenderable)r)
+							.WithTint(shadowColor, ((IModifyableRenderable)r).TintModifiers | TintModifiers.ReplaceColor)
+							.WithAlpha(shadowAlpha);
 				}
 
 				var palette = wr.Palette(info.Palette + (info.IsPlayerPalette ? args.SourceActor.Owner.InternalName : ""));

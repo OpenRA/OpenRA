@@ -50,9 +50,8 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Does this projectile have a shadow?")]
 		public readonly bool Shadow = false;
 
-		[PaletteReference]
-		[Desc("Palette to use for this projectile's shadow if Shadow is true.")]
-		public readonly string ShadowPalette = "shadow";
+		[Desc("Color to draw shadow if Shadow is true.")]
+		public readonly Color ShadowColor = Color.FromArgb(140, 0, 0, 0);
 
 		[Desc("Trail animation.")]
 		public readonly string TrailImage = null;
@@ -122,6 +121,9 @@ namespace OpenRA.Mods.Common.Projectiles
 		readonly WDist speed;
 		readonly string trailPalette;
 
+		readonly float3 shadowColor;
+		readonly float shadowAlpha;
+
 		ContrailRenderable contrail;
 
 		[Sync]
@@ -181,6 +183,9 @@ namespace OpenRA.Mods.Common.Projectiles
 
 			smokeTicks = info.TrailDelay;
 			remainingBounces = info.BounceCount;
+
+			shadowColor = new float3(info.ShadowColor.R, info.ShadowColor.G, info.ShadowColor.B) / 255f;
+			shadowAlpha = info.ShadowColor.A;
 		}
 
 		WAngle GetEffectiveFacing()
@@ -286,8 +291,10 @@ namespace OpenRA.Mods.Common.Projectiles
 				{
 					var dat = world.Map.DistanceAboveTerrain(pos);
 					var shadowPos = pos - new WVec(0, 0, dat.Length);
-					foreach (var r in anim.Render(shadowPos, wr.Palette(info.ShadowPalette)))
-						yield return r;
+					foreach (var r in anim.Render(shadowPos, wr.Palette(info.Palette)))
+						yield return ((IModifyableRenderable)r)
+							.WithTint(shadowColor, ((IModifyableRenderable)r).TintModifiers | TintModifiers.ReplaceColor)
+							.WithAlpha(shadowAlpha);
 				}
 
 				var palette = wr.Palette(info.Palette + (info.IsPlayerPalette ? args.SourceActor.Owner.InternalName : ""));
