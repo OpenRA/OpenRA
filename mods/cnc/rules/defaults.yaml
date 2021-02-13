@@ -636,7 +636,6 @@
 ^Ship:
 	Inherits@1: ^ExistsInWorld
 	Inherits@3: ^SpriteActor
-	Inherits@selection: ^SelectableCombatUnit
 	Inherits@handicaps: ^PlayerHandicaps
 	Huntable:
 	OwnerLostAction:

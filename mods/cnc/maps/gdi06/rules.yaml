@@ -57,15 +57,6 @@ FLARE:
 	RevealsShroud:
 		Range: 5c0
 
-OLDLST:
-	Inherits: LST
-	-WithRoof:
-	-Selectable:
-	RejectsOrders:
-	Cargo:
-		Types: disabled
-	Interactable:
-
 SAM:
 	SpawnActorOnDeath:
 		Actor: e1

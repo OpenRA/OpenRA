@@ -1,5 +1,6 @@
 BOAT:
 	Inherits: ^Ship
+	Inherits@SELECTABLE: ^SelectableCombatUnit
 	Inherits@EXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetAll
 	Valued:
@@ -55,10 +56,6 @@ LST:
 		Cost: 300
 	Tooltip:
 		Name: Landing Craft
-	Buildable:
-		Queue: Vehicle.GDI
-		BuildPaletteOrder: 1000
-		Prerequisites: ~disabled
 	Mobile:
 		Locomotor: lcraft
 		InitialFacing: 0
@@ -74,14 +71,14 @@ LST:
 	-BodyOrientation:
 	ClassicFacingBodyOrientation:
 	WithFacingSpriteBody:
-	Selectable:
+	Interactable:
 		Bounds: 48,48
-	WithRoof:
 	WithCargo:
 		DisplayTypes: Infantry, Vehicle
 		LocalOffset: 390,-256,0, 390,256,0, 0,0,0, -390,-256,0, -390,256,0
 	Cargo:
-		Types: Infantry, Vehicle
+		Types: disabled
 		MaxWeight: 5
 		PassengerFacing: 0
 		LoadingCondition: notmobile
+	RejectsOrders:

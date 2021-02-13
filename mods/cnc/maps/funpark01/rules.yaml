@@ -38,15 +38,6 @@ Player:
 ^CivBuilding:
 	AnnounceOnSeen:
 
-OLDLST:
-	Inherits: LST
-	-WithRoof:
-	-Selectable:
-	RejectsOrders:
-	Cargo:
-		Types: disabled
-	Interactable:
-
 TREX:
 	Health:
 		HP: 75000
