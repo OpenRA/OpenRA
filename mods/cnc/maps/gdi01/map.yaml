@@ -235,6 +235,4 @@ Actors:
 
 Rules: cnc|rules/campaign-maprules.yaml, cnc|rules/campaign-tooltips.yaml, cnc|rules/campaign-palettes.yaml, rules.yaml
 
-Sequences: sequences.yaml
-
 Weapons: weapons.yaml

@@ -109,12 +109,3 @@ BOAT:
 		InitialStance: AttackAnything
 	RejectsOrders:
 		Except: Attack
-
-OLDLST:
-	Inherits: LST
-	-WithRoof:
-	-Selectable:
-	RejectsOrders:
-	Cargo:
-		Types: disabled
-	Interactable:

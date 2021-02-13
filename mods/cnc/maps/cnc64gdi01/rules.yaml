@@ -36,12 +36,3 @@ TRAN:
 RMBO:
 	Buildable:
 		Prerequisites: ~disabled
-
-OLDLST:
-	Inherits: LST
-	-WithRoof:
-	-Selectable:
-	RejectsOrders:
-	Cargo:
-		Types: disabled
-	Interactable:
