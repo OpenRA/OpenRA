@@ -152,7 +152,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (!HasAnyValidWeapons(target))
 				return false;
 
-			var mobile = self.TraitOrDefault<Mobile>();
+			// PERF: Mobile implements IPositionable, so we can use 'as' to save a trait look-up here.
+			var mobile = positionable as Mobile;
 			if (mobile != null && !mobile.CanInteractWithGroundLayer(self))
 				return false;
 
