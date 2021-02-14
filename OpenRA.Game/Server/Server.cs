@@ -830,7 +830,6 @@ namespace OpenRA.Server
 				}
 			}
 
-			// TODO: Make this nicer
 			if (GameSave != null && conn != null)
 				GameSave.DispatchOrders(conn, frame, data);
 		}
@@ -843,7 +842,6 @@ namespace OpenRA.Server
 			foreach (var c in Conns.ToList())
 				DispatchFrameToClient(c, frameData);
 
-			// TODO: Make this nicer
 			if (GameSave != null && fakeFrom != null)
 				GameSave.DispatchOrders(fakeFrom, frame, data);
 		}
@@ -856,13 +854,13 @@ namespace OpenRA.Server
 				GameSave?.DispatchOrders(conn, frame, data);
 			}
 
-			// TODO: Find a less hacky way to deal with synchash relaying
+			// HACK: This is not a good way to detect and relay sync hashes but it is currently the only way
 			else if (conn != null && data.Length != 0 && (OrderType)data[0] == OrderType.SyncHash)
 				DispatchOrdersToOtherClients(conn, frame, data, true);
-			else if (conn != null && LobbyInfo.GlobalSettings.UseNewNetcode && State >= ServerState.GameStarted)
+			else if (conn != null && LobbyInfo.GlobalSettings.UseNewNetcode && State == ServerState.GameStarted && GameState == GameState.Playing)
 				serverGame.OrderBuffer.BufferOrders(conn.PlayerIndex, data);
 
-			// TODO: Remove frame-based order relaying unless game is running
+			// Relay all orders as normal, for old netcode and pre-game
 			else
 				DispatchOrdersToOtherClients(conn, frame, data);
 		}

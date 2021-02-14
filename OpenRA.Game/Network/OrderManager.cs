@@ -275,7 +275,7 @@ namespace OpenRA.Network
 		{
 			get
 			{
-				return GameStarted // TODO review, compare to bleed
+				return GameStarted
 					? frameData.ClientsNotReadyForFrame()
 						.Select(a => LobbyInfo.ClientWithIndex(a))
 					: NoClients;

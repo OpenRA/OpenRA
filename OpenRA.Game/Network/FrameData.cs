@@ -87,22 +87,12 @@ namespace OpenRA.Network
 
 		public bool TryPeekTimestep(out int timestep)
 		{
-			if (timestepData.Any())
-			{
-				timestep = timestepData.Dequeue();
-				return true;
-			}
-			else
-			{
-				timestep = 0;
-				return false;
-			}
+			return timestepData.TryDequeue(out timestep);
 		}
 
 		public void AdvanceFrame()
 		{
-			if (timestepData.Any())
-				timestepData.Dequeue();
+			timestepData.TryDequeue(out _);
 		}
 
 		public int BufferTimeRemaining()
