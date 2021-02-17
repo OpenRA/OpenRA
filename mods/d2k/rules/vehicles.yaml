@@ -450,7 +450,7 @@ stealth_raider:
 	Cloak:
 		InitialDelay: 45
 		CloakDelay: 90
-		UncloakOn: Attack, Unload, Infiltrate, Demolish, Dock, Damage, Heal
+		UncloakOn: Attack, Dock, Damage
 		IsPlayerPalette: true
 		PauseOnCondition: cloak-force-disabled
 	GrantConditionOnDamageState@UNCLOAK:
