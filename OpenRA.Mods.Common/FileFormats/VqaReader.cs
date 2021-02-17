@@ -319,7 +319,7 @@ namespace OpenRA.Mods.Common.FileFormats
 			// Annoyingly, the complete table is not applied until the frame
 			// *after* the one that contains the 8th chunk.
 			// Do we have a set of partial lookup tables ready to apply?
-			if (currentChunkBuffer == chunkBufferParts)
+			if (currentChunkBuffer == chunkBufferParts && chunkBufferParts != 0)
 			{
 				if (!cbpIsCompressed)
 					cbf = (byte[])cbp.Clone();
