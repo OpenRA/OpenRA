@@ -206,7 +206,7 @@ namespace OpenRA.Mods.Common.Traits
 					// Prefer refineries with less occupancy (multiplier is to offset distance cost):
 					return occupancy * Info.UnloadQueueCostModifier;
 				}))
-				path = self.World.WorldActor.Trait<IPathFinder>().FindPath(search);
+				path = mobile.Pathfinder.FindPath(search);
 
 			if (path.Count != 0)
 				return refineries[path.Last()].First().Actor;

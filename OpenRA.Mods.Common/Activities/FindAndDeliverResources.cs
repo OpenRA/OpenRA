@@ -25,7 +25,6 @@ namespace OpenRA.Mods.Common.Activities
 		readonly HarvesterInfo harvInfo;
 		readonly Mobile mobile;
 		readonly ResourceClaimLayer claimLayer;
-		readonly IPathFinder pathFinder;
 		readonly DomainIndex domainIndex;
 
 		Actor deliverActor;
@@ -43,7 +42,6 @@ namespace OpenRA.Mods.Common.Activities
 			harvInfo = self.Info.TraitInfo<HarvesterInfo>();
 			mobile = self.Trait<Mobile>();
 			claimLayer = self.World.WorldActor.Trait<ResourceClaimLayer>();
-			pathFinder = self.World.WorldActor.Trait<IPathFinder>();
 			domainIndex = self.World.WorldActor.Trait<DomainIndex>();
 			this.deliverActor = deliverActor;
 		}
@@ -218,7 +216,7 @@ namespace OpenRA.Mods.Common.Activities
 				})
 				.FromPoint(searchFromLoc)
 				.FromPoint(self.Location))
-				path = pathFinder.FindPath(search);
+				path = mobile.Pathfinder.FindPath(search);
 
 			if (path.Count > 0)
 				return path[0];
