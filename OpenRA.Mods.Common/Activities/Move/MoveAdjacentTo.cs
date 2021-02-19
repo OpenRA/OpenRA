@@ -24,7 +24,6 @@ namespace OpenRA.Mods.Common.Activities
 		static readonly List<CPos> NoPath = new List<CPos>();
 
 		protected readonly Mobile Mobile;
-		readonly IPathFinder pathFinder;
 		readonly DomainIndex domainIndex;
 		readonly Color? targetLineColor;
 
@@ -40,7 +39,6 @@ namespace OpenRA.Mods.Common.Activities
 			this.target = target;
 			this.targetLineColor = targetLineColor;
 			Mobile = self.Trait<Mobile>();
-			pathFinder = self.World.WorldActor.Trait<IPathFinder>();
 			domainIndex = self.World.WorldActor.Trait<DomainIndex>();
 			ChildHasPriority = false;
 
@@ -136,7 +134,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			using (var fromSrc = PathSearch.FromPoints(self.World, Mobile.Locomotor, self, searchCells, loc, check))
 			using (var fromDest = PathSearch.FromPoint(self.World, Mobile.Locomotor, self, loc, lastVisibleTargetLocation, check).Reverse())
-				return pathFinder.FindBidiPath(fromSrc, fromDest);
+				return Mobile.Pathfinder.FindBidiPath(fromSrc, fromDest);
 		}
 
 		public override IEnumerable<Target> GetTargets(Actor self)
