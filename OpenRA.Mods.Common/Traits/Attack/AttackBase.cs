@@ -149,15 +149,12 @@ namespace OpenRA.Mods.Common.Traits
 			if (!target.IsValidFor(self))
 				return false;
 
-			if (!HasAnyValidWeapons(target))
+			if (!HasAnyValidWeapons(target, reloadingIsInvalid: true))
 				return false;
 
 			// PERF: Mobile implements IPositionable, so we can use 'as' to save a trait look-up here.
 			var mobile = positionable as Mobile;
 			if (mobile != null && !mobile.CanInteractWithGroundLayer(self))
-				return false;
-
-			if (Armaments.All(a => a.IsReloading))
 				return false;
 
 			return true;
@@ -229,7 +226,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public abstract Activity GetAttackActivity(Actor self, AttackSource source, in Target newTarget, bool allowMove, bool forceAttack, Color? targetLineColor = null);
 
-		public bool HasAnyValidWeapons(in Target t, bool checkForCenterTargetingWeapons = false)
+		public bool HasAnyValidWeapons(in Target t, bool checkForCenterTargetingWeapons = false, bool reloadingIsInvalid = false)
 		{
 			if (IsTraitDisabled)
 				return false;
@@ -241,7 +238,8 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var armament in Armaments)
 			{
 				var checkIsValid = checkForCenterTargetingWeapons ? armament.Weapon.TargetActorCenter : !armament.IsTraitPaused;
-				if (checkIsValid && !armament.IsTraitDisabled && armament.Weapon.IsValidAgainst(t, self.World, self))
+				var reloadingStateIsValid = !reloadingIsInvalid || !armament.IsReloading;
+				if (checkIsValid && reloadingStateIsValid && !armament.IsTraitDisabled && armament.Weapon.IsValidAgainst(t, self.World, self))
 					return true;
 			}
 
