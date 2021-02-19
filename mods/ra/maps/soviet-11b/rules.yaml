@@ -1,0 +1,91 @@
+World:
+	LuaScript:
+		Scripts: campaign-global.lua, soviet11b.lua, soviet11b-AI.lua
+	MissionData:
+		BriefingVideo: soviet11.vqa
+		WinVideo: sitduck.vqa
+		LossVideo: dpthchrg.vqa
+		StartVideo: periscop.vqa
+		Briefing: Intelligence indicates that a large portion of the Allied Naval Fleet will stop for refueling at a base in this area. Destroy the fleet and the base. Beware the long range of their cruisers.
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			easy: Easy
+			normal: Normal
+			hard: Hard
+		Default: normal
+
+Player:
+	PlayerResources:
+		DefaultCash: 10000
+
+AFLD:
+	AirstrikePower@parabombs:
+		Prerequisites: aircraft.soviet
+	ParatroopersPower@paratroopers:
+		DropItems: E1,E1,E1,E2,E2
+
+ATEK:
+	Buildable:
+		Prerequisites: ~disabled
+
+IRON:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSLO:
+	Buildable:
+		Prerequisites: ~disabled
+
+TRUK:
+	Buildable:
+		Prerequisites: ~disabled
+
+FTRK:
+	Buildable:
+		Prerequisites: ~disabled
+
+QTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSUB:
+	Buildable:
+		Prerequisites: ~disabled
+
+THF:
+	Buildable:
+		Prerequisites: ~disabled
+
+PDOX:
+	Buildable:
+		Prerequisites: ~disabled
+
+E7:
+	Buildable:
+		Prerequisites: ~disabled
+
+MCV:
+	Buildable:
+		Prerequisites: ~disabled
+
+MECH:
+	Buildable:
+		Prerequisites: ~disabled
+
+MH60:
+	Buildable:
+		Prerequisites: ~disabled
+
+E3:
+	Buildable:
+		Prerequisites: ~tent
+
+CA:
+	Buildable:
+		Prerequisites: ~syrd, dome
+    
+HELI:
+	Buildable:
+		Prerequisites: ~hpad
