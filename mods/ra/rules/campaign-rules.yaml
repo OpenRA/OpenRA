@@ -59,8 +59,6 @@ MONEYCRATE:
 		Name: Crate
 	GiveCashCrateAction:
 		Amount: 2000
-	RenderSprites:
-		Image: scrate
 
 FCOM:
 	Capturable:
