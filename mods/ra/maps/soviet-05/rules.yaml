@@ -62,7 +62,7 @@ Player:
 
 World:
 	LuaScript:
-		Scripts: soviet05.lua, soviet05-AI.lua, soviet05-reinforcements_teams.lua
+		Scripts: campaign-global.lua, soviet05.lua, soviet05-AI.lua, soviet05-reinforcements_teams.lua
 	MissionData:
 		Briefing: Khalkis island contains a large quantity of ore that we need.\n\nThe Allies are well aware of our plans, and intend to establish their own base there. See to it that they fail.\n\nIn addition, capture their radar center so we can track Allied activity in this area.
 		BriefingVideo: soviet5.vqa

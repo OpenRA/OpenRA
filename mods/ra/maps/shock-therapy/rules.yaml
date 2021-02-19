@@ -1,6 +1,6 @@
 World:
 	LuaScript:
-		Scripts: shock-therapy.lua
+		Scripts: campaign-global.lua, shock-therapy.lua
 	MissionData:
 		WinVideo: sovtstar.vqa
 		LossVideo: sovcemet.vqa
