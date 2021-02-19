@@ -1,6 +1,6 @@
 World:
 	LuaScript:
-		Scripts: soviet07.lua
+		Scripts: campaign-global.lua, soviet07.lua
 	MissionData:
 		Briefing: The Allies have infiltrated one of our nuclear reactors! They have tampered with the core so that a meltdown is imminent within 30 minutes. They must not succeed!\n\nEnter the base and find any remaining technicians. Guide them to the 4 coolant stations so they can activate them, then activate the main computer. The security systems have been armed so beware.\n\nKill any Allies you find.
 		BriefingVideo: soviet7.vqa

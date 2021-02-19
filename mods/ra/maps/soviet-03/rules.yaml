@@ -1,6 +1,6 @@
 World:
 	LuaScript:
-		Scripts: soviet03.lua
+		Scripts: campaign-global.lua, soviet03.lua
 	MissionData:
 		Briefing: A spy who has compromised the security of one of the northern sarin gas sites has been traced back to Lund, Sweden, by Nadia's intelligence groups.\n\nHe has been marked for death and a squad of Soviet troops was dispatched to the location to hunt him down.
 		BriefingVideo: soviet3.vqa

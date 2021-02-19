@@ -6,7 +6,7 @@ World:
 	MissionData:
 		Briefing: The Allies are now being flanked from both sides. Evacuate before the remaining Allied forces in the area are wiped out. Einstein has recently developed a technology which allows us to obscure units from the enemy. Pull out at least one prototype mobile gap generator intact.
 	LuaScript:
-		Scripts: exodus.lua
+		Scripts: campaign-global.lua, exodus.lua
 	ScriptLobbyDropdown@difficulty:
 		ID: difficulty
 		Label: Difficulty

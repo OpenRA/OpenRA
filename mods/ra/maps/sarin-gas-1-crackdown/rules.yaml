@@ -1,6 +1,6 @@
 World:
 	LuaScript:
-		Scripts: crackdown.lua, crackdown-AI.lua
+		Scripts: campaign-global.lua, crackdown.lua, crackdown-AI.lua
 	MissionData:
 		Briefing: A Soviet convoy of Sarin nerve gas has stopped at a riverside outpost for refuelling. This is a perfect opportunity to destroy the Sarin shipment, and remove the Soviet threat in the area.\n\nUse your forces to destroy the convoy trucks and the base. It is imperative that none of the convoy trucks escape.\n\nThe Soviets keep their convoy information in their radar center. If a spy was to infiltrate the facility, it may help us locate the convoy escape routes.
 		WinVideo: allymorf.vqa
