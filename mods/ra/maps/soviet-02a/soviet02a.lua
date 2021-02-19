@@ -13,6 +13,39 @@ CmdAtk = { Attacker1, Attacker2, Attacker3, Attacker4 }
 FleeingUnits = { Fleeing1, Fleeing2 }
 HuntingUnits = { Hunter1, Hunter2, Hunter3, Hunter4 }
 
+AttackWaypoints = { AttackWaypoint1, AttackWaypoint2 }
+AttackGroup = { }
+AttackGroupSize = 3
+AlliedInfantry = { "e1", "e1", "e3" }
+
+SendAttackGroup = function()
+	if #AttackGroup < AttackGroupSize then
+		return
+	end
+
+	local way = Utils.Random(AttackWaypoints)
+	Utils.Do(AttackGroup, function(unit)
+		if not unit.IsDead then
+			unit.AttackMove(way.Location)
+			Trigger.OnIdle(unit, unit.Hunt)
+		end
+	end)
+
+	AttackGroup = { }
+end
+
+ProduceInfantry = function()
+	if Tent.IsDead then
+		return
+	end
+
+	greece.Build({ Utils.Random(AlliedInfantry) }, function(units)
+		table.insert(AttackGroup, units[1])
+		SendAttackGroup()
+		Trigger.AfterDelay(DateTime.Seconds(10), ProduceInfantry)
+	end)
+end
+
 WorldLoaded = function()
 	player = Player.GetPlayer("USSR")
 	greece = Player.GetPlayer("Greece")
@@ -127,6 +160,9 @@ WorldLoaded = function()
 		powerproxy.TargetParatroopers(ParadropLZ.CenterPosition, Angle.SouthEast)
 		powerproxy.Destroy()
 	end)
+
+	greece.Resources = 2000
+	Trigger.AfterDelay(DateTime.Seconds(30), ProduceInfantry)
 end
 
 Tick = function()

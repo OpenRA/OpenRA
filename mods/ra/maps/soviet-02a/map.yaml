@@ -161,7 +161,7 @@ Actors:
 	Actor40: powr
 		Location: 36,52
 		Owner: Greece
-	Actor41: tent
+	Tent: tent
 		Location: 41,58
 		Owner: Greece
 	Actor42: gun
