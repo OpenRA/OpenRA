@@ -276,7 +276,7 @@ Actors:
 	Actor82: barl
 		Location: 84,69
 		Owner: Greece
-	Actor83: tent
+	Tent: tent
 		Location: 70,57
 		Owner: Greece
 	Actor84: barl
@@ -482,6 +482,12 @@ Actors:
 		Owner: Neutral
 	TransportWaypoint3: waypoint
 		Location: 67,75
+		Owner: Neutral
+	AttackWaypoint1: waypoint
+		Location: 52,55
+		Owner: Neutral
+	AttackWaypoint2: waypoint
+		Location: 80,83
 		Owner: Neutral
 
 Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, ra|rules/campaign-palettes.yaml, rules.yaml
