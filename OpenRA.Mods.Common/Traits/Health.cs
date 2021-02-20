@@ -88,6 +88,9 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			get
 			{
+				if (hp == MaxHP)
+					return DamageState.Undamaged;
+
 				if (hp <= 0)
 					return DamageState.Dead;
 
@@ -99,9 +102,6 @@ namespace OpenRA.Mods.Common.Traits
 
 				if (hp * 100L < MaxHP * 75L)
 					return DamageState.Medium;
-
-				if (hp == MaxHP)
-					return DamageState.Undamaged;
 
 				return DamageState.Light;
 			}
