@@ -137,7 +137,6 @@ namespace OpenRA.Mods.Cnc.Traits
 			readonly MadTank mad;
 			readonly IMove move;
 			readonly WithFacingSpriteBody wfsb;
-			readonly ScreenShaker screenShaker;
 			readonly bool assignTargetOnFirstRun;
 
 			int ticks;
@@ -158,7 +157,6 @@ namespace OpenRA.Mods.Cnc.Traits
 
 				move = self.Trait<IMove>();
 				wfsb = self.Trait<WithFacingSpriteBody>();
-				screenShaker = self.World.WorldActor.Trait<ScreenShaker>();
 			}
 
 			protected override void OnFirstRun(Actor self)
