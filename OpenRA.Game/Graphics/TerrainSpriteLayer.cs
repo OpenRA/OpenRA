@@ -76,15 +76,15 @@ namespace OpenRA.Graphics
 
 		public void Clear(CPos cell)
 		{
-			Update(cell, null, null, 1f, true);
+			Update(cell, null, null, 1f, 1f, true);
 		}
 
 		public void Update(CPos cell, ISpriteSequence sequence, PaletteReference palette, int frame)
 		{
-			Update(cell, sequence.GetSprite(frame), palette, sequence.Scale, sequence.IgnoreWorldTint);
+			Update(cell, sequence.GetSprite(frame), palette, sequence.Scale, sequence.GetAlpha(frame), sequence.IgnoreWorldTint);
 		}
 
-		public void Update(CPos cell, Sprite sprite, PaletteReference palette, float scale = 1f, bool ignoreTint = false)
+		public void Update(CPos cell, Sprite sprite, PaletteReference palette, float scale = 1f, float alpha = 1f, bool ignoreTint = false)
 		{
 			var xyz = float3.Zero;
 			if (sprite != null)
@@ -93,7 +93,7 @@ namespace OpenRA.Graphics
 				xyz = worldRenderer.Screen3DPosition(cellOrigin) + scale * (sprite.Offset - 0.5f * sprite.Size);
 			}
 
-			Update(cell.ToMPos(map.Grid.Type), sprite, palette, xyz, scale, ignoreTint);
+			Update(cell.ToMPos(map.Grid.Type), sprite, palette, xyz, scale, alpha, ignoreTint);
 		}
 
 		void UpdateTint(MPos uv)
@@ -101,11 +101,10 @@ namespace OpenRA.Graphics
 			var offset = rowStride * uv.V + 6 * uv.U;
 			if (ignoreTint[offset])
 			{
-				var noTint = float3.Ones;
 				for (var i = 0; i < 6; i++)
 				{
 					var v = vertices[offset + i];
-					vertices[offset + i] = new Vertex(v.X, v.Y, v.Z, v.S, v.T, v.U, v.V, v.P, v.C, noTint, 1f);
+					vertices[offset + i] = new Vertex(v.X, v.Y, v.Z, v.S, v.T, v.U, v.V, v.P, v.C, v.A * float3.Ones, v.A);
 				}
 
 				return;
@@ -130,7 +129,7 @@ namespace OpenRA.Graphics
 			for (var i = 0; i < 6; i++)
 			{
 				var v = vertices[offset + i];
-				vertices[offset + i] = new Vertex(v.X, v.Y, v.Z, v.S, v.T, v.U, v.V, v.P, v.C, weights[CornerVertexMap[i]], 1f);
+				vertices[offset + i] = new Vertex(v.X, v.Y, v.Z, v.S, v.T, v.U, v.V, v.P, v.C, v.A * weights[CornerVertexMap[i]], v.A);
 			}
 
 			dirtyRows.Add(uv.V);
@@ -156,7 +155,7 @@ namespace OpenRA.Graphics
 			throw new InvalidDataException("Sheet overflow");
 		}
 
-		public void Update(MPos uv, Sprite sprite, PaletteReference palette, in float3 pos, float scale, bool ignoreTint)
+		public void Update(MPos uv, Sprite sprite, PaletteReference palette, in float3 pos, float scale, float alpha, bool ignoreTint)
 		{
 			int2 samplers;
 			if (sprite != null)
@@ -177,7 +176,7 @@ namespace OpenRA.Graphics
 				return;
 
 			var offset = rowStride * uv.V + 6 * uv.U;
-			Util.FastCreateQuad(vertices, pos, sprite, samplers, palette?.TextureIndex ?? 0, offset, scale * sprite.Size, float3.Ones, 1f);
+			Util.FastCreateQuad(vertices, pos, sprite, samplers, palette?.TextureIndex ?? 0, offset, scale * sprite.Size, alpha * float3.Ones, alpha);
 			palettes[uv.V * map.MapSize.X + uv.U] = palette;
 
 			if (worldRenderer.TerrainLighting != null)

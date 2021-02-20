@@ -107,7 +107,7 @@ namespace OpenRA.Mods.Common.Traits
 			// resource.Type is meaningless (and may be null) if resource.Sequence is null
 			if (sequence != null)
 			{
-				shadowLayer?.Update(cell, sequence.GetShadow(frame, WAngle.Zero), palette, 1f, sequence.IgnoreWorldTint);
+				shadowLayer?.Update(cell, sequence.GetShadow(frame, WAngle.Zero), palette, 1f, 1f, sequence.IgnoreWorldTint);
 				spriteLayer.Update(cell, sequence, palette, frame);
 			}
 			else
