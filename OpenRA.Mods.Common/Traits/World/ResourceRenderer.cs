@@ -80,7 +80,7 @@ namespace OpenRA.Mods.Common.Traits
 					}
 				}
 
-				// All resources must share a sheet and blend mode
+				// All resources must share a blend mode
 				var sprites = r.Value.Variants.Values.SelectMany(v => Exts.MakeArray(v.Length, x => v.GetSprite(x)));
 				if (sprites.Any(s => s.BlendMode != spriteLayer.BlendMode))
 					throw new InvalidDataException("Resource sprites specify different blend modes. "
