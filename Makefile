@@ -54,7 +54,8 @@ RM_F = $(RM) -f
 RM_RF = $(RM) -rf
 
 RUNTIME ?= dotnet
-VERSION = $(shell git name-rev --name-only --tags --no-undefined HEAD 2>/dev/null || echo git-`git rev-parse --short HEAD`)
+# Only for use in target version:
+VERSION := $(shell git name-rev --name-only --tags --no-undefined HEAD 2>/dev/null || (c=$$(git rev-parse --short HEAD 2>/dev/null) && echo git-$$c))
 
 # Detect target platform for dependencies if not given by the user
 ifndef TARGETPLATFORM
@@ -133,8 +134,11 @@ test: all
 ############# LOCAL INSTALLATION AND DOWNSTREAM PACKAGING ##############
 #
 version: VERSION mods/ra/mod.yaml mods/cnc/mod.yaml mods/d2k/mod.yaml mods/ts/mod.yaml mods/modcontent/mod.yaml mods/all/mod.yaml
-	@sh -c '. ./packaging/functions.sh; set_engine_version $(VERSION) .'
-	@sh -c '. ./packaging/functions.sh; set_mod_version $(VERSION) mods/ra/mod.yaml mods/cnc/mod.yaml mods/d2k/mod.yaml mods/ts/mod.yaml mods/modcontent/mod.yaml mods/all/mod.yaml'
+ifeq ($(VERSION),)
+	$(error Unable to determine new version (requires git or override of variable VERSION))
+endif
+	@sh -c '. ./packaging/functions.sh; set_engine_version "$(VERSION)" .'
+	@sh -c '. ./packaging/functions.sh; set_mod_version "$(VERSION)" mods/ra/mod.yaml mods/cnc/mod.yaml mods/d2k/mod.yaml mods/ts/mod.yaml mods/modcontent/mod.yaml mods/all/mod.yaml'
 
 install:
 ifeq ($(RUNTIME), mono)
