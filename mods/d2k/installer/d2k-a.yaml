@@ -63,7 +63,7 @@ d2k-a: Dune 2000 (English)
 			^SupportDir|Content/d2k/v2/Music/SOLDAPPR.AUD: SOLDAPPR.AUD
 			^SupportDir|Content/d2k/v2/Music/SPICESCT.AUD: SPICESCT.AUD
 			^SupportDir|Content/d2k/v2/Music/UNDERCON.AUD: UNDERCON.AUD
-			^SupportDir|Content/d2k/v2/Music/WAITGAME.A: WAITGAME.AUD
+			^SupportDir|Content/d2k/v2/Music/WAITGAME.AUD: WAITGAME.AUD
 		extract-blast: SETUP/SETUP.Z
 			^SupportDir|Content/d2k/v2/BLOXBAT.R8:
 				Offset: 1156652
@@ -919,7 +919,7 @@ d2k-a-linux: Dune 2000 (English)
 			^SupportDir|Content/d2k/v2/Music/SOLDAPPR.AUD: soldappr.aud
 			^SupportDir|Content/d2k/v2/Music/SPICESCT.AUD: spicesct.aud
 			^SupportDir|Content/d2k/v2/Music/UNDERCON.AUD: undercon.aud
-			^SupportDir|Content/d2k/v2/Music/WAITGAME.A: waitgame.aud
+			^SupportDir|Content/d2k/v2/Music/WAITGAME.AUD: waitgame.aud
 		extract-blast: setup/setup.z
 			^SupportDir|Content/d2k/v2/BLOXBAT.R8:
 				Offset: 1156652

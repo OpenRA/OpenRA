@@ -23,7 +23,7 @@ gruntmods: Dune 2000: GruntMods Edition
 			^SupportDir|Content/d2k/v2/Music/SOLDAPPR.AUD: SOLDAPPR.AUD
 			^SupportDir|Content/d2k/v2/Music/SPICESCT.AUD: SPICESCT.AUD
 			^SupportDir|Content/d2k/v2/Music/UNDERCON.AUD: UNDERCON.AUD
-			^SupportDir|Content/d2k/v2/Music/WAITGAME.A: WAITGAME.AUD
+			^SupportDir|Content/d2k/v2/Music/WAITGAME.AUD: WAITGAME.AUD
 		copy: Dune 2000/data
 			^SupportDir|Content/d2k/v2/BLOXBAT.R8: BLOXBAT.R8
 			^SupportDir|Content/d2k/v2/BLOXBASE.R8: BLOXBASE.R8
