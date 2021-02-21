@@ -147,7 +147,7 @@ namespace OpenRA.Mods.Common.Traits
 					var possibleBuilding = world.ActorsWithTrait<Pluggable>().FirstOrDefault(a =>
 						a.Actor.Owner == player && a.Trait.AcceptsPlug(a.Actor, plugInfo.Type));
 
-					if (possibleBuilding != null)
+					if (possibleBuilding.Actor != null)
 					{
 						orderString = "PlacePlug";
 						location = possibleBuilding.Actor.Location + possibleBuilding.Trait.Info.Offset;
