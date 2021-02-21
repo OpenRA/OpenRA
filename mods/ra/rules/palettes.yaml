@@ -134,3 +134,8 @@
 		BasePalette: player
 		Index: 7, 14, 118, 119, 159, 187, 188
 		ReplaceIndex: 137, 15, 129, 131, 137, 163, 165
+	IndexedPalette@wcrate:
+		Name: wcrate
+		BasePalette: player
+		Index: 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95
+		ReplaceIndex: 224, 224, 225, 225, 226, 184, 185, 186, 187, 188, 188, 189, 190, 190, 191, 191

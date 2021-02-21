@@ -119,6 +119,7 @@ MONEYCRATE:
 		UseCashTick: true
 	RenderSprites:
 		Image: wcrate
+		Palette: wcrate
 
 HEALCRATE:
 	Inherits: ^Crate
@@ -135,6 +136,7 @@ WCRATE:
 		Name: Wooden Crate
 	RenderSprites:
 		Image: wcrate
+		Palette: wcrate
 
 SCRATE:
 	Inherits: ^Crate
