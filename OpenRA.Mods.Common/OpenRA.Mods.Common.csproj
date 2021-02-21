@@ -33,6 +33,7 @@
     <PackageReference Include="Pfim" Version="0.9.1" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" />
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0" PrivateAssets="All" />
+    <PackageReference Include="System.Net.Http" Version="4.3.4" />
     <AdditionalFiles Include="../stylecop.json" />
   </ItemGroup>
   <Target Name="DisableAnalyzers" BeforeTargets="CoreCompile" Condition="'$(Configuration)'=='Release'">

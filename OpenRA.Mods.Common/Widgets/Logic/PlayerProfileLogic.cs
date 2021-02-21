@@ -11,10 +11,10 @@
 
 using System;
 using System.Linq;
-using System.Net;
-using System.Text;
+using System.Threading.Tasks;
 using OpenRA.Graphics;
 using OpenRA.Network;
+using OpenRA.Support;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -157,79 +157,81 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var messageText = "Loading player profile...";
 			var messageWidth = messageFont.Measure(messageText).X + 2 * message.Bounds.Left;
 
-			Action<DownloadDataCompletedEventArgs> onQueryComplete = i =>
+			Task.Run(async () =>
 			{
 				try
 				{
-					if (i.Error == null)
+					var httpClient = HttpClientFactory.Create();
+
+					var httpResponseMessage = await httpClient.GetAsync(playerDatabase.Profile + client.Fingerprint);
+					var result = await httpResponseMessage.Content.ReadAsStringAsync();
+
+					var yaml = MiniYaml.FromString(result).First();
+					if (yaml.Key == "Player")
 					{
-						var yaml = MiniYaml.FromString(Encoding.UTF8.GetString(i.Result)).First();
-						if (yaml.Key == "Player")
+						profile = FieldLoader.Load<PlayerProfile>(yaml.Value);
+						Game.RunAfterTick(() =>
 						{
-							profile = FieldLoader.Load<PlayerProfile>(yaml.Value);
-							Game.RunAfterTick(() =>
+							var nameLabel = profileHeader.Get<LabelWidget>("PROFILE_NAME");
+							var nameFont = Game.Renderer.Fonts[nameLabel.Font];
+							var rankLabel = profileHeader.Get<LabelWidget>("PROFILE_RANK");
+							var rankFont = Game.Renderer.Fonts[rankLabel.Font];
+
+							var adminContainer = profileHeader.Get("GAME_ADMIN");
+							var adminLabel = adminContainer.Get<LabelWidget>("LABEL");
+							var adminFont = Game.Renderer.Fonts[adminLabel.Font];
+
+							var headerSizeOffset = profileHeader.Bounds.Height - messageHeader.Bounds.Height;
+
+							nameLabel.GetText = () => profile.ProfileName;
+							rankLabel.GetText = () => profile.ProfileRank;
+
+							profileWidth = Math.Max(profileWidth, nameFont.Measure(profile.ProfileName).X + 2 * nameLabel.Bounds.Left);
+							profileWidth = Math.Max(profileWidth, rankFont.Measure(profile.ProfileRank).X + 2 * rankLabel.Bounds.Left);
+
+							header.Bounds.Height += headerSizeOffset;
+							badgeContainer.Bounds.Y += header.Bounds.Height;
+							if (client.IsAdmin)
 							{
-								var nameLabel = profileHeader.Get<LabelWidget>("PROFILE_NAME");
-								var nameFont = Game.Renderer.Fonts[nameLabel.Font];
-								var rankLabel = profileHeader.Get<LabelWidget>("PROFILE_RANK");
-								var rankFont = Game.Renderer.Fonts[rankLabel.Font];
+								profileWidth = Math.Max(profileWidth, adminFont.Measure(adminLabel.Text).X + 2 * adminLabel.Bounds.Left);
 
-								var adminContainer = profileHeader.Get("GAME_ADMIN");
-								var adminLabel = adminContainer.Get<LabelWidget>("LABEL");
-								var adminFont = Game.Renderer.Fonts[adminLabel.Font];
+								adminContainer.IsVisible = () => true;
+								profileHeader.Bounds.Height += adminLabel.Bounds.Height;
+								header.Bounds.Height += adminLabel.Bounds.Height;
+								badgeContainer.Bounds.Y += adminLabel.Bounds.Height;
+							}
 
-								var headerSizeOffset = profileHeader.Bounds.Height - messageHeader.Bounds.Height;
+							Func<int, int> negotiateWidth = badgeWidth =>
+							{
+								profileWidth = Math.Min(Math.Max(badgeWidth, profileWidth), maxProfileWidth);
+								return profileWidth;
+							};
 
-								nameLabel.GetText = () => profile.ProfileName;
-								rankLabel.GetText = () => profile.ProfileRank;
-
-								profileWidth = Math.Max(profileWidth, nameFont.Measure(profile.ProfileName).X + 2 * nameLabel.Bounds.Left);
-								profileWidth = Math.Max(profileWidth, rankFont.Measure(profile.ProfileRank).X + 2 * rankLabel.Bounds.Left);
-
-								header.Bounds.Height += headerSizeOffset;
-								badgeContainer.Bounds.Y += header.Bounds.Height;
-								if (client.IsAdmin)
+							if (profile.Badges.Any())
+							{
+								var badges = Ui.LoadWidget("PLAYER_PROFILE_BADGES_INSERT", badgeContainer, new WidgetArgs()
 								{
-									profileWidth = Math.Max(profileWidth, adminFont.Measure(adminLabel.Text).X + 2 * adminLabel.Bounds.Left);
+									{ "worldRenderer", worldRenderer },
+									{ "profile", profile },
+									{ "negotiateWidth", negotiateWidth }
+								});
 
-									adminContainer.IsVisible = () => true;
-									profileHeader.Bounds.Height += adminLabel.Bounds.Height;
-									header.Bounds.Height += adminLabel.Bounds.Height;
-									badgeContainer.Bounds.Y += adminLabel.Bounds.Height;
+								if (badges.Bounds.Height > 0)
+								{
+									badgeContainer.Bounds.Height = badges.Bounds.Height;
+									badgeContainer.IsVisible = () => true;
 								}
+							}
 
-								Func<int, int> negotiateWidth = badgeWidth =>
-								{
-									profileWidth = Math.Min(Math.Max(badgeWidth, profileWidth), maxProfileWidth);
-									return profileWidth;
-								};
+							profileWidth = Math.Min(profileWidth, maxProfileWidth);
+							header.Bounds.Width = widget.Bounds.Width = badgeContainer.Bounds.Width = profileWidth;
+							widget.Bounds.Height = header.Bounds.Height + badgeContainer.Bounds.Height;
 
-								if (profile.Badges.Any())
-								{
-									var badges = Ui.LoadWidget("PLAYER_PROFILE_BADGES_INSERT", badgeContainer, new WidgetArgs()
-									{
-										{ "worldRenderer", worldRenderer },
-										{ "profile", profile },
-										{ "negotiateWidth", negotiateWidth }
-									});
+							if (badgeSeparator != null)
+								badgeSeparator.Bounds.Width = profileWidth - 2 * badgeSeparator.Bounds.X;
 
-									if (badges.Bounds.Height > 0)
-									{
-										badgeContainer.Bounds.Height = badges.Bounds.Height;
-										badgeContainer.IsVisible = () => true;
-									}
-								}
-
-								profileWidth = Math.Min(profileWidth, maxProfileWidth);
-								header.Bounds.Width = widget.Bounds.Width = badgeContainer.Bounds.Width = profileWidth;
-								widget.Bounds.Height = header.Bounds.Height + badgeContainer.Bounds.Height;
-
-								if (badgeSeparator != null)
-									badgeSeparator.Bounds.Width = profileWidth - 2 * badgeSeparator.Bounds.X;
-
-								profileLoaded = true;
-							});
-						}
+							profileLoaded = true;
+						});
 					}
 				}
 				catch (Exception e)
@@ -245,15 +247,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						header.Bounds.Width = widget.Bounds.Width = messageWidth;
 					}
 				}
-			};
+			});
 
 			message.GetText = () => messageText;
 			header.Bounds.Height += messageHeader.Bounds.Height;
 			header.Bounds.Width = widget.Bounds.Width = messageWidth;
 			widget.Bounds.Height = header.Bounds.Height;
 			badgeContainer.Visible = false;
-
-			new Download(playerDatabase.Profile + client.Fingerprint, _ => { }, onQueryComplete);
 		}
 	}
 
