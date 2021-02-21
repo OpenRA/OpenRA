@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Cnc.AudioLoaders
 		public int Channels => channels;
 		public int SampleBits => sampleBits;
 		public int SampleRate => sampleRate;
-		public float LengthInSeconds => AudReader.SoundLength(sourceStream);
+		public float LengthInSeconds { get; }
 		public Stream GetPCMInputStream() { return audStreamFactory(); }
 		public void Dispose() { sourceStream.Dispose(); }
 
@@ -68,6 +68,8 @@ namespace OpenRA.Mods.Cnc.AudioLoaders
 
 			if (!AudReader.LoadSound(stream, out audStreamFactory, out sampleRate, out sampleBits, out channels))
 				throw new InvalidDataException();
+
+			LengthInSeconds = AudReader.SoundLength(sourceStream);
 		}
 	}
 }

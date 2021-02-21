@@ -180,7 +180,7 @@ Background@ASSETBROWSER_PANEL:
 					MinimumValue: 0
 				Label@FRAME_COUNT:
 					X: PARENT_RIGHT - WIDTH + 5
-					Y: 1
+					Y: 0
 					Width: 85
 					Height: 25
 					Font: TinyBold

@@ -34,6 +34,8 @@ namespace OpenRA.Mods.Cnc.FileFormats
 	{
 		public static float SoundLength(Stream s)
 		{
+			var originalPosition = s.Position;
+
 			var sampleRate = s.ReadUInt16();
 			/*var dataSize = */ s.ReadInt32();
 			var outputSize = s.ReadInt32();
@@ -45,6 +47,8 @@ namespace OpenRA.Mods.Cnc.FileFormats
 
 			if ((flags & SoundFlags._16Bit) != 0)
 				samples /= 2;
+
+			s.Seek(originalPosition, SeekOrigin.Begin);
 
 			return (float)samples / sampleRate;
 		}
@@ -70,10 +74,12 @@ namespace OpenRA.Mods.Cnc.FileFormats
 					throw new NotImplementedException();
 
 				var offsetPosition = s.Position;
+				var streamLength = s.Length;
+				var segmentLength = (int)(streamLength - offsetPosition);
 
 				result = () =>
 				{
-					var audioStream = SegmentStream.CreateWithoutOwningStream(s, offsetPosition, (int)(s.Length - offsetPosition));
+					var audioStream = SegmentStream.CreateWithoutOwningStream(s, offsetPosition, segmentLength);
 					return new AudStream(audioStream, outputSize, dataSize);
 				};
 			}
