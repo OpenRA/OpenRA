@@ -320,7 +320,7 @@ dialog4:
 # completely black tile
 dialog5:
 	Inherits: ^Dialog
-	PanelRegion: 579, 387, 0, 0, 64, 64, 0, 0
+	PanelRegion: 580, 388, 0, 0, 62, 62, 0, 0
 	PanelSides: Center
 
 lobby-bits:
