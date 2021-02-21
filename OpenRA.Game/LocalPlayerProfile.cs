@@ -12,10 +12,10 @@
 using System;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using OpenRA.Support;
 
 namespace OpenRA
 {
@@ -76,17 +76,16 @@ namespace OpenRA
 			if (State != LinkState.Unlinked && State != LinkState.Linked && State != LinkState.ConnectionFailed)
 				return;
 
-			Action<DownloadDataCompletedEventArgs> onQueryComplete = i =>
+			Task.Run(async () =>
 			{
 				try
 				{
-					if (i.Error != null)
-					{
-						innerState = LinkState.ConnectionFailed;
-						return;
-					}
+					var client = HttpClientFactory.Create();
 
-					var yaml = MiniYaml.FromString(Encoding.UTF8.GetString(i.Result)).First();
+					var httpResponseMessage = await client.GetAsync(playerDatabase.Profile + Fingerprint);
+					var result = await httpResponseMessage.Content.ReadAsStringAsync();
+
+					var yaml = MiniYaml.FromString(result).First();
 					if (yaml.Key == "Player")
 					{
 						innerData = FieldLoader.Load<PlayerProfile>(yaml.Value);
@@ -110,10 +109,9 @@ namespace OpenRA
 				{
 					onComplete?.Invoke();
 				}
-			};
+			});
 
 			innerState = LinkState.CheckingLink;
-			new Download(playerDatabase.Profile + Fingerprint, _ => { }, onQueryComplete);
 		}
 
 		public void GenerateKeypair()

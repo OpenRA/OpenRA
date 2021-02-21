@@ -12,12 +12,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Text;
+using System.Threading.Tasks;
 using BeaconLib;
 using OpenRA.Network;
 using OpenRA.Primitives;
 using OpenRA.Server;
+using OpenRA.Support;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 
@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		SearchStatus searchStatus = SearchStatus.Fetching;
 
-		Download currentQuery;
+		bool activeQuery;
 		IEnumerable<BeaconLocation> lanGameLocations;
 
 		public string ProgressLabelText()
@@ -322,41 +322,48 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		public void RefreshServerList()
 		{
 			// Query in progress
-			if (currentQuery != null)
+			if (activeQuery)
 				return;
 
 			searchStatus = SearchStatus.Fetching;
 
-			Action<DownloadDataCompletedEventArgs> onComplete = i =>
+			var queryURL = new HttpQueryBuilder(services.ServerList)
 			{
-				currentQuery = null;
+				{ "protocol", GameServer.ProtocolVersion },
+				{ "engine", Game.EngineVersion },
+				{ "mod", Game.ModData.Manifest.Id },
+				{ "version", Game.ModData.Manifest.Metadata.Version }
+			}.ToString();
 
-				List<GameServer> games = null;
-				if (i.Error == null)
+			Task.Run(async () =>
+			{
+				var games = new List<GameServer>();
+				var client = HttpClientFactory.Create();
+				var httpResponseMessage = await client.GetAsync(queryURL);
+				var result = await httpResponseMessage.Content.ReadAsStringAsync();
+
+				activeQuery = true;
+
+				try
 				{
-					games = new List<GameServer>();
-					try
+					var yaml = MiniYaml.FromString(result);
+					foreach (var node in yaml)
 					{
-						var data = Encoding.UTF8.GetString(i.Result);
-						var yaml = MiniYaml.FromString(data);
-						foreach (var node in yaml)
+						try
 						{
-							try
-							{
-								var gs = new GameServer(node.Value);
-								if (gs.Address != null)
-									games.Add(gs);
-							}
-							catch
-							{
-								// Ignore any invalid games advertised.
-							}
+							var gs = new GameServer(node.Value);
+							if (gs.Address != null)
+								games.Add(gs);
+						}
+						catch
+						{
+							// Ignore any invalid games advertised.
 						}
 					}
-					catch
-					{
-						searchStatus = SearchStatus.Failed;
-					}
+				}
+				catch
+				{
+					searchStatus = SearchStatus.Failed;
 				}
 
 				var lanGames = new List<GameServer>();
@@ -398,15 +405,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					games = groupedLanGames.ToList();
 
 				Game.RunAfterTick(() => RefreshServerListInner(games));
-			};
 
-			var queryURL = services.ServerList + "?protocol={0}&engine={1}&mod={2}&version={3}".F(
-				GameServer.ProtocolVersion,
-				Uri.EscapeUriString(Game.EngineVersion),
-				Uri.EscapeUriString(Game.ModData.Manifest.Id),
-				Uri.EscapeUriString(Game.ModData.Manifest.Metadata.Version));
-
-			currentQuery = new Download(queryURL, _ => { }, onComplete);
+				activeQuery = false;
+			});
 		}
 
 		int GroupSortOrder(GameServer testEntry)

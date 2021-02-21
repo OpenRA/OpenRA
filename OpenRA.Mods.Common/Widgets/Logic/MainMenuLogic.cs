@@ -14,7 +14,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using OpenRA.Network;
+using OpenRA.Support;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -274,19 +276,47 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					if (!fetchedNews)
 					{
-						// Send the mod and engine version to support version-filtered news (update prompts)
-						var newsURL = "{0}?version={1}&mod={2}&modversion={3}".F(
-							webServices.GameNews,
-							Uri.EscapeUriString(Game.EngineVersion),
-							Uri.EscapeUriString(Game.ModData.Manifest.Id),
-							Uri.EscapeUriString(Game.ModData.Manifest.Metadata.Version));
+						Task.Run(async () =>
+						{
+							try
+							{
+								var client = HttpClientFactory.Create();
 
-						// Parameter string is blank if the player has opted out
-						newsURL += SystemInfoPromptLogic.CreateParameterString();
+								// Send the mod and engine version to support version-filtered news (update prompts)
+								var url = new HttpQueryBuilder(webServices.GameNews)
+								{
+									{ "version", Game.EngineVersion },
+									{ "mod", Game.ModData.Manifest.Id },
+									{ "modversion", Game.ModData.Manifest.Metadata.Version }
+								}.ToString();
 
-						new Download(newsURL, cacheFile, e => { },
-							e => NewsDownloadComplete(e, cacheFile, currentNews,
-								() => OpenNewsPanel(newsButton)));
+								// Parameter string is blank if the player has opted out
+								url += SystemInfoPromptLogic.CreateParameterString();
+
+								var response = await client.GetStringAsync(url);
+								await File.WriteAllTextAsync(cacheFile, response);
+
+								Game.RunAfterTick(() => // run on the main thread
+								{
+									fetchedNews = true;
+									var newNews = ParseNews(cacheFile);
+									if (newNews == null)
+										return;
+
+									DisplayNews(newNews);
+
+									if (currentNews == null || newNews.Any(n => !currentNews.Select(c => c.DateTime).Contains(n.DateTime)))
+										OpenNewsPanel(newsButton);
+								});
+							}
+							catch (Exception e)
+							{
+								Game.RunAfterTick(() => // run on the main thread
+								{
+									SetNewsStatus("Failed to retrieve news: {0}".F(e));
+								});
+							}
+						});
 					}
 
 					newsButton.OnClick = () => OpenNewsPanel(newsButton);
@@ -362,28 +392,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			return null;
-		}
-
-		void NewsDownloadComplete(AsyncCompletedEventArgs e, string cacheFile, NewsItem[] oldNews, Action onNewsDownloaded)
-		{
-			Game.RunAfterTick(() => // run on the main thread
-			{
-				if (e.Error != null)
-				{
-					SetNewsStatus("Failed to retrieve news: {0}".F(Download.FormatErrorMessage(e.Error)));
-					return;
-				}
-
-				fetchedNews = true;
-				var newNews = ParseNews(cacheFile);
-				if (newNews == null)
-					return;
-
-				DisplayNews(newNews);
-
-				if (oldNews == null || newNews.Any(n => !oldNews.Select(c => c.DateTime).Contains(n.DateTime)))
-					onNewsDownloaded();
-			});
 		}
 
 		void DisplayNews(IEnumerable<NewsItem> newsItems)

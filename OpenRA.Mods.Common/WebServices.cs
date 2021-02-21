@@ -10,8 +10,8 @@
 #endregion
 
 using System;
-using System.Net;
-using System.Text;
+using System.Threading.Tasks;
+using OpenRA.Support;
 
 namespace OpenRA.Mods.Common
 {
@@ -31,34 +31,31 @@ namespace OpenRA.Mods.Common
 
 		public void CheckModVersion()
 		{
-			Action<DownloadDataCompletedEventArgs> onComplete = i =>
+			Task.Run(async () =>
 			{
-				if (i.Error != null)
-					return;
-				try
+				var queryURL = new HttpQueryBuilder(VersionCheck)
 				{
-					var data = Encoding.UTF8.GetString(i.Result);
+					{ "protocol", VersionCheckProtocol },
+					{ "engine", Game.EngineVersion },
+					{ "mod", Game.ModData.Manifest.Id },
+					{ "version", Game.ModData.Manifest.Metadata.Version }
+				}.ToString();
 
-					var status = ModVersionStatus.Latest;
-					switch (data)
-					{
-						case "outdated": status = ModVersionStatus.Outdated; break;
-						case "unknown": status = ModVersionStatus.Unknown; break;
-						case "playtest": status = ModVersionStatus.PlaytestAvailable; break;
-					}
+				var client = HttpClientFactory.Create();
 
-					Game.RunAfterTick(() => ModVersionStatus = status);
+				var httpResponseMessage = await client.GetAsync(queryURL);
+				var result = await httpResponseMessage.Content.ReadAsStringAsync();
+
+				var status = ModVersionStatus.Latest;
+				switch (result)
+				{
+					case "outdated": status = ModVersionStatus.Outdated; break;
+					case "unknown": status = ModVersionStatus.Unknown; break;
+					case "playtest": status = ModVersionStatus.PlaytestAvailable; break;
 				}
-				catch { }
-			};
 
-			var queryURL = VersionCheck + "?protocol={0}&engine={1}&mod={2}&version={3}".F(
-				VersionCheckProtocol,
-				Uri.EscapeUriString(Game.EngineVersion),
-				Uri.EscapeUriString(Game.ModData.Manifest.Id),
-				Uri.EscapeUriString(Game.ModData.Manifest.Metadata.Version));
-
-			new Download(queryURL, _ => { }, onComplete);
+				Game.RunAfterTick(() => ModVersionStatus = status);
+			});
 		}
 	}
 }

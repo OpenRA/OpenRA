@@ -9,13 +9,12 @@
  */
 #endregion
 
-using System;
-using System.IO;
 using System.Linq;
-using System.Net;
+using System.Threading.Tasks;
 using OpenRA.FileFormats;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
+using OpenRA.Support;
 
 namespace OpenRA
 {
@@ -39,14 +38,16 @@ namespace OpenRA
 			var spriteSize = IconSize * density;
 			var sprite = sheetBuilder.Allocate(new Size(spriteSize, spriteSize), 1f / density);
 
-			Action<DownloadDataCompletedEventArgs> onComplete = i =>
+			Task.Run(async () =>
 			{
-				if (i.Error != null)
-					return;
-
 				try
 				{
-					var icon = new Png(new MemoryStream(i.Result));
+					var client = HttpClientFactory.Create();
+
+					var httpResponseMessage = await client.GetAsync(url);
+					var result = await httpResponseMessage.Content.ReadAsStreamAsync();
+
+					var icon = new Png(result);
 					if (icon.Width == spriteSize && icon.Height == spriteSize)
 					{
 						Game.RunAfterTick(() =>
@@ -57,9 +58,7 @@ namespace OpenRA
 					}
 				}
 				catch { }
-			};
-
-			new Download(url, _ => { }, onComplete);
+			});
 
 			return sprite;
 		}

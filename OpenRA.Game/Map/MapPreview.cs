@@ -14,13 +14,15 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
-using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using OpenRA.FileFormats;
 using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
+using OpenRA.Support;
 
 namespace OpenRA
 {
@@ -165,7 +167,6 @@ namespace OpenRA
 			}
 		}
 
-		Download download;
 		public long DownloadBytes { get; private set; }
 		public int DownloadPercentage { get; private set; }
 
@@ -434,74 +435,57 @@ namespace OpenRA
 			}
 
 			var mapInstallPackage = installLocation.Key as IReadWritePackage;
-			new Thread(() =>
+
+			Task.Run(async () =>
 			{
 				// Request the filename from the server
 				// Run in a worker thread to avoid network delays
 				var mapUrl = mapRepositoryUrl + Uid;
-				var mapFilename = string.Empty;
 				try
 				{
-					var request = WebRequest.Create(mapUrl);
-					request.Method = "HEAD";
-					using (var res = request.GetResponse())
+					void OnDownloadProgress(long total, long received, int percentage)
 					{
-						// Map not found
-						if (res.Headers["Content-Disposition"] == null)
-						{
-							innerData.Status = MapStatus.DownloadError;
-							return;
-						}
-
-						mapFilename = res.Headers["Content-Disposition"].Replace("attachment; filename = ", "");
+						DownloadBytes = total;
+						DownloadPercentage = percentage;
 					}
 
-					Action<DownloadProgressChangedEventArgs> onDownloadProgress = i => { DownloadBytes = i.BytesReceived; DownloadPercentage = i.ProgressPercentage; };
-					Action<DownloadDataCompletedEventArgs> onDownloadComplete = i =>
+					var client = HttpClientFactory.Create();
+
+					var response = await client.GetAsync(mapUrl, HttpCompletionOption.ResponseHeadersRead);
+
+					if (!response.IsSuccessStatusCode)
 					{
-						download = null;
+						innerData.Status = MapStatus.DownloadError;
+						return;
+					}
 
-						if (i.Error != null)
-						{
-							Log.Write("debug", "Remote map download failed with error: {0}", Download.FormatErrorMessage(i.Error));
-							Log.Write("debug", "URL was: {0}", mapUrl);
+					response.Headers.TryGetValues("Content-Disposition", out var values);
+					var mapFilename = values.First().Replace("attachment; filename = ", "");
 
+					var fileStream = new MemoryStream();
+
+					await response.ReadAsStreamWithProgress(fileStream, OnDownloadProgress, CancellationToken.None);
+
+					mapInstallPackage.Update(mapFilename, fileStream.ToArray());
+					Log.Write("debug", "Downloaded map to '{0}'", mapFilename);
+					Game.RunAfterTick(() =>
+					{
+						var package = mapInstallPackage.OpenPackage(mapFilename, modData.ModFiles);
+						if (package == null)
 							innerData.Status = MapStatus.DownloadError;
-							return;
-						}
-
-						mapInstallPackage.Update(mapFilename, i.Result);
-						Log.Write("debug", "Downloaded map to '{0}'", mapFilename);
-						Game.RunAfterTick(() =>
+						else
 						{
-							var package = mapInstallPackage.OpenPackage(mapFilename, modData.ModFiles);
-							if (package == null)
-								innerData.Status = MapStatus.DownloadError;
-							else
-							{
-								UpdateFromMap(package, mapInstallPackage, MapClassification.User, null, GridType);
-								onSuccess();
-							}
-						});
-					};
-
-					download = new Download(mapUrl, onDownloadProgress, onDownloadComplete);
+							UpdateFromMap(package, mapInstallPackage, MapClassification.User, null, GridType);
+							onSuccess();
+						}
+					});
 				}
 				catch (Exception e)
 				{
 					Console.WriteLine(e.Message);
 					innerData.Status = MapStatus.DownloadError;
 				}
-			}).Start();
-		}
-
-		public void CancelInstall()
-		{
-			if (download == null)
-				return;
-
-			download.CancelAsync();
-			download = null;
+			});
 		}
 
 		public void Invalidate()
