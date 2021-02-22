@@ -255,7 +255,7 @@ ModContent:
 			Required: true
 			Download: patch106
 		music: Game Music
-			TestFiles: ^SupportDir|Content/d2k/v2/Music/AMBUSH.AUD
+			TestFiles: ^SupportDir|Content/d2k/v2/Music/AMBUSH.AUD, ^SupportDir|Content/d2k/v2/Music/WAITGAME.AUD
 			Sources: d2k-a, d2k-a-linux, d2k-b, d2k-b-linux, d2k-c, d2k-c-linux, d2k-d, d2k-d-linux, d2k-e, d2k-e-linux, gruntmods
 		movies: Campaign Briefings
 			TestFiles: ^SupportDir|Content/d2k/v2/Movies/A_BR01_E.VQA
