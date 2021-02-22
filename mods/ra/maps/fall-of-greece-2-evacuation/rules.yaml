@@ -1,0 +1,107 @@
+Player:
+	PlayerResources:
+		DefaultCash: 3500
+
+World:
+	LuaScript:
+		Scripts: campaign-global.lua, evacuation.lua, evacuation-AI.lua
+	MissionData:
+		WinVideo: allymorf.vqa
+		LossVideo: snstrafe.vqa
+		Briefing: Soviet forces are moving into rural Athens, threatening the civilian population. Evacuate civilians from each of the four towns to the island in the northeast. \n\nThe civilians are hiding in the town churches, and will only come out when you enter the town. Get in, get them out of the town, and to the island.\n\nThe civilians are your primary objective here -- removing the Soviet threat is optional.
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			easy: Easy
+			normal: Normal
+			hard: Hard
+		Default: easy
+
+PARADROP:
+	ParatroopersPower:
+		DropItems: E1, E1, E1, E2, E2
+	AlwaysVisible:
+
+FLAMERDROP:
+	ParatroopersPower:
+		DropItems: E2, E2, E4, E4, E4
+	AlwaysVisible:
+
+^CivInfantry:
+	Infiltrates:
+		Types: CivilianEntry
+		ValidRelationships: Ally
+
+TECN:
+	-Infiltrates:
+
+TECN2:
+	-Infiltrates:
+
+GNRL:
+	-Infiltrates:
+
+MISS:
+	Targetable:
+		TargetTypes: GroundActor, C4, DetonateAttack, Structure, CivilianEntry
+
+QTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+ATEK:
+	Buildable:
+		Prerequisites: ~disabled
+
+STEK:
+	Buildable:
+		Prerequisites: ~disabled
+
+E7:
+	Buildable:
+		Prerequisites: ~disabled
+
+E7.noautotarget:
+	Buildable:
+		Prerequisites: ~disabled
+
+PDOX:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSLO:
+	Buildable:
+		Prerequisites: ~disabled
+
+MCV:
+	Buildable:
+		Prerequisites: ~disabled
+
+TRUK:
+	Buildable:
+		Prerequisites: ~disabled
+
+MRJ:
+	Buildable:
+		Prerequisites: ~disabled
+
+HPAD:
+	Buildable:
+		Prerequisites: ~disabled
+
+TTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+CA:
+	Buildable:
+		Prerequisites: ~disabled
+
+GAP:
+	Buildable:
+		Prerequisites: ~disabled
+
+3TNK:
+	Buildable:
+		Prerequisites: ~vehicles.soviet
