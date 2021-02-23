@@ -24,6 +24,7 @@ function All-Command
 	{
 		echo "Downloading IP2Location GeoIP database."
 		$target = Join-Path $pwd.ToString() "IP2LOCATION-LITE-DB1.IPV6.BIN.ZIP"
+		[Net.ServicePointManager]::SecurityProtocol = 'Tls12'
 		(New-Object System.Net.WebClient).DownloadFile("https://github.com/OpenRA/GeoIP-Database/releases/download/monthly/IP2LOCATION-LITE-DB1.IPV6.BIN.ZIP", $target)
 	}
 }
