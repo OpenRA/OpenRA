@@ -22,6 +22,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	{
 		static bool paletteTabOpenedLast;
 		int paletteTabHighlighted = 0;
+		readonly string clickSound = ChromeMetrics.Get<string>("ClickSound");
+		readonly Ruleset modRules;
 
 		[ObjectCreator.UseCtor]
 		public ColorPickerLogic(Widget widget, ModData modData, World world, Color initialColor, string initialFaction, Action<Color> onChange,
@@ -32,6 +34,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var preview = widget.GetOrNull<ActorPreviewWidget>("PREVIEW");
 			var actor = world.Map.Rules.Actors[actorType];
+
+			modRules = modData.DefaultRules;
 
 			var td = new TypeDictionary();
 			td.Add(new OwnerInit(world.WorldActor.Owner));
@@ -131,6 +135,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						mixer.Set(color);
 						hueSlider.Value = HueFromColor(color);
 						onChange(color);
+						Game.Sound.PlayNotification(modRules, null, "Sounds", clickSound, null);
 					};
 
 					presetArea.AddChild(newSwatch);
