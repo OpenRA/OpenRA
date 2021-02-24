@@ -872,10 +872,10 @@ Actors:
 		Location: 129,-36
 		Owner: Neutral
 	Actor253: veinhole
-		Location: 101,-6
+		Location: 100,-7
 		Owner: Neutral
 	Actor254: veinhole
-		Location: 86,18
+		Location: 85,17
 		Owner: Neutral
 	Actor255: trock03
 		Location: 80,60

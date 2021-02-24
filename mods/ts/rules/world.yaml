@@ -204,7 +204,7 @@
 	CliffBackImpassabilityLayer:
 	SubterraneanActorLayer:
 	JumpjetActorLayer:
-	ResourceRenderer:
+	TSTiberiumRenderer:
 		ResourceTypes:
 			Tiberium:
 				Sequences: tib01, tib02, tib03, tib04, tib05, tib06, tib07, tib08, tib09, tib10, tib11, tib12
@@ -214,10 +214,23 @@
 				Sequences: tib01, tib02, tib03, tib04, tib05, tib06, tib07, tib08, tib09, tib10, tib11, tib12
 				Palette: bluetiberium
 				Name: Tiberium
-			Veins:
-				Sequences: veins
-				Palette: player
-				Name: Veins
+		Ramp1Sequences:
+			Tiberium: tib13, tib14
+			BlueTiberium: tib13, tib14
+		Ramp2Sequences:
+			Tiberium: tib15, tib16
+			BlueTiberium: tib15, tib16
+		Ramp3Sequences:
+			Tiberium: tib17, tib18
+			BlueTiberium: tib17, tib18
+		Ramp4Sequences:
+			Tiberium: tib19, tib20
+			BlueTiberium: tib19, tib20
+	TSVeinsRenderer:
+		ResourceType: Veins
+		Name: Veins
+		Palette: player
+		VeinholeActors: veinhole
 
 World:
 	Inherits: ^BaseWorld
@@ -257,7 +270,8 @@ World:
 	SmudgeLayer@LARGECRATER:
 		Type: LargeCrater
 		Sequence: largecraters
-	ResourceLayer:
+	TSResourceLayer:
+		VeinholeActors: veinhole
 		ResourceTypes:
 			Tiberium:
 				ResourceIndex: 1
@@ -273,7 +287,7 @@ World:
 				ResourceIndex: 3
 				TerrainType: Veins
 				AllowedTerrainTypes: Clear, Rough, DirtRoad
-				MaxDensity: 1
+				MaxDensity: 2
 	BridgeLayer:
 	CustomTerrainDebugOverlay:
 	ResourceClaimLayer:
@@ -371,7 +385,7 @@ EditorWorld:
 	Inherits: ^BaseWorld
 	EditorActorLayer:
 	EditorCursorLayer:
-	EditorResourceLayer:
+	TSEditorResourceLayer:
 		ResourceTypes:
 			Tiberium:
 				ResourceIndex: 1
@@ -387,7 +401,8 @@ EditorWorld:
 				ResourceIndex: 3
 				TerrainType: Veins
 				AllowedTerrainTypes: Clear, Rough, DirtRoad
-				MaxDensity: 1
+				MaxDensity: 2
+		VeinholeActors: veinhole
 	EditorSelectionLayer:
 		Palette: ra
 		FootprintAlpha: 0.7
