@@ -508,7 +508,7 @@ NAWAST:
 	Tooltip:
 		Name: Waste Refinery
 	Buildable:
-		Queue: Buildig
+		Queue: Building
 		BuildPaletteOrder: 130
 		Prerequisites: namisl, ~structures.nod, ~techlevel.superweapons
 		BuildLimit: 1

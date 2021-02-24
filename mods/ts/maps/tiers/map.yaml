@@ -437,13 +437,13 @@ Actors:
 		Location: 55,-5
 		Owner: Neutral
 	Actor129: veinhole
-		Location: 61,-18
+		Location: 60,-19
 		Owner: Neutral
 	Actor130: veinhole
-		Location: 72,-11
+		Location: 71,-12
 		Owner: Neutral
 	Actor131: veinhole
-		Location: 62,1
+		Location: 61,0
 		Owner: Neutral
 
 Rules:

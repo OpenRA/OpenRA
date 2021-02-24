@@ -157,6 +157,11 @@ namespace OpenRA.Mods.Common
 			return Math.Abs(offset.X) < 2 && Math.Abs(offset.Y) < 2;
 		}
 
+		public static IEnumerable<CPos> ExpandFootprint(CPos cell, bool allowDiagonal)
+		{
+			return Neighbours(cell, allowDiagonal);
+		}
+
 		public static IEnumerable<CPos> ExpandFootprint(IEnumerable<CPos> cells, bool allowDiagonal)
 		{
 			return cells.SelectMany(c => Neighbours(c, allowDiagonal)).Distinct();
