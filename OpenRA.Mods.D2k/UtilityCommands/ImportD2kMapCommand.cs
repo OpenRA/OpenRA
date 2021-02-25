@@ -17,7 +17,7 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 {
 	class ImportD2kMapCommand : IUtilityCommand
 	{
-		string IUtilityCommand.Name { get { return "--import-d2k-map"; } }
+		string IUtilityCommand.Name => "--import-d2k-map";
 
 		bool IUtilityCommand.ValidateArguments(string[] args)
 		{

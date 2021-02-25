@@ -43,8 +43,8 @@ namespace OpenRA
 
 		public int2 Sign() { return new int2(Math.Sign(X), Math.Sign(Y)); }
 		public int2 Abs() { return new int2(Math.Abs(X), Math.Abs(Y)); }
-		public int LengthSquared { get { return X * X + Y * Y; } }
-		public int Length { get { return Exts.ISqrt(LengthSquared); } }
+		public int LengthSquared => X * X + Y * Y;
+		public int Length => Exts.ISqrt(LengthSquared);
 
 		public int2 WithX(int newX)
 		{

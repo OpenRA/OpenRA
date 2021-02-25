@@ -29,13 +29,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly Actor self;
 
-		public Player Owner
-		{
-			get
-			{
-				return self.EffectiveOwner != null ? self.EffectiveOwner.Owner : self.Owner;
-			}
-		}
+		public Player Owner => self.EffectiveOwner != null ? self.EffectiveOwner.Owner : self.Owner;
 
 		public TooltipDescription(Actor self, TooltipDescriptionInfo info)
 			: base(info)
@@ -55,12 +49,6 @@ namespace OpenRA.Mods.Common.Traits
 			return Info.ValidRelationships.HasRelationship(Owner.RelationshipWith(forPlayer));
 		}
 
-		public string TooltipText
-		{
-			get
-			{
-				return Info.Description;
-			}
-		}
+		public string TooltipText => Info.Description;
 	}
 }

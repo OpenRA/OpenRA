@@ -99,21 +99,21 @@ namespace OpenRA.Mods.Common.Graphics
 			this.exception = exception;
 		}
 
-		public string Filename { get { return exception.FileName; } }
+		public string Filename => exception.FileName;
 
-		string ISpriteSequence.Name { get { throw exception; } }
-		int ISpriteSequence.Start { get { throw exception; } }
-		int ISpriteSequence.Length { get { throw exception; } }
-		int ISpriteSequence.Stride { get { throw exception; } }
-		int ISpriteSequence.Facings { get { throw exception; } }
-		int ISpriteSequence.Tick { get { throw exception; } }
-		int ISpriteSequence.ZOffset { get { throw exception; } }
-		int ISpriteSequence.ShadowStart { get { throw exception; } }
-		int ISpriteSequence.ShadowZOffset { get { throw exception; } }
-		int[] ISpriteSequence.Frames { get { throw exception; } }
-		Rectangle ISpriteSequence.Bounds { get { throw exception; } }
-		bool ISpriteSequence.IgnoreWorldTint { get { throw exception; } }
-		float ISpriteSequence.Scale { get { throw exception; } }
+		string ISpriteSequence.Name => throw exception;
+		int ISpriteSequence.Start => throw exception;
+		int ISpriteSequence.Length => throw exception;
+		int ISpriteSequence.Stride => throw exception;
+		int ISpriteSequence.Facings => throw exception;
+		int ISpriteSequence.Tick => throw exception;
+		int ISpriteSequence.ZOffset => throw exception;
+		int ISpriteSequence.ShadowStart => throw exception;
+		int ISpriteSequence.ShadowZOffset => throw exception;
+		int[] ISpriteSequence.Frames => throw exception;
+		Rectangle ISpriteSequence.Bounds => throw exception;
+		bool ISpriteSequence.IgnoreWorldTint => throw exception;
+		float ISpriteSequence.Scale => throw exception;
 		Sprite ISpriteSequence.GetSprite(int frame) { throw exception; }
 		Sprite ISpriteSequence.GetSprite(int frame, WAngle facing) { throw exception; }
 		Sprite ISpriteSequence.GetShadow(int frame, WAngle facing) { throw exception; }

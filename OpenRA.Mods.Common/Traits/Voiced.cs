@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Traits
 			Info = info;
 		}
 
-		string IVoiced.VoiceSet { get { return Info.VoiceSet; } }
+		string IVoiced.VoiceSet => Info.VoiceSet;
 
 		bool IVoiced.PlayVoice(Actor self, string phrase, string variant)
 		{

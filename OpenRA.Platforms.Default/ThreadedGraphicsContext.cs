@@ -364,13 +364,7 @@ namespace OpenRA.Platforms.Default
 			renderThread.Join();
 		}
 
-		public string GLVersion
-		{
-			get
-			{
-				return Send(getGLVersion);
-			}
-		}
+		public string GLVersion => Send(getGLVersion);
 
 		public void Clear()
 		{
@@ -473,13 +467,7 @@ namespace OpenRA.Platforms.Default
 			disableScissor = frameBuffer.DisableScissor;
 		}
 
-		public ITexture Texture
-		{
-			get
-			{
-				return device.Send(getTexture);
-			}
-		}
+		public ITexture Texture => device.Send(getTexture);
 
 		public void Bind()
 		{
@@ -589,34 +577,16 @@ namespace OpenRA.Platforms.Default
 			dispose = texture.Dispose;
 		}
 
-		public uint ID
-		{
-			get
-			{
-				return id;
-			}
-		}
+		public uint ID => id;
 
 		public TextureScaleFilter ScaleFilter
 		{
-			get
-			{
-				return (TextureScaleFilter)device.Send(getScaleFilter);
-			}
+			get => (TextureScaleFilter)device.Send(getScaleFilter);
 
-			set
-			{
-				device.Post(setScaleFilter, value);
-			}
+			set => device.Post(setScaleFilter, value);
 		}
 
-		public Size Size
-		{
-			get
-			{
-				return (Size)device.Send(getSize);
-			}
-		}
+		public Size Size => (Size)device.Send(getSize);
 
 		public void SetEmpty(int width, int height)
 		{

@@ -112,10 +112,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void IOrderGenerator.SelectionChanged(World world, IEnumerable<Actor> selected) { }
 
-		bool IsOutsideDragZone
-		{
-			get { return dragStarted && dragDirection.Length > MinDragThreshold; }
-		}
+		bool IsOutsideDragZone => dragStarted && dragDirection.Length > MinDragThreshold;
 
 		IEnumerable<IRenderable> IOrderGenerator.Render(WorldRenderer wr, World world) { yield break; }
 

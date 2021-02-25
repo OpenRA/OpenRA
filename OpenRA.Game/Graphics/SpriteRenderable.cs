@@ -43,15 +43,15 @@ namespace OpenRA.Graphics
 			this.alpha = alpha;
 		}
 
-		public WPos Pos { get { return pos + offset; } }
-		public WVec Offset { get { return offset; } }
-		public PaletteReference Palette { get { return palette; } }
-		public int ZOffset { get { return zOffset; } }
-		public bool IsDecoration { get { return isDecoration; } }
+		public WPos Pos => pos + offset;
+		public WVec Offset => offset;
+		public PaletteReference Palette => palette;
+		public int ZOffset => zOffset;
+		public bool IsDecoration => isDecoration;
 
-		public float Alpha { get { return alpha; } }
-		public float3 Tint { get { return tint; } }
-		public TintModifiers TintModifiers { get { return tintModifiers; } }
+		public float Alpha => alpha;
+		public float3 Tint => tint;
+		public TintModifiers TintModifiers => tintModifiers;
 
 		public IPalettedRenderable WithPalette(PaletteReference newPalette) { return new SpriteRenderable(sprite, pos, offset, zOffset, newPalette, scale, alpha, tint, tintModifiers, isDecoration); }
 		public IRenderable WithZOffset(int newOffset) { return new SpriteRenderable(sprite, pos, offset, newOffset, palette, scale, alpha, tint, tintModifiers, isDecoration); }

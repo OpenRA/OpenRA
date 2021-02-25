@@ -63,7 +63,7 @@ namespace OpenRA.Graphics
 
 		class PlaceholderModelCache : IModelCache
 		{
-			public IVertexBuffer<Vertex> VertexBuffer { get { throw new NotImplementedException(); } }
+			public IVertexBuffer<Vertex> VertexBuffer => throw new NotImplementedException();
 
 			public void Dispose() { }
 

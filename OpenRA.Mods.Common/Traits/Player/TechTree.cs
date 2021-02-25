@@ -106,12 +106,12 @@ namespace OpenRA.Mods.Common.Traits
 			return ret;
 		}
 
-		public Player Owner { get { return player; } }
+		public Player Owner => player;
 
 		class Watcher
 		{
 			public readonly string Key;
-			public ITechTreeElement RegisteredBy { get { return watcher; } }
+			public ITechTreeElement RegisteredBy => watcher;
 
 			// Strings may be either actor type, or "alternate name" key
 			readonly string[] prerequisites;

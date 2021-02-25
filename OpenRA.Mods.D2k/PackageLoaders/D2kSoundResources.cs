@@ -34,7 +34,7 @@ namespace OpenRA.Mods.D2k.PackageLoaders
 			}
 
 			public string Name { get; private set; }
-			public IEnumerable<string> Contents { get { return index.Keys; } }
+			public IEnumerable<string> Contents => index.Keys;
 
 			readonly Stream s;
 			readonly Dictionary<string, Entry> index = new Dictionary<string, Entry>();

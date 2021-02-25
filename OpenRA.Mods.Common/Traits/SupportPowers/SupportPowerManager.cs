@@ -147,21 +147,16 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int TotalTicks;
 
 		protected int remainingSubTicks;
-		public int RemainingTicks { get { return remainingSubTicks / 100; } }
+		public int RemainingTicks => remainingSubTicks / 100;
 		public bool Active { get; private set; }
-		public bool Disabled
-		{
-			get
-			{
-				return Manager.Self.Owner.WinState == WinState.Lost ||
-					(!prereqsAvailable && !Manager.DevMode.AllTech) ||
-					!instancesEnabled ||
-					oneShotFired;
-			}
-		}
+		public bool Disabled =>
+			Manager.Self.Owner.WinState == WinState.Lost ||
+			(!prereqsAvailable && !Manager.DevMode.AllTech) ||
+			!instancesEnabled ||
+			oneShotFired;
 
 		public SupportPowerInfo Info { get { return Instances.Select(i => i.Info).FirstOrDefault(); } }
-		public bool Ready { get { return Active && RemainingTicks == 0; } }
+		public bool Ready => Active && RemainingTicks == 0;
 
 		bool instancesEnabled;
 		bool prereqsAvailable = true;
@@ -285,7 +280,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly string cursor;
 		readonly MouseButton expectedButton;
 
-		public string OrderKey { get { return order; } }
+		public string OrderKey => order;
 
 		public SelectGenericPowerTarget(string order, SupportPowerManager manager, string cursor, MouseButton button)
 		{

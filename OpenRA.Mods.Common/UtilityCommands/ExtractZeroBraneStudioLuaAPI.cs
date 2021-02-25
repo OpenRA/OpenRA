@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 	// See https://studio.zerobrane.com/doc-api-auto-complete for reference
 	class ExtractZeroBraneStudioLuaAPI : IUtilityCommand
 	{
-		string IUtilityCommand.Name { get { return "--zbstudio-lua-api"; } }
+		string IUtilityCommand.Name => "--zbstudio-lua-api";
 
 		bool IUtilityCommand.ValidateArguments(string[] args)
 		{

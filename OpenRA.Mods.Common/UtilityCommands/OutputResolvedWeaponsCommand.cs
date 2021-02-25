@@ -15,7 +15,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 {
 	public class OutputResolvedWeaponsCommand : IUtilityCommand
 	{
-		string IUtilityCommand.Name { get { return "--resolved-weapons"; } }
+		string IUtilityCommand.Name => "--resolved-weapons";
 
 		bool IUtilityCommand.ValidateArguments(string[] args)
 		{

@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Cnc.FileSystem
 		public sealed class MixFile : IReadOnlyPackage
 		{
 			public string Name { get; private set; }
-			public IEnumerable<string> Contents { get { return index.Keys; } }
+			public IEnumerable<string> Contents => index.Keys;
 
 			readonly Dictionary<string, PackageEntry> index;
 			readonly long dataStart;

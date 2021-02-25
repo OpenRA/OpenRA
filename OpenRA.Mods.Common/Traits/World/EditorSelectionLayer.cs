@@ -106,6 +106,6 @@ namespace OpenRA.Mods.Common.Traits
 						WVec.Zero, -511, palette, 1f, pasteAlpha * info.FootprintAlpha, float3.Ones, TintModifiers.IgnoreWorldTint, true);
 		}
 
-		bool IRenderAboveShroud.SpatiallyPartitionable { get { return false; } }
+		bool IRenderAboveShroud.SpatiallyPartitionable => false;
 	}
 }

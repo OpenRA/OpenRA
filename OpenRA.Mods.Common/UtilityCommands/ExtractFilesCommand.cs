@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 {
 	class ExtractFilesCommand : IUtilityCommand
 	{
-		string IUtilityCommand.Name { get { return "--extract"; } }
+		string IUtilityCommand.Name => "--extract";
 
 		bool IUtilityCommand.ValidateArguments(string[] args)
 		{

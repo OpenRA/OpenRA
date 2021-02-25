@@ -29,23 +29,14 @@ namespace OpenRA.Mods.Common.Scripting
 		}
 
 		[Desc("Returns the total of the power the player has.")]
-		public int PowerProvided
-		{
-			get { return pm.PowerProvided; }
-		}
+		public int PowerProvided => pm.PowerProvided;
 
 		[Desc("Returns the power used by the player.")]
-		public int PowerDrained
-		{
-			get { return pm.PowerDrained; }
-		}
+		public int PowerDrained => pm.PowerDrained;
 
 		[Desc("Returns the player's power state " +
-			"(\"Normal\", \"Low\" or \"Critical\").")]
-		public string PowerState
-		{
-			get { return pm.PowerState.ToString(); }
-		}
+		      "(\"Normal\", \"Low\" or \"Critical\").")]
+		public string PowerState => pm.PowerState.ToString();
 
 		[Desc("Triggers low power for the chosen amount of ticks.")]
 		public void TriggerPowerOutage(int ticks)

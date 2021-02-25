@@ -100,7 +100,7 @@ namespace OpenRA.Mods.Common.Traits
 		int deployedToken = Actor.InvalidConditionToken;
 		int undeployedToken = Actor.InvalidConditionToken;
 
-		public DeployState DeployState { get { return deployState; } }
+		public DeployState DeployState => deployState;
 
 		public GrantConditionOnDeploy(ActorInitializer init, GrantConditionOnDeployInfo info)
 			: base(info)

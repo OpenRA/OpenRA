@@ -30,10 +30,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			return LayerPoolTable.GetValue(world, CreateLayerPool);
 		}
 
-		public override IEnumerable<(CPos, int)> Considered
-		{
-			get { return considered; }
-		}
+		public override IEnumerable<(CPos, int)> Considered => considered;
 
 		LinkedList<(CPos, int)> considered;
 

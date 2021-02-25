@@ -37,7 +37,7 @@ namespace OpenRA
 	public class ActorInitializer : IActorInitializer
 	{
 		public readonly Actor Self;
-		public World World { get { return Self.World; } }
+		public World World => Self.World;
 
 		internal TypeDictionary Dict;
 
@@ -150,7 +150,7 @@ namespace OpenRA
 
 		protected ValueActorInit(T value) { this.value = value; }
 
-		public virtual T Value { get { return value; } }
+		public virtual T Value => value;
 
 		public virtual void Initialize(MiniYaml yaml)
 		{

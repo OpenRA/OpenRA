@@ -24,7 +24,7 @@ namespace OpenRA.Support
 
 		public readonly string Expression;
 		readonly HashSet<string> variables = new HashSet<string>();
-		public IEnumerable<string> Variables { get { return variables; } }
+		public IEnumerable<string> Variables => variables;
 
 		enum CharClass { Whitespace, Operator, Mixed, Id, Digit }
 
@@ -323,16 +323,16 @@ namespace OpenRA.Support
 			public readonly TokenType Type;
 			public readonly int Index;
 
-			public virtual string Symbol { get { return TokenTypeInfos[(int)Type].Symbol; } }
+			public virtual string Symbol => TokenTypeInfos[(int)Type].Symbol;
 
-			public int Precedence { get { return (int)TokenTypeInfos[(int)Type].Precedence; } }
-			public Sides OperandSides { get { return TokenTypeInfos[(int)Type].OperandSides; } }
-			public Associativity Associativity { get { return TokenTypeInfos[(int)Type].Associativity; } }
-			public bool LeftOperand { get { return ((int)TokenTypeInfos[(int)Type].OperandSides & (int)Sides.Left) != 0; } }
-			public bool RightOperand { get { return ((int)TokenTypeInfos[(int)Type].OperandSides & (int)Sides.Right) != 0; } }
+			public int Precedence => (int)TokenTypeInfos[(int)Type].Precedence;
+			public Sides OperandSides => TokenTypeInfos[(int)Type].OperandSides;
+			public Associativity Associativity => TokenTypeInfos[(int)Type].Associativity;
+			public bool LeftOperand => ((int)TokenTypeInfos[(int)Type].OperandSides & (int)Sides.Left) != 0;
+			public bool RightOperand => ((int)TokenTypeInfos[(int)Type].OperandSides & (int)Sides.Right) != 0;
 
-			public Grouping Opens { get { return TokenTypeInfos[(int)Type].Opens; } }
-			public Grouping Closes { get { return TokenTypeInfos[(int)Type].Closes; } }
+			public Grouping Opens => TokenTypeInfos[(int)Type].Opens;
+			public Grouping Closes => TokenTypeInfos[(int)Type].Closes;
 
 			public Token(TokenType type, int index)
 			{
@@ -559,7 +559,7 @@ namespace OpenRA.Support
 		{
 			public readonly string Name;
 
-			public override string Symbol { get { return Name; } }
+			public override string Symbol => Name;
 
 			public VariableToken(int index, string symbol)
 				: base(TokenType.Variable, index) { Name = symbol; }
@@ -570,7 +570,7 @@ namespace OpenRA.Support
 			public readonly int Value;
 			readonly string symbol;
 
-			public override string Symbol { get { return symbol; } }
+			public override string Symbol => symbol;
 
 			public NumberToken(int index, string symbol)
 				: base(TokenType.Number, index)

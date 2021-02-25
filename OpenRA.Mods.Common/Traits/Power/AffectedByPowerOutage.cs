@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.Traits
 			return Color.Yellow;
 		}
 
-		bool ISelectionBar.DisplayWhenEmpty { get { return false; } }
+		bool ISelectionBar.DisplayWhenEmpty => false;
 
 		public void UpdateStatus(Actor self)
 		{

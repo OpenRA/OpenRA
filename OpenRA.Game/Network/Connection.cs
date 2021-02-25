@@ -101,25 +101,13 @@ namespace OpenRA.Network
 		readonly List<ReceivedPacket> receivedPackets = new List<ReceivedPacket>();
 		public ReplayRecorder Recorder { get; private set; }
 
-		public virtual int LocalClientId
-		{
-			get { return 1; }
-		}
+		public virtual int LocalClientId => 1;
 
-		public virtual ConnectionState ConnectionState
-		{
-			get { return ConnectionState.PreConnecting; }
-		}
+		public virtual ConnectionState ConnectionState => ConnectionState.PreConnecting;
 
-		public virtual IPEndPoint EndPoint
-		{
-			get { throw new NotSupportedException("An echo connection doesn't have an endpoint"); }
-		}
+		public virtual IPEndPoint EndPoint => throw new NotSupportedException("An echo connection doesn't have an endpoint");
 
-		public virtual string ErrorMessage
-		{
-			get { return null; }
-		}
+		public virtual string ErrorMessage => null;
 
 		public virtual void Send(int frame, List<byte[]> orders)
 		{
@@ -209,9 +197,9 @@ namespace OpenRA.Network
 		bool disposed;
 		string errorMessage;
 
-		public override IPEndPoint EndPoint { get { return endpoint; } }
+		public override IPEndPoint EndPoint => endpoint;
 
-		public override string ErrorMessage { get { return errorMessage; } }
+		public override string ErrorMessage => errorMessage;
 
 		public NetworkConnection(ConnectionTarget target)
 		{
@@ -325,8 +313,8 @@ namespace OpenRA.Network
 			}
 		}
 
-		public override int LocalClientId { get { return clientId; } }
-		public override ConnectionState ConnectionState { get { return connectionState; } }
+		public override int LocalClientId => clientId;
+		public override ConnectionState ConnectionState => connectionState;
 
 		public override void SendSync(int frame, byte[] syncData)
 		{

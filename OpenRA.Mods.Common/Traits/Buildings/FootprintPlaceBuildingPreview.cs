@@ -129,6 +129,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		void IPlaceBuildingPreview.Tick() { TickInner(); }
 
-		int2 IPlaceBuildingPreview.TopLeftScreenOffset { get { return topLeftScreenOffset; } }
+		int2 IPlaceBuildingPreview.TopLeftScreenOffset => topLeftScreenOffset;
 	}
 }

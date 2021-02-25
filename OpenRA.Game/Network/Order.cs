@@ -68,7 +68,7 @@ namespace OpenRA
 		public bool SuppressVisualFeedback;
 		public ref readonly Target VisualFeedbackTarget => ref visualFeedbackTarget;
 
-		public Player Player { get { return Subject != null ? Subject.Owner : null; } }
+		public Player Player => Subject != null ? Subject.Owner : null;
 
 		readonly Target target;
 		readonly Target visualFeedbackTarget;

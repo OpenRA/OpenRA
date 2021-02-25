@@ -39,7 +39,7 @@ namespace OpenRA
 		public int Timestep;
 
 		internal readonly OrderManager OrderManager;
-		public Session LobbyInfo { get { return OrderManager.LobbyInfo; } }
+		public Session LobbyInfo => OrderManager.LobbyInfo;
 
 		public readonly MersenneTwister SharedRandom;
 		public readonly MersenneTwister LocalRandom;
@@ -79,10 +79,7 @@ namespace OpenRA
 		Player renderPlayer;
 		public Player RenderPlayer
 		{
-			get
-			{
-				return renderPlayer;
-			}
+			get => renderPlayer;
 
 			set
 			{
@@ -103,20 +100,11 @@ namespace OpenRA
 		public bool ShroudObscures(WPos pos) { return RenderPlayer != null && !RenderPlayer.Shroud.IsExplored(pos); }
 		public bool ShroudObscures(PPos uv) { return RenderPlayer != null && !RenderPlayer.Shroud.IsExplored(uv); }
 
-		public bool IsReplay
-		{
-			get { return OrderManager.Connection is ReplayConnection; }
-		}
+		public bool IsReplay => OrderManager.Connection is ReplayConnection;
 
-		public bool IsLoadingGameSave
-		{
-			get { return OrderManager.NetFrameNumber <= OrderManager.GameSaveLastFrame; }
-		}
+		public bool IsLoadingGameSave => OrderManager.NetFrameNumber <= OrderManager.GameSaveLastFrame;
 
-		public int GameSaveLoadingPercentage
-		{
-			get { return OrderManager.NetFrameNumber * 100 / OrderManager.GameSaveLastFrame; }
-		}
+		public int GameSaveLoadingPercentage => OrderManager.NetFrameNumber * 100 / OrderManager.GameSaveLastFrame;
 
 		void SetLocalPlayer(Player localPlayer)
 		{
@@ -153,10 +141,7 @@ namespace OpenRA
 		IOrderGenerator orderGenerator;
 		public IOrderGenerator OrderGenerator
 		{
-			get
-			{
-				return orderGenerator;
-			}
+			get => orderGenerator;
 
 			set
 			{
@@ -452,10 +437,10 @@ namespace OpenRA
 			ScreenMap.TickRender();
 		}
 
-		public IEnumerable<Actor> Actors { get { return actors.Values; } }
-		public IEnumerable<IEffect> Effects { get { return effects; } }
-		public IEnumerable<IEffect> UnpartitionedEffects { get { return unpartitionedEffects; } }
-		public IEnumerable<ISync> SyncedEffects { get { return syncedEffects; } }
+		public IEnumerable<Actor> Actors => actors.Values;
+		public IEnumerable<IEffect> Effects => effects;
+		public IEnumerable<IEffect> UnpartitionedEffects => unpartitionedEffects;
+		public IEnumerable<ISync> SyncedEffects => syncedEffects;
 
 		public Actor GetActorById(uint actorId)
 		{

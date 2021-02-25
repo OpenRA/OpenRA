@@ -132,8 +132,8 @@ namespace OpenRA.Mods.Common.Traits
 				this.cursor = cursor;
 			}
 
-			public string OrderID { get { return "SetRallyPoint"; } }
-			public int OrderPriority { get { return 0; } }
+			public string OrderID => "SetRallyPoint";
+			public int OrderPriority => 0;
 			public bool TargetOverridesSelection(Actor self, in Target target, List<Actor> actorsAt, CPos xy, TargetModifiers modifiers) { return true; }
 			public bool ForceSet { get; private set; }
 			public bool IsQueued { get; protected set; }

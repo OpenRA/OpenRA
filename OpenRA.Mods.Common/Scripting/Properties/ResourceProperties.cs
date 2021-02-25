@@ -30,18 +30,18 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("The amount of harvestable resources held by the player.")]
 		public int Resources
 		{
-			get { return pr.Resources; }
-			set { pr.Resources = value.Clamp(0, pr.ResourceCapacity); }
+			get => pr.Resources;
+			set => pr.Resources = value.Clamp(0, pr.ResourceCapacity);
 		}
 
 		[Desc("The maximum resource storage of the player.")]
-		public int ResourceCapacity { get { return pr.ResourceCapacity; } }
+		public int ResourceCapacity => pr.ResourceCapacity;
 
 		[Desc("The amount of cash held by the player.")]
 		public int Cash
 		{
-			get { return pr.Cash; }
-			set { pr.Cash = Math.Max(0, value); }
+			get => pr.Cash;
+			set => pr.Cash = Math.Max(0, value);
 		}
 	}
 }

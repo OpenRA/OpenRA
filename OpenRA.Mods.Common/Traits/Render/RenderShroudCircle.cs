@@ -96,6 +96,6 @@ namespace OpenRA.Mods.Common.Traits
 			return RangeCircleRenderables(self, wr);
 		}
 
-		bool IRenderAnnotationsWhenSelected.SpatiallyPartitionable { get { return false; } }
+		bool IRenderAnnotationsWhenSelected.SpatiallyPartitionable => false;
 	}
 }

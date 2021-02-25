@@ -149,9 +149,9 @@ namespace OpenRA.Network
 			public string Bot; // Bot type, null for real clients
 			public int BotControllerClientIndex; // who added the bot to the slot
 			public bool IsAdmin;
-			public bool IsReady { get { return State == ClientState.Ready; } }
-			public bool IsInvalid { get { return State == ClientState.Invalid; } }
-			public bool IsObserver { get { return Slot == null; } }
+			public bool IsReady => State == ClientState.Ready;
+			public bool IsInvalid => State == ClientState.Invalid;
+			public bool IsObserver => Slot == null;
 
 			// Linked to the online player database
 			public string Fingerprint;
@@ -215,7 +215,7 @@ namespace OpenRA.Network
 			public string PreferredValue;
 
 			public bool IsLocked;
-			public bool IsEnabled { get { return Value == "True"; } }
+			public bool IsEnabled => Value == "True";
 		}
 
 		public class Global

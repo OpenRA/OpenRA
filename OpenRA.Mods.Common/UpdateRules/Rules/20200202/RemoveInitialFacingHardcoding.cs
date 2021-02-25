@@ -17,14 +17,9 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
 	public class RemoveInitialFacingHardcoding : UpdateRule
 	{
-		public override string Name { get { return "Removed InitialFacing hardcoding for non-VTOLs"; } }
-		public override string Description
-		{
-			get
-			{
-				return "Removed hardcoding of InitialFacing to 192 for aircraft with VTOL: false.";
-			}
-		}
+		public override string Name => "Removed InitialFacing hardcoding for non-VTOLs";
+
+		public override string Description => "Removed hardcoding of InitialFacing to 192 for aircraft with VTOL: false.";
 
 		readonly List<Tuple<string, string>> nonVTOLs = new List<Tuple<string, string>>();
 

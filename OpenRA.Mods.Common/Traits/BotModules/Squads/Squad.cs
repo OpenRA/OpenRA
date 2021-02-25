@@ -68,23 +68,17 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 				FuzzyStateMachine.Update(this);
 		}
 
-		public bool IsValid { get { return Units.Any(); } }
+		public bool IsValid => Units.Any();
 
 		public Actor TargetActor
 		{
-			get { return Target.Actor; }
-			set { Target = Target.FromActor(value); }
+			get => Target.Actor;
+			set => Target = Target.FromActor(value);
 		}
 
-		public bool IsTargetValid
-		{
-			get { return Target.IsValidFor(Units.FirstOrDefault()) && !Target.Actor.Info.HasTraitInfo<HuskInfo>(); }
-		}
+		public bool IsTargetValid => Target.IsValidFor(Units.FirstOrDefault()) && !Target.Actor.Info.HasTraitInfo<HuskInfo>();
 
-		public bool IsTargetVisible
-		{
-			get { return TargetActor.CanBeViewedByPlayer(Bot.Player); }
-		}
+		public bool IsTargetVisible => TargetActor.CanBeViewedByPlayer(Bot.Player);
 
 		public WPos CenterPosition { get { return Units.Select(u => u.CenterPosition).Average(); } }
 

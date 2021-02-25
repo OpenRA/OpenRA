@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.FileSystem
 			}
 
 			public string Name { get; private set; }
-			public IEnumerable<string> Contents { get { return index.Keys; } }
+			public IEnumerable<string> Contents => index.Keys;
 
 			readonly Dictionary<string, Entry> index = new Dictionary<string, Entry>();
 			readonly Stream s;
@@ -132,7 +132,7 @@ namespace OpenRA.Mods.Common.FileSystem
 				return index.ContainsKey(filename);
 			}
 
-			public IReadOnlyDictionary<string, Entry> Index { get { return new ReadOnlyDictionary<string, Entry>(index); } }
+			public IReadOnlyDictionary<string, Entry> Index => new ReadOnlyDictionary<string, Entry>(index);
 
 			public void Dispose()
 			{

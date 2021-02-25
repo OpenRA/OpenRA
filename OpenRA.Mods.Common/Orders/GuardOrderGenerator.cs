@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Common.Orders
 			return true;
 		}
 
-		public override bool ClearSelectionOnLeftClick { get { return false; } }
+		public override bool ClearSelectionOnLeftClick => false;
 
 		static IEnumerable<Actor> FriendlyGuardableUnits(World world, MouseInput mi)
 		{

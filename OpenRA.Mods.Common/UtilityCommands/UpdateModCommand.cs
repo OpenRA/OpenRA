@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 	class UpdateModCommand : IUtilityCommand
 	{
-		string IUtilityCommand.Name { get { return "--update-mod"; } }
+		string IUtilityCommand.Name => "--update-mod";
 
 		bool IUtilityCommand.ValidateArguments(string[] args) { return true; }
 

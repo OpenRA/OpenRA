@@ -35,12 +35,12 @@ namespace OpenRA.Graphics
 		}
 
 		// Does not exist in the world, so a world positions don't make sense
-		public WPos Pos { get { return effectiveWorldPos; } }
-		public WVec Offset { get { return WVec.Zero; } }
-		public bool IsDecoration { get { return true; } }
+		public WPos Pos => effectiveWorldPos;
+		public WVec Offset => WVec.Zero;
+		public bool IsDecoration => true;
 
-		public PaletteReference Palette { get { return palette; } }
-		public int ZOffset { get { return zOffset; } }
+		public PaletteReference Palette => palette;
+		public int ZOffset => zOffset;
 
 		public IPalettedRenderable WithPalette(PaletteReference newPalette) { return new UISpriteRenderable(sprite, effectiveWorldPos, screenPos, zOffset, newPalette, scale, alpha); }
 		public IRenderable WithZOffset(int newOffset) { return this; }

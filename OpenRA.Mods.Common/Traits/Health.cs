@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Traits
 				throw new YamlException("Actors with Health need at least one HitShape trait!");
 		}
 
-		int IHealthInfo.MaxHP { get { return HP; } }
+		int IHealthInfo.MaxHP => HP;
 
 		IEnumerable<EditorActorOption> IEditorActorOptions.ActorOptions(ActorInfo ai, World world)
 		{
@@ -78,10 +78,10 @@ namespace OpenRA.Mods.Common.Traits
 			DisplayHP = hp;
 		}
 
-		public int HP { get { return hp; } }
+		public int HP => hp;
 		public int MaxHP { get; private set; }
 
-		public bool IsDead { get { return hp <= 0; } }
+		public bool IsDead => hp <= 0;
 		public bool RemoveOnDeath = true;
 
 		public DamageState DamageState

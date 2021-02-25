@@ -18,19 +18,15 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
 	public class ModernizeDecorationTraits : UpdateRule
 	{
-		public override string Name { get { return "Modernize SelectionDecorations and With*Decoration traits."; } }
-		public override string Description
-		{
-			get
-			{
-				return "The configuration properties exposed on the SelectionDecorations and With*Decoration\n" +
-					"traits have been reworked. RenderSelectionBars and RenderSelectionBox have been removed from\n" +
-					"SelectionDecorations. The obsolete ZOffset and ScreenOffset has been removed from With*Decoration, and ReferencePoint has\n" +
-					"been replaced by Position which takes a single value (TopLeft, TopRight, BottomLeft, BottomRight, Center, or Top).\n" +
-					"A new Margin property is available to control the decoration offset relative to the edges of the selection box.\n" +
-					"RenderNameTag has been renamed to WithNameTagDecoration and now behaves like a normal decoration trait.\n";
-			}
-		}
+		public override string Name => "Modernize SelectionDecorations and With*Decoration traits.";
+
+		public override string Description =>
+			"The configuration properties exposed on the SelectionDecorations and With*Decoration\n" +
+			"traits have been reworked. RenderSelectionBars and RenderSelectionBox have been removed from\n" +
+			"SelectionDecorations. The obsolete ZOffset and ScreenOffset has been removed from With*Decoration, and ReferencePoint has\n" +
+			"been replaced by Position which takes a single value (TopLeft, TopRight, BottomLeft, BottomRight, Center, or Top).\n" +
+			"A new Margin property is available to control the decoration offset relative to the edges of the selection box.\n" +
+			"RenderNameTag has been renamed to WithNameTagDecoration and now behaves like a normal decoration trait.\n";
 
 		static readonly string[] LegacyDecorationTraits = { "WithDecoration", "WithSpriteControlGroupDecoration", "WithTextControlGroupDecoration", "WithTextDecoration", "WithBuildingRepairDecoration", "InfiltrateForDecoration" };
 		static readonly string[] ModernDecorationTraits = { "WithAmmoPipsDecoration", "WithCargoPipsDecoration", "WithHarvesterPipsDecoration", "WithResourceStoragePipsDecoration", "WithNameTagDecoration" };

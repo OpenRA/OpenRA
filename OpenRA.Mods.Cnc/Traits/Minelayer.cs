@@ -337,8 +337,8 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		class BeginMinefieldOrderTargeter : IOrderTargeter
 		{
-			public string OrderID { get { return "BeginMinefield"; } }
-			public int OrderPriority { get { return 5; } }
+			public string OrderID => "BeginMinefield";
+			public int OrderPriority => 5;
 			public bool TargetOverridesSelection(Actor self, in Target target, List<Actor> actorsAt, CPos xy, TargetModifiers modifiers) { return true; }
 
 			public bool CanTarget(Actor self, in Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor)

@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 {
 	class ReplayMetadataCommand : IUtilityCommand
 	{
-		string IUtilityCommand.Name { get { return "--replay-metadata"; } }
+		string IUtilityCommand.Name => "--replay-metadata";
 
 		bool IUtilityCommand.ValidateArguments(string[] args)
 		{

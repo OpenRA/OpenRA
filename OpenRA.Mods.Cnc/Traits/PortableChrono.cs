@@ -149,10 +149,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			chargeTick = Info.ChargeDelay;
 		}
 
-		public bool CanTeleport
-		{
-			get { return chargeTick <= 0; }
-		}
+		public bool CanTeleport => chargeTick <= 0;
 
 		float ISelectionBar.GetValue()
 		{
@@ -160,7 +157,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		}
 
 		Color ISelectionBar.GetColor() { return Color.Magenta; }
-		bool ISelectionBar.DisplayWhenEmpty { get { return false; } }
+		bool ISelectionBar.DisplayWhenEmpty => false;
 	}
 
 	class PortableChronoOrderTargeter : IOrderTargeter
@@ -172,8 +169,8 @@ namespace OpenRA.Mods.Cnc.Traits
 			this.targetCursor = targetCursor;
 		}
 
-		public string OrderID { get { return "PortableChronoTeleport"; } }
-		public int OrderPriority { get { return 5; } }
+		public string OrderID => "PortableChronoTeleport";
+		public int OrderPriority => 5;
 		public bool IsQueued { get; protected set; }
 		public bool TargetOverridesSelection(Actor self, in Target target, List<Actor> actorsAt, CPos xy, TargetModifiers modifiers) { return true; }
 

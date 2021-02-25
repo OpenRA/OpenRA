@@ -15,15 +15,11 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
 	class ChangeTargetLineDelayToMilliseconds : UpdateRule
 	{
-		public override string Name { get { return "Changed DrawLineToTarget.Delay interpretation from ticks to milliseconds."; } }
-		public override string Description
-		{
-			get
-			{
-				return "Going forward, the value of the `Delay` attribute of the `DrawLineToTarget` trait will be\n" +
-					"interpreted as milliseconds instead of ticks.\n";
-			}
-		}
+		public override string Name => "Changed DrawLineToTarget.Delay interpretation from ticks to milliseconds.";
+
+		public override string Description =>
+			"Going forward, the value of the `Delay` attribute of the `DrawLineToTarget` trait will be\n" +
+			"interpreted as milliseconds instead of ticks.\n";
 
 		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
 		{

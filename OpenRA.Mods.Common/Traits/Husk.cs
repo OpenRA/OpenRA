@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Traits
 			return new ReadOnlyDictionary<CPos, SubCell>(occupied);
 		}
 
-		bool IOccupySpaceInfo.SharesCell { get { return false; } }
+		bool IOccupySpaceInfo.SharesCell => false;
 
 		public bool CanEnterCell(World world, Actor self, CPos cell, SubCell subCell = SubCell.FullCell, Actor ignoreActor = null, BlockedByActor check = BlockedByActor.All)
 		{
@@ -73,13 +73,13 @@ namespace OpenRA.Mods.Common.Traits
 		[Sync]
 		public WAngle Facing
 		{
-			get { return orientation.Yaw; }
-			set { orientation = orientation.WithYaw(value); }
+			get => orientation.Yaw;
+			set => orientation = orientation.WithYaw(value);
 		}
 
-		public WRot Orientation { get { return orientation; } }
+		public WRot Orientation => orientation;
 
-		public WAngle TurnSpeed { get { return WAngle.Zero; } }
+		public WAngle TurnSpeed => WAngle.Zero;
 
 		public Husk(ActorInitializer init, HuskInfo info)
 		{
@@ -175,8 +175,8 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		// We return self.Owner if there's no effective owner
-		bool IEffectiveOwner.Disguised { get { return true; } }
-		Player IEffectiveOwner.Owner { get { return effectiveOwner; } }
+		bool IEffectiveOwner.Disguised => true;
+		Player IEffectiveOwner.Owner => effectiveOwner;
 	}
 
 	public class HuskSpeedInit : ValueActorInit<int>, ISingleInstanceInit

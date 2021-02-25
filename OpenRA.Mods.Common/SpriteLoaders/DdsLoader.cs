@@ -48,10 +48,10 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 		{
 			public SpriteFrameType Type { get; private set; }
 			public Size Size { get; private set; }
-			public Size FrameSize { get { return Size; } }
-			public float2 Offset { get { return float2.Zero; } }
+			public Size FrameSize => Size;
+			public float2 Offset => float2.Zero;
 			public byte[] Data { get; private set; }
-			public bool DisableExportPadding { get { return false; } }
+			public bool DisableExportPadding => false;
 
 			public DdsFrame(Stream stream)
 			{

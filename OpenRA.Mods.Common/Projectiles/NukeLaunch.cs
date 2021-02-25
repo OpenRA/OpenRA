@@ -159,6 +159,6 @@ namespace OpenRA.Mods.Common.Effects
 			return anim.Render(pos, wr.Palette(weaponPalette));
 		}
 
-		public float FractionComplete { get { return ticks * 1f / impactDelay; } }
+		public float FractionComplete => ticks * 1f / impactDelay;
 	}
 }

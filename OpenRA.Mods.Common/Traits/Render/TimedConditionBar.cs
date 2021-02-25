@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			value = duration > 0 ? remaining * 1f / duration : 0;
 		}
 
-		string IConditionTimerWatcher.Condition { get { return info.Condition; } }
+		string IConditionTimerWatcher.Condition => info.Condition;
 
 		float ISelectionBar.GetValue()
 		{
@@ -54,6 +54,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 
 		Color ISelectionBar.GetColor() { return info.Color; }
-		bool ISelectionBar.DisplayWhenEmpty { get { return false; } }
+		bool ISelectionBar.DisplayWhenEmpty => false;
 	}
 }

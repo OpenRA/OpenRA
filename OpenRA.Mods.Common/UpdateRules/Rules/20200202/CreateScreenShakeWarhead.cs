@@ -17,15 +17,9 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
 	public class CreateScreenShakeWarhead : UpdateRule
 	{
-		public override string Name { get { return "Create ScreenShakeWarhead to replace hardcoded shaking."; } }
+		public override string Name => "Create ScreenShakeWarhead to replace hardcoded shaking.";
 
-		public override string Description
-		{
-			get
-			{
-				return "The traits MadTank and NukePower (via the NukeLaunch projectile that it uses) no longer have built-in screen shaking.";
-			}
-		}
+		public override string Description => "The traits MadTank and NukePower (via the NukeLaunch projectile that it uses) no longer have built-in screen shaking.";
 
 		readonly List<Tuple<string, string, string>> weaponsToUpdate = new List<Tuple<string, string, string>>();
 

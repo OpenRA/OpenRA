@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 {
 	class CheckYaml : IUtilityCommand
 	{
-		string IUtilityCommand.Name { get { return "--check-yaml"; } }
+		string IUtilityCommand.Name => "--check-yaml";
 
 		static int errors = 0;
 

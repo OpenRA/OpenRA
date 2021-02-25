@@ -110,7 +110,7 @@ namespace OpenRA.Mods.Common.Traits
 		Dictionary<CPos, byte> footprint;
 
 		public LegacyBridgeHut Hut { get; private set; }
-		public bool IsDangling { get { return isDangling.Value; } }
+		public bool IsDangling => isDangling.Value;
 
 		public Bridge(Actor self, BridgeInfo info)
 		{

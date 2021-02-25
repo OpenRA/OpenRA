@@ -77,12 +77,12 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 
 		class ImageHeader : ISpriteFrame
 		{
-			public SpriteFrameType Type { get { return SpriteFrameType.Indexed8; } }
-			public Size Size { get { return reader.Size; } }
-			public Size FrameSize { get { return reader.Size; } }
-			public float2 Offset { get { return float2.Zero; } }
+			public SpriteFrameType Type => SpriteFrameType.Indexed8;
+			public Size Size => reader.Size;
+			public Size FrameSize => reader.Size;
+			public float2 Offset => float2.Zero;
 			public byte[] Data { get; set; }
-			public bool DisableExportPadding { get { return false; } }
+			public bool DisableExportPadding => false;
 
 			public uint FileOffset;
 			public Format Format;

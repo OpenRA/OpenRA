@@ -46,12 +46,6 @@ namespace OpenRA.Graphics
 				xy.Y + (int)(r.Bottom * scale));
 		}
 
-		public bool IsVisible
-		{
-			get
-			{
-				return DisableFunc == null || !DisableFunc();
-			}
-		}
+		public bool IsVisible => DisableFunc == null || !DisableFunc();
 	}
 }

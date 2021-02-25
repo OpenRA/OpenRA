@@ -58,18 +58,18 @@ namespace OpenRA.Primitives
 			Height = size.Height;
 		}
 
-		public int Left { get { return X; } }
-		public int Right { get { return X + Width; } }
-		public int Top { get { return Y; } }
-		public int Bottom { get { return Y + Height; } }
-		public bool IsEmpty { get { return X == 0 && Y == 0 && Width == 0 && Height == 0; } }
-		public int2 Location { get { return new int2(X, Y); } }
-		public Size Size { get { return new Size(Width, Height); } }
+		public int Left => X;
+		public int Right => X + Width;
+		public int Top => Y;
+		public int Bottom => Y + Height;
+		public bool IsEmpty => X == 0 && Y == 0 && Width == 0 && Height == 0;
+		public int2 Location => new int2(X, Y);
+		public Size Size => new Size(Width, Height);
 
-		public int2 TopLeft { get { return Location; } }
-		public int2 TopRight { get { return new int2(X + Width, Y); } }
-		public int2 BottomLeft { get { return new int2(X, Y + Height); } }
-		public int2 BottomRight { get { return new int2(X + Width, Y + Height); } }
+		public int2 TopLeft => Location;
+		public int2 TopRight => new int2(X + Width, Y);
+		public int2 BottomLeft => new int2(X, Y + Height);
+		public int2 BottomRight => new int2(X + Width, Y + Height);
 
 		public bool Contains(int x, int y)
 		{

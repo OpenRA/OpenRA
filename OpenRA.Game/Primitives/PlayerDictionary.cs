@@ -46,16 +46,16 @@ namespace OpenRA.Primitives
 		{ }
 
 		/// <summary>Gets the value for the specified player. This is slower than specifying a player index.</summary>
-		public T this[Player player] { get { return valueByPlayer[player]; } }
+		public T this[Player player] => valueByPlayer[player];
 
 		/// <summary>Gets the value for the specified player index.</summary>
-		public T this[int playerIndex] { get { return valueByPlayerIndex[playerIndex]; } }
+		public T this[int playerIndex] => valueByPlayerIndex[playerIndex];
 
-		public int Count { get { return valueByPlayerIndex.Length; } }
+		public int Count => valueByPlayerIndex.Length;
 		public IEnumerator<T> GetEnumerator() { return ((IEnumerable<T>)valueByPlayerIndex).GetEnumerator(); }
 
-		ICollection<Player> IReadOnlyDictionary<Player, T>.Keys { get { return valueByPlayer.Keys; } }
-		ICollection<T> IReadOnlyDictionary<Player, T>.Values { get { return valueByPlayer.Values; } }
+		ICollection<Player> IReadOnlyDictionary<Player, T>.Keys => valueByPlayer.Keys;
+		ICollection<T> IReadOnlyDictionary<Player, T>.Values => valueByPlayer.Values;
 		bool IReadOnlyDictionary<Player, T>.ContainsKey(Player key) { return valueByPlayer.ContainsKey(key); }
 		bool IReadOnlyDictionary<Player, T>.TryGetValue(Player key, out T value) { return valueByPlayer.TryGetValue(key, out value); }
 		IEnumerator<KeyValuePair<Player, T>> IEnumerable<KeyValuePair<Player, T>>.GetEnumerator() { return valueByPlayer.GetEnumerator(); }

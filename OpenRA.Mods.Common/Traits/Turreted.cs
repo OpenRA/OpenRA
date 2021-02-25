@@ -159,8 +159,8 @@ namespace OpenRA.Mods.Common.Traits
 		// For subclasses that want to move the turret relative to the body
 		protected WVec localOffset = WVec.Zero;
 
-		public WVec Offset { get { return Info.Offset + localOffset; } }
-		public string Name { get { return Info.Turret; } }
+		public WVec Offset => Info.Offset + localOffset;
+		public string Name => Info.Turret;
 
 		public Turreted(ActorInitializer init, TurretedInfo info)
 			: base(info)

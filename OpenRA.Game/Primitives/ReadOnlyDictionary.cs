@@ -73,13 +73,14 @@ namespace OpenRA
 			return dict.TryGetValue(key, out value);
 		}
 
-		public int Count { get { return dict.Count; } }
+		public int Count => dict.Count;
 
-		public TValue this[TKey key] { get { return dict[key]; } }
+		public TValue this[TKey key] => dict[key];
 
-		public ICollection<TKey> Keys { get { return dict.Keys; } }
+		public ICollection<TKey> Keys => dict.Keys;
 
-		public ICollection<TValue> Values { get { return dict.Values; } }
+		public ICollection<TValue> Values => dict.Values;
+
 		#endregion
 
 		#region IEnumerable implementation

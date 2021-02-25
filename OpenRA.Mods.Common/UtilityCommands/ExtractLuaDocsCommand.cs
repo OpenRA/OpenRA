@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 {
 	class ExtractLuaDocsCommand : IUtilityCommand
 	{
-		string IUtilityCommand.Name { get { return "--lua-docs"; } }
+		string IUtilityCommand.Name => "--lua-docs";
 
 		bool IUtilityCommand.ValidateArguments(string[] args)
 		{

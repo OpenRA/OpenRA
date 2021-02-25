@@ -15,15 +15,9 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
 	public class RemovePlayerHighlightPalette : UpdateRule
 	{
-		public override string Name { get { return "PlayerHighlightPalette trait has been removed."; } }
+		public override string Name => "PlayerHighlightPalette trait has been removed.";
 
-		public override string Description
-		{
-			get
-			{
-				return "PlayerHighlightPalette trait has been removed. Its functionality is now automatically provided by the engine.";
-			}
-		}
+		public override string Description => "PlayerHighlightPalette trait has been removed. Its functionality is now automatically provided by the engine.";
 
 		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
 		{

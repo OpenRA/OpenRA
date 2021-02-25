@@ -54,9 +54,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override object Create(ActorInitializer init) { return new IsometricSelectable(init.Self, this); }
 
-		int ISelectableInfo.Priority { get { return Priority; } }
-		SelectionPriorityModifiers ISelectableInfo.PriorityModifiers { get { return PriorityModifiers; } }
-		string ISelectableInfo.Voice { get { return Voice; } }
+		int ISelectableInfo.Priority => Priority;
+		SelectionPriorityModifiers ISelectableInfo.PriorityModifiers => PriorityModifiers;
+		string ISelectableInfo.Voice => Voice;
 
 		public virtual void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
@@ -136,6 +136,6 @@ namespace OpenRA.Mods.Common.Traits
 			return Bounds(self, wr);
 		}
 
-		string ISelectable.Class { get { return selectionClass; } }
+		string ISelectable.Class => selectionClass;
 	}
 }

@@ -59,8 +59,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Sync]
 		public int CurrentAmmoCount { get; private set; }
 
-		public bool HasAmmo { get { return CurrentAmmoCount > 0; } }
-		public bool HasFullAmmo { get { return CurrentAmmoCount == Info.Ammo; } }
+		public bool HasAmmo => CurrentAmmoCount > 0;
+		public bool HasFullAmmo => CurrentAmmoCount == Info.Ammo;
 
 		public AmmoPool(Actor self, AmmoPoolInfo info)
 		{

@@ -15,16 +15,11 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
 	public class RenameMPTraits : UpdateRule
 	{
-		public override string Name { get { return "Several traits spawning map actors and players have been renamed."; } }
+		public override string Name => "Several traits spawning map actors and players have been renamed.";
 
-		public override string Description
-		{
-			get
-			{
-				return "'SpawnMPUnits' was renamed to 'SpawnStartingUnits', 'MPStartUnits' to 'StartingUnits', 'MPStartLocations' to " +
-					"'MapStartingLocations', and 'CreateMPPlayers' to 'CreateMapPlayers'.";
-			}
-		}
+		public override string Description =>
+			"'SpawnMPUnits' was renamed to 'SpawnStartingUnits', 'MPStartUnits' to 'StartingUnits', 'MPStartLocations' to " +
+			"'MapStartingLocations', and 'CreateMPPlayers' to 'CreateMapPlayers'.";
 
 		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
 		{

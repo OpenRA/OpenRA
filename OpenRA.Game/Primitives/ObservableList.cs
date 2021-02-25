@@ -66,7 +66,7 @@ namespace OpenRA.Primitives
 			OnRefresh(this);
 		}
 
-		public int Count { get { return innerList.Count; } }
+		public int Count => innerList.Count;
 		public int IndexOf(T item) { return innerList.IndexOf(item); }
 		public bool Contains(T item) { return innerList.Contains(item); }
 
@@ -78,10 +78,7 @@ namespace OpenRA.Primitives
 
 		public T this[int index]
 		{
-			get
-			{
-				return innerList[index];
-			}
+			get => innerList[index];
 
 			set
 			{
@@ -106,14 +103,8 @@ namespace OpenRA.Primitives
 			return innerList.GetEnumerator();
 		}
 
-		public IEnumerable ObservedItems
-		{
-			get { return innerList; }
-		}
+		public IEnumerable ObservedItems => innerList;
 
-		public bool IsReadOnly
-		{
-			get { return innerList.IsReadOnly; }
-		}
+		public bool IsReadOnly => innerList.IsReadOnly;
 	}
 }

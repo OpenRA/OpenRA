@@ -101,10 +101,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 				this.dataSize = dataSize;
 			}
 
-			public override long Length
-			{
-				get { return outputSize; }
-			}
+			public override long Length => outputSize;
 
 			protected override bool BufferData(Stream baseStream, Queue<byte> data)
 			{

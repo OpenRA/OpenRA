@@ -16,15 +16,9 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
 	public class AddResourceRenderer : UpdateRule
 	{
-		public override string Name
-		{
-			get { return "Add ResourceRenderer trait"; }
-		}
+		public override string Name => "Add ResourceRenderer trait";
 
-		public override string Description
-		{
-			get { return "The rendering parts of ResourceLayer have been moved to a new trait"; }
-		}
+		public override string Description => "The rendering parts of ResourceLayer have been moved to a new trait";
 
 		readonly List<string> locations = new List<string>();
 

@@ -162,7 +162,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		}
 
 		Color ISelectionBar.GetColor() { return Info.TimeBarColor; }
-		bool ISelectionBar.DisplayWhenEmpty { get { return false; } }
+		bool ISelectionBar.DisplayWhenEmpty => false;
 
 		void ModifyActorInit(TypeDictionary init)
 		{

@@ -108,30 +108,18 @@ namespace OpenRA.Primitives
 			throw new NotSupportedException();
 		}
 
-		public override bool CanRead
-		{
-			get { return Stream1.CanRead && Stream2.CanRead; }
-		}
+		public override bool CanRead => Stream1.CanRead && Stream2.CanRead;
 
-		public override bool CanSeek
-		{
-			get { return Stream1.CanSeek && Stream2.CanSeek; }
-		}
+		public override bool CanSeek => Stream1.CanSeek && Stream2.CanSeek;
 
-		public override bool CanWrite
-		{
-			get { return false; }
-		}
+		public override bool CanWrite => false;
 
-		public override long Length
-		{
-			get { return VirtualLength; }
-		}
+		public override long Length => VirtualLength;
 
 		public override long Position
 		{
-			get { return position; }
-			set { Seek(value, SeekOrigin.Begin); }
+			get => position;
+			set => Seek(value, SeekOrigin.Begin);
 		}
 	}
 }

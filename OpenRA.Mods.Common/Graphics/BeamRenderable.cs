@@ -34,9 +34,9 @@ namespace OpenRA.Mods.Common.Graphics
 			this.color = color;
 		}
 
-		public WPos Pos { get { return pos; } }
-		public int ZOffset { get { return zOffset; } }
-		public bool IsDecoration { get { return true; } }
+		public WPos Pos => pos;
+		public int ZOffset => zOffset;
+		public bool IsDecoration => true;
 
 		public IRenderable WithZOffset(int newOffset) { return new BeamRenderable(pos, zOffset, length, shape, width, color); }
 		public IRenderable OffsetBy(WVec vec) { return new BeamRenderable(pos + vec, zOffset, length, shape, width, color); }

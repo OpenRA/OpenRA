@@ -56,7 +56,8 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			{ "Missile", new[] { "HorizontalRateOfTurn", "VerticalRateOfTurn" } }
 		};
 
-		public override string Name { get { return "Increase facing angle resolution"; } }
+		public override string Name => "Increase facing angle resolution";
+
 		public override string Description
 		{
 			get

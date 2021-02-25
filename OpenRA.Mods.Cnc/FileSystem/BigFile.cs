@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Cnc.FileSystem
 		sealed class BigFile : IReadOnlyPackage
 		{
 			public string Name { get; private set; }
-			public IEnumerable<string> Contents { get { return index.Keys; } }
+			public IEnumerable<string> Contents => index.Keys;
 
 			readonly Dictionary<string, Entry> index = new Dictionary<string, Entry>();
 			readonly Stream s;

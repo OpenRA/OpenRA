@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.Widgets
 		HotkeyReference[] hotkeys;
 
 		Rectangle eventBounds;
-		public override Rectangle EventBounds { get { return eventBounds; } }
+		public override Rectangle EventBounds => eventBounds;
 		SpriteFont overlayFont;
 		float2 iconOffset, holdOffset, readyOffset, timeOffset;
 

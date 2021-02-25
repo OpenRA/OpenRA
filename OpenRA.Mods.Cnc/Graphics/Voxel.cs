@@ -32,8 +32,8 @@ namespace OpenRA.Mods.Cnc.Graphics
 		readonly uint frames;
 		readonly uint limbs;
 
-		uint IModel.Frames { get { return frames; } }
-		uint IModel.Sections { get { return limbs; } }
+		uint IModel.Frames => frames;
+		uint IModel.Sections => limbs;
 
 		public Voxel(VoxelLoader loader, VxlReader vxl, HvaReader hva, (string Vxl, string Hva) files)
 		{

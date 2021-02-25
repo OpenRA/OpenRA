@@ -86,7 +86,7 @@ namespace OpenRA.Mods.Common.Traits
 					yield return r;
 		}
 
-		bool IRenderAnnotations.SpatiallyPartitionable { get { return true; } }
+		bool IRenderAnnotations.SpatiallyPartitionable => true;
 
 		IEnumerable<IRenderable> RenderArmaments(Actor self, AttackBase attack)
 		{

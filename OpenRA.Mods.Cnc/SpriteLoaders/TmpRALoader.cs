@@ -19,12 +19,12 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 	{
 		class TmpRAFrame : ISpriteFrame
 		{
-			public SpriteFrameType Type { get { return SpriteFrameType.Indexed8; } }
+			public SpriteFrameType Type => SpriteFrameType.Indexed8;
 			public Size Size { get; private set; }
 			public Size FrameSize { get; private set; }
-			public float2 Offset { get { return float2.Zero; } }
+			public float2 Offset => float2.Zero;
 			public byte[] Data { get; set; }
-			public bool DisableExportPadding { get { return false; } }
+			public bool DisableExportPadding => false;
 
 			public TmpRAFrame(byte[] data, Size size)
 			{

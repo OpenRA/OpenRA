@@ -28,15 +28,9 @@ namespace OpenRA.Mods.Common.Scripting
 
 		public int Experience
 		{
-			get
-			{
-				return exp.Experience;
-			}
+			get => exp.Experience;
 
-			set
-			{
-				exp.GiveExperience(value - exp.Experience);
-			}
+			set => exp.GiveExperience(value - exp.Experience);
 		}
 	}
 }

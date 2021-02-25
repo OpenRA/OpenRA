@@ -72,6 +72,6 @@ namespace OpenRA.Mods.Common.Traits
 				prerequisites = info.Prerequisites;
 		}
 
-		IEnumerable<string> ITechTreePrerequisite.ProvidesPrerequisites { get { return prerequisites; } }
+		IEnumerable<string> ITechTreePrerequisite.ProvidesPrerequisites => prerequisites;
 	}
 }

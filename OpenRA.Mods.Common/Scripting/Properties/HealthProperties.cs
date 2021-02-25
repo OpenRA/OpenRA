@@ -29,12 +29,12 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Current health of the actor.")]
 		public int Health
 		{
-			get { return health.HP; }
-			set { health.InflictDamage(Self, Self, new Damage(health.HP - value), true); }
+			get => health.HP;
+			set => health.InflictDamage(Self, Self, new Damage(health.HP - value), true);
 		}
 
 		[Desc("Maximum health of the actor.")]
-		public int MaxHealth { get { return health.MaxHP; } }
+		public int MaxHealth => health.MaxHP;
 
 		[Desc("Kill the actor. damageTypes may be omitted, specified as a string, or as table of strings.")]
 		public void Kill(object damageTypes = null)

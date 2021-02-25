@@ -25,7 +25,7 @@ namespace OpenRA.Platforms.Default
 		readonly IGraphicsContext context;
 		readonly Sdl2Input input;
 
-		public IGraphicsContext Context { get { return context; } }
+		public IGraphicsContext Context => context;
 
 		readonly IntPtr window;
 		bool disposed;
@@ -93,21 +93,9 @@ namespace OpenRA.Platforms.Default
 			}
 		}
 
-		public int CurrentDisplay
-		{
-			get
-			{
-				return SDL.SDL_GetWindowDisplayIndex(window);
-			}
-		}
+		public int CurrentDisplay => SDL.SDL_GetWindowDisplayIndex(window);
 
-		public int DisplayCount
-		{
-			get
-			{
-				return SDL.SDL_GetNumVideoDisplays();
-			}
-		}
+		public int DisplayCount => SDL.SDL_GetNumVideoDisplays();
 
 		public bool HasInputFocus { get; internal set; }
 

@@ -31,13 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public int OrderCount;
 
-		public int Experience
-		{
-			get
-			{
-				return experience != null ? experience.Experience : 0;
-			}
-		}
+		public int Experience => experience != null ? experience.Experience : 0;
 
 		// Low resolution (every 30 seconds) record of earnings, covering the entire game
 		public List<int> IncomeSamples = new List<int>(100);

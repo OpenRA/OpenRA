@@ -23,10 +23,7 @@ namespace OpenRA.Mods.Common.Widgets
 		string text = "";
 		public string Text
 		{
-			get
-			{
-				return text;
-			}
+			get => text;
 
 			set
 			{
@@ -46,10 +43,7 @@ namespace OpenRA.Mods.Common.Widgets
 		TextFieldType type = TextFieldType.General;
 		public TextFieldType Type
 		{
-			get
-			{
-				return type;
-			}
+			get => type;
 
 			set
 			{

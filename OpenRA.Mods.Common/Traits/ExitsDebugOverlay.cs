@@ -101,6 +101,6 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		bool IRenderAnnotationsWhenSelected.SpatiallyPartitionable { get { return true; } }
+		bool IRenderAnnotationsWhenSelected.SpatiallyPartitionable => true;
 	}
 }

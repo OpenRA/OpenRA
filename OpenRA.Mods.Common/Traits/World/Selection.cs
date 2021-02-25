@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class Selection : ISelection, INotifyCreated, INotifyOwnerChanged, ITick, IGameSaveTraitData
 	{
 		public int Hash { get; private set; }
-		public IEnumerable<Actor> Actors { get { return actors; } }
+		public IEnumerable<Actor> Actors => actors;
 
 		readonly HashSet<Actor> actors = new HashSet<Actor>();
 		World world;

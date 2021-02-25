@@ -16,16 +16,12 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
 	public class ConvertSupportPowerRangesToFootprint : UpdateRule
 	{
-		public override string Name { get { return "Convert support power ranges to footprint"; } }
-		public override string Description
-		{
-			get
-			{
-				return "ChronoshiftPower and GrantExternalConditionPower use footprint areas\n" +
-				"instead of a circular range and they no longer have a fallback default area value.\n" +
-				"The old Range values will be converted to footprints as part of this update.";
-			}
-		}
+		public override string Name => "Convert support power ranges to footprint";
+
+		public override string Description =>
+			"ChronoshiftPower and GrantExternalConditionPower use footprint areas\n" +
+			"instead of a circular range and they no longer have a fallback default area value.\n" +
+			"The old Range values will be converted to footprints as part of this update.";
 
 		static readonly string[] AffectedTraits = new string[] { "GrantExternalConditionPower", "ChronoshiftPower" };
 

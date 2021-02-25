@@ -81,10 +81,7 @@ namespace OpenRA.Mods.Common.Traits
 			});
 		}
 
-		public (int Left, int Right) this[MPos uv]
-		{
-			get { return terrainColor[uv]; }
-		}
+		public (int Left, int Right) this[MPos uv] => terrainColor[uv];
 
 		public static (int Left, int Right) GetColor(Map map, MPos uv)
 		{

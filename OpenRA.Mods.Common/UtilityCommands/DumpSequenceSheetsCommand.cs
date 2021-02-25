@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 	{
 		static readonly int[] ChannelMasks = { 2, 1, 0, 3 };
 
-		string IUtilityCommand.Name { get { return "--dump-sequence-sheets"; } }
+		string IUtilityCommand.Name => "--dump-sequence-sheets";
 
 		bool IUtilityCommand.ValidateArguments(string[] args)
 		{

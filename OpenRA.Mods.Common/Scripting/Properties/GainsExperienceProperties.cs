@@ -27,16 +27,16 @@ namespace OpenRA.Mods.Common.Scripting
 		}
 
 		[Desc("The actor's amount of experience.")]
-		public int Experience { get { return exp.Experience; } }
+		public int Experience => exp.Experience;
 
 		[Desc("The actor's level.")]
-		public int Level { get { return exp.Level; } }
+		public int Level => exp.Level;
 
 		[Desc("The actor's maximum possible level.")]
-		public int MaxLevel { get { return exp.MaxLevel; } }
+		public int MaxLevel => exp.MaxLevel;
 
 		[Desc("Returns true if the actor can gain a level.")]
-		public bool CanGainLevel { get { return exp.CanGainLevel; } }
+		public bool CanGainLevel => exp.CanGainLevel;
 
 		[Desc("Gives the actor experience. If 'silent' is true, no animation or sound will be played if the actor levels up.")]
 		public void GiveExperience(int amount, bool silent = false)

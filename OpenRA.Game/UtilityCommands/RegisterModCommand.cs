@@ -15,7 +15,8 @@ namespace OpenRA.UtilityCommands
 {
 	class RegisterModCommand : IUtilityCommand
 	{
-		string IUtilityCommand.Name { get { return "--register-mod"; } }
+		string IUtilityCommand.Name => "--register-mod";
+
 		bool IUtilityCommand.ValidateArguments(string[] args)
 		{
 			return args.Length >= 3 && new string[] { "system", "user", "both" }.Contains(args[2]);

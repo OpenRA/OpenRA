@@ -269,6 +269,6 @@ namespace OpenRA.Platforms.Default
 			}
 		}
 
-		public string GLVersion { get { return OpenGL.Version; } }
+		public string GLVersion => OpenGL.Version;
 	}
 }

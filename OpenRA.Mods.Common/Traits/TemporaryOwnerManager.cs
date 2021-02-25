@@ -81,6 +81,6 @@ namespace OpenRA.Mods.Common.Traits
 			return info.BarColor;
 		}
 
-		bool ISelectionBar.DisplayWhenEmpty { get { return false; } }
+		bool ISelectionBar.DisplayWhenEmpty => false;
 	}
 }

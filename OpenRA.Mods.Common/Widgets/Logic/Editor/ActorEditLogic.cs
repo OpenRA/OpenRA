@@ -54,10 +54,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		EditorActorPreview CurrentActor
 		{
-			get
-			{
-				return currentActorInner;
-			}
+			get => currentActorInner;
 
 			set
 			{
@@ -438,7 +435,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		}
 
 		public bool IsDirty { get; private set; }
-		public bool ShouldDoOnSave { get { return false; } }
+		public bool ShouldDoOnSave => false;
 	}
 
 	public interface IEditActorHandle
@@ -554,6 +551,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		}
 
 		public bool IsDirty { get; private set; }
-		public bool ShouldDoOnSave { get { return true; } }
+		public bool ShouldDoOnSave => true;
 	}
 }

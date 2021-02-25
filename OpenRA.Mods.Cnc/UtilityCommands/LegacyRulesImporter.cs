@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			return args.Length >= 3;
 		}
 
-		string IUtilityCommand.Name { get { return "--rules-import"; } }
+		string IUtilityCommand.Name => "--rules-import";
 
 		IniFile rulesIni;
 		IniFile artIni;

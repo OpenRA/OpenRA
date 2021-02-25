@@ -24,8 +24,8 @@ namespace OpenRA.Mods.Common.Widgets
 		public bool DrawOverlay = true;
 		public bool Skippable = true;
 
-		public bool Paused { get { return paused; } }
-		public IVideo Video { get { return video; } }
+		public bool Paused => paused;
+		public IVideo Video => video;
 
 		Sprite videoSprite, overlaySprite;
 		Sheet overlaySheet;

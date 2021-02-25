@@ -37,15 +37,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		static readonly string[] NoPrerequisites = new string[0];
 
-		public string Name { get { return info.Name; } }
+		public string Name => info.Name;
 
-		public IEnumerable<string> ProvidesPrerequisites
-		{
-			get
-			{
-				return enabled ? info.Prerequisites : NoPrerequisites;
-			}
-		}
+		public IEnumerable<string> ProvidesPrerequisites => enabled ? info.Prerequisites : NoPrerequisites;
 
 		public ProvidesTechPrerequisite(ProvidesTechPrerequisiteInfo info, ActorInitializer init)
 		{

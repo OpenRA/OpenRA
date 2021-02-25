@@ -53,8 +53,8 @@ namespace OpenRA
 				current = new MPos(r.topLeft.U - 1, r.topLeft.V);
 			}
 
-			public MPos Current { get { return current; } }
-			object IEnumerator.Current { get { return Current; } }
+			public MPos Current => current;
+			object IEnumerator.Current => Current;
 			public void Dispose() { }
 		}
 
@@ -82,7 +82,7 @@ namespace OpenRA
 			return GetEnumerator();
 		}
 
-		public MPos TopLeft { get { return topLeft; } }
-		public MPos BottomRight { get { return bottomRight; } }
+		public MPos TopLeft => topLeft;
+		public MPos BottomRight => bottomRight;
 	}
 }

@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 			return new ReadOnlyDictionary<CPos, SubCell>(occupied);
 		}
 
-		bool IOccupySpaceInfo.SharesCell { get { return false; } }
+		bool IOccupySpaceInfo.SharesCell => false;
 	}
 
 	class Immobile : IOccupySpace, ISync, INotifyAddedToWorld, INotifyRemovedFromWorld
@@ -52,8 +52,8 @@ namespace OpenRA.Mods.Common.Traits
 				occupied = new (CPos, SubCell)[0];
 		}
 
-		public CPos TopLeft { get { return location; } }
-		public WPos CenterPosition { get { return position; } }
+		public CPos TopLeft => location;
+		public WPos CenterPosition => position;
 		public (CPos, SubCell)[] OccupiedCells() { return occupied; }
 
 		void INotifyAddedToWorld.AddedToWorld(Actor self)

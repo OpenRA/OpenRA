@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 {
 	class ConvertSpriteToPngCommand : IUtilityCommand
 	{
-		string IUtilityCommand.Name { get { return "--png"; } }
+		string IUtilityCommand.Name => "--png";
 
 		bool IUtilityCommand.ValidateArguments(string[] args)
 		{

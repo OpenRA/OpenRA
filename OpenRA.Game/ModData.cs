@@ -38,16 +38,16 @@ namespace OpenRA
 		public ILoadScreen LoadScreen { get; private set; }
 		public CursorProvider CursorProvider { get; private set; }
 		public FS ModFiles;
-		public IReadOnlyFileSystem DefaultFileSystem { get { return ModFiles; } }
+		public IReadOnlyFileSystem DefaultFileSystem => ModFiles;
 
 		readonly Lazy<Ruleset> defaultRules;
-		public Ruleset DefaultRules { get { return defaultRules.Value; } }
+		public Ruleset DefaultRules => defaultRules.Value;
 
 		readonly Lazy<IReadOnlyDictionary<string, ITerrainInfo>> defaultTerrainInfo;
-		public IReadOnlyDictionary<string, ITerrainInfo> DefaultTerrainInfo { get { return defaultTerrainInfo.Value; } }
+		public IReadOnlyDictionary<string, ITerrainInfo> DefaultTerrainInfo => defaultTerrainInfo.Value;
 
 		readonly Lazy<IReadOnlyDictionary<string, SequenceProvider>> defaultSequences;
-		public IReadOnlyDictionary<string, SequenceProvider> DefaultSequences { get { return defaultSequences.Value; } }
+		public IReadOnlyDictionary<string, SequenceProvider> DefaultSequences => defaultSequences.Value;
 
 		public ModData(Manifest mod, InstalledMods mods, bool useLoadScreen = false)
 		{
@@ -134,7 +134,7 @@ namespace OpenRA
 				LoadScreen.Display();
 		}
 
-		internal bool IsOnMainThread { get { return System.Threading.Thread.CurrentThread.ManagedThreadId == initialThreadId; } }
+		internal bool IsOnMainThread => System.Threading.Thread.CurrentThread.ManagedThreadId == initialThreadId;
 
 		public void InitializeLoaders(IReadOnlyFileSystem fileSystem)
 		{

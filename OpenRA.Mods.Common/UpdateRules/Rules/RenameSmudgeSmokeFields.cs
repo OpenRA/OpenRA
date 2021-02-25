@@ -15,15 +15,11 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
 	public class RenameSmudgeSmokeFields : UpdateRule
 	{
-		public override string Name { get { return "Renamed smoke-related properties on SmudgeLayer."; } }
-		public override string Description
-		{
-			get
-			{
-				return "Renamed smoke-related properties on SmudgeLayer to be in line with comparable properties.\n" +
-					"Additionally, set the *Chance, *Image and *Sequences defaults to null.";
-			}
-		}
+		public override string Name => "Renamed smoke-related properties on SmudgeLayer.";
+
+		public override string Description =>
+			"Renamed smoke-related properties on SmudgeLayer to be in line with comparable properties.\n" +
+			"Additionally, set the *Chance, *Image and *Sequences defaults to null.";
 
 		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
 		{

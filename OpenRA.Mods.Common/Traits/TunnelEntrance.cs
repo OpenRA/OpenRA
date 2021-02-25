@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly CPos Entrance;
 		public CPos? Exit { get; private set; }
-		public int NearEnough { get { return info.Margin; } }
+		public int NearEnough => info.Margin;
 
 		public TunnelEntrance(Actor self, TunnelEntranceInfo info)
 		{

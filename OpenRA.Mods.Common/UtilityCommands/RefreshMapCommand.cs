@@ -15,7 +15,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 {
 	class RefreshMapCommand : IUtilityCommand
 	{
-		string IUtilityCommand.Name { get { return "--refresh-map"; } }
+		string IUtilityCommand.Name => "--refresh-map";
 
 		bool IUtilityCommand.ValidateArguments(string[] args)
 		{

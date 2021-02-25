@@ -27,7 +27,7 @@ namespace OpenRA.FileSystem
 				Directory.CreateDirectory(path);
 		}
 
-		public string Name { get { return path; } }
+		public string Name => path;
 
 		public IEnumerable<string> Contents
 		{

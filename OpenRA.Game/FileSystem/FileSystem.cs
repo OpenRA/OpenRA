@@ -28,7 +28,7 @@ namespace OpenRA.FileSystem
 
 	public class FileSystem : IReadOnlyFileSystem
 	{
-		public IEnumerable<IReadOnlyPackage> MountedPackages { get { return mountedPackages.Keys; } }
+		public IEnumerable<IReadOnlyPackage> MountedPackages => mountedPackages.Keys;
 		readonly Dictionary<IReadOnlyPackage, int> mountedPackages = new Dictionary<IReadOnlyPackage, int>();
 		readonly Dictionary<string, IReadOnlyPackage> explicitMounts = new Dictionary<string, IReadOnlyPackage>();
 		readonly string modID;

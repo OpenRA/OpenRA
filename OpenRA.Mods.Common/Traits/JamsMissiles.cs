@@ -30,9 +30,9 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class JamsMissiles : ConditionalTrait<JamsMissilesInfo>
 	{
-		public WDist Range { get { return IsTraitDisabled ? WDist.Zero : Info.Range; } }
-		public PlayerRelationship DeflectionStances { get { return Info.DeflectionRelationships; } }
-		public int Chance { get { return Info.Chance; } }
+		public WDist Range => IsTraitDisabled ? WDist.Zero : Info.Range;
+		public PlayerRelationship DeflectionStances => Info.DeflectionRelationships;
+		public int Chance => Info.Chance;
 
 		public JamsMissiles(JamsMissilesInfo info)
 			: base(info) { }

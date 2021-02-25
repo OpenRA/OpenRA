@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public override Widget Clone() { return new DropDownButtonWidget(this); }
 
 		// This is crap
-		public override int UsableWidth { get { return Bounds.Width - Bounds.Height; } } /* space for button */
+		public override int UsableWidth => Bounds.Width - Bounds.Height; /* space for button */
 
 		public override void Hidden()
 		{

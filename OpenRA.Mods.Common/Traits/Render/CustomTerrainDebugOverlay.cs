@@ -78,6 +78,6 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		bool IRenderAnnotations.SpatiallyPartitionable { get { return false; } }
+		bool IRenderAnnotations.SpatiallyPartitionable => false;
 	}
 }

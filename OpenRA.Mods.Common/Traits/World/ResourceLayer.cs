@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected readonly CellLayer<ResourceLayerContents> Content;
 
-		public bool IsResourceLayerEmpty { get { return resCells < 1; } }
+		public bool IsResourceLayerEmpty => resCells < 1;
 
 		int resCells;
 

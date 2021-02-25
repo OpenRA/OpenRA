@@ -68,7 +68,7 @@ namespace OpenRA.Mods.Common.Traits
 			return GenericName;
 		}
 
-		public bool IsOwnerRowVisible { get { return ShowOwnerRow; } }
+		public bool IsOwnerRowVisible => ShowOwnerRow;
 	}
 
 	public class Tooltip : ConditionalTrait<TooltipInfo>, ITooltip
@@ -76,15 +76,9 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Actor self;
 		readonly TooltipInfo info;
 
-		public ITooltipInfo TooltipInfo { get { return info; } }
+		public ITooltipInfo TooltipInfo => info;
 
-		public Player Owner
-		{
-			get
-			{
-				return self.EffectiveOwner != null ? self.EffectiveOwner.Owner : self.Owner;
-			}
-		}
+		public Player Owner => self.EffectiveOwner != null ? self.EffectiveOwner.Owner : self.Owner;
 
 		public Tooltip(Actor self, TooltipInfo info)
 			: base(info)

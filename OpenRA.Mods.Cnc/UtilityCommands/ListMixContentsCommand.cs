@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 {
 	class ListMixContents : IUtilityCommand
 	{
-		string IUtilityCommand.Name { get { return "--list-mix"; } }
+		string IUtilityCommand.Name => "--list-mix";
 
 		bool IUtilityCommand.ValidateArguments(string[] args)
 		{

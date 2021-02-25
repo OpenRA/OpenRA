@@ -60,8 +60,8 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		// We return init.Self.Owner if there's no effective owner
-		bool IEffectiveOwner.Disguised { get { return true; } }
-		Player IEffectiveOwner.Owner { get { return effectiveOwner; } }
+		bool IEffectiveOwner.Disguised => true;
+		Player IEffectiveOwner.Owner => effectiveOwner;
 
 		void INotifyCreated.Created(Actor self)
 		{

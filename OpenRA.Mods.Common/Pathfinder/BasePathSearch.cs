@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 		public abstract IEnumerable<(CPos Cell, int Cost)> Considered { get; }
 
-		public Player Owner { get { return Graph.Actor.Owner; } }
+		public Player Owner => Graph.Actor.Owner;
 		public int MaxCost { get; protected set; }
 		public bool Debug { get; set; }
 		protected Func<CPos, int> heuristic;
@@ -176,7 +176,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			return isGoal(location);
 		}
 
-		public bool CanExpand { get { return !OpenQueue.Empty; } }
+		public bool CanExpand => !OpenQueue.Empty;
 		public abstract CPos Expand();
 
 		protected virtual void Dispose(bool disposing)

@@ -37,13 +37,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			disguise = self.Trait<Disguise>();
 		}
 
-		public ITooltipInfo TooltipInfo
-		{
-			get
-			{
-				return disguise.Disguised ? disguise.AsTooltipInfo : Info;
-			}
-		}
+		public ITooltipInfo TooltipInfo => disguise.Disguised ? disguise.AsTooltipInfo : Info;
 
 		public Player Owner
 		{
@@ -98,7 +92,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public readonly string Cursor = "ability";
 
 		[GrantedConditionReference]
-		public IEnumerable<string> LinterConditions { get { return DisguisedAsConditions.Values; } }
+		public IEnumerable<string> LinterConditions => DisguisedAsConditions.Values;
 
 		public override object Create(ActorInitializer init) { return new Disguise(init.Self, this); }
 	}
@@ -110,8 +104,8 @@ namespace OpenRA.Mods.Cnc.Traits
 		public Player AsPlayer { get; private set; }
 		public ITooltipInfo AsTooltipInfo { get; private set; }
 
-		public bool Disguised { get { return AsPlayer != null; } }
-		public Player Owner { get { return AsPlayer; } }
+		public bool Disguised => AsPlayer != null;
+		public Player Owner => AsPlayer;
 
 		readonly Actor self;
 		readonly DisguiseInfo info;

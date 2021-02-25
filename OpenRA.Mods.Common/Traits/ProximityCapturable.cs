@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class ProximityCapturable : ITick, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyOwnerChanged
 	{
 		public readonly Player OriginalOwner;
-		public bool Captured { get { return Self.Owner != OriginalOwner; } }
+		public bool Captured => Self.Owner != OriginalOwner;
 
 		public ProximityCapturableInfo Info;
 		public Actor Self;

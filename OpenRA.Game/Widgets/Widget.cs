@@ -224,7 +224,7 @@ namespace OpenRA.Widgets
 			}
 		}
 
-		public virtual int2 ChildOrigin { get { return RenderOrigin; } }
+		public virtual int2 ChildOrigin => RenderOrigin;
 
 		public virtual Rectangle RenderBounds
 		{
@@ -279,7 +279,7 @@ namespace OpenRA.Widgets
 			args.Remove("widget");
 		}
 
-		public virtual Rectangle EventBounds { get { return RenderBounds; } }
+		public virtual Rectangle EventBounds => RenderBounds;
 
 		public virtual bool EventBoundsContains(int2 location)
 		{
@@ -295,8 +295,8 @@ namespace OpenRA.Widgets
 			return false;
 		}
 
-		public bool HasMouseFocus { get { return Ui.MouseFocusWidget == this; } }
-		public bool HasKeyboardFocus { get { return Ui.KeyboardFocusWidget == this; } }
+		public bool HasMouseFocus => Ui.MouseFocusWidget == this;
+		public bool HasKeyboardFocus => Ui.KeyboardFocusWidget == this;
 
 		public virtual bool TakeMouseFocus(MouseInput mi)
 		{

@@ -191,7 +191,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		HashSet<string> IOverrideAircraftLanding.LandableTerrainTypes { get { return landableTerrainTypes ?? aircraft.Info.LandableTerrainTypes; } }
+		HashSet<string> IOverrideAircraftLanding.LandableTerrainTypes => landableTerrainTypes ?? aircraft.Info.LandableTerrainTypes;
 
 		public virtual bool AttachCarryable(Actor self, Actor carryable)
 		{
@@ -399,8 +399,8 @@ namespace OpenRA.Mods.Common.Traits
 			readonly AircraftInfo aircraftInfo;
 			readonly CarryallInfo info;
 
-			public string OrderID { get { return "DeliverUnit"; } }
-			public int OrderPriority { get { return 6; } }
+			public string OrderID => "DeliverUnit";
+			public int OrderPriority => 6;
 			public bool IsQueued { get; protected set; }
 			public bool TargetOverridesSelection(Actor self, in Target target, List<Actor> actorsAt, CPos xy, TargetModifiers modifiers) { return true; }
 

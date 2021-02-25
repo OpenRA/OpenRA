@@ -23,9 +23,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Internal id for this bot.")]
 		public readonly string Type = null;
 
-		string IBotInfo.Type { get { return Type; } }
+		string IBotInfo.Type => Type;
 
-		string IBotInfo.Name { get { return Name; } }
+		string IBotInfo.Name => Name;
 
 		public override object Create(ActorInitializer init) { return new DummyBot(this); }
 	}
@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void IBot.QueueOrder(Order order) { }
 
-		IBotInfo IBot.Info { get { return info; } }
-		Player IBot.Player { get { return player; } }
+		IBotInfo IBot.Info => info;
+		Player IBot.Player => player;
 	}
 }

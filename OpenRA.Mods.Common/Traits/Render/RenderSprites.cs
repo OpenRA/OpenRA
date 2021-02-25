@@ -118,13 +118,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 					PaletteReference = null;
 			}
 
-			public bool IsVisible
-			{
-				get
-				{
-					return Animation.DisableFunc == null || !Animation.DisableFunc();
-				}
-			}
+			public bool IsVisible => Animation.DisableFunc == null || !Animation.DisableFunc();
 
 			public bool Tick()
 			{

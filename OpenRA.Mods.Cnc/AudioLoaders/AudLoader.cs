@@ -49,10 +49,10 @@ namespace OpenRA.Mods.Cnc.AudioLoaders
 
 	public sealed class AudFormat : ISoundFormat
 	{
-		public int Channels { get { return channels; } }
-		public int SampleBits { get { return sampleBits; } }
-		public int SampleRate { get { return sampleRate; } }
-		public float LengthInSeconds { get { return AudReader.SoundLength(sourceStream); } }
+		public int Channels => channels;
+		public int SampleBits => sampleBits;
+		public int SampleRate => sampleRate;
+		public float LengthInSeconds => AudReader.SoundLength(sourceStream);
 		public Stream GetPCMInputStream() { return audStreamFactory(); }
 		public void Dispose() { sourceStream.Dispose(); }
 

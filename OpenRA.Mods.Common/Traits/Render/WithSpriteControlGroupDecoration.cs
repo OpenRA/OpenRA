@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			anim = new Animation(self.World, Info.Image);
 		}
 
-		bool IDecoration.RequiresSelection { get { return true; } }
+		bool IDecoration.RequiresSelection => true;
 
 		IEnumerable<IRenderable> IDecoration.RenderDecoration(Actor self, WorldRenderer wr, ISelectionDecorations container)
 		{

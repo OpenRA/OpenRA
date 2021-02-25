@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Common.Graphics
 {
 	public class ContrailRenderable : IRenderable, IFinalizedRenderable
 	{
-		public int Length { get { return trail.Length; } }
+		public int Length => trail.Length;
 
 		readonly World world;
 		readonly Color color;
@@ -45,9 +45,9 @@ namespace OpenRA.Mods.Common.Graphics
 			this.zOffset = zOffset;
 		}
 
-		public WPos Pos { get { return trail[Index(next - 1)]; } }
-		public int ZOffset { get { return zOffset; } }
-		public bool IsDecoration { get { return true; } }
+		public WPos Pos => trail[Index(next - 1)];
+		public int ZOffset => zOffset;
+		public bool IsDecoration => true;
 
 		public IRenderable WithZOffset(int newOffset) { return new ContrailRenderable(world, (WPos[])trail.Clone(), width, next, length, skip, color, newOffset); }
 		public IRenderable OffsetBy(WVec vec) { return new ContrailRenderable(world, trail.Select(pos => pos + vec).ToArray(), width, next, length, skip, color, zOffset); }

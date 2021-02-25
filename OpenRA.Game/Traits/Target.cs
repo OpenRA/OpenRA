@@ -88,8 +88,8 @@ namespace OpenRA.Traits
 		public static Target FromActor(Actor a) { return a != null ? new Target(a) : Invalid; }
 		public static Target FromFrozenActor(FrozenActor fa) { return new Target(fa); }
 
-		public Actor Actor { get { return actor; } }
-		public FrozenActor FrozenActor { get { return frozen; } }
+		public Actor Actor => actor;
+		public FrozenActor FrozenActor => frozen;
 
 		public TargetType Type
 		{
@@ -225,10 +225,10 @@ namespace OpenRA.Traits
 		}
 
 		// Expose internal state for serialization by the orders code *only*
-		internal TargetType SerializableType { get { return type; } }
-		internal Actor SerializableActor { get { return actor; } }
-		internal CPos? SerializableCell { get { return cell; } }
-		internal SubCell? SerializableSubCell { get { return subCell; } }
-		internal WPos SerializablePos { get { return terrainCenterPosition; } }
+		internal TargetType SerializableType => type;
+		internal Actor SerializableActor => actor;
+		internal CPos? SerializableCell => cell;
+		internal SubCell? SerializableSubCell => subCell;
+		internal WPos SerializablePos => terrainCenterPosition;
 	}
 }

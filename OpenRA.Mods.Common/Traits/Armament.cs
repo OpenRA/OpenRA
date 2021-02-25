@@ -363,7 +363,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public virtual bool IsReloading { get { return FireDelay > 0 || IsTraitDisabled; } }
+		public virtual bool IsReloading => FireDelay > 0 || IsTraitDisabled;
 
 		public WVec MuzzleOffset(Actor self, Barrel b)
 		{
@@ -396,6 +396,6 @@ namespace OpenRA.Mods.Common.Traits
 			return WRot.FromYaw(b.Yaw).Rotate(turret != null ? turret.WorldOrientation : self.Orientation);
 		}
 
-		public Actor Actor { get { return self; } }
+		public Actor Actor => self;
 	}
 }

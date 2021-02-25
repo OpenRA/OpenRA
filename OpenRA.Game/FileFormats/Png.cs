@@ -33,7 +33,7 @@ namespace OpenRA.FileFormats
 		public SpriteFrameType Type { get; private set; }
 		public Dictionary<string, string> EmbeddedData = new Dictionary<string, string>();
 
-		public int PixelStride { get { return Type == SpriteFrameType.Indexed8 ? 1 : Type == SpriteFrameType.Rgb24 ? 3 : 4; } }
+		public int PixelStride => Type == SpriteFrameType.Indexed8 ? 1 : Type == SpriteFrameType.Rgb24 ? 3 : 4;
 
 		public Png(Stream s)
 		{

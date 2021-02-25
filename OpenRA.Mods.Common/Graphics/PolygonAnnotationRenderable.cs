@@ -30,9 +30,9 @@ namespace OpenRA.Mods.Common.Graphics
 			this.color = color;
 		}
 
-		public WPos Pos { get { return effectivePos; } }
-		public int ZOffset { get { return 0; } }
-		public bool IsDecoration { get { return true; } }
+		public WPos Pos => effectivePos;
+		public int ZOffset => 0;
+		public bool IsDecoration => true;
 
 		public IRenderable WithZOffset(int newOffset) { return new PolygonAnnotationRenderable(vertices, effectivePos, width, color); }
 		public IRenderable OffsetBy(WVec vec) { return new PolygonAnnotationRenderable(vertices.Select(v => v + vec).ToArray(), effectivePos + vec, width, color); }

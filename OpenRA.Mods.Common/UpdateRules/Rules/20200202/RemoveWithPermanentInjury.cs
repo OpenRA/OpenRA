@@ -16,16 +16,12 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
 	public class RemoveWithPermanentInjury : UpdateRule
 	{
-		public override string Name { get { return "WithPermanentInjury trait has been removed."; } }
-		public override string Description
-		{
-			get
-			{
-				return "The WithPermanentInjury trait has been removed, and should be replaced by\n" +
-				       "TakeCover with negative ProneTime value + GrantConditionOnDamageState/-Health.\n" +
-				       "Affected actors are listed so that these traits can be defined.";
-			}
-		}
+		public override string Name => "WithPermanentInjury trait has been removed.";
+
+		public override string Description =>
+			"The WithPermanentInjury trait has been removed, and should be replaced by\n" +
+			"TakeCover with negative ProneTime value + GrantConditionOnDamageState/-Health.\n" +
+			"Affected actors are listed so that these traits can be defined.";
 
 		readonly List<string> locations = new List<string>();
 

@@ -16,7 +16,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 {
 	class CreateManPage : IUtilityCommand
 	{
-		string IUtilityCommand.Name { get { return "--man-page"; } }
+		string IUtilityCommand.Name => "--man-page";
 
 		bool IUtilityCommand.ValidateArguments(string[] args)
 		{

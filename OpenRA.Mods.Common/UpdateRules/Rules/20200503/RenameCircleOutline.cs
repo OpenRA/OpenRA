@@ -15,14 +15,9 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
 	public class RenameCircleContrast : UpdateRule
 	{
-		public override string Name { get { return "Rename 'ContrastColor' to 'BorderColor'."; } }
-		public override string Description
-		{
-			get
-			{
-				return "RenderDetectionCircle and RenderShroudCircle ContrastColor have been renamed to BorderColor for consistency.";
-			}
-		}
+		public override string Name => "Rename 'ContrastColor' to 'BorderColor'.";
+
+		public override string Description => "RenderDetectionCircle and RenderShroudCircle ContrastColor have been renamed to BorderColor for consistency.";
 
 		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
 		{

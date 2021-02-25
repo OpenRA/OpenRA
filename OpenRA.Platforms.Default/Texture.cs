@@ -20,17 +20,14 @@ namespace OpenRA.Platforms.Default
 		uint texture;
 		TextureScaleFilter scaleFilter;
 
-		public uint ID { get { return texture; } }
+		public uint ID => texture;
 		public Size Size { get; private set; }
 
 		bool disposed;
 
 		public TextureScaleFilter ScaleFilter
 		{
-			get
-			{
-				return scaleFilter;
-			}
+			get => scaleFilter;
 
 			set
 			{

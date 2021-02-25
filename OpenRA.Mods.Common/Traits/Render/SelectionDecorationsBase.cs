@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			return DrawDecorations(self, wr);
 		}
 
-		bool IRenderAnnotations.SpatiallyPartitionable { get { return true; } }
+		bool IRenderAnnotations.SpatiallyPartitionable => true;
 
 		IEnumerable<IRenderable> DrawDecorations(Actor self, WorldRenderer wr)
 		{

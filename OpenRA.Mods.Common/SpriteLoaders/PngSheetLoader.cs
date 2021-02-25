@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 			public Size FrameSize { get; set; }
 			public float2 Offset { get; set; }
 			public byte[] Data { get; set; }
-			public bool DisableExportPadding { get { return false; } }
+			public bool DisableExportPadding => false;
 		}
 
 		public bool TryParseSprite(Stream s, out ISpriteFrame[] frames, out TypeDictionary metadata)

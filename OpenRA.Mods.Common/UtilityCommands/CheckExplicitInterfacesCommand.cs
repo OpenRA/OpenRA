@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 {
 	public class CheckExplicitInterfacesCommand : IUtilityCommand
 	{
-		string IUtilityCommand.Name { get { return "--check-explicit-interfaces"; } }
+		string IUtilityCommand.Name => "--check-explicit-interfaces";
 
 		bool IUtilityCommand.ValidateArguments(string[] args)
 		{

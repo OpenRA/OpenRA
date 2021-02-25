@@ -51,11 +51,11 @@ namespace OpenRA.Graphics
 		// Viewport geometry (world-px)
 		public int2 CenterLocation { get; private set; }
 
-		public WPos CenterPosition { get { return worldRenderer.ProjectedPosition(CenterLocation); } }
+		public WPos CenterPosition => worldRenderer.ProjectedPosition(CenterLocation);
 
-		public Rectangle Rectangle { get { return new Rectangle(TopLeft, new Size(viewportSize.X, viewportSize.Y)); } }
-		public int2 TopLeft { get { return CenterLocation - viewportSize / 2; } }
-		public int2 BottomRight { get { return CenterLocation + viewportSize / 2; } }
+		public Rectangle Rectangle => new Rectangle(TopLeft, new Size(viewportSize.X, viewportSize.Y));
+		public int2 TopLeft => CenterLocation - viewportSize / 2;
+		public int2 BottomRight => CenterLocation + viewportSize / 2;
 		int2 viewportSize;
 		ProjectedCellRegion cells;
 		bool cellsDirty = true;
@@ -75,10 +75,7 @@ namespace OpenRA.Graphics
 
 		public float Zoom
 		{
-			get
-			{
-				return zoom;
-			}
+			get => zoom;
 
 			private set
 			{
@@ -89,7 +86,7 @@ namespace OpenRA.Graphics
 			}
 		}
 
-		public float MinZoom { get { return minZoom; } }
+		public float MinZoom => minZoom;
 
 		public void AdjustZoom(float dz)
 		{

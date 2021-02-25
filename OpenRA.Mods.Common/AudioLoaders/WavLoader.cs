@@ -50,10 +50,10 @@ namespace OpenRA.Mods.Common.AudioLoaders
 
 	public sealed class WavFormat : ISoundFormat
 	{
-		public int Channels { get { return channels; } }
-		public int SampleBits { get { return sampleBits; } }
-		public int SampleRate { get { return sampleRate; } }
-		public float LengthInSeconds { get { return WavReader.WaveLength(sourceStream); } }
+		public int Channels => channels;
+		public int SampleBits => sampleBits;
+		public int SampleRate => sampleRate;
+		public float LengthInSeconds => WavReader.WaveLength(sourceStream);
 		public Stream GetPCMInputStream() { return wavStreamFactory(); }
 		public void Dispose() { sourceStream.Dispose(); }
 

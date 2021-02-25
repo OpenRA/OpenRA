@@ -222,8 +222,8 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 		public CellInfo this[CPos pos]
 		{
-			get { return (pos.Layer == 0 ? groundInfo : customLayerInfo[pos.Layer].Info)[pos]; }
-			set { (pos.Layer == 0 ? groundInfo : customLayerInfo[pos.Layer].Info)[pos] = value; }
+			get => (pos.Layer == 0 ? groundInfo : customLayerInfo[pos.Layer].Info)[pos];
+			set => (pos.Layer == 0 ? groundInfo : customLayerInfo[pos.Layer].Info)[pos] = value;
 		}
 
 		public void Dispose()

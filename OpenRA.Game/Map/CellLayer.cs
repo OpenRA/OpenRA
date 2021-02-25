@@ -64,10 +64,7 @@ namespace OpenRA
 		/// <summary>Gets or sets the <see cref="CellLayer"/> using cell coordinates</summary>
 		public T this[CPos cell]
 		{
-			get
-			{
-				return entries[Index(cell)];
-			}
+			get => entries[Index(cell)];
 
 			set
 			{
@@ -80,10 +77,7 @@ namespace OpenRA
 		/// <summary>Gets or sets the layer contents using raw map coordinates (not CPos!)</summary>
 		public T this[MPos uv]
 		{
-			get
-			{
-				return entries[Index(uv)];
-			}
+			get => entries[Index(uv)];
 
 			set
 			{

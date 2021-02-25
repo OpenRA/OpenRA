@@ -66,15 +66,12 @@ namespace OpenRA.Mods.Common.Traits
 			shortGame = player.World.WorldActor.Trait<MapOptions>().ShortGame;
 		}
 
-		public IEnumerable<Actor> AllPoints
-		{
-			get { return player.World.ActorsHavingTrait<StrategicPoint>(); }
-		}
+		public IEnumerable<Actor> AllPoints => player.World.ActorsHavingTrait<StrategicPoint>();
 
-		public int Total { get { return AllPoints.Count(); } }
+		public int Total => AllPoints.Count();
 		int Owned { get { return AllPoints.Count(a => a.Owner.RelationshipWith(player) == PlayerRelationship.Ally); } }
 
-		public bool Holding { get { return Owned >= info.RatioRequired * Total / 100; } }
+		public bool Holding => Owned >= info.RatioRequired * Total / 100;
 
 		void ITick.Tick(Actor self)
 		{

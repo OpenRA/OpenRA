@@ -15,7 +15,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 {
 	class Rgba2Hex : IUtilityCommand
 	{
-		string IUtilityCommand.Name { get { return "--rgba2hex"; } }
+		string IUtilityCommand.Name => "--rgba2hex";
 
 		static readonly char[] Comma = new char[] { ',' };
 
@@ -103,7 +103,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 	class Argb2Hex : IUtilityCommand
 	{
-		string IUtilityCommand.Name { get { return "--argb2hex"; } }
+		string IUtilityCommand.Name => "--argb2hex";
 
 		static readonly char[] Comma = new char[] { ',' };
 

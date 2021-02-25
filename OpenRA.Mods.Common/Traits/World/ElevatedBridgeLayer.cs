@@ -70,9 +70,9 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		bool ICustomMovementLayer.EnabledForActor(ActorInfo a, LocomotorInfo li) { return enabled; }
-		byte ICustomMovementLayer.Index { get { return CustomMovementLayerType.ElevatedBridge; } }
-		bool ICustomMovementLayer.InteractsWithDefaultLayer { get { return true; } }
-		bool ICustomMovementLayer.ReturnToGroundLayerOnIdle { get { return false; } }
+		byte ICustomMovementLayer.Index => CustomMovementLayerType.ElevatedBridge;
+		bool ICustomMovementLayer.InteractsWithDefaultLayer => true;
+		bool ICustomMovementLayer.ReturnToGroundLayerOnIdle => false;
 
 		WPos ICustomMovementLayer.CenterOfCell(CPos cell)
 		{

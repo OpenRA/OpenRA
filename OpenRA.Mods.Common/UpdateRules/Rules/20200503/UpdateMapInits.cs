@@ -15,7 +15,8 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
 	class UpdateMapInits : UpdateRule
 	{
-		public override string Name { get { return "Update map actor definitions"; } }
+		public override string Name => "Update map actor definitions";
+
 		public override string Description
 		{
 			get

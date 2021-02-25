@@ -15,14 +15,9 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
 	class RenameWithNukeLaunch : UpdateRule
 	{
-		public override string Name { get { return "Renamed WithNukeLaunchAnimation and Overlay"; } }
-		public override string Description
-		{
-			get
-			{
-				return "`WithNukeLaunchAnimation` has been renamed to `WithSupportPowerActivationAnimation` and `WithNukeLaunchOverlay` to `WithSupportPowerActivationOverlay`.";
-			}
-		}
+		public override string Name => "Renamed WithNukeLaunchAnimation and Overlay";
+
+		public override string Description => "`WithNukeLaunchAnimation` has been renamed to `WithSupportPowerActivationAnimation` and `WithNukeLaunchOverlay` to `WithSupportPowerActivationOverlay`.";
 
 		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
 		{

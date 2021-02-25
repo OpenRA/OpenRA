@@ -96,14 +96,8 @@ namespace OpenRA
 			return null;
 		}
 
-		public HotkeyReference this[string name]
-		{
-			get
-			{
-				return new HotkeyReference(GetHotkeyReference(name));
-			}
-		}
+		public HotkeyReference this[string name] => new HotkeyReference(GetHotkeyReference(name));
 
-		public IEnumerable<HotkeyDefinition> Definitions { get { return definitions.Values; } }
+		public IEnumerable<HotkeyDefinition> Definitions => definitions.Values;
 	}
 }

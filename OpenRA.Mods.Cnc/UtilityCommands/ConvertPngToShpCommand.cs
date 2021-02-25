@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 {
 	class ConvertPngToShpCommand : IUtilityCommand
 	{
-		string IUtilityCommand.Name { get { return "--shp"; } }
+		string IUtilityCommand.Name => "--shp";
 
 		bool IUtilityCommand.ValidateArguments(string[] args)
 		{

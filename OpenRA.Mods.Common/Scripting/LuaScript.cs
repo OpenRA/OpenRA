@@ -59,6 +59,6 @@ namespace OpenRA.Mods.Common.Scripting
 			disposed = true;
 		}
 
-		public bool FatalErrorOccurred { get { return context.FatalErrorOccurred; } }
+		public bool FatalErrorOccurred => context.FatalErrorOccurred;
 	}
 }

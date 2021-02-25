@@ -17,14 +17,9 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
 	public class RemoveAirdropActorTypeDefault : UpdateRule
 	{
-		public override string Name { get { return "Removed internal default of ProductionAirdrop.ActorType"; } }
-		public override string Description
-		{
-			get
-			{
-				return "Removed internal default of 'c17' from ProductionAirdrop.ActorType.";
-			}
-		}
+		public override string Name => "Removed internal default of ProductionAirdrop.ActorType";
+
+		public override string Description => "Removed internal default of 'c17' from ProductionAirdrop.ActorType.";
 
 		readonly List<Tuple<string, string>> missingActorTypes = new List<Tuple<string, string>>();
 

@@ -101,7 +101,7 @@ namespace OpenRA.Primitives
 		public override bool Equals(object obj) { return obj is BitSet<T> && Equals((BitSet<T>)obj); }
 		public override int GetHashCode() { return bits.GetHashCode(); }
 
-		public bool IsEmpty { get { return bits == 0; } }
+		public bool IsEmpty => bits == 0;
 
 		public bool IsProperSubsetOf(BitSet<T> other)
 		{

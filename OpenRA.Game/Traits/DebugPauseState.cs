@@ -21,7 +21,8 @@ namespace OpenRA.Traits
 	{
 		readonly World world;
 		[Sync]
-		public bool Paused { get { return world.Paused; } }
+		public bool Paused => world.Paused;
+
 		public DebugPauseState(World world) { this.world = world; }
 	}
 }

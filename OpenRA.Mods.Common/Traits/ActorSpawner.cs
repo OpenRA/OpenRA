@@ -27,6 +27,6 @@ namespace OpenRA.Mods.Common.Traits
 		public ActorSpawner(ActorSpawnerInfo info)
 			: base(info) { }
 
-		public HashSet<string> Types { get { return Info.Types; } }
+		public HashSet<string> Types => Info.Types;
 	}
 }

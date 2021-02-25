@@ -15,14 +15,9 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
 	public class RemoveLaysTerrain : UpdateRule
 	{
-		public override string Name { get { return "'LaysTerrain' has been removed in favor of the new 'D2kBuilding' trait."; } }
-		public override string Description
-		{
-			get
-			{
-				return "'LaysTerrain' was removed.";
-			}
-		}
+		public override string Name => "'LaysTerrain' has been removed in favor of the new 'D2kBuilding' trait.";
+
+		public override string Description => "'LaysTerrain' was removed.";
 
 		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
 		{

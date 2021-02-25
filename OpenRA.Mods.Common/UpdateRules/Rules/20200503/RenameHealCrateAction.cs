@@ -15,14 +15,9 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
 	public class RenameHealCrateAction : UpdateRule
 	{
-		public override string Name { get { return "Rename 'HealUnitsCrateAction' to 'HealActorsCrateAction'."; } }
-		public override string Description
-		{
-			get
-			{
-				return "The 'HealUnitsCrateAction' has been renamed to 'HealActorsCrateAction'.";
-			}
-		}
+		public override string Name => "Rename 'HealUnitsCrateAction' to 'HealActorsCrateAction'.";
+
+		public override string Description => "The 'HealUnitsCrateAction' has been renamed to 'HealActorsCrateAction'.";
 
 		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
 		{

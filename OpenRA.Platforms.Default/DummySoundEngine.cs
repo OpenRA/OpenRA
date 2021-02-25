@@ -15,7 +15,7 @@ namespace OpenRA.Platforms.Default
 {
 	sealed class DummySoundEngine : ISoundEngine
 	{
-		public bool Dummy { get { return true; } }
+		public bool Dummy => true;
 
 		public SoundDevice[] AvailableDevices()
 		{
@@ -46,7 +46,7 @@ namespace OpenRA.Platforms.Default
 
 		public float Volume
 		{
-			get { return 0; }
+			get => 0;
 			set { }
 		}
 
@@ -67,8 +67,8 @@ namespace OpenRA.Platforms.Default
 	class NullSound : ISound
 	{
 		public float Volume { get; set; }
-		public float SeekPosition { get { return 0; } }
-		public bool Complete { get { return false; } }
+		public float SeekPosition => 0;
+		public bool Complete => false;
 
 		public void SetPosition(WPos position) { }
 	}

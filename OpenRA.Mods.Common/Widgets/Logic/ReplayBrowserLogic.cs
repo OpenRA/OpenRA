@@ -763,19 +763,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			public string MapName;
 			public string Faction;
 
-			public bool IsEmpty
-			{
-				get
-				{
-					return Type == default(GameType)
-						&& Date == default(DateType)
-						&& Duration == default(DurationType)
-						&& Outcome == default(WinState)
-						&& string.IsNullOrEmpty(PlayerName)
-						&& string.IsNullOrEmpty(MapName)
-						&& string.IsNullOrEmpty(Faction);
-				}
-			}
+			public bool IsEmpty =>
+				Type == default(GameType)
+				&& Date == default(DateType)
+				&& Duration == default(DurationType)
+				&& Outcome == default(WinState)
+				&& string.IsNullOrEmpty(PlayerName)
+				&& string.IsNullOrEmpty(MapName)
+				&& string.IsNullOrEmpty(Faction);
 		}
 
 		enum GameType

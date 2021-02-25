@@ -93,7 +93,7 @@ namespace OpenRA.Mods.Common.Traits
 							yield return new SpriteRenderable(n.Tile, n.Target.CenterPosition, WVec.Zero, -511, pal, 1f, 1f, float3.Ones, TintModifiers.IgnoreWorldTint, true);
 		}
 
-		bool IRenderAboveShroud.SpatiallyPartitionable { get { return false; } }
+		bool IRenderAboveShroud.SpatiallyPartitionable => false;
 
 		IEnumerable<IRenderable> IRenderAnnotationsWhenSelected.RenderAnnotations(Actor self, WorldRenderer wr)
 		{
@@ -130,7 +130,7 @@ namespace OpenRA.Mods.Common.Traits
 			return renderableCache.ToArray();
 		}
 
-		bool IRenderAnnotationsWhenSelected.SpatiallyPartitionable { get { return false; } }
+		bool IRenderAnnotationsWhenSelected.SpatiallyPartitionable => false;
 	}
 
 	public static class LineTargetExts

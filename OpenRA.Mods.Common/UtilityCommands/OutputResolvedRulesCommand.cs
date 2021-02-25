@@ -15,7 +15,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 {
 	public class OutputResolvedRulesCommand : IUtilityCommand
 	{
-		string IUtilityCommand.Name { get { return "--resolved-rules"; } }
+		string IUtilityCommand.Name => "--resolved-rules";
 
 		bool IUtilityCommand.ValidateArguments(string[] args)
 		{

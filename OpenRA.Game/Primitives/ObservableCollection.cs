@@ -57,9 +57,6 @@ namespace OpenRA.Primitives
 			OnRemoveAt(this, index);
 		}
 
-		public IEnumerable ObservedItems
-		{
-			get { return Items; }
-		}
+		public IEnumerable ObservedItems => Items;
 	}
 }

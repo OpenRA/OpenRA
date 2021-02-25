@@ -221,7 +221,7 @@ namespace OpenRA.Mods.Common.Widgets
 			return true;
 		}
 
-		public Color Color { get { return Color.FromAhsv(H, S, V); } }
+		public Color Color => Color.FromAhsv(H, S, V);
 
 		public void Set(float hue)
 		{

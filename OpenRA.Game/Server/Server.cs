@@ -78,8 +78,8 @@ namespace OpenRA.Server
 
 		public ServerState State
 		{
-			get { return internalState; }
-			protected set { internalState = value; }
+			get => internalState;
+			protected set => internalState = value;
 		}
 
 		public static void SyncClientToPlayerReference(Session.Client c, PlayerReference pr)

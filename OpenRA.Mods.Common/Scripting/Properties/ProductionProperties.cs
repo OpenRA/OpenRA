@@ -92,10 +92,7 @@ namespace OpenRA.Mods.Common.Scripting
 
 				return Self.Location;
 			}
-			set
-			{
-				rp.Path = new List<CPos> { value };
-			}
+			set => rp.Path = new List<CPos> { value };
 		}
 	}
 
@@ -113,8 +110,8 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Query or set the factory's primary building status.")]
 		public bool IsPrimaryBuilding
 		{
-			get { return pb.IsPrimary; }
-			set { pb.SetPrimaryProducer(Self, value); }
+			get => pb.IsPrimary;
+			set => pb.SetPrimaryProducer(Self, value);
 		}
 	}
 

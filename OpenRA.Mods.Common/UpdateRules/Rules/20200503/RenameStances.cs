@@ -15,15 +15,11 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
 	public class RenameStances : UpdateRule
     {
-		public override string Name { get { return "Renamed player 'Stances' to 'Relationships'."; } }
-		public override string Description
-		{
-			get
-			{
-				return "'Stances' in regards to a player have been renamed to 'Relationships'.\n" +
-					"The yaml values did not change.";
-			}
-		}
+		public override string Name => "Renamed player 'Stances' to 'Relationships'.";
+
+		public override string Description =>
+			"'Stances' in regards to a player have been renamed to 'Relationships'.\n" +
+			"The yaml values did not change.";
 
 		readonly (string TraitName, string OldName, string NewName)[] traits =
 		{

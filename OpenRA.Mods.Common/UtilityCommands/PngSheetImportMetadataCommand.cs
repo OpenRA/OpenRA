@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 {
 	public class PngSheetImportMetadataCommand : IUtilityCommand
 	{
-		string IUtilityCommand.Name { get { return "--png-sheet-import"; } }
+		string IUtilityCommand.Name => "--png-sheet-import";
 
 		bool IUtilityCommand.ValidateArguments(string[] args)
 		{

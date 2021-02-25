@@ -113,13 +113,13 @@ namespace OpenRA.Mods.Common.Traits.Render
 			return RenderRangeCircle(self, wr, RangeCircleVisibility.WhenSelected);
 		}
 
-		bool IRenderAnnotationsWhenSelected.SpatiallyPartitionable { get { return false; } }
+		bool IRenderAnnotationsWhenSelected.SpatiallyPartitionable => false;
 
 		IEnumerable<IRenderable> IRenderAnnotations.RenderAnnotations(Actor self, WorldRenderer wr)
 		{
 			return RenderRangeCircle(self, wr, RangeCircleVisibility.Always);
 		}
 
-		bool IRenderAnnotations.SpatiallyPartitionable { get { return false; } }
+		bool IRenderAnnotations.SpatiallyPartitionable => false;
 	}
 }

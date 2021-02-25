@@ -42,9 +42,9 @@ namespace OpenRA.Mods.Common.Graphics
 				ChromeMetrics.Get<Color>("TextContrastColorLight"),
 				text) { }
 
-		public WPos Pos { get { return pos; } }
-		public int ZOffset { get { return zOffset; } }
-		public bool IsDecoration { get { return true; } }
+		public WPos Pos => pos;
+		public int ZOffset => zOffset;
+		public bool IsDecoration => true;
 
 		public IRenderable WithZOffset(int newOffset) { return new TextAnnotationRenderable(font, pos, zOffset, color, text); }
 		public IRenderable OffsetBy(WVec vec) { return new TextAnnotationRenderable(font, pos + vec, zOffset, color, text); }

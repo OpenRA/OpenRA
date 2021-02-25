@@ -17,15 +17,9 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
 	public class CreateFlashPaletteEffectWarhead : UpdateRule
 	{
-		public override string Name { get { return "Create FlashPaletteEffectWarhead to replace hardcoded nuke flashing."; } }
+		public override string Name => "Create FlashPaletteEffectWarhead to replace hardcoded nuke flashing.";
 
-		public override string Description
-		{
-			get
-			{
-				return "The trait NukePower (via the NukeLaunch projectile that it uses) no longer has built-in palette flashing.";
-			}
-		}
+		public override string Description => "The trait NukePower (via the NukeLaunch projectile that it uses) no longer has built-in palette flashing.";
 
 		readonly List<Tuple<string, string, string>> weaponsToUpdate = new List<Tuple<string, string, string>>();
 

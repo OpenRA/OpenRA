@@ -51,10 +51,10 @@ namespace OpenRA.Mods.Common.Graphics
 			shadowPalette = shadow;
 		}
 
-		public WPos Pos { get { return effectiveWorldPos; } }
-		public PaletteReference Palette { get { return palette; } }
-		public int ZOffset { get { return zOffset; } }
-		public bool IsDecoration { get { return false; } }
+		public WPos Pos => effectiveWorldPos;
+		public PaletteReference Palette => palette;
+		public int ZOffset => zOffset;
+		public bool IsDecoration => false;
 
 		public IPalettedRenderable WithPalette(PaletteReference newPalette)
 		{

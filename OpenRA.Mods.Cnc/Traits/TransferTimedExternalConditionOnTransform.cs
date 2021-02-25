@@ -58,6 +58,6 @@ namespace OpenRA.Mods.Cnc.Traits
 			this.remaining = remaining;
 		}
 
-		string IConditionTimerWatcher.Condition { get { return info.Condition; } }
+		string IConditionTimerWatcher.Condition => info.Condition;
 	}
 }

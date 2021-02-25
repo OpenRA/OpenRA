@@ -15,7 +15,8 @@ namespace OpenRA.UtilityCommands
 {
 	class UnregisterModCommand : IUtilityCommand
 	{
-		string IUtilityCommand.Name { get { return "--unregister-mod"; } }
+		string IUtilityCommand.Name => "--unregister-mod";
+
 		bool IUtilityCommand.ValidateArguments(string[] args)
 		{
 			return args.Length >= 2 && new string[] { "system", "user", "both" }.Contains(args[1]);

@@ -27,21 +27,21 @@ namespace OpenRA.Mods.Common.Scripting
 		}
 
 		[Desc("The combined value of units killed by this player.")]
-		public int KillsCost { get { return stats.KillsCost; } }
+		public int KillsCost => stats.KillsCost;
 
 		[Desc("The combined value of all units lost by this player.")]
-		public int DeathsCost { get { return stats.DeathsCost; } }
+		public int DeathsCost => stats.DeathsCost;
 
 		[Desc("The total number of units killed by this player.")]
-		public int UnitsKilled { get { return stats.UnitsKilled; } }
+		public int UnitsKilled => stats.UnitsKilled;
 
 		[Desc("The total number of units lost by this player.")]
-		public int UnitsLost { get { return stats.UnitsDead; } }
+		public int UnitsLost => stats.UnitsDead;
 
 		[Desc("The total number of buildings killed by this player.")]
-		public int BuildingsKilled { get { return stats.BuildingsKilled; } }
+		public int BuildingsKilled => stats.BuildingsKilled;
 
 		[Desc("The total number of buildings lost by this player.")]
-		public int BuildingsLost { get { return stats.BuildingsDead; } }
+		public int BuildingsLost => stats.BuildingsDead;
 	}
 }

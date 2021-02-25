@@ -75,10 +75,10 @@ namespace OpenRA.Mods.Common.Traits
 			// Do nothing
 		}
 
-		string IBridgeSegment.Type { get { return Info.Type; } }
-		DamageState IBridgeSegment.DamageState { get { return Info.DamageState; } }
-		bool IBridgeSegment.Valid { get { return self.IsInWorld; } }
-		CVec[] IBridgeSegment.NeighbourOffsets { get { return Info.NeighbourOffsets; } }
-		CPos IBridgeSegment.Location { get { return self.Location; } }
+		string IBridgeSegment.Type => Info.Type;
+		DamageState IBridgeSegment.DamageState => Info.DamageState;
+		bool IBridgeSegment.Valid => self.IsInWorld;
+		CVec[] IBridgeSegment.NeighbourOffsets => Info.NeighbourOffsets;
+		CPos IBridgeSegment.Location => self.Location;
 	}
 }

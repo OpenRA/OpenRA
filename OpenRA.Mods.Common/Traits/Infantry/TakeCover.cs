@@ -58,10 +58,10 @@ namespace OpenRA.Mods.Common.Traits
 		[Sync]
 		int remainingDuration = 0;
 
-		bool IsProne { get { return !IsTraitDisabled && remainingDuration != 0; } }
+		bool IsProne => !IsTraitDisabled && remainingDuration != 0;
 
-		bool IRenderInfantrySequenceModifier.IsModifyingSequence { get { return IsProne; } }
-		string IRenderInfantrySequenceModifier.SequencePrefix { get { return info.ProneSequencePrefix; } }
+		bool IRenderInfantrySequenceModifier.IsModifyingSequence => IsProne;
+		string IRenderInfantrySequenceModifier.SequencePrefix => info.ProneSequencePrefix;
 
 		public TakeCover(ActorInitializer init, TakeCoverInfo info)
 			: base(init, info)
@@ -96,10 +96,7 @@ namespace OpenRA.Mods.Common.Traits
 				localOffset = WVec.Zero;
 		}
 
-		public override bool HasAchievedDesiredFacing
-		{
-			get { return true; }
-		}
+		public override bool HasAchievedDesiredFacing => true;
 
 		int IDamageModifier.GetDamageModifier(Actor attacker, Damage damage)
 		{

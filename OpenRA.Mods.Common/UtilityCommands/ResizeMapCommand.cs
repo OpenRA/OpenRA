@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 {
 	public class ResizeMapCommand : IUtilityCommand
 	{
-		string IUtilityCommand.Name { get { return "--resize-map"; } }
+		string IUtilityCommand.Name => "--resize-map";
 
 		int width;
 		int height;

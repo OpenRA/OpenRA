@@ -30,14 +30,12 @@ namespace OpenRA.Network
 		int ordersFrame;
 		Dictionary<int, int> lastClientsFrame = new Dictionary<int, int>();
 
-		public int LocalClientId { get { return -1; } }
-		public ConnectionState ConnectionState { get { return ConnectionState.Connected; } }
-		public IPEndPoint EndPoint
-		{
-			get { throw new NotSupportedException("A replay connection doesn't have an endpoint"); }
-		}
+		public int LocalClientId => -1;
+		public ConnectionState ConnectionState => ConnectionState.Connected;
 
-		public string ErrorMessage { get { return null; } }
+		public IPEndPoint EndPoint => throw new NotSupportedException("A replay connection doesn't have an endpoint");
+
+		public string ErrorMessage => null;
 
 		public readonly int TickCount;
 		public readonly int FinalGameTick;

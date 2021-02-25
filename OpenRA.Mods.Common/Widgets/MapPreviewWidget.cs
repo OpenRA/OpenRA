@@ -224,6 +224,6 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 		}
 
-		public bool Loaded { get { return minimap != null; } }
+		public bool Loaded => minimap != null;
 	}
 }

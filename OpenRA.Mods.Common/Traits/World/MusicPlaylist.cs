@@ -54,10 +54,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool IsMusicAvailable;
 		public readonly bool AllowMuteBackgroundMusic;
 
-		public bool IsBackgroundMusicMuted
-		{
-			get { return AllowMuteBackgroundMusic && Game.Settings.Sound.MuteBackgroundMusic; }
-		}
+		public bool IsBackgroundMusicMuted => AllowMuteBackgroundMusic && Game.Settings.Sound.MuteBackgroundMusic;
 
 		public bool CurrentSongIsBackground { get; private set; }
 
