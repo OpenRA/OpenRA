@@ -30,6 +30,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		readonly HashSet<string> noAreaTypes = new HashSet<string>();
 
-		public HashSet<string> AreaTypes { get { return !IsTraitDisabled ? Info.AreaTypes : noAreaTypes; } }
+		public HashSet<string> AreaTypes => !IsTraitDisabled ? Info.AreaTypes : noAreaTypes;
 	}
 }

@@ -131,7 +131,7 @@ namespace OpenRA.Mods.Common.Traits
 			return new ReadOnlyDictionary<CPos, SubCell>(new Dictionary<CPos, SubCell>() { { location, subCell } });
 		}
 
-		bool IOccupySpaceInfo.SharesCell { get { return LocomotorInfo.SharesCell; } }
+		bool IOccupySpaceInfo.SharesCell => LocomotorInfo.SharesCell;
 
 		IEnumerable<EditorActorOption> IEditorActorOptions.ActorOptions(ActorInfo ai, World world)
 		{
@@ -159,10 +159,7 @@ namespace OpenRA.Mods.Common.Traits
 		MovementType movementTypes;
 		public MovementType CurrentMovementTypes
 		{
-			get
-			{
-				return movementTypes;
-			}
+			get => movementTypes;
 
 			set
 			{
@@ -195,30 +192,28 @@ namespace OpenRA.Mods.Common.Traits
 		public bool TurnToMove;
 		public bool IsBlocking { get; private set; }
 
-		public bool IsMovingBetweenCells
-		{
-			get { return FromCell != ToCell; }
-		}
+		public bool IsMovingBetweenCells => FromCell != ToCell;
 
 		#region IFacing
 
 		[Sync]
 		public WAngle Facing
 		{
-			get { return orientation.Yaw; }
-			set { orientation = orientation.WithYaw(value); }
+			get => orientation.Yaw;
+			set => orientation = orientation.WithYaw(value);
 		}
 
-		public WRot Orientation { get { return orientation; } }
+		public WRot Orientation => orientation;
 
-		public WAngle TurnSpeed { get { return Info.TurnSpeed; } }
+		public WAngle TurnSpeed => Info.TurnSpeed;
+
 		#endregion
 
 		[Sync]
-		public CPos FromCell { get { return fromCell; } }
+		public CPos FromCell => fromCell;
 
 		[Sync]
-		public CPos ToCell { get { return toCell; } }
+		public CPos ToCell => toCell;
 
 		[Sync]
 		public int PathHash;	// written by Move.EvalPath, to temporarily debug this crap.
@@ -232,7 +227,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Sync]
 		public WPos CenterPosition { get; private set; }
 
-		public CPos TopLeft { get { return ToCell; } }
+		public CPos TopLeft => ToCell;
 
 		public (CPos, SubCell)[] OccupiedCells()
 		{
@@ -989,8 +984,8 @@ namespace OpenRA.Mods.Common.Traits
 				rejectMove = !self.AcceptsOrder("Move");
 			}
 
-			public string OrderID { get { return "Move"; } }
-			public int OrderPriority { get { return 4; } }
+			public string OrderID => "Move";
+			public int OrderPriority => 4;
 			public bool IsQueued { get; protected set; }
 
 			public bool CanTarget(Actor self, in Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor)

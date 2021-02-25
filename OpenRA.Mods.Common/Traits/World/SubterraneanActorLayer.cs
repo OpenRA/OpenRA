@@ -62,9 +62,9 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		bool ICustomMovementLayer.EnabledForActor(ActorInfo a, LocomotorInfo li) { return li is SubterraneanLocomotorInfo; }
-		byte ICustomMovementLayer.Index { get { return CustomMovementLayerType.Subterranean; } }
-		bool ICustomMovementLayer.InteractsWithDefaultLayer { get { return false; } }
-		bool ICustomMovementLayer.ReturnToGroundLayerOnIdle { get { return true; } }
+		byte ICustomMovementLayer.Index => CustomMovementLayerType.Subterranean;
+		bool ICustomMovementLayer.InteractsWithDefaultLayer => false;
+		bool ICustomMovementLayer.ReturnToGroundLayerOnIdle => true;
 
 		WPos ICustomMovementLayer.CenterOfCell(CPos cell)
 		{

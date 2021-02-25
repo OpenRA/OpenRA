@@ -32,7 +32,7 @@ namespace OpenRA.Graphics
 			return data;
 		}
 
-		public bool Buffered { get { return data != null || texture == null; } }
+		public bool Buffered => data != null || texture == null;
 
 		public Sheet(SheetType type, Size size)
 		{

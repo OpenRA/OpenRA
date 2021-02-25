@@ -25,7 +25,7 @@ namespace OpenRA.Network
 		readonly FrameData frameData = new FrameData();
 
 		public Session LobbyInfo = new Session();
-		public Session.Client LocalClient { get { return LobbyInfo.ClientWithIndex(Connection.LocalClientId); } }
+		public Session.Client LocalClient => LobbyInfo.ClientWithIndex(Connection.LocalClientId);
 		public World World;
 
 		public readonly ConnectionTarget Endpoint;
@@ -41,7 +41,7 @@ namespace OpenRA.Network
 
 		public long LastTickTime = Game.RunTime;
 
-		public bool GameStarted { get { return NetFrameNumber != 0; } }
+		public bool GameStarted => NetFrameNumber != 0;
 		public IConnection Connection { get; private set; }
 
 		internal int GameSaveLastFrame = -1;
@@ -170,10 +170,7 @@ namespace OpenRA.Network
 				syncForFrame.Add(frame, packet);
 		}
 
-		public bool IsReadyForNextFrame
-		{
-			get { return GameStarted && frameData.IsReadyForFrame(NetFrameNumber); }
-		}
+		public bool IsReadyForNextFrame => GameStarted && frameData.IsReadyForFrame(NetFrameNumber);
 
 		public IEnumerable<Session.Client> GetClientsNotReadyForNextFrame
 		{

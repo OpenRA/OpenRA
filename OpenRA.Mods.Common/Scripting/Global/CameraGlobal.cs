@@ -22,8 +22,8 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("The center of the visible viewport.")]
 		public WPos Position
 		{
-			get { return Context.WorldRenderer.Viewport.CenterPosition; }
-			set { Context.WorldRenderer.Viewport.Center(value); }
+			get => Context.WorldRenderer.Viewport.CenterPosition;
+			set => Context.WorldRenderer.Viewport.Center(value);
 		}
 	}
 }

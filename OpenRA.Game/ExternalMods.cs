@@ -290,10 +290,10 @@ namespace OpenRA
 			}
 		}
 
-		public ExternalMod this[string key] { get { return mods[key]; } }
-		public int Count { get { return mods.Count; } }
-		public ICollection<string> Keys { get { return mods.Keys; } }
-		public ICollection<ExternalMod> Values { get { return mods.Values; } }
+		public ExternalMod this[string key] => mods[key];
+		public int Count => mods.Count;
+		public ICollection<string> Keys => mods.Keys;
+		public ICollection<ExternalMod> Values => mods.Values;
 		public bool ContainsKey(string key) { return mods.ContainsKey(key); }
 		public IEnumerator<KeyValuePair<string, ExternalMod>> GetEnumerator() { return mods.GetEnumerator(); }
 		public bool TryGetValue(string key, out ExternalMod value) { return mods.TryGetValue(key, out value); }

@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 		}
 
-		public WDist MinimumDistance { get { return info.MinDistance; } }
+		public WDist MinimumDistance => info.MinDistance;
 
 		// No longer want to be carried
 		void ICallForTransport.MovementCancelled(Actor self) { MovementCancelled(self); }

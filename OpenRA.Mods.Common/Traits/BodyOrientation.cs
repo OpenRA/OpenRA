@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Lazy<int> quantizedFacings;
 
 		[Sync]
-		public int QuantizedFacings { get { return quantizedFacings.Value; } }
+		public int QuantizedFacings => quantizedFacings.Value;
 
 		public BodyOrientation(ActorInitializer init, BodyOrientationInfo info)
 		{
@@ -94,7 +94,7 @@ namespace OpenRA.Mods.Common.Traits
 			});
 		}
 
-		public WAngle CameraPitch { get { return info.CameraPitch; } }
+		public WAngle CameraPitch => info.CameraPitch;
 
 		public WVec LocalToWorld(WVec vec)
 		{

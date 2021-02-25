@@ -177,7 +177,7 @@ namespace OpenRA.Mods.Common.Terrain
 			return template.Sprites[start * template.Stride + r.Index];
 		}
 
-		public Sprite MissingTile { get { return missingTile; } }
+		public Sprite MissingTile => missingTile;
 
 		public void Dispose()
 		{

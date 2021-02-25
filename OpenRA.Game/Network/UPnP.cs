@@ -28,14 +28,9 @@ namespace OpenRA.Network
 		static bool initialized;
 
 		public static IPAddress ExternalIP { get; private set; }
-		public static UPnPStatus Status
-		{
-			get
-			{
-				return initialized ? natDevice != null ?
-					UPnPStatus.Enabled : UPnPStatus.NotSupported : UPnPStatus.Disabled;
-			}
-		}
+		public static UPnPStatus Status =>
+			initialized ? natDevice != null ?
+				UPnPStatus.Enabled : UPnPStatus.NotSupported : UPnPStatus.Disabled;
 
 		public static async Task DiscoverNatDevices(int timeout)
 		{

@@ -18,10 +18,10 @@ namespace OpenRA.Mods.Cnc.FileFormats
 {
 	public class VqaReader : IVideo
 	{
-		public ushort Frames { get { return frames; } }
-		public byte Framerate { get { return framerate; } }
-		public ushort Width { get { return width; } }
-		public ushort Height { get { return height; } }
+		public ushort Frames => frames;
+		public byte Framerate => framerate;
+		public ushort Width => width;
+		public ushort Height => height;
 
 		readonly ushort frames;
 		readonly byte framerate;
@@ -65,12 +65,12 @@ namespace OpenRA.Mods.Cnc.FileFormats
 		byte[] audioData;		// audio for this frame: 22050Hz 16bit mono pcm, uncompressed.
 		bool hasAudio;
 
-		public byte[] AudioData { get { return audioData; } }
-		public int CurrentFrame { get { return currentFrame; } }
-		public int SampleRate { get { return sampleRate; } }
-		public int SampleBits { get { return sampleBits; } }
-		public int AudioChannels { get { return audioChannels; } }
-		public bool HasAudio { get { return hasAudio; } }
+		public byte[] AudioData => audioData;
+		public int CurrentFrame => currentFrame;
+		public int SampleRate => sampleRate;
+		public int SampleBits => sampleBits;
+		public int AudioChannels => audioChannels;
+		public bool HasAudio => hasAudio;
 
 		public VqaReader(Stream stream)
 		{
@@ -513,7 +513,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 			}
 		}
 
-		bool IsHqVqa { get { return (videoFlags & 0x10) == 16; } }
+		bool IsHqVqa => (videoFlags & 0x10) == 16;
 
 		void WriteBlock(int blockNumber, int count, ref int x, ref int y)
 		{

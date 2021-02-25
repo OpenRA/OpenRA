@@ -61,10 +61,10 @@ namespace OpenRA.Mods.Cnc.Graphics
 			cache = new IFinalizedRenderable[] { };
 		}
 
-		public WPos Pos { get { return pos; } }
-		public PaletteReference Palette { get { return null; } }
-		public int ZOffset { get { return zOffset; } }
-		public bool IsDecoration { get { return true; } }
+		public WPos Pos => pos;
+		public PaletteReference Palette => null;
+		public int ZOffset => zOffset;
+		public bool IsDecoration => true;
 
 		public IPalettedRenderable WithPalette(PaletteReference newPalette)
 		{

@@ -214,6 +214,6 @@ namespace OpenRA.Orders
 			}
 		}
 
-		public virtual bool ClearSelectionOnLeftClick { get { return true; } }
+		public virtual bool ClearSelectionOnLeftClick => true;
 	}
 }

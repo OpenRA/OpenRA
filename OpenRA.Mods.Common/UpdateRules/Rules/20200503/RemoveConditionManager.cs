@@ -15,15 +15,9 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
 	public class RemoveConditionManager : UpdateRule
 	{
-		public override string Name { get { return "ConditionManager trait has been removed."; } }
+		public override string Name => "ConditionManager trait has been removed.";
 
-		public override string Description
-		{
-			get
-			{
-				return "ConditionManager trait has been removed. Its functionality has been integrated into the actor itself.";
-			}
-		}
+		public override string Description => "ConditionManager trait has been removed. Its functionality has been integrated into the actor itself.";
 
 		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
 		{

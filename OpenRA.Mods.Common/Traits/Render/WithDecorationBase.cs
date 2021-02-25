@@ -89,7 +89,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			return true;
 		}
 
-		bool IDecoration.RequiresSelection { get { return Info.RequiresSelection; } }
+		bool IDecoration.RequiresSelection => Info.RequiresSelection;
 
 		protected abstract IEnumerable<IRenderable> RenderDecoration(Actor self, WorldRenderer wr, int2 pos);
 

@@ -99,10 +99,10 @@ namespace OpenRA
 			return ret;
 		}
 
-		public Manifest this[string key] { get { return mods[key]; } }
-		public int Count { get { return mods.Count; } }
-		public ICollection<string> Keys { get { return mods.Keys; } }
-		public ICollection<Manifest> Values { get { return mods.Values; } }
+		public Manifest this[string key] => mods[key];
+		public int Count => mods.Count;
+		public ICollection<string> Keys => mods.Keys;
+		public ICollection<Manifest> Values => mods.Values;
 		public bool ContainsKey(string key) { return mods.ContainsKey(key); }
 		public IEnumerator<KeyValuePair<string, Manifest>> GetEnumerator() { return mods.GetEnumerator(); }
 		public bool TryGetValue(string key, out Manifest value) { return mods.TryGetValue(key, out value); }

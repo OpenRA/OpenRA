@@ -15,14 +15,9 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
 	public class SplitDamagedByTerrain : UpdateRule
 	{
-		public override string Name { get { return "Several properties of 'DamagedByTerrain' have been moved to the new 'D2kBuilding' trait."; } }
-		public override string Description
-		{
-			get
-			{
-				return "'DamageThreshold' and 'StartOnThreshold' are no longer supported and removed from 'DamagedByTerrain'.";
-			}
-		}
+		public override string Name => "Several properties of 'DamagedByTerrain' have been moved to the new 'D2kBuilding' trait.";
+
+		public override string Description => "'DamageThreshold' and 'StartOnThreshold' are no longer supported and removed from 'DamagedByTerrain'.";
 
 		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
 		{

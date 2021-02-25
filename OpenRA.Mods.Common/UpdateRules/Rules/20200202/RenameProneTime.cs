@@ -15,14 +15,9 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
 	class RenameProneTime : UpdateRule
 	{
-		public override string Name { get { return "Renamed ProneTime to Duration"; } }
-		public override string Description
-		{
-			get
-			{
-				return "Renamed TakeCover property ProneTime to Duration.";
-			}
-		}
+		public override string Name => "Renamed ProneTime to Duration";
+
+		public override string Description => "Renamed TakeCover property ProneTime to Duration.";
 
 		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
 		{

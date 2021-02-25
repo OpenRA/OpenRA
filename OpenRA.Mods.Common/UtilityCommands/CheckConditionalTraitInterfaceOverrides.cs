@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 {
 	public class CheckConditionalTraitInterfaceOverrides : IUtilityCommand
 	{
-		string IUtilityCommand.Name { get { return "--check-conditional-trait-interface-overrides"; } }
+		string IUtilityCommand.Name => "--check-conditional-trait-interface-overrides";
 
 		bool IUtilityCommand.ValidateArguments(string[] args)
 		{

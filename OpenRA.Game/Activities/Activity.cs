@@ -53,15 +53,15 @@ namespace OpenRA.Activities
 		Activity childActivity;
 		protected Activity ChildActivity
 		{
-			get { return SkipDoneActivities(childActivity); }
-			private set { childActivity = value; }
+			get => SkipDoneActivities(childActivity);
+			private set => childActivity = value;
 		}
 
 		Activity nextActivity;
 		public Activity NextActivity
 		{
-			get { return SkipDoneActivities(nextActivity); }
-			private set { nextActivity = value; }
+			get => SkipDoneActivities(nextActivity);
+			private set => nextActivity = value;
 		}
 
 		internal static Activity SkipDoneActivities(Activity first)
@@ -81,7 +81,7 @@ namespace OpenRA.Activities
 
 		public bool IsInterruptible { get; protected set; }
 		public bool ChildHasPriority { get; protected set; }
-		public bool IsCanceling { get { return State == ActivityState.Canceling; } }
+		public bool IsCanceling => State == ActivityState.Canceling;
 		bool finishing;
 		bool firstRunCompleted;
 		bool lastRun;

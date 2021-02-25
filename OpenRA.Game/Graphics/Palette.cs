@@ -44,7 +44,8 @@ namespace OpenRA.Graphics
 		{
 			IPalette palette;
 			public ReadOnlyPalette(IPalette palette) { this.palette = palette; }
-			public uint this[int index] { get { return palette[index]; } }
+			public uint this[int index] => palette[index];
+
 			public void CopyToArray(Array destination, int destinationOffset)
 			{
 				palette.CopyToArray(destination, destinationOffset);
@@ -56,10 +57,7 @@ namespace OpenRA.Graphics
 	{
 		readonly uint[] colors = new uint[Palette.Size];
 
-		public uint this[int index]
-		{
-			get { return colors[index]; }
-		}
+		public uint this[int index] => colors[index];
 
 		public void CopyToArray(Array destination, int destinationOffset)
 		{
@@ -126,8 +124,8 @@ namespace OpenRA.Graphics
 
 		public uint this[int index]
 		{
-			get { return colors[index]; }
-			set { colors[index] = value; }
+			get => colors[index];
+			set => colors[index] = value;
 		}
 
 		public void CopyToArray(Array destination, int destinationOffset)

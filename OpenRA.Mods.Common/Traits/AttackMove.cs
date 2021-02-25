@@ -155,6 +155,6 @@ namespace OpenRA.Mods.Common.Traits
 			return true;
 		}
 
-		public override bool ClearSelectionOnLeftClick { get { return false; } }
+		public override bool ClearSelectionOnLeftClick => false;
 	}
 }

@@ -16,7 +16,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 {
 	class ExtractSettingsDocsCommand : IUtilityCommand
 	{
-		string IUtilityCommand.Name { get { return "--settings-docs"; } }
+		string IUtilityCommand.Name => "--settings-docs";
 
 		bool IUtilityCommand.ValidateArguments(string[] args)
 		{

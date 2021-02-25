@@ -16,17 +16,13 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
 	public class ReplaceAttackTypeStrafe : UpdateRule
 	{
-		public override string Name { get { return "Replaced AttackAircraft AttackType: Strafe logic."; } }
-		public override string Description
-		{
-			get
-			{
-				return "The AttackType: Strafe behaviour on AttackAircraft has been renamed to Default,\n"
-					+ "and AttackTurnDelay has been removed. A new AttackType: Strafe has been added, with a\n"
-					+ "new StrafeRunLength parameter, designed for use with the FirstBurstTargetOffset and\n"
-					+ "FollowingBurstTargetOffset weapon parameters.";
-			}
-		}
+		public override string Name => "Replaced AttackAircraft AttackType: Strafe logic.";
+
+		public override string Description =>
+			"The AttackType: Strafe behaviour on AttackAircraft has been renamed to Default,\n"
+			+ "and AttackTurnDelay has been removed. A new AttackType: Strafe has been added, with a\n"
+			+ "new StrafeRunLength parameter, designed for use with the FirstBurstTargetOffset and\n"
+			+ "FollowingBurstTargetOffset weapon parameters.";
 
 		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
 		{

@@ -118,10 +118,7 @@ namespace OpenRA.Mods.Common.Terrain
 				.Select(y => (TerrainTemplateInfo)new DefaultTerrainTemplateInfo(this, y)).ToDictionary(t => t.Id).AsReadOnly();
 		}
 
-		public TerrainTypeInfo this[byte index]
-		{
-			get { return TerrainInfo[index]; }
-		}
+		public TerrainTypeInfo this[byte index] => TerrainInfo[index];
 
 		public byte GetTerrainIndex(string type)
 		{
@@ -157,18 +154,18 @@ namespace OpenRA.Mods.Common.Terrain
 			return info != null;
 		}
 
-		string ITerrainInfo.Id { get { return Id; } }
-		TerrainTypeInfo[] ITerrainInfo.TerrainTypes { get { return TerrainInfo; } }
+		string ITerrainInfo.Id => Id;
+		TerrainTypeInfo[] ITerrainInfo.TerrainTypes => TerrainInfo;
 		TerrainTileInfo ITerrainInfo.GetTerrainInfo(TerrainTile r) { return GetTileInfo(r); }
 		bool ITerrainInfo.TryGetTerrainInfo(TerrainTile r, out TerrainTileInfo info) { return TryGetTileInfo(r, out info); }
-		Color[] ITerrainInfo.HeightDebugColors { get { return HeightDebugColors; } }
+		Color[] ITerrainInfo.HeightDebugColors => HeightDebugColors;
 		IEnumerable<Color> ITerrainInfo.RestrictedPlayerColors { get { return TerrainInfo.Where(ti => ti.RestrictPlayerColor).Select(ti => ti.Color); } }
-		float ITerrainInfo.MinHeightColorBrightness { get { return MinHeightColorBrightness; } }
-		float ITerrainInfo.MaxHeightColorBrightness { get { return MaxHeightColorBrightness; } }
-		TerrainTile ITerrainInfo.DefaultTerrainTile { get { return new TerrainTile(Templates.First().Key, 0); } }
+		float ITerrainInfo.MinHeightColorBrightness => MinHeightColorBrightness;
+		float ITerrainInfo.MaxHeightColorBrightness => MaxHeightColorBrightness;
+		TerrainTile ITerrainInfo.DefaultTerrainTile => new TerrainTile(Templates.First().Key, 0);
 
-		string[] ITemplatedTerrainInfo.EditorTemplateOrder { get { return EditorTemplateOrder; } }
-		IReadOnlyDictionary<ushort, TerrainTemplateInfo> ITemplatedTerrainInfo.Templates { get { return Templates; } }
+		string[] ITemplatedTerrainInfo.EditorTemplateOrder => EditorTemplateOrder;
+		IReadOnlyDictionary<ushort, TerrainTemplateInfo> ITemplatedTerrainInfo.Templates => Templates;
 
 		void ITerrainInfoNotifyMapCreated.MapCreated(Map map)
 		{

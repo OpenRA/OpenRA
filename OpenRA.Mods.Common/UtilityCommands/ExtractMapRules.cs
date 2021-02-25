@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 {
 	public class ExtractMapRules : IUtilityCommand
 	{
-		string IUtilityCommand.Name { get { return "--map-rules"; } }
+		string IUtilityCommand.Name => "--map-rules";
 		bool IUtilityCommand.ValidateArguments(string[] args) { return args.Length == 2; }
 
 		void MergeAndPrint(Map map, string key, MiniYaml value)

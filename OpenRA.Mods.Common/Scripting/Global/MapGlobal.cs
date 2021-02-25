@@ -49,27 +49,15 @@ namespace OpenRA.Mods.Common.Scripting
 			return FilteredObjects(actors, filter).ToArray();
 		}
 
+		// HACK: This api method abuses the coordinate system, and should be removed
+		// in favour of proper actor queries.  See #8549.
 		[Desc("Returns the location of the top-left corner of the map (assuming zero terrain height).")]
-		public WPos TopLeft
-		{
-			get
-			{
-				// HACK: This api method abuses the coordinate system, and should be removed
-				// in favour of proper actor queries.  See #8549.
-				return Context.World.Map.ProjectedTopLeft;
-			}
-		}
+		public WPos TopLeft => Context.World.Map.ProjectedTopLeft;
 
+		// HACK: This api method abuses the coordinate system, and should be removed
+		// in favour of proper actor queries.  See #8549.
 		[Desc("Returns the location of the bottom-right corner of the map (assuming zero terrain height).")]
-		public WPos BottomRight
-		{
-			get
-			{
-				// HACK: This api method abuses the coordinate system, and should be removed
-				// in favour of proper actor queries.  See #8549.
-				return Context.World.Map.ProjectedBottomRight;
-			}
-		}
+		public WPos BottomRight => Context.World.Map.ProjectedBottomRight;
 
 		[Desc("Returns a random cell inside the visible region of the map.")]
 		public CPos RandomCell()
@@ -109,10 +97,10 @@ namespace OpenRA.Mods.Common.Scripting
 		}
 
 		[Desc("Returns true if there is only one human player.")]
-		public bool IsSinglePlayer { get { return Context.World.LobbyInfo.NonBotPlayers.Count() == 1; } }
+		public bool IsSinglePlayer => Context.World.LobbyInfo.NonBotPlayers.Count() == 1;
 
 		[Desc("Returns true if this is a shellmap and the player has paused animations.")]
-		public bool IsPausedShellmap { get { return Context.World.Type == WorldType.Shellmap && gameSettings.PauseShellmap; } }
+		public bool IsPausedShellmap => Context.World.Type == WorldType.Shellmap && gameSettings.PauseShellmap;
 
 		[Desc("Returns the value of a `ScriptLobbyDropdown` selected in the game lobby.")]
 		public LuaValue LobbyOption(string id)
@@ -127,10 +115,10 @@ namespace OpenRA.Mods.Common.Scripting
 		}
 
 		[Desc("Returns a table of all the actors that were specified in the map file.")]
-		public Actor[] NamedActors { get { return sma.Actors.Values.ToArray(); } }
+		public Actor[] NamedActors => sma.Actors.Values.ToArray();
 
 		[Desc("Returns the actor that was specified with a given name in " +
-			"the map file (or nil, if the actor is dead or not found).")]
+		      "the map file (or nil, if the actor is dead or not found).")]
 		public Actor NamedActor(string actorName)
 		{
 			if (!sma.Actors.TryGetValue(actorName, out var ret))
@@ -155,6 +143,6 @@ namespace OpenRA.Mods.Common.Scripting
 		}
 
 		[Desc("Returns a table of all the actors that are currently on the map/in the world.")]
-		public Actor[] ActorsInWorld { get { return world.Actors.ToArray(); } }
+		public Actor[] ActorsInWorld => world.Actors.ToArray();
 	}
 }

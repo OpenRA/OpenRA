@@ -43,7 +43,7 @@ namespace OpenRA.Traits
 
 		public Player Owner { get; private set; }
 		public BitSet<TargetableType> TargetTypes { get; private set; }
-		public IEnumerable<WPos> TargetablePositions { get { return targetablePositions; } }
+		public IEnumerable<WPos> TargetablePositions => targetablePositions;
 
 		public ITooltipInfo TooltipInfo { get; private set; }
 		public Player TooltipOwner { get; private set; }
@@ -108,11 +108,11 @@ namespace OpenRA.Traits
 			UpdateVisibility();
 		}
 
-		public uint ID { get { return actor.ActorID; } }
-		public bool IsValid { get { return Owner != null; } }
-		public ActorInfo Info { get { return actor.Info; } }
-		public Actor Actor { get { return !actor.IsDead ? actor : null; } }
-		public Player Viewer { get { return viewer; } }
+		public uint ID => actor.ActorID;
+		public bool IsValid => Owner != null;
+		public ActorInfo Info => actor.Info;
+		public Actor Actor => !actor.IsDead ? actor : null;
+		public Player Viewer => viewer;
 
 		public void RefreshState()
 		{
@@ -198,7 +198,7 @@ namespace OpenRA.Traits
 			return Renderables;
 		}
 
-		public bool HasRenderables { get { return !Shrouded && Renderables.Any(); } }
+		public bool HasRenderables => !Shrouded && Renderables.Any();
 
 		public override string ToString()
 		{

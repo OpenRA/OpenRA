@@ -95,13 +95,13 @@ namespace OpenRA.Mods.Common.Traits
 		[Sync]
 		bool buildAnywhere;
 
-		public bool FastCharge { get { return Enabled && fastCharge; } }
-		public bool AllTech { get { return Enabled && allTech; } }
-		public bool FastBuild { get { return Enabled && fastBuild; } }
-		public bool DisableShroud { get { return Enabled && disableShroud; } }
-		public bool PathDebug { get { return Enabled && pathDebug; } }
-		public bool UnlimitedPower { get { return Enabled && unlimitedPower; } }
-		public bool BuildAnywhere { get { return Enabled && buildAnywhere; } }
+		public bool FastCharge => Enabled && fastCharge;
+		public bool AllTech => Enabled && allTech;
+		public bool FastBuild => Enabled && fastBuild;
+		public bool DisableShroud => Enabled && disableShroud;
+		public bool PathDebug => Enabled && pathDebug;
+		public bool UnlimitedPower => Enabled && unlimitedPower;
+		public bool BuildAnywhere => Enabled && buildAnywhere;
 
 		bool enableAll;
 
@@ -275,6 +275,6 @@ namespace OpenRA.Mods.Common.Traits
 			Game.Debug("Cheat used: {0} by {1}{2}", order.OrderString, self.Owner.PlayerName, debugSuffix);
 		}
 
-		bool IUnlocksRenderPlayer.RenderPlayerUnlocked { get { return Enabled; } }
+		bool IUnlocksRenderPlayer.RenderPlayerUnlocked => Enabled;
 	}
 }

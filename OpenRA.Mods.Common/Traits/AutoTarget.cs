@@ -135,7 +135,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Sync]
 		int nextScanTime = 0;
 
-		public UnitStance Stance { get { return stance; } }
+		public UnitStance Stance => stance;
 
 		[Sync]
 		public Actor Aggressor;

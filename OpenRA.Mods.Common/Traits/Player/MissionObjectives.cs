@@ -276,7 +276,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly ObjectivesPanelInfo info;
 		public ObjectivesPanel(ObjectivesPanelInfo info) { this.info = info; }
-		public string PanelName { get { return info.PanelName; } }
-		public int ExitDelay { get { return info.ExitDelay; } }
+		public string PanelName => info.PanelName;
+		public int ExitDelay => info.ExitDelay;
 	}
 }

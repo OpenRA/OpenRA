@@ -74,7 +74,7 @@ namespace OpenRA.Support
 				Log.Write("perf", FormatString, ElapsedMs, Indentation + name);
 		}
 
-		float ElapsedMs { get { return 1000f * ticks / Stopwatch.Frequency; } }
+		float ElapsedMs => 1000f * ticks / Stopwatch.Frequency;
 
 		public static void LogLongTick(long startStopwatchTicks, long endStopwatchTicks, string name, object item)
 		{
@@ -85,13 +85,7 @@ namespace OpenRA.Support
 				"[" + Game.LocalTick + "] " + name + ": " + label);
 		}
 
-		public static long LongTickThresholdInStopwatchTicks
-		{
-			get
-			{
-				return (long)(Stopwatch.Frequency * Game.Settings.Debug.LongTickThresholdMs / 1000f);
-			}
-		}
+		public static long LongTickThresholdInStopwatchTicks => (long)(Stopwatch.Frequency * Game.Settings.Debug.LongTickThresholdMs / 1000f);
 
 		#region Formatting helpers
 		static string GetHeader(string indentation, string label)

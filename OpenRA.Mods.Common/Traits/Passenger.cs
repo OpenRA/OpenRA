@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly Dictionary<string, string> CargoConditions = new Dictionary<string, string>();
 
 		[GrantedConditionReference]
-		public IEnumerable<string> LinterCargoConditions { get { return CargoConditions.Values; } }
+		public IEnumerable<string> LinterCargoConditions => CargoConditions.Values;
 
 		[VoiceReference]
 		public readonly string Voice = "Action";

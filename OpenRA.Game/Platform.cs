@@ -22,7 +22,7 @@ namespace OpenRA
 
 	public static class Platform
 	{
-		public static PlatformType CurrentPlatform { get { return currentPlatform.Value; } }
+		public static PlatformType CurrentPlatform => currentPlatform.Value;
 		public static readonly Guid SessionGUID = Guid.NewGuid();
 
 		static Lazy<PlatformType> currentPlatform = Exts.Lazy(GetCurrentPlatform);
@@ -77,7 +77,7 @@ namespace OpenRA
 		/// <summary>
 		/// Directory containing user-specific support files (settings, maps, replays, game data, etc).
 		/// </summary>
-		public static string SupportDir { get { return GetSupportDir(SupportDirType.User); } }
+		public static string SupportDir => GetSupportDir(SupportDirType.User);
 
 		public static string GetSupportDir(SupportDirType type)
 		{

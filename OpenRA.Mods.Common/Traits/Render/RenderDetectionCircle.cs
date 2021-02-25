@@ -76,7 +76,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				info.BorderWidth);
 		}
 
-		bool IRenderAnnotationsWhenSelected.SpatiallyPartitionable { get { return false; } }
+		bool IRenderAnnotationsWhenSelected.SpatiallyPartitionable => false;
 
 		void ITick.Tick(Actor self)
 		{

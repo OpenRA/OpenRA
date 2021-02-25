@@ -40,9 +40,9 @@ namespace OpenRA.Mods.Common.Graphics
 			angle = new WAngle(ticks * info.HelixAngleDeltaPerTick.Angle);
 		}
 
-		public WPos Pos { get { return pos; } }
-		public int ZOffset { get { return zOffset; } }
-		public bool IsDecoration { get { return true; } }
+		public WPos Pos => pos;
+		public int ZOffset => zOffset;
+		public bool IsDecoration => true;
 
 		public IRenderable WithZOffset(int newOffset) { return new RailgunHelixRenderable(pos, newOffset, railgun, info, ticks); }
 		public IRenderable OffsetBy(WVec vec) { return new RailgunHelixRenderable(pos + vec, zOffset, railgun, info, ticks); }

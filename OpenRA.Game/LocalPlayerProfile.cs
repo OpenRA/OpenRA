@@ -24,11 +24,11 @@ namespace OpenRA
 		const int AuthKeySize = 2048;
 		public enum LinkState { Uninitialized, GeneratingKeys, Unlinked, CheckingLink, ConnectionFailed, Linked }
 
-		public LinkState State { get { return innerState; } }
-		public string Fingerprint { get { return innerFingerprint; } }
-		public string PublicKey { get { return innerPublicKey; } }
+		public LinkState State => innerState;
+		public string Fingerprint => innerFingerprint;
+		public string PublicKey => innerPublicKey;
 
-		public PlayerProfile ProfileData { get { return innerData; } }
+		public PlayerProfile ProfileData => innerData;
 
 		volatile LinkState innerState;
 		volatile PlayerProfile innerData;

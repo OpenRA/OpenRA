@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Traits
 			bridges = new CellLayer<Actor>(world.Map);
 		}
 
-		public Actor this[CPos cell] { get { return bridges[cell]; } }
+		public Actor this[CPos cell] => bridges[cell];
 
 		public void Add(Actor b)
 		{

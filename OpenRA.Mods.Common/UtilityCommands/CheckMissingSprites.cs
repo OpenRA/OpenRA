@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 {
 	class CheckMissingSprites : IUtilityCommand
 	{
-		string IUtilityCommand.Name { get { return "--check-missing-sprites"; } }
+		string IUtilityCommand.Name => "--check-missing-sprites";
 
 		bool IUtilityCommand.ValidateArguments(string[] args)
 		{

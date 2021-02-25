@@ -98,6 +98,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 			yield return new TextAnnotationRenderable(font, self.CenterPosition + offset, 0, color, aiSquadInfo);
 		}
 
-		bool IRenderAnnotationsWhenSelected.SpatiallyPartitionable { get { return true; } }
+		bool IRenderAnnotationsWhenSelected.SpatiallyPartitionable => true;
 	}
 }

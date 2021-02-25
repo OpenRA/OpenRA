@@ -137,7 +137,7 @@ namespace OpenRA.Mods.Common.Traits
 			return NoRenderables;
 		}
 
-		bool IRenderAboveShroud.SpatiallyPartitionable { get { return false; } }
+		bool IRenderAboveShroud.SpatiallyPartitionable => false;
 
 		public IEnumerable<IRenderable> RenderAnnotations(Actor self, WorldRenderer wr)
 		{
@@ -147,7 +147,7 @@ namespace OpenRA.Mods.Common.Traits
 			return Type == EditorCursorType.Actor ? Actor.RenderAnnotations() : NoRenderables;
 		}
 
-		bool IRenderAnnotations.SpatiallyPartitionable { get { return false; } }
+		bool IRenderAnnotations.SpatiallyPartitionable => false;
 
 		public int SetActor(WorldRenderer wr, ActorInfo actor, PlayerReference owner)
 		{

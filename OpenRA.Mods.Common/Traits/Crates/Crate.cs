@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 			return new ReadOnlyDictionary<CPos, SubCell>(occupied);
 		}
 
-		bool IOccupySpaceInfo.SharesCell { get { return false; } }
+		bool IOccupySpaceInfo.SharesCell => false;
 
 		public bool CanEnterCell(World world, Actor self, CPos cell, SubCell subCell = SubCell.FullCell, Actor ignoreActor = null, BlockedByActor check = BlockedByActor.All)
 		{
@@ -176,7 +176,7 @@ namespace OpenRA.Mods.Common.Traits
 				self.Dispose();
 		}
 
-		public CPos TopLeft { get { return Location; } }
+		public CPos TopLeft => Location;
 		public (CPos, SubCell)[] OccupiedCells() { return new[] { (Location, SubCell.FullCell) }; }
 
 		public WPos CenterPosition { get; private set; }

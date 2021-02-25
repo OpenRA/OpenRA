@@ -35,13 +35,7 @@ namespace OpenRA.Mods.Common.Widgets
 		int2 dragStart, mousePos;
 		bool isDragging = false;
 
-		bool IsValidDragbox
-		{
-			get
-			{
-				return isDragging && (dragStart - mousePos).Length > Game.Settings.Game.SelectionDeadzone;
-			}
-		}
+		bool IsValidDragbox => isDragging && (dragStart - mousePos).Length > Game.Settings.Game.SelectionDeadzone;
 
 		[ObjectCreator.UseCtor]
 		public WorldInteractionControllerWidget(World world, WorldRenderer worldRenderer)

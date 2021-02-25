@@ -230,13 +230,7 @@ namespace OpenRA.Mods.Common.Widgets
 			Game.Renderer.DisableScissor();
 		}
 
-		public override int2 ChildOrigin
-		{
-			get
-			{
-				return RenderOrigin + new int2(ScrollBar == ScrollBar.Left ? ScrollbarWidth : 0, (int)currentListOffset);
-			}
-		}
+		public override int2 ChildOrigin => RenderOrigin + new int2(ScrollBar == ScrollBar.Left ? ScrollbarWidth : 0, (int)currentListOffset);
 
 		public override bool EventBoundsContains(int2 location)
 		{
@@ -268,10 +262,7 @@ namespace OpenRA.Mods.Common.Widgets
 			SetListOffset(value, smooth);
 		}
 
-		public bool ScrolledToBottom
-		{
-			get { return targetListOffset == Math.Min(0, Bounds.Height - ContentHeight) || ContentHeight <= Bounds.Height; }
-		}
+		public bool ScrolledToBottom => targetListOffset == Math.Min(0, Bounds.Height - ContentHeight) || ContentHeight <= Bounds.Height;
 
 		void ScrollToItem(Widget item, bool smooth = false)
 		{

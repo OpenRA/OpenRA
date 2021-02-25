@@ -21,12 +21,12 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 		{
 			readonly TmpTSFrame parent;
 
-			public SpriteFrameType Type { get { return SpriteFrameType.Indexed8; } }
-			public Size Size { get { return parent.Size; } }
-			public Size FrameSize { get { return Size; } }
-			public float2 Offset { get { return parent.Offset; } }
-			public byte[] Data { get { return parent.DepthData; } }
-			public bool DisableExportPadding { get { return false; } }
+			public SpriteFrameType Type => SpriteFrameType.Indexed8;
+			public Size Size => parent.Size;
+			public Size FrameSize => Size;
+			public float2 Offset => parent.Offset;
+			public byte[] Data => parent.DepthData;
+			public bool DisableExportPadding => false;
 
 			public TmpTSDepthFrame(TmpTSFrame parent)
 			{
@@ -36,13 +36,13 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 
 		class TmpTSFrame : ISpriteFrame
 		{
-			public SpriteFrameType Type { get { return SpriteFrameType.Indexed8; } }
+			public SpriteFrameType Type => SpriteFrameType.Indexed8;
 			public Size Size { get; private set; }
-			public Size FrameSize { get { return Size; } }
+			public Size FrameSize => Size;
 			public float2 Offset { get; private set; }
 			public byte[] Data { get; set; }
 			public byte[] DepthData { get; set; }
-			public bool DisableExportPadding { get { return false; } }
+			public bool DisableExportPadding => false;
 
 			public TmpTSFrame(Stream s, Size size, int u, int v)
 			{

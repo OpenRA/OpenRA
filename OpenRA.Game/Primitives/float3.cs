@@ -20,7 +20,7 @@ namespace OpenRA
 	public readonly struct float3 : IEquatable<float3>
 	{
 		public readonly float X, Y, Z;
-		public float2 XY { get { return new float2(X, Y); } }
+		public float2 XY => new float2(X, Y);
 
 		public float3(float x, float y, float z) { X = x; Y = y; Z = z; }
 		public float3(float2 xy, float z) { X = xy.X; Y = xy.Y; Z = z; }

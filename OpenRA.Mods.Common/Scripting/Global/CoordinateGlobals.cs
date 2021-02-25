@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Scripting
 		public CPos New(int x, int y) { return new CPos(x, y); }
 
 		[Desc("The cell coordinate origin.")]
-		public CPos Zero { get { return CPos.Zero; } }
+		public CPos Zero => CPos.Zero;
 	}
 
 	[ScriptGlobal("CVec")]
@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Scripting
 		public CVec New(int x, int y) { return new CVec(x, y); }
 
 		[Desc("The cell zero-vector.")]
-		public CVec Zero { get { return CVec.Zero; } }
+		public CVec Zero => CVec.Zero;
 	}
 
 	[ScriptGlobal("WPos")]
@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Scripting
 		public WPos New(int x, int y, int z) { return new WPos(x, y, z); }
 
 		[Desc("The world coordinate origin.")]
-		public WPos Zero { get { return WPos.Zero; } }
+		public WPos Zero => WPos.Zero;
 	}
 
 	[ScriptGlobal("WVec")]
@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Scripting
 		public WVec New(int x, int y, int z) { return new WVec(x, y, z); }
 
 		[Desc("The world zero-vector.")]
-		public WVec Zero { get { return WVec.Zero; } }
+		public WVec Zero => WVec.Zero;
 	}
 
 	[ScriptGlobal("WDist")]

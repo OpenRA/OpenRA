@@ -28,8 +28,8 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public Bridge FirstBridge { get; private set; }
 		public Bridge Bridge { get; private set; }
-		public DamageState BridgeDamageState { get { return Bridge.AggregateDamageState(); } }
-		public bool Repairing { get { return repairDirections > 0; } }
+		public DamageState BridgeDamageState => Bridge.AggregateDamageState();
+		public bool Repairing => repairDirections > 0;
 		int repairDirections = 0;
 
 		public LegacyBridgeHut(ActorInitializer init, LegacyBridgeHutInfo info)

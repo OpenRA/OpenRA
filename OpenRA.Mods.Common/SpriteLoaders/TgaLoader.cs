@@ -73,7 +73,7 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 			public Size FrameSize { get; private set; }
 			public float2 Offset { get; private set; }
 			public byte[] Data { get; private set; }
-			public bool DisableExportPadding { get { return false; } }
+			public bool DisableExportPadding => false;
 
 			public TgaFrame()
 			{

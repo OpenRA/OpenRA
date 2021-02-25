@@ -53,8 +53,8 @@ namespace OpenRA.Mods.Common.Traits
 			return cloaks.All(c => c.IsTraitDisabled || c.IsVisible(self, viewer.Owner));
 		}
 
-		public virtual BitSet<TargetableType> TargetTypes { get { return Info.TargetTypes; } }
+		public virtual BitSet<TargetableType> TargetTypes => Info.TargetTypes;
 
-		public bool RequiresForceFire { get { return Info.RequiresForceFire; } }
+		public bool RequiresForceFire => Info.RequiresForceFire;
 	}
 }

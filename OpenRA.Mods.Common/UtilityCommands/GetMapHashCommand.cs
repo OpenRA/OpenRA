@@ -16,7 +16,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 {
 	class GetMapHashCommand : IUtilityCommand
 	{
-		string IUtilityCommand.Name { get { return "--map-hash"; } }
+		string IUtilityCommand.Name => "--map-hash";
 
 		bool IUtilityCommand.ValidateArguments(string[] args)
 		{

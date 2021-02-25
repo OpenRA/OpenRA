@@ -18,16 +18,11 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
 	public class ReformatChromeProvider : UpdateRule
 	{
-		public override string Name { get { return "Reformat UI image definitions."; } }
+		public override string Name => "Reformat UI image definitions.";
 
-		public override string Description
-		{
-			get
-			{
-				return "The format of the chrome.yaml file defining image regions for the UI has\n" +
-					"changed to support additional metadata fields. ";
-			}
-		}
+		public override string Description =>
+			"The format of the chrome.yaml file defining image regions for the UI has\n" +
+			"changed to support additional metadata fields. ";
 
 		readonly List<string> overrideLocations = new List<string>();
 		readonly List<string> panelLocations = new List<string>();

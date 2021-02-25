@@ -16,16 +16,11 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
 	public class ReplaceShadowPalette : UpdateRule
 	{
-		public override string Name { get { return "Removed ShadowPalette from WithShadow and projectiles."; } }
+		public override string Name => "Removed ShadowPalette from WithShadow and projectiles.";
 
-		public override string Description
-		{
-			get
-			{
-				return "The ShadowPalette field has been replaced by ShadowColor on projectiles.\n" +
-					"The Palette field on WithShadow and ShadowPalette on WithParachute have similarly been replaced with ShadowColor.";
-			}
-		}
+		public override string Description =>
+			"The ShadowPalette field has been replaced by ShadowColor on projectiles.\n" +
+			"The Palette field on WithShadow and ShadowPalette on WithParachute have similarly been replaced with ShadowColor.";
 
 		readonly List<string> locations = new List<string>();
 

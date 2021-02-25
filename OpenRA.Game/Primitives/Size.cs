@@ -44,7 +44,7 @@ namespace OpenRA.Primitives
 			Height = height;
 		}
 
-		public bool IsEmpty { get { return Width == 0 && Height == 0; } }
+		public bool IsEmpty => Width == 0 && Height == 0;
 
 		public bool Equals(Size other)
 		{

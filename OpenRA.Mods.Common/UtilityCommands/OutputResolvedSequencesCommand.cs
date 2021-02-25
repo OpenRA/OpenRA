@@ -15,7 +15,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 {
 	public class OutputResolvedSequencesCommand : IUtilityCommand
 	{
-		string IUtilityCommand.Name { get { return "--resolved-sequences"; } }
+		string IUtilityCommand.Name => "--resolved-sequences";
 
 		bool IUtilityCommand.ValidateArguments(string[] args)
 		{

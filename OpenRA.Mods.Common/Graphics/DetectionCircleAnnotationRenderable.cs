@@ -42,9 +42,9 @@ namespace OpenRA.Mods.Common.Graphics
 			this.borderWidth = borderWidth;
 		}
 
-		public WPos Pos { get { return centerPosition; } }
-		public int ZOffset { get { return zOffset; } }
-		public bool IsDecoration { get { return true; } }
+		public WPos Pos => centerPosition;
+		public int ZOffset => zOffset;
+		public bool IsDecoration => true;
 
 		public IRenderable WithZOffset(int newOffset)
 		{

@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 {
 	class ExtractTraitDocsCommand : IUtilityCommand
 	{
-		string IUtilityCommand.Name { get { return "--docs"; } }
+		string IUtilityCommand.Name => "--docs";
 
 		bool IUtilityCommand.ValidateArguments(string[] args)
 		{

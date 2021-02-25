@@ -16,21 +16,17 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
 	public class AddPipDecorationTraits : UpdateRule
 	{
-		public override string Name { get { return "Add decoration traits for selection pips."; } }
-		public override string Description
-		{
-			get
-			{
-				return "The AmmoPool, Cargo, Harvester, and StoresResources traits no longer\n" +
-					"automatically add pips to the selection box. New traits WithAmmoPipsDecoration,\n" +
-					"WithCargoPipsDecoration, WithHarvesterPipsDecoration,\n" +
-					"WithResourceStoragePipsDecoration are added to provide the same functionality.\n\n" +
-					"Passenger.PipType has been replaced with CustomPipType, which now references a\n" +
-					"sequence defined in WithCargoDecoration.CustomPipTypeSequences.\n\n" +
-					"ResourceType.PipColor has been removed and resource pip colours are now defined\n" +
-					"in WithHarvesterPipsDecoration.ResourceSequences.";
-			}
-		}
+		public override string Name => "Add decoration traits for selection pips.";
+
+		public override string Description =>
+			"The AmmoPool, Cargo, Harvester, and StoresResources traits no longer\n" +
+			"automatically add pips to the selection box. New traits WithAmmoPipsDecoration,\n" +
+			"WithCargoPipsDecoration, WithHarvesterPipsDecoration,\n" +
+			"WithResourceStoragePipsDecoration are added to provide the same functionality.\n\n" +
+			"Passenger.PipType has been replaced with CustomPipType, which now references a\n" +
+			"sequence defined in WithCargoDecoration.CustomPipTypeSequences.\n\n" +
+			"ResourceType.PipColor has been removed and resource pip colours are now defined\n" +
+			"in WithHarvesterPipsDecoration.ResourceSequences.";
 
 		static readonly Dictionary<string, string> PipReplacements = new Dictionary<string, string>
 		{

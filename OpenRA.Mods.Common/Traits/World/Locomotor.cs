@@ -119,7 +119,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public virtual bool DisableDomainPassabilityCheck { get { return false; } }
+		public virtual bool DisableDomainPassabilityCheck => false;
 
 		public override object Create(ActorInitializer init) { return new Locomotor(init.Self, this); }
 	}

@@ -27,7 +27,7 @@ namespace OpenRA
 		public string Type;
 		Lazy<TypeDictionary> initDict;
 
-		internal TypeDictionary InitDict { get { return initDict.Value; } }
+		internal TypeDictionary InitDict => initDict.Value;
 
 		public ActorReference(string type)
 			: this(type, new Dictionary<string, MiniYaml>()) { }

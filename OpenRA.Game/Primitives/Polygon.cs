@@ -57,7 +57,8 @@ namespace OpenRA.Primitives
 			}
 		}
 
-		public bool IsEmpty { get { return BoundingRect.IsEmpty; } }
+		public bool IsEmpty => BoundingRect.IsEmpty;
+
 		public bool Contains(int2 xy)
 		{
 			return isRectangle ? BoundingRect.Contains(xy) : Vertices.PolygonContains(xy);

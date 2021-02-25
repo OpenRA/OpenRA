@@ -52,9 +52,9 @@ namespace OpenRA.Mods.Common.Traits
 		IDelayCarryallPickup[] delayPickups;
 
 		public Actor Carrier { get; private set; }
-		public bool Reserved { get { return state != State.Free; } }
+		public bool Reserved => state != State.Free;
 		public CPos? Destination { get; protected set; }
-		public bool WantsTransport { get { return Destination != null && !IsTraitDisabled; } }
+		public bool WantsTransport => Destination != null && !IsTraitDisabled;
 
 		protected enum State { Free, Reserved, Locked }
 		protected State state = State.Free;

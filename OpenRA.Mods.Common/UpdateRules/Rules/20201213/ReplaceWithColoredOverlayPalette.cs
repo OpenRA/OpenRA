@@ -16,15 +16,9 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
 	public class ReplaceWithColoredOverlayPalette : UpdateRule
 	{
-		public override string Name { get { return "WithColoredOverlay Palette changed to Color."; } }
+		public override string Name => "WithColoredOverlay Palette changed to Color.";
 
-		public override string Description
-		{
-			get
-			{
-				return "The Palette field has been removed from WithColoredOverlay. You must now specify the Color directly.";
-			}
-		}
+		public override string Description => "The Palette field has been removed from WithColoredOverlay. You must now specify the Color directly.";
 
 		readonly List<string> locations = new List<string>();
 

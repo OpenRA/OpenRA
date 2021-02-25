@@ -15,7 +15,8 @@ namespace OpenRA.UtilityCommands
 {
 	class ClearInvalidModRegistrationsCommand : IUtilityCommand
 	{
-		string IUtilityCommand.Name { get { return "--clear-invalid-mod-registrations"; } }
+		string IUtilityCommand.Name => "--clear-invalid-mod-registrations";
+
 		bool IUtilityCommand.ValidateArguments(string[] args)
 		{
 			return args.Length >= 2 && new string[] { "system", "user", "both" }.Contains(args[1]);

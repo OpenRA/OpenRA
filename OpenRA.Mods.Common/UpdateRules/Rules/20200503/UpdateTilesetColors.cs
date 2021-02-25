@@ -15,14 +15,9 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
 	class UpdateTilesetColors : UpdateRule
 	{
-		public override string Name { get { return "Rename Tileset LeftColor and RightColor"; } }
-		public override string Description
-		{
-			get
-			{
-				return "The LeftColor and RightColor keys in tilesets have been renamed to MinColor and MaxColor to reflect their proper usage.";
-			}
-		}
+		public override string Name => "Rename Tileset LeftColor and RightColor";
+
+		public override string Description => "The LeftColor and RightColor keys in tilesets have been renamed to MinColor and MaxColor to reflect their proper usage.";
 
 		public override IEnumerable<string> UpdateTilesetNode(ModData modData, MiniYamlNode tilesetNode)
 		{

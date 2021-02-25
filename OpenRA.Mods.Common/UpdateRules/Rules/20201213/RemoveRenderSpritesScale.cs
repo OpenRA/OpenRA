@@ -15,15 +15,9 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
 	public class RemoveRenderSpritesScale : UpdateRule
 	{
-		public override string Name { get { return "Remove RenderSprites.Scale."; } }
+		public override string Name => "Remove RenderSprites.Scale.";
 
-		public override string Description
-		{
-			get
-			{
-				return "The Scale option was removed from RenderSprites. Scale can now be defined on individual sequence definitions.";
-			}
-		}
+		public override string Description => "The Scale option was removed from RenderSprites. Scale can now be defined on individual sequence definitions.";
 
 		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
 		{

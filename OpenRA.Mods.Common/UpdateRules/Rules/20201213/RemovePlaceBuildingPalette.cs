@@ -16,17 +16,12 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
 	public class RemovePlaceBuildingPalette : UpdateRule
 	{
-		public override string Name { get { return "*PlaceBuildingPreview palette overrides have been removed."; } }
+		public override string Name => "*PlaceBuildingPreview palette overrides have been removed.";
 
-		public override string Description
-		{
-			get
-			{
-				return "The palette overrides on the ActorPreviewPlaceBuildingPreview, FootprintPlaceBuildingPreview\n" +
-					"SequencePlaceBuildingPreview, and D2kActorPreviewPlaceBuildingPreview traits have been removed.\n" +
-					"New Alpha and LineBuildSegmentAlpha properties have been added in their place.";
-			}
-		}
+		public override string Description =>
+			"The palette overrides on the ActorPreviewPlaceBuildingPreview, FootprintPlaceBuildingPreview\n" +
+			"SequencePlaceBuildingPreview, and D2kActorPreviewPlaceBuildingPreview traits have been removed.\n" +
+			"New Alpha and LineBuildSegmentAlpha properties have been added in their place.";
 
 		readonly List<string> locations = new List<string>();
 

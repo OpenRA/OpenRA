@@ -28,13 +28,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly DomainIndex domainIndex;
 		readonly Color? targetLineColor;
 
-		protected Target Target
-		{
-			get
-			{
-				return useLastVisibleTarget ? lastVisibleTarget : target;
-			}
-		}
+		protected Target Target => useLastVisibleTarget ? lastVisibleTarget : target;
 
 		Target target;
 		Target lastVisibleTarget;

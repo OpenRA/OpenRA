@@ -32,13 +32,7 @@ namespace OpenRA
 		public SpriteRenderer SpriteRenderer { get; private set; }
 		public RgbaSpriteRenderer RgbaSpriteRenderer { get; private set; }
 
-		public bool WindowHasInputFocus
-		{
-			get
-			{
-				return Window.HasInputFocus;
-			}
-		}
+		public bool WindowHasInputFocus => Window.HasInputFocus;
 
 		public IReadOnlyDictionary<string, SpriteFont> Fonts;
 
@@ -306,21 +300,18 @@ namespace OpenRA
 			CurrentBatchRenderer = null;
 		}
 
-		public Size Resolution { get { return Window.EffectiveWindowSize; } }
-		public Size NativeResolution { get { return Window.NativeWindowSize; } }
-		public float WindowScale { get { return Window.EffectiveWindowScale; } }
-		public float NativeWindowScale { get { return Window.NativeWindowScale; } }
-		public GLProfile GLProfile { get { return Window.GLProfile; } }
-		public GLProfile[] SupportedGLProfiles { get { return Window.SupportedGLProfiles; } }
+		public Size Resolution => Window.EffectiveWindowSize;
+		public Size NativeResolution => Window.NativeWindowSize;
+		public float WindowScale => Window.EffectiveWindowScale;
+		public float NativeWindowScale => Window.NativeWindowScale;
+		public GLProfile GLProfile => Window.GLProfile;
+		public GLProfile[] SupportedGLProfiles => Window.SupportedGLProfiles;
 
 		public interface IBatchRenderer { void Flush(); }
 
 		public IBatchRenderer CurrentBatchRenderer
 		{
-			get
-			{
-				return currentBatchRenderer;
-			}
+			get => currentBatchRenderer;
 
 			set
 			{
@@ -469,24 +460,15 @@ namespace OpenRA
 			return Window.SetClipboardText(text);
 		}
 
-		public string GLVersion
-		{
-			get { return Context.GLVersion; }
-		}
+		public string GLVersion => Context.GLVersion;
 
 		public IFont CreateFont(byte[] data)
 		{
 			return platform.CreateFont(data);
 		}
 
-		public int DisplayCount
-		{
-			get { return Window.DisplayCount; }
-		}
+		public int DisplayCount => Window.DisplayCount;
 
-		public int CurrentDisplay
-		{
-			get { return Window.CurrentDisplay; }
-		}
+		public int CurrentDisplay => Window.CurrentDisplay;
 	}
 }

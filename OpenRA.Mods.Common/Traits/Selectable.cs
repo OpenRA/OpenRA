@@ -33,9 +33,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override object Create(ActorInitializer init) { return new Selectable(init.Self, this); }
 
-		int ISelectableInfo.Priority { get { return Priority; } }
-		SelectionPriorityModifiers ISelectableInfo.PriorityModifiers { get { return PriorityModifiers; } }
-		string ISelectableInfo.Voice { get { return Voice; } }
+		int ISelectableInfo.Priority => Priority;
+		SelectionPriorityModifiers ISelectableInfo.PriorityModifiers => PriorityModifiers;
+		string ISelectableInfo.Voice => Voice;
 	}
 
 	public class Selectable : Interactable, ISelectable
@@ -50,6 +50,6 @@ namespace OpenRA.Mods.Common.Traits
 			Info = info;
 		}
 
-		string ISelectable.Class { get { return selectionClass; } }
+		string ISelectable.Class => selectionClass;
 	}
 }

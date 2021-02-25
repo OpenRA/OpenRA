@@ -73,7 +73,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Sync]
 		public bool IsAiming { get; set; }
 
-		public IEnumerable<Armament> Armaments { get { return getArmaments(); } }
+		public IEnumerable<Armament> Armaments => getArmaments();
 
 		protected IFacing facing;
 		protected IPositionable positionable;

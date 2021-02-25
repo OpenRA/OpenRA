@@ -116,7 +116,7 @@ namespace OpenRA.Mods.Common.Traits
 		protected DeveloperMode developerMode;
 		protected TechTree techTree;
 
-		public Actor Actor { get { return self; } }
+		public Actor Actor => self;
 
 		[Sync]
 		public bool Enabled { get; protected set; }
@@ -603,14 +603,9 @@ namespace OpenRA.Mods.Common.Traits
 		public int TotalTime { get; private set; }
 		public int RemainingTime { get; private set; }
 		public int RemainingCost { get; private set; }
-		public int RemainingTimeActual
-		{
-			get
-			{
-				return (pm == null || pm.PowerState == PowerState.Normal) ? RemainingTime :
-					RemainingTime * Queue.Info.LowPowerModifier / 100;
-			}
-		}
+		public int RemainingTimeActual =>
+			(pm == null || pm.PowerState == PowerState.Normal) ? RemainingTime :
+				RemainingTime * Queue.Info.LowPowerModifier / 100;
 
 		public bool Paused { get; private set; }
 		public bool Done { get; private set; }

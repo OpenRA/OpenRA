@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 {
 	class ExtractWeaponDocsCommand : IUtilityCommand
 	{
-		string IUtilityCommand.Name { get { return "--weapon-docs"; } }
+		string IUtilityCommand.Name => "--weapon-docs";
 
 		bool IUtilityCommand.ValidateArguments(string[] args)
 		{

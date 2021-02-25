@@ -236,6 +236,6 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public bool Repairing { get { return repairStep < segmentLocations.Count; } }
+		public bool Repairing => repairStep < segmentLocations.Count;
 	}
 }

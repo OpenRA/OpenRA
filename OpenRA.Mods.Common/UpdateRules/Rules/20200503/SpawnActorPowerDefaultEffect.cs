@@ -15,14 +15,9 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
 	class SpawnActorPowerDefaultEffect : UpdateRule
 	{
-		public override string Name { get { return "Set SpawnActorPower EffectSequence to it's previous default value."; } }
-		public override string Description
-		{
-			get
-			{
-				return "The 'EffectSequence' of 'SpawnActorPower' is unset by default.";
-			}
-		}
+		public override string Name => "Set SpawnActorPower EffectSequence to it's previous default value.";
+
+		public override string Description => "The 'EffectSequence' of 'SpawnActorPower' is unset by default.";
 
 		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
 		{

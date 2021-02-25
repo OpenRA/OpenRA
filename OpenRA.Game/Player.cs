@@ -77,14 +77,8 @@ namespace OpenRA
 		public WinState WinState = WinState.Undefined;
 		public bool HasObjectives = false;
 
-		public bool Spectating
-		{
-			get
-			{
-				// Players in mission maps must not leave the player view
-				return !inMissionMap && (spectating || WinState != WinState.Undefined);
-			}
-		}
+		// Players in mission maps must not leave the player view
+		public bool Spectating => !inMissionMap && (spectating || WinState != WinState.Undefined);
 
 		public World World { get; private set; }
 
@@ -301,8 +295,8 @@ namespace OpenRA
 
 		public LuaValue this[LuaRuntime runtime, LuaValue keyValue]
 		{
-			get { return luaInterface.Value[runtime, keyValue]; }
-			set { luaInterface.Value[runtime, keyValue] = value; }
+			get => luaInterface.Value[runtime, keyValue];
+			set => luaInterface.Value[runtime, keyValue] = value;
 		}
 
 		public LuaValue Equals(LuaRuntime runtime, LuaValue left, LuaValue right)

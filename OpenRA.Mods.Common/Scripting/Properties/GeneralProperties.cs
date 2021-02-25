@@ -31,10 +31,7 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Specifies whether the actor is in the world.")]
 		public bool IsInWorld
 		{
-			get
-			{
-				return Self.IsInWorld;
-			}
+			get => Self.IsInWorld;
 
 			set
 			{
@@ -46,18 +43,15 @@ namespace OpenRA.Mods.Common.Scripting
 		}
 
 		[Desc("Specifies whether the actor is alive or dead.")]
-		public bool IsDead { get { return Self.IsDead; } }
+		public bool IsDead => Self.IsDead;
 
 		[Desc("Specifies whether the actor is idle (not performing any activities).")]
-		public bool IsIdle { get { return Self.IsIdle; } }
+		public bool IsIdle => Self.IsIdle;
 
 		[Desc("The player that owns the actor.")]
 		public Player Owner
 		{
-			get
-			{
-				return Self.Owner;
-			}
+			get => Self.Owner;
 
 			set
 			{
@@ -70,7 +64,7 @@ namespace OpenRA.Mods.Common.Scripting
 		}
 
 		[Desc("The type of the actor (e.g. \"e1\").")]
-		public string Type { get { return Self.Info.Name; } }
+		public string Type => Self.Info.Name;
 
 		[Desc("Test whether an actor has a specific property.")]
 		public bool HasProperty(string name)
@@ -116,10 +110,10 @@ namespace OpenRA.Mods.Common.Scripting
 		}
 
 		[Desc("The actor position in cell coordinates.")]
-		public CPos Location { get { return Self.Location; } }
+		public CPos Location => Self.Location;
 
 		[Desc("The actor position in world coordinates.")]
-		public WPos CenterPosition { get { return Self.CenterPosition; } }
+		public WPos CenterPosition => Self.CenterPosition;
 
 		[Desc("The direction that the actor is facing.")]
 		public WAngle Facing
@@ -170,10 +164,7 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Current actor stance. Returns nil if this actor doesn't support stances.")]
 		public string Stance
 		{
-			get
-			{
-				return autotarget?.Stance.ToString();
-			}
+			get => autotarget?.Stance.ToString();
 
 			set
 			{
@@ -200,7 +191,7 @@ namespace OpenRA.Mods.Common.Scripting
 		}
 
 		[Desc("Specifies whether or not the actor supports 'tags'.")]
-		public bool IsTaggable { get { return scriptTags != null; } }
+		public bool IsTaggable => scriptTags != null;
 
 		[Desc("Add a tag to the actor. Returns true on success, false otherwise (for example the actor may already have the given tag).")]
 		public bool AddTag(string tag)

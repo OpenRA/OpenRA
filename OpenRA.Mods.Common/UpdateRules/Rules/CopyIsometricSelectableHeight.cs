@@ -17,15 +17,11 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
 	public class CopyIsometricSelectableHeight : UpdateRule
 	{
-		public override string Name { get { return "Copy IsometricSelectable.Height from art*.ini definitions."; } }
-		public override string Description
-		{
-			get
-			{
-				return "Reads building Height entries art.ini/artfs.ini/artmd.ini from the current working directory\n" +
-					"and adds IsometricSelectable definitions to matching actors.";
-			}
-		}
+		public override string Name => "Copy IsometricSelectable.Height from art*.ini definitions.";
+
+		public override string Description =>
+			"Reads building Height entries art.ini/artfs.ini/artmd.ini from the current working directory\n" +
+			"and adds IsometricSelectable definitions to matching actors.";
 
 		static readonly string[] SourceFiles = { "art.ini", "artfs.ini", "artmd.ini" };
 

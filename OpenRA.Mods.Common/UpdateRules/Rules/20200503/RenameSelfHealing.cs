@@ -16,15 +16,11 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
 	public class RenameSelfHealing : UpdateRule
 	{
-		public override string Name { get { return "SelfHealing was renamed as negative SelfHealing is a common usecase."; } }
-		public override string Description
-		{
-			get
-			{
-				return "SelfHealing was renamed to ChangesHealth\n" +
-						"HealIfBelow was renamed to StartIfBelow.";
-			}
-		}
+		public override string Name => "SelfHealing was renamed as negative SelfHealing is a common usecase.";
+
+		public override string Description =>
+			"SelfHealing was renamed to ChangesHealth\n" +
+			"HealIfBelow was renamed to StartIfBelow.";
 
 		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
 		{

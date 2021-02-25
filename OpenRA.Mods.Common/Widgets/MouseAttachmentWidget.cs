@@ -57,6 +57,6 @@ namespace OpenRA.Mods.Common.Widgets
 			palette = null;
 		}
 
-		public override int2 ChildOrigin { get { return location; } }
+		public override int2 ChildOrigin => location;
 	}
 }

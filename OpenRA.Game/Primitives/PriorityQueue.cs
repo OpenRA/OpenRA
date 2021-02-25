@@ -59,7 +59,7 @@ namespace OpenRA.Primitives
 			}
 		}
 
-		public bool Empty { get { return level == 0; } }
+		public bool Empty => level == 0;
 
 		T At(int level, int index) { return items[level][index]; }
 		T Above(int level, int index) { return items[level - 1][index >> 1]; }

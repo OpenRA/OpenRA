@@ -69,12 +69,12 @@ namespace OpenRA.Mods.Common.Traits
 		[Sync]
 		bool preventDock = false;
 
-		public bool AllowDocking { get { return !preventDock; } }
-		public CVec DeliveryOffset { get { return info.DockOffset; } }
-		public WAngle DeliveryAngle { get { return info.DockAngle; } }
-		public bool IsDragRequired { get { return info.IsDragRequired; } }
-		public WVec DragOffset { get { return info.DragOffset; } }
-		public int DragLength { get { return info.DragLength; } }
+		public bool AllowDocking => !preventDock;
+		public CVec DeliveryOffset => info.DockOffset;
+		public WAngle DeliveryAngle => info.DockAngle;
+		public bool IsDragRequired => info.IsDragRequired;
+		public WVec DragOffset => info.DragOffset;
+		public int DragLength => info.DragLength;
 
 		public Refinery(Actor self, RefineryInfo info)
 		{

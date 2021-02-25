@@ -16,15 +16,11 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
 	public class MoveClassicFacingFudge : UpdateRule
 	{
-		public override string Name { get { return "UseClassicFacingFudge functionality was moved to Cnc-specific sequence/coordinate code."; } }
-		public override string Description
-		{
-			get
-			{
-				return "UseClassicFacingFudge has been replaced with ClassicFacingBodyOrientation trait\n" +
-						"and Classic* variants of *Sequence loaders respectively, both located in Mods.Cnc.";
-			}
-		}
+		public override string Name => "UseClassicFacingFudge functionality was moved to Cnc-specific sequence/coordinate code.";
+
+		public override string Description =>
+			"UseClassicFacingFudge has been replaced with ClassicFacingBodyOrientation trait\n" +
+			"and Classic* variants of *Sequence loaders respectively, both located in Mods.Cnc.";
 
 		readonly List<string> locations = new List<string>();
 

@@ -214,9 +214,9 @@ namespace OpenRA.Mods.Common.Traits
 			return null;
 		}
 
-		public bool IsFull { get { return contents.Values.Sum() == Info.Capacity; } }
-		public bool IsEmpty { get { return contents.Values.Sum() == 0; } }
-		public int Fullness { get { return contents.Values.Sum() * 100 / Info.Capacity; } }
+		public bool IsFull => contents.Values.Sum() == Info.Capacity;
+		public bool IsEmpty => contents.Values.Sum() == 0;
+		public int Fullness => contents.Values.Sum() * 100 / Info.Capacity;
 
 		void UpdateCondition(Actor self)
 		{
@@ -366,8 +366,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		class HarvestOrderTargeter : IOrderTargeter
 		{
-			public string OrderID { get { return "Harvest"; } }
-			public int OrderPriority { get { return 10; } }
+			public string OrderID => "Harvest";
+			public int OrderPriority => 10;
 			public bool IsQueued { get; protected set; }
 			public bool TargetOverridesSelection(Actor self, in Target target, List<Actor> actorsAt, CPos xy, TargetModifiers modifiers) { return true; }
 

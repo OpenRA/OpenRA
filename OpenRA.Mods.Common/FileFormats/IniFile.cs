@@ -109,7 +109,7 @@ namespace OpenRA.Mods.Common.FileFormats
 			throw new InvalidOperationException("Section does not exist in map or rules: " + s);
 		}
 
-		public IEnumerable<IniSection> Sections { get { return sections.Values; } }
+		public IEnumerable<IniSection> Sections => sections.Values;
 	}
 
 	public class IniSection : IEnumerable<KeyValuePair<string, string>>

@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.HitShapes
 {
 	public class CircleShape : IHitShape
 	{
-		public WDist OuterRadius { get { return Radius; } }
+		public WDist OuterRadius => Radius;
 
 		[FieldLoader.Require]
 		public readonly WDist Radius = new WDist(426);

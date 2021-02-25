@@ -147,10 +147,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public string QueueGroup
 		{
-			get
-			{
-				return queueGroup;
-			}
+			get => queueGroup;
 
 			set
 			{
@@ -162,10 +159,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public ProductionQueue CurrentQueue
 		{
-			get
-			{
-				return paletteWidget.Value.CurrentQueue;
-			}
+			get => paletteWidget.Value.CurrentQueue;
 
 			set
 			{

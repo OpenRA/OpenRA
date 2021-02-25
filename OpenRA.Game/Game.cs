@@ -99,16 +99,16 @@ namespace OpenRA
 
 		// More accurate replacement for Environment.TickCount
 		static Stopwatch stopwatch = Stopwatch.StartNew();
-		public static long RunTime { get { return stopwatch.ElapsedMilliseconds; } }
+		public static long RunTime => stopwatch.ElapsedMilliseconds;
 
 		public static int RenderFrame = 0;
-		public static int NetFrameNumber { get { return OrderManager.NetFrameNumber; } }
-		public static int LocalTick { get { return OrderManager.LocalFrameNumber; } }
+		public static int NetFrameNumber => OrderManager.NetFrameNumber;
+		public static int LocalTick => OrderManager.LocalFrameNumber;
 
 		public static event Action<ConnectionTarget> OnRemoteDirectConnect = _ => { };
 		public static event Action<OrderManager> ConnectionStateChanged = _ => { };
 		static ConnectionState lastConnectionState = ConnectionState.PreConnecting;
-		public static int LocalClientId { get { return OrderManager.Connection.LocalClientId; } }
+		public static int LocalClientId => OrderManager.Connection.LocalClientId;
 
 		public static void RemoteDirectConnect(ConnectionTarget endpoint)
 		{

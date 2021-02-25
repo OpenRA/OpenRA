@@ -88,16 +88,13 @@ namespace OpenRA.Mods.Common.Terrain
 			return tile;
 		}
 
-		public TerrainTileInfo this[int index] { get { return tileInfo[index]; } }
+		public TerrainTileInfo this[int index] => tileInfo[index];
 
 		public bool Contains(int index)
 		{
 			return index >= 0 && index < tileInfo.Length;
 		}
 
-		public int TilesCount
-		{
-			get { return tileInfo.Length; }
-		}
+		public int TilesCount => tileInfo.Length;
 	}
 }

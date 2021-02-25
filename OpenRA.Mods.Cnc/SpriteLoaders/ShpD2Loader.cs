@@ -30,12 +30,12 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 
 		class ShpD2Frame : ISpriteFrame
 		{
-			public SpriteFrameType Type { get { return SpriteFrameType.Indexed8; } }
+			public SpriteFrameType Type => SpriteFrameType.Indexed8;
 			public Size Size { get; private set; }
-			public Size FrameSize { get { return Size; } }
-			public float2 Offset { get { return float2.Zero; } }
+			public Size FrameSize => Size;
+			public float2 Offset => float2.Zero;
 			public byte[] Data { get; set; }
-			public bool DisableExportPadding { get { return false; } }
+			public bool DisableExportPadding => false;
 
 			public ShpD2Frame(Stream s)
 			{

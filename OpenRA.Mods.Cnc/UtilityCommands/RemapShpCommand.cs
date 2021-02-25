@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 {
 	class RemapShpCommand : IUtilityCommand
 	{
-		string IUtilityCommand.Name { get { return "--remap"; } }
+		string IUtilityCommand.Name => "--remap";
 
 		bool IUtilityCommand.ValidateArguments(string[] args)
 		{

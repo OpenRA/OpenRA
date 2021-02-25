@@ -15,14 +15,9 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
 	class RenameRallyPointPath : UpdateRule
 	{
-		public override string Name { get { return "Renamed RallyPoint Offset to Path"; } }
-		public override string Description
-		{
-			get
-			{
-				return "The RallyPoint Offset property has been renamed to Path and now accepts multiple (or no) values.";
-			}
-		}
+		public override string Name => "Renamed RallyPoint Offset to Path";
+
+		public override string Description => "The RallyPoint Offset property has been renamed to Path and now accepts multiple (or no) values.";
 
 		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
 		{

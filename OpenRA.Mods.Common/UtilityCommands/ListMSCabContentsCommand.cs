@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 {
 	class ListMSCabContentsCommand : IUtilityCommand
 	{
-		string IUtilityCommand.Name { get { return "--list-mscab"; } }
+		string IUtilityCommand.Name => "--list-mscab";
 
 		bool IUtilityCommand.ValidateArguments(string[] args)
 		{

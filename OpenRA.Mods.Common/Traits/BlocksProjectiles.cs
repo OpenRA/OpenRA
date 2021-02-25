@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 		public BlocksProjectiles(Actor self, BlocksProjectilesInfo info)
 			: base(info) { }
 
-		WDist IBlocksProjectiles.BlockingHeight { get { return Info.Height; } }
+		WDist IBlocksProjectiles.BlockingHeight => Info.Height;
 
 		public static bool AnyBlockingActorAt(World world, WPos pos)
 		{

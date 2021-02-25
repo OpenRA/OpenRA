@@ -164,7 +164,7 @@ namespace OpenRA.Graphics
 			frames = new Cache<string, ISpriteFrame[]>(filename => FrameLoader.GetFrames(fileSystem, filename, loaders, out _));
 		}
 
-		public ISpriteFrame[] this[string filename] { get { return frames[filename]; } }
+		public ISpriteFrame[] this[string filename] => frames[filename];
 	}
 
 	public static class FrameLoader

@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Server
 		static readonly int ConnTimeout = 60000; // Drop unresponsive clients after 60 seconds
 
 		// TickTimeout is in microseconds
-		public int TickTimeout { get { return PingInterval * 100; } }
+		public int TickTimeout => PingInterval * 100;
 
 		long lastPing = 0;
 		long lastConnReport = 0;

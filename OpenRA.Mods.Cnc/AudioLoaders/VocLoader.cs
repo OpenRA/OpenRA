@@ -38,10 +38,10 @@ namespace OpenRA.Mods.Cnc.AudioLoaders
 
 	public sealed class VocFormat : ISoundFormat
 	{
-		public int SampleBits { get { return 8; } }
-		public int Channels { get { return 1; } }
+		public int SampleBits => 8;
+		public int Channels => 1;
 		public int SampleRate { get; private set; }
-		public float LengthInSeconds { get { return (float)totalSamples / SampleRate; } }
+		public float LengthInSeconds => (float)totalSamples / SampleRate;
 		public Stream GetPCMInputStream() { return new VocStream(new VocFormat(this)); }
 		public void Dispose() { stream.Dispose(); }
 
@@ -289,7 +289,7 @@ namespace OpenRA.Mods.Cnc.AudioLoaders
 			currentBlockEnded = true;
 		}
 
-		bool EndOfData { get { return currentBlockEnded && samplesLeftInBlock == 0; } }
+		bool EndOfData => currentBlockEnded && samplesLeftInBlock == 0;
 
 		int FillBuffer(int maxSamples)
 		{
@@ -358,15 +358,16 @@ namespace OpenRA.Mods.Cnc.AudioLoaders
 				this.format = format;
 			}
 
-			public override bool CanRead { get { return format.samplePosition < format.totalSamples; } }
-			public override bool CanSeek { get { return false; } }
-			public override bool CanWrite { get { return false; } }
+			public override bool CanRead => format.samplePosition < format.totalSamples;
+			public override bool CanSeek => false;
+			public override bool CanWrite => false;
 
-			public override long Length { get { return format.totalSamples; } }
+			public override long Length => format.totalSamples;
+
 			public override long Position
 			{
-				get { return format.samplePosition; }
-				set { throw new NotImplementedException(); }
+				get => format.samplePosition;
+				set => throw new NotImplementedException();
 			}
 
 			public override int Read(byte[] buffer, int offset, int count)

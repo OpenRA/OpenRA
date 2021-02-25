@@ -59,7 +59,7 @@ namespace OpenRA
 		/// this does not validate whether individual map cells are actually
 		/// projected inside the region.
 		/// </summary>
-		public MapCoordsRegion CandidateMapCoords { get { return new MapCoordsRegion(mapTopLeft, mapBottomRight); } }
+		public MapCoordsRegion CandidateMapCoords => new MapCoordsRegion(mapTopLeft, mapBottomRight);
 
 		public ProjectedCellRegionEnumerator GetEnumerator()
 		{
@@ -119,8 +119,8 @@ namespace OpenRA
 				v = r.TopLeft.V;
 			}
 
-			public PPos Current { get { return current; } }
-			object IEnumerator.Current { get { return Current; } }
+			public PPos Current => current;
+			object IEnumerator.Current => Current;
 			public void Dispose() { }
 		}
 	}

@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 	class UpdateMapCommand : IUtilityCommand
 	{
-		string IUtilityCommand.Name { get { return "--update-map"; } }
+		string IUtilityCommand.Name => "--update-map";
 
 		bool IUtilityCommand.ValidateArguments(string[] args)
 		{

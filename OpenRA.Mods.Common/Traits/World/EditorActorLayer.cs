@@ -119,7 +119,7 @@ namespace OpenRA.Mods.Common.Traits
 				.SelectMany(p => p.RenderAnnotations());
 		}
 
-		bool IRenderAnnotations.SpatiallyPartitionable { get { return false; } }
+		bool IRenderAnnotations.SpatiallyPartitionable => false;
 
 		public EditorActorPreview Add(ActorReference reference) { return Add(NextActorName(), reference); }
 

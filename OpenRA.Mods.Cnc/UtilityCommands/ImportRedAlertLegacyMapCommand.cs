@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 		public ImportRedAlertLegacyMapCommand()
 			: base(128) { }
 
-		string IUtilityCommand.Name { get { return "--import-ra-map"; } }
+		string IUtilityCommand.Name => "--import-ra-map";
 		bool IUtilityCommand.ValidateArguments(string[] args) { return ValidateArguments(args); }
 
 		[Desc("FILENAME", "Convert a legacy Red Alert INI/MPR map to the OpenRA format.")]

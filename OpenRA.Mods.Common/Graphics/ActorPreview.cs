@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Graphics
 	{
 		public readonly ActorInfo Actor;
 		public readonly WorldRenderer WorldRenderer;
-		public World World { get { return WorldRenderer.World; } }
+		public World World => WorldRenderer.World;
 
 		readonly ActorReference reference;
 

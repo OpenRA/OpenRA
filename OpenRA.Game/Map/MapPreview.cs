@@ -84,7 +84,7 @@ namespace OpenRA
 			public MapVisibility Visibility;
 
 			Lazy<Ruleset> rules;
-			public Ruleset Rules { get { return rules != null ? rules.Value : null; } }
+			public Ruleset Rules => rules != null ? rules.Value : null;
 			public bool InvalidCustomRules { get; private set; }
 			public bool DefinesUnsafeCustomRules { get; private set; }
 			public bool RulesLoaded { get; private set; }
@@ -138,23 +138,24 @@ namespace OpenRA
 
 		volatile InnerData innerData;
 
-		public string Title { get { return innerData.Title; } }
-		public string[] Categories { get { return innerData.Categories; } }
-		public string Author { get { return innerData.Author; } }
-		public string TileSet { get { return innerData.TileSet; } }
-		public MapPlayers Players { get { return innerData.Players; } }
-		public int PlayerCount { get { return innerData.PlayerCount; } }
-		public CPos[] SpawnPoints { get { return innerData.SpawnPoints; } }
-		public MapGridType GridType { get { return innerData.GridType; } }
-		public Rectangle Bounds { get { return innerData.Bounds; } }
-		public Png Preview { get { return innerData.Preview; } }
-		public MapStatus Status { get { return innerData.Status; } }
-		public MapClassification Class { get { return innerData.Class; } }
-		public MapVisibility Visibility { get { return innerData.Visibility; } }
+		public string Title => innerData.Title;
+		public string[] Categories => innerData.Categories;
+		public string Author => innerData.Author;
+		public string TileSet => innerData.TileSet;
+		public MapPlayers Players => innerData.Players;
+		public int PlayerCount => innerData.PlayerCount;
+		public CPos[] SpawnPoints => innerData.SpawnPoints;
+		public MapGridType GridType => innerData.GridType;
+		public Rectangle Bounds => innerData.Bounds;
+		public Png Preview => innerData.Preview;
+		public MapStatus Status => innerData.Status;
+		public MapClassification Class => innerData.Class;
+		public MapVisibility Visibility => innerData.Visibility;
 
-		public Ruleset Rules { get { return innerData.Rules; } }
-		public bool InvalidCustomRules { get { return innerData.InvalidCustomRules; } }
-		public bool RulesLoaded { get { return innerData.RulesLoaded; } }
+		public Ruleset Rules => innerData.Rules;
+		public bool InvalidCustomRules => innerData.InvalidCustomRules;
+		public bool RulesLoaded => innerData.RulesLoaded;
+
 		public bool DefinesUnsafeCustomRules
 		{
 			get

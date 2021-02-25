@@ -37,13 +37,7 @@ namespace OpenRA.Mods.Common.Traits
 			return forPlayer == self.Owner;
 		}
 
-		public string TooltipText
-		{
-			get
-			{
-				return "Power Usage: {0}{1}".F(powerManager.PowerDrained, developerMode.UnlimitedPower ? "" : "/" + powerManager.PowerProvided);
-			}
-		}
+		public string TooltipText => "Power Usage: {0}{1}".F(powerManager.PowerDrained, developerMode.UnlimitedPower ? "" : "/" + powerManager.PowerProvided);
 
 		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{

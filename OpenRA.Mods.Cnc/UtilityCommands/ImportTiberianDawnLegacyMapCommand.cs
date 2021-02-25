@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 		public ImportTiberianDawnLegacyMapCommand()
 			: base(64) { }
 
-		string IUtilityCommand.Name { get { return "--import-td-map"; } }
+		string IUtilityCommand.Name => "--import-td-map";
 		bool IUtilityCommand.ValidateArguments(string[] args) { return ValidateArguments(args); }
 
 		[Desc("FILENAME", "Convert a legacy Tiberian Dawn INI/MPR map to the OpenRA format.")]

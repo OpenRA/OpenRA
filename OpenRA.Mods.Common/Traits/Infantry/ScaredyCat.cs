@@ -48,10 +48,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Sync]
 		int panicStartedTick;
-		bool Panicking { get { return panicStartedTick > 0; } }
+		bool Panicking => panicStartedTick > 0;
 
-		bool IRenderInfantrySequenceModifier.IsModifyingSequence { get { return Panicking; } }
-		string IRenderInfantrySequenceModifier.SequencePrefix { get { return info.PanicSequencePrefix; } }
+		bool IRenderInfantrySequenceModifier.IsModifyingSequence => Panicking;
+		string IRenderInfantrySequenceModifier.SequencePrefix => info.PanicSequencePrefix;
 
 		public ScaredyCat(Actor self, ScaredyCatInfo info)
 		{

@@ -651,7 +651,7 @@ namespace OpenRA
 		{
 			public static readonly SerializeAttribute Default = new SerializeAttribute(true);
 
-			public bool IsDefault { get { return this == Default; } }
+			public bool IsDefault => this == Default;
 
 			public readonly bool Serialize;
 			public string YamlName;

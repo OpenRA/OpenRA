@@ -69,8 +69,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 			}
 		}
 
-		Sprite IProductionIconOverlay.Sprite { get { return sprite; } }
-		string IProductionIconOverlay.Palette { get { return info.Palette; } }
+		Sprite IProductionIconOverlay.Sprite => sprite;
+		string IProductionIconOverlay.Palette => info.Palette;
+
 		float2 IProductionIconOverlay.Offset(float2 iconSize)
 		{
 			var x = (sprite.Size.X - iconSize.X) / 2;

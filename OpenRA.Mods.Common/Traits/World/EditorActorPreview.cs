@@ -30,16 +30,11 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly Rectangle Bounds;
 		public readonly SelectionBoxAnnotationRenderable SelectionBox;
 
-		public string Tooltip
-		{
-			get
-			{
-				return (tooltip == null ? " < " + Info.Name + " >" : tooltip.Name) + "\n" + Owner.Name + " (" + Owner.Faction + ")"
-					+ "\nID: " + ID + "\nType: " + Info.Name;
-			}
-		}
+		public string Tooltip =>
+			(tooltip == null ? " < " + Info.Name + " >" : tooltip.Name) + "\n" + Owner.Name + " (" + Owner.Faction + ")"
+			+ "\nID: " + ID + "\nType: " + Info.Name;
 
-		public string Type { get { return reference.Type; } }
+		public string Type => reference.Type;
 
 		public string ID { get; set; }
 		public PlayerReference Owner { get; set; }

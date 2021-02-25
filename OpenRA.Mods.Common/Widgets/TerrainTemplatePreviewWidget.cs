@@ -31,10 +31,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public TerrainTemplateInfo Template
 		{
-			get
-			{
-				return template;
-			}
+			get => template;
 
 			set
 			{

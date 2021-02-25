@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 {
 	class ImportTSMapCommand : IUtilityCommand
 	{
-		string IUtilityCommand.Name { get { return "--import-ts-map"; } }
+		string IUtilityCommand.Name => "--import-ts-map";
 		bool IUtilityCommand.ValidateArguments(string[] args) { return args.Length >= 2; }
 
 		static readonly Dictionary<byte, string> OverlayToActor = new Dictionary<byte, string>()

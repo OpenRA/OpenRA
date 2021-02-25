@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common
 			this.value = (int)value;
 		}
 
-		public virtual SubCell Value { get { return (SubCell)value; } }
+		public virtual SubCell Value => (SubCell)value;
 
 		public void Initialize(MiniYaml yaml)
 		{

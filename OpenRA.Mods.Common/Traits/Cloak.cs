@@ -102,7 +102,7 @@ namespace OpenRA.Mods.Common.Traits
 			base.Created(self);
 		}
 
-		public bool Cloaked { get { return !IsTraitDisabled && !IsTraitPaused && remainingTime <= 0; } }
+		public bool Cloaked => !IsTraitDisabled && !IsTraitPaused && remainingTime <= 0;
 
 		public void Uncloak() { Uncloak(Info.CloakDelay); }
 

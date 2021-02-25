@@ -136,12 +136,6 @@ namespace OpenRA.Mods.Common.Traits
 			return blockedPositions.Any(loc => self.World.ActorMap.GetActorsAt(loc).Any(a => a != self));
 		}
 
-		WDist IBlocksProjectiles.BlockingHeight
-		{
-			get
-			{
-				return new WDist(Info.BlocksProjectilesHeight.Length * (OpenPosition - Position) / OpenPosition);
-			}
-		}
+		WDist IBlocksProjectiles.BlockingHeight => new WDist(Info.BlocksProjectilesHeight.Length * (OpenPosition - Position) / OpenPosition);
 	}
 }

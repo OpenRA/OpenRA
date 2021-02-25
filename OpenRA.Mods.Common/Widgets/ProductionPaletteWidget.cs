@@ -98,10 +98,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public ProductionQueue CurrentQueue
 		{
-			get
-			{
-				return currentQueue;
-			}
+			get => currentQueue;
 			set
 			{
 				currentQueue = value;
@@ -112,7 +109,7 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 		}
 
-		public override Rectangle EventBounds { get { return eventBounds; } }
+		public override Rectangle EventBounds => eventBounds;
 		Dictionary<Rectangle, ProductionIcon> icons = new Dictionary<Rectangle, ProductionIcon>();
 		Animation cantBuild, clock;
 		Rectangle eventBounds = Rectangle.Empty;
@@ -206,10 +203,7 @@ namespace OpenRA.Mods.Common.Widgets
 				IconRowOffset--;
 		}
 
-		public bool CanScrollUp
-		{
-			get { return IconRowOffset > 0; }
-		}
+		public bool CanScrollUp => IconRowOffset > 0;
 
 		public void ScrollToTop()
 		{

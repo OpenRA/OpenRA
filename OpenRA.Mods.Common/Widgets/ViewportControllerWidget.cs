@@ -302,14 +302,9 @@ namespace OpenRA.Mods.Common.Widgets
 			return null;
 		}
 
-		bool IsJoystickScrolling
-		{
-			get
-			{
-				return joystickScrollStart.HasValue && joystickScrollEnd.HasValue &&
-					(joystickScrollStart.Value - joystickScrollEnd.Value).Length > Game.Settings.Game.MouseScrollDeadzone;
-			}
-		}
+		bool IsJoystickScrolling =>
+			joystickScrollStart.HasValue && joystickScrollEnd.HasValue &&
+			(joystickScrollStart.Value - joystickScrollEnd.Value).Length > Game.Settings.Game.MouseScrollDeadzone;
 
 		public override bool HandleMouseInput(MouseInput mi)
 		{

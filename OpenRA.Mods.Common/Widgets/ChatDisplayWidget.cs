@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Widgets
 		const int LogLength = 9;
 		List<ChatLine> recentLines = new List<ChatLine>();
 
-		public override Rectangle EventBounds { get { return Rectangle.Empty; } }
+		public override Rectangle EventBounds => Rectangle.Empty;
 
 		public override void Draw()
 		{

@@ -177,8 +177,8 @@ namespace OpenRA.Mods.Common.Traits
 				rejectMove = !self.AcceptsOrder("Move");
 			}
 
-			public string OrderID { get { return "Move"; } }
-			public int OrderPriority { get { return 4; } }
+			public string OrderID => "Move";
+			public int OrderPriority => 4;
 			public bool IsQueued { get; protected set; }
 
 			public bool CanTarget(Actor self, in Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor)

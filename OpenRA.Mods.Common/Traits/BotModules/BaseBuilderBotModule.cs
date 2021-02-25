@@ -144,7 +144,7 @@ namespace OpenRA.Mods.Common.Traits
 			return randomConstructionYard != null ? randomConstructionYard.Location : initialBaseCenter;
 		}
 
-		public CPos DefenseCenter { get { return defenseCenter; } }
+		public CPos DefenseCenter => defenseCenter;
 
 		readonly World world;
 		readonly Player player;
@@ -194,10 +194,7 @@ namespace OpenRA.Mods.Common.Traits
 			defenseCenter = newLocation;
 		}
 
-		bool IBotRequestPauseUnitProduction.PauseUnitProduction
-		{
-			get { return !IsTraitDisabled && !HasAdequateRefineryCount; }
-		}
+		bool IBotRequestPauseUnitProduction.PauseUnitProduction => !IsTraitDisabled && !HasAdequateRefineryCount;
 
 		void IBotTick.BotTick(IBot bot)
 		{
@@ -261,25 +258,14 @@ namespace OpenRA.Mods.Common.Traits
 			return info != null && world.IsCellBuildable(x, null, info);
 		}
 
-		public bool HasAdequateRefineryCount
-		{
-			get
-			{
-				// Require at least one refinery, unless we can't build it.
-				return !Info.RefineryTypes.Any() ||
-					AIUtils.CountBuildingByCommonName(Info.RefineryTypes, player) >= MinimumRefineryCount ||
-					AIUtils.CountBuildingByCommonName(Info.PowerTypes, player) == 0 ||
-					AIUtils.CountBuildingByCommonName(Info.ConstructionYardTypes, player) == 0;
-			}
-		}
+		// Require at least one refinery, unless we can't build it.
+		public bool HasAdequateRefineryCount =>
+			!Info.RefineryTypes.Any() ||
+			AIUtils.CountBuildingByCommonName(Info.RefineryTypes, player) >= MinimumRefineryCount ||
+			AIUtils.CountBuildingByCommonName(Info.PowerTypes, player) == 0 ||
+			AIUtils.CountBuildingByCommonName(Info.ConstructionYardTypes, player) == 0;
 
-		int MinimumRefineryCount
-		{
-			get
-			{
-				return AIUtils.CountBuildingByCommonName(Info.BarracksTypes, player) > 0 ? Info.InititalMinimumRefineryCount + Info.AdditionalMinimumRefineryCount : Info.InititalMinimumRefineryCount;
-			}
-		}
+		int MinimumRefineryCount => AIUtils.CountBuildingByCommonName(Info.BarracksTypes, player) > 0 ? Info.InititalMinimumRefineryCount + Info.AdditionalMinimumRefineryCount : Info.InititalMinimumRefineryCount;
 
 		List<MiniYamlNode> IGameSaveTraitData.IssueTraitData(Actor self)
 		{

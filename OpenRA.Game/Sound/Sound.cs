@@ -200,7 +200,7 @@ namespace OpenRA
 
 		Action onMusicComplete;
 		public bool MusicPlaying { get; private set; }
-		public MusicInfo CurrentMusic { get { return currentMusic; } }
+		public MusicInfo CurrentMusic => currentMusic;
 
 		public void PlayMusic(MusicInfo m)
 		{
@@ -277,10 +277,7 @@ namespace OpenRA
 		float soundVolumeModifier = 1.0f;
 		public float SoundVolumeModifier
 		{
-			get
-			{
-				return soundVolumeModifier;
-			}
+			get => soundVolumeModifier;
 
 			set
 			{
@@ -289,13 +286,11 @@ namespace OpenRA
 			}
 		}
 
-		float InternalSoundVolume { get { return SoundVolume * soundVolumeModifier; } }
+		float InternalSoundVolume => SoundVolume * soundVolumeModifier;
+
 		public float SoundVolume
 		{
-			get
-			{
-				return Game.Settings.Sound.SoundVolume;
-			}
+			get => Game.Settings.Sound.SoundVolume;
 
 			set
 			{
@@ -306,10 +301,7 @@ namespace OpenRA
 
 		public float MusicVolume
 		{
-			get
-			{
-				return Game.Settings.Sound.MusicVolume;
-			}
+			get => Game.Settings.Sound.MusicVolume;
 
 			set
 			{
@@ -321,10 +313,7 @@ namespace OpenRA
 
 		public float VideoVolume
 		{
-			get
-			{
-				return Game.Settings.Sound.VideoVolume;
-			}
+			get => Game.Settings.Sound.VideoVolume;
 
 			set
 			{
@@ -334,15 +323,9 @@ namespace OpenRA
 			}
 		}
 
-		public float MusicSeekPosition
-		{
-			get { return music != null ? music.SeekPosition : 0; }
-		}
+		public float MusicSeekPosition => music != null ? music.SeekPosition : 0;
 
-		public float VideoSeekPosition
-		{
-			get { return video != null ? video.SeekPosition : 0; }
-		}
+		public float VideoSeekPosition => video != null ? video.SeekPosition : 0;
 
 		// Returns true if played successfully
 		public bool PlayPredefined(SoundType soundType, Ruleset ruleset, Player p, Actor voicedActor, string type, string definition, string variant,

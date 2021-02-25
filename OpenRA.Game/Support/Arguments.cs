@@ -18,7 +18,7 @@ namespace OpenRA
 	{
 		Dictionary<string, string> args = new Dictionary<string, string>();
 
-		public static Arguments Empty { get { return new Arguments(); } }
+		public static Arguments Empty => new Arguments();
 
 		public Arguments(params string[] src)
 		{

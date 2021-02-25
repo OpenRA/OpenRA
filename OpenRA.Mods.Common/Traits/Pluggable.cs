@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int EditorDisplayOrder = 5;
 
 		[GrantedConditionReference]
-		public IEnumerable<string> LinterConditions { get { return Conditions.Values; } }
+		public IEnumerable<string> LinterConditions => Conditions.Values;
 
 		[ConsumedConditionReference]
 		public IEnumerable<string> ConsumedConditions

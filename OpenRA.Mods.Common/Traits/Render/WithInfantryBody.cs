@@ -77,7 +77,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		AnimationState state;
 		IRenderInfantrySequenceModifier rsm;
 
-		bool IsModifyingSequence { get { return rsm != null && rsm.IsModifyingSequence; } }
+		bool IsModifyingSequence => rsm != null && rsm.IsModifyingSequence;
 		bool wasModifying;
 
 		// Allow subclasses to override the info that we use for rendering

@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 {
 	class DebugChromeRegions : IUtilityCommand
 	{
-		string IUtilityCommand.Name { get { return "--debug-chrome-regions"; } }
+		string IUtilityCommand.Name => "--debug-chrome-regions";
 
 		bool IUtilityCommand.ValidateArguments(string[] args)
 		{

@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			label = new CachedTransform<int, string>(g => g.ToString());
 		}
 
-		bool IDecoration.RequiresSelection { get { return true; } }
+		bool IDecoration.RequiresSelection => true;
 
 		IEnumerable<IRenderable> IDecoration.RenderDecoration(Actor self, WorldRenderer wr, ISelectionDecorations container)
 		{

@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override object Create(ActorInitializer init) { return new PaletteFromPng(init.World, this); }
 
-		string IProvidesCursorPaletteInfo.Palette { get { return CursorPalette ? Name : null; } }
+		string IProvidesCursorPaletteInfo.Palette => CursorPalette ? Name : null;
 
 		ImmutablePalette IProvidesCursorPaletteInfo.ReadPalette(IReadOnlyFileSystem fileSystem)
 		{

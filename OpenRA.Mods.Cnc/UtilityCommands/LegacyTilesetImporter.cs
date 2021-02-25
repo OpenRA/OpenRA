@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 {
 	class ImportLegacyTilesetCommand : IUtilityCommand
 	{
-		string IUtilityCommand.Name { get { return "--tileset-import"; } }
+		string IUtilityCommand.Name => "--tileset-import";
 
 		bool IUtilityCommand.ValidateArguments(string[] args)
 		{

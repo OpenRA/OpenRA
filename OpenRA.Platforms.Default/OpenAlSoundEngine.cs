@@ -23,7 +23,7 @@ namespace OpenRA.Platforms.Default
 {
 	sealed class OpenAlSoundEngine : ISoundEngine
 	{
-		public bool Dummy { get { return false; } }
+		public bool Dummy => false;
 
 		public SoundDevice[] AvailableDevices()
 		{
@@ -272,8 +272,8 @@ namespace OpenRA.Platforms.Default
 
 		public float Volume
 		{
-			get { return volume; }
-			set { AL10.alListenerf(AL10.AL_GAIN, volume = value); }
+			get => volume;
+			set => AL10.alListenerf(AL10.AL_GAIN, volume = value);
 		}
 
 		public void PauseSound(ISound sound, bool paused)
@@ -380,7 +380,7 @@ namespace OpenRA.Platforms.Default
 		uint buffer;
 		bool disposed;
 
-		public uint Buffer { get { return buffer; } }
+		public uint Buffer => buffer;
 		public int SampleRate { get; private set; }
 
 		public OpenAlSoundSource(byte[] data, int byteCount, int channels, int sampleBits, int sampleRate)
@@ -442,7 +442,7 @@ namespace OpenRA.Platforms.Default
 		public float Volume
 		{
 			get { AL10.alGetSourcef(Source, AL10.AL_GAIN, out var volume); return volume; }
-			set { AL10.alSourcef(Source, AL10.AL_GAIN, value); }
+			set => AL10.alSourcef(Source, AL10.AL_GAIN, value);
 		}
 
 		public virtual float SeekPosition
@@ -602,9 +602,6 @@ namespace OpenRA.Platforms.Default
 			}
 		}
 
-		public override bool Complete
-		{
-			get { return playTask.IsCompleted; }
-		}
+		public override bool Complete => playTask.IsCompleted;
 	}
 }

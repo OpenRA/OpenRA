@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 {
 	class ListInstallShieldCabContentsCommand : IUtilityCommand
 	{
-		string IUtilityCommand.Name { get { return "--list-installshield-cab"; } }
+		string IUtilityCommand.Name => "--list-installshield-cab";
 
 		bool IUtilityCommand.ValidateArguments(string[] args)
 		{

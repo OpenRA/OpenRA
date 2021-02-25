@@ -16,14 +16,9 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
 	public class RenameSpins : UpdateRule
 	{
-		public override string Name { get { return "FallsToEarth.Spins has been refactored to MaximumSpinSpeed."; } }
-		public override string Description
-		{
-			get
-			{
-				return "The FallsToEarth.Spins property has been refactored to MaximumSpinSpeed.";
-			}
-		}
+		public override string Name => "FallsToEarth.Spins has been refactored to MaximumSpinSpeed.";
+
+		public override string Description => "The FallsToEarth.Spins property has been refactored to MaximumSpinSpeed.";
 
 		readonly List<string> locations = new List<string>();
 

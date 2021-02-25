@@ -111,7 +111,7 @@ namespace OpenRA.Mods.Common.Traits
 			return RangeCircleRenderables(wr);
 		}
 
-		bool IRenderAnnotationsWhenSelected.SpatiallyPartitionable { get { return false; } }
+		bool IRenderAnnotationsWhenSelected.SpatiallyPartitionable => false;
 
 		float ISelectionBar.GetValue()
 		{
@@ -130,6 +130,6 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		Color ISelectionBar.GetColor() { return Color.Purple; }
-		bool ISelectionBar.DisplayWhenEmpty { get { return false; } }
+		bool ISelectionBar.DisplayWhenEmpty => false;
 	}
 }

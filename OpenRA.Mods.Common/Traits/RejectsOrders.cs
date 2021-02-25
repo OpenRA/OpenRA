@@ -29,8 +29,8 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class RejectsOrders : ConditionalTrait<RejectsOrdersInfo>
 	{
-		public HashSet<string> Reject { get { return Info.Reject; } }
-		public HashSet<string> Except { get { return Info.Except; } }
+		public HashSet<string> Reject => Info.Reject;
+		public HashSet<string> Except => Info.Except;
 
 		public RejectsOrders(RejectsOrdersInfo info)
 			: base(info) { }

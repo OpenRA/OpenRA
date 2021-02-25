@@ -48,8 +48,8 @@ namespace OpenRA
 		Activity currentActivity;
 		public Activity CurrentActivity
 		{
-			get { return Activity.SkipDoneActivities(currentActivity); }
-			private set { currentActivity = value; }
+			get => Activity.SkipDoneActivities(currentActivity);
+			private set => currentActivity = value;
 		}
 
 		public int Generation;
@@ -59,19 +59,13 @@ namespace OpenRA
 		public IOccupySpace OccupiesSpace { get; private set; }
 		public ITargetable[] Targetables { get; private set; }
 
-		public bool IsIdle { get { return CurrentActivity == null; } }
-		public bool IsDead { get { return Disposed || (health != null && health.IsDead); } }
+		public bool IsIdle => CurrentActivity == null;
+		public bool IsDead => Disposed || (health != null && health.IsDead);
 
-		public CPos Location { get { return OccupiesSpace.TopLeft; } }
-		public WPos CenterPosition { get { return OccupiesSpace.CenterPosition; } }
+		public CPos Location => OccupiesSpace.TopLeft;
+		public WPos CenterPosition => OccupiesSpace.CenterPosition;
 
-		public WRot Orientation
-		{
-			get
-			{
-				return facing != null ? facing.Orientation : WRot.None;
-			}
-		}
+		public WRot Orientation => facing != null ? facing.Orientation : WRot.None;
 
 		/// <summary>Value used to represent an invalid token.</summary>
 		public static readonly int InvalidConditionToken = -1;
@@ -615,8 +609,8 @@ namespace OpenRA
 
 		public LuaValue this[LuaRuntime runtime, LuaValue keyValue]
 		{
-			get { return luaInterface.Value[runtime, keyValue]; }
-			set { luaInterface.Value[runtime, keyValue] = value; }
+			get => luaInterface.Value[runtime, keyValue];
+			set => luaInterface.Value[runtime, keyValue] = value;
 		}
 
 		public LuaValue Equals(LuaRuntime runtime, LuaValue left, LuaValue right)

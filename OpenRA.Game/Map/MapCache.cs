@@ -335,10 +335,7 @@ namespace OpenRA
 			return initialUid;
 		}
 
-		public MapPreview this[string key]
-		{
-			get { return previews[key]; }
-		}
+		public MapPreview this[string key] => previews[key];
 
 		public IEnumerator<MapPreview> GetEnumerator()
 		{

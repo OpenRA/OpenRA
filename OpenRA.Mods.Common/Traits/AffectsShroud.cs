@@ -152,7 +152,7 @@ namespace OpenRA.Mods.Common.Traits
 				RemoveCellsFromPlayerShroud(self, p);
 		}
 
-		public virtual WDist Range { get { return CachedTraitDisabled ? WDist.Zero : Info.Range; } }
+		public virtual WDist Range => CachedTraitDisabled ? WDist.Zero : Info.Range;
 
 		void INotifyMoving.MovementTypeChanged(Actor self, MovementType type)
 		{

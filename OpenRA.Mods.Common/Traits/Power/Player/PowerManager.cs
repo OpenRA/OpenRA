@@ -37,14 +37,14 @@ namespace OpenRA.Mods.Common.Traits
 		[Sync]
 		int totalProvided;
 
-		public int PowerProvided { get { return totalProvided; } }
+		public int PowerProvided => totalProvided;
 
 		[Sync]
 		int totalDrained;
 
-		public int PowerDrained { get { return totalDrained; } }
+		public int PowerDrained => totalDrained;
 
-		public int ExcessPower { get { return totalProvided - totalDrained; } }
+		public int ExcessPower => totalProvided - totalDrained;
 
 		public int PowerOutageRemainingTicks { get; private set; }
 		public int PowerOutageTotalTicks { get; private set; }

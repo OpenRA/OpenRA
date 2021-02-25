@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			return new ReadOnlyDictionary<CPos, SubCell>(occupied);
 		}
 
-		bool IOccupySpaceInfo.SharesCell { get { return false; } }
+		bool IOccupySpaceInfo.SharesCell => false;
 
 		// Used to determine if actor can spawn
 		public bool CanEnterCell(World world, Actor self, CPos cell, SubCell subCell = SubCell.FullCell, Actor ignoreActor = null, BlockedByActor check = BlockedByActor.All)
@@ -70,19 +70,19 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Sync]
 		public WAngle Facing
 		{
-			get { return orientation.Yaw; }
-			set { orientation = orientation.WithYaw(value); }
+			get => orientation.Yaw;
+			set => orientation = orientation.WithYaw(value);
 		}
 
-		public WRot Orientation { get { return orientation; } }
+		public WRot Orientation => orientation;
 
 		[Sync]
 		public WPos CenterPosition { get; private set; }
 
-		public CPos TopLeft { get { return self.World.Map.CellContaining(CenterPosition); } }
+		public CPos TopLeft => self.World.Map.CellContaining(CenterPosition);
 
 		// Isn't used anyway
-		public WAngle TurnSpeed { get { return WAngle.Zero; } }
+		public WAngle TurnSpeed => WAngle.Zero;
 
 		CPos cachedLocation;
 
@@ -142,10 +142,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			Facing = Facing == Left ? Right : Left;
 		}
 
-		int MovementSpeed
-		{
-			get { return OpenRA.Mods.Common.Util.ApplyPercentageModifiers(Info.Speed, speedModifiers); }
-		}
+		int MovementSpeed => OpenRA.Mods.Common.Util.ApplyPercentageModifiers(Info.Speed, speedModifiers);
 
 		public (CPos, SubCell)[] OccupiedCells() { return new[] { (TopLeft, SubCell.FullCell) }; }
 
@@ -223,7 +220,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public CPos NearestMoveableCell(CPos cell) { return cell; }
 
 		// Actors with TDGunboat always move
-		public MovementType CurrentMovementTypes { get { return MovementType.Horizontal; } set { } }
+		public MovementType CurrentMovementTypes { get => MovementType.Horizontal; set { } }
 
 		public bool CanEnterTargetNow(Actor self, in Target target)
 		{

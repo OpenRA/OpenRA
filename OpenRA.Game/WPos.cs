@@ -129,10 +129,7 @@ namespace OpenRA
 				}
 			}
 
-			set
-			{
-				throw new LuaException("WPos is read-only. Use WPos.New to create a new value");
-			}
+			set => throw new LuaException("WPos is read-only. Use WPos.New to create a new value");
 		}
 
 		#endregion

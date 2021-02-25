@@ -37,12 +37,12 @@ namespace OpenRA
 		public static bool operator !=(WVec me, WVec other) { return !(me == other); }
 
 		public static int Dot(WVec a, WVec b) { return a.X * b.X + a.Y * b.Y + a.Z * b.Z; }
-		public long LengthSquared { get { return (long)X * X + (long)Y * Y + (long)Z * Z; } }
-		public int Length { get { return (int)Exts.ISqrt(LengthSquared); } }
-		public long HorizontalLengthSquared { get { return (long)X * X + (long)Y * Y; } }
-		public int HorizontalLength { get { return (int)Exts.ISqrt(HorizontalLengthSquared); } }
-		public long VerticalLengthSquared { get { return (long)Z * Z; } }
-		public int VerticalLength { get { return (int)Exts.ISqrt(VerticalLengthSquared); } }
+		public long LengthSquared => (long)X * X + (long)Y * Y + (long)Z * Z;
+		public int Length => (int)Exts.ISqrt(LengthSquared);
+		public long HorizontalLengthSquared => (long)X * X + (long)Y * Y;
+		public int HorizontalLength => (int)Exts.ISqrt(HorizontalLengthSquared);
+		public long VerticalLengthSquared => (long)Z * Z;
+		public int VerticalLength => (int)Exts.ISqrt(VerticalLengthSquared);
 
 		public WVec Rotate(in WRot rot)
 		{
@@ -151,10 +151,7 @@ namespace OpenRA
 				}
 			}
 
-			set
-			{
-				throw new LuaException("WVec is read-only. Use WVec.New to create a new value");
-			}
+			set => throw new LuaException("WVec is read-only. Use WVec.New to create a new value");
 		}
 
 		#endregion

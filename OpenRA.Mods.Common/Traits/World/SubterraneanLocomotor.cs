@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Depth at which the subterranian condition is applied.")]
 		public readonly WDist SubterraneanTransitionDepth = new WDist(-1024);
 
-		public override bool DisableDomainPassabilityCheck { get { return true; } }
+		public override bool DisableDomainPassabilityCheck => true;
 
 		public override object Create(ActorInitializer init) { return new SubterraneanLocomotor(init.Self, this); }
 	}

@@ -51,41 +51,41 @@ namespace OpenRA.Mods.Common.Scripting.Global
 			throw new LuaException("Invalid rrggbb[aa] hex string.");
 		}
 
-		public Color Aqua { get { return Color.Aqua; } }
-		public Color Black { get { return Color.Black; } }
-		public Color Blue { get { return Color.Blue; } }
-		public Color Brown { get { return Color.Brown; } }
-		public Color Cyan { get { return Color.Cyan; } }
-		public Color DarkBlue { get { return Color.DarkBlue; } }
-		public Color DarkCyan { get { return Color.DarkCyan; } }
-		public Color DarkGray { get { return Color.DarkGray; } }
-		public Color DarkGreen { get { return Color.DarkGreen; } }
-		public Color DarkOrange { get { return Color.DarkOrange; } }
-		public Color DarkRed { get { return Color.DarkRed; } }
-		public Color Fuchsia { get { return Color.Fuchsia; } }
-		public Color Gold { get { return Color.Gold; } }
-		public Color Gray { get { return Color.Gray; } }
-		public Color Green { get { return Color.Green; } }
-		public Color LawnGreen { get { return Color.LawnGreen; } }
-		public Color LightBlue { get { return Color.LightBlue; } }
-		public Color LightCyan { get { return Color.LightCyan; } }
-		public Color LightGray { get { return Color.LightGray; } }
-		public Color LightGreen { get { return Color.LightGreen; } }
-		public Color LightYellow { get { return Color.LightYellow; } }
-		public Color Lime { get { return Color.Lime; } }
-		public Color LimeGreen { get { return Color.LimeGreen; } }
-		public Color Magenta { get { return Color.Magenta; } }
-		public Color Maroon { get { return Color.Maroon; } }
-		public Color Navy { get { return Color.Navy; } }
-		public Color Olive { get { return Color.Olive; } }
-		public Color Orange { get { return Color.Orange; } }
-		public Color OrangeRed { get { return Color.OrangeRed; } }
-		public Color Purple { get { return Color.Purple; } }
-		public Color Red { get { return Color.Red; } }
-		public Color Salmon { get { return Color.Salmon; } }
-		public Color SkyBlue { get { return Color.SkyBlue; } }
-		public Color Teal { get { return Color.Teal; } }
-		public Color Yellow { get { return Color.Yellow; } }
-		public Color White { get { return Color.White; } }
+		public Color Aqua => Color.Aqua;
+		public Color Black => Color.Black;
+		public Color Blue => Color.Blue;
+		public Color Brown => Color.Brown;
+		public Color Cyan => Color.Cyan;
+		public Color DarkBlue => Color.DarkBlue;
+		public Color DarkCyan => Color.DarkCyan;
+		public Color DarkGray => Color.DarkGray;
+		public Color DarkGreen => Color.DarkGreen;
+		public Color DarkOrange => Color.DarkOrange;
+		public Color DarkRed => Color.DarkRed;
+		public Color Fuchsia => Color.Fuchsia;
+		public Color Gold => Color.Gold;
+		public Color Gray => Color.Gray;
+		public Color Green => Color.Green;
+		public Color LawnGreen => Color.LawnGreen;
+		public Color LightBlue => Color.LightBlue;
+		public Color LightCyan => Color.LightCyan;
+		public Color LightGray => Color.LightGray;
+		public Color LightGreen => Color.LightGreen;
+		public Color LightYellow => Color.LightYellow;
+		public Color Lime => Color.Lime;
+		public Color LimeGreen => Color.LimeGreen;
+		public Color Magenta => Color.Magenta;
+		public Color Maroon => Color.Maroon;
+		public Color Navy => Color.Navy;
+		public Color Olive => Color.Olive;
+		public Color Orange => Color.Orange;
+		public Color OrangeRed => Color.OrangeRed;
+		public Color Purple => Color.Purple;
+		public Color Red => Color.Red;
+		public Color Salmon => Color.Salmon;
+		public Color SkyBlue => Color.SkyBlue;
+		public Color Teal => Color.Teal;
+		public Color Yellow => Color.Yellow;
+		public Color White => Color.White;
 	}
 }
