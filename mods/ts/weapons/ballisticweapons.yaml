@@ -21,6 +21,7 @@
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: medium_clsn
+		ExplosionPalette: effect-ignore-lighting-alpha75
 		ImpactSounds: expnew14.aud
 		ValidTargets: Ground, Air
 	Warhead@3EffWater: CreateEffect
@@ -39,6 +40,23 @@
 		Explosions: small_clsn
 	Warhead@4Smu: LeaveSmudge
 		SmudgeType: SmallCrater
+
+105mm:
+	Inherits: ^Cannon
+	ReloadDelay: 75
+	Range: 7c768
+	Projectile: Bullet
+		-Image:
+		Speed: 1c512
+		Blockable: false
+		LaunchAngle: 0
+		Damage: 4200
+		Versus:
+			None: 35
+			Wood: 87
+			Light: 105
+			Heavy: 116
+			Concrete: 81
 
 120mm:
 	Inherits: ^Cannon
