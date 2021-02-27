@@ -821,6 +821,7 @@ namespace OpenRA.Mods.Common.Server
 				}
 
 				targetClient.Team = team;
+				targetClient.IsTeamLead = false;
 				server.SyncLobbyClients();
 
 				return true;
