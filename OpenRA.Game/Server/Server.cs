@@ -1134,6 +1134,20 @@ namespace OpenRA.Server
 				client.IsTeamLead = LobbyInfo.Clients.Where(c => c.Index != client.Index && c.IsTeamLead && c.Team == client.Team).Count() == 0 || client.Team == 0;
 			}
 
+			foreach (var client in LobbyInfo.Clients)
+			{
+				// Set team leader's settings to members
+				if (!client.IsTeamLead)
+				{
+					var tl = LobbyInfo.Clients.First(c => c.IsTeamLead && c.Team == client.Team);
+					client.Color = tl.Color;
+					client.Faction = tl.Faction;
+					client.Handicap = tl.Handicap;
+					// only one client per spawn point possible.
+					client.SpawnPoint = 0;
+				}
+			}
+
 			lock (LobbyInfo)
 			{
 				// TODO: Only need to sync the specific client that has changed to avoid conflicts!

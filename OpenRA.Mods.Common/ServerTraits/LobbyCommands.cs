@@ -792,7 +792,11 @@ namespace OpenRA.Mods.Common.Server
 					return true;
 				}
 
+				if (!client.IsTeamLead)
+					parts[1] = server.LobbyInfo.Clients.First(c => c.IsTeamLead && c.Team == client.Team).Faction;
+
 				targetClient.Faction = parts[1];
+
 				server.SyncLobbyClients();
 
 				return true;
@@ -856,6 +860,9 @@ namespace OpenRA.Mods.Common.Server
 					Log.Write("server", "Invalid handicap: {0}", s);
 					return false;
 				}
+
+				if (!client.IsTeamLead)
+					handicap = server.LobbyInfo.Clients.First(c => c.IsTeamLead && c.Team == client.Team).Handicap;
 
 				targetClient.Handicap = handicap;
 				server.SyncLobbyClients();
@@ -951,6 +958,9 @@ namespace OpenRA.Mods.Common.Server
 					}
 				}
 
+				if (!client.IsTeamLead)
+					spawnPoint = 0;  // only one client per spawn point possible.
+
 				targetClient.SpawnPoint = spawnPoint;
 				server.SyncLobbyClients();
 
@@ -980,6 +990,9 @@ namespace OpenRA.Mods.Common.Server
 				// Only update player's preferred color if new color is valid
 				if (newColor == targetClient.Color)
 					targetClient.PreferredColor = targetClient.Color;
+
+				if (!client.IsTeamLead)
+					targetClient.Color = server.LobbyInfo.Clients.First(c => c.IsTeamLead && c.Team == client.Team).Color;
 
 				server.SyncLobbyClients();
 
