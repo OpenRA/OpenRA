@@ -526,7 +526,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		public static void SetupEditableColorWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, World world, ColorPreviewManagerWidget colorPreview)
 		{
 			var color = parent.Get<DropDownButtonWidget>("COLOR");
-			color.IsDisabled = () => (s != null && s.LockColor) || orderManager.LocalClient.IsReady;
+			color.IsDisabled = () => (s != null && s.LockColor) || orderManager.LocalClient.IsReady || (c.Team != 0 && !c.IsTeamLead);
 			color.OnMouseDown = _ => ShowColorDropDown(color, c, orderManager, world, colorPreview);
 
 			SetupColorWidget(color, s, c);
@@ -542,7 +542,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			Dictionary<string, LobbyFaction> factions)
 		{
 			var dropdown = parent.Get<DropDownButtonWidget>("FACTION");
-			dropdown.IsDisabled = () => s.LockFaction || orderManager.LocalClient.IsReady;
+			dropdown.IsDisabled = () => s.LockFaction || orderManager.LocalClient.IsReady || (c.Team != 0 && !c.IsTeamLead);
 			dropdown.OnMouseDown = _ => ShowFactionDropDown(dropdown, c, orderManager, factions);
 
 			var tooltip = SplitOnFirstToken(factions[c.Faction].Description);
@@ -585,7 +585,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var dropdown = parent.Get<DropDownButtonWidget>("HANDICAP_DROPDOWN");
 			dropdown.IsVisible = () => true;
-			dropdown.IsDisabled = () => s.LockTeam || orderManager.LocalClient.IsReady;
+			dropdown.IsDisabled = () => s.LockTeam || orderManager.LocalClient.IsReady || (c.Team != 0 && !c.IsTeamLead);
 			dropdown.OnMouseDown = _ => ShowHandicapDropDown(dropdown, c, orderManager);
 
 			var handicapLabel = new CachedTransform<int, string>(h => "{0}%".F(h));
@@ -608,7 +608,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var dropdown = parent.Get<DropDownButtonWidget>("SPAWN_DROPDOWN");
 			dropdown.IsVisible = () => true;
-			dropdown.IsDisabled = () => s.LockSpawn || orderManager.LocalClient.IsReady;
+			dropdown.IsDisabled = () => s.LockSpawn || orderManager.LocalClient.IsReady || (c.Team != 0 && !c.IsTeamLead);
 			dropdown.OnMouseDown = _ =>
 			{
 				var spawnPoints = Enumerable.Range(0, map.SpawnPoints.Length + 1).Except(
