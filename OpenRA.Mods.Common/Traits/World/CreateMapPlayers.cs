@@ -117,7 +117,7 @@ namespace OpenRA.Mods.Common.Traits
 				var player = new Player(w, client, players[kv.Value.PlayerReference], playerRandom);
 				worldPlayers.Add(player);
 
-				if (client.Index == Game.LocalClientId)
+				if (localPlayer == null)
 					localPlayer = player;
 			}
 
