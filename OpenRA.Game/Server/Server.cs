@@ -1131,7 +1131,7 @@ namespace OpenRA.Server
 			foreach (var client in LobbyInfo.Clients)
 			{
 				// Check if your team has a team leader else become team leader
-				client.IsTeamLead = LobbyInfo.Clients.Where(c => c.Index != client.Index && c.IsTeamLead && c.Team == client.Team).Count() == 0;
+				client.IsTeamLead = LobbyInfo.Clients.Where(c => c.Index != client.Index && c.IsTeamLead && c.Team == client.Team).Count() == 0 || client.Team == 0;
 			}
 
 			lock (LobbyInfo)
