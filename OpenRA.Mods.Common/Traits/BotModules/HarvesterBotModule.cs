@@ -87,7 +87,9 @@ namespace OpenRA.Mods.Common.Traits
 			domainIndex = world.WorldActor.Trait<DomainIndex>();
 			resLayer = world.WorldActor.TraitOrDefault<ResourceLayer>();
 			claimLayer = world.WorldActor.TraitOrDefault<ResourceClaimLayer>();
-			scanForIdleHarvestersTicks = Info.ScanForIdleHarvestersInterval;
+
+			// Avoid all AIs scanning for idle harvesters on the same tick, randomize their initial scan delay.
+			scanForIdleHarvestersTicks = world.LocalRandom.Next(Info.ScanForIdleHarvestersInterval, Info.ScanForIdleHarvestersInterval * 2);
 		}
 
 		void IBotTick.BotTick(IBot bot)
