@@ -1143,8 +1143,7 @@ namespace OpenRA.Server
 					client.Color = tl.Color;
 					client.Faction = tl.Faction;
 					client.Handicap = tl.Handicap;
-					// only one client per spawn point possible.
-					client.SpawnPoint = 0;
+					client.SpawnPoint = 0;  // only one client per spawn point possible.
 				}
 			}
 
