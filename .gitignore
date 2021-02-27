@@ -12,6 +12,7 @@ obj
 *.lastcodeanalysissucceeded
 _ReSharper.*/
 /.vs
+**/rcedit-*.exe
 
 # binaries
 mods/*/*.dll
