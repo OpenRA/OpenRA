@@ -38,8 +38,8 @@ namespace OpenRA.Mods.Common.Traits
 			// Drop orders from players who shouldn't be able to control this actor
 			// This may be because the owner changed within the last net tick,
 			// or, less likely, the client may be trying to do something malicious.
-			// if (subjectClientId != clientId && !isBotOrder)
-			// 	return false;
+			if (subjectClientId != clientId && !isBotOrder)
+				return false;
 
 			return order.Subject.AcceptsOrder(order.OrderString);
 		}

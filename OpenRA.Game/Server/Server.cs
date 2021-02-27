@@ -486,6 +486,7 @@ namespace OpenRA.Server
 					{
 						client.Slot = LobbyInfo.FirstEmptySlot();
 						client.IsAdmin = !LobbyInfo.Clients.Any(c1 => c1.IsAdmin);
+						client.IsTeamLead = false;
 
 						if (client.IsObserver && !LobbyInfo.GlobalSettings.AllowSpectators)
 						{
@@ -1126,6 +1127,12 @@ namespace OpenRA.Server
 		{
 			if (State != ServerState.WaitingPlayers)
 				return;
+
+			foreach (var client in LobbyInfo.Clients)
+			{
+				// Check if your team has a team leader else become team leader
+				client.IsTeamLead = LobbyInfo.Clients.Where(c => c.Index != client.Index && c.IsTeamLead && c.Team == client.Team).Count() == 0;
+			}
 
 			lock (LobbyInfo)
 			{

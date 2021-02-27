@@ -106,6 +106,17 @@ namespace OpenRA.Mods.Common.Traits
 				throw new InvalidOperationException("Map {0} does not define a player actor owning the world.".F(w.Map.Title));
 
 			Player localPlayer = null;
+			var team = 0;
+
+			// Get team of local player
+			foreach (var kv in w.LobbyInfo.Slots)
+			{
+				var client = w.LobbyInfo.ClientInSlot(kv.Key);
+				if (client == null)
+					continue;
+				if (client.Index == Game.LocalClientId)
+					team = client.Team;
+			}
 
 			// Create the regular playable players.
 			foreach (var kv in w.LobbyInfo.Slots)
@@ -114,11 +125,14 @@ namespace OpenRA.Mods.Common.Traits
 				if (client == null)
 					continue;
 
-				var player = new Player(w, client, players[kv.Value.PlayerReference], playerRandom);
-				worldPlayers.Add(player);
+				if (client.IsTeamLead || client.Team == 0)
+				{
+					var player = new Player(w, client, players[kv.Value.PlayerReference], playerRandom);
+					worldPlayers.Add(player);
 
-				if (localPlayer == null)
-					localPlayer = player;
+					if ((client.Index == Game.LocalClientId) || (team != 0 && client.Team == team))
+						localPlayer = player;
+				}
 			}
 
 			// Create a player that is allied with everyone for shared observer shroud.
