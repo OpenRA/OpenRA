@@ -24,7 +24,7 @@ namespace OpenRA.Primitives
 		public void Add(Action a, long desiredTime)
 		{
 			if (a == null)
-				throw new ArgumentNullException("a");
+				throw new ArgumentNullException(nameof(a));
 
 			lock (actions)
 			{

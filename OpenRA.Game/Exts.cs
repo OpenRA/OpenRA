@@ -159,7 +159,7 @@ namespace OpenRA
 			if (xs.Count == 0)
 			{
 				if (throws)
-					throw new ArgumentException("Collection must not be empty.", "ts");
+					throw new ArgumentException("Collection must not be empty.", nameof(ts));
 				else
 					return default(T);
 			}
@@ -236,7 +236,7 @@ namespace OpenRA
 			{
 				if (!e.MoveNext())
 					if (throws)
-						throw new ArgumentException("Collection must not be empty.", "ts");
+						throw new ArgumentException("Collection must not be empty.", nameof(ts));
 					else
 						return default(T);
 				t = e.Current;

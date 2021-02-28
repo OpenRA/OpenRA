@@ -321,7 +321,7 @@ namespace OpenRA.Traits
 		public void Explore(Shroud s)
 		{
 			if (map.Bounds != s.map.Bounds)
-				throw new ArgumentException("The map bounds of these shrouds do not match.", "s");
+				throw new ArgumentException("The map bounds of these shrouds do not match.", nameof(s));
 
 			foreach (var puv in map.ProjectedCells)
 			{

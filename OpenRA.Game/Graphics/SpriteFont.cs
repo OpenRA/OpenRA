@@ -32,7 +32,7 @@ namespace OpenRA.Graphics
 		public SpriteFont(string name, byte[] data, int size, int ascender, float scale, SheetBuilder builder)
 		{
 			if (builder.Type != SheetType.BGRA)
-				throw new ArgumentException("The sheet builder must create BGRA sheets.", "builder");
+				throw new ArgumentException("The sheet builder must create BGRA sheets.", nameof(builder));
 
 			deviceScale = scale;
 			this.size = size;

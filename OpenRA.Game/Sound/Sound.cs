@@ -349,7 +349,7 @@ namespace OpenRA
 			bool relative, WPos pos, float volumeModifier, bool attenuateVolume)
 		{
 			if (ruleset == null)
-				throw new ArgumentNullException("ruleset");
+				throw new ArgumentNullException(nameof(ruleset));
 
 			if (definition == null || DisableAllSounds || (DisableWorldSounds && soundType == SoundType.World))
 				return false;
@@ -416,7 +416,7 @@ namespace OpenRA
 		public bool PlayNotification(Ruleset rules, Player player, string type, string notification, string variant)
 		{
 			if (rules == null)
-				throw new ArgumentNullException("rules");
+				throw new ArgumentNullException(nameof(rules));
 
 			if (type == null || notification == null)
 				return false;

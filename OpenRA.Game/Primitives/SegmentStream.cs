@@ -33,13 +33,13 @@ namespace OpenRA.Primitives
 		public SegmentStream(Stream stream, long offset, long count)
 		{
 			if (stream == null)
-				throw new ArgumentNullException("stream");
+				throw new ArgumentNullException(nameof(stream));
 			if (!stream.CanSeek)
-				throw new ArgumentException("stream must be seekable.", "stream");
+				throw new ArgumentException("stream must be seekable.", nameof(stream));
 			if (offset < 0)
-				throw new ArgumentOutOfRangeException("offset", "offset must be non-negative.");
+				throw new ArgumentOutOfRangeException(nameof(offset), "offset must be non-negative.");
 			if (count < 0)
-				throw new ArgumentOutOfRangeException("count", "count must be non-negative.");
+				throw new ArgumentOutOfRangeException(nameof(count), "count must be non-negative.");
 
 			BaseStream = stream;
 			BaseOffset = offset;
@@ -93,7 +93,7 @@ namespace OpenRA.Primitives
 		{
 			switch (origin)
 			{
-				default: throw new InvalidEnumArgumentException("origin", (int)origin, typeof(SeekOrigin));
+				default: throw new InvalidEnumArgumentException(nameof(origin), (int)origin, typeof(SeekOrigin));
 				case SeekOrigin.Begin:
 					return BaseStream.Seek(BaseOffset + offset, SeekOrigin.Begin) - offset;
 				case SeekOrigin.Current:

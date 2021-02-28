@@ -52,7 +52,7 @@ namespace OpenRA
 		public ReadOnlyList(IList<T> list)
 		{
 			if (list == null)
-				throw new ArgumentNullException("list");
+				throw new ArgumentNullException(nameof(list));
 
 			this.list = list;
 		}

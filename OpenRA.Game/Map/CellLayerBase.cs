@@ -38,7 +38,7 @@ namespace OpenRA
 		public virtual void CopyValuesFrom(CellLayerBase<T> anotherLayer)
 		{
 			if (Size != anotherLayer.Size || GridType != anotherLayer.GridType)
-				throw new ArgumentException("Layers must have a matching size and shape (grid type).", "anotherLayer");
+				throw new ArgumentException("Layers must have a matching size and shape (grid type).", nameof(anotherLayer));
 
 			Array.Copy(anotherLayer.entries, entries, entries.Length);
 		}

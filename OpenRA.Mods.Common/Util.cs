@@ -279,7 +279,7 @@ namespace OpenRA.Mods.Common
 				case InaccuracyType.Absolute:
 					return inaccuracy;
 				default:
-					throw new InvalidEnumArgumentException("inaccuracyType", (int)inaccuracyType, typeof(InaccuracyType));
+					throw new InvalidEnumArgumentException(nameof(inaccuracyType), (int)inaccuracyType, typeof(InaccuracyType));
 			}
 		}
 	}

@@ -148,7 +148,7 @@ namespace OpenRA.Mods.Common
 					timestamp = DateTime.UtcNow;
 					break;
 				default:
-					throw new ArgumentOutOfRangeException("state", state, null);
+					throw new ArgumentOutOfRangeException(nameof(state), state, null);
 			}
 
 			var richPresence = new RichPresence
