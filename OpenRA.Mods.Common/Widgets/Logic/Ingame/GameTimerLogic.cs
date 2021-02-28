@@ -65,8 +65,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				status.GetText = statusText;
 			}
 
-			var timerTooltip = timer as LabelWithTooltipWidget;
-			if (timerTooltip != null)
+			if (timer is LabelWithTooltipWidget timerTooltip)
 			{
 				var connection = orderManager.Connection as ReplayConnection;
 				if (connection != null && connection.FinalGameTick != 0)

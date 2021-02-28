@@ -209,12 +209,10 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			Func<object, bool> saveInit = init =>
 			{
-				var factionInit = init as FactionInit;
-				if (factionInit != null && factionInit.Value == Owner.Faction)
+				if (init is FactionInit factionInit && factionInit.Value == Owner.Faction)
 					return false;
 
-				var healthInit = init as HealthInit;
-				if (healthInit != null && healthInit.Value == 100)
+				if (init is HealthInit healthInit && healthInit.Value == 100)
 					return false;
 
 				// TODO: Other default values will need to be filtered

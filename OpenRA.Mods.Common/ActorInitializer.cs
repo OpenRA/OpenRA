@@ -102,12 +102,8 @@ namespace OpenRA.Mods.Common
 
 		public override object ConvertTo(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value, Type destinationType)
 		{
-			if (destinationType == typeof(string))
-			{
-				var reference = value as ActorInitActorReference;
-				if (reference != null)
-					return reference.InternalName;
-			}
+			if (destinationType == typeof(string) && value is ActorInitActorReference reference)
+				return reference.InternalName;
 
 			return base.ConvertTo(context, culture, value, destinationType);
 		}

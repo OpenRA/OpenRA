@@ -34,8 +34,7 @@ namespace OpenRA.Mods.Common.Effects
 
 			target.World.RemoveAll(effect =>
 			{
-				var flashTarget = effect as FlashTarget;
-				return flashTarget != null && flashTarget.target == target;
+				return effect is FlashTarget flashTarget && flashTarget.target == target;
 			});
 		}
 

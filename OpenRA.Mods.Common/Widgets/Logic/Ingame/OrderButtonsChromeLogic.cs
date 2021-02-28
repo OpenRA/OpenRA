@@ -19,8 +19,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public SellOrderButtonLogic(Widget widget, World world)
 		{
-			var sell = widget as ButtonWidget;
-			if (sell != null)
+			if (widget is ButtonWidget sell)
 				OrderButtonsChromeUtils.BindOrderButton<SellOrderGenerator>(world, sell, "sell");
 		}
 	}
@@ -30,8 +29,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public RepairOrderButtonLogic(Widget widget, World world)
 		{
-			var repair = widget as ButtonWidget;
-			if (repair != null)
+			if (widget is ButtonWidget repair)
 				OrderButtonsChromeUtils.BindOrderButton<RepairOrderGenerator>(world, repair, "repair");
 		}
 	}
@@ -41,8 +39,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public PowerdownOrderButtonLogic(Widget widget, World world)
 		{
-			var power = widget as ButtonWidget;
-			if (power != null)
+			if (widget is ButtonWidget power)
 				OrderButtonsChromeUtils.BindOrderButton<PowerDownOrderGenerator>(world, power, "power");
 		}
 	}
@@ -52,8 +49,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public BeaconOrderButtonLogic(Widget widget, World world)
 		{
-			var beacon = widget as ButtonWidget;
-			if (beacon != null)
+			if (widget is ButtonWidget beacon)
 				OrderButtonsChromeUtils.BindOrderButton<BeaconOrderGenerator>(world, beacon, "beacon");
 		}
 	}

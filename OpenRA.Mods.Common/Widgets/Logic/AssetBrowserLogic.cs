@@ -371,9 +371,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				currentPackage = package;
 				currentFilename = filename;
 				var prefix = "";
-				var fs = modData.DefaultFileSystem as OpenRA.FileSystem.FileSystem;
 
-				if (fs != null)
+				if (modData.DefaultFileSystem is OpenRA.FileSystem.FileSystem fs)
 				{
 					prefix = fs.GetPrefix(package);
 					if (prefix != null)

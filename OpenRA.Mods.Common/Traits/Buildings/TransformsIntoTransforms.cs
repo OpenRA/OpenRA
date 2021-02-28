@@ -36,8 +36,7 @@ namespace OpenRA.Mods.Common.Traits
 			// The DeployTransform order does not have a position associated with it,
 			// so we can only queue a new transformation if something else has
 			// already triggered the undeploy.
-			var currentTransform = self.CurrentActivity as Transform;
-			if (!order.Queued || currentTransform == null)
+			if (!order.Queued || !(self.CurrentActivity is Transform currentTransform))
 				return;
 
 			if (!order.Queued)

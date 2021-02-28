@@ -354,14 +354,13 @@ namespace OpenRA.Platforms.Default
 		public void SetHardwareCursor(IHardwareCursor cursor)
 		{
 			VerifyThreadAffinity();
-			var c = cursor as Sdl2HardwareCursor;
-			if (c == null)
-				SDL.SDL_ShowCursor((int)SDL.SDL_bool.SDL_FALSE);
-			else
+			if (cursor is Sdl2HardwareCursor c)
 			{
 				SDL.SDL_ShowCursor((int)SDL.SDL_bool.SDL_TRUE);
 				SDL.SDL_SetCursor(c.Cursor);
 			}
+			else
+				SDL.SDL_ShowCursor((int)SDL.SDL_bool.SDL_FALSE);
 		}
 
 		public void SetRelativeMouseMode(bool mode)

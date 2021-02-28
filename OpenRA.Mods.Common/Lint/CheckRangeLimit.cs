@@ -21,9 +21,8 @@ namespace OpenRA.Mods.Common.Lint
 			foreach (var weaponInfo in rules.Weapons)
 			{
 				var range = weaponInfo.Value.Range;
-				var missile = weaponInfo.Value.Projectile as MissileInfo;
 
-				if (missile != null && missile.RangeLimit > WDist.Zero && missile.RangeLimit < range)
+				if (weaponInfo.Value.Projectile is MissileInfo missile && missile.RangeLimit > WDist.Zero && missile.RangeLimit < range)
 					emitError("Weapon `{0}`: projectile RangeLimit lower than weapon range!"
 						.F(weaponInfo.Key));
 			}

@@ -148,8 +148,7 @@ namespace OpenRA
 				{
 					foreach (var map in package.Contents)
 					{
-						var mapPackage = package.OpenPackage(map, modData.ModFiles) as IReadWritePackage;
-						if (mapPackage != null)
+						if (package.OpenPackage(map, modData.ModFiles) is IReadWritePackage mapPackage)
 							yield return mapPackage;
 					}
 				}
