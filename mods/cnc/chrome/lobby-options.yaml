@@ -37,7 +37,7 @@ Container@LOBBY_OPTIONS_BIN:
 									TooltipContainer: TOOLTIP_CONTAINER
 								Checkbox@C:
 									X: 450
-									Width: 220
+									Width: 190
 									Height: 20
 									Font: Regular
 									Visible: False
