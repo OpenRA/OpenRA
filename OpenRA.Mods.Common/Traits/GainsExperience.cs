@@ -103,7 +103,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void GiveExperience(int amount, bool silent = false)
 		{
 			if (amount < 0)
-				throw new ArgumentException("Revoking experience is not implemented.", "amount");
+				throw new ArgumentException("Revoking experience is not implemented.", nameof(amount));
 
 			if (MaxLevel == 0)
 				return;

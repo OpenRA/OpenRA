@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			string mapPath = null)
 		{
 			if (manifestPropertySelector == null)
-				throw new ArgumentNullException("manifestPropertySelector", "Must pass a non-null manifestPropertySelector");
+				throw new ArgumentNullException(nameof(manifestPropertySelector), "Must pass a non-null manifestPropertySelector");
 
 			Map map = null;
 			if (mapPath != null)

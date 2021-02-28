@@ -62,7 +62,7 @@ namespace OpenRA
 		public static CellRegion BoundingRegion(MapGridType shape, IEnumerable<CPos> cells)
 		{
 			if (cells == null || !cells.Any())
-				throw new ArgumentException("cells must not be null or empty.", "cells");
+				throw new ArgumentException("cells must not be null or empty.", nameof(cells));
 
 			var minU = int.MaxValue;
 			var minV = int.MaxValue;

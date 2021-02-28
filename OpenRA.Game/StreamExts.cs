@@ -22,7 +22,7 @@ namespace OpenRA
 		public static byte[] ReadBytes(this Stream s, int count)
 		{
 			if (count < 0)
-				throw new ArgumentOutOfRangeException("count", "Non-negative number required.");
+				throw new ArgumentOutOfRangeException(nameof(count), "Non-negative number required.");
 			var buffer = new byte[count];
 			s.ReadBytes(buffer, 0, count);
 			return buffer;
@@ -31,7 +31,7 @@ namespace OpenRA
 		public static void ReadBytes(this Stream s, byte[] buffer, int offset, int count)
 		{
 			if (count < 0)
-				throw new ArgumentOutOfRangeException("count", "Non-negative number required.");
+				throw new ArgumentOutOfRangeException(nameof(count), "Non-negative number required.");
 			while (count > 0)
 			{
 				int bytesRead;

@@ -40,7 +40,7 @@ namespace OpenRA
 			ChannelInfo info;
 			lock (Channels)
 				if (!Channels.TryGetValue(channelName, out info))
-					throw new ArgumentException("Tried logging to non-existent channel " + channelName, "channelName");
+					throw new ArgumentException("Tried logging to non-existent channel " + channelName, nameof(channelName));
 
 			return info;
 		}

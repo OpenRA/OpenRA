@@ -296,7 +296,7 @@ namespace OpenRA.Network
 						case 1: return item2OrSentinel;
 						case 2: return item3;
 						case 3: return item4;
-						default: throw new ArgumentOutOfRangeException("index");
+						default: throw new ArgumentOutOfRangeException(nameof(index));
 					}
 				}
 
@@ -314,7 +314,7 @@ namespace OpenRA.Network
 						case 1: item2OrSentinel = value; break;
 						case 2: item3 = value; break;
 						case 3: item4 = value; break;
-						default: throw new ArgumentOutOfRangeException("index");
+						default: throw new ArgumentOutOfRangeException(nameof(index));
 					}
 				}
 			}

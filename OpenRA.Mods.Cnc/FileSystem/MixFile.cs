@@ -158,10 +158,10 @@ namespace OpenRA.Mods.Cnc.FileSystem
 			static uint[] ReadBlocks(Stream s, long offset, int count)
 			{
 				if (offset < 0)
-					throw new ArgumentOutOfRangeException("offset", "Non-negative number required.");
+					throw new ArgumentOutOfRangeException(nameof(offset), "Non-negative number required.");
 
 				if (count < 0)
-					throw new ArgumentOutOfRangeException("count", "Non-negative number required.");
+					throw new ArgumentOutOfRangeException(nameof(count), "Non-negative number required.");
 
 				if (offset + (count * 2) > s.Length)
 					throw new ArgumentException("Bytes to read {0} and offset {1} greater than stream length {2}.".F(count * 2, offset, s.Length));

@@ -113,16 +113,16 @@ namespace OpenRA.Mods.Common.Traits
 		public ShroudRenderer(World world, ShroudRendererInfo info)
 		{
 			if (info.ShroudVariants.Length != info.FogVariants.Length)
-				throw new ArgumentException("ShroudRenderer must define the same number of shroud and fog variants!", "info");
+				throw new ArgumentException("ShroudRenderer must define the same number of shroud and fog variants!", nameof(info));
 
 			if ((info.OverrideFullFog == null) ^ (info.OverrideFullShroud == null))
-				throw new ArgumentException("ShroudRenderer cannot define overrides for only one of shroud or fog!", "info");
+				throw new ArgumentException("ShroudRenderer cannot define overrides for only one of shroud or fog!", nameof(info));
 
 			if (info.ShroudVariants.Length > byte.MaxValue)
-				throw new ArgumentException("ShroudRenderer cannot define this many shroud and fog variants.", "info");
+				throw new ArgumentException("ShroudRenderer cannot define this many shroud and fog variants.", nameof(info));
 
 			if (info.Index.Length >= byte.MaxValue)
-				throw new ArgumentException("ShroudRenderer cannot define this many indexes for shroud directions.", "info");
+				throw new ArgumentException("ShroudRenderer cannot define this many indexes for shroud directions.", nameof(info));
 
 			this.info = info;
 			this.world = world;

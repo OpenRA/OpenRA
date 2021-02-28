@@ -51,7 +51,7 @@ namespace OpenRA.Support
 		public int Next(int low, int high)
 		{
 			if (high < low)
-				throw new ArgumentOutOfRangeException("high", "Maximum value is less than the minimum value.");
+				throw new ArgumentOutOfRangeException(nameof(high), "Maximum value is less than the minimum value.");
 
 			var diff = high - low;
 			if (diff <= 1)

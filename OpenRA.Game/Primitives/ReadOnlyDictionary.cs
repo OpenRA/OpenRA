@@ -57,7 +57,7 @@ namespace OpenRA
 		public ReadOnlyDictionary(IDictionary<TKey, TValue> dict)
 		{
 			if (dict == null)
-				throw new ArgumentNullException("dict");
+				throw new ArgumentNullException(nameof(dict));
 
 			this.dict = dict;
 		}

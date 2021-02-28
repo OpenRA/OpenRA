@@ -124,7 +124,7 @@ namespace OpenRA
 				return;
 
 			if (!Players.Contains(localPlayer))
-				throw new ArgumentException("The local player must be one of the players in the world.", "localPlayer");
+				throw new ArgumentException("The local player must be one of the players in the world.", nameof(localPlayer));
 
 			if (IsReplay)
 				return;

@@ -60,9 +60,9 @@ namespace OpenRA.Mods.Cnc.Graphics
 		public float[] TransformationMatrix(uint limb, uint frame)
 		{
 			if (frame >= frames)
-				throw new ArgumentOutOfRangeException("frame", "Only {0} frames exist.".F(frames));
+				throw new ArgumentOutOfRangeException(nameof(frame), "Only {0} frames exist.".F(frames));
 			if (limb >= limbs)
-				throw new ArgumentOutOfRangeException("limb", "Only {1} limbs exist.".F(limbs));
+				throw new ArgumentOutOfRangeException(nameof(limb), "Only {1} limbs exist.".F(limbs));
 
 			var l = limbData[limb];
 			var t = new float[16];

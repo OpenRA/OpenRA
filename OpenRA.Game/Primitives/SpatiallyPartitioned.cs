@@ -33,7 +33,7 @@ namespace OpenRA.Primitives
 		void ValidateBounds(T actor, Rectangle bounds)
 		{
 			if (bounds.Width == 0 || bounds.Height == 0)
-				throw new ArgumentException("Bounds of actor {0} are empty.".F(actor), "bounds");
+				throw new ArgumentException("Bounds of actor {0} are empty.".F(actor), nameof(bounds));
 		}
 
 		public void Add(T item, Rectangle bounds)
