@@ -486,7 +486,6 @@ namespace OpenRA.Server
 					{
 						client.Slot = LobbyInfo.FirstEmptySlot();
 						client.IsAdmin = !LobbyInfo.Clients.Any(c1 => c1.IsAdmin);
-						client.IsTeamLead = false;
 
 						if (client.IsObserver && !LobbyInfo.GlobalSettings.AllowSpectators)
 						{
@@ -1128,22 +1127,25 @@ namespace OpenRA.Server
 			if (State != ServerState.WaitingPlayers)
 				return;
 
-			foreach (var client in LobbyInfo.Clients)
+			if (LobbyInfo.GlobalSettings.OptionOrDefault("teamedfaction", false))
 			{
-				// Check if your team has a team leader else become team leader
-				client.IsTeamLead = LobbyInfo.Clients.Where(c => c.Index != client.Index && c.IsTeamLead && c.Team == client.Team).Count() == 0 || client.Team == 0;
-			}
-
-			foreach (var client in LobbyInfo.Clients)
-			{
-				// Set team leader's settings to members
-				if (!client.IsTeamLead)
+				foreach (var client in LobbyInfo.Clients)
 				{
-					var tl = LobbyInfo.Clients.First(c => c.IsTeamLead && c.Team == client.Team);
-					client.Color = tl.Color;
-					client.Faction = tl.Faction;
-					client.Handicap = tl.Handicap;
-					client.SpawnPoint = 0;  // only one client per spawn point possible.
+					// Check if your team has a team leader else become team leader
+					client.IsTeamLead = LobbyInfo.Clients.Where(c => c.Index != client.Index && c.IsTeamLead && c.Team == client.Team).Count() == 0 || client.Team == 0;
+				}
+
+				foreach (var client in LobbyInfo.Clients)
+				{
+					// Set team leader's settings to members
+					if (!client.IsTeamLead)
+					{
+						var tl = LobbyInfo.Clients.First(c => c.IsTeamLead && c.Team == client.Team);
+						client.Color = tl.Color;
+						client.Faction = tl.Faction;
+						client.Handicap = tl.Handicap;
+						client.SpawnPoint = 0;  // only one client per spawn point possible.
+					}
 				}
 			}
 

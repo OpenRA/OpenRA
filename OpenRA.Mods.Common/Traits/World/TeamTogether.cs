@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(Ruleset rules)
 		{
-			yield return new LobbyBooleanOption("TeamedFaction", TeamedFactionCheckboxLabel, TeamedFactionCheckboxDescription,
+			yield return new LobbyBooleanOption("teamedfaction", TeamedFactionCheckboxLabel, TeamedFactionCheckboxDescription,
 				TeamedFactionCheckboxVisible, TeamedFactionCheckboxDisplayOrder, TeamedFactionCheckboxEnabled, TeamedFactionCheckboxLocked);
 		}
 
@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Traits
 		void INotifyCreated.Created(Actor self)
 		{
 			TeamedFactionEnabled = self.World.LobbyInfo.GlobalSettings
-				.OptionOrDefault("TeamedFaction", info.TeamedFactionCheckboxEnabled);
+				.OptionOrDefault("teamedfaction", info.TeamedFactionCheckboxEnabled);
 		}
 	}
 }

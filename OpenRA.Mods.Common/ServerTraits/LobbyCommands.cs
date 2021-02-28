@@ -792,11 +792,10 @@ namespace OpenRA.Mods.Common.Server
 					return true;
 				}
 
-				if (!client.IsTeamLead)
+				if (server.LobbyInfo.GlobalSettings.OptionOrDefault("teamedfaction", false) && !client.IsTeamLead)
 					parts[1] = server.LobbyInfo.Clients.First(c => c.IsTeamLead && c.Team == client.Team).Faction;
 
 				targetClient.Faction = parts[1];
-
 				server.SyncLobbyClients();
 
 				return true;
@@ -861,7 +860,7 @@ namespace OpenRA.Mods.Common.Server
 					return false;
 				}
 
-				if (!client.IsTeamLead)
+				if (server.LobbyInfo.GlobalSettings.OptionOrDefault("teamedfaction", false) && !client.IsTeamLead)
 					handicap = server.LobbyInfo.Clients.First(c => c.IsTeamLead && c.Team == client.Team).Handicap;
 
 				targetClient.Handicap = handicap;
@@ -958,7 +957,7 @@ namespace OpenRA.Mods.Common.Server
 					}
 				}
 
-				if (!client.IsTeamLead)
+				if (server.LobbyInfo.GlobalSettings.OptionOrDefault("teamedfaction", false) && !client.IsTeamLead)
 					spawnPoint = 0;  // only one client per spawn point possible.
 
 				targetClient.SpawnPoint = spawnPoint;
@@ -991,7 +990,7 @@ namespace OpenRA.Mods.Common.Server
 				if (newColor == targetClient.Color)
 					targetClient.PreferredColor = targetClient.Color;
 
-				if (!client.IsTeamLead)
+				if (server.LobbyInfo.GlobalSettings.OptionOrDefault("teamedfaction", false) && !client.IsTeamLead)
 					targetClient.Color = server.LobbyInfo.Clients.First(c => c.IsTeamLead && c.Team == client.Team).Color;
 
 				server.SyncLobbyClients();

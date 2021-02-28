@@ -526,7 +526,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		public static void SetupEditableColorWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, World world, ColorPreviewManagerWidget colorPreview)
 		{
 			var color = parent.Get<DropDownButtonWidget>("COLOR");
-			color.IsDisabled = () => (s != null && s.LockColor) || orderManager.LocalClient.IsReady || (c.Team != 0 && !c.IsTeamLead);
+			var teamedFaction = orderManager.LobbyInfo.GlobalSettings.OptionOrDefault("teamedfaction", false);
+			color.IsDisabled = () => (s != null && s.LockColor) || orderManager.LocalClient.IsReady || (teamedFaction && c.Team != 0 && !c.IsTeamLead);
 			color.OnMouseDown = _ => ShowColorDropDown(color, c, orderManager, world, colorPreview);
 
 			SetupColorWidget(color, s, c);
@@ -542,7 +543,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			Dictionary<string, LobbyFaction> factions)
 		{
 			var dropdown = parent.Get<DropDownButtonWidget>("FACTION");
-			dropdown.IsDisabled = () => s.LockFaction || orderManager.LocalClient.IsReady || (c.Team != 0 && !c.IsTeamLead);
+			var teamedFaction = orderManager.LobbyInfo.GlobalSettings.OptionOrDefault("teamedfaction", false);
+			dropdown.IsDisabled = () => s.LockFaction || orderManager.LocalClient.IsReady || (teamedFaction && c.Team != 0 && !c.IsTeamLead);
 			dropdown.OnMouseDown = _ => ShowFactionDropDown(dropdown, c, orderManager, factions);
 
 			var tooltip = SplitOnFirstToken(factions[c.Faction].Description);
@@ -584,8 +586,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		public static void SetupEditableHandicapWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, MapPreview map)
 		{
 			var dropdown = parent.Get<DropDownButtonWidget>("HANDICAP_DROPDOWN");
+			var teamedFaction = orderManager.LobbyInfo.GlobalSettings.OptionOrDefault("teamedfaction", false);
 			dropdown.IsVisible = () => true;
-			dropdown.IsDisabled = () => s.LockTeam || orderManager.LocalClient.IsReady || (c.Team != 0 && !c.IsTeamLead);
+			dropdown.IsDisabled = () => s.LockTeam || orderManager.LocalClient.IsReady || (teamedFaction && c.Team != 0 && !c.IsTeamLead);
 			dropdown.OnMouseDown = _ => ShowHandicapDropDown(dropdown, c, orderManager);
 
 			var handicapLabel = new CachedTransform<int, string>(h => "{0}%".F(h));
@@ -607,8 +610,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		public static void SetupEditableSpawnWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, MapPreview map)
 		{
 			var dropdown = parent.Get<DropDownButtonWidget>("SPAWN_DROPDOWN");
+			var teamedFaction = orderManager.LobbyInfo.GlobalSettings.OptionOrDefault("teamedfaction", false);
 			dropdown.IsVisible = () => true;
-			dropdown.IsDisabled = () => s.LockSpawn || orderManager.LocalClient.IsReady || (c.Team != 0 && !c.IsTeamLead);
+			dropdown.IsDisabled = () => s.LockSpawn || orderManager.LocalClient.IsReady || (teamedFaction && c.Team != 0 && !c.IsTeamLead);
 			dropdown.OnMouseDown = _ =>
 			{
 				var spawnPoints = Enumerable.Range(0, map.SpawnPoints.Length + 1).Except(
