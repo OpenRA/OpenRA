@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.Traits
 		[PaletteReference]
 		public readonly string Palette = TileSet.TerrainPaletteInternalName;
 
-		[FieldLoader.LoadUsing("LoadInitialSmudges")]
+		[FieldLoader.LoadUsing(nameof(LoadInitialSmudges))]
 		public readonly Dictionary<CPos, MapSmudge> InitialSmudges;
 
 		public static object LoadInitialSmudges(MiniYaml yaml)

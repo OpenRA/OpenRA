@@ -129,7 +129,7 @@ namespace OpenRA.Network
 		[FieldLoader.Ignore]
 		public readonly bool IsJoinable = false;
 
-		[FieldLoader.LoadUsing("LoadClients")]
+		[FieldLoader.LoadUsing(nameof(LoadClients))]
 		public readonly GameClient[] Clients;
 
 		/// <summary>The list of spawnpoints that are disabled for this game</summary>

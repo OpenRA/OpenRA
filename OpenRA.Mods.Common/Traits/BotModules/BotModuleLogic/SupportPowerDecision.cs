@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("What is the fine scan radius of this power?", "For doing a detailed scan in the general target area.", "Minimum is 1")]
 		public readonly int FineScanRadius = 2;
 
-		[FieldLoader.LoadUsing("LoadConsiderations")]
+		[FieldLoader.LoadUsing(nameof(LoadConsiderations))]
 		[Desc("The decisions associated with this power")]
 		public readonly List<Consideration> Considerations = new List<Consideration>();
 

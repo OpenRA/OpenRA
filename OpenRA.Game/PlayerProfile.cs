@@ -24,7 +24,7 @@ namespace OpenRA
 		public readonly string ProfileName;
 		public readonly string ProfileRank = "Registered Player";
 
-		[FieldLoader.LoadUsing("LoadBadges")]
+		[FieldLoader.LoadUsing(nameof(LoadBadges))]
 		public readonly List<PlayerBadge> Badges;
 
 		static object LoadBadges(MiniYaml yaml)

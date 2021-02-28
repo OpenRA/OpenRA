@@ -121,10 +121,10 @@ namespace OpenRA.GameRules
 		[Desc("Does this weapon aim at the target's center regardless of other targetable offsets?")]
 		public readonly bool TargetActorCenter = false;
 
-		[FieldLoader.LoadUsing("LoadProjectile")]
+		[FieldLoader.LoadUsing(nameof(LoadProjectile))]
 		public readonly IProjectileInfo Projectile;
 
-		[FieldLoader.LoadUsing("LoadWarheads")]
+		[FieldLoader.LoadUsing(nameof(LoadWarheads))]
 		public readonly List<IWarhead> Warheads = new List<IWarhead>();
 
 		public WeaponInfo(string name, MiniYaml content)

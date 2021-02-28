@@ -22,7 +22,7 @@ namespace OpenRA
 
 	public class GameSpeeds : IGlobalModData
 	{
-		[FieldLoader.LoadUsing("LoadSpeeds")]
+		[FieldLoader.LoadUsing(nameof(LoadSpeeds))]
 		public readonly Dictionary<string, GameSpeed> Speeds;
 
 		static object LoadSpeeds(MiniYaml y)
