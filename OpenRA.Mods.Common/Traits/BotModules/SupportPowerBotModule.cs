@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class SupportPowerBotModuleInfo : ConditionalTraitInfo, Requires<SupportPowerManagerInfo>
 	{
 		[Desc("Tells the AI how to use its support powers.")]
-		[FieldLoader.LoadUsing("LoadDecisions")]
+		[FieldLoader.LoadUsing(nameof(LoadDecisions))]
 		public readonly List<SupportPowerDecision> Decisions = new List<SupportPowerDecision>();
 
 		static object LoadDecisions(MiniYaml yaml)

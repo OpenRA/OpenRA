@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("x means cell is blocked, capital X means blocked but not counting as targetable, ",
 			"= means part of the footprint but passable, _ means completely empty.")]
-		[FieldLoader.LoadUsing("LoadFootprint")]
+		[FieldLoader.LoadUsing(nameof(LoadFootprint))]
 		public readonly Dictionary<CVec, FootprintCellType> Footprint;
 
 		public readonly CVec Dimensions = new CVec(1, 1);

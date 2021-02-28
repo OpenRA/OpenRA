@@ -91,7 +91,7 @@ namespace OpenRA
 		public readonly string HeaderMessage;
 		public readonly string ContentInstallerMod = "modcontent";
 
-		[FieldLoader.LoadUsing("LoadPackages")]
+		[FieldLoader.LoadUsing(nameof(LoadPackages))]
 		public readonly Dictionary<string, ModPackage> Packages = new Dictionary<string, ModPackage>();
 
 		static object LoadPackages(MiniYaml yaml)
@@ -105,7 +105,7 @@ namespace OpenRA
 			return packages;
 		}
 
-		[FieldLoader.LoadUsing("LoadDownloads")]
+		[FieldLoader.LoadUsing(nameof(LoadDownloads))]
 		public readonly string[] Downloads = { };
 
 		static object LoadDownloads(MiniYaml yaml)
@@ -114,7 +114,7 @@ namespace OpenRA
 			return downloadNode != null ? downloadNode.Value.Nodes.Select(n => n.Key).ToArray() : new string[0];
 		}
 
-		[FieldLoader.LoadUsing("LoadSources")]
+		[FieldLoader.LoadUsing(nameof(LoadSources))]
 		public readonly string[] Sources = { };
 
 		static object LoadSources(MiniYaml yaml)

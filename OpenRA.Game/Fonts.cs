@@ -22,7 +22,7 @@ namespace OpenRA
 
 	public class Fonts : IGlobalModData
 	{
-		[FieldLoader.LoadUsing("LoadFonts")]
+		[FieldLoader.LoadUsing(nameof(LoadFonts))]
 		public readonly Dictionary<string, FontData> FontList;
 
 		static object LoadFonts(MiniYaml y)
