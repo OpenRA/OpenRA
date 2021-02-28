@@ -303,8 +303,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (check <= BlockedByActor.Immovable && cellFlag.HasCellFlag(CellFlag.HasMovableActor) &&
 				actor.Owner.RelationshipWith(otherActor.Owner) == PlayerRelationship.Ally)
 			{
-				var mobile = otherActor.OccupiesSpace as Mobile;
-				if (mobile != null && !mobile.IsTraitDisabled && !mobile.IsTraitPaused && !mobile.IsImmovable)
+				if (otherActor.OccupiesSpace is Mobile mobile && !mobile.IsTraitDisabled && !mobile.IsTraitPaused && !mobile.IsImmovable)
 					return false;
 			}
 
@@ -324,8 +323,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (cellFlag.HasCellFlag(CellFlag.HasTransitOnlyActor))
 			{
 				// Transit only tiles should not block movement
-				var building = otherActor.OccupiesSpace as Building;
-				if (building != null && building.TransitOnlyCells().Contains(cell))
+				if (otherActor.OccupiesSpace is Building building && building.TransitOnlyCells().Contains(cell))
 					return false;
 			}
 
@@ -346,16 +344,11 @@ namespace OpenRA.Mods.Common.Traits
 		static bool IsMoving(Actor self, Actor other)
 		{
 			// PERF: Because we can be sure that OccupiesSpace is Mobile here we can save some performance by avoiding querying for the trait.
-			var otherMobile = other.OccupiesSpace as Mobile;
-			if (otherMobile == null || !otherMobile.CurrentMovementTypes.HasMovementType(MovementType.Horizontal))
+			if (!(other.OccupiesSpace is Mobile otherMobile) || !otherMobile.CurrentMovementTypes.HasMovementType(MovementType.Horizontal))
 				return false;
 
 			// PERF: Same here.
-			var selfMobile = self.OccupiesSpace as Mobile;
-			if (selfMobile == null)
-				return false;
-
-			return true;
+			return self.OccupiesSpace is Mobile;
 		}
 
 		public void WorldLoaded(World w, WorldRenderer wr)
@@ -466,8 +459,7 @@ namespace OpenRA.Mods.Common.Traits
 					var isMovable = mobile != null && !mobile.IsTraitDisabled && !mobile.IsTraitPaused && !mobile.IsImmovable;
 					var isMoving = isMovable && mobile.CurrentMovementTypes.HasMovementType(MovementType.Horizontal);
 
-					var building = actor.OccupiesSpace as Building;
-					var isTransitOnly = building != null && building.TransitOnlyCells().Contains(cell);
+					var isTransitOnly = actor.OccupiesSpace is Building building && building.TransitOnlyCells().Contains(cell);
 
 					if (isTransitOnly)
 					{

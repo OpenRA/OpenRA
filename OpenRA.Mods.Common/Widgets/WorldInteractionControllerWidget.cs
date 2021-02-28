@@ -88,9 +88,8 @@ namespace OpenRA.Mods.Common.Widgets
 			var useClassicMouseStyle = Game.Settings.Game.UseClassicMouseStyle;
 
 			var multiClick = mi.MultiTapCount >= 2;
-			var uog = World.OrderGenerator as UnitOrderGenerator;
 
-			if (uog == null)
+			if (!(World.OrderGenerator is UnitOrderGenerator uog))
 			{
 				ApplyOrders(World, mi);
 				isDragging = false;

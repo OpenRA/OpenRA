@@ -273,12 +273,10 @@ namespace OpenRA.Mods.Common.Widgets
 
 		bool IsForceModifiersActive(Modifiers modifiers)
 		{
-			var fmog = world.OrderGenerator as ForceModifiersOrderGenerator;
-			if (fmog != null && fmog.Modifiers.HasFlag(modifiers))
+			if (world.OrderGenerator is ForceModifiersOrderGenerator fmog && fmog.Modifiers.HasFlag(modifiers))
 				return true;
 
-			var uog = world.OrderGenerator as UnitOrderGenerator;
-			if (uog != null && Game.GetModifierKeys().HasFlag(modifiers))
+			if (world.OrderGenerator is UnitOrderGenerator uog && Game.GetModifierKeys().HasFlag(modifiers))
 				return true;
 
 			return false;

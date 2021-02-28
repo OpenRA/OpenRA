@@ -55,8 +55,7 @@ namespace OpenRA
 
 		public override bool Equals(object obj)
 		{
-			var o = obj as float3?;
-			return o != null && o == this;
+			return obj is float3 o && (float3?)o == this;
 		}
 
 		public override string ToString() { return "{0},{1},{2}".F(X, Y, Z); }

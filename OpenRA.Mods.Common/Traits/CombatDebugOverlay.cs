@@ -91,8 +91,7 @@ namespace OpenRA.Mods.Common.Traits
 		IEnumerable<IRenderable> RenderArmaments(Actor self, AttackBase attack)
 		{
 			// Fire ports on garrisonable structures
-			var garrison = attack as AttackGarrisoned;
-			if (garrison != null)
+			if (attack is AttackGarrisoned garrison)
 			{
 				var bodyOrientation = coords.Value.QuantizeOrientation(self, self.Orientation);
 				foreach (var p in garrison.Info.Ports)

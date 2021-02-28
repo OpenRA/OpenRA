@@ -325,8 +325,7 @@ namespace OpenRA.Mods.Common.Orders
 			foreach (var blocker in blockers)
 			{
 				CPos moveCell;
-				var mobile = blocker.Trait as Mobile;
-				if (mobile != null)
+				if (blocker.Trait is Mobile mobile)
 				{
 					var availableCells = adjacentTiles.Where(t => mobile.CanEnterCell(t)).ToList();
 					if (availableCells.Count == 0)

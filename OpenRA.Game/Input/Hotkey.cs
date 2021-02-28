@@ -81,8 +81,7 @@ namespace OpenRA
 
 		public override bool Equals(object obj)
 		{
-			var o = obj as Hotkey?;
-			return o != null && o == this;
+			return obj is Hotkey o && (Hotkey?)o == this;
 		}
 
 		public override string ToString() { return "{0} {1}".F(Key, Modifiers.ToString("F")); }

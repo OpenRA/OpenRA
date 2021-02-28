@@ -273,8 +273,7 @@ namespace OpenRA
 
 			gameInfo.DisabledSpawnPoints = OrderManager.LobbyInfo.DisabledSpawnPoints;
 
-			var echo = OrderManager.Connection as EchoConnection;
-			var rc = echo != null ? echo.Recorder : null;
+			var rc = (OrderManager.Connection as EchoConnection)?.Recorder;
 
 			if (rc != null)
 				rc.Metadata = new ReplayMetadata(gameInfo);
@@ -326,12 +325,10 @@ namespace OpenRA
 		{
 			effects.Add(e);
 
-			var sp = e as ISpatiallyPartitionable;
-			if (sp == null)
+			if (!(e is ISpatiallyPartitionable))
 				unpartitionedEffects.Add(e);
 
-			var se = e as ISync;
-			if (se != null)
+			if (e is ISync se)
 				syncedEffects.Add(se);
 		}
 
@@ -339,12 +336,10 @@ namespace OpenRA
 		{
 			effects.Remove(e);
 
-			var sp = e as ISpatiallyPartitionable;
-			if (sp == null)
+			if (!(e is ISpatiallyPartitionable))
 				unpartitionedEffects.Remove(e);
 
-			var se = e as ISync;
-			if (se != null)
+			if (e is ISync se)
 				syncedEffects.Remove(se);
 		}
 

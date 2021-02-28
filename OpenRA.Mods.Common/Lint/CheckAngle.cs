@@ -20,8 +20,7 @@ namespace OpenRA.Mods.Common.Lint
 		{
 			foreach (var weaponInfo in rules.Weapons)
 			{
-				var missile = weaponInfo.Value.Projectile as MissileInfo;
-				if (missile != null)
+				if (weaponInfo.Value.Projectile is MissileInfo missile)
 				{
 					var minAngle = missile.MinimumLaunchAngle.Angle;
 					var maxAngle = missile.MaximumLaunchAngle.Angle;
@@ -31,8 +30,7 @@ namespace OpenRA.Mods.Common.Lint
 					CheckLaunchAngles(weaponInfo.Key, minAngle, testMaxAngle, maxAngle, emitError);
 				}
 
-				var bullet = weaponInfo.Value.Projectile as BulletInfo;
-				if (bullet != null)
+				if (weaponInfo.Value.Projectile is BulletInfo bullet)
 				{
 					var minAngle = bullet.LaunchAngle[0].Angle;
 					var maxAngle = bullet.LaunchAngle.Length > 1 ? bullet.LaunchAngle[1].Angle : minAngle;

@@ -73,11 +73,10 @@ namespace OpenRA.Widgets
 
 		public static T LoadWidget<T>(string id, Widget parent, WidgetArgs args) where T : Widget
 		{
-			var widget = LoadWidget(id, parent, args) as T;
-			if (widget == null)
-				throw new InvalidOperationException(
-					"Widget {0} is not of type {1}".F(id, typeof(T).Name));
-			return widget;
+			if (LoadWidget(id, parent, args) is T widget)
+				return widget;
+
+			throw new InvalidOperationException("Widget {0} is not of type {1}".F(id, typeof(T).Name));
 		}
 
 		public static Widget LoadWidget(string id, Widget parent, WidgetArgs args)

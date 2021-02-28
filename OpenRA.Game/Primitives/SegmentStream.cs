@@ -131,8 +131,7 @@ namespace OpenRA.Primitives
 		{
 			var offset = 0L;
 			overallBaseStream = stream;
-			var segmentStream = stream as SegmentStream;
-			if (segmentStream != null)
+			if (stream is SegmentStream segmentStream)
 				offset += segmentStream.BaseOffset + GetOverallNestedOffset(segmentStream.BaseStream, out overallBaseStream);
 			return offset;
 		}

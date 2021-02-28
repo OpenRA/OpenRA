@@ -282,8 +282,7 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			var item = Children.FirstOrDefault(c =>
 			{
-				var si = c as ScrollItemWidget;
-				return si != null && si.ItemKey == itemKey;
+				return c is ScrollItemWidget si && si.ItemKey == itemKey;
 			});
 
 			if (item != null)
@@ -294,8 +293,7 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			var item = Children.FirstOrDefault(c =>
 			{
-				var si = c as ScrollItemWidget;
-				return si != null && si.IsSelected();
+				return c is ScrollItemWidget si && si.IsSelected();
 			});
 
 			if (item != null)

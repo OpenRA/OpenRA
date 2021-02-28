@@ -180,8 +180,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				try
 				{
-					var package = map.Package as IReadWritePackage;
-					if (package == null || package.Name != combinedPath)
+					if (!(map.Package is IReadWritePackage package) || package.Name != combinedPath)
 					{
 						selectedDirectory.Folder.Delete(combinedPath);
 						if (fileType == MapFileType.OraMap)

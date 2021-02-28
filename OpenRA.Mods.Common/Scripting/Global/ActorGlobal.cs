@@ -40,9 +40,7 @@ namespace OpenRA.Mods.Common.Scripting
 			if (initInstance.Length > 1)
 				initType.GetField("InstanceName").SetValue(init, initInstance[1]);
 
-			var compositeInit = init as CompositeActorInit;
-			var tableValue = value as LuaTable;
-			if (tableValue != null && compositeInit != null)
+			if (value is LuaTable tableValue && init is CompositeActorInit compositeInit)
 			{
 				var args = compositeInit.InitializeArgs();
 				var initValues = new Dictionary<string, object>();
@@ -74,8 +72,7 @@ namespace OpenRA.Mods.Common.Scripting
 			}
 
 			// HACK: Backward compatibility for legacy int facings
-			var facingInit = init as FacingInit;
-			if (facingInit != null)
+			if (init is FacingInit facingInit)
 			{
 				if (value.TryGetClrValue(out int facing))
 				{

@@ -41,8 +41,7 @@ namespace OpenRA.Graphics
 			// See combined.vert for documentation on the channel attribute format
 			var attribC = r.Channel == TextureChannel.RGBA ? 0x02 : ((byte)r.Channel) << 1 | 0x01;
 			attribC |= samplers.X << 6;
-			var ss = r as SpriteWithSecondaryData;
-			if (ss != null)
+			if (r is SpriteWithSecondaryData ss)
 			{
 				sl = ss.SecondaryLeft;
 				st = ss.SecondaryTop;
