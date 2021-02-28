@@ -30,6 +30,10 @@ namespace OpenRA.Scripting
 		{
 			if (!LuaTypeNameReplacements.TryGetValue(t.Name, out var ret))
 				ret = t.Name;
+
+			if (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Nullable<>))
+				ret = "{0}?".F(t.GetGenericArguments().Select(p => p.Name).First());
+
 			return ret;
 		}
 
