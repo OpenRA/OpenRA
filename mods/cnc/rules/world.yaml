@@ -195,6 +195,8 @@ World:
 		GameSpeedDropdownDisplayOrder: 3
 	MapStartingLocations:
 		SeparateTeamSpawnsCheckboxDisplayOrder: 6
+	TeamTogether:
+		TeamedFactionCheckboxDisplayOrder: 7
 	CreateMapPlayers:
 	StartingUnits@mcvonly:
 		Class: none
