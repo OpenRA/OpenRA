@@ -25,6 +25,8 @@ namespace OpenRA
 {
 	public static class FieldLoader
 	{
+		const char SplitComma = ',';
+
 		[Serializable]
 		public class MissingFieldsException : YamlException
 		{
@@ -70,6 +72,451 @@ namespace OpenRA
 			new ConcurrentCache<string, BooleanExpression>(expression => new BooleanExpression(expression));
 		static readonly ConcurrentCache<string, IntegerExpression> IntegerExpressionCache =
 			new ConcurrentCache<string, IntegerExpression>(expression => new IntegerExpression(expression));
+
+		static readonly Dictionary<Type, Func<string, Type, string, MemberInfo, object>> TypeParsers =
+			new Dictionary<Type, Func<string, Type, string, MemberInfo, object>>()
+			{
+				{ typeof(int), ParseInt },
+				{ typeof(ushort), ParseUShort },
+				{ typeof(long), ParseLong },
+				{ typeof(float), ParseFloat },
+				{ typeof(decimal), ParseDecimal },
+				{ typeof(string), ParseString },
+				{ typeof(Color), ParseColor },
+				{ typeof(Hotkey), ParseHotkey },
+				{ typeof(HotkeyReference), ParseHotkeyReference },
+				{ typeof(WDist), ParseWDist },
+				{ typeof(WVec), ParseWVec },
+				{ typeof(WVec[]), ParseWVecArray },
+				{ typeof(WPos), ParseWPos },
+				{ typeof(WAngle), ParseWAngle },
+				{ typeof(WRot), ParseWRot },
+				{ typeof(CPos), ParseCPos },
+				{ typeof(CVec), ParseCVec },
+				{ typeof(CVec[]), ParseCVecArray },
+				{ typeof(BooleanExpression), ParseBooleanExpression },
+				{ typeof(IntegerExpression), ParseIntegerExpression },
+				{ typeof(Enum), ParseEnum },
+				{ typeof(bool), ParseBool },
+				{ typeof(int2[]), ParseInt2Array },
+				{ typeof(Size), ParseSize },
+				{ typeof(int2), ParseInt2 },
+				{ typeof(float2), ParseFloat2 },
+				{ typeof(float3), ParseFloat3 },
+				{ typeof(Rectangle), ParseRectangle },
+				{ typeof(DateTime), ParseDateTime }
+			};
+
+		static readonly Dictionary<Type, Func<string, Type, string, MiniYaml, MemberInfo, object>> GenericTypeParsers =
+			new Dictionary<Type, Func<string, Type, string, MiniYaml, MemberInfo, object>>()
+			{
+				{ typeof(HashSet<>), ParseHashSetOrList },
+				{ typeof(List<>), ParseHashSetOrList },
+				{ typeof(Dictionary<,>), ParseDictionary },
+				{ typeof(BitSet<>), ParseBitSet },
+				{ typeof(Nullable<>), ParseNullable },
+			};
+
+		static object ParseInt(string fieldName, Type fieldType, string value, MemberInfo field)
+		{
+			if (Exts.TryParseIntegerInvariant(value, out var res))
+				return res;
+			return InvalidValueAction(value, fieldType, fieldName);
+		}
+
+		static object ParseUShort(string fieldName, Type fieldType, string value, MemberInfo field)
+		{
+			if (ushort.TryParse(value, NumberStyles.Integer, NumberFormatInfo.InvariantInfo, out var res))
+				return res;
+			return InvalidValueAction(value, fieldType, fieldName);
+		}
+
+		static object ParseLong(string fieldName, Type fieldType, string value, MemberInfo field)
+		{
+			if (long.TryParse(value, NumberStyles.Integer, NumberFormatInfo.InvariantInfo, out var res))
+				return res;
+			return InvalidValueAction(value, fieldType, fieldName);
+		}
+
+		static object ParseFloat(string fieldName, Type fieldType, string value, MemberInfo field)
+		{
+			if (value != null && float.TryParse(value.Replace("%", ""), NumberStyles.Float, NumberFormatInfo.InvariantInfo, out var res))
+				return res * (value.Contains('%') ? 0.01f : 1f);
+			return InvalidValueAction(value, fieldType, fieldName);
+		}
+
+		static object ParseDecimal(string fieldName, Type fieldType, string value, MemberInfo field)
+		{
+			if (value != null && decimal.TryParse(value.Replace("%", ""), NumberStyles.Float, NumberFormatInfo.InvariantInfo, out var res))
+				return res * (value.Contains('%') ? 0.01m : 1m);
+			return InvalidValueAction(value, fieldType, fieldName);
+		}
+
+		static object ParseString(string fieldName, Type fieldType, string value, MemberInfo field)
+		{
+			return value;
+		}
+
+		static object ParseColor(string fieldName, Type fieldType, string value, MemberInfo field)
+		{
+			if (value != null && Color.TryParse(value, out var color))
+					return color;
+
+			return InvalidValueAction(value, fieldType, fieldName);
+		}
+
+		static object ParseHotkey(string fieldName, Type fieldType, string value, MemberInfo field)
+		{
+			if (Hotkey.TryParse(value, out var res))
+				return res;
+
+			return InvalidValueAction(value, fieldType, fieldName);
+		}
+
+		static object ParseHotkeyReference(string fieldName, Type fieldType, string value, MemberInfo field)
+		{
+			return Game.ModData.Hotkeys[value];
+		}
+
+		static object ParseWDist(string fieldName, Type fieldType, string value, MemberInfo field)
+		{
+			if (WDist.TryParse(value, out var res))
+				return res;
+
+			return InvalidValueAction(value, fieldType, fieldName);
+		}
+
+		static object ParseWVec(string fieldName, Type fieldType, string value, MemberInfo field)
+		{
+			if (value != null)
+			{
+				var parts = value.Split(SplitComma);
+				if (parts.Length == 3)
+				{
+					if (WDist.TryParse(parts[0], out var rx) && WDist.TryParse(parts[1], out var ry) && WDist.TryParse(parts[2], out var rz))
+						return new WVec(rx, ry, rz);
+				}
+			}
+
+			return InvalidValueAction(value, fieldType, fieldName);
+		}
+
+		static object ParseWVecArray(string fieldName, Type fieldType, string value, MemberInfo field)
+		{
+			if (value != null)
+			{
+				var parts = value.Split(SplitComma);
+
+				if (parts.Length % 3 != 0)
+					return InvalidValueAction(value, fieldType, fieldName);
+
+				var vecs = new WVec[parts.Length / 3];
+
+				for (var i = 0; i < vecs.Length; ++i)
+				{
+					if (WDist.TryParse(parts[3 * i], out var rx)
+							&& WDist.TryParse(parts[3 * i + 1], out var ry)
+							&& WDist.TryParse(parts[3 * i + 2], out var rz))
+						vecs[i] = new WVec(rx, ry, rz);
+				}
+
+				return vecs;
+			}
+
+			return InvalidValueAction(value, fieldType, fieldName);
+		}
+
+		static object ParseWPos(string fieldName, Type fieldType, string value, MemberInfo field)
+		{
+			if (value != null)
+			{
+				var parts = value.Split(SplitComma);
+				if (parts.Length == 3)
+				{
+					if (WDist.TryParse(parts[0], out var rx)
+						&& WDist.TryParse(parts[1], out var ry)
+						&& WDist.TryParse(parts[2], out var rz))
+						return new WPos(rx, ry, rz);
+				}
+			}
+
+			return InvalidValueAction(value, fieldType, fieldName);
+		}
+
+		static object ParseWAngle(string fieldName, Type fieldType, string value, MemberInfo field)
+		{
+			if (Exts.TryParseIntegerInvariant(value, out var res))
+				return new WAngle(res);
+			return InvalidValueAction(value, fieldType, fieldName);
+		}
+
+		static object ParseWRot(string fieldName, Type fieldType, string value, MemberInfo field)
+		{
+			if (value != null)
+			{
+				var parts = value.Split(SplitComma);
+				if (parts.Length == 3)
+				{
+					if (Exts.TryParseIntegerInvariant(parts[0], out var rr)
+							&& Exts.TryParseIntegerInvariant(parts[1], out var rp)
+							&& Exts.TryParseIntegerInvariant(parts[2], out var ry))
+						return new WRot(new WAngle(rr), new WAngle(rp), new WAngle(ry));
+				}
+			}
+
+			return InvalidValueAction(value, fieldType, fieldName);
+		}
+
+		static object ParseCPos(string fieldName, Type fieldType, string value, MemberInfo field)
+		{
+			if (value != null)
+			{
+				var parts = value.Split(SplitComma, StringSplitOptions.RemoveEmptyEntries);
+				return new CPos(Exts.ParseIntegerInvariant(parts[0]), Exts.ParseIntegerInvariant(parts[1]));
+			}
+
+			return InvalidValueAction(value, fieldType, fieldName);
+		}
+
+		static object ParseCVec(string fieldName, Type fieldType, string value, MemberInfo field)
+		{
+			if (value != null)
+			{
+				var parts = value.Split(SplitComma, StringSplitOptions.RemoveEmptyEntries);
+				return new CVec(Exts.ParseIntegerInvariant(parts[0]), Exts.ParseIntegerInvariant(parts[1]));
+			}
+
+			return InvalidValueAction(value, fieldType, fieldName);
+		}
+
+		static object ParseCVecArray(string fieldName, Type fieldType, string value, MemberInfo field)
+		{
+			if (value != null)
+			{
+				var parts = value.Split(SplitComma);
+
+				if (parts.Length % 2 != 0)
+					return InvalidValueAction(value, fieldType, fieldName);
+
+				var vecs = new CVec[parts.Length / 2];
+				for (var i = 0; i < vecs.Length; i++)
+				{
+					if (int.TryParse(parts[2 * i], out var rx)
+							&& int.TryParse(parts[2 * i + 1], out var ry))
+						vecs[i] = new CVec(rx, ry);
+				}
+
+				return vecs;
+			}
+
+			return InvalidValueAction(value, fieldType, fieldName);
+		}
+
+		static object ParseBooleanExpression(string fieldName, Type fieldType, string value, MemberInfo field)
+		{
+			if (value != null)
+			{
+				try
+				{
+					return BooleanExpressionCache[value];
+				}
+				catch (InvalidDataException e)
+				{
+					throw new YamlException(e.Message);
+				}
+			}
+
+			return InvalidValueAction(value, fieldType, fieldName);
+		}
+
+		static object ParseIntegerExpression(string fieldName, Type fieldType, string value, MemberInfo field)
+		{
+			if (value != null)
+			{
+				try
+				{
+					return IntegerExpressionCache[value];
+				}
+				catch (InvalidDataException e)
+				{
+					throw new YamlException(e.Message);
+				}
+			}
+
+			return InvalidValueAction(value, fieldType, fieldName);
+		}
+
+		static object ParseEnum(string fieldName, Type fieldType, string value, MemberInfo field)
+		{
+			try
+			{
+				return Enum.Parse(fieldType, value, true);
+			}
+			catch (ArgumentException)
+			{
+				return InvalidValueAction(value, fieldType, fieldName);
+			}
+		}
+
+		static object ParseBool(string fieldName, Type fieldType, string value, MemberInfo field)
+		{
+			if (bool.TryParse(value.ToLowerInvariant(), out var result))
+				return result;
+
+			return InvalidValueAction(value, fieldType, fieldName);
+		}
+
+		static object ParseInt2Array(string fieldName, Type fieldType, string value, MemberInfo field)
+		{
+			if (value != null)
+			{
+				var parts = value.Split(SplitComma, StringSplitOptions.RemoveEmptyEntries);
+				if (parts.Length % 2 != 0)
+					return InvalidValueAction(value, fieldType, fieldName);
+
+				var ints = new int2[parts.Length / 2];
+				for (var i = 0; i < ints.Length; i++)
+					ints[i] = new int2(Exts.ParseIntegerInvariant(parts[2 * i]), Exts.ParseIntegerInvariant(parts[2 * i + 1]));
+
+				return ints;
+			}
+
+			return InvalidValueAction(value, fieldType, fieldName);
+		}
+
+		static object ParseSize(string fieldName, Type fieldType, string value, MemberInfo field)
+		{
+			if (value != null)
+			{
+				var parts = value.Split(SplitComma, StringSplitOptions.RemoveEmptyEntries);
+				return new Size(Exts.ParseIntegerInvariant(parts[0]), Exts.ParseIntegerInvariant(parts[1]));
+			}
+
+			return InvalidValueAction(value, fieldType, fieldName);
+		}
+
+		static object ParseInt2(string fieldName, Type fieldType, string value, MemberInfo field)
+		{
+			if (value != null)
+			{
+				var parts = value.Split(SplitComma, StringSplitOptions.RemoveEmptyEntries);
+				if (parts.Length != 2)
+					return InvalidValueAction(value, fieldType, fieldName);
+
+				return new int2(Exts.ParseIntegerInvariant(parts[0]), Exts.ParseIntegerInvariant(parts[1]));
+			}
+
+			return InvalidValueAction(value, fieldType, fieldName);
+		}
+
+		static object ParseFloat2(string fieldName, Type fieldType, string value, MemberInfo field)
+		{
+			if (value != null)
+			{
+				var parts = value.Split(SplitComma, StringSplitOptions.RemoveEmptyEntries);
+				float xx = 0;
+				float yy = 0;
+				if (float.TryParse(parts[0].Replace("%", ""), NumberStyles.Float, NumberFormatInfo.InvariantInfo, out var res))
+					xx = res * (parts[0].Contains('%') ? 0.01f : 1f);
+				if (float.TryParse(parts[1].Replace("%", ""), NumberStyles.Float, NumberFormatInfo.InvariantInfo, out res))
+					yy = res * (parts[1].Contains('%') ? 0.01f : 1f);
+				return new float2(xx, yy);
+			}
+
+			return InvalidValueAction(value, fieldType, fieldName);
+		}
+
+		static object ParseFloat3(string fieldName, Type fieldType, string value, MemberInfo field)
+		{
+			if (value != null)
+			{
+				var parts = value.Split(SplitComma, StringSplitOptions.RemoveEmptyEntries);
+				float.TryParse(parts[0], NumberStyles.Float, NumberFormatInfo.InvariantInfo, out var x);
+				float.TryParse(parts[1], NumberStyles.Float, NumberFormatInfo.InvariantInfo, out var y);
+
+				// z component is optional for compatibility with older float2 definitions
+				float z = 0;
+				if (parts.Length > 2)
+					float.TryParse(parts[2], NumberStyles.Float, NumberFormatInfo.InvariantInfo, out z);
+
+				return new float3(x, y, z);
+			}
+
+			return InvalidValueAction(value, fieldType, fieldName);
+		}
+
+		static object ParseRectangle(string fieldName, Type fieldType, string value, MemberInfo field)
+		{
+			if (value != null)
+			{
+				var parts = value.Split(SplitComma, StringSplitOptions.RemoveEmptyEntries);
+				return new Rectangle(
+					Exts.ParseIntegerInvariant(parts[0]),
+					Exts.ParseIntegerInvariant(parts[1]),
+					Exts.ParseIntegerInvariant(parts[2]),
+					Exts.ParseIntegerInvariant(parts[3]));
+			}
+
+			return InvalidValueAction(value, fieldType, fieldName);
+		}
+
+		static object ParseDateTime(string fieldName, Type fieldType, string value, MemberInfo field)
+		{
+			if (DateTime.TryParseExact(value, "yyyy-MM-dd HH-mm-ss", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out var dt))
+				return dt;
+			return InvalidValueAction(value, fieldType, fieldName);
+		}
+
+		static object ParseHashSetOrList(string fieldName, Type fieldType, string value, MiniYaml yaml, MemberInfo field)
+		{
+			var set = Activator.CreateInstance(fieldType);
+			if (value == null)
+				return set;
+
+			var parts = value.Split(SplitComma, StringSplitOptions.RemoveEmptyEntries);
+			var addMethod = fieldType.GetMethod("Add", fieldType.GetGenericArguments());
+			for (var i = 0; i < parts.Length; i++)
+				addMethod.Invoke(set, new[] { GetValue(fieldName, fieldType.GetGenericArguments()[0], parts[i].Trim(), field) });
+			return set;
+		}
+
+		static object ParseDictionary(string fieldName, Type fieldType, string value, MiniYaml yaml, MemberInfo field)
+		{
+			var dict = Activator.CreateInstance(fieldType);
+			var arguments = fieldType.GetGenericArguments();
+			var addMethod = fieldType.GetMethod("Add", arguments);
+
+			foreach (var node in yaml.Nodes)
+			{
+				var key = GetValue(fieldName, arguments[0], node.Key, field);
+				var val = GetValue(fieldName, arguments[1], node.Value, field);
+				addMethod.Invoke(dict, new[] { key, val });
+			}
+
+			return dict;
+		}
+
+		static object ParseBitSet(string fieldName, Type fieldType, string value, MiniYaml yaml, MemberInfo field)
+		{
+			if (value != null)
+			{
+				var parts = value.Split(SplitComma, StringSplitOptions.RemoveEmptyEntries);
+				var ctor = fieldType.GetConstructor(new[] { typeof(string[]) });
+				return ctor.Invoke(new object[] { parts.Select(p => p.Trim()).ToArray() });
+			}
+
+			return InvalidValueAction(value, fieldType, fieldName);
+		}
+
+		static object ParseNullable(string fieldName, Type fieldType, string value, MiniYaml yaml, MemberInfo field)
+		{
+			if (string.IsNullOrEmpty(value))
+				return null;
+
+			var innerType = fieldType.GetGenericArguments().First();
+			var innerValue = GetValue("Nullable<T>", innerType, value, field);
+			return fieldType.GetConstructor(new[] { innerType }).Invoke(new[] { innerValue });
+		}
 
 		public static void Load(object self, MiniYaml my)
 		{
@@ -174,394 +621,42 @@ namespace OpenRA
 		public static object GetValue(string fieldName, Type fieldType, MiniYaml yaml, MemberInfo field)
 		{
 			var value = yaml.Value?.Trim();
-
-			if (fieldType == typeof(int))
+			if (fieldType.IsGenericType)
 			{
-				if (Exts.TryParseIntegerInvariant(value, out var res))
-					return res;
-				return InvalidValueAction(value, fieldType, fieldName);
-			}
-			else if (fieldType == typeof(ushort))
-			{
-				if (ushort.TryParse(value, NumberStyles.Integer, NumberFormatInfo.InvariantInfo, out var res))
-					return res;
-				return InvalidValueAction(value, fieldType, fieldName);
-			}
-
-			if (fieldType == typeof(long))
-			{
-				if (long.TryParse(value, NumberStyles.Integer, NumberFormatInfo.InvariantInfo, out var res))
-					return res;
-				return InvalidValueAction(value, fieldType, fieldName);
-			}
-			else if (fieldType == typeof(float))
-			{
-				if (value != null && float.TryParse(value.Replace("%", ""), NumberStyles.Float, NumberFormatInfo.InvariantInfo, out var res))
-					return res * (value.Contains('%') ? 0.01f : 1f);
-				return InvalidValueAction(value, fieldType, fieldName);
-			}
-			else if (fieldType == typeof(decimal))
-			{
-				if (value != null && decimal.TryParse(value.Replace("%", ""), NumberStyles.Float, NumberFormatInfo.InvariantInfo, out var res))
-					return res * (value.Contains('%') ? 0.01m : 1m);
-				return InvalidValueAction(value, fieldType, fieldName);
-			}
-			else if (fieldType == typeof(string))
-				return value;
-			else if (fieldType == typeof(Color))
-			{
-				if (value != null && Color.TryParse(value, out var color))
-					return color;
-
-				return InvalidValueAction(value, fieldType, fieldName);
-			}
-			else if (fieldType == typeof(Hotkey))
-			{
-				if (Hotkey.TryParse(value, out var res))
-					return res;
-
-				return InvalidValueAction(value, fieldType, fieldName);
-			}
-			else if (fieldType == typeof(HotkeyReference))
-			{
-				return Game.ModData.Hotkeys[value];
-			}
-			else if (fieldType == typeof(WDist))
-			{
-				if (WDist.TryParse(value, out var res))
-					return res;
-
-				return InvalidValueAction(value, fieldType, fieldName);
-			}
-			else if (fieldType == typeof(WVec))
-			{
-				if (value != null)
-				{
-					var parts = value.Split(',');
-					if (parts.Length == 3)
-					{
-						if (WDist.TryParse(parts[0], out var rx) && WDist.TryParse(parts[1], out var ry) && WDist.TryParse(parts[2], out var rz))
-							return new WVec(rx, ry, rz);
-					}
-				}
-
-				return InvalidValueAction(value, fieldType, fieldName);
-			}
-			else if (fieldType == typeof(WVec[]))
-			{
-				if (value != null)
-				{
-					var parts = value.Split(',');
-
-					if (parts.Length % 3 != 0)
-						return InvalidValueAction(value, fieldType, fieldName);
-
-					var vecs = new WVec[parts.Length / 3];
-
-					for (var i = 0; i < vecs.Length; ++i)
-					{
-						if (WDist.TryParse(parts[3 * i], out var rx) && WDist.TryParse(parts[3 * i + 1], out var ry) && WDist.TryParse(parts[3 * i + 2], out var rz))
-							vecs[i] = new WVec(rx, ry, rz);
-					}
-
-					return vecs;
-				}
-
-				return InvalidValueAction(value, fieldType, fieldName);
-			}
-			else if (fieldType == typeof(WPos))
-			{
-				if (value != null)
-				{
-					var parts = value.Split(',');
-					if (parts.Length == 3)
-					{
-						if (WDist.TryParse(parts[0], out var rx) && WDist.TryParse(parts[1], out var ry) && WDist.TryParse(parts[2], out var rz))
-							return new WPos(rx, ry, rz);
-					}
-				}
-
-				return InvalidValueAction(value, fieldType, fieldName);
-			}
-			else if (fieldType == typeof(WAngle))
-			{
-				if (Exts.TryParseIntegerInvariant(value, out var res))
-					return new WAngle(res);
-				return InvalidValueAction(value, fieldType, fieldName);
-			}
-			else if (fieldType == typeof(WRot))
-			{
-				if (value != null)
-				{
-					var parts = value.Split(',');
-					if (parts.Length == 3)
-					{
-						if (Exts.TryParseIntegerInvariant(parts[0], out var rr) && Exts.TryParseIntegerInvariant(parts[1], out var rp) && Exts.TryParseIntegerInvariant(parts[2], out var ry))
-							return new WRot(new WAngle(rr), new WAngle(rp), new WAngle(ry));
-					}
-				}
-
-				return InvalidValueAction(value, fieldType, fieldName);
-			}
-			else if (fieldType == typeof(CPos))
-			{
-				if (value != null)
-				{
-					var parts = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-					return new CPos(Exts.ParseIntegerInvariant(parts[0]), Exts.ParseIntegerInvariant(parts[1]));
-				}
-
-				return InvalidValueAction(value, fieldType, fieldName);
-			}
-			else if (fieldType == typeof(CVec))
-			{
-				if (value != null)
-				{
-					var parts = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-					return new CVec(Exts.ParseIntegerInvariant(parts[0]), Exts.ParseIntegerInvariant(parts[1]));
-				}
-
-				return InvalidValueAction(value, fieldType, fieldName);
-			}
-			else if (fieldType == typeof(CVec[]))
-			{
-				if (value != null)
-				{
-					var parts = value.Split(',');
-
-					if (parts.Length % 2 != 0)
-						return InvalidValueAction(value, fieldType, fieldName);
-
-					var vecs = new CVec[parts.Length / 2];
-					for (var i = 0; i < vecs.Length; i++)
-					{
-						if (int.TryParse(parts[2 * i], out var rx) && int.TryParse(parts[2 * i + 1], out var ry))
-							vecs[i] = new CVec(rx, ry);
-					}
-
-					return vecs;
-				}
-
-				return InvalidValueAction(value, fieldType, fieldName);
-			}
-			else if (fieldType == typeof(BooleanExpression))
-			{
-				if (value != null)
-				{
-					try
-					{
-						return BooleanExpressionCache[value];
-					}
-					catch (InvalidDataException e)
-					{
-						throw new YamlException(e.Message);
-					}
-				}
-
-				return InvalidValueAction(value, fieldType, fieldName);
-			}
-			else if (fieldType == typeof(IntegerExpression))
-			{
-				if (value != null)
-				{
-					try
-					{
-						return IntegerExpressionCache[value];
-					}
-					catch (InvalidDataException e)
-					{
-						throw new YamlException(e.Message);
-					}
-				}
-
-				return InvalidValueAction(value, fieldType, fieldName);
-			}
-			else if (fieldType.IsEnum)
-			{
-				try
-				{
-					return Enum.Parse(fieldType, value, true);
-				}
-				catch (ArgumentException)
-				{
-					return InvalidValueAction(value, fieldType, fieldName);
-				}
-			}
-			else if (fieldType == typeof(bool))
-			{
-				if (bool.TryParse(value.ToLowerInvariant(), out var result))
-					return result;
-
-				return InvalidValueAction(value, fieldType, fieldName);
-			}
-			else if (fieldType == typeof(int2[]))
-			{
-				if (value != null)
-				{
-					var parts = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-					if (parts.Length % 2 != 0)
-						return InvalidValueAction(value, fieldType, fieldName);
-
-					var ints = new int2[parts.Length / 2];
-					for (var i = 0; i < ints.Length; i++)
-						ints[i] = new int2(Exts.ParseIntegerInvariant(parts[2 * i]), Exts.ParseIntegerInvariant(parts[2 * i + 1]));
-
-					return ints;
-				}
-
-				return InvalidValueAction(value, fieldType, fieldName);
-			}
-			else if (fieldType.IsArray && fieldType.GetArrayRank() == 1)
-			{
-				if (value == null)
-					return Array.CreateInstance(fieldType.GetElementType(), 0);
-
-				var options = field != null && field.HasAttribute<AllowEmptyEntriesAttribute>() ?
-					StringSplitOptions.None : StringSplitOptions.RemoveEmptyEntries;
-				var parts = value.Split(new char[] { ',' }, options);
-
-				var ret = Array.CreateInstance(fieldType.GetElementType(), parts.Length);
-				for (var i = 0; i < parts.Length; i++)
-					ret.SetValue(GetValue(fieldName, fieldType.GetElementType(), parts[i].Trim(), field), i);
-				return ret;
-			}
-			else if (fieldType.IsGenericType && (fieldType.GetGenericTypeDefinition() == typeof(HashSet<>) || fieldType.GetGenericTypeDefinition() == typeof(List<>)))
-			{
-				var set = Activator.CreateInstance(fieldType);
-				if (value == null)
-					return set;
-
-				var parts = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-				var addMethod = fieldType.GetMethod("Add", fieldType.GetGenericArguments());
-				for (var i = 0; i < parts.Length; i++)
-					addMethod.Invoke(set, new[] { GetValue(fieldName, fieldType.GetGenericArguments()[0], parts[i].Trim(), field) });
-				return set;
-			}
-			else if (fieldType.IsGenericType && fieldType.GetGenericTypeDefinition() == typeof(Dictionary<,>))
-			{
-				var dict = Activator.CreateInstance(fieldType);
-				var arguments = fieldType.GetGenericArguments();
-				var addMethod = fieldType.GetMethod("Add", arguments);
-
-				foreach (var node in yaml.Nodes)
-				{
-					var key = GetValue(fieldName, arguments[0], node.Key, field);
-					var val = GetValue(fieldName, arguments[1], node.Value, field);
-					addMethod.Invoke(dict, new[] { key, val });
-				}
-
-				return dict;
-			}
-			else if (fieldType == typeof(Size))
-			{
-				if (value != null)
-				{
-					var parts = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-					return new Size(Exts.ParseIntegerInvariant(parts[0]), Exts.ParseIntegerInvariant(parts[1]));
-				}
-
-				return InvalidValueAction(value, fieldType, fieldName);
-			}
-			else if (fieldType == typeof(int2))
-			{
-				if (value != null)
-				{
-					var parts = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-					if (parts.Length != 2)
-						return InvalidValueAction(value, fieldType, fieldName);
-
-					return new int2(Exts.ParseIntegerInvariant(parts[0]), Exts.ParseIntegerInvariant(parts[1]));
-				}
-
-				return InvalidValueAction(value, fieldType, fieldName);
-			}
-			else if (fieldType == typeof(float2))
-			{
-				if (value != null)
-				{
-					var parts = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-					float xx = 0;
-					float yy = 0;
-					if (float.TryParse(parts[0].Replace("%", ""), NumberStyles.Float, NumberFormatInfo.InvariantInfo, out var res))
-						xx = res * (parts[0].Contains('%') ? 0.01f : 1f);
-					if (float.TryParse(parts[1].Replace("%", ""), NumberStyles.Float, NumberFormatInfo.InvariantInfo, out res))
-						yy = res * (parts[1].Contains('%') ? 0.01f : 1f);
-					return new float2(xx, yy);
-				}
-
-				return InvalidValueAction(value, fieldType, fieldName);
-			}
-			else if (fieldType == typeof(float3))
-			{
-				if (value != null)
-				{
-					var parts = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-					float.TryParse(parts[0], NumberStyles.Float, NumberFormatInfo.InvariantInfo, out var x);
-					float.TryParse(parts[1], NumberStyles.Float, NumberFormatInfo.InvariantInfo, out var y);
-
-					// z component is optional for compatibility with older float2 definitions
-					float z = 0;
-					if (parts.Length > 2)
-						float.TryParse(parts[2], NumberStyles.Float, NumberFormatInfo.InvariantInfo, out z);
-
-					return new float3(x, y, z);
-				}
-
-				return InvalidValueAction(value, fieldType, fieldName);
-			}
-			else if (fieldType == typeof(Rectangle))
-			{
-				if (value != null)
-				{
-					var parts = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-					return new Rectangle(
-						Exts.ParseIntegerInvariant(parts[0]),
-						Exts.ParseIntegerInvariant(parts[1]),
-						Exts.ParseIntegerInvariant(parts[2]),
-						Exts.ParseIntegerInvariant(parts[3]));
-				}
-
-				return InvalidValueAction(value, fieldType, fieldName);
-			}
-			else if (fieldType.IsGenericType && fieldType.GetGenericTypeDefinition() == typeof(BitSet<>))
-			{
-				if (value != null)
-				{
-					var parts = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-					var ctor = fieldType.GetConstructor(new[] { typeof(string[]) });
-					return ctor.Invoke(new object[] { parts.Select(p => p.Trim()).ToArray() });
-				}
-
-				return InvalidValueAction(value, fieldType, fieldName);
-			}
-			else if (fieldType.IsGenericType && fieldType.GetGenericTypeDefinition() == typeof(Nullable<>))
-			{
-				if (string.IsNullOrEmpty(value))
-					return null;
-
-				var innerType = fieldType.GetGenericArguments().First();
-				var innerValue = GetValue("Nullable<T>", innerType, value, field);
-				return fieldType.GetConstructor(new[] { innerType }).Invoke(new[] { innerValue });
-			}
-			else if (fieldType == typeof(DateTime))
-			{
-				if (DateTime.TryParseExact(value, "yyyy-MM-dd HH-mm-ss", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out var dt))
-					return dt;
-				return InvalidValueAction(value, fieldType, fieldName);
+				if (GenericTypeParsers.TryGetValue(fieldType.GetGenericTypeDefinition(), out var parseFuncGeneric))
+					return parseFuncGeneric(fieldName, fieldType, value, yaml, field);
 			}
 			else
 			{
-				var conv = TypeDescriptor.GetConverter(fieldType);
-				if (conv.CanConvertFrom(typeof(string)))
+				if (TypeParsers.TryGetValue(fieldType, out var parseFunc))
+					return parseFunc(fieldName, fieldType, value, field);
+
+				if (fieldType.IsArray && fieldType.GetArrayRank() == 1)
 				{
-					try
-					{
-						return conv.ConvertFromInvariantString(value);
-					}
-					catch
-					{
-						return InvalidValueAction(value, fieldType, fieldName);
-					}
+					if (value == null)
+						return Array.CreateInstance(fieldType.GetElementType(), 0);
+
+					var options = field != null && field.HasAttribute<AllowEmptyEntriesAttribute>() ?
+						StringSplitOptions.None : StringSplitOptions.RemoveEmptyEntries;
+					var parts = value.Split(SplitComma, options);
+
+					var ret = Array.CreateInstance(fieldType.GetElementType(), parts.Length);
+					for (var i = 0; i < parts.Length; i++)
+						ret.SetValue(GetValue(fieldName, fieldType.GetElementType(), parts[i].Trim(), field), i);
+					return ret;
+				}
+			}
+
+			var conv = TypeDescriptor.GetConverter(fieldType);
+			if (conv.CanConvertFrom(typeof(string)))
+			{
+				try
+				{
+					return conv.ConvertFromInvariantString(value);
+				}
+				catch
+				{
+					return InvalidValueAction(value, fieldType, fieldName);
 				}
 			}
 
