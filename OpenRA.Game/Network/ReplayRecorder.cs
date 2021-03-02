@@ -19,6 +19,9 @@ namespace OpenRA.Network
 {
 	sealed class ReplayRecorder
 	{
+		// Arbitrary value.
+		const int CreateReplayFileMaxRetryCount = 128;
+
 		public ReplayMetadata Metadata;
 		BinaryWriter writer;
 		Func<string> chooseFilename;
@@ -59,7 +62,12 @@ namespace OpenRA.Network
 				{
 					file = File.Create(fullFilename);
 				}
-				catch (IOException) { }
+				catch (IOException ex)
+				{
+					if (id > CreateReplayFileMaxRetryCount)
+						throw new ArgumentException(
+							"Error creating replay file \"{0}.orarep\"".F(filename), ex);
+				}
 			}
 
 			file.WriteArray(initialContent);
