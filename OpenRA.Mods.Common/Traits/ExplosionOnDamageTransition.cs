@@ -15,7 +15,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This actor triggers an explosion on itself when transitioning to a specific damage state.")]
-	public class ExplosionOnDamageTransitionInfo : TraitInfo, IRulesetLoaded, Requires<IHealthInfo>
+	public class ExplosionOnDamageTransitionInfo : ConditionalTraitInfo, IRulesetLoaded, Requires<IHealthInfo>
 	{
 		[WeaponReference]
 		[FieldLoader.Require]
@@ -32,8 +32,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override object Create(ActorInitializer init) { return new ExplosionOnDamageTransition(this, init.Self); }
 
-		public void RulesetLoaded(Ruleset rules, ActorInfo ai)
+		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
+			base.RulesetLoaded(rules, ai);
+
 			if (string.IsNullOrEmpty(Weapon))
 				return;
 
@@ -45,14 +47,13 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class ExplosionOnDamageTransition : INotifyDamageStateChanged
+	public class ExplosionOnDamageTransition : ConditionalTrait<ExplosionOnDamageTransitionInfo>, INotifyDamageStateChanged
 	{
-		readonly ExplosionOnDamageTransitionInfo info;
 		bool triggered;
 
 		public ExplosionOnDamageTransition(ExplosionOnDamageTransitionInfo info, Actor self)
+			: base(info)
 		{
-			this.info = info;
 		}
 
 		void INotifyDamageStateChanged.DamageStateChanged(Actor self, AttackInfo e)
@@ -63,13 +64,16 @@ namespace OpenRA.Mods.Common.Traits
 			if (triggered)
 				return;
 
-			if (e.DamageState >= info.DamageState && e.PreviousDamageState < info.DamageState)
+			if (IsTraitDisabled)
+				return;
+
+			if (e.DamageState >= Info.DamageState && e.PreviousDamageState < Info.DamageState)
 			{
-				if (info.TriggerOnlyOnce)
+				if (Info.TriggerOnlyOnce)
 					triggered = true;
 
 				// Use .FromPos since the actor might have been killed, don't use Target.FromActor
-				info.WeaponInfo.Impact(Target.FromPos(self.CenterPosition), e.Attacker);
+				Info.WeaponInfo.Impact(Target.FromPos(self.CenterPosition), e.Attacker);
 			}
 		}
 	}
