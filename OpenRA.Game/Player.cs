@@ -261,15 +261,14 @@ namespace OpenRA
 
 		public Color PlayerRelationshipColor(Actor a)
 		{
-			var player = a.World.RenderPlayer ?? a.World.LocalPlayer;
+			var renderPlayer = a.World.RenderPlayer;
+			var player = renderPlayer ?? a.World.LocalPlayer;
 			if (player != null && !player.Spectating)
 			{
-				var apparentOwner = a.EffectiveOwner != null && a.EffectiveOwner.Disguised
-					? a.EffectiveOwner.Owner
-					: a.Owner;
-
-				if (a.Owner.IsAlliedWith(a.World.RenderPlayer))
-					apparentOwner = a.Owner;
+				var effectiveOwner = a.EffectiveOwner;
+				var apparentOwner = a.Owner;
+				if (effectiveOwner != null && effectiveOwner.Disguised && !a.Owner.IsAlliedWith(renderPlayer))
+					apparentOwner = effectiveOwner.Owner;
 
 				if (apparentOwner == player)
 					return stanceColors.Self;
