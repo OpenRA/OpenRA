@@ -155,6 +155,12 @@ namespace OpenRA.Mods.Common.Activities
 			return true;
 		}
 
+		protected override void OnLastRun(Actor self)
+		{
+			foreach (var attack in attackTraits)
+				attack.IsAiming = false;
+		}
+
 		protected virtual AttackStatus TickAttack(Actor self, AttackFrontal attack)
 		{
 			if (!target.IsValidFor(self))
