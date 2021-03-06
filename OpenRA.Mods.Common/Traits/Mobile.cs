@@ -217,9 +217,6 @@ namespace OpenRA.Mods.Common.Traits
 		[Sync]
 		public CPos ToCell => toCell;
 
-		[Sync]
-		public int PathHash;	// written by Move.EvalPath, to temporarily debug this crap.
-
 		public Locomotor Locomotor { get; private set; }
 
 		public IPathFinder Pathfinder { get; private set; }
