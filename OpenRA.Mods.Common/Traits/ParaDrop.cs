@@ -105,7 +105,7 @@ namespace OpenRA.Mods.Common.Traits
 				dropPositionable.SetPosition(dropActor, dropCell, dropSubCell);
 
 				var dropPosition = dropActor.CenterPosition + new WVec(0, 0, self.CenterPosition.Z - dropActor.CenterPosition.Z);
-				dropPositionable.SetVisualPosition(dropActor, dropPosition);
+				dropPositionable.SetCenterPosition(dropActor, dropPosition);
 				w.Add(dropActor);
 			});
 

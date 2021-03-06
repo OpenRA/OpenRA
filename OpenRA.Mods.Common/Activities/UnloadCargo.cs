@@ -122,7 +122,7 @@ namespace OpenRA.Mods.Common.Activities
 					var pos = actor.Trait<IPositionable>();
 
 					pos.SetPosition(actor, exitSubCell.Value.Cell, exitSubCell.Value.SubCell);
-					pos.SetVisualPosition(actor, spawn);
+					pos.SetCenterPosition(actor, spawn);
 
 					actor.CancelActivity();
 					w.Add(actor);

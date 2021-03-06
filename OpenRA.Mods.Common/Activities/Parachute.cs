@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (nextPosition.Z < groundLevel)
 				return true;
 
-			pos.SetVisualPosition(self, nextPosition);
+			pos.SetCenterPosition(self, nextPosition);
 
 			return false;
 		}

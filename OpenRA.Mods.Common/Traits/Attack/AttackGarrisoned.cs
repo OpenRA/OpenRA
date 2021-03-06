@@ -162,7 +162,7 @@ namespace OpenRA.Mods.Common.Traits
 					return;
 
 				paxFacing[a.Actor].Facing = targetYaw;
-				paxPos[a.Actor].SetVisualPosition(a.Actor, pos + PortOffset(self, port));
+				paxPos[a.Actor].SetCenterPosition(a.Actor, pos + PortOffset(self, port));
 
 				var barrel = a.CheckFire(a.Actor, facing, target);
 				if (barrel == null)

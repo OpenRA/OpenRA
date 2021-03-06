@@ -77,7 +77,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Actor self;
 		readonly CrateInfo info;
 		bool collected;
-		INotifyVisualPositionChanged[] notifyVisualPositionChanged;
+		INotifyCenterPositionChanged[] notifyCenterPositionChanged;
 
 		[Sync]
 		int ticks;
@@ -97,7 +97,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyCreated.Created(Actor self)
 		{
-			notifyVisualPositionChanged = self.TraitsImplementing<INotifyVisualPositionChanged>().ToArray();
+			notifyCenterPositionChanged = self.TraitsImplementing<INotifyCenterPositionChanged>().ToArray();
 		}
 
 		void INotifyCrushed.WarnCrush(Actor self, Actor crusher, BitSet<CrushClass> crushClasses) { }
@@ -181,31 +181,31 @@ namespace OpenRA.Mods.Common.Traits
 
 		public WPos CenterPosition { get; private set; }
 
-		// Sets the location (Location) and visual position (CenterPosition)
+		// Sets the location (Location) and position (CenterPosition)
 		public void SetPosition(Actor self, WPos pos)
 		{
 			var cell = self.World.Map.CellContaining(pos);
 			SetLocation(self, cell);
-			SetVisualPosition(self, self.World.Map.CenterOfCell(cell) + new WVec(WDist.Zero, WDist.Zero, self.World.Map.DistanceAboveTerrain(pos)));
+			SetCenterPosition(self, self.World.Map.CenterOfCell(cell) + new WVec(WDist.Zero, WDist.Zero, self.World.Map.DistanceAboveTerrain(pos)));
 		}
 
-		// Sets the location (Location) and visual position (CenterPosition)
+		// Sets the location (Location) and position (CenterPosition)
 		public void SetPosition(Actor self, CPos cell, SubCell subCell = SubCell.Any)
 		{
 			SetLocation(self, cell, subCell);
-			SetVisualPosition(self, self.World.Map.CenterOfCell(cell));
+			SetCenterPosition(self, self.World.Map.CenterOfCell(cell));
 		}
 
-		// Sets only the visual position (CenterPosition)
-		public void SetVisualPosition(Actor self, WPos pos)
+		// Sets only the CenterPosition
+		public void SetCenterPosition(Actor self, WPos pos)
 		{
 			CenterPosition = pos;
 			self.World.UpdateMaps(self, this);
 
-			// This can be called from the constructor before notifyVisualPositionChanged is assigned.
-			if (notifyVisualPositionChanged != null)
-				foreach (var n in notifyVisualPositionChanged)
-					n.VisualPositionChanged(self, 0, 0);
+			// This can be called from the constructor before notifyCenterPositionChanged is assigned.
+			if (notifyCenterPositionChanged != null)
+				foreach (var n in notifyCenterPositionChanged)
+					n.CenterPositionChanged(self, 0, 0);
 		}
 
 		// Sets only the location (Location)

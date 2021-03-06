@@ -224,7 +224,7 @@ namespace OpenRA.Mods.Common.Traits
 		IDisposable reservation;
 		IEnumerable<int> speedModifiers;
 		INotifyMoving[] notifyMoving;
-		INotifyVisualPositionChanged[] notifyVisualPositionChanged;
+		INotifyCenterPositionChanged[] notifyCenterPositionChanged;
 		IOverrideAircraftLanding overrideAircraftLanding;
 
 		WRot orientation;
@@ -344,7 +344,7 @@ namespace OpenRA.Mods.Common.Traits
 			notifyMoving = self.TraitsImplementing<INotifyMoving>().ToArray();
 			positionOffsets = self.TraitsImplementing<IAircraftCenterPositionOffset>().ToArray();
 			overrideAircraftLanding = self.TraitOrDefault<IOverrideAircraftLanding>();
-			notifyVisualPositionChanged = self.TraitsImplementing<INotifyVisualPositionChanged>().ToArray();
+			notifyCenterPositionChanged = self.TraitsImplementing<INotifyCenterPositionChanged>().ToArray();
 			base.Created(self);
 		}
 
@@ -766,7 +766,7 @@ namespace OpenRA.Mods.Common.Traits
 			return SubCell.Invalid;
 		}
 
-		public void SetVisualPosition(Actor self, WPos pos) { SetPosition(self, pos); }
+		public void SetCenterPosition(Actor self, WPos pos) { SetPosition(self, pos); }
 
 		// Changes position, but not altitude
 		public void SetPosition(Actor self, CPos cell, SubCell subCell = SubCell.Any)
@@ -797,10 +797,10 @@ namespace OpenRA.Mods.Common.Traits
 			else if (!isCruising && cruising)
 				OnCruisingAltitudeLeft();
 
-			// NB: This can be called from the constructor before notifyVisualPositionChanged is assigned.
-			if (notify && notifyVisualPositionChanged != null)
-				foreach (var n in notifyVisualPositionChanged)
-					n.VisualPositionChanged(self, 0, 0);
+			// NB: This can be called from the constructor before notifyCenterPositionChanged is assigned.
+			if (notify && notifyCenterPositionChanged != null)
+				foreach (var n in notifyCenterPositionChanged)
+					n.CenterPositionChanged(self, 0, 0);
 
 			FinishedMoving(self);
 		}
@@ -946,10 +946,10 @@ namespace OpenRA.Mods.Common.Traits
 			return new Land(self, target);
 		}
 
-		public Activity VisualMove(Actor self, WPos fromPos, WPos toPos)
+		public Activity LocalMove(Actor self, WPos fromPos, WPos toPos)
 		{
 			// TODO: Ignore repulsion when moving
-			var activities = new CallFunc(() => SetVisualPosition(self, fromPos));
+			var activities = new CallFunc(() => SetCenterPosition(self, fromPos));
 			activities.Queue(new Fly(self, Target.FromPos(toPos)));
 			return activities;
 		}

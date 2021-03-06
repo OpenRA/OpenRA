@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class GrantConditionOnSubterraneanLayer : GrantConditionOnLayer<GrantConditionOnSubterraneanLayerInfo>, INotifyVisualPositionChanged
+	public class GrantConditionOnSubterraneanLayer : GrantConditionOnLayer<GrantConditionOnSubterraneanLayerInfo>, INotifyCenterPositionChanged
 	{
 		WDist transitionDepth;
 
@@ -68,7 +68,7 @@ namespace OpenRA.Mods.Common.Traits
 				Game.Sound.Play(SoundType.World, Info.SubterraneanTransitionSound);
 		}
 
-		void INotifyVisualPositionChanged.VisualPositionChanged(Actor self, byte oldLayer, byte newLayer)
+		void INotifyCenterPositionChanged.CenterPositionChanged(Actor self, byte oldLayer, byte newLayer)
 		{
 			var depth = self.World.Map.DistanceAboveTerrain(self.CenterPosition);
 

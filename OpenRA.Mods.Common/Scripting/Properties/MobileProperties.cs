@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Scripting
 		{
 			var pos = Self.CenterPosition;
 			mobile.SetPosition(Self, cell);
-			mobile.SetVisualPosition(Self, pos);
+			mobile.SetCenterPosition(Self, pos);
 			Self.QueueActivity(mobile.ReturnToCell(Self));
 		}
 

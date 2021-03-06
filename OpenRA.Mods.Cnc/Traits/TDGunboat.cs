@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		static readonly WAngle Right = new WAngle(768);
 
 		IEnumerable<int> speedModifiers;
-		INotifyVisualPositionChanged[] notifyVisualPositionChanged;
+		INotifyCenterPositionChanged[] notifyCenterPositionChanged;
 
 		WRot orientation;
 
@@ -110,7 +110,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		{
 			speedModifiers = self.TraitsImplementing<ISpeedModifier>().ToArray().Select(sm => sm.GetSpeedModifier());
 			cachedLocation = self.Location;
-			notifyVisualPositionChanged = self.TraitsImplementing<INotifyVisualPositionChanged>().ToArray();
+			notifyCenterPositionChanged = self.TraitsImplementing<INotifyCenterPositionChanged>().ToArray();
 		}
 
 		void INotifyAddedToWorld.AddedToWorld(Actor self)
@@ -134,7 +134,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 			cachedLocation = self.Location;
 
-			SetVisualPosition(self, self.CenterPosition + MoveStep(Facing));
+			SetCenterPosition(self, self.CenterPosition + MoveStep(Facing));
 		}
 
 		void Turn()
@@ -172,7 +172,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			return SubCell.Invalid;
 		}
 
-		public void SetVisualPosition(Actor self, WPos pos) { SetPosition(self, pos); }
+		public void SetCenterPosition(Actor self, WPos pos) { SetPosition(self, pos); }
 
 		public void SetPosition(Actor self, CPos cell, SubCell subCell = SubCell.Any)
 		{
@@ -192,10 +192,10 @@ namespace OpenRA.Mods.Cnc.Traits
 			self.World.UpdateMaps(self, this);
 			self.World.ActorMap.AddInfluence(self, this);
 
-			// This can be called from the constructor before notifyVisualPositionChanged is assigned.
-			if (notifyVisualPositionChanged != null)
-				foreach (var n in notifyVisualPositionChanged)
-					n.VisualPositionChanged(self, 0, 0);
+			// This can be called from the constructor before notifyCenterPositionChanged is assigned.
+			if (notifyCenterPositionChanged != null)
+				foreach (var n in notifyCenterPositionChanged)
+					n.CenterPositionChanged(self, 0, 0);
 		}
 
 		public Activity MoveTo(CPos cell, int nearEnough = 0, Actor ignoreActor = null,
@@ -210,7 +210,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public Activity MoveToTarget(Actor self, in Target target,
 			WPos? initialTargetPosition = null, Color? targetLineColor = null) { return null; }
 		public Activity MoveIntoTarget(Actor self, in Target target) { return null; }
-		public Activity VisualMove(Actor self, WPos fromPos, WPos toPos) { return null; }
+		public Activity LocalMove(Actor self, WPos fromPos, WPos toPos) { return null; }
 
 		public int EstimatedMoveDuration(Actor self, WPos fromPos, WPos toPos)
 		{

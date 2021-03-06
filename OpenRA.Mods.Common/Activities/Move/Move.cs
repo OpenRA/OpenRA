@@ -478,10 +478,10 @@ namespace OpenRA.Mods.Common.Activities
 					if (self.Location.Layer == 0)
 						pos -= new WVec(WDist.Zero, WDist.Zero, self.World.Map.DistanceAboveTerrain(pos));
 
-					mobile.SetVisualPosition(self, pos);
+					mobile.SetCenterPosition(self, pos);
 				}
 				else
-					mobile.SetVisualPosition(self, To);
+					mobile.SetCenterPosition(self, To);
 
 				if (moveFraction >= MoveFractionTotal)
 					mobile.Facing = ToFacing;
