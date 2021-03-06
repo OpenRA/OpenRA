@@ -435,57 +435,36 @@ namespace OpenRA.Mods.Common.Activities
 
 			public override bool Tick(Actor self)
 			{
-				var ret = InnerTick(self, Move.mobile);
-
-				if (moveFraction > MoveFractionTotal)
-					moveFraction = MoveFractionTotal;
-
-				UpdateCenterLocation(self, Move.mobile);
-
-				if (ret == this)
-					return false;
-
-				Queue(ret);
-				return true;
-			}
-
-			Activity InnerTick(Actor self, Mobile mobile)
-			{
+				var mobile = Move.mobile;
 				moveFraction += mobile.MovementSpeedForCell(self, mobile.ToCell);
-				if (moveFraction <= MoveFractionTotal)
-					return this;
-
-				return OnComplete(self, mobile, Move);
-			}
-
-			void UpdateCenterLocation(Actor self, Mobile mobile)
-			{
-				// Avoid division through zero
-				if (MoveFractionTotal != 0)
-				{
-					WPos pos;
-					if (EnableArc)
-					{
-						var angle = WAngle.Lerp(ArcFromAngle, ArcToAngle, moveFraction, MoveFractionTotal);
-						var length = int2.Lerp(ArcFromLength, ArcToLength, moveFraction, MoveFractionTotal);
-						var height = int2.Lerp(From.Z, To.Z, moveFraction, MoveFractionTotal);
-						pos = ArcCenter + new WVec(0, length, height).Rotate(WRot.FromYaw(angle));
-					}
-					else
-						pos = WPos.Lerp(From, To, moveFraction, MoveFractionTotal);
-
-					if (self.Location.Layer == 0)
-						pos -= new WVec(WDist.Zero, WDist.Zero, self.World.Map.DistanceAboveTerrain(pos));
-
-					mobile.SetCenterPosition(self, pos);
-				}
-				else
-					mobile.SetCenterPosition(self, To);
 
 				if (moveFraction >= MoveFractionTotal)
+				{
+					moveFraction = MoveFractionTotal;
+					mobile.SetCenterPosition(self, To);
 					mobile.Facing = ToFacing;
+
+					Queue(OnComplete(self, mobile, Move));
+					return true;
+				}
+
+				WPos pos;
+				if (EnableArc)
+				{
+					var angle = WAngle.Lerp(ArcFromAngle, ArcToAngle, moveFraction, MoveFractionTotal);
+					var length = int2.Lerp(ArcFromLength, ArcToLength, moveFraction, MoveFractionTotal);
+					var height = int2.Lerp(From.Z, To.Z, moveFraction, MoveFractionTotal);
+					pos = ArcCenter + new WVec(0, length, height).Rotate(WRot.FromYaw(angle));
+				}
 				else
-					mobile.Facing = WAngle.Lerp(FromFacing, ToFacing, moveFraction, MoveFractionTotal);
+					pos = WPos.Lerp(From, To, moveFraction, MoveFractionTotal);
+
+				if (self.Location.Layer == 0)
+					pos -= new WVec(WDist.Zero, WDist.Zero, self.World.Map.DistanceAboveTerrain(pos));
+
+				mobile.SetCenterPosition(self, pos);
+				mobile.Facing = WAngle.Lerp(FromFacing, ToFacing, moveFraction, MoveFractionTotal);
+				return false;
 			}
 
 			protected abstract MovePart OnComplete(Actor self, Mobile mobile, Move parent);
