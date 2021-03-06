@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly int dragSpeed;
 		readonly WPos finalPosition;
 
-		INotifyVisualPositionChanged[] notifyVisualPositionChanged;
+		INotifyCenterPositionChanged[] notifyCenterPositionChanged;
 
 		[Sync]
 		public CPos TopLeft { get; private set; }
@@ -102,7 +102,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (dragSpeed > 0 && distance > 0)
 				self.QueueActivity(new Drag(self, CenterPosition, finalPosition, distance / dragSpeed));
 
-			notifyVisualPositionChanged = self.TraitsImplementing<INotifyVisualPositionChanged>().ToArray();
+			notifyCenterPositionChanged = self.TraitsImplementing<INotifyCenterPositionChanged>().ToArray();
 		}
 
 		public bool CanExistInCell(CPos cell)
@@ -138,15 +138,15 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void SetPosition(Actor self, CPos cell, SubCell subCell = SubCell.Any) { SetPosition(self, self.World.Map.CenterOfCell(cell)); }
 
-		public void SetVisualPosition(Actor self, WPos pos)
+		public void SetCenterPosition(Actor self, WPos pos)
 		{
 			CenterPosition = pos;
 			self.World.ScreenMap.AddOrUpdate(self);
 
-			// This can be called from the constructor before notifyVisualPositionChanged is assigned.
-			if (notifyVisualPositionChanged != null)
-				foreach (var n in notifyVisualPositionChanged)
-					n.VisualPositionChanged(self, 0, 0);
+			// This can be called from the constructor before notifyCenterPositionChanged is assigned.
+			if (notifyCenterPositionChanged != null)
+				foreach (var n in notifyCenterPositionChanged)
+					n.CenterPositionChanged(self, 0, 0);
 		}
 
 		public void SetPosition(Actor self, WPos pos)

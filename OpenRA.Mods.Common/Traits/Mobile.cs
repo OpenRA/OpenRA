@@ -185,7 +185,7 @@ namespace OpenRA.Mods.Common.Traits
 		public SubCell FromSubCell, ToSubCell;
 
 		INotifyCustomLayerChanged[] notifyCustomLayerChanged;
-		INotifyVisualPositionChanged[] notifyVisualPositionChanged;
+		INotifyCenterPositionChanged[] notifyCenterPositionChanged;
 		INotifyMoving[] notifyMoving;
 		INotifyFinishedMoving[] notifyFinishedMoving;
 		IWrapMove[] moveWrappers;
@@ -267,18 +267,18 @@ namespace OpenRA.Mods.Common.Traits
 			if (locationInit != null)
 			{
 				fromCell = toCell = locationInit.Value;
-				SetVisualPosition(self, init.World.Map.CenterOfSubCell(FromCell, FromSubCell));
+				SetCenterPosition(self, init.World.Map.CenterOfSubCell(FromCell, FromSubCell));
 			}
 
 			Facing = oldFacing = init.GetValue<FacingInit, WAngle>(info.InitialFacing);
 
-			// Sets the initial visual position
+			// Sets the initial center position
 			// Unit will move into the cell grid (defined by LocationInit) as its initial activity
 			var centerPositionInit = init.GetOrDefault<CenterPositionInit>();
 			if (centerPositionInit != null)
 			{
 				oldPos = centerPositionInit.Value;
-				SetVisualPosition(self, oldPos);
+				SetCenterPosition(self, oldPos);
 				returnToCellOnCreation = true;
 			}
 
@@ -288,7 +288,7 @@ namespace OpenRA.Mods.Common.Traits
 		protected override void Created(Actor self)
 		{
 			notifyCustomLayerChanged = self.TraitsImplementing<INotifyCustomLayerChanged>().ToArray();
-			notifyVisualPositionChanged = self.TraitsImplementing<INotifyVisualPositionChanged>().ToArray();
+			notifyCenterPositionChanged = self.TraitsImplementing<INotifyCenterPositionChanged>().ToArray();
 			notifyMoving = self.TraitsImplementing<INotifyMoving>().ToArray();
 			notifyFinishedMoving = self.TraitsImplementing<INotifyFinishedMoving>().ToArray();
 			moveWrappers = self.TraitsImplementing<IWrapMove>().ToArray();
@@ -456,7 +456,7 @@ namespace OpenRA.Mods.Common.Traits
 			return preferred;
 		}
 
-		// Sets the location (fromCell, toCell, FromSubCell, ToSubCell) and visual position (CenterPosition)
+		// Sets the location (fromCell, toCell, FromSubCell, ToSubCell) and CenterPosition
 		public void SetPosition(Actor self, CPos cell, SubCell subCell = SubCell.Any)
 		{
 			subCell = GetValidSubCell(subCell);
@@ -466,31 +466,31 @@ namespace OpenRA.Mods.Common.Traits
 				self.World.GetCustomMovementLayers()[cell.Layer].CenterOfCell(cell);
 
 			var subcellOffset = self.World.Map.Grid.OffsetOfSubCell(subCell);
-			SetVisualPosition(self, position + subcellOffset);
+			SetCenterPosition(self, position + subcellOffset);
 			FinishedMoving(self);
 		}
 
-		// Sets the location (fromCell, toCell, FromSubCell, ToSubCell) and visual position (CenterPosition)
+		// Sets the location (fromCell, toCell, FromSubCell, ToSubCell) and CenterPosition
 		public void SetPosition(Actor self, WPos pos)
 		{
 			var cell = self.World.Map.CellContaining(pos);
 			SetLocation(cell, FromSubCell, cell, FromSubCell);
-			SetVisualPosition(self, self.World.Map.CenterOfSubCell(cell, FromSubCell) + new WVec(0, 0, self.World.Map.DistanceAboveTerrain(pos).Length));
+			SetCenterPosition(self, self.World.Map.CenterOfSubCell(cell, FromSubCell) + new WVec(0, 0, self.World.Map.DistanceAboveTerrain(pos).Length));
 			FinishedMoving(self);
 		}
 
-		// Sets only the visual position (CenterPosition)
-		public void SetVisualPosition(Actor self, WPos pos)
+		// Sets only the CenterPosition
+		public void SetCenterPosition(Actor self, WPos pos)
 		{
 			CenterPosition = pos;
 			self.World.UpdateMaps(self, this);
 
-			// The first time SetVisualPosition is called is in the constructor before creation, so we need a null check here as well
-			if (notifyVisualPositionChanged == null)
+			// The first time SetCenterPosition is called is in the constructor before creation, so we need a null check here as well
+			if (notifyCenterPositionChanged == null)
 				return;
 
-			foreach (var n in notifyVisualPositionChanged)
-				n.VisualPositionChanged(self, fromCell.Layer, toCell.Layer);
+			foreach (var n in notifyCenterPositionChanged)
+				n.CenterPositionChanged(self, fromCell.Layer, toCell.Layer);
 		}
 
 		public bool IsLeavingCell(CPos location, SubCell subCell = SubCell.Any)
@@ -670,12 +670,12 @@ namespace OpenRA.Mods.Common.Traits
 
 				// Reserve the exit cell
 				mobile.SetPosition(self, cell, subCell);
-				mobile.SetVisualPosition(self, pos);
+				mobile.SetCenterPosition(self, pos);
 
 				if (delay > 0)
 					QueueChild(new Wait(delay));
 
-				QueueChild(mobile.VisualMove(self, pos, self.World.Map.CenterOfSubCell(cell, subCell)));
+				QueueChild(mobile.LocalMove(self, pos, self.World.Map.CenterOfSubCell(cell, subCell)));
 				return true;
 			}
 		}
@@ -696,12 +696,12 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Activity cancels if the target moves by more than half a cell
 			// to avoid problems with the cell grid
-			return WrapMove(new VisualMoveIntoTarget(self, target, new WDist(512)));
+			return WrapMove(new LocalMoveIntoTarget(self, target, new WDist(512)));
 		}
 
-		public Activity VisualMove(Actor self, WPos fromPos, WPos toPos)
+		public Activity LocalMove(Actor self, WPos fromPos, WPos toPos)
 		{
-			return WrapMove(VisualMove(self, fromPos, toPos, self.Location));
+			return WrapMove(LocalMove(self, fromPos, toPos, self.Location));
 		}
 
 		public int EstimatedMoveDuration(Actor self, WPos fromPos, WPos toPos)
@@ -791,7 +791,7 @@ namespace OpenRA.Mods.Common.Traits
 		public Activity ScriptedMove(CPos cell) { return new Move(self, cell); }
 		public Activity MoveTo(Func<BlockedByActor, List<CPos>> pathFunc) { return new Move(self, pathFunc); }
 
-		Activity VisualMove(Actor self, WPos fromPos, WPos toPos, CPos cell)
+		Activity LocalMove(Actor self, WPos fromPos, WPos toPos, CPos cell)
 		{
 			var speed = MovementSpeedForCell(self, cell);
 			var length = speed > 0 ? (toPos - fromPos).Length / speed : 0;

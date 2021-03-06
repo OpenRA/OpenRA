@@ -79,7 +79,7 @@ namespace OpenRA.Mods.Cnc.Activities
 				targetPosition = target.CenterPosition;
 
 			var position = length > 1 ? WPos.Lerp(origin, targetPosition, ticks, length - 1) : targetPosition;
-			mobile.SetVisualPosition(self, position);
+			mobile.SetCenterPosition(self, position);
 
 			// We are at the destination
 			if (++ticks >= length)
@@ -100,7 +100,7 @@ namespace OpenRA.Mods.Cnc.Activities
 				attack.DoAttack(self, target);
 
 				jumpComplete = true;
-				QueueChild(mobile.VisualMove(self, position, self.World.Map.CenterOfSubCell(destinationCell, destinationSubCell)));
+				QueueChild(mobile.LocalMove(self, position, self.World.Map.CenterOfSubCell(destinationCell, destinationSubCell)));
 			}
 
 			return false;

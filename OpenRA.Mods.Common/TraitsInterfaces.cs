@@ -66,9 +66,9 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	[RequireExplicitImplementation]
-	public interface INotifyVisualPositionChanged
+	public interface INotifyCenterPositionChanged
 	{
-		void VisualPositionChanged(Actor self, byte oldLayer, byte newLayer);
+		void CenterPositionChanged(Actor self, byte oldLayer, byte newLayer);
 	}
 
 	[RequireExplicitImplementation]
@@ -425,7 +425,7 @@ namespace OpenRA.Mods.Common.Traits
 			WPos? initialTargetPosition = null, Color? targetLineColor = null);
 		Activity ReturnToCell(Actor self);
 		Activity MoveIntoTarget(Actor self, in Target target);
-		Activity VisualMove(Actor self, WPos fromPos, WPos toPos);
+		Activity LocalMove(Actor self, WPos fromPos, WPos toPos);
 		int EstimatedMoveDuration(Actor self, WPos fromPos, WPos toPos);
 		CPos NearestMoveableCell(CPos target);
 		MovementType CurrentMovementTypes { get; set; }

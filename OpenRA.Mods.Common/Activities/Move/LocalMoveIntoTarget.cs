@@ -17,7 +17,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
 {
-	public class VisualMoveIntoTarget : Activity
+	public class LocalMoveIntoTarget : Activity
 	{
 		readonly Mobile mobile;
 		readonly Target target;
@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly WDist targetMovementThreshold;
 		WPos targetStartPos;
 
-		public VisualMoveIntoTarget(Actor self, in Target target, WDist targetMovementThreshold, Color? targetLineColor = null)
+		public LocalMoveIntoTarget(Actor self, in Target target, WDist targetMovementThreshold, Color? targetLineColor = null)
 		{
 			mobile = self.Trait<Mobile>();
 			this.target = target;
@@ -66,12 +66,12 @@ namespace OpenRA.Mods.Common.Activities
 			var speed = mobile.MovementSpeedForCell(self, self.Location);
 			if (delta.LengthSquared <= speed * speed)
 			{
-				mobile.SetVisualPosition(self, targetPos);
+				mobile.SetCenterPosition(self, targetPos);
 				return true;
 			}
 
 			// Move towards the target
-			mobile.SetVisualPosition(self, currentPos + delta * speed / delta.Length);
+			mobile.SetCenterPosition(self, currentPos + delta * speed / delta.Length);
 			return false;
 		}
 

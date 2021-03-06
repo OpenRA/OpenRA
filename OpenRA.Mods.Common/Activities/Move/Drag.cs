@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.Activities
 				? WPos.Lerp(start, end, ticks, length - 1)
 				: end;
 
-			positionable.SetVisualPosition(self, pos);
+			positionable.SetCenterPosition(self, pos);
 			if (++ticks >= length)
 				return true;
 
