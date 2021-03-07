@@ -663,6 +663,22 @@ namespace OpenRA.Mods.Common.Traits
 		IEnumerable<IRenderable> RenderPreview(WorldRenderer wr, TerrainTemplateInfo template, WPos origin);
 	}
 
+	public interface IResourceLayerInfo : ITraitInfoInterface { }
+
+	[RequireExplicitImplementation]
+	public interface IResourceLayer
+	{
+		event Action<CPos, ResourceType> CellChanged;
+		ResourceLayerContents GetResource(CPos cell);
+		bool CanAddResource(ResourceType resourceType, CPos cell, int amount = 1);
+		int AddResource(ResourceType resourceType, CPos cell, int amount = 1);
+		int RemoveResource(ResourceType resourceType, CPos cell, int amount = 1);
+		void ClearResources(CPos cell);
+
+		bool IsVisible(CPos cell);
+		bool IsEmpty { get; }
+	}
+
 	[RequireExplicitImplementation]
 	public interface IResourceRenderer
 	{

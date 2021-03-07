@@ -106,7 +106,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly IReadOnlyDictionary<ResourceTypeInfo, int> Contents;
 
 		readonly Mobile mobile;
-		readonly ResourceLayer resLayer;
+		readonly IResourceLayer resourceLayer;
 		readonly ResourceClaimLayer claimLayer;
 		readonly Dictionary<ResourceTypeInfo, int> contents = new Dictionary<ResourceTypeInfo, int>();
 		int conditionToken = Actor.InvalidConditionToken;
@@ -138,7 +138,7 @@ namespace OpenRA.Mods.Common.Traits
 			Contents = new ReadOnlyDictionary<ResourceTypeInfo, int>(contents);
 
 			mobile = self.Trait<Mobile>();
-			resLayer = self.World.WorldActor.Trait<ResourceLayer>();
+			resourceLayer = self.World.WorldActor.Trait<IResourceLayer>();
 			claimLayer = self.World.WorldActor.Trait<ResourceClaimLayer>();
 		}
 
@@ -276,12 +276,12 @@ namespace OpenRA.Mods.Common.Traits
 			if (cell.Layer != 0)
 				return false;
 
-			var resType = resLayer.GetResourceType(cell);
-			if (resType == null)
+			var resourceType = resourceLayer.GetResource(cell).Type;
+			if (resourceType == null)
 				return false;
 
 			// Can the harvester collect this kind of resource?
-			return Info.Resources.Contains(resType.Info.Type);
+			return Info.Resources.Contains(resourceType.Info.Type);
 		}
 
 		IEnumerable<IOrderTargeter> IIssueOrder.Orders

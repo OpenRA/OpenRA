@@ -87,9 +87,9 @@ namespace OpenRA.Mods.Common.Traits
 			if (bi.AllowInvalidPlacement)
 				return true;
 
-			var res = world.WorldActor.TraitOrDefault<ResourceLayer>();
+			var resourceLayer = world.WorldActor.TraitOrDefault<IResourceLayer>();
 			return bi.Tiles(cell).All(t => world.Map.Contains(t) &&
-				(bi.AllowPlacementOnResources || res == null || res.GetResourceType(t) == null) &&
+				(bi.AllowPlacementOnResources || resourceLayer == null || resourceLayer.GetResource(t).Type == null) &&
 					world.IsCellBuildable(t, ai, bi, toIgnore));
 		}
 

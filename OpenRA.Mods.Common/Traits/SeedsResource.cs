@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly SeedsResourceInfo info;
 
 		readonly ResourceType resourceType;
-		readonly ResourceLayer resLayer;
+		readonly IResourceLayer resourceLayer;
 
 		public SeedsResource(Actor self, SeedsResourceInfo info)
 			: base(info)
@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (resourceType == null)
 				throw new InvalidOperationException("No such resource type `{0}`".F(info.ResourceType));
 
-			resLayer = self.World.WorldActor.Trait<ResourceLayer>();
+			resourceLayer = self.World.WorldActor.Trait<IResourceLayer>();
 		}
 
 		int ticks;
@@ -64,12 +64,11 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var cell = Util.RandomWalk(self.Location, self.World.SharedRandom)
 				.Take(info.MaxRange)
-				.SkipWhile(p => !self.World.Map.Contains(p) ||
-					(resLayer.GetResourceType(p) == resourceType && resLayer.IsFull(p)))
+				.SkipWhile(p => resourceLayer.GetResource(p).Type == resourceType && !resourceLayer.CanAddResource(resourceType, p))
 				.Cast<CPos?>().FirstOrDefault();
 
-			if (cell != null && resLayer.CanAddResource(resourceType, cell.Value))
-				resLayer.AddResource(resourceType, cell.Value);
+			if (cell != null && resourceLayer.CanAddResource(resourceType, cell.Value))
+				resourceLayer.AddResource(resourceType, cell.Value);
 		}
 	}
 }
