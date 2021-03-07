@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Actor self;
 		readonly RefineryInfo info;
 		PlayerResources playerResources;
-		RefineryResourceMultiplier[] resourceMultipliers;
+		IEnumerable<int> resourceValueModifiers;
 
 		int currentDisplayTick = 0;
 		int currentDisplayValue = 0;
@@ -86,7 +86,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyCreated.Created(Actor self)
 		{
-			resourceMultipliers = self.TraitsImplementing<RefineryResourceMultiplier>().ToArray();
+			resourceValueModifiers = self.TraitsImplementing<IResourceValueModifier>().ToArray().Select(m => m.GetResourceValueModifier());
 		}
 
 		public virtual Activity DockSequence(Actor harv, Actor self)
@@ -100,32 +100,39 @@ namespace OpenRA.Mods.Common.Traits
 				.Where(a => a.Trait.LinkedProc == self);
 		}
 
-		public bool CanGiveResource(int amount) { return !info.UseStorage || info.DiscardExcessResources || playerResources.CanGiveResources(amount); }
-
-		public void GiveResource(int amount)
+		int IAcceptResources.AcceptResources(ResourceTypeInfo resourceType, int count)
 		{
-			amount = Util.ApplyPercentageModifiers(amount, resourceMultipliers.Select(m => m.GetModifier()));
+			var value = Util.ApplyPercentageModifiers(count * resourceType.ValuePerUnit, resourceValueModifiers);
 
 			if (info.UseStorage)
 			{
-				if (info.DiscardExcessResources)
-					amount = Math.Min(amount, playerResources.ResourceCapacity - playerResources.Resources);
+				var storageLimit = Math.Max(playerResources.ResourceCapacity - playerResources.Resources, 0);
+				if (!info.DiscardExcessResources)
+				{
+					// Reduce amount if needed until it will fit the available storage
+					while (value > storageLimit)
+						value = Util.ApplyPercentageModifiers(--count * resourceType.ValuePerUnit, resourceValueModifiers);
+				}
+				else
+					value = Math.Min(value, playerResources.ResourceCapacity - playerResources.Resources);
 
-				playerResources.GiveResources(amount);
+				playerResources.GiveResources(value);
 			}
 			else
-				amount = playerResources.ChangeCash(amount);
+				value = playerResources.ChangeCash(value);
 
 			foreach (var notify in self.World.ActorsWithTrait<INotifyResourceAccepted>())
 			{
 				if (notify.Actor.Owner != self.Owner)
 					continue;
 
-				notify.Trait.OnResourceAccepted(notify.Actor, self, amount);
+				notify.Trait.OnResourceAccepted(notify.Actor, self, resourceType, count, value);
 			}
 
 			if (info.ShowTicks)
-				currentDisplayValue += amount;
+				currentDisplayValue += value;
+
+			return count;
 		}
 
 		void CancelDock(Actor self)
