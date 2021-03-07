@@ -1,5 +1,9 @@
 Player:
 	-ConquestVictoryConditions:
+	PlayerResources:
+		ResourceValues:
+			Tiberium: 0
+			BlueTiberium: 0
 
 World:
 	-CrateSpawner:
@@ -8,8 +12,6 @@ World:
 	-MapStartingLocations:
 	LuaScript:
 		Scripts: fields-of-green.lua
-	ResourceType@Tiberium:
-		ValuePerUnit: 0
 	MusicPlaylist:
 		BackgroundMusic: intro
 		DisableWorldSounds: true

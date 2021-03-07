@@ -52,6 +52,9 @@ namespace OpenRA.Mods.Common.Traits
 		[NotificationReference("Sounds")]
 		public readonly string CashTickDownNotification = null;
 
+		[Desc("Monetery value of each resource type.", "Dictionary of [resource type]: [value per unit].")]
+		public readonly Dictionary<string, int> ResourceValues = new Dictionary<string, int>();
+
 		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(Ruleset rules)
 		{
 			var startingCash = SelectableCash.ToDictionary(c => c.ToString(), c => "$" + c.ToString());
