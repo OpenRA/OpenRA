@@ -110,7 +110,6 @@ namespace OpenRA.Mods.Common.Traits
 		readonly ResourceClaimLayer claimLayer;
 		readonly Dictionary<ResourceTypeInfo, int> contents = new Dictionary<ResourceTypeInfo, int>();
 		int conditionToken = Actor.InvalidConditionToken;
-		HarvesterResourceMultiplier[] resourceMultipliers;
 
 		[Sync]
 		public Actor LastLinkedProc = null;
@@ -145,7 +144,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyCreated.Created(Actor self)
 		{
-			resourceMultipliers = self.TraitsImplementing<HarvesterResourceMultiplier>().ToArray();
 			UpdateCondition(self);
 
 			// Note: This is queued in a FrameEndTask because otherwise the activity is dropped/overridden while moving out of a factory.
@@ -242,7 +240,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		// Returns true when unloading is complete
-		public bool TickUnload(Actor self, Actor proc)
+		public virtual bool TickUnload(Actor self, Actor proc)
 		{
 			// Wait until the next bale is ready
 			if (--currentUnloadTicks > 0)
@@ -250,21 +248,23 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (contents.Keys.Count > 0)
 			{
-				var type = contents.First().Key;
-				var iao = proc.Trait<IAcceptResources>();
-				var count = Math.Min(contents[type], Info.BaleUnloadAmount);
-				var value = Util.ApplyPercentageModifiers(type.ValuePerUnit * count, resourceMultipliers.Select(m => m.GetModifier()));
+				var acceptResources = proc.Trait<IAcceptResources>();
+				foreach (var c in contents)
+				{
+					var resourceType = c.Key;
+					var count = Math.Min(c.Value, Info.BaleUnloadAmount);
+					var accepted = acceptResources.AcceptResources(resourceType, count);
+					if (accepted == 0)
+						continue;
 
-				if (!iao.CanGiveResource(value))
+					contents[resourceType] -= accepted;
+					if (contents[resourceType] <= 0)
+						contents.Remove(resourceType);
+
+					currentUnloadTicks = Info.BaleUnloadDelay;
+					UpdateCondition(self);
 					return false;
-
-				iao.GiveResource(value);
-				contents[type] -= count;
-				if (contents[type] == 0)
-					contents.Remove(type);
-
-				currentUnloadTicks = Info.BaleUnloadDelay;
-				UpdateCondition(self);
+				}
 			}
 
 			return contents.Count == 0;

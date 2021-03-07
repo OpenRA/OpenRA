@@ -152,7 +152,7 @@ namespace OpenRA.Mods.Common.Traits
 	public interface INotifyDocking { void Docked(Actor self, Actor harvester); void Undocked(Actor self, Actor harvester); }
 
 	[RequireExplicitImplementation]
-	public interface INotifyResourceAccepted { void OnResourceAccepted(Actor self, Actor refinery, int amount); }
+	public interface INotifyResourceAccepted { void OnResourceAccepted(Actor self, Actor refinery, ResourceTypeInfo resourceType, int count, int value); }
 	public interface INotifyParachute { void OnParachute(Actor self); void OnLanded(Actor self); }
 
 	[RequireExplicitImplementation]
@@ -260,8 +260,7 @@ namespace OpenRA.Mods.Common.Traits
 	public interface IAcceptResources
 	{
 		void OnDock(Actor harv, DeliverResources dockOrder);
-		void GiveResource(int amount);
-		bool CanGiveResource(int amount);
+		int AcceptResources(ResourceTypeInfo resourceType, int count = 1);
 		CVec DeliveryOffset { get; }
 		bool AllowDocking { get; }
 	}
@@ -379,6 +378,9 @@ namespace OpenRA.Mods.Common.Traits
 
 	[RequireExplicitImplementation]
 	public interface IDetectCloakedModifier { int GetDetectCloakedModifier(); }
+
+	[RequireExplicitImplementation]
+	public interface IResourceValueModifier { int GetResourceValueModifier(); }
 
 	[RequireExplicitImplementation]
 	public interface ICustomMovementLayer

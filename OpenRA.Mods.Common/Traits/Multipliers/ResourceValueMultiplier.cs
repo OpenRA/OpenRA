@@ -13,21 +13,21 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	[Desc("Modifies the bale values of this harvester.")]
-	public class HarvesterResourceMultiplierInfo : ConditionalTraitInfo
+	[Desc("Modifies the value of resources delivered to this actor.")]
+	public class ResourceValueMultiplierInfo : ConditionalTraitInfo
 	{
 		[FieldLoader.Require]
 		[Desc("Percentage modifier to apply.")]
 		public readonly int Modifier = 100;
 
-		public override object Create(ActorInitializer init) { return new HarvesterResourceMultiplier(this); }
+		public override object Create(ActorInitializer init) { return new ResourceValueMultiplier(this); }
 	}
 
-	public class HarvesterResourceMultiplier : ConditionalTrait<HarvesterResourceMultiplierInfo>, Requires<HarvesterInfo>
+	public class ResourceValueMultiplier : ConditionalTrait<ResourceValueMultiplierInfo>, IResourceValueModifier
 	{
-		public HarvesterResourceMultiplier(HarvesterResourceMultiplierInfo info)
+		public ResourceValueMultiplier(ResourceValueMultiplierInfo info)
 			: base(info) { }
 
-		public int GetModifier() { return IsTraitDisabled ? 100 : Info.Modifier; }
+		int IResourceValueModifier.GetResourceValueModifier() { return IsTraitDisabled ? 100 : Info.Modifier; }
 	}
 }
