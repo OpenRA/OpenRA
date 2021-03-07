@@ -28,11 +28,12 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new ResourceRenderer(init.Self, this); }
 	}
 
-	public class ResourceRenderer : IWorldLoaded, IRenderOverlay, ITickRender, INotifyActorDisposing
+	public class ResourceRenderer : IResourceRenderer, IWorldLoaded, IRenderOverlay, ITickRender, INotifyActorDisposing
 	{
 		protected readonly IResourceLayer ResourceLayer;
 		protected readonly CellLayer<RendererCellContents> RenderContent;
 		protected readonly ResourceRendererInfo Info;
+		protected readonly World World;
 
 		readonly HashSet<CPos> dirty = new HashSet<CPos>();
 		readonly Queue<CPos> cleanDirty = new Queue<CPos>();
@@ -42,7 +43,7 @@ namespace OpenRA.Mods.Common.Traits
 		public ResourceRenderer(Actor self, ResourceRendererInfo info)
 		{
 			Info = info;
-
+			World = self.World;
 			ResourceLayer = self.Trait<IResourceLayer>();
 			ResourceLayer.CellChanged += AddDirtyCell;
 
@@ -198,7 +199,43 @@ namespace OpenRA.Mods.Common.Traits
 			return t.Variants.Keys.Random(Game.CosmeticRandom);
 		}
 
-		public ResourceType GetRenderedResourceType(CPos cell) { return RenderContent[cell].Type; }
+		protected virtual ResourceType GetRenderedResourceType(CPos cell) { return RenderContent[cell].Type; }
+
+		protected virtual string GetRenderedResourceTooltip(CPos cell) { return RenderContent[cell].Type?.Info.Name; }
+
+		IEnumerable<ResourceType> IResourceRenderer.ResourceTypes => World.WorldActor.TraitsImplementing<ResourceType>();
+
+		ResourceType IResourceRenderer.GetRenderedResourceType(CPos cell) { return GetRenderedResourceType(cell); }
+
+		string IResourceRenderer.GetRenderedResourceTooltip(CPos cell) { return GetRenderedResourceTooltip(cell); }
+
+		IEnumerable<IRenderable> IResourceRenderer.RenderUIPreview(WorldRenderer wr, ResourceType resourceType, int2 origin, float scale)
+		{
+			var sequence = resourceType.Variants.First().Value;
+			var sprite = sequence.GetSprite(sequence.Length - 1);
+			var shadow = sequence.GetShadow(sequence.Length - 1, WAngle.Zero);
+			var palette = resourceType.Palette;
+
+			if (shadow != null)
+				yield return new UISpriteRenderable(shadow, WPos.Zero, origin, 0, palette, scale);
+
+			yield return new UISpriteRenderable(sprite, WPos.Zero, origin, 0, palette, scale);
+		}
+
+		IEnumerable<IRenderable> IResourceRenderer.RenderPreview(WorldRenderer wr, ResourceType resourceType, WPos origin)
+		{
+			var sequence = resourceType.Variants.First().Value;
+			var sprite = sequence.GetSprite(sequence.Length - 1);
+			var shadow = sequence.GetShadow(sequence.Length - 1, WAngle.Zero);
+			var alpha = sequence.GetAlpha(sequence.Length - 1);
+			var palette = resourceType.Palette;
+			var tintModifiers = sequence.IgnoreWorldTint ? TintModifiers.IgnoreWorldTint : TintModifiers.None;
+
+			if (shadow != null)
+				yield return new SpriteRenderable(shadow, origin, WVec.Zero, 0, palette, sequence.Scale, alpha, float3.Ones, tintModifiers, false);
+
+			yield return new SpriteRenderable(sprite, origin, WVec.Zero, 0, palette, sequence.Scale, alpha, float3.Ones, tintModifiers, false);
+		}
 
 		public readonly struct RendererCellContents
 		{

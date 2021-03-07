@@ -29,10 +29,10 @@ namespace OpenRA.Mods.Common.Widgets
 		AddResourcesEditorAction action;
 		bool resourceAdded;
 
-		public EditorResourceBrush(EditorViewportControllerWidget editorWidget, ResourceTypeInfo resource, WorldRenderer wr)
+		public EditorResourceBrush(EditorViewportControllerWidget editorWidget, ResourceType resource, WorldRenderer wr)
 		{
 			this.editorWidget = editorWidget;
-			ResourceType = resource;
+			ResourceType = resource.Info;
 			worldRenderer = wr;
 			world = wr.World;
 			editorActionManager = world.WorldActor.Trait<EditorActionManager>();
