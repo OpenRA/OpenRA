@@ -57,7 +57,6 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly Actor self;
 		readonly RefineryInfo info;
-		readonly Dictionary<string, int> resourceValues;
 		PlayerResources playerResources;
 		IEnumerable<int> resourceValueModifiers;
 
@@ -83,8 +82,6 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 			playerResources = self.Owner.PlayerActor.Trait<PlayerResources>();
 			currentDisplayTick = info.TickRate;
-			resourceValues = self.World.WorldActor.TraitsImplementing<ResourceType>()
-				.ToDictionary(r => r.Info.Type, r => r.Info.ValuePerUnit);
 		}
 
 		void INotifyCreated.Created(Actor self)
@@ -105,7 +102,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		int IAcceptResources.AcceptResources(string resourceType, int count)
 		{
-			if (!resourceValues.TryGetValue(resourceType, out var resourceValue))
+			if (!playerResources.Info.ResourceValues.TryGetValue(resourceType, out var resourceValue))
 				return 0;
 
 			var value = Util.ApplyPercentageModifiers(count * resourceValue, resourceValueModifiers);

@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -31,99 +32,158 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	[Desc("Attach this to the world actor.")]
-	public class ResourceLayerInfo : TraitInfo, IResourceLayerInfo, Requires<ResourceTypeInfo>, Requires<BuildingInfluenceInfo>
+	public class ResourceLayerInfo : TraitInfo, IResourceLayerInfo, Requires<BuildingInfluenceInfo>, IMapPreviewSignatureInfo
 	{
-		public override object Create(ActorInitializer init) { return new ResourceLayer(init.Self); }
+		public class ResourceTypeInfo
+		{
+			[FieldLoader.Require]
+			[Desc("Resource index in the binary map data.")]
+			public readonly byte ResourceIndex = 0;
+
+			[FieldLoader.Require]
+			[Desc("Terrain type used to determine unit movement and minimap colors.")]
+			public readonly string TerrainType = null;
+
+			[FieldLoader.Require]
+			[Desc("Terrain types that this resource can spawn on.")]
+			public readonly HashSet<string> AllowedTerrainTypes = null;
+
+			[Desc("Maximum number of resource units allowed in a single cell.")]
+			public readonly int MaxDensity = 10;
+
+			public ResourceTypeInfo(MiniYaml yaml)
+			{
+				FieldLoader.Load(this, yaml);
+			}
+		}
+
+		[FieldLoader.LoadUsing(nameof(LoadResourceTypes))]
+		public readonly Dictionary<string, ResourceTypeInfo> ResourceTypes = null;
+
+		[Desc("Override the density saved in maps with values calculated based on the number of neighbouring resource cells.")]
+		public readonly bool RecalculateResourceDensity = false;
+
+		// Copied to EditorResourceLayerInfo, ResourceRendererInfo
+		protected static object LoadResourceTypes(MiniYaml yaml)
+		{
+			var ret = new Dictionary<string, ResourceTypeInfo>();
+			var resources = yaml.Nodes.FirstOrDefault(n => n.Key == "ResourceTypes");
+			if (resources != null)
+				foreach (var r in resources.Value.Nodes)
+					ret[r.Key] = new ResourceTypeInfo(r.Value);
+
+			return ret;
+		}
+
+		public static void PopulateMapPreviewSignatureCells(Map map, Dictionary<string, ResourceTypeInfo> resources, List<(MPos, Color)> destinationBuffer)
+		{
+			var terrainInfo = map.Rules.TerrainInfo;
+			var colors = resources.Values.ToDictionary(
+				r => r.ResourceIndex,
+				r => terrainInfo.TerrainTypes[terrainInfo.GetTerrainIndex(r.TerrainType)].Color);
+
+			for (var i = 0; i < map.MapSize.X; i++)
+			{
+				for (var j = 0; j < map.MapSize.Y; j++)
+				{
+					var cell = new MPos(i, j);
+					if (colors.TryGetValue(map.Resources[cell].Type, out var color))
+						destinationBuffer.Add((cell, color));
+				}
+			}
+		}
+
+		void IMapPreviewSignatureInfo.PopulateMapPreviewSignatureCells(Map map, ActorInfo ai, ActorReference s, List<(MPos, Color)> destinationBuffer)
+		{
+			PopulateMapPreviewSignatureCells(map, ResourceTypes, destinationBuffer);
+		}
+
+		public override object Create(ActorInitializer init) { return new ResourceLayer(init.Self, this); }
 	}
 
 	public class ResourceLayer : IResourceLayer, IWorldLoaded
 	{
+		readonly ResourceLayerInfo info;
 		readonly World world;
-		readonly BuildingInfluence buildingInfluence;
-		protected readonly Dictionary<string, ResourceTypeInfo> ResourceInfo;
+		protected readonly Map Map;
+		protected readonly BuildingInfluence BuildingInfluence;
 		protected readonly CellLayer<ResourceLayerContents> Content;
+		protected readonly Dictionary<byte, string> ResourceTypesByIndex;
 
 		int resCells;
 
 		public event Action<CPos, string> CellChanged;
 
-		public ResourceLayer(Actor self)
+		public ResourceLayer(Actor self, ResourceLayerInfo info)
 		{
+			this.info = info;
 			world = self.World;
-			buildingInfluence = self.Trait<BuildingInfluence>();
-			ResourceInfo = self.TraitsImplementing<ResourceType>()
-				.ToDictionary(r => r.Info.Type, r => r.Info);
-
-			Content = new CellLayer<ResourceLayerContents>(world.Map);
+			Map = world.Map;
+			BuildingInfluence = self.Trait<BuildingInfluence>();
+			Content = new CellLayer<ResourceLayerContents>(Map);
+			ResourceTypesByIndex = info.ResourceTypes.ToDictionary(
+				kv => kv.Value.ResourceIndex,
+				kv => kv.Key);
 		}
 
-		int GetAdjacentCellsWith(string resourceType, CPos cell)
+		protected virtual void WorldLoaded(World w, WorldRenderer wr)
 		{
-			var sum = 0;
-			var directions = CVec.Directions;
-			for (var i = 0; i < directions.Length; i++)
-			{
-				var c = cell + directions[i];
-				if (Content.Contains(c) && Content[c].Type == resourceType)
-					++sum;
-			}
-
-			return sum;
-		}
-
-		public void WorldLoaded(World w, WorldRenderer wr)
-		{
-			var resources = w.WorldActor.TraitsImplementing<ResourceType>()
-				.ToDictionary(r => r.Info.ResourceType, r => r.Info.Type);
-
 			foreach (var cell in w.Map.AllCells)
 			{
-				if (!resources.TryGetValue(w.Map.Resources[cell].Type, out var resourceType))
+				var resource = world.Map.Resources[cell];
+				if (!ResourceTypesByIndex.TryGetValue(resource.Type, out var resourceType))
 					continue;
 
 				if (!AllowResourceAt(resourceType, cell))
 					continue;
 
-				Content[cell] = CreateResourceCell(resourceType, cell);
+				Content[cell] = CreateResourceCell(resourceType, cell, resource.Index);
 			}
 
+			if (!info.RecalculateResourceDensity)
+				return;
+
+			// Set initial density based on the number of neighboring resources
 			foreach (var cell in w.Map.AllCells)
 			{
-				var resourceType = Content[cell].Type;
-				if (resourceType != null && ResourceInfo.TryGetValue(resourceType, out var resourceInfo))
+				var resource = Content[cell];
+				if (resource.Type == null || !info.ResourceTypes.TryGetValue(resource.Type, out var resourceInfo))
+					continue;
+
+				var adjacent = 0;
+				var directions = CVec.Directions;
+				for (var i = 0; i < directions.Length; i++)
 				{
-					// Set initial density based on the number of neighboring resources
-					// Adjacent includes the current cell, so is always >= 1
-					var adjacent = GetAdjacentCellsWith(resourceType, cell);
-					var density = int2.Lerp(0, resourceInfo.MaxDensity, adjacent, 9);
-					Content[cell] = new ResourceLayerContents(Content[cell].Type, Math.Max(density, 1));
+					var c = cell + directions[i];
+					if (Content.Contains(c) && Content[c].Type == resource.Type)
+						++adjacent;
 				}
+
+				// Adjacent includes the current cell, so is always >= 1
+				var density = Math.Max(int2.Lerp(0, resourceInfo.MaxDensity, adjacent, 9), 1);
+				Content[cell] = new ResourceLayerContents(resource.Type, density);
 			}
 		}
 
-		public bool AllowResourceAt(string resourceType, CPos cell)
+		void IWorldLoaded.WorldLoaded(World w, WorldRenderer wr) { WorldLoaded(w, wr); }
+
+		protected virtual bool AllowResourceAt(string resourceType, CPos cell)
 		{
-			if (!ResourceInfo.TryGetValue(resourceType, out var resourceInfo))
+			if (!Map.Contains(cell) || Map.Ramp[cell] != 0)
 				return false;
 
-			if (!world.Map.Contains(cell))
+			if (resourceType == null || !info.ResourceTypes.TryGetValue(resourceType, out var resourceInfo))
 				return false;
 
-			if (!resourceInfo.AllowedTerrainTypes.Contains(world.Map.GetTerrainInfo(cell).Type))
+			if (!resourceInfo.AllowedTerrainTypes.Contains(Map.GetTerrainInfo(cell).Type))
 				return false;
 
-			if (!resourceInfo.AllowUnderActors && world.ActorMap.AnyActorsAt(cell))
-				return false;
-
-			if (!resourceInfo.AllowUnderBuildings && buildingInfluence.GetBuildingAt(cell) != null)
-				return false;
-
-			return resourceInfo.AllowOnRamps || world.Map.Ramp[cell] == 0;
+			return BuildingInfluence.GetBuildingAt(cell) == null;
 		}
 
-		ResourceLayerContents CreateResourceCell(string resourceType, CPos cell)
+		ResourceLayerContents CreateResourceCell(string resourceType, CPos cell, int density)
 		{
-			if (!ResourceInfo.TryGetValue(resourceType, out var resourceInfo))
+			if (!info.ResourceTypes.TryGetValue(resourceType, out var resourceInfo))
 			{
 				world.Map.CustomTerrain[cell] = byte.MaxValue;
 				return ResourceLayerContents.Empty;
@@ -132,7 +192,7 @@ namespace OpenRA.Mods.Common.Traits
 			world.Map.CustomTerrain[cell] = world.Map.Rules.TerrainInfo.GetTerrainIndex(resourceInfo.TerrainType);
 			++resCells;
 
-			return new ResourceLayerContents(resourceType, 0);
+			return new ResourceLayerContents(resourceType, density.Clamp(1, resourceInfo.MaxDensity));
 		}
 
 		bool CanAddResource(string resourceType, CPos cell, int amount = 1)
@@ -140,7 +200,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!world.Map.Contains(cell))
 				return false;
 
-			if (!ResourceInfo.TryGetValue(resourceType, out var resourceInfo))
+			if (resourceType == null || !info.ResourceTypes.TryGetValue(resourceType, out var resourceInfo))
 				return false;
 
 			var content = Content[cell];
@@ -158,12 +218,12 @@ namespace OpenRA.Mods.Common.Traits
 			if (!Content.Contains(cell))
 				return 0;
 
-			if (!ResourceInfo.TryGetValue(resourceType, out var resourceInfo))
+			if (resourceType == null || !info.ResourceTypes.TryGetValue(resourceType, out var resourceInfo))
 				return 0;
 
 			var content = Content[cell];
 			if (content.Type == null)
-				content = CreateResourceCell(resourceType, cell);
+				content = CreateResourceCell(resourceType, cell, 0);
 
 			if (content.Type != resourceType)
 				return 0;
@@ -192,7 +252,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (density == 0)
 			{
 				Content[cell] = ResourceLayerContents.Empty;
-				world.Map.CustomTerrain[cell] = byte.MaxValue;
+				Map.CustomTerrain[cell] = byte.MaxValue;
 				--resCells;
 
 				CellChanged?.Invoke(cell, null);
@@ -217,7 +277,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			Content[cell] = ResourceLayerContents.Empty;
-			world.Map.CustomTerrain[cell] = byte.MaxValue;
+			Map.CustomTerrain[cell] = byte.MaxValue;
 			--resCells;
 
 			CellChanged?.Invoke(cell, null);
@@ -226,7 +286,7 @@ namespace OpenRA.Mods.Common.Traits
 		ResourceLayerContents IResourceLayer.GetResource(CPos cell) { return Content.Contains(cell) ? Content[cell] : default; }
 		int IResourceLayer.GetMaxDensity(string resourceType)
 		{
-			if (!ResourceInfo.TryGetValue(resourceType, out var resourceInfo))
+			if (!info.ResourceTypes.TryGetValue(resourceType, out var resourceInfo))
 				return 0;
 
 			return resourceInfo.MaxDensity;

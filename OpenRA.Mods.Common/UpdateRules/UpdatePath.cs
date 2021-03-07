@@ -91,6 +91,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new RemovePlaceBuildingPalette(),
 				new ReplaceShadowPalette(),
 				new ReplaceResourceValueModifiers(),
+				new RemoveResourceType(),
 			})
 		};
 

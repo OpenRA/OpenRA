@@ -21,56 +21,97 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Visualizes the state of the `ResourceLayer`.", " Attach this to the world actor.")]
 	public class ResourceRendererInfo : TraitInfo, Requires<IResourceLayerInfo>
 	{
-		[FieldLoader.Require]
-		[Desc("Only render these ResourceType names.")]
-		public readonly string[] RenderTypes = null;
+		public class ResourceTypeInfo
+		{
+			[Desc("Sequence image that holds the different variants.")]
+			public readonly string Image = "resources";
+
+			[FieldLoader.Require]
+			[SequenceReference(nameof(Image))]
+			[Desc("Randomly chosen image sequences.")]
+			public readonly string[] Sequences = { };
+
+			[PaletteReference]
+			[Desc("Palette used for rendering the resource sprites.")]
+			public readonly string Palette = TileSet.TerrainPaletteInternalName;
+
+			[FieldLoader.Require]
+			[Desc("Resource name used by tooltips.")]
+			public readonly string Name = null;
+
+			public ResourceTypeInfo(MiniYaml yaml)
+			{
+				FieldLoader.Load(this, yaml);
+			}
+		}
+
+		[FieldLoader.LoadUsing(nameof(LoadResourceTypes))]
+		public readonly Dictionary<string, ResourceTypeInfo> ResourceTypes = null;
+
+		// Copied from ResourceLayerInfo
+		protected static object LoadResourceTypes(MiniYaml yaml)
+		{
+			var ret = new Dictionary<string, ResourceTypeInfo>();
+			var resources = yaml.Nodes.FirstOrDefault(n => n.Key == "ResourceTypes");
+			if (resources != null)
+				foreach (var r in resources.Value.Nodes)
+					ret[r.Key] = new ResourceTypeInfo(r.Value);
+
+			return ret;
+		}
 
 		public override object Create(ActorInitializer init) { return new ResourceRenderer(init.Self, this); }
 	}
 
 	public class ResourceRenderer : IResourceRenderer, IWorldLoaded, IRenderOverlay, ITickRender, INotifyActorDisposing
 	{
-		protected readonly IResourceLayer ResourceLayer;
-		protected readonly CellLayer<RendererCellContents> RenderContent;
 		protected readonly ResourceRendererInfo Info;
-		protected readonly Dictionary<string, ResourceType> ResourceInfo;
+		protected readonly IResourceLayer ResourceLayer;
+		protected readonly CellLayer<RendererCellContents> RenderContents;
+		protected readonly Dictionary<string, Dictionary<string, ISpriteSequence>> Variants = new Dictionary<string, Dictionary<string, ISpriteSequence>>();
+		protected readonly World World;
 
 		readonly HashSet<CPos> dirty = new HashSet<CPos>();
 		readonly Queue<CPos> cleanDirty = new Queue<CPos>();
 		TerrainSpriteLayer shadowLayer;
 		TerrainSpriteLayer spriteLayer;
+		bool disposed;
 
 		public ResourceRenderer(Actor self, ResourceRendererInfo info)
 		{
 			Info = info;
+			World = self.World;
 			ResourceLayer = self.Trait<IResourceLayer>();
 			ResourceLayer.CellChanged += AddDirtyCell;
-			ResourceInfo = self.TraitsImplementing<ResourceType>()
-				.ToDictionary(r => r.Info.Type, r => r);
-
-			RenderContent = new CellLayer<RendererCellContents>(self.World.Map);
+			RenderContents = new CellLayer<RendererCellContents>(self.World.Map);
 		}
 
 		void AddDirtyCell(CPos cell, string resourceType)
 		{
-			if (resourceType == null || Info.RenderTypes.Contains(resourceType))
+			if (resourceType == null || Info.ResourceTypes.ContainsKey(resourceType))
 				dirty.Add(cell);
 		}
 
-		void IWorldLoaded.WorldLoaded(World w, WorldRenderer wr)
+		protected virtual void WorldLoaded(World w, WorldRenderer wr)
 		{
-			foreach (var resourceType in ResourceInfo.Values)
+			var sequences = w.Map.Rules.Sequences;
+			foreach (var kv in Info.ResourceTypes)
 			{
+				var resourceInfo = kv.Value;
+				var resourceVariants = resourceInfo.Sequences
+					.ToDictionary(v => v, v => sequences.GetSequence(resourceInfo.Image, v));
+				Variants.Add(kv.Key, resourceVariants);
+
 				if (spriteLayer == null)
 				{
-					var first = resourceType.Variants.First().Value.GetSprite(0);
+					var first = resourceVariants.First().Value.GetSprite(0);
 					var emptySprite = new Sprite(first.Sheet, Rectangle.Empty, TextureChannel.Alpha);
 					spriteLayer = new TerrainSpriteLayer(w, wr, emptySprite, first.BlendMode, wr.World.Type != WorldType.Editor);
 				}
 
 				if (shadowLayer == null)
 				{
-					var firstWithShadow = resourceType.Variants.Values.FirstOrDefault(v => v.ShadowStart > 0);
+					var firstWithShadow = resourceVariants.Values.FirstOrDefault(v => v.ShadowStart > 0);
 					if (firstWithShadow != null)
 					{
 						var first = firstWithShadow.GetShadow(0, WAngle.Zero);
@@ -80,28 +121,34 @@ namespace OpenRA.Mods.Common.Traits
 				}
 
 				// All resources must share a blend mode
-				var sprites = resourceType.Variants.Values.SelectMany(v => Exts.MakeArray(v.Length, x => v.GetSprite(x)));
+				var sprites = resourceVariants.Values.SelectMany(v => Exts.MakeArray(v.Length, x => v.GetSprite(x)));
 				if (sprites.Any(s => s.BlendMode != spriteLayer.BlendMode))
 					throw new InvalidDataException("Resource sprites specify different blend modes. "
 						+ "Try using different ResourceRenderer traits for resource types that use different blend modes.");
 			}
 
-			// Initialize the RenderContent with the initial map state
-			// because the shroud may not be enabled.
+			// Initialize the RenderContent with the initial map state so it is visible
+			// through the fog with the Explored Map option enabled
 			foreach (var cell in w.Map.AllCells)
 			{
-				var type = ResourceLayer.GetResource(cell).Type;
-				if (type != null && Info.RenderTypes.Contains(type))
+				var resource = ResourceLayer.GetResource(cell);
+				var rendererCellContents = CreateRenderCellContents(wr, resource, cell);
+				if (rendererCellContents.Type != null)
 				{
-					var resourceContent = ResourceLayer.GetResource(cell);
-					if (!ResourceInfo.TryGetValue(resourceContent.Type, out var resourceType))
-						continue;
-
-					var rendererCellContents = new RendererCellContents(ChooseRandomVariant(resourceType), resourceType, resourceContent.Density);
-					RenderContent[cell] = rendererCellContents;
+					RenderContents[cell] = rendererCellContents;
 					UpdateRenderedSprite(cell, rendererCellContents);
 				}
 			}
+		}
+
+		void IWorldLoaded.WorldLoaded(World w, WorldRenderer wr) { WorldLoaded(w, wr); }
+
+		protected RendererCellContents CreateRenderCellContents(WorldRenderer wr, ResourceLayerContents contents, CPos cell)
+		{
+			if (contents.Type != null && contents.Density > 0 && Info.ResourceTypes.TryGetValue(contents.Type, out var resourceInfo))
+				return new RendererCellContents(contents.Type, contents.Density, resourceInfo, ChooseVariant(contents.Type, cell), wr.Palette(resourceInfo.Palette));
+
+			return RendererCellContents.Empty;
 		}
 
 		protected void UpdateSpriteLayers(CPos cell, ISpriteSequence sequence, int frame, PaletteReference palette)
@@ -132,27 +179,21 @@ namespace OpenRA.Mods.Common.Traits
 				if (!ResourceLayer.IsVisible(cell))
 					continue;
 
-				var resourceContent = ResourceLayer.GetResource(cell);
-				if (resourceContent.Density > 0)
+				var rendererCellContents = RendererCellContents.Empty;
+				var contents = ResourceLayer.GetResource(cell);
+				if (contents.Density > 0)
 				{
-					var cellContents = RenderContent[cell];
-					var resourceData = ResourceInfo[resourceContent.Type];
-					var variant = cellContents.Variant;
-					if (cellContents.Variant == null || cellContents.Type.Info.Type != resourceContent.Type)
-						variant = ChooseRandomVariant(resourceData);
+					rendererCellContents = RenderContents[cell];
 
-					var rendererCellContents = new RendererCellContents(variant, resourceData, resourceContent.Density);
-					RenderContent[cell] = rendererCellContents;
-
-					UpdateRenderedSprite(cell, rendererCellContents);
-				}
-				else
-				{
-					var rendererCellContents = RendererCellContents.Empty;
-					RenderContent[cell] = rendererCellContents;
-					UpdateRenderedSprite(cell, rendererCellContents);
+					// Contents are the same, so just update the density
+					if (rendererCellContents.Type == contents.Type)
+						rendererCellContents = new RendererCellContents(rendererCellContents, contents.Density);
+					else
+						rendererCellContents = CreateRenderCellContents(wr, contents, cell);
 				}
 
+				RenderContents[cell] = rendererCellContents;
+				UpdateRenderedSprite(cell, rendererCellContents);
 				cleanDirty.Enqueue(cell);
 			}
 
@@ -162,28 +203,17 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected virtual void UpdateRenderedSprite(CPos cell, RendererCellContents content)
 		{
-			var density = content.Density;
-			var type = content.Type;
 			if (content.Density > 0)
 			{
-				// The call chain for this method (that starts with AddDirtyCell()) guarantees
-				// that the new content type would still be suitable for this renderer,
-				// but that is a bit too fragile to rely on in case the code starts changing.
-				if (!Info.RenderTypes.Contains(type.Info.Type))
-					return;
-
-				var sprites = type.Variants[content.Variant];
-				var maxDensity = type.Info.MaxDensity;
-				var frame = int2.Lerp(0, sprites.Length - 1, density, maxDensity);
-
-				UpdateSpriteLayers(cell, sprites, frame, type.Palette);
+				var maxDensity = ResourceLayer.GetMaxDensity(content.Type);
+				var frame = int2.Lerp(0, content.Sequence.Length - 1, content.Density, maxDensity);
+				UpdateSpriteLayers(cell, content.Sequence, frame, content.Palette);
 			}
 			else
 				UpdateSpriteLayers(cell, null, 0, null);
 		}
 
-		bool disposed;
-		void INotifyActorDisposing.Disposing(Actor self)
+		protected virtual void Disposing(Actor self)
 		{
 			if (disposed)
 				return;
@@ -196,16 +226,18 @@ namespace OpenRA.Mods.Common.Traits
 			disposed = true;
 		}
 
-		protected virtual string ChooseRandomVariant(ResourceType t)
+		void INotifyActorDisposing.Disposing(Actor self) { Disposing(self); }
+
+		protected virtual ISpriteSequence ChooseVariant(string resourceType, CPos cell)
 		{
-			return t.Variants.Keys.Random(Game.CosmeticRandom);
+			return Variants[resourceType].Values.Random(World.LocalRandom);
 		}
 
-		protected virtual string GetRenderedResourceType(CPos cell) { return RenderContent[cell].Type.Info.Type; }
+		protected virtual string GetRenderedResourceType(CPos cell) { return RenderContents[cell].Type; }
 
-		protected virtual string GetRenderedResourceTooltip(CPos cell) { return RenderContent[cell].Type?.Info.Name; }
+		protected virtual string GetRenderedResourceTooltip(CPos cell) { return RenderContents[cell].Info?.Name; }
 
-		IEnumerable<string> IResourceRenderer.ResourceTypes => ResourceInfo.Keys;
+		IEnumerable<string> IResourceRenderer.ResourceTypes => Info.ResourceTypes.Keys;
 
 		string IResourceRenderer.GetRenderedResourceType(CPos cell) { return GetRenderedResourceType(cell); }
 
@@ -213,13 +245,16 @@ namespace OpenRA.Mods.Common.Traits
 
 		IEnumerable<IRenderable> IResourceRenderer.RenderUIPreview(WorldRenderer wr, string resourceType, int2 origin, float scale)
 		{
-			if (!ResourceInfo.TryGetValue(resourceType, out var resourceInfo))
+			if (!Variants.TryGetValue(resourceType, out var variant))
 				yield break;
 
-			var sequence = resourceInfo.Variants.First().Value;
+			if (!Info.ResourceTypes.TryGetValue(resourceType, out var resourceInfo))
+				yield break;
+
+			var sequence = variant.First().Value;
 			var sprite = sequence.GetSprite(sequence.Length - 1);
 			var shadow = sequence.GetShadow(sequence.Length - 1, WAngle.Zero);
-			var palette = resourceInfo.Palette;
+			var palette = wr.Palette(resourceInfo.Palette);
 
 			if (shadow != null)
 				yield return new UISpriteRenderable(shadow, WPos.Zero, origin, 0, palette, scale);
@@ -229,14 +264,17 @@ namespace OpenRA.Mods.Common.Traits
 
 		IEnumerable<IRenderable> IResourceRenderer.RenderPreview(WorldRenderer wr, string resourceType, WPos origin)
 		{
-			if (!ResourceInfo.TryGetValue(resourceType, out var resourceInfo))
+			if (!Variants.TryGetValue(resourceType, out var variant))
 				yield break;
 
-			var sequence = resourceInfo.Variants.First().Value;
+			if (!Info.ResourceTypes.TryGetValue(resourceType, out var resourceInfo))
+				yield break;
+
+			var sequence = variant.First().Value;
 			var sprite = sequence.GetSprite(sequence.Length - 1);
 			var shadow = sequence.GetShadow(sequence.Length - 1, WAngle.Zero);
 			var alpha = sequence.GetAlpha(sequence.Length - 1);
-			var palette = resourceInfo.Palette;
+			var palette = wr.Palette(resourceInfo.Palette);
 			var tintModifiers = sequence.IgnoreWorldTint ? TintModifiers.IgnoreWorldTint : TintModifiers.None;
 
 			if (shadow != null)
@@ -247,17 +285,30 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly struct RendererCellContents
 		{
-			public readonly string Variant;
-			public readonly ResourceType Type;
+			public readonly string Type;
+			public readonly ResourceRendererInfo.ResourceTypeInfo Info;
+			public readonly ISpriteSequence Sequence;
+			public readonly PaletteReference Palette;
 			public readonly int Density;
 
 			public static readonly RendererCellContents Empty = default;
 
-			public RendererCellContents(string variant, ResourceType type, int density)
+			public RendererCellContents(string resourceType, int density, ResourceRendererInfo.ResourceTypeInfo info, ISpriteSequence sequence, PaletteReference palette)
 			{
-				Variant = variant;
-				Type = type;
+				Type = resourceType;
 				Density = density;
+				Info = info;
+				Sequence = sequence;
+				Palette = palette;
+			}
+
+			public RendererCellContents(RendererCellContents contents, int density)
+			{
+				Type = contents.Type;
+				Density = density;
+				Info = contents.Info;
+				Sequence = contents.Sequence;
+				Palette = contents.Palette;
 			}
 		}
 	}

@@ -3,6 +3,10 @@ Player:
 	LobbyPrerequisiteCheckbox@GLOBALBOUNTY:
 		Enabled: False
 		Locked: True
+	PlayerResources:
+		ResourceValues:
+			Ore: 0
+			Gems: 0
 
 World:
 	-CrateSpawner:
@@ -12,8 +16,6 @@ World:
 		BackgroundMusic: intro
 		AllowMuteBackgroundMusic: true
 		DisableWorldSounds: true
-	ResourceType@ore:
-		ValuePerUnit: 0
 	LuaScript:
 		Scripts: desert-shellmap.lua
 	-StartGameNotification:

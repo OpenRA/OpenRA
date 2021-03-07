@@ -1,13 +1,14 @@
 Player:
 	-ConquestVictoryConditions:
 	-HarvesterInsurance:
+	PlayerResources:
+		ResourceValues:
+			Spice: 0
 
 World:
 	-CrateSpawner:
 	-SpawnStartingUnits:
 	-MapStartingLocations:
-	ResourceType@Spice:
-		ValuePerUnit: 0
 	ActorSpawnManager:
 		Minimum: 1
 		Maximum: 3
