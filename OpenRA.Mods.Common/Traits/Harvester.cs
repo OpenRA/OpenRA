@@ -386,7 +386,7 @@ namespace OpenRA.Mods.Common.Traits
 					return false;
 
 				var info = self.Info.TraitInfo<HarvesterInfo>();
-				var res = self.World.WorldActor.TraitsImplementing<ResourceRenderer>()
+				var res = self.World.WorldActor.TraitsImplementing<IResourceRenderer>()
 					.Select(r => r.GetRenderedResourceType(location))
 					.FirstOrDefault(r => r != null && info.Resources.Contains(r.Info.Type));
 

@@ -662,4 +662,14 @@ namespace OpenRA.Mods.Common.Traits
 		IEnumerable<IRenderable> RenderUIPreview(WorldRenderer wr, TerrainTemplateInfo template, int2 origin, float scale);
 		IEnumerable<IRenderable> RenderPreview(WorldRenderer wr, TerrainTemplateInfo template, WPos origin);
 	}
+
+	[RequireExplicitImplementation]
+	public interface IResourceRenderer
+	{
+		IEnumerable<ResourceType> ResourceTypes { get; }
+		ResourceType GetRenderedResourceType(CPos cell);
+		string GetRenderedResourceTooltip(CPos cell);
+		IEnumerable<IRenderable> RenderUIPreview(WorldRenderer wr, ResourceType resourceType, int2 origin, float scale);
+		IEnumerable<IRenderable> RenderPreview(WorldRenderer wr, ResourceType resourceType, WPos origin);
+	}
 }

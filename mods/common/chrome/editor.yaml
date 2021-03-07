@@ -417,7 +417,7 @@ Container@EDITOR_WORLD_ROOT:
 									IgnoreChildMouseOver: true
 									TooltipContainer: TOOLTIP_CONTAINER
 									Children:
-										Sprite@LAYER_PREVIEW:
+										ResourcePreview@LAYER_PREVIEW:
 											X: 4
 											Y: 4
 											Visible: false

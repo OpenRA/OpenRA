@@ -43,35 +43,30 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			layerTemplateList.RemoveChildren();
 			var rules = worldRenderer.World.Map.Rules;
-			var resources = rules.Actors["world"].TraitInfos<ResourceTypeInfo>();
 			var tileSize = worldRenderer.World.Map.Grid.TileSize;
-			foreach (var resource in resources)
+			foreach (var resourceRenderer in worldRenderer.World.WorldActor.TraitsImplementing<IResourceRenderer>())
 			{
-				var newResourcePreviewTemplate = ScrollItemWidget.Setup(layerPreviewTemplate,
-					() => editorCursor.Type == EditorCursorType.Resource && editorCursor.Resource == resource,
-					() => editor.SetBrush(new EditorResourceBrush(editor, resource, worldRenderer)));
+				foreach (var resourceType in resourceRenderer.ResourceTypes)
+				{
+					var newResourcePreviewTemplate = ScrollItemWidget.Setup(layerPreviewTemplate,
+						() => editorCursor.Type == EditorCursorType.Resource && editorCursor.Resource == resourceType,
+						() => editor.SetBrush(new EditorResourceBrush(editor, resourceType, worldRenderer)));
 
-				newResourcePreviewTemplate.Bounds.X = 0;
-				newResourcePreviewTemplate.Bounds.Y = 0;
+					newResourcePreviewTemplate.Bounds.X = 0;
+					newResourcePreviewTemplate.Bounds.Y = 0;
 
-				var layerPreview = newResourcePreviewTemplate.Get<SpriteWidget>("LAYER_PREVIEW");
-				layerPreview.IsVisible = () => true;
-				layerPreview.GetPalette = () => resource.Palette;
+					var layerPreview = newResourcePreviewTemplate.Get<ResourcePreviewWidget>("LAYER_PREVIEW");
+					layerPreview.IsVisible = () => true;
+					layerPreview.ResourceType = resourceType;
+					layerPreview.Bounds.Width = tileSize.Width;
+					layerPreview.Bounds.Height = tileSize.Height;
+					newResourcePreviewTemplate.Bounds.Width = tileSize.Width + (layerPreview.Bounds.X * 2);
+					newResourcePreviewTemplate.Bounds.Height = tileSize.Height + (layerPreview.Bounds.Y * 2);
+					newResourcePreviewTemplate.IsVisible = () => true;
+					newResourcePreviewTemplate.GetTooltipText = () => resourceType.Info.Type;
 
-				var variant = resource.Sequences.FirstOrDefault();
-				var sequence = rules.Sequences.GetSequence("resources", variant);
-				var frame = sequence.Frames?.Last() ?? resource.MaxDensity - 1;
-				layerPreview.GetSprite = () => sequence.GetSprite(frame);
-
-				layerPreview.Bounds.Width = tileSize.Width;
-				layerPreview.Bounds.Height = tileSize.Height;
-				newResourcePreviewTemplate.Bounds.Width = tileSize.Width + (layerPreview.Bounds.X * 2);
-				newResourcePreviewTemplate.Bounds.Height = tileSize.Height + (layerPreview.Bounds.Y * 2);
-
-				newResourcePreviewTemplate.IsVisible = () => true;
-				newResourcePreviewTemplate.GetTooltipText = () => resource.Type;
-
-				layerTemplateList.AddChild(newResourcePreviewTemplate);
+					layerTemplateList.AddChild(newResourcePreviewTemplate);
+				}
 			}
 		}
 	}
