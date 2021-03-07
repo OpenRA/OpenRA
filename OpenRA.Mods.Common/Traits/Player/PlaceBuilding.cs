@@ -91,7 +91,7 @@ namespace OpenRA.Mods.Common.Traits
 				}
 
 				var producer = queue.MostLikelyProducer();
-				var faction = producer.Trait != null ? producer.Trait.Faction : self.Owner.Faction.InternalName;
+				var faction = producer.Trait?.Faction ?? self.Owner.Faction.InternalName;
 				var buildingInfo = actorInfo.TraitInfo<BuildingInfo>();
 
 				var buildableInfo = actorInfo.TraitInfoOrDefault<BuildableInfo>();

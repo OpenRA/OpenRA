@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					if (world.LocalPlayer.WinState != WinState.Undefined && !loadingObserverWidgets)
 					{
 						loadingObserverWidgets = true;
-						Game.RunAfterDelay(objectives != null ? objectives.GameOverDelay : 0, () =>
+						Game.RunAfterDelay(objectives?.GameOverDelay ?? 0, () =>
 						{
 							if (!Game.IsCurrentWorld(world))
 								return;

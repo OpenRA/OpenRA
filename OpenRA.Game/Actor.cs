@@ -65,7 +65,7 @@ namespace OpenRA
 		public CPos Location => OccupiesSpace.TopLeft;
 		public WPos CenterPosition => OccupiesSpace.CenterPosition;
 
-		public WRot Orientation => facing != null ? facing.Orientation : WRot.None;
+		public WRot Orientation => facing?.Orientation ?? WRot.None;
 
 		/// <summary>Value used to represent an invalid token.</summary>
 		public static readonly int InvalidConditionToken = -1;

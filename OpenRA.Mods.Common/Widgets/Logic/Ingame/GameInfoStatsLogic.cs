@@ -67,9 +67,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var teams = world.Players.Where(p => !p.NonCombatant && p.Playable)
 				.Select(p => (Player: p, PlayerStatistics: p.PlayerActor.TraitOrDefault<PlayerStatistics>()))
-				.OrderByDescending(p => p.PlayerStatistics != null ? p.PlayerStatistics.Experience : 0)
+				.OrderByDescending(p => p.PlayerStatistics?.Experience ?? 0)
 				.GroupBy(p => (world.LobbyInfo.ClientWithIndex(p.Player.ClientIndex) ?? new Session.Client()).Team)
-				.OrderByDescending(g => g.Sum(gg => gg.PlayerStatistics != null ? gg.PlayerStatistics.Experience : 0));
+				.OrderByDescending(g => g.Sum(gg => gg.PlayerStatistics?.Experience ?? 0));
 
 			foreach (var t in teams)
 			{
@@ -111,7 +111,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					}
 
 					var scoreCache = new CachedTransform<int, string>(s => s.ToString());
-					item.Get<LabelWidget>("SCORE").GetText = () => scoreCache.Update(p.PlayerStatistics != null ? p.PlayerStatistics.Experience : 0);
+					item.Get<LabelWidget>("SCORE").GetText = () => scoreCache.Update(p.PlayerStatistics?.Experience ?? 0);
 
 					playerPanel.AddChild(item);
 				}

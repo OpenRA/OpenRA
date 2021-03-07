@@ -282,13 +282,13 @@ namespace OpenRA.Mods.Common.Orders
 					footprint.Add(t, MakeCellType(isCloseEnough && world.IsCellBuildable(t, actorInfo, buildingInfo) && (resourceLayer == null || resourceLayer.GetResourceType(t) == null)));
 			}
 
-			return preview != null ? preview.Render(wr, topLeft, footprint) : Enumerable.Empty<IRenderable>();
+			return preview?.Render(wr, topLeft, footprint) ?? Enumerable.Empty<IRenderable>();
 		}
 
 		IEnumerable<IRenderable> IOrderGenerator.RenderAnnotations(WorldRenderer wr, World world)
 		{
 			var preview = variants[variant].Preview;
-			return preview != null ? preview.RenderAnnotations(wr, TopLeft) : Enumerable.Empty<IRenderable>();
+			return preview?.RenderAnnotations(wr, TopLeft) ?? Enumerable.Empty<IRenderable>();
 		}
 
 		string IOrderGenerator.GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)

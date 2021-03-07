@@ -59,8 +59,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public static string GetInitialFaction(ActorInfo ai, string defaultFaction)
 		{
-			var bi = ai.TraitInfoOrDefault<BuildableInfo>();
-			return bi != null ? bi.ForceFaction ?? defaultFaction : defaultFaction;
+			return ai.TraitInfoOrDefault<BuildableInfo>()?.ForceFaction ?? defaultFaction;
 		}
 	}
 

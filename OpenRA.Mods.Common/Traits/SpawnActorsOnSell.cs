@@ -52,9 +52,13 @@ namespace OpenRA.Mods.Common.Traits
 			if (IsTraitDisabled || !correctFaction)
 				return;
 
+			var buildingInfo = self.Info.TraitInfoOrDefault<BuildingInfo>();
+			if (buildingInfo == null)
+				return;
+
 			var csv = self.Info.TraitInfoOrDefault<CustomSellValueInfo>();
 			var valued = self.Info.TraitInfoOrDefault<ValuedInfo>();
-			var cost = csv != null ? csv.Value : (valued != null ? valued.Cost : 0);
+			var cost = csv?.Value ?? valued?.Cost ?? 0;
 
 			var health = self.TraitOrDefault<IHealth>();
 			var dudesValue = Info.ValuePercent * cost / 100;
@@ -67,16 +71,14 @@ namespace OpenRA.Mods.Common.Traits
 					dudesValue = 0;
 			}
 
-			var buildingInfo = self.Info.TraitInfoOrDefault<BuildingInfo>();
-
-			var eligibleLocations = buildingInfo != null ? buildingInfo.Tiles(self.Location).ToList() : new List<CPos>();
+			var eligibleLocations = buildingInfo.Tiles(self.Location).ToList();
 			var actorTypes = Info.ActorTypes.Select(a =>
 			{
 				var av = self.World.Map.Rules.Actors[a].TraitInfoOrDefault<ValuedInfo>();
 				return new
 				{
 					Name = a,
-					Cost = av != null ? av.Cost : 0
+					Cost = av?.Cost ?? 0
 				};
 			}).ToList();
 

@@ -119,7 +119,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var moi = world.Map.Rules.Actors["player"].TraitInfoOrDefault<MissionObjectivesInfo>();
 				if (moi != null)
 				{
-					var faction = world.LocalPlayer == null ? null : world.LocalPlayer.Faction.InternalName;
+					var faction = world.LocalPlayer?.Faction.InternalName;
 					Game.Sound.PlayNotification(world.Map.Rules, null, "Speech", moi.LeaveNotification, faction);
 				}
 			}
@@ -127,7 +127,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			leaving = true;
 
 			var iop = world.WorldActor.TraitsImplementing<IObjectivesPanel>().FirstOrDefault();
-			var exitDelay = iop != null ? iop.ExitDelay : 0;
+			var exitDelay = iop?.ExitDelay ?? 0;
 			if (mpe != null)
 			{
 				Game.RunAfterDelay(exitDelay, () =>
@@ -208,7 +208,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return;
 
 			var iop = world.WorldActor.TraitsImplementing<IObjectivesPanel>().FirstOrDefault();
-			var exitDelay = iop != null ? iop.ExitDelay : 0;
+			var exitDelay = iop?.ExitDelay ?? 0;
 
 			Action onRestart = () =>
 			{

@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				// to efficiently work when the label is going to change, requiring a panel relayout
 				var remainingSeconds = (int)Math.Ceiling(sp.RemainingTicks * world.Timestep / 1000f);
 
-				var hotkey = icon.Hotkey != null ? icon.Hotkey.GetValue() : Hotkey.Invalid;
+				var hotkey = icon.Hotkey?.GetValue() ?? Hotkey.Invalid;
 				if (sp == lastPower && hotkey == lastHotkey && lastRemainingSeconds == remainingSeconds)
 					return;
 

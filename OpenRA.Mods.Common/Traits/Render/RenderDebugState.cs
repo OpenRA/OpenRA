@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public RenderDebugState(Actor self, RenderDebugStateInfo info)
 		{
 			var buildingInfo = self.Info.TraitInfoOrDefault<BuildingInfo>();
-			var yOffset = buildingInfo == null ? 1 : buildingInfo.Dimensions.Y;
+			var yOffset = buildingInfo?.Dimensions.Y ?? 1;
 			offset = new WVec(0, 512 * yOffset, 0);
 
 			this.self = self;

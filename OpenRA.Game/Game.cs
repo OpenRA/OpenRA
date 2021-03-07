@@ -206,7 +206,7 @@ namespace OpenRA
 		public static void RestartGame()
 		{
 			var replay = OrderManager.Connection as ReplayConnection;
-			var replayName = replay != null ? replay.Filename : null;
+			var replayName = replay?.Filename;
 			var lobbyInfo = OrderManager.LobbyInfo;
 
 			// Reseed the RNG so this isn't an exact repeat of the last game

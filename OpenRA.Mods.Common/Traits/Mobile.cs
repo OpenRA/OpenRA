@@ -139,7 +139,7 @@ namespace OpenRA.Mods.Common.Traits
 				actor =>
 				{
 					var init = actor.GetInitOrDefault<FacingInit>(this);
-					return (init != null ? init.Value : InitialFacing).Angle;
+					return (init?.Value ?? InitialFacing).Angle;
 				},
 				(actor, value) => actor.ReplaceInit(new FacingInit(new WAngle((int)value))));
 		}

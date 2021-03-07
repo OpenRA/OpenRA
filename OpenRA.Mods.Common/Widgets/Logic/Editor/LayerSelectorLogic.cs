@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				var variant = resource.Sequences.FirstOrDefault();
 				var sequence = rules.Sequences.GetSequence("resources", variant);
-				var frame = sequence.Frames != null ? sequence.Frames.Last() : resource.MaxDensity - 1;
+				var frame = sequence.Frames?.Last() ?? resource.MaxDensity - 1;
 				layerPreview.GetSprite = () => sequence.GetSprite(frame);
 
 				layerPreview.Bounds.Width = tileSize.Width;

@@ -86,7 +86,7 @@ namespace OpenRA
 			public MapVisibility Visibility;
 
 			Lazy<Ruleset> rules;
-			public Ruleset Rules => rules != null ? rules.Value : null;
+			public Ruleset Rules => rules?.Value;
 			public bool InvalidCustomRules { get; private set; }
 			public bool DefinesUnsafeCustomRules { get; private set; }
 			public bool RulesLoaded { get; private set; }

@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Common.Traits
 				actor =>
 				{
 					var init = actor.GetInitOrDefault<PlugInit>(this);
-					return init != null ? init.Value : "";
+					return init?.Value ?? "";
 				},
 				(actor, value) =>
 				{

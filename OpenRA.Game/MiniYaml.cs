@@ -452,7 +452,7 @@ namespace OpenRA
 				existingDict.TryGetValue(key, out var existingNode);
 				overrideDict.TryGetValue(key, out var overrideNode);
 
-				var loc = overrideNode == null ? default(MiniYamlNode.SourceLocation) : overrideNode.Location;
+				var loc = overrideNode?.Location ?? default;
 				var comment = (overrideNode ?? existingNode).Comment;
 				var merged = (existingNode == null || overrideNode == null) ? overrideNode ?? existingNode :
 					new MiniYamlNode(key, MergePartial(existingNode.Value, overrideNode.Value), comment, loc);

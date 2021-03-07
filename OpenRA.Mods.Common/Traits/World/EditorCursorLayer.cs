@@ -153,7 +153,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var ios = actor.TraitInfoOrDefault<IOccupySpaceInfo>();
 			var buildingInfo = ios as BuildingInfo;
-			actorCenterOffset = buildingInfo != null ? buildingInfo.CenterOffset(world) : WVec.Zero;
+			actorCenterOffset = buildingInfo?.CenterOffset(world) ?? WVec.Zero;
 			actorSharesCell = ios != null && ios.SharesCell;
 			actorSubCell = SubCell.Invalid;
 

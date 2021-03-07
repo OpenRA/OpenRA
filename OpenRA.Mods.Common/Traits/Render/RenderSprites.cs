@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				if (facings == -1)
 				{
 					var qbo = init.Actor.TraitInfoOrDefault<IQuantizeBodyOrientationInfo>();
-					facings = qbo != null ? qbo.QuantizedBodyFacings(init.Actor, sequenceProvider, faction) : 1;
+					facings = qbo?.QuantizedBodyFacings(init.Actor, sequenceProvider, faction) ?? 1;
 				}
 			}
 
@@ -127,7 +127,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 				// Return to the caller whether the renderable position or size has changed
 				var visible = IsVisible;
-				var offset = Animation.OffsetFunc != null ? Animation.OffsetFunc() : WVec.Zero;
+				var offset = Animation.OffsetFunc?.Invoke() ?? WVec.Zero;
 				var sequence = Animation.Animation.CurrentSequence;
 
 				var updated = visible != cachedVisible || offset != cachedOffset || sequence != cachedSequence;
