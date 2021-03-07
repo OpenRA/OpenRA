@@ -35,12 +35,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		public event Action<CPos, ResourceType> CellChanged;
 
-		ResourceLayerContents IResourceLayer.GetResource(CPos cell) { return Tiles[cell]; }
+		ResourceLayerContents IResourceLayer.GetResource(CPos cell) { return Tiles.Contains(cell) ? Tiles[cell] : default; }
 		bool IResourceLayer.CanAddResource(ResourceType resourceType, CPos cell, int amount) { return CanAddResource(resourceType, cell, amount); }
 		int IResourceLayer.AddResource(ResourceType resourceType, CPos cell, int amount) { return AddResource(resourceType, cell, amount); }
 		int IResourceLayer.RemoveResource(ResourceType resourceType, CPos cell, int amount) { return RemoveResource(resourceType, cell, amount); }
 		void IResourceLayer.ClearResources(CPos cell) { ClearResources(cell); }
 		bool IResourceLayer.IsVisible(CPos cell) { return Map.Contains(cell); }
+		bool IResourceLayer.IsEmpty => false;
 
 		public EditorResourceLayer(Actor self)
 		{

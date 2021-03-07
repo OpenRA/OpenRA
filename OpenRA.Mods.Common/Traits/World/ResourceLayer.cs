@@ -29,22 +29,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public interface IResourceLayerInfo : ITraitInfoInterface { }
-
-	[RequireExplicitImplementation]
-	public interface IResourceLayer
-	{
-		event Action<CPos, ResourceType> CellChanged;
-		ResourceLayerContents GetResource(CPos cell);
-		bool CanAddResource(ResourceType resourceType, CPos cell, int amount = 1);
-		int AddResource(ResourceType resourceType, CPos cell, int amount = 1);
-		int RemoveResource(ResourceType resourceType, CPos cell, int amount = 1);
-		void ClearResources(CPos cell);
-
-		bool IsVisible(CPos cell);
-	}
-
-	[Desc("Attach this to the world actor.", "Order of the layers defines the Z sorting.")]
+	[Desc("Attach this to the world actor.")]
 	public class ResourceLayerInfo : TraitInfo, IResourceLayerInfo, Requires<ResourceTypeInfo>, Requires<BuildingInfluenceInfo>
 	{
 		public override object Create(ActorInitializer init) { return new ResourceLayer(init.Self); }
@@ -56,8 +41,6 @@ namespace OpenRA.Mods.Common.Traits
 		readonly BuildingInfluence buildingInfluence;
 
 		protected readonly CellLayer<ResourceLayerContents> Content;
-
-		public bool IsResourceLayerEmpty => resCells < 1;
 
 		int resCells;
 
@@ -103,7 +86,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var cell in w.Map.AllCells)
 			{
-				var type = GetResourceType(cell);
+				var type = Content[cell].Type;
 				if (type != null)
 				{
 					// Set initial density based on the number of neighboring resources
@@ -140,7 +123,7 @@ namespace OpenRA.Mods.Common.Traits
 			return new ResourceLayerContents(t, 0);
 		}
 
-		public bool CanAddResource(ResourceType resourceType, CPos cell, int amount = 1)
+		bool CanAddResource(ResourceType resourceType, CPos cell, int amount = 1)
 		{
 			if (!world.Map.Contains(cell))
 				return false;
@@ -155,7 +138,7 @@ namespace OpenRA.Mods.Common.Traits
 			return content.Density + amount <= resourceType.Info.MaxDensity;
 		}
 
-		public int AddResource(ResourceType resourceType, CPos cell, int amount = 1)
+		int AddResource(ResourceType resourceType, CPos cell, int amount = 1)
 		{
 			if (!Content.Contains(cell))
 				return 0;
@@ -176,7 +159,7 @@ namespace OpenRA.Mods.Common.Traits
 			return density - oldDensity;
 		}
 
-		public int RemoveResource(ResourceType resourceType, CPos cell, int amount = 1)
+		int RemoveResource(ResourceType resourceType, CPos cell, int amount = 1)
 		{
 			if (!Content.Contains(cell))
 				return 0;
@@ -205,7 +188,7 @@ namespace OpenRA.Mods.Common.Traits
 			return oldDensity - density;
 		}
 
-		public void ClearResources(CPos cell)
+		void ClearResources(CPos cell)
 		{
 			if (!Content.Contains(cell))
 				return;
@@ -222,22 +205,12 @@ namespace OpenRA.Mods.Common.Traits
 			CellChanged?.Invoke(cell, null);
 		}
 
-		public bool IsFull(CPos cell)
-		{
-			var cellContents = Content[cell];
-			return cellContents.Density == cellContents.Type.Info.MaxDensity;
-		}
-
-		public ResourceType GetResourceType(CPos cell) { return Content[cell].Type; }
-
-		public int GetResourceDensity(CPos cell) { return Content[cell].Density; }
-
-		ResourceLayerContents IResourceLayer.GetResource(CPos cell) { return Content[cell]; }
-
+		ResourceLayerContents IResourceLayer.GetResource(CPos cell) { return Content.Contains(cell) ? Content[cell] : default; }
 		bool IResourceLayer.CanAddResource(ResourceType resourceType, CPos cell, int amount) { return CanAddResource(resourceType, cell, amount); }
 		int IResourceLayer.AddResource(ResourceType resourceType, CPos cell, int amount) { return AddResource(resourceType, cell, amount); }
 		int IResourceLayer.RemoveResource(ResourceType resourceType, CPos cell, int amount) { return RemoveResource(resourceType, cell, amount); }
 		void IResourceLayer.ClearResources(CPos cell) { ClearResources(cell); }
 		bool IResourceLayer.IsVisible(CPos cell) { return !world.FogObscures(cell); }
+		bool IResourceLayer.IsEmpty => resCells < 1;
 	}
 }

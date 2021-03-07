@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public EditorResourceBrush(EditorViewportControllerWidget editorWidget, ResourceType resource, WorldRenderer wr)
 		{
 			this.editorWidget = editorWidget;
-			ResourceType = resource.Info;
+			ResourceType = resource;
 			worldRenderer = wr;
 			world = wr.World;
 			editorActionManager = world.WorldActor.Trait<EditorActionManager>();
@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Widgets
 			resourceLayer = world.WorldActor.Trait<IResourceLayer>();
 			action = new AddResourcesEditorAction(world.Map, resourceLayer, resource);
 
-			cursorToken = editorCursor.SetResource(wr, resource.Info);
+			cursorToken = editorCursor.SetResource(wr, resource);
 		}
 
 		public bool HandleMouseInput(MouseInput mi)

@@ -56,14 +56,14 @@ namespace OpenRA.Mods.Common.Warheads
 			var resourceType = world.WorldActor.TraitsImplementing<ResourceType>()
 				.First(t => t.Info.Type == AddsResourceType);
 
-			var resLayer = world.WorldActor.Trait<ResourceLayer>();
+			var resourceLayer = world.WorldActor.Trait<IResourceLayer>();
 			foreach (var cell in allCells)
 			{
-				if (!resLayer.CanAddResource(resourceType, cell))
+				if (!resourceLayer.CanAddResource(resourceType, cell))
 					continue;
 
-				var splash = world.SharedRandom.Next(1, resourceType.Info.MaxDensity - resLayer.GetResourceDensity(cell));
-				resLayer.AddResource(resourceType, cell, splash);
+				var splash = world.SharedRandom.Next(1, resourceType.Info.MaxDensity - resourceLayer.GetResource(cell).Density);
+				resourceLayer.AddResource(resourceType, cell, splash);
 			}
 		}
 	}
