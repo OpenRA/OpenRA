@@ -38,16 +38,16 @@ namespace OpenRA.Graphics
 		public IRenderable[] Render(Actor self, WorldRenderer wr, PaletteReference pal)
 		{
 			var center = self.CenterPosition;
-			var offset = OffsetFunc != null ? OffsetFunc() : WVec.Zero;
+			var offset = OffsetFunc?.Invoke() ?? WVec.Zero;
 
-			var z = (ZOffset != null) ? ZOffset(center + offset) : 0;
+			var z = ZOffset?.Invoke(center + offset) ?? 0;
 			return Animation.Render(center, offset, z, pal);
 		}
 
 		public Rectangle ScreenBounds(Actor self, WorldRenderer wr)
 		{
 			var center = self.CenterPosition;
-			var offset = OffsetFunc != null ? OffsetFunc() : WVec.Zero;
+			var offset = OffsetFunc?.Invoke() ?? WVec.Zero;
 
 			return Animation.ScreenBounds(wr, center, offset);
 		}

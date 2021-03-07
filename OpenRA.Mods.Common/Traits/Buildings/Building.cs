@@ -65,14 +65,14 @@ namespace OpenRA.Mods.Common.Traits
 		protected static object LoadFootprint(MiniYaml yaml)
 		{
 			var footprintYaml = yaml.Nodes.FirstOrDefault(n => n.Key == "Footprint");
-			var footprintChars = footprintYaml != null ? footprintYaml.Value.Value.Where(x => !char.IsWhiteSpace(x)).ToArray() : new[] { 'x' };
+			var footprintChars = footprintYaml?.Value.Value.Where(x => !char.IsWhiteSpace(x)).ToArray() ?? new[] { 'x' };
 
 			var dimensionsYaml = yaml.Nodes.FirstOrDefault(n => n.Key == "Dimensions");
 			var dim = dimensionsYaml != null ? FieldLoader.GetValue<CVec>("Dimensions", dimensionsYaml.Value.Value) : new CVec(1, 1);
 
 			if (footprintChars.Length != dim.X * dim.Y)
 			{
-				var fp = footprintYaml.Value.Value.ToString();
+				var fp = footprintYaml.Value.Value;
 				var dims = dim.X + "x" + dim.Y;
 				throw new YamlException("Invalid footprint: {0} does not match dimensions {1}".F(fp, dims));
 			}

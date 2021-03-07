@@ -592,7 +592,7 @@ namespace OpenRA.Support
 			Token lastToken = null;
 			for (var i = 0; ;)
 			{
-				var token = Token.GetNext(Expression, ref i, lastToken != null ? lastToken.Type : TokenType.Invalid);
+				var token = Token.GetNext(Expression, ref i, lastToken?.Type ?? TokenType.Invalid);
 				if (token == null)
 				{
 					// Sanity check parsed tree

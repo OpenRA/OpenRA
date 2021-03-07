@@ -239,7 +239,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void WorldOnRenderPlayerChanged(Player player)
 		{
-			var newShroud = player != null ? player.Shroud : null;
+			var newShroud = player?.Shroud;
 
 			if (shroud != newShroud)
 			{

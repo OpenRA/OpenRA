@@ -393,7 +393,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected virtual WRot CalculateMuzzleOrientation(Actor self, Barrel b)
 		{
-			return WRot.FromYaw(b.Yaw).Rotate(turret != null ? turret.WorldOrientation : self.Orientation);
+			return WRot.FromYaw(b.Yaw).Rotate(turret?.WorldOrientation ?? self.Orientation);
 		}
 
 		public Actor Actor => self;

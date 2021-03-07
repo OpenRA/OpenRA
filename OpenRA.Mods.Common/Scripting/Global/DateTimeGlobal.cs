@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Return or set the time limit (in ticks). When setting, the time limit will count from now. Setting the time limit to 0 will disable it.")]
 		public int TimeLimit
 		{
-			get => tlm != null ? tlm.TimeLimit : 0;
+			get => tlm?.TimeLimit ?? 0;
 
 			set
 			{
@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("The notification string used for custom time limit warnings. See the TimeLimitManager trait documentation for details.")]
 		public string TimeLimitNotification
 		{
-			get => tlm != null ? tlm.Notification : null;
+			get => tlm?.Notification;
 
 			set
 			{

@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Traits
 				Info.ConstructionYardTypes.Contains(a.Info.Name))
 				.RandomOrDefault(world.LocalRandom);
 
-			return randomConstructionYard != null ? randomConstructionYard.Location : initialBaseCenter;
+			return randomConstructionYard?.Location ?? initialBaseCenter;
 		}
 
 		readonly World world;

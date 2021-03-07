@@ -49,26 +49,24 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			ActorInfo lastActor = null;
 			Hotkey lastHotkey = Hotkey.Invalid;
-			var lastPowerState = pm == null ? PowerState.Normal : pm.PowerState;
+			var lastPowerState = pm?.PowerState ?? PowerState.Normal;
 			var descLabelY = descLabel.Bounds.Y;
 			var descLabelPadding = descLabel.Bounds.Height;
 
 			tooltipContainer.BeforeRender = () =>
 			{
 				var tooltipIcon = getTooltipIcon();
-				if (tooltipIcon == null)
-					return;
 
-				var actor = tooltipIcon.Actor;
+				var actor = tooltipIcon?.Actor;
 				if (actor == null)
 					return;
 
-				var hotkey = tooltipIcon.Hotkey != null ? tooltipIcon.Hotkey.GetValue() : Hotkey.Invalid;
+				var hotkey = tooltipIcon.Hotkey?.GetValue() ?? Hotkey.Invalid;
 				if (actor == lastActor && hotkey == lastHotkey && (pm == null || pm.PowerState == lastPowerState))
 					return;
 
 				var tooltip = actor.TraitInfos<TooltipInfo>().FirstOrDefault(info => info.EnabledByDefault);
-				var name = tooltip != null ? tooltip.Name : actor.Name;
+				var name = tooltip?.Name ?? actor.Name;
 				var buildable = actor.TraitInfo<BuildableInfo>();
 
 				var cost = 0;
@@ -125,7 +123,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					powerSize = font.Measure(powerLabel.Text);
 				}
 
-				var buildTime = tooltipIcon.ProductionQueue == null ? 0 : tooltipIcon.ProductionQueue.GetBuildTime(actor, buildable);
+				var buildTime = tooltipIcon.ProductionQueue?.GetBuildTime(actor, buildable) ?? 0;
 				var timeModifier = pm != null && pm.PowerState != PowerState.Normal ? tooltipIcon.ProductionQueue.Info.LowPowerModifier : 100;
 
 				timeLabel.Text = formatBuildTime.Update((buildTime * timeModifier) / 100);

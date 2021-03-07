@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					return;
 
 				var tooltip = armyUnit.TooltipInfo;
-				var name = tooltip != null ? tooltip.Name : armyUnit.ActorInfo.Name;
+				var name = tooltip?.Name ?? armyUnit.ActorInfo.Name;
 				var buildable = armyUnit.BuildableInfo;
 
 				nameLabel.Text = name;

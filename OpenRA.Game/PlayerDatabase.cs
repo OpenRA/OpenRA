@@ -103,9 +103,9 @@ namespace OpenRA
 
 			return new PlayerBadge(
 				labelNode.Value.Value,
-				icon24Node != null ? icon24Node.Value.Value : null,
-				icon48Node != null ? icon48Node.Value.Value : null,
-				icon72Node != null ? icon72Node.Value.Value : null);
+				icon24Node?.Value.Value,
+				icon48Node?.Value.Value,
+				icon72Node?.Value.Value);
 		}
 
 		public Sprite GetIcon(PlayerBadge badge)

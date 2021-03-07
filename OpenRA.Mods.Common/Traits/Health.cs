@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Traits
 				actor =>
 				{
 					var init = actor.GetInitOrDefault<HealthInit>();
-					return init != null ? init.Value : 100;
+					return init?.Value ?? 100;
 				},
 				(actor, value) => actor.ReplaceInit(new HealthInit((int)value)));
 		}

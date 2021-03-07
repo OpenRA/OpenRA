@@ -67,7 +67,7 @@ namespace OpenRA
 						LoadWidget(args, widget, c);
 
 			var logicNode = node.Value.Nodes.FirstOrDefault(n => n.Key == "Logic");
-			var logic = logicNode == null ? null : logicNode.Value.ToDictionary();
+			var logic = logicNode?.Value.ToDictionary();
 			args.Add("logicArgs", logic);
 
 			widget.PostInit(args);

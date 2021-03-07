@@ -323,9 +323,9 @@ namespace OpenRA
 			}
 		}
 
-		public float MusicSeekPosition => music != null ? music.SeekPosition : 0;
+		public float MusicSeekPosition => music?.SeekPosition ?? 0;
 
-		public float VideoSeekPosition => video != null ? video.SeekPosition : 0;
+		public float VideoSeekPosition => video?.SeekPosition ?? 0;
 
 		// Returns true if played successfully
 		public bool PlayPredefined(SoundType soundType, Ruleset ruleset, Player p, Actor voicedActor, string type, string definition, string variant,
@@ -340,11 +340,11 @@ namespace OpenRA
 			if (ruleset.Voices == null || ruleset.Notifications == null)
 				return false;
 
-			var rules = (voicedActor != null) ? ruleset.Voices[type] : ruleset.Notifications[type];
+			var rules = voicedActor != null ? ruleset.Voices[type] : ruleset.Notifications[type];
 			if (rules == null)
 				return false;
 
-			var id = voicedActor != null ? voicedActor.ActorID : 0;
+			var id = voicedActor?.ActorID ?? 0;
 
 			SoundPool pool;
 			var suffix = rules.DefaultVariant;

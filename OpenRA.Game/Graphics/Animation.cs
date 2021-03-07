@@ -112,7 +112,7 @@ namespace OpenRA.Graphics
 		int CurrentSequenceTickOrDefault()
 		{
 			const int DefaultTick = 40; // 25 fps == 40 ms
-			return CurrentSequence != null ? CurrentSequence.Tick : DefaultTick;
+			return CurrentSequence?.Tick ?? DefaultTick;
 		}
 
 		void PlaySequence(string sequenceName)

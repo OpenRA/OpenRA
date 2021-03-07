@@ -93,7 +93,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			{
 				// Return to the caller whether the renderable position or size has changed
 				var visible = model.IsVisible;
-				var offset = model.OffsetFunc != null ? model.OffsetFunc() : WVec.Zero;
+				var offset = model.OffsetFunc?.Invoke() ?? WVec.Zero;
 
 				var updated = visible != cachedVisible || offset != cachedOffset;
 				cachedVisible = visible;

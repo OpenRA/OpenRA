@@ -118,7 +118,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (selectedDirectory == null)
 					selectedDirectory = writableDirectories.OrderByDescending(kv => kv.Classification).First();
 
-				directoryDropdown.GetText = () => selectedDirectory == null ? "" : selectedDirectory.DisplayName;
+				directoryDropdown.GetText = () => selectedDirectory?.DisplayName ?? "";
 				directoryDropdown.OnClick = () =>
 					directoryDropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 210, writableDirectories, setupItem);
 			}
