@@ -70,6 +70,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Can the actor be ordered to move in to shroud?")]
 		public readonly bool MoveIntoShroud = true;
 
+		[Desc("Should adjacent tiles be checked for diagonal movement?")]
+		public readonly bool CheckAdjacentOnDiagonal = false;
+
 		[Desc("e.g. crate, wall, infantry")]
 		public readonly BitSet<CrushClass> Crushes = default(BitSet<CrushClass>);
 
@@ -186,10 +189,19 @@ namespace OpenRA.Mods.Common.Traits
 			return terrainInfos[index].Speed;
 		}
 
-		public short MovementCostToEnterCell(Actor actor, CPos destNode, BlockedByActor check, Actor ignoreActor)
+		public short MovementCostToEnterCell(Actor actor, CPos destNode, CVec direction, BlockedByActor check, Actor ignoreActor)
 		{
 			if (!world.Map.Contains(destNode))
 				return short.MaxValue;
+
+			if (Info.CheckAdjacentOnDiagonal && direction.X != 0 && direction.Y != 0)
+			{
+				if (MovementCostToEnterCell(actor, destNode - new CVec(0, direction.Y), new CVec(direction.X, 0), check, ignoreActor) == short.MaxValue)
+					return short.MaxValue;
+
+				if (MovementCostToEnterCell(actor, destNode - new CVec(direction.X, 0), new CVec(0, direction.Y), check, ignoreActor) == short.MaxValue)
+					return short.MaxValue;
+			}
 
 			var cellCost = destNode.Layer == 0 ? cellsCost[destNode] : customLayerCellsCost[destNode.Layer][destNode];
 

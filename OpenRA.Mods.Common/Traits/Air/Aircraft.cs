@@ -182,7 +182,7 @@ namespace OpenRA.Mods.Common.Traits
 		bool IOccupySpaceInfo.SharesCell => false;
 
 		// Used to determine if an aircraft can spawn landed
-		public bool CanEnterCell(World world, Actor self, CPos cell, SubCell subCell = SubCell.FullCell, Actor ignoreActor = null, BlockedByActor check = BlockedByActor.All)
+		public bool CanEnterCell(World world, Actor self, CPos cell, SubCell subCell = SubCell.FullCell, Actor ignoreActor = null, BlockedByActor check = BlockedByActor.All, CPos? fromCell = null)
 		{
 			if (!world.Map.Contains(cell))
 				return false;
@@ -758,7 +758,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool CanExistInCell(CPos cell) { return true; }
 		public bool IsLeavingCell(CPos location, SubCell subCell = SubCell.Any) { return false; } // TODO: Handle landing
-		public bool CanEnterCell(CPos cell, Actor ignoreActor = null, BlockedByActor check = BlockedByActor.All) { return true; }
+		public bool CanEnterCell(CPos cell, Actor ignoreActor = null, BlockedByActor check = BlockedByActor.All, CPos? fromCell = null) { return true; }
 		public SubCell GetValidSubCell(SubCell preferred) { return SubCell.Invalid; }
 		public SubCell GetAvailableSubCell(CPos a, SubCell preferredSubCell = SubCell.Any, Actor ignoreActor = null, BlockedByActor check = BlockedByActor.All)
 		{

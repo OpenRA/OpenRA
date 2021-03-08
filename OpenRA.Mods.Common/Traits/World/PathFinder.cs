@@ -75,12 +75,10 @@ namespace OpenRA.Mods.Common.Traits
 			if (domainIndex != null && !domainIndex.IsPassable(source, target, locomotor))
 				return EmptyPath;
 
-			var distance = source - target;
-			var canMoveFreely = locomotor.CanMoveFreelyInto(self, target, check, null);
-			if (distance.LengthSquared < 3 && !canMoveFreely)
-				return new List<CPos> { };
+			var distance = target - source;
+			var movementCost = locomotor.MovementCostToEnterCell(self, target, distance, check, null);
 
-			if (source.Layer == target.Layer && distance.LengthSquared < 3 && canMoveFreely)
+			if (source.Layer == target.Layer && distance.LengthSquared < 3 && movementCost != short.MaxValue)
 				return new List<CPos> { target };
 
 			List<CPos> pb;

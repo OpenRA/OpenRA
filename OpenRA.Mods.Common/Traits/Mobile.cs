@@ -40,6 +40,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("If set to true, this unit will always turn in place instead of following a curved trajectory (like infantry).")]
 		public readonly bool AlwaysTurnInPlace = false;
 
+		[Desc("Should adjacent actors be checked for diagonal movement?")]
+		public readonly bool CheckAdjacentOnDiagonal = false;
+
 		[Desc("Cursor to display when a move order can be issued at target location.")]
 		public readonly string Cursor = "move";
 
@@ -100,7 +103,7 @@ namespace OpenRA.Mods.Common.Traits
 		/// <summary>
 		/// Note: If the target <paramref name="cell"/> has any free subcell, the value of <paramref name="subCell"/> is ignored.
 		/// </summary>
-		public bool CanEnterCell(World world, Actor self, CPos cell, SubCell subCell = SubCell.FullCell, Actor ignoreActor = null, BlockedByActor check = BlockedByActor.All)
+		public bool CanEnterCell(World world, Actor self, CPos cell, SubCell subCell = SubCell.FullCell, Actor ignoreActor = null, BlockedByActor check = BlockedByActor.All, CPos? fromCell = null)
 		{
 			// PERF: Avoid repeated trait queries on the hot path
 			if (locomotor == null)
@@ -110,7 +113,20 @@ namespace OpenRA.Mods.Common.Traits
 			if (locomotor.MovementCostForCell(cell) == short.MaxValue)
 				return false;
 
-			return locomotor.CanMoveFreelyInto(self, cell, subCell, check, ignoreActor);
+			if (!locomotor.CanMoveFreelyInto(self, cell, subCell, check, ignoreActor))
+				return false;
+
+			// We cannot cross diagonals if another actor is already moving diagonal.
+			if (!CheckAdjacentOnDiagonal || !fromCell.HasValue)
+				return true;
+
+			var direction = cell - fromCell.Value;
+
+			if (direction.X == 0 || direction.Y == 0)
+				return true;
+
+			return locomotor.CanMoveFreelyInto(self, cell - new CVec(direction.X, 0), check, ignoreActor) &&
+			       locomotor.CanMoveFreelyInto(self, cell - new CVec(0, direction.Y), check, ignoreActor);
 		}
 
 		public bool CanStayInCell(World world, CPos cell)
@@ -504,9 +520,9 @@ namespace OpenRA.Mods.Common.Traits
 			return Locomotor.MovementCostForCell(cell) != short.MaxValue;
 		}
 
-		public bool CanEnterCell(CPos cell, Actor ignoreActor = null, BlockedByActor check = BlockedByActor.All)
+		public bool CanEnterCell(CPos cell, Actor ignoreActor = null, BlockedByActor check = BlockedByActor.All, CPos? fromCell = null)
 		{
-			return Info.CanEnterCell(self.World, self, cell, ToSubCell, ignoreActor, check);
+			return Info.CanEnterCell(self.World, self, cell, ToSubCell, ignoreActor, check, fromCell);
 		}
 
 		public bool CanStayInCell(CPos cell)

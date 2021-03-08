@@ -240,7 +240,7 @@ namespace OpenRA.Mods.Common.Activities
 			var containsTemporaryBlocker = WorldUtils.ContainsTemporaryBlocker(self.World, nextCell, self);
 
 			// Next cell in the move is blocked by another actor
-			if (containsTemporaryBlocker || !mobile.CanEnterCell(nextCell, ignoreActor))
+			if (containsTemporaryBlocker || !mobile.CanEnterCell(nextCell, ignoreActor, BlockedByActor.All, mobile.ToCell))
 			{
 				// Are we close enough?
 				var cellRange = nearEnough.Length / 1024;
@@ -272,7 +272,7 @@ namespace OpenRA.Mods.Common.Activities
 				}
 
 				// There is no point in waiting for the other actor to move if it is incapable of moving.
-				if (!mobile.CanEnterCell(nextCell, ignoreActor, BlockedByActor.Immovable))
+				if (!mobile.CanEnterCell(nextCell, ignoreActor, BlockedByActor.Immovable, mobile.ToCell))
 				{
 					path = EvalPath(BlockedByActor.Immovable);
 					return null;

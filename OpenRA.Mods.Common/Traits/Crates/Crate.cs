@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool IOccupySpaceInfo.SharesCell => false;
 
-		public bool CanEnterCell(World world, Actor self, CPos cell, SubCell subCell = SubCell.FullCell, Actor ignoreActor = null, BlockedByActor check = BlockedByActor.All)
+		public bool CanEnterCell(World world, Actor self, CPos cell, SubCell subCell = SubCell.FullCell, Actor ignoreActor = null, BlockedByActor check = BlockedByActor.All, CPos? fromCell = null)
 		{
 			// Since crates don't share cells and GetAvailableSubCell only returns SubCell.Full or SubCell.Invalid, we ignore the subCell parameter
 			return GetAvailableSubCell(world, cell, ignoreActor, check) != SubCell.Invalid;
@@ -225,7 +225,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool CanExistInCell(CPos cell) { return info.CanExistInCell(self.World, cell); }
 
-		public bool CanEnterCell(CPos a, Actor ignoreActor = null, BlockedByActor check = BlockedByActor.All)
+		public bool CanEnterCell(CPos a, Actor ignoreActor = null, BlockedByActor check = BlockedByActor.All, CPos? fromCell = null)
 		{
 			return GetAvailableSubCell(a, SubCell.Any, ignoreActor, check) != SubCell.Invalid;
 		}

@@ -173,7 +173,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 		int GetCostToNode(CPos destNode, CVec direction)
 		{
-			var movementCost = locomotor.MovementCostToEnterCell(Actor, destNode, checkConditions, IgnoreActor);
+			var movementCost = locomotor.MovementCostToEnterCell(Actor, destNode, direction, checkConditions, IgnoreActor);
 			if (movementCost != short.MaxValue && !(CustomBlock != null && CustomBlock(destNode)))
 				return CalculateCellCost(destNode, direction, movementCost);
 
