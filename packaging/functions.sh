@@ -97,7 +97,7 @@ install_assemblies() {
 	ORIG_PWD=$(pwd)
 	cd "${SRC_PATH}" || exit 1
 
-	dotnet publish -c Release -p:TargetPlatform="${TARGETPLATFORM}" -p:PublishTrimmed=true -p:CopyGenericLauncher="${COPY_GENERIC_LAUNCHER}" -p:CopyCncDll="${COPY_CNC_DLL}" -p:CopyD2kDll="${COPY_D2K_DLL}" -r "${TARGETPLATFORM}" -o "${DEST_PATH}"
+	dotnet publish -c Release -p:TargetPlatform="${TARGETPLATFORM}" -p:PublishTrimmed=true -p:CopyGenericLauncher="${COPY_GENERIC_LAUNCHER}" -p:CopyCncDll="${COPY_CNC_DLL}" -p:CopyD2kDll="${COPY_D2K_DLL}" -r "${TARGETPLATFORM}" -o "${DEST_PATH}" --self-contained true
 
 	cd "${ORIG_PWD}" || exit 1
 }
@@ -170,7 +170,7 @@ install_windows_launcher()
 	FAQ_URL="${7}"
 
 	rm -rf "${SRC_PATH}/OpenRA.WindowsLauncher/obj"
-	dotnet publish "${SRC_PATH}/OpenRA.WindowsLauncher/OpenRA.WindowsLauncher.csproj" -c Release -r "${TARGETPLATFORM}" -p:LauncherName="${LAUNCHER_NAME}" -p:TargetPlatform="${TARGETPLATFORM}" -p:ModID="${MOD_ID}" -p:DisplayName="${MOD_NAME}" -p:FaqUrl="${FAQ_URL}" -o "${DEST_PATH}"
+	dotnet publish "${SRC_PATH}/OpenRA.WindowsLauncher/OpenRA.WindowsLauncher.csproj" -c Release -r "${TARGETPLATFORM}" -p:LauncherName="${LAUNCHER_NAME}" -p:TargetPlatform="${TARGETPLATFORM}" -p:ModID="${MOD_ID}" -p:DisplayName="${MOD_NAME}" -p:FaqUrl="${FAQ_URL}" -o "${DEST_PATH}" --self-contained true
 
 	# NET 5 is unable to customize the application host for windows when compiling from Linux,
 	# so we must patch the properties we need in the PE header.
