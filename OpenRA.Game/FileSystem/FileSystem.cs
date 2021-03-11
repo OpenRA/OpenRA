@@ -255,6 +255,12 @@ namespace OpenRA.FileSystem
 				return s != null;
 			}
 
+			if (File.Exists(filename))
+			{
+				s = File.OpenRead(filename);
+				return s != null;
+			}
+
 			s = null;
 			return false;
 		}
@@ -267,7 +273,7 @@ namespace OpenRA.FileSystem
 					if (explicitPackage.Contains(filename.Substring(explicitSplit + 1)))
 						return true;
 
-			return fileIndex.ContainsKey(filename);
+			return fileIndex.ContainsKey(filename) || File.Exists(filename);
 		}
 
 		/// <summary>
