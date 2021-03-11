@@ -268,11 +268,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 							case "delete":
 							{
-								var sourcePath = Path.Combine(path, i.Value.Value);
-
-								// Try as an absolute path
-								if (!File.Exists(sourcePath))
-									sourcePath = Platform.ResolvePath(i.Value.Value);
+								// Yaml path may be specified relative to a named directory (e.g. ^SupportDir) or the detected disc path
+								var sourcePath = i.Value.Value.StartsWith("^") ? Platform.ResolvePath(i.Value.Value) : Path.Combine(path, i.Value.Value);
 
 								Log.Write("debug", "Deleting {0}", sourcePath);
 								File.Delete(sourcePath);
@@ -325,11 +322,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		static void ExtractFromPackage(ExtractionType type, string path, MiniYaml actionYaml, List<string> extractedFiles, Action<string> updateMessage)
 		{
-			var sourcePath = Path.Combine(path, actionYaml.Value);
-
-			// Try as an absolute path
-			if (!File.Exists(sourcePath))
-				sourcePath = Platform.ResolvePath(actionYaml.Value);
+			// Yaml path may be specified relative to a named directory (e.g. ^SupportDir) or the detected disc path
+			var sourcePath = actionYaml.Value.StartsWith("^") ? Platform.ResolvePath(actionYaml.Value) : Path.Combine(path, actionYaml.Value);
 
 			using (var source = File.OpenRead(sourcePath))
 			{
@@ -384,11 +378,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		static void ExtractFromMSCab(string path, MiniYaml actionYaml, List<string> extractedFiles, Action<string> updateMessage)
 		{
-			var sourcePath = Path.Combine(path, actionYaml.Value);
-
-			// Try as an absolute path
-			if (!File.Exists(sourcePath))
-				sourcePath = Platform.ResolvePath(actionYaml.Value);
+			// Yaml path may be specified relative to a named directory (e.g. ^SupportDir) or the detected disc path
+			var sourcePath = actionYaml.Value.StartsWith("^") ? Platform.ResolvePath(actionYaml.Value) : Path.Combine(path, actionYaml.Value);
 
 			using (var source = File.OpenRead(sourcePath))
 			{
@@ -418,11 +409,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		static void ExtractFromISCab(string path, MiniYaml actionYaml, List<string> extractedFiles, Action<string> updateMessage)
 		{
-			var sourcePath = Path.Combine(path, actionYaml.Value);
-
-			// Try as an absolute path
-			if (!File.Exists(sourcePath))
-				sourcePath = Platform.ResolvePath(actionYaml.Value);
+			// Yaml path may be specified relative to a named directory (e.g. ^SupportDir) or the detected disc path
+			var sourcePath = actionYaml.Value.StartsWith("^") ? Platform.ResolvePath(actionYaml.Value) : Path.Combine(path, actionYaml.Value);
 
 			var volumeNode = actionYaml.Nodes.FirstOrDefault(n => n.Key == "Volumes");
 			if (volumeNode == null)
