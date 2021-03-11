@@ -124,11 +124,11 @@ SendInVolkov = function()
 		Media.PlaySpeechNotification(USSR, "ReinforcementsArrived")
 		local teamVolkov = Reinforcements.ReinforceWithTransport(USSR, InsertionTransport, VolkovandFriend, VolkovEntryPath, { VolkovEntryPath[1] })[2]
 		VolkovArrived = true
+		Trigger.OnKilled(teamVolkov[1], function()
+			USSR.MarkFailedObjective(VolkovSurvive)
+		end)
 		Trigger.OnAddedToWorld(teamVolkov[1], function(a)
 			Media.DisplayMessage("IFF software update failed. Require manual target input.", "Volkov")
-			Trigger.OnKilled(a, function()
-				USSR.MarkFailedObjective(VolkovSurvive)
-			end)
 		end)
 
 		Trigger.OnAddedToWorld(teamVolkov[2], function(b)
