@@ -44,7 +44,7 @@ namespace OpenRA.Graphics
 
 	public interface ISpriteLoader
 	{
-		bool TryParseSprite(Stream s, out ISpriteFrame[] frames, out TypeDictionary metadata);
+		bool TryParseSprite(Stream s, string filename, out ISpriteFrame[] frames, out TypeDictionary metadata);
 	}
 
 	public interface ISpriteFrame
@@ -173,7 +173,7 @@ namespace OpenRA.Graphics
 		{
 			using (var stream = fileSystem.Open(filename))
 			{
-				var spriteFrames = GetFrames(stream, loaders, out metadata);
+				var spriteFrames = GetFrames(stream, loaders, filename, out metadata);
 				if (spriteFrames == null)
 					throw new InvalidDataException(filename + " is not a valid sprite file!");
 
@@ -181,12 +181,12 @@ namespace OpenRA.Graphics
 			}
 		}
 
-		public static ISpriteFrame[] GetFrames(Stream stream, ISpriteLoader[] loaders, out TypeDictionary metadata)
+		public static ISpriteFrame[] GetFrames(Stream stream, ISpriteLoader[] loaders, string filename, out TypeDictionary metadata)
 		{
 			metadata = null;
 
 			foreach (var loader in loaders)
-				if (loader.TryParseSprite(stream, out var frames, out metadata))
+				if (loader.TryParseSprite(stream, filename, out var frames, out metadata))
 					return frames;
 
 			return null;

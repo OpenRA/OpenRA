@@ -155,7 +155,7 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 			return frames;
 		}
 
-		public bool TryParseSprite(Stream s, out ISpriteFrame[] frames, out TypeDictionary metadata)
+		public bool TryParseSprite(Stream s, string filename, out ISpriteFrame[] frames, out TypeDictionary metadata)
 		{
 			metadata = null;
 			if (!IsShpD2(s))
