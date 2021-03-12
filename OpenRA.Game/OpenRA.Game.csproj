@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <TargetFramework Condition="'$(Mono)' == ''">net5.0</TargetFramework>
+    <TargetFramework Condition="'$(Mono)' == ''">net6.0</TargetFramework>
     <TargetFramework Condition="'$(Mono)' != ''">netstandard2.1</TargetFramework>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Optimize>true</Optimize>
