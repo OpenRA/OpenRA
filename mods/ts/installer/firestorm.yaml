@@ -4,6 +4,7 @@ fstorm: Firestorm Expansion Disc (English)
 		Install/Language.dll: 4df87c1a2289da57dd14d0a7299546f37357fcca
 	Install:
 		copy: .
+			^SupportDir|Content/ts/firestorm/scores01.mix: scores01.mix
 		extract-raw: Install/expand01.mix
 			^SupportDir|Content/ts/firestorm/m_emp.vxl:
 				Offset: 2187652
@@ -539,28 +540,3 @@ fstorm: Firestorm Expansion Disc (English)
 			^SupportDir|Content/ts/firestorm/sounds01.mix:
 				Offset: 28229956
 				Length: 990096
-		extract-raw: scores01.mix
-			^SupportDir|Content/ts/firestorm/elusive.aud:
-				Offset: 188
-				Length: 2991051
-			^SupportDir|Content/ts/firestorm/hacker.aud:
-				Offset: 2991244
-				Length: 2719611
-			^SupportDir|Content/ts/firestorm/infiltra.aud:
-				Offset: 5710860
-				Length: 2915781
-			^SupportDir|Content/ts/firestorm/linkup.aud:
-				Offset: 8626652
-				Length: 2210011
-			^SupportDir|Content/ts/firestorm/kmachine.aud:
-				Offset: 10836668
-				Length: 2323371
-			^SupportDir|Content/ts/firestorm/rainnite.aud:
-				Offset: 13160044
-				Length: 2679051
-			^SupportDir|Content/ts/firestorm/slavesys.aud:
-				Offset: 15839100
-				Length: 1747576
-			^SupportDir|Content/ts/firestorm/dmachine.aud:
-				Offset: 17586684
-				Length: 2492891

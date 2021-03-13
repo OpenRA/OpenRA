@@ -11,7 +11,7 @@ tfd: C&C The First Decade (English)
 				^SupportDir|Content/ts/scores.mix: Tiberian Sun\SUN\SCORES.MIX
 				^SupportDir|Content/ts/tibsun.mix: Tiberian Sun\SUN\TIBSUN.MIX
 				^SupportDir|Content/ts/expand01.mix: Tiberian Sun\SUN\expand01.mix
-				^SupportDir|Content/ts/scores01.mix: Tiberian Sun\SUN\scores01.mix
+				^SupportDir|Content/ts/firestorm/scores01.mix: Tiberian Sun\SUN\scores01.mix
 		extract-raw: ^SupportDir|Content/ts/tibsun.mix
 			^SupportDir|Content/ts/cache.mix:
 				Offset: 300
@@ -592,29 +592,3 @@ tfd: C&C The First Decade (English)
 				Offset: 28229956
 				Length: 990096
 		delete: ^SupportDir|Content/ts/expand01.mix
-		extract-raw: ^SupportDir|Content/ts/scores01.mix
-			^SupportDir|Content/ts/firestorm/elusive.aud:
-				Offset: 188
-				Length: 2991051
-			^SupportDir|Content/ts/firestorm/hacker.aud:
-				Offset: 2991244
-				Length: 2719611
-			^SupportDir|Content/ts/firestorm/infiltra.aud:
-				Offset: 5710860
-				Length: 2915781
-			^SupportDir|Content/ts/firestorm/linkup.aud:
-				Offset: 8626652
-				Length: 2210011
-			^SupportDir|Content/ts/firestorm/kmachine.aud:
-				Offset: 10836668
-				Length: 2323371
-			^SupportDir|Content/ts/firestorm/rainnite.aud:
-				Offset: 13160044
-				Length: 2679051
-			^SupportDir|Content/ts/firestorm/slavesys.aud:
-				Offset: 15839100
-				Length: 1747576
-			^SupportDir|Content/ts/firestorm/dmachine.aud:
-				Offset: 17586684
-				Length: 2492891
-		delete: ^SupportDir|Content/ts/scores01.mix

@@ -311,14 +311,14 @@ ModContent:
 		tibsun-music: Base Game Music
 			TestFiles: ^SupportDir|Content/ts/scores.mix
 			Sources: tibsun, tibsun-linux, tfd, origin
-		fstorm: Expansion Freeware Content
+		fstorm: Firestorm Expansion Files
 			TestFiles: ^SupportDir|Content/ts/firestorm/e01sc01.mix, ^SupportDir|Content/ts/firestorm/e01sc02.mix, ^SupportDir|Content/ts/firestorm/e01vox01.mix, ^SupportDir|Content/ts/firestorm/e01vox02.mix
 			Sources: tfd, origin, fstorm
 			Required: true
 			Download: fstorm
-		fstorm-music: Expansion Freeware Music
+		fstorm-music: Firestorm Expansion Music
 			Sources: tfd, origin, fstorm
-			TestFiles: ^SupportDir|Content/ts/firestorm/linkup.aud, ^SupportDir|Content/ts/firestorm/hacker.aud
+			TestFiles: ^SupportDir|Content/ts/firestorm/scores01.mix
 	Downloads:
 		ts|installer/downloads.yaml
 	Sources:
