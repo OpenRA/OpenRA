@@ -58,6 +58,21 @@ lpst.gdi:
 		UseTilesetCode: true
 		Length: 36
 		ShadowStart: 36
+	idle-lights: gadpsa_a
+		DepthSprite: isodepth.shp
+		DepthSpriteOffset: -6, -6
+		Offset: 0, -13, 12
+		UseTilesetCode: true
+		Length: 10
+		Tick: 200
+	idle-lights-bright: gadpsa_a
+		DepthSprite: isodepth.shp
+		DepthSpriteOffset: -6, -6
+		Offset: 0, -13, 12
+		UseTilesetCode: true
+		Length: 10
+		Tick: 200
+		IgnoreWorldTint: True
 	icon: sidebar-gdi|lpsticon
 
 lpst.nod:
