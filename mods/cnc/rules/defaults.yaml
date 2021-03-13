@@ -917,7 +917,7 @@
 		DamageTypes: Incendiary
 		Image: burn-s
 		MinimumDamageState: Light
-		MaximumDamageState: Medium
+		MaximumDamageState: Light
 		StartSequence: idle
 		LoopSequence: loop
 		EndSequence: end
@@ -925,7 +925,7 @@
 		DamageTypes: Incendiary
 		Image: burn-m
 		MinimumDamageState: Medium
-		MaximumDamageState: Heavy
+		MaximumDamageState: Medium
 		StartSequence: idle
 		LoopSequence: loop
 		EndSequence: end

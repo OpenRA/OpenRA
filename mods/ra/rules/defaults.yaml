@@ -928,7 +928,7 @@
 		Image: burn-s
 		Palette: effect
 		MinimumDamageState: Light
-		MaximumDamageState: Medium
+		MaximumDamageState: Light
 		StartSequence: idle
 		LoopSequence: loop
 		EndSequence: end
@@ -937,7 +937,7 @@
 		Image: burn-m
 		Palette: effect
 		MinimumDamageState: Medium
-		MaximumDamageState: Heavy
+		MaximumDamageState: Medium
 		StartSequence: idle
 		LoopSequence: loop
 		EndSequence: end
