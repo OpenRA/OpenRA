@@ -150,6 +150,7 @@ LPST:
 		Condition: real-actor
 	RenderSprites:
 		Image: lpst.gdi
+		PlayerPalette: playertem
 		FactionImages:
 			gdi: lpst.gdi
 			nod: lpst.nod
@@ -174,6 +175,15 @@ LPST:
 		RequiresCondition: undeployed
 	WithSpriteBody@deployed:
 		RequiresCondition: !undeployed && real-actor
+	WithIdleOverlay@LIGHTS:
+		RequiresCondition: deployed && real-actor && !empdisable
+		Sequence: idle-lights
+		Palette: player-nobright
+		IsPlayerPalette: True
+	WithIdleOverlay@LIGHTS-BRIGHT:
+		RequiresCondition: deployed && real-actor && !empdisable
+		Sequence: idle-lights-bright
+		Palette: bright
 	DetectCloaked:
 		RequiresCondition: !empdisable && deployed
 		Range: 18c0
