@@ -27,6 +27,7 @@ namespace OpenRA.Graphics
 		readonly Func<bool> paused;
 
 		int frame;
+		int playedCount;
 		bool backwards;
 		bool tickAlways;
 		int timeUntilNextFrame;
@@ -145,6 +146,30 @@ namespace OpenRA.Graphics
 			timeUntilNextFrame = Math.Min(CurrentSequenceTickOrDefault(), timeUntilNextFrame);
 			frame %= CurrentSequence.Length;
 			return true;
+		}
+
+		public void PlayNTimesThen(string sequenceName, int times, Action after)
+		{
+			backwards = false;
+			tickAlways = false;
+			PlaySequence(sequenceName);
+
+			frame = 0;
+			tickFunc = () =>
+			{
+				++frame;
+				if (frame >= CurrentSequence.Length)
+				{
+					if (++playedCount < times)
+						frame = 0;
+					else
+					{
+						frame = CurrentSequence.Length - 1;
+						tickFunc = () => { };
+						after?.Invoke();
+					}
+				}
+			};
 		}
 
 		public void PlayThen(string sequenceName, Action after)
