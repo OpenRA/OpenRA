@@ -70,10 +70,15 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (!info.DamageTypes.IsEmpty && !e.Damage.DamageTypes.Overlaps(info.DamageTypes))
 				return;
 
-			if (isSmoking) return;
-			if (e.Damage.Value < 0) return;	/* getting healed */
-			if (e.DamageState < info.MinimumDamageState) return;
-			if (e.DamageState > info.MaximumDamageState) return;
+			if (isSmoking)
+				return;
+
+			// Getting healed
+			if (e.Damage.Value < 0)
+				return;
+
+			if (e.DamageState < info.MinimumDamageState || e.DamageState > info.MaximumDamageState)
+				return;
 
 			isSmoking = true;
 			anim.PlayThen(info.IdleSequence,
