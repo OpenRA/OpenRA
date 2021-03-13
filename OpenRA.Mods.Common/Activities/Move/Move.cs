@@ -38,6 +38,8 @@ namespace OpenRA.Mods.Common.Activities
 			BlockedByActor.None
 		};
 
+		int carryoverProgress;
+
 		List<CPos> path;
 		CPos? destination;
 
@@ -218,7 +220,8 @@ namespace OpenRA.Mods.Common.Activities
 			var to = Util.BetweenCells(self.World, mobile.FromCell, mobile.ToCell) +
 				(map.Grid.OffsetOfSubCell(mobile.FromSubCell) + map.Grid.OffsetOfSubCell(mobile.ToSubCell)) / 2;
 
-			QueueChild(new MoveFirstHalf(this, from, to, mobile.Facing, mobile.Facing, 0));
+			QueueChild(new MoveFirstHalf(this, from, to, mobile.Facing, mobile.Facing, carryoverProgress));
+			carryoverProgress = 0;
 			return false;
 		}
 
@@ -391,9 +394,10 @@ namespace OpenRA.Mods.Common.Activities
 			protected readonly WAngle ArcFromAngle;
 			protected readonly int ArcToLength;
 			protected readonly WAngle ArcToAngle;
-
 			protected readonly int Distance;
 			protected int progress;
+
+			protected bool firstTick = true;
 
 			public MovePart(Move move, WPos from, WPos to, WAngle fromFacing, WAngle toFacing, int carryoverProgress)
 			{
@@ -404,6 +408,7 @@ namespace OpenRA.Mods.Common.Activities
 				ToFacing = toFacing;
 				progress = carryoverProgress;
 				Distance = (to - from).Length;
+
 				IsInterruptible = false; // See comments in Move.Cancel()
 
 				// Calculate an elliptical arc that joins from and to
@@ -436,11 +441,17 @@ namespace OpenRA.Mods.Common.Activities
 			public override bool Tick(Actor self)
 			{
 				var mobile = Move.mobile;
-				progress += mobile.MovementSpeedForCell(self, mobile.ToCell);
+
+				// Having non-zero progress in the first tick means that this MovePart is following on from
+				// a previous MovePart that has just completed during the same tick. In this case, we want to
+				// apply the carried over progress but not evaluate a full new step until the next tick.
+				if (!firstTick || progress == 0)
+					progress += mobile.MovementSpeedForCell(self, mobile.ToCell);
+
+				firstTick = false;
 
 				if (progress >= Distance)
 				{
-					progress = Distance;
 					mobile.SetCenterPosition(self, To);
 					mobile.Facing = ToFacing;
 
@@ -546,6 +557,11 @@ namespace OpenRA.Mods.Common.Activities
 			protected override MovePart OnComplete(Actor self, Mobile mobile, Move parent)
 			{
 				mobile.SetPosition(self, mobile.ToCell);
+
+				// Move might immediately queue a new MoveFirstHalf within the same tick if we haven't
+				// reached the end of the requested path. Make sure that any leftover movement progress is
+				// correctly carried over into this new activity to avoid a glitch in the apparent move speed.
+				Move.carryoverProgress = progress - Distance;
 				return null;
 			}
 		}
