@@ -38,6 +38,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[PaletteReference]
 		public readonly string Palette = "chrome";
 
+		[Desc("Name(s) of AmmoPool(s) that use this decoration. Leave empty to include all pools.")]
+		public readonly string[] AmmoPools = { };
+
 		public override object Create(ActorInitializer init) { return new WithAmmoPipsDecoration(init.Self, this); }
 	}
 
@@ -49,7 +52,13 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public WithAmmoPipsDecoration(Actor self, WithAmmoPipsDecorationInfo info)
 			: base(self, info)
 		{
-			ammo = self.TraitsImplementing<AmmoPool>().ToArray();
+			if (info.AmmoPools.Any())
+				ammo = self.TraitsImplementing<AmmoPool>()
+					.Where(ap => info.AmmoPools.Contains(ap.Info.Name))
+					.ToArray();
+			else
+				ammo = self.TraitsImplementing<AmmoPool>().ToArray();
+
 			pips = new Animation(self.World, info.Image);
 		}
 
