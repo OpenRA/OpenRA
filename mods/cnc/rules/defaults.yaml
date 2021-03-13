@@ -248,6 +248,10 @@
 	HiddenUnderFog:
 	AttackMove:
 	WithDamageOverlay:
+		Image: smoke_m
+		StartSequence: idle
+		LoopSequence: loop
+		EndSequence: end
 	WithFacingSpriteBody:
 	Explodes:
 		Weapon: UnitExplodeSmall
@@ -646,6 +650,10 @@
 	ActorLostNotification:
 	AttackMove:
 	WithDamageOverlay:
+		Image: smoke_m
+		StartSequence: idle
+		LoopSequence: loop
+		EndSequence: end
 	Explodes:
 		Weapon: UnitExplodeShip
 		EmptyWeapon: UnitExplodeShip
@@ -910,16 +918,25 @@
 		Image: burn-s
 		MinimumDamageState: Light
 		MaximumDamageState: Medium
+		StartSequence: idle
+		LoopSequence: loop
+		EndSequence: end
 	WithDamageOverlay@MediumBurn:
 		DamageTypes: Incendiary
 		Image: burn-m
 		MinimumDamageState: Medium
 		MaximumDamageState: Heavy
+		StartSequence: idle
+		LoopSequence: loop
+		EndSequence: end
 	WithDamageOverlay@LargeBurn:
 		DamageTypes: Incendiary
 		Image: burn-l
 		MinimumDamageState: Heavy
 		MaximumDamageState: Dead
+		StartSequence: idle
+		LoopSequence: loop
+		EndSequence: end
 	HiddenUnderShroud:
 	HitShape:
 	MapEditorData:

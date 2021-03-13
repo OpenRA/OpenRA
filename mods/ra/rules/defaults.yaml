@@ -272,6 +272,10 @@
 	GpsDot:
 		String: Vehicle
 	WithDamageOverlay:
+		Image: smoke_m
+		StartSequence: idle
+		LoopSequence: loop
+		EndSequence: end
 	Guard:
 	Guardable:
 	Tooltip:
@@ -519,6 +523,10 @@
 	GpsDot:
 		String: Ship
 	WithDamageOverlay:
+		Image: smoke_m
+		StartSequence: idle
+		LoopSequence: loop
+		EndSequence: end
 	Explodes:
 		Weapon: UnitExplodeShip
 		EmptyWeapon: UnitExplodeShip
@@ -921,18 +929,27 @@
 		Palette: effect
 		MinimumDamageState: Light
 		MaximumDamageState: Medium
+		StartSequence: idle
+		LoopSequence: loop
+		EndSequence: end
 	WithDamageOverlay@MediumBurn:
 		DamageTypes: Incendiary
 		Image: burn-m
 		Palette: effect
 		MinimumDamageState: Medium
 		MaximumDamageState: Heavy
+		StartSequence: idle
+		LoopSequence: loop
+		EndSequence: end
 	WithDamageOverlay@LargeBurn:
 		DamageTypes: Incendiary
 		Image: burn-l
 		Palette: effect
 		MinimumDamageState: Heavy
 		MaximumDamageState: Dead
+		StartSequence: idle
+		LoopSequence: loop
+		EndSequence: end
 	HiddenUnderShroud:
 	MapEditorData:
 		ExcludeTilesets: INTERIOR

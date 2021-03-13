@@ -18,16 +18,20 @@ namespace OpenRA.Mods.Common.Traits.Render
 	[Desc("Renders an overlay when the actor is taking heavy damage.")]
 	public class WithDamageOverlayInfo : TraitInfo, Requires<RenderSpritesInfo>
 	{
-		public readonly string Image = "smoke_m";
+		public readonly string Image = null;
 
 		[SequenceReference(nameof(Image))]
-		public readonly string IdleSequence = "idle";
+		public readonly string StartSequence = null;
 
 		[SequenceReference(nameof(Image))]
-		public readonly string LoopSequence = "loop";
+		[FieldLoader.Require]
+		public readonly string LoopSequence = null;
 
 		[SequenceReference(nameof(Image))]
-		public readonly string EndSequence = "end";
+		public readonly string EndSequence = null;
+
+		[Desc("How often is LoopSequence repeated. Negative means infinitely (or until an invalid damage state is reached).")]
+		public readonly int LoopCount = 0;
 
 		[PaletteReference(nameof(IsPlayerPalette))]
 		[Desc("Custom palette name.")]
@@ -47,10 +51,13 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public override object Create(ActorInitializer init) { return new WithDamageOverlay(init.Self, this); }
 	}
 
-	public class WithDamageOverlay : INotifyDamage
+	public class WithDamageOverlay : INotifyDamage, INotifyDamageStateChanged
 	{
 		readonly WithDamageOverlayInfo info;
 		readonly Animation anim;
+		readonly bool hasStartSequence;
+		readonly bool hasEndSequence;
+		readonly bool isLoopingInfinitely;
 
 		bool isSmoking;
 
@@ -58,11 +65,32 @@ namespace OpenRA.Mods.Common.Traits.Render
 		{
 			this.info = info;
 
+			hasStartSequence = !string.IsNullOrEmpty(info.StartSequence);
+			hasEndSequence = !string.IsNullOrEmpty(info.EndSequence);
+			isLoopingInfinitely = info.LoopCount < 0;
+
 			var rs = self.Trait<RenderSprites>();
 
-			anim = new Animation(self.World, info.Image);
+			anim = new Animation(self.World, info.Image != null ? info.Image : rs.GetImage(self));
 			rs.Add(new AnimationWithOffset(anim, null, () => !isSmoking),
 				info.Palette, info.IsPlayerPalette);
+		}
+
+		void INotifyDamageStateChanged.DamageStateChanged(Actor self, AttackInfo e)
+		{
+			if (!isSmoking || !isLoopingInfinitely)
+				return;
+
+			if (e.DamageState >= info.MinimumDamageState && e.DamageState <= info.MaximumDamageState)
+				return;
+
+			if (hasEndSequence)
+				anim.PlayThen(info.LoopSequence,
+					() => anim.PlayThen(info.EndSequence,
+						() => isSmoking = false));
+			else
+				anim.PlayThen(info.LoopSequence,
+					() => isSmoking = false);
 		}
 
 		void INotifyDamage.Damaged(Actor self, AttackInfo e)
@@ -81,10 +109,30 @@ namespace OpenRA.Mods.Common.Traits.Render
 				return;
 
 			isSmoking = true;
-			anim.PlayThen(info.IdleSequence,
-				() => anim.PlayThen(info.LoopSequence,
+			if (isLoopingInfinitely)
+			{
+				if (hasStartSequence)
+					anim.PlayThen(info.StartSequence,
+						() => anim.PlayRepeating(info.LoopSequence));
+				else
+					anim.PlayRepeating(info.LoopSequence);
+			}
+			else if (!hasStartSequence && !hasEndSequence)
+				anim.PlayNTimesThen(info.LoopSequence, 1 + info.LoopCount,
+					() => isSmoking = false);
+			else if (!hasEndSequence)
+				anim.PlayThen(info.StartSequence,
+					() => anim.PlayNTimesThen(info.LoopSequence, 1 + info.LoopCount,
+						() => isSmoking = false));
+			else if (!hasStartSequence)
+				anim.PlayNTimesThen(info.LoopSequence, 1 + info.LoopCount,
 					() => anim.PlayThen(info.EndSequence,
-						() => isSmoking = false)));
+						() => isSmoking = false));
+			else
+				anim.PlayThen(info.StartSequence,
+					() => anim.PlayNTimesThen(info.LoopSequence, 1 + info.LoopCount,
+						() => anim.PlayThen(info.EndSequence,
+							() => isSmoking = false)));
 		}
 	}
 }
