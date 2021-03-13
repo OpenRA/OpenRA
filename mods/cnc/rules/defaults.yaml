@@ -252,6 +252,7 @@
 		StartSequence: idle
 		LoopSequence: loop
 		EndSequence: end
+		LoopCount: 8
 	WithFacingSpriteBody:
 	Explodes:
 		Weapon: UnitExplodeSmall
@@ -654,6 +655,7 @@
 		StartSequence: idle
 		LoopSequence: loop
 		EndSequence: end
+		LoopCount: 8
 	Explodes:
 		Weapon: UnitExplodeShip
 		EmptyWeapon: UnitExplodeShip
@@ -921,6 +923,7 @@
 		StartSequence: idle
 		LoopSequence: loop
 		EndSequence: end
+		LoopCount: 6
 	WithDamageOverlay@MediumBurn:
 		DamageTypes: Incendiary
 		Image: burn-m
@@ -929,6 +932,7 @@
 		StartSequence: idle
 		LoopSequence: loop
 		EndSequence: end
+		LoopCount: 6
 	WithDamageOverlay@LargeBurn:
 		DamageTypes: Incendiary
 		Image: burn-l
@@ -937,6 +941,7 @@
 		StartSequence: idle
 		LoopSequence: loop
 		EndSequence: end
+		LoopCount: 6
 	HiddenUnderShroud:
 	HitShape:
 	MapEditorData:
