@@ -50,11 +50,17 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("Only allow laying mines on listed terrain types. Leave empty to allow all terrain types.")]
 		public readonly HashSet<string> TerrainTypes = new HashSet<string>();
 
+		[CursorReference]
 		[Desc("Cursor to display when able to lay a mine.")]
 		public readonly string DeployCursor = "deploy";
 
+		[CursorReference]
 		[Desc("Cursor to display when unable to lay a mine.")]
 		public readonly string DeployBlockedCursor = "deploy-blocked";
+
+		[CursorReference]
+		[Desc("Cursor to display when able to lay a mine.")]
+		public readonly string AbilityCursor = "ability";
 
 		public override object Create(ActorInitializer init) { return new Minelayer(init.Self, this); }
 	}
@@ -85,7 +91,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		{
 			get
 			{
-				yield return new BeginMinefieldOrderTargeter();
+				yield return new BeginMinefieldOrderTargeter(Info.AbilityCursor);
 				yield return new DeployOrderTargeter("PlaceMine", 5, () => IsCellAcceptable(self, self.Location) ? Info.DeployCursor : Info.DeployBlockedCursor);
 			}
 		}
@@ -97,7 +103,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				case "BeginMinefield":
 					var start = self.World.Map.CellContaining(target.CenterPosition);
 					if (self.World.OrderGenerator is MinefieldOrderGenerator)
-						((MinefieldOrderGenerator)self.World.OrderGenerator).AddMinelayer(self, start);
+						((MinefieldOrderGenerator)self.World.OrderGenerator).AddMinelayer(self);
 					else
 						self.World.OrderGenerator = new MinefieldOrderGenerator(self, start, queued);
 
@@ -204,6 +210,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			readonly float validAlpha, unknownAlpha, blockedAlpha;
 			readonly CPos minefieldStart;
 			readonly bool queued;
+			readonly string cursor;
 
 			public MinefieldOrderGenerator(Actor a, CPos xy, bool queued)
 			{
@@ -251,9 +258,11 @@ namespace OpenRA.Mods.Cnc.Traits
 					blockedTile = blockedSequence.GetSprite(0);
 					blockedAlpha = blockedSequence.GetAlpha(0);
 				}
+
+				cursor = minelayer.Info.AbilityCursor;
 			}
 
-			public void AddMinelayer(Actor a, CPos xy)
+			public void AddMinelayer(Actor a)
 			{
 				minelayers.Add(a);
 			}
@@ -331,7 +340,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 			protected override string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
 			{
-				return "ability";
+				return cursor;
 			}
 		}
 
@@ -339,6 +348,14 @@ namespace OpenRA.Mods.Cnc.Traits
 		{
 			public string OrderID => "BeginMinefield";
 			public int OrderPriority => 5;
+
+			readonly string cursor;
+
+			public BeginMinefieldOrderTargeter(string cursor)
+			{
+				this.cursor = cursor;
+			}
+
 			public bool TargetOverridesSelection(Actor self, in Target target, List<Actor> actorsAt, CPos xy, TargetModifiers modifiers) { return true; }
 
 			public bool CanTarget(Actor self, in Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor)
@@ -350,7 +367,8 @@ namespace OpenRA.Mods.Cnc.Traits
 				if (!self.World.Map.Contains(location))
 					return false;
 
-				cursor = "ability";
+				cursor = this.cursor;
+
 				IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
 
 				return modifiers.HasModifier(TargetModifiers.ForceAttack);

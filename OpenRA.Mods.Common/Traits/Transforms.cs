@@ -45,9 +45,11 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Notification to play when the transformation is blocked.")]
 		public readonly string NoTransformNotification = null;
 
+		[CursorReference]
 		[Desc("Cursor to display when able to (un)deploy the actor.")]
 		public readonly string DeployCursor = "deploy";
 
+		[CursorReference]
 		[Desc("Cursor to display when unable to (un)deploy the actor.")]
 		public readonly string DeployBlockedCursor = "deploy-blocked";
 

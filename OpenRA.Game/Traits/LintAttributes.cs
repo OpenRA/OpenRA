@@ -63,6 +63,17 @@ namespace OpenRA.Traits
 		}
 	}
 
+	[AttributeUsage(AttributeTargets.Field)]
+	public sealed class CursorReferenceAttribute : Attribute
+	{
+		public readonly LintDictionaryReference DictionaryReference;
+
+		public CursorReferenceAttribute(LintDictionaryReference dictionaryReference = LintDictionaryReference.None)
+		{
+			DictionaryReference = dictionaryReference;
+		}
+	}
+
 	[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
 	public sealed class GrantedConditionReferenceAttribute : Attribute { }
 
