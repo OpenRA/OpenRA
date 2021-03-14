@@ -90,9 +90,11 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Color to use for the target line of harvest orders.")]
 		public readonly Color DeliverLineColor = Color.Green;
 
+		[CursorReference]
 		[Desc("Cursor to display when able to unload at target actor.")]
 		public readonly string EnterCursor = "enter";
 
+		[CursorReference]
 		[Desc("Cursor to display when unable to unload at target actor.")]
 		public readonly string EnterBlockedCursor = "enter-blocked";
 

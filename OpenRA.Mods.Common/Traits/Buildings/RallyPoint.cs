@@ -30,6 +30,7 @@ namespace OpenRA.Mods.Common.Traits
 		[SequenceReference(nameof(Image), allowNullImage: true)]
 		public readonly string CirclesSequence = "circles";
 
+		[CursorReference]
 		[Desc("Cursor to display when rally point can be set.")]
 		public readonly string Cursor = "ability";
 
