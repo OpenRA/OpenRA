@@ -186,12 +186,13 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			// All tiles are visible in the editor
+			Func<PPos, bool> visibleIfMapContains = puv => map.Contains(puv);
 			if (w.Type == WorldType.Editor)
 				visibleUnderShroud = _ => true;
 			else
-				visibleUnderShroud = puv => map.Contains(puv);
+				visibleUnderShroud = visibleIfMapContains;
 
-			visibleUnderFog = puv => map.Contains(puv);
+			visibleUnderFog = visibleIfMapContains;
 
 			var shroudBlend = shroudSprites[0].Sprite.BlendMode;
 			if (shroudSprites.Any(s => s.Sprite.BlendMode != shroudBlend))
@@ -256,8 +257,9 @@ namespace OpenRA.Mods.Common.Traits
 				}
 				else
 				{
-					visibleUnderShroud = puv => map.Contains(puv);
-					visibleUnderFog = puv => map.Contains(puv);
+					Func<PPos, bool> visibleIfMapContains = puv => map.Contains(puv);
+					visibleUnderShroud = visibleIfMapContains;
+					visibleUnderFog = visibleIfMapContains;
 				}
 
 				shroud = newShroud;
@@ -286,12 +288,17 @@ namespace OpenRA.Mods.Common.Traits
 				cellsDirty[uv] = false;
 
 				var tileInfo = tileInfos[uv];
-				var shroudSprite = GetSprite(shroudSprites, GetEdges(puv, visibleUnderShroud), tileInfo.Variant);
+				var edges = GetEdges(puv, visibleUnderShroud);
+				var shroudSprite = GetSprite(shroudSprites, edges, tileInfo.Variant);
 				var shroudPos = tileInfo.ScreenPosition;
 				if (shroudSprite.Sprite != null)
 					shroudPos += shroudSprite.Sprite.Offset - 0.5f * shroudSprite.Sprite.Size;
 
-				var fogSprite = GetSprite(fogSprites, GetEdges(puv, visibleUnderFog), tileInfo.Variant);
+				// PERF: Do not calculate edges twice if shroud is disabled.
+				if (visibleUnderShroud != visibleUnderFog)
+					edges = GetEdges(puv, visibleUnderFog);
+
+				var fogSprite = GetSprite(fogSprites, edges, tileInfo.Variant);
 				var fogPos = tileInfo.ScreenPosition;
 				if (fogSprite.Sprite != null)
 					fogPos += fogSprite.Sprite.Offset - 0.5f * fogSprite.Sprite.Size;
@@ -317,8 +324,11 @@ namespace OpenRA.Mods.Common.Traits
 			anyCellDirty = true;
 			var cell = uv.ToCPos(map);
 			foreach (var direction in CVec.Directions)
-				if (map.Contains((PPos)(cell + direction).ToMPos(map)))
-					cellsDirty[cell + direction] = true;
+			{
+				var neighbourPos = cell + direction;
+				if (map.Contains((PPos)(neighbourPos).ToMPos(map)))
+					cellsDirty[neighbourPos] = true;
+			}
 		}
 
 		(Sprite Sprite, float Scale, float Alpha) GetSprite((Sprite, float, float)[] sprites, Edges edges, int variant)
