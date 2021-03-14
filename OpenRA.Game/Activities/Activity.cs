@@ -53,14 +53,16 @@ namespace OpenRA.Activities
 		Activity childActivity;
 		protected Activity ChildActivity
 		{
-			get => SkipDoneActivities(childActivity);
+			// No side effect.
+			get => (childActivity = SkipDoneActivities(childActivity));
 			private set => childActivity = value;
 		}
 
 		Activity nextActivity;
 		public Activity NextActivity
 		{
-			get => SkipDoneActivities(nextActivity);
+			// No side effect.
+			get => (nextActivity = SkipDoneActivities(nextActivity));
 			private set => nextActivity = value;
 		}
 
@@ -141,8 +143,8 @@ namespace OpenRA.Activities
 
 		protected bool TickChild(Actor self)
 		{
-			ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
-			return ChildActivity == null;
+			childActivity = ActivityUtils.RunActivity(self, ChildActivity);
+			return childActivity == null;
 		}
 
 		/// <summary>
@@ -194,7 +196,7 @@ namespace OpenRA.Activities
 		public virtual void Cancel(Actor self, bool keepQueue = false)
 		{
 			if (!keepQueue)
-				NextActivity = null;
+				nextActivity = null;
 
 			if (!IsInterruptible)
 				return;
