@@ -36,6 +36,12 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("The color the bar of the 'return-to-origin' logic has.")]
 		public readonly Color TimeBarColor = Color.White;
 
+		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
+		{
+			if (!ai.HasTraitInfo<MobileInfo>() && !ai.HasTraitInfo<HuskInfo>())
+				throw new YamlException("Chronoshiftable requires actors to have the Mobile or Husk traits.");
+		}
+
 		public override object Create(ActorInitializer init) { return new Chronoshiftable(init, this); }
 	}
 
