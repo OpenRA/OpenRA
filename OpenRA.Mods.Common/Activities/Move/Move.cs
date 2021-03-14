@@ -341,7 +341,7 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			foreach (var actor in self.World.ActorMap.GetActorsAt(cell))
 			{
-				var move = actor.TraitOrDefault<Mobile>();
+				var move = actor.OccupiesSpace as Mobile;
 				if (move == null || !move.IsTraitEnabled() || !move.IsLeaving())
 					return false;
 			}
