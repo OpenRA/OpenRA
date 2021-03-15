@@ -177,14 +177,14 @@ namespace OpenRA.Graphics
 		}
 
 		// For RGBAColorRenderer
-		internal void DrawRGBAVertices(Vertex[] v)
+		internal void DrawRGBAVertices(Vertex[] v, BlendMode blendMode)
 		{
 			renderer.CurrentBatchRenderer = this;
 
-			if (currentBlend != BlendMode.Alpha || nv + v.Length > renderer.TempBufferSize)
+			if (currentBlend != blendMode || nv + v.Length > renderer.TempBufferSize)
 				Flush();
 
-			currentBlend = BlendMode.Alpha;
+			currentBlend = blendMode;
 			Array.Copy(v, 0, vertices, nv, v.Length);
 			nv += v.Length;
 		}
