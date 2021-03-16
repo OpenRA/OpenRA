@@ -82,7 +82,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (techLevels.Any())
 				yield return new LobbyOption("techlevel", TechLevelDropdownLabel, TechLevelDropdownDescription,	TechLevelDropdownVisible, TechLevelDropdownDisplayOrder,
-					techLevels,	TechLevel, TechLevelDropdownLocked);
+					techLevels, TechLevel, TechLevelDropdownLocked);
 
 			var gameSpeeds = Game.ModData.Manifest.Get<GameSpeeds>().Speeds
 				.ToDictionary(s => s.Key, s => s.Value.Name);

@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using OpenRA.Graphics;
@@ -108,7 +109,7 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 
 		public TgaSprite(Stream stream)
 		{
-			Frames = new ISpriteFrame[] { new TgaFrame(stream) }.AsReadOnly();
+			Frames = new ISpriteFrame[] { new TgaFrame(stream) };
 		}
 	}
 }

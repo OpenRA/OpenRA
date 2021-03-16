@@ -37,8 +37,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public IReadOnlyDictionary<CPos, SubCell> OccupiedCells(ActorInfo info, CPos location, SubCell subCell = SubCell.Any)
 		{
-			var occupied = new Dictionary<CPos, SubCell>() { { location, SubCell.FullCell } };
-			return occupied;
+			return new Dictionary<CPos, SubCell>() { { location, SubCell.FullCell } };
 		}
 
 		bool IOccupySpaceInfo.SharesCell => false;

@@ -52,7 +52,7 @@ namespace OpenRA.Network
 
 		readonly List<ChatLine> chatCache = new List<ChatLine>();
 
-		public readonly ReadOnlyList<ChatLine> ChatCache;
+		public IReadOnlyList<ChatLine> ChatCache => chatCache;
 
 		bool disposed;
 		bool generateSyncReport = false;
@@ -85,7 +85,6 @@ namespace OpenRA.Network
 			Password = password;
 			Connection = conn;
 			syncReport = new SyncReport(this);
-			ChatCache = new ReadOnlyList<ChatLine>(chatCache);
 			AddChatLine += CacheChatLine;
 		}
 

@@ -115,7 +115,7 @@ namespace OpenRA
 			if (filterNode != null)
 				yamlNodes = yamlNodes.Where(k => !filterNode(k));
 
-			return new Dictionary<string, T>(yamlNodes.ToDictionaryWithConflictLog(k => k.Key.ToLowerInvariant(), makeObject, "LoadFromManifest<" + name + ">"));
+			return yamlNodes.ToDictionaryWithConflictLog(k => k.Key.ToLowerInvariant(), makeObject, "LoadFromManifest<" + name + ">");
 		}
 
 		public static Ruleset LoadDefaults(ModData modData)

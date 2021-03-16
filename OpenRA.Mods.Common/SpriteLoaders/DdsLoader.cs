@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using OpenRA.Graphics;
@@ -74,7 +75,7 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 
 		public DdsSprite(Stream stream)
 		{
-			Frames = new ISpriteFrame[] { new DdsFrame(stream) }.AsReadOnly();
+			Frames = new ISpriteFrame[] { new DdsFrame(stream) };
 		}
 	}
 }

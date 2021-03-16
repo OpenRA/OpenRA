@@ -134,7 +134,6 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 
 			stream.Position += 4;
 			var headers = new ImageHeader[imageCount];
-			Frames = headers.AsReadOnly();
 			for (var i = 0; i < headers.Length; i++)
 				headers[i] = new ImageHeader(stream, this);
 
@@ -156,6 +155,8 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 
 			foreach (var h in headers)
 				Decompress(h);
+
+			Frames = headers;
 		}
 
 		void Decompress(ImageHeader h)

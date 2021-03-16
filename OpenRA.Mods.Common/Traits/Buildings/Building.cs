@@ -239,10 +239,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public IReadOnlyDictionary<CPos, SubCell> OccupiedCells(ActorInfo info, CPos topLeft, SubCell subCell = SubCell.Any)
 		{
-			var occupied = OccupiedTiles(topLeft)
+			return OccupiedTiles(topLeft)
 				.ToDictionary(c => c, c => SubCell.FullCell);
-
-			return occupied;
 		}
 
 		bool IOccupySpaceInfo.SharesCell => false;
