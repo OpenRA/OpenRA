@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace OpenRA.Primitives
 {
@@ -33,12 +34,13 @@ namespace OpenRA.Primitives
 			: this(loader, EqualityComparer<T>.Default) { }
 
 		public U this[T key] => cache.GetOrAdd(key, loader);
+		public IEnumerable<T> Keys => cache.Keys;
+
+		public IEnumerable<U> Values => cache.Values;
 
 		public bool ContainsKey(T key) { return cache.ContainsKey(key); }
 		public bool TryGetValue(T key, out U value) { return cache.TryGetValue(key, out value); }
 		public int Count => cache.Count;
-		public ICollection<T> Keys => cache.Keys;
-		public ICollection<U> Values => cache.Values;
 		public IEnumerator<KeyValuePair<T, U>> GetEnumerator() { return cache.GetEnumerator(); }
 		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() { return GetEnumerator(); }
 	}

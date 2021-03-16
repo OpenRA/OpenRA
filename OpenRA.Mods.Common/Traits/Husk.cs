@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Primitives;
@@ -37,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 		public IReadOnlyDictionary<CPos, SubCell> OccupiedCells(ActorInfo info, CPos location, SubCell subCell = SubCell.Any)
 		{
 			var occupied = new Dictionary<CPos, SubCell>() { { location, SubCell.FullCell } };
-			return new ReadOnlyDictionary<CPos, SubCell>(occupied);
+			return occupied;
 		}
 
 		bool IOccupySpaceInfo.SharesCell => false;

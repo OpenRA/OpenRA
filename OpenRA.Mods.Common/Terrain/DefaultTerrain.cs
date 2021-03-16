@@ -115,7 +115,7 @@ namespace OpenRA.Mods.Common.Terrain
 
 			// Templates
 			Templates = yaml["Templates"].ToDictionary().Values
-				.Select(y => (TerrainTemplateInfo)new DefaultTerrainTemplateInfo(this, y)).ToDictionary(t => t.Id).AsReadOnly();
+				.Select(y => (TerrainTemplateInfo)new DefaultTerrainTemplateInfo(this, y)).ToDictionary(t => t.Id);
 		}
 
 		public TerrainTypeInfo this[byte index] => TerrainInfo[index];

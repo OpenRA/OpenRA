@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using OpenRA.Graphics;
@@ -80,8 +81,7 @@ namespace OpenRA.Mods.Common.Traits
 				Footprint = ios.OccupiedCells(Info, location, subCell);
 			else
 			{
-				var footprint = new Dictionary<CPos, SubCell>() { { location, SubCell.FullCell } };
-				Footprint = new ReadOnlyDictionary<CPos, SubCell>(footprint);
+				Footprint = new Dictionary<CPos, SubCell>() { { location, SubCell.FullCell } };
 			}
 
 			tooltip = Info.TraitInfos<EditorOnlyTooltipInfo>().FirstOrDefault(info => info.EnabledByDefault) as TooltipInfoBase

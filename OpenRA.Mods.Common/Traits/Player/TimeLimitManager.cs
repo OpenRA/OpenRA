@@ -84,7 +84,7 @@ namespace OpenRA.Mods.Common.Traits
 			});
 
 			yield return new LobbyOption("timelimit", TimeLimitLabel, TimeLimitDescription, TimeLimitDropdownVisible, TimeLimitDisplayOrder,
-				new ReadOnlyDictionary<string, string>(timelimits), TimeLimitDefault.ToString(), TimeLimitLocked);
+				timelimits, TimeLimitDefault.ToString(), TimeLimitLocked);
 		}
 
 		public override object Create(ActorInitializer init) { return new TimeLimitManager(init.Self, this); }

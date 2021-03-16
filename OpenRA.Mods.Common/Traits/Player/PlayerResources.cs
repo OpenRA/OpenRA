@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (startingCash.Any())
 				yield return new LobbyOption("startingcash", DefaultCashDropdownLabel, DefaultCashDropdownDescription, DefaultCashDropdownVisible, DefaultCashDropdownDisplayOrder,
-					new ReadOnlyDictionary<string, string>(startingCash), DefaultCash.ToString(), DefaultCashDropdownLocked);
+					startingCash, DefaultCash.ToString(), DefaultCashDropdownLocked);
 		}
 
 		public override object Create(ActorInitializer init) { return new PlayerResources(init.Self, this); }

@@ -28,7 +28,7 @@ namespace OpenRA.Graphics
 		public HardwarePalette()
 		{
 			Texture = Game.Renderer.Context.CreateTexture();
-			readOnlyModifiablePalettes = modifiablePalettes.AsReadOnly();
+			readOnlyModifiablePalettes = modifiablePalettes;
 		}
 
 		public bool Contains(string name)

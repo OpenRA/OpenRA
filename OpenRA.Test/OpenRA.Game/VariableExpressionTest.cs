@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using NUnit.Framework;
 using OpenRA.Support;
@@ -19,13 +20,13 @@ namespace OpenRA.Test
 	[TestFixture]
 	public class VariableExpressionTest
 	{
-		IReadOnlyDictionary<string, int> testValues = new ReadOnlyDictionary<string, int>(new Dictionary<string, int>()
+		IReadOnlyDictionary<string, int> testValues = new Dictionary<string, int>
 		{
 			{ "t", 5 },
 			{ "t-1", 7 },
 			{ "one", 1 },
 			{ "five", 5 }
-		});
+		};
 
 		void AssertFalse(string expression)
 		{

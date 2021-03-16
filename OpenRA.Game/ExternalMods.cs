@@ -294,6 +294,11 @@ namespace OpenRA
 		public int Count => mods.Count;
 		public ICollection<string> Keys => mods.Keys;
 		public ICollection<ExternalMod> Values => mods.Values;
+
+		IEnumerable<string> IReadOnlyDictionary<string, ExternalMod>.Keys => ((IReadOnlyDictionary<string, ExternalMod>)mods).Keys;
+
+		IEnumerable<ExternalMod> IReadOnlyDictionary<string, ExternalMod>.Values => ((IReadOnlyDictionary<string, ExternalMod>)mods).Values;
+
 		public bool ContainsKey(string key) { return mods.ContainsKey(key); }
 		public IEnumerator<KeyValuePair<string, ExternalMod>> GetEnumerator() { return mods.GetEnumerator(); }
 		public bool TryGetValue(string key, out ExternalMod value) { return mods.TryGetValue(key, out value); }

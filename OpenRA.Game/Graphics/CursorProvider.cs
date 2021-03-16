@@ -38,8 +38,7 @@ namespace OpenRA.Graphics
 			Palettes = nodesDict["Cursors"].Nodes.Select(n => n.Value.Value)
 				.Where(p => p != null)
 				.Distinct()
-				.ToDictionary(p => p, p => pals[p].ReadPalette(modData.DefaultFileSystem))
-				.AsReadOnly();
+				.ToDictionary(p => p, p => pals[p].ReadPalette(modData.DefaultFileSystem));
 
 			var frameCache = new FrameCache(fileSystem, modData.SpriteLoaders);
 			var cursors = new Dictionary<string, CursorSequence>();
@@ -47,7 +46,7 @@ namespace OpenRA.Graphics
 				foreach (var sequence in s.Value.Nodes)
 					cursors.Add(sequence.Key, new CursorSequence(frameCache, sequence.Key, s.Key, s.Value.Value, sequence.Value));
 
-			Cursors = cursors.AsReadOnly();
+			Cursors = cursors;
 		}
 
 		public bool HasCursorSequence(string cursor)

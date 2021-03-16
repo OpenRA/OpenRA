@@ -125,7 +125,7 @@ namespace OpenRA.Graphics
 				}
 			}
 
-			return new ReadOnlyDictionary<string, UnitSequences>(items);
+			return items;
 		}
 
 		public void Preload()
