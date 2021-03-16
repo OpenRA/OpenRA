@@ -21,14 +21,12 @@ namespace OpenRA.Graphics
 		public int Height { get; private set; }
 		readonly Dictionary<string, ImmutablePalette> palettes = new Dictionary<string, ImmutablePalette>();
 		readonly Dictionary<string, MutablePalette> modifiablePalettes = new Dictionary<string, MutablePalette>();
-		readonly IReadOnlyDictionary<string, MutablePalette> readOnlyModifiablePalettes;
 		readonly Dictionary<string, int> indices = new Dictionary<string, int>();
 		byte[] buffer = new byte[0];
 
 		public HardwarePalette()
 		{
 			Texture = Game.Renderer.Context.CreateTexture();
-			readOnlyModifiablePalettes = modifiablePalettes;
 		}
 
 		public bool Contains(string name)
@@ -109,7 +107,7 @@ namespace OpenRA.Graphics
 		public void ApplyModifiers(IEnumerable<IPaletteModifier> paletteMods)
 		{
 			foreach (var mod in paletteMods)
-				mod.AdjustPalette(readOnlyModifiablePalettes);
+				mod.AdjustPalette(modifiablePalettes);
 
 			// Update our texture with the changes.
 			CopyModifiablePalettesToBuffer();

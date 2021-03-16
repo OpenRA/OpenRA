@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly MissionObjectivesInfo Info;
 		readonly List<MissionObjective> objectives = new List<MissionObjective>();
 		readonly Player player;
-		public ReadOnlyList<MissionObjective> Objectives;
+		public IReadOnlyList<MissionObjective> Objectives => objectives;
 
 		Player[] enemies;
 		Player[] allies;
@@ -92,7 +92,6 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			Info = info;
 			this.player = player;
-			Objectives = new ReadOnlyList<MissionObjective>(objectives);
 		}
 
 		void IWorldLoaded.WorldLoaded(World w, WorldRenderer wr)

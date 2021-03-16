@@ -77,12 +77,7 @@ namespace OpenRA.Mods.Common.Traits
 			var radarColorInfo = Info.TraitInfoOrDefault<RadarColorFromTerrainInfo>();
 			RadarColor = radarColorInfo == null ? owner.Color : radarColorInfo.GetColorFromTerrain(world);
 
-			if (ios != null)
-				Footprint = ios.OccupiedCells(Info, location, subCell);
-			else
-			{
-				Footprint = new Dictionary<CPos, SubCell>() { { location, SubCell.FullCell } };
-			}
+			Footprint = ios?.OccupiedCells(Info, location, subCell) ?? new Dictionary<CPos, SubCell>() { { location, SubCell.FullCell } };
 
 			tooltip = Info.TraitInfos<EditorOnlyTooltipInfo>().FirstOrDefault(info => info.EnabledByDefault) as TooltipInfoBase
 				?? Info.TraitInfos<TooltipInfo>().FirstOrDefault(info => info.EnabledByDefault);

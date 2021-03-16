@@ -216,8 +216,7 @@ namespace OpenRA
 			if (!yaml.ContainsKey(key))
 				return new Dictionary<string, string>();
 
-			var inner = yaml[key].ToDictionary(my => my.Value);
-			return inner;
+			return yaml[key].ToDictionary(my => my.Value);
 		}
 
 		public bool Contains<T>() where T : IGlobalModData
