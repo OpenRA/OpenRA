@@ -26,7 +26,7 @@ namespace OpenRA
 	public sealed class MapCache : IEnumerable<MapPreview>, IDisposable
 	{
 		public static readonly MapPreview UnknownMap = new MapPreview(null, null, MapGridType.Rectangular, null);
-		public readonly IReadOnlyDictionary<IReadOnlyPackage, MapClassification> MapLocations;
+		public IReadOnlyDictionary<IReadOnlyPackage, MapClassification> MapLocations => mapLocations;
 		readonly Dictionary<IReadOnlyPackage, MapClassification> mapLocations = new Dictionary<IReadOnlyPackage, MapClassification>();
 
 		readonly Cache<string, MapPreview> previews;
@@ -46,8 +46,6 @@ namespace OpenRA
 			var gridType = Exts.Lazy(() => modData.Manifest.Get<MapGrid>().Type);
 			previews = new Cache<string, MapPreview>(uid => new MapPreview(modData, uid, gridType.Value, this));
 			sheetBuilder = new SheetBuilder(SheetType.BGRA);
-
-			MapLocations = new ReadOnlyDictionary<IReadOnlyPackage, MapClassification>(mapLocations);
 		}
 
 		public void LoadMaps()

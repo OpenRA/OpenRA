@@ -52,7 +52,7 @@ namespace OpenRA.Graphics
 			public readonly Dictionary<string, Rectangle> Regions = new Dictionary<string, Rectangle>();
 		}
 
-		public static IReadOnlyDictionary<string, Collection> Collections { get; private set; }
+		public static IReadOnlyDictionary<string, Collection> Collections => collections;
 		static Dictionary<string, Collection> collections;
 		static Dictionary<string, (Sheet Sheet, int Density)> cachedSheets;
 		static Dictionary<string, Dictionary<string, Sprite>> cachedSprites;
@@ -76,8 +76,6 @@ namespace OpenRA.Graphics
 			cachedSprites = new Dictionary<string, Dictionary<string, Sprite>>();
 			cachedPanelSprites = new Dictionary<string, Sprite[]>();
 			cachedCollectionSheets = new Dictionary<Collection, (Sheet, int)>();
-
-			Collections = new ReadOnlyDictionary<string, Collection>(collections);
 
 			var chrome = MiniYaml.Merge(modData.Manifest.Chrome
 				.Select(s => MiniYaml.FromStream(fileSystem.Open(s), s)));

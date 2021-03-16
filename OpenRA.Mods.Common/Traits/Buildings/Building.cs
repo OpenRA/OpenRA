@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Traits;
@@ -241,7 +242,7 @@ namespace OpenRA.Mods.Common.Traits
 			var occupied = OccupiedTiles(topLeft)
 				.ToDictionary(c => c, c => SubCell.FullCell);
 
-			return new ReadOnlyDictionary<CPos, SubCell>(occupied);
+			return occupied;
 		}
 
 		bool IOccupySpaceInfo.SharesCell => false;

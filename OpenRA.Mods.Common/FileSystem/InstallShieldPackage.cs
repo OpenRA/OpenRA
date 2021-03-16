@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using OpenRA.FileSystem;
 using OpenRA.Mods.Common.FileFormats;

@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Traits
 		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(Ruleset rules)
 		{
 			yield return new LobbyOption(ID, Label, Description, Visible, DisplayOrder,
-				new ReadOnlyDictionary<string, string>(Values), Default, Locked);
+				Values, Default, Locked);
 		}
 
 		public override object Create(ActorInitializer init) { return new ScriptLobbyDropdown(this); }

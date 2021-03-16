@@ -16,7 +16,6 @@ using System.IO;
 using System.Linq;
 using OpenRA.FileSystem;
 using OpenRA.Graphics;
-using OpenRA.Primitives;
 
 namespace OpenRA
 {
@@ -100,9 +99,9 @@ namespace OpenRA
 		}
 
 		public Manifest this[string key] => mods[key];
+		public IEnumerable<string> Keys => mods.Keys;
+		public IEnumerable<Manifest> Values => mods.Values;
 		public int Count => mods.Count;
-		public ICollection<string> Keys => mods.Keys;
-		public ICollection<Manifest> Values => mods.Values;
 		public bool ContainsKey(string key) { return mods.ContainsKey(key); }
 		public IEnumerator<KeyValuePair<string, Manifest>> GetEnumerator() { return mods.GetEnumerator(); }
 		public bool TryGetValue(string key, out Manifest value) { return mods.TryGetValue(key, out value); }

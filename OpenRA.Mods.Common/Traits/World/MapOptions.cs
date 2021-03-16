@@ -82,14 +82,14 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (techLevels.Any())
 				yield return new LobbyOption("techlevel", TechLevelDropdownLabel, TechLevelDropdownDescription,	TechLevelDropdownVisible, TechLevelDropdownDisplayOrder,
-					new ReadOnlyDictionary<string, string>(techLevels),	TechLevel, TechLevelDropdownLocked);
+					techLevels,	TechLevel, TechLevelDropdownLocked);
 
 			var gameSpeeds = Game.ModData.Manifest.Get<GameSpeeds>().Speeds
 				.ToDictionary(s => s.Key, s => s.Value.Name);
 
 			// NOTE: The server hardcodes special-case logic for this option id
 			yield return new LobbyOption("gamespeed", GameSpeedDropdownLabel, GameSpeedDropdownDescription, GameSpeedDropdownVisible, GameSpeedDropdownDisplayOrder,
-				new ReadOnlyDictionary<string, string>(gameSpeeds), GameSpeed, GameSpeedDropdownLocked);
+				gameSpeeds, GameSpeed, GameSpeedDropdownLocked);
 		}
 
 		void IRulesetLoaded<ActorInfo>.RulesetLoaded(Ruleset rules, ActorInfo info)

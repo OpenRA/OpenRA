@@ -40,6 +40,11 @@ namespace OpenRA.Primitives
 
 		public ICollection<T> Keys => cache.Keys;
 		public ICollection<U> Values => cache.Values;
+
+		IEnumerable<T> IReadOnlyDictionary<T, U>.Keys => cache.Keys;
+
+		IEnumerable<U> IReadOnlyDictionary<T, U>.Values => cache.Values;
+
 		public IEnumerator<KeyValuePair<T, U>> GetEnumerator() { return cache.GetEnumerator(); }
 		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() { return GetEnumerator(); }
 	}

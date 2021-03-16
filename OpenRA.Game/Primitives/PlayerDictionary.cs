@@ -52,10 +52,13 @@ namespace OpenRA.Primitives
 		public T this[int playerIndex] => valueByPlayerIndex[playerIndex];
 
 		public int Count => valueByPlayerIndex.Length;
+
+		public IEnumerable<Player> Keys => ((IReadOnlyDictionary<Player, T>)valueByPlayer).Keys;
+
+		public IEnumerable<T> Values => ((IReadOnlyDictionary<Player, T>)valueByPlayer).Values;
+
 		public IEnumerator<T> GetEnumerator() { return ((IEnumerable<T>)valueByPlayerIndex).GetEnumerator(); }
 
-		ICollection<Player> IReadOnlyDictionary<Player, T>.Keys => valueByPlayer.Keys;
-		ICollection<T> IReadOnlyDictionary<Player, T>.Values => valueByPlayer.Values;
 		bool IReadOnlyDictionary<Player, T>.ContainsKey(Player key) { return valueByPlayer.ContainsKey(key); }
 		bool IReadOnlyDictionary<Player, T>.TryGetValue(Player key, out T value) { return valueByPlayer.TryGetValue(key, out value); }
 		IEnumerator<KeyValuePair<Player, T>> IEnumerable<KeyValuePair<Player, T>>.GetEnumerator() { return valueByPlayer.GetEnumerator(); }

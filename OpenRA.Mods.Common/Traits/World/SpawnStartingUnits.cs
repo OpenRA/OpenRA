@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (startingUnits.Any())
 				yield return new LobbyOption("startingunits", DropdownLabel, DropdownDescription, DropdownVisible, DropdownDisplayOrder,
-					new ReadOnlyDictionary<string, string>(startingUnits), StartingUnitsClass, DropdownLocked);
+					startingUnits, StartingUnitsClass, DropdownLocked);
 		}
 
 		public override object Create(ActorInitializer init) { return new SpawnStartingUnits(this); }

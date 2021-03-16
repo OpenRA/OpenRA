@@ -9,6 +9,8 @@
  */
 #endregion
 
+using System.Collections.Generic;
+
 namespace OpenRA.Mods.Common.Terrain
 {
 	public interface ITemplatedTerrainInfo : ITerrainInfo

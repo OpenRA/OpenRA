@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using OpenRA.FileSystem;
@@ -127,7 +128,7 @@ namespace OpenRA
 			MapFolders = YamlDictionary(yaml, "MapFolders");
 
 			if (yaml.TryGetValue("Packages", out var packages))
-				Packages = packages.ToDictionary(x => x.Value).AsReadOnly();
+				Packages = packages.ToDictionary(x => x.Value);
 
 			Rules = YamlList(yaml, "Rules");
 			Sequences = YamlList(yaml, "Sequences");
@@ -213,10 +214,10 @@ namespace OpenRA
 		static IReadOnlyDictionary<string, string> YamlDictionary(Dictionary<string, MiniYaml> yaml, string key)
 		{
 			if (!yaml.ContainsKey(key))
-				return new ReadOnlyDictionary<string, string>();
+				return new Dictionary<string, string>();
 
 			var inner = yaml[key].ToDictionary(my => my.Value);
-			return new ReadOnlyDictionary<string, string>(inner);
+			return inner;
 		}
 
 		public bool Contains<T>() where T : IGlobalModData
