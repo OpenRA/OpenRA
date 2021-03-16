@@ -13,7 +13,7 @@ AlliedUnits =
 	{ delay = DateTime.Seconds(7), types = { "e6", "e6", "thf" } }
 }
 ReinforceBaseUnits = { "1tnk", "1tnk", "2tnk", "arty", "arty" }
-CivilianEvacuees = { "c1", "c2", "c5", "c7", "c8" }
+CivilianEvacuees = { "c2", "c3", "c5", "c6", "c8" }
 USSROutpostFlameTurrets = { FlameTurret1, FlameTurret2 }
 ExplosiveBarrels = { ExplosiveBarrel1, ExplosiveBarrel2 }
 SuperTanks = { stnk1, stnk2, stnk3 }
