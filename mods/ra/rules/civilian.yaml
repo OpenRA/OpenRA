@@ -104,6 +104,8 @@ TECN:
 	Inherits@2: ^ArmedCivilian
 	Tooltip:
 		Name: Technician
+	Selectable:
+		Class: Technician
 	RenderSprites:
 		Image: C1
 
@@ -112,6 +114,8 @@ TECN2:
 	Inherits@2: ^ArmedCivilian
 	Tooltip:
 		Name: Technician
+	Selectable:
+		Class: Technician
 	RenderSprites:
 		Image: C1
 	WithInfantryBody:
