@@ -501,8 +501,8 @@ namespace OpenRA
 
 			using (new PerfTimer("StartGame"))
 			{
-				StartGame(shellmap, WorldType.Shellmap);
-				OnShellmapLoaded();
+			 	StartGame(shellmap, WorldType.Shellmap);
+			 	OnShellmapLoaded();
 			}
 		}
 
