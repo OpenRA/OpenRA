@@ -23,32 +23,44 @@ namespace OpenRA.Mods.Common.Traits
 	public class BuildingInfluence
 	{
 		readonly Map map;
-		readonly CellLayer<Actor> influence;
+		readonly CellLayer<List<Actor>> influence;
 
 		public BuildingInfluence(World world)
 		{
 			map = world.Map;
 
-			influence = new CellLayer<Actor>(map);
+			influence = new CellLayer<List<Actor>>(map);
 		}
 
 		internal void AddInfluence(Actor a, IEnumerable<CPos> tiles)
 		{
 			foreach (var u in tiles)
-				if (influence.Contains(u) && influence[u] == null)
-					influence[u] = a;
+			{
+				if (!influence.Contains(u))
+					continue;
+
+				if (influence[u] == null)
+					influence[u] = new List<Actor>();
+
+				influence[u].Add(a);
+			}
 		}
 
 		internal void RemoveInfluence(Actor a, IEnumerable<CPos> tiles)
 		{
 			foreach (var u in tiles)
-				if (influence.Contains(u) && influence[u] == a)
-					influence[u] = null;
+			{
+				if (!influence.Contains(u) || influence[u] == null)
+					continue;
+
+				if (influence[u].Contains(a))
+					influence[u].Remove(a);
+			}
 		}
 
-		public Actor GetBuildingAt(CPos cell)
+		public IEnumerable<Actor> GetBuildingsAt(CPos cell)
 		{
-			return influence.Contains(cell) ? influence[cell] : null;
+			return influence.Contains(cell) && influence[cell] != null ? influence[cell] : new List<Actor>();
 		}
 	}
 }

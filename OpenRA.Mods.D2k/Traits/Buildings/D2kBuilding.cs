@@ -98,7 +98,7 @@ namespace OpenRA.Mods.D2k.Traits.Buildings
 							continue;
 
 						// Don't place under other buildings (or their bib)
-						if (bi.GetBuildingAt(c) != self)
+						if (!bi.GetBuildingsAt(c).Contains(self))
 							continue;
 
 						var index = Game.CosmeticRandom.Next(template.TilesCount);
@@ -116,7 +116,7 @@ namespace OpenRA.Mods.D2k.Traits.Buildings
 							continue;
 
 						// Don't place under other buildings (or their bib)
-						if (bi.GetBuildingAt(c) != self)
+						if (!bi.GetBuildingsAt(c).Contains(self))
 							continue;
 
 						layer.AddTile(c, new TerrainTile(template.Id, (byte)i));
