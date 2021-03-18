@@ -46,22 +46,16 @@ Rules:
 	ra|rules/palettes.yaml
 	ra|rules/world.yaml
 	ra|rules/defaults.yaml
-	ra|rules/vehicles.yaml
 	ra|rules/husks.yaml
 	ra|rules/structures.yaml
 	ra|rules/infantry.yaml
 	ra|rules/civilian.yaml
 	ra|rules/decoration.yaml
-	ra|rules/aircraft.yaml
-	ra|rules/ships.yaml
 	ra|rules/fakes.yaml
 
 Sequences:
-	ra|sequences/ships.yaml
-	ra|sequences/vehicles.yaml
 	ra|sequences/structures.yaml
 	ra|sequences/infantry.yaml
-	ra|sequences/aircraft.yaml
 	ra|sequences/misc.yaml
 	ra|sequences/decorations.yaml
 
@@ -133,13 +127,10 @@ ChromeLayout:
 	common|chrome/playerprofile.yaml
 
 Weapons:
-	ra|weapons/explosions.yaml
-	ra|weapons/ballistics.yaml
-	ra|weapons/missiles.yaml
-	ra|weapons/other.yaml
 	ra|weapons/smallcaliber.yaml
-	ra|weapons/superweapons.yaml
-
+    ra|weapons/explosions.yaml
+    ra|weapons/other.yaml
+    
 Voices:
 	ra|audio/voices.yaml
 

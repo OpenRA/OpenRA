@@ -21,72 +21,6 @@
 			Ore: 80
 			Gems: 80
 			Beach: 80
-	Locomotor@WHEELED:
-		Name: wheeled
-		Crushes: mine, crate
-		TerrainSpeeds:
-			Clear: 80
-			Rough: 40
-			Road: 100
-			Bridge: 100
-			Ore: 70
-			Gems: 70
-			Beach: 40
-	Locomotor@HEAVYWHEELED:
-		Name: heavywheeled
-		Crushes: wall, mine, crate, infantry
-		TerrainSpeeds:
-			Clear: 80
-			Rough: 40
-			Road: 100
-			Bridge: 100
-			Ore: 70
-			Gems: 70
-			Beach: 40
-	Locomotor@LIGHTTRACKED:
-		Name: lighttracked
-		Crushes: wall, mine, crate
-		TerrainSpeeds:
-			Clear: 80
-			Rough: 70
-			Road: 100
-			Bridge: 100
-			Ore: 70
-			Gems: 70
-			Beach: 70
-	Locomotor@TRACKED:
-		Name: tracked
-		Crushes: wall, infantry, mine, crate
-		TerrainSpeeds:
-			Clear: 80
-			Rough: 70
-			Road: 100
-			Bridge: 100
-			Ore: 70
-			Gems: 70
-			Beach: 70
-	Locomotor@HEAVYTRACKED:
-		Name: heavytracked
-		Crushes: wall, infantry, mine, crate, heavywall
-		TerrainSpeeds:
-			Clear: 80
-			Rough: 70
-			Road: 100
-			Bridge: 100
-			Ore: 70
-			Gems: 70
-			Beach: 70
-	Locomotor@NAVAL:
-		Name: naval
-		Crushes: crate
-		TerrainSpeeds:
-			Water: 100
-	Locomotor@LANDINGCRAFT:
-		Name: lcraft
-		Crushes: crate
-		TerrainSpeeds:
-			Water: 100
-			Beach: 70
 	Locomotor@IMMOBILE:
 		Name: immobile
 		TerrainSpeeds:
@@ -96,58 +30,22 @@
 		Index: 255, 16, 32, 48, 64, 80, 96, 112, 128, 144, 160, 176, 192, 208, 224, 240, 20, 40, 56, 65, 97, 130, 148, 194, 24, 33, 66, 132, 28, 41, 67, 134, 1, 2, 4, 8, 3, 6, 12, 9, 7, 14, 13, 11, 5, 10, 15, 255
 		UseExtendedIndex: true
 	Faction@0:
-		Name: Allies
-		InternalName: allies
-		Side: Allies
-		Selectable: False
-	Faction@1:
 		Name: England
 		InternalName: england
 		Side: Allies
 		Description: England: Counterintelligence\nSpecial Unit: British Spy\nSpecial Unit: Mobile Gap Generator
-	Faction@2:
-		Name: France
-		InternalName: france
-		Side: Allies
-		Description: France: Deception\nSpecial Ability: Can build fake structures\nSpecial Unit: Phase Transport
-	Faction@3:
-		Name: Germany
-		InternalName: germany
-		Side: Allies
-		Description: Germany: Technology\nSpecial Ability: Advanced Chronoshift\nSpecial Unit: Chrono Tank
-	Faction@4:
-		Name: Soviet
-		InternalName: soviet
-		Side: Soviet
-		Selectable: False
-	Faction@5:
-		Name: Russia
-		InternalName: russia
-		Side: Soviet
-		Description: Russia: Tesla Weapons\nSpecial Unit: Tesla Tank\nSpecial Unit: Shock Trooper
-	Faction@6:
-		Name: Ukraine
-		InternalName: ukraine
-		Side: Soviet
-		Description: Ukraine: Demolitions\nSpecial Ability: Parabombs\nSpecial Unit: Demolition Truck
-	Faction@random:
+    Faction@random:
 		Name: Any
 		InternalName: Random
-		RandomFactionMembers: RandomAllies, RandomSoviet
+		RandomFactionMembers: RandomAllies
 		Side: Random
 		Description: Random Country\nA random country will be chosen when the game starts.
 	Faction@randomallies:
 		Name: Allies
 		InternalName: RandomAllies
-		RandomFactionMembers: england, france, germany
+		RandomFactionMembers: england
 		Side: Random
 		Description: Random Allied Country\nA random Allied country will be chosen when the game starts.
-	Faction@randomsoviet:
-		Name: Soviet
-		InternalName: RandomSoviet
-		RandomFactionMembers: russia, ukraine
-		Side: Random
-		Description: Random Soviet Country\nA random Soviet country will be chosen when the game starts.
 	ResourceType@ore:
 		Type: Ore
 		Name: Valuable Minerals
@@ -224,39 +122,10 @@ World:
 	StartingUnits@mcvonly:
 		Class: none
 		ClassName: MCV Only
-		Factions: allies, england, france, germany, soviet, russia, ukraine
-		BaseActor: mcv
-	StartingUnits@lightallies:
-		Class: light
-		ClassName: Light Support
-		Factions: allies, england, france, germany
-		BaseActor: mcv
-		SupportActors: e1,e1,e1,e3,e3,jeep,1tnk
-		InnerSupportRadius: 3
-		OuterSupportRadius: 5
-	StartingUnits@lightsoviet:
-		Class: light
-		ClassName: Light Support
-		Factions: soviet, russia, ukraine
-		BaseActor: mcv
-		SupportActors: e1,e1,e1,e3,e3,apc,ftrk
-		InnerSupportRadius: 3
-		OuterSupportRadius: 5
-	StartingUnits@heavyallies:
-		Class: heavy
-		ClassName: Heavy Support
-		Factions: allies, england, france, germany
-		BaseActor: mcv
-		SupportActors: e1,e1,e1,e3,e3,jeep,1tnk,2tnk,2tnk,2tnk
-		InnerSupportRadius: 3
-		OuterSupportRadius: 5
-	StartingUnits@heavysoviet:
-		Class: heavy
-		ClassName: Heavy Support
-		Factions: soviet, russia, ukraine
-		BaseActor: mcv
-		SupportActors: e1,e1,e1,e3,e3,apc,ftrk,3tnk,3tnk
-		InnerSupportRadius: 3
+		Factions: england
+		BaseActor: tent
+        SupportActors: e1,e1
+        InnerSupportRadius: 3
 		OuterSupportRadius: 5
 	MapStartingLocations:
 		SeparateTeamSpawnsCheckboxDisplayOrder: 6
