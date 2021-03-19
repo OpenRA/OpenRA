@@ -82,8 +82,6 @@ World:
 	BuildingInfluence:
 	ProductionQueueFromSelection:
 		ProductionPaletteWidget: PRODUCTION_PALETTE
-	LegacyBridgeLayer:
-		Bridges: bridge1, bridge2, bridge3, bridge4, br1, br2, br3, sbridge1, sbridge2, sbridge3, sbridge4
 	CustomTerrainDebugOverlay:
 
 	DomainIndex:
@@ -91,12 +89,6 @@ World:
 		Type: Scorch
 		Sequence: scorches
 		SmokeChance: 50
-		SmokeImage: smoke_m
-		SmokeSequences: idle
-	SmudgeLayer@CRATER:
-		Type: Crater
-		Sequence: craters
-		SmokeChance: 25
 		SmokeImage: smoke_m
 		SmokeSequences: idle
 	ResourceLayer:

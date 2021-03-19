@@ -46,12 +46,8 @@ Rules:
 	ra|rules/palettes.yaml
 	ra|rules/world.yaml
 	ra|rules/defaults.yaml
-	ra|rules/husks.yaml
 	ra|rules/structures.yaml
 	ra|rules/infantry.yaml
-	ra|rules/civilian.yaml
-	ra|rules/decoration.yaml
-	ra|rules/fakes.yaml
 
 Sequences:
 	ra|sequences/structures.yaml
@@ -130,7 +126,7 @@ Weapons:
 	ra|weapons/smallcaliber.yaml
     ra|weapons/explosions.yaml
     ra|weapons/other.yaml
-    
+
 Voices:
 	ra|audio/voices.yaml
 
