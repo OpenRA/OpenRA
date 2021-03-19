@@ -85,15 +85,7 @@ World:
 	LegacyBridgeLayer:
 		Bridges: bridge1, bridge2, bridge3, bridge4, br1, br2, br3, sbridge1, sbridge2, sbridge3, sbridge4
 	CustomTerrainDebugOverlay:
-	CrateSpawner:
-		DeliveryAircraft: badr
-		QuantizedFacings: 16
-		Minimum: 1
-		Maximum: 3
-		SpawnInterval: 3000
-		WaterChance: 20
-		InitialSpawnDelay: 1500
-		CheckboxDisplayOrder: 1
+
 	DomainIndex:
 	SmudgeLayer@SCORCH:
 		Type: Scorch
