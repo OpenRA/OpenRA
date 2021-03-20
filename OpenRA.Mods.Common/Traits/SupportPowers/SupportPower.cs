@@ -114,7 +114,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool DisplayRadarPing = false;
 
 		[Desc("Measured in ticks.")]
-		public readonly int RadarPingDuration = 5 * 25;
+		public readonly int RadarPingDuration = 125;
 
 		public readonly string OrderName;
 

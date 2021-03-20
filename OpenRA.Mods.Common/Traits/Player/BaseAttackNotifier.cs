@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly Color RadarPingColor = Color.Red;
 
 		[Desc("Length of time (in ticks) to display a location ping in the minimap.")]
-		public readonly int RadarPingDuration = 10 * 25;
+		public readonly int RadarPingDuration = 250;
 
 		[NotificationReference("Speech")]
 		[Desc("The audio notification type to play.")]

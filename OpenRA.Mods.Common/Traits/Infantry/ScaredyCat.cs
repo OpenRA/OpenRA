@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int PanicChance = 100;
 
 		[Desc("How long (in ticks) the actor should panic for.")]
-		public readonly int PanicLength = 25 * 10;
+		public readonly int PanicLength = 250;
 
 		[Desc("Panic movement speed as a percentage of the normal speed.")]
 		public readonly int PanicSpeedModifier = 200;
