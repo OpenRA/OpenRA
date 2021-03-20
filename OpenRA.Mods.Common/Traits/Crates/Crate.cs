@@ -20,9 +20,9 @@ namespace OpenRA.Mods.Common.Traits
 {
 	public class CrateInfo : TraitInfo, IPositionableInfo, Requires<RenderSpritesInfo>
 	{
-		[Desc("Length of time (in seconds) until the crate gets removed automatically. " +
+		[Desc("Length of time (in ticks) until the crate gets removed automatically. " +
 			"A value of zero disables auto-removal.")]
-		public readonly int Lifetime = 0;
+		public readonly int Duration = 0;
 
 		[Desc("Allowed to land on.")]
 		public readonly HashSet<string> TerrainTypes = new HashSet<string>();
@@ -171,7 +171,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void ITick.Tick(Actor self)
 		{
-			if (info.Lifetime != 0 && self.IsInWorld && ++ticks >= info.Lifetime * 25)
+			if (info.Duration != 0 && self.IsInWorld && ++ticks >= info.Duration)
 				self.Dispose();
 		}
 
@@ -215,7 +215,7 @@ namespace OpenRA.Mods.Common.Traits
 			self.World.ActorMap.AddInfluence(self, this);
 		}
 
-		public bool IsLeavingCell(CPos location, SubCell subCell = SubCell.Any) { return self.Location == location && ticks + 1 == info.Lifetime * 25; }
+		public bool IsLeavingCell(CPos location, SubCell subCell = SubCell.Any) { return self.Location == location && ticks + 1 == info.Duration; }
 		public SubCell GetValidSubCell(SubCell preferred = SubCell.Any) { return SubCell.FullCell; }
 		public SubCell GetAvailableSubCell(CPos cell, SubCell preferredSubCell = SubCell.Any, Actor ignoreActor = null, BlockedByActor check = BlockedByActor.All)
 		{

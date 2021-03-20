@@ -458,7 +458,7 @@
 	Tooltip:
 		Name: Crate
 	Crate:
-		Lifetime: 180
+		Duration: 4500
 		TerrainTypes: Clear, Rough, Sand, Road, DirtRoad, Tiberium, BlueTiberium, Veins, Green, Pavement
 	RenderSprites:
 		Palette: terraindecoration

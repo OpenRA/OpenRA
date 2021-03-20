@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int PanicChance = 100;
 
 		[Desc("How long (in ticks) the actor should panic for.")]
-		public readonly int PanicLength = 250;
+		public readonly int PanicDuration = 250;
 
 		[Desc("Panic movement speed as a percentage of the normal speed.")]
 		public readonly int PanicSpeedModifier = 200;
@@ -76,7 +76,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!Panicking)
 				return;
 
-			if (self.World.WorldTick >= panicStartedTick + info.PanicLength)
+			if (self.World.WorldTick >= panicStartedTick + info.PanicDuration)
 			{
 				self.CancelActivity();
 				panicStartedTick = 0;

@@ -1129,7 +1129,7 @@
 		GenericName: Crate
 		ShowOwnerRow: false
 	Crate:
-		Lifetime: 180
+		Duration: 4500
 		TerrainTypes: Clear, Rough, Road, Ore, Beach, Water
 	RenderSprites:
 		Palette: effect
