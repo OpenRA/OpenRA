@@ -95,6 +95,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new ConvertBoundsToWDist(),
 				new RemoveSmokeTrailWhenDamaged(),
 				new ReplaceCrateSecondsWithTicks(),
+				new UseMillisecondsForSounds(),
 			})
 		};
 

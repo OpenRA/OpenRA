@@ -19,8 +19,8 @@ namespace OpenRA.Mods.Common.Traits
 		"Attach this to the player actor.")]
 	public class BaseAttackNotifierInfo : TraitInfo
 	{
-		[Desc("Minimum duration (in seconds) between notification events.")]
-		public readonly int NotifyInterval = 30;
+		[Desc("Minimum duration (in milliseconds) between notification events.")]
+		public readonly int NotifyInterval = 30000;
 
 		public readonly Color RadarPingColor = Color.Red;
 
@@ -44,13 +44,13 @@ namespace OpenRA.Mods.Common.Traits
 		readonly RadarPings radarPings;
 		readonly BaseAttackNotifierInfo info;
 
-		int lastAttackTime;
+		long lastAttackTime;
 
 		public BaseAttackNotifier(Actor self, BaseAttackNotifierInfo info)
 		{
 			radarPings = self.World.WorldActor.TraitOrDefault<RadarPings>();
 			this.info = info;
-			lastAttackTime = -info.NotifyInterval * 25;
+			lastAttackTime = -info.NotifyInterval;
 		}
 
 		void INotifyDamage.Damaged(Actor self, AttackInfo e)
@@ -71,7 +71,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (e.Attacker.Owner.IsAlliedWith(self.Owner) && e.Damage.Value <= 0)
 				return;
 
-			if (self.World.WorldTick - lastAttackTime > info.NotifyInterval * 25)
+			if (Game.RunTime > lastAttackTime + info.NotifyInterval)
 			{
 				var rules = self.World.Map.Rules;
 				Game.Sound.PlayNotification(rules, self.Owner, "Speech", info.Notification, self.Owner.Faction.InternalName);
@@ -82,9 +82,9 @@ namespace OpenRA.Mods.Common.Traits
 							Game.Sound.PlayNotification(rules, p, "Speech", info.AllyNotification, p.Faction.InternalName);
 
 				radarPings?.Add(() => self.Owner.IsAlliedWith(self.World.RenderPlayer), self.CenterPosition, info.RadarPingColor, info.RadarPingDuration);
-			}
 
-			lastAttackTime = self.World.WorldTick;
+				lastAttackTime = Game.RunTime;
+			}
 		}
 	}
 }

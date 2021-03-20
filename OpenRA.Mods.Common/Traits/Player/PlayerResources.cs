@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string InsufficientFundsNotification = null;
 
 		[Desc("Delay (in ticks) during which warnings will be muted.")]
-		public readonly int InsufficientFundsNotificationDelay = 750;
+		public readonly int InsufficientFundsNotificationInterval = 30000;
 
 		[NotificationReference("Sounds")]
 		public readonly string CashTickUpNotification = null;
@@ -83,6 +83,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (!int.TryParse(startingCash, out Cash))
 				Cash = info.DefaultCash;
+
+			lastNotificationTime = -Info.InsufficientFundsNotificationInterval;
 		}
 
 		[Sync]
@@ -97,7 +99,7 @@ namespace OpenRA.Mods.Common.Traits
 		public int Earned;
 		public int Spent;
 
-		int lastNotificationTick;
+		long lastNotificationTime;
 
 		public int ChangeCash(int amount)
 		{
@@ -178,9 +180,9 @@ namespace OpenRA.Mods.Common.Traits
 			if (Cash + Resources < num)
 			{
 				if (notifyLowFunds && !string.IsNullOrEmpty(Info.InsufficientFundsNotification) &&
-					owner.World.WorldTick - lastNotificationTick >= Info.InsufficientFundsNotificationDelay)
+					Game.RunTime > lastNotificationTime + Info.InsufficientFundsNotificationInterval)
 				{
-					lastNotificationTick = owner.World.WorldTick;
+					lastNotificationTime = Game.RunTime;
 					Game.Sound.PlayNotification(owner.World.Map.Rules, owner, "Speech", Info.InsufficientFundsNotification, owner.Faction.InternalName);
 				}
 

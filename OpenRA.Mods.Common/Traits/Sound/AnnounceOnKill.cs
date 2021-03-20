@@ -16,8 +16,8 @@ namespace OpenRA.Mods.Common.Traits.Sound
 	[Desc("Play the Kill voice of this actor when eliminating enemies.")]
 	public class AnnounceOnKillInfo : TraitInfo
 	{
-		[Desc("Minimum duration (in seconds) between sound events.")]
-		public readonly int Interval = 5;
+		[Desc("Minimum duration (in milliseconds) between sound events.")]
+		public readonly int Interval = 5000;
 
 		[VoiceReference]
 		[Desc("Voice to use when killing something.")]
@@ -30,12 +30,12 @@ namespace OpenRA.Mods.Common.Traits.Sound
 	{
 		readonly AnnounceOnKillInfo info;
 
-		int lastAnnounce;
+		long lastAnnounce;
 
 		public AnnounceOnKill(Actor self, AnnounceOnKillInfo info)
 		{
 			this.info = info;
-			lastAnnounce = -info.Interval * 25;
+			lastAnnounce = -info.Interval;
 		}
 
 		void INotifyAppliedDamage.AppliedDamage(Actor self, Actor damaged, AttackInfo e)
@@ -43,10 +43,10 @@ namespace OpenRA.Mods.Common.Traits.Sound
 			// Don't notify suicides
 			if (e.DamageState == DamageState.Dead && damaged != e.Attacker)
 			{
-				if (self.World.WorldTick - lastAnnounce > info.Interval * 25)
+				if (Game.RunTime > lastAnnounce + info.Interval)
 					self.PlayVoice(info.Voice);
 
-				lastAnnounce = self.World.WorldTick;
+				lastAnnounce = Game.RunTime;
 			}
 		}
 	}

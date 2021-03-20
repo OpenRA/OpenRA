@@ -19,7 +19,8 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Attach this to the player actor.")]
 	public class PowerManagerInfo : TraitInfo, Requires<DeveloperModeInfo>
 	{
-		public readonly int AdviceInterval = 250;
+		[Desc("Interval (in milliseconds) at which to warn the player of low power.")]
+		public readonly int AdviceInterval = 10000;
 
 		[NotificationReference("Speech")]
 		public readonly string SpeechNotification = null;
@@ -50,7 +51,7 @@ namespace OpenRA.Mods.Common.Traits
 		public int PowerOutageRemainingTicks { get; private set; }
 		public int PowerOutageTotalTicks { get; private set; }
 
-		int nextPowerAdviceTime = 0;
+		long lastPowerAdviceTime;
 		bool isLowPower = false;
 		bool wasLowPower = false;
 		bool wasHackEnabled;
@@ -128,8 +129,9 @@ namespace OpenRA.Mods.Common.Traits
 			if (isLowPower != wasLowPower)
 				UpdatePowerRequiringActors();
 
+			// Force the notification to play immediately
 			if (isLowPower && !wasLowPower)
-				nextPowerAdviceTime = 0;
+				lastPowerAdviceTime = -info.AdviceInterval;
 
 			wasLowPower = isLowPower;
 		}
@@ -156,10 +158,10 @@ namespace OpenRA.Mods.Common.Traits
 				UpdatePowerState();
 			}
 
-			if (isLowPower && --nextPowerAdviceTime <= 0)
+			if (isLowPower && Game.RunTime > lastPowerAdviceTime + info.AdviceInterval)
 			{
 				Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", info.SpeechNotification, self.Owner.Faction.InternalName);
-				nextPowerAdviceTime = info.AdviceInterval;
+				lastPowerAdviceTime = Game.RunTime;
 			}
 
 			if (PowerOutageRemainingTicks > 0 && --PowerOutageRemainingTicks == 0)
