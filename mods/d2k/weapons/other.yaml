@@ -154,7 +154,7 @@ DeathHandCluster:
 	Warhead@3Eff: CreateEffect
 		Explosions: large_explosion
 		ImpactSounds: EXPLSML4.WAV
-	Warhead@2Concrete: DamagesConcrete
+	Warhead@4Concrete: DamagesConcrete
 		Damage: 4500
 
 CrateExplosion:
