@@ -34,7 +34,7 @@
 		Explosions: tiny_explosion
 		ImpactActors: false
 		ValidTargets: Ground, Air
-	Warhead@3Concrete: DamagesConcrete
+	Warhead@4Concrete: DamagesConcrete
 		Damage: 240
 
 ^Missile:
@@ -64,7 +64,7 @@
 			invulnerable: 0
 			cy: 30
 			harvester: 50
-	Warhead@2Concrete: DamagesConcrete
+	Warhead@4Concrete: DamagesConcrete
 		Damage: 720
 	Warhead@3Eff: CreateEffect
 		Explosions: small_explosion
@@ -91,7 +91,7 @@ Rocket:
 			invulnerable: 0
 			cy: 20
 			harvester: 50
-	Warhead@2Concrete: DamagesConcrete
+	Warhead@4Concrete: DamagesConcrete
 		Damage: 625
 	Warhead@3Eff: CreateEffect
 		Explosions: rocket_explosion
@@ -121,7 +121,7 @@ mtank_pri:
 	Warhead@1Dam: SpreadDamage
 		Damage: 6000
 		ValidTargets: Ground, Air
-	Warhead@2Concrete: DamagesConcrete
+	Warhead@4Concrete: DamagesConcrete
 		Damage: 900
 
 DeviatorMissile:
@@ -155,9 +155,9 @@ DeviatorMissile:
 		ExplosionPalette: deviatorgas
 		UsePlayerPalette: true
 		-ImpactSounds:
-	Warhead@4OwnerChange: ChangeOwner
+	Warhead@5OwnerChange: ChangeOwner
 		Range: 512
 		Duration: 375
 		InvalidTargets: Infantry, Structure
-	Warhead@5Concrete: DamagesConcrete
+	Warhead@4Concrete: DamagesConcrete
 		Damage: 1000
