@@ -41,7 +41,7 @@
 		Blockable: false
 	Warhead@1Dam: SpreadDamage
 		Damage: 2900
-	Warhead@2Concrete: DamagesConcrete
+	Warhead@4Concrete: DamagesConcrete
 		Damage: 2900
 
 80mm_A:
@@ -73,7 +73,7 @@ DevBullet:
 			invulnerable: 0
 			cy: 40
 			harvester: 100
-	Warhead@2Concrete: DamagesConcrete
+	Warhead@4Concrete: DamagesConcrete
 		Damage: 3250
 	Warhead@3Eff: CreateEffect
 		Explosions: shockwave
@@ -105,7 +105,7 @@ DevBullet:
 			cy: 20
 			harvester: 25
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
-	Warhead@2Concrete: DamagesConcrete
+	Warhead@4Concrete: DamagesConcrete
 		Damage: 5625
 	Warhead@3Eff: CreateEffect
 		Explosions: med_explosion
