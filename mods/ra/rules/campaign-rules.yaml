@@ -56,7 +56,7 @@ HARV:
 
 ^Crate:
 	Crate:
-		Lifetime: 0
+		Duration: 0
 
 MONEYCRATE:
 	Tooltip:

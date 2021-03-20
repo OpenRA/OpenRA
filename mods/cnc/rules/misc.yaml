@@ -5,7 +5,7 @@ CRATE.plain:
 CRATE:
 	Inherits: ^Crate
 	Crate:
-		Lifetime: 240
+		Duration: 6000
 	GiveCashCrateAction:
 		Amount: 1000
 		SelectionShares: 20

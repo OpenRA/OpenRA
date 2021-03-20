@@ -3,7 +3,7 @@ crate:
 	Tooltip:
 		Name: Crate
 	Crate:
-		Lifetime: 120
+		Duration: 3000
 		TerrainTypes: Sand, Rock, Transition, Spice, SpiceSand, Dune, Concrete
 	GiveCashCrateAction@1:
 		Amount: 750
