@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public readonly BitSet<TargetableType> Types = default(BitSet<TargetableType>);
 
 		[Desc("Measured in ticks.")]
-		public readonly int Duration = 25 * 20;
+		public readonly int Duration = 500;
 
 		[NotificationReference("Speech")]
 		[Desc("Sound the victim will hear when they get sabotaged.")]

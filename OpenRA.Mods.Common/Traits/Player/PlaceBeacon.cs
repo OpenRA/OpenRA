@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("A beacon that is constructed from a circle sprite that is animated once and a moving arrow sprite.")]
 	public class PlaceBeaconInfo : TraitInfo
 	{
-		public readonly int Duration = 30 * 25;
+		public readonly int Duration = 750;
 
 		public readonly string NotificationType = "Sounds";
 

@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int Maximum = 255;
 
 		[Desc("Average time (ticks) between crate spawn.")]
-		public readonly int SpawnInterval = 180 * 25;
+		public readonly int SpawnInterval = 4500;
 
 		[Desc("Delay (in ticks) before the first crate spawns.")]
 		public readonly int InitialSpawnDelay = 0;
