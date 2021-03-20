@@ -17,8 +17,8 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Provides the player with an audible warning when their storage is nearing full.")]
 	public class ResourceStorageWarningInfo : TraitInfo, Requires<PlayerResourcesInfo>
 	{
-		[Desc("Interval, in seconds, at which to check if more storage is needed.")]
-		public readonly int AdviceInterval = 20;
+		[Desc("Interval (in milliseconds) at which to check if more storage is needed.")]
+		public readonly int AdviceInterval = 20000;
 
 		[Desc("The percentage threshold above which a warning is played.")]
 		public readonly int Threshold = 80;
@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly ResourceStorageWarningInfo info;
 		readonly PlayerResources resources;
 
-		int nextSiloAdviceTime = 0;
+		long lastSiloAdviceTime;
 
 		public ResourceStorageWarning(Actor self, ResourceStorageWarningInfo info)
 		{
@@ -45,14 +45,14 @@ namespace OpenRA.Mods.Common.Traits
 
 		void ITick.Tick(Actor self)
 		{
-			if (--nextSiloAdviceTime <= 0)
+			if (Game.RunTime > lastSiloAdviceTime + info.AdviceInterval)
 			{
 				var owner = self.Owner;
 
 				if (resources.Resources > info.Threshold * resources.ResourceCapacity / 100)
 					Game.Sound.PlayNotification(self.World.Map.Rules, owner, "Speech", info.Notification, owner.Faction.InternalName);
 
-				nextSiloAdviceTime = info.AdviceInterval * 1000 / self.World.Timestep;
+				lastSiloAdviceTime = Game.RunTime;
 			}
 		}
 	}
