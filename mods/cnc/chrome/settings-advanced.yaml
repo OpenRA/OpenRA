@@ -121,3 +121,10 @@ Container@ADVANCED_PANEL:
 					Height: 20
 					Font: Regular
 					Text: Enable Debug Commands in Replays
+				Checkbox@PERFLOGGING_CHECKBOX:
+					X: 310
+					Y: 273
+					Width: 300
+					Height: 20
+					Font: Regular
+					Text: Enable Tick Performance Logging

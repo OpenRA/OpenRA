@@ -67,11 +67,10 @@ namespace OpenRA.Mods.Common.Traits.Render
 				var pi = c.Info.TraitInfo<PassengerInfo>();
 				if (n < pi.Weight)
 				{
-					var sequence = Info.FullSequence;
-					if (pi.CustomPipType != null && !Info.CustomPipSequences.TryGetValue(pi.CustomPipType, out sequence))
-						Log.Write("debug", "Actor type {0} defines a custom pip type {1} that is not defined for actor type {2}".F(c.Info.Name, pi.CustomPipType, self.Info.Name));
+					if (pi.CustomPipType != null && Info.CustomPipSequences.TryGetValue(pi.CustomPipType, out var sequence))
+						return sequence;
 
-					return sequence;
+					return Info.FullSequence;
 				}
 
 				n -= pi.Weight;

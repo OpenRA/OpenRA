@@ -53,6 +53,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			SettingsUtils.BindCheckboxPref(panel, "REPLAY_COMMANDS_CHECKBOX", ds, "EnableDebugCommandsInReplays");
 			SettingsUtils.BindCheckboxPref(panel, "CHECKUNSYNCED_CHECKBOX", ds, "SyncCheckUnsyncedCode");
 			SettingsUtils.BindCheckboxPref(panel, "CHECKBOTSYNC_CHECKBOX", ds, "SyncCheckBotModuleCode");
+			SettingsUtils.BindCheckboxPref(panel, "PERFLOGGING_CHECKBOX", ds, "EnableSimulationPerfLogging");
 
 			panel.Get("DEBUG_OPTIONS").IsVisible = () => ds.DisplayDeveloperSettings;
 			panel.Get("DEBUG_HIDDEN_LABEL").IsVisible = () => !ds.DisplayDeveloperSettings;
@@ -79,6 +80,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				ds.SendSystemInformation = dds.SendSystemInformation;
 				ds.CheckVersion = dds.CheckVersion;
 				ds.EnableDebugCommandsInReplays = dds.EnableDebugCommandsInReplays;
+				ds.EnableSimulationPerfLogging = dds.EnableSimulationPerfLogging;
 			};
 		}
 	}
