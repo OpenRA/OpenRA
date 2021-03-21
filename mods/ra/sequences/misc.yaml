@@ -301,6 +301,7 @@ wcrate:
 		ZOffset: -511
 	idle:
 	land:
+		Start: 1
 	water: wwcrate
 		Length: *
 		Tick: 500
