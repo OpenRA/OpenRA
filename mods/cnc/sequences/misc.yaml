@@ -171,16 +171,14 @@ allyrepair:
 		Tick: 160
 		ZOffset: 2047
 
-crate:
-	idle:
-		ZOffset: -511
-
 scrate:
 	idle:
+		Start: 1
 		ZOffset: -511
 
 wcrate:
 	idle:
+		Start: 1
 		ZOffset: -511
 
 xcratea:

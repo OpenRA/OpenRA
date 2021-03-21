@@ -39,6 +39,8 @@ WCRATE:
 	Inherits: ^Crate
 	Tooltip:
 		Name: Wooden Crate
+	RenderSprites:
+		Image: wcrate
 
 SCRATE:
 	Inherits: ^Crate
