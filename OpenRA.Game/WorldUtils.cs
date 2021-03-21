@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using OpenRA.Support;
 using OpenRA.Traits;
@@ -65,25 +64,16 @@ namespace OpenRA
 
 		public static void DoTimed<T>(this IEnumerable<T> e, Action<T> a, string text)
 		{
-			// PERF: This is a hot path and must run with minimal added overhead.
-			// Calling Stopwatch.GetTimestamp is a bit expensive, so we enumerate manually to allow us to call it only
-			// once per iteration in the normal case.
-			// See also: RunActivity
-			var longTickThresholdInStopwatchTicks = PerfTimer.LongTickThresholdInStopwatchTicks;
+			// PERF: This is a hot path and must run with minimal added overhead, so we enumerate manually
+			// to allow us to call PerfTickLogger only once per iteration in the normal case.
+			var perfLogger = new PerfTickLogger();
 			using (var enumerator = e.GetEnumerator())
 			{
-				var start = Stopwatch.GetTimestamp();
+				perfLogger.Start();
 				while (enumerator.MoveNext())
 				{
 					a(enumerator.Current);
-					var current = Stopwatch.GetTimestamp();
-					if (current - start > longTickThresholdInStopwatchTicks)
-					{
-						PerfTimer.LogLongTick(start, current, text, enumerator.Current);
-						start = Stopwatch.GetTimestamp();
-					}
-					else
-						start = current;
+					perfLogger.LogTickAndRestartTimer(text, enumerator.Current);
 				}
 			}
 		}

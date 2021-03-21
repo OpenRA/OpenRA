@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using OpenRA.Primitives;
 using OpenRA.Support;
@@ -146,6 +145,7 @@ namespace OpenRA
 		{
 			readonly List<Actor> actors = new List<Actor>();
 			readonly List<T> traits = new List<T>();
+			readonly PerfTickLogger perfLogger = new PerfTickLogger();
 
 			public int Queries { get; private set; }
 
@@ -298,21 +298,14 @@ namespace OpenRA
 
 			public void ApplyToAllTimed(Action<Actor, T> action, string text)
 			{
-				var longTickThresholdInStopwatchTicks = PerfTimer.LongTickThresholdInStopwatchTicks;
-				var start = Stopwatch.GetTimestamp();
+				perfLogger.Start();
 				for (var i = 0; i < actors.Count; i++)
 				{
 					var actor = actors[i];
 					var trait = traits[i];
 					action(actor, trait);
-					var current = Stopwatch.GetTimestamp();
-					if (current - start > longTickThresholdInStopwatchTicks)
-					{
-						PerfTimer.LogLongTick(start, current, text, trait);
-						start = Stopwatch.GetTimestamp();
-					}
-					else
-						start = current;
+
+					perfLogger.LogTickAndRestartTimer(text, trait);
 				}
 			}
 		}
