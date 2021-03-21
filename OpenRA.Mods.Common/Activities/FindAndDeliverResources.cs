@@ -182,44 +182,54 @@ namespace OpenRA.Mods.Common.Activities
 
 			var procPos = procLoc.HasValue ? (WPos?)self.World.Map.CenterOfCell(procLoc.Value) : null;
 			var harvPos = self.CenterPosition;
+			var dirPenalty = harvInfo.ResourceRefineryDirectionPenalty;
 
 			// Find any harvestable resources:
 			List<CPos> path;
-			using (var search = PathSearch.Search(self.World, mobile.Locomotor, self, BlockedByActor.Stationary, loc =>
-					domainIndex.IsPassable(self.Location, loc, mobile.Locomotor) && harv.CanHarvestCell(self, loc) && claimLayer.CanClaimCell(self, loc))
-				.WithCustomCost(loc =>
+			using (var search = PathSearch.Search(self.World, mobile.Locomotor, self,
+					BlockedByActor.Stationary,
+					loc => domainIndex.IsPassable(self.Location, loc, mobile.Locomotor)
+						&& harv.CanHarvestCell(self, loc)
+						&& claimLayer.CanClaimCell(self, loc)))
+			{
+				search.WithCustomCost(loc =>
 				{
 					if ((loc - searchFromLoc).LengthSquared > searchRadiusSquared)
 						return int.MaxValue;
 
 					// Add a cost modifier to harvestable cells to prefer resources that are closer to the refinery.
 					// This reduces the tendancy for harvesters to move in straight lines
-					if (procPos.HasValue && harvInfo.ResourceRefineryDirectionPenalty > 0 && harv.CanHarvestCell(self, loc))
+					if (procPos.HasValue && dirPenalty > 0 && harv.CanHarvestCell(self, loc))
 					{
 						var pos = self.World.Map.CenterOfCell(loc);
 
 						// Calculate harv-cell-refinery angle (cosine rule)
-						var a = harvPos - procPos.Value;
 						var b = pos - procPos.Value;
-						var c = pos - harvPos;
-
-						if (b != WVec.Zero && c != WVec.Zero)
+						if (b != WVec.Zero)
 						{
-							var cosA = (int)(512 * (b.LengthSquared + c.LengthSquared - a.LengthSquared) / b.Length / c.Length);
+							var c = pos - harvPos;
+							if (c != WVec.Zero)
+							{
+								var a = harvPos - procPos.Value;
+								var cosA = (int)(512 * (b.LengthSquared + c.LengthSquared - a.LengthSquared) / b.Length / c.Length);
 
-							// Cost modifier varies between 0 and ResourceRefineryDirectionPenalty
-							return Math.Abs(harvInfo.ResourceRefineryDirectionPenalty / 2) + harvInfo.ResourceRefineryDirectionPenalty * cosA / 2048;
+								// Cost modifier varies between 0 and ResourceRefineryDirectionPenalty
+								return Math.Abs(dirPenalty / 2) + dirPenalty * cosA / 2048;
+							}
 						}
 					}
 
 					return 0;
 				})
-				.FromPoint(searchFromLoc)
-				.FromPoint(self.Location))
-				path = mobile.Pathfinder.FindPath(search);
+				.FromPoint(searchFromLoc);
 
-			if (path.Count > 0)
-				return path[0];
+				if (searchFromLoc != self.Location)
+					search.FromPoint(self.Location);
+
+				path = mobile.Pathfinder.FindPath(search);
+				if (path.Count > 0)
+					return path[0];
+			}
 
 			return null;
 		}

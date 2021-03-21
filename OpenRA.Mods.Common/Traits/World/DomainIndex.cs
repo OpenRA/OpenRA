@@ -154,10 +154,10 @@ namespace OpenRA.Mods.Common.Traits
 			while (toProcess.Any())
 			{
 				var current = toProcess.Pop();
-				if (!transientConnections.ContainsKey(current))
+				if (!transientConnections.TryGetValue(current, out var conns))
 					continue;
 
-				foreach (var neighbor in transientConnections[current])
+				foreach (var neighbor in conns)
 				{
 					if (neighbor == d2)
 						return true;

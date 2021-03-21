@@ -51,7 +51,7 @@ namespace OpenRA
 		public static CVec operator -(CPos a, CPos b) { return new CVec(a.X - b.X, a.Y - b.Y); }
 
 		public static bool operator ==(CPos me, CPos other) { return me.Bits == other.Bits; }
-		public static bool operator !=(CPos me, CPos other) { return !(me == other); }
+		public static bool operator !=(CPos me, CPos other) { return me.Bits != other.Bits; }
 
 		public override int GetHashCode() { return Bits.GetHashCode(); }
 
