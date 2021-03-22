@@ -85,11 +85,8 @@ end
 LabInfiltrated = false
 SetupTriggers = function()
 	Trigger.OnAllKilled(SamSites, function()
-		local proxy = Actor.Create("powerproxy.parabombs", false, { Owner = USSR })
-		proxy.TargetAirstrike(TacticalNuke1.CenterPosition, Angle.SouthWest)
-		proxy.TargetAirstrike(TacticalNuke2.CenterPosition, Angle.SouthWest)
-		proxy.TargetAirstrike(TacticalNuke3.CenterPosition, Angle.SouthWest)
-		proxy.Destroy()
+		USSR.MarkCompletedObjective(KillSams)
+		SendInBombers()
 	end)
 
 	Trigger.OnInfiltrated(BioLab, function()
@@ -97,6 +94,7 @@ SetupTriggers = function()
 		Trigger.AfterDelay(DateTime.Seconds(5), function()
 			USSR.MarkCompletedObjective(InfiltrateLab)
 			LabInfiltrated = true
+			SendInBombers()
 		end)
 	end)
 
@@ -117,6 +115,17 @@ SetupTriggers = function()
 		end
 	end)
 end
+
+SendInBombers = function()
+	if LabInfiltrated and USSR.IsObjectiveCompleted(KillSams) then
+		local proxy = Actor.Create("powerproxy.parabombs", false, { Owner = USSR })
+		proxy.TargetAirstrike(TacticalNuke1.CenterPosition, Angle.SouthWest)
+		proxy.TargetAirstrike(TacticalNuke2.CenterPosition, Angle.SouthWest)
+		proxy.TargetAirstrike(TacticalNuke3.CenterPosition, Angle.SouthWest)
+		proxy.Destroy()
+	end
+end
+
 
 SendInVolkov = function()
 	if not VolkovArrived then
@@ -167,7 +176,8 @@ WorldLoaded = function()
 	LaunchMissles = Turkey.AddObjective("Survive until time expires.")
 	KillPower = USSR.AddObjective("Bring the base to low power. Volkov will arrive\nonce the defenses are down.")
 	InfiltrateLab = USSR.AddObjective("Infiltrate the bio-weapons lab with the scientist.")
-	DestroyFacility = USSR.AddObjective("Destroy all sam sites on the island.\nOur strategic bombers will finish the rest.")
+	DestroyFacility = USSR.AddObjective("Destroy the bio-weapons lab and missile silos.")
+	KillSams = USSR.AddObjective("Destroy all sam sites on the island.\nOur strategic bombers will finish the rest.", "Secondary", false)
 	VolkovSurvive = USSR.AddObjective("Volkov must survive.")
 
 	Trigger.OnObjectiveCompleted(USSR, function(p, id)
