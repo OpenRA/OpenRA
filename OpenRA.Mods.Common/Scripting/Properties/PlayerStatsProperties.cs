@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,7 +9,6 @@
  */
 #endregion
 
-using Eluant;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Scripting;
 using OpenRA.Traits;
@@ -28,21 +27,21 @@ namespace OpenRA.Mods.Common.Scripting
 		}
 
 		[Desc("The combined value of units killed by this player.")]
-		public int KillsCost { get { return stats.KillsCost; } }
+		public int KillsCost => stats.KillsCost;
 
 		[Desc("The combined value of all units lost by this player.")]
-		public int DeathsCost { get { return stats.DeathsCost; } }
+		public int DeathsCost => stats.DeathsCost;
 
 		[Desc("The total number of units killed by this player.")]
-		public int UnitsKilled { get { return stats.UnitsKilled; } }
+		public int UnitsKilled => stats.UnitsKilled;
 
 		[Desc("The total number of units lost by this player.")]
-		public int UnitsLost { get { return stats.UnitsDead; } }
+		public int UnitsLost => stats.UnitsDead;
 
 		[Desc("The total number of buildings killed by this player.")]
-		public int BuildingsKilled { get { return stats.BuildingsKilled; } }
+		public int BuildingsKilled => stats.BuildingsKilled;
 
 		[Desc("The total number of buildings lost by this player.")]
-		public int BuildingsLost { get { return stats.BuildingsDead; } }
+		public int BuildingsLost => stats.BuildingsDead;
 	}
 }

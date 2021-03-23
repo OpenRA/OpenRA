@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,7 +9,6 @@
  */
 #endregion
 
-using OpenRA.Mods.Common.Effects;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -26,10 +25,16 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Order name that toggles the condition.")]
 		public readonly string OrderName = null;
 
+		[NotificationReference("Sounds")]
 		public readonly string EnabledSound = null;
+
+		[NotificationReference("Speech")]
 		public readonly string EnabledSpeech = null;
 
+		[NotificationReference("Sounds")]
 		public readonly string DisabledSound = null;
+
+		[NotificationReference("Speech")]
 		public readonly string DisabledSpeech = null;
 
 		public override object Create(ActorInitializer init) { return new ToggleConditionOnOrder(init.Self, this); }
@@ -37,30 +42,20 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class ToggleConditionOnOrder : PausableConditionalTrait<ToggleConditionOnOrderInfo>, IResolveOrder
 	{
-		ConditionManager conditionManager;
-		int conditionToken = ConditionManager.InvalidConditionToken;
+		int conditionToken = Actor.InvalidConditionToken;
 
 		// If the trait is paused this may be true with no condition granted
-		[Sync] bool enabled = false;
+		[Sync]
+		bool enabled = false;
 
 		public ToggleConditionOnOrder(Actor self, ToggleConditionOnOrderInfo info)
 			: base(info) { }
 
-		protected override void Created(Actor self)
-		{
-			base.Created(self);
-
-			conditionManager = self.TraitOrDefault<ConditionManager>();
-		}
-
 		void SetCondition(Actor self, bool granted)
 		{
-			if (conditionManager == null)
-				return;
-
-			if (granted && conditionToken == ConditionManager.InvalidConditionToken)
+			if (granted && conditionToken == Actor.InvalidConditionToken)
 			{
-				conditionToken = conditionManager.GrantCondition(self, Info.Condition);
+				conditionToken = self.GrantCondition(Info.Condition);
 
 				if (Info.EnabledSound != null)
 					Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Sounds", Info.EnabledSound, self.Owner.Faction.InternalName);
@@ -68,9 +63,9 @@ namespace OpenRA.Mods.Common.Traits
 				if (Info.EnabledSpeech != null)
 					Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", Info.EnabledSpeech, self.Owner.Faction.InternalName);
 			}
-			else if (!granted && conditionToken != ConditionManager.InvalidConditionToken)
+			else if (!granted && conditionToken != Actor.InvalidConditionToken)
 			{
-				conditionToken = conditionManager.RevokeCondition(self, conditionToken);
+				conditionToken = self.RevokeCondition(conditionToken);
 
 				if (Info.DisabledSound != null)
 					Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Sounds", Info.DisabledSound, self.Owner.Faction.InternalName);

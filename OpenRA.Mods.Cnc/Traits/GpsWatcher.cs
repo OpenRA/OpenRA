@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -17,21 +17,27 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Cnc.Traits
 {
 	[Desc("Required for `GpsPower`. Attach this to the player actor.")]
-	class GpsWatcherInfo : ITraitInfo
+	class GpsWatcherInfo : TraitInfo
 	{
-		public object Create(ActorInitializer init) { return new GpsWatcher(init.Self.Owner); }
+		public override object Create(ActorInitializer init) { return new GpsWatcher(init.Self.Owner); }
 	}
 
 	interface IOnGpsRefreshed { void OnGpsRefresh(Actor self, Player player); }
 
 	class GpsWatcher : ISync, IPreventsShroudReset
 	{
-		[Sync] public bool Launched { get; private set; }
-		[Sync] public bool GrantedAllies { get; private set; }
-		[Sync] public bool Granted { get; private set; }
+		[Sync]
+		public bool Launched { get; private set; }
+
+		[Sync]
+		public bool GrantedAllies { get; private set; }
+
+		[Sync]
+		public bool Granted { get; private set; }
 
 		// Whether this watcher has explored the terrain (by becoming Launched, or an ally becoming Launched)
-		[Sync] bool explored;
+		[Sync]
+		bool explored;
 
 		readonly Player owner;
 

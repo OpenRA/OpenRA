@@ -7,6 +7,8 @@ E1:
 		Cost: 100
 	Tooltip:
 		Name: Minigunner
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		BuildPaletteOrder: 10
 		Prerequisites: barracks
@@ -20,7 +22,6 @@ E1:
 		ScanRadius: 4
 	Armament:
 		Weapon: M16
-	AttackFrontal:
 	WithInfantryBody:
 		IdleSequences: idle1,idle2,idle3,idle4
 		DefaultAttackSequence: shoot
@@ -34,6 +35,8 @@ E2:
 		Cost: 160
 	Tooltip:
 		Name: Grenadier
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		BuildPaletteOrder: 40
 		Prerequisites: anyhq, ~techlevel.medium
@@ -51,7 +54,6 @@ E2:
 		FireDelay: 15
 	TakeCover:
 		ProneOffset: 300,0,-227
-	AttackFrontal:
 	WithInfantryBody:
 		DefaultAttackSequence: throw
 	Explodes:
@@ -68,6 +70,8 @@ E3:
 		Cost: 300
 	Tooltip:
 		Name: Rocket Soldier
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		BuildPaletteOrder: 20
 		Prerequisites: barracks
@@ -85,7 +89,6 @@ E3:
 		FireDelay: 5
 	TakeCover:
 		ProneOffset: 180,0,-200
-	AttackFrontal:
 	WithInfantryBody:
 		DefaultAttackSequence: shoot
 
@@ -98,6 +101,8 @@ E4:
 		Cost: 200
 	Tooltip:
 		Name: Flamethrower
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		BuildPaletteOrder: 40
 		Prerequisites: anyhq, ~techlevel.medium
@@ -116,7 +121,6 @@ E4:
 		MuzzleSequence: muzzle
 	TakeCover:
 		ProneOffset: 190,0,-198
-	AttackFrontal:
 	WithMuzzleOverlay:
 	WithInfantryBody:
 		DefaultAttackSequence: shoot
@@ -130,6 +134,8 @@ E5:
 		Cost: 300
 	Tooltip:
 		Name: Chemical Warrior
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		BuildPaletteOrder: 50
 		Prerequisites: tmpl, ~techlevel.high
@@ -149,7 +155,6 @@ E5:
 		MuzzleSequence: muzzle
 	TakeCover:
 		ProneOffset: 190,0,-190
-	AttackFrontal:
 	WithMuzzleOverlay:
 	-DamagedByTerrain:
 	WithInfantryBody:
@@ -157,10 +162,13 @@ E5:
 
 E6:
 	Inherits: ^Soldier
+	Inherits@selection: ^SelectableSupportUnit
 	Valued:
 		Cost: 500
 	Tooltip:
 		Name: Engineer
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		BuildPaletteOrder: 30
 		Prerequisites: barracks
@@ -171,14 +179,18 @@ E6:
 	Health:
 		HP: 3000
 	Passenger:
-		PipType: Yellow
+		CustomPipType: yellow
 	EngineerRepair:
 	RepairsBridges:
-	Captures:
+	CaptureManager:
+	Captures@SABOTAGE:
+		CaptureTypes: building-sabotage
+		SabotageThreshold: 55
+		PlayerExperience: 50
+	Captures@CAPTURES:
 		CaptureTypes: building, husk
 		PlayerExperience: 50
-	Selectable:
-		Priority: 5
+	-AttackFrontal:
 
 RMBO:
 	Inherits: ^Soldier
@@ -186,15 +198,15 @@ RMBO:
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Inherits@DECORATIONS: ^InfantryExperienceHospitalHazmatOverrides
 	Valued:
-		Cost: 2000
+		Cost: 1800
 	Tooltip:
 		Name: Commando
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		BuildPaletteOrder: 50
 		Prerequisites: eye, ~techlevel.high
 		Queue: Infantry.GDI
-		BuildDuration: 2000
-		BuildDurationModifier: 40
 		Description: Elite sniper infantry unit.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles
 	Mobile:
 		Speed: 71
@@ -204,7 +216,7 @@ RMBO:
 	Health:
 		HP: 15000
 	Passenger:
-		PipType: Red
+		CustomPipType: red
 		Voice: Move
 	RevealsShroud:
 		Range: 6c0
@@ -222,7 +234,11 @@ RMBO:
 	WithInfantryBody:
 		DefaultAttackSequence: shoot
 		IdleSequences: idle1,idle2,idle3
-	AnnounceOnBuild:
+	ExternalCondition@PRODUCED:
+		Condition: produced
+	VoiceAnnouncement:
+		RequiresCondition: produced
+		Voice: Build
 	AnnounceOnKill:
 	Voiced:
 		VoiceSet: CommandoVoice
@@ -234,6 +250,8 @@ PVICE:
 		BuildPaletteOrder: 40
 		Description: Mutated abomination that spits liquid Tiberium.\n  Strong vs Infantry, Buildings\n  Weak vs Aircraft
 	Tooltip:
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	ActorLostNotification:
 
 STEG:
@@ -257,7 +275,6 @@ TREX:
 	Selectable:
 		Bounds: 48,36,2,1
 		DecorationBounds: 52,38
-	SelectionDecorations:
 	Buildable:
 		Description: Bipedal carnivore with a massive skull
 
@@ -267,7 +284,6 @@ TRIC:
 		Name: Triceratops
 	Armament:
 		Weapon: horn
-	SelectionDecorations:
 	Buildable:
 		Description: Quadruped with large bony frill and three horns
 	Selectable:

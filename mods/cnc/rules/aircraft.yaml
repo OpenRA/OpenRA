@@ -1,20 +1,20 @@
 TRAN:
 	Inherits: ^Helicopter
+	Inherits@TRANSPORT: ^Transport
 	Valued:
 		Cost: 750
 	Tooltip:
 		Name: Chinook Transport
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		BuildPaletteOrder: 10
 		Prerequisites: hpad
 		Queue: Aircraft.GDI, Aircraft.Nod
 		Description: Fast Infantry Transport Helicopter.\n  Unarmed
 	Aircraft:
-		LandWhenIdle: true
-		TurnSpeed: 5
+		TurnSpeed: 20
 		Speed: 150
-		InitialFacing: 224
-		LandableTerrainTypes: Clear,Rough,Road,Ore,Beach,Tiberium,BlueTiberium
 		AltitudeVelocity: 0c100
 	Health:
 		HP: 9000
@@ -42,10 +42,9 @@ TRAN:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 10
-		PipCount: 10
+		AfterUnloadDelay: 40
 	SpawnActorOnDeath:
 		Actor: TRAN.Husk
-	SelectionDecorations:
 	Selectable:
 		DecorationBounds: 41,41
 
@@ -57,14 +56,15 @@ HELI:
 		Cost: 1200
 	Tooltip:
 		Name: Apache Longbow
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		BuildPaletteOrder: 20
 		Prerequisites: hpad, anyhq, ~techlevel.medium
 		Queue: Aircraft.Nod
 		Description: Helicopter Gunship with Chainguns.\n  Strong vs Infantry, Light Vehicles and\n  Aircraft\n  Weak vs Tanks
 	Aircraft:
-		InitialFacing: 224
-		TurnSpeed: 7
+		TurnSpeed: 28
 		Speed: 180
 	Health:
 		HP: 12500
@@ -86,11 +86,13 @@ HELI:
 		PauseOnCondition: !ammo
 	AutoTarget:
 		ScanRadius: 4
-	AttackHeli:
-		FacingTolerance: 20
+	AttackAircraft:
+		FacingTolerance: 80
+		OpportunityFire: false
+		PersistentTargeting: false
+		AttackType: Hover
 	AmmoPool:
 		Ammo: 10
-		PipCount: 5
 		AmmoCondition: ammo
 	WithIdleOverlay@ROTORAIR:
 		Offset: 0,0,85
@@ -103,12 +105,16 @@ HELI:
 	WithMuzzleOverlay:
 	SpawnActorOnDeath:
 		Actor: HELI.Husk
-	SelectionDecorations:
 	ReloadAmmoPool:
 		Delay: 40
 		Count: 1
 	Selectable:
 		DecorationBounds: 30,24
+	WithAmmoPipsDecoration:
+		Position: BottomLeft
+		Margin: 4, 3
+		RequiresSelection: true
+		PipCount: 5
 
 ORCA:
 	Inherits: ^Helicopter
@@ -118,14 +124,15 @@ ORCA:
 		Cost: 1200
 	Tooltip:
 		Name: Orca
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		BuildPaletteOrder: 20
 		Prerequisites: hpad, anyhq, ~techlevel.medium
 		Queue: Aircraft.GDI
 		Description: Helicopter Gunship with AG Missiles.\n  Strong vs Buildings, Tanks\n  Weak vs Infantry
 	Aircraft:
-		InitialFacing: 224
-		TurnSpeed: 7
+		TurnSpeed: 28
 		Speed: 186
 	Health:
 		HP: 9000
@@ -144,43 +151,58 @@ ORCA:
 		PauseOnCondition: !ammo
 	AutoTarget:
 		ScanRadius: 5
-	AttackHeli:
-		FacingTolerance: 20
+	AttackAircraft:
+		FacingTolerance: 80
+		OpportunityFire: false
+		PersistentTargeting: false
+		AttackType: Hover
 	AmmoPool:
 		Ammo: 6
-		PipCount: 6
 		AmmoCondition: ammo
 	SpawnActorOnDeath:
 		Actor: ORCA.Husk
 	WithMoveAnimation:
 		MoveSequence: move
-	SelectionDecorations:
 	ReloadAmmoPool:
 		Delay: 100
 		Count: 2
 	Selectable:
 		DecorationBounds: 30,24
+	WithAmmoPipsDecoration:
+		Position: BottomLeft
+		Margin: 4, 3
+		RequiresSelection: true
 
 C17:
 	Inherits: ^Plane
+	Inherits@TRANSPORT: ^Transport
 	Interactable:
 	Tooltip:
 		Name: Supply Aircraft
 	Valued:
 		Cost: 2000
+	UpdatesPlayerStatistics:
+		AddToAssetsValue: false
 	Aircraft:
-		TurnSpeed: 5
-		Speed: 326
+		TurnSpeed: 20
+		Speed: 700
 		Repulsable: False
 		MaximumPitch: 36
 	HiddenUnderFog:
-		AlwaysVisibleStances: None
+		AlwaysVisibleRelationships: None
 		Type: CenterPosition
 	Cargo:
 		MaxWeight: 10
-		PipCount: 10
 	DamageMultiplier@INVULNERABLE:
 		Modifier: 0
+	GrantConditionOnPrerequisite@GLOBALC17STEALTH:
+		Condition: global-C17-stealth
+		Prerequisites: global-C17-stealth
+	Cloak:
+		InitialDelay: 0
+		CloakDelay: 0
+		CloakTypes: C17
+		RequiresCondition: global-C17-stealth
 	Contrail@1:
 		Offset: -261,-650,0
 		TrailLength: 15
@@ -193,8 +215,7 @@ C17:
 	Contrail@4:
 		Offset: -261,650,0
 		TrailLength: 15
-	Buildable:
-		Description: Drops vehicle reinforcements on Airstrips
+	-MapEditorData:
 
 A10:
 	Inherits: ^Plane
@@ -203,8 +224,10 @@ A10:
 		Name: A10 Bomber
 	Valued:
 		Cost: 2000
+	UpdatesPlayerStatistics:
+		AddToAssetsValue: false
 	Aircraft:
-		TurnSpeed: 4
+		TurnSpeed: 16
 		Speed: 373
 		Repulsable: False
 	AttackBomber:
@@ -224,15 +247,14 @@ A10:
 	Contrail@2:
 		Offset: -640,-171,0
 		TrailLength: 15
-	Buildable:
-		Description: Used to deliver air strikes.
+	-MapEditorData:
 
 TRAN.Husk:
 	Inherits: ^HelicopterHusk
 	Tooltip:
 		Name: Chinook Transport
 	Aircraft:
-		TurnSpeed: 5
+		TurnSpeed: 20
 		Speed: 140
 	RevealsShroud:
 		Range: 10c0
@@ -251,7 +273,7 @@ HELI.Husk:
 	Tooltip:
 		Name: Apache Longbow
 	Aircraft:
-		TurnSpeed: 4
+		TurnSpeed: 16
 		Speed: 186
 	RevealsShroud:
 		Range: 10c0
@@ -267,7 +289,7 @@ ORCA.Husk:
 	Tooltip:
 		Name: Orca
 	Aircraft:
-		TurnSpeed: 4
+		TurnSpeed: 16
 		Speed: 186
 	RevealsShroud:
 		Range: 10c0

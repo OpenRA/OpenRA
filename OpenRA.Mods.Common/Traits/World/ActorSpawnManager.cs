@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,9 +9,9 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Mods.Common;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -26,8 +26,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Maximum number of actors.")]
 		public readonly int Maximum = 4;
 
-		[Desc("Time (in ticks) between actor spawn.")]
-		public readonly int SpawnInterval = 6000;
+		[Desc("Time (in ticks) between actor spawn. Supports 1 or 2 values.\nIf 2 values are provided they are used as a range from which a value is randomly selected.")]
+		public readonly int[] SpawnInterval = { 6000 };
 
 		[FieldLoader.Require]
 		[ActorReference]
@@ -37,12 +37,26 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Owner = "Creeps";
 
 		[Desc("Type of ActorSpawner with which it connects.")]
- 		public readonly HashSet<string> Types = new HashSet<string>() { };
+		public readonly HashSet<string> Types = new HashSet<string>() { };
+
+		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
+		{
+			base.RulesetLoaded(rules, ai);
+
+			if (SpawnInterval.Length == 0 || SpawnInterval.Length > 2)
+				throw new YamlException("{0}.{1} must be either 1 or 2 values".F(nameof(ActorSpawnManager), nameof(SpawnInterval)));
+
+			if (SpawnInterval.Length == 2 && SpawnInterval[0] >= SpawnInterval[1])
+				throw new YamlException("{0}.{1}'s first value must be less than the second value".F(nameof(ActorSpawnManager), nameof(SpawnInterval)));
+
+			if (SpawnInterval.Any(it => it < 0))
+				throw new YamlException("{0}.{1}'s value(s) must not be less than 0".F(nameof(ActorSpawnManager), nameof(SpawnInterval)));
+		}
 
 		public override object Create(ActorInitializer init) { return new ActorSpawnManager(init.Self, this); }
 	}
 
-	public class ActorSpawnManager : ConditionalTrait<ActorSpawnManagerInfo>, ITick, INotifyCreated
+	public class ActorSpawnManager : ConditionalTrait<ActorSpawnManagerInfo>, ITick
 	{
 		readonly ActorSpawnManagerInfo info;
 
@@ -50,14 +64,16 @@ namespace OpenRA.Mods.Common.Traits
 		int spawnCountdown;
 		int actorsPresent;
 
-		public ActorSpawnManager(Actor self, ActorSpawnManagerInfo info) : base(info)
+		public ActorSpawnManager(Actor self, ActorSpawnManagerInfo info)
+			: base(info)
 		{
 			this.info = info;
 		}
 
-		void INotifyCreated.Created(Actor self)
+		protected override void Created(Actor self)
 		{
 			enabled = self.Trait<MapCreeps>().Enabled;
+			base.Created(self);
 		}
 
 		void ITick.Tick(Actor self)
@@ -76,14 +92,15 @@ namespace OpenRA.Mods.Common.Traits
 			if (spawnPoint == null)
 				return;
 
-			spawnCountdown = info.SpawnInterval;
+			spawnCountdown = Util.RandomDelay(self.World, info.SpawnInterval);
 
 			do
 			{
 				// Always spawn at least one actor, plus
 				// however many needed to reach the minimum.
 				SpawnActor(self, spawnPoint);
-			} while (actorsPresent < info.Minimum);
+			}
+			while (actorsPresent < info.Minimum);
 		}
 
 		WPos SpawnActor(Actor self, Actor spawnPoint)

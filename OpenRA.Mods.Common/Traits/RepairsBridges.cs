@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,32 +10,39 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Drawing;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Orders;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Can enter a BridgeHut or LegacyBridgeHut to trigger a repair.")]
-	class RepairsBridgesInfo : ITraitInfo
+	class RepairsBridgesInfo : TraitInfo
 	{
-		[VoiceReference] public readonly string Voice = "Action";
+		[VoiceReference]
+		public readonly string Voice = "Action";
+
+		[Desc("Color to use for the target line.")]
+		public readonly Color TargetLineColor = Color.Yellow;
 
 		[Desc("Behaviour when entering the structure.",
 			"Possible values are Exit, Suicide, Dispose.")]
 		public readonly EnterBehaviour EnterBehaviour = EnterBehaviour.Dispose;
 
-		[Desc("Cursor to use when targeting an unrepaired bridge.")]
+		[CursorReference]
+		[Desc("Cursor to display when targeting an unrepaired bridge.")]
 		public readonly string TargetCursor = "goldwrench";
 
-		[Desc("Cursor to use when repairing is denied.")]
+		[CursorReference]
+		[Desc("Cursor to display when repairing is denied.")]
 		public readonly string TargetBlockedCursor = "goldwrench-blocked";
 
+		[NotificationReference("Speech")]
 		[Desc("Speech notification to play when a bridge is repaired.")]
 		public readonly string RepairNotification = null;
 
-		public object Create(ActorInitializer init) { return new RepairsBridges(this); }
+		public override object Create(ActorInitializer init) { return new RepairsBridges(this); }
 	}
 
 	class RepairsBridges : IIssueOrder, IResolveOrder, IOrderVoice
@@ -52,7 +59,7 @@ namespace OpenRA.Mods.Common.Traits
 			get { yield return new RepairBridgeOrderTargeter(info); }
 		}
 
-		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
+		public Order IssueOrder(Actor self, IOrderTargeter order, in Target target, bool queued)
 		{
 			if (order.OrderID == "RepairBridge")
 				return new Order(order.OrderID, self, target, queued);
@@ -81,6 +88,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void ResolveOrder(Actor self, Order order)
 		{
 			// TODO: Add support for FrozenActors
+			// The activity supports it, but still missing way to freeze bridge state on the hut
 			if (order.OrderString == "RepairBridge" && order.Target.Type == TargetType.Actor)
 			{
 				var targetActor = order.Target.Actor;
@@ -99,11 +107,8 @@ namespace OpenRA.Mods.Common.Traits
 				else
 					return;
 
-				if (!order.Queued)
-					self.CancelActivity();
-
-				self.SetTargetLine(order.Target, Color.Yellow);
-				self.QueueActivity(new RepairBridge(self, targetActor, info.EnterBehaviour, info.RepairNotification));
+				self.QueueActivity(order.Queued, new RepairBridge(self, order.Target, info.EnterBehaviour, info.RepairNotification, info.TargetLineColor));
+				self.ShowTargetLines();
 			}
 		}
 

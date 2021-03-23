@@ -14,9 +14,6 @@ NAPULS:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
-	Selectable:
-		Bounds: 78, 54, 0, -12
-		DecorationBounds: 78, 54, 0, -12
 	Health:
 		HP: 50000
 	Armor:
@@ -24,19 +21,20 @@ NAPULS:
 	RevealsShroud:
 		Range: 8c0
 	Turreted:
-		TurnSpeed: 10
-		InitialFacing: 224
+		TurnSpeed: 40
+		InitialFacing: 896
+		RealignDelay: -1
 	AttackTurreted:
-		RequiresCondition: !empdisable && !disabled
+		RequiresCondition: !build-incomplete && !empdisable && !disabled
 	Armament:
 		Weapon: EMPulseCannon
 		LocalOffset: 212,0,1768
 		LocalYaw: 0,100
 	WithSpriteTurret:
+		RequiresCondition: !build-incomplete
 		Sequence: turret
 	Power:
 		Amount: -150
-	SelectionDecorations:
 	RenderSprites:
 		Image: napuls.gdi
 		FactionImages:

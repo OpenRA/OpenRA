@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -47,14 +47,9 @@ namespace OpenRA.Primitives
 			BitSetIndex bits = 0;
 
 			lock (Bits)
-			{
 				foreach (var value in values)
-				{
-					BitSetIndex valueBit;
-					if (Bits.TryGetValue(value, out valueBit))
+					if (Bits.TryGetValue(value, out var valueBit))
 						bits |= valueBit;
-				}
-			}
 
 			return bits;
 		}
@@ -80,11 +75,13 @@ namespace OpenRA.Primitives
 		}
 	}
 
-	public struct BitSet<T> : IEnumerable<string>, IEquatable<BitSet<T>> where T : class
+	public readonly struct BitSet<T> : IEnumerable<string>, IEquatable<BitSet<T>> where T : class
 	{
 		readonly BitSetIndex bits;
 
-		public BitSet(params string[] values) : this(BitSetAllocator<T>.GetBits(values)) { }
+		public BitSet(params string[] values)
+			: this(BitSetAllocator<T>.GetBits(values)) { }
+
 		BitSet(BitSetIndex bits) { this.bits = bits; }
 
 		public static BitSet<T> FromStringsNoAlloc(string[] values)
@@ -104,7 +101,7 @@ namespace OpenRA.Primitives
 		public override bool Equals(object obj) { return obj is BitSet<T> && Equals((BitSet<T>)obj); }
 		public override int GetHashCode() { return bits.GetHashCode(); }
 
-		public bool IsEmpty { get { return bits == 0; } }
+		public bool IsEmpty => bits == 0;
 
 		public bool IsProperSubsetOf(BitSet<T> other)
 		{

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -14,7 +14,6 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Widgets
 {
@@ -32,7 +31,10 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly World world;
 		readonly EditorViewportControllerWidget editorWidget;
 		readonly EditorActorLayer editorLayer;
-		readonly Dictionary<int, ResourceType> resources;
+		readonly EditorActionManager editorActionManager;
+		readonly IResourceLayer resourceLayer;
+
+		public EditorActorPreview SelectedActor;
 		int2 worldPixel;
 
 		public EditorDefaultBrush(EditorViewportControllerWidget editorWidget, WorldRenderer wr)
@@ -42,8 +44,8 @@ namespace OpenRA.Mods.Common.Widgets
 			world = wr.World;
 
 			editorLayer = world.WorldActor.Trait<EditorActorLayer>();
-			resources = world.WorldActor.TraitsImplementing<ResourceType>()
-				.ToDictionary(r => r.Info.ResourceType, r => r);
+			editorActionManager = world.WorldActor.Trait<EditorActionManager>();
+			resourceLayer = world.WorldActor.Trait<IResourceLayer>();
 		}
 
 		long CalculateActorSelectionPriority(EditorActorPreview actor)
@@ -60,9 +62,10 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public bool HandleMouseInput(MouseInput mi)
 		{
-			// Exclusively uses mouse wheel and right mouse buttons, but nothing else
+			// Exclusively uses mouse wheel and both mouse buttons, but nothing else
 			// Mouse move events are important for tooltips, so we always allow these through
-			if ((mi.Button != MouseButton.Right && mi.Event != MouseInputEvent.Move && mi.Event != MouseInputEvent.Scroll) ||
+			if ((mi.Button != MouseButton.Left && mi.Button != MouseButton.Right
+				&& mi.Event != MouseInputEvent.Move && mi.Event != MouseInputEvent.Scroll) ||
 				mi.Event == MouseInputEvent.Down)
 				return false;
 
@@ -70,13 +73,12 @@ namespace OpenRA.Mods.Common.Widgets
 			var cell = worldRenderer.Viewport.ViewToWorld(mi.Location);
 
 			var underCursor = editorLayer.PreviewsAt(worldPixel).MinByOrDefault(CalculateActorSelectionPriority);
+			var resourceUnderCursor = resourceLayer.GetResource(cell).Type;
 
-			var mapResources = world.Map.Resources;
-			ResourceType type;
 			if (underCursor != null)
 				editorWidget.SetTooltip(underCursor.Tooltip);
-			else if (mapResources.Contains(cell) && resources.TryGetValue(mapResources[cell].Type, out type))
-				editorWidget.SetTooltip(type.Info.Type);
+			else if (resourceUnderCursor != null)
+				editorWidget.SetTooltip(resourceUnderCursor);
 			else
 				editorWidget.SetTooltip(null);
 
@@ -84,33 +86,21 @@ namespace OpenRA.Mods.Common.Widgets
 			if (mi.Event == MouseInputEvent.Move)
 				return false;
 
+			if (mi.Button == MouseButton.Left)
+			{
+				editorWidget.SetTooltip(null);
+				SelectedActor = underCursor;
+			}
+
 			if (mi.Button == MouseButton.Right)
 			{
 				editorWidget.SetTooltip(null);
 
-				if (underCursor != null)
-					editorLayer.Remove(underCursor);
+				if (underCursor != null && underCursor != SelectedActor)
+					editorActionManager.Add(new RemoveActorAction(editorLayer, underCursor));
 
-				if (mapResources.Contains(cell) && mapResources[cell].Type != 0)
-					mapResources[cell] = new ResourceTile();
-			}
-			else if (mi.Event == MouseInputEvent.Scroll)
-			{
-				if (underCursor != null)
-				{
-					// Test case / demonstration of how to edit an existing actor
-					var facing = underCursor.Init<FacingInit>();
-					if (facing != null)
-						underCursor.ReplaceInit(new FacingInit((facing.Value(world) + mi.ScrollDelta) % 256));
-					else if (underCursor.Info.HasTraitInfo<UsesInit<FacingInit>>())
-						underCursor.ReplaceInit(new FacingInit(mi.ScrollDelta));
-
-					var turret = underCursor.Init<TurretFacingInit>();
-					if (turret != null)
-						underCursor.ReplaceInit(new TurretFacingInit((turret.Value(world) + mi.ScrollDelta) % 256));
-					else if (underCursor.Info.HasTraitInfo<UsesInit<TurretFacingInit>>())
-						underCursor.ReplaceInit(new TurretFacingInit(mi.ScrollDelta));
-				}
+				if (resourceUnderCursor != null)
+					editorActionManager.Add(new RemoveResourceAction(resourceLayer, cell, resourceUnderCursor));
 			}
 
 			return true;
@@ -118,5 +108,71 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public void Tick() { }
 		public void Dispose() { }
+	}
+
+	class RemoveActorAction : IEditorAction
+	{
+		public string Text { get; private set; }
+
+		readonly EditorActorLayer editorActorLayer;
+		readonly EditorActorPreview actor;
+
+		public RemoveActorAction(EditorActorLayer editorActorLayer, EditorActorPreview actor)
+		{
+			this.editorActorLayer = editorActorLayer;
+			this.actor = actor;
+
+			Text = "Removed {0} ({1})".F(actor.Info.Name, actor.ID);
+		}
+
+		public void Execute()
+		{
+			Do();
+		}
+
+		public void Do()
+		{
+			editorActorLayer.Remove(actor);
+		}
+
+		public void Undo()
+		{
+			editorActorLayer.Add(actor);
+		}
+	}
+
+	class RemoveResourceAction : IEditorAction
+	{
+		public string Text { get; private set; }
+
+		readonly IResourceLayer resourceLayer;
+		readonly CPos cell;
+
+		ResourceLayerContents resourceContents;
+
+		public RemoveResourceAction(IResourceLayer resourceLayer, CPos cell, string resourceType)
+		{
+			this.resourceLayer = resourceLayer;
+			this.cell = cell;
+
+			Text = "Removed {0}".F(resourceType);
+		}
+
+		public void Execute()
+		{
+			Do();
+		}
+
+		public void Do()
+		{
+			resourceContents = resourceLayer.GetResource(cell);
+			resourceLayer.ClearResources(cell);
+		}
+
+		public void Undo()
+		{
+			resourceLayer.ClearResources(cell);
+			resourceLayer.AddResource(resourceContents.Type, cell, resourceContents.Density);
+		}
 	}
 }

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,9 +10,9 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Drawing;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 	public enum RangeCircleVisibility { Always, WhenSelected }
 
 	[Desc("Renders an arbitrary circle when selected or placing a structure")]
-	class WithRangeCircleInfo : ITraitInfo, IPlaceBuildingDecorationInfo
+	class WithRangeCircleInfo : ConditionalTraitInfo, IPlaceBuildingDecorationInfo
 	{
 		[Desc("Type of range circle. used to decide which circles to draw on other structures during building placement.")]
 		public readonly string Type = null;
@@ -28,12 +28,21 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Color of the circle")]
 		public readonly Color Color = Color.FromArgb(128, Color.White);
 
+		[Desc("Border width.")]
+		public readonly float Width = 1;
+
+		[Desc("Color of the border.")]
+		public readonly Color BorderColor = Color.FromArgb(96, Color.Black);
+
+		[Desc("Range circle border width.")]
+		public readonly float BorderWidth = 3;
+
 		[Desc("If set, the color of the owning player will be used instead of `Color`.")]
 		public readonly bool UsePlayerColor = false;
 
-		[Desc("Stances of players which will be able to see the circle.",
+		[Desc("Player relationships which will be able to see the circle.",
 			"Valid values are combinations of `None`, `Ally`, `Enemy` and `Neutral`.")]
-		public readonly Stance ValidStances = Stance.Ally;
+		public readonly PlayerRelationship ValidRelationships = PlayerRelationship.Ally;
 
 		[Desc("When to show the range circle. Valid values are `Always`, and `WhenSelected`")]
 		public readonly RangeCircleVisibility Visible = RangeCircleVisibility.WhenSelected;
@@ -41,75 +50,76 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Range of the circle")]
 		public readonly WDist Range = WDist.Zero;
 
-		public IEnumerable<IRenderable> Render(WorldRenderer wr, World w, ActorInfo ai, WPos centerPosition)
+		public IEnumerable<IRenderable> RenderAnnotations(WorldRenderer wr, World w, ActorInfo ai, WPos centerPosition)
 		{
-			yield return new RangeCircleRenderable(
-				centerPosition,
-				Range,
-				0,
-				Color,
-				Color.FromArgb(96, Color.Black));
+			if (EnabledByDefault)
+			{
+				yield return new RangeCircleAnnotationRenderable(
+					centerPosition,
+					Range,
+					0,
+					Color,
+					Width,
+					BorderColor,
+					BorderWidth);
 
-			foreach (var a in w.ActorsWithTrait<WithRangeCircle>())
-				if (a.Trait.Info.Type == Type)
-					foreach (var r in a.Trait.RenderRangeCircle(a.Actor, wr))
-						yield return r;
+				foreach (var a in w.ActorsWithTrait<WithRangeCircle>())
+					if (a.Trait.Info.Type == Type)
+						foreach (var r in a.Trait.RenderRangeCircle(a.Actor, wr, RangeCircleVisibility.WhenSelected))
+							yield return r;
+			}
 		}
 
-		public object Create(ActorInitializer init) { return new WithRangeCircle(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new WithRangeCircle(init.Self, this); }
 	}
 
-	class WithRangeCircle : IRenderAboveShroudWhenSelected, IRenderAboveWorld
+	class WithRangeCircle : ConditionalTrait<WithRangeCircleInfo>, IRenderAnnotationsWhenSelected, IRenderAnnotations
 	{
-		public readonly WithRangeCircleInfo Info;
 		readonly Actor self;
 
 		public WithRangeCircle(Actor self, WithRangeCircleInfo info)
+			: base(info)
 		{
 			this.self = self;
-			Info = info;
 		}
 
 		bool Visible
 		{
 			get
 			{
+				if (IsTraitDisabled)
+					return false;
+
 				var p = self.World.RenderPlayer;
-				return p == null || Info.ValidStances.HasStance(self.Owner.Stances[p]) || (p.Spectating && !p.NonCombatant);
+				return p == null || Info.ValidRelationships.HasRelationship(self.Owner.RelationshipWith(p)) || (p.Spectating && !p.NonCombatant);
 			}
 		}
 
-		public IEnumerable<IRenderable> RenderRangeCircle(Actor self, WorldRenderer wr)
+		public IEnumerable<IRenderable> RenderRangeCircle(Actor self, WorldRenderer wr, RangeCircleVisibility visibility)
 		{
-			if (Info.Visible == RangeCircleVisibility.WhenSelected && Visible)
-				yield return new RangeCircleRenderable(
+			if (Info.Visible == visibility && Visible)
+				yield return new RangeCircleAnnotationRenderable(
 					self.CenterPosition,
 					Info.Range,
 					0,
-					Info.UsePlayerColor ? self.Owner.Color.RGB : Info.Color,
-					Color.FromArgb(96, Color.Black));
-
-			yield break;
+					Info.UsePlayerColor ? self.Owner.Color : Info.Color,
+					Info.Width,
+					Info.BorderColor,
+					Info.BorderWidth);
 		}
 
-		IEnumerable<IRenderable> IRenderAboveShroudWhenSelected.RenderAboveShroud(Actor self, WorldRenderer wr)
+		IEnumerable<IRenderable> IRenderAnnotationsWhenSelected.RenderAnnotations(Actor self, WorldRenderer wr)
 		{
-			return RenderRangeCircle(self, wr);
+			return RenderRangeCircle(self, wr, RangeCircleVisibility.WhenSelected);
 		}
 
-		bool IRenderAboveShroudWhenSelected.SpatiallyPartitionable { get { return false; } }
+		bool IRenderAnnotationsWhenSelected.SpatiallyPartitionable => false;
 
-		void IRenderAboveWorld.RenderAboveWorld(Actor self, WorldRenderer wr)
+		IEnumerable<IRenderable> IRenderAnnotations.RenderAnnotations(Actor self, WorldRenderer wr)
 		{
-			if (Info.Visible == RangeCircleVisibility.Always && Visible)
-				RangeCircleRenderable.DrawRangeCircle(
-					wr,
-					self.CenterPosition,
-					Info.Range,
-					1,
-					Info.UsePlayerColor ? self.Owner.Color.RGB : Info.Color,
-					3,
-					Color.FromArgb(96, Color.Black));
+			return RenderRangeCircle(self, wr, RangeCircleVisibility.Always);
 		}
+
+		bool IRenderAnnotations.SpatiallyPartitionable => false;
 	}
 }

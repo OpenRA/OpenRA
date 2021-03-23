@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+   Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -17,16 +17,16 @@ EnemyBaseEntranceShroudTrigger = { CPos.New(80, 73), CPos.New(81, 73), CPos.New(
 
 SendUSSRParadrops = function()
 	paraproxy1 = Actor.Create("powerproxy.paratroopers", false, { Owner = player })
-	paraproxy1.SendParatroopers(ParachuteBaseEntrance.CenterPosition, false,  Facing.North)
+	paraproxy1.TargetParatroopers(ParachuteBaseEntrance.CenterPosition, Angle.North)
 	paraproxy1.Destroy()
 end
 
 SendUSSRParadropsBase = function()
 	paraproxy2 = Actor.Create("powerproxy.paratroopers2", false, { Owner = player })
-	paraproxy2.SendParatroopers(ParachuteBase1.CenterPosition, false, Facing.East)
+	paraproxy2.TargetParatroopers(ParachuteBase1.CenterPosition, Angle.East)
 	paraproxy2.Destroy()
 	paraproxy3 = Actor.Create("powerproxy.paratroopers3", false, { Owner = player })
-	paraproxy3.SendParatroopers(ParachuteBase2.CenterPosition, false, Facing.East)
+	paraproxy3.TargetParatroopers(ParachuteBase2.CenterPosition, Angle.East)
 	paraproxy3.Destroy()
 end
 

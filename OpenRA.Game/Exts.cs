@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -11,11 +11,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using OpenRA.Primitives;
 using OpenRA.Support;
 using OpenRA.Traits;
 
@@ -79,19 +78,9 @@ namespace OpenRA
 				return val;
 		}
 
-		public static bool Contains(this Rectangle r, int2 p)
-		{
-			return r.Contains(p.ToPoint());
-		}
-
-		public static bool Contains(this RectangleF r, int2 p)
-		{
-			return r.Contains(p.ToPointF());
-		}
-
 		static int WindingDirectionTest(int2 v0, int2 v1, int2 p)
 		{
-			return (v1.X - v0.X) * (p.Y - v0.Y) - (p.X - v0.X) * (v1.Y - v0.Y);
+			return Math.Sign((v1.X - v0.X) * (p.Y - v0.Y) - (p.X - v0.X) * (v1.Y - v0.Y));
 		}
 
 		public static bool PolygonContains(this int2[] polygon, int2 p)
@@ -112,6 +101,16 @@ namespace OpenRA
 			return windingNumber != 0;
 		}
 
+		public static bool LinesIntersect(int2 a, int2 b, int2 c, int2 d)
+		{
+			// If line segments AB and CD intersect:
+			//  - the triangles ACD and BCD must have opposite sense (clockwise or anticlockwise)
+			//  - the triangles CAB and DAB must have opposite sense
+			// Segments intersect if the orientation (clockwise or anticlockwise) of the two points in each line segment are opposite with respect to the other
+			// Assumes that lines are not colinear
+			return WindingDirectionTest(c, d, a) != WindingDirectionTest(c, d, b) && WindingDirectionTest(a, b, c) != WindingDirectionTest(a, b, d);
+		}
+
 		public static bool HasModifier(this Modifiers k, Modifiers mod)
 		{
 			// PERF: Enum.HasFlag is slower and requires allocations.
@@ -121,13 +120,19 @@ namespace OpenRA
 		public static V GetOrAdd<K, V>(this Dictionary<K, V> d, K k)
 			where V : new()
 		{
-			return d.GetOrAdd(k, _ => new V());
+			return d.GetOrAdd(k, new V());
+		}
+
+		public static V GetOrAdd<K, V>(this Dictionary<K, V> d, K k, V v)
+		{
+			if (!d.TryGetValue(k, out var ret))
+				d.Add(k, ret = v);
+			return ret;
 		}
 
 		public static V GetOrAdd<K, V>(this Dictionary<K, V> d, K k, Func<K, V> createFn)
 		{
-			V ret;
-			if (!d.TryGetValue(k, out ret))
+			if (!d.TryGetValue(k, out var ret))
 				d.Add(k, ret = createFn(k));
 			return ret;
 		}
@@ -154,12 +159,32 @@ namespace OpenRA
 			if (xs.Count == 0)
 			{
 				if (throws)
-					throw new ArgumentException("Collection must not be empty.", "ts");
+					throw new ArgumentException("Collection must not be empty.", nameof(ts));
 				else
 					return default(T);
 			}
 			else
 				return xs.ElementAt(r.Next(xs.Count));
+		}
+
+		public static Rectangle Union(this IEnumerable<Rectangle> rects)
+		{
+			// PERF: Avoid LINQ.
+			var first = true;
+			var result = Rectangle.Empty;
+			foreach (var rect in rects)
+			{
+				if (first)
+				{
+					first = false;
+					result = rect;
+					continue;
+				}
+
+				result = Rectangle.Union(rect, result);
+			}
+
+			return result;
 		}
 
 		public static float Product(this IEnumerable<float> xs)
@@ -175,7 +200,11 @@ namespace OpenRA
 
 		public static IEnumerable<T> Iterate<T>(this T t, Func<T, T> f)
 		{
-			for (;;) { yield return t; t = f(t); }
+			while (true)
+			{
+				yield return t;
+				t = f(t);
+			}
 		}
 
 		public static T MinBy<T, U>(this IEnumerable<T> ts, Func<T, U> selector)
@@ -207,7 +236,7 @@ namespace OpenRA
 			{
 				if (!e.MoveNext())
 					if (throws)
-						throw new ArgumentException("Collection must not be empty.", "ts");
+						throw new ArgumentException("Collection must not be empty.", nameof(ts));
 					else
 						return default(T);
 				t = e.Current;
@@ -330,8 +359,7 @@ namespace OpenRA
 
 		public static int IntegerDivisionRoundingAwayFromZero(int dividend, int divisor)
 		{
-			int remainder;
-			var quotient = Math.DivRem(dividend, divisor, out remainder);
+			var quotient = Math.DivRem(dividend, divisor, out var remainder);
 			if (remainder == 0)
 				return quotient;
 			return quotient + (Math.Sign(dividend) == Math.Sign(divisor) ? 1 : -1);
@@ -382,8 +410,7 @@ namespace OpenRA
 				// Check for a key conflict:
 				if (d.ContainsKey(key))
 				{
-					List<string> dupKeyMessages;
-					if (!dupKeys.TryGetValue(key, out dupKeyMessages))
+					if (!dupKeys.TryGetValue(key, out var dupKeyMessages))
 					{
 						// Log the initial conflicting value already inserted:
 						dupKeyMessages = new List<string>();
@@ -448,27 +475,6 @@ namespace OpenRA
 			return result;
 		}
 
-		public static Rectangle Bounds(this Bitmap b) { return new Rectangle(0, 0, b.Width, b.Height); }
-
-		public static Bitmap CloneWith32bbpArgbPixelFormat(this Bitmap original)
-		{
-			// Note: We would use original.Clone(original.Bounds(), PixelFormat.Format32bppArgb)
-			// but this doesn't work on mono.
-			var clone = new Bitmap(original.Width, original.Height, PixelFormat.Format32bppArgb);
-			try
-			{
-				using (var g = System.Drawing.Graphics.FromImage(clone))
-					g.DrawImage(original, original.Bounds());
-			}
-			catch (Exception)
-			{
-				clone.Dispose();
-				throw;
-			}
-
-			return clone;
-		}
-
 		public static int ToBits(this IEnumerable<bool> bits)
 		{
 			var i = 0;
@@ -486,6 +492,11 @@ namespace OpenRA
 		public static int ParseIntegerInvariant(string s)
 		{
 			return int.Parse(s, NumberStyles.Integer, NumberFormatInfo.InvariantInfo);
+		}
+
+		public static byte ParseByte(string s)
+		{
+			return byte.Parse(s, NumberStyles.Integer, NumberFormatInfo.InvariantInfo);
 		}
 
 		public static bool TryParseIntegerInvariant(string s, out int i)

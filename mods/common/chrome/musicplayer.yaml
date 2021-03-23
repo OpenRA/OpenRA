@@ -18,11 +18,14 @@ Background@MUSIC_PANEL:
 					X: 2
 					Y: 0
 					Visible: false
+					EnableChildMouseOver: True
 					Children:
-						Label@TITLE:
+						LabelWithTooltip@TITLE:
 							X: 10
 							Width: PARENT_RIGHT - 50
 							Height: 25
+							TooltipContainer: MUSIC_TOOLTIP_CONTAINER
+							TooltipTemplate: SIMPLE_TOOLTIP
 						Label@LENGTH:
 							Width: 50
 							X: PARENT_RIGHT - 60
@@ -30,7 +33,7 @@ Background@MUSIC_PANEL:
 							Height: 25
 		Container@LABEL_CONTAINER:
 			X: 25
-			Y: 15
+			Y: 16
 			Width: 330
 			Children:
 				Label@TITLE:
@@ -52,79 +55,69 @@ Background@MUSIC_PANEL:
 			Width: 170
 			Children:
 				Button@BUTTON_PREV:
-					Width: 25
-					Height: 25
+					Width: 26
+					Height: 26
 					IgnoreChildMouseOver: true
 					Children:
 						Image@IMAGE_PREV:
-							X: 0
-							Y: 0
-							Width: 25
-							Height: 25
+							X: 5
+							Y: 5
 							ImageCollection: music
 							ImageName: prev
 				Button@BUTTON_PLAY:
 					X: 35
-					Width: 25
-					Height: 25
+					Width: 26
+					Height: 26
 					IgnoreChildMouseOver: true
 					Children:
 						Image@IMAGE_PLAY:
-							X: 0
-							Y: 0
-							Width: 25
-							Height: 25
+							X: 5
+							Y: 5
 							ImageCollection: music
 							ImageName: play
 				Button@BUTTON_PAUSE:
 					Visible: false
 					X: 35
-					Width: 25
-					Height: 25
+					Width: 26
+					Height: 26
 					IgnoreChildMouseOver: true
 					Children:
 						Image@IMAGE_PAUSE:
-							X: 0
-							Y: 0
-							Width: 25
-							Height: 25
+							X: 5
+							Y: 5
 							ImageCollection: music
 							ImageName: pause
 				Button@BUTTON_STOP:
 					X: 70
-					Width: 25
-					Height: 25
+					Width: 26
+					Height: 26
 					IgnoreChildMouseOver: true
 					Children:
 						Image@IMAGE_STOP:
-							X: 0
-							Y: 0
-							Width: 25
-							Height: 25
+							X: 5
+							Y: 5
 							ImageCollection: music
 							ImageName: stop
 				Button@BUTTON_NEXT:
 					X: 105
-					Width: 25
-					Height: 25
+					Width: 26
+					Height: 26
 					IgnoreChildMouseOver: true
 					Children:
 						Image@IMAGE_NEXT:
-							X: 0
-							Y: 0
-							Width: 25
-							Height: 25
+							X: 5
+							Y: 5
 							ImageCollection: music
 							ImageName: next
-				Slider@MUSIC_SLIDER:
+				ExponentialSlider@MUSIC_SLIDER:
 					X: 145
 					Y: 3
 					Width: 175
 					Height: 20
-					Ticks: 5
+					Ticks: 7
 		Label@TIME_LABEL:
 			X: (PARENT_RIGHT - WIDTH) / 2
-			Y: 330
+			Y: 332
 			Width: 140
 			Height: 25
 			Align: Center
@@ -143,7 +136,7 @@ Background@MUSIC_PANEL:
 			Text: Loop
 		Container@NO_MUSIC_LABEL:
 			X: 15
-			Y: 135
+			Y: 136
 			Width: 330
 			Height: 60
 			Visible: false
@@ -180,3 +173,4 @@ Background@MUSIC_PANEL:
 			Width: 300
 			Height: 20
 			Font: Small
+		TooltipContainer@MUSIC_TOOLTIP_CONTAINER:

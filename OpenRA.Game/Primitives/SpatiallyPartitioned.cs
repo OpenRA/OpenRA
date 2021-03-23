@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 
 namespace OpenRA.Primitives
 {
@@ -34,7 +33,7 @@ namespace OpenRA.Primitives
 		void ValidateBounds(T actor, Rectangle bounds)
 		{
 			if (bounds.Width == 0 || bounds.Height == 0)
-				throw new ArgumentException("Bounds of actor {0} are empty.".F(actor), "bounds");
+				throw new ArgumentException("Bounds of actor {0} are empty.".F(actor), nameof(bounds));
 		}
 
 		public void Add(T item, Rectangle bounds)
@@ -53,8 +52,7 @@ namespace OpenRA.Primitives
 
 		public bool Remove(T item)
 		{
-			Rectangle bounds;
-			if (!itemBounds.TryGetValue(item, out bounds))
+			if (!itemBounds.TryGetValue(item, out var bounds))
 				return false;
 
 			MutateBins(item, bounds, removeItem);
@@ -92,8 +90,7 @@ namespace OpenRA.Primitives
 
 		void MutateBins(T actor, Rectangle bounds, Action<Dictionary<T, Rectangle>, T, Rectangle> action)
 		{
-			int minRow, maxRow, minCol, maxCol;
-			BoundsToBinRowsAndCols(bounds, out minRow, out maxRow, out minCol, out maxCol);
+			BoundsToBinRowsAndCols(bounds, out var minRow, out var maxRow, out var minCol, out var maxCol);
 
 			for (var row = minRow; row < maxRow; row++)
 				for (var col = minCol; col < maxCol; col++)
@@ -111,8 +108,7 @@ namespace OpenRA.Primitives
 
 		public IEnumerable<T> InBox(Rectangle box)
 		{
-			int minRow, maxRow, minCol, maxCol;
-			BoundsToBinRowsAndCols(box, out minRow, out maxRow, out minCol, out maxCol);
+			BoundsToBinRowsAndCols(box, out var minRow, out var maxRow, out var minCol, out var maxCol);
 
 			// We want to return any items intersecting the box.
 			// If the box covers multiple bins, we must handle items that are contained in multiple bins and avoid
@@ -139,6 +135,8 @@ namespace OpenRA.Primitives
 				}
 		}
 
-		public IEnumerable<Rectangle> ItemBounds { get { return itemBounds.Values; } }
+		public IEnumerable<Rectangle> ItemBounds => itemBounds.Values;
+
+		public IEnumerable<T> Items => itemBounds.Keys;
 	}
 }

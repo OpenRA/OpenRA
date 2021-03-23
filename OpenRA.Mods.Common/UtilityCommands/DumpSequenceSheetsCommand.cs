@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,10 +10,6 @@
 #endregion
 
 using System;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Reflection;
 using OpenRA.FileSystem;
 using OpenRA.Graphics;
 
@@ -23,7 +19,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 	{
 		static readonly int[] ChannelMasks = { 2, 1, 0, 3 };
 
-		string IUtilityCommand.Name { get { return "--dump-sequence-sheets"; } }
+		string IUtilityCommand.Name => "--dump-sequence-sheets";
 
 		bool IUtilityCommand.ValidateArguments(string[] args)
 		{
@@ -36,10 +32,10 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			// HACK: The engine code assumes that Game.modData is set.
 			var modData = Game.ModData = utility.ModData;
 
-			var palette = new ImmutablePalette(args[1], new int[0]);
+			var palette = new ImmutablePalette(args[1], new[] { 0 }, new int[0]);
 
 			SequenceProvider sequences = null;
-			var mapPackage = new Folder(".").OpenPackage(args[2], modData.ModFiles);
+			var mapPackage = new Folder(Platform.EngineDir).OpenPackage(args[2], modData.ModFiles);
 			if (mapPackage != null)
 				sequences = new Map(modData, mapPackage).Rules.Sequences;
 			else if (!modData.DefaultSequences.TryGetValue(args[2], out sequences))
@@ -48,13 +44,18 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			sequences.Preload();
 
 			var count = 0;
-			var sb = sequences.SpriteCache.SheetBuilder;
+
+			var sb = sequences.SpriteCache.SheetBuilders[SheetType.Indexed];
 			foreach (var s in sb.AllSheets)
 			{
 				var max = s == sb.Current ? (int)sb.CurrentChannel + 1 : 4;
 				for (var i = 0; i < max; i++)
-					s.AsBitmap((TextureChannel)ChannelMasks[i], palette).Save("{0}.png".F(count++));
+					s.AsPng((TextureChannel)ChannelMasks[i], palette).Save("{0}.png".F(count++));
 			}
+
+			sb = sequences.SpriteCache.SheetBuilders[SheetType.BGRA];
+			foreach (var s in sb.AllSheets)
+				s.AsPng().Save("{0}.png".F(count++));
 
 			Console.WriteLine("Saved [0..{0}].png", count - 1);
 		}

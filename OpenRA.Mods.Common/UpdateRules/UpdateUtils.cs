@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -17,7 +17,7 @@ using OpenRA.FileSystem;
 
 namespace OpenRA.Mods.Common.UpdateRules
 {
-	using YamlFileSet = List<Tuple<IReadWritePackage, string, List<MiniYamlNode>>>;
+	using YamlFileSet = List<(IReadWritePackage, string, List<MiniYamlNode>)>;
 
 	public static class UpdateUtils
 	{
@@ -29,15 +29,13 @@ namespace OpenRA.Mods.Common.UpdateRules
 			var yaml = new YamlFileSet();
 			foreach (var filename in files)
 			{
-				string name;
-				IReadOnlyPackage package;
-				if (!modData.ModFiles.TryGetPackageContaining(filename, out package, out name) || !(package is IReadWritePackage))
+				if (!modData.ModFiles.TryGetPackageContaining(filename, out var package, out var name) || !(package is IReadWritePackage))
 				{
 					Console.WriteLine("Failed to load file `{0}` for writing. It will not be updated.", filename);
 					continue;
 				}
 
-				yaml.Add(Tuple.Create((IReadWritePackage)package, name, MiniYaml.FromStream(package.GetStream(name), name, false)));
+				yaml.Add(((IReadWritePackage)package, name, MiniYaml.FromStream(package.GetStream(name), name, false)));
 			}
 
 			return yaml;
@@ -62,7 +60,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 		{
 			var fileSet = new YamlFileSet()
 			{
-				Tuple.Create<IReadWritePackage, string, List<MiniYamlNode>>(null, "map.yaml", yaml.Nodes)
+				(null, "map.yaml", yaml.Nodes)
 			};
 
 			var files = FieldLoader.GetValue<string[]>("value", yaml.Value);
@@ -70,7 +68,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 			{
 				// Ignore any files that aren't in the map bundle
 				if (!filename.Contains("|") && mapPackage.Contains(filename))
-					fileSet.Add(Tuple.Create(mapPackage, filename, MiniYaml.FromStream(mapPackage.GetStream(filename), filename, false)));
+					fileSet.Add((mapPackage, filename, MiniYaml.FromStream(mapPackage.GetStream(filename), filename, false)));
 				else if (modData.ModFiles.Exists(filename))
 					externalFilenames.Add(filename);
 			}
@@ -97,9 +95,21 @@ namespace OpenRA.Mods.Common.UpdateRules
 				}
 
 				var yaml = new MiniYaml(null, MiniYaml.FromStream(mapStream, mapPackage.Name, false));
-				files = new YamlFileSet() { Tuple.Create(mapPackage, "map.yaml", yaml.Nodes) };
+				files = new YamlFileSet() { (mapPackage, "map.yaml", yaml.Nodes) };
 
 				manualSteps.AddRange(rule.BeforeUpdate(modData));
+
+				var mapActorsNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Actors");
+				if (mapActorsNode != null)
+				{
+					var mapActors = new YamlFileSet()
+					{
+						(null, "map.yaml", mapActorsNode.Value.Nodes)
+					};
+
+					manualSteps.AddRange(ApplyTopLevelTransform(modData, mapActors, rule.UpdateMapActorNode));
+					files.AddRange(mapActors);
+				}
 
 				var mapRulesNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Rules");
 				if (mapRulesNode != null)
@@ -115,6 +125,14 @@ namespace OpenRA.Mods.Common.UpdateRules
 					var mapWeapons = LoadInternalMapYaml(modData, mapPackage, mapWeaponsNode.Value, externalFilenames);
 					manualSteps.AddRange(ApplyTopLevelTransform(modData, mapWeapons, rule.UpdateWeaponNode));
 					files.AddRange(mapWeapons);
+				}
+
+				var mapSequencesNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Sequences");
+				if (mapSequencesNode != null)
+				{
+					var mapSequences = LoadInternalMapYaml(modData, mapPackage, mapSequencesNode.Value, externalFilenames);
+					manualSteps.AddRange(ApplyTopLevelTransform(modData, mapSequences, rule.UpdateWeaponNode));
+					files.AddRange(mapSequences);
 				}
 
 				manualSteps.AddRange(rule.AfterUpdate(modData));
@@ -143,8 +161,10 @@ namespace OpenRA.Mods.Common.UpdateRules
 
 			var modRules = LoadModYaml(modData, FilterExternalModFiles(modData, modData.Manifest.Rules, externalFilenames));
 			var modWeapons = LoadModYaml(modData, FilterExternalModFiles(modData, modData.Manifest.Weapons, externalFilenames));
+			var modSequences = LoadModYaml(modData, FilterExternalModFiles(modData, modData.Manifest.Sequences, externalFilenames));
 			var modTilesets = LoadModYaml(modData, FilterExternalModFiles(modData, modData.Manifest.TileSets, externalFilenames));
 			var modChromeLayout = LoadModYaml(modData, FilterExternalModFiles(modData, modData.Manifest.ChromeLayout, externalFilenames));
+			var modChromeProvider = LoadModYaml(modData, FilterExternalModFiles(modData, modData.Manifest.Chrome, externalFilenames));
 
 			// Find and add shared map includes
 			foreach (var package in modData.MapCache.EnumerateMapPackagesWithoutCaching())
@@ -166,20 +186,30 @@ namespace OpenRA.Mods.Common.UpdateRules
 						foreach (var f in LoadExternalMapYaml(modData, mapWeaponsNode.Value, externalFilenames))
 							if (!modWeapons.Any(m => m.Item1 == f.Item1 && m.Item2 == f.Item2))
 								modWeapons.Add(f);
+
+					var mapSequencesNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Sequences");
+					if (mapSequencesNode != null)
+						foreach (var f in LoadExternalMapYaml(modData, mapSequencesNode.Value, externalFilenames))
+							if (!modSequences.Any(m => m.Item1 == f.Item1 && m.Item2 == f.Item2))
+								modSequences.Add(f);
 				}
 			}
 
 			manualSteps.AddRange(rule.BeforeUpdate(modData));
 			manualSteps.AddRange(ApplyTopLevelTransform(modData, modRules, rule.UpdateActorNode));
 			manualSteps.AddRange(ApplyTopLevelTransform(modData, modWeapons, rule.UpdateWeaponNode));
+			manualSteps.AddRange(ApplyTopLevelTransform(modData, modSequences, rule.UpdateSequenceNode));
 			manualSteps.AddRange(ApplyTopLevelTransform(modData, modTilesets, rule.UpdateTilesetNode));
 			manualSteps.AddRange(ApplyChromeTransform(modData, modChromeLayout, rule.UpdateChromeNode));
+			manualSteps.AddRange(ApplyTopLevelTransform(modData, modChromeProvider, rule.UpdateChromeProviderNode));
 			manualSteps.AddRange(rule.AfterUpdate(modData));
 
 			files = modRules.ToList();
 			files.AddRange(modWeapons);
+			files.AddRange(modSequences);
 			files.AddRange(modTilesets);
 			files.AddRange(modChromeLayout);
+			files.AddRange(modChromeProvider);
 
 			return manualSteps;
 		}
@@ -221,10 +251,10 @@ namespace OpenRA.Mods.Common.UpdateRules
 							yield return manualStep;
 		}
 
-		public static string FormatMessageList(IEnumerable<string> messages, int indent = 0)
+		public static string FormatMessageList(IEnumerable<string> messages, int indent = 0, string separator = "*")
 		{
 			var prefix = string.Concat(Enumerable.Repeat("   ", indent));
-			return string.Join("\n", messages.Select(m => prefix + " * {0}".F(m.Replace("\n", "\n   " + prefix))));
+			return string.Join("\n", messages.Select(m => prefix + " {0} {1}".F(separator, m.Replace("\n", "\n   " + prefix))));
 		}
 	}
 
@@ -233,14 +263,19 @@ namespace OpenRA.Mods.Common.UpdateRules
 		public static void Save(this YamlFileSet files)
 		{
 			foreach (var file in files)
-				if (file.Item1 != null)
-					file.Item1.Update(file.Item2, Encoding.UTF8.GetBytes(file.Item3.WriteToString()));
+				file.Item1?.Update(file.Item2, Encoding.UTF8.GetBytes(file.Item3.WriteToString()));
+		}
+
+		/// <summary>Checks if node is a removal (has '-' prefix)</summary>
+		public static bool IsRemoval(this MiniYamlNode node)
+		{
+			return node.Key[0].ToString() == "-";
 		}
 
 		/// <summary>Renames a yaml key preserving any @suffix</summary>
 		public static void RenameKey(this MiniYamlNode node, string newKey, bool preserveSuffix = true, bool includeRemovals = true)
 		{
-			var prefix = includeRemovals && node.Key[0].ToString() == "-" ? "-" : "";
+			var prefix = includeRemovals && node.IsRemoval() ? "-" : "";
 			var split = node.Key.IndexOf("@", StringComparison.Ordinal);
 			if (preserveSuffix && split > -1)
 				node.Key = prefix + newKey + node.Key.Substring(split);
@@ -298,7 +333,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 			if (node.Key == null)
 				return false;
 
-			var prefix = includeRemovals && node.Key[0].ToString() == "-" ? "-" : "";
+			var prefix = includeRemovals && node.IsRemoval() ? "-" : "";
 			if (node.Key == prefix + match)
 				return true;
 
@@ -310,15 +345,36 @@ namespace OpenRA.Mods.Common.UpdateRules
 			return atPosition > 0 && node.Key.Substring(0, atPosition) == prefix + match;
 		}
 
+		/// <summary>Returns true if the node is of the form <*match*>, <*match*>@arbitrary or <arbitrary>@*match*</summary>
+		public static bool KeyContains(this MiniYamlNode node, string match, bool ignoreSuffix = true, bool includeRemovals = true)
+		{
+			if (node.Key == null)
+				return false;
+
+			var atPosition = node.Key.IndexOf('@');
+			var relevantPart = ignoreSuffix && atPosition > 0 ? node.Key.Substring(0, atPosition) : node.Key;
+
+			if (relevantPart.Contains(match) && (includeRemovals || !node.IsRemoval()))
+				return true;
+
+			return false;
+		}
+
 		/// <summary>Returns children with keys equal to [match] or [match]@[arbitrary suffix]</summary>
 		public static IEnumerable<MiniYamlNode> ChildrenMatching(this MiniYamlNode node, string match, bool ignoreSuffix = true, bool includeRemovals = true)
 		{
 			return node.Value.Nodes.Where(n => n.KeyMatches(match, ignoreSuffix, includeRemovals));
 		}
 
+		/// <summary>Returns children whose keys contain 'match' (optionally in the suffix)</summary>
+		public static IEnumerable<MiniYamlNode> ChildrenContaining(this MiniYamlNode node, string match, bool ignoreSuffix = true, bool includeRemovals = true)
+		{
+			return node.Value.Nodes.Where(n => n.KeyContains(match, ignoreSuffix, includeRemovals));
+		}
+
 		public static MiniYamlNode LastChildMatching(this MiniYamlNode node, string match, bool includeRemovals = true)
 		{
-			return node.ChildrenMatching(match, includeRemovals).LastOrDefault();
+			return node.ChildrenMatching(match, includeRemovals: includeRemovals).LastOrDefault();
 		}
 
 		public static void RenameChildrenMatching(this MiniYamlNode node, string match, string newKey, bool preserveSuffix = true, bool includeRemovals = true)

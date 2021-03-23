@@ -1,7 +1,7 @@
 Sniper:
 	Report: ramgun2.aud
 	ValidTargets: Ground, Infantry
-	InvalidTargets: Vehicle, Water, Structure, Wall, Husk
+	InvalidTargets: Vehicle, Water, Structure, Wall, Husk, Creep
 	ReloadDelay: 40
 	Range: 8c0
 	Projectile: Bullet
@@ -11,6 +11,10 @@ Sniper:
 		Damage: 10000
 		ValidTargets: Infantry
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
+	Warhead@2Eff: CreateEffect
+		Explosions: piff
+		ImpactActors: false
+		ValidTargets: Ground, Water, Air
 
 ^HeavyMG:
 	ReloadDelay: 25
@@ -48,8 +52,9 @@ Vulcan:
 		Spread: 426
 		Damage: 10000
 		Versus:
+			None: 90
 			Wood: 15
-			Light: 100
+			Light: 35
 			Heavy: 35
 
 HeliAGGun:
@@ -63,11 +68,11 @@ HeliAGGun:
 	Projectile: Bullet
 		Blockable: false
 	Warhead@1Dam: SpreadDamage
-		Spread: 256
+		Spread: 128
 		Damage: 2000
 		Versus:
 			None: 100
-			Wood: 50
+			Wood: 75
 			Light: 75
 			Heavy: 25
 		DamageTypes: Prone80Percent, TriggerProne, RippedApartDeath
@@ -76,20 +81,9 @@ HeliAAGun:
 	Inherits: HeliAGGun
 	ValidTargets: Air
 	Warhead@1Dam: SpreadDamage
-		Spread: 128
 		ValidTargets: Air
 		Versus:
 			Light: 50
-
-Pistol:
-	Inherits: ^LightMG
-	ReloadDelay: 7
-	Range: 3c0
-	Report: gun18.aud
-	Warhead@1Dam: SpreadDamage
-		Damage: 100
-		Versus:
-			None: 100
 
 ^LightMG:
 	Inherits: ^HeavyMG
@@ -109,9 +103,30 @@ Pistol:
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: piff
+		Inaccuracy: 171
+
+Pistol:
+	Inherits: ^LightMG
+	ReloadDelay: 7
+	Range: 3c0
+	Report: gun18.aud
+	Warhead@1Dam: SpreadDamage
+		Damage: 100
+		Versus:
+			None: 100
+	Warhead@2Eff: CreateEffect
+		Inaccuracy: 128
 
 M16:
 	Inherits: ^LightMG
+	Warhead@2Eff2: CreateEffect
+		Delay: 2
+		Explosions: piff
+		Inaccuracy: 171
+	Warhead@2Eff3: CreateEffect
+		Delay: 4
+		Explosions: piff
+		Inaccuracy: 171
 
 MachineGun:
 	Inherits: ^LightMG
@@ -122,7 +137,7 @@ MachineGun:
 			Wood: 10
 			Light: 70
 	Warhead@2Eff: CreateEffect
-		Explosions: piffs
+		Inaccuracy: 213
 
 MachineGunH:
 	Inherits: MachineGun
@@ -131,14 +146,14 @@ MachineGunH:
 			Light: 80
 
 APCGun:
-	ReloadDelay: 18
+	ReloadDelay: 9
 	Range: 5c0
 	Report: gun20.aud
 	Projectile: Bullet
 		Speed: 900
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 2000
+		Damage: 1000
 		Versus:
 			None: 30
 			Wood: 25
@@ -148,10 +163,11 @@ APCGun:
 	Warhead@2Eff: CreateEffect
 		Explosions: small_frag
 		ValidTargets: Ground, Water, Air
+		ImpactActors: false
 
 APCGun.AA:
 	Inherits: APCGun
-	Range: 6c0
+	Range: 7c0
 	ValidTargets: Air
 	Projectile: Bullet
 		Speed: 2c0
@@ -159,9 +175,6 @@ APCGun.AA:
 	Warhead@1Dam: SpreadDamage
 		ValidTargets: Air
 		Versus:
-			None: 60
-			Wood: 60
 			Light: 125
-			Heavy: 60
 	Warhead@2Eff: CreateEffect
 		Explosions: small_poof

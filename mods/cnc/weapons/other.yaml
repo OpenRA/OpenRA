@@ -1,13 +1,13 @@
 ^FlameWeapon:
 	ValidTargets: Ground, Water, Trees
 	ReloadDelay: 55
-	Range: 2c512
+	Range: 3c0
 	InvalidTargets: Wall
 	Report: flamer2.aud
 	Projectile: Bullet
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
-		Spread: 468
+		Spread: 256
 		Damage: 4000
 		ValidTargets: Ground, Water, Trees
 		InvalidTargets: Wall
@@ -22,7 +22,6 @@
 		InvalidTargets: Vehicle, Structure, Wall
 	Warhead@3Eff: CreateEffect
 		Explosions: small_napalm
-		ImpactSounds: flamer2.aud
 		ImpactActors: false
 
 Flamethrower:
@@ -30,12 +29,12 @@ Flamethrower:
 
 BigFlamer:
 	Inherits: ^FlameWeapon
-	ReloadDelay: 50
+	ReloadDelay: 65
 	Range: 3c512
 	Projectile: Bullet
 		Speed: 341
 	Burst: 2
-	BurstDelays: 25
+	BurstDelays: 10
 	Warhead@1Dam: SpreadDamage
 		Spread: 400
 		Damage: 10000
@@ -50,12 +49,10 @@ BigFlamer:
 Chemspray:
 	Inherits: ^FlameWeapon
 	ReloadDelay: 65
-	Range: 3c0
-	InvalidTargets:
+	-InvalidTargets:
 	Warhead@1Dam: SpreadDamage
-		Spread: 256
 		Damage: 8000
-		InvalidTargets:
+		-InvalidTargets:
 		Versus:
 			None: 70
 			Wood: 35

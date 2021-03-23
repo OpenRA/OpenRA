@@ -1,0 +1,59 @@
+Player:
+	-ConquestVictoryConditions:
+	PlayerResources:
+		ResourceValues:
+			Tiberium: 0
+			BlueTiberium: 0
+
+World:
+	-CrateSpawner:
+	-StartGameNotification:
+	-SpawnStartingUnits:
+	-MapStartingLocations:
+	LuaScript:
+		Scripts: fields-of-green.lua
+	MusicPlaylist:
+		BackgroundMusic: intro
+		DisableWorldSounds: true
+		AllowMuteBackgroundMusic: true
+
+^BaseWorld:
+	TerrainLighting:
+		BlueTint: 0.7
+		Intensity: 0.6
+
+INGRNLMP:
+	TerrainLightSource:
+		RedTint: 0.01
+		GreenTint: 0.7
+		BlueTint: 0.01
+		Intensity: 0.1
+		Range: 5c0
+
+^ExistsInWorld:
+	GivesExperience:
+		ActorExperienceModifier: 0
+
+HARV:
+	-Targetable:
+
+GALITE:
+	-Targetable:
+
+APC:
+	Cargo:
+		InitialUnits: e1, e1, e2, e2, medic
+
+^Building:
+	DamageMultiplier@UNKILLABLE:
+		RequiresCondition: unkillable
+		Modifier: 0
+	ExternalCondition@UNKILLABLE:
+		Condition: unkillable
+
+^Wall:
+	DamageMultiplier@UNKILLABLE:
+		RequiresCondition: unkillable
+		Modifier: 0
+	ExternalCondition@UNKILLABLE:
+		Condition: unkillable

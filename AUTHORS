@@ -3,26 +3,27 @@ hard work of many contributors.
 
 The OpenRA developers are:
     * Chris Forbes (chrisf)
-    * Igor Popov (ihptru)
     * Lukas Franke (abcdefg30)
-    * Oliver Brakmann (obrakmann)
     * Paul Chote (pchote)
     * Reaperrr
-    * Tom Roostan (RoosterDragon)
 
 Previous developers included:
     * Alli Witheford (alzeih)
     * Caleb Anderson (RobotCaleb)
     * Curtis Shmyr (hamb)
     * Daniel Hernandez (Mancano)
+    * Igor Popov (ihptru)
     * Matthias Mailänder (Mailaender)
     * Megan Bowra-Dean (beedee)
     * Mike Bundy (kehaar)
+    * Oliver Brakmann (obrakmann)
     * Pavel Penev (penev92)
     * Robert Pepperell (ytinasni)
     * ScottNZ
+    * Tom Roostan (RoosterDragon)
 
 Also thanks to:
+    * abmyii
     * Adam Valy (Tschokky)
     * Akseli Virtanen (RAGEQUIT)
     * Alexander Fast (mizipzor)
@@ -39,10 +40,12 @@ Also thanks to:
     * Biofreak
     * Braxton Williams (Buddytex)
     * Brendan Gluth (Mechanical_Man)
+    * Brent Gardner (bggardner)
     * Bryan Wilbur
     * Bugra Cuhadaroglu (BugraC)
-    * Christer Ulfsparre (Holloweye)
+    * Chris Cameron (Vesuvian)
     * Chris Grant (Unit158)
+    * Christer Ulfsparre (Holloweye)
     * clem
     * Cody Brittain (Generalcamo)
     * Constantin Helmig (CH4Code)
@@ -54,6 +57,7 @@ Also thanks to:
     * David Russell (DavidARussell)
     * DeadlySurprise
     * Dmitri Suvorov (suvjunmd)
+    * dtluna
     * Erasmus Schroder (rasco)
     * Eric Bajumpaa (SteelPhase)
     * Evgeniy Sergeev (evgeniysergeev)
@@ -61,11 +65,10 @@ Also thanks to:
     * Florian Wiesbauer (FiveAces)
     * Frank Razenberg (zzattack)
     * Gareth Needham (Ripley`)
-    * Glen Anderson (GlenLife)
+    * Glen Anderson (glen7)
     * Glenn Martin Jensen (Baxxster)
     * Gordon Martin (Happy0)
     * Guido Lipke (LipkeGu)
-    * Gyula Zimmermann (Graion Dilach)
     * Hervé Matysiak (Herve-M)
     * Huw Pascoe
     * Ian T. Jacobsen (Smilex)
@@ -89,10 +92,12 @@ Also thanks to:
     * Kenny Hoxworth (hoxworth)
     * Kevin Azzam (ChaoticMind)
     * Krishnakanth Mallik
+    * Kyle Smith (Smitty)
     * Kyrre Soerensen (zypres)
     * Lawrence Wang
     * Lesueur Benjamin (Valkirie)
     * Maarten Meuris (Nyerguds)
+    * Manuel Geiger (Ectras)
     * Mark Olson (markolson)
     * Markus Hartung (hartmark)
     * Matija Hustic (matija-hustic)
@@ -101,12 +106,15 @@ Also thanks to:
     * Matthijs Benschop (Nerdie)
     * Max621
     * Max Ugrumov (katzsmile)
+    * Mazar Farran (mazarf)
     * Michael Rätzel
     * Michael Silber (frühstück)
     * Michael Sztolcman (s1w_)
+    * Mike Gagné (AngryBirdz)
     * Muh
     * Mustafa Alperen Seki (MustaphaTR)
     * Neil Shivkar (havok13888)
+    * Nikolay Fomin (netnazgul)
     * Nooze
     * Nukem
     * Okunev Yu Dmitry (xaionaro)
@@ -130,14 +138,19 @@ Also thanks to:
     * Sebastien Kerguen (xanax)
     * Shawn Collins (UberWaffe)
     * Simon Verbeke (Saticmotion)
+    * Stuart McHattie (SDJMcHattie)
     * Taryn Hill (Phrohdoh)
     * Teemu Nieminen (Temeez)
     * Tim Mylemans (gecko)
     * Tirili
+    * Tomas Einarsson (Mesacer)
+    * Tom van Leth (tovl)
+    * Trevor Nichols (ocdi)
     * Tristan Keating (Kilkakon)
     * Tristan Mühlbacher (MicroBit)
     * UnknownProgrammer
     * Vladimir Komarov (VrKomarov)
+    * Wojciech Walaszek (Voidwalker)
     * Wuschel
 
 Using GNU FreeFont distributed under the GNU GPL
@@ -150,15 +163,6 @@ Using FreeType distributed under the terms of the
 FreeType License.
 
 Using OpenAL Soft distributed under the GNU LGPL.
-
-Using MaxMind GeoIP2 .NET API distributed under
-the Apache 2.0 license.
-
-Using GeoLite2 data created by MaxMind and
-distributed under the CC BY-SA 3.0 license.
-
-Using SharpFont created by Robert Rouhani and
-distributed under the MIT license.
 
 Using SDL2-CS and OpenAL-CS created by Ethan
 Lee and released under the zlib license.
@@ -178,6 +182,20 @@ Krueger and distributed under the GNU GPL terms.
 
 Using rix0rrr.BeaconLib developed by Rico Huijbers
 distributed under MIT License.
+
+Using DiscordRichPresence developed by Lachee
+distributed under MIT License.
+
+Using Json.NET developed by James Newton-King
+distributed under MIT License.
+
+Using ANGLE distributed under the BS3 3-Clause license.
+
+Using Pfim developed by Nick Babcock
+distributed under the MIT license.
+
+This site or product includes IP2Location LITE data
+available from http://www.ip2location.com.
 
 Finally, special thanks goes to the original teams
 at Westwood Studios and EA for creating the classic

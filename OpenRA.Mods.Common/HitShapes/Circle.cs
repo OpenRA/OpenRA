@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,17 +10,16 @@
 #endregion
 
 using System;
-using System.Drawing;
-using System.Linq;
+using System.Collections.Generic;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
-using OpenRA.Traits;
+using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.HitShapes
 {
 	public class CircleShape : IHitShape
 	{
-		public WDist OuterRadius { get { return Radius; } }
+		public WDist OuterRadius => Radius;
 
 		[FieldLoader.Require]
 		public readonly WDist Radius = new WDist(426);
@@ -41,32 +40,26 @@ namespace OpenRA.Mods.Common.HitShapes
 				throw new YamlException("VerticalTopOffset must be equal to or higher than VerticalBottomOffset.");
 		}
 
-		public WDist DistanceFromEdge(WVec v)
+		public WDist DistanceFromEdge(in WVec v)
 		{
 			return new WDist(Math.Max(0, v.Length - Radius.Length));
 		}
 
-		public WDist DistanceFromEdge(WPos pos, Actor actor)
+		public WDist DistanceFromEdge(WPos pos, WPos origin, WRot orientation)
 		{
-			var actorPos = actor.CenterPosition;
+			if (pos.Z > origin.Z + VerticalTopOffset)
+				return DistanceFromEdge(pos - (origin + new WVec(0, 0, VerticalTopOffset)));
 
-			if (pos.Z > actorPos.Z + VerticalTopOffset)
-				return DistanceFromEdge(pos - (actorPos + new WVec(0, 0, VerticalTopOffset)));
+			if (pos.Z < origin.Z + VerticalBottomOffset)
+				return DistanceFromEdge(pos - (origin + new WVec(0, 0, VerticalBottomOffset)));
 
-			if (pos.Z < actorPos.Z + VerticalBottomOffset)
-				return DistanceFromEdge(pos - (actorPos + new WVec(0, 0, VerticalBottomOffset)));
-
-			return DistanceFromEdge(pos - new WPos(actorPos.X, actorPos.Y, pos.Z));
+			return DistanceFromEdge(pos - new WPos(origin.X, origin.Y, pos.Z));
 		}
 
-		public void DrawCombatOverlay(WorldRenderer wr, RgbaColorRenderer wcr, Actor actor)
+		IEnumerable<IRenderable> IHitShape.RenderDebugOverlay(WorldRenderer wr, WPos origin, WRot orientation)
 		{
-			var actorPos = actor.CenterPosition;
-
-			RangeCircleRenderable.DrawRangeCircle(
-				wr, actorPos + new WVec(0, 0, VerticalTopOffset), Radius, 1, Color.Yellow, 0, Color.Yellow);
-			RangeCircleRenderable.DrawRangeCircle(
-				wr, actorPos + new WVec(0, 0, VerticalBottomOffset), Radius, 1, Color.Yellow, 0, Color.Yellow);
+			yield return new CircleAnnotationRenderable(origin + new WVec(0, 0, VerticalTopOffset), Radius, 1, Color.Yellow);
+			yield return new CircleAnnotationRenderable(origin + new WVec(0, 0, VerticalBottomOffset), Radius, 1, Color.Yellow);
 		}
 	}
 }

@@ -1,0 +1,93 @@
+Container@AUDIO_PANEL:
+	Logic: AudioSettingsLogic
+	Width: PARENT_RIGHT - 10
+	Height: PARENT_BOTTOM
+	Children:
+		Label@NO_AUDIO_DEVICE:
+			Y: 50
+			Width: PARENT_RIGHT
+			Align: Center
+			Text: Audio controls require an active sound device
+		Container@AUDIO_CONTROLS:
+			Width: PARENT_RIGHT
+			Height: PARENT_BOTTOM
+			Children:
+				Checkbox@CASH_TICKS:
+					X: 15
+					Y: 43
+					Width: 200
+					Height: 20
+					Font: Regular
+					Text: Cash Ticks
+				Checkbox@MUTE_SOUND:
+					X: 15
+					Y: 73
+					Width: 200
+					Height: 20
+					Font: Regular
+					Text: Mute Sound
+				Checkbox@MUTE_BACKGROUND_MUSIC:
+					X: 15
+					Y: 103
+					Width: 200
+					Height: 20
+					Font: Regular
+					Text: Mute Background Music
+				Label@SOUND_LABEL:
+					X: PARENT_RIGHT - WIDTH - 270
+					Y: 40
+					Width: 95
+					Height: 25
+					Align: Right
+					Text: Sound Volume:
+				ExponentialSlider@SOUND_VOLUME:
+					X: PARENT_RIGHT - WIDTH - 15
+					Y: 45
+					Width: 250
+					Height: 20
+					Ticks: 7
+				Label@MUSIC_LABEL:
+					X: PARENT_RIGHT - WIDTH - 270
+					Y: 70
+					Width: 95
+					Height: 25
+					Align: Right
+					Text: Music Volume:
+				ExponentialSlider@MUSIC_VOLUME:
+					X: PARENT_RIGHT - WIDTH - 15
+					Y: 75
+					Width: 250
+					Height: 20
+					Ticks: 7
+				Label@VIDEO_LABEL:
+					X: PARENT_RIGHT - WIDTH - 270
+					Y: 100
+					Width: 95
+					Height: 25
+					Align: Right
+					Text: Video Volume:
+				ExponentialSlider@VIDEO_VOLUME:
+					X: PARENT_RIGHT - WIDTH - 15
+					Y: 105
+					Width: 250
+					Height: 20
+					Ticks: 7
+		Label@AUDIO_DEVICE_LABEL:
+			X: 190 - WIDTH - 5
+			Y: 240
+			Width: 75
+			Height: 25
+			Align: Right
+			Text: Audio Device:
+		DropDownButton@AUDIO_DEVICE:
+			X: 190
+			Y: 240
+			Width: 300
+			Height: 25
+		Label@AUDIO_DEVICE_DESC:
+			Y: 261
+			Width: PARENT_RIGHT
+			Height: 25
+			Font: Tiny
+			Align: Center
+			Text: Device changes will be applied after the game is restarted

@@ -2,6 +2,7 @@
 	ReloadDelay: 50
 	Range: 4c768
 	Report: cannon1.aud
+	ValidTargets: Ground, Water, GroundActor, WaterActor
 	Projectile: Bullet
 		Speed: 682
 		Image: 120MM
@@ -9,6 +10,7 @@
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 4000
+		ValidTargets: GroundActor, WaterActor
 		Versus:
 			None: 30
 			Wood: 75
@@ -17,21 +19,21 @@
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
-		InvalidTargets: Vehicle, Structure, Wall, Husk, Trees
+		ValidTargets: Ground, Infantry
 	Warhead@3Eff: CreateEffect
 		Explosions: small_explosion
 		ImpactSounds: kaboom12.aud
-		ValidTargets: Ground, Ship, Trees
+		ValidTargets: Ground, GroundActor, WaterActor, Trees
 	Warhead@4EffWater: CreateEffect
 		Explosions: small_splash
 		ImpactSounds: splash9.aud
 		ValidTargets: Water, Underwater
-		InvalidTargets: Ship, Structure, Bridge
+		InvalidTargets: Bridge
 
 25mm:
 	Inherits: ^Cannon
 	ReloadDelay: 21
-	Range: 4c0
+	Range: 4c768
 	Report: cannon2.aud
 	Projectile: Bullet
 		Speed: 853
@@ -44,7 +46,7 @@
 			Light: 116
 			Heavy: 48
 			Concrete: 32
-	-Warhead@2Smu: LeaveSmudge
+	-Warhead@2Smu:
 	Warhead@3Eff: CreateEffect
 		-ImpactSounds:
 	Warhead@4EffWater: CreateEffect
@@ -60,7 +62,6 @@
 	Inherits: ^Cannon
 	ReloadDelay: 70
 	Burst: 2
-	BurstDelays: 4
 	Warhead@1Dam: SpreadDamage
 		Versus:
 			Heavy: 115
@@ -79,7 +80,7 @@
 TurretGun:
 	Inherits: ^Cannon
 	ReloadDelay: 30
-	Range: 7c0
+	Range: 6c512
 	Report: turret1.aud
 	Warhead@1Dam: SpreadDamage
 		Damage: 6000
@@ -118,6 +119,12 @@ TurretGun:
 	TargetActorCenter: true
 	Projectile: Bullet
 		ContrailLength: 30
+		Speed: 170
+		Inaccuracy: 1c138
+	Warhead@1Dam: SpreadDamage
+		Falloff: 100, 55, 20, 5
+		Versus:
+			None: 60
 
 8Inch:
 	Inherits: ^Artillery
@@ -200,11 +207,15 @@ DepthCharge:
 		Versus:
 			Light: 75
 		DamageTypes: ExplosionDeath
-	Warhead@4EffWater: CreateEffect
-		Explosions: large_splash
-		ImpactSounds: h2obomb2.aud
-		ValidTargets: Water, Underwater
 	Warhead@3Eff: CreateEffect
-		Explosions: small_explosion
+		Explosions: med_explosion
 		ImpactSounds: kaboom15.aud
 		ValidTargets: Submarine
+		InvalidTargets: Underwater
+	Warhead@4EffWater: CreateEffect
+		Explosions: large_splash
+		ImpactSounds: splash9.aud
+		ValidTargets: Water, Underwater
+	Warhead@5EffSubmergedHitSound: CreateEffect
+		ImpactSounds: h2obomb2.aud
+		ValidTargets: Underwater

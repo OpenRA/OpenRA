@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -15,10 +15,11 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using OpenRA.FileSystem;
-using OpenRA.Graphics;
 using OpenRA.Mods.Common.FileFormats;
+using OpenRA.Mods.Common.Terrain;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
@@ -65,10 +66,10 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 				// The original game isn't case sensitive, but we are.
 				var tileset = GetTileset(mapSection).ToUpperInvariant();
-				if (!ModData.DefaultTileSets.ContainsKey(tileset))
+				if (!ModData.DefaultTerrainInfo.TryGetValue(tileset, out var terrainInfo))
 					throw new InvalidDataException("Unknown tileset {0}".F(tileset));
 
-				Map = new Map(ModData, ModData.DefaultTileSets[tileset], MapSize, MapSize)
+				Map = new Map(ModData, terrainInfo, MapSize, MapSize)
 				{
 					Title = basic.GetValue("Name", Path.GetFileNameWithoutExtension(filename)),
 					Author = "Westwood Studios",
@@ -99,7 +100,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				Map.PlayerDefinitions = MapPlayers.ToMiniYaml();
 			}
 
-			Map.FixOpenAreas();
+			if (Map.Rules.TerrainInfo is ITerrainInfoNotifyMapCreated notifyMapCreated)
+				notifyMapCreated.MapCreated(Map);
 
 			var dest = Path.GetFileNameWithoutExtension(args[1]) + ".oramap";
 
@@ -182,19 +184,19 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					switch (s.Key)
 					{
 					case "Intro":
-						videos.Add(new MiniYamlNode("BackgroundVideo", s.Value.ToLower() + ".vqa"));
+						videos.Add(new MiniYamlNode("BackgroundVideo", s.Value.ToLowerInvariant() + ".vqa"));
 						break;
 					case "Brief":
-						videos.Add(new MiniYamlNode("BriefingVideo", s.Value.ToLower() + ".vqa"));
+						videos.Add(new MiniYamlNode("BriefingVideo", s.Value.ToLowerInvariant() + ".vqa"));
 						break;
 					case "Action":
-						videos.Add(new MiniYamlNode("StartVideo", s.Value.ToLower() + ".vqa"));
+						videos.Add(new MiniYamlNode("StartVideo", s.Value.ToLowerInvariant() + ".vqa"));
 						break;
 					case "Win":
-						videos.Add(new MiniYamlNode("WinVideo", s.Value.ToLower() + ".vqa"));
+						videos.Add(new MiniYamlNode("WinVideo", s.Value.ToLowerInvariant() + ".vqa"));
 						break;
 					case "Lose":
-						videos.Add(new MiniYamlNode("LossVideo", s.Value.ToLower() + ".vqa"));
+						videos.Add(new MiniYamlNode("LossVideo", s.Value.ToLowerInvariant() + ".vqa"));
 						break;
 					}
 				}
@@ -251,17 +253,17 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			var actorCount = Map.ActorDefinitions.Count;
 			var wps = waypointSection
 				.Where(kv => Exts.ParseIntegerInvariant(kv.Value) > 0)
-				.Select(kv => Pair.New(Exts.ParseIntegerInvariant(kv.Key),
-					LocationFromMapOffset(Exts.ParseIntegerInvariant(kv.Value), MapSize)));
+				.Select(kv => (WaypointNumber: Exts.ParseIntegerInvariant(kv.Key),
+					Location: LocationFromMapOffset(Exts.ParseIntegerInvariant(kv.Value), MapSize)));
 
 			// Add waypoint actors skipping duplicate entries
-			foreach (var kv in wps.DistinctBy(location => location.Second))
+			foreach (var kv in wps.DistinctBy(location => location.Location))
 			{
-				if (!singlePlayer && kv.First <= 7)
+				if (!singlePlayer && kv.WaypointNumber <= 7)
 				{
 					var ar = new ActorReference("mpspawn")
 					{
-						new LocationInit((CPos)kv.Second),
+						new LocationInit((CPos)kv.Location),
 						new OwnerInit("Neutral")
 					};
 
@@ -272,11 +274,11 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				{
 					var ar = new ActorReference("waypoint")
 					{
-						new LocationInit((CPos)kv.Second),
+						new LocationInit((CPos)kv.Location),
 						new OwnerInit("Neutral")
 					};
 
-					SaveWaypoint(kv.First, ar);
+					SaveWaypoint(kv.WaypointNumber, ar);
 				}
 			}
 		}
@@ -329,18 +331,18 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		}
 
 		// TODO: fix this -- will have bitrotted pretty badly.
-		static Dictionary<string, HSLColor> namedColorMapping = new Dictionary<string, HSLColor>()
+		static Dictionary<string, Color> namedColorMapping = new Dictionary<string, Color>()
 		{
-			{ "gold", HSLColor.FromRGB(246, 214, 121) },
-			{ "blue", HSLColor.FromRGB(226, 230, 246) },
-			{ "red", HSLColor.FromRGB(255, 20, 0) },
-			{ "neutral", HSLColor.FromRGB(238, 238, 238) },
-			{ "orange", HSLColor.FromRGB(255, 230, 149) },
-			{ "teal", HSLColor.FromRGB(93, 194, 165) },
-			{ "salmon", HSLColor.FromRGB(210, 153, 125) },
-			{ "green", HSLColor.FromRGB(160, 240, 140) },
-			{ "white", HSLColor.FromRGB(255, 255, 255) },
-			{ "black", HSLColor.FromRGB(80, 80, 80) },
+			{ "gold", Color.FromArgb(246, 214, 121) },
+			{ "blue", Color.FromArgb(226, 230, 246) },
+			{ "red", Color.FromArgb(255, 20, 0) },
+			{ "neutral", Color.FromArgb(238, 238, 238) },
+			{ "orange", Color.FromArgb(255, 230, 149) },
+			{ "teal", Color.FromArgb(93, 194, 165) },
+			{ "salmon", Color.FromArgb(210, 153, 125) },
+			{ "green", Color.FromArgb(160, 240, 140) },
+			{ "white", Color.FromArgb(255, 255, 255) },
+			{ "black", Color.FromArgb(80, 80, 80) },
 		};
 
 		public static void SetMapPlayers(string section, string faction, string color, IniFile file, List<string> players, MapPlayers mapPlayers)
@@ -403,19 +405,19 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 					var actorType = parts[1].ToLowerInvariant();
 
-					var actor = new ActorReference(actorType) {
+					var actor = new ActorReference(actorType)
+					{
 						new LocationInit(ParseActorLocation(actorType, loc)),
 						new OwnerInit(parts[0]),
 					};
 
-					var initDict = actor.InitDict;
 					if (health != 100)
-						initDict.Add(new HealthInit(health));
+						actor.Add(new HealthInit(health));
 					if (facing != 0)
-						initDict.Add(new FacingInit(255 - facing));
+						actor.Add(new FacingInit(new WAngle(1024 - 4 * facing)));
 
 					if (section == "INFANTRY")
-						actor.Add(new SubCellInit(Exts.ParseIntegerInvariant(parts[4])));
+						actor.Add(new SubCellInit((SubCell)Exts.ParseByte(parts[4])));
 
 					var actorCount = map.ActorDefinitions.Count;
 

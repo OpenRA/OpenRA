@@ -1,11 +1,21 @@
 #!/bin/sh
-MODLAUNCHER=$(python -c "import os; print(os.path.realpath('$0'))")
+if command -v mono >/dev/null 2>&1 && [ "$(grep -c .NETCoreApp,Version= bin/OpenRA.dll)" = "0" ]; then
+	RUNTIME_LAUNCHER="mono --debug"
+else
+	RUNTIME_LAUNCHER="dotnet"
+fi
+
+if command -v python3 >/dev/null 2>&1; then
+	 LAUNCHPATH=$(python3 -c "import os; print(os.path.realpath('$0'))")
+else
+	 LAUNCHPATH=$(python -c "import os; print(os.path.realpath('$0'))")
+fi
 
 # Prompt for a mod to launch if one is not already specified
 MODARG=''
 if [ z"${*#*Game.Mod}" = z"$*" ]
 then
-	if which zenity > /dev/null
+	if command -v zenity > /dev/null
 	then
 		TITLE=$(zenity --forms --add-combo="" --combo-values="Red Alert|Tiberian Dawn|Dune 2000|Tiberian Sun" --text "Select mod" --title="" || echo "cancel")
 		if [ "$TITLE" = "cancel" ]; then exit 0
@@ -21,17 +31,27 @@ then
 fi
 
 # Launch the engine with the appropriate arguments
-mono OpenRA.Game.exe Engine.LaunchPath="$MODLAUNCHER" $MODARG "$@"
+${RUNTIME_LAUNCHER} bin/OpenRA.dll Engine.EngineDir=".." Engine.LaunchPath="${LAUNCHPATH}" ${MODARG} "$@"
 
 # Show a crash dialog if something went wrong
 if [ $? != 0 ] && [ $? != 1 ]; then
-	ERROR_MESSAGE="OpenRA has encountered a fatal error.\nPlease refer to the crash logs and FAQ for more information.\n\nLog files are located in ~/.openra/Logs\nThe FAQ is available at http://wiki.openra.net/FAQ"
-	if command -v zenity > /dev/null; then
-		zenity --no-wrap --error --title "{MODNAME}" --text "${ERROR_MESSAGE}" 2> /dev/null
-	elif command -v kdialog > /dev/null; then
-		kdialog --title "{MODNAME}" --error "${ERROR_MESSAGE}"
+	if [ "$(uname -s)" = "Darwin" ]; then
+		LOGS="${HOME}/Library/Application Support/OpenRA/Logs/"
 	else
-		printf "${ERROR_MESSAGE}\n"
+		LOGS="${XDG_CONFIG_HOME:-${HOME}/.config}/openra/Logs"
+		if [ ! -d "${LOGS}" ] && [ -d "${HOME}/.openra/Logs" ]; then
+			LOGS="${HOME}/.openra/Logs"
+		fi
+	fi
+
+	test -d Support/Logs && LOGS="${PWD}/Support/Logs"
+	ERROR_MESSAGE="OpenRA has encountered a fatal error.\nPlease refer to the crash logs and FAQ for more information.\n\nLog files are located in ${LOGS}\nThe FAQ is available at http://wiki.openra.net/FAQ"
+	if command -v zenity > /dev/null; then
+		zenity --no-wrap --error --title "OpenRA" --text "${ERROR_MESSAGE}" 2> /dev/null
+	elif command -v kdialog > /dev/null; then
+		kdialog --title "OpenRA" --error "${ERROR_MESSAGE}"
+	else
+		echo "${ERROR_MESSAGE}"
 	fi
 	exit 1
 fi

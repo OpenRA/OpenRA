@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -15,12 +15,12 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class ExitsDebugOverlayManagerInfo : ITraitInfo
+	public class ExitsDebugOverlayManagerInfo : TraitInfo
 	{
 		[Desc("The font used to draw cell vectors. Should match the value as-is in the Fonts section of the mod manifest (do not convert to lowercase).")]
 		public readonly string Font = "TinyBold";
 
-		object ITraitInfo.Create(ActorInitializer init) { return new ExitsDebugOverlayManager(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new ExitsDebugOverlayManager(init.Self, this); }
 	}
 
 	public class ExitsDebugOverlayManager : IWorldLoaded, IChatCommand

@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+   Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -39,7 +39,7 @@ InitObjectives = function(player)
 	end)
 end
 
-SendCarryallReinforcements = function(player, currentWave, totalWaves, delay, pathFunction, unitTypes, customCondition, customHuntFunction)
+SendCarryallReinforcements = function(player, currentWave, totalWaves, delay, pathFunction, unitTypes, customCondition, customHuntFunction, announcementFunction)
 	Trigger.AfterDelay(delay, function()
 		if customCondition and customCondition() then
 			return
@@ -48,6 +48,10 @@ SendCarryallReinforcements = function(player, currentWave, totalWaves, delay, pa
 		currentWave = currentWave + 1
 		if currentWave > totalWaves then
 			return
+		end
+
+		if announcementFunction then
+			announcementFunction(currentWave)
 		end
 
 		local path = pathFunction()
@@ -76,6 +80,10 @@ TriggerCarryallReinforcements = function(triggeringPlayer, reinforcingPlayer, ar
 			Utils.Do(units, IdleHunt)
 		end
 	end)
+end
+
+DestroyCarryalls = function(player)
+	Utils.Do(player.GetActorsByType("carryall"), function(actor) actor.Kill() end)
 end
 
 -- Used for the AI:

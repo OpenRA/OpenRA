@@ -3,7 +3,7 @@ World:
 		CheckboxEnabled: False
 		CheckboxLocked: True
 		CheckboxVisible: False
-	-SpawnMPUnits:
+	-SpawnStartingUnits:
 	MapBuildRadius:
 		AllyBuildRadiusCheckboxLocked: True
 		AllyBuildRadiusCheckboxEnabled: False
@@ -15,7 +15,7 @@ World:
 		TechLevelDropdownLocked: True
 		TechLevelDropdownVisible: False
 		TechLevel: unrestricted
-	MPStartLocations:
+	MapStartingLocations:
 		SeparateTeamSpawnsCheckboxVisible: false
 	Locomotor@LIGHTTRACKED:
 		WaitAverage: 1
@@ -85,8 +85,9 @@ Player:
 		SelectTargetSound: slcttgt1.aud
 		BeginChargeSound: chrochr1.aud
 		EndChargeSound: chrordy1.aud
-		KillCargo: yes
-		Range: 3
+		KillCargo: true
+		Dimensions: 7, 7
+		Footprint: ___x___ __xxx__ _xxxxx_ xxxxxxx _xxxxx_ __xxx__ ___x___
 	GrantExternalConditionPower@IRONCURTAIN:
 		Icon: invuln
 		ChargeInterval: 750
@@ -96,10 +97,11 @@ Player:
 		SelectTargetSound: slcttgt1.aud
 		BeginChargeSound: ironchg1.aud
 		EndChargeSound: ironrdy1.aud
-		Range: 1
 		Condition: invulnerability
 		Sequence: idle
 		OnFireSound: ironcur9.aud
+		Dimensions: 3, 3
+		Footprint: _x_ xxx _x_
 	Production:
 		Produces: Building
 	LobbyPrerequisiteCheckbox@GLOBALBOUNTY:
@@ -121,7 +123,7 @@ MNLYR:
 		Type: Heavy
 	Mobile:
 		Speed: 128
-		TurnSpeed: 900
+		TurnSpeed: 512
 	RevealsShroud:
 		Range: 40c0
 	MustBeDestroyed:
@@ -129,7 +131,7 @@ MNLYR:
 	Transforms:
 		IntoActor: ftur
 		Offset: 0,0
-		Facing: 96
+		Facing: 384
 	CashTrickler:
 		Interval: 150
 		Amount: 20
@@ -145,7 +147,7 @@ FTUR:
 	Transforms:
 		IntoActor: mnlyr
 		Offset: 0,0
-		Facing: 96
+		Facing: 384
 	MustBeDestroyed:
 		RequiredForShortGame: true
 	CashTrickler:
@@ -173,10 +175,10 @@ MINVV:
 	WithSpriteBody:
 	Tooltip:
 		Name: Bomb
-	SelfHealing:
+	ChangesHealth:
 		Step: -100
 		Delay: 1
-		HealIfBelow: 101
+		StartIfBelow: 101
 	Explodes:
 		Weapon: CrateNuke
 		EmptyWeapon: CrateNuke

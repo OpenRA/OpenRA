@@ -7,7 +7,7 @@ Container@CREDITS_PANEL:
 	Children:
 		Label@CREDITS_TITLE:
 			Width: PARENT_RIGHT
-			Y: 0 - 25
+			Y: 0 - 22
 			Font: BigBold
 			Contrast: true
 			Align: Center
@@ -37,7 +37,7 @@ Container@CREDITS_PANEL:
 					Y: 15
 					Width: PARENT_RIGHT - 30
 					Height: PARENT_BOTTOM - 30
-					TopBottomSpacing: 6
+					TopBottomSpacing: 8
 					Children:
 						Label@CREDITS_TEMPLATE:
 							X: 8

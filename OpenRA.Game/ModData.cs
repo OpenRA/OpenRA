@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -15,6 +15,7 @@ using System.IO;
 using System.Linq;
 using OpenRA.FileSystem;
 using OpenRA.Graphics;
+using OpenRA.Video;
 using OpenRA.Widgets;
 using FS = OpenRA.FileSystem.FileSystem;
 
@@ -29,22 +30,24 @@ namespace OpenRA
 		public readonly IPackageLoader[] PackageLoaders;
 		public readonly ISoundLoader[] SoundLoaders;
 		public readonly ISpriteLoader[] SpriteLoaders;
+		public readonly ITerrainLoader TerrainLoader;
 		public readonly ISpriteSequenceLoader SpriteSequenceLoader;
 		public readonly IModelSequenceLoader ModelSequenceLoader;
+		public readonly IVideoLoader[] VideoLoaders;
 		public readonly HotkeyManager Hotkeys;
 		public ILoadScreen LoadScreen { get; private set; }
 		public CursorProvider CursorProvider { get; private set; }
 		public FS ModFiles;
-		public IReadOnlyFileSystem DefaultFileSystem { get { return ModFiles; } }
+		public IReadOnlyFileSystem DefaultFileSystem => ModFiles;
 
 		readonly Lazy<Ruleset> defaultRules;
-		public Ruleset DefaultRules { get { return defaultRules.Value; } }
+		public Ruleset DefaultRules => defaultRules.Value;
 
-		readonly Lazy<IReadOnlyDictionary<string, TileSet>> defaultTileSets;
-		public IReadOnlyDictionary<string, TileSet> DefaultTileSets { get { return defaultTileSets.Value; } }
+		readonly Lazy<IReadOnlyDictionary<string, ITerrainInfo>> defaultTerrainInfo;
+		public IReadOnlyDictionary<string, ITerrainInfo> DefaultTerrainInfo => defaultTerrainInfo.Value;
 
 		readonly Lazy<IReadOnlyDictionary<string, SequenceProvider>> defaultSequences;
-		public IReadOnlyDictionary<string, SequenceProvider> DefaultSequences { get { return defaultSequences.Value; } }
+		public IReadOnlyDictionary<string, SequenceProvider> DefaultSequences => defaultSequences.Value;
 
 		public ModData(Manifest mod, InstalledMods mods, bool useLoadScreen = false)
 		{
@@ -71,6 +74,15 @@ namespace OpenRA
 
 			SoundLoaders = ObjectCreator.GetLoaders<ISoundLoader>(Manifest.SoundFormats, "sound");
 			SpriteLoaders = ObjectCreator.GetLoaders<ISpriteLoader>(Manifest.SpriteFormats, "sprite");
+			VideoLoaders = ObjectCreator.GetLoaders<IVideoLoader>(Manifest.VideoFormats, "video");
+
+			var terrainFormat = Manifest.Get<TerrainFormat>();
+			var terrainLoader = ObjectCreator.FindType(terrainFormat.Type + "Loader");
+			var terrainCtor = terrainLoader?.GetConstructor(new[] { typeof(ModData) });
+			if (terrainLoader == null || !terrainLoader.GetInterfaces().Contains(typeof(ITerrainLoader)) || terrainCtor == null)
+				throw new InvalidOperationException("Unable to find a terrain loader for type '{0}'.".F(terrainFormat.Type));
+
+			TerrainLoader = (ITerrainLoader)terrainCtor.Invoke(new[] { this });
 
 			var sequenceFormat = Manifest.Get<SpriteSequenceFormat>();
 			var sequenceLoader = ObjectCreator.FindType(sequenceFormat.Type + "Loader");
@@ -79,7 +91,6 @@ namespace OpenRA
 				throw new InvalidOperationException("Unable to find a sequence loader for type '{0}'.".F(sequenceFormat.Type));
 
 			SpriteSequenceLoader = (ISpriteSequenceLoader)sequenceCtor.Invoke(new[] { this });
-			SpriteSequenceLoader.OnMissingSpriteError = s => Log.Write("debug", s);
 
 			var modelFormat = Manifest.Get<ModelSequenceFormat>();
 			var modelLoader = ObjectCreator.FindType(modelFormat.Type + "Loader");
@@ -93,22 +104,22 @@ namespace OpenRA
 			Hotkeys = new HotkeyManager(ModFiles, Game.Settings.Keys, Manifest);
 
 			defaultRules = Exts.Lazy(() => Ruleset.LoadDefaults(this));
-			defaultTileSets = Exts.Lazy(() =>
+			defaultTerrainInfo = Exts.Lazy(() =>
 			{
-				var items = new Dictionary<string, TileSet>();
+				var items = new Dictionary<string, ITerrainInfo>();
 
 				foreach (var file in Manifest.TileSets)
 				{
-					var t = new TileSet(DefaultFileSystem, file);
+					var t = TerrainLoader.ParseTerrain(DefaultFileSystem, file);
 					items.Add(t.Id, t);
 				}
 
-				return (IReadOnlyDictionary<string, TileSet>)(new ReadOnlyDictionary<string, TileSet>(items));
+				return (IReadOnlyDictionary<string, ITerrainInfo>)(new ReadOnlyDictionary<string, ITerrainInfo>(items));
 			});
 
 			defaultSequences = Exts.Lazy(() =>
 			{
-				var items = DefaultTileSets.ToDictionary(t => t.Key, t => new SequenceProvider(DefaultFileSystem, this, t.Value, null));
+				var items = DefaultTerrainInfo.ToDictionary(t => t.Key, t => new SequenceProvider(DefaultFileSystem, this, t.Key, null));
 				return (IReadOnlyDictionary<string, SequenceProvider>)(new ReadOnlyDictionary<string, SequenceProvider>(items));
 			});
 
@@ -123,7 +134,7 @@ namespace OpenRA
 				LoadScreen.Display();
 		}
 
-		internal bool IsOnMainThread { get { return System.Threading.Thread.CurrentThread.ManagedThreadId == initialThreadId; } }
+		internal bool IsOnMainThread => System.Threading.Thread.CurrentThread.ManagedThreadId == initialThreadId;
 
 		public void InitializeLoaders(IReadOnlyFileSystem fileSystem)
 		{
@@ -139,46 +150,9 @@ namespace OpenRA
 
 		public IEnumerable<string> Languages { get; private set; }
 
-		void LoadTranslations(Map map)
-		{
-			var selectedTranslations = new Dictionary<string, string>();
-			var defaultTranslations = new Dictionary<string, string>();
-
-			if (!Manifest.Translations.Any())
-			{
-				Languages = new string[0];
-				return;
-			}
-
-			var yaml = MiniYaml.Load(map, Manifest.Translations, map.TranslationDefinitions);
-			Languages = yaml.Select(t => t.Key).ToArray();
-
-			foreach (var y in yaml)
-			{
-				if (y.Key == Game.Settings.Graphics.Language)
-					selectedTranslations = y.Value.ToDictionary(my => my.Value ?? "");
-				else if (y.Key == Game.Settings.Graphics.DefaultLanguage)
-					defaultTranslations = y.Value.ToDictionary(my => my.Value ?? "");
-			}
-
-			var translations = new Dictionary<string, string>();
-			foreach (var tkv in defaultTranslations.Concat(selectedTranslations))
-			{
-				if (translations.ContainsKey(tkv.Key))
-					continue;
-				if (selectedTranslations.ContainsKey(tkv.Key))
-					translations.Add(tkv.Key, selectedTranslations[tkv.Key]);
-				else
-					translations.Add(tkv.Key, tkv.Value);
-			}
-
-			FieldLoader.SetTranslations(translations);
-		}
-
 		public Map PrepareMap(string uid)
 		{
-			if (LoadScreen != null)
-				LoadScreen.Display();
+			LoadScreen?.Display();
 
 			if (MapCache[uid].Status != MapStatus.Available)
 				throw new InvalidDataException("Invalid map uid: {0}".F(uid));
@@ -186,8 +160,6 @@ namespace OpenRA
 			Map map;
 			using (new Support.PerfTimer("Map"))
 				map = new Map(this, MapCache[uid].Package);
-
-			LoadTranslations(map);
 
 			// Reinitialize all our assets
 			InitializeLoaders(map);
@@ -202,12 +174,12 @@ namespace OpenRA
 
 		public void Dispose()
 		{
-			if (LoadScreen != null)
-				LoadScreen.Dispose();
+			LoadScreen?.Dispose();
 			MapCache.Dispose();
 
-			if (ObjectCreator != null)
-				ObjectCreator.Dispose();
+			ObjectCreator?.Dispose();
+
+			Manifest.Dispose();
 		}
 	}
 

@@ -11,9 +11,9 @@ Debris:
 		BounceCount: 3
 		BounceRangeModifier: 20
 	Warhead@1Dam: SpreadDamage
-		Spread: 320
-		Falloff: 100, 60, 30, 15, 0
 		Damage: 1500
+		Spread: 512
+		Falloff: 100, 0
 		Versus:
 			none: 20
 			wall: 50
@@ -26,12 +26,15 @@ Debris:
 			cy: 20
 			harvester: 50
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
+		DamageCalculationType: ClosestTargetablePosition
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater
 		InvalidTargets: Vehicle, Structure
 	Warhead@3Eff: CreateEffect
 		Explosions: tiny_explosion
 		ImpactActors: false
+	Warhead@4Concrete: DamagesConcrete
+		Damage: 300
 
 Debris2:
 	Inherits: Debris
@@ -42,6 +45,7 @@ Debris2:
 		TrailInterval: 1
 	Warhead@1Dam: SpreadDamage
 		Damage: 2500
+		Spread: 1c0
 		Versus:
 			none: 90
 			wall: 5
@@ -56,6 +60,8 @@ Debris2:
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@3Eff: CreateEffect
 		Explosions: small_napalm
+	Warhead@4Concrete: DamagesConcrete
+		Damage: 2250
 
 Debris3:
 	Inherits: Debris2
@@ -64,6 +70,8 @@ Debris3:
 		TrailImage: small_trail2
 	Warhead@1Dam: SpreadDamage
 		Damage: 1500
+	Warhead@4Concrete: DamagesConcrete
+		Damage: 1350
 
 Debris4:
 	Inherits: Debris2

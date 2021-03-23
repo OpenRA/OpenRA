@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+   Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -63,7 +63,7 @@ AtreidesAttackWaves =
 	hard = 9
 }
 
-AtreidesHunters = 
+AtreidesHunters =
 {
 	{ "trooper", "trooper", "trooper" },
 	{ "trike", "light_inf", "light_inf", "light_inf", "light_inf" },
@@ -78,7 +78,7 @@ AtreidesPaths =
 	{ AtreidesEntry8.Location, AtreidesRally8.Location }
 }
 
-AtreidesHunterPaths = 
+AtreidesHunterPaths =
 {
 	{ AtreidesEntry6.Location, AtreidesRally6.Location },
 	{ AtreidesEntry5.Location, AtreidesRally5.Location },

@@ -45,8 +45,13 @@ GACTWR:
 	Inherits: ^Defense
 	Inherits@IDISABLE: ^DisableOnPowerDown
 	Inherits@AUTOTARGET: ^AutoTargetAll
-	-WithSpriteBody:
+	WithMakeAnimation:
+		BodyNames: make
+	WithSpriteBody:
+		Name: make
+		Sequence: invisible
 	WithWallSpriteBody:
+		RequiresCondition: !build-incomplete
 		Type: wall
 	Valued:
 		Cost: 200
@@ -57,9 +62,6 @@ GACTWR:
 		BuildPaletteOrder: 70
 		Prerequisites: gapile, ~structures.gdi, ~techlevel.low
 		Description: Modular tower for base defenses.
-	Selectable:
-		Bounds: 48, 36, 0, -6
-		DecorationBounds: 48, 48, 0, -12
 	Health:
 		HP: 50000
 	Armor:
@@ -71,21 +73,22 @@ GACTWR:
 	DetectCloaked:
 		RequiresCondition: !empdisable && !disabled && (tower.vulcan || tower.rocket || tower.sam)
 	Turreted:
-		TurnSpeed: 10
-		InitialFacing: 224
+		TurnSpeed: 40
+		InitialFacing: 896
+		RealignDelay: -1
 	AttackTurreted:
-		RequiresCondition: tower.vulcan || tower.rocket || tower.sam
+		RequiresCondition: !build-incomplete && (tower.vulcan || tower.rocket || tower.sam)
 		PauseOnCondition: empdisable || disabled
 	WithSpriteTurret@VULC:
-		RequiresCondition: tower.vulcan
+		RequiresCondition: !build-incomplete && tower.vulcan
 		Recoils: false
 		Sequence: turret-vulcan
 	WithSpriteTurret@ROCKET:
-		RequiresCondition: tower.rocket
+		RequiresCondition: !build-incomplete && tower.rocket
 		Recoils: false
 		Sequence: turret-rocket
 	WithSpriteTurret@SAM:
-		RequiresCondition: tower.sam
+		RequiresCondition: !build-incomplete && tower.sam
 		Recoils: false
 		Sequence: turret-sam
 	Armament@VULCPRIMARY:
@@ -93,16 +96,12 @@ GACTWR:
 		Weapon: VulcanTower
 		LocalOffset: 588,120,1358
 		MuzzleSequence: muzzle
-		MuzzlePalette: effect-ignore-lighting
-		MuzzleSplitFacings: 8
 	Armament@VULCSECONDARY:
 		RequiresCondition: tower.vulcan
 		Name: secondary
 		Weapon: VulcanTower
 		LocalOffset: 588,-120,1358
 		MuzzleSequence: muzzle
-		MuzzlePalette: effect-ignore-lighting
-		MuzzleSplitFacings: 8
 	Armament@ROCKET:
 		RequiresCondition: tower.rocket
 		Weapon: RPGTower
@@ -112,10 +111,19 @@ GACTWR:
 		Weapon: RedEye2
 		LocalOffset: 543,0,1697
 	WithMuzzleOverlay:
-		RequiresCondition: tower.vulcan
+		RequiresCondition: !build-incomplete && tower.vulcan
 	WithIdleOverlay@LIGHTS:
-		RequiresCondition: !disabled
+		RequiresCondition: !build-incomplete && !disabled
 		Sequence: idle-lights
+		Palette: player-nobright
+		IsPlayerPalette: True
+	WithIdleOverlay@LIGHTS-BRIGHT:
+		RequiresCondition: !build-incomplete && !disabled
+		Sequence: idle-lights-bright
+		Palette: bright
+	WithMakeOverlay@MAKE-BRIGHT:
+		Sequence: make-bright
+		Palette: bright
 	LineBuildNode:
 		Types: turret
 	Power@base:
@@ -132,10 +140,28 @@ GACTWR:
 			tower.vulcan: tower.vulcan
 			tower.rocket: tower.rocket
 			tower.sam: tower.sam
+		Requirements:
+			tower.vulcan: !build-incomplete && !tower.vulcan && !tower.rocket && !tower.sam
+			tower.rocket: !build-incomplete && !tower.rocket && !tower.vulcan && !tower.sam
+			tower.sam: !build-incomplete && !tower.vulcan && !tower.rocket && !tower.sam
+		EditorOptions:
+			tower.vulcan: Vulcan Tower
+			tower.rocket: RPG Upgrade
+			tower.sam: SAM Upgrade
 	ProvidesPrerequisite@buildingname:
-	SelectionDecorations:
+	ProvidesPrerequisite@pluggable:
+		RequiresCondition: !build-incomplete && !tower.vulcan && !tower.rocket && !tower.sam
+		Prerequisite: gactwr.socket
 	Replacement:
 		ReplaceableTypes: GDITower
+	IsometricSelectable:
+		Height: 48
+
+GACTWR.SOCKET:
+	AlwaysVisible:
+	Interactable:
+	Tooltip:
+		Name: Component Tower (unupgraded)
 
 GAVULC:
 	Inherits: ^BuildingPlug
@@ -145,8 +171,8 @@ GAVULC:
 		Name: Vulcan Tower
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 120
-		Prerequisites: gactwr, gapile, ~structures.gdi, ~techlevel.low
+		BuildPaletteOrder: 80
+		Prerequisites: gactwr.socket, gapile, ~structures.gdi, ~techlevel.low
 		Description: Basic base defense.\nDoes not require power to operate.\n  Strong vs Infantry, Light armor\n  Weak vs Aircraft
 	Plug:
 		Type: tower.vulcan
@@ -161,8 +187,8 @@ GAROCK:
 		Name: RPG Upgrade
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 130
-		Prerequisites: gactwr, gapile, ~structures.gdi, ~techlevel.high
+		BuildPaletteOrder: 90
+		Prerequisites: gactwr.socket, gapile, ~structures.gdi, ~techlevel.high
 		Description: GDI Advanced base defense.\nDoes not require power to operate.\n  Strong vs Armored ground units\n  Weak vs Aircraft
 	Plug:
 		Type: tower.rocket
@@ -177,58 +203,10 @@ GACSAM:
 		Name: SAM Upgrade
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 140
-		Prerequisites: gactwr, garadr, ~structures.gdi, ~techlevel.medium
+		BuildPaletteOrder: 100
+		Prerequisites: gactwr.socket, garadr, ~structures.gdi, ~techlevel.medium
 		Description: GDI Anti-Air base defense.\nDoes not require power to operate.\n  Strong vs Aircraft\n  Weak vs Ground units
 	Plug:
 		Type: tower.sam
 	Power:
 		Amount: -30
-
-GAPOWRUP:
-	Inherits: ^BuildingPlug
-	Valued:
-		Cost: 150
-	Tooltip:
-		Name: Power Turbine
-	Buildable:
-		Queue: Defense
-		BuildPaletteOrder: 80
-		Prerequisites: gapowr, ~structures.gdi, ~techlevel.medium
-		Description: Provides extra power generation.
-	Plug:
-		Type: powrup
-	Power:
-		Amount: 50
-
-GAPLUG2:
-	Inherits: ^BuildingPlug
-	Valued:
-		Cost: 1000
-	Tooltip:
-		Name: Seeker Control
-	Buildable:
-		Queue: Defense
-		BuildPaletteOrder: 170
-		Prerequisites: gaplug, gatech, gaweap, ~structures.gdi, ~techlevel.superweapons
-		Description: Enables use of the hunter-seeker droid.
-	Plug:
-		Type: plug.hunterseeker
-	Power:
-		Amount: -50
-
-GAPLUG3:
-	Inherits: ^BuildingPlug
-	Valued:
-		Cost: 1500
-	Tooltip:
-		Name: Ion Cannon Uplink
-	Buildable:
-		Queue: Defense
-		BuildPaletteOrder: 180
-		Prerequisites: gaplug, gatech, ~structures.gdi, ~techlevel.superweapons
-		Description: Enables use of the Ion Cannon.
-	Plug:
-		Type: plug.ioncannon
-	Power:
-		Amount: -100

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,8 +9,8 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
+using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
@@ -19,26 +19,23 @@ namespace OpenRA.Effects
 	public class DelayedImpact : IEffect
 	{
 		readonly Target target;
-		readonly Actor firedBy;
-		readonly IEnumerable<int> damageModifiers;
 		readonly IWarhead wh;
+		readonly WarheadArgs args;
 
 		int delay;
 
-		public DelayedImpact(int delay, IWarhead wh, Target target, Actor firedBy, IEnumerable<int> damageModifiers)
+		public DelayedImpact(int delay, IWarhead wh, Target target, WarheadArgs args)
 		{
 			this.wh = wh;
 			this.delay = delay;
-
 			this.target = target;
-			this.firedBy = firedBy;
-			this.damageModifiers = damageModifiers;
+			this.args = args;
 		}
 
 		public void Tick(World world)
 		{
 			if (--delay <= 0)
-				world.AddFrameEndTask(w => { w.Remove(this); wh.DoImpact(target, firedBy, damageModifiers); });
+				world.AddFrameEndTask(w => { w.Remove(this); wh.DoImpact(target, args); });
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr) { yield break; }

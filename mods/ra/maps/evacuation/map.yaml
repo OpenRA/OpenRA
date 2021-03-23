@@ -16,6 +16,8 @@ Visibility: Lobby, MissionSelector
 
 Categories: Mission, Cooperative Mission
 
+LockPreview: True
+
 Players:
 	PlayerReference@Neutral:
 		Name: Neutral
@@ -54,11 +56,13 @@ Players:
 		Color: 5CC1A3
 		Allies: Allies1, Allies2
 		Enemies: Soviets
+		Bot: campaign
 	PlayerReference@Soviets:
 		Name: Soviets
 		Faction: soviet
 		Color: FE1100
 		Enemies: Allies1, Allies2, Allies
+		Bot: campaign
 
 Actors:
 	Actor1: v07
@@ -1505,15 +1509,15 @@ Actors:
 	Actor357: 3tnk
 		Location: 43,59
 		Owner: Soviets
-		Facing: 90
+		Facing: 360
 	Actor537: harv
 		Location: 25,94
 		Owner: Allies
-		Facing: 96
+		Facing: 384
 	Actor358: 3tnk
 		Location: 38,55
 		Owner: Soviets
-		Facing: 110
+		Facing: 440
 	Actor359: v2rl
 		Location: 44,53
 		Owner: Soviets

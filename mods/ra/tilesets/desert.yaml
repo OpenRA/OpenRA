@@ -14,10 +14,6 @@ Terrain:
 		TargetTypes: Ground, Bridge
 		AcceptsSmudgeType: Crater, Scorch
 		Color: 606060
-	TerrainType@Brush:
-		Type: Brush
-		TargetTypes: Ground
-		Color: 1C2024
 	TerrainType@Clear:
 		Type: Clear
 		TargetTypes: Ground

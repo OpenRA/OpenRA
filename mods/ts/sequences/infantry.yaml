@@ -50,6 +50,7 @@
 		Facings: 8
 		ShadowStart: 552
 	die-melting: electro
+		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
 		Length: *
 
 ^BasicInfantryAttack:
@@ -58,11 +59,21 @@
 		Length: 6
 		Facings: 8
 		ShadowStart: 456
+	attack-muzzle:
+		Start: 164
+		Length: 6
+		Facings: 8
+		IgnoreWorldTint: True
 	prone-attack:
 		Start: 212
 		Length: 6
 		Facings: 8
 		ShadowStart: 504
+	prone-attack-muzzle:
+		Start: 212
+		Length: 6
+		Facings: 8
+		IgnoreWorldTint: True
 
 e1.gdi:
 	Inherits: ^BasicInfantry
@@ -148,21 +159,20 @@ civ1:
 		Length: 6
 		Facings: 8
 		ShadowStart: 456
-	panic-attack:
+	attack-muzzle:
 		Start: 164
 		Length: 6
 		Facings: 8
 		ShadowStart: 456
+		IgnoreWorldTint: True
 	panic-run:
 		Start: 86
 		Length: 6
 		Facings: 8
 		ShadowStart: 378
 	panic-stand:
-		Start: 86
 		Facings: 8
-		Stride: 6
-		ShadowStart: 378
+		ShadowStart: 292
 
 civ2:
 	Inherits: ^BasicInfantry
@@ -172,10 +182,8 @@ civ2:
 		Facings: 8
 		ShadowStart: 378
 	panic-stand:
-		Start: 86
 		Facings: 8
-		Stride: 6
-		ShadowStart: 378
+		ShadowStart: 292
 
 civ3:
 	Inherits: civ1
@@ -215,15 +223,26 @@ cyborg:
 		Length: 6
 		Facings: 8
 		ShadowStart: 534
+	attack-muzzle:
+		Start: 164
+		Length: 6
+		Facings: 8
+		IgnoreWorldTint: True
 	crippled-attack:
 		Start: 212
 		Length: 6
 		Facings: 8
 		ShadowStart: 582
+	crippled-attack-muzzle:
+		Start: 212
+		Length: 6
+		Facings: 8
+		IgnoreWorldTint: True
 	emp-overlay: emp_fx01
 		Length: *
 		ZOffset: 512
 		BlendMode: Additive
+		IgnoreWorldTint: True
 	icon: cybiicon
 
 cyc2:
@@ -261,15 +280,28 @@ cyc2:
 		Length: 6
 		Facings: 8
 		ShadowStart: 520
+	attack-muzzle:
+		Start: 212
+		Length: 6
+		Facings: 8
+		ShadowStart: 520
+		IgnoreWorldTint: True
 	crippled-attack:
 		Start: 260
 		Length: 6
 		Facings: 8
 		ShadowStart: 568
+	crippled-attack-muzzle:
+		Start: 260
+		Length: 6
+		Facings: 8
+		ShadowStart: 568
+		IgnoreWorldTint: True
 	emp-overlay: emp_fx01
 		Length: *
 		ZOffset: 512
 		BlendMode: Additive
+		IgnoreWorldTint: True
 	icon: cybcicon
 
 medic:
@@ -328,6 +360,7 @@ medic:
 		Length: 14
 		ShadowStart: 599
 	die-melting: electro
+		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
 		Length: *
 	icon: mediicon
 
@@ -364,6 +397,11 @@ jumpjet:
 		Length: 6
 		Start: 292
 		ShadowStart: 743
+	flying-muzzle:
+		Facings: 8
+		Length: 6
+		Start: 292
+		IgnoreWorldTint: True
 	die-twirling: # TODO: animation for falling from sky starts at 436
 		Start: 445
 		Length: 6
@@ -389,22 +427,38 @@ jumpjet:
 		Length: 6
 		Facings: 8
 		ShadowStart: 615
+	attack-muzzle:
+		Start: 164
+		Length: 6
+		Facings: 8
+		IgnoreWorldTint: True
 	flying-attack:
 		Start: 388
 		Facings: 8
 		Length: 6
 		ShadowStart: 839
+	flying-attack-muzzle:
+		Start: 388
+		Facings: 8
+		Length: 6
+		IgnoreWorldTint: True
 	prone-attack:
 		Start: 212
 		Length: 6
 		Facings: 8
 		ShadowStart: 663
+	prone-attack-muzzle:
+		Start: 212
+		Length: 6
+		Facings: 8
+		IgnoreWorldTint: True
 	standup:
 		Start: 260
 		Length: 2
 		Facings: 8
 		ShadowStart: 711
 	die-melting: electro
+		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
 		Length: *
 	icon: jjeticon
 
@@ -469,6 +523,7 @@ weedguy:
 		Length: 20
 		ShadowStart: 379
 	die-melting: electro
+		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
 		Length: *
 	die-crushed:
 		Start: 174
@@ -482,6 +537,7 @@ flameguy:
 		Tick: 80
 		ShadowStart: 148
 		Offset: 0, 0, 16
+		IgnoreWorldTint: True
 	idle:
 	stand:
 	run:
@@ -491,3 +547,4 @@ flameguy:
 		Facings: 1
 		Length: 104
 		ShadowStart: 192
+		AlphaFade: True

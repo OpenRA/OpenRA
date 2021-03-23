@@ -35,6 +35,7 @@ Players:
 		Faction: gdi
 		Color: 8C5033
 		Enemies: Nod, Civilian
+		Bot: campaign
 	PlayerReference@Nod:
 		Name: Nod
 		Playable: True
@@ -410,7 +411,5 @@ Actors:
 		Owner: Neutral
 
 Rules: cnc|rules/campaign-maprules.yaml, cnc|rules/campaign-tooltips.yaml, cnc|rules/campaign-palettes.yaml, rules.yaml
-
-Sequences: sequences.yaml
 
 Weapons: weapons.yaml

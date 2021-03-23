@@ -3,10 +3,12 @@
 	Inherits: ^Palettes
 	ScreenMap:
 	ActorMap:
+	Selection:
 	MusicPlaylist:
 		VictoryMusic: win1
 		DefeatMusic: nod_map1
 	DebugVisualizations:
+	TerrainRenderer:
 	TerrainGeometryOverlay:
 	ShroudRenderer:
 		ShroudVariants: typea, typeb, typec, typed
@@ -50,17 +52,6 @@
 			Tiberium: 50
 			BlueTiberium: 50
 			Beach: 50
-	Locomotor@BIKE:
-		Name: bike
-		Crushes: crate
-		TerrainSpeeds:
-			Clear: 70
-			Rough: 35
-			Road: 100
-			Bridge: 100
-			Tiberium: 35
-			BlueTiberium: 35
-			Beach: 35
 	Locomotor@HEAVYWHEELED:
 		Name: heavywheeled
 		Crushes: crate, infantry
@@ -135,30 +126,16 @@
 		Name: Nod
 		InternalName: nod
 		Description: Brotherhood of Nod\nThe Brotherhood is a religious cult centered around their leader Kane\nand the alien substance Tiberium. They utilize stealth technology\nand guerilla tactics to defeat those who oppose them.
-	ResourceType@green-tib:
-		Type: Tiberium
-		Name: Tiberium
-		PipColor: Green
-		ResourceType: 1
-		Palette: staticterrain
-		TerrainType: Tiberium
-		Sequences: ti1,ti2,ti3,ti4,ti5,ti6,ti7,ti8,ti9,ti10,ti11,ti12
-		MaxDensity: 12
-		ValuePerUnit: 35
-		AllowedTerrainTypes: Clear,Road
-		AllowUnderActors: true
-	ResourceType@blue-tib:
-		Type: BlueTiberium
-		Name: Tiberium
-		PipColor: Blue
-		ResourceType: 2
-		Palette: bluetiberium
-		TerrainType: BlueTiberium
-		Sequences: bti1,bti2,bti3,bti4,bti5,bti6,bti7,bti8,bti9,bti10,bti11,bti12
-		MaxDensity: 12
-		ValuePerUnit: 60
-		AllowedTerrainTypes: Clear,Road
-		AllowUnderActors: true
+	ResourceRenderer:
+		ResourceTypes:
+			Tiberium:
+				Sequences: ti1, ti2, ti3, ti4, ti5, ti6, ti7, ti8, ti9, ti10, ti11, ti12
+				Palette: staticterrain
+				Name: Tiberium
+			BlueTiberium:
+				Sequences: bti1, bti2, bti3, bti4, bti5, bti6, bti7, bti8, bti9, bti10, bti11, bti12
+				Palette: bluetiberium
+				Name: Tiberium
 
 World:
 	Inherits: ^BaseWorld
@@ -177,16 +154,35 @@ World:
 	SmudgeLayer@SCORCH:
 		Type: Scorch
 		Sequence: scorches
-		SmokePercentage: 50
+		SmokeChance: 50
+		SmokeImage: smoke_m
+		SmokeSequences: idle
 	SmudgeLayer@CRATER:
 		Type: Crater
 		Sequence: craters
+		SmokeChance: 25
+		SmokeImage: smoke_m
+		SmokeSequences: idle
 	ResourceLayer:
+		RecalculateResourceDensity: true
+		ResourceTypes:
+			Tiberium:
+				ResourceIndex: 1
+				TerrainType: Tiberium
+				AllowedTerrainTypes: Clear, Road
+				MaxDensity: 12
+			BlueTiberium:
+				ResourceIndex: 2
+				TerrainType: BlueTiberium
+				AllowedTerrainTypes: Clear, Road
+				MaxDensity: 12
 	ResourceClaimLayer:
 	WarheadDebugOverlay:
 	CustomTerrainDebugOverlay:
 	MapCreeps:
 		CheckboxVisible: False
+		CheckboxEnabled: True
+		CheckboxLocked: True
 	SpawnMapActors:
 	MapBuildRadius:
 		AllyBuildRadiusCheckboxDisplayOrder: 4
@@ -195,52 +191,51 @@ World:
 		ShortGameCheckboxDisplayOrder: 2
 		TechLevelDropdownDisplayOrder: 2
 		GameSpeedDropdownDisplayOrder: 3
-	MPStartLocations:
+	MapStartingLocations:
 		SeparateTeamSpawnsCheckboxDisplayOrder: 6
-	CreateMPPlayers:
-	MPStartUnits@mcvonly:
+	CreateMapPlayers:
+	StartingUnits@mcvonly:
 		Class: none
 		ClassName: MCV Only
 		Factions: gdi, nod
 		BaseActor: mcv
-	MPStartUnits@defaultgdia:
+	StartingUnits@defaultgdia:
 		Class: light
 		ClassName: Light Support
 		Factions: gdi
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e1,e1,e3,e3,jeep
-	MPStartUnits@defaultnoda:
+	StartingUnits@defaultnoda:
 		Class: light
 		ClassName: Light Support
 		Factions: nod
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e1,e1,e1,e3,e3,bggy
-	MPStartUnits@heavynoda:
+	StartingUnits@heavynoda:
 		Class: heavy
 		ClassName: Heavy Support
 		Factions: nod
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e1,e3,e3,ltnk,ltnk,ftnk
-	MPStartUnits@heavynodb:
+	StartingUnits@heavynodb:
 		Class: heavy
 		ClassName: Heavy Support
 		Factions: nod
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e1,e1,e3,e3,e3,ftnk,ftnk
-	MPStartUnits@heavygdia:
+	StartingUnits@heavygdia:
 		Class: heavy
 		ClassName: Heavy Support
 		Factions: gdi
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e1,e3,e3,jeep,mtnk,mtnk
-	MPStartUnits@heavygdib:
+	StartingUnits@heavygdib:
 		Class: heavy
 		ClassName: Heavy Support
 		Factions: gdi
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e1,e1,e2,e2,e2,e3,e3,apc,mtnk
-	SpawnMPUnits:
-		StartingUnitsClass: light
+	SpawnStartingUnits:
 		DropdownDisplayOrder: 0
 	CrateSpawner:
 		Minimum: 1
@@ -257,10 +252,26 @@ World:
 	RadarPings:
 	LoadWidgetAtGameStart:
 		ShellmapRoot: MENU_BACKGROUND
+	ScriptTriggers:
+	TimeLimitManager:
 
 EditorWorld:
 	Inherits: ^BaseWorld
 	EditorActorLayer:
+	EditorCursorLayer:
 	EditorResourceLayer:
+		RecalculateResourceDensity: true
+		ResourceTypes:
+			Tiberium:
+				ResourceIndex: 1
+				TerrainType: Tiberium
+				AllowedTerrainTypes: Clear, Road
+				MaxDensity: 12
+			BlueTiberium:
+				ResourceIndex: 2
+				TerrainType: BlueTiberium
+				AllowedTerrainTypes: Clear, Road
+				MaxDensity: 12
 	EditorSelectionLayer:
 	LoadWidgetAtGameStart:
+	EditorActionManager:

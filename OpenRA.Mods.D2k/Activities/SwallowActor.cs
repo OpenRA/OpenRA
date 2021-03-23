@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,13 +10,13 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.GameRules;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.D2k.Traits;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.D2k.Activities
@@ -29,7 +29,6 @@ namespace OpenRA.Mods.D2k.Activities
 
 		readonly Target target;
 		readonly Sandworm sandworm;
-		readonly ConditionManager conditionManager;
 		readonly WeaponInfo weapon;
 		readonly Armament armament;
 		readonly AttackSwallow swallow;
@@ -39,9 +38,9 @@ namespace OpenRA.Mods.D2k.Activities
 		int countdown;
 		CPos burrowLocation;
 		AttackState stance;
-		int attackingToken = ConditionManager.InvalidConditionToken;
+		int attackingToken = Actor.InvalidConditionToken;
 
-		public SwallowActor(Actor self, Target target, Armament a, IFacing facing)
+		public SwallowActor(Actor self, in Target target, Armament a, IFacing facing)
 		{
 			this.target = target;
 			this.facing = facing;
@@ -50,7 +49,6 @@ namespace OpenRA.Mods.D2k.Activities
 			sandworm = self.Trait<Sandworm>();
 			positionable = self.Trait<Mobile>();
 			swallow = self.Trait<AttackSwallow>();
-			conditionManager = self.TraitOrDefault<ConditionManager>();
 		}
 
 		bool AttackTargets(Actor self, IEnumerable<Actor> targets)
@@ -95,7 +93,7 @@ namespace OpenRA.Mods.D2k.Activities
 			return true;
 		}
 
-		public override Activity Tick(Actor self)
+		public override bool Tick(Actor self)
 		{
 			switch (stance)
 			{
@@ -103,13 +101,13 @@ namespace OpenRA.Mods.D2k.Activities
 					stance = AttackState.Burrowed;
 					countdown = swallow.Info.AttackDelay;
 					burrowLocation = self.Location;
-					if (conditionManager != null && attackingToken == ConditionManager.InvalidConditionToken &&
-							!string.IsNullOrEmpty(swallow.Info.AttackingCondition))
-						attackingToken = conditionManager.GrantCondition(self, swallow.Info.AttackingCondition);
+					if (attackingToken == Actor.InvalidConditionToken)
+						attackingToken = self.GrantCondition(swallow.Info.AttackingCondition);
+
 					break;
 				case AttackState.Burrowed:
 					if (--countdown > 0)
-						return this;
+						return false;
 
 					var targetLocation = target.Actor.Location;
 
@@ -117,14 +115,14 @@ namespace OpenRA.Mods.D2k.Activities
 					if ((burrowLocation - targetLocation).Length > NearEnough)
 					{
 						RevokeCondition(self);
-						return NextActivity;
+						return true;
 					}
 
 					// The target reached solid ground
-					if (!positionable.CanEnterCell(targetLocation, null, false))
+					if (!positionable.CanEnterCell(targetLocation, null, BlockedByActor.None))
 					{
 						RevokeCondition(self);
-						return NextActivity;
+						return true;
 					}
 
 					var targets = self.World.ActorMap.GetActorsAt(targetLocation)
@@ -133,7 +131,7 @@ namespace OpenRA.Mods.D2k.Activities
 					if (!targets.Any())
 					{
 						RevokeCondition(self);
-						return NextActivity;
+						return true;
 					}
 
 					stance = AttackState.Attacking;
@@ -144,7 +142,7 @@ namespace OpenRA.Mods.D2k.Activities
 					break;
 				case AttackState.Attacking:
 					if (--countdown > 0)
-						return this;
+						return false;
 
 					sandworm.IsAttacking = false;
 
@@ -156,16 +154,16 @@ namespace OpenRA.Mods.D2k.Activities
 					}
 
 					RevokeCondition(self);
-					return NextActivity;
+					return true;
 			}
 
-			return this;
+			return false;
 		}
 
 		void RevokeCondition(Actor self)
 		{
-			if (attackingToken != ConditionManager.InvalidConditionToken)
-				attackingToken = conditionManager.RevokeCondition(self, attackingToken);
+			if (attackingToken != Actor.InvalidConditionToken)
+				attackingToken = self.RevokeCondition(attackingToken);
 		}
 	}
 }

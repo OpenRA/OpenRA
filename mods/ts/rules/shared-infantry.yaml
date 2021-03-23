@@ -12,6 +12,8 @@ E1:
 		Cost: 120
 	Tooltip:
 		Name: Light Infantry
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 12500
 	Mobile:
@@ -24,7 +26,7 @@ E1:
 		RequiresCondition: rank-elite
 	AttackFrontal:
 		Voice: Attack
-	WithInfantryBody:
+	WithSplitAttackPaletteInfantryBody:
 		DefaultAttackSequence: attack
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
@@ -36,12 +38,24 @@ E1:
 	RevealsShroud:
 		Range: 5c0
 
+E1R3:
+	Inherits: E1
+	RenderSprites:
+		Image: e1.gdi
+	ProducibleWithLevel:
+		Prerequisites: techlevel.low
+		InitialLevels: 3
+	-Buildable:
+
 ENGINEER:
 	Inherits: ^Soldier
+	Inherits@selection: ^SelectableSupportUnit
 	Valued:
 		Cost: 500
 	Tooltip:
 		Name: Engineer
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 40
@@ -54,10 +68,11 @@ ENGINEER:
 	Health:
 		HP: 10000
 	Passenger:
-		PipType: Yellow
+		CustomPipType: yellow
 	EngineerRepair:
 	RepairsBridges:
 		RepairNotification: BridgeRepaired
+	CaptureManager:
 	Captures:
 		CaptureTypes: building
 		PlayerExperience: 50
@@ -66,8 +81,6 @@ ENGINEER:
 		FactionImages:
 			gdi: engineer.gdi
 			nod: engineer.nod
-	Selectable:
-		Priority: 5
 
 FLAMEGUY:
 	Inherits@1: ^ExistsInWorld
@@ -80,14 +93,14 @@ FLAMEGUY:
 		IdleSequences: run
 	Health:
 		HP: 16000
-	SelfHealing:
+	ChangesHealth:
 		Step: -1000
-		HealIfBelow: 101
+		StartIfBelow: 101
 	ScaredyCat:
 		PanicSequencePrefix:
 	WithDeathAnimation:
 		FallbackSequence: die
 		UseDeathTypeSuffix: false
 	HitShape:
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: System

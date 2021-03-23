@@ -1,6 +1,6 @@
 World:
 	LuaScript:
-		Scripts: gdi02.lua
+		Scripts: campaign-global.lua, gdi02.lua
 	MusicPlaylist:
 		StartingMusic: befeared
 	MissionData:
@@ -22,7 +22,7 @@ CYCL:
 HARV:
 	Harvester:
 		SearchFromProcRadius: 32
-		SearchFromOrderRadius: 20
+		SearchFromHarvesterRadius: 20
 
 PROC:
 	Buildable:
@@ -111,14 +111,3 @@ OBLI:
 SAM:
 	Buildable:
 		Prerequisites: ~disabled
-
-OLDLST:
-	Inherits: LST
-	-WithRoof:
-	-Selectable:
-	SelectionDecorations:
-		RenderSelectionBars: False
-	RejectsOrders:
-	Cargo:
-		Types: disabled
-	Interactable:

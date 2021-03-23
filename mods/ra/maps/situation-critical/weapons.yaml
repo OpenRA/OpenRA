@@ -1,0 +1,80 @@
+VolkovWeapon:
+	Inherits: SilencedPPK
+	ReloadDelay: 25
+	Range: 6c0
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		Versus:
+			None: 90
+			Wood: 75
+			Light: 60
+			Heavy: 25
+			Concrete: 0
+		DamageTypes: Prone50Percent, TriggerProne, FireDeath
+	Warhead@2Eff: CreateEffect
+		Explosions: piff
+		ValidTargets: Ground, GroundActor, Ship, Trees
+	Warhead@3EffWater: CreateEffect
+		Explosions: water_piff
+		ValidTargets: Water, Underwater
+		InvalidTargets: Ship, Structure, Bridge
+
+ParaBomb:
+	ReloadDelay: 50
+	ValidTargets: Ground, Water, GroundActor, WaterActor, Underwater, AirborneActor, Trees
+	Warhead@1Dam_impact: SpreadDamage
+		Spread: 1c0
+		Damage: 15000
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
+		ValidTargets: GroundActor, WaterActor, Underwater, AirborneActor, Trees
+		Versus:
+			Wood: 1000
+			Concrete: 25
+		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
+	Warhead@3Smu_impact: LeaveSmudge
+		SmudgeType: Scorch
+		ValidTargets: Ground, Infantry
+		Size: 1
+	Warhead@4Eff_impact: CreateEffect
+		Explosions: nuke
+		ImpactSounds: kaboom1.aud
+		ImpactActors: false
+		ValidTargets: Ground, Water, Air
+	Warhead@5Dam_areanuke1: SpreadDamage
+		Spread: 2c0
+		Damage: 6000
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
+		Delay: 5
+		ValidTargets: GroundActor, WaterActor, Underwater, AirborneActor, Trees
+		Versus:
+			Wood: 1000
+			Concrete: 25
+		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
+	Warhead@7Smu_areanuke1: LeaveSmudge
+		SmudgeType: Scorch
+		ValidTargets: Ground, Infantry
+		Size: 2
+		Delay: 5
+	Warhead@8Eff_areanuke1: CreateEffect
+		ImpactSounds: kaboom22.aud
+		Delay: 5
+		ImpactActors: false
+	Warhead@9Dam_areanuke2: SpreadDamage
+		Spread: 3c0
+		Damage: 6000
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
+		Delay: 10
+		ValidTargets: GroundActor, Trees, WaterActor, Underwater, AirborneActor
+		Versus:
+			Wood: 50
+			Tree: 200
+			Concrete: 25
+		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
+	Warhead@12Smu_areanuke2: LeaveSmudge
+		SmudgeType: Scorch
+		ValidTargets: Ground, Infantry
+		Size: 3
+		Delay: 10
+	Warhead@13FlashEffect: FlashPaletteEffect
+		Duration: 20
+		FlashType: Nuke

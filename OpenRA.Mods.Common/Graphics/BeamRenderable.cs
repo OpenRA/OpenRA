@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,13 +9,13 @@
  */
 #endregion
 
-using System.Drawing;
 using OpenRA.Graphics;
+using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.Graphics
 {
 	public enum BeamRenderableShape { Cylindrical, Flat }
-	public struct BeamRenderable : IRenderable, IFinalizedRenderable
+	public class BeamRenderable : IRenderable, IFinalizedRenderable
 	{
 		readonly WPos pos;
 		readonly int zOffset;
@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Graphics
 		readonly WDist width;
 		readonly Color color;
 
-		public BeamRenderable(WPos pos, int zOffset, WVec length, BeamRenderableShape shape, WDist width, Color color)
+		public BeamRenderable(WPos pos, int zOffset, in WVec length, BeamRenderableShape shape, WDist width, Color color)
 		{
 			this.pos = pos;
 			this.zOffset = zOffset;
@@ -34,14 +34,12 @@ namespace OpenRA.Mods.Common.Graphics
 			this.color = color;
 		}
 
-		public WPos Pos { get { return pos; } }
-		public PaletteReference Palette { get { return null; } }
-		public int ZOffset { get { return zOffset; } }
-		public bool IsDecoration { get { return true; } }
+		public WPos Pos => pos;
+		public int ZOffset => zOffset;
+		public bool IsDecoration => true;
 
-		public IRenderable WithPalette(PaletteReference newPalette) { return new BeamRenderable(pos, zOffset, length, shape, width, color); }
 		public IRenderable WithZOffset(int newOffset) { return new BeamRenderable(pos, zOffset, length, shape, width, color); }
-		public IRenderable OffsetBy(WVec vec) { return new BeamRenderable(pos + vec, zOffset, length, shape, width, color); }
+		public IRenderable OffsetBy(in WVec vec) { return new BeamRenderable(pos + vec, zOffset, length, shape, width, color); }
 		public IRenderable AsDecoration() { return this; }
 
 		public IFinalizedRenderable PrepareRender(WorldRenderer wr) { return this; }

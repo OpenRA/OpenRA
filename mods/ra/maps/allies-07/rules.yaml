@@ -1,0 +1,129 @@
+Player:
+	PlayerResources:
+		DefaultCash: 4000
+
+World:
+	LuaScript:
+		Scripts: campaign-global.lua, allies07.lua, allies07-AI.lua
+	MissionData:
+		Briefing: LANDCOM 16 HQS.\nTOP SECRET.\nTO: FIELD COMMANDER A9\n\nINTERCEPTION OF SOVIET COMMUNIQUE INDICATES THEIR IRON CURTAIN RESEARCH WAS SET BACK BY ESPIONAGE. EXCELLENT WORK, COMMANDER!\n\nCOMMUNIQUE WAS TRACED BACK TO SECRET SOVIET BASE IN BORNHOLM. INVESTIGATE POSSIBLE CONNECTION WITH IRON CURTAIN RESEARCH. CAPTURE RADAR CENTER AND DESTROY SUB PRODUCTION CAPABILITY.\n\nCONFIRMATION CODE 1138.\n\nTRANSMISSION ENDS.\n
+		StartVideo: shorbom1.vqa
+		WinVideo: shorbom2.vqa
+		LossVideo: shipsink.vqa
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			easy: Easy
+			normal: Normal
+			hard: Hard
+		Default: easy
+
+LST.Reinforcement:
+	Inherits: LST
+	RejectsOrders:
+	-Buildable:
+	-Selectable:
+	RenderSprites:
+		Image: lst
+	Interactable:
+
+powerproxy.paratroopers:
+	ParatroopersPower:
+		DropItems: E1,E1,E1,E2,E2
+
+MCV:
+	Buildable:
+		Prerequisites: ~disabled
+
+TRUK:
+	Buildable:
+		Prerequisites: ~disabled
+
+MRJ:
+	Buildable:
+		Prerequisites: ~disabled
+
+3TNK:
+	Buildable:
+		Prerequisites: ~vehicles.soviet
+
+V2RL:
+	Buildable:
+		Prerequisites: ~vehicles.soviet
+
+4TNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+QTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+APWR:
+	Buildable:
+		Prerequisites: ~disabled
+
+AFLD:
+	Buildable:
+		Prerequisites: ~disabled
+
+HPAD:
+	Buildable:
+		Prerequisites: ~disabled
+
+ATEK:
+	Buildable:
+		Prerequisites: ~disabled
+
+STEK:
+	Buildable:
+		Prerequisites: ~disabled
+
+PDOX:
+	Buildable:
+		Prerequisites: ~disabled
+
+IRON:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSLO:
+	Buildable:
+		Prerequisites: ~disabled
+
+GAP:
+	Buildable:
+		Prerequisites: ~disabled
+
+BRIK:
+	Buildable:
+		Prerequisites: ~disabled
+
+MECH:
+	Buildable:
+		Prerequisites: ~disabled
+
+THF:
+	Buildable:
+		Prerequisites: ~disabled
+
+E7:
+	Buildable:
+		Prerequisites: ~disabled
+
+E7.noautotarget:
+	Buildable:
+		Prerequisites: ~disabled
+
+MIG:
+	Buildable:
+		Prerequisites: ~disabled
+
+CA:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSUB:
+	Buildable:
+		Prerequisites: ~disabled

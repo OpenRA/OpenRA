@@ -6,14 +6,14 @@ Background@MULTIPLAYER_CREATESERVER_PANEL:
 	Height: 315
 	Children:
 		Label@TITLE:
-			Y: 15
+			Y: 16
 			Width: PARENT_RIGHT
 			Height: 25
 			Text: Create Server
 			Align: Center
 			Font: Bold
 		Label@SERVER_NAME_LABEL:
-			Y: 44
+			Y: 45
 			Width: 105
 			Height: 25
 			Align: Right
@@ -26,7 +26,7 @@ Background@MULTIPLAYER_CREATESERVER_PANEL:
 			Height: 25
 			Text: My OpenRA Server
 		Label@PASSWORD_LABEL:
-			Y: 79
+			Y: 80
 			Width: 105
 			Height: 25
 			Align: Right
@@ -39,13 +39,13 @@ Background@MULTIPLAYER_CREATESERVER_PANEL:
 			Height: 25
 		Label@AFTER_PASSWORD_LABEL:
 			X: 265
-			Y: 79
+			Y: 80
 			Width: 95
 			Height: 25
 			Align: Left
 			Text: (optional)
 		Label@LISTEN_PORT_LABEL:
-			Y: 114
+			Y: 115
 			Width: 105
 			Height: 25
 			Align: Right
@@ -67,25 +67,25 @@ Background@MULTIPLAYER_CREATESERVER_PANEL:
 			Text: Advertise Online
 		Label@NOTICES_HEADER_A:
 			X: 20
-			Y: 155
+			Y: 156
 			Height: 25
 			Align: Left
 			Font: Bold
 		Label@NOTICES_HEADER_B:
 			X: 20
-			Y: 155
+			Y: 156
 			Height: 25
 			Align: Left
 			Font: Bold
 		Label@NOTICES_HEADER_C:
 			X: 20
-			Y: 155
+			Y: 156
 			Height: 25
 			Align: Left
 			Font: Bold
 		Container@NOTICES_LAN:
 			X: 25
-			Y: 175
+			Y: 176
 			Width: PARENT_RIGHT
 			Height: PARENT_BOTTOM
 			Children:
@@ -119,7 +119,7 @@ Background@MULTIPLAYER_CREATESERVER_PANEL:
 					Text: manually configure port forwarding on your router.
 		Container@NOTICES_NO_UPNP:
 			X: 25
-			Y: 175
+			Y: 176
 			Width: PARENT_RIGHT
 			Height: PARENT_BOTTOM
 			Children:
@@ -168,7 +168,7 @@ Background@MULTIPLAYER_CREATESERVER_PANEL:
 					Text: Advanced tab of the OpenRA settings menu.
 		Container@NOTICES_UPNP:
 			X: 25
-			Y: 175
+			Y: 176
 			Width: PARENT_RIGHT
 			Height: PARENT_BOTTOM
 			Children:
@@ -213,7 +213,7 @@ Background@MULTIPLAYER_CREATESERVER_PANEL:
 					Height: PARENT_RIGHT - 2
 		LabelWithTooltip@MAP_TITLE:
 			X: PARENT_RIGHT - 194
-			Y: 217
+			Y: 218
 			Width: 174
 			Height: 25
 			Font: Bold
@@ -222,7 +222,7 @@ Background@MULTIPLAYER_CREATESERVER_PANEL:
 			TooltipTemplate: SIMPLE_TOOLTIP
 		Label@MAP_TYPE:
 			X: PARENT_RIGHT - 194
-			Y: 232
+			Y: 233
 			Width: 174
 			Height: 25
 			Font: TinyBold
@@ -230,7 +230,7 @@ Background@MULTIPLAYER_CREATESERVER_PANEL:
 			IgnoreMouseOver: true
 		Label@MAP_AUTHOR:
 			X: PARENT_RIGHT - 194
-			Y: 245
+			Y: 246
 			Width: 174
 			Height: 25
 			Font: Tiny

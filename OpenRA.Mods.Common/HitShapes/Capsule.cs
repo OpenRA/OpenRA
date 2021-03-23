@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,11 +10,10 @@
 #endregion
 
 using System;
-using System.Drawing;
-using System.Linq;
+using System.Collections.Generic;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
-using OpenRA.Traits;
+using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.HitShapes
 {
@@ -62,7 +61,7 @@ namespace OpenRA.Mods.Common.HitShapes
 			OuterRadius = Radius + new WDist(Math.Max(PointA.Length, PointB.Length));
 		}
 
-		public WDist DistanceFromEdge(WVec v)
+		public WDist DistanceFromEdge(in WVec v)
 		{
 			var p = new int2(v.X, v.Y);
 
@@ -82,45 +81,38 @@ namespace OpenRA.Mods.Common.HitShapes
 			return new WDist(Math.Max(0, distance - Radius.Length));
 		}
 
-		public WDist DistanceFromEdge(WPos pos, Actor actor)
+		public WDist DistanceFromEdge(WPos pos, WPos origin, WRot orientation)
 		{
-			var actorPos = actor.CenterPosition;
+			if (pos.Z > origin.Z + VerticalTopOffset)
+				return DistanceFromEdge((pos - (origin + new WVec(0, 0, VerticalTopOffset))).Rotate(-orientation));
 
-			if (pos.Z > actorPos.Z + VerticalTopOffset)
-				return DistanceFromEdge((pos - (actorPos + new WVec(0, 0, VerticalTopOffset))).Rotate(-actor.Orientation));
+			if (pos.Z < origin.Z + VerticalBottomOffset)
+				return DistanceFromEdge((pos - (origin + new WVec(0, 0, VerticalBottomOffset))).Rotate(-orientation));
 
-			if (pos.Z < actorPos.Z + VerticalBottomOffset)
-				return DistanceFromEdge((pos - (actorPos + new WVec(0, 0, VerticalBottomOffset))).Rotate(-actor.Orientation));
-
-			return DistanceFromEdge((pos - new WPos(actorPos.X, actorPos.Y, pos.Z)).Rotate(-actor.Orientation));
+			return DistanceFromEdge((pos - new WPos(origin.X, origin.Y, pos.Z)).Rotate(-orientation));
 		}
 
-		public void DrawCombatOverlay(WorldRenderer wr, RgbaColorRenderer wcr, Actor actor)
+		IEnumerable<IRenderable> IHitShape.RenderDebugOverlay(WorldRenderer wr, WPos origin, WRot orientation)
 		{
-			var actorPos = actor.CenterPosition;
-
-			var a = actorPos + new WVec(PointA.X, PointA.Y, VerticalTopOffset).Rotate(actor.Orientation);
-			var b = actorPos + new WVec(PointB.X, PointB.Y, VerticalTopOffset).Rotate(actor.Orientation);
-			var aa = actorPos + new WVec(PointA.X, PointA.Y, VerticalBottomOffset).Rotate(actor.Orientation);
-			var bb = actorPos + new WVec(PointB.X, PointB.Y, VerticalBottomOffset).Rotate(actor.Orientation);
+			var a = origin + new WVec(PointA.X, PointA.Y, VerticalTopOffset).Rotate(orientation);
+			var b = origin + new WVec(PointB.X, PointB.Y, VerticalTopOffset).Rotate(orientation);
+			var aa = origin + new WVec(PointA.X, PointA.Y, VerticalBottomOffset).Rotate(orientation);
+			var bb = origin + new WVec(PointB.X, PointB.Y, VerticalBottomOffset).Rotate(orientation);
 
 			var offset1 = new WVec(a.Y - b.Y, b.X - a.X, 0);
 			offset1 = offset1 * Radius.Length / offset1.Length;
 			var offset2 = new WVec(aa.Y - bb.Y, bb.X - aa.X, 0);
 			offset2 = offset2 * Radius.Length / offset2.Length;
 
-			var c = Color.Yellow;
-			RangeCircleRenderable.DrawRangeCircle(wr, a, Radius, 1, c, 0, c);
-			RangeCircleRenderable.DrawRangeCircle(wr, b, Radius, 1, c, 0, c);
-			wcr.DrawLine(new[] { wr.Screen3DPosition(a - offset1), wr.Screen3DPosition(b - offset1) }, 1, c);
-			wcr.DrawLine(new[] { wr.Screen3DPosition(a + offset1), wr.Screen3DPosition(b + offset1) }, 1, c);
-
-			RangeCircleRenderable.DrawRangeCircle(wr, aa, Radius, 1, c, 0, c);
-			RangeCircleRenderable.DrawRangeCircle(wr, bb, Radius, 1, c, 0, c);
-			wcr.DrawLine(new[] { wr.Screen3DPosition(aa - offset2), wr.Screen3DPosition(bb - offset2) }, 1, c);
-			wcr.DrawLine(new[] { wr.Screen3DPosition(aa + offset2), wr.Screen3DPosition(bb + offset2) }, 1, c);
-
-			RangeCircleRenderable.DrawRangeCircle(wr, actorPos, OuterRadius, 1, Color.LimeGreen, 0, Color.LimeGreen);
+			yield return new CircleAnnotationRenderable(a, Radius, 1, Color.Yellow);
+			yield return new CircleAnnotationRenderable(b, Radius, 1, Color.Yellow);
+			yield return new CircleAnnotationRenderable(aa, Radius, 1, Color.Yellow);
+			yield return new CircleAnnotationRenderable(bb, Radius, 1, Color.Yellow);
+			yield return new CircleAnnotationRenderable(origin, OuterRadius, 1,  Color.LimeGreen);
+			yield return new LineAnnotationRenderable(a - offset1, b - offset1, 1, Color.Yellow);
+			yield return new LineAnnotationRenderable(a + offset1, b + offset1, 1, Color.Yellow);
+			yield return new LineAnnotationRenderable(aa - offset2, bb - offset2, 1, Color.Yellow);
+			yield return new LineAnnotationRenderable(aa + offset2, bb + offset2, 1, Color.Yellow);
 		}
 	}
 }

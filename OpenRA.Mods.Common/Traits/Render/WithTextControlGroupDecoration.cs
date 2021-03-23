@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,16 +10,17 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
+using OpenRA.Mods.Common.Widgets;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Renders Ctrl groups using typeface.")]
-	public class WithTextControlGroupDecorationInfo : ITraitInfo, IRulesetLoaded, Requires<IDecorationBoundsInfo>
+	public class WithTextControlGroupDecorationInfo : TraitInfo, IRulesetLoaded
 	{
 		public readonly string Font = "TinyBold";
 
@@ -29,101 +30,59 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Use the player color of the current owner.")]
 		public readonly bool UsePlayerColor = false;
 
-		[Desc("The Z offset to apply when rendering this decoration.")]
-		public readonly int ZOffset = 1;
+		[Desc("Position in the actor's selection box to draw the decoration.")]
+		public readonly string Position = "TopLeft";
 
-		[Desc("Point in the actor's selection box used as reference for offsetting the decoration image. " +
-			"Possible values are combinations of Center, Top, Bottom, Left, Right.")]
-		public readonly ReferencePoints ReferencePoint = ReferencePoints.Bottom | ReferencePoints.Left;
-
-		[Desc("Manual offset in screen pixel.")]
-		public readonly int2 ScreenOffset = new int2(2, -2);
+		[Desc("Offset text center position from the selection box edge.")]
+		public readonly int2 Margin = int2.Zero;
 
 		void IRulesetLoaded<ActorInfo>.RulesetLoaded(Ruleset rules, ActorInfo info)
 		{
-			if (!Game.ModData.Manifest.Fonts.ContainsKey(Font))
+			if (!Game.ModData.Manifest.Get<Fonts>().FontList.ContainsKey(Font))
 				throw new YamlException("Font '{0}' is not listed in the mod.yaml's Fonts section".F(Font));
 		}
 
-		public object Create(ActorInitializer init) { return new WithTextControlGroupDecoration(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new WithTextControlGroupDecoration(init.Self, this); }
 	}
 
-	public class WithTextControlGroupDecoration : IRenderAboveShroudWhenSelected, INotifyOwnerChanged
+	public class WithTextControlGroupDecoration : IDecoration, INotifyOwnerChanged
 	{
 		readonly WithTextControlGroupDecorationInfo info;
-		readonly IDecorationBounds[] decorationBounds;
 		readonly SpriteFont font;
+		readonly Actor self;
+		readonly CachedTransform<int, string> label;
 
 		Color color;
 
 		public WithTextControlGroupDecoration(Actor self, WithTextControlGroupDecorationInfo info)
 		{
 			this.info = info;
-
-			if (!Game.Renderer.Fonts.TryGetValue(info.Font, out font))
-				throw new YamlException("Font '{0}' is not listed in the mod.yaml's Fonts section".F(info.Font));
-
-			decorationBounds = self.TraitsImplementing<IDecorationBounds>().ToArray();
-			color = info.UsePlayerColor ? self.Owner.Color.RGB : info.Color;
+			this.self = self;
+			font = Game.Renderer.Fonts[info.Font];
+			color = info.UsePlayerColor ? self.Owner.Color : info.Color;
+			label = new CachedTransform<int, string>(g => g.ToString());
 		}
 
-		IEnumerable<IRenderable> IRenderAboveShroudWhenSelected.RenderAboveShroud(Actor self, WorldRenderer wr)
-		{
-			if (self.Owner != wr.World.LocalPlayer)
-				yield break;
+		bool IDecoration.RequiresSelection => true;
 
-			if (self.World.FogObscures(self))
-				yield break;
-
-			foreach (var r in DrawControlGroup(self, wr))
-				yield return r;
-		}
-
-		bool IRenderAboveShroudWhenSelected.SpatiallyPartitionable { get { return true; } }
-
-		IEnumerable<IRenderable> DrawControlGroup(Actor self, WorldRenderer wr)
+		IEnumerable<IRenderable> IDecoration.RenderDecoration(Actor self, WorldRenderer wr, ISelectionDecorations container)
 		{
 			var group = self.World.Selection.GetControlGroupForActor(self);
 			if (group == null)
-				yield break;
+				return Enumerable.Empty<IRenderable>();
 
-			var bounds = decorationBounds.FirstNonEmptyBounds(self, wr);
-			var number = group.Value.ToString();
-			var halfSize = font.Measure(number) / 2;
-
-			var boundsOffset = new int2(bounds.Left + bounds.Right, bounds.Top + bounds.Bottom) / 2;
-			var sizeOffset = new int2();
-			if (info.ReferencePoint.HasFlag(ReferencePoints.Top))
+			var text = label.Update(group.Value);
+			var screenPos = container.GetDecorationOrigin(self, wr, info.Position, info.Margin);
+			return new IRenderable[]
 			{
-				boundsOffset -= new int2(0, bounds.Height / 2);
-				sizeOffset += new int2(0, halfSize.Y);
-			}
-			else if (info.ReferencePoint.HasFlag(ReferencePoints.Bottom))
-			{
-				boundsOffset += new int2(0, bounds.Height / 2);
-				sizeOffset -= new int2(0, halfSize.Y);
-			}
-
-			if (info.ReferencePoint.HasFlag(ReferencePoints.Left))
-			{
-				boundsOffset -= new int2(bounds.Width / 2, 0);
-				sizeOffset += new int2(halfSize.X, 0);
-			}
-			else if (info.ReferencePoint.HasFlag(ReferencePoints.Right))
-			{
-				boundsOffset += new int2(bounds.Width / 2, 0);
-				sizeOffset -= new int2(halfSize.X, 0);
-			}
-
-			var screenPos = boundsOffset + sizeOffset + info.ScreenOffset;
-
-			yield return new TextRenderable(font, wr.ProjectedPosition(screenPos), info.ZOffset, color, number);
+				new UITextRenderable(font, self.CenterPosition, screenPos, 0, color, text)
+			};
 		}
 
 		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
 			if (info.UsePlayerColor)
-				color = newOwner.Color.RGB;
+				color = newOwner.Color;
 		}
 	}
 }

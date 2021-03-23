@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,14 +10,14 @@
 #endregion
 
 using System;
-using System.Drawing;
 using Eluant;
 using Eluant.ObjectBinding;
+using OpenRA.Primitives;
 using OpenRA.Scripting;
 
 namespace OpenRA
 {
-	public struct CVec : IScriptBindable, ILuaAdditionBinding, ILuaSubtractionBinding, ILuaUnaryMinusBinding, ILuaEqualityBinding, ILuaTableBinding, IEquatable<CVec>
+	public readonly struct CVec : IScriptBindable, ILuaAdditionBinding, ILuaSubtractionBinding, ILuaUnaryMinusBinding, ILuaEqualityBinding, ILuaTableBinding, IEquatable<CVec>
 	{
 		public readonly int X, Y;
 
@@ -42,8 +42,8 @@ namespace OpenRA
 
 		public CVec Sign() { return new CVec(Math.Sign(X), Math.Sign(Y)); }
 		public CVec Abs() { return new CVec(Math.Abs(X), Math.Abs(Y)); }
-		public int LengthSquared { get { return X * X + Y * Y; } }
-		public int Length { get { return Exts.ISqrt(LengthSquared); } }
+		public int LengthSquared => X * X + Y * Y;
+		public int Length => Exts.ISqrt(LengthSquared);
 
 		public CVec Clamp(Rectangle r)
 		{
@@ -75,8 +75,7 @@ namespace OpenRA
 
 		public LuaValue Add(LuaRuntime runtime, LuaValue left, LuaValue right)
 		{
-			CVec a, b;
-			if (!left.TryGetClrValue(out a) || !right.TryGetClrValue(out b))
+			if (!left.TryGetClrValue(out CVec a) || !right.TryGetClrValue(out CVec b))
 				throw new LuaException("Attempted to call CVec.Add(CVec, CVec) with invalid arguments ({0}, {1})".F(left.WrappedClrType().Name, right.WrappedClrType().Name));
 
 			return new LuaCustomClrObject(a + b);
@@ -84,8 +83,7 @@ namespace OpenRA
 
 		public LuaValue Subtract(LuaRuntime runtime, LuaValue left, LuaValue right)
 		{
-			CVec a, b;
-			if (!left.TryGetClrValue(out a) || !right.TryGetClrValue(out b))
+			if (!left.TryGetClrValue(out CVec a) || !right.TryGetClrValue(out CVec b))
 				throw new LuaException("Attempted to call CVec.Subtract(CVec, CVec) with invalid arguments ({0}, {1})".F(left.WrappedClrType().Name, right.WrappedClrType().Name));
 
 			return new LuaCustomClrObject(a - b);
@@ -98,8 +96,7 @@ namespace OpenRA
 
 		public LuaValue Equals(LuaRuntime runtime, LuaValue left, LuaValue right)
 		{
-			CVec a, b;
-			if (!left.TryGetClrValue(out a) || !right.TryGetClrValue(out b))
+			if (!left.TryGetClrValue(out CVec a) || !right.TryGetClrValue(out CVec b))
 				return false;
 
 			return a == b;
@@ -117,10 +114,7 @@ namespace OpenRA
 				}
 			}
 
-			set
-			{
-				throw new LuaException("CVec is read-only. Use CVec.New to create a new value");
-			}
+			set => throw new LuaException("CVec is read-only. Use CVec.New to create a new value");
 		}
 
 		#endregion

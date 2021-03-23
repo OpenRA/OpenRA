@@ -1,6 +1,9 @@
 ^BasePlayer:
 	AlwaysVisible:
 	Shroud:
+	PlayerResources:
+		ResourceValues:
+			Spice: 25
 
 EditorPlayer:
 	Inherits: ^BasePlayer
@@ -10,69 +13,105 @@ Player:
 	TechTree:
 	ClassicProductionQueue@Building:
 		Type: Building
-		BuildDurationModifier: 250
-		LowPowerSlowdown: 3
-		QueuedAudio: Building
+		DisplayOrder: 0
+		LowPowerModifier: 300
 		ReadyAudio: BuildingReady
 		BlockedAudio: NoRoom
+		QueuedAudio: Building
+		OnHoldAudio: OnHold
+		CancelledAudio: Cancelled
 		SpeedUp: true
+		BuildTimeSpeedReduction: 100, 66, 50
 	ClassicProductionQueue@Infantry:
 		Type: Infantry
-		BuildDurationModifier: 250
-		LowPowerSlowdown: 3
+		DisplayOrder: 1
+		LowPowerModifier: 300
+		ReadyAudio: UnitReady
 		BlockedAudio: NoRoom
+		QueuedAudio: Training
+		OnHoldAudio: OnHold
+		CancelledAudio: Cancelled
 		SpeedUp: true
+		BuildTimeSpeedReduction: 100, 66, 50
 	ClassicProductionQueue@Vehicle:
 		Type: Vehicle
-		BuildDurationModifier: 250
-		LowPowerSlowdown: 3
-		QueuedAudio: Building
+		DisplayOrder: 2
+		LowPowerModifier: 300
+		ReadyAudio: UnitReady
 		BlockedAudio: NoRoom
+		QueuedAudio: Building
+		OnHoldAudio: OnHold
+		CancelledAudio: Cancelled
 		SpeedUp: true
+		BuildTimeSpeedReduction: 100, 66, 50
 	ClassicProductionQueue@Armor:
 		Type: Armor
-		BuildDurationModifier: 250
-		LowPowerSlowdown: 3
-		QueuedAudio: Building
+		DisplayOrder: 3
+		LowPowerModifier: 300
+		ReadyAudio: UnitReady
 		BlockedAudio: NoRoom
+		QueuedAudio: Building
+		OnHoldAudio: OnHold
+		CancelledAudio: Cancelled
 		SpeedUp: true
+		BuildTimeSpeedReduction: 100, 66, 50
 	ClassicProductionQueue@Starport:
 		Type: Starport
+		DisplayOrder: 4
 		BuildDurationModifier: 212
-		LowPowerSlowdown: 1
 		BlockedAudio: NoRoom
 		QueuedAudio: OrderPlaced
-		ReadyAudio:
+		OnHoldAudio: OnHold
+		CancelledAudio: Cancelled
 	ClassicProductionQueue@Aircraft:
 		Type: Aircraft
-		BuildDurationModifier: 312
-		LowPowerSlowdown: 3
-		QueuedAudio: Building
+		DisplayOrder: 5
+		LowPowerModifier: 300
+		ReadyAudio: UnitReady
 		BlockedAudio: NoRoom
+		QueuedAudio: Building
+		OnHoldAudio: OnHold
+		CancelledAudio: Cancelled
 		SpeedUp: true
+		BuildTimeSpeedReduction: 100, 66, 50
 	ClassicProductionQueue@Upgrade: # Upgrade is defined after others so it won't be automatically selected by ProductionQueueFromSelection.
 		Type: Upgrade
-		BuildDurationModifier: 250
-		LowPowerSlowdown: 1
-		QueuedAudio: Upgrading
 		ReadyAudio: NewOptions
 		BlockedAudio: NoRoom
+		QueuedAudio: Upgrading
+		OnHoldAudio: OnHold
+		CancelledAudio: Cancelled
 	PlaceBuilding:
+		NewOptionsNotification: NewOptions
+		CannotPlaceNotification: BuildingCannotPlaceAudio
 	SupportPowerManager:
 	ScriptTriggers:
 	MissionObjectives:
+		WinNotification: Win
+		LoseNotification: Lose
+		LeaveNotification: Leave
 	ConquestVictoryConditions:
 	PowerManager:
 		AdviceInterval: 650
+		SpeechNotification: LowPower
 	AllyRepair:
 	PlayerResources:
 		SelectableCash: 2500, 5000, 7000, 10000, 20000
 		InsufficientFundsNotification: InsufficientFunds
+		CashTickUpNotification: CashTickUp
+		CashTickDownNotification: CashTickDown
 	DeveloperMode:
-		CheckboxDisplayOrder: 7
+		CheckboxDisplayOrder: 8
 	BaseAttackNotifier:
 	Shroud:
 		FogCheckboxDisplayOrder: 3
+	LobbyPrerequisiteCheckbox@AUTOCONCRETE:
+		ID: autoconcrete
+		Label: Automatic Concrete
+		Description: Concrete foundations are automatically created beneath buildings
+		Enabled: False
+		DisplayOrder: 7
+		Prerequisites: global-auto-concrete
 	FrozenActorLayer:
 	HarvesterAttackNotifier:
 	PlayerStatistics:
@@ -120,3 +159,5 @@ Player:
 	ResourceStorageWarning:
 		AdviceInterval: 26
 	PlayerExperience:
+	GameSaveViewportManager:
+	PlayerRadarTerrain:

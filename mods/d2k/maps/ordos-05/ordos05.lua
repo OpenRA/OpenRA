@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+   Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -7,7 +7,7 @@
    information, see COPYING.
 ]]
 
-Base = 
+Base =
 {
 	AtreidesMainBase = { AConyard, APower1, APower2, APower3, ABarracks1, ARefinery1, ALightFactory, AHeavyFactory, AGunt1, AGunt2, AGunt3, AGunt4, AGunt5 },
 	AtreidesSmallBase1 = { APower4, APower5, ABarracks2, ARefinery2, AGunt6, AGunt7 },
@@ -70,7 +70,7 @@ AtreidesPaths =
 	{ AtreidesEntry8.Location, AtreidesRally8.Location }
 }
 
-InitialReinforcements = 
+InitialReinforcements =
 {
 	AtreidesMainBase = { "combat_tank_a", "combat_tank_a", "quad", "quad", "trike", "light_inf", "light_inf", "light_inf", "light_inf" },
 	AtreidesSmallBase1 = { "trooper", "trooper", "trooper", "light_inf", "light_inf", "light_inf", "light_inf" },
@@ -201,10 +201,10 @@ WorldLoaded = function()
 
 		Reinforcements.ReinforceWithTransport(player, "frigate", { "mcv" }, { OrdosStarportEntry.Location, AStarport.Location + CVec.New(1, 1) }, { OrdosStarportExit.Location })
 
-		if APower8.Owner ~= player then
+		if APower8.Owner ~= player and not APower8.IsDead then
 			APower8.Sell()
 		end
-		if APower9.Owner ~= player then
+		if APower9.Owner ~= player and not APower9.IsDead then
 			APower9.Sell()
 		end
 	end)

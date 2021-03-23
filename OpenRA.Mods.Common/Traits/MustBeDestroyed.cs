@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -14,12 +14,12 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Actors with this trait must be destroyed for a game to end.")]
-	public class MustBeDestroyedInfo : ITraitInfo
+	public class MustBeDestroyedInfo : TraitInfo
 	{
 		[Desc("In a short game only actors that have this value set to true need to be destroyed.")]
 		public bool RequiredForShortGame = false;
 
-		public object Create(ActorInitializer init) { return new MustBeDestroyed(this); }
+		public override object Create(ActorInitializer init) { return new MustBeDestroyed(this); }
 	}
 
 	public class MustBeDestroyed

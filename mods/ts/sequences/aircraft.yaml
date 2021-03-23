@@ -7,6 +7,7 @@ orcab:
 	icon: obmbicon
 
 trnsport:
+	Inherits: ^VehicleOverlays
 	icon: otrnicon
 
 scrin:
@@ -16,15 +17,24 @@ scrin:
 apache:
 	Inherits: ^VehicleOverlays
 	icon: apchicon
-	rotor: lrotor
-		Length: 4
+	rotor: harpyrotor
+		Start: 32
+		Length: 31
 		Offset: 0, 0, 16
 		ZRamp: 1
-	slow-rotor: lrotor
-		Start: 4
-		Length: 8
+		Tick: 25
+	slow-rotor: harpyrotor
+		Length: 31
 		Offset: 0, 0, 16
 		ZRamp: 1
+		Tick: 50
 
 orcatran:
+	Inherits: ^VehicleOverlays
 	icon: crryicon
+
+pod:
+	Inherits: ^VehicleOverlays
+	idle:
+		Facings: 1
+		Length: 1

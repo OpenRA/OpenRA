@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -11,7 +11,9 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Graphics;
 using OpenRA.Mods.Common.HitShapes;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -19,13 +21,21 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Shape of actor for targeting and damage calculations.")]
 	public class HitShapeInfo : ConditionalTraitInfo, Requires<BodyOrientationInfo>
 	{
+		[Desc("Name of turret this shape is linked to. Leave empty to link shape to body.")]
+		public readonly string Turret = null;
+
 		[Desc("Create a targetable position for each offset listed here (relative to CenterPosition).")]
 		public readonly WVec[] TargetableOffsets = { WVec.Zero };
 
 		[Desc("Create a targetable position at the center of each occupied cell. Stacks with TargetableOffsets.")]
 		public readonly bool UseTargetableCellsOffsets = false;
 
-		[FieldLoader.LoadUsing("LoadShape")]
+		[Desc("Defines which Armor types apply when the actor receives damage to this HitShape.",
+			"If none specified, all armor types the actor has are valid.")]
+		public readonly BitSet<ArmorType> ArmorTypes = default(BitSet<ArmorType>);
+
+		[FieldLoader.LoadUsing(nameof(LoadShape))]
+		[Desc("Engine comes with support for `Circle`, `Capsule`, `Polygon` and `Rectangle`. Defaults to `Circle` when left empty.")]
 		public readonly IHitShape Type;
 
 		static object LoadShape(MiniYaml yaml)
@@ -61,6 +71,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		BodyOrientation orientation;
 		ITargetableCells targetableCells;
+		Turreted turret;
 
 		public HitShape(Actor self, HitShapeInfo info)
 			: base(info) { }
@@ -69,26 +80,60 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			orientation = self.Trait<BodyOrientation>();
 			targetableCells = self.TraitOrDefault<ITargetableCells>();
+			turret = self.TraitsImplementing<Turreted>().FirstOrDefault(t => t.Name == Info.Turret);
 
 			base.Created(self);
 		}
 
-		bool ITargetablePositions.AlwaysEnabled { get { return Info.RequiresCondition == null; } }
+		bool ITargetablePositions.AlwaysEnabled => Info.RequiresCondition == null;
 
 		IEnumerable<WPos> ITargetablePositions.TargetablePositions(Actor self)
 		{
 			if (IsTraitDisabled)
-				yield break;
+				return Enumerable.Empty<WPos>();
 
+			return TargetablePositions(self);
+		}
+
+		IEnumerable<WPos> TargetablePositions(Actor self)
+		{
 			if (Info.UseTargetableCellsOffsets && targetableCells != null)
 				foreach (var c in targetableCells.TargetableCells())
-					yield return self.World.Map.CenterOfCell(c.First);
+					yield return self.World.Map.CenterOfCell(c.Cell);
 
 			foreach (var o in Info.TargetableOffsets)
 			{
-				var offset = orientation.LocalToWorld(o.Rotate(orientation.QuantizeOrientation(self, self.Orientation)));
+				var offset = CalculateTargetableOffset(self, o);
 				yield return self.CenterPosition + offset;
 			}
+		}
+
+		WVec CalculateTargetableOffset(Actor self, in WVec offset)
+		{
+			var localOffset = offset;
+			var quantizedBodyOrientation = orientation.QuantizeOrientation(self, self.Orientation);
+
+			if (turret != null)
+			{
+				localOffset = localOffset.Rotate(turret.LocalOrientation);
+				localOffset += turret.Offset;
+			}
+
+			return orientation.LocalToWorld(localOffset.Rotate(quantizedBodyOrientation));
+		}
+
+		public WDist DistanceFromEdge(Actor self, WPos pos)
+		{
+			var origin = turret != null ? self.CenterPosition + turret.Position(self) : self.CenterPosition;
+			var orientation = turret != null ? turret.WorldOrientation : self.Orientation;
+			return Info.Type.DistanceFromEdge(pos, origin, orientation);
+		}
+
+		public IEnumerable<IRenderable> RenderDebugOverlay(Actor self, WorldRenderer wr)
+		{
+			var origin = turret != null ? self.CenterPosition + turret.Position(self) : self.CenterPosition;
+			var orientation = turret != null ? turret.WorldOrientation : self.Orientation;
+			return Info.Type.RenderDebugOverlay(wr, origin, orientation);
 		}
 	}
 }

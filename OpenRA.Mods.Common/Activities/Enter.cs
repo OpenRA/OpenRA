@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,10 +9,10 @@
  */
 #endregion
 
-using System;
-using System.Linq;
+using System.Collections.Generic;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
@@ -21,277 +21,135 @@ namespace OpenRA.Mods.Common.Activities
 
 	public abstract class Enter : Activity
 	{
-		public enum ReserveStatus { None, TooFar, Pending, Ready }
-		enum EnterState { ApproachingOrEntering, Inside, Exiting, Done }
+		enum EnterState { Approaching, Entering, Exiting, Finished }
 
 		readonly IMove move;
-		readonly int maxTries = 0;
-		readonly EnterBehaviour enterBehaviour;
-		readonly bool repathWhileMoving;
+		readonly Color? targetLineColor;
 
-		public Target Target { get { return target; } }
 		Target target;
-		EnterState nextState = EnterState.ApproachingOrEntering; // Hint/starting point for next state
-		bool isEnteringOrInside = false; // Used to know if exiting should be used
-		WPos savedPos; // Position just before entering
-		Activity inner;
-		bool firstApproach = true;
+		Target lastVisibleTarget;
+		bool useLastVisibleTarget;
+		EnterState lastState = EnterState.Approaching;
 
-		protected Enter(Actor self, Actor target, EnterBehaviour enterBehaviour, int maxTries = 1, bool repathWhileMoving = true)
+		protected Enter(Actor self, in Target target, Color? targetLineColor = null)
 		{
 			move = self.Trait<IMove>();
-			this.target = Target.FromActor(target);
-			this.maxTries = maxTries;
-			this.enterBehaviour = enterBehaviour;
-			this.repathWhileMoving = repathWhileMoving;
+			this.target = target;
+			this.targetLineColor = targetLineColor;
+			ChildHasPriority = false;
 		}
 
-		// CanEnter(target) should to be true; otherwise, Enter may abort.
-		// Tries counter starts at 1 (reset every tick)
-		protected virtual bool TryGetAlternateTarget(Actor self, int tries, ref Target target) { return false; }
-		protected virtual bool CanReserve(Actor self) { return true; }
-		protected virtual ReserveStatus Reserve(Actor self)
+		/// <summary>
+		/// Called early in the activity tick to allow subclasses to update state.
+		/// Call Cancel(self, true) if it is no longer valid to enter
+		/// </summary>
+		protected virtual void TickInner(Actor self, in Target target, bool targetIsDeadOrHiddenActor) { }
+
+		/// <summary>
+		/// Called when the actor is ready to transition from approaching to entering the target actor.
+		/// Return true to start entering, or false to wait in the WaitingToEnter state.
+		/// Call Cancel(self, true) before returning false if it is no longer valid to enter
+		/// </summary>
+		protected virtual bool TryStartEnter(Actor self, Actor targetActor) { return true; }
+
+		/// <summary>
+		/// Called when the actor has entered the target actor.
+		/// Actor will be be Killed/Disposed or they will enter/exit unharmed.
+		/// Depends on either the EnterBehaviour of the actor or the requirements of an overriding function.
+		/// </summary>
+		protected virtual void OnEnterComplete(Actor self, Actor targetActor) { }
+
+		public override bool Tick(Actor self)
 		{
-			return !CanReserve(self) ? ReserveStatus.None : move.CanEnterTargetNow(self, target) ? ReserveStatus.Ready : ReserveStatus.TooFar;
-		}
+			// Update our view of the target
+			target = target.Recalculate(self.Owner, out var targetIsHiddenActor);
+			if (!targetIsHiddenActor && target.Type == TargetType.Actor)
+				lastVisibleTarget = Target.FromTargetPositions(target);
 
-		protected virtual void Unreserve(Actor self, bool abort) { }
-		protected virtual void OnInside(Actor self) { }
+			var oldUseLastVisibleTarget = useLastVisibleTarget;
+			useLastVisibleTarget = targetIsHiddenActor || !target.IsValidFor(self);
 
-		protected bool TryGetAlternateTargetInCircle(
-			Actor self, WDist radius, Action<Target> update, Func<Actor, bool> primaryFilter, Func<Actor, bool>[] preferenceFilters = null)
-		{
-			var diff = new WVec(radius, radius, WDist.Zero);
-			var candidates = self.World.ActorMap.ActorsInBox(self.CenterPosition - diff, self.CenterPosition + diff)
-				.Where(primaryFilter).Select(a => new { Actor = a, Ls = (self.CenterPosition - a.CenterPosition).HorizontalLengthSquared })
-				.Where(p => p.Ls <= radius.LengthSquared).OrderBy(p => p.Ls).Select(p => p.Actor);
-			if (preferenceFilters != null)
-				foreach (var filter in preferenceFilters)
-				{
-					var preferredCandidate = candidates.FirstOrDefault(filter);
-					if (preferredCandidate == null)
-						continue;
-					target = Target.FromActor(preferredCandidate);
-					update(target);
-					return true;
-				}
+			// Cancel immediately if the target died while we were entering it
+			if (!IsCanceling && useLastVisibleTarget && lastState == EnterState.Entering)
+				Cancel(self, true);
 
-			var candidate = candidates.FirstOrDefault();
-			if (candidate == null)
+			TickInner(self, target, useLastVisibleTarget);
+
+			// We need to wait for movement to finish before transitioning to
+			// the next state or next activity
+			if (!TickChild(self))
 				return false;
-			target = Target.FromActor(candidate);
-			update(target);
-			return true;
-		}
 
-		// Called when inner activity is this and returns inner activity for next tick.
-		protected virtual Activity InsideTick(Actor self) { return null; }
-
-		// Abort entering and/or leave if necessary
-		protected virtual void AbortOrExit(Actor self)
-		{
-			if (nextState == EnterState.Done)
-				return;
-			nextState = isEnteringOrInside ? EnterState.Exiting : EnterState.Done;
-			if (inner == this)
-				inner = null;
-			else if (inner != null)
-				inner.Cancel(self);
-			if (isEnteringOrInside)
-				Unreserve(self, true);
-		}
-
-		// Cancel inner activity and mark as done unless already leaving or done
-		protected void Done(Actor self)
-		{
-			if (nextState == EnterState.Done)
-				return;
-			nextState = EnterState.Done;
-			if (inner == this)
-				inner = null;
-			else if (inner != null)
-				inner.Cancel(self);
-		}
-
-		public override bool Cancel(Actor self, bool keepQueue = false)
-		{
-			AbortOrExit(self);
-			if (nextState < EnterState.Exiting)
-				return base.Cancel(self);
-			else
-				NextActivity = null;
-
-			return true;
-		}
-
-		ReserveStatus TryReserveElseTryAlternateReserve(Actor self)
-		{
-			for (var tries = 0;;)
+			// Note that lastState refers to what we have just *finished* doing
+			switch (lastState)
 			{
-				switch (Reserve(self))
+				case EnterState.Approaching:
 				{
-					case ReserveStatus.None:
-						if (++tries > maxTries || !TryGetAlternateTarget(self, tries, ref target))
-							return ReserveStatus.None;
-						continue;
-					case ReserveStatus.TooFar:
-						// Always goto to transport on first approach
-						if (firstApproach)
-						{
-							firstApproach = false;
-							return ReserveStatus.TooFar;
-						}
+					// NOTE: We can safely cancel in this case because we know the
+					// actor has finished any in-progress move activities
+					if (IsCanceling)
+						return true;
 
-						if (++tries > maxTries)
-							return ReserveStatus.TooFar;
-						Target t = target;
-						if (!TryGetAlternateTarget(self, tries, ref t))
-							return ReserveStatus.TooFar;
+					// Lost track of the target
+					if (useLastVisibleTarget && lastVisibleTarget.Type == TargetType.Invalid)
+						return true;
 
-						var targetPosition = target.Positions.PositionClosestTo(self.CenterPosition);
-						var alternatePosition = t.Positions.PositionClosestTo(self.CenterPosition);
-						if ((targetPosition - self.CenterPosition).HorizontalLengthSquared <= (alternatePosition - self.CenterPosition).HorizontalLengthSquared)
-							return ReserveStatus.TooFar;
-						target = t;
-						continue;
-					case ReserveStatus.Pending:
-						return ReserveStatus.Pending;
-					case ReserveStatus.Ready:
-						return ReserveStatus.Ready;
+					// We are not next to the target - lets fix that
+					if (target.Type != TargetType.Invalid && !move.CanEnterTargetNow(self, target))
+					{
+						// Target lines are managed by this trait, so we do not pass targetLineColor
+						var initialTargetPosition = (useLastVisibleTarget ? lastVisibleTarget : target).CenterPosition;
+						QueueChild(move.MoveToTarget(self, target, initialTargetPosition));
+						return false;
+					}
+
+					// We are next to where we thought the target should be, but it isn't here
+					// There's not much more we can do here
+					if (useLastVisibleTarget || target.Type != TargetType.Actor)
+						return true;
+
+					// Are we ready to move into the target?
+					if (TryStartEnter(self, target.Actor))
+					{
+						lastState = EnterState.Entering;
+						QueueChild(move.MoveIntoTarget(self, target));
+						return false;
+					}
+
+					// Subclasses can cancel the activity during TryStartEnter
+					// Return immediately to avoid an extra tick's delay
+					if (IsCanceling)
+						return true;
+
+					return false;
+				}
+
+				case EnterState.Entering:
+				{
+					// Check that we reached the requested position
+					var targetPos = target.Positions.PositionClosestTo(self.CenterPosition);
+					if (!IsCanceling && self.CenterPosition == targetPos && target.Type == TargetType.Actor)
+						OnEnterComplete(self, target.Actor);
+
+					lastState = EnterState.Exiting;
+					return false;
+				}
+
+				case EnterState.Exiting:
+				{
+					QueueChild(move.ReturnToCell(self));
+					lastState = EnterState.Finished;
+					return false;
 				}
 			}
+
+			return true;
 		}
 
-		EnterState FindAndTransitionToNextState(Actor self)
+		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
 		{
-			switch (nextState)
-			{
-				case EnterState.ApproachingOrEntering:
-
-					// Reserve to enter or approach
-					isEnteringOrInside = false;
-					switch (TryReserveElseTryAlternateReserve(self))
-					{
-						case ReserveStatus.None:
-							return EnterState.Done; // No available target -> abort to next activity
-						case ReserveStatus.TooFar:
-						{
-							var moveTarget = repathWhileMoving ? target : Target.FromPos(target.Positions.PositionClosestTo(self.CenterPosition));
-							inner = move.MoveToTarget(self, moveTarget); // Approach
-							return EnterState.ApproachingOrEntering;
-						}
-
-						case ReserveStatus.Pending:
-							return EnterState.ApproachingOrEntering; // Retry next tick
-						case ReserveStatus.Ready:
-							break; // Reserved target -> start entering target
-					}
-
-					// Entering
-					isEnteringOrInside = true;
-					savedPos = self.CenterPosition; // Save position of self, before entering, for returning on exit
-
-					inner = move.MoveIntoTarget(self, target); // Enter
-
-					if (inner != null)
-					{
-						nextState = EnterState.Inside; // Should be inside once inner activity is null
-						return EnterState.ApproachingOrEntering;
-					}
-
-					// Can enter but there is no activity for it, so go inside without one
-					goto case EnterState.Inside;
-
-				case EnterState.Inside:
-					// Might as well teleport into target if there is no MoveIntoTarget activity
-					if (nextState == EnterState.ApproachingOrEntering)
-						nextState = EnterState.Inside;
-
-					// Otherwise, try to recover from moving target
-					else if (target.Positions.PositionClosestTo(self.CenterPosition) != self.CenterPosition)
-					{
-						nextState = EnterState.ApproachingOrEntering;
-						Unreserve(self, false);
-						if (Reserve(self) == ReserveStatus.Ready)
-						{
-							inner = move.MoveIntoTarget(self, target); // Enter
-							if (inner != null)
-								return EnterState.ApproachingOrEntering;
-
-							nextState = EnterState.ApproachingOrEntering;
-							goto case EnterState.ApproachingOrEntering;
-						}
-
-						nextState = EnterState.ApproachingOrEntering;
-						isEnteringOrInside = false;
-						inner = move.MoveIntoWorld(self, self.World.Map.CellContaining(savedPos));
-
-						return EnterState.ApproachingOrEntering;
-					}
-
-					OnInside(self);
-
-					if (enterBehaviour == EnterBehaviour.Suicide)
-						self.Kill(self);
-					else if (enterBehaviour == EnterBehaviour.Dispose)
-						self.Dispose();
-
-					// Return if Abort(Actor) or Done(self) was called from OnInside.
-					if (nextState >= EnterState.Exiting)
-						return EnterState.Inside;
-
-					inner = this; // Start inside activity
-					nextState = EnterState.Exiting; // Exit once inner activity is null (unless Done(self) is called)
-					return EnterState.Inside;
-
-				// TODO: Handle target moved while inside or always call done for movable targets and use a separate exit activity
-				case EnterState.Exiting:
-					inner = move.MoveIntoWorld(self, self.World.Map.CellContaining(savedPos));
-
-					// If not successfully exiting, retry on next tick
-					if (inner == null)
-						return EnterState.Exiting;
-					isEnteringOrInside = false;
-					nextState = EnterState.Done;
-					return EnterState.Exiting;
-
-				case EnterState.Done:
-					return EnterState.Done;
-			}
-
-			return EnterState.Done; // dummy to quiet dumb compiler
-		}
-
-		Activity CanceledTick(Actor self)
-		{
-			if (inner == null)
-				return ActivityUtils.RunActivity(self, NextActivity);
-			inner.Cancel(self);
-			inner.Queue(NextActivity);
-			return ActivityUtils.RunActivity(self, inner);
-		}
-
-		public override Activity Tick(Actor self)
-		{
-			if (IsCanceled)
-				return CanceledTick(self);
-
-			// Check target validity if not exiting or done
-			if (nextState != EnterState.Done && (target.Type != TargetType.Actor || !target.IsValidFor(self)))
-				AbortOrExit(self);
-
-			// If no current activity, tick next activity
-			if (inner == null && FindAndTransitionToNextState(self) == EnterState.Done)
-				return CanceledTick(self);
-
-			// Run inner activity/InsideTick
-			inner = inner == this ? InsideTick(self) : ActivityUtils.RunActivity(self, inner);
-
-			// If we are finished, move on to next activity
-			if (inner == null && nextState == EnterState.Done)
-				return NextActivity;
-
-			return this;
+			if (targetLineColor != null)
+				yield return new TargetLineNode(useLastVisibleTarget ? lastVisibleTarget : target, targetLineColor.Value);
 		}
 	}
 }

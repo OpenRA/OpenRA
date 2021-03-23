@@ -4,7 +4,7 @@ FACT:
 	Selectable:
 		Bounds: 72,48
 	Valued:
-		Cost: 3500
+		Cost: 3000
 	Tooltip:
 		Name: Construction Yard
 	Building:
@@ -17,49 +17,79 @@ FACT:
 		Type: Wood
 	RevealsShroud:
 		Range: 10c0
-	WithBuildingBib:
 	Production:
 		Produces: Building.GDI, Building.Nod, Defence.GDI, Defence.Nod
 	Transforms:
+		RequiresCondition: factundeploy
+		PauseOnCondition: being-demolished || build-incomplete
 		IntoActor: mcv
 		Offset: 1,1
-		Facing: 108
+		Facing: 432
+	TransformsIntoMobile:
 		RequiresCondition: factundeploy
+		Locomotor: heavywheeled
+		RequiresForceMove: true
+	TransformsIntoPassenger:
+		RequiresCondition: factundeploy
+		CargoType: Vehicle
+		RequiresForceMove: true
+	TransformsIntoRepairable:
+		RequiresCondition: factundeploy
+		RepairActors: fix
+		RequiresForceMove: true
+	TransformsIntoTransforms:
+		RequiresCondition: factundeploy && build-incomplete
 	GrantConditionOnPrerequisite@GLOBALFACTUNDEPLOY:
 		Condition: factundeploy
 		Prerequisites: global-factundeploy
 	ProductionQueue@GDIBuilding:
 		Type: Building.GDI
+		DisplayOrder: 0
 		Factions: gdi
 		Group: Building
-		LowPowerSlowdown: 2
-		QueuedAudio: Building
+		LowPowerModifier: 150
 		ReadyAudio: ConstructionComplete
+		BlockedAudio: NoBuild
 		LimitedAudio: BuildingInProgress
+		QueuedAudio: Building
+		OnHoldAudio: OnHold
+		CancelledAudio: Cancelled
 	ProductionQueue@NodBuilding:
 		Type: Building.Nod
+		DisplayOrder: 0
 		Factions: nod
 		Group: Building
-		LowPowerSlowdown: 2
-		QueuedAudio: Building
+		LowPowerModifier: 150
 		ReadyAudio: ConstructionComplete
+		BlockedAudio: NoBuild
 		LimitedAudio: BuildingInProgress
+		QueuedAudio: Building
+		OnHoldAudio: OnHold
+		CancelledAudio: Cancelled
 	ProductionQueue@GDIDefense:
 		Type: Defence.GDI
+		DisplayOrder: 1
 		Factions: gdi
 		Group: Defence
-		LowPowerSlowdown: 3
-		QueuedAudio: Building
+		LowPowerModifier: 150
 		ReadyAudio: ConstructionComplete
+		BlockedAudio: NoBuild
 		LimitedAudio: BuildingInProgress
+		QueuedAudio: Building
+		OnHoldAudio: OnHold
+		CancelledAudio: Cancelled
 	ProductionQueue@NodDefense:
 		Type: Defence.Nod
+		DisplayOrder: 1
 		Factions: nod
 		Group: Defence
-		LowPowerSlowdown: 3
-		QueuedAudio: Building
+		LowPowerModifier: 150
 		ReadyAudio: ConstructionComplete
+		BlockedAudio: NoBuild
 		LimitedAudio: BuildingInProgress
+		QueuedAudio: Building
+		OnHoldAudio: OnHold
+		CancelledAudio: Cancelled
 	BaseBuilding:
 	ProductionBar@BuildingGDI:
 		ProductionType: Building.GDI
@@ -67,12 +97,15 @@ FACT:
 		ProductionType: Building.Nod
 	ProductionBar@DefenceGDI:
 		ProductionType: Defence.GDI
+		Color: 8A8A8A
 	ProductionBar@DefenceNod:
 		ProductionType: Defence.Nod
+		Color: 8A8A8A
 	BaseProvider:
-		Cooldown: 75
 		Range: 14c0
+	WithBuildingBib:
 	WithBuildingPlacedAnimation:
+		RequiresCondition: !build-incomplete
 	Power:
 		Amount: 0
 	ProvidesPrerequisite@buildingname:
@@ -120,7 +153,6 @@ NUKE:
 		BuildPaletteOrder: 10
 		Prerequisites: fact
 		Queue: Building.GDI, Building.Nod
-		BuildDuration: 330
 		Description: Generates power
 	Building:
 		Footprint: xX xx ==
@@ -168,6 +200,7 @@ NUK2:
 
 PROC:
 	Inherits: ^BaseBuilding
+	Inherits@RESOURCES: ^StoresResources
 	HitShape:
 		Type: Rectangle
 			TopLeft: -1536, -512
@@ -186,45 +219,44 @@ PROC:
 		Queue: Building.GDI, Building.Nod
 		Description: Processes raw Tiberium\ninto useable resources
 	Building:
-		Footprint: _x_ xxx === ===
+		Footprint: _x_ xxx +++ ===
 		Dimensions: 3,4
 		LocalCenterOffset: 0,-512,0
 	Health:
 		HP: 100000
 	RevealsShroud:
 		Range: 6c0
-	WithBuildingBib:
 	Refinery:
-		DockAngle: 112
+		DockAngle: 448
 		DockOffset: 0,2
 		IsDragRequired: True
 		DragOffset: -554,512,0
 		DragLength: 12
 		TickRate: 15
 	StoresResources:
-		PipColor: Green
-		PipCount: 10
-		Capacity: 700
+		Capacity: 1000
 	Selectable:
 		Bounds: 72,56
 		DecorationBounds: 73,72
 	CustomSellValue:
-		Value: 500
+		Value: 400
 	FreeActor:
 		Actor: HARV
 		SpawnOffset: 1,2
-		Facing: 64
-	WithResources:
+		Facing: 256
+	WithBuildingBib:
+	WithResourceLevelOverlay:
+		RequiresCondition: !build-incomplete
 	Power:
 		Amount: -40
 	ProvidesPrerequisite@buildingname:
-	SelectionDecorations:
 
 SILO:
 	Inherits: ^BaseBuilding
 	Inherits@shape: ^2x1Shape
+	Inherits@RESOURCES: ^StoresResources
 	Valued:
-		Cost: 300
+		Cost: 100
 	Tooltip:
 		Name: Tiberium Silo
 	Buildable:
@@ -241,20 +273,17 @@ SILO:
 	RevealsShroud:
 		Range: 4c0
 	WithBuildingBib:
-		HasMinibib: Yes
-	RenderSprites:
-	WithSpriteBody:
-	WithSiloAnimation:
+		HasMinibib: true
+	-WithSpriteBody:
+	WithResourceLevelSpriteBody:
+		Sequence: stages
 	StoresResources:
-		PipCount: 10
-		PipColor: Green
 		Capacity: 3000
 	-SpawnActorsOnSell:
 	Power:
 		Amount: -10
 	MustBeDestroyed:
 		RequiredForShortGame: false
-	SelectionDecorations:
 	-AcceptsDeliveredCash:
 	Selectable:
 		Bounds: 48,24
@@ -297,14 +326,23 @@ PYLE:
 		ExitCell: 1,1
 	Production:
 		Produces: Infantry.GDI
+	GrantExternalConditionToProduced:
+		Condition: produced
 	ProductionQueue:
 		Type: Infantry.GDI
+		DisplayOrder: 2
 		Group: Infantry
-		LowPowerSlowdown: 3
+		LowPowerModifier: 150
+		ReadyAudio: UnitReady
+		BlockedAudio: NoBuild
 		LimitedAudio: BuildingInProgress
+		QueuedAudio: Training
+		OnHoldAudio: OnHold
+		CancelledAudio: Cancelled
 	ProductionBar:
+		ProductionType: Infantry.GDI
 	Power:
-		Amount: -20
+		Amount: -15
 	ProvidesPrerequisite@buildingname:
 	Selectable:
 		Bounds: 48,42,0,-5
@@ -336,7 +374,6 @@ HAND:
 		Range: 5c0
 	WithBuildingBib:
 	RallyPoint:
-		Offset: 1,2
 	Exit@1:
 		SpawnOffset: 512,1024,0
 		ExitCell: 1,2
@@ -344,17 +381,23 @@ HAND:
 		Produces: Infantry.Nod
 	ProductionQueue:
 		Type: Infantry.Nod
+		DisplayOrder: 2
 		Group: Infantry
-		LowPowerSlowdown: 3
+		LowPowerModifier: 150
+		ReadyAudio: UnitReady
+		BlockedAudio: NoBuild
 		LimitedAudio: BuildingInProgress
+		QueuedAudio: Training
+		OnHoldAudio: OnHold
+		CancelledAudio: Cancelled
 	ProductionBar:
+		ProductionType: Infantry.Nod
 	Power:
-		Amount: -20
+		Amount: -15
 	ProvidesPrerequisite@buildingname:
 	Selectable:
 		Bounds: 48,48
 		DecorationBounds: 48,68,0,-10
-	SelectionDecorations:
 
 AFLD:
 	Inherits: ^BaseBuilding
@@ -377,31 +420,38 @@ AFLD:
 		Queue: Building.Nod
 		Description: Provides a dropzone\nfor vehicle reinforcements
 	Building:
-		Footprint: XXXX xxxx ====
+		Footprint: XXX+ xxx+ ====
 		Dimensions: 4,3
 		LocalCenterOffset: 0,-512,0
 	Health:
 		HP: 110000
 	RevealsShroud:
 		Range: 7c0
-	WithBuildingBib:
-	WithIdleOverlay@DISH:
-		Sequence: idle-dish
 	RallyPoint:
-		Offset: 4,2
 	Exit@1:
 		SpawnOffset: -1024,0,0
 		ExitCell: 3,1
 	ProductionAirdrop:
 		Produces: Vehicle.Nod
+		ActorType: c17
+	WithBuildingBib:
+	WithIdleOverlay@DISH:
+		RequiresCondition: !build-incomplete
+		Sequence: idle-dish
 	WithDeliveryAnimation:
+		RequiresCondition: !build-incomplete
 	ProductionQueue:
 		Type: Vehicle.Nod
+		DisplayOrder: 3
 		Group: Vehicle
-		LowPowerSlowdown: 3
-		ReadyAudio:
+		LowPowerModifier: 150
+		BlockedAudio: NoBuild
 		LimitedAudio: BuildingInProgress
+		QueuedAudio: Training
+		OnHoldAudio: OnHold
+		CancelledAudio: Cancelled
 	ProductionBar:
+		ProductionType: Vehicle.Nod
 	Power:
 		Amount: -40
 	ProvidesPrerequisite@buildingname:
@@ -426,22 +476,21 @@ WEAP:
 		Queue: Building.GDI
 		Description: Produces vehicles
 	Building:
-		Footprint: xxx === ===
+		Footprint: xxx +++ ===
 		Dimensions: 3,3
 		LocalCenterOffset: 0,-512,0
 	Selectable:
 		Bounds: 72,48
 		DecorationBounds: 72,64,0,-16
-	SelectionDecorations:
 	Health:
 		HP: 110000
 	RevealsShroud:
 		Range: 4c0
 	WithBuildingBib:
 	WithProductionDoorOverlay:
+		RequiresCondition: !build-incomplete
 		Sequence: build-top
 	RallyPoint:
-		Offset: 0,2
 	Exit@1:
 		SpawnOffset: -512,-512,0
 		ExitCell: 0,1
@@ -450,13 +499,24 @@ WEAP:
 		Produces: Vehicle.GDI
 	ProductionQueue:
 		Type: Vehicle.GDI
+		DisplayOrder: 3
 		Group: Vehicle
-		LowPowerSlowdown: 3
+		LowPowerModifier: 150
+		ReadyAudio: UnitReady
+		BlockedAudio: NoBuild
 		LimitedAudio: BuildingInProgress
+		QueuedAudio: Training
+		OnHoldAudio: OnHold
+		CancelledAudio: Cancelled
 	ProductionBar:
+		ProductionType: Vehicle.GDI
 	Power:
 		Amount: -40
 	ProvidesPrerequisite@buildingname:
+	-ActorPreviewPlaceBuildingPreview:
+	SequencePlaceBuildingPreview:
+		Sequence: place
+		SequenceAlpha: 0.65
 
 HPAD:
 	Inherits: ^BaseBuilding
@@ -474,7 +534,7 @@ HPAD:
 		BuildPaletteOrder: 50
 		Prerequisites: proc
 		Queue: Building.GDI, Building.Nod
-		Description: Produces, rearms and\nrepairs helicopters
+		Description: Produces and repairs helicopters
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -484,32 +544,47 @@ HPAD:
 		Range: 5c0
 	Exit@1:
 		SpawnOffset: 0,-256,0
+		Facing: 896
 	Production:
 		Produces: Aircraft.GDI, Aircraft.Nod
 	Reservable:
 	RepairsUnits:
 		HpPerStep: 1000
 		PlayerExperience: 25
-	WithRepairAnimation:
+		StartRepairingNotification: Repairing
+	WithResupplyAnimation:
+		RequiresCondition: !build-incomplete
 	RallyPoint:
 	ProductionQueue@GDI:
 		Type: Aircraft.GDI
+		DisplayOrder: 4
 		Factions: gdi
 		Group: Aircraft
-		LowPowerSlowdown: 3
+		LowPowerModifier: 150
+		ReadyAudio: UnitReady
+		BlockedAudio: NoBuild
 		LimitedAudio: BuildingInProgress
+		QueuedAudio: Training
+		OnHoldAudio: OnHold
+		CancelledAudio: Cancelled
 	ProductionQueue@Nod:
 		Type: Aircraft.Nod
+		DisplayOrder: 4
 		Factions: nod
 		Group: Aircraft
-		LowPowerSlowdown: 3
+		LowPowerModifier: 150
+		ReadyAudio: UnitReady
+		BlockedAudio: NoBuild
 		LimitedAudio: BuildingInProgress
+		QueuedAudio: Training
+		OnHoldAudio: OnHold
+		CancelledAudio: Cancelled
 	ProductionBar@GDI:
 		ProductionType: Aircraft.GDI
 	ProductionBar@Nod:
 		ProductionType: Aircraft.Nod
 	Power:
-		Amount: -10
+		Amount: -20
 	ProvidesPrerequisite@buildingname:
 
 HQ:
@@ -538,7 +613,6 @@ HQ:
 	Selectable:
 		Bounds: 48,40,0,9
 		DecorationBounds: 48,53,0,-4
-	SelectionDecorations:
 	WithSpriteBody:
 		PauseOnCondition: lowpower
 	Health:
@@ -556,7 +630,7 @@ HQ:
 		PauseOnCondition: lowpower
 		Prerequisites: ~techlevel.superweapons
 		Icon: airstrike
-		ChargeInterval: 6000
+		ChargeInterval: 7500
 		SquadSize: 3
 		QuantizedFacings: 8
 		Description: Air Strike
@@ -574,6 +648,9 @@ HQ:
 		ArrowSequence: arrow
 		ClockSequence: clock
 		CircleSequence: circles
+		UseDirectionalTarget: True
+		DirectionArrowAnimation: airstrikedirection
+		SupportPowerPaletteOrder: 10
 	SupportPowerChargeBar:
 	Power:
 		Amount: -50
@@ -594,25 +671,26 @@ FIX:
 		Queue: Building.GDI, Building.Nod
 		Description: Repairs vehicles
 	Building:
-		Footprint: _X_ xxx _X_
+		Footprint: _+_ +++ _+_
 		Dimensions: 3,3
 	Selectable:
 		Bounds: 64,34,0,3
 		DecorationBounds: 72,48
-	SelectionDecorations:
 	Health:
 		HP: 80000
 	RevealsShroud:
 		Range: 5c0
 	WithBuildingBib:
-		HasMinibib: Yes
+		HasMinibib: true
+	WithResupplyAnimation:
+		RequiresCondition: !build-incomplete
 	Reservable:
 	RepairsUnits:
 		HpPerStep: 1000
 		Interval: 15
 		PlayerExperience: 25
+		StartRepairingNotification: Repairing
 	RallyPoint:
-	WithRepairAnimation:
 	Power:
 		Amount: -20
 	ProvidesPrerequisite@buildingname:
@@ -643,7 +721,6 @@ EYE:
 	Selectable:
 		Bounds: 48,40,0,9
 		DecorationBounds: 48,53,0,-4
-	SelectionDecorations:
 	WithSpriteBody:
 		PauseOnCondition: lowpower
 	Health:
@@ -662,7 +739,7 @@ EYE:
 		Prerequisites: ~techlevel.superweapons
 		Icon: ioncannon
 		Cursor: ioncannon
-		ChargeInterval: 6750
+		ChargeInterval: 9000
 		Description: Ion Cannon
 		LongDesc: Initiate an Ion Cannon strike.\nApplies instant damage to a small area.
 		BeginChargeSpeechNotification: IonCannonCharging
@@ -672,6 +749,7 @@ EYE:
 		OnFireSound: ion1.aud
 		DisplayRadarPing: True
 		CameraActor: camera.small
+		SupportPowerPaletteOrder: 20
 	SupportPowerChargeBar:
 	Power:
 		Amount: -200
@@ -702,12 +780,10 @@ TMPL:
 	Selectable:
 		Bounds: 72,48
 		DecorationBounds: 72,68,0,-12
-	SelectionDecorations:
 	Health:
 		HP: 210000
 	RevealsShroud:
 		Range: 6c0
-	WithBuildingBib:
 	RenderDetectionCircle:
 	DetectCloaked:
 		Range: 5c0
@@ -717,7 +793,7 @@ TMPL:
 		Prerequisites: ~techlevel.superweapons
 		Icon: abomb
 		Cursor: nuke
-		ChargeInterval: 9000
+		ChargeInterval: 11250
 		Description: Nuclear Strike
 		LongDesc: Launch a tactical nuclear warhead.\nApplies heavy damage over a large area.
 		EndChargeSpeechNotification: NuclearWeaponAvailable
@@ -736,8 +812,12 @@ TMPL:
 		ArrowSequence: arrow
 		ClockSequence: clock
 		CircleSequence: circles
-	WithNukeLaunchAnimation:
-	WithNukeLaunchOverlay:
+		SupportPowerPaletteOrder: 30
+	WithBuildingBib:
+	WithSupportPowerActivationAnimation:
+		RequiresCondition: !build-incomplete
+	WithSupportPowerActivationOverlay:
+		RequiresCondition: !build-incomplete
 		Sequence: smoke
 	SupportPowerChargeBar:
 	Power:
@@ -757,8 +837,7 @@ GUN:
 		BuildPaletteOrder: 45
 		Prerequisites: barracks
 		Queue: Defence.GDI, Defence.Nod
-		BuildDuration: 1440
-		BuildDurationModifier: 40
+		BuildDuration: 960
 		Description: Basic Anti-Tank base defense.\n  Strong vs Tanks, vehicles\n  Weak vs Infantry
 	Building:
 	Health:
@@ -768,25 +847,31 @@ GUN:
 	RevealsShroud:
 		Range: 6c0
 	WithBuildingBib:
-		HasMinibib: Yes
+		HasMinibib: true
 	Turreted:
-		TurnSpeed: 12
-		InitialFacing: 56
-	-WithSpriteBody:
-	WithEmbeddedTurretSpriteBody:
+		TurnSpeed: 48
+		InitialFacing: 192
+		RealignDelay: -1
+		RequiresCondition: !build-incomplete
+	WithSpriteTurret:
+		RequiresCondition: !build-incomplete
+		Recoils: false
+	WithTurretAttackAnimation:
+		Sequence: recoil
 	Armament:
 		Weapon: TurretGun
 		LocalOffset: 512,0,112
 		MuzzleSequence: muzzle
 	AttackTurreted:
+		RequiresCondition: !build-incomplete
 	WithMuzzleOverlay:
 	-WithDeathAnimation:
 	DetectCloaked:
 		Range: 3c0
 	Power:
 		Amount: -20
-	BodyOrientation:
-		UseClassicFacingFudge: True
+	-BodyOrientation:
+	ClassicFacingBodyOrientation:
 
 SAM:
 	Inherits: ^Defense
@@ -807,8 +892,7 @@ SAM:
 		BuildPaletteOrder: 50
 		Prerequisites: hand
 		Queue: Defence.Nod
-		BuildDuration: 1700
-		BuildDurationModifier: 40
+		BuildDuration: 1130
 		Description: Anti-Aircraft base defense.\n  Strong vs Aircraft\n  Cannot target Ground units.
 	Building:
 		Footprint: xx
@@ -818,24 +902,30 @@ SAM:
 	Armor:
 		Type: Heavy
 	RevealsShroud:
-		Range: 6c0
+		Range: 8c0
 	Turreted:
-		TurnSpeed: 10
+		TurnSpeed: 40
 		InitialFacing: 0
 		RealignDelay: -1
 	-WithSpriteBody:
 	WithEmbeddedTurretSpriteBody:
+		QuantizedFacings: 32
 	Armament:
 		Weapon: Dragon
 		MuzzleSequence: muzzle
 	AttackPopupTurreted:
+		RequiresCondition: !build-incomplete
 		PauseOnCondition: lowpower
 	WithMuzzleOverlay:
 	-RenderDetectionCircle:
 	Power:
 		Amount: -20
-	BodyOrientation:
-		UseClassicFacingFudge: True
+	-BodyOrientation:
+	ClassicFacingBodyOrientation:
+	-ActorPreviewPlaceBuildingPreview:
+	SequencePlaceBuildingPreview:
+		Sequence: place
+		SequenceAlpha: 0.65
 
 OBLI:
 	Inherits: ^Defense
@@ -849,13 +939,11 @@ OBLI:
 		BuildPaletteOrder: 60
 		Prerequisites: tmpl, ~techlevel.high
 		Queue: Defence.Nod
-		BuildDuration: 3120
-		BuildDurationModifier: 40
+		BuildDuration: 2080
 		Description: Advanced base defense.\nRequires power to operate.\n  Strong vs all Ground units\n  Cannot target Aircraft
 	Selectable:
 		Bounds: 24,24
 		DecorationBounds: 22,44,0,-10
-	SelectionDecorations:
 	Health:
 		HP: 75000
 	Armor:
@@ -863,12 +951,15 @@ OBLI:
 	RevealsShroud:
 		Range: 8c0
 	WithBuildingBib:
-		HasMinibib: Yes
-	WithChargeAnimation:
+		HasMinibib: true
+	-WithSpriteBody:
+	WithChargeSpriteBody:
+		Sequence: active
 	Armament:
 		Weapon: Laser
 		LocalOffset: 0,-85,1280
 	AttackCharges:
+		RequiresCondition: !build-incomplete
 		PauseOnCondition: lowpower
 		ChargeLevel: 50
 		ChargingCondition: charging
@@ -896,8 +987,7 @@ GTWR:
 		BuildPaletteOrder: 40
 		Prerequisites: barracks
 		Queue: Defence.GDI, Defence.Nod
-		BuildDuration: 1440
-		BuildDurationModifier: 40
+		BuildDuration: 960
 		Description: Basic defensive structure.\n  Strong vs Infantry\n  Weak vs Tanks
 	Building:
 	Health:
@@ -905,19 +995,20 @@ GTWR:
 	RevealsShroud:
 		Range: 7c0
 	WithBuildingBib:
-		HasMinibib: Yes
+		HasMinibib: true
 	Armament:
 		Weapon: HighV
 		LocalOffset: 256,0,256
 		MuzzleSequence: muzzle
 	AttackTurreted:
+		RequiresCondition: !build-incomplete
 	BodyOrientation:
 		QuantizedFacings: 8
 	DetectCloaked:
 		Range: 3c0
 	WithMuzzleOverlay:
 	Turreted:
-		TurnSpeed: 255
+		TurnSpeed: 512
 	Power:
 		Amount: -10
 
@@ -933,23 +1024,25 @@ ATWR:
 		BuildPaletteOrder: 60
 		Prerequisites: anyhq, ~techlevel.medium
 		Queue: Defence.GDI
-		BuildDuration: 2880
-		BuildDurationModifier: 40
-		Description: All-purpose defensive structure.\n  Strong vs Aircraft, Tanks\n  Weak vs Infantry
+		BuildDuration: 1920
+		Description: All-purpose defensive structure.\n  Strong vs Aircraft, Infantry\n  Weak vs Tanks
 	Selectable:
 		Bounds: 24,24
 		DecorationBounds: 22,48,0,-12
-	SelectionDecorations:
 	Health:
 		HP: 55000
 	Armor:
 		Type: Heavy
 	RevealsShroud:
 		Range: 8c0
+	-RenderRangeCircle:
+	WithRangeCircle:
+		Range: 7c0
+		Color: FFFF0080
 	WithBuildingBib:
-		HasMinibib: Yes
+		HasMinibib: true
 	Turreted:
-		TurnSpeed: 255
+		TurnSpeed: 512
 		Offset: 128,128,384
 	Armament@PRIMARY:
 		Weapon: TowerMissile
@@ -960,6 +1053,7 @@ ATWR:
 		LocalOffset: 256,128,0, 256,-128,0
 		LocalYaw: -100,100
 	AttackTurreted:
+		RequiresCondition: !build-incomplete
 		PauseOnCondition: lowpower
 	BodyOrientation:
 		QuantizedFacings: 8
@@ -1025,8 +1119,7 @@ BRIK:
 		BuildPaletteOrder: 30
 		Prerequisites: vehicleproduction
 		Queue: Defence.GDI, Defence.Nod
-		BuildDuration: 500
-		BuildDurationModifier: 40
+		BuildDuration: 330
 		Description: Stops infantry and most tanks.\nBlocks some projectiles.
 	Health:
 		HP: 25000
@@ -1036,8 +1129,6 @@ BRIK:
 	Crushable:
 		CrushClasses: heavywall
 		-CrushSound:
-	SoundOnDamageTransition:
-		DestroyedSounds: crumble.aud
 	LineBuild:
 		NodeTypes: concrete
 	LineBuildNode:

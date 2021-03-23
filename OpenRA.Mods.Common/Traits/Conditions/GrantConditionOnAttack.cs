@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -14,7 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class GrantConditionOnAttackInfo : ITraitInfo
+	public class GrantConditionOnAttackInfo : PausableConditionalTraitInfo
 	{
 		[FieldLoader.Require]
 		[GrantedConditionReference]
@@ -43,63 +43,54 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Should all instances be revoked instead of only one?")]
 		public readonly bool RevokeAll = false;
 
-		public object Create(ActorInitializer init) { return new GrantConditionOnAttack(init, this); }
+		public override object Create(ActorInitializer init) { return new GrantConditionOnAttack(init, this); }
 	}
 
-	public class GrantConditionOnAttack : INotifyCreated, ITick, INotifyAttack
+	public class GrantConditionOnAttack : PausableConditionalTrait<GrantConditionOnAttackInfo>, INotifyCreated, ITick, INotifyAttack
 	{
-		readonly GrantConditionOnAttackInfo info;
 		readonly Stack<int> tokens = new Stack<int>();
 
 		int cooldown = 0;
 		int shotsFired = 0;
-		ConditionManager manager;
 
 		// Only tracked when RevokeOnNewTarget is true.
 		Target lastTarget = Target.Invalid;
 
 		public GrantConditionOnAttack(ActorInitializer init, GrantConditionOnAttackInfo info)
-		{
-			this.info = info;
-		}
-
-		void INotifyCreated.Created(Actor self)
-		{
-			manager = self.TraitOrDefault<ConditionManager>();
-		}
+			: base(info) { }
 
 		void GrantInstance(Actor self, string cond)
 		{
-			if (manager == null || string.IsNullOrEmpty(cond))
+			if (string.IsNullOrEmpty(cond))
 				return;
 
-			tokens.Push(manager.GrantCondition(self, cond));
+			tokens.Push(self.GrantCondition(cond));
 		}
 
 		void RevokeInstance(Actor self, bool revokeAll)
 		{
 			shotsFired = 0;
 
-			if (manager == null || tokens.Count == 0)
+			if (tokens.Count == 0)
 				return;
 
 			if (!revokeAll)
-				manager.RevokeCondition(self, tokens.Pop());
+				self.RevokeCondition(tokens.Pop());
 			else
 				while (tokens.Count > 0)
-					manager.RevokeCondition(self, tokens.Pop());
+					self.RevokeCondition(tokens.Pop());
 		}
 
 		void ITick.Tick(Actor self)
 		{
 			if (tokens.Count > 0 && --cooldown == 0)
 			{
-				cooldown = info.RevokeDelay;
-				RevokeInstance(self, info.RevokeAll);
+				cooldown = Info.RevokeDelay;
+				RevokeInstance(self, Info.RevokeAll);
 			}
 		}
 
-		bool TargetChanged(Target lastTarget, Target target)
+		bool TargetChanged(in Target lastTarget, in Target target)
 		{
 			// Invalidate reveal changing the target.
 			if (lastTarget.Type == TargetType.FrozenActor && target.Type == TargetType.Actor)
@@ -129,40 +120,48 @@ namespace OpenRA.Mods.Common.Traits
 			return false;
 		}
 
-		void INotifyAttack.Attacking(Actor self, Target target, Armament a, Barrel barrel)
+		void INotifyAttack.Attacking(Actor self, in Target target, Armament a, Barrel barrel)
 		{
-			if (!info.ArmamentNames.Contains(a.Info.Name))
+			if (IsTraitDisabled || IsTraitPaused)
 				return;
 
-			if (info.RevokeOnNewTarget)
+			if (!Info.ArmamentNames.Contains(a.Info.Name))
+				return;
+
+			if (Info.RevokeOnNewTarget)
 			{
 				if (TargetChanged(lastTarget, target))
-					RevokeInstance(self, info.RevokeAll);
+					RevokeInstance(self, Info.RevokeAll);
 
 				lastTarget = target;
 			}
 
-			cooldown = info.RevokeDelay;
+			cooldown = Info.RevokeDelay;
 
-			if (!info.IsCyclic && tokens.Count >= info.MaximumInstances)
+			if (!Info.IsCyclic && tokens.Count >= Info.MaximumInstances)
 				return;
 
 			shotsFired++;
-			var requiredShots = tokens.Count < info.RequiredShotsPerInstance.Length
-				? info.RequiredShotsPerInstance[tokens.Count]
-				: info.RequiredShotsPerInstance[info.RequiredShotsPerInstance.Length - 1];
+			var requiredShots = tokens.Count < Info.RequiredShotsPerInstance.Length
+				? Info.RequiredShotsPerInstance[tokens.Count]
+				: Info.RequiredShotsPerInstance[Info.RequiredShotsPerInstance.Length - 1];
 
 			if (shotsFired >= requiredShots)
 			{
-				if (info.IsCyclic && tokens.Count == info.MaximumInstances)
+				if (Info.IsCyclic && tokens.Count == Info.MaximumInstances)
 					RevokeInstance(self, true);
 				else
-					GrantInstance(self, info.Condition);
+					GrantInstance(self, Info.Condition);
 
 				shotsFired = 0;
 			}
 		}
 
-		void INotifyAttack.PreparingAttack(Actor self, Target target, Armament a, Barrel barrel) { }
+		void INotifyAttack.PreparingAttack(Actor self, in Target target, Armament a, Barrel barrel) { }
+
+		protected override void TraitDisabled(Actor self)
+		{
+			RevokeInstance(self, true);
+		}
 	}
 }

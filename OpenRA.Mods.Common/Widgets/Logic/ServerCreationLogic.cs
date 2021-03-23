@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,10 +10,9 @@
 #endregion
 
 using System;
-using System.Drawing;
 using System.Linq;
-using System.Net;
 using OpenRA.Network;
+using OpenRA.Primitives;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -154,9 +153,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				noticesLabelB.Text = status == UPnPStatus.Enabled ? "Enabled" :
 					status == UPnPStatus.NotSupported ? "Not Supported" : "Disabled";
 
-				noticesLabelB.TextColor = status == UPnPStatus.Enabled ? ChromeMetrics.Get<Color>("UPnPEnabledColor") :
-					status == UPnPStatus.NotSupported ? ChromeMetrics.Get<Color>("UPnPNotSupportedColor") :
-					ChromeMetrics.Get<Color>("UPnPDisabledColor");
+				noticesLabelB.TextColor = status == UPnPStatus.Enabled ? ChromeMetrics.Get<Color>("NoticeSuccessColor") :
+					status == UPnPStatus.NotSupported ? ChromeMetrics.Get<Color>("NoticeErrorColor") :
+					ChromeMetrics.Get<Color>("NoticeInfoColor");
 
 				var bWidth = Game.Renderer.Fonts[noticesLabelB.Font].Measure(noticesLabelB.Text).X;
 				noticesLabelB.Bounds.X = noticesLabelA.Bounds.Right;
@@ -178,8 +177,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void CreateAndJoin()
 		{
 			var name = Settings.SanitizedServerName(panel.Get<TextFieldWidget>("SERVER_NAME").Text);
-			int listenPort;
-			if (!Exts.TryParseIntegerInvariant(panel.Get<TextFieldWidget>("LISTEN_PORT").Text, out listenPort))
+			if (!Exts.TryParseIntegerInvariant(panel.Get<TextFieldWidget>("LISTEN_PORT").Text, out var listenPort))
 				listenPort = 1234;
 
 			var passwordField = panel.GetOrNull<PasswordFieldWidget>("PASSWORD");
@@ -199,23 +197,23 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			// Create and join the server
 			try
 			{
-				Game.CreateServer(settings);
+				var endpoint = Game.CreateServer(settings);
+
+				Ui.CloseWindow();
+				ConnectionLogic.Connect(endpoint, password, onCreate, onExit);
 			}
 			catch (System.Net.Sockets.SocketException e)
 			{
 				var message = "Could not listen on port {0}.".F(Game.Settings.Server.ListenPort);
-				if (e.ErrorCode == 10048) { // AddressAlreadyInUse (WSAEADDRINUSE)
+
+				// AddressAlreadyInUse (WSAEADDRINUSE)
+				if (e.ErrorCode == 10048)
 					message += "\nCheck if the port is already being used.";
-				} else {
+				else
 					message += "\nError is: \"{0}\" ({1})".F(e.Message, e.ErrorCode);
-				}
 
 				ConfirmationDialogs.ButtonPrompt("Server Creation Failed", message, onCancel: () => { }, cancelText: "Back");
-				return;
 			}
-
-			Ui.CloseWindow();
-			ConnectionLogic.Connect(IPAddress.Loopback.ToString(), Game.Settings.Server.ListenPort, password, onCreate, onExit);
 		}
 	}
 }

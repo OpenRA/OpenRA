@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -17,10 +17,11 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Replaces the sprite during construction/deploy/undeploy.")]
-	public class WithMakeAnimationInfo : ITraitInfo, Requires<WithSpriteBodyInfo>
+	public class WithMakeAnimationInfo : TraitInfo, Requires<WithSpriteBodyInfo>
 	{
+		[SequenceReference]
 		[Desc("Sequence name to use.")]
-		[SequenceReference] public readonly string Sequence = "make";
+		public readonly string Sequence = "make";
 
 		[GrantedConditionReference]
 		[Desc("The condition to grant to self while the make animation is playing.")]
@@ -29,36 +30,37 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Apply to sprite bodies with these names.")]
 		public readonly string[] BodyNames = { "body" };
 
-		public object Create(ActorInitializer init) { return new WithMakeAnimation(init, this); }
+		public override object Create(ActorInitializer init) { return new WithMakeAnimation(init, this); }
 	}
 
 	public class WithMakeAnimation : INotifyCreated, INotifyDeployTriggered
 	{
 		readonly WithMakeAnimationInfo info;
 		readonly WithSpriteBody[] wsbs;
+		readonly bool skipMakeAnimation;
+		WithMakeOverlay[] overlays;
 
-		ConditionManager conditionManager;
-		int token = ConditionManager.InvalidConditionToken;
+		int token = Actor.InvalidConditionToken;
 
 		public WithMakeAnimation(ActorInitializer init, WithMakeAnimationInfo info)
 		{
 			this.info = info;
 			var self = init.Self;
 			wsbs = self.TraitsImplementing<WithSpriteBody>().Where(w => info.BodyNames.Contains(w.Info.Name)).ToArray();
+			skipMakeAnimation = init.Contains<SkipMakeAnimsInit>(info);
 		}
 
 		void INotifyCreated.Created(Actor self)
 		{
-			conditionManager = self.TraitOrDefault<ConditionManager>();
-			var building = self.TraitOrDefault<Building>();
-			if (building != null && !building.SkipMakeAnimation)
-				Forward(self, () => building.NotifyBuildingComplete(self));
+			overlays = self.TraitsImplementing<WithMakeOverlay>().ToArray();
+			if (!skipMakeAnimation)
+				Forward(self, () => { });
 		}
 
 		public void Forward(Actor self, Action onComplete)
 		{
-			if (conditionManager != null && !string.IsNullOrEmpty(info.Condition) && token == ConditionManager.InvalidConditionToken)
-				token = conditionManager.GrantCondition(self, info.Condition);
+			if (token == Actor.InvalidConditionToken)
+				token = self.GrantCondition(info.Condition);
 
 			var wsb = wsbs.FirstEnabledTraitOrDefault();
 
@@ -67,18 +69,24 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 			wsb.PlayCustomAnimation(self, info.Sequence, () =>
 			{
-				if (token != ConditionManager.InvalidConditionToken)
-					token = conditionManager.RevokeCondition(self, token);
+				self.World.AddFrameEndTask(w =>
+				{
+					if (token != Actor.InvalidConditionToken)
+						token = self.RevokeCondition(token);
 
-				// TODO: Rewrite this to use a trait notification for save game support
-				onComplete();
+					// TODO: Rewrite this to use a trait notification for save game support
+					onComplete();
+				});
 			});
+
+			foreach (var overlay in overlays)
+				overlay.Forward(self);
 		}
 
 		public void Reverse(Actor self, Action onComplete)
 		{
-			if (conditionManager != null && !string.IsNullOrEmpty(info.Condition) && token == ConditionManager.InvalidConditionToken)
-				token = conditionManager.GrantCondition(self, info.Condition);
+			if (token == Actor.InvalidConditionToken)
+				token = self.GrantCondition(info.Condition);
 
 			var wsb = wsbs.FirstEnabledTraitOrDefault();
 
@@ -87,32 +95,37 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 			wsb.PlayCustomAnimationBackwards(self, info.Sequence, () =>
 			{
-				if (token != ConditionManager.InvalidConditionToken)
-					token = conditionManager.RevokeCondition(self, token);
+				self.World.AddFrameEndTask(w =>
+				{
+					if (token != Actor.InvalidConditionToken)
+						token = self.RevokeCondition(token);
 
-				// TODO: Rewrite this to use a trait notification for save game support
-				onComplete();
+					// TODO: Rewrite this to use a trait notification for save game support
+					onComplete();
+				});
 			});
+
+			foreach (var overlay in overlays)
+				overlay.Reverse(self);
 		}
 
 		public void Reverse(Actor self, Activity activity, bool queued = true)
 		{
 			Reverse(self, () =>
 			{
-				var wsb = wsbs.FirstEnabledTraitOrDefault();
-
 				// HACK: The actor remains alive and active for one tick before the followup activity
 				// (sell/transform/etc) runs. This causes visual glitches that we attempt to minimize
 				// by forcing the animation to frame 0 and regranting the make condition.
 				// These workarounds will break the actor if the followup activity doesn't dispose it!
-				if (wsb != null)
-					wsb.DefaultAnimation.PlayFetchIndex(info.Sequence, () => 0);
+				wsbs.FirstEnabledTraitOrDefault()?.DefaultAnimation.PlayFetchIndex(info.Sequence, () => 0);
 
-				if (conditionManager != null && !string.IsNullOrEmpty(info.Condition))
-					token = conditionManager.GrantCondition(self, info.Condition);
+				token = self.GrantCondition(info.Condition);
 
 				self.QueueActivity(queued, activity);
 			});
+
+			foreach (var overlay in overlays)
+				overlay.Reverse(self);
 		}
 
 		// TODO: Make this use Forward instead
@@ -146,6 +159,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 					}
 				});
 			}
+
+			foreach (var overlay in overlays)
+				overlay.Forward(self);
 		}
 
 		// TODO: Make this use Reverse instead
@@ -179,6 +195,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 					}
 				});
 			}
+
+			foreach (var overlay in overlays)
+				overlay.Reverse(self);
 		}
 	}
 }

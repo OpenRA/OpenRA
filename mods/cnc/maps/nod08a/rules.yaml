@@ -1,6 +1,6 @@
 World:
 	LuaScript:
-		Scripts: nod08a.lua, nod08a-AI.lua
+		Scripts: campaign-global.lua, nod08a.lua, nod08a-AI.lua
 	MusicPlaylist:
 		StartingMusic: linefire
 		VictoryMusic: nod_win1
@@ -78,10 +78,6 @@ E5:
 E6:
 	-RepairsBridges:
 
-HARV:
-	Harvester:
-		SearchFromOrderRadius: 30
-
 MTNK:
 	Buildable:
 		Prerequisites: ~weap
@@ -158,13 +154,7 @@ FACTOUT.IN:
 	ProvidesPrerequisite:
 		Prerequisite: fact
 	Capturable:
-		CaptureThreshold: 100
-
-MoneyCrate:
-	Inherits: ^Crate
-	GiveCashCrateAction:
-		Amount: 2000
-		UseCashTick: yes
+		Types: building
 
 NUKEOUT.IN:
 	Inherits: NUKE
@@ -175,7 +165,7 @@ NUKEOUT.IN:
 	ProvidesPrerequisite:
 		Prerequisite: anypower
 	Capturable:
-		CaptureThreshold: 100
+		Types: building
 
 PROCOUT.IN:
 	Inherits: PROC
@@ -186,7 +176,7 @@ PROCOUT.IN:
 	ProvidesPrerequisite:
 		Prerequisite: proc
 	Capturable:
-		CaptureThreshold: 100
+		Types: building
 
 TRAN.IN:
 	Inherits: TRAN

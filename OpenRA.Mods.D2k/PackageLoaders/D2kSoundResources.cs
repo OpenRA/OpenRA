@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using OpenRA.FileSystem;
+using OpenRA.Primitives;
 
 namespace OpenRA.Mods.D2k.PackageLoaders
 {
@@ -20,7 +21,7 @@ namespace OpenRA.Mods.D2k.PackageLoaders
 	{
 		sealed class D2kSoundResources : IReadOnlyPackage
 		{
-			struct Entry
+			readonly struct Entry
 			{
 				public readonly uint Offset;
 				public readonly uint Length;
@@ -33,7 +34,7 @@ namespace OpenRA.Mods.D2k.PackageLoaders
 			}
 
 			public string Name { get; private set; }
-			public IEnumerable<string> Contents { get { return index.Keys; } }
+			public IEnumerable<string> Contents => index.Keys;
 
 			readonly Stream s;
 			readonly Dictionary<string, Entry> index = new Dictionary<string, Entry>();
@@ -63,12 +64,10 @@ namespace OpenRA.Mods.D2k.PackageLoaders
 
 			public Stream GetStream(string filename)
 			{
-				Entry e;
-				if (!index.TryGetValue(filename, out e))
+				if (!index.TryGetValue(filename, out var e))
 					return null;
 
-				s.Seek(e.Offset, SeekOrigin.Begin);
-				return new MemoryStream(s.ReadBytes((int)e.Length));
+				return SegmentStream.CreateWithoutOwningStream(s, e.Offset, (int)e.Length);
 			}
 
 			public IReadOnlyPackage OpenPackage(string filename, FileSystem.FileSystem context)

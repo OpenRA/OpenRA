@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -16,27 +16,38 @@ namespace OpenRA.Mods.Common.UtilityCommands
 {
 	class ExtractSettingsDocsCommand : IUtilityCommand
 	{
-		string IUtilityCommand.Name { get { return "--settings-docs"; } }
+		string IUtilityCommand.Name => "--settings-docs";
 
 		bool IUtilityCommand.ValidateArguments(string[] args)
 		{
 			return true;
 		}
 
-		[Desc("Generate settings documentation in markdown format.")]
+		[Desc("[VERSION]", "Generate settings documentation in markdown format.")]
 		void IUtilityCommand.Run(Utility utility, string[] args)
 		{
 			Game.ModData = utility.ModData;
+
+			var version = utility.ModData.Manifest.Metadata.Version;
+			if (args.Length > 1)
+				version = args[1];
+
 			Console.WriteLine(
 				"This documentation displays annotated settings with default values and description. " +
 				"Please do not edit it directly, but add new `[Desc(\"String\")]` tags to the source code. This file has been " +
-				"automatically generated for version {0} of OpenRA.", utility.ModData.Manifest.Metadata.Version);
+				"automatically generated for version {0} of OpenRA.", version);
 			Console.WriteLine();
 			Console.WriteLine("All settings can be changed by starting the game via a command-line parameter like `Game.Mod=ra`.");
 			Console.WriteLine();
 			Console.WriteLine("## Location");
-			Console.WriteLine("* Windows: `My Documents\\OpenRA\\settings.yaml`");
+			Console.WriteLine("* Windows: `%APPDATA%\\OpenRA\\settings.yaml`");
 			Console.WriteLine("* Mac OS X: `~/Library/Application Support/OpenRA/settings.yaml`");
+			Console.WriteLine("* Linux `~/.config/openra/settings.yaml`");
+			Console.WriteLine();
+			Console.WriteLine(
+				"Older releases (before playtest-20190825) used different locations, " +
+				"which newer versions may continue to use in some circumstances:");
+			Console.WriteLine("* Windows: `%USERPROFILE%\\Documents\\OpenRA\\settings.yaml`");
 			Console.WriteLine("* Linux `~/.openra/settings.yaml`");
 			Console.WriteLine();
 			Console.WriteLine(

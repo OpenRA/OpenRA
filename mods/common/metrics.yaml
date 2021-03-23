@@ -1,5 +1,4 @@
 Metrics:
-	ButtonBaseLine: 0
 	ButtonDepth: 1
 	ButtonFont: Regular
 	ButtonTextColor: FFFFFF
@@ -7,11 +6,13 @@ Metrics:
 	ButtonTextContrast: false
 	ButtonTextContrastColorDark: 000000
 	ButtonTextContrastColorLight: 7F7F7F
+	ButtonTextContrastRadius: 1
 	ButtonTextShadow: false
 	CheckboxPressedState: false
 	GameStartedColor: FFA500
 	HotkeyColor: FFFFFF
 	HotkeyColorDisabled: 808080
+	HotkeyColorInvalid: FF0000
 	HotkeyFont: Regular
 	IncompatibleGameColor: A9A9A9
 	IncompatibleGameStartedColor: D2691E
@@ -28,9 +29,11 @@ Metrics:
 	SpawnFont: TinyBold
 	SpawnLabelOffset: 0,1
 	TextColor: FFFFFF
+	TextHighlightColor: FFFF00
 	TextContrast: false
 	TextContrastColorDark: 000000
 	TextContrastColorLight: 7F7F7F
+	TextContrastRadius: 1
 	TextFont: Regular
 	TextShadow: false
 	TextfieldColor: FFFFFF
@@ -39,6 +42,19 @@ Metrics:
 	TextfieldColorHighlight: 195BC4
 	TextfieldFont: Regular
 	WaitingGameColor: 00FF00
-	UPnPDisabledColor: FFFFFF
-	UPnPEnabledColor: 00FF00
-	UPnPNotSupportedColor: FF0000
+	NoticeInfoColor: FFFFFF
+	NoticeWarningColor: FFA500
+	NoticeSuccessColor: 00FF00
+	NoticeErrorColor: FF0000
+	ChatLineSound: ChatLine
+	ClickDisabledSound: ClickDisabledSound
+	ClickSound: ClickSound
+	ChatMessageColor: FFFFFF
+	SystemMessageColor: FFFF00
+	NormalSelectionColor: FFFFFF
+	AltSelectionColor: 00FFFF
+	CtrlSelectionColor: FFFF00
+	ButtonCursor: default
+	DefaultCursor: default
+	WorldSelectCursor: select
+	WorldDefaultCursor: default

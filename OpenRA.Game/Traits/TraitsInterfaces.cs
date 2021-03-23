@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -12,11 +12,13 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Drawing;
 using OpenRA.Activities;
+using OpenRA.FileSystem;
+using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Network;
 using OpenRA.Primitives;
+using OpenRA.Support;
 
 namespace OpenRA.Traits
 {
@@ -33,10 +35,25 @@ namespace OpenRA.Traits
 		Dead = 32
 	}
 
+	// NOTE: Each subsequent category is a superset of the previous categories
+	// and categories are mutually exclusive.
+	public enum BlockedByActor
+	{
+		None,
+		Immovable,
+		Stationary,
+		All
+	}
+
 	/// <summary>
 	/// Type tag for DamageTypes <see cref="Primitives.BitSet{T}"/>.
 	/// </summary>
 	public sealed class DamageType { DamageType() { } }
+
+	public interface IHealthInfo : ITraitInfoInterface
+	{
+		int MaxHP { get; }
+	}
 
 	public interface IHealth
 	{
@@ -50,11 +67,8 @@ namespace OpenRA.Traits
 		void Kill(Actor self, Actor attacker, BitSet<DamageType> damageTypes);
 	}
 
-	// depends on the order of pips in WorldRenderer.cs!
-	public enum PipType { Transparent, Green, Yellow, Red, Gray, Blue, Ammo, AmmoEmpty }
-
 	[Flags]
-	public enum Stance
+	public enum PlayerRelationship
 	{
 		None = 0,
 		Enemy = 1,
@@ -62,12 +76,12 @@ namespace OpenRA.Traits
 		Ally = 4,
 	}
 
-	public static class StanceExts
+	public static class PlayerRelationshipExts
 	{
-		public static bool HasStance(this Stance s, Stance stance)
+		public static bool HasRelationship(this PlayerRelationship r, PlayerRelationship relationship)
 		{
 			// PERF: Enum.HasFlag is slower and requires allocations.
-			return (s & stance) == stance;
+			return (r & relationship) == relationship;
 		}
 	}
 
@@ -107,50 +121,18 @@ namespace OpenRA.Traits
 		IEnumerable<Rectangle> ScreenBounds(Actor self, WorldRenderer wr);
 	}
 
-	// TODO: Replace Rectangle with an int2[] polygon
-	public interface IMouseBounds { Rectangle MouseoverBounds(Actor self, WorldRenderer wr); }
+	public interface IMouseBounds { Polygon MouseoverBounds(Actor self, WorldRenderer wr); }
 	public interface IMouseBoundsInfo : ITraitInfoInterface { }
 	public interface IAutoMouseBounds { Rectangle AutoMouseoverBounds(Actor self, WorldRenderer wr); }
-
-	// HACK: This provides a shim for legacy code until it can be rewritten
-	public interface IDecorationBounds { Rectangle DecorationBounds(Actor self, WorldRenderer wr); }
-	public interface IDecorationBoundsInfo : ITraitInfoInterface { }
-	public static class DecorationBoundsExtensions
-	{
-		public static Rectangle FirstNonEmptyBounds(this IEnumerable<IDecorationBounds> decorationBounds, Actor self, WorldRenderer wr)
-		{
-			// PERF: Avoid LINQ.
-			foreach (var decoration in decorationBounds)
-			{
-				var bounds = decoration.DecorationBounds(self, wr);
-				if (!bounds.IsEmpty)
-					return bounds;
-			}
-
-			return Rectangle.Empty;
-		}
-
-		public static Rectangle FirstNonEmptyBounds(this IDecorationBounds[] decorationBounds, Actor self, WorldRenderer wr)
-		{
-			// PERF: Avoid LINQ.
-			foreach (var decoration in decorationBounds)
-			{
-				var bounds = decoration.DecorationBounds(self, wr);
-				if (!bounds.IsEmpty)
-					return bounds;
-			}
-
-			return Rectangle.Empty;
-		}
-	}
 
 	public interface IIssueOrder
 	{
 		IEnumerable<IOrderTargeter> Orders { get; }
-		Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued);
+		Order IssueOrder(Actor self, IOrderTargeter order, in Target target, bool queued);
 	}
 
-	[Flags] public enum TargetModifiers { None = 0, ForceAttack = 1, ForceQueue = 2, ForceMove = 4 }
+	[Flags]
+	public enum TargetModifiers { None = 0, ForceAttack = 1, ForceQueue = 2, ForceMove = 4 }
 
 	public static class TargetModifiersExts
 	{
@@ -165,9 +147,9 @@ namespace OpenRA.Traits
 	{
 		string OrderID { get; }
 		int OrderPriority { get; }
-		bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor);
+		bool CanTarget(Actor self, in Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor);
 		bool IsQueued { get; }
-		bool TargetOverridesSelection(TargetModifiers modifiers);
+		bool TargetOverridesSelection(Actor self, in Target target, List<Actor> actorsAt, CPos xy, TargetModifiers modifiers);
 	}
 
 	public interface IResolveOrder { void ResolveOrder(Actor self, Order order); }
@@ -214,7 +196,7 @@ namespace OpenRA.Traits
 
 	public interface ITooltipInfo : ITraitInfoInterface
 	{
-		string TooltipForPlayerStance(Stance stance);
+		string TooltipForPlayerStance(PlayerRelationship stance);
 		bool IsOwnerRowVisible { get; }
 	}
 
@@ -254,6 +236,9 @@ namespace OpenRA.Traits
 
 		WDist LargestActorRadius { get; }
 		WDist LargestBlockingActorRadius { get; }
+
+		void UpdateOccupiedCells(IOccupySpace ios);
+		event Action<CPos> CellUpdated;
 	}
 
 	[RequireExplicitImplementation]
@@ -266,13 +251,30 @@ namespace OpenRA.Traits
 		IEnumerable<Rectangle> ModifyScreenBounds(Actor self, WorldRenderer wr, IEnumerable<Rectangle> r);
 	}
 
+	[RequireExplicitImplementation]
+	public interface IProvidesCursorPaletteInfo : ITraitInfoInterface
+	{
+		string Palette { get; }
+		ImmutablePalette ReadPalette(IReadOnlyFileSystem fileSystem);
+	}
+
 	public interface ILoadsPalettes { void LoadPalettes(WorldRenderer wr); }
-	public interface ILoadsPlayerPalettes { void LoadPlayerPalettes(WorldRenderer wr, string playerName, HSLColor playerColor, bool replaceExisting); }
+	public interface ILoadsPlayerPalettes { void LoadPlayerPalettes(WorldRenderer wr, string playerName, Color playerColor, bool replaceExisting); }
 	public interface IPaletteModifier { void AdjustPalette(IReadOnlyDictionary<string, MutablePalette> b); }
-	public interface IPips { IEnumerable<PipType> GetPips(Actor self); }
 
 	[RequireExplicitImplementation]
 	public interface ISelectionBar { float GetValue(); Color GetColor(); bool DisplayWhenEmpty { get; } }
+
+	public interface ISelectionDecorations
+	{
+		IEnumerable<IRenderable> RenderSelectionAnnotations(Actor self, WorldRenderer worldRenderer, Color color);
+		int2 GetDecorationOrigin(Actor self, WorldRenderer wr, string pos, int2 margin);
+	}
+
+	public interface IMapPreviewSignatureInfo : ITraitInfoInterface
+	{
+		void PopulateMapPreviewSignatureCells(Map map, ActorInfo ai, ActorReference s, List<(MPos, Color)> destinationBuffer);
+	}
 
 	public interface IOccupySpaceInfo : ITraitInfoInterface
 	{
@@ -284,26 +286,26 @@ namespace OpenRA.Traits
 	{
 		WPos CenterPosition { get; }
 		CPos TopLeft { get; }
-		Pair<CPos, SubCell>[] OccupiedCells();
+		(CPos Cell, SubCell SubCell)[] OccupiedCells();
 	}
 
-	public enum SubCell { Invalid = int.MinValue, Any = int.MinValue / 2, FullCell = 0, First = 1 }
+	public enum SubCell : byte { Invalid = byte.MaxValue, Any = byte.MaxValue - 1, FullCell = 0, First = 1 }
 
 	public interface IPositionableInfo : IOccupySpaceInfo
 	{
-		bool CanEnterCell(World world, Actor self, CPos cell, Actor ignoreActor = null, bool checkTransientActors = true);
+		bool CanEnterCell(World world, Actor self, CPos cell, SubCell subCell = SubCell.FullCell, Actor ignoreActor = null, BlockedByActor check = BlockedByActor.All);
 	}
 
 	public interface IPositionable : IOccupySpace
 	{
 		bool CanExistInCell(CPos location);
 		bool IsLeavingCell(CPos location, SubCell subCell = SubCell.Any);
-		bool CanEnterCell(CPos location, Actor ignoreActor = null, bool checkTransientActors = true);
+		bool CanEnterCell(CPos location, Actor ignoreActor = null, BlockedByActor check = BlockedByActor.All);
 		SubCell GetValidSubCell(SubCell preferred = SubCell.Any);
-		SubCell GetAvailableSubCell(CPos location, SubCell preferredSubCell = SubCell.Any, Actor ignoreActor = null, bool checkTransientActors = true);
+		SubCell GetAvailableSubCell(CPos location, SubCell preferredSubCell = SubCell.Any, Actor ignoreActor = null, BlockedByActor check = BlockedByActor.All);
 		void SetPosition(Actor self, CPos cell, SubCell subCell = SubCell.Any);
 		void SetPosition(Actor self, WPos pos);
-		void SetVisualPosition(Actor self, WPos pos);
+		void SetCenterPosition(Actor self, WPos pos);
 	}
 
 	public interface ITemporaryBlockerInfo : ITraitInfoInterface { }
@@ -317,22 +319,35 @@ namespace OpenRA.Traits
 
 	public interface IFacing
 	{
-		int TurnSpeed { get; }
-		int Facing { get; set; }
+		WAngle TurnSpeed { get; }
+		WAngle Facing { get; set; }
+		WRot Orientation { get; }
 	}
 
-	public interface IFacingInfo : ITraitInfoInterface { int GetInitialFacing(); }
+	public interface IFacingInfo : ITraitInfoInterface { WAngle GetInitialFacing(); }
 
 	public interface ITraitInfoInterface { }
-	public interface ITraitInfo : ITraitInfoInterface { object Create(ActorInitializer init); }
 
-	public class TraitInfo<T> : ITraitInfo where T : new() { public virtual object Create(ActorInitializer init) { return new T(); } }
+	public abstract class TraitInfo : ITraitInfoInterface
+	{
+		// Value is set using reflection during TraitInfo creation
+		[FieldLoader.Ignore]
+		public readonly string InstanceName = null;
+
+		public abstract object Create(ActorInitializer init);
+	}
+
+	public class TraitInfo<T> : TraitInfo where T : new()
+	{
+		public override object Create(ActorInitializer init) { return new T(); }
+	}
+
 	public interface ILobbyCustomRulesIgnore { }
 
 	[SuppressMessage("StyleCop.CSharp.NamingRules", "SA1302:InterfaceNamesMustBeginWithI", Justification = "Not a real interface, but more like a tag.")]
 	public interface Requires<T> where T : class, ITraitInfoInterface { }
-	[SuppressMessage("StyleCop.CSharp.NamingRules", "SA1302:InterfaceNamesMustBeginWithI", Justification = "Not a real interface, but more like a tag.")]
-	public interface UsesInit<T> : ITraitInfo where T : IActorInit { }
+
+	public interface IActivityInterface { }
 
 	[RequireExplicitImplementation]
 	public interface INotifySelected { void Selected(Actor self); }
@@ -340,9 +355,38 @@ namespace OpenRA.Traits
 	public interface INotifySelection { void SelectionChanged(); }
 
 	public interface IWorldLoaded { void WorldLoaded(World w, WorldRenderer wr); }
+	public interface INotifyGameLoading { void GameLoading(World w); }
+	public interface INotifyGameLoaded { void GameLoaded(World w); }
+	public interface INotifyGameSaved { void GameSaved(World w); }
+
+	public interface IGameSaveTraitData
+	{
+		List<MiniYamlNode> IssueTraitData(Actor self);
+		void ResolveTraitData(Actor self, List<MiniYamlNode> data);
+	}
 
 	[RequireExplicitImplementation]
-	public interface ICreatePlayers { void CreatePlayers(World w); }
+	public interface ICreatePlayers { void CreatePlayers(World w, MersenneTwister playerRandom); }
+
+	[RequireExplicitImplementation]
+	public interface ICreatePlayersInfo : ITraitInfoInterface
+	{
+		void CreateServerPlayers(MapPreview map, Session lobbyInfo, List<GameInformation.Player> players, MersenneTwister playerRandom);
+	}
+
+	[RequireExplicitImplementation]
+	public interface IAssignSpawnPoints
+	{
+		CPos AssignHomeLocation(World world, Session.Client client, MersenneTwister playerRandom);
+		int SpawnPointForPlayer(Player player);
+	}
+
+	[RequireExplicitImplementation]
+	public interface IAssignSpawnPointsInfo : ITraitInfoInterface
+	{
+		object InitializeState(MapPreview map, Session lobbyInfo);
+		int AssignSpawnPoint(object state, Session lobbyInfo, Session.Client client, MersenneTwister playerRandom);
+	}
 
 	public interface IBotInfo : ITraitInfoInterface
 	{
@@ -353,7 +397,9 @@ namespace OpenRA.Traits
 	public interface IBot
 	{
 		void Activate(Player p);
+		void QueueOrder(Order order);
 		IBotInfo Info { get; }
+		Player Player { get; }
 	}
 
 	[RequireExplicitImplementation]
@@ -361,11 +407,22 @@ namespace OpenRA.Traits
 
 	[RequireExplicitImplementation]
 	public interface INotifyBecomingIdle { void OnBecomingIdle(Actor self); }
+
 	[RequireExplicitImplementation]
 	public interface INotifyIdle { void TickIdle(Actor self); }
 
 	public interface IRenderAboveWorld { void RenderAboveWorld(Actor self, WorldRenderer wr); }
-	public interface IRenderShroud { void RenderShroud(Shroud shroud, WorldRenderer wr); }
+	public interface IRenderShroud { void RenderShroud(WorldRenderer wr); }
+
+	[RequireExplicitImplementation]
+	public interface IRenderTerrain { void RenderTerrain(WorldRenderer wr, Viewport viewport); }
+
+	[RequireExplicitImplementation]
+	public interface ITerrainLighting
+	{
+		event Action<MPos> CellChanged;
+		float3 TintAt(WPos pos);
+	}
 
 	public interface IRenderAboveShroud
 	{
@@ -377,6 +434,52 @@ namespace OpenRA.Traits
 	{
 		IEnumerable<IRenderable> RenderAboveShroud(Actor self, WorldRenderer wr);
 		bool SpatiallyPartitionable { get; }
+	}
+
+	public interface IRenderAnnotations
+	{
+		IEnumerable<IRenderable> RenderAnnotations(Actor self, WorldRenderer wr);
+		bool SpatiallyPartitionable { get; }
+	}
+
+	public interface IRenderAnnotationsWhenSelected
+	{
+		IEnumerable<IRenderable> RenderAnnotations(Actor self, WorldRenderer wr);
+		bool SpatiallyPartitionable { get; }
+	}
+
+	[Flags]
+	public enum SelectionPriorityModifiers
+	{
+		None = 0,
+		Ctrl = 1,
+		Alt = 2
+	}
+
+	[RequireExplicitImplementation]
+	public interface ISelectableInfo : ITraitInfoInterface
+	{
+		int Priority { get; }
+		SelectionPriorityModifiers PriorityModifiers { get; }
+		string Voice { get; }
+	}
+
+	public interface ISelection
+	{
+		int Hash { get; }
+		IEnumerable<Actor> Actors { get; }
+
+		void Add(Actor a);
+		void Remove(Actor a);
+		bool Contains(Actor a);
+		void Combine(World world, IEnumerable<Actor> newSelection, bool isCombine, bool isClick);
+		void Clear();
+		bool RolloverContains(Actor a);
+		void SetRollover(IEnumerable<Actor> actors);
+		void DoControlGroup(World world, WorldRenderer worldRenderer, int group, Modifiers mods, int multiTapCount);
+		void AddToControlGroup(Actor a, int group);
+		void RemoveFromControlGroup(Actor a);
+		int? GetControlGroupForActor(Actor a);
 	}
 
 	/// <summary>
@@ -404,7 +507,10 @@ namespace OpenRA.Traits
 		bool AlwaysEnabled { get; }
 	}
 
-	public interface IMoveInfo : ITraitInfoInterface { }
+	public interface IMoveInfo : ITraitInfoInterface
+	{
+		Color GetTargetLineColor();
+	}
 
 	[RequireExplicitImplementation]
 	public interface IGameOver { void GameOver(World world); }
@@ -414,7 +520,7 @@ namespace OpenRA.Traits
 		int Delay { get; }
 		bool IsValidAgainst(Actor victim, Actor firedBy);
 		bool IsValidAgainst(FrozenActor victim, Actor firedBy);
-		void DoImpact(Target target, Actor firedBy, IEnumerable<int> damageModifiers);
+		void DoImpact(in Target target, WarheadArgs args);
 	}
 
 	public interface IRulesetLoaded<TInfo> { void RulesetLoaded(Ruleset rules, TInfo info); }
@@ -460,8 +566,8 @@ namespace OpenRA.Traits
 	{
 		static readonly Dictionary<string, string> BoolValues = new Dictionary<string, string>()
 		{
-			{ true.ToString(), "enabled" },
-			{ false.ToString(), "disabled" }
+			{ true.ToString(), "Enabled" },
+			{ false.ToString(), "Disabled" }
 		};
 
 		public LobbyBooleanOption(string id, string name, string description, bool visible, int displayorder, bool defaultValue, bool locked)
@@ -469,10 +575,33 @@ namespace OpenRA.Traits
 
 		public override string ValueChangedMessage(string playerName, string newValue)
 		{
-			return playerName + " " + BoolValues[newValue] + " " + Name + ".";
+			return playerName + " " + BoolValues[newValue].ToLowerInvariant() + " " + Name + ".";
 		}
 	}
 
 	[RequireExplicitImplementation]
 	public interface IUnlocksRenderPlayer { bool RenderPlayerUnlocked { get; } }
+
+	[RequireExplicitImplementation]
+	public interface ICreationActivity { Activity GetCreationActivity(); }
+
+	[RequireExplicitImplementation]
+	public interface IObservesVariablesInfo : ITraitInfoInterface { }
+
+	public delegate void VariableObserverNotifier(Actor self, IReadOnlyDictionary<string, int> variables);
+	public struct VariableObserver
+	{
+		public VariableObserverNotifier Notifier;
+		public IEnumerable<string> Variables;
+		public VariableObserver(VariableObserverNotifier notifier, IEnumerable<string> variables)
+		{
+			Notifier = notifier;
+			Variables = variables;
+		}
+	}
+
+	public interface IObservesVariables
+	{
+		IEnumerable<VariableObserver> GetVariableObservers();
+	}
 }

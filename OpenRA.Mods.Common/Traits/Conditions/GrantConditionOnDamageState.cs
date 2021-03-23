@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -14,7 +14,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Applies a condition to the actor at specified damage states.")]
-	public class GrantConditionOnDamageStateInfo : ITraitInfo, Requires<HealthInfo>
+	public class GrantConditionOnDamageStateInfo : TraitInfo, Requires<IHealthInfo>
 	{
 		[FieldLoader.Require]
 		[GrantedConditionReference]
@@ -33,35 +33,33 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Is the condition irrevocable once it has been activated?")]
 		public readonly bool GrantPermanently = false;
 
-		public object Create(ActorInitializer init) { return new GrantConditionOnDamageState(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new GrantConditionOnDamageState(init.Self, this); }
 	}
 
 	public class GrantConditionOnDamageState : INotifyDamageStateChanged, INotifyCreated
 	{
 		readonly GrantConditionOnDamageStateInfo info;
-		readonly Health health;
+		readonly IHealth health;
 
-		ConditionManager conditionManager;
-		int conditionToken = ConditionManager.InvalidConditionToken;
+		int conditionToken = Actor.InvalidConditionToken;
 
 		public GrantConditionOnDamageState(Actor self, GrantConditionOnDamageStateInfo info)
 		{
 			this.info = info;
-			health = self.Trait<Health>();
+			health = self.Trait<IHealth>();
 		}
 
 		void INotifyCreated.Created(Actor self)
 		{
-			conditionManager = self.TraitOrDefault<ConditionManager>();
 			GrantConditionOnValidDamageState(self, health.DamageState);
 		}
 
 		void GrantConditionOnValidDamageState(Actor self, DamageState state)
 		{
-			if (!info.ValidDamageStates.HasFlag(state) || conditionToken != ConditionManager.InvalidConditionToken)
+			if (!info.ValidDamageStates.HasFlag(state) || conditionToken != Actor.InvalidConditionToken)
 				return;
 
-			conditionToken = conditionManager.GrantCondition(self, info.Condition);
+			conditionToken = self.GrantCondition(info.Condition);
 
 			var sound = info.EnabledSounds.RandomOrDefault(Game.CosmeticRandom);
 			Game.Sound.Play(SoundType.World, sound, self.CenterPosition);
@@ -69,15 +67,15 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyDamageStateChanged.DamageStateChanged(Actor self, AttackInfo e)
 		{
-			var granted = conditionToken != ConditionManager.InvalidConditionToken;
-			if ((granted && info.GrantPermanently) || conditionManager == null)
+			var granted = conditionToken != Actor.InvalidConditionToken;
+			if (granted && info.GrantPermanently)
 				return;
 
 			if (!granted && !info.ValidDamageStates.HasFlag(e.PreviousDamageState))
 				GrantConditionOnValidDamageState(self, health.DamageState);
 			else if (granted && !info.ValidDamageStates.HasFlag(e.DamageState) && info.ValidDamageStates.HasFlag(e.PreviousDamageState))
 			{
-				conditionToken = conditionManager.RevokeCondition(self, conditionToken);
+				conditionToken = self.RevokeCondition(conditionToken);
 
 				var sound = info.DisabledSounds.RandomOrDefault(Game.CosmeticRandom);
 				Game.Sound.Play(SoundType.World, sound, self.CenterPosition);

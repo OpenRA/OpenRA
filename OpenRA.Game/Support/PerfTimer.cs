@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -74,7 +74,7 @@ namespace OpenRA.Support
 				Log.Write("perf", FormatString, ElapsedMs, Indentation + name);
 		}
 
-		float ElapsedMs { get { return 1000f * ticks / Stopwatch.Frequency; } }
+		float ElapsedMs => 1000f * ticks / Stopwatch.Frequency;
 
 		public static void LogLongTick(long startStopwatchTicks, long endStopwatchTicks, string name, object item)
 		{
@@ -85,13 +85,7 @@ namespace OpenRA.Support
 				"[" + Game.LocalTick + "] " + name + ": " + label);
 		}
 
-		public static long LongTickThresholdInStopwatchTicks
-		{
-			get
-			{
-				return (long)(Stopwatch.Frequency * Game.Settings.Debug.LongTickThresholdMs / 1000f);
-			}
-		}
+		public static long LongTickThresholdInStopwatchTicks => (long)(Stopwatch.Frequency * Game.Settings.Debug.LongTickThresholdMs / 1000f);
 
 		#region Formatting helpers
 		static string GetHeader(string indentation, string label)

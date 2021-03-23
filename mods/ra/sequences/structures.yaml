@@ -83,6 +83,7 @@ proc:
 	idle:
 		ZOffset: -1c511
 	damaged-idle:
+		Start: 1
 		ZOffset: -1c511
 	idle-top: proctop
 		ZOffset: 0
@@ -191,6 +192,8 @@ tent:
 		Length: *
 	icon: tenticon
 		UseTilesetExtension: false
+	fake-icon: tenficon
+		UseTilesetExtension: false
 
 kenn:
 	idle:
@@ -254,6 +257,8 @@ weap:
 	idle:
 	damaged-idle:
 		Start: 1
+	place: weapmake
+		Start: 14
 	make: weapmake
 		Length: *
 	build-top: weap3
@@ -278,10 +283,12 @@ hpad:
 	active:
 		Start: 1
 		Length: 6
+		Tick: 100
 		ZOffset: -1023
 	damaged-active:
 		Start: 8
 		Length: 6
+		Tick: 100
 		ZOffset: -1023
 	make: hpadmake
 		Length: *
@@ -371,23 +378,24 @@ fix:
 	fake-icon: fixficon
 
 gun:
-	idle:
+	idle: gunmake # Empty first frame. We need WithSpriteBody for the make anim, and WSB needs at least a placeholder default sequence to work
+	make: gunmake
+		Length: *
+	turret:
 		Facings: 32
-		UseClassicFacingFudge: True
+		UseClassicFacings: True
 	recoil:
 		Start: 32
 		Facings: 32
-		UseClassicFacingFudge: True
-	make: gunmake
-		Length: *
-	damaged-idle:
+		UseClassicFacings: True
+	damaged-turret:
 		Start: 64
 		Facings: 32
-		UseClassicFacingFudge: True
+		UseClassicFacings: True
 	damaged-recoil:
 		Start: 96
 		Facings: 32
-		UseClassicFacingFudge: True
+		UseClassicFacings: True
 	muzzle: gunfire2
 		Length: 5
 	bib: mbGUN
@@ -397,27 +405,28 @@ gun:
 	icon: gunicon
 
 agun:
-	idle:
+	idle: gunmake # Empty first frame (agunmake has no empty frames). We need WithSpriteBody for the make anim, and WSB needs at least a placeholder default sequence to work
+	make: agunmake
+		Length: *
+		Offset: 0,-13
+	turret:
 		Facings: 32
-		UseClassicFacingFudge: True
+		UseClassicFacings: True
 		Offset: 0,-13
 	recoil:
 		Start: 32
 		Facings: 32
-		UseClassicFacingFudge: True
+		UseClassicFacings: True
 		Offset: 0,-13
-	make: agunmake
-		Length: *
-		Offset: 0,-13
-	damaged-idle:
+	damaged-turret:
 		Start: 64
 		Facings: 32
-		UseClassicFacingFudge: True
+		UseClassicFacings: True
 		Offset: 0,-13
 	damaged-recoil:
 		Start: 96
 		Facings: 32
-		UseClassicFacingFudge: True
+		UseClassicFacings: True
 		Offset: 0,-13
 	muzzle: gunfire2
 		Start: 1
@@ -428,14 +437,15 @@ agun:
 	icon: agunicon
 
 sam:
-	idle: sam2
+	idle: gunmake # Empty first frame (sammake has no empty frames). We need WithSpriteBody for the make anim, and WSB needs at least a placeholder default sequence to work
+	turret: sam2
 		Facings: 32
-		UseClassicFacingFudge: True
+		UseClassicFacings: True
 		Offset: -1,-2
-	damaged-idle: sam2
+	damaged-turret: sam2
 		Start: 34
 		Facings: 32
-		UseClassicFacingFudge: True
+		UseClassicFacings: True
 		Offset: -1,-2
 	make: sammake
 		Length: *

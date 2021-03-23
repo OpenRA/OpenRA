@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,7 +10,6 @@
 #endregion
 
 using System.Collections.Generic;
-using OpenRA.Effects;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Mods.Cnc.Graphics;
@@ -22,10 +21,14 @@ namespace OpenRA.Mods.Cnc.Projectiles
 	{
 		public readonly string Image = "litning";
 
-		[SequenceReference("Image")] public readonly string BrightSequence = "bright";
-		[SequenceReference("Image")] public readonly string DimSequence = "dim";
+		[SequenceReference(nameof(Image))]
+		public readonly string BrightSequence = "bright";
 
-		[PaletteReference] public readonly string Palette = "effect";
+		[SequenceReference(nameof(Image))]
+		public readonly string DimSequence = "dim";
+
+		[PaletteReference]
+		public readonly string Palette = "effect";
 
 		public readonly int BrightZaps = 1;
 		public readonly int DimZaps = 2;
@@ -46,7 +49,9 @@ namespace OpenRA.Mods.Cnc.Projectiles
 		TeslaZapRenderable zap;
 		int ticksUntilRemove;
 		int damageDuration;
-		[Sync] WPos target;
+
+		[Sync]
+		WPos target;
 
 		public TeslaZap(TeslaZapInfo info, ProjectileArgs args)
 		{
@@ -67,7 +72,7 @@ namespace OpenRA.Mods.Cnc.Projectiles
 				target = args.Weapon.TargetActorCenter ? args.GuidedTarget.CenterPosition : args.GuidedTarget.Positions.PositionClosestTo(args.Source);
 
 			if (damageDuration-- > 0)
-				args.Weapon.Impact(Target.FromPos(target), args.SourceActor, args.DamageModifiers);
+				args.Weapon.Impact(Target.FromPos(target), new WarheadArgs(args));
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)

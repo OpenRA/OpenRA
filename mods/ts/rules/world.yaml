@@ -3,9 +3,12 @@
 	AlwaysVisible:
 	ScreenMap:
 	ActorMap:
+	Selection:
 	MusicPlaylist:
 		VictoryMusic: score
 		DefeatMusic: maps
+	TerrainRenderer:
+	TerrainLighting:
 	ShroudRenderer:
 		Index: 255, 16, 32, 48, 64, 80, 96, 112, 128, 144, 160, 176, 192, 208, 224, 240, 20, 40, 56, 65, 97, 130, 148, 194, 24, 33, 66, 132, 28, 41, 67, 134, 1, 2, 4, 8, 3, 6, 12, 9, 7, 14, 13, 11, 5, 10, 15, 255
 		UseExtendedIndex: true
@@ -195,48 +198,39 @@
 		Name: Nod
 		InternalName: nod
 		Description: Brotherhood of Nod\nThe Brotherhood is a religious cult centered around their leader Kane\nand the alien substance Tiberium. They utilize stealth technology\nand guerilla tactics to defeat those who oppose them.
-	ResourceType@Tiberium:
-		Type: Tiberium
-		Name: Tiberium
-		PipColor: Green
-		ResourceType: 1
-		Palette: greentiberium
-		Sequences: tib01, tib02, tib03, tib04, tib05, tib06, tib07, tib08, tib09, tib10, tib11, tib12
-		MaxDensity: 12
-		ValuePerUnit: 25
-		AllowedTerrainTypes: Clear, Rough, DirtRoad
-		AllowUnderActors: true
-		TerrainType: Tiberium
-	ResourceType@BlueTiberium:
-		Type: BlueTiberium
-		Name: Tiberium
-		PipColor: Blue
-		ResourceType: 2
-		Palette: bluetiberium
-		Sequences: tib01, tib02, tib03, tib04, tib05, tib06, tib07, tib08, tib09, tib10, tib11, tib12
-		MaxDensity: 12
-		ValuePerUnit: 40
-		AllowedTerrainTypes: Clear, Rough, DirtRoad
-		AllowUnderActors: true
-		TerrainType: BlueTiberium
-	ResourceType@Veins:
-		Type: Veins
-		Name: Veins
-		PipColor: Red
-		ResourceType: 3
-		Palette: player
-		Sequences: veins
-		MaxDensity: 1
-		ValuePerUnit: 0
-		AllowedTerrainTypes: Clear, Rough, DirtRoad
-		AllowUnderActors: true
-		TerrainType: Veins
 	TerrainGeometryOverlay:
 	DebugVisualizations:
 	ExitsDebugOverlayManager:
 	CliffBackImpassabilityLayer:
 	SubterraneanActorLayer:
 	JumpjetActorLayer:
+	TSTiberiumRenderer:
+		ResourceTypes:
+			Tiberium:
+				Sequences: tib01, tib02, tib03, tib04, tib05, tib06, tib07, tib08, tib09, tib10, tib11, tib12
+				Palette: greentiberium
+				Name: Tiberium
+			BlueTiberium:
+				Sequences: tib01, tib02, tib03, tib04, tib05, tib06, tib07, tib08, tib09, tib10, tib11, tib12
+				Palette: bluetiberium
+				Name: Tiberium
+		Ramp1Sequences:
+			Tiberium: tib13, tib14
+			BlueTiberium: tib13, tib14
+		Ramp2Sequences:
+			Tiberium: tib15, tib16
+			BlueTiberium: tib15, tib16
+		Ramp3Sequences:
+			Tiberium: tib17, tib18
+			BlueTiberium: tib17, tib18
+		Ramp4Sequences:
+			Tiberium: tib19, tib20
+			BlueTiberium: tib19, tib20
+	TSVeinsRenderer:
+		ResourceType: Veins
+		Name: Veins
+		Palette: player
+		VeinholeActors: veinhole
 
 World:
 	Inherits: ^BaseWorld
@@ -252,31 +246,48 @@ World:
 	SmudgeLayer@SMALLSCORCH:
 		Type: SmallScorch
 		Sequence: smallscorches
-		SmokeType: smallfire
-		SmokePercentage: 50
+		SmokeImage: smallfire
+		SmokeSequences: idle
+		SmokeChance: 50
 	SmudgeLayer@MEDIUMSCORCH:
 		Type: MediumScorch
 		Sequence: mediumscorches
-		SmokeType: mediumfire
-		SmokePercentage: 75
+		SmokeImage: mediumfire
+		SmokeSequences: idle
+		SmokeChance: 75
 	SmudgeLayer@LARGESCORCH:
 		Type: LargeScorch
 		Sequence: largescorches
-		SmokeType: largefire
-		SmokePercentage: 100
+		SmokeImage: largefire
+		SmokeSequences: idle
+		SmokeChance: 100
 	SmudgeLayer@SMALLCRATER:
 		Type: SmallCrater
-		SmokeType: smallsmoke
 		Sequence: smallcraters
 	SmudgeLayer@MEDIUMCRATER:
 		Type: MediumCrater
-		SmokeType: smallsmoke
 		Sequence: mediumcraters
 	SmudgeLayer@LARGECRATER:
 		Type: LargeCrater
-		SmokeType: largesmoke
 		Sequence: largecraters
-	ResourceLayer:
+	TSResourceLayer:
+		VeinholeActors: veinhole
+		ResourceTypes:
+			Tiberium:
+				ResourceIndex: 1
+				TerrainType: Tiberium
+				AllowedTerrainTypes: Clear, Rough, DirtRoad
+				MaxDensity: 12
+			BlueTiberium:
+				ResourceIndex: 2
+				TerrainType: BlueTiberium
+				AllowedTerrainTypes: Clear, Rough, DirtRoad
+				MaxDensity: 12
+			Veins:
+				ResourceIndex: 3
+				TerrainType: Veins
+				AllowedTerrainTypes: Clear, Rough, DirtRoad
+				MaxDensity: 2
 	BridgeLayer:
 	CustomTerrainDebugOverlay:
 	ResourceClaimLayer:
@@ -291,13 +302,13 @@ World:
 		ShortGameCheckboxDisplayOrder: 2
 		TechLevelDropdownDisplayOrder: 2
 		GameSpeedDropdownDisplayOrder: 3
-	CreateMPPlayers:
-	MPStartUnits@MCV:
+	CreateMapPlayers:
+	StartingUnits@MCV:
 		Class: none
 		ClassName: MCV Only
 		Factions: gdi, nod
 		BaseActor: mcv
-	MPStartUnits@light.gdi:
+	StartingUnits@light.gdi:
 		Class: light
 		ClassName: Light
 		Factions: gdi
@@ -305,7 +316,7 @@ World:
 		SupportActors: e1,e1,e1,smech
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
-	MPStartUnits@light.nod:
+	StartingUnits@light.nod:
 		Class: light
 		ClassName: Light
 		Factions: nod
@@ -313,7 +324,7 @@ World:
 		SupportActors: e1,e1,e1,bggy
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
-	MPStartUnits@med.gdi:
+	StartingUnits@med.gdi:
 		Class: medium
 		ClassName: Medium
 		Factions: gdi
@@ -321,7 +332,7 @@ World:
 		SupportActors: e1,e1,e2,e2,jumpjet,smech
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
-	MPStartUnits@med.nod:
+	StartingUnits@med.nod:
 		Class: medium
 		ClassName: Medium
 		Factions: nod
@@ -329,7 +340,7 @@ World:
 		SupportActors: e1,e1,e3,e3,cyborg,bggy
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
-	MPStartUnits@heavy.gdi:
+	StartingUnits@heavy.gdi:
 		Class: heavy
 		ClassName: Heavy
 		Factions: gdi
@@ -337,7 +348,7 @@ World:
 		SupportActors: e1,e1,e2,e2,jumpjet,smech,smech,mmch
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
-	MPStartUnits@heavy.nod:
+	StartingUnits@heavy.nod:
 		Class: heavy
 		ClassName: Heavy
 		Factions: nod
@@ -345,9 +356,9 @@ World:
 		SupportActors: e1,e1,e3,e3,cyborg,bggy,bike,ttnk
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
-	MPStartLocations:
+	MapStartingLocations:
 		SeparateTeamSpawnsCheckboxDisplayOrder: 6
-	SpawnMPUnits:
+	SpawnStartingUnits:
 		DropdownDisplayOrder: 1
 	CrateSpawner:
 		Minimum: 1
@@ -367,11 +378,33 @@ World:
 		PanelName: SKIRMISH_STATS
 	LoadWidgetAtGameStart:
 		ShellmapRoot: MAINMENU_PRERELEASE_NOTIFICATION
+	ScriptTriggers:
+	TimeLimitManager:
 
 EditorWorld:
 	Inherits: ^BaseWorld
 	EditorActorLayer:
-	EditorResourceLayer:
+	EditorCursorLayer:
+	TSEditorResourceLayer:
+		ResourceTypes:
+			Tiberium:
+				ResourceIndex: 1
+				TerrainType: Tiberium
+				AllowedTerrainTypes: Clear, Rough, DirtRoad
+				MaxDensity: 12
+			BlueTiberium:
+				ResourceIndex: 2
+				TerrainType: BlueTiberium
+				AllowedTerrainTypes: Clear, Rough, DirtRoad
+				MaxDensity: 12
+			Veins:
+				ResourceIndex: 3
+				TerrainType: Veins
+				AllowedTerrainTypes: Clear, Rough, DirtRoad
+				MaxDensity: 2
+		VeinholeActors: veinhole
 	EditorSelectionLayer:
-		Palette: placebuilding
+		Palette: ra
+		FootprintAlpha: 0.7
 	LoadWidgetAtGameStart:
+	EditorActionManager:

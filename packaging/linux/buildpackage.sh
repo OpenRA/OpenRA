@@ -2,25 +2,24 @@
 # OpenRA packaging script for Linux (AppImage)
 set -e
 
-command -v make >/dev/null 2>&1 || { echo >&2 "Linux packaging requires make."; exit 1; }
-command -v python >/dev/null 2>&1 || { echo >&2 "Linux packaging requires python."; exit 1; }
 command -v tar >/dev/null 2>&1 || { echo >&2 "Linux packaging requires tar."; exit 1; }
 command -v curl >/dev/null 2>&1 || command -v wget > /dev/null 2>&1 || { echo >&2 "Linux packaging requires curl or wget."; exit 1; }
 
-DEPENDENCIES_TAG="20180723"
+DEPENDENCIES_TAG="20201222"
 
 if [ $# -eq "0" ]; then
-	echo "Usage: `basename $0` version [outputdir]"
+	echo "Usage: $(basename "$0") version [outputdir]"
 	exit 1
 fi
 
 # Set the working dir to the location of this script
-cd $(dirname $0)
+cd "$(dirname "$0")" || exit 1
+. ../functions.sh
 
 TAG="$1"
 OUTPUTDIR="$2"
 SRCDIR="$(pwd)/../.."
-BUILTDIR="$(pwd)/build"
+ARTWORK_DIR="$(pwd)/../artwork/"
 
 UPDATE_CHANNEL=""
 SUFFIX="-devel"
@@ -35,110 +34,94 @@ elif [[ ${TAG} == pkgtest* ]]; then
 	SUFFIX="-pkgtest"
 fi
 
-pushd "${TEMPLATE_ROOT}" > /dev/null
+pushd "${TEMPLATE_ROOT}" > /dev/null || exit 1
 
 if [ ! -d "${OUTPUTDIR}" ]; then
 	echo "Output directory '${OUTPUTDIR}' does not exist.";
 	exit 1
 fi
 
-echo "Building core files"
-
-pushd ${SRCDIR} > /dev/null
-make linux-dependencies
-make core SDK="-sdk:4.5"
-make version VERSION="${TAG}"
-make install-engine prefix="usr" DESTDIR="${BUILTDIR}/"
-make install-common-mod-files prefix="usr" DESTDIR="${BUILTDIR}/"
-
-popd > /dev/null
-
 # Add native libraries
-echo "Downloading dependencies"
+echo "Downloading appimagetool"
 if command -v curl >/dev/null 2>&1; then
-	curl -s -L -O https://github.com/OpenRA/AppImageSupport/releases/download/${DEPENDENCIES_TAG}/libs.tar.bz2 || exit 3
 	curl -s -L -O https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage || exit 3
 else
-	wget -cq https://github.com/OpenRA/AppImageSupport/releases/download/${DEPENDENCIES_TAG}/libs.tar.bz2 || exit 3
 	wget -cq https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage || exit 3
 fi
 
 chmod a+x appimagetool-x86_64.AppImage
 
-echo "Building AppImage"
-tar xf libs.tar.bz2
-install -Dm 0755 libSDL2.so "${BUILTDIR}/usr/lib/openra/"
-install -Dm 0644 SDL2-CS.dll.config "${BUILTDIR}/usr/lib/openra/"
-install -Dm 0755 libopenal.so "${BUILTDIR}/usr/lib/openra/"
-install -Dm 0644 OpenAL-CS.dll.config "${BUILTDIR}/usr/lib/openra/"
-install -Dm 0755 liblua.so "${BUILTDIR}/usr/lib/openra/"
-install -Dm 0644 Eluant.dll.config "${BUILTDIR}/usr/lib/openra/"
-rm libs.tar.bz2 libSDL2.so SDL2-CS.dll.config libopenal.so OpenAL-CS.dll.config liblua.so Eluant.dll.config
+echo "Building AppImages"
 
 build_appimage() {
 	MOD_ID=${1}
 	DISPLAY_NAME=${2}
+	DISCORD_ID=${3}
 	APPDIR="$(pwd)/${MOD_ID}.appdir"
-	APPIMAGE="OpenRA-$(echo ${DISPLAY_NAME} | sed 's/ /-/g')${SUFFIX}-x86_64.AppImage"
+	APPIMAGE="OpenRA-$(echo "${DISPLAY_NAME}" | sed 's/ /-/g')${SUFFIX}-x86_64.AppImage"
 
-	cp -r "${BUILTDIR}" "${APPDIR}"
+	IS_D2K="False"
+	if [ "${MOD_ID}" = "d2k" ]; then
+		IS_D2K="True"
+	fi
 
-	# Add mod files
-	pushd "${SRCDIR}" > /dev/null
-	cp -r "mods/${MOD_ID}" mods/modcontent "${APPDIR}/usr/lib/openra/mods"
-	popd > /dev/null
+	install_assemblies "${SRCDIR}" "${APPDIR}/usr/lib/openra" "linux-x64" "True" "True" "${IS_D2K}"
+	install_data "${SRCDIR}" "${APPDIR}/usr/lib/openra" "${MOD_ID}"
+	set_engine_version "${TAG}" "${APPDIR}/usr/lib/openra"
+	set_mod_version "${TAG}" "${APPDIR}/usr/lib/openra/mods/${MOD_ID}/mod.yaml" "${APPDIR}/usr/lib/openra/mods/modcontent/mod.yaml"
 
 	# Add launcher and icons
-	sed "s/{MODID}/${MOD_ID}/g" AppRun.in | sed "s/{MODNAME}/${DISPLAY_NAME}/g" > AppRun.temp
-	install -m 0755 AppRun.temp "${APPDIR}/AppRun"
+	sed "s/{MODID}/${MOD_ID}/g" AppRun.in | sed "s/{MODNAME}/${DISPLAY_NAME}/g" > "${APPDIR}/AppRun"
+	chmod 0755 "${APPDIR}/AppRun"
 
-	sed "s/{MODID}/${MOD_ID}/g" openra.desktop.in | sed "s/{MODNAME}/${DISPLAY_NAME}/g" | sed "s/{TAG}/${TAG}/g" > temp.desktop
-	echo "StartupWMClass=openra-${MOD_ID}-${TAG}" >> temp.desktop
+	mkdir -p "${APPDIR}/usr/share/applications"
+	# Note that the non-discord version of the desktop file is used by the Mod SDK and must be maintained in parallel with the discord version!
+	sed "s/{MODID}/${MOD_ID}/g" openra.desktop.discord.in | sed "s/{MODNAME}/${DISPLAY_NAME}/g" | sed "s/{TAG}/${TAG}/g" | sed "s/{DISCORDAPPID}/${DISCORD_ID}/g" > "${APPDIR}/usr/share/applications/openra-${MOD_ID}.desktop"
+	chmod 0755 "${APPDIR}/usr/share/applications/openra-${MOD_ID}.desktop"
+	cp "${APPDIR}/usr/share/applications/openra-${MOD_ID}.desktop" "${APPDIR}/openra-${MOD_ID}.desktop"
 
-	install -Dm 0755 temp.desktop "${APPDIR}/usr/share/applications/openra-${MOD_ID}.desktop"
-	install -m 0755 temp.desktop "${APPDIR}/openra-${MOD_ID}.desktop"
+	mkdir -p "${APPDIR}/usr/share/mime/packages"
+	# Note that the non-discord version of the mimeinfo file is used by the Mod SDK and must be maintained in parallel with the discord version!
+	sed "s/{MODID}/${MOD_ID}/g" openra-mimeinfo.xml.discord.in | sed "s/{TAG}/${TAG}/g" | sed "s/{DISCORDAPPID}/${DISCORD_ID}/g" > "${APPDIR}/usr/share/mime/packages/openra-${MOD_ID}.xml"
+	chmod 0755 "${APPDIR}/usr/share/mime/packages/openra-${MOD_ID}.xml"
 
-	sed "s/{MODID}/${MOD_ID}/g" openra-mimeinfo.xml.in | sed "s/{TAG}/${TAG}/g" > temp.xml
-	install -Dm 0755 temp.xml "${APPDIR}/usr/share/mime/packages/openra-${MOD_ID}.xml"
-
-	if [ -f "icons/${MOD_ID}_scalable.svg" ]; then
-		install -Dm644 "icons/${MOD_ID}_scalable.svg" "${APPDIR}/usr/share/icons/hicolor/scalable/apps/openra-${MOD_ID}.svg"
+	if [ -f "${ARTWORK_DIR}/${MOD_ID}_scalable.svg" ]; then
+		install -Dm644 "${ARTWORK_DIR}/${MOD_ID}_scalable.svg" "${APPDIR}/usr/share/icons/hicolor/scalable/apps/openra-${MOD_ID}.svg"
 	fi
 
 	for i in 16x16 32x32 48x48 64x64 128x128 256x256 512x512 1024x1024; do
-		if [ -f "icons/${MOD_ID}_${i}.png" ]; then
-			install -Dm644 "icons/${MOD_ID}_${i}.png" "${APPDIR}/usr/share/icons/hicolor/${i}/apps/openra-${MOD_ID}.png"
-			install -m644 "icons/${MOD_ID}_${i}.png" "${APPDIR}/openra-${MOD_ID}.png"
+		if [ -f "${ARTWORK_DIR}/${MOD_ID}_${i}.png" ]; then
+			install -Dm644 "${ARTWORK_DIR}/${MOD_ID}_${i}.png" "${APPDIR}/usr/share/icons/hicolor/${i}/apps/openra-${MOD_ID}.png"
+			install -m644 "${ARTWORK_DIR}/${MOD_ID}_${i}.png" "${APPDIR}/openra-${MOD_ID}.png"
 		fi
 	done
 
-	install -d "${APPDIR}/usr/bin"
+	mkdir -p "${APPDIR}/usr/bin"
+	sed "s/{MODID}/${MOD_ID}/g" openra.appimage.in | sed "s/{TAG}/${TAG}/g" | sed "s/{MODNAME}/${DISPLAY_NAME}/g" > "${APPDIR}/usr/bin/openra-${MOD_ID}"
+	chmod 0755 "${APPDIR}/usr/bin/openra-${MOD_ID}"
 
-	sed "s/{MODID}/${MOD_ID}/g" openra.appimage.in | sed "s/{TAG}/${TAG}/g" | sed "s/{MODNAME}/${DISPLAY_NAME}/g" > openra-mod.temp
-	install -m 0755 openra-mod.temp "${APPDIR}/usr/bin/openra-${MOD_ID}"
+	sed "s/{MODID}/${MOD_ID}/g" openra-server.appimage.in > "${APPDIR}/usr/bin/openra-${MOD_ID}-server"
+	chmod 0755 "${APPDIR}/usr/bin/openra-${MOD_ID}-server"
 
-	sed "s/{MODID}/${MOD_ID}/g" openra-server.appimage.in > openra-mod-server.temp
-	install -m 0755 openra-mod-server.temp "${APPDIR}/usr/bin/openra-${MOD_ID}-server"
+	sed "s/{MODID}/${MOD_ID}/g" openra-utility.appimage.in > "${APPDIR}/usr/bin/openra-${MOD_ID}-utility"
+	chmod 0755 "${APPDIR}/usr/bin/openra-${MOD_ID}-utility"
 
 	install -m 0755 gtk-dialog.py "${APPDIR}/usr/bin/gtk-dialog.py"
 
-	# travis-ci doesn't support mounting FUSE filesystems so extract and run the contents manually
-	./appimagetool-x86_64.AppImage --appimage-extract
-	
-	# Embed update metadata if (and only if) compiled on travis
-	if [ ! -z "${TRAVIS_REPO_SLUG}" ]; then
-		ARCH=x86_64 ./squashfs-root/AppRun --no-appstream -u "zsync|https://master.openra.net/appimagecheck?mod=${MOD_ID}&channel=${UPDATE_CHANNEL}" "${APPDIR}" "${OUTPUTDIR}/${APPIMAGE}"
-		zsyncmake -u "https://github.com/${TRAVIS_REPO_SLUG}/releases/download/${TAG}/${APPIMAGE}" -o "${OUTPUTDIR}/${APPIMAGE}.zsync" "${OUTPUTDIR}/${APPIMAGE}"
+	# Embed update metadata if (and only if) compiled on GitHub Actions
+	if [ -n "${GITHUB_REPOSITORY}" ]; then
+		ARCH=x86_64 ./appimagetool-x86_64.AppImage --no-appstream -u "zsync|https://master.openra.net/appimagecheck?mod=${MOD_ID}&channel=${UPDATE_CHANNEL}" "${APPDIR}" "${OUTPUTDIR}/${APPIMAGE}"
+		zsyncmake -u "https://github.com/${GITHUB_REPOSITORY}/releases/download/${TAG}/${APPIMAGE}" -o "${OUTPUTDIR}/${APPIMAGE}.zsync" "${OUTPUTDIR}/${APPIMAGE}"
 	else
-		ARCH=x86_64 ./squashfs-root/AppRun --no-appstream "${APPDIR}" "${OUTPUTDIR}/${APPIMAGE}"
+		ARCH=x86_64 ./appimagetool-x86_64.AppImage --no-appstream "${APPDIR}" "${OUTPUTDIR}/${APPIMAGE}"
 	fi
 
 	rm -rf "${APPDIR}"
 }
 
-build_appimage "ra" "Red Alert"
-build_appimage "cnc" "Tiberian Dawn"
-build_appimage "d2k" "Dune 2000"
+build_appimage "ra" "Red Alert" "699222659766026240"
+build_appimage "cnc" "Tiberian Dawn" "699223250181292033"
+build_appimage "d2k" "Dune 2000" "712711732770111550"
 
 # Clean up
-rm -rf openra-mod.temp openra-mod-server.temp temp.desktop temp.xml AppRun.temp appimagetool-x86_64.AppImage squashfs-root "${BUILTDIR}"
+rm -rf appimagetool-x86_64.AppImage "${BUILTDIR}"

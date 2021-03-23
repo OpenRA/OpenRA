@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,15 +10,17 @@
 #endregion
 
 using System.Collections.Generic;
+using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Load VGA palette (.pal) registers.")]
-	class PaletteFromFileInfo : ITraitInfo
+	class PaletteFromFileInfo : TraitInfo, IProvidesCursorPaletteInfo
 	{
-		[FieldLoader.Require, PaletteDefinition]
+		[PaletteDefinition]
+		[FieldLoader.Require]
 		[Desc("internal palette name")]
 		public readonly string Name = null;
 
@@ -29,12 +31,25 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("filename to load")]
 		public readonly string Filename = null;
 
+		[Desc("Map listed indices to transparent. Ignores previous color.")]
+		public readonly int[] TransparentIndex = { 0 };
+
 		[Desc("Map listed indices to shadow. Ignores previous color.")]
 		public readonly int[] ShadowIndex = { };
 
 		public readonly bool AllowModifiers = true;
 
-		public object Create(ActorInitializer init) { return new PaletteFromFile(init.World, this); }
+		[Desc("Whether this palette is available for cursors.")]
+		public readonly bool CursorPalette = false;
+
+		public override object Create(ActorInitializer init) { return new PaletteFromFile(init.World, this); }
+
+		string IProvidesCursorPaletteInfo.Palette => CursorPalette ? Name : null;
+
+		ImmutablePalette IProvidesCursorPaletteInfo.ReadPalette(IReadOnlyFileSystem fileSystem)
+		{
+			return new ImmutablePalette(fileSystem.Open(Filename), TransparentIndex, ShadowIndex);
+		}
 	}
 
 	class PaletteFromFile : ILoadsPalettes, IProvidesAssetBrowserPalettes
@@ -50,7 +65,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void LoadPalettes(WorldRenderer wr)
 		{
 			if (info.Tileset == null || info.Tileset.ToLowerInvariant() == world.Map.Tileset.ToLowerInvariant())
-				wr.AddPalette(info.Name, new ImmutablePalette(world.Map.Open(info.Filename), info.ShadowIndex), info.AllowModifiers);
+				wr.AddPalette(info.Name, ((IProvidesCursorPaletteInfo)info).ReadPalette(world.Map), info.AllowModifiers);
 		}
 
 		public IEnumerable<string> PaletteNames
@@ -58,7 +73,7 @@ namespace OpenRA.Mods.Common.Traits
 			get
 			{
 				// Only expose the palette if it is available for the shellmap's tileset (which is a requirement for its use).
-				if (info.Tileset == null || info.Tileset == world.Map.Rules.TileSet.Id)
+				if (info.Tileset == null || info.Tileset == world.Map.Rules.TerrainInfo.Id)
 					yield return info.Name;
 			}
 		}

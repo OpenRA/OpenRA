@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -86,9 +86,11 @@ namespace OpenRA.Scripting
 				{
 					foreach (var arg in clrArgs)
 					{
-						if (!(arg is LuaValue[]))
+						var table = arg as LuaValue[];
+						if (table == null)
 							continue;
-						foreach (var value in (LuaValue[])arg)
+
+						foreach (var value in table)
 							value.Dispose();
 					}
 				}
@@ -111,8 +113,7 @@ namespace OpenRA.Scripting
 			if (IsSetProperty)
 			{
 				var pi = (PropertyInfo)Member;
-				object clrValue;
-				if (!value.TryGetClrValue(pi.PropertyType, out clrValue))
+				if (!value.TryGetClrValue(pi.PropertyType, out var clrValue))
 					throw new LuaException("Unable to convert '{0}' to Clr type '{1}'".F(value.WrappedClrType().Name, pi.PropertyType));
 
 				pi.SetValue(Target, clrValue, null);

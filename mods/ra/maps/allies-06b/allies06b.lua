@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+   Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -52,8 +52,6 @@ ParadropWaypoints =
 }
 
 SovietTechLabs = { TechLab1, TechLab2 }
-
-TechLabCams = { TechCam1, TechCam2 }
 
 GroupPatrol = function(units, waypoints, delay)
 	local i = 1
@@ -126,17 +124,22 @@ CaptureRadarDome = function()
 
 	Trigger.OnCapture(RadarDome, function()
 		player.MarkCompletedObjective(CaptureRadarDomeObj)
-		Beacon.New(player, TechLab1.CenterPosition)
-		Beacon.New(player, TechLab2.CenterPosition)
-		Media.DisplayMessage("Coordinates of the Soviet tech centers discovered.")
-		if Map.LobbyOption("difficulty") ~= "hard" then
-			Utils.Do(TechLabCams, function(a)
-				Actor.Create("TECH.CAM", true, { Owner = player, Location = a.Location })
-			end)
 
-			if Map.LobbyOption("difficulty") == "easy" then
-				Actor.Create("Camera", true, { Owner = player, Location = Weapcam.Location })
+		Utils.Do(SovietTechLabs, function(a)
+			if a.IsDead then
+				return
 			end
+
+			Beacon.New(player, a.CenterPosition)
+			if Map.LobbyOption("difficulty") ~= "hard" then
+				Actor.Create("TECH.CAM", true, { Owner = player, Location = a.Location + CVec.New(1, 1) })
+			end
+		end)
+
+		Media.DisplayMessage("Coordinates of the Soviet tech centers discovered.")
+
+		if Map.LobbyOption("difficulty") == "easy" then
+			Actor.Create("Camera", true, { Owner = player, Location = Weapcam.Location })
 		end
 	end)
 end
@@ -162,20 +165,6 @@ InfiltrateTechCenter = function()
 	Trigger.OnAllKilledOrCaptured(SovietTechLabs, function()
 		if not player.IsObjectiveCompleted(InfiltrateTechCenterObj) then
 			player.MarkFailedObjective(InfiltrateTechCenterObj)
-		end
-	end)
-end
-
-InfiltrateRef = function()
-	Trigger.OnInfiltrated(Refinery, function()
-		player.MarkCompletedObjective(InfiltrateRefObj)
-	end)
-	Trigger.OnCapture(Refinery, function()
-		player.MarkCompletedObjective(InfiltrateRefObj)
-	end)
-	Trigger.OnKilled(Refinery, function()
-		if not player.IsObjectiveCompleted(InfiltrateRefObj) then
-			player.MarkFailedObjective(InfiltrateRefObj)
 		end
 	end)
 end
@@ -215,11 +204,10 @@ WorldLoaded = function()
 
 	InfiltrateTechCenterObj = player.AddPrimaryObjective("Infiltrate one of the Soviet tech centers with a spy.")
 	CaptureRadarDomeObj = player.AddSecondaryObjective("Capture the Radar Dome at the shore.")
-	InfiltrateRefObj = player.AddSecondaryObjective("Infiltrate the Refinery for money.")
 
 	Camera.Position = DefaultCameraPosition.CenterPosition
 
-	if Map.LobbyOption("difficulty") ~= "hard" then
+	if Map.LobbyOption("difficulty") == "easy" then
 		Trigger.OnEnteredProximityTrigger(SovietDefenseCam.CenterPosition, WDist.New(1024 * 7), function(a, id)
 			if a.Owner == player then
 				Trigger.RemoveProximityTrigger(id)
@@ -235,15 +223,19 @@ WorldLoaded = function()
 				end
 			end
 		end)
+	end
 
-		if Map.LobbyOption("difficulty") == "easy" then
-			Trigger.OnKilled(DefBrl1, function(a, b)
+	if Map.LobbyOption("difficulty") ~= "hard" then
+		Trigger.OnKilled(DefBrl1, function(a, b)
+			if not DefenseFlame1.IsDead then
 				DefenseFlame1.Kill()
-			end)
-			Trigger.OnKilled(DefBrl2, function(a, b)
+			end
+		end)
+		Trigger.OnKilled(DefBrl2, function(a, b)
+			if not DefenseFlame2.IsDead then
 				DefenseFlame2.Kill()
-			end)
-		end
+			end
+		end)
 	end
 
 	Utils.Do(BadGuys, function(a)
@@ -264,6 +256,5 @@ WorldLoaded = function()
 	end)
 	CaptureRadarDome()
 	InfiltrateTechCenter()
-	InfiltrateRef()
 	Trigger.AfterDelay(0, ActivateAI)
 end

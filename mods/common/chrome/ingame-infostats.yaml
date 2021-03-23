@@ -8,14 +8,14 @@ Container@SKIRMISH_STATS:
 			Children:
 				Label@MISSION:
 					X: 20
-					Y: 20
+					Y: 22
 					Width: 482
 					Height: 25
 					Font: MediumBold
 					Text: Mission:
 				Label@STATS_STATUS:
 					X: 100
-					Y: 20
+					Y: 22
 					Width: PARENT_RIGHT - 10
 					Height: 25
 					Font: MediumBold
@@ -26,11 +26,11 @@ Container@SKIRMISH_STATS:
 					Height: 20
 					Font: Bold
 					Text: Destroy all opposition!
-					Disabled: yes
+					Disabled: true
 					TextColorDisabled: FFFFFF
 		Container@STATS_HEADERS:
 			X: 22
-			Y: 80
+			Y: 81
 			Width: 393
 			Children:
 				Label@NAME:
@@ -68,13 +68,13 @@ Container@SKIRMISH_STATS:
 					Children:
 						Label@TEAM:
 							X: 6
-							Y: 0 - 2
+							Y: 0
 							Width: 160
 							Height: 20
 							Font: Bold
 						Label@TEAM_SCORE:
 							X: 360
-							Y: 0 - 2
+							Y: 0
 							Width: 75
 							Height: 20
 							Font: Bold
@@ -104,7 +104,7 @@ Container@SKIRMISH_STATS:
 							Shadow: True
 						Image@FACTIONFLAG:
 							X: 230
-							Y: 6
+							Y: 5
 							Width: 32
 							Height: 16
 						Label@FACTION:
@@ -118,3 +118,36 @@ Container@SKIRMISH_STATS:
 							Height: 25
 							Align: Right
 							Shadow: True
+				Container@SPECTATOR_TEMPLATE:
+					Width: PARENT_RIGHT - 27
+					Height: 25
+					X: 2
+					Children:
+						Image@PROFILE:
+							ImageCollection: lobby-bits
+							X: 8
+							Y: 4
+							Visible: false
+						ClientTooltipRegion@PROFILE_TOOLTIP:
+							X: 8
+							Y: 4
+							Width: 16
+							Height: 16
+							Visible: false
+							TooltipContainer: TOOLTIP_CONTAINER
+							Template: ANONYMOUS_PLAYER_TOOLTIP
+						Label@NAME:
+							X: 29
+							Width: 166
+							Height: 25
+							Shadow: True
+						Button@KICK:
+							X: 195
+							Width: 24
+							Height: 25
+							Children:
+								Image:
+									ImageCollection: lobby-bits
+									ImageName: kick
+									X: 6
+									Y: 8

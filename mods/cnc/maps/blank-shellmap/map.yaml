@@ -27,9 +27,10 @@ Actors:
 
 Rules:
 	World:
-		-SpawnMPUnits:
-		-MPStartLocations:
+		-SpawnStartingUnits:
+		-MapStartingLocations:
 		-CrateSpawner:
 		MusicPlaylist:
 			BackgroundMusic: map1
+			AllowMuteBackgroundMusic: true
 			DisableWorldSounds: true

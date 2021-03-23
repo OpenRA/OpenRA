@@ -4,7 +4,7 @@ World:
 		Maximum: 4
 		SpawnInterval: 1000
 		CrateActors: fortcrate
-	MPStartUnits@mcvonly:
+	StartingUnits@mcvonly:
 		BaseActor: tent
 	WeatherOverlay:
 		WindTick: 150, 550
@@ -31,7 +31,7 @@ World:
 	MapBuildRadius:
 		AllyBuildRadiusCheckboxVisible: False
 		BuildRadiusCheckboxVisible: False
-	SpawnMPUnits:
+	SpawnStartingUnits:
 		DropdownVisible: False
 	MapOptions:
 		TechLevelDropdownLocked: True
@@ -53,21 +53,24 @@ World:
 			endless: Endless mode
 		Default: hard
 		DisplayOrder: 5
-	MPStartLocations:
+	MapStartingLocations:
 		SeparateTeamSpawnsCheckboxEnabled: False
 		SeparateTeamSpawnsCheckboxLocked: True
 		SeparateTeamSpawnsCheckboxVisible: False
+	TimeLimitManager:
+		TimeLimitLocked: True
+		TimeLimitDropdownVisible: False
 
 FORTCRATE:
 	Inherits: ^Crate
 	SupportPowerCrateAction@parabombs:
 		SelectionShares: 30
 		Proxy: powerproxy.parabombs
-		Effect: parabombs
-	HealUnitsCrateAction:
+		Sequence: parabombs
+	HealActorsCrateAction:
 		SelectionShares: 30
-		Notification: heal2.aud
-		Effect: heal
+		Sound: heal2.aud
+		Sequence: heal
 	GiveCashCrateAction:
 		Amount: 400
 		UseCashTick: true
@@ -77,8 +80,8 @@ FORTCRATE:
 		SelectionShares: 10
 	GrantExternalConditionCrateAction@ironcurtain:
 		SelectionShares: 10
-		Effect: invuln
-		Notification: ironcur9.aud
+		Sequence: invuln
+		Sound: ironcur9.aud
 		Condition: invulnerability
 		Duration: 1200
 	ExplodeCrateAction@bigboom:
@@ -105,11 +108,11 @@ Player:
 		DefaultCashDropdownLocked: True
 		DefaultCashDropdownVisible: False
 		DefaultCash: 50
-	-HackyAI@RushAI:
-	-HackyAI@NormalAI:
-	-HackyAI@NavalAI:
-	-HackyAI@TurtleAI:
-	DummyAI@LonestarAI:
+	-ModularBot@RushAI:
+	-ModularBot@NormalAI:
+	-ModularBot@NavalAI:
+	-ModularBot@TurtleAI:
+	DummyBot@LonestarAI:
 		Name: Lonestar AI
 		Type: lonestar
 	LobbyPrerequisiteCheckbox@GLOBALFACTUNDEPLOY:
@@ -135,12 +138,12 @@ OILB:
 
 MOBILETENT:
 	Inherits: ^Vehicle
+	Inherits@selection: ^SelectableSupportUnit
 	Valued:
 		Cost: 2000
 	Tooltip:
 		Name: Mobile Tent
 	Selectable:
-		Priority: 4
 		DecorationBounds: 21,21
 	SelectionDecorations:
 	Health:
@@ -158,7 +161,7 @@ MOBILETENT:
 	Transforms:
 		IntoActor: tent
 		Offset: 0,0
-		Facing: 96
+		Facing: 384
 		TransformSounds: placbldg.aud, build5.aud
 		NoTransformNotification: BuildingCannotPlaceAudio
 	RenderSprites:
@@ -170,6 +173,8 @@ TENT:
 	Production:
 		Produces: Infantry, Soldier, Dog, Defense
 	-Sellable:
+	Demolishable:
+		-Condition:
 	BaseProvider:
 		Range: 12c0
 	Power:
@@ -206,6 +211,7 @@ PBOX:
 DOG:
 	Buildable:
 		Prerequisites: barracks
+		BuildAtProductionType: Soldier
 	Valued:
 		Cost: 20
 
@@ -322,7 +328,7 @@ V2RL:
 	RevealsShroud:
 		Range: 14c0
 	Turreted:
-		TurnSpeed: 1
+		TurnSpeed: 4
 	Armament@PRIMARY:
 		Recoil: 8
 		RecoilRecovery: 0c7
@@ -331,10 +337,10 @@ V2RL:
 	Explodes:
 		Weapon: napalm
 		EmptyWeapon: napalm
-	SelfHealing:
+	ChangesHealth:
 		Step: 200
 		Delay: 1
-		HealIfBelow: 40
+		StartIfBelow: 40
 
 powerproxy.parabombs:
 	AirstrikePower:
@@ -417,6 +423,6 @@ TSLA:
 	Buildable:
 		Prerequisites: ~disabled
 
-HIJACKER:
+THF:
 	Buildable:
 		Prerequisites: ~disabled

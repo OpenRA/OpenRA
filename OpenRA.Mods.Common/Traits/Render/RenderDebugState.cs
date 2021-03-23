@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,30 +10,29 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
-using OpenRA.Mods.Common.AI;
 using OpenRA.Mods.Common.Graphics;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Displays the actor's type and ID above the actor.")]
-	class RenderDebugStateInfo : ITraitInfo
+	class RenderDebugStateInfo : TraitInfo
 	{
 		public readonly string Font = "TinyBold";
 
-		public object Create(ActorInitializer init) { return new RenderDebugState(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new RenderDebugState(init.Self, this); }
 	}
 
-	class RenderDebugState : INotifyAddedToWorld, INotifyOwnerChanged, IRenderAboveShroudWhenSelected
+	class RenderDebugState : INotifyAddedToWorld, INotifyOwnerChanged, INotifyCreated, IRenderAnnotationsWhenSelected
 	{
 		readonly DebugVisualizations debugVis;
 		readonly SpriteFont font;
 		readonly Actor self;
 		readonly WVec offset;
-		readonly HackyAI ai;
+		SquadManagerBotModule ai;
 
 		Color color;
 		string tagString;
@@ -41,7 +40,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public RenderDebugState(Actor self, RenderDebugStateInfo info)
 		{
 			var buildingInfo = self.Info.TraitInfoOrDefault<BuildingInfo>();
-			var yOffset = buildingInfo == null ? 1 : buildingInfo.Dimensions.Y;
+			var yOffset = buildingInfo?.Dimensions.Y ?? 1;
 			offset = new WVec(0, 512 * yOffset, 0);
 
 			this.self = self;
@@ -49,7 +48,11 @@ namespace OpenRA.Mods.Common.Traits.Render
 			font = Game.Renderer.Fonts[info.Font];
 
 			debugVis = self.World.WorldActor.TraitOrDefault<DebugVisualizations>();
-			ai = self.Owner.PlayerActor.TraitsImplementing<HackyAI>().FirstOrDefault(x => x.IsEnabled);
+		}
+
+		void INotifyCreated.Created(Actor self)
+		{
+			ai = self.Owner.PlayerActor.TraitsImplementing<SquadManagerBotModule>().FirstOrDefault(Exts.IsTraitEnabled);
 		}
 
 		void INotifyAddedToWorld.AddedToWorld(Actor self)
@@ -64,23 +67,20 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		Color GetColor()
 		{
-			return self.EffectiveOwner != null && self.EffectiveOwner.Disguised ? self.EffectiveOwner.Owner.Color.RGB : self.Owner.Color.RGB;
+			return self.EffectiveOwner != null && self.EffectiveOwner.Disguised ? self.EffectiveOwner.Owner.Color : self.Owner.Color;
 		}
 
-		IEnumerable<IRenderable> IRenderAboveShroudWhenSelected.RenderAboveShroud(Actor self, WorldRenderer wr)
+		IEnumerable<IRenderable> IRenderAnnotationsWhenSelected.RenderAnnotations(Actor self, WorldRenderer wr)
 		{
 			if (debugVis == null || !debugVis.ActorTags)
 				yield break;
 
-			yield return new TextRenderable(font, self.CenterPosition - offset, 0, color, tagString);
+			yield return new TextAnnotationRenderable(font, self.CenterPosition - offset, 0, color, tagString);
 
 			// Get the actor's activity.
 			var activity = self.CurrentActivity;
 			if (activity != null)
-			{
-				var activityName = activity.GetType().ToString().Split('.').Last();
-				yield return new TextRenderable(font, self.CenterPosition, 0, color, activityName);
-			}
+				yield return new TextAnnotationRenderable(font, self.CenterPosition, 0, color, activity.DebugLabelComponents().JoinWith("."));
 
 			// Get the AI squad that this actor belongs to.
 			if (!self.Owner.IsBot)
@@ -95,9 +95,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 				yield break;
 
 			var aiSquadInfo = "{0}, {1}".F(squad.Type, squad.TargetActor);
-			yield return new TextRenderable(font, self.CenterPosition + offset, 0, color, aiSquadInfo);
+			yield return new TextAnnotationRenderable(font, self.CenterPosition + offset, 0, color, aiSquadInfo);
 		}
 
-		bool IRenderAboveShroudWhenSelected.SpatiallyPartitionable { get { return true; } }
+		bool IRenderAnnotationsWhenSelected.SpatiallyPartitionable => true;
 	}
 }

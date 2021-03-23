@@ -3,6 +3,7 @@
 	AlwaysVisible:
 	ActorMap:
 	ScreenMap:
+	Selection:
 	MusicPlaylist:
 		VictoryMusic: score
 		DefeatMusic: map
@@ -89,6 +90,7 @@
 	Locomotor@IMMOBILE:
 		Name: immobile
 		TerrainSpeeds:
+	TerrainRenderer:
 	ShroudRenderer:
 		FogVariants: shroud
 		Index: 255, 16, 32, 48, 64, 80, 96, 112, 128, 144, 160, 176, 192, 208, 224, 240, 20, 40, 56, 65, 97, 130, 148, 194, 24, 33, 66, 132, 28, 41, 67, 134, 1, 2, 4, 8, 3, 6, 12, 9, 7, 14, 13, 11, 5, 10, 15, 255
@@ -146,30 +148,16 @@
 		RandomFactionMembers: russia, ukraine
 		Side: Random
 		Description: Random Soviet Country\nA random Soviet country will be chosen when the game starts.
-	ResourceType@ore:
-		Type: Ore
-		Name: Valuable Minerals
-		PipColor: Yellow
-		ResourceType: 1
-		TerrainType: Ore
-		Palette: player
-		Sequences: gold01,gold02,gold03,gold04
-		MaxDensity: 12
-		ValuePerUnit: 25
-		AllowedTerrainTypes: Clear,Road
-		AllowUnderActors: true
-	ResourceType@gem:
-		Type: Gems
-		Name: Valuable Minerals
-		PipColor: Red
-		ResourceType: 2
-		TerrainType: Gems
-		Palette: player
-		Sequences: gem01,gem02,gem03,gem04
-		MaxDensity: 3
-		ValuePerUnit: 50
-		AllowedTerrainTypes: Clear,Road
-		AllowUnderActors: true
+	ResourceRenderer:
+		ResourceTypes:
+			Ore:
+				Sequences: gold01, gold02, gold03, gold04
+				Palette: player
+				Name: Valuable Minerals
+			Gems:
+				Sequences: gem01, gem02, gem03, gem04
+				Palette: player
+				Name: Valuable Minerals
 
 World:
 	Inherits: ^BaseWorld
@@ -198,11 +186,28 @@ World:
 	SmudgeLayer@SCORCH:
 		Type: Scorch
 		Sequence: scorches
-		SmokePercentage: 50
+		SmokeChance: 50
+		SmokeImage: smoke_m
+		SmokeSequences: idle
 	SmudgeLayer@CRATER:
 		Type: Crater
 		Sequence: craters
+		SmokeChance: 25
+		SmokeImage: smoke_m
+		SmokeSequences: idle
 	ResourceLayer:
+		RecalculateResourceDensity: true
+		ResourceTypes:
+			Ore:
+				ResourceIndex: 1
+				TerrainType: Ore
+				AllowedTerrainTypes: Clear, Road
+				MaxDensity: 12
+			Gems:
+				ResourceIndex: 2
+				TerrainType: Gems
+				AllowedTerrainTypes: Clear, Road
+				MaxDensity: 3
 	ResourceClaimLayer:
 	WarheadDebugOverlay:
 	SpawnMapActors:
@@ -213,13 +218,13 @@ World:
 		ShortGameCheckboxDisplayOrder: 2
 		TechLevelDropdownDisplayOrder: 2
 		GameSpeedDropdownDisplayOrder: 3
-	CreateMPPlayers:
-	MPStartUnits@mcvonly:
+	CreateMapPlayers:
+	StartingUnits@mcvonly:
 		Class: none
 		ClassName: MCV Only
 		Factions: allies, england, france, germany, soviet, russia, ukraine
 		BaseActor: mcv
-	MPStartUnits@lightallies:
+	StartingUnits@lightallies:
 		Class: light
 		ClassName: Light Support
 		Factions: allies, england, france, germany
@@ -227,7 +232,7 @@ World:
 		SupportActors: e1,e1,e1,e3,e3,jeep,1tnk
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
-	MPStartUnits@lightsoviet:
+	StartingUnits@lightsoviet:
 		Class: light
 		ClassName: Light Support
 		Factions: soviet, russia, ukraine
@@ -235,7 +240,7 @@ World:
 		SupportActors: e1,e1,e1,e3,e3,apc,ftrk
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
-	MPStartUnits@heavyallies:
+	StartingUnits@heavyallies:
 		Class: heavy
 		ClassName: Heavy Support
 		Factions: allies, england, france, germany
@@ -243,7 +248,7 @@ World:
 		SupportActors: e1,e1,e1,e3,e3,jeep,1tnk,2tnk,2tnk,2tnk
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
-	MPStartUnits@heavysoviet:
+	StartingUnits@heavysoviet:
 		Class: heavy
 		ClassName: Heavy Support
 		Factions: soviet, russia, ukraine
@@ -251,9 +256,9 @@ World:
 		SupportActors: e1,e1,e1,e3,e3,apc,ftrk,3tnk,3tnk
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
-	MPStartLocations:
+	MapStartingLocations:
 		SeparateTeamSpawnsCheckboxDisplayOrder: 6
-	SpawnMPUnits:
+	SpawnStartingUnits:
 		DropdownDisplayOrder: 1
 	PathFinder:
 	ValidateOrder:
@@ -263,10 +268,36 @@ World:
 	ObjectivesPanel:
 		PanelName: SKIRMISH_STATS
 	LoadWidgetAtGameStart:
+	ScriptTriggers:
+	TimeLimitManager:
+		TimeLimitWarnings:
+			40: FourtyMinutesRemaining
+			30: ThirtyMinutesRemaining
+			20: TwentyMinutesRemaining
+			10: TenMinutesRemaining
+			5: WarningFiveMinutesRemaining
+			4: WarningFourMinutesRemaining
+			3: WarningThreeMinutesRemaining
+			2: WarningTwoMinutesRemaining
+			1: WarningOneMinuteRemaining
 
 EditorWorld:
 	Inherits: ^BaseWorld
 	EditorActorLayer:
+	EditorCursorLayer:
 	EditorResourceLayer:
+		RecalculateResourceDensity: true
+		ResourceTypes:
+			Ore:
+				ResourceIndex: 1
+				TerrainType: Ore
+				AllowedTerrainTypes: Clear, Road
+				MaxDensity: 12
+			Gems:
+				ResourceIndex: 2
+				TerrainType: Gems
+				AllowedTerrainTypes: Clear, Road
+				MaxDensity: 3
 	EditorSelectionLayer:
 	LoadWidgetAtGameStart:
+	EditorActionManager:

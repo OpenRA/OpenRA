@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -23,6 +23,8 @@ namespace OpenRA.Platforms.Default
 {
 	sealed class OpenAlSoundEngine : ISoundEngine
 	{
+		public bool Dummy => false;
+
 		public SoundDevice[] AvailableDevices()
 		{
 			var defaultDevices = new[]
@@ -136,7 +138,7 @@ namespace OpenRA.Platforms.Default
 			for (var i = 0; i < PoolSize; i++)
 			{
 				var source = 0U;
-				AL10.alGenSources(new IntPtr(1), out source);
+				AL10.alGenSources(1, out source);
 				if (AL10.alGetError() != AL10.AL_NO_ERROR)
 				{
 					Log.Write("sound", "Failed generating OpenAL source {0}", i);
@@ -240,8 +242,7 @@ namespace OpenRA.Platforms.Default
 				atten = 0.66f * ((PoolSize - activeCount * 0.5f) / PoolSize);
 			}
 
-			uint source;
-			if (!TryGetSourceFromPool(out source))
+			if (!TryGetSourceFromPool(out var source))
 				return null;
 
 			var slot = sourcePool[source];
@@ -257,8 +258,7 @@ namespace OpenRA.Platforms.Default
 		{
 			var currFrame = Game.LocalTick;
 
-			uint source;
-			if (!TryGetSourceFromPool(out source))
+			if (!TryGetSourceFromPool(out var source))
 				return null;
 
 			var slot = sourcePool[source];
@@ -272,8 +272,8 @@ namespace OpenRA.Platforms.Default
 
 		public float Volume
 		{
-			get { return volume; }
-			set { AL10.alListenerf(AL10.AL_GAIN, volume = value); }
+			get => volume;
+			set => AL10.alListenerf(AL10.AL_GAIN, volume = value);
 		}
 
 		public void PauseSound(ISound sound, bool paused)
@@ -293,8 +293,7 @@ namespace OpenRA.Platforms.Default
 
 		void PauseSound(uint source, bool paused)
 		{
-			int state;
-			AL10.alGetSourcei(source, AL10.AL_SOURCE_STATE, out state);
+			AL10.alGetSourcei(source, AL10.AL_SOURCE_STATE, out var state);
 			if (paused)
 			{
 				if (state == AL10.AL_PLAYING)
@@ -315,8 +314,7 @@ namespace OpenRA.Platforms.Default
 		{
 			var sounds = sourcePool.Keys.Where(key =>
 			{
-				int state;
-				AL10.alGetSourcei(key, AL10.AL_SOURCE_STATE, out state);
+				AL10.alGetSourcei(key, AL10.AL_SOURCE_STATE, out var state);
 				return (state == AL10.AL_PLAYING || state == AL10.AL_PAUSED) &&
 					   (music == null || key != ((OpenAlSound)music).Source) &&
 					   (video == null || key != ((OpenAlSound)video).Source);
@@ -328,17 +326,13 @@ namespace OpenRA.Platforms.Default
 
 		public void StopSound(ISound sound)
 		{
-			if (sound == null)
-				return;
-
-			((OpenAlSound)sound).Stop();
+			((OpenAlSound)sound)?.Stop();
 		}
 
 		public void StopAllSounds()
 		{
 			foreach (var slot in sourcePool.Values)
-				if (slot.Sound != null)
-					slot.Sound.Stop();
+				slot.Sound?.Stop();
 		}
 
 		public void SetListenerPosition(WPos position)
@@ -386,21 +380,21 @@ namespace OpenRA.Platforms.Default
 		uint buffer;
 		bool disposed;
 
-		public uint Buffer { get { return buffer; } }
+		public uint Buffer => buffer;
 		public int SampleRate { get; private set; }
 
 		public OpenAlSoundSource(byte[] data, int byteCount, int channels, int sampleBits, int sampleRate)
 		{
 			SampleRate = sampleRate;
-			AL10.alGenBuffers(new IntPtr(1), out buffer);
-			AL10.alBufferData(buffer, OpenAlSoundEngine.MakeALFormat(channels, sampleBits), data, new IntPtr(byteCount), new IntPtr(sampleRate));
+			AL10.alGenBuffers(1, out buffer);
+			AL10.alBufferData(buffer, OpenAlSoundEngine.MakeALFormat(channels, sampleBits), data, byteCount, sampleRate);
 		}
 
 		protected virtual void Dispose(bool disposing)
 		{
 			if (!disposed)
 			{
-				AL10.alDeleteBuffers(new IntPtr(1), ref buffer);
+				AL10.alDeleteBuffers(1, ref buffer);
 				disposed = true;
 			}
 		}
@@ -447,16 +441,15 @@ namespace OpenRA.Platforms.Default
 
 		public float Volume
 		{
-			get { float volume; AL10.alGetSourcef(Source, AL10.AL_GAIN, out volume); return volume; }
-			set { AL10.alSourcef(Source, AL10.AL_GAIN, value); }
+			get { AL10.alGetSourcef(Source, AL10.AL_GAIN, out var volume); return volume; }
+			set => AL10.alSourcef(Source, AL10.AL_GAIN, value);
 		}
 
 		public virtual float SeekPosition
 		{
 			get
 			{
-				int sampleOffset;
-				AL10.alGetSourcei(Source, AL11.AL_SAMPLE_OFFSET, out sampleOffset);
+				AL10.alGetSourcei(Source, AL11.AL_SAMPLE_OFFSET, out var sampleOffset);
 				return sampleOffset / SampleRate;
 			}
 		}
@@ -465,8 +458,7 @@ namespace OpenRA.Platforms.Default
 		{
 			get
 			{
-				int state;
-				AL10.alGetSourcei(Source, AL10.AL_SOURCE_STATE, out state);
+				AL10.alGetSourcei(Source, AL10.AL_SOURCE_STATE, out var state);
 				return state == AL10.AL_STOPPED;
 			}
 		}
@@ -478,8 +470,7 @@ namespace OpenRA.Platforms.Default
 
 		protected void StopSource()
 		{
-			int state;
-			AL10.alGetSourcei(Source, AL10.AL_SOURCE_STATE, out state);
+			AL10.alGetSourcei(Source, AL10.AL_SOURCE_STATE, out var state);
 			if (state == AL10.AL_PLAYING || state == AL10.AL_PAUSED)
 				AL10.alSourceStop(Source);
 		}
@@ -552,8 +543,7 @@ namespace OpenRA.Platforms.Default
 							// TODO: A race condition can happen between the state check and playing/rewinding if a
 							// user pauses/resumes at the right moment. The window of opportunity is small and the
 							// consequences are minor, so for now we'll ignore it.
-							int state;
-							AL10.alGetSourcei(Source, AL10.AL_SOURCE_STATE, out state);
+							AL10.alGetSourcei(Source, AL10.AL_SOURCE_STATE, out var state);
 							if (state != AL10.AL_STOPPED)
 								AL10.alSourcePlay(source);
 							else
@@ -573,8 +563,7 @@ namespace OpenRA.Platforms.Default
 						// has stopped.
 						var currentSeek = SeekPosition;
 
-						int state;
-						AL10.alGetSourcei(Source, AL10.AL_SOURCE_STATE, out state);
+						AL10.alGetSourcei(Source, AL10.AL_SOURCE_STATE, out var state);
 						if (state == AL10.AL_STOPPED)
 							break;
 
@@ -613,9 +602,6 @@ namespace OpenRA.Platforms.Default
 			}
 		}
 
-		public override bool Complete
-		{
-			get { return playTask.IsCompleted; }
-		}
+		public override bool Complete => playTask.IsCompleted;
 	}
 }

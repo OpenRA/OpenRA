@@ -2,6 +2,7 @@ Player:
 	-ConquestVictoryConditions:
 	MissionObjectives:
 		EarlyGameOver: true
+		GameOverDelay: 3000
 	Shroud:
 		FogCheckboxLocked: True
 		FogCheckboxEnabled: True
@@ -9,11 +10,14 @@ Player:
 		ExploredMapCheckboxEnabled: False
 	PlayerResources:
 		DefaultCashDropdownLocked: True
+	ModularBot@CampaignAI:
+		Name: Campaign Player AI
+		Type: campaign
 
 World:
 	-CrateSpawner:
-	-SpawnMPUnits:
-	-MPStartLocations:
+	-SpawnStartingUnits:
+	-MapStartingLocations:
 	ObjectivesPanel:
 		PanelName: MISSION_OBJECTIVES
 	ActorSpawnManager:
@@ -29,3 +33,11 @@ World:
 		TechLevelDropdownLocked: True
 		ShortGameCheckboxLocked: True
 		ShortGameCheckboxEnabled: False
+
+^AutoTargetGroundAssaultMove:
+	GrantConditionOnBotOwner@BOTOWNER:
+		Bots: campaign
+
+^AutoTargetAllAssaultMove:
+	GrantConditionOnBotOwner@BOTOWNER:
+		Bots: campaign

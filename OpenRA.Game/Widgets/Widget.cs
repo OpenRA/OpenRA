@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -11,9 +11,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Primitives;
 using OpenRA.Support;
 
 namespace OpenRA.Widgets
@@ -113,11 +113,9 @@ namespace OpenRA.Widgets
 
 			if (wasMouseOver != MouseOverWidget)
 			{
-				if (wasMouseOver != null)
-					wasMouseOver.MouseExited();
+				wasMouseOver?.MouseExited();
 
-				if (MouseOverWidget != null)
-					MouseOverWidget.MouseEntered();
+				MouseOverWidget?.MouseEntered();
 			}
 
 			return handled;
@@ -153,8 +151,8 @@ namespace OpenRA.Widgets
 		public static void ResetTooltips()
 		{
 			// Issue a no-op mouse move to force any tooltips to be recalculated
-			HandleInput(new MouseInput(MouseInputEvent.Move, MouseButton.None, 0,
-				Viewport.LastMousePos, Modifiers.None, 0));
+			HandleInput(new MouseInput(MouseInputEvent.Move, MouseButton.None,
+				Viewport.LastMousePos, int2.Zero, Modifiers.None, 0));
 		}
 	}
 
@@ -169,6 +167,8 @@ namespace OpenRA.Widgets
 
 	public abstract class Widget
 	{
+		string defaultCursor = null;
+
 		public readonly List<Widget> Children = new List<Widget>();
 
 		// Info defined in YAML
@@ -224,7 +224,7 @@ namespace OpenRA.Widgets
 			}
 		}
 
-		public virtual int2 ChildOrigin { get { return RenderOrigin; } }
+		public virtual int2 ChildOrigin => RenderOrigin;
 
 		public virtual Rectangle RenderBounds
 		{
@@ -237,6 +237,8 @@ namespace OpenRA.Widgets
 
 		public virtual void Initialize(WidgetArgs args)
 		{
+			defaultCursor = ChromeMetrics.Get<string>("DefaultCursor");
+
 			// Parse the YAML equations to find the widget bounds
 			var parentBounds = (Parent == null)
 				? new Rectangle(0, 0, Game.Renderer.Resolution.Width, Game.Renderer.Resolution.Height)
@@ -277,27 +279,24 @@ namespace OpenRA.Widgets
 			args.Remove("widget");
 		}
 
-		public virtual Rectangle EventBounds { get { return RenderBounds; } }
+		public virtual Rectangle EventBounds => RenderBounds;
 
-		public virtual Rectangle GetEventBounds()
+		public virtual bool EventBoundsContains(int2 location)
 		{
 			// PERF: Avoid LINQ.
-			var bounds = EventBounds;
-			foreach (var child in Children)
-			{
-				if (child.IsVisible())
-				{
-					var childBounds = child.GetEventBounds();
-					if (childBounds != Rectangle.Empty)
-						bounds = Rectangle.Union(bounds, childBounds);
-				}
-			}
+			if (EventBounds.Contains(location))
+				return true;
 
-			return bounds;
+			foreach (var child in Children)
+				if (child.IsVisible())
+					if (child.EventBoundsContains(location))
+						return true;
+
+			return false;
 		}
 
-		public bool HasMouseFocus { get { return Ui.MouseFocusWidget == this; } }
-		public bool HasKeyboardFocus { get { return Ui.KeyboardFocusWidget == this; } }
+		public bool HasMouseFocus => Ui.MouseFocusWidget == this;
+		public bool HasKeyboardFocus => Ui.KeyboardFocusWidget == this;
 
 		public virtual bool TakeMouseFocus(MouseInput mi)
 		{
@@ -352,11 +351,11 @@ namespace OpenRA.Widgets
 				Ui.KeyboardFocusWidget = null;
 		}
 
-		public virtual string GetCursor(int2 pos) { return "default"; }
+		public virtual string GetCursor(int2 pos) { return defaultCursor; }
 		public string GetCursorOuter(int2 pos)
 		{
 			// Is the cursor on top of us?
-			if (!(IsVisible() && GetEventBounds().Contains(pos)))
+			if (!(IsVisible() && EventBoundsContains(pos)))
 				return null;
 
 			// Do any of our children specify a cursor?
@@ -381,7 +380,7 @@ namespace OpenRA.Widgets
 		public bool HandleMouseInputOuter(MouseInput mi)
 		{
 			// Are we able to handle this event?
-			if (!(HasMouseFocus || (IsVisible() && GetEventBounds().Contains(mi.Location))))
+			if (!(HasMouseFocus || (IsVisible() && EventBoundsContains(mi.Location))))
 				return false;
 
 			var oldMouseOver = Ui.MouseOverWidget;
@@ -587,7 +586,8 @@ namespace OpenRA.Widgets
 	public class WidgetArgs : Dictionary<string, object>
 	{
 		public WidgetArgs() { }
-		public WidgetArgs(Dictionary<string, object> args) : base(args) { }
+		public WidgetArgs(Dictionary<string, object> args)
+			: base(args) { }
 		public void Add(string key, Action val) { base.Add(key, val); }
 	}
 }

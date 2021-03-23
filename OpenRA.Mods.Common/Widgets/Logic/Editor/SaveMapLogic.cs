@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -34,10 +34,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			public readonly string DisplayName;
 			public readonly MapClassification Classification;
 
-			public SaveDirectory(Folder folder, MapClassification classification)
+			public SaveDirectory(Folder folder, string displayName, MapClassification classification)
 			{
 				Folder = folder;
-				DisplayName = Platform.UnresolvePath(Folder.Name);
+				DisplayName = displayName;
 				Classification = classification;
 			}
 		}
@@ -103,7 +103,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							// Do nothing: we just want to test whether we can create the file
 						}
 
-						writableDirectories.Add(new SaveDirectory(folder, kv.Value));
+						writableDirectories.Add(new SaveDirectory(folder, kv.Value.ToString(), kv.Value));
 					}
 					catch
 					{
@@ -118,7 +118,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (selectedDirectory == null)
 					selectedDirectory = writableDirectories.OrderByDescending(kv => kv.Classification).First();
 
-				directoryDropdown.GetText = () => selectedDirectory == null ? "" : selectedDirectory.DisplayName;
+				directoryDropdown.GetText = () => selectedDirectory?.DisplayName ?? "";
 				directoryDropdown.OnClick = () =>
 					directoryDropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 210, writableDirectories, setupItem);
 			}
@@ -203,6 +203,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				catch (Exception e)
 				{
 					Log.Write("debug", "Failed to save map at {0}: {1}", combinedPath, e.Message);
+					Log.Write("debug", "{0}", e.StackTrace);
 
 					ConfirmationDialogs.ButtonPrompt(
 						title: "Failed to save map",

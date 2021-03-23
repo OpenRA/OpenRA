@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -18,13 +18,13 @@ namespace OpenRA.Mods.Cnc.Traits
 	[Desc("A special case trait that re-grants a timed external condition when this actor transforms.",
 		"This trait does not work with permanently granted external conditions.",
 		"This trait changes the external condition source, so cannot be used for conditions that may later be revoked")]
-	public class TransferTimedExternalConditionOnTransformInfo : ITraitInfo, Requires<TransformsInfo>
+	public class TransferTimedExternalConditionOnTransformInfo : TraitInfo, Requires<TransformsInfo>
 	{
 		[FieldLoader.Require]
 		[Desc("External condition to transfer")]
 		public readonly string Condition = null;
 
-		public object Create(ActorInitializer init) { return new TransferTimedExternalConditionOnTransform(this); }
+		public override object Create(ActorInitializer init) { return new TransferTimedExternalConditionOnTransform(this); }
 	}
 
 	public class TransferTimedExternalConditionOnTransform : IConditionTimerWatcher, INotifyTransform
@@ -49,8 +49,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			var external = toActor.TraitsImplementing<ExternalCondition>()
 				.FirstOrDefault(t => t.Info.Condition == info.Condition && t.CanGrantCondition(toActor, this));
 
-			if (external != null)
-				external.GrantCondition(toActor, this, duration, remaining);
+			external?.GrantCondition(toActor, this, duration, remaining);
 		}
 
 		void IConditionTimerWatcher.Update(int duration, int remaining)
@@ -59,6 +58,6 @@ namespace OpenRA.Mods.Cnc.Traits
 			this.remaining = remaining;
 		}
 
-		string IConditionTimerWatcher.Condition { get { return info.Condition; } }
+		string IConditionTimerWatcher.Condition => info.Condition;
 	}
 }

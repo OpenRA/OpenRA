@@ -7,7 +7,7 @@ Container@REPLAYBROWSER_PANEL:
 	Children:
 		Label@TITLE:
 			Width: PARENT_RIGHT
-			Y: 0 - 25
+			Y: 0 - 22
 			Font: BigBold
 			Contrast: true
 			Align: Center
@@ -139,6 +139,7 @@ Container@REPLAYBROWSER_PANEL:
 							Height: 115
 							Children:
 								Label@MANAGE_TITLE:
+									Y: 1
 									Width: PARENT_RIGHT
 									Height: 25
 									Font: Bold
@@ -167,10 +168,11 @@ Container@REPLAYBROWSER_PANEL:
 				Container@REPLAY_LIST_CONTAINER:
 					X: 310
 					Y: 20
-					Width: 245
+					Width: 250
 					Height: PARENT_BOTTOM - 20 - 20
 					Children:
 						Label@REPLAYBROWSER_LABEL_TITLE:
+							Y: 1
 							Width: PARENT_RIGHT
 							Height: 25
 							Text: Choose Replay
@@ -188,11 +190,14 @@ Container@REPLAYBROWSER_PANEL:
 									Height: 25
 									X: 2
 									Visible: false
+									EnableChildMouseOver: True
 									Children:
-										Label@TITLE:
+										LabelWithTooltip@TITLE:
 											X: 10
 											Width: PARENT_RIGHT - 20
 											Height: 25
+											TooltipContainer: TOOLTIP_CONTAINER
+											TooltipTemplate: SIMPLE_TOOLTIP
 				Container@MAP_PREVIEW_ROOT:
 					X: PARENT_RIGHT - WIDTH - 20
 					Y: 50
@@ -205,7 +210,7 @@ Container@REPLAYBROWSER_PANEL:
 					Height: PARENT_BOTTOM - 260
 					Children:
 						Label@DURATION:
-							Y: 20
+							Y: 21
 							Width: PARENT_RIGHT
 							Height: 15
 							Font: Tiny
@@ -226,7 +231,7 @@ Container@REPLAYBROWSER_PANEL:
 										Label@LABEL:
 											Font: TinyBold
 											Width: PARENT_RIGHT
-											Height: 10
+											Height: 13
 											Align: Center
 								ScrollItem@TEMPLATE:
 									Width: PARENT_RIGHT - 27

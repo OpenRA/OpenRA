@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -17,7 +17,7 @@ namespace OpenRA
 {
 	public class ModContent : IGlobalModData
 	{
-		public enum SourceType { Disc, Install }
+		public enum SourceType { Disc, RegistryDirectory, RegistryDirectoryFromFile }
 		public class ModPackage
 		{
 			public readonly string Title;
@@ -49,8 +49,11 @@ namespace OpenRA
 
 			public readonly string Title;
 
-			[FieldLoader.Ignore] public readonly MiniYaml IDFiles;
-			[FieldLoader.Ignore] public readonly List<MiniYamlNode> Install;
+			[FieldLoader.Ignore]
+			public readonly MiniYaml IDFiles;
+
+			[FieldLoader.Ignore]
+			public readonly List<MiniYamlNode> Install;
 
 			public ModSource(MiniYaml yaml)
 			{
@@ -73,6 +76,7 @@ namespace OpenRA
 			public readonly string Title;
 			public readonly string URL;
 			public readonly string MirrorList;
+			public readonly string SHA1;
 			public readonly Dictionary<string, string> Extract;
 
 			public ModDownload(MiniYaml yaml)
@@ -87,7 +91,7 @@ namespace OpenRA
 		public readonly string HeaderMessage;
 		public readonly string ContentInstallerMod = "modcontent";
 
-		[FieldLoader.LoadUsing("LoadPackages")]
+		[FieldLoader.LoadUsing(nameof(LoadPackages))]
 		public readonly Dictionary<string, ModPackage> Packages = new Dictionary<string, ModPackage>();
 
 		static object LoadPackages(MiniYaml yaml)
@@ -101,7 +105,7 @@ namespace OpenRA
 			return packages;
 		}
 
-		[FieldLoader.LoadUsing("LoadDownloads")]
+		[FieldLoader.LoadUsing(nameof(LoadDownloads))]
 		public readonly string[] Downloads = { };
 
 		static object LoadDownloads(MiniYaml yaml)
@@ -110,7 +114,7 @@ namespace OpenRA
 			return downloadNode != null ? downloadNode.Value.Nodes.Select(n => n.Key).ToArray() : new string[0];
 		}
 
-		[FieldLoader.LoadUsing("LoadSources")]
+		[FieldLoader.LoadUsing(nameof(LoadSources))]
 		public readonly string[] Sources = { };
 
 		static object LoadSources(MiniYaml yaml)

@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+   Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -62,6 +62,10 @@ BindActorTriggers = function(a)
 	end
 
 	if a.HasProperty("HasPassengers") then
+		Trigger.OnPassengerExited(a, function(t, p)
+			BindActorTriggers(p)
+		end)
+
 		Trigger.OnDamaged(a, function()
 			if a.HasPassengers then
 				a.Stop()
@@ -115,10 +119,12 @@ end
 
 ParadropSovietUnits = function()
 	local lz = Utils.Random(ParadropWaypoints)
-	local units = powerproxy.SendParatroopers(lz.CenterPosition)
+	local aircraft = powerproxy.TargetParatroopers(lz.CenterPosition)
 
-	Utils.Do(units, function(a)
-		BindActorTriggers(a)
+	Utils.Do(aircraft, function(a)
+		Trigger.OnPassengerExited(a, function(t, p)
+			BindActorTriggers(p)
+		end)
 	end)
 
 	Trigger.AfterDelay(DateTime.Seconds(35), ParadropSovietUnits)
@@ -153,7 +159,7 @@ ChronoshiftAlliedUnits = function()
 	local cells = Utils.ExpandFootprint({ ChronoshiftLocation.Location }, false)
 	local units = { }
 	for i = 1, #cells do
-		local unit = Actor.Create("2tnk", true, { Owner = allies, Facing = 0 })
+		local unit = Actor.Create("2tnk", true, { Owner = allies, Facing = Angle.North })
 		BindActorTriggers(unit)
 		units[unit] = cells[i]
 	end

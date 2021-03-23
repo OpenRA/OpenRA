@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -24,12 +24,47 @@ namespace OpenRA.GameRules
 		public int[] DamageModifiers;
 		public int[] InaccuracyModifiers;
 		public int[] RangeModifiers;
-		public int Facing;
+		public WAngle Facing;
+		public Func<WAngle> CurrentMuzzleFacing;
 		public WPos Source;
 		public Func<WPos> CurrentSource;
 		public Actor SourceActor;
 		public WPos PassiveTarget;
 		public Target GuidedTarget;
+	}
+
+	public class WarheadArgs
+	{
+		public WeaponInfo Weapon;
+		public int[] DamageModifiers = { };
+		public WPos? Source;
+		public WRot ImpactOrientation;
+		public WPos ImpactPosition;
+		public Actor SourceActor;
+		public Target WeaponTarget;
+
+		public WarheadArgs(ProjectileArgs args)
+		{
+			Weapon = args.Weapon;
+			DamageModifiers = args.DamageModifiers;
+			ImpactPosition = args.PassiveTarget;
+			Source = args.Source;
+			SourceActor = args.SourceActor;
+			WeaponTarget = args.GuidedTarget;
+		}
+
+		// For places that only want to update some of the fields (usually DamageModifiers)
+		public WarheadArgs(WarheadArgs args)
+		{
+			Weapon = args.Weapon;
+			DamageModifiers = args.DamageModifiers;
+			Source = args.Source;
+			SourceActor = args.SourceActor;
+			WeaponTarget = args.WeaponTarget;
+		}
+
+		// Default empty constructor for callers that want to initialize fields themselves
+		public WarheadArgs() { }
 	}
 
 	public interface IProjectile : IEffect { }
@@ -70,6 +105,12 @@ namespace OpenRA.GameRules
 		[Desc("What types of targets are unaffected.", "Overrules ValidTargets.")]
 		public readonly BitSet<TargetableType> InvalidTargets;
 
+		static readonly BitSet<TargetableType> TargetTypeAir = new BitSet<TargetableType>("Air");
+
+		[Desc("If weapon is not directly targeting an actor and targeted position is above this altitude,",
+			"the weapon will ignore terrain target types and only check TargetTypeAir for validity.")]
+		public readonly WDist AirThreshold = new WDist(128);
+
 		[Desc("Delay in ticks between firing shots from the same ammo magazine. If one entry, it will be used for all bursts.",
 			"If multiple entries, their number needs to match Burst - 1.")]
 		public readonly int[] BurstDelays = { 5 };
@@ -80,10 +121,10 @@ namespace OpenRA.GameRules
 		[Desc("Does this weapon aim at the target's center regardless of other targetable offsets?")]
 		public readonly bool TargetActorCenter = false;
 
-		[FieldLoader.LoadUsing("LoadProjectile")]
+		[FieldLoader.LoadUsing(nameof(LoadProjectile))]
 		public readonly IProjectileInfo Projectile;
 
-		[FieldLoader.LoadUsing("LoadWarheads")]
+		[FieldLoader.LoadUsing(nameof(LoadWarheads))]
 		public readonly List<IWarhead> Warheads = new List<IWarhead>();
 
 		public WeaponInfo(string name, MiniYaml content)
@@ -96,8 +137,7 @@ namespace OpenRA.GameRules
 
 		static object LoadProjectile(MiniYaml yaml)
 		{
-			MiniYaml proj;
-			if (!yaml.ToDictionary().TryGetValue("Projectile", out proj))
+			if (!yaml.ToDictionary().TryGetValue("Projectile", out var proj))
 				return null;
 			var ret = Game.CreateObject<IProjectileInfo>(proj.Value + "Info");
 			FieldLoader.Load(ret, proj);
@@ -123,7 +163,7 @@ namespace OpenRA.GameRules
 		}
 
 		/// <summary>Checks if the weapon is valid against (can target) the target.</summary>
-		public bool IsValidAgainst(Target target, World world, Actor firedBy)
+		public bool IsValidAgainst(in Target target, World world, Actor firedBy)
 		{
 			if (target.Type == TargetType.Actor)
 				return IsValidAgainst(target.Actor, firedBy);
@@ -133,6 +173,10 @@ namespace OpenRA.GameRules
 
 			if (target.Type == TargetType.Terrain)
 			{
+				var dat = world.Map.DistanceAboveTerrain(target.CenterPosition);
+				if (dat > AirThreshold)
+					return IsValidTarget(TargetTypeAir);
+
 				var cell = world.Map.CellContaining(target.CenterPosition);
 				if (!world.Map.Contains(cell))
 					return false;
@@ -176,17 +220,37 @@ namespace OpenRA.GameRules
 		}
 
 		/// <summary>Applies all the weapon's warheads to the target.</summary>
-		public void Impact(Target target, Actor firedBy, IEnumerable<int> damageModifiers)
+		public void Impact(in Target target, WarheadArgs args)
 		{
+			var world = args.SourceActor.World;
 			foreach (var warhead in Warheads)
 			{
-				var wh = warhead; // force the closure to bind to the current warhead
-
-				if (wh.Delay > 0)
-					firedBy.World.AddFrameEndTask(w => w.Add(new DelayedImpact(wh.Delay, wh, target, firedBy, damageModifiers)));
+				if (warhead.Delay > 0)
+				{
+					// Lambdas can't use 'in' variables, so capture a copy for later
+					var delayedTarget = target;
+					world.AddFrameEndTask(w => w.Add(new DelayedImpact(warhead.Delay, warhead, delayedTarget, args)));
+				}
 				else
-					wh.DoImpact(target, firedBy, damageModifiers);
+					warhead.DoImpact(target, args);
 			}
+		}
+
+		/// <summary>Applies all the weapon's warheads to the target. Only use for projectile-less, special-case impacts.</summary>
+		public void Impact(in Target target, Actor firedBy)
+		{
+			// The impact will happen immediately at target.CenterPosition.
+			var args = new WarheadArgs
+			{
+				Weapon = this,
+				SourceActor = firedBy,
+				WeaponTarget = target
+			};
+
+			if (firedBy.OccupiesSpace != null)
+				args.Source = firedBy.CenterPosition;
+
+			Impact(target, args);
 		}
 	}
 }

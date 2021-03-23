@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -18,8 +18,7 @@ namespace OpenRA.Scripting
 	{
 		public static Type WrappedClrType(this LuaValue value)
 		{
-			object inner;
-			if (value.TryGetClrObject(out inner))
+			if (value.TryGetClrObject(out var inner))
 				return inner.GetType();
 
 			return value.GetType();
@@ -27,16 +26,13 @@ namespace OpenRA.Scripting
 
 		public static bool TryGetClrValue<T>(this LuaValue value, out T clrObject)
 		{
-			object temp;
-			var ret = value.TryGetClrValue(typeof(T), out temp);
+			var ret = value.TryGetClrValue(typeof(T), out object temp);
 			clrObject = ret ? (T)temp : default(T);
 			return ret;
 		}
 
 		public static bool TryGetClrValue(this LuaValue value, Type t, out object clrObject)
 		{
-			object temp;
-
 			// Is t a nullable?
 			// If yes, get the underlying type
 			var nullable = Nullable.GetUnderlyingType(t);
@@ -44,7 +40,7 @@ namespace OpenRA.Scripting
 				t = nullable;
 
 			// Value wraps a CLR object
-			if (value.TryGetClrObject(out temp))
+			if (value.TryGetClrObject(out var temp))
 			{
 				if (temp.GetType() == t)
 				{
@@ -76,6 +72,18 @@ namespace OpenRA.Scripting
 			if (value is LuaNumber && t.IsAssignableFrom(typeof(int)))
 			{
 				clrObject = (int)value.ToNumber().Value;
+				return true;
+			}
+
+			if (value is LuaNumber && t.IsAssignableFrom(typeof(short)))
+			{
+				clrObject = (short)value.ToNumber().Value;
+				return true;
+			}
+
+			if (value is LuaNumber && t.IsAssignableFrom(typeof(byte)))
+			{
+				clrObject = (byte)value.ToNumber().Value;
 				return true;
 			}
 
@@ -160,8 +168,7 @@ namespace OpenRA.Scripting
 			{
 				// Object needs additional notification / context
 				var notify = obj as IScriptNotifyBind;
-				if (notify != null)
-					notify.OnScriptBind(context);
+				notify?.OnScriptBind(context);
 
 				return new LuaCustomClrObject(obj);
 			}

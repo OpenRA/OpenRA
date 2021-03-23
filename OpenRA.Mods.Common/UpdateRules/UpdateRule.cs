@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,9 +9,7 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace OpenRA.Mods.Common.UpdateRules
 {
@@ -30,8 +28,11 @@ namespace OpenRA.Mods.Common.UpdateRules
 
 		public virtual IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode) { yield break; }
 		public virtual IEnumerable<string> UpdateWeaponNode(ModData modData, MiniYamlNode weaponNode) { yield break; }
+		public virtual IEnumerable<string> UpdateSequenceNode(ModData modData, MiniYamlNode sequenceNode) { yield break; }
 		public virtual IEnumerable<string> UpdateChromeNode(ModData modData, MiniYamlNode chromeNode) { yield break; }
 		public virtual IEnumerable<string> UpdateTilesetNode(ModData modData, MiniYamlNode tilesetNode) { yield break; }
+		public virtual IEnumerable<string> UpdateChromeProviderNode(ModData modData, MiniYamlNode chromeProviderNode) { yield break; }
+		public virtual IEnumerable<string> UpdateMapActorNode(ModData modData, MiniYamlNode actorNode) { yield break; }
 
 		public virtual IEnumerable<string> BeforeUpdate(ModData modData) { yield break; }
 		public virtual IEnumerable<string> AfterUpdate(ModData modData) { yield break; }

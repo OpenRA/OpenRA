@@ -1,0 +1,82 @@
+World:
+	LuaScript:
+		Scripts: situation-critical.lua
+	MissionData:
+		WinVideo: flare.vqa
+		LossVideo: nukestok.vqa
+		Briefing: A radical faction of our forces has stolen a biological weapon, threatening to use it on Allied emplacements. Since the weapon is highly unstable, it could destroy us all if released. \n\nThe facility must be destroyed, but the weapon must be neutralized first. Destroy the island's defenses, then use Volkov to assist our scientist in reaching the bio-research center. If either are killed before the weapon is neutralized, the mission is a failure.\n\nOnce the scientist completes his mission, destroy the base.
+
+VOLK:
+	Inherits: GNRL
+	-AutoTarget:
+	-AutoTargetPriority@DEFAULT:
+	-AutoTargetPriority@ATTACKANYTHING:
+	AttackMove:
+		-AssaultMoveCondition:
+	Valued:
+		Cost: 1200
+	Tooltip:
+		Name: Volkov
+	Health:
+		HP: 15000
+	Armor:
+		Type: Heavy
+	RevealsShroud:
+		Range: 6c0
+	Demolition:
+	Mobile:
+		Voice: Action
+	AttackFrontal:
+		Voice: Action
+	AttackMove:
+		Voice: Action
+	Passenger:
+		Voice: Action
+	Guard:
+		Voice: Action
+	Voiced:
+		VoiceSet: GenericVoice
+	Armament:
+		Weapon: VolkovWeapon
+	RenderSprites:
+		Image: GNRL
+
+LST.Reinforcement:
+	Inherits: LST
+	RejectsOrders:
+	-Buildable:
+	-Selectable:
+	RenderSprites:
+		Image: lst
+	Interactable:
+
+MSLO:
+	Power:
+		Amount: 0
+	-WithColoredOverlay@IDISABLE:
+	-NukePower:
+
+SAM:
+	-WithColoredOverlay@IDISABLE:
+
+BADR.Bomber:
+	Aircraft:
+		Speed: 373
+	Tooltip:
+		Name: Strategic Bomber
+	RenderSprites:
+		Image: U2
+
+powerproxy.parabombs:
+	AirstrikePower:
+		DisplayBeacon: False
+
+DELPHI:
+	Tooltip:
+		Name: Scientist
+	Infiltrates:
+		Types: ScientistInfiltrate
+
+BIO:
+	Targetable:
+		TargetTypes: GroundActor, Structure, C4, DetonateAttack, ScientistInfiltrate

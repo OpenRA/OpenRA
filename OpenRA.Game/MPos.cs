@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,11 +10,11 @@
 #endregion
 
 using System;
-using System.Drawing;
+using OpenRA.Primitives;
 
 namespace OpenRA
 {
-	public struct MPos : IEquatable<MPos>
+	public readonly struct MPos : IEquatable<MPos>
 	{
 		public readonly int U, V;
 
@@ -66,7 +66,7 @@ namespace OpenRA
 	/// <summary>
 	/// Projected map position
 	/// </summary>
-	public struct PPos : IEquatable<PPos>
+	public readonly struct PPos : IEquatable<PPos>
 	{
 		public readonly int U, V;
 

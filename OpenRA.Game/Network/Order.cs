@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -11,21 +11,32 @@
 
 using System;
 using System.IO;
-using System.Linq;
 using OpenRA.Network;
 using OpenRA.Traits;
 
 namespace OpenRA
 {
-	[Flags]
-	enum OrderFields : byte
+	public enum OrderType : byte
 	{
+		SyncHash = 0x65,
+		Disconnect = 0xBF,
+		Handshake = 0xFE,
+		Fields = 0xFF
+	}
+
+	[Flags]
+	enum OrderFields : short
+	{
+		None = 0x0,
 		Target = 0x01,
+		ExtraActors = 0x02,
 		TargetString = 0x04,
 		Queued = 0x08,
 		ExtraLocation = 0x10,
 		ExtraData = 0x20,
-		TargetIsCell = 0x40
+		TargetIsCell = 0x40,
+		Subject = 0x80,
+		Grouped = 0x100
 	}
 
 	static class OrderFieldsExts
@@ -38,58 +49,62 @@ namespace OpenRA
 
 	public sealed class Order
 	{
+		// Length of orders with type OrderType.SyncHash
+		public const int SyncHashOrderLength = 13;
+
 		public readonly string OrderString;
 		public readonly Actor Subject;
 		public readonly bool Queued;
-		public readonly Target Target;
+		public ref readonly Target Target => ref target;
+		public readonly Actor[] GroupedActors;
+
 		public string TargetString;
 		public CPos ExtraLocation;
+		public Actor[] ExtraActors;
 		public uint ExtraData;
 		public bool IsImmediate;
+		public OrderType Type = OrderType.Fields;
 
 		public bool SuppressVisualFeedback;
-		public Target VisualFeedbackTarget;
+		public ref readonly Target VisualFeedbackTarget => ref visualFeedbackTarget;
 
-		/// <summary>
-		/// DEPRECATED: Use Target instead.
-		/// </summary>
-		public CPos TargetLocation
-		{
-			get
-			{
-				return Target.SerializableCell ?? CPos.Zero;
-			}
-		}
+		public Player Player => Subject != null ? Subject.Owner : null;
 
-		public Player Player { get { return Subject != null ? Subject.Owner : null; } }
+		readonly Target target;
+		readonly Target visualFeedbackTarget;
 
-		Order(string orderString, Actor subject, Target target, string targetString, bool queued, CPos extraLocation, uint extraData)
+		Order(string orderString, Actor subject, in Target target, string targetString, bool queued, Actor[] extraActors, CPos extraLocation, uint extraData, Actor[] groupedActors = null)
 		{
 			OrderString = orderString ?? "";
 			Subject = subject;
-			Target = target;
+			this.target = target;
 			TargetString = targetString;
 			Queued = queued;
+			ExtraActors = extraActors;
 			ExtraLocation = extraLocation;
 			ExtraData = extraData;
+			GroupedActors = groupedActors;
 		}
 
 		public static Order Deserialize(World world, BinaryReader r)
 		{
 			try
 			{
-				var magic = r.ReadByte();
-				switch (magic)
+				var type = (OrderType)r.ReadByte();
+				switch (type)
 				{
-					case 0xFF:
+					case OrderType.Fields:
 					{
 						var order = r.ReadString();
-						var subjectId = r.ReadUInt32();
-						var flags = (OrderFields)r.ReadByte();
+						var flags = (OrderFields)r.ReadInt16();
 
 						Actor subject = null;
-						if (world != null)
-							TryGetActorFromUInt(world, subjectId, out subject);
+						if (flags.HasField(OrderFields.Subject))
+						{
+							var subjectId = r.ReadUInt32();
+							if (world != null)
+								TryGetActorFromUInt(world, subjectId, out subject);
+						}
 
 						var target = Target.Invalid;
 						if (flags.HasField(OrderFields.Target))
@@ -98,8 +113,7 @@ namespace OpenRA
 							{
 								case TargetType.Actor:
 									{
-										Actor targetActor;
-										if (world != null && TryGetActorFromUInt(world, r.ReadUInt32(), out targetActor))
+										if (world != null && TryGetActorFromUInt(world, r.ReadUInt32(), out var targetActor))
 											target = Target.FromActor(targetActor);
 										break;
 									}
@@ -109,15 +123,13 @@ namespace OpenRA
 										var playerActorID = r.ReadUInt32();
 										var frozenActorID = r.ReadUInt32();
 
-										Actor playerActor;
-										if (world == null || !TryGetActorFromUInt(world, playerActorID, out playerActor))
+										if (world == null || !TryGetActorFromUInt(world, playerActorID, out var playerActor))
 											break;
 
-										var frozenLayer = playerActor.TraitOrDefault<FrozenActorLayer>();
-										if (frozenLayer == null)
+										if (playerActor.Owner.FrozenActorLayer == null)
 											break;
 
-										var frozen = frozenLayer.FromID(frozenActorID);
+										var frozen = playerActor.Owner.FrozenActorLayer.FromID(frozenActorID);
 										if (frozen != null)
 											target = Target.FromFrozenActor(frozen);
 
@@ -128,8 +140,8 @@ namespace OpenRA
 									{
 										if (flags.HasField(OrderFields.TargetIsCell))
 										{
-											var cell = new CPos(r.ReadInt32(), r.ReadInt32(), r.ReadByte());
-											var subCell = (SubCell)r.ReadInt32();
+											var cell = new CPos(r.ReadInt32());
+											var subCell = (SubCell)r.ReadByte();
 											if (world != null)
 												target = Target.FromCell(world, cell, subCell);
 										}
@@ -146,29 +158,50 @@ namespace OpenRA
 
 						var targetString = flags.HasField(OrderFields.TargetString) ? r.ReadString() : null;
 						var queued = flags.HasField(OrderFields.Queued);
-						var extraLocation = flags.HasField(OrderFields.ExtraLocation) ? new CPos(r.ReadInt32(), r.ReadInt32(), r.ReadByte()) : CPos.Zero;
+
+						Actor[] extraActors = null;
+						if (flags.HasField(OrderFields.ExtraActors))
+						{
+							var count = r.ReadInt32();
+							if (world != null)
+								extraActors = Exts.MakeArray(count, _ => world.GetActorById(r.ReadUInt32()));
+							else
+								r.ReadBytes(4 * count);
+						}
+
+						var extraLocation = flags.HasField(OrderFields.ExtraLocation) ? new CPos(r.ReadInt32()) : CPos.Zero;
 						var extraData = flags.HasField(OrderFields.ExtraData) ? r.ReadUInt32() : 0;
 
-						if (world == null)
-							return new Order(order, null, target, targetString, queued, extraLocation, extraData);
+						Actor[] groupedActors = null;
+						if (flags.HasField(OrderFields.Grouped))
+						{
+							var count = r.ReadInt32();
+							if (world != null)
+								groupedActors = Exts.MakeArray(count, _ => world.GetActorById(r.ReadUInt32()));
+							else
+								r.ReadBytes(4 * count);
+						}
 
-						if (subject == null && subjectId != uint.MaxValue)
+						if (world == null)
+							return new Order(order, null, target, targetString, queued, extraActors, extraLocation, extraData, groupedActors);
+
+						if (subject == null && flags.HasField(OrderFields.Subject))
 							return null;
 
-						return new Order(order, subject, target, targetString, queued, extraLocation, extraData);
+						return new Order(order, subject, target, targetString, queued, extraActors, extraLocation, extraData, groupedActors);
 					}
 
-					case 0xfe:
+					case OrderType.Handshake:
 					{
 						var name = r.ReadString();
-						var data = r.ReadString();
+						var targetString = r.ReadString();
 
-						return new Order(name, null, false) { IsImmediate = true, TargetString = data };
+						return new Order(name, null, false) { Type = OrderType.Handshake, TargetString = targetString };
 					}
 
 					default:
 					{
-						Log.Write("debug", "Received unknown order with magic {0}", magic);
+						Log.Write("debug", "Received unknown order with type {0}", type);
 						return null;
 					}
 				}
@@ -206,24 +239,19 @@ namespace OpenRA
 
 		// Named constructors for Orders.
 		// Now that Orders are resolved by individual Actors, these are weird; you unpack orders manually, but not pack them.
-		public static Order Chat(bool team, string text)
+		public static Order Chat(string text, uint teamNumber = 0)
 		{
-			return new Order(team ? "TeamChat" : "Chat", null, false) { IsImmediate = true, TargetString = text };
+			return new Order("Chat", null, false) { IsImmediate = true, TargetString = text, ExtraData = teamNumber };
 		}
 
-		public static Order HandshakeResponse(string text)
+		public static Order FromTargetString(string order, string targetString, bool isImmediate)
 		{
-			return new Order("HandshakeResponse", null, false) { IsImmediate = true, TargetString = text };
+			return new Order(order, null, false) { IsImmediate = isImmediate, TargetString = targetString };
 		}
 
-		public static Order Pong(string pingTime)
+		public static Order FromGroupedOrder(Order grouped, Actor subject)
 		{
-			return new Order("Pong", null, false) { IsImmediate = true, TargetString = pingTime };
-		}
-
-		public static Order PauseGame(bool paused)
-		{
-			return new Order("PauseGame", null, false) { TargetString = paused ? "Pause" : "UnPause" };
+			return new Order(grouped.OrderString, subject, grouped.Target, grouped.TargetString, grouped.Queued, grouped.ExtraActors, grouped.ExtraLocation, grouped.ExtraData);
 		}
 
 		public static Order Command(string text)
@@ -231,9 +259,9 @@ namespace OpenRA
 			return new Order("Command", null, false) { IsImmediate = true, TargetString = text };
 		}
 
-		public static Order StartProduction(Actor subject, string item, int count)
+		public static Order StartProduction(Actor subject, string item, int count, bool queued = true)
 		{
-			return new Order("StartProduction", subject, false) { ExtraData = (uint)count, TargetString = item };
+			return new Order("StartProduction", subject, queued) { ExtraData = (uint)count, TargetString = item };
 		}
 
 		public static Order PauseProduction(Actor subject, string item, bool pause)
@@ -248,95 +276,147 @@ namespace OpenRA
 
 		// For scripting special powers
 		public Order()
-			: this(null, null, Target.Invalid, null, false, CPos.Zero, 0) { }
+			: this(null, null, Target.Invalid, null, false, null, CPos.Zero, 0) { }
 
-		public Order(string orderString, Actor subject, bool queued)
-			: this(orderString, subject, Target.Invalid, null, queued, CPos.Zero, 0) { }
+		public Order(string orderString, Actor subject, bool queued, Actor[] extraActors = null, Actor[] groupedActors = null)
+			: this(orderString, subject, Target.Invalid, null, queued, extraActors, CPos.Zero, 0, groupedActors) { }
 
-		public Order(string orderString, Actor subject, Target target, bool queued)
-			: this(orderString, subject, target, null, queued, CPos.Zero, 0) { }
+		public Order(string orderString, Actor subject, in Target target, bool queued, Actor[] extraActors = null, Actor[] groupedActors = null)
+			: this(orderString, subject, target, null, queued, extraActors, CPos.Zero, 0, groupedActors) { }
+
+		public Order(string orderString, Actor subject, Target target, Target visualFeedbackTarget, bool queued)
+			: this(orderString, subject, target, null, queued, null, CPos.Zero, 0, null)
+		{
+			this.visualFeedbackTarget = visualFeedbackTarget;
+		}
 
 		public byte[] Serialize()
 		{
-			var minLength = OrderString.Length + 1 + (IsImmediate ? 1 + TargetString.Length + 1 : 6);
+			var minLength = 1 + OrderString.Length + 1;
+			if (Type == OrderType.Handshake)
+				minLength += TargetString.Length + 1;
+			else if (Type == OrderType.Fields)
+				minLength += 4 + 2 + 13 + (TargetString != null ? TargetString.Length + 1 : 0) + 4 + 4 + 4;
+
+			if (ExtraActors != null)
+				minLength += ExtraActors.Length * 4;
+
+			// ProtocolVersion.Orders and the associated documentation MUST be updated if the serialized format changes
 			var ret = new MemoryStream(minLength);
 			var w = new BinaryWriter(ret);
 
-			if (IsImmediate)
-			{
-				w.Write((byte)0xFE);
-				w.Write(OrderString);
-				w.Write(TargetString);
-				return ret.ToArray();
-			}
-
-			w.Write((byte)0xFF);
+			w.Write((byte)Type);
 			w.Write(OrderString);
-			w.Write(UIntFromActor(Subject));
 
-			OrderFields fields = 0;
-			if (Target.SerializableType != TargetType.Invalid)
-				fields |= OrderFields.Target;
-
-			if (TargetString != null)
-				fields |= OrderFields.TargetString;
-
-			if (Queued)
-				fields |= OrderFields.Queued;
-
-			if (ExtraLocation != CPos.Zero)
-				fields |= OrderFields.ExtraLocation;
-
-			if (ExtraData != 0)
-				fields |= OrderFields.ExtraData;
-
-			if (Target.SerializableCell != null)
-				fields |= OrderFields.TargetIsCell;
-
-			w.Write((byte)fields);
-
-			if (fields.HasField(OrderFields.Target))
+			switch (Type)
 			{
-				w.Write((byte)Target.SerializableType);
-				switch (Target.SerializableType)
+				case OrderType.Handshake:
 				{
-					case TargetType.Actor:
-						w.Write(UIntFromActor(Target.SerializableActor));
-						break;
-					case TargetType.FrozenActor:
-						w.Write(Target.FrozenActor.Viewer.PlayerActor.ActorID);
-						w.Write(Target.FrozenActor.ID);
-						break;
-					case TargetType.Terrain:
-						if (fields.HasField(OrderFields.TargetIsCell))
-						{
-							w.Write(Target.SerializableCell.Value);
-							w.Write((int)Target.SerializableSubCell);
-						}
-						else
-							w.Write(Target.SerializablePos);
-						break;
+					// Changing the Handshake order format will break cross-version switching
+					// Don't do this unless you really have to!
+					w.Write(TargetString ?? "");
+
+					break;
 				}
+
+				case OrderType.Fields:
+				{
+					var fields = OrderFields.None;
+					if (Subject != null)
+						fields |= OrderFields.Subject;
+
+					if (TargetString != null)
+						fields |= OrderFields.TargetString;
+
+					if (ExtraData != 0)
+						fields |= OrderFields.ExtraData;
+
+					if (Target.SerializableType != TargetType.Invalid)
+						fields |= OrderFields.Target;
+
+					if (Queued)
+						fields |= OrderFields.Queued;
+
+					if (GroupedActors != null)
+						fields |= OrderFields.Grouped;
+
+					if (ExtraActors != null)
+						fields |= OrderFields.ExtraActors;
+
+					if (ExtraLocation != CPos.Zero)
+						fields |= OrderFields.ExtraLocation;
+
+					if (Target.SerializableCell != null)
+						fields |= OrderFields.TargetIsCell;
+
+					w.Write((short)fields);
+
+					if (fields.HasField(OrderFields.Subject))
+						w.Write(UIntFromActor(Subject));
+
+					if (fields.HasField(OrderFields.Target))
+					{
+						w.Write((byte)Target.SerializableType);
+						switch (Target.SerializableType)
+						{
+							case TargetType.Actor:
+								w.Write(UIntFromActor(Target.SerializableActor));
+								break;
+							case TargetType.FrozenActor:
+								w.Write(Target.FrozenActor.Viewer.PlayerActor.ActorID);
+								w.Write(Target.FrozenActor.ID);
+								break;
+							case TargetType.Terrain:
+								if (fields.HasField(OrderFields.TargetIsCell))
+								{
+									w.Write(Target.SerializableCell.Value);
+									w.Write((byte)Target.SerializableSubCell);
+								}
+								else
+									w.Write(Target.SerializablePos);
+								break;
+						}
+					}
+
+					if (fields.HasField(OrderFields.TargetString))
+						w.Write(TargetString);
+
+					if (fields.HasField(OrderFields.ExtraActors))
+					{
+						w.Write(ExtraActors.Length);
+						foreach (var a in ExtraActors)
+							w.Write(UIntFromActor(a));
+					}
+
+					if (fields.HasField(OrderFields.ExtraLocation))
+						w.Write(ExtraLocation);
+
+					if (fields.HasField(OrderFields.ExtraData))
+						w.Write(ExtraData);
+
+					if (fields.HasField(OrderFields.Grouped))
+					{
+						w.Write(GroupedActors.Length);
+						foreach (var a in GroupedActors)
+							w.Write(UIntFromActor(a));
+					}
+
+					break;
+				}
+
+				default:
+					throw new InvalidDataException("Cannot serialize order type {0}".F(Type));
 			}
-
-			if (fields.HasField(OrderFields.TargetString))
-				w.Write(TargetString);
-
-			if (fields.HasField(OrderFields.ExtraLocation))
-				w.Write(ExtraLocation);
-
-			if (fields.HasField(OrderFields.ExtraData))
-				w.Write(ExtraData);
 
 			return ret.ToArray();
 		}
 
 		public override string ToString()
 		{
-			return ("OrderString: \"{0}\" \n\t Subject: \"{1}\". \n\t TargetActor: \"{2}\" \n\t TargetLocation: {3}." +
+			return ("OrderString: \"{0}\" \n\t Type: \"{1}\".  \n\t Subject: \"{2}\". \n\t Target: \"{3}\"." +
 				"\n\t TargetString: \"{4}\".\n\t IsImmediate: {5}.\n\t Player(PlayerName): {6}\n").F(
-				OrderString, Subject, Target.Type == TargetType.Actor ? Target.Actor.Info.Name : null, TargetLocation,
-				TargetString, IsImmediate, Player != null ? Player.PlayerName : null);
+				OrderString, Type, Subject, Target, TargetString, IsImmediate,
+				Player != null ? Player.PlayerName : null);
 		}
 	}
 }

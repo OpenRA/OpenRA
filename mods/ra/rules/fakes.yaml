@@ -32,6 +32,40 @@ FPWR:
 	Valued:
 		Cost: 30
 
+TENF:
+	Inherits: ^FakeBuilding
+	Inherits@infiltrate: ^InfiltratableFake
+	Inherits@shape: ^2x2Shape
+	Selectable:
+		Bounds: 48,48
+	Buildable:
+		BuildPaletteOrder: 880
+		Queue: Defense
+		Prerequisites: ~structures.france, ~techlevel.infonly
+		Description: Looks like an Allied Barracks.
+		Icon: fake-icon
+	Tooltip:
+		Name: Fake Allied Barracks
+		GenericName: Allied Barracks
+		GenericVisibility: Enemy
+		GenericStancePrefix: False
+	Building:
+		Footprint: xx xx ==
+		Dimensions: 2,3
+		LocalCenterOffset: 0,-512,0
+	RenderSprites:
+		Image: TENT
+	Valued:
+		Cost: 50
+	Health:
+		HP: 60000
+	Armor:
+		Type: Wood
+	WithBuildingBib:
+	HitShape:
+		UseTargetableCellsOffsets: false
+		TargetableOffsets: 0,0,0, 630,-512,0, 355,512,0, -281,-512,0, -630,512,0
+
 SYRF:
 	Inherits: ^FakeBuilding
 	Inherits@infiltrate: ^InfiltratableFake
@@ -49,7 +83,7 @@ SYRF:
 		GenericVisibility: Enemy
 		GenericStancePrefix: False
 	Targetable:
-		TargetTypes: Ground, Water, Structure, SpyInfiltrate
+		TargetTypes: WaterActor, Structure, SpyInfiltrate
 	Building:
 		Footprint: XXX xxx XXX
 		Dimensions: 3,3
@@ -64,7 +98,7 @@ SYRF:
 		HP: 100000
 	Armor:
 		Type: Light
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: INTERIOR
 	HitShape:
 		TargetableOffsets: 768,0,0, 768,-1024,0, 768,1024,0
@@ -83,7 +117,7 @@ SPEF:
 	Selectable:
 		Bounds: 72,48
 	Targetable:
-		TargetTypes: Ground, Water, Structure, SpyInfiltrate
+		TargetTypes: WaterActor, Structure, SpyInfiltrate
 	Buildable:
 		BuildPaletteOrder: 890
 		Queue: Defense
@@ -104,12 +138,12 @@ SPEF:
 	RenderSprites:
 		Image: SPEN
 	Valued:
-		Cost: 100
+		Cost: 80
 	Health:
 		HP: 100000
 	Armor:
 		Type: Light
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: INTERIOR
 	HitShape:
 		Type: Rectangle
@@ -142,10 +176,11 @@ WEAF:
 		Footprint: xxx xxx ===
 		Dimensions: 3,3
 		LocalCenterOffset: 0,-512,0
-	WithBuildingBib:
 	RenderSprites:
 		Image: WEAP
+	WithBuildingBib:
 	WithProductionDoorOverlay:
+		RequiresCondition: !build-incomplete
 		Sequence: build-top
 	Valued:
 		Cost: 200
@@ -153,6 +188,10 @@ WEAF:
 		HP: 150000
 	Armor:
 		Type: Wood
+	-ActorPreviewPlaceBuildingPreview:
+	SequencePlaceBuildingPreview:
+		Sequence: place
+		SequenceAlpha: 0.65
 
 DOMF:
 	Inherits: ^FakeBuilding
@@ -213,7 +252,7 @@ FIXF:
 	Armor:
 		Type: Wood
 	WithBuildingBib:
-		HasMinibib: Yes
+		HasMinibib: true
 	RenderSprites:
 		Image: FIX
 	Valued:
@@ -254,9 +293,8 @@ FAPW:
 	Selectable:
 		Bounds: 72,48
 		DecorationBounds: 72,68,0,-10
-	SelectionDecorations:
 	Valued:
-		Cost: 60
+		Cost: 50
 
 ATEF:
 	Inherits: ^FakeBuilding
@@ -313,7 +351,7 @@ PDOF:
 	RenderSprites:
 		Image: PDOX
 	WithBuildingBib:
-		HasMinibib: Yes
+		HasMinibib: true
 	Valued:
 		Cost: 150
 	Health:
@@ -378,7 +416,7 @@ FACF:
 	RenderSprites:
 		Image: FACT
 	Valued:
-		Cost: 250
+		Cost: 200
 	Health:
 		HP: 150000
 	Armor:

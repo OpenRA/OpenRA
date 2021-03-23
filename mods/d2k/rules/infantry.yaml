@@ -4,36 +4,40 @@ light_inf:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 10
-		BuildDuration: 54
-		BuildDurationModifier: 40
+		BuildDuration: 62
+		BuildDurationModifier: 100
 		Description: General-purpose infantry\n  Strong vs Infantry\n  Weak vs Vehicles, Artillery
 	Valued:
 		Cost: 50
 	Tooltip:
 		Name: Light Infantry
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 6000
 	Mobile:
 		Speed: 43
 	Armament:
 		Weapon: LMG
-	AttackFrontal:
 	WithInfantryBody:
 		DefaultAttackSequence: shoot
 
 engineer:
 	Inherits: ^Infantry
+	Inherits@selection: ^SelectableSupportUnit
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 30
 		Prerequisites: upgrade.barracks, ~techlevel.medium
-		BuildDuration: 108
-		BuildDurationModifier: 40
+		BuildDuration: 125
+		BuildDurationModifier: 100
 		Description: Infiltrates and captures enemy structures\n  Strong vs Buildings\n  Weak vs Everything
 	Valued:
 		Cost: 400
 	Tooltip:
 		Name: Engineer
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 5000
 	RevealsShroud:
@@ -41,12 +45,14 @@ engineer:
 	Mobile:
 		Speed: 31
 	EngineerRepair:
+	CaptureManager:
 	Captures:
-		CaptureTypes: building, husk
+		CaptureTypes: building
 		PlayerExperience: 50
 	-RevealOnFire:
 	Voiced:
 		VoiceSet: EngineerVoice
+	-AttackFrontal:
 
 trooper:
 	Inherits: ^Infantry
@@ -55,13 +61,15 @@ trooper:
 		Queue: Infantry
 		BuildPaletteOrder: 20
 		Prerequisites: upgrade.barracks, ~techlevel.medium
-		BuildDuration: 73
-		BuildDurationModifier: 40
+		BuildDuration: 85
+		BuildDurationModifier: 100
 		Description: Anti-tank infantry\n  Strong vs Tanks\n  Weak vs Infantry, Artillery
 	Valued:
 		Cost: 90
 	Tooltip:
 		Name: Trooper
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 7000
 	RevealsShroud:
@@ -73,7 +81,6 @@ trooper:
 		LocalOffset: 128,0,256
 	TakeCover:
 		ProneOffset: 324,0,-204
-	AttackFrontal:
 	WithInfantryBody:
 		DefaultAttackSequence: shoot
 
@@ -84,13 +91,15 @@ thumper:
 		Queue: Infantry
 		BuildPaletteOrder: 40
 		Prerequisites: upgrade.barracks, ~techlevel.high
-		BuildDuration: 108
-		BuildDurationModifier: 40
+		BuildDuration: 125
+		BuildDurationModifier: 100
 		Description: Attracts nearby worms when deployed\n  Unarmed
 	Valued:
 		Cost: 200
 	Tooltip:
 		Name: Thumper Infantry
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 3750
 	RevealsShroud:
@@ -101,7 +110,7 @@ thumper:
 	GrantConditionOnDeploy:
 		DeployedCondition: deployed
 		UndeployedCondition: undeployed
-		Facing: 128
+		Facing: 512
 		AllowedTerrainTypes: Sand, Spice, Dune, SpiceSand
 	WithInfantryBody:
 		RequiresCondition: undeployed
@@ -121,12 +130,15 @@ thumper:
 		Intensity: 1000
 		Falloff: 0, 0, 0, 100, 100, 100, 25, 11, 6, 4, 3, 2, 1, 0
 		RequiresCondition: deployed
+	-AttackFrontal:
 
 fremen:
 	Inherits: ^Infantry
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Tooltip:
 		Name: Fremen
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 80
@@ -148,7 +160,6 @@ fremen:
 		Weapon: Fremen_S
 	Armament@SECONDARY:
 		Weapon: Fremen_L
-	AttackFrontal:
 	WithInfantryBody:
 		DefaultAttackSequence: shoot
 	Cloak:
@@ -156,7 +167,7 @@ fremen:
 		CloakDelay: 85
 		UncloakOn: Attack, Unload, Infiltrate, Demolish, Dock, Damage, Heal
 		IsPlayerPalette: true
-		RequiresCondition: !cloak-force-disabled
+		PauseOnCondition: cloak-force-disabled
 	GrantConditionOnDamageState@UNCLOAK:
 		Condition: cloak-force-disabled
 		ValidDamageStates: Critical
@@ -171,13 +182,15 @@ grenadier:
 		Queue: Infantry
 		BuildPaletteOrder: 60
 		Prerequisites: ~barracks.atreides, upgrade.barracks, high_tech_factory, ~techlevel.medium
-		BuildDuration: 81 ## Wasn't converted, copied from Sardauker who has same value in TibEd.
-		BuildDurationModifier: 40
+		BuildDuration: 94
+		BuildDurationModifier: 100
 		Description: Infantry armed with grenades. \n  Strong vs Buildings, Infantry\n  Weak vs Vehicles
 	Valued:
 		Cost: 80
 	Tooltip:
 		Name: Grenadier
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 6000
 	Mobile:
@@ -188,7 +201,6 @@ grenadier:
 		FireDelay: 3
 	TakeCover:
 		ProneOffset: 96,100,-64
-	AttackFrontal:
 	WithInfantryBody:
 		DefaultAttackSequence: throw
 	Explodes:
@@ -202,13 +214,15 @@ sardaukar:
 		Queue: Infantry
 		BuildPaletteOrder: 50
 		Prerequisites: ~palace.sardaukar, ~techlevel.high
-		BuildDuration: 81
-		BuildDurationModifier: 40
+		BuildDuration: 94
+		BuildDurationModifier: 100
 		Description: Elite assault infantry of Corrino\n  Strong vs Infantry, Vehicles\n  Weak vs Artillery
 	Valued:
 		Cost: 120
 	Tooltip:
 		Name: Sardaukar
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 10000
 	Mobile:
@@ -221,7 +235,6 @@ sardaukar:
 		Weapon: M_LMG
 	Armament@SECONDARY:
 		Weapon: M_HMG
-	AttackFrontal:
 	Voiced:
 		VoiceSet: GenericVoice
 	Explodes:
@@ -235,7 +248,8 @@ mpsardaukar:
 		Queue: Infantry
 		BuildPaletteOrder: 70
 		Prerequisites: ~barracks.harkonnen, upgrade.barracks, high_tech_factory, ~techlevel.medium
-		BuildDuration: 133
+		BuildDuration: 160
+		BuildDurationModifier: 100
 		Description: Elite assault infantry of Harkonnen\n  Strong vs Infantry, Vehicles\n  Weak vs Artillery
 	Valued:
 		Cost: 200
@@ -257,6 +271,8 @@ saboteur:
 		Cost: 300 ## actually 0, but spawns from support power at Palace
 	Tooltip:
 		Name: Saboteur
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 4000
 	Mobile:
@@ -272,12 +288,13 @@ saboteur:
 		CloakSound: STEALTH1.WAV
 		UncloakOn: Attack, Unload, Infiltrate, Demolish, Move, Damage, Heal
 		IsPlayerPalette: true
-		RequiresCondition: !cloak-force-disabled
+		PauseOnCondition: cloak-force-disabled
 	GrantConditionOnDamageState@UNCLOAK:
 		Condition: cloak-force-disabled
 		ValidDamageStates: Critical
 	Voiced:
 		VoiceSet: SaboteurVoice
+	-AttackFrontal:
 
 nsfremen:
 	Inherits: fremen

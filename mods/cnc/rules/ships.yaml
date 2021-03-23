@@ -1,11 +1,14 @@
 BOAT:
 	Inherits: ^Ship
+	Inherits@SELECTABLE: ^SelectableCombatUnit
 	Inherits@EXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetAll
 	Valued:
 		Cost: 300
 	Tooltip:
 		Name: Gunboat
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 70000
 	Armor:
@@ -16,7 +19,7 @@ BOAT:
 		Range: 7c0
 		Type: CenterPosition
 	Turreted:
-		TurnSpeed: 5
+		TurnSpeed: 20
 		Offset: 0,896,171
 	Armament:
 		Weapon: BoatMissile
@@ -33,7 +36,6 @@ BOAT:
 	AutoTarget:
 		AllowMovement: false
 	RejectsOrders:
-	SelectionDecorations:
 	GrantConditionOnDamageState@HEAVY:
 		Condition: heavy-damage
 		ValidDamageStates: Heavy
@@ -49,36 +51,34 @@ BOAT:
 
 LST:
 	Inherits: ^Ship
+	Inherits@TRANSPORT: ^Transport
 	Valued:
 		Cost: 300
 	Tooltip:
 		Name: Landing Craft
-	Buildable:
-		Queue: Vehicle.GDI
-		BuildPaletteOrder: 1000
-		Prerequisites: ~disabled
 	Mobile:
 		Locomotor: lcraft
 		InitialFacing: 0
-		TurnSpeed: 4
+		TurnSpeed: 16
 		Speed: 142
-		RequiresCondition: !notmobile
+		PauseOnCondition: notmobile
 	Health:
 		HP: 40000
 	Armor:
 		Type: Heavy
 	RevealsShroud:
 		Range: 7c0
+	-BodyOrientation:
+	ClassicFacingBodyOrientation:
 	WithFacingSpriteBody:
-	Selectable:
+	Interactable:
 		Bounds: 48,48
-	WithRoof:
 	WithCargo:
 		DisplayTypes: Infantry, Vehicle
 		LocalOffset: 390,-256,0, 390,256,0, 0,0,0, -390,-256,0, -390,256,0
 	Cargo:
-		Types: Infantry, Vehicle
+		Types: disabled
 		MaxWeight: 5
-		PipCount: 5
 		PassengerFacing: 0
 		LoadingCondition: notmobile
+	RejectsOrders:

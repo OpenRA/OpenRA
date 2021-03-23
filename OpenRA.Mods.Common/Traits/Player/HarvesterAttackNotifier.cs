@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,14 +9,14 @@
  */
 #endregion
 
-using System.Drawing;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Plays an audio notification and shows a radar ping when a harvester is attacked.",
 		"Attach this to the player actor.")]
-	public class HarvesterAttackNotifierInfo : ITraitInfo
+	public class HarvesterAttackNotifierInfo : TraitInfo
 	{
 		[Desc("Minimum duration (in seconds) between notification events.")]
 		public readonly int NotifyInterval = 30;
@@ -26,10 +26,11 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Length of time (in ticks) to display a location ping in the minimap.")]
 		public readonly int RadarPingDuration = 10 * 25;
 
+		[NotificationReference("Speech")]
 		[Desc("The audio notification type to play.")]
 		public string Notification = "HarvesterAttack";
 
-		public object Create(ActorInitializer init) { return new HarvesterAttackNotifier(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new HarvesterAttackNotifier(init.Self, this); }
 	}
 
 	public class HarvesterAttackNotifier : INotifyDamage
@@ -60,8 +61,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", info.Notification, self.Owner.Faction.InternalName);
 
-				if (radarPings != null)
-					radarPings.Add(() => self.Owner.IsAlliedWith(self.World.RenderPlayer), self.CenterPosition, info.RadarPingColor, info.RadarPingDuration);
+				radarPings?.Add(() => self.Owner.IsAlliedWith(self.World.RenderPlayer), self.CenterPosition, info.RadarPingColor, info.RadarPingDuration);
 			}
 
 			lastAttackTime = self.World.WorldTick;

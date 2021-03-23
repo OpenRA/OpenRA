@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -11,7 +11,6 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
@@ -30,8 +29,8 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class RejectsOrders : ConditionalTrait<RejectsOrdersInfo>
 	{
-		public HashSet<string> Reject { get { return Info.Reject; } }
-		public HashSet<string> Except { get { return Info.Except; } }
+		public HashSet<string> Reject => Info.Reject;
+		public HashSet<string> Except => Info.Except;
 
 		public RejectsOrders(RejectsOrdersInfo info)
 			: base(info) { }
@@ -41,8 +40,14 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public static bool AcceptsOrder(this Actor self, string orderString)
 		{
-			var r = self.TraitsImplementing<RejectsOrders>().Where(Exts.IsTraitEnabled).ToList();
-			return !r.Any() || r.Any(t => t.Reject.Any() && !t.Reject.Contains(orderString)) || r.Any(t => t.Except.Contains(orderString));
+			var rejectsOrdersTraits = self.TraitsImplementing<RejectsOrders>().Where(Exts.IsTraitEnabled).ToArray();
+			if (!rejectsOrdersTraits.Any())
+				return true;
+
+			var reject = rejectsOrdersTraits.SelectMany(t => t.Reject);
+			var except = rejectsOrdersTraits.SelectMany(t => t.Except);
+
+			return except.Contains(orderString) || (reject.Any() && !reject.Contains(orderString));
 		}
 	}
 }

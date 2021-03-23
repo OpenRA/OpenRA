@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -14,8 +14,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using OpenRA;
-using OpenRA.FileFormats;
 using OpenRA.Mods.Common.FileFormats;
 using OpenRA.Widgets;
 
@@ -120,6 +118,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					.Where(IsValidDrive)
 					.Select(v => v.RootDirectory.FullName);
 
+				if (Platform.CurrentPlatform == PlatformType.Linux)
+				{
+					// Outside of Gnome, most mounting tools on Linux don't set DriveType.CDRom
+					// so provide a fallback by allowing users to manually mount images on known paths
+					volumes = volumes.Concat(new[]
+					{
+						"/media/openra",
+						"/media/" + Environment.UserName + "/openra",
+						"/mnt/openra"
+					});
+				}
+
 				foreach (var kv in sources)
 				{
 					message = "Searching for " + kv.Value.Title;
@@ -165,7 +175,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (Platform.CurrentPlatform == PlatformType.Windows)
 				{
 					var installations = missingSources
-						.Where(s => s.Type == ModContent.SourceType.Install)
+						.Where(s => s.Type == ModContent.SourceType.RegistryDirectory || s.Type == ModContent.SourceType.RegistryDirectoryFromFile)
 						.Select(s => s.Title)
 						.Distinct();
 
@@ -258,11 +268,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 							case "delete":
 							{
-								var sourcePath = Path.Combine(path, i.Value.Value);
-
-								// Try as an absolute path
-								if (!File.Exists(sourcePath))
-									sourcePath = Platform.ResolvePath(i.Value.Value);
+								// Yaml path may be specified relative to a named directory (e.g. ^SupportDir) or the detected disc path
+								var sourcePath = i.Value.Value.StartsWith("^") ? Platform.ResolvePath(i.Value.Value) : Path.Combine(path, i.Value.Value);
 
 								Log.Write("debug", "Deleting {0}", sourcePath);
 								File.Delete(sourcePath);
@@ -307,8 +314,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				output.Write(buffer, 0, write);
 				copied += write;
 
-				if (onProgress != null)
-					onProgress(copied);
+				onProgress?.Invoke(copied);
 			}
 		}
 
@@ -316,11 +322,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		static void ExtractFromPackage(ExtractionType type, string path, MiniYaml actionYaml, List<string> extractedFiles, Action<string> updateMessage)
 		{
-			var sourcePath = Path.Combine(path, actionYaml.Value);
-
-			// Try as an absolute path
-			if (!File.Exists(sourcePath))
-				sourcePath = Platform.ResolvePath(actionYaml.Value);
+			// Yaml path may be specified relative to a named directory (e.g. ^SupportDir) or the detected disc path
+			var sourcePath = actionYaml.Value.StartsWith("^") ? Platform.ResolvePath(actionYaml.Value) : Path.Combine(path, actionYaml.Value);
 
 			using (var source = File.OpenRead(sourcePath))
 			{
@@ -365,15 +368,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{
 						Log.Write("install", "Extracting {0} -> {1}".F(sourcePath, targetPath));
 						if (type == ExtractionType.Blast)
-						{
-							Action<long, long> onBlastProgress = (read, _) =>
-							{
-								if (onProgress != null)
-									onProgress(read);
-							};
-
-							Blast.Decompress(source, target, onBlastProgress);
-						}
+							Blast.Decompress(source, target, (read, _) => onProgress?.Invoke(read));
 						else
 							CopyStream(source, target, length, onProgress);
 					}
@@ -383,11 +378,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		static void ExtractFromMSCab(string path, MiniYaml actionYaml, List<string> extractedFiles, Action<string> updateMessage)
 		{
-			var sourcePath = Path.Combine(path, actionYaml.Value);
-
-			// Try as an absolute path
-			if (!File.Exists(sourcePath))
-				sourcePath = Platform.ResolvePath(actionYaml.Value);
+			// Yaml path may be specified relative to a named directory (e.g. ^SupportDir) or the detected disc path
+			var sourcePath = actionYaml.Value.StartsWith("^") ? Platform.ResolvePath(actionYaml.Value) : Path.Combine(path, actionYaml.Value);
 
 			using (var source = File.OpenRead(sourcePath))
 			{
@@ -417,11 +409,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		static void ExtractFromISCab(string path, MiniYaml actionYaml, List<string> extractedFiles, Action<string> updateMessage)
 		{
-			var sourcePath = Path.Combine(path, actionYaml.Value);
-
-			// Try as an absolute path
-			if (!File.Exists(sourcePath))
-				sourcePath = Platform.ResolvePath(actionYaml.Value);
+			// Yaml path may be specified relative to a named directory (e.g. ^SupportDir) or the detected disc path
+			var sourcePath = actionYaml.Value.StartsWith("^") ? Platform.ResolvePath(actionYaml.Value) : Path.Combine(path, actionYaml.Value);
 
 			var volumeNode = actionYaml.Nodes.FirstOrDefault(n => n.Key == "Volumes");
 			if (volumeNode == null)
@@ -475,7 +464,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		string FindSourcePath(ModContent.ModSource source, IEnumerable<string> volumes)
 		{
-			if (source.Type == ModContent.SourceType.Install)
+			if (source.Type == ModContent.SourceType.RegistryDirectory || source.Type == ModContent.SourceType.RegistryDirectoryFromFile)
 			{
 				if (source.RegistryKey == null)
 					return null;
@@ -488,6 +477,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var path = Microsoft.Win32.Registry.GetValue(prefix + source.RegistryKey, source.RegistryValue, null) as string;
 					if (path == null)
 						continue;
+
+					if (source.Type == ModContent.SourceType.RegistryDirectoryFromFile)
+						path = Path.GetDirectoryName(path);
 
 					return IsValidSourcePath(path, source) ? path : null;
 				}

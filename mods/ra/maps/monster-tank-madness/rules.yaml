@@ -26,9 +26,6 @@ World:
 	Explodes:
 		Weapon: BarrelExplode
 		EmptyWeapon: BarrelExplode
-	-SpawnActorOnDeath@1:
-	-SpawnActorOnDeath@2:
-	-SpawnActorOnDeath@3:
 
 V01.exploding:
 	Inherits: ^ExplodingCivBuilding
@@ -137,11 +134,11 @@ PBOX:
 	RevealsShroud@friendly:
 		Range: 6c0
 		RequiresCondition: friendly
-		ValidStances: Ally, Enemy
+		ValidRelationships: Ally, Enemy
 	ExternalCondition@friendly:
 		Condition: friendly
 	Turreted:
-		TurnSpeed: 1
+		TurnSpeed: 4
 	Armament@PRIMARY:
 		Weapon: SuperTankPrimary
 		LocalOffset: 900,180,340, 900,-180,340
@@ -163,10 +160,10 @@ PBOX:
 		EmptyWeapon: MiniNuke
 	SpawnActorOnDeath:
 		Actor: 5TNK.Husk
-	SelfHealing:
+	ChangesHealth:
 		Step: 100
 		Delay: 1
-		HealIfBelow: 100
+		StartIfBelow: 100
 		DamageCooldown: 150
 	Selectable:
 		Bounds: 44,38,0,-4
@@ -185,6 +182,7 @@ PBOX:
 		Image: 4TNK
 	-Capturable:
 	-TransformOnCapture:
+	-InfiltrateForTransform:
 
 DOME.NoInfiltrate:
 	Inherits: DOME
@@ -194,7 +192,9 @@ DOME.NoInfiltrate:
 		Image: DOME
 	-InfiltrateForExploration:
 	Targetable:
-		TargetTypes: Ground, Structure, C4, DetonateAttack, MissionObjective
+		TargetTypes: GroundActor, Structure, C4, DetonateAttack, MissionObjective
+	ProvidesPrerequisite:
+		Prerequisite: dome
 
 SPY:
 	Infiltrates:
@@ -333,7 +333,7 @@ SHOK:
 	Buildable:
 		Prerequisites: ~disabled
 
-HIJACKER:
+THF:
 	Buildable:
 		Prerequisites: ~disabled
 

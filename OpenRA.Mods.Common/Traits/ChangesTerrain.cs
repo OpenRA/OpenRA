@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -14,11 +14,12 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Modifies the terrain type underneath the actors location.")]
-	class ChangesTerrainInfo : ITraitInfo, Requires<ImmobileInfo>
+	class ChangesTerrainInfo : TraitInfo, Requires<ImmobileInfo>
 	{
-		[FieldLoader.Require] public readonly string TerrainType = null;
+		[FieldLoader.Require]
+		public readonly string TerrainType = null;
 
-		public object Create(ActorInitializer init) { return new ChangesTerrain(this); }
+		public override object Create(ActorInitializer init) { return new ChangesTerrain(this); }
 	}
 
 	class ChangesTerrain : INotifyAddedToWorld, INotifyRemovedFromWorld
@@ -35,7 +36,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var cell = self.Location;
 			var map = self.World.Map;
-			var terrain = map.Rules.TileSet.GetTerrainIndex(info.TerrainType);
+			var terrain = map.Rules.TerrainInfo.GetTerrainIndex(info.TerrainType);
 			previousTerrain = map.CustomTerrain[cell];
 			map.CustomTerrain[cell] = terrain;
 		}

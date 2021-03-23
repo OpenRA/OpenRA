@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,13 +10,12 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Enables defined prerequisites at game start for all players if the checkbox is enabled.")]
-	public class LobbyPrerequisiteCheckboxInfo : ITraitInfo, ILobbyOptions, ITechTreePrerequisiteInfo
+	public class LobbyPrerequisiteCheckboxInfo : TraitInfo, ILobbyOptions, ITechTreePrerequisiteInfo
 	{
 		[FieldLoader.Require]
 		[Desc("Internal id for this checkbox.")]
@@ -53,7 +52,7 @@ namespace OpenRA.Mods.Common.Traits
 				Visible, DisplayOrder, Enabled, Locked);
 		}
 
-		public object Create(ActorInitializer init) { return new LobbyPrerequisiteCheckbox(this); }
+		public override object Create(ActorInitializer init) { return new LobbyPrerequisiteCheckbox(this); }
 	}
 
 	public class LobbyPrerequisiteCheckbox : INotifyCreated, ITechTreePrerequisite
@@ -73,6 +72,6 @@ namespace OpenRA.Mods.Common.Traits
 				prerequisites = info.Prerequisites;
 		}
 
-		IEnumerable<string> ITechTreePrerequisite.ProvidesPrerequisites { get { return prerequisites; } }
+		IEnumerable<string> ITechTreePrerequisite.ProvidesPrerequisites => prerequisites;
 	}
 }

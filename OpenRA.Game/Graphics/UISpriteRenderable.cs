@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,11 +9,11 @@
  */
 #endregion
 
-using System.Drawing;
+using OpenRA.Primitives;
 
 namespace OpenRA.Graphics
 {
-	public struct UISpriteRenderable : IRenderable, IFinalizedRenderable
+	public class UISpriteRenderable : IRenderable, IPalettedRenderable, IFinalizedRenderable
 	{
 		readonly Sprite sprite;
 		readonly WPos effectiveWorldPos;
@@ -21,8 +21,9 @@ namespace OpenRA.Graphics
 		readonly int zOffset;
 		readonly PaletteReference palette;
 		readonly float scale;
+		readonly float alpha;
 
-		public UISpriteRenderable(Sprite sprite, WPos effectiveWorldPos, int2 screenPos, int zOffset, PaletteReference palette, float scale)
+		public UISpriteRenderable(Sprite sprite, WPos effectiveWorldPos, int2 screenPos, int zOffset, PaletteReference palette, float scale = 1f, float alpha = 1f)
 		{
 			this.sprite = sprite;
 			this.effectiveWorldPos = effectiveWorldPos;
@@ -30,25 +31,26 @@ namespace OpenRA.Graphics
 			this.zOffset = zOffset;
 			this.palette = palette;
 			this.scale = scale;
+			this.alpha = alpha;
 		}
 
 		// Does not exist in the world, so a world positions don't make sense
-		public WPos Pos { get { return effectiveWorldPos; } }
-		public WVec Offset { get { return WVec.Zero; } }
-		public bool IsDecoration { get { return true; } }
+		public WPos Pos => effectiveWorldPos;
+		public WVec Offset => WVec.Zero;
+		public bool IsDecoration => true;
 
-		public PaletteReference Palette { get { return palette; } }
-		public int ZOffset { get { return zOffset; } }
+		public PaletteReference Palette => palette;
+		public int ZOffset => zOffset;
 
-		public IRenderable WithPalette(PaletteReference newPalette) { return new UISpriteRenderable(sprite, effectiveWorldPos, screenPos, zOffset, newPalette, scale); }
+		public IPalettedRenderable WithPalette(PaletteReference newPalette) { return new UISpriteRenderable(sprite, effectiveWorldPos, screenPos, zOffset, newPalette, scale, alpha); }
 		public IRenderable WithZOffset(int newOffset) { return this; }
-		public IRenderable OffsetBy(WVec vec) { return this; }
+		public IRenderable OffsetBy(in WVec vec) { return this; }
 		public IRenderable AsDecoration() { return this; }
 
 		public IFinalizedRenderable PrepareRender(WorldRenderer wr) { return this; }
 		public void Render(WorldRenderer wr)
 		{
-			Game.Renderer.SpriteRenderer.DrawSprite(sprite, screenPos, palette, scale * sprite.Size);
+			Game.Renderer.SpriteRenderer.DrawSprite(sprite, screenPos, palette, scale * sprite.Size, float3.Ones, alpha);
 		}
 
 		public void RenderDebugGeometry(WorldRenderer wr)

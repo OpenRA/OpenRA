@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -18,8 +19,6 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Network
 {
-	using System.Globalization;
-
 	class SyncReport
 	{
 		const int NumSyncReports = 5;
@@ -30,7 +29,7 @@ namespace OpenRA.Network
 		readonly Report[] syncReports = new Report[NumSyncReports];
 		int curIndex = 0;
 
-		static Pair<string[], Values> DumpSyncTrait(ISync sync)
+		static (string[] Names, Values Values) DumpSyncTrait(ISync sync)
 		{
 			var type = sync.GetType();
 			TypeInfo typeInfo;
@@ -42,7 +41,7 @@ namespace OpenRA.Network
 			foreach (var func in typeInfo.SerializableCopyOfMemberFunctions)
 				values[index++] = func(sync);
 
-			return Pair.New(typeInfo.Names, values);
+			return (typeInfo.Names, values);
 		}
 
 		public SyncReport(OrderManager orderManager)
@@ -121,9 +120,9 @@ namespace OpenRA.Network
 						Log.Write("sync", "\t {0} {1} {2} {3} ({4})".F(a.ActorID, a.Type, a.Owner, a.Trait, a.Hash));
 
 						var nvp = a.NamesValues;
-						for (int i = 0; i < nvp.First.Length; i++)
-							if (nvp.Second[i] != null)
-								Log.Write("sync", "\t\t {0}: {1}".F(nvp.First[i], nvp.Second[i]));
+						for (int i = 0; i < nvp.Names.Length; i++)
+							if (nvp.Values[i] != null)
+								Log.Write("sync", "\t\t {0}: {1}".F(nvp.Names[i], nvp.Values[i]));
 					}
 
 					Log.Write("sync", "Synced Effects:");
@@ -132,9 +131,9 @@ namespace OpenRA.Network
 						Log.Write("sync", "\t {0} ({1})", e.Name, e.Hash);
 
 						var nvp = e.NamesValues;
-						for (int i = 0; i < nvp.First.Length; i++)
-							if (nvp.Second[i] != null)
-								Log.Write("sync", "\t\t {0}: {1}".F(nvp.First[i], nvp.Second[i]));
+						for (int i = 0; i < nvp.Names.Length; i++)
+							if (nvp.Values[i] != null)
+								Log.Write("sync", "\t\t {0}: {1}".F(nvp.Names[i], nvp.Values[i]));
 					}
 
 					Log.Write("sync", "Orders Issued:");
@@ -164,14 +163,14 @@ namespace OpenRA.Network
 			public string Owner;
 			public string Trait;
 			public int Hash;
-			public Pair<string[], Values> NamesValues;
+			public (string[] Names, Values Values) NamesValues;
 		}
 
 		struct EffectReport
 		{
 			public string Name;
 			public int Hash;
-			public Pair<string[], Values> NamesValues;
+			public (string[] Names, Values Values) NamesValues;
 		}
 
 		struct TypeInfo
@@ -297,7 +296,7 @@ namespace OpenRA.Network
 						case 1: return item2OrSentinel;
 						case 2: return item3;
 						case 3: return item4;
-						default: throw new ArgumentOutOfRangeException("index");
+						default: throw new ArgumentOutOfRangeException(nameof(index));
 					}
 				}
 
@@ -315,7 +314,7 @@ namespace OpenRA.Network
 						case 1: item2OrSentinel = value; break;
 						case 2: item3 = value; break;
 						case 3: item4 = value; break;
-						default: throw new ArgumentOutOfRangeException("index");
+						default: throw new ArgumentOutOfRangeException(nameof(index));
 					}
 				}
 			}

@@ -1,6 +1,6 @@
 World:
 	LuaScript:
-		Scripts: nod07b.lua, nod07b-AI.lua
+		Scripts: campaign-global.lua, nod07b.lua, nod07b-AI.lua
 	MusicPlaylist:
 		StartingMusic: justdoit
 		VictoryMusic: nod_win1
@@ -63,7 +63,8 @@ E5:
 
 HARV:
 	Harvester:
-		SearchFromOrderRadius: 45
+		SearchFromProcRadius: 45
+		SearchFromHarvesterRadius: 45
 
 MTNK:
 	Buildable:

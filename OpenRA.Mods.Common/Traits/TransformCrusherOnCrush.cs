@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -16,15 +16,17 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Put this on the actor that gets crushed to replace the crusher with a new actor.")]
-	public class TransformCrusherOnCrushInfo : ITraitInfo
+	public class TransformCrusherOnCrushInfo : TraitInfo
 	{
-		[ActorReference, FieldLoader.Require] public readonly string IntoActor = null;
+		[ActorReference]
+		[FieldLoader.Require]
+		public readonly string IntoActor = null;
 
 		public readonly bool SkipMakeAnims = true;
 
 		public readonly BitSet<CrushClass> CrushClasses = default(BitSet<CrushClass>);
 
-		public virtual object Create(ActorInitializer init) { return new TransformCrusherOnCrush(init, this); }
+		public override object Create(ActorInitializer init) { return new TransformCrusherOnCrush(init, this); }
 	}
 
 	public class TransformCrusherOnCrush : INotifyCrushed
@@ -35,7 +37,7 @@ namespace OpenRA.Mods.Common.Traits
 		public TransformCrusherOnCrush(ActorInitializer init, TransformCrusherOnCrushInfo info)
 		{
 			this.info = info;
-			faction = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : init.Self.Owner.Faction.InternalName;
+			faction = init.GetValue<FactionInit, string>(init.Self.Owner.Faction.InternalName);
 		}
 
 		void INotifyCrushed.WarnCrush(Actor self, Actor crusher, BitSet<CrushClass> crushClasses) { }
@@ -51,8 +53,7 @@ namespace OpenRA.Mods.Common.Traits
 				transform.Facing = facing.Facing;
 
 			transform.SkipMakeAnims = info.SkipMakeAnims;
-			if (crusher.CancelActivity())
-				crusher.QueueActivity(transform);
+			crusher.QueueActivity(false, transform);
 		}
 	}
 }

@@ -1,6 +1,6 @@
 World:
-	-SpawnMPUnits:
-	-MPStartLocations:
+	-SpawnStartingUnits:
+	-MapStartingLocations:
 	-CrateSpawner:
 	ObjectivesPanel:
 		PanelName: MISSION_OBJECTIVES
@@ -15,11 +15,19 @@ World:
 	MapOptions:
 		ShortGameCheckboxLocked: True
 		ShortGameCheckboxEnabled: False
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			normal: Normal
+		Default: normal
+		Locked: true
 
 Player:
 	-ConquestVictoryConditions:
 	MissionObjectives:
 		EarlyGameOver: true
+		GameOverDelay: 3000
 	Shroud:
 		FogCheckboxLocked: True
 		FogCheckboxEnabled: True
@@ -28,6 +36,9 @@ Player:
 	PlayerResources:
 		DefaultCashDropdownLocked: True
 		DefaultCash: 5000
+	ModularBot@CampaignAI:
+		Name: Campaign Player AI
+		Type: campaign
 
 airstrike.proxy:
 	AlwaysVisible:
@@ -51,6 +62,18 @@ airstrike.proxy:
 		ArrowSequence: arrow
 		ClockSequence: clock
 		CircleSequence: circles
+		SupportPowerPaletteOrder: 10
+
+MoneyCrate:
+	Inherits: ^Crate
+	Tooltip:
+		Name: Money Crate
+	GiveCashCrateAction:
+		Amount: 2000
+		Sequence: dollar
+		UseCashTick: true
+	RenderSprites:
+		Image: wcrate
 
 TRUCK:
 	Buildable:

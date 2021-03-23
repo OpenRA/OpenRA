@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -11,13 +11,13 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Cnc.Graphics
 {
-	struct TeslaZapRenderable : IRenderable, IFinalizedRenderable
+	class TeslaZapRenderable : IPalettedRenderable, IFinalizedRenderable
 	{
 		static int[][] steps = new[]
 		{
@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Cnc.Graphics
 		WVec cachedLength;
 		IEnumerable<IFinalizedRenderable> cache;
 
-		public TeslaZapRenderable(WPos pos, int zOffset, WVec length, string image, string brightSequence, int brightZaps, string dimSequence, int dimZaps, string palette)
+		public TeslaZapRenderable(WPos pos, int zOffset, in WVec length, string image, string brightSequence, int brightZaps, string dimSequence, int dimZaps, string palette)
 		{
 			this.pos = pos;
 			this.zOffset = zOffset;
@@ -61,18 +61,18 @@ namespace OpenRA.Mods.Cnc.Graphics
 			cache = new IFinalizedRenderable[] { };
 		}
 
-		public WPos Pos { get { return pos; } }
-		public PaletteReference Palette { get { return null; } }
-		public int ZOffset { get { return zOffset; } }
-		public bool IsDecoration { get { return true; } }
+		public WPos Pos => pos;
+		public PaletteReference Palette => null;
+		public int ZOffset => zOffset;
+		public bool IsDecoration => true;
 
-		public IRenderable WithPalette(PaletteReference newPalette)
+		public IPalettedRenderable WithPalette(PaletteReference newPalette)
 		{
 			return new TeslaZapRenderable(pos, zOffset, length, image, brightSequence, brightZaps, dimSequence, dimZaps, palette);
 		}
 
 		public IRenderable WithZOffset(int newOffset) { return new TeslaZapRenderable(pos, zOffset, length, image, brightSequence, brightZaps, dimSequence, dimZaps, palette); }
-		public IRenderable OffsetBy(WVec vec) { return new TeslaZapRenderable(pos + vec, zOffset, length, image, brightSequence, brightZaps, dimSequence, dimZaps, palette); }
+		public IRenderable OffsetBy(in WVec vec) { return new TeslaZapRenderable(pos + vec, zOffset, length, image, brightSequence, brightZaps, dimSequence, dimZaps, palette); }
 		public IRenderable AsDecoration() { return this; }
 
 		public IFinalizedRenderable PrepareRender(WorldRenderer wr) { return this; }
@@ -148,7 +148,8 @@ namespace OpenRA.Mods.Cnc.Graphics
 					.MinBy(t => Math.Abs(float2.Dot(z + new float2(t[0], t[1]), q) + c));
 
 				var pos = wr.ProjectedPosition((z + new float2(step[2], step[3])).ToInt2());
-				rs.Add(new SpriteRenderable(s.GetSprite(step[4]), pos, WVec.Zero, 0, pal, 1f, true).PrepareRender(wr));
+				var tintModifiers = s.IgnoreWorldTint ? TintModifiers.IgnoreWorldTint : TintModifiers.None;
+				rs.Add(new SpriteRenderable(s.GetSprite(step[4]), pos, WVec.Zero, 0, pal, 1f, s.GetAlpha(step[4]), float3.Ones, tintModifiers, true).PrepareRender(wr));
 
 				z += new float2(step[0], step[1]);
 				if (rs.Count >= 1000)

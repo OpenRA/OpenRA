@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -14,25 +14,29 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Orders
 {
-	public class EnterAlliedActorTargeter<T> : UnitOrderTargeter where T : ITraitInfo
+	public class EnterAlliedActorTargeter<T> : UnitOrderTargeter where T : ITraitInfoInterface
 	{
-		readonly Func<Actor, bool> canTarget;
+		readonly string enterCursor;
+		readonly string enterBlockedCursor;
+		readonly Func<Actor, TargetModifiers, bool> canTarget;
 		readonly Func<Actor, bool> useEnterCursor;
 
-		public EnterAlliedActorTargeter(string order, int priority,
-			Func<Actor, bool> canTarget, Func<Actor, bool> useEnterCursor)
-			: base(order, priority, "enter", false, true)
+		public EnterAlliedActorTargeter(string order, int priority, string enterCursor, string enterBlockedCursor,
+			Func<Actor, TargetModifiers, bool> canTarget, Func<Actor, bool> useEnterCursor)
+			: base(order, priority, enterCursor, false, true)
 		{
+			this.enterCursor = enterCursor;
+			this.enterBlockedCursor = enterBlockedCursor;
 			this.canTarget = canTarget;
 			this.useEnterCursor = useEnterCursor;
 		}
 
 		public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 		{
-			if (!self.Owner.IsAlliedWith(target.Owner) || !target.Info.HasTraitInfo<T>() || !canTarget(target))
+			if (!self.Owner.IsAlliedWith(target.Owner) || !target.Info.HasTraitInfo<T>() || !canTarget(target, modifiers))
 				return false;
 
-			cursor = useEnterCursor(target) ? "enter" : "enter-blocked";
+			cursor = useEnterCursor(target) ? enterCursor : enterBlockedCursor;
 			return true;
 		}
 

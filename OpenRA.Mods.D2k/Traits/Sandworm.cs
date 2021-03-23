@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -12,6 +12,7 @@
 using System;
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.D2k.Traits
@@ -66,7 +67,7 @@ namespace OpenRA.Mods.D2k.Traits
 			if (IsMovingTowardTarget)
 				return;
 
-			self.QueueActivity(mobile.MoveWithinRange(Target.FromCell(self.World, targetCell, SubCell.Any), WDist.FromCells(1)));
+			self.QueueActivity(mobile.MoveWithinRange(Target.FromCell(self.World, targetCell, SubCell.Any), WDist.FromCells(1), targetLineColor: Color.Red));
 		}
 
 		void ITick.Tick(Actor self)
@@ -88,7 +89,7 @@ namespace OpenRA.Mods.D2k.Traits
 
 			if (target.Type == TargetType.Actor)
 			{
-				attackTrait.AttackTarget(target, false, true, false);
+				attackTrait.AttackTarget(target, AttackSource.AutoTarget, false, true, false);
 				return;
 			}
 
@@ -97,7 +98,7 @@ namespace OpenRA.Mods.D2k.Traits
 				if (!a.Info.HasTraitInfo<AttractsWormsInfo>())
 					return false;
 
-				return mobile.CanEnterCell(a.Location, null, false);
+				return mobile.CanEnterCell(a.Location, null, BlockedByActor.None);
 			};
 
 			var actorsInRange = self.World.FindActorsInCircle(self.CenterPosition, WormInfo.MaxSearchRadius)
@@ -111,7 +112,7 @@ namespace OpenRA.Mods.D2k.Traits
 
 			var moveTo = self.World.Map.CellContaining(self.CenterPosition + noiseDirection);
 
-			while (!self.World.Map.Contains(moveTo) || !mobile.CanEnterCell(moveTo, null, false))
+			while (!self.World.Map.Contains(moveTo) || !mobile.CanEnterCell(moveTo, null, BlockedByActor.None))
 			{
 				// without this check, this while can be infinity loop
 				if (moveTo == self.Location)

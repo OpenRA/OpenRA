@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,9 +10,9 @@
 #endregion
 
 using System;
-using System.Drawing;
 using System.IO;
 using System.Linq;
+using OpenRA.Primitives;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
@@ -23,10 +23,7 @@ namespace OpenRA.Mods.Common.Widgets
 		string text = "";
 		public string Text
 		{
-			get
-			{
-				return text;
-			}
+			get => text;
 
 			set
 			{
@@ -46,10 +43,7 @@ namespace OpenRA.Mods.Common.Widgets
 		TextFieldType type = TextFieldType.General;
 		public TextFieldType Type
 		{
-			get
-			{
-				return type;
-			}
+			get => type;
 
 			set
 			{
@@ -365,7 +359,6 @@ namespace OpenRA.Mods.Common.Widgets
 						Game.Renderer.SetClipboardText(Text.Substring(lowestIndex, highestIndex - lowestIndex));
 
 						RemoveSelectedText();
-						OnTextEdited();
 					}
 
 					break;
@@ -531,6 +524,7 @@ namespace OpenRA.Mods.Common.Widgets
 				ClearSelection();
 
 				CursorPosition = lowestIndex;
+				OnTextEdited();
 			}
 		}
 
@@ -566,10 +560,8 @@ namespace OpenRA.Mods.Common.Widgets
 			var cursorPosition = font.Measure(apparentText.Substring(0, CursorPosition));
 
 			var disabled = IsDisabled();
-			var state = disabled ? "textfield-disabled" :
-				HasKeyboardFocus ? "textfield-focused" :
-				Ui.MouseOverWidget == this || Children.Any(c => c == Ui.MouseOverWidget) ? "textfield-hover" :
-				"textfield";
+			var hover = Ui.MouseOverWidget == this || Children.Any(c => c == Ui.MouseOverWidget);
+			var state = WidgetUtils.GetStatefulImageName("textfield", disabled, false, hover, HasKeyboardFocus);
 
 			WidgetUtils.DrawPanel(state,
 				new Rectangle(pos.X, pos.Y, Bounds.Width, Bounds.Height));
@@ -579,7 +571,8 @@ namespace OpenRA.Mods.Common.Widgets
 			var textPos = pos + new int2(LeftMargin, verticalMargin);
 
 			// Right align when editing and scissor when the text overflows
-			if (textSize.X > Bounds.Width - LeftMargin - RightMargin)
+			var isTextOverflowing = textSize.X > Bounds.Width - LeftMargin - RightMargin;
+			if (isTextOverflowing)
 			{
 				if (HasKeyboardFocus)
 					textPos += new int2(Bounds.Width - LeftMargin - RightMargin - textSize.X, 0);
@@ -609,7 +602,7 @@ namespace OpenRA.Mods.Common.Widgets
 			if (showCursor && HasKeyboardFocus)
 				font.DrawText("|", new float2(textPos.X + cursorPosition.X - 2, textPos.Y), TextColor);
 
-			if (textSize.X > Bounds.Width - LeftMargin - RightMargin)
+			if (isTextOverflowing)
 				Game.Renderer.DisableScissor();
 		}
 

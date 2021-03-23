@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -52,15 +52,15 @@ namespace OpenRA.Mods.Cnc.Activities
 				IsInterruptible = false;
 		}
 
-		public override Activity Tick(Actor self)
+		public override bool Tick(Actor self)
 		{
 			var pc = self.TraitOrDefault<PortableChrono>();
-			if (teleporter == self && pc != null && !pc.CanTeleport)
+			if (teleporter == self && pc != null && (!pc.CanTeleport || IsCanceling))
 			{
 				if (killOnFailure)
 					self.Kill(teleporter, killDamageTypes);
 
-				return NextActivity;
+				return true;
 			}
 
 			var bestCell = ChooseBestDestinationCell(self, destination);
@@ -69,7 +69,7 @@ namespace OpenRA.Mods.Cnc.Activities
 				if (killOnFailure)
 					self.Kill(teleporter, killDamageTypes);
 
-				return NextActivity;
+				return true;
 			}
 
 			destination = bestCell.Value;
@@ -97,8 +97,8 @@ namespace OpenRA.Mods.Cnc.Activities
 			}
 
 			// Consume teleport charges if this wasn't triggered via chronosphere
-			if (teleporter == self && pc != null)
-				pc.ResetChargeTime();
+			if (teleporter == self)
+				pc?.ResetChargeTime();
 
 			// Trigger screen desaturate effect
 			if (screenFlash)
@@ -112,7 +112,7 @@ namespace OpenRA.Mods.Cnc.Activities
 					building.PlayCustomAnimation(teleporter, "active");
 			}
 
-			return NextActivity;
+			return true;
 		}
 
 		CPos? ChooseBestDestinationCell(Actor self, CPos destination)

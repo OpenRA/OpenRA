@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -14,7 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class GrantConditionOnTerrainInfo : ITraitInfo
+	public class GrantConditionOnTerrainInfo : TraitInfo
 	{
 		[FieldLoader.Require]
 		[GrantedConditionReference]
@@ -25,51 +25,43 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Terrain names to trigger the condition.")]
 		public readonly string[] TerrainTypes = { };
 
-		public object Create(ActorInitializer init) { return new GrantConditionOnTerrain(init, this); }
+		public override object Create(ActorInitializer init) { return new GrantConditionOnTerrain(init, this); }
 	}
 
-	public class GrantConditionOnTerrain : INotifyCreated, ITick
+	public class GrantConditionOnTerrain : ITick
 	{
 		readonly GrantConditionOnTerrainInfo info;
-		readonly TileSet tileSet;
+		readonly TerrainTypeInfo[] terrainTypes;
 
-		ConditionManager conditionManager;
-		int conditionToken = ConditionManager.InvalidConditionToken;
-
+		int conditionToken = Actor.InvalidConditionToken;
 		string cachedTerrain;
-		CPos cachedLocation;
 
 		public GrantConditionOnTerrain(ActorInitializer init, GrantConditionOnTerrainInfo info)
 		{
 			this.info = info;
-			tileSet = init.World.Map.Rules.TileSet;
-		}
-
-		void INotifyCreated.Created(Actor self)
-		{
-			conditionManager = self.TraitOrDefault<ConditionManager>();
+			terrainTypes = init.World.Map.Rules.TerrainInfo.TerrainTypes;
 		}
 
 		void ITick.Tick(Actor self)
 		{
-			var loc = self.Location;
-			if (conditionManager == null || loc == cachedLocation)
+			var cell = self.Location;
+			if (!self.World.Map.Contains(cell))
 				return;
 
-			var currentTerrain = loc.Layer == 0 ? self.World.Map.GetTerrainInfo(loc).Type :
-					tileSet[self.World.GetCustomMovementLayers()[loc.Layer].GetTerrainIndex(loc)].Type;
+			// The terrain type may change between ticks without the actor moving
+			var currentTerrain = cell.Layer == 0 ? self.World.Map.GetTerrainInfo(cell).Type :
+				terrainTypes[self.World.GetCustomMovementLayers()[cell.Layer].GetTerrainIndex(cell)].Type;
 
 			var wantsGranted = info.TerrainTypes.Contains(currentTerrain);
 			if (currentTerrain != cachedTerrain)
 			{
-				if (wantsGranted && conditionToken == ConditionManager.InvalidConditionToken)
-					conditionToken = conditionManager.GrantCondition(self, info.Condition);
-				else if (!wantsGranted && conditionToken != ConditionManager.InvalidConditionToken)
-					conditionToken = conditionManager.RevokeCondition(self, conditionToken);
+				if (wantsGranted && conditionToken == Actor.InvalidConditionToken)
+					conditionToken = self.GrantCondition(info.Condition);
+				else if (!wantsGranted && conditionToken != Actor.InvalidConditionToken)
+					conditionToken = self.RevokeCondition(conditionToken);
 			}
 
 			cachedTerrain = currentTerrain;
-			cachedLocation = loc;
 		}
 	}
 }

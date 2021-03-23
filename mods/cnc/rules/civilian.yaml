@@ -13,7 +13,7 @@ V01:
 		Name: Church
 	SpawnActorOnDeath:
 		Actor: V01.Husk
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 
 V01.Husk:
@@ -23,7 +23,7 @@ V01.Husk:
 		Dimensions: 2,2
 	Tooltip:
 		Name: Church (Destroyed)
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 
 V02:
@@ -39,7 +39,7 @@ V02:
 		Dimensions: 2,2
 	SpawnActorOnDeath:
 		Actor: V02.Husk
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 	Tooltip:
 		Name: Han's and Gretel's
@@ -49,7 +49,7 @@ V02.Husk:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 	Tooltip:
 		Name: Han's and Gretel's (Destroyed)
@@ -67,7 +67,7 @@ V03:
 		Dimensions: 2,2
 	SpawnActorOnDeath:
 		Actor: V03.Husk
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 	Tooltip:
 		Name: Hewitt's House
@@ -77,7 +77,7 @@ V03.Husk:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 	Tooltip:
 		Name: Hewitt's House (Destroyed)
@@ -95,7 +95,7 @@ V04:
 		Dimensions: 2,2
 	SpawnActorOnDeath:
 		Actor: V04.Husk
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 	Tooltip:
 		Name: Ricktor's House
@@ -105,7 +105,7 @@ V04.Husk:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 	Tooltip:
 		Name: Ricktor's House (Destroyed)
@@ -118,7 +118,7 @@ V05:
 		Dimensions: 2,1
 	SpawnActorOnDeath:
 		Actor: V05.Husk
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 	Tooltip:
 		Name: Gretchkin's house
@@ -128,7 +128,7 @@ V05.Husk:
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 	Tooltip:
 		Name: Gretchkin's house (Destroyed)
@@ -141,7 +141,7 @@ V06:
 		Dimensions: 2,1
 	SpawnActorOnDeath:
 		Actor: V06.Husk
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 	Tooltip:
 		Name: The Barn
@@ -151,7 +151,7 @@ V06.Husk:
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 	Tooltip:
 		Name: The Barn (Destroyed)
@@ -164,7 +164,7 @@ V07:
 		Dimensions: 2,1
 	SpawnActorOnDeath:
 		Actor: V07.Husk
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 	Tooltip:
 		Name: Damon's Pub
@@ -174,7 +174,7 @@ V07.Husk:
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 	Tooltip:
 		Name: Damon's Pub (Destroyed)
@@ -183,14 +183,14 @@ V08:
 	Inherits: ^CivBuilding
 	SpawnActorOnDeath:
 		Actor: V08.Husk
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 	Tooltip:
 		Name: Fran's House
 
 V08.Husk:
 	Inherits: ^CivBuildingHusk
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 	Tooltip:
 		Name: Fran's House (Destroyed)
@@ -199,14 +199,14 @@ V09:
 	Inherits: ^CivBuilding
 	SpawnActorOnDeath:
 		Actor: V09.Husk
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 	Tooltip:
 		Name: Music Factory
 
 V09.Husk:
 	Inherits: ^CivBuildingHusk
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 	Tooltip:
 		Name: Music Factory (Destroyed)
@@ -215,14 +215,14 @@ V10:
 	Inherits: ^CivBuilding
 	SpawnActorOnDeath:
 		Actor: V10.Husk
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 	Tooltip:
 		Name: Toymaker's
 
 V10.Husk:
 	Inherits: ^CivBuildingHusk
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 	Tooltip:
 		Name: Toymaker's (Destroyed)
@@ -231,14 +231,14 @@ V11:
 	Inherits: ^CivBuilding
 	SpawnActorOnDeath:
 		Actor: V11.Husk
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 	Tooltip:
 		Name: Ludwig's House
 
 V11.Husk:
 	Inherits: ^CivBuildingHusk
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 	Tooltip:
 		Name: Ludwig's House (Destroyed)
@@ -247,14 +247,14 @@ V12:
 	Inherits: ^CivField
 	SpawnActorOnDeath:
 		Actor: V12.Husk
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 	Tooltip:
 		Name: Haystacks
 
 V12.Husk:
 	Inherits: ^CivBuildingHusk
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 	Tooltip:
 		Name: Haystacks (Destroyed)
@@ -263,14 +263,14 @@ V13:
 	Inherits: ^CivField
 	SpawnActorOnDeath:
 		Actor: V13.Husk
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 	Tooltip:
 		Name: Haystacks
 
 V13.Husk:
 	Inherits: ^CivBuildingHusk
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 	Tooltip:
 		Name: Haystacks (Destroyed)
@@ -279,14 +279,14 @@ V14:
 	Inherits: ^CivField
 	SpawnActorOnDeath:
 		Actor: V14.Husk
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 	Tooltip:
 		Name: Wheat Field
 
 V14.Husk:
 	Inherits: ^CivFieldHusk
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 	Tooltip:
 		Name: Wheat Field (Destroyed)
@@ -295,14 +295,14 @@ V15:
 	Inherits: ^CivField
 	SpawnActorOnDeath:
 		Actor: V15.Husk
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 	Tooltip:
 		Name: Fallow Field
 
 V15.Husk:
 	Inherits: ^CivFieldHusk
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 	Tooltip:
 		Name: Fallow Field (Destroyed)
@@ -311,14 +311,14 @@ V16:
 	Inherits: ^CivField
 	SpawnActorOnDeath:
 		Actor: V16.Husk
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 	Tooltip:
 		Name: Corn Field
 
 V16.Husk:
 	Inherits: ^CivFieldHusk
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 	Tooltip:
 		Name: Corn Field (Destroyed)
@@ -327,14 +327,14 @@ V17:
 	Inherits: ^CivField
 	SpawnActorOnDeath:
 		Actor: V17.Husk
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 	Tooltip:
 		Name: Celery Field
 
 V17.Husk:
 	Inherits: ^CivFieldHusk
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 	Tooltip:
 		Name: Celery Field (Destroyed)
@@ -343,14 +343,14 @@ V18:
 	Inherits: ^CivField
 	SpawnActorOnDeath:
 		Actor: V18.Husk
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 	Tooltip:
 		Name: Potato Field
 
 V18.Husk:
 	Inherits: ^CivFieldHusk
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT
 	Tooltip:
 		Name: Potato Field (Destroyed)

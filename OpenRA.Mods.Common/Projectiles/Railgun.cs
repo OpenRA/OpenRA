@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,11 +10,11 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Drawing;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Projectiles
@@ -25,8 +25,11 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Damage all units hit by the beam instead of just the target?")]
 		public readonly bool DamageActorsInLine = false;
 
-		[Desc("Maximum offset at the maximum range.")]
+		[Desc("The maximum/constant/incremental inaccuracy used in conjunction with the InaccuracyType property.")]
 		public readonly WDist Inaccuracy = WDist.Zero;
+
+		[Desc("Controls the way inaccuracy is calculated. Possible values are 'Maximum' - scale from 0 to max with range, 'PerCellIncrement' - scale from 0 with range and 'Absolute' - use set value regardless of range.")]
+		public readonly InaccuracyType InaccuracyType = InaccuracyType.Maximum;
 
 		[Desc("Can this projectile be blocked when hitting actors with an IBlocksProjectiles trait.")]
 		public readonly bool Blockable = false;
@@ -84,7 +87,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		public readonly string HitAnim = null;
 
 		[Desc("Sequence of impact animation to use.")]
-		[SequenceReference("HitAnim")]
+		[SequenceReference(nameof(HitAnim), allowNullImage: true)]
 		public readonly string HitAnimSequence = "idle";
 
 		[PaletteReference]
@@ -92,13 +95,13 @@ namespace OpenRA.Mods.Common.Projectiles
 
 		public IProjectile Create(ProjectileArgs args)
 		{
-			var bc = BeamPlayerColor ? Color.FromArgb(BeamColor.A, args.SourceActor.Owner.Color.RGB) : BeamColor;
-			var hc = HelixPlayerColor ? Color.FromArgb(HelixColor.A, args.SourceActor.Owner.Color.RGB) : HelixColor;
+			var bc = BeamPlayerColor ? Color.FromArgb(BeamColor.A, args.SourceActor.Owner.Color) : BeamColor;
+			var hc = HelixPlayerColor ? Color.FromArgb(HelixColor.A, args.SourceActor.Owner.Color) : HelixColor;
 			return new Railgun(args, this, bc, hc);
 		}
 	}
 
-	public class Railgun : IProjectile
+	public class Railgun : IProjectile, ISync
 	{
 		readonly ProjectileArgs args;
 		readonly RailgunInfo info;
@@ -106,8 +109,10 @@ namespace OpenRA.Mods.Common.Projectiles
 		public readonly Color BeamColor;
 		public readonly Color HelixColor;
 
-		int ticks = 0;
+		int ticks;
 		bool animationComplete;
+
+		[Sync]
 		WPos target;
 
 		// Computing these in Railgun instead of RailgunRenderable saves Info.Duration ticks of computation.
@@ -125,8 +130,14 @@ namespace OpenRA.Mods.Common.Projectiles
 			this.info = info;
 			target = args.PassiveTarget;
 
-			this.BeamColor = beamColor;
-			this.HelixColor = helixColor;
+			BeamColor = beamColor;
+			HelixColor = helixColor;
+
+			if (info.Inaccuracy.Length > 0)
+			{
+				var maxInaccuracyOffset = Util.GetProjectileInaccuracy(info.Inaccuracy.Length, info.InaccuracyType, args);
+				target += WVec.FromPDF(args.SourceActor.World.SharedRandom, 2) * maxInaccuracyOffset / 1024;
+			}
 
 			if (!string.IsNullOrEmpty(info.HitAnim))
 				hitanim = new Animation(args.SourceActor.World, info.HitAnim);
@@ -137,9 +148,8 @@ namespace OpenRA.Mods.Common.Projectiles
 		void CalculateVectors()
 		{
 			// Check for blocking actors
-			WPos blockedPos;
 			if (info.Blockable && BlocksProjectiles.AnyBlockingActorsBetween(args.SourceActor.World, target, args.Source,
-					info.BeamWidth, out blockedPos))
+					info.BeamWidth, out var blockedPos))
 				target = blockedPos;
 
 			// Note: WAngle.Sin(x) = 1024 * Math.Sin(2pi/1024 * x)
@@ -153,14 +163,17 @@ namespace OpenRA.Mods.Common.Projectiles
 
 			// An easy vector to find which is perpendicular vector to forwardStep, with 0 Z component
 			LeftVector = new WVec(ForwardStep.Y, -ForwardStep.X, 0);
-			LeftVector = 1024 * LeftVector / LeftVector.Length;
+			if (LeftVector.LengthSquared != 0)
+				LeftVector = 1024 * LeftVector / LeftVector.Length;
 
 			// Vector that is pointing upwards from the ground
 			UpVector = new WVec(
 				-ForwardStep.X * ForwardStep.Z,
 				-ForwardStep.Z * ForwardStep.Y,
 				ForwardStep.X * ForwardStep.X + ForwardStep.Y * ForwardStep.Y);
-			UpVector = 1024 * UpVector / UpVector.Length;
+
+			if (UpVector.LengthSquared != 0)
+				UpVector = 1024 * UpVector / UpVector.Length;
 
 			//// LeftVector and UpVector are unit vectors of size 1024.
 
@@ -185,17 +198,36 @@ namespace OpenRA.Mods.Common.Projectiles
 					animationComplete = true;
 
 				if (!info.DamageActorsInLine)
-					args.Weapon.Impact(Target.FromPos(target), args.SourceActor, args.DamageModifiers);
+				{
+					var warheadArgs = new WarheadArgs(args)
+					{
+						ImpactOrientation = new WRot(WAngle.Zero, Util.GetVerticalAngle(args.Source, target), args.Facing),
+						ImpactPosition = target,
+					};
+
+					args.Weapon.Impact(Target.FromPos(target), warheadArgs);
+				}
 				else
 				{
 					var actors = world.FindActorsOnLine(args.Source, target, info.BeamWidth);
 					foreach (var a in actors)
-						args.Weapon.Impact(Target.FromActor(a), args.SourceActor, args.DamageModifiers);
+					{
+						var warheadArgs = new WarheadArgs(args)
+						{
+							ImpactOrientation = new WRot(WAngle.Zero, Util.GetVerticalAngle(args.Source, target), args.Facing),
+
+							// Calculating an impact position is bogus for line damage.
+							// FindActorsOnLine guarantees that the beam touches the target's HitShape,
+							// so we just assume a center hit to avoid bogus warhead recalculations.
+							ImpactPosition = a.CenterPosition,
+						};
+
+						args.Weapon.Impact(Target.FromActor(a), warheadArgs);
+					}
 				}
 			}
 
-			if (hitanim != null)
-				hitanim.Tick();
+			hitanim?.Tick();
 
 			if (ticks++ > info.Duration && animationComplete)
 				world.AddFrameEndTask(w => w.Remove(this));

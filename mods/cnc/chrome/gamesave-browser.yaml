@@ -1,0 +1,118 @@
+Container@GAMESAVE_BROWSER_PANEL:
+	Logic: GameSaveBrowserLogic
+	X: (WINDOW_RIGHT - WIDTH) / 2
+	Y: (WINDOW_BOTTOM - HEIGHT) / 2
+	Width: 600
+	Height: 400
+	Children:
+		Label@LOAD_TITLE:
+			Width: PARENT_RIGHT
+			Y: 0 - 22
+			Font: BigBold
+			Contrast: true
+			Align: Center
+			Text: Load game
+			Visible: False
+		Label@SAVE_TITLE:
+			Width: PARENT_RIGHT
+			Y: 0 - 22
+			Font: BigBold
+			Contrast: true
+			Align: Center
+			Text: Save game
+			Visible: False
+		Background@bg:
+			Width: PARENT_RIGHT
+			Height: PARENT_BOTTOM
+			Background: panel-black
+			Children:
+				ScrollPanel@GAME_LIST:
+					X: 10
+					Y: 10
+					Width: PARENT_RIGHT - 20
+					Height: PARENT_BOTTOM - 20
+					Children:
+						ScrollItem@NEW_TEMPLATE:
+							Width: PARENT_RIGHT - 27
+							Height: 25
+							X: 2
+							Visible: false
+							Children:
+								Label@TITLE:
+									Width: PARENT_RIGHT
+									Height: PARENT_BOTTOM
+									Align: Center
+									Text: [CREATE NEW FILE]
+						ScrollItem@GAME_TEMPLATE:
+							Width: PARENT_RIGHT - 27
+							Height: 25
+							X: 2
+							Visible: false
+							EnableChildMouseOver: True
+							Children:
+								LabelWithTooltip@TITLE:
+									X: 10
+									Width: PARENT_RIGHT - 200 - 10
+									Height: 25
+									TooltipContainer: GAMESAVE_TOOLTIP_CONTAINER
+									TooltipTemplate: SIMPLE_TOOLTIP
+								Label@DATE:
+									X: PARENT_RIGHT - WIDTH - 10
+									Width: 200
+									Height: 25
+									Align: Right
+				Container@SAVE_WIDGETS:
+					X: 10
+					Y: PARENT_BOTTOM - 35
+					Width: PARENT_RIGHT - 20
+					Height: 35
+					Visible: False
+					Children:
+						TextField@SAVE_TEXTFIELD:
+							Width: PARENT_RIGHT
+							Height: 25
+							Type: Filename
+				Button@CANCEL_BUTTON:
+					Key: escape
+					X: 0
+					Y: PARENT_BOTTOM - 1
+					Width: 100
+					Height: 35
+					Text: Back
+				Button@DELETE_ALL_BUTTON:
+					X: PARENT_RIGHT - 330 - WIDTH
+					Y: PARENT_BOTTOM - 1
+					Width: 100
+					Height: 35
+					Text: Delete All
+				Button@DELETE_BUTTON:
+					X: PARENT_RIGHT - 220 - WIDTH
+					Y: PARENT_BOTTOM - 1
+					Width: 100
+					Height: 35
+					Text: Delete
+					Key: Delete
+				Button@RENAME_BUTTON:
+					X: PARENT_RIGHT - 110 - WIDTH
+					Y: PARENT_BOTTOM - 1
+					Width: 100
+					Height: 35
+					Text: Rename
+					Key: F2
+				Button@LOAD_BUTTON:
+					Key: return
+					X: PARENT_RIGHT - WIDTH
+					Y: PARENT_BOTTOM - 1
+					Width: 100
+					Height: 35
+					Text: Load
+					Visible: False
+				Button@SAVE_BUTTON:
+					Key: return
+					X: PARENT_RIGHT - WIDTH
+					Y: PARENT_BOTTOM - 1
+					Width: 100
+					Height: 35
+					Text: Save
+					Visible: False
+		TooltipContainer@GAMESAVE_TOOLTIP_CONTAINER:

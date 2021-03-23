@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,8 +10,8 @@
 #endregion
 
 using System;
-using System.Drawing;
 using System.Linq;
+using OpenRA.Primitives;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
@@ -24,12 +24,15 @@ namespace OpenRA.Mods.Common.Widgets
 		public int LeftMargin = 5;
 		public int RightMargin = 5;
 
+		public Action OnEscKey = () => { };
 		public Action OnLoseFocus = () => { };
 
 		public Func<bool> IsDisabled = () => false;
+		public Func<bool> IsValid = () => false;
 		public string Font = ChromeMetrics.Get<string>("HotkeyFont");
 		public Color TextColor = ChromeMetrics.Get<Color>("HotkeyColor");
 		public Color TextColorDisabled = ChromeMetrics.Get<Color>("HotkeyColorDisabled");
+		public Color TextColorInvalid = ChromeMetrics.Get<Color>("HotkeyColorInvalid");
 
 		public HotkeyEntryWidget() { }
 		protected HotkeyEntryWidget(HotkeyEntryWidget widget)
@@ -38,10 +41,25 @@ namespace OpenRA.Mods.Common.Widgets
 			Font = widget.Font;
 			TextColor = widget.TextColor;
 			TextColorDisabled = widget.TextColorDisabled;
+			TextColorInvalid = widget.TextColorInvalid;
 			VisualHeight = widget.VisualHeight;
 		}
 
+		public override bool TakeKeyboardFocus()
+		{
+			return base.TakeKeyboardFocus();
+		}
+
 		public override bool YieldKeyboardFocus()
+		{
+			OnLoseFocus();
+			if (!IsValid())
+				return false;
+
+			return base.YieldKeyboardFocus();
+		}
+
+		public bool ForceYieldKeyboardFocus()
 		{
 			OnLoseFocus();
 			return base.YieldKeyboardFocus();
@@ -69,7 +87,8 @@ namespace OpenRA.Mods.Common.Widgets
 			Keycode.RSHIFT, Keycode.LSHIFT,
 			Keycode.RCTRL, Keycode.LCTRL,
 			Keycode.RALT, Keycode.LALT,
-			Keycode.RGUI, Keycode.LGUI
+			Keycode.RGUI, Keycode.LGUI,
+			Keycode.RETURN, Keycode.KP_ENTER
 		};
 
 		public override bool HandleKeyPress(KeyInput e)
@@ -80,7 +99,16 @@ namespace OpenRA.Mods.Common.Widgets
 			if (!HasKeyboardFocus || IgnoreKeys.Contains(e.Key))
 				return false;
 
-			Key = Hotkey.FromKeyInput(e);
+			switch (e.Key)
+			{
+				case Keycode.ESCAPE:
+					OnEscKey();
+					break;
+
+				default:
+					Key = Hotkey.FromKeyInput(e);
+					break;
+			}
 
 			YieldKeyboardFocus();
 
@@ -109,10 +137,8 @@ namespace OpenRA.Mods.Common.Widgets
 			var textSize = font.Measure(apparentText);
 
 			var disabled = IsDisabled();
-			var state = disabled ? "textfield-disabled" :
-				HasKeyboardFocus ? "textfield-focused" :
-					Ui.MouseOverWidget == this ? "textfield-hover" :
-					"textfield";
+			var valid = IsValid();
+			var state = WidgetUtils.GetStatefulImageName("textfield", disabled, false, Ui.MouseOverWidget == this, HasKeyboardFocus);
 
 			WidgetUtils.DrawPanel(state, RenderBounds);
 
@@ -124,16 +150,17 @@ namespace OpenRA.Mods.Common.Widgets
 			var textPos = pos + new int2(LeftMargin, (Bounds.Height - textSize.Y) / 2 - VisualHeight);
 
 			// Scissor when the text overflows
-			if (textSize.X > Bounds.Width - LeftMargin - RightMargin)
+			var isTextOverflowing = textSize.X > Bounds.Width - LeftMargin - RightMargin;
+			if (isTextOverflowing)
 			{
 				Game.Renderer.EnableScissor(new Rectangle(pos.X + LeftMargin, pos.Y,
 					Bounds.Width - LeftMargin - RightMargin, Bounds.Bottom));
 			}
 
-			var color = disabled ? TextColorDisabled : TextColor;
+			var color = disabled ? TextColorDisabled : !valid ? TextColorInvalid : TextColor;
 			font.DrawText(apparentText, textPos, color);
 
-			if (textSize.X > Bounds.Width - LeftMargin - RightMargin)
+			if (isTextOverflowing)
 				Game.Renderer.DisableScissor();
 		}
 

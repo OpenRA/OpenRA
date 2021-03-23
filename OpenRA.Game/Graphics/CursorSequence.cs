@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -31,8 +31,10 @@ namespace OpenRA.Graphics
 			Palette = palette;
 			Name = name;
 
+			Frames = cache[cursorSrc].Skip(Start).ToArray();
+
 			if ((d.ContainsKey("Length") && d["Length"].Value == "*") || (d.ContainsKey("End") && d["End"].Value == "*"))
-				Length = Frames.Length - Start;
+				Length = Frames.Length;
 			else if (d.ContainsKey("Length"))
 				Length = Exts.ParseIntegerInvariant(d["Length"].Value);
 			else if (d.ContainsKey("End"))
@@ -40,22 +42,17 @@ namespace OpenRA.Graphics
 			else
 				Length = 1;
 
-			Frames = cache[cursorSrc]
-				.Skip(Start)
-				.Take(Length)
-				.ToArray();
+			Frames = Frames.Take(Length).ToArray();
 
 			if (d.ContainsKey("X"))
 			{
-				int x;
-				Exts.TryParseIntegerInvariant(d["X"].Value, out x);
+				Exts.TryParseIntegerInvariant(d["X"].Value, out var x);
 				Hotspot = Hotspot.WithX(x);
 			}
 
 			if (d.ContainsKey("Y"))
 			{
-				int y;
-				Exts.TryParseIntegerInvariant(d["Y"].Value, out y);
+				Exts.TryParseIntegerInvariant(d["Y"].Value, out var y);
 				Hotspot = Hotspot.WithY(y);
 			}
 		}

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,22 +10,21 @@
 #endregion
 
 using System.Collections.Generic;
-using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class ReplaceableInfo : ConditionalTraitInfo, ITraitInfo
+	public class ReplaceableInfo : ConditionalTraitInfo
 	{
 		[FieldLoader.Require]
-		[Desc("Replacement types this Relpaceable actor accepts.")]
+		[Desc("Replacement types this Replaceable actor accepts.")]
 		public readonly HashSet<string> Types = new HashSet<string>();
 
-		public override object Create(ActorInitializer init) { return new Replaceable(init, this); }
+		public override object Create(ActorInitializer init) { return new Replaceable(this); }
 	}
 
 	public class Replaceable : ConditionalTrait<ReplaceableInfo>
 	{
-		public Replaceable(ActorInitializer init, ReplaceableInfo info)
+		public Replaceable(ReplaceableInfo info)
 			: base(info) { }
 	}
 }

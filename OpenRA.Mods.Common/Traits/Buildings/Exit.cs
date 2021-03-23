@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -17,58 +17,78 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Where the unit should leave the building. Multiples are allowed if IDs are added: Exit@2, ...")]
-	public class ExitInfo : TraitInfo<Exit>, Requires<IOccupySpaceInfo>
+	public class ExitInfo : ConditionalTraitInfo, Requires<IOccupySpaceInfo>
 	{
 		[Desc("Offset at which that the exiting actor is spawned relative to the center of the producing actor.")]
 		public readonly WVec SpawnOffset = WVec.Zero;
 
 		[Desc("Cell offset where the exiting actor enters the ActorMap relative to the topleft cell of the producing actor.")]
 		public readonly CVec ExitCell = CVec.Zero;
-		public readonly int Facing = -1;
+		public readonly WAngle? Facing = null;
 
 		[Desc("Type tags on this exit.")]
 		public readonly HashSet<string> ProductionTypes = new HashSet<string>();
 
-		[Desc("AttackMove to a RallyPoint or stay where you are spawned.")]
-		public readonly bool MoveIntoWorld = true;
-
 		[Desc("Number of ticks to wait before moving into the world.")]
 		public readonly int ExitDelay = 0;
+
+		[Desc("Exits with larger priorities will be used before lower priorities.")]
+		public readonly int Priority = 1;
+
+		public override object Create(ActorInitializer init) { return new Exit(init, this); }
 	}
 
-	public class Exit { }
+	public class Exit : ConditionalTrait<ExitInfo>
+	{
+		public Exit(ActorInitializer init, ExitInfo info)
+			: base(info) { }
+	}
 
 	public static class ExitExts
 	{
-		public static ExitInfo FirstExitOrDefault(this ActorInfo info, string productionType = null)
+		public static Exit NearestExitOrDefault(this Actor actor, WPos pos, string productionType = null, Func<Exit, bool> p = null)
 		{
-			var all = info.TraitInfos<ExitInfo>();
-			if (string.IsNullOrEmpty(productionType))
-				return all.FirstOrDefault(e => e.ProductionTypes.Count == 0);
-			return all.FirstOrDefault(e => e.ProductionTypes.Count == 0 || e.ProductionTypes.Contains(productionType));
+			// The .ToList() is required to work around a bug/unexpected behaviour in mono, where
+			// the ThenBy clause makes the FirstOrDefault behave differently than under .NET.
+			// This is important because p may have side-effects that trigger a desync if not
+			// called on the same exits in the same order!
+			var all = Exits(actor, productionType)
+				.OrderByDescending(e => e.Info.Priority)
+				.ThenBy(e => (actor.World.Map.CenterOfCell(actor.Location + e.Info.ExitCell) - pos).LengthSquared)
+				.ToList();
+
+			return p != null ? all.FirstOrDefault(p) : all.FirstOrDefault();
 		}
 
-		public static IEnumerable<ExitInfo> Exits(this ActorInfo info, string productionType = null)
+		public static IEnumerable<Exit> Exits(this Actor actor, string productionType = null)
 		{
-			var all = info.TraitInfos<ExitInfo>();
+			var all = actor.TraitsImplementing<Exit>()
+				.Where(Exts.IsTraitEnabled);
+
 			if (string.IsNullOrEmpty(productionType))
-				return all.Where(e => e.ProductionTypes.Count == 0);
-			return all.Where(e => e.ProductionTypes.Count == 0 || e.ProductionTypes.Contains(productionType));
+				return all;
+
+			return all.Where(e => e.Info.ProductionTypes.Count == 0 || e.Info.ProductionTypes.Contains(productionType));
 		}
 
-		public static ExitInfo RandomExitOrDefault(this ActorInfo info, World world, string productionType, Func<ExitInfo, bool> p = null)
+		public static Exit RandomExitOrDefault(this Actor actor, World world, string productionType, Func<Exit, bool> p = null)
 		{
-			var allOfType = Exits(info, productionType);
+			var allOfType = Exits(actor, productionType);
 			if (!allOfType.Any())
 				return null;
 
-			var shuffled = allOfType.Shuffle(world.SharedRandom);
-			return p != null ? shuffled.FirstOrDefault(p) : shuffled.First();
-		}
+			foreach (var g in allOfType.GroupBy(e => e.Info.Priority))
+			{
+				var shuffled = g.Shuffle(world.SharedRandom);
+				if (p == null)
+					return shuffled.First();
 
-		public static ExitInfo RandomExitOrDefault(this Actor self, string productionType, Func<ExitInfo, bool> p = null)
-		{
-			return RandomExitOrDefault(self.Info, self.World, productionType, p);
+				var valid = shuffled.FirstOrDefault(p);
+				if (valid != null)
+					return valid;
+			}
+
+			return null;
 		}
 	}
 }

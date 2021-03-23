@@ -1,0 +1,215 @@
+World:
+	LuaScript:
+		Scripts: oil-spill.lua
+	SpawnStartingUnits:
+		DropdownVisible: False
+	StartingUnits@mcvonly:
+		BaseActor: fcom
+
+FCOM:
+	MustBeDestroyed:
+		RequiredForShortGame: true
+	Power:
+		Amount: 50
+	Health:
+		HP: 110000
+	Production:
+		Produces: Building, Defense
+	RepairableBuilding:
+		RepairStep: 700
+		PlayerExperience: 25
+		RepairingNotification: Repairing
+	WithBuildingRepairDecoration:
+		Image: allyrepair
+		Sequence: repair
+		Position: Center
+		Palette: player
+		IsPlayerPalette: True
+	ProductionBar@Building:
+		ProductionType: Building
+	ProductionBar@Defense:
+		ProductionType: Defense
+		Color: 8A8A8A
+	BaseBuilding:
+	ProvidesPrerequisite@buildingname:
+
+OILB:
+	CashTrickler:
+		Interval: 250
+		Amount: 100
+	SpawnActorOnDeath:
+		Actor: OILB.Husk
+		OwnerType: InternalName
+
+OILB.Husk:
+	Inherits: ^TechBuilding
+	Inherits@shape: ^2x2Shape
+	Selectable:
+		Priority: 0
+		Bounds: 48,48
+	CapturableProgressBar:
+	CapturableProgressBlink:
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Tooltip:
+		Name: Husk (Oil Derrick)
+	CaptureManager:
+	Capturable:
+		Types: building-husk
+	TransformOnCapture:
+		IntoActor: OILB
+		ForceHealthPercentage: 50
+	Targetable:
+		TargetTypes: building-husk
+
+E6:
+	Captures@husk:
+		RequiresCondition: !global-reusable-engineers
+		CaptureTypes: building-husk
+		PlayerExperience: 25
+		CaptureDelay: 200
+		EnterCursor: goldwrench
+	Captures@husk-reusable:
+		RequiresCondition: global-reusable-engineers
+		CaptureTypes: building-husk
+		PlayerExperience: 25
+		CaptureDelay: 375
+		EnterCursor: goldwrench
+		ConsumedByCapture: False
+
+WEAP:
+	Buildable:
+		Prerequisites: ~disabled
+
+PROC:
+	Buildable:
+		Prerequisites: ~disabled
+
+SILO:
+	Buildable:
+		Prerequisites: ~disabled
+
+BRIK:
+	Buildable:
+		Prerequisites: ~disabled
+
+POWR:
+	Power:
+		Amount: 125
+	-SpawnActorsOnSell:
+	-MustBeDestroyed:
+
+APWR:
+	Power:
+		Amount: 250
+	-SpawnActorsOnSell:
+	-MustBeDestroyed:
+
+TENT:
+	Buildable:
+		Prerequisites: fcom
+	-SpawnActorsOnSell:
+	-MustBeDestroyed:
+
+DOME:
+	Buildable:
+		Prerequisites: anypower
+	-SpawnActorsOnSell:
+	-MustBeDestroyed:
+
+SYRD:
+	Buildable:
+		Prerequisites: fcom
+	-MustBeDestroyed:
+
+SPEN:
+	Buildable:
+		Prerequisites: fcom
+	-MustBeDestroyed:
+
+STEK:
+	Buildable:
+		Prerequisites: dome, tent
+	-SpawnActorsOnSell:
+	-MustBeDestroyed:
+
+AFLD:
+	Buildable:
+		Prerequisites: dome
+	-SpawnActorsOnSell:
+	-MustBeDestroyed:
+	AirstrikePower@spyplane:
+		Prerequisites: afld
+	AirstrikePower@parabombs:
+		Prerequisites: afld
+
+HPAD:
+	Buildable:
+		Prerequisites: dome
+	-SpawnActorsOnSell:
+	-MustBeDestroyed:
+
+FIX:
+	Buildable:
+		Prerequisites: dome
+	-SpawnActorsOnSell:
+	-MustBeDestroyed:
+
+IRON:
+	Buildable:
+		Prerequisites: stek
+
+PDOX:
+	Buildable:
+		Prerequisites: atek
+	ChronoshiftPower@chronoshift:
+		-Prerequisites:
+	-ChronoshiftPower@advancedchronoshift:
+
+ATEK:
+	Buildable:
+		Prerequisites: dome, tent
+	-SpawnActorsOnSell:
+	-MustBeDestroyed:
+
+FTUR:
+	Buildable:
+		Prerequisites: tent
+	-SpawnActorsOnSell:
+
+GUN:
+	Buildable:
+		Prerequisites: tent
+	-SpawnActorsOnSell:
+
+GAP:
+	Buildable:
+		Prerequisites: atek
+	-SpawnActorsOnSell:
+
+AGUN:
+	Buildable:
+		Prerequisites: dome
+	-SpawnActorsOnSell:
+
+TSLA:
+	Buildable:
+		Prerequisites: dome
+	-SpawnActorsOnSell:
+
+MECH:
+	Buildable:
+		Prerequisites: dome
+
+E1:
+	Buildable:
+		Prerequisites: ~disabled
+
+E3:
+	Buildable:
+		Prerequisites: ~disabled
+
+E7:
+	Buildable:
+		Prerequisites: ~disabled

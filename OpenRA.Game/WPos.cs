@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -18,7 +18,7 @@ using OpenRA.Scripting;
 
 namespace OpenRA
 {
-	public struct WPos : IScriptBindable, ILuaAdditionBinding, ILuaSubtractionBinding, ILuaEqualityBinding, ILuaTableBinding, IEquatable<WPos>
+	public readonly struct WPos : IScriptBindable, ILuaAdditionBinding, ILuaSubtractionBinding, ILuaEqualityBinding, ILuaTableBinding, IEquatable<WPos>
 	{
 		public readonly int X, Y, Z;
 
@@ -27,24 +27,24 @@ namespace OpenRA
 
 		public static readonly WPos Zero = new WPos(0, 0, 0);
 
-		public static explicit operator WVec(WPos a) { return new WVec(a.X, a.Y, a.Z); }
+		public static explicit operator WVec(in WPos a) { return new WVec(a.X, a.Y, a.Z); }
 
-		public static WPos operator +(WPos a, WVec b) { return new WPos(a.X + b.X, a.Y + b.Y, a.Z + b.Z); }
-		public static WPos operator -(WPos a, WVec b) { return new WPos(a.X - b.X, a.Y - b.Y, a.Z - b.Z); }
-		public static WVec operator -(WPos a, WPos b) { return new WVec(a.X - b.X, a.Y - b.Y, a.Z - b.Z); }
+		public static WPos operator +(in WPos a, in WVec b) { return new WPos(a.X + b.X, a.Y + b.Y, a.Z + b.Z); }
+		public static WPos operator -(in WPos a, in WVec b) { return new WPos(a.X - b.X, a.Y - b.Y, a.Z - b.Z); }
+		public static WVec operator -(in WPos a, in WPos b) { return new WVec(a.X - b.X, a.Y - b.Y, a.Z - b.Z); }
 
-		public static bool operator ==(WPos me, WPos other) { return me.X == other.X && me.Y == other.Y && me.Z == other.Z; }
-		public static bool operator !=(WPos me, WPos other) { return !(me == other); }
-
-		/// <summary>
-		/// Returns the linear interpolation between points 'a' and 'b'
-		/// </summary>
-		public static WPos Lerp(WPos a, WPos b, int mul, int div) { return a + (b - a) * mul / div; }
+		public static bool operator ==(in WPos me, in WPos other) { return me.X == other.X && me.Y == other.Y && me.Z == other.Z; }
+		public static bool operator !=(in WPos me, in WPos other) { return !(me == other); }
 
 		/// <summary>
 		/// Returns the linear interpolation between points 'a' and 'b'
 		/// </summary>
-		public static WPos Lerp(WPos a, WPos b, long mul, long div)
+		public static WPos Lerp(in WPos a, in WPos b, int mul, int div) { return a + (b - a) * mul / div; }
+
+		/// <summary>
+		/// Returns the linear interpolation between points 'a' and 'b'
+		/// </summary>
+		public static WPos Lerp(in WPos a, in WPos b, long mul, long div)
 		{
 			// The intermediate variables may need more precision than
 			// an int can provide, so we can't use WPos.
@@ -55,7 +55,7 @@ namespace OpenRA
 			return new WPos(x, y, z);
 		}
 
-		public static WPos LerpQuadratic(WPos a, WPos b, WAngle pitch, int mul, int div)
+		public static WPos LerpQuadratic(in WPos a, in WPos b, WAngle pitch, int mul, int div)
 		{
 			// Start with a linear lerp between the points
 			var ret = Lerp(a, b, mul, div);
@@ -82,9 +82,7 @@ namespace OpenRA
 
 		public LuaValue Add(LuaRuntime runtime, LuaValue left, LuaValue right)
 		{
-			WPos a;
-			WVec b;
-			if (!left.TryGetClrValue(out a) || !right.TryGetClrValue(out b))
+			if (!left.TryGetClrValue(out WPos a) || !right.TryGetClrValue(out WVec b))
 				throw new LuaException("Attempted to call WPos.Add(WPos, WVec) with invalid arguments ({0}, {1})".F(left.WrappedClrType().Name, right.WrappedClrType().Name));
 
 			return new LuaCustomClrObject(a + b);
@@ -92,21 +90,18 @@ namespace OpenRA
 
 		public LuaValue Subtract(LuaRuntime runtime, LuaValue left, LuaValue right)
 		{
-			WPos a;
 			var rightType = right.WrappedClrType();
-			if (!left.TryGetClrValue(out a))
+			if (!left.TryGetClrValue(out WPos a))
 				throw new LuaException("Attempted to call WPos.Subtract(WPos, (WPos|WVec)) with invalid arguments ({0}, {1})".F(left.WrappedClrType().Name, rightType.Name));
 
 			if (rightType == typeof(WPos))
 			{
-				WPos b;
-				right.TryGetClrValue(out b);
+				right.TryGetClrValue(out WPos b);
 				return new LuaCustomClrObject(a - b);
 			}
 			else if (rightType == typeof(WVec))
 			{
-				WVec b;
-				right.TryGetClrValue(out b);
+				right.TryGetClrValue(out WVec b);
 				return new LuaCustomClrObject(a - b);
 			}
 
@@ -115,8 +110,7 @@ namespace OpenRA
 
 		public LuaValue Equals(LuaRuntime runtime, LuaValue left, LuaValue right)
 		{
-			WPos a, b;
-			if (!left.TryGetClrValue(out a) || !right.TryGetClrValue(out b))
+			if (!left.TryGetClrValue(out WPos a) || !right.TryGetClrValue(out WPos b))
 				return false;
 
 			return a == b;
@@ -135,10 +129,7 @@ namespace OpenRA
 				}
 			}
 
-			set
-			{
-				throw new LuaException("WPos is read-only. Use WPos.New to create a new value");
-			}
+			set => throw new LuaException("WPos is read-only. Use WPos.New to create a new value");
 		}
 
 		#endregion

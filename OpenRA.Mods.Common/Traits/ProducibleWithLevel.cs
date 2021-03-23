@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -16,7 +16,7 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Actors possessing this trait should define the GainsExperience trait. When the prerequisites are fulfilled, ",
 		"this trait grants a level-up to newly spawned actors. If additionally the actor's owning player defines the ProductionIconOverlay ",
 		"trait, the production queue icon renders with an overlay defined in that trait.")]
-	public class ProducibleWithLevelInfo : ITraitInfo, Requires<GainsExperienceInfo>
+	public class ProducibleWithLevelInfo : TraitInfo, Requires<GainsExperienceInfo>
 	{
 		public readonly string[] Prerequisites = { };
 
@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Should the level-up animation be suppressed when actor is created?")]
 		public readonly bool SuppressLevelupAnimation = true;
 
-		public object Create(ActorInitializer init) { return new ProducibleWithLevel(init, this); }
+		public override object Create(ActorInitializer init) { return new ProducibleWithLevel(init, this); }
 	}
 
 	public class ProducibleWithLevel : INotifyCreated

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using OpenRA.Primitives;
 
@@ -49,7 +48,7 @@ namespace OpenRA.Graphics
 
 		readonly Dictionary<Sheet, IFrameBuffer> mappedBuffers = new Dictionary<Sheet, IFrameBuffer>();
 		readonly Stack<KeyValuePair<Sheet, IFrameBuffer>> unmappedBuffers = new Stack<KeyValuePair<Sheet, IFrameBuffer>>();
-		readonly List<Pair<Sheet, Action>> doRender = new List<Pair<Sheet, Action>>();
+		readonly List<(Sheet Sheet, Action Func)> doRender = new List<(Sheet, Action)>();
 
 		SheetBuilder sheetBuilderForFrame;
 		bool isInFrame;
@@ -65,10 +64,10 @@ namespace OpenRA.Graphics
 			shader.SetTexture("Palette", palette);
 		}
 
-		public void SetViewportParams(Size screen, float zoom, int2 scroll)
+		public void SetViewportParams(Size screen, int2 scroll)
 		{
 			var a = 2f / renderer.SheetSize;
-			var view = new float[]
+			var view = new[]
 			{
 				a, 0, 0, 0,
 				0, -a, 0, 0,
@@ -80,8 +79,8 @@ namespace OpenRA.Graphics
 		}
 
 		public ModelRenderProxy RenderAsync(
-			WorldRenderer wr, IEnumerable<ModelAnimation> models, WRot camera, float scale,
-			float[] groundNormal, WRot lightSource, float[] lightAmbientColor, float[] lightDiffuseColor,
+			WorldRenderer wr, IEnumerable<ModelAnimation> models, in WRot camera, float scale,
+			float[] groundNormal, in WRot lightSource, float[] lightAmbientColor, float[] lightDiffuseColor,
 			PaletteReference color, PaletteReference normals, PaletteReference shadowPalette)
 		{
 			if (!isInFrame)
@@ -115,8 +114,7 @@ namespace OpenRA.Graphics
 				var offsetVec = Util.MatrixVectorMultiply(invCameraTransform, wr.ScreenVector(m.OffsetFunc()));
 				var offsetTransform = Util.TranslationMatrix(offsetVec[0], offsetVec[1], offsetVec[2]);
 
-				var worldTransform = m.RotationFunc().Aggregate(Util.IdentityMatrix(),
-					(x, y) => Util.MatrixMultiply(Util.MakeFloatMatrix(y.AsMatrix()), x));
+				var worldTransform = Util.MakeFloatMatrix(m.RotationFunc().AsMatrix());
 				worldTransform = Util.MatrixMultiply(scaleTransform, worldTransform);
 				worldTransform = Util.MatrixMultiply(offsetTransform, worldTransform);
 
@@ -162,10 +160,8 @@ namespace OpenRA.Graphics
 			}
 
 			// Shadows are rendered at twice the resolution to reduce artifacts
-			Size spriteSize, shadowSpriteSize;
-			int2 spriteOffset, shadowSpriteOffset;
-			CalculateSpriteGeometry(tl, br, 1, out spriteSize, out spriteOffset);
-			CalculateSpriteGeometry(stl, sbr, 2, out shadowSpriteSize, out shadowSpriteOffset);
+			CalculateSpriteGeometry(tl, br, 1, out var spriteSize, out var spriteOffset);
+			CalculateSpriteGeometry(stl, sbr, 2, out var shadowSpriteSize, out var shadowSpriteOffset);
 
 			if (sheetBuilderForFrame == null)
 				sheetBuilderForFrame = new SheetBuilder(SheetType.BGRA, AllocateSheet);
@@ -182,7 +178,7 @@ namespace OpenRA.Graphics
 			var correctionTransform = Util.MatrixMultiply(translateMtx, FlipMtx);
 			var shadowCorrectionTransform = Util.MatrixMultiply(shadowTranslateMtx, ShadowScaleFlipMtx);
 
-			doRender.Add(Pair.New<Sheet, Action>(sprite.Sheet, () =>
+			doRender.Add((sprite.Sheet, () =>
 			{
 				foreach (var m in models)
 				{
@@ -190,8 +186,7 @@ namespace OpenRA.Graphics
 					var offsetVec = Util.MatrixVectorMultiply(invCameraTransform, wr.ScreenVector(m.OffsetFunc()));
 					var offsetTransform = Util.TranslationMatrix(offsetVec[0], offsetVec[1], offsetVec[2]);
 
-					var rotations = m.RotationFunc().Aggregate(Util.IdentityMatrix(),
-						(x, y) => Util.MatrixMultiply(Util.MakeFloatMatrix(y.AsMatrix()), x));
+					var rotations = Util.MakeFloatMatrix(m.RotationFunc().AsMatrix());
 					var worldTransform = Util.MatrixMultiply(scaleTransform, rotations);
 					worldTransform = Util.MatrixMultiply(offsetTransform, worldTransform);
 
@@ -327,16 +322,16 @@ namespace OpenRA.Graphics
 			foreach (var v in doRender)
 			{
 				// Change sheet
-				if (v.First != currentSheet)
+				if (v.Sheet != currentSheet)
 				{
 					if (fbo != null)
 						DisableFrameBuffer(fbo);
 
-					currentSheet = v.First;
+					currentSheet = v.Sheet;
 					fbo = EnableFrameBuffer(currentSheet);
 				}
 
-				v.Second();
+				v.Func();
 			}
 
 			if (fbo != null)

@@ -35,14 +35,18 @@ Container@CHAT_PANEL:
 					Y: PARENT_BOTTOM - HEIGHT
 					Width: 24
 					Height: 25
-					Text: X
-					Font: Bold
+					Children:
+						Image:
+							ImageCollection: lobby-bits
+							ImageName: kick
+							X: 6
+							Y: 8
 				LogicKeyListener@KEY_LISTENER:
 				ScrollPanel@CHAT_SCROLLPANEL:
 					Y: PARENT_BOTTOM - HEIGHT - 30
 					Width: 550
 					Height: 164
-					TopBottomSpacing: 4
+					TopBottomSpacing: 3
 					ItemSpacing: 4
 					Align: Bottom
 					Children:
@@ -54,13 +58,11 @@ Container@CHAT_PANEL:
 								Label@NAME:
 									X: 3
 									Width: 50
-									Height: 15
-									VAlign: Top
+									Height: 16
 									Shadow: True
 								Label@TEXT:
 									X: 12
 									Width: PARENT_RIGHT - 17
-									Height: 15
+									Height: 16
 									WordWrap: true
-									VAlign: Top
 									Shadow: True

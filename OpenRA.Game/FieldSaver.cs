@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -12,12 +12,9 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
-using OpenRA.Graphics;
 using OpenRA.Primitives;
 
 namespace OpenRA
@@ -75,44 +72,14 @@ namespace OpenRA
 				return "";
 
 			var t = v.GetType();
-
-			// Color.ToString() does the wrong thing; force it to format as rgb[a] hex
-			if (t == typeof(Color))
-			{
-				return HSLColor.ToHexString((Color)v);
-			}
-
-			// HSLColor.ToString() does the wrong thing; force it to format as rgb[a] hex
-			if (t == typeof(HSLColor))
-			{
-				return ((HSLColor)v).ToHexString();
-			}
-
-			if (t == typeof(ImageFormat))
-			{
-				return ((ImageFormat)v).ToString();
-			}
-
-			if (t == typeof(Rectangle))
-			{
-				var r = (Rectangle)v;
-				return "{0},{1},{2},{3}".F(r.X, r.Y, r.Width, r.Height);
-			}
-
 			if (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(BitSet<>))
-			{
 				return ((IEnumerable<string>)v).Select(FormatValue).JoinWith(", ");
-			}
 
 			if (t.IsArray && t.GetArrayRank() == 1)
-			{
 				return ((Array)v).Cast<object>().Select(FormatValue).JoinWith(", ");
-			}
 
-			if (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(HashSet<>))
-			{
+			if (t.IsGenericType && (t.GetGenericTypeDefinition() == typeof(HashSet<>) || t.GetGenericTypeDefinition() == typeof(List<>)))
 				return ((System.Collections.IEnumerable)v).Cast<object>().Select(FormatValue).JoinWith(", ");
-			}
 
 			// This is only for documentation generation
 			if (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Dictionary<,>))
@@ -133,11 +100,8 @@ namespace OpenRA
 				return result;
 			}
 
-			if (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Primitives.Cache<,>))
-				return ""; // TODO
-
-			if (t == typeof(DateTime))
-				return ((DateTime)v).ToString("yyyy-MM-dd HH-mm-ss", CultureInfo.InvariantCulture);
+			if (v is DateTime d)
+				return d.ToString("yyyy-MM-dd HH-mm-ss", CultureInfo.InvariantCulture);
 
 			// Try the TypeConverter
 			var conv = TypeDescriptor.GetConverter(t);

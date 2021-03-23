@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,7 +9,7 @@
  */
 #endregion
 
-using OpenRA.Graphics;
+using OpenRA.Primitives;
 
 namespace OpenRA
 {
@@ -30,13 +30,28 @@ namespace OpenRA
 		public string Faction;
 
 		public bool LockColor = false;
-		public HSLColor Color = new HSLColor(0, 0, 238);
+		public Color Color = Game.ModData.Manifest.Get<DefaultPlayer>().Color;
+
+		/// <summary>
+		/// Sets the "Home" location, which can be used by traits and scripts to e.g. set the initial camera
+		/// location or choose the map edge for reinforcements.
+		/// This will usually be overridden for client (lobby slot) players with a location based on the Spawn index
+		/// </summary>
+		public CPos HomeLocation = CPos.Zero;
 
 		public bool LockSpawn = false;
+
+		/// <summary>
+		/// Sets the initial spawn point index that is used to override the "Home" location for client (lobby slot) players.
+		/// Map players always ignore this and use HomeLocation directly.
+		/// </summary>
 		public int Spawn = 0;
 
 		public bool LockTeam = false;
 		public int Team = 0;
+
+		public bool LockHandicap = false;
+		public int Handicap = 0;
 
 		public string[] Allies = { };
 		public string[] Enemies = { };

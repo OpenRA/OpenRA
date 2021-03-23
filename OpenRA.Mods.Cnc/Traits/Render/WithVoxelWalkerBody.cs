@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -11,10 +11,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
 using OpenRA.Graphics;
-using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.Common.Traits.Render;
@@ -23,7 +20,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits.Render
 {
-	public class WithVoxelWalkerBodyInfo : ITraitInfo, IRenderActorPreviewVoxelsInfo,  Requires<RenderVoxelsInfo>, Requires<IMoveInfo>, Requires<IFacingInfo>
+	public class WithVoxelWalkerBodyInfo : TraitInfo, IRenderActorPreviewVoxelsInfo,  Requires<RenderVoxelsInfo>, Requires<IMoveInfo>, Requires<IFacingInfo>
 	{
 		public readonly string Sequence = "idle";
 
@@ -32,17 +29,17 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 
 		[Desc("Defines if the Voxel should have a shadow.")]
 		public readonly bool ShowShadow = true;
-		public object Create(ActorInitializer init) { return new WithVoxelWalkerBody(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new WithVoxelWalkerBody(init.Self, this); }
 
 		public IEnumerable<ModelAnimation> RenderPreviewVoxels(
 			ActorPreviewInitializer init, RenderVoxelsInfo rv, string image, Func<WRot> orientation, int facings, PaletteReference p)
 		{
 			var model = init.World.ModelCache.GetModelSequence(image, Sequence);
 			var body = init.Actor.TraitInfo<BodyOrientationInfo>();
-			var frame = init.Contains<BodyAnimationFrameInit>() ? init.Get<BodyAnimationFrameInit, uint>() : 0;
+			var frame = init.GetValue<BodyAnimationFrameInit, uint>(this, 0);
 
 			yield return new ModelAnimation(model, () => WVec.Zero,
-				() => new[] { body.QuantizeOrientation(orientation(), facings) },
+				() => body.QuantizeOrientation(orientation(), facings),
 				() => false, () => frame, ShowShadow);
 		}
 	}
@@ -67,7 +64,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 			var model = self.World.ModelCache.GetModelSequence(rv.Image, info.Sequence);
 			frames = model.Frames;
 			modelAnimation = new ModelAnimation(model, () => WVec.Zero,
-				() => new[] { body.QuantizeOrientation(self, self.Orientation) },
+				() => body.QuantizeOrientation(self, self.Orientation),
 				() => false, () => frame, info.ShowShadow);
 
 			rv.Add(modelAnimation);
@@ -75,7 +72,8 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 
 		void ITick.Tick(Actor self)
 		{
-			if (movement.IsMoving)
+			if (movement.CurrentMovementTypes.HasMovementType(MovementType.Horizontal)
+				|| movement.CurrentMovementTypes.HasMovementType(MovementType.Turn))
 				tick++;
 
 			if (tick < info.TickRate)
@@ -97,11 +95,9 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 		}
 	}
 
-	public class BodyAnimationFrameInit : IActorInit<uint>
+	public class BodyAnimationFrameInit : ValueActorInit<uint>
 	{
-		[FieldFromYamlKey] readonly uint value = 0;
-		public BodyAnimationFrameInit() { }
-		public BodyAnimationFrameInit(uint init) { value = init; }
-		public uint Value(World world) { return value; }
+		public BodyAnimationFrameInit(uint value)
+			: base(value) { }
 	}
 }

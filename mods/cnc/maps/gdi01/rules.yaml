@@ -1,6 +1,6 @@
 World:
 	LuaScript:
-		Scripts: gdi01.lua
+		Scripts: campaign-global.lua, gdi01.lua
 	MusicPlaylist:
 		StartingMusic: aoi
 	MissionData:
@@ -13,11 +13,15 @@ World:
 
 NUKE:
 	-Sellable:
+	Demolishable:
+		-Condition:
 	Buildable:
 		BuildLimit: 1
 
 PYLE:
 	-Sellable:
+	Demolishable:
+		-Condition:
 	Buildable:
 		BuildLimit: 1
 
@@ -105,14 +109,3 @@ BOAT:
 		InitialStance: AttackAnything
 	RejectsOrders:
 		Except: Attack
-
-OLDLST:
-	Inherits: LST
-	-WithRoof:
-	-Selectable:
-	SelectionDecorations:
-		RenderSelectionBars: False
-	RejectsOrders:
-	Cargo:
-		Types: disabled
-	Interactable:

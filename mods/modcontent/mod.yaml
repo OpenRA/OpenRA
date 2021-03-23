@@ -4,9 +4,12 @@ Metadata:
 	Hidden: true
 
 Packages:
-	.
-	./mods/modcontent: modcontent
-	./mods/common: common
+	^EngineDir
+	^EngineDir|mods/modcontent: modcontent
+	^EngineDir|mods/common: common
+
+Rules:
+	modcontent|rules.yaml
 
 Cursors:
 	modcontent|cursors.yaml
@@ -15,7 +18,7 @@ Chrome:
 	modcontent|chrome.yaml
 
 Assemblies:
-	common|OpenRA.Mods.Common.dll
+	^BinDir|OpenRA.Mods.Common.dll
 
 ChromeLayout:
 	modcontent|content.yaml
@@ -24,7 +27,9 @@ Notifications:
 	modcontent|notifications.yaml
 
 LoadScreen: ModContentLoadScreen
-	Image: ./mods/modcontent/chrome.png
+	Image: ^EngineDir|mods/modcontent/chrome.png
+	Image2x: ^EngineDir|mods/modcontent/chrome-2x.png
+	Image3x: ^EngineDir|mods/modcontent/chrome-3x.png
 
 ChromeMetrics:
 	common|metrics.yaml
@@ -34,25 +39,33 @@ Fonts:
 	Tiny:
 		Font: common|FreeSans.ttf
 		Size: 10
+		Ascender: 8
 	TinyBold:
 		Font: common|FreeSansBold.ttf
 		Size: 10
+		Ascender: 8
 	Regular:
 		Font: common|FreeSans.ttf
 		Size: 14
+		Ascender: 11
 	Bold:
 		Font: common|FreeSansBold.ttf
 		Size: 14
+		Ascender: 11
 	MediumBold:
 		Font: common|FreeSansBold.ttf
 		Size: 18
+		Ascender: 14
 	BigBold:
 		Font: common|FreeSansBold.ttf
 		Size: 24
+		Ascender: 18
 
 SoundFormats:
 
-SpriteFormats: ShpTD
+SpriteFormats: PngSheet
+
+TerrainFormat: DefaultTerrain
 
 SpriteSequenceFormat: DefaultSpriteSequence
 

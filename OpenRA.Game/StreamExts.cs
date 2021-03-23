@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -22,7 +22,7 @@ namespace OpenRA
 		public static byte[] ReadBytes(this Stream s, int count)
 		{
 			if (count < 0)
-				throw new ArgumentOutOfRangeException("count", "Non-negative number required.");
+				throw new ArgumentOutOfRangeException(nameof(count), "Non-negative number required.");
 			var buffer = new byte[count];
 			s.ReadBytes(buffer, 0, count);
 			return buffer;
@@ -31,7 +31,7 @@ namespace OpenRA
 		public static void ReadBytes(this Stream s, byte[] buffer, int offset, int count)
 		{
 			if (count < 0)
-				throw new ArgumentOutOfRangeException("count", "Non-negative number required.");
+				throw new ArgumentOutOfRangeException(nameof(count), "Non-negative number required.");
 			while (count > 0)
 			{
 				int bytesRead;
@@ -61,22 +61,22 @@ namespace OpenRA
 
 		public static ushort ReadUInt16(this Stream s)
 		{
-			return BitConverter.ToUInt16(s.ReadBytes(2), 0);
+			return (ushort)(s.ReadUInt8() | s.ReadUInt8() << 8);
 		}
 
 		public static short ReadInt16(this Stream s)
 		{
-			return BitConverter.ToInt16(s.ReadBytes(2), 0);
+			return (short)(s.ReadUInt8() | s.ReadUInt8() << 8);
 		}
 
 		public static uint ReadUInt32(this Stream s)
 		{
-			return BitConverter.ToUInt32(s.ReadBytes(4), 0);
+			return (uint)(s.ReadUInt8() | s.ReadUInt8() << 8 | s.ReadUInt8() << 16 | s.ReadUInt8() << 24);
 		}
 
 		public static int ReadInt32(this Stream s)
 		{
-			return BitConverter.ToInt32(s.ReadBytes(4), 0);
+			return s.ReadUInt8() | s.ReadUInt8() << 8 | s.ReadUInt8() << 16 | s.ReadUInt8() << 24;
 		}
 
 		public static void Write(this Stream s, int value)

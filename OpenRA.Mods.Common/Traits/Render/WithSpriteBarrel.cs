@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -22,8 +22,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 	public class WithSpriteBarrelInfo : ConditionalTraitInfo, IRenderActorPreviewSpritesInfo, Requires<TurretedInfo>,
 		Requires<ArmamentInfo>, Requires<RenderSpritesInfo>, Requires<BodyOrientationInfo>
 	{
+		[SequenceReference]
 		[Desc("Sequence name to use.")]
-		[SequenceReference] public readonly string Sequence = "barrel";
+		public readonly string Sequence = "barrel";
 
 		[Desc("Armament to use for recoil.")]
 		public readonly string Armament = "primary";
@@ -33,7 +34,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		public override object Create(ActorInitializer init) { return new WithSpriteBarrel(init.Self, this); }
 
-		public IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p)
+		public IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, string image, int facings, PaletteReference p)
 		{
 			if (!EnabledByDefault)
 				yield break;
@@ -44,12 +45,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var t = init.Actor.TraitInfos<TurretedInfo>()
 				.First(tt => tt.Turret == armament.Turret);
 
-			var turretFacing = Turreted.TurretFacingFromInit(init, t.InitialFacing, armament.Turret);
+			var turretFacing = t.WorldFacingFromInit(init);
 			var anim = new Animation(init.World, image, turretFacing);
 			anim.Play(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), Sequence));
 
-			Func<int> facing = init.GetFacing();
-			Func<WRot> orientation = () => body.QuantizeOrientation(WRot.FromFacing(facing()), facings);
+			var facing = init.GetFacing();
+			Func<WRot> orientation = () => body.QuantizeOrientation(WRot.FromYaw(facing()), facings);
 			Func<WVec> turretOffset = () => body.LocalToWorld(t.Offset.Rotate(orientation()));
 			Func<int> zOffset = () =>
 			{
@@ -57,7 +58,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				return -(tmpOffset.Y + tmpOffset.Z) + 1;
 			};
 
-			yield return new SpriteActorPreview(anim, turretOffset, zOffset, p, rs.Scale);
+			yield return new SpriteActorPreview(anim, turretOffset, zOffset, p);
 		}
 	}
 
@@ -81,7 +82,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				.First(tt => tt.Name == armament.Info.Turret);
 
 			rs = self.Trait<RenderSprites>();
-			DefaultAnimation = new Animation(self.World, rs.GetImage(self), () => turreted.TurretFacing);
+			DefaultAnimation = new Animation(self.World, rs.GetImage(self), () => turreted.WorldOrientation.Yaw);
 			DefaultAnimation.PlayRepeating(NormalizeSequence(self, Info.Sequence));
 			rs.Add(new AnimationWithOffset(
 				DefaultAnimation, () => BarrelOffset(), () => IsTraitDisabled, p => RenderUtils.ZOffsetFromCenter(self, p, 0)));
@@ -97,21 +98,10 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		WVec BarrelOffset()
 		{
+			var orientation = turreted != null ? turreted.WorldOrientation : self.Orientation;
 			var localOffset = Info.LocalOffset + new WVec(-armament.Recoil, WDist.Zero, WDist.Zero);
-			var turretOffset = turreted != null ? turreted.Position(self) : WVec.Zero;
-			var quantizedBody = body.QuantizeOrientation(self, self.Orientation);
-			var turretOrientation = turreted != null ? turreted.WorldOrientation(self) - quantizedBody : WRot.Zero;
-
-			var quantizedTurret = body.QuantizeOrientation(self, turretOrientation);
-			return turretOffset + body.LocalToWorld(localOffset.Rotate(quantizedTurret).Rotate(quantizedBody));
-		}
-
-		IEnumerable<WRot> BarrelRotation()
-		{
-			var b = self.Orientation;
-			var qb = body.QuantizeOrientation(self, b);
-			yield return turreted.WorldOrientation(self) - qb + WRot.FromYaw(b.Yaw - qb.Yaw);
-			yield return qb;
+			var turretLocalOffset = turreted != null ? turreted.Offset : WVec.Zero;
+			return body.LocalToWorld(turretLocalOffset + localOffset.Rotate(orientation));
 		}
 	}
 }

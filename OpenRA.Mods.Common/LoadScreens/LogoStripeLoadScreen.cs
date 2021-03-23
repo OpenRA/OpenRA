@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,67 +10,48 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing;
-using System.IO;
 using OpenRA.Graphics;
-using OpenRA.Widgets;
+using OpenRA.Mods.Common.Widgets;
+using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.LoadScreens
 {
-	public sealed class LogoStripeLoadScreen : BlankLoadScreen
+	public sealed class LogoStripeLoadScreen : SheetLoadScreen
 	{
-		Stopwatch lastUpdate = Stopwatch.StartNew();
-		Renderer r;
-
 		Rectangle stripeRect;
 		float2 logoPos;
-		Sheet sheet;
 		Sprite stripe, logo;
+
+		Sheet lastSheet;
+		int lastDensity;
+		Size lastResolution;
+
 		string[] messages = { "Loading..." };
 
 		public override void Init(ModData modData, Dictionary<string, string> info)
 		{
 			base.Init(modData, info);
 
-			// Avoid standard loading mechanisms so we
-			// can display the loadscreen as early as possible
-			r = Game.Renderer;
-			if (r == null)
-				return;
-
 			if (info.ContainsKey("Text"))
 				messages = info["Text"].Split(',');
-
-			if (info.ContainsKey("Image"))
-			{
-				using (var stream = modData.DefaultFileSystem.Open(info["Image"]))
-					sheet = new Sheet(SheetType.BGRA, stream);
-
-				logo = new Sprite(sheet, new Rectangle(0, 0, 256, 256), TextureChannel.RGBA);
-				stripe = new Sprite(sheet, new Rectangle(256, 0, 256, 256), TextureChannel.RGBA);
-				stripeRect = new Rectangle(0, r.Resolution.Height / 2 - 128, r.Resolution.Width, 256);
-				logoPos = new float2(r.Resolution.Width / 2 - 128, r.Resolution.Height / 2 - 128);
-			}
 		}
 
-		public override void Display()
+		public override void DisplayInner(Renderer r, Sheet s, int density)
 		{
-			if (r == null)
-				return;
+			if (s != lastSheet || density != lastDensity)
+			{
+				lastSheet = s;
+				lastDensity = density;
+				logo = CreateSprite(s, density, new Rectangle(0, 0, 256, 256));
+				stripe = CreateSprite(s, density, new Rectangle(258, 0, 253, 256));
+			}
 
-			// Update text at most every 0.5 seconds
-			if (lastUpdate.Elapsed.TotalSeconds < 0.5)
-				return;
-
-			if (r.Fonts == null)
-				return;
-
-			lastUpdate.Restart();
-			var text = messages.Random(Game.CosmeticRandom);
-			var textSize = r.Fonts["Bold"].Measure(text);
-
-			r.BeginFrame(int2.Zero, 1f);
+			if (r.Resolution != lastResolution)
+			{
+				lastResolution = r.Resolution;
+				stripeRect = new Rectangle(0, lastResolution.Height / 2 - 128, lastResolution.Width, 256);
+				logoPos = new float2(lastResolution.Width / 2 - 128, lastResolution.Height / 2 - 128);
+			}
 
 			if (stripe != null)
 				WidgetUtils.FillRectWithSprite(stripeRect, stripe);
@@ -78,16 +59,12 @@ namespace OpenRA.Mods.Common.LoadScreens
 			if (logo != null)
 				r.RgbaSpriteRenderer.DrawSprite(logo, logoPos);
 
-			r.Fonts["Bold"].DrawText(text, new float2(r.Resolution.Width - textSize.X - 20, r.Resolution.Height - textSize.Y - 20), Color.White);
-			r.EndFrame(new NullInputHandler());
-		}
-
-		protected override void Dispose(bool disposing)
-		{
-			if (disposing && sheet != null)
-				sheet.Dispose();
-
-			base.Dispose(disposing);
+			if (r.Fonts != null)
+			{
+				var text = messages.Random(Game.CosmeticRandom);
+				var textSize = r.Fonts["Bold"].Measure(text);
+				r.Fonts["Bold"].DrawText(text, new float2(r.Resolution.Width - textSize.X - 20, r.Resolution.Height - textSize.Y - 20), Color.White);
+			}
 		}
 	}
 }

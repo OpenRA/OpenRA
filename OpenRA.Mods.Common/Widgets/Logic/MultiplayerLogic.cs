@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using OpenRA.Network;
 using OpenRA.Widgets;
 
@@ -24,7 +25,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly ServerListLogic serverListLogic;
 
 		[ObjectCreator.UseCtor]
-		public MultiplayerLogic(Widget widget, ModData modData, Action onStart, Action onExit, string directConnectHost, int directConnectPort)
+		public MultiplayerLogic(Widget widget, ModData modData, Action onStart, Action onExit, ConnectionTarget directConnectEndPoint)
 		{
 			// MultiplayerLogic is a superset of the ServerListLogic
 			// but cannot be a direct subclass because it needs to pass object-level state to the constructor
@@ -40,8 +41,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					{ "openLobby", OpenLobby },
 					{ "onExit", DoNothing },
-					{ "directConnectHost", null },
-					{ "directConnectPort", 0 },
+					{ "directConnectEndPoint", null },
 				});
 			};
 
@@ -55,9 +55,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				});
 			};
 
+			var hasMaps = modData.MapCache.Any(p => !p.Visibility.HasFlag(MapVisibility.Shellmap));
+			createServerButton.Disabled = !hasMaps;
+
 			widget.Get<ButtonWidget>("BACK_BUTTON").OnClick = () => { Ui.CloseWindow(); onExit(); };
 
-			if (directConnectHost != null)
+			if (directConnectEndPoint != null)
 			{
 				// The connection window must be opened at the end of the tick for the widget hierarchy to
 				// work out, but we also want to prevent the server browser from flashing visible for one tick.
@@ -68,8 +71,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{
 						{ "openLobby", OpenLobby },
 						{ "onExit", DoNothing },
-						{ "directConnectHost", directConnectHost },
-						{ "directConnectPort", directConnectPort },
+						{ "directConnectEndPoint", directConnectEndPoint },
 					});
 
 					widget.Visible = true;
@@ -89,11 +91,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					{ "onStart", onStart },
 					{ "onExit", onExit },
-					{ "directConnectHost", null },
-					{ "directConnectPort", 0 },
+					{ "directConnectEndPoint", null },
 				});
 
 				Game.Disconnect();
+
+				DiscordService.UpdateStatus(DiscordState.InMenu);
 			};
 
 			Game.OpenWindow("SERVER_LOBBY", new WidgetArgs
@@ -112,7 +115,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var host = server.Address.Split(':')[0];
 			var port = Exts.ParseIntegerInvariant(server.Address.Split(':')[1]);
 
-			ConnectionLogic.Connect(host, port, "", OpenLobby, DoNothing);
+			ConnectionLogic.Connect(new ConnectionTarget(host, port), "", OpenLobby, DoNothing);
 		}
 
 		bool disposed;

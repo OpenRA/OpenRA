@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,16 +9,17 @@
  */
 #endregion
 
-using System.Drawing;
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Displays `Exit` data for factories.")]
-	public class ExitsDebugOverlayInfo : ITraitInfo, Requires<ExitInfo>
+	public class ExitsDebugOverlayInfo : TraitInfo, Requires<ExitInfo>
 	{
 		[Desc("Should cell vectors be drawn for each perimeter cell?")]
 		public readonly bool DrawPerimiterCellVectors = true;
@@ -29,14 +30,13 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Should lines be drawn for each exit (from spawn offset to the center of the exit cell)?")]
 		public readonly bool DrawSpawnOffsetLines = true;
 
-		object ITraitInfo.Create(ActorInitializer init) { return new ExitsDebugOverlay(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new ExitsDebugOverlay(init.Self, this); }
 	}
 
-	public class ExitsDebugOverlay : IRenderAboveWorld
+	public class ExitsDebugOverlay : IRenderAnnotationsWhenSelected
 	{
 		readonly ExitsDebugOverlayManager manager;
 		readonly ExitsDebugOverlayInfo info;
-		readonly RgbaColorRenderer rgbaRenderer;
 		readonly ExitInfo[] exits;
 
 		CPos[] exitCells;
@@ -47,14 +47,13 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			this.info = info;
 			manager = self.World.WorldActor.TraitOrDefault<ExitsDebugOverlayManager>();
-			rgbaRenderer = Game.Renderer.WorldRgbaColorRenderer;
 			exits = self.Info.TraitInfos<ExitInfo>().ToArray();
 		}
 
-		void IRenderAboveWorld.RenderAboveWorld(Actor self, WorldRenderer wr)
+		IEnumerable<IRenderable> IRenderAnnotationsWhenSelected.RenderAnnotations(Actor self, WorldRenderer wr)
 		{
 			if (manager == null || !manager.Enabled)
-				return;
+				yield break;
 
 			exitCells = exits.Select(e => self.Location + e.ExitCell).ToArray();
 
@@ -62,16 +61,16 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				foreach (var exitCell in exitCells)
 				{
-					var color = self.Owner.Color.RGB;
+					var color = self.Owner.Color;
 					var vec = exitCell - self.Location;
 					var center = wr.World.Map.CenterOfCell(exitCell);
-					new TextRenderable(manager.Font, center, 0, color, vec.ToString()).Render(wr);
+					yield return new TextAnnotationRenderable(manager.Font, center, 0, color, vec.ToString());
 				}
 			}
 
 			if (info.DrawPerimiterCellVectors)
 			{
-				var occupiedCells = self.OccupiesSpace.OccupiedCells().Select(p => p.First).ToArray();
+				var occupiedCells = self.OccupiesSpace.OccupiedCells().Select(p => p.Cell).ToArray();
 				perimeterCells = Util.ExpandFootprint(occupiedCells, true).Except(occupiedCells).ToArray();
 
 				foreach (var perimCell in perimeterCells)
@@ -82,7 +81,7 @@ namespace OpenRA.Mods.Common.Traits
 
 					var vec = perimCell - self.Location;
 					var center = wr.World.Map.CenterOfCell(perimCell);
-					new TextRenderable(manager.Font, center, 0, color, vec.ToString()).Render(wr);
+					yield return new TextAnnotationRenderable(manager.Font, center, 0, color, vec.ToString());
 				}
 			}
 
@@ -97,9 +96,11 @@ namespace OpenRA.Mods.Common.Traits
 						continue;
 
 					var exitCellCenter = self.World.Map.CenterOfCell(exitCells[i]);
-					rgbaRenderer.DrawLine(wr.Screen3DPosition(spawnPos), wr.Screen3DPosition(exitCellCenter), 1f, self.Owner.Color.RGB);
+					yield return new LineAnnotationRenderable(spawnPos, exitCellCenter, 1, self.Owner.Color);
 				}
 			}
-	    }
+		}
+
+		bool IRenderAnnotationsWhenSelected.SpatiallyPartitionable => true;
 	}
 }

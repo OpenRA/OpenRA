@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,9 +9,7 @@
  */
 #endregion
 
-using System;
 using System.Linq;
-using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Widgets;
 
@@ -48,16 +46,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		void BindStanceButton(ButtonWidget button, UnitStance stance)
 		{
-			var icon = button.Get<ImageWidget>("ICON");
-			var hasDisabled = ChromeProvider.GetImage(icon.ImageCollection, icon.ImageName + "-disabled") != null;
-			var hasActive = ChromeProvider.GetImage(icon.ImageCollection, icon.ImageName + "-active") != null;
-			var hasActiveHover = ChromeProvider.GetImage(icon.ImageCollection, icon.ImageName + "-active-hover") != null;
-			var hasHover = ChromeProvider.GetImage(icon.ImageCollection, icon.ImageName + "-hover") != null;
-
-			icon.GetImageName = () => hasActive && button.IsHighlighted() ?
-						(hasActiveHover && Ui.MouseOverWidget == button ? icon.ImageName + "-active-hover" : icon.ImageName + "-active") :
-					hasDisabled && button.IsDisabled() ? icon.ImageName + "-disabled" :
-					hasHover && Ui.MouseOverWidget == button ? icon.ImageName + "-hover" : icon.ImageName;
+			WidgetUtils.BindButtonIcon(button);
 
 			button.IsDisabled = () => { UpdateStateIfNecessary(); return !actorStances.Any(); };
 			button.IsHighlighted = () => actorStances.Any(

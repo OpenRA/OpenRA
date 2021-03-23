@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,8 +9,6 @@
  */
 #endregion
 
-using System.Collections.Generic;
-using System.Linq;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -20,8 +18,8 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Reveal this actor's last position when killed.")]
 	public class RevealOnDeathInfo : ConditionalTraitInfo
 	{
-		[Desc("Stances relative to the actors' owner that shroud will be revealed for.")]
-		public readonly Stance RevealForStances = Stance.Ally;
+		[Desc("Relationships relative to the actors' owner that shroud will be revealed for.")]
+		public readonly PlayerRelationship RevealForRelationships = PlayerRelationship.Ally;
 
 		[Desc("Duration of the reveal.")]
 		public readonly int Duration = 25;
@@ -51,10 +49,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyKilled.Killed(Actor self, AttackInfo attack)
 		{
-			if (IsTraitDisabled)
-				return;
-
-			if (!self.IsInWorld)
+			if (IsTraitDisabled || !self.IsInWorld)
 				return;
 
 			if (!info.DeathTypes.IsEmpty && !attack.Damage.DamageTypes.Overlaps(info.DeathTypes))
@@ -71,7 +66,7 @@ namespace OpenRA.Mods.Common.Traits
 
 					w.Add(new RevealShroudEffect(self.CenterPosition, info.Radius,
 						info.RevealGeneratedShroud ? Shroud.SourceType.Visibility : Shroud.SourceType.PassiveVisibility,
-						owner, info.RevealForStances, duration: info.Duration));
+						owner, info.RevealForRelationships, duration: info.Duration));
 				});
 			}
 		}

@@ -30,7 +30,11 @@ FTUR:
 		Cost: 0
 	Power:
 		Amount: 0
+	CaptureManager:
+		-BeingCapturedCondition:
 	-Sellable:
+	Demolishable:
+		-Condition:
 
 PBOX:
 	-AutoTarget:

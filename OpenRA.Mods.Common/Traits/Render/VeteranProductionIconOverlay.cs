@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -15,26 +15,24 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
 {
-	[Desc("Attach this to the player actor. When attached, enables all actors possessing the LevelupWhenCreated ",
+	[Desc("Attach this to the player actor. When attached, enables all actors possessing the ProducibleWithLevel ",
 		"trait to have their production queue icons render with an overlay defined in this trait. ",
-		"The icon change occurs when LevelupWhenCreated.Prerequisites are met.")]
-	public class VeteranProductionIconOverlayInfo : ITraitInfo, Requires<TechTreeInfo>
+		"The icon change occurs when ProducibleWithLevel.Prerequisites are met.")]
+	public class VeteranProductionIconOverlayInfo : TraitInfo, Requires<TechTreeInfo>
 	{
 		[FieldLoader.Require]
 		[Desc("Image used for the overlay.")]
 		public readonly string Image = null;
 
+		[SequenceReference(nameof(Image))]
 		[Desc("Sequence used for the overlay (cannot be animated).")]
-		[SequenceReference("Image")] public readonly string Sequence = null;
+		public readonly string Sequence = null;
 
+		[PaletteReference]
 		[Desc("Palette to render the sprite in. Reference the world actor's PaletteFrom* traits.")]
-		[PaletteReference] public readonly string Palette = "chrome";
+		public readonly string Palette = "chrome";
 
-		[Desc("Point on the production icon's used as reference for offsetting the overlay. ",
-			"Possible values are combinations of Center, Top, Bottom, Left, Right.")]
-		public readonly ReferencePoints ReferencePoint = ReferencePoints.Top | ReferencePoints.Left;
-
-		public object Create(ActorInitializer init) { return new VeteranProductionIconOverlay(init, this); }
+		public override object Create(ActorInitializer init) { return new VeteranProductionIconOverlay(init, this); }
 	}
 
 	public class VeteranProductionIconOverlay : ITechTreeElement, IProductionIconOverlay
@@ -71,29 +69,19 @@ namespace OpenRA.Mods.Common.Traits.Render
 			}
 		}
 
-		Sprite IProductionIconOverlay.Sprite { get { return sprite; } }
-		string IProductionIconOverlay.Palette { get { return info.Palette; } }
+		Sprite IProductionIconOverlay.Sprite => sprite;
+		string IProductionIconOverlay.Palette => info.Palette;
+
 		float2 IProductionIconOverlay.Offset(float2 iconSize)
 		{
-			float x = 0;
-			float y = 0;
-			if (info.ReferencePoint.HasFlag(ReferencePoints.Top))
-				y -= iconSize.Y / 2 - sprite.Size.Y / 2;
-			else if (info.ReferencePoint.HasFlag(ReferencePoints.Bottom))
-				y += iconSize.Y / 2 - sprite.Size.Y / 2;
-
-			if (info.ReferencePoint.HasFlag(ReferencePoints.Left))
-				x -= iconSize.X / 2 - sprite.Size.X / 2;
-			else if (info.ReferencePoint.HasFlag(ReferencePoints.Right))
-				x += iconSize.X / 2 - sprite.Size.X / 2;
-
+			var x = (sprite.Size.X - iconSize.X) / 2;
+			var y = (sprite.Size.Y - iconSize.Y) / 2;
 			return new float2(x, y);
 		}
 
 		bool IProductionIconOverlay.IsOverlayActive(ActorInfo ai)
 		{
-			bool isActive;
-			if (!overlayActive.TryGetValue(ai, out isActive))
+			if (!overlayActive.TryGetValue(ai, out var isActive))
 				return false;
 
 			return isActive;

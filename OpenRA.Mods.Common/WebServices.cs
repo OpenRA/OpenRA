@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,8 +10,8 @@
 #endregion
 
 using System;
-using System.Net;
-using System.Text;
+using System.Threading.Tasks;
+using OpenRA.Support;
 
 namespace OpenRA.Mods.Common
 {
@@ -23,6 +23,7 @@ namespace OpenRA.Mods.Common
 		public readonly string ServerAdvertise = "https://master.openra.net/ping";
 		public readonly string MapRepository = "https://resource.openra.net/map/";
 		public readonly string GameNews = "https://master.openra.net/gamenews";
+		public readonly string GameNewsFileName = "news.yaml";
 		public readonly string VersionCheck = "https://master.openra.net/versioncheck";
 
 		public ModVersionStatus ModVersionStatus { get; private set; }
@@ -30,34 +31,31 @@ namespace OpenRA.Mods.Common
 
 		public void CheckModVersion()
 		{
-			Action<DownloadDataCompletedEventArgs> onComplete = i =>
+			Task.Run(async () =>
 			{
-				if (i.Error != null)
-					return;
-				try
+				var queryURL = new HttpQueryBuilder(VersionCheck)
 				{
-					var data = Encoding.UTF8.GetString(i.Result);
+					{ "protocol", VersionCheckProtocol },
+					{ "engine", Game.EngineVersion },
+					{ "mod", Game.ModData.Manifest.Id },
+					{ "version", Game.ModData.Manifest.Metadata.Version }
+				}.ToString();
 
-					var status = ModVersionStatus.Latest;
-					switch (data)
-					{
-						case "outdated": status = ModVersionStatus.Outdated; break;
-						case "unknown": status = ModVersionStatus.Unknown; break;
-						case "playtest": status = ModVersionStatus.PlaytestAvailable; break;
-					}
+				var client = HttpClientFactory.Create();
 
-					Game.RunAfterTick(() => ModVersionStatus = status);
+				var httpResponseMessage = await client.GetAsync(queryURL);
+				var result = await httpResponseMessage.Content.ReadAsStringAsync();
+
+				var status = ModVersionStatus.Latest;
+				switch (result)
+				{
+					case "outdated": status = ModVersionStatus.Outdated; break;
+					case "unknown": status = ModVersionStatus.Unknown; break;
+					case "playtest": status = ModVersionStatus.PlaytestAvailable; break;
 				}
-				catch { }
-			};
 
-			var queryURL = VersionCheck + "?protocol={0}&engine={1}&mod={2}&version={3}".F(
-				VersionCheckProtocol,
-				Uri.EscapeUriString(Game.EngineVersion),
-				Uri.EscapeUriString(Game.ModData.Manifest.Id),
-				Uri.EscapeUriString(Game.ModData.Manifest.Metadata.Version));
-
-			new Download(queryURL, _ => { }, onComplete);
+				Game.RunAfterTick(() => ModVersionStatus = status);
+			});
 		}
 	}
 }

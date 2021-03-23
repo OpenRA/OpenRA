@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using OpenRA.FileSystem;
 using OpenRA.Graphics;
@@ -25,7 +24,7 @@ namespace OpenRA.Mods.Cnc.Graphics
 		static readonly float[] ChannelSelect = { 0.75f, 0.25f, -0.25f, -0.75f };
 
 		readonly List<Vertex[]> vertices = new List<Vertex[]>();
-		readonly Cache<Pair<string, string>, Voxel> voxels;
+		readonly Cache<(string, string), Voxel> voxels;
 		readonly IReadOnlyFileSystem fileSystem;
 		IVertexBuffer<Vertex> vertexBuffer;
 		int totalVertexCount;
@@ -50,7 +49,7 @@ namespace OpenRA.Mods.Cnc.Graphics
 		public VoxelLoader(IReadOnlyFileSystem fileSystem)
 		{
 			this.fileSystem = fileSystem;
-			voxels = new Cache<Pair<string, string>, Voxel>(LoadFile);
+			voxels = new Cache<(string, string), Voxel>(LoadFile);
 			vertices = new List<Vertex[]>();
 			totalVertexCount = 0;
 			cachedVertexCount = 0;
@@ -78,8 +77,8 @@ namespace OpenRA.Mods.Cnc.Graphics
 			var size = new Size(su, sv);
 			var s = sheetBuilder.Allocate(size);
 			var t = sheetBuilder.Allocate(size);
-			Util.FastCopyIntoChannel(s, colors);
-			Util.FastCopyIntoChannel(t, normals);
+			OpenRA.Graphics.Util.FastCopyIntoChannel(s, colors, SpriteFrameType.Indexed8);
+			OpenRA.Graphics.Util.FastCopyIntoChannel(t, normals, SpriteFrameType.Indexed8);
 
 			// s and t are guaranteed to use the same sheet because
 			// of the custom voxel sheet allocation implementation
@@ -195,8 +194,7 @@ namespace OpenRA.Mods.Cnc.Graphics
 
 		public void RefreshBuffer()
 		{
-			if (vertexBuffer != null)
-				vertexBuffer.Dispose();
+			vertexBuffer?.Dispose();
 			vertexBuffer = Game.Renderer.CreateVertexBuffer(totalVertexCount);
 			vertexBuffer.SetData(vertices.SelectMany(v => v).ToArray(), totalVertexCount);
 			cachedVertexCount = totalVertexCount;
@@ -212,20 +210,21 @@ namespace OpenRA.Mods.Cnc.Graphics
 			}
 		}
 
-		Voxel LoadFile(Pair<string, string> files)
+		Voxel LoadFile((string Vxl, string Hva) files)
 		{
 			VxlReader vxl;
 			HvaReader hva;
-			using (var s = fileSystem.Open(files.First + ".vxl"))
+			using (var s = fileSystem.Open(files.Vxl + ".vxl"))
 				vxl = new VxlReader(s);
-			using (var s = fileSystem.Open(files.Second + ".hva"))
-				hva = new HvaReader(s, files.Second + ".hva");
-			return new Voxel(this, vxl, hva);
+
+			using (var s = fileSystem.Open(files.Hva + ".hva"))
+				hva = new HvaReader(s, files.Hva + ".hva");
+			return new Voxel(this, vxl, hva, files);
 		}
 
 		public Voxel Load(string vxl, string hva)
 		{
-			return voxels[Pair.New(vxl, hva)];
+			return voxels[(vxl, hva)];
 		}
 
 		public void Finish()
@@ -235,8 +234,7 @@ namespace OpenRA.Mods.Cnc.Graphics
 
 		public void Dispose()
 		{
-			if (vertexBuffer != null)
-				vertexBuffer.Dispose();
+			vertexBuffer?.Dispose();
 			sheetBuilder.Dispose();
 		}
 	}

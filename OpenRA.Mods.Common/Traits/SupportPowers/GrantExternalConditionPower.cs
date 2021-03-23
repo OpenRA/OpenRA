@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,11 +10,11 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
-using OpenRA.Mods.Common.Graphics;
+using OpenRA.Mods.Common.Orders;
 using OpenRA.Mods.Common.Traits.Render;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -28,16 +28,26 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Duration of the condition (in ticks). Set to 0 for a permanent condition.")]
 		public readonly int Duration = 0;
 
-		[Desc("Cells - affects whole cells only")]
-		public readonly int Range = 1;
+		[FieldLoader.Require]
+		[Desc("Size of the footprint of the affected area.")]
+		public readonly CVec Dimensions = CVec.Zero;
+
+		[FieldLoader.Require]
+		[Desc("Actual footprint. Cells marked as x will be affected.")]
+		public readonly string Footprint = string.Empty;
 
 		[Desc("Sound to instantly play at the targeted area.")]
 		public readonly string OnFireSound = null;
 
-		[SequenceReference, Desc("Sequence to play for granting actor when activated.",
+		[Desc("Player relationships which condition can be applied to.")]
+		public readonly PlayerRelationship ValidRelationships = PlayerRelationship.Ally;
+
+		[SequenceReference]
+		[Desc("Sequence to play for granting actor when activated.",
 			"This requires the actor to have the WithSpriteBody trait or one of its derivatives.")]
 		public readonly string Sequence = "active";
 
+		[CursorReference]
 		[Desc("Cursor to display when there are no units to apply the condition in range.")]
 		public readonly string BlockedCursor = "move-blocked";
 
@@ -47,50 +57,47 @@ namespace OpenRA.Mods.Common.Traits
 	class GrantExternalConditionPower : SupportPower
 	{
 		readonly GrantExternalConditionPowerInfo info;
+		readonly char[] footprint;
 
 		public GrantExternalConditionPower(Actor self, GrantExternalConditionPowerInfo info)
 			: base(self, info)
 		{
 			this.info = info;
+			footprint = info.Footprint.Where(c => !char.IsWhiteSpace(c)).ToArray();
 		}
 
 		public override void SelectTarget(Actor self, string order, SupportPowerManager manager)
 		{
-			Game.Sound.PlayToPlayer(SoundType.World, manager.Self.Owner, Info.SelectTargetSound);
 			self.World.OrderGenerator = new SelectConditionTarget(Self.World, order, manager, this);
 		}
 
 		public override void Activate(Actor self, Order order, SupportPowerManager manager)
 		{
 			base.Activate(self, order, manager);
+			PlayLaunchSounds();
 
 			var wsb = self.TraitOrDefault<WithSpriteBody>();
 			if (wsb != null && wsb.DefaultAnimation.HasSequence(info.Sequence))
 				wsb.PlayCustomAnimation(self, info.Sequence);
 
-			Game.Sound.Play(SoundType.World, info.OnFireSound, self.World.Map.CenterOfCell(order.TargetLocation));
+			Game.Sound.Play(SoundType.World, info.OnFireSound, order.Target.CenterPosition);
 
-			foreach (var a in UnitsInRange(order.TargetLocation))
-			{
-				var external = a.TraitsImplementing<ExternalCondition>()
-					.FirstOrDefault(t => t.Info.Condition == info.Condition && t.CanGrantCondition(a, self));
-
-				if (external != null)
-					external.GrantCondition(a, self, info.Duration);
-			}
+			foreach (var a in UnitsInRange(self.World.Map.CellContaining(order.Target.CenterPosition)))
+				a.TraitsImplementing<ExternalCondition>()
+					.FirstOrDefault(t => t.Info.Condition == info.Condition && t.CanGrantCondition(a, self))
+					?.GrantCondition(a, self, info.Duration);
 		}
 
 		public IEnumerable<Actor> UnitsInRange(CPos xy)
 		{
-			var range = info.Range;
-			var tiles = Self.World.Map.FindTilesInCircle(xy, range);
+			var tiles = CellsMatching(xy, footprint, info.Dimensions);
 			var units = new List<Actor>();
 			foreach (var t in tiles)
 				units.AddRange(Self.World.ActorMap.GetActorsAt(t));
 
 			return units.Distinct().Where(a =>
 			{
-				if (!a.Owner.IsAlliedWith(Self.Owner))
+				if (!info.ValidRelationships.HasRelationship(Self.Owner.RelationshipWith(a.Owner)))
 					return false;
 
 				return a.TraitsImplementing<ExternalCondition>()
@@ -98,11 +105,13 @@ namespace OpenRA.Mods.Common.Traits
 			});
 		}
 
-		class SelectConditionTarget : IOrderGenerator
+		class SelectConditionTarget : OrderGenerator
 		{
 			readonly GrantExternalConditionPower power;
-			readonly int range;
+			readonly char[] footprint;
+			readonly CVec dimensions;
 			readonly Sprite tile;
+			readonly float alpha;
 			readonly SupportPowerManager manager;
 			readonly string order;
 
@@ -115,44 +124,52 @@ namespace OpenRA.Mods.Common.Traits
 				this.manager = manager;
 				this.order = order;
 				this.power = power;
-				range = power.info.Range;
-				tile = world.Map.Rules.Sequences.GetSequence("overlay", "target-select").GetSprite(0);
+				footprint = power.info.Footprint.Where(c => !char.IsWhiteSpace(c)).ToArray();
+				dimensions = power.info.Dimensions;
+
+				var sequence = world.Map.Rules.Sequences.GetSequence("overlay", "target-select");
+				tile = sequence.GetSprite(0);
+				alpha = sequence.GetAlpha(0);
 			}
 
-			public IEnumerable<Order> Order(World world, CPos cell, int2 worldPixel, MouseInput mi)
+			protected override IEnumerable<Order> OrderInner(World world, CPos cell, int2 worldPixel, MouseInput mi)
 			{
 				world.CancelInputMode();
 				if (mi.Button == MouseButton.Left && power.UnitsInRange(cell).Any())
 					yield return new Order(order, manager.Self, Target.FromCell(world, cell), false) { SuppressVisualFeedback = true };
 			}
 
-			public void Tick(World world)
+			protected override void Tick(World world)
 			{
 				// Cancel the OG if we can't use the power
-				if (!manager.Powers.ContainsKey(order))
+				if (!manager.Powers.TryGetValue(order, out var p) || !p.Active || !p.Ready)
 					world.CancelInputMode();
 			}
 
-			public IEnumerable<IRenderable> RenderAboveShroud(WorldRenderer wr, World world)
+			protected override IEnumerable<IRenderable> RenderAboveShroud(WorldRenderer wr, World world) { yield break; }
+
+			protected override IEnumerable<IRenderable> RenderAnnotations(WorldRenderer wr, World world)
 			{
 				var xy = wr.Viewport.ViewToWorld(Viewport.LastMousePos);
 				foreach (var unit in power.UnitsInRange(xy))
 				{
-					var bounds = unit.TraitsImplementing<IDecorationBounds>().FirstNonEmptyBounds(unit, wr);
-					yield return new SelectionBoxRenderable(unit, bounds, Color.Red);
+					var decorations = unit.TraitsImplementing<ISelectionDecorations>().FirstEnabledTraitOrDefault();
+					if (decorations != null)
+						foreach (var d in decorations.RenderSelectionAnnotations(unit, wr, Color.Red))
+							yield return d;
 				}
 			}
 
-			public IEnumerable<IRenderable> Render(WorldRenderer wr, World world)
+			protected override IEnumerable<IRenderable> Render(WorldRenderer wr, World world)
 			{
 				var xy = wr.Viewport.ViewToWorld(Viewport.LastMousePos);
 				var pal = wr.Palette(TileSet.TerrainPaletteInternalName);
 
-				foreach (var t in world.Map.FindTilesInCircle(xy, range))
-					yield return new SpriteRenderable(tile, wr.World.Map.CenterOfCell(t), WVec.Zero, -511, pal, 1f, true);
+				foreach (var t in power.CellsMatching(xy, footprint, dimensions))
+					yield return new SpriteRenderable(tile, wr.World.Map.CenterOfCell(t), WVec.Zero, -511, pal, 1f, alpha, float3.Ones, TintModifiers.IgnoreWorldTint, true);
 			}
 
-			public string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
+			protected override string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
 			{
 				return power.UnitsInRange(cell).Any() ? power.info.Cursor : power.info.BlockedCursor;
 			}

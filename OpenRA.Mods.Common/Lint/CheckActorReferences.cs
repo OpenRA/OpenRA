@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -13,6 +13,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 using OpenRA.GameRules;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Lint
@@ -21,16 +22,16 @@ namespace OpenRA.Mods.Common.Lint
 	{
 		Action<string> emitError;
 
-		public void Run(Action<string> emitError, Action<string> emitWarning, Ruleset rules)
+		public void Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Ruleset rules)
 		{
 			this.emitError = emitError;
 
 			foreach (var actorInfo in rules.Actors)
-				foreach (var traitInfo in actorInfo.Value.TraitInfos<ITraitInfo>())
+				foreach (var traitInfo in actorInfo.Value.TraitInfos<TraitInfo>())
 					CheckTrait(actorInfo.Value, traitInfo, rules);
 		}
 
-		void CheckTrait(ActorInfo actorInfo, ITraitInfo traitInfo, Ruleset rules)
+		void CheckTrait(ActorInfo actorInfo, TraitInfo traitInfo, Ruleset rules)
 		{
 			var actualType = traitInfo.GetType();
 			foreach (var field in actualType.GetFields())
@@ -50,12 +51,12 @@ namespace OpenRA.Mods.Common.Lint
 		}
 
 		void CheckActorReference(ActorInfo actorInfo,
-			ITraitInfo traitInfo,
+			TraitInfo traitInfo,
 			FieldInfo fieldInfo,
 			IReadOnlyDictionary<string, ActorInfo> dict,
 			ActorReferenceAttribute attribute)
 		{
-			var values = LintExts.GetFieldValues(traitInfo, fieldInfo, emitError);
+			var values = LintExts.GetFieldValues(traitInfo, fieldInfo, emitError, attribute.DictionaryReference);
 			foreach (var value in values)
 			{
 				if (value == null)
@@ -81,7 +82,7 @@ namespace OpenRA.Mods.Common.Lint
 		}
 
 		void CheckWeaponReference(ActorInfo actorInfo,
-			ITraitInfo traitInfo,
+			TraitInfo traitInfo,
 			FieldInfo fieldInfo,
 			IReadOnlyDictionary<string, WeaponInfo> dict,
 			WeaponReferenceAttribute attribute)
@@ -92,14 +93,14 @@ namespace OpenRA.Mods.Common.Lint
 				if (value == null)
 					continue;
 
-				if (!dict.ContainsKey(value.ToLower()))
+				if (!dict.ContainsKey(value.ToLowerInvariant()))
 					emitError("{0}.{1}.{2}: Missing weapon `{3}`."
 						.F(actorInfo.Name, traitInfo.GetType().Name, fieldInfo.Name, value));
 			}
 		}
 
 		void CheckVoiceReference(ActorInfo actorInfo,
-			ITraitInfo traitInfo,
+			TraitInfo traitInfo,
 			FieldInfo fieldInfo,
 			IReadOnlyDictionary<string, SoundInfo> dict,
 			VoiceSetReferenceAttribute attribute)
@@ -110,7 +111,7 @@ namespace OpenRA.Mods.Common.Lint
 				if (value == null)
 					continue;
 
-				if (!dict.ContainsKey(value.ToLower()))
+				if (!dict.ContainsKey(value.ToLowerInvariant()))
 					emitError("{0}.{1}.{2}: Missing voice `{3}`."
 						.F(actorInfo.Name, traitInfo.GetType().Name, fieldInfo.Name, value));
 			}

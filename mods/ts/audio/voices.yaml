@@ -196,6 +196,31 @@ Civilian:
 		Zapped: electro1
 		Explode: expnew10
 
+Civilian1:
+	Inherits: Civilian
+	Voices:
+		Select: 67-n100, 67-n102
+		Move: 67-n104, 67-n106, 67-n108
+
+Civilian2:
+	Inherits: Civilian
+	Voices:
+		Select: 68-n100, 68-n102, 68-n104
+		Move: 68-n106, 68-n108, 68-n110
+
+Civilian3:
+	Inherits: Civilian
+	Voices:
+		Select: 69-n100, 69-b102, 69-n104
+		Move: 69-n106, 69-n108, 69-n110
+
+CivilianTechnician:
+	Inherits: Civilian
+	Voices:
+		Select: 70-n000, 70-n002, 70-n004
+		Move: 70-n006, 70-n008, 70-n010
+		Attack: 70-n014, 70-n016, 70-n018
+
 CivilianFemale: #can be used for female mutant as well
 	Voices:
 		Select:

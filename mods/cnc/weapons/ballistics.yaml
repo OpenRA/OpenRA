@@ -34,12 +34,13 @@
 		Damage: 2500
 		Versus:
 			None: 24
-			Wood: 72
+			Wood: 88
 			Light: 100
 			Heavy: 88
 
 120mm:
 	Inherits: ^BallisticWeapon
+	Report: tnkfire4.aud
 
 120mmDual:
 	Inherits: ^BallisticWeapon

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.IO;
 
 namespace OpenRA.Primitives
@@ -18,7 +19,7 @@ namespace OpenRA.Primitives
 		public Stream Stream1 { get; set; }
 		public Stream Stream2 { get; set; }
 
-		long VirtualLength { get; set; }
+		long VirtualLength { get; }
 		long position;
 
 		public MergedStream(Stream stream1, Stream stream2)
@@ -61,7 +62,21 @@ namespace OpenRA.Primitives
 
 		public override void SetLength(long value)
 		{
-			VirtualLength = value;
+			throw new NotSupportedException();
+		}
+
+		public override int ReadByte()
+		{
+			int value;
+
+			if (position >= Stream1.Length)
+				value = Stream2.ReadByte();
+			else
+				value = Stream1.ReadByte();
+
+			position++;
+
+			return value;
 		}
 
 		public override int Read(byte[] buffer, int offset, int count)
@@ -83,38 +98,28 @@ namespace OpenRA.Primitives
 			return bytesRead;
 		}
 
+		public override void WriteByte(byte value)
+		{
+			throw new NotSupportedException();
+		}
+
 		public override void Write(byte[] buffer, int offset, int count)
 		{
-			if (position >= Stream1.Length)
-				Stream2.Write(buffer, offset - (int)Stream1.Length, count);
-			else
-				Stream1.Write(buffer, offset, count);
+			throw new NotSupportedException();
 		}
 
-		public override bool CanRead
-		{
-			get { return Stream1.CanRead && Stream2.CanRead; }
-		}
+		public override bool CanRead => Stream1.CanRead && Stream2.CanRead;
 
-		public override bool CanSeek
-		{
-			get { return Stream1.CanSeek && Stream2.CanSeek; }
-		}
+		public override bool CanSeek => Stream1.CanSeek && Stream2.CanSeek;
 
-		public override bool CanWrite
-		{
-			get { return Stream1.CanWrite && Stream2.CanWrite; }
-		}
+		public override bool CanWrite => false;
 
-		public override long Length
-		{
-			get { return VirtualLength; }
-		}
+		public override long Length => VirtualLength;
 
 		public override long Position
 		{
-			get { return position; }
-			set { Seek(value, SeekOrigin.Begin); }
+			get => position;
+			set => Seek(value, SeekOrigin.Begin);
 		}
 	}
 }

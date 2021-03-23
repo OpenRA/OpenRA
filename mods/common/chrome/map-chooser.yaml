@@ -2,11 +2,11 @@ Background@MAPCHOOSER_PANEL:
 	X: (WINDOW_RIGHT - WIDTH) / 2
 	Y: (WINDOW_BOTTOM - HEIGHT) / 2
 	Logic: MapChooserLogic
-	Width: 808
+	Width: 900
 	Height: 600
 	Children:
 		Label@MAPCHOOSER_TITLE:
-			Y: 15
+			Y: 17
 			Align: Center
 			Width: PARENT_RIGHT
 			Height: 20
@@ -47,44 +47,44 @@ Background@MAPCHOOSER_PANEL:
 					Height: PARENT_BOTTOM
 					Children:
 		ScrollItem@MAP_TEMPLATE:
-			Width: 185
-			Height: 243
+			Width: 208
+			Height: 266
 			X: 2
 			Visible: false
 			Children:
 				MapPreview@PREVIEW:
 					X: (PARENT_RIGHT - WIDTH) / 2
 					Y: 3
-					Width: 179
-					Height: 179
+					Width: 202
+					Height: 202
 					IgnoreMouseOver: true
 					IgnoreMouseInput: true
 				Label@TITLE:
 					X: 4
-					Y: PARENT_BOTTOM - 53
+					Y: PARENT_BOTTOM - 52
 					Width: PARENT_RIGHT - 8
 					Align: Center
 				Label@DETAILS:
 					Width: PARENT_RIGHT - 8
 					X: 4
-					Y: PARENT_BOTTOM - 37
+					Y: PARENT_BOTTOM - 36
 					Align: Center
 					Font: Tiny
 				Label@AUTHOR:
 					Width: PARENT_RIGHT - 8
 					X: 4
-					Y: PARENT_BOTTOM - 25
+					Y: PARENT_BOTTOM - 24
 					Align: Center
 					Font: Tiny
 				Label@SIZE:
 					Width: PARENT_RIGHT - 8
 					X: 4
-					Y: PARENT_BOTTOM - 13
+					Y: PARENT_BOTTOM - 12
 					Align: Center
 					Font: Tiny
 		Label@FILTER_DESC:
 			X: PARENT_RIGHT - 467
-			Y: 48
+			Y: 50
 			Width: 60
 			Height: 24
 			Font: Bold
@@ -142,6 +142,6 @@ Background@MAPCHOOSER_PANEL:
 			Y: PARENT_BOTTOM - 45
 			Width: 120
 			Height: 25
-			Text: Cancel
+			Text: Back
 			Font: Bold
 			Key: escape

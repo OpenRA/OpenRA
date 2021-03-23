@@ -1,8 +1,5 @@
-Palettes:
-	cursor: mousepal.pal
-
 Cursors:
-	mouse.shp: cursor
+	mouse.shp: mouse
 		scroll-t:
 			Start: 2
 			Y: -19
@@ -218,7 +215,7 @@ Cursors:
 			Start: 385
 		joystick-tl-blocked:
 			Start: 386
-	attackmove.shp: cursor
+	attackmove.shp: mouse
 		attackmove:
 			Start: 0
 			Length: 10
@@ -231,7 +228,7 @@ Cursors:
 		attackmove-minimap-blocked:
 			Start: 21
 			Length: 1
-	assaultmove.shp: cursor
+	assaultmove.shp: mouse
 		assaultmove:
 			Start: 0
 			Length: 10

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,13 +10,12 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Drawing;
-using OpenRA.Effects;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Projectiles
@@ -50,8 +49,11 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Beam follows the target.")]
 		public readonly bool TrackTarget = true;
 
-		[Desc("Maximum offset at the maximum range.")]
+		[Desc("The maximum/constant/incremental inaccuracy used in conjunction with the InaccuracyType property.")]
 		public readonly WDist Inaccuracy = WDist.Zero;
+
+		[Desc("Controls the way inaccuracy is calculated. Possible values are 'Maximum' - scale from 0 to max with range, 'PerCellIncrement' - scale from 0 with range and 'Absolute' - use set value regardless of range.")]
+		public readonly InaccuracyType InaccuracyType = InaccuracyType.Maximum;
 
 		[Desc("Beam can be blocked.")]
 		public readonly bool Blockable = false;
@@ -76,23 +78,27 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Impact animation.")]
 		public readonly string HitAnim = null;
 
+		[SequenceReference(nameof(HitAnim), allowNullImage: true)]
 		[Desc("Sequence of impact animation to use.")]
-		[SequenceReference("HitAnim")] public readonly string HitAnimSequence = "idle";
+		public readonly string HitAnimSequence = "idle";
 
-		[PaletteReference] public readonly string HitAnimPalette = "effect";
+		[PaletteReference]
+		public readonly string HitAnimPalette = "effect";
 
 		[Desc("Image containing launch effect sequence.")]
 		public readonly string LaunchEffectImage = null;
 
+		[SequenceReference(nameof(LaunchEffectImage), allowNullImage: true)]
 		[Desc("Launch effect sequence to play.")]
-		[SequenceReference("LaunchEffectImage")] public readonly string LaunchEffectSequence = null;
+		public readonly string LaunchEffectSequence = null;
 
+		[PaletteReference]
 		[Desc("Palette to use for launch effect.")]
-		[PaletteReference] public readonly string LaunchEffectPalette = "effect";
+		public readonly string LaunchEffectPalette = "effect";
 
 		public IProjectile Create(ProjectileArgs args)
 		{
-			var c = UsePlayerColor ? args.SourceActor.Owner.Color.RGB : Color;
+			var c = UsePlayerColor ? args.SourceActor.Owner.Color : Color;
 			return new LaserZap(this, args, c);
 		}
 	}
@@ -104,27 +110,30 @@ namespace OpenRA.Mods.Common.Projectiles
 		readonly Animation hitanim;
 		readonly Color color;
 		readonly Color secondaryColor;
-		int ticks = 0;
+		readonly bool hasLaunchEffect;
+		int ticks;
 		int interval;
 		bool showHitAnim;
-		bool hasLaunchEffect;
-		[Sync] WPos target;
-		[Sync] WPos source;
+
+		[Sync]
+		WPos target;
+
+		[Sync]
+		WPos source;
 
 		public LaserZap(LaserZapInfo info, ProjectileArgs args, Color color)
 		{
 			this.args = args;
 			this.info = info;
 			this.color = color;
-			secondaryColor = info.SecondaryBeamUsePlayerColor ? args.SourceActor.Owner.Color.RGB : info.SecondaryBeamColor;
+			secondaryColor = info.SecondaryBeamUsePlayerColor ? args.SourceActor.Owner.Color : info.SecondaryBeamColor;
 			target = args.PassiveTarget;
 			source = args.Source;
 
 			if (info.Inaccuracy.Length > 0)
 			{
-				var inaccuracy = OpenRA.Mods.Common.Util.ApplyPercentageModifiers(info.Inaccuracy.Length, args.InaccuracyModifiers);
-				var maxOffset = inaccuracy * (target - source).Length / args.Weapon.Range.Length;
-				target += WVec.FromPDF(args.SourceActor.World.SharedRandom, 2) * maxOffset / 1024;
+				var maxInaccuracyOffset = Util.GetProjectileInaccuracy(info.Inaccuracy.Length, info.InaccuracyType, args);
+				target += WVec.FromPDF(args.SourceActor.World.SharedRandom, 2) * maxInaccuracyOffset / 1024;
 			}
 
 			if (!string.IsNullOrEmpty(info.HitAnim))
@@ -141,7 +150,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			source = args.CurrentSource();
 
 			if (hasLaunchEffect && ticks == 0)
-				world.AddFrameEndTask(w => w.Add(new LaunchEffect(world, args.CurrentSource, () => 0,
+				world.AddFrameEndTask(w => w.Add(new SpriteEffect(args.CurrentSource, args.CurrentMuzzleFacing, world,
 					info.LaunchEffectImage, info.LaunchEffectSequence, info.LaunchEffectPalette)));
 
 			// Beam tracks target
@@ -149,16 +158,20 @@ namespace OpenRA.Mods.Common.Projectiles
 				target = args.Weapon.TargetActorCenter ? args.GuidedTarget.CenterPosition : args.GuidedTarget.Positions.PositionClosestTo(source);
 
 			// Check for blocking actors
-			WPos blockedPos;
-			if (info.Blockable && BlocksProjectiles.AnyBlockingActorsBetween(world, source, target,
-				info.Width, out blockedPos))
+			if (info.Blockable && BlocksProjectiles.AnyBlockingActorsBetween(world, source, target, info.Width, out var blockedPos))
 			{
 				target = blockedPos;
 			}
 
 			if (ticks < info.DamageDuration && --interval <= 0)
 			{
-				args.Weapon.Impact(Target.FromPos(target), args.SourceActor, args.DamageModifiers);
+				var warheadArgs = new WarheadArgs(args)
+				{
+					ImpactOrientation = new WRot(WAngle.Zero, Util.GetVerticalAngle(source, target), args.CurrentMuzzleFacing()),
+					ImpactPosition = target,
+				};
+
+				args.Weapon.Impact(Target.FromPos(target), warheadArgs);
 				interval = info.DamageInterval;
 			}
 

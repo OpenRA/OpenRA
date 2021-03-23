@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,8 +10,7 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Drawing;
+using OpenRA.Primitives;
 
 namespace OpenRA.Graphics
 {
@@ -36,21 +35,21 @@ namespace OpenRA.Graphics
 			ZOffset = zOffset;
 		}
 
-		public IRenderable[] Render(Actor self, WorldRenderer wr, PaletteReference pal, float scale)
+		public IRenderable[] Render(Actor self, WorldRenderer wr, PaletteReference pal)
 		{
 			var center = self.CenterPosition;
-			var offset = OffsetFunc != null ? OffsetFunc() : WVec.Zero;
+			var offset = OffsetFunc?.Invoke() ?? WVec.Zero;
 
-			var z = (ZOffset != null) ? ZOffset(center + offset) : 0;
-			return Animation.Render(center, offset, z, pal, scale);
+			var z = ZOffset?.Invoke(center + offset) ?? 0;
+			return Animation.Render(center, offset, z, pal);
 		}
 
-		public Rectangle ScreenBounds(Actor self, WorldRenderer wr, float scale)
+		public Rectangle ScreenBounds(Actor self, WorldRenderer wr)
 		{
 			var center = self.CenterPosition;
-			var offset = OffsetFunc != null ? OffsetFunc() : WVec.Zero;
+			var offset = OffsetFunc?.Invoke() ?? WVec.Zero;
 
-			return Animation.ScreenBounds(wr, center, offset, scale);
+			return Animation.ScreenBounds(wr, center, offset);
 		}
 
 		public static implicit operator AnimationWithOffset(Animation a)

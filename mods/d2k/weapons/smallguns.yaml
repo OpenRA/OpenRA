@@ -3,10 +3,12 @@
 	Range: 2c512
 	Report: MGUN2.WAV
 	Projectile: InstantHit
+		Inaccuracy: 128
+		InaccuracyType: PerCellIncrement
 	Warhead@1Dam: SpreadDamage
-		Spread: 128
-		Falloff: 100, 50, 25, 0
 		Damage: 1250
+		Spread: 480
+		Falloff: 100, 0
 		Versus:
 			wall: 10
 			building: 25
@@ -17,9 +19,12 @@
 			cy: 20
 			harvester: 25
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
+		DamageCalculationType: ClosestTargetablePosition
 	Warhead@2Eff: CreateEffect
 		Explosions: piffs
 		ImpactActors: false
+	Warhead@3Concrete: DamagesConcrete
+		Damage: 1250
 
 LMG:
 	Inherits: ^MG
@@ -34,6 +39,7 @@ Fremen_S:
 M_LMG:
 	Inherits: ^MG
 	ReloadDelay: 40
+	ValidTargets: Infantry
 
 M_LMG_H:
 	Inherits: M_LMG
@@ -44,9 +50,10 @@ M_HMG:
 	ReloadDelay: 40
 	Range: 3c512
 	Report: 20MMGUN1.WAV
+	InvalidTargets: Infantry
 	Warhead@1Dam: SpreadDamage
-		Spread: 192
 		Damage: 2500
+		Spread: 512
 		Versus:
 			none: 25
 			wall: 100
@@ -57,6 +64,8 @@ M_HMG:
 			invulnerable: 0
 			cy: 20
 			harvester: 50
+	Warhead@3Concrete: DamagesConcrete
+		Damage: 625
 
 M_HMG_H:
 	Inherits: M_HMG
@@ -76,8 +85,8 @@ HMG:
 	Range: 3c0
 	Report: 20MMGUN1.WAV
 	Warhead@1Dam: SpreadDamage
-		Spread: 160
-		Falloff: 100, 60, 30, 0
+		Damage: 1800
+	Warhead@3Concrete: DamagesConcrete
 		Damage: 1800
 
 HMGo:

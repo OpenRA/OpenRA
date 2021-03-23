@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -18,8 +18,8 @@ namespace OpenRA.Graphics
 
 		public readonly string Name;
 		public IPalette Palette { get; internal set; }
-		public float TextureIndex { get { return index / hardwarePalette.Height; } }
-		public float TextureMidIndex { get { return (index + 0.5f) / hardwarePalette.Height; } }
+		public float TextureIndex => index / hardwarePalette.Height;
+		public float TextureMidIndex => (index + 0.5f) / hardwarePalette.Height;
 
 		public PaletteReference(string name, int index, IPalette palette, HardwarePalette hardwarePalette)
 		{

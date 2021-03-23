@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=OpenRA - {MODNAME}
+GenericName=Real Time Strategy Game
+GenericName[de]=Echtzeit-Strategiespiel
+Icon=openra-{MODID}
+Exec=openra-{MODID} %U
+Terminal=false
+Categories=Game;StrategyGame;
+StartupWMClass=openra-{MODID}-{TAG}
+MimeType=x-scheme-handler/openra-{MODID}-{TAG};x-scheme-handler/discord-{DISCORDAPPID};

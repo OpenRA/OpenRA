@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,17 +10,15 @@
 #endregion
 
 using System;
-using System.Drawing;
 using System.IO;
 using Eluant;
 using OpenRA.Effects;
-using OpenRA.FileSystem;
 using OpenRA.GameRules;
-using OpenRA.Graphics;
 using OpenRA.Mods.Common.Effects;
-using OpenRA.Mods.Common.FileFormats;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 using OpenRA.Scripting;
+using OpenRA.Video;
 
 namespace OpenRA.Mods.Common.Scripting
 {
@@ -177,12 +175,12 @@ namespace OpenRA.Mods.Common.Scripting
 				return false;
 			}
 
-			AsyncLoader l = new AsyncLoader(Media.LoadVqa);
+			AsyncLoader l = new AsyncLoader(Media.LoadVideo);
 			IAsyncResult ar = l.BeginInvoke(s, null, null);
 			Action onLoadComplete = () =>
 			{
 				Media.StopFMVInRadar();
-				world.AddFrameEndTask(_ => Media.PlayFMVInRadar(world, l.EndInvoke(ar), onCompleteRadar));
+				world.AddFrameEndTask(_ => Media.PlayFMVInRadar(l.EndInvoke(ar), onCompleteRadar));
 			};
 
 			world.AddFrameEndTask(w => w.Add(new AsyncAction(ar, onLoadComplete)));
@@ -190,13 +188,25 @@ namespace OpenRA.Mods.Common.Scripting
 		}
 
 		[Desc("Display a text message to the player.")]
-		public void DisplayMessage(string text, string prefix = "Mission", HSLColor? color = null)
+		public void DisplayMessage(string text, string prefix = "Mission", Color? color = null)
 		{
 			if (string.IsNullOrEmpty(text))
 				return;
 
-			Color c = color.HasValue ? HSLColor.RGBFromHSL(color.Value.H / 255f, color.Value.S / 255f, color.Value.L / 255f) : Color.White;
-			Game.AddChatLine(c, prefix, text);
+			var c = color.HasValue ? color.Value : Color.White;
+			Game.AddChatLine(prefix, c, text);
+		}
+
+		[Desc("Display a system message to the player. If 'prefix' is nil the default system prefix is used.")]
+		public void DisplaySystemMessage(string text, string prefix = null)
+		{
+			if (string.IsNullOrEmpty(text))
+				return;
+
+			if (string.IsNullOrEmpty(prefix))
+				Game.AddSystemLine(text);
+			else
+				Game.AddSystemLine(prefix, text);
 		}
 
 		[Desc("Displays a debug message to the player, if \"Show Map Debug Messages\" is checked in the settings.")]
@@ -209,15 +219,15 @@ namespace OpenRA.Mods.Common.Scripting
 		}
 
 		[Desc("Display a text message at the specified location.")]
-		public void FloatingText(string text, WPos position, int duration = 30, HSLColor? color = null)
+		public void FloatingText(string text, WPos position, int duration = 30, Color? color = null)
 		{
 			if (string.IsNullOrEmpty(text) || !world.Map.Contains(world.Map.CellContaining(position)))
 				return;
 
-			Color c = color.HasValue ? HSLColor.RGBFromHSL(color.Value.H / 255f, color.Value.S / 255f, color.Value.L / 255f) : Color.White;
+			var c = color.HasValue ? color.Value : Color.White;
 			world.AddFrameEndTask(w => w.Add(new FloatingText(position, c, text, duration)));
 		}
 
-		public delegate VqaReader AsyncLoader(Stream s);
+		public delegate IVideo AsyncLoader(Stream s);
 	}
 }

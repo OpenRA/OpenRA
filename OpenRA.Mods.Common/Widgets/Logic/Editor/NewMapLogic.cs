@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -11,6 +11,7 @@
 
 using System;
 using System.Linq;
+using OpenRA.Mods.Common.Terrain;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -27,7 +28,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			panel.Get<ButtonWidget>("CANCEL_BUTTON").OnClick = () => { Ui.CloseWindow(); onExit(); };
 
 			var tilesetDropDown = panel.Get<DropDownButtonWidget>("TILESET");
-			var tilesets = modData.DefaultTileSets.Select(t => t.Key).ToList();
+			var tilesets = modData.DefaultTerrainInfo.Keys;
 			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (option, template) =>
 			{
 				var item = ScrollItemWidget.Setup(template,
@@ -36,6 +37,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				item.Get<LabelWidget>("LABEL").GetText = () => option;
 				return item;
 			};
+
 			tilesetDropDown.Text = tilesets.First();
 			tilesetDropDown.OnClick = () =>
 				tilesetDropDown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 210, tilesets, setupItem);
@@ -45,9 +47,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			panel.Get<ButtonWidget>("CREATE_BUTTON").OnClick = () =>
 			{
-				int width, height;
-				int.TryParse(widthTextField.Text, out width);
-				int.TryParse(heightTextField.Text, out height);
+				int.TryParse(widthTextField.Text, out var width);
+				int.TryParse(heightTextField.Text, out var height);
 
 				// Require at least a 2x2 playable area so that the
 				// ground is visible through the edge shroud
@@ -55,7 +56,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				height = Math.Max(2, height);
 
 				var maxTerrainHeight = world.Map.Grid.MaximumTerrainHeight;
-				var tileset = modData.DefaultTileSets[tilesetDropDown.Text];
+				var tileset = modData.DefaultTerrainInfo[tilesetDropDown.Text];
 				var map = new Map(Game.ModData, tileset, width + 2, height + maxTerrainHeight + 2);
 
 				var tl = new PPos(1, 1 + maxTerrainHeight);
@@ -63,7 +64,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				map.SetBounds(tl, br);
 
 				map.PlayerDefinitions = new MapPlayers(map.Rules, 0).ToMiniYaml();
-				map.FixOpenAreas();
+
+				if (map.Rules.TerrainInfo is ITerrainInfoNotifyMapCreated notifyMapCreated)
+					notifyMapCreated.MapCreated(map);
 
 				Action<string> afterSave = uid =>
 				{
@@ -71,8 +74,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					// It's not clear why this is needed here, but not in the other places that load maps.
 					Game.RunAfterTick(() =>
 					{
-						ConnectionLogic.Connect(System.Net.IPAddress.Loopback.ToString(),
-							Game.CreateLocalServer(uid), "",
+						ConnectionLogic.Connect(Game.CreateLocalServer(uid), "",
 							() => Game.LoadEditor(uid),
 							() => { Game.CloseServer(); onExit(); });
 					});

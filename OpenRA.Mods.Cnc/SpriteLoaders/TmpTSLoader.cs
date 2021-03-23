@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,9 +9,9 @@
  */
 #endregion
 
-using System.Drawing;
 using System.IO;
 using OpenRA.Graphics;
+using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Cnc.SpriteLoaders
 {
@@ -21,11 +21,12 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 		{
 			readonly TmpTSFrame parent;
 
-			public Size Size { get { return parent.Size; } }
-			public Size FrameSize { get { return Size; } }
-			public float2 Offset { get { return parent.Offset; } }
-			public byte[] Data { get { return parent.DepthData; } }
-			public bool DisableExportPadding { get { return false; } }
+			public SpriteFrameType Type => SpriteFrameType.Indexed8;
+			public Size Size => parent.Size;
+			public Size FrameSize => Size;
+			public float2 Offset => parent.Offset;
+			public byte[] Data => parent.DepthData;
+			public bool DisableExportPadding => false;
 
 			public TmpTSDepthFrame(TmpTSFrame parent)
 			{
@@ -35,12 +36,13 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 
 		class TmpTSFrame : ISpriteFrame
 		{
+			public SpriteFrameType Type => SpriteFrameType.Indexed8;
 			public Size Size { get; private set; }
-			public Size FrameSize { get { return Size; } }
+			public Size FrameSize => Size;
 			public float2 Offset { get; private set; }
 			public byte[] Data { get; set; }
 			public byte[] DepthData { get; set; }
-			public bool DisableExportPadding { get { return false; } }
+			public bool DisableExportPadding => false;
 
 			public TmpTSFrame(Stream s, Size size, int u, int v)
 			{
@@ -182,8 +184,9 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 			return tiles;
 		}
 
-		public bool TryParseSprite(Stream s, out ISpriteFrame[] frames)
+		public bool TryParseSprite(Stream s, out ISpriteFrame[] frames, out TypeDictionary metadata)
 		{
+			metadata = null;
 			if (!IsTmpTS(s))
 			{
 				frames = null;

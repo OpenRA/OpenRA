@@ -1,0 +1,320 @@
+Container@MAINMENU_INTRODUCTION_PROMPT:
+	Logic: IntroductionPromptLogic
+	X: (WINDOW_RIGHT - WIDTH) / 2
+	Y: (WINDOW_BOTTOM - HEIGHT) / 2
+	Width: 600
+	Height: 350
+	Children:
+		Label@TITLE:
+			Width: PARENT_RIGHT
+			Y: 0 - 25
+			Font: BigBold
+			Contrast: true
+			Align: Center
+			Text: Establishing Battlefield Control
+		Background@bg:
+			Width: PARENT_RIGHT
+			Height: PARENT_BOTTOM
+			Background: panel-black
+			Children:
+				Label@DESC_A:
+					Width: PARENT_RIGHT
+					Y: 15
+					Height: 16
+					Font: Regular
+					Align: Center
+					Text: Welcome back Commander! Initialize combat parameters using the options below.
+				Label@DESC_B:
+					Width: PARENT_RIGHT
+					Y: 33
+					Height: 16
+					Font: Regular
+					Align: Center
+					Text: Additional options can be configured later from the Settings menu.
+				Label@PROFILE_TITLE:
+					Width: PARENT_RIGHT
+					Y: 60
+					Height: 25
+					Font: Bold
+					Align: Center
+					Text: Profile
+				Label@PLAYER:
+					Text: Player Name:
+					X: 15
+					Y: 90
+					Width: 120
+					Height: 25
+					Align: Right
+				TextField@PLAYERNAME:
+					X: 140
+					Y: 90
+					Width: 160
+					Height: 25
+					MaxLength: 16
+				Label@COLOR:
+					X: 265 + 60
+					Y: 90
+					Width: 145
+					Height: 25
+					Text: Preferred Color:
+					Align: Right
+				ColorPreviewManager@COLOR_MANAGER:
+				DropDownButton@PLAYERCOLOR:
+					X: 415 + 60
+					Y: 90
+					Width: 75
+					Height: 25
+					IgnoreChildMouseOver: true
+					PanelAlign: Right
+					Children:
+						ColorBlock@COLORBLOCK:
+							X: 5
+							Y: 6
+							Width: PARENT_RIGHT - 35
+							Height: PARENT_BOTTOM - 12
+				Label@INPUT_TITLE:
+					Width: PARENT_RIGHT
+					Y: 120
+					Height: 25
+					Font: Bold
+					Align: Center
+					Text: Input
+				Label@MOUSE_CONTROL_LABEL:
+					X: 15
+					Y: 150
+					Width: 120
+					Height: 25
+					Font: Regular
+					Text: Control Scheme:
+					Align: Right
+				DropDownButton@MOUSE_CONTROL_DROPDOWN:
+					X: 140
+					Y: 150
+					Width: 160
+					Height: 25
+					Font: Regular
+				Checkbox@EDGESCROLL_CHECKBOX:
+					X: 365
+					Y: 153
+					Width: 180
+					Height: 20
+					Font: Regular
+					Text: Screen Edge Panning
+				Container@MOUSE_CONTROL_DESC_CLASSIC:
+					X: 25
+					Y: 180
+					Width: PARENT_RIGHT - 50
+					Children:
+						LabelWithHighlight@DESC_SELECTION:
+							Height: 16
+							Font: Small
+							Text: - Select units using the {Left} mouse button
+						LabelWithHighlight@DESC_COMMANDS:
+							Y: 17
+							Height: 16
+							Font: Small
+							Text: - Command units using the {Left} mouse button
+						LabelWithHighlight@DESC_BUILDIGS:
+							Y: 34
+							Height: 16
+							Font: Small
+							Text: - Place structures using the {Left} mouse button
+						LabelWithHighlight@DESC_SUPPORT:
+							X: 265
+							Height: 16
+							Font: Small
+							Text: - Target support powers using the {Left} mouse button
+						LabelWithHighlight@DESC_ZOOM:
+							X: 265
+							Y: 17
+							Height: 16
+							Font: Small
+							Text: - Zoom the battlefield using the {Scroll Wheel}
+						LabelWithHighlight@DESC_ZOOM_MODIFIER:
+							X: 265
+							Y: 17
+							Height: 16
+							Font: Small
+							Text: - Zoom the battlefield using {MODIFIER + Scroll Wheel}
+						LabelWithHighlight@DESC_SCROLL_RIGHT:
+							X: 265
+							Y: 34
+							Height: 16
+							Font: Small
+							Text: - Pan the battlefield using the {Right} mouse button
+						LabelWithHighlight@DESC_SCROLL_MIDDLE:
+							X: 265
+							Y: 34
+							Height: 16
+							Font: Small
+							Text: - Pan the battlefield using the {Middle} mouse button
+						Label@DESC_EDGESCROLL:
+							X: 274
+							Y: 51
+							Height: 16
+							Font: Small
+							Text: or by moving the cursor to the edge of the screen
+				Container@MOUSE_CONTROL_DESC_MODERN:
+					X: 25
+					Y: 180
+					Width: PARENT_RIGHT - 50
+					Children:
+						LabelWithHighlight@DESC_SELECTION:
+							Height: 16
+							Font: Small
+							Text: - Select units using the {Left} mouse button
+						LabelWithHighlight@DESC_COMMANDS:
+							Y: 17
+							Height: 16
+							Font: Small
+							Text: - Command units using the {Right} mouse button
+						LabelWithHighlight@DESC_BUILDIGS:
+							Y: 34
+							Height: 16
+							Font: Small
+							Text: - Place structures using the {Left} mouse button
+						LabelWithHighlight@DESC_SUPPORT:
+							X: 265
+							Height: 16
+							Font: Small
+							Text: - Target support powers using the {Left} mouse button
+						LabelWithHighlight@DESC_ZOOM:
+							X: 265
+							Y: 17
+							Height: 16
+							Font: Small
+							Text: - Zoom the battlefield using the {Scroll Wheel}
+						LabelWithHighlight@DESC_ZOOM_MODIFIER:
+							X: 265
+							Y: 17
+							Height: 16
+							Font: Small
+							Text: - Zoom the battlefield using {MODIFIER + Scroll Wheel}
+						LabelWithHighlight@DESC_SCROLL_RIGHT:
+							X: 265
+							Y: 34
+							Height: 16
+							Font: Small
+							Text: - Pan the battlefield using the {Right} mouse button
+						LabelWithHighlight@DESC_SCROLL_MIDDLE:
+							X: 265
+							Y: 34
+							Height: 16
+							Font: Small
+							Text: - Pan the battlefield using the {Middle} mouse button
+						Label@DESC_EDGESCROLL:
+							X: 274
+							Y: 51
+							Height: 16
+							Font: Small
+							Text: or by moving the cursor to the edge of the screen
+				Label@INPUT_TITLE:
+					Width: PARENT_RIGHT
+					Y: 250
+					Height: 25
+					Font: Bold
+					Align: Center
+					Text: Display
+				Label@BATTLEFIELD_CAMERA:
+					X: 15
+					Y: 280
+					Width: 120
+					Height: 25
+					Text: Battlefield Camera:
+					Align: Right
+				DropDownButton@BATTLEFIELD_CAMERA_DROPDOWN:
+					X: 140
+					Y: 280
+					Width: 160
+					Height: 25
+					Font: Regular
+				Label@UI_SCALE:
+					X: 275
+					Y: 280
+					Width: 145
+					Height: 25
+					Text: UI Scale:
+					Align: Right
+				DropDownButton@UI_SCALE_DROPDOWN:
+					X: 425
+					Y: 280
+					Width: 160
+					Height: 25
+					Font: Regular
+				Checkbox@CURSORDOUBLE_CHECKBOX:
+					X: 390
+					Y: 313
+					Width: 200
+					Height: 20
+					Font: Regular
+					Text: Increase Cursor Size
+		Button@CONTINUE_BUTTON:
+			X: PARENT_RIGHT - WIDTH
+			Y: PARENT_BOTTOM - 1
+			Width: 140
+			Height: 35
+			Text: Continue
+			Font: Bold
+			Key: return
+
+Container@MAINMENU_SYSTEM_INFO_PROMPT:
+	Logic: SystemInfoPromptLogic
+	X: (WINDOW_RIGHT - WIDTH) / 2
+	Y: (WINDOW_BOTTOM - HEIGHT) / 2
+	Width: 600
+	Height: 350
+	Children:
+		Label@TITLE:
+			Width: PARENT_RIGHT
+			Y: 0 - 25
+			Font: BigBold
+			Contrast: true
+			Align: Center
+			Text: Establishing Battlefield Control
+		Background@bg:
+			Width: PARENT_RIGHT
+			Height: PARENT_BOTTOM
+			Background: panel-black
+			Children:
+				Label@PROMPT_TEXT_A:
+					X: 15
+					Y: 15
+					Width: PARENT_RIGHT - 30
+					Height: 16
+					Align: Center
+					Text: We would like to collect some details that will help us optimize OpenRA.
+				Label@PROMPT_TEXT_B:
+					X: 15
+					Y: 33
+					Width: PARENT_RIGHT - 30
+					Height: 16
+					Align: Center
+					Text: With your permission, the following anonymous system data will be sent:
+				ScrollPanel@SYSINFO_DATA:
+					X: 15
+					Y: 63
+					Width: PARENT_RIGHT - 30
+					TopBottomSpacing: 4
+					ItemSpacing: 4
+					Height: 240
+					Children:
+						Label@DATA_TEMPLATE:
+							X: 8
+							Height: 13
+							VAlign: Top
+							Font: Small
+				Checkbox@SYSINFO_CHECKBOX:
+					X: 390
+					Y: 313
+					Width: 190
+					Height: 20
+					Font: Regular
+					Text: Send System Information
+		Button@CONTINUE_BUTTON:
+			X: PARENT_RIGHT - WIDTH
+			Y: PARENT_BOTTOM - 1
+			Width: 140
+			Height: 35
+			Text: Continue
+			Font: Bold
+			Key: return

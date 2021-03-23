@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -15,12 +15,12 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class ElevatedBridgeLayerInfo : ITraitInfo, Requires<DomainIndexInfo>, ILobbyCustomRulesIgnore
+	public class ElevatedBridgeLayerInfo : TraitInfo, Requires<DomainIndexInfo>, ILobbyCustomRulesIgnore
 	{
 		[Desc("Terrain type used by cells outside any elevated bridge footprint.")]
 		public readonly string ImpassableTerrainType = "Impassable";
 
-		public object Create(ActorInitializer init) { return new ElevatedBridgeLayer(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new ElevatedBridgeLayer(init.Self, this); }
 	}
 
 	// For now this is mostly copies TerrainTunnelLayer. This will change once bridge destruction is implemented
@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Traits
 			map = self.World.Map;
 			cellCenters = new CellLayer<WPos>(map);
 			terrainIndices = new CellLayer<byte>(map);
-			terrainIndices.Clear(map.Rules.TileSet.GetTerrainIndex(info.ImpassableTerrainType));
+			terrainIndices.Clear(map.Rules.TerrainInfo.GetTerrainIndex(info.ImpassableTerrainType));
 		}
 
 		public void WorldLoaded(World world, WorldRenderer wr)
@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				enabled = true;
 
-				var terrain = map.Rules.TileSet.GetTerrainIndex(tti.TerrainType);
+				var terrain = map.Rules.TerrainInfo.GetTerrainIndex(tti.TerrainType);
 				foreach (var c in tti.BridgeCells())
 				{
 					var uv = c.ToMPos(map);
@@ -70,8 +70,9 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		bool ICustomMovementLayer.EnabledForActor(ActorInfo a, LocomotorInfo li) { return enabled; }
-		byte ICustomMovementLayer.Index { get { return CustomMovementLayerType.ElevatedBridge; } }
-		bool ICustomMovementLayer.InteractsWithDefaultLayer { get { return true; } }
+		byte ICustomMovementLayer.Index => CustomMovementLayerType.ElevatedBridge;
+		bool ICustomMovementLayer.InteractsWithDefaultLayer => true;
+		bool ICustomMovementLayer.ReturnToGroundLayerOnIdle => false;
 
 		WPos ICustomMovementLayer.CenterOfCell(CPos cell)
 		{

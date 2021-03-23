@@ -12,6 +12,8 @@ E3:
 		Cost: 250
 	Tooltip:
 		Name: Rocket Infantry
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Voiced:
 		VoiceSet: Rocket
 	Health:
@@ -25,7 +27,7 @@ E3:
 		ProneOffset: 52,64,-652
 	AttackFrontal:
 		Voice: Attack
-	WithInfantryBody:
+	WithSplitAttackPaletteInfantryBody:
 		DefaultAttackSequence: attack
 	RevealsShroud:
 		Range: 7c0
@@ -43,6 +45,8 @@ CYBORG:
 		Cost: 650
 	Tooltip:
 		Name: Cyborg Infantry
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 60
@@ -64,7 +68,6 @@ CYBORG:
 		Weapon: Vulcan3
 	AttackFrontal:
 		Voice: Attack
-	SelectionDecorations:
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
 
@@ -79,6 +82,8 @@ CYC2:
 		Cost: 2000
 	Tooltip:
 		Name: Cyborg Commando
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 100
@@ -102,7 +107,6 @@ CYC2:
 		LocalOffset: 240,120,966
 	AttackFrontal:
 		Voice: Attack
-	SelectionDecorations:
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
 
@@ -119,6 +123,8 @@ MHIJACK:
 		Cost: 1850
 	Tooltip:
 		Name: Mutant Hijacker
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Voiced:
 		VoiceSet: Hijacker
 	Health:
@@ -126,6 +132,7 @@ MHIJACK:
 	Mobile:
 		Speed: 99
 	-Crushable:
+	CaptureManager:
 	Captures:
 		CaptureTypes: Vehicle
 		PlayerExperience: 50

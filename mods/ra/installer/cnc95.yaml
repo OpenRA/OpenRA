@@ -3,10 +3,10 @@ cnc95: C&C Gold (GDI or Nod Disc, English)
 		CONQUER.MIX: 833e02a09aae694659eb312d3838367f681d1b30
 	Install:
 		copy: .
-			^Content/ra/v2/cnc/desert.mix: DESERT.MIX
+			^SupportDir|Content/ra/v2/cnc/desert.mix: DESERT.MIX
 cnc95-linux: C&C Gold (GDI or Nod Disc, English)
 	IDFiles:
 		conquer.mix: 833e02a09aae694659eb312d3838367f681d1b30
 	Install:
 		copy: .
-			^Content/ra/v2/cnc/desert.mix: desert.mix
+			^SupportDir|Content/ra/v2/cnc/desert.mix: desert.mix

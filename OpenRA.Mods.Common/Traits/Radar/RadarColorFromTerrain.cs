@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,25 +9,32 @@
  */
 #endregion
 
-using System.Drawing;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Radar
 {
-	public class RadarColorFromTerrainInfo : ITraitInfo
+	public class RadarColorFromTerrainInfo : TraitInfo
 	{
-		[FieldLoader.Require] public readonly string Terrain;
-		public object Create(ActorInitializer init) { return new RadarColorFromTerrain(init.Self, Terrain); }
+		[FieldLoader.Require]
+		public readonly string Terrain;
+
+		public Color GetColorFromTerrain(World world)
+		{
+			var terrainInfo = world.Map.Rules.TerrainInfo;
+			return terrainInfo.TerrainTypes[terrainInfo.GetTerrainIndex(Terrain)].Color;
+		}
+
+		public override object Create(ActorInitializer init) { return new RadarColorFromTerrain(init.Self, this); }
 	}
 
 	public class RadarColorFromTerrain : IRadarColorModifier
 	{
-		Color c;
+		readonly Color c;
 
-		public RadarColorFromTerrain(Actor self, string terrain)
+		public RadarColorFromTerrain(Actor self, RadarColorFromTerrainInfo info)
 		{
-			var tileSet = self.World.Map.Rules.TileSet;
-			c = tileSet[tileSet.GetTerrainIndex(terrain)].Color;
+			c = info.GetColorFromTerrain(self.World);
 		}
 
 		public bool VisibleOnRadar(Actor self) { return true; }

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,48 +10,46 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Widgets;
+using OpenRA.Primitives;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.LoadScreens
 {
-	public sealed class ModContentLoadScreen : ILoadScreen
+	public sealed class ModContentLoadScreen : SheetLoadScreen
 	{
 		Sprite sprite;
 		Rectangle bounds;
 
-		public void Init(ModData modData, Dictionary<string, string> info)
-		{
-			var res = Game.Renderer.Resolution;
-			bounds = new Rectangle(0, 0, res.Width, res.Height);
+		Sheet lastSheet;
+		int lastDensity;
+		Size lastResolution;
 
-			using (var stream = modData.DefaultFileSystem.Open(info["Image"]))
+		public override void DisplayInner(Renderer r, Sheet s, int density)
+		{
+			if (s != lastSheet || density != lastDensity)
 			{
-				var sheet = new Sheet(SheetType.BGRA, stream);
-				sprite = new Sprite(sheet, new Rectangle(0, 0, 1024, 480), TextureChannel.RGBA);
+				lastSheet = s;
+				lastDensity = density;
+				sprite = CreateSprite(s, density, new Rectangle(0, 0, 1024, 480));
 			}
-		}
 
-		public void Display()
-		{
-			var r = Game.Renderer;
-			if (r == null)
-				return;
+			if (r.Resolution != lastResolution)
+			{
+				lastResolution = r.Resolution;
+				bounds = new Rectangle(0, 0, lastResolution.Width, lastResolution.Height);
+			}
 
-			r.BeginFrame(int2.Zero, 1f);
 			WidgetUtils.FillRectWithSprite(bounds, sprite);
-			r.EndFrame(new NullInputHandler());
 		}
 
-		public void StartGame(Arguments args)
+		public override void StartGame(Arguments args)
 		{
 			var modId = args.GetValue("Content.Mod", null);
-			Manifest selectedMod;
-			if (modId == null || !Game.Mods.TryGetValue(modId, out selectedMod))
+			if (modId == null || !Game.Mods.TryGetValue(modId, out var selectedMod))
 				throw new InvalidOperationException("Invalid or missing Content.Mod argument.");
 
 			var content = selectedMod.Get<ModContent>(Game.ModData.ObjectCreator);
@@ -62,8 +60,7 @@ namespace OpenRA.Mods.Common.LoadScreens
 			{
 				var widgetArgs = new WidgetArgs
 				{
-					{ "continueLoading", () =>
-						Game.RunAfterTick(() => Game.InitializeMod(modId, new Arguments())) },
+					{ "continueLoading", () => Game.RunAfterTick(() => Game.InitializeMod(modId, new Arguments())) },
 					{ "mod", selectedMod },
 					{ "content", content },
 				};
@@ -76,8 +73,7 @@ namespace OpenRA.Mods.Common.LoadScreens
 				{
 					{ "mod", selectedMod },
 					{ "content", content },
-					{ "onCancel", () =>
-						Game.RunAfterTick(() => Game.InitializeMod(modId, new Arguments())) }
+					{ "onCancel", () => Game.RunAfterTick(() => Game.InitializeMod(modId, new Arguments())) }
 				};
 
 				Ui.OpenWindow("CONTENT_PANEL", widgetArgs);
@@ -91,13 +87,7 @@ namespace OpenRA.Mods.Common.LoadScreens
 				.All(p => p.Value.TestFiles.All(f => File.Exists(Platform.ResolvePath(f))));
 		}
 
-		public void Dispose()
-		{
-			if (sprite != null)
-				sprite.Sheet.Dispose();
-		}
-
-		public bool BeforeLoad()
+		public override bool BeforeLoad()
 		{
 			return true;
 		}

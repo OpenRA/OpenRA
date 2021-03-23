@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+   Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -72,6 +72,14 @@ ReinforcementsDelay = DateTime.Minutes(16)
 ReinforcementsUnits = { "2tnk", "2tnk", "2tnk", "2tnk", "2tnk", "2tnk", "1tnk", "1tnk", "jeep", "e1",
 	"e1", "e1", "e1", "e3", "e3", "mcv", "truk", "truk", "truk", "truk", "truk", "truk" }
 
+IdleHunt = function(actor)
+	Trigger.OnIdle(actor, function(a)
+		if a.IsInWorld then
+			a.Hunt()
+		end
+	end)
+end
+
 SpawnAlliedReinforcements = function()
 	if allies2.IsLocalPlayer then
 		UserInterface.SetMissionText("")
@@ -107,24 +115,24 @@ end
 
 SendParabombs = function()
 	local proxy = Actor.Create("powerproxy.parabombs", false, { Owner = soviets })
-	proxy.SendAirstrikeFrom(BadgerEntryPoint2.Location, ParabombPoint1.Location)
-	proxy.SendAirstrikeFrom(BadgerEntryPoint2.Location + CVec.New(0, 3), ParabombPoint2.Location)
+	proxy.TargetAirstrike(ParabombPoint1.CenterPosition, (BadgerEntryPoint2.CenterPosition - ParabombPoint1.CenterPosition).Facing)
+	proxy.TargetAirstrike(ParabombPoint2.CenterPosition, (Map.CenterOfCell(BadgerEntryPoint2.Location + CVec.New(0, 3)) - ParabombPoint2.CenterPosition).Facing)
 	proxy.Destroy()
 end
 
 SendParatroopers = function()
 	Utils.Do(Paratroopers, function(para)
 		local proxy = Actor.Create(para.proxy, false, { Owner = soviets })
-		local units = proxy.SendParatroopersFrom(para.entry, para.drop)
-		proxy.Destroy()
+		local target = Map.CenterOfCell(para.drop)
+		local dir = target - Map.CenterOfCell(para.entry)
 
-		Utils.Do(units, function(unit)
-			Trigger.OnIdle(unit, function(a)
-				if a.IsInWorld then
-					a.Hunt()
-				end
+		local aircraft = proxy.TargetParatroopers(target, dir.Facing)
+		Utils.Do(aircraft, function(a)
+			Trigger.OnPassengerExited(a, function(t, p)
+				IdleHunt(p)
 			end)
 		end)
+		proxy.Destroy()
 	end)
 end
 

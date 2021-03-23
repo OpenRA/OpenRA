@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,31 +10,37 @@
 #endregion
 
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Terrain;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	class LegacyBridgeLayerInfo : ITraitInfo
+	class LegacyBridgeLayerInfo : TraitInfo
 	{
 		[ActorReference]
 		public readonly string[] Bridges = { "bridge1", "bridge2" };
 
-		public object Create(ActorInitializer init) { return new LegacyBridgeLayer(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new LegacyBridgeLayer(init.Self, this); }
 	}
 
 	class LegacyBridgeLayer : IWorldLoaded
 	{
 		readonly LegacyBridgeLayerInfo info;
-		readonly Dictionary<ushort, Pair<string, int>> bridgeTypes = new Dictionary<ushort, Pair<string, int>>();
+		readonly Dictionary<ushort, (string Template, int Health)> bridgeTypes = new Dictionary<ushort, (string, int)>();
+		readonly ITemplatedTerrainInfo terrainInfo;
 
 		CellLayer<Bridge> bridges;
 
 		public LegacyBridgeLayer(Actor self, LegacyBridgeLayerInfo info)
 		{
 			this.info = info;
+			terrainInfo = self.World.Map.Rules.TerrainInfo as ITemplatedTerrainInfo;
+			if (terrainInfo == null)
+				throw new InvalidDataException("LegacyBridgeLayer requires a template-based tileset.");
 		}
 
 		public void WorldLoaded(World w, WorldRenderer wr)
@@ -46,7 +52,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				var bi = w.Map.Rules.Actors[bridge].TraitInfo<BridgeInfo>();
 				foreach (var template in bi.Templates)
-					bridgeTypes.Add(template.First, Pair.New(bridge, template.Second));
+					bridgeTypes.Add(template.Template, (bridge, template.Health));
 			}
 
 			// Take all templates to overlay from the map
@@ -65,18 +71,19 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			// Correlate the tile "image" aka subtile with its position to find the template origin
-			var tile = w.Map.Tiles[cell].Type;
-			var index = w.Map.Tiles[cell].Index;
-			var template = w.Map.Rules.TileSet.Templates[tile];
+			var ti = w.Map.Tiles[cell];
+			var tile = ti.Type;
+			var index = ti.Index;
+			var template = terrainInfo.Templates[tile];
 			var ni = cell.X - index % template.Size.X;
 			var nj = cell.Y - index / template.Size.X;
 
 			// Create a new actor for this bridge and keep track of which subtiles this bridge includes
-			var bridge = w.CreateActor(bridgeTypes[tile].First, new TypeDictionary
+			var bridge = w.CreateActor(bridgeTypes[tile].Template, new TypeDictionary
 			{
 				new LocationInit(new CPos(ni, nj)),
 				new OwnerInit(w.WorldActor.Owner),
-				new HealthInit(bridgeTypes[tile].Second, true),
+				new HealthInit(bridgeTypes[tile].Health, true),
 			}).Trait<Bridge>();
 
 			var subTiles = new Dictionary<CPos, byte>();
@@ -88,8 +95,12 @@ namespace OpenRA.Mods.Common.Traits
 				// Where do we expect to find the subtile
 				var subtile = new CPos(ni + ind % template.Size.X, nj + ind / template.Size.X);
 
+				if (!mapTiles.Contains(subtile))
+					continue;
+
 				// This isn't the bridge you're looking for
-				if (!mapTiles.Contains(subtile) || mapTiles[subtile].Type != tile || mapTiles[subtile].Index != ind)
+				var subti = mapTiles[subtile];
+				if (subti.Type != tile || subti.Index != ind)
 					continue;
 
 				subTiles.Add(subtile, ind);

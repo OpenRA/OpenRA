@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -11,17 +11,18 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
+using OpenRA.FileFormats;
 using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
+using OpenRA.Support;
 
 namespace OpenRA
 {
@@ -56,7 +57,7 @@ namespace OpenRA
 		public readonly string[] categories;
 		public readonly int players;
 		public readonly Rectangle bounds;
-		public readonly int[] spawnpoints = { };
+		public readonly short[] spawnpoints = { };
 		public readonly MapGridType map_grid_type;
 		public readonly string minimap;
 		public readonly bool downloading;
@@ -79,18 +80,18 @@ namespace OpenRA
 			public CPos[] SpawnPoints;
 			public MapGridType GridType;
 			public Rectangle Bounds;
-			public Bitmap Preview;
+			public Png Preview;
 			public MapStatus Status;
 			public MapClassification Class;
 			public MapVisibility Visibility;
 
 			Lazy<Ruleset> rules;
-			public Ruleset Rules { get { return rules != null ? rules.Value : null; } }
+			public Ruleset Rules => rules?.Value;
 			public bool InvalidCustomRules { get; private set; }
 			public bool DefinesUnsafeCustomRules { get; private set; }
 			public bool RulesLoaded { get; private set; }
 
-			public void SetRulesetGenerator(ModData modData, Func<Pair<Ruleset, bool>> generator)
+			public void SetRulesetGenerator(ModData modData, Func<(Ruleset Ruleset, bool DefinesUnsafeCustomRules)> generator)
 			{
 				InvalidCustomRules = false;
 				RulesLoaded = false;
@@ -107,8 +108,8 @@ namespace OpenRA
 					try
 					{
 						var ret = generator();
-						DefinesUnsafeCustomRules = ret.Second;
-						return ret.First;
+						DefinesUnsafeCustomRules = ret.DefinesUnsafeCustomRules;
+						return ret.Ruleset;
 					}
 					catch (Exception e)
 					{
@@ -139,23 +140,24 @@ namespace OpenRA
 
 		volatile InnerData innerData;
 
-		public string Title { get { return innerData.Title; } }
-		public string[] Categories { get { return innerData.Categories; } }
-		public string Author { get { return innerData.Author; } }
-		public string TileSet { get { return innerData.TileSet; } }
-		public MapPlayers Players { get { return innerData.Players; } }
-		public int PlayerCount { get { return innerData.PlayerCount; } }
-		public CPos[] SpawnPoints { get { return innerData.SpawnPoints; } }
-		public MapGridType GridType { get { return innerData.GridType; } }
-		public Rectangle Bounds { get { return innerData.Bounds; } }
-		public Bitmap Preview { get { return innerData.Preview; } }
-		public MapStatus Status { get { return innerData.Status; } }
-		public MapClassification Class { get { return innerData.Class; } }
-		public MapVisibility Visibility { get { return innerData.Visibility; } }
+		public string Title => innerData.Title;
+		public string[] Categories => innerData.Categories;
+		public string Author => innerData.Author;
+		public string TileSet => innerData.TileSet;
+		public MapPlayers Players => innerData.Players;
+		public int PlayerCount => innerData.PlayerCount;
+		public CPos[] SpawnPoints => innerData.SpawnPoints;
+		public MapGridType GridType => innerData.GridType;
+		public Rectangle Bounds => innerData.Bounds;
+		public Png Preview => innerData.Preview;
+		public MapStatus Status => innerData.Status;
+		public MapClassification Class => innerData.Class;
+		public MapVisibility Visibility => innerData.Visibility;
 
-		public Ruleset Rules { get { return innerData.Rules; } }
-		public bool InvalidCustomRules { get { return innerData.InvalidCustomRules; } }
-		public bool RulesLoaded { get { return innerData.RulesLoaded; } }
+		public Ruleset Rules => innerData.Rules;
+		public bool InvalidCustomRules => innerData.InvalidCustomRules;
+		public bool RulesLoaded => innerData.RulesLoaded;
+
 		public bool DefinesUnsafeCustomRules
 		{
 			get
@@ -166,7 +168,6 @@ namespace OpenRA
 			}
 		}
 
-		Download download;
 		public long DownloadBytes { get; private set; }
 		public int DownloadPercentage { get; private set; }
 
@@ -224,7 +225,7 @@ namespace OpenRA
 				if (yamlStream == null)
 					throw new FileNotFoundException("Required file map.yaml not present in this map");
 
-				yaml = new MiniYaml(null, MiniYaml.FromStream(yamlStream, "map.yaml")).ToDictionary();
+				yaml = new MiniYaml(null, MiniYaml.FromStream(yamlStream, "map.yaml", stringPool: cache.StringPool)).ToDictionary();
 			}
 
 			Package = p;
@@ -234,8 +235,7 @@ namespace OpenRA
 			newData.GridType = gridType;
 			newData.Class = classification;
 
-			MiniYaml temp;
-			if (yaml.TryGetValue("MapFormat", out temp))
+			if (yaml.TryGetValue("MapFormat", out var temp))
 			{
 				var format = FieldLoader.GetValue<int>("MapFormat", temp.Value);
 				if (format != Map.SupportedMapFormat)
@@ -270,14 +270,13 @@ namespace OpenRA
 			try
 			{
 				// Actor definitions may change if the map format changes
-				MiniYaml actorDefinitions;
-				if (yaml.TryGetValue("Actors", out actorDefinitions))
+				if (yaml.TryGetValue("Actors", out var actorDefinitions))
 				{
 					var spawns = new List<CPos>();
 					foreach (var kv in actorDefinitions.Nodes.Where(d => d.Value.Value == "mpspawn"))
 					{
 						var s = new ActorReference(kv.Value.Value, kv.Value.ToDictionary());
-						spawns.Add(s.InitDict.Get<LocationInit>().Value(null));
+						spawns.Add(s.Get<LocationInit>().Value);
 					}
 
 					newData.SpawnPoints = spawns.ToArray();
@@ -294,8 +293,7 @@ namespace OpenRA
 			try
 			{
 				// Player definitions may change if the map format changes
-				MiniYaml playerDefinitions;
-				if (yaml.TryGetValue("Players", out playerDefinitions))
+				if (yaml.TryGetValue("Players", out var playerDefinitions))
 				{
 					newData.Players = new MapPlayers(playerDefinitions.Nodes);
 					newData.PlayerCount = newData.Players.Players.Count(x => x.Value.Playable);
@@ -319,12 +317,12 @@ namespace OpenRA
 					voiceDefinitions, notificationDefinitions, musicDefinitions, sequenceDefinitions, modelSequenceDefinitions);
 				var flagged = Ruleset.DefinesUnsafeCustomRules(modData, this, ruleDefinitions,
 					weaponDefinitions, voiceDefinitions, notificationDefinitions, sequenceDefinitions);
-				return Pair.New(rules, flagged);
+				return (rules, flagged);
 			});
 
 			if (p.Contains("map.png"))
 				using (var dataStream = p.GetStream("map.png"))
-					newData.Preview = new Bitmap(dataStream);
+					newData.Preview = new Png(dataStream);
 
 			// Assign the new data atomically
 			innerData = newData;
@@ -332,8 +330,7 @@ namespace OpenRA
 
 		MiniYaml LoadRuleSection(Dictionary<string, MiniYaml> yaml, string section)
 		{
-			MiniYaml node;
-			if (!yaml.TryGetValue(section, out node))
+			if (!yaml.TryGetValue(section, out var node))
 				return null;
 
 			return node;
@@ -377,7 +374,7 @@ namespace OpenRA
 					newData.GridType = r.map_grid_type;
 					try
 					{
-						newData.Preview = new Bitmap(new MemoryStream(Convert.FromBase64String(r.minimap)));
+						newData.Preview = new Png(new MemoryStream(Convert.FromBase64String(r.minimap)));
 					}
 					catch (Exception e)
 					{
@@ -403,7 +400,7 @@ namespace OpenRA
 							voiceDefinitions, notificationDefinitions, musicDefinitions, sequenceDefinitions, modelSequenceDefinitions);
 						var flagged = Ruleset.DefinesUnsafeCustomRules(modData, this, ruleDefinitions,
 							weaponDefinitions, voiceDefinitions, notificationDefinitions, sequenceDefinitions);
-						return Pair.New(rules, flagged);
+						return (rules, flagged);
 					});
 				}
 				catch (Exception e)
@@ -417,8 +414,7 @@ namespace OpenRA
 				if (innerData.Preview != null)
 					cache.CacheMinimap(this);
 
-				if (parseMetadata != null)
-					parseMetadata(this);
+				parseMetadata?.Invoke(this);
 			}
 
 			// Update the status and class unconditionally
@@ -440,74 +436,57 @@ namespace OpenRA
 			}
 
 			var mapInstallPackage = installLocation.Key as IReadWritePackage;
-			new Thread(() =>
+
+			Task.Run(async () =>
 			{
 				// Request the filename from the server
 				// Run in a worker thread to avoid network delays
 				var mapUrl = mapRepositoryUrl + Uid;
-				var mapFilename = string.Empty;
 				try
 				{
-					var request = WebRequest.Create(mapUrl);
-					request.Method = "HEAD";
-					using (var res = request.GetResponse())
+					void OnDownloadProgress(long total, long received, int percentage)
 					{
-						// Map not found
-						if (res.Headers["Content-Disposition"] == null)
-						{
-							innerData.Status = MapStatus.DownloadError;
-							return;
-						}
-
-						mapFilename = res.Headers["Content-Disposition"].Replace("attachment; filename = ", "");
+						DownloadBytes = total;
+						DownloadPercentage = percentage;
 					}
 
-					Action<DownloadProgressChangedEventArgs> onDownloadProgress = i => { DownloadBytes = i.BytesReceived; DownloadPercentage = i.ProgressPercentage; };
-					Action<DownloadDataCompletedEventArgs> onDownloadComplete = i =>
+					var client = HttpClientFactory.Create();
+
+					var response = await client.GetAsync(mapUrl, HttpCompletionOption.ResponseHeadersRead);
+
+					if (!response.IsSuccessStatusCode)
 					{
-						download = null;
+						innerData.Status = MapStatus.DownloadError;
+						return;
+					}
 
-						if (i.Error != null)
-						{
-							Log.Write("debug", "Remote map download failed with error: {0}", Download.FormatErrorMessage(i.Error));
-							Log.Write("debug", "URL was: {0}", mapUrl);
+					response.Headers.TryGetValues("Content-Disposition", out var values);
+					var mapFilename = values.First().Replace("attachment; filename = ", "");
 
+					var fileStream = new MemoryStream();
+
+					await response.ReadAsStreamWithProgress(fileStream, OnDownloadProgress, CancellationToken.None);
+
+					mapInstallPackage.Update(mapFilename, fileStream.ToArray());
+					Log.Write("debug", "Downloaded map to '{0}'", mapFilename);
+					Game.RunAfterTick(() =>
+					{
+						var package = mapInstallPackage.OpenPackage(mapFilename, modData.ModFiles);
+						if (package == null)
 							innerData.Status = MapStatus.DownloadError;
-							return;
-						}
-
-						mapInstallPackage.Update(mapFilename, i.Result);
-						Log.Write("debug", "Downloaded map to '{0}'", mapFilename);
-						Game.RunAfterTick(() =>
+						else
 						{
-							var package = mapInstallPackage.OpenPackage(mapFilename, modData.ModFiles);
-							if (package == null)
-								innerData.Status = MapStatus.DownloadError;
-							else
-							{
-								UpdateFromMap(package, mapInstallPackage, MapClassification.User, null, GridType);
-								onSuccess();
-							}
-						});
-					};
-
-					download = new Download(mapUrl, onDownloadProgress, onDownloadComplete);
+							UpdateFromMap(package, mapInstallPackage, MapClassification.User, null, GridType);
+							onSuccess();
+						}
+					});
 				}
 				catch (Exception e)
 				{
 					Console.WriteLine(e.Message);
 					innerData.Status = MapStatus.DownloadError;
 				}
-			}).Start();
-		}
-
-		public void CancelInstall()
-		{
-			if (download == null)
-				return;
-
-			download.CancelAsync();
-			download = null;
+			});
 		}
 
 		public void Invalidate()
@@ -527,9 +506,7 @@ namespace OpenRA
 		public void Delete()
 		{
 			Invalidate();
-			var deleteFromPackage = parentPackage as IReadWritePackage;
-			if (deleteFromPackage != null)
-				deleteFromPackage.Delete(Package.Name);
+			(parentPackage as IReadWritePackage)?.Delete(Package.Name);
 		}
 
 		Stream IReadOnlyFileSystem.Open(string filename)

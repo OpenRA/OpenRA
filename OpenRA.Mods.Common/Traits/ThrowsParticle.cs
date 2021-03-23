@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -16,7 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	class ThrowsParticleInfo : ITraitInfo, Requires<WithSpriteBodyInfo>, Requires<BodyOrientationInfo>
+	class ThrowsParticleInfo : TraitInfo, Requires<WithSpriteBodyInfo>, Requires<BodyOrientationInfo>
 	{
 		[FieldLoader.Require]
 		public readonly string Anim = null;
@@ -40,9 +40,9 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int Velocity = 75;
 
 		[Desc("Speed at which the particle turns.")]
-		public readonly int TurnSpeed = 15;
+		public readonly WAngle TurnSpeed = new WAngle(60);
 
-		public object Create(ActorInitializer init) { return new ThrowsParticle(init, this); }
+		public override object Create(ActorInitializer init) { return new ThrowsParticle(init, this); }
 	}
 
 	class ThrowsParticle : ITick
@@ -57,6 +57,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		WAngle facing;
 		WAngle rotation;
+		int direction;
 
 		public ThrowsParticle(ActorInitializer init, ThrowsParticleInfo info)
 		{
@@ -65,23 +66,25 @@ namespace OpenRA.Mods.Common.Traits
 			var body = self.Trait<BodyOrientation>();
 
 			// TODO: Carry orientation over from the parent instead of just facing
-			var bodyFacing = init.Contains<DynamicFacingInit>() ? init.Get<DynamicFacingInit, Func<int>>()()
-				: init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : 0;
-			facing = WAngle.FromFacing(Turreted.TurretFacingFromInit(init, 0)());
+			var dynamicFacingInit = init.GetOrDefault<DynamicFacingInit>();
+			var bodyFacing = dynamicFacingInit != null ? dynamicFacingInit.Value() : init.GetValue<FacingInit, WAngle>(WAngle.Zero);
+			facing = TurretedInfo.WorldFacingFromInit(init, info, WAngle.Zero)();
 
 			// Calculate final position
-			var throwRotation = WRot.FromFacing(Game.CosmeticRandom.Next(1024));
+			var throwRotation = WRot.FromYaw(new WAngle(Game.CosmeticRandom.Next(1024)));
 			var throwDistance = Game.CosmeticRandom.Next(info.MinThrowRange.Length, info.MaxThrowRange.Length);
 
-			initialPos = pos = info.Offset.Rotate(body.QuantizeOrientation(self, WRot.FromFacing(bodyFacing)));
+			initialPos = pos = info.Offset.Rotate(body.QuantizeOrientation(self, WRot.FromYaw(bodyFacing)));
 			finalPos = initialPos + new WVec(throwDistance, 0, 0).Rotate(throwRotation);
 			angle = new WAngle(Game.CosmeticRandom.Next(info.MinThrowAngle.Angle, info.MaxThrowAngle.Angle));
 			length = (finalPos - initialPos).Length / info.Velocity;
 
-			// Facing rotation
-			rotation = WAngle.FromFacing(WDist.FromPDF(Game.CosmeticRandom, 2).Length * info.TurnSpeed / 1024);
+			// WAngle requires positive inputs, so track the speed and direction separately
+			var rotationSpeed = WDist.FromPDF(Game.CosmeticRandom, 2).Length * info.TurnSpeed.Angle / 1024;
+			direction = rotationSpeed < 0 ? -1 : 1;
+			rotation = new WAngle(Math.Abs(rotationSpeed));
 
-			var anim = new Animation(init.World, rs.GetImage(self), () => facing.Angle / 4);
+			var anim = new Animation(init.World, rs.GetImage(self), () => facing);
 			anim.PlayRepeating(info.Anim);
 			rs.Add(new AnimationWithOffset(anim, () => pos, null));
 		}
@@ -94,7 +97,7 @@ namespace OpenRA.Mods.Common.Traits
 			pos = WVec.LerpQuadratic(initialPos, finalPos, angle, tick++, length);
 
 			// Spin the particle
-			facing += rotation;
+			facing += new WAngle(direction * rotation.Angle);
 			rotation = new WAngle(rotation.Angle * 90 / 100);
 		}
 	}

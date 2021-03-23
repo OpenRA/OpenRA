@@ -46,6 +46,7 @@ doggie:
 		Start: 109
 		Length: 10
 		ShadowStart: 228
+		IgnoreWorldTint: True
 	die-melting:
 		Start: 109
 		Length: 10
@@ -90,3 +91,9 @@ floater:
 		ShadowStart: 48
 		Tick: 100
 		Offset: 0, 0, 16
+	attack-shock:
+		Length: 16
+		Start: 16
+		Tick: 100
+		Offset: 0, 0, 16
+		IgnoreWorldTint: True

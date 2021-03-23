@@ -1,0 +1,217 @@
+Container@DISPLAY_PANEL:
+	Logic: DisplaySettingsLogic
+	Width: PARENT_RIGHT
+	Height: PARENT_BOTTOM
+	Children:
+		Label@VIDEO_TITLE:
+			Y: 21
+			Width: PARENT_RIGHT
+			Font: Bold
+			Text: Display
+			Align: Center
+		Label@PLAYER:
+			Text: Player Name:
+			X: 15
+			Y: 40
+			Width: 120
+			Height: 25
+			Align: Right
+		TextField@PLAYERNAME:
+			Text: Name
+			X: 140
+			Y: 40
+			Width: 160
+			Height: 25
+			MaxLength: 16
+		Label@COLOR:
+			X: 265
+			Y: 40
+			Width: 145
+			Height: 25
+			Text: Preferred Color:
+			Align: Right
+		ColorPreviewManager@COLOR_MANAGER:
+		DropDownButton@PLAYERCOLOR:
+			X: 415
+			Y: 40
+			Width: 75
+			Height: 25
+			IgnoreChildMouseOver: true
+			PanelAlign: Right
+			Children:
+				ColorBlock@COLORBLOCK:
+					X: 5
+					Y: 6
+					Width: PARENT_RIGHT - 35
+					Height: PARENT_BOTTOM - 12
+		Label@BATTLEFIELD_CAMERA:
+			X: 15
+			Y: 70
+			Width: 120
+			Height: 25
+			Text: Battlefield Camera:
+			Align: Right
+		DropDownButton@BATTLEFIELD_CAMERA_DROPDOWN:
+			X: 140
+			Y: 70
+			Width: 160
+			Height: 25
+			Font: Regular
+		Label@TARGET_LINES:
+			X: 265
+			Y: 70
+			Width: 145
+			Height: 25
+			Text: Target Lines:
+			Align: Right
+		DropDownButton@TARGET_LINES_DROPDOWN:
+			X: 415
+			Y: 70
+			Width: 160
+			Height: 25
+			Font: Regular
+		Label@UI_SCALE:
+			X: 15
+			Y: 100
+			Width: 120
+			Height: 25
+			Text: UI Scale:
+			Align: Right
+		DropDownButton@UI_SCALE_DROPDOWN:
+			X: 140
+			Y: 100
+			Width: 160
+			Height: 25
+			Font: Regular
+		Label@STATUS_BARS:
+			X: 265
+			Y: 100
+			Width: 145
+			Height: 25
+			Text: Status Bars:
+			Align: Right
+		DropDownButton@STATUS_BAR_DROPDOWN:
+			X: 415
+			Y: 100
+			Width: 160
+			Height: 25
+			Font: Regular
+		Checkbox@CURSORDOUBLE_CHECKBOX:
+			X: 15
+			Y: 133
+			Width: 200
+			Height: 20
+			Font: Regular
+			Text: Increase Cursor Size
+		Checkbox@PLAYER_STANCE_COLORS_CHECKBOX:
+			X: 310
+			Y: 133
+			Width: 200
+			Height: 20
+			Font: Regular
+			Text: Player Stance Colors
+		Label@VIDEO_TITLE:
+			Y: 190
+			Width: PARENT_RIGHT
+			Font: Bold
+			Text: Video
+			Align: Center
+		Label@VIDEO_MODE:
+			X: 15
+			Y: 210
+			Width: 120
+			Height: 25
+			Align: Right
+			Text: Video Mode:
+		DropDownButton@MODE_DROPDOWN:
+			X: 140
+			Y: 210
+			Width: 160
+			Height: 25
+			Font: Regular
+			Text: Windowed
+		Container@WINDOW_RESOLUTION:
+			Y: 240
+			Children:
+				Label@WINDOW_SIZE:
+					X: 15
+					Height: 25
+					Width: 120
+					Align: Right
+					Text: Window Size:
+				TextField@WINDOW_WIDTH:
+					X: 140
+					Width: 55
+					Height: 25
+					MaxLength: 5
+					Type: Integer
+				Label@X:
+					Text: x
+					Font: Bold
+					X: 195
+					Height: 25
+					Width: 15
+					Align: Center
+				TextField@WINDOW_HEIGHT:
+					X: 210
+					Width: 55
+					Height: 25
+					MaxLength: 5
+					Type: Integer
+		Container@DISPLAY_SELECTION:
+			Y: 240
+			Children:
+				Label@DISPLAY_SELECTION_LABEL:
+					X: 15
+					Height: 25
+					Width: 120
+					Align: Right
+					Text: Select Display:
+				DropDownButton@DISPLAY_SELECTION_DROPDOWN:
+					X: 140
+					Width: 160
+					Height: 25
+					Font: Regular
+		Checkbox@VSYNC_CHECKBOX:
+			X: 310
+			Y: 210
+			Width: 200
+			Height: 20
+			Font: Regular
+			Text: Enable VSync
+		Checkbox@FRAME_LIMIT_CHECKBOX:
+			X: 310
+			Y: 243
+			Width: 200
+			Height: 20
+			Font: Regular
+			Text: Enable Frame Limiter
+		Slider@FRAME_LIMIT_SLIDER:
+			X: 340
+			Y: 265
+			Width: 200
+			Height: 20
+			Ticks: 20
+			MinimumValue: 50
+			MaximumValue: 240
+		Label@GL_PROFILE:
+			X: 15
+			Y: 270
+			Width: 120
+			Height: 25
+			Align: Right
+			Text: OpenGL Profile:
+		DropDownButton@GL_PROFILE_DROPDOWN:
+			X: 140
+			Y: 270
+			Width: 160
+			Height: 25
+			Font: Regular
+		Label@RESTART_REQUIRED_DESC:
+			X: 300
+			Y: PARENT_BOTTOM + 10
+			Width: PARENT_RIGHT - 300
+			Height: 15
+			Font: TinyBold
+			Text: Display and OpenGL changes require restart
+			Align: Center

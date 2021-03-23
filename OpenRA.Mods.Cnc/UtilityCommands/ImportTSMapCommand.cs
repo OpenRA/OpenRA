@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -11,20 +11,22 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using OpenRA.FileSystem;
+using OpenRA.Mods.Cnc.FileFormats;
 using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.FileFormats;
+using OpenRA.Mods.Common.Terrain;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.UtilityCommands
 {
 	class ImportTSMapCommand : IUtilityCommand
 	{
-		string IUtilityCommand.Name { get { return "--import-ts-map"; } }
+		string IUtilityCommand.Name => "--import-ts-map";
 		bool IUtilityCommand.ValidateArguments(string[] args) { return args.Length >= 2; }
 
 		static readonly Dictionary<byte, string> OverlayToActor = new Dictionary<byte, string>()
@@ -70,6 +72,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			{ 0x48, "palet03" },
 			{ 0x49, "palet04" },
 
+			// Bridges
 			{ 0x4A, "lobrdg_b" }, // lobrdg01
 			{ 0x4B, "lobrdg_b" }, // lobrdg02
 			{ 0x4C, "lobrdg_b" }, // lobrdg03
@@ -99,11 +102,14 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			{ 0x64, "lobrdg_b_d" }, // lobrdg27
 			{ 0x65, "lobrdg_a_d" }, // lobrdg28
 
+			// Ramps
 			{ 0x7A, "lobrdg_r_se" }, // lobrdg1
 			{ 0x7B, "lobrdg_r_nw" }, // lobrdg2
 			{ 0x7C, "lobrdg_r_ne" }, // lobrdg3
 			{ 0x7D, "lobrdg_r_sw" }, // lobrdg4
 
+			// Other
+			{ 0x1B, "bigblue" },
 			{ 0xA7, "veinhole" },
 			{ 0xA8, "srock01" },
 			{ 0xA9, "srock02" },
@@ -162,12 +168,9 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			{ 0x4B, DamageState.Undamaged },
 			{ 0x4C, DamageState.Undamaged },
 			{ 0x4D, DamageState.Undamaged },
-
 			{ 0x4E, DamageState.Heavy },
 			{ 0x4F, DamageState.Heavy },
-
 			{ 0x50, DamageState.Heavy },
-
 			{ 0x51, DamageState.Critical },
 			{ 0x52, DamageState.Critical },
 
@@ -176,12 +179,9 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			{ 0x54, DamageState.Undamaged },
 			{ 0x55, DamageState.Undamaged },
 			{ 0x56, DamageState.Undamaged },
-
 			{ 0x57, DamageState.Heavy },
 			{ 0x58, DamageState.Heavy },
-
 			{ 0x59, DamageState.Heavy },
-
 			{ 0x5A, DamageState.Critical },
 			{ 0x5B, DamageState.Critical },
 
@@ -201,7 +201,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			{ 0x7C, DamageState.Undamaged },
 			{ 0x7D, DamageState.Undamaged },
 
-			// actually dead, placeholders for resurrection
+			// Actually dead, placeholders for resurrection
 			{ 0x64, DamageState.Undamaged },
 			{ 0x65, DamageState.Undamaged },
 		};
@@ -209,11 +209,19 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 		static readonly Dictionary<byte, byte[]> ResourceFromOverlay = new Dictionary<byte, byte[]>()
 		{
 			// "tib" - Regular Tiberium
-			{ 0x01, new byte[] { 0x66, 0x67, 0x68, 0x69, 0x6A, 0x6B, 0x6C, 0x6D, 0x6E, 0x6F,
-					0x70, 0x71, 0x72, 0x73, 0x74, 0x75, 0x76, 0x77, 0x78, 0x79 } },
+			{
+				0x01, new byte[]
+				{
+					0x66, 0x67, 0x68, 0x69, 0x6A, 0x6B, 0x6C, 0x6D, 0x6E, 0x6F,
+					0x70, 0x71, 0x72, 0x73, 0x74, 0x75, 0x76, 0x77, 0x78, 0x79
+				}
+			},
 
 			// "btib" - Blue Tiberium
-			{ 0x02, new byte[] { 0x1B, 0x1C, 0x1D, 0x1E, 0x1F, 0x20, 0x21, 0x22, 0x23, 0x24, 0x25, 0x26,
+			{
+				0x02, new byte[]
+				{
+					0x1B, 0x1C, 0x1D, 0x1E, 0x1F, 0x20, 0x21, 0x22, 0x23, 0x24, 0x25, 0x26,
 
 					// Should be "tib2"
 					0x7F, 0x80, 0x81, 0x82, 0x83, 0x84, 0x85, 0x86, 0x87, 0x88,
@@ -221,17 +229,30 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 
 					// Should be "tib3"
 					0x93, 0x94, 0x95, 0x96, 0x97, 0x98, 0x99, 0x9A, 0x9B, 0x9C,
-					0x9D, 0x9E, 0x9F, 0xA0, 0xA1, 0xA2, 0xA3, 0xA4, 0xA5, 0xA6 } },
+					0x9D, 0x9E, 0x9F, 0xA0, 0xA1, 0xA2, 0xA3, 0xA4, 0xA5, 0xA6
+				}
+			},
 
 			// Veins
 			{ 0x03, new byte[] { 0x7E } }
 		};
+
+		// Veins and vein holes
+		static readonly int[] ValidVeinNeighbours = { 0x7E, 0xA7, 0xB2 };
 
 		static readonly Dictionary<string, string> DeployableActors = new Dictionary<string, string>()
 		{
 			{ "gadpsa", "lpst" },
 			{ "gatick", "ttnk" }
 		};
+
+		static readonly string[] LampActors =
+		{
+			"GALITE", "INGALITE", "NEGLAMP", "REDLAMP", "NEGRED", "GRENLAMP", "BLUELAMP", "YELWLAMP",
+			"INYELWLAMP", "PURPLAMP", "INPURPLAMP", "INORANLAMP", "INGRNLMP", "INREDLMP", "INBLULMP"
+		};
+
+		static readonly string[] CreepActors = { "DOGGIE", "VISC_SML", "VISC_LRG", "JFISH" };
 
 		[Desc("FILENAME", "Convert a Tiberian Sun map to the OpenRA format.")]
 		void IUtilityCommand.Run(Utility utility, string[] args)
@@ -248,7 +269,10 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			var iniBounds = mapSection.GetValue("LocalSize", "0, 0, 0, 0").Split(',').Select(int.Parse).ToArray();
 			var size = new Size(iniSize[2], 2 * iniSize[3]);
 
-			var map = new Map(Game.ModData, utility.ModData.DefaultTileSets[tileset], size.Width, size.Height)
+			if (!utility.ModData.DefaultTerrainInfo.TryGetValue(tileset, out var terrainInfo))
+				throw new InvalidDataException("Unknown tileset {0}".F(tileset));
+
+			var map = new Map(Game.ModData, terrainInfo, size.Width, size.Height)
 			{
 				Title = basic.GetValue("Name", Path.GetFileNameWithoutExtension(filename)),
 				Author = "Westwood Studios",
@@ -265,6 +289,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			ReadWaypoints(map, file, fullSize);
 			ReadOverlay(map, file, fullSize);
 			ReadLighting(map, file);
+			ReadLamps(map, file);
 
 			var spawnCount = map.ActorDefinitions.Count(n => n.Value.Value == "mpspawn");
 			var mapPlayers = new MapPlayers(map.Rules, spawnCount);
@@ -310,7 +335,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 
 		static void ReadTiles(Map map, IniFile file, int2 fullSize)
 		{
-			var tileset = Game.ModData.DefaultTileSets[map.Tileset];
+			var terrainInfo = (ITemplatedTerrainInfo)Game.ModData.DefaultTerrainInfo[map.Tileset];
 			var mapSection = file.GetSection("IsoMapPack5");
 
 			var data = Convert.FromBase64String(string.Concat(mapSection.Select(kvp => kvp.Value)));
@@ -337,7 +362,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 
 				if (map.Tiles.Contains(cell))
 				{
-					if (!tileset.Templates.ContainsKey(tilenum))
+					if (!terrainInfo.Templates.ContainsKey(tilenum))
 						tilenum = subtile = 0;
 
 					map.Tiles[cell] = new TerrainTile(tilenum, subtile);
@@ -386,8 +411,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 				if (overlayType == 0xFF)
 					continue;
 
-				string actorType;
-				if (OverlayToActor.TryGetValue(overlayType, out actorType))
+				if (OverlayToActor.TryGetValue(overlayType, out var actorType))
 				{
 					if (string.IsNullOrEmpty(actorType))
 						continue;
@@ -398,29 +422,27 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 						// Only import the top-left cell of multi-celled overlays
 						var aboveType = overlayPack[overlayIndex[cell - new CVec(1, 0)]];
 						if (shape.Width > 1 && aboveType != 0xFF)
-						{
-							string a;
-							if (OverlayToActor.TryGetValue(aboveType, out a) && a == actorType)
+							if (OverlayToActor.TryGetValue(aboveType, out var a) && a == actorType)
 								continue;
-						}
 
 						var leftType = overlayPack[overlayIndex[cell - new CVec(0, 1)]];
 						if (shape.Height > 1 && leftType != 0xFF)
-						{
-							string a;
-							if (OverlayToActor.TryGetValue(leftType, out a) && a == actorType)
+							if (OverlayToActor.TryGetValue(leftType, out var a) && a == actorType)
 								continue;
-						}
 					}
+
+					// Fix position of vein hole actors
+					var location = cell;
+					if (actorType == "veinhole")
+						location -= new CVec(1, 1);
 
 					var ar = new ActorReference(actorType)
 					{
-						new LocationInit(cell),
+						new LocationInit(location),
 						new OwnerInit("Neutral")
 					};
 
-					DamageState damageState;
-					if (OverlayToHealth.TryGetValue(overlayType, out damageState))
+					if (OverlayToHealth.TryGetValue(overlayType, out var damageState))
 					{
 						var health = 100;
 						if (damageState == DamageState.Critical)
@@ -436,6 +458,19 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 
 					map.ActorDefinitions.Add(new MiniYamlNode("Actor" + map.ActorDefinitions.Count, ar.Save()));
 
+					continue;
+				}
+
+				// TS maps encode the non-harvestable border tiles as overlay
+				// Only convert to vein resources if the overlay data specifies non-border frames
+				if (overlayType == 0x7E)
+				{
+					var frame = overlayDataPack[overlayIndex[cell]];
+					if (frame < 48 || frame > 60)
+						continue;
+
+					// Pick half or full density based on the frame
+					map.Resources[cell] = new ResourceTile(3, (byte)(frame == 52 ? 1 : 2));
 					continue;
 				}
 
@@ -466,8 +501,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 				var dy = rx + ry - fullSize.X - 1;
 				var cell = new MPos(dx / 2, dy).ToCPos(map);
 
-				int wpindex;
-				var ar = new ActorReference((!int.TryParse(kv.Key, out wpindex) || wpindex > 7) ? "waypoint" : "mpspawn");
+				var ar = new ActorReference((!int.TryParse(kv.Key, out var wpindex) || wpindex > 7) ? "waypoint" : "mpspawn");
 				ar.Add(new LocationInit(cell));
 				ar.Add(new OwnerInit("Neutral"));
 
@@ -518,7 +552,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 				var health = short.Parse(entries[2]);
 				var rx = int.Parse(entries[3]);
 				var ry = int.Parse(entries[4]);
-				var facing = (byte)(byte.Parse(entries[5]) + 96);
+				var facing = (byte)(224 - byte.Parse(entries[5]));
 
 				var dx = rx - ry + fullSize.X - 1;
 				var dy = rx + ry - fullSize.X - 1;
@@ -527,14 +561,13 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 				var ar = new ActorReference(name)
 				{
 					new LocationInit(cell),
-					new OwnerInit("Neutral")
+					new OwnerInit(CreepActors.Contains(entries[1]) ? "Creeps" : "Neutral")
 				};
 
 				if (health != 256)
 					ar.Add(new HealthInit(100 * health / 256));
 
-				if (facing != 96)
-					ar.Add(new FacingInit(facing));
+				ar.Add(new FacingInit(WAngle.FromFacing(facing)));
 
 				if (isDeployed)
 					ar.Add(new DeployStateInit(DeployState.Deployed));
@@ -548,28 +581,90 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 
 		static void ReadLighting(Map map, IniFile file)
 		{
-			var lightingTypes = new[] { "Red", "Green", "Blue", "Ambient" };
+			var lightingTypes = new Dictionary<string, string>()
+			{
+				{ "Red", "RedTint" },
+				{ "Green", "GreenTint" },
+				{ "Blue", "BlueTint" },
+				{ "Ambient", "Intensity" },
+				{ "Level", "HeightStep" },
+				{ "Ground", null }
+			};
+
 			var lightingSection = file.GetSection("Lighting");
+			var parsed = new Dictionary<string, float>();
 			var lightingNodes = new List<MiniYamlNode>();
 
 			foreach (var kv in lightingSection)
 			{
-				if (lightingTypes.Contains(kv.Key))
-				{
-					var val = FieldLoader.GetValue<float>(kv.Key, kv.Value);
-					if (val != 1.0f)
-						lightingNodes.Add(new MiniYamlNode(kv.Key, FieldSaver.FormatValue(val)));
-				}
+				if (lightingTypes.ContainsKey(kv.Key))
+					parsed[kv.Key] = FieldLoader.GetValue<float>(kv.Key, kv.Value);
 				else
 					Console.WriteLine("Ignoring unknown lighting type: `{0}`".F(kv.Key));
 			}
 
+			// Merge Ground into Ambient
+			float ground = 0;
+			if (parsed.TryGetValue("Ground", out ground))
+			{
+				if (!parsed.ContainsKey("Ambient"))
+					parsed["Ambient"] = 1f;
+				parsed["Ambient"] -= ground;
+			}
+
+			foreach (var node in lightingTypes)
+			{
+				if (node.Value != null && parsed.TryGetValue(node.Key, out var val) && ((node.Key == "Level" && val != 0) || (node.Key != "Level" && val != 1.0f)))
+					lightingNodes.Add(new MiniYamlNode(node.Value, FieldSaver.FormatValue(val)));
+			}
+
 			if (lightingNodes.Any())
 			{
-				map.RuleDefinitions.Nodes.Add(new MiniYamlNode("World", new MiniYaml("", new List<MiniYamlNode>()
+				map.RuleDefinitions.Nodes.Add(new MiniYamlNode("^BaseWorld", new MiniYaml("", new List<MiniYamlNode>()
 				{
-					new MiniYamlNode("GlobalLightingPaletteEffect", new MiniYaml("", lightingNodes))
+					new MiniYamlNode("TerrainLighting", new MiniYaml("", lightingNodes))
 				})));
+			}
+		}
+
+		static void ReadLamps(Map map, IniFile file)
+		{
+			var lightingTypes = new Dictionary<string, string>()
+			{
+				{ "LightIntensity", "Intensity" },
+				{ "LightRedTint", "RedTint" },
+				{ "LightGreenTint", "GreenTint" },
+				{ "LightBlueTint", "BlueTint" },
+			};
+
+			foreach (var lamp in LampActors)
+			{
+				var lightingSection = file.GetSection(lamp, true);
+				var lightingNodes = new List<MiniYamlNode>();
+
+				foreach (var kv in lightingSection)
+				{
+					if (kv.Key == "LightVisibility")
+					{
+						// Convert leptons to WDist
+						var visibility = FieldLoader.GetValue<int>(kv.Key, kv.Value);
+						lightingNodes.Add(new MiniYamlNode("Range", FieldSaver.FormatValue(new WDist(visibility * 4))));
+					}
+					else if (lightingTypes.ContainsKey(kv.Key))
+					{
+						// Some maps use "," instead of "."!
+						var value = FieldLoader.GetValue<float>(kv.Key, kv.Value.Replace(',', '.'));
+						lightingNodes.Add(new MiniYamlNode(lightingTypes[kv.Key], FieldSaver.FormatValue(value)));
+					}
+				}
+
+				if (lightingNodes.Any())
+				{
+					map.RuleDefinitions.Nodes.Add(new MiniYamlNode(lamp, new MiniYaml("", new List<MiniYamlNode>()
+					{
+						new MiniYamlNode("TerrainLightSource", new MiniYaml("", lightingNodes))
+					})));
+				}
 			}
 		}
 	}

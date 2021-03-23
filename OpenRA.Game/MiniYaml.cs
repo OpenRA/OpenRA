@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -28,7 +28,8 @@ namespace OpenRA
 
 		public static string WriteToString(this MiniYamlNodes y)
 		{
-			return y.ToLines().JoinWith("\n");
+			// Remove all trailing newlines and restore the final EOF newline
+			return y.ToLines().JoinWith("\n").TrimEnd('\n') + "\n";
 		}
 
 		public static IEnumerable<string> ToLines(this MiniYamlNodes y)
@@ -98,7 +99,10 @@ namespace OpenRA
 
 		public MiniYaml Clone()
 		{
-			return new MiniYaml(Value, Nodes.Select(n => n.Clone()).ToList());
+			var clonedNodes = new MiniYamlNodes(Nodes.Count);
+			foreach (var node in Nodes)
+				clonedNodes.Add(node.Clone());
+			return new MiniYaml(Value, clonedNodes);
 		}
 
 		public Dictionary<string, MiniYaml> ToDictionary()
@@ -132,7 +136,8 @@ namespace OpenRA
 			return ret;
 		}
 
-		public MiniYaml(string value) : this(value, null) { }
+		public MiniYaml(string value)
+			: this(value, null) { }
 
 		public MiniYaml(string value, List<MiniYamlNode> nodes)
 		{
@@ -146,8 +151,11 @@ namespace OpenRA
 			return nd.ContainsKey(s) ? nd[s].Nodes : new List<MiniYamlNode>();
 		}
 
-		static List<MiniYamlNode> FromLines(IEnumerable<string> lines, string filename, bool discardCommentsAndWhitespace)
+		static List<MiniYamlNode> FromLines(IEnumerable<string> lines, string filename, bool discardCommentsAndWhitespace, Dictionary<string, string> stringPool)
 		{
+			if (stringPool == null)
+				stringPool = new Dictionary<string, string>();
+
 			var levels = new List<List<MiniYamlNode>>();
 			levels.Add(new List<MiniYamlNode>());
 
@@ -223,7 +231,7 @@ namespace OpenRA
 						if (commentStart < 0 && line[i] == '#' && (i == 0 || line[i - 1] != '\\'))
 						{
 							commentStart = i + 1;
-							if (commentStart < keyLength)
+							if (commentStart <= keyLength)
 								keyLength = i - keyStart;
 							else
 								valueLength = i - valueStart;
@@ -261,6 +269,10 @@ namespace OpenRA
 
 				if (key != null || !discardCommentsAndWhitespace)
 				{
+					key = key == null ? null : stringPool.GetOrAdd(key, key);
+					value = value == null ? null : stringPool.GetOrAdd(value, value);
+					comment = comment == null ? null : stringPool.GetOrAdd(comment, comment);
+
 					var nodes = new List<MiniYamlNode>();
 					levels[level].Add(new MiniYamlNode(key, value, comment, nodes, location));
 
@@ -268,23 +280,33 @@ namespace OpenRA
 				}
 			}
 
+			foreach (var nodes in levels)
+				nodes.TrimExcess();
+
 			return levels[0];
 		}
 
-		public static List<MiniYamlNode> FromFile(string path, bool discardCommentsAndWhitespace = true)
+		public static List<MiniYamlNode> FromFile(string path, bool discardCommentsAndWhitespace = true, Dictionary<string, string> stringPool = null)
 		{
-			return FromLines(File.ReadAllLines(path), path, discardCommentsAndWhitespace);
+			return FromLines(File.ReadAllLines(path), path, discardCommentsAndWhitespace, stringPool);
 		}
 
-		public static List<MiniYamlNode> FromStream(Stream s, string fileName = "<no filename available>", bool discardCommentsAndWhitespace = true)
+		public static List<MiniYamlNode> FromStream(Stream s, string fileName = "<no filename available>", bool discardCommentsAndWhitespace = true, Dictionary<string, string> stringPool = null)
 		{
+			IEnumerable<string> Lines(StreamReader reader)
+			{
+				string line;
+				while ((line = reader.ReadLine()) != null)
+					yield return line;
+			}
+
 			using (var reader = new StreamReader(s))
-				return FromString(reader.ReadToEnd(), fileName, discardCommentsAndWhitespace);
+				return FromLines(Lines(reader), fileName, discardCommentsAndWhitespace, stringPool);
 		}
 
-		public static List<MiniYamlNode> FromString(string text, string fileName = "<no filename available>", bool discardCommentsAndWhitespace = true)
+		public static List<MiniYamlNode> FromString(string text, string fileName = "<no filename available>", bool discardCommentsAndWhitespace = true, Dictionary<string, string> stringPool = null)
 		{
-			return FromLines(text.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None), fileName, discardCommentsAndWhitespace);
+			return FromLines(text.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None), fileName, discardCommentsAndWhitespace, stringPool);
 		}
 
 		public static List<MiniYamlNode> Merge(IEnumerable<List<MiniYamlNode>> sources)
@@ -302,7 +324,7 @@ namespace OpenRA
 			foreach (var kv in tree)
 			{
 				var inherited = new Dictionary<string, MiniYamlNode.SourceLocation>();
-				inherited.Add(kv.Key, new MiniYamlNode.SourceLocation());
+				inherited.Add(kv.Key, default(MiniYamlNode.SourceLocation));
 
 				var children = ResolveInherits(kv.Key, kv.Value, tree, inherited);
 				resolved.Add(kv.Key, new MiniYaml(kv.Value.Value, children));
@@ -328,7 +350,7 @@ namespace OpenRA
 
 		static List<MiniYamlNode> ResolveInherits(string key, MiniYaml node, Dictionary<string, MiniYaml> tree, Dictionary<string, MiniYamlNode.SourceLocation> inherited)
 		{
-			var resolved = new List<MiniYamlNode>();
+			var resolved = new List<MiniYamlNode>(node.Nodes.Count);
 
 			// Inheritance is tracked from parent->child, but not from child->parentsiblings.
 			inherited = new Dictionary<string, MiniYamlNode.SourceLocation>(inherited);
@@ -337,8 +359,7 @@ namespace OpenRA
 			{
 				if (n.Key == "Inherits" || n.Key.StartsWith("Inherits@", StringComparison.Ordinal))
 				{
-					MiniYaml parent;
-					if (!tree.TryGetValue(n.Value.Value, out parent))
+					if (!tree.TryGetValue(n.Value.Value, out var parent))
 						throw new YamlException(
 							"{0}: Parent type `{1}` not found".F(n.Location, n.Value.Value));
 
@@ -360,6 +381,7 @@ namespace OpenRA
 					MergeIntoResolved(n, resolved, tree, inherited);
 			}
 
+			resolved.TrimExcess();
 			return resolved;
 		}
 
@@ -396,6 +418,7 @@ namespace OpenRA
 				}
 			}
 
+			ret.TrimExcess();
 			return ret;
 		}
 
@@ -426,17 +449,17 @@ namespace OpenRA
 
 			foreach (var key in allKeys)
 			{
-				MiniYamlNode existingNode, overrideNode;
-				existingDict.TryGetValue(key, out existingNode);
-				overrideDict.TryGetValue(key, out overrideNode);
+				existingDict.TryGetValue(key, out var existingNode);
+				overrideDict.TryGetValue(key, out var overrideNode);
 
-				var loc = overrideNode == null ? default(MiniYamlNode.SourceLocation) : overrideNode.Location;
+				var loc = overrideNode?.Location ?? default;
 				var comment = (overrideNode ?? existingNode).Comment;
 				var merged = (existingNode == null || overrideNode == null) ? overrideNode ?? existingNode :
 					new MiniYamlNode(key, MergePartial(existingNode.Value, overrideNode.Value), comment, loc);
 				ret.Add(merged);
 			}
 
+			ret.TrimExcess();
 			return ret;
 		}
 
@@ -444,7 +467,7 @@ namespace OpenRA
 		{
 			var hasKey = !string.IsNullOrEmpty(key);
 			var hasValue = !string.IsNullOrEmpty(Value);
-			var hasComment = !string.IsNullOrEmpty(comment);
+			var hasComment = comment != null;
 			yield return (hasKey ? key + ":" : "")
 				+ (hasValue ? " " + Value.Replace("#", "\\#") : "")
 				+ (hasComment ? (hasKey || hasValue ? " " : "") + "#" + comment : "");
@@ -473,6 +496,7 @@ namespace OpenRA
 	[Serializable]
 	public class YamlException : Exception
 	{
-		public YamlException(string s) : base(s) { }
+		public YamlException(string s)
+			: base(s) { }
 	}
 }

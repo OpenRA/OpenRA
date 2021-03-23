@@ -1,6 +1,5 @@
 Background@ASSETBROWSER_PANEL:
 	Logic: AssetBrowserLogic
-		SupportedFormats: .shp, .r8, .tmp, .tem, .des, .sno, .int, .vqa
 	X: (WINDOW_RIGHT - WIDTH) / 2
 	Y: (WINDOW_BOTTOM - HEIGHT) / 2
 	Width: 700
@@ -9,7 +8,7 @@ Background@ASSETBROWSER_PANEL:
 		LogicTicker@ANIMATION_TICKER:
 		ColorPreviewManager@COLOR_MANAGER:
 		Label@ASSETBROWSER_TITLE:
-			Y: 20
+			Y: 21
 			Width: PARENT_RIGHT
 			Height: 25
 			Font: Bold
@@ -17,7 +16,7 @@ Background@ASSETBROWSER_PANEL:
 			Text: Asset Browser
 		Label@SOURCE_SELECTOR_DESC:
 			X: 20
-			Y: 35
+			Y: 36
 			Width: 160
 			Height: 25
 			Font: TinyBold
@@ -43,14 +42,17 @@ Background@ASSETBROWSER_PANEL:
 					X: 2
 					Y: 0
 					Visible: false
+					EnableChildMouseOver: True
 					Children:
-						Label@TITLE:
+						LabelWithTooltip@TITLE:
 							X: 10
 							Width: PARENT_RIGHT - 20
 							Height: 25
+							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipTemplate: SIMPLE_TOOLTIP
 		Label@FILENAME_DESC:
 			X: 20
-			Y: 370
+			Y: 371
 			Width: 160
 			Height: 25
 			Font: TinyBold
@@ -97,11 +99,17 @@ Background@ASSETBROWSER_PANEL:
 				Sprite@SPRITE:
 					Width: PARENT_RIGHT
 					Height: PARENT_BOTTOM
-				VqaPlayer@PLAYER:
+				VideoPlayer@PLAYER:
 					Width: PARENT_RIGHT
 					Height: PARENT_BOTTOM
 					AspectRatio: 1
+				Model@VOXEL:
+					Width: PARENT_RIGHT
+					Height: PARENT_BOTTOM
+					Palette: colorpicker
+					PlayerPalette: colorpicker
 				Label@ERROR:
+					Y: 1
 					X: 5
 					Width: 490 - 10
 					Height: 330
@@ -115,72 +123,62 @@ Background@ASSETBROWSER_PANEL:
 				Button@BUTTON_PREV:
 					X: 0
 					Y: 0
-					Width: 25
-					Height: 25
+					Width: 26
+					Height: 26
 					Key: LEFT
 					Children:
 						Image@IMAGE_PREV:
-							X: 0
-							Y: 0
-							Width: 25
-							Height: 25
+							X: 5
+							Y: 5
 							ImageCollection: music
 							ImageName: prev
 				Button@BUTTON_PLAY:
 					X: 35
 					Y: 0
-					Width: 25
-					Height: 25
+					Width: 26
+					Height: 26
 					Key: SPACE
 					Children:
 						Image@IMAGE_PLAY:
-							X: 0
-							Y: 0
-							Width: 25
-							Height: 25
+							X: 5
+							Y: 5
 							ImageCollection: music
 							ImageName: play
 				Button@BUTTON_PAUSE:
-					Visible: no
+					Visible: false
 					X: 35
 					Y: 0
-					Width: 25
-					Height: 25
+					Width: 26
+					Height: 26
 					Key: SPACE
 					Children:
 						Image@IMAGE_PAUSE:
-							X: 0
-							Y: 0
-							Width: 25
-							Height: 25
+							X: 5
+							Y: 5
 							ImageCollection: music
 							ImageName: pause
 				Button@BUTTON_STOP:
 					X: 70
 					Y: 0
-					Width: 25
-					Height: 25
+					Width: 26
+					Height: 26
 					Key: RETURN
 					Children:
 						Image@IMAGE_STOP:
-							X: 0
-							Y: 0
-							Width: 25
-							Height: 25
+							X: 5
+							Y: 5
 							ImageCollection: music
 							ImageName: stop
 				Button@BUTTON_NEXT:
 					X: 105
 					Y: 0
-					Width: 25
-					Height: 25
+					Width: 26
+					Height: 26
 					Key: RIGHT
 					Children:
 						Image@IMAGE_NEXT:
-							X: 0
-							Y: 0
-							Width: 25
-							Height: 25
+							X: 5
+							Y: 5
 							ImageCollection: music
 							ImageName: next
 				Slider@FRAME_SLIDER:
@@ -191,10 +189,60 @@ Background@ASSETBROWSER_PANEL:
 					MinimumValue: 0
 				Label@FRAME_COUNT:
 					X: 445
+					Y: 1
 					Width: 40
 					Height: 25
 					Font: TinyBold
 					Align: Left
+		Container@VOXEL_SELECTOR:
+			X: 60
+			Y: 425
+			Children:
+				Label@ROLL:
+					X: 140
+					Y: 1
+					Width: 40
+					Height: 25
+					Font: TinyBold
+					Align: Left
+					Text: Roll
+				Slider@ROLL_SLIDER:
+					X: 165
+					Y: 3
+					Width: 100
+					Height: 20
+					MinimumValue: 1
+					MaximumValue: 1023
+				Label@PITCH:
+					X: 310
+					Y: 1
+					Width: 40
+					Height: 25
+					Font: TinyBold
+					Align: Left
+					Text: Pitch
+				Slider@PITCH_SLIDER:
+					X: 335
+					Y: 3
+					Width: 100
+					Height: 20
+					MinimumValue: 1
+					MaximumValue: 1023
+				Label@YAW:
+					X: 480
+					Y: 1
+					Width: 40
+					Height: 25
+					Font: TinyBold
+					Align: Left
+					Text: Yaw
+				Slider@YAW_SLIDER:
+					X: 505
+					Y: 3
+					Width: 100
+					Height: 20
+					MinimumValue: 1
+					MaximumValue: 1023
 		Button@CLOSE_BUTTON:
 			Key: escape
 			X: PARENT_RIGHT - 180
@@ -203,3 +251,4 @@ Background@ASSETBROWSER_PANEL:
 			Height: 25
 			Font: Bold
 			Text: Close
+		TooltipContainer@TOOLTIP_CONTAINER:

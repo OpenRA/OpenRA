@@ -15,6 +15,8 @@ World:
 			normal: Normal
 			hard: Hard
 		Default: normal
+	TimeLimitManager:
+		TimeLimitLocked: True
 
 ^Palettes:
 	FixedColorPalette@SovietTruk:
@@ -31,7 +33,7 @@ World:
 
 MISS:
 	Targetable:
-		TargetTypes: Ground, C4, DetonateAttack, Structure, MissionObjective, NoAutoTarget
+		TargetTypes: GroundActor, C4, DetonateAttack, Structure, MissionObjective, NoAutoTarget
 
 LST.Unselectable.UnloadOnly:
 	Inherits: LST
@@ -42,9 +44,8 @@ LST.Unselectable.UnloadOnly:
 		Prerequisites: ~disabled
 	Cargo:
 		MaxWeight: 0
-		PipCount: 0
 	Targetable:
-		TargetTypes: Ground, Water, Repair, NoAutoTarget
+		TargetTypes: GroundActor, Water, Repair, NoAutoTarget
 	Interactable:
 
 SPY.Strong:
@@ -59,8 +60,12 @@ SPY.Strong:
 		Range: 6c0
 	Infiltrates:
 		Types: MissionObjective
-	ExternalCaptures:
+	CaptureManager:
+	Captures:
 		CaptureTypes: MissionObjective
+		ConsumedByCapture: False
+		EnterCursor: ability
+		EnterBlockedCursor: move-blocked
 	Passenger:
 
 DOG.Patrol:
@@ -74,22 +79,21 @@ DOG.Patrol:
 
 TRUK.Hijackable:
 	Inherits: TRUK
+	Inherits@CARGOPIPS: ^CargoPips
 	Buildable:
 		Prerequisites: ~disabled
 	Mobile:
-		RequiresCondition: mobile
+		RequiresCondition: mobile && !being-captured
 	Cargo:
 		Types: Infantry
 		MaxWeight: 5
-		PipCount: 5
 		PassengerConditions:
 			spy.strong: mobile
 	Targetable:
-		TargetTypes: Ground, Repair, Vehicle, NoAutoTarget
+		TargetTypes: GroundActor, Repair, Vehicle, NoAutoTarget
 	-Huntable:
-	ExternalCapturable:
+	Capturable:
 		Types: MissionObjective
-		CaptureCompleteTime: 1
 	-DeliversCash:
 	RenderSprites:
 		Image: TRUK

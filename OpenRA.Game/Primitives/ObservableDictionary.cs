@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -74,8 +74,8 @@ namespace OpenRA.Primitives
 			return innerDict.ContainsKey(key);
 		}
 
-		public ICollection<TKey> Keys { get { return innerDict.Keys; } }
-		public ICollection<TValue> Values { get { return innerDict.Values; } }
+		public ICollection<TKey> Keys => innerDict.Keys;
+		public ICollection<TValue> Values => innerDict.Values;
 
 		public bool TryGetValue(TKey key, out TValue value)
 		{
@@ -84,8 +84,8 @@ namespace OpenRA.Primitives
 
 		public TValue this[TKey key]
 		{
-			get { return innerDict[key]; }
-			set { innerDict[key] = value; }
+			get => innerDict[key];
+			set => innerDict[key] = value;
 		}
 
 		public void Clear()
@@ -94,10 +94,7 @@ namespace OpenRA.Primitives
 			OnRefresh(this);
 		}
 
-		public int Count
-		{
-			get { return innerDict.Count; }
-		}
+		public int Count => innerDict.Count;
 
 		public void Add(KeyValuePair<TKey, TValue> item)
 		{
@@ -114,10 +111,7 @@ namespace OpenRA.Primitives
 			innerDict.CopyTo(array, arrayIndex);
 		}
 
-		public bool IsReadOnly
-		{
-			get { return innerDict.IsReadOnly; }
-		}
+		public bool IsReadOnly => innerDict.IsReadOnly;
 
 		public bool Remove(KeyValuePair<TKey, TValue> item)
 		{
@@ -134,9 +128,6 @@ namespace OpenRA.Primitives
 			return innerDict.GetEnumerator();
 		}
 
-		public IEnumerable ObservedItems
-		{
-			get { return innerDict.Keys; }
-		}
+		public IEnumerable ObservedItems => innerDict.Keys;
 	}
 }

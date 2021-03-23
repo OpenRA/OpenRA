@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -37,8 +37,7 @@ namespace OpenRA
 
 		public Widget LoadWidget(WidgetArgs args, Widget parent, string w)
 		{
-			MiniYamlNode ret;
-			if (!widgets.TryGetValue(w, out ret))
+			if (!widgets.TryGetValue(w, out var ret))
 				throw new InvalidDataException("Cannot find widget with Id `{0}`".F(w));
 
 			return LoadWidget(args, parent, ret);
@@ -51,8 +50,7 @@ namespace OpenRA
 
 			var widget = NewWidget(node.Key, args);
 
-			if (parent != null)
-				parent.AddChild(widget);
+			parent?.AddChild(widget);
 
 			if (node.Key.Contains("@"))
 				FieldLoader.LoadField(widget, "Id", node.Key.Split('@')[1]);
@@ -69,7 +67,7 @@ namespace OpenRA
 						LoadWidget(args, widget, c);
 
 			var logicNode = node.Value.Nodes.FirstOrDefault(n => n.Key == "Logic");
-			var logic = logicNode == null ? null : logicNode.Value.ToDictionary();
+			var logic = logicNode?.Value.ToDictionary();
 			args.Add("logicArgs", logic);
 
 			widget.PostInit(args);

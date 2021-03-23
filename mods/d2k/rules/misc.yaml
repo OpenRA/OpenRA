@@ -22,12 +22,12 @@ crate:
 		SelectionShares: 5
 	HideMapCrateAction:
 		SelectionShares: 5
-		Effect: hide-map
+		Sequence: hide-map
 	LevelUpCrateAction:
 		SelectionShares: 40
 	RevealMapCrateAction:
 		SelectionShares: 2
-		Effect: reveal-map
+		Sequence: reveal-map
 	GiveUnitCrateAction@LightInfantry:
 		SelectionShares: 15
 		Units: light_inf, light_inf, light_inf, light_inf, light_inf
@@ -134,7 +134,7 @@ crate:
 		Palette: effect
 	WithCrateBody:
 	Passenger:
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: System
 	Interactable:
 		Bounds: 20,20
@@ -150,8 +150,10 @@ mpspawn:
 	WithSpriteBody:
 	BodyOrientation:
 		QuantizedFacings: 1
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: System
+	RequiresSpecificOwners:
+		ValidOwnerNames: Neutral
 
 waypoint:
 	Interactable:
@@ -164,15 +166,15 @@ waypoint:
 	WithSpriteBody:
 	BodyOrientation:
 		QuantizedFacings: 1
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: System
 
 carryall.colorpicker:
 	Inherits: carryall
 	Aircraft:
-		InitialFacing: 104
+		InitialFacing: 416
 	-Buildable:
-	-EditorTilesetFilter:
+	-MapEditorData:
 	RenderSprites:
 		Image: carryall
 		Palette: colorpicker
@@ -191,7 +193,7 @@ camera:
 	RevealsShroud:
 		Range: 6c768
 		Type: CenterPosition
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: System
 
 wormspawner:
@@ -206,7 +208,7 @@ wormspawner:
 	BodyOrientation:
 		QuantizedFacings: 1
 	ActorSpawner:
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: System
 
 upgrade.conyard:
@@ -220,8 +222,8 @@ upgrade.conyard:
 		Prerequisites: construction_yard
 		Queue: Upgrade
 		BuildLimit: 1
-		BuildDuration: 590
-		BuildDurationModifier: 40
+		BuildDuration: 625
+		BuildDurationModifier: 100
 		Description: Unlocks additional construction options \n(Large Concrete Slab, Rocket Turret)
 	Valued:
 		Cost: 1000
@@ -245,8 +247,8 @@ upgrade.barracks:
 		Prerequisites: barracks
 		Queue: Upgrade
 		BuildLimit: 1
-		BuildDuration: 290
-		BuildDurationModifier: 40
+		BuildDuration: 208
+		BuildDurationModifier: 100
 		Description: Unlocks additional infantry \n(Trooper, Engineer, Thumper Infantry)    \n\nRequired to unlock faction specific infantry \n(Atreides: Grenadier, Harkonnen: Sardaukar)
 	Valued:
 		Cost: 500
@@ -270,8 +272,8 @@ upgrade.light:
 		Prerequisites: light_factory
 		Queue: Upgrade
 		BuildLimit: 1
-		BuildDuration: 215
-		BuildDurationModifier: 40
+		BuildDuration: 268
+		BuildDurationModifier: 100
 		Description: Unlocks additional light unit \n(Missile Quad) \n\nRequired to unlock faction specific light unit \n(Ordos: Stealth Raider Trike)
 	Valued:
 		Cost: 400
@@ -295,8 +297,8 @@ upgrade.heavy:
 		Prerequisites: heavy_factory
 		Queue: Upgrade
 		BuildLimit: 1
-		BuildDuration: 380
-		BuildDurationModifier: 40
+		BuildDuration: 468
+		BuildDurationModifier: 100
 		Description: Unlocks additional construction options    \n(Repair Pad, IX Research Center) \n\nUnlocks additional heavy units \n(Siege Tank, Missile Tank, MCV)
 	Valued:
 		Cost: 800
@@ -321,8 +323,8 @@ upgrade.hightech:
 		Prerequisites: ~hightech.atreides, ~techlevel.superweapons
 		Queue: Upgrade
 		BuildLimit: 1
-		BuildDuration: 720
-		BuildDurationModifier: 40
+		BuildDuration: 937
+		BuildDurationModifier: 100
 		Description: Unlocks the Atreides Air Strike superweapon
 	Valued:
 		Cost: 1500

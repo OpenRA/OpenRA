@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+   Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -60,20 +60,20 @@ WorldLoaded = function()
 		end)
 
 		-- Find the bridge actors
-		bridgepart1 = Map.ActorsInBox(waypoint23.CenterPosition, waypoint49.CenterPosition, function(self) return self.Type == "br1" end)[1]
-		bridgepart2 = Map.ActorsInBox(waypoint23.CenterPosition, waypoint49.CenterPosition, function(self) return self.Type == "br2" end)[1]
+		bridgepart1 = Map.ActorsInBox(Box1.CenterPosition, Box2.CenterPosition, function(self) return self.Type == "br1" end)[1]
+		bridgepart2 = Map.ActorsInBox(Box1.CenterPosition, Box2.CenterPosition, function(self) return self.Type == "br2" end)[1]
 	end)
 
 	-- Discover the area around the bridge exposing the two german soldiers
 	-- When the two infantry near the bridge are discovered move them across the bridge to waypoint4
 	-- in the meanwhile one USSR soldier hunts them down
 	Trigger.AfterDelay(DateTime.Seconds(1), function()
-		Actor.Create("camera", true, { Owner = player, Location = waypoint23.Location })
+		Actor.Create("camera", true, { Owner = player, Location = Box1.Location })
 
 		Utils.Do(FleeingUnits, function(unit)
-			unit.Move(waypoint4.Location)
+			unit.Move(RifleRetreat.Location)
 		end)
-		Follower.AttackMove(waypoint4.Location)
+		Follower.AttackMove(RifleRetreat.Location)
 	end)
 
 	-- To make it look more smooth we will blow up the bridge when the barrel closest to it blows up
@@ -123,8 +123,8 @@ WorldLoaded = function()
 	-- When destroying the allied radar dome or the refinery drop 2 badgers with 5 grenadiers each
 	Trigger.OnAnyKilled({ AlliedDome, AlliedProc }, function()
 		local powerproxy = Actor.Create("powerproxy.paratroopers", true, { Owner = player })
-		powerproxy.SendParatroopers(ParadropLZ.CenterPosition, false, Facing.South)
-		powerproxy.SendParatroopers(ParadropLZ.CenterPosition, false, Facing.SouthEast)
+		powerproxy.TargetParatroopers(ParadropLZ.CenterPosition, Angle.South)
+		powerproxy.TargetParatroopers(ParadropLZ.CenterPosition, Angle.SouthEast)
 		powerproxy.Destroy()
 	end)
 end

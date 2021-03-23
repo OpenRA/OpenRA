@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,7 +10,6 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -34,21 +33,13 @@ namespace OpenRA.Mods.Common.Traits
 
 	class GrantConditionOnFaction : ConditionalTrait<GrantConditionOnFactionInfo>, INotifyOwnerChanged
 	{
-		ConditionManager conditionManager;
-		int conditionToken = ConditionManager.InvalidConditionToken;
+		int conditionToken = Actor.InvalidConditionToken;
 		string faction;
 
 		public GrantConditionOnFaction(ActorInitializer init, GrantConditionOnFactionInfo info)
 			: base(info)
 		{
-			faction = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : init.Self.Owner.Faction.InternalName;
-		}
-
-		protected override void Created(Actor self)
-		{
-			conditionManager = self.Trait<ConditionManager>();
-
-			base.Created(self);
+			faction = init.GetValue<FactionInit, string>(init.Self.Owner.Faction.InternalName);
 		}
 
 		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
@@ -64,16 +55,16 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected override void TraitEnabled(Actor self)
 		{
-			if (conditionToken == ConditionManager.InvalidConditionToken && Info.Factions.Contains(faction))
-				conditionToken = conditionManager.GrantCondition(self, Info.Condition);
+			if (conditionToken == Actor.InvalidConditionToken && Info.Factions.Contains(faction))
+				conditionToken = self.GrantCondition(Info.Condition);
 		}
 
 		protected override void TraitDisabled(Actor self)
 		{
-			if (conditionToken == ConditionManager.InvalidConditionToken)
+			if (conditionToken == Actor.InvalidConditionToken)
 				return;
 
-			conditionToken = conditionManager.RevokeCondition(self, conditionToken);
+			conditionToken = self.RevokeCondition(conditionToken);
 		}
 	}
 }

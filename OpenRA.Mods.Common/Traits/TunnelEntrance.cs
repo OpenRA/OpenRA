@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System;
 using System.Linq;
 using OpenRA.Traits;
 
@@ -17,7 +16,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Provides a target for players to issue orders for units to move through a TerrainTunnel.",
 		"The host actor should be placed so that the Sensor position overlaps one of the TerrainTunnel portal cells.")]
-	public class TunnelEntranceInfo : ITraitInfo
+	public class TunnelEntranceInfo : TraitInfo
 	{
 		[FieldLoader.Require]
 		[Desc("Offset to use as a staging point for actors entering or exiting the tunnel.",
@@ -30,7 +29,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Offset to check for the corresponding TerrainTunnel portal cell(s).")]
 		public readonly CVec Sensor = CVec.Zero;
 
-		public object Create(ActorInitializer init) { return new TunnelEntrance(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new TunnelEntrance(init.Self, this); }
 	}
 
 	public class TunnelEntrance : INotifyCreated
@@ -39,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly CPos Entrance;
 		public CPos? Exit { get; private set; }
-		public int NearEnough { get { return info.Margin; } }
+		public int NearEnough => info.Margin;
 
 		public TunnelEntrance(Actor self, TunnelEntranceInfo info)
 		{

@@ -14,14 +14,14 @@ Background@CONTENT_PANEL:
 			Background: panel-rule
 		Label@TITLE:
 			X: 0
-			Y: 12
+			Y: 14
 			Width: PARENT_RIGHT
 			Height: 25
 			Text: Manage Content
 			Align: Center
 			Font: MediumBold
 		Label@HEADER_TEMPLATE:
-			Y: 65
+			Y: 66
 			Width: PARENT_RIGHT
 			Height: 16
 			Align: Center
@@ -44,7 +44,6 @@ Background@CONTENT_PANEL:
 							Height: 23
 						Label@REQUIRED:
 							X: 185
-							Y: 0 - 2
 							Width: 90
 							Height: 23
 							Align: Center
@@ -53,7 +52,7 @@ Background@CONTENT_PANEL:
 							Text: Required
 						Image@DISC:
 							X: 275
-							Y: 1
+							Y: 2
 							Width: 20
 							Height: 20
 							ImageCollection: modcontent
@@ -69,7 +68,6 @@ Background@CONTENT_PANEL:
 							Text: Download
 						Label@INSTALLED:
 							X: 304
-							Y: 0 - 2
 							Width: 100
 							Height: 23
 							Align: Center
@@ -78,7 +76,6 @@ Background@CONTENT_PANEL:
 							Text: Installed
 						Label@REQUIRES_DISC:
 							X: 304
-							Y: 0 - 2
 							Width: 100
 							Height: 23
 							Align: Center

@@ -3,16 +3,19 @@ Player:
 	LobbyPrerequisiteCheckbox@GLOBALBOUNTY:
 		Enabled: False
 		Locked: True
+	PlayerResources:
+		ResourceValues:
+			Ore: 0
+			Gems: 0
 
 World:
 	-CrateSpawner:
-	-SpawnMPUnits:
-	-MPStartLocations:
+	-SpawnStartingUnits:
+	-MapStartingLocations:
 	MusicPlaylist:
 		BackgroundMusic: intro
+		AllowMuteBackgroundMusic: true
 		DisableWorldSounds: true
-	ResourceType@ore:
-		ValuePerUnit: 0
 	LuaScript:
 		Scripts: desert-shellmap.lua
 	-StartGameNotification:
@@ -23,47 +26,9 @@ World:
 			Soviets: 229, 230, 231, 232, 233, 234, 235, 8, 236, 237, 238, 239, 221, 222, 223, 223
 			Allies: 160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175
 
-^Vehicle:
-	GainsExperience:
-		Conditions:
-	DamageMultiplier@UNKILLABLE:
-		RequiresCondition: unkillable
-		Modifier: 0
-	ExternalCondition@UNKILLABLE:
-		Condition: unkillable
-
-^Infantry:
-	GainsExperience:
-		Conditions:
-	DeathSounds@NORMAL:
-		VolumeMultiplier: 0.1
-	DeathSounds@BURNED:
-		VolumeMultiplier: 0.1
-	DeathSounds@ZAPPED:
-		VolumeMultiplier: 0.1
-	DamageMultiplier@UNKILLABLE:
-		RequiresCondition: unkillable
-		Modifier: 0
-	ExternalCondition@UNKILLABLE:
-		Condition: unkillable
-
-^Ship:
-	GainsExperience:
-		Conditions:
-	DamageMultiplier@UNKILLABLE:
-		RequiresCondition: unkillable
-		Modifier: 0
-	ExternalCondition@UNKILLABLE:
-		Condition: unkillable
-
-^Plane:
-	DamageMultiplier@UNKILLABLE:
-		RequiresCondition: unkillable
-		Modifier: 0
-	ExternalCondition@UNKILLABLE:
-		Condition: unkillable
-
-^Building:
+^ExistsInWorld:
+	GivesExperience:
+		ActorExperienceModifier: 0
 	DamageMultiplier@UNKILLABLE:
 		RequiresCondition: unkillable
 		Modifier: 0
@@ -74,13 +39,19 @@ World:
 	DamageMultiplier:
 		Modifier: 0
 
+^Wall:
+	DamageMultiplier:
+		Modifier: 0
+
 OILB:
 	CashTrickler:
 		ShowTicks: false
 
 TRAN.Husk2:
-	Burns:
-		Damage: 0
+	WithIdleOverlay@Burns:
+		Image: fire
+		Sequence: 1
+		IsDecoration: True
 
 MISS:
 	DamageMultiplier@INVULNERABLE:
@@ -95,9 +66,6 @@ Ant:
 		Prerequisites: barr
 	Health:
 		HP: 20000
-
-E7:
-	-AnnounceOnKill:
 
 powerproxy.paratroopers:
 	ParatroopersPower:

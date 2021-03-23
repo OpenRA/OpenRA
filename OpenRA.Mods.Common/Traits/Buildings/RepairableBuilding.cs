@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -12,13 +12,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Mods.Common.Effects;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Building can be repaired by the repair button.")]
-	public class RepairableBuildingInfo : ConditionalTraitInfo, Requires<HealthInfo>
+	public class RepairableBuildingInfo : ConditionalTraitInfo, Requires<IHealthInfo>
 	{
 		[Desc("Cost to fully repair the actor as a percent of its value.")]
 		public readonly int RepairPercent = 20;
@@ -28,6 +28,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("The maximum amount of HP to repair each step.")]
 		public readonly int RepairStep = 7;
+
+		[Desc("Damage types used for the repair.")]
+		public readonly BitSet<DamageType> RepairDamageTypes = default(BitSet<DamageType>);
 
 		[Desc("The percentage repair bonus applied with increasing numbers of repairers.")]
 		public readonly int[] RepairBonuses = { 100, 150, 175, 200, 220, 240, 260, 280, 300 };
@@ -43,15 +46,17 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("The condition to grant to self while being repaired.")]
 		public readonly string RepairCondition = null;
 
+		[NotificationReference("Speech")]
+		public readonly string RepairingNotification = null;
+
 		public override object Create(ActorInitializer init) { return new RepairableBuilding(init.Self, this); }
 	}
 
 	public class RepairableBuilding : ConditionalTrait<RepairableBuildingInfo>, ITick
 	{
-		readonly Health health;
+		readonly IHealth health;
 		readonly Predicate<Player> isNotActiveAlly;
 		readonly Stack<int> repairTokens = new Stack<int>();
-		ConditionManager conditionManager;
 		int remainingTicks;
 
 		public readonly List<Player> Repairers = new List<Player>();
@@ -60,14 +65,8 @@ namespace OpenRA.Mods.Common.Traits
 		public RepairableBuilding(Actor self, RepairableBuildingInfo info)
 			: base(info)
 		{
-			health = self.Trait<Health>();
-			isNotActiveAlly = player => player.WinState != WinState.Undefined || player.Stances[self.Owner] != Stance.Ally;
-		}
-
-		protected override void Created(Actor self)
-		{
-			base.Created(self);
-			conditionManager = self.TraitOrDefault<ConditionManager>();
+			health = self.Trait<IHealth>();
+			isNotActiveAlly = player => player.WinState != WinState.Undefined || self.Owner.RelationshipWith(player) != PlayerRelationship.Ally;
 		}
 
 		[Sync]
@@ -78,21 +77,21 @@ namespace OpenRA.Mods.Common.Traits
 				var hash = 0;
 				foreach (var player in Repairers)
 					hash ^= Sync.HashPlayer(player);
+
 				return hash;
 			}
 		}
 
 		void UpdateCondition(Actor self)
 		{
-			if (conditionManager == null || string.IsNullOrEmpty(Info.RepairCondition))
+			if (string.IsNullOrEmpty(Info.RepairCondition))
 				return;
 
-			var currentRepairers = Repairers.Count;
 			while (Repairers.Count > repairTokens.Count)
-				repairTokens.Push(conditionManager.GrantCondition(self, Info.RepairCondition));
+				repairTokens.Push(self.GrantCondition(Info.RepairCondition));
 
 			while (Repairers.Count < repairTokens.Count && repairTokens.Count > 0)
-				conditionManager.RevokeCondition(self, repairTokens.Pop());
+				self.RevokeCondition(repairTokens.Pop());
 		}
 
 		public void RepairBuilding(Actor self, Player player)
@@ -112,7 +111,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			Repairers.Add(player);
-			Game.Sound.PlayNotification(self.World.Map.Rules, player, "Speech", "Repairing", player.Faction.InternalName);
+			Game.Sound.PlayNotification(self.World.Map.Rules, player, "Speech", Info.RepairingNotification, player.Faction.InternalName);
 			UpdateCondition(self);
 		}
 
@@ -164,7 +163,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				// activePlayers won't cause IndexOutOfRange because we capped the max amount of players
 				// to the length of the array
-				self.InflictDamage(self, new Damage(-(hpToRepair * Info.RepairBonuses[activePlayers - 1] / 100)));
+				self.InflictDamage(self, new Damage(-(hpToRepair * Info.RepairBonuses[activePlayers - 1] / 100), Info.RepairDamageTypes));
 
 				if (health.DamageState == DamageState.Undamaged)
 				{
@@ -173,9 +172,7 @@ namespace OpenRA.Mods.Common.Traits
 						if (r == self.Owner)
 							return;
 
-						var exp = r.PlayerActor.TraitOrDefault<PlayerExperience>();
-						if (exp != null)
-							exp.GiveExperience(Info.PlayerExperience);
+						r.PlayerActor.TraitOrDefault<PlayerExperience>()?.GiveExperience(Info.PlayerExperience);
 					});
 
 					Repairers.Clear();

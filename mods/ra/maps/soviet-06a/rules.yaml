@@ -72,7 +72,7 @@ SPY:
 	Buildable:
 		Prerequisites: ~disabled
 
-HIJACKER:
+THF:
 	Buildable:
 		Prerequisites: ~disabled
 
@@ -142,18 +142,9 @@ MNLY:
 	Buildable:
 		Prerequisites: ~disabled
 
-HARV:
-	Harvester:
-		SearchFromProcRadius: 50
-		SearchFromOrderRadius: 50
-
 AFLD:
 	ParatroopersPower@paratroopers:
 		DropItems: E1,E1,E1,E1,E1
-
-MONEYCRATE:
-	GiveCashCrateAction:
-		Amount: 2000
 
 V01:
 	SpawnActorOnDeath:

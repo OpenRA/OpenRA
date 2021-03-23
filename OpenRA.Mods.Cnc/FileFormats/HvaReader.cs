@@ -1,18 +1,16 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
  * the License, or (at your option) any later version. For more
  * information, see COPYING.
  */
-
 #endregion
 
 using System;
 using System.IO;
-using OpenRA.Graphics;
 
 namespace OpenRA.Mods.Cnc.FileFormats
 {
@@ -50,7 +48,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 						Transforms[c + ids[k]] = s.ReadFloat();
 
 					Array.Copy(Transforms, 16 * (LimbCount * j + i), testMatrix, 0, 16);
-					if (Util.MatrixInverse(testMatrix) == null)
+					if (OpenRA.Graphics.Util.MatrixInverse(testMatrix) == null)
 						throw new InvalidDataException(
 							"The transformation matrix for HVA file `{0}` section {1} frame {2} is invalid because it is not invertible!"
 							.F(fileName, i, j));

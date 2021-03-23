@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,8 +10,8 @@
 #endregion
 
 using System;
-using System.Drawing;
 using OpenRA.Graphics;
+using OpenRA.Primitives;
 using SDL2;
 
 namespace OpenRA.Platforms.Default
@@ -35,13 +35,24 @@ namespace OpenRA.Platforms.Default
 			if (context == IntPtr.Zero || SDL.SDL_GL_MakeCurrent(window.Window, context) < 0)
 				throw new InvalidOperationException("Can not create OpenGL context. (Error: {0})".F(SDL.SDL_GetError()));
 
-			OpenGL.Initialize();
+			OpenGL.Initialize(window.GLProfile == GLProfile.Legacy);
+			OpenGL.CheckGLError();
+
+			if (OpenGL.Profile != GLProfile.Legacy)
+			{
+				OpenGL.glGenVertexArrays(1, out var vao);
+				OpenGL.CheckGLError();
+				OpenGL.glBindVertexArray(vao);
+				OpenGL.CheckGLError();
+			}
 
 			OpenGL.glEnableVertexAttribArray(Shader.VertexPosAttributeIndex);
 			OpenGL.CheckGLError();
 			OpenGL.glEnableVertexAttribArray(Shader.TexCoordAttributeIndex);
 			OpenGL.CheckGLError();
 			OpenGL.glEnableVertexAttribArray(Shader.TexMetadataAttributeIndex);
+			OpenGL.CheckGLError();
+			OpenGL.glEnableVertexAttribArray(Shader.TintAttributeIndex);
 			OpenGL.CheckGLError();
 		}
 
@@ -57,22 +68,22 @@ namespace OpenRA.Platforms.Default
 			return new Texture();
 		}
 
-		public ITexture CreateTexture(Bitmap bitmap)
-		{
-			VerifyThreadAffinity();
-			return new Texture(bitmap);
-		}
-
 		public IFrameBuffer CreateFrameBuffer(Size s)
 		{
 			VerifyThreadAffinity();
-			return new FrameBuffer(s, new Texture());
+			return new FrameBuffer(s, new Texture(), Color.FromArgb(0));
 		}
 
-		public IFrameBuffer CreateFrameBuffer(Size s, ITextureInternal texture)
+		public IFrameBuffer CreateFrameBuffer(Size s, Color clearColor)
 		{
 			VerifyThreadAffinity();
-			return new FrameBuffer(s, texture);
+			return new FrameBuffer(s, new Texture(), clearColor);
+		}
+
+		public IFrameBuffer CreateFrameBuffer(Size s, ITextureInternal texture, Color clearColor)
+		{
+			VerifyThreadAffinity();
+			return new FrameBuffer(s, texture, clearColor);
 		}
 
 		public IShader CreateShader(string name)
@@ -81,7 +92,7 @@ namespace OpenRA.Platforms.Default
 			return new Shader(name);
 		}
 
-		public void EnableScissor(int left, int top, int width, int height)
+		public void EnableScissor(int x, int y, int width, int height)
 		{
 			VerifyThreadAffinity();
 
@@ -91,20 +102,19 @@ namespace OpenRA.Platforms.Default
 			if (height < 0)
 				height = 0;
 
-			var windowSize = window.WindowSize;
-			var windowScale = window.WindowScale;
+			var windowSize = window.EffectiveWindowSize;
+			var windowScale = window.EffectiveWindowScale;
 			var surfaceSize = window.SurfaceSize;
 
-			var bottom = windowSize.Height - (top + height);
 			if (windowSize != surfaceSize)
 			{
-				left = (int)Math.Round(windowScale * left);
-				bottom = (int)Math.Round(windowScale * bottom);
+				x = (int)Math.Round(windowScale * x);
+				y = (int)Math.Round(windowScale * y);
 				width = (int)Math.Round(windowScale * width);
 				height = (int)Math.Round(windowScale * height);
 			}
 
-			OpenGL.glScissor(left, bottom, width, height);
+			OpenGL.glScissor(x, y, width, height);
 			OpenGL.CheckGLError();
 			OpenGL.glEnable(OpenGL.GL_SCISSOR_TEST);
 			OpenGL.CheckGLError();
@@ -115,31 +125,6 @@ namespace OpenRA.Platforms.Default
 			VerifyThreadAffinity();
 			OpenGL.glDisable(OpenGL.GL_SCISSOR_TEST);
 			OpenGL.CheckGLError();
-		}
-
-		public Bitmap TakeScreenshot()
-		{
-			var rect = new Rectangle(Point.Empty, window.SurfaceSize);
-			var bitmap = new Bitmap(rect.Width, rect.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-			var data = bitmap.LockBits(rect,
-				System.Drawing.Imaging.ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-
-			OpenGL.glPushClientAttrib(OpenGL.GL_CLIENT_PIXEL_STORE_BIT);
-
-			OpenGL.glPixelStoref(OpenGL.GL_PACK_ROW_LENGTH, data.Stride / 4f);
-			OpenGL.glPixelStoref(OpenGL.GL_PACK_ALIGNMENT, 1);
-
-			OpenGL.glReadPixels(rect.X, rect.Y, rect.Width, rect.Height, OpenGL.GL_BGRA, OpenGL.GL_UNSIGNED_BYTE, data.Scan0);
-			OpenGL.glFinish();
-
-			OpenGL.glPopClientAttrib();
-
-			bitmap.UnlockBits(data);
-
-			// OpenGL standard defines the origin in the bottom left corner which is why this is upside-down by default.
-			bitmap.RotateFlip(RotateFlipType.RotateNoneFlipY);
-
-			return bitmap;
 		}
 
 		public void Present()
@@ -225,7 +210,7 @@ namespace OpenRA.Platforms.Default
 					if (mode == BlendMode.Subtractive)
 					{
 						OpenGL.CheckGLError();
-						OpenGL.glBlendEquation(OpenGL.GL_FUNC_REVERSE_SUBTRACT);
+						OpenGL.glBlendEquationSeparate(OpenGL.GL_FUNC_REVERSE_SUBTRACT, OpenGL.GL_FUNC_ADD);
 					}
 
 					break;
@@ -245,9 +230,30 @@ namespace OpenRA.Platforms.Default
 					OpenGL.CheckGLError();
 					OpenGL.glBlendFunc(OpenGL.GL_DST_COLOR, OpenGL.GL_SRC_COLOR);
 					break;
+				case BlendMode.LowAdditive:
+					OpenGL.glEnable(OpenGL.GL_BLEND);
+					OpenGL.CheckGLError();
+					OpenGL.glBlendFunc(OpenGL.GL_DST_COLOR, OpenGL.GL_ONE);
+					break;
+				case BlendMode.Screen:
+					OpenGL.glEnable(OpenGL.GL_BLEND);
+					OpenGL.CheckGLError();
+					OpenGL.glBlendFunc(OpenGL.GL_SRC_COLOR, OpenGL.GL_ONE_MINUS_SRC_COLOR);
+					break;
+				case BlendMode.Translucent:
+					OpenGL.glEnable(OpenGL.GL_BLEND);
+					OpenGL.CheckGLError();
+					OpenGL.glBlendFunc(OpenGL.GL_DST_COLOR, OpenGL.GL_ONE_MINUS_DST_COLOR);
+					break;
 			}
 
 			OpenGL.CheckGLError();
+		}
+
+		public void SetVSyncEnabled(bool enabled)
+		{
+			VerifyThreadAffinity();
+			SDL.SDL_GL_SetSwapInterval(enabled ? 1 : 0);
 		}
 
 		public void Dispose()
@@ -263,6 +269,6 @@ namespace OpenRA.Platforms.Default
 			}
 		}
 
-		public string GLVersion { get { return OpenGL.Version; } }
+		public string GLVersion => OpenGL.Version;
 	}
 }

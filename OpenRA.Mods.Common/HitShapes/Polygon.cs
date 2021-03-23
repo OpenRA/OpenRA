@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,10 +10,11 @@
 #endregion
 
 using System;
-using System.Drawing;
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
+using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.HitShapes
 {
@@ -80,7 +81,7 @@ namespace OpenRA.Mods.Common.HitShapes
 			return (ac - ap).LengthSquared;
 		}
 
-		public WDist DistanceFromEdge(WVec v)
+		public WDist DistanceFromEdge(in WVec v)
 		{
 			var p = new int2(v.X, v.Y);
 			var z = Math.Abs(v.Z);
@@ -98,31 +99,28 @@ namespace OpenRA.Mods.Common.HitShapes
 			return new WDist(Exts.ISqrt(min2 + z * z));
 		}
 
-		public WDist DistanceFromEdge(WPos pos, Actor actor)
+		public WDist DistanceFromEdge(WPos pos, WPos origin, WRot orientation)
 		{
-			var actorPos = actor.CenterPosition;
-			var orientation = actor.Orientation + WRot.FromYaw(LocalYaw);
+			orientation += WRot.FromYaw(LocalYaw);
 
-			if (pos.Z > actorPos.Z + VerticalTopOffset)
-				return DistanceFromEdge((pos - (actorPos + new WVec(0, 0, VerticalTopOffset))).Rotate(-orientation));
+			if (pos.Z > origin.Z + VerticalTopOffset)
+				return DistanceFromEdge((pos - (origin + new WVec(0, 0, VerticalTopOffset))).Rotate(-orientation));
 
-			if (pos.Z < actorPos.Z + VerticalBottomOffset)
-				return DistanceFromEdge((pos - (actorPos + new WVec(0, 0, VerticalBottomOffset))).Rotate(-orientation));
+			if (pos.Z < origin.Z + VerticalBottomOffset)
+				return DistanceFromEdge((pos - (origin + new WVec(0, 0, VerticalBottomOffset))).Rotate(-orientation));
 
-			return DistanceFromEdge((pos - new WPos(actorPos.X, actorPos.Y, pos.Z)).Rotate(-orientation));
+			return DistanceFromEdge((pos - new WPos(origin.X, origin.Y, pos.Z)).Rotate(-orientation));
 		}
 
-		public void DrawCombatOverlay(WorldRenderer wr, RgbaColorRenderer wcr, Actor actor)
+		IEnumerable<IRenderable> IHitShape.RenderDebugOverlay(WorldRenderer wr, WPos actorPos, WRot orientation)
 		{
-			var actorPos = actor.CenterPosition;
-			var orientation = actor.Orientation + WRot.FromYaw(LocalYaw);
+			orientation += WRot.FromYaw(LocalYaw);
+			var vertsTop = combatOverlayVertsTop.Select(v => actorPos + v.Rotate(orientation)).ToArray();
+			var vertsBottom = combatOverlayVertsBottom.Select(v => actorPos + v.Rotate(orientation)).ToArray();
 
-			var vertsTop = combatOverlayVertsTop.Select(v => wr.Screen3DPosition(actorPos + v.Rotate(orientation)));
-			var vertsBottom = combatOverlayVertsBottom.Select(v => wr.Screen3DPosition(actorPos + v.Rotate(orientation)));
-			wcr.DrawPolygon(vertsTop.ToArray(), 1, Color.Yellow);
-			wcr.DrawPolygon(vertsBottom.ToArray(), 1, Color.Yellow);
-
-			RangeCircleRenderable.DrawRangeCircle(wr, actorPos, OuterRadius, 1, Color.LimeGreen, 0, Color.LimeGreen);
+			yield return new PolygonAnnotationRenderable(vertsTop, actorPos, 1, Color.Yellow);
+			yield return new PolygonAnnotationRenderable(vertsBottom, actorPos, 1, Color.Yellow);
+			yield return new CircleAnnotationRenderable(actorPos, OuterRadius, 1, Color.LimeGreen);
 		}
 	}
 }

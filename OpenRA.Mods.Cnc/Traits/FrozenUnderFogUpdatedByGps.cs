@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -19,9 +19,9 @@ namespace OpenRA.Mods.Cnc.Traits
 	using FrozenActorAction = Action<FrozenUnderFogUpdatedByGps, FrozenActorLayer, GpsWatcher, FrozenActor>;
 
 	[Desc("Updates frozen actors of actors that change owners, are sold or die whilst having an active GPS power.")]
-	public class FrozenUnderFogUpdatedByGpsInfo : ITraitInfo, Requires<FrozenUnderFogInfo>
+	public class FrozenUnderFogUpdatedByGpsInfo : TraitInfo, Requires<FrozenUnderFogInfo>
 	{
-		public object Create(ActorInitializer init) { return new FrozenUnderFogUpdatedByGps(init); }
+		public override object Create(ActorInitializer init) { return new FrozenUnderFogUpdatedByGps(init); }
 	}
 
 	public class FrozenUnderFogUpdatedByGps : INotifyOwnerChanged, INotifyActorDisposing, IOnGpsRefreshed
@@ -32,13 +32,18 @@ namespace OpenRA.Mods.Cnc.Traits
 			// This only makes sense if the frozen actor has already been revealed (i.e. has renderables)
 			if (fa.HasRenderables)
 			{
+				// HACK: RefreshState updated *all* actor state, not just the owner
+				// This is generally bogus, and specifically breaks cursors and tooltips by setting Hidden to false
+				var hidden = fa.Hidden;
 				fa.RefreshState();
+				fa.Hidden = hidden;
 				fa.NeedRenderables = true;
 			}
 		};
 		static readonly FrozenActorAction Remove = (fufubg, fal, gps, fa) =>
 		{
 			// Removes the frozen actor. Once done, we no longer need to track GPS updates.
+			fa.Invalidate();
 			fal.Remove(fa);
 			gps.UnregisterForOnGpsRefreshed(fufubg.self, fufubg);
 		};
@@ -49,7 +54,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			public readonly GpsWatcher GpsWatcher;
 			public Traits(Player player, FrozenUnderFogUpdatedByGps frozenUnderFogUpdatedByGps)
 			{
-				FrozenActorLayer = player.PlayerActor.TraitOrDefault<FrozenActorLayer>();
+				FrozenActorLayer = player.FrozenActorLayer;
 				GpsWatcher = player.PlayerActor.TraitOrDefault<GpsWatcher>();
 				GpsWatcher.RegisterForOnGpsRefreshed(frozenUnderFogUpdatedByGps.self, frozenUnderFogUpdatedByGps);
 			}

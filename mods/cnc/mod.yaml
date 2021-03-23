@@ -7,11 +7,11 @@ Metadata:
 PackageFormats: Mix
 
 Packages:
-	~^Content/cnc
-	~^Content/cnc/movies
-	.
+	~^SupportDir|Content/cnc
+	~^SupportDir|Content/cnc/movies
+	^EngineDir
 	$cnc: cnc
-	./mods/common: common
+	^EngineDir|mods/common: common
 	~speech.mix
 	~conquer.mix
 	~sounds.mix
@@ -29,11 +29,12 @@ Packages:
 	cnc|bits/jungle
 	cnc|bits/desert
 	cnc|bits/ss
+	cnc|bits/scripts
 	cnc|uibits
 
 MapFolders:
 	cnc|maps: System
-	~^maps/cnc/{DEV_VERSION}: User
+	~^SupportDir|maps/cnc/{DEV_VERSION}: User
 
 Rules:
 	cnc|rules/misc.yaml
@@ -86,11 +87,12 @@ Chrome:
 	cnc|chrome.yaml
 
 Assemblies:
-	common|OpenRA.Mods.Common.dll
-	common|OpenRA.Mods.Cnc.dll
+	^BinDir|OpenRA.Mods.Common.dll
+	^BinDir|OpenRA.Mods.Cnc.dll
 
 ChromeLayout:
 	cnc|chrome/mainmenu.yaml
+	cnc|chrome/mainmenu-prompts.yaml
 	cnc|chrome/playerprofile.yaml
 	cnc|chrome/multiplayer-browser.yaml
 	cnc|chrome/multiplayer-browserpanels.yaml
@@ -107,6 +109,8 @@ ChromeLayout:
 	cnc|chrome/color-picker.yaml
 	cnc|chrome/mapchooser.yaml
 	cnc|chrome/replaybrowser.yaml
+	cnc|chrome/gamesave-browser.yaml
+	cnc|chrome/gamesave-loading.yaml
 	cnc|chrome/ingame.yaml
 	cnc|chrome/ingame-chat.yaml
 	cnc|chrome/ingame-menu.yaml
@@ -117,9 +121,14 @@ ChromeLayout:
 	cnc|chrome/ingame-infoscripterror.yaml
 	cnc|chrome/ingame-infoobjectives.yaml
 	cnc|chrome/ingame-infostats.yaml
-	cnc|chrome/ingame-observerstats.yaml
+	cnc|chrome/ingame-debuginfo.yaml
 	cnc|chrome/music.yaml
 	cnc|chrome/settings.yaml
+	cnc|chrome/settings-display.yaml
+	cnc|chrome/settings-audio.yaml
+	cnc|chrome/settings-input.yaml
+	cnc|chrome/settings-hotkeys.yaml
+	cnc|chrome/settings-advanced.yaml
 	cnc|chrome/credits.yaml
 	cnc|chrome/dialogs.yaml
 	cnc|chrome/tooltips.yaml
@@ -136,9 +145,6 @@ Notifications:
 Music:
 	cnc|audio/music.yaml
 
-Translations:
-	cnc|languages/english.yaml
-
 Hotkeys:
 	common|hotkeys/game.yaml
 	common|hotkeys/observer.yaml
@@ -150,6 +156,8 @@ Hotkeys:
 
 LoadScreen: CncLoadScreen
 	Image: cnc|uibits/chrome.png
+	Image2x: cnc|uibits/chrome-2x.png
+	Image3x: cnc|uibits/chrome-3x.png
 	Text: Loading
 
 ServerTraits:
@@ -166,27 +174,35 @@ Fonts:
 	Tiny:
 		Font: common|FreeSans.ttf
 		Size: 10
+		Ascender: 8
 	TinyBold:
 		Font: common|FreeSansBold.ttf
 		Size: 10
+		Ascender: 8
 	Small:
 		Font: common|FreeSans.ttf
 		Size: 12
+		Ascender: 9
 	Regular:
 		Font: common|FreeSans.ttf
 		Size: 14
+		Ascender: 11
 	Bold:
 		Font: common|FreeSansBold.ttf
 		Size: 14
+		Ascender: 11
 	MediumBold:
 		Font: common|FreeSansBold.ttf
 		Size: 18
+		Ascender: 14
 	BigBold:
 		Font: common|FreeSansBold.ttf
 		Size: 24
+		Ascender: 18
 	Title:
 		Font: common|FreeSansBold.ttf
 		Size: 32
+		Ascender: 24
 
 Missions:
 	./mods/cnc/missions.yaml
@@ -201,7 +217,11 @@ SoundFormats: Aud, Wav
 
 SpriteFormats: ShpTD, TmpTD, ShpTS, TmpRA
 
-SpriteSequenceFormat: TilesetSpecificSpriteSequence
+VideoFormats: Vqa
+
+TerrainFormat: DefaultTerrain
+
+SpriteSequenceFormat: ClassicTilesetSpecificSpriteSequence
 	TilesetExtensions:
 		TEMPERAT: .tem
 		WINTER: .win
@@ -210,6 +230,9 @@ SpriteSequenceFormat: TilesetSpecificSpriteSequence
 		JUNGLE: .jun
 
 ModelSequenceFormat: PlaceholderModelSequence
+
+AssetBrowser:
+	SupportedExtensions: .shp, .tem, .des, .sno, .jun, .vqa
 
 GameSpeeds:
 	slowest:
@@ -238,30 +261,29 @@ GameSpeeds:
 		OrderLatency: 6
 
 ColorValidator:
-	TeamColorPresets: f70606, ff7a22, f8d3b3, f8e947, b6f706, f335a0, a64d6c, ce08f9, f5b2db, 12b572, 380135, 1d06f7, 328dff, 78dbf8, cef6b1, 000000
+	TeamColorPresets: f70606, ff7a22, f8d3b3, f8e947, 94b319, f335a0, a64d6c, ce08f9, f5b2db, 12b572, 502048, 1d06f7, 328dff, 78dbf8, cef6b1, 391d1d
 
 ModContent:
-	InstallPromptMessage: Tiberian Dawn requires artwork and audio from the original game.\n\nQuick Install will automatically download this content (without music\nor videos) from a mirror of the 2007 C&C Gold freeware release.\n\nAdvanced Install includes options for downloading the music and for\ncopying the videos and other content from an original game disc.
+	InstallPromptMessage: Tiberian Dawn requires artwork and audio from the original game.\n\nQuick Install will automatically download this content (without music\nor videos) from a mirror of the 2007 C&C Gold freeware release.\n\nAdvanced Install includes options for copying the music, videos, and\nother content from an original game disc or digital installation.
 	QuickDownload: basefiles
 	HeaderMessage: Game content may be extracted from the original game discs or an\nexisting digital install. OpenRA can also download the base game\nfiles from an online mirror of the 2007 freeware release of C&C.
 	Packages:
 		base: Base Game Files
-			TestFiles: ^Content/cnc/conquer.mix, ^Content/cnc/desert.mix, ^Content/cnc/sounds.mix, ^Content/cnc/speech.mix, ^Content/cnc/temperat.mix, ^Content/cnc/tempicnh.mix, ^Content/cnc/winter.mix
+			TestFiles: ^SupportDir|Content/cnc/conquer.mix, ^SupportDir|Content/cnc/desert.mix, ^SupportDir|Content/cnc/sounds.mix, ^SupportDir|Content/cnc/speech.mix, ^SupportDir|Content/cnc/temperat.mix, ^SupportDir|Content/cnc/tempicnh.mix, ^SupportDir|Content/cnc/winter.mix
 			Sources: gdi95, gdi95-linux, nod95, nod95-linux, tfd, origin
 			Required: true
 			Download: basefiles
 		music: Base Game Music
-			TestFiles: ^Content/cnc/scores.mix
+			TestFiles: ^SupportDir|Content/cnc/scores.mix
 			Sources: gdi95, gdi95-linux, nod95, nod95-linux, tfd, origin
-			Download: music
 		movies-gdi: GDI Campaign Briefings
-			TestFiles: ^Content/cnc/movies/visor.vqa, ^Content/cnc/movies/turtkill.vqa, ^Content/cnc/movies/trailer.vqa, ^Content/cnc/movies/tbrinfo3.vqa, ^Content/cnc/movies/tbrinfo2.vqa, ^Content/cnc/movies/tbrinfo1.vqa, ^Content/cnc/movies/seige.vqa, ^Content/cnc/movies/samsite.vqa, ^Content/cnc/movies/samdie.vqa, ^Content/cnc/movies/sabotage.vqa, ^Content/cnc/movies/retro.vqa, ^Content/cnc/movies/podium.vqa, ^Content/cnc/movies/planecra.vqa, ^Content/cnc/movies/pintle.vqa, ^Content/cnc/movies/paratrop.vqa, ^Content/cnc/movies/nodsweep.vqa, ^Content/cnc/movies/nodlose.vqa, ^Content/cnc/movies/nodflees.vqa, ^Content/cnc/movies/nod1.vqa, ^Content/cnc/movies/nitejump.vqa, ^Content/cnc/movies/napalm.vqa, ^Content/cnc/movies/logo.vqa, ^Content/cnc/movies/landing.vqa, ^Content/cnc/movies/intro2.vqa, ^Content/cnc/movies/hellvaly.vqa, ^Content/cnc/movies/gunboat.vqa, ^Content/cnc/movies/generic.vqa, ^Content/cnc/movies/gdilose.vqa, ^Content/cnc/movies/gdifinb.vqa, ^Content/cnc/movies/gdifina.vqa, ^Content/cnc/movies/gdiend2.vqa, ^Content/cnc/movies/gdiend1.vqa, ^Content/cnc/movies/gdi9.vqa, ^Content/cnc/movies/gdi8b.vqa, ^Content/cnc/movies/gdi8a.vqa, ^Content/cnc/movies/gdi7.vqa, ^Content/cnc/movies/gdi6.vqa, ^Content/cnc/movies/gdi5.vqa, ^Content/cnc/movies/gdi4b.vqa, ^Content/cnc/movies/gdi4a.vqa, ^Content/cnc/movies/gdi3lose.vqa, ^Content/cnc/movies/gdi3.vqa, ^Content/cnc/movies/gdi2.vqa, ^Content/cnc/movies/gdi15.vqa, ^Content/cnc/movies/gdi14.vqa, ^Content/cnc/movies/gdi13.vqa, ^Content/cnc/movies/gdi12.vqa, ^Content/cnc/movies/gdi11.vqa, ^Content/cnc/movies/gdi10.vqa, ^Content/cnc/movies/gdi1.vqa, ^Content/cnc/movies/gameover.vqa, ^Content/cnc/movies/forestkl.vqa, ^Content/cnc/movies/flyy.vqa, ^Content/cnc/movies/flag.vqa, ^Content/cnc/movies/dino.vqa, ^Content/cnc/movies/desolat.vqa, ^Content/cnc/movies/consyard.vqa, ^Content/cnc/movies/cc2tease.vqa, ^Content/cnc/movies/burdet2.vqa, ^Content/cnc/movies/burdet1.vqa, ^Content/cnc/movies/bombflee.vqa, ^Content/cnc/movies/bombaway.vqa, ^Content/cnc/movies/bkground.vqa, ^Content/cnc/movies/bcanyon.vqa, ^Content/cnc/movies/banner.vqa
+			TestFiles: ^SupportDir|Content/cnc/movies/visor.vqa, ^SupportDir|Content/cnc/movies/turtkill.vqa, ^SupportDir|Content/cnc/movies/trailer.vqa, ^SupportDir|Content/cnc/movies/tbrinfo3.vqa, ^SupportDir|Content/cnc/movies/tbrinfo2.vqa, ^SupportDir|Content/cnc/movies/tbrinfo1.vqa, ^SupportDir|Content/cnc/movies/seige.vqa, ^SupportDir|Content/cnc/movies/samsite.vqa, ^SupportDir|Content/cnc/movies/samdie.vqa, ^SupportDir|Content/cnc/movies/sabotage.vqa, ^SupportDir|Content/cnc/movies/retro.vqa, ^SupportDir|Content/cnc/movies/podium.vqa, ^SupportDir|Content/cnc/movies/planecra.vqa, ^SupportDir|Content/cnc/movies/pintle.vqa, ^SupportDir|Content/cnc/movies/paratrop.vqa, ^SupportDir|Content/cnc/movies/nodsweep.vqa, ^SupportDir|Content/cnc/movies/nodlose.vqa, ^SupportDir|Content/cnc/movies/nodflees.vqa, ^SupportDir|Content/cnc/movies/nod1.vqa, ^SupportDir|Content/cnc/movies/nitejump.vqa, ^SupportDir|Content/cnc/movies/napalm.vqa, ^SupportDir|Content/cnc/movies/logo.vqa, ^SupportDir|Content/cnc/movies/landing.vqa, ^SupportDir|Content/cnc/movies/intro2.vqa, ^SupportDir|Content/cnc/movies/hellvaly.vqa, ^SupportDir|Content/cnc/movies/gunboat.vqa, ^SupportDir|Content/cnc/movies/generic.vqa, ^SupportDir|Content/cnc/movies/gdilose.vqa, ^SupportDir|Content/cnc/movies/gdifinb.vqa, ^SupportDir|Content/cnc/movies/gdifina.vqa, ^SupportDir|Content/cnc/movies/gdiend2.vqa, ^SupportDir|Content/cnc/movies/gdiend1.vqa, ^SupportDir|Content/cnc/movies/gdi9.vqa, ^SupportDir|Content/cnc/movies/gdi8b.vqa, ^SupportDir|Content/cnc/movies/gdi8a.vqa, ^SupportDir|Content/cnc/movies/gdi7.vqa, ^SupportDir|Content/cnc/movies/gdi6.vqa, ^SupportDir|Content/cnc/movies/gdi5.vqa, ^SupportDir|Content/cnc/movies/gdi4b.vqa, ^SupportDir|Content/cnc/movies/gdi4a.vqa, ^SupportDir|Content/cnc/movies/gdi3lose.vqa, ^SupportDir|Content/cnc/movies/gdi3.vqa, ^SupportDir|Content/cnc/movies/gdi2.vqa, ^SupportDir|Content/cnc/movies/gdi15.vqa, ^SupportDir|Content/cnc/movies/gdi14.vqa, ^SupportDir|Content/cnc/movies/gdi13.vqa, ^SupportDir|Content/cnc/movies/gdi12.vqa, ^SupportDir|Content/cnc/movies/gdi11.vqa, ^SupportDir|Content/cnc/movies/gdi10.vqa, ^SupportDir|Content/cnc/movies/gdi1.vqa, ^SupportDir|Content/cnc/movies/gameover.vqa, ^SupportDir|Content/cnc/movies/forestkl.vqa, ^SupportDir|Content/cnc/movies/flyy.vqa, ^SupportDir|Content/cnc/movies/flag.vqa, ^SupportDir|Content/cnc/movies/dino.vqa, ^SupportDir|Content/cnc/movies/desolat.vqa, ^SupportDir|Content/cnc/movies/consyard.vqa, ^SupportDir|Content/cnc/movies/cc2tease.vqa, ^SupportDir|Content/cnc/movies/burdet2.vqa, ^SupportDir|Content/cnc/movies/burdet1.vqa, ^SupportDir|Content/cnc/movies/bombflee.vqa, ^SupportDir|Content/cnc/movies/bombaway.vqa, ^SupportDir|Content/cnc/movies/bkground.vqa, ^SupportDir|Content/cnc/movies/bcanyon.vqa, ^SupportDir|Content/cnc/movies/banner.vqa
 			Sources: gdi95, gdi95-linux, tfd, origin
 		movies-nod: Nod Campaign Briefings
-			TestFiles: ^Content/cnc/movies/visor.vqa, ^Content/cnc/movies/trtkil_d.vqa, ^Content/cnc/movies/trailer.vqa, ^Content/cnc/movies/tiberfx.vqa, ^Content/cnc/movies/tankkill.vqa, ^Content/cnc/movies/tankgo.vqa, ^Content/cnc/movies/sundial.vqa, ^Content/cnc/movies/stealth.vqa, ^Content/cnc/movies/spycrash.vqa, ^Content/cnc/movies/sethpre.vqa, ^Content/cnc/movies/seige.vqa, ^Content/cnc/movies/samsite.vqa, ^Content/cnc/movies/retro.vqa, ^Content/cnc/movies/refint.vqa, ^Content/cnc/movies/obel.vqa, ^Content/cnc/movies/nuke.vqa, ^Content/cnc/movies/nodlose.vqa, ^Content/cnc/movies/nodfinal.vqa, ^Content/cnc/movies/nodend4.vqa, ^Content/cnc/movies/nodend3.vqa, ^Content/cnc/movies/nodend2.vqa, ^Content/cnc/movies/nodend1.vqa, ^Content/cnc/movies/nod9.vqa, ^Content/cnc/movies/nod8.vqa, ^Content/cnc/movies/nod7b.vqa, ^Content/cnc/movies/nod7a.vqa, ^Content/cnc/movies/nod6.vqa, ^Content/cnc/movies/nod5.vqa, ^Content/cnc/movies/nod4b.vqa, ^Content/cnc/movies/nod4a.vqa, ^Content/cnc/movies/nod3.vqa, ^Content/cnc/movies/nod2.vqa, ^Content/cnc/movies/nod1pre.vqa, ^Content/cnc/movies/nod13.vqa, ^Content/cnc/movies/nod12.vqa, ^Content/cnc/movies/nod11.vqa, ^Content/cnc/movies/nod10b.vqa, ^Content/cnc/movies/nod10a.vqa, ^Content/cnc/movies/nod1.vqa, ^Content/cnc/movies/logo.vqa, ^Content/cnc/movies/landing.vqa, ^Content/cnc/movies/kanepre.vqa, ^Content/cnc/movies/intro2.vqa, ^Content/cnc/movies/insites.vqa, ^Content/cnc/movies/generic.vqa, ^Content/cnc/movies/gdi1.vqa, ^Content/cnc/movies/gameover.vqa, ^Content/cnc/movies/forestkl.vqa, ^Content/cnc/movies/flag.vqa, ^Content/cnc/movies/dino.vqa, ^Content/cnc/movies/dessweep.vqa, ^Content/cnc/movies/deskill.vqa, ^Content/cnc/movies/desflees.vqa, ^Content/cnc/movies/consyard.vqa, ^Content/cnc/movies/cc2tease.vqa, ^Content/cnc/movies/bombflee.vqa, ^Content/cnc/movies/bombaway.vqa, ^Content/cnc/movies/bcanyon.vqa, ^Content/cnc/movies/banner.vqa, ^Content/cnc/movies/akira.vqa, ^Content/cnc/movies/airstrk.vqa
+			TestFiles: ^SupportDir|Content/cnc/movies/visor.vqa, ^SupportDir|Content/cnc/movies/trtkil_d.vqa, ^SupportDir|Content/cnc/movies/trailer.vqa, ^SupportDir|Content/cnc/movies/tiberfx.vqa, ^SupportDir|Content/cnc/movies/tankkill.vqa, ^SupportDir|Content/cnc/movies/tankgo.vqa, ^SupportDir|Content/cnc/movies/sundial.vqa, ^SupportDir|Content/cnc/movies/stealth.vqa, ^SupportDir|Content/cnc/movies/spycrash.vqa, ^SupportDir|Content/cnc/movies/sethpre.vqa, ^SupportDir|Content/cnc/movies/seige.vqa, ^SupportDir|Content/cnc/movies/samsite.vqa, ^SupportDir|Content/cnc/movies/retro.vqa, ^SupportDir|Content/cnc/movies/refint.vqa, ^SupportDir|Content/cnc/movies/obel.vqa, ^SupportDir|Content/cnc/movies/nuke.vqa, ^SupportDir|Content/cnc/movies/nodlose.vqa, ^SupportDir|Content/cnc/movies/nodfinal.vqa, ^SupportDir|Content/cnc/movies/nodend4.vqa, ^SupportDir|Content/cnc/movies/nodend3.vqa, ^SupportDir|Content/cnc/movies/nodend2.vqa, ^SupportDir|Content/cnc/movies/nodend1.vqa, ^SupportDir|Content/cnc/movies/nod9.vqa, ^SupportDir|Content/cnc/movies/nod8.vqa, ^SupportDir|Content/cnc/movies/nod7b.vqa, ^SupportDir|Content/cnc/movies/nod7a.vqa, ^SupportDir|Content/cnc/movies/nod6.vqa, ^SupportDir|Content/cnc/movies/nod5.vqa, ^SupportDir|Content/cnc/movies/nod4b.vqa, ^SupportDir|Content/cnc/movies/nod4a.vqa, ^SupportDir|Content/cnc/movies/nod3.vqa, ^SupportDir|Content/cnc/movies/nod2.vqa, ^SupportDir|Content/cnc/movies/nod1pre.vqa, ^SupportDir|Content/cnc/movies/nod13.vqa, ^SupportDir|Content/cnc/movies/nod12.vqa, ^SupportDir|Content/cnc/movies/nod11.vqa, ^SupportDir|Content/cnc/movies/nod10b.vqa, ^SupportDir|Content/cnc/movies/nod10a.vqa, ^SupportDir|Content/cnc/movies/nod1.vqa, ^SupportDir|Content/cnc/movies/logo.vqa, ^SupportDir|Content/cnc/movies/landing.vqa, ^SupportDir|Content/cnc/movies/kanepre.vqa, ^SupportDir|Content/cnc/movies/intro2.vqa, ^SupportDir|Content/cnc/movies/insites.vqa, ^SupportDir|Content/cnc/movies/generic.vqa, ^SupportDir|Content/cnc/movies/gdi1.vqa, ^SupportDir|Content/cnc/movies/gameover.vqa, ^SupportDir|Content/cnc/movies/forestkl.vqa, ^SupportDir|Content/cnc/movies/flag.vqa, ^SupportDir|Content/cnc/movies/dino.vqa, ^SupportDir|Content/cnc/movies/dessweep.vqa, ^SupportDir|Content/cnc/movies/deskill.vqa, ^SupportDir|Content/cnc/movies/desflees.vqa, ^SupportDir|Content/cnc/movies/consyard.vqa, ^SupportDir|Content/cnc/movies/cc2tease.vqa, ^SupportDir|Content/cnc/movies/bombflee.vqa, ^SupportDir|Content/cnc/movies/bombaway.vqa, ^SupportDir|Content/cnc/movies/bcanyon.vqa, ^SupportDir|Content/cnc/movies/banner.vqa, ^SupportDir|Content/cnc/movies/akira.vqa, ^SupportDir|Content/cnc/movies/airstrk.vqa
 			Sources: nod95, nod95-linux, tfd, origin
 		music-covertops: Covert Operations Music
-			TestFiles: ^Content/cnc/scores-covertops.mix
+			TestFiles: ^SupportDir|Content/cnc/scores-covertops.mix
 			Sources: covertops, covertops-linux, tfd, origin
 	Downloads:
 		cnc|installer/downloads.yaml
@@ -271,3 +293,6 @@ ModContent:
 		cnc|installer/gdi95.yaml
 		cnc|installer/nod95.yaml
 		cnc|installer/origin.yaml
+
+DiscordService:
+	ApplicationId: 699223250181292033

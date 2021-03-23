@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -11,32 +11,38 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
 {
-	public interface IRenderActorPreviewVoxelsInfo : ITraitInfo
+	public interface IRenderActorPreviewVoxelsInfo : ITraitInfoInterface
 	{
 		IEnumerable<ModelAnimation> RenderPreviewVoxels(
 			ActorPreviewInitializer init, RenderVoxelsInfo rv, string image, Func<WRot> orientation, int facings, PaletteReference p);
 	}
 
-	public class RenderVoxelsInfo : ITraitInfo, IRenderActorPreviewInfo, Requires<BodyOrientationInfo>
+	public class RenderVoxelsInfo : TraitInfo, IRenderActorPreviewInfo, Requires<BodyOrientationInfo>
 	{
 		[Desc("Defaults to the actor name.")]
 		public readonly string Image = null;
 
 		[Desc("Custom palette name")]
-		[PaletteReference] public readonly string Palette = null;
+		[PaletteReference]
+		public readonly string Palette = null;
 
+		[PaletteReference]
 		[Desc("Custom PlayerColorPalette: BaseName")]
-		[PaletteReference] public readonly string PlayerPalette = "player";
-		[PaletteReference] public readonly string NormalsPalette = "normals";
-		[PaletteReference] public readonly string ShadowPalette = "shadow";
+		public readonly string PlayerPalette = "player";
+
+		[PaletteReference]
+		public readonly string NormalsPalette = "normals";
+
+		[PaletteReference]
+		public readonly string ShadowPalette = "shadow";
 
 		[Desc("Change the image size.")]
 		public readonly float Scale = 12;
@@ -46,13 +52,13 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public readonly float[] LightAmbientColor = { 0.6f, 0.6f, 0.6f };
 		public readonly float[] LightDiffuseColor = { 0.4f, 0.4f, 0.4f };
 
-		public virtual object Create(ActorInitializer init) { return new RenderVoxels(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new RenderVoxels(init.Self, this); }
 
 		public virtual IEnumerable<IActorPreview> RenderPreview(ActorPreviewInitializer init)
 		{
 			var body = init.Actor.TraitInfo<BodyOrientationInfo>();
-			var faction = init.Get<FactionInit, string>();
-			var ownerName = init.Get<OwnerInit>().PlayerName;
+			var faction = init.GetValue<FactionInit, string>(this);
+			var ownerName = init.Get<OwnerInit>().InternalName;
 			var sequenceProvider = init.World.Map.Rules.Sequences;
 			var image = Image ?? init.Actor.Name;
 			var facings = body.QuantizedFacings == -1 ?
@@ -87,7 +93,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			{
 				// Return to the caller whether the renderable position or size has changed
 				var visible = model.IsVisible;
-				var offset = model.OffsetFunc != null ? model.OffsetFunc() : WVec.Zero;
+				var offset = model.OffsetFunc?.Invoke() ?? WVec.Zero;
 
 				var updated = visible != cachedVisible || offset != cachedOffset;
 				cachedVisible = visible;
@@ -141,10 +147,13 @@ namespace OpenRA.Mods.Common.Traits.Render
 				initializePalettes = false;
 			}
 
-			return new IRenderable[] { new ModelRenderable(
-				components, self.CenterPosition, 0, camera, Info.Scale,
-				lightSource, Info.LightAmbientColor, Info.LightDiffuseColor,
-				colorPalette, normalsPalette, shadowPalette) };
+			return new IRenderable[]
+			{
+				new ModelRenderable(
+					components, self.CenterPosition, 0, camera, Info.Scale,
+					lightSource, Info.LightAmbientColor, Info.LightDiffuseColor,
+					colorPalette, normalsPalette, shadowPalette)
+			};
 		}
 
 		IEnumerable<Rectangle> IRender.ScreenBounds(Actor self, WorldRenderer wr)
@@ -155,7 +164,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 					yield return c.ScreenBounds(pos, wr, Info.Scale);
 		}
 
-		public string Image { get { return Info.Image ?? self.Info.Name; } }
+		public string Image => Info.Image ?? self.Info.Name;
+
 		public void Add(ModelAnimation m)
 		{
 			components.Add(m);

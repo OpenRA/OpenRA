@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -62,8 +62,7 @@ namespace OpenRA.Mods.Common.FileFormats
 				return null;
 			var sectionName = m.Groups[1].Value.ToLowerInvariant();
 
-			IniSection ret;
-			if (!sections.TryGetValue(sectionName, out ret))
+			if (!sections.TryGetValue(sectionName, out var ret))
 				sections.Add(sectionName, ret = new IniSection(sectionName));
 			return ret;
 		}
@@ -102,8 +101,7 @@ namespace OpenRA.Mods.Common.FileFormats
 
 		public IniSection GetSection(string s, bool allowFail)
 		{
-			IniSection section;
-			if (sections.TryGetValue(s.ToLowerInvariant(), out section))
+			if (sections.TryGetValue(s.ToLowerInvariant(), out var section))
 				return section;
 
 			if (allowFail)
@@ -111,7 +109,7 @@ namespace OpenRA.Mods.Common.FileFormats
 			throw new InvalidOperationException("Section does not exist in map or rules: " + s);
 		}
 
-		public IEnumerable<IniSection> Sections { get { return sections.Values; } }
+		public IEnumerable<IniSection> Sections => sections.Values;
 	}
 
 	public class IniSection : IEnumerable<KeyValuePair<string, string>>
@@ -136,8 +134,7 @@ namespace OpenRA.Mods.Common.FileFormats
 
 		public string GetValue(string key, string defaultValue)
 		{
-			string s;
-			return values.TryGetValue(key, out s) ? s : defaultValue;
+			return values.TryGetValue(key, out var s) ? s : defaultValue;
 		}
 
 		public IEnumerator<KeyValuePair<string, string>> GetEnumerator()

@@ -72,7 +72,7 @@ SPY:
 	Buildable:
 		Prerequisites: ~disabled
 
-HIJACKER:
+THF:
 	Buildable:
 		Prerequisites: ~disabled
 
@@ -141,11 +141,6 @@ GAP:
 MNLY:
 	Buildable:
 		Prerequisites: ~disabled
-
-HARV:
-	Harvester:
-		SearchFromProcRadius: 50
-		SearchFromOrderRadius: 50
 
 AFLD:
 	ParatroopersPower@paratroopers:

@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+   Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -71,7 +71,7 @@ FremenAttackWaves =
 
 AtreidesHunters = { "trooper", "trooper", "trooper", "trooper", "trooper", "trooper", "trooper", "trooper", "trooper", "trooper" }
 
-FremenHunters = 
+FremenHunters =
 {
 	{ "fremen", "fremen", "fremen" },
 	{ "combat_tank_a", "combat_tank_a", "combat_tank_a" },
@@ -79,7 +79,7 @@ FremenHunters =
 }
 
 InitialAtreidesReinforcements =
-{ 
+{
 	{ "trooper", "trooper", "trooper", "trooper", "light_inf", "light_inf", "light_inf", "light_inf" },
 	{ "combat_tank_a", "combat_tank_a", "quad", "trike" }
 }
@@ -98,7 +98,7 @@ FremenPaths =
 	{ FremenEntry6.Location, FremenRally6.Location }
 }
 
-FremenHunterPaths = 
+FremenHunterPaths =
 {
 	{ FremenEntry1.Location, FremenRally1.Location },
 	{ FremenEntry2.Location, FremenRally2.Location },

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -16,28 +16,29 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	public enum LineBuildDirection { Unset, X, Y }
-	public class LineBuildDirectionInit : IActorInit<LineBuildDirection>
+	public class LineBuildDirectionInit : ValueActorInit<LineBuildDirection>, ISingleInstanceInit
 	{
-		[FieldFromYamlKey] readonly LineBuildDirection value = LineBuildDirection.Unset;
-		public LineBuildDirectionInit() { }
-		public LineBuildDirectionInit(LineBuildDirection init) { value = init; }
-		public LineBuildDirection Value(World world) { return value; }
+		public LineBuildDirectionInit(LineBuildDirection value)
+			: base(value) { }
 	}
 
-	public class LineBuildParentInit : IActorInit<Actor[]>
+	public class LineBuildParentInit : ValueActorInit<string[]>, ISingleInstanceInit
 	{
-		[FieldFromYamlKey] public readonly string[] ParentNames = new string[0];
 		readonly Actor[] parents = null;
 
-		public LineBuildParentInit() { }
-		public LineBuildParentInit(Actor[] init) { parents = init; }
-		public Actor[] Value(World world)
+		public LineBuildParentInit(Actor[] value)
+			: base(new string[0])
+		{
+			parents = value;
+		}
+
+		public Actor[] ActorValue(World world)
 		{
 			if (parents != null)
 				return parents;
 
 			var sma = world.WorldActor.Trait<SpawnMapActors>();
-			return ParentNames.Select(n => sma.Actors[n]).ToArray();
+			return value.Select(n => sma.Actors[n]).ToArray();
 		}
 	}
 
@@ -48,7 +49,7 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	[Desc("Place the second actor in line to build more of the same at once (used for walls).")]
-	public class LineBuildInfo : ITraitInfo
+	public class LineBuildInfo : TraitInfo
 	{
 		[Desc("The maximum allowed length of the line.")]
 		public readonly int Range = 5;
@@ -63,7 +64,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Delete generated segments when destroyed or sold.")]
 		public readonly bool SegmentsRequireNode = false;
 
-		public object Create(ActorInitializer init) { return new LineBuild(init, this); }
+		public override object Create(ActorInitializer init) { return new LineBuild(init, this); }
 	}
 
 	public class LineBuild : INotifyKilled, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyLineBuildSegmentsChanged
@@ -75,8 +76,9 @@ namespace OpenRA.Mods.Common.Traits
 		public LineBuild(ActorInitializer init, LineBuildInfo info)
 		{
 			this.info = info;
-			if (init.Contains<LineBuildParentInit>())
-				parentNodes = init.Get<LineBuildParentInit>().Value(init.World);
+			var lineBuildParentInit = init.GetOrDefault<LineBuildParentInit>();
+			if (lineBuildParentInit != null)
+				parentNodes = lineBuildParentInit.ActorValue(init.World);
 		}
 
 		void INotifyLineBuildSegmentsChanged.SegmentAdded(Actor self, Actor segment)
@@ -89,10 +91,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyLineBuildSegmentsChanged.SegmentRemoved(Actor self, Actor segment)
 		{
-			if (segments == null)
-				return;
-
-			segments.Remove(segment);
+			segments?.Remove(segment);
 		}
 
 		void INotifyAddedToWorld.AddedToWorld(Actor self)

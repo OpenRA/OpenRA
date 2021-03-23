@@ -1,6 +1,10 @@
 ^BasePlayer:
 	AlwaysVisible:
 	Shroud:
+	PlayerResources:
+		ResourceValues:
+			Tiberium: 35
+			BlueTiberium: 60
 
 EditorPlayer:
 	Inherits: ^BasePlayer
@@ -8,26 +12,43 @@ EditorPlayer:
 Player:
 	Inherits: ^BasePlayer
 	PlaceBuilding:
+		NewOptionsNotification: NewOptions
+		CannotPlaceNotification: BuildingCannotPlaceAudio
 	TechTree:
 	SupportPowerManager:
 	ScriptTriggers:
 	MissionObjectives:
+		WinNotification: Win
+		LoseNotification: Lose
+		LeaveNotification: Leave
 	ConquestVictoryConditions:
 	PowerManager:
+		SpeechNotification: LowPower
 	AllyRepair:
 	PlayerResources:
+		CashTickUpNotification: CashTickUp
+		CashTickDownNotification: CashTickDown
+		SelectableCash: 2500, 5000, 7500, 10000, 20000
+		DefaultCash: 7500
 	DeveloperMode:
-		CheckboxDisplayOrder: 8
+		CheckboxDisplayOrder: 9
 	BaseAttackNotifier:
 	Shroud:
 		FogCheckboxDisplayOrder: 3
 	LobbyPrerequisiteCheckbox@GLOBALFACTUNDEPLOY:
 		ID: factundeploy
 		Label: Redeployable MCVs
-		Description: Allow undeploying Construction Yard.
+		Description: Allow undeploying Construction Yard
 		Enabled: True
 		DisplayOrder: 7
 		Prerequisites: global-factundeploy
+	LobbyPrerequisiteCheckbox@GLOBALC17STEALTH:
+		ID: C17-Stealth
+		Label: Stealth Deliveries
+		Description: Nod's delivery plane is cloaked
+		Enabled: False
+		DisplayOrder: 8
+		Prerequisites: global-C17-stealth
 	PlayerStatistics:
 	FrozenActorLayer:
 	PlaceBeacon:
@@ -50,3 +71,5 @@ Player:
 	GrantConditionOnPrerequisiteManager:
 	ResourceStorageWarning:
 	PlayerExperience:
+	GameSaveViewportManager:
+	PlayerRadarTerrain:

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Linq;
 using Eluant;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Effects;
@@ -30,10 +31,7 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Specifies whether the actor is in the world.")]
 		public bool IsInWorld
 		{
-			get
-			{
-				return Self.IsInWorld;
-			}
+			get => Self.IsInWorld;
 
 			set
 			{
@@ -45,28 +43,28 @@ namespace OpenRA.Mods.Common.Scripting
 		}
 
 		[Desc("Specifies whether the actor is alive or dead.")]
-		public bool IsDead { get { return Self.IsDead; } }
+		public bool IsDead => Self.IsDead;
 
 		[Desc("Specifies whether the actor is idle (not performing any activities).")]
-		public bool IsIdle { get { return Self.IsIdle; } }
+		public bool IsIdle => Self.IsIdle;
 
 		[Desc("The player that owns the actor.")]
 		public Player Owner
 		{
-			get
-			{
-				return Self.Owner;
-			}
+			get => Self.Owner;
 
 			set
 			{
+				if (value == null)
+					throw new LuaException("Attempted to change the owner of actor '{0}' to nil value.".F(Self));
+
 				if (Self.Owner != value)
 					Self.ChangeOwner(value);
 			}
 		}
 
 		[Desc("The type of the actor (e.g. \"e1\").")]
-		public string Type { get { return Self.Info.Name; } }
+		public string Type => Self.Info.Name;
 
 		[Desc("Test whether an actor has a specific property.")]
 		public bool HasProperty(string name)
@@ -100,6 +98,7 @@ namespace OpenRA.Mods.Common.Scripting
 		readonly IFacing facing;
 		readonly AutoTarget autotarget;
 		readonly ScriptTags scriptTags;
+		readonly Tooltip[] tooltips;
 
 		public GeneralProperties(ScriptContext context, Actor self)
 			: base(context, self)
@@ -107,16 +106,17 @@ namespace OpenRA.Mods.Common.Scripting
 			facing = self.TraitOrDefault<IFacing>();
 			autotarget = self.TraitOrDefault<AutoTarget>();
 			scriptTags = self.TraitOrDefault<ScriptTags>();
+			tooltips = self.TraitsImplementing<Tooltip>().ToArray();
 		}
 
 		[Desc("The actor position in cell coordinates.")]
-		public CPos Location { get { return Self.Location; } }
+		public CPos Location => Self.Location;
 
 		[Desc("The actor position in world coordinates.")]
-		public WPos CenterPosition { get { return Self.CenterPosition; } }
+		public WPos CenterPosition => Self.CenterPosition;
 
 		[Desc("The direction that the actor is facing.")]
-		public int Facing
+		public WAngle Facing
 		{
 			get
 			{
@@ -164,21 +164,14 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Current actor stance. Returns nil if this actor doesn't support stances.")]
 		public string Stance
 		{
-			get
-			{
-				if (autotarget == null)
-					return null;
-
-				return autotarget.Stance.ToString();
-			}
+			get => autotarget?.Stance.ToString();
 
 			set
 			{
 				if (autotarget == null)
 					return;
 
-				UnitStance stance;
-				if (!Enum<UnitStance>.TryParse(value, true, out stance))
+				if (!Enum<UnitStance>.TryParse(value, true, out var stance))
 					throw new LuaException("Unknown stance type '{0}'".F(value));
 
 				autotarget.PredictedStance = stance;
@@ -186,8 +179,19 @@ namespace OpenRA.Mods.Common.Scripting
 			}
 		}
 
+		[Desc("The actor's tooltip name. Returns nil if the actor has no tooltip.")]
+		public string TooltipName
+		{
+			get
+			{
+				var tooltip = tooltips.FirstEnabledTraitOrDefault();
+
+				return tooltip?.Info.Name;
+			}
+		}
+
 		[Desc("Specifies whether or not the actor supports 'tags'.")]
-		public bool IsTaggable { get { return scriptTags != null; } }
+		public bool IsTaggable => scriptTags != null;
 
 		[Desc("Add a tag to the actor. Returns true on success, false otherwise (for example the actor may already have the given tag).")]
 		public bool AddTag(string tag)

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -19,7 +19,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Effects
 {
-	class GpsDotEffect : IEffect, IEffectAboveShroud
+	class GpsDotEffect : IEffect, IEffectAnnotation
 	{
 		readonly Actor actor;
 		readonly GpsDotInfo info;
@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Cnc.Effects
 			visibilityModifiers = actor.TraitsImplementing<IVisibilityModifier>().ToArray();
 
 			dotStates = new PlayerDictionary<DotState>(actor.World,
-				p => new DotState(actor, p.PlayerActor.Trait<GpsWatcher>(), p.PlayerActor.TraitOrDefault<FrozenActorLayer>()));
+				p => new DotState(actor, p.PlayerActor.Trait<GpsWatcher>(), p.FrozenActorLayer));
 		}
 
 		bool ShouldRender(DotState state, Player toPlayer)
@@ -97,7 +97,7 @@ namespace OpenRA.Mods.Cnc.Effects
 			return SpriteRenderable.None;
 		}
 
-		IEnumerable<IRenderable> IEffectAboveShroud.RenderAboveShroud(WorldRenderer wr)
+		IEnumerable<IRenderable> IEffectAnnotation.RenderAnnotation(WorldRenderer wr)
 		{
 			if (actor.World.RenderPlayer == null || !dotStates[actor.World.RenderPlayer].Visible)
 				return SpriteRenderable.None;
@@ -106,7 +106,8 @@ namespace OpenRA.Mods.Cnc.Effects
 				actor.EffectiveOwner.Owner : actor.Owner;
 
 			var palette = wr.Palette(info.IndicatorPalettePrefix + effectiveOwner.InternalName);
-			return anim.Render(actor.CenterPosition, palette);
+			var screenPos = wr.Viewport.WorldToViewPx(wr.ScreenPxPosition(actor.CenterPosition));
+			return anim.RenderUI(wr, screenPos, WVec.Zero, 0, palette);
 		}
 	}
 }

@@ -5,8 +5,11 @@ mcv.starport:
 		Queue: Starport
 	Valued:
 		Cost: 2500
+	-MapEditorData:
 	RenderSprites:
 		Image: mcv
+	UpdatesPlayerStatistics:
+		OverrideActor: mcv
 
 harvester.starport:
 	Inherits: harvester
@@ -15,8 +18,11 @@ harvester.starport:
 		Queue: Starport
 	Valued:
 		Cost: 1500
+	-MapEditorData:
 	RenderSprites:
 		Image: harvester
+	UpdatesPlayerStatistics:
+		OverrideActor: harvester
 
 trike.starport:
 	Inherits: trike
@@ -25,8 +31,11 @@ trike.starport:
 		Queue: Starport
 	Valued:
 		Cost: 315
+	-MapEditorData:
 	RenderSprites:
 		Image: trike
+	UpdatesPlayerStatistics:
+		OverrideActor: trike
 
 quad.starport:
 	Inherits: quad
@@ -35,8 +44,11 @@ quad.starport:
 		Queue: Starport
 	Valued:
 		Cost: 500
+	-MapEditorData:
 	RenderSprites:
 		Image: quad
+	UpdatesPlayerStatistics:
+		OverrideActor: quad
 
 siege_tank.starport:
 	Inherits: siege_tank
@@ -45,8 +57,11 @@ siege_tank.starport:
 		Queue: Starport
 	Valued:
 		Cost: 1075
+	-MapEditorData:
 	RenderSprites:
 		Image: siege_tank
+	UpdatesPlayerStatistics:
+		OverrideActor: siege_tank
 
 missile_tank.starport:
 	Inherits: missile_tank
@@ -55,8 +70,11 @@ missile_tank.starport:
 		Queue: Starport
 	Valued:
 		Cost: 1250
+	-MapEditorData:
 	RenderSprites:
 		Image: missile_tank
+	UpdatesPlayerStatistics:
+		OverrideActor: missile_tank
 
 combat_tank_a.starport:
 	Inherits: combat_tank_a
@@ -65,8 +83,11 @@ combat_tank_a.starport:
 		Queue: Starport
 	Valued:
 		Cost: 875
+	-MapEditorData:
 	RenderSprites:
 		Image: combat_tank_a
+	UpdatesPlayerStatistics:
+		OverrideActor: combat_tank_a
 
 combat_tank_h.starport:
 	Inherits: combat_tank_h
@@ -75,8 +96,11 @@ combat_tank_h.starport:
 		Queue: Starport
 	Valued:
 		Cost: 875
+	-MapEditorData:
 	RenderSprites:
 		Image: combat_tank_h
+	UpdatesPlayerStatistics:
+		OverrideActor: combat_tank_h
 
 combat_tank_o.starport:
 	Inherits: combat_tank_o
@@ -85,8 +109,11 @@ combat_tank_o.starport:
 		Queue: Starport
 	Valued:
 		Cost: 875
+	-MapEditorData:
 	RenderSprites:
 		Image: combat_tank_o
+	UpdatesPlayerStatistics:
+		OverrideActor: combat_tank_o
 
 carryall.starport:
 	Inherits: carryall
@@ -95,3 +122,6 @@ carryall.starport:
 		Queue: Starport
 	Valued:
 		Cost: 1500
+	-MapEditorData:
+	UpdatesPlayerStatistics:
+		OverrideActor: carryall

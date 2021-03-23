@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,9 +10,9 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
@@ -20,7 +20,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 	[Desc("Clones the actor sprite with another palette below it.")]
 	public class WithShadowInfo : ConditionalTraitInfo
 	{
-		[PaletteReference] public readonly string Palette = "shadow";
+		[Desc("Color to draw shadow.")]
+		public readonly Color ShadowColor = Color.FromArgb(140, 0, 0, 0);
 
 		[Desc("Shadow position offset relative to actor position (ground level).")]
 		public readonly WVec Offset = WVec.Zero;
@@ -34,11 +35,15 @@ namespace OpenRA.Mods.Common.Traits.Render
 	public class WithShadow : ConditionalTrait<WithShadowInfo>, IRenderModifier
 	{
 		readonly WithShadowInfo info;
+		readonly float3 shadowColor;
+		readonly float shadowAlpha;
 
 		public WithShadow(WithShadowInfo info)
 			: base(info)
 		{
 			this.info = info;
+			shadowColor = new float3(info.ShadowColor.R, info.ShadowColor.G, info.ShadowColor.B) / 255f;
+			shadowAlpha = info.ShadowColor.A / 255f;
 		}
 
 		IEnumerable<IRenderable> IRenderModifier.ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)
@@ -46,12 +51,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (IsTraitDisabled)
 				return r;
 
-			// Contrails shouldn't cast shadows
 			var height = self.World.Map.DistanceAboveTerrain(self.CenterPosition).Length;
-			var shadowSprites = r.Where(s => !s.IsDecoration)
-				.Select(a => a.WithPalette(wr.Palette(info.Palette))
+			var shadowSprites = r.Where(s => !s.IsDecoration && s is IModifyableRenderable)
+				.Select(ma => ((IModifyableRenderable)ma).WithTint(shadowColor, ((IModifyableRenderable)ma).TintModifiers | TintModifiers.ReplaceColor)
+					.WithAlpha(shadowAlpha)
 					.OffsetBy(info.Offset - new WVec(0, 0, height))
-					.WithZOffset(a.ZOffset + (height + info.ZOffset))
+					.WithZOffset(ma.ZOffset + (height + info.ZOffset))
 					.AsDecoration());
 
 			return shadowSprites.Concat(r);

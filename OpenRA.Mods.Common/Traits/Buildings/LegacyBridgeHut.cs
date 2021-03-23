@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,31 +10,37 @@
 #endregion
 
 using System.Linq;
+using OpenRA.Effects;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Allows bridges to be targeted for demolition and repair.")]
-	class LegacyBridgeHutInfo : IDemolishableInfo, ITraitInfo
+	class LegacyBridgeHutInfo : TraitInfo, IDemolishableInfo
 	{
 		public bool IsValidTarget(ActorInfo actorInfo, Actor saboteur) { return false; } // TODO: bridges don't support frozen under fog
 
-		public object Create(ActorInitializer init) { return new LegacyBridgeHut(init); }
+		public override object Create(ActorInitializer init) { return new LegacyBridgeHut(init, this); }
 	}
 
 	class LegacyBridgeHut : IDemolishable
 	{
-		public readonly Bridge FirstBridge;
-		public readonly Bridge Bridge;
-		public DamageState BridgeDamageState { get { return Bridge.AggregateDamageState(); } }
-		public bool Repairing { get { return repairDirections > 0; } }
+		public Bridge FirstBridge { get; private set; }
+		public Bridge Bridge { get; private set; }
+		public DamageState BridgeDamageState => Bridge.AggregateDamageState();
+		public bool Repairing => repairDirections > 0;
 		int repairDirections = 0;
 
-		public LegacyBridgeHut(ActorInitializer init)
+		public LegacyBridgeHut(ActorInitializer init, LegacyBridgeHutInfo info)
 		{
-			Bridge = init.Get<ParentActorInit>().ActorValue.Trait<Bridge>();
-			Bridge.AddHut(this);
-			FirstBridge = Bridge.Enumerate(0, true).Last();
+			var bridge = init.Get<ParentActorInit>().Value;
+			init.World.AddFrameEndTask(_ =>
+			{
+				Bridge = bridge.Actor(init.World).Value.Trait<Bridge>();
+				Bridge.AddHut(this);
+				FirstBridge = Bridge.Enumerate(0, true).Last();
+			});
 		}
 
 		public void Repair(Actor repairer)
@@ -43,14 +49,26 @@ namespace OpenRA.Mods.Common.Traits
 			Bridge.Do((b, d) => b.Repair(repairer, d, () => repairDirections--));
 		}
 
-		public void Demolish(Actor self, Actor saboteur)
-		{
-			Bridge.Do((b, d) => b.Demolish(saboteur, d));
-		}
-
-		public bool IsValidTarget(Actor self, Actor saboteur)
+		bool IDemolishable.IsValidTarget(Actor self, Actor saboteur)
 		{
 			return BridgeDamageState != DamageState.Dead;
+		}
+
+		void IDemolishable.Demolish(Actor self, Actor saboteur, int delay, BitSet<DamageType> damageTypes)
+		{
+			// TODO: Handle using ITick
+			self.World.Add(new DelayedAction(delay, () =>
+			{
+				if (self.IsDead)
+					return;
+
+				var modifiers = self.TraitsImplementing<IDamageModifier>()
+					.Concat(self.Owner.PlayerActor.TraitsImplementing<IDamageModifier>())
+					.Select(t => t.GetDamageModifier(self, null));
+
+				if (Util.ApplyPercentageModifiers(100, modifiers) > 0)
+					Bridge.Do((b, d) => b.Demolish(saboteur, d, damageTypes));
+			}));
 		}
 	}
 }

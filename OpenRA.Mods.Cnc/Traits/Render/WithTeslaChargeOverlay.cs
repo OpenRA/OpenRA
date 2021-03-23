@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -17,18 +17,20 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Cnc.Traits.Render
 {
 	[Desc("Rendered together with AttackCharge.")]
-	public class WithTeslaChargeOverlayInfo : ITraitInfo, Requires<RenderSpritesInfo>
+	public class WithTeslaChargeOverlayInfo : TraitInfo, Requires<RenderSpritesInfo>
 	{
+		[SequenceReference]
 		[Desc("Sequence name to use")]
-		[SequenceReference] public readonly string Sequence = "active";
+		public readonly string Sequence = "active";
 
+		[PaletteReference(nameof(IsPlayerPalette))]
 		[Desc("Custom palette name")]
-		[PaletteReference("IsPlayerPalette")] public readonly string Palette = null;
+		public readonly string Palette = null;
 
 		[Desc("Custom palette is a player palette BaseName")]
 		public readonly bool IsPlayerPalette = false;
 
-		public object Create(ActorInitializer init) { return new WithTeslaChargeOverlay(init, this); }
+		public override object Create(ActorInitializer init) { return new WithTeslaChargeOverlay(init, this); }
 	}
 
 	public class WithTeslaChargeOverlay : INotifyTeslaCharging, INotifyDamageStateChanged, INotifySold
@@ -51,7 +53,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 				info.Palette, info.IsPlayerPalette);
 		}
 
-		void INotifyTeslaCharging.Charging(Actor self, Target target)
+		void INotifyTeslaCharging.Charging(Actor self, in Target target)
 		{
 			charging = true;
 			overlay.PlayThen(RenderSprites.NormalizeSequence(overlay, self.GetDamageState(), info.Sequence), () => charging = false);

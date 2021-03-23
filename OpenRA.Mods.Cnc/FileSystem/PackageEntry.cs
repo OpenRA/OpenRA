@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -49,8 +49,7 @@ namespace OpenRA.Mods.Cnc.FileSystem
 
 		public override string ToString()
 		{
-			string filename;
-			if (names.TryGetValue(Hash, out filename))
+			if (names.TryGetValue(Hash, out var filename))
 				return "{0} - offset 0x{1:x8} - length 0x{2:x8}".F(filename, Offset, Length);
 			else
 				return "0x{0:x8} - offset 0x{1:x8} - length 0x{2:x8}".F(Hash, Offset, Length);
@@ -66,16 +65,16 @@ namespace OpenRA.Mods.Cnc.FileSystem
 						if (name.Length % 4 != 0)
 							name = name.PadRight(name.Length + (4 - name.Length % 4), '\0');
 
-						using (var ms = new MemoryStream(Encoding.ASCII.GetBytes(name)))
+						var result = 0u;
+						var data = Encoding.ASCII.GetBytes(name);
+						var i = 0;
+						while (i < data.Length)
 						{
-							var len = name.Length >> 2;
-							uint result = 0;
-
-							while (len-- != 0)
-								result = ((result << 1) | (result >> 31)) + ms.ReadUInt32();
-
-							return result;
+							var next = (uint)(data[i++] | data[i++] << 8 | data[i++] << 16 | data[i++] << 24);
+							result = ((result << 1) | (result >> 31)) + next;
 						}
+
+						return result;
 					}
 
 				case PackageHashType.CRC32:

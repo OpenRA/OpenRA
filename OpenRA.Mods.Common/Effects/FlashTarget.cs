@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -18,15 +18,20 @@ namespace OpenRA.Mods.Common.Effects
 {
 	public class FlashTarget : IEffect
 	{
-		Actor target;
-		Player player;
-		int remainingTicks;
+		readonly Actor target;
+		readonly Player player;
+		readonly int count;
+		readonly int interval;
+		int tick;
 
-		public FlashTarget(Actor target, Player asPlayer = null, int ticks = 4)
+		public FlashTarget(Actor target, Player asPlayer = null, int count = 2, int interval = 2, int delay = 0)
 		{
 			this.target = target;
 			player = asPlayer;
-			remainingTicks = ticks;
+			this.count = count;
+			this.interval = interval;
+			tick = -delay;
+
 			target.World.RemoveAll(effect =>
 			{
 				var flashTarget = effect as FlashTarget;
@@ -36,18 +41,22 @@ namespace OpenRA.Mods.Common.Effects
 
 		public void Tick(World world)
 		{
-			if (--remainingTicks == 0 || !target.IsInWorld)
+			if (++tick >= count * interval || !target.IsInWorld)
 				world.AddFrameEndTask(w => w.Remove(this));
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			if (target.IsInWorld && remainingTicks % 2 == 0)
+			if (target.IsInWorld && tick >= 0 && tick % interval == 0)
 			{
-				var palette = wr.Palette(player == null ? "highlight" : "highlight" + player.InternalName);
+				var color = player == null ? float3.Ones : new float3(player.Color.R, player.Color.G, player.Color.B) / 255f;
 				return target.Render(wr)
-					.Where(r => !r.IsDecoration)
-					.Select(r => r.WithPalette(palette));
+					.Where(r => !r.IsDecoration && r is IModifyableRenderable)
+					.Select(r =>
+					{
+						var mr = (IModifyableRenderable)r;
+						return mr.WithTint(color, mr.TintModifiers | TintModifiers.ReplaceColor).WithAlpha(0.5f);
+					});
 			}
 
 			return SpriteRenderable.None;

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -11,6 +11,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.Pathfinder
@@ -25,7 +27,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 		/// <summary>
 		/// Stores the analyzed nodes by the expand function
 		/// </summary>
-		IEnumerable<Pair<CPos, int>> Considered { get; }
+		IEnumerable<(CPos Cell, int Cost)> Considered { get; }
 
 		Player Owner { get; }
 
@@ -38,6 +40,8 @@ namespace OpenRA.Mods.Common.Pathfinder
 		IPathSearch WithIgnoredActor(Actor b);
 
 		IPathSearch WithHeuristic(Func<CPos, int> h);
+
+		IPathSearch WithHeuristicWeight(int percentage);
 
 		IPathSearch WithCustomCost(Func<CPos, int> w);
 
@@ -64,13 +68,14 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 		protected IPriorityQueue<GraphConnection> OpenQueue { get; private set; }
 
-		public abstract IEnumerable<Pair<CPos, int>> Considered { get; }
+		public abstract IEnumerable<(CPos Cell, int Cost)> Considered { get; }
 
-		public Player Owner { get { return Graph.Actor.Owner; } }
+		public Player Owner => Graph.Actor.Owner;
 		public int MaxCost { get; protected set; }
 		public bool Debug { get; set; }
 		protected Func<CPos, int> heuristic;
 		protected Func<CPos, bool> isGoal;
+		protected int heuristicWeightPercentage;
 
 		// This member is used to compute the ID of PathSearch.
 		// Essentially, it represents a collection of the initial
@@ -79,12 +84,20 @@ namespace OpenRA.Mods.Common.Pathfinder
 		// a deterministic set of calculations
 		protected readonly IPriorityQueue<GraphConnection> StartPoints;
 
+		private readonly int cellCost, diagonalCellCost;
+
 		protected BasePathSearch(IGraph<CellInfo> graph)
 		{
 			Graph = graph;
 			OpenQueue = new PriorityQueue<GraphConnection>(GraphConnection.ConnectionCostComparer);
 			StartPoints = new PriorityQueue<GraphConnection>(GraphConnection.ConnectionCostComparer);
 			MaxCost = 0;
+			heuristicWeightPercentage = 100;
+
+			// Determine the minimum possible cost for moving horizontally between cells based on terrain speeds.
+			// The minimum possible cost diagonally is then Sqrt(2) times more costly.
+			cellCost = ((Mobile)graph.Actor.OccupiesSpace).Info.LocomotorInfo.TerrainSpeeds.Values.Min(ti => ti.Cost);
+			diagonalCellCost = cellCost * 141421 / 100000;
 		}
 
 		/// <summary>
@@ -92,7 +105,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 		/// http://theory.stanford.edu/~amitp/GameProgramming/Heuristics.html
 		/// </summary>
 		/// <returns>A delegate that calculates the estimation for a node</returns>
-		protected static Func<CPos, int> DefaultEstimator(CPos destination)
+		protected Func<CPos, int> DefaultEstimator(CPos destination)
 		{
 			return here =>
 			{
@@ -102,7 +115,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 				// According to the information link, this is the shape of the function.
 				// We just extract factors to simplify.
 				// Possible simplification: var h = Constants.CellCost * (straight + (Constants.Sqrt2 - 2) * diag);
-				return Constants.CellCost * straight + (Constants.DiagonalCellCost - 2 * Constants.CellCost) * diag;
+				return (cellCost * straight + (diagonalCellCost - 2 * cellCost) * diag) * heuristicWeightPercentage / 100;
 			};
 		}
 
@@ -127,6 +140,12 @@ namespace OpenRA.Mods.Common.Pathfinder
 		public IPathSearch WithHeuristic(Func<CPos, int> h)
 		{
 			heuristic = h;
+			return this;
+		}
+
+		public IPathSearch WithHeuristicWeight(int percentage)
+		{
+			heuristicWeightPercentage = percentage;
 			return this;
 		}
 
@@ -157,7 +176,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			return isGoal(location);
 		}
 
-		public bool CanExpand { get { return !OpenQueue.Empty; } }
+		public bool CanExpand => !OpenQueue.Empty;
 		public abstract CPos Expand();
 
 		protected virtual void Dispose(bool disposing)

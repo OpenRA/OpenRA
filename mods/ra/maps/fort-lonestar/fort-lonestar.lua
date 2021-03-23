@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+   Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -91,6 +91,14 @@ if Map.LobbyOption("difficulty") == "tough" or Map.LobbyOption("difficulty") == 
 	Waves[11] = { delay = 1500, units = { Vehicles, Infantry, Patrol, Patrol, Patrol, Infantry, LongRange, Tank, Boss, Infantry, Infantry, Patrol } }
 end
 
+IdleHunt = function(actor)
+	Trigger.OnIdle(actor, function(a)
+		if a.IsInWorld then
+			a.Hunt()
+		end
+	end)
+end
+
 SendUnits = function(entryCell, unitTypes, targetCell, extraData)
 	Reinforcements.Reinforce(soviets, unitTypes, { entryCell }, 40, function(a)
 		if not a.HasProperty("AttackMove") then
@@ -138,12 +146,10 @@ SendWave = function()
 
 		if (Wave < #Waves) then
 			if Utils.RandomInteger(1, 100) < ParaChance then
-				local units = ParaProxy.SendParatroopers(Utils.Random(ParadropWaypoints).CenterPosition)
-				Utils.Do(units, function(unit)
-					Trigger.OnIdle(unit, function(a)
-						if a.IsInWorld then
-							a.Hunt()
-						end
+				local aircraft = ParaProxy.TargetParatroopers(Utils.Random(ParadropWaypoints).CenterPosition)
+				Utils.Do(aircraft, function(a)
+					Trigger.OnPassengerExited(a, function(t, p)
+						IdleHunt(p)
 					end)
 				end)
 

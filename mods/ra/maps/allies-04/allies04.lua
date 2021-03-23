@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+   Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -57,9 +57,11 @@ ParadropLZs = { ParadropPoint1.CenterPosition, ParadropPoint2.CenterPosition, Pa
 Paradropped = 0
 Paradrop = function()
 	Trigger.AfterDelay(Utils.RandomInteger(ParadropDelay[1], ParadropDelay[2]), function()
-		local units = PowerProxy.SendParatroopers(Utils.Random(ParadropLZs))
-		Utils.Do(units, function(unit)
-			Trigger.OnAddedToWorld(unit, IdleHunt)
+		local aircraft = PowerProxy.TargetParatroopers(Utils.Random(ParadropLZs))
+		Utils.Do(aircraft, function(a)
+			Trigger.OnPassengerExited(a, function(t, p)
+				IdleHunt(p)
+			end)
 		end)
 
 		Paradropped = Paradropped + 1

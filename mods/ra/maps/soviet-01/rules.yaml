@@ -13,6 +13,11 @@ V01:
 	SpawnActorOnDeath:
 		Actor: healcrate
 
+powerproxy.paratroopers:
+	ParatroopersPower:
+		DisplayBeacon: False
+		DropItems: E1,E1,E1,E2,E2
+
 ^CivBuilding:
 	MustBeDestroyed:
 
@@ -20,7 +25,7 @@ JEEP:
 	Explodes:
 	ProximityExternalCondition@JAMMER:
 		Range: 10c0
-		ValidStances: Enemy, Neutral
+		ValidRelationships: Enemy, Neutral
 		Condition: jammed
 
 YAK:
@@ -35,13 +40,22 @@ AFLD:
 	AirstrikePower@spyplane:
 		Prerequisites: ~disabled
 	ParatroopersPower@paratroopers:
-		ChargeInterval: 1500
-		DropItems: E1,E1,E1,E2,E2
+		Prerequisites: ~disabled
 	-RallyPoint:
 	-Sellable:
+	Demolishable:
+		-Condition:
 
 DOME:
+	CaptureManager:
+		-BeingCapturedCondition:
 	-Sellable:
+	Demolishable:
+		-Condition:
 
 POWR:
+	CaptureManager:
+		-BeingCapturedCondition:
 	-Sellable:
+	Demolishable:
+		-Condition:

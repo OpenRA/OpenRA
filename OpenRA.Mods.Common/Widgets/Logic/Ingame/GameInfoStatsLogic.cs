@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,7 +9,7 @@
  */
 #endregion
 
-using System.Drawing;
+using System;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
@@ -23,9 +23,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	class GameInfoStatsLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
-		public GameInfoStatsLogic(Widget widget, World world, OrderManager orderManager, WorldRenderer worldRenderer)
+		public GameInfoStatsLogic(Widget widget, World world, OrderManager orderManager, WorldRenderer worldRenderer, Action<bool> hideMenu)
 		{
-			var player = world.RenderPlayer ?? world.LocalPlayer;
+			var player = world.LocalPlayer;
 			var playerPanel = widget.Get<ScrollPanelWidget>("PLAYER_LIST");
 
 			if (player != null && !player.NonCombatant)
@@ -62,13 +62,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var teamTemplate = playerPanel.Get<ScrollItemWidget>("TEAM_TEMPLATE");
 			var playerTemplate = playerPanel.Get("PLAYER_TEMPLATE");
+			var spectatorTemplate = playerPanel.Get("SPECTATOR_TEMPLATE");
 			playerPanel.RemoveChildren();
 
 			var teams = world.Players.Where(p => !p.NonCombatant && p.Playable)
-				.Select(p => new Pair<Player, PlayerStatistics>(p, p.PlayerActor.TraitOrDefault<PlayerStatistics>()))
-				.OrderByDescending(p => p.Second != null ? p.Second.Experience : 0)
-				.GroupBy(p => (world.LobbyInfo.ClientWithIndex(p.First.ClientIndex) ?? new Session.Client()).Team)
-				.OrderByDescending(g => g.Sum(gg => gg.Second != null ? gg.Second.Experience : 0));
+				.Select(p => (Player: p, PlayerStatistics: p.PlayerActor.TraitOrDefault<PlayerStatistics>()))
+				.OrderByDescending(p => p.PlayerStatistics?.Experience ?? 0)
+				.GroupBy(p => (world.LobbyInfo.ClientWithIndex(p.Player.ClientIndex) ?? new Session.Client()).Team)
+				.OrderByDescending(g => g.Sum(gg => gg.PlayerStatistics?.Experience ?? 0));
 
 			foreach (var t in teams)
 			{
@@ -77,42 +78,31 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var teamHeader = ScrollItemWidget.Setup(teamTemplate, () => true, () => { });
 					teamHeader.Get<LabelWidget>("TEAM").GetText = () => t.Key == 0 ? "No Team" : "Team {0}".F(t.Key);
 					var teamRating = teamHeader.Get<LabelWidget>("TEAM_SCORE");
-					teamRating.GetText = () => t.Sum(gg => gg.Second != null ? gg.Second.Experience : 0).ToString();
+					var scoreCache = new CachedTransform<int, string>(s => s.ToString());
+					var teamMemberScores = t.Select(tt => tt.PlayerStatistics).Where(s => s != null).ToArray().Select(s => s.Experience);
+					teamRating.GetText = () => scoreCache.Update(teamMemberScores.Sum());
 
 					playerPanel.AddChild(teamHeader);
 				}
 
 				foreach (var p in t.ToList())
 				{
-					var pp = p.First;
+					var pp = p.Player;
 					var client = world.LobbyInfo.ClientWithIndex(pp.ClientIndex);
 					var item = playerTemplate.Clone();
 					LobbyUtils.SetupProfileWidget(item, client, orderManager, worldRenderer);
 
 					var nameLabel = item.Get<LabelWidget>("NAME");
-					var nameFont = Game.Renderer.Fonts[nameLabel.Font];
-
-					var suffixLength = new CachedTransform<string, int>(s => nameFont.Measure(s).X);
-					var name = new CachedTransform<Pair<string, int>, string>(c =>
-						WidgetUtils.TruncateText(c.First, nameLabel.Bounds.Width - c.Second, nameFont));
-
-					nameLabel.GetText = () =>
-					{
-						var suffix = pp.WinState == WinState.Undefined ? "" : " (" + pp.WinState + ")";
-						if (client != null && client.State == Session.ClientState.Disconnected)
-							suffix = " (Gone)";
-
-						var sl = suffixLength.Update(suffix);
-						return name.Update(Pair.New(pp.PlayerName, sl)) + suffix;
-					};
-					nameLabel.GetColor = () => pp.Color.RGB;
+					WidgetUtils.BindPlayerNameAndStatus(nameLabel, pp);
+					nameLabel.GetColor = () => pp.Color;
 
 					var flag = item.Get<ImageWidget>("FACTIONFLAG");
 					flag.GetImageCollection = () => "flags";
-					if (player == null || player.Stances[pp] == Stance.Ally || player.WinState != WinState.Undefined)
+					if (player == null || player.RelationshipWith(pp) == PlayerRelationship.Ally || player.WinState != WinState.Undefined)
 					{
 						flag.GetImageName = () => pp.Faction.InternalName;
-						item.Get<LabelWidget>("FACTION").GetText = () => pp.Faction.Name;
+						var factionName = pp.Faction.Name != pp.DisplayFaction.Name ? "{0} ({1})".F(pp.DisplayFaction.Name, pp.Faction.Name) : pp.Faction.Name;
+						item.Get<LabelWidget>("FACTION").GetText = () => factionName;
 					}
 					else
 					{
@@ -120,8 +110,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						item.Get<LabelWidget>("FACTION").GetText = () => pp.DisplayFaction.Name;
 					}
 
-					var experience = p.Second != null ? p.Second.Experience : 0;
-					item.Get<LabelWidget>("SCORE").GetText = () => experience.ToString();
+					var scoreCache = new CachedTransform<int, string>(s => s.ToString());
+					item.Get<LabelWidget>("SCORE").GetText = () => scoreCache.Update(p.PlayerStatistics?.Experience ?? 0);
 
 					playerPanel.AddChild(item);
 				}
@@ -137,24 +127,39 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				foreach (var client in spectators)
 				{
-					var item = playerTemplate.Clone();
+					var item = spectatorTemplate.Clone();
 					LobbyUtils.SetupProfileWidget(item, client, orderManager, worldRenderer);
 
 					var nameLabel = item.Get<LabelWidget>("NAME");
 					var nameFont = Game.Renderer.Fonts[nameLabel.Font];
 
 					var suffixLength = new CachedTransform<string, int>(s => nameFont.Measure(s).X);
-					var name = new CachedTransform<Pair<string, int>, string>(c =>
-						WidgetUtils.TruncateText(c.First, nameLabel.Bounds.Width - c.Second, nameFont));
+					var name = new CachedTransform<(string Name, string Suffix), string>(c =>
+						WidgetUtils.TruncateText(c.Name, nameLabel.Bounds.Width - suffixLength.Update(c.Suffix), nameFont) + c.Suffix);
 
 					nameLabel.GetText = () =>
 					{
 						var suffix = client.State == Session.ClientState.Disconnected ? " (Gone)" : "";
-						var sl = suffixLength.Update(suffix);
-						return name.Update(Pair.New(client.Name, sl)) + suffix;
+						return name.Update((client.Name, suffix));
 					};
 
-					item.Get<ImageWidget>("FACTIONFLAG").IsVisible = () => false;
+					var kickButton = item.Get<ButtonWidget>("KICK");
+					kickButton.IsVisible = () => Game.IsHost && client.Index != orderManager.LocalClient.Index && client.State != Session.ClientState.Disconnected;
+					kickButton.OnClick = () =>
+					{
+						hideMenu(true);
+						ConfirmationDialogs.ButtonPrompt(
+							title: "Kick {0}?".F(client.Name),
+							text: "They will not be able to rejoin this game.",
+							onConfirm: () =>
+							{
+								orderManager.IssueOrder(Order.Command("kick {0} {1}".F(client.Index, false)));
+								hideMenu(false);
+							},
+							onCancel: () => hideMenu(false),
+							confirmText: "Kick");
+					};
+
 					playerPanel.AddChild(item);
 				}
 			}

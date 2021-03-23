@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -11,13 +11,13 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
-using System.Net;
-using System.Text;
+using System.Threading.Tasks;
 using BeaconLib;
 using OpenRA.Network;
+using OpenRA.Primitives;
 using OpenRA.Server;
+using OpenRA.Support;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 
@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		SearchStatus searchStatus = SearchStatus.Fetching;
 
-		Download currentQuery;
+		bool activeQuery;
 		IEnumerable<BeaconLocation> lanGameLocations;
 
 		public string ProgressLabelText()
@@ -235,9 +235,22 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (mapTitle != null)
 			{
 				var font = Game.Renderer.Fonts[mapTitle.Font];
-				var title = new CachedTransform<MapPreview, string>(m => m == null ? "No Server Selected" :
+				var title = new CachedTransform<MapPreview, string>(m =>
 					WidgetUtils.TruncateText(m.Title, mapTitle.Bounds.Width, font));
-				mapTitle.GetText = () => title.Update(currentMap);
+
+				mapTitle.GetText = () =>
+				{
+					if (currentMap == null)
+						return "No Server Selected";
+
+					if (currentMap.Status == MapStatus.Searching)
+						return "Searching...";
+
+					if (currentMap.Class == MapClassification.Unknown)
+						return "Unknown Map";
+
+					return title.Update(currentMap);
+				};
 			}
 
 			var ip = widget.GetOrNull<LabelWidget>("SELECTED_IP");
@@ -309,31 +322,48 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		public void RefreshServerList()
 		{
 			// Query in progress
-			if (currentQuery != null)
+			if (activeQuery)
 				return;
 
 			searchStatus = SearchStatus.Fetching;
 
-			Action<DownloadDataCompletedEventArgs> onComplete = i =>
+			var queryURL = new HttpQueryBuilder(services.ServerList)
 			{
-				currentQuery = null;
+				{ "protocol", GameServer.ProtocolVersion },
+				{ "engine", Game.EngineVersion },
+				{ "mod", Game.ModData.Manifest.Id },
+				{ "version", Game.ModData.Manifest.Metadata.Version }
+			}.ToString();
 
-				List<GameServer> games = null;
-				if (i.Error == null)
+			Task.Run(async () =>
+			{
+				var games = new List<GameServer>();
+				var client = HttpClientFactory.Create();
+				var httpResponseMessage = await client.GetAsync(queryURL);
+				var result = await httpResponseMessage.Content.ReadAsStringAsync();
+
+				activeQuery = true;
+
+				try
 				{
-					try
+					var yaml = MiniYaml.FromString(result);
+					foreach (var node in yaml)
 					{
-						var data = Encoding.UTF8.GetString(i.Result);
-						var yaml = MiniYaml.FromString(data);
-
-						games = yaml.Select(a => new GameServer(a.Value))
-							.Where(gs => gs.Address != null)
-							.ToList();
+						try
+						{
+							var gs = new GameServer(node.Value);
+							if (gs.Address != null)
+								games.Add(gs);
+						}
+						catch
+						{
+							// Ignore any invalid games advertised.
+						}
 					}
-					catch
-					{
-						searchStatus = SearchStatus.Failed;
-					}
+				}
+				catch
+				{
+					searchStatus = SearchStatus.Failed;
 				}
 
 				var lanGames = new List<GameServer>();
@@ -357,6 +387,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							if (addressNode != null)
 								addressNode.Value.Value = bl.Address.ToString().Split(':')[0] + ":" + addressNode.Value.Value.Split(':')[1];
 
+							game.Nodes.Add(new MiniYamlNode("Location", "Local Network"));
+
 							lanGames.Add(new GameServer(game));
 						}
 					}
@@ -373,15 +405,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					games = groupedLanGames.ToList();
 
 				Game.RunAfterTick(() => RefreshServerListInner(games));
-			};
 
-			var queryURL = services.ServerList + "?protocol={0}&engine={1}&mod={2}&version={3}".F(
-				GameServer.ProtocolVersion,
-				Uri.EscapeUriString(Game.EngineVersion),
-				Uri.EscapeUriString(Game.ModData.Manifest.Id),
-				Uri.EscapeUriString(Game.ModData.Manifest.Metadata.Version));
-
-			currentQuery = new Download(queryURL, _ => { }, onComplete);
+				activeQuery = false;
+			});
 		}
 
 		int GroupSortOrder(GameServer testEntry)
@@ -403,6 +429,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			currentServer = server;
 			currentMap = server != null ? modData.MapCache[server.Map] : null;
 
+			// Can only show factions if the server is running the same mod
+			if (server != null && mapPreview != null)
+			{
+				var spawns = currentMap.SpawnPoints;
+				var occupants = server.Clients
+					.Where(c => (c.SpawnPoint - 1 >= 0) && (c.SpawnPoint - 1 < spawns.Length))
+					.ToDictionary(c => c.SpawnPoint, c => new SpawnOccupant(c, server.Mod != modData.Manifest.Id));
+
+				mapPreview.SpawnOccupants = () => occupants;
+				mapPreview.DisabledSpawnPoints = () => server.DisabledSpawnPoints;
+			}
+
 			if (server == null || !server.Clients.Any())
 			{
 				if (joinButton != null)
@@ -413,19 +451,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			if (joinButton != null)
 				joinButton.Bounds.Y = clientContainer.Bounds.Bottom;
-
-			// Can only show factions if the server is running the same mod
-			var disableFactionDisplay = server.Mod != modData.Manifest.Id;
-
-			if (server != null && mapPreview != null)
-			{
-				var spawns = currentMap.SpawnPoints;
-				var occupants = server.Clients
-					.Where(c => (c.SpawnPoint - 1 >= 0) && (c.SpawnPoint - 1 < spawns.Length))
-					.ToDictionary(c => spawns[c.SpawnPoint - 1], c => new SpawnOccupant(c, disableFactionDisplay));
-
-				mapPreview.SpawnOccupants = () => occupants;
-			}
 
 			if (clientList == null)
 				return;
@@ -464,13 +489,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var o = option;
 
 					var item = ScrollItemWidget.Setup(clientTemplate, () => false, () => { });
-					if (!o.IsSpectator && !disableFactionDisplay)
+					if (!o.IsSpectator && server.Mod == modData.Manifest.Id)
 					{
 						var label = item.Get<LabelWidget>("LABEL");
 						var font = Game.Renderer.Fonts[label.Font];
 						var name = WidgetUtils.TruncateText(o.Name, label.Bounds.Width, font);
 						label.GetText = () => name;
-						label.GetColor = () => o.Color.RGB;
+						label.GetColor = () => o.Color;
 
 						var flag = item.Get<ImageWidget>("FLAG");
 						flag.IsVisible = () => true;
@@ -484,7 +509,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						var name = WidgetUtils.TruncateText(o.Name, label.Bounds.Width, font);
 
 						// Force spectator color to prevent spoofing by the server
-						var color = o.IsSpectator ? Color.White : o.Color.RGB;
+						var color = o.IsSpectator ? Color.White : o.Color;
 						label.GetText = () => name;
 						label.GetColor = () => color;
 					}
@@ -528,8 +553,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				foreach (var row in rows)
 					serverList.AddChild(row);
 
-				if (nextServerRow != null)
-					nextServerRow.OnClick();
+				nextServerRow?.OnClick();
 
 				playerCount = games.Sum(g => g.Players);
 			});
@@ -583,12 +607,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 						var canJoin = game.IsJoinable;
 						var item = ScrollItemWidget.Setup(serverTemplate, () => currentServer == game, () => SelectServer(game), () => onJoin(game));
-						var title = item.GetOrNull<LabelWidget>("TITLE");
+						var title = item.GetOrNull<LabelWithTooltipWidget>("TITLE");
 						if (title != null)
 						{
-							var font = Game.Renderer.Fonts[title.Font];
-							var label = WidgetUtils.TruncateText(game.Name, title.Bounds.Width, font);
-							title.GetText = () => label;
+							WidgetUtils.TruncateLabelToTooltip(title, game.Name);
 							title.GetColor = () => canJoin ? title.TextColor : incompatibleGameColor;
 						}
 
@@ -649,8 +671,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						if (location != null)
 						{
 							var font = Game.Renderer.Fonts[location.Font];
-							var cachedServerLocation = game.Id != -1 ? GeoIP.LookupCountry(game.Address.Split(':')[0]) : "Local Network";
-							var label = WidgetUtils.TruncateText(cachedServerLocation, location.Bounds.Width, font);
+							var label = WidgetUtils.TruncateText(game.Location, location.Bounds.Width, font);
 							location.GetText = () => label;
 							location.GetColor = () => canJoin ? location.TextColor : incompatibleGameColor;
 						}
@@ -734,8 +755,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (disposing && !disposed)
 			{
 				disposed = true;
-				if (lanGameProbe != null)
-					lanGameProbe.Dispose();
+				lanGameProbe?.Dispose();
 			}
 
 			base.Dispose(disposing);

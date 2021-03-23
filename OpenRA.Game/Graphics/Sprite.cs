@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,7 +10,7 @@
 #endregion
 
 using System;
-using System.Drawing;
+using OpenRA.Primitives;
 
 namespace OpenRA.Graphics
 {
@@ -26,17 +26,17 @@ namespace OpenRA.Graphics
 		public readonly float3 FractionalOffset;
 		public readonly float Top, Left, Bottom, Right;
 
-		public Sprite(Sheet sheet, Rectangle bounds, TextureChannel channel)
-			: this(sheet, bounds, 0, float2.Zero, channel) { }
+		public Sprite(Sheet sheet, Rectangle bounds, TextureChannel channel, float scale = 1)
+			: this(sheet, bounds, 0, float2.Zero, channel, BlendMode.Alpha, scale) { }
 
-		public Sprite(Sheet sheet, Rectangle bounds, float zRamp, float3 offset, TextureChannel channel, BlendMode blendMode = BlendMode.Alpha)
+		public Sprite(Sheet sheet, Rectangle bounds, float zRamp, in float3 offset, TextureChannel channel, BlendMode blendMode = BlendMode.Alpha, float scale = 1f)
 		{
 			Sheet = sheet;
 			Bounds = bounds;
 			Offset = offset;
 			ZRamp = zRamp;
 			Channel = channel;
-			Size = new float3(bounds.Size.Width, bounds.Size.Height, bounds.Size.Height * zRamp);
+			Size = scale * new float3(bounds.Size.Width, bounds.Size.Height, bounds.Size.Height * zRamp);
 			BlendMode = blendMode;
 			FractionalOffset = Size.Z != 0 ? offset / Size :
 				new float3(offset.X / Size.X, offset.Y / Size.Y, 0);

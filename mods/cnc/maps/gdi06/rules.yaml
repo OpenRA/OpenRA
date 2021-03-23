@@ -1,6 +1,6 @@
 World:
 	LuaScript:
-		Scripts: gdi06.lua
+		Scripts: campaign-global.lua, gdi06.lua
 	MusicPlaylist:
 		BackgroundMusic: rain-ambient
 		StartingMusic: rain
@@ -40,6 +40,7 @@ World:
 			normal: Normal
 			hard: Hard
 		Default: easy
+		Locked: false
 
 Player:
 	PlayerResources:
@@ -55,17 +56,6 @@ BRIDGEHUT:
 FLARE:
 	RevealsShroud:
 		Range: 5c0
-
-OLDLST:
-	Inherits: LST
-	-WithRoof:
-	-Selectable:
-	SelectionDecorations:
-		RenderSelectionBars: False
-	RejectsOrders:
-	Cargo:
-		Types: disabled
-	Interactable:
 
 SAM:
 	SpawnActorOnDeath:
@@ -84,10 +74,10 @@ RMBO.easy:
 	Inherits: RMBO
 	Health:
 		HP: 30000
-	SelfHealing:
+	ChangesHealth:
 		Step: 500
 		Delay: 10
-		HealIfBelow: 50
+		StartIfBelow: 50
 		DamageCooldown: 200
 	RenderSprites:
 		Image: RMBO

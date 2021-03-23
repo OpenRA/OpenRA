@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,19 +9,20 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This actor gives experience to a GainsExperience actor when they are killed.")]
-	class GivesExperienceInfo : ITraitInfo
+	class GivesExperienceInfo : TraitInfo
 	{
 		[Desc("If -1, use the value of the unit cost.")]
 		public readonly int Experience = -1;
 
-		[Desc("Stance the attacking player needs to receive the experience.")]
-		public readonly Stance ValidStances = Stance.Neutral | Stance.Enemy;
+		[Desc("Player relationships the attacking player needs to receive the experience.")]
+		public readonly PlayerRelationship ValidRelationships = PlayerRelationship.Neutral | PlayerRelationship.Enemy;
 
 		[Desc("Percentage of the `Experience` value that is being granted to the killing actor.")]
 		public readonly int ActorExperienceModifier = 10000;
@@ -29,34 +30,39 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Percentage of the `Experience` value that is being granted to the player owning the killing actor.")]
 		public readonly int PlayerExperienceModifier = 0;
 
-		public object Create(ActorInitializer init) { return new GivesExperience(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new GivesExperience(init.Self, this); }
 	}
 
-	class GivesExperience : INotifyKilled
+	class GivesExperience : INotifyKilled, INotifyCreated
 	{
 		readonly GivesExperienceInfo info;
+
+		int exp;
+		IEnumerable<int> experienceModifiers;
 
 		public GivesExperience(Actor self, GivesExperienceInfo info)
 		{
 			this.info = info;
 		}
 
-		void INotifyKilled.Killed(Actor self, AttackInfo e)
+		void INotifyCreated.Created(Actor self)
 		{
-			if (e.Attacker == null || e.Attacker.Disposed)
-				return;
-
-			if (!info.ValidStances.HasStance(e.Attacker.Owner.Stances[self.Owner]))
-				return;
-
 			var valued = self.Info.TraitInfoOrDefault<ValuedInfo>();
-
-			var exp = info.Experience >= 0
-				? info.Experience
+			exp = info.Experience >= 0 ? info.Experience
 				: valued != null ? valued.Cost : 0;
 
-			var experienceModifier = self.TraitsImplementing<IGivesExperienceModifier>().Select(x => x.GetGivesExperienceModifier());
-			exp = Util.ApplyPercentageModifiers(exp, experienceModifier);
+			experienceModifiers = self.TraitsImplementing<IGivesExperienceModifier>().ToArray().Select(m => m.GetGivesExperienceModifier());
+		}
+
+		void INotifyKilled.Killed(Actor self, AttackInfo e)
+		{
+			if (exp == 0 || e.Attacker == null || e.Attacker.Disposed)
+				return;
+
+			if (!info.ValidRelationships.HasRelationship(e.Attacker.Owner.RelationshipWith(self.Owner)))
+				return;
+
+			exp = Util.ApplyPercentageModifiers(exp, experienceModifiers);
 
 			var killer = e.Attacker.TraitOrDefault<GainsExperience>();
 			if (killer != null)
@@ -66,9 +72,8 @@ namespace OpenRA.Mods.Common.Traits
 				killer.GiveExperience(Util.ApplyPercentageModifiers(exp, killerExperienceModifier));
 			}
 
-			var attackerExp = e.Attacker.Owner.PlayerActor.TraitOrDefault<PlayerExperience>();
-			if (attackerExp != null)
-				attackerExp.GiveExperience(Util.ApplyPercentageModifiers(exp, new[] { info.PlayerExperienceModifier }));
+			e.Attacker.Owner.PlayerActor.TraitOrDefault<PlayerExperience>()
+				?.GiveExperience(Util.ApplyPercentageModifiers(exp, new[] { info.PlayerExperienceModifier }));
 		}
 	}
 }

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -11,13 +11,12 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using OpenRA.Effects;
+using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
-using OpenRA.Mods.Common.Effects;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Projectiles
@@ -48,8 +47,11 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Ranges at which each Falloff step is defined.")]
 		public readonly WDist[] Range = { WDist.Zero, new WDist(int.MaxValue) };
 
-		[Desc("Maximum offset at the maximum range.")]
+		[Desc("The maximum/constant/incremental inaccuracy used in conjunction with the InaccuracyType property.")]
 		public readonly WDist Inaccuracy = WDist.Zero;
+
+		[Desc("Controls the way inaccuracy is calculated. Possible values are 'Maximum' - scale from 0 to max with range, 'PerCellIncrement' - scale from 0 with range and 'Absolute' - use set value regardless of range.")]
+		public readonly InaccuracyType InaccuracyType = InaccuracyType.Maximum;
 
 		[Desc("Can this projectile be blocked when hitting actors with an IBlocksProjectiles trait.")]
 		public readonly bool Blockable = false;
@@ -71,7 +73,7 @@ namespace OpenRA.Mods.Common.Projectiles
 
 		public IProjectile Create(ProjectileArgs args)
 		{
-			var c = UsePlayerColor ? args.SourceActor.Owner.Color.RGB : Color;
+			var c = UsePlayerColor ? args.SourceActor.Owner.Color : Color;
 			return new AreaBeam(this, args, c);
 		}
 	}
@@ -84,19 +86,24 @@ namespace OpenRA.Mods.Common.Projectiles
 		readonly Color color;
 		readonly WDist speed;
 
-		[Sync] WPos headPos;
-		[Sync] WPos tailPos;
-		[Sync] WPos target;
+		[Sync]
+		WPos headPos;
+
+		[Sync]
+		WPos tailPos;
+
+		[Sync]
+		WPos target;
+
 		int length;
-		int towardsTargetFacing;
+		WAngle towardsTargetFacing;
 		int headTicks;
 		int tailTicks;
 		bool isHeadTravelling = true;
 		bool isTailTravelling;
 		bool continueTracking = true;
 
-		bool IsBeamComplete { get { return !isHeadTravelling && headTicks >= length &&
-			!isTailTravelling && tailTicks >= length; } }
+		bool IsBeamComplete => !isHeadTravelling && headTicks >= length && !isTailTravelling && tailTicks >= length;
 
 		public AreaBeam(AreaBeamInfo info, ProjectileArgs args, Color color)
 		{
@@ -118,16 +125,15 @@ namespace OpenRA.Mods.Common.Projectiles
 			target = args.PassiveTarget;
 			if (info.Inaccuracy.Length > 0)
 			{
-				var inaccuracy = Util.ApplyPercentageModifiers(info.Inaccuracy.Length, args.InaccuracyModifiers);
-				var maxOffset = inaccuracy * (target - headPos).Length / args.Weapon.Range.Length;
-				target += WVec.FromPDF(world.SharedRandom, 2) * maxOffset / 1024;
+				var maxInaccuracyOffset = Util.GetProjectileInaccuracy(info.Inaccuracy.Length, info.InaccuracyType, args);
+				target += WVec.FromPDF(world.SharedRandom, 2) * maxInaccuracyOffset / 1024;
 			}
 
-			towardsTargetFacing = (target - headPos).Yaw.Facing;
+			towardsTargetFacing = (target - headPos).Yaw;
 
 			// Update the target position with the range we shoot beyond the target by
 			// I.e. we can deliberately overshoot, so aim for that position
-			var dir = new WVec(0, -1024, 0).Rotate(WRot.FromFacing(towardsTargetFacing));
+			var dir = new WVec(0, -1024, 0).Rotate(WRot.FromYaw(towardsTargetFacing));
 			target += dir * info.BeyondTargetRange.Length / 1024;
 
 			length = Math.Max((target - headPos).Length / speed.Length, 1);
@@ -150,11 +156,11 @@ namespace OpenRA.Mods.Common.Projectiles
 				else
 				{
 					target = guidedTargetPos;
-					towardsTargetFacing = (target - args.Source).Yaw.Facing;
+					towardsTargetFacing = (target - args.Source).Yaw;
 
 					// Update the target position with the range we shoot beyond the target by
 					// I.e. we can deliberately overshoot, so aim for that position
-					var dir = new WVec(0, -1024, 0).Rotate(WRot.FromFacing(towardsTargetFacing));
+					var dir = new WVec(0, -1024, 0).Rotate(WRot.FromYaw(towardsTargetFacing));
 					target += dir * info.BeyondTargetRange.Length / 1024;
 				}
 			}
@@ -206,9 +212,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			}
 
 			// Check for blocking actors
-			WPos blockedPos;
-			if (info.Blockable && BlocksProjectiles.AnyBlockingActorsBetween(world, tailPos, headPos,
-				info.Width, out blockedPos))
+			if (info.Blockable && BlocksProjectiles.AnyBlockingActorsBetween(world, tailPos, headPos, info.Width, out var blockedPos))
 			{
 				headPos = blockedPos;
 				target = headPos;
@@ -222,7 +226,19 @@ namespace OpenRA.Mods.Common.Projectiles
 				foreach (var a in actors)
 				{
 					var adjustedModifiers = args.DamageModifiers.Append(GetFalloff((args.Source - a.CenterPosition).Length));
-					args.Weapon.Impact(Target.FromActor(a), args.SourceActor, adjustedModifiers);
+
+					var warheadArgs = new WarheadArgs(args)
+					{
+						ImpactOrientation = new WRot(WAngle.Zero, Util.GetVerticalAngle(args.Source, target), args.CurrentMuzzleFacing()),
+
+						// Calculating an impact position is bogus for line damage.
+						// FindActorsOnLine guarantees that the beam touches the target's HitShape,
+						// so we just assume a center hit to avoid bogus warhead recalculations.
+						ImpactPosition = a.CenterPosition,
+						DamageModifiers = adjustedModifiers.ToArray(),
+					};
+
+					args.Weapon.Impact(Target.FromActor(a), warheadArgs);
 				}
 			}
 

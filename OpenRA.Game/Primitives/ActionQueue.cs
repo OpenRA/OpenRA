@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -24,7 +24,7 @@ namespace OpenRA.Primitives
 		public void Add(Action a, long desiredTime)
 		{
 			if (a == null)
-				throw new ArgumentNullException("a");
+				throw new ArgumentNullException(nameof(a));
 
 			lock (actions)
 			{
@@ -65,7 +65,7 @@ namespace OpenRA.Primitives
 		}
 	}
 
-	struct DelayedAction : IComparable<DelayedAction>
+	readonly struct DelayedAction : IComparable<DelayedAction>
 	{
 		public readonly long Time;
 		public readonly Action Action;

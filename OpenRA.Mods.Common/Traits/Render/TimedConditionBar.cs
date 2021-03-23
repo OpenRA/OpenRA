@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,13 +9,13 @@
  */
 #endregion
 
-using System.Drawing;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Visualizes the remaining time for a condition.")]
-	class TimedConditionBarInfo : ITraitInfo, Requires<ConditionManagerInfo>
+	class TimedConditionBarInfo : TraitInfo
 	{
 		[FieldLoader.Require]
 		[Desc("Condition that this bar corresponds to")]
@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		public readonly Color Color = Color.Red;
 
-		public object Create(ActorInitializer init) { return new TimedConditionBar(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new TimedConditionBar(init.Self, this); }
 	}
 
 	class TimedConditionBar : ISelectionBar, IConditionTimerWatcher
@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			value = duration > 0 ? remaining * 1f / duration : 0;
 		}
 
-		string IConditionTimerWatcher.Condition { get { return info.Condition; } }
+		string IConditionTimerWatcher.Condition => info.Condition;
 
 		float ISelectionBar.GetValue()
 		{
@@ -54,6 +54,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 
 		Color ISelectionBar.GetColor() { return info.Color; }
-		bool ISelectionBar.DisplayWhenEmpty { get { return false; } }
+		bool ISelectionBar.DisplayWhenEmpty => false;
 	}
 }

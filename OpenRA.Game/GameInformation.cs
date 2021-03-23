@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -12,8 +12,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Graphics;
 using OpenRA.Network;
+using OpenRA.Primitives;
 
 namespace OpenRA
 {
@@ -24,6 +24,7 @@ namespace OpenRA
 
 		public string MapUid;
 		public string MapTitle;
+		public int FinalGameTick;
 
 		/// <summary>Game start timestamp (when the recoding started).</summary>
 		public DateTime StartTimeUtc;
@@ -32,11 +33,13 @@ namespace OpenRA
 		public DateTime EndTimeUtc;
 
 		/// <summary>Gets the game's duration, from the time the game started until the replay recording stopped.</summary>
-		public TimeSpan Duration { get { return EndTimeUtc > StartTimeUtc ? EndTimeUtc - StartTimeUtc : TimeSpan.Zero; } }
+		public TimeSpan Duration => EndTimeUtc > StartTimeUtc ? EndTimeUtc - StartTimeUtc : TimeSpan.Zero;
+
 		public IList<Player> Players { get; private set; }
-		public MapPreview MapPreview { get { return Game.ModData.MapCache[MapUid]; } }
+		public HashSet<int> DisabledSpawnPoints = new HashSet<int>();
+		public MapPreview MapPreview => Game.ModData.MapCache[MapUid];
 		public IEnumerable<Player> HumanPlayers { get { return Players.Where(p => p.IsHuman); } }
-		public bool IsSinglePlayer { get { return HumanPlayers.Count() == 1; } }
+		public bool IsSinglePlayer => HumanPlayers.Count() == 1;
 
 		readonly Dictionary<OpenRA.Player, Player> playersByRuntime;
 
@@ -95,10 +98,10 @@ namespace OpenRA
 		public void AddPlayer(OpenRA.Player runtimePlayer, Session lobbyInfo)
 		{
 			if (runtimePlayer == null)
-				throw new ArgumentNullException("runtimePlayer");
+				throw new ArgumentNullException(nameof(runtimePlayer));
 
 			if (lobbyInfo == null)
-				throw new ArgumentNullException("lobbyInfo");
+				throw new ArgumentNullException(nameof(lobbyInfo));
 
 			// We don't care about spectators and map players
 			if (runtimePlayer.NonCombatant || !runtimePlayer.Playable)
@@ -117,11 +120,15 @@ namespace OpenRA
 				IsBot = runtimePlayer.IsBot,
 				FactionName = runtimePlayer.Faction.Name,
 				FactionId = runtimePlayer.Faction.InternalName,
+				DisplayFactionName = runtimePlayer.DisplayFaction.Name,
+				DisplayFactionId = runtimePlayer.DisplayFaction.InternalName,
 				Color = runtimePlayer.Color,
 				Team = client.Team,
+				Handicap = client.Handicap,
 				SpawnPoint = runtimePlayer.SpawnPoint,
 				IsRandomFaction = runtimePlayer.Faction.InternalName != client.Faction,
-				IsRandomSpawnPoint = runtimePlayer.SpawnPoint != client.SpawnPoint
+				IsRandomSpawnPoint = runtimePlayer.DisplaySpawnPoint == 0,
+				Fingerprint = client.Fingerprint
 			};
 
 			playersByRuntime.Add(runtimePlayer, player);
@@ -131,9 +138,7 @@ namespace OpenRA
 		/// <summary>Gets the player information for the specified runtime player instance.</summary>
 		public Player GetPlayer(OpenRA.Player runtimePlayer)
 		{
-			Player player;
-
-			playersByRuntime.TryGetValue(runtimePlayer, out player);
+			playersByRuntime.TryGetValue(runtimePlayer, out var player);
 
 			return player;
 		}
@@ -154,17 +159,25 @@ namespace OpenRA
 
 			/// <summary>The faction ID, a.k.a. the faction's internal name.</summary>
 			public string FactionId;
-			public HSLColor Color;
+			public Color Color;
+
+			/// <summary>The faction (including Random, etc.) that was selected in the lobby.</summary>
+			public string DisplayFactionName;
+			public string DisplayFactionId;
 
 			/// <summary>The team ID on start-up, or 0 if the player is not part of a team.</summary>
 			public int Team;
 			public int SpawnPoint;
+			public int Handicap;
 
 			/// <summary>True if the faction was chosen at random; otherwise, false.</summary>
 			public bool IsRandomFaction;
 
 			/// <summary>True if the spawn point was chosen at random; otherwise, false.</summary>
 			public bool IsRandomSpawnPoint;
+
+			/// <summary>Player authentication fingerprint for the OpenRA forum.</summary>
+			public string Fingerprint;
 
 			#endregion
 
@@ -175,6 +188,9 @@ namespace OpenRA
 
 			/// <summary>The time when this player won or lost the game.</summary>
 			public DateTime OutcomeTimestampUtc;
+
+			/// <summary>The frame at which this player disconnected.</summary>
+			public int DisconnectFrame;
 
 			#endregion
 		}

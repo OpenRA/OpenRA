@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -14,18 +14,19 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using OpenRA.Mods.Cnc.FileFormats;
 using OpenRA.Mods.Common.FileFormats;
 using OpenRA.Mods.Common.UtilityCommands;
-using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Cnc.UtilityCommands
 {
 	class ImportRedAlertLegacyMapCommand : ImportLegacyMapCommand, IUtilityCommand
 	{
 		// TODO: 128x128 is probably not true for "mega maps" from the expansions.
-		public ImportRedAlertLegacyMapCommand() : base(128) { }
+		public ImportRedAlertLegacyMapCommand()
+			: base(128) { }
 
-		string IUtilityCommand.Name { get { return "--import-ra-map"; } }
+		string IUtilityCommand.Name => "--import-ra-map";
 		bool IUtilityCommand.ValidateArguments(string[] args) { return ValidateArguments(args); }
 
 		[Desc("FILENAME", "Convert a legacy Red Alert INI/MPR map to the OpenRA format.")]
@@ -50,17 +51,17 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			"fpls", "wcrate", "scrate", "barb", "sbag",
 		};
 
-		static Dictionary<string, Pair<byte, byte>> overlayResourceMapping = new Dictionary<string, Pair<byte, byte>>()
+		static Dictionary<string, (byte Type, byte Index)> overlayResourceMapping = new Dictionary<string, (byte, byte)>()
 		{
 			// RA ore & crystals
-			{ "gold01", new Pair<byte, byte>(1, 0) },
-			{ "gold02", new Pair<byte, byte>(1, 1) },
-			{ "gold03", new Pair<byte, byte>(1, 2) },
-			{ "gold04", new Pair<byte, byte>(1, 3) },
-			{ "gem01", new Pair<byte, byte>(2, 0) },
-			{ "gem02", new Pair<byte, byte>(2, 1) },
-			{ "gem03", new Pair<byte, byte>(2, 2) },
-			{ "gem04", new Pair<byte, byte>(2, 3) },
+			{ "gold01", (1, 0) },
+			{ "gold02", (1, 1) },
+			{ "gold03", (1, 2) },
+			{ "gold04", (1, 3) },
+			{ "gem01", (2, 0) },
+			{ "gem02", (2, 1) },
+			{ "gem03", (2, 2) },
+			{ "gem04", (2, 3) },
 		};
 
 		void UnpackTileData(MemoryStream ms)
@@ -83,10 +84,13 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 		static string[] overlayActors = new string[]
 		{
 			// Fences
-			"sbag", "cycl", "brik", "fenc", "wood", "wood",
+			"sbag", "cycl", "brik", "fenc", "wood",
 
 			// Fields
-			"v12", "v13", "v14", "v15", "v16", "v17", "v18"
+			"v12", "v13", "v14", "v15", "v16", "v17", "v18",
+
+			// Crates
+			"wcrate", "scrate"
 		};
 
 		void UnpackOverlayData(MemoryStream ms)
@@ -96,13 +100,13 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 				for (var i = 0; i < MapSize; i++)
 				{
 					var o = ms.ReadUInt8();
-					var res = Pair.New((byte)0, (byte)0);
+					var res = (Type: (byte)0, Index: (byte)0);
 
 					if (o != 255 && overlayResourceMapping.ContainsKey(redAlertOverlayNames[o]))
 						res = overlayResourceMapping[redAlertOverlayNames[o]];
 
 					var cell = new CPos(i, j);
-					Map.Resources[cell] = new ResourceTile(res.First, res.Second);
+					Map.Resources[cell] = new ResourceTile(res.Type, res.Index);
 
 					if (o != 255 && overlayActors.Contains(redAlertOverlayNames[o]))
 					{
@@ -189,7 +193,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 		public static MemoryStream ReadPackedSection(IniSection mapPackSection)
 		{
 			var sb = new StringBuilder();
-			for (var i = 1;; i++)
+			for (var i = 1; ; i++)
 			{
 				var line = mapPackSection.GetValue(i.ToString(), null);
 				if (line == null)

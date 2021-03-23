@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -17,10 +17,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 	[Desc("Periodically plays an idle animation, replacing the default body animation.")]
 	public class WithIdleAnimationInfo : ConditionalTraitInfo, Requires<WithSpriteBodyInfo>
 	{
-		[SequenceReference, Desc("Sequence names to use.")]
+		[SequenceReference]
+		[Desc("Sequence names to use.")]
 		public readonly string[] Sequences = { "active" };
 
-		public readonly int Interval = 750;
+		[Desc("The amount of time (in ticks) between animations. Two values indicate a range between which a random value is chosen.")]
+		public readonly int[] Interval = { 750 };
 
 		[Desc("Which sprite body to play the animation on.")]
 		public readonly string Body = "body";
@@ -28,42 +30,33 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public override object Create(ActorInitializer init) { return new WithIdleAnimation(init.Self, this); }
 	}
 
-	public class WithIdleAnimation : ConditionalTrait<WithIdleAnimationInfo>, ITick, INotifyBuildComplete, INotifySold
+	public class WithIdleAnimation : ConditionalTrait<WithIdleAnimationInfo>, ITick
 	{
 		readonly WithSpriteBody wsb;
-		bool buildComplete;
 		int ticks;
 
 		public WithIdleAnimation(Actor self, WithIdleAnimationInfo info)
 			: base(info)
 		{
 			wsb = self.TraitsImplementing<WithSpriteBody>().Single(w => w.Info.Name == Info.Body);
-			buildComplete = !self.Info.HasTraitInfo<BuildingInfo>(); // always render instantly for units
-			ticks = info.Interval;
+			ticks = Util.RandomDelay(self.World, info.Interval);
 		}
 
 		void ITick.Tick(Actor self)
 		{
-			if (!buildComplete || IsTraitDisabled)
+			if (IsTraitDisabled)
 				return;
 
 			if (--ticks <= 0)
 			{
 				wsb.PlayCustomAnimation(self, Info.Sequences.Random(Game.CosmeticRandom));
-				ticks = Info.Interval;
+				ticks = Util.RandomDelay(self.World, Info.Interval);
 			}
 		}
 
-		void INotifyBuildComplete.BuildingComplete(Actor self)
+		protected override void TraitDisabled(Actor self)
 		{
-			buildComplete = true;
+			wsb.CancelCustomAnimation(self);
 		}
-
-		void INotifySold.Selling(Actor self)
-		{
-			buildComplete = false;
-		}
-
-		void INotifySold.Sold(Actor self) { }
 	}
 }

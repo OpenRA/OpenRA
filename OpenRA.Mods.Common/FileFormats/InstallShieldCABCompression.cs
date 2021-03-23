@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -13,7 +13,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using ICSharpCode.SharpZipLib.Zip.Compression;
 
 namespace OpenRA.Mods.Common.FileFormats
@@ -36,7 +35,7 @@ namespace OpenRA.Mods.Common.FileFormats
 			Next = 0x2
 		}
 
-		struct FileGroup
+		readonly struct FileGroup
 		{
 			public readonly string Name;
 			public readonly uint FirstFile;
@@ -56,7 +55,7 @@ namespace OpenRA.Mods.Common.FileFormats
 			}
 		}
 
-		struct CabDescriptor
+		readonly struct CabDescriptor
 		{
 			public readonly long FileTableOffset;
 			public readonly uint FileTableSize;
@@ -79,7 +78,7 @@ namespace OpenRA.Mods.Common.FileFormats
 			}
 		}
 
-		struct DirectoryDescriptor
+		readonly struct DirectoryDescriptor
 		{
 			public readonly string Name;
 
@@ -95,7 +94,7 @@ namespace OpenRA.Mods.Common.FileFormats
 			}
 		}
 
-		struct FileDescriptor
+		readonly struct FileDescriptor
 		{
 			public readonly uint Index;
 			public readonly CABFlags Flags;
@@ -143,7 +142,7 @@ namespace OpenRA.Mods.Common.FileFormats
 			}
 		}
 
-		struct CommonHeader
+		readonly struct CommonHeader
 		{
 			public const long Size = 16;
 			public readonly uint Version;
@@ -160,7 +159,7 @@ namespace OpenRA.Mods.Common.FileFormats
 			}
 		}
 
-		struct VolumeHeader
+		readonly struct VolumeHeader
 		{
 			public readonly uint DataOffset;
 			public readonly uint DataOffsetHigh;
@@ -244,26 +243,26 @@ namespace OpenRA.Mods.Common.FileFormats
 						toExtract -= bytesToExtract;
 						while (!inf.IsNeedingInput)
 						{
-							if (onProgress != null)
-								onProgress((int)(100 * output.Position / file.ExpandedSize));
+							onProgress?.Invoke((int)(100 * output.Position / file.ExpandedSize));
 
 							var inflated = inf.Inflate(buffer);
 							output.Write(buffer, 0, inflated);
 						}
 
 						inf.Reset();
-					} while (toExtract > 0);
+					}
+					while (toExtract > 0);
 				}
 				else
 				{
 					do
 					{
-						if (onProgress != null)
-							onProgress((int)(100 * output.Position / file.ExpandedSize));
+						onProgress?.Invoke((int)(100 * output.Position / file.ExpandedSize));
 
 						toExtract -= remainingInArchive;
 						output.Write(GetBytes(remainingInArchive), 0, (int)remainingInArchive);
-					} while (toExtract > 0);
+					}
+					while (toExtract > 0);
 				}
 			}
 
@@ -393,8 +392,7 @@ namespace OpenRA.Mods.Common.FileFormats
 
 		public void ExtractFile(string filename, Stream output, Action<int> onProgress = null)
 		{
-			FileDescriptor file;
-			if (!index.TryGetValue(filename, out file))
+			if (!index.TryGetValue(filename, out var file))
 				throw new FileNotFoundException(filename);
 
 			ExtractFile(file, output, onProgress);

@@ -1,0 +1,14 @@
+[[actions]]
+os = "windows"
+name = "Red Alert"
+path = "RedAlert.exe"
+
+[[actions]]
+os = "windows"
+name = "Dune 2000"
+path = "Dune2000.exe"
+
+[[actions]]
+os = "windows"
+name = "Tiberian Dawn"
+path = "TiberianDawn.exe"

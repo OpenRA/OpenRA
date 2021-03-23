@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -34,55 +34,64 @@ namespace OpenRA.Mods.Common.UpdateRules
 			Justification = "Extracting update lists to temporary variables obfuscates the definitions.")]
 		static readonly UpdatePath[] Paths =
 		{
-			new UpdatePath("release-20171014", "release-20180218", new UpdateRule[]
+			new UpdatePath("release-20191117", "release-20200202", new UpdateRule[]
 			{
-				new LegacyBetaWarning(),
-				new RemoveMobileOnRails(),
-				new AircraftCanHoverGeneralization(),
-				new AddNukeLaunchAnimation(),
-				new RenameWithTurreted(),
-				new RemovePlayerPaletteTileset(),
-				new CapturableChanges(),
-				new DecoupleSelfReloading(),
-				new RemoveOutOfAmmo(),
-				new ChangeCanPowerDown(),
-				new ReplaceRequiresPower(),
-				new DropPauseAnimationWhenDisabled(),
-				new ChangeBuildableArea(),
-				new MoveVisualBounds(),
-				new ScaleDefaultModHealth(),
-				new ReworkCheckboxes(),
-				new SplitGateFromBuilding(),
-				new RemoveIDisable(),
-				new ReplaceCanPowerDown(),
-				new ScaleSupportPowerSecondsToTicks(),
-				new WarnAboutInfiltrateForTypes(),
-				new RenameBurstDelay(),
+				new ReplaceAttackTypeStrafe()
 			}),
 
-			new UpdatePath("release-20180218", "release-20180307", new UpdateRule[0]),
+			new UpdatePath("release-20200202", "release-20200503", new UpdateRule[]
+			{
+				new RemoveYesNo(),
+				new RemoveInitialFacingHardcoding(),
+				new RemoveAirdropActorTypeDefault(),
+				new RenameProneTime(),
+				new RemoveWithPermanentInjury(),
+				new AddResourceRenderer(),
+				new ReformatChromeProvider(),
+				new RenameSpins(),
+				new CreateScreenShakeWarhead(),
+				new RenameRallyPointPath(),
+			}),
 
-			new UpdatePath("release-20180307", new UpdateRule[]
+			new UpdatePath("release-20200503", "playtest-20201213", new UpdateRule[]
+			{
+				// Prep only changes here
+				new AddPipDecorationTraits(),
+				new ModernizeDecorationTraits(),
+				new RenameHealCrateAction(),
+				new RenameInfiltrationNotifications(),
+				new MoveClassicFacingFudge(),
+				new RenameWithNukeLaunch(),
+				new SpawnActorPowerDefaultEffect(),
+				new RemoveConditionManager(),
+				new ConvertSupportPowerRangesToFootprint(),
+				new UpdateTilesetColors(),
+				new UpdateMapInits(),
+				new CreateFlashPaletteEffectWarhead(),
+				new ChangeTargetLineDelayToMilliseconds(),
+				new ReplaceFacingAngles(),
+				new RenameSelfHealing(),
+				new ReplaceBurns(),
+				new RemoveMuzzleSplitFacings(),
+				new RenameStances(),
+				new RemoveTurnToDock(),
+				new RenameSmudgeSmokeFields(),
+				new RenameCircleContrast(),
+				new SplitDamagedByTerrain(),
+				new RemoveLaysTerrain(),
+			}),
+
+			new UpdatePath("playtest-20201213", new UpdateRule[]
 			{
 				// Bleed only changes here
-				new RemoveTerrainTypeIsWaterFlag(),
-				new DefineSquadExcludeHarvester(),
-				new RemoveWeaponScanRadius(),
-				new SplitAimAnimations(),
-				new DefineSoundDefaults(),
-				new RenameWormSpawner(),
-				new RemoveWithReloadingSpriteTurret(),
-				new ChangeIntensityToDuration(),
-				new IgnoreAbstractActors(),
-				new AddShakeToBridge(),
-				new RemovePaletteFromCurrentTileset(),
-				new DefineLocomotors(),
-				new DefineOwnerLostAction(),
-				new RenameEmitInfantryOnSell(),
-				new SplitRepairDecoration(),
-				new MoveHackyAISupportPowerDecisions(),
-				new DefineGroundCorpseDefault(),
-				new RemoveCanUndeployFromGrantConditionOnDeploy(),
+				new RenameMPTraits(),
+				new RemovePlayerHighlightPalette(),
+				new ReplaceWithColoredOverlayPalette(),
+				new RemoveRenderSpritesScale(),
+				new RemovePlaceBuildingPalette(),
+				new ReplaceShadowPalette(),
+				new ReplaceResourceValueModifiers(),
+				new RemoveResourceType(),
 			})
 		};
 

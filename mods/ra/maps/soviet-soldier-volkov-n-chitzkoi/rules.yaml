@@ -1,0 +1,164 @@
+World:
+	LuaScript:
+		Scripts: soviet-soldier-volkov-n-chitzkoi.lua, soviet-soldier-volkov-n-chitzkoi-AI.lua
+	MissionData:
+		Briefing: The Allies have stolen a new armor plating from us. With it, they can make structures nearly invulnerable. Their processing plant must be destroyed.\n\nFor this critical mission, we are allowing you access to Soldier Volkov. Use him and his cybernetic dog to sabotage the Allied control center, allowing our units in the southeast access to the alloy facility.\n\nThe mission is a success when Volkov destroys the control center, and our units destroy the alloy facility.\n
+		WinVideo: grvestne.vqa
+		LossVideo: sovcemet.vqa
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			easy: Easy
+			normal: Normal
+			hard: Hard
+		Default: easy
+
+E7:
+	Health:
+		HP: 25000
+	Armor:
+		Type: Heavy
+
+2TNK:
+	Buildable:
+		Prerequisites: ~vehicles.allies, ~techlevel.medium
+
+C2:
+	Inherits@2: ^ArmedCivilian
+
+C3:
+	Inherits@2: ^ArmedCivilian
+
+C4:
+	Inherits@2: ^ArmedCivilian
+
+C5:
+	Inherits@2: ^ArmedCivilian
+
+C6:
+	Inherits@2: ^ArmedCivilian
+
+C8:
+	Inherits@2: ^ArmedCivilian
+
+C9:
+	Inherits@2: ^ArmedCivilian
+
+C10:
+	Inherits@2: ^ArmedCivilian
+
+V01:
+	SpawnActorOnDeath:
+		Actor: healcrate
+
+HOSP:
+	SpawnActorOnDeath:
+		Actor: healcrate
+
+HEALCRATE:
+	Crate:
+		Lifetime: 0
+
+^Vehicle:
+	-Demolishable:
+
+^Mine:
+	Tooltip:
+		ShowOwnerRow: false
+
+AFAC:
+	Inherits: BIO
+	Health:
+		HP: 400000
+	Tooltip:
+		Name: Alloy Facility
+		GenericName: Alloy Facility
+		GenericVisibility: Enemy, Ally, Neutral
+		GenericStancePrefix: false
+	RenderSprites:
+		Image: BIO
+
+CCEN:
+	Inherits: ATEK
+	Tooltip:
+		Name: Control Center
+		GenericName: Control Center
+		GenericVisibility: Enemy, Ally, Neutral
+		GenericStancePrefix: false
+	GpsPower:
+		Prerequisites: ~disabled
+	Power:
+		Amount: 200
+	RenderSprites:
+		Image: ATEK
+
+HGUN:
+	Inherits: GUN
+	Valued:
+		Cost: 2800
+	Tooltip:
+		Name: Heavy Turret Prototype
+	Health:
+		HP: 350000
+	Armor:
+		Type: Heavy
+	RevealsShroud:
+		Range: 8c0
+	Armament:
+		Weapon: HeavyTurretGun
+	RenderSprites:
+		Image: GUN
+
+ZKOI:
+	Inherits: DOG
+	Valued:
+		Cost: 2000
+	Tooltip:
+		Name: Chitzkoi
+		GenericName: Cyborg Dog
+	Health:
+		HP: 100000
+	-Crushable:
+	RevealsShroud:
+		Range: 7c0
+	Armament:
+		Weapon: CydogJaw
+	RenderSprites:
+		Image: DOG
+
+VOLK:
+	Inherits: GNRL
+	Valued:
+		Cost: 3000
+	Tooltip:
+		Name: Volkov
+	Health:
+		HP: 250000
+	Armor:
+		Type: Heavy
+	-Crushable:
+	RevealsShroud:
+		Range: 10c0
+	Demolition:
+	Mobile:
+		Voice: Action
+	AttackFrontal:
+		Voice: Action
+	AttackMove:
+		Voice: Action
+	Passenger:
+		Voice: Action
+	Guard:
+		Voice: Action
+	Voiced:
+		VoiceSet: GenericVoice
+	Armament:
+		Weapon: VolkovWeapon
+	RenderSprites:
+		Image: GNRL
+
+powerproxy.pararifles:
+	Inherits: powerproxy.paratroopers
+	ParatroopersPower:
+		DropItems: E1,E1,E1,E1,E1

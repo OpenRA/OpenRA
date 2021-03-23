@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Server
 		static readonly int ConnTimeout = 60000; // Drop unresponsive clients after 60 seconds
 
 		// TickTimeout is in microseconds
-		public int TickTimeout { get { return PingInterval * 100; } }
+		public int TickTimeout => PingInterval * 100;
 
 		long lastPing = 0;
 		long lastConnReport = 0;
@@ -36,7 +36,11 @@ namespace OpenRA.Mods.Common.Server
 				lastPing = Game.RunTime;
 
 				// Ignore client timeout in singleplayer games to make debugging easier
-				if (server.LobbyInfo.NonBotClients.Count() < 2 && !server.Dedicated)
+				var nonBotClientCount = 0;
+				lock (server.LobbyInfo)
+					nonBotClientCount = server.LobbyInfo.NonBotClients.Count();
+
+				if (nonBotClientCount < 2 && server.Type != ServerType.Dedicated)
 					foreach (var c in server.Conns.ToList())
 						server.SendOrderTo(c, "Ping", Game.RunTime.ToString());
 				else

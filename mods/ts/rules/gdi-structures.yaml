@@ -23,14 +23,21 @@ GAPOWR:
 		Range: 4c0
 		MaxHeightDelta: 3
 	WithIdleOverlay@LIGHTS:
-		RequiresCondition: !empdisable
+		RequiresCondition: !build-incomplete && !empdisable
 		Sequence: idle-lights
+		Palette: player-nobright
+		IsPlayerPalette: True
+	WithIdleOverlay@LIGHTS-BRIGHT:
+		RequiresCondition: !build-incomplete && !empdisable
+		Sequence: idle-lights-bright
+		Palette: bright
 	WithIdleOverlay@PLUG:
+		RequiresCondition: !build-incomplete
 		PauseOnCondition: empdisable
 		Sequence: idle-plug
-	Selectable:
-		Bounds: 90, 48, 0, -6
-		DecorationBounds: 90, 84, 0, -12
+	WithMakeOverlay@MAKE-BRIGHT:
+		Sequence: make-bright
+		Palette: bright
 	Power:
 		Amount: 100
 		RequiresCondition: !empdisable
@@ -42,33 +49,68 @@ GAPOWR:
 		Offset: 0,1
 		Conditions:
 			powrup: powrup.a
+		Requirements:
+			powrup: !build-incomplete && !powrup.a
+		EditorOptions:
+			powrup: Power Turbine
 	Power@pluga:
 		RequiresCondition: !empdisable && powrup.a
 		Amount: 50
 	WithIdleOverlay@pluga:
-		RequiresCondition: powrup.a
+		RequiresCondition: !build-incomplete && powrup.a
 		PauseOnCondition: empdisable
 		Sequence: idle-powrupa
 	Pluggable@plugb:
 		Offset: 1,1
 		Conditions:
 			powrup: powrup.b
+		Requirements:
+			powrup: !build-incomplete && !powrup.b
+		EditorOptions:
+			powrup: Power Turbine
 	WithIdleOverlay@plugb:
-		RequiresCondition: powrup.b
+		RequiresCondition: !build-incomplete && powrup.b
 		PauseOnCondition: empdisable
 		Sequence: idle-powrupb
 	Power@plugb:
 		RequiresCondition: !empdisable && powrup.b
 		Amount: 50
 	ProvidesPrerequisite@buildingname:
-	SelectionDecorations:
+	ProvidesPrerequisite@pluggable:
+		RequiresCondition: !powrup.a || !powrup.b
+		Prerequisite: gapowr.socket
+	IsometricSelectable:
+		Height: 48
+
+GAPOWR.SOCKET:
+	AlwaysVisible:
+	Interactable:
+	Tooltip:
+		Name: GDI Power Plant socket
+
+GAPOWRUP:
+	Inherits: ^BuildingPlug
+	Valued:
+		Cost: 150
+	Tooltip:
+		Name: Power Turbine
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 100
+		Prerequisites: gapowr.socket, ~structures.gdi, ~techlevel.medium
+		Description: Provides extra power generation.
+	Plug:
+		Type: powrup
+	Power:
+		Amount: 50
 
 GAPILE:
 	Inherits: ^Building
 	Inherits@SHAPE: ^2x2Shape
+	Inherits@PRIMARY: ^PrimaryBuilding
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 30
+		BuildPaletteOrder: 20
 		Prerequisites: anypower, ~structures.gdi, ~techlevel.low
 		Description: Produces infantry.
 	Valued:
@@ -80,9 +122,6 @@ GAPILE:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
-	Selectable:
-		Bounds: 88, 48, 0, -8
-		DecorationBounds: 88, 56, 0, -8
 	Health:
 		HP: 80000
 	Armor:
@@ -91,40 +130,77 @@ GAPILE:
 		Range: 5c0
 		MaxHeightDelta: 3
 	RallyPoint:
-		Offset: 2,3
 		Palette: mouse
 		IsPlayerPalette: false
+		LineWidth: 2
 	Exit@1:
-		SpawnOffset: -256,1024,0
+		SpawnOffset: -512,768,0
+		ExitCell: 1,2
+		Priority: 2
+	Exit@2:
+		SpawnOffset: -512,768,0
+		ExitCell: 0,2
+		Priority: 2
+	Exit@fallback1:
+		SpawnOffset: 0,724,0
 		ExitCell: 2,2
+	Exit@fallback2:
+		SpawnOffset: 0,724,0
+		ExitCell: 2,1
+	Exit@fallback3:
+		SpawnOffset: 724,0,0
+		ExitCell: 2,0
+	Exit@fallback4:
+		SpawnOffset: 724,0,0
+		ExitCell: 2,-1
+	Exit@fallback5:
+		SpawnOffset: 724,0,0
+		ExitCell: 1,-1
+	Exit@fallback6:
+		SpawnOffset: 0,-724,0
+		ExitCell: 0,-1
+	Exit@fallback7:
+		SpawnOffset: 0,-724,0
+		ExitCell: -1,-1
+	Exit@fallback8:
+		SpawnOffset: 0,-724,0
+		ExitCell: -1,0
+	Exit@fallback9:
+		SpawnOffset: -724,0,0
+		ExitCell: -1,1
+	Exit@fallback10:
+		SpawnOffset: -724,0,0
+		ExitCell: -1,2
 	ExitsDebugOverlay:
 	Production:
 		Produces: Infantry
 		PauseOnCondition: empdisable
-	PrimaryBuilding:
-		PrimaryCondition: primary
 	ProductionBar:
+		ProductionType: Infantry
 	WithIdleOverlay@LIGHTS:
+		RequiresCondition: !build-incomplete
 		Sequence: idle-lights
-	WithIdleOverlay@LIGHT:
-		Sequence: idle-light
+		Palette: player-nobright
+		IsPlayerPalette: True
+	WithIdleOverlay@LIGHTS-BRIGHT:
+		RequiresCondition: !build-incomplete
+		Sequence: idle-lights-bright
+		Palette: bright
+	WithIdleOverlay@LIGHT-BRIGHT:
+		RequiresCondition: !build-incomplete
+		Sequence: idle-light-bright
+		Palette: bright
 	WithIdleOverlay@FLAG:
+		RequiresCondition: !build-incomplete
 		Sequence: idle-flag
 	Power:
 		Amount: -20
 	ProvidesPrerequisite@buildingname:
-	SelectionDecorations:
-	WithTextDecoration@primary:
-		RequiresSelection: true
-		Text: PRIMARY
-		ReferencePoint: Top
-		Color: E0D048
-		ZOffset: 256
-		RequiresCondition: primary
 
 GAWEAP:
 	Inherits: ^Building
 	Inherits@SHAPE: ^4x3FactoryWithBibShape
+	Inherits@PRIMARY: ^PrimaryBuilding
 	Valued:
 		Cost: 2000
 	Tooltip:
@@ -133,15 +209,12 @@ GAWEAP:
 		Prerequisite: factory
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 60
+		BuildPaletteOrder: 50
 		Prerequisites: proc, ~structures.gdi, ~techlevel.low
 		Description: Produces vehicles.
 	Building:
-		Footprint: xxX= xxX= xxX=
+		Footprint: xxX+ xxX+ xxX+
 		Dimensions: 4,3
-	Selectable:
-		Bounds: 154, 96, -2, -12
-		DecorationBounds: 154, 100, -2, -12
 	Health:
 		HP: 100000
 	RevealsShroud:
@@ -150,9 +223,9 @@ GAWEAP:
 	Armor:
 		Type: Heavy
 	RallyPoint:
-		Offset: 4,1
 		Palette: mouse
 		IsPlayerPalette: false
+		LineWidth: 2
 	Exit@1:
 		SpawnOffset: -384,-384,0
 		ExitCell: 3,1
@@ -161,41 +234,56 @@ GAWEAP:
 	Production:
 		Produces: Vehicle
 		PauseOnCondition: empdisable
-	PrimaryBuilding:
-		PrimaryCondition: primary
 	ProductionBar:
+		ProductionType: Vehicle
 	WithIdleOverlay@ROOF:
+		RequiresCondition: !build-incomplete
 		Sequence: idle-roof
 	WithProductionDoorOverlay@DOOR:
+		RequiresCondition: !build-incomplete
 	WithIdleOverlay@WHITELIGHTS:
+		RequiresCondition: !build-incomplete
 		Sequence: idle-lights-white
+		Palette: player-nobright
+		IsPlayerPalette: True
+	WithIdleOverlay@WHITELIGHTS-BRIGHT:
+		RequiresCondition: !build-incomplete
+		Sequence: idle-lights-white-bright
+		Palette: bright
 	WithIdleOverlay@REDLIGHTS:
+		RequiresCondition: !build-incomplete
 		Sequence: idle-lights-red
+		Palette: player-nobright
+		IsPlayerPalette: True
+	WithIdleOverlay@REDLIGHTS-BRIGHT:
+		RequiresCondition: !build-incomplete
+		Sequence: idle-lights-red-bright
+		Palette: bright
 	WithIdleOverlay@TURBINES:
+		RequiresCondition: !build-incomplete
 		Sequence: idle-turbines
 	WithIdleOverlay@BIB:
+		RequiresCondition: !build-incomplete
 		Sequence: bib
+	WithMakeOverlay@MAKE-BRIGHT:
+		Sequence: make-bright
+		Palette: bright
 	Power:
 		Amount: -30
 	ProvidesPrerequisite@buildingname:
-	SelectionDecorations:
-	WithTextDecoration@primary:
-		RequiresSelection: true
-		Text: PRIMARY
-		ReferencePoint: Top
-		Color: E0D048
-		ZOffset: 256
-		RequiresCondition: primary
+	IsometricSelectable:
+		Height: 48
 
 GAHPAD:
 	Inherits: ^Building
 	Inherits@SHAPE: ^2x2Shape
+	Inherits@PRIMARY: ^PrimaryBuilding
 	Valued:
 		Cost: 500
 	Tooltip:
 		Name: Helipad
 	Buildable:
-		BuildPaletteOrder: 130
+		BuildPaletteOrder: 80
 		Queue: Building
 		Prerequisites: garadr, ~structures.gdi, ~techlevel.medium
 		Description: Produces, rearms and\nrepairs helicopters.
@@ -209,42 +297,41 @@ GAHPAD:
 		MaxHeightDelta: 3
 	Exit@1:
 		SpawnOffset: 0,-256,0
+		Facing: 896
 	ExitsDebugOverlay:
 	RallyPoint:
 		Palette: mouse
 		IsPlayerPalette: false
+		LineWidth: 2
 	Production:
 		Produces: Air
 		PauseOnCondition: empdisable
-	PrimaryBuilding:
-		PrimaryCondition: primary
 	Reservable:
 	RepairsUnits:
 		HpPerStep: 1000
 		PauseOnCondition: empdisable
 		PlayerExperience: 15
+		StartRepairingNotification: Repairing
 	ProductionBar:
+		ProductionType: Air
 	WithIdleOverlay@PLATFORM:
+		RequiresCondition: !build-incomplete
 		Sequence: idle-platform
 	WithIdleOverlay@LIGHTS:
+		RequiresCondition: !build-incomplete && !empdisable
 		Sequence: idle-lights
+		Palette: player-nobright
+		IsPlayerPalette: True
+	WithIdleOverlay@LIGHTS-BRIGHT:
+		RequiresCondition: !build-incomplete && !empdisable
+		Sequence: idle-lights-bright
+		Palette: bright
 	WithDeathAnimation@BIB:
 		DeathSequence: dead-platform
 		UseDeathTypeSuffix: false
 	Power:
 		Amount: -10
-	Selectable:
-		Bounds: 88, 66, 0, -5
-		DecorationBounds: 88, 66, 0, -5
 	ProvidesPrerequisite@buildingname:
-	SelectionDecorations:
-	WithTextDecoration@primary:
-		RequiresSelection: true
-		Text: PRIMARY
-		ReferencePoint: Top
-		Color: E0D048
-		ZOffset: 256
-		RequiresCondition: primary
 
 GADEPT:
 	Inherits: ^Building
@@ -254,16 +341,13 @@ GADEPT:
 	Tooltip:
 		Name: Service Depot
 	Buildable:
-		BuildPaletteOrder: 110
+		BuildPaletteOrder: 70
 		Prerequisites: factory, ~structures.gdi, ~techlevel.medium
 		Queue: Building
 		Description: Repairs vehicles.
 	Building:
-		Footprint: =x= xxx =x=
+		Footprint: =+= x++ x+=
 		Dimensions: 3,3
-	Selectable:
-		Bounds: 96, 64, -6, -6
-		DecorationBounds: 98, 68, -6, -6
 	Health:
 		HP: 110000
 	RevealsShroud:
@@ -274,22 +358,49 @@ GADEPT:
 		HpPerStep: 1000
 		PauseOnCondition: empdisable
 		PlayerExperience: 15
+		StartRepairingNotification: Repairing
 	RallyPoint:
 		Palette: mouse
 		IsPlayerPalette: false
+		LineWidth: 2
 	WithIdleOverlay@LIGHT:
+		RequiresCondition: !build-incomplete
 		Sequence: idle-light
+		Palette: player-nobright
+		IsPlayerPalette: True
+	WithIdleOverlay@LIGHT-BRIGHT:
+		RequiresCondition: !build-incomplete && !empdisable
+		Sequence: idle-light-bright
+		Palette: bright
 	WithIdleOverlay@GROUND:
+		RequiresCondition: !build-incomplete
 		Sequence: ground
 	WithIdleOverlay@CIRCUITS:
+		RequiresCondition: !build-incomplete
 		Sequence: circuits
+		Palette: player-nobright
+		IsPlayerPalette: True
+	WithIdleOverlay@CIRCUITS-BRIGHT:
+		RequiresCondition: !build-incomplete && !empdisable
+		Sequence: circuits-bright
+		Palette: bright
 	WithRepairOverlay@CRANE:
+		RequiresCondition: !build-incomplete
 		PauseOnCondition: empdisable
 		StartSequence: crane-start
 		Sequence: crane-loop
 		EndSequence: crane-end
+		Palette: player-nobright
+		IsPlayerPalette: True
+	WithRepairOverlay@CRANE-BRIGHT:
+		RequiresCondition: !build-incomplete
+		PauseOnCondition: empdisable
+		StartSequence: crane-start
+		Sequence: crane-loop-bright
+		EndSequence: crane-end
+		Palette: bright
 	WithRepairOverlay@PLATFORM:
-		RequiresCondition: !empdisable
+		RequiresCondition: !build-incomplete && !empdisable
 		Sequence: platform
 	WithDeathAnimation@BIB:
 		DeathSequence: dead-ground
@@ -297,7 +408,6 @@ GADEPT:
 	Power:
 		Amount: -30
 	ProvidesPrerequisite@buildingname:
-	SelectionDecorations:
 	RenderSprites:
 		Image: gadept.gdi
 		FactionImages:
@@ -310,7 +420,7 @@ GARADR:
 	Inherits@SHAPE: ^2x2Shape
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 80
+		BuildPaletteOrder: 40
 		Prerequisites: proc, ~structures.gdi, ~techlevel.low
 		Description: Provides an overview of the battlefield.\nCan detect cloaked units.\nRequires power to operate.
 	Valued:
@@ -322,9 +432,6 @@ GARADR:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
-	Selectable:
-		Bounds: 96, 48, 0, -6
-		DecorationBounds: 96, 118, 0, -38
 	Health:
 		HP: 100000
 	Armor:
@@ -339,14 +446,16 @@ GARADR:
 		Range: 10c0
 		MaxHeightDelta: 3
 	WithIdleOverlay@DISH:
-		Sequence: idle-dish
+		RequiresCondition: !build-incomplete
 		PauseOnCondition: disabled || empdisable
+		Sequence: idle-dish
 	Targetable:
 		TargetTypes: Ground, Building, C4, SpyInfiltrate
 	Power:
 		Amount: -50
 	ProvidesPrerequisite@buildingname:
-	SelectionDecorations:
+	IsometricSelectable:
+		Height: 72
 
 GATECH:
 	Inherits: ^Building
@@ -354,7 +463,7 @@ GATECH:
 	Inherits@SHAPE: ^3x2Shape
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 150
+		BuildPaletteOrder: 90
 		Prerequisites: gaweap, garadr, ~structures.gdi, ~techlevel.medium
 		Description: Provides access to advanced GDI technologies.
 	Valued:
@@ -366,9 +475,6 @@ GATECH:
 	Building:
 		Footprint: xxx xxx
 		Dimensions: 3,2
-	Selectable:
-		Bounds: 110, 60, 3, -4
-		DecorationBounds: 110, 60, 3, -4
 	Health:
 		HP: 50000
 	Armor:
@@ -377,12 +483,19 @@ GATECH:
 		Range: 4c0
 		MaxHeightDelta: 3
 	WithIdleOverlay@LIGHTS:
-		RequiresCondition: !disabled
+		RequiresCondition: !build-incomplete && !disabled
 		Sequence: idle-lights
+		Palette: player-nobright
+		IsPlayerPalette: True
+	WithIdleOverlay@LIGHTS-BRIGHT:
+		RequiresCondition: !build-incomplete && !disabled
+		Sequence: idle-lights-bright
+		Palette: bright
 	Power:
 		Amount: -150
 	ProvidesPrerequisite@buildingname:
-	SelectionDecorations:
+	IsometricSelectable:
+		Height: 48
 
 GAPLUG:
 	Inherits: ^Building
@@ -392,11 +505,8 @@ GAPLUG:
 		Cost: 1000
 	Tooltip:
 		Name: GDI Upgrade Center
-	Selectable:
-		Bounds: 115,72,0,-12
-		DecorationBounds: 115,104,0,-24
 	Buildable:
-		BuildPaletteOrder: 170
+		BuildPaletteOrder: 110
 		Prerequisites: proc, gatech, ~structures.gdi, ~techlevel.superweapons
 		Queue: Building
 		Description: Can be upgraded for additional technology.
@@ -404,13 +514,15 @@ GAPLUG:
 		Footprint: xxx xxx
 		Dimensions: 2,3
 	WithIdleOverlay@DISH:
+		RequiresCondition: !build-incomplete
 		PauseOnCondition: disabled || empdisable
 		Sequence: idle-dish
 	WithIdleOverlay@LIGHTS:
-		RequiresCondition: !disabled && !empdisable
-		Sequence: idle-lights
+		RequiresCondition: !build-incomplete && !disabled && !empdisable
+		Sequence: idle-lights-bright
+		Palette: bright
 	WithIdleOverlay@STRIP:
-		RequiresCondition: !disabled && !empdisable
+		RequiresCondition: !build-incomplete && !disabled && !empdisable
 		Sequence: idle-strip
 	Health:
 		HP: 100000
@@ -426,7 +538,6 @@ GAPLUG:
 		Icon: ioncannon
 		Effect: explosion
 		EffectSequence: ionring
-		EffectPalette: effectalpha75
 		WeaponDelay: 0
 		ChargeInterval: 12750
 		Description: Ion Cannon
@@ -434,6 +545,18 @@ GAPLUG:
 		EndChargeSpeechNotification: IonCannonReady
 		SelectTargetSpeechNotification: SelectTarget
 		DisplayRadarPing: True
+		CameraActor: camera
+	DropPodsPower:
+		Cursor: ioncannon
+		PauseOnCondition: disabled || empdisable
+		RequiresCondition: plug.droppoda || plug.droppodb
+		Icon: droppods
+		Description: Drop Pods
+		LongDesc: Drop Pod reinforcements.\nSmall team of elite soldiers orbital drops\nto target location.
+		SelectTargetSpeechNotification: SelectTarget
+		DisplayRadarPing: true
+		ChargeInterval: 10000
+		UnitTypes: DPOD2E1, DPOD2E2
 		CameraActor: camera
 	ProduceActorPower:
 		PauseOnCondition: disabled || empdisable
@@ -453,42 +576,160 @@ GAPLUG:
 	Power:
 		Amount: -150
 	Power@ioncannon:
-		RequiresCondition: (plug.ioncannona || plug.ioncannonb)
+		RequiresCondition: plug.ioncannona || plug.ioncannonb
 		Amount: -100
 	Power@hunterseeker:
-		RequiresCondition: (plug.hunterseekera || plug.hunterseekerb)
+		RequiresCondition: plug.hunterseekera || plug.hunterseekerb
 		Amount: -50
+	Power@droppod:
+		RequiresCondition: plug.droppoda || plug.droppodb
+		Amount: -20
 	Pluggable@pluga:
 		Offset: 0,2
 		Conditions:
 			plug.ioncannon: plug.ioncannona
 			plug.hunterseeker: plug.hunterseekera
+			plug.droppod: plug.droppoda
 		Requirements:
-			plug.ioncannon: !plug.ioncannonb && !plug.ioncannona && !plug.hunterseekera
-			plug.hunterseeker: !plug.hunterseekerb && !plug.ioncannona && !plug.hunterseekera
+			plug.ioncannon: !build-incomplete && !plug.ioncannonb && !plug.ioncannona && !plug.hunterseekera && !plug.droppoda
+			plug.hunterseeker: !build-incomplete && !plug.hunterseekerb && !plug.ioncannona && !plug.hunterseekera && !plug.droppoda
+			plug.droppod: !build-incomplete &&  !plug.droppodb && !plug.ioncannona && !plug.hunterseekera && !plug.droppoda
+		EditorOptions:
+			plug.ioncannon: Ion Cannon
+			plug.hunterseeker: Hunter Seeker
+			plug.droppod: Drop Pod Reinforcements
 	WithIdleOverlay@ioncannona:
-		RequiresCondition: plug.ioncannona
+		RequiresCondition: !build-incomplete && plug.ioncannona
 		PauseOnCondition: disabled
 		Sequence: idle-ioncannona
 	WithIdleOverlay@hunterseekera:
-		RequiresCondition: plug.hunterseekera
+		RequiresCondition: !build-incomplete && plug.hunterseekera
 		PauseOnCondition: disabled
 		Sequence: idle-hunterseekera
+		Palette: player-nobright
+		IsPlayerPalette: True
+	WithIdleOverlay@hunterseekera-bright:
+		RequiresCondition: !build-incomplete && plug.hunterseekera
+		PauseOnCondition: disabled
+		Sequence: idle-hunterseekera-bright
+		Palette: bright
+	WithIdleOverlay@droppoda:
+		RequiresCondition: !build-incomplete && plug.droppoda
+		PauseOnCondition: disabled
+		Sequence: idle-droppoda
+		Palette: player-nobright
+		IsPlayerPalette: True
+	WithIdleOverlay@droppoda-bright:
+		RequiresCondition: !build-incomplete && plug.droppoda
+		PauseOnCondition: disabled
+		Sequence: idle-droppoda-bright
+		Palette: bright
 	Pluggable@plugb:
 		Offset: 1,2
 		Conditions:
 			plug.ioncannon: plug.ioncannonb
 			plug.hunterseeker: plug.hunterseekerb
+			plug.droppod: plug.droppodb
 		Requirements:
-			plug.ioncannon: !plug.ioncannona && !plug.ioncannonb && !plug.hunterseekerb
-			plug.hunterseeker: !plug.hunterseekera && !plug.ioncannonb && !plug.hunterseekerb
+			plug.ioncannon: !build-incomplete && !plug.ioncannona && !plug.ioncannonb && !plug.hunterseekerb && !plug.droppodb
+			plug.hunterseeker: !build-incomplete && !plug.hunterseekera && !plug.ioncannonb && !plug.hunterseekerb && !plug.droppodb
+			plug.droppod: !build-incomplete && !plug.droppoda && !plug.ioncannonb && !plug.hunterseekerb  && !plug.droppodb
+		EditorOptions:
+			plug.ioncannon: Ion Cannon
+			plug.hunterseeker: Hunter Seeker
+			plug.droppod: Drop Pod Reinforcements
 	WithIdleOverlay@ioncannonb:
-		RequiresCondition: plug.ioncannonb
+		RequiresCondition: !build-incomplete && plug.ioncannonb
 		PauseOnCondition: disabled
 		Sequence: idle-ioncannonb
 	WithIdleOverlay@hunterseekerb:
-		RequiresCondition: plug.hunterseekerb
+		RequiresCondition: !build-incomplete && plug.hunterseekerb
 		PauseOnCondition: disabled
 		Sequence: idle-hunterseekerb
+		Palette: player-nobright
+		IsPlayerPalette: True
+	WithIdleOverlay@hunterseekerb-bright:
+		RequiresCondition: !build-incomplete && plug.hunterseekerb
+		PauseOnCondition: disabled
+		Sequence: idle-hunterseekerb-bright
+		Palette: bright
+	WithIdleOverlay@droppodb:
+		RequiresCondition: plug.droppodb
+		PauseOnCondition: disabled
+		Sequence: idle-droppodb
+		Palette: player-nobright
+		IsPlayerPalette: True
+	WithIdleOverlay@droppodb-bright:
+		RequiresCondition: plug.droppodb
+		PauseOnCondition: disabled
+		Sequence: idle-droppodb-bright
+		Palette: bright
 	ProvidesPrerequisite@buildingname:
-	SelectionDecorations:
+	ProvidesPrerequisite@pluggableion:
+		RequiresCondition: !plug.ioncannona && !plug.ioncannonb
+		Prerequisite: gaplug.socket.ioncannon
+	ProvidesPrerequisite@pluggablehunter:
+		RequiresCondition: !plug.hunterseekera && !plug.hunterseekerb
+		Prerequisite: gaplug.socket.hunterseeker
+	IsometricSelectable:
+		Height: 48
+
+GAPLUG.SOCKET.IONCANNON:
+	AlwaysVisible:
+	Interactable:
+	Tooltip:
+		Name: GDI Upgrade Center socket
+
+GAPLUG.SOCKET.HUNTERSEEKER:
+	AlwaysVisible:
+	Interactable:
+	Tooltip:
+		Name: GDI Upgrade Center socket
+
+GAPLUG2:
+	Inherits: ^BuildingPlug
+	Valued:
+		Cost: 1000
+	Tooltip:
+		Name: Seeker Control
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 110
+		Prerequisites: gaplug.socket.hunterseeker, gatech, gaweap, ~structures.gdi, ~techlevel.superweapons
+		Description: Enables use of the hunter-seeker droid.
+	Plug:
+		Type: plug.hunterseeker
+	Power:
+		Amount: -50
+
+GAPLUG3:
+	Inherits: ^BuildingPlug
+	Valued:
+		Cost: 1500
+	Tooltip:
+		Name: Ion Cannon Uplink
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 120
+		Prerequisites: gaplug.socket.ioncannon, gatech, ~structures.gdi, ~techlevel.superweapons
+		Description: Enables use of the Ion Cannon.
+	Plug:
+		Type: plug.ioncannon
+	Power:
+		Amount: -100
+
+GAPLUG4:
+	Inherits: ^BuildingPlug
+	Valued:
+		Cost: 1000
+	Tooltip:
+		Name: Drop Pod Node
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 180
+		Prerequisites: gaplug, gatech, ~structures.gdi, ~techlevel.superweapons
+		Description: Enables use of the Drop Pod Reinforcements.
+	Plug:
+		Type: plug.droppod
+	Power:
+		Amount: -20

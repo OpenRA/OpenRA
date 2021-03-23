@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,13 +9,12 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Eluant;
 using OpenRA.Activities;
-using OpenRA.Effects;
 using OpenRA.Mods.Common.Activities;
+using OpenRA.Mods.Common.Effects;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Scripting;
@@ -36,8 +35,7 @@ namespace OpenRA.Mods.Common.Scripting
 
 		Actor CreateActor(Player owner, string actorType, bool addToWorld, CPos? entryLocation = null, CPos? nextLocation = null)
 		{
-			ActorInfo ai;
-			if (!Context.World.Map.Rules.Actors.TryGetValue(actorType, out ai))
+			if (!Context.World.Map.Rules.Actors.TryGetValue(actorType, out var ai))
 				throw new LuaException("Unknown actor type '{0}'".F(actorType));
 
 			var initDict = new TypeDictionary();
@@ -46,17 +44,20 @@ namespace OpenRA.Mods.Common.Scripting
 
 			if (entryLocation.HasValue)
 			{
-				var pi = ai.TraitInfoOrDefault<AircraftInfo>();
-				initDict.Add(new CenterPositionInit(owner.World.Map.CenterOfCell(entryLocation.Value) + new WVec(0, 0, pi != null ? pi.CruiseAltitude.Length : 0)));
 				initDict.Add(new LocationInit(entryLocation.Value));
+
+				var pi = ai.TraitInfoOrDefault<AircraftInfo>();
+				if (pi != null)
+					initDict.Add(new CenterPositionInit(owner.World.Map.CenterOfCell(entryLocation.Value) + new WVec(0, 0, pi.CruiseAltitude.Length)));
 			}
 
 			if (entryLocation.HasValue && nextLocation.HasValue)
-				initDict.Add(new FacingInit(Context.World.Map.FacingBetween(CPos.Zero, CPos.Zero + (nextLocation.Value - entryLocation.Value), 0)));
+			{
+				var facing = Context.World.Map.FacingBetween(CPos.Zero, CPos.Zero + (nextLocation.Value - entryLocation.Value), WAngle.Zero);
+				initDict.Add(new FacingInit(facing));
+			}
 
-			var actor = Context.World.CreateActor(addToWorld, actorType, initDict);
-
-			return actor;
+			return Context.World.CreateActor(addToWorld, actorType, initDict);
 		}
 
 		void Move(Actor actor, CPos dest)
@@ -84,24 +85,21 @@ namespace OpenRA.Mods.Common.Scripting
 				actors.Add(actor);
 
 				var actionDelay = i * interval;
-				Action actorAction = () =>
+				Activity queuedActivity = null;
+				if (af != null)
 				{
-					Context.World.Add(actor);
-					for (var j = 1; j < entryPath.Length; j++)
-						Move(actor, entryPath[j]);
-
-					if (af != null)
+					queuedActivity = new CallFunc(() =>
 					{
-						actor.QueueActivity(new CallFunc(() =>
-						{
-							using (af)
-							using (var a = actor.ToLuaValue(Context))
-								af.Call(a);
-						}));
-					}
-				};
+						using (af)
+						using (var a = actor.ToLuaValue(Context))
+							af.Call(a);
+					});
+				}
 
-				Context.World.AddFrameEndTask(w => w.Add(new DelayedAction(actionDelay, actorAction)));
+				// We need to exclude the spawn location from the movement path
+				var path = entryPath.Skip(1).ToArray();
+
+				Context.World.AddFrameEndTask(w => w.Add(new SpawnActorEffect(actor, actionDelay, path, queuedActivity)));
 			}
 
 			return actors.ToArray();
@@ -152,56 +150,14 @@ namespace OpenRA.Mods.Common.Scripting
 			else
 			{
 				var aircraft = transport.TraitOrDefault<Aircraft>();
+
+				// Scripted cargo aircraft must turn to default position before unloading.
+				// TODO: pass facing through UnloadCargo instead.
 				if (aircraft != null)
-				{
-					var destination = entryPath.Last();
-
-					// Try to find an alternative landing spot if we can't land at the current destination
-					if (!aircraft.CanLand(destination) && dropRange > 0)
-					{
-						var locomotors = cargo.Passengers
-							.Select(a => a.Info.TraitInfoOrDefault<MobileInfo>())
-							.Where(m => m != null)
-							.Distinct()
-							.Select(m => m.LocomotorInfo)
-							.ToList();
-
-						foreach (var c in transport.World.Map.FindTilesInCircle(destination, dropRange))
-						{
-							if (!aircraft.CanLand(c))
-								continue;
-
-							if (!locomotors.All(m => domainIndex.IsPassable(destination, c, m)))
-								continue;
-
-							destination = c;
-							break;
-						}
-					}
-
-					if (aircraft.Info.VTOL)
-					{
-						if (destination != entryPath.Last())
-							Move(transport, destination);
-
-						transport.QueueActivity(new Turn(transport, aircraft.Info.InitialFacing));
-						transport.QueueActivity(new HeliLand(transport, true));
-					}
-					else
-					{
-						transport.QueueActivity(new Land(transport, Target.FromCell(transport.World, destination)));
-					}
-
-					transport.QueueActivity(new Wait(15));
-				}
+					transport.QueueActivity(new Land(transport, Target.FromCell(transport.World, entryPath.Last()), WDist.FromCells(dropRange), aircraft.Info.InitialFacing));
 
 				if (cargo != null)
-				{
-					transport.QueueActivity(new UnloadCargo(transport, true));
-					transport.QueueActivity(new WaitFor(() => cargo.IsEmpty(transport)));
-				}
-
-				transport.QueueActivity(new Wait(aircraft != null ? 50 : 25));
+					transport.QueueActivity(new UnloadCargo(transport, WDist.FromCells(dropRange)));
 			}
 
 			if (exitFunc != null)

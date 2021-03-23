@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -29,23 +29,14 @@ namespace OpenRA.Mods.Common.Scripting
 		}
 
 		[Desc("Returns the total of the power the player has.")]
-		public int PowerProvided
-		{
-			get { return pm.PowerProvided; }
-		}
+		public int PowerProvided => pm.PowerProvided;
 
 		[Desc("Returns the power used by the player.")]
-		public int PowerDrained
-		{
-			get { return pm.PowerDrained; }
-		}
+		public int PowerDrained => pm.PowerDrained;
 
 		[Desc("Returns the player's power state " +
-			"(\"Normal\", \"Low\" or \"Critical\").")]
-		public string PowerState
-		{
-			get { return pm.PowerState.ToString(); }
-		}
+		      "(\"Normal\", \"Low\" or \"Critical\").")]
+		public string PowerState => pm.PowerState.ToString();
 
 		[Desc("Triggers low power for the chosen amount of ticks.")]
 		public void TriggerPowerOutage(int ticks)

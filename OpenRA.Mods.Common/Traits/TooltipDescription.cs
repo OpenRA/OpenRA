@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -17,11 +17,10 @@ namespace OpenRA.Mods.Common.Traits
 	public class TooltipDescriptionInfo : ConditionalTraitInfo
 	{
 		[Desc("Text shown in tooltip.")]
-		[Translate]
 		public readonly string Description = "";
 
-		[Desc("Player stances who can view the description.")]
-		public readonly Stance ValidStances = Stance.Ally | Stance.Neutral | Stance.Enemy;
+		[Desc("Player relationships who can view the description.")]
+		public readonly PlayerRelationship ValidRelationships = PlayerRelationship.Ally | PlayerRelationship.Neutral | PlayerRelationship.Enemy;
 
 		public override object Create(ActorInitializer init) { return new TooltipDescription(init.Self, this); }
 	}
@@ -30,13 +29,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly Actor self;
 
-		public Player Owner
-		{
-			get
-			{
-				return self.EffectiveOwner != null ? self.EffectiveOwner.Owner : self.Owner;
-			}
-		}
+		public Player Owner => self.EffectiveOwner != null ? self.EffectiveOwner.Owner : self.Owner;
 
 		public TooltipDescription(Actor self, TooltipDescriptionInfo info)
 			: base(info)
@@ -53,18 +46,9 @@ namespace OpenRA.Mods.Common.Traits
 			if (Owner == null || forPlayer == null)
 				return false;
 
-			if (!Info.ValidStances.HasStance(Owner.Stances[forPlayer]))
-				return false;
-
-			return true;
+			return Info.ValidRelationships.HasRelationship(Owner.RelationshipWith(forPlayer));
 		}
 
-		public string TooltipText
-		{
-			get
-			{
-				return Info.Description;
-			}
-		}
+		public string TooltipText => Info.Description;
 	}
 }

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Scripting
 			"close enough to complete the activity.")]
 		public void AttackMove(CPos cell, int closeEnough = 0)
 		{
-			Self.QueueActivity(new AttackMoveActivity(Self, move.MoveTo(cell, closeEnough)));
+			Self.QueueActivity(new AttackMoveActivity(Self, () => move.MoveTo(cell, closeEnough)));
 		}
 
 		[ScriptActorPropertyActivity]
@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Scripting
 		{
 			foreach (var wpt in waypoints)
 			{
-				Self.QueueActivity(new AttackMoveActivity(Self, move.MoveTo(wpt, 2)));
+				Self.QueueActivity(new AttackMoveActivity(Self, () => move.MoveTo(wpt, 2)));
 				Self.QueueActivity(new Wait(wait));
 			}
 
@@ -78,12 +78,12 @@ namespace OpenRA.Mods.Common.Scripting
 	[ScriptPropertyGroup("Combat")]
 	public class GeneralCombatProperties : ScriptActorProperties, Requires<AttackBaseInfo>
 	{
-		readonly AttackBase attackBase;
+		readonly AttackBase[] attackBases;
 
 		public GeneralCombatProperties(ScriptContext context, Actor self)
 			: base(context, self)
 		{
-			attackBase = self.Trait<AttackBase>();
+			attackBases = self.TraitsImplementing<AttackBase>().ToArray();
 		}
 
 		[Desc("Attack the target actor. The target actor needs to be visible.")]
@@ -96,7 +96,8 @@ namespace OpenRA.Mods.Common.Scripting
 			if (!targetActor.Info.HasTraitInfo<FrozenUnderFogInfo>() && !targetActor.CanBeViewedByPlayer(Self.Owner))
 				Log.Write("lua", "{1} is not revealed for player {0}!", Self.Owner, targetActor);
 
-			attackBase.AttackTarget(target, true, allowMove, forceAttack);
+			foreach (var attack in attackBases)
+				attack.AttackTarget(target, AttackSource.Default, true, allowMove, forceAttack);
 		}
 
 		[Desc("Checks if the targeted actor is a valid target for this actor.")]

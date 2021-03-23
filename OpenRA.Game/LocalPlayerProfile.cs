@@ -1,6 +1,6 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -12,11 +12,10 @@
 using System;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using OpenRA.Network;
+using OpenRA.Support;
 
 namespace OpenRA
 {
@@ -25,11 +24,11 @@ namespace OpenRA
 		const int AuthKeySize = 2048;
 		public enum LinkState { Uninitialized, GeneratingKeys, Unlinked, CheckingLink, ConnectionFailed, Linked }
 
-		public LinkState State { get { return innerState; } }
-		public string Fingerprint { get { return innerFingerprint; } }
-		public string PublicKey { get { return innerPublicKey; } }
+		public LinkState State => innerState;
+		public string Fingerprint => innerFingerprint;
+		public string PublicKey => innerPublicKey;
 
-		public PlayerProfile ProfileData { get { return innerData; } }
+		public PlayerProfile ProfileData => innerData;
 
 		volatile LinkState innerState;
 		volatile PlayerProfile innerData;
@@ -77,19 +76,16 @@ namespace OpenRA
 			if (State != LinkState.Unlinked && State != LinkState.Linked && State != LinkState.ConnectionFailed)
 				return;
 
-			Action<DownloadDataCompletedEventArgs> onQueryComplete = i =>
+			Task.Run(async () =>
 			{
 				try
 				{
-					innerState = LinkState.Unlinked;
+					var client = HttpClientFactory.Create();
 
-					if (i.Error != null)
-					{
-						innerState = LinkState.ConnectionFailed;
-						return;
-					}
+					var httpResponseMessage = await client.GetAsync(playerDatabase.Profile + Fingerprint);
+					var result = await httpResponseMessage.Content.ReadAsStringAsync();
 
-					var yaml = MiniYaml.FromString(Encoding.UTF8.GetString(i.Result)).First();
+					var yaml = MiniYaml.FromString(result).First();
 					if (yaml.Key == "Player")
 					{
 						innerData = FieldLoader.Load<PlayerProfile>(yaml.Value);
@@ -101,6 +97,8 @@ namespace OpenRA
 						else
 							innerState = LinkState.Linked;
 					}
+					else
+						innerState = LinkState.Unlinked;
 				}
 				catch (Exception e)
 				{
@@ -109,13 +107,11 @@ namespace OpenRA
 				}
 				finally
 				{
-					if (onComplete != null)
-						onComplete();
+					onComplete?.Invoke();
 				}
-			};
+			});
 
 			innerState = LinkState.CheckingLink;
-			new Download(playerDatabase.Profile + Fingerprint, _ => { }, onQueryComplete);
 		}
 
 		public void GenerateKeypair()
@@ -161,14 +157,18 @@ namespace OpenRA
 			}
 
 			innerState = LinkState.Uninitialized;
-			parameters = new RSAParameters();
+			parameters = default(RSAParameters);
 			innerFingerprint = null;
 			innerData = null;
 		}
 
 		public string Sign(params string[] data)
 		{
-			if (State != LinkState.Linked)
+			// If we don't have any keys, or we know for sure that they haven't been linked to the forum
+			// then we can't do much here. If we have keys but don't yet know if they have been linked to the
+			// forum (LinkState.CheckingLink or ConnectionFailed) then we sign to avoid blocking the main thread
+			// but accept that - if the cert is invalid - the server will reject the result.
+			if (State <= LinkState.Unlinked)
 				return null;
 
 			return CryptoUtil.Sign(parameters, data.Where(x => !string.IsNullOrEmpty(x)).JoinWith(string.Empty));
@@ -176,7 +176,7 @@ namespace OpenRA
 
 		public string DecryptString(string data)
 		{
-			if (State != LinkState.Linked)
+			if (State <= LinkState.Unlinked)
 				return null;
 
 			return CryptoUtil.DecryptString(parameters, data);

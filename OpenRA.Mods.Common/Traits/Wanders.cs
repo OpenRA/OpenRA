@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,7 +9,8 @@
  */
 #endregion
 
-using System;
+using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -28,6 +29,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Maximum amount of ticks the actor will sit idly before starting to wander.")]
 		public readonly int MaxMoveDelay = 0;
 
+		[Desc("The terrain types that this actor should avoid wandering on to.")]
+		public readonly HashSet<string> AvoidTerrainTypes = new HashSet<string>();
+
 		public override object Create(ActorInitializer init) { return new Wanders(init.Self, this); }
 	}
 
@@ -40,7 +44,6 @@ namespace OpenRA.Mods.Common.Traits
 		int countdown;
 		int ticksIdle;
 		int effectiveMoveRadius;
-		bool firstTick = true;
 
 		public Wanders(Actor self, WandersInfo info)
 			: base(info)
@@ -48,6 +51,7 @@ namespace OpenRA.Mods.Common.Traits
 			this.self = self;
 			this.info = info;
 			effectiveMoveRadius = info.WanderMoveRadius;
+			countdown = self.World.SharedRandom.Next(info.MinMoveDelay, info.MaxMoveDelay);
 		}
 
 		protected override void Created(Actor self)
@@ -72,20 +76,12 @@ namespace OpenRA.Mods.Common.Traits
 			if (IsTraitDisabled)
 				return;
 
-			// OnBecomingIdle has not been called yet at this point, so set the initial countdown here
-			if (firstTick)
-			{
-				countdown = self.World.SharedRandom.Next(info.MinMoveDelay, info.MaxMoveDelay);
-				firstTick = false;
-				return;
-			}
-
 			if (--countdown > 0)
 				return;
 
 			var targetCell = PickTargetLocation();
-			if (targetCell != CPos.Zero)
-				DoAction(self, targetCell);
+			if (targetCell.HasValue)
+				DoAction(self, targetCell.Value);
 		}
 
 		void INotifyIdle.TickIdle(Actor self)
@@ -93,7 +89,7 @@ namespace OpenRA.Mods.Common.Traits
 			TickIdle(self);
 		}
 
-		CPos PickTargetLocation()
+		CPos? PickTargetLocation()
 		{
 			var target = self.CenterPosition + new WVec(0, -1024 * effectiveMoveRadius, 0).Rotate(WRot.FromFacing(self.World.SharedRandom.Next(255)));
 			var targetCell = self.World.Map.CellContaining(target);
@@ -104,7 +100,15 @@ namespace OpenRA.Mods.Common.Traits
 				if (++ticksIdle % info.ReduceMoveRadiusDelay == 0)
 					effectiveMoveRadius--;
 
-				return CPos.Zero; // We'll be back the next tick; better to sit idle for a few seconds than prolong this tick indefinitely with a loop
+				// We'll be back the next tick; better to sit idle for a few seconds than prolong this tick indefinitely with a loop
+				return null;
+			}
+
+			if (info.AvoidTerrainTypes.Count > 0)
+			{
+				var terrainType = self.World.Map.GetTerrainInfo(targetCell).Type;
+				if (Info.AvoidTerrainTypes.Contains(terrainType))
+					return null;
 			}
 
 			ticksIdle = 0;

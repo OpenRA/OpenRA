@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,22 +10,23 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using OpenRA.Mods.Common.Activities;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This unit can spawn and eject other actors while flying.")]
-	public class ParaDropInfo : ITraitInfo, Requires<CargoInfo>
+	public class ParaDropInfo : TraitInfo, Requires<CargoInfo>
 	{
 		[Desc("Distance around the drop-point to unload troops.")]
 		public readonly WDist DropRange = WDist.FromCells(4);
 
+		[Desc("Wait at least this many ticks between each drop.")]
+		public readonly int DropInterval = 5;
+
 		[Desc("Sound to play when dropping.")]
 		public readonly string ChuteSound = null;
 
-		public object Create(ActorInitializer init) { return new ParaDrop(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new ParaDrop(init.Self, this); }
 	}
 
 	public class ParaDrop : ITick, ISync, INotifyRemovedFromWorld
@@ -33,14 +34,19 @@ namespace OpenRA.Mods.Common.Traits
 		readonly ParaDropInfo info;
 		readonly Actor self;
 		readonly Cargo cargo;
-		readonly HashSet<CPos> droppedAt = new HashSet<CPos>();
 
 		public event Action<Actor> OnRemovedFromWorld = self => { };
 		public event Action<Actor> OnEnteredDropRange = self => { };
 		public event Action<Actor> OnExitedDropRange = self => { };
 
-		[Sync] bool inDropRange;
-		[Sync] Target target;
+		[Sync]
+		bool inDropRange;
+
+		[Sync]
+		Target target;
+
+		[Sync]
+		int dropDelay;
 
 		bool checkForSuitableCell;
 
@@ -53,13 +59,18 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void SetLZ(CPos lz, bool checkLandingCell)
 		{
-			droppedAt.Clear();
 			target = Target.FromCell(self.World, lz);
 			checkForSuitableCell = checkLandingCell;
 		}
 
 		void ITick.Tick(Actor self)
 		{
+			if (dropDelay > 0)
+			{
+				dropDelay--;
+				return;
+			}
+
 			var wasInDropRange = inDropRange;
 			inDropRange = target.IsInRange(self.CenterPosition, info.DropRange);
 
@@ -70,30 +81,36 @@ namespace OpenRA.Mods.Common.Traits
 				OnExitedDropRange(self);
 
 			// Are we able to drop the next trooper?
-			if (!inDropRange || cargo.IsEmpty(self))
+			if (!inDropRange || cargo.IsEmpty(self) || !self.World.Map.Contains(self.Location))
 				return;
 
-			if (droppedAt.Contains(self.Location) || (checkForSuitableCell && !IsSuitableCell(cargo.Peek(self), self.Location)))
-				return;
+			var dropActor = cargo.Peek(self);
+			var dropPositionable = dropActor.Trait<IPositionable>();
+			var dropCell = self.Location;
+			var dropSubCell = dropPositionable.GetAvailableSubCell(dropCell);
+			if (dropSubCell == SubCell.Invalid)
+			{
+				if (checkForSuitableCell)
+					return;
 
-			if (!self.World.Map.Contains(self.Location))
-				return;
+				dropSubCell = SubCell.Any;
+			}
 
-			// unload a dude here
-			droppedAt.Add(self.Location);
+			// Unload here
+			if (cargo.Unload(self) != dropActor)
+				throw new InvalidOperationException("Peeked cargo was not unloaded!");
 
-			var a = cargo.Unload(self);
 			self.World.AddFrameEndTask(w =>
 			{
-				w.Add(a);
-				a.QueueActivity(new Parachute(a, self.CenterPosition));
-			});
-			Game.Sound.Play(SoundType.World, info.ChuteSound, self.CenterPosition);
-		}
+				dropPositionable.SetPosition(dropActor, dropCell, dropSubCell);
 
-		static bool IsSuitableCell(Actor actorToDrop, CPos p)
-		{
-			return actorToDrop.Trait<IPositionable>().CanEnterCell(p);
+				var dropPosition = dropActor.CenterPosition + new WVec(0, 0, self.CenterPosition.Z - dropActor.CenterPosition.Z);
+				dropPositionable.SetCenterPosition(dropActor, dropPosition);
+				w.Add(dropActor);
+			});
+
+			Game.Sound.Play(SoundType.World, info.ChuteSound, self.CenterPosition);
+			dropDelay = info.DropInterval;
 		}
 
 		void INotifyRemovedFromWorld.RemovedFromWorld(Actor self)

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -123,17 +123,17 @@ namespace OpenRA.Scripting
 
 	public sealed class ScriptContext : IDisposable
 	{
-		public World World { get; private set; }
-		public WorldRenderer WorldRenderer { get; private set; }
-
-		readonly MemoryConstrainedLuaRuntime runtime;
-		readonly LuaFunction tick;
-
 		// Restrict user scripts (excluding system libraries) to 50 MB of memory use
 		const int MaxUserScriptMemory = 50 * 1024 * 1024;
 
 		// Restrict the number of instructions that will be run per map function call
 		const int MaxUserScriptInstructions = 1000000;
+
+		public World World { get; private set; }
+		public WorldRenderer WorldRenderer { get; private set; }
+
+		readonly MemoryConstrainedLuaRuntime runtime;
+		readonly LuaFunction tick;
 
 		readonly Type[] knownActorCommands;
 		public readonly Cache<ActorInfo, Type[]> ActorCommands;
@@ -161,8 +161,8 @@ namespace OpenRA.Scripting
 				.ToArray();
 			PlayerCommands = FilterCommands(world.Map.Rules.Actors["player"], knownPlayerCommands);
 
-			runtime.Globals["GameDir"] = Platform.GameDir;
-			runtime.DoBuffer(File.Open(Platform.ResolvePath(".", "lua", "scriptwrapper.lua"), FileMode.Open, FileAccess.Read).ReadAllText(), "scriptwrapper.lua").Dispose();
+			runtime.Globals["EngineDir"] = Platform.EngineDir;
+			runtime.DoBuffer(File.Open(Path.Combine(Platform.EngineDir, "lua", "scriptwrapper.lua"), FileMode.Open, FileAccess.Read).ReadAllText(), "scriptwrapper.lua").Dispose();
 			tick = (LuaFunction)runtime.Globals["Tick"];
 
 			// Register globals
@@ -267,8 +267,7 @@ namespace OpenRA.Scripting
 				return;
 
 			disposed = true;
-			if (runtime != null)
-				runtime.Dispose();
+			runtime?.Dispose();
 		}
 
 		static IEnumerable<Type> ExtractRequiredTypes(Type t)

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -15,14 +15,14 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
 {
-	class MineInfo : ITraitInfo
+	class MineInfo : TraitInfo
 	{
 		public readonly BitSet<CrushClass> CrushClasses = default(BitSet<CrushClass>);
 		public readonly bool AvoidFriendly = true;
 		public readonly bool BlockFriendly = true;
 		public readonly BitSet<CrushClass> DetonateClasses = default(BitSet<CrushClass>);
 
-		public object Create(ActorInitializer init) { return new Mine(this); }
+		public override object Create(ActorInitializer init) { return new Mine(this); }
 	}
 
 	class Mine : ICrushable, INotifyCrushed
@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (!info.CrushClasses.Overlaps(crushClasses))
 				return;
 
-			if (crusher.Info.HasTraitInfo<MineImmuneInfo>() || (self.Owner.Stances[crusher.Owner] == Stance.Ally && info.AvoidFriendly))
+			if (crusher.Info.HasTraitInfo<MineImmuneInfo>() || (self.Owner.RelationshipWith(crusher.Owner) == PlayerRelationship.Ally && info.AvoidFriendly))
 				return;
 
 			var mobile = crusher.TraitOrDefault<Mobile>();
@@ -53,10 +53,19 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		bool ICrushable.CrushableBy(Actor self, Actor crusher, BitSet<CrushClass> crushClasses)
 		{
-			if (info.BlockFriendly && !crusher.Info.HasTraitInfo<MineImmuneInfo>() && self.Owner.Stances[crusher.Owner] == Stance.Ally)
+			if (info.BlockFriendly && !crusher.Info.HasTraitInfo<MineImmuneInfo>() && self.Owner.RelationshipWith(crusher.Owner) == PlayerRelationship.Ally)
 				return false;
 
 			return info.CrushClasses.Overlaps(crushClasses);
+		}
+
+		LongBitSet<PlayerBitMask> ICrushable.CrushableBy(Actor self, BitSet<CrushClass> crushClasses)
+		{
+			if (!info.CrushClasses.Overlaps(crushClasses))
+				return self.World.NoPlayersMask;
+
+			// Friendly units should move around!
+			return info.BlockFriendly ? ~self.Owner.AlliedPlayersMask : self.World.AllPlayersMask;
 		}
 	}
 

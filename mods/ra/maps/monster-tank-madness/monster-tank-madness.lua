@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+   Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -10,7 +10,7 @@ AlliedUnits =
 {
 	{ delay = 0, types = { "1tnk", "1tnk", "2tnk", "2tnk" } },
 	{ delay = DateTime.Seconds(3), types = { "e1", "e1", "e1", "e3", "e3" } },
-	{ delay = DateTime.Seconds(7), types = { "e6" } }
+	{ delay = DateTime.Seconds(7), types = { "e6", "e6", "thf" } }
 }
 ReinforceBaseUnits = { "1tnk", "1tnk", "2tnk", "arty", "arty" }
 CivilianEvacuees = { "c1", "c2", "c5", "c7", "c8" }
@@ -28,7 +28,6 @@ ExtractionLZ = DemitriLZ.Location
 BeachTrigger = { CPos.New(19, 44), CPos.New(20, 44), CPos.New(21, 44), CPos.New(22, 44), CPos.New(22, 45), CPos.New(23, 45), CPos.New(22, 44), CPos.New(24, 45), CPos.New(24, 46), CPos.New(24, 47), CPos.New(25, 47), CPos.New(25, 48) }
 DemitriAreaTrigger = { CPos.New(32, 98), CPos.New(32, 99), CPos.New(33, 99), CPos.New(33, 100), CPos.New(33, 101), CPos.New(33, 102), CPos.New(32, 102), CPos.New(32, 103) }
 HospitalAreaTrigger = { CPos.New(43, 41), CPos.New(44, 41), CPos.New(45, 41), CPos.New(46, 41), CPos.New(46, 42), CPos.New(46, 43), CPos.New(46, 44), CPos.New(46, 45), CPos.New(46, 46), CPos.New(45, 46), CPos.New(44, 46), CPos.New(43, 46) }
-
 
 EvacuateCivilians = function()
 	local evacuees = Reinforcements.Reinforce(neutral, CivilianEvacuees, { HospitalCivilianSpawnPoint.Location }, 0)
@@ -121,7 +120,11 @@ SendAlliedUnits = function()
 				if unit.Type == "e6" then
 					Engineer = unit
 					Trigger.OnKilled(unit, LandingPossible)
-				end
+				elseif unit.Type == "thf" then
+					Trigger.OnKilled(unit, function()
+						player.MarkFailedObjective(StealMoney)
+					end)
+				end	
 			end)
 		end)
 	end)
@@ -226,8 +229,8 @@ CreateDemitri = function()
 	end)
 	Trigger.OnRemovedFromWorld(demitri, function()
 		if not demitriChinook.IsDead and demitriChinook.HasPassengers then
-			demitriChinook.Move(ExtractionWaypoint)
-			Trigger.OnIdle(demitriChinook, demitriChinook.Destroy)
+			demitriChinook.Move(ExtractionWaypoint + CVec.New(0, -1))
+			demitriChinook.Destroy()
 			demitriLZFlare.Destroy()
 		end
 	end)
@@ -289,9 +292,6 @@ InitPlayers = function()
 
 	ussr.Cash = 2000
 	Trigger.AfterDelay(0, function() badguy.Resources = badguy.ResourceCapacity * 0.75 end)
-	Trigger.OnCapture(USSROutpostSilo, function() -- getting money through capturing doesn't work
-		player.Cash = player.Cash + Utils.RandomInteger(1200, 1300)
-	end)
 end
 
 InitObjectives = function()
@@ -300,6 +300,7 @@ InitObjectives = function()
 	end)
 
 	EliminateSuperTanks = player.AddPrimaryObjective("Eliminate these super tanks.")
+	StealMoney = player.AddPrimaryObjective("Steal money from the nearby outpost with the Thief.")
 	CrossRiver = player.AddPrimaryObjective("Secure transport to the mainland.")
 	FindOutpost = player.AddPrimaryObjective("Find our outpost and start repairs on it.")
 	RescueCivilians = player.AddSecondaryObjective("Evacuate all civilians from the hospital.")
@@ -380,6 +381,17 @@ InitTriggers = function()
 		end
 	end)
 
+	Trigger.OnInfiltrated(USSROutpostSilo, function()
+		MoneyStolen = true
+		player.MarkCompletedObjective(StealMoney)
+	end)
+
+	Trigger.OnKilledOrCaptured(USSROutpostSilo, function()
+		if not MoneyStolen then
+			player.MarkFailedObjective(StealMoney)
+		end
+	end)
+
 	beachReached = false
 	Trigger.OnEnteredFootprint(BeachTrigger, function(a, id)
 		if not beachReached and a.Owner == player then
@@ -425,6 +437,7 @@ InitTriggers = function()
 
 	LstProduced = 0
 	Trigger.OnKilled(USSRSpen, LandingPossible)
+	Trigger.OnSold(USSRSpen, LandingPossible)
 	Trigger.OnProduction(USSRSpen, function(self, produced)
 		if produced.Type == "lst" then
 			LstProduced = LstProduced + 1
@@ -437,10 +450,7 @@ InitTriggers = function()
 end
 
 WorldLoaded = function()
-
 	InitPlayers()
 	InitTriggers()
-
 	SetupMission()
 end
-

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -11,19 +11,19 @@
 
 using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Drawing;
+using OpenRA.Primitives;
 
 namespace OpenRA
 {
 	[SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Mimic a built-in type alias.")]
-	public struct int2 : IEquatable<int2>
+	public readonly struct int2 : IEquatable<int2>
 	{
 		public readonly int X, Y;
 		public int2(int x, int y) { X = x; Y = y; }
-		public int2(Point p) { X = p.X; Y = p.Y; }
 		public int2(Size p) { X = p.Width; Y = p.Height; }
 
 		public static int2 operator +(int2 a, int2 b) { return new int2(a.X + b.X, a.Y + b.Y); }
+		public static int2 operator +(int2 a, Size b) { return new int2(a.X + b.Width, a.Y + b.Height); }
 		public static int2 operator -(int2 a, int2 b) { return new int2(a.X - b.X, a.Y - b.Y); }
 		public static int2 operator *(int a, int2 b) { return new int2(a * b.X, a * b.Y); }
 		public static int2 operator *(int2 b, int a) { return new int2(a * b.X, a * b.Y); }
@@ -43,8 +43,8 @@ namespace OpenRA
 
 		public int2 Sign() { return new int2(Math.Sign(X), Math.Sign(Y)); }
 		public int2 Abs() { return new int2(Math.Abs(X), Math.Abs(Y)); }
-		public int LengthSquared { get { return X * X + Y * Y; } }
-		public int Length { get { return Exts.ISqrt(LengthSquared); } }
+		public int LengthSquared => X * X + Y * Y;
+		public int Length => Exts.ISqrt(LengthSquared);
 
 		public int2 WithX(int newX)
 		{
@@ -60,8 +60,6 @@ namespace OpenRA
 		public static int2 Min(int2 a, int2 b) { return new int2(Math.Min(a.X, b.X), Math.Min(a.Y, b.Y)); }
 
 		public static readonly int2 Zero = new int2(0, 0);
-		public Point ToPoint() { return new Point(X, Y); }
-		public PointF ToPointF() { return new PointF(X, Y); }
 		public float2 ToFloat2() { return new float2(X, Y); }
 
 		// Change endianness of a uint32

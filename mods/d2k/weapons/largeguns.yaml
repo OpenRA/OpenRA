@@ -4,12 +4,13 @@
 	Report: MEDTANK1.WAV
 	Projectile: Bullet
 		Speed: 562
-		Inaccuracy: 380
+		Inaccuracy: 128
+		InaccuracyType: PerCellIncrement
 		Image: 120mm
 	Warhead@1Dam: SpreadDamage
-		Spread: 256
-		Falloff: 100, 50, 25, 0
 		Damage: 2700
+		Spread: 512
+		Falloff: 100, 0
 		Versus:
 			none: 20
 			wall: 50
@@ -20,12 +21,15 @@
 			cy: 20
 			harvester: 50
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
+		DamageCalculationType: ClosestTargetablePosition
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 		InvalidTargets: Vehicle, Structure
 	Warhead@3Eff: CreateEffect
 		Explosions: small_napalm
 		ImpactActors: false
+	Warhead@4Concrete: DamagesConcrete
+		Damage: 540
 
 110mm_Gun:
 	Inherits: ^Cannon
@@ -36,6 +40,8 @@
 		Speed: 875
 		Blockable: false
 	Warhead@1Dam: SpreadDamage
+		Damage: 2900
+	Warhead@4Concrete: DamagesConcrete
 		Damage: 2900
 
 80mm_A:
@@ -55,10 +61,8 @@ DevBullet:
 	Report: TANKHVY1.WAV
 	Projectile: Bullet
 		Speed: 281
-		Inaccuracy: 0
 		Image: doubleblastbullet
 	Warhead@1Dam: SpreadDamage
-		Spread: 384
 		Damage: 6500
 		Versus:
 			none: 50
@@ -69,6 +73,8 @@ DevBullet:
 			invulnerable: 0
 			cy: 40
 			harvester: 100
+	Warhead@4Concrete: DamagesConcrete
+		Damage: 3250
 	Warhead@3Eff: CreateEffect
 		Explosions: shockwave
 		ImpactSounds: EXPLMD1.WAV
@@ -81,15 +87,13 @@ DevBullet:
 	Projectile: Bullet
 		Speed: 192
 		Blockable: false
-		Shadow: yes
+		Shadow: true
 		LaunchAngle: 62
-		Inaccuracy: 768
 		ContrailLength: 20
 		Image: 155mm
 	Warhead@1Dam: SpreadDamage
-		Spread: 416
-		Falloff: 100, 65, 35, 20, 0
 		Damage: 4500
+		Spread: 1c0
 		Versus:
 			none: 125
 			wall: 100
@@ -101,6 +105,8 @@ DevBullet:
 			cy: 20
 			harvester: 25
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+	Warhead@4Concrete: DamagesConcrete
+		Damage: 5625
 	Warhead@3Eff: CreateEffect
 		Explosions: med_explosion
 		ImpactSounds: EXPLMD2.WAV

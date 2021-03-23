@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,18 +9,17 @@
  */
 #endregion
 
-using System.Collections.Generic;
-using System.Linq;
 using OpenRA.GameRules;
-using OpenRA.Mods.Common.Warheads;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This actor triggers an explosion on itself when transitioning to a specific damage state.")]
-	public class ExplosionOnDamageTransitionInfo : ITraitInfo, IRulesetLoaded, Requires<HealthInfo>
+	public class ExplosionOnDamageTransitionInfo : ConditionalTraitInfo, IRulesetLoaded, Requires<IHealthInfo>
 	{
-		[WeaponReference, FieldLoader.Require, Desc("Weapon to use for explosion.")]
+		[WeaponReference]
+		[FieldLoader.Require]
+		[Desc("Weapon to use for explosion.")]
 		public readonly string Weapon = null;
 
 		[Desc("At which damage state explosion will trigger.")]
@@ -31,30 +30,30 @@ namespace OpenRA.Mods.Common.Traits
 
 		public WeaponInfo WeaponInfo { get; private set; }
 
-		public object Create(ActorInitializer init) { return new ExplosionOnDamageTransition(this, init.Self); }
+		public override object Create(ActorInitializer init) { return new ExplosionOnDamageTransition(this, init.Self); }
 
-		public void RulesetLoaded(Ruleset rules, ActorInfo ai)
+		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
+			base.RulesetLoaded(rules, ai);
+
 			if (string.IsNullOrEmpty(Weapon))
 				return;
 
-			WeaponInfo weapon;
 			var weaponToLower = Weapon.ToLowerInvariant();
-			if (!rules.Weapons.TryGetValue(weaponToLower, out weapon))
+			if (!rules.Weapons.TryGetValue(weaponToLower, out var weapon))
 				throw new YamlException("Weapons Ruleset does not contain an entry '{0}'".F(weaponToLower));
 
 			WeaponInfo = weapon;
 		}
 	}
 
-	public class ExplosionOnDamageTransition : INotifyDamageStateChanged
+	public class ExplosionOnDamageTransition : ConditionalTrait<ExplosionOnDamageTransitionInfo>, INotifyDamageStateChanged
 	{
-		readonly ExplosionOnDamageTransitionInfo info;
 		bool triggered;
 
 		public ExplosionOnDamageTransition(ExplosionOnDamageTransitionInfo info, Actor self)
+			: base(info)
 		{
-			this.info = info;
 		}
 
 		void INotifyDamageStateChanged.DamageStateChanged(Actor self, AttackInfo e)
@@ -65,13 +64,16 @@ namespace OpenRA.Mods.Common.Traits
 			if (triggered)
 				return;
 
-			if (e.DamageState >= info.DamageState && e.PreviousDamageState < info.DamageState)
+			if (IsTraitDisabled)
+				return;
+
+			if (e.DamageState >= Info.DamageState && e.PreviousDamageState < Info.DamageState)
 			{
-				if (info.TriggerOnlyOnce)
+				if (Info.TriggerOnlyOnce)
 					triggered = true;
 
 				// Use .FromPos since the actor might have been killed, don't use Target.FromActor
-				info.WeaponInfo.Impact(Target.FromPos(self.CenterPosition), e.Attacker, Enumerable.Empty<int>());
+				Info.WeaponInfo.Impact(Target.FromPos(self.CenterPosition), e.Attacker);
 			}
 		}
 	}

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -11,7 +11,6 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Graphics;
 
 namespace OpenRA
 {
@@ -25,7 +24,7 @@ namespace OpenRA
 		public readonly string ProfileName;
 		public readonly string ProfileRank = "Registered Player";
 
-		[FieldLoader.LoadUsing("LoadBadges")]
+		[FieldLoader.LoadUsing(nameof(LoadBadges))]
 		public readonly List<PlayerBadge> Badges;
 
 		static object LoadBadges(MiniYaml yaml)
@@ -35,19 +34,20 @@ namespace OpenRA
 			var badgesNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Badges");
 			if (badgesNode != null)
 			{
-				try
+				var playerDatabase = Game.ModData.Manifest.Get<PlayerDatabase>();
+				foreach (var badgeNode in badgesNode.Value.Nodes)
 				{
-					var playerDatabase = Game.ModData.Manifest.Get<PlayerDatabase>();
-					foreach (var badgeNode in badgesNode.Value.Nodes)
+					Game.RunAfterTick(() =>
 					{
-						var badge = playerDatabase.LoadBadge(badgeNode.Value);
-						if (badge != null)
-							badges.Add(badge);
-					}
-				}
-				catch
-				{
-					// Discard badges on error
+						// Discard badge on error
+						try
+						{
+							var badge = playerDatabase.LoadBadge(badgeNode.Value);
+							if (badge != null)
+								badges.Add(badge);
+						}
+						catch { }
+					});
 				}
 			}
 
@@ -58,12 +58,16 @@ namespace OpenRA
 	public class PlayerBadge
 	{
 		public readonly string Label;
-		public readonly Sprite Icon24;
+		public readonly string Icon;
+		public readonly string Icon2x;
+		public readonly string Icon3x;
 
-		public PlayerBadge(string label, Sprite icon24)
+		public PlayerBadge(string label, string icon, string icon2x, string icon3x)
 		{
 			Label = label;
-			Icon24 = icon24;
+			Icon = icon;
+			Icon2x = icon2x;
+			Icon3x = icon3x;
 		}
 	}
 }

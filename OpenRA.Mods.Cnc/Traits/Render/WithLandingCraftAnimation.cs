@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -17,17 +17,23 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits.Render
 {
-	public class WithLandingCraftAnimationInfo : ITraitInfo, Requires<IMoveInfo>, Requires<WithSpriteBodyInfo>, Requires<CargoInfo>
+	public class WithLandingCraftAnimationInfo : TraitInfo, Requires<IMoveInfo>, Requires<WithSpriteBodyInfo>, Requires<CargoInfo>
 	{
 		public readonly HashSet<string> OpenTerrainTypes = new HashSet<string> { "Clear" };
-		[SequenceReference] public readonly string OpenSequence = "open";
-		[SequenceReference] public readonly string CloseSequence = "close";
-		[SequenceReference] public readonly string UnloadSequence = "unload";
+
+		[SequenceReference]
+		public readonly string OpenSequence = "open";
+
+		[SequenceReference]
+		public readonly string CloseSequence = "close";
+
+		[SequenceReference]
+		public readonly string UnloadSequence = "unload";
 
 		[Desc("Which sprite body to play the animation on.")]
 		public readonly string Body = "body";
 
-		public object Create(ActorInitializer init) { return new WithLandingCraftAnimation(init, this); }
+		public override object Create(ActorInitializer init) { return new WithLandingCraftAnimation(init, this); }
 	}
 
 	public class WithLandingCraftAnimation : ITick
@@ -50,7 +56,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 
 		public bool ShouldBeOpen()
 		{
-			if (move.IsMoving || self.CenterPosition.Z > 0)
+			if (move.CurrentMovementTypes != MovementType.None || self.World.Map.DistanceAboveTerrain(self.CenterPosition).Length > 0)
 				return false;
 
 			return cargo.CurrentAdjacentCells.Any(c => self.World.Map.Contains(c)

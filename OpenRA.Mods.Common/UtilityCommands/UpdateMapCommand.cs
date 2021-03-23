@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -18,11 +18,11 @@ using OpenRA.Mods.Common.UpdateRules;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
-	using YamlFileSet = List<Tuple<IReadWritePackage, string, List<MiniYamlNode>>>;
+	using YamlFileSet = List<(IReadWritePackage, string, List<MiniYamlNode>)>;
 
 	class UpdateMapCommand : IUtilityCommand
 	{
-		string IUtilityCommand.Name { get { return "--update-map"; } }
+		string IUtilityCommand.Name => "--update-map";
 
 		bool IUtilityCommand.ValidateArguments(string[] args)
 		{
@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			var modData = Game.ModData = utility.ModData;
 
 			// HACK: We know that maps can only be oramap or folders, which are ReadWrite
-			var package = new Folder(".").OpenPackage(args[1], modData.ModFiles) as IReadWritePackage;
+			var package = new Folder(Platform.EngineDir).OpenPackage(args[1], modData.ModFiles) as IReadWritePackage;
 			if (package == null)
 				throw new FileNotFoundException(args[1]);
 

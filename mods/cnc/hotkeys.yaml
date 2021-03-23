@@ -1,19 +1,19 @@
 ProductionTypeBuilding: E
 	Description: Building Tab
-	Types: Production
+	Types: Production, Player
 
 ProductionTypeDefense: R
 	Description: Defense Tab
-	Types: Production
+	Types: Production, Player
 
 ProductionTypeInfantry: T
 	Description: Infantry Tab
-	Types: Production
+	Types: Production, Player
 
 ProductionTypeVehicle: Y
 	Description: Vehicle Tab
-	Types: Production
+	Types: Production, Player
 
 ProductionTypeAircraft: U
 	Description: Aircraft Tab
-	Types: Production
+	Types: Production, Player

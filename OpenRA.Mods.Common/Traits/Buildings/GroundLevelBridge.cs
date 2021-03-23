@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,7 +10,6 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -18,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Bridge actor that can't be passed underneath.")]
-	class GroundLevelBridgeInfo : ITraitInfo, IRulesetLoaded, Requires<BuildingInfo>, Requires<HealthInfo>
+	class GroundLevelBridgeInfo : TraitInfo, IRulesetLoaded, Requires<BuildingInfo>, Requires<IHealthInfo>
 	{
 		public readonly string TerrainType = "Bridge";
 
@@ -26,8 +25,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly CVec[] NeighbourOffsets = { };
 
+		[WeaponReference]
 		[Desc("The name of the weapon to use when demolishing the bridge")]
-		[WeaponReference] public readonly string DemolishWeapon = "Demolish";
+		public readonly string DemolishWeapon = "Demolish";
 
 		public WeaponInfo DemolishWeaponInfo { get; private set; }
 
@@ -36,15 +36,14 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
-			WeaponInfo weapon;
 			var weaponToLower = (DemolishWeapon ?? string.Empty).ToLowerInvariant();
-			if (!rules.Weapons.TryGetValue(weaponToLower, out weapon))
+			if (!rules.Weapons.TryGetValue(weaponToLower, out var weapon))
 				throw new YamlException("Weapons Ruleset does not contain an entry '{0}'".F(weaponToLower));
 
 			DemolishWeaponInfo = weapon;
 		}
 
-		public object Create(ActorInitializer init) { return new GroundLevelBridge(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new GroundLevelBridge(init.Self, this); }
 	}
 
 	class GroundLevelBridge : IBridgeSegment, INotifyAddedToWorld, INotifyRemovedFromWorld
@@ -53,13 +52,13 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Actor self;
 		readonly BridgeLayer bridgeLayer;
 		readonly IEnumerable<CPos> cells;
-		readonly Health health;
+		readonly IHealth health;
 
 		public GroundLevelBridge(Actor self, GroundLevelBridgeInfo info)
 		{
 			Info = info;
 			this.self = self;
-			health = self.Trait<Health>();
+			health = self.Trait<IHealth>();
 
 			bridgeLayer = self.World.WorldActor.Trait<BridgeLayer>();
 			var buildingInfo = self.Info.TraitInfo<BuildingInfo>();
@@ -71,17 +70,14 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var cell in cells)
 				self.World.Map.CustomTerrain[cell] = terrainIndex;
 
-			var domainIndex = self.World.WorldActor.TraitOrDefault<DomainIndex>();
-			if (domainIndex != null)
-				domainIndex.UpdateCells(self.World, cells);
+			self.World.WorldActor.TraitOrDefault<DomainIndex>()?.UpdateCells(self.World, cells);
 		}
 
 		void INotifyAddedToWorld.AddedToWorld(Actor self)
 		{
 			bridgeLayer.Add(self);
 
-			var tileSet = self.World.Map.Rules.TileSet;
-			var terrainIndex = tileSet.GetTerrainIndex(Info.TerrainType);
+			var terrainIndex = self.World.Map.Rules.TerrainInfo.GetTerrainIndex(Info.TerrainType);
 			UpdateTerrain(self, terrainIndex);
 			KillInvalidActorsInFootprint(self);
 		}
@@ -107,7 +103,7 @@ namespace OpenRA.Mods.Common.Traits
 			health.InflictDamage(self, repairer, new Damage(-health.MaxHP), true);
 		}
 
-		void IBridgeSegment.Demolish(Actor saboteur)
+		void IBridgeSegment.Demolish(Actor saboteur, BitSet<DamageType> damageTypes)
 		{
 			self.World.AddFrameEndTask(w =>
 			{
@@ -115,16 +111,16 @@ namespace OpenRA.Mods.Common.Traits
 					return;
 
 				// Use .FromPos since this actor is dead. Cannot use Target.FromActor
-				Info.DemolishWeaponInfo.Impact(Target.FromPos(self.CenterPosition), saboteur, Enumerable.Empty<int>());
+				Info.DemolishWeaponInfo.Impact(Target.FromPos(self.CenterPosition), saboteur);
 
-				self.Kill(saboteur);
+				self.Kill(saboteur, damageTypes);
 			});
 		}
 
-		string IBridgeSegment.Type { get { return Info.Type; } }
-		DamageState IBridgeSegment.DamageState { get { return self.GetDamageState(); } }
-		bool IBridgeSegment.Valid { get { return self.IsInWorld; } }
-		CVec[] IBridgeSegment.NeighbourOffsets { get { return Info.NeighbourOffsets; } }
-		CPos IBridgeSegment.Location { get { return self.Location; } }
+		string IBridgeSegment.Type => Info.Type;
+		DamageState IBridgeSegment.DamageState => self.GetDamageState();
+		bool IBridgeSegment.Valid => self.IsInWorld;
+		CVec[] IBridgeSegment.NeighbourOffsets => Info.NeighbourOffsets;
+		CPos IBridgeSegment.Location => self.Location;
 	}
 }

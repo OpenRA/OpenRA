@@ -1,85 +1,42 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProjectGuid>{6CB8E1B7-6B36-4D93-8633-7C573E194AC4}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OpenRA.Test</RootNamespace>
-    <AssemblyName>OpenRA.Test</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <TargetFramework>net5.0</TargetFramework>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <LangVersion>7.3</LangVersion>
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>..\</OutputPath>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <OutputPath>../bin</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <CodeAnalysisRuleSet>..\OpenRA.ruleset</CodeAnalysisRuleSet>
+    <IsPublishable>false</IsPublishable>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- Work around an issue where Rider does not detect files in the project root using the default glob -->
+    <Compile Include="**/*.cs" Exclude="$(DefaultItemExcludes)" />
+  </ItemGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Debug'">
     <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <LangVersion>5</LangVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>..\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <Optimize>true</Optimize>
+    <Optimize>false</Optimize>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Eluant, Version=1.0.5229.27703, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\thirdparty\download\Eluant.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="nunit.framework, Version=2.6.3.13283, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\thirdparty\download\nunit.framework.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Drawing" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="OpenRA.Game\ActionQueueTest.cs" />
-    <Compile Include="OpenRA.Game\MiniYamlTest.cs" />
-    <Compile Include="OpenRA.Game\ActorInfoTest.cs" />
-    <Compile Include="OpenRA.Game\CoordinateTest.cs" />
-    <Compile Include="OpenRA.Game\PriorityQueueTest.cs" />
-    <Compile Include="OpenRA.Game\SpatiallyPartitionedTest.cs" />
-    <Compile Include="OpenRA.Mods.Common\ShapeTest.cs" />
-    <Compile Include="OpenRA.Game\OrderTest.cs" />
-    <Compile Include="OpenRA.Game\PlatformTest.cs" />
-    <Compile Include="OpenRA.Game\VariableExpressionTest.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">
-      <Project>{0dfb103f-2962-400f-8c6d-e2c28ccba633}</Project>
-      <Name>OpenRA.Game</Name>
-      <Private>False</Private>
-    </ProjectReference>
+    <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj" />
     <ProjectReference Include="..\OpenRA.Mods.Common\OpenRA.Mods.Common.csproj">
-      <Project>{fe6c8cc0-2f07-442a-b29f-17617b3b7fc6}</Project>
-      <Name>OpenRA.Mods.Common</Name>
-      <Private>False</Private>
+      <Private>True</Private>
     </ProjectReference>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.6.1" />
+    <PackageReference Include="NUnit" Version="3.12.0" />
+    <PackageReference Include="NUnit.Console" Version="3.11.1" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.17.0-beta.1" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" />
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0" PrivateAssets="All" />
+    <AdditionalFiles Include="../stylecop.json" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
+  <Target Name="DisableAnalyzers" BeforeTargets="CoreCompile" Condition="'$(Configuration)'=='Release'">
+    <!-- Disable code style analysis on Release builds to improve compile-time performance -->
+    <ItemGroup Condition="'$(Configuration)'=='Release'">
+      <Analyzer Remove="@(Analyzer)" />
+    </ItemGroup>
   </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

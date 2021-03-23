@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+   Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -96,7 +96,7 @@ FremenGroupSize =
 }
 
 InitialAtreidesReinforcements =
-{ 
+{
 	{ "trooper", "trooper", "light_inf", "light_inf", "light_inf", "light_inf", "light_inf", "light_inf" },
 	{ "trooper", "trooper", "trooper", "combat_tank_a", "combat_tank_a" },
 	{ "combat_tank_a", "combat_tank_a", "quad", "quad", "trike" },
@@ -140,7 +140,7 @@ SendStarportReinforcements = function()
 		if CStarport.IsDead or CStarport.Owner ~= corrino_main then
 			return
 		end
-		
+
 		reinforcements = Utils.Random(CorrinoStarportReinforcements[Difficulty])
 
 		local units = Reinforcements.ReinforceWithTransport(corrino_main, "frigate", reinforcements, { CorrinoStarportEntry.Location, CStarport.Location + CVec.New(1, 1) }, { CorrinoStarportExit.Location })[2]
@@ -178,7 +178,7 @@ SendAirStrike = function()
 	end)
 
 	if #targets > 0 then
-		AHiTechFactory.SendAirstrike(Utils.Random(targets).CenterPosition, true, 0)
+		AHiTechFactory.TargetAirstrike(Utils.Random(targets).CenterPosition)
 	end
 
 	Trigger.AfterDelay(DateTime.Minutes(5), SendAirStrike)

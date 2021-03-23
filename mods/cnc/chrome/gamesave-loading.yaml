@@ -1,0 +1,52 @@
+Container@GAMESAVE_LOADING_SCREEN:
+	Logic: GameSaveLoadingLogic
+	Width: WINDOW_RIGHT
+	Height: WINDOW_BOTTOM
+	Children:
+		LogicKeyListener@CANCEL_HANDLER:
+		Image@NOD:
+			X: WINDOW_RIGHT / 2 - 384
+			Y: (WINDOW_BOTTOM - 256) / 2
+			ImageCollection: logos
+			ImageName: nod-load
+		Image@GDI:
+			X: WINDOW_RIGHT / 2 + 128
+			Y: (WINDOW_BOTTOM - 256) / 2
+			ImageCollection: logos
+			ImageName: gdi-load
+		Image@EVA:
+			X: WINDOW_RIGHT - 128 - 43
+			Y: 43
+			Width: 128
+			Height: 64
+			ImageCollection: logos
+			ImageName: eva
+		Label@VERSION_LABEL:
+			X: WINDOW_RIGHT - 128 - 43
+			Y: 116
+			Width: 128
+			Align: Center
+			Shadow: true
+		Background@BORDER:
+			Width: WINDOW_RIGHT
+			Height: WINDOW_BOTTOM
+			Background: shellmapborder
+		Label@TITLE:
+			Width: WINDOW_RIGHT
+			Y: 3 * WINDOW_BOTTOM / 4 - 29
+			Height: 25
+			Font: Bold
+			Align: Center
+			Text: Loading Saved Game
+		ProgressBar@PROGRESS:
+			X: (WINDOW_RIGHT - 500) / 2
+			Y: 3 * WINDOW_BOTTOM / 4
+			Width: 500
+			Height: 20
+		Label@DESC:
+			Width: WINDOW_RIGHT
+			Y: 3 * WINDOW_BOTTOM / 4 + 19
+			Height: 25
+			Font: Regular
+			Align: Center
+			Text: Press Escape to cancel loading and return to the main menu

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -14,7 +14,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Provides the player with an audible warning when their storage is nearing full.")]
-	public class ResourceStorageWarningInfo : ITraitInfo, Requires<PlayerResourcesInfo>
+	public class ResourceStorageWarningInfo : TraitInfo, Requires<PlayerResourcesInfo>
 	{
 		[Desc("Interval, in seconds, at which to check if more storage is needed.")]
 		public readonly int AdviceInterval = 20;
@@ -22,10 +22,11 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("The percentage threshold above which a warning is played.")]
 		public readonly int Threshold = 80;
 
+		[NotificationReference("Speech")]
 		[Desc("The speech to play for the warning.")]
 		public readonly string Notification = "SilosNeeded";
 
-		public object Create(ActorInitializer init) { return new ResourceStorageWarning(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new ResourceStorageWarning(init.Self, this); }
 	}
 
 	public class ResourceStorageWarning : ITick

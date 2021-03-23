@@ -11,10 +11,15 @@ CABHUT:
 		Palette: player
 	Targetable:
 		TargetTypes: C4
-	-SelectionDecorations:
+	-IsometricSelectable:
+	-IsometricSelectionDecorations:
+	Interactable:
+	SelectionDecorations:
 	-Demolishable:
 	-Explodes:
-	EditorTilesetFilter:
+	-FrozenUnderFog:
+	HiddenUnderShroud:
+	MapEditorData:
 		Categories: Bridge
 
 ^LowBridgeRamp:
@@ -25,12 +30,14 @@ CABHUT:
 	AppearsOnRadar:
 	RadarColorFromTerrain:
 		Terrain: Bridge
+	AppearsOnMapPreview:
+		Terrain: Bridge
 	BodyOrientation:
 		UseClassicPerspectiveFudge: false
 		QuantizedFacings: 1
 	Tooltip:
 		Name: Bridge
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Bridge
 	Interactable:
 
@@ -171,6 +178,8 @@ LOBRDG_R_SW:
 	AppearsOnRadar:
 	RadarColorFromTerrain:
 		Terrain: Bridge
+	AppearsOnMapPreview:
+		Terrain: Bridge
 	BodyOrientation:
 		UseClassicPerspectiveFudge: false
 		QuantizedFacings: 1
@@ -178,7 +187,7 @@ LOBRDG_R_SW:
 		Name: Bridge
 	Immobile:
 		OccupiesSpace: false
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Bridge
 	Interactable:
 		Bounds: 96, 144

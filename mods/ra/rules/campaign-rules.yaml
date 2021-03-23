@@ -2,6 +2,7 @@ Player:
 	-ConquestVictoryConditions:
 	MissionObjectives:
 		EarlyGameOver: true
+		GameOverDelay: 3000
 	Shroud:
 		FogCheckboxLocked: True
 		FogCheckboxEnabled: True
@@ -10,13 +11,16 @@ Player:
 	PlayerResources:
 		DefaultCashDropdownLocked: True
 		DefaultCash: 0
+	ModularBot@CampaignAI:
+		Name: Campaign Player AI
+		Type: campaign
 
 World:
 	CrateSpawner:
 		CheckboxEnabled: False
 		CheckboxLocked: True
-	-SpawnMPUnits:
-	-MPStartLocations:
+	-SpawnStartingUnits:
+	-MapStartingLocations:
 	ObjectivesPanel:
 		PanelName: MISSION_OBJECTIVES
 	MapBuildRadius:
@@ -38,9 +42,52 @@ E7.noautotarget:
 	-AutoTargetPriority@DEFAULT:
 	-AutoTargetPriority@ATTACKANYTHING:
 	AttackMove:
-		-AssaultMoveScanCondition:
+		-AssaultMoveCondition:
 	RenderSprites:
 		Image: E7
 
 ^Vehicle:
 	Demolishable:
+
+HARV:
+	Harvester:
+		SearchFromProcRadius: 50
+		SearchFromHarvesterRadius: 50
+
+MONEYCRATE:
+	Tooltip:
+		Name: Crate
+	GiveCashCrateAction:
+		Amount: 2000
+	RenderSprites:
+		Image: scrate
+
+FCOM:
+	Capturable:
+		Types: ~disabled
+	-GivesBuildableArea:
+	BaseProvider:
+		Range: 0
+	RepairableBuilding:
+		RepairStep: 700
+		PlayerExperience: 25
+		RepairingNotification: Repairing
+	WithBuildingRepairDecoration:
+		Image: allyrepair
+		Sequence: repair
+		Position: Center
+		Palette: player
+		IsPlayerPalette: True
+
+MISS:
+	RevealsShroud:
+		Range: 3c0
+	-RevealsShroud@GAPGEN:
+
+Ant:
+	Buildable:
+		Prerequisites: ~disabled
+
+Zombie:
+	Buildable:
+		Prerequisites: ~disabled

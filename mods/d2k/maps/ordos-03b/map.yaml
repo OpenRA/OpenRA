@@ -43,7 +43,8 @@ Players:
 		Faction: harkonnen
 		LockColor: True
 		Color: FE0000
-		Enemies: Ordos
+		Enemies: Ordos, Creeps
+		Bot: campaign
 
 Actors:
 	Actor0: spicebloom.spawnpoint

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,8 +10,8 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Drawing;
 using OpenRA.Graphics;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 	using GUtil = OpenRA.Graphics.Util;
 
 	[Desc("Used for bursted one-colored whole screen effects. Add this to the world actor.")]
-	public class FlashPaletteEffectInfo : ITraitInfo
+	public class FlashPaletteEffectInfo : TraitInfo
 	{
 		public readonly HashSet<string> ExcludePalettes = new HashSet<string> { "cursor", "chrome", "colorpicker", "fog", "shroud" };
 
@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Set this when using multiple independent flash effects.")]
 		public readonly string Type = null;
 
-		public object Create(ActorInitializer init) { return new FlashPaletteEffect(this); }
+		public override object Create(ActorInitializer init) { return new FlashPaletteEffect(this); }
 	}
 
 	public class FlashPaletteEffect : IPaletteModifier, ITick

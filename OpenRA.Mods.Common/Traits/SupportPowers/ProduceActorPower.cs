@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -18,7 +18,8 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Produces an actor without using the standard production queue.")]
 	public class ProduceActorPowerInfo : SupportPowerInfo
 	{
-		[ActorReference, FieldLoader.Require]
+		[ActorReference]
+		[FieldLoader.Require]
 		[Desc("Actors to produce.")]
 		public readonly string[] Actors = null;
 
@@ -26,10 +27,12 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Production queue type to use")]
 		public readonly string Type = null;
 
+		[NotificationReference("Speech")]
 		[Desc("Notification played when production is activated.",
 			"The filename of the audio is defined per faction in notifications.yaml.")]
 		public readonly string ReadyAudio = null;
 
+		[NotificationReference("Speech")]
 		[Desc("Notification played when the exit is jammed.",
 			"The filename of the audio is defined per faction in notifications.yaml.")]
 		public readonly string BlockedAudio = null;
@@ -44,7 +47,7 @@ namespace OpenRA.Mods.Common.Traits
 		public ProduceActorPower(ActorInitializer init, ProduceActorPowerInfo info)
 			: base(init.Self, info)
 		{
-			faction = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : init.Self.Owner.Faction.InternalName;
+			faction = init.GetValue<FactionInit, string>(init.Self.Owner.Faction.InternalName);
 		}
 
 		public override void SelectTarget(Actor self, string order, SupportPowerManager manager)
@@ -55,6 +58,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override void Activate(Actor self, Order order, SupportPowerManager manager)
 		{
 			base.Activate(self, order, manager);
+			PlayLaunchSounds();
 
 			var info = Info as ProduceActorPowerInfo;
 			var producers = self.World.ActorsWithTrait<Production>()
@@ -79,7 +83,7 @@ namespace OpenRA.Mods.Common.Traits
 						new FactionInit(BuildableInfo.GetInitialFaction(ai, faction))
 					};
 
-					activated |= p.Trait.Produce(p.Actor, ai, info.Type, inits);
+					activated |= p.Trait.Produce(p.Actor, ai, info.Type, inits, 0);
 				}
 
 				if (activated)

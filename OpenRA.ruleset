@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="OpenRA Code Style" ToolsVersion="14.0">
+  <IncludeAll Action="Warning" />
+  <Rules AnalyzerId="StyleCop.Analyzers" RuleNamespace="StyleCop.Analyzers">
+    <Rule Id="SX1101" Action="Warning" /><!-- DoNotPrefixLocalMembersWithThis -->
+    <!-- Rules that conflict with OpenRA project style conventions -->
+    <Rule Id="SA0001" Action="None" /><!-- XmlCommentAnalysisDisabled -->
+    <Rule Id="SA1101" Action="None" /><!-- PrefixLocalCallsWithThis -->
+    <Rule Id="SA1117" Action="None" /><!-- ParametersMustBeOnSameLineOrSeparateLines -->
+    <Rule Id="SA1118" Action="None" /><!-- ParameterMustNotSpanMultipleLines -->
+    <Rule Id="SA1122" Action="None" /><!-- UseStringEmptyForEmptyStrings -->
+    <Rule Id="SA1124" Action="None" /><!-- DoNotUseRegions -->
+    <Rule Id="SA1127" Action="None" /><!-- GenericTypeConstraintsMustBeOnOwnLine -->
+    <Rule Id="SA1135" Action="None" /><!-- UsingDirectivesMustBeQualified -->
+    <Rule Id="SA1136" Action="None" /><!-- EnumValuesShouldBeOnSeparateLines -->
+    <Rule Id="SA1200" Action="None" /><!-- UsingDirectivesMustBePlacedCorrectly -->
+    <Rule Id="SA1201" Action="None" /><!-- ElementsMustAppearInTheCorrectOrder -->
+    <Rule Id="SA1202" Action="None" /><!-- ElementsMustBeOrderedByAccess -->
+    <Rule Id="SA1314" Action="None" /><!-- TypeParameterNamesMustBeginWithT -->
+    <Rule Id="SA1400" Action="None" /><!-- AccessModifierMustBeDeclared -->
+    <Rule Id="SA1401" Action="None" /><!-- FieldsMustBePrivate -->
+    <Rule Id="SA1402" Action="None" /><!-- FileMayOnlyContainASingleType -->
+    <Rule Id="SA1407" Action="None" /><!-- ArithmeticExpressionsMustDeclarePrecedence -->
+    <Rule Id="SA1501" Action="None" /><!-- StatementMustNotBeOnSingleLine -->
+    <Rule Id="SA1502" Action="None" /><!-- ElementMustNotBeOnSingleLine -->
+    <Rule Id="SA1503" Action="None" /><!-- BracesMustNotBeOmitted -->
+    <Rule Id="SA1519" Action="None" /><!-- BracesMustNotBeOmittedFromMultiLineChildStatement -->
+    <Rule Id="SA1520" Action="None" /><!-- UseBracesConsistently -->
+    <Rule Id="SA1600" Action="None" /><!-- ElementsMustBeDocumented -->
+    <Rule Id="SA1601" Action="None" /><!-- PartialElementsMustBeDocumented -->
+    <Rule Id="SA1602" Action="None" /><!-- EnumerationItemsMustBeDocumented -->
+    <Rule Id="SA1633" Action="None" /><!-- FileMustHaveHeader -->
+    <Rule Id="SA1649" Action="None" /><!-- FileNameMustMatchTypeName -->
+
+    <!-- Rules that could potentially be enabled after existing violations are fixed -->
+    <Rule Id="SA1027" Action="None" /><!-- UseTabsCorrectly -->
+    <Rule Id="SA1107" Action="None" /><!-- CodeMustNotContainMultipleStatementsOnOneLine -->
+    <Rule Id="SA1116" Action="None" /><!-- SplitParametersMustStartOnLineAfterDeclaration -->
+    <Rule Id="SA1119" Action="None" /><!-- StatementMustNotUseUnnecessaryParenthesis -->
+    <Rule Id="SA1132" Action="None" /><!-- DoNotCombineFields -->
+    <Rule Id="SA1204" Action="None" /><!-- StaticElementsMustAppearBeforeInstanceElements -->
+    <Rule Id="SA1214" Action="None" /><!-- ReadonlyElementsMustAppearBeforeNonReadonlyElements -->
+    <Rule Id="SA1413" Action="None" /><!-- UseTrailingCommasInMultiLineInitializers -->
+    <Rule Id="SA1516" Action="None" /><!-- ElementsMustBeSeparatedByBlankLine -->
+    <Rule Id="SA1604" Action="None" /><!-- ElementDocumentationShouldHaveSummary -->
+    <Rule Id="SA1611" Action="None" /><!-- ElementParametersShouldBeDocumented -->
+    <Rule Id="SA1615" Action="None" /><!-- ElementReturnValueShouldBeDocumented -->
+    <Rule Id="SA1618" Action="None" /><!-- GenericTypeParametersShouldBeDocumented -->
+    <Rule Id="SA1623" Action="None" /><!-- PropertySummaryDocumentationShouldMatchAccessors -->
+    <Rule Id="SA1629" Action="None" /><!-- DocumentationTextShouldEndWithAPeriod -->
+    <Rule Id="SA1642" Action="None" /><!-- ConstructorSummaryDocumentationShouldBeginWithStandardText -->
+  </Rules>
+</RuleSet>

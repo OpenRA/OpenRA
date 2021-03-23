@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -15,13 +15,11 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Controls the build radius checkboxes in the lobby options.")]
-	public class MapBuildRadiusInfo : ITraitInfo, ILobbyOptions
+	public class MapBuildRadiusInfo : TraitInfo, ILobbyOptions
 	{
-		[Translate]
 		[Desc("Descriptive label for the ally build radius checkbox in the lobby.")]
 		public readonly string AllyBuildRadiusCheckboxLabel = "Build off Allies";
 
-		[Translate]
 		[Desc("Tooltip description for the ally build radius checkbox in the lobby.")]
 		public readonly string AllyBuildRadiusCheckboxDescription = "Allow allies to place structures inside your build area";
 
@@ -37,11 +35,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Display order for the ally build radius checkbox in the lobby.")]
 		public readonly int AllyBuildRadiusCheckboxDisplayOrder = 0;
 
-		[Translate]
 		[Desc("Tooltip description for the build radius checkbox in the lobby.")]
 		public readonly string BuildRadiusCheckboxLabel = "Limit Build Area";
 
-		[Translate]
 		[Desc("Tooltip description for the build radius checkbox in the lobby.")]
 		public readonly string BuildRadiusCheckboxDescription = "Limits structure placement to areas around Construction Yards";
 
@@ -66,7 +62,7 @@ namespace OpenRA.Mods.Common.Traits
 				BuildRadiusCheckboxVisible, BuildRadiusCheckboxDisplayOrder, BuildRadiusCheckboxEnabled, BuildRadiusCheckboxLocked);
 		}
 
-		public object Create(ActorInitializer init) { return new MapBuildRadius(this); }
+		public override object Create(ActorInitializer init) { return new MapBuildRadius(this); }
 	}
 
 	public class MapBuildRadius : INotifyCreated

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -22,8 +22,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Turret name")]
 		public readonly string Turret = "primary";
 
+		[SequenceReference]
 		[Desc("Displayed while attacking.")]
-		[SequenceReference] public readonly string Sequence = null;
+		public readonly string Sequence = null;
 
 		[Desc("Delay in ticks before animation starts, either relative to attack preparation or attack.")]
 		public readonly int Delay = 0;
@@ -63,13 +64,13 @@ namespace OpenRA.Mods.Common.Traits.Render
 				PlayAttackAnimation(self);
 		}
 
-		void INotifyAttack.Attacking(Actor self, Target target, Armament a, Barrel barrel)
+		void INotifyAttack.Attacking(Actor self, in Target target, Armament a, Barrel barrel)
 		{
 			if (!IsTraitDisabled && a == armament && Info.DelayRelativeTo == AttackDelayType.Attack)
 				NotifyAttack(self);
 		}
 
-		void INotifyAttack.PreparingAttack(Actor self, Target target, Armament a, Barrel barrel)
+		void INotifyAttack.PreparingAttack(Actor self, in Target target, Armament a, Barrel barrel)
 		{
 			if (!IsTraitDisabled && a == armament && Info.DelayRelativeTo == AttackDelayType.Preparation)
 				NotifyAttack(self);

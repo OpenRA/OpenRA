@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -44,26 +44,38 @@ namespace OpenRA.Platforms.Default
 		{
 			// On Windows and Linux (X11) events are given in surface coordinates
 			// These must be scaled to our effective window coordinates
-			if (Platform.CurrentPlatform != PlatformType.OSX && device.WindowSize != device.SurfaceSize)
-				return new int2((int)(x / device.WindowScale), (int)(y / device.WindowScale));
+			// Round fractional components up to avoid rounding small deltas to 0
+			if (Platform.CurrentPlatform != PlatformType.OSX && device.EffectiveWindowSize != device.SurfaceSize)
+			{
+				var s = 1 / device.EffectiveWindowScale;
+				return new int2((int)(Math.Sign(x) / 2f + x * s), (int)(Math.Sign(x) / 2f + y * s));
+			}
+
+			// On macOS we must still account for the user-requested scale modifier
+			if (Platform.CurrentPlatform == PlatformType.OSX && device.EffectiveWindowScale != device.NativeWindowScale)
+			{
+				var s = device.NativeWindowScale / device.EffectiveWindowScale;
+				return new int2((int)(Math.Sign(x) / 2f + x * s), (int)(Math.Sign(x) / 2f + y * s));
+			}
 
 			return new int2(x, y);
 		}
 
-		public void PumpInput(Sdl2PlatformWindow device, IInputHandler inputHandler)
+		public void PumpInput(Sdl2PlatformWindow device, IInputHandler inputHandler, int2? lockedMousePosition)
 		{
 			var mods = MakeModifiers((int)SDL.SDL_GetModState());
-			var scrollDelta = 0;
 			inputHandler.ModifierKeys(mods);
 			MouseInput? pendingMotion = null;
 
-			SDL.SDL_Event e;
-			while (SDL.SDL_PollEvent(out e) != 0)
+			while (SDL.SDL_PollEvent(out var e) != 0)
 			{
 				switch (e.type)
 				{
 					case SDL.SDL_EventType.SDL_QUIT:
-						Game.Exit();
+						// On macOS, we'd like to restrict Cmd + Q from suddenly exiting the game.
+						if (Platform.CurrentPlatform != PlatformType.OSX || !mods.HasModifier(Modifiers.Meta))
+							Game.Exit();
+
 						break;
 
 					case SDL.SDL_EventType.SDL_WINDOWEVENT:
@@ -71,11 +83,11 @@ namespace OpenRA.Platforms.Default
 							switch (e.window.windowEvent)
 							{
 								case SDL.SDL_WindowEventID.SDL_WINDOWEVENT_FOCUS_LOST:
-									Game.HasInputFocus = false;
+									device.HasInputFocus = false;
 									break;
 
 								case SDL.SDL_WindowEventID.SDL_WINDOWEVENT_FOCUS_GAINED:
-									Game.HasInputFocus = true;
+									device.HasInputFocus = true;
 									break;
 
 								// Triggered when moving between displays with different DPI settings
@@ -98,9 +110,11 @@ namespace OpenRA.Platforms.Default
 							var button = MakeButton(e.button.button);
 							lastButtonBits |= button;
 
-							var pos = EventPosition(device, e.button.x, e.button.y);
+							var input = lockedMousePosition ?? new int2(e.button.x, e.button.y);
+							var pos = EventPosition(device, input.X, input.Y);
+
 							inputHandler.OnMouseInput(new MouseInput(
-								MouseInputEvent.Down, button, scrollDelta, pos, mods,
+								MouseInputEvent.Down, button, pos, int2.Zero, mods,
 								MultiTapDetection.DetectFromMouse(e.button.button, pos)));
 
 							break;
@@ -117,9 +131,11 @@ namespace OpenRA.Platforms.Default
 							var button = MakeButton(e.button.button);
 							lastButtonBits &= ~button;
 
-							var pos = EventPosition(device, e.button.x, e.button.y);
+							var input = lockedMousePosition ?? new int2(e.button.x, e.button.y);
+							var pos = EventPosition(device, input.X, input.Y);
+
 							inputHandler.OnMouseInput(new MouseInput(
-								MouseInputEvent.Up, button, scrollDelta, pos, mods,
+								MouseInputEvent.Up, button, pos, int2.Zero, mods,
 								MultiTapDetection.InfoFromMouse(e.button.button)));
 
 							break;
@@ -127,20 +143,26 @@ namespace OpenRA.Platforms.Default
 
 					case SDL.SDL_EventType.SDL_MOUSEMOTION:
 						{
-							var pos = EventPosition(device, e.motion.x, e.motion.y);
+							var mousePos = new int2(e.motion.x, e.motion.y);
+							var input = lockedMousePosition ?? mousePos;
+							var pos = EventPosition(device, input.X, input.Y);
+
+							var delta = lockedMousePosition == null
+								? EventPosition(device, e.motion.xrel, e.motion.yrel)
+								: mousePos - lockedMousePosition.Value;
+
 							pendingMotion = new MouseInput(
-								MouseInputEvent.Move, lastButtonBits, scrollDelta,
-								pos, mods, 0);
+								MouseInputEvent.Move, lastButtonBits, pos, delta, mods, 0);
 
 							break;
 						}
 
 					case SDL.SDL_EventType.SDL_MOUSEWHEEL:
 						{
-							int x, y;
-							SDL.SDL_GetMouseState(out x, out y);
-							scrollDelta = e.wheel.y;
-							inputHandler.OnMouseInput(new MouseInput(MouseInputEvent.Scroll, MouseButton.None, scrollDelta, new int2(x, y), mods, 0));
+							SDL.SDL_GetMouseState(out var x, out var y);
+
+							var pos = EventPosition(device, x, y);
+							inputHandler.OnMouseInput(new MouseInput(MouseInputEvent.Scroll, MouseButton.None, pos, new int2(0, e.wheel.y), mods, 0));
 
 							break;
 						}
@@ -161,8 +183,8 @@ namespace OpenRA.Platforms.Default
 								KeyInputEvent.Down : KeyInputEvent.Up;
 
 							var tapCount = e.type == SDL.SDL_EventType.SDL_KEYDOWN ?
-								MultiTapDetection.DetectFromKeyboard(keyCode) :
-								MultiTapDetection.InfoFromKeyboard(keyCode);
+								MultiTapDetection.DetectFromKeyboard(keyCode, mods) :
+								MultiTapDetection.InfoFromKeyboard(keyCode, mods);
 
 							var keyEvent = new KeyInput
 							{

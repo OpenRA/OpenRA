@@ -1,6 +1,6 @@
 World:
 	LuaScript:
-		Scripts: gdi05a.lua
+		Scripts: campaign-global.lua, gdi05a.lua
 	MusicPlaylist:
 		StartingMusic: rain
 	MissionData:
@@ -34,6 +34,7 @@ World:
 			normal: Normal
 			hard: Hard
 		Default: easy
+		Locked: false
 
 Player:
 	EnemyWatcher:
@@ -72,8 +73,6 @@ RMBO:
 		Prerequisites: ~disabled
 
 HARV:
-	Harvester:
-		SearchFromOrderRadius: 24
 	Buildable:
 		Prerequisites: ~disabled
 
@@ -166,10 +165,8 @@ OBLI:
 		Prerequisites: ~disabled
 
 MoneyCrate:
-	Inherits: ^Crate
 	GiveCashCrateAction:
 		Amount: 500
-		UseCashTick: yes
 
 airstrike.proxy:
 	AirstrikePower:

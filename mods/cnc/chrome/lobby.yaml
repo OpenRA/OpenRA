@@ -2,13 +2,13 @@ Container@SERVER_LOBBY:
 	Logic: LobbyLogic
 	X: (WINDOW_RIGHT - WIDTH) / 2
 	Y: (WINDOW_BOTTOM - 560) / 2
-	Width: 800
+	Width: 900
 	Height: 575
 	Children:
 		ColorPreviewManager@COLOR_MANAGER:
 		Label@SERVER_NAME:
 			Width: PARENT_RIGHT
-			Y: 0 - 25
+			Y: 0 - 22
 			Font: BigBold
 			Contrast: true
 			Align: Center
@@ -25,55 +25,57 @@ Container@SERVER_LOBBY:
 				DropDownButton@SLOTS_DROPDOWNBUTTON:
 					X: 15
 					Y: 254
-					Width: 182
+					Width: 211
 					Height: 25
 					Text: Slot Admin
 				Container@SKIRMISH_TABS:
+					X: 697 - WIDTH
+					Width: 465
 					Visible: False
 					Children:
 						Button@PLAYERS_TAB:
-							X: 202
 							Y: 248
-							Width: 129
+							Width: 151
 							Height: 31
 							Text: Players
 						Button@OPTIONS_TAB:
-							X: 336
+							X: 157
 							Y: 248
-							Width: 128
+							Width: 151
 							Height: 31
 							Text: Options
 						Button@MUSIC_TAB:
-							X: 469
+							X: 314
 							Y: 248
-							Width: 128
+							Width: 151
 							Height: 31
 							Text: Music
 				Container@MULTIPLAYER_TABS:
+					X: 697 - WIDTH
+					Width: 465
 					Visible: False
 					Children:
 						Button@PLAYERS_TAB:
-							X: 202
 							Y: 248
-							Width: 95
+							Width: 112
 							Height: 31
 							Text: Players
 						Button@OPTIONS_TAB:
-							X: 302
+							X: 118
 							Y: 248
-							Width: 95
+							Width: 112
 							Height: 31
 							Text: Options
 						Button@MUSIC_TAB:
-							X: 402
+							X: 236
 							Y: 248
-							Width: 95
+							Width: 112
 							Height: 31
 							Text: Music
 						Button@SERVERS_TAB:
-							X: 502
+							X: 354
 							Y: 248
-							Width: 95
+							Width: 111
 							Height: 31
 							Text: Servers
 				Button@CHANGEMAP_BUTTON:
@@ -85,7 +87,7 @@ Container@SERVER_LOBBY:
 				Container@TOP_PANELS_ROOT:
 					X: 15
 					Y: 30
-					Width: 582
+					Width: 682
 					Height: 219
 				Container@LOBBYCHAT:
 					X: 15
@@ -96,7 +98,7 @@ Container@SERVER_LOBBY:
 						ScrollPanel@CHAT_DISPLAY:
 							Width: PARENT_RIGHT
 							Height: PARENT_BOTTOM - 30
-							TopBottomSpacing: 2
+							TopBottomSpacing: 3
 							ItemSpacing: 2
 							Children:
 								Container@CHAT_TEMPLATE:
@@ -108,34 +110,30 @@ Container@SERVER_LOBBY:
 										Label@TIME:
 											X: 3
 											Width: 50
-											Height: 15
-											VAlign: Top
+											Height: 16
 											Shadow: True
 										Label@NAME:
 											X: 45
 											Width: 50
-											Height: 15
-											VAlign: Top
+											Height: 16
 											Shadow: True
 										Label@TEXT:
 											X: 55
 											Width: PARENT_RIGHT - 60
-											Height: 15
+											Height: 16
 											WordWrap: true
-											VAlign: Top
 											Shadow: True
-						TextField@CHAT_TEXTFIELD:
+						Button@CHAT_MODE:
 							Y: PARENT_BOTTOM - HEIGHT
-							Width: PARENT_RIGHT
+							Width: 50
 							Height: 25
-							LeftMargin: 50
-							Children:
-								Label@LABEL_CHATTYPE:
-									Y: 0 - 1
-									Width: 45
-									Height: 25
-									Align: Right
-									Text: Chat:
+							Text: Team
+							Font: Bold
+						TextField@CHAT_TEXTFIELD:
+							X: 55
+							Y: PARENT_BOTTOM - HEIGHT
+							Width: PARENT_RIGHT - 55
+							Height: 25
 		Button@DISCONNECT_BUTTON:
 			Y: PARENT_BOTTOM - 36
 			Width: 140

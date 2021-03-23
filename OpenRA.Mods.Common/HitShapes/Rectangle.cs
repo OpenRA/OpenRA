@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,11 +10,11 @@
 #endregion
 
 using System;
-using System.Drawing;
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
-using OpenRA.Traits;
+using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.HitShapes
 {
@@ -43,6 +43,8 @@ namespace OpenRA.Mods.Common.HitShapes
 
 		WVec[] combatOverlayVertsTop;
 		WVec[] combatOverlayVertsBottom;
+		WVec[] combatOverlayVertsSide1;
+		WVec[] combatOverlayVertsSide2;
 
 		public RectangleShape() { }
 
@@ -73,7 +75,7 @@ namespace OpenRA.Mods.Common.HitShapes
 				new WVec(TopLeft.X, TopLeft.Y, VerticalTopOffset),
 				new WVec(BottomRight.X, TopLeft.Y, VerticalTopOffset),
 				new WVec(BottomRight.X, BottomRight.Y, VerticalTopOffset),
-				new WVec(TopLeft.X, BottomRight.Y, VerticalTopOffset)
+				new WVec(TopLeft.X, BottomRight.Y, VerticalTopOffset),
 			};
 
 			combatOverlayVertsBottom = new WVec[]
@@ -81,11 +83,27 @@ namespace OpenRA.Mods.Common.HitShapes
 				new WVec(TopLeft.X, TopLeft.Y, VerticalBottomOffset),
 				new WVec(BottomRight.X, TopLeft.Y, VerticalBottomOffset),
 				new WVec(BottomRight.X, BottomRight.Y, VerticalBottomOffset),
-				new WVec(TopLeft.X, BottomRight.Y, VerticalBottomOffset)
+				new WVec(TopLeft.X, BottomRight.Y, VerticalBottomOffset),
+			};
+
+			combatOverlayVertsSide1 = new WVec[]
+			{
+				new WVec(TopLeft.X, TopLeft.Y, VerticalBottomOffset),
+				new WVec(TopLeft.X, TopLeft.Y, VerticalTopOffset),
+				new WVec(TopLeft.X, BottomRight.Y, VerticalTopOffset),
+				new WVec(TopLeft.X, BottomRight.Y, VerticalBottomOffset),
+			};
+
+			combatOverlayVertsSide2 = new WVec[]
+			{
+				new WVec(BottomRight.X, TopLeft.Y, VerticalBottomOffset),
+				new WVec(BottomRight.X, TopLeft.Y, VerticalTopOffset),
+				new WVec(BottomRight.X, BottomRight.Y, VerticalTopOffset),
+				new WVec(BottomRight.X, BottomRight.Y, VerticalBottomOffset),
 			};
 		}
 
-		public WDist DistanceFromEdge(WVec v)
+		public WDist DistanceFromEdge(in WVec v)
 		{
 			var r = new WVec(
 				Math.Max(Math.Abs(v.X - center.X) - quadrantSize.X, 0),
@@ -94,31 +112,33 @@ namespace OpenRA.Mods.Common.HitShapes
 			return new WDist(r.HorizontalLength);
 		}
 
-		public WDist DistanceFromEdge(WPos pos, Actor actor)
+		public WDist DistanceFromEdge(WPos pos, WPos origin, WRot orientation)
 		{
-			var actorPos = actor.CenterPosition;
-			var orientation = actor.Orientation + WRot.FromYaw(LocalYaw);
+			orientation += WRot.FromYaw(LocalYaw);
 
-			if (pos.Z > actorPos.Z + VerticalTopOffset)
-				return DistanceFromEdge((pos - (actorPos + new WVec(0, 0, VerticalTopOffset))).Rotate(-orientation));
+			if (pos.Z > origin.Z + VerticalTopOffset)
+				return DistanceFromEdge((pos - (origin + new WVec(0, 0, VerticalTopOffset))).Rotate(-orientation));
 
-			if (pos.Z < actorPos.Z + VerticalBottomOffset)
-				return DistanceFromEdge((pos - (actorPos + new WVec(0, 0, VerticalBottomOffset))).Rotate(-orientation));
+			if (pos.Z < origin.Z + VerticalBottomOffset)
+				return DistanceFromEdge((pos - (origin + new WVec(0, 0, VerticalBottomOffset))).Rotate(-orientation));
 
-			return DistanceFromEdge((pos - new WPos(actorPos.X, actorPos.Y, pos.Z)).Rotate(-orientation));
+			return DistanceFromEdge((pos - new WPos(origin.X, origin.Y, pos.Z)).Rotate(-orientation));
 		}
 
-		public void DrawCombatOverlay(WorldRenderer wr, RgbaColorRenderer wcr, Actor actor)
+		IEnumerable<IRenderable> IHitShape.RenderDebugOverlay(WorldRenderer wr, WPos origin, WRot orientation)
 		{
-			var actorPos = actor.CenterPosition;
-			var orientation = actor.Orientation + WRot.FromYaw(LocalYaw);
+			orientation += WRot.FromYaw(LocalYaw);
 
-			var vertsTop = combatOverlayVertsTop.Select(v => wr.Screen3DPosition(actorPos + v.Rotate(orientation)));
-			var vertsBottom = combatOverlayVertsBottom.Select(v => wr.Screen3DPosition(actorPos + v.Rotate(orientation)));
-			wcr.DrawPolygon(vertsTop.ToArray(), 1, Color.Yellow);
-			wcr.DrawPolygon(vertsBottom.ToArray(), 1, Color.Yellow);
+			var vertsTop = combatOverlayVertsTop.Select(v => origin + v.Rotate(orientation)).ToArray();
+			var vertsBottom = combatOverlayVertsBottom.Select(v => origin + v.Rotate(orientation)).ToArray();
+			var side1 = combatOverlayVertsSide1.Select(v => origin + v.Rotate(orientation)).ToArray();
+			var side2 = combatOverlayVertsSide2.Select(v => origin + v.Rotate(orientation)).ToArray();
 
-			RangeCircleRenderable.DrawRangeCircle(wr, actorPos, OuterRadius, 1, Color.LimeGreen, 0, Color.LimeGreen);
+			yield return new PolygonAnnotationRenderable(vertsTop, origin, 1, Color.Yellow);
+			yield return new PolygonAnnotationRenderable(vertsBottom, origin, 1, Color.Yellow);
+			yield return new PolygonAnnotationRenderable(side1, origin, 1, Color.Yellow);
+			yield return new PolygonAnnotationRenderable(side2, origin, 1, Color.Yellow);
+			yield return new CircleAnnotationRenderable(origin, OuterRadius, 1, Color.LimeGreen);
 		}
 	}
 }

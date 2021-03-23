@@ -26,14 +26,15 @@ Players:
 		Faction: gdi
 	PlayerReference@GDI:
 		Name: GDI
+		Bot: campaign
 		Faction: gdi
 		Color: F5D378
 		Allies: GDI
 		Enemies: Nod
 	PlayerReference@Nod:
 		Name: Nod
-		Playable: True
 		AllowBots: False
+		Playable: True
 		Required: True
 		LockFaction: True
 		Faction: nod
@@ -213,28 +214,28 @@ Actors:
 	Actor55: t18
 		Location: 38,31
 		Owner: Neutral
-	Actor56: pyle
+	Base2: pyle
 		Location: 25,20
 		Owner: GDI
-	Actor57: fact
+	Base1: fact
 		Location: 27,20
 		Owner: GDI
-	Actor58: silo
+	Base5: silo
 		Location: 23,17
 		Owner: GDI
-	Actor59: silo
+	Base4: silo
 		Location: 23,19
 		Owner: GDI
-	Actor60: proc
+	Base3: proc
 		Location: 20,17
 		Owner: GDI
-	Actor61: nuke
+	Base6: nuke
 		Location: 25,17
 		Owner: GDI
-	Actor62: nuke
+	Base7: nuke
 		Location: 27,17
 		Owner: GDI
-	Actor63: gtwr
+	GuardTower: gtwr
 		Location: 28,24
 		Owner: GDI
 	Actor64: v24
@@ -282,31 +283,31 @@ Actors:
 	Actor79: v26
 		Location: 37,19
 		Owner: Neutral
-	Actor82: jeep
+	Humvee2: jeep
 		Location: 21,22
 		Owner: GDI
-		Facing: 128
-	Actor83: jeep
+		Facing: 512
+	Humvee1: jeep
 		Location: 20,22
 		Owner: GDI
-		Facing: 128
+		Facing: 512
 	Actor84: jeep
 		Location: 18,17
 		Owner: GDI
-		Facing: 128
+		Facing: 512
 	Actor89: jeep
 		Location: 29,34
 		Owner: GDI
-		Facing: 96
+		Facing: 384
 	Actor95: e1
 		Location: 33,20
 		Owner: GDI
-		Facing: 128
+		Facing: 512
 		SubCell: 2
 	Actor96: e1
 		Location: 34,19
 		Owner: GDI
-		Facing: 128
+		Facing: 512
 		SubCell: 3
 	Actor99: e1
 		Location: 14,44
@@ -315,49 +316,49 @@ Actors:
 	Actor100: e1
 		Location: 33,31
 		Owner: GDI
-		Facing: 96
+		Facing: 384
 		SubCell: 4
-	Actor101: e1
+	Patrol3: e1
 		Location: 34,23
 		Owner: GDI
-		Facing: 96
 		SubCell: 2
+		Facing: 384
 	Actor102: c1
 		Location: 19,40
 		Owner: Neutral
-		Facing: 96
+		Facing: 384
 		SubCell: 1
 	Actor103: c3
 		Location: 19,39
 		Owner: Neutral
-		Facing: 96
+		Facing: 384
 		SubCell: 3
 	Actor104: c5
 		Location: 15,42
 		Owner: Neutral
-		Facing: 32
+		Facing: 128
 		SubCell: 2
 	Actor105: c6
 		Location: 14,37
 		Owner: Neutral
 		Health: 60
-		Facing: 96
+		Facing: 384
 		SubCell: 1
 	Actor106: c7
 		Location: 15,41
 		Owner: Neutral
-		Facing: 224
+		Facing: 896
 		SubCell: 0
 	Actor108: e1
 		Location: 34,31
 		Owner: GDI
-		Facing: 96
+		Facing: 384
 		SubCell: 3
-	Actor109: e1
+	Patrol1: e1
 		Location: 34,25
 		Owner: GDI
-		Facing: 160
 		SubCell: 2
+		Facing: 640
 	Actor111: e1
 		Location: 39,31
 		Owner: GDI
@@ -365,27 +366,27 @@ Actors:
 	Actor112: e1
 		Location: 40,37
 		Owner: GDI
-		Facing: 96
+		Facing: 384
 		SubCell: 0
-	Actor116: e2
+	Patrol4: e2
 		Location: 34,22
 		Owner: GDI
-		Facing: 96
 		SubCell: 3
-	Actor117: e2
+		Facing: 384
+	Patrol2: e2
 		Location: 34,23
 		Owner: GDI
-		Facing: 160
 		SubCell: 4
+		Facing: 640
 	Actor118: e2
 		Location: 42,18
 		Owner: GDI
-		Facing: 128
+		Facing: 512
 		SubCell: 4
 	Actor119: e2
 		Location: 33,19
 		Owner: GDI
-		Facing: 128
+		Facing: 512
 		SubCell: 0
 	TechCenter: miss
 		Location: 14,17
@@ -396,17 +397,17 @@ Actors:
 	VillageGuard01: e1
 		Location: 38,22
 		Owner: GDI
-		Facing: 96
+		Facing: 384
 		SubCell: 2
 	VillageGuard02: e1
 		Location: 38,22
 		Owner: GDI
-		Facing: 96
+		Facing: 384
 		SubCell: 3
 	VillageGuard03: e1
 		Location: 39,22
 		Owner: GDI
-		Facing: 160
+		Facing: 640
 		SubCell: 3
 	PlayerBase: waypoint
 		Location: 50,38
@@ -426,7 +427,10 @@ Actors:
 	AttackWaveSpawnC: waypoint
 		Location: 33,16
 		Owner: Neutral
-	CellTrig: waypoint
+	PatrolA: waypoint
+		Location: 24,26
+		Owner: Neutral
+	PatrolB: waypoint
 		Location: 32,47
 		Owner: Neutral
 

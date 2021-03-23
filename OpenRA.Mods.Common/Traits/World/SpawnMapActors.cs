@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -26,34 +26,45 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void WorldLoaded(World world, WorldRenderer wr)
 		{
+			var preventMapSpawns = world.WorldActor.TraitsImplementing<IPreventMapSpawn>()
+				.Concat(world.WorldActor.Owner.PlayerActor.TraitsImplementing<IPreventMapSpawn>())
+				.ToArray();
+
 			foreach (var kv in world.Map.ActorDefinitions)
 			{
 				var actorReference = new ActorReference(kv.Value.Value, kv.Value.ToDictionary());
 
 				// If there is no real player associated, don't spawn it.
-				var ownerName = actorReference.InitDict.Get<OwnerInit>().PlayerName;
+				var ownerName = actorReference.Get<OwnerInit>().InternalName;
 				if (!world.Players.Any(p => p.InternalName == ownerName))
 					continue;
 
-				var initDict = actorReference.InitDict;
-				initDict.Add(new SkipMakeAnimsInit());
-				initDict.Add(new SpawnedByMapInit(kv.Key));
-				var actor = world.CreateActor(actorReference.Type, initDict);
+				actorReference.Add(new SkipMakeAnimsInit());
+				actorReference.Add(new SpawnedByMapInit(kv.Key));
+
+				if (PreventMapSpawn(world, actorReference, preventMapSpawns))
+					continue;
+
+				var actor = world.CreateActor(true, actorReference);
 				Actors[kv.Key] = actor;
 				LastMapActorID = actor.ActorID;
 			}
 		}
+
+		bool PreventMapSpawn(World world, ActorReference actorReference, IEnumerable<IPreventMapSpawn> preventMapSpawns)
+		{
+			foreach (var pms in preventMapSpawns)
+				if (pms.PreventMapSpawn(world, actorReference))
+					return true;
+
+			return false;
+		}
 	}
 
-	public class SkipMakeAnimsInit : IActorInit, ISuppressInitExport { }
-	public class SpawnedByMapInit : IActorInit<string>, ISuppressInitExport
+	public class SkipMakeAnimsInit : RuntimeFlagInit { }
+	public class SpawnedByMapInit : ValueActorInit<string>, ISuppressInitExport, ISingleInstanceInit
 	{
-		public readonly string Name;
-		public SpawnedByMapInit(string name) { Name = name; }
-
-		public string Value(World world)
-		{
-			return Name;
-		}
+		public SpawnedByMapInit(string value)
+			: base(value) { }
 	}
 }

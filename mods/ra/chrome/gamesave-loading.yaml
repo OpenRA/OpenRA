@@ -1,0 +1,37 @@
+Container@GAMESAVE_LOADING_SCREEN:
+	Logic: GameSaveLoadingLogic
+	Width: WINDOW_RIGHT
+	Height: WINDOW_BOTTOM
+	Children:
+		LogicKeyListener@CANCEL_HANDLER:
+		Background@STRIPE:
+			Y: (WINDOW_BOTTOM - HEIGHT) / 2
+			Width: WINDOW_RIGHT
+			Height: 256
+			Background: loadscreen-stripe
+		Image@LOGO:
+			X: (WINDOW_RIGHT - 256) / 2
+			Y: (WINDOW_BOTTOM - 256) / 2
+			ImageCollection: logos
+			ImageName: logo
+		Label@TITLE:
+			Width: WINDOW_RIGHT
+			Y: 3 * WINDOW_BOTTOM / 4 - 29
+			Height: 25
+			Font: Bold
+			Align: Center
+			Text: Loading Saved Game
+		ProgressBar@PROGRESS:
+			X: (WINDOW_RIGHT - 500) / 2
+			Y: 3 * WINDOW_BOTTOM / 4
+			Width: 500
+			Height: 20
+			Background: observer-scrollpanel-button-pressed
+			Bar: observer-scrollpanel-button
+		Label@DESC:
+			Width: WINDOW_RIGHT
+			Y: 3 * WINDOW_BOTTOM / 4 + 19
+			Height: 25
+			Font: Regular
+			Align: Center
+			Text: Press Escape to cancel loading and return to the main menu

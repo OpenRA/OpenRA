@@ -1,0 +1,77 @@
+World:
+	LuaScript:
+		Scripts: scu36ea.lua
+	MissionData:
+		Briefing: A critical cargo held in this supply truck must reach the waystation atop this mountain. The way is blocked by Allied squads, but do not let that deter you -- the cargo must reach its destination.\n\nIn addition, the onset of nightfall has brought sub-zero temperatures with it. The Allies are prepared for this -- our units are not. The life expectancy of your troops in these extremes is limited. Infantry may last 12 minutes, while vehicles could survive for up to 36 minutes. You have little time. Go.\n
+		WinVideo: sovtstar.vqa
+		LossVideo: sovbatl.vqa
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			easy: Easy
+			normal: Normal
+			hard: Hard
+		Default: easy
+	TimeLimitManager:
+		SkipTimerExpiredNotification: True
+
+^Palettes:
+	IndexedPlayerPalette@truk:
+		BaseName: truk
+		BasePalette: player
+		RemapIndex: 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95
+		PlayerIndex:
+			USSR: 200, 200, 201, 202, 203, 203, 204, 205, 206, 206, 207, 221, 222, 222, 223, 223
+		AllowModifiers: True
+
+MSLO:
+	Buildable:
+		Prerequisites: ~disabled
+
+HEALCRATE:
+	Crate:
+		Lifetime: 0
+
+AGUN:
+	Power:
+		Amount: 125
+
+TRUK:
+	-SpawnActorOnDeath:
+	RenderSprites:
+		PlayerPalette: truk
+
+GNRL:
+	Armament:
+		Weapon: SilencedPPK
+
+SCAMERA:
+	Inherits: CAMERA
+	RevealsShroud:
+		Range: 5c512
+
+powerproxy.spyplane:
+	AlwaysVisible:
+	AirstrikePower:
+		OrderName: SovietSpyPlane
+		Icon: spyplane
+		ChargeInterval: 4500
+		Description: Spy Plane (Single Use)
+		LongDesc: Reveals an area of the map and cloaked enemy units.
+		OneShot: true
+		SelectTargetSpeechNotification: SelectTarget
+		EndChargeSpeechNotification: SpyPlaneReady
+		CameraActor: camera.spyplane
+		CameraRemoveDelay: 150
+		UnitType: u2
+		QuantizedFacings: 8
+		DisplayBeacon: true
+		BeaconPoster: camicon
+		ArrowSequence: arrow
+		ClockSequence: clock
+		CircleSequence: circles
+
+powerproxy.parabombs:
+	AirstrikePower:
+		ChargeInterval: 4500

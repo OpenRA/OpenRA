@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -11,310 +11,292 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	[Desc("Attach this to the world actor.", "Order of the layers defines the Z sorting.")]
-	public class ResourceLayerInfo : ITraitInfo, Requires<ResourceTypeInfo>, Requires<BuildingInfluenceInfo>
+	public struct ResourceLayerContents
 	{
-		public virtual object Create(ActorInitializer init) { return new ResourceLayer(init.Self); }
+		public static readonly ResourceLayerContents Empty = default;
+		public readonly string Type;
+		public readonly int Density;
+
+		public ResourceLayerContents(string type, int density)
+		{
+			Type = type;
+			Density = density;
+		}
 	}
 
-	public class ResourceLayer : IRenderOverlay, IWorldLoaded, ITickRender, INotifyActorDisposing
+	[Desc("Attach this to the world actor.")]
+	public class ResourceLayerInfo : TraitInfo, IResourceLayerInfo, Requires<BuildingInfluenceInfo>, IMapPreviewSignatureInfo
 	{
-		static readonly CellContents EmptyCell = new CellContents();
+		public class ResourceTypeInfo
+		{
+			[FieldLoader.Require]
+			[Desc("Resource index in the binary map data.")]
+			public readonly byte ResourceIndex = 0;
 
+			[FieldLoader.Require]
+			[Desc("Terrain type used to determine unit movement and minimap colors.")]
+			public readonly string TerrainType = null;
+
+			[FieldLoader.Require]
+			[Desc("Terrain types that this resource can spawn on.")]
+			public readonly HashSet<string> AllowedTerrainTypes = null;
+
+			[Desc("Maximum number of resource units allowed in a single cell.")]
+			public readonly int MaxDensity = 10;
+
+			public ResourceTypeInfo(MiniYaml yaml)
+			{
+				FieldLoader.Load(this, yaml);
+			}
+		}
+
+		[FieldLoader.LoadUsing(nameof(LoadResourceTypes))]
+		public readonly Dictionary<string, ResourceTypeInfo> ResourceTypes = null;
+
+		[Desc("Override the density saved in maps with values calculated based on the number of neighbouring resource cells.")]
+		public readonly bool RecalculateResourceDensity = false;
+
+		// Copied to EditorResourceLayerInfo, ResourceRendererInfo
+		protected static object LoadResourceTypes(MiniYaml yaml)
+		{
+			var ret = new Dictionary<string, ResourceTypeInfo>();
+			var resources = yaml.Nodes.FirstOrDefault(n => n.Key == "ResourceTypes");
+			if (resources != null)
+				foreach (var r in resources.Value.Nodes)
+					ret[r.Key] = new ResourceTypeInfo(r.Value);
+
+			return ret;
+		}
+
+		public static void PopulateMapPreviewSignatureCells(Map map, Dictionary<string, ResourceTypeInfo> resources, List<(MPos, Color)> destinationBuffer)
+		{
+			var terrainInfo = map.Rules.TerrainInfo;
+			var colors = resources.Values.ToDictionary(
+				r => r.ResourceIndex,
+				r => terrainInfo.TerrainTypes[terrainInfo.GetTerrainIndex(r.TerrainType)].Color);
+
+			for (var i = 0; i < map.MapSize.X; i++)
+			{
+				for (var j = 0; j < map.MapSize.Y; j++)
+				{
+					var cell = new MPos(i, j);
+					if (colors.TryGetValue(map.Resources[cell].Type, out var color))
+						destinationBuffer.Add((cell, color));
+				}
+			}
+		}
+
+		void IMapPreviewSignatureInfo.PopulateMapPreviewSignatureCells(Map map, ActorInfo ai, ActorReference s, List<(MPos, Color)> destinationBuffer)
+		{
+			PopulateMapPreviewSignatureCells(map, ResourceTypes, destinationBuffer);
+		}
+
+		public override object Create(ActorInitializer init) { return new ResourceLayer(init.Self, this); }
+	}
+
+	public class ResourceLayer : IResourceLayer, IWorldLoaded
+	{
+		readonly ResourceLayerInfo info;
 		readonly World world;
-		readonly BuildingInfluence buildingInfluence;
-		readonly HashSet<CPos> dirty = new HashSet<CPos>();
-		readonly Dictionary<PaletteReference, TerrainSpriteLayer> spriteLayers = new Dictionary<PaletteReference, TerrainSpriteLayer>();
+		protected readonly Map Map;
+		protected readonly BuildingInfluence BuildingInfluence;
+		protected readonly CellLayer<ResourceLayerContents> Content;
+		protected readonly Dictionary<byte, string> ResourceTypesByIndex;
 
-		protected readonly CellLayer<CellContents> Content;
-		protected readonly CellLayer<CellContents> RenderContent;
-
-		public bool IsResourceLayerEmpty { get { return resCells < 1; } }
-
-		bool disposed;
 		int resCells;
 
-		public ResourceLayer(Actor self)
+		public event Action<CPos, string> CellChanged;
+
+		public ResourceLayer(Actor self, ResourceLayerInfo info)
 		{
+			this.info = info;
 			world = self.World;
-			buildingInfluence = self.Trait<BuildingInfluence>();
-
-			Content = new CellLayer<CellContents>(world.Map);
-			RenderContent = new CellLayer<CellContents>(world.Map);
-
-			RenderContent.CellEntryChanged += UpdateSpriteLayers;
+			Map = world.Map;
+			BuildingInfluence = self.Trait<BuildingInfluence>();
+			Content = new CellLayer<ResourceLayerContents>(Map);
+			ResourceTypesByIndex = info.ResourceTypes.ToDictionary(
+				kv => kv.Value.ResourceIndex,
+				kv => kv.Key);
 		}
 
-		void UpdateSpriteLayers(CPos cell)
+		protected virtual void WorldLoaded(World w, WorldRenderer wr)
 		{
-			var resource = RenderContent[cell];
-			foreach (var kv in spriteLayers)
-			{
-				// resource.Type is meaningless (and may be null) if resource.Sprite is null
-				if (resource.Sprite != null && resource.Type.Palette == kv.Key)
-					kv.Value.Update(cell, resource.Sprite);
-				else
-					kv.Value.Update(cell, null);
-			}
-		}
-
-		void IRenderOverlay.Render(WorldRenderer wr)
-		{
-			foreach (var kv in spriteLayers.Values)
-				kv.Draw(wr.Viewport);
-		}
-
-		int GetAdjacentCellsWith(ResourceType t, CPos cell)
-		{
-			var sum = 0;
-			for (var u = -1; u < 2; u++)
-			{
-				for (var v = -1; v < 2; v++)
-				{
-					var c = cell + new CVec(u, v);
-					if (Content.Contains(c) && Content[c].Type == t)
-						++sum;
-				}
-			}
-
-			return sum;
-		}
-
-		public void WorldLoaded(World w, WorldRenderer wr)
-		{
-			var resources = w.WorldActor.TraitsImplementing<ResourceType>()
-				.ToDictionary(r => r.Info.ResourceType, r => r);
-
-			// Build the sprite layer dictionary for rendering resources
-			// All resources that have the same palette must also share a sheet and blend mode
-			foreach (var r in resources)
-			{
-				var layer = spriteLayers.GetOrAdd(r.Value.Palette, pal =>
-				{
-					var first = r.Value.Variants.First().Value.First();
-					return new TerrainSpriteLayer(w, wr, first.Sheet, first.BlendMode, pal, wr.World.Type != WorldType.Editor);
-				});
-
-				// Validate that sprites are compatible with this layer
-				var sheet = layer.Sheet;
-				if (r.Value.Variants.Any(kv => kv.Value.Any(s => s.Sheet != sheet)))
-					throw new InvalidDataException("Resource sprites span multiple sheets. Try loading their sequences earlier.");
-
-				var blendMode = layer.BlendMode;
-				if (r.Value.Variants.Any(kv => kv.Value.Any(s => s.BlendMode != blendMode)))
-					throw new InvalidDataException("Resource sprites specify different blend modes. "
-						+ "Try using different palettes for resource types that use different blend modes.");
-			}
-
 			foreach (var cell in w.Map.AllCells)
 			{
-				ResourceType t;
-				if (!resources.TryGetValue(w.Map.Resources[cell].Type, out t))
+				var resource = world.Map.Resources[cell];
+				if (!ResourceTypesByIndex.TryGetValue(resource.Type, out var resourceType))
 					continue;
 
-				if (!AllowResourceAt(t, cell))
+				if (!AllowResourceAt(resourceType, cell))
 					continue;
 
-				Content[cell] = CreateResourceCell(t, cell);
+				Content[cell] = CreateResourceCell(resourceType, cell, resource.Index);
 			}
 
+			if (!info.RecalculateResourceDensity)
+				return;
+
+			// Set initial density based on the number of neighboring resources
 			foreach (var cell in w.Map.AllCells)
 			{
-				var type = Content[cell].Type;
-				if (type != null)
+				var resource = Content[cell];
+				if (resource.Type == null || !info.ResourceTypes.TryGetValue(resource.Type, out var resourceInfo))
+					continue;
+
+				var adjacent = 0;
+				var directions = CVec.Directions;
+				for (var i = 0; i < directions.Length; i++)
 				{
-					// Set initial density based on the number of neighboring resources
-					// Adjacent includes the current cell, so is always >= 1
-					var adjacent = GetAdjacentCellsWith(type, cell);
-					var density = int2.Lerp(0, type.Info.MaxDensity, adjacent, 9);
-					var temp = Content[cell];
-					temp.Density = Math.Max(density, 1);
-
-					// Initialize the RenderContent with the initial map state
-					// because the shroud may not be enabled.
-					RenderContent[cell] = Content[cell] = temp;
-					UpdateRenderedSprite(cell);
+					var c = cell + directions[i];
+					if (Content.Contains(c) && Content[c].Type == resource.Type)
+						++adjacent;
 				}
+
+				// Adjacent includes the current cell, so is always >= 1
+				var density = Math.Max(int2.Lerp(0, resourceInfo.MaxDensity, adjacent, 9), 1);
+				Content[cell] = new ResourceLayerContents(resource.Type, density);
 			}
 		}
 
-		protected virtual void UpdateRenderedSprite(CPos cell)
+		void IWorldLoaded.WorldLoaded(World w, WorldRenderer wr) { WorldLoaded(w, wr); }
+
+		protected virtual bool AllowResourceAt(string resourceType, CPos cell)
 		{
-			var t = RenderContent[cell];
-			if (t.Density > 0)
+			if (!Map.Contains(cell) || Map.Ramp[cell] != 0)
+				return false;
+
+			if (resourceType == null || !info.ResourceTypes.TryGetValue(resourceType, out var resourceInfo))
+				return false;
+
+			if (!resourceInfo.AllowedTerrainTypes.Contains(Map.GetTerrainInfo(cell).Type))
+				return false;
+
+			return BuildingInfluence.GetBuildingAt(cell) == null;
+		}
+
+		ResourceLayerContents CreateResourceCell(string resourceType, CPos cell, int density)
+		{
+			if (!info.ResourceTypes.TryGetValue(resourceType, out var resourceInfo))
 			{
-				var sprites = t.Type.Variants[t.Variant];
-				var frame = int2.Lerp(0, sprites.Length - 1, t.Density, t.Type.Info.MaxDensity);
-				t.Sprite = sprites[frame];
-			}
-			else
-				t.Sprite = null;
-
-			RenderContent[cell] = t;
-		}
-
-		protected virtual string ChooseRandomVariant(ResourceType t)
-		{
-			return t.Variants.Keys.Random(Game.CosmeticRandom);
-		}
-
-		void ITickRender.TickRender(WorldRenderer wr, Actor self)
-		{
-			var remove = new List<CPos>();
-			foreach (var c in dirty)
-			{
-				if (!self.World.FogObscures(c))
-				{
-					RenderContent[c] = Content[c];
-					UpdateRenderedSprite(c);
-					remove.Add(c);
-				}
+				world.Map.CustomTerrain[cell] = byte.MaxValue;
+				return ResourceLayerContents.Empty;
 			}
 
-			foreach (var r in remove)
-				dirty.Remove(r);
-		}
-
-		public bool AllowResourceAt(ResourceType rt, CPos cell)
-		{
-			if (!world.Map.Contains(cell))
-				return false;
-
-			if (!rt.Info.AllowedTerrainTypes.Contains(world.Map.GetTerrainInfo(cell).Type))
-				return false;
-
-			if (!rt.Info.AllowUnderActors && world.ActorMap.AnyActorsAt(cell))
-				return false;
-
-			if (!rt.Info.AllowUnderBuildings && buildingInfluence.GetBuildingAt(cell) != null)
-				return false;
-
-			if (!rt.Info.AllowOnRamps)
-			{
-				var tile = world.Map.Tiles[cell];
-				var tileInfo = world.Map.Rules.TileSet.GetTileInfo(tile);
-				if (tileInfo != null && tileInfo.RampType > 0)
-					return false;
-			}
-
-			return true;
-		}
-
-		public bool CanSpawnResourceAt(ResourceType newResourceType, CPos cell)
-		{
-			if (!world.Map.Contains(cell))
-				return false;
-
-			var currentResourceType = GetResource(cell);
-			return (currentResourceType == newResourceType && !IsFull(cell))
-				|| (currentResourceType == null && AllowResourceAt(newResourceType, cell));
-		}
-
-		CellContents CreateResourceCell(ResourceType t, CPos cell)
-		{
-			world.Map.CustomTerrain[cell] = world.Map.Rules.TileSet.GetTerrainIndex(t.Info.TerrainType);
+			world.Map.CustomTerrain[cell] = world.Map.Rules.TerrainInfo.GetTerrainIndex(resourceInfo.TerrainType);
 			++resCells;
 
-			return new CellContents
-			{
-				Type = t,
-				Variant = ChooseRandomVariant(t),
-			};
+			return new ResourceLayerContents(resourceType, density.Clamp(1, resourceInfo.MaxDensity));
 		}
 
-		public void AddResource(ResourceType t, CPos p, int n)
+		bool CanAddResource(string resourceType, CPos cell, int amount = 1)
 		{
-			var cell = Content[p];
-			if (cell.Type == null)
-				cell = CreateResourceCell(t, p);
+			if (!world.Map.Contains(cell))
+				return false;
 
-			if (cell.Type != t)
-				return;
+			if (resourceType == null || !info.ResourceTypes.TryGetValue(resourceType, out var resourceInfo))
+				return false;
 
-			cell.Density = Math.Min(cell.Type.Info.MaxDensity, cell.Density + n);
-			Content[p] = cell;
+			var content = Content[cell];
+			if (content.Type == null)
+				return amount <= resourceInfo.MaxDensity && AllowResourceAt(resourceType, cell);
 
-			dirty.Add(p);
+			if (content.Type != resourceType)
+				return false;
+
+			return content.Density + amount <= resourceInfo.MaxDensity;
 		}
 
-		public bool IsFull(CPos cell)
+		int AddResource(string resourceType, CPos cell, int amount = 1)
 		{
-			return Content[cell].Density == Content[cell].Type.Info.MaxDensity;
-		}
-
-		public ResourceType Harvest(CPos cell)
-		{
-			var c = Content[cell];
-			if (c.Type == null)
-				return null;
-
-			if (--c.Density < 0)
-			{
-				Content[cell] = EmptyCell;
-				world.Map.CustomTerrain[cell] = byte.MaxValue;
-				--resCells;
-			}
-			else
-				Content[cell] = c;
-
-			dirty.Add(cell);
-
-			return c.Type;
-		}
-
-		public void Destroy(CPos cell)
-		{
-			// Don't break other users of CustomTerrain if there are no resources
-			if (Content[cell].Type == null)
-				return;
-
-			--resCells;
-
-			// Clear cell
-			Content[cell] = EmptyCell;
-			world.Map.CustomTerrain[cell] = byte.MaxValue;
-
-			dirty.Add(cell);
-		}
-
-		public ResourceType GetResource(CPos cell) { return Content[cell].Type; }
-		public ResourceType GetRenderedResource(CPos cell) { return RenderContent[cell].Type; }
-		public int GetResourceDensity(CPos cell) { return Content[cell].Density; }
-		public int GetMaxResourceDensity(CPos cell)
-		{
-			if (Content[cell].Type == null)
+			if (!Content.Contains(cell))
 				return 0;
 
-			return Content[cell].Type.Info.MaxDensity;
+			if (resourceType == null || !info.ResourceTypes.TryGetValue(resourceType, out var resourceInfo))
+				return 0;
+
+			var content = Content[cell];
+			if (content.Type == null)
+				content = CreateResourceCell(resourceType, cell, 0);
+
+			if (content.Type != resourceType)
+				return 0;
+
+			var oldDensity = content.Density;
+			var density = Math.Min(resourceInfo.MaxDensity, oldDensity + amount);
+			Content[cell] = new ResourceLayerContents(content.Type, density);
+
+			CellChanged?.Invoke(cell, content.Type);
+
+			return density - oldDensity;
 		}
 
-		void INotifyActorDisposing.Disposing(Actor self)
+		int RemoveResource(string resourceType, CPos cell, int amount = 1)
 		{
-			if (disposed)
+			if (!Content.Contains(cell))
+				return 0;
+
+			var content = Content[cell];
+			if (content.Type == null || content.Type != resourceType)
+				return 0;
+
+			var oldDensity = content.Density;
+			var density = Math.Max(0, oldDensity - amount);
+
+			if (density == 0)
+			{
+				Content[cell] = ResourceLayerContents.Empty;
+				Map.CustomTerrain[cell] = byte.MaxValue;
+				--resCells;
+
+				CellChanged?.Invoke(cell, null);
+			}
+			else
+			{
+				Content[cell] = new ResourceLayerContents(content.Type, density);
+				CellChanged?.Invoke(cell, content.Type);
+			}
+
+			return oldDensity - density;
+		}
+
+		void ClearResources(CPos cell)
+		{
+			if (!Content.Contains(cell))
 				return;
 
-			foreach (var kv in spriteLayers.Values)
-				kv.Dispose();
+			// Don't break other users of CustomTerrain if there are no resources
+			var content = Content[cell];
+			if (content.Type == null)
+				return;
 
-			RenderContent.CellEntryChanged -= UpdateSpriteLayers;
+			Content[cell] = ResourceLayerContents.Empty;
+			Map.CustomTerrain[cell] = byte.MaxValue;
+			--resCells;
 
-			disposed = true;
+			CellChanged?.Invoke(cell, null);
 		}
 
-		public struct CellContents
+		ResourceLayerContents IResourceLayer.GetResource(CPos cell) { return Content.Contains(cell) ? Content[cell] : default; }
+		int IResourceLayer.GetMaxDensity(string resourceType)
 		{
-			public static readonly CellContents Empty = new CellContents();
-			public ResourceType Type;
-			public int Density;
-			public string Variant;
-			public Sprite Sprite;
+			if (!info.ResourceTypes.TryGetValue(resourceType, out var resourceInfo))
+				return 0;
+
+			return resourceInfo.MaxDensity;
 		}
+
+		bool IResourceLayer.CanAddResource(string resourceType, CPos cell, int amount) { return CanAddResource(resourceType, cell, amount); }
+		int IResourceLayer.AddResource(string resourceType, CPos cell, int amount) { return AddResource(resourceType, cell, amount); }
+		int IResourceLayer.RemoveResource(string resourceType, CPos cell, int amount) { return RemoveResource(resourceType, cell, amount); }
+		void IResourceLayer.ClearResources(CPos cell) { ClearResources(cell); }
+		bool IResourceLayer.IsVisible(CPos cell) { return !world.FogObscures(cell); }
+		bool IResourceLayer.IsEmpty => resCells < 1;
 	}
 }

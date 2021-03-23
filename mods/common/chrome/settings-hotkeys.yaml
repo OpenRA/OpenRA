@@ -1,0 +1,163 @@
+Container@HOTKEYS_PANEL:
+	Logic: HotkeysSettingsLogic
+		HotkeyGroups:
+			Game Commands:
+				Template: TWO_COLUMN
+				Types: OrderGenerator, World, Menu
+			Viewport Commands:
+				Template: TWO_COLUMN
+				Types: Viewport
+			Observer / Replay Commands:
+				Template: TWO_COLUMN
+				Types: Observer, Replay
+			Unit Commands:
+				Template: THREE_COLUMN
+				Types: Unit
+			Unit Stance Commands:
+				Template: TWO_COLUMN
+				Types: Stance
+			Production Commands:
+				Template: THREE_COLUMN
+				Types: Production, ProductionSlot
+			Support Power Commands:
+				Template: THREE_COLUMN
+				Types: SupportPower
+			Music Commands:
+				Template: TWO_COLUMN
+				Types: Music
+	Width: PARENT_RIGHT - 10
+	Height: PARENT_BOTTOM
+	Children:
+		ScrollPanel@HOTKEY_LIST:
+			X: 15
+			Y: 40
+			Width: PARENT_RIGHT - 30
+			TopBottomSpacing: 4
+			ItemSpacing: 4
+			Height: 190
+			Children:
+				ScrollItem@HEADER:
+					BaseName: scrollheader
+					Width: 528
+					Height: 13
+					Visible: false
+					Children:
+						Label@LABEL:
+							Font: TinyBold
+							Width: PARENT_RIGHT
+							Height: 10
+							Align: Center
+						ScrollItem@HEADER:
+							Width: 528
+							Height: 13
+							Visible: false
+							Children:
+								Label@LABEL:
+									Font: TinyBold
+									Width: PARENT_RIGHT
+									Height: 10
+									Align: Center
+						Container@TEMPLATES:
+							Children:
+								Container@TWO_COLUMN:
+									Width: 262
+									Height: 25
+									Visible: false
+									Children:
+										Label@FUNCTION:
+											Y: 0 - 1
+											Width: PARENT_RIGHT - 85
+											Height: 25
+											Align: Right
+										Button@HOTKEY:
+											X: PARENT_RIGHT - WIDTH
+											Width: 80
+											Height: 25
+											Align: Left
+											TooltipContainer: SETTINGS_TOOLTIP_CONTAINER
+								Container@THREE_COLUMN:
+									Width: 173
+									Height: 25
+									Visible: false
+									Children:
+										Label@FUNCTION:
+											Y: 0 - 1
+											Width: PARENT_RIGHT - 84
+											Height: 25
+											Align: Right
+										Button@HOTKEY:
+											X: PARENT_RIGHT - WIDTH + 1
+											Width: 80
+											Height: 25
+											Align: Left
+											TooltipContainer: SETTINGS_TOOLTIP_CONTAINER
+		Background@HOTKEY_DIALOG_ROOT:
+			X: 15
+			Y: 230
+			Width: PARENT_RIGHT - 30
+			Height: 65
+			Background: dialog3
+			Children:
+				Label@HOTKEY_LABEL:
+					X: 15
+					Y: 19
+					Width: 219 - 15 - 10
+					Height: 25
+					Font: Bold
+					Align: Right
+				HotkeyEntry@HOTKEY_ENTRY:
+					X: 219
+					Y: 20
+					Width: 170
+					Height: 25
+				Container@NOTICES:
+					X: 219
+					Y: 42
+					Width: 170
+					Height: 25
+					Children:
+						Label@DEFAULT_NOTICE:
+							Width: PARENT_RIGHT
+							Height: PARENT_BOTTOM
+							Font: Tiny
+							Align: Left
+							Text: This is the default
+						Label@ORIGINAL_NOTICE:
+							Width: PARENT_RIGHT
+							Height: PARENT_BOTTOM
+							Font: Tiny
+							Align: Left
+							Text: The default is "{0}"
+						Label@DUPLICATE_NOTICE:
+							Width: PARENT_RIGHT
+							Height: PARENT_BOTTOM
+							Font: Tiny
+							Align: Left
+							Text: This is already used for "{0}"
+				Button@OVERRIDE_HOTKEY_BUTTON:
+					X: PARENT_RIGHT - 3 * WIDTH - 30
+					Y: 20
+					Width: 70
+					Height: 25
+					Text: Override
+					Font: Bold
+				Button@CLEAR_HOTKEY_BUTTON:
+					X: PARENT_RIGHT - 2 * WIDTH - 30
+					Y: 20
+					Width: 65
+					Height: 25
+					Text: Clear
+					Font: Bold
+					TooltipText: Unbind the hotkey
+					TooltipContainer: SETTINGS_TOOLTIP_CONTAINER
+					TooltipTemplate: SIMPLE_TOOLTIP
+				Button@RESET_HOTKEY_BUTTON:
+					X: PARENT_RIGHT - WIDTH - 20
+					Y: 20
+					Width: 65
+					Height: 25
+					Text: Reset
+					Font: Bold
+					TooltipText: Reset to default
+					TooltipContainer: SETTINGS_TOOLTIP_CONTAINER
+					TooltipTemplate: SIMPLE_TOOLTIP

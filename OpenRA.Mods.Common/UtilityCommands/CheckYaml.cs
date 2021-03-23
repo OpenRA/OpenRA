@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 {
 	class CheckYaml : IUtilityCommand
 	{
-		string IUtilityCommand.Name { get { return "--check-yaml"; } }
+		string IUtilityCommand.Name => "--check-yaml";
 
 		static int errors = 0;
 
@@ -81,7 +81,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					maps = modData.MapCache.EnumerateMapsWithoutCaching().ToList();
 				}
 				else
-					maps.Add(new Map(modData, new Folder(".").OpenPackage(args[1], modData.ModFiles)));
+					maps.Add(new Map(modData, new Folder(Platform.EngineDir).OpenPackage(args[1], modData.ModFiles)));
 
 				foreach (var testMap in maps)
 				{
@@ -134,7 +134,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				try
 				{
 					var customRulesPass = (ILintRulesPass)modData.ObjectCreator.CreateBasic(customRulesPassType);
-					customRulesPass.Run(EmitError, EmitWarning, rules);
+					customRulesPass.Run(EmitError, EmitWarning, modData, rules);
 				}
 				catch (Exception e)
 				{

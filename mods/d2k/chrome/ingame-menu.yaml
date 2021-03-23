@@ -2,10 +2,12 @@ Container@INGAME_MENU:
 	Width: WINDOW_RIGHT
 	Height: WINDOW_BOTTOM
 	Logic: IngameMenuLogic
+		Buttons: RESUME, LOAD_GAME, SAVE_GAME, SETTINGS, MUSIC, SURRENDER, RESTART, ABORT_MISSION, SAVE_MAP, EXIT_EDITOR
+		ButtonStride: 0, 40
 	Children:
 		Label@VERSION_LABEL:
 			X: WINDOW_RIGHT - 10
-			Y: WINDOW_BOTTOM - 20
+			Y: WINDOW_BOTTOM - 19
 			Align: Right
 			Font: Regular
 			Contrast: True
@@ -14,63 +16,19 @@ Container@INGAME_MENU:
 			X: 13 + (WINDOW_RIGHT - 522) / 4 - WIDTH / 2
 			Y: (WINDOW_BOTTOM - HEIGHT) / 2
 			Width: 200
-			Height: 295
+			Height: 120
 			Children:
 				Label@LABEL_TITLE:
 					X: (PARENT_RIGHT - WIDTH) / 2
-					Y: 20
+					Y: 21
 					Width: 200
 					Height: 30
 					Text: Options
 					Align: Center
 					Font: Bold
-				Button@RESUME:
+				Button@BUTTON_TEMPLATE:
 					X: (PARENT_RIGHT - WIDTH) / 2
 					Y: 60
 					Width: 140
 					Height: 30
-					Text: Resume
-					Font: Bold
-					Key: escape
-				Button@SETTINGS:
-					X: (PARENT_RIGHT - WIDTH) / 2
-					Y: 100
-					Width: 140
-					Height: 30
-					Text: Settings
-					Font: Bold
-				Button@MUSIC:
-					X: (PARENT_RIGHT - WIDTH) / 2
-					Y: 140
-					Width: 140
-					Height: 30
-					Text: Music
-					Font: Bold
-				Button@SURRENDER:
-					X: (PARENT_RIGHT - WIDTH) / 2
-					Y: 180
-					Width: 140
-					Height: 30
-					Text: Surrender
-					Font: Bold
-				Button@SAVE_MAP:
-					X: (PARENT_RIGHT - WIDTH) / 2
-					Y: 180
-					Width: 140
-					Height: 30
-					Text: Save Map
-					Font: Bold
-				Button@ABORT_MISSION:
-					X: (PARENT_RIGHT - WIDTH) / 2
-					Y: 220
-					Width: 140
-					Height: 30
-					Text: Abort Mission
-					Font: Bold
-				Button@EXIT_EDITOR:
-					X: (PARENT_RIGHT - WIDTH) / 2
-					Y: 220
-					Width: 140
-					Height: 30
-					Text: Exit Map Editor
 					Font: Bold

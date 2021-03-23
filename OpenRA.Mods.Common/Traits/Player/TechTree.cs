@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -18,9 +18,9 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Manages build limits and pre-requisites.", " Attach this to the player actor.")]
-	public class TechTreeInfo : ITraitInfo
+	public class TechTreeInfo : TraitInfo
 	{
-		public object Create(ActorInitializer init) { return new TechTree(init); }
+		public override object Create(ActorInitializer init) { return new TechTree(init); }
 	}
 
 	public class TechTree
@@ -106,10 +106,12 @@ namespace OpenRA.Mods.Common.Traits
 			return ret;
 		}
 
+		public Player Owner => player;
+
 		class Watcher
 		{
 			public readonly string Key;
-			public ITechTreeElement RegisteredBy { get { return watcher; } }
+			public ITechTreeElement RegisteredBy => watcher;
 
 			// Strings may be either actor type, or "alternate name" key
 			readonly string[] prerequisites;

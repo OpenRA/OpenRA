@@ -3,7 +3,7 @@ DOGGIE:
 	Inherits@2: ^RegularInfantryDeath
 	Inherits@3: ^HealsOnTiberium
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Critter
 	Tooltip:
 		Name: Tiberian Fiend
@@ -22,7 +22,7 @@ DOGGIE:
 	Voiced:
 		VoiceSet: Fiend
 	Targetable:
-		TargetTypes: Ground
+		TargetTypes: Ground, Creep
 	Armament:
 		Weapon: FiendShard
 	AttackFrontal:
@@ -131,8 +131,12 @@ JFISH:
 		MaxMoveDelay: 600
 	WithAttackAnimation:
 		Sequence: attack
+	WithAttackOverlay@muzzle:
+		Sequence: attack-shock
+		Palette: bright
 	RenderSprites:
 		Image: floater
+		Palette: player-nobright
 	Selectable:
 		Bounds: 32,32,0,-5
 	AmbientSound:

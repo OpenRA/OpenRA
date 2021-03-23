@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -15,14 +15,14 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits.Conditions
 {
 	[Desc("Grants a random condition from a predefined list to the actor when created.")]
-	public class GrantRandomConditionInfo : ITraitInfo
+	public class GrantRandomConditionInfo : TraitInfo
 	{
 		[FieldLoader.Require]
 		[GrantedConditionReference]
 		[Desc("List of conditions to grant from.")]
 		public readonly string[] Conditions = null;
 
-		public object Create(ActorInitializer init) { return new GrantRandomCondition(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new GrantRandomCondition(init.Self, this); }
 	}
 
 	public class GrantRandomCondition : INotifyCreated
@@ -40,8 +40,7 @@ namespace OpenRA.Mods.Common.Traits.Conditions
 				return;
 
 			var condition = info.Conditions.Random(self.World.SharedRandom);
-			var conditionManager = self.Trait<ConditionManager>();
-			conditionManager.GrantCondition(self, condition);
+			self.GrantCondition(condition);
 		}
 	}
 }

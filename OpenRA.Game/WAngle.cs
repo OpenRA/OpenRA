@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,16 +10,19 @@
 #endregion
 
 using System;
+using Eluant;
+using Eluant.ObjectBinding;
+using OpenRA.Scripting;
 
 namespace OpenRA
 {
 	/// <summary>
 	/// 1D angle - 1024 units = 360 degrees.
 	/// </summary>
-	public struct WAngle : IEquatable<WAngle>
+	public readonly struct WAngle : IScriptBindable, ILuaAdditionBinding, ILuaSubtractionBinding, ILuaEqualityBinding, IEquatable<WAngle>
 	{
 		public readonly int Angle;
-		public int AngleSquared { get { return (int)Angle * Angle; } }
+		public int AngleSquared => (int)Angle * Angle;
 
 		public WAngle(int a)
 		{
@@ -43,7 +46,7 @@ namespace OpenRA
 		public bool Equals(WAngle other) { return other == this; }
 		public override bool Equals(object obj) { return obj is WAngle && Equals((WAngle)obj); }
 
-		public int Facing { get { return Angle / 4; } }
+		public int Facing => Angle / 4;
 
 		public int Sin() { return new WAngle(Angle - 256).Cos(); }
 
@@ -77,6 +80,50 @@ namespace OpenRA
 				bb -= 1024;
 
 			return new WAngle(aa + (bb - aa) * mul / div);
+		}
+
+		public static WAngle ArcSin(int d)
+		{
+			if (d < -1024 || d > 1024)
+				throw new ArgumentException("ArcSin is only valid for values between -1024 and 1024. Received {0}".F(d));
+
+			var a = ClosestCosineIndex(Math.Abs(d));
+			return new WAngle(d < 0 ? 768 + a : 256 - a);
+		}
+
+		public static WAngle ArcCos(int d)
+		{
+			if (d < -1024 || d > 1024)
+				throw new ArgumentException("ArcCos is only valid for values between -1024 and 1024. Received {0}".F(d));
+
+			var a = ClosestCosineIndex(Math.Abs(d));
+			return new WAngle(d < 0 ? 512 - a : a);
+		}
+
+		/// <summary>
+		/// Find the index of CosineTable that has the value closest to the given value.
+		/// The first or last index will be returned for values above or below the valid range
+		/// </summary>
+		static int ClosestCosineIndex(int value)
+		{
+			var aboveIndex = 0;
+			var belowIndex = 256;
+			while (aboveIndex != belowIndex - 1)
+			{
+				var index = (aboveIndex + belowIndex) / 2;
+				var val = CosineTable[index];
+
+				if (val == value)
+					return index;
+
+				if (val < value)
+					belowIndex = index;
+				else
+					aboveIndex = index;
+			}
+
+			// Take the index with the smallest error
+			return CosineTable[aboveIndex] - value > value - CosineTable[belowIndex] ? belowIndex : aboveIndex;
 		}
 
 		public static WAngle ArcTan(int y, int x) { return ArcTan(y, x, 1); }
@@ -169,5 +216,51 @@ namespace OpenRA
 			9233, 9781, 10396, 11094, 11891, 12810, 13882, 15148, 16667, 18524, 20843,
 			23826, 27801, 33366, 41713, 55622, 83438, 166883, int.MaxValue
 		};
+
+		#region Scripting interface
+
+		public LuaValue Add(LuaRuntime runtime, LuaValue left, LuaValue right)
+		{
+			if (!left.TryGetClrValue(out WAngle a))
+				throw new LuaException("Attempted to call WAngle.Add(WAngle, WAngle) with invalid arguments ({0}, {1})".F(left.WrappedClrType().Name, right.WrappedClrType().Name));
+
+			if (right.TryGetClrValue(out int c))
+			{
+				Game.Debug("Support for facing calculations mixing Angle with integers is deprecated. Make sure all facing calculations use Angle");
+				return new LuaCustomClrObject(a + FromFacing(c));
+			}
+
+			if (right.TryGetClrValue(out WAngle b))
+				return new LuaCustomClrObject(a + b);
+
+			throw new LuaException("Attempted to call WAngle.Add(WAngle, WAngle) with invalid arguments ({0}, {1})".F(left.WrappedClrType().Name, right.WrappedClrType().Name));
+		}
+
+		public LuaValue Subtract(LuaRuntime runtime, LuaValue left, LuaValue right)
+		{
+			if (!left.TryGetClrValue(out WAngle a))
+				throw new LuaException("Attempted to call WAngle.Subtract(WAngle, WAngle) with invalid arguments ({0}, {1})".F(left.WrappedClrType().Name, right.WrappedClrType().Name));
+
+			if (right.TryGetClrValue(out int c))
+			{
+				Game.Debug("Support for facing calculations mixing Angle with integers is deprecated. Make sure all facing calculations use Angle");
+				return new LuaCustomClrObject(a - FromFacing(c));
+			}
+
+			if (right.TryGetClrValue(out WAngle b))
+				return new LuaCustomClrObject(a - b);
+
+			throw new LuaException("Attempted to call WAngle.Subtract(WAngle, WAngle) with invalid arguments ({0}, {1})".F(left.WrappedClrType().Name, right.WrappedClrType().Name));
+		}
+
+		public LuaValue Equals(LuaRuntime runtime, LuaValue left, LuaValue right)
+		{
+			if (!left.TryGetClrValue(out WAngle a) || !right.TryGetClrValue(out WAngle b))
+				return false;
+
+			return a == b;
+		}
+
+		#endregion
 	}
 }

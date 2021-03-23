@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -16,13 +16,11 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	/// <summary>Use as base class for *Info to subclass of ConditionalTrait. (See ConditionalTrait.)</summary>
-	public abstract class ConditionalTraitInfo : IObservesVariablesInfo, IRulesetLoaded
+	public abstract class ConditionalTraitInfo : TraitInfo, IObservesVariablesInfo, IRulesetLoaded
 	{
 		[ConsumedConditionReference]
 		[Desc("Boolean expression defining the condition to enable this trait.")]
 		public readonly BooleanExpression RequiresCondition = null;
-
-		public abstract object Create(ActorInitializer init);
 
 		// HACK: A shim for all the ActorPreview code that used to query UpgradeMinEnabledLevel directly
 		// This can go away after we introduce an InitialConditions ActorInit and have the traits query the
@@ -51,7 +49,8 @@ namespace OpenRA.Mods.Common.Traits
 				yield return new VariableObserver(RequiredConditionsChanged, Info.RequiresCondition.Variables);
 		}
 
-		[Sync] public bool IsTraitDisabled { get; private set; }
+		[Sync]
+		public bool IsTraitDisabled { get; private set; }
 
 		public ConditionalTrait(InfoType info)
 		{

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -13,7 +13,7 @@ using System;
 
 namespace OpenRA
 {
-	public struct Int32Matrix4x4 : IEquatable<Int32Matrix4x4>
+	public readonly struct Int32Matrix4x4 : IEquatable<Int32Matrix4x4>
 	{
 		public readonly int M11, M12, M13, M14, M21, M22, M23, M24, M31, M32, M33, M34, M41, M42, M43, M44;
 

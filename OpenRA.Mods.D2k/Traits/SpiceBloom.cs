@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -11,20 +11,17 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Effects;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
-using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.Common.Traits.Render;
-using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.D2k.Traits
 {
 	[Desc("Seeds resources by explosive eruptions after accumulation times.")]
-	public class SpiceBloomInfo : ITraitInfo, IRenderActorPreviewSpritesInfo, Requires<RenderSpritesInfo>
+	public class SpiceBloomInfo : TraitInfo, IRenderActorPreviewSpritesInfo, Requires<RenderSpritesInfo>
 	{
 		[SequenceReference]
 		public readonly string[] GrowthSequences = { "grow1", "grow2", "grow3" };
@@ -50,22 +47,21 @@ namespace OpenRA.Mods.D2k.Traits
 		[Desc("The maximum distance in cells that spice may be expelled.")]
 		public readonly int Range = 5;
 
-		public object Create(ActorInitializer init) { return new SpiceBloom(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new SpiceBloom(init.Self, this); }
 
-		public IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p)
+		public IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, string image, int facings, PaletteReference p)
 		{
 			var anim = new Animation(init.World, image);
 			anim.PlayRepeating(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), GrowthSequences[0]));
 
-			yield return new SpriteActorPreview(anim, () => WVec.Zero, () => 0, p, rs.Scale);
+			yield return new SpriteActorPreview(anim, () => WVec.Zero, () => 0, p);
 		}
 	}
 
 	public class SpiceBloom : ITick, INotifyKilled
 	{
 		readonly SpiceBloomInfo info;
-		readonly ResourceType resType;
-		readonly ResourceLayer resLayer;
+		readonly IResourceLayer resourceLayer;
 		readonly Animation body;
 		readonly Animation spurt;
 		readonly int growTicks;
@@ -78,8 +74,7 @@ namespace OpenRA.Mods.D2k.Traits
 		{
 			this.info = info;
 
-			resLayer = self.World.WorldActor.Trait<ResourceLayer>();
-			resType = self.World.WorldActor.TraitsImplementing<ResourceType>().First(t => t.Info.Type == info.ResourceType);
+			resourceLayer = self.World.WorldActor.Trait<IResourceLayer>();
 
 			var rs = self.Trait<RenderSprites>();
 			body = new Animation(self.World, rs.GetImage(self));
@@ -129,20 +124,28 @@ namespace OpenRA.Mods.D2k.Traits
 
 			for (var i = 0; i < pieces; i++)
 			{
-				var cell = cells.SkipWhile(p => resLayer.GetResource(p) == resType && resLayer.IsFull(p)).Cast<CPos?>().RandomOrDefault(self.World.SharedRandom);
+				var cell = cells
+					.SkipWhile(p => resourceLayer.GetResource(p).Type == info.ResourceType && !resourceLayer.CanAddResource(info.ResourceType, p))
+					.Cast<CPos?>()
+					.RandomOrDefault(self.World.SharedRandom);
+
 				if (cell == null)
 					cell = cells.Random(self.World.SharedRandom);
 
 				var args = new ProjectileArgs
 				{
 					Weapon = self.World.Map.Rules.Weapons[info.Weapon.ToLowerInvariant()],
-					Facing = 0,
+					Facing = WAngle.Zero,
+					CurrentMuzzleFacing = () => WAngle.Zero,
 
 					DamageModifiers = self.TraitsImplementing<IFirepowerModifier>()
 						.Select(a => a.GetFirepowerModifier()).ToArray(),
 
 					InaccuracyModifiers = self.TraitsImplementing<IInaccuracyModifier>()
 						.Select(a => a.GetInaccuracyModifier()).ToArray(),
+
+					RangeModifiers = self.TraitsImplementing<IRangeModifier>()
+						.Select(a => a.GetRangeModifier()).ToArray(),
 
 					Source = self.CenterPosition,
 					CurrentSource = () => self.CenterPosition,
@@ -159,7 +162,7 @@ namespace OpenRA.Mods.D2k.Traits
 							self.World.Add(projectile);
 
 						if (args.Weapon.Report != null && args.Weapon.Report.Any())
-							Game.Sound.Play(SoundType.World, args.Weapon.Report.Random(self.World.SharedRandom), self.CenterPosition);
+							Game.Sound.Play(SoundType.World, args.Weapon.Report, self.World, self.CenterPosition);
 					}
 				});
 			}

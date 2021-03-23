@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -19,7 +19,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Renders crates with both water and land variants.")]
-	class WithCrateBodyInfo : ITraitInfo, Requires<RenderSpritesInfo>, IRenderActorPreviewSpritesInfo
+	class WithCrateBodyInfo : TraitInfo, Requires<RenderSpritesInfo>, IRenderActorPreviewSpritesInfo
 	{
 		[Desc("Easteregg sequences to use in December.")]
 		public readonly string[] XmasImages = { };
@@ -27,17 +27,22 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Terrain types on which to display WaterSequence.")]
 		public readonly HashSet<string> WaterTerrainTypes = new HashSet<string> { "Water" };
 
-		[SequenceReference] public readonly string IdleSequence = "idle";
-		[SequenceReference] public readonly string WaterSequence = null;
-		[SequenceReference] public readonly string LandSequence = null;
+		[SequenceReference]
+		public readonly string IdleSequence = "idle";
 
-		public object Create(ActorInitializer init) { return new WithCrateBody(init.Self, this); }
+		[SequenceReference]
+		public readonly string WaterSequence = null;
 
-		public IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p)
+		[SequenceReference]
+		public readonly string LandSequence = null;
+
+		public override object Create(ActorInitializer init) { return new WithCrateBody(init.Self, this); }
+
+		public IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, string image, int facings, PaletteReference p)
 		{
-			var anim = new Animation(init.World, rs.Image, () => 0);
+			var anim = new Animation(init.World, image);
 			anim.PlayRepeating(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), IdleSequence));
-			yield return new SpriteActorPreview(anim, () => WVec.Zero, () => 0, p, rs.Scale);
+			yield return new SpriteActorPreview(anim, () => WVec.Zero, () => 0, p);
 		}
 	}
 
@@ -63,16 +68,20 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		void INotifyAddedToWorld.AddedToWorld(Actor self)
 		{
-			// Don't change animations while still in air
-			if (!self.IsAtGroundLevel())
-				return;
+			// Run in a frame end task to give Parachute a chance to set the actor position
+			self.World.AddFrameEndTask(w =>
+			{
+				// Don't change animations while still in air
+				if (!self.IsAtGroundLevel())
+					return;
 
-			PlaySequence();
+				PlaySequence();
+			});
 		}
 
 		void INotifyParachute.OnParachute(Actor self) { }
 
-		void INotifyParachute.OnLanded(Actor self, Actor ignore)
+		void INotifyParachute.OnLanded(Actor self)
 		{
 			PlaySequence();
 		}

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 {
 	class ImportLegacyTilesetCommand : IUtilityCommand
 	{
-		string IUtilityCommand.Name { get { return "--tileset-import"; } }
+		string IUtilityCommand.Name => "--tileset-import";
 
 		bool IUtilityCommand.ValidateArguments(string[] args)
 		{
@@ -65,8 +65,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			var name = args.Length > 3 ? args[3] : Path.GetFileNameWithoutExtension(args[2]);
 			metadata.AppendLine("\tName: {0}".F(name));
 			metadata.AppendLine("\tId: {0}".F(name.ToUpperInvariant()));
-			metadata.AppendLine("\tPalette: iso{0}.pal".F(extension));
-			metadata.AppendLine("\tHeightDebugColors:  00000080, 00004480, 00008880, 0000CC80, 0000FF80, 4400CC80," +
+			metadata.AppendLine("\tHeightDebugColors: 00000080, 00004480, 00008880, 0000CC80, 0000FF80, 4400CC80," +
 				" 88008880, CC004480, FF110080, FF550080, FF990080, FFDD0080, DDFF0080, 99FF0080, 55FF0080, 11FF0080");
 
 			// Loop over template sets
@@ -76,7 +75,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			var usedCategories = new HashSet<string>();
 			try
 			{
-				for (var tilesetGroupIndex = 0;; tilesetGroupIndex++)
+				for (var tilesetGroupIndex = 0; ; tilesetGroupIndex++)
 				{
 					var section = file.GetSection("TileSet{0:D4}".F(tilesetGroupIndex));
 
@@ -96,7 +95,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 						using (var s = modData.DefaultFileSystem.Open(templateFilename))
 						{
 							data.AppendLine("\tTemplate@{0}:".F(templateIndex));
-							data.AppendLine("\t\tCategory: {0}".F(sectionCategory));
+							data.AppendLine("\t\tCategories: {0}".F(sectionCategory));
 							usedCategories.Add(sectionCategory);
 
 							data.AppendLine("\t\tId: {0}".F(templateIndex));
@@ -144,8 +143,8 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 								if (rampType != 0)
 									data.AppendLine("\t\t\t\tRampType: {0}".F(rampType));
 
-								data.AppendLine("\t\t\t\tLeftColor: {0:X2}{1:X2}{2:X2}".F(s.ReadUInt8(), s.ReadUInt8(), s.ReadUInt8()));
-								data.AppendLine("\t\t\t\tRightColor: {0:X2}{1:X2}{2:X2}".F(s.ReadUInt8(), s.ReadUInt8(), s.ReadUInt8()));
+								data.AppendLine("\t\t\t\tMinColor: {0:X2}{1:X2}{2:X2}".F(s.ReadUInt8(), s.ReadUInt8(), s.ReadUInt8()));
+								data.AppendLine("\t\t\t\tMaxColor: {0:X2}{1:X2}{2:X2}".F(s.ReadUInt8(), s.ReadUInt8(), s.ReadUInt8()));
 								data.AppendLine("\t\t\t\tZOffset: {0}".F(-tileSize.Height / 2.0f));
 								data.AppendLine("\t\t\t\tZRamp: 0");
 							}

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -12,18 +12,18 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
+using System.Runtime;
 using System.Threading;
 using System.Threading.Tasks;
 using OpenRA.Graphics;
 using OpenRA.Network;
 using OpenRA.Primitives;
+using OpenRA.Server;
 using OpenRA.Support;
 using OpenRA.Widgets;
 
@@ -40,8 +40,10 @@ namespace OpenRA
 
 		public static ModData ModData;
 		public static Settings Settings;
-		public static ICursor Cursor;
+		public static CursorManager Cursor;
+		public static bool HideCursor;
 		static WorldRenderer worldRenderer;
+		static string modLaunchWrapper;
 
 		internal static OrderManager OrderManager;
 		static Server.Server server;
@@ -50,38 +52,36 @@ namespace OpenRA
 
 		public static Renderer Renderer;
 		public static Sound Sound;
-		public static bool HasInputFocus = false;
-
-		public static bool BenchmarkMode = false;
 
 		public static string EngineVersion { get; private set; }
 		public static LocalPlayerProfile LocalPlayerProfile;
 
 		static Task discoverNat;
 		static bool takeScreenshot = false;
+		static Benchmark benchmark = null;
 
 		public static event Action OnShellmapLoaded = () => { };
 
-		public static OrderManager JoinServer(string host, int port, string password, bool recordReplay = true)
+		public static OrderManager JoinServer(ConnectionTarget endpoint, string password, bool recordReplay = true)
 		{
-			var connection = new NetworkConnection(host, port);
+			var connection = new NetworkConnection(endpoint);
 			if (recordReplay)
 				connection.StartRecording(() => { return TimestampedFilename(); });
 
-			var om = new OrderManager(host, port, password, connection);
+			var om = new OrderManager(endpoint, password, connection);
 			JoinInner(om);
 			return om;
 		}
 
-		static string TimestampedFilename(bool includemilliseconds = false)
+		public static string TimestampedFilename(bool includemilliseconds = false, string extra = "")
 		{
 			var format = includemilliseconds ? "yyyy-MM-ddTHHmmssfffZ" : "yyyy-MM-ddTHHmmssZ";
-			return "OpenRA-" + DateTime.UtcNow.ToString(format, CultureInfo.InvariantCulture);
+			return ModData.Manifest.Id + extra + "-" + DateTime.UtcNow.ToString(format, CultureInfo.InvariantCulture);
 		}
 
 		static void JoinInner(OrderManager om)
 		{
-			if (OrderManager != null) OrderManager.Dispose();
+			OrderManager?.Dispose();
 			OrderManager = om;
 			lastConnectionState = ConnectionState.PreConnecting;
 			ConnectionStateChanged(OrderManager);
@@ -89,30 +89,30 @@ namespace OpenRA
 
 		public static void JoinReplay(string replayFile)
 		{
-			JoinInner(new OrderManager("<no server>", -1, "", new ReplayConnection(replayFile)));
+			JoinInner(new OrderManager(new ConnectionTarget(), "", new ReplayConnection(replayFile)));
 		}
 
 		static void JoinLocal()
 		{
-			JoinInner(new OrderManager("<no server>", -1, "", new EchoConnection()));
+			JoinInner(new OrderManager(new ConnectionTarget(), "", new EchoConnection()));
 		}
 
 		// More accurate replacement for Environment.TickCount
 		static Stopwatch stopwatch = Stopwatch.StartNew();
-		public static long RunTime { get { return stopwatch.ElapsedMilliseconds; } }
+		public static long RunTime => stopwatch.ElapsedMilliseconds;
 
 		public static int RenderFrame = 0;
-		public static int NetFrameNumber { get { return OrderManager.NetFrameNumber; } }
-		public static int LocalTick { get { return OrderManager.LocalFrameNumber; } }
+		public static int NetFrameNumber => OrderManager.NetFrameNumber;
+		public static int LocalTick => OrderManager.LocalFrameNumber;
 
-		public static event Action<string, int> OnRemoteDirectConnect = (a, b) => { };
+		public static event Action<ConnectionTarget> OnRemoteDirectConnect = _ => { };
 		public static event Action<OrderManager> ConnectionStateChanged = _ => { };
 		static ConnectionState lastConnectionState = ConnectionState.PreConnecting;
-		public static int LocalClientId { get { return OrderManager.Connection.LocalClientId; } }
+		public static int LocalClientId => OrderManager.Connection.LocalClientId;
 
-		public static void RemoteDirectConnect(string host, int port)
+		public static void RemoteDirectConnect(ConnectionTarget endpoint)
 		{
-			OnRemoteDirectConnect(host, port);
+			OnRemoteDirectConnect(endpoint);
 		}
 
 		// Hacky workaround for orderManager visibility
@@ -155,8 +155,7 @@ namespace OpenRA
 		internal static void StartGame(string mapUID, WorldType type)
 		{
 			// Dispose of the old world before creating a new one.
-			if (worldRenderer != null)
-				worldRenderer.Dispose();
+			worldRenderer?.Dispose();
 
 			Cursor.SetCursor(null);
 			BeforeGameStart();
@@ -168,13 +167,17 @@ namespace OpenRA
 			using (new PerfTimer("NewWorld"))
 				OrderManager.World = new World(ModData, map, OrderManager, type);
 
+			OrderManager.World.GameOver += FinishBenchmark;
+
 			worldRenderer = new WorldRenderer(ModData, OrderManager.World);
 
+			// Proactively collect memory during loading to reduce peak memory.
 			GC.Collect();
 
 			using (new PerfTimer("LoadComplete"))
 				OrderManager.World.LoadComplete(worldRenderer);
 
+			// Proactively collect memory during loading to reduce peak memory.
 			GC.Collect();
 
 			if (OrderManager.GameStarted)
@@ -187,17 +190,30 @@ namespace OpenRA
 			OrderManager.LastTickTime = RunTime;
 			OrderManager.StartGame();
 			worldRenderer.RefreshPalette();
-			Cursor.SetCursor("default");
+			Cursor.SetCursor(ChromeMetrics.Get<string>("DefaultCursor"));
 
+			// Now loading is completed, now is the ideal time to run a GC and compact the LOH.
+			// - All the temporary garbage created during loading can be collected.
+			// - Live objects are likely to live for the length of the game or longer,
+			//   thus promoting them into a higher generation is not an issue.
+			// - We can remove any fragmentation in the LOH caused by temporary loading garbage.
+			// - A loading screen is visible, so a delay won't matter to the user.
+			//   Much better to clean up now then to drop frames during gameplay for GC pauses.
+			GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
 			GC.Collect();
 		}
 
 		public static void RestartGame()
 		{
 			var replay = OrderManager.Connection as ReplayConnection;
-			var replayName = replay != null ? replay.Filename : null;
+			var replayName = replay?.Filename;
 			var lobbyInfo = OrderManager.LobbyInfo;
-			var orders = new[] {
+
+			// Reseed the RNG so this isn't an exact repeat of the last game
+			lobbyInfo.GlobalSettings.RandomSeed = CosmeticRandom.Next();
+
+			var orders = new[]
+			{
 					Order.Command("sync_lobby {0}".F(lobbyInfo.Serialize())),
 					Order.Command("startgame")
 			};
@@ -227,7 +243,7 @@ namespace OpenRA
 
 			LobbyInfoChanged += lobbyReady;
 
-			om = JoinServer(IPAddress.Loopback.ToString(), CreateLocalServer(mapUID), "");
+			om = JoinServer(CreateLocalServer(mapUID), "");
 		}
 
 		public static bool IsHost
@@ -246,20 +262,26 @@ namespace OpenRA
 
 		public static void InitializeSettings(Arguments args)
 		{
-			Settings = new Settings(Platform.ResolvePath(Path.Combine(Platform.SupportDirPrefix, "settings.yaml")), args);
+			Settings = new Settings(Path.Combine(Platform.SupportDir, "settings.yaml"), args);
 		}
 
 		public static RunStatus InitializeAndRun(string[] args)
 		{
 			Initialize(new Arguments(args));
+
+			// Proactively collect memory during loading to reduce peak memory.
 			GC.Collect();
 			return Run();
 		}
 
 		static void Initialize(Arguments args)
 		{
+			var engineDirArg = args.GetValue("Engine.EngineDir", null);
+			if (!string.IsNullOrEmpty(engineDirArg))
+				Platform.OverrideEngineDir(engineDirArg);
+
 			var supportDirArg = args.GetValue("Engine.SupportDir", null);
-			if (supportDirArg != null)
+			if (!string.IsNullOrEmpty(supportDirArg))
 				Platform.OverrideSupportDir(supportDirArg);
 
 			Console.WriteLine("Platform is {0}", Platform.CurrentPlatform);
@@ -267,7 +289,7 @@ namespace OpenRA
 			// Load the engine version as early as possible so it can be written to exception logs
 			try
 			{
-				EngineVersion = File.ReadAllText(Platform.ResolvePath(Path.Combine(".", "VERSION"))).Trim();
+				EngineVersion = File.ReadAllText(Path.Combine(Platform.EngineDir, "VERSION")).Trim();
 			}
 			catch { }
 
@@ -275,6 +297,7 @@ namespace OpenRA
 				EngineVersion = "Unknown";
 
 			Console.WriteLine("Engine version is {0}", EngineVersion);
+			Console.WriteLine("Runtime: {0}", Platform.RuntimeVersion);
 
 			// Special case handling of Game.Mod argument: if it matches a real filesystem path
 			// then we use this to override the mod search path, and replace it with the mod id
@@ -290,11 +313,12 @@ namespace OpenRA
 
 			Log.AddChannel("perf", "perf.log");
 			Log.AddChannel("debug", "debug.log");
-			Log.AddChannel("server", "server.log");
+			Log.AddChannel("server", "server.log", true);
 			Log.AddChannel("sound", "sound.log");
 			Log.AddChannel("graphics", "graphics.log");
 			Log.AddChannel("geoip", "geoip.log");
 			Log.AddChannel("nat", "nat.log");
+			Log.AddChannel("client", "client.log");
 
 			var platforms = new[] { Settings.Game.Platform, "Default", null };
 			foreach (var p in platforms)
@@ -305,10 +329,17 @@ namespace OpenRA
 				Settings.Game.Platform = p;
 				try
 				{
-					var rendererPath = Platform.ResolvePath(Path.Combine(".", "OpenRA.Platforms." + p + ".dll"));
-					var assembly = Assembly.LoadFile(rendererPath);
+					var rendererPath = Path.Combine(Platform.BinDir, "OpenRA.Platforms." + p + ".dll");
 
+#if !MONO
+					var loader = new AssemblyLoader(rendererPath);
+					var platformType = loader.LoadDefaultAssembly().GetTypes().SingleOrDefault(t => typeof(IPlatform).IsAssignableFrom(t));
+
+#else
+					var assembly = Assembly.LoadFile(rendererPath);
 					var platformType = assembly.GetTypes().SingleOrDefault(t => typeof(IPlatform).IsAssignableFrom(t));
+#endif
+
 					if (platformType == null)
 						throw new InvalidOperationException("Platform dll must include exactly one IPlatform implementation.");
 
@@ -323,15 +354,11 @@ namespace OpenRA
 					Log.Write("graphics", "{0}", e);
 					Console.WriteLine("Renderer initialization failed. Check graphics.log for details.");
 
-					if (Renderer != null)
-						Renderer.Dispose();
+					Renderer?.Dispose();
 
-					if (Sound != null)
-						Sound.Dispose();
+					Sound?.Dispose();
 				}
 			}
-
-			GeoIP.Initialize();
 
 			if (Settings.Server.DiscoverNatDevices)
 				discoverNat = UPnP.DiscoverNatDevices(Settings.Server.NatDiscoveryTimeout);
@@ -339,29 +366,39 @@ namespace OpenRA
 			var modSearchArg = args.GetValue("Engine.ModSearchPaths", null);
 			var modSearchPaths = modSearchArg != null ?
 				FieldLoader.GetValue<string[]>("Engine.ModsPath", modSearchArg) :
-				new[] { Path.Combine(".", "mods") };
+				new[] { Path.Combine(Platform.EngineDir, "mods") };
 
 			Mods = new InstalledMods(modSearchPaths, explicitModPaths);
 			Console.WriteLine("Internal mods:");
 			foreach (var mod in Mods)
 				Console.WriteLine("\t{0}: {1} ({2})", mod.Key, mod.Value.Metadata.Title, mod.Value.Metadata.Version);
 
+			modLaunchWrapper = args.GetValue("Engine.LaunchWrapper", null);
+
 			ExternalMods = new ExternalMods();
 
-			Manifest currentMod;
-			if (modID != null && Mods.TryGetValue(modID, out currentMod))
+			if (modID != null && Mods.TryGetValue(modID, out _))
 			{
-				var launchPath = args.GetValue("Engine.LaunchPath", Assembly.GetEntryAssembly().Location);
+				var launchPath = args.GetValue("Engine.LaunchPath", null);
+				var launchArgs = new List<string>();
 
 				// Sanitize input from platform-specific launchers
 				// Process.Start requires paths to not be quoted, even if they contain spaces
-				if (launchPath.First() == '"' && launchPath.Last() == '"')
+				if (launchPath != null && launchPath.First() == '"' && launchPath.Last() == '"')
 					launchPath = launchPath.Substring(1, launchPath.Length - 2);
 
-				ExternalMods.Register(Mods[modID], launchPath, ModRegistration.User);
+				if (launchPath == null)
+				{
+					// When launching the assembly directly we must propagate the Engine.EngineDir argument if defined
+					// Platform-specific launchers are expected to manage this internally.
+					launchPath = Assembly.GetEntryAssembly().Location;
+					if (!string.IsNullOrEmpty(engineDirArg))
+						launchArgs.Add("Engine.EngineDir=\"" + engineDirArg + "\"");
+				}
 
-				ExternalMod activeMod;
-				if (ExternalMods.TryGetValue(ExternalMod.MakeKey(Mods[modID]), out activeMod))
+				ExternalMods.Register(Mods[modID], launchPath, launchArgs, ModRegistration.User);
+
+				if (ExternalMods.TryGetValue(ExternalMod.MakeKey(Mods[modID]), out var activeMod))
 					ExternalMods.ClearInvalidRegistrations(activeMod, ModRegistration.User);
 			}
 
@@ -378,18 +415,15 @@ namespace OpenRA
 			LobbyInfoChanged = () => { };
 			ConnectionStateChanged = om => { };
 			BeforeGameStart = () => { };
-			OnRemoteDirectConnect = (a, b) => { };
+			OnRemoteDirectConnect = endpoint => { };
 			delayedActions = new ActionQueue();
 
 			Ui.ResetAll();
 
-			if (worldRenderer != null)
-				worldRenderer.Dispose();
+			worldRenderer?.Dispose();
 			worldRenderer = null;
-			if (server != null)
-				server.Shutdown();
-			if (OrderManager != null)
-				OrderManager.Dispose();
+			server?.Shutdown();
+			OrderManager?.Dispose();
 
 			if (ModData != null)
 			{
@@ -411,7 +445,7 @@ namespace OpenRA
 
 			ModData = new ModData(Mods[mod], Mods, true);
 
-			LocalPlayerProfile = new LocalPlayerProfile(Platform.ResolvePath(Path.Combine("^", Settings.Game.AuthProfile)), ModData.Manifest.Get<PlayerDatabase>());
+			LocalPlayerProfile = new LocalPlayerProfile(Path.Combine(Platform.SupportDir, Settings.Game.AuthProfile), ModData.Manifest.Get<PlayerDatabase>());
 
 			if (!ModData.LoadScreen.BeforeLoad())
 				return;
@@ -425,46 +459,33 @@ namespace OpenRA
 			var grid = ModData.Manifest.Contains<MapGrid>() ? ModData.Manifest.Get<MapGrid>() : null;
 			Renderer.InitializeDepthBuffer(grid);
 
-			if (Cursor != null)
-				Cursor.Dispose();
+			Cursor?.Dispose();
 
-			if (Settings.Graphics.HardwareCursors)
-			{
-				try
-				{
-					Cursor = new HardwareCursor(ModData.CursorProvider);
-				}
-				catch (Exception e)
-				{
-					Log.Write("debug", "Failed to initialize hardware cursors. Falling back to software cursors.");
-					Log.Write("debug", "Error was: " + e.Message);
-
-					Console.WriteLine("Failed to initialize hardware cursors. Falling back to software cursors.");
-					Console.WriteLine("Error was: " + e.Message);
-
-					Cursor = new SoftwareCursor(ModData.CursorProvider);
-				}
-			}
-			else
-				Cursor = new SoftwareCursor(ModData.CursorProvider);
+			Cursor = new CursorManager(ModData.CursorProvider);
 
 			PerfHistory.Items["render"].HasNormalTick = false;
 			PerfHistory.Items["batches"].HasNormalTick = false;
+			PerfHistory.Items["render_world"].HasNormalTick = false;
 			PerfHistory.Items["render_widgets"].HasNormalTick = false;
 			PerfHistory.Items["render_flip"].HasNormalTick = false;
+			PerfHistory.Items["terrain_lighting"].HasNormalTick = false;
 
 			JoinLocal();
 
 			try
 			{
-				if (discoverNat != null)
-					discoverNat.Wait();
+				discoverNat?.Wait();
 			}
 			catch (Exception e)
 			{
 				Console.WriteLine("NAT discovery failed: {0}", e.Message);
 				Log.Write("nat", e.ToString());
 			}
+
+			ChromeMetrics.TryGet("ChatMessageColor", out chatMessageColor);
+			ChromeMetrics.TryGet("SystemMessageColor", out systemMessageColor);
+			if (!ChromeMetrics.TryGet("SystemMessageLabel", out systemMessageLabel))
+				systemMessageLabel = "Battlefield Control";
 
 			ModData.LoadScreen.StartGame(args);
 		}
@@ -501,8 +522,15 @@ namespace OpenRA
 		{
 			try
 			{
+				var path = mod.LaunchPath;
 				var args = launchArguments != null ? mod.LaunchArgs.Append(launchArguments) : mod.LaunchArgs;
-				var p = Process.Start(mod.LaunchPath, args.Select(a => "\"" + a + "\"").JoinWith(" "));
+				if (modLaunchWrapper != null)
+				{
+					path = modLaunchWrapper;
+					args = new[] { mod.LaunchPath }.Concat(args);
+				}
+
+				var p = Process.Start(path, args.Select(a => "\"" + a + "\"").JoinWith(" "));
 				if (p == null || p.HasExited)
 					onFailed();
 				else
@@ -525,36 +553,28 @@ namespace OpenRA
 		// Note: These delayed actions should only be used by widgets or disposing objects
 		// - things that depend on a particular world should be queuing them on the world actor.
 		static volatile ActionQueue delayedActions = new ActionQueue();
+		static Color systemMessageColor = Color.White;
+		static Color chatMessageColor = Color.White;
+		static string systemMessageLabel;
+
 		public static void RunAfterTick(Action a) { delayedActions.Add(a, RunTime); }
 		public static void RunAfterDelay(int delayMilliseconds, Action a) { delayedActions.Add(a, RunTime + delayMilliseconds); }
 
 		static void TakeScreenshotInner()
 		{
-			Log.Write("debug", "Taking screenshot");
-
-			Bitmap bitmap;
-			using (new PerfTimer("Renderer.TakeScreenshot"))
-				bitmap = Renderer.Context.TakeScreenshot();
-
-			ThreadPool.QueueUserWorkItem(_ =>
+			using (new PerfTimer("Renderer.SaveScreenshot"))
 			{
 				var mod = ModData.Manifest.Metadata;
-				var directory = Platform.ResolvePath(Platform.SupportDirPrefix, "Screenshots", ModData.Manifest.Id, mod.Version);
+				var directory = Path.Combine(Platform.SupportDir, "Screenshots", ModData.Manifest.Id, mod.Version);
 				Directory.CreateDirectory(directory);
 
 				var filename = TimestampedFilename(true);
-				var format = Settings.Graphics.ScreenshotFormat;
-				var extension = ImageCodecInfo.GetImageEncoders().FirstOrDefault(x => x.FormatID == format.Guid)
-					.FilenameExtension.Split(';').First().ToLowerInvariant().Substring(1);
-				var destination = Path.Combine(directory, string.Concat(filename, extension));
+				var path = Path.Combine(directory, string.Concat(filename, ".png"));
+				Log.Write("debug", "Taking screenshot " + path);
 
-				using (new PerfTimer("Save Screenshot ({0})".F(format)))
-					bitmap.Save(destination, format);
-
-				bitmap.Dispose();
-
-				RunAfterTick(() => Debug("Saved screenshot " + filename));
-			});
+				Renderer.SaveScreenshot(path);
+				Debug("Saved screenshot " + filename);
+			}
 		}
 
 		static void InnerLogicTick(OrderManager orderManager)
@@ -570,11 +590,11 @@ namespace OpenRA
 				var integralTickTimestep = (uiTickDelta / Timestep) * Timestep;
 				Ui.LastTickTime += integralTickTimestep >= TimestepJankThreshold ? integralTickTimestep : Timestep;
 
-				Sync.CheckSyncUnchanged(world, Ui.Tick);
+				Sync.RunUnsynced(Settings.Debug.SyncCheckUnsyncedCode, world, Ui.Tick);
 				Cursor.Tick();
 			}
 
-			var worldTimestep = world == null ? Timestep : world.Timestep;
+			var worldTimestep = world == null ? Timestep : world.IsLoadingGameSave ? 1 : world.Timestep;
 			var worldTickDelta = tick - orderManager.LastTickTime;
 			if (worldTimestep != 0 && worldTickDelta >= worldTimestep)
 			{
@@ -588,7 +608,7 @@ namespace OpenRA
 					orderManager.LastTickTime += integralTickTimestep >= TimestepJankThreshold ? integralTickTimestep : worldTimestep;
 
 					Sound.Tick();
-					Sync.CheckSyncUnchanged(world, orderManager.TickImmediate);
+					Sync.RunUnsynced(Settings.Debug.SyncCheckUnsyncedCode, world, orderManager.TickImmediate);
 
 					if (world == null)
 						return;
@@ -601,16 +621,12 @@ namespace OpenRA
 
 						Log.Write("debug", "--Tick: {0} ({1})", LocalTick, isNetTick ? "net" : "local");
 
-						if (BenchmarkMode)
-							Log.Write("cpu", "{0};{1}".F(LocalTick, PerfHistory.Items["tick_time"].LastValue));
-
 						if (isNetTick)
 							orderManager.Tick();
 
-						Sync.CheckSyncUnchanged(world, () =>
+						Sync.RunUnsynced(Settings.Debug.SyncCheckUnsyncedCode, world, () =>
 						{
 							world.OrderGenerator.Tick(world);
-							world.Selection.Tick(world);
 						});
 
 						world.Tick();
@@ -622,14 +638,16 @@ namespace OpenRA
 
 					// Wait until we have done our first world Tick before TickRendering
 					if (orderManager.LocalFrameNumber > 0)
-						Sync.CheckSyncUnchanged(world, () => world.TickRender(worldRenderer));
+						Sync.RunUnsynced(Settings.Debug.SyncCheckUnsyncedCode, world, () => world.TickRender(worldRenderer));
 				}
+
+				benchmark?.Tick(LocalTick);
 			}
 		}
 
 		static void LogicTick()
 		{
-			delayedActions.PerformActions(RunTime);
+			PerformDelayedActions();
 
 			if (OrderManager.Connection.ConnectionState != lastConnectionState)
 			{
@@ -640,6 +658,11 @@ namespace OpenRA
 			InnerLogicTick(OrderManager);
 			if (worldRenderer != null && OrderManager.World != worldRenderer.World)
 				InnerLogicTick(worldRenderer.World.OrderManager);
+		}
+
+		public static void PerformDelayedActions()
+		{
+			delayedActions.PerformActions(RunTime);
 		}
 
 		public static void TakeScreenshot()
@@ -653,28 +676,51 @@ namespace OpenRA
 			{
 				++RenderFrame;
 
-				// worldRenderer is null during the initial install/download screen
-				if (worldRenderer != null)
+				// Prepare renderables (i.e. render voxels) before calling BeginFrame
+				using (new PerfSample("render_prepare"))
 				{
-					Renderer.BeginFrame(worldRenderer.Viewport.TopLeft, worldRenderer.Viewport.Zoom);
-					Sound.SetListenerPosition(worldRenderer.Viewport.CenterPosition);
-					worldRenderer.Draw();
+					Renderer.WorldModelRenderer.BeginFrame();
+
+					// World rendering is disabled while the loading screen is displayed
+					if (worldRenderer != null && !worldRenderer.World.IsLoadingGameSave)
+					{
+						worldRenderer.Viewport.Tick();
+						worldRenderer.PrepareRenderables();
+					}
+
+					Ui.PrepareRenderables();
+					Renderer.WorldModelRenderer.EndFrame();
 				}
-				else
-					Renderer.BeginFrame(int2.Zero, 1f);
+
+				// worldRenderer is null during the initial install/download screen
+				// World rendering is disabled while the loading screen is displayed
+				// Use worldRenderer.World instead of OrderManager.World to avoid a rendering mismatch while processing orders
+				if (worldRenderer != null && !worldRenderer.World.IsLoadingGameSave)
+				{
+					Renderer.BeginWorld(worldRenderer.Viewport.Rectangle);
+					Sound.SetListenerPosition(worldRenderer.Viewport.CenterPosition);
+					using (new PerfSample("render_world"))
+						worldRenderer.Draw();
+				}
 
 				using (new PerfSample("render_widgets"))
 				{
-					Renderer.WorldModelRenderer.BeginFrame();
-					Ui.PrepareRenderables();
-					Renderer.WorldModelRenderer.EndFrame();
+					Renderer.BeginUI();
+
+					if (worldRenderer != null && !worldRenderer.World.IsLoadingGameSave)
+						worldRenderer.DrawAnnotations();
 
 					Ui.Draw();
 
 					if (ModData != null && ModData.CursorProvider != null)
 					{
-						Cursor.SetCursor(Ui.Root.GetCursorOuter(Viewport.LastMousePos) ?? "default");
-						Cursor.Render(Renderer);
+						if (HideCursor)
+							Cursor.SetCursor(null);
+						else
+						{
+							Cursor.SetCursor(Ui.Root.GetCursorOuter(Viewport.LastMousePos) ?? "default");
+							Cursor.Render(Renderer);
+						}
 					}
 				}
 
@@ -690,11 +736,10 @@ namespace OpenRA
 
 			PerfHistory.Items["render"].Tick();
 			PerfHistory.Items["batches"].Tick();
+			PerfHistory.Items["render_world"].Tick();
 			PerfHistory.Items["render_widgets"].Tick();
 			PerfHistory.Items["render_flip"].Tick();
-
-			if (BenchmarkMode)
-				Log.Write("render", "{0};{1}".F(RenderFrame, PerfHistory.Items["render"].LastValue));
+			PerfHistory.Items["terrain_lighting"].Tick();
 		}
 
 		static void Loop()
@@ -740,6 +785,7 @@ namespace OpenRA
 			var nextLogic = RunTime;
 			var nextRender = RunTime;
 			var forcedNextRender = RunTime;
+			var renderBeforeNextTick = false;
 
 			while (state == RunStatus.Running)
 			{
@@ -751,6 +797,13 @@ namespace OpenRA
 				var maxFramerate = Settings.Graphics.CapFramerate ? Settings.Graphics.MaxFramerate.Clamp(1, 1000) : 1000;
 				var renderInterval = 1000 / maxFramerate;
 
+				// Tick as fast as possible while restoring game saves, capping rendering at 5 FPS
+				if (OrderManager.World != null && OrderManager.World.IsLoadingGameSave)
+				{
+					logicInterval = 1;
+					renderInterval = 200;
+				}
+
 				var now = RunTime;
 
 				// If the logic has fallen behind too much, skip it and catch up
@@ -761,17 +814,17 @@ namespace OpenRA
 				var nextUpdate = Math.Min(nextLogic, nextRender);
 				if (now >= nextUpdate)
 				{
-					var forceRender = now >= forcedNextRender;
+					var forceRender = renderBeforeNextTick || now >= forcedNextRender;
 
-					if (now >= nextLogic)
+					if (now >= nextLogic && !renderBeforeNextTick)
 					{
 						nextLogic += logicInterval;
 
 						LogicTick();
 
 						// Force at least one render per tick during regular gameplay
-						if (OrderManager.World != null && !OrderManager.World.IsReplay)
-							forceRender = true;
+						if (OrderManager.World != null && !OrderManager.World.IsLoadingGameSave && !OrderManager.World.IsReplay)
+							renderBeforeNextTick = true;
 					}
 
 					var haveSomeTimeUntilNextLogic = now < nextLogic;
@@ -790,6 +843,7 @@ namespace OpenRA
 						forcedNextRender = now + maxRenderInterval;
 
 						RenderTick();
+						renderBeforeNextTick = false;
 					}
 				}
 				else
@@ -812,12 +866,10 @@ namespace OpenRA
 			finally
 			{
 				// Ensure that the active replay is properly saved
-				if (OrderManager != null)
-					OrderManager.Dispose();
+				OrderManager?.Dispose();
 			}
 
-			if (worldRenderer != null)
-				worldRenderer.Dispose();
+			worldRenderer?.Dispose();
 			ModData.Dispose();
 			ChromeProvider.Deinitialize();
 
@@ -834,20 +886,29 @@ namespace OpenRA
 			state = RunStatus.Success;
 		}
 
-		public static void AddChatLine(Color color, string name, string text)
+		public static void AddSystemLine(string text)
 		{
-			OrderManager.AddChatLine(color, name, text);
+			AddSystemLine(systemMessageLabel, text);
+		}
+
+		public static void AddSystemLine(string name, string text)
+		{
+			OrderManager.AddChatLine(name, systemMessageColor, text, systemMessageColor);
+		}
+
+		public static void AddChatLine(string name, Color nameColor, string text)
+		{
+			OrderManager.AddChatLine(name, nameColor, text, chatMessageColor);
 		}
 
 		public static void Debug(string s, params object[] args)
 		{
-			AddChatLine(Color.White, "Debug", string.Format(s, args));
+			AddSystemLine("Debug", string.Format(s, args));
 		}
 
 		public static void Disconnect()
 		{
-			if (OrderManager.World != null)
-				OrderManager.World.TraitDict.PrintReport();
+			OrderManager.World?.TraitDict.PrintReport();
 
 			OrderManager.Dispose();
 			CloseServer();
@@ -856,8 +917,7 @@ namespace OpenRA
 
 		public static void CloseServer()
 		{
-			if (server != null)
-				server.Shutdown();
+			server?.Shutdown();
 		}
 
 		public static T CreateObject<T>(string name)
@@ -865,12 +925,19 @@ namespace OpenRA
 			return ModData.ObjectCreator.CreateObject<T>(name);
 		}
 
-		public static void CreateServer(ServerSettings settings)
+		public static ConnectionTarget CreateServer(ServerSettings settings)
 		{
-			server = new Server.Server(new IPEndPoint(IPAddress.Any, settings.ListenPort), settings, ModData, false);
+			var endpoints = new List<IPEndPoint>
+			{
+				new IPEndPoint(IPAddress.IPv6Any, settings.ListenPort),
+				new IPEndPoint(IPAddress.Any, settings.ListenPort)
+			};
+			server = new Server.Server(endpoints, settings, ModData, ServerType.Multiplayer);
+
+			return server.GetEndpointForLocalConnection();
 		}
 
-		public static int CreateLocalServer(string map)
+		public static ConnectionTarget CreateLocalServer(string map)
 		{
 			var settings = new ServerSettings()
 			{
@@ -879,9 +946,16 @@ namespace OpenRA
 				AdvertiseOnline = false
 			};
 
-			server = new Server.Server(new IPEndPoint(IPAddress.Loopback, 0), settings, ModData, false);
+			// Always connect to local games using the same loopback connection
+			// Exposing multiple endpoints introduces a race condition on the client's PlayerIndex (sometimes 0, sometimes 1)
+			// This would break the Restart button, which relies on the PlayerIndex always being the same for local servers
+			var endpoints = new List<IPEndPoint>
+			{
+				new IPEndPoint(IPAddress.Loopback, 0)
+			};
+			server = new Server.Server(endpoints, settings, ModData, ServerType.Local);
 
-			return server.Port;
+			return server.GetEndpointForLocalConnection();
 		}
 
 		public static bool IsCurrentWorld(World world)
@@ -892,6 +966,38 @@ namespace OpenRA
 		public static bool SetClipboardText(string text)
 		{
 			return Renderer.Window.SetClipboardText(text);
+		}
+
+		public static void BenchmarkMode(string prefix)
+		{
+			benchmark = new Benchmark(prefix);
+		}
+
+		public static void LoadMap(string launchMap)
+		{
+			var orders = new List<Order>
+			{
+				Order.Command("option gamespeed {0}".F("default")),
+				Order.Command("state {0}".F(Session.ClientState.Ready))
+			};
+
+			var path = Platform.ResolvePath(launchMap);
+			var map = ModData.MapCache.SingleOrDefault(m => m.Uid == launchMap) ??
+				ModData.MapCache.SingleOrDefault(m => m.Package.Name == path);
+
+			if (map == null)
+				throw new InvalidOperationException("Could not find map '{0}'.".F(launchMap));
+
+			CreateAndStartLocalServer(map.Uid, orders);
+		}
+
+		public static void FinishBenchmark()
+		{
+			if (benchmark != null)
+			{
+				benchmark.Write();
+				Exit();
+			}
 		}
 	}
 }

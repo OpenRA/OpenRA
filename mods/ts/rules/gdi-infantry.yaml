@@ -12,6 +12,8 @@ E2:
 		Cost: 200
 	Tooltip:
 		Name: Disc Thrower
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 15000
 	Mobile:
@@ -24,12 +26,21 @@ E2:
 		ProneOffset: 160,128,-555
 	AttackFrontal:
 		Voice: Attack
-	WithInfantryBody:
+	WithSplitAttackPaletteInfantryBody:
 		DefaultAttackSequence: attack
 	RevealsShroud:
 		Range: 7c0
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
+
+E2R3:
+	Inherits: E2
+	RenderSprites:
+		Image: E2
+	ProducibleWithLevel:
+		Prerequisites: techlevel.low
+		InitialLevels: 3
+	-Buildable:
 
 MEDIC:
 	Inherits: ^Soldier
@@ -39,6 +50,8 @@ MEDIC:
 		Cost: 600
 	Tooltip:
 		Name: Medic
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 50
@@ -56,21 +69,21 @@ MEDIC:
 		CrushSound: squishy2.aud
 	Armament:
 		Weapon: Heal
-		TargetStances: Ally
-		ForceTargetStances: None
+		TargetRelationships: Ally
+		ForceTargetRelationships: None
 		Cursor: heal
 		OutsideRangeCursor: heal
 	AutoTarget:
 	AutoTargetPriority@DEFAULT:
 		ValidTargets: Infantry
 	AttackFrontal:
-	WithInfantryBody:
+	WithSplitAttackPaletteInfantryBody:
 		DefaultAttackSequence: heal
-	SelfHealing:
+	ChangesHealth:
 		Step: 500
 		Delay: 60
 	Passenger:
-		PipType: Red
+		CustomPipType: red
 
 JUMPJET:
 	Inherits: ^Soldier
@@ -81,6 +94,8 @@ JUMPJET:
 		Cost: 600
 	Tooltip:
 		Name: Jumpjet Infantry
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 70
@@ -96,7 +111,7 @@ JUMPJET:
 	Armor:
 		Type: Light
 	Passenger:
-		PipType: Green
+		CustomPipType: green
 	RevealsShroud:
 		Range: 6c0
 	Armament:
@@ -104,7 +119,7 @@ JUMPJET:
 	-Crushable:
 	AttackFrontal:
 		Voice: Attack
-	WithInfantryBody:
+	WithSplitAttackPaletteInfantryBody:
 		RequiresCondition: !airborne
 		DefaultAttackSequence: attack
 	WithInfantryBody@flying:
@@ -112,6 +127,13 @@ JUMPJET:
 		DefaultAttackSequence: flying-attack
 		StandSequences: flying
 		MoveSequence: flying
+		Palette: player-nomuzzle
+	WithInfantryBody@flying-muzzle:
+		RequiresCondition: airborne
+		DefaultAttackSequence: flying-attack-muzzle
+		StandSequences: flying-muzzle
+		MoveSequence: flying-muzzle
+		Palette: muzzle
 	-TakeCover:
 	Hovers:
 		RequiresCondition: airborne
@@ -158,7 +180,6 @@ JUMPJET.Husk:
 	RenderSprites:
 	BodyOrientation:
 		QuantizedFacings: 1
-	Aircraft:
 	HiddenUnderFog:
 		Type: GroundPosition
 	ScriptTriggers:
@@ -177,7 +198,6 @@ JUMPJET.Husk:
 		Sequence: die-falling
 	Health:
 	HitShape:
-	ConditionManager:
 	GrantConditionOnTerrain:
 		TerrainTypes: Water
 		Condition: water-death
@@ -187,8 +207,6 @@ JUMPJET.Husk:
 	WithDeathAnimation@SPLASH:
 		RequiresCondition: water-death
 		FallbackSequence: die-splash
-	EditorTilesetFilter:
-		Categories: Husk
 	Interactable:
 
 GHOST:
@@ -201,6 +219,8 @@ GHOST:
 		Cost: 1750
 	Tooltip:
 		Name: Ghost Stalker
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 90
@@ -230,7 +250,7 @@ GHOST:
 	Demolition:
 		DetonationDelay: 45
 		Voice: Attack
-	WithInfantryBody:
+	WithSplitAttackPaletteInfantryBody:
 		DefaultAttackSequence: attack
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded

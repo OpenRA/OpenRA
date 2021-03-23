@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -57,7 +57,7 @@ namespace OpenRA
 		public ReadOnlyDictionary(IDictionary<TKey, TValue> dict)
 		{
 			if (dict == null)
-				throw new ArgumentNullException("dict");
+				throw new ArgumentNullException(nameof(dict));
 
 			this.dict = dict;
 		}
@@ -73,13 +73,14 @@ namespace OpenRA
 			return dict.TryGetValue(key, out value);
 		}
 
-		public int Count { get { return dict.Count; } }
+		public int Count => dict.Count;
 
-		public TValue this[TKey key] { get { return dict[key]; } }
+		public TValue this[TKey key] => dict[key];
 
-		public ICollection<TKey> Keys { get { return dict.Keys; } }
+		public ICollection<TKey> Keys => dict.Keys;
 
-		public ICollection<TValue> Values { get { return dict.Values; } }
+		public ICollection<TValue> Values => dict.Values;
+
 		#endregion
 
 		#region IEnumerable implementation

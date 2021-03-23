@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,14 +10,13 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Palette effect used for sprinkle \"animations\".")]
-	class RotationPaletteEffectInfo : ITraitInfo
+	class RotationPaletteEffectInfo : TraitInfo
 	{
 		[Desc("Defines to which palettes this effect should be applied to.",
 			"If none specified, it applies to all palettes not explicitly excluded.")]
@@ -42,7 +41,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Step towards next color index per tick.")]
 		public readonly float RotationStep = .25f;
 
-		public object Create(ActorInitializer init) { return new RotationPaletteEffect(init.World, this); }
+		public override object Create(ActorInitializer init) { return new RotationPaletteEffect(init.World, this); }
 	}
 
 	class RotationPaletteEffect : ITick, IPaletteModifier
@@ -57,7 +56,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			this.info = info;
 			rotationBuffer = new uint[info.RotationRange];
-			tilesetId = world.Map.Rules.TileSet.Id;
+			tilesetId = world.Map.Rules.TerrainInfo.Id;
 
 			validTileset = IsValidTileset();
 		}

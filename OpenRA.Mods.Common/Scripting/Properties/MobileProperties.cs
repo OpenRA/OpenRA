@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -46,24 +46,27 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Moves from outside the world into the cell grid.")]
 		public void MoveIntoWorld(CPos cell)
 		{
-			Self.QueueActivity(mobile.MoveIntoWorld(Self, cell, mobile.ToSubCell));
+			var pos = Self.CenterPosition;
+			mobile.SetPosition(Self, cell);
+			mobile.SetCenterPosition(Self, pos);
+			Self.QueueActivity(mobile.ReturnToCell(Self));
 		}
 
 		[ScriptActorPropertyActivity]
 		[Desc("Leave the current position in a random direction.")]
 		public void Scatter()
 		{
-			mobile.Nudge(Self, Self, true);
+			mobile.Nudge(Self);
 		}
 
 		[ScriptActorPropertyActivity]
 		[Desc("Move to and enter the transport.")]
 		public void EnterTransport(Actor transport)
 		{
-			Self.QueueActivity(new EnterTransport(Self, transport, 1, false));
+			Self.QueueActivity(new RideTransport(Self, Target.FromActor(transport), null));
 		}
 
 		[Desc("Whether the actor can move (false if immobilized).")]
-		public bool IsMobile { get { return !mobile.IsTraitDisabled; } }
+		public bool IsMobile => !mobile.IsTraitDisabled && !mobile.IsTraitPaused;
 	}
 }

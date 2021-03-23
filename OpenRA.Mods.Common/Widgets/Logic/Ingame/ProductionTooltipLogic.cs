@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,11 +10,9 @@
 #endregion
 
 using System;
-using System.Drawing;
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Support;
-using OpenRA.Traits;
+using OpenRA.Primitives;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -51,26 +49,35 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			ActorInfo lastActor = null;
 			Hotkey lastHotkey = Hotkey.Invalid;
-			var lastPowerState = pm == null ? PowerState.Normal : pm.PowerState;
+			var lastPowerState = pm?.PowerState ?? PowerState.Normal;
+			var descLabelY = descLabel.Bounds.Y;
+			var descLabelPadding = descLabel.Bounds.Height;
 
 			tooltipContainer.BeforeRender = () =>
 			{
 				var tooltipIcon = getTooltipIcon();
-				if (tooltipIcon == null)
-					return;
 
-				var actor = tooltipIcon.Actor;
+				var actor = tooltipIcon?.Actor;
 				if (actor == null)
 					return;
 
-				var hotkey = tooltipIcon.Hotkey != null ? tooltipIcon.Hotkey.GetValue() : Hotkey.Invalid;
+				var hotkey = tooltipIcon.Hotkey?.GetValue() ?? Hotkey.Invalid;
 				if (actor == lastActor && hotkey == lastHotkey && (pm == null || pm.PowerState == lastPowerState))
 					return;
 
 				var tooltip = actor.TraitInfos<TooltipInfo>().FirstOrDefault(info => info.EnabledByDefault);
-				var name = tooltip != null ? tooltip.Name : actor.Name;
+				var name = tooltip?.Name ?? actor.Name;
 				var buildable = actor.TraitInfo<BuildableInfo>();
-				var cost = actor.TraitInfo<ValuedInfo>().Cost;
+
+				var cost = 0;
+				if (tooltipIcon.ProductionQueue != null)
+					cost = tooltipIcon.ProductionQueue.GetProductionCost(actor);
+				else
+				{
+					var valued = actor.TraitInfoOrDefault<ValuedInfo>();
+					if (valued != null)
+						cost = valued.Cost;
+				}
 
 				nameLabel.Text = name;
 
@@ -89,8 +96,20 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				var prereqs = buildable.Prerequisites.Select(a => ActorName(mapRules, a))
 					.Where(s => !s.StartsWith("~", StringComparison.Ordinal) && !s.StartsWith("!", StringComparison.Ordinal));
-				requiresLabel.Text = prereqs.Any() ? requiresFormat.F(prereqs.JoinWith(", ")) : "";
-				var requiresSize = requiresFont.Measure(requiresLabel.Text);
+
+				var requiresSize = int2.Zero;
+				if (prereqs.Any())
+				{
+					requiresLabel.Text = requiresFormat.F(prereqs.JoinWith(", "));
+					requiresSize = requiresFont.Measure(requiresLabel.Text);
+					requiresLabel.Visible = true;
+					descLabel.Bounds.Y = descLabelY + requiresLabel.Bounds.Height;
+				}
+				else
+				{
+					requiresLabel.Visible = false;
+					descLabel.Bounds.Y = descLabelY;
+				}
 
 				var powerSize = new int2(0, 0);
 				if (pm != null)
@@ -104,11 +123,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					powerSize = font.Measure(powerLabel.Text);
 				}
 
-				var buildTime = tooltipIcon.ProductionQueue == null ? 0 : tooltipIcon.ProductionQueue.GetBuildTime(actor, buildable);
-				var timeMultiplier = pm != null && pm.PowerState != PowerState.Normal ? tooltipIcon.ProductionQueue.Info.LowPowerSlowdown : 1;
+				var buildTime = tooltipIcon.ProductionQueue?.GetBuildTime(actor, buildable) ?? 0;
+				var timeModifier = pm != null && pm.PowerState != PowerState.Normal ? tooltipIcon.ProductionQueue.Info.LowPowerModifier : 100;
 
-				timeLabel.Text = formatBuildTime.Update(buildTime * timeMultiplier);
-				timeLabel.TextColor = (pm != null && pm.PowerState != PowerState.Normal && tooltipIcon.ProductionQueue.Info.LowPowerSlowdown > 1) ? Color.Red : Color.White;
+				timeLabel.Text = formatBuildTime.Update((buildTime * timeModifier) / 100);
+				timeLabel.TextColor = (pm != null && pm.PowerState != PowerState.Normal && tooltipIcon.ProductionQueue.Info.LowPowerModifier > 100) ? Color.Red : Color.White;
 				var timeSize = font.Measure(timeLabel.Text);
 
 				costLabel.Text = cost.ToString();
@@ -117,6 +136,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				descLabel.Text = buildable.Description.Replace("\\n", "\n");
 				var descSize = descFont.Measure(descLabel.Text);
+				descLabel.Bounds.Width = descSize.X;
+				descLabel.Bounds.Height = descSize.Y + descLabelPadding;
 
 				var leftWidth = new[] { nameSize.X + hotkeyWidth, requiresSize.X, descSize.X }.Aggregate(Math.Max);
 				var rightWidth = new[] { powerSize.X, timeSize.X, costSize.X }.Aggregate(Math.Max);
@@ -125,9 +146,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				timeLabel.Bounds.X = powerLabel.Bounds.X = costLabel.Bounds.X = timeIcon.Bounds.Right + iconMargin;
 				widget.Bounds.Width = leftWidth + rightWidth + 3 * nameLabel.Bounds.X + timeIcon.Bounds.Width + iconMargin;
 
-				var leftHeight = nameSize.Y + requiresSize.Y + descSize.Y;
-				var rightHeight = powerSize.Y + timeSize.Y + costSize.Y;
-				widget.Bounds.Height = Math.Max(leftHeight, rightHeight) * 3 / 2 + 3 * nameLabel.Bounds.Y;
+				// Set the bottom margin to match the left margin
+				var leftHeight = descLabel.Bounds.Bottom + descLabel.Bounds.X;
+
+				// Set the bottom margin to match the top margin
+				var rightHeight = (powerLabel.Visible ? powerIcon.Bounds.Bottom : timeIcon.Bounds.Bottom) + costIcon.Bounds.Top;
+
+				widget.Bounds.Height = Math.Max(leftHeight, rightHeight);
 
 				lastActor = actor;
 				lastHotkey = hotkey;
@@ -138,8 +163,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		static string ActorName(Ruleset rules, string a)
 		{
-			ActorInfo ai;
-			if (rules.Actors.TryGetValue(a.ToLowerInvariant(), out ai))
+			if (rules.Actors.TryGetValue(a.ToLowerInvariant(), out var ai))
 			{
 				var actorTooltip = ai.TraitInfos<TooltipInfo>().FirstOrDefault(info => info.EnabledByDefault);
 				if (actorTooltip != null)

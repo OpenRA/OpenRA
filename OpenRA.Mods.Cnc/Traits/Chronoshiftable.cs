@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,9 +9,8 @@
  */
 #endregion
 
-using System.Drawing;
-using OpenRA.Activities;
 using OpenRA.Mods.Cnc.Activities;
+using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
@@ -37,11 +36,17 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("The color the bar of the 'return-to-origin' logic has.")]
 		public readonly Color TimeBarColor = Color.White;
 
+		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
+		{
+			if (!ai.HasTraitInfo<MobileInfo>() && !ai.HasTraitInfo<HuskInfo>())
+				throw new YamlException("Chronoshiftable requires actors to have the Mobile or Husk traits.");
+		}
+
 		public override object Create(ActorInitializer init) { return new Chronoshiftable(init, this); }
 	}
 
 	public class Chronoshiftable : ConditionalTrait<ChronoshiftableInfo>, ITick, ISync, ISelectionBar,
-		IDeathActorInitModifier, ITransformActorInitModifier, INotifyCreated
+		IDeathActorInitModifier, ITransformActorInitModifier
 	{
 		readonly Actor self;
 		Actor chronosphere;
@@ -50,25 +55,28 @@ namespace OpenRA.Mods.Cnc.Traits
 		IPositionable iPositionable;
 
 		// Return-to-origin logic
-		[Sync] public CPos Origin;
-		[Sync] public int ReturnTicks = 0;
+		[Sync]
+		public CPos Origin;
+
+		[Sync]
+		public int ReturnTicks = 0;
 
 		public Chronoshiftable(ActorInitializer init, ChronoshiftableInfo info)
 			: base(info)
 		{
 			self = init.Self;
 
-			if (init.Contains<ChronoshiftReturnInit>())
-				ReturnTicks = init.Get<ChronoshiftReturnInit, int>();
+			var returnInit = init.GetOrDefault<ChronoshiftReturnInit>();
+			if (returnInit != null)
+			{
+				ReturnTicks = returnInit.Ticks;
+				duration = returnInit.Duration;
+				Origin = returnInit.Origin;
 
-			if (init.Contains<ChronoshiftDurationInit>())
-				duration = init.Get<ChronoshiftDurationInit, int>();
-
-			if (init.Contains<ChronoshiftOriginInit>())
-				Origin = init.Get<ChronoshiftOriginInit, CPos>();
-
-			if (init.Contains<ChronoshiftChronosphereInit>())
-				chronosphere = init.Get<ChronoshiftChronosphereInit, Actor>();
+				// Defer to the end of tick as the lazy value may reference an actor that hasn't been created yet
+				if (returnInit.Chronosphere != null)
+					init.World.AddFrameEndTask(w => chronosphere = returnInit.Chronosphere.Actor(init.World).Value);
+			}
 		}
 
 		void ITick.Tick(Actor self)
@@ -79,8 +87,6 @@ namespace OpenRA.Mods.Cnc.Traits
 			// Return to original location
 			if (--ReturnTicks == 0)
 			{
-				self.CancelActivity();
-
 				// The Move activity is not immediately cancelled, which, combined
 				// with Activity.Cancel discarding NextActivity without checking the
 				// IsInterruptable flag, means that a well timed order can cancel the
@@ -94,14 +100,15 @@ namespace OpenRA.Mods.Cnc.Traits
 					typeof(Actor).GetProperty("CurrentActivity").SetValue(self, null);
 
 				// The actor is killed using Info.DamageTypes if the teleport fails
-				self.QueueActivity(new Teleport(chronosphere, Origin, null, true, killCargo, Info.ChronoshiftSound,
+				self.QueueActivity(false, new Teleport(chronosphere ?? self, Origin, null, true, killCargo, Info.ChronoshiftSound,
 					false, true, Info.DamageTypes));
 			}
 		}
 
-		void INotifyCreated.Created(Actor self)
+		protected override void Created(Actor self)
 		{
 			iPositionable = self.TraitOrDefault<IPositionable>();
+			base.Created(self);
 		}
 
 		// Can't be used in synced code, except with ignoreVis.
@@ -142,8 +149,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			this.killCargo = killCargo;
 
 			// Set up the teleport
-			self.CancelActivity();
-			self.QueueActivity(new Teleport(chronosphere, targetLocation, null, killCargo, true, Info.ChronoshiftSound));
+			self.QueueActivity(false, new Teleport(chronosphere, targetLocation, null, killCargo, true, Info.ChronoshiftSound));
 
 			return true;
 		}
@@ -162,51 +168,33 @@ namespace OpenRA.Mods.Cnc.Traits
 		}
 
 		Color ISelectionBar.GetColor() { return Info.TimeBarColor; }
-		bool ISelectionBar.DisplayWhenEmpty { get { return false; } }
+		bool ISelectionBar.DisplayWhenEmpty => false;
 
 		void ModifyActorInit(TypeDictionary init)
 		{
 			if (IsTraitDisabled || !Info.ReturnToOrigin || ReturnTicks <= 0)
 				return;
 
-			init.Add(new ChronoshiftOriginInit(Origin));
-			init.Add(new ChronoshiftReturnInit(ReturnTicks));
-			init.Add(new ChronoshiftDurationInit(duration));
-			if (chronosphere != self)
-				init.Add(new ChronoshiftChronosphereInit(chronosphere));
+			init.Add(new ChronoshiftReturnInit(ReturnTicks, duration, Origin, chronosphere));
 		}
 
 		void IDeathActorInitModifier.ModifyDeathActorInit(Actor self, TypeDictionary init) { ModifyActorInit(init); }
 		void ITransformActorInitModifier.ModifyTransformActorInit(Actor self, TypeDictionary init) { ModifyActorInit(init); }
 	}
 
-	public class ChronoshiftReturnInit : IActorInit<int>
+	public class ChronoshiftReturnInit : CompositeActorInit, ISingleInstanceInit
 	{
-		[FieldFromYamlKey] readonly int value = 0;
-		public ChronoshiftReturnInit() { }
-		public ChronoshiftReturnInit(int init) { value = init; }
-		public int Value(World world) { return value; }
-	}
+		public readonly int Ticks;
+		public readonly int Duration;
+		public readonly CPos Origin;
+		public readonly ActorInitActorReference Chronosphere;
 
-	public class ChronoshiftDurationInit : IActorInit<int>
-	{
-		[FieldFromYamlKey] readonly int value = 0;
-		public ChronoshiftDurationInit() { }
-		public ChronoshiftDurationInit(int init) { value = init; }
-		public int Value(World world) { return value; }
-	}
-
-	public class ChronoshiftOriginInit : IActorInit<CPos>
-	{
-		[FieldFromYamlKey] readonly CPos value;
-		public ChronoshiftOriginInit(CPos init) { value = init; }
-		public CPos Value(World world) { return value; }
-	}
-
-	public class ChronoshiftChronosphereInit : IActorInit<Actor>
-	{
-		readonly Actor value;
-		public ChronoshiftChronosphereInit(Actor init) { value = init; }
-		public Actor Value(World world) { return value; }
+		public ChronoshiftReturnInit(int ticks, int duration, CPos origin, Actor chronosphere)
+		{
+			Ticks = ticks;
+			Duration = duration;
+			Origin = origin;
+			Chronosphere = chronosphere;
+		}
 	}
 }

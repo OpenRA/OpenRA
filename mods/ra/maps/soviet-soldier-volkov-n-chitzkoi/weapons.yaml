@@ -1,0 +1,36 @@
+HeavyTurretGun:
+	Inherits: TurretGun
+	Range: 10c0
+
+CydogJaw:
+	Inherits: DogJaw
+	Range: 5c512
+
+VolkovWeapon:
+	Inherits: SilencedPPK
+	ReloadDelay: 25
+	Range: 6c0
+	ValidTargets: Ground, GroundActor, Water, WaterActor
+	InvalidTargets: Bridge, Structure, Wall
+	Warhead@1Dam: SpreadDamage
+		Spread: 256
+		Versus:
+			None: 90
+			Wood: 75
+			Light: 60
+			Heavy: 25
+			Concrete: 50
+		ValidTargets: Barrel, Infantry, Vehicle, Mine
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Crater
+		InvalidTargets: Vehicle, Structure, Wall, Husk, Trees
+	Warhead@3Eff: CreateEffect
+		Explosions: artillery_explosion
+		ImpactSounds: kaboom25.aud
+		ValidTargets: Ground, GroundActor, Ship, Trees
+	Warhead@4EffWater: CreateEffect
+		Explosions: small_splash
+		ImpactSounds: splash9.aud
+		ValidTargets: Water, Underwater
+		InvalidTargets: Ship, Structure, Bridge

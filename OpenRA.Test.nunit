@@ -1,6 +1,0 @@
-<NUnitProject>
-  <Settings activeconfig="Debug"/>
-  <Config name="Debug" binpath="mods/common">
-    <assembly path="OpenRA.Test.dll"/>
-  </Config>
-</NUnitProject>

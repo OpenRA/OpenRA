@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,8 +10,12 @@
 #endregion
 
 using System;
-using System.Drawing;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
+using System.Linq;
 using System.Runtime.InteropServices;
+using OpenRA.Primitives;
 using SDL2;
 
 namespace OpenRA.Platforms.Default
@@ -21,7 +25,7 @@ namespace OpenRA.Platforms.Default
 		readonly IGraphicsContext context;
 		readonly Sdl2Input input;
 
-		public IGraphicsContext Context { get { return context; } }
+		public IGraphicsContext Context => context;
 
 		readonly IntPtr window;
 		bool disposed;
@@ -29,7 +33,11 @@ namespace OpenRA.Platforms.Default
 		readonly object syncObject = new object();
 		Size windowSize;
 		Size surfaceSize;
-		float windowScale;
+		float windowScale = 1f;
+		int2? lockedMousePosition;
+		float scaleModifier;
+		readonly GLProfile profile;
+		readonly GLProfile[] supportedProfiles;
 
 		internal IntPtr Window
 		{
@@ -40,7 +48,7 @@ namespace OpenRA.Platforms.Default
 			}
 		}
 
-		public Size WindowSize
+		public Size NativeWindowSize
 		{
 			get
 			{
@@ -49,7 +57,16 @@ namespace OpenRA.Platforms.Default
 			}
 		}
 
-		public float WindowScale
+		public Size EffectiveWindowSize
+		{
+			get
+			{
+				lock (syncObject)
+					return new Size((int)(windowSize.Width / scaleModifier), (int)(windowSize.Height / scaleModifier));
+			}
+		}
+
+		public float NativeWindowScale
 		{
 			get
 			{
@@ -58,7 +75,16 @@ namespace OpenRA.Platforms.Default
 			}
 		}
 
-		internal Size SurfaceSize
+		public float EffectiveWindowScale
+		{
+			get
+			{
+				lock (syncObject)
+					return windowScale * scaleModifier;
+			}
+		}
+
+		public Size SurfaceSize
 		{
 			get
 			{
@@ -67,40 +93,117 @@ namespace OpenRA.Platforms.Default
 			}
 		}
 
-		public event Action<float, float> OnWindowScaleChanged = (before, after) => { };
+		public int CurrentDisplay => SDL.SDL_GetWindowDisplayIndex(window);
+
+		public int DisplayCount => SDL.SDL_GetNumVideoDisplays();
+
+		public bool HasInputFocus { get; internal set; }
+
+		public GLProfile GLProfile
+		{
+			get
+			{
+				lock (syncObject)
+					return profile;
+			}
+		}
+
+		public GLProfile[] SupportedGLProfiles
+		{
+			get
+			{
+				lock (syncObject)
+					return supportedProfiles;
+			}
+		}
+
+		public event Action<float, float, float, float> OnWindowScaleChanged = (oldNative, oldEffective, newNative, newEffective) => { };
 
 		[DllImport("user32.dll")]
 		static extern bool SetProcessDPIAware();
 
-		public Sdl2PlatformWindow(Size requestWindowSize, WindowMode windowMode, int batchSize)
+		public Sdl2PlatformWindow(Size requestEffectiveWindowSize, WindowMode windowMode,
+			float scaleModifier, int batchSize, int videoDisplay, GLProfile requestProfile, bool enableLegacyGL)
 		{
-			Console.WriteLine("Using SDL 2 with OpenGL renderer");
-
 			// Lock the Window/Surface properties until initialization is complete
 			lock (syncObject)
 			{
-				windowSize = requestWindowSize;
+				this.scaleModifier = scaleModifier;
 
 				// Disable legacy scaling on Windows
-				if (Platform.CurrentPlatform == PlatformType.Windows && !Game.Settings.Graphics.DisableWindowsDPIScaling)
+				if (Platform.CurrentPlatform == PlatformType.Windows)
 					SetProcessDPIAware();
 
-				SDL.SDL_Init(SDL.SDL_INIT_NOPARACHUTE | SDL.SDL_INIT_VIDEO);
-				SDL.SDL_GL_SetAttribute(SDL.SDL_GLattr.SDL_GL_DOUBLEBUFFER, 1);
-				SDL.SDL_GL_SetAttribute(SDL.SDL_GLattr.SDL_GL_RED_SIZE, 8);
-				SDL.SDL_GL_SetAttribute(SDL.SDL_GLattr.SDL_GL_GREEN_SIZE, 8);
-				SDL.SDL_GL_SetAttribute(SDL.SDL_GLattr.SDL_GL_BLUE_SIZE, 8);
-				SDL.SDL_GL_SetAttribute(SDL.SDL_GLattr.SDL_GL_ALPHA_SIZE, 0);
+				// Decide which OpenGL profile to use.
+				// Prefer standard GL over GLES provided by the native driver
+				var testProfiles = new List<GLProfile> { GLProfile.ANGLE, GLProfile.Modern, GLProfile.Embedded };
+				if (enableLegacyGL)
+					testProfiles.Add(GLProfile.Legacy);
 
-				SDL.SDL_DisplayMode display;
-				SDL.SDL_GetCurrentDisplayMode(0, out display);
+				supportedProfiles = testProfiles
+					.Where(CanCreateGLWindow)
+					.ToArray();
+
+				if (!supportedProfiles.Any())
+					throw new InvalidOperationException("No supported OpenGL profiles were found.");
+
+				profile = supportedProfiles.Contains(requestProfile) ? requestProfile : supportedProfiles.First();
+
+				// Note: This must be called after the CanCreateGLWindow checks above,
+				// which needs to create and destroy its own SDL contexts as a workaround for specific buggy drivers
+				SDL.SDL_Init(SDL.SDL_INIT_VIDEO);
+				SetSDLAttributes(profile);
+
+				Console.WriteLine("Using SDL 2 with OpenGL ({0}) renderer", profile);
+				if (videoDisplay < 0 || videoDisplay >= DisplayCount)
+					videoDisplay = 0;
+
+				SDL.SDL_GetCurrentDisplayMode(videoDisplay, out var display);
+
+				// Windows and Linux define window sizes in native pixel units.
+				// Query the display/dpi scale so we can convert our requested effective size to pixels.
+				// This is not necessary on macOS, which defines window sizes in effective units ("points").
+				if (Platform.CurrentPlatform == PlatformType.Windows)
+				{
+					// Launch the game with OPENRA_DISPLAY_SCALE to force a specific scaling factor
+					// Otherwise fall back to Windows's DPI configuration
+					var scaleVariable = Environment.GetEnvironmentVariable("OPENRA_DISPLAY_SCALE");
+					if (scaleVariable == null || !float.TryParse(scaleVariable, NumberStyles.Float, NumberFormatInfo.InvariantInfo, out windowScale) || windowScale <= 0)
+						if (SDL.SDL_GetDisplayDPI(videoDisplay, out var ddpi, out _, out _) == 0)
+							windowScale = ddpi / 96;
+				}
+				else if (Platform.CurrentPlatform == PlatformType.Linux)
+				{
+					// Launch the game with OPENRA_DISPLAY_SCALE to force a specific scaling factor
+					// Otherwise fall back to GDK_SCALE or parsing the x11 DPI configuration
+					var scaleVariable = Environment.GetEnvironmentVariable("OPENRA_DISPLAY_SCALE") ?? Environment.GetEnvironmentVariable("GDK_SCALE");
+					if (scaleVariable == null || !float.TryParse(scaleVariable, NumberStyles.Float, NumberFormatInfo.InvariantInfo, out windowScale) || windowScale <= 0)
+					{
+						// Attempt to automatically detect DPI
+						try
+						{
+							var psi = new ProcessStartInfo("/usr/bin/xrdb", "-query");
+							psi.UseShellExecute = false;
+							psi.RedirectStandardOutput = true;
+							var p = Process.Start(psi);
+							var lines = p.StandardOutput.ReadToEnd().Split('\n');
+
+							foreach (var line in lines)
+								if (line.StartsWith("Xft.dpi") && int.TryParse(line.Substring(8), out var dpi))
+									windowScale = dpi / 96f;
+						}
+						catch { }
+					}
+				}
 
 				Console.WriteLine("Desktop resolution: {0}x{1}", display.w, display.h);
-				if (windowSize.Width == 0 && windowSize.Height == 0)
+				if (requestEffectiveWindowSize.Width == 0 && requestEffectiveWindowSize.Height == 0)
 				{
 					Console.WriteLine("No custom resolution provided, using desktop resolution");
-					windowSize = new Size(display.w, display.h);
+					surfaceSize = windowSize = new Size(display.w, display.h);
 				}
+				else
+					surfaceSize = windowSize = new Size((int)(requestEffectiveWindowSize.Width * windowScale), (int)(requestEffectiveWindowSize.Height * windowScale));
 
 				Console.WriteLine("Using resolution: {0}x{1}", windowSize.Width, windowSize.Height);
 
@@ -110,42 +213,44 @@ namespace OpenRA.Platforms.Default
 				if (Platform.CurrentPlatform == PlatformType.OSX && windowMode == WindowMode.Fullscreen)
 					SDL.SDL_SetHint(SDL.SDL_HINT_VIDEO_HIGHDPI_DISABLED, "1");
 
-				window = SDL.SDL_CreateWindow("OpenRA", SDL.SDL_WINDOWPOS_CENTERED, SDL.SDL_WINDOWPOS_CENTERED,
+				window = SDL.SDL_CreateWindow("OpenRA", SDL.SDL_WINDOWPOS_CENTERED_DISPLAY(videoDisplay), SDL.SDL_WINDOWPOS_CENTERED_DISPLAY(videoDisplay),
 					windowSize.Width, windowSize.Height, windowFlags);
 
-				surfaceSize = windowSize;
-				windowScale = 1;
+				// Work around an issue in macOS's GL backend where the window remains permanently black
+				// (if dark mode is enabled) unless we drain the event queue before initializing GL
+				if (Platform.CurrentPlatform == PlatformType.OSX)
+				{
+					while (SDL.SDL_PollEvent(out var e) != 0)
+					{
+						// We can safely ignore all mouse/keyboard events and window size changes
+						// (these will be caught in the window setup below), but do need to process focus
+						if (e.type == SDL.SDL_EventType.SDL_WINDOWEVENT)
+						{
+							switch (e.window.windowEvent)
+							{
+								case SDL.SDL_WindowEventID.SDL_WINDOWEVENT_FOCUS_LOST:
+									HasInputFocus = false;
+									break;
+
+								case SDL.SDL_WindowEventID.SDL_WINDOWEVENT_FOCUS_GAINED:
+									HasInputFocus = true;
+									break;
+							}
+						}
+					}
+				}
 
 				// Enable high resolution rendering for Retina displays
 				if (Platform.CurrentPlatform == PlatformType.OSX)
 				{
 					// OSX defines the window size in "points", with a device-dependent number of pixels per point.
 					// The window scale is simply the ratio of GL pixels / window points.
-					int width, height;
-
-					SDL.SDL_GL_GetDrawableSize(Window, out width, out height);
+					SDL.SDL_GL_GetDrawableSize(Window, out var width, out var height);
 					surfaceSize = new Size(width, height);
 					windowScale = width * 1f / windowSize.Width;
 				}
-				else if (Platform.CurrentPlatform == PlatformType.Windows)
-				{
-					float ddpi, hdpi, vdpi;
-					if (!Game.Settings.Graphics.DisableWindowsDPIScaling && SDL.SDL_GetDisplayDPI(0, out ddpi, out hdpi, out vdpi) == 0)
-					{
-						windowScale = ddpi / 96;
-						windowSize = new Size((int)(surfaceSize.Width / windowScale), (int)(surfaceSize.Height / windowScale));
-					}
-				}
 				else
-				{
-					float scale = 1;
-					var scaleVariable = Environment.GetEnvironmentVariable("OPENRA_DISPLAY_SCALE");
-					if (scaleVariable != null && float.TryParse(scaleVariable, out scale))
-					{
-						windowScale = scale;
-						windowSize = new Size((int)(surfaceSize.Width / windowScale), (int)(surfaceSize.Height / windowScale));
-					}
-				}
+					windowSize = new Size((int)(surfaceSize.Width / windowScale), (int)(surfaceSize.Height / windowScale));
 
 				Console.WriteLine("Using window scale {0:F2}", windowScale);
 
@@ -166,19 +271,13 @@ namespace OpenRA.Platforms.Default
 					// This is usually not what the player wants, but is the best we can consistently do.
 					if (Platform.CurrentPlatform == PlatformType.OSX)
 					{
-						int width, height;
-						SDL.SDL_GetWindowSize(Window, out width, out height);
+						SDL.SDL_GetWindowSize(Window, out var width, out var height);
 						windowSize = surfaceSize = new Size(width, height);
 						windowScale = 1;
 					}
 				}
 				else if (windowMode == WindowMode.PseudoFullscreen)
 				{
-					// Work around a visual glitch in OSX: the window is offset
-					// partially offscreen if the dock is at the left of the screen
-					if (Platform.CurrentPlatform == PlatformType.OSX)
-						SDL.SDL_SetWindowPosition(Window, 0, 0);
-
 					SDL.SDL_SetWindowFullscreen(Window, (uint)SDL.SDL_WindowFlags.SDL_WINDOW_FULLSCREEN_DESKTOP);
 					SDL.SDL_SetHint(SDL.SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, "0");
 				}
@@ -198,36 +297,50 @@ namespace OpenRA.Platforms.Default
 			else
 				context = new ThreadedGraphicsContext(new Sdl2GraphicsContext(this), batchSize);
 
+			context.SetVSyncEnabled(Game.Settings.Graphics.VSync);
+
 			SDL.SDL_SetModState(SDL.SDL_Keymod.KMOD_NONE);
 			input = new Sdl2Input();
 		}
 
-		public IHardwareCursor CreateHardwareCursor(string name, Size size, byte[] data, int2 hotspot)
+		byte[] DoublePixelData(byte[] data, Size size)
+		{
+			var scaledData = new byte[4 * data.Length];
+			for (var y = 0; y < size.Height; y++)
+			{
+				for (var x = 0; x < size.Width; x++)
+				{
+					var a = 4 * (y * size.Width + x);
+					var b = 8 * (2 * y * size.Width + x);
+					var c = b + 8 * size.Width;
+					for (var i = 0; i < 4; i++)
+						scaledData[b + i] = scaledData[b + 4 + i] = scaledData[c + i] = scaledData[c + 4 + i] = data[a + i];
+				}
+			}
+
+			return scaledData;
+		}
+
+		public IHardwareCursor CreateHardwareCursor(string name, Size size, byte[] data, int2 hotspot, bool pixelDouble)
 		{
 			VerifyThreadAffinity();
 			try
 			{
 				// Pixel double the cursor on non-OSX if the window scale is large enough
 				// OSX does this for us automatically
-				if (Platform.CurrentPlatform != PlatformType.OSX && WindowScale > 1.5)
+				if (Platform.CurrentPlatform != PlatformType.OSX && NativeWindowScale > 1.5f)
 				{
-					var scaledData = new byte[4 * data.Length];
-					for (var y = 0; y < size.Height * 4; y += 4)
-					{
-						for (var x = 0; x < size.Width * 4; x += 4)
-						{
-							var a = 4 * (y * size.Width + x);
-							var b = 4 * ((y + 1) * size.Width + x);
-							for (var i = 0; i < 4; i++)
-							{
-								scaledData[2 * a + i] = scaledData[2 * a + 4 + i] = data[a + i];
-								scaledData[2 * b + i] = scaledData[2 * b + 4 + i] = data[b + i];
-							}
-						}
-					}
-
+					data = DoublePixelData(data, size);
 					size = new Size(2 * size.Width, 2 * size.Height);
-					data = scaledData;
+					hotspot *= 2;
+				}
+
+				// Scale all but the "default" cursor if requested by the player
+				if (pixelDouble)
+				{
+					data = DoublePixelData(data, size);
+					size = new Size(2 * size.Width, 2 * size.Height);
+					hotspot *= 2;
 				}
 
 				return new Sdl2HardwareCursor(size, data, hotspot);
@@ -251,14 +364,29 @@ namespace OpenRA.Platforms.Default
 			}
 		}
 
+		public void SetRelativeMouseMode(bool mode)
+		{
+			if (mode)
+			{
+				SDL.SDL_GetMouseState(out var x, out var y);
+				lockedMousePosition = new int2(x, y);
+			}
+			else
+			{
+				if (lockedMousePosition.HasValue)
+					SDL.SDL_WarpMouseInWindow(window, lockedMousePosition.Value.X, lockedMousePosition.Value.Y);
+
+				lockedMousePosition = null;
+			}
+		}
+
 		internal void WindowSizeChanged()
 		{
 			// The ratio between pixels and points can change when moving between displays in OSX
 			// We need to recalculate our scale to account for the potential change in the actual rendered area
 			if (Platform.CurrentPlatform == PlatformType.OSX)
 			{
-				int width, height;
-				SDL.SDL_GL_GetDrawableSize(Window, out width, out height);
+				SDL.SDL_GL_GetDrawableSize(Window, out var width, out var height);
 
 				if (width != SurfaceSize.Width || height != SurfaceSize.Height)
 				{
@@ -270,7 +398,7 @@ namespace OpenRA.Platforms.Default
 						windowScale = width * 1f / windowSize.Width;
 					}
 
-					OnWindowScaleChanged(oldScale, windowScale);
+					OnWindowScaleChanged(oldScale, oldScale * scaleModifier, windowScale, windowScale * scaleModifier);
 				}
 			}
 		}
@@ -282,8 +410,7 @@ namespace OpenRA.Platforms.Default
 
 			disposed = true;
 
-			if (context != null)
-				context.Dispose();
+			context?.Dispose();
 
 			if (Window != IntPtr.Zero)
 				SDL.SDL_DestroyWindow(Window);
@@ -306,7 +433,10 @@ namespace OpenRA.Platforms.Default
 		public void PumpInput(IInputHandler inputHandler)
 		{
 			VerifyThreadAffinity();
-			input.PumpInput(this, inputHandler);
+			input.PumpInput(this, inputHandler, lockedMousePosition);
+
+			if (lockedMousePosition.HasValue)
+				SDL.SDL_WarpMouseInWindow(window, lockedMousePosition.Value.X, lockedMousePosition.Value.Y);
 		}
 
 		public string GetClipboardText()
@@ -319,6 +449,85 @@ namespace OpenRA.Platforms.Default
 		{
 			VerifyThreadAffinity();
 			return input.SetClipboardText(text);
+		}
+
+		static void SetSDLAttributes(GLProfile profile)
+		{
+			SDL.SDL_GL_ResetAttributes();
+			SDL.SDL_GL_SetAttribute(SDL.SDL_GLattr.SDL_GL_DOUBLEBUFFER, 1);
+			SDL.SDL_GL_SetAttribute(SDL.SDL_GLattr.SDL_GL_RED_SIZE, 8);
+			SDL.SDL_GL_SetAttribute(SDL.SDL_GLattr.SDL_GL_GREEN_SIZE, 8);
+			SDL.SDL_GL_SetAttribute(SDL.SDL_GLattr.SDL_GL_BLUE_SIZE, 8);
+			SDL.SDL_GL_SetAttribute(SDL.SDL_GLattr.SDL_GL_ALPHA_SIZE, 0);
+
+			var useAngle = profile == GLProfile.ANGLE ? "1" : "0";
+			SDL.SDL_SetHint("SDL_OPENGL_ES_DRIVER", useAngle);
+
+			switch (profile)
+			{
+				case GLProfile.Modern:
+					SDL.SDL_GL_SetAttribute(SDL.SDL_GLattr.SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+					SDL.SDL_GL_SetAttribute(SDL.SDL_GLattr.SDL_GL_CONTEXT_MINOR_VERSION, 2);
+					SDL.SDL_GL_SetAttribute(SDL.SDL_GLattr.SDL_GL_CONTEXT_PROFILE_MASK, (int)SDL.SDL_GLprofile.SDL_GL_CONTEXT_PROFILE_CORE);
+					break;
+				case GLProfile.ANGLE:
+				case GLProfile.Embedded:
+					SDL.SDL_GL_SetAttribute(SDL.SDL_GLattr.SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+					SDL.SDL_GL_SetAttribute(SDL.SDL_GLattr.SDL_GL_CONTEXT_MINOR_VERSION, 0);
+					SDL.SDL_GL_SetAttribute(SDL.SDL_GLattr.SDL_GL_CONTEXT_PROFILE_MASK, (int)SDL.SDL_GLprofile.SDL_GL_CONTEXT_PROFILE_ES);
+					break;
+				case GLProfile.Legacy:
+					SDL.SDL_GL_SetAttribute(SDL.SDL_GLattr.SDL_GL_CONTEXT_MAJOR_VERSION, 2);
+					SDL.SDL_GL_SetAttribute(SDL.SDL_GLattr.SDL_GL_CONTEXT_MINOR_VERSION, 1);
+					break;
+			}
+		}
+
+		static bool CanCreateGLWindow(GLProfile profile)
+		{
+			// Implementation inspired by TestIndividualGLVersion from Veldrid
+
+			// Need to create and destroy its own SDL contexts as a workaround for specific buggy drivers
+			SDL.SDL_Init(SDL.SDL_INIT_VIDEO);
+			SetSDLAttributes(profile);
+
+			var flags = SDL.SDL_WindowFlags.SDL_WINDOW_HIDDEN | SDL.SDL_WindowFlags.SDL_WINDOW_OPENGL;
+			var window = SDL.SDL_CreateWindow("", 0, 0, 1, 1, flags);
+			if (window == IntPtr.Zero || !string.IsNullOrEmpty(SDL.SDL_GetError()))
+			{
+				SDL.SDL_ClearError();
+				SDL.SDL_Quit();
+				return false;
+			}
+
+			var context = SDL.SDL_GL_CreateContext(window);
+			if (context == IntPtr.Zero || SDL.SDL_GL_MakeCurrent(window, context) < 0)
+			{
+				SDL.SDL_ClearError();
+				SDL.SDL_DestroyWindow(window);
+				SDL.SDL_Quit();
+				return false;
+			}
+
+			// Distinguish between ANGLE and native GLES
+			var success = true;
+			if (profile == GLProfile.ANGLE || profile == GLProfile.Embedded)
+			{
+				var isAngle = SDL.SDL_GL_ExtensionSupported("GL_ANGLE_texture_usage") == SDL.SDL_bool.SDL_TRUE;
+				success = isAngle ^ (profile != GLProfile.ANGLE);
+			}
+
+			SDL.SDL_GL_DeleteContext(context);
+			SDL.SDL_DestroyWindow(window);
+			SDL.SDL_Quit();
+			return success;
+		}
+
+		public void SetScaleModifier(float scale)
+		{
+			var oldScaleModifier = scaleModifier;
+			scaleModifier = scale;
+			OnWindowScaleChanged(windowScale, windowScale * oldScaleModifier, windowScale, windowScale * scaleModifier);
 		}
 	}
 }

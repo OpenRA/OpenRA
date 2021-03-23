@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -20,7 +20,8 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Spawn another actor immediately upon death.")]
 	public class SpawnActorOnDeathInfo : ConditionalTraitInfo
 	{
-		[ActorReference, FieldLoader.Require]
+		[ActorReference]
+		[FieldLoader.Require]
 		[Desc("Actor to spawn on death.")]
 		public readonly string Actor = null;
 
@@ -71,15 +72,12 @@ namespace OpenRA.Mods.Common.Traits
 			: base(info)
 		{
 			enabled = !info.RequiresLobbyCreeps || init.Self.World.WorldActor.Trait<MapCreeps>().Enabled;
-			faction = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : init.Self.Owner.Faction.InternalName;
+			faction = init.GetValue<FactionInit, string>(init.Self.Owner.Faction.InternalName);
 		}
 
 		void INotifyKilled.Killed(Actor self, AttackInfo e)
 		{
-			if (!enabled || IsTraitDisabled)
-				return;
-
-			if (!self.IsInWorld)
+			if (!enabled || IsTraitDisabled || !self.IsInWorld)
 				return;
 
 			if (self.World.SharedRandom.Next(100) > Info.Probability)

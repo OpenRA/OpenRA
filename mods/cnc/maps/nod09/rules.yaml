@@ -1,6 +1,6 @@
 World:
 	LuaScript:
-		Scripts: nod09.lua, nod09-AI.lua
+		Scripts: campaign-global.lua, nod09.lua, nod09-AI.lua
 	MusicPlaylist:
 		StartingMusic: march
 		VictoryMusic: nod_win1
@@ -35,6 +35,7 @@ World:
 			normal: Normal
 			hard: Hard
 		Default: easy
+		Locked: false
 
 Player:
 	PlayerResources:
@@ -82,10 +83,6 @@ E2:
 E5:
 	Buildable:
 		Prerequisites: ~disabled
-
-HARV:
-	Harvester:
-		SearchFromOrderRadius: 45
 
 HTNK:
 	Buildable:
@@ -140,7 +137,7 @@ BOAT:
 	RejectsOrders:
 		Except: Attack
 	RevealsShroud:
-		ValidStances: Ally, Neutral, Enemy
+		ValidRelationships: Ally, Neutral, Enemy
 		Range: 4c0
 
 TRAN.IN:
@@ -162,7 +159,7 @@ NUKEOUT.IN:
 	ProvidesPrerequisite:
 		Prerequisite: anypower
 	Capturable:
-		CaptureThreshold: 100
+		Types: building
 
 PROCOUT.IN:
 	Inherits: PROC
@@ -173,16 +170,16 @@ PROCOUT.IN:
 	ProvidesPrerequisite:
 		Prerequisite: proc
 	Capturable:
-		CaptureThreshold: 100
+		Types: building
 
 RMBO.easy:
 	Inherits: RMBO
 	Health:
 		HP: 30000
-	SelfHealing:
+	ChangesHealth:
 		Step: 500
 		Delay: 10
-		HealIfBelow: 50
+		StartIfBelow: 50
 		DamageCooldown: 200
 	RenderSprites:
 		Image: RMBO

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -8,6 +8,9 @@
  * information, see COPYING.
  */
 #endregion
+
+using System;
+using OpenRA.Network;
 
 namespace OpenRA
 {
@@ -22,8 +25,11 @@ namespace OpenRA
 		[Desc("Automatically start playing the given replay file.")]
 		public string Replay;
 
-		[Desc("Dump performance data into cpu.csv and render.csv in the logs folder.")]
-		public bool Benchmark;
+		[Desc("Dump performance data into cpu.csv and render.csv in the logs folder with the given prefix.")]
+		public string Benchmark;
+
+		[Desc("Automatically start playing the given map.")]
+		public string Map;
 
 		public LaunchArguments(Arguments args)
 		{
@@ -35,17 +41,28 @@ namespace OpenRA
 					FieldLoader.LoadField(this, f.Name, args.GetValue("Launch" + "." + f.Name, ""));
 		}
 
-		public string GetConnectAddress()
+		public ConnectionTarget GetConnectEndPoint()
 		{
-			var connect = string.Empty;
+			try
+			{
+				Uri uri;
+				if (!string.IsNullOrEmpty(URI))
+					uri = new Uri(URI);
+				else if (!string.IsNullOrEmpty(Connect))
+					uri = new Uri("tcp://" + Connect);
+				else
+					return null;
 
-			if (!string.IsNullOrEmpty(Connect))
-				connect = Connect;
-
-			if (!string.IsNullOrEmpty(URI))
-				connect = URI.Substring(URI.IndexOf("://", System.StringComparison.Ordinal) + 3).TrimEnd('/');
-
-			return connect;
+				if (uri.IsAbsoluteUri)
+					return new ConnectionTarget(uri.Host, uri.Port);
+				else
+					return null;
+			}
+			catch (Exception ex)
+			{
+				Log.Write("client", "Failed to parse Launch.URI or Launch.Connect: {0}", ex.Message);
+				return null;
+			}
 		}
 	}
 }

@@ -3,6 +3,8 @@ V19:
 	Selectable:
 		Bounds: 24,24
 	CashTrickler:
+		Amount: 10
+		RequiresCondition: enabled
 	Building:
 		Footprint: x
 		Dimensions: 1,1
@@ -12,12 +14,15 @@ V19:
 		Name: Oil Derrick
 	TooltipDescription@ally:
 		Description: Provides additional funds.
-		ValidStances: Ally
+		ValidRelationships: Ally
 	TooltipDescription@other:
 		Description: Capture to receive additional funds.
-		ValidStances: Neutral, Enemy
+		ValidRelationships: Neutral, Enemy
 	SpawnActorOnDeath:
 		Actor: V19.Husk
+	UpdatesDerrickCount:
+	GrantConditionOnCombatantOwner:
+		Condition: enabled
 
 V19.Husk:
 	Inherits: ^CivBuildingHusk
@@ -38,7 +43,6 @@ HOSP:
 	Inherits@shape: ^2x2Shape
 	Selectable:
 		Bounds: 48,48
-		Priority: 0
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -48,14 +52,14 @@ HOSP:
 		Name: Hospital
 	TooltipDescription@ally:
 		Description: Provides infantry with self-healing.
-		ValidStances: Ally
+		ValidRelationships: Ally
 	TooltipDescription@other:
 		Description: Capture to enable self-healing for infantry.
-		ValidStances: Neutral, Enemy
+		ValidRelationships: Neutral, Enemy
 	SpawnActorOnDeath:
 		Actor: HOSP.Husk
 	WithBuildingBib:
-		HasMinibib: Yes
+		HasMinibib: true
 	ProvidesPrerequisite@buildingname:
 
 HOSP.Husk:
@@ -68,7 +72,7 @@ HOSP.Husk:
 	Tooltip:
 		Name: Hospital (Destroyed)
 	WithBuildingBib:
-		HasMinibib: Yes
+		HasMinibib: true
 
 BIO:
 	Inherits: ^TechBuilding
@@ -83,11 +87,11 @@ BIO:
 	Tooltip:
 		Name: Biological Lab
 	TooltipDescription@ally:
-		Description: Produces Bio-Lab units.
-		ValidStances: Ally
+		Description: Provides infantry with Tiberium immunity. Produces Visceroids.
+		ValidRelationships: Ally
 	TooltipDescription@other:
-		Description: Capture to produce Bio-Lab units.
-		ValidStances: Neutral, Enemy
+		Description: Capture to enable Tiberium immunity for infantry. Produces Visceroids.
+		ValidRelationships: Neutral, Enemy
 	Exit@1:
 		SpawnOffset: 0,-426,0
 		ExitCell: 0,-1
@@ -96,11 +100,16 @@ BIO:
 	ProductionQueue:
 		Type: Biolab
 		Group: Infantry
-		LowPowerSlowdown: 3
+		LowPowerModifier: 300
+		ReadyAudio: UnitReady
+		BlockedAudio: NoBuild
 		LimitedAudio: BuildingInProgress
+		QueuedAudio: Training
+		OnHoldAudio: OnHold
+		CancelledAudio: Cancelled
 	ProductionBar:
+		ProductionType: Biolab
 	RallyPoint:
-		Offset: -1,-1
 	SpawnActorOnDeath:
 		Actor: BIO.Husk
 	ProvidesPrerequisite@buildingname:
@@ -132,6 +141,6 @@ MISS:
 	Valued:
 		Cost: 2000
 	WithBuildingBib:
-		HasMinibib: Yes
+		HasMinibib: true
 	WithMakeAnimation:
 	ProvidesPrerequisite@buildingname:

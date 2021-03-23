@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -11,6 +11,7 @@
 
 using System;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
@@ -21,10 +22,11 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public readonly string TooltipContainer;
 		public readonly string TooltipTemplate;
+		public readonly EditorDefaultBrush DefaultBrush;
 
 		readonly Lazy<TooltipContainerWidget> tooltipContainer;
-		readonly EditorDefaultBrush defaultBrush;
 		readonly WorldRenderer worldRenderer;
+		readonly EditorActionManager editorActionManager;
 
 		bool enableTooltips;
 
@@ -33,16 +35,26 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			this.worldRenderer = worldRenderer;
 			tooltipContainer = Exts.Lazy(() => Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
-			CurrentBrush = defaultBrush = new EditorDefaultBrush(this, worldRenderer);
+			CurrentBrush = DefaultBrush = new EditorDefaultBrush(this, worldRenderer);
+			editorActionManager = world.WorldActor.Trait<EditorActionManager>();
+
+			editorActionManager.OnChange += EditorActionManagerOnChange;
+
+			// Allow zooming out to full map size
+			worldRenderer.Viewport.UnlockMinimumZoom(0.25f);
+		}
+
+		void EditorActionManagerOnChange()
+		{
+			DefaultBrush.SelectedActor = null;
 		}
 
 		public void ClearBrush() { SetBrush(null); }
 		public void SetBrush(IEditorBrush brush)
 		{
-			if (CurrentBrush != null)
-				CurrentBrush.Dispose();
+			CurrentBrush?.Dispose();
 
-			CurrentBrush = brush ?? defaultBrush;
+			CurrentBrush = brush ?? DefaultBrush;
 		}
 
 		public override void MouseEntered()
@@ -70,26 +82,11 @@ namespace OpenRA.Mods.Common.Widgets
 				tooltipContainer.Value.RemoveTooltip();
 		}
 
-		void Zoom(int amount)
-		{
-			var zoomSteps = worldRenderer.Viewport.AvailableZoomSteps;
-			var currentZoom = worldRenderer.Viewport.Zoom;
-
-			var nextIndex = zoomSteps.IndexOf(currentZoom) - amount;
-			if (nextIndex < 0 || nextIndex >= zoomSteps.Length)
-				return;
-
-			var zoom = zoomSteps[nextIndex];
-			Parent.Get<DropDownButtonWidget>("ZOOM_BUTTON").SelectedItem = zoom.ToString();
-			worldRenderer.Viewport.Zoom = zoom;
-		}
-
 		public override bool HandleMouseInput(MouseInput mi)
 		{
-			if (mi.Event == MouseInputEvent.Scroll &&
-				Game.Settings.Game.AllowZoom && mi.Modifiers.HasModifier(Game.Settings.Game.ZoomModifier))
+			if (mi.Event == MouseInputEvent.Scroll && mi.Modifiers.HasModifier(Game.Settings.Game.ZoomModifier))
 			{
-				Zoom(mi.ScrollDelta);
+				worldRenderer.Viewport.AdjustZoom(mi.Delta.Y * Game.Settings.Game.ZoomSpeed, mi.Location);
 				return true;
 			}
 
@@ -108,6 +105,12 @@ namespace OpenRA.Mods.Common.Widgets
 
 			cachedViewportPosition = worldRenderer.Viewport.CenterPosition;
 			CurrentBrush.Tick();
+		}
+
+		public override void Removed()
+		{
+			base.Removed();
+			editorActionManager.OnChange -= EditorActionManagerOnChange;
 		}
 	}
 }

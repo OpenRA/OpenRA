@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -16,7 +16,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 {
 	class GetMapHashCommand : IUtilityCommand
 	{
-		string IUtilityCommand.Name { get { return "--map-hash"; } }
+		string IUtilityCommand.Name => "--map-hash";
 
 		bool IUtilityCommand.ValidateArguments(string[] args)
 		{
@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		[Desc("MAPFILE", "Generate hash of specified oramap file.")]
 		void IUtilityCommand.Run(Utility utility, string[] args)
 		{
-			using (var package = new Folder(".").OpenPackage(args[1], utility.ModData.ModFiles))
+			using (var package = new Folder(Platform.EngineDir).OpenPackage(args[1], utility.ModData.ModFiles))
 				Console.WriteLine(Map.ComputeUID(package));
 		}
 	}

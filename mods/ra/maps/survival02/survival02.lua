@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+   Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -129,8 +129,12 @@ end
 
 SendSovietParadrops = function(table)
 	local paraproxy = Actor.Create(table.type, false, { Owner = soviets })
-	units = paraproxy.SendParatroopers(table.target.CenterPosition)
-	Utils.Do(units, function(unit) IdleHunt(unit) end)
+	local aircraft = paraproxy.TargetParatroopers(table.target.CenterPosition)
+	Utils.Do(aircraft, function(a)
+		Trigger.OnPassengerExited(a, function(t, p)
+			IdleHunt(p)
+		end)
+	end)
 	paraproxy.Destroy()
 end
 
@@ -181,9 +185,9 @@ FrenchReinforcements = function()
 	end
 
 	powerproxy = Actor.Create("powerproxy.parabombs", false, { Owner = allies })
-	powerproxy.SendAirstrike(drum1.CenterPosition, false, Facing.NorthEast + 4)
-	powerproxy.SendAirstrike(drum2.CenterPosition, false, Facing.NorthEast)
-	powerproxy.SendAirstrike(drum3.CenterPosition, false, Facing.NorthEast - 4)
+	powerproxy.TargetAirstrike(drum1.CenterPosition, Angle.NorthEast + Angle.New(16))
+	powerproxy.TargetAirstrike(drum2.CenterPosition, Angle.NorthEast)
+	powerproxy.TargetAirstrike(drum3.CenterPosition, Angle.NorthEast - Angle.New(16))
 	powerproxy.Destroy()
 
 	Trigger.AfterDelay(DateTime.Seconds(3), function()

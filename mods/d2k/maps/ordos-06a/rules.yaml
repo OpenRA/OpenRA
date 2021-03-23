@@ -1,0 +1,60 @@
+Player:
+	PlayerResources:
+		DefaultCash: 6000
+
+World:
+	LuaScript:
+		Scripts: campaign-global.lua, ordos06a.lua, ordos06a-AI.lua
+	MissionData:
+		Briefing: The Starport must be protected. All other efforts are secondary. No House will be allowed to interfere with the arrival of our Ixian weaponry.\n\nOnce we possess these illegal technologies, we will confuse and crush our opponents. Until then, survive. This will give you a higher probability of success.
+		BriefingVideo: O_BR06_E.VQA
+	MapOptions:
+		TechLevel: medium
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			easy: Easy
+			normal: Normal
+			hard: Hard
+		Default: easy
+
+carryall.reinforce:
+	Cargo:
+		MaxWeight: 10
+
+frigate:
+	Aircraft:
+		LandableTerrainTypes: Sand, Rock, Transition, Spice, SpiceSand, Dune, Concrete
+
+concreteb:
+	Buildable:
+		Prerequisites: ~disabled
+
+upgrade.conyard:
+	Buildable:
+		Prerequisites: ~disabled
+
+starport:
+	Buildable:
+		Prerequisites: heavy_factory, outpost
+
+missile_tank:
+	Buildable:
+		Prerequisites: ~heavy.missile_tank, upgrade.heavy, research_centre
+
+grenadier:
+	Buildable:
+		Prerequisites: ~disabled
+
+stealth_raider:
+	Buildable:
+		Prerequisites: ~disabled
+
+sardaukar:
+	Buildable:
+		Prerequisites: ~disabled
+
+large_gun_turret:
+	Buildable:
+		Prerequisites: ~disabled

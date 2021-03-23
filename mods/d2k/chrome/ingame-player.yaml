@@ -21,8 +21,8 @@ Container@PLAYER_WIDGETS:
 			Y: WINDOW_BOTTOM - HEIGHT
 			Width: 416
 			Height: 43
-			ImageCollection: sidebar-bits
-			ImageName: commandbar-background
+			ImageCollection: commandbar
+			ImageName: background
 		Container@COMMAND_BAR:
 			Logic: CommandBarLogic
 			X: 24
@@ -73,7 +73,7 @@ Container@PLAYER_WIDGETS:
 					Background: command-button
 					DisableKeySound: true
 					TooltipText: Force Attack
-					TooltipDesc: Selected units will attack the targeted unit or location\nignoring their default activity for the target.\n\nLeft-click icon then right-click on target.\nHold {(Ctrl)} to activate temporarily while commanding units.
+					TooltipDesc: Selected units will attack the targeted unit or location\n - Default activity for the target is suppressed\n - Allows targeting of own or ally forces\n\nLeft-click icon then right-click on target.\nHold {(Ctrl)} to activate temporarily while commanding units.
 					TooltipContainer: TOOLTIP_CONTAINER
 					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP
 					Children:
@@ -248,6 +248,26 @@ Container@PLAYER_WIDGETS:
 							Y: 5
 							ImageCollection: stance-icons
 							ImageName: hold-fire
+		Container@MUTE_INDICATOR:
+			Logic: MuteIndicatorLogic
+			X: WINDOW_RIGHT - WIDTH - 231
+			Y: 5
+			Width: 200
+			Height: 25
+			Children:
+				Image@ICON:
+					X: PARENT_RIGHT - WIDTH
+					Y: 1
+					Width: 24
+					Height: 24
+					ImageCollection: sidebar-bits
+					ImageName: indicator-muted
+				Label@LABEL:
+					Width: PARENT_RIGHT - 30
+					Height: 25
+					Align: Right
+					Text: Audio Muted
+					Contrast: true
 		Image@SIDEBAR_BACKGROUND_TOP:
 			X: WINDOW_RIGHT - 226
 			Y: 0
@@ -262,22 +282,6 @@ Container@PLAYER_WIDGETS:
 					X: 16
 					Y: 236
 					Children:
-						MenuButton@DEBUG_BUTTON:
-							X: 4
-							Width: 34
-							Height: 35
-							Background:
-							Key: escape Shift
-							TooltipText: Debug Menu
-							TooltipContainer: TOOLTIP_CONTAINER
-							DisableWorldSounds: true
-							VisualHeight: 0
-							Children:
-								Image@ICON:
-									X: 0
-									Y: 0
-									ImageCollection: order-icons
-									ImageName: debug
 						Button@REPAIR_BUTTON:
 							Logic: RepairOrderButtonLogic
 							X: 29
@@ -376,8 +380,10 @@ Container@PLAYER_WIDGETS:
 							Y: 34
 							Width: 202
 							Height: 202
+							SoundUp: RadarUp
+							SoundDown: RadarDown
 							Children:
-						VqaPlayer@PLAYER:
+						VideoPlayer@PLAYER:
 							X: 12
 							Y: 32
 							Width: 202
@@ -419,7 +425,7 @@ Container@PLAYER_WIDGETS:
 				Label@GAME_TIMER:
 					Logic: GameTimerLogic
 					X: 10
-					Y: 2
+					Y: 4
 					Width: PARENT_RIGHT
 					Height: 22
 					Align: Center
@@ -427,7 +433,7 @@ Container@PLAYER_WIDGETS:
 				LabelWithTooltip@CASH:
 					Logic: IngameCashCounterLogic
 					X: 29
-					Y: 2
+					Y: 4
 					Width: 50
 					Height: 22
 					Font: Bold
@@ -437,7 +443,7 @@ Container@PLAYER_WIDGETS:
 				LabelWithTooltip@POWER:
 					Logic: IngamePowerCounterLogic
 					X: PARENT_RIGHT - WIDTH - 30
-					Y: 2
+					Y: 4
 					Width: 50
 					Height: 22
 					Align: Right
@@ -448,7 +454,7 @@ Container@PLAYER_WIDGETS:
 					Children:
 						Image@POWER_ICON:
 							X: PARENT_RIGHT + 0
-							Y: 5
+							Y: 3
 							ImageCollection: power-icons
 							ImageName: power-normal
 		Container@SIDEBAR_PRODUCTION:
@@ -486,6 +492,8 @@ Container@PLAYER_WIDGETS:
 					MaximumRows: 6
 					HotkeyPrefix: Production
 					HotkeyCount: 24
+					SelectProductionBuildingHotkey: SelectProductionBuilding
+					ClickSound: TabClick
 				Container@PRODUCTION_TYPES:
 					X: 6
 					Y: 2
@@ -608,8 +616,8 @@ Container@PLAYER_WIDGETS:
 								Image@ICON:
 									X: 5
 									Y: 5
-									ImageCollection: scrollbar
-									ImageName: up_arrow
+									ImageCollection: scrollpanel-decorations
+									ImageName: up
 						Button@SCROLL_DOWN_BUTTON:
 							Y: 248
 							Width: 25
@@ -622,5 +630,5 @@ Container@PLAYER_WIDGETS:
 								Image@ICON:
 									X: 5
 									Y: 5
-									ImageCollection: scrollbar
-									ImageName: down_arrow
+									ImageCollection: scrollpanel-decorations
+									ImageName: down

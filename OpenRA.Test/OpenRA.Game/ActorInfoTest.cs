@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,16 +9,14 @@
  */
 #endregion
 
-using System;
 using System.Linq;
-using System.Text.RegularExpressions;
 using NUnit.Framework;
 using OpenRA.Traits;
 
 namespace OpenRA.Test
 {
-	interface IMock : ITraitInfo { }
-	class MockTraitInfo : ITraitInfo { public object Create(ActorInitializer init) { return null; } }
+	interface IMock : ITraitInfoInterface { }
+	class MockTraitInfo : TraitInfo { public override object Create(ActorInitializer init) { return null; } }
 	class MockInheritInfo : MockTraitInfo { }
 	class MockAInfo : MockInheritInfo, IMock { }
 	class MockBInfo : MockTraitInfo, Requires<MockAInfo>, Requires<IMock>, Requires<MockInheritInfo> { }
@@ -33,7 +31,7 @@ namespace OpenRA.Test
 		[TestCase(TestName = "Trait ordering sorts in dependency order correctly")]
 		public void TraitOrderingSortsCorrectly()
 		{
-			var unorderedTraits = new ITraitInfo[] { new MockBInfo(), new MockCInfo(), new MockAInfo(), new MockBInfo() };
+			var unorderedTraits = new TraitInfo[] { new MockBInfo(), new MockCInfo(), new MockAInfo(), new MockBInfo() };
 			var actorInfo = new ActorInfo("test", unorderedTraits);
 			var orderedTraits = actorInfo.TraitsInConstructOrder().ToArray();
 
