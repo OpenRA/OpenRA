@@ -56,7 +56,6 @@ namespace OpenRA
 		public static string EngineVersion { get; private set; }
 		public static LocalPlayerProfile LocalPlayerProfile;
 
-		static Task discoverNat;
 		static bool takeScreenshot = false;
 		static Benchmark benchmark = null;
 
@@ -360,8 +359,7 @@ namespace OpenRA
 				}
 			}
 
-			if (Settings.Server.DiscoverNatDevices)
-				discoverNat = UPnP.DiscoverNatDevices(Settings.Server.NatDiscoveryTimeout);
+			Nat.Initialize();
 
 			var modSearchArg = args.GetValue("Engine.ModSearchPaths", null);
 			var modSearchPaths = modSearchArg != null ?
@@ -471,16 +469,6 @@ namespace OpenRA
 			PerfHistory.Items["terrain_lighting"].HasNormalTick = false;
 
 			JoinLocal();
-
-			try
-			{
-				discoverNat?.Wait();
-			}
-			catch (Exception e)
-			{
-				Console.WriteLine("NAT discovery failed: {0}", e.Message);
-				Log.Write("nat", e.ToString());
-			}
 
 			ChromeMetrics.TryGet("ChatMessageColor", out chatMessageColor);
 			ChromeMetrics.TryGet("SystemMessageColor", out systemMessageColor);

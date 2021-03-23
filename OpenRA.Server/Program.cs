@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Threading;
+using OpenRA.Network;
 using OpenRA.Support;
 
 namespace OpenRA.Server
@@ -55,6 +56,8 @@ namespace OpenRA.Server
 			// This isn't nearly as bad as ModData, but is still not very nice.
 			Game.InitializeSettings(arguments);
 			var settings = Game.Settings.Server;
+
+			Nat.Initialize();
 
 			var envModSearchPaths = Environment.GetEnvironmentVariable("MOD_SEARCH_PATHS");
 			var modSearchPaths = !string.IsNullOrWhiteSpace(envModSearchPaths) ?

@@ -15,7 +15,7 @@ Container@ADVANCED_PANEL:
 			Width: 200
 			Height: 20
 			Font: Regular
-			Text: Enable Network Discovery (UPnP)
+			Text: Enable UPnP/NAT-PMP Discovery
 		Checkbox@PERFTEXT_CHECKBOX:
 			X: 15
 			Y: 73

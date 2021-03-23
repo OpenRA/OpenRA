@@ -49,11 +49,11 @@ namespace OpenRA
 		[Desc("Locks the game with a password.")]
 		public string Password = "";
 
-		[Desc("Allow users to enable NAT discovery for external IP detection and automatic port forwarding.")]
+		[Desc("Allow users to search UPnP/NAT-PMP enabled devices for automatic port forwarding.")]
 		public bool DiscoverNatDevices = false;
 
-		[Desc("Time in milliseconds to search for UPnP enabled NAT devices.")]
-		public int NatDiscoveryTimeout = 5000;
+		[Desc("Time in seconds for UPnP/NAT-PMP mappings to last.")]
+		public int NatPortMappingLifetime = 36000;
 
 		[Desc("Starts the game with a default map. Input as hash that can be obtained by the utility.")]
 		public string Map = null;

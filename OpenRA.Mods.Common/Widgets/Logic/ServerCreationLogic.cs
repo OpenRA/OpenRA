@@ -116,20 +116,20 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (noticesNoUPnP != null)
 			{
 				noticesNoUPnP.IsVisible = () => advertiseOnline &&
-					(UPnP.Status == UPnPStatus.NotSupported || UPnP.Status == UPnPStatus.Disabled);
+					(Nat.Status == NatStatus.NotSupported || Nat.Status == NatStatus.Disabled);
 
 				var settingsA = noticesNoUPnP.GetOrNull("SETTINGS_A");
 				if (settingsA != null)
-					settingsA.IsVisible = () => UPnP.Status == UPnPStatus.Disabled;
+					settingsA.IsVisible = () => Nat.Status == NatStatus.Disabled;
 
 				var settingsB = noticesNoUPnP.GetOrNull("SETTINGS_B");
 				if (settingsB != null)
-					settingsB.IsVisible = () => UPnP.Status == UPnPStatus.Disabled;
+					settingsB.IsVisible = () => Nat.Status == NatStatus.Disabled;
 			}
 
 			var noticesUPnP = panel.GetOrNull("NOTICES_UPNP");
 			if (noticesUPnP != null)
-				noticesUPnP.IsVisible = () => advertiseOnline && UPnP.Status == UPnPStatus.Enabled;
+				noticesUPnP.IsVisible = () => advertiseOnline && Nat.Status == NatStatus.Enabled;
 
 			var noticesLAN = panel.GetOrNull("NOTICES_LAN");
 			if (noticesLAN != null)
@@ -145,16 +145,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			if (advertiseOnline)
 			{
-				noticesLabelA.Text = "Internet Server (UPnP ";
+				noticesLabelA.Text = "Internet Server (UPnP/NAT-PMP ";
 				var aWidth = Game.Renderer.Fonts[noticesLabelA.Font].Measure(noticesLabelA.Text).X;
 				noticesLabelA.Bounds.Width = aWidth;
 
-				var status = UPnP.Status;
-				noticesLabelB.Text = status == UPnPStatus.Enabled ? "Enabled" :
-					status == UPnPStatus.NotSupported ? "Not Supported" : "Disabled";
+				noticesLabelB.Text = Nat.Status == NatStatus.Enabled ? "Enabled" :
+					Nat.Status == NatStatus.NotSupported ? "Not Supported" : "Disabled";
 
-				noticesLabelB.TextColor = status == UPnPStatus.Enabled ? ChromeMetrics.Get<Color>("NoticeSuccessColor") :
-					status == UPnPStatus.NotSupported ? ChromeMetrics.Get<Color>("NoticeErrorColor") :
+				noticesLabelB.TextColor = Nat.Status == NatStatus.Enabled ? ChromeMetrics.Get<Color>("NoticeSuccessColor") :
+					Nat.Status == NatStatus.NotSupported ? ChromeMetrics.Get<Color>("NoticeErrorColor") :
 					ChromeMetrics.Get<Color>("NoticeInfoColor");
 
 				var bWidth = Game.Renderer.Fonts[noticesLabelB.Font].Measure(noticesLabelB.Text).X;
