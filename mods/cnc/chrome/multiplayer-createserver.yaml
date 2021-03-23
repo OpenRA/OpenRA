@@ -162,7 +162,7 @@ Container@MULTIPLAYER_CREATESERVER_PANEL:
 							Height: 25
 							Font: Tiny
 							Align: Left
-							Text: - You can enable UPnP (if supported by your router) in the
+							Text: - You can enable UPnP/NAT-PMP (if supported by your router)
 						Label@SETTINGS_B:
 							X: 7
 							Y: 60
@@ -170,7 +170,7 @@ Container@MULTIPLAYER_CREATESERVER_PANEL:
 							Height: 25
 							Font: Tiny
 							Align: Left
-							Text: Advanced tab of the OpenRA settings menu.
+							Text:  in the Advanced tab of the settings menu.
 				Container@NOTICES_UPNP:
 					X: 20
 					Y: 145
@@ -196,14 +196,14 @@ Container@MULTIPLAYER_CREATESERVER_PANEL:
 							Height: 25
 							Font: Tiny
 							Align: Left
-							Text: - OpenRA will use UPnP to automaticaly configure port forwarding.
+							Text: - Game will automatically configure port forwarding.
 						Label@SETTINGS_A:
 							Y: 36
 							Width: 305
 							Height: 25
 							Font: Tiny
 							Align: Left
-							Text: - You can disable UPnP in the OpenRA settings menu.
+							Text: - You can disable UPnP/NAT-PMP in the settings menu.
 				Background@MAP_BG:
 					X: PARENT_RIGHT - 189
 					Y: 15
