@@ -1,0 +1,107 @@
+name: Deploy Documentation
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Git Tag'
+        required: true
+        default: 'release-xxxxxxxx'
+
+jobs:
+  wiki:
+    name: Update Wiki
+    if: github.repository == 'openra/openra'
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Clone Repository
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.inputs.tag }}
+
+      - name: Prepare Environment
+        run: |
+          make all
+
+      - name: Clone Wiki
+        uses: actions/checkout@v2
+        with:
+          repository: openra/openra.wiki
+          token: ${{ secrets.DOCS_TOKEN }}
+          path: wiki
+
+      - name: Update Wiki (Playtest)
+        if: startsWith(github.event.inputs.tag, 'playtest-')
+        env:
+          GIT_TAG: ${{ github.event.inputs.tag }}
+        run: |
+          ./utility.sh all --settings-docs "${GIT_TAG}" > "wiki/Settings (playtest).md"
+
+      - name: Update Wiki (Release)
+        if: startsWith(github.event.inputs.tag, 'release-')
+        env:
+          GIT_TAG: ${{ github.event.inputs.tag }}
+        run: |
+          ./utility.sh all --settings-docs "${GIT_TAG}" > "wiki/Settings.md"
+
+      - name: Push Wiki
+        env:
+          GIT_TAG: ${{ github.event.inputs.tag }}
+        run: |
+          cd wiki
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
+          git add --all
+          git commit -m "Update auto-generated documentation for ${GIT_TAG}"
+          git push origin master
+
+  docs:
+    name: Update docs.openra.net
+    if: github.repository == 'openra/openra'
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Clone Repository
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.inputs.tag }}
+
+      - name: Prepare Environment
+        run: |
+          make all
+
+      - name: Clone docs.openra.net
+        uses: actions/checkout@v2
+        with:
+          repository: openra/docs
+          token: ${{ secrets.DOCS_TOKEN }}
+          path: docs
+
+      - name: Update docs.openra.net (Playtest)
+        if: startsWith(github.event.inputs.tag, 'playtest-')
+        env:
+          GIT_TAG: ${{ github.event.inputs.tag }}
+        run: |
+          ./utility.sh all --docs "${GIT_TAG}" > "docs/api/playtest/traits.md"
+          ./utility.sh all --weapon-docs "${GIT_TAG}" > "docs/api/playtest/weapons.md"
+          ./utility.sh all --lua-docs "${GIT_TAG}" > "docs/api/playtest/lua.md"
+
+      - name: Update docs.openra.net (Release)
+        if: startsWith(github.event.inputs.tag, 'release-')
+        env:
+          GIT_TAG: ${{ github.event.inputs.tag }}
+        run: |
+          ./utility.sh all --docs "${GIT_TAG}" > "docs/api/release/traits.md"
+          ./utility.sh all --weapon-docs "${GIT_TAG}" > "docs/api/release/weapons.md"
+          ./utility.sh all --lua-docs "${GIT_TAG}" > "docs/api/release/lua.md"
+
+      - name: Push docs.openra.net
+        env:
+          GIT_TAG: ${{ github.event.inputs.tag }}
+        run: |
+          cd docs
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
+          git add --all
+          git commit -m "Update auto-generated documentation for ${GIT_TAG}"
+          git push origin master
+

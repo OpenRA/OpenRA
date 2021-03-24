@@ -1,0 +1,77 @@
+name: Continuous Integration
+
+on:
+  push:
+  pull_request:
+    branches: [ bleed ]
+
+jobs:
+  linux:
+    name: Linux (.NET 5.0)
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Clone Repository
+        uses: actions/checkout@v2
+
+      - name: Install .NET 5
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '5.0.x'
+
+      - name: Check Code
+        run: |
+          make check
+
+      - name: Check Mods
+        run: |
+          sudo apt-get install lua5.1
+          make check-scripts
+          make test
+
+  linux-mono:
+    name: Linux (mono)
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Clone Repository
+        uses: actions/checkout@v2
+
+      - name: Check Code
+        run: |
+          mono --version
+          make RUNTIME=mono check
+
+      - name: Check Mods
+        run: |
+          # check-scripts does not depend on .net/mono, so is not needed here
+          make RUNTIME=mono test
+
+  windows:
+    name: Windows (.NET 5.0)
+    runs-on: windows-2019
+
+    steps:
+      - name: Clone Repository
+        uses: actions/checkout@v2
+
+      - name: Install .NET 5
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '5.0.x'
+
+      - name: Check Code
+        shell: powershell
+        run: |
+          # Work around runtime failures on the GH Actions runner
+          dotnet nuget locals all --clear
+          .\make.ps1 check
+          dotnet build OpenRA.Test\OpenRA.Test.csproj -c Debug --nologo -p:TargetPlatform=win-x64
+          dotnet test bin\OpenRA.Test.dll --test-adapter-path:.
+
+      - name: Check Mods
+        run: |
+          chocolatey install lua --version 5.1.5.52
+          $ENV:Path = $ENV:Path + ";C:\Program Files (x86)\Lua\5.1\"
+          .\make.ps1 check-scripts
+          .\make.ps1 test

@@ -1,0 +1,129 @@
+name: Release Packaging
+
+on:
+  push:
+    tags:
+    - 'release-*'
+    - 'playtest-*'
+    - 'devtest-*'
+
+jobs:
+  source:
+    name: Source Tarball
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Clone Repository
+        uses: actions/checkout@v2
+
+      - name: Prepare Environment
+        run: echo "GIT_TAG=${GITHUB_REF#refs/tags/}" >> ${GITHUB_ENV}
+
+      - name: Package Source
+        run: |
+          mkdir -p build/source
+          ./packaging/source/buildpackage.sh "${GIT_TAG}" "${PWD}/build/source"
+
+      - name: Upload Packages
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ github.ref }}
+          overwrite: true
+          file_glob: true
+          file: build/source/*
+
+  linux:
+    name: Linux AppImages
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Clone Repository
+        uses: actions/checkout@v2
+
+      - name: Install .NET 5
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '5.0.x'
+
+      - name: Prepare Environment
+        run: echo "GIT_TAG=${GITHUB_REF#refs/tags/}" >> ${GITHUB_ENV}
+
+      - name: Package AppImages
+        run: |
+          mkdir -p build/linux
+          ./packaging/linux/buildpackage.sh "${GIT_TAG}" "${PWD}/build/linux"
+
+      - name: Upload Packages
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ github.ref }}
+          overwrite: true
+          file_glob: true
+          file: build/linux/*
+
+  macos:
+    name: macOS Disk Images
+    runs-on: macos-10.15
+    steps:
+      - name: Clone Repository
+        uses: actions/checkout@v2
+
+      - name: Install .NET 5
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '5.0.x'
+
+      - name: Prepare Environment
+        run: echo "GIT_TAG=${GITHUB_REF#refs/tags/}" >> ${GITHUB_ENV}
+
+      - name: Package Disk Images
+        env:
+          MACOS_DEVELOPER_IDENTITY: ${{ secrets.MACOS_DEVELOPER_IDENTITY }}
+          MACOS_DEVELOPER_CERTIFICATE_BASE64: ${{ secrets.MACOS_DEVELOPER_CERTIFICATE_BASE64 }}
+          MACOS_DEVELOPER_CERTIFICATE_PASSWORD: ${{ secrets.MACOS_DEVELOPER_CERTIFICATE_PASSWORD }}
+          MACOS_DEVELOPER_USERNAME: ${{ secrets.MACOS_DEVELOPER_USERNAME }}
+          MACOS_DEVELOPER_PASSWORD: ${{ secrets.MACOS_DEVELOPER_PASSWORD }}
+        run: |
+          mkdir -p build/macos
+          ./packaging/macos/buildpackage.sh "${GIT_TAG}" "${PWD}/build/macos"
+
+      - name: Upload Packages
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ github.ref }}
+          overwrite: true
+          file_glob: true
+          file: build/macos/*
+
+  windows:
+    name: Windows Installers
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Clone Repository
+        uses: actions/checkout@v2
+
+      - name: Install .NET 5
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '5.0.x'
+
+      - name: Prepare Environment
+        run: |
+          echo "GIT_TAG=${GITHUB_REF#refs/tags/}" >> ${GITHUB_ENV}
+          sudo apt-get update
+          sudo apt-get install nsis wine64
+
+      - name: Package Installers
+        run: |
+          mkdir -p build/windows
+          ./packaging/windows/buildpackage.sh "${GIT_TAG}" "${PWD}/build/windows"
+
+      - name: Upload Packages
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ github.ref }}
+          overwrite: true
+          file_glob: true
+          file: build/windows/*
