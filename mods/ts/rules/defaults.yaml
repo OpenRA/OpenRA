@@ -708,6 +708,7 @@
 	WithSplitAttackPaletteInfantryBody:
 		IdleSequences: idle1, idle2
 		Palette: player-nomuzzle
+		IsPlayerPalette: true
 		SplitAttackPalette: muzzle
 
 ^Cyborg:
@@ -740,6 +741,7 @@
 		DefaultAttackSequence: attack
 		IdleSequences: idle1, idle2
 		Palette: player-nomuzzle
+		IsPlayerPalette: true
 		SplitAttackPalette: muzzle
 	GrantConditionOnDamageState@CRITICAL:
 		Condition: critical
