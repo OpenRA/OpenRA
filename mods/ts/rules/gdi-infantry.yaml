@@ -128,6 +128,7 @@ JUMPJET:
 		StandSequences: flying
 		MoveSequence: flying
 		Palette: player-nomuzzle
+		IsPlayerPalette: true
 	WithInfantryBody@flying-muzzle:
 		RequiresCondition: airborne
 		DefaultAttackSequence: flying-attack-muzzle

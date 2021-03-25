@@ -163,6 +163,7 @@ MUTANT3:
 	WithSplitAttackPaletteInfantryBody:
 		DefaultAttackSequence: attack
 		Palette: player-nobright
+		IsPlayerPalette: true
 		SplitAttackPalette: bright
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
@@ -223,6 +224,7 @@ CIV1:
 	WithSplitAttackPaletteInfantryBody:
 		DefaultAttackSequence: attack
 		Palette: player-nomuzzle
+		IsPlayerPalette: true
 		SplitAttackPalette: muzzle
 	Armament:
 		Weapon: Pistola
@@ -249,6 +251,7 @@ CTECH:
 	WithSplitAttackPaletteInfantryBody:
 		DefaultAttackSequence: attack
 		Palette: player-nomuzzle
+		IsPlayerPalette: true
 		SplitAttackPalette: muzzle
 	Armament:
 		Weapon: Pistola
