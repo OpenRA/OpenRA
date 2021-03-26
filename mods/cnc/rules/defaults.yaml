@@ -472,9 +472,6 @@
 		Range: 2c0
 	Passenger:
 		CustomPipType: gray
-	ActorLostNotification:
-		Notification: CivilianKilled
-		NotifyAll: true
 	ScaredyCat:
 		AvoidTerrainTypes: Tiberium, BlueTiberium
 	Crushable:
