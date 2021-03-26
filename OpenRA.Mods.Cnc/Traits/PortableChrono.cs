@@ -35,15 +35,19 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("Sound to play when teleporting.")]
 		public readonly string ChronoshiftSound = "chrotnk1.aud";
 
+		[CursorReference]
 		[Desc("Cursor to display when able to deploy the actor.")]
 		public readonly string DeployCursor = "deploy";
 
+		[CursorReference]
 		[Desc("Cursor to display when unable to deploy the actor.")]
 		public readonly string DeployBlockedCursor = "deploy-blocked";
 
+		[CursorReference]
 		[Desc("Cursor to display when targeting a teleport location.")]
 		public readonly string TargetCursor = "chrono-target";
 
+		[CursorReference]
 		[Desc("Cursor to display when the targeted location is blocked.")]
 		public readonly string TargetBlockedCursor = "move-blocked";
 

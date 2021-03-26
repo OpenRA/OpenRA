@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly HarvesterInfo harvInfo;
 		readonly IFacing facing;
 		readonly ResourceClaimLayer claimLayer;
-		readonly ResourceLayer resLayer;
+		readonly IResourceLayer resourceLayer;
 		readonly BodyOrientation body;
 		readonly IMove move;
 		readonly CPos targetCell;
@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Activities
 			body = self.Trait<BodyOrientation>();
 			move = self.Trait<IMove>();
 			claimLayer = self.World.WorldActor.Trait<ResourceClaimLayer>();
-			resLayer = self.World.WorldActor.Trait<ResourceLayer>();
+			resourceLayer = self.World.WorldActor.Trait<IResourceLayer>();
 			this.targetCell = targetCell;
 			notifyHarvesterActions = self.TraitsImplementing<INotifyHarvesterAction>().ToArray();
 		}
@@ -81,14 +81,14 @@ namespace OpenRA.Mods.Common.Activities
 				}
 			}
 
-			var resource = resLayer.Harvest(self.Location);
-			if (resource == null)
+			var resource = resourceLayer.GetResource(self.Location);
+			if (resource.Type == null || resourceLayer.RemoveResource(resource.Type, self.Location) != 1)
 				return true;
 
-			harv.AcceptResource(self, resource);
+			harv.AcceptResource(self, resource.Type);
 
 			foreach (var t in notifyHarvesterActions)
-				t.Harvested(self, resource);
+				t.Harvested(self, resource.Type);
 
 			QueueChild(new Wait(harvInfo.BaleLoadDelay));
 			return false;

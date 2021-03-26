@@ -61,8 +61,7 @@ namespace OpenRA.Mods.D2k.Traits
 	public class SpiceBloom : ITick, INotifyKilled
 	{
 		readonly SpiceBloomInfo info;
-		readonly ResourceType resType;
-		readonly ResourceLayer resLayer;
+		readonly IResourceLayer resourceLayer;
 		readonly Animation body;
 		readonly Animation spurt;
 		readonly int growTicks;
@@ -75,8 +74,7 @@ namespace OpenRA.Mods.D2k.Traits
 		{
 			this.info = info;
 
-			resLayer = self.World.WorldActor.Trait<ResourceLayer>();
-			resType = self.World.WorldActor.TraitsImplementing<ResourceType>().First(t => t.Info.Type == info.ResourceType);
+			resourceLayer = self.World.WorldActor.Trait<IResourceLayer>();
 
 			var rs = self.Trait<RenderSprites>();
 			body = new Animation(self.World, rs.GetImage(self));
@@ -126,7 +124,11 @@ namespace OpenRA.Mods.D2k.Traits
 
 			for (var i = 0; i < pieces; i++)
 			{
-				var cell = cells.SkipWhile(p => resLayer.GetResourceType(p) == resType && resLayer.IsFull(p)).Cast<CPos?>().RandomOrDefault(self.World.SharedRandom);
+				var cell = cells
+					.SkipWhile(p => resourceLayer.GetResource(p).Type == info.ResourceType && !resourceLayer.CanAddResource(info.ResourceType, p))
+					.Cast<CPos?>()
+					.RandomOrDefault(self.World.SharedRandom);
+
 				if (cell == null)
 					cell = cells.Random(self.World.SharedRandom);
 

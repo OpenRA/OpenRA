@@ -90,9 +90,11 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Color to use for the target line of harvest orders.")]
 		public readonly Color DeliverLineColor = Color.Green;
 
+		[CursorReference]
 		[Desc("Cursor to display when able to unload at target actor.")]
 		public readonly string EnterCursor = "enter";
 
+		[CursorReference]
 		[Desc("Cursor to display when unable to unload at target actor.")]
 		public readonly string EnterBlockedCursor = "enter-blocked";
 
@@ -103,14 +105,13 @@ namespace OpenRA.Mods.Common.Traits
 		ISpeedModifier, ISync, INotifyCreated
 	{
 		public readonly HarvesterInfo Info;
-		public readonly IReadOnlyDictionary<ResourceTypeInfo, int> Contents;
+		public readonly IReadOnlyDictionary<string, int> Contents;
 
 		readonly Mobile mobile;
-		readonly ResourceLayer resLayer;
+		readonly IResourceLayer resourceLayer;
 		readonly ResourceClaimLayer claimLayer;
-		readonly Dictionary<ResourceTypeInfo, int> contents = new Dictionary<ResourceTypeInfo, int>();
+		readonly Dictionary<string, int> contents = new Dictionary<string, int>();
 		int conditionToken = Actor.InvalidConditionToken;
-		HarvesterResourceMultiplier[] resourceMultipliers;
 
 		[Sync]
 		public Actor LastLinkedProc = null;
@@ -122,13 +123,13 @@ namespace OpenRA.Mods.Common.Traits
 		int currentUnloadTicks;
 
 		[Sync]
-		public int ContentValue
+		public int ContentHash
 		{
 			get
 			{
 				var value = 0;
 				foreach (var c in contents)
-					value += c.Key.ValuePerUnit * c.Value;
+					value += c.Value << c.Key.Length;
 				return value;
 			}
 		}
@@ -136,16 +137,14 @@ namespace OpenRA.Mods.Common.Traits
 		public Harvester(Actor self, HarvesterInfo info)
 		{
 			Info = info;
-			Contents = new ReadOnlyDictionary<ResourceTypeInfo, int>(contents);
-
+			Contents = new ReadOnlyDictionary<string, int>(contents);
 			mobile = self.Trait<Mobile>();
-			resLayer = self.World.WorldActor.Trait<ResourceLayer>();
+			resourceLayer = self.World.WorldActor.Trait<IResourceLayer>();
 			claimLayer = self.World.WorldActor.Trait<ResourceClaimLayer>();
 		}
 
 		void INotifyCreated.Created(Actor self)
 		{
-			resourceMultipliers = self.TraitsImplementing<HarvesterResourceMultiplier>().ToArray();
 			UpdateCondition(self);
 
 			// Note: This is queued in a FrameEndTask because otherwise the activity is dropped/overridden while moving out of a factory.
@@ -231,18 +230,18 @@ namespace OpenRA.Mods.Common.Traits
 				conditionToken = self.RevokeCondition(conditionToken);
 		}
 
-		public void AcceptResource(Actor self, ResourceType type)
+		public void AcceptResource(Actor self, string resourceType)
 		{
-			if (!contents.ContainsKey(type.Info))
-				contents[type.Info] = 1;
+			if (!contents.ContainsKey(resourceType))
+				contents[resourceType] = 1;
 			else
-				contents[type.Info]++;
+				contents[resourceType]++;
 
 			UpdateCondition(self);
 		}
 
 		// Returns true when unloading is complete
-		public bool TickUnload(Actor self, Actor proc)
+		public virtual bool TickUnload(Actor self, Actor proc)
 		{
 			// Wait until the next bale is ready
 			if (--currentUnloadTicks > 0)
@@ -250,21 +249,23 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (contents.Keys.Count > 0)
 			{
-				var type = contents.First().Key;
-				var iao = proc.Trait<IAcceptResources>();
-				var count = Math.Min(contents[type], Info.BaleUnloadAmount);
-				var value = Util.ApplyPercentageModifiers(type.ValuePerUnit * count, resourceMultipliers.Select(m => m.GetModifier()));
+				var acceptResources = proc.Trait<IAcceptResources>();
+				foreach (var c in contents)
+				{
+					var resourceType = c.Key;
+					var count = Math.Min(c.Value, Info.BaleUnloadAmount);
+					var accepted = acceptResources.AcceptResources(resourceType, count);
+					if (accepted == 0)
+						continue;
 
-				if (!iao.CanGiveResource(value))
+					contents[resourceType] -= accepted;
+					if (contents[resourceType] <= 0)
+						contents.Remove(resourceType);
+
+					currentUnloadTicks = Info.BaleUnloadDelay;
+					UpdateCondition(self);
 					return false;
-
-				iao.GiveResource(value);
-				contents[type] -= count;
-				if (contents[type] == 0)
-					contents.Remove(type);
-
-				currentUnloadTicks = Info.BaleUnloadDelay;
-				UpdateCondition(self);
+				}
 			}
 
 			return contents.Count == 0;
@@ -276,12 +277,12 @@ namespace OpenRA.Mods.Common.Traits
 			if (cell.Layer != 0)
 				return false;
 
-			var resType = resLayer.GetResourceType(cell);
-			if (resType == null)
+			var resourceType = resourceLayer.GetResource(cell).Type;
+			if (resourceType == null)
 				return false;
 
 			// Can the harvester collect this kind of resource?
-			return Info.Resources.Contains(resType.Info.Type);
+			return Info.Resources.Contains(resourceType);
 		}
 
 		IEnumerable<IOrderTargeter> IIssueOrder.Orders
@@ -386,9 +387,9 @@ namespace OpenRA.Mods.Common.Traits
 					return false;
 
 				var info = self.Info.TraitInfo<HarvesterInfo>();
-				var res = self.World.WorldActor.TraitsImplementing<ResourceRenderer>()
+				var res = self.World.WorldActor.TraitsImplementing<IResourceRenderer>()
 					.Select(r => r.GetRenderedResourceType(location))
-					.FirstOrDefault(r => r != null && info.Resources.Contains(r.Info.Type));
+					.FirstOrDefault(r => r != null && info.Resources.Contains(r));
 
 				if (res == null)
 					return false;

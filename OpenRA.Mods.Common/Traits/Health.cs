@@ -88,6 +88,9 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			get
 			{
+				if (hp == MaxHP)
+					return DamageState.Undamaged;
+
 				if (hp <= 0)
 					return DamageState.Dead;
 
@@ -99,9 +102,6 @@ namespace OpenRA.Mods.Common.Traits
 
 				if (hp * 100L < MaxHP * 75L)
 					return DamageState.Medium;
-
-				if (hp == MaxHP)
-					return DamageState.Undamaged;
 
 				return DamageState.Light;
 			}
@@ -168,11 +168,24 @@ namespace OpenRA.Mods.Common.Traits
 			// Apply any damage modifiers
 			if (!ignoreModifiers && damage.Value > 0)
 			{
-				var modifiers = damageModifiers
-					.Concat(damageModifiersPlayer)
-					.Select(t => t.GetDamageModifier(attacker, damage));
+				// PERF: Util.ApplyPercentageModifiers has been manually inlined to
+				// avoid unnecessary loop enumerations and allocations
+				var appliedDamage = (decimal)damage.Value;
+				foreach (var dm in damageModifiers)
+				{
+					var modifier = dm.GetDamageModifier(attacker, damage);
+					if (modifier != 100)
+						appliedDamage *= modifier / 100m;
+				}
 
-				damage = new Damage(Util.ApplyPercentageModifiers(damage.Value, modifiers), damage.DamageTypes);
+				foreach (var dm in damageModifiersPlayer)
+				{
+					var modifier = dm.GetDamageModifier(attacker, damage);
+					if (modifier != 100)
+						appliedDamage *= modifier / 100m;
+				}
+
+				damage = new Damage((int)appliedDamage, damage.DamageTypes);
 			}
 
 			hp = (hp - damage.Value).Clamp(0, MaxHP);

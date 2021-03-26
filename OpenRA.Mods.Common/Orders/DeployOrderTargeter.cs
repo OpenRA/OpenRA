@@ -19,11 +19,6 @@ namespace OpenRA.Mods.Common.Orders
 	{
 		readonly Func<string> cursor;
 
-		public DeployOrderTargeter(string order, int priority)
-			: this(order, priority, () => "deploy")
-		{
-		}
-
 		public DeployOrderTargeter(string order, int priority, Func<string> cursor)
 		{
 			OrderID = order;

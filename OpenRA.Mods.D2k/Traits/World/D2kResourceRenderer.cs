@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 
 namespace OpenRA.Mods.D2k.Traits
@@ -41,17 +42,8 @@ namespace OpenRA.Mods.D2k.Traits
 			All = 0xFF
 		}
 
-		public static readonly Dictionary<string, int[]> Variants = new Dictionary<string, int[]>()
-		{
-			{ "cleara", new[] { 0, 50 } },
-			{ "clearb", new[] { 1, 51 } },
-			{ "clearc", new[] { 43, 52 } },
-			{ "cleard", new[] { 0, 53 } },
-		};
-
 		public static readonly Dictionary<ClearSides, int> SpriteMap = new Dictionary<ClearSides, int>()
 		{
-			{ ClearSides.None, 0 },
 			{ ClearSides.Left | ClearSides.Top | ClearSides.TopLeft | ClearSides.TopRight | ClearSides.BottomLeft | ClearSides.BottomRight, 2 },
 			{ ClearSides.Top | ClearSides.Right | ClearSides.TopLeft | ClearSides.TopRight | ClearSides.BottomLeft | ClearSides.BottomRight, 3 },
 			{ ClearSides.Left | ClearSides.Bottom | ClearSides.TopLeft | ClearSides.TopRight | ClearSides.BottomLeft | ClearSides.BottomRight, 4 },
@@ -103,36 +95,36 @@ namespace OpenRA.Mods.D2k.Traits
 		public D2kResourceRenderer(Actor self, D2kResourceRendererInfo info)
 			: base(self, info) { }
 
-		bool CellContains(CPos c, ResourceType t)
+		bool CellContains(CPos cell, string resourceType)
 		{
-			return RenderContent.Contains(c) && RenderContent[c].Type == t;
+			return RenderContents.Contains(cell) && RenderContents[cell].Type == resourceType;
 		}
 
-		ClearSides FindClearSides(ResourceType t, CPos p)
+		ClearSides FindClearSides(CPos cell, string resourceType)
 		{
 			var ret = ClearSides.None;
-			if (!CellContains(p + new CVec(0, -1), t))
+			if (!CellContains(cell + new CVec(0, -1), resourceType))
 				ret |= ClearSides.Top | ClearSides.TopLeft | ClearSides.TopRight;
 
-			if (!CellContains(p + new CVec(-1, 0), t))
+			if (!CellContains(cell + new CVec(-1, 0), resourceType))
 				ret |= ClearSides.Left | ClearSides.TopLeft | ClearSides.BottomLeft;
 
-			if (!CellContains(p + new CVec(1, 0), t))
+			if (!CellContains(cell + new CVec(1, 0), resourceType))
 				ret |= ClearSides.Right | ClearSides.TopRight | ClearSides.BottomRight;
 
-			if (!CellContains(p + new CVec(0, 1), t))
+			if (!CellContains(cell + new CVec(0, 1), resourceType))
 				ret |= ClearSides.Bottom | ClearSides.BottomLeft | ClearSides.BottomRight;
 
-			if (!CellContains(p + new CVec(-1, -1), t))
+			if (!CellContains(cell + new CVec(-1, -1), resourceType))
 				ret |= ClearSides.TopLeft;
 
-			if (!CellContains(p + new CVec(1, -1), t))
+			if (!CellContains(cell + new CVec(1, -1), resourceType))
 				ret |= ClearSides.TopRight;
 
-			if (!CellContains(p + new CVec(-1, 1), t))
+			if (!CellContains(cell + new CVec(-1, 1), resourceType))
 				ret |= ClearSides.BottomLeft;
 
-			if (!CellContains(p + new CVec(1, 1), t))
+			if (!CellContains(cell + new CVec(1, 1), resourceType))
 				ret |= ClearSides.BottomRight;
 
 			return ret;
@@ -144,50 +136,33 @@ namespace OpenRA.Mods.D2k.Traits
 
 			var directions = CVec.Directions;
 			for (var i = 0; i < directions.Length; i++)
-				UpdateRenderedSpriteInner(cell + directions[i]);
-		}
-
-		void UpdateRenderedSpriteInner(CPos cell)
-		{
-			UpdateRenderedSpriteInner(cell, RenderContent[cell]);
+			{
+				var neighbour = cell + directions[i];
+				UpdateRenderedSpriteInner(neighbour, RenderContents[neighbour]);
+			}
 		}
 
 		void UpdateRenderedSpriteInner(CPos cell, RendererCellContents content)
 		{
-			var density = content.Density;
-			var renderType = content.Type;
-
-			if (density > 0 && renderType != null)
+			if (content.Density > 0)
 			{
-				// The call chain for this method (that starts with AddDirtyCell()) guarantees
-				// that the new content type would still be suitable for this renderer,
-				// but that is a bit too fragile to rely on in case the code starts changing.
-				if (!Info.RenderTypes.Contains(renderType.Info.Type))
-					return;
-
-				var clear = FindClearSides(renderType, cell);
+				var clear = FindClearSides(cell, content.Type);
 
 				if (clear == ClearSides.None)
 				{
-					var sprites = Variants[content.Variant];
-					var frame = density > renderType.Info.MaxDensity / 2 ? 1 : 0;
-
-					UpdateSpriteLayers(cell, renderType.Variants.First().Value, sprites[frame], renderType.Palette);
+					var maxDensity = ResourceLayer.GetMaxDensity(content.Type);
+					var index = content.Density > maxDensity / 2 ? 1 : 0;
+					UpdateSpriteLayers(cell, content.Sequence, index, content.Palette);
 				}
 				else if (SpriteMap.TryGetValue(clear, out var index))
 				{
-					UpdateSpriteLayers(cell, renderType.Variants.First().Value, index, renderType.Palette);
+					UpdateSpriteLayers(cell, content.Sequence, index, content.Palette);
 				}
 				else
 					throw new InvalidOperationException("SpriteMap does not contain an index for ClearSides type '{0}'".F(clear));
 			}
 			else
 				UpdateSpriteLayers(cell, null, 0, null);
-		}
-
-		protected override string ChooseRandomVariant(ResourceType t)
-		{
-			return Variants.Keys.Random(Game.CosmeticRandom);
 		}
 	}
 }

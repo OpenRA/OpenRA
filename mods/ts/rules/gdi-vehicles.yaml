@@ -142,8 +142,13 @@ SMECH:
 		Sequence: stand
 	WithFacingSpriteBody:
 		Sequence: stand
+		Palette: player-nomuzzle
+		IsPlayerPalette: True
 	WithAttackAnimation:
 		Sequence: shoot
+	WithAttackOverlay@muzzle:
+		Sequence: shoot-muzzle
+		Palette: muzzle
 	WithMoveAnimation:
 		MoveSequence: walk
 		ValidMovementTypes: Horizontal, Turn

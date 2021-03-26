@@ -46,12 +46,15 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Relationships that the structure's previous owner needs to have for the capturing player to receive Experience.")]
 		public readonly PlayerRelationship PlayerExperienceRelationships = PlayerRelationship.Enemy;
 
+		[CursorReference]
 		[Desc("Cursor to display when the health of the target actor is above the sabotage threshold.")]
 		public readonly string SabotageCursor = "capture";
 
+		[CursorReference]
 		[Desc("Cursor to display when able to capture the target actor.")]
 		public readonly string EnterCursor = "enter";
 
+		[CursorReference]
 		[Desc("Cursor to display when unable to capture the target actor.")]
 		public readonly string EnterBlockedCursor = "enter-blocked";
 

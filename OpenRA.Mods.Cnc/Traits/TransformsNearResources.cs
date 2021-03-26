@@ -46,12 +46,12 @@ namespace OpenRA.Mods.Cnc.Traits
 	public class TransformsNearResources : ITick
 	{
 		readonly TransformsNearResourcesInfo info;
-		readonly ResourceLayer resourceLayer;
+		readonly IResourceLayer resourceLayer;
 		int delay;
 
 		public TransformsNearResources(Actor self, TransformsNearResourcesInfo info)
 		{
-			resourceLayer = self.World.WorldActor.Trait<ResourceLayer>();
+			resourceLayer = self.World.WorldActor.Trait<IResourceLayer>();
 			delay = Common.Util.RandomDelay(self.World, info.Delay);
 			this.info = info;
 		}
@@ -66,12 +66,11 @@ namespace OpenRA.Mods.Cnc.Traits
 			{
 				var location = self.Location + direction;
 
-				var resource = resourceLayer.GetResourceType(location);
-				if (resource == null || resource.Info.Type != info.Type)
+				var resource = resourceLayer.GetResource(location);
+				if (resource.Type == null || resource.Type != info.Type)
 					continue;
 
-				var density = resourceLayer.GetResourceDensity(location);
-				if (density < info.Density)
+				if (resource.Density < info.Density)
 					continue;
 
 				if (++adjacent < info.Adjacency)

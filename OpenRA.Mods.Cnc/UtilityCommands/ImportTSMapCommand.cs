@@ -237,6 +237,9 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			{ 0x03, new byte[] { 0x7E } }
 		};
 
+		// Veins and vein holes
+		static readonly int[] ValidVeinNeighbours = { 0x7E, 0xA7, 0xB2 };
+
 		static readonly Dictionary<string, string> DeployableActors = new Dictionary<string, string>()
 		{
 			{ "gadpsa", "lpst" },
@@ -428,9 +431,14 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 								continue;
 					}
 
+					// Fix position of vein hole actors
+					var location = cell;
+					if (actorType == "veinhole")
+						location -= new CVec(1, 1);
+
 					var ar = new ActorReference(actorType)
 					{
-						new LocationInit(cell),
+						new LocationInit(location),
 						new OwnerInit("Neutral")
 					};
 
@@ -450,6 +458,19 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 
 					map.ActorDefinitions.Add(new MiniYamlNode("Actor" + map.ActorDefinitions.Count, ar.Save()));
 
+					continue;
+				}
+
+				// TS maps encode the non-harvestable border tiles as overlay
+				// Only convert to vein resources if the overlay data specifies non-border frames
+				if (overlayType == 0x7E)
+				{
+					var frame = overlayDataPack[overlayIndex[cell]];
+					if (frame < 48 || frame > 60)
+						continue;
+
+					// Pick half or full density based on the frame
+					map.Resources[cell] = new ResourceTile(3, (byte)(frame == 52 ? 1 : 2));
 					continue;
 				}
 

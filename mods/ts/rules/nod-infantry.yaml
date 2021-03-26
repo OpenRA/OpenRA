@@ -27,7 +27,7 @@ E3:
 		ProneOffset: 52,64,-652
 	AttackFrontal:
 		Voice: Attack
-	WithInfantryBody:
+	WithSplitAttackPaletteInfantryBody:
 		DefaultAttackSequence: attack
 	RevealsShroud:
 		Range: 7c0

@@ -65,12 +65,27 @@ GACNST:
 	WithIdleOverlay@TOP:
 		RequiresCondition: !build-incomplete
 		Sequence: idle-top
+		Palette: player-nobright
+		IsPlayerPalette: True
+	WithIdleOverlay@TOP-BRIGHT:
+		RequiresCondition: !build-incomplete
+		Sequence: idle-top-bright
+		Palette: bright
 	WithIdleOverlay@SIDE:
 		RequiresCondition: !build-incomplete
 		Sequence: idle-side
 	WithIdleOverlay@FRONT:
 		RequiresCondition: !build-incomplete
 		Sequence: idle-front
+		Palette: player-nobright
+		IsPlayerPalette: True
+	WithIdleOverlay@FRONT-BRIGHT:
+		RequiresCondition: !build-incomplete
+		Sequence: idle-front-bright
+		Palette: bright
+	WithMakeOverlay@MAKE-BRIGHT:
+		Sequence: make-bright
+		Palette: bright
 	WithBuildingPlacedOverlay:
 		RequiresCondition: !build-incomplete
 	Power:
@@ -116,9 +131,15 @@ PROC:
 		Actor: HARV
 		SpawnOffset: 2,1
 		Facing: 640
-	WithIdleOverlay@REDLIGHTS:
+	WithIdleOverlay@LIGHTS:
 		RequiresCondition: !build-incomplete
-		Sequence: idle-redlights
+		Sequence: idle-lights
+		Palette: player-nobright
+		IsPlayerPalette: True
+	WithIdleOverlay@LIGHTS-BRIGHT:
+		RequiresCondition: !build-incomplete
+		Sequence: idle-lights-bright
+		Palette: bright
 	WithIdleOverlay@BIB:
 		RequiresCondition: !build-incomplete
 		Sequence: bib
@@ -184,9 +205,10 @@ GASILO:
 		Sequence: stages
 	WithSpriteBody:
 		Sequence: idle-underlay
-	WithIdleOverlay@LIGHTS:
+	WithIdleOverlay@LIGHTS-BRIGHT:
 		RequiresCondition: !build-incomplete
-		Sequence: idle-lights
+		Sequence: idle-lights-bright
+		Palette: bright
 	StoresResources:
 		Capacity: 1500
 	Power:

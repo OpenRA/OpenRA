@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Widgets
 	public class ViewportControllerWidget : Widget
 	{
 		readonly ModData modData;
-		readonly IEnumerable<ResourceRenderer> resourceRenderers;
+		readonly IEnumerable<IResourceRenderer> resourceRenderers;
 
 		public readonly HotkeyReference ZoomInKey = new HotkeyReference();
 		public readonly HotkeyReference ZoomOutKey = new HotkeyReference();
@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public ITooltip ActorTooltip { get; private set; }
 		public IProvideTooltipInfo[] ActorTooltipExtra { get; private set; }
 		public FrozenActor FrozenActorTooltip { get; private set; }
-		public ResourceType ResourceTooltip { get; private set; }
+		public string ResourceTooltip { get; private set; }
 
 		static readonly Dictionary<ScrollDirection, string> ScrollCursors = new Dictionary<ScrollDirection, string>
 		{
@@ -145,7 +145,7 @@ namespace OpenRA.Mods.Common.Widgets
 			tooltipContainer = Exts.Lazy(() =>
 				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
 
-			resourceRenderers = world.WorldActor.TraitsImplementing<ResourceRenderer>().ToArray();
+			resourceRenderers = world.WorldActor.TraitsImplementing<IResourceRenderer>().ToArray();
 		}
 
 		public override void Initialize(WidgetArgs args)
@@ -269,11 +269,11 @@ namespace OpenRA.Mods.Common.Widgets
 
 			foreach (var resourceRenderer in resourceRenderers)
 			{
-				var resource = resourceRenderer.GetRenderedResourceType(cell);
-				if (resource != null)
+				var resourceTooltip = resourceRenderer.GetRenderedResourceTooltip(cell);
+				if (resourceTooltip != null)
 				{
 					TooltipType = WorldTooltipType.Resource;
-					ResourceTooltip = resource;
+					ResourceTooltip = resourceTooltip;
 					break;
 				}
 			}

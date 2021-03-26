@@ -115,6 +115,15 @@ GACTWR:
 	WithIdleOverlay@LIGHTS:
 		RequiresCondition: !build-incomplete && !disabled
 		Sequence: idle-lights
+		Palette: player-nobright
+		IsPlayerPalette: True
+	WithIdleOverlay@LIGHTS-BRIGHT:
+		RequiresCondition: !build-incomplete && !disabled
+		Sequence: idle-lights-bright
+		Palette: bright
+	WithMakeOverlay@MAKE-BRIGHT:
+		Sequence: make-bright
+		Palette: bright
 	LineBuildNode:
 		Types: turret
 	Power@base:

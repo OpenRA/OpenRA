@@ -28,22 +28,13 @@ namespace OpenRA.Mods.Common.Traits
 	class SeedsResource : ConditionalTrait<SeedsResourceInfo>, ITick, ISeedableResource
 	{
 		readonly SeedsResourceInfo info;
-
-		readonly ResourceType resourceType;
-		readonly ResourceLayer resLayer;
+		readonly IResourceLayer resourceLayer;
 
 		public SeedsResource(Actor self, SeedsResourceInfo info)
 			: base(info)
 		{
 			this.info = info;
-
-			resourceType = self.World.WorldActor.TraitsImplementing<ResourceType>()
-				.FirstOrDefault(t => t.Info.Type == info.ResourceType);
-
-			if (resourceType == null)
-				throw new InvalidOperationException("No such resource type `{0}`".F(info.ResourceType));
-
-			resLayer = self.World.WorldActor.Trait<ResourceLayer>();
+			resourceLayer = self.World.WorldActor.Trait<IResourceLayer>();
 		}
 
 		int ticks;
@@ -64,12 +55,11 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var cell = Util.RandomWalk(self.Location, self.World.SharedRandom)
 				.Take(info.MaxRange)
-				.SkipWhile(p => !self.World.Map.Contains(p) ||
-					(resLayer.GetResourceType(p) == resourceType && resLayer.IsFull(p)))
+				.SkipWhile(p => resourceLayer.GetResource(p).Type == info.ResourceType && !resourceLayer.CanAddResource(info.ResourceType, p))
 				.Cast<CPos?>().FirstOrDefault();
 
-			if (cell != null && resLayer.CanSpawnResourceAt(resourceType, cell.Value))
-				resLayer.AddResource(resourceType, cell.Value, 1);
+			if (cell != null && resourceLayer.CanAddResource(info.ResourceType, cell.Value))
+				resourceLayer.AddResource(info.ResourceType, cell.Value);
 		}
 	}
 }

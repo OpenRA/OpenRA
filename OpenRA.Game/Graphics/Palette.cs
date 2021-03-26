@@ -64,18 +64,18 @@ namespace OpenRA.Graphics
 			Buffer.BlockCopy(colors, 0, destination, destinationOffset * 4, Palette.Size * 4);
 		}
 
-		public ImmutablePalette(string filename, int[] remap)
+		public ImmutablePalette(string filename, int[] remapTransparent, int[] remap)
 		{
 			using (var s = File.OpenRead(filename))
-				LoadFromStream(s, remap);
+				LoadFromStream(s, remapTransparent, remap);
 		}
 
-		public ImmutablePalette(Stream s, int[] remapShadow)
+		public ImmutablePalette(Stream s, int[] remapTransparent, int[] remapShadow)
 		{
-			LoadFromStream(s, remapShadow);
+			LoadFromStream(s, remapTransparent, remapShadow);
 		}
 
-		void LoadFromStream(Stream s, int[] remapShadow)
+		void LoadFromStream(Stream s, int[] remapTransparent, int[] remapShadow)
 		{
 			using (var reader = new BinaryReader(s))
 				for (var i = 0; i < Palette.Size; i++)
@@ -92,7 +92,9 @@ namespace OpenRA.Graphics
 					colors[i] = (uint)((255 << 24) | (r << 16) | (g << 8) | b);
 				}
 
-			colors[0] = 0; // Convert black background to transparency.
+			foreach (var i in remapTransparent)
+				colors[i] = 0;
+
 			foreach (var i in remapShadow)
 				colors[i] = 140u << 24;
 		}

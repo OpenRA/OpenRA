@@ -37,9 +37,11 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Can this actor deploy on slopes?")]
 		public readonly bool CanDeployOnRamps = false;
 
+		[CursorReference]
 		[Desc("Cursor to display when able to (un)deploy the actor.")]
 		public readonly string DeployCursor = "deploy";
 
+		[CursorReference]
 		[Desc("Cursor to display when unable to (un)deploy the actor.")]
 		public readonly string DeployBlockedCursor = "deploy-blocked";
 

@@ -400,20 +400,19 @@ resources:
 	tib10: tib10
 	tib11: tib11
 	tib12: tib12
-	tib13: tib13 # TODO: NW ramp variant, currently unused
-	tib14: tib14 # TODO: NW ramp variant, currently unused
-	tib15: tib15 # TODO: NE ramp variant, currently unused
-	tib16: tib16 # TODO: NE ramp variant, currently unused
-	tib17: tib17 # TODO: SE ramp variant, currently unused
-	tib18: tib18 # TODO: SE ramp variant, currently unused
-	tib19: tib19 # TODO: SW ramp variant, currently unused
-	tib20: tib20 # TODO: SW ramp variant, currently unused
+	tib13: tib13
+	tib14: tib14
+	tib15: tib15
+	tib16: tib16
+	tib17: tib17
+	tib18: tib18
+	tib19: tib19
+	tib20: tib20
 	veins: veins
-		Length: 1
-		Start: 52
+		Length: *
 		ShadowStart: -1
-		Tick: 180
-		Offset: 0, -12, 2.5
+		# TODO: Reduce z offset again after fixing #12229
+		Offset: 0, -12, 5.5
 		IgnoreWorldTint: false
 
 veins:

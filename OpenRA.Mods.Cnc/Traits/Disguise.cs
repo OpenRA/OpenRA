@@ -88,6 +88,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			"A dictionary of [actor id]: [condition].")]
 		public readonly Dictionary<string, string> DisguisedAsConditions = new Dictionary<string, string>();
 
+		[CursorReference]
 		[Desc("Cursor to display when hovering over a valid actor to disguise as.")]
 		public readonly string Cursor = "ability";
 

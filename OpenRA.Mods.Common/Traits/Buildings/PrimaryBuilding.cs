@@ -40,7 +40,11 @@ namespace OpenRA.Mods.Common.Traits
 			"If empty, the list given in the `Produces` property of the `Production` trait will be used.")]
 		public readonly string[] ProductionQueues = { };
 
-		public override object Create(ActorInitializer init) { return new PrimaryBuilding(init.Self, this); }
+		[CursorReference]
+		[Desc("Cursor to display when setting the primary building.")]
+		public readonly string Cursor = "deploy";
+
+		public override object Create(ActorInitializer init) { return new PrimaryBuilding(this); }
 	}
 
 	public class PrimaryBuilding : ConditionalTrait<PrimaryBuildingInfo>, IIssueOrder, IResolveOrder
@@ -51,7 +55,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool IsPrimary { get; private set; }
 
-		public PrimaryBuilding(Actor self, PrimaryBuildingInfo info)
+		public PrimaryBuilding(PrimaryBuildingInfo info)
 			: base(info) { }
 
 		IEnumerable<IOrderTargeter> IIssueOrder.Orders
@@ -61,7 +65,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (IsTraitDisabled)
 					yield break;
 
-				yield return new DeployOrderTargeter(OrderID, 1);
+				yield return new DeployOrderTargeter(OrderID, 1, () => Info.Cursor);
 			}
 		}
 

@@ -56,12 +56,12 @@ namespace OpenRA.Mods.Cnc.Traits
 			base.Created(self);
 		}
 
-		void INotifyResourceAccepted.OnResourceAccepted(Actor self, Actor refinery, int amount)
+		void INotifyResourceAccepted.OnResourceAccepted(Actor self, Actor refinery, string resourceType, int count, int value)
 		{
 			if (IsTraitDisabled)
 				return;
 
-			var cash = OpenRA.Mods.Common.Util.ApplyPercentageModifiers(amount, modifier);
+			var cash = Common.Util.ApplyPercentageModifiers(value, modifier);
 			playerResources.GiveCash(cash);
 
 			if (Info.ShowTicks && self.Info.HasTraitInfo<IOccupySpaceInfo>())

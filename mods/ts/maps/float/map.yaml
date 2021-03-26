@@ -651,7 +651,7 @@ Actors:
 		Location: 70,-20
 		Owner: Neutral
 	Actor195: veinhole
-		Location: 31,11
+		Location: 30,10
 		Owner: Neutral
 	Actor196: srock05
 		Location: 34,14
@@ -666,13 +666,13 @@ Actors:
 		Location: 98,-44
 		Owner: Neutral
 	Actor200: veinhole
-		Location: 97,-39
+		Location: 96,-40
 		Owner: Neutral
 	Actor201: trock03
 		Location: 102,-44
 		Owner: Neutral
 	Actor202: veinhole
-		Location: 71,-8
+		Location: 70,-9
 		Owner: Neutral
 	Actor203: trock01
 		Location: 96,-33

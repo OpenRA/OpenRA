@@ -175,7 +175,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (Platform.CurrentPlatform == PlatformType.Windows)
 				{
 					var installations = missingSources
-						.Where(s => s.Type == ModContent.SourceType.Install)
+						.Where(s => s.Type == ModContent.SourceType.RegistryDirectory || s.Type == ModContent.SourceType.RegistryDirectoryFromFile)
 						.Select(s => s.Title)
 						.Distinct();
 
@@ -464,7 +464,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		string FindSourcePath(ModContent.ModSource source, IEnumerable<string> volumes)
 		{
-			if (source.Type == ModContent.SourceType.Install)
+			if (source.Type == ModContent.SourceType.RegistryDirectory || source.Type == ModContent.SourceType.RegistryDirectoryFromFile)
 			{
 				if (source.RegistryKey == null)
 					return null;
@@ -477,6 +477,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var path = Microsoft.Win32.Registry.GetValue(prefix + source.RegistryKey, source.RegistryValue, null) as string;
 					if (path == null)
 						continue;
+
+					if (source.Type == ModContent.SourceType.RegistryDirectoryFromFile)
+						path = Path.GetDirectoryName(path);
 
 					return IsValidSourcePath(path, source) ? path : null;
 				}

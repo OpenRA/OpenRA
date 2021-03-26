@@ -28,7 +28,7 @@ namespace OpenRA.Graphics
 			this.parent = parent;
 		}
 
-		public void DrawLine(in float3 start, in float3 end, float width, Color startColor, Color endColor)
+		public void DrawLine(in float3 start, in float3 end, float width, Color startColor, Color endColor, BlendMode blendMode = BlendMode.Alpha)
 		{
 			var delta = (end - start) / (end - start).XY.Length;
 			var corner = width / 2 * new float3(-delta.Y, delta.X, delta.Z);
@@ -52,10 +52,10 @@ namespace OpenRA.Graphics
 			vertices[4] = new Vertex(end - corner + Offset, er, eg, eb, ea, 0, 0);
 			vertices[5] = new Vertex(start - corner + Offset, sr, sg, sb, sa, 0, 0);
 
-			parent.DrawRGBAVertices(vertices);
+			parent.DrawRGBAVertices(vertices, blendMode);
 		}
 
-		public void DrawLine(in float3 start, in float3 end, float width, Color color)
+		public void DrawLine(in float3 start, in float3 end, float width, Color color, BlendMode blendMode = BlendMode.Alpha)
 		{
 			var delta = (end - start) / (end - start).XY.Length;
 			var corner = width / 2 * new float2(-delta.Y, delta.X);
@@ -72,7 +72,7 @@ namespace OpenRA.Graphics
 			vertices[3] = new Vertex(end + corner + Offset, r, g, b, a, 0, 0);
 			vertices[4] = new Vertex(end - corner + Offset, r, g, b, a, 0, 0);
 			vertices[5] = new Vertex(start - corner + Offset, r, g, b, a, 0, 0);
-			parent.DrawRGBAVertices(vertices);
+			parent.DrawRGBAVertices(vertices, blendMode);
 		}
 
 		/// <summary>
@@ -90,7 +90,7 @@ namespace OpenRA.Graphics
 			return new float3(x / d, y / d, 0.5f * (a.Z + b.Z));
 		}
 
-		void DrawDisconnectedLine(IEnumerable<float3> points, float width, Color color)
+		void DrawDisconnectedLine(IEnumerable<float3> points, float width, Color color, BlendMode blendMode)
 		{
 			using (var e = points.GetEnumerator())
 			{
@@ -101,13 +101,13 @@ namespace OpenRA.Graphics
 				while (e.MoveNext())
 				{
 					var point = e.Current;
-					DrawLine(lastPoint, point, width, color);
+					DrawLine(lastPoint, point, width, color, blendMode);
 					lastPoint = point;
 				}
 			}
 		}
 
-		void DrawConnectedLine(float3[] points, float width, Color color, bool closed)
+		void DrawConnectedLine(float3[] points, float width, Color color, bool closed, BlendMode blendMode)
 		{
 			// Not a line
 			if (points.Length < 2)
@@ -116,7 +116,7 @@ namespace OpenRA.Graphics
 			// Single segment
 			if (points.Length == 2)
 			{
-				DrawLine(points[0], points[1], width, color);
+				DrawLine(points[0], points[1], width, color, blendMode);
 				return;
 			}
 
@@ -163,7 +163,7 @@ namespace OpenRA.Graphics
 				vertices[3] = new Vertex(cc + Offset, r, g, b, a, 0, 0);
 				vertices[4] = new Vertex(cd + Offset, r, g, b, a, 0, 0);
 				vertices[5] = new Vertex(ca + Offset, r, g, b, a, 0, 0);
-				parent.DrawRGBAVertices(vertices);
+				parent.DrawRGBAVertices(vertices, blendMode);
 
 				// Advance line segment
 				end = next;
@@ -175,32 +175,32 @@ namespace OpenRA.Graphics
 			}
 		}
 
-		public void DrawLine(IEnumerable<float3> points, float width, Color color, bool connectSegments = false)
+		public void DrawLine(IEnumerable<float3> points, float width, Color color, bool connectSegments = false, BlendMode blendMode = BlendMode.Alpha)
 		{
 			if (!connectSegments)
-				DrawDisconnectedLine(points, width, color);
+				DrawDisconnectedLine(points, width, color, blendMode);
 			else
-				DrawConnectedLine(points as float3[] ?? points.ToArray(), width, color, false);
+				DrawConnectedLine(points as float3[] ?? points.ToArray(), width, color, false, blendMode);
 		}
 
-		public void DrawPolygon(float3[] vertices, float width, Color color)
+		public void DrawPolygon(float3[] vertices, float width, Color color, BlendMode blendMode = BlendMode.Alpha)
 		{
-			DrawConnectedLine(vertices, width, color, true);
+			DrawConnectedLine(vertices, width, color, true, blendMode);
 		}
 
-		public void DrawPolygon(float2[] vertices, float width, Color color)
+		public void DrawPolygon(float2[] vertices, float width, Color color, BlendMode blendMode = BlendMode.Alpha)
 		{
-			DrawConnectedLine(vertices.Select(v => new float3(v, 0)).ToArray(), width, color, true);
+			DrawConnectedLine(vertices.Select(v => new float3(v, 0)).ToArray(), width, color, true, blendMode);
 		}
 
-		public void DrawRect(in float3 tl, in float3 br, float width, Color color)
+		public void DrawRect(in float3 tl, in float3 br, float width, Color color, BlendMode blendMode = BlendMode.Alpha)
 		{
 			var tr = new float3(br.X, tl.Y, tl.Z);
 			var bl = new float3(tl.X, br.Y, br.Z);
-			DrawPolygon(new[] { tl, tr, br, bl }, width, color);
+			DrawPolygon(new[] { tl, tr, br, bl }, width, color, blendMode);
 		}
 
-		public void FillTriangle(in float3 a, in float3 b, in float3 c, Color color)
+		public void FillTriangle(in float3 a, in float3 b, in float3 c, Color color, BlendMode blendMode = BlendMode.Alpha)
 		{
 			color = Util.PremultiplyAlpha(color);
 			var cr = color.R / 255.0f;
@@ -211,17 +211,17 @@ namespace OpenRA.Graphics
 			vertices[0] = new Vertex(a + Offset, cr, cg, cb, ca, 0, 0);
 			vertices[1] = new Vertex(b + Offset, cr, cg, cb, ca, 0, 0);
 			vertices[2] = new Vertex(c + Offset, cr, cg, cb, ca, 0, 0);
-			parent.DrawRGBAVertices(vertices);
+			parent.DrawRGBAVertices(vertices, blendMode);
 		}
 
-		public void FillRect(in float3 tl, in float3 br, Color color)
+		public void FillRect(in float3 tl, in float3 br, Color color, BlendMode blendMode = BlendMode.Alpha)
 		{
 			var tr = new float3(br.X, tl.Y, tl.Z);
 			var bl = new float3(tl.X, br.Y, br.Z);
-			FillRect(tl, tr, br, bl, color);
+			FillRect(tl, tr, br, bl, color, blendMode);
 		}
 
-		public void FillRect(in float3 a, in float3 b, in float3 c, in float3 d, Color color)
+		public void FillRect(in float3 a, in float3 b, in float3 c, in float3 d, Color color, BlendMode blendMode = BlendMode.Alpha)
 		{
 			color = Util.PremultiplyAlpha(color);
 			var cr = color.R / 255.0f;
@@ -235,10 +235,10 @@ namespace OpenRA.Graphics
 			vertices[3] = new Vertex(c + Offset, cr, cg, cb, ca, 0, 0);
 			vertices[4] = new Vertex(d + Offset, cr, cg, cb, ca, 0, 0);
 			vertices[5] = new Vertex(a + Offset, cr, cg, cb, ca, 0, 0);
-			parent.DrawRGBAVertices(vertices);
+			parent.DrawRGBAVertices(vertices, blendMode);
 		}
 
-		public void FillRect(in float3 a, in float3 b, in float3 c, in float3 d, Color topLeftColor, Color topRightColor, Color bottomRightColor, Color bottomLeftColor)
+		public void FillRect(in float3 a, in float3 b, in float3 c, in float3 d, Color topLeftColor, Color topRightColor, Color bottomRightColor, Color bottomLeftColor, BlendMode blendMode = BlendMode.Alpha)
 		{
 			vertices[0] = VertexWithColor(a + Offset, topLeftColor);
 			vertices[1] = VertexWithColor(b + Offset, topRightColor);
@@ -247,7 +247,7 @@ namespace OpenRA.Graphics
 			vertices[4] = VertexWithColor(d + Offset, bottomLeftColor);
 			vertices[5] = VertexWithColor(a + Offset, topLeftColor);
 
-			parent.DrawRGBAVertices(vertices);
+			parent.DrawRGBAVertices(vertices, blendMode);
 		}
 
 		static Vertex VertexWithColor(in float3 xyz, Color color)
@@ -261,7 +261,7 @@ namespace OpenRA.Graphics
 			return new Vertex(xyz, cr, cg, cb, ca, 0, 0);
 		}
 
-		public void FillEllipse(in float3 tl, in float3 br, Color color, int vertices = 32)
+		public void FillEllipse(in float3 tl, in float3 br, Color color, int vertices = 32, BlendMode blendMode = BlendMode.Alpha)
 		{
 			// TODO: Create an ellipse polygon instead
 			var a = (br.X - tl.X) / 2;
@@ -272,7 +272,7 @@ namespace OpenRA.Graphics
 			{
 				var z = float2.Lerp(tl.Z, br.Z, (y - tl.Y) / (br.Y - tl.Y));
 				var dx = a * (float)Math.Sqrt(1 - (y - yc) * (y - yc) / b / b);
-				DrawLine(new float3(xc - dx, y, z), new float3(xc + dx, y, z), 1, color);
+				DrawLine(new float3(xc - dx, y, z), new float3(xc + dx, y, z), 1, color, blendMode);
 			}
 		}
 	}

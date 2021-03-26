@@ -34,14 +34,14 @@ namespace OpenRA.Mods.Common.Warheads
 				return;
 
 			var targetTile = world.Map.CellContaining(pos);
-			var resLayer = world.WorldActor.Trait<ResourceLayer>();
+			var resourceLayer = world.WorldActor.Trait<IResourceLayer>();
 
 			var minRange = (Size.Length > 1 && Size[1] > 0) ? Size[1] : 0;
 			var allCells = world.Map.FindTilesInAnnulus(targetTile, minRange, Size[0]);
 
 			// Destroy all resources in the selected tiles
 			foreach (var cell in allCells)
-				resLayer.Destroy(cell);
+				resourceLayer.ClearResources(cell);
 		}
 	}
 }

@@ -13,40 +13,78 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Required for the map editor to work. Attach this to the world actor.")]
-	public class EditorResourceLayerInfo : TraitInfo, IResourceLayerInfo, Requires<ResourceTypeInfo>
+	public class EditorResourceLayerInfo : TraitInfo, IResourceLayerInfo, IMapPreviewSignatureInfo
 	{
-		public override object Create(ActorInitializer init) { return new EditorResourceLayer(init.Self); }
+		[FieldLoader.LoadUsing(nameof(LoadResourceTypes))]
+		public readonly Dictionary<string, ResourceLayerInfo.ResourceTypeInfo> ResourceTypes = null;
+
+		// Copied from ResourceLayerInfo
+		protected static object LoadResourceTypes(MiniYaml yaml)
+		{
+			var ret = new Dictionary<string, ResourceLayerInfo.ResourceTypeInfo>();
+			var resources = yaml.Nodes.FirstOrDefault(n => n.Key == "ResourceTypes");
+			if (resources != null)
+				foreach (var r in resources.Value.Nodes)
+					ret[r.Key] = new ResourceLayerInfo.ResourceTypeInfo(r.Value);
+
+			return ret;
+		}
+
+		[Desc("Override the density saved in maps with values calculated based on the number of neighbouring resource cells.")]
+		public readonly bool RecalculateResourceDensity = false;
+
+		void IMapPreviewSignatureInfo.PopulateMapPreviewSignatureCells(Map map, ActorInfo ai, ActorReference s, List<(MPos, Color)> destinationBuffer)
+		{
+			ResourceLayerInfo.PopulateMapPreviewSignatureCells(map, ResourceTypes, destinationBuffer);
+		}
+
+		public override object Create(ActorInitializer init) { return new EditorResourceLayer(init.Self, this); }
 	}
 
 	public class EditorResourceLayer : IResourceLayer, IWorldLoaded, INotifyActorDisposing
 	{
+		readonly EditorResourceLayerInfo info;
 		protected readonly Map Map;
-		protected readonly Dictionary<int, ResourceType> Resources;
+		protected readonly Dictionary<byte, string> ResourceTypesByIndex;
 		protected readonly CellLayer<ResourceLayerContents> Tiles;
+		protected Dictionary<string, int> resourceValues;
 
 		public int NetWorth { get; protected set; }
 
 		bool disposed;
 
-		public event Action<CPos, ResourceType> CellChanged;
+		public event Action<CPos, string> CellChanged;
 
-		ResourceLayerContents IResourceLayer.GetResource(CPos cell) { return Tiles[cell]; }
+		ResourceLayerContents IResourceLayer.GetResource(CPos cell) { return Tiles.Contains(cell) ? Tiles[cell] : default; }
+		int IResourceLayer.GetMaxDensity(string resourceType)
+		{
+			return info.ResourceTypes.TryGetValue(resourceType, out var resourceInfo) ? resourceInfo.MaxDensity : 0;
+		}
+
+		bool IResourceLayer.CanAddResource(string resourceType, CPos cell, int amount) { return CanAddResource(resourceType, cell, amount); }
+		int IResourceLayer.AddResource(string resourceType, CPos cell, int amount) { return AddResource(resourceType, cell, amount); }
+		int IResourceLayer.RemoveResource(string resourceType, CPos cell, int amount) { return RemoveResource(resourceType, cell, amount); }
+		void IResourceLayer.ClearResources(CPos cell) { ClearResources(cell); }
 		bool IResourceLayer.IsVisible(CPos cell) { return Map.Contains(cell); }
+		bool IResourceLayer.IsEmpty => false;
 
-		public EditorResourceLayer(Actor self)
+		public EditorResourceLayer(Actor self, EditorResourceLayerInfo info)
 		{
 			if (self.World.Type != WorldType.Editor)
 				return;
 
+			this.info = info;
 			Map = self.World.Map;
 			Tiles = new CellLayer<ResourceLayerContents>(Map);
-			Resources = self.TraitsImplementing<ResourceType>()
-				.ToDictionary(r => r.Info.ResourceType, r => r);
+			ResourceTypesByIndex = info.ResourceTypes.ToDictionary(
+				kv => kv.Value.ResourceIndex,
+				kv => kv.Key);
 
 			Map.Resources.CellEntryChanged += UpdateCell;
 		}
@@ -55,6 +93,9 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (w.Type != WorldType.Editor)
 				return;
+
+			var playerResourcesInfo = w.Map.Rules.Actors["player"].TraitInfoOrDefault<PlayerResourcesInfo>();
+			resourceValues = playerResourcesInfo?.ResourceValues ?? new Dictionary<string, int>();
 
 			foreach (var cell in Map.AllCells)
 				UpdateCell(cell);
@@ -71,15 +112,10 @@ namespace OpenRA.Mods.Common.Traits
 
 			var newTile = ResourceLayerContents.Empty;
 			var newTerrain = byte.MaxValue;
-			if (Resources.TryGetValue(tile.Type, out var type))
+			if (ResourceTypesByIndex.TryGetValue(tile.Type, out var resourceType) && info.ResourceTypes.TryGetValue(resourceType, out var resourceInfo))
 			{
-				newTile = new ResourceLayerContents
-				{
-					Type = type,
-					Density = CalculateCellDensity(type, cell)
-				};
-
-				newTerrain = Map.Rules.TerrainInfo.GetTerrainIndex(type.Info.TerrainType);
+				newTile = new ResourceLayerContents(resourceType, CalculateCellDensity(new ResourceLayerContents(resourceType, tile.Index), cell));
+				newTerrain = Map.Rules.TerrainInfo.GetTerrainIndex(resourceInfo.TerrainType);
 			}
 
 			// Nothing has changed
@@ -89,9 +125,12 @@ namespace OpenRA.Mods.Common.Traits
 			UpdateNetWorth(t.Type, t.Density, newTile.Type, newTile.Density);
 			Tiles[uv] = newTile;
 			Map.CustomTerrain[uv] = newTerrain;
-			CellChanged?.Invoke(cell, type);
+			CellChanged?.Invoke(cell, newTile.Type);
 
-			// Neighbouring cell density depends on this cell
+			if (!info.RecalculateResourceDensity)
+				return;
+
+			// Update neighbour density to account for this cell
 			foreach (var d in CVec.Directions)
 			{
 				var neighbouringCell = cell + d;
@@ -99,33 +138,38 @@ namespace OpenRA.Mods.Common.Traits
 					continue;
 
 				var neighbouringTile = Tiles[neighbouringCell];
-				var density = CalculateCellDensity(neighbouringTile.Type, neighbouringCell);
+				if (neighbouringTile.Type == null)
+					continue;
+
+				var density = CalculateCellDensity(neighbouringTile, neighbouringCell);
 				if (neighbouringTile.Density == density)
 					continue;
 
 				UpdateNetWorth(neighbouringTile.Type, neighbouringTile.Density, neighbouringTile.Type, density);
-				neighbouringTile.Density = density;
-				Tiles[neighbouringCell] = neighbouringTile;
+				Tiles[neighbouringCell] = new ResourceLayerContents(neighbouringTile.Type, density);
 
-				CellChanged?.Invoke(neighbouringCell, type);
+				CellChanged?.Invoke(neighbouringCell, neighbouringTile.Type);
 			}
 		}
 
-		void UpdateNetWorth(ResourceType oldType, int oldDensity, ResourceType newType, int newDensity)
+		void UpdateNetWorth(string oldResourceType, int oldDensity, string newResourceType, int newDensity)
 		{
 			// Density + 1 as workaround for fixing ResourceLayer.Harvest as it would be very disruptive to balancing
-			if (oldType != null && oldDensity > 0)
-				NetWorth -= (oldDensity + 1) * oldType.Info.ValuePerUnit;
+			if (oldResourceType != null && oldDensity > 0 && resourceValues.TryGetValue(oldResourceType, out var oldResourceValue))
+				NetWorth -= (oldDensity + 1) * oldResourceValue;
 
-			if (newType != null && newDensity > 0)
-				NetWorth += (newDensity + 1) * newType.Info.ValuePerUnit;
+			if (newResourceType != null && newDensity > 0 && resourceValues.TryGetValue(newResourceType, out var newResourceValue))
+				NetWorth += (newDensity + 1) * newResourceValue;
 		}
 
-		public int CalculateCellDensity(ResourceType type, CPos c)
+		protected virtual int CalculateCellDensity(ResourceLayerContents contents, CPos c)
 		{
 			var resources = Map.Resources;
-			if (type == null || resources[c].Type != type.Info.ResourceType)
+			if (contents.Type == null || !info.ResourceTypes.TryGetValue(contents.Type, out var resourceInfo) || resources[c].Type != resourceInfo.ResourceIndex)
 				return 0;
+
+			if (!info.RecalculateResourceDensity)
+				return contents.Density.Clamp(1, resourceInfo.MaxDensity);
 
 			// Set density based on the number of neighboring resources
 			var adjacent = 0;
@@ -134,12 +178,89 @@ namespace OpenRA.Mods.Common.Traits
 				for (var v = -1; v < 2; v++)
 				{
 					var cell = c + new CVec(u, v);
-					if (resources.Contains(cell) && resources[cell].Type == type.Info.ResourceType)
+					if (resources.Contains(cell) && resources[cell].Type == resourceInfo.ResourceIndex)
 						adjacent++;
 				}
 			}
 
-			return Math.Max(int2.Lerp(0, type.Info.MaxDensity, adjacent, 9), 1);
+			return Math.Max(int2.Lerp(0, resourceInfo.MaxDensity, adjacent, 9), 1);
+		}
+
+		protected virtual bool AllowResourceAt(string resourceType, CPos cell)
+		{
+			if (!Map.Ramp.Contains(cell) || Map.Ramp[cell] != 0)
+				return false;
+
+			if (!info.ResourceTypes.TryGetValue(resourceType, out var resourceInfo))
+				return false;
+
+			// Ignore custom terrain types when spawning resources in the editor
+			var terrainInfo = Map.Rules.TerrainInfo;
+			var terrainType = terrainInfo.TerrainTypes[terrainInfo.GetTerrainInfo(Map.Tiles[cell]).TerrainType].Type;
+
+			// TODO: Check against actors in the EditorActorLayer
+			return resourceInfo.AllowedTerrainTypes.Contains(terrainType);
+		}
+
+		bool CanAddResource(string resourceType, CPos cell, int amount = 1)
+		{
+			var resources = Map.Resources;
+			if (!resources.Contains(cell))
+				return false;
+
+			if (!info.ResourceTypes.TryGetValue(resourceType, out var resourceInfo))
+				return false;
+
+			// The editor allows the user to replace one resource type with another, so treat mismatching resource type as an empty cell
+			var content = resources[cell];
+			if (content.Type != resourceInfo.ResourceIndex)
+				return amount <= resourceInfo.MaxDensity && AllowResourceAt(resourceType, cell);
+
+			var oldDensity = content.Type == resourceInfo.ResourceIndex ? content.Index : 0;
+			return oldDensity + amount <= resourceInfo.MaxDensity;
+		}
+
+		protected virtual int AddResource(string resourceType, CPos cell, int amount = 1)
+		{
+			var resources = Map.Resources;
+			if (!resources.Contains(cell))
+				return 0;
+
+			if (!info.ResourceTypes.TryGetValue(resourceType, out var resourceInfo))
+				return 0;
+
+			// The editor allows the user to replace one resource type with another, so treat mismatching resource type as an empty cell
+			var content = resources[cell];
+			var oldDensity = content.Type == resourceInfo.ResourceIndex ? content.Index : 0;
+			var density = (byte)Math.Min(resourceInfo.MaxDensity, oldDensity + amount);
+			Map.Resources[cell] = new ResourceTile((byte)resourceInfo.ResourceIndex, density);
+
+			return density - oldDensity;
+		}
+
+		protected virtual int RemoveResource(string resourceType, CPos cell, int amount = 1)
+		{
+			var resources = Map.Resources;
+			if (!resources.Contains(cell))
+				return 0;
+
+			if (!info.ResourceTypes.TryGetValue(resourceType, out var resourceInfo))
+				return 0;
+
+			var content = resources[cell];
+			if (content.Type == 0 || content.Type != resourceInfo.ResourceIndex)
+				return 0;
+
+			var oldDensity = content.Index;
+			var density = (byte)Math.Max(0, oldDensity - amount);
+			resources[cell] = density > 0 ? new ResourceTile(resourceInfo.ResourceIndex, density) : default;
+
+			return oldDensity - density;
+		}
+
+		protected virtual void ClearResources(CPos cell)
+		{
+			Map.Resources[cell] = default;
 		}
 
 		void INotifyActorDisposing.Disposing(Actor self)

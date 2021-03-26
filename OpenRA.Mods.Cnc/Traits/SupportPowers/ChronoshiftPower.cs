@@ -48,12 +48,15 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		public readonly bool KillCargo = true;
 
+		[CursorReference]
 		[Desc("Cursor to display when selecting targets for the chronoshift.")]
 		public readonly string SelectionCursor = "chrono-select";
 
+		[CursorReference]
 		[Desc("Cursor to display when targeting an area for the chronoshift.")]
 		public readonly string TargetCursor = "chrono-target";
 
+		[CursorReference]
 		[Desc("Cursor to display when the targeted area is blocked.")]
 		public readonly string TargetBlockedCursor = "move-blocked";
 

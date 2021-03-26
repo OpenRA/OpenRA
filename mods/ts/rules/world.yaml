@@ -198,47 +198,39 @@
 		Name: Nod
 		InternalName: nod
 		Description: Brotherhood of Nod\nThe Brotherhood is a religious cult centered around their leader Kane\nand the alien substance Tiberium. They utilize stealth technology\nand guerilla tactics to defeat those who oppose them.
-	ResourceType@Tiberium:
-		Type: Tiberium
-		Name: Tiberium
-		ResourceType: 1
-		Palette: greentiberium
-		Sequences: tib01, tib02, tib03, tib04, tib05, tib06, tib07, tib08, tib09, tib10, tib11, tib12
-		MaxDensity: 12
-		ValuePerUnit: 25
-		AllowedTerrainTypes: Clear, Rough, DirtRoad
-		AllowUnderActors: true
-		TerrainType: Tiberium
-	ResourceType@BlueTiberium:
-		Type: BlueTiberium
-		Name: Tiberium
-		ResourceType: 2
-		Palette: bluetiberium
-		Sequences: tib01, tib02, tib03, tib04, tib05, tib06, tib07, tib08, tib09, tib10, tib11, tib12
-		MaxDensity: 12
-		ValuePerUnit: 40
-		AllowedTerrainTypes: Clear, Rough, DirtRoad
-		AllowUnderActors: true
-		TerrainType: BlueTiberium
-	ResourceType@Veins:
-		Type: Veins
-		Name: Veins
-		ResourceType: 3
-		Palette: player
-		Sequences: veins
-		MaxDensity: 1
-		ValuePerUnit: 0
-		AllowedTerrainTypes: Clear, Rough, DirtRoad
-		AllowUnderActors: true
-		TerrainType: Veins
 	TerrainGeometryOverlay:
 	DebugVisualizations:
 	ExitsDebugOverlayManager:
 	CliffBackImpassabilityLayer:
 	SubterraneanActorLayer:
 	JumpjetActorLayer:
-	ResourceRenderer:
-		RenderTypes: Tiberium, BlueTiberium, Veins
+	TSTiberiumRenderer:
+		ResourceTypes:
+			Tiberium:
+				Sequences: tib01, tib02, tib03, tib04, tib05, tib06, tib07, tib08, tib09, tib10, tib11, tib12
+				Palette: greentiberium
+				Name: Tiberium
+			BlueTiberium:
+				Sequences: tib01, tib02, tib03, tib04, tib05, tib06, tib07, tib08, tib09, tib10, tib11, tib12
+				Palette: bluetiberium
+				Name: Tiberium
+		Ramp1Sequences:
+			Tiberium: tib13, tib14
+			BlueTiberium: tib13, tib14
+		Ramp2Sequences:
+			Tiberium: tib15, tib16
+			BlueTiberium: tib15, tib16
+		Ramp3Sequences:
+			Tiberium: tib17, tib18
+			BlueTiberium: tib17, tib18
+		Ramp4Sequences:
+			Tiberium: tib19, tib20
+			BlueTiberium: tib19, tib20
+	TSVeinsRenderer:
+		ResourceType: Veins
+		Name: Veins
+		Palette: player
+		VeinholeActors: veinhole
 
 World:
 	Inherits: ^BaseWorld
@@ -278,7 +270,24 @@ World:
 	SmudgeLayer@LARGECRATER:
 		Type: LargeCrater
 		Sequence: largecraters
-	ResourceLayer:
+	TSResourceLayer:
+		VeinholeActors: veinhole
+		ResourceTypes:
+			Tiberium:
+				ResourceIndex: 1
+				TerrainType: Tiberium
+				AllowedTerrainTypes: Clear, Rough, DirtRoad
+				MaxDensity: 12
+			BlueTiberium:
+				ResourceIndex: 2
+				TerrainType: BlueTiberium
+				AllowedTerrainTypes: Clear, Rough, DirtRoad
+				MaxDensity: 12
+			Veins:
+				ResourceIndex: 3
+				TerrainType: Veins
+				AllowedTerrainTypes: Clear, Rough, DirtRoad
+				MaxDensity: 2
 	BridgeLayer:
 	CustomTerrainDebugOverlay:
 	ResourceClaimLayer:
@@ -376,7 +385,24 @@ EditorWorld:
 	Inherits: ^BaseWorld
 	EditorActorLayer:
 	EditorCursorLayer:
-	EditorResourceLayer:
+	TSEditorResourceLayer:
+		ResourceTypes:
+			Tiberium:
+				ResourceIndex: 1
+				TerrainType: Tiberium
+				AllowedTerrainTypes: Clear, Rough, DirtRoad
+				MaxDensity: 12
+			BlueTiberium:
+				ResourceIndex: 2
+				TerrainType: BlueTiberium
+				AllowedTerrainTypes: Clear, Rough, DirtRoad
+				MaxDensity: 12
+			Veins:
+				ResourceIndex: 3
+				TerrainType: Veins
+				AllowedTerrainTypes: Clear, Rough, DirtRoad
+				MaxDensity: 2
+		VeinholeActors: veinhole
 	EditorSelectionLayer:
 		Palette: ra
 		FootprintAlpha: 0.7

@@ -152,7 +152,7 @@ namespace OpenRA.Mods.Common.Traits
 	public interface INotifyDocking { void Docked(Actor self, Actor harvester); void Undocked(Actor self, Actor harvester); }
 
 	[RequireExplicitImplementation]
-	public interface INotifyResourceAccepted { void OnResourceAccepted(Actor self, Actor refinery, int amount); }
+	public interface INotifyResourceAccepted { void OnResourceAccepted(Actor self, Actor refinery, string resourceType, int count, int value); }
 	public interface INotifyParachute { void OnParachute(Actor self); void OnLanded(Actor self); }
 
 	[RequireExplicitImplementation]
@@ -188,7 +188,7 @@ namespace OpenRA.Mods.Common.Traits
 		void MovingToResources(Actor self, CPos targetCell);
 		void MovingToRefinery(Actor self, Actor refineryActor);
 		void MovementCancelled(Actor self);
-		void Harvested(Actor self, ResourceType resource);
+		void Harvested(Actor self, string resourceType);
 		void Docked();
 		void Undocked();
 	}
@@ -260,8 +260,7 @@ namespace OpenRA.Mods.Common.Traits
 	public interface IAcceptResources
 	{
 		void OnDock(Actor harv, DeliverResources dockOrder);
-		void GiveResource(int amount);
-		bool CanGiveResource(int amount);
+		int AcceptResources(string resourceType, int count = 1);
 		CVec DeliveryOffset { get; }
 		bool AllowDocking { get; }
 	}
@@ -379,6 +378,9 @@ namespace OpenRA.Mods.Common.Traits
 
 	[RequireExplicitImplementation]
 	public interface IDetectCloakedModifier { int GetDetectCloakedModifier(); }
+
+	[RequireExplicitImplementation]
+	public interface IResourceValueModifier { int GetResourceValueModifier(); }
 
 	[RequireExplicitImplementation]
 	public interface ICustomMovementLayer
@@ -659,5 +661,32 @@ namespace OpenRA.Mods.Common.Traits
 		Rectangle TemplateBounds(TerrainTemplateInfo template);
 		IEnumerable<IRenderable> RenderUIPreview(WorldRenderer wr, TerrainTemplateInfo template, int2 origin, float scale);
 		IEnumerable<IRenderable> RenderPreview(WorldRenderer wr, TerrainTemplateInfo template, WPos origin);
+	}
+
+	public interface IResourceLayerInfo : ITraitInfoInterface { }
+
+	[RequireExplicitImplementation]
+	public interface IResourceLayer
+	{
+		event Action<CPos, string> CellChanged;
+		ResourceLayerContents GetResource(CPos cell);
+		int GetMaxDensity(string resourceType);
+		bool CanAddResource(string resourceType, CPos cell, int amount = 1);
+		int AddResource(string resourceType, CPos cell, int amount = 1);
+		int RemoveResource(string resourceType, CPos cell, int amount = 1);
+		void ClearResources(CPos cell);
+
+		bool IsVisible(CPos cell);
+		bool IsEmpty { get; }
+	}
+
+	[RequireExplicitImplementation]
+	public interface IResourceRenderer
+	{
+		IEnumerable<string> ResourceTypes { get; }
+		string GetRenderedResourceType(CPos cell);
+		string GetRenderedResourceTooltip(CPos cell);
+		IEnumerable<IRenderable> RenderUIPreview(WorldRenderer wr, string resourceType, int2 origin, float scale);
+		IEnumerable<IRenderable> RenderPreview(WorldRenderer wr, string resourceType, WPos origin);
 	}
 }

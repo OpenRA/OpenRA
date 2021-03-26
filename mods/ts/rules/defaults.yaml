@@ -585,7 +585,7 @@
 		ValidDamageStates: Light, Medium, Heavy, Critical
 	QuantizeFacingsFromSequence:
 		Sequence: stand
-	WithInfantryBody:
+	WithSplitAttackPaletteInfantryBody:
 	AttackMove:
 		Voice: Move
 	Passenger:
@@ -705,8 +705,10 @@
 			Prone350Percent: 350
 		DamageTriggers: TriggerProne
 		ProneOffset: 300,0,0
-	WithInfantryBody:
-		IdleSequences: idle1,idle2
+	WithSplitAttackPaletteInfantryBody:
+		IdleSequences: idle1, idle2
+		Palette: player-nomuzzle
+		SplitAttackPalette: muzzle
 
 ^Cyborg:
 	Inherits@1: ^Infantry
@@ -734,9 +736,11 @@
 			Prone350Percent: 350
 		ProneOffset: 300,0,0
 		ProneSequencePrefix: crippled-
-	WithInfantryBody:
+	WithSplitAttackPaletteInfantryBody:
 		DefaultAttackSequence: attack
 		IdleSequences: idle1, idle2
+		Palette: player-nomuzzle
+		SplitAttackPalette: muzzle
 	GrantConditionOnDamageState@CRITICAL:
 		Condition: critical
 		ValidDamageStates: Critical

@@ -39,9 +39,11 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Sound to play when repairing is done.")]
 		public readonly string RepairSound = null;
 
+		[CursorReference]
 		[Desc("Cursor to display when hovering over a valid actor to repair.")]
 		public readonly string Cursor = "goldwrench";
 
+		[CursorReference]
 		[Desc("Cursor to display when target actor has full health so it can't be repaired.")]
 		public readonly string RepairBlockedCursor = "goldwrench-blocked";
 

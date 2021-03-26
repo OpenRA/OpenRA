@@ -64,7 +64,7 @@ M_HMG:
 			invulnerable: 0
 			cy: 20
 			harvester: 50
-	Warhead@2Concrete: DamagesConcrete
+	Warhead@3Concrete: DamagesConcrete
 		Damage: 625
 
 M_HMG_H:
@@ -86,7 +86,7 @@ HMG:
 	Report: 20MMGUN1.WAV
 	Warhead@1Dam: SpreadDamage
 		Damage: 1800
-	Warhead@2Concrete: DamagesConcrete
+	Warhead@3Concrete: DamagesConcrete
 		Damage: 1800
 
 HMGo:

@@ -1,6 +1,10 @@
 ^BasePlayer:
 	AlwaysVisible:
 	Shroud:
+	PlayerResources:
+		ResourceValues:
+			Ore: 25
+			Gems: 50
 
 EditorPlayer:
 	Inherits: ^BasePlayer

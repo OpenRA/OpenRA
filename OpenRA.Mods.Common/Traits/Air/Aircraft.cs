@@ -160,9 +160,11 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Boolean expression defining the condition under which the regular (non-force) move cursor is disabled.")]
 		public readonly BooleanExpression RequireForceMoveCondition = null;
 
+		[CursorReference]
 		[Desc("Cursor to display when able to land at target building.")]
 		public readonly string EnterCursor = "enter";
 
+		[CursorReference]
 		[Desc("Cursor to display when unable to land at target building.")]
 		public readonly string EnterBlockedCursor = "enter-blocked";
 

@@ -44,6 +44,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("Experience to grant to the infiltrating player.")]
 		public readonly int PlayerExperience = 0;
 
+		[CursorReference]
 		[Desc("Cursor to display when able to infiltrate the target actor.")]
 		public readonly string EnterCursor = "enter";
 

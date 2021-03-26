@@ -1,6 +1,11 @@
 ^BasePlayer:
 	AlwaysVisible:
 	Shroud:
+	PlayerResources:
+		ResourceValues:
+			Tiberium: 25
+			BlueTiberium: 40
+			Veins: 0
 
 EditorPlayer:
 	Inherits: ^BasePlayer

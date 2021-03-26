@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			{
 				if (n < rt.Value)
 				{
-					if (!Info.ResourceSequences.TryGetValue(rt.Key.Type, out var sequence))
+					if (!Info.ResourceSequences.TryGetValue(rt.Key, out var sequence))
 						sequence = Info.FullSequence;
 
 					return sequence;

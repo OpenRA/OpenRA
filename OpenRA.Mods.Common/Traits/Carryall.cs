@@ -39,21 +39,26 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Radius around the target drop location that are considered if the target tile is blocked.")]
 		public readonly WDist DropRange = WDist.FromCells(5);
 
+		[CursorReference]
 		[Desc("Cursor to display when able to unload the passengers.")]
 		public readonly string UnloadCursor = "deploy";
 
+		[CursorReference]
 		[Desc("Cursor to display when unable to unload the passengers.")]
 		public readonly string UnloadBlockedCursor = "deploy-blocked";
 
 		[Desc("Allow moving and unloading with one order using force-move")]
 		public readonly bool AllowDropOff = false;
 
+		[CursorReference]
 		[Desc("Cursor to display when able to drop off the passengers at location.")]
 		public readonly string DropOffCursor = "ability";
 
+		[CursorReference]
 		[Desc("Cursor to display when unable to drop off the passengers at location.")]
 		public readonly string DropOffBlockedCursor = "move-blocked";
 
+		[CursorReference]
 		[Desc("Cursor to display when picking up the passengers.")]
 		public readonly string PickUpCursor = "ability";
 

@@ -31,8 +31,8 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly World world;
 		readonly EditorViewportControllerWidget editorWidget;
 		readonly EditorActorLayer editorLayer;
-		readonly Dictionary<int, ResourceType> resources;
 		readonly EditorActionManager editorActionManager;
+		readonly IResourceLayer resourceLayer;
 
 		public EditorActorPreview SelectedActor;
 		int2 worldPixel;
@@ -44,10 +44,8 @@ namespace OpenRA.Mods.Common.Widgets
 			world = wr.World;
 
 			editorLayer = world.WorldActor.Trait<EditorActorLayer>();
-			resources = world.WorldActor.TraitsImplementing<ResourceType>()
-				.ToDictionary(r => r.Info.ResourceType, r => r);
-
 			editorActionManager = world.WorldActor.Trait<EditorActionManager>();
+			resourceLayer = world.WorldActor.Trait<IResourceLayer>();
 		}
 
 		long CalculateActorSelectionPriority(EditorActorPreview actor)
@@ -75,13 +73,12 @@ namespace OpenRA.Mods.Common.Widgets
 			var cell = worldRenderer.Viewport.ViewToWorld(mi.Location);
 
 			var underCursor = editorLayer.PreviewsAt(worldPixel).MinByOrDefault(CalculateActorSelectionPriority);
+			var resourceUnderCursor = resourceLayer.GetResource(cell).Type;
 
-			var mapResources = world.Map.Resources;
-			ResourceType type = null;
 			if (underCursor != null)
 				editorWidget.SetTooltip(underCursor.Tooltip);
-			else if (mapResources.Contains(cell) && resources.TryGetValue(mapResources[cell].Type, out type))
-				editorWidget.SetTooltip(type.Info.Type);
+			else if (resourceUnderCursor != null)
+				editorWidget.SetTooltip(resourceUnderCursor);
 			else
 				editorWidget.SetTooltip(null);
 
@@ -102,8 +99,8 @@ namespace OpenRA.Mods.Common.Widgets
 				if (underCursor != null && underCursor != SelectedActor)
 					editorActionManager.Add(new RemoveActorAction(editorLayer, underCursor));
 
-				if (type != null && mapResources.Contains(cell) && mapResources[cell].Type != 0)
-					editorActionManager.Add(new RemoveResourceAction(mapResources, cell, type));
+				if (resourceUnderCursor != null)
+					editorActionManager.Add(new RemoveResourceAction(resourceLayer, cell, resourceUnderCursor));
 			}
 
 			return true;
@@ -148,17 +145,17 @@ namespace OpenRA.Mods.Common.Widgets
 	{
 		public string Text { get; private set; }
 
-		readonly CellLayer<ResourceTile> mapResources;
+		readonly IResourceLayer resourceLayer;
 		readonly CPos cell;
 
-		ResourceTile resourceTile;
+		ResourceLayerContents resourceContents;
 
-		public RemoveResourceAction(CellLayer<ResourceTile> mapResources, CPos cell, ResourceType type)
+		public RemoveResourceAction(IResourceLayer resourceLayer, CPos cell, string resourceType)
 		{
-			this.mapResources = mapResources;
+			this.resourceLayer = resourceLayer;
 			this.cell = cell;
 
-			Text = "Removed {0}".F(type.Info.TerrainType);
+			Text = "Removed {0}".F(resourceType);
 		}
 
 		public void Execute()
@@ -168,13 +165,14 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public void Do()
 		{
-			resourceTile = mapResources[cell];
-			mapResources[cell] = default(ResourceTile);
+			resourceContents = resourceLayer.GetResource(cell);
+			resourceLayer.ClearResources(cell);
 		}
 
 		public void Undo()
 		{
-			mapResources[cell] = resourceTile;
+			resourceLayer.ClearResources(cell);
+			resourceLayer.AddResource(resourceContents.Type, cell, resourceContents.Density);
 		}
 	}
 }
