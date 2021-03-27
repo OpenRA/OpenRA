@@ -31,7 +31,7 @@ jobs:
           BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
           CHANNEL: win
           ITCH_GAME: openra
-          ITCH_USER: openra-developers
+          ITCH_USER: openra
           VERSION: ${{ github.event.inputs.tag }}
           PACKAGE: OpenRA-${{ github.event.inputs.tag }}-x64.exe
 
@@ -41,7 +41,7 @@ jobs:
           BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
           CHANNEL: itch
           ITCH_GAME: openra
-          ITCH_USER: openra-developers
+          ITCH_USER: openra
           VERSION: ${{ github.event.inputs.tag }}
           PACKAGE: OpenRA-${{ github.event.inputs.tag }}-x64-win-itch.zip
 
@@ -51,7 +51,7 @@ jobs:
           BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
           CHANNEL: macos
           ITCH_GAME: openra
-          ITCH_USER: openra-developers
+          ITCH_USER: openra
           VERSION: ${{ github.event.inputs.tag }}
           PACKAGE: OpenRA-${{ github.event.inputs.tag }}.dmg
 
@@ -61,7 +61,7 @@ jobs:
           BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
           CHANNEL: linux-ra
           ITCH_GAME: openra
-          ITCH_USER: openra-developers
+          ITCH_USER: openra
           VERSION: ${{ github.event.inputs.tag }}
           PACKAGE: OpenRA-Red-Alert-x86_64.AppImage
 
@@ -71,7 +71,7 @@ jobs:
           BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
           CHANNEL: linux-cnc
           ITCH_GAME: openra
-          ITCH_USER: openra-developers
+          ITCH_USER: openra
           VERSION: ${{ github.event.inputs.tag }}
           PACKAGE: OpenRA-Tiberian-Dawn-x86_64.AppImage
 
@@ -81,6 +81,6 @@ jobs:
           BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
           CHANNEL: linux-d2k
           ITCH_GAME: openra
-          ITCH_USER: openra-developers
+          ITCH_USER: openra
           VERSION: ${{ github.event.inputs.tag }}
           PACKAGE: OpenRA-Dune-2000-x86_64.AppImage
