@@ -86,3 +86,4 @@ function build_platform()
 
 build_platform "x86"
 build_platform "x64"
+rm rcedit-x64.exe
