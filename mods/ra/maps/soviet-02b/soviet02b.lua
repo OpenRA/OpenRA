@@ -193,9 +193,9 @@ WorldLoaded = function()
 	Trigger.OnPlayerLost(player, function()
 		Media.PlaySpeechNotification(player, "Lose")
 	end)
-	alliedObjective = enemy.AddPrimaryObjective("Destroy all Soviet troops.")
-	sovietObjective1 = player.AddPrimaryObjective("Protect the Command Center.")
-	sovietObjective2 = player.AddPrimaryObjective("Destroy all Allied units and structures.")
+	alliedObjective = enemy.AddObjective("Destroy all Soviet troops.")
+	sovietObjective1 = player.AddObjective("Protect the Command Center.")
+	sovietObjective2 = player.AddObjective("Destroy all Allied units and structures.")
 
 	enemy.Resources = 2000
 	Trigger.AfterDelay(DateTime.Seconds(30), ProduceInfantry)

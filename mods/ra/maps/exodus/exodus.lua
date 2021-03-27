@@ -331,9 +331,9 @@ WorldLoaded = function()
 	UserInterface.SetMissionText(UnitsEvacuated .. "/" .. unitsEvacuatedThreshold .. " units evacuated.", TextColor)
 	Utils.Do(humans, function(player)
 		if player then
-			evacuateUnits = player.AddPrimaryObjective("Evacuate " .. unitsEvacuatedThreshold .. " units.")
-			destroyAirbases = player.AddSecondaryObjective("Destroy the nearby Soviet airbases.")
-			evacuateMgg = player.AddSecondaryObjective("Evacuate at least one mobile gap generator.")
+			evacuateUnits = player.AddObjective("Evacuate " .. unitsEvacuatedThreshold .. " units.")
+			destroyAirbases = player.AddObjective("Destroy the nearby Soviet airbases.", "Secondary", false)
+			evacuateMgg = player.AddObjective("Evacuate at least one mobile gap generator.", "Secondary", false)
 		end
 	end)
 
@@ -345,7 +345,7 @@ WorldLoaded = function()
 		end)
 	end)
 
-	sovietObjective = soviets.AddPrimaryObjective("Eradicate all allied troops.")
+	sovietObjective = soviets.AddObjective("Eradicate all allied troops.")
 
 	if not allies2 or allies1.IsLocalPlayer then
 		Camera.Position = Allies1EntryPoint.CenterPosition

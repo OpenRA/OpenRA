@@ -135,7 +135,7 @@ CreateEinstein = function()
 	einstein = Actor.Create(EinsteinType, true, { Location = EinsteinSpawnPoint.Location, Owner = player })
 	einstein.Scatter()
 	Trigger.OnKilled(einstein, RescueFailed)
-	ExtractObjective = player.AddPrimaryObjective("Wait for the helicopter and extract Einstein.")
+	ExtractObjective = player.AddObjective("Wait for the helicopter and extract Einstein.")
 	Trigger.AfterDelay(DateTime.Seconds(1), function() Media.PlaySpeechNotification(player, "TargetFreed") end)
 end
 
@@ -193,10 +193,10 @@ WorldLoaded = function()
 	Trigger.OnPlayerLost(player, MissionFailed)
 	Trigger.OnPlayerWon(player, MissionAccomplished)
 
-	FindEinsteinObjective = player.AddPrimaryObjective("Find Einstein.")
-	TanyaSurviveObjective = player.AddPrimaryObjective("Tanya must survive.")
-	EinsteinSurviveObjective = player.AddPrimaryObjective("Einstein must survive.")
-	CivilProtectionObjective = player.AddSecondaryObjective("Protect all civilians.")
+	FindEinsteinObjective = player.AddObjective("Find Einstein.")
+	TanyaSurviveObjective = player.AddObjective("Tanya must survive.")
+	EinsteinSurviveObjective = player.AddObjective("Einstein must survive.")
+	CivilProtectionObjective = player.AddObjective("Protect all civilians.", "Secondary", false)
 
 	RunInitialActivities()
 

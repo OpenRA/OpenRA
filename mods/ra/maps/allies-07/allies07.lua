@@ -185,10 +185,10 @@ WorldLoaded = function()
 
 	Camera.Position = DefaultCameraPosition.CenterPosition
 
-	CaptureRadarDomeObj = greece.AddPrimaryObjective("Capture the Radar Dome.")
-	DestroySubPens = greece.AddPrimaryObjective("Destroy all Soviet Sub Pens")
-	ClearSubActivity = greece.AddSecondaryObjective("Clear the area of all sub activity")
-	BeatAllies = ussr.AddPrimaryObjective("Defeat the Allied forces.")
+	CaptureRadarDomeObj = greece.AddObjective("Capture the Radar Dome.")
+	DestroySubPens = greece.AddObjective("Destroy all Soviet Sub Pens")
+	ClearSubActivity = greece.AddObjective("Clear the area of all sub activity", "Secondary", false)
+	BeatAllies = ussr.AddObjective("Defeat the Allied forces.")
 
 	Trigger.OnObjectiveCompleted(greece, function(p, id)
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")

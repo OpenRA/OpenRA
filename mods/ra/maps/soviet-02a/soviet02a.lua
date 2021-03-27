@@ -60,8 +60,8 @@ WorldLoaded = function()
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
 	end)
 
-	CommandCenterIntact = player.AddPrimaryObjective("Protect the Command Center.")
-	DestroyAllAllied = player.AddPrimaryObjective("Destroy all Allied units and structures.")
+	CommandCenterIntact = player.AddObjective("Protect the Command Center.")
+	DestroyAllAllied = player.AddObjective("Destroy all Allied units and structures.")
 
 	Trigger.OnPlayerWon(player, function()
 		Media.PlaySpeechNotification(player, "MissionAccomplished")

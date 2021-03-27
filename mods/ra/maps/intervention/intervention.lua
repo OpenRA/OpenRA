@@ -270,9 +270,9 @@ WorldLoaded = function()
 		Media.PlaySpeechNotification(player, "MissionFailed")
 	end)
 
-	sovietObjective = soviets.AddPrimaryObjective("Destroy the village.")
-	villageObjective = player.AddPrimaryObjective("Save the village.")
-	beachheadObjective = player.AddPrimaryObjective("Get your MCV to the main island.")
+	sovietObjective = soviets.AddObjective("Destroy the village.")
+	villageObjective = player.AddObjective("Save the village.")
+	beachheadObjective = player.AddObjective("Get your MCV to the main island.")
 
 	beachheadTrigger = false
 	Trigger.OnExitedFootprint(BeachheadTrigger, function(a, id)
@@ -281,7 +281,7 @@ WorldLoaded = function()
 			Trigger.RemoveFootprintTrigger(id)
 			player.MarkCompletedObjective(beachheadObjective)
 
-			captureObjective = player.AddPrimaryObjective("Locate and capture the enemy's Air Force HQ.")
+			captureObjective = player.AddObjective("Locate and capture the enemy's Air Force HQ.")
 
 			if AirForceHQ.IsDead then
 				player.MarkFailedObjective(captureObjective)

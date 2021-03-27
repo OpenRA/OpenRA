@@ -60,7 +60,7 @@ DiscoveredAlliedBase = function(actor, discoverer)
 
 		--Need to delay this so we don't fail mission before obj added
 		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			SurviveObjective = allies.AddPrimaryObjective("Defend outpost until reinforcements arrive.")
+			SurviveObjective = allies.AddObjective("Defend outpost until reinforcements arrive.")
 			SetupTimeNotifications()
 			Trigger.OnAllRemovedFromWorld(AlliedBase, function()
 				allies.MarkFailedObjective(SurviveObjective)
@@ -145,7 +145,7 @@ InitObjectives = function()
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
 	end)
 
-	DiscoverObjective = allies.AddPrimaryObjective("Find the outpost.")
+	DiscoverObjective = allies.AddObjective("Find the outpost.")
 
 	Utils.Do(AlliedBase, function(actor)
 		Trigger.OnEnteredProximityTrigger(actor.CenterPosition, WDist.FromCells(8), function(discoverer, id)

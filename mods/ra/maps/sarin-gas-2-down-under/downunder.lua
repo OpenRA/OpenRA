@@ -463,11 +463,11 @@ WorldLoaded = function()
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
 	end)
 
-	ussrObj = ussr.AddPrimaryObjective("Defeat the Allies.")
-	ExitBase = greece.AddPrimaryObjective("Reach the eastern exit of the facility.")
-	FreeTanya = greece.AddPrimaryObjective("Free Tanya and keep her alive.")
-	KillVIPs = greece.AddSecondaryObjective("Kill all Soviet officers and scientists.")
-	StealTank = greece.AddSecondaryObjective("Steal a Soviet mammoth tank.")
+	ussrObj = ussr.AddObjective("Defeat the Allies.")
+	ExitBase = greece.AddObjective("Reach the eastern exit of the facility.")
+	FreeTanya = greece.AddObjective("Free Tanya and keep her alive.")
+	KillVIPs = greece.AddObjective("Kill all Soviet officers and scientists.", "Secondary", false)
+	StealTank = greece.AddObjective("Steal a Soviet mammoth tank.", "Secondary", false)
 	if Map.LobbyOption("difficulty") == "hard" then
 		NoCasualties = greece.AddPrimaryObjective("Do not lose a single soldier or civilian\nunder your command.")
 	end

@@ -82,7 +82,7 @@ Tick = function()
 		if DestroyObj then
 			allies.MarkCompletedObjective(DestroyObj)
 		else
-			DestroyObj = allies.AddPrimaryObjective("Destroy all Soviet forces in the area.")
+			DestroyObj = allies.AddObjective("Destroy all Soviet forces in the area.")
 			allies.MarkCompletedObjective(DestroyObj)
 		end
 	end
@@ -220,7 +220,7 @@ FinalAttack = function()
 	Trigger.OnAllKilledOrCaptured(units, function()
 		if not DestroyObj then
 			Media.DisplayMessage("Excellent work Commander! We have reinforced our position enough to initiate a counter-attack.", "Incoming Report")
-			DestroyObj = allies.AddPrimaryObjective("Destroy the remaining Soviet forces in the area.")
+			DestroyObj = allies.AddObjective("Destroy the remaining Soviet forces in the area.")
 		end
 		allies.MarkCompletedObjective(SurviveObj)
 	end)
@@ -260,7 +260,7 @@ SetupBridges = function()
 	end
 
 	Media.DisplayMessage("Commander! The Soviets destroyed the bridges to disable our reinforcements. Repair them for additional reinforcements.", "Incoming Report")
-	RepairBridges = allies.AddSecondaryObjective("Repair the two southern bridges.")
+	RepairBridges = allies.AddObjective("Repair the two southern bridges.", "Secondary", false)
 
 	local bridgeA = Map.ActorsInCircle(BrokenBridge1.CenterPosition, WDist.FromCells(1), function(self) return self.Type == "bridge1" end)
 	local bridgeB = Map.ActorsInCircle(BrokenBridge2.CenterPosition, WDist.FromCells(1), function(self) return self.Type == "bridge1" end)
@@ -295,8 +295,8 @@ InitObjectives = function()
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
 	end)
 
-	SurviveObj = allies.AddPrimaryObjective("Enforce your position and hold-out the onslaught.")
-	SovietObj = soviets.AddPrimaryObjective("Eliminate all Allied forces.")
+	SurviveObj = allies.AddObjective("Enforce your position and hold-out the onslaught.")
+	SovietObj = soviets.AddObjective("Eliminate all Allied forces.")
 
 	Trigger.AfterDelay(DateTime.Seconds(15), function()
 		SetupBridges()

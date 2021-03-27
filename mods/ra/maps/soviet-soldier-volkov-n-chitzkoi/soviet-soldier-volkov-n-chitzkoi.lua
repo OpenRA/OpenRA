@@ -80,10 +80,10 @@ WorldLoaded = function()
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
 	end)
 
-	DestroyControlCenter = player.AddPrimaryObjective("Destroy the Control Center.")
-	KeepTanksAlive = player.AddPrimaryObjective("Your tank division must not be destroyed before\n the alloy facility is dealt with.")
-	KeepVolkovAlive = player.AddPrimaryObjective("Keep Volkov Alive.")
-	KeepChitzkoiAlive = player.AddSecondaryObjective("Keep Chitzkoi Alive.")
+	DestroyControlCenter = player.AddObjective("Destroy the Control Center.")
+	KeepTanksAlive = player.AddObjective("Your tank division must not be destroyed before\n the alloy facility is dealt with.")
+	KeepVolkovAlive = player.AddObjective("Keep Volkov Alive.")
+	KeepChitzkoiAlive = player.AddObjective("Keep Chitzkoi Alive.", "Secondary", false)
 
 	Trigger.OnPlayerWon(player, function()
 		Media.PlaySpeechNotification(player, "MissionAccomplished")
@@ -97,7 +97,7 @@ WorldLoaded = function()
 			if not struc.IsDead then struc.Kill() end
 		end)
 		player.MarkCompletedObjective(DestroyControlCenter)
-		DestroyAlloyFacility = player.AddPrimaryObjective("Destroy the Alloy Facility.")
+		DestroyAlloyFacility = player.AddObjective("Destroy the Alloy Facility.")
 		Media.PlaySpeechNotification(player, "FirstObjectiveMet")
 		Media.DisplayMessage("Excellent! The heavy turret control center is destroyed\n and now we can deal with the alloy facility.")
 	end)
@@ -105,7 +105,7 @@ WorldLoaded = function()
 	Trigger.OnKilled(AlloyFacility, function()
 		if not player.IsObjectiveCompleted(DestroyControlCenter) then --Prevent a crash if the player somehow manage to cheese the mission and destroy
 			player.MarkCompletedObjective(DestroyControlCenter) --the Alloy Facility without destroying the Control Center.
-			DestroyAlloyFacility = player.AddPrimaryObjective("Destroy the Alloy Facility.")
+			DestroyAlloyFacility = player.AddObjective("Destroy the Alloy Facility.")
 		end
 		Trigger.AfterDelay(DateTime.Seconds(2), function()
 			player.MarkCompletedObjective(DestroyAlloyFacility)
