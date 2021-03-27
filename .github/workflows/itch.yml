@@ -33,7 +33,7 @@ jobs:
           ITCH_GAME: openra
           ITCH_USER: openra-developers
           VERSION: ${{ github.event.inputs.tag }}
-          PACKAGE: OpenRA-${{ github.event.inputs.tag }}}-x64.exe
+          PACKAGE: OpenRA-${{ github.event.inputs.tag }}-x64.exe
 
       - name: Publish Windows Itch Bundle
         uses: josephbmanley/butler-publish-itchio-action@master
@@ -53,7 +53,7 @@ jobs:
           ITCH_GAME: openra
           ITCH_USER: openra-developers
           VERSION: ${{ github.event.inputs.tag }}
-          PACKAGE: OpenRA-${{ github.event.inputs.tag }}}.dmg
+          PACKAGE: OpenRA-${{ github.event.inputs.tag }}.dmg
 
       - name: Publish RA AppImage
         uses: josephbmanley/butler-publish-itchio-action@master
