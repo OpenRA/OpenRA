@@ -166,9 +166,3 @@ WorldLoaded = function()
 	Trigger.AfterDelay(DateTime.Minutes(12), function() BoatAttack(Gunboat5) end)
 	Trigger.AfterDelay(DateTime.Minutes(14), function() BoatAttack(Gunboat6) end)
 end
-
-OnAnyDamaged = function(actors, func)
-	Utils.Do(actors, function(actor)
-		Trigger.OnDamaged(actor, func)
-	end)
-end

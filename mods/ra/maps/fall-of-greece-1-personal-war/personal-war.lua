@@ -526,9 +526,3 @@ WorldLoaded = function()
 	Trigger.OnDamaged(Church, ChurchAttack)
 	OnAnyDamaged(SovBase, SovBaseAttack)
 end
-
-OnAnyDamaged = function(actors, func)
-	Utils.Do(actors, function(actor)
-		Trigger.OnDamaged(actor, func)
-	end)
-end

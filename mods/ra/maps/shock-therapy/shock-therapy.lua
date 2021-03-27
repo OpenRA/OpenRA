@@ -339,9 +339,3 @@ WorldLoaded = function()
 	MissionStart()
 	MissionTriggers()
 end
-
-OnAnyDamaged = function(actors, func)
-	Utils.Do(actors, function(actor)
-		Trigger.OnDamaged(actor, func)
-	end)
-end

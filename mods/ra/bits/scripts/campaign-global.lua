@@ -37,3 +37,9 @@ ChooseRandomTarget = function(unit, enemyPlayer)
 	end
 	return target
 end
+
+OnAnyDamaged = function(actors, func)
+	Utils.Do(actors, function(actor)
+		Trigger.OnDamaged(actor, func)
+	end)
+end
