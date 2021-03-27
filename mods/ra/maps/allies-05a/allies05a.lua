@@ -137,7 +137,7 @@ SendWaterExtraction = function()
 	Camera.Position = flare.CenterPosition
 
 	WaterExtractionTran = Reinforcements.ReinforceWithTransport(greece, ExtractionTransport, nil, SpyEntryPath)[1]
-	ExtractObj = greece.AddPrimaryObjective("Get all your forces into the transport.")
+	ExtractObj = greece.AddObjective("Get all your forces into the transport.")
 
 	Trigger.OnKilled(WaterExtractionTran, function() ussr.MarkCompletedObjective(ussrObj) end)
 	Trigger.OnAllRemovedFromWorld(greece.GetGroundAttackers(), function()
@@ -192,13 +192,13 @@ FreeTanya = function()
 	Trigger.OnKilled(Tanya, function() ussr.MarkCompletedObjective(ussrObj) end)
 
 	if Map.LobbyOption("difficulty") == "tough" then
-		KillSams = greece.AddPrimaryObjective("Destroy all four SAM Sites that block\nour reinforcements' helicopter.")
+		KillSams = greece.AddObjective("Destroy all four SAM Sites that block\nour reinforcements' helicopter.")
 
 		greece.MarkCompletedObjective(mainObj)
-		surviveObj = greece.AddPrimaryObjective("Tanya must not die!")
+		surviveObj = greece.AddObjective("Tanya must not die!")
 		Media.PlaySpeechNotification(greece, "TanyaRescued")
 	else
-		KillSams = greece.AddPrimaryObjective("Destroy all four SAM sites that block\nthe extraction helicopter.")
+		KillSams = greece.AddObjective("Destroy all four SAM sites that block\nthe extraction helicopter.")
 
 		Media.PlaySpeechNotification(greece, "TargetFreed")
 	end
@@ -376,10 +376,10 @@ InitObjectives = function()
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
 	end)
 
-	ussrObj = ussr.AddPrimaryObjective("Deny the Allies.")
-	mainObj = greece.AddPrimaryObjective("Rescue Tanya.")
-	KillAll = greece.AddPrimaryObjective("Eliminate all Soviet units in this area.")
-	infWarfactory = greece.AddSecondaryObjective("Infiltrate the Soviet warfactory.")
+	ussrObj = ussr.AddObjective("Deny the Allies.")
+	mainObj = greece.AddObjective("Rescue Tanya.")
+	KillAll = greece.AddObjective("Eliminate all Soviet units in this area.")
+	infWarfactory = greece.AddObjective("Infiltrate the Soviet warfactory.", "Secondary", false)
 
 	Trigger.OnObjectiveCompleted(greece, function(p, id)
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")

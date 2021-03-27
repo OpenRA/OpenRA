@@ -127,9 +127,9 @@ WorldLoaded = function()
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
 	end)
 
-	KillAll = player.AddPrimaryObjective("Defeat the Allied forces.")
-	BeatUSSR = Greece.AddPrimaryObjective("Defeat the Soviet forces.")
-	KillRadar = player.AddSecondaryObjective("Destroy Allied Radar Dome to stop enemy\nreinforcements.")
+	KillAll = player.AddObjective("Defeat the Allied forces.")
+	BeatUSSR = Greece.AddObjective("Defeat the Soviet forces.")
+	KillRadar = player.AddObjective("Destroy Allied Radar Dome to stop enemy\nreinforcements.", "Secondary", false)
 
 	Trigger.OnPlayerLost(player, function()
 		Media.PlaySpeechNotification(player, "Lose")

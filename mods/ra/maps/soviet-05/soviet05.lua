@@ -197,9 +197,9 @@ WorldLoaded = function()
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
 	end)
 
-	CaptureObjective = player.AddPrimaryObjective("Capture the Radar Dome.")
-	KillAll = player.AddPrimaryObjective("Defeat the Allied forces.")
-	BeatUSSR = GoodGuy.AddPrimaryObjective("Defeat the Soviet forces.")
+	CaptureObjective = player.AddObjective("Capture the Radar Dome.")
+	KillAll = player.AddObjective("Defeat the Allied forces.")
+	BeatUSSR = GoodGuy.AddObjective("Defeat the Soviet forces.")
 
 	RunInitialActivities()
 
@@ -223,7 +223,7 @@ WorldLoaded = function()
 			return
 		end
 
-		HoldObjective = player.AddPrimaryObjective("Defend the Radar Dome.")
+		HoldObjective = player.AddObjective("Defend the Radar Dome.")
 		player.MarkCompletedObjective(CaptureObjective)
 		Beacon.New(player, MCVDeploy.CenterPosition)
 		if Map.LobbyOption("difficulty") == "easy" then

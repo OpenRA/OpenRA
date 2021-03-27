@@ -151,7 +151,7 @@ InfiltrateTechCenter = function()
 				return
 			end
 			infiltrated = true
-			DestroySovietsObj = player.AddPrimaryObjective("Destroy all Soviet buildings and units in the area.")
+			DestroySovietsObj = player.AddObjective("Destroy all Soviet buildings and units in the area.")
 			player.MarkCompletedObjective(InfiltrateTechCenterObj)
 		end)
 
@@ -202,8 +202,8 @@ WorldLoaded = function()
 		Media.PlaySpeechNotification(player, "MissionAccomplished")
 	end)
 
-	InfiltrateTechCenterObj = player.AddPrimaryObjective("Infiltrate one of the Soviet tech centers with a spy.")
-	CaptureRadarDomeObj = player.AddSecondaryObjective("Capture the Radar Dome at the shore.")
+	InfiltrateTechCenterObj = player.AddObjective("Infiltrate one of the Soviet tech centers with a spy.")
+	CaptureRadarDomeObj = player.AddObjective("Capture the Radar Dome at the shore.", "Secondary", false)
 
 	Camera.Position = DefaultCameraPosition.CenterPosition
 

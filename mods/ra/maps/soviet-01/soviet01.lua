@@ -82,7 +82,7 @@ WorldLoaded = function()
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
 	end)
 
-	VillageRaidObjective = player.AddPrimaryObjective("Raze the village.")
+	VillageRaidObjective = player.AddObjective("Raze the village.")
 
 	Trigger.OnAllRemovedFromWorld(Airfields, function()
 		player.MarkFailedObjective(VillageRaidObjective)

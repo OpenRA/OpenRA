@@ -143,8 +143,8 @@ InitObjectives = function()
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
 	end)
 
-	KillUSSR = player.AddPrimaryObjective("Destroy all Soviet units and buildings in this region.")
-	DestroyConvoys = player.AddSecondaryObjective("Eliminate all passing Soviet convoys.")
+	KillUSSR = player.AddObjective("Destroy all Soviet units and buildings in this region.")
+	DestroyConvoys = player.AddObjective("Eliminate all passing Soviet convoys.", "Secondary", false)
 
 	Trigger.OnObjectiveCompleted(player, function(p, id)
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")

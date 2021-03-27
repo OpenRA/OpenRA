@@ -180,7 +180,7 @@ SendTrucks = function()
 
 		DateTime.TimeLimit = 0
 		UserInterface.SetMissionText("")
-		ConvoyObjective = player.AddPrimaryObjective("Escort the convoy.")
+		ConvoyObjective = player.AddObjective("Escort the convoy.")
 
 		Media.PlaySpeechNotification(player, "ConvoyApproaching")
 		Trigger.AfterDelay(DateTime.Seconds(3), function()
@@ -234,10 +234,10 @@ WorldLoaded = function()
 		Media.PlaySpeechNotification(player, "MissionAccomplished")
 	end)
 
-	ussrObj = ussr.AddPrimaryObjective("Deny the allies!")
+	ussrObj = ussr.AddObjective("Deny the allies!")
 
-	SecureObjective = player.AddPrimaryObjective("Secure the convoy's path.")
-	ConquestObjective = player.AddPrimaryObjective("Eliminate the entire soviet presence in this area.")
+	SecureObjective = player.AddObjective("Secure the convoy's path.")
+	ConquestObjective = player.AddObjective("Eliminate the entire soviet presence in this area.")
 
 	Trigger.AfterDelay(DateTime.Seconds(1), function() Media.PlaySpeechNotification(allies, "MissionTimerInitialised") end)
 

@@ -277,9 +277,9 @@ TimerExpired = function()
 	Reinforcements.Reinforce(allies, FrenchReinforcements, { SovietEntryPoint7.Location, Alliesbase.Location })
 
 	if DestroyObj then
-		KillObj = allies.AddPrimaryObjective("Take control of French reinforcements and\nkill all remaining Soviet forces.")
+		KillObj = allies.AddObjective("Take control of French reinforcements and\nkill all remaining Soviet forces.")
 	else
-		DestroyObj = allies.AddPrimaryObjective("Take control of French reinforcements and\ndismantle the nearby Soviet base.")
+		DestroyObj = allies.AddObjective("Take control of French reinforcements and\ndismantle the nearby Soviet base.")
 	end
 
 	allies.MarkCompletedObjective(SurviveObj)
@@ -310,11 +310,11 @@ InitObjectives = function()
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
 	end)
 
-	SurviveObj = allies.AddPrimaryObjective("Enforce your position and hold-out the onslaught\nuntil reinforcements arrive.")
-	KillSams = allies.AddSecondaryObjective("Destroy the two SAM sites before reinforcements\narrive.")
+	SurviveObj = allies.AddObjective("Enforce your position and hold-out the onslaught\nuntil reinforcements arrive.")
+	KillSams = allies.AddObjective("Destroy the two SAM sites before reinforcements\narrive.", "Secondary", false)
 	Media.DisplayMessage("The Soviets are blocking our GPS. We need to investigate their new technology.")
-	CaptureAirfields = allies.AddSecondaryObjective("Capture and hold the Soviet airbase\nin the northeast.")
-	SovietObj = soviets.AddPrimaryObjective("Eliminate all Allied forces.")
+	CaptureAirfields = allies.AddObjective("Capture and hold the Soviet airbase\nin the northeast.", "Secondary", false)
+	SovietObj = soviets.AddObjective("Eliminate all Allied forces.")
 
 	Trigger.OnObjectiveCompleted(allies, function(p, id)
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
@@ -367,11 +367,11 @@ InitMission = function()
 	Trigger.OnAllKilledOrCaptured(SovietBuildings, function()
 		if DestroyObj then
 			if not soviets.HasNoRequiredUnits() then
-				KillObj = allies.AddPrimaryObjective("Kill all remaining Soviet forces.")
+				KillObj = allies.AddObjective("Kill all remaining Soviet forces.")
 			end
 			allies.MarkCompletedObjective(DestroyObj)
 		else
-			DestroyObj = allies.AddPrimaryObjective("Dismantle the nearby Soviet base.")
+			DestroyObj = allies.AddObjective("Dismantle the nearby Soviet base.")
 			allies.MarkCompletedObjective(DestroyObj)
 		end
 	end)
