@@ -25,6 +25,3 @@ powerproxy.parabombs:
 	AirstrikePower:
 		DisplayBeacon: False
 
-HEALCRATE:
-	Crate:
-		Lifetime: 0

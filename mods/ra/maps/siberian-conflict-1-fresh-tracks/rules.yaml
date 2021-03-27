@@ -19,8 +19,6 @@ Player:
 		DefaultCash: 2100
 
 MONEYCRATE:
-	Crate:
-		Lifetime: 0
 	ExplodeCrateAction:
 		Weapon: MiniNuke
 	Tooltip:

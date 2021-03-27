@@ -29,10 +29,6 @@ MSLO:
 	Buildable:
 		Prerequisites: ~disabled
 
-HEALCRATE:
-	Crate:
-		Lifetime: 0
-
 AGUN:
 	Power:
 		Amount: 125

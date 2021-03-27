@@ -68,10 +68,6 @@ TRUK:
 	SpawnActorOnDeath:
 		Actor: healcrate
 
-HEALCRATE:
-	Crate:
-		Lifetime: 0
-
 TRAN:
 	-Selectable:
 	RevealsShroud:
