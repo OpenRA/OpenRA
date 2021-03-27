@@ -55,22 +55,22 @@ Players:
 Actors:
 	Actor0: wood
 		Location: 44,50
-		Owner: Neutral
+		Owner: France
 	Actor1: wood
 		Location: 44,51
-		Owner: Neutral
+		Owner: France
 	Actor2: wood
 		Location: 44,52
-		Owner: Neutral
+		Owner: France
 	Actor3: wood
 		Location: 44,53
-		Owner: Neutral
+		Owner: France
 	Actor4: wood
 		Location: 45,53
-		Owner: Neutral
+		Owner: France
 	Actor5: wood
 		Location: 56,65
-		Owner: Neutral
+		Owner: France
 	Actor6: v14
 		Location: 54,66
 		Owner: Neutral
@@ -79,40 +79,40 @@ Actors:
 		Owner: Neutral
 	Actor8: wood
 		Location: 56,66
-		Owner: Neutral
+		Owner: France
 	Actor9: wood
 		Location: 53,67
-		Owner: Neutral
+		Owner: France
 	Actor10: wood
 		Location: 55,67
-		Owner: Neutral
+		Owner: France
 	Actor11: wood
 		Location: 56,67
-		Owner: Neutral
+		Owner: France
 	Actor12: wood
 		Location: 45,69
-		Owner: Neutral
+		Owner: France
 	Actor13: wood
 		Location: 46,69
-		Owner: Neutral
+		Owner: France
 	Actor14: wood
 		Location: 47,69
-		Owner: Neutral
+		Owner: France
 	Actor15: wood
 		Location: 45,70
-		Owner: Neutral
+		Owner: France
 	Actor16: wood
 		Location: 51,70
-		Owner: Neutral
+		Owner: France
 	Actor17: wood
 		Location: 53,71
-		Owner: Neutral
+		Owner: France
 	Actor18: wood
 		Location: 52,72
-		Owner: Neutral
+		Owner: France
 	Actor19: wood
 		Location: 53,72
-		Owner: Neutral
+		Owner: France
 	Actor20: t16
 		Location: 53,52
 		Owner: Neutral
