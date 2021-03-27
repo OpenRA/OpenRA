@@ -56,10 +56,6 @@ HOSP:
 	SpawnActorOnDeath:
 		Actor: healcrate
 
-HEALCRATE:
-	Crate:
-		Lifetime: 0
-
 ^Vehicle:
 	-Demolishable:
 
