@@ -89,7 +89,7 @@ LOBRDG_A_D:
 		AOffset: 1,-1
 		BOffset: 1,1
 	Interactable:
-		Bounds: 96, 48
+		Bounds: 2896, 2896
 
 LOBRDG_B:
 	Inherits: ^LowBridge
@@ -128,7 +128,7 @@ LOBRDG_B_D:
 		AOffset: 1,1
 		BOffset: -1,1
 	Interactable:
-		Bounds: 96, 48
+		Bounds: 2896, 2896
 
 LOBRDG_R_SE:
 	Inherits: ^LowBridgeRamp
@@ -190,7 +190,7 @@ LOBRDG_R_SW:
 	MapEditorData:
 		Categories: Bridge
 	Interactable:
-		Bounds: 96, 144
+		Bounds: 2896, 8688
 
 BRIDGE1:
 	Inherits: ^ElevatedBridgePlaceholder

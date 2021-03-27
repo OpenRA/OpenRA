@@ -11,7 +11,7 @@ MCV:
 		Queue: Vehicle.GDI, Vehicle.Nod
 		Description: Deploys into another Construction Yard.\n  Unarmed
 	Selectable:
-		DecorationBounds: 36,36
+		DecorationBounds: 1536, 1536
 	Mobile:
 		Speed: 71
 		Locomotor: heavywheeled
@@ -52,7 +52,7 @@ HARV:
 		Queue: Vehicle.GDI, Vehicle.Nod
 		Description: Collects Tiberium for processing.\n  Unarmed
 	Selectable:
-		DecorationBounds: 36,36
+		DecorationBounds: 1536, 1536
 	Harvester:
 		Resources: Tiberium, BlueTiberium
 		Capacity: 20
@@ -468,7 +468,7 @@ MTNK:
 		OwnerType: InternalName
 		EffectiveOwnerFromOwner: true
 	Selectable:
-		DecorationBounds: 28,28
+		DecorationBounds: 1194, 1194
 
 HTNK:
 	Inherits: ^Tank
@@ -529,7 +529,7 @@ HTNK:
 		OwnerType: InternalName
 		EffectiveOwnerFromOwner: true
 	Selectable:
-		DecorationBounds: 34,34,0,-3
+		DecorationBounds: 1450, 1450, 0, -128
 
 MSAM:
 	Inherits: ^Tank

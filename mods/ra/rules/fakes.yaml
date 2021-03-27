@@ -3,7 +3,7 @@ FPWR:
 	Inherits@infiltrate: ^InfiltratableFake
 	Inherits@shape: ^2x2Shape
 	Selectable:
-		Bounds: 48,48
+		Bounds: 2048, 2048
 	HitShape:
 		UseTargetableCellsOffsets: false
 		TargetableOffsets: 0,0,0, 640,-384,0, 640,512,0, -710,-512,0, -710,512,0
@@ -37,7 +37,7 @@ TENF:
 	Inherits@infiltrate: ^InfiltratableFake
 	Inherits@shape: ^2x2Shape
 	Selectable:
-		Bounds: 48,48
+		Bounds: 2048, 2048
 	Buildable:
 		BuildPaletteOrder: 880
 		Queue: Defense
@@ -70,7 +70,7 @@ SYRF:
 	Inherits: ^FakeBuilding
 	Inherits@infiltrate: ^InfiltratableFake
 	Selectable:
-		Bounds: 72,48
+		Bounds: 3072, 2048
 	Buildable:
 		BuildPaletteOrder: 890
 		Queue: Defense
@@ -115,7 +115,7 @@ SPEF:
 	Inherits: ^FakeBuilding
 	Inherits@infiltrate: ^InfiltratableFake
 	Selectable:
-		Bounds: 72,48
+		Bounds: 3072, 2048
 	Targetable:
 		TargetTypes: WaterActor, Structure, SpyInfiltrate
 	Buildable:
@@ -160,7 +160,7 @@ WEAF:
 	Inherits@infiltrate: ^InfiltratableFake
 	Inherits@shape: ^3x2Shape
 	Selectable:
-		Bounds: 72,48
+		Bounds: 3072, 2048
 	Buildable:
 		BuildPaletteOrder: 920
 		Prerequisites: ~structures.france, ~techlevel.medium
@@ -199,7 +199,7 @@ DOMF:
 	Inherits@infiltrate: ^InfiltratableFake
 	Inherits@shape: ^2x2Shape
 	Selectable:
-		Bounds: 48,48
+		Bounds: 2048, 2048
 	HitShape:
 		UseTargetableCellsOffsets: false
 		TargetableOffsets: 0,0,0, 630,-384,0, 630,384,0, -700,-512,0, -700,512,0
@@ -231,8 +231,8 @@ DOMF:
 FIXF:
 	Inherits: ^FakeBuilding
 	Selectable:
-		Bounds: 68,34,0,3
-		DecorationBounds: 72,48
+		Bounds: 2901, 1450, 0, 128
+		DecorationBounds: 3072, 2048
 	Buildable:
 		BuildPaletteOrder: 940
 		Queue: Defense
@@ -291,8 +291,8 @@ FAPW:
 	RenderSprites:
 		Image: APWR
 	Selectable:
-		Bounds: 72,48
-		DecorationBounds: 72,68,0,-10
+		Bounds: 3072, 2048
+		DecorationBounds: 3072, 2901, 0, -426
 	Valued:
 		Cost: 50
 
@@ -301,7 +301,7 @@ ATEF:
 	Inherits@IDISABLE: ^DisableOnLowPower
 	Inherits@shape: ^2x2Shape
 	Selectable:
-		Bounds: 48,48
+		Bounds: 2048, 2048
 	Tooltip:
 		Name: Fake Allied Tech Center
 		GenericName: Allied Tech Center
@@ -332,7 +332,7 @@ PDOF:
 	Inherits@IDISABLE: ^DisableOnLowPower
 	Inherits@shape: ^2x2Shape
 	Selectable:
-		Bounds: 48,48
+		Bounds: 2048, 2048
 	Tooltip:
 		Name: Fake Chronosphere
 		GenericName: Chronosphere
@@ -366,7 +366,7 @@ MSLF:
 	Inherits@IDISABLE: ^DisableOnLowPower
 	Inherits@shape: ^2x1Shape
 	Selectable:
-		Bounds: 48,24
+		Bounds: 2048, 1024
 	Tooltip:
 		Name: Fake Missile Silo
 		GenericName: Missile Silo
@@ -396,7 +396,7 @@ MSLF:
 FACF:
 	Inherits: ^FakeBuilding
 	Selectable:
-		Bounds: 72,72
+		Bounds: 3072, 3072
 	Buildable:
 		BuildPaletteOrder: 1000
 		Queue: Defense

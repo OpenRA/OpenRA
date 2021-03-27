@@ -237,7 +237,7 @@
 		Locomotor: wheeled
 		TurnSpeed: 20
 	Selectable:
-		Bounds: 24,24
+		Bounds: 1024, 1024
 	Targetable:
 		TargetTypes: Ground, Vehicle
 	Repairable:
@@ -288,7 +288,7 @@
 		TargetTypes: Air
 		RequiresCondition: airborne
 	Selectable:
-		Bounds: 24,24
+		Bounds: 1024, 1024
 	Repairable:
 		RepairActors: hpad
 	Aircraft:
@@ -344,8 +344,8 @@
 		AlwaysTurnInPlace: true
 		Locomotor: foot
 	Selectable:
-		Bounds: 18,18,0,-6
-		DecorationBounds: 12,17,0,-6
+		Bounds: 768, 768, 0, -256
+		DecorationBounds: 512, 725, 0, -256
 	Targetable:
 		TargetTypes: Ground, Infantry
 	QuantizeFacingsFromSequence:
@@ -520,7 +520,7 @@
 		Speed: 113
 		Voice: Move
 	Selectable:
-		Bounds: 24,24
+		Bounds: 1024, 1024
 	Targetable:
 		TargetTypes: Ground, Creep
 	HiddenUnderFog:
@@ -565,7 +565,7 @@
 		Speed: 71
 		Locomotor: critter
 	Selectable:
-		Bounds: 24,24
+		Bounds: 1024, 1024
 	Targetable:
 		TargetTypes: Ground, Creep
 	AutoTarget:
@@ -835,7 +835,7 @@
 	Inherits@1: ^SpriteActor
 	Inherits@shape: ^1x1Shape
 	Interactable:
-		Bounds: 24,24
+		Bounds: 1024, 1024
 	CombatDebugOverlay:
 	AppearsOnRadar:
 	OwnerLostAction:

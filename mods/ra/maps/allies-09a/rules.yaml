@@ -7,9 +7,9 @@ World:
 		Scripts: campaign-global.lua, allies09a.lua, allies09a-AI.lua
 	MissionData:
 		Briefing: One of Stalin's top atomic strategists, Vladimir Kosygin, wishes to defect. His knowledge of Stalin's atomic strategies is invaluable to us. We will extract him from the Riga compound where he is stationed.\n\nUse a spy to infiltrate the Soviet command center and contact Kosygin. Once he is out of the building, guide him back to your base any way you can.
-		StartVideo: 
-		WinVideo: 
-		LossVideo: 
+		StartVideo:
+		WinVideo:
+		LossVideo:
 	ScriptLobbyDropdown@difficulty:
 		ID: difficulty
 		Label: Difficulty

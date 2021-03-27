@@ -166,7 +166,7 @@ PBOX:
 		StartIfBelow: 100
 		DamageCooldown: 150
 	Selectable:
-		Bounds: 44,38,0,-4
+		Bounds: 1877, 1621, 0, -170
 	RenderSprites:
 		Image: 4TNK
 

@@ -14,8 +14,8 @@ DOG:
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Selectable:
-		Bounds: 12,17,-1,-4
-		DecorationBounds: 12,17,-1,-4
+		Bounds: 512, 725, -42, -170
+		DecorationBounds: 512, 725, -42, -170
 	Health:
 		HP: 1800
 	Mobile:
@@ -749,8 +749,8 @@ Ant:
 		Prerequisites: ~barracks, ~bio
 		Description: Irradiated insect that grew oversize.
 	Selectable:
-		Bounds: 24,24,0,-5
-		DecorationBounds: 30,30,0,-2
+		Bounds: 1024, 1024, 0, -213
+		DecorationBounds: 1280, 1280, 0, -85
 	Health:
 		HP: 75000
 	Mobile:

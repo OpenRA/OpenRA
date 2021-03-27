@@ -87,12 +87,13 @@ namespace OpenRA.Mods.Common.Traits
 			int2 left, right, top, bottom;
 			if (bounds != null)
 			{
-				var offset = bounds.Length >= 4 ? new int2(bounds[2], bounds[3]) : int2.Zero;
+				// Convert from WDist to pixels
+				var offset = bounds.Length >= 4 ? new int2(bounds[2] * wr.TileSize.Width / wr.TileScale, bounds[3] * wr.TileSize.Height / wr.TileScale) : int2.Zero;
 				var center = wr.ScreenPxPosition(self.CenterPosition) + offset;
-				left = center - new int2(bounds[0] / 2, 0);
-				right = left + new int2(bounds[0], 0);
-				top = center - new int2(0, bounds[1] / 2);
-				bottom = top + new int2(0, bounds[1]);
+				left = center - new int2(bounds[0] * wr.TileSize.Width / (2 * wr.TileScale), 0);
+				right = left + new int2(bounds[0] * wr.TileSize.Width / wr.TileScale, 0);
+				top = center - new int2(0, bounds[1] * wr.TileSize.Height / (2 * wr.TileScale));
+				bottom = top + new int2(0, bounds[1] * wr.TileSize.Height / wr.TileScale);
 			}
 			else
 			{

@@ -124,7 +124,7 @@ FCOM:
 	Inherits: ^TechBuilding
 	Inherits@shape: ^2x2Shape
 	Selectable:
-		Bounds: 48,48
+		Bounds: 2048, 2048
 	OwnerLostAction:
 		Action: ChangeOwner
 	Building:
@@ -176,7 +176,7 @@ HOSP:
 		Action: ChangeOwner
 	Selectable:
 		Priority: 0
-		Bounds: 48,48
+		Bounds: 2048, 2048
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -400,7 +400,7 @@ BARL:
 	MapEditorData:
 		Categories: Decoration
 	Interactable:
-		Bounds: 24,24
+		Bounds: 1024, 1024
 
 BRL3:
 	Inherits: ^TechBuilding
@@ -422,7 +422,7 @@ BRL3:
 	MapEditorData:
 		Categories: Decoration
 	Interactable:
-		Bounds: 24,24
+		Bounds: 1024, 1024
 
 AMMOBOX1:
 	Inherits: ^AmmoBox
@@ -441,7 +441,7 @@ MISS:
 		TargetableOffsets: 0,0,0, 840,0,0, 840,-1024,0, 420,768,0, -840,0,0, -840,-1024,0, -840,1024,0
 	Selectable:
 		Priority: 0
-		Bounds: 72,48
+		Bounds: 3072, 2048
 	OwnerLostAction:
 		Action: ChangeOwner
 	Building:
@@ -485,7 +485,7 @@ BIO:
 	Inherits: ^TechBuilding
 	Inherits@shape: ^2x2Shape
 	Selectable:
-		Bounds: 48,48
+		Bounds: 2048, 2048
 	OwnerLostAction:
 		Action: ChangeOwner
 	Building:
@@ -523,7 +523,7 @@ OILB:
 		TargetableOffsets: 0,0,0, 630,-300,0, 420,512,0, -420,-512,0, -630,300,0
 	Selectable:
 		Priority: 0
-		Bounds: 48,48
+		Bounds: 2048, 2048
 	OwnerLostAction:
 		Action: ChangeOwner
 	Building:
@@ -614,7 +614,7 @@ BRIDGE1:
 		Actor: bridgehut
 		SpawnOffset: 0,1
 	Interactable:
-		Bounds: 120,72
+		Bounds: 5120, 3072
 
 BRIDGE2:
 	Inherits: ^Bridge
@@ -632,7 +632,7 @@ BRIDGE2:
 		Actor: bridgehut
 		SpawnOffset: 2,1
 	Interactable:
-		Bounds: 120,48
+		Bounds: 5120, 2048
 
 BRIDGE3:
 	Inherits: ^Bridge
@@ -650,7 +650,7 @@ BRIDGE3:
 		Actor: bridgehut
 		SpawnOffset: 0,1
 	Interactable:
-		Bounds: 96,48
+		Bounds: 4096, 2048
 
 BRIDGE4:
 	Inherits: ^Bridge
@@ -668,7 +668,7 @@ BRIDGE4:
 		Actor: bridgehut
 		SpawnOffset: 2,1
 	Interactable:
-		Bounds: 96,48
+		Bounds: 4096, 2048
 
 SBRIDGE1:
 	Inherits: ^Bridge
@@ -686,7 +686,7 @@ SBRIDGE1:
 		Actor: bridgehut.small
 		SpawnOffset: 1,1
 	Interactable:
-		Bounds: 72,48
+		Bounds: 3072, 2048
 
 SBRIDGE2:
 	Inherits: ^Bridge
@@ -704,7 +704,7 @@ SBRIDGE2:
 		Actor: bridgehut.small
 		SpawnOffset: 1,1
 	Interactable:
-		Bounds: 48,72
+		Bounds: 2048, 3072
 
 SBRIDGE3:
 	Inherits: ^Bridge
@@ -738,7 +738,7 @@ BRIDGEHUT:
 		Footprint: __ __
 		Dimensions: 2,2
 	Selectable:
-		Bounds: 48,48
+		Bounds: 2048, 2048
 		Priority: 2
 	LegacyBridgeHut:
 	Targetable:
@@ -750,7 +750,7 @@ BRIDGEHUT.small:
 		Footprint: _
 		Dimensions: 1,1
 	Selectable:
-		Bounds: 24,24
+		Bounds: 1024, 1024
 		Priority: 2
 	LegacyBridgeHut:
 	Targetable:
@@ -923,7 +923,7 @@ LHUS:
 	MapEditorData:
 		RequireTilesets: TEMPERAT
 	Selectable:
-		Bounds: 24,48,0,-16
+		Bounds: 1024, 2048, 0, -682
 	Tooltip:
 		Name: Lighthouse
 	Building:
@@ -935,8 +935,8 @@ WINDMILL:
 	MapEditorData:
 		RequireTilesets: TEMPERAT
 	Selectable:
-		Bounds: 24,24,0,-14
-		DecorationBounds: 36,36,0,-14
+		Bounds: 1024, 1024, 0, -597
+		DecorationBounds: 1536, 1536, 0, -597
 	Tooltip:
 		Name: Windmill
 	Building:

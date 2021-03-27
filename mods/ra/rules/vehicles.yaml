@@ -45,7 +45,7 @@ V2RL:
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
 	Selectable:
-		DecorationBounds: 28,28
+		DecorationBounds: 1194, 1194
 
 1TNK:
 	Inherits: ^TrackedVehicle
@@ -133,7 +133,7 @@ V2RL:
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
 	Selectable:
-		DecorationBounds: 28,28
+		DecorationBounds: 1194, 1194
 
 3TNK:
 	Inherits: ^TrackedVehicle
@@ -179,7 +179,7 @@ V2RL:
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
 	Selectable:
-		DecorationBounds: 28,28
+		DecorationBounds: 1194, 1194
 
 4TNK:
 	Inherits: ^TrackedVehicle
@@ -238,7 +238,7 @@ V2RL:
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
 	Selectable:
-		DecorationBounds: 44,38,0,-4
+		DecorationBounds: 1877, 1621, 0, -170
 
 ARTY:
 	Inherits: ^TrackedVehicle
@@ -298,7 +298,7 @@ HARV:
 		Name: Ore Truck
 		GenericName: Harvester
 	Selectable:
-		DecorationBounds: 42,42
+		DecorationBounds: 1792, 1792
 	Harvester:
 		Capacity: 20
 		Resources: Ore,Gems
@@ -359,7 +359,7 @@ MCV:
 	Tooltip:
 		Name: Mobile Construction Vehicle
 	Selectable:
-		DecorationBounds: 42,42
+		DecorationBounds: 1792, 1792
 	Health:
 		HP: 60000
 	Armor:
@@ -658,7 +658,7 @@ TTNK:
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
 	Selectable:
-		DecorationBounds: 30,30
+		DecorationBounds: 1280, 1280
 
 FTRK:
 	Inherits: ^Vehicle
@@ -707,7 +707,7 @@ FTRK:
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
 	Selectable:
-		DecorationBounds: 28,28
+		DecorationBounds: 1194, 1194
 
 DTRK:
 	Inherits: ^Vehicle
@@ -791,7 +791,7 @@ CTNK:
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
 	Selectable:
-		DecorationBounds: 30,30
+		DecorationBounds: 1280, 1280
 
 QTNK:
 	Inherits: ^TrackedVehicle
@@ -831,7 +831,7 @@ QTNK:
 	Targetable:
 		TargetTypes: GroundActor, MADTank, Vehicle
 	Selectable:
-		DecorationBounds: 44,38,0,-4
+		DecorationBounds: 1877, 1621, 0, -170
 
 STNK:
 	Inherits: ^Vehicle

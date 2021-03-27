@@ -3,7 +3,7 @@ MSLO:
 	Inherits@IDISABLE: ^DisableOnLowPowerOrPowerDown
 	Inherits@shape: ^2x1Shape
 	Selectable:
-		Bounds: 48,24
+		Bounds: 2048, 1024
 	Valued:
 		Cost: 2500
 	Tooltip:
@@ -81,8 +81,8 @@ GAP:
 		Prerequisites: atek, ~structures.allies, ~techlevel.high
 		Description: Obscures the enemy's view with shroud.\nRequires power to operate.
 	Selectable:
-		Bounds: 24,24
-		DecorationBounds: 24,48,0,-12
+		Bounds: 1024, 1024
+		DecorationBounds: 1024, 2048, 0, -512
 	WithSpriteBody:
 		PauseOnCondition: disabled
 	Health:
@@ -118,7 +118,7 @@ SPEN:
 	Inherits: ^Building
 	Inherits@PRIMARY: ^PrimaryBuilding
 	Selectable:
-		Bounds: 72,48
+		Bounds: 3072, 2048
 	InfiltrateForSupportPower:
 		Proxy: powerproxy.sonarpulse
 		Types: SpyInfiltrate
@@ -257,7 +257,7 @@ SYRD:
 	Inherits: ^Building
 	Inherits@PRIMARY: ^PrimaryBuilding
 	Selectable:
-		Bounds: 72,48
+		Bounds: 3072, 2048
 	InfiltrateForSupportPower:
 		Proxy: powerproxy.sonarpulse
 		Types: SpyInfiltrate
@@ -392,8 +392,8 @@ IRON:
 		Footprint: xx
 		Dimensions: 2,1
 	Selectable:
-		Bounds: 48,28,0,2
-		DecorationBounds: 50,50,0,-12
+		Bounds: 2048, 1194, 0, 85
+		DecorationBounds: 2133, 2133, 0, -512
 	Health:
 		HP: 100000
 	Armor:
@@ -443,7 +443,7 @@ PDOX:
 	Inherits@IDISABLE: ^DisableOnLowPowerOrPowerDown
 	Inherits@shape: ^2x2Shape
 	Selectable:
-		Bounds: 48,48
+		Bounds: 2048, 2048
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 120
@@ -541,8 +541,8 @@ TSLA:
 	Tooltip:
 		Name: Tesla Coil
 	Selectable:
-		Bounds: 24,24
-		DecorationBounds: 24,40,0,-8
+		Bounds: 1024, 1024
+		DecorationBounds: 1024, 1706, 0, -341
 	Health:
 		HP: 40000
 	Armor:
@@ -586,8 +586,8 @@ AGUN:
 	Tooltip:
 		Name: AA Gun
 	Selectable:
-		Bounds: 24,24
-		DecorationBounds: 24,32,0,-4
+		Bounds: 1024, 1024
+		DecorationBounds: 1024, 1365, 0, -170
 	Health:
 		HP: 40000
 	Armor:
@@ -628,7 +628,7 @@ DOME:
 	Inherits@IDISABLE: ^DisableOnLowPowerOrPowerDown
 	Inherits@shape: ^2x2Shape
 	Selectable:
-		Bounds: 48,48
+		Bounds: 2048, 2048
 	HitShape:
 		UseTargetableCellsOffsets: false
 		TargetableOffsets: 0,0,0, 630,-384,0, 630,384,0, -700,-512,0, -700,512,0
@@ -892,7 +892,7 @@ SAM:
 	Inherits@AUTOTARGET: ^AutoTargetAir
 	Inherits@shape: ^2x1Shape
 	Selectable:
-		Bounds: 48,24
+		Bounds: 2048, 1024
 	HitShape:
 		Type: Rectangle
 			TopLeft: -768,-512
@@ -949,7 +949,7 @@ ATEK:
 	Inherits@IDISABLE: ^DisableOnLowPower
 	Inherits@shape: ^2x2Shape
 	Selectable:
-		Bounds: 48,48
+		Bounds: 2048, 2048
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 140
@@ -1001,7 +1001,7 @@ WEAP:
 	Inherits@shape: ^3x2Shape
 	Inherits@PRIMARY: ^PrimaryBuilding
 	Selectable:
-		Bounds: 72,48
+		Bounds: 3072, 2048
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 80
@@ -1108,7 +1108,7 @@ WEAP:
 FACT:
 	Inherits: ^Building
 	Selectable:
-		Bounds: 72,72
+		Bounds: 3072, 3072
 	Building:
 		Footprint: xxX xxx XxX ===
 		Dimensions: 3,4
@@ -1234,8 +1234,8 @@ PROC:
 		Dimensions: 3,4
 		LocalCenterOffset: 0,-512,0
 	Selectable:
-		Bounds: 72,50,0,4
-		DecorationBounds: 72,70,0,-2
+		Bounds: 3072, 2133, 0, 170
+		DecorationBounds: 3072, 2986, 0, -85
 	Targetable:
 		TargetTypes: GroundActor, Structure, C4, DetonateAttack, ThiefInfiltrate, SpyInfiltrate
 	Health:
@@ -1301,7 +1301,7 @@ PROC:
 SILO:
 	Inherits: ^Building
 	Selectable:
-		Bounds: 24,24
+		Bounds: 1024, 1024
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 35
@@ -1350,7 +1350,7 @@ HPAD:
 	Inherits@shape: ^2x2Shape
 	Inherits@PRIMARY: ^PrimaryBuilding
 	Selectable:
-		Bounds: 48,48
+		Bounds: 2048, 2048
 	HitShape:
 		UseTargetableCellsOffsets: false
 		TargetableOffsets: 0,0,0, 768,-512,0, 768,512,0, -281,-512,0, -630,512,0
@@ -1448,7 +1448,7 @@ AFLD:
 		Name: Airfield
 	Selectable:
 		Class: afld
-		Bounds: 72,48
+		Bounds: 3072, 2048
 	Building:
 		Footprint: xxx xxx
 		Dimensions: 3,2
@@ -1586,7 +1586,7 @@ POWR:
 	Inherits@POWER_OUTAGE: ^DisabledByPowerOutage
 	Inherits@shape: ^2x2Shape
 	Selectable:
-		Bounds: 48,48
+		Bounds: 2048, 2048
 	HitShape:
 		UseTargetableCellsOffsets: false
 		TargetableOffsets: 0,0,0, 640,-384,0, 640,512,0, -710,-512,0, -710,512,0
@@ -1643,8 +1643,8 @@ APWR:
 		Dimensions: 3,3
 		LocalCenterOffset: 0,-512,0
 	Selectable:
-		Bounds: 72,48
-		DecorationBounds: 72,68,0,-10
+		Bounds: 3072, 2048
+		DecorationBounds: 3072, 2901, 0, -426
 	Health:
 		HP: 70000
 	Armor:
@@ -1665,7 +1665,7 @@ STEK:
 	Inherits: ^ScienceBuilding
 	Inherits@shape: ^3x2Shape
 	Selectable:
-		Bounds: 72,48
+		Bounds: 3072, 2048
 	HitShape:
 		TargetableOffsets: 420,-768,0, 420,768,0, -770,-768,0, -770,768,0
 	Buildable:
@@ -1703,7 +1703,7 @@ BARR:
 	Inherits@shape: ^2x2Shape
 	Inherits@PRIMARY: ^PrimaryBuilding
 	Selectable:
-		Bounds: 48,48
+		Bounds: 2048, 2048
 	HitShape:
 		UseTargetableCellsOffsets: false
 		TargetableOffsets: 0,0,0, 490,-470,0, 355,512,0, -355,-512,0, -630,512,0
@@ -1787,7 +1787,7 @@ KENN:
 	Inherits: ^Building
 	Inherits@PRIMARY: ^PrimaryBuilding
 	Selectable:
-		Bounds: 24,24
+		Bounds: 1024, 1024
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 175
@@ -1864,7 +1864,7 @@ TENT:
 	Inherits@shape: ^2x2Shape
 	Inherits@PRIMARY: ^PrimaryBuilding
 	Selectable:
-		Bounds: 48,48
+		Bounds: 2048, 2048
 	HitShape:
 		UseTargetableCellsOffsets: false
 		TargetableOffsets: 0,0,0, 630,-512,0, 355,512,0, -281,-512,0, -630,512,0
@@ -1965,8 +1965,8 @@ FIX:
 		Footprint: _+_ +++ _+_
 		Dimensions: 3,3
 	Selectable:
-		Bounds: 68,34,0,3
-		DecorationBounds: 72,48
+		Bounds: 2901, 1450, 0, 128
+		DecorationBounds: 3072, 2048
 	Health:
 		HP: 80000
 	Armor:

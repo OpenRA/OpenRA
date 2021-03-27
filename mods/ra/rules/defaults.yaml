@@ -249,7 +249,7 @@
 		Locomotor: wheeled
 		TurnSpeed: 20
 	Selectable:
-		Bounds: 24, 24
+		Bounds: 1024, 1024
 	Targetable:
 		RequiresCondition: !parachute
 		TargetTypes: GroundActor, Vehicle
@@ -335,8 +335,8 @@
 		AlwaysTurnInPlace: true
 		Locomotor: foot
 	Selectable:
-		Bounds: 18,20,0,-6
-		DecorationBounds: 12,18,0,-8
+		Bounds: 768, 853, 0, -256
+		DecorationBounds: 512, 768, 0, -341
 	Targetable:
 		RequiresCondition: !parachute
 		TargetTypes: GroundActor, Infantry, Disguise
@@ -498,7 +498,7 @@
 	Mobile:
 		Locomotor: naval
 	Selectable:
-		Bounds: 24,24
+		Bounds: 1024, 1024
 	Targetable:
 		TargetTypes: WaterActor, Ship
 	Targetable@REPAIR:
@@ -550,7 +550,7 @@
 	AppearsOnRadar:
 		UseLocation: true
 	Selectable:
-		Bounds: 24,24
+		Bounds: 1024, 1024
 	Aircraft:
 		AirborneCondition: airborne
 	Targetable@GROUND:
@@ -729,7 +729,7 @@
 	Inherits: ^Building
 	Inherits@selection: ^SelectableCombatBuilding
 	Selectable:
-		Bounds: 24,24
+		Bounds: 1024, 1024
 	Targetable:
 		TargetTypes: GroundActor, C4, DetonateAttack, Structure, Defense
 	MustBeDestroyed:
@@ -750,7 +750,7 @@
 	Inherits@shape: ^1x1Shape
 	Inherits@handicaps: ^PlayerHandicaps
 	Interactable:
-		Bounds: 24,24
+		Bounds: 1024, 1024
 	OwnerLostAction:
 		Action: ChangeOwner
 	Building:
@@ -861,7 +861,7 @@
 	MapEditorData:
 		Categories: Decoration
 	Interactable:
-		Bounds: 24,24
+		Bounds: 1024, 1024
 
 ^CivBuilding:
 	Inherits: ^TechBuilding
@@ -1083,7 +1083,7 @@
 	BodyOrientation:
 		QuantizedFacings: 1
 	Interactable:
-		Bounds: 96,48
+		Bounds: 4096, 2048
 	ShakeOnDeath:
 		Duration: 15
 		Intensity: 6
@@ -1122,7 +1122,7 @@
 ^Crate:
 	Inherits@1: ^SpriteActor
 	Interactable:
-		Bounds: 24,24
+		Bounds: 1024, 1024
 	HiddenUnderFog:
 	Tooltip:
 		Name: Crate
@@ -1156,7 +1156,7 @@
 ^Mine:
 	Inherits: ^SpriteActor
 	Interactable:
-		Bounds: 24,24
+		Bounds: 1024, 1024
 	WithSpriteBody:
 	HiddenUnderFog:
 	Mine:

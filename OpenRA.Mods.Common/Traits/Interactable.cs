@@ -21,13 +21,13 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[Desc("Defines a custom rectangle for mouse interaction with the actor.",
 			"If null, the engine will guess an appropriate size based on the With*Body trait.",
-			"The first two numbers define the width and height of the rectangle.",
+			"The first two numbers define the width and height of the rectangle as a world distance.",
 			"The (optional) second two numbers define an x and y offset from the actor center.")]
-		public readonly int[] Bounds = null;
+		public readonly WDist[] Bounds = null;
 
 		[Desc("Defines a custom rectangle for Decorations (e.g. the selection box).",
 			"If null, Bounds will be used instead")]
-		public readonly int[] DecorationBounds = null;
+		public readonly WDist[] DecorationBounds = null;
 
 		public override object Create(ActorInitializer init) { return new Interactable(this); }
 	}
@@ -52,16 +52,17 @@ namespace OpenRA.Mods.Common.Traits
 			return autoBounds.Select(s => s.AutoMouseoverBounds(self, wr)).FirstOrDefault(r => !r.IsEmpty);
 		}
 
-		Polygon Bounds(Actor self, WorldRenderer wr, int[] bounds)
+		Polygon Bounds(Actor self, WorldRenderer wr, WDist[] bounds)
 		{
 			if (bounds == null)
 				return new Polygon(AutoBounds(self, wr));
 
-			var size = new int2(bounds[0], bounds[1]);
+			// Convert from WDist to pixels
+			var size = new int2(bounds[0].Length * wr.TileSize.Width / wr.TileScale, bounds[1].Length * wr.TileSize.Height / wr.TileScale);
 
 			var offset = -size / 2;
 			if (bounds.Length > 2)
-				offset += new int2(bounds[2], bounds[3]);
+				offset += new int2(bounds[2].Length * wr.TileSize.Width / wr.TileScale, bounds[3].Length * wr.TileSize.Height / wr.TileScale);
 
 			var xy = wr.ScreenPxPosition(self.CenterPosition) + offset;
 			return new Polygon(new Rectangle(xy.X, xy.Y, size.X, size.Y));

@@ -14,7 +14,7 @@ mcv:
 		Name: Mobile Construction Vehicle
 	Selectable:
 		Class: mcv
-		DecorationBounds: 42,42
+		DecorationBounds: 1344, 1344
 	Health:
 		HP: 45000
 	Armor:
@@ -63,7 +63,7 @@ harvester:
 		Name: Spice Harvester
 	Selectable:
 		Class: harvester
-		DecorationBounds: 42,42
+		DecorationBounds: 1344, 1344
 	Harvester:
 		Capacity: 28
 		HarvestFacings: 8
@@ -390,7 +390,7 @@ devastator:
 		Delay: 3
 		StartIfBelow: 50
 	Selectable:
-		DecorationBounds: 44,38,0,0
+		DecorationBounds: 1408, 1216, 0, 0
 
 raider:
 	Inherits: ^Vehicle
