@@ -108,6 +108,42 @@ CRATE:
 		Sound: ironcur9.aud
 		Condition: invulnerability
 		Duration: 600
+	GiveUnitCrateAction@lst:
+		SelectionShares: 6
+		Units: lst
+		ValidFactions: allies, england, france, germany, soviet, russia, ukraine
+		Prerequisites: techlevel.low
+	GiveUnitCrateAction@pt:
+		SelectionShares: 6
+		Units: pt
+		ValidFactions: allies, england, france, germany
+		Prerequisites: techlevel.low
+	GiveUnitCrateAction@ss:
+		SelectionShares: 4
+		Units: ss
+		ValidFactions: soviet, russia, ukraine
+		Prerequisites: techlevel.low
+	GiveUnitCrateAction@dd:
+		SelectionShares: 4
+		Units: dd
+		ValidFactions: allies, england, france, germany
+		Prerequisites: techlevel.medium, dome
+	GiveUnitCrateAction@ss2:
+		SelectionShares: 4
+		Units: ss
+		ValidFactions: soviet, russia, ukraine
+		Prerequisites: techlevel.medium, dome
+	GiveUnitCrateAction@ca:
+		SelectionShares: 3
+		Units: ca
+		ValidFactions: allies, england, france, germany
+		Prerequisites: techlevel.high, atek
+	GiveUnitCrateAction@msub:
+		SelectionShares: 3
+		Units: msub
+		ValidFactions: soviet, russia, ukraine
+		Prerequisites: techlevel.high, stek
+
 
 MONEYCRATE:
 	Inherits: ^Crate
