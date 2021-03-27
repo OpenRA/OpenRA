@@ -204,7 +204,7 @@
 		Locomotor: vehicle
 		PauseOnCondition: notmobile
 	Selectable:
-		Bounds: 32,32
+		Bounds: 1024, 1024
 	Targetable:
 		TargetTypes: Ground, Vehicle, C4
 	Passenger:
@@ -320,8 +320,8 @@
 		AlwaysTurnInPlace: true
 		Locomotor: foot
 	Selectable:
-		Bounds: 24,24,0,-4
-		DecorationBounds: 12,20,0,-4
+		Bounds: 768, 768, 0, -128
+		DecorationBounds: 384, 640, 0, -128
 	Targetable:
 		TargetTypes: Ground, Infantry
 	QuantizeFacingsFromSequence:

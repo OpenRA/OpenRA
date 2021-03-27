@@ -10,7 +10,7 @@ DOGGIE:
 	Health:
 		HP: 25000
 	Selectable:
-		Bounds: 24,24
+		Bounds: 724, 1448
 	Valued:
 		Cost: 100
 	Armor:
@@ -138,7 +138,7 @@ JFISH:
 		Image: floater
 		Palette: player-nobright
 	Selectable:
-		Bounds: 32,32,0,-5
+		Bounds: 965, 1930, 0, -301
 	AmbientSound:
 		SoundFiles: floatmov.aud, flotmov2.aud, flotmov3.aud, flotmov4.aud
 		Delay: 150, 450

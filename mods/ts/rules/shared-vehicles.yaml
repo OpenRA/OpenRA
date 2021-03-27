@@ -12,7 +12,7 @@ MCV:
 	Tooltip:
 		Name: Mobile Construction Vehicle
 	Selectable:
-		DecorationBounds: 42,42
+		DecorationBounds: 1267, 2534
 	Health:
 		HP: 100000
 	Armor:
@@ -54,8 +54,8 @@ HARV:
 		Prerequisites: ~factory, proc, ~techlevel.low
 		Description: Collects Tiberium for processing.\n  Unarmed
 	Selectable:
-		Bounds: 36,36
-		DecorationBounds: 36,36
+		Bounds: 1086, 2172
+		DecorationBounds: 1086, 2172
 	Harvester:
 		DeliveryBuildings: proc
 		Capacity: 28

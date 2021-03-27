@@ -162,7 +162,7 @@ NAFNCE:
 		Pieces: 0, 1
 		Range: 2c0, 5c0
 	Interactable:
-		Bounds: 48, 24
+		Bounds: 1448, 1448
 
 NALASR:
 	Inherits: ^Defense

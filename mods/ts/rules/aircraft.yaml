@@ -134,7 +134,7 @@ ORCA:
 		Prerequisites: ~gahpad
 		Description: Fast assault gunship with\ndual missile launchers.\n  Strong vs Buildings, Vehicles\n  Weak vs Infantry, Aircraft
 	Selectable:
-		Bounds: 30,24
+		Bounds: 905, 1448
 	Aircraft:
 		TurnSpeed: 20
 		Speed: 186
@@ -195,7 +195,7 @@ ORCAB:
 		Prerequisites: ~gahpad, gatech
 		Description: Heavy bomber.\n  Strong vs Buildings, Vehicles\n  Weak vs Infantry, Aircraft
 	Selectable:
-		Bounds: 30,24
+		Bounds: 905, 1448
 	Aircraft:
 		CruiseAltitude: 5c512
 		TurnSpeed: 12
@@ -323,7 +323,7 @@ TRNSPORT:
 		Type: CenterPosition
 	RenderSprites:
 	Selectable:
-		Bounds: 44,32,0,-8
+		Bounds: 1327, 1930, 0, -482
 	SpawnActorOnDeath:
 		Actor: TRNSPORT.Husk
 		RequiresCondition: !empdisable
@@ -347,7 +347,7 @@ SCRIN:
 		Prerequisites: ~nahpad, natech
 		Description: Advanced fighter-bomber craft\nwith twin plasma cannons.\n  Strong vs Buildings, Vehicles\n  Weak vs Infantry, Aircraft
 	Selectable:
-		Bounds: 30,24
+		Bounds: 905, 1448
 	Voiced:
 		VoiceSet: Scrin
 	Aircraft:
@@ -414,7 +414,7 @@ APACHE:
 		Prerequisites: ~nahpad
 		Description: Anti-personnel support gunship\narmed with dual chain guns.\n  Strong vs Infantry, Light armor, Aircraft\n  Weak vs Vehicles
 	Selectable:
-		Bounds: 30,24
+		Bounds: 905, 1448
 	Aircraft:
 		Pitch: -32
 		PitchSpeed: 8

@@ -137,7 +137,7 @@ crate:
 	MapEditorData:
 		Categories: System
 	Interactable:
-		Bounds: 20,20
+		Bounds: 640, 640
 
 mpspawn:
 	Interactable:

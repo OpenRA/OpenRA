@@ -63,7 +63,7 @@ SS:
 		EmptyWeapon: UnitExplodeSubmarine
 	-MustBeDestroyed:
 	Selectable:
-		DecorationBounds: 38,38
+		DecorationBounds: 1621, 1621
 
 MSUB:
 	Inherits: ^Ship
@@ -134,7 +134,7 @@ MSUB:
 		EmptyWeapon: UnitExplodeSubmarine
 	-MustBeDestroyed:
 	Selectable:
-		DecorationBounds: 44,44
+		DecorationBounds: 1877, 1877
 
 DD:
 	Inherits: ^Ship
@@ -186,7 +186,7 @@ DD:
 		Range: 4c0
 	RenderDetectionCircle:
 	Selectable:
-		DecorationBounds: 38,38
+		DecorationBounds: 1621, 1621
 
 CA:
 	Inherits: ^Ship
@@ -249,7 +249,7 @@ CA:
 	WithSpriteTurret@SECONDARY:
 		Turret: secondary
 	Selectable:
-		DecorationBounds: 44,44
+		DecorationBounds: 1877, 1877
 
 LST:
 	Inherits: ^Ship
@@ -288,7 +288,7 @@ LST:
 		LoadingCondition: notmobile
 	-Chronoshiftable:
 	Selectable:
-		DecorationBounds: 36,36
+		DecorationBounds: 1536, 1536
 
 PT:
 	Inherits: ^Ship
@@ -337,4 +337,4 @@ PT:
 		Range: 4c0
 	RenderDetectionCircle:
 	Selectable:
-		DecorationBounds: 36,36
+		DecorationBounds: 1536, 1536

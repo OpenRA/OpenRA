@@ -46,7 +46,7 @@ TRAN:
 	SpawnActorOnDeath:
 		Actor: TRAN.Husk
 	Selectable:
-		DecorationBounds: 41,41
+		DecorationBounds: 1749, 1749
 
 HELI:
 	Inherits: ^Helicopter
@@ -109,7 +109,7 @@ HELI:
 		Delay: 40
 		Count: 1
 	Selectable:
-		DecorationBounds: 30,24
+		DecorationBounds: 1280, 1024
 	WithAmmoPipsDecoration:
 		Position: BottomLeft
 		Margin: 4, 3
@@ -167,7 +167,7 @@ ORCA:
 		Delay: 100
 		Count: 2
 	Selectable:
-		DecorationBounds: 30,24
+		DecorationBounds: 1280, 1024
 	WithAmmoPipsDecoration:
 		Position: BottomLeft
 		Margin: 4, 3

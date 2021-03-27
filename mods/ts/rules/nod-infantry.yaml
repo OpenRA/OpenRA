@@ -53,8 +53,8 @@ CYBORG:
 		Prerequisites: ~nahand, ~techlevel.medium
 		Description: Cybernetic infantry unit.\n  Strong vs Infantry, Light armor\n  Weak vs Vehicles, Aircraft
 	Selectable:
-		Bounds: 16,31,0,-10
-		DecorationBounds: 16,31,0,-10
+		Bounds: 482, 1870, 0, -603
+		DecorationBounds: 482, 1870, 0, -603
 	Voiced:
 		VoiceSet: Cyborg
 	Mobile:
@@ -91,8 +91,8 @@ CYC2:
 		BuildLimit: 1
 		Description: Elite cybernetic infantry unit.\n  Strong vs Infantry, Vehicles, Buildings\n  Weak vs Aircraft\nMaximum 1 can be trained.
 	Selectable:
-		Bounds: 16,32,-1,-12
-		DecorationBounds: 16,32,-1,-12
+		Bounds: 482, 1930, -30, -724
+		DecorationBounds: 482, 1930, -30, -724
 	Voiced:
 		VoiceSet: CyborgCommando
 	Mobile:

@@ -2,7 +2,7 @@ FACT:
 	Inherits: ^BaseBuilding
 	Inherits@shape: ^3x2Shape
 	Selectable:
-		Bounds: 72,48
+		Bounds: 3072, 2048
 	Valued:
 		Cost: 3000
 	Tooltip:
@@ -140,7 +140,7 @@ NUKE:
 	Inherits: ^BaseBuilding
 	Inherits@shape: ^2x2Shape
 	Selectable:
-		Bounds: 48,48
+		Bounds: 2048, 2048
 	HitShape:
 		TargetableOffsets: 630,299,0
 	Valued:
@@ -171,7 +171,7 @@ NUK2:
 	Inherits: ^BaseBuilding
 	Inherits@shape: ^2x2Shape
 	Selectable:
-		Bounds: 48,48
+		Bounds: 2048, 2048
 	HitShape:
 		TargetableOffsets: 630,299,0
 	Valued:
@@ -236,8 +236,8 @@ PROC:
 	StoresResources:
 		Capacity: 1000
 	Selectable:
-		Bounds: 72,56
-		DecorationBounds: 73,72
+		Bounds: 3072, 2389
+		DecorationBounds: 3114, 3072
 	CustomSellValue:
 		Value: 400
 	FreeActor:
@@ -286,8 +286,8 @@ SILO:
 		RequiredForShortGame: false
 	-AcceptsDeliveredCash:
 	Selectable:
-		Bounds: 48,24
-		DecorationBounds: 49,30
+		Bounds: 2048, 1024
+		DecorationBounds: 2090, 1280
 
 PYLE:
 	Inherits: ^BaseBuilding
@@ -345,7 +345,7 @@ PYLE:
 		Amount: -15
 	ProvidesPrerequisite@buildingname:
 	Selectable:
-		Bounds: 48,42,0,-5
+		Bounds: 2048, 1792, 0, -213
 
 HAND:
 	Inherits: ^BaseBuilding
@@ -396,13 +396,13 @@ HAND:
 		Amount: -15
 	ProvidesPrerequisite@buildingname:
 	Selectable:
-		Bounds: 48,48
-		DecorationBounds: 48,68,0,-10
+		Bounds: 2048, 2048
+		DecorationBounds: 2048, 2901, 0, -426
 
 AFLD:
 	Inherits: ^BaseBuilding
 	Selectable:
-		Bounds: 96,48
+		Bounds: 4096, 2048
 	HitShape:
 		TargetableOffsets: 0,0,0, 0,-512,256, 0,-1451,384, 0,512,128, 0,1536,85
 		Type: Rectangle
@@ -480,8 +480,8 @@ WEAP:
 		Dimensions: 3,3
 		LocalCenterOffset: 0,-512,0
 	Selectable:
-		Bounds: 72,48
-		DecorationBounds: 72,64,0,-16
+		Bounds: 3072, 2048
+		DecorationBounds: 3072, 2730, 0, -682
 	Health:
 		HP: 110000
 	RevealsShroud:
@@ -522,7 +522,7 @@ HPAD:
 	Inherits: ^BaseBuilding
 	Inherits@shape: ^2x2Shape
 	Selectable:
-		Bounds: 48,48
+		Bounds: 2048, 2048
 	HitShape:
 		UseTargetableCellsOffsets: false
 		TargetableOffsets: 0,0,0, 768,-512,0, 768,512,0, -281,-512,0, -630,512,0
@@ -611,8 +611,8 @@ HQ:
 		Dimensions: 2,3
 		LocalCenterOffset: 0,-512,0
 	Selectable:
-		Bounds: 48,40,0,9
-		DecorationBounds: 48,53,0,-4
+		Bounds: 2048, 1706, 0, 384
+		DecorationBounds: 2048, 2261, 0, -170
 	WithSpriteBody:
 		PauseOnCondition: lowpower
 	Health:
@@ -674,8 +674,8 @@ FIX:
 		Footprint: _+_ +++ _+_
 		Dimensions: 3,3
 	Selectable:
-		Bounds: 64,34,0,3
-		DecorationBounds: 72,48
+		Bounds: 2730, 1450, 0, 128
+		DecorationBounds: 3072, 2048
 	Health:
 		HP: 80000
 	RevealsShroud:
@@ -719,8 +719,8 @@ EYE:
 		Dimensions: 2,3
 		LocalCenterOffset: 0,-512,0
 	Selectable:
-		Bounds: 48,40,0,9
-		DecorationBounds: 48,53,0,-4
+		Bounds: 2048, 1706, 0, 384
+		DecorationBounds: 2048, 2261, 0, -170
 	WithSpriteBody:
 		PauseOnCondition: lowpower
 	Health:
@@ -778,8 +778,8 @@ TMPL:
 		Dimensions: 3,3
 		LocalCenterOffset: 0,-512,0
 	Selectable:
-		Bounds: 72,48
-		DecorationBounds: 72,68,0,-12
+		Bounds: 3072, 2048
+		DecorationBounds: 3072, 2901, 0, -512
 	Health:
 		HP: 210000
 	RevealsShroud:
@@ -828,7 +828,7 @@ GUN:
 	Inherits: ^Defense
 	Inherits@AUTOTARGET: ^AutoTargetGround
 	Selectable:
-		Bounds: 24,24
+		Bounds: 1024, 1024
 	Valued:
 		Cost: 600
 	Tooltip:
@@ -879,7 +879,7 @@ SAM:
 	Inherits@AUTOTARGET: ^AutoTargetAir
 	Inherits@shape: ^2x1Shape
 	Selectable:
-		Bounds: 48,24
+		Bounds: 2048, 1024
 	HitShape:
 		Type: Rectangle
 			TopLeft: -768,-512
@@ -942,8 +942,8 @@ OBLI:
 		BuildDuration: 2080
 		Description: Advanced base defense.\nRequires power to operate.\n  Strong vs all Ground units\n  Cannot target Aircraft
 	Selectable:
-		Bounds: 24,24
-		DecorationBounds: 22,44,0,-10
+		Bounds: 1024, 1024
+		DecorationBounds: 938, 1877, 0, -426
 	Health:
 		HP: 75000
 	Armor:
@@ -978,7 +978,7 @@ GTWR:
 	Inherits: ^Defense
 	Inherits@AUTOTARGET: ^AutoTargetGround
 	Selectable:
-		Bounds: 24,24
+		Bounds: 1024, 1024
 	Valued:
 		Cost: 600
 	Tooltip:
@@ -1027,8 +1027,8 @@ ATWR:
 		BuildDuration: 1920
 		Description: All-purpose defensive structure.\n  Strong vs Aircraft, Infantry\n  Weak vs Tanks
 	Selectable:
-		Bounds: 24,24
-		DecorationBounds: 22,48,0,-12
+		Bounds: 1024, 1024
+		DecorationBounds: 938, 2048, 0, -512
 	Health:
 		HP: 55000
 	Armor:

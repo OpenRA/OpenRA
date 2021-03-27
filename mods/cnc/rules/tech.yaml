@@ -1,7 +1,7 @@
 V19:
 	Inherits: ^TechBuilding
 	Selectable:
-		Bounds: 24,24
+		Bounds: 1024, 1024
 	CashTrickler:
 		Amount: 10
 		RequiresCondition: enabled
@@ -27,7 +27,7 @@ V19:
 V19.Husk:
 	Inherits: ^CivBuildingHusk
 	Interactable:
-		Bounds: 24,24
+		Bounds: 1024, 1024
 	WithSpriteBody:
 	WithIdleOverlay:
 		StartSequence: fire-start
@@ -42,7 +42,7 @@ HOSP:
 	Inherits: ^TechBuilding
 	Inherits@shape: ^2x2Shape
 	Selectable:
-		Bounds: 48,48
+		Bounds: 2048, 2048
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -65,7 +65,7 @@ HOSP:
 HOSP.Husk:
 	Inherits: ^CivBuildingHusk
 	Interactable:
-		Bounds: 48,48
+		Bounds: 2048, 2048
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -78,7 +78,7 @@ BIO:
 	Inherits: ^TechBuilding
 	Inherits@shape: ^2x2Shape
 	Selectable:
-		Bounds: 48,48
+		Bounds: 2048, 2048
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -117,7 +117,7 @@ BIO:
 BIO.Husk:
 	Inherits: ^CivBuildingHusk
 	Interactable:
-		Bounds: 48,48
+		Bounds: 2048, 2048
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -128,7 +128,7 @@ MISS:
 	Inherits: ^CivBuilding
 	Inherits@shape: ^3x2Shape
 	Selectable:
-		Bounds: 72,48
+		Bounds: 3072, 2048
 	Building:
 		Footprint: xxx xxx
 		Dimensions: 3,2

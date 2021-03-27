@@ -95,8 +95,8 @@ MIG:
 		Ammo: 8
 		AmmoCondition: ammo
 	Selectable:
-		Bounds: 36,28,0,2
-		DecorationBounds: 40,29,0,1
+		Bounds: 1536, 1194, 0, 85
+		DecorationBounds: 1706, 1237, 0, 42
 	Contrail@1:
 		Offset: -598,-683,0
 	Contrail@2:
@@ -179,7 +179,7 @@ YAK:
 	ProducibleWithLevel:
 		Prerequisites: aircraft.upgraded
 	Selectable:
-		DecorationBounds: 30,28,0,2
+		DecorationBounds: 1280, 1194, 0, 85
 	Rearmable:
 		RearmActors: afld, afld.ukraine
 	WithAmmoPipsDecoration:
@@ -240,7 +240,7 @@ TRAN:
 	SpawnActorOnDeath:
 		Actor: TRAN.Husk
 	Selectable:
-		DecorationBounds: 40,36
+		DecorationBounds: 1706, 1536
 
 HELI:
 	Inherits: ^Helicopter
@@ -304,7 +304,7 @@ HELI:
 	ProducibleWithLevel:
 		Prerequisites: aircraft.upgraded
 	Selectable:
-		DecorationBounds: 36,28
+		DecorationBounds: 1536, 1194
 	Rearmable:
 		RearmActors: hpad
 	WithAmmoPipsDecoration:
@@ -377,7 +377,7 @@ HIND:
 	ProducibleWithLevel:
 		Prerequisites: aircraft.upgraded
 	Selectable:
-		DecorationBounds: 38,32
+		DecorationBounds: 1621, 1365
 	Rearmable:
 		RearmActors: hpad
 	WithAmmoPipsDecoration:
@@ -479,7 +479,7 @@ MH60:
 	ProducibleWithLevel:
 		Prerequisites: aircraft.upgraded
 	Selectable:
-		DecorationBounds: 38,32
+		DecorationBounds: 1621, 1365
 	Rearmable:
 		RearmActors: hpad
 	WithAmmoPipsDecoration:

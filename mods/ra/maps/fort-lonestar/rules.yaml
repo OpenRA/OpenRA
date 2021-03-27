@@ -144,7 +144,7 @@ MOBILETENT:
 	Tooltip:
 		Name: Mobile Tent
 	Selectable:
-		DecorationBounds: 21,21
+		DecorationBounds: 896, 896
 	SelectionDecorations:
 	Health:
 		HP: 60000
