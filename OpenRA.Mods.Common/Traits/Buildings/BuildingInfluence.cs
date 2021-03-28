@@ -50,5 +50,10 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			return influence.Contains(cell) ? influence[cell] : null;
 		}
+
+		public bool AnyBuildingAt(CPos cell)
+		{
+			return influence.Contains(cell) && influence[cell] != null;
+		}
 	}
 }

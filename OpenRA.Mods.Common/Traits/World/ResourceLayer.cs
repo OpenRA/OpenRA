@@ -178,7 +178,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!resourceInfo.AllowedTerrainTypes.Contains(Map.GetTerrainInfo(cell).Type))
 				return false;
 
-			return BuildingInfluence.GetBuildingAt(cell) == null;
+			return !BuildingInfluence.AnyBuildingAt(cell);
 		}
 
 		ResourceLayerContents CreateResourceCell(string resourceType, CPos cell, int density)
