@@ -235,7 +235,7 @@ namespace OpenRA.Mods.Common.Traits
 
 					// Building bibs and pathable footprint cells are not included in the ActorMap
 					// TODO: Allow ActorMap to track these and finally remove the BuildingInfluence layer completely
-					if (AnyGivesBuildableArea(new[] { bi.GetBuildingAt(c) }, p, allyBuildEnabled, requiresBuildableArea))
+					if (AnyGivesBuildableArea(bi.GetBuildingsAt(c), p, allyBuildEnabled, requiresBuildableArea))
 						nearnessCandidates.Add(c);
 				}
 			}
