@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Traits;
+using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Traits
 {
@@ -48,7 +49,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void Fade(EffectType type)
 		{
 			startTime = Game.RunTime;
-			endTime = startTime + Game.Timestep * Info.FadeLength;
+			endTime = startTime + Ui.Timestep * Info.FadeLength;
 			frac = 1;
 
 			from = to;

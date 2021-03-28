@@ -20,6 +20,8 @@ namespace OpenRA.Widgets
 {
 	public static class Ui
 	{
+		public const int Timestep = 40;
+
 		public static Widget Root = new ContainerWidget();
 
 		public static long LastTickTime = Game.RunTime;

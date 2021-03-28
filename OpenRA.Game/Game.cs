@@ -32,7 +32,6 @@ namespace OpenRA
 	public static class Game
 	{
 		public const int NetTickScale = 3; // 120 ms net tick for 40 ms local tick
-		public const int Timestep = 40;
 		public const int TimestepJankThreshold = 250; // Don't catch up for delays larger than 250ms
 
 		public static InstalledMods Mods { get; private set; }
@@ -572,17 +571,17 @@ namespace OpenRA
 			var world = orderManager.World;
 
 			var uiTickDelta = tick - Ui.LastTickTime;
-			if (uiTickDelta >= Timestep)
+			if (uiTickDelta >= Ui.Timestep)
 			{
 				// Explained below for the world tick calculation
-				var integralTickTimestep = (uiTickDelta / Timestep) * Timestep;
-				Ui.LastTickTime += integralTickTimestep >= TimestepJankThreshold ? integralTickTimestep : Timestep;
+				var integralTickTimestep = (uiTickDelta / Ui.Timestep) * Ui.Timestep;
+				Ui.LastTickTime += integralTickTimestep >= TimestepJankThreshold ? integralTickTimestep : Ui.Timestep;
 
 				Sync.RunUnsynced(Settings.Debug.SyncCheckUnsyncedCode, world, Ui.Tick);
 				Cursor.Tick();
 			}
 
-			var worldTimestep = world == null ? Timestep : world.IsLoadingGameSave ? 1 : world.Timestep;
+			var worldTimestep = world == null ? Ui.Timestep : world.IsLoadingGameSave ? 1 : world.Timestep;
 			var worldTickDelta = tick - orderManager.LastTickTime;
 			if (worldTimestep != 0 && worldTickDelta >= worldTimestep)
 			{
@@ -779,7 +778,7 @@ namespace OpenRA
 			{
 				// Ideal time between logic updates. Timestep = 0 means the game is paused
 				// but we still call LogicTick() because it handles pausing internally.
-				var logicInterval = worldRenderer != null && worldRenderer.World.Timestep != 0 ? worldRenderer.World.Timestep : Timestep;
+				var logicInterval = worldRenderer != null && worldRenderer.World.Timestep != 0 ? worldRenderer.World.Timestep : Ui.Timestep;
 
 				// Ideal time between screen updates
 				var maxFramerate = Settings.Graphics.CapFramerate ? Settings.Graphics.MaxFramerate.Clamp(1, 1000) : 1000;
