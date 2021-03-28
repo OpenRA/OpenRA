@@ -181,10 +181,24 @@ namespace OpenRA.Mods.Common.Traits
 			return null;
 		}
 
-		bool ActorGrantsValidArea(Actor a, RequiresBuildableAreaInfo rba)
+		static bool AnyGivesBuildableArea(IEnumerable<Actor> actors, Player p, bool allyBuildEnabled, RequiresBuildableAreaInfo rba)
 		{
-			return rba.AreaTypes.Overlaps(a.TraitsImplementing<GivesBuildableArea>()
-				.SelectMany(gba => gba.AreaTypes));
+			foreach (var a in actors)
+			{
+				if (!a.IsInWorld)
+					continue;
+
+				if (a.Owner != p && (!allyBuildEnabled || a.Owner.RelationshipWith(p) != PlayerRelationship.Ally))
+					continue;
+
+				var overlaps = rba.AreaTypes.Overlaps(a.TraitsImplementing<GivesBuildableArea>()
+					.SelectMany(gba => gba.AreaTypes));
+
+				if (overlaps)
+					return true;
+			}
+
+			return false;
 		}
 
 		public virtual bool IsCloseEnoughToBase(World world, Player p, ActorInfo ai, CPos topLeft)
@@ -212,21 +226,17 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				for (var x = scanStart.X; x < scanEnd.X; x++)
 				{
-					var pos = new CPos(x, y);
-					var buildingAtPos = bi.GetBuildingAt(pos);
-
-					if (buildingAtPos == null)
+					var c = new CPos(x, y);
+					if (AnyGivesBuildableArea(world.ActorMap.GetActorsAt(c), p, allyBuildEnabled, requiresBuildableArea))
 					{
-						var unitsAtPos = world.ActorMap.GetActorsAt(pos).Where(a => a.IsInWorld
-							&& (a.Owner == p || (allyBuildEnabled && a.Owner.RelationshipWith(p) == PlayerRelationship.Ally))
-							&& ActorGrantsValidArea(a, requiresBuildableArea));
-
-						if (unitsAtPos.Any())
-							nearnessCandidates.Add(pos);
+						nearnessCandidates.Add(c);
+						continue;
 					}
-					else if (buildingAtPos.IsInWorld && ActorGrantsValidArea(buildingAtPos, requiresBuildableArea)
-						&& (buildingAtPos.Owner == p || (allyBuildEnabled && buildingAtPos.Owner.RelationshipWith(p) == PlayerRelationship.Ally)))
-						nearnessCandidates.Add(pos);
+
+					// Building bibs and pathable footprint cells are not included in the ActorMap
+					// TODO: Allow ActorMap to track these and finally remove the BuildingInfluence layer completely
+					if (AnyGivesBuildableArea(new[] { bi.GetBuildingAt(c) }, p, allyBuildEnabled, requiresBuildableArea))
+						nearnessCandidates.Add(c);
 				}
 			}
 
