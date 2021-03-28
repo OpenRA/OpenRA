@@ -20,7 +20,7 @@ namespace OpenRA.Graphics
 		public ITexture Texture { get; private set; }
 		public int Height { get; private set; }
 		readonly Dictionary<string, ImmutablePalette> palettes = new Dictionary<string, ImmutablePalette>();
-		readonly Dictionary<string, MutablePalette> modifiablePalettes = new Dictionary<string, MutablePalette>();
+		readonly Dictionary<string, MutablePalette> mutablePalettes = new Dictionary<string, MutablePalette>();
 		readonly Dictionary<string, int> indices = new Dictionary<string, int>();
 		byte[] buffer = new byte[0];
 
@@ -31,12 +31,12 @@ namespace OpenRA.Graphics
 
 		public bool Contains(string name)
 		{
-			return modifiablePalettes.ContainsKey(name) || palettes.ContainsKey(name);
+			return mutablePalettes.ContainsKey(name) || palettes.ContainsKey(name);
 		}
 
 		public IPalette GetPalette(string name)
 		{
-			if (modifiablePalettes.TryGetValue(name, out var mutable))
+			if (mutablePalettes.TryGetValue(name, out var mutable))
 				return mutable.AsReadOnly();
 			if (palettes.TryGetValue(name, out var immutable))
 				return immutable;
@@ -66,15 +66,15 @@ namespace OpenRA.Graphics
 			}
 
 			if (allowModifiers)
-				modifiablePalettes.Add(name, new MutablePalette(p));
+				mutablePalettes.Add(name, new MutablePalette(p));
 			else
 				CopyPaletteToBuffer(index, p);
 		}
 
 		public void ReplacePalette(string name, IPalette p)
 		{
-			if (modifiablePalettes.ContainsKey(name))
-				CopyPaletteToBuffer(indices[name], modifiablePalettes[name] = new MutablePalette(p));
+			if (mutablePalettes.ContainsKey(name))
+				CopyPaletteToBuffer(indices[name], mutablePalettes[name] = new MutablePalette(p));
 			else if (palettes.ContainsKey(name))
 				CopyPaletteToBuffer(indices[name], palettes[name] = new ImmutablePalette(p));
 			else
@@ -95,7 +95,7 @@ namespace OpenRA.Graphics
 
 		void CopyModifiablePalettesToBuffer()
 		{
-			foreach (var kvp in modifiablePalettes)
+			foreach (var kvp in mutablePalettes)
 				CopyPaletteToBuffer(indices[kvp.Key], kvp.Value);
 		}
 
@@ -107,14 +107,14 @@ namespace OpenRA.Graphics
 		public void ApplyModifiers(IEnumerable<IPaletteModifier> paletteMods)
 		{
 			foreach (var mod in paletteMods)
-				mod.AdjustPalette(modifiablePalettes);
+				mod.AdjustPalette(mutablePalettes);
 
 			// Update our texture with the changes.
 			CopyModifiablePalettesToBuffer();
 			CopyBufferToTexture();
 
 			// Reset modified palettes back to their original colors, ready for next time.
-			foreach (var kvp in modifiablePalettes)
+			foreach (var kvp in mutablePalettes)
 			{
 				var originalPalette = palettes[kvp.Key];
 				var modifiedPalette = kvp.Value;
