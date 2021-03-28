@@ -114,7 +114,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			var blockedByNeighbours = Map.Ramp[cell] == 0 && !Common.Util.ExpandFootprint(cell, false)
 				.All(c => check(cell, c));
 
-			return !blockedByNeighbours && (resourceType == info.VeinType || BuildingInfluence.GetBuildingAt(cell) == null);
+			return !blockedByNeighbours && (resourceType == info.VeinType || !BuildingInfluence.AnyBuildingAt(cell));
 		}
 	}
 }
