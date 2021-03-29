@@ -10,7 +10,6 @@
 #endregion
 
 using System;
-using System.Linq;
 using OpenRA.Primitives;
 using OpenRA.Support;
 
@@ -21,7 +20,6 @@ namespace OpenRA.Graphics
 		public int TopOffset { get; private set; }
 		readonly int size;
 		readonly SheetBuilder builder;
-		readonly Func<string, float> lineWidth;
 		readonly IFont font;
 		readonly Cache<char, GlyphInfo> glyphs;
 		readonly Cache<(char C, int Radius), Sprite> contrastGlyphs;
@@ -42,10 +40,6 @@ namespace OpenRA.Graphics
 			glyphs = new Cache<char, GlyphInfo>(CreateGlyph);
 			contrastGlyphs = new Cache<(char, int), Sprite>(CreateContrastGlyph);
 			dilationElements = new Cache<int, float[]>(CreateCircularWeightMap);
-
-			// PERF: Cache these delegates for Measure calls.
-			Func<char, float> characterWidth = character => glyphs[character].Advance;
-			lineWidth = line => line.Sum(characterWidth) / deviceScale;
 
 			// Pre-cache small font sizes so glyphs are immediately available when we need them
 			if (size <= 24)
@@ -238,16 +232,26 @@ namespace OpenRA.Graphics
 			if (string.IsNullOrEmpty(text))
 				return new int2(0, size);
 
-			var lines = text.Split('\n');
-			return new int2((int)Math.Ceiling(MaxLineWidth(lines, lineWidth)), lines.Length * size);
+			var lines = text.SplitLines('\n');
+
+			var maxWidth = 0f;
+			var rows = 0;
+			foreach (var line in lines)
+			{
+				rows++;
+				maxWidth = Math.Max(maxWidth, LineWidth(line));
+			}
+
+			return new int2((int)Math.Ceiling(maxWidth), rows * size);
 		}
 
-		static float MaxLineWidth(string[] lines, Func<string, float> lineWidth)
+		float LineWidth(ReadOnlySpan<char> line)
 		{
-			var maxWidth = 0f;
-			foreach (var line in lines)
-				maxWidth = Math.Max(maxWidth, lineWidth(line));
-			return maxWidth;
+			var result = 0f;
+			foreach (var c in line)
+				result += glyphs[c].Advance;
+
+			return result / deviceScale;
 		}
 
 		GlyphInfo CreateGlyph(char c)
