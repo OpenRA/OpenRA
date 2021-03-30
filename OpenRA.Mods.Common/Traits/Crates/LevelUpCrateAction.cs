@@ -67,12 +67,12 @@ namespace OpenRA.Mods.Common.Traits
 			if (info.MaxExtraCollectors > -1)
 				inRange = inRange.Take(info.MaxExtraCollectors);
 
-			foreach (var actor in inRange.Append(collector))
+			foreach (var recipient in inRange.Append(collector))
 			{
-				var recipient = actor;	// loop variable in closure hazard
 				recipient.World.AddFrameEndTask(w =>
 				{
-					recipient.TraitOrDefault<GainsExperience>()?.GiveLevels(info.Levels);
+					if (!recipient.IsDead)
+						recipient.TraitOrDefault<GainsExperience>()?.GiveLevels(info.Levels);
 				});
 			}
 
