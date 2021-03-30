@@ -558,6 +558,7 @@ GNRL:
 
 THF:
 	Inherits: ^Soldier
+	Inherits@selection: ^SelectableSupportUnit
 	Buildable:
 		Queue: Infantry
 		BuildAtProductionType: Soldier
