@@ -46,12 +46,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var originalTimestep = world.Timestep;
 
 				var pauseButton = widget.Get<ButtonWidget>("BUTTON_PAUSE");
-				pauseButton.IsVisible = () => world.Timestep != 0 && orderManager.NetFrameNumber < replayNetTicks;
-				pauseButton.OnClick = () => world.Timestep = 0;
+				pauseButton.IsVisible = () => world.ReplayTimestep != 0 && orderManager.NetFrameNumber < replayNetTicks;
+				pauseButton.OnClick = () => world.ReplayTimestep = 0;
 
 				var playButton = widget.Get<ButtonWidget>("BUTTON_PLAY");
-				playButton.IsVisible = () => world.Timestep == 0 || orderManager.NetFrameNumber >= replayNetTicks;
-				playButton.OnClick = () => world.Timestep = (int)Math.Ceiling(originalTimestep * multipliers[speed]);
+				playButton.IsVisible = () => world.ReplayTimestep == 0 || orderManager.NetFrameNumber >= replayNetTicks;
+				playButton.OnClick = () => world.ReplayTimestep = (int)Math.Ceiling(originalTimestep * multipliers[speed]);
 				playButton.IsDisabled = () => orderManager.NetFrameNumber >= replayNetTicks;
 
 				var slowButton = widget.Get<ButtonWidget>("BUTTON_SLOW");
@@ -60,8 +60,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				slowButton.OnClick = () =>
 				{
 					speed = PlaybackSpeed.Slow;
-					if (world.Timestep != 0)
-						world.Timestep = (int)Math.Ceiling(originalTimestep * multipliers[speed]);
+					if (world.ReplayTimestep != 0)
+						world.ReplayTimestep = (int)Math.Ceiling(originalTimestep * multipliers[speed]);
 				};
 
 				var normalSpeedButton = widget.Get<ButtonWidget>("BUTTON_REGULAR");
@@ -70,8 +70,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				normalSpeedButton.OnClick = () =>
 				{
 					speed = PlaybackSpeed.Regular;
-					if (world.Timestep != 0)
-						world.Timestep = (int)Math.Ceiling(originalTimestep * multipliers[speed]);
+					if (world.ReplayTimestep != 0)
+						world.ReplayTimestep = (int)Math.Ceiling(originalTimestep * multipliers[speed]);
 				};
 
 				var fastButton = widget.Get<ButtonWidget>("BUTTON_FAST");
@@ -80,8 +80,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				fastButton.OnClick = () =>
 				{
 					speed = PlaybackSpeed.Fast;
-					if (world.Timestep != 0)
-						world.Timestep = (int)Math.Ceiling(originalTimestep * multipliers[speed]);
+					if (world.ReplayTimestep != 0)
+						world.ReplayTimestep = (int)Math.Ceiling(originalTimestep * multipliers[speed]);
 				};
 
 				var maximumButton = widget.Get<ButtonWidget>("BUTTON_MAXIMUM");
@@ -90,8 +90,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				maximumButton.OnClick = () =>
 				{
 					speed = PlaybackSpeed.Maximum;
-					if (world.Timestep != 0)
-						world.Timestep = (int)Math.Ceiling(originalTimestep * multipliers[speed]);
+					if (world.ReplayTimestep != 0)
+						world.ReplayTimestep = (int)Math.Ceiling(originalTimestep * multipliers[speed]);
 				};
 			}
 		}

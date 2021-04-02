@@ -60,8 +60,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Description of the game speed option in the lobby.")]
 		public readonly string GameSpeedDropdownDescription = "Change the rate at which time passes";
 
-		[Desc("Default game speed.")]
-		public readonly string GameSpeed = "default";
+		[Desc("Default game speed (leave empty to use the default defined in mod.yaml).")]
+		public readonly string GameSpeed = null;
 
 		[Desc("Prevent the game speed from being changed in the lobby.")]
 		public readonly bool GameSpeedDropdownLocked = false;
@@ -84,18 +84,18 @@ namespace OpenRA.Mods.Common.Traits
 				yield return new LobbyOption("techlevel", TechLevelDropdownLabel, TechLevelDropdownDescription,	TechLevelDropdownVisible, TechLevelDropdownDisplayOrder,
 					techLevels, TechLevel, TechLevelDropdownLocked);
 
-			var gameSpeeds = Game.ModData.Manifest.Get<GameSpeeds>().Speeds
-				.ToDictionary(s => s.Key, s => s.Value.Name);
+			var gameSpeeds = Game.ModData.Manifest.Get<GameSpeeds>();
+			var speeds = gameSpeeds.Speeds.ToDictionary(s => s.Key, s => s.Value.Name);
 
-			// NOTE: The server hardcodes special-case logic for this option id
+			// NOTE: This is just exposing the UI, the backend logic for this option is hardcoded in World
 			yield return new LobbyOption("gamespeed", GameSpeedDropdownLabel, GameSpeedDropdownDescription, GameSpeedDropdownVisible, GameSpeedDropdownDisplayOrder,
-				gameSpeeds, GameSpeed, GameSpeedDropdownLocked);
+				speeds, GameSpeed ?? gameSpeeds.DefaultSpeed, GameSpeedDropdownLocked);
 		}
 
 		void IRulesetLoaded<ActorInfo>.RulesetLoaded(Ruleset rules, ActorInfo info)
 		{
 			var gameSpeeds = Game.ModData.Manifest.Get<GameSpeeds>().Speeds;
-			if (!gameSpeeds.ContainsKey(GameSpeed))
+			if (GameSpeed != null && !gameSpeeds.ContainsKey(GameSpeed))
 				throw new YamlException("Invalid default game speed '{0}'.".F(GameSpeed));
 		}
 
@@ -108,7 +108,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool ShortGame { get; private set; }
 		public string TechLevel { get; private set; }
-		public GameSpeed GameSpeed { get; private set; }
 
 		public MapOptions(MapOptionsInfo info)
 		{
@@ -122,11 +121,6 @@ namespace OpenRA.Mods.Common.Traits
 
 			TechLevel = self.World.LobbyInfo.GlobalSettings
 				.OptionOrDefault("techlevel", info.TechLevel);
-
-			var speed = self.World.LobbyInfo.GlobalSettings
-				.OptionOrDefault("gamespeed", info.GameSpeed);
-
-			GameSpeed = Game.ModData.Manifest.Get<GameSpeeds>().Speeds[speed];
 		}
 	}
 }

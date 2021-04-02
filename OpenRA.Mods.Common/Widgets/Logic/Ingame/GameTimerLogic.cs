@@ -26,27 +26,22 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var tlm = world.WorldActor.TraitOrDefault<TimeLimitManager>();
 			var startTick = Ui.LastTickTime;
 
-			Func<bool> shouldShowStatus = () => (world.Paused || world.Timestep != world.LobbyInfo.GlobalSettings.Timestep)
+			Func<bool> shouldShowStatus = () => (world.Paused || world.ReplayTimestep != world.Timestep)
 				&& (Ui.LastTickTime - startTick) / 1000 % 2 == 0;
 
 			Func<string> statusText = () =>
 			{
-				if (world.Paused || world.Timestep == 0)
+				if (world.Paused || world.ReplayTimestep == 0)
 					return "Paused";
 
-				if (world.Timestep == 1)
+				if (world.ReplayTimestep == 1)
 					return "Max Speed";
 
-				return "{0}% Speed".F(world.LobbyInfo.GlobalSettings.Timestep * 100 / world.Timestep);
+				return "{0}% Speed".F(world.Timestep * 100 / world.ReplayTimestep);
 			};
 
 			if (timer != null)
 			{
-				// Timers in replays should be synced to the effective game time, not the playback time.
-				var timestep = world.Timestep;
-				if (world.IsReplay)
-					timestep = world.WorldActor.Trait<MapOptions>().GameSpeed.Timestep;
-
 				timer.GetText = () =>
 				{
 					if (status == null && shouldShowStatus())
@@ -54,7 +49,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					var timeLimit = tlm?.TimeLimit ?? 0;
 					var displayTick = timeLimit > 0 ? timeLimit - world.WorldTick : world.WorldTick;
-					return WidgetUtils.FormatTime(Math.Max(0, displayTick), timestep);
+					return WidgetUtils.FormatTime(Math.Max(0, displayTick), world.Timestep);
 				};
 			}
 

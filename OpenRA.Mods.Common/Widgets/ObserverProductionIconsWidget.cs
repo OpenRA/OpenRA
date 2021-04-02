@@ -27,7 +27,6 @@ namespace OpenRA.Mods.Common.Widgets
 		public Func<Player> GetPlayer;
 		readonly World world;
 		readonly WorldRenderer worldRenderer;
-		readonly int timestep;
 
 		public int IconWidth = 32;
 		public int IconHeight = 24;
@@ -56,7 +55,6 @@ namespace OpenRA.Mods.Common.Widgets
 			this.world = world;
 			this.worldRenderer = worldRenderer;
 			clocks = new Dictionary<ProductionQueue, Animation>();
-			timestep = world.IsReplay ? world.WorldActor.Trait<MapOptions>().GameSpeed.Timestep : world.Timestep;
 			GetTooltipIcon = () => TooltipIcon;
 			tooltipContainer = Exts.Lazy(() =>
 				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
@@ -69,7 +67,6 @@ namespace OpenRA.Mods.Common.Widgets
 			GetPlayer = other.GetPlayer;
 			world = other.world;
 			worldRenderer = other.worldRenderer;
-			timestep = other.timestep;
 			clocks = other.clocks;
 
 			IconWidth = other.IconWidth;
@@ -198,7 +195,7 @@ namespace OpenRA.Mods.Common.Widgets
 			foreach (var icon in productionIcons)
 			{
 				var current = icon.Queued.First();
-				var text = GetOverlayForItem(current, timestep);
+				var text = GetOverlayForItem(current, world.Timestep);
 				tiny.DrawTextWithContrast(text,
 					icon.Pos + new float2(16, 12) - new float2(tiny.Measure(text).X / 2, 0),
 					Color.White, Color.Black, 1);

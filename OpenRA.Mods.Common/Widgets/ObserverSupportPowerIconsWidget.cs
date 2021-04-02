@@ -26,7 +26,6 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly World world;
 		readonly WorldRenderer worldRenderer;
 		readonly Dictionary<string, Animation> clocks;
-		readonly int timestep;
 
 		readonly Lazy<TooltipContainerWidget> tooltipContainer;
 
@@ -55,11 +54,6 @@ namespace OpenRA.Mods.Common.Widgets
 			this.worldRenderer = worldRenderer;
 			clocks = new Dictionary<string, Animation>();
 
-			// Timers in replays should be synced to the effective game time, not the playback time.
-			timestep = world.Timestep;
-			if (world.IsReplay)
-				timestep = world.WorldActor.Trait<MapOptions>().GameSpeed.Timestep;
-
 			tooltipContainer = Exts.Lazy(() =>
 				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
 		}
@@ -72,7 +66,6 @@ namespace OpenRA.Mods.Common.Widgets
 			world = other.world;
 			worldRenderer = other.worldRenderer;
 			clocks = other.clocks;
-			timestep = other.timestep;
 
 			IconWidth = other.IconWidth;
 			IconHeight = other.IconHeight;
@@ -146,7 +139,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var tiny = Game.Renderer.Fonts["Tiny"];
 			foreach (var icon in supportPowerIconsIcons)
 			{
-				var text = GetOverlayForItem(icon.Power, timestep);
+				var text = GetOverlayForItem(icon.Power, world.Timestep);
 				tiny.DrawTextWithContrast(text,
 					icon.Pos + new float2(16, 12) - new float2(tiny.Measure(text).X / 2, 0),
 					Color.White, Color.Black, 1);
