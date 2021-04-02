@@ -93,6 +93,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class TimeLimitManager : INotifyTimeLimit, ITick, IWorldLoaded
 	{
 		readonly TimeLimitManagerInfo info;
+		readonly int ticksPerSecond;
 		MapOptions mapOptions;
 		LabelWidget countdownLabel;
 		CachedTransform<int, string> countdown;
@@ -105,13 +106,14 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			this.info = info;
 			Notification = info.Notification;
+			ticksPerSecond = 1000 / self.World.Timestep;
 
 			var tl = self.World.LobbyInfo.GlobalSettings.OptionOrDefault("timelimit", info.TimeLimitDefault.ToString());
 			if (!int.TryParse(tl, out TimeLimit))
 				TimeLimit = info.TimeLimitDefault;
 
 			// Convert from minutes to ticks
-			TimeLimit *= 60 * (1000 / self.World.Timestep);
+			TimeLimit *= 60 * ticksPerSecond;
 		}
 
 		void IWorldLoaded.WorldLoaded(World w, OpenRA.Graphics.WorldRenderer wr)
@@ -124,7 +126,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (countdownLabel != null)
 			{
 				countdown = new CachedTransform<int, string>(t =>
-					info.CountdownText.F(WidgetUtils.FormatTime(t, true, w.IsReplay ? mapOptions.GameSpeed.Timestep : w.Timestep)));
+					info.CountdownText.F(WidgetUtils.FormatTime(t, true, w.Timestep)));
 				countdownLabel.GetText = () => countdown.Update(ticksRemaining);
 			}
 		}
@@ -134,7 +136,6 @@ namespace OpenRA.Mods.Common.Traits
 			if (TimeLimit <= 0)
 				return;
 
-			var ticksPerSecond = 1000 / (self.World.IsReplay ? mapOptions.GameSpeed.Timestep : self.World.Timestep);
 			ticksRemaining = TimeLimit - self.World.WorldTick;
 
 			if (ticksRemaining == 0)

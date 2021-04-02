@@ -563,13 +563,6 @@ namespace OpenRA.Mods.Common.Server
 
 				oo.Value = oo.PreferredValue = split[1];
 
-				if (option.Id == "gamespeed")
-				{
-					var speed = server.ModData.Manifest.Get<GameSpeeds>().Speeds[oo.Value];
-					server.LobbyInfo.GlobalSettings.Timestep = speed.Timestep;
-					server.LobbyInfo.GlobalSettings.OrderLatency = speed.OrderLatency;
-				}
-
 				server.SyncLobbyGlobalSettings();
 				server.SendMessage(option.ValueChangedMessage(client.Name, split[1]));
 
@@ -1080,13 +1073,6 @@ namespace OpenRA.Mods.Common.Server
 					state.Value = value;
 					state.PreferredValue = preferredValue;
 					gs.LobbyOptions[o.Id] = state;
-
-					if (o.Id == "gamespeed")
-					{
-						var speed = server.ModData.Manifest.Get<GameSpeeds>().Speeds[value];
-						gs.Timestep = speed.Timestep;
-						gs.OrderLatency = speed.OrderLatency;
-					}
 				}
 			}
 		}

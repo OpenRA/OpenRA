@@ -162,8 +162,12 @@ namespace OpenRA
 
 			using (new PerfTimer("PrepareMap"))
 				map = ModData.PrepareMap(mapUID);
+
 			using (new PerfTimer("NewWorld"))
+			{
 				OrderManager.World = new World(ModData, map, OrderManager, type);
+				OrderManager.FramesAhead = OrderManager.World.OrderLatency;
+			}
 
 			OrderManager.World.GameOver += FinishBenchmark;
 
@@ -581,7 +585,11 @@ namespace OpenRA
 				Cursor.Tick();
 			}
 
-			var worldTimestep = world == null ? Ui.Timestep : world.IsLoadingGameSave ? 1 : world.Timestep;
+			var worldTimestep = world == null ? Ui.Timestep :
+				world.IsLoadingGameSave ? 1 :
+				world.IsReplay ? world.ReplayTimestep :
+				world.Timestep;
+
 			var worldTickDelta = tick - orderManager.LastTickTime;
 			if (worldTimestep != 0 && worldTickDelta >= worldTimestep)
 			{
@@ -776,9 +784,14 @@ namespace OpenRA
 
 			while (state == RunStatus.Running)
 			{
-				// Ideal time between logic updates. Timestep = 0 means the game is paused
-				// but we still call LogicTick() because it handles pausing internally.
-				var logicInterval = worldRenderer != null && worldRenderer.World.Timestep != 0 ? worldRenderer.World.Timestep : Ui.Timestep;
+				var logicInterval = Ui.Timestep;
+				var logicWorld = worldRenderer?.World;
+
+				// ReplayTimestep = 0 means the replay is paused: we need to keep logicInterval as UI.Timestep to avoid breakage
+				if (logicWorld != null && !(logicWorld.IsReplay && logicWorld.ReplayTimestep == 0))
+					logicInterval = logicWorld.IsLoadingGameSave ? 1 :
+						logicWorld.IsReplay ? logicWorld.ReplayTimestep :
+						logicWorld.Timestep;
 
 				// Ideal time between screen updates
 				var maxFramerate = Settings.Graphics.CapFramerate ? Settings.Graphics.MaxFramerate.Clamp(1, 1000) : 1000;

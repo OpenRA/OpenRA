@@ -27,7 +27,10 @@ namespace OpenRA.Network
 
 		Queue<Chunk> chunks = new Queue<Chunk>();
 		List<byte[]> sync = new List<byte[]>();
+
+		readonly int orderLatency;
 		int ordersFrame;
+
 		Dictionary<int, int> lastClientsFrame = new Dictionary<int, int>();
 
 		public int LocalClientId => -1;
@@ -122,7 +125,10 @@ namespace OpenRA.Network
 				}
 			}
 
-			ordersFrame = LobbyInfo.GlobalSettings.OrderLatency;
+			var gameSpeeds = Game.ModData.Manifest.Get<GameSpeeds>();
+			var gameSpeedName = LobbyInfo.GlobalSettings.OptionOrDefault("gamespeed", gameSpeeds.DefaultSpeed);
+			orderLatency = gameSpeeds.Speeds[gameSpeedName].OrderLatency;
+			ordersFrame = orderLatency;
 		}
 
 		// Do nothing: ignore locally generated orders
@@ -137,7 +143,7 @@ namespace OpenRA.Network
 			sync.Add(ms.GetBuffer());
 
 			// Store the current frame so Receive() can return the next chunk of orders.
-			ordersFrame = frame + LobbyInfo.GlobalSettings.OrderLatency;
+			ordersFrame = frame + orderLatency;
 		}
 
 		public void Receive(Action<int, byte[]> packetFn)

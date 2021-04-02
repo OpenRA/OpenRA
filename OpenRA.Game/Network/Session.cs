@@ -222,8 +222,6 @@ namespace OpenRA.Network
 		{
 			public string ServerName;
 			public string Map;
-			public int Timestep = 40;
-			public int OrderLatency = 3; // net tick frames (x 120 = ms)
 			public int RandomSeed = 0;
 			public bool AllowSpectators = true;
 			public string GameUid;

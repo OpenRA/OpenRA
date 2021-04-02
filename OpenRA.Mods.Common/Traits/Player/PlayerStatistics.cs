@@ -58,7 +58,6 @@ namespace OpenRA.Mods.Common.Traits
 		int lastIncome;
 		int lastIncomeTick;
 		int ticks;
-		int replayTimestep;
 
 		bool armyGraphDisabled;
 		bool incomeGraphDisabled;
@@ -81,7 +80,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			ticks++;
 
-			var timestep = self.World.IsReplay ? replayTimestep : self.World.Timestep;
+			var timestep = self.World.Timestep;
 			if (ticks * timestep >= 30000)
 			{
 				ticks = 0;
@@ -124,9 +123,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void WorldLoaded(World w, WorldRenderer wr)
 		{
-			if (w.IsReplay)
-				replayTimestep = w.WorldActor.Trait<MapOptions>().GameSpeed.Timestep;
-
 			if (!armyGraphDisabled)
 				ArmySamples.Add(ArmyValue);
 

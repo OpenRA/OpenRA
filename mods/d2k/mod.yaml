@@ -211,30 +211,32 @@ AssetBrowser:
 	SupportedExtensions: .shp, .r8, .vqa
 
 GameSpeeds:
-	slowest:
-		Name: Slowest
-		Timestep: 80
-		OrderLatency: 2
-	slower:
-		Name: Slower
-		Timestep: 50
-		OrderLatency: 3
-	default:
-		Name: Normal
-		Timestep: 40
-		OrderLatency: 3
-	fast:
-		Name: Fast
-		Timestep: 35
-		OrderLatency: 4
-	faster:
-		Name: Faster
-		Timestep: 30
-		OrderLatency: 4
-	fastest:
-		Name: Fastest
-		Timestep: 20
-		OrderLatency: 6
+	DefaultSpeed: default
+	Speeds:
+		slowest:
+			Name: Slowest
+			Timestep: 80
+			OrderLatency: 2
+		slower:
+			Name: Slower
+			Timestep: 50
+			OrderLatency: 3
+		default:
+			Name: Normal
+			Timestep: 40
+			OrderLatency: 3
+		fast:
+			Name: Fast
+			Timestep: 35
+			OrderLatency: 4
+		faster:
+			Name: Faster
+			Timestep: 30
+			OrderLatency: 4
+		fastest:
+			Name: Fastest
+			Timestep: 20
+			OrderLatency: 6
 
 ColorValidator:
 	TeamColorPresets: 9023cd, f53333, ffae00, fff830, 87f506, f872ad, da06f3, ddb8ff, def7b2, 39c46f, 200738, 280df6, 2f86f2, 76d2f8, 498221, 392929
