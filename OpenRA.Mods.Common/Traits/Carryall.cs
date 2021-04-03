@@ -348,7 +348,7 @@ namespace OpenRA.Mods.Common.Traits
 					return;
 
 				var targetLocation = move.NearestMoveableCell(cell);
-				self.QueueActivity(order.Queued, new DeliverUnit(self, order.Target, Info.DropRange));
+				self.QueueActivity(order.Queued, new DeliverUnit(self, order.Target, Info.DropRange, Info.TargetLineColor));
 				self.ShowTargetLines();
 			}
 			else if (order.OrderString == "Unload")
@@ -356,14 +356,14 @@ namespace OpenRA.Mods.Common.Traits
 				if (!order.Queued && !CanUnload())
 					return;
 
-				self.QueueActivity(order.Queued, new DeliverUnit(self, Info.DropRange));
+				self.QueueActivity(order.Queued, new DeliverUnit(self, Info.DropRange, Info.TargetLineColor));
 			}
 			else if (order.OrderString == "PickupUnit")
 			{
 				if (order.Target.Type != TargetType.Actor)
 					return;
 
-				self.QueueActivity(order.Queued, new PickupUnit(self, order.Target.Actor, Info.BeforeLoadDelay));
+				self.QueueActivity(order.Queued, new PickupUnit(self, order.Target.Actor, Info.BeforeLoadDelay, Info.TargetLineColor));
 				self.ShowTargetLines();
 			}
 		}

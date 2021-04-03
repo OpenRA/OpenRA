@@ -12,6 +12,7 @@
 using System.Collections.Generic;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
@@ -25,6 +26,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly BodyOrientation carryableBody;
 
 		readonly int delay;
+		readonly Color? targetLineColor;
 
 		// TODO: Expose this to yaml
 		readonly WDist targetLockRange = WDist.FromCells(4);
@@ -32,10 +34,11 @@ namespace OpenRA.Mods.Common.Activities
 		enum PickupState { Intercept, LockCarryable, Pickup }
 		PickupState state = PickupState.Intercept;
 
-		public PickupUnit(Actor self, Actor cargo, int delay)
+		public PickupUnit(Actor self, Actor cargo, int delay, Color? targetLineColor)
 		{
 			this.cargo = cargo;
 			this.delay = delay;
+			this.targetLineColor = targetLineColor;
 			carryable = cargo.Trait<Carryable>();
 			carryableFacing = cargo.Trait<IFacing>();
 			carryableBody = cargo.Trait<BodyOrientation>();
@@ -115,7 +118,8 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
 		{
-			yield return new TargetLineNode(Target.FromActor(cargo), carryall.Info.TargetLineColor);
+			if (targetLineColor != null)
+				yield return new TargetLineNode(Target.FromActor(cargo), targetLineColor.Value);
 		}
 
 		class AttachUnit : Activity

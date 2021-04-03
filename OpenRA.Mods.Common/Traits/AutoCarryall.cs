@@ -105,16 +105,20 @@ namespace OpenRA.Mods.Common.Traits
 		class FerryUnit : Activity
 		{
 			readonly Actor cargo;
+			readonly Carryable carryable;
+			readonly CarryallInfo carryallInfo;
 
 			public FerryUnit(Actor self, Actor cargo)
 			{
 				this.cargo = cargo;
+				carryable = cargo.Trait<Carryable>();
+				carryallInfo = self.Trait<Carryall>().Info;
 			}
 
 			protected override void OnFirstRun(Actor self)
 			{
 				if (!cargo.IsDead)
-					QueueChild(new PickupUnit(self, cargo, 0));
+					QueueChild(new PickupUnit(self, cargo, 0, carryallInfo.TargetLineColor));
 			}
 
 			public override bool Tick(Actor self)
@@ -122,10 +126,10 @@ namespace OpenRA.Mods.Common.Traits
 				if (cargo.IsDead)
 					return true;
 
-				var dropRange = self.Trait<Carryall>().Info.DropRange;
-				var destination = cargo.Trait<Carryable>().Destination;
+				var dropRange = carryallInfo.DropRange;
+				var destination = carryable.Destination;
 				if (destination != null)
-					self.QueueActivity(true, new DeliverUnit(self, Target.FromCell(self.World, destination.Value), dropRange));
+					self.QueueActivity(true, new DeliverUnit(self, Target.FromCell(self.World, destination.Value), dropRange, carryallInfo.TargetLineColor));
 
 				return true;
 			}

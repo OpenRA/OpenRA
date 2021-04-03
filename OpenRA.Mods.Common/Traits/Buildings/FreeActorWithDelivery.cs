@@ -65,8 +65,9 @@ namespace OpenRA.Mods.Common.Traits
 			var carryable = cargo.Trait<Carryable>();
 			carryable.Reserve(cargo, carrier);
 
-			carrier.Trait<Carryall>().AttachCarryable(carrier, cargo);
-			carrier.QueueActivity(new DeliverUnit(carrier, Target.FromCell(self.World, location), info.DeliveryRange));
+			var carryall = carrier.Trait<Carryall>();
+			carryall.AttachCarryable(carrier, cargo);
+			carrier.QueueActivity(new DeliverUnit(carrier, Target.FromCell(self.World, location), info.DeliveryRange, carryall.Info.TargetLineColor));
 			carrier.QueueActivity(new Fly(carrier, Target.FromCell(self.World, self.World.Map.ChooseRandomEdgeCell(self.World.SharedRandom))));
 			carrier.QueueActivity(new RemoveSelf());
 
