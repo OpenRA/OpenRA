@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Display order for the option in the lobby.")]
 		public readonly int DisplayOrder = 0;
 
-		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(Ruleset rules)
+		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(MapPreview map)
 		{
 			yield return new LobbyOption(ID, Label, Description, Visible, DisplayOrder,
 				Values, Default, Locked);

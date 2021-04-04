@@ -73,14 +73,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void RebuildOptions()
 		{
-			if (mapPreview == null || mapPreview.Rules == null || mapPreview.InvalidCustomRules)
+			if (mapPreview == null || mapPreview.WorldActorInfo == null || mapPreview.InvalidCustomRules)
 				return;
 
 			optionsContainer.RemoveChildren();
 			optionsContainer.Bounds.Height = 0;
-			var allOptions = mapPreview.Rules.Actors[SystemActors.Player].TraitInfos<ILobbyOptions>()
-					.Concat(mapPreview.Rules.Actors[SystemActors.World].TraitInfos<ILobbyOptions>())
-					.SelectMany(t => t.LobbyOptions(mapPreview.Rules))
+			var allOptions = mapPreview.PlayerActorInfo.TraitInfos<ILobbyOptions>()
+					.Concat(mapPreview.WorldActorInfo.TraitInfos<ILobbyOptions>())
+					.SelectMany(t => t.LobbyOptions(mapPreview))
 					.Where(o => o.IsVisible)
 					.OrderBy(o => o.DisplayOrder)
 					.ToArray();

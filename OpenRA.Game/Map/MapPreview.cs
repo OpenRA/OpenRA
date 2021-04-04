@@ -86,10 +86,12 @@ namespace OpenRA
 			public MapVisibility Visibility;
 
 			Lazy<Ruleset> rules;
-			public Ruleset Rules => rules?.Value;
 			public bool InvalidCustomRules { get; private set; }
 			public bool DefinesUnsafeCustomRules { get; private set; }
 			public bool RulesLoaded { get; private set; }
+
+			public ActorInfo WorldActorInfo => rules?.Value.Actors[SystemActors.World];
+			public ActorInfo PlayerActorInfo => rules?.Value.Actors[SystemActors.Player];
 
 			public void SetRulesetGenerator(ModData modData, Func<(Ruleset Ruleset, bool DefinesUnsafeCustomRules)> generator)
 			{
@@ -154,16 +156,18 @@ namespace OpenRA
 		public MapClassification Class => innerData.Class;
 		public MapVisibility Visibility => innerData.Visibility;
 
-		public Ruleset Rules => innerData.Rules;
 		public bool InvalidCustomRules => innerData.InvalidCustomRules;
 		public bool RulesLoaded => innerData.RulesLoaded;
+
+		public ActorInfo WorldActorInfo => innerData.WorldActorInfo;
+		public ActorInfo PlayerActorInfo => innerData.PlayerActorInfo;
 
 		public bool DefinesUnsafeCustomRules
 		{
 			get
 			{
 				// Force lazy rules to be evaluated
-				var force = innerData.Rules;
+				var force = innerData.WorldActorInfo;
 				return innerData.DefinesUnsafeCustomRules;
 			}
 		}
@@ -338,7 +342,7 @@ namespace OpenRA
 
 		public void PreloadRules()
 		{
-			var unused = Rules;
+			var unused = WorldActorInfo;
 		}
 
 		public void UpdateRemoteSearch(MapStatus status, MiniYaml yaml, Action<MapPreview> parseMetadata = null)

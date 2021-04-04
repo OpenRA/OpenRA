@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		IEnumerable<string> ITechTreePrerequisiteInfo.Prerequisites(ActorInfo info) { return Prerequisites; }
 
-		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(Ruleset rules)
+		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(MapPreview map)
 		{
 			yield return new LobbyBooleanOption(ID, Label, Description,
 				Visible, DisplayOrder, Enabled, Locked);
