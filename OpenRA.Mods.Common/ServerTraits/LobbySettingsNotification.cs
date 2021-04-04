@@ -23,11 +23,11 @@ namespace OpenRA.Mods.Common.Server
 			lock (server.LobbyInfo)
 			{
 				var defaults = new Session.Global();
-				LobbyCommands.LoadMapSettings(server, defaults, server.Map.Rules);
+				LobbyCommands.LoadMapSettings(server, defaults, server.Map);
 
-				var options = server.Map.Rules.Actors[SystemActors.Player].TraitInfos<ILobbyOptions>()
-					.Concat(server.Map.Rules.Actors[SystemActors.World].TraitInfos<ILobbyOptions>())
-					.SelectMany(t => t.LobbyOptions(server.Map.Rules))
+				var options = server.Map.PlayerActorInfo.TraitInfos<ILobbyOptions>()
+					.Concat(server.Map.WorldActorInfo.TraitInfos<ILobbyOptions>())
+					.SelectMany(t => t.LobbyOptions(server.Map))
 					.ToDictionary(o => o.Id, o => o);
 
 				foreach (var kv in server.LobbyInfo.GlobalSettings.LobbyOptions)

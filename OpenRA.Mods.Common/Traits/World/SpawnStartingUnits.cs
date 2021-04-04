@@ -39,12 +39,12 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Display order for the starting units option in the lobby.")]
 		public readonly int DropdownDisplayOrder = 0;
 
-		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(Ruleset rules)
+		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(MapPreview map)
 		{
 			var startingUnits = new Dictionary<string, string>();
 
 			// Duplicate classes are defined for different race variants
-			foreach (var t in rules.Actors[SystemActors.World].TraitInfos<StartingUnitsInfo>())
+			foreach (var t in map.WorldActorInfo.TraitInfos<StartingUnitsInfo>())
 				startingUnits[t.Class] = t.ClassName;
 
 			if (startingUnits.Any())

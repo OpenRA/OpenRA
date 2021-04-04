@@ -530,7 +530,7 @@ namespace OpenRA.Traits
 	[RequireExplicitImplementation]
 	public interface ILobbyOptions : ITraitInfoInterface
 	{
-		IEnumerable<LobbyOption> LobbyOptions(Ruleset rules);
+		IEnumerable<LobbyOption> LobbyOptions(MapPreview map);
 	}
 
 	public class LobbyOption

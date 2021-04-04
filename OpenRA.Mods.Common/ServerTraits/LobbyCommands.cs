@@ -357,7 +357,7 @@ namespace OpenRA.Mods.Common.Server
 				}
 
 				var botType = parts[2];
-				var botInfo = server.Map.Rules.Actors[SystemActors.Player].TraitInfos<IBotInfo>()
+				var botInfo = server.Map.PlayerActorInfo.TraitInfos<IBotInfo>()
 					.FirstOrDefault(b => b.Type == botType);
 
 				if (botInfo == null)
@@ -386,7 +386,7 @@ namespace OpenRA.Mods.Common.Server
 
 					// Pick a random color for the bot
 					var validator = server.ModData.Manifest.Get<ColorValidator>();
-					var terrainColors = server.Map.Rules.TerrainInfo.RestrictedPlayerColors;
+					var terrainColors = server.ModData.DefaultTerrainInfo[server.Map.TileSet].RestrictedPlayerColors;
 					var playerColors = server.LobbyInfo.Clients.Select(c => c.Color)
 						.Concat(server.Map.Players.Players.Values.Select(p => p.Color));
 					bot.Color = bot.PreferredColor = validator.RandomPresetColor(server.Random, terrainColors, playerColors);
@@ -437,10 +437,10 @@ namespace OpenRA.Mods.Common.Server
 							.Where(ss => ss != null)
 							.ToDictionary(ss => ss.PlayerReference, ss => ss);
 
-						LoadMapSettings(server, server.LobbyInfo.GlobalSettings, server.Map.Rules);
+						LoadMapSettings(server, server.LobbyInfo.GlobalSettings, server.Map);
 
 						// Reset client states
-						var selectableFactions = server.Map.Rules.Actors[SystemActors.World].TraitInfos<FactionInfo>()
+						var selectableFactions = server.Map.WorldActorInfo.TraitInfos<FactionInfo>()
 							.Where(f => f.Selectable)
 							.Select(f => f.InternalName)
 							.ToList();
@@ -457,7 +457,7 @@ namespace OpenRA.Mods.Common.Server
 						//  - Players who now lack a slot are made observers
 						//  - Bots who now lack a slot are dropped
 						//  - Bots who are not defined in the map rules are dropped
-						var botTypes = server.Map.Rules.Actors[SystemActors.Player].TraitInfos<IBotInfo>().Select(t => t.Type);
+						var botTypes = server.Map.PlayerActorInfo.TraitInfos<IBotInfo>().Select(t => t.Type);
 						var slots = server.LobbyInfo.Slots.Keys.ToArray();
 						var i = 0;
 						foreach (var os in oldSlots)
@@ -534,9 +534,9 @@ namespace OpenRA.Mods.Common.Server
 					return true;
 				}
 
-				var allOptions = server.Map.Rules.Actors[SystemActors.Player].TraitInfos<ILobbyOptions>()
-					.Concat(server.Map.Rules.Actors[SystemActors.World].TraitInfos<ILobbyOptions>())
-					.SelectMany(t => t.LobbyOptions(server.Map.Rules));
+				var allOptions = server.Map.PlayerActorInfo.TraitInfos<ILobbyOptions>()
+					.Concat(server.Map.WorldActorInfo.TraitInfos<ILobbyOptions>())
+					.SelectMany(t => t.LobbyOptions(server.Map));
 
 				// Overwrite keys with duplicate ids
 				var options = new Dictionary<string, LobbyOption>();
@@ -775,7 +775,7 @@ namespace OpenRA.Mods.Common.Server
 				if (server.LobbyInfo.Slots[targetClient.Slot].LockFaction)
 					return true;
 
-				var factions = server.Map.Rules.Actors[SystemActors.World].TraitInfos<FactionInfo>()
+				var factions = server.Map.WorldActorInfo.TraitInfos<FactionInfo>()
 					.Where(f => f.Selectable).Select(f => f.InternalName);
 
 				if (!factions.Contains(parts[1]))
@@ -1018,7 +1018,7 @@ namespace OpenRA.Mods.Common.Server
 					.Where(s => s != null)
 					.ToDictionary(s => s.PlayerReference, s => s);
 
-				LoadMapSettings(server, server.LobbyInfo.GlobalSettings, server.Map.Rules);
+				LoadMapSettings(server, server.LobbyInfo.GlobalSettings, server.Map);
 			}
 		}
 
@@ -1041,13 +1041,13 @@ namespace OpenRA.Mods.Common.Server
 			};
 		}
 
-		public static void LoadMapSettings(S server, Session.Global gs, Ruleset rules)
+		public static void LoadMapSettings(S server, Session.Global gs, MapPreview map)
 		{
 			lock (server.LobbyInfo)
 			{
-				var options = rules.Actors[SystemActors.Player].TraitInfos<ILobbyOptions>()
-					.Concat(rules.Actors[SystemActors.World].TraitInfos<ILobbyOptions>())
-					.SelectMany(t => t.LobbyOptions(rules));
+				var options = map.PlayerActorInfo.TraitInfos<ILobbyOptions>()
+					.Concat(map.WorldActorInfo.TraitInfos<ILobbyOptions>())
+					.SelectMany(t => t.LobbyOptions(map));
 
 				foreach (var o in options)
 				{
@@ -1090,7 +1090,7 @@ namespace OpenRA.Mods.Common.Server
 						server.SendOrderTo(connectionToEcho, "Message", message);
 				};
 
-				var terrainColors = server.Map.Rules.TerrainInfo.RestrictedPlayerColors;
+				var terrainColors = server.ModData.DefaultTerrainInfo[server.Map.TileSet].RestrictedPlayerColors;
 				var playerColors = server.LobbyInfo.Clients.Where(c => c.Index != playerIndex).Select(c => c.Color)
 					.Concat(server.Map.Players.Players.Values.Select(p => p.Color)).ToList();
 
@@ -1100,7 +1100,7 @@ namespace OpenRA.Mods.Common.Server
 
 		static string MissionBriefingOrDefault(S server)
 		{
-			var missionData = server.Map.Rules.Actors[SystemActors.World].TraitInfoOrDefault<MissionDataInfo>();
+			var missionData = server.Map.WorldActorInfo.TraitInfoOrDefault<MissionDataInfo>();
 			if (missionData != null && !string.IsNullOrEmpty(missionData.Briefing))
 				return missionData.Briefing.Replace("\\n", "\n");
 
