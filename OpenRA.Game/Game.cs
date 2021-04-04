@@ -103,6 +103,11 @@ namespace OpenRA
 		public static long RunTime => stopwatch.ElapsedMilliseconds;
 
 		public static int RenderFrame = 0;
+
+		// Needed for interpolation
+		public static long LastWorldTickRunTime = 0;
+		public static int RenderInterpolatedTimestepProgress = 0;
+
 		public static int NetFrameNumber => OrderManager.NetFrameNumber;
 		public static int LocalTick => OrderManager.LocalFrameNumber;
 
@@ -610,6 +615,11 @@ namespace OpenRA
 						});
 
 						world.Tick();
+						LastWorldTickRunTime = RunTime;
+
+						// We must not reset this when world is paused, otherwise interpolated objects would visually jump back
+						if (!world.Paused)
+							RenderInterpolatedTimestepProgress = 0;
 
 						PerfHistory.Tick();
 					}
@@ -823,6 +833,12 @@ namespace OpenRA
 						// in this interval.
 						var maxRenderInterval = Math.Max(1000 / MinReplayFps, renderInterval);
 						forcedNextRender = now + maxRenderInterval;
+
+						if (logicWorld != null && !logicWorld.Paused && logicInterval > 1)
+						{
+							var tickTimeDelta = now - LastWorldTickRunTime;
+							RenderInterpolatedTimestepProgress = (int)tickTimeDelta.Clamp(1, logicInterval);
+						}
 
 						RenderTick();
 						renderBeforeNextTick = false;
