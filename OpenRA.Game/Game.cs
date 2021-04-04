@@ -451,11 +451,11 @@ namespace OpenRA
 			if (!ModData.LoadScreen.BeforeLoad())
 				return;
 
-			using (new PerfTimer("LoadMaps"))
-				ModData.MapCache.LoadMaps();
-
 			ModData.InitializeLoaders(ModData.DefaultFileSystem);
 			Renderer.InitializeFonts(ModData);
+
+			using (new PerfTimer("LoadMaps"))
+				ModData.MapCache.LoadMaps();
 
 			var grid = ModData.Manifest.Contains<MapGrid>() ? ModData.Manifest.Get<MapGrid>() : null;
 			Renderer.InitializeDepthBuffer(grid);
