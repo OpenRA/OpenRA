@@ -170,7 +170,7 @@ Container@MULTIPLAYER_CREATESERVER_PANEL:
 							Height: 25
 							Font: Tiny
 							Align: Left
-							Text:  in the Advanced tab of the settings menu.
+							Text: in the Advanced tab of the settings menu.
 				Container@NOTICES_UPNP:
 					X: 20
 					Y: 145
