@@ -161,6 +161,7 @@ namespace OpenRA
 				var result = GetOrDefault(actor);
 				if (result == null)
 					throw new InvalidOperationException("Actor {0} does not have trait of type `{1}`".F(actor.Info.Name, typeof(T)));
+
 				return result;
 			}
 
@@ -169,10 +170,12 @@ namespace OpenRA
 				++Queries;
 				var index = actors.BinarySearchMany(actor.ActorID);
 				if (index >= actors.Count || actors[index] != actor)
-					return default(T);
-				else if (index + 1 < actors.Count && actors[index + 1] == actor)
+					return default;
+
+				if (index + 1 < actors.Count && actors[index + 1] == actor)
 					throw new InvalidOperationException("Actor {0} has multiple traits of type `{1}`".F(actor.Info.Name, typeof(T)));
-				else return traits[index];
+
+				return traits[index];
 			}
 
 			public IEnumerable<T> GetMultiple(uint actor)
@@ -229,6 +232,7 @@ namespace OpenRA
 					var current = actors[i];
 					if (current == last)
 						continue;
+
 					yield return current;
 					last = current;
 				}
@@ -244,6 +248,7 @@ namespace OpenRA
 					var current = actors[i];
 					if (current == last || !predicate(traits[i]))
 						continue;
+
 					yield return current;
 					last = current;
 				}
@@ -282,9 +287,11 @@ namespace OpenRA
 				var startIndex = actors.BinarySearchMany(actor);
 				if (startIndex >= actors.Count || actors[startIndex].ActorID != actor)
 					return;
+
 				var endIndex = startIndex + 1;
 				while (endIndex < actors.Count && actors[endIndex].ActorID == actor)
 					endIndex++;
+
 				var count = endIndex - startIndex;
 				actors.RemoveRange(startIndex, count);
 				traits.RemoveRange(startIndex, count);
