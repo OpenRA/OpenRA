@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			editorLayer = world.WorldActor.Trait<EditorActorLayer>();
 			editorActionManager = world.WorldActor.Trait<EditorActionManager>();
-			resourceLayer = world.WorldActor.Trait<IResourceLayer>();
+			resourceLayer = world.WorldActor.TraitOrDefault<IResourceLayer>();
 		}
 
 		long CalculateActorSelectionPriority(EditorActorPreview actor)
@@ -73,7 +73,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var cell = worldRenderer.Viewport.ViewToWorld(mi.Location);
 
 			var underCursor = editorLayer.PreviewsAt(worldPixel).MinByOrDefault(CalculateActorSelectionPriority);
-			var resourceUnderCursor = resourceLayer.GetResource(cell).Type;
+			var resourceUnderCursor = resourceLayer?.GetResource(cell).Type;
 
 			if (underCursor != null)
 				editorWidget.SetTooltip(underCursor.Tooltip);
