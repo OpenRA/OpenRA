@@ -139,19 +139,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (allPreviews.Any())
 				SelectMap(allPreviews.First());
 
-			// Preload map preview and rules to reduce jank
+			// Preload map preview to reduce jank
 			new Thread(() =>
 			{
 				foreach (var p in allPreviews)
-				{
 					p.GetMinimap();
-					p.PreloadRules();
-				}
 			}).Start();
 
 			var startButton = widget.Get<ButtonWidget>("STARTGAME_BUTTON");
 			startButton.OnClick = StartMissionClicked;
-			startButton.IsDisabled = () => selectedMap == null || selectedMap.InvalidCustomRules;
+			startButton.IsDisabled = () => selectedMap == null;
 
 			widget.Get<ButtonWidget>("BACK_BUTTON").OnClick = () =>
 			{
@@ -372,9 +369,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void StartMissionClicked()
 		{
 			StopVideo(videoPlayer);
-
-			if (selectedMap.InvalidCustomRules)
-				return;
 
 			var orders = new List<Order>();
 			if (difficulty != null)

@@ -431,6 +431,7 @@ namespace OpenRA.Mods.Common.Server
 
 						var oldSlots = server.LobbyInfo.Slots.Keys.ToArray();
 						server.Map = server.ModData.MapCache[server.LobbyInfo.GlobalSettings.Map];
+						server.LobbyInfo.GlobalSettings.MapStatus = server.MapStatusCache[server.Map];
 
 						server.LobbyInfo.Slots = server.Map.Players.Players
 							.Select(p => MakeSlotFromPlayerReference(p.Value))
@@ -492,7 +493,7 @@ namespace OpenRA.Mods.Common.Server
 
 						server.SendMessage("{0} changed the map to {1}.".F(client.Name, server.Map.Title));
 
-						if (server.Map.DefinesUnsafeCustomRules)
+						if ((server.LobbyInfo.GlobalSettings.MapStatus & Session.MapStatus.UnsafeCustomRules) != 0)
 							server.SendMessage("This map contains custom rules. Game experience may change.");
 
 						if (!server.LobbyInfo.GlobalSettings.EnableSingleplayer)

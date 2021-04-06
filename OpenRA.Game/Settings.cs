@@ -91,6 +91,9 @@ namespace OpenRA
 		[Desc("For dedicated servers only, save replays for all games played.")]
 		public bool RecordReplays = false;
 
+		[Desc("For dedicated servers only, treat maps that fail the lint checks as invalid.")]
+		public bool EnableLintChecks = true;
+
 		public ServerSettings Clone()
 		{
 			return (ServerSettings)MemberwiseClone();

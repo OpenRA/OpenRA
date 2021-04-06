@@ -38,9 +38,6 @@ namespace OpenRA
 		Remote = 4
 	}
 
-	// Used for verifying map availability in the lobby
-	public enum MapRuleStatus { Unknown, Cached, Invalid }
-
 	[SuppressMessage("StyleCop.CSharp.NamingRules",
 		"SA1307:AccessibleFieldsMustBeginWithUpperCaseLetter",
 		Justification = "Fields names must match the with the remote API.")]
@@ -85,45 +82,50 @@ namespace OpenRA
 			public MapClassification Class;
 			public MapVisibility Visibility;
 
-			Lazy<Ruleset> rules;
-			public bool InvalidCustomRules { get; private set; }
-			public bool DefinesUnsafeCustomRules { get; private set; }
-			public bool RulesLoaded { get; private set; }
+			public MiniYaml RuleDefinitions;
+			public MiniYaml WeaponDefinitions;
+			public MiniYaml VoiceDefinitions;
+			public MiniYaml MusicDefinitions;
+			public MiniYaml NotificationDefinitions;
+			public MiniYaml SequenceDefinitions;
+			public MiniYaml ModelSequenceDefinitions;
 
-			public ActorInfo WorldActorInfo => rules?.Value.Actors[SystemActors.World];
-			public ActorInfo PlayerActorInfo => rules?.Value.Actors[SystemActors.Player];
+			public ActorInfo WorldActorInfo { get; private set; }
+			public ActorInfo PlayerActorInfo { get; private set; }
 
-			public void SetRulesetGenerator(ModData modData, Func<(Ruleset Ruleset, bool DefinesUnsafeCustomRules)> generator)
+			static MiniYaml LoadRuleSection(Dictionary<string, MiniYaml> yaml, string section)
 			{
-				InvalidCustomRules = false;
-				RulesLoaded = false;
-				DefinesUnsafeCustomRules = false;
+				if (!yaml.TryGetValue(section, out var node))
+					return null;
 
-				// Note: multiple threads may try to access the value at the same time
-				// We rely on the thread-safety guarantees given by Lazy<T> to prevent race conitions.
-				// If you're thinking about replacing this, then you must be careful to keep this safe.
-				rules = Exts.Lazy(() =>
+				return node;
+			}
+
+			public void SetCustomRules(ModData modData, IReadOnlyFileSystem fileSystem, Dictionary<string, MiniYaml> yaml)
+			{
+				RuleDefinitions = LoadRuleSection(yaml, "Rules");
+				WeaponDefinitions = LoadRuleSection(yaml, "Weapons");
+				VoiceDefinitions = LoadRuleSection(yaml, "Voices");
+				MusicDefinitions = LoadRuleSection(yaml, "Music");
+				NotificationDefinitions = LoadRuleSection(yaml, "Notifications");
+				SequenceDefinitions = LoadRuleSection(yaml, "Sequences");
+				ModelSequenceDefinitions = LoadRuleSection(yaml, "ModelSequences");
+
+				try
 				{
-					if (generator == null)
-						return Ruleset.LoadDefaultsForTileSet(modData, TileSet);
+					var rules = Ruleset.Load(modData, fileSystem, TileSet, RuleDefinitions,
+						WeaponDefinitions, VoiceDefinitions, NotificationDefinitions,
+						MusicDefinitions, SequenceDefinitions, ModelSequenceDefinitions);
 
-					try
-					{
-						var ret = generator();
-						DefinesUnsafeCustomRules = ret.DefinesUnsafeCustomRules;
-						return ret.Ruleset;
-					}
-					catch (Exception e)
-					{
-						Log.Write("debug", "Failed to load rules for `{0}` with error :{1}", Title, e.Message);
-						InvalidCustomRules = true;
-						return Ruleset.LoadDefaultsForTileSet(modData, TileSet);
-					}
-					finally
-					{
-						RulesLoaded = true;
-					}
-				});
+					WorldActorInfo = rules.Actors[SystemActors.World];
+					PlayerActorInfo = rules.Actors[SystemActors.Player];
+				}
+				catch (Exception e)
+				{
+					Log.Write("debug", "Failed to load rules for `{0}` with error :{1}", Title, e.Message);
+					WorldActorInfo = modData.DefaultRules.Actors[SystemActors.World];
+					PlayerActorInfo = modData.DefaultRules.Actors[SystemActors.Player];
+				}
 			}
 
 			public InnerData Clone()
@@ -132,7 +134,7 @@ namespace OpenRA
 			}
 		}
 
-		static readonly CPos[] NoSpawns = new CPos[] { };
+		static readonly CPos[] NoSpawns = { };
 		readonly MapCache cache;
 		readonly ModData modData;
 
@@ -156,21 +158,8 @@ namespace OpenRA
 		public MapClassification Class => innerData.Class;
 		public MapVisibility Visibility => innerData.Visibility;
 
-		public bool InvalidCustomRules => innerData.InvalidCustomRules;
-		public bool RulesLoaded => innerData.RulesLoaded;
-
 		public ActorInfo WorldActorInfo => innerData.WorldActorInfo;
 		public ActorInfo PlayerActorInfo => innerData.PlayerActorInfo;
-
-		public bool DefinesUnsafeCustomRules
-		{
-			get
-			{
-				// Force lazy rules to be evaluated
-				var force = innerData.WorldActorInfo;
-				return innerData.DefinesUnsafeCustomRules;
-			}
-		}
 
 		public long DownloadBytes { get; private set; }
 		public int DownloadPercentage { get; private set; }
@@ -195,6 +184,20 @@ namespace OpenRA
 		{
 			this.minimap = minimap;
 			generatingMinimap = false;
+		}
+
+		public bool DefinesUnsafeCustomRules()
+		{
+			return Ruleset.DefinesUnsafeCustomRules(modData, this, innerData.RuleDefinitions,
+				innerData.WeaponDefinitions, innerData.VoiceDefinitions,
+				innerData.NotificationDefinitions, innerData.SequenceDefinitions);
+		}
+
+		public Ruleset LoadRuleset()
+		{
+			return Ruleset.Load(modData, this, TileSet, innerData.RuleDefinitions,
+				innerData.WeaponDefinitions, innerData.VoiceDefinitions, innerData.NotificationDefinitions,
+				innerData.MusicDefinitions, innerData.SequenceDefinitions, innerData.ModelSequenceDefinitions);
 		}
 
 		public MapPreview(ModData modData, string uid, MapGridType gridType, MapCache cache)
@@ -308,21 +311,7 @@ namespace OpenRA
 				newData.Status = MapStatus.Unavailable;
 			}
 
-			newData.SetRulesetGenerator(modData, () =>
-			{
-				var ruleDefinitions = LoadRuleSection(yaml, "Rules");
-				var weaponDefinitions = LoadRuleSection(yaml, "Weapons");
-				var voiceDefinitions = LoadRuleSection(yaml, "Voices");
-				var musicDefinitions = LoadRuleSection(yaml, "Music");
-				var notificationDefinitions = LoadRuleSection(yaml, "Notifications");
-				var sequenceDefinitions = LoadRuleSection(yaml, "Sequences");
-				var modelSequenceDefinitions = LoadRuleSection(yaml, "ModelSequences");
-				var rules = Ruleset.Load(modData, this, TileSet, ruleDefinitions, weaponDefinitions,
-					voiceDefinitions, notificationDefinitions, musicDefinitions, sequenceDefinitions, modelSequenceDefinitions);
-				var flagged = Ruleset.DefinesUnsafeCustomRules(modData, this, ruleDefinitions,
-					weaponDefinitions, voiceDefinitions, notificationDefinitions, sequenceDefinitions);
-				return (rules, flagged);
-			});
+			newData.SetCustomRules(modData, this, yaml);
 
 			if (p.Contains("map.png"))
 				using (var dataStream = p.GetStream("map.png"))
@@ -330,19 +319,6 @@ namespace OpenRA
 
 			// Assign the new data atomically
 			innerData = newData;
-		}
-
-		MiniYaml LoadRuleSection(Dictionary<string, MiniYaml> yaml, string section)
-		{
-			if (!yaml.TryGetValue(section, out var node))
-				return null;
-
-			return node;
-		}
-
-		public void PreloadRules()
-		{
-			var unused = WorldActorInfo;
 		}
 
 		public void UpdateRemoteSearch(MapStatus status, MiniYaml yaml, Action<MapPreview> parseMetadata = null)
@@ -389,23 +365,9 @@ namespace OpenRA
 					var playersString = Encoding.UTF8.GetString(Convert.FromBase64String(r.players_block));
 					newData.Players = new MapPlayers(MiniYaml.FromString(playersString));
 
-					newData.SetRulesetGenerator(modData, () =>
-					{
-						var rulesString = Encoding.UTF8.GetString(Convert.FromBase64String(r.rules));
-						var rulesYaml = new MiniYaml("", MiniYaml.FromString(rulesString)).ToDictionary();
-						var ruleDefinitions = LoadRuleSection(rulesYaml, "Rules");
-						var weaponDefinitions = LoadRuleSection(rulesYaml, "Weapons");
-						var voiceDefinitions = LoadRuleSection(rulesYaml, "Voices");
-						var musicDefinitions = LoadRuleSection(rulesYaml, "Music");
-						var notificationDefinitions = LoadRuleSection(rulesYaml, "Notifications");
-						var sequenceDefinitions = LoadRuleSection(rulesYaml, "Sequences");
-						var modelSequenceDefinitions = LoadRuleSection(rulesYaml, "ModelSequences");
-						var rules = Ruleset.Load(modData, this, TileSet, ruleDefinitions, weaponDefinitions,
-							voiceDefinitions, notificationDefinitions, musicDefinitions, sequenceDefinitions, modelSequenceDefinitions);
-						var flagged = Ruleset.DefinesUnsafeCustomRules(modData, this, ruleDefinitions,
-							weaponDefinitions, voiceDefinitions, notificationDefinitions, sequenceDefinitions);
-						return (rules, flagged);
-					});
+					var rulesString = Encoding.UTF8.GetString(Convert.FromBase64String(r.rules));
+					var rulesYaml = new MiniYaml("", MiniYaml.FromString(rulesString)).ToDictionary();
+					newData.SetCustomRules(modData, this, rulesYaml);
 				}
 				catch (Exception e)
 				{
@@ -473,21 +435,19 @@ namespace OpenRA
 
 					mapInstallPackage.Update(mapFilename, fileStream.ToArray());
 					Log.Write("debug", "Downloaded map to '{0}'", mapFilename);
-					Game.RunAfterTick(() =>
+
+					var package = mapInstallPackage.OpenPackage(mapFilename, modData.ModFiles);
+					if (package == null)
+						innerData.Status = MapStatus.DownloadError;
+					else
 					{
-						var package = mapInstallPackage.OpenPackage(mapFilename, modData.ModFiles);
-						if (package == null)
-							innerData.Status = MapStatus.DownloadError;
-						else
-						{
-							UpdateFromMap(package, mapInstallPackage, MapClassification.User, null, GridType);
-							onSuccess();
-						}
-					});
+						UpdateFromMap(package, mapInstallPackage, MapClassification.User, null, GridType);
+						Game.RunAfterTick(onSuccess);
+					}
 				}
 				catch (Exception e)
 				{
-					Console.WriteLine(e.Message);
+					Log.Write("debug", "Map installation failed with error: {0}", e);
 					innerData.Status = MapStatus.DownloadError;
 				}
 			});

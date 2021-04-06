@@ -58,6 +58,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly TabCompletionLogic tabCompletion = new TabCompletionLogic();
 
 		MapPreview map;
+		Session.MapStatus mapStatus;
+
 		bool addBotOnMapLoad;
 		bool disableTeamChat;
 		bool insufficientPlayerSpawns;
@@ -66,6 +68,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		Dictionary<int, SpawnOccupant> spawnOccupants = new Dictionary<int, SpawnOccupant>();
 
 		readonly string chatLineSound = ChromeMetrics.Get<string>("ChatLineSound");
+
+		bool MapIsPlayable => (mapStatus & Session.MapStatus.Playable) == Session.MapStatus.Playable;
 
 		// Listen for connection failures
 		void ConnectionStateChanged(OrderManager om)
@@ -131,7 +135,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var mapContainer = Ui.LoadWidget("MAP_PREVIEW", lobby.Get("MAP_PREVIEW_ROOT"), new WidgetArgs
 			{
 				{ "orderManager", orderManager },
-				{ "getMap", (Func<MapPreview>)(() => map) },
+				{ "getMap", (Func<(MapPreview, Session.MapStatus)>)(() => (map, mapStatus)) },
 				{
 					"onMouseDown", (Action<MapPreviewWidget, MapPreview, MouseInput>)((preview, mapPreview, mi) =>
 						LobbyUtils.SelectSpawnPoint(orderManager, preview, mapPreview, mi))
@@ -163,8 +167,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var gameStarting = false;
 			Func<bool> configurationDisabled = () => !Game.IsHost || gameStarting ||
-				panel == PanelType.Kick || panel == PanelType.ForceStart ||
-				!map.RulesLoaded || map.InvalidCustomRules ||
+				panel == PanelType.Kick || panel == PanelType.ForceStart || !MapIsPlayable ||
 				orderManager.LocalClient == null || orderManager.LocalClient.IsReady;
 
 			var mapButton = lobby.GetOrNull<ButtonWidget>("CHANGEMAP_BUTTON");
@@ -330,7 +333,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			optionsTab.IsHighlighted = () => panel == PanelType.Options;
 			optionsTab.IsDisabled = OptionsTabDisabled;
 			optionsTab.OnClick = () => panel = PanelType.Options;
-			optionsTab.GetText = () => !map.RulesLoaded ? "Loading..." : optionsTab.Text;
 
 			var playersTab = tabContainer.Get<ButtonWidget>("PLAYERS_TAB");
 			playersTab.IsHighlighted = () => panel == PanelType.Players;
@@ -476,7 +478,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		bool OptionsTabDisabled()
 		{
-			return !map.RulesLoaded || map.InvalidCustomRules || panel == PanelType.Kick || panel == PanelType.ForceStart;
+			return !MapIsPlayable || panel == PanelType.Kick || panel == PanelType.ForceStart;
 		}
 
 		public override void Tick()
@@ -505,14 +507,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			return true;
 		}
 
-		void LoadMapPreviewRules(MapPreview map)
-		{
-			// Force map rules to be loaded on this background thread
-			new Task(map.PreloadRules).Start();
-		}
-
 		void UpdateCurrentMap()
 		{
+			mapStatus = orderManager.LobbyInfo.GlobalSettings.MapStatus;
 			var uid = orderManager.LobbyInfo.GlobalSettings.Map;
 			if (map.Uid == uid)
 				return;
@@ -520,39 +517,22 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			map = modData.MapCache[uid];
 			if (map.Status == MapStatus.Available)
 			{
-				// Maps need to be validated and pre-loaded before they can be accessed
-				var currentMap = map;
-				new Task(() =>
+				// Tell the server that we have the map
+				orderManager.IssueOrder(Order.Command("state {0}".F(Session.ClientState.NotReady)));
+
+				if (addBotOnMapLoad)
 				{
-					// Force map rules to be loaded on this background thread
-					currentMap.PreloadRules();
-					Game.RunAfterTick(() =>
-					{
-						// Map may have changed in the meantime
-						if (currentMap != map)
-							return;
+					var slot = orderManager.LobbyInfo.FirstEmptyBotSlot();
+					var bot = map.PlayerActorInfo.TraitInfos<IBotInfo>().Select(t => t.Type).FirstOrDefault();
+					var botController = orderManager.LobbyInfo.Clients.FirstOrDefault(c => c.IsAdmin);
+					if (slot != null && bot != null)
+						orderManager.IssueOrder(Order.Command("slot_bot {0} {1} {2}".F(slot, botController.Index, bot)));
 
-						// Tell the server that we have the map
-						if (!currentMap.InvalidCustomRules)
-							orderManager.IssueOrder(Order.Command("state {0}".F(Session.ClientState.NotReady)));
-
-						if (addBotOnMapLoad)
-						{
-							var slot = orderManager.LobbyInfo.FirstEmptyBotSlot();
-							var bot = currentMap.PlayerActorInfo.TraitInfos<IBotInfo>().Select(t => t.Type).FirstOrDefault();
-							var botController = orderManager.LobbyInfo.Clients.FirstOrDefault(c => c.IsAdmin);
-							if (slot != null && bot != null)
-								orderManager.IssueOrder(Order.Command("slot_bot {0} {1} {2}".F(slot, botController.Index, bot)));
-
-							addBotOnMapLoad = false;
-						}
-					});
-				}).Start();
+					addBotOnMapLoad = false;
+				}
 			}
-			else if (map.Status == MapStatus.DownloadAvailable)
-				LoadMapPreviewRules(map);
-			else if (Game.Settings.Game.AllowDownloading)
-				modData.MapCache.QueryRemoteMapDetails(services.MapRepository, new[] { uid }, LoadMapPreviewRules);
+			else if (map.Status != MapStatus.DownloadAvailable && Game.Settings.Game.AllowDownloading)
+				modData.MapCache.QueryRemoteMapDetails(services.MapRepository, new[] { uid });
 		}
 
 		void UpdatePlayerList()
@@ -626,7 +606,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					LobbyUtils.SetupEditableTeamWidget(template, slot, client, orderManager, map);
 					LobbyUtils.SetupEditableHandicapWidget(template, slot, client, orderManager, map);
 					LobbyUtils.SetupEditableSpawnWidget(template, slot, client, orderManager, map);
-					LobbyUtils.SetupEditableReadyWidget(template, slot, client, orderManager, map);
+					LobbyUtils.SetupEditableReadyWidget(template, slot, client, orderManager, map, MapIsPlayable);
 				}
 				else
 				{
@@ -686,7 +666,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					LobbyUtils.SetupEditableNameWidget(template, null, c, orderManager, worldRenderer);
 
 					if (client.IsAdmin)
-						LobbyUtils.SetupEditableReadyWidget(template, null, client, orderManager, map);
+						LobbyUtils.SetupEditableReadyWidget(template, null, client, orderManager, map, MapIsPlayable);
 					else
 						LobbyUtils.HideReadyWidgets(template);
 				}

@@ -61,6 +61,7 @@ namespace OpenRA.Server
 
 		// Managed by LobbyCommands
 		public MapPreview Map;
+		public readonly MapStatusCache MapStatusCache;
 		public GameSave GameSave = null;
 
 		readonly int randomSeed;
@@ -170,6 +171,17 @@ namespace OpenRA.Server
 			}.Serialize());
 		}
 
+		void MapStatusChanged(string uid, Session.MapStatus status)
+		{
+			lock (LobbyInfo)
+			{
+				if (LobbyInfo.GlobalSettings.Map == uid)
+					LobbyInfo.GlobalSettings.MapStatus = status;
+
+				SyncLobbyInfo();
+			}
+		}
+
 		public Server(List<IPEndPoint> endpoints, ServerSettings settings, ModData modData, ServerType type)
 		{
 			Log.AddChannel("server", "server.log", true);
@@ -229,12 +241,16 @@ namespace OpenRA.Server
 
 			serverTraits.TrimExcess();
 
+			Map = ModData.MapCache[settings.Map];
+			MapStatusCache = new MapStatusCache(modData, MapStatusChanged, type == ServerType.Dedicated && settings.EnableLintChecks);
+
 			LobbyInfo = new Session
 			{
 				GlobalSettings =
 				{
 					RandomSeed = randomSeed,
-					Map = settings.Map,
+					Map = Map.Uid,
+					MapStatus = Session.MapStatus.Unknown,
 					ServerName = settings.Name,
 					EnableSingleplayer = settings.EnableSingleplayer || Type != ServerType.Dedicated,
 					EnableSyncReports = settings.EnableSyncReports,
@@ -254,6 +270,8 @@ namespace OpenRA.Server
 
 			new Thread(_ =>
 			{
+				// Initial status is set off the main thread to avoid triggering a load screen when joining a skirmish game
+				LobbyInfo.GlobalSettings.MapStatus = MapStatusCache[Map];
 				foreach (var t in serverTraits.WithInterface<INotifyServerStart>())
 					t.ServerStarted(this);
 
@@ -541,7 +559,7 @@ namespace OpenRA.Server
 								SendOrderTo(newConn, "Message", motd);
 						}
 
-						if (Map.DefinesUnsafeCustomRules)
+						if ((LobbyInfo.GlobalSettings.MapStatus & Session.MapStatus.UnsafeCustomRules) != 0)
 							SendOrderTo(newConn, "Message", "This map contains custom rules. Game experience may change.");
 
 						if (!LobbyInfo.GlobalSettings.EnableSingleplayer)

@@ -17,6 +17,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using OpenRA.FileFormats;
+using OpenRA.Network;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 using OpenRA.Widgets;
@@ -93,7 +94,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			Ui.LoadWidget("MAP_PREVIEW", mapPreviewRoot, new WidgetArgs
 			{
 				{ "orderManager", null },
-				{ "getMap", (Func<MapPreview>)(() => map) },
+				{ "getMap", (Func<(MapPreview, Session.MapStatus)>)(() => (map, Session.MapStatus.Playable)) },
 				{ "onMouseDown",  (Action<MapPreviewWidget, MapPreview, MouseInput>)((preview, mapPreview, mi) => { }) },
 				{ "getSpawnOccupants", (Func<Dictionary<int, SpawnOccupant>>)(() => spawnOccupants.Update(selectedReplay)) },
 				{ "getDisabledSpawnPoints", (Func<HashSet<int>>)(() => disabledSpawnPoints.Update(selectedReplay)) },
@@ -623,13 +624,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			try
 			{
-				if (map.Status != MapStatus.Available)
-				{
-					if (map.Status == MapStatus.DownloadAvailable)
-						LoadMapPreviewRules(map);
-					else if (Game.Settings.Game.AllowDownloading)
-						modData.MapCache.QueryRemoteMapDetails(services.MapRepository, new[] { map.Uid }, LoadMapPreviewRules);
-				}
+				if (map.Status == MapStatus.Unavailable && Game.Settings.Game.AllowDownloading)
+					modData.MapCache.QueryRemoteMapDetails(services.MapRepository, new[] { map.Uid });
 
 				var players = replay.GameInfo.Players
 					.GroupBy(p => p.Team)
@@ -683,15 +679,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				Log.Write("debug", "Exception while parsing replay: {0}", e);
 				SelectReplay(null);
 			}
-		}
-
-		void LoadMapPreviewRules(MapPreview map)
-		{
-			new Task(() =>
-			{
-				// Force map rules to be loaded on this background thread
-				map.PreloadRules();
-			}).Start();
 		}
 
 		void WatchReplay()

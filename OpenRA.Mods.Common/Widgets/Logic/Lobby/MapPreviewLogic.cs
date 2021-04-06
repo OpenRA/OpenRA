@@ -24,8 +24,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		int blinkTick;
 
 		[ObjectCreator.UseCtor]
-		internal MapPreviewLogic(Widget widget, ModData modData, OrderManager orderManager, Func<MapPreview> getMap, Action<MapPreviewWidget, MapPreview, MouseInput> onMouseDown,
-			Func<Dictionary<int, SpawnOccupant>> getSpawnOccupants, Func<HashSet<int>> getDisabledSpawnPoints, bool showUnoccupiedSpawnpoints)
+		internal MapPreviewLogic(Widget widget, ModData modData, OrderManager orderManager, Func<(MapPreview Map, Session.MapStatus Status)> getMap,
+			Action<MapPreviewWidget, MapPreview, MouseInput> onMouseDown, Func<Dictionary<int, SpawnOccupant>> getSpawnOccupants,
+			Func<HashSet<int>> getDisabledSpawnPoints, bool showUnoccupiedSpawnpoints)
 		{
 			var mapRepository = modData.Manifest.Get<WebServices>().MapRepository;
 
@@ -34,8 +35,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				available.IsVisible = () =>
 				{
-					var map = getMap();
-					return map.Status == MapStatus.Available && (!map.RulesLoaded || !map.InvalidCustomRules);
+					var (map, serverStatus) = getMap();
+					var isPlayable = (serverStatus & Session.MapStatus.Playable) == Session.MapStatus.Playable;
+					return map.Status == MapStatus.Available && isPlayable;
 				};
 
 				SetupWidgets(available, getMap, onMouseDown, getSpawnOccupants, getDisabledSpawnPoints, showUnoccupiedSpawnpoints);
@@ -46,17 +48,30 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				invalid.IsVisible = () =>
 				{
-					var map = getMap();
-					return map.Status == MapStatus.Available && map.InvalidCustomRules;
+					var (map, serverStatus) = getMap();
+					return map.Status == MapStatus.Available && (serverStatus & Session.MapStatus.Incompatible) != 0;
 				};
 
 				SetupWidgets(invalid, getMap, onMouseDown, getSpawnOccupants, getDisabledSpawnPoints, showUnoccupiedSpawnpoints);
 			}
 
+			var validating = widget.GetOrNull("MAP_VALIDATING");
+			if (validating != null)
+			{
+				validating.IsVisible = () =>
+				{
+					var (map, serverStatus) = getMap();
+					return map.Status == MapStatus.Available && (serverStatus & Session.MapStatus.Validating) != 0;
+				};
+
+				SetupWidgets(validating, getMap, onMouseDown, getSpawnOccupants, getDisabledSpawnPoints, showUnoccupiedSpawnpoints);
+			}
+
 			var download = widget.GetOrNull("MAP_DOWNLOADABLE");
 			if (download != null)
 			{
-				download.IsVisible = () => getMap().Status == MapStatus.DownloadAvailable;
+				download.IsVisible = () => getMap().Map.Status == MapStatus.DownloadAvailable;
+
 				SetupWidgets(download, getMap, onMouseDown, getSpawnOccupants, getDisabledSpawnPoints, showUnoccupiedSpawnpoints);
 
 				var install = download.GetOrNull<ButtonWidget>("MAP_INSTALL");
@@ -64,10 +79,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					install.OnClick = () =>
 					{
-						var map = getMap();
-						map.Install(mapRepository, () =>
+						getMap().Map.Install(mapRepository, () =>
 						{
-							map.PreloadRules();
 							if (orderManager != null)
 								Game.RunAfterTick(() => orderManager.IssueOrder(Order.Command("state {0}".F(Session.ClientState.NotReady))));
 						});
@@ -82,7 +95,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				progress.IsVisible = () =>
 				{
-					var map = getMap();
+					var (map, _) = getMap();
 					return map.Status != MapStatus.Available && map.Status != MapStatus.DownloadAvailable;
 				};
 
@@ -90,29 +103,36 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				var statusSearching = progress.GetOrNull("MAP_STATUS_SEARCHING");
 				if (statusSearching != null)
-					statusSearching.IsVisible = () => getMap().Status == MapStatus.Searching;
+				{
+					statusSearching.IsVisible = () =>
+					{
+						var (map, _) = getMap();
+						return map.Status == MapStatus.Searching;
+					};
+				}
 
 				var statusUnavailable = progress.GetOrNull("MAP_STATUS_UNAVAILABLE");
 				if (statusUnavailable != null)
 				{
 					statusUnavailable.IsVisible = () =>
 					{
-						var map = getMap();
+						var (map, _) = getMap();
 						return map.Status == MapStatus.Unavailable && map != MapCache.UnknownMap;
 					};
 				}
 
 				var statusError = progress.GetOrNull("MAP_STATUS_ERROR");
 				if (statusError != null)
-					statusError.IsVisible = () => getMap().Status == MapStatus.DownloadError;
+					statusError.IsVisible = () => getMap().Map.Status == MapStatus.DownloadError;
 
 				var statusDownloading = progress.GetOrNull<LabelWidget>("MAP_STATUS_DOWNLOADING");
 				if (statusDownloading != null)
 				{
-					statusDownloading.IsVisible = () => getMap().Status == MapStatus.Downloading;
+					statusDownloading.IsVisible = () => getMap().Map.Status == MapStatus.Downloading;
+
 					statusDownloading.GetText = () =>
 					{
-						var map = getMap();
+						var (map, _) = getMap();
 						if (map.DownloadBytes == 0)
 							return "Connecting...";
 
@@ -129,18 +149,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					retry.IsVisible = () =>
 					{
-						var map = getMap();
+						var (map, _) = getMap();
 						return (map.Status == MapStatus.DownloadError || map.Status == MapStatus.Unavailable) && map != MapCache.UnknownMap;
 					};
 
 					retry.OnClick = () =>
 					{
-						var map = getMap();
+						var (map, _) = getMap();
 						if (map.Status == MapStatus.DownloadError)
 						{
 							map.Install(mapRepository, () =>
 							{
-								map.PreloadRules();
 								if (orderManager != null)
 									Game.RunAfterTick(() => orderManager.IssueOrder(Order.Command("state {0}".F(Session.ClientState.NotReady))));
 							});
@@ -149,15 +168,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							modData.MapCache.QueryRemoteMapDetails(mapRepository, new[] { map.Uid });
 					};
 
-					retry.GetText = () => getMap().Status == MapStatus.DownloadError ? "Retry Install" : "Retry Search";
+					retry.GetText = () => getMap().Map.Status == MapStatus.DownloadError ? "Retry Install" : "Retry Search";
 				}
 
 				var progressbar = progress.GetOrNull<ProgressBarWidget>("MAP_PROGRESSBAR");
 				if (progressbar != null)
 				{
-					progressbar.IsIndeterminate = () => getMap().DownloadPercentage == 0;
-					progressbar.GetPercentage = () => getMap().DownloadPercentage;
-					progressbar.IsVisible = () => getMap().Status == MapStatus.Downloading;
+					progressbar.IsIndeterminate = () => getMap().Map.DownloadPercentage == 0;
+					progressbar.GetPercentage = () => getMap().Map.DownloadPercentage;
+					progressbar.IsVisible = () => getMap().Map.Status == MapStatus.Downloading;
 				}
 			}
 		}
@@ -171,12 +190,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 		}
 
-		void SetupWidgets(Widget parent, Func<MapPreview> getMap,
-			Action<MapPreviewWidget, MapPreview, MouseInput> onMouseDown, Func<Dictionary<int, SpawnOccupant>> getSpawnOccupants, Func<HashSet<int>> getDisabledSpawnPoints, bool showUnoccupiedSpawnpoints)
+		void SetupWidgets(Widget parent,
+			Func<(MapPreview Map, Session.MapStatus Status)> getMap,
+			Action<MapPreviewWidget, MapPreview, MouseInput> onMouseDown,
+			Func<Dictionary<int, SpawnOccupant>> getSpawnOccupants,
+			Func<HashSet<int>> getDisabledSpawnPoints,
+			bool showUnoccupiedSpawnpoints)
 		{
 			var preview = parent.Get<MapPreviewWidget>("MAP_PREVIEW");
-			preview.Preview = () => getMap();
-			preview.OnMouseDown = mi => onMouseDown(preview, getMap(), mi);
+			preview.Preview = () => getMap().Map;
+			preview.OnMouseDown = mi => onMouseDown(preview, getMap().Map, mi);
 			preview.SpawnOccupants = getSpawnOccupants;
 			preview.DisabledSpawnPoints = getDisabledSpawnPoints;
 			preview.ShowUnoccupiedSpawnpoints = showUnoccupiedSpawnpoints;
@@ -184,18 +207,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var titleLabel = parent.GetOrNull<LabelWithTooltipWidget>("MAP_TITLE");
 			if (titleLabel != null)
 			{
-				titleLabel.IsVisible = () => getMap() != MapCache.UnknownMap;
+				titleLabel.IsVisible = () => getMap().Map != MapCache.UnknownMap;
 				var font = Game.Renderer.Fonts[titleLabel.Font];
 				var title = new CachedTransform<MapPreview, string>(m => WidgetUtils.TruncateText(m.Title, titleLabel.Bounds.Width, font));
-				titleLabel.GetText = () => title.Update(getMap());
-				titleLabel.GetTooltipText = () => getMap().Title;
+				titleLabel.GetText = () => title.Update(getMap().Map);
+				titleLabel.GetTooltipText = () => getMap().Map.Title;
 			}
 
 			var typeLabel = parent.GetOrNull<LabelWidget>("MAP_TYPE");
 			if (typeLabel != null)
 			{
 				var type = new CachedTransform<MapPreview, string>(m => m.Categories.FirstOrDefault() ?? "");
-				typeLabel.GetText = () => type.Update(getMap());
+				typeLabel.GetText = () => type.Update(getMap().Map);
 			}
 
 			var authorLabel = parent.GetOrNull<LabelWidget>("MAP_AUTHOR");
@@ -204,7 +227,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var font = Game.Renderer.Fonts[authorLabel.Font];
 				var author = new CachedTransform<MapPreview, string>(
 					m => WidgetUtils.TruncateText("Created by {0}".F(m.Author), authorLabel.Bounds.Width, font));
-				authorLabel.GetText = () => author.Update(getMap());
+				authorLabel.GetText = () => author.Update(getMap().Map);
 			}
 		}
 	}
