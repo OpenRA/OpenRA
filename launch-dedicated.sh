@@ -26,6 +26,7 @@ ProfileIDWhitelist="${ProfileIDWhitelist:-""}"
 EnableSingleplayer="${EnableSingleplayer:-"False"}"
 EnableSyncReports="${EnableSyncReports:-"False"}"
 EnableGeoIP="${EnableGeoIP:-"True"}"
+EnableLintChecks="${EnableLintChecks:-"True"}"
 ShareAnonymizedIPs="${ShareAnonymizedIPs:-"True"}"
 
 SupportDir="${SupportDir:-""}"
@@ -43,6 +44,7 @@ while true; do
      Server.ProfileIDWhitelist="$ProfileIDWhitelist" \
      Server.EnableSyncReports="$EnableSyncReports" \
      Server.EnableGeoIP="$EnableGeoIP" \
+     Server.EnableLintChecks="$EnableLintChecks" \
      Server.ShareAnonymizedIPs="$ShareAnonymizedIPs" \
      Engine.SupportDir="$SupportDir"
 done

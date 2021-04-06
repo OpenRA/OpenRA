@@ -77,6 +77,42 @@ Container@MAP_PREVIEW:
 					Font: Tiny
 					Align: Center
 					Text: with this version of OpenRA
+		Container@MAP_VALIDATING:
+			Width: PARENT_RIGHT
+			Height: PARENT_BOTTOM
+			Children:
+				Background@MAP_BG:
+					Width: PARENT_RIGHT
+					Height: 158
+					Background: panel-gray
+					Children:
+						MapPreview@MAP_PREVIEW:
+							X: 1
+							Y: 1
+							Width: PARENT_RIGHT - 2
+							Height: PARENT_BOTTOM - 2
+							TooltipContainer: TOOLTIP_CONTAINER
+				LabelWithTooltip@MAP_TITLE:
+					Y: 159
+					Width: PARENT_RIGHT
+					Height: 25
+					Font: Bold
+					Align: Center
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: SIMPLE_TOOLTIP
+				Label@MAP_STATUS_VALIDATING:
+					Y: 174
+					Width: PARENT_RIGHT
+					Height: 25
+					Font: Tiny
+					Align: Center
+					Text: Validating...
+					IgnoreMouseOver: true
+				ProgressBar@MAP_PROGRESSBAR:
+					Y: 194
+					Width: PARENT_RIGHT
+					Height: 25
+					Indeterminate: True
 		Container@MAP_DOWNLOADABLE:
 			Width: PARENT_RIGHT
 			Height: PARENT_BOTTOM

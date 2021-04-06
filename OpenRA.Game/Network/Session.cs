@@ -15,6 +15,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using OpenRA.Primitives;
+using OpenRA.Server;
 
 namespace OpenRA.Network
 {
@@ -218,10 +219,21 @@ namespace OpenRA.Network
 			public bool IsEnabled => Value == "True";
 		}
 
+		[Flags]
+		public enum MapStatus
+		{
+			Unknown = 0,
+			Validating = 1,
+			Playable = 2,
+			Incompatible = 4,
+			UnsafeCustomRules = 8,
+		}
+
 		public class Global
 		{
 			public string ServerName;
 			public string Map;
+			public MapStatus MapStatus;
 			public int RandomSeed = 0;
 			public bool AllowSpectators = true;
 			public string GameUid;
