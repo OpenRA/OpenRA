@@ -582,6 +582,9 @@ namespace OpenRA.Server
 									client.Fingerprint = handshake.Fingerprint;
 									Log.Write("server", "{0} authenticated as {1} (UID {2})", newConn.Socket.RemoteEndPoint,
 										profile.ProfileName, profile.ProfileID);
+
+									foreach (var t in serverTraits.WithInterface<IClientAuthenticated>())
+										t.ClientAuthenticated(this, client, profile);
 								}
 								else if (profile.KeyRevoked)
 								{

@@ -144,6 +144,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var badgeContainer = widget.Get("BADGES_CONTAINER");
 			var badgeSeparator = badgeContainer.GetOrNull("SEPARATOR");
 
+			var serverInfo = new[] { client.ServerTooltipLine1, client.ServerTooltipLine2, client.ServerTooltipLine3 }
+				.Where(x => !string.IsNullOrEmpty(x))
+				.ToArray();
+
+			var serverContainer = widget.Get("SERVER_CONTAINER");
+			var serverSeparator = serverContainer.GetOrNull("SEPARATOR");
+			var serverTitle = serverContainer.GetOrNull("TITLE");
+			var serverLineTemplate = serverContainer.Get<LabelWithHighlightWidget>("LINE");
+			var serverMargin = serverContainer.Bounds.Y;
+			serverContainer.RemoveChild(serverLineTemplate);
+
 			var profileHeader = header.Get("PROFILE_HEADER");
 			var messageHeader = header.Get("MESSAGE_HEADER");
 			var message = messageHeader.Get<LabelWidget>("MESSAGE");
@@ -190,7 +201,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							profileWidth = Math.Max(profileWidth, rankFont.Measure(profile.ProfileRank).X + 2 * rankLabel.Bounds.Left);
 
 							header.Bounds.Height += headerSizeOffset;
+							serverContainer.Bounds.Y += header.Bounds.Height;
 							badgeContainer.Bounds.Y += header.Bounds.Height;
+
 							if (client.IsAdmin)
 							{
 								profileWidth = Math.Max(profileWidth, adminFont.Measure(adminLabel.Text).X + 2 * adminLabel.Bounds.Left);
@@ -198,17 +211,42 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 								adminContainer.IsVisible = () => true;
 								profileHeader.Bounds.Height += adminLabel.Bounds.Height;
 								header.Bounds.Height += adminLabel.Bounds.Height;
+								serverContainer.Bounds.Y += adminLabel.Bounds.Height;
 								badgeContainer.Bounds.Y += adminLabel.Bounds.Height;
 							}
 
-							Func<int, int> negotiateWidth = badgeWidth =>
+							if (serverInfo.Any())
 							{
-								profileWidth = Math.Min(Math.Max(badgeWidth, profileWidth), maxProfileWidth);
-								return profileWidth;
-							};
+								var lineFont = Game.Renderer.Fonts[serverLineTemplate.Font];
+								var maxWidth = serverInfo.Max(l => LabelWithHighlightWidget.MeasureWidth(l, lineFont)) + 2 * serverLineTemplate.Bounds.X;
+								profileWidth = Math.Min(Math.Max(maxWidth, profileWidth), maxProfileWidth);
+
+								var lineOffset = serverLineTemplate.Bounds.Y;
+								foreach (var serverLine in serverInfo)
+								{
+									var line = (LabelWithHighlightWidget)serverLineTemplate.Clone();
+									var lineText = LabelWithHighlightWidget.TruncateText(serverLine, profileWidth - 2 * line.Bounds.X, lineFont);
+									line.GetText = () => lineText;
+
+									line.Bounds.Y = lineOffset;
+									serverContainer.AddChild(line);
+
+									lineOffset += line.Bounds.Height;
+								}
+
+								serverContainer.IsVisible = () => true;
+								serverContainer.Bounds.Height = lineOffset + serverTitle.Bounds.Y;
+								badgeContainer.Bounds.Y += serverMargin + serverContainer.Bounds.Height;
+							}
 
 							if (profile.Badges.Any())
 							{
+								Func<int, int> negotiateWidth = badgeWidth =>
+								{
+									profileWidth = Math.Min(Math.Max(badgeWidth, profileWidth), maxProfileWidth);
+									return profileWidth;
+								};
+
 								var badges = Ui.LoadWidget("PLAYER_PROFILE_BADGES_INSERT", badgeContainer, new WidgetArgs()
 								{
 									{ "worldRenderer", worldRenderer },
@@ -224,11 +262,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							}
 
 							profileWidth = Math.Min(profileWidth, maxProfileWidth);
-							header.Bounds.Width = widget.Bounds.Width = badgeContainer.Bounds.Width = profileWidth;
-							widget.Bounds.Height = header.Bounds.Height + badgeContainer.Bounds.Height;
+							header.Bounds.Width = widget.Bounds.Width = badgeContainer.Bounds.Width = serverContainer.Bounds.Width = profileWidth;
+							widget.Bounds.Height = header.Bounds.Height + serverContainer.Bounds.Height + badgeContainer.Bounds.Height;
 
 							if (badgeSeparator != null)
 								badgeSeparator.Bounds.Width = profileWidth - 2 * badgeSeparator.Bounds.X;
+
+							if (serverSeparator != null)
+								serverSeparator.Bounds.Width = profileWidth - 2 * serverSeparator.Bounds.X;
 
 							profileLoaded = true;
 						});

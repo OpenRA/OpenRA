@@ -156,6 +156,11 @@ namespace OpenRA.Network
 			// Linked to the online player database
 			public string Fingerprint;
 
+			// Servers can add up to three lines of custom text to the player tooltip
+			public string ServerTooltipLine1;
+			public string ServerTooltipLine2;
+			public string ServerTooltipLine3;
+
 			public MiniYamlNode Serialize()
 			{
 				return new MiniYamlNode("Client@{0}".F(Index), FieldSaver.Save(this));

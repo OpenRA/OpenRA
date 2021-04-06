@@ -511,6 +511,23 @@ Container@REGISTERED_PLAYER_TOOLTIP:
 							Width: PARENT_RIGHT - 20
 							Height: 23
 							Font: Bold
+		Background@SERVER_CONTAINER:
+			Width: PARENT_RIGHT
+			Y: 0-1
+			Visible: false
+			Background: panel-black
+			Children:
+				Label@TITLE:
+					X: 5
+					Y: 5
+					Height: 12
+					Text: Server Information
+					Font: Bold
+				LabelWithHighlight@LINE:
+					X: 5
+					Y: 20
+					Height: 12
+					Font: TinyBold
 		Background@BADGES_CONTAINER:
 			Width: PARENT_RIGHT
 			Y: 0-1
