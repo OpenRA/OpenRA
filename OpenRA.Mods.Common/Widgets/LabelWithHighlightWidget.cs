@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Text;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Widgets;
@@ -36,7 +37,7 @@ namespace OpenRA.Mods.Common.Widgets
 			textComponents = new CachedTransform<string, (string, bool)[]>(MakeComponents);
 		}
 
-		(string, bool)[] MakeComponents(string text)
+		static (string Text, bool Highlighted)[] MakeComponents(string text)
 		{
 			var components = new List<(string, bool)>();
 			foreach (var l in text.Split(new[] { "\\n" }, StringSplitOptions.None))
@@ -82,5 +83,68 @@ namespace OpenRA.Mods.Common.Widgets
 		}
 
 		public override Widget Clone() { return new LabelWithHighlightWidget(this); }
+
+		public static int MeasureWidth(string text, SpriteFont font)
+		{
+			var width = 0;
+			foreach (var c in MakeComponents(text))
+				width += font.Measure(c.Text).X;
+
+			return width;
+		}
+
+		public static string TruncateText(string text, int width, SpriteFont font)
+		{
+			var components = MakeComponents(text);
+			var accumulatedWidth = new int[components.Length];
+			accumulatedWidth[0] = font.Measure(components[0].Text).X;
+			for (var i = 1; i < components.Length; i++)
+				accumulatedWidth[i] = accumulatedWidth[i - 1] + font.Measure(components[i].Text).X;
+
+			// Is the text already short enough?
+			if (accumulatedWidth[components.Length - 1] <= width)
+				return text;
+
+			// Work backwards until we find the component that straddles the break
+			for (var i = components.Length - 1; i >= 1; i--)
+			{
+				var offset = accumulatedWidth[i - 1];
+				if (offset > width)
+					continue;
+
+				var trimmed = components[i].Text + "...";
+				var trimmedWidth = font.Measure(trimmed).X;
+				while (offset + trimmedWidth > width && trimmed.Length > 3)
+				{
+					trimmed = components[i].Text.Substring(0, trimmed.Length - 4) + "...";
+					trimmedWidth = font.Measure(trimmed).X;
+				}
+
+				// Component is too close to the limit for even "..." to fit
+				if (trimmed.Length == 3)
+					continue;
+
+				// Rebuild the unformatted string
+				var result = new StringBuilder();
+				for (var j = 0; j <= i; j++)
+				{
+					var c = components[j];
+					if (c.Highlighted)
+						result.Append("{");
+
+					if (j < i)
+						result.Append(c.Text);
+					else
+						result.Append(trimmed);
+
+					if (c.Highlighted)
+						result.Append("}");
+				}
+
+				return result.ToString();
+			}
+
+			return string.Empty;
+		}
 	}
 }
