@@ -101,6 +101,15 @@ namespace OpenRA
 				return node;
 			}
 
+			static bool IsLoadableRuleDefinition(MiniYamlNode n)
+			{
+				if (n.Key[0] == '^')
+					return true;
+
+				var key = n.Key.ToLowerInvariant();
+				return key == "world" || key == "player";
+			}
+
 			public void SetCustomRules(ModData modData, IReadOnlyFileSystem fileSystem, Dictionary<string, MiniYaml> yaml)
 			{
 				RuleDefinitions = LoadRuleSection(yaml, "Rules");
@@ -113,19 +122,34 @@ namespace OpenRA
 
 				try
 				{
-					var rules = Ruleset.Load(modData, fileSystem, TileSet, RuleDefinitions,
-						WeaponDefinitions, VoiceDefinitions, NotificationDefinitions,
-						MusicDefinitions, SequenceDefinitions, ModelSequenceDefinitions);
+					// PERF: Implement a minimal custom loader for custom world and player actors to minimize loading time
+					// This assumes/enforces that these actor types can only inherit abstract definitions (starting with ^)
+					if (RuleDefinitions != null)
+					{
+						var files = modData.Manifest.Rules.AsEnumerable();
+						if (RuleDefinitions.Value != null)
+						{
+							var mapFiles = FieldLoader.GetValue<string[]>("value", RuleDefinitions.Value);
+							files = files.Append(mapFiles);
+						}
 
-					WorldActorInfo = rules.Actors[SystemActors.World];
-					PlayerActorInfo = rules.Actors[SystemActors.Player];
+						var sources = files.Select(s => MiniYaml.FromStream(fileSystem.Open(s), s).Where(IsLoadableRuleDefinition).ToList());
+						if (RuleDefinitions.Nodes.Any())
+							sources = sources.Append(RuleDefinitions.Nodes.Where(IsLoadableRuleDefinition).ToList());
+
+						var yamlNodes = MiniYaml.Merge(sources);
+						WorldActorInfo = new ActorInfo(modData.ObjectCreator, "world", yamlNodes.First(n => n.Key.ToLowerInvariant() == "world").Value);
+						PlayerActorInfo = new ActorInfo(modData.ObjectCreator, "player", yamlNodes.First(n => n.Key.ToLowerInvariant() == "player").Value);
+						return;
+					}
 				}
 				catch (Exception e)
 				{
-					Log.Write("debug", "Failed to load rules for `{0}` with error :{1}", Title, e.Message);
-					WorldActorInfo = modData.DefaultRules.Actors[SystemActors.World];
-					PlayerActorInfo = modData.DefaultRules.Actors[SystemActors.Player];
+					Log.Write("debug", "Failed to load rules for `{0}` with error: {1}", Title, e.Message);
 				}
+
+				WorldActorInfo = modData.DefaultRules.Actors[SystemActors.World];
+				PlayerActorInfo = modData.DefaultRules.Actors[SystemActors.Player];
 			}
 
 			public InnerData Clone()
@@ -157,6 +181,8 @@ namespace OpenRA
 		public MapStatus Status => innerData.Status;
 		public MapClassification Class => innerData.Class;
 		public MapVisibility Visibility => innerData.Visibility;
+
+		public MiniYaml RuleDefinitions => innerData.RuleDefinitions;
 
 		public ActorInfo WorldActorInfo => innerData.WorldActorInfo;
 		public ActorInfo PlayerActorInfo => innerData.PlayerActorInfo;
