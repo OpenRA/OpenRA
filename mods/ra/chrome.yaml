@@ -580,3 +580,8 @@ dropdown-separators:
 		separator-pressed: 766, 2, 1, 19
 		separator-disabled: 513, 258, 1, 19
 		observer-separator: 769, 258, 1, 19
+
+tooltip-separator:
+	Inherits: ^Dialog
+	Regions:
+		border-t: 518, 387, 52, 1

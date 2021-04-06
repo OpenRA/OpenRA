@@ -430,6 +430,11 @@ dropdown-separators:
 		separator-pressed: 641, 2, 1, 19
 		separator-disabled: 513, 258, 1, 19
 
+tooltip-separator:
+	Inherits: ^Dialog
+	Regions:
+		border-t: 642, 1, 124, 1
+
 logos:
 	Inherits: ^LoadScreen
 	Regions:
