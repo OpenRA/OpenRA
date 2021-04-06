@@ -476,14 +476,12 @@ namespace OpenRA
 
 			innerData.Status = MapStatus.Downloading;
 			var installLocation = cache.MapLocations.FirstOrDefault(p => p.Value == MapClassification.User);
-			if (installLocation.Key == null || !(installLocation.Key is IReadWritePackage))
+			if (!(installLocation.Key is IReadWritePackage mapInstallPackage))
 			{
 				Log.Write("debug", "Map install directory not found");
 				innerData.Status = MapStatus.DownloadError;
 				return;
 			}
-
-			var mapInstallPackage = installLocation.Key as IReadWritePackage;
 
 			Task.Run(async () =>
 			{
@@ -508,8 +506,14 @@ namespace OpenRA
 						return;
 					}
 
-					response.Headers.TryGetValues("Content-Disposition", out var values);
-					var mapFilename = values.First().Replace("attachment; filename = ", "");
+					var mapFilename = response.Content.Headers.ContentDisposition?.FileName;
+
+					// Map not found
+					if (string.IsNullOrEmpty(mapFilename))
+					{
+						innerData.Status = MapStatus.DownloadError;
+						return;
+					}
 
 					var fileStream = new MemoryStream();
 
