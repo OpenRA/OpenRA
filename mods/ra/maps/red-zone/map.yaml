@@ -3341,6 +3341,11 @@ Actors:
 		Owner: Neutral
 		Facing: 384
 		Location: 54,116
+	Actor1321: thf
+		Owner: USSR
+		Facing: 384
+		SubCell: 3
+		Location: 21,98
 
 Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, ra|rules/campaign-palettes.yaml, rules.yaml
 

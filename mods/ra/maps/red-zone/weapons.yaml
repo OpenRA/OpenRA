@@ -1,43 +1,45 @@
 90mmAA:
 	Inherits: 90mm
-	InvalidTargets: Ground, Water
-	ValidTargets: Air
+	Range: 5c0
+	InvalidTargets: Water
+	ValidTargets: AirborneActor
 	Projectile: Bullet
 		Blockable: false
 	Warhead@1Dam: SpreadDamage
 		InvalidTargets: Ground, Water
-		ValidTargets: Air
+		ValidTargets: AirborneActor
 	Warhead@3Eff: CreateEffect
 		Explosions: med_explosion_air
-		ValidTargets: Air, AirHit
+		ValidTargets: AirborneActor, AirHit
 
 M60mgAA:
 	Inherits: M60mg
-	ValidTargets: Air, Ground
+	Range: 5c0
+	ValidTargets: AirborneActor
 	Projectile: Bullet
 		Blockable: false
 	Warhead@1Dam: SpreadDamage
 		Damage: 500
 		InvalidTargets: Ground, Water
-		ValidTargets: Air
+		ValidTargets: AirborneActor
 	Warhead@3Eff: CreateEffect
 		Explosions: small_explosion_air
 		ImpactSounds: kaboom25.aud
-		ValidTargets: Air, AirHit
+		ValidTargets: AirborneActor, AirHit
 
 HellfireAG:
 	ReloadDelay: 100
-	Range: 7c0
-	MinRange: 5c256
+	Range: 8c0
+	MinRange: 3c256
 	Report: missile6.aud
 	Burst: 5
-	BurstDelay: 3
-	ValidTargets: Ground, Water
+	BurstDelays: 3
+	ValidTargets: Ground, Water, GroundActor, WaterActor
 	InvalidTargets: Infantry
 	Projectile: Bullet
 		Speed: 300
 		Blockable: false
-		Angle: 15
+		Angle: 15  
 		Inaccuracy: 1c0
 		Image: MISSILE
 		TrailImage: smokey
@@ -45,7 +47,7 @@ HellfireAG:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 6000
-		ValidTargets: Ground, Water
+		ValidTargets: Ground, Water, GroundActor, WaterActor
 		Versus:
 			None: 30
 			Wood: 75
@@ -94,7 +96,7 @@ RedEye:
 	ReloadDelay: 50
 	Range: 7c512
 	Report: missile1.aud
-	ValidTargets: Air
+	ValidTargets: AirborneActor
 	Projectile: Missile
 		Arm: 3
 		Blockable: false
@@ -120,16 +122,16 @@ RedEye:
 		ImpactSound: kaboom25.aud
 
 ChainGun:
-	ReloadDelay: 2
-	Range: 7c0
+	ReloadDelay: 3
+	Range: 8c0
 	MinRange: 1c768
 	Report: gun13.aud
 	Projectile: Bullet
 		Speed: 1c682
 		Blockable: false
 	Warhead@1Dam: SpreadDamage
-		Spread: 128
-		Damage: 3000
+		Spread: 528
+		Damage: 2400
 		Versus:
 			None: 120
 			Wood: 50
@@ -143,6 +145,9 @@ ChainGun:
 	Warhead@3EffWater: CreateEffect
 		Explosions: water_piffs
 		ValidTargets: Water
+	Warhead@Smu: LeaveSmudge
+		SmudgeType: Crater
+		ValidTargets: Ground, Vehicle, Infantry
 
 Stinger:
 	Warhead@1Dam: SpreadDamage

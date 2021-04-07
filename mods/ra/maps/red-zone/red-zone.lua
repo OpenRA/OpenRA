@@ -6,7 +6,7 @@
    the License, or (at your option) any later version. For more
    information, see COPYING.
 ]]
-
+PlayerInfo = { }
 TankCamera =
 {
 	easy = "CAMERA.15_Cells",
@@ -142,52 +142,99 @@ BackupHeli = function()
 	end)
 end
 
-Hind1PassengerCheck = function()
-	Utils.Do(HindUnit1, function(actor)
-		if actor.IsDead then
-			return
-		end
-		if not actor.HasPassengers then
-			actor.Owner = bad_guy
-		end
-		if actor.HasPassengers then
-			actor.Owner = ussr
-		end	
-	end)
 
-	Trigger.AfterDelay(0, Hind1PassengerCheck)
+Hind1PassengerCheck = function()
+		Trigger.OnPassengerEntered(Hind1, function(transport, passenger)
+			-- If someone enters a vehicle with no passengers, they're the owner.
+			if transport.PassengerCount == 1 then
+				transport.Owner = passenger.Owner
+			end
+			local pi = PlayerInfo[passenger.Owner.InternalName]
+		
+			-- Set passenger state
+			pi.PassengerOfVehicle = transport
+		
+			-- Eject on death hack: Set the current health value when we need to eject anyone out.
+			pi.EjectOnDeathHealth = passenger.Health
+			-- actor.Owner = ussr
+			-- Name tag hack: Setting the driver to display the proper pilot name.
+			if transport.PassengerCount == 1 then
+				pi.IsPilot = true
+			end
+		end)
+		-- If it's empty and alive, transfer ownership back to neutral.
+	-- Husks (if any) retain ownership, and don't want husk explosions to hurt allies.
+	Trigger.OnPassengerExited(Hind1, function(transport, passenger)
+		if not transport.IsDead and transport.PassengerCount == 0 then
+			-- NOTE: With EjectOnDeath being busted, this might not be working as intended.
+			transport.Owner = neutral
+		end
+	
+		local pi = PlayerInfo[passenger.Owner.InternalName]
+	
+	-- 	-- Set passenger state
+		pi.PassengerOfVehicle = nil
+	
+	-- 	-- Name tag hack: Remove pilot info.
+		pi.IsPilot = false
+		-- actor.Owner = neutral
+	end)
+	-- Media.DisplayMessage("Hijack a Hind Helicopter.")
+
+	-- Utils.Do(HindUnit1, function(actor)
+	-- 	if actor.IsDead then
+	-- 		return
+	-- 	end
+		
+	-- 	if actor.HasPassengers then
+	-- 		actor.Owner = ussr
+	-- 		-- Trigger.AfterDelay(0, Hind1PassengerCheck)
+	-- 		-- return
+	-- 	end
+	-- 	-- actor.Owner = neutral
+	-- 	if not actor.HasPassengers then
+	-- 		Media.DisplayMessage("Hijack a Hind Helicopter.")
+	-- 		actor.Owner = neutral
+			
+	-- 		-- Trigger.OnCapture(Hind1, Hind1PassengerCheck)
+	-- 	-- else
+	-- 	-- Trigger.AfterDelay(0, Hind1PassengerCheck)
+	-- 	end
+	-- end)
+	-- Trigger.AfterDelay(0, Hind1PassengerCheck)
 end
 
 Hind2PassengerCheck = function()
-	Utils.Do(HindUnit2, function(actor)
-		if actor.IsDead then
+	Utils.Do(HindUnit2, function(actor2)
+		if actor2.IsDead then
 			return
 		end
-		if not actor.HasPassengers then
-			actor.Owner = bad_guy
-		end
-		if actor.HasPassengers then
-			actor.Owner = ussr
-		end	
-	end)
-
-	Trigger.AfterDelay(0, Hind2PassengerCheck)
-end
-
-Hind3PassengerCheck = function()
-	Utils.Do(HindUnit3, function(actor)
-		if actor.IsDead then
-			return
-		end
-		if not actor.HasPassengers then
-			actor.Owner = bad_guy
-		end
-		if actor.HasPassengers then
-			actor.Owner = ussr
+		if not actor2.HasPassengers then
+			actor2.Owner = neutral
+		else
+		-- if actor.HasPassengers then
+			actor2.Owner = ussr
 		end	
 	end)
 
 	Trigger.AfterDelay(0, Hind3PassengerCheck)
+end
+
+Hind3PassengerCheck = function()
+	Utils.Do(HindUnit3, function(actor3)
+		if actor3.IsDead then
+			return
+		end
+		if not actor3.HasPassengers then
+			actor3.Owner = neutral
+		end
+		
+		if actor3.HasPassengers then
+			actor3.Owner = ussr
+		end	
+	end)
+
+	Trigger.AfterDelay(0, Hind1PassengerCheck)
 end
 
 GroupPatrol = function(units, waypoints, delay) 
@@ -449,6 +496,7 @@ MissionAccomplished = function()
 end
 
 RunInitialActivities = function()
+	
 	APCDropoff()
 
 	Camera.Position = APCDropoffPoint.CenterPosition
@@ -459,6 +507,7 @@ RunInitialActivities = function()
 	Trigger.OnCapture(Tank1, EnglandAirBaseReveal)
 	Trigger.OnCapture(Tank2, EnglandAirBaseReveal)
 
+	-- Trigger.OnPassengerEntered(Hind1, Hind1PassengerCheck)
 	Trigger.OnCapture(Hind1, Hind1PassengerCheck)
 	Trigger.OnCapture(Hind2, Hind2PassengerCheck)
 	Trigger.OnCapture(Hind3, Hind3PassengerCheck)
@@ -487,10 +536,23 @@ RunInitialActivities = function()
 	Trigger.OnKilled(CommunicationsCenter, CommunicationsCenterDestroyed)
 end
 
+PlayerIsTeamAi = function(player)
+	return player.InternalName == AlphaTeamPlayerName or player.InternalName == BravoTeamPlayerName
+end
+
+PlayerIsHumanOrBot = function(player)
+	return player.IsNonCombatant == false and PlayerIsTeamAi(player) == false
+end
+
+
 WorldLoaded = function()
+	local teamPlayers = Player.GetPlayers(function(p)
+		return PlayerIsHumanOrBot(p)
+	end)
+
 	ussr = Player.GetPlayer("USSR")
 	bad_guy = Player.GetPlayer("BadGuy")
-
+	forEnglandJames = Player.GetPlayer("England Missile Silos")
 	neutral = Player.GetPlayer("Neutral")
 
 	england_air = Player.GetPlayer("England Air Base")
@@ -498,6 +560,16 @@ WorldLoaded = function()
 	england_main = Player.GetPlayer("England Main Base")
 	england_prison = Player.GetPlayer("England Prison Base")
 	england_nuke = Player.GetPlayer("England Missile Silos")
+
+	Utils.Do(teamPlayers, function(p)
+		
+		PlayerInfo[p.InternalName] =
+			{
+				IsPilot = false, 
+			}
+
+		if p.IsLocalPlayer then	LocalPlayerInfo = PlayerInfo[p.InternalName] end
+	end)
 
 	RunInitialActivities()
 

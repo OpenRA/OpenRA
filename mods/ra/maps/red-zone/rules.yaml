@@ -264,22 +264,23 @@ HIND:
 		LocalOffset: 85,300,-85
 		MuzzleSequence: muzzle
 		PauseOnCondition: !ammo
-	
 	Aircraft:
 		IdleSpeed: 0
 		InitialFacing: 20
 		LandableTerrainTypes: Clear,Rough,Road,Ore,Beach
-		IdleBehavior: None
+		IdleBehavior: Land
 		CanHover: False
 		CanForceLand: False
 		CruiseAltitude: 1c256
 		TakeOffOnCreation: False
 		# CanForceLand: False
+	AttackAircraft:
+		FacingTolerance: 10
 	Rearmable:
 		RearmActors: fix
 	-EjectOnDeath:
 	AmmoPool:
-		Ammo: 100
+		Ammo: 400
 		PipCount: 9
 		PipType: Red
 		ReloadDelay: 10
@@ -312,6 +313,7 @@ HIND:
 		Types: Pilot, Co-Pilot
 		MaxWeight: 2
 		PipCount: 2
+		UnloadTerrainTypes: Clear, Rough, Road, Ore, Beach, Gems
 		InitialUnits: thf
 	DamageMultiplier@EASY:
 		RequiresCondition: easy
@@ -324,7 +326,7 @@ HIND:
 	ExternalCondition@HARD:
 		Condition: hard
 	RenderSprites:
-		Scale: 1.3
+		Scale: 1.5
 
 HIND.Husk:
 	RenderSprites:
