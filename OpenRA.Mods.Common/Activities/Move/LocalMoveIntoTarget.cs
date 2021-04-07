@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Activities
 			var targetPos = target.Positions.PositionClosestTo(currentPos);
 
 			// Give up if the target has moved too far
-			if (targetMovementThreshold > WDist.Zero && (targetPos - targetStartPos).LengthSquared > targetMovementThreshold.LengthSquared)
+			if (targetMovementThreshold > WDist.Zero && targetPos.SquaredDistanceTo(targetStartPos) > targetMovementThreshold.LengthSquared)
 				return true;
 
 			// Turn if required

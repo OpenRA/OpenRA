@@ -78,6 +78,14 @@ namespace OpenRA
 
 		public override string ToString() { return X + "," + Y + "," + Z; }
 
+		public int SquaredDistanceTo(WPos other)
+		{
+			var x = X - other.X;
+			var y = Y - other.Y;
+			var z = Z - other.Z;
+			return x * x + y * y + z * z;
+		}
+
 		#region Scripting interface
 
 		public LuaValue Add(LuaRuntime runtime, LuaValue left, LuaValue right)

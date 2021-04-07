@@ -77,7 +77,7 @@ namespace OpenRA.Mods.Common
 
 		public static CPos ClosestCell(this Actor self, IEnumerable<CPos> cells)
 		{
-			return cells.MinByOrDefault(c => (self.Location - c).LengthSquared);
+			return cells.MinByOrDefault(c => self.Location.SquaredDistanceTo(c));
 		}
 	}
 }

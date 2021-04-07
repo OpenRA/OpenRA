@@ -243,7 +243,7 @@ namespace OpenRA.Mods.Common.Activities
 			{
 				// Are we close enough?
 				var cellRange = nearEnough.Length / 1024;
-				if (!containsTemporaryBlocker && (mobile.ToCell - destination.Value).LengthSquared <= cellRange * cellRange && mobile.CanStayInCell(mobile.ToCell))
+				if (!containsTemporaryBlocker && mobile.ToCell.SquaredDistanceTo(destination.Value) <= cellRange * cellRange && mobile.CanStayInCell(mobile.ToCell))
 				{
 					// Apply some simple checks to avoid giving up in cases where we can be confident that
 					// nudging/waiting/repathing should produce better results.
@@ -258,10 +258,10 @@ namespace OpenRA.Mods.Common.Activities
 					// We can reasonably assume that the blocker is friendly and has a similar locomotor type.
 					// If there is a free cell next to the blocker that is a similar or closer distance to the
 					// destination then we can probably nudge or path around it.
-					var blockerDistSq = (nextCell - destination.Value).LengthSquared;
+					var blockerDistSq = nextCell.SquaredDistanceTo(destination.Value);
 					var nudgeOrRepath = CVec.Directions
 						.Select(d => nextCell + d)
-						.Any(c => c != self.Location && (c - destination.Value).LengthSquared <= blockerDistSq && mobile.CanEnterCell(c, ignoreActor));
+						.Any(c => c != self.Location && c.SquaredDistanceTo(destination.Value) <= blockerDistSq && mobile.CanEnterCell(c, ignoreActor));
 
 					if (!nudgeOrRepath)
 					{
@@ -316,7 +316,7 @@ namespace OpenRA.Mods.Common.Activities
 					var newCell = mobile.GetAdjacentCell(nextCell);
 					if (newCell != null)
 					{
-						if ((nextCell - newCell).Value.LengthSquared > 2)
+						if (nextCell.SquaredDistanceTo(newCell.Value) > 2)
 							path.Add(mobile.ToCell);
 
 						return (newCell.Value, mobile.GetAvailableSubCell(newCell.Value, mobile.FromSubCell, ignoreActor));

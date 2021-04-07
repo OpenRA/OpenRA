@@ -203,7 +203,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			// HACK: Consider ourselves blocked if we have moved by less than 64 WDist in the last five ticks
 			// Stop if we are blocked and close enough
-			if (positionBuffer.Count >= 5 && (positionBuffer.Last() - positionBuffer[0]).LengthSquared < 4096 &&
+			if (positionBuffer.Count >= 5 && positionBuffer.Last().SquaredDistanceTo(positionBuffer[0]) < 4096 &&
 				delta.HorizontalLengthSquared <= nearEnough.LengthSquared)
 				return true;
 

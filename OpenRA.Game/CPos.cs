@@ -85,6 +85,13 @@ namespace OpenRA
 			return new MPos(u, v);
 		}
 
+		public int SquaredDistanceTo(CPos other)
+		{
+			var x = X - other.X;
+			var y = Y - other.Y;
+			return x * x + y * y;
+		}
+
 		#region Scripting interface
 
 		public LuaValue Add(LuaRuntime runtime, LuaValue left, LuaValue right)

@@ -52,16 +52,16 @@ namespace OpenRA.Mods.Common.HitShapes
 			combatOverlayVertsTop = Points.Select(p => new WVec(p.X, p.Y, VerticalTopOffset)).ToArray();
 			combatOverlayVertsBottom = Points.Select(p => new WVec(p.X, p.Y, VerticalBottomOffset)).ToArray();
 			squares = new int[Points.Length];
-			squares[0] = (Points[0] - Points[Points.Length - 1]).LengthSquared;
+			squares[0] = Points[0].SquaredDistanceTo(Points[Points.Length - 1]);
 			for (var i = 1; i < Points.Length; i++)
-				squares[i] = (Points[i] - Points[i - 1]).LengthSquared;
+				squares[i] = Points[i].SquaredDistanceTo(Points[i - 1]);
 		}
 
 		static int DistanceSquaredFromLineSegment(int2 c, int2 a, int2 b, int ab2)
 		{
 			var ac = c - a;
 			var ac2 = ac.LengthSquared;
-			var bc2 = (c - b).LengthSquared;
+			var bc2 = c.SquaredDistanceTo(b);
 
 			// c is closest to point a
 			if (ac2 + ab2 <= bc2)
@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Common.HitShapes
 			var ap = new int2((int)((long)ab.X * ap2 / ab2), (int)((long)ab.Y * ap2 / ab2));
 
 			// Length of vector pc squared.
-			return (ac - ap).LengthSquared;
+			return ac.SquaredDistanceTo(ap);
 		}
 
 		public WDist DistanceFromEdge(in WVec v)

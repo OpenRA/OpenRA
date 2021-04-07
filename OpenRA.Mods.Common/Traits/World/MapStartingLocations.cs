@@ -96,7 +96,7 @@ namespace OpenRA.Mods.Common.Traits
 				? state.AvailableSpawnPoints.Random(playerRandom)
 				: state.AvailableSpawnPoints // pick the most distant spawnpoint from everyone else
 					.Select(s => (Cell: state.SpawnLocations[s - 1], Index: s))
-					.MaxBy(s => state.OccupiedSpawnPoints.Sum(kv => (state.SpawnLocations[kv.Key - 1] - s.Cell).LengthSquared)).Index;
+					.MaxBy(s => state.OccupiedSpawnPoints.Sum(kv => state.SpawnLocations[kv.Key - 1].SquaredDistanceTo(s.Cell))).Index;
 
 			state.AvailableSpawnPoints.Remove(spawnPoint);
 			state.OccupiedSpawnPoints.Add(spawnPoint, client);
@@ -151,7 +151,7 @@ namespace OpenRA.Mods.Common.Traits
 				? availableSpawnPoints.Random(playerRandom)
 				: availableSpawnPoints // pick the most distant spawnpoint from everyone else
 					.Select(s => (Cell: spawnLocations[s - 1], Index: s))
-					.MaxBy(s => occupiedSpawnPoints.Sum(kv => (spawnLocations[kv.Key - 1] - s.Cell).LengthSquared)).Index;
+					.MaxBy(s => occupiedSpawnPoints.Sum(kv => spawnLocations[kv.Key - 1].SquaredDistanceTo(s.Cell))).Index;
 
 			availableSpawnPoints.Remove(spawnPoint);
 			occupiedSpawnPoints.Add(spawnPoint, client);

@@ -187,7 +187,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				// Sort by distance to target if we have one
 				if (center != target)
-					cells = cells.OrderBy(c => (c - target).LengthSquared);
+					cells = cells.OrderBy(c => c.SquaredDistanceTo(target));
 				else
 					cells = cells.Shuffle(world.LocalRandom);
 

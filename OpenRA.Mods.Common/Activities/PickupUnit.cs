@@ -81,7 +81,7 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			// Wait until we are near the target before we try to lock it
-			var distSq = (cargo.CenterPosition - self.CenterPosition).HorizontalLengthSquared;
+			var distSq = cargo.CenterPosition.SquaredDistanceTo(self.CenterPosition);
 			if (state == PickupState.Intercept && distSq <= targetLockRange.LengthSquared)
 				state = PickupState.LockCarryable;
 

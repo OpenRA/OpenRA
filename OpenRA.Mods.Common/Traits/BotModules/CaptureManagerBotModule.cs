@@ -159,7 +159,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var capturer in capturers)
 			{
-				var targetActor = capturableTargetOptions.MinByOrDefault(target => (target.CenterPosition - capturer.Actor.CenterPosition).LengthSquared);
+				var targetActor = capturableTargetOptions.MinByOrDefault(target => target.CenterPosition.SquaredDistanceTo(capturer.Actor.CenterPosition));
 				if (targetActor == null)
 					continue;
 

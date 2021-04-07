@@ -138,7 +138,7 @@ namespace OpenRA.Mods.Common.Activities
 				if (repairableNear == null)
 					QueueChild(move.MoveTo(targetCell, targetLineColor: moveInfo.GetTargetLineColor()));
 
-				var delta = (self.CenterPosition - host.CenterPosition).LengthSquared;
+				var delta = self.CenterPosition.SquaredDistanceTo(host.CenterPosition);
 				transportCallers.FirstOrDefault(t => t.MinimumDistance.LengthSquared < delta)?.RequestTransport(self, targetCell);
 
 				return false;

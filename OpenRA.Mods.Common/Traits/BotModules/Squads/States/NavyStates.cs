@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 				// If the naval production is within MaxBaseRadius, it implies that
 				// this squad is close to enemy territory and they should expect a naval combat;
 				// closest enemy makes more sense in that case.
-				if ((nearest.Location - first.Location).LengthSquared > owner.SquadManager.Info.MaxBaseRadius * owner.SquadManager.Info.MaxBaseRadius)
+				if (nearest.Location.SquaredDistanceTo(first.Location) > owner.SquadManager.Info.MaxBaseRadius * owner.SquadManager.Info.MaxBaseRadius)
 					return nearest;
 			}
 

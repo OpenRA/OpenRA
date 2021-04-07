@@ -189,7 +189,7 @@ namespace OpenRA.Mods.Common.Activities
 					domainIndex.IsPassable(self.Location, loc, mobile.Locomotor) && harv.CanHarvestCell(self, loc) && claimLayer.CanClaimCell(self, loc))
 				.WithCustomCost(loc =>
 				{
-					if ((loc - searchFromLoc).LengthSquared > searchRadiusSquared)
+					if (loc.SquaredDistanceTo(searchFromLoc) > searchRadiusSquared)
 						return int.MaxValue;
 
 					// Add a cost modifier to harvestable cells to prefer resources that are closer to the refinery.

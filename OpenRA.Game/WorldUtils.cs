@@ -26,12 +26,12 @@ namespace OpenRA
 
 		public static Actor ClosestTo(this IEnumerable<Actor> actors, WPos pos)
 		{
-			return actors.MinByOrDefault(a => (a.CenterPosition - pos).LengthSquared);
+			return actors.MinByOrDefault(a => a.CenterPosition.SquaredDistanceTo(pos));
 		}
 
 		public static WPos PositionClosestTo(this IEnumerable<WPos> positions, WPos pos)
 		{
-			return positions.MinByOrDefault(p => (p - pos).LengthSquared);
+			return positions.MinByOrDefault(p => p.SquaredDistanceTo(pos));
 		}
 
 		public static IEnumerable<Actor> FindActorsInCircle(this World world, WPos origin, WDist r)

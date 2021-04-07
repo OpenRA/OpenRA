@@ -96,7 +96,7 @@ namespace OpenRA.Mods.Common.Traits
 			var projectedLocation = self.World.Map.CellContaining(projectedPos);
 			var pos = self.CenterPosition;
 
-			var dirty = Info.MoveRecalculationThreshold.Length > 0 && (pos - cachedPos).LengthSquared > Info.MoveRecalculationThreshold.LengthSquared;
+			var dirty = Info.MoveRecalculationThreshold.Length > 0 && pos.SquaredDistanceTo(cachedPos) > Info.MoveRecalculationThreshold.LengthSquared;
 			if (!dirty && cachedLocation == projectedLocation)
 				return;
 

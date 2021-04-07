@@ -84,6 +84,13 @@ namespace OpenRA
 							Math.Min(r.Bottom, Math.Max(Y, r.Top)));
 		}
 
+		public int SquaredDistanceTo(int2 other)
+		{
+			var x = X - other.X;
+			var y = Y - other.Y;
+			return x * x + y * y;
+		}
+
 		public static int Dot(int2 a, int2 b) { return a.X * b.X + a.Y * b.Y; }
 	}
 }

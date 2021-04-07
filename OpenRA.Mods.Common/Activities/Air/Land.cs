@@ -110,7 +110,7 @@ namespace OpenRA.Mods.Common.Activities
 			landingCell = self.World.Map.CellContaining(targetPosition);
 
 			// We are already at the landing location.
-			if ((targetPosition - pos).LengthSquared == 0)
+			if (targetPosition.SquaredDistanceTo(pos) == 0)
 				return true;
 
 			// Look for free landing cell

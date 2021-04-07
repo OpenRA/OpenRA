@@ -76,12 +76,12 @@ namespace OpenRA.Mods.Common.Traits
 			if (domainIndex != null && !domainIndex.IsPassable(source, target, locomotor))
 				return EmptyPath;
 
-			var distance = source - target;
+			var distanceSquared = source.SquaredDistanceTo(target);
 			var canMoveFreely = locomotor.CanMoveFreelyInto(self, target, check, null);
-			if (distance.LengthSquared < 3 && !canMoveFreely)
+			if (distanceSquared < 3 && !canMoveFreely)
 				return new List<CPos> { };
 
-			if (source.Layer == target.Layer && distance.LengthSquared < 3 && canMoveFreely)
+			if (source.Layer == target.Layer && distanceSquared < 3 && canMoveFreely)
 				return new List<CPos> { target };
 
 			List<CPos> pb;
@@ -112,8 +112,9 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Select only the tiles that are within range from the requested SubCell
 			// This assumes that the SubCell does not change during the path traversal
+			var rangeLengthSquared = range.LengthSquared;
 			var tilesInRange = world.Map.FindTilesInCircle(targetCell, range.Length / 1024 + 1)
-				.Where(t => (world.Map.CenterOfCell(t) - target).LengthSquared <= range.LengthSquared
+				.Where(t => world.Map.CenterOfCell(t).SquaredDistanceTo(target) <= rangeLengthSquared
 							&& mobile.Info.CanEnterCell(self.World, self, t));
 
 			// See if there is any cell within range that does not involve a cross-domain request

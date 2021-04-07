@@ -77,7 +77,7 @@ namespace OpenRA.Traits
 		{
 			var cp = worldRenderer.Viewport.CenterPosition;
 			var intensity = 100 * 1024 * 1024 * shakeEffects.Sum(
-				e => (float)e.Intensity / (e.Position - cp).LengthSquared);
+				e => (float)e.Intensity / e.Position.SquaredDistanceTo(cp));
 
 			return Math.Min(intensity, 10);
 		}

@@ -122,7 +122,7 @@ namespace OpenRA.Mods.Common.Traits
 					&& a.Actor.Owner.IsAlliedWith(self.Owner) &&
 					Info.RepairActors.Contains(a.Actor.Info.Name))
 				.OrderBy(a => a.Actor.Owner == self.Owner ? 0 : 1)
-				.ThenBy(p => (self.Location - p.Actor.Location).LengthSquared);
+				.ThenBy(p => self.Location.SquaredDistanceTo(p.Actor.Location));
 
 			// Worst case FirstOrDefault() will return a TraitPair<null, null>, which is OK.
 			return repairBuilding.FirstOrDefault().Actor;
