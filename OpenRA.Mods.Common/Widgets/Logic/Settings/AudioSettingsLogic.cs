@@ -47,6 +47,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			SettingsUtils.BindCheckboxPref(panel, "CASH_TICKS", ss, "CashTicks");
 			SettingsUtils.BindCheckboxPref(panel, "MUTE_SOUND", ss, "Mute");
 			SettingsUtils.BindCheckboxPref(panel, "MUTE_BACKGROUND_MUSIC", ss, "MuteBackgroundMusic");
+			SettingsUtils.BindCheckboxPref(panel, "FACTION_MUSIC", ss, "FactionMusic");
 
 			SettingsUtils.BindSliderPref(panel, "SOUND_VOLUME", ss, "SoundVolume");
 			SettingsUtils.BindSliderPref(panel, "MUSIC_VOLUME", ss, "MusicVolume");

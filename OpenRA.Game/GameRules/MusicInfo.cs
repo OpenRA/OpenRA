@@ -23,6 +23,7 @@ namespace OpenRA.GameRules
 
 		public int Length { get; private set; } // seconds
 		public bool Exists { get; private set; }
+		public string Faction { get; private set; }
 
 		public MusicInfo(string key, MiniYaml value)
 		{
@@ -34,6 +35,9 @@ namespace OpenRA.GameRules
 
 			if (nd.ContainsKey("VolumeModifier"))
 				VolumeModifier = FieldLoader.GetValue<float>("VolumeModifier", nd["VolumeModifier"].Value);
+
+			if (nd.ContainsKey("Faction"))
+				Faction = FieldLoader.GetValue<string>("Faction", nd["Faction"].Value);
 
 			var ext = nd.ContainsKey("Extension") ? nd["Extension"].Value : "aud";
 			Filename = (nd.ContainsKey("Filename") ? nd["Filename"].Value : key) + "." + ext;
