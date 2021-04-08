@@ -1,19 +1,29 @@
+# Faction music theme taken from the original 
+# https://github.com/electronicarts/CnC_Remastered_Collection/blob/master/REDALERT/THEME.CPP
 await_r: Afterlife (Await)
 	VolumeModifier: 0.7
+	Faction: Allies
 bigf226m: Bigfoot
 	VolumeModifier: 0.7
+	Faction: Allies
 crus226m: Crush
 	VolumeModifier: 0.7
+	Faction: Soviet
 dense_r: Dense
 	VolumeModifier: 0.7
+	Faction: Allies
 fac1226m: Face to the Enemy 1
 	VolumeModifier: 0.85
+	Faction: Allies
 fac2226m: Face to the Enemy 2
 	VolumeModifier: 0.7
+	Faction: Soviet
 fogger1a: Fogger
 	VolumeModifier: 0.8
+	Faction: Allies
 hell226m: Hell March
 	VolumeModifier: 0.7
+	Faction: Allies
 intro: Intro
 	Hidden: true
 	VolumeModifier: 0.9
@@ -22,57 +32,85 @@ map: Map
 	VolumeModifier: 0.6
 mud1a: Mud
 	VolumeModifier: 0.7
+	Faction: Allies
 radio2: Radio 2
 	VolumeModifier: 0.7
+	Faction: Allies
 credits: Reload Fire (Credits)
 	VolumeModifier: 0.9
 rollout: Roll Out
 	VolumeModifier: 0.7
+	Faction: Allies
 run1226m: Run (For Your Life)
 	VolumeModifier: 0.7
+	Faction: Soviet
 score: Militant Force (Scores)
 	Hidden: true
 	VolumeModifier: 0.7
 smsh226m: Smash
 	VolumeModifier: 0.7
+	Faction: Allies
 snake: Snake
 	VolumeModifier: 0.7
+	Faction: Allies
 terminat: Terminate
 	VolumeModifier: 0.7
+	Faction: Allies
 tren226m: Trenches
 	VolumeModifier: 0.7
+	Faction: Soviet
 twin: Twin Cannon
 	VolumeModifier: 0.7
+	Faction: Allies
 vector1a: Vector
 	VolumeModifier: 0.7
+	Faction: Allies
 work226m: Workmen
 	VolumeModifier: 0.7
+	Faction: Allies
 
 # Counterstrike tracks
 araziod: Arazoid
 	VolumeModifier: 0.8
+	Faction: Soviet
 backstab: Backstab
 	VolumeModifier: 0.9
+	Faction: Allies
 chaos2: Chaos
 	VolumeModifier: 0.9
+	Faction: Soviet
 shut_it: Shut It
 	VolumeModifier: 0.9
+	Faction: Allies
 2nd_hand: The Second Hand
+	Faction: Allies
 twinmix1: Twin Cannon (Remix)
 	VolumeModifier: 0.9
+	Faction: Soviet
 under3: Underlying Thoughts
 	VolumeModifier: 0.95
+	Faction: Allies
 vr2: Voice Rhythm 2
 	VolumeModifier: 0.95
+	Faction: Soviet
 
 # Aftermath tracks
 await: Afterlife (Await)
+	Faction: Allies
 bog: Bog
 	VolumeModifier: 0.9
+	Faction: Allies
 float_v2: Floating
+	Faction: Soviet
 gloom: Gloom
+	Faction: Allies
 grndwire: Groundwire
+	Faction: Soviet
 rpt: Running Through Pipes
+	Faction: Allies
 search: The Search
+	Faction: Soviet
 traction: Traction
+	Faction: Allies
 wastelnd: Wasteland
+	Faction: Soviet
