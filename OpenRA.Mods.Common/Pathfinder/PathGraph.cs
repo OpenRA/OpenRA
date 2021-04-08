@@ -18,37 +18,6 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Pathfinder
 {
-	/// <summary>
-	/// Represents a graph with nodes and edges
-	/// </summary>
-	/// <typeparam name="T">The type of node used in the graph</typeparam>
-	public interface IGraph<T> : IDisposable
-	{
-		/// <summary>
-		/// Gets all the Connections for a given node in the graph
-		/// </summary>
-		List<GraphConnection> GetConnections(CPos position);
-
-		/// <summary>
-		/// Retrieves an object given a node in the graph
-		/// </summary>
-		T this[CPos pos] { get; set; }
-
-		Func<CPos, bool> CustomBlock { get; set; }
-
-		Func<CPos, int> CustomCost { get; set; }
-
-		int LaneBias { get; set; }
-
-		bool InReverse { get; set; }
-
-		Actor IgnoreActor { get; set; }
-
-		World World { get; }
-
-		Actor Actor { get; }
-	}
-
 	public readonly struct GraphConnection
 	{
 		public static readonly CostComparer ConnectionCostComparer = CostComparer.Instance;
@@ -73,44 +42,41 @@ namespace OpenRA.Mods.Common.Pathfinder
 		}
 	}
 
-	sealed class PathGraph : IGraph<CellInfo>
+	public class PathGraph
 	{
 		public const int CostForInvalidCell = int.MaxValue;
 
-		public Actor Actor { get; private set; }
-		public World World { get; private set; }
-		public Func<CPos, bool> CustomBlock { get; set; }
-		public Func<CPos, int> CustomCost { get; set; }
-		public int LaneBias { get; set; }
-		public bool InReverse { get; set; }
-		public Actor IgnoreActor { get; set; }
+		public readonly PathQuery Query;
 
-		readonly BlockedByActor checkConditions;
-		readonly Locomotor locomotor;
 		readonly CellInfoLayerPool.PooledCellInfoLayer pooledLayer;
 		readonly bool checkTerrainHeight;
+		readonly int laneBias;
 		CellLayer<CellInfo> groundInfo;
 
 		readonly Dictionary<byte, (ICustomMovementLayer Layer, CellLayer<CellInfo> Info)> customLayerInfo =
 			new Dictionary<byte, (ICustomMovementLayer, CellLayer<CellInfo>)>();
 
-		public PathGraph(CellInfoLayerPool layerPool, Locomotor locomotor, Actor actor, World world, BlockedByActor check)
+		ICustomMovementLayer[] customMovementLayers;
+
+		public PathGraph(CellInfoLayerPool layerPool, PathQuery query)
 		{
+			Query = query;
 			pooledLayer = layerPool.Get();
 			groundInfo = pooledLayer.GetLayer();
-			var locomotorInfo = locomotor.Info;
-			this.locomotor = locomotor;
-			var layers = world.GetCustomMovementLayers().Values
-				.Where(cml => cml.EnabledForActor(actor.Info, locomotorInfo));
 
-			foreach (var cml in layers)
-				customLayerInfo[cml.Index] = (cml, pooledLayer.GetLayer());
+			var locomotorInfo = Query.Locomotor.Info;
+			foreach (var cml in Query.World.GetCustomMovementLayers().Values)
+				if (cml.EnabledForActor(Query.Actor.Info, locomotorInfo))
+					customLayerInfo[cml.Index] = (cml, pooledLayer.GetLayer());
 
-			World = world;
-			Actor = actor;
-			LaneBias = 1;
-			checkConditions = check;
-			checkTerrainHeight = world.Map.Grid.MaximumTerrainHeight > 0;
+			// PERF: Store dictionary values as array.
+			customMovementLayers = new ICustomMovementLayer[customLayerInfo.Count];
+			var i = 0;
+			foreach (var cli in customLayerInfo.Values)
+				customMovementLayers[i++] = cli.Layer;
+
+			laneBias = Query.LaneBiasDisabled ? 0 : 1;
+			checkTerrainHeight = Query.World.Map.Grid.MaximumTerrainHeight > 0;
 		}
 
 		// Sets of neighbors for each incoming direction. These exclude the neighbors which are guaranteed
@@ -133,7 +99,8 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 		public List<GraphConnection> GetConnections(CPos position)
 		{
-			var info = position.Layer == 0 ? groundInfo : customLayerInfo[position.Layer].Info;
+			var positionLayer = position.Layer;
+			var info = positionLayer == 0 ? groundInfo : customLayerInfo[positionLayer].Info;
 			var previousPos = info[position].PreviousPos;
 
 			var dx = position.X - previousPos.X;
@@ -141,29 +108,39 @@ namespace OpenRA.Mods.Common.Pathfinder
 			var index = dy * 3 + dx + 4;
 
 			var directions = DirectedNeighbors[index];
-			var validNeighbors = new List<GraphConnection>(directions.Length);
+			var validNeighbors = new List<GraphConnection>(directions.Length +
+				(positionLayer == 0 ? customMovementLayers.Length : 1));
 			for (var i = 0; i < directions.Length; i++)
 			{
-				var neighbor = position + directions[i];
-				var movementCost = GetCostToNode(neighbor, directions[i]);
+				var direction = directions[i];
+				var neighbor = position + direction;
+				var neighborCell = info[neighbor];
+
+				// PERF: Skip closed cells already, ~15% of all cells
+				if (neighborCell.Status == CellStatus.Closed)
+					continue;
+
+				var movementCost = GetCostToNode(neighbor, direction);
 				if (movementCost != CostForInvalidCell)
 					validNeighbors.Add(new GraphConnection(neighbor, movementCost));
 			}
 
-			if (position.Layer == 0)
+			var actorInfo = Query.Actor.Info;
+			var locomotorInfo = Query.Locomotor.Info;
+			if (positionLayer == 0)
 			{
-				foreach (var cli in customLayerInfo.Values)
+				foreach (var layer in customMovementLayers)
 				{
-					var layerPosition = new CPos(position.X, position.Y, cli.Layer.Index);
-					var entryCost = cli.Layer.EntryMovementCost(Actor.Info, locomotor.Info, layerPosition);
+					var layerPosition = position.ToLayer(layer.Index);
+					var entryCost = layer.EntryMovementCost(actorInfo, locomotorInfo, layerPosition);
 					if (entryCost != CostForInvalidCell)
 						validNeighbors.Add(new GraphConnection(layerPosition, entryCost));
 				}
 			}
 			else
 			{
-				var layerPosition = new CPos(position.X, position.Y, 0);
-				var exitCost = customLayerInfo[position.Layer].Layer.ExitMovementCost(Actor.Info, locomotor.Info, layerPosition);
+				var layerPosition = position.ToLayer(0);
+				var exitCost = customLayerInfo[positionLayer].Layer.ExitMovementCost(actorInfo, locomotorInfo, layerPosition);
 				if (exitCost != CostForInvalidCell)
 					validNeighbors.Add(new GraphConnection(layerPosition, exitCost));
 			}
@@ -173,8 +150,14 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 		int GetCostToNode(CPos destNode, CVec direction)
 		{
-			var movementCost = locomotor.MovementCostToEnterCell(Actor, destNode, checkConditions, IgnoreActor);
-			if (movementCost != short.MaxValue && !(CustomBlock != null && CustomBlock(destNode)))
+			var movementCost = Query.Locomotor.MovementCostToEnterCell(
+				Query.Actor,
+				destNode,
+				Query.Check,
+				Query.IgnoreActor);
+
+			if (movementCost != short.MaxValue &&
+					!(Query.CustomBlock != null && Query.CustomBlock(destNode)))
 				return CalculateCellCost(destNode, direction, movementCost);
 
 			return CostForInvalidCell;
@@ -187,49 +170,59 @@ namespace OpenRA.Mods.Common.Pathfinder
 			if (direction.X * direction.Y != 0)
 				cellCost = (cellCost * 34) / 24;
 
-			if (CustomCost != null)
+			var customCost = Query.CustomCost;
+			if (customCost != null)
 			{
-				var customCost = CustomCost(neighborCPos);
-				if (customCost == CostForInvalidCell)
+				var cc = customCost(neighborCPos);
+				if (cc == CostForInvalidCell)
 					return CostForInvalidCell;
 
-				cellCost += customCost;
+				cellCost += cc;
 			}
 
 			// Prevent units from jumping over height discontinuities
 			if (checkTerrainHeight && neighborCPos.Layer == 0)
 			{
+				var heightLayer = Query.World.Map.Height;
 				var from = neighborCPos - direction;
-				if (Math.Abs(World.Map.Height[neighborCPos] - World.Map.Height[from]) > 1)
+				if (Math.Abs(heightLayer[neighborCPos] - heightLayer[from]) > 1)
 					return CostForInvalidCell;
 			}
 
 			// Directional bonuses for smoother flow!
-			if (LaneBias != 0)
+			if (laneBias != 0)
 			{
-				var ux = neighborCPos.X + (InReverse ? 1 : 0) & 1;
-				var uy = neighborCPos.Y + (InReverse ? 1 : 0) & 1;
+				var reverse = Query.Reverse ? 1 : 0;
+				var ux = neighborCPos.X + reverse & 1;
+				var uy = neighborCPos.Y + reverse & 1;
 
 				if ((ux == 0 && direction.Y < 0) || (ux == 1 && direction.Y > 0))
-					cellCost += LaneBias;
+					cellCost += laneBias;
 
 				if ((uy == 0 && direction.X < 0) || (uy == 1 && direction.X > 0))
-					cellCost += LaneBias;
+					cellCost += laneBias;
 			}
 
 			return cellCost;
 		}
 
+		public CellInfo CellAt(CPos pos)
+		{
+			var layer = pos.Layer;
+			return (layer == 0 ? groundInfo : customLayerInfo[layer].Info)[pos];
+		}
+
 		public CellInfo this[CPos pos]
 		{
-			get => (pos.Layer == 0 ? groundInfo : customLayerInfo[pos.Layer].Info)[pos];
-			set => (pos.Layer == 0 ? groundInfo : customLayerInfo[pos.Layer].Info)[pos] = value;
+			get { var layer = pos.Layer; return (layer == 0 ? groundInfo : customLayerInfo[layer].Info)[pos]; }
+			set { var layer = pos.Layer; (layer == 0 ? groundInfo : customLayerInfo[layer].Info)[pos] = value; }
 		}
 
 		public void Dispose()
 		{
 			groundInfo = null;
 			customLayerInfo.Clear();
+			customMovementLayers = null;
 			pooledLayer.Dispose();
 		}
 	}

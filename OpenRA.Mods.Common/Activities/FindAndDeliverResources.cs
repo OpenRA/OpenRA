@@ -180,42 +180,71 @@ namespace OpenRA.Mods.Common.Activities
 
 			var searchRadiusSquared = searchRadius * searchRadius;
 
-			var procPos = procLoc.HasValue ? (WPos?)self.World.Map.CenterOfCell(procLoc.Value) : null;
+			var map = self.World.Map;
+			var procPos = procLoc.HasValue ? (WPos?)map.CenterOfCell(procLoc.Value) : null;
 			var harvPos = self.CenterPosition;
 
 			// Find any harvestable resources:
 			List<CPos> path;
-			using (var search = PathSearch.Search(self.World, mobile.Locomotor, self, BlockedByActor.Stationary, loc =>
-					domainIndex.IsPassable(self.Location, loc, mobile.Locomotor) && harv.CanHarvestCell(self, loc) && claimLayer.CanClaimCell(self, loc))
-				.WithCustomCost(loc =>
+			Func<CPos, int> customCost;
+
+			if (procPos.HasValue && harvInfo.ResourceRefineryDirectionPenalty > 0)
+			{
+				customCost = loc =>
 				{
 					if ((loc - searchFromLoc).LengthSquared > searchRadiusSquared)
-						return int.MaxValue;
+						return PathGraph.CostForInvalidCell;
 
-					// Add a cost modifier to harvestable cells to prefer resources that are closer to the refinery.
+					// Add a cost modifier to harvestable cells to prefer resources
+					// that are closer to the refinery.
 					// This reduces the tendancy for harvesters to move in straight lines
-					if (procPos.HasValue && harvInfo.ResourceRefineryDirectionPenalty > 0 && harv.CanHarvestCell(self, loc))
+					if (harv.CanHarvestCell(self, loc))
 					{
-						var pos = self.World.Map.CenterOfCell(loc);
+						var pos = map.CenterOfCell(loc);
 
 						// Calculate harv-cell-refinery angle (cosine rule)
-						var a = harvPos - procPos.Value;
 						var b = pos - procPos.Value;
-						var c = pos - harvPos;
-
-						if (b != WVec.Zero && c != WVec.Zero)
+						if (b != WVec.Zero)
 						{
-							var cosA = (int)(512 * (b.LengthSquared + c.LengthSquared - a.LengthSquared) / b.Length / c.Length);
+							var c = pos - harvPos;
+							if (c != WVec.Zero)
+							{
+								var a = harvPos - procPos.Value;
+								var cosA = (int)(512 * (b.LengthSquared + c.LengthSquared - a.LengthSquared) / b.Length / c.Length);
 
-							// Cost modifier varies between 0 and ResourceRefineryDirectionPenalty
-							return Math.Abs(harvInfo.ResourceRefineryDirectionPenalty / 2) + harvInfo.ResourceRefineryDirectionPenalty * cosA / 2048;
+								// Cost modifier varies between 0 and ResourceRefineryDirectionPenalty
+								return Math.Abs(harvInfo.ResourceRefineryDirectionPenalty / 2) + harvInfo.ResourceRefineryDirectionPenalty * cosA / 2048;
+							}
 						}
 					}
 
 					return 0;
-				})
-				.FromPoint(searchFromLoc)
-				.FromPoint(self.Location))
+				};
+			}
+			else
+			{
+				customCost = loc =>
+				{
+					if ((loc - searchFromLoc).LengthSquared > searchRadiusSquared)
+						return PathGraph.CostForInvalidCell;
+					return 0;
+				};
+			}
+
+			var query = new PathQuery(
+				queryType: PathQueryType.ConditionUnidirectional,
+				world: self.World,
+				locomotor: mobile.Locomotor,
+				actor: self,
+				check: BlockedByActor.Stationary,
+				isGoal: loc => domainIndex.IsPassable(self.Location, loc, mobile.Locomotor)
+					&& harv.CanHarvestCell(self, loc)
+					&& claimLayer.CanClaimCell(self, loc),
+				customCost: customCost,
+				fromPositions: self.Location.Equals(searchFromLoc) ?
+					new CPos[] { self.Location } : new CPos[] { searchFromLoc, self.Location });
+
+			using (var search = new PathSearch(query))
 				path = mobile.Pathfinder.FindPath(search);
 
 			if (path.Count > 0)

@@ -15,7 +15,7 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.Pathfinder
 {
-	sealed class CellInfoLayerPool
+	public sealed class CellInfoLayerPool
 	{
 		const int MaxPoolSize = 4;
 		readonly Stack<CellLayer<CellInfo>> pool = new Stack<CellLayer<CellInfo>>(MaxPoolSize);

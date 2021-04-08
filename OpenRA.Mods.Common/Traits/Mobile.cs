@@ -804,9 +804,16 @@ namespace OpenRA.Mods.Common.Traits
 				return above;
 
 			List<CPos> path;
-			using (var search = PathSearch.Search(self.World, Locomotor, self, BlockedByActor.All,
-					loc => loc.Layer == 0 && CanEnterCell(loc))
-				.FromPoint(self.Location))
+			var query = new PathQuery(
+				queryType: PathQueryType.ConditionUnidirectional,
+				world: self.World,
+				locomotor: Locomotor,
+				actor: self,
+				check: BlockedByActor.All,
+				fromPosition: self.Location,
+				isGoal: loc => loc.Layer == 0 && CanEnterCell(loc));
+
+			using (var search = new PathSearch(query))
 				path = Pathfinder.FindPath(search);
 
 			if (path.Count > 0)

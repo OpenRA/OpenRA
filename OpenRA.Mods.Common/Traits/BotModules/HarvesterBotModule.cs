@@ -149,17 +149,38 @@ namespace OpenRA.Mods.Common.Traits
 				harv.Harvester.CanHarvestCell(actor, cell) &&
 				claimLayer.CanClaimCell(actor, cell);
 
-			var path = pathfinder.FindPath(
-				PathSearch.Search(world, harv.Locomotor, actor, BlockedByActor.Stationary, isValidResource)
-					.WithCustomCost(loc => world.FindActorsInCircle(world.Map.CenterOfCell(loc), Info.HarvesterEnemyAvoidanceRadius)
-						.Where(u => !u.IsDead && actor.Owner.RelationshipWith(u.Owner) == PlayerRelationship.Enemy)
-						.Sum(u => Math.Max(WDist.Zero.Length, Info.HarvesterEnemyAvoidanceRadius.Length - (world.Map.CenterOfCell(loc) - u.CenterPosition).Length)))
-					.FromPoint(actor.Location));
+			var map = world.Map;
+			var avoidRadius = Info.HarvesterEnemyAvoidanceRadius;
+			var avoidRadiusLength = avoidRadius.Length;
+			var owner = actor.Owner;
+			Func<CPos, int> customCost = loc =>
+			{
+				var enemies = world.FindActorsInCircle(map.CenterOfCell(loc), avoidRadius)
+					.Where(u => !u.IsDead
+						&& owner.RelationshipWith(u.Owner) == PlayerRelationship.Enemy);
 
-			if (path.Count == 0)
-				return Target.Invalid;
+				return enemies.Sum(u => Math.Max(WDist.Zero.Length,
+					avoidRadiusLength - (map.CenterOfCell(loc) - u.CenterPosition).Length));
+			};
 
-			return Target.FromCell(world, path[0]);
+			var query = new PathQuery(
+				queryType: PathQueryType.ConditionUnidirectional,
+				world: world,
+				locomotor: harv.Locomotor,
+				actor: actor,
+				check: BlockedByActor.Stationary,
+				customCost: customCost,
+				fromPosition: actor.Location,
+				isGoal: isValidResource);
+
+			using (var search = new PathSearch(query))
+			{
+				var path = pathfinder.FindPath(search);
+				if (path.Count == 0)
+					return Target.Invalid;
+
+				return Target.FromCell(world, path[0]);
+			}
 		}
 	}
 }
