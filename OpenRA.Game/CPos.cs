@@ -85,6 +85,11 @@ namespace OpenRA
 			return new MPos(u, v);
 		}
 
+		public CPos ToLayer(byte layer)
+		{
+			return new CPos((Bits & 0xff) | layer);
+		}
+
 		#region Scripting interface
 
 		public LuaValue Add(LuaRuntime runtime, LuaValue left, LuaValue right)
