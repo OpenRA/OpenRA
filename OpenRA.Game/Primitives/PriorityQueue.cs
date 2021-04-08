@@ -43,14 +43,18 @@ namespace OpenRA.Primitives
 		{
 			var addLevel = level;
 			var addIndex = index;
-			var above = Above(addLevel, addIndex);
 
-			while (addLevel >= 1 && comparer.Compare(above), item) > 0)
+			while (addLevel >= 1)
 			{
-				items[addLevel][addIndex] = above;
-				--addLevel;
-				addIndex >>= 1;
-				above = Above(addLevel, addIndex);
+				var above = Above(addLevel, addIndex);
+				if (comparer.Compare(above, item) > 0)
+				{
+					items[addLevel][addIndex] = above;
+					--addLevel;
+					addIndex >>= 1;
+				}
+				else
+					break;
 			}
 
 			items[addLevel][addIndex] = item;
