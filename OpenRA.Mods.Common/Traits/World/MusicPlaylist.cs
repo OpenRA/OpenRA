@@ -131,7 +131,7 @@ namespace OpenRA.Mods.Common.Traits
 		public MusicInfo[] AvailablePlaylist()
 		{
 			// TODO: add filter options for faction-specific music
-			if (world.LocalPlayer != null && !string.IsNullOrEmpty(world.LocalPlayer.Faction.Side))
+			if (Game.Settings.Sound.FactionMusic && world.LocalPlayer != null && !string.IsNullOrEmpty(world.LocalPlayer.Faction.Side))
 			{
 				var playerFaction = world.LocalPlayer.Faction.Side;
 
@@ -225,7 +225,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!IsMusicAvailable)
 				return null;
 
-			var songs = Game.Settings.Sound.Shuffle ? random : playlist;
+			var songs = Game.Settings.Sound.Shuffle ? random : AvailablePlaylist();
 
 			var next = reverse ? songs.Reverse().SkipWhile(m => m != currentSong)
 				.Skip(1).FirstOrDefault() ?? songs.Reverse().FirstOrDefault() :
