@@ -72,10 +72,9 @@ namespace OpenRA.Mods.Common.Traits
 			return pos + new WVec(0, 0, height[cell] - pos.Z);
 		}
 
-		bool ValidTransitionCell(CPos cell, LocomotorInfo li)
+		bool ValidTransitionCell(CPos cell, SubterraneanLocomotorInfo sli)
 		{
 			var terrainType = map.GetTerrainInfo(cell).Type;
-			var sli = (SubterraneanLocomotorInfo)li;
 			if (!sli.SubterraneanTransitionTerrainTypes.Contains(terrainType) && sli.SubterraneanTransitionTerrainTypes.Any())
 				return false;
 
