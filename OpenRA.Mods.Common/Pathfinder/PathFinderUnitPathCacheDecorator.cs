@@ -22,9 +22,9 @@ namespace OpenRA.Mods.Common.Pathfinder
 	public class PathFinderUnitPathCacheDecorator : IPathFinder
 	{
 		readonly IPathFinder pathFinder;
-		readonly ICacheStorage<List<CPos>> cacheStorage;
+		readonly ICacheStorage<PathCacheKey, List<CPos>> cacheStorage;
 
-		public PathFinderUnitPathCacheDecorator(IPathFinder pathFinder, ICacheStorage<List<CPos>> cacheStorage)
+		public PathFinderUnitPathCacheDecorator(IPathFinder pathFinder, ICacheStorage<PathCacheKey, List<CPos>> cacheStorage)
 		{
 			this.pathFinder = pathFinder;
 			this.cacheStorage = cacheStorage;
@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 		{
 			using (new PerfSample("Pathfinder"))
 			{
-				var key = "FindUnitPath" + self.ActorID + source.X + source.Y + target.X + target.Y;
+				var key = new PathCacheKey(PathCacheQueryType.UnitPath, self.ActorID, source, target);
 
 				// Only cache path when transient actors are ignored, otherwise there is no guarantee that the path
 				// is still valid at the next check.
@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 		{
 			using (new PerfSample("Pathfinder"))
 			{
-				var key = "FindUnitPathToRange" + self.ActorID + source.X + source.Y + target.X + target.Y;
+				var key = new PathCacheKey(PathCacheQueryType.UnitPathToRange, self.ActorID, source, target);
 
 				if (check == BlockedByActor.None)
 				{
@@ -76,13 +76,13 @@ namespace OpenRA.Mods.Common.Pathfinder
 			}
 		}
 
-		public List<CPos> FindPath(IPathSearch search)
+		public List<CPos> FindPath(BasePathSearch search)
 		{
 			using (new PerfSample("Pathfinder"))
 				return pathFinder.FindPath(search);
 		}
 
-		public List<CPos> FindBidiPath(IPathSearch fromSrc, IPathSearch fromDest)
+		public List<CPos> FindBidiPath(BasePathSearch fromSrc, BasePathSearch fromDest)
 		{
 			using (new PerfSample("Pathfinder"))
 				return pathFinder.FindBidiPath(fromSrc, fromDest);

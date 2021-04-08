@@ -11,10 +11,10 @@
 
 namespace OpenRA
 {
-	public interface ICacheStorage<T>
+	public interface ICacheStorage<K, V>
 	{
-		void Remove(string key);
-		void Store(string key, T data);
-		T Retrieve(string key);
+		void Remove(in K key);
+		void Store(in K key, V data);
+		V Retrieve(in K key);
 	}
 }
