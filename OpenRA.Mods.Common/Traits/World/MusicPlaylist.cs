@@ -131,6 +131,17 @@ namespace OpenRA.Mods.Common.Traits
 		public MusicInfo[] AvailablePlaylist()
 		{
 			// TODO: add filter options for faction-specific music
+			if (world.LocalPlayer != null && !string.IsNullOrEmpty(world.LocalPlayer.Faction.Side))
+			{
+				var playerFaction = world.LocalPlayer.Faction.Side;
+
+				// TODO: need append non fraction music?
+				var factionMusicTheme = playlist
+					.Where(x => x.Faction.Equals(playerFaction, StringComparison.OrdinalIgnoreCase))
+					.ToArray();
+				return factionMusicTheme.Any() ? factionMusicTheme : playlist;
+			}
+
 			return playlist;
 		}
 
