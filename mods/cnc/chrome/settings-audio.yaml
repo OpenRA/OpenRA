@@ -39,6 +39,13 @@ Container@AUDIO_PANEL:
 					Height: 20
 					Font: Regular
 					Text: Mute Background Music
+				Checkbox@FACTION_MUSIC:
+					X: 15
+					Y: 133
+					Width: 200
+					Height: 20
+					Font: Regular
+					Text: Use Faction Music Theme
 				Label@SOUND_LABEL:
 					X: PARENT_RIGHT - WIDTH - 270
 					Y: 40
