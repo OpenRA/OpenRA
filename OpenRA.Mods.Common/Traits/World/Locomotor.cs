@@ -175,7 +175,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (!world.Map.Contains(cell))
 				return short.MaxValue;
 
-			return cell.Layer == 0 ? cellsCost[cell] : customLayerCellsCost[cell.Layer][cell];
+			var layer = cell.Layer;
+			return layer == 0 ? cellsCost[cell] : customLayerCellsCost[layer][cell];
 		}
 
 		public int MovementSpeedForCell(CPos cell)
@@ -191,7 +192,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (!world.Map.Contains(destNode))
 				return short.MaxValue;
 
-			var cellCost = destNode.Layer == 0 ? cellsCost[destNode] : customLayerCellsCost[destNode.Layer][destNode];
+			var destLayer = destNode.Layer;
+			var cellCost = destLayer == 0 ? cellsCost[destNode] : customLayerCellsCost[destLayer][destNode];
 
 			if (cellCost == short.MaxValue ||
 				!CanMoveFreelyInto(actor, destNode, check, ignoreActor))
@@ -399,7 +401,8 @@ namespace OpenRA.Mods.Common.Traits
 				dirtyCells.Remove(cell);
 			}
 
-			var cache = cell.Layer == 0 ? blockingCache : customLayerBlockingCache[cell.Layer];
+			var layer = cell.Layer;
+			var cache = layer == 0 ? blockingCache : customLayerBlockingCache[layer];
 
 			return cache[cell];
 		}

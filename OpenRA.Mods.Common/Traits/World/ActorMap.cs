@@ -261,7 +261,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (!influence.Contains(uv))
 				return Enumerable.Empty<Actor>();
 
-			var layer = a.Layer == 0 ? influence : customInfluence[a.Layer];
+			var layerIndex = a.Layer;
+			var layer = layerIndex == 0 ? influence : customInfluence[layerIndex];
 			return new ActorsAtEnumerable(layer[uv]);
 		}
 
@@ -271,7 +272,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (!influence.Contains(uv))
 				yield break;
 
-			var layer = a.Layer == 0 ? influence : customInfluence[a.Layer];
+			var layerIndex = a.Layer;
+			var layer = layerIndex == 0 ? influence : customInfluence[layerIndex];
 			for (var i = layer[uv]; i != null; i = i.Next)
 				if (!i.Actor.Disposed && (i.SubCell == sub || i.SubCell == SubCell.FullCell || sub == SubCell.FullCell || sub == SubCell.Any))
 					yield return i.Actor;
@@ -318,7 +320,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (!influence.Contains(uv))
 				return false;
 
-			var layer = a.Layer == 0 ? influence : customInfluence[a.Layer];
+			var layerIndex = a.Layer;
+			var layer = layerIndex == 0 ? influence : customInfluence[layerIndex];
 			return layer[uv] != null;
 		}
 
@@ -330,7 +333,8 @@ namespace OpenRA.Mods.Common.Traits
 				return false;
 
 			var always = sub == SubCell.FullCell || sub == SubCell.Any;
-			var layer = a.Layer == 0 ? influence : customInfluence[a.Layer];
+			var layerIndex = a.Layer;
+			var layer = layerIndex == 0 ? influence : customInfluence[layerIndex];
 			for (var i = layer[uv]; i != null; i = i.Next)
 			{
 				if (always || i.SubCell == sub || i.SubCell == SubCell.FullCell)
@@ -355,7 +359,8 @@ namespace OpenRA.Mods.Common.Traits
 				return false;
 
 			var always = sub == SubCell.FullCell || sub == SubCell.Any;
-			var layer = a.Layer == 0 ? influence : customInfluence[a.Layer];
+			var layerIndex = a.Layer;
+			var layer = layerIndex == 0 ? influence : customInfluence[layerIndex];
 			for (var i = layer[uv]; i != null; i = i.Next)
 				if ((always || i.SubCell == sub || i.SubCell == SubCell.FullCell) && !i.Actor.Disposed && withCondition(i.Actor))
 					return true;
@@ -371,7 +376,8 @@ namespace OpenRA.Mods.Common.Traits
 				if (!influence.Contains(uv))
 					continue;
 
-				var layer = c.Cell.Layer == 0 ? influence : customInfluence[c.Cell.Layer];
+				var layerIndex = c.Cell.Layer;
+				var layer = layerIndex == 0 ? influence : customInfluence[layerIndex];
 				layer[uv] = new InfluenceNode { Next = layer[uv], SubCell = c.SubCell, Actor = self };
 
 				if (cellTriggerInfluence.TryGetValue(c.Cell, out var triggers))
@@ -390,7 +396,8 @@ namespace OpenRA.Mods.Common.Traits
 				if (!influence.Contains(uv))
 					continue;
 
-				var layer = c.Cell.Layer == 0 ? influence : customInfluence[c.Cell.Layer];
+				var layerIndex = c.Cell.Layer;
+				var layer = layerIndex == 0 ? influence : customInfluence[layerIndex];
 				var temp = layer[uv];
 				RemoveInfluenceInner(ref temp, self);
 				layer[uv] = temp;
