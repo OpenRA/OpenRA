@@ -28,6 +28,7 @@ namespace OpenRA.GameRules
 		public MusicInfo(string key, MiniYaml value)
 		{
 			Title = value.Value;
+			Faction = string.Empty;
 
 			var nd = value.ToDictionary();
 			if (nd.ContainsKey("Hidden"))
