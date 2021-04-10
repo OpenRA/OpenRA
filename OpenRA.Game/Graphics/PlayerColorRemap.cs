@@ -18,43 +18,34 @@ namespace OpenRA.Graphics
 {
 	public class PlayerColorRemap : IPaletteRemap
 	{
-		Dictionary<int, Color> remapColors;
+		readonly int[] remapIndices;
+		readonly float hue;
+		readonly float saturation;
 
-		public static int GetRemapIndex(int[] ramp, int i)
+		public PlayerColorRemap(int[] remapIndices, float hue, float saturation)
 		{
-			return ramp[i];
-		}
-
-		public PlayerColorRemap(int[] ramp, Color c, float rampFraction)
-		{
-			var h = c.GetHue() / 360.0f;
-			var s = c.GetSaturation();
-			var l = c.GetBrightness();
-
-			// Increase luminosity if required to represent the full ramp
-			var rampRange = (byte)((1 - rampFraction) * l);
-			var c1 = Color.FromAhsl(h, s, Math.Max(rampRange, l));
-			var c2 = Color.FromAhsl(h, s, (byte)Math.Max(0, l - rampRange));
-			var baseIndex = ramp[0];
-			var remapRamp = ramp.Select(r => r - ramp[0]);
-			var rampMaxIndex = ramp.Length - 1;
-
-			// reversed remapping
-			if (ramp[0] > ramp[rampMaxIndex])
-			{
-				baseIndex = ramp[rampMaxIndex];
-				for (var i = rampMaxIndex; i > 0; i--)
-					remapRamp = ramp.Select(r => r - ramp[rampMaxIndex]);
-			}
-
-			remapColors = remapRamp.Select((x, i) => (baseIndex + i, Exts.ColorLerp(x / (float)ramp.Length, c1, c2)))
-				.ToDictionary(u => u.Item1, u => u.Item2);
+			this.remapIndices = remapIndices;
+			this.hue = hue;
+			this.saturation = saturation;
 		}
 
 		public Color GetRemappedColor(Color original, int index)
 		{
-			return remapColors.TryGetValue(index, out var c)
-				? c : original;
+			if (!remapIndices.Contains(index))
+				return original;
+
+			// Color remapping is applied in a linear color space, so start
+			// by undoing the pre-multiplied alpha and gamma corrections
+			var (r, g, b) = original.ToLinear();
+
+			// Calculate the brightness (i.e HSV value) of the original colour
+			var value = Math.Max(Math.Max(r, g), b);
+
+			// Construct the new RGB color
+			(r, g, b) = Color.HsvToRgb(hue, saturation, value);
+
+			// Convert linear back to SRGB and pre-multiply by the alpha
+			return Color.FromLinear(original.A, r, g, b);
 		}
 	}
 }

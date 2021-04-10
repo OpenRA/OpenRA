@@ -31,9 +31,6 @@ namespace OpenRA.Traits
 		[Desc("The fixed color to remap.")]
 		public readonly Color Color;
 
-		[Desc("Luminosity range to span.")]
-		public readonly float Ramp = 0.05f;
-
 		[Desc("Allow palette modifiers to change the palette.")]
 		public readonly bool AllowModifiers = true;
 
@@ -51,7 +48,9 @@ namespace OpenRA.Traits
 
 		public void LoadPalettes(WorldRenderer wr)
 		{
-			var remap = new PlayerColorRemap(info.RemapIndex, info.Color, info.Ramp);
+			info.Color.ToAhsv(out _, out var h, out var s, out _);
+
+			var remap = new PlayerColorRemap(info.RemapIndex, h, s);
 			wr.AddPalette(info.Name, new ImmutablePalette(wr.Palette(info.Base).Palette, remap), info.AllowModifiers);
 		}
 	}
