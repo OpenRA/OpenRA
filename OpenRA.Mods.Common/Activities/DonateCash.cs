@@ -21,6 +21,8 @@ namespace OpenRA.Mods.Common.Activities
 		readonly int payload;
 		readonly int playerExperience;
 
+		Actor enterActor;
+
 		public DonateCash(Actor self, in Target target, int payload, int playerExperience, Color? targetLineColor)
 			: base(self, target, targetLineColor)
 		{
@@ -28,9 +30,43 @@ namespace OpenRA.Mods.Common.Activities
 			this.playerExperience = playerExperience;
 		}
 
+		protected override bool TryStartEnter(Actor self, Actor targetActor)
+		{
+			enterActor = targetActor;
+
+			// Make sure the target actor is still owned by a player with eligible relationship
+			var isTargetStillValid = true;
+			var targetInfo = targetActor.Info.TraitInfoOrDefault<AcceptsDeliveredCashInfo>();
+			if (targetInfo == null
+				|| !targetInfo.ValidRelationships.HasRelationship(targetActor.Owner.RelationshipWith(self.Owner))
+				|| (targetInfo.SamePlayerOnly && targetActor.Owner != self.Owner))
+				isTargetStillValid = false;
+
+			if (!isTargetStillValid)
+			{
+				Cancel(self, true);
+				return false;
+			}
+
+			return true;
+		}
+
 		protected override void OnEnterComplete(Actor self, Actor targetActor)
 		{
+			// Make sure the target hasn't changed while entering
+			// OnEnterComplete is only called if targetActor is alive
+			if (targetActor != enterActor)
+				return;
+
 			var targetOwner = targetActor.Owner;
+
+			// Make sure the target actor is still owned by a player with eligible relationship
+			var targetInfo = targetActor.Info.TraitInfoOrDefault<AcceptsDeliveredCashInfo>();
+			if (targetInfo == null
+				|| !targetInfo.ValidRelationships.HasRelationship(targetOwner.RelationshipWith(self.Owner))
+				|| (targetInfo.SamePlayerOnly && targetOwner != self.Owner))
+				return;
+
 			var donated = targetOwner.PlayerActor.Trait<PlayerResources>().ChangeCash(payload);
 
 			var exp = self.Owner.PlayerActor.TraitOrDefault<PlayerExperience>();

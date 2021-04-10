@@ -35,7 +35,13 @@ namespace OpenRA.Mods.Common.Activities
 			enterActor = targetActor;
 			enterGainsExperience = targetActor.TraitOrDefault<GainsExperience>();
 
-			if (enterGainsExperience == null || enterGainsExperience.Level == enterGainsExperience.MaxLevel)
+			// Make sure the target actor is still owned by a player with eligible relationship
+			var isTargetStillValid = true;
+			var targetInfo = targetActor.Info.TraitInfoOrDefault<AcceptsDeliveredExperienceInfo>();
+			if (targetInfo == null || !targetInfo.ValidRelationships.HasRelationship(targetActor.Owner.RelationshipWith(self.Owner)))
+				isTargetStillValid = false;
+
+			if (enterGainsExperience == null || enterGainsExperience.Level == enterGainsExperience.MaxLevel || !isTargetStillValid)
 			{
 				Cancel(self, true);
 				return false;
@@ -51,7 +57,13 @@ namespace OpenRA.Mods.Common.Activities
 			if (targetActor != enterActor)
 				return;
 
-			if (enterGainsExperience.Level == enterGainsExperience.MaxLevel)
+			// Make sure the target actor is still owned by a player with eligible relationship
+			var isTargetStillValid = true;
+			var targetInfo = targetActor.Info.TraitInfoOrDefault<AcceptsDeliveredExperienceInfo>();
+			if (targetInfo == null || !targetInfo.ValidRelationships.HasRelationship(targetActor.Owner.RelationshipWith(self.Owner)))
+				isTargetStillValid = false;
+
+			if (enterGainsExperience.Level == enterGainsExperience.MaxLevel || !isTargetStillValid)
 				return;
 
 			enterGainsExperience.GiveLevels(level);
