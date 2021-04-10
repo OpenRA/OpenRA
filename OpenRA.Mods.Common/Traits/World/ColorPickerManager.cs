@@ -40,16 +40,19 @@ namespace OpenRA.Mods.Common.Traits
 			"A dictionary of [faction name]: [actor name].")]
 		public readonly Dictionary<string, string> FactionPreviewActors = new Dictionary<string, string>();
 
+		[Desc("Remap these indices to player colors.")]
 		public readonly int[] RemapIndices = { };
-		public readonly float Ramp = 0.05f;
+
 		public Color Color { get; private set; }
 
 		public void Update(WorldRenderer worldRenderer, Color color)
 		{
 			Color = color;
 
+			Color.ToAhsv(out _, out var h, out var s, out _);
+
 			var newPalette = new MutablePalette(worldRenderer.Palette(PaletteName).Palette);
-			newPalette.ApplyRemap(new PlayerColorRemap(RemapIndices, Color, Ramp));
+			newPalette.ApplyRemap(new PlayerColorRemap(RemapIndices, h, s));
 			worldRenderer.ReplacePalette(PaletteName, newPalette);
 		}
 
