@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Scripting.Global
 			var s = (byte)saturation.Clamp(0, 255);
 			var l = (byte)luminosity.Clamp(0, 255);
 
-			return Color.FromAhsl(h, s, l);
+			return Color.FromAhsl(255, h / 255f, s / 255f, l / 255f);
 		}
 
 		[Desc("Create a new color with the specified red/green/blue/[alpha] values.")]

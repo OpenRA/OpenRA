@@ -20,13 +20,22 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Configuration options for the lobby player color picker. Attach this to the world actor.")]
-	public class ColorPickerManagerInfo : TraitInfo<ColorPickerManager>
+	public class ColorPickerManagerInfo : TraitInfo<ColorPickerManager>, IRulesetLoaded
 	{
-		// The bigger the color threshold, the less permissive is the algorithm
-		public readonly int Threshold = 0x50;
-		public readonly float[] HsvSaturationRange = new[] { 0.25f, 1f };
-		public readonly float[] HsvValueRange = new[] { 0.2f, 1.0f };
-		public readonly Color[] TeamColorPresets = { };
+		[Desc("Minimum and maximum saturation levels that are valid for use.")]
+		public readonly float[] HsvSaturationRange = { 0.3f, 0.95f };
+
+		[Desc("HSV value component for player colors.")]
+		public readonly float V = 0.95f;
+
+		[Desc("Perceptual color threshold for determining whether two colors are too similar.")]
+		public readonly float SimilarityThreshold = 0.314f;
+
+		[Desc("List of hue components for the preset colors in the palette tab. Each entry must have a corresponding PresetSaturations definition.")]
+		public readonly float[] PresetHues = { };
+
+		[Desc("List of saturation components for the preset colors in the palette tab. Each entry must have a corresponding PresetHues definition.")]
+		public readonly float[] PresetSaturations = { };
 
 		[PaletteReference]
 		public readonly string PaletteName = "colorpicker";
@@ -40,8 +49,21 @@ namespace OpenRA.Mods.Common.Traits
 			"A dictionary of [faction name]: [actor name].")]
 		public readonly Dictionary<string, string> FactionPreviewActors = new Dictionary<string, string>();
 
+		[FieldLoader.Require]
 		[Desc("Remap these indices to player colors.")]
 		public readonly int[] RemapIndices = { };
+
+		public void RulesetLoaded(Ruleset rules, ActorInfo ai)
+		{
+			if (PresetHues.Length != PresetSaturations.Length)
+				throw new YamlException("PresetHues and PresetSaturations must have the same number of elements.");
+		}
+
+		public IEnumerable<Color> PresetColors()
+		{
+			for (var i = 0; i < PresetHues.Length; i++)
+				yield return Color.FromAhsv(PresetHues[i], PresetSaturations[i], V);
+		}
 
 		public Color Color { get; private set; }
 
@@ -56,161 +78,120 @@ namespace OpenRA.Mods.Common.Traits
 			worldRenderer.ReplacePalette(PaletteName, newPalette);
 		}
 
-		double GetColorDelta(Color colorA, Color colorB)
+		bool TryGetBlockingColor((float R, float G, float B) color, List<(float R, float G, float B)> candidateBlockers, out (float R, float G, float B) closestBlocker)
 		{
-			var rmean = (colorA.R + colorB.R) / 2.0;
-			var r = colorA.R - colorB.R;
-			var g = colorA.G - colorB.G;
-			var b = colorA.B - colorB.B;
-			var weightR = 2.0 + rmean / 256;
-			var weightG = 4.0;
-			var weightB = 2.0 + (255 - rmean) / 256;
-			return Math.Sqrt(weightR * r * r + weightG * g * g + weightB * b * b);
-		}
+			var closestDistance = SimilarityThreshold;
+			closestBlocker = default;
 
-		bool IsValid(Color askedColor, IEnumerable<Color> forbiddenColors, out Color forbiddenColor)
-		{
-			var blockingColors = forbiddenColors
-				.Where(playerColor => GetColorDelta(askedColor, playerColor) < Threshold)
-				.Select(playerColor => new { Delta = GetColorDelta(askedColor, playerColor), Color = playerColor });
-
-			// Return the player that holds with the lowest difference
-			if (blockingColors.Any())
+			foreach (var candidate in candidateBlockers)
 			{
-				forbiddenColor = blockingColors.MinBy(aa => aa.Delta).Color;
-				return false;
+				// Uses the perceptually based color metric explained by https://www.compuphase.com/cmetric.htm
+				// Input colors are expected to be in the linear (non-gamma corrected) color space
+				var rmean = (color.R + candidate.R) / 2.0;
+				var r = color.R - candidate.R;
+				var g = color.G - candidate.G;
+				var b = color.B - candidate.B;
+				var weightR = 2.0 + rmean;
+				var weightG = 4.0;
+				var weightB = 3.0 - rmean;
+
+				var distance = (float)Math.Sqrt(weightR * r * r + weightG * g * g + weightB * b * b);
+				if (distance < closestDistance)
+				{
+					closestBlocker = candidate;
+					closestDistance = distance;
+				}
 			}
 
-			forbiddenColor = default(Color);
-			return true;
-		}
-
-		public bool IsValid(Color askedColor, out Color forbiddenColor, IEnumerable<Color> terrainColors, IEnumerable<Color> playerColors, HashSet<string> errorMessages = null)
-		{
-			// Validate color against HSV
-			askedColor.ToAhsv(out _, out _, out var s, out var v);
-			if (s < HsvSaturationRange[0] || s > HsvSaturationRange[1] || v < HsvValueRange[0] || v > HsvValueRange[1])
-			{
-				errorMessages?.Add("Color was adjusted to be inside the allowed range.");
-				forbiddenColor = askedColor;
-				return false;
-			}
-
-			// Validate color against the current map tileset
-			if (!IsValid(askedColor, terrainColors, out forbiddenColor))
-			{
-				errorMessages?.Add("Color was adjusted to be less similar to the terrain.");
-				return false;
-			}
-
-			// Validate color against other clients
-			if (!IsValid(askedColor, playerColors, out forbiddenColor))
-			{
-				errorMessages?.Add("Color was adjusted to be less similar to another player.");
-				return false;
-			}
-
-			// Color is valid
-			forbiddenColor = default(Color);
-
-			return true;
+			return closestDistance < SimilarityThreshold;
 		}
 
 		public Color RandomPresetColor(MersenneTwister random, IEnumerable<Color> terrainColors, IEnumerable<Color> playerColors)
 		{
-			if (TeamColorPresets.Any())
+			var terrainLinear = terrainColors.Select(c => c.ToLinear()).ToList();
+			var playerLinear = playerColors.Select(c => c.ToLinear()).ToList();
+
+			if (PresetHues.Any())
 			{
-				foreach (var c in TeamColorPresets.Shuffle(random))
-					if (IsValid(c, out _, terrainColors, playerColors))
-						return c;
+				foreach (var i in Exts.MakeArray(PresetHues.Length, x => x).Shuffle(random))
+				{
+					var h = PresetHues[i];
+					var s = PresetSaturations[i];
+					var preset = Color.FromAhsv(h, s, V);
+
+					// Color may already be taken
+					var linear = preset.ToLinear();
+					if (!TryGetBlockingColor(linear, terrainLinear, out _) && !TryGetBlockingColor(linear, playerLinear, out _))
+						return preset;
+				}
 			}
 
-			return RandomValidColor(random, terrainColors, playerColors);
+			// Fall back to a random non-preset color
+			var randomHue = random.NextFloat();
+			var randomSat = float2.Lerp(HsvSaturationRange[0], HsvSaturationRange[1], random.NextFloat());
+			return MakeValid(randomHue, randomSat, random, terrainLinear, playerLinear, null);
 		}
 
 		public Color RandomValidColor(MersenneTwister random, IEnumerable<Color> terrainColors, IEnumerable<Color> playerColors)
 		{
-			Color color;
-			do
-			{
-				var h = random.Next(255) / 255f;
-				var s = float2.Lerp(HsvSaturationRange[0], HsvSaturationRange[1], random.NextFloat());
-				var v = float2.Lerp(HsvValueRange[0], HsvValueRange[1], random.NextFloat());
-				color = Color.FromAhsv(h, s, v);
-			}
-			while (!IsValid(color, out _, terrainColors, playerColors));
-
-			return color;
+			var h = random.NextFloat();
+			var s = float2.Lerp(HsvSaturationRange[0], HsvSaturationRange[1], random.NextFloat());
+			return MakeValid(h, s, random, terrainColors, playerColors, null);
 		}
 
-		public Color MakeValid(Color askedColor, MersenneTwister random, IEnumerable<Color> terrainColors, IEnumerable<Color> playerColors, Action<string> onError)
+		public Color MakeValid(Color color, MersenneTwister random, IEnumerable<Color> terrainColors, IEnumerable<Color> playerColors, Action<string> onError = null)
 		{
-			var errorMessages = new HashSet<string>();
+			color.ToAhsv(out _, out var h, out var s, out _);
+			return MakeValid(h, s, random, terrainColors, playerColors, onError);
+		}
 
-			if (IsValid(askedColor, out var forbiddenColor, terrainColors, playerColors, errorMessages))
-				return askedColor;
+		Color MakeValid(float hue, float sat, MersenneTwister random, IEnumerable<Color> terrainColors, IEnumerable<Color> playerColors, Action<string> onError)
+		{
+			var terrainLinear = terrainColors.Select(c => c.ToLinear()).ToList();
+			var playerLinear = playerColors.Select(c => c.ToLinear()).ToList();
 
-			// Vector between the 2 colors
-			var vector = new double[]
+			return MakeValid(hue, sat, random, terrainLinear, playerLinear, onError);
+		}
+
+		Color MakeValid(float hue, float sat, MersenneTwister random, List<(float R, float G, float B)> terrainLinear, List<(float R, float G, float B)> playerLinear, Action<string> onError)
+		{
+			// Clamp saturation without triggering a warning
+			// This can only happen due to rounding errors (common) or modified clients (rare)
+			sat = sat.Clamp(HsvSaturationRange[0], HsvSaturationRange[1]);
+
+			// Limit to 100 attempts, which is enough to move all the way around the hue range
+			string errorMessage = null;
+			var stepSign = 0;
+			for (var i = 0; i < 101; i++)
 			{
-				askedColor.R - forbiddenColor.R,
-				askedColor.G - forbiddenColor.G,
-				askedColor.B - forbiddenColor.B
-			};
-
-			// Reduce vector by it's biggest value (more calculations, but more accuracy too)
-			var vectorMax = vector.Max(vv => Math.Abs(vv));
-			if (vectorMax == 0)
-			{
-				vectorMax = 1;  // Avoid division by 0
-
-				// Create a tiny vector to make the while loop maths work
-				vector[0] = 1;
-				vector[1] = 1;
-				vector[2] = 1;
-			}
-
-			vector[0] /= vectorMax;
-			vector[1] /= vectorMax;
-			vector[2] /= vectorMax;
-
-			// Color weights
-			var rmean = (double)(askedColor.R + forbiddenColor.R) / 2;
-			var weightVector = new[]
-			{
-				2.0 + rmean / 256,
-				4.0,
-				2.0 + (255 - rmean) / 256,
-			};
-
-			var attempt = 1;
-			Color color;
-			do
-			{
-				// If we reached the limit (The ii >= 255 prevents too much calculations)
-				if (attempt >= 255)
+				var linear = Color.FromAhsv(hue, sat, V).ToLinear();
+				if (TryGetBlockingColor(linear, terrainLinear, out var blocker))
+					errorMessage = "Color was adjusted to be less similar to the terrain.";
+				else if (TryGetBlockingColor(linear, playerLinear, out blocker))
+					errorMessage = "Color was adjusted to be less similar to another player.";
+				else
 				{
-					color = RandomPresetColor(random, terrainColors, playerColors);
-					errorMessages.Add("Color could not be adjusted enough, a new color has been picked.");
-					break;
+					if (errorMessage != null)
+						onError?.Invoke(errorMessage);
+
+					return Color.FromAhsv(hue, sat, V);
 				}
 
-				// Apply vector to forbidden color
-				var r = (forbiddenColor.R + (int)(vector[0] * weightVector[0] * attempt)).Clamp(0, 255);
-				var g = (forbiddenColor.G + (int)(vector[1] * weightVector[1] * attempt)).Clamp(0, 255);
-				var b = (forbiddenColor.B + (int)(vector[2] * weightVector[2] * attempt)).Clamp(0, 255);
+				// Pick a direction based on the first blocking color and step in hue
+				// until we either find a suitable color or loop back to where we started.
+				// This is a simple way to avoid being trapped between two blocking colors.
+				if (stepSign == 0)
+				{
+					Color.FromLinear(255, blocker.R, blocker.G, blocker.B).ToAhsv(out _, out var blockerHue, out _, out _);
+					stepSign = blockerHue > hue ? -1 : 1;
+				}
 
-				// Get the alternative color attempt
-				color = Color.FromArgb(r, g, b);
-
-				attempt++;
+				hue += stepSign * 0.01f;
 			}
-			while (!IsValid(color, out forbiddenColor, terrainColors, playerColors, errorMessages));
 
-			// Coalesce the error messages to only print one of each type despite up to 255 iterations
-			errorMessages.Do(onError);
-
-			return color;
+			// Failed to find a solution within a reasonable time: return a random color without any validation
+			onError?.Invoke("Unable to determine a valid player color. A random color has been selected.");
+			return Color.FromAhsv(random.NextFloat(), float2.Lerp(HsvSaturationRange[0], HsvSaturationRange[1], random.NextFloat()), V);
 		}
 	}
 

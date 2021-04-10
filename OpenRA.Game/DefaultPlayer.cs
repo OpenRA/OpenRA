@@ -15,6 +15,6 @@ namespace OpenRA
 {
 	public class DefaultPlayer : IGlobalModData
 	{
-		public readonly Color Color = Color.FromAhsl(0, 0, 238);
+		public readonly Color Color = Color.FromArgb(0xEE, 0xEE, 0xEE);
 	}
 }
