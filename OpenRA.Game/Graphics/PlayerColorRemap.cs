@@ -39,6 +39,7 @@ namespace OpenRA.Graphics
 			var (r, g, b) = original.ToLinear();
 
 			// Calculate the brightness (i.e HSV value) of the original colour
+			// This inlines the single line of Color.RgbToHsv() that we need
 			var value = Math.Max(Math.Max(r, g), b);
 
 			// Construct the new RGB color

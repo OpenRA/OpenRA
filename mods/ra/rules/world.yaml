@@ -283,7 +283,8 @@ World:
 	ColorPickerManager:
 		PreviewActor: fact.colorpicker
 		RemapIndices: 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95
-		TeamColorPresets: f7b3b3, f50606, 98331f, f57606, f7bb06, f861a4, da06f3, ddb8ff, 06f739, cef7b2, 200738, 280df6, 2f86f2, 76d2f8, 34ba93, 391d1d
+		PresetHues: 0, 0.125, 0.22, 0.375, 0.5, 0.56, 0.8, 0.88, 0, 0.15, 0.235, 0.4, 0.47, 0.55, 0.75, 0.85
+		PresetSaturations: 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.4, 0.5, 0.4, 0.5, 0.4, 0.5, 0.4, 0.5
 
 EditorWorld:
 	Inherits: ^BaseWorld

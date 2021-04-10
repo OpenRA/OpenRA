@@ -28,33 +28,24 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		public ColorPickerLogic(Widget widget, ModData modData, World world, Color initialColor, string initialFaction, Action<Color> onChange,
 			Dictionary<string, MiniYaml> logicArgs)
 		{
-			var hueSlider = widget.Get<SliderWidget>("HUE");
 			var mixer = widget.Get<ColorMixerWidget>("MIXER");
-			var randomButton = widget.GetOrNull<ButtonWidget>("RANDOM_BUTTON");
-
-			hueSlider.OnChange += _ => mixer.Set(hueSlider.Value);
-			mixer.OnChange += () => onChange(mixer.Color);
-
-			if (randomButton != null)
-			{
-				randomButton.OnClick = () =>
-				{
-					// Avoid colors with low sat or lum
-					var hue = (byte)Game.CosmeticRandom.Next(255);
-					var sat = (byte)Game.CosmeticRandom.Next(70, 255);
-					var lum = (byte)Game.CosmeticRandom.Next(70, 255);
-					var color = Color.FromAhsl(hue, sat, lum);
-
-					mixer.Set(color);
-					hueSlider.Value = HueFromColor(color);
-				};
-			}
 
 			// Set the initial state
 			var colorManager = world.WorldActor.Info.TraitInfo<ColorPickerManagerInfo>();
-			mixer.SetPaletteRange(colorManager.HsvSaturationRange[0], colorManager.HsvSaturationRange[1], colorManager.HsvValueRange[0], colorManager.HsvValueRange[1]);
+			mixer.SetColorLimits(colorManager.HsvSaturationRange[0], colorManager.HsvSaturationRange[1], colorManager.V);
+			mixer.OnChange += () => onChange(mixer.Color);
 			mixer.Set(initialColor);
-			hueSlider.Value = HueFromColor(initialColor);
+
+			var randomButton = widget.GetOrNull<ButtonWidget>("RANDOM_BUTTON");
+			if (randomButton != null)
+			{
+				var terrainColors = modData.DefaultTerrainInfo
+					.SelectMany(t => t.Value.RestrictedPlayerColors)
+					.Distinct()
+					.ToList();
+				var playerColors = Enumerable.Empty<Color>();
+				randomButton.OnClick = () => mixer.Set(colorManager.RandomValidColor(world.LocalRandom, terrainColors, playerColors));
+			}
 
 			if (initialFaction == null || !colorManager.FactionPreviewActors.TryGetValue(initialFaction, out var actorType))
 				actorType = colorManager.PreviewActor;
@@ -125,15 +116,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (!int.TryParse(yaml.Value, out paletteCustomRows))
 					throw new YamlException($"Invalid value for PaletteCustomRows: {yaml.Value}");
 
+			var presetColors = colorManager.PresetColors().ToList();
 			for (var j = 0; j < palettePresetRows; j++)
 			{
 				for (var i = 0; i < paletteCols; i++)
 				{
 					var colorIndex = j * paletteCols + i;
-					if (colorIndex >= colorManager.TeamColorPresets.Length)
+					if (colorIndex >= presetColors.Count)
 						break;
 
-					var color = colorManager.TeamColorPresets[colorIndex];
+					var color = presetColors[colorIndex];
 
 					var newSwatch = (ColorBlockWidget)presetColorTemplate.Clone();
 					newSwatch.GetColor = () => color;
@@ -143,7 +135,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					newSwatch.OnMouseUp = m =>
 					{
 						mixer.Set(color);
-						hueSlider.Value = HueFromColor(color);
 						onChange(color);
 					};
 
@@ -166,7 +157,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{
 						var color = Game.Settings.Player.CustomColors[colorIndex];
 						mixer.Set(color);
-						hueSlider.Value = HueFromColor(color);
 						onChange(color);
 					};
 
@@ -196,12 +186,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						paletteTabHighlighted = 4;
 				};
 			}
-		}
-
-		static float HueFromColor(Color c)
-		{
-			c.ToAhsv(out _, out var h, out _, out _);
-			return h;
 		}
 
 		public static void ShowColorDropDown(DropDownButtonWidget color, ColorPickerManagerInfo colorManager, WorldRenderer worldRenderer, Action onExit = null)

@@ -31,49 +31,17 @@ namespace OpenRA.Primitives
 
 		public static Color FromAhsl(int alpha, float h, float s, float l)
 		{
-			// Convert from HSL to RGB
-			var q = (l < 0.5f) ? l * (1 + s) : l + s - (l * s);
-			var p = 2 * l - q;
+			// Convert HSL to HSV
+			var v = l + s * Math.Min(l, 1 - l);
+			var sv = v > 0 ? 2 * (1 - l / v) : 0;
 
-			float[] trgb = { h + 1 / 3.0f, h, h - 1 / 3.0f };
-			float[] rgb = { 0, 0, 0 };
-
-			for (var k = 0; k < 3; k++)
-			{
-				while (trgb[k] < 0) trgb[k] += 1.0f;
-				while (trgb[k] > 1) trgb[k] -= 1.0f;
-			}
-
-			for (var k = 0; k < 3; k++)
-			{
-				if (trgb[k] < 1 / 6.0f)
-					rgb[k] = p + ((q - p) * 6 * trgb[k]);
-				else if (trgb[k] >= 1 / 6.0f && trgb[k] < 0.5)
-					rgb[k] = q;
-				else if (trgb[k] >= 0.5f && trgb[k] < 2.0f / 3)
-					rgb[k] = p + ((q - p) * 6 * (2.0f / 3 - trgb[k]));
-				else
-					rgb[k] = p;
-			}
-
-			return FromArgb(alpha, (int)(rgb[0] * 255), (int)(rgb[1] * 255), (int)(rgb[2] * 255));
-		}
-
-		public static Color FromAhsl(int h, int s, int l)
-		{
-			return FromAhsl(255, h / 255f, s / 255f, l / 255f);
-		}
-
-		public static Color FromAhsl(float h, float s, float l)
-		{
-			return FromAhsl(255, h, s, l);
+			return FromAhsv(alpha, h, sv, v);
 		}
 
 		public static Color FromAhsv(int alpha, float h, float s, float v)
 		{
-			var ll = 0.5f * (2 - s) * v;
-			var ss = (ll >= 1 || v <= 0) ? 0 : 0.5f * s * v / (ll <= 0.5f ? ll : 1 - ll);
-			return FromAhsl(alpha, h, ss, ll);
+			var (r, g, b) = HsvToRgb(h, s, v);
+			return FromArgb(alpha, (byte)Math.Round(255 * r), (byte)Math.Round(255 * g), (byte)Math.Round(255 * b));
 		}
 
 		public static Color FromAhsv(float h, float s, float v)
@@ -83,13 +51,8 @@ namespace OpenRA.Primitives
 
 		public void ToAhsv(out int a, out float h, out float s, out float v)
 		{
-			var ll = 2 * GetBrightness();
-			var ss = GetSaturation() * ((ll <= 1) ? ll : 2 - ll);
-
 			a = A;
-			h = GetHue() / 360f;
-			s = (2 * ss) / (ll + ss);
-			v = (ll + ss) / 2;
+			(h, s, v) = RgbToHsv(R, G, B);
 		}
 
 		Color(long argb)
@@ -117,9 +80,84 @@ namespace OpenRA.Primitives
 			return FromArgb((byte)(argb >> 24), (byte)(argb >> 16), (byte)(argb >> 8), (byte)argb);
 		}
 
+		static float SrgbToLinear(float c)
+		{
+			// Standard gamma conversion equation: see e.g. http://entropymine.com/imageworsener/srgbformula/
+			return c <= 0.04045f ? c / 12.92f : (float)Math.Pow((c + 0.055f) / 1.055f, 2.4f);
+		}
+
+		static float LinearToSrgb(float c)
+		{
+			// Standard gamma conversion equation: see e.g. http://entropymine.com/imageworsener/srgbformula/
+			return c <= 0.0031308f ? c * 12.92f : 1.055f * (float)Math.Pow(c, 1.0f / 2.4f) - 0.055f;
+		}
+
+		public (float R, float G, float B) ToLinear()
+		{
+			// Undo pre-multiplied alpha and gamma correction
+			var r = SrgbToLinear((float)R / A);
+			var g = SrgbToLinear((float)G / A);
+			var b = SrgbToLinear((float)B / A);
+
+			return (r, g, b);
+		}
+
+		public static Color FromLinear(byte a, float r, float g, float b)
+		{
+			// Apply gamma correction and pre-multiplied alpha
+			return FromArgb(a,
+				(byte)Math.Round(LinearToSrgb(r) * a),
+				(byte)Math.Round(LinearToSrgb(g) * a),
+				(byte)Math.Round(LinearToSrgb(b) * a));
+		}
+
+		public static (float R, float G, float B) HsvToRgb(float h, float s, float v)
+		{
+			// Based on maths explained in http://lolengine.net/blog/2013/07/27/rgb-to-hsv-in-glsl
+			var px = Math.Abs(h * 6f - 3);
+			var py = Math.Abs((h + 2f / 3) % 1 * 6f - 3);
+			var pz = Math.Abs((h + 1f / 3) % 1 * 6f - 3);
+
+			var r = v * float2.Lerp(1f, (px - 1).Clamp(0, 1), s);
+			var g = v * float2.Lerp(1f, (py - 1).Clamp(0, 1), s);
+			var b = v * float2.Lerp(1f, (pz - 1).Clamp(0, 1), s);
+
+			return (r, g, b);
+		}
+
+		public static (float H, float S, float V) RgbToHsv(byte r, byte g, byte b)
+		{
+			return RgbToHsv(r / 255f, g / 255f, b / 255f);
+		}
+
+		public static (float H, float S, float V) RgbToHsv(float r, float g, float b)
+		{
+			// Based on maths explained in http://lolengine.net/blog/2013/01/13/fast-rgb-to-hsv
+			var rgbMax = Math.Max(r, Math.Max(g, b));
+			var rgbMin = Math.Min(r, Math.Min(g, b));
+			var delta = rgbMax - rgbMin;
+			var v = rgbMax;
+
+			// Greyscale colors are defined to have hue and saturation 0
+			if (delta == 0.0f)
+				return (0, 0, v);
+
+			float hue;
+			if (r == rgbMax)
+				hue = (g - b) / (6 * delta);
+			else if (g == rgbMax)
+				hue = (b - r) / (6 * delta) + 1 / 3f;
+			else
+				hue = (r - g) / (6 * delta) + 2 / 3f;
+
+			var h = hue - (int)hue;
+			var s = delta / rgbMax;
+			return (h, s, v);
+		}
+
 		public static bool TryParse(string value, out Color color)
 		{
-			color = default(Color);
+			color = default;
 			value = value.Trim();
 			if (value.Length != 6 && value.Length != 8)
 				return false;
@@ -153,46 +191,6 @@ namespace OpenRA.Primitives
 			var min = Math.Min(R, Math.Min(G, B));
 			var max = Math.Max(R, Math.Max(G, B));
 			return (max + min) / 510f;
-		}
-
-		public float GetSaturation()
-		{
-			var min = Math.Min(R, Math.Min(G, B));
-			var max = Math.Max(R, Math.Max(G, B));
-			if (max == min)
-				return 0.0f;
-
-			var sum = max + min;
-			if (sum > byte.MaxValue)
-				sum = 510 - sum;
-
-			return (float)(max - min) / sum;
-		}
-
-		public float GetHue()
-		{
-			var min = Math.Min(R, Math.Min(G, B));
-			var max = Math.Max(R, Math.Max(G, B));
-			if (max == min)
-				return 0.0f;
-
-			var diff = (float)(max - min);
-			var rNorm = (max - R) / diff;
-			var gNorm = (max - G) / diff;
-			var bNorm = (max - B) / diff;
-
-			var hue = 0.0f;
-			if (R == max)
-				hue = 60.0f * (6.0f + bNorm - gNorm);
-			if (G == max)
-				hue = 60.0f * (2.0f + rNorm - bNorm);
-			if (B == max)
-				hue = 60.0f * (4.0f + gNorm - rNorm);
-
-			if (hue > 360.0f)
-				hue -= 360f;
-
-			return hue;
 		}
 
 		public byte A => (byte)(argb >> 24);
