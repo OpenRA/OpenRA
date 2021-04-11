@@ -381,6 +381,7 @@ World:
 	ScriptTriggers:
 	TimeLimitManager:
 	ColorPickerManager:
+		RemapIndices: 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31
 		TeamColorPresets: f70606, ff7a22, f8d3b3, f8e947, 94b319, f335a0, a64d6c, ce08f9, f5b2db, 12b572, 4A1948, 1d06f7, 328dff, 78dbf8, cef6b1, 391d1d
 
 EditorWorld:

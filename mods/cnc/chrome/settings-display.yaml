@@ -30,7 +30,6 @@ Container@DISPLAY_PANEL:
 			Height: 25
 			Text: Preferred Color:
 			Align: Right
-		ColorPreviewManager@COLOR_MANAGER:
 		DropDownButton@PLAYERCOLOR:
 			X: 415
 			Y: 40

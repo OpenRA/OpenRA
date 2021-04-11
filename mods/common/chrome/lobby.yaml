@@ -5,7 +5,6 @@ Background@SERVER_LOBBY:
 	Width: 900
 	Height: 600
 	Children:
-		ColorPreviewManager@COLOR_MANAGER:
 		Label@SERVER_NAME:
 			Y: 16
 			Align: Center

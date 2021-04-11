@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Network;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -220,23 +221,23 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		}
 
 		public static void ShowColorDropDown(DropDownButtonWidget color, Session.Client client,
-			OrderManager orderManager, World world, ColorPreviewManagerWidget preview)
+			OrderManager orderManager, WorldRenderer worldRenderer, ColorPickerManagerInfo colorManager)
 		{
 			Action onExit = () =>
 			{
-				if (client.Bot == null)
+				if (client == orderManager.LocalClient)
 				{
-					Game.Settings.Player.Color = preview.Color;
+					Game.Settings.Player.Color = colorManager.Color;
 					Game.Settings.Save();
 				}
 
 				color.RemovePanel();
-				orderManager.IssueOrder(Order.Command($"color {client.Index} {preview.Color}"));
+				orderManager.IssueOrder(Order.Command($"color {client.Index} {colorManager.Color}"));
 			};
 
-			Action<Color> onChange = c => preview.Color = c;
+			Action<Color> onChange = c => colorManager.Update(worldRenderer, c);
 
-			var colorChooser = Game.LoadWidget(world, "COLOR_CHOOSER", null, new WidgetArgs()
+			var colorChooser = Game.LoadWidget(worldRenderer.World, "COLOR_CHOOSER", null, new WidgetArgs()
 			{
 				{ "onChange", onChange },
 				{ "initialColor", client.Color },
@@ -523,11 +524,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 		}
 
-		public static void SetupEditableColorWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, World world, ColorPreviewManagerWidget colorPreview)
+		public static void SetupEditableColorWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, WorldRenderer worldRenderer, ColorPickerManagerInfo colorManager)
 		{
 			var color = parent.Get<DropDownButtonWidget>("COLOR");
 			color.IsDisabled = () => (s != null && s.LockColor) || orderManager.LocalClient.IsReady;
-			color.OnMouseDown = _ => ShowColorDropDown(color, c, orderManager, world, colorPreview);
+			color.OnMouseDown = _ => ShowColorDropDown(color, c, orderManager, worldRenderer, colorManager);
 
 			SetupColorWidget(color, s, c);
 		}
