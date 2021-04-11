@@ -30,7 +30,7 @@ namespace OpenRA
 
 		public MapPlayers(Ruleset rules, int playerCount)
 		{
-			var firstFaction = rules.Actors["world"].TraitInfos<FactionInfo>()
+			var firstFaction = rules.Actors[SystemActors.World].TraitInfos<FactionInfo>()
 				.First(f => f.Selectable).InternalName;
 
 			Players = new Dictionary<string, PlayerReference>

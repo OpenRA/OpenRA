@@ -22,6 +22,7 @@ namespace OpenRA.Traits
 		void OnVisibilityChanged(FrozenActor frozen);
 	}
 
+	[TraitLocation(SystemActors.Player)]
 	[Desc("Required for FrozenUnderFog to work. Attach this to the player actor.")]
 	public class FrozenActorLayerInfo : TraitInfo, Requires<ShroudInfo>
 	{

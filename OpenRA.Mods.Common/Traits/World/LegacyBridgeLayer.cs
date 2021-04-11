@@ -19,6 +19,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	[TraitLocation(SystemActors.World)]
 	class LegacyBridgeLayerInfo : TraitInfo
 	{
 		[ActorReference]

@@ -54,6 +54,7 @@ namespace OpenRA.Mods.Common.Traits
 		public const byte ElevatedBridge = 4;
 	}
 
+	[TraitLocation(SystemActors.World | SystemActors.EditorWorld)]
 	[Desc("Used by Mobile. Attach these to the world actor. You can have multiple variants by adding @suffixes.")]
 	public class LocomotorInfo : TraitInfo
 	{

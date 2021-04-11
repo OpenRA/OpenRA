@@ -18,6 +18,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	using GUtil = OpenRA.Graphics.Util;
 
+	[TraitLocation(SystemActors.World | SystemActors.EditorWorld)]
 	[Desc("Used for bursted one-colored whole screen effects. Add this to the world actor.")]
 	public class FlashPaletteEffectInfo : TraitInfo
 	{

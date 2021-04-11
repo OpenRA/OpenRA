@@ -14,6 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	[TraitLocation(SystemActors.World)]
 	[Desc("Used by SpawnStartingUnits. Attach these to the world actor. You can have multiple variants by adding @suffixes.")]
 	public class StartingUnitsInfo : TraitInfo<StartingUnits>
 	{

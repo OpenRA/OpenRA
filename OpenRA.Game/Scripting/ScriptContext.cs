@@ -159,7 +159,7 @@ namespace OpenRA.Scripting
 			var knownPlayerCommands = Game.ModData.ObjectCreator
 				.GetTypesImplementing<ScriptPlayerProperties>()
 				.ToArray();
-			PlayerCommands = FilterCommands(world.Map.Rules.Actors["player"], knownPlayerCommands);
+			PlayerCommands = FilterCommands(world.Map.Rules.Actors[SystemActors.Player], knownPlayerCommands);
 
 			runtime.Globals["EngineDir"] = Platform.EngineDir;
 			runtime.DoBuffer(File.Open(Path.Combine(Platform.EngineDir, "lua", "scriptwrapper.lua"), FileMode.Open, FileAccess.Read).ReadAllText(), "scriptwrapper.lua").Dispose();

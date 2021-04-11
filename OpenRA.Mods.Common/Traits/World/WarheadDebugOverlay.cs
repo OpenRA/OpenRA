@@ -17,6 +17,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	[TraitLocation(SystemActors.World)]
 	[Desc("Part of the combat overlay from DeveloperMode. Attach this to the world actor.")]
 	public class WarheadDebugOverlayInfo : TraitInfo
 	{

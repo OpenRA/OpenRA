@@ -473,7 +473,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (server.Clients.Any(c => c.IsSpectator))
 				teams.Add("Spectators", server.Clients.Where(c => c.IsSpectator));
 
-			var factionInfo = modData.DefaultRules.Actors["world"].TraitInfos<FactionInfo>();
+			var factionInfo = modData.DefaultRules.Actors[SystemActors.World].TraitInfos<FactionInfo>();
 			foreach (var kv in teams)
 			{
 				var group = kv.Key;

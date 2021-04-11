@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 			// No queues available - check for classic production queues
 			if (queue == null)
-				queue = rules.Actors["player"].TraitInfos<ProductionQueueInfo>().FirstOrDefault(q => ProductionType == q.Type);
+				queue = rules.Actors[SystemActors.Player].TraitInfos<ProductionQueueInfo>().FirstOrDefault(q => ProductionType == q.Type);
 
 			if (queue == null)
 				throw new YamlException("Can't find a queue with ProductionType '{0}'".F(ProductionType));

@@ -708,7 +708,7 @@ namespace OpenRA
 			}
 
 			// ResourceLayer is on world actor, which isn't caught above, so an extra check for it.
-			var worldActorInfo = Rules.Actors["world"];
+			var worldActorInfo = Rules.Actors[SystemActors.World];
 			var worldimpsis = worldActorInfo.TraitInfos<IMapPreviewSignatureInfo>();
 			foreach (var worldimpsi in worldimpsis)
 				worldimpsi.PopulateMapPreviewSignatureCells(this, worldActorInfo, null, positions);

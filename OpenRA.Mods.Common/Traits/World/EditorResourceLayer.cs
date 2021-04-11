@@ -18,6 +18,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	[TraitLocation(SystemActors.EditorWorld)]
 	[Desc("Required for the map editor to work. Attach this to the world actor.")]
 	public class EditorResourceLayerInfo : TraitInfo, IResourceLayerInfo, IMapPreviewSignatureInfo
 	{
@@ -94,7 +95,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (w.Type != WorldType.Editor)
 				return;
 
-			var playerResourcesInfo = w.Map.Rules.Actors["player"].TraitInfoOrDefault<PlayerResourcesInfo>();
+			var playerResourcesInfo = w.Map.Rules.Actors[SystemActors.Player].TraitInfoOrDefault<PlayerResourcesInfo>();
 			resourceValues = playerResourcesInfo?.ResourceValues ?? new Dictionary<string, int>();
 
 			foreach (var cell in Map.AllCells)

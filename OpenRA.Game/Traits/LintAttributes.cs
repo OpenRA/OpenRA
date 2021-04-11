@@ -105,4 +105,14 @@ namespace OpenRA.Traits
 			PlayerPaletteReferenceSwitch = playerPaletteReferenceSwitch;
 		}
 	}
+
+	[AttributeUsage(AttributeTargets.Class)]
+	public sealed class TraitLocationAttribute : Attribute
+	{
+		public readonly SystemActors SystemActors;
+		public TraitLocationAttribute(SystemActors systemActors)
+		{
+			SystemActors = systemActors;
+		}
+	}
 }

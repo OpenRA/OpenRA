@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
-			if (!rules.Actors["world"].HasTraitInfo<ITiledTerrainRendererInfo>())
+			if (!rules.Actors[SystemActors.World].HasTraitInfo<ITiledTerrainRendererInfo>())
 				throw new YamlException("Bridge requires a tile-based terrain renderer.");
 
 			if (string.IsNullOrEmpty(DemolishWeapon))

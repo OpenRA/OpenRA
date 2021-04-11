@@ -18,6 +18,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Controls the spawning of specified actor types. Attach this to the world actor.")]
+	[TraitLocation(SystemActors.World)]
 	public class ActorSpawnManagerInfo : ConditionalTraitInfo, Requires<MapCreepsInfo>
 	{
 		[Desc("Minimum number of actors.")]

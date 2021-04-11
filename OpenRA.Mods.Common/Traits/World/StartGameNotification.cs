@@ -14,6 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	[TraitLocation(SystemActors.World)]
 	class StartGameNotificationInfo : TraitInfo
 	{
 		[NotificationReference("Speech")]

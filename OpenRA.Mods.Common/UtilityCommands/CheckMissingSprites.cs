@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						var terrainInfo = modData.DefaultTerrainInfo[kv.Key];
 
 						if (terrainInfo is ITemplatedTerrainInfo templatedTerrainInfo)
-							foreach (var r in modData.DefaultRules.Actors["world"].TraitInfos<ITiledTerrainRendererInfo>())
+							foreach (var r in modData.DefaultRules.Actors[SystemActors.World].TraitInfos<ITiledTerrainRendererInfo>())
 								failed |= r.ValidateTileSprites(templatedTerrainInfo, Console.WriteLine);
 
 						foreach (var image in kv.Value.Images)

@@ -13,6 +13,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	[TraitLocation(SystemActors.Player)]
 	[Desc("Provides the player with an audible warning when their storage is nearing full.")]
 	public class ResourceStorageWarningInfo : TraitInfo, Requires<PlayerResourcesInfo>
 	{

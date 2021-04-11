@@ -17,6 +17,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common
 {
+	[TraitLocation(SystemActors.World | SystemActors.EditorWorld)]
 	[Desc("Define a palette by swapping palette indices.")]
 	public class IndexedPaletteInfo : TraitInfo, IRulesetLoaded
 	{

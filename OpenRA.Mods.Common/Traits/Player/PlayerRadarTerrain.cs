@@ -11,11 +11,11 @@
 
 using System;
 using OpenRA.Graphics;
-using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	[TraitLocation(SystemActors.Player)]
 	public class PlayerRadarTerrainInfo : TraitInfo, Requires<ShroudInfo>
 	{
 		public override object Create(ActorInitializer init)

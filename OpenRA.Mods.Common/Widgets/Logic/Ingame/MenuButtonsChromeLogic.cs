@@ -73,7 +73,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				// Can't use DeveloperMode.Enabled because there is a hardcoded hack to *always*
 				// enable developer mode for singleplayer games, but we only want to show the button
 				// if it has been explicitly enabled
-				var def = world.Map.Rules.Actors["player"].TraitInfo<DeveloperModeInfo>().CheckboxEnabled;
+				var def = world.Map.Rules.Actors[SystemActors.Player].TraitInfo<DeveloperModeInfo>().CheckboxEnabled;
 				var enabled = world.LobbyInfo.GlobalSettings.OptionOrDefault("cheats", def);
 				debug.IsVisible = () => enabled;
 				debug.IsDisabled = () => disableSystemButtons;

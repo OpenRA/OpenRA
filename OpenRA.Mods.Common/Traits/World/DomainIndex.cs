@@ -17,6 +17,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	[TraitLocation(SystemActors.World)]
 	[Desc("Identify untraversable regions of the map for faster pathfinding, especially with AI.",
 		"This trait is required. Every mod needs it attached to the world actor.")]
 	class DomainIndexInfo : TraitInfo<DomainIndex> { }

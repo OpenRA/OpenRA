@@ -11,6 +11,7 @@
 
 namespace OpenRA.Traits
 {
+	[TraitLocation(SystemActors.World)]
 	[Desc("Checks for pause related desyncs. Attach this to the world actor.")]
 	public class DebugPauseStateInfo : TraitInfo
 	{

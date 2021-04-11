@@ -13,6 +13,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	[TraitLocation(SystemActors.Player)]
 	[Desc("Attach this to the player actor to allow building repair by team mates.")]
 	class AllyRepairInfo : TraitInfo<AllyRepair> { }
 

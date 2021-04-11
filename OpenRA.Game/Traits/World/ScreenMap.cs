@@ -30,6 +30,7 @@ namespace OpenRA.Traits
 		public override string ToString() { return "{0}->{1}".F(Actor.Info.Name, Bounds.GetType().Name); }
 	}
 
+	[TraitLocation(SystemActors.World | SystemActors.EditorWorld)]
 	public class ScreenMapInfo : TraitInfo
 	{
 		[Desc("Size of partition bins (world pixels)")]

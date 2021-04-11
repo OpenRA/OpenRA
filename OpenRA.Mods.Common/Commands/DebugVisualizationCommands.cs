@@ -16,6 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Commands
 {
+	[TraitLocation(SystemActors.World)]
 	[Desc("Enables visualization commands via the chatbox. Attach this to the world actor.")]
 	public class DebugVisualizationCommandsInfo : TraitInfo<DebugVisualizationCommands> { }
 

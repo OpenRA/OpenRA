@@ -16,6 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	[TraitLocation(SystemActors.Player | SystemActors.EditorPlayer)]
 	public class PlayerResourcesInfo : TraitInfo, ILobbyOptions
 	{
 		[Desc("Descriptive label for the starting cash option in the lobby.")]

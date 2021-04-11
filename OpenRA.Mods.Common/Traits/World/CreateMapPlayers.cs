@@ -18,6 +18,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	[TraitLocation(SystemActors.World)]
 	[Desc("Attach this to the world actor.")]
 	public class CreateMapPlayersInfo : TraitInfo<CreateMapPlayers>, ICreatePlayersInfo
 	{
@@ -27,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 		/// </summary>
 		void ICreatePlayersInfo.CreateServerPlayers(MapPreview map, Session lobbyInfo, List<GameInformation.Player> players, MersenneTwister playerRandom)
 		{
-			var worldInfo = map.Rules.Actors["world"];
+			var worldInfo = map.Rules.Actors[SystemActors.World];
 			var factions = worldInfo.TraitInfos<FactionInfo>().ToArray();
 			var assignSpawnLocations = worldInfo.TraitInfoOrDefault<IAssignSpawnPointsInfo>();
 			var spawnState = assignSpawnLocations?.InitializeState(map, lobbyInfo);
@@ -41,7 +42,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			// Create the regular playable players.
-			var bots = map.Rules.Actors["player"].TraitInfos<IBotInfo>().ToArray();
+			var bots = map.Rules.Actors[SystemActors.Player].TraitInfos<IBotInfo>().ToArray();
 
 			foreach (var kv in lobbyInfo.Slots)
 			{

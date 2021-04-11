@@ -78,8 +78,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			optionsContainer.RemoveChildren();
 			optionsContainer.Bounds.Height = 0;
-			var allOptions = mapPreview.Rules.Actors["player"].TraitInfos<ILobbyOptions>()
-					.Concat(mapPreview.Rules.Actors["world"].TraitInfos<ILobbyOptions>())
+			var allOptions = mapPreview.Rules.Actors[SystemActors.Player].TraitInfos<ILobbyOptions>()
+					.Concat(mapPreview.Rules.Actors[SystemActors.World].TraitInfos<ILobbyOptions>())
 					.SelectMany(t => t.LobbyOptions(mapPreview.Rules))
 					.Where(o => o.IsVisible)
 					.OrderBy(o => o.DisplayOrder)

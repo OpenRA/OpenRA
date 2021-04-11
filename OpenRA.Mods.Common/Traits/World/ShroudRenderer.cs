@@ -19,6 +19,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	[TraitLocation(SystemActors.World | SystemActors.EditorWorld)]
 	public class ShroudRendererInfo : TraitInfo
 	{
 		public readonly string Sequence = "shroud";

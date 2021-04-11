@@ -16,6 +16,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	[TraitLocation(SystemActors.World | SystemActors.EditorWorld)]
 	public class LoadWidgetAtGameStartInfo : TraitInfo
 	{
 		[Desc("The widget tree to open when a shellmap is loaded (i.e. the main menu).")]
