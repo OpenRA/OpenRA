@@ -15,47 +15,46 @@ using System.Linq;
 using System.Reflection;
 using OpenRA.GameRules;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Server;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Lint
 {
-	public class CheckActorReferences : ILintRulesPass
+	public class CheckActorReferences : ILintRulesPass, ILintServerMapPass
 	{
-		Action<string> emitError;
-
-		public void Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Ruleset rules)
+		void ILintRulesPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Ruleset rules)
 		{
-			this.emitError = emitError;
-
 			foreach (var actorInfo in rules.Actors)
 				foreach (var traitInfo in actorInfo.Value.TraitInfos<TraitInfo>())
-					CheckTrait(actorInfo.Value, traitInfo, rules);
+					CheckTrait(emitError, actorInfo.Value, traitInfo, rules);
 		}
 
-		void CheckTrait(ActorInfo actorInfo, TraitInfo traitInfo, Ruleset rules)
+		void ILintServerMapPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData, MapPreview map, Ruleset mapRules)
+		{
+			foreach (var actorInfo in mapRules.Actors)
+				foreach (var traitInfo in actorInfo.Value.TraitInfos<TraitInfo>())
+					CheckTrait(emitError, actorInfo.Value, traitInfo, mapRules);
+		}
+
+		void CheckTrait(Action<string> emitError, ActorInfo actorInfo, TraitInfo traitInfo, Ruleset rules)
 		{
 			var actualType = traitInfo.GetType();
 			foreach (var field in actualType.GetFields())
 			{
 				if (field.HasAttribute<ActorReferenceAttribute>())
-					CheckActorReference(actorInfo, traitInfo, field, rules.Actors,
+					CheckActorReference(emitError, actorInfo, traitInfo, field, rules.Actors,
 						field.GetCustomAttributes<ActorReferenceAttribute>(true)[0]);
 
 				if (field.HasAttribute<WeaponReferenceAttribute>())
-					CheckWeaponReference(actorInfo, traitInfo, field, rules.Weapons,
-						field.GetCustomAttributes<WeaponReferenceAttribute>(true)[0]);
+					CheckWeaponReference(emitError, actorInfo, traitInfo, field, rules.Weapons);
 
 				if (field.HasAttribute<VoiceSetReferenceAttribute>())
-					CheckVoiceReference(actorInfo, traitInfo, field, rules.Voices,
-						field.GetCustomAttributes<VoiceSetReferenceAttribute>(true)[0]);
+					CheckVoiceReference(emitError, actorInfo, traitInfo, field, rules.Voices);
 			}
 		}
 
-		void CheckActorReference(ActorInfo actorInfo,
-			TraitInfo traitInfo,
-			FieldInfo fieldInfo,
-			IReadOnlyDictionary<string, ActorInfo> dict,
-			ActorReferenceAttribute attribute)
+		void CheckActorReference(Action<string> emitError, ActorInfo actorInfo, TraitInfo traitInfo,
+			FieldInfo fieldInfo, IReadOnlyDictionary<string, ActorInfo> dict, ActorReferenceAttribute attribute)
 		{
 			var values = LintExts.GetFieldValues(traitInfo, fieldInfo, emitError, attribute.DictionaryReference);
 			foreach (var value in values)
@@ -82,11 +81,8 @@ namespace OpenRA.Mods.Common.Lint
 			}
 		}
 
-		void CheckWeaponReference(ActorInfo actorInfo,
-			TraitInfo traitInfo,
-			FieldInfo fieldInfo,
-			IReadOnlyDictionary<string, WeaponInfo> dict,
-			WeaponReferenceAttribute attribute)
+		void CheckWeaponReference(Action<string> emitError, ActorInfo actorInfo, TraitInfo traitInfo,
+			FieldInfo fieldInfo, IReadOnlyDictionary<string, WeaponInfo> dict)
 		{
 			var values = LintExts.GetFieldValues(traitInfo, fieldInfo, emitError);
 			foreach (var value in values)
@@ -100,11 +96,8 @@ namespace OpenRA.Mods.Common.Lint
 			}
 		}
 
-		void CheckVoiceReference(ActorInfo actorInfo,
-			TraitInfo traitInfo,
-			FieldInfo fieldInfo,
-			IReadOnlyDictionary<string, SoundInfo> dict,
-			VoiceSetReferenceAttribute attribute)
+		void CheckVoiceReference(Action<string> emitError, ActorInfo actorInfo, TraitInfo traitInfo,
+			FieldInfo fieldInfo, IReadOnlyDictionary<string, SoundInfo> dict)
 		{
 			var values = LintExts.GetFieldValues(traitInfo, fieldInfo, emitError);
 			foreach (var value in values)

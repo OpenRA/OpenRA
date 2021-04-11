@@ -12,11 +12,29 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.FileSystem;
+using OpenRA.Server;
 
 namespace OpenRA.Mods.Common.Lint
 {
-	class CheckUnknownTraitFields : ILintPass, ILintMapPass
+	class CheckUnknownTraitFields : ILintPass, ILintMapPass, ILintServerMapPass
 	{
+		void ILintPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData)
+		{
+			foreach (var f in modData.Manifest.Rules)
+				CheckActors(MiniYaml.FromStream(modData.DefaultFileSystem.Open(f), f), emitError, modData);
+		}
+
+		void ILintMapPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Map map)
+		{
+			CheckMapYaml(emitError, modData, map, map.RuleDefinitions);
+		}
+
+		void ILintServerMapPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData, MapPreview map, Ruleset mapRules)
+		{
+			CheckMapYaml(emitError, modData, map, map.RuleDefinitions);
+		}
+
 		string NormalizeName(string key)
 		{
 			var name = key.Split('@')[0];
@@ -64,23 +82,17 @@ namespace OpenRA.Mods.Common.Lint
 			}
 		}
 
-		void ILintPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData)
+		void CheckMapYaml(Action<string> emitError, ModData modData, IReadOnlyFileSystem fileSystem, MiniYaml ruleDefinitions)
 		{
-			foreach (var f in modData.Manifest.Rules)
-				CheckActors(MiniYaml.FromStream(modData.DefaultFileSystem.Open(f), f), emitError, modData);
-		}
+			if (ruleDefinitions == null)
+				return;
 
-		void ILintMapPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Map map)
-		{
-			if (map.RuleDefinitions != null && map.RuleDefinitions.Value != null)
-			{
-				var mapFiles = FieldLoader.GetValue<string[]>("value", map.RuleDefinitions.Value);
-				foreach (var f in mapFiles)
-					CheckActors(MiniYaml.FromStream(map.Open(f), f), emitError, modData);
+			var mapFiles = FieldLoader.GetValue<string[]>("value", ruleDefinitions.Value);
+			foreach (var f in mapFiles)
+				CheckActors(MiniYaml.FromStream(fileSystem.Open(f), f), emitError, modData);
 
-				if (map.RuleDefinitions.Nodes.Any())
-					CheckActors(map.RuleDefinitions.Nodes, emitError, modData);
-			}
+			if (ruleDefinitions.Nodes.Any())
+				CheckActors(ruleDefinitions.Nodes, emitError, modData);
 		}
 	}
 }

@@ -12,18 +12,28 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Server;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Lint
 {
-	class CheckPalettes : ILintRulesPass
+	class CheckPalettes : ILintRulesPass, ILintServerMapPass
 	{
-		List<string> palettes = new List<string>();
-		List<string> playerPalettes = new List<string>();
-
-		public void Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Ruleset rules)
+		void ILintRulesPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Ruleset rules)
 		{
-			GetPalettes(emitError, rules);
+			Run(emitError, rules);
+		}
+
+		void ILintServerMapPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData, MapPreview map, Ruleset mapRules)
+		{
+			Run(emitError, mapRules);
+		}
+
+		void Run(Action<string> emitError, Ruleset rules)
+		{
+			var palettes = new List<string>();
+			var playerPalettes = new List<string>();
+			GetPalettes(emitError, rules, palettes, playerPalettes);
 
 			foreach (var actorInfo in rules.Actors)
 			{
@@ -111,7 +121,7 @@ namespace OpenRA.Mods.Common.Lint
 			}
 		}
 
-		void GetPalettes(Action<string> emitError, Ruleset rules)
+		void GetPalettes(Action<string> emitError, Ruleset rules, List<string> palettes, List<string> playerPalettes)
 		{
 			foreach (var actorInfo in rules.Actors)
 			{

@@ -61,6 +61,7 @@ namespace OpenRA
 		public readonly string tileset;
 		public readonly string rules;
 		public readonly string players_block;
+		public readonly int mapformat;
 	}
 
 	public class MapPreview : IDisposable, IReadOnlyFileSystem
@@ -68,6 +69,7 @@ namespace OpenRA
 		/// <summary>Wrapper that enables map data to be replaced in an atomic fashion</summary>
 		class InnerData
 		{
+			public int MapFormat;
 			public string Title;
 			public string[] Categories;
 			public string Author;
@@ -168,6 +170,7 @@ namespace OpenRA
 
 		volatile InnerData innerData;
 
+		public int MapFormat => innerData.MapFormat;
 		public string Title => innerData.Title;
 		public string[] Categories => innerData.Categories;
 		public string Author => innerData.Author;
@@ -183,6 +186,7 @@ namespace OpenRA
 		public MapVisibility Visibility => innerData.Visibility;
 
 		public MiniYaml RuleDefinitions => innerData.RuleDefinitions;
+		public MiniYaml WeaponDefinitions => innerData.WeaponDefinitions;
 
 		public ActorInfo WorldActorInfo => innerData.WorldActorInfo;
 		public ActorInfo PlayerActorInfo => innerData.PlayerActorInfo;
@@ -234,6 +238,7 @@ namespace OpenRA
 			Uid = uid;
 			innerData = new InnerData
 			{
+				MapFormat = 0,
 				Title = "Unknown Map",
 				Categories = new[] { "Unknown" },
 				Author = "Unknown Author",
@@ -248,6 +253,53 @@ namespace OpenRA
 				Class = MapClassification.Unknown,
 				Visibility = MapVisibility.Lobby,
 			};
+		}
+
+		// For linting purposes only!
+		public MapPreview(Map map, ModData modData)
+		{
+			this.modData = modData;
+			cache = modData.MapCache;
+
+			Uid = map.Uid;
+			Package = map.Package;
+
+			var mapPlayers = new MapPlayers(map.PlayerDefinitions);
+			var spawns = new List<CPos>();
+			foreach (var kv in map.ActorDefinitions.Where(d => d.Value.Value == "mpspawn"))
+			{
+				var s = new ActorReference(kv.Value.Value, kv.Value.ToDictionary());
+				spawns.Add(s.Get<LocationInit>().Value);
+			}
+
+			innerData = new InnerData
+			{
+				MapFormat = map.MapFormat,
+				Title = map.Title,
+				Categories = map.Categories,
+				Author = map.Author,
+				TileSet = map.Tileset,
+				Players = mapPlayers,
+				PlayerCount = mapPlayers.Players.Count(x => x.Value.Playable),
+				SpawnPoints = spawns.ToArray(),
+				GridType = map.Grid.Type,
+				Bounds = map.Bounds,
+				Preview = null,
+				Status = MapStatus.Available,
+				Class = MapClassification.Unknown,
+				Visibility = map.Visibility,
+			};
+
+			innerData.SetCustomRules(modData, this, new Dictionary<string, MiniYaml>()
+			{
+				{ "Rules", map.RuleDefinitions },
+				{ "Weapons", map.WeaponDefinitions },
+				{ "Voices", map.VoiceDefinitions },
+				{ "Music", map.MusicDefinitions },
+				{ "Notifications", map.NotificationDefinitions },
+				{ "Sequences", map.SequenceDefinitions },
+				{ "ModelSequences", map.ModelSequenceDefinitions }
+			});
 		}
 
 		public void UpdateFromMap(IReadOnlyPackage p, IReadOnlyPackage parent, MapClassification classification, string[] mapCompatibility, MapGridType gridType)
@@ -296,6 +348,9 @@ namespace OpenRA
 			string requiresMod = string.Empty;
 			if (yaml.TryGetValue("RequiresMod", out temp))
 				requiresMod = temp.Value;
+
+			if (yaml.TryGetValue("MapFormat", out temp))
+				newData.MapFormat = FieldLoader.GetValue<int>("MapFormat", temp.Value);
 
 			newData.Status = mapCompatibility == null || mapCompatibility.Contains(requiresMod) ?
 				MapStatus.Available : MapStatus.Unavailable;
@@ -372,6 +427,7 @@ namespace OpenRA
 					newData.PlayerCount = r.players;
 					newData.Bounds = r.bounds;
 					newData.TileSet = r.tileset;
+					newData.MapFormat = r.mapformat;
 
 					var spawns = new CPos[r.spawnpoints.Length / 2];
 					for (var j = 0; j < r.spawnpoints.Length; j += 2)
