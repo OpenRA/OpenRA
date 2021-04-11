@@ -18,6 +18,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	[TraitLocation(SystemActors.World)]
 	[Desc("Spawn base actor at the spawnpoint and support units in an annulus around the base actor. Both are defined at MPStartUnits. Attach this to the world actor.")]
 	public class SpawnStartingUnitsInfo : TraitInfo, Requires<StartingUnitsInfo>, ILobbyOptions
 	{
@@ -43,7 +44,7 @@ namespace OpenRA.Mods.Common.Traits
 			var startingUnits = new Dictionary<string, string>();
 
 			// Duplicate classes are defined for different race variants
-			foreach (var t in rules.Actors["world"].TraitInfos<StartingUnitsInfo>())
+			foreach (var t in rules.Actors[SystemActors.World].TraitInfos<StartingUnitsInfo>())
 				startingUnits[t.Class] = t.ClassName;
 
 			if (startingUnits.Any())
@@ -75,7 +76,7 @@ namespace OpenRA.Mods.Common.Traits
 			var spawnClass = p.PlayerReference.StartingUnitsClass ?? w.LobbyInfo.GlobalSettings
 				.OptionOrDefault("startingunits", info.StartingUnitsClass);
 
-			var unitGroup = w.Map.Rules.Actors["world"].TraitInfos<StartingUnitsInfo>()
+			var unitGroup = w.Map.Rules.Actors[SystemActors.World].TraitInfos<StartingUnitsInfo>()
 				.Where(g => g.Class == spawnClass && g.Factions != null && g.Factions.Contains(p.Faction.InternalName))
 				.RandomOrDefault(w.SharedRandom);
 

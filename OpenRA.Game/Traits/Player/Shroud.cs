@@ -14,6 +14,7 @@ using System.Collections.Generic;
 
 namespace OpenRA.Traits
 {
+	[TraitLocation(SystemActors.Player | SystemActors.EditorPlayer)]
 	[Desc("Required for shroud and fog visibility checks. Add this to the player actor.")]
 	public class ShroudInfo : TraitInfo, ILobbyOptions
 	{

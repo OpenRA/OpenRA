@@ -14,7 +14,8 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Traits
 {
-	[Desc("Add this to the Player actor definition.")]
+	[TraitLocation(SystemActors.World | SystemActors.EditorWorld)]
+	[Desc("Add this to the World actor definition.")]
 	public class PlayerColorPaletteInfo : TraitInfo
 	{
 		[PaletteReference]

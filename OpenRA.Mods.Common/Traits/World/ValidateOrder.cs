@@ -14,6 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	[TraitLocation(SystemActors.World)]
 	[Desc("Used to detect exploits. Attach this to the world actor.")]
 	public class ValidateOrderInfo : TraitInfo<ValidateOrder> { }
 

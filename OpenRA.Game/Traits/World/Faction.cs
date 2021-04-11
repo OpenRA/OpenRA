@@ -14,6 +14,7 @@ using System.Collections.Generic;
 namespace OpenRA.Traits
 {
 	[Desc("Attach this to the `World` actor.")]
+	[TraitLocation(SystemActors.World | SystemActors.EditorWorld)]
 	public class FactionInfo : TraitInfo<Faction>
 	{
 		[Desc("This is the name exposed to the players.")]

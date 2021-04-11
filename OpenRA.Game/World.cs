@@ -202,8 +202,8 @@ namespace OpenRA
 
 			ModelCache = modData.ModelSequenceLoader.CacheModels(map, modData, map.Rules.ModelSequences);
 
-			var worldActorType = type == WorldType.Editor ? "EditorWorld" : "World";
-			WorldActor = CreateActor(worldActorType, new TypeDictionary());
+			var worldActorType = type == WorldType.Editor ? SystemActors.EditorWorld : SystemActors.World;
+			WorldActor = CreateActor(worldActorType.ToString(), new TypeDictionary());
 			ActorMap = WorldActor.Trait<IActorMap>();
 			ScreenMap = WorldActor.Trait<ScreenMap>();
 			Selection = WorldActor.Trait<ISelection>();

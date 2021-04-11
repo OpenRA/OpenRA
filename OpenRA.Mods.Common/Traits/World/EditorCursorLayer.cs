@@ -19,6 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	public enum EditorCursorType { None, Actor, TerrainTemplate, Resource }
 
+	[TraitLocation(SystemActors.EditorWorld)]
 	[Desc("Required for the map editor to work. Attach this to the world actor.")]
 	public class EditorCursorLayerInfo : TraitInfo, Requires<EditorActorLayerInfo>, Requires<ITiledTerrainRendererInfo>
 	{

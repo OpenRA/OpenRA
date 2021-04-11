@@ -16,6 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	[TraitLocation(SystemActors.World | SystemActors.EditorWorld)]
 	[Desc("Load VGA palette (.pal) registers.")]
 	class PaletteFromFileInfo : TraitInfo, IProvidesCursorPaletteInfo
 	{

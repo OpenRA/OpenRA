@@ -1209,7 +1209,7 @@ namespace OpenRA.Server
 				// The null padding is needed to keep the player indexes in sync with world.Players on the clients
 				// This will need to change if future code wants to use worldPlayers for other purposes
 				var playerRandom = new MersenneTwister(LobbyInfo.GlobalSettings.RandomSeed);
-				foreach (var cmpi in Map.Rules.Actors["world"].TraitInfos<ICreatePlayersInfo>())
+				foreach (var cmpi in Map.Rules.Actors[SystemActors.World].TraitInfos<ICreatePlayersInfo>())
 					cmpi.CreateServerPlayers(Map, LobbyInfo, worldPlayers, playerRandom);
 
 				if (recorder != null)

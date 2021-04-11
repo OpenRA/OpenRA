@@ -14,6 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	[TraitLocation(SystemActors.Player)]
 	public class ProvidesTechPrerequisiteInfo : TraitInfo, ITechTreePrerequisiteInfo
 	{
 		[Desc("Internal id for this tech level.")]

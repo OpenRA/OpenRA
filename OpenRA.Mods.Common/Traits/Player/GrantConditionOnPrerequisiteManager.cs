@@ -11,11 +11,11 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	[TraitLocation(SystemActors.Player)]
 	[Desc("Attach this to the player actor.")]
 	public class GrantConditionOnPrerequisiteManagerInfo : TraitInfo, Requires<TechTreeInfo>
 	{

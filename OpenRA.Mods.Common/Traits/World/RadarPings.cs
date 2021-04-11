@@ -16,6 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	[TraitLocation(SystemActors.World)]
 	public class RadarPingsInfo : TraitInfo
 	{
 		public readonly int FromRadius = 200;

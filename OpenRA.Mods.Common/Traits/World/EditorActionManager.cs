@@ -16,6 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	[TraitLocation(SystemActors.EditorWorld)]
 	public class EditorActionManagerInfo : TraitInfo<EditorActionManager> { }
 
 	public class EditorActionManager : IWorldLoaded

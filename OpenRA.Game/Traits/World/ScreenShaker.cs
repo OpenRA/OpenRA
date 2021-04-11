@@ -16,6 +16,7 @@ using OpenRA.Graphics;
 
 namespace OpenRA.Traits
 {
+	[TraitLocation(SystemActors.World)]
 	public class ScreenShakerInfo : TraitInfo
 	{
 		public readonly float2 MinMultiplier = new float2(-3, -3);

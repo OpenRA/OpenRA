@@ -17,6 +17,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	[TraitLocation(SystemActors.World)]
 	class ProductionQueueFromSelectionInfo : TraitInfo
 	{
 		public string ProductionTabsWidget = null;

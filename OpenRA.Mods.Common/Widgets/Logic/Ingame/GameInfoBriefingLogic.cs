@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var mapDescription = widget.Get<LabelWidget>("MAP_DESCRIPTION");
 			var mapFont = Game.Renderer.Fonts[mapDescription.Font];
 
-			var missionData = world.Map.Rules.Actors["world"].TraitInfoOrDefault<MissionDataInfo>();
+			var missionData = world.Map.Rules.Actors[SystemActors.World].TraitInfoOrDefault<MissionDataInfo>();
 			if (missionData != null)
 			{
 				var text = WidgetUtils.WrapText(missionData.Briefing.Replace("\\n", "\n"), mapDescription.Bounds.Width, mapFont);

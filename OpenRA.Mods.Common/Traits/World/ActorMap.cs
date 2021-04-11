@@ -18,6 +18,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	[TraitLocation(SystemActors.World | SystemActors.EditorWorld)]
 	public class ActorMapInfo : TraitInfo
 	{
 		[Desc("Size of partition bins (cells)")]

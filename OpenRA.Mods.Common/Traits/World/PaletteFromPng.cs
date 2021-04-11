@@ -18,6 +18,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	[TraitLocation(SystemActors.World | SystemActors.EditorWorld)]
 	[Desc("Load a PNG and use its embedded palette.")]
 	class PaletteFromPngInfo : TraitInfo, IProvidesCursorPaletteInfo
 	{

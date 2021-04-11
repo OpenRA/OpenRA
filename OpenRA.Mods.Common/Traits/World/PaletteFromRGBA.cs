@@ -16,6 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	[TraitLocation(SystemActors.World | SystemActors.EditorWorld)]
 	[Desc("Creates a single color palette without any base palette file.")]
 	class PaletteFromRGBAInfo : TraitInfo
 	{

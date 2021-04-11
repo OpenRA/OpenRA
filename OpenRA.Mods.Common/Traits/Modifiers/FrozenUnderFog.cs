@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Traits
 			var map = init.World.Map;
 
 			// Explore map-placed actors if the "Explore Map" option is enabled
-			var shroudInfo = init.World.Map.Rules.Actors["player"].TraitInfo<ShroudInfo>();
+			var shroudInfo = init.World.Map.Rules.Actors[SystemActors.Player].TraitInfo<ShroudInfo>();
 			var exploredMap = init.World.LobbyInfo.GlobalSettings.OptionOrDefault("explored", shroudInfo.ExploredMapCheckboxEnabled);
 			startsRevealed = exploredMap && init.Contains<SpawnedByMapInit>() && !init.Contains<HiddenUnderFogInit>();
 			var buildingInfo = init.Self.Info.TraitInfoOrDefault<BuildingInfo>();

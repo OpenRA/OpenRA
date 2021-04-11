@@ -15,6 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	[TraitLocation(SystemActors.World)]
 	[Desc("Allows harvesters to coordinate their operations. Attach this to the world actor.")]
 	public sealed class ResourceClaimLayerInfo : TraitInfo<ResourceClaimLayer> { }
 

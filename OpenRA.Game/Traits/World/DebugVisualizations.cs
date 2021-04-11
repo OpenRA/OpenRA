@@ -11,6 +11,7 @@
 
 namespace OpenRA.Traits
 {
+	[TraitLocation(SystemActors.World | SystemActors.EditorWorld)]
 	[Desc("Enables visualization commands. Attach this to the world actor.")]
 	public class DebugVisualizationsInfo : TraitInfo<DebugVisualizations> { }
 

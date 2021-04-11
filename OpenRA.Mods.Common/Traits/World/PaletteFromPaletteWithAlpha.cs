@@ -16,6 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	[TraitLocation(SystemActors.World | SystemActors.EditorWorld)]
 	[Desc("Create a palette by applying alpha transparency to another palette.")]
 	class PaletteFromPaletteWithAlphaInfo : TraitInfo
 	{

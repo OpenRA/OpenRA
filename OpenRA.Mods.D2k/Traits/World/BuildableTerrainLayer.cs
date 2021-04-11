@@ -18,6 +18,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.D2k.Traits
 {
 	[Desc("Attach this to the world actor. Required for LaysTerrain to work.")]
+	[TraitLocation(SystemActors.World)]
 	public class BuildableTerrainLayerInfo : TraitInfo, Requires<ITiledTerrainRendererInfo>
 	{
 		[Desc("Palette to render the layer sprites in.")]

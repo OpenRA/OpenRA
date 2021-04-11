@@ -17,6 +17,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	[TraitLocation(SystemActors.World)]
 	[Desc("Displays custom terrain types.")]
 	class CustomTerrainDebugOverlayInfo : TraitInfo
 	{

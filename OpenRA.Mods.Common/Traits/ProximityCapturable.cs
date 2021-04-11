@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void RulesetLoaded(Ruleset rules, ActorInfo info)
 		{
-			var pci = rules.Actors["player"].TraitInfoOrDefault<ProximityCaptorInfo>();
+			var pci = rules.Actors[SystemActors.Player].TraitInfoOrDefault<ProximityCaptorInfo>();
 			if (pci == null)
 				throw new YamlException("ProximityCapturable requires the `Player` actor to have the ProximityCaptor trait.");
 		}

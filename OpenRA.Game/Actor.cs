@@ -24,6 +24,15 @@ using OpenRA.Traits;
 
 namespace OpenRA
 {
+	[Flags]
+	public enum SystemActors
+	{
+		Player = 0,
+		EditorPlayer = 1,
+		World = 2,
+		EditorWorld = 4
+	}
+
 	public sealed class Actor : IScriptBindable, IScriptNotifyBind, ILuaTableBinding, ILuaEqualityBinding, ILuaToStringBinding, IEquatable<Actor>, IDisposable
 	{
 		internal readonly struct SyncHash

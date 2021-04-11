@@ -31,7 +31,7 @@ namespace OpenRA.Graphics
 
 			// Overwrite previous definitions if there are duplicates
 			var pals = new Dictionary<string, IProvidesCursorPaletteInfo>();
-			foreach (var p in modData.DefaultRules.Actors["world"].TraitInfos<IProvidesCursorPaletteInfo>())
+			foreach (var p in modData.DefaultRules.Actors[SystemActors.World].TraitInfos<IProvidesCursorPaletteInfo>())
 				if (p.Palette != null)
 					pals[p.Palette] = p;
 

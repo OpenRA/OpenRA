@@ -18,6 +18,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
 {
+	[TraitLocation(SystemActors.World | SystemActors.EditorWorld)]
 	[Desc("Adds the hard-coded shroud palette to the game")]
 	class ShroudPaletteInfo : TraitInfo
 	{

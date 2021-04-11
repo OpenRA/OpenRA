@@ -22,6 +22,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new Selection(this); }
 	}
 
+	[TraitLocation(SystemActors.World | SystemActors.EditorWorld)]
 	public class Selection : ISelection, INotifyCreated, INotifyOwnerChanged, ITick, IGameSaveTraitData
 	{
 		public int Hash { get; private set; }

@@ -357,7 +357,7 @@ namespace OpenRA.Mods.Common.Server
 				}
 
 				var botType = parts[2];
-				var botInfo = server.Map.Rules.Actors["player"].TraitInfos<IBotInfo>()
+				var botInfo = server.Map.Rules.Actors[SystemActors.Player].TraitInfos<IBotInfo>()
 					.FirstOrDefault(b => b.Type == botType);
 
 				if (botInfo == null)
@@ -440,7 +440,7 @@ namespace OpenRA.Mods.Common.Server
 						LoadMapSettings(server, server.LobbyInfo.GlobalSettings, server.Map.Rules);
 
 						// Reset client states
-						var selectableFactions = server.Map.Rules.Actors["world"].TraitInfos<FactionInfo>()
+						var selectableFactions = server.Map.Rules.Actors[SystemActors.World].TraitInfos<FactionInfo>()
 							.Where(f => f.Selectable)
 							.Select(f => f.InternalName)
 							.ToList();
@@ -457,7 +457,7 @@ namespace OpenRA.Mods.Common.Server
 						//  - Players who now lack a slot are made observers
 						//  - Bots who now lack a slot are dropped
 						//  - Bots who are not defined in the map rules are dropped
-						var botTypes = server.Map.Rules.Actors["player"].TraitInfos<IBotInfo>().Select(t => t.Type);
+						var botTypes = server.Map.Rules.Actors[SystemActors.Player].TraitInfos<IBotInfo>().Select(t => t.Type);
 						var slots = server.LobbyInfo.Slots.Keys.ToArray();
 						var i = 0;
 						foreach (var os in oldSlots)
@@ -534,8 +534,8 @@ namespace OpenRA.Mods.Common.Server
 					return true;
 				}
 
-				var allOptions = server.Map.Rules.Actors["player"].TraitInfos<ILobbyOptions>()
-					.Concat(server.Map.Rules.Actors["world"].TraitInfos<ILobbyOptions>())
+				var allOptions = server.Map.Rules.Actors[SystemActors.Player].TraitInfos<ILobbyOptions>()
+					.Concat(server.Map.Rules.Actors[SystemActors.World].TraitInfos<ILobbyOptions>())
 					.SelectMany(t => t.LobbyOptions(server.Map.Rules));
 
 				// Overwrite keys with duplicate ids
@@ -775,7 +775,7 @@ namespace OpenRA.Mods.Common.Server
 				if (server.LobbyInfo.Slots[targetClient.Slot].LockFaction)
 					return true;
 
-				var factions = server.Map.Rules.Actors["world"].TraitInfos<FactionInfo>()
+				var factions = server.Map.Rules.Actors[SystemActors.World].TraitInfos<FactionInfo>()
 					.Where(f => f.Selectable).Select(f => f.InternalName);
 
 				if (!factions.Contains(parts[1]))
@@ -1045,8 +1045,8 @@ namespace OpenRA.Mods.Common.Server
 		{
 			lock (server.LobbyInfo)
 			{
-				var options = rules.Actors["player"].TraitInfos<ILobbyOptions>()
-					.Concat(rules.Actors["world"].TraitInfos<ILobbyOptions>())
+				var options = rules.Actors[SystemActors.Player].TraitInfos<ILobbyOptions>()
+					.Concat(rules.Actors[SystemActors.World].TraitInfos<ILobbyOptions>())
 					.SelectMany(t => t.LobbyOptions(rules));
 
 				foreach (var o in options)
@@ -1100,7 +1100,7 @@ namespace OpenRA.Mods.Common.Server
 
 		static string MissionBriefingOrDefault(S server)
 		{
-			var missionData = server.Map.Rules.Actors["world"].TraitInfoOrDefault<MissionDataInfo>();
+			var missionData = server.Map.Rules.Actors[SystemActors.World].TraitInfoOrDefault<MissionDataInfo>();
 			if (missionData != null && !string.IsNullOrEmpty(missionData.Briefing))
 				return missionData.Briefing.Replace("\\n", "\n");
 

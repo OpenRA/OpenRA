@@ -219,7 +219,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			new Thread(() =>
 			{
-				var mapDifficulty = preview.Rules.Actors["world"].TraitInfos<ScriptLobbyDropdownInfo>()
+				var mapDifficulty = preview.Rules.Actors[SystemActors.World].TraitInfos<ScriptLobbyDropdownInfo>()
 					.FirstOrDefault(sld => sld.ID == "difficulty");
 
 				if (mapDifficulty != null)
@@ -229,7 +229,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					difficultyDisabled = mapDifficulty.Locked;
 				}
 
-				var missionData = preview.Rules.Actors["world"].TraitInfoOrDefault<MissionDataInfo>();
+				var missionData = preview.Rules.Actors[SystemActors.World].TraitInfoOrDefault<MissionDataInfo>();
 				if (missionData != null)
 				{
 					briefingVideo = missionData.BriefingVideo;
@@ -383,7 +383,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			orders.Add(Order.Command("option gamespeed {0}".F(gameSpeed)));
 			orders.Add(Order.Command("state {0}".F(Session.ClientState.Ready)));
 
-			var missionData = selectedMap.Rules.Actors["world"].TraitInfoOrDefault<MissionDataInfo>();
+			var missionData = selectedMap.Rules.Actors[SystemActors.World].TraitInfoOrDefault<MissionDataInfo>();
 			if (missionData != null && missionData.StartVideo != null && modData.DefaultFileSystem.Exists(missionData.StartVideo))
 			{
 				var fsPlayer = fullscreenVideoPlayer.Get<VideoPlayerWidget>("PLAYER");

@@ -14,6 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	[TraitLocation(SystemActors.Player)]
 	[Desc("Enables defined prerequisites at game start for all players if the checkbox is enabled.")]
 	public class LobbyPrerequisiteCheckboxInfo : TraitInfo, ILobbyOptions, ITechTreePrerequisiteInfo
 	{

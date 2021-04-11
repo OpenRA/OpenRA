@@ -19,6 +19,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	[TraitLocation(SystemActors.World | SystemActors.EditorWorld)]
 	[Desc("Load a GIMP .gpl or JASC .pal palette file. Supports per-color alpha.")]
 	class PaletteFromGimpOrJascFileInfo : TraitInfo, IProvidesCursorPaletteInfo
 	{

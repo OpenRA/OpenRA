@@ -14,10 +14,12 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.D2k.Traits
 {
 	[Desc("Used to render spice with round borders.", "Attach this to the world actor")]
+	[TraitLocation(SystemActors.World | SystemActors.EditorWorld)]
 	public class D2kResourceRendererInfo : ResourceRendererInfo
 	{
 		public override object Create(ActorInitializer init) { return new D2kResourceRenderer(init.Self, this); }

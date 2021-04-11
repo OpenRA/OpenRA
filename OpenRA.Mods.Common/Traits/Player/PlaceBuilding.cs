@@ -18,6 +18,7 @@ namespace OpenRA.Mods.Common.Traits
 	// Allows third party mods to detect whether an actor was created by PlaceBuilding.
 	public class PlaceBuildingInit : RuntimeFlagInit { }
 
+	[TraitLocation(SystemActors.Player)]
 	[Desc("Allows the player to execute build orders.", " Attach this to the player actor.")]
 	public class PlaceBuildingInfo : TraitInfo
 	{

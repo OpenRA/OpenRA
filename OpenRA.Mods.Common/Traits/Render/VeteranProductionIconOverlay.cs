@@ -15,6 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
 {
+	[TraitLocation(SystemActors.Player)]
 	[Desc("Attach this to the player actor. When attached, enables all actors possessing the ProducibleWithLevel ",
 		"trait to have their production queue icons render with an overlay defined in this trait. ",
 		"The icon change occurs when ProducibleWithLevel.Prerequisites are met.")]

@@ -116,7 +116,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			// TODO: Create a mechanism to do things like this cleaner. Also needed for scripted missions
 			if (world.Type == WorldType.Regular)
 			{
-				var moi = world.Map.Rules.Actors["player"].TraitInfoOrDefault<MissionObjectivesInfo>();
+				var moi = world.Map.Rules.Actors[SystemActors.Player].TraitInfoOrDefault<MissionObjectivesInfo>();
 				if (moi != null)
 				{
 					var faction = world.LocalPlayer?.Faction.InternalName;

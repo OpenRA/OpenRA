@@ -31,6 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
+	[TraitLocation(SystemActors.World)]
 	[Desc("Attach this to the world actor.")]
 	public class ResourceLayerInfo : TraitInfo, IResourceLayerInfo, Requires<BuildingInfluenceInfo>, IMapPreviewSignatureInfo
 	{

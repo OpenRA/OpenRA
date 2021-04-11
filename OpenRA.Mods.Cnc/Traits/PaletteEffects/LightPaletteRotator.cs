@@ -15,6 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
 {
+	[TraitLocation(SystemActors.World | SystemActors.EditorWorld)]
 	[Desc("Palette effect used for blinking \"animations\" on actors.")]
 	class LightPaletteRotatorInfo : TraitInfo
 	{

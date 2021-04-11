@@ -14,6 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	[TraitLocation(SystemActors.World)]
 	[Desc("Controls the build radius checkboxes in the lobby options.")]
 	public class MapBuildRadiusInfo : TraitInfo, ILobbyOptions
 	{

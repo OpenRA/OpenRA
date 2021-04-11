@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Lint
 	{
 		public void Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Ruleset rules)
 		{
-			var worldActor = rules.Actors["world"];
+			var worldActor = rules.Actors[SystemActors.World];
 			var locomotorInfos = worldActor.TraitInfos<LocomotorInfo>().ToArray();
 			foreach (var li in locomotorInfos)
 				foreach (var otherLocomotor in locomotorInfos)

@@ -25,8 +25,8 @@ namespace OpenRA.Mods.Common.Server
 				var defaults = new Session.Global();
 				LobbyCommands.LoadMapSettings(server, defaults, server.Map.Rules);
 
-				var options = server.Map.Rules.Actors["player"].TraitInfos<ILobbyOptions>()
-					.Concat(server.Map.Rules.Actors["world"].TraitInfos<ILobbyOptions>())
+				var options = server.Map.Rules.Actors[SystemActors.Player].TraitInfos<ILobbyOptions>()
+					.Concat(server.Map.Rules.Actors[SystemActors.World].TraitInfos<ILobbyOptions>())
 					.SelectMany(t => t.LobbyOptions(server.Map.Rules))
 					.ToDictionary(o => o.Id, o => o);
 

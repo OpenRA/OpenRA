@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Lint
 			if (!worldOwnerFound)
 				emitError("Found no player owning the world.");
 
-			var worldActor = map.Rules.Actors["world"];
+			var worldActor = map.Rules.Actors[SystemActors.World];
 			var factions = worldActor.TraitInfos<FactionInfo>().Select(f => f.InternalName).ToHashSet();
 			foreach (var player in players.Values)
 				if (!string.IsNullOrWhiteSpace(player.Faction) && !factions.Contains(player.Faction))

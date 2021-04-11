@@ -22,7 +22,7 @@ namespace OpenRA
 {
 	public class Ruleset
 	{
-		public readonly IReadOnlyDictionary<string, ActorInfo> Actors;
+		public readonly ActorInfoDictionary Actors;
 		public readonly IReadOnlyDictionary<string, WeaponInfo> Weapons;
 		public readonly IReadOnlyDictionary<string, SoundInfo> Voices;
 		public readonly IReadOnlyDictionary<string, SoundInfo> Notifications;
@@ -41,7 +41,7 @@ namespace OpenRA
 			SequenceProvider sequences,
 			IReadOnlyDictionary<string, MiniYamlNode> modelSequences)
 		{
-			Actors = actors;
+			Actors = new ActorInfoDictionary(actors);
 			Weapons = weapons;
 			Voices = voices;
 			Notifications = notifications;

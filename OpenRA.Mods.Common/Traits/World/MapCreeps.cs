@@ -15,6 +15,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Controls the 'Creeps' checkbox in the lobby options.")]
+	[TraitLocation(SystemActors.World)]
 	public class MapCreepsInfo : TraitInfo, ILobbyOptions
 	{
 		[Desc("Descriptive label for the creeps checkbox in the lobby.")]

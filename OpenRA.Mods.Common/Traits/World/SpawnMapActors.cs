@@ -16,6 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	[TraitLocation(SystemActors.World)]
 	[Desc("Spawns the initial units for each player upon game start.")]
 	public class SpawnMapActorsInfo : TraitInfo<SpawnMapActors> { }
 

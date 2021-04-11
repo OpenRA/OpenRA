@@ -21,6 +21,7 @@ namespace OpenRA.Mods.Common.Traits
 		"Will only work together with the Production: trait on the actor that actually does the production.",
 		"You will also want to add PrimaryBuildings: to let the user choose where new units should exit.",
 		"The production speed depends on the number of production buildings and units queued at the same time.")]
+	[TraitLocation(SystemActors.Player)]
 	public class ClassicParallelProductionQueueInfo : ProductionQueueInfo, Requires<TechTreeInfo>, Requires<PlayerResourcesInfo>
 	{
 		[Desc("If you build more actors of the same type,", "the same queue will get its build time lowered for every actor produced there.")]

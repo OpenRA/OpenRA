@@ -16,6 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	[TraitLocation(SystemActors.Player)]
 	public class GameSaveViewportManagerInfo : TraitInfo
 	{
 		public override object Create(ActorInitializer init) { return new GameSaveViewportManager(); }

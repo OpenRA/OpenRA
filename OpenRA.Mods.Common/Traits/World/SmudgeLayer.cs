@@ -25,6 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 		public int Depth;
 	}
 
+	[TraitLocation(SystemActors.World)]
 	[Desc("Attach this to the world actor.", "Order of the layers defines the Z sorting.")]
 	public class SmudgeLayerInfo : TraitInfo
 	{
