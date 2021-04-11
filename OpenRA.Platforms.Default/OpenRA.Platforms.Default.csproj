@@ -1,47 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework Condition="'$(Mono)' == ''">net5.0</TargetFramework>
-    <TargetFramework Condition="'$(Mono)' != ''">netstandard2.1</TargetFramework>
-      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-      <Optimize>true</Optimize>
-      <LangVersion>7.3</LangVersion>
-      <DebugSymbols>true</DebugSymbols>
-      <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-      <OutputPath>../bin</OutputPath>
-      <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-      <PlatformTarget>AnyCPU</PlatformTarget>
-      <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
-      <CodeAnalysisRuleSet>..\OpenRA.ruleset</CodeAnalysisRuleSet>
-      <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-    </PropertyGroup>
-  <PropertyGroup>
-    <TargetPlatform Condition="$([MSBuild]::IsOsPlatform('Windows'))">win-x64</TargetPlatform>
-    <TargetPlatform Condition="$([MSBuild]::IsOsPlatform('Linux'))">linux-x64</TargetPlatform>
-    <TargetPlatform Condition="$([MSBuild]::IsOsPlatform('OSX'))">osx-x64</TargetPlatform>
-  </PropertyGroup>
-    <ItemGroup>
-      <!-- Work around an issue where Rider does not detect files in the project root using the default glob -->
-      <Compile Include="**/*.cs" Exclude="$(DefaultItemExcludes)" />
-    </ItemGroup>
-  <PropertyGroup Condition="'$(Configuration)'=='Debug'">
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <Optimize>false</Optimize>
-  </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj" />
     <PackageReference Include="OpenRA-Freetype6" Version="1.0.4" />
     <PackageReference Include="OpenRA-OpenAL-CS" Version="1.0.16" />
     <PackageReference Include="OpenRA-SDL2-CS" Version="1.0.28" />
-    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" />
-    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0" PrivateAssets="All" />
-    <AdditionalFiles Include="../stylecop.json" />
   </ItemGroup>
-  <Target Name="DisableAnalyzers" BeforeTargets="CoreCompile" Condition="'$(Configuration)'=='Release'">
-    <!-- Disable code style analysis on Release builds to improve compile-time performance -->
-    <ItemGroup Condition="'$(Configuration)'=='Release'">
-      <Analyzer Remove="@(Analyzer)" />
-    </ItemGroup>
-  </Target>
   <ItemGroup>
     <Content Include="OpenRA.Platforms.Default.dll.config" Condition="'$(TargetPlatform)' != 'win-x64' And '$(TargetPlatform)' != 'win-x86'">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

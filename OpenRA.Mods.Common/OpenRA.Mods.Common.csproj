@@ -1,27 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework Condition="'$(Mono)' == ''">net5.0</TargetFramework>
-    <TargetFramework Condition="'$(Mono)' != ''">netstandard2.1</TargetFramework>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Optimize>true</Optimize>
-    <LangVersion>7.3</LangVersion>
-    <DebugSymbols>true</DebugSymbols>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <OutputPath>../bin</OutputPath>
-    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
-    <CodeAnalysisRuleSet>..\OpenRA.ruleset</CodeAnalysisRuleSet>
-    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-  </PropertyGroup>
-  <ItemGroup>
-    <!-- Work around an issue where Rider does not detect files in the project root using the default glob -->
-    <Compile Include="**/*.cs" Exclude="$(DefaultItemExcludes)" />
-  </ItemGroup>
-  <PropertyGroup Condition="'$(Configuration)'=='Debug'">
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <Optimize>false</Optimize>
-  </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">
       <Private>False</Private>
@@ -31,15 +8,6 @@
     <PackageReference Include="DiscordRichPresence" Version="1.0.150" />
     <PackageReference Include="rix0rrr.BeaconLib" Version="1.0.2" />
     <PackageReference Include="Pfim" Version="0.9.1" />
-    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" />
-    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0" PrivateAssets="All" />
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
-    <AdditionalFiles Include="../stylecop.json" />
   </ItemGroup>
-  <Target Name="DisableAnalyzers" BeforeTargets="CoreCompile" Condition="'$(Configuration)'=='Release'">
-    <!-- Disable code style analysis on Release builds to improve compile-time performance -->
-    <ItemGroup Condition="'$(Configuration)'=='Release'">
-      <Analyzer Remove="@(Analyzer)" />
-    </ItemGroup>
-  </Target>
 </Project>
