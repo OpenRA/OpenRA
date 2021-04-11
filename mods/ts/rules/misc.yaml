@@ -32,8 +32,6 @@ mmch.colorpicker:
 	Inherits: MMCH
 	Mobile:
 		InitialFacing: 640
-	Turreted:
-		InitialFacing: 640
 	WithFacingSpriteBody:
 		Sequence: walk
 	-Buildable:
