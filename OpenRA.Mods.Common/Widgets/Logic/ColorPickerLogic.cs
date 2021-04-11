@@ -65,8 +65,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			// Set the initial state
-			var validator = modData.Manifest.Get<ColorValidator>();
-			mixer.SetPaletteRange(validator.HsvSaturationRange[0], validator.HsvSaturationRange[1], validator.HsvValueRange[0], validator.HsvValueRange[1]);
+			var colorManager = world.WorldActor.Info.TraitInfo<ColorPickerManagerInfo>();
+			mixer.SetPaletteRange(colorManager.HsvSaturationRange[0], colorManager.HsvSaturationRange[1], colorManager.HsvValueRange[0], colorManager.HsvValueRange[1]);
 			mixer.Set(initialColor);
 			hueSlider.Value = HueFromColor(initialColor);
 
@@ -116,10 +116,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				for (var i = 0; i < paletteCols; i++)
 				{
 					var colorIndex = j * paletteCols + i;
-					if (colorIndex >= validator.TeamColorPresets.Length)
+					if (colorIndex >= colorManager.TeamColorPresets.Length)
 						break;
 
-					var color = validator.TeamColorPresets[colorIndex];
+					var color = colorManager.TeamColorPresets[colorIndex];
 
 					var newSwatch = (ColorBlockWidget)presetColorTemplate.Clone();
 					newSwatch.GetColor = () => color;

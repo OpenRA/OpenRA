@@ -385,11 +385,11 @@ namespace OpenRA.Mods.Common.Server
 					};
 
 					// Pick a random color for the bot
-					var validator = server.ModData.Manifest.Get<ColorValidator>();
+					var colorManager = server.ModData.DefaultRules.Actors[SystemActors.World].TraitInfo<ColorPickerManagerInfo>();
 					var terrainColors = server.ModData.DefaultTerrainInfo[server.Map.TileSet].RestrictedPlayerColors;
 					var playerColors = server.LobbyInfo.Clients.Select(c => c.Color)
 						.Concat(server.Map.Players.Players.Values.Select(p => p.Color));
-					bot.Color = bot.PreferredColor = validator.RandomPresetColor(server.Random, terrainColors, playerColors);
+					bot.Color = bot.PreferredColor = colorManager.RandomPresetColor(server.Random, terrainColors, playerColors);
 
 					server.LobbyInfo.Clients.Add(bot);
 				}
@@ -1089,7 +1089,7 @@ namespace OpenRA.Mods.Common.Server
 		{
 			lock (server.LobbyInfo)
 			{
-				var validator = server.ModData.Manifest.Get<ColorValidator>();
+				var colorManager = server.ModData.DefaultRules.Actors[SystemActors.World].TraitInfo<ColorPickerManagerInfo>();
 				var askColor = askedColor;
 
 				Action<string> onError = message =>
@@ -1102,7 +1102,7 @@ namespace OpenRA.Mods.Common.Server
 				var playerColors = server.LobbyInfo.Clients.Where(c => c.Index != playerIndex).Select(c => c.Color)
 					.Concat(server.Map.Players.Players.Values.Select(p => p.Color)).ToList();
 
-				return validator.MakeValid(askColor, server.Random, terrainColors, playerColors, onError);
+				return colorManager.MakeValid(askColor, server.Random, terrainColors, playerColors, onError);
 			}
 		}
 
