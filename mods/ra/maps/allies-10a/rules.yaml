@@ -1,0 +1,90 @@
+World:
+	LuaScript:
+		Scripts: allies10a.lua, allies10a-AI.lua, campaign-global.lua
+	MissionData:
+		BriefingVideo: ally10.vqa
+		LossVideo: trinity.vqa
+		StartVideo: mcv_land.vqa
+		Briefing: Kosygin has indicated that this is the site of Stalin's main atomic weapons plant. Use extreme care in approaching the Soviet base -- we don't know if any atomic bombs are armed yet. Take the facility off-line and then destroy any atomic weapons that exist.
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			easy: Easy
+			normal: Normal
+			hard: Hard
+		Default: normal
+
+Player:
+	PlayerResources:
+		DefaultCash: 6500
+
+PARADROP:
+	ParatroopersPower:
+		DropItems: E1, E1, E1, E2, E2
+	AlwaysVisible:
+
+FCOM:
+	Capturable:
+		Types: building
+
+MSLO:
+	-WithColoredOverlay@IDISABLE:
+	NukePower:
+		DisplayTimerRelationships: Neutral
+	Buildable:
+		Prerequisites: ~disabled
+	Capturable:
+		Types: ~disabled
+
+MCV:
+	Buildable:
+		Prerequisites: ~disabled
+
+MRJ:
+	Buildable:
+		Prerequisites: ~disabled
+
+HPAD:
+	Buildable:
+		Prerequisites: ~disabled
+
+E7:
+	Buildable:
+		Prerequisites: ~disabled
+
+E7.noautotarget:
+	Buildable:
+		Prerequisites: ~disabled
+
+PDOX:
+	Buildable:
+		Prerequisites: ~disabled
+
+IRON:
+	Buildable:
+		Prerequisites: ~disabled
+
+SYRD:
+	Buildable:
+		Prerequisites: ~disabled
+
+SPEN:
+	Buildable:
+		Prerequisites: ~disabled
+
+QTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+TTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+SHOK:
+	Buildable:
+		Prerequisites: ~disabled
+
+DTRK:
+	Buildable:
+		Prerequisites: ~disabled
