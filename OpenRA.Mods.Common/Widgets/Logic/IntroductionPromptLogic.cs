@@ -11,6 +11,7 @@
 
 using System;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -63,8 +64,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return true;
 			};
 
-			var colorPreview = widget.Get<ColorPreviewManagerWidget>("COLOR_MANAGER");
-			colorPreview.Color = ps.Color;
+			var colorManager = modData.DefaultRules.Actors[SystemActors.World].TraitInfo<ColorPickerManagerInfo>();
+			colorManager.Update(worldRenderer, ps.Color);
 
 			var mouseControlDescClassic = widget.Get("MOUSE_CONTROL_DESC_CLASSIC");
 			mouseControlDescClassic.IsVisible = () => gs.UseClassicMouseStyle;
@@ -103,7 +104,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var colorDropdown = widget.Get<DropDownButtonWidget>("PLAYERCOLOR");
 			colorDropdown.IsDisabled = () => worldRenderer.World.Type != WorldType.Shellmap;
-			colorDropdown.OnMouseDown = _ => ColorPickerLogic.ShowColorDropDown(colorDropdown, colorPreview, worldRenderer.World);
+			colorDropdown.OnMouseDown = _ => ColorPickerLogic.ShowColorDropDown(colorDropdown, colorManager, worldRenderer);
 			colorDropdown.Get<ColorBlockWidget>("COLORBLOCK").GetColor = () => ps.Color;
 
 			var viewportSizes = modData.Manifest.Get<WorldViewportSizes>();

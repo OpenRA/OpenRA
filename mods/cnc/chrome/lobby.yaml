@@ -5,7 +5,6 @@ Container@SERVER_LOBBY:
 	Width: 900
 	Height: 575
 	Children:
-		ColorPreviewManager@COLOR_MANAGER:
 		Label@SERVER_NAME:
 			Width: PARENT_RIGHT
 			Y: 0 - 22

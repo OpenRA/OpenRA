@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Support;
 using OpenRA.Traits;
@@ -26,6 +27,22 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly float[] HsvSaturationRange = new[] { 0.25f, 1f };
 		public readonly float[] HsvValueRange = new[] { 0.2f, 1.0f };
 		public readonly Color[] TeamColorPresets = { };
+
+		[PaletteReference]
+		public readonly string PaletteName = "colorpicker";
+
+		public readonly int[] RemapIndices = { };
+		public readonly float Ramp = 0.05f;
+		public Color Color { get; private set; }
+
+		public void Update(WorldRenderer worldRenderer, Color color)
+		{
+			Color = color;
+
+			var newPalette = new MutablePalette(worldRenderer.Palette(PaletteName).Palette);
+			newPalette.ApplyRemap(new PlayerColorRemap(RemapIndices, Color, Ramp));
+			worldRenderer.ReplacePalette(PaletteName, newPalette);
+		}
 
 		double GetColorDelta(Color colorA, Color colorB)
 		{

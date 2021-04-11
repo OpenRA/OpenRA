@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Widgets;
@@ -190,22 +191,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			return h;
 		}
 
-		public static void ShowColorDropDown(DropDownButtonWidget color, ColorPreviewManagerWidget preview, World world)
+		public static void ShowColorDropDown(DropDownButtonWidget color, ColorPickerManagerInfo colorManager, WorldRenderer worldRenderer, Action onExit = null)
 		{
-			Action onExit = () =>
-			{
-				Game.Settings.Player.Color = preview.Color;
-				Game.Settings.Save();
-			};
-
 			color.RemovePanel();
 
-			Action<Color> onChange = c => preview.Color = c;
+			Action<Color> onChange = c => colorManager.Update(worldRenderer, c);
 
-			var colorChooser = Game.LoadWidget(world, "COLOR_CHOOSER", null, new WidgetArgs()
+			var colorChooser = Game.LoadWidget(worldRenderer.World, "COLOR_CHOOSER", null, new WidgetArgs()
 			{
 				{ "onChange", onChange },
-				{ "initialColor", Game.Settings.Player.Color },
+				{ "initialColor", colorManager.Color },
 				{ "initialFaction", null }
 			});
 

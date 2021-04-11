@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Support;
 using OpenRA.Widgets;
@@ -179,12 +180,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return true;
 			};
 
-			var colorPreview = panel.Get<ColorPreviewManagerWidget>("COLOR_MANAGER");
-			colorPreview.Color = ps.Color;
+			var colorManager = modData.DefaultRules.Actors[SystemActors.World].TraitInfo<ColorPickerManagerInfo>();
+			colorManager.Update(worldRenderer, ps.Color);
 
 			var colorDropdown = panel.Get<DropDownButtonWidget>("PLAYERCOLOR");
 			colorDropdown.IsDisabled = () => worldRenderer.World.Type != WorldType.Shellmap;
-			colorDropdown.OnMouseDown = _ => ColorPickerLogic.ShowColorDropDown(colorDropdown, colorPreview, worldRenderer.World);
+			colorDropdown.OnMouseDown = _ => ColorPickerLogic.ShowColorDropDown(colorDropdown, colorManager, worldRenderer, () =>
+			{
+				Game.Settings.Player.Color = colorManager.Color;
+				Game.Settings.Save();
+			});
 			colorDropdown.Get<ColorBlockWidget>("COLORBLOCK").GetColor = () => ps.Color;
 
 			return () =>

@@ -6,7 +6,6 @@ Background@ASSETBROWSER_PANEL:
 	Height: 500
 	Children:
 		LogicTicker@ANIMATION_TICKER:
-		ColorPreviewManager@COLOR_MANAGER:
 		Label@ASSETBROWSER_TITLE:
 			Y: 21
 			Width: PARENT_RIGHT
