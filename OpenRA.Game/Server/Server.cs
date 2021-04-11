@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -122,9 +123,14 @@ namespace OpenRA.Server
 					if (error == SocketError.WouldBlock)
 					{
 						Log.Write("server", "Non-blocking send of {0} bytes failed. Falling back to blocking send.", length - start);
+						var startTimestamp = Stopwatch.GetTimestamp();
+
 						s.Blocking = true;
 						sent = s.Send(data, start, length - start, SocketFlags.None);
 						s.Blocking = false;
+
+						var elapsedMs = (Stopwatch.GetTimestamp() - startTimestamp) * 1000f / Stopwatch.Frequency;
+						Log.Write("server", "Blocking send completed in {0}ms.", elapsedMs);
 					}
 					else if (error != SocketError.Success)
 						throw new SocketException((int)error);
