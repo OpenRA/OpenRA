@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -14,10 +14,12 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Primitives;
 using OpenRA.Support;
+using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common
+namespace OpenRA.Mods.Common.Traits
 {
-	public class ColorValidator : IGlobalModData
+	[Desc("Configuration options for the lobby player color picker. Attach this to the world actor.")]
+	public class ColorPickerManagerInfo : TraitInfo<ColorPickerManager>
 	{
 		// The bigger the color threshold, the less permissive is the algorithm
 		public readonly int Threshold = 0x50;
@@ -182,4 +184,6 @@ namespace OpenRA.Mods.Common
 			return color;
 		}
 	}
+
+	public class ColorPickerManager { }
 }
