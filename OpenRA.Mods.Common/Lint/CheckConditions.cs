@@ -12,13 +12,24 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Server;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Lint
 {
-	public class CheckConditions : ILintRulesPass
+	public class CheckConditions : ILintRulesPass, ILintServerMapPass
 	{
-		public void Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Ruleset rules)
+		void ILintRulesPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Ruleset rules)
+		{
+			Run(emitError, emitWarning, rules);
+		}
+
+		void ILintServerMapPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData, MapPreview map, Ruleset mapRules)
+		{
+			Run(emitError, emitWarning, mapRules);
+		}
+
+		void Run(Action<string> emitError, Action<string> emitWarning, Ruleset rules)
 		{
 			foreach (var actorInfo in rules.Actors)
 			{

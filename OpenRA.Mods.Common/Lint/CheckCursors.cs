@@ -12,13 +12,24 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Server;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Lint
 {
-	class CheckCursors : ILintRulesPass
+	class CheckCursors : ILintRulesPass, ILintServerMapPass
 	{
-		public void Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Ruleset rules)
+		void ILintRulesPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Ruleset rules)
+		{
+			Run(emitError, modData, rules);
+		}
+
+		void ILintServerMapPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData, MapPreview map, Ruleset mapRules)
+		{
+			Run(emitError, modData, mapRules);
+		}
+
+		void Run(Action<string> emitError, ModData modData, Ruleset rules)
 		{
 			var fileSystem = modData.DefaultFileSystem;
 			var sequenceYaml = MiniYaml.Merge(modData.Manifest.Cursors.Select(s => MiniYaml.FromStream(fileSystem.Open(s), s)));

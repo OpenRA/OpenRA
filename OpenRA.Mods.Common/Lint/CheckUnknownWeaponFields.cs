@@ -12,12 +12,30 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.FileSystem;
 using OpenRA.GameRules;
+using OpenRA.Server;
 
 namespace OpenRA.Mods.Common.Lint
 {
-	class CheckUnknownWeaponFields : ILintPass, ILintMapPass
+	class CheckUnknownWeaponFields : ILintPass, ILintMapPass, ILintServerMapPass
 	{
+		void ILintPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData)
+		{
+			foreach (var f in modData.Manifest.Weapons)
+				CheckWeapons(MiniYaml.FromStream(modData.DefaultFileSystem.Open(f), f), emitError, emitWarning, modData);
+		}
+
+		void ILintMapPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Map map)
+		{
+			CheckMapYaml(emitError, emitWarning, modData, map, map.WeaponDefinitions);
+		}
+
+		void ILintServerMapPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData, MapPreview map, Ruleset mapRules)
+		{
+			CheckMapYaml(emitError, emitWarning, modData, map, map.WeaponDefinitions);
+		}
+
 		string NormalizeName(string key)
 		{
 			var name = key.Split('@')[0];
@@ -81,23 +99,17 @@ namespace OpenRA.Mods.Common.Lint
 			}
 		}
 
-		void ILintPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData)
+		void CheckMapYaml(Action<string> emitError, Action<string> emitWarning, ModData modData, IReadOnlyFileSystem fileSystem, MiniYaml weaponDefinitions)
 		{
-			foreach (var f in modData.Manifest.Weapons)
-				CheckWeapons(MiniYaml.FromStream(modData.DefaultFileSystem.Open(f), f), emitError, emitWarning, modData);
-		}
+			if (weaponDefinitions == null)
+				return;
 
-		void ILintMapPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Map map)
-		{
-			if (map.WeaponDefinitions != null && map.WeaponDefinitions.Value != null)
-			{
-				var mapFiles = FieldLoader.GetValue<string[]>("value", map.WeaponDefinitions.Value);
-				foreach (var f in mapFiles)
-					CheckWeapons(MiniYaml.FromStream(map.Open(f), f), emitError, emitWarning, modData);
+			var mapFiles = FieldLoader.GetValue<string[]>("value", weaponDefinitions.Value);
+			foreach (var f in mapFiles)
+				CheckWeapons(MiniYaml.FromStream(fileSystem.Open(f), f), emitError, emitWarning, modData);
 
-				if (map.WeaponDefinitions.Nodes.Any())
-					CheckWeapons(map.WeaponDefinitions.Nodes, emitError, emitWarning, modData);
-			}
+			if (weaponDefinitions.Nodes.Any())
+				CheckWeapons(weaponDefinitions.Nodes, emitError, emitWarning, modData);
 		}
 	}
 }

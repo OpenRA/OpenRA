@@ -11,12 +11,23 @@
 
 using System;
 using OpenRA.Mods.Common.Projectiles;
+using OpenRA.Server;
 
 namespace OpenRA.Mods.Common.Lint
 {
-	class CheckRangeLimit : ILintRulesPass
+	class CheckRangeLimit : ILintRulesPass, ILintServerMapPass
 	{
-		public void Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Ruleset rules)
+		void ILintRulesPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Ruleset rules)
+		{
+			Run(emitError, rules);
+		}
+
+		void ILintServerMapPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData, MapPreview map, Ruleset mapRules)
+		{
+			Run(emitError, mapRules);
+		}
+
+		void Run(Action<string> emitError, Ruleset rules)
 		{
 			foreach (var weaponInfo in rules.Weapons)
 			{

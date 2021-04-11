@@ -11,24 +11,34 @@
 
 using System;
 using System.Linq;
+using OpenRA.Server;
 
 namespace OpenRA.Mods.Common.Lint
 {
-	public class CheckMapMetadata : ILintMapPass
+	public class CheckMapMetadata : ILintMapPass, ILintServerMapPass
 	{
-		public void Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Map map)
+		void ILintMapPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Map map)
 		{
-			if (map.MapFormat != Map.SupportedMapFormat)
-				emitError("Map format {0} does not match the supported version {1}."
-					.F(map.MapFormat, Map.SupportedMapFormat));
+			Run(emitError, map.MapFormat, map.Author, map.Title, map.Categories);
+		}
 
-			if (map.Author == null)
+		void ILintServerMapPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData, MapPreview map, Ruleset mapRules)
+		{
+			Run(emitError, map.MapFormat, map.Author, map.Title, map.Categories);
+		}
+
+		void Run(Action<string> emitError, int mapFormat, string author, string title, string[] categories)
+		{
+			if (mapFormat != Map.SupportedMapFormat)
+				emitError("Map format {0} does not match the supported version {1}.".F(mapFormat, Map.SupportedMapFormat));
+
+			if (author == null)
 				emitError("Map does not define a valid author.");
 
-			if (map.Title == null)
+			if (title == null)
 				emitError("Map does not define a valid title.");
 
-			if (!map.Categories.Any())
+			if (!categories.Any())
 				emitError("Map does not define any categories.");
 		}
 	}
