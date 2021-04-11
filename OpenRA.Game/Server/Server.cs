@@ -105,22 +105,36 @@ namespace OpenRA.Server
 			var start = 0;
 			var length = data.Length;
 
-			// Non-blocking sends are free to send only part of the data
-			while (start < length)
+			// The non-blocking Socket.Send call can in some situations block for 10+ minutes rather than
+			// returning with SocketError.WouldBlock.
+			// This behaviour doesn't make sense, and does not appear to be documented, but has been reproduced
+			// on Linux with both mono and .NET 5 by blocking a client in a full lobby at the firewall using
+			// `iptables -I INPUT -s <client IP> -j DROP `.
+			// Avoid stalling the server by using a task with a timeout to raise an exception if either the
+			// "non-blocking" or the explicitly blocking fallback take too long.
+			// The calling code is expected to handle this in the same way it would a "real" SocketException.
+			var sendTask = Task.Run(() =>
 			{
-				var sent = s.Send(data, start, length - start, SocketFlags.None, out var error);
-				if (error == SocketError.WouldBlock)
+				// Non-blocking sends are free to send only part of the data
+				while (start < length)
 				{
-					Log.Write("server", "Non-blocking send of {0} bytes failed. Falling back to blocking send.", length - start);
-					s.Blocking = true;
-					sent = s.Send(data, start, length - start, SocketFlags.None);
-					s.Blocking = false;
-				}
-				else if (error != SocketError.Success)
-					throw new SocketException((int)error);
+					var sent = s.Send(data, start, length - start, SocketFlags.None, out var error);
+					if (error == SocketError.WouldBlock)
+					{
+						Log.Write("server", "Non-blocking send of {0} bytes failed. Falling back to blocking send.", length - start);
+						s.Blocking = true;
+						sent = s.Send(data, start, length - start, SocketFlags.None);
+						s.Blocking = false;
+					}
+					else if (error != SocketError.Success)
+						throw new SocketException((int)error);
 
-				start += sent;
-			}
+					start += sent;
+				}
+			});
+
+			if (!sendTask.Wait(10000))
+				throw new Exception("Socket.Send blocked for more than 10 seconds");
 		}
 
 		public void Shutdown()
