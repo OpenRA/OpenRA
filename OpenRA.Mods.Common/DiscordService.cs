@@ -43,6 +43,9 @@ namespace OpenRA.Mods.Common
 				if (instance != null)
 					return instance;
 
+				if (!Game.Settings.Game.EnableDiscordService)
+					return null;
+
 				if (!Game.ModData.Manifest.Contains<DiscordService>())
 					return null;
 
