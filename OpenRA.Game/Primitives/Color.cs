@@ -49,10 +49,10 @@ namespace OpenRA.Primitives
 			return FromAhsv(255, h, s, v);
 		}
 
-		public void ToAhsv(out int a, out float h, out float s, out float v)
+		public (float A, float H, float S, float V) ToAhsv()
 		{
-			a = A;
-			(h, s, v) = RgbToHsv(R, G, B);
+			var (h, s, v) = RgbToHsv(R, G, B);
+			return (A, h, s, v);
 		}
 
 		Color(long argb)

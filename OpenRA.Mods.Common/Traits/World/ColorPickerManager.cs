@@ -71,8 +71,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			Color = color;
 
-			Color.ToAhsv(out _, out var h, out var s, out _);
-
+			var (_, h, s, _) = Color.ToAhsv();
 			var newPalette = new MutablePalette(worldRenderer.Palette(PaletteName).Palette);
 			newPalette.ApplyRemap(new PlayerColorRemap(RemapIndices, h, s));
 			worldRenderer.ReplacePalette(PaletteName, newPalette);
@@ -141,7 +140,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Color MakeValid(Color color, MersenneTwister random, IEnumerable<Color> terrainColors, IEnumerable<Color> playerColors, Action<string> onError = null)
 		{
-			color.ToAhsv(out _, out var h, out var s, out _);
+			var (_, h, s, _) = color.ToAhsv();
 			return MakeValid(h, s, random, terrainColors, playerColors, onError);
 		}
 
@@ -181,10 +180,7 @@ namespace OpenRA.Mods.Common.Traits
 				// until we either find a suitable color or loop back to where we started.
 				// This is a simple way to avoid being trapped between two blocking colors.
 				if (stepSign == 0)
-				{
-					Color.FromLinear(255, blocker.R, blocker.G, blocker.B).ToAhsv(out _, out var blockerHue, out _, out _);
-					stepSign = blockerHue > hue ? -1 : 1;
-				}
+					stepSign = Color.FromLinear(255, blocker.R, blocker.G, blocker.B).ToAhsv().H > hue ? -1 : 1;
 
 				hue += stepSign * 0.01f;
 			}
