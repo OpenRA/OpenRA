@@ -48,7 +48,7 @@ namespace OpenRA.Traits
 
 		public void LoadPalettes(WorldRenderer wr)
 		{
-			info.Color.ToAhsv(out _, out var h, out var s, out _);
+			var (_, h, s, _) = info.Color.ToAhsv();
 
 			var remap = new PlayerColorRemap(info.RemapIndex, h, s);
 			wr.AddPalette(info.Name, new ImmutablePalette(wr.Palette(info.Base).Palette, remap), info.AllowModifiers);

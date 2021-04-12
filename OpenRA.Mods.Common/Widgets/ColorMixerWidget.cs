@@ -149,7 +149,7 @@ namespace OpenRA.Mods.Common.Widgets
 		/// </summary>
 		public void Set(Color color)
 		{
-			color.ToAhsv(out _, out var h, out var s, out _);
+			var (_, h, s, _) = color.ToAhsv();
 
 			if (H != h || S != s)
 			{
