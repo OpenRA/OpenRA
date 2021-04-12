@@ -258,6 +258,9 @@ namespace OpenRA
 		public MPGameFilters MPGameFilters = MPGameFilters.Waiting | MPGameFilters.Empty | MPGameFilters.Protected | MPGameFilters.Started;
 
 		public bool PauseShellmap = false;
+
+		[Desc("Allow mods to enable the Discord service that can interact with a local Discord client.")]
+		public bool EnableDiscordService = true;
 	}
 
 	public class Settings
