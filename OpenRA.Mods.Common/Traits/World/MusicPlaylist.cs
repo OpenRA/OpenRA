@@ -75,6 +75,17 @@ namespace OpenRA.Mods.Common.Traits
 				.Select(a => a.Value)
 				.ToArray();
 
+			if (Game.Settings.Sound.FactionMusic && world.LocalPlayer != null && !string.IsNullOrEmpty(world.LocalPlayer.Faction.Side))
+			{
+				var playerFaction = world.LocalPlayer.Faction.Side;
+
+				// TODO: need append non fraction music?
+				var factionMusicTheme = playlist
+					.Where(x => x.Faction.Equals(playerFaction, StringComparison.OrdinalIgnoreCase))
+					.ToArray();
+				playlist = factionMusicTheme;
+			}
+
 			random = playlist.Shuffle(Game.CosmeticRandom).ToArray();
 			IsMusicAvailable = playlist.Any();
 			AllowMuteBackgroundMusic = info.AllowMuteBackgroundMusic;
@@ -131,17 +142,6 @@ namespace OpenRA.Mods.Common.Traits
 		public MusicInfo[] AvailablePlaylist()
 		{
 			// TODO: add filter options for faction-specific music
-			if (Game.Settings.Sound.FactionMusic && world.LocalPlayer != null && !string.IsNullOrEmpty(world.LocalPlayer.Faction.Side))
-			{
-				var playerFaction = world.LocalPlayer.Faction.Side;
-
-				// TODO: need append non fraction music?
-				var factionMusicTheme = playlist
-					.Where(x => x.Faction.Equals(playerFaction, StringComparison.OrdinalIgnoreCase))
-					.ToArray();
-				return factionMusicTheme.Any() ? factionMusicTheme : playlist;
-			}
-
 			return playlist;
 		}
 
@@ -225,7 +225,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!IsMusicAvailable)
 				return null;
 
-			var songs = Game.Settings.Sound.Shuffle ? random : AvailablePlaylist();
+			var songs = Game.Settings.Sound.Shuffle ? random : playlist;
 
 			var next = reverse ? songs.Reverse().SkipWhile(m => m != currentSong)
 				.Skip(1).FirstOrDefault() ?? songs.Reverse().FirstOrDefault() :
