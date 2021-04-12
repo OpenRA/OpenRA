@@ -55,11 +55,14 @@ namespace OpenRA
 			Channel = System.Threading.Channels.Channel.CreateUnbounded<ChannelData>();
 			ChannelWriter = Channel.Writer;
 
-			Thread = new Thread(DoWork);
-			var cancellationTokenToken = CancellationToken.Token;
-			Thread.Start(cancellationTokenToken);
+			Thread = new Thread(DoWork)
+			{
+				Name = "OpenRA Logging Thread"
+			};
 
-			Timer = new Timer(FlushToDisk, cancellationTokenToken, FlushInterval, Timeout.InfiniteTimeSpan);
+			Thread.Start(CancellationToken.Token);
+
+			Timer = new Timer(FlushToDisk, CancellationToken.Token, FlushInterval, Timeout.InfiniteTimeSpan);
 		}
 
 		static void FlushToDisk(object state)
@@ -83,8 +86,12 @@ namespace OpenRA
 			var reader = Channel.Reader;
 
 			while (!token.IsCancellationRequested)
-				if (reader.TryRead(out var item))
+			{
+				while (reader.TryRead(out var item))
 					WriteValue(item);
+
+				Thread.Sleep(1);
+			}
 
 			while (reader.TryRead(out var item))
 				WriteValue(item);
@@ -173,6 +180,7 @@ namespace OpenRA
 		{
 			CancellationToken.Cancel();
 			Timer.Dispose();
+			Thread.Join();
 		}
 	}
 }
