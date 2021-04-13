@@ -281,7 +281,7 @@ WorldLoaded = function()
 	Trigger.OnCapture(MHeavyFactory, function()
 		player.MarkCompletedObjective(AllyWithMercenaries)
 		Media.DisplayMessage("Leader Captured. Mercenaries have been persuaded to fight with House Harkonnen.", "Mentat")
-		MercenaryAttackLocation = OPalace.Location
+		MercenaryAttackLocation = MercenaryAttackPoint.Location
 
 		ChangeOwner(mercenary_enemy, mercenary_ally)
 		SendStarportReinforcements(mercenary_ally)
