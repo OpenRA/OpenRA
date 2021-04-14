@@ -20,19 +20,22 @@ namespace OpenRA.Launcher
 		[STAThread]
 		static int Main(string[] args)
 		{
-			if (Debugger.IsAttached || args.Contains("--just-die"))
-				return (int)Game.InitializeAndRun(args);
-
-			AppDomain.CurrentDomain.UnhandledException += (_, e) => ExceptionHandler.HandleFatalError((Exception)e.ExceptionObject);
-
 			try
 			{
-				return (int)Game.InitializeAndRun(args);
-			}
-			catch (Exception e)
-			{
-				ExceptionHandler.HandleFatalError(e);
-				return (int)RunStatus.Error;
+				if (Debugger.IsAttached || args.Contains("--just-die"))
+					return (int)Game.InitializeAndRun(args);
+
+				AppDomain.CurrentDomain.UnhandledException += (_, e) => ExceptionHandler.HandleFatalError((Exception)e.ExceptionObject);
+
+				try
+				{
+					return (int)Game.InitializeAndRun(args);
+				}
+				catch (Exception e)
+				{
+					ExceptionHandler.HandleFatalError(e);
+					return (int)RunStatus.Error;
+				}
 			}
 			finally
 			{

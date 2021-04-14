@@ -78,6 +78,10 @@ namespace OpenRA.WindowsLauncher
 				ExceptionHandler.HandleFatalError(e);
 				return (int)RunStatus.Error;
 			}
+			finally
+			{
+				Log.Dispose();
+			}
 		}
 
 		static int RunInnerLauncher(string[] args)
