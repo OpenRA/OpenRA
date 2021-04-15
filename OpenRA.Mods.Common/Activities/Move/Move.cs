@@ -39,6 +39,7 @@ namespace OpenRA.Mods.Common.Activities
 		};
 
 		int carryoverProgress;
+		int lastMovePartCompletedTick;
 
 		List<CPos> path;
 		CPos? destination;
@@ -397,8 +398,6 @@ namespace OpenRA.Mods.Common.Activities
 			protected readonly int Distance;
 			protected int progress;
 
-			protected bool firstTick = true;
-
 			public MovePart(Move move, WPos from, WPos to, WAngle fromFacing, WAngle toFacing, int carryoverProgress)
 			{
 				Move = move;
@@ -442,19 +441,17 @@ namespace OpenRA.Mods.Common.Activities
 			{
 				var mobile = Move.mobile;
 
-				// Having non-zero progress in the first tick means that this MovePart is following on from
-				// a previous MovePart that has just completed during the same tick. In this case, we want to
-				// apply the carried over progress but not evaluate a full new step until the next tick.
-				if (!firstTick || progress == 0)
+				// Only move by a full speed step if we didn't already move this tick.
+				// If we did, we limit the move to any carried-over leftover progress.
+				if (Move.lastMovePartCompletedTick < self.World.WorldTick)
 					progress += mobile.MovementSpeedForCell(self, mobile.ToCell);
-
-				firstTick = false;
 
 				if (progress >= Distance)
 				{
 					mobile.SetCenterPosition(self, To);
 					mobile.Facing = ToFacing;
 
+					Move.lastMovePartCompletedTick = self.World.WorldTick;
 					Queue(OnComplete(self, mobile, Move));
 					return true;
 				}
