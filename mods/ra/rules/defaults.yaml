@@ -331,7 +331,7 @@
 	RevealsShroud:
 		Range: 4c0
 	Mobile:
-		Speed: 56
+		Speed: 54
 		AlwaysTurnInPlace: true
 		Locomotor: foot
 	Selectable:

@@ -19,7 +19,7 @@ SS:
 		Type: Light
 	Mobile:
 		TurnSpeed: 16
-		Speed: 71
+		Speed: 78
 	RevealsShroud:
 		MinRange: 5c0
 		Range: 8c0
@@ -86,7 +86,7 @@ MSUB:
 		Type: Light
 	Mobile:
 		TurnSpeed: 12
-		Speed: 42
+		Speed: 44
 	RevealsShroud:
 		MinRange: 5c0
 		Range: 8c0
@@ -157,7 +157,7 @@ DD:
 		Type: Heavy
 	Mobile:
 		TurnSpeed: 28
-		Speed: 85
+		Speed: 92
 	RevealsShroud:
 		MinRange: 5c0
 		Range: 6c0
@@ -209,7 +209,7 @@ CA:
 		Type: Heavy
 	Mobile:
 		TurnSpeed: 12
-		Speed: 42
+		Speed: 44
 	RevealsShroud:
 		MinRange: 5c0
 		Range: 7c0
@@ -271,7 +271,7 @@ LST:
 		Type: Heavy
 	Mobile:
 		Locomotor: lcraft
-		Speed: 113
+		Speed: 128
 		PauseOnCondition: notmobile
 	RevealsShroud:
 		MinRange: 5c0
@@ -311,7 +311,7 @@ PT:
 		Type: Heavy
 	Mobile:
 		TurnSpeed: 28
-		Speed: 128
+		Speed: 142
 	RevealsShroud:
 		MinRange: 5c0
 		Range: 7c0
