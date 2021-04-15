@@ -19,7 +19,7 @@ DOG:
 	Health:
 		HP: 1800
 	Mobile:
-		Speed: 99
+		Speed: 100
 		Voice: Move
 		PauseOnCondition: attack-cooldown || eating
 	Guard:
@@ -133,7 +133,7 @@ E2:
 	Health:
 		HP: 5000
 	Mobile:
-		Speed: 71
+		Speed: 68
 	Armament@PRIMARY:
 		Weapon: Grenade
 		LocalOffset: 0,0,555
@@ -394,7 +394,7 @@ E7:
 	Health:
 		HP: 10000
 	Mobile:
-		Speed: 71
+		Speed: 68
 		Voice: Move
 	Guard:
 		Voice: Move
@@ -453,7 +453,7 @@ MEDI:
 	Health:
 		HP: 6000
 	Mobile:
-		Speed: 50
+		Speed: 49
 	RevealsShroud:
 		Range: 3c0
 	Passenger:
@@ -496,7 +496,7 @@ MECH:
 	Health:
 		HP: 8000
 	Mobile:
-		Speed: 50
+		Speed: 49
 		Voice: Move
 	RevealsShroud:
 		Range: 3c0
@@ -541,7 +541,7 @@ EINSTEIN:
 	Tooltip:
 		Name: Prof. Einstein
 	Mobile:
-		Speed: 71
+		Speed: 68
 	Voiced:
 		VoiceSet: EinsteinVoice
 
@@ -551,7 +551,7 @@ DELPHI:
 	Tooltip:
 		Name: Agent Delphi
 	Mobile:
-		Speed: 71
+		Speed: 68
 
 CHAN:
 	Inherits: ^CivInfantry
@@ -648,7 +648,7 @@ THF:
 		Condition: cloak-force-disabled
 		ValidDamageStates: Critical
 	Mobile:
-		Speed: 71
+		Speed: 68
 	-AttackFrontal:
 
 SHOK:
@@ -772,7 +772,7 @@ Zombie:
 	Health:
 		HP: 25000
 	Mobile:
-		Speed: 42
+		Speed: 39
 	AutoTarget:
 		ScanRadius: 5
 	WithInfantryBody:
@@ -811,7 +811,7 @@ Ant:
 	Health:
 		HP: 75000
 	Mobile:
-		Speed: 99
+		Speed: 92
 		TurnSpeed: 48
 		Locomotor: lighttracked
 	-Crushable:
@@ -838,7 +838,7 @@ FireAnt:
 		Name: Fire Ant
 		GenericVisibility: none
 	Mobile:
-		Speed: 80
+		Speed: 68
 	Armament:
 		Weapon: AntFireball
 	Health:
@@ -868,7 +868,7 @@ WarriorAnt:
 		Name: Warrior Ant
 		GenericVisibility: none
 	Mobile:
-		Speed: 65
+		Speed: 56
 	Health:
 		HP: 12500
 	Armor:

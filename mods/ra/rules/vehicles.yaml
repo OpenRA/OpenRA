@@ -18,7 +18,7 @@ V2RL:
 	Armor:
 		Type: Light
 	Mobile:
-		Speed: 85
+		Speed: 72
 	RevealsShroud:
 		MinRange: 4c0
 		Range: 5c0
@@ -68,7 +68,7 @@ V2RL:
 	Armor:
 		Type: Heavy
 	Mobile:
-		Speed: 118
+		Speed: 113
 	RevealsShroud:
 		MinRange: 4c0
 		Range: 5c0
@@ -110,7 +110,7 @@ V2RL:
 	Armor:
 		Type: Heavy
 	Mobile:
-		Speed: 85
+		Speed: 72
 	RevealsShroud:
 		MinRange: 4c0
 		Range: 6c0
@@ -156,7 +156,7 @@ V2RL:
 	Armor:
 		Type: Heavy
 	Mobile:
-		Speed: 71
+		Speed: 60
 	RevealsShroud:
 		MinRange: 4c0
 		Range: 6c0
@@ -202,7 +202,7 @@ V2RL:
 	Armor:
 		Type: Heavy
 	Mobile:
-		Speed: 50
+		Speed: 43
 		Locomotor: heavytracked
 	RevealsShroud:
 		MinRange: 4c0
@@ -261,7 +261,7 @@ ARTY:
 		Type: Light
 	Mobile:
 		TurnSpeed: 8
-		Speed: 85
+		Speed: 72
 		Locomotor: lighttracked
 	RevealsShroud:
 		MinRange: 4c0
@@ -312,7 +312,7 @@ HARV:
 	Armor:
 		Type: Heavy
 	Mobile:
-		Speed: 85
+		Speed: 72
 		Locomotor: heavywheeled
 	RevealsShroud:
 		Range: 4c0
@@ -365,7 +365,7 @@ MCV:
 	Armor:
 		Type: Light
 	Mobile:
-		Speed: 71
+		Speed: 60
 		Locomotor: heavywheeled
 	RevealsShroud:
 		Range: 4c0
@@ -451,7 +451,7 @@ APC:
 	Armor:
 		Type: Heavy
 	Mobile:
-		Speed: 142
+		Speed: 128
 		PauseOnCondition: notmobile || being-captured
 	RevealsShroud:
 		MinRange: 4c0
@@ -491,7 +491,7 @@ MNLY:
 	Armor:
 		Type: Heavy
 	Mobile:
-		Speed: 128
+		Speed: 113
 	RevealsShroud:
 		MinRange: 4c0
 		Range: 5c0
@@ -540,7 +540,7 @@ TRUK:
 	Armor:
 		Type: Light
 	Mobile:
-		Speed: 128
+		Speed: 113
 	RevealsShroud:
 		Range: 4c0
 	DeliversCash:
@@ -567,7 +567,7 @@ MGG:
 	Armor:
 		Type: Heavy
 	Mobile:
-		Speed: 85
+		Speed: 72
 	WithIdleOverlay@SPINNER:
 		Offset: -299,0,171
 		Sequence: spinner
@@ -601,7 +601,7 @@ MRJ:
 	Armor:
 		Type: Heavy
 	Mobile:
-		Speed: 78
+		Speed: 68
 	RevealsShroud:
 		Range: 7c0
 	WithIdleOverlay@SPINNER:
@@ -641,7 +641,7 @@ TTNK:
 	Armor:
 		Type: Light
 	Mobile:
-		Speed: 99
+		Speed: 92
 	RevealsShroud:
 		MinRange: 6c0
 		Range: 7c0
@@ -681,7 +681,7 @@ FTRK:
 		Type: Light
 	Mobile:
 		TurnSpeed: 40
-		Speed: 118
+		Speed: 113
 	RevealsShroud:
 		MinRange: 4c0
 		Range: 6c0
@@ -727,7 +727,7 @@ DTRK:
 	Armor:
 		Type: Light
 	Mobile:
-		Speed: 85
+		Speed: 72
 	RevealsShroud:
 		Range: 4c0
 	Explodes:
@@ -769,7 +769,7 @@ CTNK:
 	Armor:
 		Type: Light
 	Mobile:
-		Speed: 96
+		Speed: 86
 		Locomotor: heavywheeled
 	RevealsShroud:
 		MinRange: 4c0
@@ -814,7 +814,7 @@ QTNK:
 	Mobile:
 		RequiresCondition: !deployed
 		PauseOnCondition: being-captured
-		Speed: 56
+		Speed: 46
 	Chronoshiftable:
 		RequiresCondition: !deployed && !being-captured
 	RevealsShroud:
@@ -854,7 +854,7 @@ STNK:
 	Armor:
 		Type: Light
 	Mobile:
-		Speed: 142
+		Speed: 128
 		Locomotor: heavywheeled
 		PauseOnCondition: notmobile || being-captured
 	RevealsShroud:
