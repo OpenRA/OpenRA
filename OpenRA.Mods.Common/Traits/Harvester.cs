@@ -99,6 +99,10 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Cursor to display when unable to unload at target actor.")]
 		public readonly string EnterBlockedCursor = "enter-blocked";
 
+		[CursorReference]
+		[Desc("Cursor to display when ordering to harvest resources.")]
+		public readonly string HarvestCursor = "harvest";
+
 		public override object Create(ActorInitializer init) { return new Harvester(init.Self, this); }
 	}
 
@@ -395,7 +399,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (res == null)
 					return false;
 
-				cursor = "harvest";
+				cursor = info.HarvestCursor;
 				IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
 
 				return true;
