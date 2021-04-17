@@ -63,28 +63,6 @@ SendWaves = function(counter, Waves)
 	end
 end
 
-SendAttackWave = function(team)
-	for type, amount in pairs(team.units) do
-		count = 0
-		local actors = Nod.GetActorsByType(type)
-		Utils.Do(actors, function(actor)
-			if actor.IsIdle and count < amount then
-				SetAttackWaypoints(actor, team.waypoints)
-				IdleHunt(actor)
-				count = count + 1
-			end
-		end)
-	end
-end
-
-SetAttackWaypoints = function(actor, waypoints)
-	if not actor.IsDead then
-		Utils.Do(waypoints, function(waypoint)
-			actor.AttackMove(waypoint.Location)
-		end)
-	end
-end
-
 CheckRepairGDIAssetsObjective = function()
 	local failed = false
 	local repaired = true
