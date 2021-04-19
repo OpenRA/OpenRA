@@ -32,8 +32,6 @@ namespace OpenRA.Network
 	{
 		int LocalClientId { get; }
 		ConnectionState ConnectionState { get; }
-		IPEndPoint EndPoint { get; }
-		string ErrorMessage { get; }
 		void Send(int frame, List<byte[]> orders);
 		void SendImmediate(IEnumerable<byte[]> orders);
 		void SendSync(int frame, byte[] syncData);
@@ -54,10 +52,6 @@ namespace OpenRA.Network
 		public virtual int LocalClientId => 1;
 
 		public virtual ConnectionState ConnectionState => ConnectionState.PreConnecting;
-
-		public virtual IPEndPoint EndPoint => throw new NotSupportedException("An echo connection doesn't have an endpoint");
-
-		public virtual string ErrorMessage => null;
 
 		public virtual void Send(int frame, List<byte[]> orders)
 		{
@@ -147,9 +141,9 @@ namespace OpenRA.Network
 		bool disposed;
 		string errorMessage;
 
-		public override IPEndPoint EndPoint => endpoint;
+		public IPEndPoint EndPoint => endpoint;
 
-		public override string ErrorMessage => errorMessage;
+		public string ErrorMessage => errorMessage;
 
 		public NetworkConnection(ConnectionTarget target)
 		{
