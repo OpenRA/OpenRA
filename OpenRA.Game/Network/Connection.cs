@@ -40,7 +40,7 @@ namespace OpenRA.Network
 		void Receive(Action<int, byte[]> packetFn);
 	}
 
-	class EchoConnection : IConnection
+	public class EchoConnection : IConnection
 	{
 		protected struct ReceivedPacket
 		{
@@ -136,9 +136,9 @@ namespace OpenRA.Network
 		}
 	}
 
-	sealed class NetworkConnection : EchoConnection
+	public sealed class NetworkConnection : EchoConnection
 	{
-		readonly ConnectionTarget target;
+		public readonly ConnectionTarget Target;
 		TcpClient tcp;
 		IPEndPoint endpoint;
 		readonly List<byte[]> queuedSyncPackets = new List<byte[]>();
@@ -153,7 +153,7 @@ namespace OpenRA.Network
 
 		public NetworkConnection(ConnectionTarget target)
 		{
-			this.target = target;
+			Target = target;
 			new Thread(NetworkConnectionConnect)
 			{
 				Name = $"{GetType().Name} (connect to {target})",
@@ -166,7 +166,7 @@ namespace OpenRA.Network
 			var queue = new BlockingCollection<TcpClient>();
 
 			var atLeastOneEndpoint = false;
-			foreach (var endpoint in target.GetConnectEndPoints())
+			foreach (var endpoint in Target.GetConnectEndPoints())
 			{
 				atLeastOneEndpoint = true;
 				new Thread(() =>

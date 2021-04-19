@@ -66,8 +66,14 @@ namespace OpenRA
 			if (recordReplay)
 				connection.StartRecording(() => { return TimestampedFilename(); });
 
-			var om = new OrderManager(endpoint, password, connection);
+			var om = new OrderManager(connection);
 			JoinInner(om);
+			CurrentServerSettings.Password = password;
+			CurrentServerSettings.Target = endpoint;
+
+			lastConnectionState = ConnectionState.PreConnecting;
+			ConnectionStateChanged(OrderManager, password, connection);
+
 			return om;
 		}
 
@@ -81,18 +87,16 @@ namespace OpenRA
 		{
 			OrderManager?.Dispose();
 			OrderManager = om;
-			lastConnectionState = ConnectionState.PreConnecting;
-			ConnectionStateChanged(OrderManager);
 		}
 
 		public static void JoinReplay(string replayFile)
 		{
-			JoinInner(new OrderManager(new ConnectionTarget(), "", new ReplayConnection(replayFile)));
+			JoinInner(new OrderManager(new ReplayConnection(replayFile)));
 		}
 
 		static void JoinLocal()
 		{
-			JoinInner(new OrderManager(new ConnectionTarget(), "", new EchoConnection()));
+			JoinInner(new OrderManager(new EchoConnection()));
 		}
 
 		// More accurate replacement for Environment.TickCount
@@ -104,7 +108,7 @@ namespace OpenRA
 		public static int LocalTick => OrderManager.LocalFrameNumber;
 
 		public static event Action<ConnectionTarget> OnRemoteDirectConnect = _ => { };
-		public static event Action<OrderManager> ConnectionStateChanged = _ => { };
+		public static event Action<OrderManager, string, NetworkConnection> ConnectionStateChanged = (om, pass, conn) => { };
 		static ConnectionState lastConnectionState = ConnectionState.PreConnecting;
 		public static int LocalClientId => OrderManager.Connection.LocalClientId;
 
@@ -415,7 +419,7 @@ namespace OpenRA
 		{
 			// Clear static state if we have switched mods
 			LobbyInfoChanged = () => { };
-			ConnectionStateChanged = om => { };
+			ConnectionStateChanged = (om, p, conn) => { };
 			BeforeGameStart = () => { };
 			OnRemoteDirectConnect = endpoint => { };
 			delayedActions = new ActionQueue();
@@ -652,7 +656,7 @@ namespace OpenRA
 			if (OrderManager.Connection.ConnectionState != lastConnectionState)
 			{
 				lastConnectionState = OrderManager.Connection.ConnectionState;
-				ConnectionStateChanged(OrderManager);
+				ConnectionStateChanged(OrderManager, null, null);
 			}
 
 			InnerLogicTick(OrderManager);
@@ -996,5 +1000,11 @@ namespace OpenRA
 				Exit();
 			}
 		}
+	}
+
+	public static class CurrentServerSettings
+	{
+		public static string Password;
+		public static ConnectionTarget Target;
 	}
 }
