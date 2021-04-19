@@ -28,6 +28,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				Game.RunAfterTick(() => Ui.OpenWindow("CONNECTIONFAILED_PANEL", new WidgetArgs
 				{
 					{ "orderManager", orderManager },
+					{ "password", CurrentServerSettings.Password },
+					{ "connection", orderManager.Connection as NetworkConnection },
 					{ "onAbort", null },
 					{ "onRetry", null }
 				}));

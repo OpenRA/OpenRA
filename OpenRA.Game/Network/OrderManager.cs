@@ -28,9 +28,6 @@ namespace OpenRA.Network
 		public Session.Client LocalClient => LobbyInfo.ClientWithIndex(Connection.LocalClientId);
 		public World World;
 
-		public readonly ConnectionTarget Endpoint;
-		public readonly string Password = "";
-
 		public string ServerError = null;
 		public bool AuthenticationFailed = false;
 		public ExternalMod ServerExternalMod = null;
@@ -94,10 +91,8 @@ namespace OpenRA.Network
 					Connection.Send(i, new List<byte[]>());
 		}
 
-		public OrderManager(ConnectionTarget endpoint, string password, IConnection conn)
+		public OrderManager(IConnection conn)
 		{
-			Endpoint = endpoint;
-			Password = password;
 			Connection = conn;
 			syncReport = new SyncReport(this);
 			AddChatLine += CacheChatLine;

@@ -72,9 +72,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		bool MapIsPlayable => (mapStatus & Session.MapStatus.Playable) == Session.MapStatus.Playable;
 
 		// Listen for connection failures
-		void ConnectionStateChanged(OrderManager om)
+		void ConnectionStateChanged(OrderManager om, string password, NetworkConnection connection)
 		{
-			if (om.Connection.ConnectionState == ConnectionState.NotConnected)
+			if (connection.ConnectionState == ConnectionState.NotConnected)
 			{
 				// Show connection failed dialog
 				Ui.CloseWindow();
@@ -89,12 +89,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					});
 				};
 
-				Action<string> onRetry = password => ConnectionLogic.Connect(om.Endpoint, password, onConnect, onExit);
+				Action<string> onRetry = pass => ConnectionLogic.Connect(connection.Target, pass, onConnect, onExit);
 
 				var switchPanel = om.ServerExternalMod != null ? "CONNECTION_SWITCHMOD_PANEL" : "CONNECTIONFAILED_PANEL";
 				Ui.OpenWindow(switchPanel, new WidgetArgs()
 				{
 					{ "orderManager", om },
+					{ "connection", connection },
+					{ "password", password },
 					{ "onAbort", onExit },
 					{ "onRetry", onRetry }
 				});
@@ -762,7 +764,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				string secret = null;
 				if (orderManager.LobbyInfo.GlobalSettings.Dedicated)
 				{
-					var endpoint = orderManager.Endpoint.GetConnectEndPoints().First();
+					var endpoint = CurrentServerSettings.Target.GetConnectEndPoints().First();
 					secret = string.Concat(endpoint.Address, "|", endpoint.Port);
 				}
 

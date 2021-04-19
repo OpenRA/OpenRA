@@ -218,7 +218,7 @@ namespace OpenRA.Network
 							Client = info,
 							Mod = mod.Id,
 							Version = mod.Metadata.Version,
-							Password = orderManager.Password,
+							Password = CurrentServerSettings.Password,
 							Fingerprint = localProfile.Fingerprint,
 							OrdersProtocol = ProtocolVersion.Orders
 						};
