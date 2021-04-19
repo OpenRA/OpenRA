@@ -192,7 +192,7 @@ namespace OpenRA.Network
 							Game.ExternalMods.TryGetValue(externalKey, out var external))
 						{
 							// The ConnectionFailedLogic will prompt the user to switch mods
-							orderManager.ServerExternalMod = external;
+							CurrentServerSettings.ServerExternalMod = external;
 							orderManager.Connection.Dispose();
 							break;
 						}

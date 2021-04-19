@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				CloseWindow();
 
-				var switchPanel = om.ServerExternalMod != null ? "CONNECTION_SWITCHMOD_PANEL" : "CONNECTIONFAILED_PANEL";
+				var switchPanel = CurrentServerSettings.ServerExternalMod != null ? "CONNECTION_SWITCHMOD_PANEL" : "CONNECTIONFAILED_PANEL";
 				Ui.OpenWindow(switchPanel, new WidgetArgs()
 				{
 					{ "orderManager", om },
@@ -106,7 +106,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			widget.Get<LabelWidget>("CONNECTING_DESC").GetText = () => $"Could not connect to {connection.Target}";
 
 			var connectionError = widget.Get<LabelWidget>("CONNECTION_ERROR");
-			connectionError.GetText = () => orderManager.ServerError ?? orderManager.Connection.ErrorMessage ?? "Unknown error";
+			connectionError.GetText = () => orderManager.ServerError ?? connection.ErrorMessage ?? "Unknown error";
 
 			var panelTitle = widget.Get<LabelWidget>("TITLE");
 			panelTitle.GetText = () => orderManager.AuthenticationFailed ? "Password Required" : "Connection Failed";
@@ -157,14 +157,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var abortButton = panel.Get<ButtonWidget>("ABORT_BUTTON");
 			var switchButton = panel.Get<ButtonWidget>("SWITCH_BUTTON");
 
-			var mod = orderManager.ServerExternalMod;
+			var mod = CurrentServerSettings.ServerExternalMod;
 			var modTitle = mod.Title;
 			var modVersion = mod.Version;
 
 			switchButton.OnClick = () =>
 			{
 				var launchCommand = $"Launch.URI={new UriBuilder("tcp", connection.EndPoint.Address.ToString(), connection.EndPoint.Port)}";
-				Game.SwitchToExternalMod(orderManager.ServerExternalMod, new[] { launchCommand }, () =>
+				Game.SwitchToExternalMod(CurrentServerSettings.ServerExternalMod, new[] { launchCommand }, () =>
 				{
 					orderManager.ServerError = "Failed to switch mod.";
 					Ui.CloseWindow();

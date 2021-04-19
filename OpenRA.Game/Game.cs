@@ -1034,5 +1034,6 @@ namespace OpenRA
 	{
 		public static string Password;
 		public static ConnectionTarget Target;
+		public static ExternalMod ServerExternalMod;
 	}
 }
