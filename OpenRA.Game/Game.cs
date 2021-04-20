@@ -42,7 +42,6 @@ namespace OpenRA
 		public static CursorManager Cursor;
 		public static bool HideCursor;
 		static WorldRenderer worldRenderer;
-		static string modLaunchWrapper;
 
 		internal static OrderManager OrderManager;
 		static Server.Server server;
@@ -370,7 +369,7 @@ namespace OpenRA
 			foreach (var mod in Mods)
 				Console.WriteLine("\t{0}: {1} ({2})", mod.Key, mod.Value.Metadata.Title, mod.Value.Metadata.Version);
 
-			modLaunchWrapper = args.GetValue("Engine.LaunchWrapper", null);
+			ExternalModSwitcher.Initialize(args.GetValue("Engine.LaunchWrapper", null));
 
 			ExternalMods = new ExternalMods();
 
@@ -498,35 +497,6 @@ namespace OpenRA
 				throw new InvalidDataException("No valid shellmaps available");
 
 			return shellmaps.Random(CosmeticRandom);
-		}
-
-		public static void SwitchToExternalMod(ExternalMod mod, string[] launchArguments = null, Action onFailed = null)
-		{
-			try
-			{
-				var path = mod.LaunchPath;
-				var args = launchArguments != null ? mod.LaunchArgs.Append(launchArguments) : mod.LaunchArgs;
-				if (modLaunchWrapper != null)
-				{
-					path = modLaunchWrapper;
-					args = new[] { mod.LaunchPath }.Concat(args);
-				}
-
-				var p = Process.Start(path, args.Select(a => "\"" + a + "\"").JoinWith(" "));
-				if (p == null || p.HasExited)
-					onFailed();
-				else
-				{
-					p.Close();
-					Exit();
-				}
-			}
-			catch (Exception e)
-			{
-				Log.Write("debug", "Failed to switch to external mod.");
-				Log.Write("debug", "Error was: " + e.Message);
-				onFailed();
-			}
 		}
 
 		static RunStatus state = RunStatus.Running;

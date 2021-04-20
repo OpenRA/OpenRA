@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					Action restart = () =>
 					{
 						var external = Game.ExternalMods[ExternalMod.MakeKey(Game.ModData.Manifest)];
-						Game.SwitchToExternalMod(external, null, closeAndExit);
+						ExternalModSwitcher.Switch(external, null, closeAndExit);
 					};
 
 					ConfirmationDialogs.ButtonPrompt(
