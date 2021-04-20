@@ -188,12 +188,12 @@ namespace OpenRA.Mods.Common.Traits
 		public void DoControlGroup(World world, WorldRenderer worldRenderer, int group, Modifiers mods, int multiTapCount)
 		{
 			var addModifier = Platform.CurrentPlatform == PlatformType.OSX ? Modifiers.Meta : Modifiers.Ctrl;
-			if (mods.HasModifier(addModifier))
+			if (mods.HasFlag(addModifier))
 			{
 				if (actors.Count == 0)
 					return;
 
-				if (!mods.HasModifier(Modifiers.Shift))
+				if (!mods.HasFlag(Modifiers.Shift))
 					controlGroups[group].Clear();
 
 				for (var i = 0; i < 10; i++) // all control groups
@@ -205,13 +205,13 @@ namespace OpenRA.Mods.Common.Traits
 
 			var groupActors = controlGroups[group].Where(a => a.IsInWorld);
 
-			if (mods.HasModifier(Modifiers.Alt) || multiTapCount >= 2)
+			if (mods.HasFlag(Modifiers.Alt) || multiTapCount >= 2)
 			{
 				worldRenderer.Viewport.Center(groupActors);
 				return;
 			}
 
-			Combine(world, groupActors, mods.HasModifier(Modifiers.Shift), false);
+			Combine(world, groupActors, mods.HasFlag(Modifiers.Shift), false);
 		}
 
 		public void AddToControlGroup(Actor a, int group)

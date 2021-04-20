@@ -194,7 +194,7 @@ namespace OpenRA.Mods.Common.Orders
 						yield break;
 					}
 
-					if (ai.HasTraitInfo<LineBuildInfo>() && !mi.Modifiers.HasModifier(Modifiers.Shift))
+					if (ai.HasTraitInfo<LineBuildInfo>() && !mi.Modifiers.HasFlag(Modifiers.Shift))
 						orderType = "LineBuild";
 				}
 
@@ -261,7 +261,7 @@ namespace OpenRA.Mods.Common.Orders
 				if (buildingInfo.Dimensions.X != 1 || buildingInfo.Dimensions.Y != 1)
 					throw new InvalidOperationException("LineBuild requires a 1x1 sized Building");
 
-				if (!Game.GetModifierKeys().HasModifier(Modifiers.Shift))
+				if (!HotkeyModifiers.HasModifier(Modifiers.Shift))
 				{
 					foreach (var t in BuildingUtils.GetLineBuildCells(world, topLeft, actorInfo, buildingInfo, owner))
 					{

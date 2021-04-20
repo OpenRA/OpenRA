@@ -73,7 +73,7 @@ namespace OpenRA.Platforms.Default
 				{
 					case SDL.SDL_EventType.SDL_QUIT:
 						// On macOS, we'd like to restrict Cmd + Q from suddenly exiting the game.
-						if (Platform.CurrentPlatform != PlatformType.OSX || !mods.HasModifier(Modifiers.Meta))
+						if (Platform.CurrentPlatform != PlatformType.OSX || !mods.HasFlag(Modifiers.Meta))
 							Game.Exit();
 
 						break;
@@ -197,7 +197,7 @@ namespace OpenRA.Platforms.Default
 							};
 
 							// Special case workaround for windows users
-							if (e.key.keysym.sym == SDL.SDL_Keycode.SDLK_F4 && mods.HasModifier(Modifiers.Alt) &&
+							if (e.key.keysym.sym == SDL.SDL_Keycode.SDLK_F4 && mods.HasFlag(Modifiers.Alt) &&
 								Platform.CurrentPlatform == PlatformType.Windows)
 								Game.Exit();
 							else

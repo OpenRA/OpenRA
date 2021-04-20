@@ -90,7 +90,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var cell = worldRenderer.Viewport.ViewToWorld(mi.Location);
 			var isMoving = mi.Event == MouseInputEvent.Move;
 
-			if (mi.Modifiers.HasModifier(Modifiers.Shift))
+			if (mi.Modifiers.HasFlag(Modifiers.Shift))
 			{
 				FloodFillWithBrush(cell, isMoving);
 				painting = false;

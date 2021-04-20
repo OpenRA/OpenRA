@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public override void Draw()
 		{
-			var modifiers = Game.GetModifierKeys();
+			var modifiers = HotkeyModifiers.GetModifierKeys();
 			IEnumerable<Actor> rollover;
 			if (IsValidDragbox)
 			{
@@ -157,7 +157,7 @@ namespace OpenRA.Mods.Common.Widgets
 					if (isDragging && (uog.ClearSelectionOnLeftClick || IsValidDragbox))
 					{
 						var newSelection = SelectActorsInBoxWithDeadzone(World, dragStart, mousePos, mi.Modifiers);
-						World.Selection.Combine(World, newSelection, mi.Modifiers.HasModifier(Modifiers.Shift), dragStart == mousePos);
+						World.Selection.Combine(World, newSelection, mi.Modifiers.HasFlag(Modifiers.Shift), dragStart == mousePos);
 					}
 				}
 
@@ -237,7 +237,7 @@ namespace OpenRA.Mods.Common.Widgets
 				{
 					Location = screenPos,
 					Button = Game.Settings.Game.MouseButtonPreference.Action,
-					Modifiers = Game.GetModifierKeys()
+					Modifiers = HotkeyModifiers.GetModifierKeys()
 				};
 
 				return World.OrderGenerator.GetCursor(World, cell, worldPixel, mi);

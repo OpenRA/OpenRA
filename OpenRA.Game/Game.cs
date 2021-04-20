@@ -258,10 +258,6 @@ namespace OpenRA
 			}
 		}
 
-		static Modifiers modifiers;
-		public static Modifiers GetModifierKeys() { return modifiers; }
-		internal static void HandleModifierKeys(Modifiers mods) { modifiers = mods; }
-
 		public static void InitializeSettings(Arguments args)
 		{
 			Settings = new Settings(Path.Combine(Platform.SupportDir, "settings.yaml"), args);

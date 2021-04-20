@@ -51,10 +51,10 @@ namespace OpenRA.Traits
 		{
 			var priority = info.Priority;
 
-			if (modifiers.HasModifier(Modifiers.Ctrl) && !modifiers.HasModifier(Modifiers.Alt) && info.PriorityModifiers.HasFlag(SelectionPriorityModifiers.Ctrl))
+			if (modifiers.HasFlag(Modifiers.Ctrl) && !modifiers.HasFlag(Modifiers.Alt) && info.PriorityModifiers.HasFlag(SelectionPriorityModifiers.Ctrl))
 				priority = int.MaxValue;
 
-			if (modifiers.HasModifier(Modifiers.Alt) && !modifiers.HasModifier(Modifiers.Ctrl) && info.PriorityModifiers.HasFlag(SelectionPriorityModifiers.Alt))
+			if (modifiers.HasFlag(Modifiers.Alt) && !modifiers.HasFlag(Modifiers.Ctrl) && info.PriorityModifiers.HasFlag(SelectionPriorityModifiers.Alt))
 				priority = int.MaxValue;
 
 			return priority;

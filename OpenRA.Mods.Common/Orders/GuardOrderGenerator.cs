@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Orders
 
 			world.CancelInputMode();
 
-			var queued = mi.Modifiers.HasModifier(Modifiers.Shift);
+			var queued = mi.Modifiers.HasFlag(Modifiers.Shift);
 			yield return new Order(orderName, null, Target.FromActor(target), queued, null, subjects.Where(s => s != target).ToArray());
 		}
 

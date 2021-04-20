@@ -111,12 +111,6 @@ namespace OpenRA
 			return WindingDirectionTest(c, d, a) != WindingDirectionTest(c, d, b) && WindingDirectionTest(a, b, c) != WindingDirectionTest(a, b, d);
 		}
 
-		public static bool HasModifier(this Modifiers k, Modifiers mod)
-		{
-			// PERF: Enum.HasFlag is slower and requires allocations.
-			return (k & mod) == mod;
-		}
-
 		public static V GetOrAdd<K, V>(this Dictionary<K, V> d, K k)
 			where V : new()
 		{

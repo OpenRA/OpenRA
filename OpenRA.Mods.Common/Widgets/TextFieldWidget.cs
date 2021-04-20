@@ -138,7 +138,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var cachedCursorPos = CursorPosition;
 			CursorPosition = ClosestCursorPosition(mi.Location.X);
 
-			if (mi.Modifiers.HasModifier(Modifiers.Shift) || (mi.Event == MouseInputEvent.Move && mouseSelectionActive))
+			if (mi.Modifiers.HasFlag(Modifiers.Shift) || (mi.Event == MouseInputEvent.Move && mouseSelectionActive))
 				HandleSelectionUpdate(cachedCursorPos, CursorPosition);
 			else
 				ClearSelection();
@@ -252,14 +252,14 @@ namespace OpenRA.Mods.Common.Widgets
 					{
 						var cachedCurrentCursorPos = CursorPosition;
 
-						if ((!isOSX && e.Modifiers.HasModifier(Modifiers.Ctrl)) || (isOSX && e.Modifiers.HasModifier(Modifiers.Alt)))
+						if ((!isOSX && e.Modifiers.HasFlag(Modifiers.Ctrl)) || (isOSX && e.Modifiers.HasFlag(Modifiers.Alt)))
 							CursorPosition = GetPrevWhitespaceIndex();
-						else if (isOSX && e.Modifiers.HasModifier(Modifiers.Meta))
+						else if (isOSX && e.Modifiers.HasFlag(Modifiers.Meta))
 							CursorPosition = 0;
 						else
 							CursorPosition--;
 
-						if (e.Modifiers.HasModifier(Modifiers.Shift))
+						if (e.Modifiers.HasFlag(Modifiers.Shift))
 							HandleSelectionUpdate(cachedCurrentCursorPos, CursorPosition);
 						else
 							ClearSelection();
@@ -273,14 +273,14 @@ namespace OpenRA.Mods.Common.Widgets
 					{
 						var cachedCurrentCursorPos = CursorPosition;
 
-						if ((!isOSX && e.Modifiers.HasModifier(Modifiers.Ctrl)) || (isOSX && e.Modifiers.HasModifier(Modifiers.Alt)))
+						if ((!isOSX && e.Modifiers.HasFlag(Modifiers.Ctrl)) || (isOSX && e.Modifiers.HasFlag(Modifiers.Alt)))
 							CursorPosition = GetNextWhitespaceIndex();
-						else if (isOSX && e.Modifiers.HasModifier(Modifiers.Meta))
+						else if (isOSX && e.Modifiers.HasFlag(Modifiers.Meta))
 							CursorPosition = Text.Length;
 						else
 							CursorPosition++;
 
-						if (e.Modifiers.HasModifier(Modifiers.Shift))
+						if (e.Modifiers.HasFlag(Modifiers.Shift))
 							HandleSelectionUpdate(cachedCurrentCursorPos, CursorPosition);
 						else
 							ClearSelection();
@@ -290,7 +290,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 				case Keycode.HOME:
 					ResetBlinkCycle();
-					if (e.Modifiers.HasModifier(Modifiers.Shift))
+					if (e.Modifiers.HasFlag(Modifiers.Shift))
 						HandleSelectionUpdate(CursorPosition, 0);
 					else
 						ClearSelection();
@@ -301,7 +301,7 @@ namespace OpenRA.Mods.Common.Widgets
 				case Keycode.END:
 					ResetBlinkCycle();
 
-					if (e.Modifiers.HasModifier(Modifiers.Shift))
+					if (e.Modifiers.HasFlag(Modifiers.Shift))
 						HandleSelectionUpdate(CursorPosition, Text.Length);
 					else
 						ClearSelection();
@@ -310,7 +310,7 @@ namespace OpenRA.Mods.Common.Widgets
 					break;
 
 				case Keycode.D:
-					if (e.Modifiers.HasModifier(Modifiers.Ctrl) && CursorPosition < Text.Length)
+					if (e.Modifiers.HasFlag(Modifiers.Ctrl) && CursorPosition < Text.Length)
 					{
 						// Write directly to the Text backing field to avoid unnecessary validation
 						text = text.Remove(CursorPosition, 1);
@@ -324,7 +324,7 @@ namespace OpenRA.Mods.Common.Widgets
 				case Keycode.K:
 					// ctrl+k is equivalent to cmd+delete on osx (but also works on osx)
 					ResetBlinkCycle();
-					if (e.Modifiers.HasModifier(Modifiers.Ctrl) && CursorPosition < Text.Length)
+					if (e.Modifiers.HasFlag(Modifiers.Ctrl) && CursorPosition < Text.Length)
 					{
 						// Write directly to the Text backing field to avoid unnecessary validation
 						text = text.Remove(CursorPosition);
@@ -338,7 +338,7 @@ namespace OpenRA.Mods.Common.Widgets
 				case Keycode.U:
 					// ctrl+u is equivalent to cmd+backspace on osx
 					ResetBlinkCycle();
-					if (!isOSX && e.Modifiers.HasModifier(Modifiers.Ctrl) && CursorPosition > 0)
+					if (!isOSX && e.Modifiers.HasFlag(Modifiers.Ctrl) && CursorPosition > 0)
 					{
 						// Write directly to the Text backing field to avoid unnecessary validation
 						text = text.Substring(CursorPosition);
@@ -351,7 +351,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 				case Keycode.X:
 					ResetBlinkCycle();
-					if (((!isOSX && e.Modifiers.HasModifier(Modifiers.Ctrl)) || (isOSX && e.Modifiers.HasModifier(Modifiers.Meta))) &&
+					if (((!isOSX && e.Modifiers.HasFlag(Modifiers.Ctrl)) || (isOSX && e.Modifiers.HasFlag(Modifiers.Meta))) &&
 						!string.IsNullOrEmpty(Text) && selectionStartIndex != -1)
 					{
 						var lowestIndex = selectionStartIndex < selectionEndIndex ? selectionStartIndex : selectionEndIndex;
@@ -364,7 +364,7 @@ namespace OpenRA.Mods.Common.Widgets
 					break;
 				case Keycode.C:
 					ResetBlinkCycle();
-					if (((!isOSX && e.Modifiers.HasModifier(Modifiers.Ctrl)) || (isOSX && e.Modifiers.HasModifier(Modifiers.Meta)))
+					if (((!isOSX && e.Modifiers.HasFlag(Modifiers.Ctrl)) || (isOSX && e.Modifiers.HasFlag(Modifiers.Meta)))
 						&& !string.IsNullOrEmpty(Text) && selectionStartIndex != -1)
 					{
 						var lowestIndex = selectionStartIndex < selectionEndIndex ? selectionStartIndex : selectionEndIndex;
@@ -382,9 +382,9 @@ namespace OpenRA.Mods.Common.Widgets
 					else if (CursorPosition < Text.Length)
 					{
 						// Write directly to the Text backing field to avoid unnecessary validation
-						if ((!isOSX && e.Modifiers.HasModifier(Modifiers.Ctrl)) || (isOSX && e.Modifiers.HasModifier(Modifiers.Alt)))
+						if ((!isOSX && e.Modifiers.HasFlag(Modifiers.Ctrl)) || (isOSX && e.Modifiers.HasFlag(Modifiers.Alt)))
 							text = text.Substring(0, CursorPosition) + text.Substring(GetNextWhitespaceIndex());
-						else if (isOSX && e.Modifiers.HasModifier(Modifiers.Meta))
+						else if (isOSX && e.Modifiers.HasFlag(Modifiers.Meta))
 							text = text.Remove(CursorPosition);
 						else
 							text = text.Remove(CursorPosition, 1);
@@ -403,13 +403,13 @@ namespace OpenRA.Mods.Common.Widgets
 					else if (CursorPosition > 0)
 					{
 						// Write directly to the Text backing field to avoid unnecessary validation
-						if ((!isOSX && e.Modifiers.HasModifier(Modifiers.Ctrl)) || (isOSX && e.Modifiers.HasModifier(Modifiers.Alt)))
+						if ((!isOSX && e.Modifiers.HasFlag(Modifiers.Ctrl)) || (isOSX && e.Modifiers.HasFlag(Modifiers.Alt)))
 						{
 							var prevWhitespace = GetPrevWhitespaceIndex();
 							text = text.Substring(0, prevWhitespace) + text.Substring(CursorPosition);
 							CursorPosition = prevWhitespace;
 						}
-						else if (isOSX && e.Modifiers.HasModifier(Modifiers.Meta))
+						else if (isOSX && e.Modifiers.HasFlag(Modifiers.Meta))
 						{
 							text = text.Substring(CursorPosition);
 							CursorPosition = 0;
@@ -431,7 +431,7 @@ namespace OpenRA.Mods.Common.Widgets
 					if (selectionStartIndex != -1)
 						RemoveSelectedText();
 
-					if ((!isOSX && e.Modifiers.HasModifier(Modifiers.Ctrl)) || (isOSX && e.Modifiers.HasModifier(Modifiers.Meta)))
+					if ((!isOSX && e.Modifiers.HasFlag(Modifiers.Ctrl)) || (isOSX && e.Modifiers.HasFlag(Modifiers.Meta)))
 					{
 						var clipboardText = Game.Renderer.GetClipboardText();
 
@@ -448,7 +448,7 @@ namespace OpenRA.Mods.Common.Widgets
 					break;
 				case Keycode.A:
 					// Ctrl+A as Select-All, or Cmd+A on OSX
-					if ((!isOSX && e.Modifiers.HasModifier(Modifiers.Ctrl)) || (isOSX && e.Modifiers.HasModifier(Modifiers.Meta)))
+					if ((!isOSX && e.Modifiers.HasFlag(Modifiers.Ctrl)) || (isOSX && e.Modifiers.HasFlag(Modifiers.Meta)))
 					{
 						ClearSelection();
 						HandleSelectionUpdate(0, Text.Length);

@@ -36,8 +36,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			button.IsDisabled = () => !tabs.Groups[button.ProductionGroup].Tabs.Any(t => t.Queue.BuildableItems().Any());
-			button.OnMouseUp = mi => selectTab(mi.Modifiers.HasModifier(Modifiers.Shift));
-			button.OnKeyPress = e => selectTab(e.Modifiers.HasModifier(Modifiers.Shift));
+			button.OnMouseUp = mi => selectTab(mi.Modifiers.HasFlag(Modifiers.Shift));
+			button.OnKeyPress = e => selectTab(e.Modifiers.HasFlag(Modifiers.Shift));
 			button.IsHighlighted = () => tabs.QueueGroup == button.ProductionGroup;
 
 			var chromeName = button.ProductionGroup.ToLowerInvariant();

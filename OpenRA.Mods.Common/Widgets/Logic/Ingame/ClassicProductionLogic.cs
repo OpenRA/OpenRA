@@ -44,8 +44,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			button.IsDisabled = () => !queues.Any(q => q.BuildableItems().Any());
-			button.OnMouseUp = mi => selectTab(mi.Modifiers.HasModifier(Modifiers.Shift));
-			button.OnKeyPress = e => selectTab(e.Modifiers.HasModifier(Modifiers.Shift));
+			button.OnMouseUp = mi => selectTab(mi.Modifiers.HasFlag(Modifiers.Shift));
+			button.OnKeyPress = e => selectTab(e.Modifiers.HasFlag(Modifiers.Shift));
 			button.OnClick = () => selectTab(false);
 			button.IsHighlighted = () => queues.Contains(palette.CurrentQueue);
 

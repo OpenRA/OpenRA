@@ -32,7 +32,7 @@ namespace OpenRA
 
 		public void ModifierKeys(Modifiers mods)
 		{
-			Game.HandleModifierKeys(mods);
+			HotkeyModifiers.HandleModifierKeys(mods);
 		}
 
 		public void OnKeyInput(KeyInput input)

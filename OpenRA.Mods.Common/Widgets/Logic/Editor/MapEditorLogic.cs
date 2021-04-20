@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				// TODO: Add platform-specific override support to HotkeyManager
 				// and then port the editor hotkeys to this system.
 				var copyPasteKey = copypasteButton.Key.GetValue();
-				if (Platform.CurrentPlatform == PlatformType.OSX && copyPasteKey.Modifiers.HasModifier(Modifiers.Ctrl))
+				if (Platform.CurrentPlatform == PlatformType.OSX && copyPasteKey.Modifiers.HasFlag(Modifiers.Ctrl))
 				{
 					var modified = new Hotkey(copyPasteKey.Key, copyPasteKey.Modifiers & ~Modifiers.Ctrl | Modifiers.Meta);
 					copypasteButton.Key = FieldLoader.GetValue<HotkeyReference>("Key", modified.ToString());

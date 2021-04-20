@@ -59,7 +59,7 @@ namespace OpenRA.Orders
 			yield return new Order("CreateGroup", actorsInvolved.First().Owner.PlayerActor, false, actorsInvolved.ToArray());
 
 			foreach (var o in orders)
-				yield return CheckSameOrder(o.Order, o.Trait.IssueOrder(o.Actor, o.Order, o.Target, mi.Modifiers.HasModifier(Modifiers.Shift)));
+				yield return CheckSameOrder(o.Order, o.Trait.IssueOrder(o.Actor, o.Order, o.Target, mi.Modifiers.HasFlag(Modifiers.Shift)));
 		}
 
 		public virtual void Tick(World world) { }
@@ -86,7 +86,7 @@ namespace OpenRA.Orders
 					return cursorOrder.Cursor;
 
 				useSelect = target.Type == TargetType.Actor && target.Actor.Info.HasTraitInfo<ISelectableInfo>() &&
-				    (mi.Modifiers.HasModifier(Modifiers.Shift) || !world.Selection.Actors.Any());
+				    (mi.Modifiers.HasFlag(Modifiers.Shift) || !world.Selection.Actors.Any());
 			}
 
 			return useSelect ? worldSelectCursor : worldDefaultCursor;
@@ -111,11 +111,11 @@ namespace OpenRA.Orders
 			var actorsAt = world.ActorMap.GetActorsAt(cell).ToList();
 
 			var modifiers = TargetModifiers.None;
-			if (mi.Modifiers.HasModifier(Modifiers.Ctrl))
+			if (mi.Modifiers.HasFlag(Modifiers.Ctrl))
 				modifiers |= TargetModifiers.ForceAttack;
-			if (mi.Modifiers.HasModifier(Modifiers.Shift))
+			if (mi.Modifiers.HasFlag(Modifiers.Shift))
 				modifiers |= TargetModifiers.ForceQueue;
-			if (mi.Modifiers.HasModifier(Modifiers.Alt))
+			if (mi.Modifiers.HasFlag(Modifiers.Alt))
 				modifiers |= TargetModifiers.ForceMove;
 
 			foreach (var a in world.Selection.Actors)
@@ -150,11 +150,11 @@ namespace OpenRA.Orders
 				return null;
 
 			var modifiers = TargetModifiers.None;
-			if (mi.Modifiers.HasModifier(Modifiers.Ctrl))
+			if (mi.Modifiers.HasFlag(Modifiers.Ctrl))
 				modifiers |= TargetModifiers.ForceAttack;
-			if (mi.Modifiers.HasModifier(Modifiers.Shift))
+			if (mi.Modifiers.HasFlag(Modifiers.Shift))
 				modifiers |= TargetModifiers.ForceQueue;
-			if (mi.Modifiers.HasModifier(Modifiers.Alt))
+			if (mi.Modifiers.HasFlag(Modifiers.Alt))
 				modifiers |= TargetModifiers.ForceMove;
 
 			// The Select(x => x) is required to work around an issue on mono 5.0

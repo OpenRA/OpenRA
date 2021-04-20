@@ -69,7 +69,7 @@ namespace OpenRA.Mods.Common.Traits
 				return false;
 
 			// Players want to see the lines when in waypoint mode.
-			var force = Game.GetModifierKeys().HasModifier(Modifiers.Shift) || self.World.OrderGenerator is ForceModifiersOrderGenerator;
+			var force = HotkeyModifiers.HasModifier(Modifiers.Shift) || self.World.OrderGenerator is ForceModifiersOrderGenerator;
 
 			return force || Game.RunTime <= lifetime;
 		}

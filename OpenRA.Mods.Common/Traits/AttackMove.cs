@@ -127,8 +127,8 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				world.CancelInputMode();
 
-				var queued = mi.Modifiers.HasModifier(Modifiers.Shift);
-				var orderName = mi.Modifiers.HasModifier(Modifiers.Ctrl) ? "AssaultMove" : "AttackMove";
+				var queued = mi.Modifiers.HasFlag(Modifiers.Shift);
+				var orderName = mi.Modifiers.HasFlag(Modifiers.Ctrl) ? "AssaultMove" : "AttackMove";
 
 				// Cells outside the playable area should be clamped to the edge for consistency with move orders
 				cell = world.Map.Clamp(cell);
@@ -149,7 +149,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
 		{
-			var isAssaultMove = mi.Modifiers.HasModifier(Modifiers.Ctrl);
+			var isAssaultMove = mi.Modifiers.HasFlag(Modifiers.Ctrl);
 
 			var subject = subjects.FirstOrDefault();
 			if (subject.Actor != null)

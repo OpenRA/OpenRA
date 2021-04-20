@@ -222,7 +222,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				&& self.Trait<PortableChrono>().CanTeleport && self.Owner.Shroud.IsExplored(cell))
 			{
 				world.CancelInputMode();
-				yield return new Order("PortableChronoTeleport", self, Target.FromCell(world, cell), mi.Modifiers.HasModifier(Modifiers.Shift));
+				yield return new Order("PortableChronoTeleport", self, Target.FromCell(world, cell), mi.Modifiers.HasFlag(Modifiers.Shift));
 			}
 		}
 

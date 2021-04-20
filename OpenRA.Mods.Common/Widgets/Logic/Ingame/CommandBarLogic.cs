@@ -158,7 +158,7 @@ namespace OpenRA.Mods.Common.Widgets
 				{
 					UpdateStateIfNecessary();
 
-					var queued = Game.GetModifierKeys().HasModifier(Modifiers.Shift);
+					var queued = HotkeyModifiers.HasModifier(Modifiers.Shift);
 					return !selectedDeploys.Any(pair => pair.Trait.CanIssueDeployOrder(pair.Actor, queued));
 				};
 
@@ -168,7 +168,7 @@ namespace OpenRA.Mods.Common.Widgets
 					if (highlightOnButtonPress)
 						deployHighlighted = 2;
 
-					var queued = Game.GetModifierKeys().HasModifier(Modifiers.Shift);
+					var queued = HotkeyModifiers.HasModifier(Modifiers.Shift);
 					PerformDeployOrderOnSelection(queued);
 				};
 
@@ -217,7 +217,7 @@ namespace OpenRA.Mods.Common.Widgets
 				keyOverrides.AddHandler(e =>
 				{
 					// HACK: allow command buttons to be triggered if the shift (queue order modifier) key is held
-					if (e.Modifiers.HasModifier(Modifiers.Shift))
+					if (e.Modifiers.HasFlag(Modifiers.Shift))
 					{
 						var eNoShift = e;
 						eNoShift.Modifiers &= ~Modifiers.Shift;
@@ -276,7 +276,7 @@ namespace OpenRA.Mods.Common.Widgets
 			if (world.OrderGenerator is ForceModifiersOrderGenerator fmog && fmog.Modifiers.HasFlag(modifiers))
 				return true;
 
-			if (world.OrderGenerator is UnitOrderGenerator uog && Game.GetModifierKeys().HasFlag(modifiers))
+			if (world.OrderGenerator is UnitOrderGenerator uog && HotkeyModifiers.HasModifier(modifiers))
 				return true;
 
 			return false;
