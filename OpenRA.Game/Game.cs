@@ -19,7 +19,6 @@ using System.Net;
 using System.Reflection;
 using System.Runtime;
 using System.Threading;
-using System.Threading.Tasks;
 using OpenRA.Graphics;
 using OpenRA.Network;
 using OpenRA.Primitives;
@@ -509,23 +508,6 @@ namespace OpenRA
 		public static void RunAfterTick(Action a) { delayedActions.Add(a, RunTime); }
 		public static void RunAfterDelay(int delayMilliseconds, Action a) { delayedActions.Add(a, RunTime + delayMilliseconds); }
 
-		static void TakeScreenshotInner()
-		{
-			using (new PerfTimer("Renderer.SaveScreenshot"))
-			{
-				var mod = ModData.Manifest.Metadata;
-				var directory = Path.Combine(Platform.SupportDir, "Screenshots", ModData.Manifest.Id, mod.Version);
-				Directory.CreateDirectory(directory);
-
-				var filename = TimestampedFilename(true);
-				var path = Path.Combine(directory, string.Concat(filename, ".png"));
-				Log.Write("debug", "Taking screenshot " + path);
-
-				Renderer.SaveScreenshot(path);
-				TextManager.Debug("Saved screenshot " + filename);
-			}
-		}
-
 		static void InnerLogicTick(OrderManager orderManager)
 		{
 			var tick = RunTime;
@@ -681,7 +663,7 @@ namespace OpenRA
 				if (takeScreenshot)
 				{
 					takeScreenshot = false;
-					TakeScreenshotInner();
+					ScreenshotManager.TakeScreenshot();
 				}
 			}
 
