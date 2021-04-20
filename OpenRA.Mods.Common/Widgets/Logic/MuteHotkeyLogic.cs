@@ -29,12 +29,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (Game.Settings.Sound.Mute)
 			{
 				Game.Sound.MuteAudio();
-				Game.AddSystemLine("Audio muted");
+				TextManager.AddSystemLine("Audio muted");
 			}
 			else
 			{
 				Game.Sound.UnmuteAudio();
-				Game.AddSystemLine("Audio unmuted");
+				TextManager.AddSystemLine("Audio unmuted");
 			}
 
 			return true;
