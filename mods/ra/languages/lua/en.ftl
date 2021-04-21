@@ -352,6 +352,12 @@ save-migs = Do not squander any of our new MiG aircraft.
 ## soviet-11b
 destroy-allied-naval-base = Destroy Allied naval base.
 
+## soviet-13a, soviet13b
+chrono-trap-triggered = We failed to take the trap offline!
+destroy-allied-radar-sites = Destroy the Allied radar sites before approaching
+    the Chronoshpere.
+capture-the-chronosphere = Capture the Chronoshpere.
+
 ## soviet-soldier-volkov-n-chitzkoi
 destroy-control-center = Destroy the Control Center.
 tank-division-must-not-be-destroyed = Your tank division must not be destroyed before
