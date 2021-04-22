@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 			this.self = self;
 			color = GetColor();
-			font = Game.Renderer.Fonts[info.Font];
+			font = Game.FontManager[info.Font];
 
 			debugVis = self.World.WorldActor.TraitOrDefault<DebugVisualizations>();
 		}

@@ -203,7 +203,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					initialActorID = actorIDField.Text = actor.ID;
 
-					var font = Game.Renderer.Fonts[typeLabel.Font];
+					var font = Game.FontManager[typeLabel.Font];
 					var truncatedType = WidgetUtils.TruncateText(actor.DescriptiveName, typeLabel.Bounds.Width, font);
 					typeLabel.Text = truncatedType;
 

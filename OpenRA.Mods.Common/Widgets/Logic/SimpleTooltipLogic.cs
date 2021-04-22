@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var spacing = widget.Get("LINE_HEIGHT");
 			widget.RemoveChildren();
 
-			var font = Game.Renderer.Fonts[label.Font];
+			var font = Game.FontManager[label.Font];
 			var horizontalPadding = label.Bounds.Width - widget.Bounds.Width;
 			if (horizontalPadding <= 0)
 				horizontalPadding = 2 * label.Bounds.X;

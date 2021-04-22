@@ -256,7 +256,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var titleLabel = item.Get<LabelWidget>("TITLE");
 				if (titleLabel != null)
 				{
-					var font = Game.Renderer.Fonts[titleLabel.Font];
+					var font = Game.FontManager[titleLabel.Font];
 					var title = WidgetUtils.TruncateText(preview.Title, titleLabel.Bounds.Width, font);
 					titleLabel.GetText = () => title;
 				}
@@ -279,7 +279,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var authorWidget = item.GetOrNull<LabelWidget>("AUTHOR");
 				if (authorWidget != null)
 				{
-					var font = Game.Renderer.Fonts[authorWidget.Font];
+					var font = Game.FontManager[authorWidget.Font];
 					var author = WidgetUtils.TruncateText("Created by {0}".F(preview.Author), authorWidget.Bounds.Width, font);
 					authorWidget.GetText = () => author;
 				}

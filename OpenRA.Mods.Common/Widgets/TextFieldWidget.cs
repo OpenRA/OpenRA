@@ -151,7 +151,7 @@ namespace OpenRA.Mods.Common.Widgets
 		int ClosestCursorPosition(int x)
 		{
 			var apparentText = GetApparentText();
-			var font = Game.Renderer.Fonts[Font];
+			var font = Game.FontManager[Font];
 			var textSize = font.Measure(apparentText);
 
 			var start = RenderOrigin.X + LeftMargin;
@@ -553,7 +553,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public override void Draw()
 		{
 			var apparentText = GetApparentText();
-			var font = Game.Renderer.Fonts[Font];
+			var font = Game.FontManager[Font];
 			var pos = RenderOrigin;
 
 			var textSize = font.Measure(apparentText);

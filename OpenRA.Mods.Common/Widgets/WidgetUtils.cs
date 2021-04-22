@@ -262,7 +262,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public static void TruncateLabelToTooltip(LabelWithTooltipWidget label, string text)
 		{
-			var truncatedText = TruncateText(text, label.Bounds.Width, Game.Renderer.Fonts[label.Font]);
+			var truncatedText = TruncateText(text, label.Bounds.Width, Game.FontManager[label.Font]);
 
 			label.GetText = () => truncatedText;
 
@@ -274,7 +274,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public static void TruncateButtonToTooltip(ButtonWidget button, string text)
 		{
-			var truncatedText = TruncateText(text, button.Bounds.Width - button.LeftMargin - button.RightMargin, Game.Renderer.Fonts[button.Font]);
+			var truncatedText = TruncateText(text, button.Bounds.Width - button.LeftMargin - button.RightMargin, Game.FontManager[button.Font]);
 
 			button.GetText = () => truncatedText;
 
@@ -336,7 +336,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public static void BindPlayerNameAndStatus(LabelWidget label, Player p)
 		{
 			var client = p.World.LobbyInfo.ClientWithIndex(p.ClientIndex);
-			var nameFont = Game.Renderer.Fonts[label.Font];
+			var nameFont = Game.FontManager[label.Font];
 			var name = new CachedTransform<(string Name, WinState WinState, Session.ClientState ClientState), string>(c =>
 			{
 				var suffix = c.WinState == WinState.Undefined ? "" : " (" + c.Item2 + ")";

@@ -26,10 +26,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var hotkeyLabel = widget.Get<LabelWidget>("HOTKEY");
 			var timeLabel = widget.Get<LabelWidget>("TIME");
 			var descLabel = widget.Get<LabelWidget>("DESC");
-			var nameFont = Game.Renderer.Fonts[nameLabel.Font];
-			var hotkeyFont = Game.Renderer.Fonts[hotkeyLabel.Font];
-			var timeFont = Game.Renderer.Fonts[timeLabel.Font];
-			var descFont = Game.Renderer.Fonts[descLabel.Font];
+			var nameFont = Game.FontManager[nameLabel.Font];
+			var hotkeyFont = Game.FontManager[hotkeyLabel.Font];
+			var timeFont = Game.FontManager[timeLabel.Font];
+			var descFont = Game.FontManager[descLabel.Font];
 			var baseHeight = widget.Bounds.Height;
 			var timeOffset = timeLabel.Bounds.X;
 

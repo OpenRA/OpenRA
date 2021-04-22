@@ -118,7 +118,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var rb = RenderBounds;
 			leftButtonRect = new Rectangle(rb.X, rb.Y, ArrowWidth, rb.Height);
 			rightButtonRect = new Rectangle(rb.Right - ArrowWidth, rb.Y, ArrowWidth, rb.Height);
-			font = Game.Renderer.Fonts["TinyBold"];
+			font = Game.FontManager["TinyBold"];
 		}
 
 		public bool SelectNextTab(bool reverse)

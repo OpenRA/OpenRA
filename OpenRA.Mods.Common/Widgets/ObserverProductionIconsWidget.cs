@@ -190,8 +190,8 @@ namespace OpenRA.Mods.Common.Widgets
 
 			Game.Renderer.DisableAntialiasingFilter();
 
-			var tiny = Game.Renderer.Fonts["Tiny"];
-			var bold = Game.Renderer.Fonts["Small"];
+			var tiny = Game.FontManager["Tiny"];
+			var bold = Game.FontManager["Small"];
 			foreach (var icon in productionIcons)
 			{
 				var current = icon.Queued.First();

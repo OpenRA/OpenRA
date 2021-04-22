@@ -428,7 +428,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var name = parent.Get<LabelWidget>("NAME");
 			name.IsVisible = () => true;
-			var font = Game.Renderer.Fonts[name.Font];
+			var font = Game.FontManager[name.Font];
 			var label = WidgetUtils.TruncateText(c.Name, name.Bounds.Width, font);
 			name.GetText = () => label;
 
@@ -444,7 +444,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var truncated = new CachedTransform<string, string>(name =>
 				WidgetUtils.TruncateText(name, slot.Bounds.Width - slot.Bounds.Height - slot.LeftMargin - slot.RightMargin,
-				Game.Renderer.Fonts[slot.Font]));
+				Game.FontManager[slot.Font]));
 
 			slot.GetText = () => truncated.Update(c != null ? c.Name : s.Closed ? "Closed" : "Open");
 			slot.OnMouseDown = _ => ShowSlotDropDown(slot, s, c, orderManager, map);
@@ -472,7 +472,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var truncated = new CachedTransform<string, string>(name =>
 				WidgetUtils.TruncateText(name, slot.Bounds.Width - slot.Bounds.Height - slot.LeftMargin - slot.RightMargin,
-				Game.Renderer.Fonts[slot.Font]));
+				Game.FontManager[slot.Font]));
 
 			slot.GetText = () => truncated.Update(c != null ? c.Name : string.Empty);
 			slot.OnMouseDown = _ => ShowPlayerActionDropDown(slot, s, c, orderManager, lobby, before, after);
@@ -659,7 +659,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var textLabel = template.Get<LabelWidget>("TEXT");
 
 			var nameText = name + ":";
-			var font = Game.Renderer.Fonts[nameLabel.Font];
+			var font = Game.FontManager[nameLabel.Font];
 			var nameSize = font.Measure(nameText);
 
 			timeLabel.GetText = () => "{0:D2}:{1:D2}".F(time.Hour, time.Minute);

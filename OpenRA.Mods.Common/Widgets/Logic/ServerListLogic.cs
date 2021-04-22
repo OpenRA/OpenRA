@@ -234,7 +234,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var mapTitle = widget.GetOrNull<LabelWidget>("SELECTED_MAP");
 			if (mapTitle != null)
 			{
-				var font = Game.Renderer.Fonts[mapTitle.Font];
+				var font = Game.FontManager[mapTitle.Font];
 				var title = new CachedTransform<MapPreview, string>(m =>
 					WidgetUtils.TruncateText(m.Title, mapTitle.Bounds.Width, font));
 
@@ -274,7 +274,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				modVersion.IsVisible = () => currentServer != null;
 				modVersion.GetColor = () => currentServer.IsCompatible ? modVersion.TextColor : incompatibleVersionColor;
 
-				var font = Game.Renderer.Fonts[modVersion.Font];
+				var font = Game.FontManager[modVersion.Font];
 				var version = new CachedTransform<GameServer, string>(s => WidgetUtils.TruncateText(s.ModLabel, modVersion.Bounds.Width, font));
 				modVersion.GetText = () => version.Update(currentServer);
 			}
@@ -492,7 +492,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					if (!o.IsSpectator && server.Mod == modData.Manifest.Id)
 					{
 						var label = item.Get<LabelWidget>("LABEL");
-						var font = Game.Renderer.Fonts[label.Font];
+						var font = Game.FontManager[label.Font];
 						var name = WidgetUtils.TruncateText(o.Name, label.Bounds.Width, font);
 						label.GetText = () => name;
 						label.GetColor = () => o.Color;
@@ -505,7 +505,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					else
 					{
 						var label = item.Get<LabelWidget>("NOFLAG_LABEL");
-						var font = Game.Renderer.Fonts[label.Font];
+						var font = Game.FontManager[label.Font];
 						var name = WidgetUtils.TruncateText(o.Name, label.Bounds.Width, font);
 
 						// Force spectator color to prevent spoofing by the server
@@ -670,7 +670,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						var location = item.GetOrNull<LabelWidget>("LOCATION");
 						if (location != null)
 						{
-							var font = Game.Renderer.Fonts[location.Font];
+							var font = Game.FontManager[location.Font];
 							var label = WidgetUtils.TruncateText(game.Location, location.Bounds.Width, font);
 							location.GetText = () => label;
 							location.GetColor = () => canJoin ? location.TextColor : incompatibleGameColor;

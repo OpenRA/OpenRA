@@ -147,7 +147,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var profileHeader = header.Get("PROFILE_HEADER");
 			var messageHeader = header.Get("MESSAGE_HEADER");
 			var message = messageHeader.Get<LabelWidget>("MESSAGE");
-			var messageFont = Game.Renderer.Fonts[message.Font];
+			var messageFont = Game.FontManager[message.Font];
 
 			profileHeader.IsVisible = () => profileLoaded;
 			messageHeader.IsVisible = () => !profileLoaded;
@@ -173,13 +173,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						Game.RunAfterTick(() =>
 						{
 							var nameLabel = profileHeader.Get<LabelWidget>("PROFILE_NAME");
-							var nameFont = Game.Renderer.Fonts[nameLabel.Font];
+							var nameFont = Game.FontManager[nameLabel.Font];
 							var rankLabel = profileHeader.Get<LabelWidget>("PROFILE_RANK");
-							var rankFont = Game.Renderer.Fonts[rankLabel.Font];
+							var rankFont = Game.FontManager[rankLabel.Font];
 
 							var adminContainer = profileHeader.Get("GAME_ADMIN");
 							var adminLabel = adminContainer.Get<LabelWidget>("LABEL");
-							var adminFont = Game.Renderer.Fonts[adminLabel.Font];
+							var adminFont = Game.FontManager[adminLabel.Font];
 
 							var headerSizeOffset = profileHeader.Bounds.Height - messageHeader.Bounds.Height;
 
@@ -272,7 +272,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var maxLabelWidth = 0;
 			var templateIcon = badgeTemplate.Get("ICON");
 			var templateLabel = badgeTemplate.Get<LabelWidget>("LABEL");
-			var templateLabelFont = Game.Renderer.Fonts[templateLabel.Font];
+			var templateLabelFont = Game.FontManager[templateLabel.Font];
 			foreach (var badge in profile.Badges)
 				maxLabelWidth = Math.Max(maxLabelWidth, templateLabelFont.Measure(badge.Label).X);
 
@@ -289,7 +289,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				icon.Badge = badge;
 
 				var label = b.Get<LabelWidget>("LABEL");
-				var labelFont = Game.Renderer.Fonts[label.Font];
+				var labelFont = Game.FontManager[label.Font];
 
 				var labelText = WidgetUtils.TruncateText(badge.Label, widget.Bounds.Width - label.Bounds.X - icon.Bounds.X, labelFont);
 				label.GetText = () => labelText;
@@ -313,7 +313,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		public AnonymousProfileTooltipLogic(Widget widget, OrderManager orderManager, Session.Client client)
 		{
 			var nameLabel = widget.Get<LabelWidget>("NAME");
-			var nameFont = Game.Renderer.Fonts[nameLabel.Font];
+			var nameFont = Game.FontManager[nameLabel.Font];
 			widget.Bounds.Width = nameFont.Measure(nameLabel.Text).X + 2 * nameLabel.Bounds.Left;
 
 			var locationLabel = widget.Get<LabelWidget>("LOCATION");
@@ -322,7 +322,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			if (client.Location != null)
 			{
-				var locationFont = Game.Renderer.Fonts[locationLabel.Font];
+				var locationFont = Game.FontManager[locationLabel.Font];
 				var locationWidth = widget.Bounds.Width - 2 * locationLabel.Bounds.X;
 				var location = WidgetUtils.TruncateText(client.Location, locationWidth, locationFont);
 				locationLabel.IsVisible = () => true;

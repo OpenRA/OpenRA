@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		public ButtonTooltipLogic(Widget widget, ButtonWidget button)
 		{
 			var label = widget.Get<LabelWidget>("LABEL");
-			var font = Game.Renderer.Fonts[label.Font];
+			var font = Game.FontManager[label.Font];
 			var text = button.GetTooltipText();
 			var labelWidth = font.Measure(text).X;
 			var key = button.Key.GetValue();
@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var descTemplate = widget.Get<LabelWidget>("DESC");
 				widget.RemoveChild(descTemplate);
 
-				var descFont = Game.Renderer.Fonts[descTemplate.Font];
+				var descFont = Game.FontManager[descTemplate.Font];
 				var descWidth = 0;
 				var descOffset = descTemplate.Bounds.Y;
 				foreach (var line in desc.Split(new[] { "\\n" }, StringSplitOptions.None))

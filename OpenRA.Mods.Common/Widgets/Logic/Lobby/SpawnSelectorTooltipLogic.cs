@@ -27,8 +27,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var team = widget.Get<LabelWidget>("TEAM");
 			var singleHeight = widget.Get("SINGLE_HEIGHT").Bounds.Height;
 			var doubleHeight = widget.Get("DOUBLE_HEIGHT").Bounds.Height;
-			var ownerFont = Game.Renderer.Fonts[label.Font];
-			var teamFont = Game.Renderer.Fonts[team.Font];
+			var ownerFont = Game.FontManager[label.Font];
+			var teamFont = Game.FontManager[team.Font];
 
 			// Width specified in YAML is used as the margin between flag / label and label / border
 			var labelMargin = widget.Bounds.Width;

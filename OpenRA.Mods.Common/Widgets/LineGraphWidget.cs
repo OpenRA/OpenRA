@@ -105,8 +105,8 @@ namespace OpenRA.Mods.Common.Widgets
 			var cr = Game.Renderer.RgbaColorRenderer;
 			var rect = RenderBounds;
 
-			var labelFont = Game.Renderer.Fonts[font];
-			var axisFont = Game.Renderer.Fonts[GetAxisFont()];
+			var labelFont = Game.FontManager[font];
+			var axisFont = Game.FontManager[GetAxisFont()];
 
 			var xAxisSize = GetXAxisSize();
 			var yAxisSize = GetYAxisSize();

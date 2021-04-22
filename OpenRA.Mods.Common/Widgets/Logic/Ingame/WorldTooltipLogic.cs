@@ -27,8 +27,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var owner = widget.Get<LabelWidget>("OWNER");
 			var extras = widget.Get<LabelWidget>("EXTRA");
 
-			var font = Game.Renderer.Fonts[label.Font];
-			var ownerFont = Game.Renderer.Fonts[owner.Font];
+			var font = Game.FontManager[label.Font];
+			var ownerFont = Game.FontManager[owner.Font];
 			var labelText = "";
 			var showOwner = false;
 			var flagFaction = "";

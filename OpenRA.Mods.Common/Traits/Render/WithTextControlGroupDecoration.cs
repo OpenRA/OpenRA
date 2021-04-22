@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		{
 			this.info = info;
 			this.self = self;
-			font = Game.Renderer.Fonts[info.Font];
+			font = Game.FontManager[info.Font];
 			color = info.UsePlayerColor ? self.Owner.Color : info.Color;
 			label = new CachedTransform<int, string>(g => g.ToString());
 		}

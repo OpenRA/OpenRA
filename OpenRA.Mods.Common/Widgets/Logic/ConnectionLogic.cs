@@ -184,7 +184,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var title = panel.GetOrNull<LabelWidget>("MOD_TITLE");
 			if (title != null)
 			{
-				var font = Game.Renderer.Fonts[title.Font];
+				var font = Game.FontManager[title.Font];
 				var label = WidgetUtils.TruncateText(modTitle, title.Bounds.Width, font);
 				var labelWidth = font.Measure(label).X;
 				width = Math.Max(width, title.Bounds.X + labelWidth);
@@ -195,7 +195,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var version = panel.GetOrNull<LabelWidget>("MOD_VERSION");
 			if (version != null)
 			{
-				var font = Game.Renderer.Fonts[version.Font];
+				var font = Game.FontManager[version.Font];
 				var label = WidgetUtils.TruncateText(modVersion, version.Bounds.Width, font);
 				var labelWidth = font.Measure(label).X;
 				width = Math.Max(width, version.Bounds.X + labelWidth);

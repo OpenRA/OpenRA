@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public override void Draw()
 		{
-			if (!Game.Renderer.Fonts.TryGetValue(Font, out var font))
+			if (!Game.FontManager.TryGetValue(Font, out var font))
 				throw new ArgumentException("Requested font '{0}' was not found.".F(Font));
 
 			var text = GetText();

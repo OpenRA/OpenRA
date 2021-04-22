@@ -74,7 +74,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var y = 0;
 			foreach (var t in texts)
 			{
-				var font = Game.Renderer.Fonts[Font];
+				var font = Game.FontManager[Font];
 				var textSize = font.Measure(t.Text);
 				var location = new float2(Bounds.Location) + new float2(0, y);
 

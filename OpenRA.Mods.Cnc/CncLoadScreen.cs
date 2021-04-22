@@ -86,14 +86,14 @@ namespace OpenRA.Mods.Cnc
 
 			WidgetUtils.DrawPanel(bounds, border);
 
-			if (r.Fonts != null)
+			if (Game.FontManager != null)
 			{
-				var loadingFont = r.Fonts["BigBold"];
+				var loadingFont = Game.FontManager["BigBold"];
 				var loadingText = Info["Text"];
 				var loadingPos = new float2((bounds.Width - loadingFont.Measure(loadingText).X) / 2, barY);
 				loadingFont.DrawText(loadingText, loadingPos, Color.Gray);
 
-				var versionFont = r.Fonts["Regular"];
+				var versionFont = Game.FontManager["Regular"];
 				var versionSize = versionFont.Measure(versionText);
 				var versionPos = new float2(bounds.Width - 107 - versionSize.X / 2, 115 - versionSize.Y / 2);
 				versionFont.DrawTextWithContrast(versionText, versionPos, Color.White, Color.Black, 2);

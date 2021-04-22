@@ -355,7 +355,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void SetNewsStatus(string message)
 		{
-			message = WidgetUtils.WrapText(message, newsStatus.Bounds.Width, Game.Renderer.Fonts[newsStatus.Font]);
+			message = WidgetUtils.WrapText(message, newsStatus.Bounds.Width, Game.FontManager[newsStatus.Font]);
 			newsStatus.GetText = () => message;
 		}
 
@@ -414,9 +414,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				var contentLabel = newsItem.Get<LabelWidget>("CONTENT");
 				var content = item.Content.Replace("\\n", "\n");
-				content = WidgetUtils.WrapText(content, contentLabel.Bounds.Width, Game.Renderer.Fonts[contentLabel.Font]);
+				content = WidgetUtils.WrapText(content, contentLabel.Bounds.Width, Game.FontManager[contentLabel.Font]);
 				contentLabel.GetText = () => content;
-				contentLabel.Bounds.Height = Game.Renderer.Fonts[contentLabel.Font].Measure(content).Y;
+				contentLabel.Bounds.Height = Game.FontManager[contentLabel.Font].Measure(content).Y;
 				newsItem.Bounds.Height += contentLabel.Bounds.Height;
 
 				newsPanel.AddChild(newsItem);

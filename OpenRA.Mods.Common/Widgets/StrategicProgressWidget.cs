@@ -69,7 +69,7 @@ namespace OpenRA.Mods.Common.Widgets
 				isVictory ? "victory" : "defeat",
 				WidgetUtils.FormatTime(winnerSvc.TicksLeft, world.Timestep));
 
-			var font = Game.Renderer.Fonts["Bold"];
+			var font = Game.FontManager["Bold"];
 
 			var size = font.Measure(tc);
 			font.DrawTextWithContrast(tc, offset + new float2(rb.Left - size.X / 2 + 1, rb.Top + 1), Color.White, Color.Black, 1);

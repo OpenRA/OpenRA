@@ -134,7 +134,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			Game.Renderer.DisableAntialiasingFilter();
 
-			var bold = Game.Renderer.Fonts["TinyBold"];
+			var bold = Game.FontManager["TinyBold"];
 			foreach (var armyIcon in armyIcons)
 			{
 				var text = armyIcon.Unit.Count.ToString();

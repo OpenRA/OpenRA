@@ -20,9 +20,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		public LatencyTooltipLogic(Widget widget, TooltipContainerWidget tooltipContainer, OrderManager orderManager, Session.Client client)
 		{
 			var latencyPrefix = widget.Get<LabelWidget>("LATENCY_PREFIX");
-			var latencyPrefixFont = Game.Renderer.Fonts[latencyPrefix.Font];
+			var latencyPrefixFont = Game.FontManager[latencyPrefix.Font];
 			var latency = widget.Get<LabelWidget>("LATENCY");
-			var latencyFont = Game.Renderer.Fonts[latency.Font];
+			var latencyFont = Game.FontManager[latency.Font];
 			var rightMargin = widget.Bounds.Width;
 
 			latency.Bounds.X = latencyPrefix.Bounds.X + latencyPrefixFont.Measure(latencyPrefix.Text + " ").X;

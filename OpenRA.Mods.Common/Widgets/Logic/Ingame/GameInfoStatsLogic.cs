@@ -131,7 +131,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					LobbyUtils.SetupProfileWidget(item, client, orderManager, worldRenderer);
 
 					var nameLabel = item.Get<LabelWidget>("NAME");
-					var nameFont = Game.Renderer.Fonts[nameLabel.Font];
+					var nameFont = Game.FontManager[nameLabel.Font];
 
 					var suffixLength = new CachedTransform<string, int>(s => nameFont.Measure(s).X);
 					var name = new CachedTransform<(string Name, string Suffix), string>(c =>

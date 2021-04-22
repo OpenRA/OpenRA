@@ -131,7 +131,7 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			var apparentText = Key.DisplayString();
 
-			var font = Game.Renderer.Fonts[Font];
+			var font = Game.FontManager[Font];
 			var pos = RenderOrigin;
 
 			var textSize = font.Measure(apparentText);

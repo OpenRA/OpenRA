@@ -41,9 +41,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var iconMargin = timeIcon.Bounds.X;
 
-			var font = Game.Renderer.Fonts[nameLabel.Font];
-			var descFont = Game.Renderer.Fonts[descLabel.Font];
-			var requiresFont = Game.Renderer.Fonts[requiresLabel.Font];
+			var font = Game.FontManager[nameLabel.Font];
+			var descFont = Game.FontManager[descLabel.Font];
+			var requiresFont = Game.FontManager[requiresLabel.Font];
 			var formatBuildTime = new CachedTransform<int, string>(time => WidgetUtils.FormatTime(time, world.Timestep));
 			var requiresFormat = requiresLabel.Text;
 

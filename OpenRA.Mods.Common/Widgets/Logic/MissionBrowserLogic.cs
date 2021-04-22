@@ -79,7 +79,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			descriptionPanel = widget.Get<ScrollPanelWidget>("MISSION_DESCRIPTION_PANEL");
 
 			description = descriptionPanel.Get<LabelWidget>("MISSION_DESCRIPTION");
-			descriptionFont = Game.Renderer.Fonts[description.Font];
+			descriptionFont = Game.FontManager[description.Font];
 
 			difficultyButton = widget.Get<DropDownButtonWidget>("DIFFICULTY_DROPDOWNBUTTON");
 			gameSpeedButton = widget.GetOrNull<DropDownButtonWidget>("GAMESPEED_DROPDOWNBUTTON");

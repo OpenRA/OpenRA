@@ -108,7 +108,7 @@ namespace OpenRA.Mods.Common.Widgets
 			hotkeys = Exts.MakeArray(HotkeyCount,
 				i => modData.Hotkeys[HotkeyPrefix + (i + 1).ToString("D2")]);
 
-			overlayFont = Game.Renderer.Fonts[OverlayFont];
+			overlayFont = Game.FontManager[OverlayFont];
 
 			iconOffset = 0.5f * IconSize.ToFloat2() + IconSpriteOffset;
 			holdOffset = iconOffset - overlayFont.Measure(HoldText) / 2;

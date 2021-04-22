@@ -555,7 +555,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			titleLabel.Text = title;
 			progressBar.IsIndeterminate = () => true;
 
-			var font = Game.Renderer.Fonts[progressLabel.Font];
+			var font = Game.FontManager[progressLabel.Font];
 			var status = new CachedTransform<string, string>(s => WidgetUtils.TruncateText(s, progressLabel.Bounds.Width, font));
 			progressLabel.GetText = () => status.Update(getMessage());
 

@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public override void Draw()
 		{
 			var disabled = IsDisabled();
-			var font = Game.Renderer.Fonts[Font];
+			var font = Game.FontManager[Font];
 			var color = GetColor();
 			var colordisabled = GetColorDisabled();
 			var bgDark = GetContrastColorDark();

@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var mapDescriptionPanel = widget.Get<ScrollPanelWidget>("MAP_DESCRIPTION_PANEL");
 			var mapDescription = widget.Get<LabelWidget>("MAP_DESCRIPTION");
-			var mapFont = Game.Renderer.Fonts[mapDescription.Font];
+			var mapFont = Game.FontManager[mapDescription.Font];
 
 			var missionData = world.Map.Rules.Actors[SystemActors.World].TraitInfoOrDefault<MissionDataInfo>();
 			if (missionData != null)

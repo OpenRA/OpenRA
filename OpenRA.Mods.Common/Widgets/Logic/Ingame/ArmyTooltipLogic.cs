@@ -24,8 +24,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var nameLabel = widget.Get<LabelWidget>("NAME");
 			var descLabel = widget.Get<LabelWidget>("DESC");
 
-			var font = Game.Renderer.Fonts[nameLabel.Font];
-			var descFont = Game.Renderer.Fonts[descLabel.Font];
+			var font = Game.FontManager[nameLabel.Font];
+			var descFont = Game.FontManager[descLabel.Font];
 
 			ArmyUnit lastArmyUnit = null;
 			var descLabelPadding = descLabel.Bounds.Height;

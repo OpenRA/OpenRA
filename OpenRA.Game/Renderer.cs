@@ -34,8 +34,6 @@ namespace OpenRA
 
 		public bool WindowHasInputFocus => Window.HasInputFocus;
 
-		public IReadOnlyDictionary<string, SpriteFont> Fonts;
-
 		internal IPlatformWindow Window { get; private set; }
 		internal IGraphicsContext Context { get; private set; }
 
@@ -50,8 +48,6 @@ namespace OpenRA
 
 		IFrameBuffer worldBuffer;
 		Sprite worldSprite;
-
-		SheetBuilder fontSheetBuilder;
 		readonly IPlatform platform;
 
 		float depthMargin;
@@ -64,15 +60,11 @@ namespace OpenRA
 		IBatchRenderer currentBatchRenderer;
 		RenderType renderType = RenderType.None;
 
-		public Renderer(IPlatform platform, GraphicSettings graphicSettings)
+		public Renderer(IPlatform platform, IPlatformWindow window, GraphicSettings graphicSettings)
 		{
 			this.platform = platform;
-			var resolution = GetResolution(graphicSettings);
 
-			Window = platform.CreateWindow(new Size(resolution.Width, resolution.Height),
-				graphicSettings.Mode, graphicSettings.UIScale, graphicSettings.BatchSize,
-				graphicSettings.VideoDisplay, graphicSettings.GLProfile, !graphicSettings.DisableLegacyGL);
-
+			Window = window;
 			Context = Window.Context;
 
 			TempBufferSize = graphicSettings.BatchSize;
@@ -89,43 +81,9 @@ namespace OpenRA
 			tempBuffer = Context.CreateVertexBuffer(TempBufferSize);
 		}
 
-		static Size GetResolution(GraphicSettings graphicsSettings)
-		{
-			var size = (graphicsSettings.Mode == WindowMode.Windowed)
-				? graphicsSettings.WindowedSize
-				: graphicsSettings.FullscreenSize;
-			return new Size(size.X, size.Y);
-		}
-
 		public void SetUIScale(float scale)
 		{
 			Window.SetScaleModifier(scale);
-		}
-
-		public void InitializeFonts(ModData modData)
-		{
-			if (Fonts != null)
-				foreach (var font in Fonts.Values)
-					font.Dispose();
-			using (new PerfTimer("SpriteFonts"))
-			{
-				fontSheetBuilder?.Dispose();
-				fontSheetBuilder = new SheetBuilder(SheetType.BGRA, 512);
-				Fonts = modData.Manifest.Get<Fonts>().FontList.ToDictionary(x => x.Key,
-					x => new SpriteFont(x.Value.Font, modData.DefaultFileSystem.Open(x.Value.Font).ReadAllBytes(),
-										x.Value.Size, x.Value.Ascender, Window.EffectiveWindowScale, fontSheetBuilder));
-			}
-
-			Window.OnWindowScaleChanged += (oldNative, oldEffective, newNative, newEffective) =>
-			{
-				Game.RunAfterTick(() =>
-				{
-					ChromeProvider.SetDPIScale(newEffective);
-
-					foreach (var f in Fonts)
-						f.Value.SetScale(newEffective);
-				});
-			};
 		}
 
 		public void InitializeDepthBuffer(MapGrid mapGrid)
@@ -438,10 +396,6 @@ namespace OpenRA
 		{
 			WorldModelRenderer.Dispose();
 			tempBuffer.Dispose();
-			fontSheetBuilder?.Dispose();
-			if (Fonts != null)
-				foreach (var font in Fonts.Values)
-					font.Dispose();
 			Window.Dispose();
 		}
 

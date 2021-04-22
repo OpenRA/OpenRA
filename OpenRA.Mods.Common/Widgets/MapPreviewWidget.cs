@@ -89,7 +89,7 @@ namespace OpenRA.Mods.Common.Widgets
 			spawnClaimed = ChromeProvider.GetImage("lobby-bits", "spawn-claimed");
 			spawnUnclaimed = ChromeProvider.GetImage("lobby-bits", "spawn-unclaimed");
 			spawnDisabled = ChromeProvider.GetImage("lobby-bits", "spawn-disabled") ?? spawnUnclaimed;
-			spawnFont = Game.Renderer.Fonts[ChromeMetrics.Get<string>("SpawnFont")];
+			spawnFont = Game.FontManager[ChromeMetrics.Get<string>("SpawnFont")];
 			spawnColor = ChromeMetrics.Get<Color>("SpawnColor");
 			spawnContrastColor = ChromeMetrics.Get<Color>("SpawnContrastColor");
 			spawnLabelOffset = ChromeMetrics.Get<int2>("SpawnLabelOffset");
@@ -110,7 +110,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			spawnClaimed = ChromeProvider.GetImage("lobby-bits", "spawn-claimed");
 			spawnUnclaimed = ChromeProvider.GetImage("lobby-bits", "spawn-unclaimed");
-			spawnFont = Game.Renderer.Fonts[ChromeMetrics.Get<string>("SpawnFont")];
+			spawnFont = Game.FontManager[ChromeMetrics.Get<string>("SpawnFont")];
 			spawnColor = ChromeMetrics.Get<Color>("SpawnColor");
 			spawnContrastColor = ChromeMetrics.Get<Color>("SpawnContrastColor");
 			spawnLabelOffset = ChromeMetrics.Get<int2>("SpawnLabelOffset");

@@ -59,11 +59,11 @@ namespace OpenRA.Mods.Common.LoadScreens
 			if (logo != null)
 				r.RgbaSpriteRenderer.DrawSprite(logo, logoPos);
 
-			if (r.Fonts != null)
+			if (Game.FontManager != null)
 			{
 				var text = messages.Random(Game.CosmeticRandom);
-				var textSize = r.Fonts["Bold"].Measure(text);
-				r.Fonts["Bold"].DrawText(text, new float2(r.Resolution.Width - textSize.X - 20, r.Resolution.Height - textSize.Y - 20), Color.White);
+				var textSize = Game.FontManager["Bold"].Measure(text);
+				Game.FontManager["Bold"].DrawText(text, new float2(r.Resolution.Width - textSize.X - 20, r.Resolution.Height - textSize.Y - 20), Color.White);
 			}
 		}
 	}

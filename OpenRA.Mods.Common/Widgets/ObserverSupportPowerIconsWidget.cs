@@ -136,7 +136,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			Game.Renderer.DisableAntialiasingFilter();
 
-			var tiny = Game.Renderer.Fonts["Tiny"];
+			var tiny = Game.FontManager["Tiny"];
 			foreach (var icon in supportPowerIconsIcons)
 			{
 				var text = GetOverlayForItem(icon.Power, world.Timestep);

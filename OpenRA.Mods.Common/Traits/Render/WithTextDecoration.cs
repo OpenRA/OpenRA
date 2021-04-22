@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public WithTextDecoration(Actor self, WithTextDecorationInfo info)
 			: base(self, info)
 		{
-			font = Game.Renderer.Fonts[info.Font];
+			font = Game.FontManager[info.Font];
 			color = info.UsePlayerColor ? self.Owner.Color : info.Color;
 		}
 

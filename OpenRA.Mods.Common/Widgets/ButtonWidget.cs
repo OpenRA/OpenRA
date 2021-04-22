@@ -234,7 +234,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var rb = RenderBounds;
 			var disabled = IsDisabled();
 			var highlighted = IsHighlighted();
-			var font = Game.Renderer.Fonts[Font];
+			var font = Game.FontManager[Font];
 			var text = GetText();
 			var color = GetColor();
 			var colordisabled = GetColorDisabled();

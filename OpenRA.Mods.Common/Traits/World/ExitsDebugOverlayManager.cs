@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Traits
 			this.self = self;
 			Info = info;
 
-			if (!Game.Renderer.Fonts.TryGetValue(info.Font, out Font))
+			if (!Game.FontManager.TryGetValue(info.Font, out Font))
 				throw new YamlException("Could not find font '{0}'".F(info.Font));
 		}
 

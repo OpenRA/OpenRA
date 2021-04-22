@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var titleLabel = panel.GetOrNull<LabelWithTooltipWidget>("MAP_TITLE");
 				if (titleLabel != null)
 				{
-					var font = Game.Renderer.Fonts[titleLabel.Font];
+					var font = Game.FontManager[titleLabel.Font];
 					var title = new CachedTransform<MapPreview, string>(m => WidgetUtils.TruncateText(m.Title, titleLabel.Bounds.Width, font));
 					titleLabel.GetText = () => title.Update(preview);
 					titleLabel.GetTooltipText = () => preview.Title;
@@ -76,7 +76,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var authorLabel = panel.GetOrNull<LabelWidget>("MAP_AUTHOR");
 				if (authorLabel != null)
 				{
-					var font = Game.Renderer.Fonts[authorLabel.Font];
+					var font = Game.FontManager[authorLabel.Font];
 					var author = new CachedTransform<MapPreview, string>(
 						m => WidgetUtils.TruncateText("Created by {0}".F(m.Author), authorLabel.Bounds.Width, font));
 					authorLabel.GetText = () => author.Update(preview);
@@ -146,7 +146,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (advertiseOnline)
 			{
 				noticesLabelA.Text = "Internet Server (UPnP/NAT-PMP ";
-				var aWidth = Game.Renderer.Fonts[noticesLabelA.Font].Measure(noticesLabelA.Text).X;
+				var aWidth = Game.FontManager[noticesLabelA.Font].Measure(noticesLabelA.Text).X;
 				noticesLabelA.Bounds.Width = aWidth;
 
 				noticesLabelB.Text = Nat.Status == NatStatus.Enabled ? "Enabled" :
@@ -156,7 +156,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					Nat.Status == NatStatus.NotSupported ? ChromeMetrics.Get<Color>("NoticeErrorColor") :
 					ChromeMetrics.Get<Color>("NoticeInfoColor");
 
-				var bWidth = Game.Renderer.Fonts[noticesLabelB.Font].Measure(noticesLabelB.Text).X;
+				var bWidth = Game.FontManager[noticesLabelB.Font].Measure(noticesLabelB.Text).X;
 				noticesLabelB.Bounds.X = noticesLabelA.Bounds.Right;
 				noticesLabelB.Bounds.Width = bWidth;
 				noticesLabelB.Visible = true;

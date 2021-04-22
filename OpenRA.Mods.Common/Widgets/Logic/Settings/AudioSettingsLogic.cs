@@ -104,7 +104,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var audioDeviceDropdown = panel.Get<DropDownButtonWidget>("AUDIO_DEVICE");
 			audioDeviceDropdown.OnMouseDown = _ => ShowAudioDeviceDropdown(audioDeviceDropdown, devices);
 
-			var deviceFont = Game.Renderer.Fonts[audioDeviceDropdown.Font];
+			var deviceFont = Game.FontManager[audioDeviceDropdown.Font];
 			var deviceLabel = new CachedTransform<SoundDevice, string>(
 				s => WidgetUtils.TruncateText(s.Label, audioDeviceDropdown.UsableWidth, deviceFont));
 			audioDeviceDropdown.GetText = () => deviceLabel.Update(soundDevice);
@@ -154,7 +154,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					() => soundDevice = options[o]);
 
 				var deviceLabel = item.Get<LabelWidget>("LABEL");
-				var font = Game.Renderer.Fonts[deviceLabel.Font];
+				var font = Game.FontManager[deviceLabel.Font];
 				var label = WidgetUtils.TruncateText(options[o].Label, deviceLabel.Bounds.Width, font);
 				deviceLabel.GetText = () => label;
 				return item;

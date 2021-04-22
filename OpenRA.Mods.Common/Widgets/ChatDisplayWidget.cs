@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var chatLogArea = new Rectangle(pos.X, pos.Y, Bounds.Width, Bounds.Height);
 			var chatPos = new int2(chatLogArea.X + 5, chatLogArea.Bottom - 8);
 
-			var font = Game.Renderer.Fonts["Regular"];
+			var font = Game.FontManager["Regular"];
 			Game.Renderer.EnableScissor(chatLogArea);
 
 			foreach (var line in recentLines.AsEnumerable().Reverse())
