@@ -1,0 +1,79 @@
+World:
+	LuaScript:
+		Scripts: campaign.lua, soviet13b.lua, soviet13b-AI.lua, utils.lua
+	MissionData:
+		BriefingVideo: soviet13.vqa
+		WinVideo: sovtstar.vqa
+		LossVideo: allymorf.vqa
+		StartVideo: mtnkfact.vqa
+		Briefing: We have another chance to capture the Chronosphere. Take out the Radar Domes to cut the link between them and the Chronosphere. Then capture it!
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
+		Values:
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
+		Default: normal
+
+Player:
+	PlayerResources:
+		DefaultCash: 10000
+
+AFLD:
+	AirstrikePower@parabombs:
+		Prerequisites: aircraft.soviet
+	ParatroopersPower@paratroopers:
+		DropItems: E1,E1,E1,E2,E2
+
+PDOX:
+	Power:
+		Amount: 0
+	-WithColoredOverlay@IDISABLE:
+	Buildable:
+		Prerequisites: ~disabled
+
+ATEK:
+	GpsPower:
+		DisplayTimerRelationships: Ally
+
+MSLO:
+	Buildable:
+		Prerequisites: ~disabled
+
+MCV:
+	Buildable:
+		Prerequisites: ~disabled
+
+MECH:
+	Buildable:
+		Prerequisites: ~disabled
+
+IRON:
+	Buildable:
+		Prerequisites: ~disabled
+
+QTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+E7:
+	Buildable:
+		Prerequisites: ~disabled
+
+E7.noautotarget:
+	Buildable:
+		Prerequisites: ~disabled
+
+E3:
+	Buildable:
+		Prerequisites: ~tent
+
+MSUB:
+	Buildable:
+		Prerequisites: ~disabled
+
+THF:
+	Buildable:
+		Prerequisites: ~disabled
