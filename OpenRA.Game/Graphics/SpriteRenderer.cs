@@ -18,7 +18,7 @@ namespace OpenRA.Graphics
 {
 	public class SpriteRenderer : Renderer.IBatchRenderer
 	{
-		public const int SheetCount = 7;
+		public const int SheetCount = 8;
 		static readonly string[] SheetIndexToTextureName = Exts.MakeArray(SheetCount, i => $"Texture{i}");
 
 		readonly Renderer renderer;
