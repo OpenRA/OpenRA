@@ -10,6 +10,7 @@ uniform sampler2D Texture3;
 uniform sampler2D Texture4;
 uniform sampler2D Texture5;
 uniform sampler2D Texture6;
+uniform sampler2D Texture7;
 uniform sampler2D Palette;
 
 uniform bool EnableDepthPreview;
@@ -35,6 +36,7 @@ uniform vec2 Texture3Size;
 uniform vec2 Texture4Size;
 uniform vec2 Texture5Size;
 uniform vec2 Texture6Size;
+uniform vec2 Texture7Size;
 #else
 in vec4 vColor;
 
@@ -82,8 +84,10 @@ vec2 Size(float samplerIndex)
 		return Texture4Size;
 	else if (samplerIndex < 5.5)
 		return Texture5Size;
+	else if (samplerIndex < 6.5)
+		return Texture6Size;
 
-	return Texture6Size;
+	return Texture7Size;
 }
 
 vec4 Sample(float samplerIndex, vec2 pos)
@@ -100,8 +104,10 @@ vec4 Sample(float samplerIndex, vec2 pos)
 		return texture2D(Texture4, pos);
 	else if (samplerIndex < 5.5)
 		return texture2D(Texture5, pos);
+	else if (samplerIndex < 6.5)
+		return texture2D(Texture6, pos);
 
-	return texture2D(Texture6, pos);
+	return texture2D(Texture7, pos);
 }
 #else
 ivec2 Size(float samplerIndex)
@@ -118,8 +124,10 @@ ivec2 Size(float samplerIndex)
 		return textureSize(Texture4, 0);
 	else if (samplerIndex < 5.5)
 		return textureSize(Texture5, 0);
+	else if (samplerIndex < 6.5)
+		return textureSize(Texture6, 0);
 
-	return textureSize(Texture6, 0);
+	return textureSize(Texture7, 0);
 }
 
 vec4 Sample(float samplerIndex, vec2 pos)
@@ -136,8 +144,10 @@ vec4 Sample(float samplerIndex, vec2 pos)
 		return texture(Texture4, pos);
 	else if (samplerIndex < 5.5)
 		return texture(Texture5, pos);
+	else if (samplerIndex < 6.5)
+		return texture(Texture6, pos);
 
-	return texture(Texture6, pos);
+	return texture(Texture7, pos);
 }
 #endif
 
