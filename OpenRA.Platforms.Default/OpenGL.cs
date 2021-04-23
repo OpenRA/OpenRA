@@ -631,6 +631,7 @@ namespace OpenRA.Platforms.Default
 					glGenVertexArrays = null;
 					glBindVertexArray = null;
 					glBindFragDataLocation = null;
+					glGetTexImage = Bind<GetTexImage>("glGetTexImage");
 					glGenFramebuffers = Bind<GenFramebuffers>("glGenFramebuffersEXT");
 					glBindFramebuffer = Bind<BindFramebuffer>("glBindFramebufferEXT");
 					glFramebufferTexture2D = Bind<FramebufferTexture2D>("glFramebufferTexture2DEXT");
