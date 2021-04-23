@@ -560,6 +560,8 @@ namespace OpenRA.Platforms.Default
 		readonly Func<object, object> setData1;
 		readonly Action<object> setData2;
 		readonly Func<object, object> setData3;
+		readonly Action<object> setData4;
+		readonly Func<object, object> setData5;
 		readonly Action dispose;
 
 		public ThreadedTexture(ThreadedGraphicsContext device, ITextureInternal texture)
@@ -574,6 +576,8 @@ namespace OpenRA.Platforms.Default
 			setData1 = colors => { texture.SetData((uint[,])colors); return null; };
 			setData2 = tuple => { var t = (ValueTuple<byte[], int, int>)tuple; texture.SetData(t.Item1, t.Item2, t.Item3); };
 			setData3 = tuple => { setData2(tuple); return null; };
+			setData4 = tuple => { var t = (ValueTuple<float[], int, int>)tuple; texture.SetFloatData(t.Item1, t.Item2, t.Item3); };
+			setData5 = tuple => { setData4(tuple); return null; };
 			dispose = texture.Dispose;
 		}
 
@@ -620,6 +624,25 @@ namespace OpenRA.Platforms.Default
 				// If the length is large and would result in an array on the Large Object Heap (LOH),
 				// send a message and block to avoid LOH allocation as this requires a Gen2 collection.
 				device.Send(setData3, (colors, width, height));
+			}
+		}
+
+		public void SetFloatData(float[] data, int width, int height)
+		{
+			// Objects 85000 bytes or more will be directly allocated in the Large Object Heap (LOH).
+			// https://docs.microsoft.com/en-us/dotnet/standard/garbage-collection/large-object-heap
+			if (data.Length < 21250)
+			{
+				// If we are able to create a small array the GC can collect easily, post a message to avoid blocking.
+				var temp = new float[data.Length];
+				Array.Copy(data, temp, temp.Length);
+				device.Post(setData4, (temp, width, height));
+			}
+			else
+			{
+				// If the length is large and would result in an array on the Large Object Heap (LOH),
+				// send a message and block to avoid LOH allocation as this requires a Gen2 collection.
+				device.Send(setData5, (data, width, height));
 			}
 		}
 

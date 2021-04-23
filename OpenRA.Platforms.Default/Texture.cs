@@ -110,6 +110,25 @@ namespace OpenRA.Platforms.Default
 			}
 		}
 
+		public void SetFloatData(float[] data, int width, int height)
+		{
+			VerifyThreadAffinity();
+			if (!Exts.IsPowerOf2(width) || !Exts.IsPowerOf2(height))
+				throw new InvalidDataException("Non-power-of-two array {0}x{1}".F(width, height));
+
+			Size = new Size(width, height);
+			unsafe
+			{
+				fixed (float* ptr = &data[0])
+				{
+					PrepareTexture();
+					OpenGL.glTexImage2D(OpenGL.GL_TEXTURE_2D, 0, OpenGL.GL_RGBA16F, width, height,
+						0, OpenGL.GL_RGBA, OpenGL.GL_FLOAT, new IntPtr(ptr));
+					OpenGL.CheckGLError();
+				}
+			}
+		}
+
 		public byte[] GetData()
 		{
 			VerifyThreadAffinity();

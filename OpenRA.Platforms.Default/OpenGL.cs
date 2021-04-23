@@ -144,6 +144,8 @@ namespace OpenRA.Platforms.Default
 		public const int GL_INFO_LOG_LENGTH = 0x8B84;
 		public const int GL_ACTIVE_UNIFORMS = 0x8B86;
 
+		public const int GL_RGBA16F = 0x881A;
+
 		// OpenGL 4.3
 		public const int GL_DEBUG_OUTPUT = 0x92E0;
 		public const int GL_DEBUG_OUTPUT_SYNCHRONOUS = 0x8242;
