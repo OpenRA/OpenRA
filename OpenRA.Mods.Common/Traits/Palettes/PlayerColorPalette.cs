@@ -9,15 +9,15 @@
  */
 #endregion
 
-using System.Collections.Generic;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common
+namespace OpenRA.Mods.Common.Traits
 {
-	[Desc("Define a player palette by swapping palette indices.")]
-	public class IndexedPlayerPaletteInfo : TraitInfo, IRulesetLoaded
+	[TraitLocation(SystemActors.World | SystemActors.EditorWorld)]
+	[Desc("Add this to the World actor definition.")]
+	public class PlayerColorPaletteInfo : TraitInfo
 	{
 		[PaletteReference]
 		[Desc("The name of the palette to base off.")]
@@ -33,37 +33,24 @@ namespace OpenRA.Mods.Common
 		[Desc("Allow palette modifiers to change the palette.")]
 		public readonly bool AllowModifiers = true;
 
-		public readonly Dictionary<string, int[]> PlayerIndex;
-
-		public override object Create(ActorInitializer init) { return new IndexedPlayerPalette(this); }
-
-		public void RulesetLoaded(Ruleset rules, ActorInfo ai)
-		{
-			foreach (var p in PlayerIndex)
-				if (p.Value.Length != RemapIndex.Length)
-					throw new YamlException($"PlayerIndex for player `{p.Key}` length does not match RemapIndex!");
-		}
+		public override object Create(ActorInitializer init) { return new PlayerColorPalette(this); }
 	}
 
-	public class IndexedPlayerPalette : ILoadsPlayerPalettes
+	public class PlayerColorPalette : ILoadsPlayerPalettes
 	{
-		readonly IndexedPlayerPaletteInfo info;
+		readonly PlayerColorPaletteInfo info;
 
-		public IndexedPlayerPalette(IndexedPlayerPaletteInfo info)
+		public PlayerColorPalette(PlayerColorPaletteInfo info)
 		{
 			this.info = info;
 		}
 
 		public void LoadPlayerPalettes(WorldRenderer wr, string playerName, Color color, bool replaceExisting)
 		{
-			var basePalette = wr.Palette(info.BasePalette).Palette;
-			ImmutablePalette pal;
+			var (_, h, s, _) = color.ToAhsv();
 
-			if (info.PlayerIndex.TryGetValue(playerName, out var remap))
-				pal = new ImmutablePalette(basePalette, new IndexedColorRemap(basePalette, info.RemapIndex, remap));
-			else
-				pal = new ImmutablePalette(basePalette);
-
+			var remap = new PlayerColorRemap(info.RemapIndex, h, s);
+			var pal = new ImmutablePalette(wr.Palette(info.BasePalette).Palette, remap);
 			wr.AddPalette(info.BaseName + playerName, pal, info.AllowModifiers, replaceExisting);
 		}
 	}

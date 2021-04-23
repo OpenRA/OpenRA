@@ -11,9 +11,11 @@
 
 using OpenRA.Graphics;
 using OpenRA.Primitives;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.Common.Traits
 {
+	[TraitLocation(SystemActors.World | SystemActors.EditorWorld)]
 	[Desc("Add this to the World actor definition.")]
 	public class FixedColorPaletteInfo : TraitInfo
 	{
