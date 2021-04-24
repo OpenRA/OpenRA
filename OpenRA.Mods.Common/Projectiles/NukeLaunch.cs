@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Effects
 		readonly int trailInterval;
 		readonly int trailDelay;
 
-		WPos pos;
+		WPos pos, nextPos;
 		int ticks, trailTicks;
 		int launchDelay;
 		bool isLaunched;
@@ -80,7 +80,7 @@ namespace OpenRA.Mods.Common.Effects
 
 			anim = new Animation(firedBy.World, name);
 
-			pos = skipAscent ? descendSource : ascendSource;
+			pos = nextPos = skipAscent ? descendSource : ascendSource;
 		}
 
 		public void Tick(World world)
@@ -105,9 +105,15 @@ namespace OpenRA.Mods.Common.Effects
 
 			var isDescending = ticks >= turn;
 			if (!isDescending)
+			{
 				pos = WPos.LerpQuadratic(ascendSource, ascendTarget, WAngle.Zero, ticks, turn);
+				nextPos = WPos.LerpQuadratic(ascendSource, ascendTarget, WAngle.Zero, ticks + 1, turn);
+			}
 			else
+			{
 				pos = WPos.LerpQuadratic(descendSource, descendTarget, WAngle.Zero, ticks - turn, impactDelay - turn);
+				nextPos = WPos.LerpQuadratic(descendSource, descendTarget, WAngle.Zero, ticks + 1 - turn, impactDelay - turn);
+			}
 
 			if (!string.IsNullOrEmpty(trailImage) && --trailTicks < 0)
 			{
@@ -131,6 +137,7 @@ namespace OpenRA.Mods.Common.Effects
 
 		void Explode(World world, bool removeProjectile)
 		{
+			nextPos = pos;
 			if (removeProjectile)
 				world.AddFrameEndTask(w => { w.Remove(this); w.ScreenMap.Remove(this); });
 
@@ -156,7 +163,8 @@ namespace OpenRA.Mods.Common.Effects
 			if (!isLaunched)
 				return Enumerable.Empty<IRenderable>();
 
-			return anim.Render(pos, wr.Palette(weaponPalette));
+			var visualPos = WPos.Lerp(pos, nextPos, Game.RenderInterpolatedTimestepProgress, firedBy.World.Timestep);
+			return anim.Render(visualPos, wr.Palette(weaponPalette));
 		}
 
 		public float FractionComplete => ticks * 1f / impactDelay;
