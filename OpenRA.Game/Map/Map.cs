@@ -21,6 +21,7 @@ using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Support;
 using OpenRA.Traits;
+using OpenRA.Widgets;
 
 namespace OpenRA
 {
@@ -164,6 +165,7 @@ namespace OpenRA
 			new MapField("Bounds"),
 			new MapField("Visibility"),
 			new MapField("Categories"),
+			new MapField("Translations", required: false),
 			new MapField("LockPreview", required: false, ignoreIfValue: "False"),
 			new MapField("Players", "PlayerDefinitions"),
 			new MapField("Actors", "ActorDefinitions"),
@@ -189,6 +191,7 @@ namespace OpenRA
 		public Rectangle Bounds;
 		public MapVisibility Visibility = MapVisibility.Lobby;
 		public string[] Categories = { "Conquest" };
+		public string[] Translations;
 
 		public int2 MapSize { get; private set; }
 
@@ -245,6 +248,8 @@ namespace OpenRA
 		CellLayer<PPos[]> cellProjection;
 		CellLayer<List<MPos>> inverseCellProjection;
 		CellLayer<byte> projectedHeight;
+
+		internal Translation Translation;
 
 		public static string ComputeUID(IReadOnlyPackage package)
 		{
@@ -417,6 +422,8 @@ namespace OpenRA
 			}
 
 			Rules.Sequences.Preload();
+
+			Translation = new Translation(Game.Settings.Player.Language, Translations, this);
 
 			var tl = new MPos(0, 0).ToCPos(this);
 			var br = new MPos(MapSize.X - 1, MapSize.Y - 1).ToCPos(this);
@@ -1306,6 +1313,14 @@ namespace OpenRA
 				return modData.DefaultFileSystem.IsExternalModFile(filename);
 
 			return false;
+		}
+
+		public string Translate(string key, IDictionary<string, object> args = null, string attribute = null)
+		{
+			if (Translation.GetFormattedMessage(key, args, attribute) == key)
+				return Ui.Translate(key, args, attribute);
+
+			return Translation.GetFormattedMessage(key, args, attribute);
 		}
 	}
 }

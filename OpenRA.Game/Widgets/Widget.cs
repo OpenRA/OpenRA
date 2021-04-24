@@ -32,6 +32,8 @@ namespace OpenRA.Widgets
 		public static Widget KeyboardFocusWidget;
 		public static Widget MouseOverWidget;
 
+		internal static Translation Translation;
+
 		public static void CloseWindow()
 		{
 			if (WindowList.Count > 0)
@@ -154,6 +156,27 @@ namespace OpenRA.Widgets
 			// Issue a no-op mouse move to force any tooltips to be recalculated
 			HandleInput(new MouseInput(MouseInputEvent.Move, MouseButton.None,
 				Viewport.LastMousePos, int2.Zero, Modifiers.None, 0));
+		}
+
+		public static void InitializeTranslation()
+		{
+			Translation = new Translation(Game.Settings.Player.Language, Game.ModData.Manifest.Translations, Game.ModData.DefaultFileSystem);
+		}
+
+		public static string Translate(string key, IDictionary<string, object> args = null, string attribute = null)
+		{
+			if (Translation == null)
+				return null;
+
+			return Translation.GetFormattedMessage(key, args, attribute);
+		}
+
+		public static string TranslationAttribute(string key, string attribute = null)
+		{
+			if (Translation == null)
+				return null;
+
+			return Translation.GetAttribute(key, attribute);
 		}
 	}
 

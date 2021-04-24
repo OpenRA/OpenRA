@@ -221,6 +221,7 @@ namespace OpenRA
 		public Color Color = Color.FromArgb(200, 32, 32);
 		public string LastServer = "localhost:1234";
 		public Color[] CustomColors = { };
+		public string Language = "en";
 	}
 
 	public class GameSettings
