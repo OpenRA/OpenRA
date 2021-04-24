@@ -280,7 +280,7 @@ saboteur:
 	Demolition:
 		DetonationDelay: 0
 		Flashes: 0
-		EnterBehaviour: Suicide
+		EnterBehaviour: Dispose
 	-RevealOnFire:
 	GrantChargeDrainCondition:
 		MaxChargePoints: 125
