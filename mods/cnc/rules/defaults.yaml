@@ -465,7 +465,7 @@
 		Name: Civilian
 		GenericVisibility: None
 	Mobile:
-		Speed: 56
+		Speed: 54
 	Health:
 		HP: 2500
 	RevealsShroud:
@@ -562,7 +562,7 @@
 		Range: 6c0
 	Mobile:
 		Voice: Move
-		Speed: 71
+		Speed: 68
 		Locomotor: critter
 	Selectable:
 		Bounds: 1024, 1024
