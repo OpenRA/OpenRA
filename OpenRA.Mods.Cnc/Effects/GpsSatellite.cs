@@ -54,7 +54,8 @@ namespace OpenRA.Mods.Cnc.Effects
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			return anim.Render(pos, wr.Palette(palette));
+			var visualPos = WPos.Lerp(pos, pos + new WVec(0, 0, 427), Game.RenderInterpolatedTimestepProgress, wr.World.Timestep);
+			return anim.Render(visualPos, wr.Palette(palette));
 		}
 	}
 }
