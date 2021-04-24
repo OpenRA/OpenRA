@@ -31,5 +31,10 @@ namespace OpenRA.Mods.Common.Scripting.Global
 			var c = color.HasValue ? color.Value : Color.White;
 			luaLabel.GetColor = () => c;
 		}
+
+		public string Translate(string text)
+		{
+			return Context.World.Map.Translate(text);
+		}
 	}
 }
