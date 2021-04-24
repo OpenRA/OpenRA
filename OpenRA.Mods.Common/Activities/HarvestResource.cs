@@ -53,6 +53,9 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override bool Tick(Actor self)
 		{
+			if (harv.IsTraitDisabled)
+				Cancel(self, true);
+
 			if (IsCanceling || harv.IsFull)
 				return true;
 

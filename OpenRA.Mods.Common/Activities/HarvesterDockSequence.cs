@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Common.Activities
 					return false;
 
 				case DockingState.Drag:
-					if (IsCanceling || !Refinery.IsInWorld || Refinery.IsDead)
+					if (IsCanceling || !Refinery.IsInWorld || Refinery.IsDead || Harv.IsTraitDisabled)
 						return true;
 
 					dockingState = DockingState.Dock;
@@ -69,7 +69,7 @@ namespace OpenRA.Mods.Common.Activities
 					return false;
 
 				case DockingState.Dock:
-					if (!IsCanceling && Refinery.IsInWorld && !Refinery.IsDead)
+					if (!IsCanceling && Refinery.IsInWorld && !Refinery.IsDead && !Harv.IsTraitDisabled)
 						OnStateDock(self);
 					else
 						dockingState = DockingState.Undock;
@@ -77,7 +77,7 @@ namespace OpenRA.Mods.Common.Activities
 					return false;
 
 				case DockingState.Loop:
-					if (IsCanceling || !Refinery.IsInWorld || Refinery.IsDead || Harv.TickUnload(self, Refinery))
+					if (IsCanceling || !Refinery.IsInWorld || Refinery.IsDead || Harv.IsTraitDisabled || Harv.TickUnload(self, Refinery))
 						dockingState = DockingState.Undock;
 
 					return false;
