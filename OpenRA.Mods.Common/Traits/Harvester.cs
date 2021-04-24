@@ -22,7 +22,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class HarvesterInfo : TraitInfo, Requires<MobileInfo>
+	public class HarvesterInfo : ConditionalTraitInfo, Requires<MobileInfo>
 	{
 		public readonly HashSet<string> DeliveryBuildings = new HashSet<string>();
 
@@ -106,10 +106,9 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new Harvester(init.Self, this); }
 	}
 
-	public class Harvester : IIssueOrder, IResolveOrder, IOrderVoice,
+	public class Harvester : ConditionalTrait<HarvesterInfo>, IIssueOrder, IResolveOrder, IOrderVoice,
 		ISpeedModifier, ISync, INotifyCreated
 	{
-		public readonly HarvesterInfo Info;
 		public readonly IReadOnlyDictionary<string, int> Contents;
 
 		readonly Mobile mobile;
@@ -140,21 +139,23 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		public Harvester(Actor self, HarvesterInfo info)
+			: base(info)
 		{
-			Info = info;
 			Contents = new ReadOnlyDictionary<string, int>(contents);
 			mobile = self.Trait<Mobile>();
 			resourceLayer = self.World.WorldActor.Trait<IResourceLayer>();
 			claimLayer = self.World.WorldActor.Trait<ResourceClaimLayer>();
 		}
 
-		void INotifyCreated.Created(Actor self)
+		protected override void Created(Actor self)
 		{
 			UpdateCondition(self);
 
 			// Note: This is queued in a FrameEndTask because otherwise the activity is dropped/overridden while moving out of a factory.
 			if (Info.SearchOnCreation)
 				self.World.AddFrameEndTask(w => self.QueueActivity(new FindAndDeliverResources(self)));
+
+			base.Created(self);
 		}
 
 		public void LinkProc(Actor self, Actor proc)
@@ -294,6 +295,9 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			get
 			{
+				if (IsTraitDisabled)
+					yield break;
+
 				yield return new EnterAlliedActorTargeter<IAcceptResourcesInfo>(
 					"Deliver",
 					5,
@@ -368,6 +372,16 @@ namespace OpenRA.Mods.Common.Traits
 		int ISpeedModifier.GetSpeedModifier()
 		{
 			return 100 - (100 - Info.FullyLoadedSpeed) * contents.Values.Sum() / Info.Capacity;
+		}
+
+		protected override void TraitDisabled(Actor self)
+		{
+			LastLinkedProc = null;
+			LinkedProc = null;
+			contents.Clear();
+
+			if (conditionToken != Actor.InvalidConditionToken)
+				conditionToken = self.RevokeCondition(conditionToken);
 		}
 
 		class HarvestOrderTargeter : IOrderTargeter
