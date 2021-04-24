@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			displayLabel = cashLabel.F(displayResources);
 
 			cash.GetText = () => displayLabel;
-			cash.GetTooltipText = () => "Silo Usage: {0}/{1}".F(playerResources.Resources, playerResources.ResourceCapacity);
+			cash.GetTooltipText = () => $"Silo Usage: {playerResources.Resources}/{playerResources.ResourceCapacity}";
 		}
 
 		public override void Tick()

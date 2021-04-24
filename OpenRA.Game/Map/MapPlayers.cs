@@ -50,7 +50,7 @@ namespace OpenRA
 						Name = "Creeps",
 						Faction = firstFaction,
 						NonCombatant = true,
-						Enemies = Exts.MakeArray(playerCount, i => "Multi{0}".F(i))
+						Enemies = Exts.MakeArray(playerCount, i => $"Multi{i}")
 					}
 				}
 			};
@@ -59,7 +59,7 @@ namespace OpenRA
 			{
 				var p = new PlayerReference
 				{
-					Name = "Multi{0}".F(index),
+					Name = $"Multi{index}",
 					Faction = "Random",
 					Playable = true,
 					Enemies = new[] { "Creeps" }
@@ -70,7 +70,7 @@ namespace OpenRA
 
 		public List<MiniYamlNode> ToMiniYaml()
 		{
-			return Players.Select(p => new MiniYamlNode("PlayerReference@{0}".F(p.Key),
+			return Players.Select(p => new MiniYamlNode($"PlayerReference@{p.Key}",
 				FieldSaver.SaveDifferences(p.Value, new PlayerReference()))).ToList();
 		}
 	}

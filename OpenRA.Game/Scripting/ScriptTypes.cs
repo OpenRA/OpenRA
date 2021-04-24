@@ -126,7 +126,7 @@ namespace OpenRA.Scripting
 							if (!elementHasClrValue || !(element is LuaValue))
 								kv.Value.Dispose();
 							if (!elementHasClrValue)
-								throw new LuaException("Unable to convert table value of type {0} to type {1}".F(kv.Value.WrappedClrType(), innerType));
+								throw new LuaException($"Unable to convert table value of type {kv.Value.WrappedClrType()} to type {innerType}");
 						}
 
 						array.SetValue(element, i++);
@@ -186,7 +186,7 @@ namespace OpenRA.Scripting
 				return table;
 			}
 
-			throw new InvalidOperationException("Cannot convert type '{0}' to Lua. Class must implement IScriptBindable.".F(obj.GetType()));
+			throw new InvalidOperationException($"Cannot convert type '{obj.GetType()}' to Lua. Class must implement IScriptBindable.");
 		}
 	}
 }

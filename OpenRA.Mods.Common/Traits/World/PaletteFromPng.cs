@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Traits
 			var png = new Png(fileSystem.Open(Filename));
 
 			if (png.Palette == null)
-				throw new InvalidOperationException("Unable to load palette `{0}` from non-paletted png `{1}`".F(Name, Filename));
+				throw new InvalidOperationException($"Unable to load palette `{Name}` from non-paletted png `{Filename}`");
 
 			var colors = new uint[Palette.Size];
 

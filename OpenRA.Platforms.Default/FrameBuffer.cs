@@ -30,7 +30,7 @@ namespace OpenRA.Platforms.Default
 			this.size = size;
 			this.clearColor = clearColor;
 			if (!Exts.IsPowerOf2(size.Width) || !Exts.IsPowerOf2(size.Height))
-				throw new InvalidDataException("Frame buffer size ({0}x{1}) must be a power of two".F(size.Width, size.Height));
+				throw new InvalidDataException($"Frame buffer size ({size.Width}x{size.Height}) must be a power of two");
 
 			OpenGL.glGenFramebuffers(1, out framebuffer);
 			OpenGL.CheckGLError();
@@ -61,7 +61,7 @@ namespace OpenRA.Platforms.Default
 			var status = OpenGL.glCheckFramebufferStatus(OpenGL.GL_FRAMEBUFFER);
 			if (status != OpenGL.GL_FRAMEBUFFER_COMPLETE)
 			{
-				var error = "Error creating framebuffer: {0}\n{1}".F(status, new StackTrace());
+				var error = $"Error creating framebuffer: {status}\n{new StackTrace()}";
 				OpenGL.WriteGraphicsLog(error);
 				throw new InvalidOperationException("OpenGL Error: See graphics.log for details.");
 			}

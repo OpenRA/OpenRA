@@ -313,10 +313,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		string PlayersLabel(GameServer game)
 		{
-			return "{0}{1}{2}".F(
-				"{0} Player{1}".F(game.Players > 0 ? game.Players.ToString() : "No", game.Players != 1 ? "s" : ""),
-				game.Bots > 0 ? ", {0} Bot{1}".F(game.Bots, game.Bots != 1 ? "s" : "") : "",
-				game.Spectators > 0 ? ", {0} Spectator{1}".F(game.Spectators, game.Spectators != 1 ? "s" : "") : "");
+			return $"{(game.Players > 0 ? game.Players.ToString() : "No")} Player{(game.Players != 1 ? "s" : "")}{(game.Bots > 0 ? $", {game.Bots} Bot{(game.Bots != 1 ? "s" : "")}" : "")}{(game.Spectators > 0 ? $", {game.Spectators} Spectator{(game.Spectators != 1 ? "s" : "")}" : "")}";
 		}
 
 		public void RefreshServerList()
@@ -466,7 +463,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var noTeams = players.Count() == 1;
 			foreach (var p in players)
 			{
-				var label = noTeams ? "Players" : p.Key == 0 ? "No Team" : "Team {0}".F(p.Key);
+				var label = noTeams ? "Players" : p.Key == 0 ? "No Team" : $"Team {p.Key}";
 				teams.Add(label, p);
 			}
 
@@ -634,8 +631,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						var players = item.GetOrNull<LabelWithTooltipWidget>("PLAYERS");
 						if (players != null)
 						{
-							var label = "{0} / {1}".F(game.Players + game.Bots, game.MaxPlayers + game.Bots)
-								+ (game.Spectators > 0 ? " + {0}".F(game.Spectators) : "");
+							var label = $"{game.Players + game.Bots} / {game.MaxPlayers + game.Bots}"
+							            + (game.Spectators > 0 ? $" + {game.Spectators}" : "");
 
 							var color = canJoin ? players.TextColor : incompatibleGameColor;
 							players.GetText = () => label;
@@ -647,7 +644,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 								if (game.Clients.Length > 10)
 									displayClients = displayClients
 										.Take(9)
-										.Append("+ {0} other players".F(game.Clients.Length - 9));
+										.Append($"+ {game.Clients.Length - 9} other players");
 
 								var tooltip = displayClients.JoinWith("\n");
 								players.GetTooltipText = () => tooltip;
@@ -699,7 +696,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (game.PlayTime > 0)
 				{
 					var totalMinutes = Math.Ceiling(game.PlayTime / 60.0);
-					label += " for {0} minute{1}".F(totalMinutes, totalMinutes > 1 ? "s" : "");
+					label += $" for {totalMinutes} minute{(totalMinutes > 1 ? "s" : "")}";
 				}
 
 				return label;

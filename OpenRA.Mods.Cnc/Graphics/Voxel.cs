@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Cnc.Graphics
 		public Voxel(VoxelLoader loader, VxlReader vxl, HvaReader hva, (string Vxl, string Hva) files)
 		{
 			if (vxl.LimbCount != hva.LimbCount)
-				throw new InvalidOperationException("{0}.vxl and {1}.hva limb counts don't match.".F(files.Vxl, files.Hva));
+				throw new InvalidOperationException($"{files.Vxl}.vxl and {files.Hva}.hva limb counts don't match.");
 
 			transforms = hva.Transforms;
 			frames = hva.FrameCount;
@@ -60,9 +60,9 @@ namespace OpenRA.Mods.Cnc.Graphics
 		public float[] TransformationMatrix(uint limb, uint frame)
 		{
 			if (frame >= frames)
-				throw new ArgumentOutOfRangeException(nameof(frame), "Only {0} frames exist.".F(frames));
+				throw new ArgumentOutOfRangeException(nameof(frame), $"Only {frames} frames exist.");
 			if (limb >= limbs)
-				throw new ArgumentOutOfRangeException(nameof(limb), "Only {1} limbs exist.".F(limbs));
+				throw new ArgumentOutOfRangeException(nameof(limb), $"Only {limbs} limbs exist.");
 
 			var l = limbData[limb];
 			var t = new float[16];

@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Traits
 		void IRulesetLoaded<ActorInfo>.RulesetLoaded(Ruleset rules, ActorInfo info)
 		{
 			if (ShowTicks && !info.HasTraitInfo<IOccupySpaceInfo>())
-				throw new YamlException("CashTrickler is defined with ShowTicks 'true' but actor '{0}' occupies no space.".F(info.Name));
+				throw new YamlException($"CashTrickler is defined with ShowTicks 'true' but actor '{info.Name}' occupies no space.");
 		}
 
 		public override object Create(ActorInitializer init) { return new CashTrickler(this); }

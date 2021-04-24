@@ -170,7 +170,7 @@ namespace OpenRA.Network
 
 							if (orderManager.World.Paused != pause && world != null && world.LobbyInfo.NonBotClients.Count() > 1)
 							{
-								var pausetext = "The game is {0} by {1}".F(pause ? "paused" : "un-paused", client.Name);
+								var pausetext = $"The game is {(pause ? "paused" : "un-paused")} by {client.Name}";
 								Game.AddSystemLine(pausetext);
 							}
 

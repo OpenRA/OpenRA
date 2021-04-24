@@ -53,13 +53,13 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				{
 					currentNamespace = t.Namespace;
 					doc.AppendLine();
-					doc.AppendLine("## {0}".F(currentNamespace));
+					doc.AppendLine($"## {currentNamespace}");
 				}
 
 				var traitName = t.Name.EndsWith("Info") ? t.Name.Substring(0, t.Name.Length - 4) : t.Name;
 				var traitDescLines = t.GetCustomAttributes<DescAttribute>(false).SelectMany(d => d.Lines);
 				doc.AppendLine();
-				doc.AppendLine("### {0}".F(traitName));
+				doc.AppendLine($"### {traitName}");
 				foreach (var line in traitDescLines)
 					doc.AppendLine(line);
 
@@ -70,14 +70,14 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					if (t.HasAttribute<DescAttribute>())
 						doc.AppendLine();
 
-					doc.Append("Requires trait{0}: ".F(reqCount > 1 ? "s" : ""));
+					doc.Append($"Requires trait{(reqCount > 1 ? "s" : "")}: ");
 
 					var i = 0;
 					foreach (var require in requires)
 					{
 						var n = require.Name;
 						var name = n.EndsWith("Info") ? n.Remove(n.Length - 4, 4) : n;
-						doc.Append("[`{0}`](#{1}){2}".F(name, name.ToLowerInvariant(), i + 1 == reqCount ? ".\n" : ", "));
+						doc.Append($"[`{name}`](#{name.ToLowerInvariant()}){(i + 1 == reqCount ? ".\n" : ", ")}");
 						i++;
 					}
 				}
@@ -94,7 +94,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					var fieldType = Util.FriendlyTypeName(info.Field.FieldType);
 					var loadInfo = info.Field.GetCustomAttributes<FieldLoader.SerializeAttribute>(true).FirstOrDefault();
 					var defaultValue = loadInfo != null && loadInfo.Required ? "<em>(required)</em>" : FieldSaver.SaveField(liveTraitInfo, info.Field.Name).Value.Value;
-					doc.Append("<tr><td>{0}</td><td>{1}</td><td>{2}</td>".F(info.YamlName, defaultValue, fieldType));
+					doc.Append($"<tr><td>{info.YamlName}</td><td>{defaultValue}</td><td>{fieldType}</td>");
 					doc.Append("<td>");
 					foreach (var line in fieldDescLines)
 						doc.Append(line + " ");

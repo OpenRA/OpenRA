@@ -196,10 +196,10 @@ namespace OpenRA.Mods.Common.Widgets
 			var minutes = seconds / 60;
 
 			if (minutes >= 60)
-				return "{0:D}:{1:D2}:{2:D2}".F(minutes / 60, minutes % 60, seconds % 60);
+				return $"{minutes / 60:D}:{minutes % 60:D2}:{seconds % 60:D2}";
 			if (leadingMinuteZero)
-				return "{0:D2}:{1:D2}".F(minutes, seconds % 60);
-			return "{0:D}:{1:D2}".F(minutes, seconds % 60);
+				return $"{minutes:D2}:{seconds % 60:D2}";
+			return $"{minutes:D}:{seconds % 60:D2}";
 		}
 
 		public static string WrapText(string text, int width, SpriteFont font)

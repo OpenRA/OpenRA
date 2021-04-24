@@ -58,7 +58,7 @@ namespace OpenRA
 			return obj is float3 o && (float3?)o == this;
 		}
 
-		public override string ToString() { return "{0},{1},{2}".F(X, Y, Z); }
+		public override string ToString() { return $"{X},{Y},{Z}"; }
 
 		public static readonly float3 Zero = new float3(0, 0, 0);
 		public static readonly float3 Ones = new float3(1, 1, 1);

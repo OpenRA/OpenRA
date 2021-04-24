@@ -75,7 +75,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			flag.IsVisible = () => playerFaction != null;
 			flag.GetImageCollection = () => "flags";
 			flag.GetImageName = () => playerFaction;
-			team.GetText = () => "Team {0}".F(playerTeam);
+			team.GetText = () => $"Team {playerTeam}";
 			team.IsVisible = () => playerTeam > 0;
 		}
 	}

@@ -82,7 +82,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						getMap().Map.Install(mapRepository, () =>
 						{
 							if (orderManager != null)
-								Game.RunAfterTick(() => orderManager.IssueOrder(Order.Command("state {0}".F(Session.ClientState.NotReady))));
+								Game.RunAfterTick(() => orderManager.IssueOrder(Order.Command($"state {Session.ClientState.NotReady}")));
 						});
 					};
 
@@ -138,9 +138,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 						// Server does not provide the total file length
 						if (map.DownloadPercentage == 0)
-							return "Downloading {0} kB".F(map.DownloadBytes / 1024);
+							return $"Downloading {map.DownloadBytes / 1024} kB";
 
-						return "Downloading {0} kB ({1}%)".F(map.DownloadBytes / 1024, map.DownloadPercentage);
+						return $"Downloading {map.DownloadBytes / 1024} kB ({map.DownloadPercentage}%)";
 					};
 				}
 
@@ -161,7 +161,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							map.Install(mapRepository, () =>
 							{
 								if (orderManager != null)
-									Game.RunAfterTick(() => orderManager.IssueOrder(Order.Command("state {0}".F(Session.ClientState.NotReady))));
+									Game.RunAfterTick(() => orderManager.IssueOrder(Order.Command($"state {Session.ClientState.NotReady}")));
 							});
 						}
 						else if (map.Status == MapStatus.Unavailable)
@@ -226,7 +226,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				var font = Game.Renderer.Fonts[authorLabel.Font];
 				var author = new CachedTransform<MapPreview, string>(
-					m => WidgetUtils.TruncateText("Created by {0}".F(m.Author), authorLabel.Bounds.Width, font));
+					m => WidgetUtils.TruncateText($"Created by {m.Author}", authorLabel.Bounds.Width, font));
 				authorLabel.GetText = () => author.Update(getMap().Map);
 			}
 		}

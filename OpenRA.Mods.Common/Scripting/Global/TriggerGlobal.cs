@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Scripting
 		{
 			var events = a.TraitOrDefault<ScriptTriggers>();
 			if (events == null)
-				throw new LuaException("Actor '{0}' requires the ScriptTriggers trait before attaching a trigger".F(a.Info.Name));
+				throw new LuaException($"Actor '{a.Info.Name}' requires the ScriptTriggers trait before attaching a trigger");
 
 			return events;
 		}

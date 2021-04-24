@@ -76,7 +76,7 @@ namespace OpenRA
 			}
 			catch (YamlException)
 			{
-				Log.Write("debug", "GameInformation deserialized invalid MiniYaml:\n{0}".F(data));
+				Log.Write("debug", $"GameInformation deserialized invalid MiniYaml:\n{data}");
 				throw;
 			}
 		}
@@ -89,7 +89,7 @@ namespace OpenRA
 			};
 
 			for (var i = 0; i < Players.Count; i++)
-				nodes.Add(new MiniYamlNode("Player@{0}".F(i), FieldSaver.Save(Players[i])));
+				nodes.Add(new MiniYamlNode($"Player@{i}", FieldSaver.Save(Players[i])));
 
 			return nodes.WriteToString();
 		}

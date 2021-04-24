@@ -149,9 +149,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (frameText != null)
 			{
 				frameText.GetText = () =>
-					isVideoLoaded ?
-					"{0} / {1}".F(player.Video.CurrentFrame + 1, player.Video.Frames) :
-					"{0} / {1}".F(currentFrame, currentSprites.Length - 1);
+					isVideoLoaded ? $"{player.Video.CurrentFrame + 1} / {player.Video.Frames}"
+						: $"{currentFrame} / {currentSprites.Length - 1}";
 			}
 
 			var playButton = panel.GetOrNull<ButtonWidget>("BUTTON_PLAY");

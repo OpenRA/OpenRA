@@ -75,7 +75,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				foreach (var m in members.OrderBy(m => m.Name))
 				{
 					var desc = m.HasAttribute<DescAttribute>() ? m.GetCustomAttributes<DescAttribute>(true).First().Lines.JoinWith("\n") : "";
-					Console.WriteLine("<tr><td align=\"right\" width=\"50%\"><strong>{0}</strong></td><td>{1}</td></tr>".F(m.LuaDocString(), desc));
+					Console.WriteLine($"<tr><td align=\"right\" width=\"50%\"><strong>{m.LuaDocString()}</strong></td><td>{desc}</td></tr>");
 				}
 
 				Console.WriteLine("</table>");
@@ -119,7 +119,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						Console.WriteLine("<br />");
 
 					if (hasRequires)
-						Console.WriteLine("<b>Requires {1}:</b> {0}".F(required.JoinWith(", "), required.Length == 1 ? "Trait" : "Traits"));
+						Console.WriteLine($"<b>Requires {(required.Length == 1 ? "Trait" : "Traits")}:</b> {required.JoinWith(", ")}");
 
 					Console.WriteLine("</td></tr>");
 				}
@@ -165,7 +165,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						Console.WriteLine("<br />");
 
 					if (hasRequires)
-						Console.WriteLine("<b>Requires {1}:</b> {0}".F(required.JoinWith(", "), required.Length == 1 ? "Trait" : "Traits"));
+						Console.WriteLine($"<b>Requires {(required.Length == 1 ? "Trait" : "Traits")}:</b> {required.JoinWith(", ")}");
 
 					Console.WriteLine("</td></tr>");
 				}

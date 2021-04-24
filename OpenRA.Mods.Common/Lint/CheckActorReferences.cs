@@ -68,16 +68,14 @@ namespace OpenRA.Mods.Common.Lint
 
 				if (!dict.ContainsKey(v))
 				{
-					emitError("{0}.{1}.{2}: Missing actor `{3}`."
-						.F(actorInfo.Name, traitInfo.GetType().Name, fieldInfo.Name, value));
+					emitError($"{actorInfo.Name}.{traitInfo.GetType().Name}.{fieldInfo.Name}: Missing actor `{value}`.");
 
 					continue;
 				}
 
 				foreach (var requiredTrait in attribute.RequiredTraits)
 					if (!dict[v].TraitsInConstructOrder().Any(t => t.GetType() == requiredTrait || t.GetType().IsSubclassOf(requiredTrait)))
-						emitError("Actor type {0} does not have trait {1} which is required by {2}.{3}."
-							.F(value, requiredTrait.Name, traitInfo.GetType().Name, fieldInfo.Name));
+						emitError($"Actor type {value} does not have trait {requiredTrait.Name} which is required by {traitInfo.GetType().Name}.{fieldInfo.Name}.");
 			}
 		}
 
@@ -91,8 +89,7 @@ namespace OpenRA.Mods.Common.Lint
 					continue;
 
 				if (!dict.ContainsKey(value.ToLowerInvariant()))
-					emitError("{0}.{1}.{2}: Missing weapon `{3}`."
-						.F(actorInfo.Name, traitInfo.GetType().Name, fieldInfo.Name, value));
+					emitError($"{actorInfo.Name}.{traitInfo.GetType().Name}.{fieldInfo.Name}: Missing weapon `{value}`.");
 			}
 		}
 
@@ -106,8 +103,7 @@ namespace OpenRA.Mods.Common.Lint
 					continue;
 
 				if (!dict.ContainsKey(value.ToLowerInvariant()))
-					emitError("{0}.{1}.{2}: Missing voice `{3}`."
-						.F(actorInfo.Name, traitInfo.GetType().Name, fieldInfo.Name, value));
+					emitError($"{actorInfo.Name}.{traitInfo.GetType().Name}.{fieldInfo.Name}: Missing voice `{value}`.");
 			}
 		}
 	}

@@ -46,11 +46,11 @@ namespace OpenRA.Support
 			foreach (var sample in samples)
 			{
 				var name = sample.Key;
-				Log.AddChannel(name, "{0}{1}.csv".F(prefix, name));
+				Log.AddChannel(name, $"{prefix}{name}.csv");
 				Log.Write(name, "tick,time [ms]");
 
 				foreach (var point in sample.Value)
-					Log.Write(name, "{0},{1}".F(point.Tick,  point.Value));
+					Log.Write(name, $"{point.Tick},{point.Value}");
 			}
 		}
 

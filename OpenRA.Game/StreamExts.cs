@@ -151,7 +151,7 @@ namespace OpenRA
 		{
 			var length = s.ReadInt32();
 			if (length > maxLength)
-				throw new InvalidOperationException("The length of the string ({0}) is longer than the maximum allowed ({1}).".F(length, maxLength));
+				throw new InvalidOperationException($"The length of the string ({length}) is longer than the maximum allowed ({maxLength}).");
 
 			return encoding.GetString(s.ReadBytes(length));
 		}

@@ -60,7 +60,7 @@ namespace OpenRA.Network
 		void OutOfSync(int frame)
 		{
 			syncReport.DumpSyncReport(frame, frameData.OrdersForFrame(World, frame));
-			throw new InvalidOperationException("Out of sync in frame {0}.\n Compare syncreport.log with other players.".F(frame));
+			throw new InvalidOperationException($"Out of sync in frame {frame}.\n Compare syncreport.log with other players.");
 		}
 
 		public void StartGame()
@@ -126,7 +126,7 @@ namespace OpenRA.Network
 					{
 						if (packet.Length != 4 + Order.SyncHashOrderLength)
 						{
-							Log.Write("debug", "Dropped sync order with length {0}. Expected length {1}.".F(packet.Length, 4 + Order.SyncHashOrderLength));
+							Log.Write("debug", $"Dropped sync order with length {packet.Length}. Expected length {4 + Order.SyncHashOrderLength}.");
 							return;
 						}
 

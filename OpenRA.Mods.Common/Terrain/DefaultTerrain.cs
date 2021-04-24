@@ -106,7 +106,7 @@ namespace OpenRA.Mods.Common.Terrain
 				var tt = TerrainInfo[i].Type;
 
 				if (terrainIndexByType.ContainsKey(tt))
-					throw new YamlException("Duplicate terrain type '{0}' in '{1}'.".F(tt, filepath));
+					throw new YamlException($"Duplicate terrain type '{tt}' in '{filepath}'.");
 
 				terrainIndexByType.Add(tt, i);
 			}
@@ -125,7 +125,7 @@ namespace OpenRA.Mods.Common.Terrain
 			if (terrainIndexByType.TryGetValue(type, out var index))
 				return index;
 
-			throw new InvalidDataException("Tileset '{0}' lacks terrain type '{1}'".F(Id, type));
+			throw new InvalidDataException($"Tileset '{Id}' lacks terrain type '{type}'");
 		}
 
 		public byte GetTerrainIndex(TerrainTile r)

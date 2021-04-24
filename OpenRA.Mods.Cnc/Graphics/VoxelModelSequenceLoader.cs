@@ -98,10 +98,10 @@ namespace OpenRA.Mods.Cnc.Graphics
 			{
 				if (models.ContainsKey(model))
 					throw new InvalidOperationException(
-						"Model `{0}` does not have a sequence `{1}`".F(model, sequence));
+						$"Model `{model}` does not have a sequence `{sequence}`");
 				else
 					throw new InvalidOperationException(
-						"Model `{0}` does not have any sequences defined.".F(model));
+						$"Model `{model}` does not have any sequences defined.");
 			}
 		}
 
@@ -109,7 +109,7 @@ namespace OpenRA.Mods.Cnc.Graphics
 		{
 			if (!models.ContainsKey(model))
 				throw new InvalidOperationException(
-					"Model `{0}` does not have any sequences defined.".F(model));
+					$"Model `{model}` does not have any sequences defined.");
 
 			return models[model].ContainsKey(sequence);
 		}

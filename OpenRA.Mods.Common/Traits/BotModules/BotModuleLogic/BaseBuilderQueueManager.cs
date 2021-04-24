@@ -166,7 +166,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				if (location == null)
 				{
-					AIUtils.BotDebug("{0} has nowhere to place {1}".F(player, currentBuilding.Item));
+					AIUtils.BotDebug($"{player} has nowhere to place {currentBuilding.Item}");
 					bot.QueueOrder(Order.CancelProduction(queue.Actor, currentBuilding.Item, 1));
 					failCount += failCount;
 

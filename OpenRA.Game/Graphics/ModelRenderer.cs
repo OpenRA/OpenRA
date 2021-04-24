@@ -205,7 +205,7 @@ namespace OpenRA.Graphics
 						var t = m.Model.TransformationMatrix(i, frame);
 						var it = Util.MatrixInverse(t);
 						if (it == null)
-							throw new InvalidOperationException("Failed to invert the transformed matrix of frame {0} during RenderAsync.".F(i));
+							throw new InvalidOperationException($"Failed to invert the transformed matrix of frame {i} during RenderAsync.");
 
 						// Transform light vector from shadow -> world -> limb coords
 						var lightDirection = ExtractRotationVector(Util.MatrixMultiply(it, lightTransform));

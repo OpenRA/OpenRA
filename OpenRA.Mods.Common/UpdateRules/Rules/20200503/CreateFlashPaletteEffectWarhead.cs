@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 				var weaponName = weaponNode.Value.Value;
 
-				weaponsToUpdate.Add(new Tuple<string, string, string>(weaponName, traitName, "{0} ({1})".F(actorNode.Key, actorNode.Location.Filename)));
+				weaponsToUpdate.Add(new Tuple<string, string, string>(weaponName, traitName, $"{actorNode.Key} ({actorNode.Location.Filename})"));
 
 				nukePowerTrait.RemoveNodes("FlashType");
 			}
@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 		{
 			if (weaponsToUpdate.Any())
 				yield return "Add a FlashPaletteEffectWarhead to the following weapons:\n" +
-					UpdateUtils.FormatMessageList(weaponsToUpdate.Select(x => "Weapon `{0}`, used by trait `{1}` on actor {2}".F(x.Item1, x.Item2, x.Item3)));
+					UpdateUtils.FormatMessageList(weaponsToUpdate.Select(x => $"Weapon `{x.Item1}`, used by trait `{x.Item2}` on actor {x.Item3}"));
 
 			weaponsToUpdate.Clear();
 		}

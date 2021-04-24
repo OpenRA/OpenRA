@@ -117,12 +117,12 @@ namespace OpenRA.Network
 					Log.Write("sync", "Synced Traits:");
 					foreach (var a in r.Traits)
 					{
-						Log.Write("sync", "\t {0} {1} {2} {3} ({4})".F(a.ActorID, a.Type, a.Owner, a.Trait, a.Hash));
+						Log.Write("sync", $"\t {a.ActorID} {a.Type} {a.Owner} {a.Trait} ({a.Hash})");
 
 						var nvp = a.NamesValues;
 						for (int i = 0; i < nvp.Names.Length; i++)
 							if (nvp.Values[i] != null)
-								Log.Write("sync", "\t\t {0}: {1}".F(nvp.Names[i], nvp.Values[i]));
+								Log.Write("sync", $"\t\t {nvp.Names[i]}: {nvp.Values[i]}");
 					}
 
 					Log.Write("sync", "Synced Effects:");
@@ -133,7 +133,7 @@ namespace OpenRA.Network
 						var nvp = e.NamesValues;
 						for (int i = 0; i < nvp.Names.Length; i++)
 							if (nvp.Values[i] != null)
-								Log.Write("sync", "\t\t {0}: {1}".F(nvp.Names[i], nvp.Values[i]));
+								Log.Write("sync", $"\t\t {nvp.Names[i]}: {nvp.Values[i]}");
 					}
 
 					Log.Write("sync", "Orders Issued:");

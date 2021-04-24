@@ -50,8 +50,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 					Array.Copy(Transforms, 16 * (LimbCount * j + i), testMatrix, 0, 16);
 					if (OpenRA.Graphics.Util.MatrixInverse(testMatrix) == null)
 						throw new InvalidDataException(
-							"The transformation matrix for HVA file `{0}` section {1} frame {2} is invalid because it is not invertible!"
-							.F(fileName, i, j));
+							$"The transformation matrix for HVA file `{fileName}` section {i} frame {j} is invalid because it is not invertible!");
 				}
 		}
 

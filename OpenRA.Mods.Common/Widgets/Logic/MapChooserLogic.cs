@@ -193,7 +193,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				// 'all game types' extra item
 				categories.Insert(0, (null as string, tabMaps[tab].Count()));
 
-				Func<(string Category, int Count), string> showItem = x => "{0} ({1})".F(x.Category ?? "All Maps", x.Count);
+				Func<(string Category, int Count), string> showItem = x => $"{x.Category ?? "All Maps"} ({x.Count})";
 
 				Func<(string Category, int Count), ScrollItemWidget, ScrollItemWidget> setupItem = (ii, template) =>
 				{
@@ -272,7 +272,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					if (type != null)
 						details = type + " ";
 
-					details += "({0} players)".F(preview.PlayerCount);
+					details += $"({preview.PlayerCount} players)";
 					detailsWidget.GetText = () => details;
 				}
 
@@ -280,7 +280,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (authorWidget != null)
 				{
 					var font = Game.Renderer.Fonts[authorWidget.Font];
-					var author = WidgetUtils.TruncateText("Created by {0}".F(preview.Author), authorWidget.Bounds.Width, font);
+					var author = WidgetUtils.TruncateText($"Created by {preview.Author}", authorWidget.Bounds.Width, font);
 					authorWidget.GetText = () => author;
 				}
 
@@ -331,7 +331,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			ConfirmationDialogs.ButtonPrompt(
 				title: "Delete map",
-				text: "Delete the map '{0}'?".F(modData.MapCache[map].Title),
+				text: $"Delete the map '{modData.MapCache[map].Title}'?",
 				onConfirm: () =>
 				{
 					var newUid = DeleteMap(map);

@@ -113,7 +113,7 @@ namespace OpenRA
 				var filename = nodes[i].Value.Value;
 				var contents = package.GetStream(filename);
 				if (contents == null)
-					throw new YamlException("{0}: File `{1}` not found.".F(nodes[i].Location, filename));
+					throw new YamlException($"{nodes[i].Location}: File `{filename}` not found.");
 
 				nodes.RemoveAt(i);
 				nodes.InsertRange(i, MiniYaml.FromStream(contents, filename));
@@ -182,7 +182,7 @@ namespace OpenRA
 
 				var t = oc.FindType(kv.Key);
 				if (t == null || !typeof(IGlobalModData).IsAssignableFrom(t))
-					throw new InvalidDataException("`{0}` is not a valid mod manifest entry.".F(kv.Key));
+					throw new InvalidDataException($"`{kv.Key}` is not a valid mod manifest entry.");
 
 				IGlobalModData module;
 				var ctor = t.GetConstructor(new[] { typeof(MiniYaml) });

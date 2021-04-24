@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Traits
 				}
 				catch (YamlException e)
 				{
-					throw new YamlException("HitShape {0}: {1}".F(shape, e.Message));
+					throw new YamlException($"HitShape {shape}: {e.Message}");
 				}
 			}
 			else

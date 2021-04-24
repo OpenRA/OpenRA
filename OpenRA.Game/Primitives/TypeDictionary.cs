@@ -64,12 +64,12 @@ namespace OpenRA.Primitives
 			if (!data.TryGetValue(t, out var ret))
 			{
 				if (throwsIfMissing)
-					throw new InvalidOperationException("TypeDictionary does not contain instance of type `{0}`".F(t));
+					throw new InvalidOperationException($"TypeDictionary does not contain instance of type `{t}`");
 				return null;
 			}
 
 			if (ret.Count > 1)
-				throw new InvalidOperationException("TypeDictionary contains multiple instances of type `{0}`".F(t));
+				throw new InvalidOperationException($"TypeDictionary contains multiple instances of type `{t}`");
 			return ret[0];
 		}
 

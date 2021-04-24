@@ -86,7 +86,7 @@ namespace OpenRA.Mods.Common.Lint
 				foreach (var inherit in inherits)
 				{
 					if (inherit[0] != '^')
-						emitError("{0} definition inherits from {1}, which is not an abstract template.".F(actor, inherit));
+						emitError($"{actor} definition inherits from {inherit}, which is not an abstract template.");
 
 					toResolve.Enqueue(inherit);
 				}

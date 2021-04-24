@@ -81,7 +81,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (c == 0)
 					return "No limit";
 				else
-					return c.ToString() + " minute{0}".F(c > 1 ? "s" : null);
+					return c.ToString() + $" minute{(c > 1 ? "s" : null)}";
 			});
 
 			yield return new LobbyOption("timelimit", TimeLimitLabel, TimeLimitDescription, TimeLimitDropdownVisible, TimeLimitDisplayOrder,

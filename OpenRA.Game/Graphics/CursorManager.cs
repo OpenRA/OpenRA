@@ -231,7 +231,7 @@ namespace OpenRA.Graphics
 
 			// All palettes must be explicitly referenced, even if they are embedded in the sprite.
 			if (palette == null)
-				throw new InvalidOperationException("Cursor sequence `{0}` attempted to load an indexed sprite but does not define Palette".F(name));
+				throw new InvalidOperationException($"Cursor sequence `{name}` attempted to load an indexed sprite but does not define Palette");
 
 			var width = frame.Size.Width;
 			var height = frame.Size.Height;

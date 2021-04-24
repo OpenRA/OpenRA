@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			var world = worldRenderer.World;
 			if (!world.Map.Rules.Actors.TryGetValue(reference.Type.ToLowerInvariant(), out Info))
-				throw new InvalidDataException("Actor {0} of unknown type {1}".F(id, reference.Type.ToLowerInvariant()));
+				throw new InvalidDataException($"Actor {id} of unknown type {reference.Type.ToLowerInvariant()}");
 
 			CenterPosition = PreviewPosition(world, reference);
 
@@ -241,7 +241,7 @@ namespace OpenRA.Mods.Common.Traits
 				return world.Map.CenterOfSubCell(cell, subCell) + offset;
 			}
 			else
-				throw new InvalidDataException("Actor {0} must define Location or CenterPosition".F(ID));
+				throw new InvalidDataException($"Actor {ID} must define Location or CenterPosition");
 		}
 
 		void GeneratePreviews()
@@ -259,7 +259,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override string ToString()
 		{
-			return "{0} {1}".F(Info.Name, ID);
+			return $"{Info.Name} {ID}";
 		}
 
 		public bool Equals(EditorActorPreview other)

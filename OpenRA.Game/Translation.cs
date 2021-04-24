@@ -104,13 +104,13 @@ namespace OpenRA
 				name = args[i] as string;
 				if (string.IsNullOrEmpty(name))
 				{
-					throw new ArgumentException("Expected the argument at index {0} to be a non-empty string".F(i),
+					throw new ArgumentException($"Expected the argument at index {i} to be a non-empty string",
 						nameof(args));
 				}
 
 				value = args[i + 1];
 				if (value == null)
-					throw new ArgumentNullException("args", "Expected the argument at index {0} to be a non-null value".F(i + 1));
+					throw new ArgumentNullException("args", $"Expected the argument at index {i + 1} to be a non-null value");
 
 				argumentDictionary.Add(name, value);
 			}

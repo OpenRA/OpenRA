@@ -81,8 +81,8 @@ namespace OpenRA.Scripting
 	/// </remarks>
 	public abstract class ScriptGlobal : ScriptObjectWrapper
 	{
-		protected override string DuplicateKeyError(string memberName) { return "Table '{0}' defines multiple members '{1}'".F(Name, memberName); }
-		protected override string MemberNotFoundError(string memberName) { return "Table '{0}' does not define a property '{1}'".F(Name, memberName); }
+		protected override string DuplicateKeyError(string memberName) { return $"Table '{Name}' defines multiple members '{memberName}'"; }
+		protected override string MemberNotFoundError(string memberName) { return $"Table '{Name}' does not define a property '{memberName}'"; }
 
 		public readonly string Name;
 		public ScriptGlobal(ScriptContext context)
@@ -92,7 +92,7 @@ namespace OpenRA.Scripting
 			var type = GetType();
 			var names = type.GetCustomAttributes<ScriptGlobalAttribute>(true);
 			if (names.Length != 1)
-				throw new InvalidOperationException("[ScriptGlobal] attribute not found for global table '{0}'".F(type));
+				throw new InvalidOperationException($"[ScriptGlobal] attribute not found for global table '{type}'");
 
 			Name = names.First().Name;
 			Bind(new[] { this });
@@ -187,7 +187,7 @@ namespace OpenRA.Scripting
 					});
 
 					if (ctor == null)
-						throw new InvalidOperationException("{0} must define a constructor that takes a ScriptContext context parameter".F(b.Name));
+						throw new InvalidOperationException($"{b.Name} must define a constructor that takes a ScriptContext context parameter");
 
 					var binding = (ScriptGlobal)ctor.Invoke(new[] { this });
 					using (var obj = binding.ToLuaValue(this))
@@ -236,7 +236,7 @@ namespace OpenRA.Scripting
 			using (var registerGlobal = (LuaFunction)runtime.Globals["RegisterSandboxedGlobal"])
 			{
 				if (runtime.Globals.ContainsKey(name))
-					throw new LuaException("The global name '{0}' is reserved, and may not be used by a map actor".F(name));
+					throw new LuaException($"The global name '{name}' is reserved, and may not be used by a map actor");
 
 				using (var obj = a.ToLuaValue(this))
 					registerGlobal.Call(name, obj).Dispose();

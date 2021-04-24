@@ -292,7 +292,7 @@ namespace OpenRA.Mods.Common.FileFormats
 			{
 				currentVolumeID = newVolume;
 				if (!volumes.TryGetValue(currentVolumeID, out currentVolume))
-					throw new FileNotFoundException("Volume {0} is not available".F(currentVolumeID));
+					throw new FileNotFoundException($"Volume {currentVolumeID} is not available");
 
 				currentVolume.Position = 0;
 				if (currentVolume.ReadUInt32() != 0x28635349)
@@ -385,7 +385,7 @@ namespace OpenRA.Mods.Common.FileFormats
 				{
 					header.Position = cabDescriptorOffset +	cabDescriptor.FileTableOffset + cabDescriptor.FileTableOffset2 + i * 0x57;
 					var file = new FileDescriptor(header, i, cabDescriptorOffset + cabDescriptor.FileTableOffset);
-					var path = "{0}\\{1}\\{2}".F(fileGroup.Name, directories[file.DirectoryIndex].Name, file.Filename);
+					var path = $"{fileGroup.Name}\\{directories[file.DirectoryIndex].Name}\\{file.Filename}";
 					index[path] = file;
 				}
 			}
@@ -418,7 +418,7 @@ namespace OpenRA.Mods.Common.FileFormats
 			extracter.CopyTo(output, onProgress);
 
 			if (output.Length != file.ExpandedSize)
-				throw new InvalidDataException("File expanded to wrong length. Expected = {0}, Got = {1}".F(file.ExpandedSize, output.Length));
+				throw new InvalidDataException($"File expanded to wrong length. Expected = {file.ExpandedSize}, Got = {output.Length}");
 		}
 
 		public IReadOnlyDictionary<int, IEnumerable<string>> Contents

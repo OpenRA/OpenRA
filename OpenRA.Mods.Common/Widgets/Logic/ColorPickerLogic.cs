@@ -103,13 +103,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			if (logicArgs.TryGetValue("PaletteColumns", out var yaml))
 				if (!int.TryParse(yaml.Value, out paletteCols))
-					throw new YamlException("Invalid value for PaletteColumns: {0}".F(yaml.Value));
+					throw new YamlException($"Invalid value for PaletteColumns: {yaml.Value}");
 			if (logicArgs.TryGetValue("PalettePresetRows", out yaml))
 				if (!int.TryParse(yaml.Value, out palettePresetRows))
-					throw new YamlException("Invalid value for PalettePresetRows: {0}".F(yaml.Value));
+					throw new YamlException($"Invalid value for PalettePresetRows: {yaml.Value}");
 			if (logicArgs.TryGetValue("PaletteCustomRows", out yaml))
 				if (!int.TryParse(yaml.Value, out paletteCustomRows))
-					throw new YamlException("Invalid value for PaletteCustomRows: {0}".F(yaml.Value));
+					throw new YamlException($"Invalid value for PaletteCustomRows: {yaml.Value}");
 
 			for (var j = 0; j < palettePresetRows; j++)
 			{

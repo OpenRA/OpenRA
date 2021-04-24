@@ -37,9 +37,9 @@ namespace OpenRA.Mods.Common.Lint
 					{
 						var type = Game.ModData.ObjectCreator.FindType(typeName);
 						if (type == null)
-							emitError("{0} refers to a logic object `{1}` that does not exist".F(filename, typeName));
+							emitError($"{filename} refers to a logic object `{typeName}` that does not exist");
 						else if (!typeof(ChromeLogic).IsAssignableFrom(type))
-							emitError("{0} refers to a logic object `{1}` that does not inherit from ChromeLogic".F(filename, typeName));
+							emitError($"{filename} refers to a logic object `{typeName}` that does not inherit from ChromeLogic");
 					}
 				}
 

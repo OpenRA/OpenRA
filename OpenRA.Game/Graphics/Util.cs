@@ -108,7 +108,7 @@ namespace OpenRA.Graphics
 									}
 
 									default:
-										throw new InvalidOperationException("Unknown SpriteFrameType {0}".F(srcType));
+										throw new InvalidOperationException($"Unknown SpriteFrameType {srcType}");
 								}
 
 								var cc = Color.FromArgb(a, r, g, b);
@@ -181,7 +181,7 @@ namespace OpenRA.Graphics
 
 								// Pngs don't support BGR[A], so no need to include them here
 								default:
-									throw new InvalidOperationException("Unknown SpriteFrameType {0}".F(src.Type));
+									throw new InvalidOperationException($"Unknown SpriteFrameType {src.Type}");
 							}
 
 							data[(y + j) * destStride + x + i] = PremultiplyAlpha(cc).ToArgb();

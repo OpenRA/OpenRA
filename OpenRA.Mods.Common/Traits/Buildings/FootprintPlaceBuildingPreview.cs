@@ -65,9 +65,9 @@ namespace OpenRA.Mods.Common.Traits
 			topLeftScreenOffset = -wr.ScreenPxOffset(centerOffset);
 
 			var tileset = world.Map.Tileset.ToLowerInvariant();
-			if (world.Map.Rules.Sequences.HasSequence("overlay", "build-valid-{0}".F(tileset)))
+			if (world.Map.Rules.Sequences.HasSequence("overlay", $"build-valid-{tileset}"))
 			{
-				var validSequence = world.Map.Rules.Sequences.GetSequence("overlay", "build-valid-{0}".F(tileset));
+				var validSequence = world.Map.Rules.Sequences.GetSequence("overlay", $"build-valid-{tileset}");
 				validTile = validSequence.GetSprite(0);
 				validAlpha = validSequence.GetAlpha(0);
 			}

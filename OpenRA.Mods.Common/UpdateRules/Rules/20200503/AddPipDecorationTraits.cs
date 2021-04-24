@@ -58,13 +58,13 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 				yield return "Some passenger types define custom cargo pips. Review the following definitions:\n" +
 					UpdateUtils.FormatMessageList(cargoPipLocations) +
 					"\nand, if required, add the following to the WithCargoPipsDecoration traits:\n" +
-					"CustomPipSequences:\n" + cargoCustomPips.Select(p => "\t{0}: {1}".F(p, PipReplacements[p])).JoinWith("\n");
+					"CustomPipSequences:\n" + cargoCustomPips.Select(p => $"\t{p}: {PipReplacements[p]}").JoinWith("\n");
 
 			if (harvesterCustomPips.Any() && harvesterPipLocations.Any())
 				yield return "Review the following definitions:\n" +
 				             UpdateUtils.FormatMessageList(harvesterPipLocations) +
 				             "\nand, if required, add the following to the WithHarvesterPipsDecoration traits:\n" +
-				             "ResourceSequences:\n" + harvesterCustomPips.Select(kv => "\t{0}: {1}".F(kv.Key, PipReplacements[kv.Value])).JoinWith("\n");
+				             "ResourceSequences:\n" + harvesterCustomPips.Select(kv => $"\t{kv.Key}: {PipReplacements[kv.Value]}").JoinWith("\n");
 
 			customPips = false;
 			locations.Clear();
@@ -124,7 +124,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 				}
 
 				addNodes.Add(ammoPips);
-				locations.Add("{0}: {1} ({2})".F(actorNode.Key, ammoPips.Key, actorNode.Location.Filename));
+				locations.Add($"{actorNode.Key}: {ammoPips.Key} ({actorNode.Location.Filename})");
 			}
 
 			foreach (var cargo in actorNode.ChildrenMatching("Cargo"))
@@ -154,8 +154,8 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 					continue;
 
 				addNodes.Add(cargoPips);
-				locations.Add("{0}: {1} ({2})".F(actorNode.Key, cargoPips.Key, actorNode.Location.Filename));
-				cargoPipLocations.Add("{0} ({1})".F(actorNode.Key, actorNode.Location.Filename));
+				locations.Add($"{actorNode.Key}: {cargoPips.Key} ({actorNode.Location.Filename})");
+				cargoPipLocations.Add($"{actorNode.Key} ({actorNode.Location.Filename})");
 			}
 
 			foreach (var passenger in actorNode.ChildrenMatching("Passenger"))
@@ -199,8 +199,8 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 					harvesterPips.AddNode("PipCount", 7);
 
 				addNodes.Add(harvesterPips);
-				locations.Add("{0}: {1} ({2})".F(actorNode.Key, harvesterPips.Key, actorNode.Location.Filename));
-				harvesterPipLocations.Add("{0} ({1})".F(actorNode.Key, actorNode.Location.Filename));
+				locations.Add($"{actorNode.Key}: {harvesterPips.Key} ({actorNode.Location.Filename})");
+				harvesterPipLocations.Add($"{actorNode.Key} ({actorNode.Location.Filename})");
 			}
 
 			foreach (var resourceType in actorNode.ChildrenMatching("ResourceType"))
@@ -254,7 +254,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 					storagePips.AddNode("FullSequence", PipReplacements["yellow"]);
 
 				addNodes.Add(storagePips);
-				locations.Add("{0}: {1} ({2})".F(actorNode.Key, storagePips.Key, actorNode.Location.Filename));
+				locations.Add($"{actorNode.Key}: {storagePips.Key} ({actorNode.Location.Filename})");
 			}
 
 			foreach (var addNode in addNodes)

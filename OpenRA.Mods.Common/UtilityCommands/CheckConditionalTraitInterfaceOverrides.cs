@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				if (!IsConditionalTrait(t))
 					continue;
 
-				var overridesCreated = t.GetMethod("{0}.{1}".F(interfaceType.FullName, methodName), BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly) != null;
+				var overridesCreated = t.GetMethod($"{interfaceType.FullName}.{methodName}", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly) != null;
 				if (overridesCreated)
 				{
 					Console.WriteLine("{0} must override ConditionalTrait's {1} method instead of implementing {2} directly", t.Name, methodName, interfaceType.Name);

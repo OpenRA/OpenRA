@@ -64,13 +64,13 @@ namespace OpenRA
 			{
 				var mono = Type.GetType("Mono.Runtime");
 				if (mono == null)
-					return ".NET CLR {0}".F(Environment.Version);
+					return $".NET CLR {Environment.Version}";
 
 				var version = mono.GetMethod("GetDisplayName", BindingFlags.NonPublic | BindingFlags.Static);
 				if (version == null)
-					return "Mono (unknown version) CLR {0}".F(Environment.Version);
+					return $"Mono (unknown version) CLR {Environment.Version}";
 
-				return "Mono {0} CLR {1}".F(version.Invoke(null, null), Environment.Version);
+				return $"Mono {version.Invoke(null, null)} CLR {Environment.Version}";
 			}
 		}
 

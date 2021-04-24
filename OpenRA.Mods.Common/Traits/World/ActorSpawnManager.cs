@@ -45,13 +45,13 @@ namespace OpenRA.Mods.Common.Traits
 			base.RulesetLoaded(rules, ai);
 
 			if (SpawnInterval.Length == 0 || SpawnInterval.Length > 2)
-				throw new YamlException("{0}.{1} must be either 1 or 2 values".F(nameof(ActorSpawnManager), nameof(SpawnInterval)));
+				throw new YamlException($"{nameof(ActorSpawnManager)}.{nameof(SpawnInterval)} must be either 1 or 2 values");
 
 			if (SpawnInterval.Length == 2 && SpawnInterval[0] >= SpawnInterval[1])
-				throw new YamlException("{0}.{1}'s first value must be less than the second value".F(nameof(ActorSpawnManager), nameof(SpawnInterval)));
+				throw new YamlException($"{nameof(ActorSpawnManager)}.{nameof(SpawnInterval)}'s first value must be less than the second value");
 
 			if (SpawnInterval.Any(it => it < 0))
-				throw new YamlException("{0}.{1}'s value(s) must not be less than 0".F(nameof(ActorSpawnManager), nameof(SpawnInterval)));
+				throw new YamlException($"{nameof(ActorSpawnManager)}.{nameof(SpawnInterval)}'s value(s) must not be less than 0");
 		}
 
 		public override object Create(ActorInitializer init) { return new ActorSpawnManager(init.Self, this); }

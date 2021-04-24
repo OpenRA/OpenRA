@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Common.Traits
 			domains = new CellLayer<ushort>(world.Map);
 			transientConnections = new Dictionary<ushort, HashSet<ushort>>();
 
-			using (new PerfTimer("BuildDomains: {0} for movement class {1}".F(world.Map.Title, movementClass)))
+			using (new PerfTimer($"BuildDomains: {world.Map.Title} for movement class {movementClass}"))
 				BuildDomains(world);
 		}
 

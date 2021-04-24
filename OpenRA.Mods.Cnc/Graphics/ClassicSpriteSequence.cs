@@ -38,8 +38,7 @@ namespace OpenRA.Mods.Cnc.Graphics
 
 			if (useClassicFacings && Facings != 32)
 				throw new InvalidOperationException(
-					"{0}: Sequence {1}.{2}: UseClassicFacings is only valid for 32 facings"
-					.F(info.Nodes[0].Location, sequence, animation));
+					$"{info.Nodes[0].Location}: Sequence {sequence}.{animation}: UseClassicFacings is only valid for 32 facings");
 		}
 
 		protected override int GetFacingFrameOffset(WAngle facing)

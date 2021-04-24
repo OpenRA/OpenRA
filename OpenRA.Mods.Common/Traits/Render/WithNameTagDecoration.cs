@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
 			if (!Game.ModData.Manifest.Get<Fonts>().FontList.ContainsKey(Font))
-				throw new YamlException("Font '{0}' is not listed in the mod.yaml's Fonts section".F(Font));
+				throw new YamlException($"Font '{Font}' is not listed in the mod.yaml's Fonts section");
 
 			base.RulesetLoaded(rules, ai);
 		}

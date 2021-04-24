@@ -205,12 +205,12 @@ namespace OpenRA.Mods.Common.Traits
 
 			for (var index = 0; index < newCount; index++)
 			{
-				if (Players.Players.ContainsKey("Multi{0}".F(index)))
+				if (Players.Players.ContainsKey($"Multi{index}"))
 					continue;
 
 				var pr = new PlayerReference
 				{
-					Name = "Multi{0}".F(index),
+					Name = $"Multi{index}",
 					Faction = "Random",
 					Playable = true,
 					Enemies = new[] { "Creeps" }

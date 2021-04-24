@@ -89,7 +89,7 @@ namespace OpenRA.Mods.Common.Server
 
 							var client = server.GetClient(c);
 							if (client != null)
-								server.SendMessage("{0} will be dropped in {1} seconds.".F(client.Name, (ConnTimeout - c.TimeSinceLastResponse) / 1000));
+								server.SendMessage($"{client.Name} will be dropped in {(ConnTimeout - c.TimeSinceLastResponse) / 1000} seconds.");
 						}
 					}
 				}

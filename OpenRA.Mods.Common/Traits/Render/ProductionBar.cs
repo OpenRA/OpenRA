@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				queue = rules.Actors[SystemActors.Player].TraitInfos<ProductionQueueInfo>().FirstOrDefault(q => ProductionType == q.Type);
 
 			if (queue == null)
-				throw new YamlException("Can't find a queue with ProductionType '{0}'".F(ProductionType));
+				throw new YamlException($"Can't find a queue with ProductionType '{ProductionType}'");
 
 			base.RulesetLoaded(rules, ai);
 		}

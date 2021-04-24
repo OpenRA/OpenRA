@@ -494,7 +494,7 @@ namespace OpenRA.Server
 				if (bans.Contains(client.IPAddress))
 				{
 					Log.Write("server", "Rejected connection from {0}; Banned.", newConn.Socket.RemoteEndPoint);
-					SendOrderTo(newConn, "ServerError", "You have been {0} from the server".F(Settings.Ban.Contains(client.IPAddress) ? "banned" : "temporarily banned"));
+					SendOrderTo(newConn, "ServerError", $"You have been {(Settings.Ban.Contains(client.IPAddress) ? "banned" : "temporarily banned")} from the server");
 					DropClient(newConn);
 					return;
 				}
@@ -543,7 +543,7 @@ namespace OpenRA.Server
 							client.Name, newConn.Socket.RemoteEndPoint);
 
 						// Report to all other players
-						SendMessage("{0} has joined the game.".F(client.Name), newConn);
+						SendMessage($"{client.Name} has joined the game.", newConn);
 
 						// Send initial ping
 						SendOrderTo(newConn, "Ping", Game.RunTime.ToString(CultureInfo.InvariantCulture));
@@ -816,7 +816,7 @@ namespace OpenRA.Server
 					if (data.Length == Order.SyncHashOrderLength)
 						HandleSyncOrder(frame, data);
 					else
-						Log.Write("server", "Dropped sync order with length {0} from client {1}. Expected length {2}.".F(data.Length, from, Order.SyncHashOrderLength));
+						Log.Write("server", $"Dropped sync order with length {data.Length} from client {from}. Expected length {Order.SyncHashOrderLength}.");
 				}
 			}
 		}
@@ -860,7 +860,7 @@ namespace OpenRA.Server
 			DispatchOrdersToClients(conn, 0, Order.FromTargetString("Message", text, true).Serialize());
 
 			if (Type == ServerType.Dedicated)
-				Console.WriteLine("[{0}] {1}".F(DateTime.Now.ToString(Settings.TimestampFormat), text));
+				Console.WriteLine($"[{DateTime.Now.ToString(Settings.TimestampFormat)}] {text}");
 		}
 
 		void InterpretServerOrder(Connection conn, Order o)
@@ -894,7 +894,7 @@ namespace OpenRA.Server
 							if (handledBy == null)
 							{
 								Log.Write("server", "Unknown server command: {0}", o.TargetString);
-								SendOrderTo(conn, "Message", "Unknown server command: {0}".F(o.TargetString));
+								SendOrderTo(conn, "Message", $"Unknown server command: {o.TargetString}");
 							}
 
 							break;
@@ -1070,8 +1070,8 @@ namespace OpenRA.Server
 
 					var suffix = "";
 					if (State == ServerState.GameStarted)
-						suffix = dropClient.IsObserver ? " (Spectator)" : dropClient.Team != 0 ? " (Team {0})".F(dropClient.Team) : "";
-					SendMessage("{0}{1} has disconnected.".F(dropClient.Name, suffix));
+						suffix = dropClient.IsObserver ? " (Spectator)" : dropClient.Team != 0 ? $" (Team {dropClient.Team})" : "";
+					SendMessage($"{dropClient.Name}{suffix} has disconnected.");
 
 					// Send disconnected order, even if still in the lobby
 					DispatchOrdersToClients(toDrop, 0, Order.FromTargetString("Disconnected", "", true).Serialize());
@@ -1098,7 +1098,7 @@ namespace OpenRA.Server
 						if (nextAdmin != null)
 						{
 							nextAdmin.IsAdmin = true;
-							SendMessage("{0} is now the admin.".F(nextAdmin.Name));
+							SendMessage($"{nextAdmin.Name} is now the admin.");
 						}
 					}
 

@@ -40,10 +40,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					fpsReferenceFrame = Game.RenderFrame;
 				}
 
-				return "FPS: {0}\nTick {1} @ {2:F1} ms\nRender {3} @ {4:F1} ms\nBatches: {5}".F(
-					fps, Game.LocalTick, PerfHistory.Items["tick_time"].Average(Game.Settings.Debug.Samples),
-					Game.RenderFrame, PerfHistory.Items["render"].Average(Game.Settings.Debug.Samples),
-					PerfHistory.Items["batches"].LastValue);
+				return $"FPS: {fps}\nTick {Game.LocalTick} @ {PerfHistory.Items["tick_time"].Average(Game.Settings.Debug.Samples):F1} ms\nRender {Game.RenderFrame} @ {PerfHistory.Items["render"].Average(Game.Settings.Debug.Samples):F1} ms\nBatches: {PerfHistory.Items["batches"].LastValue}";
 			};
 		}
 	}

@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		{
 			var weaponToLower = Weapon.ToLowerInvariant();
 			if (!rules.Weapons.TryGetValue(weaponToLower, out var weaponInfo))
-				throw new YamlException("Weapons Ruleset does not contain an entry '{0}'".F(weaponToLower));
+				throw new YamlException($"Weapons Ruleset does not contain an entry '{weaponToLower}'");
 
 			WeaponInfo = weaponInfo;
 		}

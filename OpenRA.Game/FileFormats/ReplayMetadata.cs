@@ -44,7 +44,7 @@ namespace OpenRA.FileFormats
 			// Read version
 			var version = fs.ReadInt32();
 			if (version != MetaVersion)
-				throw new NotSupportedException("Metadata version {0} is not supported".F(version));
+				throw new NotSupportedException($"Metadata version {version} is not supported");
 
 			// Read game info (max 100K limit as a safeguard against corrupted files)
 			var data = fs.ReadString(Encoding.UTF8, 1024 * 100);

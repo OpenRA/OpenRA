@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 		{
 			if (format > 1)
 			{
-				Console.WriteLine("ERROR: Detected NewINIFormat {0}. Are you trying to import a Red Alert map?".F(format));
+				Console.WriteLine($"ERROR: Detected NewINIFormat {format}. Are you trying to import a Red Alert map?");
 				return;
 			}
 		}

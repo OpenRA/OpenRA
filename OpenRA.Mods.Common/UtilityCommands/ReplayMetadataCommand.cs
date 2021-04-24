@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			var playerCount = 0;
 			foreach (var p in info.Players)
 			{
-				var playerLines = FieldSaver.Save(p).ToLines("{0}".F(playerCount++));
+				var playerLines = FieldSaver.Save(p).ToLines($"{playerCount++}");
 				foreach (var line in playerLines)
 					Console.WriteLine("\t\t" + line);
 			}

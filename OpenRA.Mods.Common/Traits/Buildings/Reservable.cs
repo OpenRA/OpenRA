@@ -61,8 +61,7 @@ namespace OpenRA.Mods.Common.Traits
 				{
 					if (Game.IsCurrentWorld(self.World))
 						throw new InvalidOperationException(
-							"Attempted to finalize an undisposed DisposableAction. {0} ({1}) reserved {2} ({3})".F(
-							forActor.Info.Name, forActor.ActorID, self.Info.Name, self.ActorID));
+							$"Attempted to finalize an undisposed DisposableAction. {forActor.Info.Name} ({forActor.ActorID}) reserved {self.Info.Name} ({self.ActorID})");
 				}));
 		}
 

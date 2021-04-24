@@ -66,8 +66,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					var cell = worldRenderer.Viewport.ViewToWorld(Viewport.LastMousePos);
 					var map = worldRenderer.World.Map;
-					return map.Height.Contains(cell) ?
-						"{0},{1} ({2})".F(cell, map.Height[cell], map.Tiles[cell].Type) : "";
+					return map.Height.Contains(cell) ? $"{cell},{map.Height[cell]} ({map.Tiles[cell].Type})" : "";
 				};
 			}
 
@@ -76,7 +75,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				var reslayer = worldRenderer.World.WorldActor.TraitsImplementing<EditorResourceLayer>().FirstOrDefault();
 				if (reslayer != null)
-					cashLabel.GetText = () => "$ {0}".F(reslayer.NetWorth);
+					cashLabel.GetText = () => $"$ {reslayer.NetWorth}";
 			}
 
 			var undoButton = widget.GetOrNull<ButtonWidget>("UNDO_BUTTON");

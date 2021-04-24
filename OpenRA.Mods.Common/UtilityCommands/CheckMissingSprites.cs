@@ -68,12 +68,12 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					{
 						// The stacktrace associated with yaml errors are not very useful
 						// Suppress them to make the lint output less intimidating for modders
-						Console.WriteLine("\t{0}".F(e.Message));
+						Console.WriteLine($"\t{e.Message}");
 						failed = true;
 					}
 					catch (Exception e)
 					{
-						Console.WriteLine("Failed with exception: {0}".F(e));
+						Console.WriteLine($"Failed with exception: {e}");
 						failed = true;
 					}
 				}
@@ -82,7 +82,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			{
 				// The stacktrace associated with yaml errors are not very useful
 				// Suppress them to make the lint output less intimidating for modders
-				Console.WriteLine("{0}".F(e.Message));
+				Console.WriteLine($"{e.Message}");
 				failed = true;
 			}
 

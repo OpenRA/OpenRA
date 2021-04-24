@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Lint
 					foreach (var prereq in bi.Prerequisites)
 						if (!prereq.StartsWith("~disabled"))
 							if (!providedPrereqs.Contains(prereq.Replace("!", "").Replace("~", "")))
-								emitError("Buildable actor {0} has prereq {1} not provided by anything.".F(i.Key, prereq));
+								emitError($"Buildable actor {i.Key} has prereq {prereq} not provided by anything.");
 			}
 		}
 	}

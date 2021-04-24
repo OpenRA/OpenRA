@@ -203,7 +203,7 @@ namespace OpenRA.Traits
 
 		public override string ToString()
 		{
-			return "{0} {1}{2}".F(Info.Name, ID, IsValid ? "" : " (invalid)");
+			return $"{Info.Name} {ID}{(IsValid ? "" : " (invalid)")}";
 		}
 	}
 

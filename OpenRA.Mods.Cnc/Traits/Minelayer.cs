@@ -81,8 +81,8 @@ namespace OpenRA.Mods.Cnc.Traits
 			this.self = self;
 
 			var tileset = self.World.Map.Tileset.ToLowerInvariant();
-			if (self.World.Map.Rules.Sequences.HasSequence("overlay", "{0}-{1}".F(Info.TileValidName, tileset)))
-				Tile = self.World.Map.Rules.Sequences.GetSequence("overlay", "{0}-{1}".F(Info.TileValidName, tileset)).GetSprite(0);
+			if (self.World.Map.Rules.Sequences.HasSequence("overlay", $"{Info.TileValidName}-{tileset}"))
+				Tile = self.World.Map.Rules.Sequences.GetSequence("overlay", $"{Info.TileValidName}-{tileset}").GetSprite(0);
 			else
 				Tile = self.World.Map.Rules.Sequences.GetSequence("overlay", Info.TileValidName).GetSprite(0);
 		}
@@ -220,9 +220,9 @@ namespace OpenRA.Mods.Cnc.Traits
 
 				minelayer = a.Trait<Minelayer>();
 				var tileset = a.World.Map.Tileset.ToLowerInvariant();
-				if (a.World.Map.Rules.Sequences.HasSequence("overlay", "{0}-{1}".F(minelayer.Info.TileValidName, tileset)))
+				if (a.World.Map.Rules.Sequences.HasSequence("overlay", $"{minelayer.Info.TileValidName}-{tileset}"))
 				{
-					var validSequence = a.World.Map.Rules.Sequences.GetSequence("overlay", "{0}-{1}".F(minelayer.Info.TileValidName, tileset));
+					var validSequence = a.World.Map.Rules.Sequences.GetSequence("overlay", $"{minelayer.Info.TileValidName}-{tileset}");
 					validTile = validSequence.GetSprite(0);
 					validAlpha = validSequence.GetAlpha(0);
 				}
@@ -233,9 +233,9 @@ namespace OpenRA.Mods.Cnc.Traits
 					validAlpha = validSequence.GetAlpha(0);
 				}
 
-				if (a.World.Map.Rules.Sequences.HasSequence("overlay", "{0}-{1}".F(minelayer.Info.TileUnknownName, tileset)))
+				if (a.World.Map.Rules.Sequences.HasSequence("overlay", $"{minelayer.Info.TileUnknownName}-{tileset}"))
 				{
-					var unknownSequence = a.World.Map.Rules.Sequences.GetSequence("overlay", "{0}-{1}".F(minelayer.Info.TileUnknownName, tileset));
+					var unknownSequence = a.World.Map.Rules.Sequences.GetSequence("overlay", $"{minelayer.Info.TileUnknownName}-{tileset}");
 					unknownTile = unknownSequence.GetSprite(0);
 					unknownAlpha = unknownSequence.GetAlpha(0);
 				}
@@ -246,9 +246,9 @@ namespace OpenRA.Mods.Cnc.Traits
 					unknownAlpha = unknownSequence.GetAlpha(0);
 				}
 
-				if (a.World.Map.Rules.Sequences.HasSequence("overlay", "{0}-{1}".F(minelayer.Info.TileInvalidName, tileset)))
+				if (a.World.Map.Rules.Sequences.HasSequence("overlay", $"{minelayer.Info.TileInvalidName}-{tileset}"))
 				{
-					var blockedSequence = a.World.Map.Rules.Sequences.GetSequence("overlay", "{0}-{1}".F(minelayer.Info.TileInvalidName, tileset));
+					var blockedSequence = a.World.Map.Rules.Sequences.GetSequence("overlay", $"{minelayer.Info.TileInvalidName}-{tileset}");
 					blockedTile = blockedSequence.GetSprite(0);
 					blockedAlpha = blockedSequence.GetAlpha(0);
 				}

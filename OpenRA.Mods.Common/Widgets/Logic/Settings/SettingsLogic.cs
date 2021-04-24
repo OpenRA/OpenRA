@@ -102,7 +102,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				};
 
 				ConfirmationDialogs.ButtonPrompt(
-					title: "Reset \"{0}\"".F(panels[activePanel]),
+					title: $"Reset \"{panels[activePanel]}\"",
 					text: "Are you sure you want to reset\nall settings in this panel?",
 					onConfirm: reset,
 					onCancel: () => { },

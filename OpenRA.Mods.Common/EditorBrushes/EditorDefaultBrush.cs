@@ -122,7 +122,7 @@ namespace OpenRA.Mods.Common.Widgets
 			this.editorActorLayer = editorActorLayer;
 			this.actor = actor;
 
-			Text = "Removed {0} ({1})".F(actor.Info.Name, actor.ID);
+			Text = $"Removed {actor.Info.Name} ({actor.ID})";
 		}
 
 		public void Execute()
@@ -155,7 +155,7 @@ namespace OpenRA.Mods.Common.Widgets
 			this.resourceLayer = resourceLayer;
 			this.cell = cell;
 
-			Text = "Removed {0}".F(resourceType);
+			Text = $"Removed {resourceType}";
 		}
 
 		public void Execute()

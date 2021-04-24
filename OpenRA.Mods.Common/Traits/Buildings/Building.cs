@@ -75,7 +75,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				var fp = footprintYaml.Value.Value;
 				var dims = dim.X + "x" + dim.Y;
-				throw new YamlException("Invalid footprint: {0} does not match dimensions {1}".F(fp, dims));
+				throw new YamlException($"Invalid footprint: {fp} does not match dimensions {dims}");
 			}
 
 			var index = 0;
@@ -86,7 +86,7 @@ namespace OpenRA.Mods.Common.Traits
 				{
 					var c = footprintChars[index++];
 					if (!Enum.IsDefined(typeof(FootprintCellType), (FootprintCellType)c))
-						throw new YamlException("Invalid footprint cell type '{0}'".F(c));
+						throw new YamlException($"Invalid footprint cell type '{c}'");
 
 					ret[new CVec(x, y)] = (FootprintCellType)c;
 				}

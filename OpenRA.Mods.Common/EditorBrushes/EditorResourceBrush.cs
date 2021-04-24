@@ -149,7 +149,7 @@ namespace OpenRA.Mods.Common.Widgets
 			cellResources.Add(resourceCell);
 
 			var cellText = cellResources.Count != 1 ? "cells" : "cell";
-			Text = "Added {0} {1} of {2}".F(cellResources.Count, cellText, resourceType);
+			Text = $"Added {cellResources.Count} {cellText} of {resourceType}";
 		}
 	}
 }

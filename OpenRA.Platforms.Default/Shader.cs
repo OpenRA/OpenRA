@@ -60,7 +60,7 @@ namespace OpenRA.Platforms.Default
 				OpenGL.glGetShaderInfoLog(shader, len, out _, log);
 
 				Log.Write("graphics", "GL Info Log:\n{0}", log.ToString());
-				throw new InvalidProgramException("Compile error in shader object '{0}'".F(filename));
+				throw new InvalidProgramException($"Compile error in shader object '{filename}'");
 			}
 
 			return shader;
@@ -106,7 +106,7 @@ namespace OpenRA.Platforms.Default
 				var log = new StringBuilder(len);
 				OpenGL.glGetProgramInfoLog(program, len, out _, log);
 				Log.Write("graphics", "GL Info Log:\n{0}", log.ToString());
-				throw new InvalidProgramException("Link error in shader program '{0}'".F(name));
+				throw new InvalidProgramException($"Link error in shader program '{name}'");
 			}
 
 			OpenGL.glUseProgram(program);

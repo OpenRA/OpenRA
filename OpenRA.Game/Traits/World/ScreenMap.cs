@@ -27,7 +27,7 @@ namespace OpenRA.Traits
 
 		public override int GetHashCode() { return Actor.GetHashCode() ^ Bounds.GetHashCode(); }
 
-		public override string ToString() { return "{0}->{1}".F(Actor.Info.Name, Bounds.GetType().Name); }
+		public override string ToString() { return $"{Actor.Info.Name}->{Bounds.GetType().Name}"; }
 	}
 
 	[TraitLocation(SystemActors.World | SystemActors.EditorWorld)]

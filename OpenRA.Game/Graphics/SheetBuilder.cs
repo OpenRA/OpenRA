@@ -61,7 +61,7 @@ namespace OpenRA.Graphics
 				case SpriteFrameType.Rgba32:
 				case SpriteFrameType.Rgb24:
 					return SheetType.BGRA;
-				default: throw new NotImplementedException("Unknown SpriteFrameType {0}".F(t));
+				default: throw new NotImplementedException($"Unknown SpriteFrameType {t}");
 			}
 		}
 

@@ -80,7 +80,7 @@ namespace OpenRA.Widgets
 			if (LoadWidget(id, parent, args) is T widget)
 				return widget;
 
-			throw new InvalidOperationException("Widget {0} is not of type {1}".F(id, typeof(T).Name));
+			throw new InvalidOperationException($"Widget {id} is not of type {typeof(T).Name}");
 		}
 
 		public static Widget LoadWidget(string id, Widget parent, WidgetArgs args)
@@ -236,7 +236,7 @@ namespace OpenRA.Widgets
 
 		public virtual Widget Clone()
 		{
-			throw new InvalidOperationException("Widget type `{0}` is not cloneable.".F(GetType().Name));
+			throw new InvalidOperationException($"Widget type `{GetType().Name}` is not cloneable.");
 		}
 
 		public virtual int2 RenderOrigin
@@ -579,9 +579,7 @@ namespace OpenRA.Widgets
 		{
 			var t = GetOrNull<T>(id);
 			if (t == null)
-				throw new InvalidOperationException(
-					"Widget {0} has no child {1} of type {2}".F(
-						Id, id, typeof(T).Name));
+				throw new InvalidOperationException($"Widget {Id} has no child {id} of type {typeof(T).Name}");
 			return t;
 		}
 

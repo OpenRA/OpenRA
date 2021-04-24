@@ -95,7 +95,7 @@ namespace OpenRA.FileSystem
 					name = name.Substring(1);
 
 					if (!installedMods.TryGetValue(name, out var mod))
-						throw new InvalidOperationException("Could not load mod '{0}'. Available mods: {1}".F(name, installedMods.Keys.JoinWith(", ")));
+						throw new InvalidOperationException($"Could not load mod '{name}'. Available mods: {installedMods.Keys.JoinWith(", ")}");
 
 					package = mod.Package;
 					modPackages.Add(package);
@@ -104,7 +104,7 @@ namespace OpenRA.FileSystem
 				{
 					package = OpenPackage(name);
 					if (package == null)
-						throw new InvalidOperationException("Could not open package '{0}', file not found or its format is not supported.".F(name));
+						throw new InvalidOperationException($"Could not open package '{name}', file not found or its format is not supported.");
 				}
 
 				Mount(package, explicitName);
@@ -203,7 +203,7 @@ namespace OpenRA.FileSystem
 		public Stream Open(string filename)
 		{
 			if (!TryOpen(filename, out var s))
-				throw new FileNotFoundException("File not found: {0}".F(filename), filename);
+				throw new FileNotFoundException($"File not found: {filename}", filename);
 
 			return s;
 		}

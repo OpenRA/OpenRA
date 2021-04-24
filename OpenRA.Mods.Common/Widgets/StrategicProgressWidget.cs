@@ -65,9 +65,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var winnerSvc = pendingWinner.PlayerActor.Trait<StrategicVictoryConditions>();
 
 			var isVictory = pendingWinner.RelationshipWith(world.LocalPlayer) == PlayerRelationship.Ally;
-			var tc = "Strategic {0} in {1}".F(
-				isVictory ? "victory" : "defeat",
-				WidgetUtils.FormatTime(winnerSvc.TicksLeft, world.Timestep));
+			var tc = $"Strategic {(isVictory ? "victory" : "defeat")} in {WidgetUtils.FormatTime(winnerSvc.TicksLeft, world.Timestep)}";
 
 			var font = Game.Renderer.Fonts["Bold"];
 

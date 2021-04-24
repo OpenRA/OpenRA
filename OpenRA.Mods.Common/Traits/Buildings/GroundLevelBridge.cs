@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var weaponToLower = (DemolishWeapon ?? string.Empty).ToLowerInvariant();
 			if (!rules.Weapons.TryGetValue(weaponToLower, out var weapon))
-				throw new YamlException("Weapons Ruleset does not contain an entry '{0}'".F(weaponToLower));
+				throw new YamlException($"Weapons Ruleset does not contain an entry '{weaponToLower}'");
 
 			DemolishWeaponInfo = weapon;
 		}

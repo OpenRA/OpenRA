@@ -94,7 +94,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (squad == null)
 				yield break;
 
-			var aiSquadInfo = "{0}, {1}".F(squad.Type, squad.TargetActor);
+			var aiSquadInfo = $"{squad.Type}, {squad.TargetActor}";
 			yield return new TextAnnotationRenderable(font, self.CenterPosition + offset, 0, color, aiSquadInfo);
 		}
 

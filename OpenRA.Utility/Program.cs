@@ -24,7 +24,7 @@ namespace OpenRA
 	{
 		public readonly string Command;
 		public NoSuchCommandException(string command)
-			: base("No such command '{0}'".F(command))
+			: base($"No such command '{command}'")
 		{
 			Command = command;
 		}

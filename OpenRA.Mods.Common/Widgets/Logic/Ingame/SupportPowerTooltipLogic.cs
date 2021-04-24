@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					var remaining = WidgetUtils.FormatTime(sp.RemainingTicks, world.Timestep);
 					var total = WidgetUtils.FormatTime(sp.Info.ChargeInterval, world.Timestep);
-					timeLabel.Text = "{0} / {1}".F(remaining, total);
+					timeLabel.Text = $"{remaining} / {total}";
 				}
 				else
 					timeLabel.Text = customLabel;
@@ -74,7 +74,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				hotkeyLabel.Visible = hotkey.IsValid();
 				if (hotkeyLabel.Visible)
 				{
-					var hotkeyText = "({0})".F(hotkey.DisplayString());
+					var hotkeyText = $"({hotkey.DisplayString()})";
 
 					hotkeyWidth = hotkeyFont.Measure(hotkeyText).X + 2 * nameLabel.Bounds.X;
 					hotkeyLabel.Text = hotkeyText;

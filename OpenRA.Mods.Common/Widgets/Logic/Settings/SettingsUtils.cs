@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var field = group.GetType().GetField(pref);
 			if (field == null)
-				throw new InvalidOperationException("{0} does not contain a preference type {1}".F(group.GetType().Name, pref));
+				throw new InvalidOperationException($"{group.GetType().Name} does not contain a preference type {pref}");
 
 			var cb = parent.Get<CheckboxWidget>(id);
 			cb.IsChecked = () => (bool)field.GetValue(group);
@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var field = group.GetType().GetField(pref);
 			if (field == null)
-				throw new InvalidOperationException("{0} does not contain a preference type {1}".F(group.GetType().Name, pref));
+				throw new InvalidOperationException($"{group.GetType().Name} does not contain a preference type {pref}");
 
 			var ss = parent.Get<SliderWidget>(id);
 			ss.Value = (float)field.GetValue(group);
@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var field = group.GetType().GetField(pref);
 			if (field == null)
-				throw new InvalidOperationException("{0} does not contain a preference type {1}".F(group.GetType().Name, pref));
+				throw new InvalidOperationException($"{group.GetType().Name} does not contain a preference type {pref}");
 
 			var ss = parent.Get<SliderWidget>(id);
 			ss.Value = (float)(int)field.GetValue(group);

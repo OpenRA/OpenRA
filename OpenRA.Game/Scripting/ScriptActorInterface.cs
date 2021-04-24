@@ -18,14 +18,14 @@ namespace OpenRA.Scripting
 	{
 		readonly Actor actor;
 
-		protected override string DuplicateKeyError(string memberName) { return "Actor '{0}' defines the command '{1}' on multiple traits".F(actor.Info.Name, memberName); }
+		protected override string DuplicateKeyError(string memberName) { return $"Actor '{actor.Info.Name}' defines the command '{memberName}' on multiple traits"; }
 		protected override string MemberNotFoundError(string memberName)
 		{
 			var actorName = actor.Info.Name;
 			if (actor.IsDead)
 				actorName += " (dead)";
 
-			return "Actor '{0}' does not define a property '{1}'".F(actorName, memberName);
+			return $"Actor '{actorName}' does not define a property '{memberName}'";
 		}
 
 		public ScriptActorInterface(ScriptContext context, Actor actor)

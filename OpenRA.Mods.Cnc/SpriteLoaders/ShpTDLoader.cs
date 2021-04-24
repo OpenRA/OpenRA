@@ -147,7 +147,7 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 				if (h.Format == Format.XORPrev)
 					h.RefImage = headers[i - 1];
 				else if (h.Format == Format.XORLCW && !offsets.TryGetValue(h.RefOffset, out h.RefImage))
-					throw new InvalidDataException("Reference doesn't point to image data {0}->{1}".F(h.FileOffset, h.RefOffset));
+					throw new InvalidDataException($"Reference doesn't point to image data {h.FileOffset}->{h.RefOffset}");
 			}
 
 			shpBytesFileOffset = stream.Position;

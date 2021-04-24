@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			{
 				var src = utility.ModData.DefaultFileSystem.Open(f);
 				if (src == null)
-					throw new InvalidOperationException("File not found: {0}".F(f));
+					throw new InvalidOperationException($"File not found: {f}");
 				var data = src.ReadAllBytes();
 				File.WriteAllBytes(f, data);
 				Console.WriteLine(f + " saved.");

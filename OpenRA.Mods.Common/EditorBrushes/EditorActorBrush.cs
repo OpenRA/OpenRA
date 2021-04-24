@@ -102,7 +102,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public void Do()
 		{
 			editorActorPreview = editorLayer.Add(actor);
-			Text = "Added {0} ({1})".F(editorActorPreview.Info.Name, editorActorPreview.ID);
+			Text = $"Added {editorActorPreview.Info.Name} ({editorActorPreview.ID})";
 		}
 
 		public void Undo()

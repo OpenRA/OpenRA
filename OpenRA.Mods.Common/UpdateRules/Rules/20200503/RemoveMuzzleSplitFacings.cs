@@ -33,9 +33,10 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 					var sequence = sequenceNode.Value.Value;
 					var facings = muzzleSplitFacings.NodeValue<int>() - 1;
 					var actor = actorNode.Key.ToLowerInvariant();
-					yield return "The Armament muzzle effect has been removed from {0} ({1}).\n".F(actor, actorNode.Location.Filename) +
-						"If you would like to restore the muzzle effect you must redefine `MuzzleSequence: {0}`\n".F(sequence) +
-						"and replace the {0}0-{1} sequence definitions with a single `{0}` sequence that uses\n".F(sequence, facings) +
+					yield return
+						$"The Armament muzzle effect has been removed from {actor} ({actorNode.Location.Filename}).\n" +
+						$"If you would like to restore the muzzle effect you must redefine `MuzzleSequence: {sequence}`\n" +
+						$"and replace the {sequence}0-{facings} sequence definitions with a single `{sequence}` sequence that uses\n" +
 						"the Combine syntax to assemble the different facing sprites.";
 
 					a.RemoveNode(muzzleSplitFacings);

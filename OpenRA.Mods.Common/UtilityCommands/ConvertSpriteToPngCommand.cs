@@ -79,7 +79,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				}
 
 				var png = new Png(pngData, SpriteFrameType.Indexed8, frameSize.Width, frameSize.Height, palColors);
-				png.Save("{0}-{1:D4}.png".F(prefix, count++));
+				png.Save($"{prefix}-{(count++):D4}.png");
 			}
 
 			Console.WriteLine("Saved {0}-[0..{1}].png", prefix, count - 1);

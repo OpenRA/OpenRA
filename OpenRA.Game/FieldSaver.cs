@@ -94,7 +94,7 @@ namespace OpenRA
 					var formattedKey = FormatValue(key);
 					var formattedValue = FormatValue(value);
 
-					result += "{0}: {1}{2}".F(formattedKey, formattedValue, Environment.NewLine);
+					result += $"{formattedKey}: {formattedValue}{Environment.NewLine}";
 				}
 
 				return result;

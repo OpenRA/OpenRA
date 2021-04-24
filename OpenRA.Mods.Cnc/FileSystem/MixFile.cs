@@ -54,8 +54,8 @@ namespace OpenRA.Mods.Cnc.FileSystem
 						entries = ParseHeader(s, isCncMix ? 0 : 4, out dataStart);
 
 					index = ParseIndex(entries.ToDictionaryWithConflictLog(x => x.Hash,
-						"{0} ({1} format, Encrypted: {2}, DataStart: {3})".F(filename, isCncMix ? "C&C" : "RA/TS/RA2", isEncrypted, dataStart),
-						null, x => "(offs={0}, len={1})".F(x.Offset, x.Length)), allPossibleFilenames);
+						$"{filename} ({(isCncMix ? "C&C" : "RA/TS/RA2")} format, Encrypted: {isEncrypted}, DataStart: {dataStart})",
+						null, x => $"(offs={x.Offset}, len={x.Length})"), allPossibleFilenames);
 				}
 				catch (Exception)
 				{
@@ -103,7 +103,7 @@ namespace OpenRA.Mods.Cnc.FileSystem
 
 				var unknown = entries.Count - bestIndex.Count;
 				if (unknown > 0)
-					Log.Write("debug", "{0}: failed to resolve filenames for {1} unknown hashes".F(Name, unknown));
+					Log.Write("debug", $"{Name}: failed to resolve filenames for {unknown} unknown hashes");
 
 				return bestIndex;
 			}
@@ -165,7 +165,7 @@ namespace OpenRA.Mods.Cnc.FileSystem
 					throw new ArgumentOutOfRangeException(nameof(count), "Non-negative number required.");
 
 				if (offset + (count * 2) > s.Length)
-					throw new ArgumentException("Bytes to read {0} and offset {1} greater than stream length {2}.".F(count * 2, offset, s.Length));
+					throw new ArgumentException($"Bytes to read {count * 2} and offset {offset} greater than stream length {s.Length}.");
 
 				s.Seek(offset, SeekOrigin.Begin);
 

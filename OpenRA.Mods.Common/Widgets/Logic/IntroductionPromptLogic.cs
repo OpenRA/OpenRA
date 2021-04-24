@@ -113,7 +113,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			battlefieldCameraDropDown.GetText = () => battlefieldCameraLabel.Update(ds.ViewportDistance);
 
 			var uiScaleDropdown = widget.Get<DropDownButtonWidget>("UI_SCALE_DROPDOWN");
-			var uiScaleLabel = new CachedTransform<float, string>(s => "{0}%".F((int)(100 * s)));
+			var uiScaleLabel = new CachedTransform<float, string>(s => $"{(int)(100 * s)}%");
 			uiScaleDropdown.OnMouseDown = _ => DisplaySettingsLogic.ShowUIScaleDropdown(uiScaleDropdown, ds);
 			uiScaleDropdown.GetText = () => uiScaleLabel.Update(ds.UIScale);
 

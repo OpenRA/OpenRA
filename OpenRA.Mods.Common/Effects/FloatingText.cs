@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Effects
 
 		public static string FormatCashTick(int cashAmount)
 		{
-			return "{0}${1}".F(cashAmount < 0 ? "-" : "+", Math.Abs(cashAmount));
+			return $"{(cashAmount < 0 ? "-" : "+")}${Math.Abs(cashAmount)}";
 		}
 	}
 }

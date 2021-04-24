@@ -43,7 +43,7 @@ namespace OpenRA.Graphics
 
 			// Pre-cache small font sizes so glyphs are immediately available when we need them
 			if (size <= 24)
-				using (new PerfTimer("Precache {0} {1}px".F(name, size)))
+				using (new PerfTimer($"Precache {name} {size}px"))
 					for (var n = (char)0x20; n < (char)0x7f; n++)
 						if (glyphs[n] == null)
 							throw new InvalidOperationException();

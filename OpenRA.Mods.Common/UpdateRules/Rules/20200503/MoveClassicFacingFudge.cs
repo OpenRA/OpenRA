@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 				if (usesClassicFacings)
 				{
 					bo.RenameKey("ClassicFacingBodyOrientation");
-					locations.Add("{0} ({1})".F(actorNode.Key, actorNode.Location.Filename));
+					locations.Add($"{actorNode.Key} ({actorNode.Location.Filename})");
 				}
 			}
 
