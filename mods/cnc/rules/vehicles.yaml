@@ -13,7 +13,7 @@ MCV:
 	Selectable:
 		DecorationBounds: 1536, 1536
 	Mobile:
-		Speed: 71
+		Speed: 60
 		Locomotor: heavywheeled
 	Health:
 		HP: 120000
@@ -63,7 +63,7 @@ HARV:
 		HarvestFacings: 8
 		EmptyCondition: no-tiberium
 	Mobile:
-		Speed: 85
+		Speed: 72
 	Health:
 		HP: 62500
 	Repairable:
@@ -114,7 +114,7 @@ APC:
 		Description: Armed infantry transport.\nCan attack Aircraft.\n  Strong vs Vehicles\n  Weak vs Infantry
 	Mobile:
 		TurnSpeed: 20
-		Speed: 132
+		Speed: 128
 		PauseOnCondition: notmobile
 	Health:
 		HP: 19000
@@ -189,7 +189,7 @@ ARTY:
 		Description: Long-range artillery.\n  Strong vs Infantry, Vehicles and Buildings
 	Mobile:
 		TurnSpeed: 16
-		Speed: 85
+		Speed: 72
 	Health:
 		HP: 7500
 	Repairable:
@@ -235,7 +235,7 @@ FTNK:
 		Description: Heavily armored flame-throwing vehicle.\n  Strong vs Infantry, Buildings and Vehicles\n  Weak vs Tanks
 	Mobile:
 		TurnSpeed: 28
-		Speed: 99
+		Speed: 92
 	Health:
 		HP: 27000
 	Repairable:
@@ -318,7 +318,7 @@ BIKE:
 		Description: Fast scout vehicle, armed with\nrockets.\nCan attack Aircraft.\n  Strong vs Vehicles, Tanks\n  Weak vs Infantry
 	Mobile:
 		TurnSpeed: 40
-		Speed: 184
+		Speed: 192
 		Locomotor: wheeled
 	Health:
 		HP: 11000
@@ -356,7 +356,7 @@ JEEP:
 		Description: Fast scout and anti-infantry vehicle.\n  Strong vs Infantry\n  Weak vs Tanks
 	Mobile:
 		TurnSpeed: 40
-		Speed: 156
+		Speed: 145
 	Health:
 		HP: 16000
 	Repairable:
@@ -398,7 +398,7 @@ LTNK:
 		Description: Fast, light tank.\n  Strong vs Vehicles, Tanks\n  Weak vs Infantry
 	Mobile:
 		TurnSpeed: 28
-		Speed: 110
+		Speed: 102
 	Health:
 		HP: 34000
 	Repairable:
@@ -440,7 +440,7 @@ MTNK:
 		Queue: Vehicle.GDI
 		Description: General-Purpose GDI Tank.\n  Strong vs Tanks, Vehicles\n  Weak vs Infantry
 	Mobile:
-		Speed: 85
+		Speed: 72
 	Health:
 		HP: 45000
 	Repairable:
@@ -488,7 +488,7 @@ HTNK:
 		Description: Heavily armored GDI Tank.\nCan attack Aircraft.\n  Strong vs Everything
 	Mobile:
 		Locomotor: heavytracked
-		Speed: 56
+		Speed: 46
 		TurnSpeed: 12
 	Health:
 		HP: 87000
@@ -548,7 +548,7 @@ MSAM:
 		Queue: Vehicle.GDI
 		Description: Long range rocket artillery.\n  Strong vs all Ground units.
 	Mobile:
-		Speed: 85
+		Speed: 72
 		TurnSpeed: 16
 	Health:
 		HP: 12000
@@ -599,7 +599,7 @@ MLRS:
 		Queue: Vehicle.Nod
 		Description: Powerful anti-air unit.\nCannot attack Ground units.
 	Mobile:
-		Speed: 99
+		Speed: 92
 		TurnSpeed: 28
 	Health:
 		HP: 18000
@@ -657,7 +657,7 @@ STNK:
 	Mobile:
 		Locomotor: heavywheeled
 		TurnSpeed: 40
-		Speed: 142
+		Speed: 127
 	Targetable:
 		TargetTypes: Ground, Vehicle, StealthTank
 	Health:
@@ -708,7 +708,7 @@ MHQ:
 	Armor:
 		Type: Light
 	Mobile:
-		Speed: 85
+		Speed: 72
 	RevealsShroud:
 		Range: 6c0
 	WithIdleOverlay@SPINNER:
@@ -735,7 +735,7 @@ TRUCK:
 	Armor:
 		Type: Light
 	Mobile:
-		Speed: 128
+		Speed: 113
 	RevealsShroud:
 		Range: 4c0
 	DeliversCash:

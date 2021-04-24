@@ -14,7 +14,7 @@ BOAT:
 	Armor:
 		Type: Heavy
 	TDGunboat:
-		Speed: 28
+		Speed: 29
 	RevealsShroud:
 		Range: 7c0
 		Type: CenterPosition
@@ -60,7 +60,7 @@ LST:
 		Locomotor: lcraft
 		InitialFacing: 0
 		TurnSpeed: 16
-		Speed: 142
+		Speed: 170
 		PauseOnCondition: notmobile
 	Health:
 		HP: 40000
