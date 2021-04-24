@@ -34,8 +34,7 @@ namespace OpenRA.Mods.Common.Lint
 				var range = weaponInfo.Value.Range;
 
 				if (weaponInfo.Value.Projectile is MissileInfo missile && missile.RangeLimit > WDist.Zero && missile.RangeLimit < range)
-					emitError("Weapon `{0}`: projectile RangeLimit lower than weapon range!"
-						.F(weaponInfo.Key));
+					emitError($"Weapon `{weaponInfo.Key}`: projectile RangeLimit lower than weapon range!");
 			}
 		}
 	}

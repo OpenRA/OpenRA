@@ -83,7 +83,7 @@ namespace OpenRA.Mods.Common.Widgets
 				return new string[0];
 
 			if (string.IsNullOrEmpty(prefix))
-				emitError("{0} must define HotkeyPrefix if HotkeyCount > 0.".F(widgetNode.Location));
+				emitError($"{widgetNode.Location} must define HotkeyPrefix if HotkeyCount > 0.");
 
 			return Exts.MakeArray(count, i => prefix + (i + 1).ToString("D2"));
 		}

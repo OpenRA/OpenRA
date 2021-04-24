@@ -63,14 +63,14 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					{
 						var r = s.Bounds;
 						if (c.Value.PanelSides.HasSide(s.PanelSides))
-							regions.Add("[\"{0}.<{1}>\",{2},{3},{4},{5}]".F(c.Key, s.PanelSides, r.X, r.Y, r.Width, r.Height));
+							regions.Add($"[\"{c.Key}.<{s.PanelSides}>\",{r.X},{r.Y},{r.Width},{r.Height}]");
 					}
 				}
 
 				foreach (var kv in c.Value.Regions)
 				{
 					var r = kv.Value;
-					regions.Add("[\"{0}\",{1},{2},{3},{4}]".F(c.Key + "." + kv.Key, r.X, r.Y, r.Width, r.Height));
+					regions.Add($"[\"{c.Key}.{kv.Key}\",{r.X},{r.Y},{r.Width},{r.Height}]");
 				}
 			}
 

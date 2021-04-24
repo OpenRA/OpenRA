@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Scripting
 			set
 			{
 				if (value == null)
-					throw new LuaException("Attempted to change the owner of actor '{0}' to nil value.".F(Self));
+					throw new LuaException($"Attempted to change the owner of actor '{Self}' to nil value.");
 
 				if (Self.Owner != value)
 					Self.ChangeOwner(value);
@@ -121,7 +121,7 @@ namespace OpenRA.Mods.Common.Scripting
 			get
 			{
 				if (facing == null)
-					throw new LuaException("Actor '{0}' doesn't define a facing".F(Self));
+					throw new LuaException($"Actor '{Self}' doesn't define a facing");
 
 				return facing.Facing;
 			}
@@ -172,7 +172,7 @@ namespace OpenRA.Mods.Common.Scripting
 					return;
 
 				if (!Enum<UnitStance>.TryParse(value, true, out var stance))
-					throw new LuaException("Unknown stance type '{0}'".F(value));
+					throw new LuaException($"Unknown stance type '{value}'");
 
 				autotarget.PredictedStance = stance;
 				autotarget.SetStance(Self, stance);

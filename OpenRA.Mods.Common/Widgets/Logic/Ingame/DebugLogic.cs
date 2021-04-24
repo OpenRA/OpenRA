@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic.Ingame
 					var cell = worldRenderer.Viewport.ViewToWorld(Viewport.LastMousePos);
 					var map = worldRenderer.World.Map;
 					var wpos = map.CenterOfCell(cell);
-					return map.Height.Contains(cell) ? "({0},{1}) ({2})".F(cell, map.Height[cell], wpos) : "";
+					return map.Height.Contains(cell) ? $"({cell},{map.Height[cell]}) ({wpos})" : "";
 				});
 
 				labelWidget.GetText = () => cellPosText.Update(Viewport.LastMousePos);

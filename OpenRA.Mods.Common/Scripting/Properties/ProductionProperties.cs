@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Scripting
 		public void Produce(string actorType, string factionVariant = null, string productionType = null)
 		{
 			if (!Self.World.Map.Rules.Actors.TryGetValue(actorType, out var actorInfo))
-				throw new LuaException("Unknown actor type '{0}'".F(actorType));
+				throw new LuaException($"Unknown actor type '{actorType}'");
 
 			var bi = actorInfo.TraitInfo<BuildableInfo>();
 			Self.QueueActivity(new WaitFor(() =>
@@ -197,7 +197,7 @@ namespace OpenRA.Mods.Common.Scripting
 			var bi = ri.TraitInfoOrDefault<BuildableInfo>();
 
 			if (bi == null)
-				throw new LuaException("Actor of type {0} cannot be produced".F(actorType));
+				throw new LuaException($"Actor of type {actorType} cannot be produced");
 			else
 				return bi;
 		}
@@ -304,7 +304,7 @@ namespace OpenRA.Mods.Common.Scripting
 			var bi = ri.TraitInfoOrDefault<BuildableInfo>();
 
 			if (bi == null)
-				throw new LuaException("Actor of type {0} cannot be produced".F(actorType));
+				throw new LuaException($"Actor of type {actorType} cannot be produced");
 			else
 				return bi;
 		}

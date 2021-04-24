@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Common.Scripting
 		{
 			var targetGainsExperience = target.TraitOrDefault<GainsExperience>();
 			if (targetGainsExperience == null)
-				throw new LuaException("Actor '{0}' cannot gain experience!".F(target));
+				throw new LuaException($"Actor '{target}' cannot gain experience!");
 
 			if (targetGainsExperience.Level == targetGainsExperience.MaxLevel)
 				return;

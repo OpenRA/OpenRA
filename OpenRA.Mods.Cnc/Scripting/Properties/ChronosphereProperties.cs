@@ -33,8 +33,7 @@ namespace OpenRA.Mods.Cnc.Scripting
 				using (kv.Value)
 				{
 					if (!kv.Key.TryGetClrValue(out actor) || !kv.Value.TryGetClrValue(out cell))
-						throw new LuaException("Chronoshift requires a table of Actor,CPos pairs. Received {0},{1}".F(
-							kv.Key.WrappedClrType().Name, kv.Value.WrappedClrType().Name));
+						throw new LuaException($"Chronoshift requires a table of Actor,CPos pairs. Received {kv.Key.WrappedClrType().Name},{kv.Value.WrappedClrType().Name}");
 				}
 
 				var cs = actor.TraitsImplementing<Chronoshiftable>()

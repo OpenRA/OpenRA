@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common
 		public void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
 			if (Index.Length != ReplaceIndex.Length)
-				throw new YamlException("ReplaceIndex length does not match Index length for palette {0}".F(Name));
+				throw new YamlException($"ReplaceIndex length does not match Index length for palette {Name}");
 		}
 	}
 

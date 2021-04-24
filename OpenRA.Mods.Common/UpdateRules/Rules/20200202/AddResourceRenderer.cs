@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 		{
 			if (actorNode.ChildrenMatching("ResourceLayer").Any() && !actorNode.ChildrenMatching("ResourceRenderer").Any())
 			{
-				locations.Add("{0} ({1})".F(actorNode.Key, actorNode.Location.Filename));
+				locations.Add($"{actorNode.Key} ({actorNode.Location.Filename})");
 				var resourceRenderer = new MiniYamlNode("ResourceRenderer", "");
 				resourceRenderer.AddNode("RenderTypes", "");
 				actorNode.AddNode(resourceRenderer);
@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			{
 				actorNode.RenameChildrenMatching("D2kResourceLayer", "ResourceLayer");
 
-				locations.Add("{0} ({1})".F(actorNode.Key, actorNode.Location.Filename));
+				locations.Add($"{actorNode.Key} ({actorNode.Location.Filename})");
 				var resourceRenderer = new MiniYamlNode("D2kResourceRenderer", "");
 				resourceRenderer.AddNode("RenderTypes", "");
 				actorNode.AddNode(resourceRenderer);

@@ -45,7 +45,7 @@ namespace OpenRA
 		public struct SourceLocation
 		{
 			public string Filename; public int Line;
-			public override string ToString() { return "{0}:{1}".F(Filename, Line); }
+			public override string ToString() { return $"{Filename}:{Line}"; }
 		}
 
 		public SourceLocation Location;
@@ -80,7 +80,7 @@ namespace OpenRA
 
 		public override string ToString()
 		{
-			return "{{YamlNode: {0} @ {1}}}".F(Key, Location);
+			return $"{{YamlNode: {Key} @ {Location}}}";
 		}
 
 		public MiniYamlNode Clone()
@@ -129,7 +129,7 @@ namespace OpenRA
 				}
 				catch (ArgumentException ex)
 				{
-					throw new InvalidDataException("Duplicate key '{0}' in {1}".F(y.Key, y.Location), ex);
+					throw new InvalidDataException($"Duplicate key '{y.Key}' in {y.Location}", ex);
 				}
 			}
 
@@ -205,7 +205,7 @@ namespace OpenRA
 					}
 
 					if (levels.Count <= level)
-						throw new YamlException("Bad indent in miniyaml at {0}".F(location));
+						throw new YamlException($"Bad indent in miniyaml at {location}");
 
 					while (levels.Count > level + 1)
 						levels.RemoveAt(levels.Count - 1);
@@ -361,11 +361,10 @@ namespace OpenRA
 				{
 					if (!tree.TryGetValue(n.Value.Value, out var parent))
 						throw new YamlException(
-							"{0}: Parent type `{1}` not found".F(n.Location, n.Value.Value));
+							$"{n.Location}: Parent type `{n.Value.Value}` not found");
 
 					if (inherited.ContainsKey(n.Value.Value))
-						throw new YamlException("{0}: Parent type `{1}` was already inherited by this yaml tree at {2} (note: may be from a derived tree)"
-							.F(n.Location, n.Value.Value, inherited[n.Value.Value]));
+						throw new YamlException($"{n.Location}: Parent type `{n.Value.Value}` was already inherited by this yaml tree at {inherited[n.Value.Value]} (note: may be from a derived tree)");
 
 					inherited.Add(n.Value.Value, n.Location);
 					foreach (var r in ResolveInherits(n.Key, parent, tree, inherited))
@@ -375,7 +374,7 @@ namespace OpenRA
 				{
 					var removed = n.Key.Substring(1);
 					if (resolved.RemoveAll(r => r.Key == removed) == 0)
-						throw new YamlException("{0}: There are no elements with key `{1}` to remove".F(n.Location, removed));
+						throw new YamlException($"{n.Location}: There are no elements with key `{removed}` to remove");
 				}
 				else
 					MergeIntoResolved(n, resolved, tree, inherited);
@@ -443,8 +442,8 @@ namespace OpenRA
 
 			var ret = new List<MiniYamlNode>();
 
-			var existingDict = existingNodes.ToDictionaryWithConflictLog(x => x.Key, "MiniYaml.Merge", null, x => "{0} (at {1})".F(x.Key, x.Location));
-			var overrideDict = overrideNodes.ToDictionaryWithConflictLog(x => x.Key, "MiniYaml.Merge", null, x => "{0} (at {1})".F(x.Key, x.Location));
+			var existingDict = existingNodes.ToDictionaryWithConflictLog(x => x.Key, "MiniYaml.Merge", null, x => $"{x.Key} (at {x.Location})");
+			var overrideDict = overrideNodes.ToDictionaryWithConflictLog(x => x.Key, "MiniYaml.Merge", null, x => $"{x.Key} (at {x.Location})");
 			var allKeys = existingDict.Keys.Union(overrideDict.Keys);
 
 			foreach (var key in allKeys)

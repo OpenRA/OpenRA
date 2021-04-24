@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					var font = Game.Renderer.Fonts[authorLabel.Font];
 					var author = new CachedTransform<MapPreview, string>(
-						m => WidgetUtils.TruncateText("Created by {0}".F(m.Author), authorLabel.Bounds.Width, font));
+						m => WidgetUtils.TruncateText($"Created by {m.Author}", authorLabel.Bounds.Width, font));
 					authorLabel.GetText = () => author.Update(preview);
 				}
 			}
@@ -203,13 +203,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 			catch (System.Net.Sockets.SocketException e)
 			{
-				var message = "Could not listen on port {0}.".F(Game.Settings.Server.ListenPort);
+				var message = $"Could not listen on port {Game.Settings.Server.ListenPort}.";
 
 				// AddressAlreadyInUse (WSAEADDRINUSE)
 				if (e.ErrorCode == 10048)
 					message += "\nCheck if the port is already being used.";
 				else
-					message += "\nError is: \"{0}\" ({1})".F(e.Message, e.ErrorCode);
+					message += $"\nError is: \"{e.Message}\" ({e.ErrorCode})";
 
 				ConfirmationDialogs.ButtonPrompt("Server Creation Failed", message, onCancel: () => { }, cancelText: "Back");
 			}

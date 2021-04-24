@@ -56,10 +56,10 @@ namespace OpenRA.Mods.Common.Lint
 					if (field.Key.StartsWith("-", StringComparison.Ordinal))
 					{
 						if (field.Value.Nodes.Any())
-							emitError("{0} {1} defines child nodes, which is not valid for removals.".F(field.Location, field.Key));
+							emitError($"{field.Location} {field.Key} defines child nodes, which is not valid for removals.");
 
 						if (!string.IsNullOrEmpty(field.Value.Value))
-							emitError("{0} {1} defines a value, which is not valid for removals.".F(field.Location, field.Key));
+							emitError($"{field.Location} {field.Key} defines a value, which is not valid for removals.");
 
 						continue;
 					}
@@ -73,14 +73,14 @@ namespace OpenRA.Mods.Common.Lint
 						{
 							var projectileFieldName = NormalizeName(projectileField.Key);
 							if (projectileInfo.GetField(projectileFieldName) == null)
-								emitError("{0} refers to a projectile field `{1}` that does not exist on `{2}`.".F(projectileField.Location, projectileFieldName, projectileName));
+								emitError($"{projectileField.Location} refers to a projectile field `{projectileFieldName}` that does not exist on `{projectileName}`.");
 						}
 					}
 					else if (fieldName == "Warhead")
 					{
 						if (string.IsNullOrEmpty(field.Value.Value))
 						{
-							emitWarning("{0} does not define a warhead type. Skipping unknown field check.".F(field.Location));
+							emitWarning($"{field.Location} does not define a warhead type. Skipping unknown field check.");
 							continue;
 						}
 
@@ -90,11 +90,11 @@ namespace OpenRA.Mods.Common.Lint
 						{
 							var warheadFieldName = NormalizeName(warheadField.Key);
 							if (warheadInfo.GetField(warheadFieldName) == null)
-								emitError("{0} refers to a warhead field `{1}` that does not exist on `{2}`.".F(warheadField.Location, warheadFieldName, warheadName));
+								emitError($"{warheadField.Location} refers to a warhead field `{warheadFieldName}` that does not exist on `{warheadName}`.");
 						}
 					}
 					else if (fieldName != "Inherits" && weaponInfo.GetField(fieldName) == null)
-						emitError("{0} refers to a weapon field `{1}` that does not exist.".F(field.Location, fieldName));
+						emitError($"{field.Location} refers to a weapon field `{fieldName}` that does not exist.");
 				}
 			}
 		}

@@ -65,12 +65,12 @@ namespace OpenRA.Mods.Common.Lint
 							if (isPlayerPalette)
 							{
 								if (!playerPalettes.Contains(reference))
-									emitError("Undefined player palette reference {0} detected at {1} for {2}".F(reference, traitInfo, actorInfo.Key));
+									emitError($"Undefined player palette reference {reference} detected at {traitInfo} for {actorInfo.Key}");
 							}
 							else
 							{
 								if (!palettes.Contains(reference))
-									emitError("Undefined palette reference {0} detected at {1} for {2}".F(reference, traitInfo, actorInfo.Key));
+									emitError($"Undefined palette reference {reference} detected at {traitInfo} for {actorInfo.Key}");
 							}
 						}
 					}
@@ -109,12 +109,12 @@ namespace OpenRA.Mods.Common.Lint
 						if (isPlayerPalette)
 						{
 							if (!playerPalettes.Contains(reference))
-								emitError("Undefined player palette reference {0} detected at weapon {1}.".F(reference, weaponInfo.Key));
+								emitError($"Undefined player palette reference {reference} detected at weapon {weaponInfo.Key}.");
 						}
 						else
 						{
 							if (!palettes.Contains(reference))
-								emitError("Undefined palette reference {0} detected at weapon {1}.".F(reference, weaponInfo.Key));
+								emitError($"Undefined palette reference {reference} detected at weapon {weaponInfo.Key}.");
 						}
 					}
 				}

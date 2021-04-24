@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
 		{
-			var locationKey = "{0} ({1})".F(actorNode.Key, actorNode.Location.Filename);
+			var locationKey = $"{actorNode.Key} ({actorNode.Location.Filename})";
 			var anyConditionalSmokeTrail = false;
 
 			foreach (var smokeTrail in actorNode.ChildrenMatching("SmokeTrailWhenDamaged"))

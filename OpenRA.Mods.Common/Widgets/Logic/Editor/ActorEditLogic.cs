@@ -461,7 +461,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			actorId = actor.ID;
 			this.actor = actor;
 			this.handles = handles;
-			Text = "Edited {0} ({1})".F(actor.Info.Name, actor.ID);
+			Text = $"Edited {actor.Info.Name} ({actor.ID})";
 		}
 
 		public void Execute()

@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Scripting
 		{
 			var pool = ammoPools.FirstOrDefault(a => a.Info.Name == poolName);
 			if (pool == null)
-				throw new LuaException("Invalid ammopool name {0} queried on actor {1}.".F(poolName, self));
+				throw new LuaException($"Invalid ammopool name {poolName} queried on actor {self}.");
 
 			return pool.CurrentAmmoCount;
 		}
@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.Scripting
 		{
 			var pool = ammoPools.FirstOrDefault(a => a.Info.Name == poolName);
 			if (pool == null)
-				throw new LuaException("Invalid ammopool name {0} queried on actor {1}.".F(poolName, self));
+				throw new LuaException($"Invalid ammopool name {poolName} queried on actor {self}.");
 
 			return pool.Info.Ammo;
 		}
@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Scripting
 		{
 			var pool = ammoPools.FirstOrDefault(a => a.Info.Name == poolName);
 			if (pool == null)
-				throw new LuaException("Invalid ammopool name {0} queried on actor {1}.".F(poolName, self));
+				throw new LuaException($"Invalid ammopool name {poolName} queried on actor {self}.");
 
 			if (amount > 0)
 				pool.GiveAmmo(self, amount);

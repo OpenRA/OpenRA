@@ -405,7 +405,7 @@ namespace OpenRA
 				}
 
 				default:
-					throw new InvalidDataException("Cannot serialize order type {0}".F(Type));
+					throw new InvalidDataException($"Cannot serialize order type {Type}");
 			}
 
 			return ret.ToArray();
@@ -413,10 +413,8 @@ namespace OpenRA
 
 		public override string ToString()
 		{
-			return ("OrderString: \"{0}\" \n\t Type: \"{1}\".  \n\t Subject: \"{2}\". \n\t Target: \"{3}\"." +
-				"\n\t TargetString: \"{4}\".\n\t IsImmediate: {5}.\n\t Player(PlayerName): {6}\n").F(
-				OrderString, Type, Subject, Target, TargetString, IsImmediate,
-				Player != null ? Player.PlayerName : null);
+			return $"OrderString: \"{OrderString}\" \n\t Type: \"{Type}\".  \n\t Subject: \"{Subject}\". \n\t Target: \"{Target}\"." +
+					$"\n\t TargetString: \"{TargetString}\".\n\t IsImmediate: {IsImmediate}.\n\t Player(PlayerName): {Player?.PlayerName}\n";
 		}
 	}
 }

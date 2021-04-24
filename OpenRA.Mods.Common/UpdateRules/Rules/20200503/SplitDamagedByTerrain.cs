@@ -24,9 +24,9 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			foreach (var damaged in actorNode.ChildrenMatching("DamagedByTerrain", includeRemovals: false))
 			{
 				if (damaged.RemoveNodes("DamageThreshold") > 0)
-					yield return "'DamageThreshold' was removed from {0} ({1}) without replacement.\n".F(actorNode.Key, actorNode.Location.Filename);
+					yield return $"'DamageThreshold' was removed from {actorNode.Key} ({actorNode.Location.Filename}) without replacement.\n";
 				if (damaged.RemoveNodes("StartOnThreshold") > 0)
-					yield return "'StartOnThreshold' was removed from {0} ({1}) without replacement.\n".F(actorNode.Key, actorNode.Location.Filename);
+					yield return $"'StartOnThreshold' was removed from {actorNode.Key} ({actorNode.Location.Filename}) without replacement.\n";
 			}
 
 			yield break;

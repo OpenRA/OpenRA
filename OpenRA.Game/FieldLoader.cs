@@ -58,12 +58,12 @@ namespace OpenRA
 
 		public static Func<string, Type, string, object> InvalidValueAction = (s, t, f) =>
 		{
-			throw new YamlException("FieldLoader: Cannot parse `{0}` into `{1}.{2}` ".F(s, f, t));
+			throw new YamlException($"FieldLoader: Cannot parse `{s}` into `{f}.{t}` ");
 		};
 
 		public static Action<string, Type> UnknownFieldAction = (s, f) =>
 		{
-			throw new NotImplementedException("FieldLoader: Missing field `{0}` on `{1}`".F(s, f.Name));
+			throw new NotImplementedException($"FieldLoader: Missing field `{s}` on `{f.Name}`");
 		};
 
 		static readonly ConcurrentCache<Type, FieldLoadInfo[]> TypeLoadInfo =
@@ -660,7 +660,7 @@ namespace OpenRA
 				}
 			}
 
-			UnknownFieldAction("[Type] {0}".F(value), fieldType);
+			UnknownFieldAction($"[Type] {value}", fieldType);
 			return null;
 		}
 
@@ -771,7 +771,7 @@ namespace OpenRA
 				{
 					var method = type.GetMethod(Loader, Flags);
 					if (method == null)
-						throw new InvalidOperationException("{0} does not specify a loader function '{1}'".F(type.Name, Loader));
+						throw new InvalidOperationException($"{type.Name} does not specify a loader function '{Loader}'");
 
 					return (Func<MiniYaml, object>)Delegate.CreateDelegate(typeof(Func<MiniYaml, object>), method);
 				}

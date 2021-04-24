@@ -270,7 +270,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			var size = new Size(iniSize[2], 2 * iniSize[3]);
 
 			if (!utility.ModData.DefaultTerrainInfo.TryGetValue(tileset, out var terrainInfo))
-				throw new InvalidDataException("Unknown tileset {0}".F(tileset));
+				throw new InvalidDataException($"Unknown tileset {tileset}");
 
 			var map = new Map(Game.ModData, terrainInfo, size.Width, size.Height)
 			{
@@ -527,7 +527,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 				ar.Add(new OwnerInit("Neutral"));
 
 				if (!map.Rules.Actors.ContainsKey(name))
-					Console.WriteLine("Ignoring unknown actor type: `{0}`".F(name));
+					Console.WriteLine($"Ignoring unknown actor type: `{name}`");
 				else
 					map.ActorDefinitions.Add(new MiniYamlNode("Actor" + map.ActorDefinitions.Count, ar.Save()));
 			}
@@ -573,7 +573,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 					ar.Add(new DeployStateInit(DeployState.Deployed));
 
 				if (!map.Rules.Actors.ContainsKey(name))
-					Console.WriteLine("Ignoring unknown actor type: `{0}`".F(name));
+					Console.WriteLine($"Ignoring unknown actor type: `{name}`");
 				else
 					map.ActorDefinitions.Add(new MiniYamlNode("Actor" + map.ActorDefinitions.Count, ar.Save()));
 			}
@@ -600,7 +600,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 				if (lightingTypes.ContainsKey(kv.Key))
 					parsed[kv.Key] = FieldLoader.GetValue<float>(kv.Key, kv.Value);
 				else
-					Console.WriteLine("Ignoring unknown lighting type: `{0}`".F(kv.Key));
+					Console.WriteLine($"Ignoring unknown lighting type: `{kv.Key}`");
 			}
 
 			// Merge Ground into Ambient

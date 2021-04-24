@@ -71,7 +71,7 @@ namespace OpenRA.Network
 
 		public MiniYamlNode Serialize(string key)
 		{
-			return new MiniYamlNode("SlotClient@{0}".F(key), FieldSaver.Save(this));
+			return new MiniYamlNode($"SlotClient@{key}", FieldSaver.Save(this));
 		}
 	}
 
@@ -195,7 +195,7 @@ namespace OpenRA.Network
 			{
 				if (data.Length != Order.SyncHashOrderLength)
 				{
-					Log.Write("debug", "Dropped sync order with length {0}. Expected length {1}.".F(data.Length, Order.SyncHashOrderLength));
+					Log.Write("debug", $"Dropped sync order with length {data.Length}. Expected length {Order.SyncHashOrderLength}.");
 					return;
 				}
 

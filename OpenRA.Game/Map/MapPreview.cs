@@ -324,7 +324,7 @@ namespace OpenRA
 			{
 				var format = FieldLoader.GetValue<int>("MapFormat", temp.Value);
 				if (format != Map.SupportedMapFormat)
-					throw new InvalidDataException("Map format {0} is not supported.".F(format));
+					throw new InvalidDataException($"Map format {format} is not supported.");
 			}
 
 			if (yaml.TryGetValue("Title", out temp))

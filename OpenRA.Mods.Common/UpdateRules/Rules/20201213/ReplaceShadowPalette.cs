@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 		{
 			foreach (var projectileNode in weaponNode.ChildrenMatching("Projectile"))
 				if (projectileNode.RemoveNodes("ShadowPalette") > 0)
-					locations.Add("{0}: {1} ({2})".F(weaponNode.Key, weaponNode.Key, weaponNode.Location.Filename));
+					locations.Add($"{weaponNode.Key}: {weaponNode.Key} ({weaponNode.Location.Filename})");
 
 			yield break;
 		}
@@ -47,11 +47,11 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 		{
 			foreach (var node in actorNode.ChildrenMatching("WithShadow"))
 				if (node.RemoveNodes("Palette") > 0)
-					locations.Add("{0}: {1} ({2})".F(actorNode.Key, node.Key, actorNode.Location.Filename));
+					locations.Add($"{actorNode.Key}: {node.Key} ({actorNode.Location.Filename})");
 
 			foreach (var node in actorNode.ChildrenMatching("WithParachute"))
 				if (node.RemoveNodes("ShadowPalette") > 0)
-					locations.Add("{0}: {1} ({2})".F(actorNode.Key, node.Key, actorNode.Location.Filename));
+					locations.Add($"{actorNode.Key}: {node.Key} ({actorNode.Location.Filename})");
 
 			yield break;
 		}

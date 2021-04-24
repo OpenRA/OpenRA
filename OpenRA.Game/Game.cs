@@ -216,7 +216,7 @@ namespace OpenRA
 
 			var orders = new[]
 			{
-					Order.Command("sync_lobby {0}".F(lobbyInfo.Serialize())),
+					Order.Command($"sync_lobby {lobbyInfo.Serialize()}"),
 					Order.Command("startgame")
 			};
 
@@ -439,7 +439,7 @@ namespace OpenRA
 				throw new InvalidOperationException("Game.Mod argument missing.");
 
 			if (!Mods.ContainsKey(mod))
-				throw new InvalidOperationException("Unknown or invalid mod '{0}'.".F(mod));
+				throw new InvalidOperationException($"Unknown or invalid mod '{mod}'.");
 
 			Console.WriteLine("Loading mod: {0}", mod);
 
@@ -988,8 +988,8 @@ namespace OpenRA
 		{
 			var orders = new List<Order>
 			{
-				Order.Command("option gamespeed {0}".F("default")),
-				Order.Command("state {0}".F(Session.ClientState.Ready))
+				Order.Command("option gamespeed default"),
+				Order.Command($"state {Session.ClientState.Ready}")
 			};
 
 			var path = Platform.ResolvePath(launchMap);
@@ -997,7 +997,7 @@ namespace OpenRA
 				ModData.MapCache.SingleOrDefault(m => m.Package.Name == path);
 
 			if (map == null)
-				throw new InvalidOperationException("Could not find map '{0}'.".F(launchMap));
+				throw new InvalidOperationException($"Could not find map '{launchMap}'.");
 
 			CreateAndStartLocalServer(map.Uid, orders);
 		}

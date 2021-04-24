@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
 		{
-			var locationKey = "{0} ({1})".F(actorNode.Key, actorNode.Location.Filename);
+			var locationKey = $"{actorNode.Key} ({actorNode.Location.Filename})";
 
 			foreach (var trait in LegacyDecorationTraits)
 			{

@@ -23,8 +23,8 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 		{
 			foreach (var renderSprites in actorNode.ChildrenMatching("RenderSprites"))
 				if (renderSprites.RemoveNodes("Scale") > 0)
-					yield return "The actor-level scaling has been removed from {0} ({1}).\n".F(actorNode.Key, actorNode.Location.Filename) +
-					             "You must manually define Scale on its sequences instead.";
+					yield return $"The actor-level scaling has been removed from {actorNode.Key} ({actorNode.Location.Filename}).\n" +
+						"You must manually define Scale on its sequences instead.";
 		}
 	}
 }

@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Lint
 							continue;
 
 						if (!cursors.Contains(cursor))
-							emitError("Undefined cursor {0} for actor {1} with trait {2}.".F(cursor, actorInfo.Value.Name, traitInfo));
+							emitError($"Undefined cursor {cursor} for actor {actorInfo.Value.Name} with trait {traitInfo}.");
 					}
 				}
 			}

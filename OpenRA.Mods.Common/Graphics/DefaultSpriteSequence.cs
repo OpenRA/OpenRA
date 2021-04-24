@@ -67,12 +67,12 @@ namespace OpenRA.Mods.Common.Graphics
 			}
 			catch (Exception e)
 			{
-				throw new InvalidDataException("Error occurred while parsing {0}".F(node.Key), e);
+				throw new InvalidDataException($"Error occurred while parsing {node.Key}", e);
 			}
 
 			foreach (var kvp in nodes)
 			{
-				using (new Support.PerfTimer("new Sequence(\"{0}\")".F(node.Key), 20))
+				using (new Support.PerfTimer($"new Sequence(\"{node.Key}\")", 20))
 				{
 					try
 					{
@@ -223,32 +223,26 @@ namespace OpenRA.Mods.Common.Graphics
 					Stride = LoadField(d, "Stride", Length);
 
 					if (Length > Stride)
-						throw new YamlException("Sequence {0}.{1}: Length must be <= stride"
-							.F(sequence, animation));
+						throw new YamlException($"Sequence {sequence}.{animation}: Length must be <= stride");
 
 					if (Frames != null && Length > Frames.Length)
-						throw new YamlException("Sequence {0}.{1}: Length must be <= Frames.Length"
-							.F(sequence, animation));
+						throw new YamlException($"Sequence {sequence}.{animation}: Length must be <= Frames.Length");
 
 					var end = Start + (Facings - 1) * Stride + Length - 1;
 					if (Frames != null)
 					{
 						foreach (var f in Frames)
 							if (f < 0 || f >= frameCount)
-								throw new YamlException("Sequence {0}.{1} defines a Frames override that references frame {2}, but only [{3}..{4}] actually exist"
-									.F(sequence, animation, f, Start, end));
+								throw new YamlException($"Sequence {sequence}.{animation} defines a Frames override that references frame {f}, but only [{Start}..{end}] actually exist");
 
 						if (Start < 0 || end >= Frames.Length)
-							throw new YamlException("Sequence {0}.{1} uses indices [{2}..{3}] of the Frames list, but only {4} frames are defined"
-									.F(sequence, animation, Start, end, Frames.Length));
+							throw new YamlException($"Sequence {sequence}.{animation} uses indices [{Start}..{end}] of the Frames list, but only {Frames.Length} frames are defined");
 					}
 					else if (Start < 0 || end >= frameCount)
-						throw new YamlException("Sequence {0}.{1} uses frames [{2}..{3}], but only [0..{4}] actually exist"
-								.F(sequence, animation, Start, end, frameCount - 1));
+						throw new YamlException($"Sequence {sequence}.{animation} uses frames [{Start}..{end}], but only [0..{frameCount - 1}] actually exist");
 
 					if (ShadowStart >= 0 && ShadowStart + (Facings - 1) * Stride + Length > frameCount)
-						throw new YamlException("Sequence {0}.{1}'s shadow frames use frames [{2}..{3}], but only [0..{4}] actually exist"
-							.F(sequence, animation, ShadowStart, ShadowStart + (Facings - 1) * Stride + Length - 1, frameCount - 1));
+						throw new YamlException($"Sequence {sequence}.{animation}'s shadow frames use frames [{ShadowStart}..{ShadowStart + (Facings - 1) * Stride + Length - 1}], but only [0..{frameCount - 1}] actually exist");
 
 					var usedFrames = new List<int>();
 					for (var facing = 0; facing < Facings; facing++)
@@ -325,13 +319,13 @@ namespace OpenRA.Mods.Common.Graphics
 					if (alpha.Length == 1)
 						alpha = Exts.MakeArray(Length, _ => alpha[0]);
 					else if (alpha.Length != Length)
-						throw new YamlException("Sequence {0}.{1} must define either 1 or {2} Alpha values.".F(sequence, animation, Length));
+						throw new YamlException($"Sequence {sequence}.{animation} must define either 1 or {Length} Alpha values.");
 				}
 
 				if (LoadField(d, "AlphaFade", false))
 				{
 					if (alpha != null)
-						throw new YamlException("Sequence {0}.{1} cannot define both AlphaFade and Alpha.".F(sequence, animation));
+						throw new YamlException($"Sequence {sequence}.{animation} cannot define both AlphaFade and Alpha.");
 
 					alpha = Exts.MakeArray(Length, i => float2.Lerp(1f, 0f, i / (Length - 1f)));
 				}
@@ -368,7 +362,7 @@ namespace OpenRA.Mods.Common.Graphics
 					var i = Frames != null ? Frames[0] : Start;
 					var palettes = metadata != null ? metadata.GetOrDefault<EmbeddedSpritePalette>() : null;
 					if (palettes == null || !palettes.TryGetPaletteForFrame(i, out EmbeddedPalette))
-						throw new YamlException("Cannot export palettes from {0}: frame {1} does not define an embedded palette".F(src, i));
+						throw new YamlException($"Cannot export palettes from {src}: frame {i} does not define an embedded palette");
 				}
 
 				var boundSprites = SpriteBounds(sprites, Frames, Start, Facings, Length, Stride, transpose);
@@ -379,7 +373,7 @@ namespace OpenRA.Mods.Common.Graphics
 			}
 			catch (FormatException f)
 			{
-				throw new FormatException("Failed to parse sequences for {0}.{1} at {2}:\n{3}".F(sequence, animation, info.Nodes[0].Location, f));
+				throw new FormatException($"Failed to parse sequences for {sequence}.{animation} at {info.Nodes[0].Location}:\n{f}");
 			}
 		}
 
@@ -428,8 +422,7 @@ namespace OpenRA.Mods.Common.Graphics
 
 			var j = Frames != null ? Frames[i] : start + i;
 			if (sprites[j] == null)
-				throw new InvalidOperationException("Attempted to query unloaded sprite from {0}.{1}".F(Name, sequence) +
-					" start={0} frame={1} facing={2}".F(start, frame, facing));
+				throw new InvalidOperationException($"Attempted to query unloaded sprite from {Name}.{sequence} start={start} frame={frame} facing={facing}");
 
 			return sprites[j];
 		}

@@ -353,14 +353,14 @@ namespace OpenRA
 			if (voicedActor != null)
 			{
 				if (!rules.VoicePools.Value.ContainsKey(definition))
-					throw new InvalidOperationException("Can't find {0} in voice pool.".F(definition));
+					throw new InvalidOperationException($"Can't find {definition} in voice pool.");
 
 				pool = rules.VoicePools.Value[definition];
 			}
 			else
 			{
 				if (!rules.NotificationsPools.Value.ContainsKey(definition))
-					throw new InvalidOperationException("Can't find {0} in notification pool.".F(definition));
+					throw new InvalidOperationException($"Can't find {definition} in notification pool.");
 
 				pool = rules.NotificationsPools.Value[definition];
 			}

@@ -83,7 +83,7 @@ namespace OpenRA
 		public LuaValue Add(LuaRuntime runtime, LuaValue left, LuaValue right)
 		{
 			if (!left.TryGetClrValue(out WPos a) || !right.TryGetClrValue(out WVec b))
-				throw new LuaException("Attempted to call WPos.Add(WPos, WVec) with invalid arguments ({0}, {1})".F(left.WrappedClrType().Name, right.WrappedClrType().Name));
+				throw new LuaException($"Attempted to call WPos.Add(WPos, WVec) with invalid arguments ({left.WrappedClrType().Name}, {right.WrappedClrType().Name})");
 
 			return new LuaCustomClrObject(a + b);
 		}
@@ -92,7 +92,7 @@ namespace OpenRA
 		{
 			var rightType = right.WrappedClrType();
 			if (!left.TryGetClrValue(out WPos a))
-				throw new LuaException("Attempted to call WPos.Subtract(WPos, (WPos|WVec)) with invalid arguments ({0}, {1})".F(left.WrappedClrType().Name, rightType.Name));
+				throw new LuaException($"Attempted to call WPos.Subtract(WPos, (WPos|WVec)) with invalid arguments ({left.WrappedClrType().Name}, {rightType.Name})");
 
 			if (rightType == typeof(WPos))
 			{
@@ -105,7 +105,7 @@ namespace OpenRA
 				return new LuaCustomClrObject(a - b);
 			}
 
-			throw new LuaException("Attempted to call WPos.Subtract(WPos, (WPos|WVec)) with invalid arguments ({0}, {1})".F(left.WrappedClrType().Name, rightType.Name));
+			throw new LuaException($"Attempted to call WPos.Subtract(WPos, (WPos|WVec)) with invalid arguments ({left.WrappedClrType().Name}, {rightType.Name})");
 		}
 
 		public LuaValue Equals(LuaRuntime runtime, LuaValue left, LuaValue right)
@@ -125,7 +125,7 @@ namespace OpenRA
 					case "X": return X;
 					case "Y": return Y;
 					case "Z": return Z;
-					default: throw new LuaException("WPos does not define a member '{0}'".F(key));
+					default: throw new LuaException($"WPos does not define a member '{key}'");
 				}
 			}
 

@@ -313,7 +313,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							{
 								Game.RunAfterTick(() => // run on the main thread
 								{
-									SetNewsStatus("Failed to retrieve news: {0}".F(e));
+									SetNewsStatus($"Failed to retrieve news: {e}");
 								});
 							}
 						});
@@ -388,7 +388,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 			catch (Exception ex)
 			{
-				SetNewsStatus("Failed to parse news: {0}".F(ex.Message));
+				SetNewsStatus($"Failed to parse news: {ex.Message}");
 			}
 
 			return null;

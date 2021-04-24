@@ -161,7 +161,7 @@ namespace OpenRA.Mods.D2k.Traits
 					UpdateSpriteLayers(cell, content.Sequence, index, content.Palette);
 				}
 				else
-					throw new InvalidOperationException("SpriteMap does not contain an index for ClearSides type '{0}'".F(clear));
+					throw new InvalidOperationException($"SpriteMap does not contain an index for ClearSides type '{clear}'");
 			}
 			else
 				UpdateSpriteLayers(cell, null, 0, null);

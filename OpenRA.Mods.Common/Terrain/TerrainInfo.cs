@@ -45,10 +45,10 @@ namespace OpenRA.Mods.Common.Terrain
 				foreach (var node in nodes)
 				{
 					if (!int.TryParse(node.Key, out var key))
-						throw new YamlException("Tileset `{0}` template `{1}` defines a frame `{2}` that is not a valid integer.".F(terrainInfo.Id, Id, node.Key));
+						throw new YamlException($"Tileset `{terrainInfo.Id}` template `{Id}` defines a frame `{node.Key}` that is not a valid integer.");
 
 					if (key < 0 || key >= tileInfo.Length)
-						throw new YamlException("Tileset `{0}` template `{1}` references frame {2}, but only [0..{3}] are valid for a {4}x{5} Size template.".F(terrainInfo.Id, Id, key, tileInfo.Length - 1, Size.X, Size.Y));
+						throw new YamlException($"Tileset `{terrainInfo.Id}` template `{Id}` references frame {key}, but only [0..{tileInfo.Length - 1}] are valid for a {Size.X}x{Size.Y} Size template.");
 
 					tileInfo[key] = LoadTileInfo(terrainInfo, node.Value);
 				}
@@ -61,10 +61,10 @@ namespace OpenRA.Mods.Common.Terrain
 				foreach (var node in nodes)
 				{
 					if (!int.TryParse(node.Key, out var key))
-						throw new YamlException("Tileset `{0}` template `{1}` defines a frame `{2}` that is not a valid integer.".F(terrainInfo.Id, Id, node.Key));
+						throw new YamlException($"Tileset `{terrainInfo.Id}` template `{Id}` defines a frame `{node.Key}` that is not a valid integer.");
 
 					if (key != i++)
-						throw new YamlException("Tileset `{0}` template `{1}` is missing a definition for frame {2}.".F(terrainInfo.Id, Id, i - 1));
+						throw new YamlException($"Tileset `{terrainInfo.Id}` template `{Id}` is missing a definition for frame {i - 1}.");
 
 					tileInfo[key] = LoadTileInfo(terrainInfo, node.Value);
 				}

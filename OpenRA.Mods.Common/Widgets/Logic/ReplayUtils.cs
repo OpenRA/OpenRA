@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		static bool IncompatibleReplayDialog(string type, string name, Action onCancel)
 		{
 			var error = "It was recorded with an " + type;
-			error += string.IsNullOrEmpty(name) ? "." : ":\n{0}".F(name);
+			error += string.IsNullOrEmpty(name) ? "." : $":\n{name}";
 
 			ConfirmationDialogs.ButtonPrompt("Incompatible Replay", error, onCancel: onCancel);
 

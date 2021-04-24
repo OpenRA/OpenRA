@@ -144,7 +144,7 @@ namespace OpenRA
 				{
 					case "Length": return Length;
 					case "Range": Game.Debug("WDist.Range is deprecated. Use WDist.Length instead"); return Length;
-					default: throw new LuaException("WDist does not define a member '{0}'".F(key));
+					default: throw new LuaException($"WDist does not define a member '{key}'");
 				}
 			}
 

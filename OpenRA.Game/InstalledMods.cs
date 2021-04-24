@@ -74,7 +74,7 @@ namespace OpenRA
 			}
 			catch (Exception e)
 			{
-				Log.Write("debug", "Load mod '{0}': {1}".F(path, e));
+				Log.Write("debug", $"Load mod '{path}': {e}");
 			}
 
 			package?.Dispose();

@@ -85,7 +85,7 @@ namespace OpenRA
 		public static WAngle ArcSin(int d)
 		{
 			if (d < -1024 || d > 1024)
-				throw new ArgumentException("ArcSin is only valid for values between -1024 and 1024. Received {0}".F(d));
+				throw new ArgumentException($"ArcSin is only valid for values between -1024 and 1024. Received {d}");
 
 			var a = ClosestCosineIndex(Math.Abs(d));
 			return new WAngle(d < 0 ? 768 + a : 256 - a);
@@ -94,7 +94,7 @@ namespace OpenRA
 		public static WAngle ArcCos(int d)
 		{
 			if (d < -1024 || d > 1024)
-				throw new ArgumentException("ArcCos is only valid for values between -1024 and 1024. Received {0}".F(d));
+				throw new ArgumentException($"ArcCos is only valid for values between -1024 and 1024. Received {d}");
 
 			var a = ClosestCosineIndex(Math.Abs(d));
 			return new WAngle(d < 0 ? 512 - a : a);
@@ -222,7 +222,7 @@ namespace OpenRA
 		public LuaValue Add(LuaRuntime runtime, LuaValue left, LuaValue right)
 		{
 			if (!left.TryGetClrValue(out WAngle a))
-				throw new LuaException("Attempted to call WAngle.Add(WAngle, WAngle) with invalid arguments ({0}, {1})".F(left.WrappedClrType().Name, right.WrappedClrType().Name));
+				throw new LuaException($"Attempted to call WAngle.Add(WAngle, WAngle) with invalid arguments ({left.WrappedClrType().Name}, {right.WrappedClrType().Name})");
 
 			if (right.TryGetClrValue(out int c))
 			{
@@ -233,13 +233,13 @@ namespace OpenRA
 			if (right.TryGetClrValue(out WAngle b))
 				return new LuaCustomClrObject(a + b);
 
-			throw new LuaException("Attempted to call WAngle.Add(WAngle, WAngle) with invalid arguments ({0}, {1})".F(left.WrappedClrType().Name, right.WrappedClrType().Name));
+			throw new LuaException($"Attempted to call WAngle.Add(WAngle, WAngle) with invalid arguments ({left.WrappedClrType().Name}, {right.WrappedClrType().Name})");
 		}
 
 		public LuaValue Subtract(LuaRuntime runtime, LuaValue left, LuaValue right)
 		{
 			if (!left.TryGetClrValue(out WAngle a))
-				throw new LuaException("Attempted to call WAngle.Subtract(WAngle, WAngle) with invalid arguments ({0}, {1})".F(left.WrappedClrType().Name, right.WrappedClrType().Name));
+				throw new LuaException($"Attempted to call WAngle.Subtract(WAngle, WAngle) with invalid arguments ({left.WrappedClrType().Name}, {right.WrappedClrType().Name})");
 
 			if (right.TryGetClrValue(out int c))
 			{
@@ -250,7 +250,7 @@ namespace OpenRA
 			if (right.TryGetClrValue(out WAngle b))
 				return new LuaCustomClrObject(a - b);
 
-			throw new LuaException("Attempted to call WAngle.Subtract(WAngle, WAngle) with invalid arguments ({0}, {1})".F(left.WrappedClrType().Name, right.WrappedClrType().Name));
+			throw new LuaException($"Attempted to call WAngle.Subtract(WAngle, WAngle) with invalid arguments ({left.WrappedClrType().Name}, {right.WrappedClrType().Name})");
 		}
 
 		public LuaValue Equals(LuaRuntime runtime, LuaValue left, LuaValue right)

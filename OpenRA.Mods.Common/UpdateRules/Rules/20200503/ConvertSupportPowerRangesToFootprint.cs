@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			{
 				range = rangeNode.NodeValue<int>();
 				if (range > 3)
-					locations.Add("{0} ({1})".F(rangeNode.Key, rangeNode.Location.Filename));
+					locations.Add($"{rangeNode.Key} ({rangeNode.Location.Filename})");
 
 				power.RemoveNode(rangeNode);
 			}

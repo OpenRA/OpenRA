@@ -111,7 +111,7 @@ namespace OpenRA
 		public LuaValue Add(LuaRuntime runtime, LuaValue left, LuaValue right)
 		{
 			if (!left.TryGetClrValue(out WVec a) || !right.TryGetClrValue(out WVec b))
-				throw new LuaException("Attempted to call WVec.Add(WVec, WVec) with invalid arguments ({0}, {1})".F(left.WrappedClrType().Name, right.WrappedClrType().Name));
+				throw new LuaException($"Attempted to call WVec.Add(WVec, WVec) with invalid arguments ({left.WrappedClrType().Name}, {right.WrappedClrType().Name})");
 
 			return new LuaCustomClrObject(a + b);
 		}
@@ -119,7 +119,7 @@ namespace OpenRA
 		public LuaValue Subtract(LuaRuntime runtime, LuaValue left, LuaValue right)
 		{
 			if (!left.TryGetClrValue(out WVec a) || !right.TryGetClrValue(out WVec b))
-				throw new LuaException("Attempted to call WVec.Subtract(WVec, WVec) with invalid arguments ({0}, {1})".F(left.WrappedClrType().Name, right.WrappedClrType().Name));
+				throw new LuaException($"Attempted to call WVec.Subtract(WVec, WVec) with invalid arguments ({left.WrappedClrType().Name}, {right.WrappedClrType().Name})");
 
 			return new LuaCustomClrObject(a - b);
 		}
@@ -147,7 +147,7 @@ namespace OpenRA
 					case "Y": return Y;
 					case "Z": return Z;
 					case "Facing": return new LuaCustomClrObject(Yaw);
-					default: throw new LuaException("WVec does not define a member '{0}'".F(key));
+					default: throw new LuaException($"WVec does not define a member '{key}'");
 				}
 			}
 

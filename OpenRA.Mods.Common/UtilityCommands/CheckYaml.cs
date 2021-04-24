@@ -52,13 +52,13 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				Log.AddChannel("perf", null);
 
 				// bind some nonfatal error handling into FieldLoader, so we don't just *explode*.
-				ObjectCreator.MissingTypeAction = s => EmitError("Missing Type: {0}".F(s));
-				FieldLoader.UnknownFieldAction = (s, f) => EmitError("FieldLoader: Missing field `{0}` on `{1}`".F(s, f.Name));
+				ObjectCreator.MissingTypeAction = s => EmitError($"Missing Type: {s}");
+				FieldLoader.UnknownFieldAction = (s, f) => EmitError($"FieldLoader: Missing field `{s}` on `{f.Name}`");
 
 				var maps = new List<Map>();
 				if (args.Length < 2)
 				{
-					Console.WriteLine("Testing mod: {0}".F(modData.Manifest.Metadata.Title));
+					Console.WriteLine($"Testing mod: {modData.Manifest.Metadata.Title}");
 
 					// Run all rule checks on the default mod rules.
 					CheckRules(modData, modData.DefaultRules);
@@ -73,7 +73,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						}
 						catch (Exception e)
 						{
-							EmitError("{0} failed with exception: {1}".F(customPassType, e));
+							EmitError($"{customPassType} failed with exception: {e}");
 						}
 					}
 
@@ -85,7 +85,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 				foreach (var testMap in maps)
 				{
-					Console.WriteLine("Testing map: {0}".F(testMap.Title));
+					Console.WriteLine($"Testing map: {testMap.Title}");
 
 					// Lint tests can't be trusted if the map rules are bogus
 					// so report that problem then skip the tests
@@ -109,7 +109,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						}
 						catch (Exception e)
 						{
-							EmitError("{0} failed with exception: {1}".F(customMapPassType, e));
+							EmitError($"{customMapPassType} failed with exception: {e}");
 						}
 					}
 				}
@@ -122,7 +122,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			}
 			catch (Exception e)
 			{
-				EmitError("Failed with exception: {0}".F(e));
+				EmitError($"Failed with exception: {e}");
 				Environment.Exit(1);
 			}
 		}
@@ -138,7 +138,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				}
 				catch (Exception e)
 				{
-					EmitError("{0} failed with exception: {1}".F(customRulesPassType, e));
+					EmitError($"{customRulesPassType} failed with exception: {e}");
 				}
 			}
 		}

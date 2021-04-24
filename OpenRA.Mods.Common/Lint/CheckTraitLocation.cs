@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Lint
 						var traitName = traitInfo.GetType().Name;
 						traitName = traitName.Remove(traitName.Length - 4);
 						var locations = traitLocation.SystemActors.ToString().Replace(", ", " or ");
-						emitError("{0} does not belong on {1}. It is a system trait meant for {2}.".F(traitName, actorInfo.Key, locations));
+						emitError($"{traitName} does not belong on {actorInfo.Key}. It is a system trait meant for {locations}.");
 					}
 				}
 			}

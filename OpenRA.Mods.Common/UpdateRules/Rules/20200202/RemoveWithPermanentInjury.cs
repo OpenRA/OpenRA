@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
 		{
 			if (actorNode.RemoveNodes("WithPermanentInjury") > 0)
-				locations.Add("{0} ({1})".F(actorNode.Key, actorNode.Location.Filename));
+				locations.Add($"{actorNode.Key} ({actorNode.Location.Filename})");
 
 			yield break;
 		}

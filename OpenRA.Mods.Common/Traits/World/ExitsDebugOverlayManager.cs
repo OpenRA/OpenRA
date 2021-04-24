@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Traits
 			Info = info;
 
 			if (!Game.Renderer.Fonts.TryGetValue(info.Font, out Font))
-				throw new YamlException("Could not find font '{0}'".F(info.Font));
+				throw new YamlException($"Could not find font '{info.Font}'");
 		}
 
 		void IWorldLoaded.WorldLoaded(World w, WorldRenderer wr)

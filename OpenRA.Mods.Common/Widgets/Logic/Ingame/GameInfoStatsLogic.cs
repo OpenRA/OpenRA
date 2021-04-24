@@ -76,7 +76,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (teams.Count() > 1)
 				{
 					var teamHeader = ScrollItemWidget.Setup(teamTemplate, () => true, () => { });
-					teamHeader.Get<LabelWidget>("TEAM").GetText = () => t.Key == 0 ? "No Team" : "Team {0}".F(t.Key);
+					teamHeader.Get<LabelWidget>("TEAM").GetText = () => t.Key == 0 ? "No Team" : $"Team {t.Key}";
 					var teamRating = teamHeader.Get<LabelWidget>("TEAM_SCORE");
 					var scoreCache = new CachedTransform<int, string>(s => s.ToString());
 					var teamMemberScores = t.Select(tt => tt.PlayerStatistics).Where(s => s != null).ToArray().Select(s => s.Experience);
@@ -101,7 +101,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					if (player == null || player.RelationshipWith(pp) == PlayerRelationship.Ally || player.WinState != WinState.Undefined)
 					{
 						flag.GetImageName = () => pp.Faction.InternalName;
-						var factionName = pp.Faction.Name != pp.DisplayFaction.Name ? "{0} ({1})".F(pp.DisplayFaction.Name, pp.Faction.Name) : pp.Faction.Name;
+						var factionName = pp.Faction.Name != pp.DisplayFaction.Name ? $"{pp.DisplayFaction.Name} ({pp.Faction.Name})" : pp.Faction.Name;
 						item.Get<LabelWidget>("FACTION").GetText = () => factionName;
 					}
 					else
@@ -149,11 +149,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{
 						hideMenu(true);
 						ConfirmationDialogs.ButtonPrompt(
-							title: "Kick {0}?".F(client.Name),
+							title: $"Kick {client.Name}?",
 							text: "They will not be able to rejoin this game.",
 							onConfirm: () =>
 							{
-								orderManager.IssueOrder(Order.Command("kick {0} {1}".F(client.Index, false)));
+								orderManager.IssueOrder(Order.Command($"kick {client.Index} {false}"));
 								hideMenu(false);
 							},
 							onCancel: () => hideMenu(false),

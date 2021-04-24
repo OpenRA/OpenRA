@@ -40,20 +40,20 @@ namespace OpenRA.Graphics
 				return mutable.AsReadOnly();
 			if (palettes.TryGetValue(name, out var immutable))
 				return immutable;
-			throw new InvalidOperationException("Palette `{0}` does not exist".F(name));
+			throw new InvalidOperationException($"Palette `{name}` does not exist");
 		}
 
 		public int GetPaletteIndex(string name)
 		{
 			if (!indices.TryGetValue(name, out var ret))
-				throw new InvalidOperationException("Palette `{0}` does not exist".F(name));
+				throw new InvalidOperationException($"Palette `{name}` does not exist");
 			return ret;
 		}
 
 		public void AddPalette(string name, ImmutablePalette p, bool allowModifiers)
 		{
 			if (palettes.ContainsKey(name))
-				throw new InvalidOperationException("Palette {0} has already been defined".F(name));
+				throw new InvalidOperationException($"Palette {name} has already been defined");
 
 			int index = palettes.Count;
 			indices.Add(name, index);
@@ -78,7 +78,7 @@ namespace OpenRA.Graphics
 			else if (palettes.ContainsKey(name))
 				CopyPaletteToBuffer(indices[name], palettes[name] = new ImmutablePalette(p));
 			else
-				throw new InvalidOperationException("Palette `{0}` does not exist".F(name));
+				throw new InvalidOperationException($"Palette `{name}` does not exist");
 			CopyBufferToTexture();
 		}
 

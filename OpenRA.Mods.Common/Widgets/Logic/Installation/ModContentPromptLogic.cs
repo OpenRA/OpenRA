@@ -73,7 +73,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				var download = downloadYaml.FirstOrDefault(n => n.Key == content.QuickDownload);
 				if (download == null)
-					throw new InvalidOperationException("Mod QuickDownload `{0}` definition not found.".F(content.QuickDownload));
+					throw new InvalidOperationException($"Mod QuickDownload `{content.QuickDownload}` definition not found.");
 
 				Ui.OpenWindow("PACKAGE_DOWNLOAD_PANEL", new WidgetArgs
 				{

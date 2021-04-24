@@ -278,7 +278,7 @@ namespace OpenRA
 		public static int ISqrt(int number, ISqrtRoundMode round = ISqrtRoundMode.Floor)
 		{
 			if (number < 0)
-				throw new InvalidOperationException("Attempted to calculate the square root of a negative integer: {0}".F(number));
+				throw new InvalidOperationException($"Attempted to calculate the square root of a negative integer: {number}");
 
 			return (int)ISqrt((uint)number, round);
 		}
@@ -319,7 +319,7 @@ namespace OpenRA
 		public static long ISqrt(long number, ISqrtRoundMode round = ISqrtRoundMode.Floor)
 		{
 			if (number < 0)
-				throw new InvalidOperationException("Attempted to calculate the square root of a negative integer: {0}".F(number));
+				throw new InvalidOperationException($"Attempted to calculate the square root of a negative integer: {number}");
 
 			return (long)ISqrt((ulong)number, round);
 		}
@@ -429,8 +429,8 @@ namespace OpenRA
 			// If any duplicates were found, throw a descriptive error
 			if (dupKeys.Count > 0)
 			{
-				var badKeysFormatted = string.Join(", ", dupKeys.Select(p => "{0}: [{1}]".F(logKey(p.Key), string.Join(",", p.Value))));
-				var msg = "{0}, duplicate values found for the following keys: {1}".F(debugName, badKeysFormatted);
+				var badKeysFormatted = string.Join(", ", dupKeys.Select(p => $"{logKey(p.Key)}: [{string.Join(",", p.Value)}]"));
+				var msg = $"{debugName}, duplicate values found for the following keys: {badKeysFormatted}";
 				throw new ArgumentException(msg);
 			}
 

@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 		{
 			foreach (var node in actorNode.ChildrenMatching("WithColoredOverlay"))
 				if (node.RemoveNodes("Palette") > 0)
-					locations.Add("{0}: {1} ({2})".F(actorNode.Key, node.Key, actorNode.Location.Filename));
+					locations.Add($"{actorNode.Key}: {node.Key} ({actorNode.Location.Filename})");
 
 			yield break;
 		}

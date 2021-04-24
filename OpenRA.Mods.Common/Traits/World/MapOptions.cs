@@ -97,7 +97,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var gameSpeeds = Game.ModData.Manifest.Get<GameSpeeds>().Speeds;
 			if (GameSpeed != null && !gameSpeeds.ContainsKey(GameSpeed))
-				throw new YamlException("Invalid default game speed '{0}'.".F(GameSpeed));
+				throw new YamlException($"Invalid default game speed '{GameSpeed}'.");
 		}
 
 		public override object Create(ActorInitializer init) { return new MapOptions(this); }

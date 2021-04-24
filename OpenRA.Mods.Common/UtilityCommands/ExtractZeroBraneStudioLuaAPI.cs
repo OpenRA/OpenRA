@@ -136,7 +136,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			Console.WriteLine("  name = \"OpenRA\",");
 			Console.WriteLine("  description = \"Adds API description for auto-complete and tooltip support for OpenRA.\",");
 			Console.WriteLine("  author = \"Matthias Mailänder\",");
-			Console.WriteLine("  version = \"{0}\",".F(Game.ModData.Manifest.Metadata.Version.Split('-').LastOrDefault()));
+			Console.WriteLine($"  version = \"{Game.ModData.Manifest.Metadata.Version.Split('-').LastOrDefault()}\",");
 			Console.WriteLine();
 			Console.WriteLine("  onRegister = function(self)");
 			Console.WriteLine("    ide:AddAPI(\"lua\", \"openra\", api)");

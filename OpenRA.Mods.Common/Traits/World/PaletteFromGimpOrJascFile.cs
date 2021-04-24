@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.Traits
 				using (var lines = s.ReadAllLines().GetEnumerator())
 				{
 					if (!lines.MoveNext() || (lines.Current != "GIMP Palette" && lines.Current != "JASC-PAL"))
-						throw new InvalidDataException("File `{0}` is not a valid GIMP or JASC palette.".F(Filename));
+						throw new InvalidDataException($"File `{Filename}` is not a valid GIMP or JASC palette.");
 
 					byte a;
 					a = 255;
@@ -76,16 +76,16 @@ namespace OpenRA.Mods.Common.Traits
 
 						var rgba = lines.Current.Split((char[])null, StringSplitOptions.RemoveEmptyEntries);
 						if (rgba.Length < 3)
-							throw new InvalidDataException("Invalid RGB(A) triplet/quartet: ({0})".F(string.Join(" ", rgba)));
+							throw new InvalidDataException($"Invalid RGB(A) triplet/quartet: ({string.Join(" ", rgba)})");
 
 						if (!byte.TryParse(rgba[0], out var r))
-							throw new InvalidDataException("Invalid R value: {0}".F(rgba[0]));
+							throw new InvalidDataException($"Invalid R value: {rgba[0]}");
 
 						if (!byte.TryParse(rgba[1], out var g))
-							throw new InvalidDataException("Invalid G value: {0}".F(rgba[1]));
+							throw new InvalidDataException($"Invalid G value: {rgba[1]}");
 
 						if (!byte.TryParse(rgba[2], out var b))
-							throw new InvalidDataException("Invalid B value: {0}".F(rgba[2]));
+							throw new InvalidDataException($"Invalid B value: {rgba[2]}");
 
 						// Check if color has a (valid) alpha value.
 						// Note: We can't throw on "rgba.Length > 3 but parse failed", because in GIMP palettes the 'invalid' value is probably a color name string.

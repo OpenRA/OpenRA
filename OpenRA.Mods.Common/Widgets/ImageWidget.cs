@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var sprite = ChromeProvider.GetImage(collection, name);
 			if (sprite == null)
-				throw new ArgumentException("Sprite {0}/{1} was not found.".F(collection, name));
+				throw new ArgumentException($"Sprite {collection}/{name} was not found.");
 
 			WidgetUtils.DrawRGBA(sprite, RenderOrigin);
 		}

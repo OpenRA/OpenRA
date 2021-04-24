@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (world.ReplayTimestep == 1)
 					return "Max Speed";
 
-				return "{0}% Speed".F(world.Timestep * 100 / world.ReplayTimestep);
+				return $"{world.Timestep * 100 / world.ReplayTimestep}% Speed";
 			};
 
 			if (timer != null)
@@ -64,9 +64,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				var connection = orderManager.Connection as ReplayConnection;
 				if (connection != null && connection.FinalGameTick != 0)
-					timerTooltip.GetTooltipText = () => "{0}% complete".F(world.WorldTick * 100 / connection.FinalGameTick);
+					timerTooltip.GetTooltipText = () => $"{world.WorldTick * 100 / connection.FinalGameTick}% complete";
 				else if (connection != null && connection.TickCount != 0)
-					timerTooltip.GetTooltipText = () => "{0}% complete".F(orderManager.NetFrameNumber * 100 / connection.TickCount);
+					timerTooltip.GetTooltipText = () => $"{orderManager.NetFrameNumber * 100 / connection.TickCount}% complete";
 				else
 					timerTooltip.GetTooltipText = null;
 			}

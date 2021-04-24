@@ -61,7 +61,7 @@ namespace OpenRA
 			}
 			catch (YamlException e)
 			{
-				throw new YamlException("Actor type {0}: {1}".F(name, e.Message));
+				throw new YamlException($"Actor type {name}: {e.Message}");
 			}
 		}
 
@@ -76,8 +76,7 @@ namespace OpenRA
 		static TraitInfo LoadTraitInfo(ObjectCreator creator, string traitName, MiniYaml my)
 		{
 			if (!string.IsNullOrEmpty(my.Value))
-				throw new YamlException("Junk value `{0}` on trait node {1}"
-				.F(my.Value, traitName));
+				throw new YamlException($"Junk value `{my.Value}` on trait node {traitName}");
 
 			// HACK: The linter does not want to crash when a trait doesn't exist but only print an error instead
 			// ObjectCreator will only return null to signal us to abort here if the linter is running

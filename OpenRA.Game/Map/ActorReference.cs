@@ -42,7 +42,7 @@ namespace OpenRA
 				{
 					var init = LoadInit(i.Key, i.Value);
 					if (init is ISingleInstanceInit && dict.Contains(init.GetType()))
-						throw new InvalidDataException("Duplicate initializer '{0}'".F(init.GetType().Name));
+						throw new InvalidDataException($"Duplicate initializer '{init.GetType().Name}'");
 
 					dict.Add(init);
 				}
@@ -68,7 +68,7 @@ namespace OpenRA
 			var initInstance = initName.Split(ActorInfo.TraitInstanceSeparator);
 			var type = Game.ModData.ObjectCreator.FindType(initInstance[0] + "Init");
 			if (type == null)
-				throw new InvalidDataException("Unknown initializer type '{0}Init'".F(initInstance[0]));
+				throw new InvalidDataException($"Unknown initializer type '{initInstance[0]}Init'");
 
 			var init = (ActorInit)FormatterServices.GetUninitializedObject(type);
 			if (initInstance.Length > 1)
@@ -76,7 +76,7 @@ namespace OpenRA
 
 			var loader = type.GetMethod("Initialize", new[] { typeof(MiniYaml) });
 			if (loader == null)
-				throw new InvalidDataException("{0}Init does not define a yaml-assignable type.".F(initInstance[0]));
+				throw new InvalidDataException($"{initInstance[0]}Init does not define a yaml-assignable type.");
 
 			loader.Invoke(init, new[] { initYaml });
 			return init;
@@ -119,7 +119,7 @@ namespace OpenRA
 		public void Add(ActorInit init)
 		{
 			if (init is ISingleInstanceInit && InitDict.Contains(init.GetType()))
-				throw new InvalidDataException("Duplicate initializer '{0}'".F(init.GetType().Name));
+				throw new InvalidDataException($"Duplicate initializer '{init.GetType().Name}'");
 
 			InitDict.Add(init);
 		}
@@ -162,7 +162,7 @@ namespace OpenRA
 		{
 			var init = GetOrDefault<T>(info);
 			if (init == null)
-				throw new InvalidOperationException("TypeDictionary does not contain instance of type `{0}`".F(typeof(T)));
+				throw new InvalidOperationException($"TypeDictionary does not contain instance of type `{typeof(T)}`");
 
 			return init;
 		}

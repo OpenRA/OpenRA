@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 
 		public override string ToString()
 		{
-			return "{0} - offset 0x{1:x8} - length 0x{2:x8}".F(Filename, Offset, Length);
+			return $"{Filename} - offset 0x{Offset:x8} - length 0x{Length:x8}";
 		}
 	}
 }

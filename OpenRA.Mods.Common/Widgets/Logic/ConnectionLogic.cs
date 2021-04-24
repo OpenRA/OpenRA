@@ -59,8 +59,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var panel = widget;
 			panel.Get<ButtonWidget>("ABORT_BUTTON").OnClick = () => { CloseWindow(); onAbort(); };
 
-			widget.Get<LabelWidget>("CONNECTING_DESC").GetText = () =>
-				"Connecting to {0}...".F(endpoint);
+			widget.Get<LabelWidget>("CONNECTING_DESC").GetText = () => $"Connecting to {endpoint}...";
 		}
 
 		public static void Connect(ConnectionTarget endpoint, string password, Action onConnect, Action onAbort)
@@ -102,8 +101,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				onRetry(password);
 			};
 
-			widget.Get<LabelWidget>("CONNECTING_DESC").GetText = () =>
-				"Could not connect to {0}".F(orderManager.Endpoint);
+			widget.Get<LabelWidget>("CONNECTING_DESC").GetText = () => $"Could not connect to {orderManager.Endpoint}";
 
 			var connectionError = widget.Get<LabelWidget>("CONNECTION_ERROR");
 			connectionError.GetText = () => orderManager.ServerError ?? orderManager.Connection.ErrorMessage ?? "Unknown error";
@@ -163,7 +161,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			switchButton.OnClick = () =>
 			{
-				var launchCommand = "Launch.URI={0}".F(new UriBuilder("tcp", orderManager.Connection.EndPoint.Address.ToString(), orderManager.Connection.EndPoint.Port));
+				var launchCommand = $"Launch.URI={new UriBuilder("tcp", orderManager.Connection.EndPoint.Address.ToString(), orderManager.Connection.EndPoint.Port)}";
 				Game.SwitchToExternalMod(orderManager.ServerExternalMod, new[] { launchCommand }, () =>
 				{
 					orderManager.ServerError = "Failed to switch mod.";

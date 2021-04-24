@@ -170,7 +170,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var terrainInfo = (ITemplatedTerrainInfo)map.Rules.TerrainInfo;
 			terrainTemplate = terrainInfo.Templates[template];
-			Text = "Added tile {0}".F(terrainTemplate.Id);
+			Text = $"Added tile {terrainTemplate.Id}";
 		}
 
 		public void Execute()
@@ -239,7 +239,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var terrainInfo = (ITemplatedTerrainInfo)map.Rules.TerrainInfo;
 			terrainTemplate = terrainInfo.Templates[template];
-			Text = "Filled with tile {0}".F(terrainTemplate.Id);
+			Text = $"Filled with tile {terrainTemplate.Id}";
 		}
 
 		public void Execute()

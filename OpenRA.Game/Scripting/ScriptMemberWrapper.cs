@@ -62,14 +62,14 @@ namespace OpenRA.Scripting
 					if (i >= argCount)
 					{
 						if (!pi[i].IsOptional)
-							throw new LuaException("Argument '{0}' of '{1}' is not optional.".F(pi[i].LuaDocString(), Member.LuaDocString()));
+							throw new LuaException($"Argument '{pi[i].LuaDocString()}' of '{Member.LuaDocString()}' is not optional.");
 
 						clrArgs[i] = pi[i].DefaultValue;
 						continue;
 					}
 
 					if (!args[i].TryGetClrValue(pi[i].ParameterType, out clrArgs[i]))
-						throw new LuaException("Unable to convert parameter {0} to {1}".F(i, pi[i].ParameterType.Name));
+						throw new LuaException($"Unable to convert parameter {i} to {pi[i].ParameterType.Name}");
 				}
 
 				return mi.Invoke(Target, clrArgs).ToLuaValue(context);
@@ -105,7 +105,7 @@ namespace OpenRA.Scripting
 			if (IsGetProperty)
 				return ((PropertyInfo)Member).GetValue(Target, null).ToLuaValue(context);
 
-			throw new LuaException("The property '{0}' is write-only".F(Member.Name));
+			throw new LuaException($"The property '{Member.Name}' is write-only");
 		}
 
 		public void Set(LuaRuntime runtime, LuaValue value)
@@ -114,12 +114,12 @@ namespace OpenRA.Scripting
 			{
 				var pi = (PropertyInfo)Member;
 				if (!value.TryGetClrValue(pi.PropertyType, out var clrValue))
-					throw new LuaException("Unable to convert '{0}' to Clr type '{1}'".F(value.WrappedClrType().Name, pi.PropertyType));
+					throw new LuaException($"Unable to convert '{value.WrappedClrType().Name}' to Clr type '{pi.PropertyType}'");
 
 				pi.SetValue(Target, clrValue, null);
 			}
 			else
-				throw new LuaException("The property '{0}' is read-only".F(Member.Name));
+				throw new LuaException($"The property '{Member.Name}' is read-only");
 		}
 
 		public static IEnumerable<MemberInfo> WrappableMembers(Type t)

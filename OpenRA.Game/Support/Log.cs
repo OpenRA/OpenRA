@@ -121,9 +121,9 @@ namespace OpenRA
 			Directory.CreateDirectory(path);
 
 			for (var i = 0; i < CreateLogFileMaxRetryCount; i++)
-				yield return Path.Combine(path, i > 0 ? "{0}.{1}".F(baseFilename, i) : baseFilename);
+				yield return Path.Combine(path, i > 0 ? $"{baseFilename}.{i}" : baseFilename);
 
-			throw new ApplicationException("Error creating log file \"{0}\"".F(baseFilename));
+			throw new ApplicationException($"Error creating log file \"{baseFilename}\"");
 		}
 
 		static ChannelInfo GetChannel(string channelName)

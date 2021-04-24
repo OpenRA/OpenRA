@@ -219,7 +219,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 										continue;
 									}
 
-									Log.Write("install", "Copying {0} -> {1}".F(sourcePath, targetPath));
+									Log.Write("install", $"Copying {sourcePath} -> {targetPath}");
 									extracted.Add(targetPath);
 									Directory.CreateDirectory(Path.GetDirectoryName(targetPath));
 
@@ -233,7 +233,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 										if (length < ShowPercentageThreshold)
 											message = "Copying " + displayFilename;
 										else
-											onProgress = b => message = "Copying " + displayFilename + " ({0}%)".F(100 * b / length);
+											onProgress = b => message = $"Copying {displayFilename} ({100 * b / length}%)";
 
 										CopyStream(source, target, length, onProgress);
 									}
@@ -362,11 +362,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					if (length < ShowPercentageThreshold)
 						updateMessage("Extracting " + displayFilename);
 					else
-						onProgress = b => updateMessage("Extracting " + displayFilename + " ({0}%)".F(100 * b / length));
+						onProgress = b => updateMessage($"Extracting {displayFilename} ({100 * b / length}%)");
 
 					using (var target = File.OpenWrite(targetPath))
 					{
-						Log.Write("install", "Extracting {0} -> {1}".F(sourcePath, targetPath));
+						Log.Write("install", $"Extracting {sourcePath} -> {targetPath}");
 						if (type == ExtractionType.Blast)
 							Blast.Decompress(source, target, (read, _) => onProgress?.Invoke(read));
 						else
@@ -398,9 +398,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					Directory.CreateDirectory(Path.GetDirectoryName(targetPath));
 					using (var target = File.OpenWrite(targetPath))
 					{
-						Log.Write("install", "Extracting {0} -> {1}".F(sourcePath, targetPath));
+						Log.Write("install", $"Extracting {sourcePath} -> {targetPath}");
 						var displayFilename = Path.GetFileName(Path.GetFileName(targetPath));
-						Action<int> onProgress = percent => updateMessage("Extracting {0} ({1}%)".F(displayFilename, percent));
+						Action<int> onProgress = percent => updateMessage($"Extracting {displayFilename} ({percent}%)");
 						reader.ExtractFile(node.Value.Value, target, onProgress);
 					}
 				}
@@ -447,9 +447,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						Directory.CreateDirectory(Path.GetDirectoryName(targetPath));
 						using (var target = File.OpenWrite(targetPath))
 						{
-							Log.Write("install", "Extracting {0} -> {1}".F(sourcePath, targetPath));
+							Log.Write("install", $"Extracting {sourcePath} -> {targetPath}");
 							var displayFilename = Path.GetFileName(Path.GetFileName(targetPath));
-							Action<int> onProgress = percent => updateMessage("Extracting {0} ({1}%)".F(displayFilename, percent));
+							Action<int> onProgress = percent => updateMessage($"Extracting {displayFilename} ({percent}%)");
 							reader.ExtractFile(node.Value.Value, target, onProgress);
 						}
 					}

@@ -81,7 +81,7 @@ namespace OpenRA.Mods.Common.Traits
 				.RandomOrDefault(w.SharedRandom);
 
 			if (unitGroup == null)
-				throw new InvalidOperationException("No starting units defined for faction {0} with class {1}".F(p.Faction.InternalName, spawnClass));
+				throw new InvalidOperationException($"No starting units defined for faction {p.Faction.InternalName} with class {spawnClass}");
 
 			if (unitGroup.BaseActor != null)
 			{
@@ -108,7 +108,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				if (validCell == CPos.Zero)
 				{
-					Log.Write("debug", "No cells available to spawn starting unit {0} for player {1}".F(s, p));
+					Log.Write("debug", $"No cells available to spawn starting unit {s} for player {p}");
 					continue;
 				}
 

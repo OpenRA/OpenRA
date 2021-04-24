@@ -63,12 +63,12 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				{
 					currentNamespace = t.Namespace;
 					doc.AppendLine();
-					doc.AppendLine("## {0}".F(currentNamespace));
+					doc.AppendLine($"## {currentNamespace}");
 				}
 
 				var traitName = t.Name.EndsWith("Info") ? t.Name.Substring(0, t.Name.Length - 4) : t.Name;
 				doc.AppendLine();
-				doc.AppendLine("### {0}".F(traitName));
+				doc.AppendLine($"### {traitName}");
 
 				var traitDescLines = t.GetCustomAttributes<DescAttribute>(false).SelectMany(d => d.Lines);
 				foreach (var line in traitDescLines)
@@ -87,7 +87,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					var fieldDescLines = info.Field.GetCustomAttributes<DescAttribute>(true).SelectMany(d => d.Lines);
 					var fieldType = Util.FriendlyTypeName(info.Field.FieldType);
 					var defaultValue = liveTraitInfo == null ? "" : FieldSaver.SaveField(liveTraitInfo, info.Field.Name).Value.Value;
-					doc.Append("<tr><td>{0}</td><td>{1}</td><td>{2}</td>".F(info.YamlName, defaultValue, fieldType));
+					doc.Append($"<tr><td>{info.YamlName}</td><td>{defaultValue}</td><td>{fieldType}</td>");
 					doc.Append("<td>");
 
 					foreach (var line in fieldDescLines)

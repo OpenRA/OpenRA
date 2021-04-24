@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common
 		{
 			foreach (var p in PlayerIndex)
 				if (p.Value.Length != RemapIndex.Length)
-					throw new YamlException("PlayerIndex for player `{0}` length does not match RemapIndex!".F(p.Key));
+					throw new YamlException($"PlayerIndex for player `{p.Key}` length does not match RemapIndex!");
 		}
 	}
 

@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 		static void ReplicatePrevious(byte[] dest, int destIndex, int srcIndex, int count)
 		{
 			if (srcIndex > destIndex)
-				throw new NotImplementedException("srcIndex > destIndex {0} {1}".F(srcIndex, destIndex));
+				throw new NotImplementedException($"srcIndex > destIndex {srcIndex} {destIndex}");
 
 			for (var i = 0; i < count; i++)
 			{
@@ -80,7 +80,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 						var count = count3 == 0x3F ? ctx.ReadWord() : count3 + 3;
 						var srcIndex = reverse ? destIndex - ctx.ReadWord() : ctx.ReadWord();
 						if (srcIndex >= destIndex)
-							throw new NotImplementedException("srcIndex >= destIndex {0} {1}".F(srcIndex, destIndex));
+							throw new NotImplementedException($"srcIndex >= destIndex {srcIndex} {destIndex}");
 
 						for (var end = destIndex + count; destIndex < end; destIndex++)
 							dest[destIndex] = dest[srcIndex++];

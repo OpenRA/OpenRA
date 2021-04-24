@@ -56,9 +56,9 @@ namespace OpenRA.Mods.Common.Traits
 			var locomotorInfos = rules.Actors[SystemActors.World].TraitInfos<LocomotorInfo>();
 			LocomotorInfo = locomotorInfos.FirstOrDefault(li => li.Name == Locomotor);
 			if (LocomotorInfo == null)
-				throw new YamlException("A locomotor named '{0}' doesn't exist.".F(Locomotor));
+				throw new YamlException($"A locomotor named '{Locomotor}' doesn't exist.");
 			else if (locomotorInfos.Count(li => li.Name == Locomotor) > 1)
-				throw new YamlException("There is more than one locomotor named '{0}'.".F(Locomotor));
+				throw new YamlException($"There is more than one locomotor named '{Locomotor}'.");
 
 			base.RulesetLoaded(rules, ai);
 		}

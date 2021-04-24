@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Scripting
 				.FirstOrDefault(t => t.Info.Condition == condition && t.CanGrantCondition(Self, this));
 
 			if (external == null)
-				throw new LuaException("Condition `{0}` has not been listed on an enabled ExternalCondition trait".F(condition));
+				throw new LuaException($"Condition `{condition}` has not been listed on an enabled ExternalCondition trait");
 
 			return external.GrantCondition(Self, this, duration);
 		}

@@ -213,7 +213,7 @@ namespace OpenRA.FileFormats
 				}
 
 				default:
-					throw new InvalidDataException("Unhandled SpriteFrameType {0}".F(type));
+					throw new InvalidDataException($"Unhandled SpriteFrameType {type}");
 			}
 
 			if (embeddedData != null)

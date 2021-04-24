@@ -49,10 +49,10 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 					Console.WriteLine(".TP");
 
-					Console.Write(".BR {0}.{1}=".F(section.Key, field.Name));
+					Console.Write($".BR {section.Key}.{field.Name}=");
 					var value = field.GetValue(section.Value);
 					if (value != null && !value.ToString().StartsWith("System.", StringComparison.Ordinal))
-						Console.WriteLine("\\fI{0}\\fR".F(value));
+						Console.WriteLine($"\\fI{value}\\fR");
 					else
 						Console.WriteLine();
 

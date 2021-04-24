@@ -126,7 +126,7 @@ namespace OpenRA.Primitives
 
 		public override string ToString()
 		{
-			return "{0},{1},{2},{3}".F(X, Y, Width, Height);
+			return $"{X},{Y},{Width},{Height}";
 		}
 	}
 }

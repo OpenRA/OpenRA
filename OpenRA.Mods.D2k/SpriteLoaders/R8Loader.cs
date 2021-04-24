@@ -51,7 +51,7 @@ namespace OpenRA.Mods.D2k.SpriteLoaders
 				var paletteOffset = s.ReadInt32();
 				var bpp = s.ReadUInt8();
 				if (bpp != 8)
-					throw new InvalidDataException("Error: {0} bits per pixel are not supported.".F(bpp));
+					throw new InvalidDataException($"Error: {bpp} bits per pixel are not supported.");
 
 				var frameHeight = s.ReadUInt8();
 				var frameWidth = s.ReadUInt8();

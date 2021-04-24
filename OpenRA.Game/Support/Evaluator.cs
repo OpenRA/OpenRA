@@ -66,7 +66,7 @@ namespace OpenRA.Support
 				else if (char.IsLetter(t[0]))
 				{
 					if (!syms.ContainsKey(t))
-						throw new InvalidOperationException("Substitution `{0}` undefined".F(t));
+						throw new InvalidOperationException($"Substitution `{t}` undefined");
 
 					yield return syms[t].ToString();
 				}

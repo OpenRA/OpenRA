@@ -50,9 +50,9 @@ namespace OpenRA.Mods.Cnc.FileSystem
 		public override string ToString()
 		{
 			if (names.TryGetValue(Hash, out var filename))
-				return "{0} - offset 0x{1:x8} - length 0x{2:x8}".F(filename, Offset, Length);
+				return $"{filename} - offset 0x{Offset:x8} - length 0x{Length:x8}";
 			else
-				return "0x{0:x8} - offset 0x{1:x8} - length 0x{2:x8}".F(Hash, Offset, Length);
+				return $"0x{Hash:x8} - offset 0x{Offset:x8} - length 0x{Length:x8}";
 		}
 
 		public static uint HashFilename(string name, PackageHashType type)
@@ -93,7 +93,7 @@ namespace OpenRA.Mods.Cnc.FileSystem
 						return CRC32.Calculate(Encoding.ASCII.GetBytes(name));
 					}
 
-				default: throw new NotImplementedException("Unknown hash type `{0}`".F(type));
+				default: throw new NotImplementedException($"Unknown hash type `{type}`");
 			}
 		}
 

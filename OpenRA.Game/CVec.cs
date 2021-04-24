@@ -76,7 +76,7 @@ namespace OpenRA
 		public LuaValue Add(LuaRuntime runtime, LuaValue left, LuaValue right)
 		{
 			if (!left.TryGetClrValue(out CVec a) || !right.TryGetClrValue(out CVec b))
-				throw new LuaException("Attempted to call CVec.Add(CVec, CVec) with invalid arguments ({0}, {1})".F(left.WrappedClrType().Name, right.WrappedClrType().Name));
+				throw new LuaException($"Attempted to call CVec.Add(CVec, CVec) with invalid arguments ({left.WrappedClrType().Name}, {right.WrappedClrType().Name})");
 
 			return new LuaCustomClrObject(a + b);
 		}
@@ -84,7 +84,7 @@ namespace OpenRA
 		public LuaValue Subtract(LuaRuntime runtime, LuaValue left, LuaValue right)
 		{
 			if (!left.TryGetClrValue(out CVec a) || !right.TryGetClrValue(out CVec b))
-				throw new LuaException("Attempted to call CVec.Subtract(CVec, CVec) with invalid arguments ({0}, {1})".F(left.WrappedClrType().Name, right.WrappedClrType().Name));
+				throw new LuaException($"Attempted to call CVec.Subtract(CVec, CVec) with invalid arguments ({left.WrappedClrType().Name}, {right.WrappedClrType().Name})");
 
 			return new LuaCustomClrObject(a - b);
 		}
@@ -110,7 +110,7 @@ namespace OpenRA
 				{
 					case "X": return X;
 					case "Y": return Y;
-					default: throw new LuaException("CVec does not define a member '{0}'".F(key));
+					default: throw new LuaException($"CVec does not define a member '{key}'");
 				}
 			}
 

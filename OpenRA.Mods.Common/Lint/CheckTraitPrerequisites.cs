@@ -35,11 +35,11 @@ namespace OpenRA.Mods.Common.Lint
 				{
 					var hasTraits = actorInfo.Value.TraitsInConstructOrder().Any();
 					if (!hasTraits)
-						emitWarning("Actor {0} has no traits. Is this intended?".F(actorInfo.Key));
+						emitWarning($"Actor {actorInfo.Key} has no traits. Is this intended?");
 				}
 				catch (Exception e)
 				{
-					emitError("Actor {0} is not constructible; failure: {1}".F(actorInfo.Key, e.Message));
+					emitError($"Actor {actorInfo.Key} is not constructible; failure: {e.Message}");
 				}
 			}
 		}

@@ -19,7 +19,7 @@ namespace OpenRA.Graphics
 	public class SpriteRenderer : Renderer.IBatchRenderer
 	{
 		public const int SheetCount = 7;
-		static readonly string[] SheetIndexToTextureName = Exts.MakeArray(SheetCount, i => "Texture{0}".F(i));
+		static readonly string[] SheetIndexToTextureName = Exts.MakeArray(SheetCount, i => $"Texture{i}");
 
 		readonly Renderer renderer;
 		readonly IShader shader;
@@ -173,7 +173,7 @@ namespace OpenRA.Graphics
 		// PERF: methods that throw won't be inlined by the JIT, so extract a static helper for use on hot paths
 		static void ThrowSheetOverflow(string paramName)
 		{
-			throw new ArgumentException("SpriteRenderer only supports {0} simultaneous textures".F(SheetCount), paramName);
+			throw new ArgumentException($"SpriteRenderer only supports {SheetCount} simultaneous textures", paramName);
 		}
 
 		// For RGBAColorRenderer

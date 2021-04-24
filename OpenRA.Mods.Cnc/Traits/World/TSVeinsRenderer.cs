@@ -249,7 +249,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			else if (BorderIndices.TryGetValue(adjacency, out var indices))
 				UpdateSpriteLayers(cell, indices);
 			else
-				throw new InvalidOperationException("SpriteMap does not contain an index for Adjacency type '{0}'".F(adjacency));
+				throw new InvalidOperationException($"SpriteMap does not contain an index for Adjacency type '{adjacency}'");
 		}
 
 		void UpdateSpriteLayers(CPos cell, int[] indices)

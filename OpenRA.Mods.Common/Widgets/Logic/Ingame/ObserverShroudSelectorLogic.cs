@@ -99,7 +99,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var noTeams = teams.Count() == 1;
 			foreach (var t in teams)
 			{
-				var label = noTeams ? "Players" : t.Key == 0 ? "No Team" : "Team {0}".F(t.Key);
+				var label = noTeams ? "Players" : t.Key == 0 ? "No Team" : $"Team {t.Key}";
 				groups.Add(label, t);
 			}
 

@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 						// SpriteFrameType refers to the channel byte order, which is reversed from the little-endian bit order
 						case ImageFormat.Rgba32: Type = SpriteFrameType.Bgra32; break;
 						case ImageFormat.Rgb24: Type = SpriteFrameType.Bgr24; break;
-						default: throw new InvalidDataException("Unhandled ImageFormat {0}".F(dds.Format));
+						default: throw new InvalidDataException($"Unhandled ImageFormat {dds.Format}");
 					}
 				}
 			}

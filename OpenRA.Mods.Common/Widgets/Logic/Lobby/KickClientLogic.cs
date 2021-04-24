@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public KickClientLogic(Widget widget, string clientName, Action<bool> okPressed, Action cancelPressed)
 		{
-			widget.Get<LabelWidget>("TITLE").GetText = () => "Kick {0}?".F(clientName);
+			widget.Get<LabelWidget>("TITLE").GetText = () => $"Kick {clientName}?";
 
 			var tempBan = false;
 			var preventRejoiningCheckbox = widget.Get<CheckboxWidget>("PREVENT_REJOINING_CHECKBOX");

@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Cnc.Activities
 		{
 			var max = teleporter.World.Map.Grid.MaximumTileSearchRange;
 			if (maximumDistance > max)
-				throw new InvalidOperationException("Teleport distance cannot exceed the value of MaximumTileSearchRange ({0}).".F(max));
+				throw new InvalidOperationException($"Teleport distance cannot exceed the value of MaximumTileSearchRange ({max}).");
 
 			this.teleporter = teleporter;
 			this.destination = destination;

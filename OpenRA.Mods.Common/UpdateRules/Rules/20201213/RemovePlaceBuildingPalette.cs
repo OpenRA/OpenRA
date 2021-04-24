@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			}
 
 			if (removed > 0)
-				locations.Add("{0} ({1})".F(actorNode.Key, actorNode.Location.Filename));
+				locations.Add($"{actorNode.Key} ({actorNode.Location.Filename})");
 
 			yield break;
 		}

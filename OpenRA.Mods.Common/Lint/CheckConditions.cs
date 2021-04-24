@@ -65,11 +65,11 @@ namespace OpenRA.Mods.Common.Lint
 
 				var unconsumed = granted.Except(consumed);
 				if (unconsumed.Any())
-					emitWarning("Actor type `{0}` grants conditions that are not consumed: {1}".F(actorInfo.Key, unconsumed.JoinWith(", ")));
+					emitWarning($"Actor type `{actorInfo.Key}` grants conditions that are not consumed: {unconsumed.JoinWith(", ")}");
 
 				var ungranted = consumed.Except(granted);
 				if (ungranted.Any())
-					emitError("Actor type `{0}` consumes conditions that are not granted: {1}".F(actorInfo.Key, ungranted.JoinWith(", ")));
+					emitError($"Actor type `{actorInfo.Key}` consumes conditions that are not granted: {ungranted.JoinWith(", ")}");
 			}
 		}
 	}

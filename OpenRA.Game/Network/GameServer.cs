@@ -135,7 +135,7 @@ namespace OpenRA.Network
 		/// <summary>The list of spawnpoints that are disabled for this game</summary>
 		public readonly int[] DisabledSpawnPoints = { };
 
-		public string ModLabel => "{0} ({1})".F(ModTitle, Version);
+		public string ModLabel => $"{ModTitle} ({Version})";
 
 		static object LoadClients(MiniYaml yaml)
 		{
@@ -200,9 +200,9 @@ namespace OpenRA.Network
 						.FirstOrDefault(m => m.Id == Mod);
 
 					if (guessMod != null)
-						ModTitle = "{0}".F(guessMod.Title);
+						ModTitle = guessMod.Title;
 					else
-						ModTitle = "Unknown mod: {0}".F(Mod);
+						ModTitle = $"Unknown mod: {Mod}";
 				}
 			}
 

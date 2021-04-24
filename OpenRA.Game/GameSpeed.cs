@@ -50,7 +50,7 @@ namespace OpenRA
 				catch (FieldLoader.MissingFieldsException e)
 				{
 					var label = e.Missing.Length > 1 ? "Required properties missing" : "Required property missing";
-					throw new YamlException("Error parsing GameSpeed {0}: {1}: {2}".F(node.Key, label, e.Missing.JoinWith(", ")));
+					throw new YamlException($"Error parsing GameSpeed {node.Key}: {label}: {e.Missing.JoinWith(", ")}");
 				}
 			}
 

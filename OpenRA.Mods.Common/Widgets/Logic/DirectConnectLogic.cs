@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				var port = Exts.WithDefault(1234, () => Exts.ParseIntegerInvariant(portField.Text));
 
-				Game.Settings.Player.LastServer = "{0}:{1}".F(ipField.Text, port);
+				Game.Settings.Player.LastServer = $"{ipField.Text}:{port}";
 				Game.Settings.Save();
 
 				ConnectionLogic.Connect(new ConnectionTarget(ipField.Text, port), "", () => { Ui.CloseWindow(); openLobby(); }, DoNothing);

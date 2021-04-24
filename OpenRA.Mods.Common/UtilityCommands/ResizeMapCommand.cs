@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 				if (!map.Contains(locationInit.Value))
 				{
-					Console.WriteLine("Removing actor {0} located at {1} due being outside of the new map boundaries.".F(actor.Type, locationInit.Value));
+					Console.WriteLine($"Removing actor {actor.Type} located at {locationInit.Value} due being outside of the new map boundaries.");
 					forRemoval.Add(kv);
 				}
 			}

@@ -77,7 +77,7 @@ namespace OpenRA.Mods.Common.Lint
 							if (string.IsNullOrEmpty(imageOverride))
 							{
 								if (!sequenceReference.AllowNullImage)
-									emitError("Actor type `{0}` trait `{1}` must define a value for `{2}`".F(actorInfo.Value.Name, traitName, sequenceReference.ImageReference));
+									emitError($"Actor type `{actorInfo.Value.Name}` trait `{traitName}` must define a value for `{sequenceReference.ImageReference}`");
 								continue;
 							}
 
@@ -95,10 +95,10 @@ namespace OpenRA.Mods.Common.Lint
 								{
 									// TODO: Remove prefixed sequence references and instead use explicit lists of lintable references
 									if (!sequences.Sequences(i).Any(s => s.StartsWith(sequence)))
-										emitWarning("Actor type `{0}` trait `{1}` field `{2}` defines a prefix `{3}` that does not match any sequences on image `{4}`.".F(actorInfo.Value.Name, traitName, field.Name, sequence, i));
+										emitWarning($"Actor type `{actorInfo.Value.Name}` trait `{traitName}` field `{field.Name}` defines a prefix `{sequence}` that does not match any sequences on image `{i}`.");
 								}
 								else if (!sequences.HasSequence(i, sequence))
-									emitError("Actor type `{0}` trait `{1}` field `{2}` references an undefined sequence `{3}` on image `{4}`.".F(actorInfo.Value.Name, traitName, field.Name, sequence, i));
+									emitError($"Actor type `{actorInfo.Value.Name}` trait `{traitName}` field `{field.Name}` references an undefined sequence `{sequence}` on image `{i}`.");
 							}
 						}
 					}
@@ -123,7 +123,7 @@ namespace OpenRA.Mods.Common.Lint
 					if (string.IsNullOrEmpty(image))
 					{
 						if (!sequenceReference.AllowNullImage)
-							emitError("Weapon type `{0}` projectile field `{1}` must define a value".F(weaponInfo.Key, sequenceReference.ImageReference));
+							emitError($"Weapon type `{weaponInfo.Key}` projectile field `{sequenceReference.ImageReference}` must define a value");
 
 						continue;
 					}
@@ -138,10 +138,10 @@ namespace OpenRA.Mods.Common.Lint
 						{
 							// TODO: Remove prefixed sequence references and instead use explicit lists of lintable references
 							if (!sequences.Sequences(image).Any(s => s.StartsWith(sequence)))
-								emitWarning("Weapon type `{0}` projectile field `{1}` defines a prefix `{2}` that does not match any sequences on image `{3}`.".F(weaponInfo.Key, field.Name, sequence, image));
+								emitWarning($"Weapon type `{weaponInfo.Key}` projectile field `{field.Name}` defines a prefix `{sequence}` that does not match any sequences on image `{image}`.");
 						}
 						else if (!sequences.HasSequence(image, sequence))
-							emitError("Weapon type `{0}` projectile field `{1}` references an undefined sequence `{2}` on image `{3}`.".F(weaponInfo.Key, field.Name, sequence, image));
+							emitError($"Weapon type `{weaponInfo.Key}` projectile field `{field.Name}` references an undefined sequence `{sequence}` on image `{image}`.");
 					}
 				}
 			}

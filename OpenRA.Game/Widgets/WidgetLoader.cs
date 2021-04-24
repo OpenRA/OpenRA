@@ -30,7 +30,7 @@ namespace OpenRA
 				{
 					var key = w.Key.Substring(w.Key.IndexOf('@') + 1);
 					if (widgets.ContainsKey(key))
-						throw new InvalidDataException("Widget has duplicate Key `{0}` at {1}".F(w.Key, w.Location));
+						throw new InvalidDataException($"Widget has duplicate Key `{w.Key}` at {w.Location}");
 					widgets.Add(key, w);
 				}
 		}
@@ -38,7 +38,7 @@ namespace OpenRA
 		public Widget LoadWidget(WidgetArgs args, Widget parent, string w)
 		{
 			if (!widgets.TryGetValue(w, out var ret))
-				throw new InvalidDataException("Cannot find widget with Id `{0}`".F(w));
+				throw new InvalidDataException($"Cannot find widget with Id `{w}`");
 
 			return LoadWidget(args, parent, ret);
 		}

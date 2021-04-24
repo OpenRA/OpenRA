@@ -204,7 +204,7 @@ namespace OpenRA.Mods.Common.Widgets
 			mapHeight = map.Height;
 			mapResources = map.Resources;
 
-			Text = "Copied {0} tiles".F(tiles.Count);
+			Text = $"Copied {tiles.Count} tiles";
 		}
 
 		public void Execute()

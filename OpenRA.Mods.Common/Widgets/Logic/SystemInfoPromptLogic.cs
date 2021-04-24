@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{ "x64process", ("Process is 64 bit", Environment.Is64BitProcess.ToString()) },
 				{ "runtime", (".NET Runtime", Platform.RuntimeVersion) },
 				{ "gl", ("OpenGL Version", Game.Renderer.GLVersion) },
-				{ "windowsize", ("Window Size", "{0}x{1}".F(Game.Renderer.NativeResolution.Width, Game.Renderer.NativeResolution.Height)) },
+				{ "windowsize", ("Window Size", $"{Game.Renderer.NativeResolution.Width}x{Game.Renderer.NativeResolution.Height}") },
 				{ "windowscale", ("Window Scale", Game.Renderer.NativeWindowScale.ToString("F2", CultureInfo.InvariantCulture)) },
 				{ "uiscale", ("UI Scale", Game.Settings.Graphics.UIScale.ToString("F2", CultureInfo.InvariantCulture)) },
 				{ "lang", ("System Language", lang) }
@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (!Game.Settings.Debug.SendSystemInformation)
 				return "";
 
-			return "&sysinfoversion={0}&".F(SystemInformationVersion)
+			return $"&sysinfoversion={SystemInformationVersion}&"
 			       + GetSystemInformation()
 				       .Select(kv => kv.Key + "=" + Uri.EscapeUriString(kv.Value.Value))
 				       .JoinWith("&");

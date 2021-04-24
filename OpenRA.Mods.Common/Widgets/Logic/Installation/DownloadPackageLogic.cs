@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var status = new CachedTransform<string, string>(s => WidgetUtils.TruncateText(s, statusLabel.Bounds.Width, statusFont));
 			statusLabel.GetText = () => status.Update(getStatusText());
 
-			var text = "Downloading {0}".F(download.Title);
+			var text = $"Downloading {download.Title}";
 			panel.Get<LabelWidget>("TITLE").Text = text;
 
 			ShowDownloadDialog();
@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					dataReceived = read / (float)(1L << (mag * 10));
 					dataSuffix = SizeSuffixes[mag];
 
-					getStatusText = () => "Downloading from {2} {0:0.00} {1}".F(dataReceived, dataSuffix, downloadHost ?? "unknown host");
+					getStatusText = () => $"Downloading from {downloadHost ?? "unknown host"} {dataReceived:0.00} {dataSuffix}";
 					progressBar.Indeterminate = true;
 				}
 				else
@@ -88,7 +88,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					dataReceived = read / (float)(1L << (mag * 10));
 					dataSuffix = SizeSuffixes[mag];
 
-					getStatusText = () => "Downloading from {4} {1:0.00}/{2:0.00} {3} ({0}%)".F(progressPercentage, dataReceived, dataTotal, dataSuffix, downloadHost ?? "unknown host");
+					getStatusText = () => $"Downloading from {downloadHost ?? "unknown host"} {dataReceived:0.00}/{dataTotal:0.00} {dataSuffix} ({progressPercentage}%)";
 					progressBar.Indeterminate = false;
 				}
 

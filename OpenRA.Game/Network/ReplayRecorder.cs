@@ -56,7 +56,7 @@ namespace OpenRA.Network
 			var id = -1;
 			while (file == null)
 			{
-				var fullFilename = Path.Combine(dir, id < 0 ? "{0}.orarep".F(filename) : "{0}-{1}.orarep".F(filename, id));
+				var fullFilename = Path.Combine(dir, id < 0 ? $"{filename}.orarep" : $"{filename}-{id}.orarep");
 				id++;
 				try
 				{
@@ -65,8 +65,7 @@ namespace OpenRA.Network
 				catch (IOException ex)
 				{
 					if (id > CreateReplayFileMaxRetryCount)
-						throw new ArgumentException(
-							"Error creating replay file \"{0}.orarep\"".F(filename), ex);
+						throw new ArgumentException($"Error creating replay file \"{filename}.orarep\"", ex);
 				}
 			}
 

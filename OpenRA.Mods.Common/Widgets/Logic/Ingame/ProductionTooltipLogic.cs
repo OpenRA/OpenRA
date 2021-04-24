@@ -87,7 +87,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				if (hotkeyLabel.Visible)
 				{
-					var hotkeyText = "({0})".F(hotkey.DisplayString());
+					var hotkeyText = $"({hotkey.DisplayString()})";
 
 					hotkeyWidth = font.Measure(hotkeyText).X + 2 * nameLabel.Bounds.X;
 					hotkeyLabel.Text = hotkeyText;

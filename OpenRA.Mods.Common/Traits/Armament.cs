@@ -89,7 +89,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var weaponToLower = Weapon.ToLowerInvariant();
 			if (!rules.Weapons.TryGetValue(weaponToLower, out var weaponInfo))
-				throw new YamlException("Weapons Ruleset does not contain an entry '{0}'".F(weaponToLower));
+				throw new YamlException($"Weapons Ruleset does not contain an entry '{weaponToLower}'");
 
 			WeaponInfo = weaponInfo;
 			ModifiedRange = new WDist(Util.ApplyPercentageModifiers(
@@ -97,7 +97,7 @@ namespace OpenRA.Mods.Common.Traits
 				ai.TraitInfos<IRangeModifierInfo>().Select(m => m.GetRangeModifierDefault())));
 
 			if (WeaponInfo.Burst > 1 && WeaponInfo.BurstDelays.Length > 1 && (WeaponInfo.BurstDelays.Length != WeaponInfo.Burst - 1))
-				throw new YamlException("Weapon '{0}' has an invalid number of BurstDelays, must be single entry or Burst - 1.".F(weaponToLower));
+				throw new YamlException($"Weapon '{weaponToLower}' has an invalid number of BurstDelays, must be single entry or Burst - 1.");
 
 			base.RulesetLoaded(rules, ai);
 		}

@@ -56,7 +56,7 @@ namespace OpenRA.Network
 		public override string ToString()
 		{
 			return endpoints
-				.Select(e => "{0}:{1}".F(e.Host, e.Port))
+				.Select(e => $"{e.Host}:{e.Port}")
 				.JoinWith("/");
 		}
 	}

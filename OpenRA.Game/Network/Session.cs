@@ -37,7 +37,7 @@ namespace OpenRA.Network
 			{
 				// Follow convention used by Google Analytics: remove last octet
 				var b = ip.GetAddressBytes();
-				return "{0}.{1}.{2}.*".F(b[0], b[1], b[2]);
+				return $"{b[0]}.{b[1]}.{b[2]}.*";
 			}
 
 			return null;
@@ -82,11 +82,11 @@ namespace OpenRA.Network
 			}
 			catch (YamlException)
 			{
-				throw new YamlException("Session deserialized invalid MiniYaml:\n{0}".F(data));
+				throw new YamlException($"Session deserialized invalid MiniYaml:\n{data}");
 			}
 			catch (InvalidOperationException)
 			{
-				throw new YamlException("Session deserialized invalid MiniYaml:\n{0}".F(data));
+				throw new YamlException($"Session deserialized invalid MiniYaml:\n{data}");
 			}
 		}
 
@@ -159,7 +159,7 @@ namespace OpenRA.Network
 
 			public MiniYamlNode Serialize()
 			{
-				return new MiniYamlNode("Client@{0}".F(Index), FieldSaver.Save(this));
+				return new MiniYamlNode($"Client@{Index}", FieldSaver.Save(this));
 			}
 		}
 
@@ -182,7 +182,7 @@ namespace OpenRA.Network
 
 			public MiniYamlNode Serialize()
 			{
-				return new MiniYamlNode("ClientPing@{0}".F(Index), FieldSaver.Save(this));
+				return new MiniYamlNode($"ClientPing@{Index}", FieldSaver.Save(this));
 			}
 		}
 
@@ -206,7 +206,7 @@ namespace OpenRA.Network
 
 			public MiniYamlNode Serialize()
 			{
-				return new MiniYamlNode("Slot@{0}".F(PlayerReference), FieldSaver.Save(this));
+				return new MiniYamlNode($"Slot@{PlayerReference}", FieldSaver.Save(this));
 			}
 		}
 

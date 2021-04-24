@@ -59,7 +59,7 @@ namespace OpenRA.Graphics
 			try { return Cursors[cursor]; }
 			catch (KeyNotFoundException)
 			{
-				throw new InvalidOperationException("Cursor does not have a sequence `{0}`".F(cursor));
+				throw new InvalidOperationException($"Cursor does not have a sequence `{cursor}`");
 			}
 		}
 	}

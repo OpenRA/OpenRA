@@ -80,7 +80,7 @@ namespace OpenRA.Mods.Common.Server
 
 				if (server.State == ServerState.GameStarted)
 				{
-					server.SendOrderTo(conn, "Message", "Cannot change state when game started. ({0})".F(cmd));
+					server.SendOrderTo(conn, "Message", $"Cannot change state when game started. ({cmd})");
 					return false;
 				}
 				else if (client.State == Session.ClientState.Ready && !(cmd.StartsWith("state") || cmd == "startgame"))
@@ -491,7 +491,7 @@ namespace OpenRA.Mods.Common.Server
 
 						server.SyncLobbyInfo();
 
-						server.SendMessage("{0} changed the map to {1}.".F(client.Name, server.Map.Title));
+						server.SendMessage($"{client.Name} changed the map to {server.Map.Title}.");
 
 						if ((server.LobbyInfo.GlobalSettings.MapStatus & Session.MapStatus.UnsafeCustomRules) != 0)
 							server.SendMessage("This map contains custom rules. Game experience may change.");
@@ -554,7 +554,7 @@ namespace OpenRA.Mods.Common.Server
 
 				if (option.IsLocked)
 				{
-					server.SendOrderTo(conn, "Message", "{0} cannot be changed.".F(option.Name));
+					server.SendOrderTo(conn, "Message", $"{option.Name} cannot be changed.");
 					return true;
 				}
 
@@ -588,7 +588,7 @@ namespace OpenRA.Mods.Common.Server
 
 				if (!Exts.TryParseIntegerInvariant(s, out var teamCount))
 				{
-					server.SendOrderTo(conn, "Message", "Number of teams could not be parsed: {0}".F(s));
+					server.SendOrderTo(conn, "Message", $"Number of teams could not be parsed: {s}");
 					return true;
 				}
 
@@ -653,7 +653,7 @@ namespace OpenRA.Mods.Common.Server
 				}
 
 				Log.Write("server", "Kicking client {0}.", kickClientID);
-				server.SendMessage("{0} kicked {1} from the server.".F(client.Name, kickClient.Name));
+				server.SendMessage($"{client.Name} kicked {kickClient.Name} from the server.");
 				server.SendOrderTo(kickConn, "ServerError", "You have been kicked from the server.");
 				server.DropClient(kickConn);
 
@@ -661,7 +661,7 @@ namespace OpenRA.Mods.Common.Server
 				if (tempBan)
 				{
 					Log.Write("server", "Temporarily banning client {0} ({1}).", kickClientID, kickClient.IPAddress);
-					server.SendMessage("{0} temporarily banned {1} from the server.".F(client.Name, kickClient.Name));
+					server.SendMessage($"{client.Name} temporarily banned {kickClient.Name} from the server.");
 					server.TempBans.Add(kickClient.IPAddress);
 				}
 
@@ -701,8 +701,8 @@ namespace OpenRA.Mods.Common.Server
 				foreach (var b in bots)
 					b.BotControllerClientIndex = newAdminId;
 
-				server.SendMessage("{0} is now the admin.".F(newAdminClient.Name));
-				Log.Write("server", "{0} is now the admin.".F(newAdminClient.Name));
+				server.SendMessage($"{newAdminClient.Name} is now the admin.");
+				Log.Write("server", $"{newAdminClient.Name} is now the admin.");
 				server.SyncLobbyClients();
 
 				return true;
@@ -735,8 +735,8 @@ namespace OpenRA.Mods.Common.Server
 				targetClient.Handicap = 0;
 				targetClient.Color = Color.White;
 				targetClient.State = Session.ClientState.NotReady;
-				server.SendMessage("{0} moved {1} to spectators.".F(client.Name, targetClient.Name));
-				Log.Write("server", "{0} moved {1} to spectators.".F(client.Name, targetClient.Name));
+				server.SendMessage($"{client.Name} moved {targetClient.Name} to spectators.");
+				Log.Write("server", $"{client.Name} moved {targetClient.Name} to spectators.");
 				server.SyncLobbyClients();
 				CheckAutoStart(server);
 
@@ -753,7 +753,7 @@ namespace OpenRA.Mods.Common.Server
 					return true;
 
 				Log.Write("server", "Player@{0} is now known as {1}.", conn.Socket.RemoteEndPoint, sanitizedName);
-				server.SendMessage("{0} is now known as {1}.".F(client.Name, sanitizedName));
+				server.SendMessage($"{client.Name} is now known as {sanitizedName}.");
 				client.Name = sanitizedName;
 				server.SyncLobbyClients();
 
@@ -781,8 +781,8 @@ namespace OpenRA.Mods.Common.Server
 
 				if (!factions.Contains(parts[1]))
 				{
-					server.SendOrderTo(conn, "Message", "Invalid faction selected: {0}".F(parts[1]));
-					server.SendOrderTo(conn, "Message", "Supported values: {0}".F(factions.JoinWith(", ")));
+					server.SendOrderTo(conn, "Message", $"Invalid faction selected: {parts[1]}");
+					server.SendOrderTo(conn, "Message", $"Supported values: {factions.JoinWith(", ")}");
 					return true;
 				}
 
@@ -1012,7 +1012,7 @@ namespace OpenRA.Mods.Common.Server
 				var uid = server.LobbyInfo.GlobalSettings.Map;
 				server.Map = server.ModData.MapCache[uid];
 				if (server.Map.Status != MapStatus.Available)
-					throw new InvalidOperationException("Map {0} not found".F(uid));
+					throw new InvalidOperationException($"Map {uid} not found");
 
 				server.LobbyInfo.Slots = server.Map.Players.Players
 					.Select(p => MakeSlotFromPlayerReference(p.Value))

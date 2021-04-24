@@ -81,7 +81,7 @@ namespace OpenRA
 			var terrainLoader = ObjectCreator.FindType(terrainFormat.Type + "Loader");
 			var terrainCtor = terrainLoader?.GetConstructor(new[] { typeof(ModData) });
 			if (terrainLoader == null || !terrainLoader.GetInterfaces().Contains(typeof(ITerrainLoader)) || terrainCtor == null)
-				throw new InvalidOperationException("Unable to find a terrain loader for type '{0}'.".F(terrainFormat.Type));
+				throw new InvalidOperationException($"Unable to find a terrain loader for type '{terrainFormat.Type}'.");
 
 			TerrainLoader = (ITerrainLoader)terrainCtor.Invoke(new[] { this });
 
@@ -89,7 +89,7 @@ namespace OpenRA
 			var sequenceLoader = ObjectCreator.FindType(sequenceFormat.Type + "Loader");
 			var sequenceCtor = sequenceLoader != null ? sequenceLoader.GetConstructor(new[] { typeof(ModData) }) : null;
 			if (sequenceLoader == null || !sequenceLoader.GetInterfaces().Contains(typeof(ISpriteSequenceLoader)) || sequenceCtor == null)
-				throw new InvalidOperationException("Unable to find a sequence loader for type '{0}'.".F(sequenceFormat.Type));
+				throw new InvalidOperationException($"Unable to find a sequence loader for type '{sequenceFormat.Type}'.");
 
 			SpriteSequenceLoader = (ISpriteSequenceLoader)sequenceCtor.Invoke(new[] { this });
 
@@ -97,7 +97,7 @@ namespace OpenRA
 			var modelLoader = ObjectCreator.FindType(modelFormat.Type + "Loader");
 			var modelCtor = modelLoader != null ? modelLoader.GetConstructor(new[] { typeof(ModData) }) : null;
 			if (modelLoader == null || !modelLoader.GetInterfaces().Contains(typeof(IModelSequenceLoader)) || modelCtor == null)
-				throw new InvalidOperationException("Unable to find a model loader for type '{0}'.".F(modelFormat.Type));
+				throw new InvalidOperationException($"Unable to find a model loader for type '{modelFormat.Type}'.");
 
 			ModelSequenceLoader = (IModelSequenceLoader)modelCtor.Invoke(new[] { this });
 			ModelSequenceLoader.OnMissingModelError = s => Log.Write("debug", s);
@@ -156,7 +156,7 @@ namespace OpenRA
 			LoadScreen?.Display();
 
 			if (MapCache[uid].Status != MapStatus.Available)
-				throw new InvalidDataException("Invalid map uid: {0}".F(uid));
+				throw new InvalidDataException($"Invalid map uid: {uid}");
 
 			Map map;
 			using (new Support.PerfTimer("Map"))

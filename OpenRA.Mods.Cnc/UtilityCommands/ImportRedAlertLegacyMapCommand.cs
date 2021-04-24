@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 		{
 			if (format < 2)
 			{
-				Console.WriteLine("ERROR: Detected NewINIFormat {0}. Are you trying to import a Tiberian Dawn map?".F(format));
+				Console.WriteLine($"ERROR: Detected NewINIFormat {format}. Are you trying to import a Tiberian Dawn map?");
 				return;
 			}
 		}

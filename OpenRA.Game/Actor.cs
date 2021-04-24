@@ -125,7 +125,7 @@ namespace OpenRA
 				.FirstOrDefault(i => i.Count() > 1);
 
 			if (duplicateInit != null)
-				throw new InvalidDataException("Duplicate initializer '{0}'".F(duplicateInit.Key.Name));
+				throw new InvalidDataException($"Duplicate initializer '{duplicateInit.Key.Name}'");
 
 			var init = new ActorInitializer(this, initDict);
 
@@ -250,7 +250,7 @@ namespace OpenRA
 					continue;
 
 				if (creationActivity != null)
-					throw new InvalidOperationException("More than one enabled ICreationActivity trait: {0} and {1}".F(creationActivity.GetType().Name, ica.GetType().Name));
+					throw new InvalidOperationException($"More than one enabled ICreationActivity trait: {creationActivity.GetType().Name} and {ica.GetType().Name}");
 
 				var activity = ica.GetCreationActivity();
 				if (activity == null)
@@ -592,7 +592,7 @@ namespace OpenRA
 		public int RevokeCondition(int token)
 		{
 			if (!conditionTokens.TryGetValue(token, out var condition))
-				throw new InvalidOperationException("Attempting to revoke condition with invalid token {0} for {1}.".F(token, this));
+				throw new InvalidOperationException($"Attempting to revoke condition with invalid token {token} for {this}.");
 
 			conditionTokens.Remove(token);
 			UpdateConditionState(condition, token, true);
@@ -632,7 +632,7 @@ namespace OpenRA
 
 		public LuaValue ToString(LuaRuntime runtime)
 		{
-			return "Actor ({0})".F(this);
+			return $"Actor ({this})";
 		}
 
 		public bool HasScriptProperty(string name)

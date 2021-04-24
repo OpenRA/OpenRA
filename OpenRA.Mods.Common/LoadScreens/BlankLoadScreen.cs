@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.LoadScreens
 
 			if (!string.IsNullOrEmpty(Launch.Benchmark))
 			{
-				Console.WriteLine("Saving benchmark data into {0}".F(Path.Combine(Platform.SupportDir, "Logs")));
+				Console.WriteLine($"Saving benchmark data into {Path.Combine(Platform.SupportDir, "Logs")}");
 
 				Game.BenchmarkMode(Launch.Benchmark);
 			}

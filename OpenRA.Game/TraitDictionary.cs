@@ -81,7 +81,7 @@ namespace OpenRA
 		static void CheckDestroyed(Actor actor)
 		{
 			if (actor.Disposed)
-				throw new InvalidOperationException("Attempted to get trait from destroyed object ({0})".F(actor));
+				throw new InvalidOperationException($"Attempted to get trait from destroyed object ({actor})");
 		}
 
 		public T Get<T>(Actor actor)
@@ -160,7 +160,7 @@ namespace OpenRA
 			{
 				var result = GetOrDefault(actor);
 				if (result == null)
-					throw new InvalidOperationException("Actor {0} does not have trait of type `{1}`".F(actor.Info.Name, typeof(T)));
+					throw new InvalidOperationException($"Actor {actor.Info.Name} does not have trait of type `{typeof(T)}`");
 
 				return result;
 			}
@@ -173,7 +173,7 @@ namespace OpenRA
 					return default;
 
 				if (index + 1 < actors.Count && actors[index + 1] == actor)
-					throw new InvalidOperationException("Actor {0} has multiple traits of type `{1}`".F(actor.Info.Name, typeof(T)));
+					throw new InvalidOperationException($"Actor {actor.Info.Name} has multiple traits of type `{typeof(T)}`");
 
 				return traits[index];
 			}

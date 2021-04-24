@@ -176,7 +176,7 @@ namespace OpenRA.Mods.Common.Traits
 					var amount = order.ExtraData != 0 ? (int)order.ExtraData : info.Cash;
 					self.Trait<PlayerResources>().ChangeCash(amount);
 
-					debugSuffix = " ({0} credits)".F(amount);
+					debugSuffix = $" ({amount} credits)";
 					break;
 				}
 
@@ -188,7 +188,7 @@ namespace OpenRA.Mods.Common.Traits
 					foreach (var player in receivingPlayers)
 						player.PlayerActor.Trait<PlayerResources>().ChangeCash(amount);
 
-					debugSuffix = " ({0} credits)".F(amount);
+					debugSuffix = $" ({amount} credits)";
 					break;
 				}
 

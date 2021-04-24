@@ -123,10 +123,10 @@ namespace OpenRA.Mods.Common.Widgets
 				yield break;
 
 			if (string.IsNullOrEmpty(savePrefix))
-				emitError("{0} must define BookmarkSaveKeyPrefix if BookmarkKeyCount > 0.".F(widgetNode.Location));
+				emitError($"{widgetNode.Location} must define BookmarkSaveKeyPrefix if BookmarkKeyCount > 0.");
 
 			if (string.IsNullOrEmpty(restorePrefix))
-				emitError("{0} must define BookmarkRestoreKeyPrefix if BookmarkKeyCount > 0.".F(widgetNode.Location));
+				emitError($"{widgetNode.Location} must define BookmarkRestoreKeyPrefix if BookmarkKeyCount > 0.");
 
 			for (var i = 0; i < count; i++)
 			{

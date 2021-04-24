@@ -32,16 +32,16 @@ namespace OpenRA.Scripting
 				ret = t.Name;
 
 			if (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Nullable<>))
-				ret = "{0}?".F(t.GetGenericArguments().Select(p => p.Name).First());
+				ret = $"{t.GetGenericArguments().Select(p => p.Name).First()}?";
 
 			return ret;
 		}
 
 		public static string LuaDocString(this ParameterInfo pi)
 		{
-			var ret = "{0} {1}".F(pi.ParameterType.LuaDocString(), pi.Name);
+			var ret = $"{pi.ParameterType.LuaDocString()} {pi.Name}";
 			if (pi.IsOptional)
-				ret += " = {0}".F(pi.DefaultValue != null ? pi.DefaultValue : "nil");
+				ret += $" = {pi.DefaultValue ?? "nil"}";
 
 			return ret;
 		}
@@ -52,7 +52,7 @@ namespace OpenRA.Scripting
 			if (methodInfo != null)
 			{
 				var parameters = methodInfo.GetParameters().Select(pi => pi.LuaDocString());
-				return "{0} {1}({2})".F(methodInfo.ReturnType.LuaDocString(), mi.Name, parameters.JoinWith(", "));
+				return $"{methodInfo.ReturnType.LuaDocString()} {mi.Name}({parameters.JoinWith(", ")})";
 			}
 
 			var propertyInfo = mi as PropertyInfo;
@@ -64,10 +64,10 @@ namespace OpenRA.Scripting
 				if (propertyInfo.GetSetMethod() != null)
 					types.Add("set;");
 
-				return "{0} {1} {{ {2} }}".F(propertyInfo.PropertyType.LuaDocString(), mi.Name, types.JoinWith(" "));
+				return $"{propertyInfo.PropertyType.LuaDocString()} {mi.Name} {{ {types.JoinWith(" ")} }}";
 			}
 
-			return "Unknown field: {0}".F(mi.Name);
+			return $"Unknown field: {mi.Name}";
 		}
 	}
 }

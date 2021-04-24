@@ -646,7 +646,7 @@ namespace OpenRA.Platforms.Default
 			}
 			catch (Exception e)
 			{
-				WriteGraphicsLog("Failed to initialize OpenGL bindings.\nInner exception was: {0}".F(e));
+				WriteGraphicsLog($"Failed to initialize OpenGL bindings.\nInner exception was: {e}");
 				throw new InvalidProgramException("Failed to initialize OpenGL. See graphics.log for details.", e);
 			}
 		}
@@ -750,7 +750,7 @@ namespace OpenRA.Platforms.Default
 
 			string errorText;
 			errorText = ErrorToText.TryGetValue(type, out errorText) ? errorText : type.ToString("X");
-			var error = "GL Error: {0}\n{1}".F(errorText, new StackTrace());
+			var error = $"GL Error: {errorText}\n{new StackTrace()}";
 
 			WriteGraphicsLog(error);
 
@@ -791,7 +791,7 @@ namespace OpenRA.Platforms.Default
 			severityText = DebugSeverityToText.TryGetValue(severity, out severityText) ? severityText : severity.ToString("X");
 			var messageText = message.ToString();
 
-			return "{0} - GL Debug {1} Output: {2} - {3}\n{4}".F(severityText, sourceText, typeText, messageText, new StackTrace());
+			return $"{severityText} - GL Debug {sourceText} Output: {typeText} - {messageText}\n{new StackTrace()}";
 		}
 	}
 }

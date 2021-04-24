@@ -75,7 +75,7 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 					framePrefix = prefix;
 
 				if (prefix != framePrefix)
-					throw new InvalidDataException("Frame prefix mismatch: `{0}` != `{1}`".F(prefix, framePrefix));
+					throw new InvalidDataException($"Frame prefix mismatch: `{prefix}` != `{framePrefix}`");
 
 				frameCount = Math.Max(frameCount, int.Parse(match.Groups["frame"].Value) + 1);
 			}
@@ -83,7 +83,7 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 			var frames = new ISpriteFrame[frameCount];
 			for (var i = 0; i < frames.Length; i++)
 			{
-				var tgaEntry = container.GetEntry("{0}{1:D4}.tga".F(framePrefix, i));
+				var tgaEntry = container.GetEntry($"{framePrefix}{i:D4}.tga");
 
 				// Blank frame
 				if (tgaEntry == null)
@@ -92,7 +92,7 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 					continue;
 				}
 
-				var metaEntry = container.GetEntry("{0}{1:D4}.meta".F(framePrefix, i));
+				var metaEntry = container.GetEntry($"{framePrefix}{i:D4}.meta");
 				using (var tgaStream = container.GetInputStream(tgaEntry))
 				{
 					var metaStream = metaEntry != null ? container.GetInputStream(metaEntry) : null;

@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 						fallsToEarth.AddNode("MaximumSpinSpeed", "0");
 
 					fallsToEarth.RemoveNode(spinsNode);
-					locations.Add("{0} ({1})".F(actorNode.Key, actorNode.Location.Filename));
+					locations.Add($"{actorNode.Key} ({actorNode.Location.Filename})");
 				}
 			}
 
