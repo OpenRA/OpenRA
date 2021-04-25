@@ -146,7 +146,7 @@ end
 Hind1PassengerCheck = function()
 		Trigger.OnPassengerEntered(Hind1, function(transport, passenger)
 			-- If someone enters a vehicle with no passengers, they're the owner.
-			if transport.PassengerCount == 1 then
+			if transport.PassengerCount == 1 or transport.PassengerCount == 2 then
 				transport.Owner = passenger.Owner
 			end
 			local pi = PlayerInfo[passenger.Owner.InternalName]
@@ -162,47 +162,44 @@ Hind1PassengerCheck = function()
 				pi.IsPilot = true
 			end
 		end)
-		-- If it's empty and alive, transfer ownership back to neutral.
-	-- Husks (if any) retain ownership, and don't want husk explosions to hurt allies.
-	Trigger.OnPassengerExited(Hind1, function(transport, passenger)
-		if not transport.IsDead and transport.PassengerCount == 0 then
-			-- NOTE: With EjectOnDeath being busted, this might not be working as intended.
-			transport.Owner = neutral
-		end
+		Trigger.OnPassengerExited(Hind1, function(transport, passenger)
+			if not transport.IsDead and transport.PassengerCount == 0 then
+				-- NOTE: With EjectOnDeath being busted, this might not be working as intended.
+				transport.Owner = neutral
+			end
 	
-		local pi = PlayerInfo[passenger.Owner.InternalName]
-	
+			local pi = PlayerInfo[passenger.Owner.InternalName]
 	-- 	-- Set passenger state
-		pi.PassengerOfVehicle = nil
-	
-	-- 	-- Name tag hack: Remove pilot info.
-		pi.IsPilot = false
-		-- actor.Owner = neutral
-	end)
-	-- Media.DisplayMessage("Hijack a Hind Helicopter.")
-
-	-- Utils.Do(HindUnit1, function(actor)
-	-- 	if actor.IsDead then
-	-- 		return
-	-- 	end
+			pi.PassengerOfVehicle = nil
 		
-	-- 	if actor.HasPassengers then
-	-- 		actor.Owner = ussr
-	-- 		-- Trigger.AfterDelay(0, Hind1PassengerCheck)
-	-- 		-- return
-	-- 	end
-	-- 	-- actor.Owner = neutral
-	-- 	if not actor.HasPassengers then
-	-- 		Media.DisplayMessage("Hijack a Hind Helicopter.")
-	-- 		actor.Owner = neutral
-			
-	-- 		-- Trigger.OnCapture(Hind1, Hind1PassengerCheck)
-	-- 	-- else
-	-- 	-- Trigger.AfterDelay(0, Hind1PassengerCheck)
-	-- 	end
-	-- end)
-	-- Trigger.AfterDelay(0, Hind1PassengerCheck)
+		-- 	-- Name tag hack: Remove pilot info.
+			pi.IsPilot = false
+	end)
 end
+Hind2PassengerCheck = function()
+		Trigger.OnPassengerEntered(Hind2, function(transport, passenger)
+			if transport.PassengerCount == 1 then
+				transport.Owner = passenger.Owner
+			end
+			local pi = PlayerInfo[passenger.Owner.InternalName]
+
+			pi.PassengerOfVehicle = transport
+			pi.EjectOnDeathHealth = passenger.Health
+			if transport.PassengerCount == 1 then
+				pi.IsPilot = true
+			end
+		end)
+		Trigger.OnPassengerExited(Hind2, function(transport, passenger)
+			if not transport.IsDead and transport.PassengerCount == 0 then
+				transport.Owner = neutral
+			end
+
+			local pi = PlayerInfo[passenger.Owner.InternalName]
+			pi.PassengerOfVehicle = nil
+			pi.IsPilot = false
+		end)
+	end
+			
 
 Hind2PassengerCheck = function()
 	Utils.Do(HindUnit2, function(actor2)

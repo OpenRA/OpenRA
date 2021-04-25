@@ -31,7 +31,7 @@ Players:
 		LockColor: True
 		Color: ABB7E4
 		Allies: England Northern Base, England Main Base, England Air Base, England Prison Base
-		Enemies: Creeps, USSR, BadGuy
+		Enemies: USSR, BadGuy
 	PlayerReference@England Air Base:
 		Name: England Air Base
 		NonCombatant: True
@@ -39,7 +39,7 @@ Players:
 		LockColor: True
 		Color: ABB7E4
 		Allies: England Northern Base, England Main Base, England Prison Base, England Missile Silos
-		Enemies: Creeps, USSR, BadGuy
+		Enemies: USSR, BadGuy
 	PlayerReference@England Northern Base:
 		Name: England Northern Base
 		NonCombatant: True
@@ -47,7 +47,7 @@ Players:
 		LockColor: True
 		Color: ABB7E4
 		Allies: England Main Base, England Air Base, England Prison Base, England Missile Silos
-		Enemies: Creeps, USSR, BadGuy
+		Enemies: USSR, BadGuy
 	PlayerReference@England Prison Base:
 		Name: England Prison Base
 		NonCombatant: True
@@ -55,7 +55,7 @@ Players:
 		LockColor: True
 		Color: ABB7E4
 		Allies: England Northern Base, England Main Base, England Air Base, England Missile Silos
-		Enemies: Creeps, USSR, BadGuy
+		Enemies: USSR, BadGuy
 	PlayerReference@England Main Base:
 		Name: England Main Base
 		NonCombatant: True
@@ -63,12 +63,7 @@ Players:
 		LockColor: True
 		Color: ABB7E4
 		Allies: England Northern Base, England Air Base, England Prison Base, England Missile Silos
-		Enemies: Creeps, USSR, BadGuy
-	PlayerReference@Creeps:
-		Name: Creeps
-		NonCombatant: True
-		Faction: england
-		Enemies: USSR
+		Enemies: USSR, BadGuy
 	PlayerReference@USSR:
 		Name: USSR
 		Playable: True
@@ -79,7 +74,7 @@ Players:
 		LockSpawn: True
 		LockTeam: True
 		Allies: BadGuy
-		Enemies: Creeps, England Missile Silos, England Main Base, England Northern Base, England Air Base, England Prison Base
+		Enemies: England Missile Silos, England Main Base, England Northern Base, England Air Base, England Prison Base
 	PlayerReference@BadGuy:
 		Name: BadGuy
 		NonCombatant: True
@@ -87,140 +82,140 @@ Players:
 		LockColor: True
 		Color: FE1100
 		Allies: USSR
-		Enemies: Creeps, England Missile Silos, England Prison Base, England Main Base, England Northern Base, England Air Base
+		Enemies: England Missile Silos, England Prison Base, England Main Base, England Northern Base, England Air Base
 
 Actors:
 	Actor1243: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 107,23
 	Actor1236: barb
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 30,55
 	Actor1239: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 106,22
 	Actor1397: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 116,18
 	Actor1277: barb
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 121,7
 	Actor1011: tc01
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 19,41
 	Actor1009: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 89,20
 	Actor10: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 90,30
 	Actor11: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 90,30
 	Actor569: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 93,36
 	Actor568: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 92,36
 	Actor567: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 91,36
 	Actor563: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 90,35
 	Actor566: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 90,36
 	Actor560: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 90,34
 	Actor559: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 90,33
 	Actor558: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 90,32
 	Actor557: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 90,31
 	Actor23: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 94,36
 	Actor24: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 95,36
 	Actor25: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 96,36
 	Actor26: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 97,36
 	Actor27: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 97,37
 	Actor28: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 98,37
 	Actor29: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 98,36
 	Actor30: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 108,36
 	Actor32: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 108,37
 	Actor33: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 109,36
 	Actor34: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 109,37
 	Actor35: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 110,36
 	Actor36: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 111,36
 	Actor37: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 112,36
 	Actor38: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 113,36
 	Actor39: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 113,36
 	Actor40: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 114,36
 	Actor41: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 115,36
 	Actor42: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 115,36
 	Actor43: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 116,36
 	Actor44: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 116,35
 	Actor45: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 116,34
 	Actor47: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 116,32
 	Actor50: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 116,33
 	Actor51: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 116,31
 	Actor52: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 116,30
 	MissileSilo1: mslo
 		Owner: England Main Base
@@ -242,13 +237,13 @@ Actors:
 		Owner: Neutral
 		Location: 122,7
 	Actor1399: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 116,20
 	Actor1203: rock6
 		Owner: Neutral
 		Location: 106,8
 	Actor1250: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 107,11
 	Actor1174: e1
 		Owner: England Northern Base
@@ -260,10 +255,10 @@ Actors:
 		Owner: Neutral
 		Location: 120,10
 	Actor1251: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 108,11
 	Actor1257: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 107,25
 	Actor1390: barb
 		Owner: Neutral
@@ -275,7 +270,7 @@ Actors:
 		Owner: Neutral
 		Location: 124,7
 	Actor1217: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 90,15
 	DemoDropoffPoint: waypoint
 		Owner: Neutral
@@ -287,7 +282,7 @@ Actors:
 		Owner: England Main Base
 		Location: 106,15
 	Actor1393: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 116,14
 	Actor1221: barb
 		Owner: Neutral
@@ -296,7 +291,7 @@ Actors:
 		Owner: Neutral
 		Location: 28,56
 	Actor1036: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 90,20
 	Actor1220: truk
 		Owner: England Northern Base
@@ -306,49 +301,49 @@ Actors:
 		Owner: Neutral
 		Location: 30,54
 	Actor1244: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 98,24
 	Actor1240: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 107,22
 	Actor1593: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 117,28
 	Actor1394: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 116,15
 	Actor1396: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 116,17
 	Actor1290: barb
 		Owner: Neutral
 		Location: 82,27
 	Actor1268: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 107,28
 	Actor1248: apwr
 		Owner: England Main Base
 		Location: 94,29
 	Actor1241: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 98,23
 	Actor1378: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 107,19
 	Actor1259: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 105,19
 	Actor1247: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 98,25
 	Actor1299: barb
 		Owner: Neutral
 		Location: 77,27
 	Actor1402: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 89,19
 	Actor1260: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 98,26
 	Actor1301: barb
 		Owner: Neutral
@@ -360,10 +355,10 @@ Actors:
 		Owner: Neutral
 		Location: 77,26
 	Actor1246: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 107,24
 	Actor1008: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 117,20
 	MissileSilo3: mslo
 		Owner: England Main Base
@@ -372,19 +367,19 @@ Actors:
 		Owner: England Main Base
 		Location: 78,23
 	Actor1395: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 116,16
 	Actor561: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 90,34
 	Oil3: oilb
 		Owner: England Main Base
 		Location: 121,9
 	Actor1270: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 89,28
 	Actor1279: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 89,29
 	Actor577: gun
 		Owner: England Main Base
@@ -394,32 +389,32 @@ Actors:
 		Owner: Neutral
 		Location: 32,39
 	Actor1264: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 107,26
 	Actor1266: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 107,27
 	Actor1267: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 101,28
 	Actor597: tc01
 		Owner: Neutral
 		Location: 51,129
 	Actor1442: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 108,19
 	Actor1191: truk
 		Owner: England Northern Base
 		Location: 27,52
 		Facing: 96
 	Actor1178: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 116,12
 	Oil4: oilb
 		Owner: England Main Base
 		Location: 80,25
 	Actor939: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 27,98
 	Actor862: barb
 		Owner: Neutral
@@ -446,7 +441,7 @@ Actors:
 		Owner: Neutral
 		Location: 23,123
 	Actor895: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 16,111
 	Actor374: rock5
 		Owner: Neutral
@@ -458,19 +453,19 @@ Actors:
 		Owner: Neutral
 		Location: 51,40
 	Actor1194: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 104,22
 	Actor1183: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 101,22
 	Actor1193: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 103,22
 	Actor1295: barb
 		Owner: Neutral
 		Location: 77,24
 	Actor1238: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 105,22
 	Oil6: oilb
 		Owner: England Main Base
@@ -479,7 +474,7 @@ Actors:
 		Owner: England Main Base
 		Location: 100,15
 	Actor1182: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 100,22
 	Actor389: tc01
 		Owner: Neutral
@@ -515,7 +510,7 @@ Actors:
 		Owner: Neutral
 		Location: 124,14
 	Actor889: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 23,22
 	AWarFactory4: weap
 		Owner: England Main Base
@@ -534,13 +529,13 @@ Actors:
 		Location: 117,23
 		TurretFacing: 92
 	Actor1544: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 19,101
 	PatrolPoint1: waypoint
 		Owner: Neutral
 		Location: 71,81
 	Actor1003: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 41,50
 	Actor975: rock7
 		Owner: Neutral
@@ -549,7 +544,7 @@ Actors:
 		Owner: Neutral
 		Location: 6,16
 	Actor1192: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 102,22
 	Actor592: rock4
 		Owner: Neutral
@@ -573,13 +568,13 @@ Actors:
 		Owner: Neutral
 		Location: 126,46
 	Actor1263: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 106,19
 	Actor1153: tc01
 		Owner: Neutral
 		Location: 100,64
 	Actor1010: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 116,28
 	Actor1163: tc01
 		Owner: Neutral
@@ -643,7 +638,7 @@ Actors:
 		Owner: Neutral
 		Location: 127,42
 	Actor1274: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 105,29
 	Actor837: barb
 		Owner: Neutral
@@ -655,7 +650,7 @@ Actors:
 		Owner: Neutral
 		Location: 121,42
 	Actor1272: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 103,29
 	Actor827: barb
 		Owner: Neutral
@@ -701,31 +696,31 @@ Actors:
 		Owner: Neutral
 		Location: 117,94
 	Actor877: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 24,28
 	Actor883: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 19,22
 	Actor886: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 21,22
 	Actor845: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 25,28
 	Actor1134: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 19,28
 	Actor885: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 22,22
 	Actor884: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 20,22
 	Actor871: barb
 		Owner: Neutral
 		Location: 28,40
 	Actor879: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 19,27
 	Actor997: barb
 		Owner: Neutral
@@ -761,7 +756,7 @@ Actors:
 		Facing: 128
 		TurretFacing: 128
 	Actor908: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 29,95
 	Actor515: ca
 		Owner: England Main Base
@@ -813,79 +808,79 @@ Actors:
 		Owner: Neutral
 		Location: 88,71
 	Actor517: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 66,59
 	Actor571: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 65,59
 	Actor579: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 63,59
 	Actor580: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 64,59
 	Actor581: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 62,59
 	Actor582: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 61,59
 	Actor583: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 60,59
 	Actor584: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 59,59
 	Actor585: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 58,59
 	Actor587: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 58,58
 	Actor591: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 58,57
 	Actor593: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 58,56
 	Actor594: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 58,55
 	Actor603: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 58,53
 	Actor604: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 58,54
 	Actor605: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 58,52
 	Actor606: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 58,51
 	Actor608: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 72,59
 	Actor609: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 73,59
 	Actor610: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 74,59
 	Actor611: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 75,59
 	Actor612: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 76,59
 	Actor613: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 77,59
 	Actor614: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 78,59
 	Actor615: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 79,59
 	Actor1136: gun
 		Owner: England Main Base
@@ -958,121 +953,121 @@ Actors:
 		Owner: Neutral
 		Location: 117,95
 	Actor705: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 10,102
 	Actor707: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 21,111
 	Actor709: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 23,111
 	Actor783: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 12,111
 	Actor754: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 10,106
 	Actor710: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 24,111
 	Actor708: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 22,111
 	Actor755: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 10,107
 	Actor722: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 40,109
 	Actor721: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 40,108
 	Actor745: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 40,106
 	Actor747: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 40,107
 	Actor839: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 29,92
 	Actor734: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 40,105
 	Actor639: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 40,104
 	Actor724: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 39,109
 	Actor860: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 8,93
 	Actor723: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 38,109
 	Actor765: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 41,95
 	Actor638: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 40,103
 	Actor725: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 32,86
 	Actor712: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 10,103
 	Actor715: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 10,104
 	Actor742: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 10,105
 	Actor820: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 28,92
 	Actor748: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 33,86
 	Actor762: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 41,93
 	Actor759: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 41,90
 	Actor794: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 14,82
 	Actor802: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 13,82
 	Actor857: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 8,85
 	Actor846: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 10,111
 	Actor752: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 41,88
 	Actor750: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 41,87
 	Actor749: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 41,86
 	Actor760: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 41,91
 	Actor753: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 41,89
 	Actor852: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 9,82
 	Actor714: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 17,82
 	Actor766: apwr
 		Owner: England Air Base
@@ -1088,64 +1083,64 @@ Actors:
 		Owner: England Air Base
 		Location: 26,107
 	fence: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 18,82
 	Actor788: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 15,111
 	Actor767: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 35,86
 	Actor769: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 37,86
 	Actor751: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 34,86
 	Actor768: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 36,86
 	Actor761: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 41,92
 	Actor775: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 40,86
 	Actor763: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 41,94
 	Actor774: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 32,85
 	Actor778: cycl
 		Owner: Neutral
 		Location: 32,84
 	Actor773: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 39,86
 	Actor868: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 8,89
 	Actor772: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 38,86
 	Actor790: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 27,84
 	Actor777: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 27,83
 	Actor780: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 30,84
 	Actor779: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 31,84
 	Actor843: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 28,84
 	Actor781: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 29,84
 	Actor1112: barb
 		Owner: Neutral
@@ -1154,7 +1149,7 @@ Actors:
 		Owner: Neutral
 		Location: 74,105
 	Actor952: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 26,101
 	Actor1297: agun
 		Owner: England Northern Base
@@ -1198,40 +1193,40 @@ Actors:
 		Owner: England Air Base
 		Location: 33,96
 	Actor602: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 20,92
 	Actor703: barb
 		Owner: Neutral
 		Location: 101,93
 	Actor848: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 11,111
 	Actor902: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 29,93
 	Actor951: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 25,101
 	Actor842: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 20,93
 	PatrolPoint12: waypoint
 		Owner: Neutral
 		Location: 25,110
 	Actor904: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 29,94
 	Actor948: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 22,101
 	Actor757: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 10,109
 	Actor866: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 8,90
 	Actor758: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 10,110
 	PatrolPoint13: waypoint
 		Owner: Neutral
@@ -1244,7 +1239,7 @@ Actors:
 		Location: 39,100
 		TurretFacing: 92
 	Actor756: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 10,108
 	TransportDropoffPoint: waypoint
 		Owner: Neutral
@@ -1256,10 +1251,10 @@ Actors:
 		Facing: 128
 		TurretFacing: 128
 	Actor786: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 14,111
 	Actor785: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 13,111
 	Actor933: e1
 		Owner: England Air Base
@@ -1277,70 +1272,70 @@ Actors:
 		Owner: England Northern Base
 		Location: 33,27
 	Actor896: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 17,111
 	Actor897: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 18,111
 	Actor898: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 19,111
 	Actor927: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 20,111
 	Actor976: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 25,111
 	Actor977: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 26,111
 	Actor978: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 27,111
 	Actor979: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 28,111
 	Actor980: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 29,111
 	Actor981: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 30,111
 	Actor982: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 31,111
 	Actor983: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 32,111
 	Actor984: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 34,111
 	Actor985: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 35,111
 	Actor986: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 36,111
 	Actor987: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 37,111
 	Actor988: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 33,111
 	Actor989: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 38,111
 	Actor990: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 38,110
 	Actor946: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 20,101
 	Actor929: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 28,96
 	Actor936: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 27,97
 	EnglandAirBasePatrolInfantry2: e1
 		Owner: England Main Base
@@ -1355,10 +1350,10 @@ Actors:
 		TurretFacing: 92
 		Location: 22,106
 	Actor950: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 24,101
 	Actor947: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 21,101
 	Actor940: e1
 		Owner: England Air Base
@@ -1367,13 +1362,13 @@ Actors:
 		TurretFacing: 160
 		Location: 30,98
 	Actor943: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 27,99
 	Actor945: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 27,100
 	Actor949: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 23,101
 	APCEntryPoint: waypoint
 		Owner: Neutral
@@ -1391,7 +1386,7 @@ Actors:
 		Facing: 128
 		TurretFacing: 128
 	Actor930: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 29,96
 	EnglandAirBasePatrolInfantry1: e1
 		Owner: England Air Base
@@ -1400,13 +1395,13 @@ Actors:
 		Facing: 92
 		TurretFacing: 92
 	Actor953: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 27,101
 	AirBaseCam: camera
 		Owner: Neutral
 		Location: 26,96
 	Actor922: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 27,96
 	Hind1: hind
 		Owner: Neutral
@@ -1420,47 +1415,47 @@ Actors:
 		Location: 24,99
 		Facing: 64
 	Actor869: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 8,88
 	Actor955: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 8,87
 	Actor855: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 8,82
 	Actor854: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 8,83
 	Actor856: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 8,84
 	Actor965: gun
 		Owner: England Air Base
 		Location: 10,96
 		TurretFacing: 64
 	Actor859: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 8,86
 	Actor864: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 8,92
 	Actor865: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 8,91
 	Actor819: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 12,82
 	Actor717: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 15,82
 	Actor716: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 16,82
 	Actor849: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 11,82
 	Actor956: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 10,82
 	Actor958: apwr
 		Owner: England Air Base
@@ -1553,13 +1548,13 @@ Actors:
 		Owner: Neutral
 		Location: 117,98
 	Actor1020: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 42,48
 	Actor1019: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 42,49
 	Actor1018: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 42,50
 	Actor1002: agun
 		Owner: England Northern Base
@@ -1587,40 +1582,40 @@ Actors:
 		Owner: Neutral
 		Location: 74,69
 	Actor1021: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 41,48
 	Actor1022: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 40,48
 	Actor1023: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 40,49
 	Actor1024: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 40,50
 	Actor1025: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 32,57
 	Actor1026: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 31,57
 	Actor1029: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 31,58
 	Actor1030: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 31,59
 	Actor1031: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 32,59
 	Actor1032: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 33,59
 	Actor1033: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 33,58
 	Actor1034: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 33,57
 	Actor1035: e1
 		Owner: England Air Base
@@ -1673,52 +1668,52 @@ Actors:
 		Location: 5,56
 		TurretFacing: 128
 	Actor1046: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 19,63
 	Actor1047: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 20,63
 	Actor1048: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 20,62
 	Actor1049: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 20,61
 	Actor1050: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 19,61
 	Actor1051: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 18,61
 	Actor1052: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 18,62
 	Actor1053: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 18,63
 	Actor1054: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 5,57
 	Actor1055: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 6,57
 	Actor1056: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 6,56
 	Actor1057: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 6,55
 	Actor1058: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 5,55
 	Actor1059: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 4,55
 	Actor1060: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 4,56
 	Actor1061: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 4,57
 	Actor1063: fenc
 		Owner: Neutral
@@ -1888,28 +1883,28 @@ Actors:
 		Owner: Neutral
 		Location: 11,38
 	Actor1126: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 25,23
 	Actor1127: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 25,24
 	Actor1128: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 25,25
 	Actor1129: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 25,26
 	Actor1130: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 25,27
 	Actor1132: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 24,27
 	Actor890: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 25,22
 	Actor1133: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 24,22
 	ABarracks6: tent
 		Owner: England Main Base
@@ -1983,7 +1978,7 @@ Actors:
 		Owner: Neutral
 		Location: 106,64
 	Actor1271: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 102,29
 	Actor1230: e1
 		Owner: England Northern Base
@@ -1992,28 +1987,28 @@ Actors:
 		Facing: 96
 		TurretFacing: 96
 	Actor1180: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 99,22
 	Actor1179: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 98,22
 	Actor1162: barb
 		Owner: Neutral
 		Location: 126,14
 	Actor1014: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 90,28
 	Actor1392: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 116,13
 	SpawnPoint4: waypoint
 		Owner: Neutral
 		Location: 129,83
 	Actor1261: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 99,26
 	Actor1391: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 107,29
 	Actor1286: barb
 		Owner: Neutral
@@ -2039,10 +2034,10 @@ Actors:
 		Facing: 64
 		TurretFacing: 64
 	Actor974: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 116,11
 	Actor1219: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 90,13
 	Actor1296: barb
 		Owner: Neutral
@@ -2157,25 +2152,25 @@ Actors:
 		Owner: Neutral
 		Location: 96,108
 	Actor1188: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 18,27
 	Actor1189: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 18,28
 	Actor1190: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 18,26
 	Actor1340: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 18,25
 	Actor1341: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 18,24
 	Actor1342: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 18,23
 	Actor1343: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 18,22
 	AWarFactory2: weap
 		Owner: England Northern Base
@@ -2280,7 +2275,7 @@ Actors:
 		Owner: Neutral
 		Location: 129,50
 	Actor1269: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 101,29
 	Actor1380: barb
 		Owner: Neutral
@@ -2325,43 +2320,43 @@ Actors:
 		Facing: 128
 		TurretFacing: 128
 	Actor1325: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 29,91
 	Actor1327: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 28,91
 	SpawnPoint3: waypoint
 		Owner: Neutral
 		Location: 129,52
 	Actor1218: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 90,14
 	Actor1229: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 90,11
 	Actor1105: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 90,18
 	Actor1211: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 90,16
 	Actor1086: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 90,19
 	Actor1209: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 90,17
 	Actor1252: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 92,11
 	Actor1225: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 90,12
 	Actor1408: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 93,11
 	Actor1234: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 91,11
 	Actor1549: barb
 		Owner: Neutral
@@ -2508,47 +2503,47 @@ Actors:
 		Owner: Neutral
 		Location: 120,8
 	Actor1422: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 110,11
 	Actor1423: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 111,11
 	Actor1426: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 112,11
 	Actor1235: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 106,11
 	Actor1429: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 115,11
 	Actor1427: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 113,11
 	Actor1428: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 114,11
 	Actor1500: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 105,11
 	Actor1398: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 116,19
 	Actor1401: gun
 		Owner: England Main Base
 		Location: 89,25
 		TurretFacing: 64
 	Actor1407: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 117,29
 	Actor1403: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 116,29
 	Actor1421: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 109,11
 	Actor1592: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 90,29
 	Oil9: oilb
 		Owner: England Northern Base
@@ -2560,7 +2555,7 @@ Actors:
 		Owner: England Northern Base
 		Location: 123,12
 	Actor1273: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 104,29
 	Oil12: oilb
 		Owner: England Prison Base
@@ -2569,7 +2564,7 @@ Actors:
 		Owner: England Prison Base
 		Location: 124,43
 	Actor1376: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 106,29
 	Tank2: 2tnk
 		Owner: England Northern Base
@@ -2577,97 +2572,97 @@ Actors:
 		Facing: 96
 		TurretFacing: 96
 	Actor1409: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 94,11
 	Actor1410: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 95,11
 	Actor1411: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 96,11
 	Actor1412: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 97,11
 	Actor1413: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 98,11
 	Actor1414: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 99,11
 	Actor1415: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 103,11
 	Actor1416: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 101,11
 	Actor1417: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 101,11
 	Actor1418: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 102,11
 	Actor1419: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 104,11
 	Actor1420: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 100,11
 	Actor1612: waypoint
 		Owner: Neutral
 		Location: 90,57
 	Actor1444: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 110,19
 	Actor1443: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 109,19
 	Actor1462: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 110,17
 	Actor1445: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 110,18
 	Actor1483: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 110,16
 	Actor1484: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 110,15
 	Actor1485: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 110,14
 	Actor1486: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 110,13
 	Actor1487: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 110,12
 	Actor1488: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 109,12
 	Actor1489: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 108,12
 	Actor1490: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 107,12
 	Actor1491: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 106,12
 	Actor1492: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 105,12
 	Actor1493: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 104,12
 	Actor1494: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 103,12
 	Actor1495: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 103,13
 	Actor1496: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 103,14
 	Actor1497: apwr
 		Owner: England Main Base
@@ -3018,7 +3013,7 @@ Actors:
 		Owner: Neutral
 		Location: 102,25
 	Actor1202: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 117,19
 	MissileSilo4: mslo
 		Owner: England Main Base
@@ -3082,28 +3077,28 @@ Actors:
 		Location: 53,46
 		TurretFacing: 128
 	Actor1573: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 53,47
 	Actor1574: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 54,47
 	Actor1575: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 54,46
 	Actor1576: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 54,45
 	Actor1577: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 53,45
 	Actor1578: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 52,45
 	Actor1587: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 52,46
 	Actor1588: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 52,47
 	Waypoint2: waypoint
 		Owner: Neutral
@@ -3136,7 +3131,7 @@ Actors:
 		Facing: 64
 		TurretFacing: 64
 	Actor1364: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 19,93
 	Actor1609: barb
 		Owner: Neutral
@@ -3175,25 +3170,25 @@ Actors:
 		Owner: Neutral
 		Location: 22,27
 	Actor1374: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 19,94
 	Actor1533: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 19,95
 	Actor1543: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 19,96
 	Actor1545: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 19,97
 	Actor1546: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 19,98
 	Actor1547: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 19,99
 	Actor1548: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 19,100
 	Actor1550: barb
 		Owner: Neutral
@@ -3211,7 +3206,7 @@ Actors:
 		Owner: Neutral
 		Location: 27,94
 	Actor1282: brik
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 19,92
 	LZ2: waypoint
 		Owner: Neutral
@@ -3311,31 +3306,31 @@ Actors:
 		Owner: Neutral
 		Location: 120,58
 	Actor1309: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 42,95
 	Actor1310: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 42,94
 	Actor1346: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 8,94
 	Actor1354: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 9,93
 	Actor1356: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 9,94
 	Actor1254: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 11,102
 	Actor1284: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 11,103
 	Actor1332: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 39,104
 	Actor1333: cycl
-		Owner: Neutral
+		Owner: England Main Base
 		Location: 39,103
 	Actor1216: hind
 		Owner: Neutral

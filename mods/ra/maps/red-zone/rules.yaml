@@ -249,19 +249,19 @@ HIND:
 	ProvidesRadar:
 	Armament@CHAINGUN:
 		Weapon: ChainGun
-		LocalOffset: 900, 0, -200
+		LocalOffset: 1200, 0, -200
 		MuzzleSequence: muzzle
 		PauseOnCondition: !ammo
 	Armament@PRIMARY:
 		Name: primary
 		Weapon: HellfireAG
-		LocalOffset: 85,-300,-85
+		LocalOffset: 85,-400,-85
 		MuzzleSequence: muzzle
 		PauseOnCondition: !ammo
 	Armament@SECONDARY:
 		Name: secondary
 		Weapon: HellfireAG
-		LocalOffset: 85,300,-85
+		LocalOffset: 85,400,-85
 		MuzzleSequence: muzzle
 		PauseOnCondition: !ammo
 	Aircraft:
@@ -269,10 +269,13 @@ HIND:
 		InitialFacing: 20
 		LandableTerrainTypes: Clear,Rough,Road,Ore,Beach
 		IdleBehavior: Land
-		CanHover: False
-		CanForceLand: False
-		CruiseAltitude: 1c256
+		CanHover: True
+		CanForceLand: True
+		CruiseAltitude: 2c0
 		TakeOffOnCreation: False
+		TargetLineColor: FF0000
+		AltitudeVelocity: 0c70
+		# LandAltitude: 1c256
 		# CanForceLand: False
 	AttackAircraft:
 		FacingTolerance: 10

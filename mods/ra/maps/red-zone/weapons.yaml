@@ -15,7 +15,7 @@
 M60mgAA:
 	Inherits: M60mg
 	Range: 5c0
-	ValidTargets: AirborneActor
+	ValidTargets: AirborneActor, Ground, Water, GroundActor, WaterActor
 	Projectile: Bullet
 		Blockable: false
 	Warhead@1Dam: SpreadDamage
@@ -23,7 +23,7 @@ M60mgAA:
 		InvalidTargets: Ground, Water
 		ValidTargets: AirborneActor
 	Warhead@3Eff: CreateEffect
-		Explosions: small_explosion_air
+		Explosions: flak_explosion_ground
 		ImpactSounds: kaboom25.aud
 		ValidTargets: AirborneActor, AirHit
 
@@ -94,7 +94,7 @@ GrenadeLauncher:
 
 RedEye:
 	ReloadDelay: 50
-	Range: 7c512
+	Range: 9c512
 	Report: missile1.aud
 	ValidTargets: AirborneActor
 	Projectile: Missile
@@ -131,7 +131,7 @@ ChainGun:
 		Blockable: false
 	Warhead@1Dam: SpreadDamage
 		Spread: 528
-		Damage: 2400
+		Damage: 2200
 		Versus:
 			None: 120
 			Wood: 50
