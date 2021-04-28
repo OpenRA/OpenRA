@@ -86,6 +86,20 @@ ifeq ($(TARGETPLATFORM), unix-generic)
 endif
 	@./fetch-geoip.sh
 
+##################### DEVELOPMENT BUILDS AND TESTS  (WITH DEBUG) #####################
+#
+debug:
+ifeq ($(RUNTIME), mono)
+	@command -v $(firstword $(MSBUILD)) >/dev/null || (echo "OpenRA requires the '$(MSBUILD)' tool provided by Mono >= 6.4."; exit 1)
+	@$(MSBUILD) -t:Build -restore -p:Configuration=Release -p:TargetPlatform=$(TARGETPLATFORM) -p:Mono=true
+else
+	@$(DOTNET) build -c Debug -nologo -p:TargetPlatform=$(TARGETPLATFORM)
+endif
+ifeq ($(TARGETPLATFORM), unix-generic)
+	@./configure-system-libraries.sh
+endif
+	@./fetch-geoip.sh
+
 # dotnet clean and msbuild -t:Clean leave files that cause problems when switching between mono/dotnet
 # Deleting the intermediate / output directories ensures the build directory is actually clean
 clean:
