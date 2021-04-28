@@ -4,7 +4,7 @@
 		{
 			"label": "build",
 			"command": "make",
-			"args": ["debug"],
+			"args": ["all", "CONFIGURATION=Debug"],
 			"windows": {
 				"command": "make.cmd"
 			}
