@@ -151,12 +151,14 @@ namespace OpenRA.Mods.Common.Traits
 				{
 					cursor = this.cursor;
 
-					// Notify force-set 'RallyPoint' order watchers with Ctrl and only if this is the only building of its type selected
+					// Notify force-set 'RallyPoint' order watchers with Ctrl
 					if (modifiers.HasModifier(TargetModifiers.ForceAttack))
 					{
 						var selfName = self.Info.Name;
-						if (!self.World.Selection.Actors.Any(a => a.Info.Name == selfName && a.ActorID != self.ActorID))
-							ForceSet = true;
+						ForceSet = self.World.Selection.Actors
+							.Where(a => a.Info.Name == selfName)
+							.OrderBy(a => (location - a.Location).LengthSquared)
+							.First().ActorID == self.ActorID;
 					}
 
 					return true;
