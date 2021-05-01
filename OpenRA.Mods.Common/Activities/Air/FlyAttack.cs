@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Activities;
@@ -158,9 +159,6 @@ namespace OpenRA.Mods.Common.Activities
 				return false;
 			}
 
-			var delta = attackAircraft.GetTargetPosition(pos, target) - pos;
-			var desiredFacing = delta.HorizontalLengthSquared != 0 ? delta.Yaw : aircraft.Facing;
-
 			QueueChild(new TakeOff(self));
 
 			var minimumRange = attackAircraft.Info.AttackType == AirAttackType.Strafe ? WDist.Zero : attackAircraft.GetMinimumRangeVersusTarget(target);
@@ -177,7 +175,25 @@ namespace OpenRA.Mods.Common.Activities
 
 			// Turn to face the target if required.
 			else if (!attackAircraft.TargetInFiringArc(self, target, attackAircraft.Info.FacingTolerance))
-				aircraft.Facing = Util.TickFacing(aircraft.Facing, desiredFacing, aircraft.TurnSpeed);
+			{
+				var delta = attackAircraft.GetTargetPosition(pos, target) - pos;
+				var desiredFacing = delta.HorizontalLengthSquared != 0 ? delta.Yaw : aircraft.Facing;
+				var finalFacing = WAngle.Zero;
+				var finalAngle = 1024;
+
+				foreach (var attackFacing in attackAircraft.Info.FacingOffsets)
+				{
+					var turnFacing = desiredFacing + attackFacing;
+					var angle = Math.Abs(turnFacing.Angle - aircraft.Facing.Angle);
+					if (finalAngle > angle)
+					{
+						finalAngle = angle;
+						finalFacing = turnFacing;
+					}
+				}
+
+				aircraft.Facing = Util.TickFacing(aircraft.Facing, finalFacing, aircraft.TurnSpeed);
+			}
 
 			return false;
 		}

@@ -33,6 +33,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Does this actor cancel its attack activity when it needs to resupply? Setting this to 'false' will make the actor resume attack after reloading.")]
 		public readonly bool AbortOnResupply = true;
 
+		[Desc("The angle relative to the actor's orientation used to fire the weapon from.")]
+		public readonly WAngle[] FacingOffsets = { WAngle.Zero };
+
 		public override object Create(ActorInitializer init) { return new AttackAircraft(init.Self, this); }
 	}
 
@@ -46,6 +49,24 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			Info = info;
 			aircraftInfo = self.Info.TraitInfo<AircraftInfo>();
+		}
+
+		public override bool TargetInFiringArc(Actor self, in Target target, WAngle facingTolerance)
+		{
+			if (facing == null)
+				return true;
+
+			var pos = self.CenterPosition;
+			var targetedPosition = GetTargetPosition(pos, target);
+			var delta = targetedPosition - pos;
+
+			if (delta.HorizontalLengthSquared == 0)
+				return true;
+
+			foreach (var attackFacing in Info.FacingOffsets)
+				if (Util.FacingWithinTolerance(facing.Facing, delta.Yaw + attackFacing, facingTolerance))
+					return true;
+			return false;
 		}
 
 		public override Activity GetAttackActivity(Actor self, AttackSource source, in Target newTarget, bool allowMove, bool forceAttack, Color? targetLineColor = null)

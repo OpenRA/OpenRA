@@ -21,6 +21,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Tolerance for attack angle. Range [0, 512], 512 covers 360 degrees.")]
 		public readonly new WAngle FacingTolerance = WAngle.Zero;
 
+		[Desc("The angle relative to the actor's orientation used to fire the weapon from.")]
+		public readonly WAngle[] FacingOffsets = { WAngle.Zero };
+
 		public override object Create(ActorInitializer init) { return new AttackFrontal(init.Self, this); }
 	}
 
@@ -32,6 +35,24 @@ namespace OpenRA.Mods.Common.Traits
 			: base(self, info)
 		{
 			Info = info;
+		}
+
+		public override bool TargetInFiringArc(Actor self, in Target target, WAngle facingTolerance)
+		{
+			if (facing == null)
+				return true;
+
+			var pos = self.CenterPosition;
+			var targetedPosition = GetTargetPosition(pos, target);
+			var delta = targetedPosition - pos;
+
+			if (delta.HorizontalLengthSquared == 0)
+				return true;
+
+			foreach (var attackFacing in Info.FacingOffsets)
+				if (Util.FacingWithinTolerance(facing.Facing, delta.Yaw + attackFacing, facingTolerance))
+					return true;
+			return false;
 		}
 
 		protected override bool CanAttack(Actor self, in Target target)
