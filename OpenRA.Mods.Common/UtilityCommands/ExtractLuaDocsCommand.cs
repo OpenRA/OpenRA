@@ -81,7 +81,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				Console.WriteLine("</table>");
 			}
 
-			Console.WriteLine("### Actor Properties / Commands");
+			Console.WriteLine("## Actor Properties / Commands");
 
 			var actorCategories = utility.ModData.ObjectCreator.GetTypesImplementing<ScriptActorProperties>().SelectMany(cg =>
 			{
@@ -140,7 +140,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 			foreach (var kv in playerCategories)
 			{
-				Console.WriteLine("<table align=\"center\" width=\"1024\"><tr><th colspan=\"2\" width=\"1024\">{0}</th></tr>", kv.Key);
+				Console.WriteLine("### " + kv.Key);
+				Console.WriteLine("<table>");
 
 				foreach (var property in kv.OrderBy(p => p.Item2.Name))
 				{
