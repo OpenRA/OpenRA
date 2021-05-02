@@ -41,6 +41,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		List<CPos> path;
 		CPos? destination;
+		int startTicks;
 
 		// For dealing with blockers
 		bool hasWaited;
@@ -111,6 +112,8 @@ namespace OpenRA.Mods.Common.Activities
 
 		protected override void OnFirstRun(Actor self)
 		{
+			startTicks = self.World.WorldTick;
+
 			if (evaluateNearestMovableCell && destination.HasValue)
 			{
 				var movableDestination = mobile.NearestMoveableCell(destination.Value);
@@ -156,6 +159,10 @@ namespace OpenRA.Mods.Common.Activities
 				return false;
 
 			var firstFacing = self.World.Map.FacingBetween(mobile.FromCell, nextCell.Value.Cell, mobile.Facing);
+
+			if (mobile.Info.CanMoveBackward && self.World.WorldTick - startTicks < mobile.Info.BackwardDuration && Math.Abs(firstFacing.Angle - mobile.Facing.Angle) > 256)
+				firstFacing = new WAngle(firstFacing.Angle + 512);
+
 			if (firstFacing != mobile.Facing)
 			{
 				path.Add(nextCell.Value.Cell);
