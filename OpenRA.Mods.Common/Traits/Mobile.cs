@@ -65,6 +65,12 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Display order for the facing slider in the map editor")]
 		public readonly int EditorFacingDisplayOrder = 3;
 
+		[Desc("Can move backward if possible")]
+		public readonly bool CanMoveBackward = false;
+
+		[Desc("After how many ticks the actor will turn forward during backoff")]
+		public readonly int BackwardDuration = 40;
+
 		[ConsumedConditionReference]
 		[Desc("Boolean expression defining the condition under which the regular (non-force) move cursor is disabled.")]
 		public readonly BooleanExpression RequireForceMoveCondition = null;
