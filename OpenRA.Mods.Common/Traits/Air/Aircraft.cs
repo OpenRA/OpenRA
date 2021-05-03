@@ -162,6 +162,14 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly BooleanExpression RequireForceMoveCondition = null;
 
 		[CursorReference]
+		[Desc("Cursor to display when a move order can be issued at target location.")]
+		public readonly string Cursor = "move";
+
+		[CursorReference]
+		[Desc("Cursor to display when a move order cannot be issued at target location.")]
+		public readonly string BlockedCursor = "move-blocked";
+
+		[CursorReference]
 		[Desc("Cursor to display when able to land at target building.")]
 		public readonly string EnterCursor = "enter";
 
@@ -1285,8 +1293,8 @@ namespace OpenRA.Mods.Common.Traits
 
 				var explored = self.Owner.Shroud.IsExplored(location);
 				cursor = !aircraft.IsTraitPaused && (explored || aircraft.Info.MoveIntoShroud) && self.World.Map.Contains(location) ?
-					(self.World.Map.GetTerrainInfo(location).CustomCursor ?? "move") :
-					"move-blocked";
+					(self.World.Map.GetTerrainInfo(location).CustomCursor ?? aircraft.Info.Cursor) :
+					aircraft.Info.BlockedCursor;
 
 				return true;
 			}
