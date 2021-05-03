@@ -74,12 +74,12 @@ build_app() {
 	fi
 
 	# Install engine and mod files
+	RUNTIME="net5"
 	if [ "${PLATFORM}" = "compat" ]; then
-		install_assemblies_mono "${SRCDIR}" "${LAUNCHER_ASSEMBLY_DIR}" "osx-x64" "True" "True" "${IS_D2K}"
-	else
-		install_assemblies "${SRCDIR}" "${LAUNCHER_ASSEMBLY_DIR}" "osx-x64" "True" "True" "${IS_D2K}"
+		RUNTIME="mono"
 	fi
 
+	install_assemblies "${SRCDIR}" "${LAUNCHER_ASSEMBLY_DIR}" "osx-x64" "${RUNTIME}" "True" "True" "${IS_D2K}"
 	install_data "${SRCDIR}" "${LAUNCHER_RESOURCES_DIR}" "${MOD_ID}"
 	set_engine_version "${TAG}" "${LAUNCHER_RESOURCES_DIR}"
 	set_mod_version "${TAG}" "${LAUNCHER_RESOURCES_DIR}/mods/${MOD_ID}/mod.yaml" "${LAUNCHER_RESOURCES_DIR}/mods/modcontent/mod.yaml"
