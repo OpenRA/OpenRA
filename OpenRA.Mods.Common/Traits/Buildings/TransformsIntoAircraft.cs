@@ -35,6 +35,14 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool RequiresForceMove = false;
 
 		[CursorReference]
+		[Desc("Cursor to display when a move order can be issued at target location.")]
+		public readonly string Cursor = "move";
+
+		[CursorReference]
+		[Desc("Cursor to display when a move order cannot be issued at target location.")]
+		public readonly string BlockedCursor = "move-blocked";
+
+		[CursorReference]
 		[Desc("Cursor to display when able to land at target building.")]
 		public readonly string EnterCursor = "enter";
 
@@ -200,13 +208,13 @@ namespace OpenRA.Mods.Common.Traits
 				var location = self.World.Map.CellContaining(target.CenterPosition);
 				var explored = self.Owner.Shroud.IsExplored(location);
 				cursor = self.World.Map.Contains(location) ?
-					self.World.Map.GetTerrainInfo(location).CustomCursor ?? "move" : "move-blocked";
+					self.World.Map.GetTerrainInfo(location).CustomCursor ?? aircraft.Info.Cursor : aircraft.Info.BlockedCursor;
 
 				IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
 
 				if (!(self.CurrentActivity is Transform || aircraft.transforms.Any(t => !t.IsTraitDisabled && !t.IsTraitPaused))
 					|| (!explored && !aircraft.Info.MoveIntoShroud))
-					cursor = "move-blocked";
+					cursor = aircraft.Info.BlockedCursor;
 
 				return true;
 			}
