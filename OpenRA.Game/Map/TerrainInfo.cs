@@ -54,7 +54,6 @@ namespace OpenRA
 		public readonly HashSet<string> AcceptsSmudgeType = new HashSet<string>();
 		public readonly Color Color;
 		public readonly bool RestrictPlayerColor = false;
-		public readonly string CustomCursor;
 
 		public TerrainTypeInfo(MiniYaml my) { FieldLoader.Load(this, my); }
 	}
