@@ -1293,8 +1293,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				var explored = self.Owner.Shroud.IsExplored(location);
 				cursor = !aircraft.IsTraitPaused && (explored || aircraft.Info.MoveIntoShroud) && self.World.Map.Contains(location) ?
-					(self.World.Map.GetTerrainInfo(location).CustomCursor ?? aircraft.Info.Cursor) :
-					aircraft.Info.BlockedCursor;
+					aircraft.Info.Cursor : aircraft.Info.BlockedCursor;
 
 				return true;
 			}

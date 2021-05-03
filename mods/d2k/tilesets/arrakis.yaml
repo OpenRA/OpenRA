@@ -38,7 +38,6 @@ Terrain:
 		Type: Rough
 		TargetTypes: Ground
 		Color: 587474
-		CustomCursor: move-rough
 	TerrainType@Sand:
 		Type: Sand
 		TargetTypes: Ground

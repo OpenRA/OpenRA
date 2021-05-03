@@ -432,9 +432,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				var location = self.World.Map.CellContaining(target.CenterPosition);
 				var explored = self.Owner.Shroud.IsExplored(location);
-				cursor = self.World.Map.Contains(location) ?
-					(self.World.Map.GetTerrainInfo(location).CustomCursor ?? info.DropOffCursor) :
-					info.DropOffBlockedCursor;
+				cursor = self.World.Map.Contains(location) ? info.DropOffCursor : info.DropOffBlockedCursor;
 
 				IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
 

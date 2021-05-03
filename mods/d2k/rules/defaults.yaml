@@ -319,6 +319,8 @@
 	Mobile:
 		AlwaysTurnInPlace: true
 		Locomotor: foot
+		TerrainCursors:
+			Rough: move-rough
 	Selectable:
 		Bounds: 768, 768, 0, -128
 		DecorationBounds: 384, 640, 0, -128

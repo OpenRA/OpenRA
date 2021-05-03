@@ -45,6 +45,11 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Cursor to display when a move order can be issued at target location.")]
 		public readonly string Cursor = "move";
 
+		[CursorReference(dictionaryReference: LintDictionaryReference.Values)]
+		[Desc("Cursor overrides to display for specific terrain types.",
+			"A dictionary of [terrain type]: [cursor name].")]
+		public readonly Dictionary<string, string> TerrainCursors = new Dictionary<string, string>();
+
 		[CursorReference]
 		[Desc("Cursor to display when a move order cannot be issued at target location.")]
 		public readonly string BlockedCursor = "move-blocked";
@@ -996,13 +1001,14 @@ namespace OpenRA.Mods.Common.Traits
 				IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
 
 				var explored = self.Owner.Shroud.IsExplored(location);
-				cursor = self.World.Map.Contains(location) ?
-					(self.World.Map.GetTerrainInfo(location).CustomCursor ?? mobile.Info.Cursor) : mobile.Info.BlockedCursor;
 
-				if (mobile.IsTraitPaused
+				if (!self.World.Map.Contains(location)
+					|| mobile.IsTraitPaused
 					|| (!explored && !locomotorInfo.MoveIntoShroud)
 					|| (explored && mobile.Locomotor.MovementCostForCell(location) == short.MaxValue))
 					cursor = mobile.Info.BlockedCursor;
+				else if (!explored || !mobile.Info.TerrainCursors.TryGetValue(self.World.Map.GetTerrainInfo(location).Type, out cursor))
+					cursor = mobile.Info.Cursor;
 
 				return true;
 			}
