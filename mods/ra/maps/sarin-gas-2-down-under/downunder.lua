@@ -356,8 +356,6 @@ SpyTruckDrive = function()
 	end)
 end
 
-IdleHunt = function(actor) if not actor.IsDead then Trigger.OnIdle(actor, actor.Hunt) end end
-
 PrisonEscape = function()
 	local alarmed
 	Trigger.OnEnteredFootprint(PrisonAlarm, function(unit, id)

@@ -23,14 +23,6 @@ else
 	TanyaType = "e7.noautotarget"
 end
 
-IdleHunt = function(actor)
-	Trigger.OnIdle(actor, function(a)
-		if a.IsInWorld then
-			a.Hunt()
-		end
-	end)
-end
-
 ProduceUnits = function(factory, count)
 	if ussr.IsProducing("e1") then
 		Trigger.AfterDelay(DateTime.Seconds(5), function() ProduceUnits(factory, count) end)

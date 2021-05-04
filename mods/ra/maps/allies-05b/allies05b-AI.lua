@@ -15,8 +15,6 @@ SovietAircraftType = { "yak" }
 Planes = { }
 SovietProduction = { Conyard, USSRBarracks, USSRWarFactory }
 
-IdleHunt = function(unit) if not unit.IsDead then Trigger.OnIdle(unit, unit.Hunt) end end
-
 ProductionInterval =
 {
 	easy = DateTime.Seconds(25),

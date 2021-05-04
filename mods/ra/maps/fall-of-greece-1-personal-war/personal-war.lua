@@ -52,8 +52,6 @@ lstReinforcements =
 	}
 }
 
-IdleHunt = function(actor) if not actor.IsDead then Trigger.OnIdle(actor, actor.Hunt) end end
-
 VIPs = { }
 MissionStart = function()
 	FlareBoy.Move(LightFlare.Location)

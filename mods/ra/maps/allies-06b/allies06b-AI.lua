@@ -170,8 +170,6 @@ ProduceAircraft = function()
 	end)
 end
 
-IdleHunt = function(unit) if not unit.IsDead then Trigger.OnIdle(unit, unit.Hunt) end end
-
 SendAttack = function(units, path)
 	Utils.Do(units, function(unit)
 		unit.Patrol(path, false)

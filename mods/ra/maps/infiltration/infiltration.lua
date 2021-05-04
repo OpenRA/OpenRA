@@ -216,10 +216,6 @@ InsertSpies = function()
 	end
 end
 
-IdleHunt = function(unit)
-	Trigger.OnIdle(unit, unit.Hunt)
-end
-
 StopHunt = function(unit)
 	if not unit.IsDead then
 		unit.Stop()

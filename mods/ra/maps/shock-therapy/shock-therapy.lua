@@ -26,7 +26,6 @@ AlliedInfantry = { "e1", "e1", "e1", "e3" }
 AttackGroupSize = 4
 InfantryDelay = DateTime.Seconds(10)
 IdlingUnits = { }
-IdleHunt = function(unit) if not unit.IsDead then Trigger.OnIdle(unit, unit.Hunt) end end
 
 MissionStart = function()
 	LZCamera = Actor.Create("camera", true, { Owner = USSR, Location = LZ.Location })

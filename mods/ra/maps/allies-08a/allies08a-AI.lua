@@ -13,8 +13,6 @@ SovietVehicles = { "3tnk", "3tnk", "v2rl" }
 SovietAircraftType = { "mig" }
 Migs = { }
 
-IdleHunt = function(unit) if not unit.IsDead then Trigger.OnIdle(unit, unit.Hunt) end end
-
 GroundWavesUpgradeDelay = DateTime.Minutes(12)
 GroundAttackUnitType = "Normal"
 GroundAttackUnits =

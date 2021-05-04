@@ -6,7 +6,6 @@
    the License, or (at your option) any later version. For more
    information, see COPYING.
 ]]
-IdleHunt = function(unit) if not unit.IsDead then Trigger.OnIdle(unit, unit.Hunt) end end
 StartAnts = { StartAnt1, StartAnt2 }
 Hive1Killzone = { CPos.New(80,83), CPos.New(81,83), CPos.New(82,83), CPos.New(83,83), CPos.New(84,83), CPos.New(85,83), CPos.New(85,84), CPos.New(85,85), CPos.New(85,86), CPos.New(85,87), CPos.New(84,87), CPos.New(83,87), CPos.New(82,87), CPos.New(81,87), CPos.New(80,87), CPos.New(80,86), CPos.New(80,85), CPos.New(80,84) }
 Hive2Killzone = { CPos.New(84,50), CPos.New(85,50), CPos.New(86,50), CPos.New(87,50), CPos.New(88,50), CPos.New(89,50), CPos.New(89,51), CPos.New(89,52), CPos.New(89,53), CPos.New(89,54), CPos.New(88,54), CPos.New(87,54), CPos.New(86,54), CPos.New(85,54), CPos.New(84,54), CPos.New(84,53), CPos.New(84,52), CPos.New(84,51) }

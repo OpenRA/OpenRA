@@ -20,8 +20,6 @@ MCVReinforcements =
 	hard = { "1tnk", "1tnk", "mcv" }
 }
 
-IdleHunt = function(unit) if not unit.IsDead then Trigger.OnIdle(unit, unit.Hunt) end end
-
 SetupTriggers = function()
 	Trigger.OnEnteredFootprint(MammothStart, function(actor, mammothcam)
 		if actor.Owner == Greece then

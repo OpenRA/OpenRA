@@ -6,9 +6,6 @@
    the License, or (at your option) any later version. For more
    information, see COPYING.
 ]]
-
-IdleHunt = function(unit) if not unit.IsDead then Trigger.OnIdle(unit, unit.Hunt) end end
-
 IdlingUnits = function()
 	local lazyUnits = Utils.Where(Map.ActorsInWorld, function(actor)
 		return actor.HasProperty("Hunt") and actor.Owner == Greece end)

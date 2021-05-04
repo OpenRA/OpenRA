@@ -72,14 +72,6 @@ ReinforcementsDelay = DateTime.Minutes(16)
 ReinforcementsUnits = { "2tnk", "2tnk", "2tnk", "2tnk", "2tnk", "2tnk", "1tnk", "1tnk", "jeep", "e1",
 	"e1", "e1", "e1", "e3", "e3", "mcv", "truk", "truk", "truk", "truk", "truk", "truk" }
 
-IdleHunt = function(actor)
-	Trigger.OnIdle(actor, function(a)
-		if a.IsInWorld then
-			a.Hunt()
-		end
-	end)
-end
-
 SpawnAlliedReinforcements = function()
 	if allies2.IsLocalPlayer then
 		UserInterface.SetMissionText("")

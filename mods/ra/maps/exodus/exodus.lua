@@ -184,13 +184,6 @@ SendSovietParadrop = function()
 	Trigger.AfterDelay(sovietParadropTicks, SendSovietParadrop)
 end
 
-IdleHunt = function(unit)
-	Trigger.OnIdle(unit, unit.Hunt)
-	Trigger.OnCapture(unit, function()
-		Trigger.ClearAll(unit)
-	end)
-end
-
 AircraftTargets = function(yak)
 	local targets = Utils.Where(Map.ActorsInWorld, function(a)
 		return (a.Owner == allies1 or a.Owner == allies2) and a.HasProperty("Health") and yak.CanTarget(a)

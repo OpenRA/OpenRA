@@ -23,8 +23,6 @@ ProductionInterval =
 	hard = DateTime.Seconds(11)
 }
 
-IdleHunt = function(unit) if not unit.IsDead then Trigger.OnIdle(unit, unit.Hunt) end end
-
 ParadropDelays =
 {
 	easy = { DateTime.Minutes(3), DateTime.Minutes(4) },
