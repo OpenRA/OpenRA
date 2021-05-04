@@ -11,7 +11,7 @@ World:
 			easy: Easy
 			normal: Normal
 			hard: Hard
-		Default: easy
+		Default: normal
 
 Player:
 	PlayerResources:

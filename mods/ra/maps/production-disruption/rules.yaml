@@ -11,7 +11,7 @@ World:
 		Values:
 			easy: Easy
 			normal: Normal
-		Default: easy
+		Default: normal
 
 CHALK1:
 	ParatroopersPower:

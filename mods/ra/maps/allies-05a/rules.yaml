@@ -17,7 +17,7 @@ World:
 			normal: Normal
 			hard: Hard
 			tough: Real tough guy
-		Default: easy
+		Default: normal
 
 Camera.Small:
 	Inherits: CAMERA

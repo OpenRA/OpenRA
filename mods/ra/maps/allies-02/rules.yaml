@@ -22,7 +22,7 @@ World:
 			normal: Normal
 			hard: Hard
 			tough: Real tough guy
-		Default: easy
+		Default: normal
 	TimeLimitManager:
 		CountdownLabel: MISSION_TEXT
 		CountdownText: The convoy will arrive in {0}
