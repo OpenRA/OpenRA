@@ -138,10 +138,6 @@ FTRK:
 	Buildable:
 		Prerequisites: ~disabled
 
-TRUK:
-	Buildable:
-		Prerequisites: ~disabled
-
 APC:
 	Buildable:
 		Prerequisites: ~disabled

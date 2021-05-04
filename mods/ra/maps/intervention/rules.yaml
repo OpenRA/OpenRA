@@ -158,10 +158,6 @@ MRJ:
 	Buildable:
 		Prerequisites: ~disabled
 
-TRUK:
-	Buildable:
-		Prerequisites: ~disabled
-
 MH60:
 	Buildable:
 		Prerequisites: ~disabled

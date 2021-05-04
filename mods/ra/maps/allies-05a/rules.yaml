@@ -62,8 +62,6 @@ TRAN.IN:
 
 TRUK.mission:
 	Inherits: TRUK
-	Buildable:
-		Prerequisites: ~disabled
 	WithFacingSpriteBody:
 	-SpawnActorOnDeath:
 	RevealsShroud:

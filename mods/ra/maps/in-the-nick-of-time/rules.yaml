@@ -58,10 +58,6 @@ V01:
 	Buildable:
 		Prerequisites: ~disabled
 
-TRUK:
-	Buildable:
-		Prerequisites: ~disabled
-
 QTNK:
 	Buildable:
 		Prerequisites: ~disabled

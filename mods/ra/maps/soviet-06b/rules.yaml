@@ -99,8 +99,6 @@ APC:
 TRUK:
 	-SpawnActorOnDeath:
 	-DeliversCash:
-	Buildable:
-		Prerequisites: ~disabled
 
 QTNK:
 	Buildable:

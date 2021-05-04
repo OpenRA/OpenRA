@@ -48,8 +48,6 @@ MCV:
 		Prerequisites: ~disabled
 
 TRUK:
-	Buildable:
-		Prerequisites: ~disabled
 	-SpawnActorOnDeath:
 
 SPEN:
