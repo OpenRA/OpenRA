@@ -20,7 +20,7 @@ World:
 			easy: Easy
 			normal: Normal
 			hard: Hard
-		Default: easy
+		Default: normal
 
 AFLD:
 	ParatroopersPower@paratroopers:

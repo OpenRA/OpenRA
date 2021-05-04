@@ -12,7 +12,7 @@ World:
 		Values:
 			easy: Easy
 			normal: Normal
-		Default: easy
+		Default: normal
 
 powerproxy.paratroopers:
 	ParatroopersPower:
