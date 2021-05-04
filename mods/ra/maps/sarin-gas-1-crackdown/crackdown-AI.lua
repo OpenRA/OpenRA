@@ -33,8 +33,6 @@ GroundWavesDelays =
 	hard = 2
 }
 
-IdleHunt = function(unit) if not unit.IsDead then Trigger.OnIdle(unit, unit.Hunt) end end
-
 SendBGAttackGroup = function()
 	if #BGAttackGroup < BGAttackGroupSize then
 		return

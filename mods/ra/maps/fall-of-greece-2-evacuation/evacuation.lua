@@ -22,7 +22,6 @@ NWVillage = { NWChurch, NWHouse1, NWHouse2, NWHouse3 }
 SWVillage = { SWChurch, SWHouse1, SWHouse2, SWHouse3, SWHouse4 }
 MiddleVillage = { MiddleChurch, MiddleHouse1, MiddleHouse2, MiddleHouse3, MiddleHouse4 }
 EastVillage = { EastChurch, EastHouse1, EastHouse2, EastHouse3 }
-IdleHunt = function(unit) if not unit.IsDead then Trigger.OnIdle(unit, unit.Hunt) end end
 
 MissionStart = function()
 	Reinforcements.Reinforce(Allies, AlliedReinforcementsA, { AlliedSpawn.Location, AlliedBase.Location }, 5)

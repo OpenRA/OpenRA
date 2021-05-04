@@ -43,14 +43,6 @@ ParaWaves =
 	{ delay = AttackTicks * 3, type = "SovietSquad", target = SovietParaDrop1 }
 }
 
-IdleHunt = function(unit)
-	Trigger.OnIdle(unit, function(a)
-		if a.IsInWorld then
-			a.Hunt()
-		end
-	end)
-end
-
 GuardHarvester = function(unit, harvester)
 	if not unit.IsDead then
 		unit.Stop()

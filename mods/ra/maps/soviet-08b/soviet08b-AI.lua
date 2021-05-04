@@ -56,8 +56,6 @@ AlliedVehicles =
 	Upgraded = { "2tnk", "arty" }
 }
 
-IdleHunt = function(unit) if not unit.IsDead then Trigger.OnIdle(unit, unit.Hunt) end end
-
 WTransWaves = function()
 	local way = Utils.Random(WTransWays)
 	local units = Utils.Random(WTransUnits)

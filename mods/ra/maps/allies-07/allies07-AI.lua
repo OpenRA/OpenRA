@@ -28,8 +28,6 @@ ProductionInterval =
 	hard = DateTime.Seconds(5)
 }
 
-IdleHunt = function(unit) if not unit.IsDead then Trigger.OnIdle(unit, unit.Hunt) end end
-
 ParadropDelay = { DateTime.Seconds(30), DateTime.Minutes(1) }
 ParadropWaves = 6
 ParadropLZs = { ParaLZ1.CenterPosition, ParaLZ2.CenterPosition, ParaLZ3.CenterPosition, ParaLZ4.CenterPosition }

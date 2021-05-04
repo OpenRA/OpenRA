@@ -182,14 +182,6 @@ FinishTimer = function()
 	Trigger.AfterDelay(DateTime.Seconds(10), function() UserInterface.SetMissionText("") end)
 end
 
-IdleHunt = function(unit)
-	Trigger.OnIdle(unit, function(a)
-		if a.IsInWorld then
-			a.Hunt()
-		end
-	end)
-end
-
 SendSovietParadrops = function(table)
 	local aircraft = powerproxy.TargetParatroopers(table[2].CenterPosition, table[1])
 	Utils.Do(aircraft, function(a)

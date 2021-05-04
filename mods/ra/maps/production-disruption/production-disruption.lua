@@ -20,8 +20,6 @@ SovietSquad = { "e1", "e1", "e1", "e4", "e4" }
 V2Squad = { "v2rl", "v2rl" }
 SubEscapePath = { SubPath1, SubPath2, SubPath3 }
 
-IdleHunt = function(unit) if not unit.IsDead then Trigger.OnIdle(unit, unit.Hunt) end end
-
 MissionStart = function()
 	LZCamera = Actor.Create("camera", true, { Owner = Greece, Location = LZ.Location })
 	Chalk1.TargetParatroopers(LZ.CenterPosition, Angle.New(740))

@@ -6,6 +6,7 @@
    the License, or (at your option) any later version. For more
    information, see COPYING.
 ]]
+IdleHunt = function(unit) if not unit.IsDead then Trigger.OnIdle(unit, unit.Hunt) end end
 
 AttackAircraftTargets = { }
 InitializeAttackAircraft = function(aircraft, enemyPlayer)

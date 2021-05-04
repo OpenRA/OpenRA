@@ -26,8 +26,6 @@ HoldProduction = true
 BuildVehicles = true
 TrainInfantry = true
 
-IdleHunt = function(unit) if not unit.IsDead then Trigger.OnIdle(unit, unit.Hunt) end end
-
 SetupAttackGroup = function()
 	local units = { }
 

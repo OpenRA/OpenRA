@@ -12,8 +12,6 @@ Squad2 = { SecondSquad1, SecondSquad2, SecondSquad3 }
 PatrolMammothPath = { Patrol1.Location, Patrol2.Location, Patrol3.Location, Patrol4.Location, Patrol5.Location, Patrol6.Location, Patrol7.Location }
 ConvoyEscape = { CPos.New(113, 42), CPos.New(117, 71) }
 
-IdleHunt = function(actor) if not actor.IsDead then Trigger.OnIdle(actor, actor.Hunt) end end
-
 ConvoyUnits =
 {
 	easy = { { "e2", "e2", "e2", "truk", "truk", "truk" }, { "3tnk", "3tnk", "truk", "truk", "truk" } },

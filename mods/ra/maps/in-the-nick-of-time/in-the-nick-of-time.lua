@@ -37,7 +37,6 @@ NorthWaterTeam = { "1tnk", "1tnk", "1tnk", "2tnk", "2tnk" }
 BoatofMammoths = { "4tnk", "4tnk", "4tnk", "4tnk", "4tnk" }
 EvacuateFootprint = { CPos.New(93,92), CPos.New(94,92), CPos.New(95,92), CPos.New(96,92), CPos.New(97,92), CPos.New(98,92), CPos.New(99,92) }
 TimerTicks = DateTime.Minutes(54)
-IdleHunt = function(unit) if not unit.IsDead then Trigger.OnIdle(unit, unit.Hunt) end end
 
 AlliedReinforcements = function()
 	Reinforcements.Reinforce(Greece, StartUnits, { AlliesEntry.Location, AlliesRally.Location }, 6)

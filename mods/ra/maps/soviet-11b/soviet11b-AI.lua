@@ -76,8 +76,6 @@ ProductionDelays =
 	hard = 1
 }
 
-IdleHunt = function(unit) if not unit.IsDead then Trigger.OnIdle(unit, unit.Hunt) end end
-
 SendCruiser = function()
 	if NavalYard2.IsDead or NavalYard2.Owner ~= Greece then
 		return

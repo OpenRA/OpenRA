@@ -58,8 +58,6 @@ SovietAircraftType = { "yak" }
 SovietSSType = { "ss" }
 VehicleUnits = { "3tnk", "3tnk", "3tnk", "v2rl" }
 
-IdleHunt = function(unit) if not unit.IsDead then Trigger.OnIdle(unit, unit.Hunt) end end
-
 SendInfantryAttackGroup = function()
 	if #InfantryAttackGroup < InfantryAttackGroupSize then
 		return
