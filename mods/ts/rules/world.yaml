@@ -157,7 +157,7 @@
 			Veins: 100
 	Locomotor@VISCEROID:
 		Name: visceroid
-		Crushes: crate, infantry
+		Crushes: infantry
 		TerrainSpeeds:
 			Clear: 90
 			Road: 100
