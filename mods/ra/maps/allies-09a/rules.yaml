@@ -44,10 +44,6 @@ MCV:
 	Buildable:
 		Prerequisites: ~disabled
 
-TRUK:
-	Buildable:
-		Prerequisites: ~disabled
-
 MRJ:
 	Buildable:
 		Prerequisites: ~disabled

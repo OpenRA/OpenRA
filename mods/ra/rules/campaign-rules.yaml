@@ -86,6 +86,10 @@ MISS:
 		Range: 3c0
 	-RevealsShroud@GAPGEN:
 
+TRUK:
+	Buildable:
+		Prerequisites: ~disabled
+
 Ant:
 	Buildable:
 		Prerequisites: ~disabled

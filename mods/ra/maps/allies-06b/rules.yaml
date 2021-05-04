@@ -38,10 +38,6 @@ MCV:
 	Buildable:
 		Prerequisites: ~disabled
 
-TRUK:
-	Buildable:
-		Prerequisites: ~disabled
-
 TECH.CAM:
 	Inherits: CAMERA
 	RevealsShroud:

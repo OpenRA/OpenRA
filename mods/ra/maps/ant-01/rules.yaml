@@ -75,10 +75,6 @@ STNK:
 	Buildable:
 		Prerequisites: ~disabled
 
-TRUK:
-	Buildable:
-		Prerequisites: ~disabled
-
 SPY:
 	Buildable:
 		Prerequisites: ~disabled

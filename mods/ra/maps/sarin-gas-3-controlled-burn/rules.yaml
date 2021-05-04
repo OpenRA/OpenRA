@@ -22,10 +22,6 @@ APC:
 	Buildable:
 		Prerequisites: ~vehicles.allies
 
-TRUK:
-	Buildable:
-		Prerequisites: ~disabled
-
 MGG:
 	Buildable:
 		Prerequisites: ~disabled

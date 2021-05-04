@@ -73,10 +73,6 @@ MSLO:
 	Buildable:
 		Prerequisites: ~disabled
 
-TRUK:
-	Buildable:
-		Prerequisites: ~disabled
-
 FTRK:
 	Buildable:
 		Prerequisites: ~disabled
