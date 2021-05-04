@@ -104,7 +104,6 @@
 			River: 100
 	Locomotor@CRITTER:
 		Name: critter
-		Crushes: crate
 		TerrainSpeeds:
 			Clear: 90
 			Rough: 80
