@@ -374,19 +374,16 @@ namespace OpenRA.Server
 				return;
 			}
 
-			var newConn = new Connection { Socket = newSocket };
+
+			// Validate player identity by asking them to sign a random blob of data
+			// which we can then verify against the player public key database
+			var token = Convert.ToBase64String(OpenRA.Exts.MakeArray(256, _ => (byte)Random.Next()));
+
+			var newConn = new Connection(newSocket, ChooseFreePlayerIndex(), token);
 			try
 			{
 				newConn.Socket.Blocking = false;
 				newConn.Socket.NoDelay = true;
-
-				// Validate player identity by asking them to sign a random blob of data
-				// which we can then verify against the player public key database
-				var token = Convert.ToBase64String(OpenRA.Exts.MakeArray(256, _ => (byte)Random.Next()));
-
-				// Assign the player number.
-				newConn.PlayerIndex = ChooseFreePlayerIndex();
-				newConn.AuthToken = token;
 
 				// Send handshake and client index.
 				var ms = new MemoryStream(8);
