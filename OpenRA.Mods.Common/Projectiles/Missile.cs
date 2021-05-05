@@ -559,7 +559,7 @@ namespace OpenRA.Mods.Common.Projectiles
 
 					|| (desiredVFacing == 0 // Upper part of incline surmounting manoeuvre
 						&& relTarHorDist <= loopRadius * WAngle.FromFacing(vFacing).Sin() / 1024
-							+ Exts.ISqrt(predAttHght * (2 * loopRadius - predAttHght)))); // Target too close to hit at current speed
+							+ Exts.ISqrt(predAttHght * (2 * loopRadius - predAttHght > 0 ? 2 * loopRadius - predAttHght : 0)))); // Target too close to hit at current speed
 
 			if (slowDown)
 				ChangeSpeed(-1);
@@ -659,7 +659,10 @@ namespace OpenRA.Mods.Common.Projectiles
 							var h1 = loopRadius - Exts.ISqrt(d1 * (2 * loopRadius - d1)) - (pos.Z - lastHt);
 
 							if (h1 > loopRadius * (1024 - WAngle.FromFacing(vFacing).Cos()) / 1024)
-								desiredVFacing = WAngle.ArcTan(Exts.ISqrt(h1 * (2 * loopRadius - h1)), loopRadius - h1).Angle >> 2;
+							{
+								var maxVChange = 2 * loopRadius - h1 > 0 ? 2 * loopRadius - h1 : 0;
+								desiredVFacing = WAngle.ArcTan(Exts.ISqrt(h1 * maxVChange), loopRadius - h1).Angle >> 2;
+							}
 							else
 								desiredVFacing = 0;
 
