@@ -19,21 +19,29 @@ namespace OpenRA.Server
 	public class Connection
 	{
 		public const int MaxOrderLength = 131072;
-		public Socket Socket;
-		public List<byte> Data = new List<byte>();
-		public ReceiveState State = ReceiveState.Header;
-		public int ExpectLength = 8;
-		public int Frame = 0;
-		public int MostRecentFrame = 0;
-		public bool Validated;
+
+		public readonly Socket Socket;
+		public readonly List<byte> Data = new List<byte>();
+		public readonly int PlayerIndex;
+		public readonly string AuthToken;
 
 		public long TimeSinceLastResponse => Game.RunTime - lastReceivedTime;
-		public bool TimeoutMessageShown = false;
+		public int MostRecentFrame { get; private set; }
+
+		public bool TimeoutMessageShown;
+		public bool Validated;
+
+		ReceiveState state = ReceiveState.Header;
+		int expectLength = 8;
+		int frame = 0;
 		long lastReceivedTime = 0;
 
-		/* client data */
-		public int PlayerIndex;
-		public string AuthToken;
+		public Connection(Socket socket, int playerIndex, string authToken)
+		{
+			Socket = socket;
+			PlayerIndex = playerIndex;
+			AuthToken = authToken;
+		}
 
 		public byte[] PopBytes(int n)
 		{
@@ -85,21 +93,22 @@ namespace OpenRA.Server
 		public void ReadData(Server server)
 		{
 			if (ReadDataInner(server))
-				while (Data.Count >= ExpectLength)
+			{
+				while (Data.Count >= expectLength)
 				{
-					var bytes = PopBytes(ExpectLength);
-					switch (State)
+					var bytes = PopBytes(expectLength);
+					switch (state)
 					{
 						case ReceiveState.Header:
 							{
-								ExpectLength = BitConverter.ToInt32(bytes, 0) - 4;
-								Frame = BitConverter.ToInt32(bytes, 4);
-								State = ReceiveState.Data;
+								expectLength = BitConverter.ToInt32(bytes, 0) - 4;
+								frame = BitConverter.ToInt32(bytes, 4);
+								state = ReceiveState.Data;
 
-								if (ExpectLength < 0 || ExpectLength > MaxOrderLength)
+								if (expectLength < 0 || expectLength > MaxOrderLength)
 								{
 									server.DropClient(this);
-									Log.Write("server", "Dropping client {0} for excessive order length = {1}", PlayerIndex, ExpectLength);
+									Log.Write("server", "Dropping client {0} for excessive order length = {1}", PlayerIndex, expectLength);
 									return;
 								}
 
@@ -108,17 +117,18 @@ namespace OpenRA.Server
 
 						case ReceiveState.Data:
 							{
-								if (MostRecentFrame < Frame)
-									MostRecentFrame = Frame;
+								if (MostRecentFrame < frame)
+									MostRecentFrame = frame;
 
-								server.DispatchOrders(this, Frame, bytes);
-								ExpectLength = 8;
-								State = ReceiveState.Header;
+								server.DispatchOrders(this, frame, bytes);
+								expectLength = 8;
+								state = ReceiveState.Header;
 
 								break;
 							}
 					}
 				}
+			}
 		}
 	}
 
