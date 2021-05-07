@@ -13,7 +13,6 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
@@ -39,55 +38,6 @@ namespace OpenRA.Network
 		void SendImmediate(IEnumerable<byte[]> orders);
 		void SendSync(int frame, byte[] syncData);
 		void Receive(Action<int, byte[]> packetFn);
-	}
-
-	public class ConnectionTarget
-	{
-		readonly DnsEndPoint[] endpoints;
-
-		public ConnectionTarget()
-		{
-			endpoints = new[] { new DnsEndPoint("invalid", 0) };
-		}
-
-		public ConnectionTarget(string host, int port)
-		{
-			endpoints = new[] { new DnsEndPoint(host, port) };
-		}
-
-		public ConnectionTarget(IEnumerable<DnsEndPoint> endpoints)
-		{
-			this.endpoints = endpoints.ToArray();
-			if (this.endpoints.Length == 0)
-			{
-				throw new ArgumentException("ConnectionTarget must have at least one address.");
-			}
-		}
-
-		public IEnumerable<IPEndPoint> GetConnectEndPoints()
-		{
-			return endpoints
-				.SelectMany(e =>
-				{
-					try
-					{
-						return Dns.GetHostAddresses(e.Host)
-							.Select(a => new IPEndPoint(a, e.Port));
-					}
-					catch (Exception)
-					{
-						return Enumerable.Empty<IPEndPoint>();
-					}
-				})
-				.ToList();
-		}
-
-		public override string ToString()
-		{
-			return endpoints
-				.Select(e => "{0}:{1}".F(e.Host, e.Port))
-				.JoinWith("/");
-		}
 	}
 
 	class EchoConnection : IConnection
