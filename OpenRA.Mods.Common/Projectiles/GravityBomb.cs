@@ -95,9 +95,8 @@ namespace OpenRA.Mods.Common.Projectiles
 			pos += velocity;
 			velocity += acceleration;
 
-			if (pos.Z <= args.PassiveTarget.Z)
+			if (world.Map.DistanceAboveTerrain(pos) <= WDist.Zero)
 			{
-				pos += new WVec(0, 0, args.PassiveTarget.Z - pos.Z);
 				world.AddFrameEndTask(w => w.Remove(this));
 
 				var warheadArgs = new WarheadArgs(args)
