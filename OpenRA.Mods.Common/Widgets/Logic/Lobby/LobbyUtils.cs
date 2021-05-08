@@ -510,7 +510,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					Game.LoadWidget(null, "KICK_SPECTATORS_DIALOG", lobby.Get("TOP_PANELS_ROOT"), new WidgetArgs
 					{
-						{ "clientCount", $"{spectatorCount}" },
+						{ "clientCount", spectatorCount },
 						{ "okPressed", okPressed },
 						{ "cancelPressed", after }
 					});
