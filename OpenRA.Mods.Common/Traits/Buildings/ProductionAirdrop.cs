@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[FieldLoader.Require]
 		[ActorReference(typeof(AircraftInfo))]
-		[Desc("Cargo aircraft used for delivery. Must have the `Aircraft` trait.")]
+		[Desc("Cargo aircraft used for delivery. Must have the `" + nameof(Aircraft) + "` trait.")]
 		public readonly string ActorType = null;
 
 		[Desc("The cargo aircraft will spawn at the player baseline (map edge closest to the player spawn)")]
