@@ -12,6 +12,7 @@
 using System.Collections.Generic;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -47,6 +48,9 @@ namespace OpenRA.Mods.Common.Projectiles
 
 		[Desc("Value added to Velocity every tick.")]
 		public readonly WVec Acceleration = new WVec(0, 0, -15);
+
+		[Desc("Width of bomb (used for finding blocking actors).")]
+		public readonly WDist Width = new WDist(1);
 
 		public IProjectile Create(ProjectileArgs args) { return new GravityBomb(this, args); }
 	}
@@ -95,10 +99,24 @@ namespace OpenRA.Mods.Common.Projectiles
 			pos += velocity;
 			velocity += acceleration;
 			var distanceAboveTerrain = world.Map.DistanceAboveTerrain(pos);
+			var shouldExplode = false;
 
+			// Check we're above the ground first
+			// We don't want to accidentally go through the floor to hit somthing
 			if (distanceAboveTerrain <= WDist.Zero)
 			{
 				pos += new WVec(0, 0, -distanceAboveTerrain.Length);
+				shouldExplode = true;
+			}
+
+			if (BlocksProjectiles.AnyBlockingActorsBetween(world, lastPos, pos, info.Width, out var blockedPos))
+			{
+				pos = blockedPos;
+				shouldExplode = true;
+			}
+
+			if (shouldExplode)
+			{
 				world.AddFrameEndTask(w => w.Remove(this));
 
 				var warheadArgs = new WarheadArgs(args)
