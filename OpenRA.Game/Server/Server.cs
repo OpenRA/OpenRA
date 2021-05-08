@@ -1252,16 +1252,6 @@ namespace OpenRA.Server
 				SyncLobbyInfo();
 				State = ServerState.GameStarted;
 
-				var disconnectData = new[] { (byte)OrderType.Disconnect };
-				foreach (var c in Conns)
-				{
-					foreach (var d in Conns)
-						DispatchOrdersToClient(c, d.PlayerIndex, int.MaxValue, disconnectData);
-
-					if (recorder != null)
-						recorder.ReceiveFrame(c.PlayerIndex, int.MaxValue, disconnectData);
-				}
-
 				if (GameSave == null && LobbyInfo.GlobalSettings.GameSavesEnabled)
 					GameSave = new GameSave();
 
