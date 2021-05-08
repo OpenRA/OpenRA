@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	class KickSpectatorsLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
-		public KickSpectatorsLogic(Widget widget, string clientCount, Action okPressed, Action cancelPressed)
+		public KickSpectatorsLogic(Widget widget, int clientCount, Action okPressed, Action cancelPressed)
 		{
 			widget.Get<LabelWidget>("TEXT").GetText = () => $"Are you sure you want to kick {clientCount} spectators?";
 
