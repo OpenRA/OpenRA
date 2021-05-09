@@ -236,6 +236,7 @@ World:
 	StartGameNotification:
 	TimeLimitManager:
 	ColorPickerManager:
+		PreviewActor: carryall.colorpicker
 		RemapIndices: 255, 254, 253, 252, 251, 250, 249, 248, 247, 246, 245, 244, 243, 242, 241, 240
 		TeamColorPresets: 9023cd, f53333, ffae00, fff830, 87f506, f872ad, da06f3, ddb8ff, def7b2, 39c46f, 200738, 280df6, 2f86f2, 76d2f8, 498221, 392929
 

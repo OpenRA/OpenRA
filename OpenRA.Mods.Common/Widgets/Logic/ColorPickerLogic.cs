@@ -28,21 +28,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		public ColorPickerLogic(Widget widget, ModData modData, World world, Color initialColor, string initialFaction, Action<Color> onChange,
 			Dictionary<string, MiniYaml> logicArgs)
 		{
-			if (initialFaction == null || !ChromeMetrics.TryGet("ColorPickerActorType-" + initialFaction, out string actorType))
-				actorType = ChromeMetrics.Get<string>("ColorPickerActorType");
-
-			var preview = widget.GetOrNull<ActorPreviewWidget>("PREVIEW");
-			var actor = world.Map.Rules.Actors[actorType];
-
-			var td = new TypeDictionary();
-			td.Add(new OwnerInit(world.WorldActor.Owner));
-			td.Add(new FactionInit(world.WorldActor.Owner.PlayerReference.Faction));
-			foreach (var api in actor.TraitInfos<IActorPreviewInitInfo>())
-				foreach (var o in api.ActorPreviewInits(actor, ActorPreviewType.ColorPicker))
-					td.Add(o);
-
-			preview?.SetPreview(actor, td);
-
 			var hueSlider = widget.Get<SliderWidget>("HUE");
 			var mixer = widget.Get<ColorMixerWidget>("MIXER");
 			var randomButton = widget.GetOrNull<ButtonWidget>("RANDOM_BUTTON");
@@ -70,6 +55,34 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			mixer.SetPaletteRange(colorManager.HsvSaturationRange[0], colorManager.HsvSaturationRange[1], colorManager.HsvValueRange[0], colorManager.HsvValueRange[1]);
 			mixer.Set(initialColor);
 			hueSlider.Value = HueFromColor(initialColor);
+
+			if (initialFaction == null || !colorManager.FactionPreviewActors.TryGetValue(initialFaction, out var actorType))
+				actorType = colorManager.PreviewActor;
+
+			if (actorType == null)
+			{
+				var message = "ColorPickerManager does not define a preview actor";
+				if (initialFaction != null)
+					message += " for faction " + initialFaction;
+				message += "!";
+
+				throw new YamlException(message);
+			}
+
+			var preview = widget.GetOrNull<ActorPreviewWidget>("PREVIEW");
+			var actor = world.Map.Rules.Actors[actorType];
+
+			var td = new TypeDictionary
+			{
+				new OwnerInit(world.WorldActor.Owner),
+				new FactionInit(world.WorldActor.Owner.PlayerReference.Faction)
+			};
+
+			foreach (var api in actor.TraitInfos<IActorPreviewInitInfo>())
+				foreach (var o in api.ActorPreviewInits(actor, ActorPreviewType.ColorPicker))
+					td.Add(o);
+
+			preview?.SetPreview(actor, td);
 
 			// HACK: the value returned from the color mixer will generally not
 			// be equal to the given initialColor due to its internal RGB -> HSL -> RGB
