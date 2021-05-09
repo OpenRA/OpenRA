@@ -16,7 +16,6 @@ using System.IO;
 using System.Net;
 using System.Threading;
 using OpenRA.Network;
-using OpenRA.Support;
 
 namespace OpenRA.Server
 {
@@ -89,8 +88,6 @@ namespace OpenRA.Server
 
 				// HACK: Related to the above one, initialize the translations so we can load maps with their (translated) lobby options.
 				TranslationProvider.Initialize(modData, modData.DefaultFileSystem);
-
-				settings.Map = modData.MapCache.ChooseInitialMap(settings.Map, new MersenneTwister());
 
 				var endpoints = new List<IPEndPoint> { new IPEndPoint(IPAddress.IPv6Any, settings.ListenPort), new IPEndPoint(IPAddress.Any, settings.ListenPort) };
 				var server = new Server(endpoints, settings, modData, ServerType.Dedicated);
