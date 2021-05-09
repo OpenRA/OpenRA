@@ -109,7 +109,7 @@ namespace OpenRA.Mods.Common.Projectiles
 				shouldExplode = true;
 			}
 
-			if (BlocksProjectiles.AnyBlockingActorsBetween(world, lastPos, pos, info.Width, out var blockedPos))
+			if (BlocksProjectiles.AnyBlockingActorsBetween3D(world, lastPos, pos, info.Width, out var blockedPos))
 			{
 				pos = blockedPos;
 				shouldExplode = true;
