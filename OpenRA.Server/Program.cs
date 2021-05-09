@@ -85,8 +85,6 @@ namespace OpenRA.Server
 				var modData = Game.ModData = new ModData(mods[modID], mods);
 				modData.MapCache.LoadMaps();
 
-				settings.Map = modData.MapCache.ChooseInitialMap(settings.Map, new MersenneTwister());
-
 				var endpoints = new List<IPEndPoint> { new IPEndPoint(IPAddress.IPv6Any, settings.ListenPort), new IPEndPoint(IPAddress.Any, settings.ListenPort) };
 				var server = new Server(endpoints, settings, modData, ServerType.Dedicated);
 

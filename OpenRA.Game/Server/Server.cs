@@ -62,7 +62,8 @@ namespace OpenRA.Server
 		// Managed by LobbyCommands
 		public MapPreview Map;
 		public readonly MapStatusCache MapStatusCache;
-		public GameSave GameSave = null;
+		public GameSave GameSave;
+		public HashSet<string> MapPool;
 
 		readonly int randomSeed;
 		readonly List<TcpListener> listeners = new List<TcpListener>();
@@ -241,7 +242,6 @@ namespace OpenRA.Server
 
 			serverTraits.TrimExcess();
 
-			Map = ModData.MapCache[settings.Map];
 			MapStatusCache = new MapStatusCache(modData, MapStatusChanged, type == ServerType.Dedicated && settings.EnableLintChecks);
 
 			LobbyInfo = new Session
@@ -249,8 +249,6 @@ namespace OpenRA.Server
 				GlobalSettings =
 				{
 					RandomSeed = randomSeed,
-					Map = Map.Uid,
-					MapStatus = Session.MapStatus.Unknown,
 					ServerName = settings.Name,
 					EnableSingleplayer = settings.EnableSingleplayer || Type != ServerType.Dedicated,
 					EnableSyncReports = settings.EnableSyncReports,
@@ -270,8 +268,7 @@ namespace OpenRA.Server
 
 			new Thread(_ =>
 			{
-				// Initial status is set off the main thread to avoid triggering a load screen when joining a skirmish game
-				LobbyInfo.GlobalSettings.MapStatus = MapStatusCache[Map];
+				// Note: at least one of these is required to set the initial LobbyInfo.Map and MapStatus
 				foreach (var t in serverTraits.WithInterface<INotifyServerStart>())
 					t.ServerStarted(this);
 
@@ -1301,6 +1298,24 @@ namespace OpenRA.Server
 			}
 
 			return new ConnectionTarget(endpoints);
+		}
+
+		public bool MapIsUnknown(string uid)
+		{
+			if (string.IsNullOrEmpty(uid))
+				return true;
+
+			var status = ModData.MapCache[uid].Status;
+			return status != MapStatus.Available && status != MapStatus.DownloadAvailable;
+		}
+
+		public bool MapIsKnown(string uid)
+		{
+			if (string.IsNullOrEmpty(uid))
+				return false;
+
+			var status = ModData.MapCache[uid].Status;
+			return status == MapStatus.Available || status == MapStatus.DownloadAvailable;
 		}
 	}
 }
