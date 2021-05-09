@@ -68,7 +68,7 @@ namespace OpenRA.Network
 
 			public override string ToString()
 			{
-				return "ClientId: {0} {1}".F(Client, Order);
+				return $"ClientId: {Client} {Order}";
 			}
 		}
 
