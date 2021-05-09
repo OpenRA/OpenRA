@@ -11,12 +11,15 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.Common.Widgets.Logic;
 using OpenRA.Network;
 using OpenRA.Primitives;
 using OpenRA.Server;
+using OpenRA.Support;
 using OpenRA.Traits;
 using S = OpenRA.Server.Server;
 
@@ -570,6 +573,12 @@ namespace OpenRA.Mods.Common.Server
 					return true;
 				}
 
+				if (server.MapPool != null && !server.MapPool.Contains(s))
+				{
+					QueryFailed();
+					return true;
+				}
+
 				var lastMap = server.LobbyInfo.GlobalSettings.Map;
 				void SelectMap(MapPreview map)
 				{
@@ -659,8 +668,6 @@ namespace OpenRA.Mods.Common.Server
 					}
 				}
 
-				void QueryFailed() => server.SendLocalizedMessageTo(conn, UnknownMap);
-
 				var m = server.ModData.MapCache[s];
 				if (m.Status == MapStatus.Available || m.Status == MapStatus.DownloadAvailable)
 					SelectMap(m);
@@ -682,6 +689,8 @@ namespace OpenRA.Mods.Common.Server
 
 				return true;
 			}
+
+			void QueryFailed() => server.SendLocalizedMessageTo(conn, UnknownMap);
 		}
 
 		static bool Option(S server, Connection conn, Session.Client client, string s)
@@ -1227,16 +1236,68 @@ namespace OpenRA.Mods.Common.Server
 			}
 		}
 
+		static void InitializeMapPool(S server)
+		{
+			if (server.Type != ServerType.Dedicated)
+				return;
+
+			var mapCache = server.ModData.MapCache;
+			if (server.Settings.MapPool.Length > 0)
+				server.MapPool = server.Settings.MapPool.ToHashSet();
+			else if (!server.Settings.QueryMapRepository)
+				server.MapPool = mapCache
+					.Where(p => p.Status == MapStatus.Available && p.Visibility.HasFlag(MapVisibility.Lobby))
+					.Select(p => p.Uid)
+					.ToHashSet();
+			else
+				return;
+
+			var unknownMaps = server.MapPool.Where(server.MapIsUnknown);
+			if (server.Settings.QueryMapRepository && unknownMaps.Any())
+			{
+				Log.Write("server", $"Querying Resource Center for information on {unknownMaps.Count()} maps...");
+
+				// Query any missing maps and wait up to 10 seconds for a response
+				// Maps that have not resolved will not be valid for the initial map choice
+				var mapRepository = server.ModData.Manifest.Get<WebServices>().MapRepository;
+				mapCache.QueryRemoteMapDetails(mapRepository, unknownMaps);
+
+				var searchingMaps = server.MapPool.Where(uid => mapCache[uid].Status == MapStatus.Searching);
+				var stopwatch = Stopwatch.StartNew();
+				while (searchingMaps.Any() && stopwatch.ElapsedMilliseconds < 10000)
+					Thread.Sleep(100);
+			}
+
+			if (unknownMaps.Any())
+				Log.Write("server", "Failed to resolve maps: " + unknownMaps.JoinWith(", "));
+		}
+
+		static string ChooseInitialMap(S server)
+		{
+			if (server.MapIsKnown(server.Settings.Map))
+				return server.Settings.Map;
+
+			if (server.MapPool == null)
+				return server.ModData.MapCache.ChooseInitialMap(server.Settings.Map, new MersenneTwister());
+
+			return server.MapPool
+				.Where(server.MapIsKnown)
+				.RandomOrDefault(new MersenneTwister());
+		}
+
 		public void ServerStarted(S server)
 		{
 			lock (server.LobbyInfo)
 			{
-				// Remote maps are not supported for the initial map
-				var uid = server.LobbyInfo.GlobalSettings.Map;
-				server.Map = server.ModData.MapCache[uid];
-				if (server.Map.Status != MapStatus.Available)
-					throw new InvalidOperationException($"Map {uid} not found");
+				InitializeMapPool(server);
 
+				var uid = ChooseInitialMap(server);
+				if (string.IsNullOrEmpty(uid))
+					throw new InvalidOperationException("Unable to resolve a valid initial map");
+
+				server.LobbyInfo.GlobalSettings.Map = server.Settings.Map = uid;
+				server.Map = server.ModData.MapCache[uid];
+				server.LobbyInfo.GlobalSettings.MapStatus = server.MapStatusCache[server.Map];
 				server.LobbyInfo.Slots = server.Map.Players.Players
 					.Select(p => MakeSlotFromPlayerReference(p.Value))
 					.Where(s => s != null)

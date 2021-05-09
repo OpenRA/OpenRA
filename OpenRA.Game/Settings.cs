@@ -102,6 +102,9 @@ namespace OpenRA
 		[Desc("For dedicated servers only, treat maps that fail the lint checks as invalid.")]
 		public bool EnableLintChecks = true;
 
+		[Desc("For dedicated servers only, a comma separated list of map uids that are allowed to be used.")]
+		public string[] MapPool = Array.Empty<string>();
+
 		[Desc("Delay in milliseconds before newly joined players can send chat messages.")]
 		public int FloodLimitJoinCooldown = 5000;
 
