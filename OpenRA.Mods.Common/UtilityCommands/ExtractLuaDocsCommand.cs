@@ -70,16 +70,19 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				var name = t.GetCustomAttributes<ScriptGlobalAttribute>(true).First().Name;
 				var members = ScriptMemberWrapper.WrappableMembers(t);
 
+				Console.WriteLine();
 				Console.WriteLine("### " + name);
-				Console.WriteLine("<table>");
+				Console.WriteLine();
+				Console.WriteLine("| Function | Description |");
+				Console.WriteLine("|---------:|-------------|");
 				foreach (var m in members.OrderBy(m => m.Name))
 				{
-					var desc = m.HasAttribute<DescAttribute>() ? m.GetCustomAttributes<DescAttribute>(true).First().Lines.JoinWith("\n") : "";
-					Console.WriteLine($"<tr><td align=\"right\" width=\"50%\"><strong>{m.LuaDocString()}</strong></td><td>{desc}</td></tr>");
+					var desc = m.HasAttribute<DescAttribute>() ? m.GetCustomAttributes<DescAttribute>(true).First().Lines.JoinWith("<br />") : "";
+					Console.WriteLine($"| **{m.LuaDocString()}** | {desc} |");
 				}
-
-				Console.WriteLine("</table>");
 			}
+
+			Console.WriteLine();
 
 			Console.WriteLine("## Actor Properties / Commands");
 
@@ -94,8 +97,11 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 			foreach (var kv in actorCategories)
 			{
+				Console.WriteLine();
 				Console.WriteLine("### " + kv.Key);
-				Console.WriteLine("<table>");
+				Console.WriteLine();
+				Console.WriteLine("| Function | Description |");
+				Console.WriteLine("|---------:|-------------|");
 
 				foreach (var property in kv.OrderBy(p => p.Item2.Name))
 				{
@@ -105,27 +111,27 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					var hasRequires = required.Any();
 					var isActivity = mi.HasAttribute<ScriptActorPropertyActivityAttribute>();
 
-					Console.WriteLine("<tr><td width=\"50%\" align=\"right\"><strong>{0}</strong>", mi.LuaDocString());
+					Console.Write($"| **{mi.LuaDocString()}**");
 
 					if (isActivity)
-						Console.WriteLine("<br /><em>Queued Activity</em>");
+						Console.Write("<br />*Queued Activity*");
 
-					Console.WriteLine("</td><td>");
+					Console.Write(" | ");
 
 					if (hasDesc)
-						Console.WriteLine(mi.GetCustomAttributes<DescAttribute>(false).First().Lines.JoinWith("\n"));
+						Console.Write(mi.GetCustomAttributes<DescAttribute>(false).First().Lines.JoinWith("<br />"));
 
 					if (hasDesc && hasRequires)
-						Console.WriteLine("<br />");
+						Console.Write("<br />");
 
 					if (hasRequires)
-						Console.WriteLine($"<b>Requires {(required.Length == 1 ? "Trait" : "Traits")}:</b> {required.JoinWith(", ")}");
+						Console.Write($"**Requires {(required.Length == 1 ? "Trait" : "Traits")}:** {required.JoinWith(", ")}");
 
-					Console.WriteLine("</td></tr>");
+					Console.WriteLine(" |");
 				}
-
-				Console.WriteLine("</table>");
 			}
+
+			Console.WriteLine();
 
 			Console.WriteLine("## Player Properties / Commands");
 
@@ -140,8 +146,11 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 			foreach (var kv in playerCategories)
 			{
+				Console.WriteLine();
 				Console.WriteLine("### " + kv.Key);
-				Console.WriteLine("<table>");
+				Console.WriteLine();
+				Console.WriteLine("| Function | Description |");
+				Console.WriteLine("|---------:|-------------|");
 
 				foreach (var property in kv.OrderBy(p => p.Item2.Name))
 				{
@@ -151,26 +160,26 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					var hasRequires = required.Any();
 					var isActivity = mi.HasAttribute<ScriptActorPropertyActivityAttribute>();
 
-					Console.WriteLine("<tr><td width=\"50%\" align=\"right\"><strong>{0}</strong>", mi.LuaDocString());
+					Console.Write($"| **{mi.LuaDocString()}**");
 
 					if (isActivity)
-						Console.WriteLine("<br /><em>Queued Activity</em>");
+						Console.Write("<br />*Queued Activity*");
 
-					Console.WriteLine("</td><td>");
+					Console.Write(" | ");
 
 					if (hasDesc)
-						Console.WriteLine(mi.GetCustomAttributes<DescAttribute>(false).First().Lines.JoinWith("\n"));
+						Console.Write(mi.GetCustomAttributes<DescAttribute>(false).First().Lines.JoinWith("<br />"));
 
 					if (hasDesc && hasRequires)
-						Console.WriteLine("<br />");
+						Console.Write("<br />");
 
 					if (hasRequires)
-						Console.WriteLine($"<b>Requires {(required.Length == 1 ? "Trait" : "Traits")}:</b> {required.JoinWith(", ")}");
+						Console.Write($"**Requires {(required.Length == 1 ? "Trait" : "Traits")}:** {required.JoinWith(", ")}");
 
-					Console.WriteLine("</td></tr>");
+					Console.WriteLine(" |");
 				}
 
-				Console.WriteLine("</table>");
+				Console.WriteLine();
 			}
 		}
 

@@ -85,23 +85,21 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				var infos = FieldLoader.GetTypeLoadInfo(t);
 				if (!infos.Any())
 					continue;
-				doc.AppendLine("<table>");
-				doc.AppendLine("<tr><th>Property</th><th>Default Value</th><th>Type</th><th>Description</th></tr>");
+				doc.AppendLine();
+				doc.AppendLine("| Property | Default Value | Type | Description |");
+				doc.AppendLine("| -------- | --------------| ---- | ----------- |");
 				var liveTraitInfo = Game.ModData.ObjectCreator.CreateBasic(t);
 				foreach (var info in infos)
 				{
 					var fieldDescLines = info.Field.GetCustomAttributes<DescAttribute>(true).SelectMany(d => d.Lines);
 					var fieldType = Util.FriendlyTypeName(info.Field.FieldType);
 					var loadInfo = info.Field.GetCustomAttributes<FieldLoader.SerializeAttribute>(true).FirstOrDefault();
-					var defaultValue = loadInfo != null && loadInfo.Required ? "<em>(required)</em>" : FieldSaver.SaveField(liveTraitInfo, info.Field.Name).Value.Value;
-					doc.Append($"<tr><td>{info.YamlName}</td><td>{defaultValue}</td><td>{fieldType}</td>");
-					doc.Append("<td>");
+					var defaultValue = loadInfo != null && loadInfo.Required ? "*(required)*" : FieldSaver.SaveField(liveTraitInfo, info.Field.Name).Value.Value;
+					doc.Append($"| {info.YamlName} | {defaultValue} | {fieldType} | ");
 					foreach (var line in fieldDescLines)
 						doc.Append(line + " ");
-					doc.AppendLine("</td></tr>");
+					doc.AppendLine("|");
 				}
-
-				doc.AppendLine("</table>");
 			}
 
 			Console.Write(doc.ToString());
