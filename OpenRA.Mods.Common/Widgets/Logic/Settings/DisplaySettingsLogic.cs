@@ -181,7 +181,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			var colorManager = modData.DefaultRules.Actors[SystemActors.World].TraitInfo<ColorPickerManagerInfo>();
-			colorManager.Update(worldRenderer, ps.Color);
+			colorManager.Color = ps.Color;
 
 			var colorDropdown = panel.Get<DropDownButtonWidget>("PLAYERCOLOR");
 			colorDropdown.IsDisabled = () => worldRenderer.World.Type != WorldType.Shellmap;

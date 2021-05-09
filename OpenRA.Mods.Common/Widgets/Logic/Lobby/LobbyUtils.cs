@@ -235,11 +235,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				orderManager.IssueOrder(Order.Command($"color {client.Index} {colorManager.Color}"));
 			};
 
-			Action<Color> onChange = c => colorManager.Update(worldRenderer, c);
-
 			var colorChooser = Game.LoadWidget(worldRenderer.World, "COLOR_CHOOSER", null, new WidgetArgs()
 			{
-				{ "onChange", onChange },
+				{ "onChange", (Action<Color>)(c => colorManager.Color = c) },
 				{ "initialColor", client.Color },
 				{ "initialFaction", client.Faction }
 			});

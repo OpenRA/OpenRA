@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	{
 		readonly string[] allowedExtensions;
 		readonly IEnumerable<IReadOnlyPackage> acceptablePackages;
-
+		readonly string[] palettes;
 		readonly World world;
 		readonly ModData modData;
 
@@ -57,6 +57,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			world = worldRenderer.World;
 			this.modData = modData;
 			panel = widget;
+
+			var colorPickerPalettes = world.WorldActor.TraitsImplementing<IProvidesAssetBrowserColorPickerPalettes>()
+				.SelectMany(p => p.ColorPickerPaletteNames)
+				.ToArray();
+
+			palettes = world.WorldActor.TraitsImplementing<IProvidesAssetBrowserPalettes>()
+				.SelectMany(p => p.PaletteNames)
+				.Concat(colorPickerPalettes)
+				.ToArray();
 
 			var ticker = panel.GetOrNull<LogicTickerWidget>("ANIMATION_TICKER");
 			if (ticker != null)
@@ -112,12 +121,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			var colorManager = modData.DefaultRules.Actors[SystemActors.World].TraitInfo<ColorPickerManagerInfo>();
-			colorManager.Update(worldRenderer, Game.Settings.Player.Color);
+			colorManager.Color = Game.Settings.Player.Color;
 
 			var colorDropdown = panel.GetOrNull<DropDownButtonWidget>("COLOR");
 			if (colorDropdown != null)
 			{
-				colorDropdown.IsDisabled = () => currentPalette != colorManager.PaletteName;
+				colorDropdown.IsDisabled = () => !colorPickerPalettes.Contains(currentPalette);
 				colorDropdown.OnMouseDown = _ => ColorPickerLogic.ShowColorDropDown(colorDropdown, colorManager, worldRenderer);
 				panel.Get<ColorBlockWidget>("COLORBLOCK").GetColor = () => colorManager.Color;
 			}
@@ -489,8 +498,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return item;
 			};
 
-			var palettes = world.WorldActor.TraitsImplementing<IProvidesAssetBrowserPalettes>()
-				.SelectMany(p => p.PaletteNames);
 			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 280, palettes, setupItem);
 			return true;
 		}

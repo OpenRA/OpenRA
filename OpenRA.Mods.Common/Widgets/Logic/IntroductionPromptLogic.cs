@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			var colorManager = modData.DefaultRules.Actors[SystemActors.World].TraitInfo<ColorPickerManagerInfo>();
-			colorManager.Update(worldRenderer, ps.Color);
+			colorManager.Color = ps.Color;
 
 			var mouseControlDescClassic = widget.Get("MOUSE_CONTROL_DESC_CLASSIC");
 			mouseControlDescClassic.IsVisible = () => gs.UseClassicMouseStyle;

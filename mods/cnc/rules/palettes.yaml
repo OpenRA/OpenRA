@@ -67,10 +67,10 @@
 		Name: effect
 		Filename: temperat.pal
 		ShadowIndex: 4
-	PaletteFromFile@colorpicker:
+	ColorPickerPalette@colorpicker:
 		Name: colorpicker
-		Filename: temperat.pal
-		ShadowIndex: 4
+		BasePalette: terrain
+		RemapIndex: 176, 178, 180, 182, 184, 186, 189, 191, 177, 179, 181, 183, 185, 187, 188, 190
 		AllowModifiers: false
 	PaletteFromRGBA@cloak:
 		Name: cloak
