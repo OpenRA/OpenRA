@@ -49,6 +49,12 @@ Container@MAPCHOOSER_PANEL:
 					Height: 31
 					Width: 135
 					Text: Official Maps
+				Button@REMOTE_MAPS_TAB_BUTTON:
+					X: 15
+					Y: 15
+					Height: 31
+					Width: 135
+					Text: Server Maps
 				Button@USER_MAPS_TAB_BUTTON:
 					X: 155
 					Y: 15
@@ -56,6 +62,16 @@ Container@MAPCHOOSER_PANEL:
 					Width: 135
 					Text: Custom Maps
 				Container@SYSTEM_MAPS_TAB:
+					X: 15
+					Y: 45
+					Width: PARENT_RIGHT - 30
+					Height: PARENT_BOTTOM - 60
+					Children:
+						ScrollPanel@MAP_LIST:
+							Width: PARENT_RIGHT
+							Height: PARENT_BOTTOM
+							ItemSpacing: 1
+				Container@REMOTE_MAPS_TAB:
 					X: 15
 					Y: 45
 					Width: PARENT_RIGHT - 30
@@ -111,6 +127,13 @@ Container@MAPCHOOSER_PANEL:
 							Y: PARENT_BOTTOM - 8
 							Align: Center
 							Font: Tiny
+				Label@REMOTE_MAP_LABEL:
+					X: 140
+					Y: 539
+					Width: PARENT_RIGHT - 430
+					Height: 35
+					Align: Center
+					Font: Bold
 				Button@BUTTON_CANCEL:
 					Key: escape
 					Y: 539

@@ -322,6 +322,12 @@ namespace OpenRA.Network
 						break;
 					}
 
+				case "SyncMapPool":
+					{
+						orderManager.ServerMapPool = FieldLoader.GetValue<HashSet<string>>("SyncMapPool", order.TargetString);
+						break;
+					}
+
 				case "Ping":
 					{
 						orderManager.IssueOrder(Order.FromTargetString("Pong", order.TargetString, true));

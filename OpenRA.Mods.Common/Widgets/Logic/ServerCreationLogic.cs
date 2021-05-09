@@ -47,6 +47,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					Ui.OpenWindow("MAPCHOOSER_PANEL", new WidgetArgs()
 					{
 						{ "initialMap", preview.Uid },
+						{ "remoteMapPool", null },
 						{ "initialTab", MapClassification.System },
 						{ "onExit", () => { } },
 						{ "onSelect", (Action<string>)(uid => preview = modData.MapCache[uid]) },

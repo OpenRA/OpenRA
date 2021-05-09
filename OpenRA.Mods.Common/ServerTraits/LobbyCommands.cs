@@ -1180,6 +1180,9 @@ namespace OpenRA.Mods.Common.Server
 		{
 			lock (server.LobbyInfo)
 			{
+				if (server.MapPool != null)
+					server.SendOrderTo(conn, "SyncMapPool", FieldSaver.FormatValue(server.MapPool));
+
 				var client = server.GetClient(conn);
 
 				// Validate whether color is allowed and get an alternative if it isn't
