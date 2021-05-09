@@ -12,7 +12,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Support;
 using OpenRA.Traits;
@@ -37,9 +36,6 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("List of saturation components for the preset colors in the palette tab. Each entry must have a corresponding PresetHues definition.")]
 		public readonly float[] PresetSaturations = { };
 
-		[PaletteReference]
-		public readonly string PaletteName = "colorpicker";
-
 		[ActorReference]
 		[Desc("Actor type to show in the color picker. This can be overriden for specific factions with FactionPreviewActors.")]
 		public readonly string PreviewActor = null;
@@ -48,10 +44,6 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Actor type to show in the color picker for specific factions. Overrides PreviewActor.",
 			"A dictionary of [faction name]: [actor name].")]
 		public readonly Dictionary<string, string> FactionPreviewActors = new Dictionary<string, string>();
-
-		[FieldLoader.Require]
-		[Desc("Remap these indices to player colors.")]
-		public readonly int[] RemapIndices = { };
 
 		public void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
@@ -65,17 +57,7 @@ namespace OpenRA.Mods.Common.Traits
 				yield return Color.FromAhsv(PresetHues[i], PresetSaturations[i], V);
 		}
 
-		public Color Color { get; private set; }
-
-		public void Update(WorldRenderer worldRenderer, Color color)
-		{
-			Color = color;
-
-			var (_, h, s, _) = Color.ToAhsv();
-			var newPalette = new MutablePalette(worldRenderer.Palette(PaletteName).Palette);
-			newPalette.ApplyRemap(new PlayerColorRemap(RemapIndices, h, s));
-			worldRenderer.ReplacePalette(PaletteName, newPalette);
-		}
+		public Color Color;
 
 		bool TryGetBlockingColor((float R, float G, float B) color, List<(float R, float G, float B)> candidateBlockers, out (float R, float G, float B) closestBlocker)
 		{

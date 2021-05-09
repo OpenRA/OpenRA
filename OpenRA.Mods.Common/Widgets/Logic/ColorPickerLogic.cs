@@ -31,7 +31,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var mixer = widget.Get<ColorMixerWidget>("MIXER");
 
 			// Set the initial state
-			var colorManager = world.WorldActor.Info.TraitInfo<ColorPickerManagerInfo>();
+			// All users need to use the same TraitInfo instance, chosen as the default mod rules
+			var colorManager = modData.DefaultRules.Actors[SystemActors.World].TraitInfo<ColorPickerManagerInfo>();
 			mixer.SetColorLimits(colorManager.HsvSaturationRange[0], colorManager.HsvSaturationRange[1], colorManager.V);
 			mixer.OnChange += () => onChange(mixer.Color);
 			mixer.Set(initialColor);
@@ -192,11 +193,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			color.RemovePanel();
 
-			Action<Color> onChange = c => colorManager.Update(worldRenderer, c);
-
 			var colorChooser = Game.LoadWidget(worldRenderer.World, "COLOR_CHOOSER", null, new WidgetArgs()
 			{
-				{ "onChange", onChange },
+				{ "onChange", (Action<Color>)(c => colorManager.Color = c) },
 				{ "initialColor", colorManager.Color },
 				{ "initialFaction", null }
 			});

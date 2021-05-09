@@ -41,10 +41,10 @@
 		Name: effect
 		Filename: temperat.pal
 		ShadowIndex: 4
-	PaletteFromFile@colorpicker:
+	ColorPickerPalette@colorpicker:
 		Name: colorpicker
-		Filename: temperat.pal
-		ShadowIndex: 4
+		BasePalette: player
+		RemapIndex: 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95
 		AllowModifiers: false
 	PaletteFromFile@desert:
 		Name: desert
