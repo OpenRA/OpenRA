@@ -1,6 +1,5 @@
 # General dumping-ground for UI element sizes, etc.
 Metrics:
-	ColorPickerActorType: carryall.colorpicker
 	FactionSuffix-fremen: atreides
 	FactionSuffix-corrino: harkonnen
 	FactionSuffix-smuggler: ordos

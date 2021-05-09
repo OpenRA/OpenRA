@@ -4,5 +4,4 @@ Metrics:
 	ButtonDepth: 0
 	ButtonFont: Bold
 	CheckboxPressedState: true
-	ColorPickerActorType: fact.colorpicker
 	TextfieldColorHighlight: 800000

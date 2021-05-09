@@ -1,7 +1,6 @@
 # General dumping-ground for UI element sizes, etc.
 
 Metrics:
-	ColorPickerActorType: fact.colorpicker
 	FactionSuffix-allies: allies
 	FactionSuffix-england: allies
 	FactionSuffix-france: allies

@@ -31,6 +31,15 @@ namespace OpenRA.Mods.Common.Traits
 		[PaletteReference]
 		public readonly string PaletteName = "colorpicker";
 
+		[ActorReference]
+		[Desc("Actor type to show in the color picker. This can be overriden for specific factions with FactionPreviewActors.")]
+		public readonly string PreviewActor = null;
+
+		[SequenceReference(dictionaryReference: LintDictionaryReference.Values)]
+		[Desc("Actor type to show in the color picker for specific factions. Overrides PreviewActor.",
+			"A dictionary of [faction name]: [actor name].")]
+		public readonly Dictionary<string, string> FactionPreviewActors = new Dictionary<string, string>();
+
 		public readonly int[] RemapIndices = { };
 		public readonly float Ramp = 0.05f;
 		public Color Color { get; private set; }
