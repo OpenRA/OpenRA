@@ -37,31 +37,61 @@ namespace OpenRA.Mods.Common
 			var xDir = xDiff < 0 ? -1 : 1;
 			var yDir = yDiff < 0 ? -1 : 1;
 
-			var dir = new WVec(xDir, yDir, 0);
-			var largestValidActorRadius = onlyBlockers ? world.ActorMap.LargestBlockingActorRadius.Length : world.ActorMap.LargestActorRadius.Length;
-			var overselect = dir * (1024 + lineWidth.Length + largestValidActorRadius);
-			var finalTarget = lineEnd + overselect;
-			var finalSource = lineStart - overselect;
+			var finalEnds = AdjustLineEndsForWidth(world, lineStart, lineEnd, xDir, yDir, 0, lineWidth, onlyBlockers);
 
-			var actorsInSquare = world.ActorMap.ActorsInBox(finalTarget, finalSource);
+			var actorsInSquare = world.ActorMap.ActorsInBox(finalEnds.Item1, finalEnds.Item2);
 			var intersectedActors = new List<Actor>();
 
 			foreach (var currActor in actorsInSquare)
 			{
-				var actorWidth = 0;
-				var shapes = currActor.TraitsImplementing<HitShape>().Where(Exts.IsTraitEnabled);
-				if (shapes.Any())
-					actorWidth = shapes.Max(h => h.Info.Type.OuterRadius.Length);
-
-				var projection = MinimumPointLineProjection(lineStart, lineEnd, currActor.CenterPosition);
-				var distance = (currActor.CenterPosition - projection).HorizontalLength;
-				var maxReach = actorWidth + lineWidth.Length;
-
-				if (distance <= maxReach)
+				if (ActorOnLine(currActor, lineStart, lineEnd, lineWidth))
 					intersectedActors.Add(currActor);
 			}
 
 			return intersectedActors;
+		}
+
+		public static IEnumerable<Actor> FindActorsOn3DLine(this World world, WPos lineStart, WPos lineEnd, WDist lineWidth, bool onlyBlockers = false)
+		{
+			var xDir = lineEnd.X - lineStart.X < 0 ? -1 : 1;
+			var yDir = lineEnd.Y - lineStart.Y < 0 ? -1 : 1;
+			var zDir = lineEnd.Z - lineStart.Z < 0 ? -1 : lineEnd.Z == lineStart.Z ? 0 : 1;
+
+			var finalEnds = AdjustLineEndsForWidth(world, lineStart, lineEnd, xDir, yDir, zDir, lineWidth, onlyBlockers);
+
+			var actorsInCube = world.ActorMap.ActorsInCube(finalEnds.Item1, finalEnds.Item2);
+			var intersectedActors = new List<Actor>();
+
+			foreach (var currActor in actorsInCube)
+			{
+				if (ActorOnLine(currActor, lineStart, lineEnd, lineWidth))
+					intersectedActors.Add(currActor);
+			}
+
+			return intersectedActors;
+		}
+
+		static bool ActorOnLine(Actor currActor, WPos lineStart, WPos lineEnd, WDist lineWidth)
+		{
+			var actorWidth = 0;
+			var shapes = currActor.TraitsImplementing<HitShape>().Where(Exts.IsTraitEnabled);
+			if (shapes.Any())
+				actorWidth = shapes.Max(h => h.Info.Type.OuterRadius.Length);
+
+			var projection = MinimumPointLineProjection(lineStart, lineEnd, currActor.CenterPosition);
+			var distance = (currActor.CenterPosition - projection).HorizontalLength;
+			var maxReach = actorWidth + lineWidth.Length;
+			return distance <= maxReach;
+		}
+
+		static (WPos, WPos) AdjustLineEndsForWidth(World world, WPos lineStart, WPos lineEnd, int xDir, int yDir, int zDir, WDist lineWidth, bool onlyBlockers)
+		{
+			var dir = new WVec(xDir, yDir, zDir);
+			var largestValidActorRadius = onlyBlockers ? world.ActorMap.LargestBlockingActorRadius.Length : world.ActorMap.LargestActorRadius.Length;
+			var overselect = dir * (1024 + lineWidth.Length + largestValidActorRadius);
+			var finalTarget = lineEnd + overselect;
+			var finalSource = lineStart - overselect;
+			return (finalTarget, finalSource);
 		}
 
 		public static IEnumerable<Actor> FindBlockingActorsOnLine(this World world, WPos lineStart, WPos lineEnd, WDist lineWidth)
@@ -100,7 +130,8 @@ namespace OpenRA.Mods.Common
 			// We then later divide by dist, only AFTER we have multiplied by the dotproduct.
 			var xDiff = ((long)point.X - lineEnd.X) * (lineStart.X - lineEnd.X);
 			var yDiff = ((long)point.Y - lineEnd.Y) * (lineStart.Y - lineEnd.Y);
-			var t = xDiff + yDiff;
+			var zDiff = ((long)point.Z - lineEnd.Z) * (lineStart.Z - lineEnd.Z);
+			var t = xDiff + yDiff + zDiff;
 
 			// Beyond the 'target' end of the segment
 			if (t < 0)

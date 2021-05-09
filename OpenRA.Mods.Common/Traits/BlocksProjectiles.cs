@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Linq;
 
 namespace OpenRA.Mods.Common.Traits
@@ -41,6 +42,17 @@ namespace OpenRA.Mods.Common.Traits
 		public static bool AnyBlockingActorsBetween(World world, WPos start, WPos end, WDist width, out WPos hit)
 		{
 			var actors = world.FindBlockingActorsOnLine(start, end, width);
+			return CheckForBlockingActors(actors, world, start, end, out hit);
+		}
+
+		public static bool AnyBlockingActorsBetween3D(World world, WPos start, WPos end, WDist width, out WPos hit)
+		{
+			var actors = world.FindActorsOn3DLine(start, end, width, true);
+			return CheckForBlockingActors(actors, world, start, end, out hit);
+		}
+
+		static bool CheckForBlockingActors(IEnumerable<Actor> actors, World world, WPos start, WPos end, out WPos hit)
+		{
 			var length = (end - start).Length;
 
 			foreach (var a in actors)

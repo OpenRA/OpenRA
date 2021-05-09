@@ -614,6 +614,33 @@ namespace OpenRA.Mods.Common.Traits
 				}
 			}
 		}
+
+		public IEnumerable<Actor> ActorsInCube(WPos a, WPos b)
+		{
+			// PERF: Inline BinsInBox here to avoid allocations as this method is called often.
+			var left = Math.Min(a.X, b.X);
+			var top = Math.Min(a.Y, b.Y);
+			var down = Math.Min(a.Z, b.Z);
+			var right = Math.Max(a.X, b.X);
+			var bottom = Math.Max(a.Y, b.Y);
+			var up = Math.Max(a.Z, b.Z);
+			var region = BinRectangleCoveringWorldArea(left, top, right, bottom);
+			for (var row = region.Top; row <= region.Bottom; row++)
+			{
+				for (var col = region.Left; col <= region.Right; col++)
+				{
+					foreach (var actor in BinAt(row, col).Actors)
+					{
+						if (actor.IsInWorld)
+						{
+							var c = actor.CenterPosition;
+							if (left <= c.X && c.X <= right && top <= c.Y && c.Y <= bottom && c.Z <= up && down <= c.Z)
+								yield return actor;
+						}
+					}
+				}
+			}
+		}
 	}
 
 	public static class ActorMapWorldExts
