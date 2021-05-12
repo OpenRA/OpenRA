@@ -413,14 +413,14 @@ silo.atreides:
 		Start: 2814
 		Offset: -16,16
 	damaged-idle: DATA.R8
-		Start: 2817
+		Start: 2818
 		Offset: -16,16
 	stages: DATA.R8
 		Start: 2814
 		Length: 4
 		Offset: -16,16
 	damaged-stages: DATA.R8
-		Start: 2817
+		Start: 2818
 		Offset: -16,16
 	make: DATA.R8
 		Start: 4577
