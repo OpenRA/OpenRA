@@ -1408,6 +1408,9 @@ HPAD:
 	ProvidesPrerequisite@germany:
 		Factions: germany
 		Prerequisite: aircraft.germany
+	ProvidesPrerequisite@soviets:
+		Factions: soviet, russia, ukraine
+		Prerequisite: aircraft.soviets
 	ProvidesPrerequisite@alliedstructure:
 		RequiresPrerequisites: structures.allies
 		Prerequisite: aircraft.allies
