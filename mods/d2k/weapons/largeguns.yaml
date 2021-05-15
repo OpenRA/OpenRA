@@ -77,7 +77,7 @@ DevBullet:
 		Damage: 3250
 	Warhead@3Eff: CreateEffect
 		Explosions: shockwave
-		ImpactSounds: EXPLMD1.WAV
+		ImpactSounds: EXPLMD4.WAV
 
 155mm:
 	Inherits: ^Cannon
