@@ -26,7 +26,7 @@ HARV:
 
 PROC:
 	Buildable:
-		Prerequisites: ~disabled
+		Queue: Building.Nod
 
 SILO:
 	Buildable:
@@ -90,7 +90,7 @@ E5:
 
 E6:
 	Buildable:
-		Prerequisites: ~disabled
+		Queue: Infantry.Nod
 
 RMBO:
 	Buildable:
