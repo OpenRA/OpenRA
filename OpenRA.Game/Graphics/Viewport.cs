@@ -250,6 +250,9 @@ namespace OpenRA.Graphics
 			else
 				Zoom = Zoom.Clamp(minZoom, maxZoom);
 
+			var maxSize = (1f / (unlockMinZoom ? unlockedMinZoom : minZoom) * new float2(Game.Renderer.NativeResolution));
+			Game.Renderer.SetMaximumViewportSize(new Size((int)maxSize.X, (int)maxSize.Y));
+
 			foreach (var t in worldRenderer.World.WorldActor.TraitsImplementing<INotifyViewportZoomExtentsChanged>())
 				t.ViewportZoomExtentsChanged(minZoom, maxZoom);
 		}

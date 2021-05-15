@@ -50,7 +50,10 @@ namespace OpenRA
 		Sprite screenSprite;
 
 		IFrameBuffer worldBuffer;
+		Sheet worldSheet;
 		Sprite worldSprite;
+
+		public Size WorldFrameBufferSize => worldSheet.Size;
 
 		SheetBuilder fontSheetBuilder;
 		readonly IPlatform platform;
@@ -59,7 +62,6 @@ namespace OpenRA
 
 		Size lastBufferSize = new Size(-1, -1);
 
-		Size lastWorldBufferSize = new Size(-1, -1);
 		Rectangle lastWorldViewport = Rectangle.Empty;
 		ITexture currentPaletteTexture;
 		IBatchRenderer currentBatchRenderer;
@@ -178,14 +180,9 @@ namespace OpenRA
 			}
 		}
 
-		public void BeginWorld(Rectangle worldViewport)
+		public void SetMaximumViewportSize(Size size)
 		{
-			if (renderType != RenderType.None)
-				throw new InvalidOperationException($"BeginWorld called with renderType = {renderType}, expected RenderType.None.");
-
-			BeginFrame();
-
-			var worldBufferSize = worldViewport.Size.NextPowerOf2();
+			var worldBufferSize = size.NextPowerOf2();
 			if (worldSprite == null || worldSprite.Sheet.Size != worldBufferSize)
 			{
 				worldBuffer?.Dispose();
@@ -195,24 +192,36 @@ namespace OpenRA
 
 				// Pixel art scaling mode is a customized bilinear sampling
 				worldBuffer.Texture.ScaleFilter = TextureScaleFilter.Linear;
+				worldSheet = new Sheet(SheetType.BGRA, worldBuffer.Texture);
+
+				// Invalidate cached state to force a shader update
+				lastWorldViewport = Rectangle.Empty;
+				worldSprite = null;
 			}
+		}
+
+		public void BeginWorld(Rectangle worldViewport)
+		{
+			if (renderType != RenderType.None)
+				throw new InvalidOperationException($"BeginWorld called with renderType = {renderType}, expected RenderType.None.");
+
+			BeginFrame();
+
+			if (worldSheet == null)
+				throw new InvalidOperationException($"BeginWorld called before SetMaximumViewportSize has been set.");
 
 			if (worldSprite == null || worldViewport.Size != worldSprite.Bounds.Size)
-			{
-				var worldSheet = new Sheet(SheetType.BGRA, worldBuffer.Texture);
 				worldSprite = new Sprite(worldSheet, new Rectangle(int2.Zero, worldViewport.Size), TextureChannel.RGBA);
-			}
 
 			worldBuffer.Bind();
 
-			if (worldBufferSize != lastWorldBufferSize || lastWorldViewport != worldViewport)
+			if (lastWorldViewport != worldViewport)
 			{
-				var depthScale = worldBufferSize.Height / (worldBufferSize.Height + depthMargin);
-				WorldSpriteRenderer.SetViewportParams(worldBufferSize, depthScale, depthScale / 2, worldViewport.Location);
-				WorldModelRenderer.SetViewportParams(worldBufferSize, worldViewport.Location);
+				var depthScale = worldSheet.Size.Height / (worldSheet.Size.Height + depthMargin);
+				WorldSpriteRenderer.SetViewportParams(worldSheet.Size, depthScale, depthScale / 2, worldViewport.Location);
+				WorldModelRenderer.SetViewportParams(worldSheet.Size, worldViewport.Location);
 
 				lastWorldViewport = worldViewport;
-				lastWorldBufferSize = worldBufferSize;
 			}
 
 			renderType = RenderType.World;
