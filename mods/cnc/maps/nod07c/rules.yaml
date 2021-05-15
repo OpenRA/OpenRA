@@ -105,6 +105,10 @@ HELI:
 	Buildable:
 		Prerequisites: ~disabled
 
+ORCA:
+	Buildable:
+		Prerequisites: ~disabled
+
 TRAN:
 	Buildable:
 		Prerequisites: ~disabled
