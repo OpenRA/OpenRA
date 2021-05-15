@@ -10,6 +10,7 @@
 #endregion
 
 using System.Diagnostics;
+using OpenRA.Graphics;
 using OpenRA.Support;
 using OpenRA.Widgets;
 
@@ -18,7 +19,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class PerfDebugLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
-		public PerfDebugLogic(Widget widget)
+		public PerfDebugLogic(Widget widget, WorldRenderer worldRenderer)
 		{
 			var perfGraph = widget.Get("GRAPH_BG");
 			perfGraph.IsVisible = () => Game.Settings.Debug.PerfGraph;
@@ -40,7 +41,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					fpsReferenceFrame = Game.RenderFrame;
 				}
 
-				return $"FPS: {fps}\nTick {Game.LocalTick} @ {PerfHistory.Items["tick_time"].Average(Game.Settings.Debug.Samples):F1} ms\nRender {Game.RenderFrame} @ {PerfHistory.Items["render"].Average(Game.Settings.Debug.Samples):F1} ms\nBatches: {PerfHistory.Items["batches"].LastValue}";
+				var wfbSize = Game.Renderer.WorldFrameBufferSize;
+				var viewportSize = worldRenderer.Viewport.Rectangle.Size;
+				return $"FPS: {fps}\nTick {Game.LocalTick} @ {PerfHistory.Items["tick_time"].Average(Game.Settings.Debug.Samples):F1} ms\n" +
+					$"Render {Game.RenderFrame} @ {PerfHistory.Items["render"].Average(Game.Settings.Debug.Samples):F1} ms\n" +
+					$"Batches: {PerfHistory.Items["batches"].LastValue}\n" +
+					$"Viewport Size: {viewportSize.Width} x {viewportSize.Height}\n" +
+					$"WFB Size: {wfbSize.Width} x {wfbSize.Height}";
 			};
 		}
 	}
