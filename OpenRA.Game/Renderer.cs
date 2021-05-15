@@ -52,8 +52,12 @@ namespace OpenRA
 		IFrameBuffer worldBuffer;
 		Sheet worldSheet;
 		Sprite worldSprite;
+		int worldDownscaleFactor = 1;
+		Size lastMaximumViewportSize;
+		Size lastWorldViewportSize;
 
 		public Size WorldFrameBufferSize => worldSheet.Size;
+		public int WorldDownscaleFactor => worldDownscaleFactor;
 
 		SheetBuilder fontSheetBuilder;
 		readonly IPlatform platform;
@@ -123,6 +127,9 @@ namespace OpenRA
 			{
 				Game.RunAfterTick(() =>
 				{
+					// Recalculate downscaling factor for the new window scale
+					SetMaximumViewportSize(lastMaximumViewportSize);
+
 					ChromeProvider.SetDPIScale(newEffective);
 
 					foreach (var f in Fonts)
@@ -175,19 +182,33 @@ namespace OpenRA
 			var bufferSize = new Size((int)(surfaceBufferSize.Width / scale), (int)(surfaceBufferSize.Height / scale));
 			if (lastBufferSize != bufferSize)
 			{
-				SpriteRenderer.SetViewportParams(bufferSize, 0f, 0f, int2.Zero);
+				SpriteRenderer.SetViewportParams(bufferSize, 1, 0f, int2.Zero);
 				lastBufferSize = bufferSize;
 			}
 		}
 
 		public void SetMaximumViewportSize(Size size)
 		{
-			var worldBufferSize = size.NextPowerOf2();
-			if (worldSprite == null || worldSprite.Sheet.Size != worldBufferSize)
+			// Aim to render the world into a framebuffer at 1:1 scaling which is then up/downscaled using a custom
+			// filter to provide crisp scaling and avoid rendering glitches when the depth buffer is used and samples don't match.
+			// This approach does not scale well to large sizes, first saturating GPU fill rate and then crashing when
+			// reaching the framebuffer size limits (typically 16k). We therefore clamp the maximum framebuffer size to
+			// twice the window surface size, which strikes a reasonable balance between rendering quality and performance.
+			// Mods that use the depth buffer must instead limit their artwork resolution or maximum zoom-out levels.
+			Size worldBufferSize;
+			if (depthMargin == 0)
+			{
+				var surfaceSize = Window.SurfaceSize;
+				worldBufferSize = new Size(Math.Min(size.Width, 2 * surfaceSize.Width), Math.Min(size.Height, 2 * surfaceSize.Height)).NextPowerOf2();
+			}
+			else
+				worldBufferSize = size.NextPowerOf2();
+
+			if (worldSprite == null || worldSheet.Size != worldBufferSize)
 			{
 				worldBuffer?.Dispose();
 
-				// Render the world into a framebuffer at 1:1 scaling to allow the depth buffer to match the artwork at all zoom levels
+				// If enableWorldFrameBufferDownscale and the world is more than twice the size of the final output size do we allow it to be downsampled!
 				worldBuffer = Context.CreateFrameBuffer(worldBufferSize);
 
 				// Pixel art scaling mode is a customized bilinear sampling
@@ -198,6 +219,8 @@ namespace OpenRA
 				lastWorldViewport = Rectangle.Empty;
 				worldSprite = null;
 			}
+
+			lastMaximumViewportSize = size;
 		}
 
 		public void BeginWorld(Rectangle worldViewport)
@@ -210,15 +233,27 @@ namespace OpenRA
 			if (worldSheet == null)
 				throw new InvalidOperationException($"BeginWorld called before SetMaximumViewportSize has been set.");
 
-			if (worldSprite == null || worldViewport.Size != worldSprite.Bounds.Size)
-				worldSprite = new Sprite(worldSheet, new Rectangle(int2.Zero, worldViewport.Size), TextureChannel.RGBA);
+			if (worldSprite == null || worldViewport.Size != lastWorldViewportSize)
+			{
+				// Downscale world rendering if needed to fit within the framebuffer
+				var vw = worldViewport.Size.Width;
+				var vh = worldViewport.Size.Height;
+				var bw = worldSheet.Size.Width;
+				var bh = worldSheet.Size.Height;
+				worldDownscaleFactor = 1;
+				while (vw / worldDownscaleFactor > bw || vh / worldDownscaleFactor > bh)
+					worldDownscaleFactor++;
+
+				var s = new Size(vw / worldDownscaleFactor, vh / worldDownscaleFactor);
+				worldSprite = new Sprite(worldSheet, new Rectangle(int2.Zero, s), TextureChannel.RGBA);
+				lastWorldViewportSize = worldViewport.Size;
+			}
 
 			worldBuffer.Bind();
 
 			if (lastWorldViewport != worldViewport)
 			{
-				var depthScale = worldSheet.Size.Height / (worldSheet.Size.Height + depthMargin);
-				WorldSpriteRenderer.SetViewportParams(worldSheet.Size, depthScale, depthScale / 2, worldViewport.Location);
+				WorldSpriteRenderer.SetViewportParams(worldSheet.Size, worldDownscaleFactor, depthMargin, worldViewport.Location);
 				WorldModelRenderer.SetViewportParams(worldSheet.Size, worldViewport.Location);
 
 				lastWorldViewport = worldViewport;
@@ -239,10 +274,10 @@ namespace OpenRA
 				screenBuffer.Bind();
 
 				var scale = Window.EffectiveWindowScale;
-				var bufferSize = new Size((int)(screenSprite.Bounds.Width / scale), (int)(-screenSprite.Bounds.Height / scale));
+				var bufferSize = new float2((int)(screenSprite.Bounds.Width / scale), (int)(-screenSprite.Bounds.Height / scale));
 
 				SpriteRenderer.SetAntialiasingPixelsPerTexel(Window.SurfaceSize.Height * 1f / worldSprite.Bounds.Height);
-				RgbaSpriteRenderer.DrawSprite(worldSprite, float3.Zero, new float2(bufferSize));
+				RgbaSpriteRenderer.DrawSprite(worldSprite, float3.Zero, bufferSize);
 				Flush();
 				SpriteRenderer.SetAntialiasingPixelsPerTexel(0);
 			}
@@ -348,7 +383,14 @@ namespace OpenRA
 			Flush();
 
 			if (renderType == RenderType.World)
-				worldBuffer.EnableScissor(rect);
+			{
+				var r = Rectangle.FromLTRB(
+					rect.Left / worldDownscaleFactor,
+					rect.Top / worldDownscaleFactor,
+					(rect.Right + worldDownscaleFactor - 1) / worldDownscaleFactor,
+					(rect.Bottom + worldDownscaleFactor - 1) / worldDownscaleFactor);
+				worldBuffer.EnableScissor(r);
+			}
 			else
 				Context.EnableScissor(rect.X, rect.Y, rect.Width, rect.Height);
 
@@ -364,7 +406,15 @@ namespace OpenRA
 			{
 				// Restore previous scissor rect
 				if (scissorState.Any())
-					worldBuffer.EnableScissor(scissorState.Peek());
+				{
+					var rect = scissorState.Peek();
+					var r = Rectangle.FromLTRB(
+						rect.Left / worldDownscaleFactor,
+						rect.Top / worldDownscaleFactor,
+						(rect.Right + worldDownscaleFactor - 1) / worldDownscaleFactor,
+						(rect.Bottom + worldDownscaleFactor - 1) / worldDownscaleFactor);
+					worldBuffer.EnableScissor(r);
+				}
 				else
 					worldBuffer.DisableScissor();
 			}

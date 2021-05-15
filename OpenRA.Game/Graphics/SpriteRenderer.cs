@@ -209,17 +209,22 @@ namespace OpenRA.Graphics
 			shader.SetTexture("ColorShifts", colorShifts);
 		}
 
-		public void SetViewportParams(Size screen, float depthScale, float depthOffset, int2 scroll)
+		public void SetViewportParams(Size sheetSize, int downscale, float depthMargin, int2 scroll)
 		{
+			// Calculate the effective size of the render surface in viewport pixels
+			var width = downscale * sheetSize.Width;
+			var height = downscale * sheetSize.Height;
+			var depthScale = height / (height + depthMargin);
+			var depthOffset = depthScale / 2;
 			shader.SetVec("Scroll", scroll.X, scroll.Y, scroll.Y);
 			shader.SetVec("r1",
-				2f / screen.Width,
-				2f / screen.Height,
-				-depthScale / screen.Height);
+				2f / width,
+				2f / height,
+				-depthScale / height);
 			shader.SetVec("r2", -1, -1, 1 - depthOffset);
 
 			// Texture index is sampled as a float, so convert to pixels then scale
-			shader.SetVec("DepthTextureScale", 128 * depthScale / screen.Height);
+			shader.SetVec("DepthTextureScale", 128 * depthScale / height);
 		}
 
 		public void SetDepthPreviewEnabled(bool enabled)
