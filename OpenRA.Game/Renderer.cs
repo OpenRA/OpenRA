@@ -249,14 +249,16 @@ namespace OpenRA
 
 		public void SetPalette(HardwarePalette palette)
 		{
+			// Note: palette.Texture and palette.ColorShifts are updated at the same time
+			// so we only need to check one of the two to know whether we must update the textures
 			if (palette.Texture == currentPaletteTexture)
 				return;
 
 			Flush();
 			currentPaletteTexture = palette.Texture;
 
-			SpriteRenderer.SetPalette(currentPaletteTexture);
-			WorldSpriteRenderer.SetPalette(currentPaletteTexture);
+			SpriteRenderer.SetPalette(currentPaletteTexture, palette.ColorShifts);
+			WorldSpriteRenderer.SetPalette(currentPaletteTexture, palette.ColorShifts);
 			WorldModelRenderer.SetPalette(currentPaletteTexture);
 		}
 

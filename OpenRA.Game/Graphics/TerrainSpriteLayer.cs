@@ -164,6 +164,12 @@ namespace OpenRA.Graphics
 					throw new InvalidDataException("Attempted to add sprite with a different blend mode");
 
 				samplers = new int2(GetOrAddSheetIndex(sprite.Sheet), GetOrAddSheetIndex((sprite as SpriteWithSecondaryData)?.SecondarySheet));
+
+				// PERF: Remove useless palette assignments for RGBA sprites
+				// HACK: This is working around the limitation that palettes are defined on traits rather than on sequences,
+				// and can be removed once this has been fixed
+				if (sprite.Channel == TextureChannel.RGBA && !(palette?.HasColorShift ?? false))
+					palette = null;
 			}
 			else
 			{

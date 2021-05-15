@@ -41,6 +41,12 @@ namespace OpenRA.Graphics
 			this.isDecoration = isDecoration;
 			this.tintModifiers = tintModifiers;
 			this.alpha = alpha;
+
+			// PERF: Remove useless palette assignments for RGBA sprites
+			// HACK: This is working around the fact that palettes are defined on traits rather than sequences
+			// and can be removed once this has been fixed
+			if (sprite.Channel == TextureChannel.RGBA && !(palette?.HasColorShift ?? false))
+				this.palette = null;
 		}
 
 		public WPos Pos => pos + offset;
