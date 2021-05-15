@@ -18,15 +18,19 @@ namespace OpenRA.Graphics
 	public sealed class HardwarePalette : IDisposable
 	{
 		public ITexture Texture { get; private set; }
+		public ITexture ColorShifts { get; private set; }
+
 		public int Height { get; private set; }
 		readonly Dictionary<string, ImmutablePalette> palettes = new Dictionary<string, ImmutablePalette>();
 		readonly Dictionary<string, MutablePalette> mutablePalettes = new Dictionary<string, MutablePalette>();
 		readonly Dictionary<string, int> indices = new Dictionary<string, int>();
 		byte[] buffer = new byte[0];
+		float[] colorShiftBuffer = new float[0];
 
 		public HardwarePalette()
 		{
 			Texture = Game.Renderer.Context.CreateTexture();
+			ColorShifts = Game.Renderer.Context.CreateTexture();
 		}
 
 		public bool Contains(string name)
@@ -55,14 +59,18 @@ namespace OpenRA.Graphics
 			if (palettes.ContainsKey(name))
 				throw new InvalidOperationException($"Palette {name} has already been defined");
 
-			int index = palettes.Count;
+			// PERF: the first row in the palette textures is reserved as a placeholder for non-indexed sprites
+			// that do not have a color-shift applied. This provides a quick shortcut to avoid querying the
+			// color-shift texture for every pixel only to find that most are not shifted.
+			var index = palettes.Count + 1;
 			indices.Add(name, index);
 			palettes.Add(name, p);
 
-			if (palettes.Count > Height)
+			if (index >= Height)
 			{
-				Height = Exts.NextPowerOf2(palettes.Count);
+				Height = Exts.NextPowerOf2(index + 1);
 				Array.Resize(ref buffer, Height * Palette.Size * 4);
+				Array.Resize(ref colorShiftBuffer, Height * 4);
 			}
 
 			if (allowModifiers)
@@ -80,6 +88,21 @@ namespace OpenRA.Graphics
 			else
 				throw new InvalidOperationException($"Palette `{name}` does not exist");
 			CopyBufferToTexture();
+		}
+
+		public void SetColorShift(string name, float hueOffset, float satOffset, float minHue, float maxHue)
+		{
+			var index = GetPaletteIndex(name);
+			colorShiftBuffer[4 * index + 0] = hueOffset;
+			colorShiftBuffer[4 * index + 1] = satOffset;
+			colorShiftBuffer[4 * index + 2] = minHue;
+			colorShiftBuffer[4 * index + 3] = maxHue;
+		}
+
+		public bool HasColorShift(string name)
+		{
+			var index = GetPaletteIndex(name);
+			return colorShiftBuffer[4 * index + 2] != 0 || colorShiftBuffer[4 * index + 3] != 0;
 		}
 
 		public void Initialize()
@@ -102,6 +125,7 @@ namespace OpenRA.Graphics
 		void CopyBufferToTexture()
 		{
 			Texture.SetData(buffer, Palette.Size, Height);
+			ColorShifts.SetFloatData(colorShiftBuffer, 1, Height);
 		}
 
 		public void ApplyModifiers(IEnumerable<IPaletteModifier> paletteMods)
@@ -125,6 +149,7 @@ namespace OpenRA.Graphics
 		public void Dispose()
 		{
 			Texture.Dispose();
+			ColorShifts.Dispose();
 		}
 	}
 }

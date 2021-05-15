@@ -116,14 +116,28 @@ namespace OpenRA.Graphics
 			nv += 6;
 		}
 
+		float ResolveTextureIndex(Sprite s, PaletteReference pal)
+		{
+			if (pal == null)
+				return 0;
+
+			// PERF: Remove useless palette assignments for RGBA sprites
+			// HACK: This is working around the limitation that palettes are defined on traits rather than on sequences,
+			// and can be removed once this has been fixed
+			if (s.Channel == TextureChannel.RGBA && !pal.HasColorShift)
+				return 0;
+
+			return pal.TextureIndex;
+		}
+
 		public void DrawSprite(Sprite s, in float3 location, PaletteReference pal)
 		{
-			DrawSprite(s, location, pal.TextureIndex, s.Size);
+			DrawSprite(s, location, ResolveTextureIndex(s, pal), s.Size);
 		}
 
 		public void DrawSprite(Sprite s, in float3 location, PaletteReference pal, float3 size)
 		{
-			DrawSprite(s, location, pal.TextureIndex, size);
+			DrawSprite(s, location, ResolveTextureIndex(s, pal), size);
 		}
 
 		public void DrawSprite(Sprite s, in float3 a, in float3 b, in float3 c, in float3 d)
@@ -142,7 +156,7 @@ namespace OpenRA.Graphics
 
 		public void DrawSprite(Sprite s, in float3 location, PaletteReference pal, in float3 size, in float3 tint, float alpha)
 		{
-			DrawSprite(s, location, pal.TextureIndex, size, tint, alpha);
+			DrawSprite(s, location, ResolveTextureIndex(s, pal), size, tint, alpha);
 		}
 
 		public void DrawSprite(Sprite s, in float3 a, in float3 b, in float3 c, in float3 d, in float3 tint, float alpha)
@@ -189,9 +203,10 @@ namespace OpenRA.Graphics
 			nv += v.Length;
 		}
 
-		public void SetPalette(ITexture palette)
+		public void SetPalette(ITexture palette, ITexture colorShifts)
 		{
 			shader.SetTexture("Palette", palette);
+			shader.SetTexture("ColorShifts", colorShifts);
 		}
 
 		public void SetViewportParams(Size screen, float depthScale, float depthOffset, int2 scroll)

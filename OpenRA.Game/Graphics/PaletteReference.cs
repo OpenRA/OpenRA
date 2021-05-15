@@ -28,5 +28,7 @@ namespace OpenRA.Graphics
 			this.index = index;
 			this.hardwarePalette = hardwarePalette;
 		}
+
+		public bool HasColorShift => hardwarePalette.HasColorShift(Name);
 	}
 }
