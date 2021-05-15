@@ -58,7 +58,7 @@ BRIK:
 
 E3:
 	Buildable:
-		Prerequisites: ~disabled
+		Queue: Infantry.Nod
 
 E4:
 	Buildable:
