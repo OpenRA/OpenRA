@@ -8,11 +8,12 @@
     <LangVersion>7.3</LangVersion>
     <DebugSymbols>true</DebugSymbols>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <OutputPath>../bin</OutputPath>
+    <EngineRootPath Condition="'$(EngineRootPath)' == ''">..</EngineRootPath>
+    <OutputPath>$(EngineRootPath)/bin</OutputPath>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ExternalConsole>false</ExternalConsole>
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
-    <CodeAnalysisRuleSet>..\OpenRA.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>$(EngineRootPath)/OpenRA.ruleset</CodeAnalysisRuleSet>
     <Nullable>disable</Nullable>
   </PropertyGroup>
 
@@ -48,6 +49,6 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0" PrivateAssets="All" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" />
-    <AdditionalFiles Include="../stylecop.json" />
+    <AdditionalFiles Include="$(EngineRootPath)/stylecop.json" />
   </ItemGroup>
 </Project>
