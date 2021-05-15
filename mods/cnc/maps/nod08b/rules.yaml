@@ -100,10 +100,6 @@ HARV:
 		SearchFromProcRadius: 30
 		SearchFromHarvesterRadius: 30
 
-MTNK:
-	Buildable:
-		Prerequisites: ~weap
-
 HTNK:
 	Buildable:
 		Prerequisites: ~disabled

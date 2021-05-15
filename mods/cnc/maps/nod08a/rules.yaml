@@ -78,10 +78,6 @@ E5:
 E6:
 	-RepairsBridges:
 
-MTNK:
-	Buildable:
-		Prerequisites: ~weap
-
 HTNK:
 	Buildable:
 		Prerequisites: ~disabled
