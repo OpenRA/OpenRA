@@ -95,6 +95,10 @@ E3:
 	Buildable:
 		Prerequisites: ~disabled
 
+E5:
+	Buildable:
+		Prerequisites: ~disabled
+
 HARV:
 	Buildable:
 		Prerequisites: ~disabled
