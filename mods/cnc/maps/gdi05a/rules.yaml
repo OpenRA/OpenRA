@@ -76,10 +76,6 @@ HARV:
 	Buildable:
 		Prerequisites: ~disabled
 
-LTNK:
-	Buildable:
-		Prerequisites: ~afld
-
 MCV:
 	Buildable:
 		Prerequisites: ~disabled
