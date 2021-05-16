@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
@@ -22,6 +23,15 @@ namespace OpenRA.Mods.Common.Commands
 
 	public class DebugVisualizationCommands : IChatCommand, IWorldLoaded
 	{
+		readonly IDictionary<string, (string Description, Action<DebugVisualizations, DeveloperMode> Handler)> commandHandlers = new Dictionary<string, (string Description, Action<DebugVisualizations, DeveloperMode> Handler)>
+		{
+			{ "combat-geometry", ("toggles combat geometry overlay.", CombatGeometry) },
+			{ "render-geometry", ("toggles render geometry overlay.", RenderGeometry) },
+			{ "screen-map", ("toggles screen map overlay.", ScreenMap) },
+			{ "depth-buffer", ("toggles depth buffer overlay.", DepthBuffer) },
+			{ "actor-tags", ("toggles actor tags overlay.", ActorTags) },
+		};
+
 		DebugVisualizations debugVis;
 		DeveloperMode devMode;
 
@@ -39,44 +49,43 @@ namespace OpenRA.Mods.Common.Commands
 			var console = world.WorldActor.Trait<ChatCommands>();
 			var help = world.WorldActor.Trait<HelpCommand>();
 
-			Action<string, string> register = (name, helpText) =>
+			foreach (var command in commandHandlers)
 			{
-				console.RegisterCommand(name, this);
-				help.RegisterHelp(name, helpText);
-			};
+				console.RegisterCommand(command.Key, this);
+				help.RegisterHelp(command.Key, command.Value.Description);
+			}
+		}
 
-			register("showcombatgeometry", "toggles combat geometry overlay.");
-			register("showrendergeometry", "toggles render geometry overlay.");
-			register("showscreenmap", "toggles screen map overlay.");
-			register("showdepthbuffer", "toggles depth buffer overlay.");
-			register("showactortags", "toggles actor tags overlay.");
+		static void CombatGeometry(DebugVisualizations debugVis, DeveloperMode devMode)
+		{
+			debugVis.CombatGeometry ^= true;
+		}
+
+		static void RenderGeometry(DebugVisualizations debugVis, DeveloperMode devMode)
+		{
+			debugVis.RenderGeometry ^= true;
+		}
+
+		static void ScreenMap(DebugVisualizations debugVis, DeveloperMode devMode)
+		{
+			if (devMode == null || devMode.Enabled)
+				debugVis.ScreenMap ^= true;
+		}
+
+		static void DepthBuffer(DebugVisualizations debugVis, DeveloperMode devMode)
+		{
+			debugVis.DepthBuffer ^= true;
+		}
+
+		static void ActorTags(DebugVisualizations debugVis, DeveloperMode devMode)
+		{
+			debugVis.ActorTags ^= true;
 		}
 
 		public void InvokeCommand(string name, string arg)
 		{
-			switch (name)
-			{
-				case "showcombatgeometry":
-					debugVis.CombatGeometry ^= true;
-					break;
-
-				case "showrendergeometry":
-					debugVis.RenderGeometry ^= true;
-					break;
-
-				case "showscreenmap":
-					if (devMode == null || devMode.Enabled)
-						debugVis.ScreenMap ^= true;
-					break;
-
-				case "showdepthbuffer":
-					debugVis.DepthBuffer ^= true;
-					break;
-
-				case "showactortags":
-					debugVis.ActorTags ^= true;
-					break;
-			}
+			if (commandHandlers.TryGetValue(name, out var command))
+				command.Handler(debugVis, devMode);
 		}
 	}
 }
