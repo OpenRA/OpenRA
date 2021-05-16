@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using OpenRA.Primitives;
 using OpenRA.Support;
@@ -20,12 +19,10 @@ namespace OpenRA.Network
 {
 	public sealed class OrderManager : IDisposable
 	{
+		static readonly IEnumerable<Session.Client> NoClients = new Session.Client[] { };
+
 		readonly SyncReport syncReport;
-
-		// These are the clients who we expect to receive orders / sync from before we can simulate the next tick
-		readonly HashSet<int> activeClients = new HashSet<int>();
-
-		readonly Dictionary<int, Queue<byte[]>> pendingPackets = new Dictionary<int, Queue<byte[]>>();
+		readonly FrameData frameData = new FrameData();
 
 		public Session LobbyInfo = new Session();
 		public Session.Client LocalClient => LobbyInfo.ClientWithIndex(Connection.LocalClientId);
@@ -52,7 +49,6 @@ namespace OpenRA.Network
 
 		readonly List<Order> localOrders = new List<Order>();
 		readonly List<Order> localImmediateOrders = new List<Order>();
-		readonly List<(int ClientId, byte[] Packet)> immediatePackets = new List<(int ClientId, byte[] Packet)>();
 
 		readonly List<ChatLine> chatCache = new List<ChatLine>();
 
@@ -61,20 +57,9 @@ namespace OpenRA.Network
 		bool disposed;
 		bool generateSyncReport = false;
 
-		public struct ClientOrder
-		{
-			public int Client;
-			public Order Order;
-
-			public override string ToString()
-			{
-				return $"ClientId: {Client} {Order}";
-			}
-		}
-
 		void OutOfSync(int frame)
 		{
-			syncReport.DumpSyncReport(frame);
+			syncReport.DumpSyncReport(frame, frameData.OrdersForFrame(World, frame));
 			throw new InvalidOperationException($"Out of sync in frame {frame}.\n Compare syncreport.log with other players.");
 		}
 
@@ -129,12 +114,14 @@ namespace OpenRA.Network
 				Connection.SendImmediate(localImmediateOrders.Select(o => o.Serialize()));
 			localImmediateOrders.Clear();
 
+			var immediatePackets = new List<(int ClientId, byte[] Packet)>();
+
 			Connection.Receive(
 				(clientId, packet) =>
 				{
 					var frame = BitConverter.ToInt32(packet, 0);
 					if (packet.Length == 5 && packet[4] == (byte)OrderType.Disconnect)
-						activeClients.Remove(clientId);
+						frameData.ClientQuit(clientId, frame);
 					else if (packet.Length > 4 && packet[4] == (byte)OrderType.SyncHash)
 					{
 						if (packet.Length != 4 + Order.SyncHashOrderLength)
@@ -148,10 +135,7 @@ namespace OpenRA.Network
 					else if (frame == 0)
 						immediatePackets.Add((clientId, packet));
 					else
-					{
-						activeClients.Add(clientId);
-						pendingPackets.GetOrAdd(clientId).Enqueue(packet);
-					}
+						frameData.AddFrameOrders(clientId, frame, packet);
 				});
 
 			foreach (var p in immediatePackets)
@@ -165,8 +149,6 @@ namespace OpenRA.Network
 						return;
 				}
 			}
-
-			immediatePackets.Clear();
 		}
 
 		Dictionary<int, byte[]> syncForFrame = new Dictionary<int, byte[]>();
@@ -187,7 +169,18 @@ namespace OpenRA.Network
 				syncForFrame.Add(frame, packet);
 		}
 
-		public bool IsReadyForNextFrame => GameStarted && activeClients.All(client => pendingPackets[client].Count > 0);
+		public bool IsReadyForNextFrame => GameStarted && frameData.IsReadyForFrame(NetFrameNumber);
+
+		public IEnumerable<Session.Client> GetClientsNotReadyForNextFrame
+		{
+			get
+			{
+				return GameStarted
+					? frameData.ClientsNotReadyForFrame(NetFrameNumber)
+						.Select(a => LobbyInfo.ClientWithIndex(a))
+					: NoClients;
+			}
+		}
 
 		public void Tick()
 		{
@@ -199,26 +192,8 @@ namespace OpenRA.Network
 
 			localOrders.Clear();
 
-			var clientOrders = new List<ClientOrder>();
-
-			foreach (var clientId in activeClients)
-			{
-				// The IsReadyForNextFrame check above guarantees that all clients have sent a packet
-				var frameData = pendingPackets[clientId].Dequeue();
-
-				// Orders are synchronised by sending an initial FramesAhead set of empty packets
-				// and then making sure that we enqueue and process exactly one packet for each player each tick.
-				// This may change in the future, so sanity check that the orders are for the frame we expect
-				// and crash early instead of risking desyncs.
-				var frameNumber = BitConverter.ToInt32(frameData, 0);
-				if (frameNumber != NetFrameNumber)
-					throw new InvalidDataException($"Attempted to process orders from client {clientId} for frame {frameNumber} on frame {NetFrameNumber}");
-				foreach (var order in frameData.ToOrderList(World))
-				{
-					UnitOrders.ProcessOrder(this, World, clientId, order);
-					clientOrders.Add(new ClientOrder { Client = clientId, Order = order });
-				}
-			}
+			foreach (var order in frameData.OrdersForFrame(World, NetFrameNumber))
+				UnitOrders.ProcessOrder(this, World, order.Client, order.Order);
 
 			if (NetFrameNumber + FramesAhead >= GameSaveLastSyncFrame)
 			{
@@ -234,7 +209,7 @@ namespace OpenRA.Network
 
 			if (generateSyncReport)
 				using (new PerfSample("sync_report"))
-					syncReport.UpdateSyncReport(clientOrders);
+					syncReport.UpdateSyncReport();
 
 			++NetFrameNumber;
 		}
