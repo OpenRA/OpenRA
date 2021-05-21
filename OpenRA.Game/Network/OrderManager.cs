@@ -22,9 +22,6 @@ namespace OpenRA.Network
 	{
 		readonly SyncReport syncReport;
 
-		// These are the clients who we expect to receive orders / sync from before we can simulate the next tick
-		readonly HashSet<int> activeClients = new HashSet<int>();
-
 		readonly Dictionary<int, Queue<byte[]>> pendingPackets = new Dictionary<int, Queue<byte[]>>();
 
 		public Session LobbyInfo = new Session();
@@ -52,7 +49,6 @@ namespace OpenRA.Network
 
 		readonly List<Order> localOrders = new List<Order>();
 		readonly List<Order> localImmediateOrders = new List<Order>();
-		readonly List<(int ClientId, byte[] Packet)> immediatePackets = new List<(int ClientId, byte[] Packet)>();
 
 		readonly List<ChatLine> chatCache = new List<ChatLine>();
 
@@ -82,6 +78,10 @@ namespace OpenRA.Network
 		{
 			if (GameStarted)
 				return;
+
+			foreach (var client in LobbyInfo.Clients)
+				if (!client.IsBot)
+					pendingPackets.Add(client.Index, new Queue<byte[]>());
 
 			// Generating sync reports is expensive, so only do it if we have
 			// other players to compare against if a desync did occur
@@ -132,9 +132,13 @@ namespace OpenRA.Network
 			Connection.Receive(
 				(clientId, packet) =>
 				{
+					// HACK: The shellmap relies on ticking a disposed OM
+					if (disposed && World.Type != WorldType.Shellmap)
+						return;
+
 					var frame = BitConverter.ToInt32(packet, 0);
 					if (packet.Length == 5 && packet[4] == (byte)OrderType.Disconnect)
-						activeClients.Remove(clientId);
+						pendingPackets.Remove(clientId);
 					else if (packet.Length > 4 && packet[4] == (byte)OrderType.SyncHash)
 					{
 						if (packet.Length != 4 + Order.SyncHashOrderLength)
@@ -146,27 +150,24 @@ namespace OpenRA.Network
 						CheckSync(packet);
 					}
 					else if (frame == 0)
-						immediatePackets.Add((clientId, packet));
+					{
+						foreach (var o in packet.ToOrderList(World))
+						{
+							UnitOrders.ProcessOrder(this, World, clientId, o);
+
+							// A mod switch or other event has pulled the ground from beneath us
+							if (disposed)
+								return;
+						}
+					}
 					else
 					{
-						activeClients.Add(clientId);
-						pendingPackets.GetOrAdd(clientId).Enqueue(packet);
+						if (pendingPackets.TryGetValue(clientId, out var queue))
+							queue.Enqueue(packet);
+						else
+							Log.Write("debug", $"Received packet from disconnected client '{clientId}'");
 					}
 				});
-
-			foreach (var p in immediatePackets)
-			{
-				foreach (var o in p.Packet.ToOrderList(World))
-				{
-					UnitOrders.ProcessOrder(this, World, p.ClientId, o);
-
-					// A mod switch or other event has pulled the ground from beneath us
-					if (disposed)
-						return;
-				}
-			}
-
-			immediatePackets.Clear();
 		}
 
 		Dictionary<int, byte[]> syncForFrame = new Dictionary<int, byte[]>();
@@ -187,7 +188,7 @@ namespace OpenRA.Network
 				syncForFrame.Add(frame, packet);
 		}
 
-		public bool IsReadyForNextFrame => GameStarted && activeClients.All(client => pendingPackets[client].Count > 0);
+		public bool IsReadyForNextFrame => GameStarted && pendingPackets.All(p => p.Value.Count > 0);
 
 		public void Tick()
 		{
@@ -201,10 +202,10 @@ namespace OpenRA.Network
 
 			var clientOrders = new List<ClientOrder>();
 
-			foreach (var clientId in activeClients)
+			foreach (var (clientId, clientPackets) in pendingPackets)
 			{
 				// The IsReadyForNextFrame check above guarantees that all clients have sent a packet
-				var frameData = pendingPackets[clientId].Dequeue();
+				var frameData = clientPackets.Dequeue();
 
 				// Orders are synchronised by sending an initial FramesAhead set of empty packets
 				// and then making sure that we enqueue and process exactly one packet for each player each tick.
