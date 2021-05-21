@@ -153,6 +153,7 @@ namespace OpenRA.Network
 			public bool IsReady => State == ClientState.Ready;
 			public bool IsInvalid => State == ClientState.Invalid;
 			public bool IsObserver => Slot == null;
+			public bool IsBot => Bot != null;
 
 			// Linked to the online player database
 			public string Fingerprint;
