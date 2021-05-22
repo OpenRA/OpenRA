@@ -129,6 +129,10 @@ QTNK:
 	Buildable:
 		Prerequisites: ~disabled
 
+THF:
+	Buildable:
+		Prerequisites: ~disabled
+
 CAMERA.Large:
 	Inherits: CAMERA
 	# Required for YakAttack to work
