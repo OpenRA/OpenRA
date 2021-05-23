@@ -18,7 +18,6 @@ World:
 			hard: Hard
 			tough: Real tough guy
 		Default: normal
-		Locked: false
 
 Player:
 	PlayerResources:
