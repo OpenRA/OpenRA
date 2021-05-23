@@ -11,7 +11,7 @@ World:
 		Values:
 			normal: Normal
 			hard: Hard
-		Default: Normal
+		Default: normal
 
 Player:
 	PlayerResources:
