@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Sockets;
 
 namespace OpenRA.Server
@@ -130,6 +131,8 @@ namespace OpenRA.Server
 				}
 			}
 		}
+
+		public EndPoint EndPoint => Socket.RemoteEndPoint;
 	}
 
 	public enum ReceiveState { Header, Data }

@@ -421,8 +421,7 @@ namespace OpenRA.Server
 			{
 				if (State == ServerState.GameStarted)
 				{
-					Log.Write("server", "Rejected connection from {0}; game is already started.",
-						newConn.Socket.RemoteEndPoint);
+					Log.Write("server", "Rejected connection from {0}; game is already started.", newConn.EndPoint);
 
 					SendOrderTo(newConn, "ServerError", "The game has already started");
 					DropClient(newConn);
@@ -439,7 +438,7 @@ namespace OpenRA.Server
 					return;
 				}
 
-				var ipAddress = ((IPEndPoint)newConn.Socket.RemoteEndPoint).Address;
+				var ipAddress = ((IPEndPoint)newConn.EndPoint).Address;
 				var client = new Session.Client
 				{
 					Name = OpenRA.Settings.SanitizedPlayerName(handshake.Client.Name),
@@ -459,7 +458,7 @@ namespace OpenRA.Server
 				if (ModData.Manifest.Id != handshake.Mod)
 				{
 					Log.Write("server", "Rejected connection from {0}; mods do not match.",
-						newConn.Socket.RemoteEndPoint);
+						newConn.EndPoint);
 
 					SendOrderTo(newConn, "ServerError", "Server is running an incompatible mod");
 					DropClient(newConn);
@@ -468,8 +467,7 @@ namespace OpenRA.Server
 
 				if (ModData.Manifest.Metadata.Version != handshake.Version)
 				{
-					Log.Write("server", "Rejected connection from {0}; Not running the same version.",
-						newConn.Socket.RemoteEndPoint);
+					Log.Write("server", "Rejected connection from {0}; Not running the same version.", newConn.EndPoint);
 
 					SendOrderTo(newConn, "ServerError", "Server is running an incompatible version");
 					DropClient(newConn);
@@ -479,7 +477,7 @@ namespace OpenRA.Server
 				if (handshake.OrdersProtocol != ProtocolVersion.Orders)
 				{
 					Log.Write("server", "Rejected connection from {0}; incompatible Orders protocol version {1}.",
-						newConn.Socket.RemoteEndPoint, handshake.OrdersProtocol);
+						newConn.EndPoint, handshake.OrdersProtocol);
 
 					SendOrderTo(newConn, "ServerError", "Server is running an incompatible protocol");
 					DropClient(newConn);
@@ -490,7 +488,7 @@ namespace OpenRA.Server
 				var bans = Settings.Ban.Union(TempBans);
 				if (bans.Contains(client.IPAddress))
 				{
-					Log.Write("server", "Rejected connection from {0}; Banned.", newConn.Socket.RemoteEndPoint);
+					Log.Write("server", "Rejected connection from {0}; Banned.", newConn.EndPoint);
 					SendOrderTo(newConn, "ServerError", $"You have been {(Settings.Ban.Contains(client.IPAddress) ? "banned" : "temporarily banned")} from the server");
 					DropClient(newConn);
 					return;
@@ -524,20 +522,17 @@ namespace OpenRA.Server
 						var clientPing = new Session.ClientPing { Index = client.Index };
 						LobbyInfo.ClientPings.Add(clientPing);
 
-						Log.Write("server", "Client {0}: Accepted connection from {1}.",
-							newConn.PlayerIndex, newConn.Socket.RemoteEndPoint);
+						Log.Write("server", "Client {0}: Accepted connection from {1}.", newConn.PlayerIndex, newConn.EndPoint);
 
 						if (client.Fingerprint != null)
-							Log.Write("server", "Client {0}: Player fingerprint is {1}.",
-								newConn.PlayerIndex, client.Fingerprint);
+							Log.Write("server", "Client {0}: Player fingerprint is {1}.", newConn.PlayerIndex, client.Fingerprint);
 
 						foreach (var t in serverTraits.WithInterface<IClientJoined>())
 							t.ClientJoined(this, newConn);
 
 						SyncLobbyInfo();
 
-						Log.Write("server", "{0} ({1}) has joined the game.",
-							client.Name, newConn.Socket.RemoteEndPoint);
+						Log.Write("server", "{0} ({1}) has joined the game.", client.Name, newConn.EndPoint);
 
 						// Report to all other players
 						SendMessage($"{client.Name} has joined the game.", newConn);
@@ -595,29 +590,29 @@ namespace OpenRA.Server
 								if (!profile.KeyRevoked && CryptoUtil.VerifySignature(parameters, newConn.AuthToken, handshake.AuthSignature))
 								{
 									client.Fingerprint = handshake.Fingerprint;
-									Log.Write("server", "{0} authenticated as {1} (UID {2})", newConn.Socket.RemoteEndPoint,
+									Log.Write("server", "{0} authenticated as {1} (UID {2})", newConn.EndPoint,
 										profile.ProfileName, profile.ProfileID);
 								}
 								else if (profile.KeyRevoked)
 								{
 									profile = null;
-									Log.Write("server", "{0} failed to authenticate as {1} (key revoked)", newConn.Socket.RemoteEndPoint, handshake.Fingerprint);
+									Log.Write("server", "{0} failed to authenticate as {1} (key revoked)", newConn.EndPoint, handshake.Fingerprint);
 								}
 								else
 								{
 									profile = null;
 									Log.Write("server", "{0} failed to authenticate as {1} (signature verification failed)",
-										newConn.Socket.RemoteEndPoint, handshake.Fingerprint);
+										newConn.EndPoint, handshake.Fingerprint);
 								}
 							}
 							else
 								Log.Write("server", "{0} failed to authenticate as {1} (invalid server response: `{2}` is not `Player`)",
-									newConn.Socket.RemoteEndPoint, handshake.Fingerprint, yaml.Key);
+									newConn.EndPoint, handshake.Fingerprint, yaml.Key);
 						}
 						catch (Exception ex)
 						{
 							Log.Write("server", "{0} failed to authenticate as {1} (exception occurred)",
-								newConn.Socket.RemoteEndPoint, handshake.Fingerprint);
+								newConn.EndPoint, handshake.Fingerprint);
 							Log.Write("server", ex.ToString());
 						}
 
@@ -630,16 +625,16 @@ namespace OpenRA.Server
 
 							if (notAuthenticated)
 							{
-								Log.Write("server", "Rejected connection from {0}; Not authenticated.", newConn.Socket.RemoteEndPoint);
+								Log.Write("server", "Rejected connection from {0}; Not authenticated.", newConn.EndPoint);
 								SendOrderTo(newConn, "ServerError", "Server requires players to have an OpenRA forum account");
 								DropClient(newConn);
 							}
 							else if (blacklisted || notWhitelisted)
 							{
 								if (blacklisted)
-									Log.Write("server", "Rejected connection from {0}; In server blacklist.", newConn.Socket.RemoteEndPoint);
+									Log.Write("server", "Rejected connection from {0}; In server blacklist.", newConn.EndPoint);
 								else
-									Log.Write("server", "Rejected connection from {0}; Not in server whitelist.", newConn.Socket.RemoteEndPoint);
+									Log.Write("server", "Rejected connection from {0}; Not in server whitelist.", newConn.EndPoint);
 
 								SendOrderTo(newConn, "ServerError", "You do not have permission to join this server");
 								DropClient(newConn);
@@ -655,7 +650,7 @@ namespace OpenRA.Server
 				{
 					if (Type == ServerType.Dedicated && (Settings.RequireAuthentication || Settings.ProfileIDWhitelist.Any()))
 					{
-						Log.Write("server", "Rejected connection from {0}; Not authenticated.", newConn.Socket.RemoteEndPoint);
+						Log.Write("server", "Rejected connection from {0}; Not authenticated.", newConn.EndPoint);
 						SendOrderTo(newConn, "ServerError", "Server requires players to have an OpenRA forum account");
 						DropClient(newConn);
 					}
@@ -665,7 +660,7 @@ namespace OpenRA.Server
 			}
 			catch (Exception ex)
 			{
-				Log.Write("server", "Dropping connection {0} because an error occurred:", newConn.Socket.RemoteEndPoint);
+				Log.Write("server", "Dropping connection {0} because an error occurred:", newConn.EndPoint);
 				Log.Write("server", ex.ToString());
 				DropClient(newConn);
 			}
@@ -873,7 +868,7 @@ namespace OpenRA.Server
 					else
 					{
 						Log.Write("server", "Rejected connection from {0}; Order `{1}` is not a `HandshakeResponse`.",
-							conn.Socket.RemoteEndPoint, o.OrderString);
+							conn.EndPoint, o.OrderString);
 
 						DropClient(conn);
 					}

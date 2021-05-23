@@ -144,7 +144,7 @@ namespace OpenRA.Mods.Common.Server
 				}
 
 				client.State = state;
-				Log.Write("server", "Player @{0} is {1}", conn.Socket.RemoteEndPoint, client.State);
+				Log.Write("server", "Player @{0} is {1}", conn.EndPoint, client.State);
 
 				server.SyncLobbyClients();
 				CheckAutoStart(server);
@@ -759,7 +759,7 @@ namespace OpenRA.Mods.Common.Server
 				if (sanitizedName == client.Name)
 					return true;
 
-				Log.Write("server", "Player@{0} is now known as {1}.", conn.Socket.RemoteEndPoint, sanitizedName);
+				Log.Write("server", "Player@{0} is now known as {1}.", conn.EndPoint, sanitizedName);
 				server.SendMessage($"{client.Name} is now known as {sanitizedName}.");
 				client.Name = sanitizedName;
 				server.SyncLobbyClients();
