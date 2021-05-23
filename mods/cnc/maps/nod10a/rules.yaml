@@ -29,8 +29,7 @@ World:
 			easy: Easy
 			normal: Normal
 			hard: Hard
-		Default: easy
-		Locked: false
+		Default: normal
 	-LegacyBridgeLayer:
 
 ^CivBuilding:

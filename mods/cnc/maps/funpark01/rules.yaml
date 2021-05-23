@@ -16,8 +16,7 @@ World:
 		Values:
 			easy: Easy
 			normal: Normal
-		Default: easy
-		Locked: false
+		Default: normal
 
 Player:
 	EnemyWatcher:
