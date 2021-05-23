@@ -132,6 +132,29 @@ namespace OpenRA.Server
 			}
 		}
 
+		public void SendData(byte[] data)
+		{
+			var start = 0;
+			var length = data.Length;
+
+			// Non-blocking sends are free to send only part of the data
+			while (start < length)
+			{
+				var sent = Socket.Send(data, start, length - start, SocketFlags.None, out var error);
+				if (error == SocketError.WouldBlock)
+				{
+					Log.Write("server", "Non-blocking send of {0} bytes failed. Falling back to blocking send.", length - start);
+					Socket.Blocking = true;
+					sent = Socket.Send(data, start, length - start, SocketFlags.None);
+					Socket.Blocking = false;
+				}
+				else if (error != SocketError.Success)
+					throw new SocketException((int)error);
+
+				start += sent;
+			}
+		}
+
 		public EndPoint EndPoint => Socket.RemoteEndPoint;
 	}
 
