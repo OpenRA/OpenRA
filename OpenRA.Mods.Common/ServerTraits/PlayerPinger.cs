@@ -41,13 +41,16 @@ namespace OpenRA.Mods.Common.Server
 					nonBotClientCount = server.LobbyInfo.NonBotClients.Count();
 
 				if (nonBotClientCount < 2 && server.Type != ServerType.Dedicated)
+				{
 					foreach (var c in server.Conns.ToList())
-						server.SendOrderTo(c, "Ping", Game.RunTime.ToString());
+						if (c.Validated)
+							server.SendOrderTo(c, "Ping", Game.RunTime.ToString());
+				}
 				else
 				{
 					foreach (var c in server.Conns.ToList())
 					{
-						if (c == null || c.Socket == null)
+						if (!c.Validated)
 							continue;
 
 						var client = server.GetClient(c);
@@ -79,14 +82,11 @@ namespace OpenRA.Mods.Common.Server
 						lastConnReport = Game.RunTime;
 
 						var timeouts = server.Conns
-							.Where(c => c.TimeSinceLastResponse > ConnReportInterval && c.TimeSinceLastResponse < ConnTimeout)
+							.Where(c => c.Validated && c.TimeSinceLastResponse > ConnReportInterval && c.TimeSinceLastResponse < ConnTimeout)
 							.OrderBy(c => c.TimeSinceLastResponse);
 
 						foreach (var c in timeouts)
 						{
-							if (c == null || c.Socket == null)
-								continue;
-
 							var client = server.GetClient(c);
 							if (client != null)
 								server.SendMessage($"{client.Name} will be dropped in {(ConnTimeout - c.TimeSinceLastResponse) / 1000} seconds.");
