@@ -645,7 +645,7 @@ namespace OpenRA.Mods.Common.Server
 
 				Exts.TryParseIntegerInvariant(split[0], out var kickClientID);
 
-				var kickConn = server.Conns.SingleOrDefault(c => server.GetClient(c) != null && server.GetClient(c).Index == kickClientID);
+				var kickConn = server.Conns.SingleOrDefault(c => server.GetClient(c)?.Index == kickClientID);
 				if (kickConn == null)
 				{
 					server.SendOrderTo(conn, "Message", "No-one in that slot.");
@@ -690,7 +690,7 @@ namespace OpenRA.Mods.Common.Server
 				}
 
 				Exts.TryParseIntegerInvariant(s, out var newAdminId);
-				var newAdminConn = server.Conns.SingleOrDefault(c => server.GetClient(c) != null && server.GetClient(c).Index == newAdminId);
+				var newAdminConn = server.Conns.SingleOrDefault(c => server.GetClient(c)?.Index == newAdminId);
 
 				if (newAdminConn == null)
 				{
@@ -727,7 +727,7 @@ namespace OpenRA.Mods.Common.Server
 				}
 
 				Exts.TryParseIntegerInvariant(s, out var targetId);
-				var targetConn = server.Conns.SingleOrDefault(c => server.GetClient(c) != null && server.GetClient(c).Index == targetId);
+				var targetConn = server.Conns.SingleOrDefault(c => server.GetClient(c)?.Index == targetId);
 
 				if (targetConn == null)
 				{
