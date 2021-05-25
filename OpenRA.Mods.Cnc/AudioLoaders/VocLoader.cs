@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Cnc.AudioLoaders
 			}
 			catch
 			{
-				// Not a (supported) WAV
+				// Not a (supported) VOC
 			}
 
 			sound = null;
@@ -352,7 +352,7 @@ namespace OpenRA.Mods.Cnc.AudioLoaders
 
 		public class VocStream : Stream
 		{
-			VocFormat format;
+			readonly VocFormat format;
 			public VocStream(VocFormat format)
 			{
 				this.format = format;
