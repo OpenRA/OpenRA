@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Network;
 using OpenRA.Primitives;
 using OpenRA.Support;
 
@@ -24,7 +25,7 @@ namespace OpenRA.Widgets
 
 		public static Widget Root = new ContainerWidget();
 
-		public static long LastTickTime = Game.RunTime;
+		public static TickTime LastTickTime = new TickTime(() => Timestep, Game.RunTime);
 
 		static readonly Stack<Widget> WindowList = new Stack<Widget>();
 

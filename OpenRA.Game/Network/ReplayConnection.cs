@@ -26,7 +26,7 @@ namespace OpenRA.Network
 		}
 
 		Queue<Chunk> chunks = new Queue<Chunk>();
-		List<byte[]> sync = new List<byte[]>();
+		Queue<byte[]> sync = new Queue<byte[]>();
 
 		readonly int orderLatency;
 		int ordersFrame;
@@ -139,7 +139,7 @@ namespace OpenRA.Network
 			var ms = new MemoryStream(4 + syncData.Length);
 			ms.WriteArray(BitConverter.GetBytes(frame));
 			ms.WriteArray(syncData);
-			sync.Add(ms.GetBuffer());
+			sync.Enqueue(ms.GetBuffer());
 
 			// Store the current frame so Receive() can return the next chunk of orders.
 			ordersFrame = frame + orderLatency;
@@ -148,10 +148,7 @@ namespace OpenRA.Network
 		public void Receive(Action<int, byte[]> packetFn)
 		{
 			while (sync.Count != 0)
-			{
-				packetFn(LocalClientId, sync[0]);
-				sync.RemoveAt(0);
-			}
+				packetFn(LocalClientId, sync.Dequeue());
 
 			while (chunks.Count != 0 && chunks.Peek().Frame <= ordersFrame)
 				foreach (var o in chunks.Dequeue().Packets)

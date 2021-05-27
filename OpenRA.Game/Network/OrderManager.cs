@@ -15,6 +15,7 @@ using System.IO;
 using System.Linq;
 using OpenRA.Primitives;
 using OpenRA.Support;
+using OpenRA.Widgets;
 
 namespace OpenRA.Network
 {
@@ -35,7 +36,7 @@ namespace OpenRA.Network
 		public int LocalFrameNumber;
 		public int FramesAhead = 0;
 
-		public long LastTickTime = Game.RunTime;
+		public TickTime LastTickTime;
 
 		public bool GameStarted => NetFrameNumber != 0;
 		public IConnection Connection { get; private set; }
@@ -84,6 +85,8 @@ namespace OpenRA.Network
 			generateSyncReport = !(Connection is ReplayConnection) && LobbyInfo.GlobalSettings.EnableSyncReports;
 
 			NetFrameNumber = 1;
+			LocalFrameNumber = 0;
+			LastTickTime.Value = Game.RunTime;
 
 			if (GameSaveLastFrame < 0)
 				for (var i = NetFrameNumber; i <= FramesAhead; i++)
@@ -95,6 +98,8 @@ namespace OpenRA.Network
 			Connection = conn;
 			syncReport = new SyncReport(this);
 			AddTextNotification += CacheTextNotification;
+
+			LastTickTime = new TickTime(() => SuggestedTimestep, Game.RunTime);
 		}
 
 		public void IssueOrders(Order[] orders)
@@ -117,12 +122,15 @@ namespace OpenRA.Network
 			notificationsCache.Add(notification);
 		}
 
-		public void TickImmediate()
+		void SendImmediateOrders()
 		{
 			if (localImmediateOrders.Count != 0 && GameSaveLastFrame < NetFrameNumber + FramesAhead)
 				Connection.SendImmediate(localImmediateOrders.Select(o => o.Serialize()));
 			localImmediateOrders.Clear();
+		}
 
+		void ReceiveAllOrdersAndCheckSync()
+		{
 			Connection.Receive(
 				(clientId, packet) =>
 				{
@@ -184,18 +192,39 @@ namespace OpenRA.Network
 				syncForFrame.Add(frame, packet);
 		}
 
-		public bool IsReadyForNextFrame => GameStarted && pendingPackets.All(p => p.Value.Count > 0);
+		bool IsReadyForNextFrame => GameStarted && pendingPackets.All(p => p.Value.Count > 0);
 
-		public void Tick()
+		int SuggestedTimestep
 		{
-			if (!IsReadyForNextFrame)
-				throw new InvalidOperationException();
+			get
+			{
+				if (World == null)
+					return Ui.Timestep;
+
+				if (World.IsLoadingGameSave)
+					return 1;
+
+				if (World.IsReplay)
+					return World.ReplayTimestep;
+
+				return World.Timestep;
+			}
+		}
+
+		void SendOrders()
+		{
+			if (!GameStarted)
+				return;
 
 			if (GameSaveLastFrame < NetFrameNumber + FramesAhead)
+			{
 				Connection.Send(NetFrameNumber + FramesAhead, localOrders.Select(o => o.Serialize()).ToList());
+				localOrders.Clear();
+			}
+		}
 
-			localOrders.Clear();
-
+		void ProcessOrders()
+		{
 			var clientOrders = new List<ClientOrder>();
 
 			foreach (var (clientId, clientPackets) in pendingPackets)
@@ -210,6 +239,7 @@ namespace OpenRA.Network
 				var frameNumber = BitConverter.ToInt32(frameData, 0);
 				if (frameNumber != NetFrameNumber)
 					throw new InvalidDataException($"Attempted to process orders from client {clientId} for frame {frameNumber} on frame {NetFrameNumber}");
+
 				foreach (var order in frameData.ToOrderList(World))
 				{
 					UnitOrders.ProcessOrder(this, World, clientId, order);
@@ -241,5 +271,44 @@ namespace OpenRA.Network
 			disposed = true;
 			Connection?.Dispose();
 		}
+
+		public void TickImmediate()
+		{
+			SendImmediateOrders();
+
+			ReceiveAllOrdersAndCheckSync();
+		}
+
+		public bool TryTick()
+		{
+			var shouldTick = true;
+
+			if (IsNetTick)
+			{
+				// Check whether or not we will be ready for a tick next frame
+				// We don't need to include ourselves in the equation because we can always generate orders this frame
+				shouldTick = pendingPackets.All(p => p.Key == Connection.LocalClientId || p.Value.Count > 0);
+
+				// Send orders only if we are currently ready, this prevents us sending orders too soon if we are
+				// stalling
+				if (shouldTick)
+					SendOrders();
+			}
+
+			var willTick = shouldTick;
+			if (willTick && IsNetTick)
+			{
+				willTick = IsReadyForNextFrame;
+				if (willTick)
+					ProcessOrders();
+			}
+
+			if (willTick)
+				LocalFrameNumber++;
+
+			return willTick;
+		}
+
+		bool IsNetTick => LocalFrameNumber % Game.NetTickScale == 0;
 	}
 }

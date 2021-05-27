@@ -24,10 +24,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var timer = widget.GetOrNull<LabelWidget>("GAME_TIMER");
 			var status = widget.GetOrNull<LabelWidget>("GAME_TIMER_STATUS");
 			var tlm = world.WorldActor.TraitOrDefault<TimeLimitManager>();
-			var startTick = Ui.LastTickTime;
+			var startTick = Ui.LastTickTime.Value;
 
 			Func<bool> shouldShowStatus = () => (world.Paused || world.ReplayTimestep != world.Timestep)
-				&& (Ui.LastTickTime - startTick) / 1000 % 2 == 0;
+				&& (Ui.LastTickTime.Value - startTick) / 1000 % 2 == 0;
 
 			Func<string> statusText = () =>
 			{
