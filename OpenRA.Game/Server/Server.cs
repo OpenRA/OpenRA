@@ -42,7 +42,7 @@ namespace OpenRA.Server
 		Dedicated = 2
 	}
 
-	public class Server
+	public sealed class Server
 	{
 		public readonly string TwoHumansRequiredText = "This server requires at least two human players to start a match.";
 
@@ -66,7 +66,7 @@ namespace OpenRA.Server
 		readonly TypeDictionary serverTraits = new TypeDictionary();
 		readonly PlayerDatabase playerDatabase;
 
-		protected volatile ServerState internalState = ServerState.WaitingPlayers;
+		volatile ServerState internalState = ServerState.WaitingPlayers;
 
 		readonly BlockingCollection<IServerEvent> events = new BlockingCollection<IServerEvent>();
 
@@ -77,7 +77,7 @@ namespace OpenRA.Server
 		public ServerState State
 		{
 			get => internalState;
-			protected set => internalState = value;
+			set => internalState = value;
 		}
 
 		public static void SyncClientToPlayerReference(Session.Client c, PlayerReference pr)
@@ -779,7 +779,7 @@ namespace OpenRA.Server
 			RecordOrder(frame, data, from);
 		}
 
-		public void DispatchOrders(Connection conn, int frame, byte[] data)
+		public void ReceiveOrders(Connection conn, int frame, byte[] data)
 		{
 			if (frame == 0)
 				InterpretServerOrders(conn, data);
@@ -1298,7 +1298,7 @@ namespace OpenRA.Server
 
 			void IServerEvent.Invoke(Server server)
 			{
-				server.DispatchOrders(connection, frame, data);
+				server.ReceiveOrders(connection, frame, data);
 			}
 		}
 
