@@ -69,8 +69,7 @@ namespace OpenRA.Mods.Common.Traits
 				yield return new LineAnnotationRenderable(self.CenterPosition, self.CenterPosition + height, 1, Color.Orange);
 			}
 
-			var activeShapes = shapes.Where(Exts.IsTraitEnabled);
-			foreach (var s in activeShapes)
+			foreach (var s in shapes)
 				foreach (var r in s.RenderDebugOverlay(self, wr))
 					yield return r;
 

@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.HitShapes
@@ -125,7 +126,7 @@ namespace OpenRA.Mods.Common.HitShapes
 			return DistanceFromEdge((pos - new WPos(origin.X, origin.Y, pos.Z)).Rotate(-orientation));
 		}
 
-		IEnumerable<IRenderable> IHitShape.RenderDebugOverlay(WorldRenderer wr, WPos origin, WRot orientation)
+		IEnumerable<IRenderable> IHitShape.RenderDebugOverlay(HitShape hs, WorldRenderer wr, WPos origin, WRot orientation)
 		{
 			orientation += WRot.FromYaw(LocalYaw);
 
@@ -134,11 +135,13 @@ namespace OpenRA.Mods.Common.HitShapes
 			var side1 = combatOverlayVertsSide1.Select(v => origin + v.Rotate(orientation)).ToArray();
 			var side2 = combatOverlayVertsSide2.Select(v => origin + v.Rotate(orientation)).ToArray();
 
-			yield return new PolygonAnnotationRenderable(vertsTop, origin, 1, Color.Yellow);
-			yield return new PolygonAnnotationRenderable(vertsBottom, origin, 1, Color.Yellow);
-			yield return new PolygonAnnotationRenderable(side1, origin, 1, Color.Yellow);
-			yield return new PolygonAnnotationRenderable(side2, origin, 1, Color.Yellow);
-			yield return new CircleAnnotationRenderable(origin, OuterRadius, 1, Color.LimeGreen);
+			var shapeColor = hs.IsTraitDisabled ? Color.LightGray : Color.Yellow;
+
+			yield return new PolygonAnnotationRenderable(vertsTop, origin, 1, shapeColor);
+			yield return new PolygonAnnotationRenderable(vertsBottom, origin, 1, shapeColor);
+			yield return new PolygonAnnotationRenderable(side1, origin, 1, shapeColor);
+			yield return new PolygonAnnotationRenderable(side2, origin, 1, shapeColor);
+			yield return new CircleAnnotationRenderable(origin, OuterRadius, 1, hs.IsTraitDisabled ? Color.Gray : Color.LimeGreen);
 		}
 	}
 }

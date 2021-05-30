@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.HitShapes
@@ -92,7 +93,7 @@ namespace OpenRA.Mods.Common.HitShapes
 			return DistanceFromEdge((pos - new WPos(origin.X, origin.Y, pos.Z)).Rotate(-orientation));
 		}
 
-		IEnumerable<IRenderable> IHitShape.RenderDebugOverlay(WorldRenderer wr, WPos origin, WRot orientation)
+		IEnumerable<IRenderable> IHitShape.RenderDebugOverlay(HitShape hs, WorldRenderer wr, WPos origin, WRot orientation)
 		{
 			var a = origin + new WVec(PointA.X, PointA.Y, VerticalTopOffset).Rotate(orientation);
 			var b = origin + new WVec(PointB.X, PointB.Y, VerticalTopOffset).Rotate(orientation);
@@ -104,15 +105,17 @@ namespace OpenRA.Mods.Common.HitShapes
 			var offset2 = new WVec(aa.Y - bb.Y, bb.X - aa.X, 0);
 			offset2 = offset2 * Radius.Length / offset2.Length;
 
-			yield return new CircleAnnotationRenderable(a, Radius, 1, Color.Yellow);
-			yield return new CircleAnnotationRenderable(b, Radius, 1, Color.Yellow);
-			yield return new CircleAnnotationRenderable(aa, Radius, 1, Color.Yellow);
-			yield return new CircleAnnotationRenderable(bb, Radius, 1, Color.Yellow);
-			yield return new CircleAnnotationRenderable(origin, OuterRadius, 1,  Color.LimeGreen);
-			yield return new LineAnnotationRenderable(a - offset1, b - offset1, 1, Color.Yellow);
-			yield return new LineAnnotationRenderable(a + offset1, b + offset1, 1, Color.Yellow);
-			yield return new LineAnnotationRenderable(aa - offset2, bb - offset2, 1, Color.Yellow);
-			yield return new LineAnnotationRenderable(aa + offset2, bb + offset2, 1, Color.Yellow);
+			var shapeColor = hs.IsTraitDisabled ? Color.LightGray : Color.Yellow;
+
+			yield return new CircleAnnotationRenderable(a, Radius, 1, shapeColor);
+			yield return new CircleAnnotationRenderable(b, Radius, 1, shapeColor);
+			yield return new CircleAnnotationRenderable(aa, Radius, 1, shapeColor);
+			yield return new CircleAnnotationRenderable(bb, Radius, 1, shapeColor);
+			yield return new CircleAnnotationRenderable(origin, OuterRadius, 1, hs.IsTraitDisabled ? Color.Gray : Color.LimeGreen);
+			yield return new LineAnnotationRenderable(a - offset1, b - offset1, 1, shapeColor);
+			yield return new LineAnnotationRenderable(a + offset1, b + offset1, 1, shapeColor);
+			yield return new LineAnnotationRenderable(aa - offset2, bb - offset2, 1, shapeColor);
+			yield return new LineAnnotationRenderable(aa + offset2, bb + offset2, 1, shapeColor);
 		}
 	}
 }

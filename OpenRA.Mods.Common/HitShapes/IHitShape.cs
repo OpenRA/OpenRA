@@ -11,6 +11,7 @@
 
 using System.Collections.Generic;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Traits;
 
 namespace OpenRA.Mods.Common.HitShapes
 {
@@ -22,6 +23,6 @@ namespace OpenRA.Mods.Common.HitShapes
 		WDist DistanceFromEdge(WPos pos, WPos origin, WRot orientation);
 
 		void Initialize();
-		IEnumerable<IRenderable> RenderDebugOverlay(WorldRenderer wr, WPos origin, WRot orientation);
+		IEnumerable<IRenderable> RenderDebugOverlay(HitShape hs, WorldRenderer wr, WPos origin, WRot orientation);
 	}
 }
