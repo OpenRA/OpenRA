@@ -133,7 +133,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var origin = turret != null ? self.CenterPosition + turret.Position(self) : self.CenterPosition;
 			var orientation = turret != null ? turret.WorldOrientation : self.Orientation;
-			return Info.Type.RenderDebugOverlay(wr, origin, orientation);
+			return Info.Type.RenderDebugOverlay(this, wr, origin, orientation);
 		}
 	}
 }
