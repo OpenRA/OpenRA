@@ -69,16 +69,18 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class HitShape : ConditionalTrait<HitShapeInfo>, ITargetablePositions
 	{
-		BodyOrientation orientation;
+		readonly BodyOrientation orientation;
 		ITargetableCells targetableCells;
 		Turreted turret;
 
 		public HitShape(Actor self, HitShapeInfo info)
-			: base(info) { }
+			: base(info)
+		{
+			orientation = self.Trait<BodyOrientation>();
+		}
 
 		protected override void Created(Actor self)
 		{
-			orientation = self.Trait<BodyOrientation>();
 			targetableCells = self.TraitOrDefault<ITargetableCells>();
 			turret = self.TraitsImplementing<Turreted>().FirstOrDefault(t => t.Name == Info.Turret);
 
