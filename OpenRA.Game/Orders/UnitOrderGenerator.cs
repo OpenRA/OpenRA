@@ -188,9 +188,9 @@ namespace OpenRA.Orders
 		static Order CheckSameOrder(IOrderTargeter iot, Order order)
 		{
 			if (order == null && iot.OrderID != null)
-				Game.Debug("BUG: in order targeter - decided on {0} but then didn't order", iot.OrderID);
+				TextNotificationsManager.Debug("BUG: in order targeter - decided on {0} but then didn't order", iot.OrderID);
 			else if (order != null && iot.OrderID != order.OrderString)
-				Game.Debug("BUG: in order targeter - decided on {0} but ordered {1}", iot.OrderID, order.OrderString);
+				TextNotificationsManager.Debug("BUG: in order targeter - decided on {0} but ordered {1}", iot.OrderID, order.OrderString);
 			return order;
 		}
 

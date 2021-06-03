@@ -252,7 +252,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 			catch (Exception ex)
 			{
-				Game.Debug("Failed to delete save file '{0}'. See the logs for details.", savePath);
+				TextNotificationsManager.Debug("Failed to delete save file '{0}'. See the logs for details.", savePath);
 				Log.Write("debug", ex.ToString());
 				return;
 			}

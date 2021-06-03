@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Commands
 				if (command.Value != null)
 					command.Value.InvokeCommand(name.ToLowerInvariant(), message.Substring(1 + name.Length).Trim());
 				else
-					Game.Debug("{0} is not a valid command.", name);
+					TextNotificationsManager.Debug("{0} is not a valid command.", name);
 
 				return false;
 			}

@@ -194,7 +194,7 @@ namespace OpenRA.Mods.Common.Scripting
 				return;
 
 			var c = color.HasValue ? color.Value : Color.White;
-			Game.AddChatLine(prefix, c, text);
+			TextNotificationsManager.AddChatLine(prefix, c, text);
 		}
 
 		[Desc("Display a system message to the player. If 'prefix' is nil the default system prefix is used.")]
@@ -204,9 +204,9 @@ namespace OpenRA.Mods.Common.Scripting
 				return;
 
 			if (string.IsNullOrEmpty(prefix))
-				Game.AddSystemLine(text);
+				TextNotificationsManager.AddSystemLine(text);
 			else
-				Game.AddSystemLine(prefix, text);
+				TextNotificationsManager.AddSystemLine(prefix, text);
 		}
 
 		[Desc("Displays a debug message to the player, if \"Show Map Debug Messages\" is checked in the settings.")]
@@ -215,7 +215,7 @@ namespace OpenRA.Mods.Common.Scripting
 			if (string.IsNullOrEmpty(text) || !Game.Settings.Debug.LuaDebug)
 				return;
 
-			Game.Debug(text);
+			TextNotificationsManager.Debug(text);
 		}
 
 		[Desc("Display a text message at the specified location.")]

@@ -36,14 +36,14 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Activate the actor's Airstrike Power. DEPRECATED! Will be removed.")]
 		public void SendAirstrike(WPos target, bool randomize = true, int facing = 0)
 		{
-			Game.Debug("SendAirstrike is deprecated. Use TargetAirstrike instead.");
+			TextNotificationsManager.Debug("SendAirstrike is deprecated. Use TargetAirstrike instead.");
 			ap.SendAirstrike(Self, target, randomize ? (WAngle?)null : WAngle.FromFacing(facing));
 		}
 
 		[Desc("Activate the actor's Airstrike Power. DEPRECATED! Will be removed.")]
 		public void SendAirstrikeFrom(CPos from, CPos to)
 		{
-			Game.Debug("SendAirstrikeFrom is deprecated. Use TargetAirstrike instead.");
+			TextNotificationsManager.Debug("SendAirstrikeFrom is deprecated. Use TargetAirstrike instead.");
 			var i = Self.World.Map.CenterOfCell(from);
 			var j = Self.World.Map.CenterOfCell(to);
 
