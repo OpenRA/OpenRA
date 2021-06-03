@@ -77,7 +77,7 @@ namespace OpenRA.Mods.Common.Scripting
 				if (value.TryGetClrValue(out int facing))
 				{
 					facingInit.Initialize(WAngle.FromFacing(facing));
-					Game.Debug("Initializing Facing with integers is deprecated. Use Angle instead.");
+					TextNotificationsManager.Debug("Initializing Facing with integers is deprecated. Use Angle instead.");
 					return facingInit;
 				}
 			}

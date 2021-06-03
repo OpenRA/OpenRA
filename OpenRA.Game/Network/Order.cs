@@ -212,8 +212,8 @@ namespace OpenRA
 				Log.Write("debug", e.ToString());
 
 				// HACK: this can hopefully go away in the future
-				Game.Debug("Ignoring malformed order that would have crashed the game");
-				Game.Debug("Please file a bug report and include the replay from this match");
+				TextNotificationsManager.Debug("Ignoring malformed order that would have crashed the game");
+				TextNotificationsManager.Debug("Please file a bug report and include the replay from this match");
 
 				return null;
 			}

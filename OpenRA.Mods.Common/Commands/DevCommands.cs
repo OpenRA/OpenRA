@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Common.Commands
 
 			if (!developerMode.Enabled)
 			{
-				Game.Debug("Cheats are disabled.");
+				TextNotificationsManager.Debug("Cheats are disabled.");
 				return;
 			}
 

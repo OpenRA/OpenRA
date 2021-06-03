@@ -320,7 +320,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 			catch (Exception ex)
 			{
-				Game.Debug("Failed to delete map '{0}'. See the debug.log file for details.", map);
+				TextNotificationsManager.Debug("Failed to delete map '{0}'. See the debug.log file for details.", map);
 				Log.Write("debug", ex.ToString());
 			}
 

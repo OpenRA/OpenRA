@@ -273,7 +273,7 @@ namespace OpenRA.Mods.Common.Traits
 					return;
 			}
 
-			Game.Debug("Cheat used: {0} by {1}{2}", order.OrderString, self.Owner.PlayerName, debugSuffix);
+			TextNotificationsManager.Debug("Cheat used: {0} by {1}{2}", order.OrderString, self.Owner.PlayerName, debugSuffix);
 		}
 
 		bool IUnlocksRenderPlayer.RenderPlayerUnlocked => Enabled;

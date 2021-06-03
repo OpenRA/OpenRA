@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Scripting.Global
 
 		void Deprecated()
 		{
-			Game.Debug("The Facing table is deprecated. Use Angle instead.");
+			TextNotificationsManager.Debug("The Facing table is deprecated. Use Angle instead.");
 		}
 
 		public int North { get { Deprecated(); return 0; } }

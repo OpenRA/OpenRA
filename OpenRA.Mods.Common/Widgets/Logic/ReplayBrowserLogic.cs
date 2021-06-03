@@ -499,7 +499,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 			catch (Exception ex)
 			{
-				Game.Debug("Failed to delete replay file '{0}'. See the logs for details.", replay.FilePath);
+				TextNotificationsManager.Debug("Failed to delete replay file '{0}'. See the logs for details.", replay.FilePath);
 				Log.Write("debug", ex.ToString());
 				return;
 			}

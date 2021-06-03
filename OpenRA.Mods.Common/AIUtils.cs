@@ -77,7 +77,7 @@ namespace OpenRA.Mods.Common
 		public static void BotDebug(string s, params object[] args)
 		{
 			if (Game.Settings.Debug.BotDebug)
-				Game.Debug(s, args);
+				TextNotificationsManager.Debug(s, args);
 		}
 	}
 }

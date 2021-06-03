@@ -226,7 +226,7 @@ namespace OpenRA
 
 			if (right.TryGetClrValue(out int c))
 			{
-				Game.Debug("Support for facing calculations mixing Angle with integers is deprecated. Make sure all facing calculations use Angle");
+				TextNotificationsManager.Debug("Support for facing calculations mixing Angle with integers is deprecated. Make sure all facing calculations use Angle");
 				return new LuaCustomClrObject(a + FromFacing(c));
 			}
 
@@ -243,7 +243,7 @@ namespace OpenRA
 
 			if (right.TryGetClrValue(out int c))
 			{
-				Game.Debug("Support for facing calculations mixing Angle with integers is deprecated. Make sure all facing calculations use Angle");
+				TextNotificationsManager.Debug("Support for facing calculations mixing Angle with integers is deprecated. Make sure all facing calculations use Angle");
 				return new LuaCustomClrObject(a - FromFacing(c));
 			}
 
