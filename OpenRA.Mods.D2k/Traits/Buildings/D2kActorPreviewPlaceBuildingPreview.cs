@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -16,6 +16,7 @@ using OpenRA.Mods.Common.Orders;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.Common.Widgets;
 using OpenRA.Primitives;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.D2k.Traits
 {
@@ -27,6 +28,21 @@ namespace OpenRA.Mods.D2k.Traits
 
 		[Desc("Only check for 'unsafe' footprint tiles when you have these prerequisites.")]
 		public readonly string[] RequiresPrerequisites = { };
+
+		[Desc("Sprite image to use for the overlay.")]
+		public readonly string Image = "overlay";
+
+		[SequenceReference("Image")]
+		[Desc("Sprite overlay to use for valid cells.")]
+		public readonly string TileValidName = "build-valid";
+
+		[SequenceReference("Image")]
+		[Desc("Sprite overlay to use for invalid cells.")]
+		public readonly string TileInvalidName = "build-invalid";
+
+		[SequenceReference("Image")]
+		[Desc("Sprite overlay to use for blocked cells.")]
+		public readonly string TileUnsafeName = "build-unsafe";
 
 		protected override IPlaceBuildingPreview CreatePreview(WorldRenderer wr, ActorInfo ai, TypeDictionary init)
 		{
@@ -60,15 +76,15 @@ namespace OpenRA.Mods.D2k.Traits
 			var techTree = init.Get<OwnerInit>().Value(world).PlayerActor.Trait<TechTree>();
 			checkUnsafeTiles = info.RequiresPrerequisites.Any() && techTree.HasPrerequisites(info.RequiresPrerequisites);
 
-			var validSequence = sequences.GetSequence("overlay", "build-valid");
+			var validSequence = sequences.GetSequence(info.Image, info.TileValidName);
 			validTile = validSequence.GetSprite(0);
 			validAlpha = validSequence.GetAlpha(0);
 
-			var unsafeSequence = sequences.GetSequence("overlay", "build-unsafe");
+			var unsafeSequence = sequences.GetSequence(info.Image, info.TileUnsafeName);
 			unsafeTile = unsafeSequence.GetSprite(0);
 			unsafeAlpha = unsafeSequence.GetAlpha(0);
 
-			var blockedSequence = sequences.GetSequence("overlay", "build-invalid");
+			var blockedSequence = sequences.GetSequence(info.Image, info.TileInvalidName);
 			blockedTile = blockedSequence.GetSprite(0);
 			blockedAlpha = blockedSequence.GetAlpha(0);
 
