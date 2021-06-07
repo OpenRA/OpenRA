@@ -38,10 +38,10 @@ medium_gun_turret:
 		Offset: -16,16
 		ZOffset: 1024
 	crumble-overlay: DATA.R8
-		Start: 4584
+		Start: 4585
 		Length: 7
 		Offset: -16,16
-		Tick: 200
+		Tick: 100
 		ZOffset: 1024
 	turret: DATA.R8
 		Start: 2837
@@ -74,10 +74,10 @@ large_gun_turret:
 		Offset: -16,16
 		ZOffset: 1024
 	crumble-overlay: DATA.R8
-		Start: 4584
+		Start: 4585
 		Length: 7
 		Offset: -16,16
-		Tick: 200
+		Tick: 100
 		ZOffset: 1024
 	turret: DATA.R8
 		Start: 2885
@@ -99,7 +99,7 @@ conyard.atreides:
 		Start: 4403
 		Length: 12
 		Offset: -48,64
-		Tick: 170
+		Tick: 100
 	damaged-idle: DATA.R8
 		Start: 2808
 		Offset: -48,64
@@ -130,10 +130,10 @@ conyard.atreides:
 repair_pad.atreides:
 	make: DATA.R8
 		Start: 4634
-		Length: 10
+		Length: 11
 		Offset: -48,48
 	crumble-overlay: DATA.R8
-		Start: 4644
+		Start: 4645
 		Length: 10
 		Offset: -48,48
 		Tick: 100
@@ -163,10 +163,10 @@ repair_pad.atreides:
 repair_pad.harkonnen:
 	make: DATA.R8
 		Start: 4634
-		Length: 10
+		Length: 11
 		Offset: -48,48
 	crumble-overlay: DATA.R8
-		Start: 4644
+		Start: 4645
 		Length: 10
 		Offset: -48,48
 		Tick: 100
@@ -196,10 +196,10 @@ repair_pad.harkonnen:
 repair_pad.ordos:
 	make: DATA.R8
 		Start: 4634
-		Length: 10
+		Length: 11
 		Offset: -48,48
 	crumble-overlay: DATA.R8
-		Start: 4644
+		Start: 4645
 		Length: 10
 		Offset: -48,48
 		Tick: 100
@@ -251,10 +251,10 @@ starport.atreides:
 		Tick: 200
 	make: DATA.R8
 		Start: 4611
-		Length: 11
+		Length: 12
 		Offset: -48,48
 	crumble-overlay: DATA.R8
-		Start: 4622
+		Start: 4623
 		Length: 11
 		Offset: -48,48
 		Tick: 100
@@ -276,11 +276,11 @@ power.atreides:
 		Offset: -32,64
 	make: DATA.R8
 		Start: 4415
-		Length: 12
+		Length: 11
 		Offset: -32,64
 	crumble-overlay: DATA.R8
-		Start: 4427
-		Length: 12
+		Start: 4426
+		Length: 13
 		Offset: -32,64
 		Tick: 100
 	damaged-idle: DATA.R8
@@ -313,11 +313,11 @@ barracks.atreides:
 		Start: 2773
 		Offset: -32,64
 	make: DATA.R8
-		Start: 4440
-		Length: 8
+		Start: 4439
+		Length: 11
 		Offset: -32,64
 	crumble-overlay: DATA.R8
-		Start: 4448
+		Start: 4450
 		Length: 9
 		Offset: -32,64
 		Tick: 100
@@ -342,12 +342,13 @@ outpost.atreides:
 		Offset: -48,64
 	make: DATA.R8
 		Start: 4518
-		Length: 9
+		Length: 11
 		Offset: -48,64
 	crumble-overlay: DATA.R8
-		Start: 4527
-		Length: 10
+		Start: 4529
+		Length: 9
 		Offset: -48,64
+		ZOffset: 1024
 		Tick: 100
 	damaged-idle: DATA.R8
 		Start: 2770
@@ -377,9 +378,10 @@ refinery.atreides:
 		Length: 11
 		Offset: -48,64
 	crumble-overlay: DATA.R8
-		Start: 4505
+		Start: 4506
 		Length: 12
 		Offset: -48,64
+		ZOffset: 1024
 		Tick: 100
 	damaged-idle: DATA.R8
 		Start: 2809
@@ -413,24 +415,24 @@ silo.atreides:
 		Start: 2814
 		Offset: -16,16
 	damaged-idle: DATA.R8
-		Start: 2817
+		Start: 2818
 		Offset: -16,16
 	stages: DATA.R8
 		Start: 2814
 		Length: 4
 		Offset: -16,16
 	damaged-stages: DATA.R8
-		Start: 2817
+		Start: 2818
 		Offset: -16,16
 	make: DATA.R8
 		Start: 4577
-		Length: 7
+		Length: 8
 		Offset: -16,16
 	crumble-overlay: DATA.R8
-		Start: 4584
+		Start: 4585
 		Length: 7
 		Offset: -16,16
-		Tick: 200
+		Tick: 100
 		ZOffset: 1024
 	icon: DATA.R8
 		Start: 4348
@@ -443,9 +445,9 @@ hightech.atreides:
 		Start: 2812
 	make: DATA.R8
 		Start: 4538
-		Length: 10
+		Length: 11
 	crumble-overlay: DATA.R8
-		Start: 4548
+		Start: 4549
 		Length: 10
 		Tick: 100
 	damaged-idle: DATA.R8
@@ -480,10 +482,10 @@ research.atreides:
 		Offset: -48,80
 	make: DATA.R8
 		Start: 4655
-		Length: 10
+		Length: 11
 		Offset: -48,80
 	crumble-overlay: DATA.R8
-		Start: 4665
+		Start: 4666
 		Length: 11
 		Offset: -48,80
 		Tick: 100
@@ -513,10 +515,10 @@ research.harkonnen:
 		Offset: -48,80
 	make: DATA.R8
 		Start: 4655
-		Length: 10
+		Length: 11
 		Offset: -48,80
 	crumble-overlay: DATA.R8
-		Start: 4665
+		Start: 4666
 		Length: 11
 		Offset: -48,80
 		Tick: 100
@@ -546,10 +548,10 @@ research.ordos:
 		Offset: -48,80
 	make: DATA.R8
 		Start: 4655
-		Length: 10
+		Length: 11
 		Offset: -48,80
 	crumble-overlay: DATA.R8
-		Start: 4665
+		Start: 4666
 		Length: 11
 		Offset: -48,80
 		Tick: 100
@@ -582,11 +584,11 @@ palace.atreides:
 		Offset: -48,48
 	make: DATA.R8
 		Start: 4677
-		Length: 11
+		Length: 13
 		Offset: -48,48
 	crumble-overlay: DATA.R8
-		Start: 4688
-		Length: 11
+		Start: 4690
+		Length: 10
 		Offset: -48,48
 		Tick: 100
 	damaged-idle: DATA.R8
@@ -610,12 +612,13 @@ light.atreides:
 		Offset: -48,64
 	make: DATA.R8
 		Start: 4559
-		Length: 8
-		Offset: -48,64
-	crumble-overlay: DATA.R8
-		Start: 4567
 		Length: 9
 		Offset: -48,64
+	crumble-overlay: DATA.R8
+		Start: 4568
+		Length: 9
+		Offset: -48,64
+		ZOffset: 897
 		Tick: 100
 	damaged-idle: DATA.R8
 		Start: 2921
@@ -660,12 +663,13 @@ heavy.atreides:
 		Offset: -48,80
 	make: DATA.R8
 		Start: 4592
-		Length: 9
+		Length: 10
 		Offset: -48,80
 	crumble-overlay: DATA.R8
-		Start: 4601
+		Start: 4602
 		Length: 9
 		Offset: -48,80
+		ZOffset: 897
 		Tick: 100
 	damaged-idle: DATA.R8
 		Start: 2766
@@ -709,7 +713,7 @@ conyard.harkonnen:
 		Start: 4403
 		Length: 12
 		Offset: -48,64
-		Tick: 170
+		Tick: 100
 	damaged-idle: DATA.R8
 		Start: 2968
 		Offset: -48,64
@@ -762,10 +766,10 @@ starport.harkonnen:
 		Tick: 200
 	make: DATA.R8
 		Start: 4611
-		Length: 11
+		Length: 12
 		Offset: -48,48
 	crumble-overlay: DATA.R8
-		Start: 4622
+		Start: 4623
 		Length: 11
 		Offset: -48,48
 		Tick: 100
@@ -787,11 +791,11 @@ power.harkonnen:
 		Offset: -32,64
 	make: DATA.R8
 		Start: 4415
-		Length: 12
+		Length: 11
 		Offset: -32,64
 	crumble-overlay: DATA.R8
-		Start: 4427
-		Length: 12
+		Start: 4426
+		Length: 13
 		Offset: -32,64
 		Tick: 100
 	damaged-idle: DATA.R8
@@ -825,10 +829,10 @@ barracks.harkonnen:
 		Offset: -32,64
 	make: DATA.R8
 		Start: 4477
-		Length: 8
+		Length: 9
 		Offset: -32,64
 	crumble-overlay: DATA.R8
-		Start: 4485
+		Start: 4486
 		Length: 9
 		Offset: -32,64
 		Tick: 100
@@ -853,12 +857,13 @@ outpost.harkonnen:
 		Offset: -48,64
 	make: DATA.R8
 		Start: 4518
-		Length: 9
+		Length: 11
 		Offset: -48,64
 	crumble-overlay: DATA.R8
-		Start: 4527
-		Length: 10
+		Start: 4529
+		Length: 9
 		Offset: -48,64
+		ZOffset: 1024
 		Tick: 100
 	damaged-idle: DATA.R8
 		Start: 2930
@@ -888,9 +893,10 @@ refinery.harkonnen:
 		Length: 11
 		Offset: -48,64
 	crumble-overlay: DATA.R8
-		Start: 4505
+		Start: 4506
 		Length: 12
 		Offset: -48,64
+		ZOffset: 1024
 		Tick: 100
 	damaged-idle: DATA.R8
 		Start: 2969
@@ -935,13 +941,13 @@ silo.harkonnen:
 		Offset: -16,16
 	make: DATA.R8
 		Start: 4577
-		Length: 7
+		Length: 8
 		Offset: -16,16
 	crumble-overlay: DATA.R8
-		Start: 4584
+		Start: 4585
 		Length: 7
 		Offset: -16,16
-		Tick: 200
+		Tick: 100
 		ZOffset: 1024
 	icon: DATA.R8
 		Start: 4349
@@ -954,9 +960,9 @@ hightech.harkonnen:
 		Start: 2972
 	make: DATA.R8
 		Start: 4538
-		Length: 10
+		Length: 11
 	crumble-overlay: DATA.R8
-		Start: 4548
+		Start: 4549
 		Length: 10
 		Tick: 100
 	damaged-idle: DATA.R8
@@ -985,11 +991,11 @@ palace.harkonnen:
 		Offset: -48,48
 	make: DATA.R8
 		Start: 4677
-		Length: 11
+		Length: 13
 		Offset: -48,48
 	crumble-overlay: DATA.R8
-		Start: 4688
-		Length: 11
+		Start: 4690
+		Length: 10
 		Offset: -48,48
 		Tick: 100
 	damaged-idle: DATA.R8
@@ -1021,12 +1027,13 @@ light.harkonnen:
 		Offset: -48,64
 	make: DATA.R8
 		Start: 4559
-		Length: 8
-		Offset: -48,64
-	crumble-overlay: DATA.R8
-		Start: 4567
 		Length: 9
 		Offset: -48,64
+	crumble-overlay: DATA.R8
+		Start: 4568
+		Length: 9
+		Offset: -48,64
+		ZOffset: 897
 		Tick: 100
 	damaged-idle: DATA.R8
 		Start: 3081
@@ -1064,12 +1071,13 @@ heavy.harkonnen:
 		Offset: -48,80
 	make: DATA.R8
 		Start: 4592
-		Length: 9
+		Length: 10
 		Offset: -48,80
 	crumble-overlay: DATA.R8
-		Start: 4601
+		Start: 4602
 		Length: 9
 		Offset: -48,80
+		ZOffset: 897
 		Tick: 100
 	damaged-idle: DATA.R8
 		Start: 2926
@@ -1113,7 +1121,7 @@ conyard.ordos:
 		Start: 4403
 		Length: 12
 		Offset: -48,64
-		Tick: 170
+		Tick: 100
 	damaged-idle: DATA.R8
 		Start: 3128
 		Offset: -48,64
@@ -1166,10 +1174,10 @@ starport.ordos:
 		Tick: 200
 	make: DATA.R8
 		Start: 4611
-		Length: 11
+		Length: 12
 		Offset: -48,48
 	crumble-overlay: DATA.R8
-		Start: 4622
+		Start: 4623
 		Length: 11
 		Offset: -48,48
 		Tick: 100
@@ -1191,11 +1199,11 @@ power.ordos:
 		Offset: -32,64
 	make: DATA.R8
 		Start: 4415
-		Length: 12
+		Length: 11
 		Offset: -32,64
 	crumble-overlay: DATA.R8
-		Start: 4427
-		Length: 12
+		Start: 4426
+		Length: 13
 		Offset: -32,64
 		Tick: 100
 	damaged-idle: DATA.R8
@@ -1229,10 +1237,10 @@ barracks.ordos:
 		Offset: -32,64
 	make: DATA.R8
 		Start: 4477
-		Length: 8
+		Length: 9
 		Offset: -32,64
 	crumble-overlay: DATA.R8
-		Start: 4485
+		Start: 4486
 		Length: 9
 		Offset: -32,64
 		Tick: 100
@@ -1257,12 +1265,13 @@ outpost.ordos:
 		Offset: -48,64
 	make: DATA.R8
 		Start: 4518
-		Length: 9
+		Length: 11
 		Offset: -48,64
 	crumble-overlay: DATA.R8
-		Start: 4527
-		Length: 10
+		Start: 4529
+		Length: 9
 		Offset: -48,64
+		ZOffset: 1024
 		Tick: 100
 	damaged-idle: DATA.R8
 		Start: 3090
@@ -1292,9 +1301,10 @@ refinery.ordos:
 		Length: 11
 		Offset: -48,64
 	crumble-overlay: DATA.R8
-		Start: 4505
+		Start: 4506
 		Length: 12
 		Offset: -48,64
+		ZOffset: 1024
 		Tick: 100
 	damaged-idle: DATA.R8
 		Start: 3129
@@ -1339,14 +1349,14 @@ silo.ordos:
 		Offset: -16,16
 	make: DATA.R8
 		Start: 4577
-		Length: 7
+		Length: 8
 		Offset: -16,16
 	crumble-overlay: DATA.R8
-		Start: 4584
+		Start: 4585
 		Length: 7
 		Offset: -16,16
 		ZOffset: 1024
-		Tick: 200
+		Tick: 100
 	icon: DATA.R8
 		Start: 4350
 		Offset: -30,-24
@@ -1358,9 +1368,9 @@ hightech.ordos:
 		Start: 3132
 	make: DATA.R8
 		Start: 4538
-		Length: 10
+		Length: 11
 	crumble-overlay: DATA.R8
-		Start: 4548
+		Start: 4549
 		Length: 10
 		Tick: 100
 	damaged-idle: DATA.R8
@@ -1392,11 +1402,11 @@ palace.ordos:
 		Offset: -48,48
 	make: DATA.R8
 		Start: 4677
-		Length: 11
+		Length: 13
 		Offset: -48,48
 	crumble-overlay: DATA.R8
-		Start: 4688
-		Length: 11
+		Start: 4690
+		Length: 10
 		Offset: -48,48
 		Tick: 100
 	damaged-idle: DATA.R8
@@ -1420,12 +1430,13 @@ light.ordos:
 		Offset: -48,64
 	make: DATA.R8
 		Start: 4559
-		Length: 8
-		Offset: -48,64
-	crumble-overlay: DATA.R8
-		Start: 4567
 		Length: 9
 		Offset: -48,64
+	crumble-overlay: DATA.R8
+		Start: 4568
+		Length: 9
+		Offset: -48,64
+		ZOffset: 897
 		Tick: 100
 	damaged-idle: DATA.R8
 		Start: 3241
@@ -1463,12 +1474,13 @@ heavy.ordos:
 		Offset: -48,80
 	make: DATA.R8
 		Start: 4592
-		Length: 9
+		Length: 10
 		Offset: -48,80
 	crumble-overlay: DATA.R8
-		Start: 4601
+		Start: 4602
 		Length: 9
 		Offset: -48,80
+		ZOffset: 897
 		Tick: 100
 	damaged-idle: DATA.R8
 		Start: 3086
@@ -1521,11 +1533,11 @@ palace.corrino:
 	icon: palacecicon.shp
 	make: DATA.R8
 		Start: 4677
-		Length: 11
+		Length: 13
 		Offset: -48,48
 	crumble-overlay: DATA.R8
-		Start: 4688
-		Length: 11
+		Start: 4690
+		Length: 10
 		Offset: -48,48
 		Tick: 100
 
@@ -1554,10 +1566,10 @@ starport.smuggler:
 		Tick: 200
 	make: DATA.R8
 		Start: 4611
-		Length: 11
+		Length: 12
 		Offset: -48,48
 	crumble-overlay: DATA.R8
-		Start: 4622
+		Start: 4623
 		Length: 11
 		Offset: -48,48
 		Tick: 100
@@ -1579,12 +1591,13 @@ heavy.mercenary:
 		Offset: -48,80
 	make: DATA.R8
 		Start: 4592
-		Length: 9
+		Length: 10
 		Offset: -48,80
 	crumble-overlay: DATA.R8
-		Start: 4601
+		Start: 4602
 		Length: 9
 		Offset: -48,80
+		ZOffset: 897
 		Tick: 100
 	damaged-idle: DATA.R8
 		Start: 3249
