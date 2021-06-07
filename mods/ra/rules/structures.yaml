@@ -2119,21 +2119,15 @@ BARRACKS:
 	Interactable:
 	Tooltip:
 		Name: Infantry Production
-	Buildable:
-		Description: Infantry Production
 
 TECHCENTER:
 	AlwaysVisible:
 	Interactable:
 	Tooltip:
 		Name: Tech Center
-	Buildable:
-		Description: Tech Center
 
 ANYPOWER:
 	AlwaysVisible:
 	Interactable:
 	Tooltip:
 		Name: Power Plant
-	Buildable:
-		Description: Power Plant
