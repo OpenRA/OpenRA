@@ -20,11 +20,6 @@ namespace OpenRA.Mods.Common.Widgets
 {
 	public static class WidgetUtils
 	{
-		public static Sprite GetChromeImage(World world, string name)
-		{
-			return ChromeProvider.GetImage("chrome-" + world.LocalPlayer.Faction.InternalName, name);
-		}
-
 		public static string GetStatefulImageName(string baseName, bool disabled = false, bool pressed = false, bool hover = false, bool focused = false)
 		{
 			var suffix = disabled ? "-disabled" :
