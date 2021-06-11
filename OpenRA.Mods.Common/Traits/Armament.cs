@@ -83,6 +83,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Cursor to display when hovering over a valid target that is outside of range.")]
 		public readonly string OutsideRangeCursor = "attackoutsiderange";
 
+		[Desc("Ammo the weapon consumes per shot.")]
+		public readonly int AmmoUsage = 1;
+
 		public override object Create(ActorInitializer init) { return new Armament(init.Self, this); }
 
 		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
