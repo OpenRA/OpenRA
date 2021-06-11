@@ -85,7 +85,13 @@ namespace OpenRA.Graphics
 			return new PaletteReference(name, palette.GetPaletteIndex(name), pal, palette);
 		}
 
-		public PaletteReference Palette(string name) { return palettes.GetOrAdd(name, createPaletteReference); }
+		public PaletteReference Palette(string name)
+		{
+			// HACK: This is working around the fact that palettes are defined on traits rather than sequences
+			// and can be removed once this has been fixed.
+			return name == null ? null : palettes.GetOrAdd(name, createPaletteReference);
+		}
+
 		public void AddPalette(string name, ImmutablePalette pal, bool allowModifiers = false, bool allowOverwrite = false)
 		{
 			if (allowOverwrite && palette.Contains(name))
