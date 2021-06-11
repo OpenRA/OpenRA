@@ -62,6 +62,9 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("Cursor to display when able to lay a mine.")]
 		public readonly string AbilityCursor = "ability";
 
+		[Desc("Ammo the minelayer consumes per mine.")]
+		public readonly int AmmoUsage = 1;
+
 		public override object Create(ActorInitializer init) { return new Minelayer(init.Self, this); }
 	}
 

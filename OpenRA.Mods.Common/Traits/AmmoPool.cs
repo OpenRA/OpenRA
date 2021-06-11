@@ -99,7 +99,7 @@ namespace OpenRA.Mods.Common.Traits
 		void INotifyAttack.Attacking(Actor self, in Target target, Armament a, Barrel barrel)
 		{
 			if (a != null && Info.Armaments.Contains(a.Info.Name))
-				TakeAmmo(self, 1);
+				TakeAmmo(self, a.Info.AmmoUsage);
 		}
 
 		void INotifyAttack.PreparingAttack(Actor self, in Target target, Armament a, Barrel barrel) { }

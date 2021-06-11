@@ -147,7 +147,7 @@ namespace OpenRA.Mods.Cnc.Activities
 				if (pool == null)
 					return;
 
-				pool.TakeAmmo(self, 1);
+				pool.TakeAmmo(self, minelayer.Info.AmmoUsage);
 			}
 
 			self.World.AddFrameEndTask(w => w.CreateActor(minelayer.Info.Mine, new TypeDictionary
