@@ -131,8 +131,10 @@ namespace OpenRA.Network
 						return;
 
 					var frame = BitConverter.ToInt32(packet, 0);
-					if (packet.Length == 5 && packet[4] == (byte)OrderType.Disconnect)
-						pendingPackets.Remove(clientId);
+					if (packet.Length == Order.DisconnectOrderLength + 4 && packet[4] == (byte)OrderType.Disconnect)
+					{
+						pendingPackets.Remove(BitConverter.ToInt32(packet, 5));
+					}
 					else if (packet.Length > 4 && packet[4] == (byte)OrderType.SyncHash)
 					{
 						if (packet.Length != 4 + Order.SyncHashOrderLength)

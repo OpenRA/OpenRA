@@ -115,7 +115,7 @@ namespace OpenRA.Network
 							continue;
 
 						var packet = tmpPacketPair.Packet;
-						if (packet.Length == 5 && packet[4] == (byte)OrderType.Disconnect)
+						if (packet.Length == Order.DisconnectOrderLength + 4 && packet[4] == (byte)OrderType.Disconnect)
 						{
 							var lastClientFrame = lastClientsFrame[client];
 							var lastFramePacket = BitConverter.GetBytes(lastClientFrame);

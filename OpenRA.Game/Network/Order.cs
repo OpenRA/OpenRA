@@ -52,6 +52,9 @@ namespace OpenRA
 		// Length of orders with type OrderType.SyncHash
 		public const int SyncHashOrderLength = 13;
 
+		// Length of orders with type OrderType.Disconnect
+		public const int DisconnectOrderLength = 5;
+
 		public readonly string OrderString;
 		public readonly Actor Subject;
 		public readonly bool Queued;
