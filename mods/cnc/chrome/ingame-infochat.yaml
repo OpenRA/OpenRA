@@ -3,6 +3,11 @@ Container@CHAT_CONTAINER:
 	Width: PARENT_RIGHT
 	Height: PARENT_BOTTOM - 20
 	Logic: IngameChatLogic
+		Templates:
+			Chat: CHAT_LINE_TEMPLATE
+			System: SYSTEM_LINE_TEMPLATE
+			Mission: SYSTEM_LINE_TEMPLATE
+			Feedback: SYSTEM_LINE_TEMPLATE
 	Children:
 		Container@CHAT_CHROME:
 			X: 15
@@ -28,20 +33,3 @@ Container@CHAT_CONTAINER:
 					Height: PARENT_BOTTOM - 30
 					TopBottomSpacing: 3
 					ItemSpacing: 2
-					Children:
-						Container@CHAT_TEMPLATE:
-							X: 2
-							Width: PARENT_RIGHT - 27
-							Height: 16
-							Children:
-								Label@NAME:
-									X: 3
-									Width: 50
-									Height: 16
-									Shadow: True
-								Label@TEXT:
-									X: 12
-									Width: PARENT_RIGHT - 17
-									Height: 16
-									WordWrap: true
-									Shadow: True

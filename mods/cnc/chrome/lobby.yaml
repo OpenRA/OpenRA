@@ -1,5 +1,10 @@
 Container@SERVER_LOBBY:
 	Logic: LobbyLogic
+		ChatTemplates:
+			Chat: CHAT_LINE_TEMPLATE
+			System: SYSTEM_LINE_TEMPLATE
+			Mission: SYSTEM_LINE_TEMPLATE
+			Feedback: SYSTEM_LINE_TEMPLATE
 	X: (WINDOW_RIGHT - WIDTH) / 2
 	Y: (WINDOW_BOTTOM - 560) / 2
 	Width: 900
@@ -99,29 +104,6 @@ Container@SERVER_LOBBY:
 							Height: PARENT_BOTTOM - 30
 							TopBottomSpacing: 3
 							ItemSpacing: 2
-							Children:
-								Container@CHAT_TEMPLATE:
-									Width: PARENT_RIGHT - 27
-									Height: 16
-									X: 2
-									Y: 0
-									Children:
-										Label@TIME:
-											X: 3
-											Width: 50
-											Height: 16
-											Shadow: True
-										Label@NAME:
-											X: 45
-											Width: 50
-											Height: 16
-											Shadow: True
-										Label@TEXT:
-											X: 55
-											Width: PARENT_RIGHT - 60
-											Height: 16
-											WordWrap: true
-											Shadow: True
 						Button@CHAT_MODE:
 							Y: PARENT_BOTTOM - HEIGHT
 							Width: 50

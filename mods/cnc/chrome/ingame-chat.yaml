@@ -6,17 +6,22 @@ Container@CHAT_PANEL:
 	Logic: IngameChatLogic
 		OpenTeamChatKey: OpenTeamChat
 		OpenGeneralChatKey: OpenGeneralChat
+		Templates:
+			Chat: CHAT_LINE_TEMPLATE
+			System: SYSTEM_LINE_TEMPLATE
+			Mission: SYSTEM_LINE_TEMPLATE
+			Feedback: SYSTEM_LINE_TEMPLATE
 	Children:
 		Container@CHAT_OVERLAY:
 			Width: PARENT_RIGHT - 24
-			Height: PARENT_BOTTOM - 25
+			Height: PARENT_BOTTOM - 30
 			Visible: false
 			Children:
-				ChatDisplay@CHAT_DISPLAY:
+				TextNotificationsDisplay@CHAT_DISPLAY:
 					Width: PARENT_RIGHT
 					Height: PARENT_BOTTOM
 					RemoveTime: 250
-					UseShadow: True
+					BottomSpacing: 3
 		Container@CHAT_CHROME:
 			Width: PARENT_RIGHT
 			Height: PARENT_BOTTOM
@@ -59,20 +64,3 @@ Container@CHAT_PANEL:
 					TopBottomSpacing: 3
 					ItemSpacing: 4
 					Align: Bottom
-					Children:
-						Container@CHAT_TEMPLATE:
-							X: 2
-							Width: PARENT_RIGHT - 27
-							Height: 16
-							Children:
-								Label@NAME:
-									X: 3
-									Width: 50
-									Height: 16
-									Shadow: True
-								Label@TEXT:
-									X: 12
-									Width: PARENT_RIGHT - 17
-									Height: 16
-									WordWrap: true
-									Shadow: True
