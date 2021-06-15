@@ -25,15 +25,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	{
 		readonly OrderManager orderManager;
 		readonly Ruleset modRules;
+		readonly World world;
 
 		readonly ContainerWidget chatOverlay;
-		readonly ChatDisplayWidget chatOverlayDisplay;
+		readonly TextNotificationsDisplayWidget chatOverlayDisplay;
 
 		readonly ContainerWidget chatChrome;
 		readonly ScrollPanelWidget chatScrollPanel;
-		readonly ContainerWidget chatTemplate;
 		readonly TextFieldWidget chatText;
 		readonly CachedTransform<int, string> chatDisabledLabel;
+		readonly Dictionary<TextNotificationPool, Widget> templates = new Dictionary<TextNotificationPool, Widget>();
 
 		readonly TabCompletionLogic tabCompletion = new TabCompletionLogic();
 
@@ -43,11 +44,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		int repetitions;
 		bool chatEnabled;
 
+		readonly bool isMenuChat;
+
 		[ObjectCreator.UseCtor]
 		public IngameChatLogic(Widget widget, OrderManager orderManager, World world, ModData modData, bool isMenuChat, Dictionary<string, MiniYaml> logicArgs)
 		{
 			this.orderManager = orderManager;
 			modRules = modData.DefaultRules;
+			this.isMenuChat = isMenuChat;
+			this.world = world;
 
 			var chatTraits = world.WorldActor.TraitsImplementing<INotifyChat>().ToArray();
 			var players = world.Players.Where(p => p != world.LocalPlayer && !p.NonCombatant && !p.IsBot);
@@ -59,11 +64,20 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			tabCompletion.Commands = chatTraits.OfType<ChatCommands>().SelectMany(x => x.Commands.Keys).ToList();
 			tabCompletion.Names = orderManager.LobbyInfo.Clients.Select(c => c.Name).Distinct().ToList();
 
+			if (logicArgs.TryGetValue("Templates", out var templateIds))
+			{
+				foreach (var item in templateIds.Nodes)
+				{
+					var key = FieldLoader.GetValue<TextNotificationPool>("key", item.Key);
+					templates[key] = Ui.LoadWidget(item.Value.Value, null, new WidgetArgs());
+				}
+			}
+
 			var chatPanel = (ContainerWidget)widget;
 			chatOverlay = chatPanel.GetOrNull<ContainerWidget>("CHAT_OVERLAY");
 			if (chatOverlay != null)
 			{
-				chatOverlayDisplay = chatOverlay.Get<ChatDisplayWidget>("CHAT_DISPLAY");
+				chatOverlayDisplay = chatOverlay.Get<TextNotificationsDisplayWidget>("CHAT_DISPLAY");
 				chatOverlay.Visible = false;
 			}
 
@@ -194,14 +208,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			chatScrollPanel = chatChrome.Get<ScrollPanelWidget>("CHAT_SCROLLPANEL");
-			chatTemplate = chatScrollPanel.Get<ContainerWidget>("CHAT_TEMPLATE");
 			chatScrollPanel.RemoveChildren();
 			chatScrollPanel.ScrollToBottom();
 
 			foreach (var chatLine in orderManager.NotificationsCache)
 				AddChatLine(chatLine, true);
 
-			orderManager.AddTextNotification += AddChatLineWrapper;
+			orderManager.AddTextNotification += AddNotificationWrapper;
 
 			chatText.IsDisabled = () => !chatEnabled || (world.IsReplay && !Game.Settings.Debug.EnableDebugCommandsInReplays);
 
@@ -248,7 +261,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			Ui.ResetTooltips();
 		}
 
-		public void AddChatLineWrapper(TextNotification chatLine)
+		public void AddNotificationWrapper(TextNotification chatLine)
 		{
 			var chatLineToDisplay = chatLine;
 
@@ -263,53 +276,27 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					chatLine.TextColor);
 
 				chatScrollPanel.RemoveChild(chatScrollPanel.Children[chatScrollPanel.Children.Count - 1]);
-				chatOverlayDisplay?.RemoveMostRecentLine();
+				chatOverlayDisplay?.RemoveMostRecentNotification();
 			}
 			else
 				repetitions = 0;
 
 			lastLine = chatLine;
 
-			chatOverlayDisplay?.AddLine(chatLineToDisplay);
+			chatOverlayDisplay?.AddNotification(chatLineToDisplay);
 
 			// HACK: Force disable the chat notification sound for the in-menu chat dialog
 			// This works around our inability to disable the sounds for the in-game dialog when it is hidden
 			AddChatLine(chatLineToDisplay, chatOverlay == null);
 		}
 
-		void AddChatLine(TextNotification chatLine, bool suppressSound)
+		void AddChatLine(TextNotification notification, bool suppressSound)
 		{
-			var template = chatTemplate.Clone();
-			var nameLabel = template.Get<LabelWidget>("NAME");
-			var textLabel = template.Get<LabelWidget>("TEXT");
-
-			var name = "";
-			if (!string.IsNullOrEmpty(chatLine.Prefix))
-				name = chatLine.Prefix + ":";
-
-			var font = Game.Renderer.Fonts[nameLabel.Font];
-			var nameSize = font.Measure(chatLine.Prefix);
-
-			nameLabel.GetColor = () => chatLine.PrefixColor;
-			nameLabel.GetText = () => name;
-			nameLabel.Bounds.Width = nameSize.X;
-
-			textLabel.GetColor = () => chatLine.TextColor;
-			textLabel.Bounds.X += nameSize.X;
-			textLabel.Bounds.Width -= nameSize.X;
-
-			// Hack around our hacky wordwrap behavior: need to resize the widget to fit the text
-			var text = WidgetUtils.WrapText(chatLine.Text, textLabel.Bounds.Width, font);
-			textLabel.GetText = () => text;
-			var dh = font.Measure(text).Y - textLabel.Bounds.Height;
-			if (dh > 0)
-			{
-				textLabel.Bounds.Height += dh;
-				template.Bounds.Height += dh;
-			}
+			var chatLine = templates[notification.Pool].Clone();
+			WidgetUtils.SetupTextNotification(chatLine, notification, chatScrollPanel.Bounds.Width - chatScrollPanel.ScrollbarWidth, isMenuChat && !world.IsReplay);
 
 			var scrolledToBottom = chatScrollPanel.ScrolledToBottom;
-			chatScrollPanel.AddChild(template);
+			chatScrollPanel.AddChild(chatLine);
 			if (scrolledToBottom)
 				chatScrollPanel.ScrollToBottom(smooth: true);
 
@@ -343,7 +330,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			if (!disposed)
 			{
-				orderManager.AddTextNotification -= AddChatLineWrapper;
+				orderManager.AddTextNotification -= AddNotificationWrapper;
 				disposed = true;
 			}
 

@@ -648,37 +648,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			HideChildWidget(parent, "STATUS_IMAGE");
 		}
 
-		public static void SetupChatLine(ContainerWidget template, DateTime time, TextNotification chatLine)
-		{
-			var nameLabel = template.Get<LabelWidget>("NAME");
-			var timeLabel = template.Get<LabelWidget>("TIME");
-			var textLabel = template.Get<LabelWidget>("TEXT");
-
-			var nameText = chatLine.Prefix + ":";
-			var font = Game.Renderer.Fonts[nameLabel.Font];
-			var nameSize = font.Measure(nameText);
-
-			timeLabel.GetText = () => $"{time.Hour:D2}:{time.Minute:D2}";
-
-			nameLabel.GetColor = () => chatLine.PrefixColor;
-			nameLabel.GetText = () => nameText;
-			nameLabel.Bounds.Width = nameSize.X;
-
-			textLabel.GetColor = () => chatLine.TextColor;
-			textLabel.Bounds.X += nameSize.X;
-			textLabel.Bounds.Width -= nameSize.X;
-
-			// Hack around our hacky wordwrap behavior: need to resize the widget to fit the text
-			var text = WidgetUtils.WrapText(chatLine.Text, textLabel.Bounds.Width, font);
-			textLabel.GetText = () => text;
-			var dh = font.Measure(text).Y - textLabel.Bounds.Height;
-			if (dh > 0)
-			{
-				textLabel.Bounds.Height += dh;
-				template.Bounds.Height += dh;
-			}
-		}
-
 		static void HideChildWidget(Widget parent, string widgetId)
 		{
 			var widget = parent.GetOrNull(widgetId);

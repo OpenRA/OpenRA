@@ -16,33 +16,29 @@ namespace OpenRA
 {
 	public static class TextNotificationsManager
 	{
-		static Color systemMessageColor = Color.White;
-		static Color chatMessageColor = Color.White;
-		static string systemMessageLabel;
+		static readonly string SystemMessageLabel;
 
 		public static long ChatDisabledUntil { get; internal set; }
 
 		static TextNotificationsManager()
 		{
-			ChromeMetrics.TryGet("ChatMessageColor", out chatMessageColor);
-			ChromeMetrics.TryGet("SystemMessageColor", out systemMessageColor);
-			if (!ChromeMetrics.TryGet("SystemMessageLabel", out systemMessageLabel))
-				systemMessageLabel = "Battlefield Control";
+			if (!ChromeMetrics.TryGet("SystemMessageLabel", out SystemMessageLabel))
+				SystemMessageLabel = "Battlefield Control";
 		}
 
 		public static void AddFeedbackLine(string text)
 		{
-			AddTextNotification(TextNotificationPool.Feedback, systemMessageLabel, text, systemMessageColor, systemMessageColor);
+			AddTextNotification(TextNotificationPool.Feedback, SystemMessageLabel, text);
 		}
 
 		public static void AddSystemLine(string text)
 		{
-			AddSystemLine(systemMessageLabel, text);
+			AddSystemLine(SystemMessageLabel, text);
 		}
 
 		public static void AddSystemLine(string prefix, string text)
 		{
-			AddTextNotification(TextNotificationPool.System, prefix, text, systemMessageColor, systemMessageColor);
+			AddTextNotification(TextNotificationPool.System, prefix, text);
 		}
 
 		public static void AddChatLine(string prefix, string text, Color? prefixColor = null, Color? textColor = null)
@@ -58,7 +54,7 @@ namespace OpenRA
 		static void AddTextNotification(TextNotificationPool pool, string prefix, string text, Color? prefixColor = null, Color? textColor = null)
 		{
 			if (IsPoolEnabled(pool))
-				Game.OrderManager.AddTextNotification(new TextNotification(pool, prefix, text, prefixColor ?? chatMessageColor, textColor ?? chatMessageColor));
+				Game.OrderManager.AddTextNotification(new TextNotification(pool, prefix, text, prefixColor, textColor));
 		}
 
 		static bool IsPoolEnabled(TextNotificationPool pool)

@@ -364,6 +364,62 @@ namespace OpenRA.Mods.Common.Widgets
 				return name.Update((p.PlayerName, p.WinState, clientState));
 			};
 		}
+
+		public static void SetupTextNotification(Widget notificationWidget, TextNotification notification, int boxWidth, bool withTimestamp)
+		{
+			var timeLabel = notificationWidget.GetOrNull<LabelWidget>("TIME");
+			var prefixLabel = notificationWidget.GetOrNull<LabelWidget>("PREFIX");
+			var textLabel = notificationWidget.Get<LabelWidget>("TEXT");
+
+			var textFont = Game.Renderer.Fonts[textLabel.Font];
+			var textWidth = boxWidth - notificationWidget.Bounds.X - textLabel.Bounds.X;
+
+			var hasPrefix = !string.IsNullOrEmpty(notification.Prefix) && prefixLabel != null;
+			var timeOffset = 0;
+
+			if (withTimestamp && timeLabel != null)
+			{
+				var time = $"{notification.Time.Hour:D2}:{notification.Time.Minute:D2}";
+				timeOffset = timeLabel.Bounds.Width + timeLabel.Bounds.X;
+
+				timeLabel.GetText = () => time;
+
+				textWidth -= timeOffset;
+				textLabel.Bounds.X += timeOffset;
+
+				if (hasPrefix)
+					prefixLabel.Bounds.X += timeOffset;
+			}
+
+			if (hasPrefix)
+			{
+				var prefix = notification.Prefix + ":";
+				var prefixSize = Game.Renderer.Fonts[prefixLabel.Font].Measure(prefix);
+				var prefixOffset = prefixSize.X + prefixLabel.Bounds.X;
+
+				prefixLabel.GetColor = () => notification.PrefixColor ?? prefixLabel.TextColor;
+				prefixLabel.GetText = () => prefix;
+				prefixLabel.Bounds.Width = prefixSize.X;
+
+				textWidth -= prefixOffset;
+				textLabel.Bounds.X += prefixOffset - timeOffset;
+			}
+
+			textLabel.GetColor = () => notification.TextColor ?? textLabel.TextColor;
+			textLabel.Bounds.Width = textWidth;
+
+			// Hack around our hacky wordwrap behavior: need to resize the widget to fit the text
+			var text = WrapText(notification.Text, textLabel.Bounds.Width, textFont);
+			textLabel.GetText = () => text;
+			var dh = textFont.Measure(text).Y - textLabel.Bounds.Height;
+			if (dh > 0)
+			{
+				textLabel.Bounds.Height += dh;
+				notificationWidget.Bounds.Height += dh;
+			}
+
+			notificationWidget.Bounds.Width = boxWidth - notificationWidget.Bounds.X;
+		}
 	}
 
 	public class CachedTransform<T, U>

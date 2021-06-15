@@ -138,6 +138,7 @@ ChromeLayout:
 	cnc|chrome/assetbrowser.yaml
 	cnc|chrome/missionbrowser.yaml
 	cnc|chrome/editor.yaml
+	common|chrome/text-notifications.yaml
 
 Voices:
 	cnc|audio/voices.yaml

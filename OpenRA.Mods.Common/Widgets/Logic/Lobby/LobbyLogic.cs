@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly Widget newSpectatorTemplate;
 
 		readonly ScrollPanelWidget lobbyChatPanel;
-		readonly Widget chatTemplate;
+		readonly Dictionary<TextNotificationPool, Widget> chatTemplates = new Dictionary<TextNotificationPool, Widget>();
 		readonly TextFieldWidget chatTextField;
 		readonly CachedTransform<int, string> chatDisabledLabel;
 
@@ -398,6 +398,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (skirmishMode)
 				disconnectButton.Text = "Back";
 
+			if (logicArgs.TryGetValue("ChatTemplates", out var templateIds))
+			{
+				foreach (var item in templateIds.Nodes)
+				{
+					var key = FieldLoader.GetValue<TextNotificationPool>("key", item.Key);
+					chatTemplates[key] = Ui.LoadWidget(item.Value.Value, null, new WidgetArgs());
+				}
+			}
+
 			var chatMode = lobby.Get<ButtonWidget>("CHAT_MODE");
 			chatMode.GetText = () => teamChat ? "Team" : "All";
 			chatMode.OnClick = () => teamChat ^= true;
@@ -442,7 +451,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			chatDisabledLabel = new CachedTransform<int, string>(x => x > 0 ? $"Chat available in {x} seconds..." : "Chat Disabled");
 
 			lobbyChatPanel = lobby.Get<ScrollPanelWidget>("CHAT_DISPLAY");
-			chatTemplate = lobbyChatPanel.Get("CHAT_TEMPLATE");
 			lobbyChatPanel.RemoveChildren();
 
 			var settingsButton = lobby.GetOrNull<ButtonWidget>("SETTINGS_BUTTON");
@@ -510,13 +518,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 		}
 
-		void AddChatLine(TextNotification chatLine)
+		void AddChatLine(TextNotification notification)
 		{
-			var template = (ContainerWidget)chatTemplate.Clone();
-			LobbyUtils.SetupChatLine(template, DateTime.Now, chatLine);
+			var chatLine = chatTemplates[notification.Pool].Clone();
+			WidgetUtils.SetupTextNotification(chatLine, notification, lobbyChatPanel.Bounds.Width - lobbyChatPanel.ScrollbarWidth, true);
 
 			var scrolledToBottom = lobbyChatPanel.ScrolledToBottom;
-			lobbyChatPanel.AddChild(template);
+			lobbyChatPanel.AddChild(chatLine);
 			if (scrolledToBottom)
 				lobbyChatPanel.ScrollToBottom(smooth: true);
 

@@ -21,16 +21,18 @@ namespace OpenRA
 		public readonly TextNotificationPool Pool;
 		public readonly string Prefix;
 		public readonly string Text;
-		public readonly Color PrefixColor;
-		public readonly Color TextColor;
+		public readonly Color? PrefixColor;
+		public readonly Color? TextColor;
+		public readonly DateTime Time;
 
-		public TextNotification(TextNotificationPool pool, string prefix, string text, Color prefixColor, Color textColor)
+		public TextNotification(TextNotificationPool pool, string prefix, string text, Color? prefixColor, Color? textColor)
 		{
 			Pool = pool;
 			Prefix = prefix;
 			Text = text;
 			PrefixColor = prefixColor;
 			TextColor = textColor;
+			Time = DateTime.Now;
 		}
 
 		public bool CanIncrementOnDuplicate()
@@ -38,19 +40,17 @@ namespace OpenRA
 			return Pool == TextNotificationPool.Feedback || Pool == TextNotificationPool.System;
 		}
 
-		public bool Equals(TextNotification other)
-		{
-			return other != null && other.GetHashCode() == GetHashCode();
-		}
+		public static bool operator ==(TextNotification me, TextNotification other) { return me.GetHashCode() == other.GetHashCode(); }
 
-		public override bool Equals(object obj)
-		{
-			return obj is TextNotification && Equals((TextNotification)obj);
-		}
+		public static bool operator !=(TextNotification me, TextNotification other) { return !(me == other); }
+
+		public bool Equals(TextNotification other) { return other == this; }
+
+		public override bool Equals(object obj) { return obj is TextNotification notification && Equals(notification); }
 
 		public override int GetHashCode()
 		{
-			return string.Format("{0}{1}{2}", Prefix, Text, Pool).GetHashCode();
+			return HashCode.Combine(Prefix, Text, (int)Pool);
 		}
 	}
 }
