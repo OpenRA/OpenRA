@@ -40,8 +40,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		readonly string chatLineSound = ChromeMetrics.Get<string>("ChatLineSound");
 
-		TextNotification lastLine;
-		int repetitions;
 		bool chatEnabled;
 
 		readonly bool isMenuChat;
@@ -211,8 +209,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			chatScrollPanel.RemoveChildren();
 			chatScrollPanel.ScrollToBottom();
 
-			foreach (var chatLine in orderManager.NotificationsCache)
-				AddChatLine(chatLine, true);
+			foreach (var notification in orderManager.NotificationsCache)
+				if (IsNotificationEligible(notification))
+					AddNotification(notification, true);
 
 			orderManager.AddTextNotification += AddNotificationWrapper;
 
@@ -261,36 +260,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			Ui.ResetTooltips();
 		}
 
-		public void AddNotificationWrapper(TextNotification chatLine)
+		public void AddNotificationWrapper(TextNotification notification)
 		{
-			var chatLineToDisplay = chatLine;
+			if (!IsNotificationEligible(notification))
+				return;
 
-			if (chatLine.CanIncrementOnDuplicate() && chatLine.Equals(lastLine))
-			{
-				repetitions++;
-				chatLineToDisplay = new TextNotification(
-					chatLine.Pool,
-					chatLine.Prefix,
-					$"{chatLine.Text} ({repetitions + 1})",
-					chatLine.PrefixColor,
-					chatLine.TextColor);
-
-				chatScrollPanel.RemoveChild(chatScrollPanel.Children[chatScrollPanel.Children.Count - 1]);
-				chatOverlayDisplay?.RemoveMostRecentNotification();
-			}
-			else
-				repetitions = 0;
-
-			lastLine = chatLine;
-
-			chatOverlayDisplay?.AddNotification(chatLineToDisplay);
+			chatOverlayDisplay?.AddNotification(notification);
 
 			// HACK: Force disable the chat notification sound for the in-menu chat dialog
 			// This works around our inability to disable the sounds for the in-game dialog when it is hidden
-			AddChatLine(chatLineToDisplay, chatOverlay == null);
+			AddNotification(notification, chatOverlay == null);
 		}
 
-		void AddChatLine(TextNotification notification, bool suppressSound)
+		void AddNotification(TextNotification notification, bool suppressSound)
 		{
 			var chatLine = templates[notification.Pool].Clone();
 			WidgetUtils.SetupTextNotification(chatLine, notification, chatScrollPanel.Bounds.Width - chatScrollPanel.ScrollbarWidth, isMenuChat && !world.IsReplay);
@@ -323,6 +305,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				chatText.Text = chatDisabledLabel.Update(remaining);
 			}
+		}
+
+		static bool IsNotificationEligible(TextNotification notification)
+		{
+			return notification.Pool == TextNotificationPool.Chat ||
+				notification.Pool == TextNotificationPool.System ||
+				notification.Pool == TextNotificationPool.Mission;
 		}
 
 		bool disposed = false;
