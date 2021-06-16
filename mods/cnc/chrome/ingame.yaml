@@ -59,7 +59,7 @@ Container@PERF_WIDGETS:
 		Background@GRAPH_BG:
 			Logic: AddFactionSuffixLogic
 			X: 5
-			Y: WINDOW_BOTTOM - HEIGHT - 56
+			Y: WINDOW_BOTTOM - HEIGHT - 156
 			Width: 220
 			Height: 220
 			Background: panel-black

@@ -10,7 +10,6 @@ Container@CHAT_PANEL:
 			Chat: CHAT_LINE_TEMPLATE
 			System: SYSTEM_LINE_TEMPLATE
 			Mission: SYSTEM_LINE_TEMPLATE
-			Feedback: SYSTEM_LINE_TEMPLATE
 	Children:
 		Container@CHAT_OVERLAY:
 			Width: PARENT_RIGHT - 24

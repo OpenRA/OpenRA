@@ -69,6 +69,7 @@ Assemblies:
 ChromeLayout:
 	common|chrome/ingame.yaml
 	common|chrome/ingame-chat.yaml
+	common|chrome/ingame-transients.yaml
 	common|chrome/ingame-fmvplayer.yaml
 	d2k|chrome/ingame-menu.yaml
 	common|chrome/ingame-info.yaml

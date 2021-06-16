@@ -11,7 +11,7 @@ Container@PERF_WIDGETS:
 			ClickThrough: true
 			Background: dialog4
 			X: 10
-			Y: WINDOW_BOTTOM - 265
+			Y: WINDOW_BOTTOM - HEIGHT - 156
 			Width: 210
 			Height: 210
 			Children:

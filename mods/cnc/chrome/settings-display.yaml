@@ -115,7 +115,7 @@ Container@DISPLAY_PANEL:
 			Width: 200
 			Height: 20
 			Font: Regular
-			Text: UI Feedback in Chat
+			Text: UI Feedback in Transients Panel
 		Label@VIDEO_TITLE:
 			Y: 190
 			Width: PARENT_RIGHT
