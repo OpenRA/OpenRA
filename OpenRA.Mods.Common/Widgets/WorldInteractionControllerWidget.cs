@@ -31,6 +31,9 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly Color altSelectionColor;
 		readonly Color ctrlSelectionColor;
 
+		public readonly string ClickSound = ChromeMetrics.Get<string>("ClickSound");
+		public readonly string ClickDisabledSound = ChromeMetrics.Get<string>("ClickDisabledSound");
+
 		int2 dragStart, mousePos;
 		bool isDragging = false;
 
@@ -257,12 +260,16 @@ namespace OpenRA.Mods.Common.Widgets
 					}
 
 					World.Selection.Combine(World, ownUnitsOnScreen, false, false);
+
+					Game.Sound.PlayNotification(World.Map.Rules, World.LocalPlayer, "Sounds", ClickSound, null);
 				}
 				else if (SelectSameTypeKey.IsActivatedBy(e) && !World.IsGameOver)
 				{
 					if (!World.Selection.Actors.Any())
 					{
 						TextNotificationsManager.AddFeedbackLine("Nothing selected.");
+						Game.Sound.PlayNotification(World.Map.Rules, World.LocalPlayer, "Sounds", ClickDisabledSound, null);
+
 						return false;
 					}
 
@@ -292,6 +299,8 @@ namespace OpenRA.Mods.Common.Widgets
 					}
 
 					World.Selection.Combine(World, newSelection, true, false);
+
+					Game.Sound.PlayNotification(World.Map.Rules, World.LocalPlayer, "Sounds", ClickSound, null);
 				}
 			}
 
