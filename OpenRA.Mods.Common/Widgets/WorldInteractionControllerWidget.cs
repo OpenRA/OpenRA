@@ -261,7 +261,10 @@ namespace OpenRA.Mods.Common.Widgets
 				else if (SelectSameTypeKey.IsActivatedBy(e) && !World.IsGameOver)
 				{
 					if (!World.Selection.Actors.Any())
+					{
+						TextNotificationsManager.AddFeedbackLine("Nothing selected.");
 						return false;
+					}
 
 					var ownedActors = World.Selection.Actors
 						.Where(x => !x.IsDead && eligiblePlayers.Contains(x.Owner))
