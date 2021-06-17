@@ -31,7 +31,6 @@ namespace OpenRA.Network
 	public interface IConnection : IDisposable
 	{
 		int LocalClientId { get; }
-		ConnectionState ConnectionState { get; }
 		void Send(int frame, List<byte[]> orders);
 		void SendImmediate(IEnumerable<byte[]> orders);
 		void SendSync(int frame, byte[] syncData);
@@ -50,8 +49,6 @@ namespace OpenRA.Network
 		public ReplayRecorder Recorder { get; private set; }
 
 		public virtual int LocalClientId => 1;
-
-		public virtual ConnectionState ConnectionState => ConnectionState.PreConnecting;
 
 		public virtual void Send(int frame, List<byte[]> orders)
 		{
@@ -256,7 +253,7 @@ namespace OpenRA.Network
 		}
 
 		public override int LocalClientId => clientId;
-		public override ConnectionState ConnectionState => connectionState;
+		public ConnectionState ConnectionState => connectionState;
 
 		public override void SendSync(int frame, byte[] syncData)
 		{
