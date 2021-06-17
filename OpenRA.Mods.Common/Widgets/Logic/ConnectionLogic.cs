@@ -22,12 +22,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void ConnectionStateChanged(OrderManager om, string password, NetworkConnection connection)
 		{
-			if (om.Connection.ConnectionState == ConnectionState.Connected)
+			if (connection.ConnectionState == ConnectionState.Connected)
 			{
 				CloseWindow();
 				onConnect();
 			}
-			else if (om.Connection.ConnectionState == ConnectionState.NotConnected)
+			else if (connection.ConnectionState == ConnectionState.NotConnected)
 			{
 				CloseWindow();
 

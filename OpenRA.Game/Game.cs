@@ -62,17 +62,17 @@ namespace OpenRA
 
 		public static OrderManager JoinServer(ConnectionTarget endpoint, string password, bool recordReplay = true)
 		{
-			var connection = new NetworkConnection(endpoint);
+			var newConnection = new NetworkConnection(endpoint);
 			if (recordReplay)
-				connection.StartRecording(() => { return TimestampedFilename(); });
+				newConnection.StartRecording(() => { return TimestampedFilename(); });
 
-			var om = new OrderManager(connection);
+			var om = new OrderManager(newConnection);
 			JoinInner(om);
 			CurrentServerSettings.Password = password;
 			CurrentServerSettings.Target = endpoint;
 
 			lastConnectionState = ConnectionState.PreConnecting;
-			ConnectionStateChanged(OrderManager, password, connection);
+			ConnectionStateChanged(OrderManager, password, newConnection);
 
 			return om;
 		}
@@ -653,10 +653,10 @@ namespace OpenRA
 		{
 			PerformDelayedActions();
 
-			if (OrderManager.Connection.ConnectionState != lastConnectionState)
+			if (OrderManager.Connection is NetworkConnection nc && nc.ConnectionState != lastConnectionState)
 			{
-				lastConnectionState = OrderManager.Connection.ConnectionState;
-				ConnectionStateChanged(OrderManager, null, null);
+				lastConnectionState = nc.ConnectionState;
+				ConnectionStateChanged(OrderManager, null, nc);
 			}
 
 			InnerLogicTick(OrderManager);

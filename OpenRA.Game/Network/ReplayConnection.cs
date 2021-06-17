@@ -34,7 +34,6 @@ namespace OpenRA.Network
 		Dictionary<int, int> lastClientsFrame = new Dictionary<int, int>();
 
 		public int LocalClientId => -1;
-		public ConnectionState ConnectionState => ConnectionState.Connected;
 
 		public IPEndPoint EndPoint => throw new NotSupportedException("A replay connection doesn't have an endpoint");
 
