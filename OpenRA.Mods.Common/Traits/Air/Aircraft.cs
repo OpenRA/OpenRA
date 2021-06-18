@@ -1249,7 +1249,11 @@ namespace OpenRA.Mods.Common.Traits
 			public override bool Tick(Actor self)
 			{
 				if (!aircraft.Info.TakeOffOnCreation)
+				{
+					// Freshly created aircraft shouldn't block the exit, so we allow them to yield their reservation
+					aircraft.AllowYieldingReservation();
 					return true;
+				}
 
 				if (self.World.Map.DistanceAboveTerrain(aircraft.CenterPosition).Length <= aircraft.LandAltitude.Length)
 					QueueChild(new TakeOff(self));
