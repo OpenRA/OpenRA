@@ -607,6 +607,8 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		public int MovementSpeed => !IsTraitDisabled && !IsTraitPaused ? Util.ApplyPercentageModifiers(Info.Speed, speedModifiers) : 0;
+		public int IdleMovementSpeed => Info.IdleSpeed < 0 ? MovementSpeed :
+			!IsTraitDisabled && !IsTraitPaused ? Util.ApplyPercentageModifiers(Info.IdleSpeed, speedModifiers) : 0;
 
 		public (CPos Cell, SubCell SubCell)[] OccupiedCells()
 		{
