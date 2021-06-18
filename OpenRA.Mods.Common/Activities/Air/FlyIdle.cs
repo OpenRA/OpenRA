@@ -52,10 +52,8 @@ namespace OpenRA.Mods.Common.Activities
 
 			if (isIdleTurner)
 			{
-				var speed = aircraft.Info.IdleSpeed < 0 ? aircraft.Info.Speed : aircraft.Info.IdleSpeed;
-
 				// This override is necessary, otherwise aircraft with CanSlide would circle sideways
-				var move = aircraft.FlyStep(speed, aircraft.Facing);
+				var move = aircraft.FlyStep(aircraft.IdleMovementSpeed, aircraft.Facing);
 
 				// We can't possibly turn this fast
 				var desiredFacing = aircraft.Facing + new WAngle(256);
