@@ -266,7 +266,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public CPos TopLeft => self.World.Map.CellContaining(CenterPosition);
 		public WAngle TurnSpeed => !IsTraitDisabled && !IsTraitPaused ? Info.TurnSpeed : WAngle.Zero;
-		public WAngle? IdleTurnSpeed => Info.IdleTurnSpeed;
+		public WAngle? IdleTurnSpeed => !IsTraitDisabled && !IsTraitPaused ? Info.IdleTurnSpeed : null;
 
 		public Actor ReservedActor { get; private set; }
 		public bool MayYieldReservation { get; private set; }
