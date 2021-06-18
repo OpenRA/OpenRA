@@ -921,43 +921,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Activity ReturnToCell(Actor self) { return null; }
 
-		class AssociateWithAirfieldActivity : Activity
-		{
-			readonly Actor self;
-			readonly Aircraft aircraft;
-			readonly int delay;
-
-			public AssociateWithAirfieldActivity(Actor self, int delay = 0)
-			{
-				this.self = self;
-				aircraft = self.Trait<Aircraft>();
-				IsInterruptible = false;
-				this.delay = delay;
-			}
-
-			protected override void OnFirstRun(Actor self)
-			{
-				var host = aircraft.GetActorBelow();
-				if (host != null)
-					aircraft.MakeReservation(host);
-
-				if (delay > 0)
-					QueueChild(new Wait(delay));
-			}
-
-			public override bool Tick(Actor self)
-			{
-				if (!aircraft.Info.TakeOffOnCreation)
-					return true;
-
-				if (self.World.Map.DistanceAboveTerrain(aircraft.CenterPosition).Length <= aircraft.LandAltitude.Length)
-					QueueChild(new TakeOff(self));
-
-				aircraft.UnReserve();
-				return true;
-			}
-		}
-
 		public Activity MoveToTarget(Actor self, in Target target,
 			WPos? initialTargetPosition = null, Color? targetLineColor = null)
 		{
@@ -1257,6 +1220,43 @@ namespace OpenRA.Mods.Common.Traits
 		Activity ICreationActivity.GetCreationActivity()
 		{
 			return new AssociateWithAirfieldActivity(self, creationActivityDelay);
+		}
+
+		class AssociateWithAirfieldActivity : Activity
+		{
+			readonly Actor self;
+			readonly Aircraft aircraft;
+			readonly int delay;
+
+			public AssociateWithAirfieldActivity(Actor self, int delay = 0)
+			{
+				this.self = self;
+				aircraft = self.Trait<Aircraft>();
+				IsInterruptible = false;
+				this.delay = delay;
+			}
+
+			protected override void OnFirstRun(Actor self)
+			{
+				var host = aircraft.GetActorBelow();
+				if (host != null)
+					aircraft.MakeReservation(host);
+
+				if (delay > 0)
+					QueueChild(new Wait(delay));
+			}
+
+			public override bool Tick(Actor self)
+			{
+				if (!aircraft.Info.TakeOffOnCreation)
+					return true;
+
+				if (self.World.Map.DistanceAboveTerrain(aircraft.CenterPosition).Length <= aircraft.LandAltitude.Length)
+					QueueChild(new TakeOff(self));
+
+				aircraft.UnReserve();
+				return true;
+			}
 		}
 
 		public class AircraftMoveOrderTargeter : IOrderTargeter
