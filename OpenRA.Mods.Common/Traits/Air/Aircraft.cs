@@ -268,6 +268,18 @@ namespace OpenRA.Mods.Common.Traits
 		public WAngle TurnSpeed => IsTraitDisabled || IsTraitPaused ? WAngle.Zero : Info.TurnSpeed;
 		public WAngle? IdleTurnSpeed => IsTraitDisabled || IsTraitPaused ? null : Info.IdleTurnSpeed;
 
+		public WAngle GetTurnSpeed(bool isIdleTurn)
+		{
+			// A MovementSpeed of zero indicates either a speed modifier of zero percent or that the trait is paused or disabled.
+			// Bail early in that case.
+			if ((isIdleTurn && IdleMovementSpeed == 0) || MovementSpeed == 0)
+				return WAngle.Zero;
+
+			var turnSpeed = isIdleTurn ? IdleTurnSpeed ?? TurnSpeed : TurnSpeed;
+
+			return new WAngle(Util.ApplyPercentageModifiers(turnSpeed.Angle, speedModifiers).Clamp(1, 1024));
+		}
+
 		public Actor ReservedActor { get; private set; }
 		public bool MayYieldReservation { get; private set; }
 		public bool ForceLanding { get; private set; }

@@ -68,7 +68,7 @@ namespace OpenRA.Mods.Common.Activities
 				move = moveOverride;
 
 			var oldFacing = aircraft.Facing;
-			var turnSpeed = idleTurn ? aircraft.IdleTurnSpeed ?? aircraft.TurnSpeed : aircraft.TurnSpeed;
+			var turnSpeed = aircraft.GetTurnSpeed(idleTurn);
 			aircraft.Facing = Util.TickFacing(aircraft.Facing, desiredFacing, turnSpeed);
 
 			var roll = idleTurn ? aircraft.Info.IdleRoll ?? aircraft.Info.Roll : aircraft.Info.Roll;
