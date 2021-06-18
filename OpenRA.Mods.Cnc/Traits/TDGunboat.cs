@@ -222,6 +222,8 @@ namespace OpenRA.Mods.Cnc.Traits
 		// Actors with TDGunboat always move
 		public MovementType CurrentMovementTypes { get => MovementType.Horizontal; set { } }
 
+		bool IMove.FreesExitOnCreation => true;
+
 		public bool CanEnterTargetNow(Actor self, in Target target)
 		{
 			return false;

@@ -724,6 +724,8 @@ namespace OpenRA.Mods.Common.Traits
 			return self.Location == self.World.Map.CellContaining(target.CenterPosition) || Util.AdjacentCells(self.World, target).Any(c => c == self.Location);
 		}
 
+		bool IMove.FreesExitOnCreation => true;
+
 		#endregion
 
 		#region Local IMove-related

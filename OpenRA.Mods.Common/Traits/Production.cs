@@ -90,7 +90,7 @@ namespace OpenRA.Mods.Common.Traits
 				var newUnit = self.World.CreateActor(producee.Name, td);
 
 				var move = newUnit.TraitOrDefault<IMove>();
-				if (exitinfo != null && move != null)
+				if (exitinfo != null && move != null && move.FreesExitOnCreation)
 					foreach (var cell in exitLocations)
 						newUnit.QueueActivity(new AttackMoveActivity(newUnit, () => move.MoveTo(cell, 1, evaluateNearestMovableCell: true, targetLineColor: Color.OrangeRed)));
 

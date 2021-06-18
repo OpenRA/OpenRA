@@ -961,6 +961,8 @@ namespace OpenRA.Mods.Common.Traits
 			return true;
 		}
 
+		bool IMove.FreesExitOnCreation => Info.TakeOffOnCreation;
+
 		#endregion
 
 		#region Implement order interfaces
