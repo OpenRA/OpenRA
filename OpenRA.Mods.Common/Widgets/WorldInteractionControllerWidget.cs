@@ -12,7 +12,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
-using OpenRA.Mods.Common.Effects;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Orders;
 using OpenRA.Primitives;
@@ -201,21 +200,9 @@ namespace OpenRA.Mods.Common.Widgets
 				if (!flashed && !o.SuppressVisualFeedback)
 				{
 					var visualTarget = o.VisualFeedbackTarget.Type != TargetType.Invalid ? o.VisualFeedbackTarget : o.Target;
-					if (visualTarget.Type == TargetType.Actor)
-					{
-						world.AddFrameEndTask(w => w.Add(new FlashTarget(visualTarget.Actor)));
-						flashed = true;
-					}
-					else if (visualTarget.Type == TargetType.FrozenActor)
-					{
-						visualTarget.FrozenActor.Flash();
-						flashed = true;
-					}
-					else if (visualTarget.Type == TargetType.Terrain)
-					{
-						world.AddFrameEndTask(w => w.Add(new SpriteAnnotation(visualTarget.CenterPosition, world, "moveflsh", "idle", "moveflash")));
-						flashed = true;
-					}
+
+					foreach (var notifyOrderIssued in world.WorldActor.TraitsImplementing<INotifyOrderIssued>())
+						flashed = notifyOrderIssued.OrderIssued(world, visualTarget);
 				}
 
 				world.IssueOrder(o);

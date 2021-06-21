@@ -55,6 +55,12 @@ namespace OpenRA.Mods.Common.Traits
 	public interface IBlocksProjectilesInfo : ITraitInfoInterface { }
 
 	[RequireExplicitImplementation]
+	public interface INotifyOrderIssued
+	{
+		bool OrderIssued(World world, Target target);
+	}
+
+	[RequireExplicitImplementation]
 	public interface INotifySold
 	{
 		void Selling(Actor self);
