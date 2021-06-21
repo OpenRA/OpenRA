@@ -142,7 +142,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			// PERF: Avoid LINQ
 			foreach (var a in armaments)
-				if (!a.IsReloading)
+				if (!a.IsWaiting)
 					return Info.WeaponInfo;
 
 			return Info.EmptyWeaponInfo;

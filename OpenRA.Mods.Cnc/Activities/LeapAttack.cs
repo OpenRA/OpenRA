@@ -121,7 +121,7 @@ namespace OpenRA.Mods.Cnc.Activities
 				return true;
 
 			// Can't leap yet
-			if (attack.Armaments.All(a => a.IsReloading))
+			if (attack.Armaments.All(a => a.IsWaiting))
 				return false;
 
 			// Use CenterOfSubCell with ToSubCell instead of target.Centerposition

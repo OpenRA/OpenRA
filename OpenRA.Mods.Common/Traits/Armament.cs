@@ -65,6 +65,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Condition to grant while reloading.")]
 		public readonly string ReloadingCondition = null;
 
+		[Desc("Whether the weapon is assumed to be reloaded if enough time between shots has passed for a reload.")]
+		public readonly bool ReloadWhileWaiting = true;
+
 		public WeaponInfo WeaponInfo { get; private set; }
 		public WDist ModifiedRange { get; private set; }
 
@@ -185,7 +188,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (string.IsNullOrEmpty(Info.ReloadingCondition))
 				return;
 
-			var enabled = !IsTraitDisabled && IsReloading;
+			var enabled = !IsTraitDisabled && IsWaiting;
 
 			if (enabled && conditionToken == Actor.InvalidConditionToken)
 				conditionToken = self.GrantCondition(Info.ReloadingCondition);
@@ -236,7 +239,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected virtual bool CanFire(Actor self, in Target target)
 		{
-			if (IsReloading || IsTraitPaused)
+			if (IsWaiting || IsTraitPaused)
 				return false;
 
 			if (turret != null && !turret.HasAchievedDesiredFacing)
@@ -259,7 +262,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!CanFire(self, target))
 				return null;
 
-			if (ticksSinceLastShot >= Weapon.ReloadDelay)
+			if (Info.ReloadWhileWaiting && ticksSinceLastShot >= Weapon.ReloadDelay)
 				Burst = Weapon.Burst;
 
 			ticksSinceLastShot = 0;
@@ -368,7 +371,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public virtual bool IsReloading => FireDelay > 0 || IsTraitDisabled;
+		public virtual bool IsWaiting => FireDelay > 0 || IsTraitDisabled;
 
 		public WVec MuzzleOffset(Actor self, Barrel b)
 		{
