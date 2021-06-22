@@ -5,12 +5,16 @@ World:
 		WaterChance: 100
 		CrateActors: unitcrate
 		InitialSpawnDelay: 0
+		CheckboxVisible: False
 	-SpawnStartingUnits:
 	-MapStartingLocations:
 	MapBuildRadius:
 		AllyBuildRadiusCheckboxVisible: False
 		BuildRadiusCheckboxVisible: False
 	MapOptions:
+		ShortGameCheckboxVisible: False
+		ShortGameCheckboxLocked: True
+		ShortGameCheckboxEnabled: False
 		TechLevelDropdownLocked: True
 		TechLevelDropdownVisible: False
 		TechLevel: unrestricted
@@ -69,4 +73,6 @@ Player:
 		Locked: True
 		Visible: False
 	LobbyPrerequisiteCheckbox@GLOBALFACTUNDEPLOY:
+		Visible: False
+	LobbyPrerequisiteCheckbox@REUSABLEENGINEERS:
 		Visible: False

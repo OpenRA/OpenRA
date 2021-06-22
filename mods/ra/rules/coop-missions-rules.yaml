@@ -1,0 +1,26 @@
+Player:
+	Shroud:
+		FogCheckboxVisible: True
+		ExploredMapCheckboxVisible: True
+	PlayerResources:
+		DefaultCashDropdownVisible: True
+	LobbyPrerequisiteCheckbox@GLOBALBOUNTY:
+		Visible: True
+	LobbyPrerequisiteCheckbox@GLOBALFACTUNDEPLOY:
+		Visible: True
+	LobbyPrerequisiteCheckbox@REUSABLEENGINEERS:
+		Visible: True
+	DeveloperMode:
+		CheckboxVisible: True
+
+World:
+	CrateSpawner:
+		CheckboxVisible: True
+	MapBuildRadius:
+		AllyBuildRadiusCheckboxVisible: True
+		BuildRadiusCheckboxVisible: True
+	MapOptions:
+		ShortGameCheckboxVisible: True
+		TechLevelDropdownVisible: True
+	TimeLimitManager:
+		TimeLimitDropdownVisible: True
