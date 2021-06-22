@@ -5,16 +5,24 @@ World:
 	ObjectivesPanel:
 		PanelName: MISSION_OBJECTIVES
 	MapCreeps:
+		CheckboxVisible: False
 		CheckboxLocked: True
 		CheckboxEnabled: False
 	MapBuildRadius:
+		AllyBuildRadiusCheckboxVisible: False
 		AllyBuildRadiusCheckboxLocked: True
 		AllyBuildRadiusCheckboxEnabled: False
+		BuildRadiusCheckboxVisible: False
 		BuildRadiusCheckboxLocked: True
 		BuildRadiusCheckboxEnabled: True
 	MapOptions:
+		ShortGameCheckboxVisible: False
 		ShortGameCheckboxLocked: True
 		ShortGameCheckboxEnabled: False
+		TechLevelDropdownVisible: False
+		TechLevelDropdownLocked: True
+	TimeLimitManager:
+		TimeLimitDropdownVisible: False
 
 Player:
 	-ConquestVictoryConditions:
@@ -22,13 +30,26 @@ Player:
 		EarlyGameOver: true
 		GameOverDelay: 3000
 	Shroud:
+		FogCheckboxVisible: False
 		FogCheckboxLocked: True
 		FogCheckboxEnabled: True
+		ExploredMapCheckboxVisible: False
 		ExploredMapCheckboxLocked: True
 		ExploredMapCheckboxEnabled: False
 	PlayerResources:
+		DefaultCashDropdownVisible: False
 		DefaultCashDropdownLocked: True
 		DefaultCash: 5000
+	LobbyPrerequisiteCheckbox@GLOBALFACTUNDEPLOY:
+		Enabled: False
+		Locked: True
+		Visible: False
+	LobbyPrerequisiteCheckbox@GLOBALC17STEALTH:
+		Enabled: False
+		Locked: True
+		Visible: False
+	DeveloperMode:
+		CheckboxVisible: False
 	ModularBot@CampaignAI:
 		Name: Campaign Player AI
 		Type: campaign

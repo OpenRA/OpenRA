@@ -1382,4 +1382,4 @@ Actors:
 		Owner: Soviets
 		Location: 130,45
 
-Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, ra|rules/campaign-palettes.yaml, rules.yaml
+Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, ra|rules/campaign-palettes.yaml, ra|rules/coop-missions-rules.yaml, rules.yaml

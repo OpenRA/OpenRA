@@ -4,12 +4,16 @@ World:
 		SpawnInterval: 125
 		CrateActors: unitcrate
 		InitialSpawnDelay: 0
+		CheckboxVisible: False
 	-SpawnStartingUnits:
 	-MapStartingLocations:
 	MapBuildRadius:
 		AllyBuildRadiusCheckboxVisible: False
 		BuildRadiusCheckboxVisible: False
 	MapOptions:
+		ShortGameCheckboxVisible: False
+		ShortGameCheckboxLocked: True
+		ShortGameCheckboxEnabled: False
 		TechLevelDropdownLocked: True
 		TechLevelDropdownVisible: False
 		TechLevel: unrestricted

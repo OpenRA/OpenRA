@@ -12,6 +12,9 @@ World:
 		BuildRadiusCheckboxEnabled: True
 		BuildRadiusCheckboxVisible: False
 	MapOptions:
+		ShortGameCheckboxVisible: False
+		ShortGameCheckboxLocked: True
+		ShortGameCheckboxEnabled: False
 		TechLevelDropdownLocked: True
 		TechLevelDropdownVisible: False
 		TechLevel: unrestricted
@@ -109,6 +112,8 @@ Player:
 		Locked: True
 		Visible: False
 	LobbyPrerequisiteCheckbox@GLOBALFACTUNDEPLOY:
+		Visible: False
+	LobbyPrerequisiteCheckbox@REUSABLEENGINEERS:
 		Visible: False
 
 MNLYR:
