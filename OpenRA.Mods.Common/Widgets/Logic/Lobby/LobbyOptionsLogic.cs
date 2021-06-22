@@ -168,8 +168,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			panel.ContentHeight = yMargin + optionsContainer.Bounds.Height;
 			optionsContainer.Bounds.Y = yMargin;
-			if (panel.ContentHeight < panel.Bounds.Height)
-				optionsContainer.Bounds.Y += (panel.Bounds.Height - panel.ContentHeight) / 2;
 
 			panel.ScrollToTop();
 		}
