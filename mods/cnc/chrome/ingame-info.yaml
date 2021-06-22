@@ -13,13 +13,6 @@ Container@GAME_INFO_PANEL:
 			Align: Center
 			Font: BigBold
 			Contrast: true
-		Label@TITLE_NO_TABS:
-			Width: PARENT_RIGHT
-			Y: 18
-			Text: Game Information
-			Align: Center
-			Font: BigBold
-			Contrast: true
 		Container@TAB_CONTAINER_2:
 			Visible: False
 			Children:
