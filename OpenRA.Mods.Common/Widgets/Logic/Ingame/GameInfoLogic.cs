@@ -102,29 +102,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					activePanel = type;
 			}
 
-			// Handle empty space when tabs aren't displayed
 			var titleText = widget.Get<LabelWidget>("TITLE");
-			var titleTextNoTabs = widget.GetOrNull<LabelWidget>("TITLE_NO_TABS");
 
 			var mapTitle = world.Map.Title;
 			var firstCategory = world.Map.Categories.FirstOrDefault();
 			if (firstCategory != null)
 				mapTitle = firstCategory + ": " + mapTitle;
 
-			titleText.IsVisible = () => numTabs > 1 || (numTabs == 1 && titleTextNoTabs == null);
 			titleText.GetText = () => mapTitle;
-			if (titleTextNoTabs != null)
-			{
-				titleTextNoTabs.IsVisible = () => numTabs == 1;
-				titleTextNoTabs.GetText = () => mapTitle;
-			}
-
-			var bg = widget.Get<BackgroundWidget>("BACKGROUND");
-			var bgNoTabs = widget.GetOrNull<BackgroundWidget>("BACKGROUND_NO_TABS");
-
-			bg.IsVisible = () => numTabs > 1 || (numTabs == 1 && bgNoTabs == null);
-			if (bgNoTabs != null)
-				bgNoTabs.IsVisible = () => numTabs == 1;
 		}
 
 		void SetupObjectivesPanel(ButtonWidget objectivesTabButton, Widget objectivesPanelContainer)
