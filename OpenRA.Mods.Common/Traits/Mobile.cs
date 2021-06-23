@@ -807,7 +807,7 @@ namespace OpenRA.Mods.Common.Traits
 			using (var search = PathSearch.Search(self.World, Locomotor, self, BlockedByActor.All,
 					loc => loc.Layer == 0 && CanEnterCell(loc))
 				.FromPoint(self.Location))
-				path = Pathfinder.FindPath(search);
+				path = Pathfinder.FindPath(search, self.Orientation);
 
 			if (path.Count > 0)
 				return path[0];

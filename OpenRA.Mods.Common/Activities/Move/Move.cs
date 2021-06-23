@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Activities
 				using (var search =
 					PathSearch.FromPoint(self.World, mobile.Locomotor, self, mobile.ToCell, destination, check)
 					.WithoutLaneBias())
-					path = mobile.Pathfinder.FindPath(search);
+					path = mobile.Pathfinder.FindPath(search, self.Orientation);
 				return path;
 			};
 

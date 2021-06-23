@@ -101,7 +101,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 		/// using the A* algorithm (A-star) and returns that node
 		/// </summary>
 		/// <returns>The most promising node of the iteration</returns>
-		public override CPos Expand()
+		public override CPos Expand(WRot orientation)
 		{
 			var currentMinNode = OpenQueue.Pop().Destination;
 
@@ -115,6 +115,37 @@ namespace OpenRA.Mods.Common.Pathfinder
 			{
 				// Calculate the cost up to that point
 				var gCost = currentCell.CostSoFar + connection.Cost;
+
+				// This constant is experimental. Orientation.Yaw is integer from [0...1024]
+				// 128 is eight of it => difference between 2 neighboring orientations
+				// In future we should check how long it takes to rotate on same position.
+				// longer it takes, smaller variable a
+				var a = 128.0;
+				var val = 0;
+
+				// Check orientation of actor/vehicle and make directions in front of it more interesting among all eight possible
+				if (connection.Destination.X - currentMinNode.X == 1)
+				{
+					if (connection.Destination.Y - currentMinNode.Y == 1)
+						value = 896;
+					else if (connection.Destination.Y - currentMinNode.Y == 0)
+						value = 768;
+					else
+						value = 640;
+				}
+				else if (connection.Destination.X - currentMinNode.X == -1)
+				{
+					if (connection.Destination.Y - currentMinNode.Y == 1)
+						value = 128;
+					else if (connection.Destination.Y - currentMinNode.Y == 0)
+						value = 256;
+					else
+						value = 384;
+				}
+				else if (connection.Destination.X - currentMinNode.X == 0 && connection.Destination.Y - currentMinNode.Y == -1)
+						value = 512;
+
+				gCost += (int)Math.Round(Math.Abs(512 - Math.Abs(orientation.Yaw.Angle - value)) / a);
 
 				var neighborCPos = connection.Destination;
 				var neighborCell = Graph[neighborCPos];

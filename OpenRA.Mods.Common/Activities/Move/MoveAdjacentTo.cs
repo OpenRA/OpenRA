@@ -134,7 +134,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			using (var fromSrc = PathSearch.FromPoints(self.World, Mobile.Locomotor, self, searchCells, loc, check))
 			using (var fromDest = PathSearch.FromPoint(self.World, Mobile.Locomotor, self, loc, lastVisibleTargetLocation, check).Reverse())
-				return Mobile.Pathfinder.FindBidiPath(fromSrc, fromDest);
+				return Mobile.Pathfinder.FindBidiPath(fromSrc, fromDest, self.Orientation);
 		}
 
 		public override IEnumerable<Target> GetTargets(Actor self)

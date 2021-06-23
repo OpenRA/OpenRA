@@ -76,16 +76,16 @@ namespace OpenRA.Mods.Common.Pathfinder
 			}
 		}
 
-		public List<CPos> FindPath(IPathSearch search)
+		public List<CPos> FindPath(IPathSearch search, WRot orientation)
 		{
 			using (new PerfSample("Pathfinder"))
-				return pathFinder.FindPath(search);
+				return pathFinder.FindPath(search, orientation);
 		}
 
-		public List<CPos> FindBidiPath(IPathSearch fromSrc, IPathSearch fromDest)
+		public List<CPos> FindBidiPath(IPathSearch fromSrc, IPathSearch fromDest, WRot orientation)
 		{
 			using (new PerfSample("Pathfinder"))
-				return pathFinder.FindBidiPath(fromSrc, fromDest);
+				return pathFinder.FindBidiPath(fromSrc, fromDest, orientation);
 		}
 	}
 }

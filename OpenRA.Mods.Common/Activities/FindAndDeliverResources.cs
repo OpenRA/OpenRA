@@ -216,7 +216,7 @@ namespace OpenRA.Mods.Common.Activities
 				})
 				.FromPoint(searchFromLoc)
 				.FromPoint(self.Location))
-				path = mobile.Pathfinder.FindPath(search);
+				path = mobile.Pathfinder.FindPath(search, self.Orientation);
 
 			if (path.Count > 0)
 				return path[0];

@@ -38,14 +38,14 @@ namespace OpenRA.Mods.Common.Traits
 		/// <summary>
 		/// Calculates a path given a search specification
 		/// </summary>
-		List<CPos> FindPath(IPathSearch search);
+		List<CPos> FindPath(IPathSearch search, WRot orientation);
 
 		/// <summary>
 		/// Calculates a path given two search specifications, and
 		/// then returns a path when both search intersect each other
 		/// TODO: This should eventually disappear
 		/// </summary>
-		List<CPos> FindBidiPath(IPathSearch fromSrc, IPathSearch fromDest);
+		List<CPos> FindBidiPath(IPathSearch fromSrc, IPathSearch fromDest, WRot orientation);
 	}
 
 	public class PathFinder : IPathFinder
@@ -87,7 +87,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			using (var fromSrc = PathSearch.FromPoint(world, locomotor, self, target, source, check).WithIgnoredActor(ignoreActor))
 			using (var fromDest = PathSearch.FromPoint(world, locomotor, self, source, target, check).WithIgnoredActor(ignoreActor).Reverse())
-				pb = FindBidiPath(fromSrc, fromDest);
+				pb = FindBidiPath(fromSrc, fromDest, self.Orientation);
 
 			return pb;
 		}
@@ -126,16 +126,16 @@ namespace OpenRA.Mods.Common.Traits
 
 			using (var fromSrc = PathSearch.FromPoints(world, locomotor, self, tilesInRange, source, check))
 			using (var fromDest = PathSearch.FromPoint(world, locomotor, self, source, targetCell, check).Reverse())
-				return FindBidiPath(fromSrc, fromDest);
+				return FindBidiPath(fromSrc, fromDest, self.Orientation);
 		}
 
-		public List<CPos> FindPath(IPathSearch search)
+		public List<CPos> FindPath(IPathSearch search, WRot orientation)
 		{
 			List<CPos> path = null;
 
 			while (search.CanExpand)
 			{
-				var p = search.Expand();
+				var p = search.Expand(orientation);
 				if (search.IsTarget(p))
 				{
 					path = MakePath(search.Graph, p);
@@ -154,14 +154,14 @@ namespace OpenRA.Mods.Common.Traits
 
 		// Searches from both ends toward each other. This is used to prevent blockings in case we find
 		// units in the middle of the path that prevent us to continue.
-		public List<CPos> FindBidiPath(IPathSearch fromSrc, IPathSearch fromDest)
+		public List<CPos> FindBidiPath(IPathSearch fromSrc, IPathSearch fromDest, WRot orientation)
 		{
 			List<CPos> path = null;
 
 			while (fromSrc.CanExpand && fromDest.CanExpand)
 			{
 				// make some progress on the first search
-				var p = fromSrc.Expand();
+				var p = fromSrc.Expand(orientation);
 				if (fromDest.Graph[p].Status == CellStatus.Closed &&
 					fromDest.Graph[p].CostSoFar < int.MaxValue)
 				{
@@ -170,7 +170,7 @@ namespace OpenRA.Mods.Common.Traits
 				}
 
 				// make some progress on the second search
-				var q = fromDest.Expand();
+				var q = fromDest.Expand(orientation);
 				if (fromSrc.Graph[q].Status == CellStatus.Closed &&
 					fromSrc.Graph[q].CostSoFar < int.MaxValue)
 				{
