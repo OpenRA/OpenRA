@@ -253,12 +253,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					() => selectedUid = preview.Uid, dblClick);
 				item.IsVisible = () => item.RenderBounds.IntersectsWith(scrollpanels[tab].RenderBounds);
 
-				var titleLabel = item.Get<LabelWidget>("TITLE");
+				var titleLabel = item.Get<LabelWithTooltipWidget>("TITLE");
 				if (titleLabel != null)
 				{
-					var font = Game.Renderer.Fonts[titleLabel.Font];
-					var title = WidgetUtils.TruncateText(preview.Title, titleLabel.Bounds.Width, font);
-					titleLabel.GetText = () => title;
+					WidgetUtils.TruncateLabelToTooltip(titleLabel, preview.Title);
 				}
 
 				var previewWidget = item.Get<MapPreviewWidget>("PREVIEW");
@@ -276,12 +274,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					detailsWidget.GetText = () => details;
 				}
 
-				var authorWidget = item.GetOrNull<LabelWidget>("AUTHOR");
+				var authorWidget = item.GetOrNull<LabelWithTooltipWidget>("AUTHOR");
 				if (authorWidget != null)
 				{
-					var font = Game.Renderer.Fonts[authorWidget.Font];
-					var author = WidgetUtils.TruncateText($"Created by {preview.Author}", authorWidget.Bounds.Width, font);
-					authorWidget.GetText = () => author;
+					WidgetUtils.TruncateLabelToTooltip(authorWidget, $"Created by {preview.Author}");
 				}
 
 				var sizeWidget = item.GetOrNull<LabelWidget>("SIZE");
