@@ -92,7 +92,7 @@ namespace OpenRA.Server
 			if (pr.LockTeam)
 				c.Team = pr.Team;
 			if (pr.LockHandicap)
-				c.Team = pr.Handicap;
+				c.Handicap = pr.Handicap;
 
 			c.Color = pr.LockColor ? pr.Color : c.PreferredColor;
 		}
