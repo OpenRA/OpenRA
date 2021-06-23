@@ -80,6 +80,7 @@ Container@MAPCHOOSER_PANEL:
 					Height: 262
 					X: 1
 					Visible: false
+					EnableChildMouseOver: True
 					Children:
 						MapPreview@PREVIEW:
 							X: (PARENT_RIGHT - WIDTH) / 2
@@ -88,27 +89,35 @@ Container@MAPCHOOSER_PANEL:
 							Height: 204
 							IgnoreMouseOver: true
 							IgnoreMouseInput: true
-						Label@TITLE:
+						LabelWithTooltip@TITLE:
 							X: 4
-							Y: PARENT_BOTTOM - 46
+							Y: PARENT_BOTTOM - HEIGHT - 33
 							Width: PARENT_RIGHT - 8
+							Height: 24
 							Align: Center
+							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipTemplate: SIMPLE_TOOLTIP
 						Label@DETAILS:
 							Width: PARENT_RIGHT - 8
+							Height: 12
 							X: 4
-							Y: PARENT_BOTTOM - 32
+							Y: PARENT_BOTTOM - HEIGHT - 26
 							Align: Center
 							Font: Tiny
-						Label@AUTHOR:
+						LabelWithTooltip@AUTHOR:
 							Width: PARENT_RIGHT - 8
+							Height: 12
 							X: 4
-							Y: PARENT_BOTTOM - 20
+							Y: PARENT_BOTTOM - HEIGHT - 14
 							Align: Center
 							Font: Tiny
+							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipTemplate: SIMPLE_TOOLTIP
 						Label@SIZE:
 							Width: PARENT_RIGHT - 8
+							Height: 12
 							X: 4
-							Y: PARENT_BOTTOM - 8
+							Y: PARENT_BOTTOM - HEIGHT - 2
 							Align: Center
 							Font: Tiny
 				Button@BUTTON_CANCEL:
@@ -143,3 +152,4 @@ Container@MAPCHOOSER_PANEL:
 					Width: 140
 					Height: 35
 					Text: Ok
+				TooltipContainer@TOOLTIP_CONTAINER:
