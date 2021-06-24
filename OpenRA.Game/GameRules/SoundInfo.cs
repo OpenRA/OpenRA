@@ -33,11 +33,11 @@ namespace OpenRA.GameRules
 		{
 			FieldLoader.Load(this, y);
 
-			VoicePools = Exts.Lazy(() => Voices.ToDictionary(a => a.Key, a => new SoundPool(1f, a.Value)));
+			VoicePools = Exts.Lazy(() => Voices.ToDictionary(a => a.Key, a => new SoundPool(1f, false, a.Value)));
 			NotificationsPools = Exts.Lazy(() => ParseSoundPool(y, "Notifications"));
 		}
 
-		Dictionary<string, SoundPool> ParseSoundPool(MiniYaml y, string key)
+		static Dictionary<string, SoundPool> ParseSoundPool(MiniYaml y, string key)
 		{
 			var ret = new Dictionary<string, SoundPool>();
 			var classifiction = y.Nodes.First(x => x.Key == key);
@@ -48,8 +48,13 @@ namespace OpenRA.GameRules
 				if (volumeModifierNode != null)
 					volumeModifier = FieldLoader.GetValue<float>(volumeModifierNode.Key, volumeModifierNode.Value.Value);
 
+				var allowInterrupt = false;
+				var allowInterruptNode = t.Value.Nodes.FirstOrDefault(x => x.Key == "AllowInterrupt");
+				if (allowInterruptNode != null)
+					allowInterrupt = FieldLoader.GetValue<bool>(allowInterruptNode.Key, allowInterruptNode.Value.Value);
+
 				var names = FieldLoader.GetValue<string[]>(t.Key, t.Value.Value);
-				var sp = new SoundPool(volumeModifier, names);
+				var sp = new SoundPool(volumeModifier, allowInterrupt, names);
 				ret.Add(t.Key, sp);
 			}
 
@@ -60,12 +65,14 @@ namespace OpenRA.GameRules
 	public class SoundPool
 	{
 		public readonly float VolumeModifier;
+		public readonly bool AllowInterrupt;
 		readonly string[] clips;
 		readonly List<string> liveclips = new List<string>();
 
-		public SoundPool(float volumeModifier, params string[] clips)
+		public SoundPool(float volumeModifier, bool allowInterrupt, params string[] clips)
 		{
 			VolumeModifier = volumeModifier;
+			AllowInterrupt = allowInterrupt;
 			this.clips = clips;
 		}
 
