@@ -54,6 +54,7 @@ Sounds:
 	Notifications:
 		Appear: appear1
 		Beacon: bleep2
+			AllowInterrupt: true
 		Beepy2: beepy2
 		Beepy3: beepy3
 		Beepy6: beepy6
@@ -61,8 +62,11 @@ Sounds:
 		CashTickUp: tone15
 			VolumeModifier: 0.33
 		ChatLine: scold1
+			AllowInterrupt: true
 		ClickDisabledSound: scold2
+			AllowInterrupt: true
 		ClickSound: button
+			AllowInterrupt: true
 		Cloak: trans1
 		Clock: clock1
 		Construction: constru2

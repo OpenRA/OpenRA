@@ -126,9 +126,12 @@ Sounds:
 		DisablePower: bleep11
 		EnablePower: bleep12
 		ChatLine: rabeep1
+			AllowInterrupt: true
 		ClickSound: ramenu1
+			AllowInterrupt: true
 		ClickDisabledSound:
 		Beacon: beepslct
+			AllowInterrupt: true
 		AlertBuzzer: buzzy1
 		AlertBleep: bleep6
 		BaseSetup: bleep9

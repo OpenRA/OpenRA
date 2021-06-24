@@ -2,6 +2,7 @@ Sounds:
 	Notifications:
 		Bargraph: bargraph
 		Beacon: message1
+			AllowInterrupt: true
 		Bestbox: bestbox
 		Blip: blip
 		BuildPaletteClose: emblem
@@ -13,8 +14,11 @@ Sounds:
 		CashTickUp: credup1
 			VolumeModifier: 0.33
 		ChatLine: message1
+			AllowInterrupt: true
 		ClickDisabledSound: wrong1
+			AllowInterrupt: true
 		ClickSound: clicky1
+			AllowInterrupt: true
 		GameForming: gamefrm1
 		Gdiclose: gdiclose
 		Gdiopen: gdiopen

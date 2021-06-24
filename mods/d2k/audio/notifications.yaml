@@ -70,9 +70,14 @@ Sounds:
 		CashTickDown: CASHTIK1
 		LevelUp: SCORTIK1
 		ChatLine: CHAT1
+			AllowInterrupt: true
 		BuildPaletteOpen: BUTTON1
 		BuildPaletteClose: BUTTON1
 		TabClick: SIDEBAR1
+			AllowInterrupt: true
 		ClickSound: BUTTON1
+			AllowInterrupt: true
 		ClickDisabledSound: ENDLIST1
+			AllowInterrupt: true
 		Beacon: CHAT1
+			AllowInterrupt: true
