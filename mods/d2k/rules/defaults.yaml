@@ -243,7 +243,6 @@
 		Categories: Vehicle
 	GrantConditionOnDamageState@HEAVY:
 		Condition: heavy-damage
-		ValidDamageStates: Heavy
 	SpeedMultiplier@HEAVYDAMAGE:
 		RequiresCondition: heavy-damage
 		Modifier: 75
