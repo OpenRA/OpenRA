@@ -12,6 +12,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Graphics;
 using OpenRA.Mods.Common.HitShapes;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -129,6 +130,18 @@ namespace OpenRA.Mods.Common.Traits
 			var origin = turret != null ? self.CenterPosition + turret.Position(self) : self.CenterPosition;
 			var orientation = turret != null ? turret.WorldOrientation : self.Orientation;
 			return Info.Type.DistanceFromEdge(pos, origin, orientation);
+		}
+
+		public IEnumerable<IRenderable> RenderDebugAnnotations(Actor self, WorldRenderer wr)
+		{
+			var targetPosHLine = new WVec(0, 128, 0);
+			var targetPosVLine = new WVec(128, 0, 0);
+			var targetPosColor = IsTraitDisabled ? Color.Gainsboro : Color.Lime;
+			foreach (var p in TargetablePositions(self))
+			{
+				yield return new LineAnnotationRenderable(p - targetPosHLine, p + targetPosHLine, 1, targetPosColor);
+				yield return new LineAnnotationRenderable(p - targetPosVLine, p + targetPosVLine, 1, targetPosColor);
+			}
 		}
 
 		public IEnumerable<IRenderable> RenderDebugOverlay(Actor self, WorldRenderer wr)
