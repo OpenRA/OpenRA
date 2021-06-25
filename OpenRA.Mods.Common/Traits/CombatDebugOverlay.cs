@@ -28,9 +28,6 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class CombatDebugOverlay : IRenderAnnotations, INotifyDamage, INotifyCreated
 	{
-		static readonly WVec TargetPosHLine = new WVec(0, 128, 0);
-		static readonly WVec TargetPosVLine = new WVec(128, 0, 0);
-
 		readonly DebugVisualizations debugVis;
 		readonly IHealthInfo healthInfo;
 		readonly Lazy<BodyOrientation> coords;
@@ -70,14 +67,12 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			foreach (var s in shapes)
+			{
+				foreach (var a in s.RenderDebugAnnotations(self, wr))
+					yield return a;
+
 				foreach (var r in s.RenderDebugOverlay(self, wr))
 					yield return r;
-
-			var positions = Target.FromActor(self).Positions;
-			foreach (var p in positions)
-			{
-				yield return new LineAnnotationRenderable(p - TargetPosHLine, p + TargetPosHLine, 1, Color.Lime);
-				yield return new LineAnnotationRenderable(p - TargetPosVLine, p + TargetPosVLine, 1, Color.Lime);
 			}
 
 			foreach (var attack in self.TraitsImplementing<AttackBase>().Where(x => !x.IsTraitDisabled))
