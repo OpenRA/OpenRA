@@ -17,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[TraitLocation(SystemActors.EditorWorld)]
-	class BuildableTerrainOverlayInfo : TraitInfo
+	public class BuildableTerrainOverlayInfo : TraitInfo
 	{
 		[FieldLoader.Require]
 		public readonly HashSet<string> AllowedTerrainTypes = null;
@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	class BuildableTerrainOverlay : IRenderAboveWorld, IWorldLoaded, INotifyActorDisposing
+	public class BuildableTerrainOverlay : IRenderAboveWorld, IWorldLoaded, INotifyActorDisposing
 	{
 		readonly BuildableTerrainOverlayInfo info;
 		readonly World world;
