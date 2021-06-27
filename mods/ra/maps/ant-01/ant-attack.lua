@@ -92,7 +92,3 @@ end
 EndAntAttack = function()
 	SendAnts = false
 end
-
-InitEnemyPlayers = function()
-	AntMan = Player.GetPlayer("AntMan")
-end
