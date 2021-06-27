@@ -113,9 +113,7 @@ Tick = function()
 			if ticks == DateTime.Minutes(17) then
 				StartAntAttack()
 			elseif ticks == DateTime.Minutes(15) then
-				if DifficultySetting ~= "hard" then
-					SendInsertionHelicopter()
-				end
+				SendInsertionHelicopter()
 			elseif ticks == DateTime.Minutes(12) then
 				StartAntAttack()
 			elseif ticks == DateTime.Minutes(6) then
@@ -182,5 +180,8 @@ WorldLoaded = function()
 	InitEnemyPlayers()
 	Trigger.OnKilled(MoneyDerrick, function()
 		Actor.Create("moneycrate", true, { Owner = allies, Location = MoneyDerrick.Location + CVec.New(1,0) })
+	end)
+	Trigger.OnKilled(MoneyBarrel, function()
+		Actor.Create("moneycrate", true, { Owner = allies, Location = MoneyBarrel.Location})
 	end)
 end
