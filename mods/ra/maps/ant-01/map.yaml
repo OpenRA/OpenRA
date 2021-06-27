@@ -430,7 +430,7 @@ Actors:
 	Actor120: barl
 		Location: 56,50
 		Owner: AntMan
-	Actor121: brl3
+	MoneyBarrel: brl3
 		Location: 55,50
 		Owner: AntMan
 	Actor122: barl
