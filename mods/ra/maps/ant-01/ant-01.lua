@@ -26,13 +26,13 @@ AlliedForces = { "2tnk" , "2tnk", "mcv" }
 ChopperTeam = { "e1r1", "e1r1", "e2", "e2", "e1r1" }
 
 SendTanks = function()
-	Media.PlaySpeechNotification(allies, "ReinforcementsArrived")
-	Reinforcements.Reinforce(allies, AlliedForces, TankPath, DateTime.Seconds(1))
+	Media.PlaySpeechNotification(Allies, "ReinforcementsArrived")
+	Reinforcements.Reinforce(Allies, AlliedForces, TankPath, DateTime.Seconds(1))
 end
 
 SendInsertionHelicopter = function()
-	Media.PlaySpeechNotification(allies, "AlliedReinforcementsSouth")
-	Reinforcements.ReinforceWithTransport(allies, InsertionHelicopterType, ChopperTeam, InsertionPath, { waypoint4.Location })
+	Media.PlaySpeechNotification(Allies, "AlliedReinforcementsSouth")
+	Reinforcements.ReinforceWithTransport(Allies, InsertionHelicopterType, ChopperTeam, InsertionPath, { waypoint4.Location })
 end
 
 FinishTimer = function()
@@ -47,59 +47,59 @@ FinishTimer = function()
 end
 
 TimerExpired = function()
-	allies.MarkCompletedObjective(SurviveObjective)
+	Allies.MarkCompletedObjective(SurviveObjective)
 end
 
 DiscoveredAlliedBase = function(actor, discoverer)
-	if (not baseDiscovered and discoverer.Owner == allies) then
+	if (not baseDiscovered and discoverer.Owner == Allies) then
 		baseDiscovered = true
-		Media.PlaySpeechNotification(allies, "ObjectiveReached")
+		Media.PlaySpeechNotification(Allies, "ObjectiveReached")
 		Utils.Do(AlliedBase, function(building)
-			building.Owner = allies
+			building.Owner = Allies
 		end)
 
 		--Need to delay this so we don't fail mission before obj added
 		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			SurviveObjective = allies.AddObjective("Defend outpost until reinforcements arrive.")
+			SurviveObjective = Allies.AddObjective("Defend outpost until reinforcements arrive.")
 			SetupTimeNotifications()
 			Trigger.OnAllRemovedFromWorld(AlliedBase, function()
-				allies.MarkFailedObjective(SurviveObjective)
+				Allies.MarkFailedObjective(SurviveObjective)
 			end)
-			Media.PlaySpeechNotification(allies, "TimerStarted")
-			Trigger.AfterDelay(DateTime.Seconds(2), function() allies.MarkCompletedObjective(DiscoverObjective) end)
-			creeps.GetActorsByType("harv")[1].FindResources()
-			creeps.GetActorsByType("harv")[1].Owner = allies
+			Media.PlaySpeechNotification(Allies, "TimerStarted")
+			Trigger.AfterDelay(DateTime.Seconds(2), function() Allies.MarkCompletedObjective(DiscoverObjective) end)
+			Creeps.GetActorsByType("harv")[1].FindResources()
+			Creeps.GetActorsByType("harv")[1].Owner = Allies
 		end)
 	end
 end
 
 SetupTimeNotifications = function()
 	Trigger.AfterDelay(DateTime.Minutes(8), function()
-		Media.PlaySpeechNotification(allies, "TenMinutesRemaining")
+		Media.PlaySpeechNotification(Allies, "TenMinutesRemaining")
 	end)
 
 	Trigger.AfterDelay(DateTime.Minutes(13), function()
-		Media.PlaySpeechNotification(allies, "WarningFiveMinutesRemaining")
+		Media.PlaySpeechNotification(Allies, "WarningFiveMinutesRemaining")
 	end)
 
 	Trigger.AfterDelay(DateTime.Minutes(14), function()
-		Media.PlaySpeechNotification(allies, "WarningFourMinutesRemaining")
+		Media.PlaySpeechNotification(Allies, "WarningFourMinutesRemaining")
 	end)
 
 	Trigger.AfterDelay(DateTime.Minutes(15), function()
-		Media.PlaySpeechNotification(allies, "WarningThreeMinutesRemaining")
+		Media.PlaySpeechNotification(Allies, "WarningThreeMinutesRemaining")
 	end)
 
 	Trigger.AfterDelay(DateTime.Minutes(16), function()
-		Media.PlaySpeechNotification(allies, "WarningTwoMinutesRemaining")
+		Media.PlaySpeechNotification(Allies, "WarningTwoMinutesRemaining")
 	end)
 
 	Trigger.AfterDelay(DateTime.Minutes(17), function()
-		Media.PlaySpeechNotification(allies, "WarningOneMinuteRemaining")
+		Media.PlaySpeechNotification(Allies, "WarningOneMinuteRemaining")
 	end)
 
 	Trigger.AfterDelay(DateTime.Minutes(17) + DateTime.Seconds(40), function()
-		Media.PlaySpeechNotification(allies, "AlliedForcesApproaching")
+		Media.PlaySpeechNotification(Allies, "AlliedForcesApproaching")
 	end)
 end
 
@@ -126,7 +126,7 @@ Tick = function()
 			UserInterface.SetMissionText("Reinforcements arrive in " .. Utils.FormatTime(ticks), TimerColor)
 		else
 			if not AtEndGame then
-				Media.PlaySpeechNotification(allies, "SecondObjectiveMet")
+				Media.PlaySpeechNotification(Allies, "SecondObjectiveMet")
 				AtEndGame = true
 				FinishTimer()
 				Camera.Position = waypoint13.CenterPosition
@@ -139,11 +139,11 @@ Tick = function()
 end
 
 InitObjectives = function()
-	Trigger.OnObjectiveAdded(allies, function(p, id)
+	Trigger.OnObjectiveAdded(Allies, function(p, id)
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
 	end)
 
-	DiscoverObjective = allies.AddObjective("Find the outpost.")
+	DiscoverObjective = Allies.AddObjective("Find the outpost.")
 
 	Utils.Do(AlliedBase, function(actor)
 		Trigger.OnEnteredProximityTrigger(actor.CenterPosition, WDist.FromCells(8), function(discoverer, id)
@@ -152,36 +152,36 @@ InitObjectives = function()
 	end)
 
 	Trigger.AfterDelay(DateTime.Seconds(1), function()
-		creeps.GetActorsByType("harv")[1].Stop()
+		Creeps.GetActorsByType("harv")[1].Stop()
 	end)
 
-	Trigger.OnObjectiveCompleted(allies, function(p, id)
+	Trigger.OnObjectiveCompleted(Allies, function(p, id)
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
 	end)
-	Trigger.OnObjectiveFailed(allies, function(p, id)
+	Trigger.OnObjectiveFailed(Allies, function(p, id)
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
 	end)
 
-	Trigger.OnPlayerLost(allies, function()
-		Media.PlaySpeechNotification(allies, "MissionFailed")
+	Trigger.OnPlayerLost(Allies, function()
+		Media.PlaySpeechNotification(Allies, "MissionFailed")
 	end)
 
-	Trigger.OnPlayerWon(allies, function()
-		Trigger.AfterDelay(DateTime.Seconds(1), function() Media.PlaySpeechNotification(allies, "MissionAccomplished")  end)
+	Trigger.OnPlayerWon(Allies, function()
+		Trigger.AfterDelay(DateTime.Seconds(1), function() Media.PlaySpeechNotification(Allies, "MissionAccomplished")  end)
 	end)
 
 	Camera.Position = Ranger.CenterPosition
 end
 
 WorldLoaded = function()
-	allies = Player.GetPlayer("Spain")
-	creeps = Player.GetPlayer("Creeps")
+	Allies = Player.GetPlayer("Spain")
+	AntMan = Player.GetPlayer("AntMan")
+	Creeps = Player.GetPlayer("Creeps")
 	InitObjectives()
-	InitEnemyPlayers()
 	Trigger.OnKilled(MoneyDerrick, function()
-		Actor.Create("moneycrate", true, { Owner = allies, Location = MoneyDerrick.Location + CVec.New(1,0) })
+		Actor.Create("moneycrate", true, { Owner = Allies, Location = MoneyDerrick.Location + CVec.New(1,0) })
 	end)
 	Trigger.OnKilled(MoneyBarrel, function()
-		Actor.Create("moneycrate", true, { Owner = allies, Location = MoneyBarrel.Location})
+		Actor.Create("moneycrate", true, { Owner = Allies, Location = MoneyBarrel.Location})
 	end)
 end
