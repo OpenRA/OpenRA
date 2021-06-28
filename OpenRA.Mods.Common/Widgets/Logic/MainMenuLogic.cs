@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class MainMenuLogic : ChromeLogic
 	{
-		protected enum MenuType { Main, Singleplayer, Extras, MapEditor, StartupPrompts, None }
+		protected enum MenuType { Main, Singleplayer, Extras, MapEditor, StartupPrompts, None, Quit }
 
 		protected enum MenuPanel { None, Missions, Skirmish, Multiplayer, MapEditor, Replays, GameSaves }
 
@@ -86,7 +86,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			mainMenu.Get<ButtonWidget>("EXTRAS_BUTTON").OnClick = () => SwitchMenu(MenuType.Extras);
 
-			mainMenu.Get<ButtonWidget>("QUIT_BUTTON").OnClick = Game.Exit;
+			mainMenu.Get<ButtonWidget>("QUIT_BUTTON").OnClick = () => SwitchMenu(MenuType.Quit);
+
+			// Quit menu
+			var quitMenu = widget.Get("REALLY_QUIT");
+			quitMenu.IsVisible = () => menuType == MenuType.Quit;
+			quitMenu.Get<ButtonWidget>("CANCEL_QUIT").OnClick = () => SwitchMenu(MenuType.Main);
+			quitMenu.Get<ButtonWidget>("YES_QUIT").OnClick = Game.Exit;
 
 			// Singleplayer menu
 			var singleplayerMenu = widget.Get("SINGLEPLAYER_MENU");

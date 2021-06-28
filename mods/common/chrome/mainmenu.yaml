@@ -88,6 +88,34 @@ Container@MAINMENU:
 							Height: 30
 							Text: Quit
 							Font: Bold
+							Key: escape
+				Background@REALLY_QUIT:
+					Width: PARENT_RIGHT
+					Height: 300
+					Visible: False
+					Children:
+						Label@QUIT_TITLE:
+							X: PARENT_RIGHT / 2 - WIDTH / 2
+							Y: 21
+							Width: 140
+							Height: 20
+							Text: Do you want to quit?
+							Align: Center
+							Font: Bold
+						Button@CANCEL_QUIT:
+							X: PARENT_RIGHT / 2 - WIDTH / 2
+							Y: 110
+							Width: 140
+							Height: 50
+							Text: Cancel
+							Key: escape
+						Button@YES_QUIT:
+							X: PARENT_RIGHT / 2 - WIDTH / 2
+							Y: 50
+							Width: 140
+							Height: 50
+							Text: Quit
+							Key: q
 				Background@SINGLEPLAYER_MENU:
 					Width: PARENT_RIGHT
 					Height: PARENT_BOTTOM

@@ -94,6 +94,33 @@ Container@MENU_BACKGROUND:
 							Width: 140
 							Height: 35
 							Text: Quit
+							Key: escape
+				Container@REALLY_QUIT:
+					Width: PARENT_RIGHT
+					Height: 300
+					Visible: False
+					Children:
+						Label@QUIT_TITLE:
+							X: 50
+							Y: 0
+							Width: 100
+							Height: 20
+							Text: Do you really want to quit OpenRA?
+							Font: Bold
+						Button@CANCEL_QUIT:
+							X: 470
+							Y: 0
+							Width: 150
+							Height: 40
+							Text: Cancel
+							Key: escape
+						Button@YES_QUIT:
+							X: 300
+							Y: 0
+							Width: 150
+							Height: 40
+							Text: Quit
+							Key: q
 				Container@SINGLEPLAYER_MENU:
 					Width: PARENT_RIGHT
 					Visible: False
