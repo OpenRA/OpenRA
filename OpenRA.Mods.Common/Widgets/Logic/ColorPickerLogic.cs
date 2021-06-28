@@ -150,13 +150,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var colorIndex = j * paletteCols + i;
 
 					var newSwatch = (ColorBlockWidget)customColorTemplate.Clone();
-					newSwatch.GetColor = () => Game.Settings.Player.CustomColors[colorIndex];
+					var getColor = new CachedTransform<Color, Color>(c => colorManager.MakeValid(c, world.LocalRandom, Enumerable.Empty<Color>(), Enumerable.Empty<Color>()));
+
+					newSwatch.GetColor = () => getColor.Update(Game.Settings.Player.CustomColors[colorIndex]);
 					newSwatch.IsVisible = () => Game.Settings.Player.CustomColors.Length > colorIndex;
 					newSwatch.Bounds.X = i * newSwatch.Bounds.Width;
 					newSwatch.Bounds.Y = j * newSwatch.Bounds.Height;
 					newSwatch.OnMouseUp = m =>
 					{
-						var color = Game.Settings.Player.CustomColors[colorIndex];
+						var color = newSwatch.GetColor();
 						mixer.Set(color);
 						onChange(color);
 					};
