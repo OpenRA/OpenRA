@@ -102,7 +102,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			chatText = chatChrome.Get<TextFieldWidget>("CHAT_TEXTFIELD");
 			chatText.MaxLength = UnitOrders.ChatMessageMaxLength;
-			chatText.OnEnterKey = () =>
+			chatText.OnEnterKey = _ =>
 			{
 				var team = teamChat && !disableTeamChat;
 				if (chatText.Text != "")
@@ -135,7 +135,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return true;
 			};
 
-			chatText.OnTabKey = () =>
+			chatText.OnTabKey = _ =>
 			{
 				var previousText = chatText.Text;
 				chatText.Text = tabCompletion.Complete(chatText.Text);
@@ -147,7 +147,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return true;
 			};
 
-			chatText.OnEscKey = () =>
+			chatText.OnEscKey = _ =>
 			{
 				if (!isMenuChat)
 					CloseChat();

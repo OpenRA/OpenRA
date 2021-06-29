@@ -409,8 +409,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				}
 			};
 
-			name.OnEnterKey = () => { name.YieldKeyboardFocus(); return true; };
-			name.OnEscKey = () =>
+			name.OnEnterKey = _ => { name.YieldKeyboardFocus(); return true; };
+			name.OnEscKey = _ =>
 			{
 				name.Text = c.Name;
 				escPressed = true;

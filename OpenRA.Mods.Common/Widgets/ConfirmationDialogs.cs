@@ -113,7 +113,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var isValid = false;
 			input.Text = initialText;
 			input.IsValid = () => isValid;
-			input.OnEnterKey = () =>
+			input.OnEnterKey = _ =>
 			{
 				if (acceptButton.IsDisabled())
 					return false;
@@ -121,7 +121,7 @@ namespace OpenRA.Mods.Common.Widgets
 				acceptButton.OnClick();
 				return true;
 			};
-			input.OnEscKey = () =>
+			input.OnEscKey = _ =>
 			{
 				if (cancelButton.IsDisabled())
 					return false;

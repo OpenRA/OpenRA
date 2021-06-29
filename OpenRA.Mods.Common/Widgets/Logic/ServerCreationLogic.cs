@@ -85,7 +85,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var serverName = panel.Get<TextFieldWidget>("SERVER_NAME");
 			serverName.Text = Settings.SanitizedServerName(settings.Server.Name);
-			serverName.OnEnterKey = () => { serverName.YieldKeyboardFocus(); return true; };
+			serverName.OnEnterKey = _ => { serverName.YieldKeyboardFocus(); return true; };
 			serverName.OnLoseFocus = () =>
 			{
 				serverName.Text = Settings.SanitizedServerName(serverName.Text);

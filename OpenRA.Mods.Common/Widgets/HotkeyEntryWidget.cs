@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public int LeftMargin = 5;
 		public int RightMargin = 5;
 
-		public Action OnEscKey = () => { };
+		public Action<KeyInput> OnEscKey = _ => { };
 		public Action OnLoseFocus = () => { };
 
 		public Func<bool> IsDisabled = () => false;
@@ -102,7 +102,7 @@ namespace OpenRA.Mods.Common.Widgets
 			switch (e.Key)
 			{
 				case Keycode.ESCAPE:
-					OnEscKey();
+					OnEscKey(e);
 					break;
 
 				default:

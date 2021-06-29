@@ -406,7 +406,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			chatTextField.MaxLength = UnitOrders.ChatMessageMaxLength;
 
 			chatTextField.TakeKeyboardFocus();
-			chatTextField.OnEnterKey = () =>
+			chatTextField.OnEnterKey = _ =>
 			{
 				if (chatTextField.Text.Length == 0)
 					return true;
@@ -423,7 +423,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return true;
 			};
 
-			chatTextField.OnTabKey = () =>
+			chatTextField.OnTabKey = _ =>
 			{
 				var previousText = chatTextField.Text;
 				chatTextField.Text = tabCompletion.Complete(chatTextField.Text);
@@ -435,7 +435,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					return true;
 			};
 
-			chatTextField.OnEscKey = () => { chatTextField.Text = ""; return true; };
+			chatTextField.OnEscKey = _ => { chatTextField.Text = ""; return true; };
 
 			lobbyChatPanel = lobby.Get<ScrollPanelWidget>("CHAT_DISPLAY");
 			chatTemplate = lobbyChatPanel.Get("CHAT_TEMPLATE");
