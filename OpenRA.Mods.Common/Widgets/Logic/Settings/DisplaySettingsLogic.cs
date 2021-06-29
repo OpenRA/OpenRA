@@ -171,8 +171,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				}
 			};
 
-			nameTextfield.OnEnterKey = () => { nameTextfield.YieldKeyboardFocus(); return true; };
-			nameTextfield.OnEscKey = () =>
+			nameTextfield.OnEnterKey = _ => { nameTextfield.YieldKeyboardFocus(); return true; };
+			nameTextfield.OnEscKey = _ =>
 			{
 				nameTextfield.Text = Settings.SanitizedPlayerName(ps.Name);
 				escPressed = true;

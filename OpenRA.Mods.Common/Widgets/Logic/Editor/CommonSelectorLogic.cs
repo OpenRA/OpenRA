@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			Panel.Layout = new GridLayout(Panel);
 
 			SearchTextField = widget.Get<TextFieldWidget>("SEARCH_TEXTFIELD");
-			SearchTextField.OnEscKey = () =>
+			SearchTextField.OnEscKey = _ =>
 			{
 				SearchTextField.Text = "";
 				SearchTextField.YieldKeyboardFocus();

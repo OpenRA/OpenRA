@@ -133,7 +133,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			filenameInput = panel.Get<TextFieldWidget>("FILENAME_INPUT");
 			filenameInput.OnTextEdited = () => ApplyFilter();
-			filenameInput.OnEscKey = filenameInput.YieldKeyboardFocus;
+			filenameInput.OnEscKey = _ => filenameInput.YieldKeyboardFocus();
 
 			var frameContainer = panel.GetOrNull("FRAME_SELECTOR");
 			if (frameContainer != null)

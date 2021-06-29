@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (mapFilterInput != null)
 			{
 				mapFilterInput.TakeKeyboardFocus();
-				mapFilterInput.OnEscKey = () =>
+				mapFilterInput.OnEscKey = _ =>
 				{
 					if (mapFilterInput.Text.Length == 0)
 						canceling();
@@ -77,7 +77,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					return true;
 				};
-				mapFilterInput.OnEnterKey = () => { approving(); return true; };
+				mapFilterInput.OnEnterKey = _ => { approving(); return true; };
 				mapFilterInput.OnTextEdited = () =>
 				{
 					mapFilter = mapFilterInput.Text;

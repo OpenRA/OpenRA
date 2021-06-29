@@ -55,9 +55,9 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 		}
 
-		public Func<bool> OnEnterKey = () => false;
-		public Func<bool> OnTabKey = () => false;
-		public Func<bool> OnEscKey = () => false;
+		public Func<KeyInput, bool> OnEnterKey = _ => false;
+		public Func<KeyInput, bool> OnTabKey = _ => false;
+		public Func<KeyInput, bool> OnEscKey = _ => false;
 		public Func<bool> OnAltKey = () => false;
 		public Action OnLoseFocus = () => { };
 		public Action OnTextEdited = () => { };
@@ -226,18 +226,18 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				case Keycode.RETURN:
 				case Keycode.KP_ENTER:
-					if (OnEnterKey())
+					if (OnEnterKey(e))
 						return true;
 					break;
 
 				case Keycode.TAB:
-					if (OnTabKey())
+					if (OnTabKey(e))
 						return true;
 					break;
 
 				case Keycode.ESCAPE:
 					ClearSelection();
-					if (OnEscKey())
+					if (OnEscKey(e))
 						return true;
 					break;
 
