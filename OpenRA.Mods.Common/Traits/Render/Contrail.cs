@@ -56,18 +56,22 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			this.info = info;
 
-			color = info.UsePlayerColor ? ContrailRenderable.ChooseColor(self) : info.Color;
-			trail = new ContrailRenderable(self.World, color, info.TrailWidth, info.TrailLength, 0, info.ZOffset);
-
 			body = self.Trait<BodyOrientation>();
+			color = info.UsePlayerColor ? ContrailRenderable.ChooseColor(self) : info.Color;
+			trail = new ContrailRenderable(self.World, color, info.TrailWidth, info.TrailLength, 0, info.ZOffset, GetPosition(self));
 		}
 
 		void ITick.Tick(Actor self)
 		{
 			// We want to update the trails' position even while the trait is disabled,
 			// otherwise we might get visual 'jumps' when the trait is re-enabled.
+			trail.Update(GetPosition(self));
+		}
+
+		WPos GetPosition(Actor self)
+		{
 			var local = info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation));
-			trail.Update(self.CenterPosition + body.LocalToWorld(local));
+			return self.CenterPosition + body.LocalToWorld(local);
 		}
 
 		IEnumerable<IRenderable> IRender.Render(Actor self, WorldRenderer wr)
@@ -86,7 +90,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyAddedToWorld.AddedToWorld(Actor self)
 		{
-			trail = new ContrailRenderable(self.World, color, info.TrailWidth, info.TrailLength, 0, info.ZOffset);
+			trail = new ContrailRenderable(self.World, color, info.TrailWidth, info.TrailLength, 0, info.ZOffset, GetPosition(self));
 		}
 	}
 }

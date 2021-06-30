@@ -30,8 +30,14 @@ namespace OpenRA.Mods.Common.Graphics
 		int length;
 		int skip;
 
-		public ContrailRenderable(World world, Color color, WDist width, int length, int skip, int zOffset)
-			: this(world, new WPos[length], width, 0, 0, skip, color, zOffset) { }
+		public ContrailRenderable(World world, Color color, WDist width, int length, int skip, int zOffset, WPos source)
+			: this(world, new WPos[length], width, 0, 0, skip, color, zOffset)
+		{
+			// Make sure we have enough segments to draw on the first frame.
+			// Otherwise fast actors will have their trail not starting at their origin.
+			for (var i = 0; i < 3; i++)
+				Update(source);
+		}
 
 		ContrailRenderable(World world, WPos[] trail, WDist width, int next, int length, int skip, Color color, int zOffset)
 		{
