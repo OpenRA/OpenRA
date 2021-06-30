@@ -297,7 +297,11 @@ namespace OpenRA.Mods.Common.Projectiles
 							.WithAlpha(shadowAlpha);
 				}
 
-				var palette = wr.Palette(info.Palette + (info.IsPlayerPalette ? args.SourceActor.Owner.InternalName : ""));
+				var paletteName = info.Palette;
+				if (paletteName != null && info.IsPlayerPalette)
+					paletteName += args.SourceActor.Owner.InternalName;
+
+				var palette = wr.Palette(paletteName);
 				foreach (var r in anim.Render(pos, palette))
 					yield return r;
 			}
