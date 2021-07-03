@@ -336,9 +336,6 @@ namespace OpenRA
 				throw new InvalidDataException($"Map format {MapFormat} is not supported.\n File: {package.Name}");
 
 			PlayerDefinitions = MiniYaml.NodesOrEmpty(yaml, "Players");
-			if (PlayerDefinitions.Count > 64)
-				throw new InvalidDataException($"Maps must not define more than 64 players.\n File: {package.Name}");
-
 			ActorDefinitions = MiniYaml.NodesOrEmpty(yaml, "Actors");
 
 			Grid = modData.Manifest.Get<MapGrid>();

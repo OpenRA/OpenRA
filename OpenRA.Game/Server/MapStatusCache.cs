@@ -88,6 +88,12 @@ namespace OpenRA.Server
 					status = Session.MapStatus.Incompatible;
 				}
 
+				if (map.Players.Players.Count > MapPlayers.MaximumPlayerCount)
+				{
+					Log.Write("server", "Failed to load `{0}`: Player count exceeds maximum ({1}/{2}).", map.Title, map.Players.Players.Count, MapPlayers.MaximumPlayerCount);
+					status = Session.MapStatus.Incompatible;
+				}
+
 				cache[map] = status;
 
 				if ((status & Session.MapStatus.Validating) != 0)
