@@ -10,10 +10,13 @@
 #endregion
 
 using OpenRA.Mods.Common.Effects;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	public enum ActorFlashType { Overlay, Tint }
+
 	[Desc("Renders an effect at the order target locations.")]
 	public class OrderEffectsInfo : TraitInfo
 	{
@@ -27,6 +30,24 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("The palette to use.")]
 		public readonly string TerrainFlashPalette;
+
+		[Desc("The type of effect to apply to targeted (frozen) actors. Accepts values Overlay and Tint.")]
+		public readonly ActorFlashType ActorFlashType = ActorFlashType.Overlay;
+
+		[Desc("The overlay color to display when ActorFlashType is Overlay.")]
+		public readonly Color ActorFlashOverlayColor = Color.White;
+
+		[Desc("The overlay transparency to display when ActorFlashType is Overlay.")]
+		public readonly float ActorFlashOverlayAlpha = 0.5f;
+
+		[Desc("The tint to apply when ActorFlashType is Tint.")]
+		public readonly float3 ActorFlashTint = new float3(1.4f, 1.4f, 1.4f);
+
+		[Desc("Number of times to flash (frozen) actors.")]
+		public readonly int ActorFlashCount = 2;
+
+		[Desc("Number of ticks between (frozen) actor flashes.")]
+		public readonly int ActorFlashInterval = 2;
 
 		public override object Create(ActorInitializer init)
 		{
@@ -47,13 +68,25 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (target.Type == TargetType.Actor)
 			{
-				world.AddFrameEndTask(w => w.Add(new FlashTarget(target.Actor)));
+				if (info.ActorFlashType == ActorFlashType.Overlay)
+					world.AddFrameEndTask(w => w.Add(new FlashTarget(
+						target.Actor, info.ActorFlashOverlayColor, info.ActorFlashOverlayAlpha,
+						info.ActorFlashCount, info.ActorFlashInterval)));
+				else
+					world.AddFrameEndTask(w => w.Add(new FlashTarget(
+						target.Actor, info.ActorFlashTint,
+						info.ActorFlashCount, info.ActorFlashInterval)));
+
 				return true;
 			}
 
 			if (target.Type == TargetType.FrozenActor)
 			{
-				target.FrozenActor.Flash();
+				if (info.ActorFlashType == ActorFlashType.Overlay)
+					target.FrozenActor.Flash(info.ActorFlashOverlayColor, info.ActorFlashOverlayAlpha);
+				else
+					target.FrozenActor.Flash(info.ActorFlashTint);
+
 				return true;
 			}
 

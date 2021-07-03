@@ -71,7 +71,7 @@ namespace OpenRA.Mods.Common.Activities
 				if (!enterDemolishables.Any(i => i.IsValidTarget(enterActor, self)))
 					return;
 
-				w.Add(new FlashTarget(enterActor, count: flashes, delay: flashesDelay, interval: flashInterval));
+				w.Add(new FlashTarget(enterActor, Color.White, count: flashes, interval: flashInterval, delay: flashesDelay));
 
 				foreach (var ind in notifiers)
 					ind.Demolishing(self);

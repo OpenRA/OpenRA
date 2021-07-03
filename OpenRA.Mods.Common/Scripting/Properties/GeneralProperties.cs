@@ -14,6 +14,7 @@ using Eluant;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 using OpenRA.Scripting;
 using OpenRA.Traits;
 
@@ -76,7 +77,7 @@ namespace OpenRA.Mods.Common.Scripting
 			"defines which player palette to use. Duration is in ticks.")]
 		public void Flash(int duration = 4, Player asPlayer = null)
 		{
-			Self.World.Add(new FlashTarget(Self, asPlayer, duration));
+			Self.World.Add(new FlashTarget(Self, asPlayer?.Color ?? Color.White, duration));
 		}
 
 		[Desc("The effective owner of the actor.")]
