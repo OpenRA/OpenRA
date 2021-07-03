@@ -98,6 +98,7 @@ Background@COLOR_CHOOSER:
 									Width: 27
 									Height: 27
 									Visible: false
+									ClickSound: ClickSound
 						Background@CUSTOM_HEADER:
 							Background: panel-black
 							Width: PARENT_RIGHT - 4
@@ -123,3 +124,4 @@ Background@COLOR_CHOOSER:
 									Width: 27
 									Height: 27
 									Visible: false
+									ClickSound: ClickSound

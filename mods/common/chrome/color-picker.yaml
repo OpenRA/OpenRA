@@ -92,6 +92,7 @@ Background@COLOR_CHOOSER:
 									Width: 29
 									Height: 29
 									Visible: false
+									ClickSound: ClickSound
 						Background@CUSTOM_HEADER:
 							Background: dialog2
 							Width: PARENT_RIGHT - 4
@@ -117,3 +118,4 @@ Background@COLOR_CHOOSER:
 									Width: 29
 									Height: 29
 									Visible: false
+									ClickSound: ClickSound
