@@ -19,6 +19,10 @@ namespace OpenRA.Mods.Common.Widgets
 {
 	public class ColorMixerWidget : Widget
 	{
+		readonly Ruleset modRules;
+
+		public string ClickSound = ChromeMetrics.Get<string>("ClickSound");
+
 		public event Action OnChange = () => { };
 
 		public float H { get; private set; }
@@ -30,14 +34,18 @@ namespace OpenRA.Mods.Common.Widgets
 		Sprite mixerSprite;
 		bool isMoving;
 
-		public ColorMixerWidget()
+		[ObjectCreator.UseCtor]
+		public ColorMixerWidget(ModData modData)
 		{
+			modRules = modData.DefaultRules;
 			V = 1.0f;
 		}
 
 		public ColorMixerWidget(ColorMixerWidget other)
 			: base(other)
 		{
+			modRules = other.modRules;
+			ClickSound = other.ClickSound;
 			OnChange = other.OnChange;
 			H = other.H;
 			S = other.S;
@@ -126,6 +134,8 @@ namespace OpenRA.Mods.Common.Widgets
 					isMoving = true;
 					SetValueFromPx(mi.Location - RenderOrigin);
 					OnChange();
+
+					Game.Sound.PlayNotification(modRules, null, "Sounds", ClickSound, null);
 					break;
 
 				case MouseInputEvent.Move:
