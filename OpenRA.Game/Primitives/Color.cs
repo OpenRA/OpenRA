@@ -151,6 +151,11 @@ namespace OpenRA.Primitives
 				hue = (r - g) / (6 * delta) + 2 / 3f;
 
 			var h = hue - (int)hue;
+
+			// Wrap negative values into [0-1)
+			if (h < 0)
+				h += 1;
+
 			var s = delta / rgbMax;
 			return (h, s, v);
 		}
