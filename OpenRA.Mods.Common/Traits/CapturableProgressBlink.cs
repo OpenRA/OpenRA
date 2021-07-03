@@ -64,10 +64,10 @@ namespace OpenRA.Mods.Common.Traits
 			if (tick / 4 < captorOwners.Count && tick % 4 == 0)
 			{
 				var captorOwner = captorOwners[tick / 4];
-				self.World.Add(new FlashTarget(self, captorOwner));
+				self.World.Add(new FlashTarget(self, captorOwner.Color));
 				foreach (var captor in captors)
 					if (captor.Owner == captorOwner)
-						self.World.Add(new FlashTarget(captor, captorOwner));
+						self.World.Add(new FlashTarget(captor, captorOwner.Color));
 			}
 
 			if (++tick >= Info.Interval)

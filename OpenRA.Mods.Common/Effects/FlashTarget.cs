@@ -13,21 +13,25 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Effects;
 using OpenRA.Graphics;
+using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.Effects
 {
 	public class FlashTarget : IEffect
 	{
 		readonly Actor target;
-		readonly Player player;
 		readonly int count;
 		readonly int interval;
+
+		readonly TintModifiers modifiers;
+		readonly float3 tint;
+		readonly float? alpha;
+
 		int tick;
 
-		public FlashTarget(Actor target, Player asPlayer = null, int count = 2, int interval = 2, int delay = 0)
+		FlashTarget(Actor target, int count, int interval, int delay)
 		{
 			this.target = target;
-			player = asPlayer;
 			this.count = count;
 			this.interval = interval;
 			tick = -delay;
@@ -36,6 +40,20 @@ namespace OpenRA.Mods.Common.Effects
 			{
 				return effect is FlashTarget flashTarget && flashTarget.target == target;
 			});
+		}
+
+		public FlashTarget(Actor target, Color color, float alpha = 0.5f, int count = 2, int interval = 2, int delay = 0)
+			: this(target, count, interval, delay)
+		{
+			modifiers = TintModifiers.ReplaceColor;
+			tint = new float3(color.R, color.G, color.B) / 255f;
+			this.alpha = alpha;
+		}
+
+		public FlashTarget(Actor target, float3 tint, int count = 2, int interval = 2, int delay = 0)
+			: this(target, count, interval, delay)
+		{
+			this.tint = tint;
 		}
 
 		public void Tick(World world)
@@ -48,13 +66,16 @@ namespace OpenRA.Mods.Common.Effects
 		{
 			if (target.IsInWorld && tick >= 0 && tick % interval == 0)
 			{
-				var color = player == null ? float3.Ones : new float3(player.Color.R, player.Color.G, player.Color.B) / 255f;
 				return target.Render(wr)
 					.Where(r => !r.IsDecoration && r is IModifyableRenderable)
 					.Select(r =>
 					{
 						var mr = (IModifyableRenderable)r;
-						return mr.WithTint(color, mr.TintModifiers | TintModifiers.ReplaceColor).WithAlpha(0.5f);
+						mr = mr.WithTint(tint, mr.TintModifiers | modifiers);
+						if (alpha.HasValue)
+							mr = mr.WithAlpha(alpha.Value);
+
+						return mr;
 					});
 			}
 

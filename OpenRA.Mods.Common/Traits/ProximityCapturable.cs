@@ -179,7 +179,7 @@ namespace OpenRA.Mods.Common.Traits
 				self.ChangeOwner(captor.Owner);
 
 				if (self.Owner == self.World.LocalPlayer)
-					w.Add(new FlashTarget(self));
+					w.Add(new FlashTarget(self, Color.White));
 
 				var pc = captor.Info.TraitInfoOrDefault<ProximityCaptorInfo>();
 				foreach (var t in self.TraitsImplementing<INotifyCapture>())

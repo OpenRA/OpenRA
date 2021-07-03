@@ -388,6 +388,7 @@ World:
 		TerrainFlashImage: moveflsh
 		TerrainFlashSequence: idle
 		TerrainFlashPalette: moveflash
+		ActorFlashType: Tint
 
 EditorWorld:
 	Inherits: ^BaseWorld
