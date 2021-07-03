@@ -17,6 +17,10 @@ namespace OpenRA
 {
 	public class MapPlayers
 	{
+		// Player masks are represented using a 64 bit integer
+		// The "Everyone" player for spectators is created at runtime,
+		// reducing the available player count for maps by 1.
+		public const int MaximumPlayerCount = 63;
 		public readonly Dictionary<string, PlayerReference> Players;
 
 		public MapPlayers()

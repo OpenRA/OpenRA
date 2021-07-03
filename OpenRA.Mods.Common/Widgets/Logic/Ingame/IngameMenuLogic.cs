@@ -351,12 +351,27 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				hideMenu = true;
 				var editorActorLayer = world.WorldActor.Trait<EditorActorLayer>();
 				var actionManager = world.WorldActor.Trait<EditorActionManager>();
+
+				var playerDefinitions = editorActorLayer.Players.ToMiniYaml();
+
+				var playerCount = new MapPlayers(playerDefinitions).Players.Count;
+				if (playerCount > MapPlayers.MaximumPlayerCount)
+				{
+					ConfirmationDialogs.ButtonPrompt(
+						title: "Error: Max player count exceeded",
+						text: $"There are too many players defined ({playerCount}/{MapPlayers.MaximumPlayerCount}).",
+						onConfirm: ShowMenu,
+						confirmText: "Back");
+
+					return;
+				}
+
 				Ui.OpenWindow("SAVE_MAP_PANEL", new WidgetArgs()
 				{
 					{ "onSave", (Action<string>)(_ => { hideMenu = false; actionManager.Modified = false; }) },
 					{ "onExit", () => hideMenu = false },
 					{ "map", world.Map },
-					{ "playerDefinitions", editorActorLayer.Players.ToMiniYaml() },
+					{ "playerDefinitions", playerDefinitions },
 					{ "actorDefinitions", editorActorLayer.Save() }
 				});
 			};
