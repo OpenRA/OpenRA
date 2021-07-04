@@ -17,6 +17,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	public enum ActorFlashType { Overlay, Tint }
 
+	[TraitLocation(SystemActors.World)]
 	[Desc("Renders an effect at the order target locations.")]
 	public class OrderEffectsInfo : TraitInfo
 	{
