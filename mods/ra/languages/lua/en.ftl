@@ -102,6 +102,13 @@ deactivate-four-missiles = Commander, we're tracking four missiles. They must be
 capture-enemy-command-center = Capture the enemy Command Center. Hurry!
 disable-atomic-weapons = Find a way to take the atomic weapons off-line.
 
+## allies-10b
+nuclear-missile-deactivated = Nuclear missile deactivated.
+reach-target-in = Nuclear missiles reach targets in { $time }
+get-engineers-to-consoles = Get your engineers to each launch control center.
+spare-the-scientists = Spare the scientists. They are more valuable as
+    prisoners of war.
+
 ## ant-01
 allied-forces-have-arrived = Allied forces have arrived!
 defend-outpost-until-reinforcements-arrive = Defend outpost until reinforcements arrive.
