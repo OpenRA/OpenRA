@@ -46,8 +46,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			SearchTextField = widget.Get<TextFieldWidget>("SEARCH_TEXTFIELD");
 			SearchTextField.OnEscKey = _ =>
 			{
-				SearchTextField.Text = "";
-				SearchTextField.YieldKeyboardFocus();
+				if (string.IsNullOrEmpty(SearchTextField.Text))
+					SearchTextField.YieldKeyboardFocus();
+				else
+				{
+					SearchTextField.Text = "";
+					SearchTextField.OnTextEdited();
+				}
+
 				return true;
 			};
 

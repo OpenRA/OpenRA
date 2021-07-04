@@ -436,7 +436,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return true;
 			};
 
-			chatTextField.OnEscKey = _ => { chatTextField.Text = ""; return true; };
+			chatTextField.OnEscKey = _ => chatTextField.YieldKeyboardFocus();
 
 			lobbyChatPanel = lobby.Get<ScrollPanelWidget>("CHAT_DISPLAY");
 			chatTemplate = lobbyChatPanel.Get("CHAT_TEMPLATE");
