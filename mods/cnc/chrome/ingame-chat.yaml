@@ -21,7 +21,8 @@ Container@CHAT_PANEL:
 			Width: PARENT_RIGHT
 			Height: PARENT_BOTTOM
 			Children:
-				Button@CHAT_MODE:
+				WorldButton@CHAT_MODE:
+					Logic: AddFactionSuffixLogic
 					Y: PARENT_BOTTOM - HEIGHT
 					Width: 50
 					Height: 25
@@ -29,13 +30,16 @@ Container@CHAT_PANEL:
 					Font: Bold
 					Key: Tab SHIFT
 					TooltipText: Toggle chat mode
+					TooltipTemplate: BUTTON_TOOLTIP_FACTIONSUFFIX
 					TooltipContainer: TOOLTIP_CONTAINER
 				TextField@CHAT_TEXTFIELD:
+					Logic: AddFactionSuffixLogic
 					X: 55
 					Y: PARENT_BOTTOM - HEIGHT
 					Width: 466
 					Height: 25
 				Button@CHAT_CLOSE:
+					Logic: AddFactionSuffixLogic
 					X: 526
 					Y: PARENT_BOTTOM - HEIGHT
 					Width: 24
@@ -48,6 +52,7 @@ Container@CHAT_PANEL:
 							Y: 8
 				LogicKeyListener@KEY_LISTENER:
 				ScrollPanel@CHAT_SCROLLPANEL:
+					Logic: AddFactionSuffixLogic
 					Y: PARENT_BOTTOM - HEIGHT - 30
 					Width: 550
 					Height: 164
