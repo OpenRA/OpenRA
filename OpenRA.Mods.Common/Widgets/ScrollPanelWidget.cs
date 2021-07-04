@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public string Background = "scrollpanel-bg";
 		public string ScrollBarBackground = "scrollpanel-bg";
 		public string Button = "scrollpanel-button";
-		public readonly string Decorations = "scrollpanel-decorations";
+		public string Decorations = "scrollpanel-decorations";
 		public readonly string DecorationScrollUp = "up";
 		public readonly string DecorationScrollDown = "down";
 		readonly CachedTransform<(bool Disabled, bool Pressed, bool Hover, bool Focused), Sprite> getUpArrowImage;

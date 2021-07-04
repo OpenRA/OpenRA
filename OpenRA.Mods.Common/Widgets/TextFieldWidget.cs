@@ -37,6 +37,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public int VisualHeight = 1;
 		public int LeftMargin = 5;
 		public int RightMargin = 5;
+		public string Background = "textfield";
 
 		public bool Disabled = false;
 
@@ -561,7 +562,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var disabled = IsDisabled();
 			var hover = Ui.MouseOverWidget == this || Children.Any(c => c == Ui.MouseOverWidget);
-			var state = WidgetUtils.GetStatefulImageName("textfield", disabled, false, hover, HasKeyboardFocus);
+			var state = WidgetUtils.GetStatefulImageName(Background, disabled, false, hover, HasKeyboardFocus);
 
 			WidgetUtils.DrawPanel(state,
 				new Rectangle(pos.X, pos.Y, Bounds.Width, Bounds.Height));

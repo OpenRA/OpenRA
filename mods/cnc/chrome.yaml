@@ -120,6 +120,30 @@ textfield-disabled:
 textfield-focused:
 	Inherits: button-pressed
 
+textfield-nod:
+	Inherits: button-nod
+
+textfield-nod-hover:
+	Inherits: button-nod-hover
+
+textfield-nod-disabled:
+	Inherits: button-nod-disabled
+
+textfield-nod-focused:
+	Inherits: button-nod-pressed
+
+textfield-gdi:
+	Inherits: button-gdi
+
+textfield-gdi-hover:
+	Inherits: button-gdi-hover
+
+textfield-gdi-disabled:
+	Inherits: button-gdi-disabled
+
+textfield-gdi-focused:
+	Inherits: button-gdi-pressed
+
 #
 # Progress bar
 # ===
@@ -150,6 +174,36 @@ scrollpanel-button-disabled:
 
 scrollpanel-button-pressed:
 	Inherits: button-pressed
+
+scrollpanel-bg-nod:
+	Inherits: panel-gray-nod
+
+scrollpanel-button-nod:
+	Inherits: button-nod
+
+scrollpanel-button-nod-hover:
+	Inherits: button-nod-hover
+
+scrollpanel-button-nod-disabled:
+	Inherits: button-nod-disabled
+
+scrollpanel-button-nod-pressed:
+	Inherits: button-nod-pressed
+
+scrollpanel-bg-gdi:
+	Inherits: panel-gray-gdi
+
+scrollpanel-button-gdi:
+	Inherits: button-gdi
+
+scrollpanel-button-gdi-hover:
+	Inherits: button-gdi-hover
+
+scrollpanel-button-gdi-disabled:
+	Inherits: button-gdi-disabled
+
+scrollpanel-button-gdi-pressed:
+	Inherits: button-gdi-pressed
 
 scrollitem-hover:
 	Inherits: button
@@ -373,6 +427,12 @@ scrollpanel-decorations:
 		right-disabled: 921, 17, 16, 16
 		left: 938, 17, 16, 16
 		left-disabled: 955, 17, 16, 16
+
+scrollpanel-decorations-nod:
+	Inherits: scrollpanel-decorations
+
+scrollpanel-decorations-gdi:
+	Inherits: scrollpanel-decorations
 
 dropdown-decorations:
 	Inherits: ^Chrome
