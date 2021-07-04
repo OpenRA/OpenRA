@@ -114,11 +114,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				&& editor.CurrentBrush == editor.DefaultBrush
 				&& Game.RunTime > lastScrollTime + scrollVisibleTimeout;
 
-			actorIDField.OnEscKey = _ =>
-			{
-				actorIDField.YieldKeyboardFocus();
-				return true;
-			};
+			actorIDField.OnEscKey = _ => actorIDField.YieldKeyboardFocus();
 
 			actorIDField.OnTextEdited = () =>
 			{
