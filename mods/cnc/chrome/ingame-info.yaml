@@ -20,31 +20,84 @@ Container@GAME_INFO_PANEL:
 			Align: Center
 			Font: BigBold
 			Contrast: true
-		Container@TAB_CONTAINER:
+		Container@TAB_CONTAINER_2:
+			Visible: False
 			Children:
 				Button@BUTTON1:
 					Y: 5
 					Width: 140
 					Height: 35
-					Visible: False
 				Button@BUTTON2:
 					X: 150
 					Y: 5
 					Width: 140
 					Height: 35
-					Visible: False
+		Container@TAB_CONTAINER_3:
+			Visible: False
+			Children:
+				Button@BUTTON1:
+					Y: 5
+					Width: 140
+					Height: 35
+				Button@BUTTON2:
+					X: 150
+					Y: 5
+					Width: 140
+					Height: 35
 				Button@BUTTON3:
 					X: 300
 					Y: 5
 					Width: 140
 					Height: 35
-					Visible: False
-				Button@BUTTON4:
-					X: 450
+		Container@TAB_CONTAINER_4:
+			Visible: False
+			Children:
+				Button@BUTTON1:
 					Y: 5
-					Width: 140
+					Width: 121
 					Height: 35
-					Visible: False
+				Button@BUTTON2:
+					X: 131
+					Y: 5
+					Width: 120
+					Height: 35
+				Button@BUTTON3:
+					X: 261
+					Y: 5
+					Width: 120
+					Height: 35
+				Button@BUTTON4:
+					X: 391
+					Y: 5
+					Width: 121
+					Height: 35
+		Container@TAB_CONTAINER_5:
+			Visible: False
+			Children:
+				Button@BUTTON1:
+					Y: 5
+					Width: 99
+					Height: 35
+				Button@BUTTON2:
+					X: 104
+					Y: 5
+					Width: 98
+					Height: 35
+				Button@BUTTON3:
+					X: 207
+					Y: 5
+					Width: 98
+					Height: 35
+				Button@BUTTON4:
+					X: 310
+					Y: 5
+					Width: 98
+					Height: 35
+				Button@BUTTON5:
+					X: 413
+					Y: 5
+					Width: 99
+					Height: 35
 		Background@BACKGROUND:
 			Y: 39
 			Width: PARENT_RIGHT

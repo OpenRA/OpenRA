@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		[ObjectCreator.UseCtor]
 		public IngameMenuLogic(Widget widget, ModData modData, World world, Action onExit, WorldRenderer worldRenderer,
-			IngameInfoPanel activePanel, Dictionary<string, MiniYaml> logicArgs)
+			IngameInfoPanel initialPanel, Dictionary<string, MiniYaml> logicArgs)
 		{
 			this.modData = modData;
 			this.world = world;
@@ -103,7 +103,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				Action<bool> requestHideMenu = h => hideMenu = h;
 				var gameInfoPanel = Game.LoadWidget(world, "GAME_INFO_PANEL", panelRoot, new WidgetArgs()
 				{
-					{ "activePanel", activePanel },
+					{ "initialPanel", initialPanel },
 					{ "hideMenu", requestHideMenu }
 				});
 
