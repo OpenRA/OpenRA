@@ -231,7 +231,7 @@ SpriteSequenceFormat: ClassicTilesetSpecificSpriteSequence
 		DESERT: .des
 		JUNGLE: .jun
 
-ModelSequenceFormat: PlaceholderModelSequence
+ModelSequenceFormat: DefaultModelSequence
 
 AssetBrowser:
 	SupportedExtensions: .shp, .tem, .des, .sno, .jun, .vqa, .wsa

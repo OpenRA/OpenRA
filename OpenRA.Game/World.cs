@@ -48,7 +48,7 @@ namespace OpenRA
 
 		public readonly MersenneTwister SharedRandom;
 		public readonly MersenneTwister LocalRandom;
-		public readonly IModelCache ModelCache;
+		public readonly ModelCache ModelCache;
 		public LongBitSet<PlayerBitMask> AllPlayersMask = default(LongBitSet<PlayerBitMask>);
 		public readonly LongBitSet<PlayerBitMask> NoPlayersMask = default(LongBitSet<PlayerBitMask>);
 
@@ -200,7 +200,7 @@ namespace OpenRA
 			SharedRandom = new MersenneTwister(orderManager.LobbyInfo.GlobalSettings.RandomSeed);
 			LocalRandom = new MersenneTwister();
 
-			ModelCache = modData.ModelSequenceLoader.CacheModels(map, modData, map.Rules.ModelSequences);
+			ModelCache = modData.ModelSequenceLoader.CacheModels(modData.ModelLoaders, map, modData, map.Rules.ModelSequences);
 
 			var worldActorType = type == WorldType.Editor ? SystemActors.EditorWorld : SystemActors.World;
 			WorldActor = CreateActor(worldActorType.ToString(), new TypeDictionary());

@@ -210,12 +210,12 @@ namespace OpenRA.Graphics
 						// Transform light vector from shadow -> world -> limb coords
 						var lightDirection = ExtractRotationVector(Util.MatrixMultiply(it, lightTransform));
 
-						Render(rd, wr.World.ModelCache, Util.MatrixMultiply(transform, t), lightDirection,
+						Render(rd, Util.MatrixMultiply(transform, t), lightDirection,
 							lightAmbientColor, lightDiffuseColor, color.TextureMidIndex, normals.TextureMidIndex);
 
 						// Disable shadow normals by forcing zero diffuse and identity ambient light
 						if (m.ShowShadow)
-							Render(rd, wr.World.ModelCache, Util.MatrixMultiply(shadow, t), lightDirection,
+							Render(rd, Util.MatrixMultiply(shadow, t), lightDirection,
 								ShadowAmbient, ShadowDiffuse, shadowPalette.TextureMidIndex, normals.TextureMidIndex);
 					}
 				}
@@ -261,7 +261,6 @@ namespace OpenRA.Graphics
 
 		void Render(
 			ModelRenderData renderData,
-			IModelCache cache,
 			float[] t, float[] lightDirection,
 			float[] ambientLight, float[] diffuseLight,
 			float colorPaletteTextureMidIndex, float normalsPaletteTextureMidIndex)
@@ -274,7 +273,7 @@ namespace OpenRA.Graphics
 			shader.SetVec("DiffuseLight", diffuseLight, 3);
 
 			shader.PrepareRender();
-			renderer.DrawBatch(cache.VertexBuffer, renderData.Start, renderData.Count, PrimitiveType.TriangleList);
+			renderer.DrawBatch(renderData.VertexBuffer, renderData.Start, renderData.Count, PrimitiveType.TriangleList);
 		}
 
 		public void BeginFrame()

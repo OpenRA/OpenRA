@@ -19,13 +19,11 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Cnc.Graphics
 {
-	public sealed class VoxelLoader : IDisposable
+	public sealed class VxlLoader : IModelLoader
 	{
 		static readonly float[] ChannelSelect = { 0.75f, 0.25f, -0.25f, -0.75f };
 
 		readonly List<Vertex[]> vertices = new List<Vertex[]>();
-		readonly Cache<(string, string), Voxel> voxels;
-		readonly IReadOnlyFileSystem fileSystem;
 		IVertexBuffer<Vertex> vertexBuffer;
 		int totalVertexCount;
 		int cachedVertexCount;
@@ -46,15 +44,54 @@ namespace OpenRA.Mods.Cnc.Graphics
 			return new SheetBuilder(SheetType.Indexed, allocate);
 		}
 
-		public VoxelLoader(IReadOnlyFileSystem fileSystem)
+		public VxlLoader()
 		{
-			this.fileSystem = fileSystem;
-			voxels = new Cache<(string, string), Voxel>(LoadFile);
 			vertices = new List<Vertex[]>();
 			totalVertexCount = 0;
 			cachedVertexCount = 0;
 
 			sheetBuilder = CreateSheetBuilder();
+		}
+
+		public bool TryLoadModel(IReadOnlyFileSystem fileSystem, string filename, out IModel model)
+		{
+			return TryLoadModel(fileSystem, filename, null, out model);
+		}
+
+		public bool TryLoadModel(IReadOnlyFileSystem fileSystem, string filename, MiniYaml yaml, out IModel model)
+		{
+			var fields = (yaml?.Value ?? filename).Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+
+			var vxl = fields[0].Trim();
+			var hva = vxl;
+
+			if (fields.Length > 1)
+				hva = fields[1].Trim();
+
+			if (!fileSystem.Exists(vxl))
+				vxl += ".vxl";
+
+			if (!fileSystem.Exists(hva))
+				hva += ".hva";
+
+			if (!fileSystem.Exists(vxl) || !fileSystem.Exists(hva))
+			{
+				model = null;
+				return false;
+			}
+
+			VxlReader vxlReader;
+			HvaReader hvaReader;
+
+			using (var s = fileSystem.Open(vxl))
+				vxlReader = new VxlReader(s);
+
+			using (var s = fileSystem.Open(hva))
+				hvaReader = new HvaReader(s, hva);
+
+			model = new Voxel(this, vxlReader, hvaReader, (vxl, hva));
+
+			return true;
 		}
 
 		Vertex[] GenerateSlicePlane(int su, int sv, Func<int, int, VxlElement> first, Func<int, int, VxlElement> second, Func<int, int, float3> coord)
@@ -189,7 +226,7 @@ namespace OpenRA.Mods.Cnc.Graphics
 			var start = totalVertexCount;
 			var count = v.Length;
 			totalVertexCount += count;
-			return new ModelRenderData(start, count, sheetBuilder.Current);
+			return new ModelRenderData(start, count, VertexBuffer, sheetBuilder.Current);
 		}
 
 		public void RefreshBuffer()
@@ -208,23 +245,6 @@ namespace OpenRA.Mods.Cnc.Graphics
 					RefreshBuffer();
 				return vertexBuffer;
 			}
-		}
-
-		Voxel LoadFile((string Vxl, string Hva) files)
-		{
-			VxlReader vxl;
-			HvaReader hva;
-			using (var s = fileSystem.Open(files.Vxl + ".vxl"))
-				vxl = new VxlReader(s);
-
-			using (var s = fileSystem.Open(files.Hva + ".hva"))
-				hva = new HvaReader(s, files.Hva + ".hva");
-			return new Voxel(this, vxl, hva, files);
-		}
-
-		public Voxel Load(string vxl, string hva)
-		{
-			return voxels[(vxl, hva)];
 		}
 
 		public void Finish()

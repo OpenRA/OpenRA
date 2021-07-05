@@ -236,7 +236,7 @@ SpriteSequenceFormat: ClassicTilesetSpecificSpriteSequence
 		INTERIOR: .int
 		DESERT: .des
 
-ModelSequenceFormat: PlaceholderModelSequence
+ModelSequenceFormat: DefaultModelSequence
 
 AssetBrowser:
 	SupportedExtensions: .shp, .tmp, .tem, .des, .sno, .int, .vqa, .wsa

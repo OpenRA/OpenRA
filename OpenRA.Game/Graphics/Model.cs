@@ -16,7 +16,7 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Graphics
 {
-	public interface IModel
+	public interface IModel : IDisposable
 	{
 		uint Frames { get; }
 		uint Sections { get; }
@@ -34,61 +34,26 @@ namespace OpenRA.Graphics
 	{
 		public readonly int Start;
 		public readonly int Count;
+		public readonly IVertexBuffer<Vertex> VertexBuffer;
 		public readonly Sheet Sheet;
 
-		public ModelRenderData(int start, int count, Sheet sheet)
+		public ModelRenderData(int start, int count, IVertexBuffer<Vertex> vertexBuffer, Sheet sheet)
 		{
 			Start = start;
 			Count = count;
+			VertexBuffer = vertexBuffer;
 			Sheet = sheet;
 		}
 	}
 
-	public interface IModelCache : IDisposable
+	public interface IModelLoader
 	{
-		IModel GetModel(string model);
-		IModel GetModelSequence(string model, string sequence);
-		bool HasModelSequence(string model, string sequence);
-		IVertexBuffer<Vertex> VertexBuffer { get; }
+		bool TryLoadModel(IReadOnlyFileSystem fileSystem, string filename, out IModel model);
+		bool TryLoadModel(IReadOnlyFileSystem fileSystem, string filename, MiniYaml yaml, out IModel model);
 	}
 
 	public interface IModelSequenceLoader
 	{
-		Action<string> OnMissingModelError { get; set; }
-		IModelCache CacheModels(IReadOnlyFileSystem fileSystem, ModData modData, IReadOnlyDictionary<string, MiniYamlNode> modelDefinitions);
-	}
-
-	public class PlaceholderModelSequenceLoader : IModelSequenceLoader
-	{
-		public Action<string> OnMissingModelError { get; set; }
-
-		class PlaceholderModelCache : IModelCache
-		{
-			public IVertexBuffer<Vertex> VertexBuffer => throw new NotImplementedException();
-
-			public void Dispose() { }
-
-			public IModel GetModel(string model)
-			{
-				throw new NotImplementedException();
-			}
-
-			public IModel GetModelSequence(string model, string sequence)
-			{
-				throw new NotImplementedException();
-			}
-
-			public bool HasModelSequence(string model, string sequence)
-			{
-				throw new NotImplementedException();
-			}
-		}
-
-		public PlaceholderModelSequenceLoader(ModData modData) { }
-
-		public IModelCache CacheModels(IReadOnlyFileSystem fileSystem, ModData modData, IReadOnlyDictionary<string, MiniYamlNode> modelDefinitions)
-		{
-			return new PlaceholderModelCache();
-		}
+		ModelCache CacheModels(IModelLoader[] loaders, IReadOnlyFileSystem fileSystem, ModData modData, IReadOnlyDictionary<string, MiniYamlNode> modelDefinitions);
 	}
 }

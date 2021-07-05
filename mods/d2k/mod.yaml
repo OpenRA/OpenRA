@@ -206,7 +206,7 @@ TerrainFormat: DefaultTerrain
 
 SpriteSequenceFormat: DefaultSpriteSequence
 
-ModelSequenceFormat: PlaceholderModelSequence
+ModelSequenceFormat: DefaultModelSequence
 
 AssetBrowser:
 	SupportedExtensions: .shp, .r8, .vqa

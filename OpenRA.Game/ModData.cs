@@ -31,6 +31,7 @@ namespace OpenRA
 		public readonly IPackageLoader[] PackageLoaders;
 		public readonly ISoundLoader[] SoundLoaders;
 		public readonly ISpriteLoader[] SpriteLoaders;
+		public readonly IModelLoader[] ModelLoaders;
 		public readonly ITerrainLoader TerrainLoader;
 		public readonly ISpriteSequenceLoader SpriteSequenceLoader;
 		public readonly IModelSequenceLoader ModelSequenceLoader;
@@ -75,6 +76,7 @@ namespace OpenRA
 
 			SoundLoaders = ObjectCreator.GetLoaders<ISoundLoader>(Manifest.SoundFormats, "sound");
 			SpriteLoaders = ObjectCreator.GetLoaders<ISpriteLoader>(Manifest.SpriteFormats, "sprite");
+			ModelLoaders = ObjectCreator.GetLoaders<IModelLoader>(Manifest.ModelFormats, "model");
 			VideoLoaders = ObjectCreator.GetLoaders<IVideoLoader>(Manifest.VideoFormats, "video");
 
 			var terrainFormat = Manifest.Get<TerrainFormat>();
@@ -100,7 +102,6 @@ namespace OpenRA
 				throw new InvalidOperationException($"Unable to find a model loader for type '{modelFormat.Type}'.");
 
 			ModelSequenceLoader = (IModelSequenceLoader)modelCtor.Invoke(new[] { this });
-			ModelSequenceLoader.OnMissingModelError = s => Log.Write("debug", s);
 
 			Hotkeys = new HotkeyManager(ModFiles, Game.Settings.Keys, Manifest);
 

@@ -253,6 +253,8 @@ SoundFormats: Aud, Wav
 
 SpriteFormats: ShpTS, TmpTS, ShpTD
 
+ModelFormats: Vxl
+
 VideoFormats: Vqa
 
 TerrainFormat: DefaultTerrain
@@ -265,7 +267,7 @@ SpriteSequenceFormat: TilesetSpecificSpriteSequence
 		TEMPERATE: t
 		SNOW: a
 
-ModelSequenceFormat: VoxelModelSequence
+ModelSequenceFormat: DefaultModelSequence
 
 AssetBrowser:
 	SupportedExtensions: .shp, .tem, .sno, .vqa, .vxl
