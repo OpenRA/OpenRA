@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					blinking = false;
 					OpenMenuPanel(options, new WidgetArgs()
 					{
-						{ "activePanel", IngameInfoPanel.AutoSelect }
+						{ "initialPanel", IngameInfoPanel.AutoSelect }
 					});
 				};
 				options.IsHighlighted = () => blinking && Game.LocalTick % 50 < 25;
@@ -79,7 +79,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				debug.IsDisabled = () => disableSystemButtons;
 				debug.OnClick = () => OpenMenuPanel(debug, new WidgetArgs()
 				{
-					{ "activePanel", IngameInfoPanel.Debug }
+					{ "initialPanel", IngameInfoPanel.Debug }
 				});
 			}
 

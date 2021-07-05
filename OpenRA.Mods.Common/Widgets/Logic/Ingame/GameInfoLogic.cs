@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Scripting;
 using OpenRA.Mods.Common.Traits;
@@ -21,61 +22,41 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 	class GameInfoLogic : ChromeLogic
 	{
-		[ObjectCreator.UseCtor]
-		public GameInfoLogic(Widget widget, World world, IngameInfoPanel activePanel, Action<bool> hideMenu)
-		{
-			var lp = world.LocalPlayer;
-			var numTabs = 0;
+		readonly World world;
+		readonly Action<bool> hideMenu;
+		readonly IObjectivesPanel iop;
+		IngameInfoPanel activePanel;
+		bool hasError;
 
-			widget.IsVisible = () => activePanel != IngameInfoPanel.AutoSelect;
+		[ObjectCreator.UseCtor]
+		public GameInfoLogic(Widget widget, World world, IngameInfoPanel initialPanel, Action<bool> hideMenu)
+		{
+			var panels = new Dictionary<IngameInfoPanel, (string Panel, string Label, Action<ButtonWidget, Widget> Setup)>()
+			{
+				{ IngameInfoPanel.Objectives, ("OBJECTIVES_PANEL", "Objectives", SetupObjectivesPanel) },
+				{ IngameInfoPanel.Map, ("MAP_PANEL", "Briefing", SetupMapPanel) },
+				{ IngameInfoPanel.Debug, ("DEBUG_PANEL", "Debug", SetupDebugPanel) },
+				{ IngameInfoPanel.Chat, ("CHAT_PANEL", "Chat", SetupChatPanel) }
+			};
+
+			this.world = world;
+			this.hideMenu = hideMenu;
+			activePanel = initialPanel;
+
+			var visiblePanels = new List<IngameInfoPanel>();
 
 			// Objectives/Stats tab
 			var scriptContext = world.WorldActor.TraitOrDefault<LuaScript>();
-			var hasError = scriptContext != null && scriptContext.FatalErrorOccurred;
-			var iop = world.WorldActor.TraitsImplementing<IObjectivesPanel>().FirstOrDefault();
-			var hasObjectivesPanel = hasError || (iop != null && iop.PanelName != null);
+			hasError = scriptContext != null && scriptContext.FatalErrorOccurred;
+			iop = world.WorldActor.TraitsImplementing<IObjectivesPanel>().FirstOrDefault();
 
-			if (hasObjectivesPanel)
-			{
-				numTabs++;
-				var objectivesTabButton = widget.Get<ButtonWidget>(string.Concat("BUTTON", numTabs.ToString()));
-				objectivesTabButton.GetText = () => "Objectives";
-				objectivesTabButton.IsVisible = () => numTabs > 1 && !hasError;
-				objectivesTabButton.OnClick = () => activePanel = IngameInfoPanel.Objectives;
-				objectivesTabButton.IsHighlighted = () => activePanel == IngameInfoPanel.Objectives;
-
-				var panel = hasError ? "SCRIPT_ERROR_PANEL" : iop.PanelName;
-				var objectivesPanel = widget.Get<ContainerWidget>("OBJECTIVES_PANEL");
-				objectivesPanel.IsVisible = () => activePanel == IngameInfoPanel.Objectives;
-
-				Game.LoadWidget(world, panel, objectivesPanel, new WidgetArgs()
-				{
-					{ "hideMenu", hideMenu }
-				});
-
-				if (activePanel == IngameInfoPanel.AutoSelect)
-					activePanel = IngameInfoPanel.Objectives;
-			}
+			if (hasError || (iop != null && iop.PanelName != null))
+				visiblePanels.Add(IngameInfoPanel.Objectives);
 
 			// Briefing tab
 			var missionData = world.WorldActor.Info.TraitInfoOrDefault<MissionDataInfo>();
 			if (missionData != null && !string.IsNullOrEmpty(missionData.Briefing))
-			{
-				numTabs++;
-				var mapTabButton = widget.Get<ButtonWidget>(string.Concat("BUTTON", numTabs.ToString()));
-				mapTabButton.Text = "Briefing";
-				mapTabButton.IsVisible = () => numTabs > 1 && !hasError;
-				mapTabButton.OnClick = () => activePanel = IngameInfoPanel.Map;
-				mapTabButton.IsHighlighted = () => activePanel == IngameInfoPanel.Map;
-
-				var mapPanel = widget.Get<ContainerWidget>("MAP_PANEL");
-				mapPanel.IsVisible = () => activePanel == IngameInfoPanel.Map;
-
-				Game.LoadWidget(world, "MAP_PANEL", mapPanel, new WidgetArgs());
-
-				if (activePanel == IngameInfoPanel.AutoSelect)
-					activePanel = IngameInfoPanel.Map;
-			}
+				visiblePanels.Add(IngameInfoPanel.Map);
 
 			// Debug/Cheats tab
 			// Can't use DeveloperMode.Enabled because there is a hardcoded hack to *always*
@@ -83,45 +64,36 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			// if it has been explicitly enabled
 			var def = world.Map.Rules.Actors[SystemActors.Player].TraitInfo<DeveloperModeInfo>().CheckboxEnabled;
 			var developerEnabled = world.LobbyInfo.GlobalSettings.OptionOrDefault("cheats", def);
-			if (lp != null && developerEnabled)
-			{
-				numTabs++;
-				var debugTabButton = widget.Get<ButtonWidget>(string.Concat("BUTTON", numTabs.ToString()));
-				debugTabButton.Text = "Debug";
-				debugTabButton.IsVisible = () => numTabs > 1 && !hasError;
-				debugTabButton.IsDisabled = () => world.IsGameOver;
-				debugTabButton.OnClick = () => activePanel = IngameInfoPanel.Debug;
-				debugTabButton.IsHighlighted = () => activePanel == IngameInfoPanel.Debug;
-
-				var debugPanelContainer = widget.Get<ContainerWidget>("DEBUG_PANEL");
-				debugPanelContainer.IsVisible = () => activePanel == IngameInfoPanel.Debug;
-
-				Game.LoadWidget(world, "DEBUG_PANEL", debugPanelContainer, new WidgetArgs());
-
-				if (activePanel == IngameInfoPanel.AutoSelect)
-					activePanel = IngameInfoPanel.Debug;
-			}
+			if (world.LocalPlayer != null && developerEnabled)
+				visiblePanels.Add(IngameInfoPanel.Debug);
 
 			if (world.LobbyInfo.NonBotClients.Count() > 1)
+				visiblePanels.Add(IngameInfoPanel.Chat);
+
+			var numTabs = visiblePanels.Count;
+			var tabContainer = !hasError ? widget.GetOrNull($"TAB_CONTAINER_{numTabs}") : null;
+			if (tabContainer != null)
+				tabContainer.IsVisible = () => true;
+
+			for (var i = 0; i < numTabs; i++)
 			{
-				numTabs++;
-				var chatPanelContainer = widget.Get<ContainerWidget>("CHAT_PANEL");
-				var chatTabButton = widget.Get<ButtonWidget>(string.Concat("BUTTON", numTabs.ToString()));
-				chatTabButton.Text = "Chat";
-				chatTabButton.IsVisible = () => numTabs > 1 && !hasError;
-				chatTabButton.IsHighlighted = () => activePanel == IngameInfoPanel.Chat;
-				chatTabButton.OnClick = () =>
+				var type = visiblePanels[i];
+				var info = panels[type];
+				var tabButton = tabContainer?.Get<ButtonWidget>($"BUTTON{i + 1}");
+
+				if (tabButton != null)
 				{
-					activePanel = IngameInfoPanel.Chat;
-					chatPanelContainer.Get<TextFieldWidget>("CHAT_TEXTFIELD").TakeKeyboardFocus();
-				};
+					tabButton.Text = info.Label;
+					tabButton.OnClick = () => activePanel = type;
+					tabButton.IsHighlighted = () => activePanel == type;
+				}
 
-				chatPanelContainer.IsVisible = () => activePanel == IngameInfoPanel.Chat;
-
-				Game.LoadWidget(world, "CHAT_CONTAINER", chatPanelContainer, new WidgetArgs() { { "isMenuChat", true } });
+				var panelContainer = widget.Get<ContainerWidget>(info.Panel);
+				panelContainer.IsVisible = () => activePanel == type;
+				info.Setup(tabButton, panelContainer);
 
 				if (activePanel == IngameInfoPanel.AutoSelect)
-					chatTabButton.OnClick();
+					activePanel = type;
 			}
 
 			// Handle empty space when tabs aren't displayed
@@ -147,6 +119,46 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			bg.IsVisible = () => numTabs > 1 || (numTabs == 1 && bgNoTabs == null);
 			if (bgNoTabs != null)
 				bgNoTabs.IsVisible = () => numTabs == 1;
+		}
+
+		void SetupObjectivesPanel(ButtonWidget objectivesTabButton, Widget objectivesPanelContainer)
+		{
+			var panel = hasError ? "SCRIPT_ERROR_PANEL" : iop.PanelName;
+			Game.LoadWidget(world, panel, objectivesPanelContainer, new WidgetArgs()
+			{
+				{ "hideMenu", hideMenu }
+			});
+		}
+
+		void SetupMapPanel(ButtonWidget mapTabButton, Widget mapPanelContainer)
+		{
+			Game.LoadWidget(world, "MAP_PANEL", mapPanelContainer, new WidgetArgs());
+		}
+
+		void SetupDebugPanel(ButtonWidget debugTabButton, Widget debugPanelContainer)
+		{
+			if (debugTabButton != null)
+				debugTabButton.IsDisabled = () => world.IsGameOver;
+
+			Game.LoadWidget(world, "DEBUG_PANEL", debugPanelContainer, new WidgetArgs());
+
+			if (activePanel == IngameInfoPanel.AutoSelect)
+				activePanel = IngameInfoPanel.Debug;
+		}
+
+		void SetupChatPanel(ButtonWidget chatTabButton, Widget chatPanelContainer)
+		{
+			if (chatTabButton != null)
+			{
+				var lastOnClick = chatTabButton.OnClick;
+				chatTabButton.OnClick = () =>
+				{
+					lastOnClick();
+					chatPanelContainer.Get<TextFieldWidget>("CHAT_TEXTFIELD").TakeKeyboardFocus();
+				};
+			}
+
+			Game.LoadWidget(world, "CHAT_CONTAINER", chatPanelContainer, new WidgetArgs() { { "isMenuChat", true } });
 		}
 	}
 }
