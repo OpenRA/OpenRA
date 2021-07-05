@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.IO;
 using MP3Sharp;
 using OpenRA.Primitives;
@@ -39,7 +40,7 @@ namespace OpenRA.Mods.Common.AudioLoaders
 		public int Channels { get { return mp3.ChannelCount; } }
 		public int SampleBits { get { return 16; } }
 		public int SampleRate { get { return mp3.Frequency; } }
-		public float LengthInSeconds { get { return mp3.Length * 8f / (2f * Channels * SampleRate); } }
+		public float LengthInSeconds { get; private set; }
 		public Stream GetPCMInputStream() { return new MP3Stream(Clone(this)); }
 		public void Dispose() { mp3.Dispose(); }
 
@@ -50,11 +51,38 @@ namespace OpenRA.Mods.Common.AudioLoaders
 		{
 			mp3 = new MP3Stream(stream);
 			this.stream = stream;
+
+			// Make a first guess based on the file size and bitrate
+			// This should be fine for constant bitrate files
+			LengthInSeconds = mp3.Length * 8f / (2f * Channels * SampleRate);
+
+			try
+			{
+				// Attempt to parse a more accurate length from the file metadata;
+				LengthInSeconds = (float)new TagLib.Mpeg.AudioFile(new StreamAbstraction(stream)).Properties.Duration.TotalSeconds;
+			}
+			catch { }
 		}
 
 		Stream Clone(Mp3Format cloneFrom)
 		{
 			return SegmentStream.CreateWithoutOwningStream(cloneFrom.stream, 0, (int)cloneFrom.stream.Length);
+		}
+
+		public class StreamAbstraction : TagLib.File.IFileAbstraction
+		{
+			readonly Stream s;
+			public StreamAbstraction(Stream s)
+			{
+				this.s = s;
+			}
+
+			public Stream ReadStream => s;
+
+			public Stream WriteStream => throw new NotImplementedException();
+
+			public void CloseStream(Stream stream) { }
+			public string Name => "";
 		}
 	}
 }
