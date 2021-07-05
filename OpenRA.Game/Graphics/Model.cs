@@ -34,15 +34,17 @@ namespace OpenRA.Graphics
 	{
 		public readonly int Start;
 		public readonly int Count;
-		public readonly IVertexBuffer<Vertex> VertexBuffer;
-		public readonly Sheet Sheet;
+		public readonly IShader Shader;
+		public readonly IVertexBuffer VertexBuffer;
+		public readonly Dictionary<string, ITexture> Textures;
 
-		public ModelRenderData(int start, int count, IVertexBuffer<Vertex> vertexBuffer, Sheet sheet)
+		public ModelRenderData(int start, int count, IShader shader, IVertexBuffer vertexBuffer, Dictionary<string, ITexture> textures)
 		{
 			Start = start;
 			Count = count;
+			Shader = shader;
 			VertexBuffer = vertexBuffer;
-			Sheet = sheet;
+			Textures = textures;
 		}
 	}
 
