@@ -16,7 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits.Render
 {
-	[Desc("Rendered on the refinery when a voxel harvester is docking and undocking.")]
+	[Desc("Rendered on the refinery when a model harvester is docking and undocking.")]
 	public class WithDockingOverlayInfo : PausableConditionalTraitInfo, Requires<RenderSpritesInfo>, Requires<BodyOrientationInfo>
 	{
 		[SequenceReference]

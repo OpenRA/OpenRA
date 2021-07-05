@@ -18,18 +18,18 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
 {
-	[Desc("Also returns a default selection size that is calculated automatically from the voxel dimensions.")]
-	public class WithVoxelBodyInfo : ConditionalTraitInfo, IRenderActorPreviewVoxelsInfo, Requires<RenderVoxelsInfo>
+	[Desc("Also returns a default selection size that is calculated automatically from the model dimensions.")]
+	public class WithModelBodyInfo : ConditionalTraitInfo, IRenderActorPreviewModelsInfo, Requires<RenderModelsInfo>
 	{
 		public readonly string Sequence = "idle";
 
-		[Desc("Defines if the Voxel should have a shadow.")]
+		[Desc("Defines if the Model should have a shadow.")]
 		public readonly bool ShowShadow = true;
 
-		public override object Create(ActorInitializer init) { return new WithVoxelBody(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new WithModelBody(init.Self, this); }
 
-		public IEnumerable<ModelAnimation> RenderPreviewVoxels(
-			ActorPreviewInitializer init, RenderVoxelsInfo rv, string image, Func<WRot> orientation, int facings, PaletteReference p)
+		public IEnumerable<ModelAnimation> RenderPreviewModels(
+			ActorPreviewInitializer init, RenderModelsInfo rv, string image, Func<WRot> orientation, int facings, PaletteReference p)
 		{
 			var body = init.Actor.TraitInfo<BodyOrientationInfo>();
 			var model = init.World.ModelCache.GetModelSequence(image, Sequence);
@@ -39,16 +39,16 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 	}
 
-	public class WithVoxelBody : ConditionalTrait<WithVoxelBodyInfo>, IAutoMouseBounds
+	public class WithModelBody : ConditionalTrait<WithModelBodyInfo>, IAutoMouseBounds
 	{
 		readonly ModelAnimation modelAnimation;
-		readonly RenderVoxels rv;
+		readonly RenderModels rv;
 
-		public WithVoxelBody(Actor self, WithVoxelBodyInfo info)
+		public WithModelBody(Actor self, WithModelBodyInfo info)
 			: base(info)
 		{
 			var body = self.Trait<BodyOrientation>();
-			rv = self.Trait<RenderVoxels>();
+			rv = self.Trait<RenderModels>();
 
 			var model = self.World.ModelCache.GetModelSequence(rv.Image, info.Sequence);
 			modelAnimation = new ModelAnimation(model, () => WVec.Zero,

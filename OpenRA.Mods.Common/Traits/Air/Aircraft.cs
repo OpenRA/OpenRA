@@ -63,16 +63,16 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("If non-negative, force the aircraft to move in circles at this speed when idle (a speed of 0 means don't move), ignoring CanHover.")]
 		public readonly int IdleSpeed = -1;
 
-		[Desc("Body pitch when flying forwards. Only relevant for voxel aircraft.")]
+		[Desc("Body pitch when flying forwards. Only relevant for model aircraft.")]
 		public readonly WAngle Pitch = WAngle.Zero;
 
 		[Desc("Pitch steps to apply each tick when starting/stopping.")]
 		public readonly WAngle PitchSpeed = WAngle.Zero;
 
-		[Desc("Body roll when turning. Only relevant for voxel aircraft.")]
+		[Desc("Body roll when turning. Only relevant for model aircraft.")]
 		public readonly WAngle Roll = WAngle.Zero;
 
-		[Desc("Body roll to apply when aircraft flies in circles while idle. Defaults to Roll if undefined. Only relevant for voxel aircraft.")]
+		[Desc("Body roll to apply when aircraft flies in circles while idle. Defaults to Roll if undefined. Only relevant for model aircraft.")]
 		public readonly WAngle? IdleRoll = null;
 
 		[Desc("Roll steps to apply each tick when turning.")]

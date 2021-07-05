@@ -20,19 +20,19 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits.Render
 {
-	public class WithVoxelWalkerBodyInfo : TraitInfo, IRenderActorPreviewVoxelsInfo,  Requires<RenderVoxelsInfo>, Requires<IMoveInfo>, Requires<IFacingInfo>
+	public class WithModelWalkerBodyInfo : TraitInfo, IRenderActorPreviewModelsInfo,  Requires<RenderModelsInfo>, Requires<IMoveInfo>, Requires<IFacingInfo>
 	{
 		public readonly string Sequence = "idle";
 
 		[Desc("The speed of the walker's legs.")]
 		public readonly int TickRate = 5;
 
-		[Desc("Defines if the Voxel should have a shadow.")]
+		[Desc("Defines if the Model should have a shadow.")]
 		public readonly bool ShowShadow = true;
-		public override object Create(ActorInitializer init) { return new WithVoxelWalkerBody(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new WithModelWalkerBody(init.Self, this); }
 
-		public IEnumerable<ModelAnimation> RenderPreviewVoxels(
-			ActorPreviewInitializer init, RenderVoxelsInfo rv, string image, Func<WRot> orientation, int facings, PaletteReference p)
+		public IEnumerable<ModelAnimation> RenderPreviewModels(
+			ActorPreviewInitializer init, RenderModelsInfo rv, string image, Func<WRot> orientation, int facings, PaletteReference p)
 		{
 			var model = init.World.ModelCache.GetModelSequence(image, Sequence);
 			var body = init.Actor.TraitInfo<BodyOrientationInfo>();
@@ -44,22 +44,22 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 		}
 	}
 
-	public class WithVoxelWalkerBody : ITick, IActorPreviewInitModifier, IAutoMouseBounds
+	public class WithModelWalkerBody : ITick, IActorPreviewInitModifier, IAutoMouseBounds
 	{
-		readonly WithVoxelWalkerBodyInfo info;
+		readonly WithModelWalkerBodyInfo info;
 		readonly IMove movement;
 		readonly ModelAnimation modelAnimation;
-		readonly RenderVoxels rv;
+		readonly RenderModels rv;
 
 		uint tick, frame, frames;
 
-		public WithVoxelWalkerBody(Actor self, WithVoxelWalkerBodyInfo info)
+		public WithModelWalkerBody(Actor self, WithModelWalkerBodyInfo info)
 		{
 			this.info = info;
 			movement = self.Trait<IMove>();
 
 			var body = self.Trait<BodyOrientation>();
-			rv = self.Trait<RenderVoxels>();
+			rv = self.Trait<RenderModels>();
 
 			var model = self.World.ModelCache.GetModelSequence(rv.Image, info.Sequence);
 			frames = model.Frames;

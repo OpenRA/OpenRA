@@ -15,15 +15,15 @@ using OpenRA.Mods.Common.Traits;
 
 namespace OpenRA.Mods.Cnc.Activities
 {
-	public class VoxelHarvesterDockSequence : HarvesterDockSequence
+	public class ModelHarvesterDockSequence : HarvesterDockSequence
 	{
-		readonly WithVoxelUnloadBody body;
+		readonly WithModelUnloadBody body;
 		readonly WithDockingOverlay spriteOverlay;
 
-		public VoxelHarvesterDockSequence(Actor self, Actor refinery, WAngle dockAngle, bool isDragRequired, in WVec dragOffset, int dragLength)
+		public ModelHarvesterDockSequence(Actor self, Actor refinery, WAngle dockAngle, bool isDragRequired, in WVec dragOffset, int dragLength)
 			: base(self, refinery, dockAngle, isDragRequired, dragOffset, dragLength)
 		{
-			body = self.Trait<WithVoxelUnloadBody>();
+			body = self.Trait<WithModelUnloadBody>();
 			spriteOverlay = refinery.TraitOrDefault<WithDockingOverlay>();
 		}
 

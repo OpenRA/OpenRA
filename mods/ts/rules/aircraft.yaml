@@ -471,7 +471,7 @@ APACHE:
 		EmptySequence: pip-ammoempty
 		Palette: pips
 	WithShadow:
-	WithVoxelBody:
+	WithModelBody:
 		ShowShadow: False
 
 HUNTER:

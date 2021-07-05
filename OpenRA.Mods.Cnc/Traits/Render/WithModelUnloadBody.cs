@@ -20,22 +20,22 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits.Render
 {
-	// TODO: This trait is hacky and should go away as soon as we support granting a condition on docking, in favor of toggling two regular WithVoxelBodies
-	public class WithVoxelUnloadBodyInfo : TraitInfo, IRenderActorPreviewVoxelsInfo, Requires<RenderVoxelsInfo>
+	// TODO: This trait is hacky and should go away as soon as we support granting a condition on docking, in favor of toggling two regular WithModelBodies
+	public class WithModelUnloadBodyInfo : TraitInfo, IRenderActorPreviewModelsInfo, Requires<RenderModelsInfo>
 	{
-		[Desc("Voxel sequence name to use when docked to a refinery.")]
+		[Desc("Model sequence name to use when docked to a refinery.")]
 		public readonly string UnloadSequence = "unload";
 
-		[Desc("Voxel sequence name to use when undocked from a refinery.")]
+		[Desc("Model sequence name to use when undocked from a refinery.")]
 		public readonly string IdleSequence = "idle";
 
-		[Desc("Defines if the Voxel should have a shadow.")]
+		[Desc("Defines if the Model should have a shadow.")]
 		public readonly bool ShowShadow = true;
 
-		public override object Create(ActorInitializer init) { return new WithVoxelUnloadBody(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new WithModelUnloadBody(init.Self, this); }
 
-		public IEnumerable<ModelAnimation> RenderPreviewVoxels(
-			ActorPreviewInitializer init, RenderVoxelsInfo rv, string image, Func<WRot> orientation, int facings, PaletteReference p)
+		public IEnumerable<ModelAnimation> RenderPreviewModels(
+			ActorPreviewInitializer init, RenderModelsInfo rv, string image, Func<WRot> orientation, int facings, PaletteReference p)
 		{
 			var body = init.Actor.TraitInfo<BodyOrientationInfo>();
 			var model = init.World.ModelCache.GetModelSequence(image, IdleSequence);
@@ -45,17 +45,17 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 		}
 	}
 
-	public class WithVoxelUnloadBody : IAutoMouseBounds
+	public class WithModelUnloadBody : IAutoMouseBounds
 	{
 		public bool Docked;
 
 		readonly ModelAnimation modelAnimation;
-		readonly RenderVoxels rv;
+		readonly RenderModels rv;
 
-		public WithVoxelUnloadBody(Actor self, WithVoxelUnloadBodyInfo info)
+		public WithModelUnloadBody(Actor self, WithModelUnloadBodyInfo info)
 		{
 			var body = self.Trait<BodyOrientation>();
-			rv = self.Trait<RenderVoxels>();
+			rv = self.Trait<RenderModels>();
 
 			var idleModel = self.World.ModelCache.GetModelSequence(rv.Image, info.IdleSequence);
 			modelAnimation = new ModelAnimation(idleModel, () => WVec.Zero,

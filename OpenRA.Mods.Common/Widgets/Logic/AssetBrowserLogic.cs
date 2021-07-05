@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		string currentFilename;
 		IReadOnlyPackage currentPackage;
 		Sprite[] currentSprites;
-		IModel currentVoxel;
+		IModel currentModel;
 		VideoPlayerWidget player = null;
 		bool isVideoLoaded = false;
 		bool isLoadError = false;
@@ -98,15 +98,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (playerWidget != null)
 				playerWidget.IsVisible = () => isVideoLoaded && !isLoadError;
 
-			var modelWidget = panel.GetOrNull<ModelWidget>("VOXEL");
+			var modelWidget = panel.GetOrNull<ModelWidget>("MODEL");
 			if (modelWidget != null)
 			{
-				modelWidget.GetVoxel = () => currentVoxel;
+				modelWidget.GetModel = () => currentModel;
 				currentPalette = modelWidget.Palette;
 				modelWidget.GetPalette = () => currentPalette;
 				modelWidget.GetPlayerPalette = () => currentPalette;
 				modelWidget.GetRotation = () => modelOrientation;
-				modelWidget.IsVisible = () => !isVideoLoaded && !isLoadError && currentVoxel != null;
+				modelWidget.IsVisible = () => !isVideoLoaded && !isLoadError && currentModel != null;
 			}
 
 			var errorLabelWidget = panel.GetOrNull("ERROR");
@@ -242,9 +242,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				prevButton.IsVisible = () => !isVideoLoaded;
 			}
 
-			var voxelContainer = panel.GetOrNull("VOXEL_SELECTOR");
-			if (voxelContainer != null)
-				voxelContainer.IsVisible = () => currentVoxel != null;
+			var modelContainer = panel.GetOrNull("MODEL_SELECTOR");
+			if (modelContainer != null)
+				modelContainer.IsVisible = () => currentModel != null;
 
 			var rollSlider = panel.GetOrNull<SliderWidget>("ROLL_SLIDER");
 			if (rollSlider != null)
@@ -416,8 +416,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				if (Path.GetExtension(filename.ToLowerInvariant()) == ".vxl")
 				{
-					var voxelName = Path.GetFileNameWithoutExtension(filename);
-					currentVoxel = world.ModelCache.GetModel(voxelName);
+					var modelName = Path.GetFileNameWithoutExtension(filename);
+					currentModel = world.ModelCache.GetModel(modelName);
 					currentSprites = null;
 				}
 				else
@@ -431,7 +431,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						frameSlider.Ticks = currentSprites.Length;
 					}
 
-					currentVoxel = null;
+					currentModel = null;
 				}
 			}
 			catch (Exception ex)

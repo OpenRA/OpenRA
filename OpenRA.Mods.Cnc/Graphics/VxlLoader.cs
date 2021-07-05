@@ -89,7 +89,7 @@ namespace OpenRA.Mods.Cnc.Graphics
 			using (var s = fileSystem.Open(hva))
 				hvaReader = new HvaReader(s, hva);
 
-			model = new Voxel(this, vxlReader, hvaReader, (vxl, hva));
+			model = new VxlModel(this, vxlReader, hvaReader, (vxl, hva));
 
 			return true;
 		}

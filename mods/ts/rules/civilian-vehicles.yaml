@@ -35,8 +35,8 @@
 		Delay: 10
 		StartIfBelow: 50
 		DamageCooldown: 200
-	WithVoxelTurret:
-	WithVoxelBarrel:
+	WithModelTurret:
+	WithModelBarrel:
 	WithMuzzleOverlay:
 
 ^TRUCK:

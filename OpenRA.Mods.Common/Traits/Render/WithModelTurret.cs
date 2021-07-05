@@ -18,21 +18,21 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
 {
-	public class WithVoxelTurretInfo : ConditionalTraitInfo, IRenderActorPreviewVoxelsInfo, Requires<RenderVoxelsInfo>, Requires<TurretedInfo>
+	public class WithModelTurretInfo : ConditionalTraitInfo, IRenderActorPreviewModelsInfo, Requires<RenderModelsInfo>, Requires<TurretedInfo>
 	{
-		[Desc("Voxel sequence name to use")]
+		[Desc("Model sequence name to use")]
 		public readonly string Sequence = "turret";
 
 		[Desc("Turreted 'Turret' key to display")]
 		public readonly string Turret = "primary";
 
-		[Desc("Defines if the Voxel should have a shadow.")]
+		[Desc("Defines if the Model should have a shadow.")]
 		public readonly bool ShowShadow = true;
 
-		public override object Create(ActorInitializer init) { return new WithVoxelTurret(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new WithModelTurret(init.Self, this); }
 
-		public IEnumerable<ModelAnimation> RenderPreviewVoxels(
-			ActorPreviewInitializer init, RenderVoxelsInfo rv, string image, Func<WRot> orientation, int facings, PaletteReference p)
+		public IEnumerable<ModelAnimation> RenderPreviewModels(
+			ActorPreviewInitializer init, RenderModelsInfo rv, string image, Func<WRot> orientation, int facings, PaletteReference p)
 		{
 			if (!EnabledByDefault)
 				yield break;
@@ -47,13 +47,13 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 	}
 
-	public class WithVoxelTurret : ConditionalTrait<WithVoxelTurretInfo>
+	public class WithModelTurret : ConditionalTrait<WithModelTurretInfo>
 	{
 		readonly Actor self;
 		readonly Turreted turreted;
 		readonly BodyOrientation body;
 
-		public WithVoxelTurret(Actor self, WithVoxelTurretInfo info)
+		public WithModelTurret(Actor self, WithModelTurretInfo info)
 			: base(info)
 		{
 			this.self = self;
@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			turreted = self.TraitsImplementing<Turreted>()
 				.First(tt => tt.Name == Info.Turret);
 
-			var rv = self.Trait<RenderVoxels>();
+			var rv = self.Trait<RenderModels>();
 			rv.Add(new ModelAnimation(self.World.ModelCache.GetModelSequence(rv.Image, Info.Sequence),
 				() => turreted.Position(self), () => turreted.WorldOrientation,
 				() => IsTraitDisabled, () => 0, info.ShowShadow));
