@@ -481,8 +481,8 @@ namespace OpenRA.Server
 
 						Log.Write("server", "{0} ({1}) has joined the game.", client.Name, newConn.EndPoint);
 
-						// Report to all other players
-						SendMessage($"{client.Name} has joined the game.");
+						if (Type != ServerType.Local)
+							SendMessage($"{client.Name} has joined the game.");
 
 						// Send initial ping
 						SendOrderTo(newConn, "Ping", Game.RunTime.ToString(CultureInfo.InvariantCulture));
