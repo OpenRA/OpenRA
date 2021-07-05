@@ -22,8 +22,9 @@ namespace OpenRA.Graphics
 		public readonly Func<bool> DisableFunc;
 		public readonly Func<uint> FrameFunc;
 		public readonly bool ShowShadow;
+		public readonly Func<float[]> TransformFunc;
 
-		public ModelAnimation(IModel model, Func<WVec> offset, Func<WRot> rotation, Func<bool> disable, Func<uint> frame, bool showshadow)
+		public ModelAnimation(IModel model, Func<WVec> offset, Func<WRot> rotation, Func<bool> disable, Func<uint> frame, bool showshadow, Func<float[]> transform = null)
 		{
 			Model = model;
 			OffsetFunc = offset;
@@ -31,6 +32,7 @@ namespace OpenRA.Graphics
 			DisableFunc = disable;
 			FrameFunc = frame;
 			ShowShadow = showshadow;
+			TransformFunc = transform;
 		}
 
 		public Rectangle ScreenBounds(WPos pos, WorldRenderer wr, float scale)

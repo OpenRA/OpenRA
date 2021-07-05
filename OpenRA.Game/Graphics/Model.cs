@@ -22,9 +22,10 @@ namespace OpenRA.Graphics
 		uint Sections { get; }
 
 		float[] TransformationMatrix(uint section, uint frame);
+		float[] TransformationMatrix(uint section, uint frame, string bone);
 		float[] Size { get; }
 		float[] Bounds(uint frame);
-		ModelRenderData RenderData(uint section);
+		ModelRenderData RenderData(uint section, uint frame);
 
 		/// <summary>Returns the smallest rectangle that covers all rotations of all frames in a model</summary>
 		Rectangle AggregateBounds { get; }

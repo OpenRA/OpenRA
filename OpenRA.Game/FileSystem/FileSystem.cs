@@ -267,7 +267,10 @@ namespace OpenRA.FileSystem
 					if (explicitPackage.Contains(filename.Substring(explicitSplit + 1)))
 						return true;
 
-			return fileIndex.ContainsKey(filename);
+			if (fileIndex.ContainsKey(filename))
+				return true;
+
+			return MountedPackages.Any(package => package.Contains(filename));
 		}
 
 		/// <summary>

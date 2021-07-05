@@ -80,7 +80,12 @@ namespace OpenRA.Mods.Cnc.Graphics
 			return t;
 		}
 
-		public ModelRenderData RenderData(uint limb)
+		public float[] TransformationMatrix(uint section, uint frame, string bone)
+		{
+			throw new NotSupportedException();
+		}
+
+		public ModelRenderData RenderData(uint limb, uint frame)
 		{
 			return limbData[limb].RenderData;
 		}

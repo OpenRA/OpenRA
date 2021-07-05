@@ -199,8 +199,12 @@ namespace OpenRA.Graphics
 					var frame = m.FrameFunc();
 					for (uint i = 0; i < m.Model.Sections; i++)
 					{
-						var rd = m.Model.RenderData(i);
+						var rd = m.Model.RenderData(i, frame);
 						var t = m.Model.TransformationMatrix(i, frame);
+
+						if (m.TransformFunc != null)
+							t = Util.MatrixMultiply(m.TransformFunc(), t);
+
 						var it = Util.MatrixInverse(t);
 						if (it == null)
 							throw new InvalidOperationException($"Failed to invert the transformed matrix of frame {i} during RenderAsync.");
@@ -209,7 +213,7 @@ namespace OpenRA.Graphics
 						var lightDirection = ExtractRotationVector(Util.MatrixMultiply(it, lightTransform));
 
 						Render(rd, Util.MatrixMultiply(transform, t), lightDirection,
-							lightAmbientColor, lightDiffuseColor, color.TextureMidIndex, normals.TextureMidIndex);
+							lightAmbientColor, lightDiffuseColor, color?.TextureMidIndex ?? 0, normals?.TextureMidIndex ?? 0);
 
 						// Disable shadow normals by forcing zero diffuse and identity ambient light
 						if (m.ShowShadow)
