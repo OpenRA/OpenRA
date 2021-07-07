@@ -79,9 +79,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		void IResolveOrder.ResolveOrder(Actor self, Order order)
 		{
-			var forceRallyPoint = RallyPoint.IsForceSet(order);
-			if (order.OrderString == OrderID || forceRallyPoint)
-				SetPrimaryProducer(self, !IsPrimary || forceRallyPoint);
+			if (order.OrderString == OrderID)
+				SetPrimaryProducer(self, !IsPrimary);
+
+			if (RallyPoint.IsForceSet(order) && !IsPrimary)
+				SetPrimaryProducer(self, true);
 		}
 
 		public void SetPrimaryProducer(Actor self, bool isPrimary)
