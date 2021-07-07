@@ -208,6 +208,7 @@ SPEN:
 		FinishRepairingNotification: UnitRepaired
 		PlayerExperience: 15
 	RallyPoint:
+		ForceSetType: Ship
 	ProductionBar:
 		ProductionType: Ship
 	Power:
@@ -322,6 +323,7 @@ SYRD:
 		FinishRepairingNotification: UnitRepaired
 		PlayerExperience: 15
 	RallyPoint:
+		ForceSetType: Ship
 	ProductionBar:
 		ProductionType: Ship
 	Power:
@@ -1030,6 +1032,7 @@ WEAP:
 		RequiresCondition: !build-incomplete
 		Sequence: build-top
 	RallyPoint:
+		ForceSetType: Vehicle
 	Exit@1:
 		RequiresCondition: !being-captured
 		SpawnOffset: 213,-128,0
@@ -1386,6 +1389,7 @@ HPAD:
 		ExitCell: 0,0
 		Facing: 896
 	RallyPoint:
+		ForceSetType: Helicopter
 	Production:
 		Produces: Aircraft, Helicopter
 	Reservable:
@@ -1467,6 +1471,7 @@ AFLD:
 		ExitCell: 1,1
 		Facing: 768
 	RallyPoint:
+		ForceSetType: Plane
 	Production:
 		Produces: Aircraft, Plane
 	Reservable:
@@ -1732,6 +1737,7 @@ BARR:
 		Range: 4c0
 	WithBuildingBib:
 	RallyPoint:
+		ForceSetType: Infantry
 	Exit@1:
 		RequiresCondition: !being-captured
 		SpawnOffset: -170,810,0
@@ -1807,6 +1813,7 @@ KENN:
 	WithBuildingBib:
 		HasMinibib: True
 	RallyPoint:
+		ForceSetType: Dog
 	Exit@0:
 		RequiresCondition: !being-captured
 		SpawnOffset: -280,400,0
@@ -1893,6 +1900,7 @@ TENT:
 		Range: 4c0
 	WithBuildingBib:
 	RallyPoint:
+		ForceSetType: Infantry
 	Exit@1:
 		RequiresCondition: !being-captured
 		SpawnOffset: -42,810,0
