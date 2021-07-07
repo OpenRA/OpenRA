@@ -133,6 +133,7 @@ GAPILE:
 		Palette: mouse
 		IsPlayerPalette: false
 		LineWidth: 2
+		ForceSetType: Infantry
 	Exit@1:
 		SpawnOffset: -512,768,0
 		ExitCell: 1,2
@@ -226,6 +227,7 @@ GAWEAP:
 		Palette: mouse
 		IsPlayerPalette: false
 		LineWidth: 2
+		ForceSetType: Vehicle
 	Exit@1:
 		SpawnOffset: -384,-384,0
 		ExitCell: 3,1
@@ -303,6 +305,7 @@ GAHPAD:
 		Palette: mouse
 		IsPlayerPalette: false
 		LineWidth: 2
+		ForceSetType: Air
 	Production:
 		Produces: Air
 		PauseOnCondition: empdisable

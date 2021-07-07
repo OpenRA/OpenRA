@@ -159,6 +159,7 @@ NAHAND:
 		Palette: mouse
 		IsPlayerPalette: false
 		LineWidth: 2
+		ForceSetType: Infantry
 	Production:
 		Produces: Infantry
 		PauseOnCondition: empdisable
@@ -205,6 +206,7 @@ NAWEAP:
 		Palette: mouse
 		IsPlayerPalette: false
 		LineWidth: 2
+		ForceSetType: Vehicle
 	Exit@1:
 		SpawnOffset: -384,-384,0
 		ExitCell: 3,1
@@ -267,6 +269,7 @@ NAHPAD:
 		Palette: mouse
 		IsPlayerPalette: false
 		LineWidth: 2
+		ForceSetType: Air
 	Production:
 		Produces: Air
 		PauseOnCondition: empdisable
