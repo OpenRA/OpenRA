@@ -16,15 +16,6 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	static class PrimaryExts
-	{
-		public static bool IsPrimaryBuilding(this Actor a)
-		{
-			var pb = a.TraitOrDefault<PrimaryBuilding>();
-			return pb != null && pb.IsPrimary;
-		}
-	}
-
 	[Desc("Used together with ClassicProductionQueue.")]
 	public class PrimaryBuildingInfo : ConditionalTraitInfo
 	{

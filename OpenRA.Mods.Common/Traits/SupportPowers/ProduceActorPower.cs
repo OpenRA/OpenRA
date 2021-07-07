@@ -65,8 +65,10 @@ namespace OpenRA.Mods.Common.Traits
 				.Where(x => x.Actor.Owner == self.Owner
 					&& !x.Trait.IsTraitDisabled
 					&& x.Trait.Info.Produces.Contains(info.Type))
-					.OrderByDescending(x => x.Actor.IsPrimaryBuilding())
-					.ThenByDescending(x => x.Actor.ActorID);
+				.Select<TraitPair<Production>, (Actor Actor, Production Production, PrimaryBuilding PrimaryBuilding)>(
+					x => (x.Actor, x.Trait, x.Actor.TraitOrDefault<PrimaryBuilding>()))
+				.OrderByDescending(x => x.PrimaryBuilding != null && x.PrimaryBuilding.IsPrimary)
+				.ThenByDescending(x => x.Actor.ActorID);
 
 			// TODO: The power should not reset if the production fails.
 			// Fixing this will require a larger rework of the support power code
@@ -83,7 +85,7 @@ namespace OpenRA.Mods.Common.Traits
 						new FactionInit(BuildableInfo.GetInitialFaction(ai, faction))
 					};
 
-					activated |= p.Trait.Produce(p.Actor, ai, info.Type, inits, 0);
+					activated |= p.Production.Produce(p.Actor, ai, info.Type, inits, 0);
 				}
 
 				if (activated)

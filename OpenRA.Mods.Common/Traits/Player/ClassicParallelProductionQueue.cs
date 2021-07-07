@@ -135,13 +135,23 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var productionActors = self.World.ActorsWithTrait<Production>()
 				.Where(x => x.Actor.Owner == self.Owner
-					&& !x.Trait.IsTraitDisabled && x.Trait.Info.Produces.Contains(Info.Type))
-				.OrderByDescending(x => x.Actor.IsPrimaryBuilding())
-				.ThenByDescending(x => x.Actor.ActorID)
+		            && !x.Trait.IsTraitDisabled
+		            && x.Trait.Info.Produces.Contains(Info.Type))
+				.Select<TraitPair<Production>, (TraitPair<Production> TraitPair, PrimaryBuilding PrimaryBuilding)>(
+					x => (x, x.Actor.TraitOrDefault<PrimaryBuilding>()))
+				.OrderByDescending(x => x.PrimaryBuilding != null && x.PrimaryBuilding.IsPrimary)
+				.ThenBy(x => x.TraitPair.Trait.IsTraitPaused)
+				.ThenByDescending(x => x.TraitPair.Actor.ActorID)
 				.ToList();
 
-			var unpaused = productionActors.FirstOrDefault(a => !a.Trait.IsTraitPaused);
-			return unpaused.Trait != null ? unpaused : productionActors.FirstOrDefault();
+			// Primary buildings always take precedence
+			// TraitPair is a struct, so FirstOrDefault always returns a valid object
+			var first = productionActors.FirstOrDefault();
+			if (first.PrimaryBuilding != null && first.PrimaryBuilding.IsPrimary)
+				return first.TraitPair;
+
+			var unpaused = productionActors.FirstOrDefault(a => !a.TraitPair.Trait.IsTraitPaused).TraitPair;
+			return unpaused.Trait != null ? unpaused : first.TraitPair;
 		}
 
 		protected override bool BuildUnit(ActorInfo unit)
@@ -154,9 +164,11 @@ namespace OpenRA.Mods.Common.Traits
 
 			var producers = self.World.ActorsWithTrait<Production>()
 				.Where(x => x.Actor.Owner == self.Owner
-					&& !x.Trait.IsTraitDisabled
-					&& x.Trait.Info.Produces.Contains(type))
-				.OrderByDescending(x => x.Actor.IsPrimaryBuilding())
+		            && !x.Trait.IsTraitDisabled
+		            && x.Trait.Info.Produces.Contains(type))
+				.Select<TraitPair<Production>, (Actor Actor, Production Production, PrimaryBuilding PrimaryBuilding)>(
+					x => (x.Actor, x.Trait, x.Actor.TraitOrDefault<PrimaryBuilding>()))
+				.OrderByDescending(x => x.PrimaryBuilding != null && x.PrimaryBuilding.IsPrimary)
 				.ThenByDescending(x => x.Actor.ActorID);
 
 			if (!producers.Any())
@@ -167,21 +179,25 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var p in producers)
 			{
-				if (p.Trait.IsTraitPaused)
+				if (p.Production.IsTraitPaused)
 					continue;
 
 				var inits = new TypeDictionary
 				{
 					new OwnerInit(self.Owner),
-					new FactionInit(BuildableInfo.GetInitialFaction(unit, p.Trait.Faction))
+					new FactionInit(BuildableInfo.GetInitialFaction(unit, p.Production.Faction))
 				};
 
 				var item = Queue.First(i => i.Done && i.Item == unit.Name);
-				if (p.Trait.Produce(p.Actor, unit, type, inits, item.TotalCost))
+				if (p.Production.Produce(p.Actor, unit, type, inits, item.TotalCost))
 				{
 					EndProduction(item);
 					return true;
 				}
+
+				// Wait for the primary building to become available instead of falling back to a non-primary producer
+				if (p.PrimaryBuilding.IsPrimary)
+					return false;
 			}
 
 			return false;
