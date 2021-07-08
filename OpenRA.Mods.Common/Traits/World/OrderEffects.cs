@@ -23,14 +23,14 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[Desc("The image to use.")]
 		[FieldLoader.Require]
-		public readonly string TerrainFlashImage;
+		public readonly string TerrainFlashImage = null;
 
 		[Desc("The sequence to use.")]
 		[FieldLoader.Require]
-		public readonly string TerrainFlashSequence;
+		public readonly string TerrainFlashSequence = null;
 
 		[Desc("The palette to use.")]
-		public readonly string TerrainFlashPalette;
+		public readonly string TerrainFlashPalette = null;
 
 		[Desc("The type of effect to apply to targeted (frozen) actors. Accepts values Overlay and Tint.")]
 		public readonly ActorFlashType ActorFlashType = ActorFlashType.Overlay;
@@ -67,37 +67,41 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool INotifyOrderIssued.OrderIssued(World world, Target target)
 		{
-			if (target.Type == TargetType.Actor)
+			switch (target.Type)
 			{
-				if (info.ActorFlashType == ActorFlashType.Overlay)
-					world.AddFrameEndTask(w => w.Add(new FlashTarget(
-						target.Actor, info.ActorFlashOverlayColor, info.ActorFlashOverlayAlpha,
-						info.ActorFlashCount, info.ActorFlashInterval)));
-				else
-					world.AddFrameEndTask(w => w.Add(new FlashTarget(
-						target.Actor, info.ActorFlashTint,
-						info.ActorFlashCount, info.ActorFlashInterval)));
+				case TargetType.Actor:
+				{
+					if (info.ActorFlashType == ActorFlashType.Overlay)
+						world.AddFrameEndTask(w => w.Add(new FlashTarget(
+							target.Actor, info.ActorFlashOverlayColor, info.ActorFlashOverlayAlpha,
+							info.ActorFlashCount, info.ActorFlashInterval)));
+					else
+						world.AddFrameEndTask(w => w.Add(new FlashTarget(
+							target.Actor, info.ActorFlashTint,
+							info.ActorFlashCount, info.ActorFlashInterval)));
 
-				return true;
+					return true;
+				}
+
+				case TargetType.FrozenActor:
+				{
+					if (info.ActorFlashType == ActorFlashType.Overlay)
+						target.FrozenActor.Flash(info.ActorFlashOverlayColor, info.ActorFlashOverlayAlpha);
+					else
+						target.FrozenActor.Flash(info.ActorFlashTint);
+
+					return true;
+				}
+
+				case TargetType.Terrain:
+				{
+					world.AddFrameEndTask(w => w.Add(new SpriteAnnotation(target.CenterPosition, world, info.TerrainFlashImage, info.TerrainFlashSequence, info.TerrainFlashPalette)));
+					return true;
+				}
+
+				default:
+					return false;
 			}
-
-			if (target.Type == TargetType.FrozenActor)
-			{
-				if (info.ActorFlashType == ActorFlashType.Overlay)
-					target.FrozenActor.Flash(info.ActorFlashOverlayColor, info.ActorFlashOverlayAlpha);
-				else
-					target.FrozenActor.Flash(info.ActorFlashTint);
-
-				return true;
-			}
-
-			if (target.Type == TargetType.Terrain)
-			{
-				world.AddFrameEndTask(w => w.Add(new SpriteAnnotation(target.CenterPosition, world, info.TerrainFlashImage, info.TerrainFlashSequence, info.TerrainFlashPalette)));
-				return true;
-			}
-
-			return false;
 		}
 	}
 }
