@@ -158,8 +158,9 @@ namespace OpenRA
 		}
 
 		public readonly ISelection Selection;
+		readonly IOrderGeneratorFactory orderGeneratorFactory;
 
-		public void CancelInputMode() { OrderGenerator = new UnitOrderGenerator(); }
+		public void CancelInputMode() { OrderGenerator = orderGeneratorFactory.CreateOrderGenerator(); }
 
 		public bool ToggleInputMode<T>() where T : IOrderGenerator, new()
 		{
@@ -183,7 +184,6 @@ namespace OpenRA
 		{
 			Type = type;
 			OrderManager = orderManager;
-			orderGenerator = new UnitOrderGenerator();
 			Map = map;
 
 			var gameSpeeds = modData.Manifest.Get<GameSpeeds>();
@@ -208,6 +208,8 @@ namespace OpenRA
 			ScreenMap = WorldActor.Trait<ScreenMap>();
 			Selection = WorldActor.Trait<ISelection>();
 			OrderValidators = WorldActor.TraitsImplementing<IValidateOrder>().ToArray();
+			orderGeneratorFactory = WorldActor.Trait<IOrderGeneratorFactory>();
+			orderGenerator = orderGeneratorFactory.CreateOrderGenerator();
 
 			LongBitSet<PlayerBitMask>.Reset();
 
