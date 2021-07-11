@@ -19,6 +19,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public AddFactionSuffixLogic(Widget widget, World world)
 		{
+			if (world.LocalPlayer == null)
+				return;
+
 			if (!ChromeMetrics.TryGet("FactionSuffix-" + world.LocalPlayer.Faction.InternalName, out string faction))
 				faction = world.LocalPlayer.Faction.InternalName;
 			var suffix = "-" + faction;
