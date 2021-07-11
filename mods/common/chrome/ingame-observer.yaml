@@ -1,6 +1,7 @@
 Container@OBSERVER_WIDGETS:
-	Logic: MenuButtonsChromeLogic
+	Logic: MenuButtonsChromeLogic, LoadIngameChatLogic
 	Children:
+		Container@CHAT_ROOT:
 		LogicKeyListener@OBSERVER_KEY_LISTENER:
 		MenuButton@OPTIONS_BUTTON:
 			X: 5

@@ -1,5 +1,7 @@
 Container@OBSERVER_WIDGETS:
+	Logic: LoadIngameChatLogic
 	Children:
+		Container@CHAT_ROOT:
 		Container@MUTE_INDICATOR:
 			Logic: MuteIndicatorLogic
 			X: WINDOW_RIGHT - WIDTH - 260
