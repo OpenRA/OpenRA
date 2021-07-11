@@ -22,7 +22,6 @@ Container@INGAME_ROOT:
 				CycleStatusBarsKey: CycleStatusBars
 				PauseKey: Pause
 		Container@WORLD_ROOT:
-			Logic: LoadIngamePerfLogic
 			Children:
 				LogicTicker@DISCONNECT_WATCHER:
 					Logic: DisconnectWatcherLogic
@@ -37,7 +36,6 @@ Container@INGAME_ROOT:
 				StrategicProgress@STRATEGIC_PROGRESS:
 					X: WINDOW_RIGHT / 2
 					Y: 40
-				Container@PERF_ROOT:
 				WorldInteractionController@INTERACTION_CONTROLLER:
 					Width: WINDOW_RIGHT
 					Height: WINDOW_BOTTOM
@@ -73,8 +71,10 @@ Container@PERF_WIDGETS:
 					Height: 200
 
 Container@OBSERVER_WIDGETS:
-	Logic: MenuButtonsChromeLogic
+	Logic: MenuButtonsChromeLogic, LoadIngamePerfLogic, LoadIngameChatLogic
 	Children:
+		Container@CHAT_ROOT:
+		Container@PERF_ROOT:
 		ViewportController:
 			Width: WINDOW_RIGHT
 			Height: WINDOW_BOTTOM
@@ -1140,7 +1140,10 @@ Container@OBSERVER_WIDGETS:
 							AxisFont: TinyBold
 
 Container@PLAYER_WIDGETS:
+	Logic: LoadIngamePerfLogic, LoadIngameChatLogic
 	Children:
+		Container@CHAT_ROOT:
+		Container@PERF_ROOT:
 		ViewportController:
 			Width: WINDOW_RIGHT
 			Height: WINDOW_BOTTOM
