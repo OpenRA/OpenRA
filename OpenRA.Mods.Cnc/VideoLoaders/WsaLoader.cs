@@ -34,6 +34,8 @@ namespace OpenRA.Mods.Cnc.VideoLoaders
 			var start = s.Position;
 
 			var frames = s.ReadUInt16();
+			if (frames <= 1) // TODO: find a better way to differentiate .shp icons
+				return false;
 
 			var x = s.ReadUInt16();
 			var y = s.ReadUInt16();
