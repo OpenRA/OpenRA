@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public AddFactionSuffixLogic(Widget widget, World world)
 		{
-			if (world.LocalPlayer == null)
+			if (world.LocalPlayer == null || world.LocalPlayer.Spectating)
 				return;
 
 			if (!ChromeMetrics.TryGet("FactionSuffix-" + world.LocalPlayer.Faction.InternalName, out string faction))

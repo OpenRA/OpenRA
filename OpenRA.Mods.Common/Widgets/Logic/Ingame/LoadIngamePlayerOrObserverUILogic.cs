@@ -54,7 +54,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			Game.LoadWidget(world, "DEBUG_WIDGETS", worldRoot, new WidgetArgs());
-			Game.LoadWidget(world, "CHAT_PANEL", worldRoot, new WidgetArgs() { { "isMenuChat", false } });
 
 			world.GameOver += () =>
 			{
