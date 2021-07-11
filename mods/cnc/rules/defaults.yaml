@@ -815,6 +815,25 @@
 	RenderSprites:
 		Palette: terrain
 
+^CivHaystackOrIgloo:
+	Inherits: ^CivField
+	MapEditorData:
+		ExcludeTilesets: DESERT
+	-Tooltip:
+	GrantConditionOnTileSet@WINTER:
+		Condition: winter
+		TileSets: SNOW, WINTER
+	Tooltip@WINTER:
+		Name: Igloo
+		RequiresCondition: winter
+		GenericVisibility: None
+		ShowOwnerRow: false
+	Tooltip@SUMMER:
+		Name: Haystacks
+		RequiresCondition: !winter
+		GenericVisibility: None
+		ShowOwnerRow: false
+
 ^CivFieldHusk:
 	Inherits@1: ^SpriteActor
 	Interactable:
@@ -832,6 +851,25 @@
 	FrozenUnderFog:
 	MapEditorData:
 		Categories: Husk
+
+^CivHaystackOrIglooHusk:
+	Inherits: ^CivField
+	MapEditorData:
+		ExcludeTilesets: DESERT
+	-Tooltip:
+	GrantConditionOnTileSet@WINTER:
+		Condition: winter
+		TileSets: SNOW, WINTER
+	Tooltip@WINTER:
+		Name: Igloo (Destroyed)
+		RequiresCondition: winter
+		GenericVisibility: None
+		ShowOwnerRow: false
+	Tooltip@SUMMER:
+		Name: Haystacks (Destroyed)
+		RequiresCondition: !winter
+		GenericVisibility: None
+		ShowOwnerRow: false
 
 ^Wall:
 	Inherits@1: ^SpriteActor

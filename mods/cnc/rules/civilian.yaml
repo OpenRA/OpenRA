@@ -244,36 +244,20 @@ V11.Husk:
 		Name: Ludwig's House (Destroyed)
 
 V12:
-	Inherits: ^CivField
+	Inherits: ^CivHaystackOrIgloo
 	SpawnActorOnDeath:
 		Actor: V12.Husk
-	MapEditorData:
-		ExcludeTilesets: DESERT
-	Tooltip:
-		Name: Haystacks
 
 V12.Husk:
-	Inherits: ^CivBuildingHusk
-	MapEditorData:
-		ExcludeTilesets: DESERT
-	Tooltip:
-		Name: Haystacks (Destroyed)
+	Inherits: ^CivHaystackOrIglooHusk
 
 V13:
-	Inherits: ^CivField
+	Inherits: ^CivHaystackOrIgloo
 	SpawnActorOnDeath:
 		Actor: V13.Husk
-	MapEditorData:
-		ExcludeTilesets: DESERT
-	Tooltip:
-		Name: Haystacks
 
 V13.Husk:
-	Inherits: ^CivBuildingHusk
-	MapEditorData:
-		ExcludeTilesets: DESERT
-	Tooltip:
-		Name: Haystacks (Destroyed)
+	Inherits: ^CivHaystackOrIglooHusk
 
 V14:
 	Inherits: ^CivField
