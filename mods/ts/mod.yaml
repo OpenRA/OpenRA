@@ -256,6 +256,8 @@ Fonts:
 		Size: 32
 		Ascender: 24
 
+DefaultOrderGenerator: UnitOrderGenerator
+
 SupportsMapsFrom: ts
 
 SoundFormats: Aud, Wav

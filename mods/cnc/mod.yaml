@@ -223,6 +223,8 @@ MapGrid:
 	TileSize: 24,24
 	Type: Rectangular
 
+DefaultOrderGenerator: UnitOrderGenerator
+
 SupportsMapsFrom: cnc
 
 SoundFormats: Aud, Wav

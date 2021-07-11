@@ -79,6 +79,7 @@ namespace OpenRA
 		public readonly IReadOnlyDictionary<string, string> Packages;
 		public readonly IReadOnlyDictionary<string, string> MapFolders;
 		public readonly MiniYaml LoadScreen;
+		public readonly string DefaultOrderGenerator;
 
 		public readonly string[] SoundFormats = Array.Empty<string>();
 		public readonly string[] SpriteFormats = Array.Empty<string>();
@@ -90,7 +91,7 @@ namespace OpenRA
 			"Include", "Metadata", "Folders", "MapFolders", "Packages", "Rules",
 			"Sequences", "ModelSequences", "Cursors", "Chrome", "Assemblies", "ChromeLayout", "Weapons",
 			"Voices", "Notifications", "Music", "Translations", "TileSets", "ChromeMetrics", "Missions", "Hotkeys",
-			"ServerTraits", "LoadScreen", "SupportsMapsFrom", "SoundFormats", "SpriteFormats", "VideoFormats",
+			"ServerTraits", "LoadScreen", "DefaultOrderGenerator", "SupportsMapsFrom", "SoundFormats", "SpriteFormats", "VideoFormats",
 			"RequiresMods", "PackageFormats"
 		};
 
@@ -160,6 +161,9 @@ namespace OpenRA
 				compat.AddRange(yaml["SupportsMapsFrom"].Value.Split(',').Select(c => c.Trim()));
 
 			MapCompatibility = compat.ToArray();
+
+			if (yaml.ContainsKey("DefaultOrderGenerator"))
+				DefaultOrderGenerator = yaml["DefaultOrderGenerator"].Value;
 
 			if (yaml.ContainsKey("PackageFormats"))
 				PackageFormats = FieldLoader.GetValue<string[]>("PackageFormats", yaml["PackageFormats"].Value);

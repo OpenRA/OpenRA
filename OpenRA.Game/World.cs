@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using OpenRA.Effects;
 using OpenRA.FileFormats;
@@ -33,6 +34,7 @@ namespace OpenRA
 		readonly List<IEffect> unpartitionedEffects = new List<IEffect>();
 		readonly List<ISync> syncedEffects = new List<ISync>();
 		readonly GameSettings gameSettings;
+		readonly ModData modData;
 
 		readonly Queue<Action<World>> frameEndActions = new Queue<Action<World>>();
 
@@ -143,6 +145,8 @@ namespace OpenRA
 		// Hide the OrderManager from mod code
 		public void IssueOrder(Order o) { OrderManager.IssueOrder(o); }
 
+		readonly Type defaultOrderGeneratorType;
+
 		IOrderGenerator orderGenerator;
 		public IOrderGenerator OrderGenerator
 		{
@@ -160,7 +164,7 @@ namespace OpenRA
 		public readonly ISelection Selection;
 		public readonly IControlGroups ControlGroups;
 
-		public void CancelInputMode() { OrderGenerator = new UnitOrderGenerator(); }
+		public void CancelInputMode() { OrderGenerator = (IOrderGenerator)modData.ObjectCreator.CreateBasic(defaultOrderGeneratorType); }
 
 		public bool ToggleInputMode<T>() where T : IOrderGenerator, new()
 		{
@@ -182,10 +186,19 @@ namespace OpenRA
 
 		internal World(ModData modData, Map map, OrderManager orderManager, WorldType type)
 		{
+			this.modData = modData;
 			Type = type;
 			OrderManager = orderManager;
-			orderGenerator = new UnitOrderGenerator();
 			Map = map;
+
+			if (string.IsNullOrEmpty(modData.Manifest.DefaultOrderGenerator))
+				throw new InvalidDataException("mod.yaml must define a DefaultOrderGenerator");
+
+			defaultOrderGeneratorType = modData.ObjectCreator.FindType(modData.Manifest.DefaultOrderGenerator);
+			if (defaultOrderGeneratorType == null)
+				throw new InvalidDataException($"{modData.Manifest.DefaultOrderGenerator} is not a valid DefaultOrderGenerator");
+
+			orderGenerator = (IOrderGenerator)modData.ObjectCreator.CreateBasic(defaultOrderGeneratorType);
 
 			var gameSpeeds = modData.Manifest.Get<GameSpeeds>();
 			var gameSpeedName = orderManager.LobbyInfo.GlobalSettings.OptionOrDefault("gamespeed", gameSpeeds.DefaultSpeed);

@@ -204,6 +204,8 @@ Fonts:
 Missions:
 	d2k|missions.yaml
 
+DefaultOrderGenerator: UnitOrderGenerator
+
 SupportsMapsFrom: d2k
 
 SoundFormats: Aud, Wav
