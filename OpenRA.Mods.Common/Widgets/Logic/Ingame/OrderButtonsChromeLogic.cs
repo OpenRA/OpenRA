@@ -10,6 +10,7 @@
 #endregion
 
 using OpenRA.Mods.Common.Orders;
+using OpenRA.Orders;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic

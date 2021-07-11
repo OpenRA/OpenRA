@@ -12,7 +12,7 @@
 using System.Collections.Generic;
 using OpenRA.Graphics;
 
-namespace OpenRA
+namespace OpenRA.Orders
 {
 	public interface IOrderGenerator
 	{
