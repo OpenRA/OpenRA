@@ -320,18 +320,10 @@ V11:
 		ExcludeTilesets: DESERT, INTERIOR
 
 V12:
-	Inherits: ^CivField
-	MapEditorData:
-		ExcludeTilesets: DESERT, INTERIOR
-	Tooltip:
-		Name: Haystacks
+	Inherits: ^CivHaystackOrIgloo
 
 V13:
-	Inherits: ^CivField
-	MapEditorData:
-		ExcludeTilesets: DESERT, INTERIOR
-	Tooltip:
-		Name: Haystack
+	Inherits: ^CivHaystackOrIgloo
 
 V14:
 	Inherits: ^CivField
