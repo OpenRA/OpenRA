@@ -95,7 +95,6 @@ namespace OpenRA.Mods.Common.Widgets
 						var gridType = worldRenderer.World.Map.Grid.Type;
 						var source = CellRegion.BoundingRegion(gridType, new[] { start, end });
 						Copy(source, cell - end);
-						editorWidget.ClearBrush();
 						break;
 					}
 				}
