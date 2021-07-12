@@ -42,18 +42,21 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 	public class WithProductionOverlay : PausableConditionalTrait<WithProductionOverlayInfo>, INotifyDamageStateChanged, INotifyCreated, INotifyOwnerChanged
 	{
+		readonly Actor self;
 		readonly Animation overlay;
 		readonly ProductionInfo[] productionInfos;
 		ProductionQueue[] queues;
 
 		bool IsProducing
 		{
-			get { return queues != null && queues.Any(q => q.Enabled && q.AllQueued().Any(i => !i.Paused && i.Started)); }
+			get { return queues != null && queues.Any(q => q.Enabled && q.AllQueued().Any(i => !i.Paused && i.Started) && q.MostLikelyProducer().Actor == self); }
 		}
 
 		public WithProductionOverlay(Actor self, WithProductionOverlayInfo info)
 			: base(info)
 		{
+			this.self = self;
+
 			var rs = self.Trait<RenderSprites>();
 			var body = self.Trait<BodyOrientation>();
 
