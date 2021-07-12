@@ -25,7 +25,6 @@ namespace OpenRA.Mods.Common.Traits
 	public class EditorActorPreview : IEquatable<EditorActorPreview>
 	{
 		public readonly string DescriptiveName;
-		public readonly ActorInfo Info;
 		public readonly WPos CenterPosition;
 		public readonly IReadOnlyDictionary<CPos, SubCell> Footprint;
 		public readonly Rectangle Bounds;
@@ -38,6 +37,7 @@ namespace OpenRA.Mods.Common.Traits
 		public string Type => reference.Type;
 
 		public string ID { get; set; }
+		public ActorInfo Info { get; set; }
 		public PlayerReference Owner { get; set; }
 		public SubCell SubCell { get; private set; }
 		public bool Selected { get; set; }
@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly WorldRenderer worldRenderer;
 		readonly TooltipInfoBase tooltip;
 		IActorPreview[] previews;
-		readonly ActorReference reference;
+		ActorReference reference;
 		readonly Dictionary<INotifyEditorPlacementInfo, object> editorData = new Dictionary<INotifyEditorPlacementInfo, object>();
 
 		public EditorActorPreview(WorldRenderer worldRenderer, string id, ActorReference reference, PlayerReference owner)
@@ -63,8 +63,10 @@ namespace OpenRA.Mods.Common.Traits
 				reference.Add(new OwnerInit(owner.Name));
 
 			var world = worldRenderer.World;
-			if (!world.Map.Rules.Actors.TryGetValue(reference.Type.ToLowerInvariant(), out Info))
+			if (!world.Map.Rules.Actors.TryGetValue(reference.Type.ToLowerInvariant(), out var actorInfo))
 				throw new InvalidDataException($"Actor {id} of unknown type {reference.Type.ToLowerInvariant()}");
+
+			Info = actorInfo;
 
 			CenterPosition = PreviewPosition(world, reference);
 
@@ -136,6 +138,25 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			foreach (var kv in editorData)
 				kv.Key.RemovedFromEditor(this, worldRenderer.World, kv.Value);
+		}
+
+		public void ReplaceActor(string type)
+		{
+			var world = worldRenderer.World;
+			if (!world.Map.Rules.Actors.TryGetValue(type, out var actorInfo))
+				return;
+
+			Info = actorInfo;
+
+			var location = reference.Get<LocationInit>().Value;
+			reference = new ActorReference(type)
+			{
+				new FactionInit(Owner.Faction),
+				new OwnerInit(Owner.Name),
+				new LocationInit(location),
+			};
+
+			GeneratePreviews();
 		}
 
 		public void AddInit<T>(T init) where T : ActorInit

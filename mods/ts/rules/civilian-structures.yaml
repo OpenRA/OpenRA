@@ -307,26 +307,36 @@ BBOARD01:
 	Inherits: ^CivBillboard
 	Tooltip:
 		Name: Eat at Rade's Roadhouse
+	EditorVariants:
+		Actors: bboard02, bboard03, bboard04, bboard05
 
 BBOARD02:
 	Inherits: ^CivBillboard
 	Tooltip:
 		Name: Drink YEO-CA Cola!
+	EditorVariants:
+		Actors: bboard01, bboard03, bboard04, bboard05
 
 BBOARD03:
 	Inherits: ^CivBillboard
 	Tooltip:
 		Name: Hamburgers $.99
+	EditorVariants:
+		Actors: bboard01, bboard02, bboard04, bboard05
 
 BBOARD04:
 	Inherits: ^CivBillboard
 	Tooltip:
 		Name: Visit Scenic Las Vegas
+	EditorVariants:
+		Actors: bboard01, bboard02, bboard03, bboard05
 
 BBOARD05:
 	Inherits: ^CivBillboard
 	Tooltip:
 		Name: Rooms $29 a nite
+	EditorVariants:
+		Actors: bboard01, bboard02, bboard03, bboard04
 
 BBOARD06:
 	Inherits: ^CivBillboard
@@ -368,26 +378,36 @@ BBOARD09:
 	Inherits: ^CivBillboard
 	Tooltip:
 		Name: TacticX games rock!
+	EditorVariants:
+		Actors: bboard10, bboard11, bboard12, bboard13
 
 BBOARD10:
 	Inherits: ^CivBillboard
 	Tooltip:
 		Name: WW Surf and Turf hits the spot!
+	EditorVariants:
+		Actors: bboard09, bboard11, bboard12, bboard13
 
 BBOARD11:
 	Inherits: ^CivBillboard
 	Tooltip:
 		Name: Only 11 miles to Zydeko's cafe!
+	EditorVariants:
+		Actors: bboard09, bboard10, bboard12, bboard13
 
 BBOARD12:
 	Inherits: ^CivBillboard
 	Tooltip:
 		Name: No escape from Archer's Asylum!
+	EditorVariants:
+		Actors: bboard09, bboard10, bboard11, bboard13
 
 BBOARD13:
 	Inherits: ^CivBillboard
 	Tooltip:
 		Name: Stop in at Hewitt's hair salon
+	EditorVariants:
+		Actors: bboard09, bboard10, bboard11, bboard12
 
 BBOARD14:
 	Inherits: ^CivBillboard

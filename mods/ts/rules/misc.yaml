@@ -139,15 +139,23 @@ TROCK05:
 
 CRAT01:
 	Inherits: ^Box
+	EditorVariants:
+		Actors: crat02, crat03, crat04
 
 CRAT02:
 	Inherits: ^Box
+	EditorVariants:
+		Actors: crat01, crat03, crat04
 
 CRAT03:
 	Inherits: ^Box
+	EditorVariants:
+		Actors: crat01, crat02, crat04
 
 CRAT04:
 	Inherits: ^Box
+	EditorVariants:
+		Actors: crat01, crat02, crat03
 
 CRAT0A:
 	Inherits: ^Box
@@ -166,15 +174,23 @@ DRUM02:
 
 PALET01:
 	Inherits: ^Palette
+	EditorVariants:
+		Actors: palet02, palet03, palet04
 
 PALET02:
 	Inherits: ^Palette
+	EditorVariants:
+		Actors: palet01, palet03, palet04
 
 PALET03:
 	Inherits: ^Palette
+	EditorVariants:
+		Actors: palet01, palet02, palet04
 
 PALET04:
 	Inherits: ^Palette
+	EditorVariants:
+		Actors: palet01, palet02, palet03
 
 TRACKS01:
 	Inherits: ^Railway

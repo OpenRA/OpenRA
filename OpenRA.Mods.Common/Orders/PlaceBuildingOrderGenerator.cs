@@ -132,7 +132,7 @@ namespace OpenRA.Mods.Common.Orders
 				if (mi.Button == MouseButton.Right)
 					world.CancelInputMode();
 
-				var ret = InnerOrder(world, cell, mi).ToArray();
+				var ret = InnerOrder(world, mi).ToArray();
 
 				// If there was a successful placement order
 				if (ret.Any(o => o.OrderString == "PlaceBuilding"
@@ -158,7 +158,7 @@ namespace OpenRA.Mods.Common.Orders
 			}
 		}
 
-		IEnumerable<Order> InnerOrder(World world, CPos cell, MouseInput mi)
+		IEnumerable<Order> InnerOrder(World world, MouseInput mi)
 		{
 			if (world.Paused)
 				yield break;
