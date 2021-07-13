@@ -128,6 +128,9 @@ namespace OpenRA.Mods.Common.Widgets
 			var tick = ChromeProvider.GetImage("slider", "tick");
 			for (var i = 0; i < Ticks; i++)
 			{
+				if (Ticks == 1)
+					continue;
+
 				var tickPos = new float2(
 					trackOrigin + (i * (trackRect.Width - (int)tick.Size.X) / (Ticks - 1)) - tick.Size.X / 2,
 					trackRect.Bottom);
