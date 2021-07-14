@@ -126,10 +126,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				}
 
 				// Check for duplicate ActorID
-				foreach (var kv in world.Map.ActorDefinitions)
+				if (CurrentActor.ID.Equals(actorId, StringComparison.OrdinalIgnoreCase))
 				{
-					if (kv.Key.ToLowerInvariant() == actorId.ToLowerInvariant() &&
-						CurrentActor.ID.ToLowerInvariant() != actorId.ToLowerInvariant())
+					if (editorActorLayer[actorId] != null)
 					{
 						nextActorIDStatus = ActorIDStatus.Duplicate;
 						actorIDErrorLabel.Text = "Duplicate ActorID";
