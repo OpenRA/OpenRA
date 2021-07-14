@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly BackgroundWidget actorEditPanel;
 		readonly LabelWidget typeLabel;
 		readonly TextFieldWidget actorIDField;
-		readonly LabelWidget actorIDErrorLabel;
+		/*readonly*/ LabelWidget actorIDErrorLabel;
 
 		readonly Widget initContainer;
 		readonly Widget buttonContainer;
@@ -125,12 +125,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					return;
 				}
 
-				// Check for duplicate actor ID
-				if (CurrentActor.ID.Equals(actorId, StringComparison.OrdinalIgnoreCase))
+				foreach (var kv in world.Map.ActorDefinitions)
 				{
-					if (editorActorLayer[actorId] != null)
+					if (kv.Key.ToString().ToLowerInvariant() == actorId.ToLowerInvariant() &&
+						CurrentActor.ID.ToString().ToLowerInvariant() != actorId.ToString().ToLowerInvariant())
 					{
 						nextActorIDStatus = ActorIDStatus.Duplicate;
+						actorIDErrorLabel.Text = "Duplicate ActorID";
+						actorIDErrorLabel.Visible = true;
 						return;
 					}
 				}
