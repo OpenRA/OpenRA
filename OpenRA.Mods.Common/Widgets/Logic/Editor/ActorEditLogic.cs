@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly BackgroundWidget actorEditPanel;
 		readonly LabelWidget typeLabel;
 		readonly TextFieldWidget actorIDField;
-		LabelWidget actorIDErrorLabel;
+		readonly LabelWidget actorIDErrorLabel;
 
 		readonly Widget initContainer;
 		readonly Widget buttonContainer;
@@ -128,8 +128,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				// Check for duplicate ActorID
 				foreach (var kv in world.Map.ActorDefinitions)
 				{
-					if (kv.Key.ToString().ToLowerInvariant() == actorId.ToLowerInvariant() &&
-						CurrentActor.ID.ToString().ToLowerInvariant() != actorId.ToString().ToLowerInvariant())
+					if (kv.Key.ToLowerInvariant() == actorId.ToLowerInvariant() &&
+						CurrentActor.ID.ToLowerInvariant() != actorId.ToLowerInvariant())
 					{
 						nextActorIDStatus = ActorIDStatus.Duplicate;
 						actorIDErrorLabel.Text = "Duplicate ActorID";
