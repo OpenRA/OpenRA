@@ -685,6 +685,7 @@ namespace OpenRA.Mods.Common.Traits
 		event Action<CPos, string> CellChanged;
 		ResourceLayerContents GetResource(CPos cell);
 		int GetMaxDensity(string resourceType);
+		int GetValueFromPatchAround(CPos startCell);
 		bool CanAddResource(string resourceType, CPos cell, int amount = 1);
 		int AddResource(string resourceType, CPos cell, int amount = 1);
 		int RemoveResource(string resourceType, CPos cell, int amount = 1);

@@ -299,5 +299,6 @@ namespace OpenRA.Mods.Common.Traits
 		void IResourceLayer.ClearResources(CPos cell) { ClearResources(cell); }
 		bool IResourceLayer.IsVisible(CPos cell) { return !world.FogObscures(cell); }
 		bool IResourceLayer.IsEmpty => resCells < 1;
+		int IResourceLayer.GetValueFromPatchAround(CPos cell) { return 0; }
 	}
 }

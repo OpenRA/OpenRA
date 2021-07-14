@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
@@ -54,6 +55,7 @@ namespace OpenRA.Mods.Common.Traits
 		protected readonly Map Map;
 		protected readonly Dictionary<byte, string> ResourceTypesByIndex;
 		protected readonly CellLayer<ResourceLayerContents> Tiles;
+
 		protected Dictionary<string, int> resourceValues;
 
 		public int NetWorth { get; protected set; }
@@ -185,6 +187,47 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			return Math.Max(int2.Lerp(0, resourceInfo.MaxDensity, adjacent, 9), 1);
+		}
+
+		IEnumerable<CPos> NonEmptyNeighbours(CPos cell)
+		{
+			var neighbours = CVec.Directions.Select(d => d + cell);
+			foreach (var neighbour in neighbours)
+			{
+				if (Tiles[neighbour].Density > 0)
+					yield return neighbour;
+			}
+		}
+
+		IEnumerable<CPos> ExpandNeighboursAround(CPos cell)
+		{
+			var patch = NonEmptyNeighbours(cell).Append(cell);
+			var count = 0;
+
+			do
+			{
+				count = patch.Count();
+				patch = patch.SelectMany(c => NonEmptyNeighbours(c)).Distinct();
+			}
+			while (patch.Count() > count);
+
+			return patch;
+		}
+
+		public int GetValueFromPatchAround(CPos startCell)
+		{
+			var sum = 0;
+
+			var neighbours = ExpandNeighboursAround(startCell);
+			var cells = neighbours.Append(startCell).Distinct();
+
+			foreach (var cell in cells)
+			{
+				var resource = Tiles[cell];
+				sum += (resource.Density + 1) * resourceValues[resource.Type];
+			}
+
+			return sum;
 		}
 
 		protected virtual bool AllowResourceAt(string resourceType, CPos cell)

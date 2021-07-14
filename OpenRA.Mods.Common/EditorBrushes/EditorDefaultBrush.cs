@@ -10,8 +10,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 
@@ -35,7 +33,10 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly IResourceLayer resourceLayer;
 
 		public EditorActorPreview SelectedActor;
+
 		int2 worldPixel;
+		CPos previousCellUnderCursor = CPos.Zero;
+		int resourcePatchUnderCursorNetworth;
 
 		public EditorDefaultBrush(EditorViewportControllerWidget editorWidget, WorldRenderer wr)
 		{
@@ -75,10 +76,18 @@ namespace OpenRA.Mods.Common.Widgets
 			var underCursor = editorLayer.PreviewsAt(worldPixel).MinByOrDefault(CalculateActorSelectionPriority);
 			var resourceUnderCursor = resourceLayer?.GetResource(cell).Type;
 
+			var mapResources = world.Map.Resources;
+
 			if (underCursor != null)
 				editorWidget.SetTooltip(underCursor.Tooltip);
-			else if (resourceUnderCursor != null)
-				editorWidget.SetTooltip(resourceUnderCursor);
+			else if (mapResources.Contains(cell) && mapResources[cell].Type != 0)
+			{
+				if (cell != previousCellUnderCursor)
+					resourcePatchUnderCursorNetworth = resourceLayer.GetValueFromPatchAround(cell);
+
+				editorWidget.SetTooltip($"${resourcePatchUnderCursorNetworth}");
+				previousCellUnderCursor = cell;
+			}
 			else
 				editorWidget.SetTooltip(null);
 
