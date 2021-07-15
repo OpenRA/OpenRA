@@ -98,18 +98,30 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 		/// <summary>
 		/// This function analyzes the neighbors of the most promising node in the Pathfinding graph
-		/// using the A* algorithm (A-star) and returns that node
+		/// using the A* algorithm (A-star).
 		/// </summary>
-		/// <returns>The most promising node of the iteration</returns>
-		public override CPos Expand()
+		/// <param name="mostPromisingNode">If the graph can be expanded, contains the next lowest cost cell.</param>
+		/// <returns>True if the graph was expanded and mostPromisingNode contains a valid cell, otherwise false.</returns>
+		public override bool TryExpand(out CPos mostPromisingNode)
 		{
-			var currentMinNode = OpenQueue.Pop().Destination;
+			if (!OpenQueue.TryPop(out var currentMinConnection))
+			{
+				mostPromisingNode = default(CPos);
+				return false;
+			}
+
+			var currentMinNode = currentMinConnection.Destination;
 
 			var currentCell = Graph[currentMinNode];
 			Graph[currentMinNode] = new CellInfo(currentCell.CostSoFar, currentCell.EstimatedTotal, currentCell.PreviousPos, CellStatus.Closed);
 
-			if (Graph.CustomCost != null && Graph.CustomCost(currentMinNode) == PathGraph.CostForInvalidCell)
-				return currentMinNode;
+			var customCost = Graph.CustomCost;
+
+			if (customCost != null && customCost(currentMinNode) == PathGraph.CostForInvalidCell)
+			{
+				mostPromisingNode = currentMinNode;
+				return true;
+			}
 
 			foreach (var connection in Graph.GetConnections(currentMinNode))
 			{
@@ -147,7 +159,8 @@ namespace OpenRA.Mods.Common.Pathfinder
 				}
 			}
 
-			return currentMinNode;
+			mostPromisingNode = currentMinNode;
+			return true;
 		}
 	}
 }

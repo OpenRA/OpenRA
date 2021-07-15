@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 		bool IsTarget(CPos location);
 
 		bool CanExpand { get; }
-		CPos Expand();
+		bool TryExpand(out CPos cell);
 	}
 
 	public abstract class BasePathSearch : IPathSearch
@@ -177,7 +177,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 		}
 
 		public bool CanExpand => !OpenQueue.Empty;
-		public abstract CPos Expand();
+		public abstract bool TryExpand(out CPos cell);
 
 		protected virtual void Dispose(bool disposing)
 		{

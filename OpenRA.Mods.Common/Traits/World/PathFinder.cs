@@ -132,11 +132,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		public List<CPos> FindPath(IPathSearch search)
 		{
-			List<CPos> path = null;
+			List<CPos> path = EmptyPath;
 
-			while (search.CanExpand)
+			while (search.TryExpand(out var p))
 			{
-				var p = search.Expand();
 				if (search.IsTarget(p))
 				{
 					path = MakePath(search.Graph, p);
@@ -146,34 +145,28 @@ namespace OpenRA.Mods.Common.Traits
 
 			search.Graph.Dispose();
 
-			if (path != null)
-				return path;
-
-			// no path exists
-			return EmptyPath;
+			return path;
 		}
 
 		// Searches from both ends toward each other. This is used to prevent blockings in case we find
 		// units in the middle of the path that prevent us to continue.
 		public List<CPos> FindBidiPath(IPathSearch fromSrc, IPathSearch fromDest)
 		{
-			List<CPos> path = null;
+			List<CPos> path = EmptyPath;
 
-			while (fromSrc.CanExpand && fromDest.CanExpand)
+			while (fromSrc.TryExpand(out var p) && fromDest.TryExpand(out var q))
 			{
 				// make some progress on the first search
-				var p = fromSrc.Expand();
-				if (fromDest.Graph[p].Status == CellStatus.Closed &&
-					fromDest.Graph[p].CostSoFar < int.MaxValue)
+				var pci = fromDest.Graph[p];
+				if (pci.Status == CellStatus.Closed && pci.CostSoFar < int.MaxValue)
 				{
 					path = MakeBidiPath(fromSrc, fromDest, p);
 					break;
 				}
 
 				// make some progress on the second search
-				var q = fromDest.Expand();
-				if (fromSrc.Graph[q].Status == CellStatus.Closed &&
-					fromSrc.Graph[q].CostSoFar < int.MaxValue)
+				var qci = fromSrc.Graph[q];
+				if (qci.Status == CellStatus.Closed && qci.CostSoFar < int.MaxValue)
 				{
 					path = MakeBidiPath(fromSrc, fromDest, q);
 					break;
@@ -183,10 +176,7 @@ namespace OpenRA.Mods.Common.Traits
 			fromSrc.Graph.Dispose();
 			fromDest.Graph.Dispose();
 
-			if (path != null)
-				return path;
-
-			return EmptyPath;
+			return path;
 		}
 
 		// Build the path from the destination. When we find a node that has the same previous
@@ -195,11 +185,12 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var ret = new List<CPos>();
 			var currentNode = destination;
-
-			while (cellInfo[currentNode].PreviousPos != currentNode)
+			var prevNode = cellInfo[currentNode].PreviousPos;
+			while (prevNode != currentNode)
 			{
 				ret.Add(currentNode);
-				currentNode = cellInfo[currentNode].PreviousPos;
+				currentNode = prevNode;
+				prevNode = cellInfo[currentNode].PreviousPos;
 			}
 
 			ret.Add(currentNode);
@@ -214,10 +205,12 @@ namespace OpenRA.Mods.Common.Traits
 			var ret = new List<CPos>();
 
 			var q = confluenceNode;
-			while (ca[q].PreviousPos != q)
+			var prevQ = ca[q].PreviousPos;
+			while (prevQ != q)
 			{
 				ret.Add(q);
-				q = ca[q].PreviousPos;
+				q = prevQ;
+				prevQ = ca[q].PreviousPos;
 			}
 
 			ret.Add(q);
@@ -225,10 +218,12 @@ namespace OpenRA.Mods.Common.Traits
 			ret.Reverse();
 
 			q = confluenceNode;
-			while (cb[q].PreviousPos != q)
+			prevQ = cb[q].PreviousPos;
+			while (prevQ != q)
 			{
-				q = cb[q].PreviousPos;
+				q = prevQ;
 				ret.Add(q);
+				prevQ = cb[q].PreviousPos;
 			}
 
 			return ret;
