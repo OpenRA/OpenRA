@@ -52,7 +52,15 @@ namespace OpenRA
 		// Resolve an array index from cell coordinates
 		int Index(CPos cell)
 		{
-			return Index(cell.ToMPos(GridType));
+			// PERF: Inline CPos.ToMPos to avoid MPos allocation
+			var x = cell.X;
+			var y = cell.Y;
+			if (GridType == MapGridType.Rectangular)
+				return y * Size.Width + x;
+
+			var u = (x - y) / 2;
+			var v = x + y;
+			return v * Size.Width + u;
 		}
 
 		// Resolve an array index from map coordinates
