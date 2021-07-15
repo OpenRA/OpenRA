@@ -9,12 +9,62 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace OpenRA.Mods.Common.Pathfinder
 {
-	public class PathCacheStorage : ICacheStorage<List<CPos>>
+	public readonly struct PathCacheKey : IEquatable<PathCacheKey>
+	{
+		readonly uint actorID;
+		readonly int source;
+		readonly int target;
+		readonly int targetY;
+		readonly int hash;
+
+		// FindUnitPath result.
+		public PathCacheKey(uint actorID, CPos source, CPos target)
+		{
+			this.actorID = actorID;
+			this.source = source.Bits;
+			this.target = target.Bits;
+			targetY = int.MinValue;
+			hash = HashCode.Combine(actorID, this.source, this.target);
+		}
+
+		// FindUnitPathToRange result.
+		public PathCacheKey(uint actorID, CPos source, WPos target)
+		{
+			this.actorID = actorID;
+			this.source = source.Bits;
+			this.target = target.X;
+			targetY = target.Y;
+			hash = HashCode.Combine(actorID, this.source, this.target, targetY);
+		}
+
+		public static bool operator ==(PathCacheKey me, PathCacheKey other)
+		{
+			return me.hash == other.hash
+				&& me.actorID == other.actorID
+				&& me.source == other.source
+				&& me.target == other.target
+				&& me.targetY == other.targetY;
+		}
+
+		public static bool operator !=(PathCacheKey me, PathCacheKey other)
+		{
+			return !(me == other);
+		}
+
+		public override int GetHashCode() { return hash; }
+
+		public bool Equals(PathCacheKey other) { return this == other; }
+
+		public override bool Equals(object obj) { return obj is PathCacheKey && Equals((PathCacheKey)obj); }
+	}
+
+	public sealed class PathCacheStorage
 	{
 		class CachedPath
 		{
@@ -24,19 +74,19 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 		const int MaxPathAge = 50;
 		readonly World world;
-		Dictionary<string, CachedPath> cachedPaths = new Dictionary<string, CachedPath>(100);
+		readonly Dictionary<PathCacheKey, CachedPath> cachedPaths = new Dictionary<PathCacheKey, CachedPath>(100);
 
 		public PathCacheStorage(World world)
 		{
 			this.world = world;
 		}
 
-		public void Remove(string key)
+		public void Remove(in PathCacheKey key)
 		{
 			cachedPaths.Remove(key);
 		}
 
-		public void Store(string key, List<CPos> data)
+		public void Store(in PathCacheKey key, List<CPos> data)
 		{
 			// Eventually clean up the cachedPaths dictionary
 			if (cachedPaths.Count >= 100)
@@ -50,7 +100,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			});
 		}
 
-		public List<CPos> Retrieve(string key)
+		public List<CPos> Retrieve(in PathCacheKey key)
 		{
 			if (cachedPaths.TryGetValue(key, out var cached))
 			{

@@ -12,6 +12,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Pathfinder;
+using OpenRA.Support;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -22,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public override object Create(ActorInitializer init)
 		{
-			return new PathFinderUnitPathCacheDecorator(new PathFinder(init.World), new PathCacheStorage(init.World));
+			return new PathFinder(init.World);
 		}
 	}
 
@@ -54,22 +55,24 @@ namespace OpenRA.Mods.Common.Traits
 		static readonly List<CPos> EmptyPath = new List<CPos>(0);
 		readonly World world;
 		DomainIndex domainIndex;
-		bool cached;
+		bool domainIndexCached;
+		readonly PathCacheStorage cacheStorage;
 
 		public PathFinder(World world)
 		{
 			this.world = world;
+			cacheStorage = new PathCacheStorage(world);
 		}
 
-		public List<CPos> FindUnitPath(CPos source, CPos target, Actor self, Actor ignoreActor, BlockedByActor check)
+		List<CPos> FindUnitPathInner(CPos source, CPos target, Actor self, Actor ignoreActor, BlockedByActor check)
 		{
 			// PERF: Because we can be sure that OccupiesSpace is Mobile here, we can save some performance by avoiding querying for the trait.
 			var locomotor = ((Mobile)self.OccupiesSpace).Locomotor;
 
-			if (!cached)
+			if (!domainIndexCached)
 			{
 				domainIndex = world.WorldActor.TraitOrDefault<DomainIndex>();
-				cached = true;
+				domainIndexCached = true;
 			}
 
 			// If a water-land transition is required, bail early
@@ -93,12 +96,36 @@ namespace OpenRA.Mods.Common.Traits
 			return pb;
 		}
 
-		public List<CPos> FindUnitPathToRange(CPos source, SubCell srcSub, WPos target, WDist range, Actor self, BlockedByActor check)
+		public List<CPos> FindUnitPath(CPos source, CPos target, Actor self, Actor ignoreActor, BlockedByActor check)
 		{
-			if (!cached)
+			using (new PerfSample("Pathfinder"))
+			{
+				var key = new PathCacheKey(self.ActorID, source, target);
+
+				// Only cache path when transient actors are ignored, otherwise there is no guarantee that the path
+				// is still valid at the next check.
+				if (check == BlockedByActor.None)
+				{
+					var cachedPath = cacheStorage.Retrieve(key);
+					if (cachedPath != null)
+						return cachedPath;
+				}
+
+				var pb = FindUnitPathInner(source, target, self, ignoreActor, check);
+
+				if (check == BlockedByActor.None)
+					cacheStorage.Store(key, pb);
+
+				return pb;
+			}
+		}
+
+		List<CPos> FindUnitPathToRangeInner(CPos source, SubCell srcSub, WPos target, WDist range, Actor self, BlockedByActor check)
+		{
+			if (!domainIndexCached)
 			{
 				domainIndex = world.WorldActor.TraitOrDefault<DomainIndex>();
-				cached = true;
+				domainIndexCached = true;
 			}
 
 			// PERF: Because we can be sure that OccupiesSpace is Mobile here, we can save some performance by avoiding querying for the trait.
@@ -130,63 +157,91 @@ namespace OpenRA.Mods.Common.Traits
 				return FindBidiPath(fromSrc, fromDest);
 		}
 
+		public List<CPos> FindUnitPathToRange(CPos source, SubCell srcSub, WPos target, WDist range, Actor self, BlockedByActor check)
+		{
+			using (new PerfSample("Pathfinder"))
+			{
+				var key = new PathCacheKey(self.ActorID, source, target);
+
+				if (check == BlockedByActor.None)
+				{
+					var cachedPath = cacheStorage.Retrieve(key);
+					if (cachedPath != null)
+						return cachedPath;
+				}
+
+				var pb = FindUnitPathToRangeInner(source, srcSub, target, range, self, check);
+
+				if (check == BlockedByActor.None)
+					cacheStorage.Store(key, pb);
+
+				return pb;
+			}
+		}
+
 		public List<CPos> FindPath(IPathSearch search)
 		{
-			List<CPos> path = null;
-
-			while (search.CanExpand)
+			using (new PerfSample("Pathfinder"))
 			{
-				var p = search.Expand();
-				if (search.IsTarget(p))
+				List<CPos> path = null;
+
+				while (search.CanExpand)
 				{
-					path = MakePath(search.Graph, p);
-					break;
+					var p = search.Expand();
+					if (search.IsTarget(p))
+					{
+						path = MakePath(search.Graph, p);
+						break;
+					}
 				}
+
+				search.Graph.Dispose();
+
+				if (path != null)
+					return path;
+
+				// no path exists
+				return EmptyPath;
 			}
-
-			search.Graph.Dispose();
-
-			if (path != null)
-				return path;
-
-			// no path exists
-			return EmptyPath;
 		}
 
 		// Searches from both ends toward each other. This is used to prevent blockings in case we find
 		// units in the middle of the path that prevent us to continue.
 		public List<CPos> FindBidiPath(IPathSearch fromSrc, IPathSearch fromDest)
 		{
-			List<CPos> path = null;
-
-			while (fromSrc.CanExpand && fromDest.CanExpand)
+			using (new PerfSample("Pathfinder"))
 			{
-				// make some progress on the first search
-				var p = fromSrc.Expand();
-				if (fromDest.Graph[p].Status == CellStatus.Closed &&
-					fromDest.Graph[p].CostSoFar < int.MaxValue)
+				List<CPos> path = null;
+
+				while (fromSrc.CanExpand && fromDest.CanExpand)
 				{
-					path = MakeBidiPath(fromSrc, fromDest, p);
-					break;
+					// make some progress on the first search
+					var p = fromSrc.Expand();
+					if (fromDest.Graph[p].Status == CellStatus.Closed &&
+						fromDest.Graph[p].CostSoFar < int.MaxValue)
+					{
+						path = MakeBidiPath(fromSrc, fromDest, p);
+						break;
+					}
+
+					// make some progress on the second search
+					var q = fromDest.Expand();
+					if (fromSrc.Graph[q].Status == CellStatus.Closed &&
+						fromSrc.Graph[q].CostSoFar < int.MaxValue)
+					{
+						path = MakeBidiPath(fromSrc, fromDest, q);
+						break;
+					}
 				}
 
-				// make some progress on the second search
-				var q = fromDest.Expand();
-				if (fromSrc.Graph[q].Status == CellStatus.Closed &&
-					fromSrc.Graph[q].CostSoFar < int.MaxValue)
-				{
-					path = MakeBidiPath(fromSrc, fromDest, q);
-					break;
-				}
+				fromSrc.Graph.Dispose();
+				fromDest.Graph.Dispose();
+
+				if (path != null)
+					return path;
+
+				return EmptyPath;
 			}
-
-			fromSrc.Graph.Dispose();
-			fromDest.Graph.Dispose();
-
-			if (path != null)
-				return path;
-
-			return EmptyPath;
 		}
 
 		// Build the path from the destination. When we find a node that has the same previous
