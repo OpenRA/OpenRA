@@ -100,11 +100,11 @@ namespace OpenRA.Mods.Common.Pathfinder
 			groundInfo = pooledLayer.GetLayer();
 			var locomotorInfo = locomotor.Info;
 			this.locomotor = locomotor;
-			var layers = world.GetCustomMovementLayers().Values
-				.Where(cml => cml.EnabledForActor(actor.Info, locomotorInfo));
 
-			foreach (var cml in layers)
-				customLayerInfo[cml.Index] = (cml, pooledLayer.GetLayer());
+			// PERF: Avoid LINQ
+			foreach (var cml in world.GetCustomMovementLayers().Values)
+				if (cml.EnabledForActor(actor.Info, locomotorInfo))
+					customLayerInfo[cml.Index] = (cml, pooledLayer.GetLayer());
 
 			World = world;
 			Actor = actor;
@@ -133,7 +133,8 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 		public List<GraphConnection> GetConnections(CPos position)
 		{
-			var info = position.Layer == 0 ? groundInfo : customLayerInfo[position.Layer].Info;
+			var posLayer = position.Layer;
+			var info = posLayer == 0 ? groundInfo : customLayerInfo[posLayer].Info;
 			var previousPos = info[position].PreviousPos;
 
 			var dx = position.X - previousPos.X;
@@ -141,16 +142,22 @@ namespace OpenRA.Mods.Common.Pathfinder
 			var index = dy * 3 + dx + 4;
 
 			var directions = DirectedNeighbors[index];
-			var validNeighbors = new List<GraphConnection>(directions.Length);
+			var validNeighbors = new List<GraphConnection>(directions.Length + (posLayer == 0 ? customLayerInfo.Count : 1));
 			for (var i = 0; i < directions.Length; i++)
 			{
-				var neighbor = position + directions[i];
-				var movementCost = GetCostToNode(neighbor, directions[i]);
+				var dir = directions[i];
+				var neighbor = position + dir;
+
+				// PERF: Skip closed cells already, 15% of all cells
+				if (info[neighbor].Status == CellStatus.Closed)
+					continue;
+
+				var movementCost = GetCostToNode(neighbor, dir);
 				if (movementCost != CostForInvalidCell)
 					validNeighbors.Add(new GraphConnection(neighbor, movementCost));
 			}
 
-			if (position.Layer == 0)
+			if (posLayer == 0)
 			{
 				foreach (var cli in customLayerInfo.Values)
 				{
@@ -163,7 +170,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			else
 			{
 				var layerPosition = new CPos(position.X, position.Y, 0);
-				var exitCost = customLayerInfo[position.Layer].Layer.ExitMovementCost(Actor.Info, locomotor.Info, layerPosition);
+				var exitCost = customLayerInfo[posLayer].Layer.ExitMovementCost(Actor.Info, locomotor.Info, layerPosition);
 				if (exitCost != CostForInvalidCell)
 					validNeighbors.Add(new GraphConnection(layerPosition, exitCost));
 			}
@@ -199,8 +206,9 @@ namespace OpenRA.Mods.Common.Pathfinder
 			// Prevent units from jumping over height discontinuities
 			if (checkTerrainHeight && neighborCPos.Layer == 0)
 			{
+				var heightLayer = World.Map.Height;
 				var from = neighborCPos - direction;
-				if (Math.Abs(World.Map.Height[neighborCPos] - World.Map.Height[from]) > 1)
+				if (Math.Abs(heightLayer[neighborCPos] - heightLayer[from]) > 1)
 					return CostForInvalidCell;
 			}
 
