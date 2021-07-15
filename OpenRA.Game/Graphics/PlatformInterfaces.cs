@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 
@@ -82,11 +83,12 @@ namespace OpenRA
 
 	public interface IGraphicsContext : IDisposable
 	{
-		IVertexBuffer<Vertex> CreateVertexBuffer(int size);
+		IVertexBuffer<T> CreateVertexBuffer<T>(int size) where T : struct;
 		ITexture CreateTexture();
 		IFrameBuffer CreateFrameBuffer(Size s);
 		IFrameBuffer CreateFrameBuffer(Size s, Color clearColor);
-		IShader CreateShader(string name);
+		IShader CreateShader<T>() where T : IShaderBindings;
+		IShader CreateUnsharedShader<T>() where T : IShaderBindings;
 		void EnableScissor(int x, int y, int width, int height);
 		void DisableScissor();
 		void Present();
@@ -100,15 +102,30 @@ namespace OpenRA
 		string GLVersion { get; }
 	}
 
-	public interface IVertexBuffer<T> : IDisposable
+	public interface IVertexBuffer : IDisposable
 	{
 		void Bind();
+	}
+
+	public interface IVertexBuffer<T> : IVertexBuffer
+		where T : struct
+	{
 		void SetData(T[] vertices, int length);
 		void SetData(T[] vertices, int offset, int start, int length);
 	}
 
+	public interface IShaderBindings
+	{
+		string VertexShaderName { get; }
+		string FragmentShaderName { get; }
+		int Stride { get; }
+		IEnumerable<ShaderVertexAttribute> Attributes { get; }
+		void SetRenderData(IShader shader, ModelRenderData renderData);
+	}
+
 	public interface IShader
 	{
+		void SetRenderData(ModelRenderData renderData);
 		void SetBool(string name, bool value);
 		void SetVec(string name, float x);
 		void SetVec(string name, float x, float y);
@@ -117,6 +134,7 @@ namespace OpenRA
 		void SetTexture(string param, ITexture texture);
 		void SetMatrix(string param, float[] mtx);
 		void PrepareRender();
+		void LayoutAttributes();
 	}
 
 	public enum TextureScaleFilter { Nearest, Linear }

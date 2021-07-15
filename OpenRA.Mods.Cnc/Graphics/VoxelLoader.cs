@@ -189,13 +189,13 @@ namespace OpenRA.Mods.Cnc.Graphics
 			var start = totalVertexCount;
 			var count = v.Length;
 			totalVertexCount += count;
-			return new ModelRenderData(start, count, sheetBuilder.Current);
+			return new ModelRenderData(start, count, Game.Renderer.GetShader<ModelShaderBindings>(), VertexBuffer, new Dictionary<string, ITexture>() { { "DiffuseTexture", sheetBuilder.Current.GetTexture() } });
 		}
 
 		public void RefreshBuffer()
 		{
 			vertexBuffer?.Dispose();
-			vertexBuffer = Game.Renderer.CreateVertexBuffer(totalVertexCount);
+			vertexBuffer = Game.Renderer.CreateVertexBuffer<Vertex>(totalVertexCount);
 			vertexBuffer.SetData(vertices.SelectMany(v => v).ToArray(), totalVertexCount);
 			cachedVertexCount = totalVertexCount;
 		}

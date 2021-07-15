@@ -13,27 +13,32 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using OpenRA.Graphics;
 
 namespace OpenRA.Platforms.Default
 {
 	class Shader : ThreadAffine, IShader
 	{
-		public const int VertexPosAttributeIndex = 0;
-		public const int TexCoordAttributeIndex = 1;
-		public const int TexMetadataAttributeIndex = 2;
-		public const int TintAttributeIndex = 3;
-
 		readonly Dictionary<string, int> samplers = new Dictionary<string, int>();
 		readonly Dictionary<int, int> legacySizeUniforms = new Dictionary<int, int>();
 		readonly Dictionary<int, ITexture> textures = new Dictionary<int, ITexture>();
 		readonly Queue<int> unbindTextures = new Queue<int>();
 		readonly uint program;
+		readonly IShaderBindings bindings;
 
 		protected uint CompileShaderObject(int type, string name)
 		{
 			var ext = type == OpenGL.GL_VERTEX_SHADER ? "vert" : "frag";
-			var filename = Path.Combine(Platform.EngineDir, "glsl", name + "." + ext);
-			var code = File.ReadAllText(filename);
+			var filename = name + "." + ext;
+			string code;
+
+			if (Game.ModData != null && Game.ModData.DefaultFileSystem.TryOpen(filename, out var stream))
+			{
+				code = stream.ReadAllText();
+				stream.Dispose();
+			}
+			else
+				code = File.ReadAllText(Path.Combine(Platform.EngineDir, "glsl", filename));
 
 			var version = OpenGL.Profile == GLProfile.Embedded ? "300 es" :
 				OpenGL.Profile == GLProfile.Legacy ? "120" : "140";
@@ -66,23 +71,22 @@ namespace OpenRA.Platforms.Default
 			return shader;
 		}
 
-		public Shader(string name)
+		public Shader(IShaderBindings bindings)
 		{
-			var vertexShader = CompileShaderObject(OpenGL.GL_VERTEX_SHADER, name);
-			var fragmentShader = CompileShaderObject(OpenGL.GL_FRAGMENT_SHADER, name);
+			this.bindings = bindings;
+
+			var vertexShader = CompileShaderObject(OpenGL.GL_VERTEX_SHADER, bindings.VertexShaderName);
+			var fragmentShader = CompileShaderObject(OpenGL.GL_FRAGMENT_SHADER, bindings.FragmentShaderName);
 
 			// Assemble program
 			program = OpenGL.glCreateProgram();
 			OpenGL.CheckGLError();
 
-			OpenGL.glBindAttribLocation(program, VertexPosAttributeIndex, "aVertexPosition");
-			OpenGL.CheckGLError();
-			OpenGL.glBindAttribLocation(program, TexCoordAttributeIndex, "aVertexTexCoord");
-			OpenGL.CheckGLError();
-			OpenGL.glBindAttribLocation(program, TexMetadataAttributeIndex, "aVertexTexMetadata");
-			OpenGL.CheckGLError();
-			OpenGL.glBindAttribLocation(program, TintAttributeIndex, "aVertexTint");
-			OpenGL.CheckGLError();
+			foreach (var attribute in bindings.Attributes)
+			{
+				OpenGL.glBindAttribLocation(program, attribute.Index, attribute.Name);
+				OpenGL.CheckGLError();
+			}
 
 			if (OpenGL.Profile == GLProfile.Modern)
 			{
@@ -106,7 +110,7 @@ namespace OpenRA.Platforms.Default
 				var log = new StringBuilder(len);
 				OpenGL.glGetProgramInfoLog(program, len, out _, log);
 				Log.Write("graphics", "GL Info Log:\n{0}", log.ToString());
-				throw new InvalidProgramException($"Link error in shader program '{name}'");
+				throw new InvalidProgramException($"Link error in shader program '{bindings.VertexShaderName}' and '{bindings.FragmentShaderName}'");
 			}
 
 			OpenGL.glUseProgram(program);
@@ -151,6 +155,7 @@ namespace OpenRA.Platforms.Default
 			OpenGL.glUseProgram(program);
 			OpenGL.CheckGLError();
 
+			// Future notice: using ARB_bindless_texture makes all the gl calls below obsolete.
 			// bind the textures
 			foreach (var kv in textures)
 			{
@@ -187,6 +192,11 @@ namespace OpenRA.Platforms.Default
 
 			if (samplers.TryGetValue(name, out var texUnit))
 				textures[texUnit] = t;
+		}
+
+		public void SetRenderData(ModelRenderData renderData)
+		{
+			bindings.SetRenderData(this, renderData);
 		}
 
 		public void SetBool(string name, bool value)
@@ -275,6 +285,17 @@ namespace OpenRA.Platforms.Default
 			}
 
 			OpenGL.CheckGLError();
+		}
+
+		public void LayoutAttributes()
+		{
+			foreach (var attribute in bindings.Attributes)
+			{
+				OpenGL.glVertexAttribPointer(attribute.Index, attribute.Components, OpenGL.GL_FLOAT, false, bindings.Stride, new IntPtr(attribute.Offset));
+				OpenGL.CheckGLError();
+				OpenGL.glEnableVertexAttribArray(attribute.Index);
+				OpenGL.CheckGLError();
+			}
 		}
 	}
 }

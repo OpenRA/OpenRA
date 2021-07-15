@@ -45,7 +45,6 @@ namespace OpenRA.Graphics
 		static readonly float[] GroundNormal = { 0, 0, 1, 1 };
 
 		readonly Renderer renderer;
-		readonly IShader shader;
 
 		readonly Dictionary<Sheet, IFrameBuffer> mappedBuffers = new Dictionary<Sheet, IFrameBuffer>();
 		readonly Stack<KeyValuePair<Sheet, IFrameBuffer>> unmappedBuffers = new Stack<KeyValuePair<Sheet, IFrameBuffer>>();
@@ -53,30 +52,29 @@ namespace OpenRA.Graphics
 
 		SheetBuilder sheetBuilderForFrame;
 		bool isInFrame;
+		ITexture palette;
+		float[] view;
 
-		public ModelRenderer(Renderer renderer, IShader shader)
+		public ModelRenderer(Renderer renderer)
 		{
 			this.renderer = renderer;
-			this.shader = shader;
 		}
 
 		public void SetPalette(ITexture palette)
 		{
-			shader.SetTexture("Palette", palette);
+			this.palette = palette;
 		}
 
 		public void SetViewportParams(Size screen, int2 scroll)
 		{
 			var a = 2f / renderer.SheetSize;
-			var view = new[]
+			view = new[]
 			{
 				a, 0, 0, 0,
 				0, -a, 0, 0,
 				0, 0, -2 * a, 0,
 				-1, 1, 0, 1
 			};
-
-			shader.SetMatrix("View", view);
 		}
 
 		public ModelRenderProxy RenderAsync(
@@ -270,15 +268,25 @@ namespace OpenRA.Graphics
 			float[] ambientLight, float[] diffuseLight,
 			float colorPaletteTextureMidIndex, float normalsPaletteTextureMidIndex)
 		{
-			shader.SetTexture("DiffuseTexture", renderData.Sheet.GetTexture());
-			shader.SetVec("PaletteRows", colorPaletteTextureMidIndex, normalsPaletteTextureMidIndex);
-			shader.SetMatrix("TransformMatrix", t);
-			shader.SetVec("LightDirection", lightDirection, 4);
-			shader.SetVec("AmbientLight", ambientLight, 3);
-			shader.SetVec("DiffuseLight", diffuseLight, 3);
+			var currentShader = renderData.Shader;
 
-			shader.PrepareRender();
-			renderer.DrawBatch(cache.VertexBuffer, renderData.Start, renderData.Count, PrimitiveType.TriangleList);
+			// Future notice: using ARB_Uniform_Buffer_Object makes all the gl calls obsolete.
+			currentShader.SetTexture("Palette", palette);
+
+			if (view != null)
+				currentShader.SetMatrix("View", view);
+
+			currentShader.SetVec("PaletteRows", colorPaletteTextureMidIndex, normalsPaletteTextureMidIndex);
+			currentShader.SetMatrix("TransformMatrix", t);
+			currentShader.SetVec("LightDirection", lightDirection, 4);
+			currentShader.SetVec("AmbientLight", ambientLight, 3);
+			currentShader.SetVec("DiffuseLight", diffuseLight, 3);
+
+			currentShader.SetRenderData(renderData);
+
+			currentShader.PrepareRender();
+
+			renderer.DrawBatch(currentShader, renderData.VertexBuffer, renderData.Start, renderData.Count, PrimitiveType.TriangleList);
 		}
 
 		public void BeginFrame()
