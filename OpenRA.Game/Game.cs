@@ -482,8 +482,11 @@ namespace OpenRA
 			Renderer.InitializeDepthBuffer(grid);
 
 			Cursor?.Dispose();
-
 			Cursor = new CursorManager(ModData.CursorProvider);
+
+			var metadata = ModData.Manifest.Metadata;
+			if (!string.IsNullOrEmpty(metadata.WindowTitle))
+				Renderer.Window.SetWindowTitle(metadata.WindowTitle);
 
 			PerfHistory.Items["render"].HasNormalTick = false;
 			PerfHistory.Items["batches"].HasNormalTick = false;
