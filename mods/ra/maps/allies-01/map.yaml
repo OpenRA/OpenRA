@@ -21,10 +21,10 @@ LockPreview: True
 Players:
 	PlayerReference@USSR:
 		Name: USSR
+		Bot: campaign
 		Faction: soviet
 		Color: FE1100
 		Enemies: Greece, England
-		Bot: campaign
 	PlayerReference@Neutral:
 		Name: Neutral
 		OwnsWorld: True
@@ -32,8 +32,8 @@ Players:
 		Faction: allies
 	PlayerReference@Greece:
 		Name: Greece
-		Playable: True
 		AllowBots: False
+		Playable: True
 		Required: True
 		LockFaction: True
 		Faction: allies
@@ -45,11 +45,11 @@ Players:
 		Enemies: USSR
 	PlayerReference@England:
 		Name: England
+		Bot: campaign
 		Faction: allies
 		Color: A1EF8C
 		Allies: Greece
 		Enemies: USSR
-		Bot: campaign
 
 Actors:
 	Actor0: t16
@@ -127,7 +127,7 @@ Actors:
 	Actor24: powr
 		Location: 67,57
 		Owner: USSR
-	Actor25: powr
+	BarrelPower: powr
 		Location: 61,57
 		Owner: USSR
 	Actor27: fact
@@ -203,31 +203,31 @@ Actors:
 		Location: 73,66
 		Owner: USSR
 		SubCell: 1
-	Actor56: e1
+	Response3: e1
 		Location: 62,67
 		Owner: USSR
-		Facing: 512
 		SubCell: 4
-	Actor57: e1
+		Facing: 512
+	Response5: e1
 		Location: 67,67
 		Owner: USSR
-		Facing: 640
 		SubCell: 3
-	Actor58: e1
+		Facing: 640
+	Response4: e1
 		Location: 65,67
 		Owner: USSR
-		Facing: 640
 		SubCell: 3
-	Actor59: e1
+		Facing: 640
+	Response1: e1
 		Location: 56,60
 		Owner: USSR
-		Facing: 384
 		SubCell: 1
-	Actor63: e1
+		Facing: 384
+	Response2: e1
 		Location: 58,60
 		Owner: USSR
-		Facing: 256
 		SubCell: 1
+		Facing: 256
 	Actor64: e1
 		Location: 64,49
 		Owner: Greece
@@ -403,7 +403,7 @@ Actors:
 		Owner: England
 		SubCell: 3
 	EinsteinSpawnPoint: waypoint
-		Location: 62,61
+		Location: 62,60
 		Owner: Neutral
 	InsertionEntry: waypoint
 		Location: 63,45
@@ -440,6 +440,9 @@ Actors:
 		Owner: Neutral
 	CruiserPoint3: waypoint
 		Location: 68,76
+		Owner: Neutral
+	CivMove: waypoint
+		Location: 69,56
 		Owner: Neutral
 
 Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, ra|rules/campaign-palettes.yaml, rules.yaml
