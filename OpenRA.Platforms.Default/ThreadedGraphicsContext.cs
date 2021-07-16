@@ -404,6 +404,11 @@ namespace OpenRA.Platforms.Default
 			return Send(getCreateVertexBuffer, length);
 		}
 
+		public Vertex[] CreateVertices(int size)
+		{
+			return GetVertices(size);
+		}
+
 		public void DisableDepthBuffer()
 		{
 			Post(doDisableDepthBuffer);
@@ -524,6 +529,16 @@ namespace OpenRA.Platforms.Default
 			var buffer = device.GetVertices(length);
 			Array.Copy(vertices, buffer, length);
 			device.Post(setData1, (buffer, length));
+		}
+
+		/// <summary>
+		/// PERF: The vertices array is passed without copying to the render thread. Upon return `vertices` may reference another
+		/// array object of at least the same size - containing random values.
+		/// </summary>
+		public void SetData(ref Vertex[] vertices, int length)
+		{
+			device.Post(setData1, (vertices, length));
+			vertices = device.GetVertices(vertices.Length);
 		}
 
 		public void SetData(Vertex[] vertices, int offset, int start, int length)

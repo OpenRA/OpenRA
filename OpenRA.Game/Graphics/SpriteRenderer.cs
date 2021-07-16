@@ -23,7 +23,7 @@ namespace OpenRA.Graphics
 		readonly Renderer renderer;
 		readonly IShader shader;
 
-		readonly Vertex[] vertices;
+		Vertex[] vertices;
 		readonly Sheet[] sheets = new Sheet[SheetCount];
 
 		BlendMode currentBlend = BlendMode.Alpha;
@@ -34,7 +34,7 @@ namespace OpenRA.Graphics
 		{
 			this.renderer = renderer;
 			this.shader = shader;
-			vertices = new Vertex[renderer.TempBufferSize];
+			vertices = renderer.Context.CreateVertices(renderer.TempBufferSize);
 		}
 
 		public void Flush()
@@ -49,7 +49,9 @@ namespace OpenRA.Graphics
 
 				renderer.Context.SetBlendMode(currentBlend);
 				shader.PrepareRender();
-				renderer.DrawBatch(vertices, nv, PrimitiveType.TriangleList);
+
+				// PERF: The renderer may choose to replace vertices with a different temporary buffer.
+				renderer.DrawBatch(ref vertices, nv, PrimitiveType.TriangleList);
 				renderer.Context.SetBlendMode(BlendMode.None);
 
 				nv = 0;

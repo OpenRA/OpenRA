@@ -84,6 +84,7 @@ namespace OpenRA
 	public interface IGraphicsContext : IDisposable
 	{
 		IVertexBuffer<Vertex> CreateVertexBuffer(int size);
+		Vertex[] CreateVertices(int size);
 		ITexture CreateTexture();
 		IFrameBuffer CreateFrameBuffer(Size s);
 		IFrameBuffer CreateFrameBuffer(Size s, Color clearColor);
@@ -105,6 +106,11 @@ namespace OpenRA
 	{
 		void Bind();
 		void SetData(T[] vertices, int length);
+
+		/// <summary>
+		/// Upon return `vertices` may reference another array object of at least the same size - containing random values.
+		/// </summary>
+		void SetData(ref T[] vertices, int length);
 		void SetData(T[] vertices, int offset, int start, int length);
 	}
 

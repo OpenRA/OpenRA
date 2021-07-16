@@ -67,6 +67,12 @@ namespace OpenRA.Platforms.Default
 			return new VertexBuffer<Vertex>(size);
 		}
 
+		public Vertex[] CreateVertices(int size)
+		{
+			VerifyThreadAffinity();
+			return new Vertex[size];
+		}
+
 		public ITexture CreateTexture()
 		{
 			VerifyThreadAffinity();
