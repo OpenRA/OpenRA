@@ -126,7 +126,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				}
 
 				// Check for duplicate ActorID
-				if (CurrentActor.ID.Equals(actorId, StringComparison.OrdinalIgnoreCase))
+				if (!CurrentActor.ID.Equals(actorId, StringComparison.OrdinalIgnoreCase))
 				{
 					if (editorActorLayer[actorId] != null)
 					{
