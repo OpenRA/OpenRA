@@ -186,22 +186,24 @@ namespace OpenRA.Mods.Common.Activities
 
 			// Find any harvestable resources:
 			List<CPos> path;
-			using (var search = PathSearch.Search(self.World, mobile.Locomotor, self, BlockedByActor.Stationary, loc =>
-					domainIndex.IsPassable(self.Location, loc, mobile.Locomotor) && harv.CanHarvestCell(self, loc) && claimLayer.CanClaimCell(self, loc))
-				.WithCustomCost(loc =>
+			Func<CPos, int> customCost;
+
+			if (procPos.HasValue && harvInfo.ResourceRefineryDirectionPenalty > 0)
+			{
+				customCost = loc =>
 				{
 					if ((loc - searchFromLoc).LengthSquared > searchRadiusSquared)
 						return PathGraph.CostForInvalidCell;
 
-					// Add a cost modifier to harvestable cells to prefer resources that are closer to the refinery.
+					// Add a cost modifier to harvestable cells to prefer resources
+					// that are closer to the refinery.
 					// This reduces the tendancy for harvesters to move in straight lines
-					if (procPos.HasValue && harvInfo.ResourceRefineryDirectionPenalty > 0 && harv.CanHarvestCell(self, loc))
+					if (harv.CanHarvestCell(self, loc))
 					{
 						var pos = map.CenterOfCell(loc);
 
 						// Calculate harv-cell-refinery angle (cosine rule)
 						var b = pos - procPos.Value;
-
 						if (b != WVec.Zero)
 						{
 							var c = pos - harvPos;
@@ -217,9 +219,32 @@ namespace OpenRA.Mods.Common.Activities
 					}
 
 					return 0;
-				})
-				.FromPoint(searchFromLoc)
-				.FromPoint(self.Location))
+				};
+			}
+			else
+			{
+				customCost = loc =>
+				{
+					if ((loc - searchFromLoc).LengthSquared > searchRadiusSquared)
+					return PathGraph.CostForInvalidCell;
+					return 0;
+				};
+			}
+
+			var query = new PathQuery(
+				queryType: PathQueryType.ConditionUnidirectional,
+				world: self.World,
+				locomotor: mobile.Locomotor,
+				actor: self,
+				check: BlockedByActor.Stationary,
+				isGoal: loc => domainIndex.IsPassable(self.Location, loc, mobile.Locomotor)
+				&& harv.CanHarvestCell(self, loc)
+				&& claimLayer.CanClaimCell(self, loc),
+				customCost: customCost,
+				fromPositions: self.Location.Equals(searchFromLoc) ?
+				new CPos[] { self.Location } : new CPos[] { searchFromLoc, self.Location });
+
+			using (var search = new PathSearch(query))
 				path = mobile.Pathfinder.FindPath(search);
 
 			if (path.Count > 0)

@@ -18,37 +18,6 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Pathfinder
 {
-	/// <summary>
-	/// Represents a graph with nodes and edges
-	/// </summary>
-	/// <typeparam name="T">The type of node used in the graph</typeparam>
-	public interface IGraph<T> : IDisposable
-	{
-		/// <summary>
-		/// Gets all the Connections for a given node in the graph
-		/// </summary>
-		List<GraphConnection> GetConnections(CPos position);
-
-		/// <summary>
-		/// Retrieves an object given a node in the graph
-		/// </summary>
-		T this[CPos pos] { get; set; }
-
-		Func<CPos, bool> CustomBlock { get; set; }
-
-		Func<CPos, int> CustomCost { get; set; }
-
-		int LaneBias { get; set; }
-
-		bool InReverse { get; set; }
-
-		Actor IgnoreActor { get; set; }
-
-		World World { get; }
-
-		Actor Actor { get; }
-	}
-
 	public readonly struct GraphConnection
 	{
 		public static readonly CostComparer ConnectionCostComparer = CostComparer.Instance;
@@ -73,44 +42,36 @@ namespace OpenRA.Mods.Common.Pathfinder
 		}
 	}
 
-	sealed class PathGraph : IGraph<CellInfo>
+	public class PathGraph
 	{
 		public const int CostForInvalidCell = int.MaxValue;
 
-		public Actor Actor { get; private set; }
-		public World World { get; private set; }
-		public Func<CPos, bool> CustomBlock { get; set; }
-		public Func<CPos, int> CustomCost { get; set; }
-		public int LaneBias { get; set; }
-		public bool InReverse { get; set; }
-		public Actor IgnoreActor { get; set; }
+		public readonly PathQuery Query;
 
-		readonly BlockedByActor checkConditions;
-		readonly Locomotor locomotor;
 		readonly CellInfoLayerPool.PooledCellInfoLayer pooledLayer;
+		readonly int laneBias;
 		readonly bool checkTerrainHeight;
 		CellLayer<CellInfo> groundInfo;
 
 		readonly Dictionary<byte, (ICustomMovementLayer Layer, CellLayer<CellInfo> Info)> customLayerInfo =
 			new Dictionary<byte, (ICustomMovementLayer, CellLayer<CellInfo>)>();
 
-		public PathGraph(CellInfoLayerPool layerPool, Locomotor locomotor, Actor actor, World world, BlockedByActor check)
+		public PathGraph(CellInfoLayerPool layerPool, PathQuery query)
 		{
+			Query = query;
 			pooledLayer = layerPool.Get();
 			groundInfo = pooledLayer.GetLayer();
-			var locomotorInfo = locomotor.Info;
-			this.locomotor = locomotor;
+
+			var locomotorInfo = Query.Locomotor.Info;
+			var actorInfo = Query.Actor.Info;
 
 			// PERF: Avoid LINQ
-			foreach (var cml in world.GetCustomMovementLayers().Values)
-				if (cml.EnabledForActor(actor.Info, locomotorInfo))
+			foreach (var cml in Query.World.GetCustomMovementLayers().Values)
+				if (cml.EnabledForActor(actorInfo, locomotorInfo))
 					customLayerInfo[cml.Index] = (cml, pooledLayer.GetLayer());
 
-			World = world;
-			Actor = actor;
-			LaneBias = 1;
-			checkConditions = check;
-			checkTerrainHeight = world.Map.Grid.MaximumTerrainHeight > 0;
+			laneBias = Query.LaneBiasDisabled ? 0 : 1;
+			checkTerrainHeight = Query.World.Map.Grid.MaximumTerrainHeight > 0;
 		}
 
 		// Sets of neighbors for each incoming direction. These exclude the neighbors which are guaranteed
@@ -154,12 +115,14 @@ namespace OpenRA.Mods.Common.Pathfinder
 					validNeighbors.Add(new GraphConnection(neighbor, movementCost));
 			}
 
-			if (posLayer == 0)
+			var actorInfo = Query.Actor.Info;
+			var locomotorInfo = Query.Locomotor.Info;
+			if (position.Layer == 0)
 			{
 				foreach (var cli in customLayerInfo.Values)
 				{
 					var layerPosition = new CPos(position.X, position.Y, cli.Layer.Index);
-					var entryCost = cli.Layer.EntryMovementCost(Actor.Info, locomotor.Info, layerPosition);
+					var entryCost = cli.Layer.EntryMovementCost(actorInfo, locomotorInfo, layerPosition);
 					if (entryCost != CostForInvalidCell)
 						validNeighbors.Add(new GraphConnection(layerPosition, entryCost));
 				}
@@ -167,7 +130,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			else
 			{
 				var layerPosition = new CPos(position.X, position.Y, 0);
-				var exitCost = customLayerInfo[posLayer].Layer.ExitMovementCost(Actor.Info, locomotor.Info, layerPosition);
+				var exitCost = customLayerInfo[posLayer].Layer.ExitMovementCost(actorInfo, locomotorInfo, layerPosition);
 				if (exitCost != CostForInvalidCell)
 					validNeighbors.Add(new GraphConnection(layerPosition, exitCost));
 			}
@@ -177,8 +140,10 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 		int GetCostToNode(CPos destNode, CVec direction)
 		{
-			var movementCost = locomotor.MovementCostToEnterCell(Actor, destNode, checkConditions, IgnoreActor);
-			if (movementCost != short.MaxValue && !(CustomBlock != null && CustomBlock(destNode)))
+			var movementCost = Query.Locomotor.MovementCostToEnterCell(Query.Actor,
+				destNode, Query.Check, Query.IgnoreActor);
+			var customBlock = Query.CustomBlock;
+			if (movementCost != short.MaxValue && !(customBlock != null && customBlock(destNode)))
 				return CalculateCellCost(destNode, direction, movementCost);
 
 			return CostForInvalidCell;
@@ -191,35 +156,37 @@ namespace OpenRA.Mods.Common.Pathfinder
 			if (direction.X * direction.Y != 0)
 				cellCost = (cellCost * 34) / 24;
 
-			if (CustomCost != null)
+			var customCost = Query.CustomCost;
+			if (customCost != null)
 			{
-				var customCost = CustomCost(neighborCPos);
-				if (customCost == CostForInvalidCell)
+				var cc = customCost(neighborCPos);
+				if (cc == CostForInvalidCell)
 					return CostForInvalidCell;
 
-				cellCost += customCost;
+				cellCost += cc;
 			}
 
 			// Prevent units from jumping over height discontinuities
 			if (checkTerrainHeight && neighborCPos.Layer == 0)
 			{
-				var heightLayer = World.Map.Height;
 				var from = neighborCPos - direction;
+				var heightLayer = Query.World.Map.Height;
 				if (Math.Abs(heightLayer[neighborCPos] - heightLayer[from]) > 1)
 					return CostForInvalidCell;
 			}
 
 			// Directional bonuses for smoother flow!
-			if (LaneBias != 0)
+			if (laneBias != 0)
 			{
-				var ux = neighborCPos.X + (InReverse ? 1 : 0) & 1;
-				var uy = neighborCPos.Y + (InReverse ? 1 : 0) & 1;
+				var reverse = (Query.Reverse ? 1 : 0);
+				var ux = neighborCPos.X + reverse & 1;
+				var uy = neighborCPos.Y + reverse & 1;
 
 				if ((ux == 0 && direction.Y < 0) || (ux == 1 && direction.Y > 0))
-					cellCost += LaneBias;
+					cellCost += laneBias;
 
 				if ((uy == 0 && direction.X < 0) || (uy == 1 && direction.X > 0))
-					cellCost += LaneBias;
+					cellCost += laneBias;
 			}
 
 			return cellCost;

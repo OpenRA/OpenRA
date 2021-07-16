@@ -61,10 +61,19 @@ namespace OpenRA.Mods.Common.Activities
 			getPath = check =>
 			{
 				List<CPos> path;
-				using (var search =
-					PathSearch.FromPoint(self.World, mobile.Locomotor, self, mobile.ToCell, destination, check)
-					.WithoutLaneBias())
+				var query = new PathQuery(
+					queryType: PathQueryType.PositionUnidirectional,
+					world: self.World,
+					locomotor: mobile.Locomotor,
+					actor: self,
+					laneBiasDisabled: true,
+					fromPosition: mobile.ToCell,
+					toPosition: destination,
+					check: check);
+
+				using (var search = new PathSearch(query))
 					path = mobile.Pathfinder.FindPath(search);
+
 				return path;
 			};
 

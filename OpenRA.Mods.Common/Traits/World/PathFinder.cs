@@ -39,14 +39,14 @@ namespace OpenRA.Mods.Common.Traits
 		/// <summary>
 		/// Calculates a path given a search specification
 		/// </summary>
-		List<CPos> FindPath(IPathSearch search);
+		List<CPos> FindPath(BasePathSearch search);
 
 		/// <summary>
 		/// Calculates a path given two search specifications, and
 		/// then returns a path when both search intersect each other
 		/// TODO: This should eventually disappear
 		/// </summary>
-		List<CPos> FindBidiPath(IPathSearch fromSrc, IPathSearch fromDest);
+		List<CPos> FindBidiPath(BasePathSearch fromSrc, BasePathSearch fromDest);
 	}
 
 	public class PathFinder : IPathFinder
@@ -85,11 +85,19 @@ namespace OpenRA.Mods.Common.Traits
 				return new List<CPos> { target };
 
 			List<CPos> pb;
+			var fromSrcQuery = new PathQuery(
+				queryType: PathQueryType.PositionBidirectional,
+				world: world,
+				locomotor: locomotor,
+				actor: self,
+				fromPosition: target,
+				toPosition: source,
+				check: check,
+				ignoreActor: ignoreActor);
 
-			using (var fromSrc = PathSearch.FromPoint(world, locomotor, self, target, source, check).WithIgnoredActor(ignoreActor))
-			using (var fromDest = PathSearch.FromPoint(world, locomotor, self, source, target, check).WithIgnoredActor(ignoreActor).Reverse())
+			using (var fromSrc = new PathSearch(fromSrcQuery))
+			using (var fromDest = new PathSearch(fromSrcQuery.CreateReverse()))
 				pb = FindBidiPath(fromSrc, fromDest);
-
 			return pb;
 		}
 
@@ -128,19 +136,39 @@ namespace OpenRA.Mods.Common.Traits
 					return EmptyPath;
 			}
 
-			using (var fromSrc = PathSearch.FromPoints(world, locomotor, self, tilesInRange, source, check))
-			using (var fromDest = PathSearch.FromPoint(world, locomotor, self, source, targetCell, check).Reverse())
+			var fromSrcQuery = new PathQuery(
+				queryType: PathQueryType.PositionBidirectional,
+				world: world,
+				locomotor: locomotor,
+				actor: self,
+				fromPositions: tilesInRange,
+				toPosition: source,
+				check: check);
+
+			var fromDestQuery = new PathQuery(
+				queryType: PathQueryType.PositionBidirectional,
+				world: world,
+				locomotor: locomotor,
+				actor: self,
+				fromPosition: source,
+				toPosition: targetCell,
+				check: check,
+				reverse: true);
+
+			using (var fromSrc = new PathSearch(fromSrcQuery))
+			using (var fromDest = new PathSearch(fromDestQuery))
 				return FindBidiPath(fromSrc, fromDest);
 		}
 
-		public List<CPos> FindPath(IPathSearch search)
+		public List<CPos> FindPath(BasePathSearch search)
 		{
-			List<CPos> path = null;
+			List<CPos> path = EmptyPath;
 
+			var isGoal = search.IsGoal;
 			while (search.CanExpand)
 			{
 				var p = search.Expand();
-				if (search.IsTarget(p))
+				if (isGoal(p))
 				{
 					path = MakePath(search.Graph, p);
 					break;
@@ -149,18 +177,14 @@ namespace OpenRA.Mods.Common.Traits
 
 			search.Graph.Dispose();
 
-			if (path != null)
-				return path;
-
-			// no path exists
-			return EmptyPath;
+			return path;
 		}
 
 		// Searches from both ends toward each other. This is used to prevent blockings in case we find
 		// units in the middle of the path that prevent us to continue.
-		public List<CPos> FindBidiPath(IPathSearch fromSrc, IPathSearch fromDest)
+		public List<CPos> FindBidiPath(BasePathSearch fromSrc, BasePathSearch fromDest)
 		{
-			List<CPos> path = null;
+			List<CPos> path = EmptyPath;
 
 			while (fromSrc.CanExpand && fromDest.CanExpand)
 			{
@@ -186,15 +210,12 @@ namespace OpenRA.Mods.Common.Traits
 			fromSrc.Graph.Dispose();
 			fromDest.Graph.Dispose();
 
-			if (path != null)
-				return path;
-
-			return EmptyPath;
+			return path;
 		}
 
 		// Build the path from the destination. When we find a node that has the same previous
 		// position than itself, that node is the source node.
-		static List<CPos> MakePath(IGraph<CellInfo> cellInfo, CPos destination)
+		static List<CPos> MakePath(PathGraph cellInfo, CPos destination)
 		{
 			var ret = new List<CPos>();
 			var currentNode = destination;
@@ -209,7 +230,7 @@ namespace OpenRA.Mods.Common.Traits
 			return ret;
 		}
 
-		static List<CPos> MakeBidiPath(IPathSearch a, IPathSearch b, CPos confluenceNode)
+		static List<CPos> MakeBidiPath(BasePathSearch a, BasePathSearch b, CPos confluenceNode)
 		{
 			var ca = a.Graph;
 			var cb = b.Graph;

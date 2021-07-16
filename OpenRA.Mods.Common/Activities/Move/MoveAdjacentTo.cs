@@ -132,8 +132,27 @@ namespace OpenRA.Mods.Common.Activities
 			if (!searchCells.Any())
 				return NoPath;
 
-			using (var fromSrc = PathSearch.FromPoints(self.World, Mobile.Locomotor, self, searchCells, loc, check))
-			using (var fromDest = PathSearch.FromPoint(self.World, Mobile.Locomotor, self, loc, lastVisibleTargetLocation, check).Reverse())
+			var fromSrcQuery = new PathQuery(
+				queryType: PathQueryType.PositionBidirectional,
+				world: self.World,
+				locomotor: Mobile.Locomotor,
+				actor: self,
+				fromPositions: searchCells,
+				toPosition: loc,
+				check: check);
+
+			var fromDestQuery = new PathQuery(
+				queryType: PathQueryType.PositionBidirectional,
+				world: self.World,
+				locomotor: Mobile.Locomotor,
+				actor: self,
+				fromPosition: loc,
+				toPosition: lastVisibleTargetLocation,
+				check: check,
+				reverse: true);
+
+			using (var fromSrc = new PathSearch(fromSrcQuery))
+			using (var fromDest = new PathSearch(fromDestQuery))
 				return Mobile.Pathfinder.FindBidiPath(fromSrc, fromDest);
 		}
 

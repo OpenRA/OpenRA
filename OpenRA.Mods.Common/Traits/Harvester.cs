@@ -183,38 +183,56 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Actor ClosestProc(Actor self, Actor ignore)
 		{
-			// Find all refineries and their occupancy count:
-			var refineries = self.World.ActorsWithTrait<IAcceptResources>()
+			var world = self.World;
+
+			// Find all refineries and their occupancy count
+			var refineries = world.ActorsWithTrait<IAcceptResources>()
 				.Where(r => r.Actor != ignore && r.Actor.Owner == self.Owner && IsAcceptableProcType(r.Actor))
-				.Select(r => new
+				.ToArray();
+
+			if (refineries.Length == 0)
+				return null;
+
+			// PERF: Avoid LINQ, use Dictionary over Lookup, calculate cost prior to search
+			var locationCost = new Dictionary<CPos, (Actor Actor, int Cost)>(refineries.Length);
+			foreach (var r in refineries)
+			{
+				var location = r.Actor.Location + r.Trait.DeliveryOffset;
+				var occupancy = world.ActorsHavingTrait<Harvester>(h => h.LinkedProc == r.Actor)
+					.Count();
+
+				int cost;
+				if (occupancy >= Info.MaxUnloadQueue)
 				{
-					Location = r.Actor.Location + r.Trait.DeliveryOffset,
-					Actor = r.Actor,
-					Occupancy = self.World.ActorsHavingTrait<Harvester>(h => h.LinkedProc == r.Actor).Count()
-				}).ToLookup(r => r.Location);
+					// Too many harvesters clogs up the refinery's delivery location:
+					cost = PathGraph.CostForInvalidCell;
+				}
+				else
+				{
+					// Prefer refineries with less occupancy (multiplier is to offset distance cost):
+					cost = occupancy * Info.UnloadQueueCostModifier;
+				}
+
+				locationCost.TryAdd(location, (r.Actor, cost));
+			}
 
 			// Start a search from each refinery's delivery location:
 			List<CPos> path;
+			var query = new PathQuery(
+				queryType: PathQueryType.PositionUnidirectional,
+				world: world,
+				locomotor: mobile.Locomotor,
+				actor: self,
+				fromPositions: locationCost.Keys,
+				toPosition: self.Location,
+				check: BlockedByActor.None,
+				customCost: location => locationCost.TryGetValue(location, out var lc) ? lc.Cost : 0);
 
-			using (var search = PathSearch.FromPoints(self.World, mobile.Locomotor, self, refineries.Select(r => r.Key), self.Location, BlockedByActor.None)
-				.WithCustomCost(location =>
-				{
-					if (!refineries.Contains(location))
-						return 0;
-
-					var occupancy = refineries[location].First().Occupancy;
-
-					// Too many harvesters clogs up the refinery's delivery location:
-					if (occupancy >= Info.MaxUnloadQueue)
-						return PathGraph.CostForInvalidCell;
-
-					// Prefer refineries with less occupancy (multiplier is to offset distance cost):
-					return occupancy * Info.UnloadQueueCostModifier;
-				}))
+			using (var search = new PathSearch(query))
 				path = mobile.Pathfinder.FindPath(search);
 
 			if (path.Count != 0)
-				return refineries[path.Last()].First().Actor;
+				return locationCost[path.Last()].Actor;
 
 			return null;
 		}
