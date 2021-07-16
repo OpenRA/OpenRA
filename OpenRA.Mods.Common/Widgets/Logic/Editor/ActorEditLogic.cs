@@ -125,12 +125,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					return;
 				}
 
-				// Check for duplicate actor ID
+				// Check for duplicate ActorID
 				if (CurrentActor.ID.Equals(actorId, StringComparison.OrdinalIgnoreCase))
 				{
 					if (editorActorLayer[actorId] != null)
 					{
 						nextActorIDStatus = ActorIDStatus.Duplicate;
+						actorIDErrorLabel.Text = "Duplicate ActorID";
+						actorIDErrorLabel.Visible = true;
 						return;
 					}
 				}
