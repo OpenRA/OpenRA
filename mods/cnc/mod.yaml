@@ -3,6 +3,7 @@ Metadata:
 	Version: {DEV_VERSION}
 	Website: https://www.openra.net
 	WebIcon32: https://www.openra.net/images/icons/cnc_32x32.png
+	WindowTitle: OpenRA - Tiberian Dawn
 
 PackageFormats: Mix
 
