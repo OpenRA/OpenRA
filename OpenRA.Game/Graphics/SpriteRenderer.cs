@@ -69,41 +69,69 @@ namespace OpenRA.Graphics
 
 			// Check if the sheet (or secondary data sheet) have already been mapped
 			var sheet = s.Sheet;
-			var sheetIndex = 0;
-			for (; sheetIndex < ns; sheetIndex++)
-				if (sheets[sheetIndex] == sheet)
+			var sheetIndex = -1;
+			var addCount = 2;
+			for (var si = 0; si < ns; si++)
+			{
+				if (sheets[si] == sheet)
+				{
+					sheetIndex = si;
+					addCount -= 1;
 					break;
+				}
+			}
 
 			var secondarySheetIndex = 0;
 			var ss = s as SpriteWithSecondaryData;
 			if (ss != null)
 			{
 				var secondarySheet = ss.SecondarySheet;
-				for (; secondarySheetIndex < ns; secondarySheetIndex++)
-					if (sheets[secondarySheetIndex] == secondarySheet)
-						break;
+				if (sheet == secondarySheet)
+				{
+					secondarySheetIndex = sheetIndex;
+					addCount -= 1;
+				}
+				else
+				{
+					secondarySheetIndex = -1;
+					for (var si = 0; si < ns; si++)
+					{
+						if (sheets[secondarySheetIndex] == secondarySheet)
+						{
+							secondarySheetIndex = si;
+							addCount -= 1;
+							break;
+						}
+					}
+				}
 			}
 
 			// Make sure that we have enough free samplers to map both if needed, otherwise flush
-			var needSamplers = (sheetIndex == ns ? 1 : 0) + (secondarySheetIndex == ns ? 1 : 0);
-			if (ns + needSamplers >= sheets.Length)
+			if (addCount > 0 && ns + addCount >= sheets.Length)
 			{
 				Flush();
-				sheetIndex = 0;
+				sheetIndex = -1;
 				if (ss != null)
-					secondarySheetIndex = 1;
+					secondarySheetIndex = -1;
 			}
 
-			if (sheetIndex >= ns)
+			if (sheetIndex == -1)
 			{
+				sheetIndex = ns++;
 				sheets[sheetIndex] = sheet;
-				ns += 1;
 			}
 
-			if (secondarySheetIndex >= ns && ss != null)
+			if (ss != null && secondarySheetIndex == -1)
 			{
-				sheets[secondarySheetIndex] = ss.SecondarySheet;
-				ns += 1;
+				if (sheet == ss.SecondarySheet)
+				{
+					secondarySheetIndex = sheetIndex;
+				}
+				else
+				{
+					secondarySheetIndex = ns++;
+					sheets[secondarySheetIndex] = ss.SecondarySheet;
+				}
 			}
 
 			return new int2(sheetIndex, secondarySheetIndex);
