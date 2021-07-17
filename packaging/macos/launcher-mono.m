@@ -69,20 +69,6 @@ static int check_mono_version(const char *version, const char *req_version)
 		return FALSE;
 	}
 
-	mono_main _mono_main = (mono_main)dlsym(libmono, "mono_main");
-	if (!_mono_main)
-	{
-		fprintf(stderr, "Could not load mono_main(): %s\n", dlerror());
-		return FALSE;
-	}
-
-	mono_free _mono_free = (mono_free)dlsym(libmono, "mono_free");
-	if (!_mono_free)
-	{
-		fprintf(stderr, "Could not load mono_free(): %s\n", dlerror());
-		return FALSE;
-	}
-
 	mono_get_runtime_build_info _mono_get_runtime_build_info = (mono_get_runtime_build_info)dlsym(libmono, "mono_get_runtime_build_info");
 	if (!_mono_get_runtime_build_info)
 	{
