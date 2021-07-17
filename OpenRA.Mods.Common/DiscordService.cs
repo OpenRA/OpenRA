@@ -58,6 +58,9 @@ namespace OpenRA.Mods.Common
 		{
 			FieldLoader.Load(this, yaml);
 
+			if (!Game.Settings.Game.EnableDiscordService)
+				return;
+
 			// HACK: Prevent service from starting when launching the utility or server.
 			if (Game.Renderer == null)
 				return;
