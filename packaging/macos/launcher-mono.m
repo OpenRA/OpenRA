@@ -257,7 +257,7 @@ static int check_mono_version(const char *version, const char *req_version)
 	NSString *gamePath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent: @"Contents/Resources/"];
 
 	NSString *launchPath = [SYSTEM_MONO_PATH stringByAppendingPathComponent: @"Commands/mono"];
-	NSString *appPath = [exePath stringByAppendingPathComponent: @"OpenRA"];
+	NSString *appPath = [exePath stringByAppendingPathComponent: @"Launcher"];
 	NSString *engineLaunchPath = [self resolveTranslocatedPath: appPath];
 
 	NSMutableArray *launchArgs = [NSMutableArray arrayWithCapacity: [gameArgs count] + 2];
