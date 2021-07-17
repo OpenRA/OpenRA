@@ -335,8 +335,11 @@ namespace OpenRA
 			if (MapFormat != SupportedMapFormat)
 				throw new InvalidDataException($"Map format {MapFormat} is not supported.\n File: {package.Name}");
 
-			PlayerDefinitions = MiniYaml.NodesOrEmpty(yaml, "Players");
-			ActorDefinitions = MiniYaml.NodesOrEmpty(yaml, "Actors");
+			if (!yaml.TryGetNodes("Players", out PlayerDefinitions))
+				PlayerDefinitions = new List<MiniYamlNode>();
+
+			if (!yaml.TryGetNodes("Actors", out ActorDefinitions))
+				ActorDefinitions = new List<MiniYamlNode>();
 
 			Grid = modData.Manifest.Get<MapGrid>();
 
