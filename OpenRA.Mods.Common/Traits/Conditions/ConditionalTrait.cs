@@ -56,8 +56,8 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			Info = info;
 
-			// Conditional traits will be enabled (if appropriate) by the ConditionManager
-			// calling ConditionConsumers at the end of INotifyCreated.
+			// Conditional traits will be enabled (if appropriate) by the Actor
+			// calling ConditionConsumers after INotifyCreated runs.
 			IsTraitDisabled = Info.RequiresCondition != null;
 		}
 
