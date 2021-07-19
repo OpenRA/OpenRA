@@ -209,9 +209,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				titleLabel.IsVisible = () => getMap().Map != MapCache.UnknownMap;
 				var font = Game.Renderer.Fonts[titleLabel.Font];
-				var title = new CachedTransform<MapPreview, string>(m => WidgetUtils.TruncateText(m.Title, titleLabel.Bounds.Width, font));
+				var title = new CachedTransform<MapPreview, string>(m =>
+				{
+					var truncated = WidgetUtils.TruncateText(m.Title, titleLabel.Bounds.Width, font);
+
+					if (m.Title != truncated)
+						titleLabel.GetTooltipText = () => m.Title;
+					else
+						titleLabel.GetTooltipText = null;
+
+					return truncated;
+				});
 				titleLabel.GetText = () => title.Update(getMap().Map);
-				titleLabel.GetTooltipText = () => getMap().Map.Title;
 			}
 
 			var typeLabel = parent.GetOrNull<LabelWidget>("MAP_TYPE");
