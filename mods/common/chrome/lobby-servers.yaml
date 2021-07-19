@@ -164,12 +164,14 @@ Container@LOBBY_SERVERS_BIN:
 							Width: PARENT_RIGHT - 2
 							Height: PARENT_BOTTOM - 2
 							TooltipContainer: TOOLTIP_CONTAINER
-				Label@SELECTED_MAP:
+				LabelWithTooltip@SELECTED_MAP:
 					Y: 173
 					Width: PARENT_RIGHT
 					Height: 25
 					Font: Bold
 					Align: Center
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: SIMPLE_TOOLTIP
 				Label@SELECTED_IP:
 					Y: 188
 					Width: PARENT_RIGHT

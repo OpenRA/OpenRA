@@ -231,12 +231,21 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (mapPreview != null)
 				mapPreview.Preview = () => currentMap;
 
-			var mapTitle = widget.GetOrNull<LabelWidget>("SELECTED_MAP");
+			var mapTitle = widget.GetOrNull<LabelWithTooltipWidget>("SELECTED_MAP");
 			if (mapTitle != null)
 			{
 				var font = Game.Renderer.Fonts[mapTitle.Font];
 				var title = new CachedTransform<MapPreview, string>(m =>
-					WidgetUtils.TruncateText(m.Title, mapTitle.Bounds.Width, font));
+				{
+					var truncated = WidgetUtils.TruncateText(m.Title, mapTitle.Bounds.Width, font);
+
+					if (m.Title != truncated)
+						mapTitle.GetTooltipText = () => m.Title;
+					else
+						mapTitle.GetTooltipText = null;
+
+					return truncated;
+				});
 
 				mapTitle.GetText = () =>
 				{
