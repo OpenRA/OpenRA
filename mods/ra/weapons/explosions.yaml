@@ -142,15 +142,38 @@ CivPanicExplosion:
 		Delay: 1
 
 BarrelExplode:
-	Inherits: ^Explosion
+	Warhead@Cluster: FireCluster
+		Weapon: BarrelCluster
+		Dimensions: 3,3
+		Footprint: _X_ X_X _X_
 	Warhead@1Dam: SpreadDamage
+		Spread: 325
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 5
 		ValidTargets: GroundActor, Trees
 		Versus:
 			None: 120
-			Wood: 100
 			Light: 50
+			Wood: 20
+			Concrete: 10
+	Warhead@2Eff: CreateEffect
+		Explosions: building
+		ImpactSounds: kaboom25.aud
+	Warhead@Smu: LeaveSmudge
+		SmudgeType: Crater
+
+BarrelCluster:
+	Inherits: ^Explosion
+	Projectile: InstantHit
+	Warhead@1Dam: SpreadDamage
+		Spread: 325
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
+		Delay: 5
+		ValidTargets: GroundActor, Trees
+		Versus:
+			None: 120
+			Light: 50
+			Wood: 20
 			Concrete: 10
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
 	Warhead@2Eff: CreateEffect
@@ -160,8 +183,6 @@ BarrelExplode:
 	-Warhead@3EffWater:
 	Warhead@Smu: LeaveSmudge
 		SmudgeType: Scorch
-		Size: 2
-		Delay: 5
 
 ATMine:
 	ValidTargets: Ground, Water, GroundActor, WaterActor
