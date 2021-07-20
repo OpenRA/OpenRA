@@ -58,6 +58,9 @@ Var StartMenuFolder
 !insertmacro MUI_PAGE_COMPONENTS
 !insertmacro MUI_PAGE_INSTFILES
 
+!define MUI_PAGE_CUSTOMFUNCTION_SHOW un.ModifyUnWelcome
+!define MUI_PAGE_CUSTOMFUNCTION_LEAVE un.LeaveUnWelcome
+!insertmacro MUI_UNPAGE_WELCOME
 !insertmacro MUI_UNPAGE_CONFIRM
 !insertmacro MUI_UNPAGE_INSTFILES
 !insertmacro MUI_UNPAGE_FINISH
@@ -202,6 +205,19 @@ Section "-Uninstaller"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenRA${SUFFIX}" "NoRepair" "1"
 SectionEnd
 
+Var keepDatacheckbox
+Var keepDatacheckboxState
+Function un.ModifyUnWelcome
+${NSD_CreateCheckbox} 120u -18u 50% 12u "Keep user data (settings, mods, maps,...)"
+Pop $keepDatacheckbox
+SetCtlColors $keepDatacheckbox "" ${MUI_BGCOLOR}
+${NSD_Check} $keepDatacheckbox ; Check it by default
+FunctionEnd
+
+Function un.LeaveUnWelcome
+${NSD_GetState} $keepDatacheckbox $keepDatacheckboxState
+FunctionEnd
+
 !macro Clean UN
 Function ${UN}Clean
 	nsExec::ExecToLog '"$INSTDIR\OpenRA.Utility.exe" ra --unregister-mod system'
@@ -237,7 +253,10 @@ Function ${UN}Clean
 
 	Delete $INSTDIR\uninstaller.exe
 	RMDir $INSTDIR
-	RMDir /r $APPDATA\OpenRA
+	
+	${If} $keepDatacheckbox == 0
+		RMDir /r $APPDATA\OpenRA
+	${EndIf}
 
 	!insertmacro MUI_STARTMENU_GETFOLDER Application $StartMenuFolder
 
