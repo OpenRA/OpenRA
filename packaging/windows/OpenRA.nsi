@@ -237,6 +237,7 @@ Function ${UN}Clean
 
 	Delete $INSTDIR\uninstaller.exe
 	RMDir $INSTDIR
+	RMDir /r $APPDATA\OpenRA
 
 	!insertmacro MUI_STARTMENU_GETFOLDER Application $StartMenuFolder
 
