@@ -239,7 +239,7 @@ crate-effects:
 		Tick: 200
 	cloak: DATA.R8
 		Start: 4164
-		Lenght: 36
+		Length: 36
 
 allyrepair:
 	repair: DATA.R8
