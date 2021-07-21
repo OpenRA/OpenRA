@@ -619,9 +619,8 @@ palet04:
 ^tracks:
 	idle:
 		UseTilesetExtension: true
-		ZOffset: -1c0
-		Offset: 0, 0, 1
-		ZRamp: 1
+		ZOffset: -1c511
+		Offset: 0, 0, 12
 
 tracks01:
 	Inherits: ^tracks
