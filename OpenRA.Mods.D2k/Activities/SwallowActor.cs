@@ -68,7 +68,7 @@ namespace OpenRA.Mods.D2k.Activities
 					{
 						var insurance = targetClose.Owner.PlayerActor.TraitOrDefault<HarvesterInsurance>();
 						if (insurance != null)
-							self.World.AddFrameEndTask(__ => insurance.TryActivate());
+							self.World.AddFrameEndTask(w => insurance.TryActivate());
 					}
 				});
 			}
