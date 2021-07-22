@@ -118,10 +118,7 @@ namespace OpenRA.Mods.Common.Widgets
 					Log.Write("perf", "VqaPlayer : {0} skipped {1} frames at position {2}", cachedVideo, skippedFrames, video.CurrentFrame);
 			}
 
-			Game.Renderer.RgbaSpriteRenderer.DrawSprite(
-				videoSprite,
-				videoOrigin,
-				videoSize);
+			WidgetUtils.DrawSprite(videoSprite, videoOrigin, videoSize);
 
 			if (DrawOverlay)
 			{
@@ -161,7 +158,7 @@ namespace OpenRA.Mods.Common.Widgets
 					overlayScale = scale;
 				}
 
-				Game.Renderer.RgbaSpriteRenderer.DrawSprite(overlaySprite, overlayOrigin, overlaySize);
+				WidgetUtils.DrawSprite(overlaySprite, overlayOrigin, overlaySize);
 			}
 		}
 

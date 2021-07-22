@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			var sprite = GetSprite();
 			if (sprite != null)
-				Game.Renderer.RgbaSpriteRenderer.DrawSprite(sprite, RenderOrigin);
+				WidgetUtils.DrawSprite(sprite, RenderOrigin);
 		}
 	}
 }

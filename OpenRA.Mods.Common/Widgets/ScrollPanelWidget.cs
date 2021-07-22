@@ -210,11 +210,11 @@ namespace OpenRA.Mods.Common.Widgets
 				var downOffset = !downPressed || downDisabled ? 4 : 4 + ButtonDepth;
 
 				var upArrowImage = getUpArrowImage.Update((upDisabled, upPressed, upHover, false));
-				WidgetUtils.DrawRGBA(upArrowImage,
+				WidgetUtils.DrawSprite(upArrowImage,
 					new float2(upButtonRect.Left + upOffset, upButtonRect.Top + upOffset));
 
 				var downArrowImage = getDownArrowImage.Update((downDisabled, downPressed, downHover, false));
-				WidgetUtils.DrawRGBA(downArrowImage,
+				WidgetUtils.DrawSprite(downArrowImage,
 					new float2(downButtonRect.Left + downOffset, downButtonRect.Top + downOffset));
 			}
 

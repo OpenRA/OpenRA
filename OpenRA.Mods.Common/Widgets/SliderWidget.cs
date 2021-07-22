@@ -132,7 +132,7 @@ namespace OpenRA.Mods.Common.Widgets
 					trackOrigin + (i * (trackRect.Width - (int)tick.Size.X) / (Ticks - 1)) - tick.Size.X / 2,
 					trackRect.Bottom);
 
-				WidgetUtils.DrawRGBA(tick, tickPos);
+				WidgetUtils.DrawSprite(tick, tickPos);
 			}
 
 			// Track

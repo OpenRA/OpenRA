@@ -89,12 +89,12 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public override void Draw()
 		{
-			Game.Renderer.RgbaSpriteRenderer.DrawSprite(mixerSprite, RenderOrigin, new float2(RenderBounds.Size));
+			WidgetUtils.DrawSprite(mixerSprite, RenderOrigin, RenderBounds.Size);
 
 			var sprite = ChromeProvider.GetImage("lobby-bits", "colorpicker");
 			var pos = RenderOrigin + PxFromValue() - new int2((int)sprite.Size.X, (int)sprite.Size.Y) / 2;
 			WidgetUtils.FillEllipseWithColor(new Rectangle(pos.X + 1, pos.Y + 1, (int)sprite.Size.X - 2, (int)sprite.Size.Y - 2), Color);
-			Game.Renderer.RgbaSpriteRenderer.DrawSprite(sprite, pos);
+			WidgetUtils.DrawSprite(sprite, pos);
 		}
 
 		void SetValueFromPx(int2 xy)

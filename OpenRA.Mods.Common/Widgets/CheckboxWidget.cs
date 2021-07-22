@@ -75,7 +75,7 @@ namespace OpenRA.Mods.Common.Widgets
 					checkType += "-disabled";
 
 				var offset = new float2(rect.Left + CheckOffset, rect.Top + CheckOffset);
-				WidgetUtils.DrawRGBA(ChromeProvider.GetImage("checkbox-bits", checkType), offset);
+				WidgetUtils.DrawSprite(ChromeProvider.GetImage("checkbox-bits", checkType), offset);
 			}
 		}
 

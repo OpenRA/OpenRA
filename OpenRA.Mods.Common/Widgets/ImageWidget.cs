@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Common.Widgets
 			if (sprite == null)
 				throw new ArgumentException($"Sprite {collection}/{name} was not found.");
 
-			WidgetUtils.DrawRGBA(sprite, RenderOrigin);
+			WidgetUtils.DrawSprite(sprite, RenderOrigin);
 		}
 
 		public override bool HandleMouseInput(MouseInput mi)
