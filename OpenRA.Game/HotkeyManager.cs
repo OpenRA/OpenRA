@@ -35,7 +35,7 @@ namespace OpenRA
 
 			foreach (var kv in settings)
 			{
-				if (definitions.ContainsKey(kv.Key))
+				if (definitions.ContainsKey(kv.Key) && !definitions[kv.Key].Readonly)
 					keys[kv.Key] = kv.Value;
 			}
 
@@ -59,6 +59,9 @@ namespace OpenRA
 		public void Set(string name, Hotkey value)
 		{
 			if (!definitions.TryGetValue(name, out var definition))
+				return;
+
+			if (definition.Readonly)
 				return;
 
 			keys[name] = value;

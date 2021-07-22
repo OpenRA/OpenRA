@@ -7,3 +7,15 @@ OpenGeneralChat: Return Shift
 	Description: Open General Chat
 	Types: Chat
 	Contexts: Player, Spectator
+
+ToggleChatMode: Tab Shift
+	Description: Toggle Chat Mode
+	Types: Chat
+	Contexts: Chat Input, Menu
+	Readonly: True
+
+Autocomplete: Tab
+	Description: Autocomplete
+	Types: Chat
+	Contexts: Chat Input
+	Readonly: True

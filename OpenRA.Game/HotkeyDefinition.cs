@@ -21,6 +21,7 @@ namespace OpenRA
 		public readonly string Description = "";
 		public readonly HashSet<string> Types = new HashSet<string>();
 		public readonly HashSet<string> Contexts = new HashSet<string>();
+		public readonly bool Readonly = false;
 		public bool HasDuplicates { get; internal set; }
 
 		public HotkeyDefinition(string name, MiniYaml node)
@@ -49,6 +50,10 @@ namespace OpenRA
 				if (platformOverride != null)
 					Default = FieldLoader.GetValue<Hotkey>("value", platformOverride.Value.Value);
 			}
+
+			var readonlyNode = node.Nodes.FirstOrDefault(n => n.Key == "Readonly");
+			if (readonlyNode != null)
+				Readonly = FieldLoader.GetValue<bool>("Readonly", readonlyNode.Value.Value);
 		}
 	}
 }

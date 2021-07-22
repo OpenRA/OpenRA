@@ -32,7 +32,7 @@ Container@CHAT_PANEL:
 					Height: 25
 					Text: Team
 					Font: Bold
-					Key: Tab SHIFT
+					Key: ToggleChatMode
 					TooltipText: Toggle chat mode
 					TooltipTemplate: BUTTON_TOOLTIP_FACTIONSUFFIX
 					TooltipContainer: TOOLTIP_CONTAINER

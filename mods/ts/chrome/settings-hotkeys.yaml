@@ -133,6 +133,11 @@ Container@HOTKEYS_PANEL:
 									Height: PARENT_BOTTOM
 									Font: Tiny
 									Text: This is already used for "{0}" in the {1} context
+								Label@READONLY_NOTICE:
+									Width: PARENT_RIGHT
+									Height: PARENT_BOTTOM
+									Font: Tiny
+									Text: This hotkey cannot be modified
 						Button@OVERRIDE_HOTKEY_BUTTON:
 							X: PARENT_RIGHT - 3 * WIDTH - 30
 							Y: 20
