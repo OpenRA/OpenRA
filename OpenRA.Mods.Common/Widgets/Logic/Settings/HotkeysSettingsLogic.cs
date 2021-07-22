@@ -86,7 +86,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				selectedHotkeyButton = remapButton;
 				hotkeyEntryWidget.Key = modData.Hotkeys[hd.Name].GetValue();
 				ValidateHotkey();
-				hotkeyEntryWidget.TakeKeyboardFocus();
+
+				if (hd.Readonly)
+					hotkeyEntryWidget.YieldKeyboardFocus();
+				else
+					hotkeyEntryWidget.TakeKeyboardFocus();
 			};
 
 			hotkeyList.AddChild(key);
@@ -228,17 +232,21 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var originalNoticeText = new CachedTransform<HotkeyDefinition, string>(hd => originalNotice.Text.F(hd?.Default.DisplayString()));
 			originalNotice.GetText = () => originalNoticeText.Update(selectedHotkeyDefinition);
 
+			var readonlyNotice = panel.Get<LabelWidget>("READONLY_NOTICE");
+			readonlyNotice.TextColor = ChromeMetrics.Get<Color>("NoticeInfoColor");
+			readonlyNotice.IsVisible = () => selectedHotkeyDefinition.Readonly;
+
 			var resetButton = panel.Get<ButtonWidget>("RESET_HOTKEY_BUTTON");
-			resetButton.IsDisabled = () => isHotkeyDefault;
+			resetButton.IsDisabled = () => isHotkeyDefault || selectedHotkeyDefinition.Readonly;
 			resetButton.OnClick = ResetHotkey;
 
 			var clearButton = panel.Get<ButtonWidget>("CLEAR_HOTKEY_BUTTON");
-			clearButton.IsDisabled = () => !hotkeyEntryWidget.Key.IsValid();
+			clearButton.IsDisabled = () => selectedHotkeyDefinition.Readonly || !hotkeyEntryWidget.Key.IsValid();
 			clearButton.OnClick = ClearHotkey;
 
 			var overrideButton = panel.Get<ButtonWidget>("OVERRIDE_HOTKEY_BUTTON");
 			overrideButton.IsDisabled = () => isHotkeyValid;
-			overrideButton.IsVisible = () => !isHotkeyValid;
+			overrideButton.IsVisible = () => !isHotkeyValid && !duplicateHotkeyDefinition.Readonly;
 			overrideButton.OnClick = OverrideHotkey;
 
 			hotkeyEntryWidget = panel.Get<HotkeyEntryWidget>("HOTKEY_ENTRY");
@@ -248,6 +256,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				hotkeyEntryWidget.Key = modData.Hotkeys[selectedHotkeyDefinition.Name].GetValue();
 			};
+			hotkeyEntryWidget.IsDisabled = () => selectedHotkeyDefinition.Readonly;
 
 			validHotkeyEntryWidth = hotkeyEntryWidget.Bounds.Width;
 			invalidHotkeyEntryWidth = validHotkeyEntryWidth - (clearButton.Bounds.X - overrideButton.Bounds.X);
@@ -259,7 +268,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return;
 
 			duplicateHotkeyDefinition = modData.Hotkeys.GetFirstDuplicate(selectedHotkeyDefinition, hotkeyEntryWidget.Key);
-			isHotkeyValid = duplicateHotkeyDefinition == null;
+			isHotkeyValid = duplicateHotkeyDefinition == null || selectedHotkeyDefinition.Readonly;
 			isHotkeyDefault = hotkeyEntryWidget.Key == selectedHotkeyDefinition.Default || (!hotkeyEntryWidget.Key.IsValid() && !selectedHotkeyDefinition.Default.IsValid());
 
 			if (isHotkeyValid)
@@ -269,13 +278,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 			else
 			{
-				hotkeyEntryWidget.Bounds.Width = invalidHotkeyEntryWidth;
+				hotkeyEntryWidget.Bounds.Width = duplicateHotkeyDefinition.Readonly ? validHotkeyEntryWidth : invalidHotkeyEntryWidth;
 				hotkeyEntryWidget.TakeKeyboardFocus();
 			}
 		}
 
 		void SaveHotkey()
 		{
+			if (selectedHotkeyDefinition.Readonly)
+				return;
+
 			WidgetUtils.TruncateButtonToTooltip(selectedHotkeyButton, hotkeyEntryWidget.Key.DisplayString());
 			modData.Hotkeys.Set(selectedHotkeyDefinition.Name, hotkeyEntryWidget.Key);
 			Game.Settings.Save();

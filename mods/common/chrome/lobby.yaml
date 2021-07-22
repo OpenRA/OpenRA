@@ -114,7 +114,7 @@ Background@SERVER_LOBBY:
 					Height: 25
 					Text: Team
 					Font: Bold
-					Key: Tab SHIFT
+					Key: ToggleChatMode
 					TooltipText: Toggle chat mode
 					TooltipContainer: TOOLTIP_CONTAINER
 				TextField@CHAT_TEXTFIELD:
