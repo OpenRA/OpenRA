@@ -194,11 +194,11 @@ namespace OpenRA.Mods.Common.Widgets
 			ButtonWidget.DrawBackground(Button, rightButtonRect, rightDisabled, rightPressed, rightHover, false);
 
 			var leftArrowImage = getLeftArrowImage.Update((leftDisabled, leftPressed, leftHover, false));
-			WidgetUtils.DrawRGBA(leftArrowImage,
+			WidgetUtils.DrawSprite(leftArrowImage,
 				new float2(leftButtonRect.Left + 2, leftButtonRect.Top + 2));
 
 			var rightArrowImage = getRightArrowImage.Update((rightDisabled, rightPressed, rightHover, false));
-			WidgetUtils.DrawRGBA(rightArrowImage,
+			WidgetUtils.DrawSprite(rightArrowImage,
 				new float2(rightButtonRect.Left + 2, rightButtonRect.Top + 2));
 
 			// Draw tab buttons

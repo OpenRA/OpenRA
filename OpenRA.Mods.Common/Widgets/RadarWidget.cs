@@ -339,12 +339,11 @@ namespace OpenRA.Mods.Common.Widgets
 			var o = new float2(mapRect.Location.X, mapRect.Location.Y + world.Map.Bounds.Height * previewScale * (1 - radarMinimapHeight) / 2);
 			var s = new float2(mapRect.Size.Width, mapRect.Size.Height * radarMinimapHeight);
 
-			var rsr = Game.Renderer.RgbaSpriteRenderer;
-			rsr.DrawSprite(terrainSprite, o, s);
-			rsr.DrawSprite(actorSprite, o, s);
+			WidgetUtils.DrawSprite(terrainSprite, o, s);
+			WidgetUtils.DrawSprite(actorSprite, o, s);
 
 			if (shroud != null)
-				rsr.DrawSprite(shroudSprite, o, s);
+				WidgetUtils.DrawSprite(shroudSprite, o, s);
 
 			// Draw viewport rect
 			if (hasRadar)

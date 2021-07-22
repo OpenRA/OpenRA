@@ -90,7 +90,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 				var x = (b.Left + b.Right - indicator.Size.X) / 2;
 				var y = float2.Lerp(b.Bottom, b.Top, usedFrac) - indicator.Size.Y / 2;
-				Game.Renderer.RgbaSpriteRenderer.DrawSprite(indicator, new float2(x, y));
+				WidgetUtils.DrawSprite(indicator, new float2(x, y));
 			}
 			else
 			{
@@ -100,7 +100,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 				var x = float2.Lerp(b.Left, b.Right, usedFrac) - indicator.Size.X / 2;
 				var y = (b.Bottom + b.Top - indicator.Size.Y) / 2;
-				Game.Renderer.RgbaSpriteRenderer.DrawSprite(indicator, new float2(x, y));
+				WidgetUtils.DrawSprite(indicator, new float2(x, y));
 			}
 		}
 	}

@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var icon = playerDatabase.GetIcon(Badge);
 			if (icon != null)
-				Game.Renderer.RgbaSpriteRenderer.DrawSprite(icon, RenderOrigin);
+				WidgetUtils.DrawSprite(icon, RenderOrigin);
 		}
 	}
 }
