@@ -151,7 +151,7 @@ namespace OpenRA.Mods.Common.Scripting
 				var squad = new List<Actor>();
 				var func = actionFunc.CopyReference() as LuaFunction;
 
-				Action<Actor, Actor> productionHandler = (_, __) => { };
+				Action<Actor, Actor> productionHandler = (a, b) => { };
 				productionHandler = (factory, unit) =>
 				{
 					if (player != factory.Owner)

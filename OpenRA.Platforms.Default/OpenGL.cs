@@ -19,6 +19,7 @@ using SDL2;
 
 namespace OpenRA.Platforms.Default
 {
+#pragma warning disable IDE1006 // Naming Styles
 	[SuppressMessage("Microsoft.StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter",
 		Justification = "C-style naming is kept for consistency with the underlying native API.")]
 	[SuppressMessage("Microsoft.StyleCop.CSharp.NamingRules", "SA1310:FieldNamesMustNotContainUnderscore",
