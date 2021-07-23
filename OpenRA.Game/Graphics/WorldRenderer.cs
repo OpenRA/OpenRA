@@ -153,14 +153,14 @@ namespace OpenRA.Graphics
 		// PERF: Avoid LINQ.
 		void GenerateOverlayRenderables()
 		{
-			foreach (var a in World.ActorsWithTrait<IRenderAboveShroud>())
+			World.ApplyToActorsWithTrait<IRenderAboveShroud>((actor, trait) =>
 			{
-				if (!a.Actor.IsInWorld || a.Actor.Disposed || (a.Trait.SpatiallyPartitionable && !onScreenActors.Contains(a.Actor)))
-					continue;
+				if (!actor.IsInWorld || actor.Disposed || (trait.SpatiallyPartitionable && !onScreenActors.Contains(actor)))
+					return;
 
-				foreach (var renderable in a.Trait.RenderAboveShroud(a.Actor, this))
+				foreach (var renderable in trait.RenderAboveShroud(actor, this))
 					preparedOverlayRenderables.Add(renderable.PrepareRender(this));
-			}
+			});
 
 			foreach (var a in World.Selection.Actors)
 			{
@@ -195,14 +195,14 @@ namespace OpenRA.Graphics
 		// PERF: Avoid LINQ.
 		void GenerateAnnotationRenderables()
 		{
-			foreach (var a in World.ActorsWithTrait<IRenderAnnotations>())
+			World.ApplyToActorsWithTrait<IRenderAnnotations>((actor, trait) =>
 			{
-				if (!a.Actor.IsInWorld || a.Actor.Disposed || (a.Trait.SpatiallyPartitionable && !onScreenActors.Contains(a.Actor)))
-					continue;
+				if (!actor.IsInWorld || actor.Disposed || (trait.SpatiallyPartitionable && !onScreenActors.Contains(actor)))
+					return;
 
-				foreach (var renderAnnotation in a.Trait.RenderAnnotations(a.Actor, this))
+				foreach (var renderAnnotation in trait.RenderAnnotations(actor, this))
 					preparedAnnotationRenderables.Add(renderAnnotation.PrepareRender(this));
-			}
+			});
 
 			foreach (var a in World.Selection.Actors)
 			{
@@ -278,15 +278,16 @@ namespace OpenRA.Graphics
 			if (enableDepthBuffer)
 				Game.Renderer.ClearDepthBuffer();
 
-			foreach (var a in World.ActorsWithTrait<IRenderAboveWorld>())
-				if (a.Actor.IsInWorld && !a.Actor.Disposed)
-					a.Trait.RenderAboveWorld(a.Actor, this);
+			World.ApplyToActorsWithTrait<IRenderAboveWorld>((actor, trait) =>
+			{
+				if (actor.IsInWorld && !actor.Disposed)
+					trait.RenderAboveWorld(actor, this);
+			});
 
 			if (enableDepthBuffer)
 				Game.Renderer.ClearDepthBuffer();
 
-			foreach (var a in World.ActorsWithTrait<IRenderShroud>())
-				a.Trait.RenderShroud(this);
+			World.ApplyToActorsWithTrait<IRenderShroud>((actor, trait) => trait.RenderShroud(this));
 
 			if (enableDepthBuffer)
 				Game.Renderer.Context.DisableDepthBuffer();
