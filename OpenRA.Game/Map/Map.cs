@@ -788,16 +788,21 @@ namespace OpenRA
 
 		public bool Contains(CPos cell)
 		{
-			// .ToMPos() returns the same result if the X and Y coordinates
-			// are switched. X < Y is invalid in the RectangularIsometric coordinate system,
-			// so we pre-filter these to avoid returning the wrong result
-			if (Grid.Type == MapGridType.RectangularIsometric && cell.X < cell.Y)
-				return false;
-
-			// If the mod uses flat & rectangular maps, ToMPos and Contains(MPos) create unnecessary cost.
-			// Just check if CPos is within map bounds.
-			if (Grid.MaximumTerrainHeight == 0 && Grid.Type == MapGridType.Rectangular)
-				return Bounds.Contains(cell.X, cell.Y);
+			if (Grid.Type == MapGridType.RectangularIsometric)
+			{
+				// .ToMPos() returns the same result if the X and Y coordinates
+				// are switched. X < Y is invalid in the RectangularIsometric coordinate system,
+				// so we pre-filter these to avoid returning the wrong result
+				if (cell.X < cell.Y)
+					return false;
+			}
+			else
+			{
+				// If the mod uses flat & rectangular maps, ToMPos and Contains(MPos) create unnecessary cost.
+				// Just check if CPos is within map bounds.
+				if (Grid.MaximumTerrainHeight == 0)
+					return Bounds.Contains(cell.X, cell.Y);
+			}
 
 			return Contains(cell.ToMPos(this));
 		}
