@@ -264,9 +264,6 @@ GAWEAP:
 	WithIdleOverlay@TURBINES:
 		RequiresCondition: !build-incomplete
 		Sequence: idle-turbines
-	WithIdleOverlay@BIB:
-		RequiresCondition: !build-incomplete
-		Sequence: bib
 	WithMakeOverlay@MAKE-BRIGHT:
 		Sequence: make-bright
 		Palette: bright

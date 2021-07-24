@@ -288,11 +288,18 @@ namespace OpenRA.Mods.Common.Graphics
 						};
 
 						var subSrc = GetSpriteSrc(modData, tileSet, sequence, animation, sub.Key, sd);
-						var subSprites = cache[subSrc, subGetUsedFrames].Select(
-							s => s != null ? new Sprite(s.Sheet,
-								FlipRectangle(s.Bounds, subFlipX, subFlipY), ZRamp,
-								new float3(subFlipX ? -s.Offset.X : s.Offset.X, subFlipY ? -s.Offset.Y : s.Offset.Y, s.Offset.Z) + subOffset + offset,
-								s.Channel, blendMode) : null).ToList();
+						var subSprites = cache[subSrc, subGetUsedFrames].Select(s =>
+						{
+							if (s == null)
+								return null;
+
+							var bounds = FlipRectangle(s.Bounds, subFlipX, subFlipY);
+							var dx = subOffset.X + offset.X + (subFlipX ? -s.Offset.X : s.Offset.X);
+							var dy = subOffset.Y + offset.Y + (subFlipY ? -s.Offset.Y : s.Offset.Y);
+							var dz = subOffset.Z + offset.Z + s.Offset.Z + ZRamp * dy;
+
+							return new Sprite(s.Sheet, bounds, ZRamp, new float3(dx, dy, dz), s.Channel, blendMode);
+						}).ToList();
 
 						var frames = subFrames != null ? subFrames.Skip(subStart).Take(subLength).ToArray() : Exts.MakeArray(subLength, i => subStart + i);
 						combined = combined.Concat(frames.Select(i => subSprites[i]));
@@ -306,11 +313,18 @@ namespace OpenRA.Mods.Common.Graphics
 					// Apply offset to each sprite in the sequence
 					// Different sequences may apply different offsets to the same frame
 					var src = GetSpriteSrc(modData, tileSet, sequence, animation, info.Value, d);
-					sprites = cache[src, getUsedFrames].Select(
-						s => s != null ? new Sprite(s.Sheet,
-							FlipRectangle(s.Bounds, flipX, flipY), ZRamp,
-							new float3(flipX ? -s.Offset.X : s.Offset.X, flipY ? -s.Offset.Y : s.Offset.Y, s.Offset.Z) + offset,
-							s.Channel, blendMode) : null).ToArray();
+					sprites = cache[src, getUsedFrames].Select(s =>
+					{
+						if (s == null)
+							return null;
+
+						var bounds = FlipRectangle(s.Bounds, flipX, flipY);
+						var dx = offset.X + (flipX ? -s.Offset.X : s.Offset.X);
+						var dy = offset.Y + (flipY ? -s.Offset.Y : s.Offset.Y);
+						var dz = offset.Z + s.Offset.Z + ZRamp * dy;
+
+						return new Sprite(s.Sheet, bounds, ZRamp, new float3(dx, dy, dz), s.Channel, blendMode);
+					}).ToArray();
 				}
 
 				alpha = LoadField(d, "Alpha", (float[])null);
