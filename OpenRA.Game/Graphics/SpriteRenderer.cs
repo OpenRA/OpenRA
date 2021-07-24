@@ -226,9 +226,10 @@ namespace OpenRA.Graphics
 			shader.SetVec("DepthTextureScale", 128 * depthScale / height);
 		}
 
-		public void SetDepthPreviewEnabled(bool enabled)
+		public void SetDepthPreview(bool enabled, float contrast, float offset)
 		{
 			shader.SetBool("EnableDepthPreview", enabled);
+			shader.SetVec("DepthPreviewParams", contrast, offset);
 		}
 
 		public void SetAntialiasingPixelsPerTexel(float pxPerTx)

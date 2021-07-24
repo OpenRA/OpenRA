@@ -45,8 +45,6 @@ namespace OpenRA.Graphics
 
 		readonly List<IRenderable> renderablesBuffer = new List<IRenderable>();
 
-		bool lastDepthPreviewEnabled;
-
 		internal WorldRenderer(ModData modData, World world)
 		{
 			World = world;
@@ -256,11 +254,7 @@ namespace OpenRA.Graphics
 			if (World.WorldActor.Disposed)
 				return;
 
-			if (debugVis.Value != null && lastDepthPreviewEnabled != debugVis.Value.DepthBuffer)
-			{
-				lastDepthPreviewEnabled = debugVis.Value.DepthBuffer;
-				Game.Renderer.WorldSpriteRenderer.SetDepthPreviewEnabled(lastDepthPreviewEnabled);
-			}
+			debugVis.Value?.UpdateDepthBuffer();
 
 			var bounds = Viewport.GetScissorBounds(World.Type != WorldType.Editor);
 			Game.Renderer.EnableScissor(bounds);

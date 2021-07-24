@@ -21,3 +21,23 @@ ProductionTypeAircraft: U
 PowerDown: X
 	Description: Power-down mode
 	Types: OrderGenerator, Player
+
+DecreaseDepthPreviewContrast: LEFTBRACKET SHIFT
+	Description: Decrease Contrast
+	Types: DepthDebug
+
+IncreaseDepthPreviewContrast: RIGHTBRACKET SHIFT
+	Description: Increase Contrast
+	Types: DepthDebug
+
+DecreaseDepthPreviewOffset: SEMICOLON SHIFT
+	Description: Decrease Offset
+	Types: DepthDebug
+
+IncreaseDepthPreviewOffset: QUOTE SHIFT
+	Description: Increase Offset
+	Types: DepthDebug
+
+ToggleDepthPreview: BACKSLASH SHIFT
+	Description: Toggle Preview
+	Types: DepthDebug
