@@ -274,10 +274,10 @@ namespace OpenRA
 				screenBuffer.Bind();
 
 				var scale = Window.EffectiveWindowScale;
-				var bufferSize = new float2((int)(screenSprite.Bounds.Width / scale), (int)(-screenSprite.Bounds.Height / scale));
+				var bufferScale = new float3((int)(screenSprite.Bounds.Width / scale) / worldSprite.Size.X, (int)(-screenSprite.Bounds.Height / scale) / worldSprite.Size.Y, 1f);
 
 				SpriteRenderer.SetAntialiasingPixelsPerTexel(Window.SurfaceSize.Height * 1f / worldSprite.Bounds.Height);
-				RgbaSpriteRenderer.DrawSprite(worldSprite, float3.Zero, bufferSize);
+				RgbaSpriteRenderer.DrawSprite(worldSprite, float3.Zero, bufferScale);
 				Flush();
 				SpriteRenderer.SetAntialiasingPixelsPerTexel(0);
 			}
@@ -318,7 +318,7 @@ namespace OpenRA
 			// Render the compositor buffers to the screen
 			// HACK / PERF: Fudge the coordinates to cover the actual window while keeping the buffer viewport parameters
 			// This saves us two redundant (and expensive) SetViewportParams each frame
-			RgbaSpriteRenderer.DrawSprite(screenSprite, new float3(0, lastBufferSize.Height, 0), new float3(lastBufferSize.Width, -lastBufferSize.Height, 0));
+			RgbaSpriteRenderer.DrawSprite(screenSprite, new float3(0, lastBufferSize.Height, 0), new float3(lastBufferSize.Width / screenSprite.Size.X, -lastBufferSize.Height / screenSprite.Size.Y, 1f));
 			Flush();
 
 			Window.PumpInput(inputHandler);

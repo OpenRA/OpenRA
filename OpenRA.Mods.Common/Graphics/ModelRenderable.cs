@@ -170,7 +170,7 @@ namespace OpenRA.Mods.Common.Graphics
 					a *= -1;
 
 				wrsr.DrawSprite(renderProxy.ShadowSprite, sa, sb, sc, sd, t, a);
-				wrsr.DrawSprite(renderProxy.Sprite, pxOrigin - 0.5f * renderProxy.Sprite.Size, renderProxy.Sprite.Size, t, a);
+				wrsr.DrawSprite(renderProxy.Sprite, pxOrigin - 0.5f * renderProxy.Sprite.Size, 1f, t, a);
 			}
 
 			public void RenderDebugGeometry(WorldRenderer wr)

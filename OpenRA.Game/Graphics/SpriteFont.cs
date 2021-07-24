@@ -85,7 +85,7 @@ namespace OpenRA.Graphics
 					var contrastSprite = contrastGlyphs[(s, screenContrast)];
 					Game.Renderer.RgbaSpriteRenderer.DrawSprite(contrastSprite,
 						(screen + g.Offset - contrastVector) / deviceScale,
-						contrastSprite.Size / deviceScale,
+						1f / deviceScale,
 						tint, 1f);
 				}
 
@@ -116,7 +116,7 @@ namespace OpenRA.Graphics
 				if (g.Sprite != null)
 					Game.Renderer.RgbaSpriteRenderer.DrawSprite(g.Sprite,
 					(screen + g.Offset).ToFloat2() / deviceScale,
-					g.Sprite.Size / deviceScale,
+					1f / deviceScale,
 					tint, 1f);
 
 				screen += new int2((int)(g.Advance + 0.5f), 0);
