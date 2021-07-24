@@ -35,6 +35,12 @@ namespace OpenRA.Server
 		ShuttingDown = 3
 	}
 
+	public enum GameState
+	{
+		Loading = 1,
+		Playing = 2
+	}
+
 	public enum ServerType
 	{
 		Local = 0,
@@ -42,7 +48,7 @@ namespace OpenRA.Server
 		Dedicated = 2
 	}
 
-	public sealed class Server
+	public sealed class Server : IFrameOrderDispatcher
 	{
 		public readonly string TwoHumansRequiredText = "This server requires at least two human players to start a match.";
 
@@ -73,6 +79,8 @@ namespace OpenRA.Server
 		ReplayRecorder recorder;
 		GameInformation gameInfo;
 		readonly List<GameInformation.Player> worldPlayers = new List<GameInformation.Player>();
+
+		ServerGame serverGame;
 
 		public ServerState State
 		{
@@ -251,6 +259,7 @@ namespace OpenRA.Server
 					ServerName = settings.Name,
 					EnableSingleplayer = settings.EnableSingleplayer || Type != ServerType.Dedicated,
 					EnableSyncReports = settings.EnableSyncReports,
+					UseNewNetcode = settings.UseNewNetcode,
 					GameUid = Guid.NewGuid().ToString(),
 					Dedicated = Type == ServerType.Dedicated
 				}
@@ -288,6 +297,17 @@ namespace OpenRA.Server
 
 						foreach (var t in serverTraits.WithInterface<ITick>())
 							t.Tick(this);
+
+						if (State == ServerState.GameStarted && GameState == GameState.Loading && Conns.All(c => c.Loaded))
+							GameState = GameState.Playing;
+
+						var shouldFlush = true;
+						if (LobbyInfo.GlobalSettings.UseNewNetcode && State == ServerState.GameStarted && GameState == GameState.Playing)
+							shouldFlush = serverGame.TryTick(this);
+
+						if (shouldFlush)
+							foreach (var c in Conns)
+								c.Flush();
 					}
 
 					if (State == ServerState.ShuttingDown)
@@ -306,6 +326,8 @@ namespace OpenRA.Server
 			})
 			{ IsBackground = true }.Start();
 		}
+
+		public GameState GameState { get; set; }
 
 		int nextPlayerIndex;
 		public int ChooseFreePlayerIndex()
@@ -621,25 +643,6 @@ namespace OpenRA.Server
 			}
 		}
 
-		void DispatchOrdersToClient(Connection c, int client, int frame, byte[] data)
-		{
-			DispatchFrameToClient(c, client, CreateFrame(client, frame, data));
-		}
-
-		void DispatchFrameToClient(Connection c, int client, byte[] frameData)
-		{
-			try
-			{
-				c.SendData(frameData);
-			}
-			catch (Exception e)
-			{
-				DropClient(c);
-				Log.Write("server", "Dropping client {0} because dispatching orders failed: {1}",
-					client.ToString(CultureInfo.InvariantCulture), e);
-			}
-		}
-
 		bool AnyUndefinedWinStates()
 		{
 			var lastTeam = -1;
@@ -735,15 +738,64 @@ namespace OpenRA.Server
 			}
 		}
 
-		public void DispatchOrdersToClients(Connection conn, int frame, byte[] data)
+		public void DispatchOrdersToClients(Connection conn, int frame, byte[] data, bool buffer = false)
 		{
 			var from = conn.PlayerIndex;
 			var frameData = CreateFrame(from, frame, data);
 			foreach (var c in Conns.ToList())
 				if (c != conn && c.Validated)
-					DispatchFrameToClient(c, from, frameData);
+					DispatchFrameToClient(c, frameData, buffer);
 
 			RecordOrder(frame, data, from);
+		}
+
+		void DispatchOrdersToClient(Connection c, int client, int frame, byte[] data, bool buffer = false)
+		{
+			DispatchFrameToClient(c, CreateFrame(client, frame, data), buffer);
+		}
+
+		void DispatchFrameToClient(Connection c, byte[] frameData, bool buffer = false)
+		{
+			try
+			{
+				if (buffer)
+					c.SendBufferedData(frameData);
+				else
+					c.SendData(frameData);
+			}
+			catch (Exception e)
+			{
+				DropClient(c);
+				Log.Write("server", "Dropping client {0} because dispatching orders failed: {1}",
+					c.PlayerIndex.ToString(CultureInfo.InvariantCulture), e);
+			}
+		}
+
+		public void DispatchBufferedOrdersToOtherClients(int fromClient, List<byte[]> allData)
+		{
+			var ms = new MemoryStream(allData.Sum(d => d.Length));
+			foreach (var data in allData)
+				ms.WriteArray(data);
+
+			var conn = Conns.Single(c => c.PlayerIndex == fromClient);
+			DispatchOrdersToClients(conn, serverGame.CurrentNetFrame, ms.ToArray(), true);
+		}
+
+		public void DispatchBufferedOrderAcks(int forClient, int acks, int timestep)
+		{
+			if (acks > 0xFFFF)
+				throw new InvalidOperationException("Acks too great");
+
+			var ms = new MemoryStream(5);
+			var writer = new BinaryWriter(ms);
+			writer.Write((byte)OrderType.Ack);
+			writer.Write((short)acks);
+			writer.Write((short)timestep);
+
+			var conn = Conns.Single(c => c.PlayerIndex == forClient);
+
+			// Send acks to client from themselves
+			DispatchOrdersToClient(conn, forClient, serverGame.CurrentNetFrame, ms.ToArray(), true);
 		}
 
 		void RecordOrder(int frame, byte[] data, int from)
@@ -774,7 +826,7 @@ namespace OpenRA.Server
 			var frameData = CreateFrame(from, frame, data);
 			foreach (var c in Conns.ToList())
 				if (c.Validated)
-					DispatchFrameToClient(c, from, frameData);
+					DispatchFrameToClient(c, frameData);
 
 			RecordOrder(frame, data, from);
 		}
@@ -783,6 +835,12 @@ namespace OpenRA.Server
 		{
 			if (frame == 0)
 				InterpretServerOrders(conn, data);
+
+			// HACK: This is not a good way to detect and relay sync hashes but it is currently the only way
+			else if (data.Length != 0 && (OrderType)data[0] == OrderType.SyncHash)
+				DispatchOrdersToClients(conn, frame, data, true);
+			else if (LobbyInfo.GlobalSettings.UseNewNetcode && State == ServerState.GameStarted && GameState == GameState.Playing)
+				serverGame.OrderBuffer.BufferOrders(conn.PlayerIndex, data);
 			else
 				DispatchOrdersToClients(conn, frame, data);
 
@@ -1005,6 +1063,29 @@ namespace OpenRA.Server
 
 							break;
 						}
+
+					case "SlowDown":
+						{
+							if (LobbyInfo.GlobalSettings.UseNewNetcode)
+							{
+								var amount = int.Parse(o.TargetString);
+								serverGame.SlowDown(amount);
+							}
+							else
+								Log.Write("server", "Received request to slow down from client {0} but not using new netcode!", conn.PlayerIndex);
+
+							break;
+						}
+
+					case "Loaded":
+						{
+							if (LobbyInfo.GlobalSettings.UseNewNetcode)
+								conn.Loaded = true;
+							else
+								Log.Write("server", "Received Loaded message from client {0} but not using new netcode!", conn.PlayerIndex);
+
+							break;
+						}
 				}
 			}
 		}
@@ -1200,7 +1281,21 @@ namespace OpenRA.Server
 				}
 
 				SyncLobbyInfo();
-				State = ServerState.GameStarted;
+
+				if (LobbyInfo.GlobalSettings.UseNewNetcode)
+				{
+					serverGame = new ServerGame(40);
+					foreach (var c in Conns)
+						serverGame.OrderBuffer.AddClient(c.PlayerIndex);
+
+					State = ServerState.GameStarted;
+					GameState = GameState.Loading;
+				}
+				else
+				{
+					State = ServerState.GameStarted;
+					GameState = GameState.Playing;
+				}
 
 				if (GameSave == null && LobbyInfo.GlobalSettings.GameSavesEnabled)
 					GameSave = new GameSave();

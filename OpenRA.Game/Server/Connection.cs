@@ -29,11 +29,13 @@ namespace OpenRA.Server
 
 		public long TimeSinceLastResponse => Game.RunTime - lastReceivedTime;
 		public int MostRecentFrame { get; private set; }
+		public bool Loaded { get; set; }
 
 		public bool TimeoutMessageShown;
 		public bool Validated;
 
 		long lastReceivedTime = 0;
+		List<byte> sendBuffer = new List<byte>();
 
 		readonly BlockingCollection<byte[]> sendQueue = new BlockingCollection<byte[]>();
 
@@ -163,6 +165,17 @@ namespace OpenRA.Server
 		public void SendData(byte[] data)
 		{
 			sendQueue.Add(data);
+		}
+
+		public void SendBufferedData(byte[] data)
+		{
+			sendBuffer.AddRange(data);
+		}
+
+		public void Flush()
+		{
+			sendQueue.Add(sendBuffer.ToArray());
+			sendBuffer.Clear();
 		}
 
 		public void Dispose()

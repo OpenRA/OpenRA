@@ -30,8 +30,10 @@ namespace OpenRA
 {
 	public static class Game
 	{
-		public const int NetTickScale = 3; // 120 ms net tick for 40 ms local tick
+		public const int DefaultNetTickScale = 3; // 120 ms net tick for 40 ms local tick
+		public const int NewNetcodeNetTickScale = 1; // Net tick every world frame
 		public const int TimestepJankThreshold = 250; // Don't catch up for delays larger than 250ms
+		const int MaxSimLagBeforeFrameDrops = 50;
 
 		public static InstalledMods Mods { get; private set; }
 		public static ExternalMods ExternalMods { get; private set; }
@@ -593,11 +595,12 @@ namespace OpenRA
 			{
 				using (new PerfSample("tick_time"))
 				{
-					orderManager.LastTickTime.AdvanceTickTime(tick);
+					if (!orderManager.ShouldUseCatchUp || !orderManager.LobbyInfo.GlobalSettings.UseNewNetcode)
+						orderManager.LastTickTime.AdvanceTickTime(tick);
 
 					Sound.Tick();
 
-					Sync.RunUnsynced(Settings.Debug.SyncCheckUnsyncedCode, world, orderManager.TickImmediate);
+					Sync.RunUnsynced(Settings.Debug.SyncCheckUnsyncedCode, world, () => orderManager.TickImmediate(tick));
 
 					if (world == null)
 						return;
@@ -806,7 +809,7 @@ namespace OpenRA
 						LogicTick();
 
 						// Force at least one render per tick during regular gameplay
-						if (OrderManager.World != null && !OrderManager.World.IsLoadingGameSave && !OrderManager.World.IsReplay)
+						if (!OrderManager.IsStalling && OrderManager.SimLag < MaxSimLagBeforeFrameDrops && OrderManager.World != null && !OrderManager.World.IsLoadingGameSave && !OrderManager.World.IsReplay)
 							renderBeforeNextTick = true;
 					}
 
@@ -918,7 +921,8 @@ namespace OpenRA
 			{
 				Name = "Skirmish Game",
 				Map = map,
-				AdvertiseOnline = false
+				AdvertiseOnline = false,
+				UseNewNetcode = Settings.Server.UseNewNetcode
 			};
 
 			// Always connect to local games using the same loopback connection

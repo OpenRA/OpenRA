@@ -13,6 +13,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
@@ -34,7 +35,8 @@ namespace OpenRA.Network
 		void Send(int frame, List<byte[]> orders);
 		void SendImmediate(IEnumerable<byte[]> orders);
 		void SendSync(int frame, byte[] syncData);
-		void Receive(Action<int, byte[]> packetFn);
+		void Receive(Action<int, byte[], int> packetFn);
+		bool ShouldUseCatchUp { get; }
 	}
 
 	public class EchoConnection : IConnection
@@ -43,11 +45,12 @@ namespace OpenRA.Network
 		{
 			public int FromClient;
 			public byte[] Data;
+			public int Timestep;
 		}
 
-		readonly List<ReceivedPacket> receivedPackets = new List<ReceivedPacket>();
+		readonly ConcurrentQueue<ReceivedPacket> receivedPackets = new ConcurrentQueue<ReceivedPacket>();
 		public ReplayRecorder Recorder { get; private set; }
-
+		public bool ShouldUseCatchUp { get; protected set; }
 		public virtual int LocalClientId => 1;
 
 		public virtual void Send(int frame, List<byte[]> orders)
@@ -87,22 +90,18 @@ namespace OpenRA.Network
 
 		protected void AddPacket(ReceivedPacket packet)
 		{
-			lock (receivedPackets)
-				receivedPackets.Add(packet);
+			receivedPackets.Enqueue(packet);
 		}
 
-		public virtual void Receive(Action<int, byte[]> packetFn)
+		public virtual void Receive(Action<int, byte[], int> packetFn)
 		{
-			ReceivedPacket[] packets;
-			lock (receivedPackets)
-			{
-				packets = receivedPackets.ToArray();
-				receivedPackets.Clear();
-			}
+			var packets = new List<ReceivedPacket>(receivedPackets.Count);
+			while (receivedPackets.TryDequeue(out var received))
+				packets.Add(received);
 
 			foreach (var p in packets)
 			{
-				packetFn(p.FromClient, p.Data);
+				packetFn(p.FromClient, p.Data, p.Timestep);
 				Recorder?.Receive(p.FromClient, p.Data);
 			}
 		}
@@ -133,6 +132,7 @@ namespace OpenRA.Network
 		TcpClient tcp;
 		IPEndPoint endpoint;
 		readonly List<byte[]> queuedSyncPackets = new List<byte[]>();
+		readonly ConcurrentQueue<byte[]> awaitingAckPackets = new ConcurrentQueue<byte[]>();
 		volatile ConnectionState connectionState = ConnectionState.Connecting;
 		volatile int clientId;
 		bool disposed;
@@ -150,6 +150,8 @@ namespace OpenRA.Network
 				Name = $"{GetType().Name} (connect to {target})",
 				IsBackground = true
 			}.Start();
+
+			ShouldUseCatchUp = true;
 		}
 
 		void NetworkConnectionConnect()
@@ -222,23 +224,26 @@ namespace OpenRA.Network
 		{
 			try
 			{
-				var reader = new BinaryReader(tcp.GetStream());
-				var handshakeProtocol = reader.ReadInt32();
+				var stream = tcp.GetStream();
+				var handshakeProtocol = stream.ReadInt32();
 
 				if (handshakeProtocol != ProtocolVersion.Handshake)
 					throw new InvalidOperationException($"Handshake protocol version mismatch. Server={handshakeProtocol} Client={ProtocolVersion.Handshake}");
 
-				clientId = reader.ReadInt32();
+				clientId = stream.ReadInt32();
 				connectionState = ConnectionState.Connected;
 
 				while (true)
 				{
-					var len = reader.ReadInt32();
-					var client = reader.ReadInt32();
-					var buf = reader.ReadBytes(len);
-					if (len == 0)
+					var len = stream.ReadInt32();
+					var client = stream.ReadInt32();
+					var buf = stream.ReadBytes(len);
+					if (UseNewNetcode && client == LocalClientId && len == 9 && buf[4] == (byte)OrderType.Ack)
+						Ack(buf);
+					else if (len == 0)
 						throw new NotImplementedException();
-					AddPacket(new ReceivedPacket { FromClient = client, Data = buf });
+					else
+						AddPacket(new ReceivedPacket { FromClient = client, Data = buf });
 				}
 			}
 			catch (Exception ex)
@@ -252,8 +257,31 @@ namespace OpenRA.Network
 			}
 		}
 
+		void Ack(byte[] buf)
+		{
+			var stream = new MemoryStream(buf);
+			var frameReceived = stream.ReadInt32();
+			stream.ReadByte();
+			var framesToAck = stream.ReadInt16();
+			var timestep = stream.ReadInt16();
+
+			var ms = new MemoryStream(4 + awaitingAckPackets.Take(framesToAck).Sum(i => i.Length));
+			ms.WriteArray(BitConverter.GetBytes(frameReceived));
+
+			for (var i = 0; i < framesToAck; i++)
+			{
+				if (!awaitingAckPackets.TryDequeue(out var queuedPacket))
+					throw new InvalidOperationException("Received acks for unknown frames");
+
+				ms.WriteArray(queuedPacket);
+			}
+
+			AddPacket(new ReceivedPacket { FromClient = LocalClientId, Data = ms.GetBuffer(), Timestep = timestep });
+		}
+
 		public override int LocalClientId => clientId;
 		public ConnectionState ConnectionState => connectionState;
+		public bool UseNewNetcode { get; set; }
 
 		public override void SendSync(int frame, byte[] syncData)
 		{
@@ -263,24 +291,85 @@ namespace OpenRA.Network
 			queuedSyncPackets.Add(ms.GetBuffer());
 		}
 
+		public override void Send(int frame, List<byte[]> orders)
+		{
+			var ordersLength = orders.Sum(i => i.Length);
+			var ms = new MemoryStream(8 + ordersLength);
+
+			// Always write data for old netcode
+			if (orders.Count > 0 || !UseNewNetcode)
+			{
+				// Write our packet to be acked
+				var ackMs = new MemoryStream(ordersLength);
+
+				foreach (var o in orders)
+					ackMs.WriteArray(o);
+
+				var ackArray = ackMs.GetBuffer();
+
+				if (UseNewNetcode)
+					awaitingAckPackets.Enqueue(ackArray);
+				else
+				{
+					// Have to send data to self with frame information
+					var dataMs = new MemoryStream(ackArray.Length + 4);
+
+					dataMs.WriteArray(BitConverter.GetBytes(frame));
+					dataMs.WriteArray(ackArray);
+					AddPacket(new ReceivedPacket { FromClient = LocalClientId, Data = dataMs.GetBuffer() });
+				}
+
+				// Write our packet to send to the main memory stream
+				ms.WriteArray(BitConverter.GetBytes(ackArray.Length + 4));
+				ms.WriteArray(BitConverter.GetBytes(frame)); // TODO: Remove frames from send protocol
+				ms.WriteArray(ackArray);
+			}
+
+			WriteQueuedSyncPackets(ms);
+			SendNetwork(ms);
+		}
+
 		protected override void Send(byte[] packet)
 		{
 			base.Send(packet);
 
+			var ms = new MemoryStream();
+			WriteOrderPacket(ms, packet);
+			WriteQueuedSyncPackets(ms);
+			SendNetwork(ms);
+		}
+
+		void WriteOrderPacket(MemoryStream ms, byte[] packet)
+		{
+			ms.WriteArray(BitConverter.GetBytes(packet.Length));
+			ms.WriteArray(packet);
+		}
+
+		void WriteQueuedSyncPackets(MemoryStream ms)
+		{
+			if (queuedSyncPackets.Any())
+			{
+				var listLengthNeeded = queuedSyncPackets.Sum(i => 4 + i.Length);
+				if (ms.Capacity - ms.Length < listLengthNeeded)
+					ms.Capacity += listLengthNeeded - (ms.Capacity - (int)ms.Length);
+			}
+			else
+				return;
+
+			foreach (var q in queuedSyncPackets)
+			{
+				ms.WriteArray(BitConverter.GetBytes(q.Length));
+				ms.WriteArray(q);
+				base.Send(q);
+			}
+
+			queuedSyncPackets.Clear();
+		}
+
+		void SendNetwork(MemoryStream ms)
+		{
 			try
 			{
-				var ms = new MemoryStream();
-				ms.WriteArray(BitConverter.GetBytes(packet.Length));
-				ms.WriteArray(packet);
-
-				foreach (var q in queuedSyncPackets)
-				{
-					ms.WriteArray(BitConverter.GetBytes(q.Length));
-					ms.WriteArray(q);
-					base.Send(q);
-				}
-
-				queuedSyncPackets.Clear();
 				ms.WriteTo(tcp.GetStream());
 			}
 			catch (SocketException) { /* drop this on the floor; we'll pick up the disconnect from the reader thread */ }

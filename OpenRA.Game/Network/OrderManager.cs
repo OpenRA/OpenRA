@@ -21,9 +21,23 @@ namespace OpenRA.Network
 {
 	public sealed class OrderManager : IDisposable
 	{
+		const double CatchupFactor = 0.1;
+		const double CatchUpLimit = 1.5;
+		const int SimLagThreshold = 500;
+		const int SimLagLimit = 1000;
+
 		readonly SyncReport syncReport;
 
 		readonly Dictionary<int, Queue<byte[]>> pendingPackets = new Dictionary<int, Queue<byte[]>>();
+		readonly Queue<int> timestepData = new Queue<int>();
+
+		int targetTimestep;
+		int actualTimestep;
+		double averageSimLag;
+		long tickStartRuntime = Game.RunTime;
+		long lastTickStartRuntime = Game.RunTime;
+		int lastSlowDownRequestTick;
+		int nextOrderFrame;
 
 		public Session LobbyInfo = new Session();
 		public Session.Client LocalClient => LobbyInfo.ClientWithIndex(Connection.LocalClientId);
@@ -35,7 +49,9 @@ namespace OpenRA.Network
 		public int NetFrameNumber { get; private set; }
 		public int LocalFrameNumber;
 		public int FramesAhead = 0;
-
+		public bool ShouldUseCatchUp;
+		public volatile bool IsStalling;
+		public int SimLag = 0;
 		public TickTime LastTickTime;
 
 		public bool GameStarted => NetFrameNumber != 0;
@@ -85,12 +101,24 @@ namespace OpenRA.Network
 			generateSyncReport = !(Connection is ReplayConnection) && LobbyInfo.GlobalSettings.EnableSyncReports;
 
 			NetFrameNumber = 1;
+			nextOrderFrame = 1;
 			LocalFrameNumber = 0;
 			LastTickTime.Value = Game.RunTime;
 
-			if (GameSaveLastFrame < 0)
-				for (var i = NetFrameNumber; i <= FramesAhead; i++)
-					Connection.Send(i, new List<byte[]>());
+			if (orderLatency != World.OrderLatency && !GameStarted)
+			{
+				orderLatency = World.OrderLatency;
+				Log.Write("server", "Order lag is now {0} frames.", World.OrderLatency);
+			}
+
+			if (Connection is NetworkConnection c)
+				c.UseNewNetcode = LobbyInfo.GlobalSettings.UseNewNetcode;
+
+			if (LobbyInfo.GlobalSettings.UseNewNetcode)
+				localImmediateOrders.Add(Order.FromTargetString("Loaded", "", true));
+			else
+				for (var i = 0; i <= orderLatency; ++i)
+					SendOrders();
 		}
 
 		public OrderManager(IConnection conn)
@@ -100,6 +128,8 @@ namespace OpenRA.Network
 			AddTextNotification += CacheTextNotification;
 
 			LastTickTime = new TickTime(() => SuggestedTimestep, Game.RunTime);
+
+			ShouldUseCatchUp = conn.ShouldUseCatchUp;
 		}
 
 		public void IssueOrders(Order[] orders)
@@ -124,7 +154,7 @@ namespace OpenRA.Network
 
 		void SendImmediateOrders()
 		{
-			if (localImmediateOrders.Count != 0 && GameSaveLastFrame < NetFrameNumber + FramesAhead)
+			if (localImmediateOrders.Count != 0 && GameSaveLastFrame < NetFrameNumber)
 				Connection.SendImmediate(localImmediateOrders.Select(o => o.Serialize()));
 			localImmediateOrders.Clear();
 		}
@@ -132,7 +162,7 @@ namespace OpenRA.Network
 		void ReceiveAllOrdersAndCheckSync()
 		{
 			Connection.Receive(
-				(clientId, packet) =>
+				(clientId, packet, timestep) =>
 				{
 					// HACK: The shellmap relies on ticking a disposed OM
 					if (disposed && World.Type != WorldType.Shellmap)
@@ -170,11 +200,15 @@ namespace OpenRA.Network
 							queue.Enqueue(packet);
 						else
 							Log.Write("debug", $"Received packet from disconnected client '{clientId}'");
+
+						if (timestep != 0)
+							timestepData.Enqueue(timestep);
 					}
 				});
 		}
 
 		Dictionary<int, byte[]> syncForFrame = new Dictionary<int, byte[]>();
+		int orderLatency;
 
 		void CheckSync(byte[] packet)
 		{
@@ -201,7 +235,10 @@ namespace OpenRA.Network
 				if (World == null)
 					return Ui.Timestep;
 
-				if (World.IsLoadingGameSave)
+				if (!ShouldUseCatchUp)
+					return World.Timestep;
+
+				if (IsStalling || World.IsLoadingGameSave)
 					return 1;
 
 				if (World.IsReplay)
@@ -216,11 +253,13 @@ namespace OpenRA.Network
 			if (!GameStarted)
 				return;
 
-			if (GameSaveLastFrame < NetFrameNumber + FramesAhead)
+			if (GameSaveLastFrame < nextOrderFrame)
 			{
-				Connection.Send(NetFrameNumber + FramesAhead, localOrders.Select(o => o.Serialize()).ToList());
+				Connection.Send(nextOrderFrame, localOrders.Select(o => o.Serialize()).ToList());
 				localOrders.Clear();
 			}
+
+			nextOrderFrame++;
 		}
 
 		void ProcessOrders()
@@ -263,6 +302,9 @@ namespace OpenRA.Network
 				using (new PerfSample("sync_report"))
 					syncReport.UpdateSyncReport(clientOrders);
 
+			if (timestepData.TryDequeue(out var timestep))
+				actualTimestep = timestep;
+
 			++NetFrameNumber;
 		}
 
@@ -272,8 +314,10 @@ namespace OpenRA.Network
 			Connection?.Dispose();
 		}
 
-		public void TickImmediate()
+		public void TickImmediate(long tick)
 		{
+			tickStartRuntime = tick;
+
 			SendImmediateOrders();
 
 			ReceiveAllOrdersAndCheckSync();
@@ -306,9 +350,55 @@ namespace OpenRA.Network
 			if (willTick)
 				LocalFrameNumber++;
 
+			IsStalling = !willTick;
+
+			CompensateForLatency();
+
 			return willTick;
 		}
 
-		bool IsNetTick => LocalFrameNumber % Game.NetTickScale == 0;
+		bool IsNetTick => LocalFrameNumber % (LobbyInfo.GlobalSettings.UseNewNetcode ? Game.NewNetcodeNetTickScale : Game.DefaultNetTickScale) == 0;
+
+		void CompensateForLatency()
+		{
+			if (!LobbyInfo.GlobalSettings.UseNewNetcode || !ShouldUseCatchUp)
+				return;
+
+			if (LocalFrameNumber == 0 || IsStalling)
+			{
+				LastTickTime.Value = tickStartRuntime;
+				lastTickStartRuntime = tickStartRuntime;
+				targetTimestep = actualTimestep;
+
+				// We are happy to stall after a lag spike
+				SimLag = (SimLag - 1).Clamp(-World.Timestep, SimLagLimit);
+				return;
+			}
+
+			var bufferRemaining = pendingPackets[LocalClient.Index].Count * World.Timestep;
+			var realTimestep = (int)(tickStartRuntime - lastTickStartRuntime);
+			SimLag = (SimLag + realTimestep - targetTimestep).Clamp(-World.Timestep, SimLagLimit);
+			var catchup = (int)Math.Ceiling(bufferRemaining * CatchupFactor).Clamp(0, World.Timestep / CatchUpLimit);
+			var simLagDelta = realTimestep - World.Timestep + catchup;
+			averageSimLag = averageSimLag * 0.95 + simLagDelta * 0.05;
+			var slowDownRequired = (int)Math.Ceiling(averageSimLag);
+
+			if (slowDownRequired > 0 && SimLag > SimLagThreshold && NetFrameNumber > lastSlowDownRequestTick + 5)
+			{
+				localImmediateOrders.Add(Order.FromTargetString("SlowDown", slowDownRequired.ToString(), true));
+				lastSlowDownRequestTick = NetFrameNumber;
+			}
+
+			targetTimestep = (actualTimestep - catchup).Clamp(1, 1000);
+
+			LastTickTime.Value = tickStartRuntime - SimLag;
+
+			lastTickStartRuntime = tickStartRuntime;
+
+			PerfHistory.Increment("net_buffer", bufferRemaining);
+			PerfHistory.Increment("net_slowdown", slowDownRequired < 0 ? slowDownRequired : 0);
+			PerfHistory.Increment("net_simlag", 100.0 * (double)SimLag / (double)SimLagLimit);
+			PerfHistory.Increment("net_speed", 100.0 * (double)World.Timestep / (double)actualTimestep);
+		}
 	}
 }

@@ -34,6 +34,7 @@ namespace OpenRA.Network
 		Dictionary<int, int> lastClientsFrame = new Dictionary<int, int>();
 
 		public int LocalClientId => -1;
+		public bool ShouldUseCatchUp { get; }
 
 		public IPEndPoint EndPoint => throw new NotSupportedException("A replay connection doesn't have an endpoint");
 
@@ -145,14 +146,14 @@ namespace OpenRA.Network
 			ordersFrame = frame + orderLatency;
 		}
 
-		public void Receive(Action<int, byte[]> packetFn)
+		public void Receive(Action<int, byte[], int> packetFn)
 		{
 			while (sync.Count != 0)
-				packetFn(LocalClientId, sync.Dequeue());
+				packetFn(LocalClientId, sync.Dequeue(), 0);
 
 			while (chunks.Count != 0 && chunks.Peek().Frame <= ordersFrame)
 				foreach (var o in chunks.Dequeue().Packets)
-					packetFn(o.ClientId, o.Packet);
+					packetFn(o.ClientId, o.Packet, 0);
 		}
 
 		public void Dispose() { }

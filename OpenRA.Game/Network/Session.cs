@@ -240,6 +240,7 @@ namespace OpenRA.Network
 			public string GameUid;
 			public bool EnableSingleplayer;
 			public bool EnableSyncReports;
+			public bool UseNewNetcode;
 			public bool Dedicated;
 			public bool GameSavesEnabled;
 
