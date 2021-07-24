@@ -15,6 +15,7 @@ uniform sampler2D Palette;
 uniform sampler2D ColorShifts;
 
 uniform bool EnableDepthPreview;
+uniform vec2 DepthPreviewParams;
 uniform float DepthTextureScale;
 uniform float AntialiasPixelsPerTexel;
 
@@ -54,21 +55,6 @@ in vec4 vTint;
 
 out vec4 fragColor;
 #endif
-
-float jet_r(float x)
-{
-	return x < 0.7 ? 4.0 * x - 1.5 : -4.0 * x + 4.5;
-}
-
-float jet_g(float x)
-{
-	return x < 0.5 ? 4.0 * x - 0.5 : -4.0 * x + 3.5;
-}
-
-float jet_b(float x)
-{
-	return x < 0.3 ? 4.0 * x + 0.5 : -4.0 * x + 2.5;
-}
 
 vec3 rgb2hsv(vec3 c)
 {
@@ -289,14 +275,12 @@ void main()
 
 	if (EnableDepthPreview)
 	{
-		float x = 1.0 - gl_FragDepth;
-		float r = clamp(jet_r(x), 0.0, 1.0);
-		float g = clamp(jet_g(x), 0.0, 1.0);
-		float b = clamp(jet_b(x), 0.0, 1.0);
+		float intensity = 1.0 - clamp(DepthPreviewParams.x * depth - 0.5 * DepthPreviewParams.x - DepthPreviewParams.y + 0.5, 0.0, 1.0);
+
 		#if __VERSION__ == 120
-		gl_FragColor = vec4(r, g, b, 1.0);
+		gl_FragColor = vec4(vec3(intensity), 1.0);
 		#else
-		fragColor = vec4(r, g, b, 1.0);
+		fragColor = vec4(vec3(intensity), 1.0);
 		#endif
 	}
 	else

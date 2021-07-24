@@ -20,7 +20,51 @@ namespace OpenRA.Traits
 		public bool CombatGeometry;
 		public bool RenderGeometry;
 		public bool ScreenMap;
-		public bool DepthBuffer;
 		public bool ActorTags;
+
+		// The depth buffer may have been left enabled by the previous world
+		// Initializing this as dirty forces us to reset the default rendering before the first render
+		bool depthBufferDirty = true;
+		bool depthBuffer;
+		public bool DepthBuffer
+		{
+			get => depthBuffer;
+			set
+			{
+				 depthBuffer = value;
+				 depthBufferDirty = true;
+			}
+		}
+
+		float depthBufferContrast = 1f;
+		public float DepthBufferContrast
+		{
+			get => depthBufferContrast;
+			set
+			{
+				depthBufferContrast = value;
+				depthBufferDirty = true;
+			}
+		}
+
+		float depthBufferOffset;
+		public float DepthBufferOffset
+		{
+			get => depthBufferOffset;
+			set
+			{
+				depthBufferOffset = value;
+				depthBufferDirty = true;
+			}
+		}
+
+		public void UpdateDepthBuffer()
+		{
+			if (depthBufferDirty)
+			{
+				Game.Renderer.WorldSpriteRenderer.SetDepthPreview(DepthBuffer, DepthBufferContrast, DepthBufferOffset);
+				depthBufferDirty = false;
+			}
+		}
 	}
 }
