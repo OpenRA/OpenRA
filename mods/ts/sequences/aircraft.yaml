@@ -20,12 +20,12 @@ apache:
 	rotor: harpyrotor
 		Start: 32
 		Length: 31
-		Offset: 0, 0, 16
+		Offset: 0, 0, 32
 		ZRamp: 1
 		Tick: 25
 	slow-rotor: harpyrotor
 		Length: 31
-		Offset: 0, 0, 16
+		Offset: 0, 0, 32
 		ZRamp: 1
 		Tick: 50
 

@@ -72,19 +72,19 @@ mpspawn:
 	idle:
 		Length: *
 		ZRamp: 1
-		Offset: 0, 0, 24
+		Offset: 0, 0, 1
 
 waypoint:
 	idle:
 		Length: *
 		ZRamp: 1
-		Offset: 0, 0, 24
+		Offset: 0, 0, 1
 
 camera:
 	idle:
 		Length: *
 		ZRamp: 1
-		Offset: 0, 0, 24
+		Offset: 0, 0, 1
 
 clock:
 	idle: gclock2
@@ -144,32 +144,26 @@ explosion:
 		IgnoreWorldTint: False
 	ionbeam: ionbeam
 		Offset: 0, -60, 60
-		ZRamp: 1
 		Tick: 100
 		IgnoreWorldTint: False
 	ionbeam2: ionbeam
 		Offset: 0, -180, 60
-		ZRamp: 1
 		Tick: 100
 		IgnoreWorldTint: False
 	ionbeam3: ionbeam
 		Offset: 0, -300, 60
-		ZRamp: 1
 		Tick: 100
 		IgnoreWorldTint: False
 	ionbeam4: ionbeam
 		Offset: 0, -420, 60
-		ZRamp: 1
 		Tick: 100
 		IgnoreWorldTint: False
 	ionbeam5: ionbeam
 		Offset: 0, -540, 60
-		ZRamp: 1
 		Tick: 100
 		IgnoreWorldTint: False
 	ionbeam6: ionbeam
 		Offset: 0, -660, 60
-		ZRamp: 1
 		Tick: 100
 		IgnoreWorldTint: False
 	pulse_explosion: pulsefx2
@@ -367,7 +361,6 @@ moveflsh:
 		Length: *
 		Tick: 30
 		ZOffset: 2047
-		Offset: 0, 0, 48
 		ZRamp: 1
 		AlphaFade: True
 
@@ -385,7 +378,7 @@ resources:
 		UseTilesetExtension: true
 		Length: 12
 		ShadowStart: 12
-		Offset: 0, -12, 1.5
+		Offset: 0, -12, 1
 		ZRamp: 1
 		IgnoreWorldTint: true
 	tib01: tib01
@@ -411,8 +404,6 @@ resources:
 	veins: veins
 		Length: *
 		ShadowStart: -1
-		# TODO: Reduce z offset again after fixing #12229
-		Offset: 0, -12, 5.5
 		IgnoreWorldTint: false
 
 veins:
@@ -679,22 +670,22 @@ tracks16:
 tuntop01:
 	Inherits: ^tuntop
 	idle:
-		Offset: 24, -49, 36
+		Offset: 24, -49, 48
 
 tuntop02:
 	Inherits: ^tuntop
 	idle:
-		Offset: -24, -49, 36
+		Offset: -24, -49, 48
 
 tuntop03:
 	Inherits: ^tuntop
 	idle:
-		Offset: 24, -49, 24
+		Offset: 24, -49, 49
 
 tuntop04:
 	Inherits: ^tuntop
 	idle:
-		Offset: -24, -49, 24
+		Offset: -24, -49, 49
 
 dig:
 	idle:

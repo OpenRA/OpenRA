@@ -206,15 +206,15 @@ gaweap:
 		DepthSprite: isodepth.shp
 	idle: gtweap_1
 		ShadowStart: 2
+		Offset: -12, -42, 1
 		ZOffset: -1024
-		Offset: -12, -42, 0
 		ZRamp: 1
 		-DepthSprite:
 	damaged-idle: gtweap_1
 		Start: 1
 		ShadowStart: 3
 		ZOffset: -1024
-		Offset: -12, -42, 0
+		Offset: -12, -42, 1
 		ZRamp: 1
 		-DepthSprite:
 	idle-roof: gtweap_2
@@ -270,26 +270,6 @@ gaweap:
 		Offset: -12, -42, 44
 		DepthSpriteOffset: -12, 0
 		IgnoreWorldTint: True
-	bib: gtweapbb
-		Length: 1
-		ZOffset: -1024
-		Offset: -12, -42, 0
-		ZRamp: 1
-		-DepthSprite:
-	damaged-bib: gtweapbb
-		Start: 1
-		Length: 1
-		ZOffset: -1024
-		Offset: -12, -42, 0
-		ZRamp: 1
-		-DepthSprite:
-	dead-bib: gtweapbb
-		Start: 2
-		Length: 1
-		ZOffset: -1024
-		Offset: -12, -42, 0
-		ZRamp: 1
-		-DepthSprite:
 	emp-overlay: emp_fx01
 		Length: *
 		Offset: 0, 0, 23
@@ -443,7 +423,7 @@ nahand:
 
 naweap:
 	Defaults:
-		Offset: -12, -42, 30
+		Offset: -12, -42, 25
 		DepthSpriteOffset: 24, 0
 		UseTilesetCode: true
 		DepthSprite: isodepth.shp
@@ -506,23 +486,6 @@ naweap:
 		ShadowStart: 22
 		Offset: -12, -42, 43
 		DepthSpriteOffset: -12, 0
-	bib: ntweapbb
-		ZOffset: -1024
-		Offset: -12, -42, 1
-		ZRamp: 1
-		-DepthSprite:
-	damaged-bib: ntweapbb
-		Start: 1
-		ZOffset: -1024
-		Offset: -12, -42, 1
-		ZRamp: 1
-		-DepthSprite:
-	dead-bib: ntweapbb
-		Start: 2
-		ZOffset: -1024
-		Offset: -12, -42, 1
-		ZRamp: 1
-		-DepthSprite:
 	emp-overlay: emp_fx01
 		Length: *
 		Offset: 0, 0, 31
@@ -783,7 +746,7 @@ gawall:
 
 gagate_a:
 	Defaults:
-		Offset: -24, -24, 24
+		Offset: -24, -24, 25
 		DepthSpriteOffset: -24, 0
 		UseTilesetCode: true
 		DepthSprite: isodepth.shp
@@ -795,6 +758,7 @@ gagate_a:
 		ShadowStart: 30
 		Offset: -24, -24, 1
 		ZRamp: 1
+		ZOffset: -1024
 		-DepthSprite:
 	damaged-idle:
 		Start: 10
@@ -805,6 +769,7 @@ gagate_a:
 		ShadowStart: 40
 		Offset: -24, -24, 1
 		ZRamp: 1
+		ZOffset: -1024
 		-DepthSprite:
 	dead:
 		Start: 20
@@ -825,7 +790,7 @@ gagate_a:
 
 gagate_b:
 	Defaults:
-		Offset: 24, -24, 24
+		Offset: 24, -24, 25
 		DepthSpriteOffset: 24, 0
 		UseTilesetCode: true
 		DepthSprite: isodepth.shp
@@ -836,6 +801,7 @@ gagate_b:
 		Start: 9
 		ShadowStart: 30
 		Offset: 24, -24, 1
+		ZOffset: -1024
 		ZRamp: 1
 		-DepthSprite:
 	damaged-idle:
@@ -847,6 +813,7 @@ gagate_b:
 		ShadowStart: 40
 		Offset: 24, -24, 1
 		ZRamp: 1
+		ZOffset: -1024
 		-DepthSprite:
 	dead:
 		Start: 20
@@ -867,7 +834,7 @@ gagate_b:
 
 nagate_a:
 	Defaults:
-		Offset: -24, -24, 24
+		Offset: -24, -24, 25
 		DepthSpriteOffset: -24, 0
 		UseTilesetCode: true
 		Tick: 80
@@ -884,6 +851,7 @@ nagate_a:
 		ShadowStart: 21
 		Offset: -24, -24, 1
 		ZRamp: 1
+		ZOffset: -1024
 		-DepthSprite:
 	damaged-idle:
 		Start: 7
@@ -894,6 +862,7 @@ nagate_a:
 		ShadowStart: 28
 		Offset: -24, -24, 1
 		ZRamp: 1
+		ZOffset: -1024
 		-DepthSprite:
 	dead:
 		Start: 14
@@ -914,7 +883,7 @@ nagate_a:
 
 nagate_b:
 	Defaults:
-		Offset: 24, -24, 24
+		Offset: 24, -24, 25
 		DepthSpriteOffset: 24, 0
 		UseTilesetCode: true
 		DepthSprite: isodepth.shp
@@ -927,6 +896,7 @@ nagate_b:
 		ShadowStart: 21
 		Offset: 24, -24, 1
 		ZRamp: 1
+		ZOffset: -1024
 		-DepthSprite:
 	damaged-idle:
 		Start: 7
@@ -937,6 +907,7 @@ nagate_b:
 		ShadowStart: 28
 		Offset: 24, -24, 1
 		ZRamp: 1
+		ZOffset: -1024
 		-DepthSprite:
 	dead:
 		Start: 14
@@ -1023,7 +994,7 @@ napost:
 
 nafnce:
 	Defaults:
-		Offset: 0, -12, 13
+		Offset: 0, -12, 19
 		UseTilesetCode: true
 		DepthSprite: isodepth.shp
 	idle:
@@ -1043,20 +1014,24 @@ nafnce:
 	enabled-x:
 		Frames: 3,3,1,1,3,3,1,1,2,2,0,0,2,2,0,0
 		Length: 16
+		DepthSpriteOffset: -12, 0
 	enabled-x-bright:
 		Frames: 3,3,1,1,3,3,1,1,2,2,0,0,2,2,0,0
 		Length: 16
+		DepthSpriteOffset: -12, 0
 		IgnoreWorldTint: True
 	enabled-y:
 		Frames: 7,5,7,5,6,4,6,4,7,5,7,5,6,4,6,4
 		Length: 16
+		DepthSpriteOffset: 12, 0
 	enabled-y-bright:
 		Frames: 7,5,7,5,6,4,6,4,7,5,7,5,6,4,6,4
 		Length: 16
+		DepthSpriteOffset: 12, 0
 		IgnoreWorldTint: True
 	emp-overlay: emp_fx01
 		Length: *
-		Offset: 0, 0, 25
+		Offset: 0, 0, 13
 		UseTilesetCode: false
 		ZOffset: 512
 		BlendMode: Additive
@@ -1492,7 +1467,7 @@ gahpad:
 
 nahpad:
 	Defaults:
-		Offset: 0, -24, 0
+		Offset: 0, -24, 1
 		DepthSpriteOffset: -24, 0
 		UseTilesetCode: true
 	idle:
@@ -1605,19 +1580,19 @@ proc.gdi:
 	bib: ntrefnbb
 		Length: 1
 		ZOffset: -1024
-		Offset: -12, -42, 5
+		Offset: -12, -42, 1
 		ZRamp: 1
 		-DepthSprite:
 	damaged-bib: ntrefnbb
 		Start: 1
 		ZOffset: -1024
-		Offset: -12, -42, 5
+		Offset: -12, -42, 1
 		ZRamp: 1
 		-DepthSprite:
 	dead-bib: ntrefnbb
 		Start: 2
 		ZOffset: -1024
-		Offset: -12, -42, 5
+		Offset: -12, -42, 1
 		ZRamp: 1
 		-DepthSprite:
 	emp-overlay: emp_fx01
@@ -1669,19 +1644,19 @@ proc.nod:
 	bib: ntrefnbb
 		Length: 1
 		ZOffset: -1024
-		Offset: -12, -42, 5
+		Offset: -12, -42, 1
 		ZRamp: 1
 		-DepthSprite:
 	damaged-bib: ntrefnbb
 		Start: 1
 		ZOffset: -1024
-		Offset: -12, -42, 5
+		Offset: -12, -42, 1
 		ZRamp: 1
 		-DepthSprite:
 	dead-bib: ntrefnbb
 		Start: 2
 		ZOffset: -1024
-		Offset: -12, -42, 5
+		Offset: -12, -42, 1
 		ZRamp: 1
 		-DepthSprite:
 	emp-overlay: emp_fx01
@@ -1739,19 +1714,19 @@ nawast:
 		ZOffset: -1024
 		ZRamp: 1
 		-DepthSprite:
-		Offset: 0, -36, 3
+		Offset: 0, -36, 1
 	damaged-bib: ntwastbb
 		Start: 1
 		ZOffset: -1024
 		ZRamp: 1
 		-DepthSprite:
-		Offset: 0, -36, 3
+		Offset: 0, -36, 1
 	dead-bib: ntwastbb
 		Start: 2
 		ZOffset: -1024
 		ZRamp: 1
 		-DepthSprite:
-		Offset: 0, -36, 3
+		Offset: 0, -36, 1
 	emp-overlay: emp_fx01
 		Length: *
 		Offset: 0, 0, 25

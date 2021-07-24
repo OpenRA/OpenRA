@@ -231,9 +231,6 @@ NAWEAP:
 		RequiresCondition: !build-incomplete && !empdisable
 		Sequence: idle-lights-bright
 		Palette: bright
-	WithIdleOverlay@BIB:
-		RequiresCondition: !build-incomplete
-		Sequence: bib
 	Power:
 		Amount: -30
 	ProvidesPrerequisite@buildingname:
