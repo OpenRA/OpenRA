@@ -210,20 +210,28 @@ namespace OpenRA.Graphics
 
 		public void SetViewportParams(Size sheetSize, int downscale, float depthMargin, int2 scroll)
 		{
-			// Calculate the effective size of the render surface in viewport pixels
-			var width = downscale * sheetSize.Width;
-			var height = downscale * sheetSize.Height;
-			var depthScale = height / (height + depthMargin);
-			var depthOffset = depthScale / 2;
-			shader.SetVec("Scroll", scroll.X, scroll.Y, scroll.Y);
-			shader.SetVec("r1",
-				2f / width,
-				2f / height,
-				-depthScale / height);
-			shader.SetVec("r2", -1, -1, 1 - depthOffset);
+			// Calculate the scale (r1) and offset (r2) that convert from OpenRA viewport pixels
+			// to OpenGL normalized device coordinates (NDC). OpenGL expects coordinates to vary from [-1, 1],
+			// so we rescale viewport pixels to the range [0, 2] using r1 then subtract 1 using r2.
+			var width = 2f / (downscale * sheetSize.Width);
+			var height = 2f / (downscale * sheetSize.Height);
 
-			// Texture index is sampled as a float, so convert to pixels then scale
-			shader.SetVec("DepthTextureScale", 128 * depthScale / height);
+			// Depth is more complicated:
+			// * The OpenGL z axis is inverted (negative is closer) relative to OpenRA (positive is closer).
+			// * We want to avoid clipping pixels that are behind the nominal z == y plane at the
+			//   top of the map, or above the nominal z == y plane at the bottom of the map.
+			//   We therefore expand the depth range by an extra margin that is calculated based on
+			//   the maximum expected world height (see Renderer.InitializeDepthBuffer).
+			// * Sprites can specify an additional per-pixel depth offset map, which is applied in the
+			//   fragment shader. The fragment shader operates in OpenGL window coordinates, not NDC,
+			//   with a depth range [0, 1] corresponding to the NDC [-1, 1]. We must therefore multiply the
+			//   sprite channel value [0, 1] by 255 to find the pixel depth offset, then by our depth scale
+			//   to find the equivalent NDC offset, then divide by 2 to find the window coordinate offset.
+			var depth = 2f / (downscale * (sheetSize.Height + depthMargin));
+			shader.SetVec("DepthTextureScale", 128 * depth);
+			shader.SetVec("Scroll", scroll.X, scroll.Y, scroll.Y);
+			shader.SetVec("r1", width, height, -depth);
+			shader.SetVec("r2", -1, -1, 1);
 		}
 
 		public void SetDepthPreview(bool enabled, float contrast, float offset)

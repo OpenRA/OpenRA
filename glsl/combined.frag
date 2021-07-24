@@ -270,8 +270,7 @@ void main()
 		depth = depth + DepthTextureScale * dot(y, vDepthMask);
 	}
 
-	// Convert to window coords
-	gl_FragDepth = 0.5 * depth + 0.5;
+	gl_FragDepth = depth;
 
 	if (EnableDepthPreview)
 	{
