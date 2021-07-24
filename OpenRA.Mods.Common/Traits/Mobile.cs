@@ -804,6 +804,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		CPos? ClosestGroundCell()
 		{
+			// Creating a new CPos serves to reset a potential custom layer
 			var above = new CPos(TopLeft.X, TopLeft.Y);
 			if (CanEnterCell(above))
 				return above;
