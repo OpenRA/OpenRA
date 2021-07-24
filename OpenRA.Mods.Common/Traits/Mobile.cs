@@ -1003,8 +1003,8 @@ namespace OpenRA.Mods.Common.Traits
 
 				var explored = self.Owner.Shroud.IsExplored(location);
 
-				if (!self.World.Map.Contains(location)
-					|| mobile.IsTraitPaused
+				if (mobile.IsTraitPaused
+					|| !self.World.Map.Contains(location)
 					|| (!explored && !locomotorInfo.MoveIntoShroud)
 					|| (explored && mobile.Locomotor.MovementCostForCell(location) == short.MaxValue))
 					cursor = mobile.Info.BlockedCursor;
