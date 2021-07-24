@@ -8,19 +8,27 @@ cd "${HERE}/../lib/openra" || exit 1
 if [ -n "${APPIMAGE}" ]; then
 	LAUNCHER=${APPIMAGE}
 
-	# appimaged doesn't update the mime or icon caches when registering AppImages.
-	# Run update-desktop-database and gtk-update-icon-cache ourselves if we detect
-	# that the desktop file has been installed but the handler is not cached
-	if command -v update-desktop-database > /dev/null; then
-		APPIMAGEID=$(printf "file://%s" "${APPIMAGE}" | md5sum | cut -d' ' -f1)
-		LAUNCHER_NAME="appimagekit_${APPIMAGEID}-openra-{MODID}.desktop"
-		LAUNCHER_PATH="${HOME}/.local/share/applications/${LAUNCHER_NAME}"
-		MIMECACHE_PATH="${HOME}/.local/share/applications/mimeinfo.cache"
-		SCHEME="x-scheme-handler/openra-{MODID}-{TAG}"
-		if [ -f "${LAUNCHER_PATH}" ] && ! grep -qs "${SCHEME}=" "${MIMECACHE_PATH}"; then
-			update-desktop-database "${HOME}/.local/share/applications"
-			if command -v gtk-update-icon-cache > /dev/null; then
-				gtk-update-icon-cache ~/.local/share/icons/hicolor/ -t
+	APPIMAGEID=$(printf "file://%s" "${APPIMAGE}" | md5sum | cut -d' ' -f1)
+	LAUNCHER_NAME="appimagekit_${APPIMAGEID}-openra-{MODID}.desktop"
+	LAUNCHER_PATH="${HOME}/.local/share/applications/${LAUNCHER_NAME}"
+	export SDL_VIDEO_X11_WMCLASS="openra-{MODID}-{TAG}"
+
+	if [ -f "${LAUNCHER_PATH}" ]; then
+		# The KDE task switcher limits itself to the 128px icon unless we
+		# set an X11 _KDE_NET_WM_DESKTOP_FILE property on the window
+		export OPENRA_DESKTOP_FILENAME="${LAUNCHER_NAME}"
+
+		# appimaged doesn't update the mime or icon caches when registering AppImages.
+		# Run update-desktop-database and gtk-update-icon-cache ourselves if we detect
+		# that the desktop file has been installed but the handler is not cached
+		if command -v update-desktop-database > /dev/null; then
+			MIMECACHE_PATH="${HOME}/.local/share/applications/mimeinfo.cache"
+			SCHEME="x-scheme-handler/openra-{MODID}-{TAG}"
+			if ! grep -qs "${SCHEME}=" "${MIMECACHE_PATH}"; then
+				update-desktop-database "${HOME}/.local/share/applications"
+				if command -v gtk-update-icon-cache > /dev/null; then
+					gtk-update-icon-cache ~/.local/share/icons/hicolor/ -t
+				fi
 			fi
 		fi
 	fi
