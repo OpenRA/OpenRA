@@ -21,7 +21,7 @@ namespace OpenRA.Graphics
 	public sealed class WorldRenderer : IDisposable
 	{
 		public static readonly Func<IRenderable, int> RenderableZPositionComparisonKey =
-			r => ZPosition(r.Pos, r.ZOffset);
+			r => r.Pos.Y + r.Pos.Z + r.ZOffset;
 
 		public readonly Size TileSize;
 		public readonly int TileScale;
@@ -359,7 +359,13 @@ namespace OpenRA.Graphics
 
 		public float3 Screen3DPosition(WPos pos)
 		{
-			var z = ZPosition(pos, 0) * (float)TileSize.Height / TileScale;
+			// The projection from world coordinates to screen coordinates has
+			// a non-obvious relationship between the y and z coordinates:
+			// * A flat surface with constant y (e.g. a vertical wall) in world coordinates
+			//   transforms into a flat surface with constant z (depth) in screen coordinates.
+			// * Increasing the world y coordinate increases screen y and z coordinates equally.
+			// * Increases the world z coordinate decreases screen y but doesn't change screen z.
+			var z = pos.Y * (float)TileSize.Height / TileScale;
 			return new float3((float)TileSize.Width * pos.X / TileScale, (float)TileSize.Height * (pos.Y - pos.Z) / TileScale, z);
 		}
 
@@ -398,16 +404,6 @@ namespace OpenRA.Graphics
 			// Round to nearest pixel
 			var xyz = ScreenVectorComponents(vec);
 			return new int2((int)Math.Round(xyz.X), (int)Math.Round(xyz.Y));
-		}
-
-		public float ScreenZPosition(WPos pos, int offset)
-		{
-			return ZPosition(pos, offset) * (float)TileSize.Height / TileScale;
-		}
-
-		static int ZPosition(WPos pos, int offset)
-		{
-			return pos.Y + pos.Z + offset;
 		}
 
 		/// <summary>
