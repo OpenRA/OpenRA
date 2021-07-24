@@ -20,6 +20,9 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		readonly WDist maxRange;
 		readonly WDist minRange;
+		readonly Map map;
+		readonly int maxCells;
+		readonly int minCells;
 
 		public MoveWithinRange(Actor self, in Target target, WDist minRange, WDist maxRange,
 			WPos? initialTargetPosition = null, Color? targetLineColor = null)
@@ -27,6 +30,9 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			this.minRange = minRange;
 			this.maxRange = maxRange;
+			map = self.World.Map;
+			maxCells = (maxRange.Length + 1023) / 1024;
+			minCells = minRange.Length / 1024;
 		}
 
 		protected override bool ShouldStop(Actor self)
@@ -44,10 +50,6 @@ namespace OpenRA.Mods.Common.Activities
 
 		protected override IEnumerable<CPos> CandidateMovementCells(Actor self)
 		{
-			var map = self.World.Map;
-			var maxCells = (maxRange.Length + 1023) / 1024;
-			var minCells = minRange.Length / 1024;
-
 			return map.FindTilesInAnnulus(lastVisibleTargetLocation, minCells, maxCells)
 				.Where(c => Mobile.CanStayInCell(c) && AtCorrectRange(map.CenterOfSubCell(c, Mobile.FromSubCell)));
 		}
