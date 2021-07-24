@@ -48,17 +48,19 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public static void DrawSprite(Sprite s, float2 pos, Size size)
 		{
-			Game.Renderer.RgbaSpriteRenderer.DrawSprite(s, pos, new float2(size));
+			var scale = new float3(size.Width / s.Size.X, size.Height / s.Size.Y, 1f);
+			Game.Renderer.RgbaSpriteRenderer.DrawSprite(s, pos, scale);
 		}
 
 		public static void DrawSprite(Sprite s, float2 pos, float2 size)
 		{
-			Game.Renderer.RgbaSpriteRenderer.DrawSprite(s, pos, size);
+			var scale = new float3(size.X / s.Size.X, size.Y / s.Size.Y, 1f);
+			Game.Renderer.RgbaSpriteRenderer.DrawSprite(s, pos, scale);
 		}
 
 		public static void DrawSpriteCentered(Sprite s, PaletteReference p, float2 pos, float scale = 1f)
 		{
-			Game.Renderer.SpriteRenderer.DrawSprite(s, pos - 0.5f * scale * s.Size, p, scale * s.Size);
+			Game.Renderer.SpriteRenderer.DrawSprite(s, p, pos - 0.5f * scale * s.Size, scale);
 		}
 
 		public static void DrawPanel(string collection, Rectangle bounds)

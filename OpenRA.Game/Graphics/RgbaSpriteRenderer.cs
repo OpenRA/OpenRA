@@ -22,36 +22,28 @@ namespace OpenRA.Graphics
 			this.parent = parent;
 		}
 
-		public void DrawSprite(Sprite s, in float3 location, in float3 size)
+		public void DrawSprite(Sprite s, in float3 location, in float3 scale)
 		{
 			if (s.Channel != TextureChannel.RGBA)
 				throw new InvalidOperationException("DrawRGBASprite requires a RGBA sprite.");
 
-			parent.DrawSprite(s, location, 0, size);
+			parent.DrawSprite(s, 0, location, scale);
 		}
 
-		public void DrawSprite(Sprite s, in float3 location)
+		public void DrawSprite(Sprite s, in float3 location, float scale = 1f)
 		{
 			if (s.Channel != TextureChannel.RGBA)
 				throw new InvalidOperationException("DrawRGBASprite requires a RGBA sprite.");
 
-			parent.DrawSprite(s, location, 0, s.Size);
+			parent.DrawSprite(s, 0, location, scale);
 		}
 
-		public void DrawSprite(Sprite s, in float3 a, in float3 b, in float3 c, in float3 d)
+		public void DrawSprite(Sprite s, in float3 location, float scale, in float3 tint, float alpha)
 		{
 			if (s.Channel != TextureChannel.RGBA)
 				throw new InvalidOperationException("DrawRGBASprite requires a RGBA sprite.");
 
-			parent.DrawSprite(s, a, b, c, d);
-		}
-
-		public void DrawSprite(Sprite s, in float3 location, in float3 size, in float3 tint, float alpha)
-		{
-			if (s.Channel != TextureChannel.RGBA)
-				throw new InvalidOperationException("DrawRGBASprite requires a RGBA sprite.");
-
-			parent.DrawSprite(s, location, 0, size, tint, alpha);
+			parent.DrawSprite(s, 0, location, scale, tint, alpha);
 		}
 
 		public void DrawSprite(Sprite s, in float3 a, in float3 b, in float3 c, in float3 d, in float3 tint, float alpha)
@@ -59,7 +51,7 @@ namespace OpenRA.Graphics
 			if (s.Channel != TextureChannel.RGBA)
 				throw new InvalidOperationException("DrawRGBASprite requires a RGBA sprite.");
 
-			parent.DrawSprite(s, a, b, c, d, tint, alpha);
+			parent.DrawSprite(s, 0, a, b, c, d, tint, alpha);
 		}
 	}
 }

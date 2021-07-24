@@ -23,7 +23,6 @@ namespace OpenRA.Graphics
 		public readonly float ZRamp;
 		public readonly float3 Size;
 		public readonly float3 Offset;
-		public readonly float3 FractionalOffset;
 		public readonly float Top, Left, Bottom, Right;
 
 		public Sprite(Sheet sheet, Rectangle bounds, TextureChannel channel, float scale = 1)
@@ -38,8 +37,6 @@ namespace OpenRA.Graphics
 			Channel = channel;
 			Size = scale * new float3(bounds.Size.Width, bounds.Size.Height, bounds.Size.Height * zRamp);
 			BlendMode = blendMode;
-			FractionalOffset = Size.Z != 0 ? offset / Size :
-				new float3(offset.X / Size.X, offset.Y / Size.Y, 0);
 
 			// Some GPUs suffer from precision issues when rendering into non 1:1 framebuffers that result
 			// in rendering a line of texels that sample outside the sprite rectangle.
