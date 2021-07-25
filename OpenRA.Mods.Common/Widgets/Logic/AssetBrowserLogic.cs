@@ -25,6 +25,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class AssetBrowserLogic : ChromeLogic
 	{
 		readonly string[] allowedExtensions;
+		readonly string[] allowedSpriteExtensions;
+		readonly string[] allowedModelExtensions;
+		readonly string[] allowedVideoExtensions;
 		readonly IEnumerable<IReadOnlyPackage> acceptablePackages;
 		readonly string[] palettes;
 		readonly World world;
@@ -283,7 +286,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			var assetBrowserModData = modData.Manifest.Get<AssetBrowser>();
-			allowedExtensions = assetBrowserModData.SupportedExtensions;
+			allowedSpriteExtensions = assetBrowserModData.SpriteExtensions;
+			allowedModelExtensions = assetBrowserModData.ModelExtensions;
+			allowedVideoExtensions = assetBrowserModData.VideoExtensions;
+			allowedExtensions = allowedSpriteExtensions
+				.Union(allowedModelExtensions)
+				.Union(allowedVideoExtensions)
+				.ToArray();
 
 			acceptablePackages = modData.ModFiles.MountedPackages.Where(p =>
 				p.Contents.Any(c => allowedExtensions.Contains(Path.GetExtension(c).ToLowerInvariant())));
@@ -397,30 +406,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						prefix += "|";
 				}
 
-				var video = VideoLoader.GetVideo(Game.ModData.DefaultFileSystem.Open(filename), Game.ModData.VideoLoaders);
-				if (video != null)
-				{
-					player = panel.Get<VideoPlayerWidget>("PLAYER");
-					player.Load(prefix + filename);
-					player.DrawOverlay = false;
-					isVideoLoaded = true;
-
-					if (frameSlider != null)
-					{
-						frameSlider.MaximumValue = (float)player.Video.Frames - 1;
-						frameSlider.Ticks = 0;
-					}
-
-					return true;
-				}
-
-				if (Path.GetExtension(filename.ToLowerInvariant()) == ".vxl")
-				{
-					var voxelName = Path.GetFileNameWithoutExtension(filename);
-					currentVoxel = world.ModelCache.GetModel(voxelName);
-					currentSprites = null;
-				}
-				else
+				var fileExtension = Path.GetExtension(filename.ToLowerInvariant());
+				if (allowedSpriteExtensions.Contains(fileExtension))
 				{
 					currentSprites = world.Map.Rules.Sequences.SpriteCache[prefix + filename];
 					currentFrame = 0;
@@ -433,6 +420,32 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					currentVoxel = null;
 				}
+				else if (allowedModelExtensions.Contains(fileExtension))
+				{
+					var voxelName = Path.GetFileNameWithoutExtension(filename);
+					currentVoxel = world.ModelCache.GetModel(voxelName);
+					currentSprites = null;
+				}
+				else if (allowedVideoExtensions.Contains(fileExtension))
+				{
+					var video = VideoLoader.GetVideo(Game.ModData.DefaultFileSystem.Open(filename), Game.ModData.VideoLoaders);
+					if (video != null)
+					{
+
+						player = panel.Get<VideoPlayerWidget>("PLAYER");
+						player.Load(prefix + filename);
+						player.DrawOverlay = false;
+						isVideoLoaded = true;
+
+						if (frameSlider != null)
+						{
+							frameSlider.MaximumValue = (float)player.Video.Frames - 1;
+							frameSlider.Ticks = 0;
+						}
+					}
+				}
+				else
+					return false;
 			}
 			catch (Exception ex)
 			{

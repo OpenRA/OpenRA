@@ -15,7 +15,8 @@ namespace OpenRA
 {
 	public class AssetBrowser : IGlobalModData
 	{
-		[FieldLoader.Require]
-		public readonly string[] SupportedExtensions = Array.Empty<string>();
+		public readonly string[] SpriteExtensions = Array.Empty<string>();
+		public readonly string[] ModelExtensions = Array.Empty<string>();
+		public readonly string[] VideoExtensions = Array.Empty<string>();
 	}
 }
