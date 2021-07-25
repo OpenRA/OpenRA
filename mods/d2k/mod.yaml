@@ -214,7 +214,8 @@ SpriteSequenceFormat: DefaultSpriteSequence
 ModelSequenceFormat: PlaceholderModelSequence
 
 AssetBrowser:
-	SupportedExtensions: .shp, .r8, .vqa
+	SpriteExtensions: .shp, .r8
+	VideoExtensions: .vqa
 
 GameSpeeds:
 	DefaultSpeed: default
