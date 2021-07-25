@@ -82,28 +82,32 @@ namespace OpenRA.Graphics
 				for (; secondarySheetIndex < ns; secondarySheetIndex++)
 					if (sheets[secondarySheetIndex] == secondarySheet)
 						break;
+
+				// If neither sheet has been mapped both index values will be set to ns.
+				// This is fine if they both reference the same texture, but if they don't
+				// we must increment the secondary sheet index to the next free sampler.
+				if (secondarySheetIndex == sheetIndex && secondarySheet != sheet)
+					secondarySheetIndex++;
 			}
 
 			// Make sure that we have enough free samplers to map both if needed, otherwise flush
-			var needSamplers = (sheetIndex == ns ? 1 : 0) + (secondarySheetIndex == ns ? 1 : 0);
-			if (ns + needSamplers >= sheets.Length)
+			if (Math.Max(sheetIndex, secondarySheetIndex) >= sheets.Length)
 			{
 				Flush();
 				sheetIndex = 0;
-				if (ss != null)
-					secondarySheetIndex = 1;
+				secondarySheetIndex = ss != null && ss.SecondarySheet != sheet ? 1 : 0;
 			}
 
 			if (sheetIndex >= ns)
 			{
 				sheets[sheetIndex] = sheet;
-				ns += 1;
+				ns++;
 			}
 
 			if (secondarySheetIndex >= ns && ss != null)
 			{
 				sheets[secondarySheetIndex] = ss.SecondarySheet;
-				ns += 1;
+				ns++;
 			}
 
 			return new int2(sheetIndex, secondarySheetIndex);
