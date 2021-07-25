@@ -54,6 +54,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly int OverrideFogIndex = 15;
 
+		[Desc("Size of the terrain layer partitions (cells)")]
+		public readonly int BinSize = 10;
+
 		public readonly BlendMode ShroudBlend = BlendMode.Alpha;
 		public override object Create(ActorInitializer init) { return new ShroudRenderer(init.World, this); }
 	}
@@ -205,8 +208,8 @@ namespace OpenRA.Mods.Common.Traits
 			var emptySprite = new Sprite(shroudSprites[0].Sprite.Sheet, Rectangle.Empty, TextureChannel.Alpha);
 			shroudPaletteReference = wr.Palette(info.ShroudPalette);
 			fogPaletteReference = wr.Palette(info.FogPalette);
-			shroudLayer = new TerrainSpriteLayer(w, wr, emptySprite, shroudBlend, false);
-			fogLayer = new TerrainSpriteLayer(w, wr, emptySprite, fogBlend, false);
+			shroudLayer = new TerrainSpriteLayer(w, wr, info.BinSize, emptySprite, shroudBlend, false);
+			fogLayer = new TerrainSpriteLayer(w, wr, info.BinSize, emptySprite, fogBlend, false);
 
 			WorldOnRenderPlayerChanged(world.RenderPlayer);
 		}

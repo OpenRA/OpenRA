@@ -53,6 +53,9 @@ namespace OpenRA.Mods.Common.Traits
 		[FieldLoader.LoadUsing(nameof(LoadInitialSmudges))]
 		public readonly Dictionary<CPos, MapSmudge> InitialSmudges;
 
+		[Desc("Size of the terrain layer partitions (cells)")]
+		public readonly int BinSize = 10;
+
 		public static object LoadInitialSmudges(MiniYaml yaml)
 		{
 			var nd = yaml.ToDictionary();
@@ -123,7 +126,7 @@ namespace OpenRA.Mods.Common.Traits
 					+ "Try using different smudge types for smudges that use different blend modes.");
 
 			paletteReference = wr.Palette(Info.Palette);
-			render = new TerrainSpriteLayer(w, wr, emptySprite, blendMode, w.Type != WorldType.Editor);
+			render = new TerrainSpriteLayer(w, wr, Info.BinSize, emptySprite, blendMode, w.Type != WorldType.Editor);
 
 			// Add map smudges
 			foreach (var kv in Info.InitialSmudges)

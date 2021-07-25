@@ -165,8 +165,13 @@ namespace OpenRA.Graphics
 			nv += 6;
 		}
 
-		public void DrawVertexBuffer(IVertexBuffer<Vertex> buffer, int start, int length, PrimitiveType type, IEnumerable<Sheet> sheets, BlendMode blendMode)
+		internal void SetRenderStateForVertexBuffer(IVertexBuffer<Vertex> buffer, IEnumerable<Sheet> sheets, BlendMode blendMode)
 		{
+			renderer.CurrentBatchRenderer = this;
+			Flush();
+
+			currentBlend = blendMode;
+
 			var i = 0;
 			foreach (var s in sheets)
 			{
@@ -179,8 +184,7 @@ namespace OpenRA.Graphics
 
 			renderer.Context.SetBlendMode(blendMode);
 			shader.PrepareRender();
-			renderer.DrawBatch(buffer, start, length, type);
-			renderer.Context.SetBlendMode(BlendMode.None);
+			buffer.Bind();
 		}
 
 		// PERF: methods that throw won't be inlined by the JIT, so extract a static helper for use on hot paths

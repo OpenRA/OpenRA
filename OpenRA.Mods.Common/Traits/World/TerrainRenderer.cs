@@ -22,6 +22,9 @@ namespace OpenRA.Mods.Common.Traits
 	[TraitLocation(SystemActors.World | SystemActors.EditorWorld)]
 	public class TerrainRendererInfo : TraitInfo, ITiledTerrainRendererInfo
 	{
+		[Desc("Size of the terrain layer partitions (cells)")]
+		public readonly int BinSize = 10;
+
 		bool ITiledTerrainRendererInfo.ValidateTileSprites(ITemplatedTerrainInfo terrainInfo, Action<string> onError)
 		{
 			var missingImages = new HashSet<string>();
@@ -56,11 +59,12 @@ namespace OpenRA.Mods.Common.Traits
 			return failed;
 		}
 
-		public override object Create(ActorInitializer init) { return new TerrainRenderer(init.World); }
+		public override object Create(ActorInitializer init) { return new TerrainRenderer(init.World, this); }
 	}
 
 	public sealed class TerrainRenderer : IRenderTerrain, IWorldLoaded, INotifyActorDisposing, ITiledTerrainRenderer
 	{
+		readonly TerrainRendererInfo info;
 		readonly Map map;
 		TerrainSpriteLayer spriteLayer;
 		readonly DefaultTerrain terrainInfo;
@@ -68,8 +72,9 @@ namespace OpenRA.Mods.Common.Traits
 		WorldRenderer worldRenderer;
 		bool disposed;
 
-		public TerrainRenderer(World world)
+		public TerrainRenderer(World world, TerrainRendererInfo info)
 		{
+			this.info = info;
 			map = world.Map;
 			terrainInfo = map.Rules.TerrainInfo as DefaultTerrain;
 			if (terrainInfo == null)
@@ -81,7 +86,7 @@ namespace OpenRA.Mods.Common.Traits
 		void IWorldLoaded.WorldLoaded(World world, WorldRenderer wr)
 		{
 			worldRenderer = wr;
-			spriteLayer = new TerrainSpriteLayer(world, wr, tileCache.MissingTile, BlendMode.Alpha, world.Type != WorldType.Editor);
+			spriteLayer = new TerrainSpriteLayer(world, wr, info.BinSize, tileCache.MissingTile, BlendMode.Alpha, world.Type != WorldType.Editor);
 			foreach (var cell in map.AllCells)
 				UpdateCell(cell);
 

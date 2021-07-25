@@ -36,6 +36,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Custom opacity to apply to the overlay sprite.")]
 		public readonly float Alpha = 1f;
 
+		[Desc("Size of the terrain layer partitions (cells)")]
+		public readonly int BinSize = 10;
+
 		public override object Create(ActorInitializer init)
 		{
 			return new BuildableTerrainOverlay(init.Self, this);
@@ -65,7 +68,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void IWorldLoaded.WorldLoaded(World w, WorldRenderer wr)
 		{
-			render = new TerrainSpriteLayer(w, wr, disabledSprite, BlendMode.Alpha, wr.World.Type != WorldType.Editor);
+			render = new TerrainSpriteLayer(w, wr, info.BinSize, disabledSprite, BlendMode.Alpha, wr.World.Type != WorldType.Editor);
 
 			world.Map.Tiles.CellEntryChanged += UpdateTerrainCell;
 			world.Map.CustomTerrain.CellEntryChanged += UpdateTerrainCell;

@@ -45,6 +45,9 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("Actor types that should be treated as veins for adjacency.")]
 		public readonly HashSet<string> VeinholeActors = new HashSet<string> { };
 
+		[Desc("Size of the terrain layer partitions (cells)")]
+		public readonly int BinSize = 10;
+
 		public override object Create(ActorInitializer init) { return new TSVeinsRenderer(init.Self, this); }
 	}
 
@@ -133,7 +136,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 			var first = veinSequence.GetSprite(0);
 			var emptySprite = new Sprite(first.Sheet, Rectangle.Empty, TextureChannel.Alpha);
-			spriteLayer = new TerrainSpriteLayer(w, wr, emptySprite, first.BlendMode, wr.World.Type != WorldType.Editor);
+			spriteLayer = new TerrainSpriteLayer(w, wr, info.BinSize, emptySprite, first.BlendMode, wr.World.Type != WorldType.Editor);
 
 			// Initialize the renderIndices with the initial map state so it is visible
 			// through the fog with the Explored Map option enabled

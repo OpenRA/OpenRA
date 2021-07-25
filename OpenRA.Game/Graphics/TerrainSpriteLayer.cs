@@ -25,11 +25,15 @@ namespace OpenRA.Graphics
 		readonly Sheet[] sheets;
 		readonly Sprite emptySprite;
 
+		readonly int binSize;
+		readonly int binCols;
+		readonly int binStride;
+
 		readonly IVertexBuffer<Vertex> vertexBuffer;
 		readonly Vertex[] vertices;
 		readonly bool[] ignoreTint;
-		readonly HashSet<int> dirtyRows = new HashSet<int>();
-		readonly int rowStride;
+		readonly bool[] dirtyBins;
+
 		readonly bool restrictToBounds;
 
 		readonly WorldRenderer worldRenderer;
@@ -37,28 +41,52 @@ namespace OpenRA.Graphics
 
 		readonly PaletteReference[] palettes;
 
-		public TerrainSpriteLayer(World world, WorldRenderer wr, Sprite emptySprite, BlendMode blendMode, bool restrictToBounds)
+		public TerrainSpriteLayer(World world, WorldRenderer wr, int binSize, Sprite emptySprite, BlendMode blendMode, bool restrictToBounds)
 		{
 			worldRenderer = wr;
+			this.binSize = binSize;
 			this.restrictToBounds = restrictToBounds;
 			this.emptySprite = emptySprite;
 			sheets = new Sheet[SpriteRenderer.SheetCount];
 			BlendMode = blendMode;
 
 			map = world.Map;
-			rowStride = 6 * map.MapSize.X;
+			binCols = Exts.IntegerDivisionRoundingAwayFromZero(map.MapSize.X, binSize);
+			var binRows = Exts.IntegerDivisionRoundingAwayFromZero(map.MapSize.Y, binSize);
+			binStride = 6 * binSize * binSize;
+			vertices = new Vertex[binRows * binCols * binStride];
 
-			vertices = new Vertex[rowStride * map.MapSize.Y];
 			palettes = new PaletteReference[map.MapSize.X * map.MapSize.Y];
 			vertexBuffer = Game.Renderer.Context.CreateVertexBuffer(vertices.Length);
+
+			dirtyBins = new bool[binRows * binCols];
+			Array.Fill(dirtyBins, true, 0, dirtyBins.Length);
 
 			wr.PaletteInvalidated += UpdatePaletteIndices;
 
 			if (wr.TerrainLighting != null)
 			{
-				ignoreTint = new bool[rowStride * map.MapSize.Y];
+				ignoreTint = new bool[vertices.Length];
 				wr.TerrainLighting.CellChanged += UpdateTint;
 			}
+		}
+
+		int VertexOffset(MPos uv)
+		{
+			var binCol = uv.U / binSize;
+			var binRow = uv.V / binSize;
+			var dx = uv.U - binCol * binSize;
+			var dy = uv.V - binRow * binSize;
+
+			return binStride * (binRow * binCols + binCol) + 6 * (dy * binSize + dx);
+		}
+
+		void MarkDirty(MPos uv)
+		{
+			var binCol = uv.U / binSize;
+			var binRow = uv.V / binSize;
+
+			dirtyBins[binRow * binCols + binCol] = true;
 		}
 
 		void UpdatePaletteIndices()
@@ -70,8 +98,7 @@ namespace OpenRA.Graphics
 				vertices[i] = new Vertex(v.X, v.Y, v.Z, v.S, v.T, v.U, v.V, p, v.C, v.R, v.G, v.B, v.A);
 			}
 
-			for (var row = 0; row < map.MapSize.Y; row++)
-				dirtyRows.Add(row);
+			Array.Fill(dirtyBins, true, 0, dirtyBins.Length);
 		}
 
 		public void Clear(CPos cell)
@@ -98,7 +125,7 @@ namespace OpenRA.Graphics
 
 		void UpdateTint(MPos uv)
 		{
-			var offset = rowStride * uv.V + 6 * uv.U;
+			var offset = VertexOffset(uv);
 			if (ignoreTint[offset])
 			{
 				for (var i = 0; i < 6; i++)
@@ -132,7 +159,7 @@ namespace OpenRA.Graphics
 				vertices[offset + i] = new Vertex(v.X, v.Y, v.Z, v.S, v.T, v.U, v.V, v.P, v.C, v.A * weights[CornerVertexMap[i]], v.A);
 			}
 
-			dirtyRows.Add(uv.V);
+			MarkDirty(uv);
 		}
 
 		int GetOrAddSheetIndex(Sheet sheet)
@@ -181,7 +208,7 @@ namespace OpenRA.Graphics
 			if (!map.Tiles.Contains(uv))
 				return;
 
-			var offset = rowStride * uv.V + 6 * uv.U;
+			var offset = VertexOffset(uv);
 			Util.FastCreateQuad(vertices, pos, sprite, samplers, palette?.TextureIndex ?? 0, offset, scale * sprite.Size, alpha * float3.Ones, alpha);
 			palettes[uv.V * map.MapSize.X + uv.U] = palette;
 
@@ -191,32 +218,54 @@ namespace OpenRA.Graphics
 				UpdateTint(uv);
 			}
 
-			dirtyRows.Add(uv.V);
+			MarkDirty(uv);
 		}
 
 		public void Draw(Viewport viewport)
 		{
 			var cells = restrictToBounds ? viewport.VisibleCellsInsideBounds : viewport.AllVisibleCells;
 
-			// Only draw the rows that are visible.
-			var firstRow = cells.CandidateMapCoords.TopLeft.V.Clamp(0, map.MapSize.Y);
-			var lastRow = (cells.CandidateMapCoords.BottomRight.V + 1).Clamp(firstRow, map.MapSize.Y);
+			// Only update and draw bins that are visible
+			var tl = cells.CandidateMapCoords.TopLeft;
+			var br = cells.CandidateMapCoords.BottomRight;
+			var minCol = tl.U.Clamp(0, map.MapSize.X) / binSize;
+			var maxCol = br.U.Clamp(0, map.MapSize.X) / binSize;
+			var minRow = tl.V.Clamp(0, map.MapSize.Y) / binSize;
+			var maxRow = br.V.Clamp(0, map.MapSize.Y) / binSize;
 
-			Game.Renderer.Flush();
+			Game.Renderer.WorldSpriteRenderer.SetRenderStateForVertexBuffer(vertexBuffer, sheets, BlendMode);
 
 			// Flush any visible changes to the GPU
-			for (var row = firstRow; row <= lastRow; row++)
+			for (var row = minRow; row <= maxRow; row++)
 			{
-				if (!dirtyRows.Remove(row))
-					continue;
+				for (var col = minCol; col <= maxCol;)
+				{
+					var i = row * binCols + col;
+					if (!dirtyBins[i])
+					{
+						col++;
+						continue;
+					}
 
-				var rowOffset = rowStride * row;
-				vertexBuffer.SetData(vertices, rowOffset, rowOffset, rowStride);
+					// Coalesce adjacent bin updates to reduce SetData calls
+					var updateStart = i * binStride;
+					var updateLength = binStride;
+					dirtyBins[i] = false;
+
+					while (++col <= maxCol && dirtyBins[++i])
+					{
+						updateLength += binStride;
+						dirtyBins[i] = false;
+					}
+
+					vertexBuffer.SetData(vertices, updateStart, updateStart, updateLength);
+				}
+
+				var offset = binStride * (row * binCols + minCol);
+				var length = binStride * (maxCol - minCol + 1);
+
+				Game.Renderer.Context.DrawPrimitives(PrimitiveType.TriangleList, offset, length);
 			}
-
-			Game.Renderer.WorldSpriteRenderer.DrawVertexBuffer(
-				vertexBuffer, rowStride * firstRow, rowStride * (lastRow - firstRow),
-				PrimitiveType.TriangleList, sheets, BlendMode);
 
 			Game.Renderer.Flush();
 		}

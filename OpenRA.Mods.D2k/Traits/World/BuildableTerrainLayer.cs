@@ -27,6 +27,9 @@ namespace OpenRA.Mods.D2k.Traits
 		[Desc("The hitpoints, which can be reduced by the DamagesConcreteWarhead.")]
 		public readonly int MaxStrength = 9000;
 
+		[Desc("Size of the terrain layer partitions (cells)")]
+		public readonly int BinSize = 10;
+
 		public override object Create(ActorInitializer init) { return new BuildableTerrainLayer(init.Self, this); }
 	}
 
@@ -52,7 +55,7 @@ namespace OpenRA.Mods.D2k.Traits
 
 		void IWorldLoaded.WorldLoaded(World w, WorldRenderer wr)
 		{
-			render = new TerrainSpriteLayer(w, wr, terrainRenderer.MissingTile, BlendMode.Alpha, wr.World.Type != WorldType.Editor);
+			render = new TerrainSpriteLayer(w, wr, info.BinSize, terrainRenderer.MissingTile, BlendMode.Alpha, wr.World.Type != WorldType.Editor);
 			paletteReference = wr.Palette(info.Palette);
 		}
 

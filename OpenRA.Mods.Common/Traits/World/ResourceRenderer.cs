@@ -49,6 +49,9 @@ namespace OpenRA.Mods.Common.Traits
 		[FieldLoader.LoadUsing(nameof(LoadResourceTypes))]
 		public readonly Dictionary<string, ResourceTypeInfo> ResourceTypes = null;
 
+		[Desc("Size of the terrain layer partitions (cells)")]
+		public readonly int BinSize = 10;
+
 		// Copied from ResourceLayerInfo
 		protected static object LoadResourceTypes(MiniYaml yaml)
 		{
@@ -107,7 +110,7 @@ namespace OpenRA.Mods.Common.Traits
 				{
 					var first = resourceVariants.First().Value.GetSprite(0);
 					var emptySprite = new Sprite(first.Sheet, Rectangle.Empty, TextureChannel.Alpha);
-					spriteLayer = new TerrainSpriteLayer(w, wr, emptySprite, first.BlendMode, wr.World.Type != WorldType.Editor);
+					spriteLayer = new TerrainSpriteLayer(w, wr, Info.BinSize, emptySprite, first.BlendMode, wr.World.Type != WorldType.Editor);
 				}
 
 				if (shadowLayer == null)
@@ -117,7 +120,7 @@ namespace OpenRA.Mods.Common.Traits
 					{
 						var first = firstWithShadow.GetShadow(0, WAngle.Zero);
 						var emptySprite = new Sprite(first.Sheet, Rectangle.Empty, TextureChannel.Alpha);
-						shadowLayer = new TerrainSpriteLayer(w, wr, emptySprite, first.BlendMode, wr.World.Type != WorldType.Editor);
+						shadowLayer = new TerrainSpriteLayer(w, wr, Info.BinSize, emptySprite, first.BlendMode, wr.World.Type != WorldType.Editor);
 					}
 				}
 
