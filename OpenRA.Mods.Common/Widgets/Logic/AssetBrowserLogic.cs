@@ -50,6 +50,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		Sprite[] currentSprites;
 		IModel currentVoxel;
 		ISound currentSound;
+		ISoundFormat currentSoundFormat;
+		Stream currentAudioStream;
 		VideoPlayerWidget player = null;
 		bool isVideoLoaded = false;
 		bool isLoadError = false;
@@ -160,7 +162,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var frameContainer = panel.GetOrNull("FRAME_SELECTOR");
 			if (frameContainer != null)
 				frameContainer.IsVisible = () => (currentSprites != null && currentSprites.Length > 1) ||
-					(isVideoLoaded && player != null && player.Video != null && player.Video.Frames > 1);
+					(isVideoLoaded && player != null && player.Video != null && player.Video.Frames > 1) ||
+					currentSoundFormat != null;
 
 			frameSlider = panel.GetOrNull<SliderWidget>("FRAME_SLIDER");
 			if (frameSlider != null)
@@ -171,16 +174,33 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						currentFrame = (int)Math.Round(x);
 				};
 
-				frameSlider.GetValue = () => isVideoLoaded ? player.Video.CurrentFrame : currentFrame;
-				frameSlider.IsDisabled = () => isVideoLoaded;
+				frameSlider.GetValue = () =>
+				{
+					if (isVideoLoaded)
+						return player.Video.CurrentFrame;
+
+					if (currentSound != null)
+						return currentSound.SeekPosition * currentSoundFormat.SampleRate;
+
+					return currentFrame;
+				};
+
+				frameSlider.IsDisabled = () => isVideoLoaded || currentSoundFormat != null;
 			}
 
 			var frameText = panel.GetOrNull<LabelWidget>("FRAME_COUNT");
 			if (frameText != null)
 			{
 				frameText.GetText = () =>
-					isVideoLoaded ? $"{player.Video.CurrentFrame + 1} / {player.Video.Frames}"
-						: $"{currentFrame} / {currentSprites.Length - 1}";
+				{
+					if (isVideoLoaded)
+						return $"{player.Video.CurrentFrame + 1} / {player.Video.Frames}";
+
+					if (currentSoundFormat != null)
+						return $"{Math.Round(currentSoundFormat.LengthInSeconds, 3)} sec";
+
+					return $"{currentFrame} / {currentSprites.Length - 1}";
+				};
 			}
 
 			var playButton = panel.GetOrNull<ButtonWidget>("BUTTON_PLAY");
@@ -190,11 +210,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					if (isVideoLoaded)
 						player.Play();
+					else if (currentSoundFormat != null)
+					{
+						if (currentSound != null)
+							Game.Sound.StopSound(currentSound);
+
+						currentSound = Game.Sound.Play(currentSoundFormat, Game.Sound.SoundVolume);
+					}
 					else
 						animateFrames = true;
 				};
 
-				playButton.IsVisible = () => isVideoLoaded ? player.Paused : !animateFrames;
+				playButton.IsVisible = () => isVideoLoaded ? player.Paused : !animateFrames || currentSoundFormat != null;
 			}
 
 			var pauseButton = panel.GetOrNull<ButtonWidget>("BUTTON_PAUSE");
@@ -208,7 +235,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						animateFrames = false;
 				};
 
-				pauseButton.IsVisible = () => isVideoLoaded ? !player.Paused : animateFrames;
+				pauseButton.IsVisible = () => isVideoLoaded ? !player.Paused : (animateFrames && currentSoundFormat == null);
 			}
 
 			var stopButton = panel.GetOrNull<ButtonWidget>("BUTTON_STOP");
@@ -218,14 +245,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					if (isVideoLoaded)
 						player.Stop();
+					else if (currentSound != null)
+						Game.Sound.StopSound(currentSound);
 					else
 					{
-						if (frameSlider != null)
-							frameSlider.Value = 0;
-
 						currentFrame = 0;
 						animateFrames = false;
 					}
+
+					if (frameSlider != null)
+						frameSlider.Value = 0;
 				};
 			}
 
@@ -238,7 +267,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						nextButton.OnClick = SelectNextFrame;
 				};
 
-				nextButton.IsVisible = () => !isVideoLoaded;
+				nextButton.IsVisible = () => !isVideoLoaded && currentSoundFormat == null;
 			}
 
 			var prevButton = panel.GetOrNull<ButtonWidget>("BUTTON_PREV");
@@ -250,7 +279,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						SelectPreviousFrame();
 				};
 
-				prevButton.IsVisible = () => !isVideoLoaded;
+				prevButton.IsVisible = () => !isVideoLoaded && currentSoundFormat == null;
 			}
 
 			var spriteScaleSlider = panel.GetOrNull<SliderWidget>("SPRITE_SCALE_SLIDER");
@@ -258,8 +287,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				spriteScaleSlider.OnChange += x => spriteScale = x;
 				spriteScaleSlider.GetValue = () => spriteScale;
-				spriteScaleSlider.IsVisible = () => !isVideoLoaded;
-				panel.GetOrNull<LabelWidget>("SPRITE_SCALE").IsVisible = () => !isVideoLoaded;
+				spriteScaleSlider.IsVisible = () => !isVideoLoaded && currentSoundFormat == null;
+				panel.GetOrNull<LabelWidget>("SPRITE_SCALE").IsVisible = () => !isVideoLoaded && currentSoundFormat == null;
 			}
 
 			var voxelContainer = panel.GetOrNull("VOXEL_SELECTOR");
@@ -331,10 +360,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (closeButton != null)
 				closeButton.OnClick = () =>
 				{
-					if (isVideoLoaded)
-						player.Stop();
-
-					UnMuteSounds();
+					ClearLoadedAssets();
 					Ui.CloseWindow();
 					onExit();
 				};
@@ -406,20 +432,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		bool LoadAsset(IReadOnlyPackage package, string filename)
 		{
-			if (currentSound != null)
-				Game.Sound.StopSound(currentSound);
-
-			currentSprites = null;
-			currentFrame = 0;
-			currentVoxel = null;
-			currentSound = null;
-
-			if (isVideoLoaded)
-			{
-				player.Stop();
-				player = null;
-				isVideoLoaded = false;
-			}
+			ClearLoadedAssets();
 
 			if (string.IsNullOrEmpty(filename))
 				return false;
@@ -455,35 +468,41 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					}
 
 					currentVoxel = null;
-
-					// Just in case we're switching away from a type of asset that forced the music to pause.
-					UnMuteSounds();
 				}
 				else if (allowedModelExtensions.Contains(fileExtension))
 				{
 					var voxelName = Path.GetFileNameWithoutExtension(filename);
 					currentVoxel = world.ModelCache.GetModel(voxelName);
 					currentSprites = null;
-
-					// Just in case we're switching away from a type of asset that forced the music to pause.
-					UnMuteSounds();
 				}
 				else if (allowedAudioExtensions.Contains(fileExtension))
 				{
-					// Mute music so it doesn't interfere with current asset.
+					// Mute music so it doesn't interfere with the current asset.
 					MuteSounds();
 
 					using (var soundStream = Game.ModData.DefaultFileSystem.Open(prefix + filename))
+					{
 						foreach (var modDataSoundLoader in Game.ModData.SoundLoaders)
-							if (modDataSoundLoader.TryParseSound(soundStream, out var soundFormat))
-								currentSound = Game.Sound.Play(soundFormat, Game.Sound.SoundVolume);
+						{
+							if (modDataSoundLoader.TryParseSound(soundStream, out currentSoundFormat))
+							{
+								if (frameSlider != null)
+								{
+									frameSlider.MaximumValue = currentSoundFormat.LengthInSeconds * currentSoundFormat.SampleRate;
+									frameSlider.Ticks = 0;
+								}
+
+								break;
+							}
+						}
+					}
 				}
 				else if (allowedVideoExtensions.Contains(fileExtension))
 				{
 					var video = VideoLoader.GetVideo(Game.ModData.DefaultFileSystem.Open(filename), Game.ModData.VideoLoaders);
 					if (video != null)
 					{
-						// Pause music so it doesn't interfere with current asset.
+						// Mute music so it doesn't interfere with the current asset.
 						MuteSounds();
 
 						player = panel.Get<VideoPlayerWidget>("PLAYER");
@@ -623,6 +642,29 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			if (cachedMusicVolume > 0)
 				Game.Sound.MusicVolume = cachedMusicVolume;
+		}
+
+		void ClearLoadedAssets()
+		{
+			if (currentSound != null)
+				Game.Sound.StopSound(currentSound);
+
+			currentSprites = null;
+			currentFrame = 0;
+
+			currentVoxel = null;
+
+			currentSound = null;
+			currentSoundFormat = null;
+			currentAudioStream?.Dispose();
+			currentAudioStream = null;
+
+			player?.Stop();
+			player = null;
+			isVideoLoaded = false;
+
+			// Just in case we're switching away from a type of asset that forced the music to mute.
+			UnMuteSounds();
 		}
 	}
 }
