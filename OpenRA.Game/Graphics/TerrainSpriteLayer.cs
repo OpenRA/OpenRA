@@ -28,7 +28,8 @@ namespace OpenRA.Graphics
 		readonly IVertexBuffer<Vertex> vertexBuffer;
 		readonly Vertex[] vertices;
 		readonly bool[] ignoreTint;
-		readonly HashSet<int> dirtyRows = new HashSet<int>();
+		readonly bool[] dirtyRows;
+		int dirtyRowCount;
 		readonly int rowStride;
 		readonly bool restrictToBounds;
 
@@ -51,6 +52,8 @@ namespace OpenRA.Graphics
 			vertices = new Vertex[rowStride * map.MapSize.Y];
 			palettes = new PaletteReference[map.MapSize.X * map.MapSize.Y];
 			vertexBuffer = Game.Renderer.Context.CreateVertexBuffer(vertices.Length);
+			dirtyRows = new bool[map.MapSize.Y];
+			dirtyRowCount = 0;
 
 			wr.PaletteInvalidated += UpdatePaletteIndices;
 
@@ -70,8 +73,8 @@ namespace OpenRA.Graphics
 				vertices[i] = new Vertex(v.X, v.Y, v.Z, v.S, v.T, v.U, v.V, p, v.C, v.R, v.G, v.B, v.A);
 			}
 
-			for (var row = 0; row < map.MapSize.Y; row++)
-				dirtyRows.Add(row);
+			Array.Fill(dirtyRows, true, 0, dirtyRows.Length);
+			dirtyRowCount = dirtyRows.Length;
 		}
 
 		public void Clear(CPos cell)
@@ -94,6 +97,15 @@ namespace OpenRA.Graphics
 			}
 
 			Update(cell.ToMPos(map.Grid.Type), sprite, palette, xyz, scale, alpha, ignoreTint);
+		}
+
+		void MarkRowDirty(int row)
+		{
+			if (!dirtyRows[row])
+			{
+				dirtyRows[row] = true;
+				dirtyRowCount++;
+			}
 		}
 
 		void UpdateTint(MPos uv)
@@ -132,7 +144,7 @@ namespace OpenRA.Graphics
 				vertices[offset + i] = new Vertex(v.X, v.Y, v.Z, v.S, v.T, v.U, v.V, v.P, v.C, v.A * weights[CornerVertexMap[i]], v.A);
 			}
 
-			dirtyRows.Add(uv.V);
+			MarkRowDirty(uv.V);
 		}
 
 		int GetOrAddSheetIndex(Sheet sheet)
@@ -191,7 +203,7 @@ namespace OpenRA.Graphics
 				UpdateTint(uv);
 			}
 
-			dirtyRows.Add(uv.V);
+			MarkRowDirty(uv.V);
 		}
 
 		public void Draw(Viewport viewport)
@@ -204,14 +216,20 @@ namespace OpenRA.Graphics
 
 			Game.Renderer.Flush();
 
-			// Flush any visible changes to the GPU
-			for (var row = firstRow; row <= lastRow; row++)
+			if (dirtyRowCount > 0)
 			{
-				if (!dirtyRows.Remove(row))
-					continue;
+				// Flush any visible changes to the GPU
+				for (var row = firstRow; row <= lastRow; row++)
+				{
+					if (!dirtyRows[row])
+						continue;
 
-				var rowOffset = rowStride * row;
-				vertexBuffer.SetData(vertices, rowOffset, rowOffset, rowStride);
+					dirtyRows[row] = false;
+					dirtyRowCount--;
+
+					var rowOffset = rowStride * row;
+					vertexBuffer.SetData(vertices, rowOffset, rowOffset, rowStride);
+				}
 			}
 
 			Game.Renderer.WorldSpriteRenderer.DrawVertexBuffer(
