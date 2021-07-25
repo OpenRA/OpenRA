@@ -51,7 +51,7 @@ namespace OpenRA
 		public static CVec operator -(CPos a, CPos b) { return new CVec(a.X - b.X, a.Y - b.Y); }
 
 		public static bool operator ==(CPos me, CPos other) { return me.Bits == other.Bits; }
-		public static bool operator !=(CPos me, CPos other) { return !(me == other); }
+		public static bool operator !=(CPos me, CPos other) { return me.Bits != other.Bits; }
 
 		public override int GetHashCode() { return Bits.GetHashCode(); }
 
@@ -80,8 +80,10 @@ namespace OpenRA
 			// (b) Therefore:
 			//  - ax + by adds (a - b)/2 to u (only even increments count)
 			//  - ax + by adds a + b to v
-			var u = (X - Y) / 2;
-			var v = X + Y;
+			var x = X;
+			var y = Y;
+			var u = (x - y) / 2;
+			var v = x + y;
 			return new MPos(u, v);
 		}
 
