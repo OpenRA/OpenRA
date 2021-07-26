@@ -416,6 +416,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var label = item.Get<LabelWithTooltipWidget>("TITLE");
 			WidgetUtils.TruncateLabelToTooltip(label, filepath);
+			label.GetTooltipText = () => $"{filepath}\n{package.Name}";
 
 			item.IsVisible = () =>
 			{
