@@ -141,15 +141,22 @@ namespace OpenRA.Mods.Common.Graphics
 
 			public void Render(WorldRenderer wr)
 			{
-				var groundPos = model.pos - new WVec(0, 0, wr.World.Map.DistanceAboveTerrain(model.pos).Length);
-				var tileScale = wr.World.Map.Grid.Type == MapGridType.RectangularIsometric ? 1448f : 1024f;
+				var map = wr.World.Map;
+				var groundPos = model.pos - new WVec(0, 0, map.DistanceAboveTerrain(model.pos).Length);
+				var tileScale = map.Grid.Type == MapGridType.RectangularIsometric ? 1448f : 1024f;
 
-				var groundZ = wr.World.Map.Grid.TileSize.Height * (groundPos.Z - model.pos.Z) / tileScale;
+				var groundZ = map.Grid.TileSize.Height * (groundPos.Z - model.pos.Z) / tileScale;
 				var pxOrigin = wr.Screen3DPosition(model.pos);
 
 				// HACK: We don't have enough texture channels to pass the depth data to the shader
 				// so for now just offset everything forward so that the back corner is rendered at pos.
 				pxOrigin -= new float3(0, 0, Screen3DBounds(wr).Z.X);
+
+				// HACK: The previous hack isn't sufficient for the ramp type that is half flat and half
+				// sloped towards the camera. Offset it by another half cell to avoid clipping.
+				var cell = map.CellContaining(model.pos);
+				if (map.Ramp.Contains(cell) && map.Ramp[cell] == 7)
+					pxOrigin += new float3(0, 0, 0.5f * map.Grid.TileSize.Height);
 
 				var shadowOrigin = pxOrigin - groundZ * (new float2(renderProxy.ShadowDirection, 1));
 
