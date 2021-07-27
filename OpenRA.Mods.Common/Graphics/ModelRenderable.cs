@@ -116,8 +116,6 @@ namespace OpenRA.Mods.Common.Graphics
 				palette, normalsPalette, shadowPalette, alpha, newTint, newTintModifiers);
 		}
 
-		// This will need generalizing once we support TS/RA2 terrain
-		static readonly float[] GroundNormal = new float[] { 0, 0, 1, 1 };
 		public IFinalizedRenderable PrepareRender(WorldRenderer wr)
 		{
 			return new FinalizedModelRenderable(wr, this);
@@ -135,10 +133,8 @@ namespace OpenRA.Mods.Common.Graphics
 
 				var map = wr.World.Map;
 				var groundOrientation = map.TerrainOrientation(map.CellContaining(model.pos));
-				var groundNormal = OpenRA.Graphics.Util.MatrixVectorMultiply(OpenRA.Graphics.Util.MakeFloatMatrix(groundOrientation.AsMatrix()), GroundNormal);
-
 				renderProxy = Game.Renderer.WorldModelRenderer.RenderAsync(
-					wr, draw, model.camera, model.scale, groundNormal, model.lightSource,
+					wr, draw, model.camera, model.scale, groundOrientation, model.lightSource,
 					model.lightAmbientColor, model.lightDiffuseColor,
 					model.palette, model.normalsPalette, model.shadowPalette);
 			}

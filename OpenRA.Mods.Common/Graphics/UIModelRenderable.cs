@@ -68,7 +68,6 @@ namespace OpenRA.Mods.Common.Graphics
 		public IRenderable OffsetBy(in WVec vec) { return this; }
 		public IRenderable AsDecoration() { return this; }
 
-		static readonly float[] GroundNormal = { 0, 0, 1, 1 };
 		public IFinalizedRenderable PrepareRender(WorldRenderer wr)
 		{
 			return new FinalizedUIModelRenderable(wr, this);
@@ -85,7 +84,7 @@ namespace OpenRA.Mods.Common.Graphics
 				var draw = model.models.Where(v => v.IsVisible);
 
 				renderProxy = Game.Renderer.WorldModelRenderer.RenderAsync(
-					wr, draw, model.camera, model.scale, GroundNormal, model.lightSource,
+					wr, draw, model.camera, model.scale, WRot.None, model.lightSource,
 					model.lightAmbientColor, model.lightDiffuseColor,
 					model.palette, model.normalsPalette, model.shadowPalette);
 			}
