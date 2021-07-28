@@ -4,29 +4,29 @@ Background@COLOR_CHOOSER:
 		PalettePresetRows: 2
 		PaletteCustomRows: 1
 	Background: dialog2
-	Width: 326
+	Width: 330
 	Height: 154
 	Children:
 		Button@RANDOM_BUTTON:
 			Key: tab
 			X: 245
 			Y: 95
-			Width: 76
+			Width: 80
 			Height: 25
 			Text: Random
 			Font: Bold
 		Button@STORE_BUTTON:
 			X: 245
 			Y: 124
-			Width: 76
+			Width: 80
 			Height: 25
 			Text: Store
 			Font: Bold
 		ActorPreview@PREVIEW:
-			X: 245
-			Y: 16
-			Width: 76
-			Height: 74
+			X: PARENT_RIGHT - 94
+			Y: 10
+			Width: 90
+			Height: 90
 			Animate: true
 		Button@MIXER_TAB_BUTTON:
 			X: 5
@@ -46,7 +46,7 @@ Background@COLOR_CHOOSER:
 			Background: dialog3
 			X: 5
 			Y: 5
-			Width: PARENT_RIGHT - 90
+			Width: PARENT_RIGHT - 94
 			Height: PARENT_BOTTOM - 34
 			Children:
 				ColorMixer@MIXER:
@@ -58,7 +58,7 @@ Background@COLOR_CHOOSER:
 			Background: dialog3
 			X: 5
 			Y: 5
-			Width: PARENT_RIGHT - 90
+			Width: PARENT_RIGHT - 94
 			Height: PARENT_BOTTOM - 34
 			Visible: false
 			Children:
