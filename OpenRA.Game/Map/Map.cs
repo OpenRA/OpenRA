@@ -165,7 +165,7 @@ namespace OpenRA
 			new MapField("Bounds"),
 			new MapField("Visibility"),
 			new MapField("Categories"),
-			new MapField("Translations", required: false),
+			new MapField("Translations", required: false, ignoreIfValue: ""),
 			new MapField("LockPreview", required: false, ignoreIfValue: "False"),
 			new MapField("Players", "PlayerDefinitions"),
 			new MapField("Actors", "ActorDefinitions"),
