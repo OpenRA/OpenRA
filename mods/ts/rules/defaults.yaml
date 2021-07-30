@@ -1042,11 +1042,6 @@
 	Building:
 		Footprint: x
 		Dimensions: 1, 1
-	AppearsOnRadar:
-	RadarColorFromTerrain:
-		Terrain: Tree
-	AppearsOnMapPreview:
-		Terrain: Tree
 	Tooltip:
 		Name: Tree
 	MapEditorData:
@@ -1064,11 +1059,6 @@
 	Building:
 		Footprint: x
 		Dimensions: 1, 1
-	AppearsOnRadar:
-	RadarColorFromTerrain:
-		Terrain: Rock
-	AppearsOnMapPreview:
-		Terrain: Rock
 	Tooltip:
 		Name: Rock
 	MapEditorData:
