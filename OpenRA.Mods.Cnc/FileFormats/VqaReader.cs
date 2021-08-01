@@ -18,29 +18,38 @@ namespace OpenRA.Mods.Cnc.FileFormats
 {
 	public class VqaReader : IVideo
 	{
-		public ushort Frames => frames;
-		public byte Framerate => framerate;
-		public ushort Width => width;
-		public ushort Height => height;
+		public ushort FrameCount { get; }
+		public byte Framerate { get; }
+		public ushort Width { get; }
+		public ushort Height { get; }
 
-		readonly ushort frames;
-		readonly byte framerate;
-		readonly ushort width;
-		readonly ushort height;
+		public int CurrentFrameNumber { get; private set; }
+		public uint[,] CurrentFrameData
+		{
+			get
+			{
+				if (cachedFrameNumber != CurrentFrameNumber)
+					DecodeFrameData();
 
-		Stream stream;
-		int currentFrame;
-		ushort numColors;
-		ushort blockWidth;
-		ushort blockHeight;
-		byte chunkBufferParts;
-		int2 blocks;
-		uint[] offsets;
-		uint[] palette;
-		uint videoFlags; // if 0x10 is set the video is a 16 bit hq video (ts and later)
-		int sampleRate;
-		int sampleBits;
-		int audioChannels;
+				return cachedCurrentFrameData;
+			}
+		}
+
+		public bool HasAudio { get; set; }
+		public byte[] AudioData { get; private set; } // audio for this frame: 22050Hz 16bit mono pcm, uncompressed.
+		public int AudioChannels { get; }
+		public int SampleBits { get; }
+		public int SampleRate { get; }
+
+		readonly Stream stream;
+		readonly ushort numColors;
+		readonly ushort blockWidth;
+		readonly ushort blockHeight;
+		readonly byte chunkBufferParts;
+		readonly int2 blocks;
+		readonly uint[] offsets;
+		readonly uint[] palette;
+		readonly uint videoFlags; // if 0x10 is set the video is a 16 bit hq video (ts and later)
 
 		// Stores a list of subpixels, referenced by the VPTZ chunk
 		byte[] cbf;
@@ -60,17 +69,8 @@ namespace OpenRA.Mods.Cnc.FileFormats
 		// Top half contains block info, bottom half contains references to cbf array
 		byte[] origData;
 
-		// Final frame output
-		uint[,] frameData;
-		byte[] audioData;		// audio for this frame: 22050Hz 16bit mono pcm, uncompressed.
-		bool hasAudio;
-
-		public byte[] AudioData => audioData;
-		public int CurrentFrame => currentFrame;
-		public int SampleRate => sampleRate;
-		public int SampleBits => sampleBits;
-		public int AudioChannels => audioChannels;
-		public bool HasAudio => hasAudio;
+		int cachedFrameNumber = -1;
+		uint[,] cachedCurrentFrameData;
 
 		public VqaReader(Stream stream)
 		{
@@ -87,15 +87,15 @@ namespace OpenRA.Mods.Cnc.FileFormats
 
 			/*var version = */stream.ReadUInt16();
 			videoFlags = stream.ReadUInt16();
-			frames = stream.ReadUInt16();
-			width = stream.ReadUInt16();
-			height = stream.ReadUInt16();
+			FrameCount = stream.ReadUInt16();
+			Width = stream.ReadUInt16();
+			Height = stream.ReadUInt16();
 
 			blockWidth = stream.ReadUInt8();
 			blockHeight = stream.ReadUInt8();
-			framerate = stream.ReadUInt8();
+			Framerate = stream.ReadUInt8();
 			chunkBufferParts = stream.ReadUInt8();
-			blocks = new int2(width / blockWidth, height / blockHeight);
+			blocks = new int2(Width / blockWidth, Height / blockHeight);
 
 			numColors = stream.ReadUInt16();
 			/*var maxBlocks = */stream.ReadUInt16();
@@ -103,9 +103,9 @@ namespace OpenRA.Mods.Cnc.FileFormats
 			/*var unknown2 = */stream.ReadUInt32();
 
 			// Audio
-			sampleRate = stream.ReadUInt16();
-			audioChannels = stream.ReadByte();
-			sampleBits = stream.ReadByte();
+			SampleRate = stream.ReadUInt16();
+			AudioChannels = stream.ReadByte();
+			SampleBits = stream.ReadByte();
 
 			/*var unknown3 =*/stream.ReadUInt32();
 			/*var unknown4 =*/stream.ReadUInt16();
@@ -113,7 +113,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 
 			/*var unknown5 =*/stream.ReadUInt32();
 
-			var frameSize = Exts.NextPowerOf2(Math.Max(width, height));
+			var frameSize = Exts.NextPowerOf2(Math.Max(Width, Height));
 
 			if (IsHqVqa)
 			{
@@ -123,14 +123,14 @@ namespace OpenRA.Mods.Cnc.FileFormats
 			}
 			else
 			{
-				cbfBuffer = new byte[width * height];
-				cbf = new byte[width * height];
-				cbp = new byte[width * height];
+				cbfBuffer = new byte[Width * Height];
+				cbf = new byte[Width * Height];
+				cbp = new byte[Width * Height];
 				origData = new byte[2 * blocks.X * blocks.Y];
 			}
 
 			palette = new uint[numColors];
-			frameData = new uint[frameSize, frameSize];
+			cachedCurrentFrameData = new uint[frameSize, frameSize];
 			var type = stream.ReadASCII(4);
 			while (type != "FINF")
 			{
@@ -149,8 +149,8 @@ namespace OpenRA.Mods.Cnc.FileFormats
 			/*var unknown4 = */stream.ReadUInt16();
 
 			// Frame offsets
-			offsets = new uint[frames];
-			for (var i = 0; i < frames; i++)
+			offsets = new uint[FrameCount];
+			for (var i = 0; i < FrameCount; i++)
 			{
 				offsets[i] = stream.ReadUInt32();
 				if (offsets[i] > 0x40000000)
@@ -165,7 +165,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 
 		public void Reset()
 		{
-			currentFrame = chunkBufferOffset = currentChunkBuffer = 0;
+			CurrentFrameNumber = chunkBufferOffset = currentChunkBuffer = 0;
 			LoadFrame();
 		}
 
@@ -175,10 +175,10 @@ namespace OpenRA.Mods.Cnc.FileFormats
 			var audio2 = new MemoryStream(); // right channel
 			var adpcmIndex = 0;
 			var compressed = false;
-			for (var i = 0; i < frames; i++)
+			for (var i = 0; i < FrameCount; i++)
 			{
 				stream.Seek(offsets[i], SeekOrigin.Begin);
-				var end = (i < frames - 1) ? offsets[i + 1] : stream.Length;
+				var end = (i < FrameCount - 1) ? offsets[i + 1] : stream.Length;
 
 				while (stream.Position < end)
 				{
@@ -196,9 +196,9 @@ namespace OpenRA.Mods.Cnc.FileFormats
 					{
 						case "SND0":
 						case "SND2":
-							if (audioChannels == 0)
+							if (AudioChannels == 0)
 								throw new NotSupportedException();
-							else if (audioChannels == 1)
+							else if (AudioChannels == 1)
 							{
 								var rawAudio = stream.ReadBytes((int)length);
 								audio1.WriteArray(rawAudio);
@@ -227,8 +227,8 @@ namespace OpenRA.Mods.Cnc.FileFormats
 				}
 			}
 
-			if (audioChannels == 1)
-				audioData = compressed ? ImaAdpcmReader.LoadImaAdpcmSound(audio1.ToArray(), ref adpcmIndex) : audio1.ToArray();
+			if (AudioChannels == 1)
+				AudioData = compressed ? ImaAdpcmReader.LoadImaAdpcmSound(audio1.ToArray(), ref adpcmIndex) : audio1.ToArray();
 			else
 			{
 				byte[] leftData, rightData;
@@ -245,40 +245,40 @@ namespace OpenRA.Mods.Cnc.FileFormats
 					rightData = ImaAdpcmReader.LoadImaAdpcmSound(audio2.ToArray(), ref adpcmIndex);
 				}
 
-				audioData = new byte[rightData.Length + leftData.Length];
+				AudioData = new byte[rightData.Length + leftData.Length];
 				var rightIndex = 0;
 				var leftIndex = 0;
-				for (var i = 0; i < audioData.Length;)
+				for (var i = 0; i < AudioData.Length;)
 				{
-					audioData[i++] = leftData[leftIndex++];
-					audioData[i++] = leftData[leftIndex++];
-					audioData[i++] = rightData[rightIndex++];
-					audioData[i++] = rightData[rightIndex++];
+					AudioData[i++] = leftData[leftIndex++];
+					AudioData[i++] = leftData[leftIndex++];
+					AudioData[i++] = rightData[rightIndex++];
+					AudioData[i++] = rightData[rightIndex++];
 				}
 			}
 
-			hasAudio = audioData.Length > 0;
+			HasAudio = AudioData.Length > 0;
 		}
 
 		public void AdvanceFrame()
 		{
-			currentFrame++;
+			CurrentFrameNumber++;
 			LoadFrame();
 		}
 
 		void LoadFrame()
 		{
-			if (currentFrame >= frames)
+			if (CurrentFrameNumber >= FrameCount)
 				return;
 
 			// Seek to the start of the frame
-			stream.Seek(offsets[currentFrame], SeekOrigin.Begin);
-			var end = (currentFrame < frames - 1) ? offsets[currentFrame + 1] : stream.Length;
+			stream.Seek(offsets[CurrentFrameNumber], SeekOrigin.Begin);
+			var end = (CurrentFrameNumber < FrameCount - 1) ? offsets[CurrentFrameNumber + 1] : stream.Length;
 
 			while (stream.Position < end)
 			{
 				var type = stream.ReadASCII(4);
-				var length = 0U;
+				uint length;
 				if (type == "SN2J")
 				{
 					var jmp = int2.Swap(stream.ReadUInt32());
@@ -425,11 +425,9 @@ namespace OpenRA.Mods.Cnc.FileFormats
 			}
 		}
 
-		int cachedFrame = -1;
-
 		void DecodeFrameData()
 		{
-			cachedFrame = currentFrame;
+			cachedFrameNumber = CurrentFrameNumber;
 			if (IsHqVqa)
 			{
 				/* The VP?? chunks of the video file contains an array of instructions for
@@ -494,22 +492,11 @@ namespace OpenRA.Mods.Cnc.FileFormats
 							{
 								var cbfi = (mod * 256 + px) * 8 + j * blockWidth + i;
 								var color = (mod == 0x0f) ? px : cbf[cbfi];
-								frameData[y * blockHeight + j, x * blockWidth + i] = palette[color];
+								cachedCurrentFrameData[y * blockHeight + j, x * blockWidth + i] = palette[color];
 							}
 						}
 					}
 				}
-			}
-		}
-
-		public uint[,] FrameData
-		{
-			get
-			{
-				if (cachedFrame != currentFrame)
-					DecodeFrameData();
-
-				return frameData;
 			}
 		}
 
@@ -527,7 +514,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 					{
 						var p = (bx + by * blockWidth) * 3;
 
-						frameData[frameY + by, frameX + bx] = (uint)(0xFF << 24 | cbf[offset + p] << 16 | cbf[offset + p + 1] << 8 | cbf[offset + p + 2]);
+						cachedCurrentFrameData[frameY + by, frameX + bx] = (uint)(0xFF << 24 | cbf[offset + p] << 16 | cbf[offset + p + 1] << 8 | cbf[offset + p + 2]);
 					}
 
 				x++;

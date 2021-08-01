@@ -165,7 +165,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var frameContainer = panel.GetOrNull("FRAME_SELECTOR");
 			if (frameContainer != null)
 				frameContainer.IsVisible = () => (currentSprites != null && currentSprites.Length > 1) ||
-					(isVideoLoaded && player != null && player.Video != null && player.Video.Frames > 1) ||
+					(isVideoLoaded && player != null && player.Video != null && player.Video.FrameCount > 1) ||
 					currentSoundFormat != null;
 
 			frameSlider = panel.GetOrNull<SliderWidget>("FRAME_SLIDER");
@@ -180,7 +180,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				frameSlider.GetValue = () =>
 				{
 					if (isVideoLoaded)
-						return player.Video.CurrentFrame;
+						return player.Video.CurrentFrameNumber;
 
 					if (currentSound != null)
 						return currentSound.SeekPosition * currentSoundFormat.SampleRate;
@@ -197,7 +197,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				frameText.GetText = () =>
 				{
 					if (isVideoLoaded)
-						return $"{player.Video.CurrentFrame + 1} / {player.Video.Frames}";
+						return $"{player.Video.CurrentFrameNumber + 1} / {player.Video.FrameCount}";
 
 					if (currentSoundFormat != null)
 						return $"{Math.Round(currentSoundFormat.LengthInSeconds, 3)} sec";
@@ -516,7 +516,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 						if (frameSlider != null)
 						{
-							frameSlider.MaximumValue = (float)player.Video.Frames - 1;
+							frameSlider.MaximumValue = (float)player.Video.FrameCount - 1;
 							frameSlider.Ticks = 0;
 						}
 					}

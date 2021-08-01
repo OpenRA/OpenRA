@@ -17,49 +17,55 @@ namespace OpenRA.Mods.Cnc.FileFormats
 {
 	public class WsaReader : IVideo
 	{
+		public ushort FrameCount { get; }
+		public byte Framerate => 1;
+		public ushort Width { get; }
+		public ushort Height { get; }
+
+		public int CurrentFrameNumber { get; private set; }
+		public uint[,] CurrentFrameData
+		{
+			get
+			{
+				if (cachedFrameNumber != CurrentFrameNumber)
+					LoadFrame();
+
+				return cachedCurrentFrameData;
+			}
+		}
+
+		public bool HasAudio => false;
+		public byte[] AudioData => null;
+		public int AudioChannels => 0;
+		public int SampleBits => 0;
+		public int SampleRate => 0;
+
 		readonly Stream stream;
-
-		public ushort Frames { get { return frameCount; } }
-		public byte Framerate { get { return 1; } }
-		public ushort Width { get { return width; } }
-		public ushort Height { get { return height; } }
-
-		readonly ushort frameCount;
-		readonly ushort width;
-		readonly ushort height;
 		readonly uint[] palette;
 		readonly uint[] frameOffsets;
 
-		uint[,] coloredFrameData;
-		public uint[,] FrameData { get { return coloredFrameData; } }
+		byte[] previousFramePaletteIndexData;
+		byte[] currentFramePaletteIndexData;
 
-		int currentFrame;
-		byte[] previousFrameData;
-		byte[] currentFrameData;
-
-		public byte[] AudioData { get { return null; } }
-		public int CurrentFrame { get { return currentFrame; } }
-		public int SampleRate { get { return 0; } }
-		public int SampleBits { get { return 0; } }
-		public int AudioChannels { get { return 0; } }
-		public bool HasAudio { get { return false; } }
+		int cachedFrameNumber = -1;
+		uint[,] cachedCurrentFrameData;
 
 		public WsaReader(Stream stream)
 		{
 			this.stream = stream;
 
-			frameCount = stream.ReadUInt16();
+			FrameCount = stream.ReadUInt16();
 
-			var x = stream.ReadUInt16();
-			var y = stream.ReadUInt16();
+			/*var x = */stream.ReadUInt16();
+			/*var y = */stream.ReadUInt16();
 
-			width = stream.ReadUInt16();
-			height = stream.ReadUInt16();
+			Width = stream.ReadUInt16();
+			Height = stream.ReadUInt16();
 
 			var delta = stream.ReadUInt16() + 37;
 			var flags = stream.ReadUInt16();
 
-			frameOffsets = new uint[frameCount + 2];
+			frameOffsets = new uint[FrameCount + 2];
 			for (var i = 0; i < frameOffsets.Length; i++)
 				frameOffsets[i] = stream.ReadUInt32();
 
@@ -89,48 +95,48 @@ namespace OpenRA.Mods.Cnc.FileFormats
 
 		public void Reset()
 		{
-			currentFrame = 0;
-			previousFrameData = null;
+			CurrentFrameNumber = 0;
+			previousFramePaletteIndexData = null;
 			LoadFrame();
 		}
 
 		public void AdvanceFrame()
 		{
-			previousFrameData = currentFrameData;
-			currentFrame++;
+			previousFramePaletteIndexData = currentFramePaletteIndexData;
+			CurrentFrameNumber++;
 			LoadFrame();
 		}
 
 		void LoadFrame()
 		{
-			if (currentFrame >= frameCount)
+			if (CurrentFrameNumber >= FrameCount)
 				return;
 
-			stream.Seek(frameOffsets[currentFrame], SeekOrigin.Begin);
+			stream.Seek(frameOffsets[CurrentFrameNumber], SeekOrigin.Begin);
 
-			var dataLength = frameOffsets[currentFrame + 1] - frameOffsets[currentFrame];
+			var dataLength = frameOffsets[CurrentFrameNumber + 1] - frameOffsets[CurrentFrameNumber];
 
 			var rawData = StreamExts.ReadBytes(stream, (int)dataLength);
-			var intermediateData = new byte[width * height];
+			var intermediateData = new byte[Width * Height];
 
 			// Format80 decompression
 			LCWCompression.DecodeInto(rawData, intermediateData);
 
 			// and Format40 decompression
-			currentFrameData = new byte[width * height];
-			if (previousFrameData == null)
-				Array.Clear(currentFrameData, 0, currentFrameData.Length);
+			currentFramePaletteIndexData = new byte[Width * Height];
+			if (previousFramePaletteIndexData == null)
+				Array.Clear(currentFramePaletteIndexData, 0, currentFramePaletteIndexData.Length);
 			else
-				Array.Copy(previousFrameData, currentFrameData, currentFrameData.Length);
+				Array.Copy(previousFramePaletteIndexData, currentFramePaletteIndexData, currentFramePaletteIndexData.Length);
 
-			XORDeltaCompression.DecodeInto(intermediateData, currentFrameData, 0);
+			XORDeltaCompression.DecodeInto(intermediateData, currentFramePaletteIndexData, 0);
 
 			var c = 0;
-			var frameSize = Exts.NextPowerOf2(Math.Max(width, height));
-			coloredFrameData = new uint[frameSize, frameSize];
-			for (var y = 0; y < height; y++)
-				for (var x = 0; x < width; x++)
-					coloredFrameData[y, x] = palette[currentFrameData[c++]];
+			var frameSize = Exts.NextPowerOf2(Math.Max(Width, Height));
+			cachedCurrentFrameData = new uint[frameSize, frameSize];
+			for (var y = 0; y < Height; y++)
+				for (var x = 0; x < Width; x++)
+					cachedCurrentFrameData[y, x] = palette[currentFramePaletteIndexData[c++]];
 		}
 	}
 }

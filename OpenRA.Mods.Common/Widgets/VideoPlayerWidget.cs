@@ -60,14 +60,14 @@ namespace OpenRA.Mods.Common.Widgets
 			Game.Sound.StopVideo();
 			onComplete = () => { };
 
-			invLength = video.Framerate * 1f / video.Frames;
+			invLength = video.Framerate * 1f / video.FrameCount;
 
 			var size = Math.Max(video.Width, video.Height);
 			var textureSize = Exts.NextPowerOf2(size);
 			var videoSheet = new Sheet(SheetType.BGRA, new Size(textureSize, textureSize));
 
 			videoSheet.GetTexture().ScaleFilter = TextureScaleFilter.Linear;
-			videoSheet.GetTexture().SetData(video.FrameData);
+			videoSheet.GetTexture().SetData(video.CurrentFrameData);
 
 			videoSprite = new Sprite(videoSheet,
 				new Rectangle(
@@ -93,27 +93,29 @@ namespace OpenRA.Mods.Common.Widgets
 
 			if (!stopped && !paused)
 			{
-				var nextFrame = video.CurrentFrame + 1;
+				int nextFrame;
 				if (video.HasAudio && !Game.Sound.DummyEngine)
-					nextFrame = (int)float2.Lerp(0, video.Frames, Game.Sound.VideoSeekPosition * invLength);
+					nextFrame = (int)float2.Lerp(0, video.FrameCount, Game.Sound.VideoSeekPosition * invLength);
+				else
+					nextFrame = video.CurrentFrameNumber + 1;
 
 				// Without the 2nd check the sound playback sometimes ends before the final frame is displayed which causes the player to be stuck on the first frame
-				if (nextFrame > video.Frames || nextFrame < video.CurrentFrame)
+				if (nextFrame > video.FrameCount || nextFrame < video.CurrentFrameNumber)
 				{
 					Stop();
 					return;
 				}
 
 				var skippedFrames = 0;
-				while (nextFrame > video.CurrentFrame)
+				while (nextFrame > video.CurrentFrameNumber)
 				{
 					video.AdvanceFrame();
-					videoSprite.Sheet.GetTexture().SetData(video.FrameData);
+					videoSprite.Sheet.GetTexture().SetData(video.CurrentFrameData);
 					skippedFrames++;
 				}
 
 				if (skippedFrames > 1)
-					Log.Write("perf", "VqaPlayer : {0} skipped {1} frames at position {2}", cachedVideo, skippedFrames, video.CurrentFrame);
+					Log.Write("perf", "VqaPlayer : {0} skipped {1} frames at position {2}", cachedVideo, skippedFrames, video.CurrentFrameNumber);
 			}
 
 			WidgetUtils.DrawSprite(videoSprite, videoOrigin, videoSize);
@@ -216,7 +218,7 @@ namespace OpenRA.Mods.Common.Widgets
 			paused = true;
 			Game.Sound.StopVideo();
 			video.Reset();
-			videoSprite.Sheet.GetTexture().SetData(video.FrameData);
+			videoSprite.Sheet.GetTexture().SetData(video.CurrentFrameData);
 			Game.RunAfterTick(onComplete);
 		}
 
