@@ -21,7 +21,7 @@ namespace OpenRA.Video
 		/// <summary>
 		/// Current frame color data in 32-bit BGRA.
 		/// </summary>
-		uint[,] CurrentFrameData { get; }
+		byte[] CurrentFrameData { get; }
 		int CurrentFrameNumber { get; }
 		void AdvanceFrame();
 

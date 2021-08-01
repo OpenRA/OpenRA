@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 		public ushort Width { get; }
 		public ushort Height { get; }
 
-		public uint[,] CurrentFrameData { get; }
+		public byte[] CurrentFrameData { get; }
 		public int CurrentFrameNumber { get; private set; }
 
 		public bool HasAudio => false;
@@ -78,8 +78,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 					frameOffsets[i] += 768;
 			}
 
-			var frameSize = Exts.NextPowerOf2(Math.Max(Width, Height));
-			CurrentFrameData = new uint[frameSize, frameSize];
+			CurrentFrameData = new byte[Width * Height * 4];
 
 			Reset();
 		}
@@ -123,9 +122,18 @@ namespace OpenRA.Mods.Cnc.FileFormats
 			XORDeltaCompression.DecodeInto(intermediateData, currentFramePaletteIndexData, 0);
 
 			var c = 0;
+			var position = 0;
 			for (var y = 0; y < Height; y++)
+			{
 				for (var x = 0; x < Width; x++)
-					CurrentFrameData[y, x] = palette[currentFramePaletteIndexData[c++]];
+				{
+					var color = palette[currentFramePaletteIndexData[c++]];
+					CurrentFrameData[position++] = (byte)(color & 0xFF);
+					CurrentFrameData[position++] = (byte)(color >> 8 & 0xFF);
+					CurrentFrameData[position++] = (byte)(color >> 16 & 0xFF);
+					CurrentFrameData[position++] = (byte)(color >> 24 & 0xFF);
+				}
+			}
 		}
 	}
 }

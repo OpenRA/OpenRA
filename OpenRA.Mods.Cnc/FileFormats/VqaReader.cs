@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 		public ushort Width { get; }
 		public ushort Height { get; }
 
-		public uint[,] CurrentFrameData { get; }
+		public byte[] CurrentFrameData { get; }
 		public int CurrentFrameNumber { get; private set; }
 
 		public bool HasAudio { get; set; }
@@ -145,8 +145,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 
 			CollectAudioData();
 
-			var frameSize = Exts.NextPowerOf2(Math.Max(Width, Height));
-			CurrentFrameData = new uint[frameSize, frameSize];
+			CurrentFrameData = new byte[Width * Height * 4];
 
 			Reset();
 		}
@@ -481,8 +480,16 @@ namespace OpenRA.Mods.Cnc.FileFormats
 							for (var i = 0; i < blockWidth; i++)
 							{
 								var cbfi = (mod * 256 + px) * 8 + j * blockWidth + i;
-								var color = (mod == 0x0f) ? px : cbf[cbfi];
-								CurrentFrameData[y * blockHeight + j, x * blockWidth + i] = palette[color];
+								var colorIndex = (mod == 0x0f) ? px : cbf[cbfi];
+								var color = palette[colorIndex];
+
+								var pixelX = x * blockWidth + i;
+								var pixelY = y * blockHeight + j;
+								var pos = pixelY * Width + pixelX;
+								CurrentFrameData[pos * 4] = (byte)(color & 0xFF);
+								CurrentFrameData[pos * 4 + 1] = (byte)(color >> 8 & 0xFF);
+								CurrentFrameData[pos * 4 + 2] = (byte)(color >> 16 & 0xFF);
+								CurrentFrameData[pos * 4 + 3] = (byte)(color >> 24 & 0xFF);
 							}
 						}
 					}
@@ -496,15 +503,19 @@ namespace OpenRA.Mods.Cnc.FileFormats
 		{
 			for (var i = 0; i < count; i++)
 			{
-				var frameX = x * blockWidth;
-				var frameY = y * blockHeight;
 				var offset = blockNumber * blockHeight * blockWidth * 3;
 				for (var by = 0; by < blockHeight; by++)
 					for (var bx = 0; bx < blockWidth; bx++)
 					{
 						var p = (bx + by * blockWidth) * 3;
 
-						CurrentFrameData[frameY + by, frameX + bx] = (uint)(0xFF << 24 | cbf[offset + p] << 16 | cbf[offset + p + 1] << 8 | cbf[offset + p + 2]);
+						var pixelX = x * blockWidth + bx;
+						var pixelY = y * blockHeight + by;
+						var pos = pixelY * Width + pixelX;
+						CurrentFrameData[pos * 4] = cbf[offset + p + 2];
+						CurrentFrameData[pos * 4 + 1] = cbf[offset + p + 1];
+						CurrentFrameData[pos * 4 + 2] = cbf[offset + p];
+						CurrentFrameData[pos * 4 + 3] = 255;
 					}
 
 				x++;
