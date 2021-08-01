@@ -22,17 +22,8 @@ namespace OpenRA.Mods.Cnc.FileFormats
 		public ushort Width { get; }
 		public ushort Height { get; }
 
+		public uint[,] CurrentFrameData { get; }
 		public int CurrentFrameNumber { get; private set; }
-		public uint[,] CurrentFrameData
-		{
-			get
-			{
-				if (cachedFrameNumber != CurrentFrameNumber)
-					LoadFrame();
-
-				return cachedCurrentFrameData;
-			}
-		}
 
 		public bool HasAudio => false;
 		public byte[] AudioData => null;
@@ -46,9 +37,6 @@ namespace OpenRA.Mods.Cnc.FileFormats
 
 		byte[] previousFramePaletteIndexData;
 		byte[] currentFramePaletteIndexData;
-
-		int cachedFrameNumber = -1;
-		uint[,] cachedCurrentFrameData;
 
 		public WsaReader(Stream stream)
 		{
@@ -89,6 +77,9 @@ namespace OpenRA.Mods.Cnc.FileFormats
 				for (var i = 0; i < frameOffsets.Length; i++)
 					frameOffsets[i] += 768;
 			}
+
+			var frameSize = Exts.NextPowerOf2(Math.Max(Width, Height));
+			CurrentFrameData = new uint[frameSize, frameSize];
 
 			Reset();
 		}
@@ -132,11 +123,9 @@ namespace OpenRA.Mods.Cnc.FileFormats
 			XORDeltaCompression.DecodeInto(intermediateData, currentFramePaletteIndexData, 0);
 
 			var c = 0;
-			var frameSize = Exts.NextPowerOf2(Math.Max(Width, Height));
-			cachedCurrentFrameData = new uint[frameSize, frameSize];
 			for (var y = 0; y < Height; y++)
 				for (var x = 0; x < Width; x++)
-					cachedCurrentFrameData[y, x] = palette[currentFramePaletteIndexData[c++]];
+					CurrentFrameData[y, x] = palette[currentFramePaletteIndexData[c++]];
 		}
 	}
 }
