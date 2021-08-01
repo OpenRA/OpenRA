@@ -23,17 +23,8 @@ namespace OpenRA.Mods.Cnc.FileFormats
 		public ushort Width { get; }
 		public ushort Height { get; }
 
+		public uint[,] CurrentFrameData { get; }
 		public int CurrentFrameNumber { get; private set; }
-		public uint[,] CurrentFrameData
-		{
-			get
-			{
-				if (cachedFrameNumber != CurrentFrameNumber)
-					DecodeFrameData();
-
-				return cachedCurrentFrameData;
-			}
-		}
 
 		public bool HasAudio { get; set; }
 		public byte[] AudioData { get; private set; } // audio for this frame: 22050Hz 16bit mono pcm, uncompressed.
@@ -68,9 +59,6 @@ namespace OpenRA.Mods.Cnc.FileFormats
 
 		// Top half contains block info, bottom half contains references to cbf array
 		byte[] origData;
-
-		int cachedFrameNumber = -1;
-		uint[,] cachedCurrentFrameData;
 
 		public VqaReader(Stream stream)
 		{
@@ -113,8 +101,6 @@ namespace OpenRA.Mods.Cnc.FileFormats
 
 			/*var unknown5 =*/stream.ReadUInt32();
 
-			var frameSize = Exts.NextPowerOf2(Math.Max(Width, Height));
-
 			if (IsHqVqa)
 			{
 				cbfBuffer = new byte[maxCbfzSize];
@@ -130,7 +116,6 @@ namespace OpenRA.Mods.Cnc.FileFormats
 			}
 
 			palette = new uint[numColors];
-			cachedCurrentFrameData = new uint[frameSize, frameSize];
 			var type = stream.ReadASCII(4);
 			while (type != "FINF")
 			{
@@ -159,6 +144,9 @@ namespace OpenRA.Mods.Cnc.FileFormats
 			}
 
 			CollectAudioData();
+
+			var frameSize = Exts.NextPowerOf2(Math.Max(Width, Height));
+			CurrentFrameData = new uint[frameSize, frameSize];
 
 			Reset();
 		}
@@ -317,6 +305,9 @@ namespace OpenRA.Mods.Cnc.FileFormats
 				// Chunks are aligned on even bytes; advance by a byte if the next one is null
 				if (stream.Peek() == 0) stream.ReadByte();
 			}
+
+			// Now that the frame data has been loaded (in the relevant private fields), decode it into CurrentFrameData.
+			DecodeFrameData();
 		}
 
 		// VQA Frame
@@ -427,7 +418,6 @@ namespace OpenRA.Mods.Cnc.FileFormats
 
 		void DecodeFrameData()
 		{
-			cachedFrameNumber = CurrentFrameNumber;
 			if (IsHqVqa)
 			{
 				/* The VP?? chunks of the video file contains an array of instructions for
@@ -492,7 +482,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 							{
 								var cbfi = (mod * 256 + px) * 8 + j * blockWidth + i;
 								var color = (mod == 0x0f) ? px : cbf[cbfi];
-								cachedCurrentFrameData[y * blockHeight + j, x * blockWidth + i] = palette[color];
+								CurrentFrameData[y * blockHeight + j, x * blockWidth + i] = palette[color];
 							}
 						}
 					}
@@ -514,7 +504,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 					{
 						var p = (bx + by * blockWidth) * 3;
 
-						cachedCurrentFrameData[frameY + by, frameX + bx] = (uint)(0xFF << 24 | cbf[offset + p] << 16 | cbf[offset + p + 1] << 8 | cbf[offset + p + 2]);
+						CurrentFrameData[frameY + by, frameX + bx] = (uint)(0xFF << 24 | cbf[offset + p] << 16 | cbf[offset + p + 1] << 8 | cbf[offset + p + 2]);
 					}
 
 				x++;
