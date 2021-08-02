@@ -557,7 +557,6 @@ namespace OpenRA.Platforms.Default
 		readonly Func<object> getSize;
 		readonly Action<object> setEmpty;
 		readonly Func<byte[]> getData;
-		readonly Func<object, object> setData1;
 		readonly Action<object> setData2;
 		readonly Func<object, object> setData3;
 		readonly Action<object> setData4;
@@ -573,7 +572,6 @@ namespace OpenRA.Platforms.Default
 			getSize = () => texture.Size;
 			setEmpty = tuple => { var t = (ValueTuple<int, int>)tuple; texture.SetEmpty(t.Item1, t.Item2); };
 			getData = () => texture.GetData();
-			setData1 = colors => { texture.SetData((uint[,])colors); return null; };
 			setData2 = tuple => { var t = (ValueTuple<byte[], int, int>)tuple; texture.SetData(t.Item1, t.Item2, t.Item3); };
 			setData3 = tuple => { setData2(tuple); return null; };
 			setData4 = tuple => { var t = (ValueTuple<float[], int, int>)tuple; texture.SetFloatData(t.Item1, t.Item2, t.Item3); };
@@ -600,12 +598,6 @@ namespace OpenRA.Platforms.Default
 		public byte[] GetData()
 		{
 			return device.Send(getData);
-		}
-
-		public void SetData(uint[,] colors)
-		{
-			// We can't return until we are finished with the data, so we must Send here.
-			device.Send(setData1, colors);
 		}
 
 		public void SetData(byte[] colors, int width, int height)
