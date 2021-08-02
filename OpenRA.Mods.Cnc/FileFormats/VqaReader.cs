@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 		readonly byte chunkBufferParts;
 		readonly int2 blocks;
 		readonly uint[] offsets;
-		readonly uint[] palette;
+		readonly byte[] paletteBytes;
 		readonly uint videoFlags; // if 0x10 is set the video is a 16 bit hq video (ts and later)
 		readonly ushort totalFrameWidth;
 
@@ -116,7 +116,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 				origData = new byte[2 * blocks.X * blocks.Y];
 			}
 
-			palette = new uint[numColors];
+			paletteBytes = new byte[numColors * 4];
 			var type = stream.ReadASCII(4);
 			while (type != "FINF")
 			{
@@ -396,7 +396,10 @@ namespace OpenRA.Mods.Cnc.FileFormats
 							var r = (byte)(s.ReadUInt8() << 2);
 							var g = (byte)(s.ReadUInt8() << 2);
 							var b = (byte)(s.ReadUInt8() << 2);
-							palette[i] = (uint)((255 << 24) | (r << 16) | (g << 8) | b);
+							paletteBytes[i * 4] = b;
+							paletteBytes[i * 4 + 1] = g;
+							paletteBytes[i * 4 + 2] = r;
+							paletteBytes[i * 4 + 3] = 255;
 						}
 
 						break;
@@ -492,15 +495,14 @@ namespace OpenRA.Mods.Cnc.FileFormats
 							{
 								var cbfi = (mod * 256 + px) * 8 + j * blockWidth + i;
 								var colorIndex = (mod == 0x0f) ? px : cbf[cbfi];
-								var color = palette[colorIndex];
 
 								var pixelX = x * blockWidth + i;
 								var pixelY = y * blockHeight + j;
 								var pos = pixelY * totalFrameWidth + pixelX;
-								CurrentFrameData[pos * 4] = (byte)(color & 0xFF);
-								CurrentFrameData[pos * 4 + 1] = (byte)(color >> 8 & 0xFF);
-								CurrentFrameData[pos * 4 + 2] = (byte)(color >> 16 & 0xFF);
-								CurrentFrameData[pos * 4 + 3] = (byte)(color >> 24 & 0xFF);
+								CurrentFrameData[pos * 4] = paletteBytes[colorIndex * 4];
+								CurrentFrameData[pos * 4 + 1] = paletteBytes[colorIndex * 4 + 1];
+								CurrentFrameData[pos * 4 + 2] = paletteBytes[colorIndex * 4 + 2];
+								CurrentFrameData[pos * 4 + 3] = paletteBytes[colorIndex * 4 + 3];
 							}
 						}
 					}
