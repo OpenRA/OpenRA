@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 		public int SampleRate => 0;
 
 		readonly Stream stream;
-		readonly uint[] palette;
+		readonly byte[] paletteBytes;
 		readonly uint[] frameOffsets;
 		readonly ushort totalFrameWidth;
 
@@ -60,8 +60,8 @@ namespace OpenRA.Mods.Cnc.FileFormats
 
 			if (flags == 1)
 			{
-				palette = new uint[256];
-				for (var i = 0; i < palette.Length; i++)
+				paletteBytes = new byte[1024];
+				for (var i = 0; i < paletteBytes.Length;)
 				{
 					var r = (byte)(stream.ReadByte() << 2);
 					var g = (byte)(stream.ReadByte() << 2);
@@ -72,7 +72,10 @@ namespace OpenRA.Mods.Cnc.FileFormats
 					g |= (byte)(g >> 6);
 					b |= (byte)(b >> 6);
 
-					palette[i] = (uint)((255 << 24) | (r << 16) | (g << 8) | b);
+					paletteBytes[i++] = b;
+					paletteBytes[i++] = g;
+					paletteBytes[i++] = r;
+					paletteBytes[i++] = 255;
 				}
 
 				for (var i = 0; i < frameOffsets.Length; i++)
@@ -138,11 +141,11 @@ namespace OpenRA.Mods.Cnc.FileFormats
 			{
 				for (var x = 0; x < Width; x++)
 				{
-					var color = palette[currentFramePaletteIndexData[c++]];
-					CurrentFrameData[position++] = (byte)(color & 0xFF);
-					CurrentFrameData[position++] = (byte)(color >> 8 & 0xFF);
-					CurrentFrameData[position++] = (byte)(color >> 16 & 0xFF);
-					CurrentFrameData[position++] = (byte)(color >> 24 & 0xFF);
+					var colorIndex = currentFramePaletteIndexData[c++];
+					CurrentFrameData[position++] = paletteBytes[colorIndex * 4];
+					CurrentFrameData[position++] = paletteBytes[colorIndex * 4 + 1];
+					CurrentFrameData[position++] = paletteBytes[colorIndex * 4 + 2];
+					CurrentFrameData[position++] = paletteBytes[colorIndex * 4 + 3];
 				}
 
 				// Recalculate the position in the byte array to the start of the next pixel row just in case there is padding in the frame.
