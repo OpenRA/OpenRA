@@ -92,24 +92,6 @@ namespace OpenRA.Platforms.Default
 			}
 		}
 
-		// An array of RGBA
-		public void SetData(uint[,] colors)
-		{
-			VerifyThreadAffinity();
-			var width = colors.GetUpperBound(1) + 1;
-			var height = colors.GetUpperBound(0) + 1;
-
-			if (!Exts.IsPowerOf2(width) || !Exts.IsPowerOf2(height))
-				throw new InvalidDataException($"Non-power-of-two array {width}x{height}");
-
-			Size = new Size(width, height);
-			unsafe
-			{
-				fixed (uint* ptr = &colors[0, 0])
-					SetData(new IntPtr(ptr), width, height);
-			}
-		}
-
 		public void SetFloatData(float[] data, int width, int height)
 		{
 			VerifyThreadAffinity();
