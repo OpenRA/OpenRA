@@ -147,13 +147,10 @@ namespace OpenRA.Mods.Common.Pathfinder
 			{
 				var dir = directions[i];
 				var neighbor = position + dir;
+				var movementCost = GetCostToNode(neighbor, dir);
 
 				// PERF: Skip closed cells already, 15% of all cells
-				if (info[neighbor].Status == CellStatus.Closed)
-					continue;
-
-				var movementCost = GetCostToNode(neighbor, dir);
-				if (movementCost != CostForInvalidCell)
+				if (movementCost != CostForInvalidCell && info[neighbor].Status != CellStatus.Closed)
 					validNeighbors.Add(new GraphConnection(neighbor, movementCost));
 			}
 
