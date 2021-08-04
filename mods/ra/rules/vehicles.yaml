@@ -792,6 +792,13 @@ CTNK:
 		Prerequisites: vehicles.upgraded
 	Selectable:
 		DecorationBounds: 1280, 1280
+	Contrail@Teleport:
+		Offset: 0, 0, 0
+		Color: 00F0F844
+		UsePlayerColor: false
+		ZOffset: -1024
+		TrailWidth: 64
+		TrailLength: 5
 
 QTNK:
 	Inherits: ^TrackedVehicle
