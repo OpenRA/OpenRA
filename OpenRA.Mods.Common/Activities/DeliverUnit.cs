@@ -78,6 +78,11 @@ namespace OpenRA.Mods.Common.Activities
 
 			protected override void OnFirstRun(Actor self)
 			{
+				// HACK: Activities still tick between the actor being killed and being disposed
+				// Thus the carryable might have changed since queuing because the death handler set it to null
+				if (carryall.Carryable == null)
+					return;
+
 				self.Trait<Aircraft>().RemoveInfluence();
 
 				var localOffset = carryall.CarryableOffset.Rotate(body.QuantizeOrientation(self, self.Orientation));
