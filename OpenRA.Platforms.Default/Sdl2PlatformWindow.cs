@@ -344,11 +344,14 @@ namespace OpenRA.Platforms.Default
 					hotspot *= 2;
 				}
 
-				return new Sdl2HardwareCursor(size, data, hotspot);
+				var cursor = new Sdl2HardwareCursor(size, data, hotspot);
+				return cursor.Cursor == IntPtr.Zero ? null : cursor;
 			}
 			catch (Exception ex)
 			{
-				throw new Sdl2HardwareCursorException($"Failed to create hardware cursor `{name}` - {ex.Message}", ex);
+				Log.Write("debug", $"Failed to create hardware cursor `{name}` - {ex.Message}");
+				Console.WriteLine($"Failed to create hardware cursor `{name}` - {ex.Message}");
+				return null;
 			}
 		}
 
