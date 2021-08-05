@@ -532,7 +532,7 @@ namespace OpenRA
 					args = new[] { mod.LaunchPath }.Concat(args);
 				}
 
-				var p = Process.Start(path, args.Select(a => "\"" + a + "\"").JoinWith(" "));
+				var p = Process.Start(path.Replace(".dll", ".exe"), args.Select(a => "\"" + a + "\"").JoinWith(" "));
 				if (p == null || p.HasExited)
 					onFailed();
 				else
