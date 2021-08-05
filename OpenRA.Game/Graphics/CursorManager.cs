@@ -118,18 +118,13 @@ namespace OpenRA.Graphics
 					var paddingTL = -(template.Bounds.Location - template.Sprites[i].Offset.XY.ToInt2());
 					var paddingBR = template.PaddedSize - new int2(template.Sprites[i].Bounds.Size) - paddingTL;
 
-					try
+					var hardwareCursor = CreateHardwareCursor(kv.Key, template.Sprites[i], paddingTL, paddingBR, -template.Bounds.Location);
+					if (hardwareCursor != null)
+						template.Cursors[i] = hardwareCursor;
+					else
 					{
-						template.Cursors[i] = CreateHardwareCursor(kv.Key, template.Sprites[i], paddingTL, paddingBR, -template.Bounds.Location);
-					}
-					catch (Exception e)
-					{
-						Log.Write("debug", "Failed to initialize hardware cursor for {0}.", template.Name);
-						Log.Write("debug", "Error was: " + e.Message);
-
-						Console.WriteLine("Failed to initialize hardware cursor for {0}.", template.Name);
-						Console.WriteLine("Error was: " + e.Message);
-						template.Cursors[i] = null;
+						Log.Write("debug", $"Failed to initialize hardware cursor for {template.Name}.");
+						Console.WriteLine($"Failed to initialize hardware cursor for {template.Name}.");
 					}
 				}
 			}
