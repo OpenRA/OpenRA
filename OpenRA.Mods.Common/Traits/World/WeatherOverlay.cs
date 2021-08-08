@@ -27,10 +27,10 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool ChangingWindLevel = true;
 
 		[Desc("The levels of wind intensity (particles x-axis movement in px/tick).")]
-		public readonly int[] WindLevels = { -5, -3, -2, 0, 2, 3, 5 };
+		public readonly int[] WindLevels = { -12, -7, -5, 0, 5, 7, 12 };
 
 		[Desc("Works only if ChangingWindLevel is enabled. Min. and max. ticks needed to change the WindLevel.")]
-		public readonly int[] WindTick = { 150, 750 };
+		public readonly int[] WindTick = { 150, 550 };
 
 		[Desc("Hard or soft fading between the WindLevels.")]
 		public readonly bool InstantWindChanges = false;
@@ -45,13 +45,13 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int[] ScatterDirection = { -1, 1 };
 
 		[Desc("Min. and max. speed at which particles fall in px/tick.")]
-		public readonly float[] Gravity = { 1.00f, 2.00f };
+		public readonly float[] Gravity = { 2.5f, 5f };
 
 		[Desc("The current offset value for the swing movement. SwingOffset min. and max. value in px/tick.")]
-		public readonly float[] SwingOffset = { 1.0f, 1.5f };
+		public readonly float[] SwingOffset = { 2.5f, 3.5f };
 
 		[Desc("The value that particles swing to the side each update. SwingSpeed min. and max. value in px/tick.")]
-		public readonly float[] SwingSpeed = { 0.001f, 0.025f };
+		public readonly float[] SwingSpeed = { 0.0025f, 0.06f };
 
 		[Desc("The value range that can be swung to the left or right. SwingAmplitude min. and max. value in px/tick.")]
 		public readonly float[] SwingAmplitude = { 1.0f, 1.5f };
@@ -140,6 +140,7 @@ namespace OpenRA.Mods.Common.Traits
 		long windUpdateCountdown;
 		Particle[] particles;
 		Size viewportSize;
+		long lastRender;
 
 		public WeatherOverlay(World world, WeatherOverlayInfo info)
 		{
@@ -197,6 +198,12 @@ namespace OpenRA.Mods.Common.Traits
 			var viewport = new Rectangle(center - new int2(viewportSize) / 2, viewportSize);
 			var wcr = Game.Renderer.WorldRgbaColorRenderer;
 
+			// SwingSpeed is defined in px/tick so we must account for the fraction of a tick that elapsed since the last render.
+			// The scale is capped at 1 tick to avoid unexpected behaviour at game start, if RunTime overflows, or if the game stalls.
+			var runtime = Game.RunTime;
+			var tickFraction = Math.Min((runtime - lastRender) * 1f / world.Timestep, 1);
+			lastRender = runtime;
+
 			for (var i = 0; i < particles.Length; i++)
 			{
 				// Simulate wind and gravity effects on the particle
@@ -208,7 +215,7 @@ namespace OpenRA.Mods.Common.Traits
 						swingDirection *= -1;
 
 					var swingOffset = p.SwingOffset + p.SwingDirection * p.SwingSpeed;
-					var pos = p.Pos + new float2(p.DirectionScatterX + p.SwingOffset + windStrength, p.Gravity);
+					var pos = p.Pos + tickFraction * new float2(p.DirectionScatterX + p.SwingOffset + windStrength, p.Gravity);
 					particles[i] = p = new Particle(p, pos, swingDirection, swingOffset);
 				}
 

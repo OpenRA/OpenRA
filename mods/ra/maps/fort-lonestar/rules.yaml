@@ -10,7 +10,7 @@ World:
 		WindTick: 150, 550
 		UseSquares: false
 		ScatterDirection: 0, 0
-		Gravity: 8.00, 12.00
+		Gravity: 15, 25
 		SwingOffset: 0, 0
 		SwingSpeed: 0, 0
 		SwingAmplitude: 0, 0
