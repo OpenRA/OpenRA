@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Commands
 			{ "build-anywhere", ("toggles you the ability to build anywhere.", BuildAnywhere) },
 			{ "unlimited-power", ("toggles infinite power.", UnlimitedPower) },
 			{ "enable-tech", ("toggles the ability to build everything.", EnableTech) },
-			{ "instant-charge", ("toggles instant support power charging.", InstantCharge) },
+			{ "fast-charge", ("toggles almost instant support power charging.", FastCharge) },
 			{ "all", ("toggles all cheats and gives you some cash for your trouble.", All) },
 			{ "crash", ("crashes the game.", Crash) },
 			{ "levelup", ("adds a specified number of levels to the selected actors.", LevelUp) },
@@ -123,7 +123,7 @@ namespace OpenRA.Mods.Common.Commands
 			IssueDevCommand(world, "DevEnableTech");
 		}
 
-		static void InstantCharge(string arg, World world)
+		static void FastCharge(string arg, World world)
 		{
 			IssueDevCommand(world, "DevFastCharge");
 		}
