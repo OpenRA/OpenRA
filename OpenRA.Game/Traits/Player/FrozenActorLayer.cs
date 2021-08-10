@@ -155,14 +155,15 @@ namespace OpenRA.Traits
 			// PERF: Avoid LINQ.
 			foreach (var puv in Footprint)
 			{
-				if (shroud.IsVisible(puv))
+				var cv = shroud.GetVisibility(puv);
+				if (cv.HasFlag(Shroud.CellVisibility.Visible))
 				{
 					Visible = false;
 					Shrouded = false;
 					break;
 				}
 
-				if (Shrouded && shroud.IsExplored(puv))
+				if (Shrouded && cv.HasFlag(Shroud.CellVisibility.Explored))
 					Shrouded = false;
 			}
 

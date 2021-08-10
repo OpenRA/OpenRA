@@ -83,6 +83,10 @@ namespace OpenRA.Traits
 			}
 		}
 
+		// Visible is not a super set of Explored. IsExplored may return false even if IsVisible returns true.
+		[Flags]
+		public enum CellVisibility : byte { Hidden = 0x0, Explored = 0x1, Visible = 0x2 }
+
 		readonly Actor self;
 		readonly ShroudInfo info;
 		readonly Map map;
@@ -422,6 +426,54 @@ namespace OpenRA.Traits
 			// Check that uv is inside the map area. There is nothing special
 			// about explored here: any of the CellLayers would have been suitable.
 			return explored.Contains(uv);
+		}
+
+		// PERF: Combine IsExplored and IsVisible.
+		public CellVisibility GetVisibility(PPos puv)
+		{
+			var state = CellVisibility.Hidden;
+
+			if (Disabled)
+			{
+				if (FogEnabled)
+				{
+					// Shroud disabled, Fog enabled
+					if (resolvedType.Contains(puv))
+					{
+						state |= CellVisibility.Explored;
+
+						if (resolvedType[puv] == ShroudCellType.Visible)
+							state |= CellVisibility.Visible;
+					}
+				}
+				else if (map.Contains(puv))
+					state |= CellVisibility.Explored | CellVisibility.Visible;
+			}
+			else
+			{
+				if (FogEnabled)
+				{
+					// Shroud and Fog enabled
+					if (resolvedType.Contains(puv))
+					{
+						var rt = resolvedType[puv];
+						if (rt == ShroudCellType.Visible)
+							state |= CellVisibility.Explored | CellVisibility.Visible;
+						else if (rt > ShroudCellType.Shroud)
+							state |= CellVisibility.Explored;
+					}
+				}
+				else if (resolvedType.Contains(puv))
+				{
+					// We do not set Explored since IsExplored may return false.
+					state |= CellVisibility.Visible;
+
+					if (resolvedType[puv] > ShroudCellType.Shroud)
+						state |= CellVisibility.Explored;
+				}
+			}
+
+			return state;
 		}
 	}
 }
