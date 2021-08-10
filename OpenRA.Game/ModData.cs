@@ -124,7 +124,7 @@ namespace OpenRA
 				return (IReadOnlyDictionary<string, SequenceProvider>)(new ReadOnlyDictionary<string, SequenceProvider>(items));
 			});
 
-			initialThreadId = System.Threading.Thread.CurrentThread.ManagedThreadId;
+			initialThreadId = Environment.CurrentManagedThreadId;
 		}
 
 		// HACK: Only update the loading screen if we're in the main thread.
@@ -135,7 +135,7 @@ namespace OpenRA
 				LoadScreen.Display();
 		}
 
-		internal bool IsOnMainThread => System.Threading.Thread.CurrentThread.ManagedThreadId == initialThreadId;
+		internal bool IsOnMainThread => Environment.CurrentManagedThreadId == initialThreadId;
 
 		public void InitializeLoaders(IReadOnlyFileSystem fileSystem)
 		{
