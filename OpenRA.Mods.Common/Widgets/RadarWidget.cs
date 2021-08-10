@@ -22,6 +22,9 @@ namespace OpenRA.Mods.Common.Widgets
 {
 	public sealed class RadarWidget : Widget, IDisposable
 	{
+		public readonly int ColorFog = Color.FromArgb(128, Color.Black).ToArgb();
+		public readonly int ColorShroud = Color.Black.ToArgb();
+
 		public string WorldInteractionController = null;
 		public int AnimationLength = 5;
 		public string RadarOnlineSound = null;
@@ -240,10 +243,11 @@ namespace OpenRA.Mods.Common.Widgets
 		void UpdateShroudCell(PPos puv)
 		{
 			var color = 0;
-			if (!currentPlayer.Shroud.IsExplored(puv))
-				color = Color.Black.ToArgb();
-			else if (!currentPlayer.Shroud.IsVisible(puv))
-				color = Color.FromArgb(128, Color.Black).ToArgb();
+			var cv = currentPlayer.Shroud.GetVisibility(puv);
+			if (cv == Shroud.CellVisibility.Hidden)
+				color = ColorShroud;
+			else if (cv.HasFlag(Shroud.CellVisibility.Visible))
+				color = ColorFog;
 
 			var stride = radarSheet.Size.Width;
 			unsafe
