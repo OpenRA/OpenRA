@@ -128,7 +128,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 				var spawnFacing = Info.SpawnAtLastPosition ? cachedFacing : facing?.Facing ?? WAngle.Zero;
 
-				if ((Info.TerrainTypes.Count == 0 || Info.TerrainTypes.Contains(type)) && !string.IsNullOrEmpty(Info.Image))
+				if (Info.TerrainTypes.Count == 0 || Info.TerrainTypes.Contains(type))
 					self.World.AddFrameEndTask(w => w.Add(new SpriteEffect(pos, spawnFacing, self.World, Info.Image,
 						Info.Sequences.Random(Game.CosmeticRandom), Info.Palette, Info.VisibleThroughFog)));
 
