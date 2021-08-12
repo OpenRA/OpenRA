@@ -15,6 +15,10 @@
     "Tiberian Sun": {
       "commandName": "Project",
       "commandLineArgs": "Engine.EngineDir=\"..\" Game.Mod=ts"
+    },
+    "Red Alert - Test Map": {
+      "commandName": "Project",
+      "commandLineArgs": "Engine.EngineDir=\"..\" Game.Mod=ra Launch.Map=mods/ra/maps/a-nuclear-winter"
     }
   }
 }
