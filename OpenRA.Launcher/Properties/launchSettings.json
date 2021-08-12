@@ -18,7 +18,7 @@
     },
     "Red Alert - Test Map": {
       "commandName": "Project",
-      "commandLineArgs": "Engine.EngineDir=\"..\" Game.Mod=ra Launch.Map=e1248630d8444f5b690ba10ae8cd85b1e2f9c5ea"
+      "commandLineArgs": "Engine.EngineDir=\"..\" Game.Mod=ra Launch.Map=mods/ra/maps/a-nuclear-winter"
     }
   }
 }
