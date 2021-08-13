@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var sel in a.TraitsImplementing<INotifySelected>())
 				sel.Selected(a);
 
-			Sync.RunUnsynced(Game.Settings.Debug.SyncCheckUnsyncedCode, world, () => world.OrderGenerator.SelectionChanged(world, actors));
+			Sync.RunUnsynced(world, () => world.OrderGenerator.SelectionChanged(world, actors));
 			foreach (var ns in worldNotifySelection)
 				ns.SelectionChanged();
 		}
@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (actors.Remove(a))
 			{
 				UpdateHash();
-				Sync.RunUnsynced(Game.Settings.Debug.SyncCheckUnsyncedCode, world, () => world.OrderGenerator.SelectionChanged(world, actors));
+				Sync.RunUnsynced(world, () => world.OrderGenerator.SelectionChanged(world, actors));
 				foreach (var ns in worldNotifySelection)
 					ns.SelectionChanged();
 			}
@@ -121,7 +121,7 @@ namespace OpenRA.Mods.Common.Traits
 				foreach (var sel in a.TraitsImplementing<INotifySelected>())
 					sel.Selected(a);
 
-			Sync.RunUnsynced(Game.Settings.Debug.SyncCheckUnsyncedCode, world, () => world.OrderGenerator.SelectionChanged(world, actors));
+			Sync.RunUnsynced(world, () => world.OrderGenerator.SelectionChanged(world, actors));
 			foreach (var ns in worldNotifySelection)
 				ns.SelectionChanged();
 
@@ -148,7 +148,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			actors.Clear();
 			UpdateHash();
-			Sync.RunUnsynced(Game.Settings.Debug.SyncCheckUnsyncedCode, world, () => world.OrderGenerator.SelectionChanged(world, actors));
+			Sync.RunUnsynced(world, () => world.OrderGenerator.SelectionChanged(world, actors));
 			foreach (var ns in worldNotifySelection)
 				ns.SelectionChanged();
 		}
@@ -170,7 +170,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (removed > 0)
 			{
 				UpdateHash();
-				Sync.RunUnsynced(Game.Settings.Debug.SyncCheckUnsyncedCode, world, () => world.OrderGenerator.SelectionChanged(world, actors));
+				Sync.RunUnsynced(world, () => world.OrderGenerator.SelectionChanged(world, actors));
 				foreach (var ns in worldNotifySelection)
 					ns.SelectionChanged();
 			}

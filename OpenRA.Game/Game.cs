@@ -40,6 +40,7 @@ namespace OpenRA
 		public static Settings Settings;
 		public static CursorManager Cursor;
 		public static bool HideCursor;
+
 		static WorldRenderer worldRenderer;
 		static string modLaunchWrapper;
 
@@ -589,7 +590,7 @@ namespace OpenRA
 			if (Ui.LastTickTime.ShouldAdvance(tick))
 			{
 				Ui.LastTickTime.AdvanceTickTime(tick);
-				Sync.RunUnsynced(Settings.Debug.SyncCheckUnsyncedCode, world, Ui.Tick);
+				Sync.RunUnsynced(world, Ui.Tick);
 				Cursor.Tick();
 			}
 
@@ -601,14 +602,14 @@ namespace OpenRA
 
 					Sound.Tick();
 
-					Sync.RunUnsynced(Settings.Debug.SyncCheckUnsyncedCode, world, orderManager.TickImmediate);
+					Sync.RunUnsynced(world, orderManager.TickImmediate);
 
 					if (world == null)
 						return;
 
 					if (orderManager.TryTick())
 					{
-						Sync.RunUnsynced(Settings.Debug.SyncCheckUnsyncedCode, world, () =>
+						Sync.RunUnsynced(world, () =>
 						{
 							world.OrderGenerator.Tick(world);
 						});
@@ -620,7 +621,7 @@ namespace OpenRA
 
 					// Wait until we have done our first world Tick before TickRendering
 					if (orderManager.LocalFrameNumber > 0)
-						Sync.RunUnsynced(Settings.Debug.SyncCheckUnsyncedCode, world, () => world.TickRender(worldRenderer));
+						Sync.RunUnsynced(world, () => world.TickRender(worldRenderer));
 				}
 
 				benchmark?.Tick(LocalTick);

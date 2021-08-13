@@ -37,17 +37,17 @@ namespace OpenRA
 
 		public void OnKeyInput(KeyInput input)
 		{
-			Sync.RunUnsynced(Game.Settings.Debug.SyncCheckUnsyncedCode, world, () => Ui.HandleKeyPress(input));
+			Sync.RunUnsynced(world, () => Ui.HandleKeyPress(input));
 		}
 
 		public void OnTextInput(string text)
 		{
-			Sync.RunUnsynced(Game.Settings.Debug.SyncCheckUnsyncedCode, world, () => Ui.HandleTextInput(text));
+			Sync.RunUnsynced(world, () => Ui.HandleTextInput(text));
 		}
 
 		public void OnMouseInput(MouseInput input)
 		{
-			Sync.RunUnsynced(Game.Settings.Debug.SyncCheckUnsyncedCode, world, () => Ui.HandleInput(input));
+			Sync.RunUnsynced(world, () => Ui.HandleInput(input));
 		}
 	}
 
