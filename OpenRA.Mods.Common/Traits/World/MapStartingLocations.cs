@@ -45,6 +45,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Display order for the spawn positions checkbox in the lobby.")]
 		public readonly int SeparateTeamSpawnsCheckboxDisplayOrder = 0;
 
+		[Desc("Options category in which to display the 'Separate Team Spawns checkbox' in the lobby.")]
+		public readonly string SeparateTeamSpawnsCheckboxCategory = null;
+
 		public override object Create(ActorInitializer init) { return new MapStartingLocations(this); }
 
 		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(MapPreview map)
@@ -56,7 +59,8 @@ namespace OpenRA.Mods.Common.Traits
 				SeparateTeamSpawnsCheckboxVisible,
 				SeparateTeamSpawnsCheckboxDisplayOrder,
 				SeparateTeamSpawnsCheckboxEnabled,
-				SeparateTeamSpawnsCheckboxLocked);
+				SeparateTeamSpawnsCheckboxLocked,
+				SeparateTeamSpawnsCheckboxCategory);
 		}
 
 		class AssignSpawnLocationsState
