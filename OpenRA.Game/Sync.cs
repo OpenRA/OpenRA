@@ -161,6 +161,11 @@ namespace OpenRA
 			return t.GetHashCode();
 		}
 
+		public static void RunUnsynced(World world, Action fn)
+		{
+			RunUnsynced(Game.Settings.Debug.SyncCheckUnsyncedCode, world, () => { fn(); return true; });
+		}
+
 		public static void RunUnsynced(bool checkSyncHash, World world, Action fn)
 		{
 			RunUnsynced(checkSyncHash, world, () => { fn(); return true; });
@@ -168,13 +173,18 @@ namespace OpenRA
 
 		static bool inUnsyncedCode = false;
 
+		public static T RunUnsynced<T>(World world, Func<T> fn)
+		{
+			return RunUnsynced(Game.Settings.Debug.SyncCheckUnsyncedCode, world, fn);
+		}
+
 		public static T RunUnsynced<T>(bool checkSyncHash, World world, Func<T> fn)
 		{
-			if (world == null)
+			// PERF: Detect sync changes in top level entry point only. Do not recalculate sync hash during reentry.
+			if (inUnsyncedCode || world == null)
 				return fn();
 
 			var sync = checkSyncHash ? world.SyncHash() : 0;
-			var prevInUnsyncedCode = inUnsyncedCode;
 			inUnsyncedCode = true;
 
 			try
@@ -183,7 +193,7 @@ namespace OpenRA
 			}
 			finally
 			{
-				inUnsyncedCode = prevInUnsyncedCode;
+				inUnsyncedCode = false;
 				if (checkSyncHash && sync != world.SyncHash())
 					throw new InvalidOperationException("RunUnsynced: sync-changing code may not run here");
 			}
