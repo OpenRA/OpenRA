@@ -45,7 +45,7 @@ namespace OpenRA.Network
 			public byte[] Data;
 		}
 
-		readonly List<ReceivedPacket> receivedPackets = new List<ReceivedPacket>();
+		readonly ConcurrentQueue<ReceivedPacket> receivedPackets = new ConcurrentQueue<ReceivedPacket>();
 		public ReplayRecorder Recorder { get; private set; }
 
 		public virtual int LocalClientId => 1;
@@ -87,20 +87,12 @@ namespace OpenRA.Network
 
 		protected void AddPacket(ReceivedPacket packet)
 		{
-			lock (receivedPackets)
-				receivedPackets.Add(packet);
+			receivedPackets.Enqueue(packet);
 		}
 
 		public virtual void Receive(Action<int, byte[]> packetFn)
 		{
-			ReceivedPacket[] packets;
-			lock (receivedPackets)
-			{
-				packets = receivedPackets.ToArray();
-				receivedPackets.Clear();
-			}
-
-			foreach (var p in packets)
+			while (receivedPackets.TryDequeue(out var p))
 			{
 				packetFn(p.FromClient, p.Data);
 				Recorder?.Receive(p.FromClient, p.Data);
@@ -222,20 +214,20 @@ namespace OpenRA.Network
 		{
 			try
 			{
-				var reader = new BinaryReader(tcp.GetStream());
-				var handshakeProtocol = reader.ReadInt32();
+				var stream = tcp.GetStream();
+				var handshakeProtocol = stream.ReadInt32();
 
 				if (handshakeProtocol != ProtocolVersion.Handshake)
 					throw new InvalidOperationException($"Handshake protocol version mismatch. Server={handshakeProtocol} Client={ProtocolVersion.Handshake}");
 
-				clientId = reader.ReadInt32();
+				clientId = stream.ReadInt32();
 				connectionState = ConnectionState.Connected;
 
 				while (true)
 				{
-					var len = reader.ReadInt32();
-					var client = reader.ReadInt32();
-					var buf = reader.ReadBytes(len);
+					var len = stream.ReadInt32();
+					var client = stream.ReadInt32();
+					var buf = stream.ReadBytes(len);
 					if (len == 0)
 						throw new NotImplementedException();
 					AddPacket(new ReceivedPacket { FromClient = client, Data = buf });
