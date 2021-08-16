@@ -107,6 +107,16 @@ namespace OpenRA
 			return InnerGet<T>().All();
 		}
 
+		public IEnumerable<TraitPair<T>> ActorsWithTrait<T>(Func<Actor, bool> predicate)
+		{
+			return InnerGet<T>().Where(predicate);
+		}
+
+		public IEnumerable<T> ActorTraits<T>(Func<Actor, bool> predicate)
+		{
+			return InnerGet<T>().TraitWhere(predicate);
+		}
+
 		public IEnumerable<Actor> ActorsHavingTrait<T>()
 		{
 			return InnerGet<T>().Actors();
@@ -223,6 +233,20 @@ namespace OpenRA
 				return new AllEnumerable(this);
 			}
 
+			public IEnumerable<TraitPair<T>> Where(Func<Actor, bool> predicate)
+			{
+				// PERF: Custom enumerator for efficiency - using `yield` is slower.
+				++Queries;
+				return new ActorPredicateEnumerable(this, predicate);
+			}
+
+			public IEnumerable<T> TraitWhere(Func<Actor, bool> predicate)
+			{
+				// PERF: Custom enumerator for efficiency - using `yield` is slower.
+				++Queries;
+				return new ActorPredicateTraitEnumerable(this, predicate);
+			}
+
 			public IEnumerable<Actor> Actors()
 			{
 				++Queries;
@@ -278,6 +302,128 @@ namespace OpenRA
 				public void Reset() { index = -1; }
 				public bool MoveNext() { return ++index < actors.Count; }
 				public TraitPair<T> Current => new TraitPair<T>(actors[index], traits[index]);
+				object System.Collections.IEnumerator.Current => Current;
+				public void Dispose() { }
+			}
+
+			readonly struct ActorPredicateEnumerable : IEnumerable<TraitPair<T>>
+			{
+				readonly TraitContainer<T> container;
+				readonly Func<Actor, bool> predicate;
+
+				public ActorPredicateEnumerable(TraitContainer<T> container, Func<Actor, bool> predicate) { this.container = container; this.predicate = predicate; }
+				public IEnumerator<TraitPair<T>> GetEnumerator() { return new ActorPredicateEnumerator(container, predicate); }
+				System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() { return GetEnumerator(); }
+			}
+
+			struct ActorPredicateEnumerator : IEnumerator<TraitPair<T>>
+			{
+				readonly List<Actor> actors;
+				readonly List<T> traits;
+				readonly Func<Actor, bool> predicate;
+				int index;
+				Actor prev;
+
+				public ActorPredicateEnumerator(TraitContainer<T> container, Func<Actor, bool> predicate)
+					: this()
+				{
+					actors = container.actors;
+					traits = container.traits;
+					this.predicate = predicate;
+					Reset();
+				}
+
+				public void Reset() { index = -1; prev = null; }
+				public bool MoveNext()
+				{
+					while (++index < actors.Count)
+					{
+						var actor = actors[index];
+						if (actor == prev)
+							return true;
+
+						if (predicate(actor))
+						{
+							prev = actor;
+							return true;
+						}
+
+						// PERF: Skip entries of current actor
+						while (++index < actors.Count)
+						{
+							if (actors[index] != actor)
+							{
+								--index;
+								break;
+							}
+						}
+					}
+
+					return false;
+				}
+
+				public TraitPair<T> Current => new TraitPair<T>(actors[index], traits[index]);
+				object System.Collections.IEnumerator.Current => Current;
+				public void Dispose() { }
+			}
+
+			readonly struct ActorPredicateTraitEnumerable : IEnumerable<T>
+			{
+				readonly TraitContainer<T> container;
+				readonly Func<Actor, bool> predicate;
+
+				public ActorPredicateTraitEnumerable(TraitContainer<T> container, Func<Actor, bool> predicate) { this.container = container; this.predicate = predicate; }
+				public IEnumerator<T> GetEnumerator() { return new ActorPredicateTraitEnumerator(container, predicate); }
+				System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() { return GetEnumerator(); }
+			}
+
+			struct ActorPredicateTraitEnumerator : IEnumerator<T>
+			{
+				readonly List<Actor> actors;
+				readonly List<T> traits;
+				readonly Func<Actor, bool> predicate;
+				int index;
+				Actor prev;
+
+				public ActorPredicateTraitEnumerator(TraitContainer<T> container, Func<Actor, bool> predicate)
+					: this()
+				{
+					actors = container.actors;
+					traits = container.traits;
+					this.predicate = predicate;
+					Reset();
+				}
+
+				public void Reset() { index = -1; prev = null; }
+				public bool MoveNext()
+				{
+					while (++index < actors.Count)
+					{
+						var actor = actors[index];
+						if (actor == prev)
+							return true;
+
+						if (predicate(actor))
+						{
+							prev = actor;
+							return true;
+						}
+
+						// PERF: Skip entries of current actor
+						while (++index < actors.Count)
+						{
+							if (actors[index] != actor)
+							{
+								--index;
+								break;
+							}
+						}
+					}
+
+					return false;
+				}
+
+				public T Current => traits[index];
 				object System.Collections.IEnumerator.Current => Current;
 				public void Dispose() { }
 			}

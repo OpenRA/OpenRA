@@ -496,6 +496,16 @@ namespace OpenRA
 			return TraitDict.ActorsWithTrait<T>();
 		}
 
+		public IEnumerable<TraitPair<T>> ActorsWithTrait<T>(Func<Actor, bool> predicate)
+		{
+			return TraitDict.ActorsWithTrait<T>(predicate);
+		}
+
+		public IEnumerable<T> ActorTraits<T>(Func<Actor, bool> predicate)
+		{
+			return TraitDict.ActorTraits<T>(predicate);
+		}
+
 		public void ApplyToActorsWithTraitTimed<T>(Action<Actor, T> action, string text)
 		{
 			TraitDict.ApplyToActorsWithTraitTimed<T>(action, text);

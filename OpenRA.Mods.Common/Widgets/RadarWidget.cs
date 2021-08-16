@@ -398,11 +398,8 @@ namespace OpenRA.Mods.Common.Widgets
 					{
 						var colors = (int*)colorBytes;
 
-						foreach (var t in world.ActorsWithTrait<IRadarSignature>())
+						foreach (var t in world.ActorsWithTrait<IRadarSignature>(a => a.IsInWorld && !world.FogObscures(a)))
 						{
-							if (!t.Actor.IsInWorld || world.FogObscures(t.Actor))
-								continue;
-
 							cells.Clear();
 							t.Trait.PopulateRadarSignatureCells(t.Actor, cells);
 							foreach (var cell in cells)

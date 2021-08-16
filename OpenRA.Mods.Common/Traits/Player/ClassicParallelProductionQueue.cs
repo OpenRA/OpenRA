@@ -59,16 +59,19 @@ namespace OpenRA.Mods.Common.Traits
 			// PERF: Avoid LINQ.
 			Enabled = false;
 			var isActive = false;
-			foreach (var x in self.World.ActorsWithTrait<Production>())
+			foreach (var t in self.World.ActorTraits<Production>(a => a.Owner == self.Owner))
 			{
-				if (x.Trait.IsTraitDisabled)
+				if (t.IsTraitDisabled)
 					continue;
 
-				if (x.Actor.Owner != self.Owner || !x.Trait.Info.Produces.Contains(Info.Type))
+				if (!t.Info.Produces.Contains(Info.Type))
 					continue;
 
 				Enabled |= IsValidFaction;
-				isActive |= !x.Trait.IsTraitPaused;
+				isActive |= !t.IsTraitPaused;
+
+				if (Enabled && isActive)
+					break;
 			}
 
 			if (!Enabled)
@@ -133,9 +136,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override TraitPair<Production> MostLikelyProducer()
 		{
-			var productionActors = self.World.ActorsWithTrait<Production>()
-				.Where(x => x.Actor.Owner == self.Owner
-					&& !x.Trait.IsTraitDisabled && x.Trait.Info.Produces.Contains(Info.Type))
+			var productionActors = self.World.ActorsWithTrait<Production>(a => a.Owner == self.Owner)
+				.Where(x => !x.Trait.IsTraitDisabled && x.Trait.Info.Produces.Contains(Info.Type))
 				.OrderByDescending(x => x.Actor.IsPrimaryBuilding())
 				.ThenByDescending(x => x.Actor.ActorID)
 				.ToList();
@@ -152,10 +154,8 @@ namespace OpenRA.Mods.Common.Traits
 			// Some units may request a specific production type, which is ignored if the AllTech cheat is enabled
 			var type = developerMode.AllTech ? Info.Type : (bi.BuildAtProductionType ?? Info.Type);
 
-			var producers = self.World.ActorsWithTrait<Production>()
-				.Where(x => x.Actor.Owner == self.Owner
-					&& !x.Trait.IsTraitDisabled
-					&& x.Trait.Info.Produces.Contains(type))
+			var producers = self.World.ActorsWithTrait<Production>(a => a.Owner == self.Owner)
+				.Where(x => !x.Trait.IsTraitDisabled && x.Trait.Info.Produces.Contains(type))
 				.OrderByDescending(x => x.Actor.IsPrimaryBuilding())
 				.ThenByDescending(x => x.Actor.ActorID);
 
@@ -204,8 +204,8 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				var type = bi.BuildAtProductionType ?? info.Type;
 
-				var selfsameProductionsCount = self.World.ActorsWithTrait<Production>()
-					.Count(p => !p.Trait.IsTraitDisabled && !p.Trait.IsTraitPaused && p.Actor.Owner == self.Owner && p.Trait.Info.Produces.Contains(type));
+				var selfsameProductionsCount = self.World.ActorTraits<Production>(a => a.Owner == self.Owner)
+					.Count(t => !t.IsTraitDisabled && !t.IsTraitPaused && t.Info.Produces.Contains(type));
 
 				var speedModifier = selfsameProductionsCount.Clamp(1, info.BuildingCountBuildTimeMultipliers.Length) - 1;
 				time = (time * info.BuildingCountBuildTimeMultipliers[speedModifier]) / 100;

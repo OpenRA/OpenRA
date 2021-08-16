@@ -47,10 +47,9 @@ namespace OpenRA.Mods.Common.Traits
 					BorderWidth);
 			}
 
-			foreach (var a in w.ActorsWithTrait<RenderJammerCircle>())
-				if (a.Actor.Owner.IsAlliedWith(w.RenderPlayer))
-					foreach (var r in a.Trait.RenderAnnotations(a.Actor, wr))
-						yield return r;
+			foreach (var a in w.ActorsWithTrait<RenderJammerCircle>(a => a.Owner.IsAlliedWith(w.RenderPlayer)))
+				foreach (var r in a.Trait.RenderAnnotations(a.Actor, wr))
+					yield return r;
 		}
 
 		public override object Create(ActorInitializer init) { return new RenderJammerCircle(this); }

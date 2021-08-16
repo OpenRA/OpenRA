@@ -99,10 +99,8 @@ namespace OpenRA.Mods.Common.Traits
 				foreach (var q in queues)
 				{
 					foreach (var b in self.World
-							.ActorsWithTrait<PrimaryBuilding>()
+							.ActorsWithTrait<PrimaryBuilding>(a => a != self && a.Owner == self.Owner)
 							.Where(a =>
-								a.Actor != self &&
-								a.Actor.Owner == self.Owner &&
 								a.Trait.IsPrimary &&
 								a.Actor.TraitsImplementing<Production>().Where(p => !p.IsTraitDisabled).Any(pi => pi.Info.Produces.Contains(q))))
 						b.Trait.SetPrimaryProducer(b.Actor, false);

@@ -99,16 +99,15 @@ namespace OpenRA.Mods.Common.Widgets
 			if (player == null)
 				return;
 
-			var queues = world.ActorsWithTrait<ProductionQueue>()
-				.Where(a => a.Actor.Owner == player)
-				.Select((a, i) => new { a.Trait, i });
+			var queues = world.ActorTraits<ProductionQueue>(a => a.Owner == player)
+				.Select((trait, i) => new { trait, i });
 
 			foreach (var queue in queues)
-				if (!clocks.ContainsKey(queue.Trait))
-					clocks.Add(queue.Trait, new Animation(world, ClockAnimation));
+				if (!clocks.ContainsKey(queue.trait))
+					clocks.Add(queue.trait, new Animation(world, ClockAnimation));
 
 			var currentItemsByItem = queues
-					.Select(a => a.Trait.CurrentItem())
+					.Select(a => a.trait.CurrentItem())
 					.Where(pi => pi != null)
 					.GroupBy(pr => pr.Item)
 					.OrderBy(g => g.First().Queue.Info.DisplayOrder)

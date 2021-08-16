@@ -151,9 +151,9 @@ namespace OpenRA.Graphics
 		// PERF: Avoid LINQ.
 		void GenerateOverlayRenderables()
 		{
-			foreach (var a in World.ActorsWithTrait<IRenderAboveShroud>())
+			foreach (var a in World.ActorsWithTrait<IRenderAboveShroud>(a => a.IsInWorld && !a.Disposed))
 			{
-				if (!a.Actor.IsInWorld || a.Actor.Disposed || (a.Trait.SpatiallyPartitionable && !onScreenActors.Contains(a.Actor)))
+				if (a.Trait.SpatiallyPartitionable && !onScreenActors.Contains(a.Actor))
 					continue;
 
 				foreach (var renderable in a.Trait.RenderAboveShroud(a.Actor, this))
@@ -193,9 +193,9 @@ namespace OpenRA.Graphics
 		// PERF: Avoid LINQ.
 		void GenerateAnnotationRenderables()
 		{
-			foreach (var a in World.ActorsWithTrait<IRenderAnnotations>())
+			foreach (var a in World.ActorsWithTrait<IRenderAnnotations>(a => a.IsInWorld && !a.Disposed))
 			{
-				if (!a.Actor.IsInWorld || a.Actor.Disposed || (a.Trait.SpatiallyPartitionable && !onScreenActors.Contains(a.Actor)))
+				if (a.Trait.SpatiallyPartitionable && !onScreenActors.Contains(a.Actor))
 					continue;
 
 				foreach (var renderAnnotation in a.Trait.RenderAnnotations(a.Actor, this))
@@ -272,9 +272,8 @@ namespace OpenRA.Graphics
 			if (enableDepthBuffer)
 				Game.Renderer.ClearDepthBuffer();
 
-			foreach (var a in World.ActorsWithTrait<IRenderAboveWorld>())
-				if (a.Actor.IsInWorld && !a.Actor.Disposed)
-					a.Trait.RenderAboveWorld(a.Actor, this);
+			foreach (var a in World.ActorsWithTrait<IRenderAboveWorld>(a => a.IsInWorld && !a.Disposed))
+				a.Trait.RenderAboveWorld(a.Actor, this);
 
 			if (enableDepthBuffer)
 				Game.Renderer.ClearDepthBuffer();

@@ -36,9 +36,8 @@ namespace OpenRA.Mods.Common
 
 		public static IEnumerable<ProductionQueue> FindQueues(Player player, string category)
 		{
-			return player.World.ActorsWithTrait<ProductionQueue>()
-				.Where(a => a.Actor.Owner == player && a.Trait.Info.Type == category && a.Trait.Enabled)
-				.Select(a => a.Trait);
+			return player.World.ActorTraits<ProductionQueue>(a => a.Owner == player)
+				.Where(t => t.Info.Type == category && t.Enabled);
 		}
 
 		public static IEnumerable<Actor> GetActorsWithTrait<T>(World world)
