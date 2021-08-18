@@ -29,6 +29,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public readonly Actor Self;
 		public readonly Dictionary<string, SupportPowerInstance> Powers = new Dictionary<string, SupportPowerInstance>();
+		public event Action<SupportPowerManager> OnPowersChanged;
 
 		public readonly DeveloperMode DevMode;
 		public readonly TechTree TechTree;
@@ -55,6 +56,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (a.Owner != Self.Owner)
 				return;
 
+			var modified = false;
 			foreach (var t in a.TraitsImplementing<SupportPower>())
 			{
 				var key = MakeKey(t);
@@ -68,10 +70,15 @@ namespace OpenRA.Mods.Common.Traits
 						TechTree.Add(key, t.Info.Prerequisites, 0, this);
 						TechTree.Update();
 					}
+
+					modified = true;
 				}
 
 				Powers[key].Instances.Add(t);
 			}
+
+			if (modified && OnPowersChanged != null)
+				OnPowersChanged(this);
 		}
 
 		void ActorRemoved(Actor a)
@@ -79,6 +86,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (a.Owner != Self.Owner || !a.Info.HasTraitInfo<SupportPowerInfo>())
 				return;
 
+			var modified = false;
 			foreach (var t in a.TraitsImplementing<SupportPower>())
 			{
 				var key = MakeKey(t);
@@ -89,14 +97,22 @@ namespace OpenRA.Mods.Common.Traits
 					Powers.Remove(key);
 					TechTree.Remove(key);
 					TechTree.Update();
+					modified = true;
 				}
 			}
+
+			if (modified && OnPowersChanged != null)
+				OnPowersChanged(this);
 		}
 
 		void ITick.Tick(Actor self)
 		{
+			var disabledStateChanged = false;
 			foreach (var power in Powers.Values)
-				power.Tick();
+				disabledStateChanged |= power.Tick();
+
+			if (disabledStateChanged && OnPowersChanged != null)
+				OnPowersChanged(this);
 		}
 
 		public void ResolveOrder(Actor self, Order order)
@@ -146,16 +162,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly List<SupportPower> Instances = new List<SupportPower>();
 		public readonly int TotalTicks;
+		private bool disabled;
 
 		protected int remainingSubTicks;
 		public int RemainingTicks => remainingSubTicks / 100;
 		public bool Active { get; private set; }
-		public bool Disabled =>
-			Manager.Self.Owner.WinState == WinState.Lost ||
-			(!prereqsAvailable && !Manager.DevMode.AllTech) ||
-			!instancesEnabled ||
-			oneShotFired;
-
+		public bool Disabled => disabled;
 		public SupportPowerInfo Info { get { return Instances.Select(i => i.Info).FirstOrDefault(); } }
 		public bool Ready => Active && RemainingTicks == 0;
 
@@ -187,15 +199,27 @@ namespace OpenRA.Mods.Common.Traits
 				remainingSubTicks = TotalTicks * 100;
 		}
 
-		public virtual void Tick()
+		public virtual bool Tick()
 		{
+			var disabledStateChanged = false;
 			instancesEnabled = Instances.Any(i => !i.IsTraitDisabled);
 			if (!instancesEnabled)
 				remainingSubTicks = TotalTicks * 100;
 
-			Active = !Disabled && Instances.Any(i => !i.IsTraitPaused);
+			var dis = Manager.Self.Owner.WinState == WinState.Lost ||
+				(!prereqsAvailable && !Manager.DevMode.AllTech) ||
+				!instancesEnabled ||
+				oneShotFired;
+
+			if (disabled != dis)
+			{
+				disabledStateChanged = true;
+				disabled = dis;
+			}
+
+			Active = !disabled && Instances.Any(i => !i.IsTraitPaused);
 			if (!Active)
-				return;
+				return disabledStateChanged;
 
 			var power = Instances.First();
 			if (Manager.DevMode.FastCharge && remainingSubTicks > 2500)
@@ -215,6 +239,8 @@ namespace OpenRA.Mods.Common.Traits
 				power.Charged(power.Self, Key);
 				notifiedReady = true;
 			}
+
+			return disabledStateChanged;
 		}
 
 		public virtual void Target()

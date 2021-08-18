@@ -20,7 +20,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
 {
-	public class SupportPowersWidget : Widget
+	public class SupportPowersWidget : Widget, IDisposable
 	{
 		public readonly string ReadyText = "";
 
@@ -99,6 +99,8 @@ namespace OpenRA.Mods.Common.Widgets
 				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
 
 			clock = new Animation(world, ClockAnimation);
+			spm.OnPowersChanged += OnPowersChanged;
+			OnPowersChanged(spm);
 		}
 
 		public override void Initialize(WidgetArgs args)
@@ -125,18 +127,24 @@ namespace OpenRA.Mods.Common.Widgets
 			public HotkeyReference Hotkey;
 		}
 
+		void OnPowersChanged(SupportPowerManager spm)
+		{
+			RefreshIcons();
+		}
+
 		public void RefreshIcons()
 		{
-			icons = new Dictionary<Rectangle, SupportPowerIcon>();
-			var powers = spm.Powers.Values.Where(p => !p.Disabled)
-				.OrderBy(p => p.Info.SupportPowerPaletteOrder);
+			icons.Clear();
 
 			var oldIconCount = IconCount;
 			IconCount = 0;
 
 			var rb = RenderBounds;
-			foreach (var p in powers)
+			foreach (var p in spm.Powers.Values.OrderBy(p => p.Info.SupportPowerPaletteOrder))
 			{
+				if (p.Disabled)
+					continue;
+
 				Rectangle rect;
 				if (Horizontal)
 					rect = new Rectangle(rb.X + IconCount * (IconSize.X + IconMargin), rb.Y, IconSize.X, IconSize.Y);
@@ -242,12 +250,6 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 		}
 
-		public override void Tick()
-		{
-			// TODO: Only do this when the powers have changed
-			RefreshIcons();
-		}
-
 		public override void MouseEntered()
 		{
 			if (TooltipContainer == null)
@@ -286,6 +288,11 @@ namespace OpenRA.Mods.Common.Widgets
 				ClickIcon(clicked);
 
 			return true;
+		}
+
+		public void Dispose()
+		{
+			spm.OnPowersChanged -= OnPowersChanged;
 		}
 	}
 }

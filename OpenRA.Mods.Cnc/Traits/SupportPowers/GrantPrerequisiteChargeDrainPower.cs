@@ -122,10 +122,10 @@ namespace OpenRA.Mods.Cnc.Traits
 					((GrantPrerequisiteChargeDrainPower)p).Deactivate(p.Self, this);
 			}
 
-			public override void Tick()
+			public override bool Tick()
 			{
 				var orig = remainingSubTicks;
-				base.Tick();
+				var disableStateChanged = base.Tick();
 
 				if (Ready)
 					available = true;
@@ -144,6 +144,8 @@ namespace OpenRA.Mods.Cnc.Traits
 						Deactivate();
 					}
 				}
+
+				return disableStateChanged;
 			}
 
 			public void Discharge(int subTicks)
