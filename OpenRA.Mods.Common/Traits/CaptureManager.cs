@@ -254,20 +254,25 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var w in progressWatchers)
 				w.Update(self, self, target, 0, 0);
 
-			foreach (var w in targetManager.progressWatchers)
-				w.Update(target, self, target, 0, 0);
+			if (targetManager != null)
+				foreach (var w in targetManager.progressWatchers)
+					w.Update(target, self, target, 0, 0);
 
 			if (capturingToken != Actor.InvalidConditionToken)
 				capturingToken = self.RevokeCondition(capturingToken);
 
-			if (targetManager.beingCapturedToken != Actor.InvalidConditionToken)
-				targetManager.beingCapturedToken = target.RevokeCondition(targetManager.beingCapturedToken);
+			if (targetManager != null)
+			{
+				if (targetManager.beingCapturedToken != Actor.InvalidConditionToken)
+					targetManager.beingCapturedToken = target.RevokeCondition(targetManager.beingCapturedToken);
+
+				targetManager.currentCaptors.Remove(self);
+			}
 
 			currentTarget = null;
 			currentTargetManager = null;
 			currentTargetDelay = 0;
 			enteringCurrentTarget = false;
-			targetManager.currentCaptors.Remove(self);
 		}
 
 		void ITick.Tick(Actor self)
