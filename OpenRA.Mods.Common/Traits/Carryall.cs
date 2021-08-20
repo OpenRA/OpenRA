@@ -128,7 +128,7 @@ namespace OpenRA.Mods.Common.Traits
 					new OwnerInit(self.Owner)
 				});
 
-				unit.Trait<Carryable>().Attached(self);
+				unit.Trait<Carryable>().Attached(unit);
 				AttachCarryable(self, unit);
 			}
 		}
