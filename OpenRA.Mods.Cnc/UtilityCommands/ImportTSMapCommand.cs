@@ -31,7 +31,9 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 
 		static readonly Dictionary<byte, string> OverlayToActor = new Dictionary<byte, string>()
 		{
+			{ 0x00, "gasand" },
 			{ 0x01, "gasand" },
+			{ 0x02, "gawall" },
 			{ 0x03, "gawall" },
 			{ 0x18, "bridge1" },
 			{ 0x19, "bridge2" },
@@ -552,7 +554,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 				var health = short.Parse(entries[2]);
 				var rx = int.Parse(entries[3]);
 				var ry = int.Parse(entries[4]);
-				var facing = (byte)(224 - byte.Parse(entries[5]));
+				var facing = (byte)(224 - byte.Parse(entries[type == "Infantry" ? 7 : 5]));
 
 				var dx = rx - ry + fullSize.X - 1;
 				var dy = rx + ry - fullSize.X - 1;
@@ -563,6 +565,20 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 					new LocationInit(cell),
 					new OwnerInit(CreepActors.Contains(entries[1]) ? "Creeps" : "Neutral")
 				};
+
+				if (type == "Infantry")
+				{
+					var subcell = 0;
+					switch (byte.Parse(entries[5]))
+					{
+						case 2: subcell = 3; break;
+						case 3: subcell = 1; break;
+						case 4: subcell = 2; break;
+					}
+
+					if (subcell != 0)
+						ar.Add(new SubCellInit((SubCell)subcell));
+				}
 
 				if (health != 256)
 					ar.Add(new HealthInit(100 * health / 256));
