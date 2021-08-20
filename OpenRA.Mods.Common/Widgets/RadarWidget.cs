@@ -193,7 +193,7 @@ namespace OpenRA.Mods.Common.Widgets
 					top = Math.Min(top, allTop.MinBy(uv => uv.V).V);
 
 				if (allBottom.Any())
-					bottom = Math.Max(bottom, allBottom.MinBy(uv => uv.V).V);
+					bottom = Math.Max(bottom, allBottom.MaxBy(uv => uv.V).V);
 			}
 
 			var b = Rectangle.FromLTRB(left, top, right, bottom);
