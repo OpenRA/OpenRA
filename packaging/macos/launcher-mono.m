@@ -241,8 +241,6 @@ static int check_mono_version(const char *version, const char *req_version)
 
 	NSString *exePath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent: @"Contents/MacOS/"];
 	NSString *gamePath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent: @"Contents/Resources/"];
-
-	NSString *launchPath = [SYSTEM_MONO_PATH stringByAppendingPathComponent: @"Commands/mono"];
 	NSString *appPath = [exePath stringByAppendingPathComponent: @"Launcher"];
 	NSString *engineLaunchPath = [self resolveTranslocatedPath: appPath];
 
@@ -263,7 +261,7 @@ static int check_mono_version(const char *version, const char *req_version)
 
 	gameTask = [[NSTask alloc] init];
 	[gameTask setCurrentDirectoryPath: gamePath];
-	[gameTask setLaunchPath: launchPath];
+	[gameTask setLaunchPath: appPath];
 	[gameTask setArguments: launchArgs];
 
 	[[NSNotificationCenter defaultCenter]
@@ -345,6 +343,35 @@ static int check_mono_version(const char *version, const char *req_version)
 int main(int argc, char **argv)
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+
+	if (argc > 1)
+	{
+		struct rlimit limit;
+		if (getrlimit (RLIMIT_NOFILE, &limit) == 0 && limit.rlim_cur < 1024)
+		{
+			limit.rlim_cur = MIN(limit.rlim_max, 1024);
+			setrlimit(RLIMIT_NOFILE, &limit);
+		}
+
+		void *libmono = dlopen([[SYSTEM_MONO_PATH stringByAppendingPathComponent: @"/lib/libmonosgen-2.0.dylib"] UTF8String], RTLD_LAZY);
+		if (libmono == NULL)
+		{
+			fprintf (stderr, "Failed to load libmonosgen-2.0.dylib: %s\n", dlerror());
+			return EXIT_FAILURE;
+		}
+
+		mono_main _mono_main = (mono_main)dlsym(libmono, "mono_main");
+		if (!_mono_main)
+		{
+			fprintf(stderr, "Could not load mono_main(): %s\n", dlerror());
+			return EXIT_FAILURE;
+		}
+
+		[pool drain];
+
+		return _mono_main(argc, argv);
+	}
+
 	NSApplication *application = [NSApplication sharedApplication];
 	OpenRALauncher *launcher = [[OpenRALauncher alloc] init];
 	[NSApp setActivationPolicy: NSApplicationActivationPolicyProhibited];
