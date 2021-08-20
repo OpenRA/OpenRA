@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	[TraitLocation(SystemActors.World)]
 	[Desc("Attach this to the world actor.")]
-	public class ResourceLayerInfo : TraitInfo, IResourceLayerInfo, Requires<BuildingInfluenceInfo>, IMapPreviewSignatureInfo
+	public class ResourceLayerInfo : TraitInfo, IResourceLayerInfo, Requires<BuildingInfluenceInfo>
 	{
 		public class ResourceTypeInfo
 		{
@@ -76,27 +76,28 @@ namespace OpenRA.Mods.Common.Traits
 			return ret;
 		}
 
-		public static void PopulateMapPreviewSignatureCells(Map map, Dictionary<string, ResourceTypeInfo> resources, List<(MPos, Color)> destinationBuffer)
+		bool IResourceLayerInfo.TryGetTerrainType(string resourceType, out string terrainType)
 		{
-			var terrainInfo = map.Rules.TerrainInfo;
-			var colors = resources.Values.ToDictionary(
-				r => r.ResourceIndex,
-				r => terrainInfo.TerrainTypes[terrainInfo.GetTerrainIndex(r.TerrainType)].Color);
-
-			for (var i = 0; i < map.MapSize.X; i++)
+			if (resourceType == null || !ResourceTypes.TryGetValue(resourceType, out var resourceInfo))
 			{
-				for (var j = 0; j < map.MapSize.Y; j++)
-				{
-					var cell = new MPos(i, j);
-					if (colors.TryGetValue(map.Resources[cell].Type, out var color))
-						destinationBuffer.Add((cell, color));
-				}
+				terrainType = null;
+				return false;
 			}
+
+			terrainType = resourceInfo.TerrainType;
+			return true;
 		}
 
-		void IMapPreviewSignatureInfo.PopulateMapPreviewSignatureCells(Map map, ActorInfo ai, ActorReference s, List<(MPos, Color)> destinationBuffer)
+		bool IResourceLayerInfo.TryGetResourceIndex(string resourceType, out byte index)
 		{
-			PopulateMapPreviewSignatureCells(map, ResourceTypes, destinationBuffer);
+			if (resourceType == null || !ResourceTypes.TryGetValue(resourceType, out var resourceInfo))
+			{
+				index = 0;
+				return false;
+			}
+
+			index = resourceInfo.ResourceIndex;
+			return true;
 		}
 
 		public override object Create(ActorInitializer init) { return new ResourceLayer(init.Self, this); }
@@ -299,5 +300,6 @@ namespace OpenRA.Mods.Common.Traits
 		void IResourceLayer.ClearResources(CPos cell) { ClearResources(cell); }
 		bool IResourceLayer.IsVisible(CPos cell) { return !world.FogObscures(cell); }
 		bool IResourceLayer.IsEmpty => resCells < 1;
+		IResourceLayerInfo IResourceLayer.Info => info;
 	}
 }

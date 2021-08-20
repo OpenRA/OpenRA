@@ -9,10 +9,12 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.D2k.Traits
@@ -30,13 +32,14 @@ namespace OpenRA.Mods.D2k.Traits
 		public override object Create(ActorInitializer init) { return new BuildableTerrainLayer(init.Self, this); }
 	}
 
-	public class BuildableTerrainLayer : IRenderOverlay, IWorldLoaded, ITickRender, INotifyActorDisposing
+	public class BuildableTerrainLayer : IRenderOverlay, IWorldLoaded, ITickRender, IRadarTerrainLayer, INotifyActorDisposing
 	{
 		readonly BuildableTerrainLayerInfo info;
 		readonly Dictionary<CPos, TerrainTile?> dirty = new Dictionary<CPos, TerrainTile?>();
 		readonly ITiledTerrainRenderer terrainRenderer;
 		readonly World world;
 		readonly CellLayer<int> strength;
+		readonly CellLayer<(Color, Color)> radarColor;
 
 		TerrainSpriteLayer render;
 		PaletteReference paletteReference;
@@ -47,6 +50,7 @@ namespace OpenRA.Mods.D2k.Traits
 			this.info = info;
 			world = self.World;
 			strength = new CellLayer<int>(world.Map);
+			radarColor = new CellLayer<(Color, Color)>(world.Map);
 			terrainRenderer = self.Trait<ITiledTerrainRenderer>();
 		}
 
@@ -61,8 +65,11 @@ namespace OpenRA.Mods.D2k.Traits
 			if (!strength.Contains(cell))
 				return;
 
-			world.Map.CustomTerrain[cell] = world.Map.Rules.TerrainInfo.GetTerrainIndex(tile);
-			strength[cell] = info.MaxStrength;
+			var uv = cell.ToMPos(world.Map);
+			var tileInfo = world.Map.Rules.TerrainInfo.GetTerrainInfo(tile);
+			world.Map.CustomTerrain[uv] = tileInfo.TerrainType;
+			strength[uv] = info.MaxStrength;
+			radarColor[uv] = (tileInfo.GetColor(world.LocalRandom), tileInfo.GetColor(world.LocalRandom));
 			dirty[cell] = tile;
 		}
 
@@ -85,8 +92,10 @@ namespace OpenRA.Mods.D2k.Traits
 			if (!strength.Contains(cell))
 				return;
 
-			world.Map.CustomTerrain[cell] = byte.MaxValue;
+			var uv = cell.ToMPos(world.Map);
+			world.Map.CustomTerrain[uv] = byte.MaxValue;
 			strength[cell] = 0;
+			radarColor[uv] = (Color.Transparent, Color.Transparent);
 			dirty[cell] = null;
 		}
 
@@ -119,6 +128,18 @@ namespace OpenRA.Mods.D2k.Traits
 		void IRenderOverlay.Render(WorldRenderer wr)
 		{
 			render.Draw(wr.Viewport);
+		}
+
+		event Action<CPos> IRadarTerrainLayer.CellEntryChanged
+		{
+			add => radarColor.CellEntryChanged += value;
+			remove => radarColor.CellEntryChanged -= value;
+		}
+
+		bool IRadarTerrainLayer.TryGetTerrainColorPair(MPos uv, out (Color Left, Color Right) value)
+		{
+			value = radarColor[uv];
+			return strength[uv] > 0;
 		}
 
 		void INotifyActorDisposing.Disposing(Actor self)

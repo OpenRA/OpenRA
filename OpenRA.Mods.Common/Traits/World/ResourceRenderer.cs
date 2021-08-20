@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -20,7 +21,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	[TraitLocation(SystemActors.World | SystemActors.EditorWorld)]
 	[Desc("Visualizes the state of the `ResourceLayer`.", " Attach this to the world actor.")]
-	public class ResourceRendererInfo : TraitInfo, Requires<IResourceLayerInfo>
+	public class ResourceRendererInfo : TraitInfo, Requires<IResourceLayerInfo>, IMapPreviewSignatureInfo
 	{
 		public class ResourceTypeInfo
 		{
@@ -61,10 +62,38 @@ namespace OpenRA.Mods.Common.Traits
 			return ret;
 		}
 
+		void IMapPreviewSignatureInfo.PopulateMapPreviewSignatureCells(Map map, ActorInfo ai, ActorReference s, List<(MPos, Color)> destinationBuffer)
+		{
+			var resourceLayer = ai.TraitInfoOrDefault<IResourceLayerInfo>();
+			if (resourceLayer == null)
+				return;
+
+			var terrainInfo = map.Rules.TerrainInfo;
+			var colors = new Dictionary<byte, Color>();
+			foreach (var r in ResourceTypes.Keys)
+			{
+				if (!resourceLayer.TryGetResourceIndex(r, out var resourceIndex) || !resourceLayer.TryGetTerrainType(r, out var terrainType))
+					continue;
+
+				var info = terrainInfo.TerrainTypes[terrainInfo.GetTerrainIndex(terrainType)];
+				colors.Add(resourceIndex, info.Color);
+			}
+
+			for (var i = 0; i < map.MapSize.X; i++)
+			{
+				for (var j = 0; j < map.MapSize.Y; j++)
+				{
+					var cell = new MPos(i, j);
+					if (colors.TryGetValue(map.Resources[cell].Type, out var color))
+						destinationBuffer.Add((cell, color));
+				}
+			}
+		}
+
 		public override object Create(ActorInitializer init) { return new ResourceRenderer(init.Self, this); }
 	}
 
-	public class ResourceRenderer : IResourceRenderer, IWorldLoaded, IRenderOverlay, ITickRender, INotifyActorDisposing
+	public class ResourceRenderer : IResourceRenderer, IWorldLoaded, IRenderOverlay, ITickRender, INotifyActorDisposing, IRadarTerrainLayer
 	{
 		protected readonly ResourceRendererInfo Info;
 		protected readonly IResourceLayer ResourceLayer;
@@ -282,6 +311,30 @@ namespace OpenRA.Mods.Common.Traits
 				yield return new SpriteRenderable(shadow, origin, WVec.Zero, 0, palette, sequence.Scale, alpha, float3.Ones, tintModifiers, false);
 
 			yield return new SpriteRenderable(sprite, origin, WVec.Zero, 0, palette, sequence.Scale, alpha, float3.Ones, tintModifiers, false);
+		}
+
+		event Action<CPos> IRadarTerrainLayer.CellEntryChanged
+		{
+			add => RenderContents.CellEntryChanged += value;
+			remove => RenderContents.CellEntryChanged -= value;
+		}
+
+		bool IRadarTerrainLayer.TryGetTerrainColorPair(MPos uv, out (Color Left, Color Right) value)
+		{
+			value = default;
+
+			var type = RenderContents[uv].Type;
+			if (type == null)
+				return false;
+
+			if (!ResourceLayer.Info.TryGetTerrainType(type, out var terrainType))
+				return false;
+
+			var terrainInfo = World.Map.Rules.TerrainInfo;
+			var info = terrainInfo.TerrainTypes[terrainInfo.GetTerrainIndex(terrainType)];
+
+			value = (info.Color, info.Color);
+			return true;
 		}
 
 		public readonly struct RendererCellContents

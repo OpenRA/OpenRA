@@ -12,6 +12,7 @@
 using System.Collections.Generic;
 using OpenRA.FileSystem;
 using OpenRA.Primitives;
+using OpenRA.Support;
 using OpenRA.Traits;
 
 namespace OpenRA
@@ -45,6 +46,14 @@ namespace OpenRA
 		public readonly byte RampType;
 		public readonly Color MinColor;
 		public readonly Color MaxColor;
+
+		public Color GetColor(MersenneTwister random)
+		{
+			if (MinColor != MaxColor)
+				return Exts.ColorLerp(random.NextFloat(), MinColor, MaxColor);
+
+			return MinColor;
+		}
 	}
 
 	public class TerrainTypeInfo
