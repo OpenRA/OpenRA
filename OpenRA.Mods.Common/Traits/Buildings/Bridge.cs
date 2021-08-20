@@ -93,7 +93,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	class Bridge : IRender, INotifyDamageStateChanged
+	class Bridge : IRender, INotifyDamageStateChanged, IRadarSignature
 	{
 		readonly BuildingInfo buildingInfo;
 		readonly Bridge[] neighbours = new Bridge[2];
@@ -108,6 +108,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Lazy<bool> isDangling;
 		ushort template;
 		Dictionary<CPos, byte> footprint;
+		(CPos Cell, Color Color)[] radarSignature;
 
 		public LegacyBridgeHut Hut { get; private set; }
 		public bool IsDangling => isDangling.Value;
@@ -147,17 +148,23 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			this.template = template;
 			this.footprint = footprint;
+			radarSignature = new (CPos Cell, Color Color)[footprint.Keys.Count];
 
-			// Set the initial custom terrain types
+			// Set the initial state
+			var i = 0;
 			foreach (var c in footprint.Keys)
-				self.World.Map.CustomTerrain[c] = GetTerrainType(c);
+			{
+				var tileInfo = GetTerrainInfo(c);
+				self.World.Map.CustomTerrain[c] = tileInfo.TerrainType;
+				radarSignature[i++] = (c, tileInfo.GetColor(self.World.LocalRandom));
+			}
 		}
 
-		byte GetTerrainType(CPos cell)
+		TerrainTileInfo GetTerrainInfo(CPos cell)
 		{
 			var dx = cell - self.Location;
 			var index = dx.X + terrainInfo.Templates[template].Size.X * dx.Y;
-			return terrainInfo.GetTerrainIndex(new TerrainTile(template, (byte)index));
+			return terrainInfo.GetTerrainInfo(new TerrainTile(template, (byte)index));
 		}
 
 		public void LinkNeighbouringBridges(World world, LegacyBridgeLayer bridges)
@@ -308,8 +315,13 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			// Update map
+			var i = 0;
 			foreach (var c in footprint.Keys)
-				self.World.Map.CustomTerrain[c] = GetTerrainType(c);
+			{
+				var tileInfo = GetTerrainInfo(c);
+				self.World.Map.CustomTerrain[c] = tileInfo.TerrainType;
+				radarSignature[i++] = (c, tileInfo.GetColor(self.World.LocalRandom));
+			}
 
 			// If this bridge repair operation connects two pathfinding domains,
 			// update the domain index.
@@ -400,6 +412,11 @@ namespace OpenRA.Mods.Common.Traits
 				self.World.AddFrameEndTask(w => w.Add(new DelayedAction(delay, () =>
 					neighbours[direction].Demolish(saboteur, direction, damageTypes))));
 			}
+		}
+
+		void IRadarSignature.PopulateRadarSignatureCells(Actor self, List<(CPos Cell, Color Color)> destinationBuffer)
+		{
+			destinationBuffer.AddRange(radarSignature);
 		}
 	}
 }

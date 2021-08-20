@@ -675,16 +675,10 @@ namespace OpenRA
 
 		public (Color Left, Color Right) GetTerrainColorPair(MPos uv)
 		{
-			Color left, right;
 			var terrainInfo = Rules.TerrainInfo;
 			var type = terrainInfo.GetTerrainInfo(Tiles[uv]);
-			if (type.MinColor != type.MaxColor)
-			{
-				left = Exts.ColorLerp(Game.CosmeticRandom.NextFloat(), type.MinColor, type.MaxColor);
-				right = Exts.ColorLerp(Game.CosmeticRandom.NextFloat(), type.MinColor, type.MaxColor);
-			}
-			else
-				left = right = type.MinColor;
+			var left = type.GetColor(Game.CosmeticRandom);
+			var right = type.GetColor(Game.CosmeticRandom);
 
 			if (terrainInfo.MinHeightColorBrightness != 1.0f || terrainInfo.MaxHeightColorBrightness != 1.0f)
 			{

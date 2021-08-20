@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	[TraitLocation(SystemActors.EditorWorld)]
 	[Desc("Required for the map editor to work. Attach this to the world actor.")]
-	public class EditorResourceLayerInfo : TraitInfo, IResourceLayerInfo, IMapPreviewSignatureInfo
+	public class EditorResourceLayerInfo : TraitInfo, IResourceLayerInfo
 	{
 		[FieldLoader.LoadUsing(nameof(LoadResourceTypes))]
 		public readonly Dictionary<string, ResourceLayerInfo.ResourceTypeInfo> ResourceTypes = null;
@@ -40,9 +40,28 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Override the density saved in maps with values calculated based on the number of neighbouring resource cells.")]
 		public readonly bool RecalculateResourceDensity = false;
 
-		void IMapPreviewSignatureInfo.PopulateMapPreviewSignatureCells(Map map, ActorInfo ai, ActorReference s, List<(MPos, Color)> destinationBuffer)
+		bool IResourceLayerInfo.TryGetTerrainType(string resourceType, out string terrainType)
 		{
-			ResourceLayerInfo.PopulateMapPreviewSignatureCells(map, ResourceTypes, destinationBuffer);
+			if (resourceType == null || !ResourceTypes.TryGetValue(resourceType, out var resourceInfo))
+			{
+				terrainType = null;
+				return false;
+			}
+
+			terrainType = resourceInfo.TerrainType;
+			return true;
+		}
+
+		bool IResourceLayerInfo.TryGetResourceIndex(string resourceType, out byte index)
+		{
+			if (resourceType == null || !ResourceTypes.TryGetValue(resourceType, out var resourceInfo))
+			{
+				index = 0;
+				return false;
+			}
+
+			index = resourceInfo.ResourceIndex;
+			return true;
 		}
 
 		public override object Create(ActorInitializer init) { return new EditorResourceLayer(init.Self, this); }
@@ -74,6 +93,7 @@ namespace OpenRA.Mods.Common.Traits
 		void IResourceLayer.ClearResources(CPos cell) { ClearResources(cell); }
 		bool IResourceLayer.IsVisible(CPos cell) { return Map.Contains(cell); }
 		bool IResourceLayer.IsEmpty => false;
+		IResourceLayerInfo IResourceLayer.Info => info;
 
 		public EditorResourceLayer(Actor self, EditorResourceLayerInfo info)
 		{

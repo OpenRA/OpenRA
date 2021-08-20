@@ -677,7 +677,11 @@ namespace OpenRA.Mods.Common.Traits
 		IEnumerable<IRenderable> RenderPreview(WorldRenderer wr, TerrainTemplateInfo template, WPos origin);
 	}
 
-	public interface IResourceLayerInfo : ITraitInfoInterface { }
+	public interface IResourceLayerInfo : ITraitInfoInterface
+	{
+		bool TryGetTerrainType(string resourceType, out string terrainType);
+		bool TryGetResourceIndex(string resourceType, out byte index);
+	}
 
 	[RequireExplicitImplementation]
 	public interface IResourceLayer
@@ -692,6 +696,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool IsVisible(CPos cell);
 		bool IsEmpty { get; }
+		IResourceLayerInfo Info { get; }
 	}
 
 	[RequireExplicitImplementation]
@@ -702,5 +707,12 @@ namespace OpenRA.Mods.Common.Traits
 		string GetRenderedResourceTooltip(CPos cell);
 		IEnumerable<IRenderable> RenderUIPreview(WorldRenderer wr, string resourceType, int2 origin, float scale);
 		IEnumerable<IRenderable> RenderPreview(WorldRenderer wr, string resourceType, WPos origin);
+	}
+
+	[RequireExplicitImplementation]
+	public interface IRadarTerrainLayer
+	{
+		event Action<CPos> CellEntryChanged;
+		bool TryGetTerrainColorPair(MPos uv, out (Color Left, Color Right) value);
 	}
 }

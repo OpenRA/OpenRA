@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -20,7 +21,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Cnc.Traits
 {
 	[Desc("Renders the Tiberian Sun Vein resources.", "Attach this to the world actor")]
-	public class TSVeinsRendererInfo : TraitInfo, Requires<IResourceLayerInfo>
+	public class TSVeinsRendererInfo : TraitInfo, Requires<IResourceLayerInfo>, IMapPreviewSignatureInfo
 	{
 		[FieldLoader.Require]
 		[Desc("Resource type used for veins.")]
@@ -45,10 +46,69 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("Actor types that should be treated as veins for adjacency.")]
 		public readonly HashSet<string> VeinholeActors = new HashSet<string> { };
 
+		void IMapPreviewSignatureInfo.PopulateMapPreviewSignatureCells(Map map, ActorInfo ai, ActorReference s, List<(MPos, Color)> destinationBuffer)
+		{
+			var resourceLayer = ai.TraitInfoOrDefault<IResourceLayerInfo>();
+			if (resourceLayer == null)
+				return;
+
+			if (!resourceLayer.TryGetResourceIndex(ResourceType, out var resourceIndex) || !resourceLayer.TryGetTerrainType(ResourceType, out var terrainType))
+				return;
+
+			var veinholeCells = new HashSet<CPos>();
+
+			foreach (var kv in map.ActorDefinitions)
+			{
+				var type = kv.Value.Value;
+				if (!VeinholeActors.Contains(type))
+					continue;
+
+				var actorReference = new ActorReference(type, kv.Value.ToDictionary());
+				var location = actorReference.Get<LocationInit>();
+				var veinholeInfo = map.Rules.Actors[actorReference.Type];
+				foreach (var cell in veinholeInfo.TraitInfo<IOccupySpaceInfo>().OccupiedCells(veinholeInfo, location.Value))
+					veinholeCells.Add(cell.Key);
+			}
+
+			var terrainInfo = map.Rules.TerrainInfo;
+			var info = terrainInfo.TerrainTypes[terrainInfo.GetTerrainIndex(terrainType)];
+
+			for (var i = 0; i < map.MapSize.X; i++)
+			{
+				for (var j = 0; j < map.MapSize.Y; j++)
+				{
+					var uv = new MPos(i, j);
+
+					// Cell contains veins
+					if (map.Resources[uv].Type == resourceIndex)
+					{
+						destinationBuffer.Add((uv, info.Color));
+						continue;
+					}
+
+					// Cell is a vein border if it is flat and adjacent to at least one cell
+					// that is also flat and contains veins (borders are not drawn next to slope vein cells)
+					var isBorder = map.Ramp[uv] == 0 && Common.Util.ExpandFootprint(uv.ToCPos(map), false).Any(c =>
+					{
+						if (!map.Resources.Contains(c))
+							return false;
+
+						if (veinholeCells.Contains(c))
+							return true;
+
+						return map.Resources[c].Type == resourceIndex && map.Ramp[c] == 0;
+					});
+
+					if (isBorder)
+						destinationBuffer.Add((uv, info.Color));
+				}
+			}
+		}
+
 		public override object Create(ActorInitializer init) { return new TSVeinsRenderer(init.Self, this); }
 	}
 
-	public class TSVeinsRenderer : IResourceRenderer, IWorldLoaded, IRenderOverlay, ITickRender, INotifyActorDisposing
+	public class TSVeinsRenderer : IResourceRenderer, IWorldLoaded, IRenderOverlay, ITickRender, INotifyActorDisposing, IRadarTerrainLayer
 	{
 		[Flags]
 		enum Adjacency : byte
@@ -95,6 +155,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		readonly Queue<CPos> cleanDirty = new Queue<CPos>();
 		readonly HashSet<CPos> veinholeCells = new HashSet<CPos>();
 		readonly int maxDensity;
+		readonly Color veinRadarColor;
 
 		ISpriteSequence veinSequence;
 		PaletteReference veinPalette;
@@ -108,6 +169,10 @@ namespace OpenRA.Mods.Cnc.Traits
 			resourceLayer = self.Trait<IResourceLayer>();
 			resourceLayer.CellChanged += AddDirtyCell;
 			maxDensity = resourceLayer.GetMaxDensity(info.ResourceType);
+
+			var terrainInfo = self.World.Map.Rules.TerrainInfo;
+			resourceLayer.Info.TryGetTerrainType(info.ResourceType, out var terrainType);
+			veinRadarColor = terrainInfo.TerrainTypes[terrainInfo.GetTerrainIndex(terrainType)].Color;
 
 			renderIndices = new CellLayer<int[]>(world.Map);
 			borders = new CellLayer<Adjacency>(world.Map);
@@ -333,6 +398,31 @@ namespace OpenRA.Mods.Cnc.Traits
 
 			var tintModifiers = veinSequence.IgnoreWorldTint ? TintModifiers.IgnoreWorldTint : TintModifiers.None;
 			yield return new SpriteRenderable(sprite, origin, WVec.Zero, 0, palette, veinSequence.Scale, alpha, float3.Ones, tintModifiers, false);
+		}
+
+		event Action<CPos> IRadarTerrainLayer.CellEntryChanged
+		{
+			add
+			{
+				renderIndices.CellEntryChanged += value;
+				borders.CellEntryChanged += value;
+			}
+			remove
+			{
+				renderIndices.CellEntryChanged -= value;
+				borders.CellEntryChanged -= value;
+			}
+		}
+
+		bool IRadarTerrainLayer.TryGetTerrainColorPair(MPos uv, out (Color Left, Color Right) value)
+		{
+			value = default;
+
+			if (borders[uv] == Adjacency.None && renderIndices[uv] == null)
+				return false;
+
+			value = (veinRadarColor, veinRadarColor);
+			return true;
 		}
 	}
 }
