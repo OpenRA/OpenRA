@@ -212,6 +212,24 @@ namespace OpenRA.Mods.Common.Traits
 			if (self.Owner.WinState != WinState.Undefined)
 				return;
 
+			if (includedInArmyValue)
+			{
+				playerStats.ArmyValue -= cost;
+				includedInArmyValue = false;
+				playerStats.Units[actorName].Count--;
+			}
+
+			if (includedInAssetsValue)
+			{
+				playerStats.AssetsValue -= cost;
+				includedInAssetsValue = false;
+			}
+
+			playerStats.DeathsCost += cost;
+
+			if (e.Attacker == self)
+				return;
+
 			var attackerStats = e.Attacker.Owner.PlayerActor.Trait<PlayerStatistics>();
 			if (self.Info.HasTraitInfo<BuildingInfo>())
 			{
@@ -225,19 +243,6 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			attackerStats.KillsCost += cost;
-			playerStats.DeathsCost += cost;
-			if (includedInArmyValue)
-			{
-				playerStats.ArmyValue -= cost;
-				includedInArmyValue = false;
-				playerStats.Units[actorName].Count--;
-			}
-
-			if (includedInAssetsValue)
-			{
-				playerStats.AssetsValue -= cost;
-				includedInAssetsValue = false;
-			}
 		}
 
 		void INotifyCreated.Created(Actor self)
