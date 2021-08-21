@@ -67,6 +67,7 @@ HVR:
 	Mobile:
 		Speed: 99
 		Locomotor: hover
+		TerrainOrientationAdjustmentMargin: -1
 	Selectable:
 		Bounds: 1206, 1448, 0, -603
 	Health:
@@ -123,6 +124,7 @@ SMECH:
 		TurnSpeed: 20
 		Speed: 99
 		AlwaysTurnInPlace: true
+		TerrainOrientationAdjustmentMargin: -1
 	Health:
 		HP: 17500
 	Armor:
@@ -176,6 +178,7 @@ MMCH:
 		TurnSpeed: 20
 		Speed: 56
 		AlwaysTurnInPlace: true
+		TerrainOrientationAdjustmentMargin: -1
 	Health:
 		HP: 40000
 	Armor:
@@ -341,6 +344,7 @@ JUGG:
 		AlwaysTurnInPlace: true
 		ImmovableCondition: !undeployed
 		RequireForceMoveCondition: !undeployed
+		TerrainOrientationAdjustmentMargin: -1
 	RevealsShroud:
 		RequiresCondition: !inside-tunnel
 		Range: 9c0

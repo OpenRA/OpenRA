@@ -74,6 +74,10 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Boolean expression defining the condition under which this actor cannot be nudged by other actors.")]
 		public readonly BooleanExpression ImmovableCondition = null;
 
+		[Desc("The distance from the edge of a cell over which the actor will adjust its tilt when moving between cells with different ramp types.",
+			"-1 means that the actor does not tilt on slopes.")]
+		public readonly WDist TerrainOrientationAdjustmentMargin = new WDist(-1);
+
 		IEnumerable<ActorInit> IActorPreviewInitInfo.ActorPreviewInits(ActorInfo ai, ActorPreviewType type)
 		{
 			yield return new FacingInit(PreviewFacing);
@@ -183,6 +187,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 		#endregion
 
+		WRot terrainRampOrientation = WRot.None;
 		WAngle oldFacing;
 		WRot orientation;
 		WPos oldPos;
@@ -211,7 +216,7 @@ namespace OpenRA.Mods.Common.Traits
 			set => orientation = orientation.WithYaw(value);
 		}
 
-		public WRot Orientation => orientation;
+		public WRot Orientation => orientation.Rotate(terrainRampOrientation);
 
 		public WAngle TurnSpeed => Info.TurnSpeed;
 
@@ -485,12 +490,21 @@ namespace OpenRA.Mods.Common.Traits
 			CenterPosition = pos;
 			self.World.UpdateMaps(self, this);
 
+			var map = self.World.Map;
+			SetTerrainRampOrientation(self, map.TerrainOrientation(map.CellContaining(pos)));
+
 			// The first time SetCenterPosition is called is in the constructor before creation, so we need a null check here as well
 			if (notifyCenterPositionChanged == null)
 				return;
 
 			foreach (var n in notifyCenterPositionChanged)
 				n.CenterPositionChanged(self, fromCell.Layer, toCell.Layer);
+		}
+
+		public void SetTerrainRampOrientation(Actor self, WRot orientation)
+		{
+			if (Info.TerrainOrientationAdjustmentMargin.Length >= 0)
+				terrainRampOrientation = orientation;
 		}
 
 		public bool IsLeavingCell(CPos location, SubCell subCell = SubCell.Any)

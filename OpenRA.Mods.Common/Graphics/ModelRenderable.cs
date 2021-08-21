@@ -133,8 +133,12 @@ namespace OpenRA.Mods.Common.Graphics
 				this.model = model;
 				var draw = model.models.Where(v => v.IsVisible);
 
+				var map = wr.World.Map;
+				var groundOrientation = map.TerrainOrientation(map.CellContaining(model.pos));
+				var groundNormal = OpenRA.Graphics.Util.MatrixVectorMultiply(OpenRA.Graphics.Util.MakeFloatMatrix(groundOrientation.AsMatrix()), GroundNormal);
+
 				renderProxy = Game.Renderer.WorldModelRenderer.RenderAsync(
-					wr, draw, model.camera, model.scale, GroundNormal, model.lightSource,
+					wr, draw, model.camera, model.scale, groundNormal, model.lightSource,
 					model.lightAmbientColor, model.lightDiffuseColor,
 					model.palette, model.normalsPalette, model.shadowPalette);
 			}

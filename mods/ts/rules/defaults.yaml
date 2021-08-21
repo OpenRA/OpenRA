@@ -780,6 +780,7 @@
 		Locomotor: wheeled
 		TurnSpeed: 20
 		Voice: Move
+		TerrainOrientationAdjustmentMargin: 256
 	Selectable:
 		Bounds: 1206, 1448
 	Voiced:

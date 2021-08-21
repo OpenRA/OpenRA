@@ -900,6 +900,14 @@ namespace OpenRA
 			return new WDist(offset.Z);
 		}
 
+		public WRot TerrainOrientation(CPos cell)
+		{
+			if (!Ramp.Contains(cell))
+				return WRot.None;
+
+			return Grid.Ramps[Ramp[cell]].Orientation;
+		}
+
 		public WVec Offset(CVec delta, int dz)
 		{
 			if (Grid.Type == MapGridType.Rectangular)
