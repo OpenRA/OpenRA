@@ -51,6 +51,9 @@ namespace OpenRA.Mods.Common.Commands
 
 			foreach (var command in commandHandlers)
 			{
+				if (command.Key == "depth-buffer" && !w.Map.Grid.EnableDepthBuffer)
+					continue;
+
 				console.RegisterCommand(command.Key, this);
 				help.RegisterHelp(command.Key, command.Value.Description);
 			}
