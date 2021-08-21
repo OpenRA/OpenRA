@@ -92,6 +92,8 @@ namespace OpenRA.Mods.Common.Widgets
 						break;
 					case State.Paste:
 					{
+						if (mi.Event != MouseInputEvent.Down)
+							break;
 						var gridType = worldRenderer.World.Map.Grid.Type;
 						var source = CellRegion.BoundingRegion(gridType, new[] { start, end });
 						Copy(source, cell - end);
