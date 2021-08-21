@@ -227,11 +227,14 @@ namespace OpenRA.Graphics
 			//   with a depth range [0, 1] corresponding to the NDC [-1, 1]. We must therefore multiply the
 			//   sprite channel value [0, 1] by 255 to find the pixel depth offset, then by our depth scale
 			//   to find the equivalent NDC offset, then divide by 2 to find the window coordinate offset.
-			var depth = 2f / (downscale * (sheetSize.Height + depthMargin));
+			// * If depthMargin == 0 (which indicates per-pixel depth testing is disabled) sprites that
+			//   extend beyond the top of bottom edges of the screen may be pushed outside [-1, 1] and
+			//   culled by the GPU. We avoid this by forcing everything into the z = 0 plane.
+			var depth = depthMargin != 0f ? 2f / (downscale * (sheetSize.Height + depthMargin)) : 0;
 			shader.SetVec("DepthTextureScale", 128 * depth);
-			shader.SetVec("Scroll", scroll.X, scroll.Y, scroll.Y);
+			shader.SetVec("Scroll", scroll.X, scroll.Y, depthMargin != 0f ? scroll.Y : 0);
 			shader.SetVec("r1", width, height, -depth);
-			shader.SetVec("r2", -1, -1, 1);
+			shader.SetVec("r2", -1, -1, depthMargin != 0f ? 1 : 0);
 		}
 
 		public void SetDepthPreview(bool enabled, float contrast, float offset)
