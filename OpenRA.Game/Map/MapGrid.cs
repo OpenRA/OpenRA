@@ -27,9 +27,11 @@ namespace OpenRA
 		public readonly int CenterHeightOffset;
 		public readonly WVec[] Corners;
 		public readonly WVec[][] Polygons;
+		public readonly WRot Orientation;
 
-		public CellRamp(MapGridType type, RampCornerHeight tl = RampCornerHeight.Low, RampCornerHeight tr = RampCornerHeight.Low, RampCornerHeight br = RampCornerHeight.Low,  RampCornerHeight bl = RampCornerHeight.Low, RampSplit split = RampSplit.Flat)
+		public CellRamp(MapGridType type, WRot orientation, RampCornerHeight tl = RampCornerHeight.Low, RampCornerHeight tr = RampCornerHeight.Low, RampCornerHeight br = RampCornerHeight.Low,  RampCornerHeight bl = RampCornerHeight.Low, RampSplit split = RampSplit.Flat)
 		{
+			Orientation = orientation;
 			if (type == MapGridType.RectangularIsometric)
 			{
 				Corners = new[]
@@ -138,41 +140,52 @@ namespace OpenRA
 					throw new InvalidDataException("Subcell default index must be a valid index into the offset triples and must be greater than 0 for mods with subcells");
 			}
 
+			// Rotation axes and amounts for the different slope types
+			var southEast = new WVec(724, 724, 0);
+			var southWest = new WVec(-724, 724, 0);
+			var south = new WVec(0, 1024, 0);
+			var east = new WVec(1024, 0, 0);
+
+			var forward = new WAngle(64);
+			var backward = -forward;
+			var halfForward = new WAngle(48);
+			var halfBackward = -halfForward;
+
 			// Slope types are hardcoded following the convention from the TS and RA2 map format
 			Ramps = new[]
 			{
 				// Flat
-				new CellRamp(Type),
+				new CellRamp(Type, WRot.None),
 
 				// Two adjacent corners raised by half a cell
-				new CellRamp(Type, tr: RampCornerHeight.Half, br: RampCornerHeight.Half),
-				new CellRamp(Type, br: RampCornerHeight.Half, bl: RampCornerHeight.Half),
-				new CellRamp(Type, tl: RampCornerHeight.Half, bl: RampCornerHeight.Half),
-				new CellRamp(Type, tl: RampCornerHeight.Half, tr: RampCornerHeight.Half),
+				new CellRamp(Type, new WRot(southEast, backward), tr: RampCornerHeight.Half, br: RampCornerHeight.Half),
+				new CellRamp(Type, new WRot(southWest, backward), br: RampCornerHeight.Half, bl: RampCornerHeight.Half),
+				new CellRamp(Type, new WRot(southEast, forward), tl: RampCornerHeight.Half, bl: RampCornerHeight.Half),
+				new CellRamp(Type, new WRot(southWest, forward), tl: RampCornerHeight.Half, tr: RampCornerHeight.Half),
 
 				// One corner raised by half a cell
-				new CellRamp(Type, br: RampCornerHeight.Half, split: RampSplit.X),
-				new CellRamp(Type, bl: RampCornerHeight.Half, split: RampSplit.Y),
-				new CellRamp(Type, tl: RampCornerHeight.Half, split: RampSplit.X),
-				new CellRamp(Type, tr: RampCornerHeight.Half, split: RampSplit.Y),
+				new CellRamp(Type, new WRot(south, halfBackward), br: RampCornerHeight.Half, split: RampSplit.X),
+				new CellRamp(Type, new WRot(east, halfForward), bl: RampCornerHeight.Half, split: RampSplit.Y),
+				new CellRamp(Type, new WRot(south, halfForward), tl: RampCornerHeight.Half, split: RampSplit.X),
+				new CellRamp(Type, new WRot(east, halfBackward), tr: RampCornerHeight.Half, split: RampSplit.Y),
 
 				// Three corners raised by half a cell
-				new CellRamp(Type, tr: RampCornerHeight.Half, br: RampCornerHeight.Half, bl: RampCornerHeight.Half, split: RampSplit.X),
-				new CellRamp(Type, tl: RampCornerHeight.Half, br: RampCornerHeight.Half, bl: RampCornerHeight.Half, split: RampSplit.Y),
-				new CellRamp(Type, tl: RampCornerHeight.Half, tr: RampCornerHeight.Half, bl: RampCornerHeight.Half, split: RampSplit.X),
-				new CellRamp(Type, tl: RampCornerHeight.Half, tr: RampCornerHeight.Half, br: RampCornerHeight.Half, split: RampSplit.Y),
+				new CellRamp(Type, new WRot(south, halfBackward), tr: RampCornerHeight.Half, br: RampCornerHeight.Half, bl: RampCornerHeight.Half, split: RampSplit.X),
+				new CellRamp(Type, new WRot(east, halfForward), tl: RampCornerHeight.Half, br: RampCornerHeight.Half, bl: RampCornerHeight.Half, split: RampSplit.Y),
+				new CellRamp(Type, new WRot(south, halfForward), tl: RampCornerHeight.Half, tr: RampCornerHeight.Half, bl: RampCornerHeight.Half, split: RampSplit.X),
+				new CellRamp(Type, new WRot(east, halfBackward), tl: RampCornerHeight.Half, tr: RampCornerHeight.Half, br: RampCornerHeight.Half, split: RampSplit.Y),
 
 				// Full tile sloped (mid corners raised by half cell, far corner by full cell)
-				new CellRamp(Type, tr: RampCornerHeight.Half, br: RampCornerHeight.Full, bl: RampCornerHeight.Half),
-				new CellRamp(Type, tl: RampCornerHeight.Half, br: RampCornerHeight.Half, bl: RampCornerHeight.Full),
-				new CellRamp(Type, tl: RampCornerHeight.Full, tr: RampCornerHeight.Half, bl: RampCornerHeight.Half),
-				new CellRamp(Type, tl: RampCornerHeight.Half, tr: RampCornerHeight.Full, br: RampCornerHeight.Half),
+				new CellRamp(Type, new WRot(south, backward), tr: RampCornerHeight.Half, br: RampCornerHeight.Full, bl: RampCornerHeight.Half),
+				new CellRamp(Type, new WRot(east, forward), tl: RampCornerHeight.Half, br: RampCornerHeight.Half, bl: RampCornerHeight.Full),
+				new CellRamp(Type, new WRot(south, forward), tl: RampCornerHeight.Full, tr: RampCornerHeight.Half, bl: RampCornerHeight.Half),
+				new CellRamp(Type, new WRot(east, backward), tl: RampCornerHeight.Half, tr: RampCornerHeight.Full, br: RampCornerHeight.Half),
 
 				// Two opposite corners raised by half a cell
-				new CellRamp(Type, tr: RampCornerHeight.Half, bl: RampCornerHeight.Half, split: RampSplit.Y),
-				new CellRamp(Type, tl: RampCornerHeight.Half, br: RampCornerHeight.Half, split: RampSplit.Y),
-				new CellRamp(Type, tr: RampCornerHeight.Half, bl: RampCornerHeight.Half, split: RampSplit.X),
-				new CellRamp(Type, tl: RampCornerHeight.Half, br: RampCornerHeight.Half, split: RampSplit.X),
+				new CellRamp(Type, WRot.None, tr: RampCornerHeight.Half, bl: RampCornerHeight.Half, split: RampSplit.Y),
+				new CellRamp(Type, WRot.None, tl: RampCornerHeight.Half, br: RampCornerHeight.Half, split: RampSplit.Y),
+				new CellRamp(Type, WRot.None, tr: RampCornerHeight.Half, bl: RampCornerHeight.Half, split: RampSplit.X),
+				new CellRamp(Type, WRot.None, tl: RampCornerHeight.Half, br: RampCornerHeight.Half, split: RampSplit.X),
 			};
 
 			TilesByDistance = CreateTilesByDistance();

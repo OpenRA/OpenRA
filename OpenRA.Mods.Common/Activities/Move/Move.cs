@@ -221,7 +221,12 @@ namespace OpenRA.Mods.Common.Activities
 			var to = Util.BetweenCells(self.World, mobile.FromCell, mobile.ToCell) +
 				(map.Grid.OffsetOfSubCell(mobile.FromSubCell) + map.Grid.OffsetOfSubCell(mobile.ToSubCell)) / 2;
 
-			QueueChild(new MoveFirstHalf(this, from, to, mobile.Facing, mobile.Facing, carryoverProgress));
+			WRot? toTerrainOrientation = null;
+			var margin = mobile.Info.TerrainOrientationAdjustmentMargin.Length;
+			if (margin >= 0)
+				toTerrainOrientation = WRot.SLerp(map.TerrainOrientation(mobile.FromCell), map.TerrainOrientation(mobile.ToCell), 1, 2);
+
+			QueueChild(new MoveFirstHalf(this, from, to, mobile.Facing, mobile.Facing, null, toTerrainOrientation, margin, carryoverProgress));
 			carryoverProgress = 0;
 			return false;
 		}
@@ -389,6 +394,7 @@ namespace OpenRA.Mods.Common.Activities
 			protected readonly Move Move;
 			protected readonly WPos From, To;
 			protected readonly WAngle FromFacing, ToFacing;
+			protected readonly WRot? FromTerrainOrientation, ToTerrainOrientation;
 			protected readonly bool EnableArc;
 			protected readonly WPos ArcCenter;
 			protected readonly int ArcFromLength;
@@ -396,17 +402,22 @@ namespace OpenRA.Mods.Common.Activities
 			protected readonly int ArcToLength;
 			protected readonly WAngle ArcToAngle;
 			protected readonly int Distance;
+			readonly int terrainOrientationMargin;
 			protected int progress;
 
-			public MovePart(Move move, WPos from, WPos to, WAngle fromFacing, WAngle toFacing, int carryoverProgress)
+			public MovePart(Move move, WPos from, WPos to, WAngle fromFacing, WAngle toFacing,
+				WRot? fromTerrainOrientation, WRot? toTerrainOrientation, int terrainOrientationMargin, int carryoverProgress)
 			{
 				Move = move;
 				From = from;
 				To = to;
 				FromFacing = fromFacing;
 				ToFacing = toFacing;
+				FromTerrainOrientation = fromTerrainOrientation;
+				ToTerrainOrientation = toTerrainOrientation;
 				progress = carryoverProgress;
 				Distance = (to - from).Length;
+				this.terrainOrientationMargin = Math.Min(terrainOrientationMargin, Distance / 2);
 
 				IsInterruptible = false; // See comments in Move.Cancel()
 
@@ -471,6 +482,21 @@ namespace OpenRA.Mods.Common.Activities
 					pos -= new WVec(WDist.Zero, WDist.Zero, self.World.Map.DistanceAboveTerrain(pos));
 
 				mobile.SetCenterPosition(self, pos);
+
+				// Smoothly interpolate over terrain orientation changes
+				if (FromTerrainOrientation.HasValue && progress < terrainOrientationMargin)
+				{
+					var currentCellOrientation = self.World.Map.TerrainOrientation(mobile.FromCell);
+					var orientation = WRot.SLerp(FromTerrainOrientation.Value, currentCellOrientation, progress, terrainOrientationMargin);
+					mobile.SetTerrainRampOrientation(self, orientation);
+				}
+				else if (ToTerrainOrientation.HasValue && Distance - progress < terrainOrientationMargin)
+				{
+					var currentCellOrientation = self.World.Map.TerrainOrientation(mobile.FromCell);
+					var orientation = WRot.SLerp(ToTerrainOrientation.Value, currentCellOrientation, Distance - progress, terrainOrientationMargin);
+					mobile.SetTerrainRampOrientation(self, orientation);
+				}
+
 				mobile.Facing = WAngle.Lerp(FromFacing, ToFacing, progress, Distance);
 				return false;
 			}
@@ -485,8 +511,9 @@ namespace OpenRA.Mods.Common.Activities
 
 		class MoveFirstHalf : MovePart
 		{
-			public MoveFirstHalf(Move move, WPos from, WPos to, WAngle fromFacing, WAngle toFacing, int carryoverProgress)
-				: base(move, from, to, fromFacing, toFacing, carryoverProgress) { }
+			public MoveFirstHalf(Move move, WPos from, WPos to, WAngle fromFacing, WAngle toFacing,
+				WRot? fromTerrainOrientation, WRot? toTerrainOrientation, int terrainOrientationMargin, int carryoverProgress)
+				: base(move, from, to, fromFacing, toFacing, fromTerrainOrientation, toTerrainOrientation, terrainOrientationMargin, carryoverProgress) { }
 
 			static bool IsTurn(Mobile mobile, CPos nextCell, Map map)
 			{
@@ -513,12 +540,20 @@ namespace OpenRA.Mods.Common.Activities
 					if (!mobile.IsTraitPaused && !mobile.IsTraitDisabled && IsTurn(mobile, nextCell.Value.Cell, map))
 					{
 						var nextSubcellOffset = map.Grid.OffsetOfSubCell(nextCell.Value.SubCell);
+						WRot? nextToTerrainOrientation = null;
+						var margin = mobile.Info.TerrainOrientationAdjustmentMargin.Length;
+						if (margin >= 0)
+							nextToTerrainOrientation = WRot.SLerp(map.TerrainOrientation(mobile.ToCell), map.TerrainOrientation(nextCell.Value.Cell), 1, 2);
+
 						var ret = new MoveFirstHalf(
 							Move,
 							Util.BetweenCells(self.World, mobile.FromCell, mobile.ToCell) + (fromSubcellOffset + toSubcellOffset) / 2,
 							Util.BetweenCells(self.World, mobile.ToCell, nextCell.Value.Cell) + (toSubcellOffset + nextSubcellOffset) / 2,
 							mobile.Facing,
 							map.FacingBetween(mobile.ToCell, nextCell.Value.Cell, mobile.Facing),
+							ToTerrainOrientation,
+							nextToTerrainOrientation,
+							margin,
 							progress - Distance);
 
 						mobile.FinishedMoving(self);
@@ -538,6 +573,9 @@ namespace OpenRA.Mods.Common.Activities
 					toPos + toSubcellOffset,
 					mobile.Facing,
 					mobile.Facing,
+					ToTerrainOrientation,
+					null,
+					mobile.Info.TerrainOrientationAdjustmentMargin.Length,
 					progress - Distance);
 
 				mobile.EnteringCell(self);
@@ -548,8 +586,9 @@ namespace OpenRA.Mods.Common.Activities
 
 		class MoveSecondHalf : MovePart
 		{
-			public MoveSecondHalf(Move move, WPos from, WPos to, WAngle fromFacing, WAngle toFacing, int carryoverProgress)
-				: base(move, from, to, fromFacing, toFacing, carryoverProgress) { }
+			public MoveSecondHalf(Move move, WPos from, WPos to, WAngle fromFacing, WAngle toFacing,
+				WRot? fromTerrainOrientation, WRot? toTerrainOrientation, int terrainOrientationMargin, int carryoverProgress)
+				: base(move, from, to, fromFacing, toFacing, fromTerrainOrientation, toTerrainOrientation, terrainOrientationMargin, carryoverProgress) { }
 
 			protected override MovePart OnComplete(Actor self, Mobile mobile, Move parent)
 			{
