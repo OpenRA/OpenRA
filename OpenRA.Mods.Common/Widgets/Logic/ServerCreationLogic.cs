@@ -93,11 +93,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			var serverName = panel.Get<TextFieldWidget>("SERVER_NAME");
-			serverName.Text = Settings.SanitizedServerName(settings.Server.Name);
+			serverName.Text = Game.Settings.SanitizedServerName(settings.Server.Name);
 			serverName.OnEnterKey = _ => { serverName.YieldKeyboardFocus(); return true; };
 			serverName.OnLoseFocus = () =>
 			{
-				serverName.Text = Settings.SanitizedServerName(serverName.Text);
+				serverName.Text = Game.Settings.SanitizedServerName(serverName.Text);
 				settings.Server.Name = serverName.Text;
 			};
 
@@ -184,7 +184,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void CreateAndJoin()
 		{
-			var name = Settings.SanitizedServerName(panel.Get<TextFieldWidget>("SERVER_NAME").Text);
+			var name = Game.Settings.SanitizedServerName(panel.Get<TextFieldWidget>("SERVER_NAME").Text);
 			if (!Exts.TryParseIntegerInvariant(panel.Get<TextFieldWidget>("LISTEN_PORT").Text, out var listenPort))
 				listenPort = 1234;
 

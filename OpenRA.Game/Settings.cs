@@ -45,7 +45,7 @@ namespace OpenRA
 	public class ServerSettings
 	{
 		[Desc("Sets the server name.")]
-		public string Name = "OpenRA Game";
+		public string Name = "";
 
 		[Desc("Sets the internal port.")]
 		public int ListenPort = 1234;
@@ -404,11 +404,11 @@ namespace OpenRA
 			return clean;
 		}
 
-		public static string SanitizedServerName(string dirty)
+		public string SanitizedServerName(string dirty)
 		{
 			var clean = SanitizedName(dirty);
 			if (string.IsNullOrWhiteSpace(clean))
-				return new ServerSettings().Name;
+				return $"{SanitizedPlayerName(Player.Name)}'s Game";
 			else
 				return clean;
 		}

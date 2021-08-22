@@ -222,7 +222,7 @@ namespace OpenRA.Server
 			Type = type;
 			Settings = settings;
 
-			Settings.Name = OpenRA.Settings.SanitizedServerName(Settings.Name);
+			Settings.Name = Game.Settings.SanitizedServerName(Settings.Name);
 
 			ModData = modData;
 
