@@ -367,9 +367,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						}
 					}
 				}
-				catch
+				catch (Exception e)
 				{
 					searchStatus = SearchStatus.Failed;
+					Log.Write("debug", $"Failed to query server list with exception: {e}");
 				}
 
 				var lanGames = new List<GameServer>();
