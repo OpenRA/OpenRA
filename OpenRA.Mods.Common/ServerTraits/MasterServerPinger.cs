@@ -22,7 +22,7 @@ using S = OpenRA.Server.Server;
 
 namespace OpenRA.Mods.Common.Server
 {
-	public class MasterServerPinger : ServerTrait, ITick, INotifyServerStart, INotifySyncLobbyInfo, IStartGame, IEndGame
+	public class MasterServerPinger : ServerTrait, ITick, INotifyServerStart, INotifyServerShutdown, INotifySyncLobbyInfo, IStartGame, IEndGame
 	{
 		// 3 minutes (in milliseconds). Server has a 5 minute TTL for games, so give ourselves a bit of leeway.
 		const int MasterPingInterval = 60 * 3 * 1000;
@@ -82,10 +82,22 @@ namespace OpenRA.Mods.Common.Server
 					server.SendMessage(masterServerMessages.Dequeue());
 		}
 
-		public void ServerStarted(S server)
+		void INotifyServerStart.ServerStarted(S server)
 		{
 			if (server.Type != ServerType.Local && LanGameBeacon != null)
 				LanGameBeacon.Start();
+		}
+
+		void INotifyServerShutdown.ServerShutdown(S server)
+		{
+			if (server.Settings.AdvertiseOnline)
+			{
+				// Announce that the game has ended to remove it from the list.
+				var gameServer = new GameServer(server);
+				UpdateMasterServer(server, gameServer.ToPOSTData(false));
+			}
+
+			LanGameBeacon?.Stop();
 		}
 
 		public void LobbyInfoSynced(S server)
