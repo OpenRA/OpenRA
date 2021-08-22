@@ -162,13 +162,15 @@ namespace OpenRA.Mods.Common.Traits
 			if (!SongExists(currentSong) || (CurrentSongIsBackground && IsBackgroundMusicMuted))
 				return;
 
-			Game.Sound.PlayMusicThen(currentSong, () =>
-			{
-				if (!CurrentSongIsBackground && !Game.Settings.Sound.Repeat)
-					currentSong = GetNextSong();
+			Game.Sound.PlayMusicThen(currentSong, PlayNextSong);
+		}
 
-				Play();
-			});
+		void PlayNextSong()
+		{
+			if (!CurrentSongIsBackground)
+				currentSong = GetNextSong();
+
+			Play();
 		}
 
 		public void Play(MusicInfo music)

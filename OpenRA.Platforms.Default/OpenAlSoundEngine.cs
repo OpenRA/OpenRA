@@ -66,7 +66,7 @@ namespace OpenRA.Platforms.Default
 			if (devicesPtr == IntPtr.Zero || AL10.alGetError() != AL10.AL_NO_ERROR)
 			{
 				Log.Write("sound", "Failed to query OpenAL device list using {0}", label);
-				return new string[0];
+				return Array.Empty<string>();
 			}
 
 			var devices = new List<string>();
@@ -103,7 +103,7 @@ namespace OpenRA.Platforms.Default
 			if (ALC11.alcIsExtensionPresent(IntPtr.Zero, "ALC_ENUMERATION_EXT"))
 				return QueryDevices("ALC_ENUMERATION_EXT", ALC10.ALC_DEVICE_SPECIFIER);
 
-			return new string[] { };
+			return Array.Empty<string>();
 		}
 
 		internal static int MakeALFormat(int channels, int bits)
@@ -137,8 +137,7 @@ namespace OpenRA.Platforms.Default
 
 			for (var i = 0; i < PoolSize; i++)
 			{
-				var source = 0U;
-				AL10.alGenSources(1, out source);
+				AL10.alGenSources(1, out var source);
 				if (AL10.alGetError() != AL10.AL_NO_ERROR)
 				{
 					Log.Write("sound", "Failed generating OpenAL source {0}", i);
@@ -346,6 +345,11 @@ namespace OpenRA.Platforms.Default
 			AL10.alListenerf(EFX.AL_METERS_PER_UNIT, .01f);
 		}
 
+		public void SetSoundLooping(bool looping, ISound sound)
+		{
+			((OpenAlSound)sound)?.SetLooping(looping);
+		}
+
 		~OpenAlSoundEngine()
 		{
 			Dispose(false);
@@ -517,6 +521,14 @@ namespace OpenRA.Platforms.Default
 
 			StopSource();
 			AL10.alSourcei(Source, AL10.AL_BUFFER, 0);
+		}
+
+		public void SetLooping(bool looping)
+		{
+			if (done)
+				return;
+
+			AL10.alSourcei(Source, AL10.AL_LOOPING, looping ? AL10.AL_TRUE : AL10.AL_FALSE);
 		}
 	}
 
