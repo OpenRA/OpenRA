@@ -137,6 +137,12 @@ namespace OpenRA
 			soundEngine.Volume = 1f;
 		}
 
+		public void SetMusicLooped(bool loop)
+		{
+			Game.Settings.Sound.Repeat = loop;
+			soundEngine.SetSoundLooping(loop, music);
+		}
+
 		public bool DisableAllSounds { get; set; }
 		public bool DisableWorldSounds { get; set; }
 		public ISound Play(SoundType type, string name) { return Play(type, null, name, true, WPos.Zero, 1f); }
@@ -202,11 +208,6 @@ namespace OpenRA
 		public bool MusicPlaying { get; private set; }
 		public MusicInfo CurrentMusic => currentMusic;
 
-		public void PlayMusic(MusicInfo m)
-		{
-			PlayMusicThen(m, () => { });
-		}
-
 		public void PlayMusicThen(MusicInfo m, Action then)
 		{
 			if (m == null || !m.Exists)
@@ -221,13 +222,21 @@ namespace OpenRA
 				return;
 			}
 
+			PlayMusic(m, Game.Settings.Sound.Repeat);
+		}
+
+		public void PlayMusic(MusicInfo m, bool looped = false)
+		{
+			if (m == null || !m.Exists)
+				return;
+
 			StopMusic();
 
 			Func<ISoundFormat, ISound> stream = soundFormat => soundEngine.Play2DStream(
 				soundFormat.GetPCMInputStream(), soundFormat.Channels, soundFormat.SampleBits, soundFormat.SampleRate,
-				false, true, WPos.Zero, MusicVolume * m.VolumeModifier);
-			music = LoadSound(m.Filename, stream);
+				looped, true, WPos.Zero, MusicVolume * m.VolumeModifier);
 
+			music = LoadSound(m.Filename, stream);
 			if (music == null)
 			{
 				onMusicComplete = null;

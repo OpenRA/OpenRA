@@ -56,6 +56,7 @@ namespace OpenRA.Platforms.Default
 		public void StopSound(ISound sound) { }
 		public void StopAllSounds() { }
 		public void SetListenerPosition(WPos position) { }
+		public void SetSoundLooping(bool looping, ISound sound) { }
 		public void Dispose() { }
 	}
 

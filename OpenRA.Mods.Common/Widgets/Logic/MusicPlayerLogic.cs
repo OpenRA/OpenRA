@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var repeatCheckbox = panel.Get<CheckboxWidget>("REPEAT");
 			repeatCheckbox.IsChecked = () => Game.Settings.Sound.Repeat;
-			repeatCheckbox.OnClick = () => Game.Settings.Sound.Repeat ^= true;
+			repeatCheckbox.OnClick = () => Game.Sound.SetMusicLooped(!Game.Settings.Sound.Repeat);
 			repeatCheckbox.IsDisabled = () => musicPlaylist.CurrentSongIsBackground;
 
 			panel.Get<LabelWidget>("TIME_LABEL").GetText = () =>
