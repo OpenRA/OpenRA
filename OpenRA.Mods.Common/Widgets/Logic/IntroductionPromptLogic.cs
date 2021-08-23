@@ -104,7 +104,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var colorDropdown = widget.Get<DropDownButtonWidget>("PLAYERCOLOR");
 			colorDropdown.IsDisabled = () => worldRenderer.World.Type != WorldType.Shellmap;
-			colorDropdown.OnMouseDown = _ => ColorPickerLogic.ShowColorDropDown(colorDropdown, colorManager, worldRenderer);
+			colorDropdown.OnMouseDown = _ => ColorPickerLogic.ShowColorDropDown(colorDropdown, colorManager, worldRenderer, () =>
+			{
+				Game.Settings.Player.Color = colorManager.Color;
+				Game.Settings.Save();
+			});
 			colorDropdown.Get<ColorBlockWidget>("COLORBLOCK").GetColor = () => ps.Color;
 
 			var viewportSizes = modData.Manifest.Get<WorldViewportSizes>();
