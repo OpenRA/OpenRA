@@ -953,12 +953,9 @@ namespace OpenRA
 				Order.Command($"state {Session.ClientState.Ready}")
 			};
 
-			var path = Platform.ResolvePath(launchMap);
-			var map = ModData.MapCache.SingleOrDefault(m => m.Uid == launchMap) ??
-				ModData.MapCache.SingleOrDefault(m => m.Package.Name == path);
-
+			var map = ModData.MapCache.SingleOrDefault(m => m.Uid == launchMap || Path.GetFileName(m.Package.Name) == launchMap);
 			if (map == null)
-				throw new InvalidOperationException($"Could not find map '{launchMap}'.");
+				throw new ArgumentException($"Could not find map '{launchMap}'.");
 
 			CreateAndStartLocalServer(map.Uid, orders);
 		}
