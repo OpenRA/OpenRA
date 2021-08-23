@@ -79,6 +79,15 @@ namespace OpenRA.Network
 			return ms.GetBuffer();
 		}
 
+		public static byte[] SerializeOrders(int frame, IEnumerable<Order> orders)
+		{
+			var ms = new MemoryStream();
+			ms.WriteArray(BitConverter.GetBytes(frame));
+			foreach (var o in orders)
+				ms.WriteArray(o.Serialize());
+			return ms.ToArray();
+		}
+
 		public static bool TryParseDisconnect(byte[] packet, out int clientId)
 		{
 			if (packet.Length == Order.DisconnectOrderLength + 4 && packet[4] == (byte)OrderType.Disconnect)

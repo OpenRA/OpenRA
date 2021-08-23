@@ -52,22 +52,12 @@ namespace OpenRA.Network
 
 		public virtual void Send(int frame, IEnumerable<Order> orders)
 		{
-			var ms = new MemoryStream();
-			ms.WriteArray(BitConverter.GetBytes(frame));
-			foreach (var o in orders)
-				ms.WriteArray(o.Serialize());
-			Send(ms.ToArray());
+			Send(OrderIO.SerializeOrders(frame, orders));
 		}
 
 		public virtual void SendImmediate(IEnumerable<Order> orders)
 		{
-			foreach (var o in orders)
-			{
-				var ms = new MemoryStream();
-				ms.WriteArray(BitConverter.GetBytes(0));
-				ms.WriteArray(o.Serialize());
-				Send(ms.ToArray());
-			}
+			Send(OrderIO.SerializeOrders(0, orders));
 		}
 
 		public virtual void SendSync(int frame, int syncHash, ulong defeatState)
