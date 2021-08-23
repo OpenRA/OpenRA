@@ -74,7 +74,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool ValidTransitionCell(CPos cell, SubterraneanLocomotorInfo sli)
 		{
-			var terrainType = map.GetTerrainInfo(cell).Type;
+			var terrainType = map.GetTerrainTileInfo(cell).Type;
 			if (!sli.SubterraneanTransitionTerrainTypes.Contains(terrainType) && sli.SubterraneanTransitionTerrainTypes.Any())
 				return false;
 

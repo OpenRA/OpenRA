@@ -74,7 +74,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (terrainType == byte.MaxValue)
 					continue;
 
-				var info = wr.World.Map.GetTerrainInfo(cell);
+				var info = wr.World.Map.GetTerrainTileInfo(cell);
 				yield return new TextAnnotationRenderable(font, center, 0, info.Color, info.Type);
 			}
 		}

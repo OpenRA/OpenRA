@@ -244,7 +244,7 @@ namespace OpenRA.Mods.Common.Projectiles
 				if (!world.Map.Contains(cell))
 					return true;
 
-				if (info.InvalidBounceTerrain.Contains(world.Map.GetTerrainInfo(cell).Type))
+				if (info.InvalidBounceTerrain.Contains(world.Map.GetTerrainTileInfo(cell).Type))
 					return true;
 
 				if (AnyValidTargetsInRadius(world, pos, info.Width, args.SourceActor, true))

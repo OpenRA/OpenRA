@@ -217,7 +217,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Ignore custom terrain types when spawning resources in the editor
 			var terrainInfo = Map.Rules.TerrainInfo;
-			var terrainType = terrainInfo.TerrainTypes[terrainInfo.GetTerrainInfo(Map.Tiles[cell]).TerrainType].Type;
+			var terrainType = terrainInfo.TerrainTypes[terrainInfo.GetTerrainTileInfo(Map.Tiles[cell]).TerrainType].Type;
 
 			// TODO: Check against actors in the EditorActorLayer
 			return resourceInfo.AllowedTerrainTypes.Contains(terrainType);

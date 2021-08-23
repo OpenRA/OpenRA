@@ -177,7 +177,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (resourceType == null || !info.ResourceTypes.TryGetValue(resourceType, out var resourceInfo))
 				return false;
 
-			if (!resourceInfo.AllowedTerrainTypes.Contains(Map.GetTerrainInfo(cell).Type))
+			if (!resourceInfo.AllowedTerrainTypes.Contains(Map.GetTerrainTileInfo(cell).Type))
 				return false;
 
 			return !BuildingInfluence.AnyBuildingAt(cell);

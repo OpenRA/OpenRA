@@ -26,10 +26,10 @@ namespace OpenRA
 	{
 		string Id { get; }
 		TerrainTypeInfo[] TerrainTypes { get; }
-		TerrainTileInfo GetTerrainInfo(TerrainTile r);
-		bool TryGetTerrainInfo(TerrainTile r, out TerrainTileInfo info);
+		TerrainTileInfo GetTerrainTileInfo(TerrainTile tile);
+		bool TryGetTerrainTileInfo(TerrainTile tile, out TerrainTileInfo info);
 		byte GetTerrainIndex(string type);
-		byte GetTerrainIndex(TerrainTile r);
+		byte GetTerrainIndex(TerrainTile tile);
 		TerrainTile DefaultTerrainTile { get; }
 
 		Color[] HeightDebugColors { get; }

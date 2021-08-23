@@ -198,7 +198,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!world.Map.Contains(cell))
 				return false;
 
-			var type = world.Map.GetTerrainInfo(cell).Type;
+			var type = world.Map.GetTerrainTileInfo(cell).Type;
 			if (!LandableTerrainTypes.Contains(type))
 				return false;
 
@@ -685,7 +685,7 @@ namespace OpenRA.Mods.Common.Traits
 				return true;
 
 			var landableTerrain = overrideAircraftLanding != null ? overrideAircraftLanding.LandableTerrainTypes : Info.LandableTerrainTypes;
-			return landableTerrain.Contains(self.World.Map.GetTerrainInfo(cell).Type);
+			return landableTerrain.Contains(self.World.Map.GetTerrainTileInfo(cell).Type);
 		}
 
 		bool IsBlockedBy(Actor self, Actor otherActor, Actor ignoreActor, bool blockedByMobile = true)

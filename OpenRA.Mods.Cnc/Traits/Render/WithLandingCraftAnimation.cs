@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 				return false;
 
 			return cargo.CurrentAdjacentCells.Any(c => self.World.Map.Contains(c)
-				&& info.OpenTerrainTypes.Contains(self.World.Map.GetTerrainInfo(c).Type));
+				&& info.OpenTerrainTypes.Contains(self.World.Map.GetTerrainTileInfo(c).Type));
 		}
 
 		void Open()

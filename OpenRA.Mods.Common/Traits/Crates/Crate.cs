@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!world.Map.Contains(cell))
 				return false;
 
-			var type = world.Map.GetTerrainInfo(cell).Type;
+			var type = world.Map.GetTerrainTileInfo(cell).Type;
 			if (!TerrainTypes.Contains(type))
 				return false;
 

@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Warheads
 			// Draw the smudges:
 			foreach (var sc in allCells)
 			{
-				var smudgeType = world.Map.GetTerrainInfo(sc).AcceptsSmudgeType.FirstOrDefault(SmudgeType.Contains);
+				var smudgeType = world.Map.GetTerrainTileInfo(sc).AcceptsSmudgeType.FirstOrDefault(SmudgeType.Contains);
 				if (smudgeType == null)
 					continue;
 

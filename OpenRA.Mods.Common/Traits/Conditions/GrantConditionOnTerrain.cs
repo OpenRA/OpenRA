@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			// The terrain type may change between ticks without the actor moving
-			var currentTerrain = cell.Layer == 0 ? self.World.Map.GetTerrainInfo(cell).Type :
+			var currentTerrain = cell.Layer == 0 ? self.World.Map.GetTerrainTileInfo(cell).Type :
 				terrainTypes[self.World.GetCustomMovementLayers()[cell.Layer].GetTerrainIndex(cell)].Type;
 
 			var wantsGranted = info.TerrainTypes.Contains(currentTerrain);

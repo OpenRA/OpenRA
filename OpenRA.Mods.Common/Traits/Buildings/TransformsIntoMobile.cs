@@ -202,7 +202,7 @@ namespace OpenRA.Mods.Common.Traits
 				    || (!explored && !mobile.locomotor.Info.MoveIntoShroud)
 				    || (explored && !CanEnterCell(self, location)))
 					cursor = mobile.Info.BlockedCursor;
-				else if (!explored || !mobile.Info.TerrainCursors.TryGetValue(self.World.Map.GetTerrainInfo(location).Type, out cursor))
+				else if (!explored || !mobile.Info.TerrainCursors.TryGetValue(self.World.Map.GetTerrainTileInfo(location).Type, out cursor))
 					cursor = mobile.Info.Cursor;
 
 				return true;

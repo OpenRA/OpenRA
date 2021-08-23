@@ -237,7 +237,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (checkTerrainType)
 			{
-				var terrainType = self.World.Map.GetTerrainInfo(self.Location).Type;
+				var terrainType = self.World.Map.GetTerrainTileInfo(self.Location).Type;
 
 				if (!Info.UnloadTerrainTypes.Contains(terrainType))
 					return false;

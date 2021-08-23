@@ -107,7 +107,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				var target = order.Target.CenterPosition;
 				var targetCell = self.World.Map.CellContaining(target);
 				var podLocations = self.World.Map.FindTilesInCircle(targetCell, info.PodScatter)
-					.Where(c => aircraftInfo.LandableTerrainTypes.Contains(w.Map.GetTerrainInfo(c).Type)
+					.Where(c => aircraftInfo.LandableTerrainTypes.Contains(w.Map.GetTerrainTileInfo(c).Type)
 						&& !self.World.ActorMap.GetActorsAt(c).Any());
 
 				if (!podLocations.Any())

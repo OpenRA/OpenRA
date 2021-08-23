@@ -882,8 +882,8 @@ namespace OpenRA.Mods.Common.Projectiles
 			shouldExplode |= height.Length < 0 // Hit the ground
 				|| relTarDist < info.CloseEnough.Length // Within range
 				|| (info.ExplodeWhenEmpty && rangeLimit >= WDist.Zero && distanceCovered > rangeLimit) // Ran out of fuel
-				|| !world.Map.Contains(cell) // This also avoids an IndexOutOfRangeException in GetTerrainInfo below.
-				|| (!string.IsNullOrEmpty(info.BoundToTerrainType) && world.Map.GetTerrainInfo(cell).Type != info.BoundToTerrainType) // Hit incompatible terrain
+				|| !world.Map.Contains(cell) // This also avoids an IndexOutOfRangeException in GetTerrainTileInfo below.
+				|| (!string.IsNullOrEmpty(info.BoundToTerrainType) && world.Map.GetTerrainTileInfo(cell).Type != info.BoundToTerrainType) // Hit incompatible terrain
 				|| (height.Length < info.AirburstAltitude.Length && relTarHorDist < info.CloseEnough.Length); // Airburst
 
 			if (shouldExplode)

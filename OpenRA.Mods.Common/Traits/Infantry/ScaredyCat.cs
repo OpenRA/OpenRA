@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.Traits
 			mobile = self.Trait<Mobile>();
 
 			if (info.AvoidTerrainTypes.Count > 0)
-				avoidTerrainFilter = c => info.AvoidTerrainTypes.Contains(self.World.Map.GetTerrainInfo(c).Type);
+				avoidTerrainFilter = c => info.AvoidTerrainTypes.Contains(self.World.Map.GetTerrainTileInfo(c).Type);
 		}
 
 		public void Panic()

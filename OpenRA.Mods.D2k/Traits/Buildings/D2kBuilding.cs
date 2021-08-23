@@ -93,7 +93,7 @@ namespace OpenRA.Mods.D2k.Traits.Buildings
 					foreach (var c in info.Tiles(self.Location))
 					{
 						// Only place on allowed terrain types
-						if (!map.Contains(c) || map.CustomTerrain[c] != byte.MaxValue || !info.TerrainTypes.Contains(map.GetTerrainInfo(c).Type))
+						if (!map.Contains(c) || map.CustomTerrain[c] != byte.MaxValue || !info.TerrainTypes.Contains(map.GetTerrainTileInfo(c).Type))
 							continue;
 
 						// Don't place under other buildings (or their bib)
@@ -111,7 +111,7 @@ namespace OpenRA.Mods.D2k.Traits.Buildings
 						var c = self.Location + new CVec(i % template.Size.X, i / template.Size.X);
 
 						// Only place on allowed terrain types
-						if (!map.Contains(c) || map.CustomTerrain[c] != byte.MaxValue || !info.TerrainTypes.Contains(map.GetTerrainInfo(c).Type))
+						if (!map.Contains(c) || map.CustomTerrain[c] != byte.MaxValue || !info.TerrainTypes.Contains(map.GetTerrainTileInfo(c).Type))
 							continue;
 
 						// Don't place under other buildings (or their bib)
@@ -129,7 +129,7 @@ namespace OpenRA.Mods.D2k.Traits.Buildings
 			foreach (var kv in self.OccupiesSpace.OccupiedCells())
 			{
 				totalTiles++;
-				if (!info.DamageTerrainTypes.Contains(self.World.Map.GetTerrainInfo(kv.Cell).Type))
+				if (!info.DamageTerrainTypes.Contains(self.World.Map.GetTerrainTileInfo(kv.Cell).Type))
 					safeTiles++;
 			}
 

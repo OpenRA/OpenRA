@@ -93,7 +93,7 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Returns the type of the terrain at the target cell.")]
 		public string TerrainType(CPos cell)
 		{
-			return Context.World.Map.GetTerrainInfo(cell).Type;
+			return Context.World.Map.GetTerrainTileInfo(cell).Type;
 		}
 
 		[Desc("Returns true if there is only one human player.")]

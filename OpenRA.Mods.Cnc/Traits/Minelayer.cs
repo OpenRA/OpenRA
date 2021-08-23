@@ -201,7 +201,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (Info.TerrainTypes.Count == 0)
 				return true;
 
-			var terrainType = self.World.Map.GetTerrainInfo(cell).Type;
+			var terrainType = self.World.Map.GetTerrainTileInfo(cell).Type;
 			return Info.TerrainTypes.Contains(terrainType);
 		}
 

@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!self.IsInWorld)
 				return;
 
-			var t = self.World.Map.GetTerrainInfo(self.Location);
+			var t = self.World.Map.GetTerrainTileInfo(self.Location);
 			if (!Info.Terrain.Contains(t.Type))
 				return;
 

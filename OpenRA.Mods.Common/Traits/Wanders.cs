@@ -106,7 +106,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (info.AvoidTerrainTypes.Count > 0)
 			{
-				var terrainType = self.World.Map.GetTerrainInfo(targetCell).Type;
+				var terrainType = self.World.Map.GetTerrainTileInfo(targetCell).Type;
 				if (Info.AvoidTerrainTypes.Contains(terrainType))
 					return null;
 			}

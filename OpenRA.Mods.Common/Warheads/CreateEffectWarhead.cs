@@ -141,7 +141,7 @@ namespace OpenRA.Mods.Common.Warheads
 				return false;
 
 			var dat = world.Map.DistanceAboveTerrain(pos);
-			return IsValidTarget(dat > AirThreshold ? TargetTypeAir : world.Map.GetTerrainInfo(cell).TargetTypes);
+			return IsValidTarget(dat > AirThreshold ? TargetTypeAir : world.Map.GetTerrainTileInfo(cell).TargetTypes);
 		}
 	}
 }

@@ -93,7 +93,7 @@ namespace OpenRA.Mods.D2k.Traits
 			if (!self.World.Map.Contains(self.Location))
 				return;
 
-			if (info.GrowthTerrainTypes.Count > 0 && !info.GrowthTerrainTypes.Contains(self.World.Map.GetTerrainInfo(self.Location).Type))
+			if (info.GrowthTerrainTypes.Count > 0 && !info.GrowthTerrainTypes.Contains(self.World.Map.GetTerrainTileInfo(self.Location).Type))
 				return;
 
 			ticks++;

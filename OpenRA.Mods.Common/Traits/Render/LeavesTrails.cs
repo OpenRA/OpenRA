@@ -115,7 +115,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				if (!self.World.Map.Contains(spawnCell))
 					return;
 
-				var type = self.World.Map.GetTerrainInfo(spawnCell).Type;
+				var type = self.World.Map.GetTerrainTileInfo(spawnCell).Type;
 
 				if (++offset >= Info.Offsets.Length)
 					offset = 0;

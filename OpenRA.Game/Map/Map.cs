@@ -438,11 +438,11 @@ namespace OpenRA
 			var terrainInfo = Rules.TerrainInfo;
 			foreach (var uv in AllCells.MapCoords)
 			{
-				if (!terrainInfo.TryGetTerrainInfo(Tiles[uv], out var info))
+				if (!terrainInfo.TryGetTerrainTileInfo(Tiles[uv], out var info))
 				{
 					ReplacedInvalidTerrainTiles[uv.ToCPos(this)] = Tiles[uv];
 					Tiles[uv] = terrainInfo.DefaultTerrainTile;
-					info = terrainInfo.GetTerrainInfo(terrainInfo.DefaultTerrainTile);
+					info = terrainInfo.GetTerrainTileInfo(terrainInfo.DefaultTerrainTile);
 				}
 
 				Ramp[uv] = info.RampType;
@@ -453,7 +453,7 @@ namespace OpenRA
 
 		void UpdateRamp(CPos cell)
 		{
-			Ramp[cell] = Rules.TerrainInfo.GetTerrainInfo(Tiles[cell]).RampType;
+			Ramp[cell] = Rules.TerrainInfo.GetTerrainTileInfo(Tiles[cell]).RampType;
 		}
 
 		void InitializeCellProjection()
@@ -540,7 +540,7 @@ namespace OpenRA
 					// The original games treat the top of cliffs the same way as the bottom
 					// This information isn't stored in the map data, so query the offset from the tileset
 					var temp = inverse.MaxBy(uv => uv.V);
-					return (byte)(Height[temp] - Rules.TerrainInfo.GetTerrainInfo(Tiles[temp]).Height);
+					return (byte)(Height[temp] - Rules.TerrainInfo.GetTerrainTileInfo(Tiles[temp]).Height);
 				}
 
 				// Try the next cell down if this is a cliff face
@@ -676,7 +676,7 @@ namespace OpenRA
 		public (Color Left, Color Right) GetTerrainColorPair(MPos uv)
 		{
 			var terrainInfo = Rules.TerrainInfo;
-			var type = terrainInfo.GetTerrainInfo(Tiles[uv]);
+			var type = terrainInfo.GetTerrainTileInfo(Tiles[uv]);
 			var left = type.GetColor(Game.CosmeticRandom);
 			var right = type.GetColor(Game.CosmeticRandom);
 
@@ -1071,13 +1071,13 @@ namespace OpenRA
 			if (terrainIndex == InvalidCachedTerrainIndex)
 			{
 				var custom = CustomTerrain[uv];
-				terrainIndex = cachedTerrainIndexes[uv] = custom != byte.MaxValue ? custom : Rules.TerrainInfo.GetTerrainInfo(Tiles[uv]).TerrainType;
+				terrainIndex = cachedTerrainIndexes[uv] = custom != byte.MaxValue ? custom : Rules.TerrainInfo.GetTerrainTileInfo(Tiles[uv]).TerrainType;
 			}
 
 			return (byte)terrainIndex;
 		}
 
-		public TerrainTypeInfo GetTerrainInfo(CPos cell)
+		public TerrainTypeInfo GetTerrainTileInfo(CPos cell)
 		{
 			return Rules.TerrainInfo.TerrainTypes[GetTerrainIndex(cell)];
 		}

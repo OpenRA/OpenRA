@@ -141,7 +141,7 @@ namespace OpenRA.Mods.Common.Traits
 				for (var x = 0; x < template.Size.X; x++)
 				{
 					var tile = new TerrainTile(template.Id, (byte)(i++));
-					if (!terrainInfo.TryGetTileInfo(tile, out var tileInfo))
+					if (!terrainInfo.TryGetTerrainTileInfo(tile, out var tileInfo))
 						continue;
 
 					var sprite = tileCache.TileSprite(tile);
@@ -171,7 +171,7 @@ namespace OpenRA.Mods.Common.Traits
 				for (var x = 0; x < template.Size.X; x++)
 				{
 					var tile = new TerrainTile(template.Id, (byte)i++);
-					if (!terrainInfo.TryGetTileInfo(tile, out var tileInfo))
+					if (!terrainInfo.TryGetTerrainTileInfo(tile, out var tileInfo))
 						continue;
 
 					var sprite = tileCache.TileSprite(tile, 0);
@@ -196,7 +196,7 @@ namespace OpenRA.Mods.Common.Traits
 				for (var x = 0; x < template.Size.X; x++)
 				{
 					var tile = new TerrainTile(template.Id, (byte)i++);
-					if (!terrainInfo.TryGetTileInfo(tile, out var tileInfo))
+					if (!terrainInfo.TryGetTerrainTileInfo(tile, out var tileInfo))
 						continue;
 
 					var sprite = tileCache.TileSprite(tile, 0);

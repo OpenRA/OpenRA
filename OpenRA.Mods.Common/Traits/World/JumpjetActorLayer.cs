@@ -75,7 +75,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool ValidTransitionCell(CPos cell, LocomotorInfo li)
 		{
-			var terrainType = map.GetTerrainInfo(cell).Type;
+			var terrainType = map.GetTerrainTileInfo(cell).Type;
 			var jli = (JumpjetLocomotorInfo)li;
 			if (!jli.JumpjetTransitionTerrainTypes.Contains(terrainType) && jli.JumpjetTransitionTerrainTypes.Any())
 				return false;

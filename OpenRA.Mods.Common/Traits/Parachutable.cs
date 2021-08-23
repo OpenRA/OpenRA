@@ -102,7 +102,7 @@ namespace OpenRA.Mods.Common.Traits
 				.Any(a => a != IgnoreActor && a != self && self.World.Map.DistanceAboveTerrain(a.CenterPosition) == WDist.Zero))
 				return;
 
-			var onWater = info.WaterTerrainTypes.Contains(self.World.Map.GetTerrainInfo(cell).Type);
+			var onWater = info.WaterTerrainTypes.Contains(self.World.Map.GetTerrainTileInfo(cell).Type);
 			var sound = onWater ? info.WaterImpactSound : info.GroundImpactSound;
 			Game.Sound.Play(SoundType.World, sound, self.CenterPosition);
 

@@ -181,7 +181,7 @@ namespace OpenRA.GameRules
 				if (!world.Map.Contains(cell))
 					return false;
 
-				var cellInfo = world.Map.GetTerrainInfo(cell);
+				var cellInfo = world.Map.GetTerrainTileInfo(cell);
 				if (!IsValidTarget(cellInfo.TargetTypes))
 					return false;
 

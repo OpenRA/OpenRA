@@ -88,7 +88,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		void PlaySequence()
 		{
-			var onWater = info.WaterTerrainTypes.Contains(self.World.Map.GetTerrainInfo(self.Location).Type);
+			var onWater = info.WaterTerrainTypes.Contains(self.World.Map.GetTerrainTileInfo(self.Location).Type);
 			var sequence = onWater ? info.WaterSequence : info.LandSequence;
 			if (!string.IsNullOrEmpty(sequence))
 				anim.PlayRepeating(sequence);

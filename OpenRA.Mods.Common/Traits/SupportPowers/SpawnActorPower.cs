@@ -106,7 +106,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!info.AllowUnderShroud && world.ShroudObscures(cell))
 				return false;
 
-			if (info.Terrain != null && !info.Terrain.Contains(world.Map.GetTerrainInfo(cell).Type))
+			if (info.Terrain != null && !info.Terrain.Contains(world.Map.GetTerrainTileInfo(cell).Type))
 				return false;
 
 			return true;
