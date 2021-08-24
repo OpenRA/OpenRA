@@ -111,8 +111,7 @@ namespace OpenRA.Mods.Common.Traits
 			// Minimum should not be negative as delays in HackyAI could be zero.
 			var randomFactor = world.LocalRandom.Next(0, baseBuilder.Info.StructureProductionRandomBonusDelay);
 
-			// Needs to be at least 4 * OrderLatency because otherwise the AI frequently duplicates build orders (i.e. makes the same build decision twice)
-			waitTicks = active ? 4 * world.OrderLatency + baseBuilder.Info.StructureProductionActiveDelay + randomFactor
+			waitTicks = active ? baseBuilder.Info.StructureProductionActiveDelay + randomFactor
 				: baseBuilder.Info.StructureProductionInactiveDelay + randomFactor;
 		}
 
