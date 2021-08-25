@@ -574,6 +574,12 @@ namespace OpenRA
 			while (frameEndActions.Count != 0)
 				frameEndActions.Dequeue()(this);
 
+			// HACK: The shellmap OrderManager is owned by its world in order to avoid
+			// problems with having multiple OMs active when joining a game lobby from the main menu.
+			// A matching check in Game.JoinInner handles OM disposal for all other cases.
+			if (Type == WorldType.Shellmap)
+				OrderManager.Dispose();
+
 			Game.FinishBenchmark();
 		}
 	}

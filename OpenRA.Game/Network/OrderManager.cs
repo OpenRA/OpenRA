@@ -128,19 +128,11 @@ namespace OpenRA.Network
 
 		public void ReceiveDisconnect(int clientIndex)
 		{
-			// HACK: The shellmap relies on ticking a disposed OM
-			if (disposed && World.Type != WorldType.Shellmap)
-				return;
-
 			pendingOrders.Remove(clientIndex);
 		}
 
 		public void ReceiveSync((int Frame, int SyncHash, ulong DefeatState) sync)
 		{
-			// HACK: The shellmap relies on ticking a disposed OM
-			if (disposed && World.Type != WorldType.Shellmap)
-				return;
-
 			if (syncForFrame.TryGetValue(sync.Frame, out var s))
 			{
 				if (s.SyncHash != sync.SyncHash || s.DefeatState != sync.DefeatState)
@@ -152,10 +144,6 @@ namespace OpenRA.Network
 
 		public void ReceiveImmediateOrders(int clientId, OrderPacket orders)
 		{
-			// HACK: The shellmap relies on ticking a disposed OM
-			if (disposed && World.Type != WorldType.Shellmap)
-				return;
-
 			foreach (var o in orders.GetOrders(World))
 			{
 				UnitOrders.ProcessOrder(this, World, clientId, o);
@@ -168,10 +156,6 @@ namespace OpenRA.Network
 
 		public void ReceiveOrders(int clientId, (int Frame, OrderPacket Orders) orders)
 		{
-			// HACK: The shellmap relies on ticking a disposed OM
-			if (disposed && World.Type != WorldType.Shellmap)
-				return;
-
 			if (pendingOrders.TryGetValue(clientId, out var queue))
 				queue.Enqueue((orders.Frame, orders.Orders));
 			else

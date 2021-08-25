@@ -84,7 +84,14 @@ namespace OpenRA
 
 		static void JoinInner(OrderManager om)
 		{
-			OrderManager?.Dispose();
+			// HACK: The shellmap World and OrderManager are owned by the main menu's WorldRenderer instead of Game.
+			// This allows us to switch Game.OrderManager from the shellmap to the new network connection when joining
+			// a lobby, while keeping the OrderManager that runs the shellmap intact.
+			// A matching check in World.Dispose (which is called by WorldRenderer.Dispose) makes sure that we dispose
+			// the shellmap's OM when a lobby game actually starts.
+			if (OrderManager?.World == null || OrderManager.World.Type != WorldType.Shellmap)
+				OrderManager?.Dispose();
+
 			OrderManager = om;
 		}
 
