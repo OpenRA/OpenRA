@@ -45,6 +45,7 @@ namespace OpenRA.Network
 		readonly Queue<(int Frame, int SyncHash, ulong DefeatState)> sync = new Queue<(int, int, ulong)>();
 		readonly Queue<(int Frame, OrderPacket Orders)> orders = new Queue<(int, OrderPacket)>();
 		readonly Queue<OrderPacket> immediateOrders = new Queue<OrderPacket>();
+		bool disposed;
 
 		int IConnection.LocalClientId => LocalClientId;
 
@@ -72,7 +73,14 @@ namespace OpenRA.Network
 		void IConnection.Receive(OrderManager orderManager)
 		{
 			while (immediateOrders.TryDequeue(out var i))
+			{
 				orderManager.ReceiveImmediateOrders(LocalClientId, i);
+
+				// An immediate order may trigger a chain of actions that disposes the OrderManager and connection.
+				// Bail out to avoid potential problems from acting on disposed objects.
+				if (disposed)
+					break;
+			}
 
 			// Project orders forward to the next frame
 			while (orders.TryDequeue(out var o))
@@ -82,7 +90,10 @@ namespace OpenRA.Network
 				orderManager.ReceiveSync(s);
 		}
 
-		void IDisposable.Dispose() { }
+		void IDisposable.Dispose()
+		{
+			disposed = true;
+		}
 	}
 
 	public sealed class NetworkConnection : IConnection
@@ -272,6 +283,11 @@ namespace OpenRA.Network
 			{
 				orderManager.ReceiveImmediateOrders(clientId, i);
 				Recorder?.Receive(clientId, i.Serialize(0));
+
+				// An immediate order may trigger a chain of actions that disposes the OrderManager and connection.
+				// Bail out to avoid potential problems from acting on disposed objects.
+				if (disposed)
+					return;
 			}
 
 			while (sentSync.TryDequeue(out var s))
@@ -312,6 +328,11 @@ namespace OpenRA.Network
 
 				if (record)
 					Recorder?.Receive(p.FromClient, p.Data);
+
+				// An immediate order may trigger a chain of actions that disposes the OrderManager and connection.
+				// Bail out to avoid potential problems from acting on disposed objects.
+				if (disposed)
+					return;
 			}
 		}
 
