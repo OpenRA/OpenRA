@@ -25,30 +25,26 @@ namespace OpenRA.Mods.Common.Widgets
 		public readonly string Separators = "dropdown-separators";
 		public readonly string SeparatorImage = "separator";
 		public readonly TextAlign PanelAlign = TextAlign.Left;
+		public string PanelRoot;
 
 		Widget panel;
 		MaskWidget fullscreenMask;
 		Widget panelRoot;
-		readonly CachedTransform<(bool Disabled, bool Pressed, bool Hover, bool Focused), Sprite> getMarkerImage;
-		readonly CachedTransform<(bool Disabled, bool Pressed, bool Hover, bool Focused), Sprite> getSeparatorImage;
-
-		public string PanelRoot;
-		public string SelectedItem;
+		CachedTransform<(bool Disabled, bool Pressed, bool Hover, bool Focused), Sprite> getMarkerImage;
+		CachedTransform<(bool Disabled, bool Pressed, bool Hover, bool Focused), Sprite> getSeparatorImage;
 
 		[ObjectCreator.UseCtor]
 		public DropDownButtonWidget(ModData modData)
-			: base(modData)
-		{
-			getMarkerImage = WidgetUtils.GetCachedStatefulImage(Decorations, DecorationMarker);
-			getSeparatorImage = WidgetUtils.GetCachedStatefulImage(Separators, SeparatorImage);
-		}
+			: base(modData) { }
 
 		protected DropDownButtonWidget(DropDownButtonWidget widget)
 			: base(widget)
 		{
 			PanelRoot = widget.PanelRoot;
-			getMarkerImage = WidgetUtils.GetCachedStatefulImage(Decorations, DecorationMarker);
-			getSeparatorImage = WidgetUtils.GetCachedStatefulImage(Separators, SeparatorImage);
+			Decorations = widget.Decorations;
+			DecorationMarker = widget.DecorationMarker;
+			Separators = widget.Separators;
+			SeparatorImage = widget.SeparatorImage;
 		}
 
 		public override void Draw()
@@ -60,8 +56,14 @@ namespace OpenRA.Mods.Common.Widgets
 			var isDisabled = IsDisabled();
 			var isHover = Ui.MouseOverWidget == this || Children.Any(c => c == Ui.MouseOverWidget);
 
+			if (getMarkerImage == null)
+				getMarkerImage = WidgetUtils.GetCachedStatefulImage(Decorations, DecorationMarker);
+
 			var arrowImage = getMarkerImage.Update((isDisabled, Depressed, isHover, false));
 			WidgetUtils.DrawSprite(arrowImage, stateOffset + new float2(rb.Right - (int)((rb.Height + arrowImage.Size.X) / 2), rb.Top + (int)((rb.Height - arrowImage.Size.Y) / 2)));
+
+			if (getSeparatorImage == null)
+				getSeparatorImage = WidgetUtils.GetCachedStatefulImage(Separators, SeparatorImage);
 
 			var separatorImage = getSeparatorImage.Update((isDisabled, Depressed, isHover, false));
 			if (separatorImage != null)
