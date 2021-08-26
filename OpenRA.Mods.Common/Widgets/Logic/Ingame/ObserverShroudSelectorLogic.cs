@@ -97,13 +97,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				.OrderBy(g => g.Key);
 
 			var noTeams = teams.Count() == 1;
+			var totalPlayers = 0;
 			foreach (var t in teams)
 			{
+				totalPlayers += t.Count();
 				var label = noTeams ? "Players" : t.Key == 0 ? "No Team" : $"Team {t.Key}";
 				groups.Add(label, t);
 			}
 
+			var shroudSelectorDisabled = limitViews && totalPlayers < 2;
 			var shroudSelector = widget.Get<DropDownButtonWidget>("SHROUD_SELECTOR");
+			shroudSelector.IsDisabled = () => shroudSelectorDisabled;
 			shroudSelector.OnMouseDown = _ =>
 			{
 				Func<CameraOption, ScrollItemWidget, ScrollItemWidget> setupItem = (option, template) =>
