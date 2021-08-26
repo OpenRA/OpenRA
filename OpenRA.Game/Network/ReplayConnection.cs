@@ -25,19 +25,13 @@ namespace OpenRA.Network
 			public (int ClientId, byte[] Packet)[] Packets;
 		}
 
-		Queue<Chunk> chunks = new Queue<Chunk>();
-		Queue<byte[]> sync = new Queue<byte[]>();
-
+		readonly Queue<Chunk> chunks = new Queue<Chunk>();
+		readonly Queue<(int Frame, int SyncHash, ulong DefeatState)> sync = new Queue<(int, int, ulong)>();
+		readonly Dictionary<int, int> lastClientsFrame = new Dictionary<int, int>();
 		readonly int orderLatency;
 		int ordersFrame;
 
-		Dictionary<int, int> lastClientsFrame = new Dictionary<int, int>();
-
 		public int LocalClientId => -1;
-
-		public IPEndPoint EndPoint => throw new NotSupportedException("A replay connection doesn't have an endpoint");
-
-		public string ErrorMessage => null;
 
 		public readonly int TickCount;
 		public readonly int FinalGameTick;
@@ -76,13 +70,15 @@ namespace OpenRA.Network
 					if (frame == 0)
 					{
 						// Parse replay metadata from orders stream
-						var orders = packet.ToOrderList(null);
-						foreach (var o in orders)
+						if (OrderIO.TryParseOrderPacket(packet, out _, out var orders))
 						{
-							if (o.OrderString == "StartGame")
-								IsValid = true;
-							else if (o.OrderString == "SyncInfo" && !IsValid)
-								LobbyInfo = Session.Deserialize(o.TargetString);
+							foreach (var o in orders.GetOrders(null))
+							{
+								if (o.OrderString == "StartGame")
+									IsValid = true;
+								else if (o.OrderString == "SyncInfo" && !IsValid)
+									LobbyInfo = Session.Deserialize(o.TargetString);
+							}
 						}
 					}
 					else
@@ -131,28 +127,42 @@ namespace OpenRA.Network
 		}
 
 		// Do nothing: ignore locally generated orders
-		public void Send(int frame, List<byte[]> orders) { }
-		public void SendImmediate(IEnumerable<byte[]> orders) { }
+		public void Send(int frame, IEnumerable<Order> orders) { }
+		public void SendImmediate(IEnumerable<Order> orders) { }
 
-		public void SendSync(int frame, byte[] syncData)
+		public void SendSync(int frame, int syncHash, ulong defeatState)
 		{
-			var ms = new MemoryStream(4 + syncData.Length);
-			ms.WriteArray(BitConverter.GetBytes(frame));
-			ms.WriteArray(syncData);
-			sync.Enqueue(ms.GetBuffer());
+			sync.Enqueue((frame, syncHash, defeatState));
 
 			// Store the current frame so Receive() can return the next chunk of orders.
 			ordersFrame = frame + orderLatency;
 		}
 
-		public void Receive(Action<int, byte[]> packetFn)
+		public void Receive(OrderManager orderManager)
 		{
 			while (sync.Count != 0)
-				packetFn(LocalClientId, sync.Dequeue());
+			{
+				var (syncFrame, syncHash, defeatState) = sync.Dequeue();
+				orderManager.ReceiveSync(syncFrame, syncHash, defeatState);
+			}
 
 			while (chunks.Count != 0 && chunks.Peek().Frame <= ordersFrame)
+			{
 				foreach (var o in chunks.Dequeue().Packets)
-					packetFn(o.ClientId, o.Packet);
+				{
+					if (OrderIO.TryParseDisconnect(o.Packet, out var disconnectClient))
+						orderManager.ReceiveDisconnect(disconnectClient);
+					else if (OrderIO.TryParseSync(o.Packet, out var syncFrame, out var syncHash, out var defeatState))
+						orderManager.ReceiveSync(syncFrame, syncHash, defeatState);
+					else if (OrderIO.TryParseOrderPacket(o.Packet, out var frame, out var orders))
+					{
+						if (frame == 0)
+							orderManager.ReceiveImmediateOrders(o.ClientId, orders);
+						else
+							orderManager.ReceiveOrders(o.ClientId, frame, orders);
+					}
+				}
+			}
 		}
 
 		public void Dispose() { }
