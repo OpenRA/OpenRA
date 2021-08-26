@@ -31,10 +31,10 @@ namespace OpenRA.Network
 	public interface IConnection : IDisposable
 	{
 		int LocalClientId { get; }
-		void Send(int frame, List<byte[]> orders);
-		void SendImmediate(IEnumerable<byte[]> orders);
-		void SendSync(int frame, byte[] syncData);
-		void Receive(Action<int, byte[]> packetFn);
+		void Send(int frame, IEnumerable<Order> orders);
+		void SendImmediate(IEnumerable<Order> orders);
+		void SendSync(int frame, int syncHash, ulong defeatState);
+		void Receive(OrderManager orderManager);
 	}
 
 	public class EchoConnection : IConnection
@@ -50,32 +50,29 @@ namespace OpenRA.Network
 
 		public virtual int LocalClientId => 1;
 
-		public virtual void Send(int frame, List<byte[]> orders)
+		public virtual void Send(int frame, IEnumerable<Order> orders)
 		{
 			var ms = new MemoryStream();
 			ms.WriteArray(BitConverter.GetBytes(frame));
 			foreach (var o in orders)
-				ms.WriteArray(o);
+				ms.WriteArray(o.Serialize());
 			Send(ms.ToArray());
 		}
 
-		public virtual void SendImmediate(IEnumerable<byte[]> orders)
+		public virtual void SendImmediate(IEnumerable<Order> orders)
 		{
 			foreach (var o in orders)
 			{
 				var ms = new MemoryStream();
 				ms.WriteArray(BitConverter.GetBytes(0));
-				ms.WriteArray(o);
+				ms.WriteArray(o.Serialize());
 				Send(ms.ToArray());
 			}
 		}
 
-		public virtual void SendSync(int frame, byte[] syncData)
+		public virtual void SendSync(int frame, int syncHash, ulong defeatState)
 		{
-			var ms = new MemoryStream(4 + syncData.Length);
-			ms.WriteArray(BitConverter.GetBytes(frame));
-			ms.WriteArray(syncData);
-			Send(ms.GetBuffer());
+			Send(OrderIO.SerializeSync(frame, syncHash, defeatState));
 		}
 
 		protected virtual void Send(byte[] packet)
@@ -90,11 +87,22 @@ namespace OpenRA.Network
 			receivedPackets.Enqueue(packet);
 		}
 
-		public virtual void Receive(Action<int, byte[]> packetFn)
+		public virtual void Receive(OrderManager orderManager)
 		{
 			while (receivedPackets.TryDequeue(out var p))
 			{
-				packetFn(p.FromClient, p.Data);
+				if (OrderIO.TryParseDisconnect(p.Data, out var disconnectClient))
+					orderManager.ReceiveDisconnect(disconnectClient);
+				else if (OrderIO.TryParseSync(p.Data, out var syncFrame, out var syncHash, out var defeatState))
+					orderManager.ReceiveSync(syncFrame, syncHash, defeatState);
+				else if (OrderIO.TryParseOrderPacket(p.Data, out var ordersFrame, out var orders))
+				{
+					if (ordersFrame == 0)
+						orderManager.ReceiveImmediateOrders(p.FromClient, orders);
+					else
+						orderManager.ReceiveOrders(p.FromClient, ordersFrame, orders);
+				}
+
 				Recorder?.Receive(p.FromClient, p.Data);
 			}
 		}
@@ -247,12 +255,9 @@ namespace OpenRA.Network
 		public override int LocalClientId => clientId;
 		public ConnectionState ConnectionState => connectionState;
 
-		public override void SendSync(int frame, byte[] syncData)
+		public override void SendSync(int frame, int syncHash, ulong defeatState)
 		{
-			var ms = new MemoryStream(4 + syncData.Length);
-			ms.WriteArray(BitConverter.GetBytes(frame));
-			ms.WriteArray(syncData);
-			queuedSyncPackets.Add(ms.GetBuffer());
+			queuedSyncPackets.Add(OrderIO.SerializeSync(frame, syncHash, defeatState));
 		}
 
 		protected override void Send(byte[] packet)

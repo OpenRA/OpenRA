@@ -9,70 +9,126 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 
 namespace OpenRA.Network
 {
-	public static class OrderIO
+	public class OrderPacket
 	{
-		static readonly List<Order> EmptyOrderList = new List<Order>(0);
-
-		public static List<Order> ToOrderList(this byte[] bytes, World world)
+		readonly Order[] orders;
+		readonly MemoryStream data;
+		public OrderPacket(Order[] orders)
 		{
-			// PERF: Skip empty order frames, often per client each frame
-			if (bytes.Length == 4)
-				return EmptyOrderList;
+			this.orders = orders;
+			data = null;
+		}
 
-			var ms = new MemoryStream(bytes, 4, bytes.Length - 4);
-			var reader = new BinaryReader(ms);
-			var ret = new List<Order>();
-			while (ms.Position < ms.Length)
+		public OrderPacket(MemoryStream data)
+		{
+			orders = null;
+			this.data = data;
+		}
+
+		public IEnumerable<Order> GetOrders(World world)
+		{
+			return orders ?? ParseData(world);
+		}
+
+		IEnumerable<Order> ParseData(World world)
+		{
+			if (data == null)
+				yield break;
+
+			// Order deserialization depends on the current world state,
+			// so must be deferred until we are ready to consume them.
+			var reader = new BinaryReader(data);
+			while (data.Position < data.Length)
 			{
 				var o = Order.Deserialize(world, reader);
 				if (o != null)
-					ret.Add(o);
+					yield return o;
 			}
-
-			return ret;
 		}
 
-		public static byte[] SerializeSync(int sync, ulong defeatState)
+		public byte[] Serialize(int frame)
 		{
-			var ms = new MemoryStream(Order.SyncHashOrderLength);
-			using (var writer = new BinaryWriter(ms))
-			{
-				writer.Write((byte)OrderType.SyncHash);
-				writer.Write(sync);
-				writer.Write(defeatState);
-			}
+			if (data != null)
+				return data.ToArray();
 
+			var ms = new MemoryStream();
+			ms.WriteArray(BitConverter.GetBytes(frame));
+			foreach (var o in orders)
+				ms.WriteArray(o.Serialize());
+			return ms.ToArray();
+		}
+	}
+
+	public static class OrderIO
+	{
+		static readonly OrderPacket NoOrders = new OrderPacket(Array.Empty<Order>());
+
+		public static byte[] SerializeSync(int frame, int syncHash, ulong defeatState)
+		{
+			var ms = new MemoryStream(4 + Order.SyncHashOrderLength);
+			ms.WriteArray(BitConverter.GetBytes(frame));
+			ms.WriteByte((byte)OrderType.SyncHash);
+			ms.WriteArray(BitConverter.GetBytes(syncHash));
+			ms.WriteArray(BitConverter.GetBytes(defeatState));
 			return ms.GetBuffer();
 		}
 
-		public static int2 ReadInt2(this BinaryReader r)
+		public static bool TryParseDisconnect(byte[] packet, out int clientId)
 		{
-			var x = r.ReadInt32();
-			var y = r.ReadInt32();
-			return new int2(x, y);
+			if (packet.Length == Order.DisconnectOrderLength + 4 && packet[4] == (byte)OrderType.Disconnect)
+			{
+				clientId = BitConverter.ToInt32(packet, 5);
+				return true;
+			}
+
+			clientId = 0;
+			return false;
 		}
 
-		public static void Write(this BinaryWriter w, int2 p)
+		public static bool TryParseSync(byte[] packet, out int frame, out int syncHash, out ulong defeatState)
 		{
-			w.Write(p.X);
-			w.Write(p.Y);
+			if (packet.Length != 4 + Order.SyncHashOrderLength || packet[4] != (byte)OrderType.SyncHash)
+			{
+				frame = syncHash = 0;
+				defeatState = 0;
+				return false;
+			}
+
+			frame = BitConverter.ToInt32(packet, 0);
+			syncHash = BitConverter.ToInt32(packet, 5);
+			defeatState = BitConverter.ToUInt64(packet, 9);
+			return true;
 		}
 
-		public static void Write(this BinaryWriter w, CPos cell)
+		public static bool TryParseOrderPacket(byte[] packet, out int frame, out OrderPacket orders)
 		{
-			w.Write(cell.Bits);
-		}
+			// Not a valid packet
+			if (packet.Length < 4)
+			{
+				frame = 0;
+				orders = null;
+				return false;
+			}
 
-		public static void Write(this BinaryWriter w, WPos pos)
-		{
-			w.Write(pos.X);
-			w.Write(pos.Y);
-			w.Write(pos.Z);
+			// Wrong packet type
+			if (packet.Length >= 5 && (packet[4] == (byte)OrderType.Disconnect || packet[4] == (byte)OrderType.SyncHash))
+			{
+				frame = 0;
+				orders = null;
+				return false;
+			}
+
+			frame = BitConverter.ToInt32(packet, 0);
+
+			// PERF: Skip empty order frames, often per client each frame
+			orders = packet.Length > 4 ? new OrderPacket(new MemoryStream(packet, 4, packet.Length - 4)) : NoOrders;
+			return true;
 		}
 	}
 }
