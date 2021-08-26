@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			for (var i = 0; i < keyNames.Length; i++)
 				statsHotkeys[i] = logicArgs.TryGetValue("Statistics" + keyNames[i] + "Key", out yaml) ? modData.Hotkeys[yaml.Value] : new HotkeyReference();
 
-			players = world.Players.Where(p => !p.NonCombatant);
+			players = world.Players.Where(p => !p.NonCombatant && p.Playable);
 			teams = players.GroupBy(p => (world.LobbyInfo.ClientWithIndex(p.ClientIndex) ?? new Session.Client()).Team).OrderBy(g => g.Key);
 			hasTeams = !(teams.Count() == 1 && teams.First().Key == 0);
 
