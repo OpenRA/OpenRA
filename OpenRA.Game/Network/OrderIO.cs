@@ -69,23 +69,14 @@ namespace OpenRA.Network
 	{
 		static readonly OrderPacket NoOrders = new OrderPacket(Array.Empty<Order>());
 
-		public static byte[] SerializeSync(int frame, int syncHash, ulong defeatState)
+		public static byte[] SerializeSync((int Frame, int SyncHash, ulong DefeatState) data)
 		{
 			var ms = new MemoryStream(4 + Order.SyncHashOrderLength);
-			ms.WriteArray(BitConverter.GetBytes(frame));
+			ms.WriteArray(BitConverter.GetBytes(data.Frame));
 			ms.WriteByte((byte)OrderType.SyncHash);
-			ms.WriteArray(BitConverter.GetBytes(syncHash));
-			ms.WriteArray(BitConverter.GetBytes(defeatState));
+			ms.WriteArray(BitConverter.GetBytes(data.SyncHash));
+			ms.WriteArray(BitConverter.GetBytes(data.DefeatState));
 			return ms.GetBuffer();
-		}
-
-		public static byte[] SerializeOrders(int frame, IEnumerable<Order> orders)
-		{
-			var ms = new MemoryStream();
-			ms.WriteArray(BitConverter.GetBytes(frame));
-			foreach (var o in orders)
-				ms.WriteArray(o.Serialize());
-			return ms.ToArray();
 		}
 
 		public static bool TryParseDisconnect(byte[] packet, out int clientId)
@@ -100,43 +91,42 @@ namespace OpenRA.Network
 			return false;
 		}
 
-		public static bool TryParseSync(byte[] packet, out int frame, out int syncHash, out ulong defeatState)
+		public static bool TryParseSync(byte[] packet, out (int Frame, int SyncHash, ulong DefeatState) data)
 		{
 			if (packet.Length != 4 + Order.SyncHashOrderLength || packet[4] != (byte)OrderType.SyncHash)
 			{
-				frame = syncHash = 0;
-				defeatState = 0;
+				data = (0, 0, 0);
 				return false;
 			}
 
-			frame = BitConverter.ToInt32(packet, 0);
-			syncHash = BitConverter.ToInt32(packet, 5);
-			defeatState = BitConverter.ToUInt64(packet, 9);
+			var frame = BitConverter.ToInt32(packet, 0);
+			var syncHash = BitConverter.ToInt32(packet, 5);
+			var defeatState = BitConverter.ToUInt64(packet, 9);
+			data = (frame, syncHash, defeatState);
 			return true;
 		}
 
-		public static bool TryParseOrderPacket(byte[] packet, out int frame, out OrderPacket orders)
+		public static bool TryParseOrderPacket(byte[] packet, out (int Frame, OrderPacket Orders) data)
 		{
 			// Not a valid packet
 			if (packet.Length < 4)
 			{
-				frame = 0;
-				orders = null;
+				data = (0, null);
 				return false;
 			}
 
 			// Wrong packet type
 			if (packet.Length >= 5 && (packet[4] == (byte)OrderType.Disconnect || packet[4] == (byte)OrderType.SyncHash))
 			{
-				frame = 0;
-				orders = null;
+				data = (0, null);
 				return false;
 			}
 
-			frame = BitConverter.ToInt32(packet, 0);
+			var frame = BitConverter.ToInt32(packet, 0);
 
 			// PERF: Skip empty order frames, often per client each frame
-			orders = packet.Length > 4 ? new OrderPacket(new MemoryStream(packet, 4, packet.Length - 4)) : NoOrders;
+			var orders = packet.Length > 4 ? new OrderPacket(new MemoryStream(packet, 4, packet.Length - 4)) : NoOrders;
+			data = (frame, orders);
 			return true;
 		}
 	}

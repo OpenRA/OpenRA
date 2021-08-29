@@ -31,8 +31,6 @@ namespace OpenRA.Network
 		readonly int orderLatency;
 		int ordersFrame;
 
-		public int LocalClientId => -1;
-
 		public readonly int TickCount;
 		public readonly int FinalGameTick;
 		public readonly bool IsValid;
@@ -70,9 +68,9 @@ namespace OpenRA.Network
 					if (frame == 0)
 					{
 						// Parse replay metadata from orders stream
-						if (OrderIO.TryParseOrderPacket(packet, out _, out var orders))
+						if (OrderIO.TryParseOrderPacket(packet, out var orders))
 						{
-							foreach (var o in orders.GetOrders(null))
+							foreach (var o in orders.Orders.GetOrders(null))
 							{
 								if (o.OrderString == "StartGame")
 									IsValid = true;
@@ -127,10 +125,10 @@ namespace OpenRA.Network
 		}
 
 		// Do nothing: ignore locally generated orders
-		public void Send(int frame, IEnumerable<Order> orders) { }
-		public void SendImmediate(IEnumerable<Order> orders) { }
+		void IConnection.Send(int frame, IEnumerable<Order> orders) { }
+		void IConnection.SendImmediate(IEnumerable<Order> orders) { }
 
-		public void SendSync(int frame, int syncHash, ulong defeatState)
+		void IConnection.SendSync(int frame, int syncHash, ulong defeatState)
 		{
 			sync.Enqueue((frame, syncHash, defeatState));
 
@@ -138,13 +136,10 @@ namespace OpenRA.Network
 			ordersFrame = frame + orderLatency;
 		}
 
-		public void Receive(OrderManager orderManager)
+		void IConnection.Receive(OrderManager orderManager)
 		{
 			while (sync.Count != 0)
-			{
-				var (syncFrame, syncHash, defeatState) = sync.Dequeue();
-				orderManager.ReceiveSync(syncFrame, syncHash, defeatState);
-			}
+				orderManager.ReceiveSync(sync.Dequeue());
 
 			while (chunks.Count != 0 && chunks.Peek().Frame <= ordersFrame)
 			{
@@ -152,19 +147,23 @@ namespace OpenRA.Network
 				{
 					if (OrderIO.TryParseDisconnect(o.Packet, out var disconnectClient))
 						orderManager.ReceiveDisconnect(disconnectClient);
-					else if (OrderIO.TryParseSync(o.Packet, out var syncFrame, out var syncHash, out var defeatState))
-						orderManager.ReceiveSync(syncFrame, syncHash, defeatState);
-					else if (OrderIO.TryParseOrderPacket(o.Packet, out var frame, out var orders))
+					else if (OrderIO.TryParseSync(o.Packet, out var sync))
+						orderManager.ReceiveSync(sync);
+					else if (OrderIO.TryParseOrderPacket(o.Packet, out var orders))
 					{
-						if (frame == 0)
-							orderManager.ReceiveImmediateOrders(o.ClientId, orders);
+						if (orders.Frame == 0)
+							orderManager.ReceiveImmediateOrders(o.ClientId, orders.Orders);
 						else
-							orderManager.ReceiveOrders(o.ClientId, frame, orders);
+							orderManager.ReceiveOrders(o.ClientId, orders);
 					}
+					else
+						throw new InvalidDataException($"Received unknown packet from client {o.ClientId} with length {o.Packet.Length}");
 				}
 			}
 		}
 
-		public void Dispose() { }
+		int IConnection.LocalClientId => -1;
+
+		void IDisposable.Dispose() { }
 	}
 }

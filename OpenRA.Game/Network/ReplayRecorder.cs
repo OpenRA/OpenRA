@@ -29,10 +29,10 @@ namespace OpenRA.Network
 
 		static bool IsGameStart(byte[] data)
 		{
-			if (!OrderIO.TryParseOrderPacket(data, out var frame, out var orders))
+			if (!OrderIO.TryParseOrderPacket(data, out var orders))
 				return false;
 
-			return frame == 0 && orders.GetOrders(null).Any(o => o.OrderString == "StartGame");
+			return orders.Frame == 0 && orders.Orders.GetOrders(null).Any(o => o.OrderString == "StartGame");
 		}
 
 		public ReplayRecorder(Func<string> chooseFilename)
