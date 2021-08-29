@@ -198,7 +198,7 @@ namespace OpenRA.Server
 							{
 								try
 								{
-									events.Add(new ClientConnectEvent(listener.AcceptSocket()));
+									events.Add(new ConnectionConnectEvent(listener.AcceptSocket()));
 								}
 								catch (Exception)
 								{
@@ -316,14 +316,14 @@ namespace OpenRA.Server
 			return nextPlayerIndex++;
 		}
 
-		void OnClientPacket(Connection conn, int frame, byte[] data)
+		internal void OnConnectionPacket(Connection conn, int frame, byte[] data)
 		{
-			events.Add(new ClientPacketEvent(conn, frame, data));
+			events.Add(new ConnectionPacketEvent(conn, frame, data));
 		}
 
-		void OnClientDisconnect(Connection conn)
+		internal void OnConnectionDisconnect(Connection conn)
 		{
-			events.Add(new ClientDisconnectEvent(conn));
+			events.Add(new ConnectionDisconnectEvent(conn));
 		}
 
 		void AcceptConnection(Socket socket)
@@ -335,7 +335,7 @@ namespace OpenRA.Server
 			// which we can then verify against the player public key database
 			var token = Convert.ToBase64String(OpenRA.Exts.MakeArray(256, _ => (byte)Random.Next()));
 
-			var newConn = new Connection(socket, ChooseFreePlayerIndex(), token, OnClientPacket, OnClientDisconnect);
+			var newConn = new Connection(this, socket, token);
 			try
 			{
 				// Send handshake and client index.
@@ -1315,10 +1315,10 @@ namespace OpenRA.Server
 
 		interface IServerEvent { void Invoke(Server server); }
 
-		class ClientConnectEvent : IServerEvent
+		class ConnectionConnectEvent : IServerEvent
 		{
 			readonly Socket socket;
-			public ClientConnectEvent(Socket socket)
+			public ConnectionConnectEvent(Socket socket)
 			{
 				this.socket = socket;
 			}
@@ -1329,10 +1329,10 @@ namespace OpenRA.Server
 			}
 		}
 
-		class ClientDisconnectEvent : IServerEvent
+		class ConnectionDisconnectEvent : IServerEvent
 		{
 			readonly Connection connection;
-			public ClientDisconnectEvent(Connection connection)
+			public ConnectionDisconnectEvent(Connection connection)
 			{
 				this.connection = connection;
 			}
@@ -1343,13 +1343,13 @@ namespace OpenRA.Server
 			}
 		}
 
-		class ClientPacketEvent : IServerEvent
+		class ConnectionPacketEvent : IServerEvent
 		{
 			readonly Connection connection;
 			readonly int frame;
 			readonly byte[] data;
 
-			public ClientPacketEvent(Connection connection, int frame, byte[] data)
+			public ConnectionPacketEvent(Connection connection, int frame, byte[] data)
 			{
 				this.connection = connection;
 				this.frame = frame;

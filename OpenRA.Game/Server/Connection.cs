@@ -37,9 +37,9 @@ namespace OpenRA.Server
 
 		readonly BlockingCollection<byte[]> sendQueue = new BlockingCollection<byte[]>();
 
-		public Connection(Socket socket, int playerIndex, string authToken, Action<Connection, int, byte[]> onPacket, Action<Connection> onDisconnect)
+		public Connection(Server server, Socket socket, string authToken)
 		{
-			PlayerIndex = playerIndex;
+			PlayerIndex = server.ChooseFreePlayerIndex();
 			AuthToken = authToken;
 			EndPoint = socket.RemoteEndPoint;
 
@@ -47,12 +47,12 @@ namespace OpenRA.Server
 			{
 				Name = $"Client communication ({EndPoint}",
 				IsBackground = true
-			}.Start((socket, onPacket, onDisconnect));
+			}.Start((server, socket));
 		}
 
 		void SendReceiveLoop(object s)
 		{
-			var (socket, onPacket, onDisconnect) = (ValueTuple<Socket, Action<Connection, int, byte[]>, Action<Connection>>)s;
+			var (server, socket) = (ValueTuple<Server, Socket>)s;
 			socket.Blocking = false;
 			socket.NoDelay = true;
 
@@ -107,7 +107,7 @@ namespace OpenRA.Server
 
 								case ReceiveState.Data:
 								{
-									onPacket(this, frame, bytes);
+									server.OnConnectionPacket(this, frame, bytes);
 									expectLength = 8;
 									state = ReceiveState.Header;
 
@@ -152,7 +152,7 @@ namespace OpenRA.Server
 			}
 			finally
 			{
-				onDisconnect(this);
+				server.OnConnectionDisconnect(this);
 				socket.Dispose();
 			}
 		}
