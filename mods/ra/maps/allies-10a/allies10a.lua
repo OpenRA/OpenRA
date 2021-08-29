@@ -15,10 +15,8 @@ NorthHarassFootprint = { CPos.New(24, 75), CPos.New(25, 75), CPos.New(26, 75), C
 NorthHarassTeam = { "e2", "e2", "e2", "3tnk" }
 MissileSilos = { MissileSilo1, MissileSilo2, MissileSilo3, MissileSilo4 }
 
-StartTimer = false
 TimerColor = Player.GetPlayer("USSR").Color
 TimerTicks = DateTime.Minutes(59) + DateTime.Seconds(42)
-ticked = TimerTicks
 
 MissionStart = function()
 	Utils.Do(USSR.GetGroundAttackers(), function(unit)
@@ -58,6 +56,12 @@ MissionTriggers = function()
 			Trigger.RemoveProximityTrigger(id)
 			LaunchMissiles()
 		end
+	end)
+
+	Trigger.OnTimerExpired(function()
+		DateTime.TimeLimit = 0
+		Trigger.AfterDelay(1, function() UserInterface.SetMissionText("We're too late!", USSR.Color) end)
+		USSR.MarkCompletedObjective(HoldOut)
 	end)
 
 	Trigger.OnKilled(BridgeBarrel, function()
@@ -123,34 +127,9 @@ LaunchMissiles = function()
 
 	Trigger.AfterDelay(DateTime.Seconds(9), function()
 		CaptureFCom = Greece.AddObjective("Capture the enemy Command Center. Hurry!")
-		StartTimer = true
+		DateTime.TimeLimit = TimerTicks
 		Media.PlaySpeechNotification(Greece, "TimerStarted")
 		Greece.MarkCompletedObjective(ApproachBase)
-
-		Trigger.AfterDelay(DateTime.Minutes(30), function()
-			Media.PlaySpeechNotification(Greece, "ThirtyMinutesRemaining")
-		end)
-		Trigger.AfterDelay(DateTime.Minutes(40), function()
-			Media.PlaySpeechNotification(Greece, "TwentyMinutesRemaining")
-		end)
-		Trigger.AfterDelay(DateTime.Minutes(50), function()
-			Media.PlaySpeechNotification(Greece, "TenMinutesRemaining")
-		end)
-		Trigger.AfterDelay(DateTime.Minutes(55), function()
-			Media.PlaySpeechNotification(Greece, "WarningFiveMinutesRemaining")
-		end)
-		Trigger.AfterDelay(DateTime.Minutes(56), function()
-			Media.PlaySpeechNotification(Greece, "WarningFourMinutesRemaining")
-		end)
-		Trigger.AfterDelay(DateTime.Minutes(57), function()
-			Media.PlaySpeechNotification(Greece, "WarningThreeMinutesRemaining")
-		end)
-		Trigger.AfterDelay(DateTime.Minutes(58), function()
-			Media.PlaySpeechNotification(Greece, "WarningTwoMinutesRemaining")
-		end)
-		Trigger.AfterDelay(DateTime.Minutes(59), function()
-			Media.PlaySpeechNotification(Greece, "WarningOneMinuteRemaining")
-		end)	
 	end)
 
 	Trigger.OnCapture(CommandCenter, function()
@@ -170,16 +149,6 @@ end
 Tick = function()
 	USSR.Cash = 50000
 	BadGuy.Cash = 50000
-
-	if StartTimer then
-		if ticked > 0 then
-			UserInterface.SetMissionText("Missiles reach their targets in " .. Utils.FormatTime(ticked), TimerColor)
-			ticked = ticked - 1
-		elseif ticked == 0 then
-			UserInterface.SetMissionText("We're too late!", USSR.Color)
-			USSR.MarkCompletedObjective(HoldOut)
-		end
-	end
 
 	if Greece.HasNoRequiredUnits() then
 		USSR.MarkCompletedObjective(HoldOut)
