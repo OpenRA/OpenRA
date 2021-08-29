@@ -128,7 +128,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				countdown = new CachedTransform<int, string>(t =>
 					info.CountdownText.F(WidgetUtils.FormatTime(t, true, w.Timestep)));
-				countdownLabel.GetText = () => countdown.Update(ticksRemaining);
+				countdownLabel.GetText = () => TimeLimit > 0 ? countdown.Update(ticksRemaining) : "";
 			}
 		}
 
