@@ -137,19 +137,19 @@ namespace OpenRA.Network
 			pendingOrders.Remove(clientIndex);
 		}
 
-		public void ReceiveSync(int frame, int syncHash, ulong defeatState)
+		public void ReceiveSync((int Frame, int SyncHash, ulong DefeatState) sync)
 		{
 			// HACK: The shellmap relies on ticking a disposed OM
 			if (disposed && World.Type != WorldType.Shellmap)
 				return;
 
-			if (syncForFrame.TryGetValue(frame, out var s))
+			if (syncForFrame.TryGetValue(sync.Frame, out var s))
 			{
-				if (s.SyncHash != syncHash || s.DefeatState != defeatState)
-					OutOfSync(frame);
+				if (s.SyncHash != sync.SyncHash || s.DefeatState != sync.DefeatState)
+					OutOfSync(sync.Frame);
 			}
 			else
-				syncForFrame.Add(frame, (syncHash, defeatState));
+				syncForFrame.Add(sync.Frame, (sync.SyncHash, sync.DefeatState));
 		}
 
 		public void ReceiveImmediateOrders(int clientId, OrderPacket orders)
@@ -168,16 +168,16 @@ namespace OpenRA.Network
 			}
 		}
 
-		public void ReceiveOrders(int clientId, int frame, OrderPacket orders)
+		public void ReceiveOrders(int clientId, (int Frame, OrderPacket Orders) orders)
 		{
 			// HACK: The shellmap relies on ticking a disposed OM
 			if (disposed && World.Type != WorldType.Shellmap)
 				return;
 
 			if (pendingOrders.TryGetValue(clientId, out var queue))
-				queue.Enqueue((frame, orders));
+				queue.Enqueue((orders.Frame, orders.Orders));
 			else
-				Log.Write("debug", $"Received packet from disconnected client '{clientId}'");
+				throw new InvalidDataException($"Received packet from disconnected client '{clientId}'");
 		}
 
 		void ReceiveAllOrdersAndCheckSync()

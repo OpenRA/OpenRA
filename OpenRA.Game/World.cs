@@ -289,10 +289,8 @@ namespace OpenRA
 
 			gameInfo.DisabledSpawnPoints = OrderManager.LobbyInfo.DisabledSpawnPoints;
 
-			var rc = (OrderManager.Connection as EchoConnection)?.Recorder;
-
-			if (rc != null)
-				rc.Metadata = new ReplayMetadata(gameInfo);
+			if (OrderManager.Connection is NetworkConnection nc && nc.Recorder != null)
+				nc.Recorder.Metadata = new ReplayMetadata(gameInfo);
 		}
 
 		public void SetWorldOwner(Player p)
