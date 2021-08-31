@@ -1025,7 +1025,10 @@ namespace OpenRA.Server
 
 				var dropClient = LobbyInfo.Clients.FirstOrDefault(c1 => c1.Index == toDrop.PlayerIndex);
 				if (dropClient == null)
+				{
+					toDrop.Dispose();
 					return;
+				}
 
 				var suffix = "";
 				if (State == ServerState.GameStarted)
