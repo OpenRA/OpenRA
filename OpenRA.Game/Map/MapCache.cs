@@ -117,7 +117,7 @@ namespace OpenRA
 			}
 		}
 
-		public IEnumerable<IReadWritePackage> EnumerateMapPackagesWithoutCaching(MapClassification classification = MapClassification.System)
+		public IEnumerable<IReadWritePackage> EnumerateMapDirPackages(MapClassification classification = MapClassification.System)
 		{
 			// Utility mod that does not support maps
 			if (!modData.Manifest.Contains<MapGrid>())
@@ -143,14 +143,27 @@ namespace OpenRA
 					continue;
 
 				using (var package = (IReadWritePackage)modData.ModFiles.OpenPackage(name))
-				{
-					foreach (var map in package.Contents)
-					{
-						if (package.OpenPackage(map, modData.ModFiles) is IReadWritePackage mapPackage)
-							yield return mapPackage;
-					}
-				}
+					yield return package;
 			}
+		}
+
+		public IEnumerable<(IReadWritePackage package, string map)> EnumerateMapDirPackagesAndNames(MapClassification classification = MapClassification.System)
+		{
+			var mapDirPackages = EnumerateMapDirPackages(classification);
+
+			foreach (var mapDirPackage in mapDirPackages)
+				foreach (var map in mapDirPackage.Contents)
+					yield return (mapDirPackage, map);
+		}
+
+		public IEnumerable<IReadWritePackage> EnumerateMapPackagesWithoutCaching(MapClassification classification = MapClassification.System)
+		{
+			var mapDirPackages = EnumerateMapDirPackages(classification);
+
+			foreach (var mapDirPackage in mapDirPackages)
+				foreach (var map in mapDirPackage.Contents)
+					if (mapDirPackage.OpenPackage(map, modData.ModFiles) is IReadWritePackage mapPackage)
+						yield return mapPackage;
 		}
 
 		public IEnumerable<Map> EnumerateMapsWithoutCaching(MapClassification classification = MapClassification.System)
