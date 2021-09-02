@@ -124,6 +124,8 @@ namespace OpenRA.Network
 			ordersFrame = orderLatency;
 		}
 
+		void IConnection.StartGame() { }
+
 		// Do nothing: ignore locally generated orders
 		void IConnection.Send(int frame, IEnumerable<Order> orders) { }
 		void IConnection.SendImmediate(IEnumerable<Order> orders) { }

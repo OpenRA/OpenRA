@@ -39,7 +39,6 @@ namespace OpenRA
 		public readonly GameSpeed GameSpeed;
 
 		public readonly int Timestep;
-		public readonly int OrderLatency;
 
 		public int ReplayTimestep;
 
@@ -189,13 +188,7 @@ namespace OpenRA
 			var gameSpeeds = modData.Manifest.Get<GameSpeeds>();
 			var gameSpeedName = orderManager.LobbyInfo.GlobalSettings.OptionOrDefault("gamespeed", gameSpeeds.DefaultSpeed);
 			GameSpeed = gameSpeeds.Speeds[gameSpeedName];
-
 			Timestep = ReplayTimestep = GameSpeed.Timestep;
-			OrderLatency = GameSpeed.OrderLatency;
-
-			// HACK: Turn down the latency if there is only one real player/spectator
-			if (orderManager.LobbyInfo.NonBotClients.Count() == 1)
-				OrderLatency = 1;
 
 			SharedRandom = new MersenneTwister(orderManager.LobbyInfo.GlobalSettings.RandomSeed);
 			LocalRandom = new MersenneTwister();

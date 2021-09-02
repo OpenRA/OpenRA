@@ -33,7 +33,6 @@ namespace OpenRA.Network
 
 		public int NetFrameNumber { get; private set; }
 		public int LocalFrameNumber;
-		public int FramesAhead = 0;
 
 		public TickTime LastTickTime;
 
@@ -52,6 +51,7 @@ namespace OpenRA.Network
 
 		bool disposed;
 		bool generateSyncReport = false;
+		int sentOrdersFrame = 0;
 
 		public struct ClientOrder
 		{
@@ -87,9 +87,7 @@ namespace OpenRA.Network
 			LocalFrameNumber = 0;
 			LastTickTime.Value = Game.RunTime;
 
-			if (GameSaveLastFrame < 0)
-				for (var i = NetFrameNumber; i <= FramesAhead; i++)
-					Connection.Send(i, Array.Empty<Order>());
+			Connection.StartGame();
 		}
 
 		public OrderManager(IConnection conn)
@@ -123,7 +121,7 @@ namespace OpenRA.Network
 
 		void SendImmediateOrders()
 		{
-			if (localImmediateOrders.Count != 0 && GameSaveLastFrame < NetFrameNumber + FramesAhead)
+			if (localImmediateOrders.Count != 0 && GameSaveLastFrame < NetFrameNumber)
 				Connection.SendImmediate(localImmediateOrders);
 			localImmediateOrders.Clear();
 		}
@@ -206,13 +204,11 @@ namespace OpenRA.Network
 
 		void SendOrders()
 		{
-			if (!GameStarted)
-				return;
-
-			if (GameSaveLastFrame < NetFrameNumber + FramesAhead)
+			if (GameStarted && GameSaveLastFrame < NetFrameNumber && sentOrdersFrame < NetFrameNumber)
 			{
-				Connection.Send(NetFrameNumber + FramesAhead, localOrders);
+				Connection.Send(NetFrameNumber, localOrders);
 				localOrders.Clear();
+				sentOrdersFrame = NetFrameNumber;
 			}
 		}
 
@@ -225,10 +221,9 @@ namespace OpenRA.Network
 				// The IsReadyForNextFrame check above guarantees that all clients have sent a packet
 				var (frameNumber, orders) = frameOrders.Dequeue();
 
-				// Orders are synchronised by sending an initial FramesAhead set of empty packets
-				// and then making sure that we enqueue and process exactly one packet for each player each tick.
-				// This may change in the future, so sanity check that the orders are for the frame we expect
-				// and crash early instead of risking desyncs.
+				// We expect every frame to have a queued order packet, even if it contains no orders, as this
+				// controls the pacing of the game simulation.
+				// Sanity check that we are processing the frame that we expect, so we can crash early instead of desyncing.
 				if (frameNumber != NetFrameNumber)
 					throw new InvalidDataException($"Attempted to process orders from client {clientId} for frame {frameNumber} on frame {NetFrameNumber}");
 
@@ -239,7 +234,7 @@ namespace OpenRA.Network
 				}
 			}
 
-			if (NetFrameNumber + FramesAhead >= GameSaveLastSyncFrame)
+			if (NetFrameNumber >= GameSaveLastSyncFrame)
 			{
 				var defeatState = 0UL;
 				for (var i = 0; i < World.Players.Length; i++)

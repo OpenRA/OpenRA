@@ -35,6 +35,8 @@ namespace OpenRA.Server
 		//   - Length-prefixed string specifying the order name
 		//   - OrderFields enum encoded as a byte: specifies the data included in the rest of the order
 		//   - Order-specific data - see OpenRA.Game/Server/Order.cs for details
+		// - 0x10: Order acknowledgement (sent from the server to a client in response to a packet with world orders)
+		//   - Int32 containing the frame number that the client should apply the orders it sent
 		//
 		// A connection handshake begins when a client opens a connection to the server:
 		// - Server sends:
@@ -68,6 +70,6 @@ namespace OpenRA.Server
 		// The protocol for server and world orders
 		// This applies after the handshake has completed, and is provided to support
 		// alternative server implementations that wish to support multiple versions in parallel
-		public const int Orders = 13;
+		public const int Orders = 14;
 	}
 }

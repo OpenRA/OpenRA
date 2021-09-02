@@ -167,10 +167,7 @@ namespace OpenRA
 				map = ModData.PrepareMap(mapUID);
 
 			using (new PerfTimer("NewWorld"))
-			{
 				OrderManager.World = new World(ModData, map, OrderManager, type);
-				OrderManager.FramesAhead = OrderManager.World.OrderLatency;
-			}
 
 			OrderManager.World.GameOver += FinishBenchmark;
 
