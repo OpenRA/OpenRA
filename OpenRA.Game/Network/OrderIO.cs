@@ -106,6 +106,19 @@ namespace OpenRA.Network
 			return true;
 		}
 
+		public static bool TryParseAck((int FromClient, byte[] Data) packet, out int frame)
+		{
+			// Ack packets are only accepted from the server
+			if (packet.FromClient != 0 || packet.Data.Length != 5 || packet.Data[4] != (byte)OrderType.Ack)
+			{
+				frame = 0;
+				return false;
+			}
+
+			frame = BitConverter.ToInt32(packet.Data, 0);
+			return true;
+		}
+
 		public static bool TryParseOrderPacket(byte[] packet, out (int Frame, OrderPacket Orders) data)
 		{
 			// Not a valid packet

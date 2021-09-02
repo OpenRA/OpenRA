@@ -61,6 +61,9 @@ namespace OpenRA.Server
 		public readonly MapStatusCache MapStatusCache;
 		public GameSave GameSave = null;
 
+		// Default to the next frame for ServerType.Local - MP servers take the value from the selected GameSpeed.
+		public int OrderLatency = 1;
+
 		readonly int randomSeed;
 		readonly List<TcpListener> listeners = new List<TcpListener>();
 		readonly TypeDictionary serverTraits = new TypeDictionary();
@@ -611,14 +614,22 @@ namespace OpenRA.Server
 
 		byte[] CreateFrame(int client, int frame, byte[] data)
 		{
-			using (var ms = new MemoryStream(data.Length + 12))
-			{
-				ms.WriteArray(BitConverter.GetBytes(data.Length + 4));
-				ms.WriteArray(BitConverter.GetBytes(client));
-				ms.WriteArray(BitConverter.GetBytes(frame));
-				ms.WriteArray(data);
-				return ms.GetBuffer();
-			}
+			var ms = new MemoryStream(data.Length + 12);
+			ms.WriteArray(BitConverter.GetBytes(data.Length + 4));
+			ms.WriteArray(BitConverter.GetBytes(client));
+			ms.WriteArray(BitConverter.GetBytes(frame));
+			ms.WriteArray(data);
+			return ms.GetBuffer();
+		}
+
+		byte[] CreateAckFrame(int frame)
+		{
+			var ms = new MemoryStream(13);
+			ms.WriteArray(BitConverter.GetBytes(5));
+			ms.WriteArray(BitConverter.GetBytes(0));
+			ms.WriteArray(BitConverter.GetBytes(frame));
+			ms.WriteByte((byte)OrderType.Ack);
+			return ms.GetBuffer();
 		}
 
 		void DispatchOrdersToClient(Connection c, int client, int frame, byte[] data)
@@ -784,10 +795,23 @@ namespace OpenRA.Server
 			if (frame == 0)
 				InterpretServerOrders(conn, data);
 			else
-				DispatchOrdersToClients(conn, frame, data);
+			{
+				// Non-immediate orders must be projected into the future so that all players can
+				// apply them on the same world tick. We can do this directly when forwarding the
+				// packet on to other clients, but sending the same data back to the client that
+				// sent it just to update the frame number would be wasteful. We instead send them
+				// a separate Ack packet that tells them to apply the order from a locally stored queue.
+				// TODO: Replace static latency with a dynamic order buffering system
+				if (data.Length == 0 || data[0] != (byte)OrderType.SyncHash)
+				{
+					frame += OrderLatency;
+					DispatchFrameToClient(conn, conn.PlayerIndex, CreateAckFrame(frame));
+				}
 
-			if (GameSave != null)
-				GameSave.DispatchOrders(conn, frame, data);
+				DispatchOrdersToClients(conn, frame, data);
+			}
+
+			GameSave?.DispatchOrders(conn, frame, data);
 		}
 
 		void InterpretServerOrders(Connection conn, byte[] data)
@@ -1205,6 +1229,13 @@ namespace OpenRA.Server
 				SyncLobbyInfo();
 				State = ServerState.GameStarted;
 
+				if (Type != ServerType.Local)
+				{
+					var gameSpeeds = Game.ModData.Manifest.Get<GameSpeeds>();
+					var gameSpeedName = LobbyInfo.GlobalSettings.OptionOrDefault("gamespeed", gameSpeeds.DefaultSpeed);
+					OrderLatency = gameSpeeds.Speeds[gameSpeedName].OrderLatency;
+				}
+
 				if (GameSave == null && LobbyInfo.GlobalSettings.GameSavesEnabled)
 					GameSave = new GameSave();
 
@@ -1227,6 +1258,7 @@ namespace OpenRA.Server
 				foreach (var t in serverTraits.WithInterface<IStartGame>())
 					t.GameStarted(this);
 
+				var firstFrame = 1;
 				if (GameSave != null && GameSave.LastOrdersFrame >= 0)
 				{
 					GameSave.ParseOrders(LobbyInfo, (frame, client, data) =>
@@ -1235,6 +1267,28 @@ namespace OpenRA.Server
 							if (c.Validated)
 								DispatchOrdersToClient(c, client, frame, data);
 					});
+
+					firstFrame += GameSave.LastOrdersFrame;
+				}
+
+				// ReceiveOrders projects player orders into the future so that all players can
+				// apply them on the same world tick.
+				// Clients require every frame to have an orders packet associated with it, so we must
+				// inject an empty packet for each frame that we are skipping forwards.
+				// TODO: Replace static latency with a dynamic order buffering system
+				var conns = Conns.Where(c => c.Validated).ToList();
+				foreach (var from in conns)
+				{
+					for (var i = 0; i < OrderLatency; i++)
+					{
+						var frame = firstFrame + i;
+						var frameData = CreateFrame(from.PlayerIndex, frame, Array.Empty<byte>());
+						foreach (var to in conns)
+							DispatchFrameToClient(to, from.PlayerIndex, frameData);
+
+						RecordOrder(frame, Array.Empty<byte>(), from.PlayerIndex);
+						GameSave?.DispatchOrders(from, frame, Array.Empty<byte>());
+					}
 				}
 			}
 		}
