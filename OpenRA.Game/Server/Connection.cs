@@ -28,10 +28,10 @@ namespace OpenRA.Server
 		public readonly EndPoint EndPoint;
 
 		public long TimeSinceLastResponse => Game.RunTime - lastReceivedTime;
-		public int MostRecentFrame { get; private set; }
 
 		public bool TimeoutMessageShown;
 		public bool Validated;
+		public int LastOrdersFrame;
 
 		long lastReceivedTime = 0;
 
@@ -107,9 +107,6 @@ namespace OpenRA.Server
 
 								case ReceiveState.Data:
 								{
-									if (MostRecentFrame < frame)
-										MostRecentFrame = frame;
-
 									onPacket(this, frame, bytes);
 									expectLength = 8;
 									state = ReceiveState.Header;

@@ -20,6 +20,8 @@ namespace OpenRA.Network
 {
 	public sealed class OrderManager : IDisposable
 	{
+		const OrderPacket ClientDisconnected = null;
+
 		readonly SyncReport syncReport;
 		readonly Dictionary<int, Queue<(int Frame, OrderPacket Orders)>> pendingOrders = new Dictionary<int, Queue<(int, OrderPacket)>>();
 		readonly Dictionary<int, (int SyncHash, ulong DefeatState)> syncForFrame = new Dictionary<int, (int, ulong)>();
@@ -44,6 +46,9 @@ namespace OpenRA.Network
 
 		readonly List<Order> localOrders = new List<Order>();
 		readonly List<Order> localImmediateOrders = new List<Order>();
+
+		readonly List<ClientOrder> processClientOrders = new List<ClientOrder>();
+		readonly List<int> processClientsToRemove = new List<int>();
 
 		readonly List<TextNotification> notificationsCache = new List<TextNotification>();
 
@@ -126,9 +131,18 @@ namespace OpenRA.Network
 			localImmediateOrders.Clear();
 		}
 
-		public void ReceiveDisconnect(int clientIndex)
+		public void ReceiveDisconnect(int clientId, int frame)
 		{
-			pendingOrders.Remove(clientIndex);
+			// All clients must process the disconnect on the same world tick to allow synced actions to run deterministically.
+			// The server guarantees that we will not receive any more order packets from this client from this frame, so we
+			// can insert a marker in the orders stream and process the synced disconnect behaviours on the first tick of that frame.
+			if (GameStarted)
+				ReceiveOrders(clientId, (frame, ClientDisconnected));
+
+			// The Client state field is not synced; update it immediately so it can be shown in the UI
+			var client = LobbyInfo.ClientWithIndex(clientId);
+			if (client != null)
+				client.State = Session.ClientState.Disconnected;
 		}
 
 		public void ReceiveSync((int Frame, int SyncHash, ulong DefeatState) sync)
@@ -198,8 +212,6 @@ namespace OpenRA.Network
 
 		void ProcessOrders()
 		{
-			var clientOrders = new List<ClientOrder>();
-
 			foreach (var (clientId, frameOrders) in pendingOrders)
 			{
 				// The IsReadyForNextFrame check above guarantees that all clients have sent a packet
@@ -211,12 +223,23 @@ namespace OpenRA.Network
 				if (frameNumber != NetFrameNumber)
 					throw new InvalidDataException($"Attempted to process orders from client {clientId} for frame {frameNumber} on frame {NetFrameNumber}");
 
+				if (orders == ClientDisconnected)
+				{
+					processClientsToRemove.Add(clientId);
+					World.OnClientDisconnected(clientId);
+
+					continue;
+				}
+
 				foreach (var order in orders.GetOrders(World))
 				{
 					UnitOrders.ProcessOrder(this, World, clientId, order);
-					clientOrders.Add(new ClientOrder { Client = clientId, Order = order });
+					processClientOrders.Add(new ClientOrder { Client = clientId, Order = order });
 				}
 			}
+
+			foreach (var clientId in processClientsToRemove)
+				pendingOrders.Remove(clientId);
 
 			if (NetFrameNumber >= GameSaveLastSyncFrame)
 			{
@@ -232,7 +255,10 @@ namespace OpenRA.Network
 
 			if (generateSyncReport)
 				using (new PerfSample("sync_report"))
-					syncReport.UpdateSyncReport(clientOrders);
+					syncReport.UpdateSyncReport(processClientOrders);
+
+			processClientOrders.Clear();
+			processClientsToRemove.Clear();
 
 			++NetFrameNumber;
 		}
