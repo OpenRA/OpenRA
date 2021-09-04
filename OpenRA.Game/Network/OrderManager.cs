@@ -280,7 +280,7 @@ namespace OpenRA.Network
 		{
 			var shouldTick = true;
 
-			if (IsNetTick)
+			if (IsNetFrame)
 			{
 				// Check whether or not we will be ready for a tick next frame
 				// We don't need to include ourselves in the equation because we can always generate orders this frame
@@ -293,7 +293,7 @@ namespace OpenRA.Network
 			}
 
 			var willTick = shouldTick;
-			if (willTick && IsNetTick)
+			if (willTick && IsNetFrame)
 			{
 				willTick = IsReadyForNextFrame;
 				if (willTick)
@@ -306,6 +306,8 @@ namespace OpenRA.Network
 			return willTick;
 		}
 
-		bool IsNetTick => LocalFrameNumber % Game.NetTickScale == 0;
+		// The server may request clients to batch multiple frames worth of orders into a single packet
+		// to improve robustness against network jitter at the expense of input latency
+		bool IsNetFrame => LocalFrameNumber % LobbyInfo.GlobalSettings.NetFrameInterval == 0;
 	}
 }
