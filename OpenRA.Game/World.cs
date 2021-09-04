@@ -136,6 +136,7 @@ namespace OpenRA
 		public readonly WorldType Type;
 
 		public readonly IValidateOrder[] OrderValidators;
+		readonly INotifyPlayerDisconnected[] notifyDisconnected;
 
 		readonly GameInformation gameInfo;
 
@@ -201,6 +202,7 @@ namespace OpenRA
 			ScreenMap = WorldActor.Trait<ScreenMap>();
 			Selection = WorldActor.Trait<ISelection>();
 			OrderValidators = WorldActor.TraitsImplementing<IValidateOrder>().ToArray();
+			notifyDisconnected = WorldActor.TraitsImplementing<INotifyPlayerDisconnected>().ToArray();
 
 			LongBitSet<PlayerBitMask>.Reset();
 
@@ -519,13 +521,20 @@ namespace OpenRA
 			}
 		}
 
-		public void OnPlayerDisconnected(Player player)
+		internal void OnClientDisconnected(int clientId)
 		{
-			var pi = gameInfo.GetPlayer(player);
-			if (pi == null)
-				return;
+			foreach (var player in Players.Where(p => p.ClientIndex == clientId && p.PlayerReference.Playable))
+			{
+				foreach (var np in notifyDisconnected)
+					np.PlayerDisconnected(WorldActor, player);
 
-			pi.DisconnectFrame = OrderManager.NetFrameNumber;
+				foreach (var p in Players)
+					p.PlayerDisconnected(player);
+
+				var pi = gameInfo.GetPlayer(player);
+				if (pi != null)
+					pi.DisconnectFrame = OrderManager.NetFrameNumber;
+			}
 		}
 
 		public void RequestGameSave(string filename)

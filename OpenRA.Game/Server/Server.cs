@@ -778,10 +778,9 @@ namespace OpenRA.Server
 			DispatchServerOrdersToClients(order.Serialize());
 		}
 
-		public void DispatchServerOrdersToClients(byte[] data)
+		public void DispatchServerOrdersToClients(byte[] data, int frame = 0)
 		{
 			var from = 0;
-			var frame = 0;
 			var frameData = CreateFrame(from, frame, data);
 			foreach (var c in Conns.ToList())
 				if (c.Validated)
@@ -792,6 +791,10 @@ namespace OpenRA.Server
 
 		public void ReceiveOrders(Connection conn, int frame, byte[] data)
 		{
+			// Make sure we don't accidentally forward on orders from clients who we have just dropped
+			if (!Conns.Contains(conn))
+				return;
+
 			if (frame == 0)
 				InterpretServerOrders(conn, data);
 			else
@@ -806,6 +809,11 @@ namespace OpenRA.Server
 				{
 					frame += OrderLatency;
 					DispatchFrameToClient(conn, conn.PlayerIndex, CreateAckFrame(frame));
+
+					// Track the last frame for each client so the disconnect handling can write
+					// an EndOfOrders marker with the correct frame number.
+					// TODO: This should be handled by the order buffering system too
+					conn.LastOrdersFrame = frame;
 				}
 
 				DispatchOrdersToClients(conn, frame, data);
@@ -1059,15 +1067,6 @@ namespace OpenRA.Server
 					suffix = dropClient.IsObserver ? " (Spectator)" : dropClient.Team != 0 ? $" (Team {dropClient.Team})" : "";
 				SendMessage($"{dropClient.Name}{suffix} has disconnected.");
 
-				// Send disconnected order, even if still in the lobby
-				DispatchOrdersToClients(toDrop, 0, Order.FromTargetString("Disconnected", "", true).Serialize());
-
-				if (gameInfo != null && !dropClient.IsObserver)
-				{
-					var disconnectedPlayer = gameInfo.Players.First(p => p.ClientIndex == toDrop.PlayerIndex);
-					disconnectedPlayer.DisconnectFrame = toDrop.MostRecentFrame;
-				}
-
 				LobbyInfo.Clients.RemoveAll(c => c.Index == toDrop.PlayerIndex);
 				LobbyInfo.ClientPings.RemoveAll(p => p.Index == toDrop.PlayerIndex);
 
@@ -1091,7 +1090,11 @@ namespace OpenRA.Server
 				var disconnectPacket = new MemoryStream(5);
 				disconnectPacket.WriteByte((byte)OrderType.Disconnect);
 				disconnectPacket.Write(toDrop.PlayerIndex);
-				DispatchServerOrdersToClients(disconnectPacket.ToArray());
+				DispatchServerOrdersToClients(disconnectPacket.ToArray(), toDrop.LastOrdersFrame + 1);
+
+				if (gameInfo != null)
+					foreach (var player in gameInfo.Players.Where(p => p.ClientIndex == toDrop.PlayerIndex))
+						player.DisconnectFrame = toDrop.LastOrdersFrame + 1;
 
 				// All clients have left: clean up
 				if (!Conns.Any(c => c.Validated))
@@ -1281,13 +1284,13 @@ namespace OpenRA.Server
 				{
 					for (var i = 0; i < OrderLatency; i++)
 					{
-						var frame = firstFrame + i;
-						var frameData = CreateFrame(from.PlayerIndex, frame, Array.Empty<byte>());
+						from.LastOrdersFrame = firstFrame + i;
+						var frameData = CreateFrame(from.PlayerIndex, from.LastOrdersFrame, Array.Empty<byte>());
 						foreach (var to in conns)
 							DispatchFrameToClient(to, from.PlayerIndex, frameData);
 
-						RecordOrder(frame, Array.Empty<byte>(), from.PlayerIndex);
-						GameSave?.DispatchOrders(from, frame, Array.Empty<byte>());
+						RecordOrder(from.LastOrdersFrame, Array.Empty<byte>(), from.PlayerIndex);
+						GameSave?.DispatchOrders(from, from.LastOrdersFrame, Array.Empty<byte>());
 					}
 				}
 			}

@@ -28,6 +28,7 @@ namespace OpenRA.Server
 		//   - UInt64 containing the current defeat state (a bit set
 		//     to 1 means the corresponding player is defeated)
 		// - 0xBF: Player disconnected
+		//   - Int32 specifying the client ID that disconnected
 		// - 0xFE: Handshake (also used for ServerOrders for ProtocolVersion.Orders < 8)
 		//   - Length-prefixed string specifying a name or key
 		//   - Length-prefixed string specifying a value / data
@@ -70,6 +71,6 @@ namespace OpenRA.Server
 		// The protocol for server and world orders
 		// This applies after the handshake has completed, and is provided to support
 		// alternative server implementations that wish to support multiple versions in parallel
-		public const int Orders = 14;
+		public const int Orders = 15;
 	}
 }

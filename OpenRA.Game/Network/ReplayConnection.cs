@@ -147,8 +147,8 @@ namespace OpenRA.Network
 			{
 				foreach (var o in chunks.Dequeue().Packets)
 				{
-					if (OrderIO.TryParseDisconnect(o.Packet, out var disconnectClient))
-						orderManager.ReceiveDisconnect(disconnectClient);
+					if (OrderIO.TryParseDisconnect(o, out var disconnect))
+						orderManager.ReceiveDisconnect(disconnect.ClientId, disconnect.Frame);
 					else if (OrderIO.TryParseSync(o.Packet, out var sync))
 						orderManager.ReceiveSync(sync);
 					else if (OrderIO.TryParseOrderPacket(o.Packet, out var orders))

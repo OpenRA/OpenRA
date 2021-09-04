@@ -300,8 +300,8 @@ namespace OpenRA.Network
 			while (receivedPackets.TryDequeue(out var p))
 			{
 				var record = true;
-				if (OrderIO.TryParseDisconnect(p.Data, out var disconnectClient))
-					orderManager.ReceiveDisconnect(disconnectClient);
+				if (OrderIO.TryParseDisconnect(p, out var disconnect))
+					orderManager.ReceiveDisconnect(disconnect.ClientId, disconnect.Frame);
 				else if (OrderIO.TryParseSync(p.Data, out var sync))
 					orderManager.ReceiveSync(sync);
 				else if (OrderIO.TryParseAck(p, out var ackFrame))

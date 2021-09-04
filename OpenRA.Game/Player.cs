@@ -82,6 +82,7 @@ namespace OpenRA
 		readonly bool inMissionMap;
 		readonly bool spectating;
 		readonly IUnlocksRenderPlayer[] unlockRenderPlayer;
+		readonly INotifyPlayerDisconnected[] notifyDisconnected;
 
 		// Each player is identified with a unique bit in the set
 		// Cache masks for the player's index and ally/enemy player indices for performance.
@@ -226,6 +227,7 @@ namespace OpenRA
 			stanceColors.Neutrals = ChromeMetrics.Get<Color>("PlayerStanceColorNeutrals");
 
 			unlockRenderPlayer = PlayerActor.TraitsImplementing<IUnlocksRenderPlayer>().ToArray();
+			notifyDisconnected = PlayerActor.TraitsImplementing<INotifyPlayerDisconnected>().ToArray();
 		}
 
 		public override string ToString()
@@ -278,6 +280,12 @@ namespace OpenRA
 			}
 
 			return stanceColors.Neutrals;
+		}
+
+		internal void PlayerDisconnected(Player p)
+		{
+			foreach (var np in notifyDisconnected)
+				np.PlayerDisconnected(PlayerActor, p);
 		}
 
 		#region Scripting interface

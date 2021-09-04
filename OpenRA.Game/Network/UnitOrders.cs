@@ -34,21 +34,6 @@ namespace OpenRA.Network
 					TextNotificationsManager.AddSystemLine(order.TargetString);
 					break;
 
-				// Reports that the target player disconnected
-				case "Disconnected":
-					{
-						var client = orderManager.LobbyInfo.ClientWithIndex(clientId);
-						if (client != null)
-						{
-							client.State = Session.ClientState.Disconnected;
-							var player = world?.FindPlayerByClient(client);
-							if (player != null)
-								world.OnPlayerDisconnected(player);
-						}
-
-						break;
-					}
-
 				case "Chat":
 					{
 						var client = orderManager.LobbyInfo.ClientWithIndex(clientId);

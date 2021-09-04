@@ -51,20 +51,21 @@ namespace OpenRA.Network
 				syncReports[i] = new Report();
 		}
 
-		internal void UpdateSyncReport(List<OrderManager.ClientOrder> orders)
+		internal void UpdateSyncReport(IEnumerable<OrderManager.ClientOrder> orders)
 		{
 			GenerateSyncReport(syncReports[curIndex], orders);
 			curIndex = ++curIndex % NumSyncReports;
 		}
 
-		void GenerateSyncReport(Report report, List<OrderManager.ClientOrder> orders)
+		void GenerateSyncReport(Report report, IEnumerable<OrderManager.ClientOrder> orders)
 		{
 			report.Frame = orderManager.NetFrameNumber;
 			report.SyncedRandom = orderManager.World.SharedRandom.Last;
 			report.TotalCount = orderManager.World.SharedRandom.TotalCount;
 			report.Traits.Clear();
 			report.Effects.Clear();
-			report.Orders = orders;
+			report.Orders.Clear();
+			report.Orders.AddRange(orders);
 
 			foreach (var actor in orderManager.World.ActorsHavingTrait<ISync>())
 			{

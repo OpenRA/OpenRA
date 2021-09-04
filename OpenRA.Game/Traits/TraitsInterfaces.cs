@@ -605,4 +605,10 @@ namespace OpenRA.Traits
 	{
 		IEnumerable<VariableObserver> GetVariableObservers();
 	}
+
+	[RequireExplicitImplementation]
+	public interface INotifyPlayerDisconnected
+	{
+		void PlayerDisconnected(Actor self, Player p);
+	}
 }
