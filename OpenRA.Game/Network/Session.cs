@@ -218,6 +218,9 @@ namespace OpenRA.Network
 			public bool Dedicated;
 			public bool GameSavesEnabled;
 
+			// 120ms network frame interval for 40ms local tick
+			public int NetFrameInterval = 3;
+
 			[FieldLoader.Ignore]
 			public Dictionary<string, LobbyOptionState> LobbyOptions = new Dictionary<string, LobbyOptionState>();
 
