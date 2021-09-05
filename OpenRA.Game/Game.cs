@@ -103,6 +103,20 @@ namespace OpenRA
 		static void JoinLocal()
 		{
 			JoinInner(new OrderManager(new EchoConnection()));
+
+			// Add a spectator client for the local player
+			// On the shellmap this player is controlling the map via scripted orders
+			OrderManager.LobbyInfo.Clients.Add(new Session.Client
+			{
+				Index = OrderManager.Connection.LocalClientId,
+				Name = Settings.Player.Name,
+				PreferredColor = Settings.Player.Color,
+				Color = Settings.Player.Color,
+				Faction = "Random",
+				SpawnPoint = 0,
+				Team = 0,
+				State = Session.ClientState.Ready
+			});
 		}
 
 		// More accurate replacement for Environment.TickCount
@@ -484,27 +498,13 @@ namespace OpenRA
 
 		public static void LoadEditor(string mapUid)
 		{
+			JoinLocal();
 			StartGame(mapUid, WorldType.Editor);
 		}
 
 		public static void LoadShellMap()
 		{
 			var shellmap = ChooseShellmap();
-
-			// Add a spectator client for the local player,
-			// who is controlling the map via scripted orders
-			OrderManager.LobbyInfo.Clients.Add(new Session.Client
-			{
-				Index = OrderManager.Connection.LocalClientId,
-				Name = Settings.Player.Name,
-				PreferredColor = Settings.Player.Color,
-				Color = Settings.Player.Color,
-				Faction = "Random",
-				SpawnPoint = 0,
-				Team = 0,
-				State = Session.ClientState.Ready
-			});
-
 			using (new PerfTimer("StartGame"))
 			{
 				StartGame(shellmap, WorldType.Shellmap);
