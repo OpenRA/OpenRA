@@ -26,9 +26,9 @@ namespace OpenRA.Graphics
 		public readonly Size Size;
 		public readonly SheetType Type;
 
-		public byte[] GetData()
+		public byte[] GetData(byte backgroundPaletteIndex)
 		{
-			CreateBuffer();
+			CreateBuffer(backgroundPaletteIndex);
 			return data;
 		}
 
@@ -82,7 +82,7 @@ namespace OpenRA.Graphics
 			if (Type == SheetType.Indexed)
 				throw new InvalidOperationException("AsPng() cannot be called on Indexed sheets.");
 
-			return new Png(GetData(), SpriteFrameType.Bgra32, Size.Width, Size.Height);
+			return new Png(GetData(0), SpriteFrameType.Bgra32, Size.Width, Size.Height);
 		}
 
 		public Png AsPng(TextureChannel channel, IPalette pal)
@@ -90,7 +90,7 @@ namespace OpenRA.Graphics
 			if (Type != SheetType.Indexed)
 				throw new InvalidOperationException("AsPng(TextureChannel, IPalette) can only be called on Indexed sheets.");
 
-			var d = GetData();
+			var d = GetData(0);
 			var plane = new byte[Size.Width * Size.Height];
 			var dataStride = 4 * Size.Width;
 			var channelOffset = (int)channel;
@@ -106,12 +106,16 @@ namespace OpenRA.Graphics
 			return new Png(plane, SpriteFrameType.Indexed8, Size.Width, Size.Height, palColors);
 		}
 
-		public void CreateBuffer()
+		public void CreateBuffer(byte backgroundPaletteIndex)
 		{
 			if (data != null)
 				return;
 			if (texture == null)
+			{
 				data = new byte[4 * Size.Width * Size.Height];
+				if (backgroundPaletteIndex != 0)
+					Array.Fill(data, backgroundPaletteIndex);
+			}
 			else
 				data = texture.GetData();
 			releaseBufferOnCommit = false;

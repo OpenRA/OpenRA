@@ -275,7 +275,7 @@ namespace OpenRA.Graphics
 				Offset = glyph.Offset
 			};
 
-			var dest = s.Sheet.GetData();
+			var dest = s.Sheet.GetData(0);
 			var destStride = s.Sheet.Size.Width * 4;
 
 			for (var j = 0; j < s.Size.Y; j++)
@@ -363,10 +363,10 @@ namespace OpenRA.Graphics
 			var r = c.Radius;
 
 			var s = builder.Allocate(new Size(glyph.Sprite.Bounds.Width + 2 * r, glyph.Sprite.Bounds.Height + 2 * r));
-			var dest = s.Sheet.GetData();
+			var dest = s.Sheet.GetData(0);
 			var destStride = s.Sheet.Size.Width * 4;
 
-			var glyphData = glyph.Sprite.Sheet.GetData();
+			var glyphData = glyph.Sprite.Sheet.GetData(0);
 			var glyphStride = glyph.Sprite.Sheet.Size.Width * 4;
 			var glyphBounds = glyph.Sprite.Bounds;
 

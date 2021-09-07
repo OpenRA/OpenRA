@@ -236,6 +236,8 @@ SpriteSequenceFormat: ClassicTilesetSpecificSpriteSequence
 		INTERIOR: .int
 		DESERT: .des
 
+Rendering:
+
 ModelSequenceFormat: PlaceholderModelSequence
 
 AssetBrowser:

@@ -113,14 +113,14 @@ namespace OpenRA.Mods.Common.Terrain
 						var type = SheetBuilder.FrameTypeToSheetType(f.Type);
 
 						var s = sheetBuilders[type].Allocate(f.Size, zRamp, offset);
-						OpenRA.Graphics.Util.FastCopyIntoChannel(s, f.Data, f.Type);
+						OpenRA.Graphics.Util.FastCopyIntoChannel(s, f.Data, f.Type, 0);
 
 						if (terrainInfo.EnableDepth)
 						{
 							var depthFrame = depthFrames != null ? depthFrames[j] : allFrames[j + frameCount];
 							var depthType = SheetBuilder.FrameTypeToSheetType(depthFrame.Type);
 							var ss = sheetBuilders[depthType].Allocate(depthFrame.Size, zRamp, offset);
-							OpenRA.Graphics.Util.FastCopyIntoChannel(ss, depthFrame.Data, depthFrame.Type);
+							OpenRA.Graphics.Util.FastCopyIntoChannel(ss, depthFrame.Data, depthFrame.Type, 0);
 							s = new SpriteWithSecondaryData(s, ss.Sheet, ss.Bounds, ss.Channel);
 						}
 

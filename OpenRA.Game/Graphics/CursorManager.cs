@@ -250,7 +250,7 @@ namespace OpenRA.Graphics
 		{
 			var size = data.Bounds.Size;
 			var srcStride = data.Sheet.Size.Width;
-			var srcData = data.Sheet.GetData();
+			var srcData = data.Sheet.GetData(0);
 			var newWidth = paddingTL.X + size.Width + paddingBR.X;
 			var newHeight = paddingTL.Y + size.Height + paddingBR.Y;
 			var rgbaData = new byte[4 * newWidth * newHeight];

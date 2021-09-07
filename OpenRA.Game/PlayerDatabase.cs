@@ -70,7 +70,7 @@ namespace OpenRA
 			// We must manually force the buffer creation to avoid a crash
 			// that is indirectly triggered by rendering from a Sheet that
 			// has not yet been written to.
-			sheet.CreateBuffer();
+			sheet.CreateBuffer(0);
 			sheet.GetTexture().ScaleFilter = TextureScaleFilter.Linear;
 
 			return sheet;

@@ -61,9 +61,9 @@ namespace OpenRA.Graphics
 			vertices[nv + 5] = new Vertex(a, r.Left, r.Top, sl, st, paletteTextureIndex, fAttribC, tint, alpha);
 		}
 
-		public static void FastCopyIntoChannel(Sprite dest, byte[] src, SpriteFrameType srcType)
+		public static void FastCopyIntoChannel(Sprite dest, byte[] src, SpriteFrameType srcType, byte backgroundPaletteIndex)
 		{
-			var destData = dest.Sheet.GetData();
+			var destData = dest.Sheet.GetData(backgroundPaletteIndex);
 			var width = dest.Bounds.Width;
 			var height = dest.Bounds.Height;
 
@@ -140,7 +140,7 @@ namespace OpenRA.Graphics
 
 		public static void FastCopyIntoSprite(Sprite dest, Png src)
 		{
-			var destData = dest.Sheet.GetData();
+			var destData = dest.Sheet.GetData(0);
 			var destStride = dest.Sheet.Size.Width;
 			var width = dest.Bounds.Width;
 			var height = dest.Bounds.Height;

@@ -50,8 +50,11 @@ namespace OpenRA.Graphics
 	{
 		readonly ModData modData;
 		readonly string tileSet;
+
+		// The lazyness is needed there because otherwise you couldn't run headless utilities without having the assets installed.
 		readonly Lazy<Sequences> sequences;
 		readonly Lazy<SpriteCache> spriteCache;
+
 		public SpriteCache SpriteCache => spriteCache.Value;
 
 		readonly Dictionary<string, UnitSequences> sequenceCache = new Dictionary<string, UnitSequences>();
@@ -131,8 +134,12 @@ namespace OpenRA.Graphics
 		public void Preload()
 		{
 			foreach (var sb in SpriteCache.SheetBuilders.Values)
-				sb.Current.CreateBuffer();
+			{
+				sb.Current.CreateBuffer(0);
+				sb.SetBackgroundIndex(modData.Manifest);
+			}
 
+			// Accessing forces the lazy to be evaluated
 			foreach (var unitSeq in sequences.Value.Values)
 				foreach (var seq in unitSeq.Value.Values) { }
 

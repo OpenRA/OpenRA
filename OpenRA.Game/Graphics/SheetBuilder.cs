@@ -42,6 +42,7 @@ namespace OpenRA.Graphics
 		TextureChannel channel;
 		int rowHeight = 0;
 		int2 p;
+		byte background;
 
 		public static Sheet AllocateSheet(SheetType type, int sheetSize)
 		{
@@ -81,6 +82,11 @@ namespace OpenRA.Graphics
 			this.margin = margin;
 		}
 
+		public void SetBackgroundIndex(Manifest manifest)
+		{
+			background = manifest.Contains<Rendering>() ? manifest.Get<Rendering>().TransparentPaletteIndex : (byte)0;
+		}
+
 		public Sprite Add(ISpriteFrame frame) { return Add(frame.Data, frame.Type, frame.Size, 0, frame.Offset); }
 		public Sprite Add(byte[] src, SpriteFrameType type, Size size) { return Add(src, type, size, 0, float3.Zero); }
 		public Sprite Add(byte[] src, SpriteFrameType type, Size size, float zRamp, in float3 spriteOffset)
@@ -90,14 +96,14 @@ namespace OpenRA.Graphics
 				return new Sprite(current, Rectangle.Empty, 0, spriteOffset, channel, BlendMode.Alpha);
 
 			var rect = Allocate(size, zRamp, spriteOffset);
-			Util.FastCopyIntoChannel(rect, src, type);
+			Util.FastCopyIntoChannel(rect, src, type, background);
 			current.CommitBufferedData();
 			return rect;
 		}
 
 		public Sprite Add(Png src, float scale = 1f)
 		{
-			var rect = Allocate(new Size(src.Width, src.Height),  scale);
+			var rect = Allocate(new Size(src.Width, src.Height), scale);
 			Util.FastCopyIntoSprite(rect, src);
 			current.CommitBufferedData();
 			return rect;
