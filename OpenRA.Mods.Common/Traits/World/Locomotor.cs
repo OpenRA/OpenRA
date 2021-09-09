@@ -209,12 +209,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool CanMoveFreelyInto(Actor actor, CPos cell, SubCell subCell, BlockedByActor check, Actor ignoreActor)
 		{
-			var cellCache = GetCache(cell);
-			var cellFlag = cellCache.CellFlag;
-
 			// If the check allows: We are not blocked by transient actors.
 			if (check == BlockedByActor.None)
 				return true;
+
+			var cellCache = GetCache(cell);
+			var cellFlag = cellCache.CellFlag;
 
 			// No actor in the cell or free SubCell.
 			if (cellFlag == CellFlag.HasFreeSpace)

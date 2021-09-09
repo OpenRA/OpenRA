@@ -272,9 +272,10 @@ namespace OpenRA.Mods.Common.Traits
 			if (!influence.Contains(uv))
 				yield break;
 
+			var always = sub == SubCell.FullCell || sub == SubCell.Any;
 			var layer = a.Layer == 0 ? influence : customInfluence[a.Layer];
 			for (var i = layer[uv]; i != null; i = i.Next)
-				if (!i.Actor.Disposed && (i.SubCell == sub || i.SubCell == SubCell.FullCell || sub == SubCell.FullCell || sub == SubCell.Any))
+				if (!i.Actor.Disposed && (i.SubCell == sub || i.SubCell == SubCell.FullCell || always))
 					yield return i.Actor;
 		}
 
@@ -285,14 +286,18 @@ namespace OpenRA.Mods.Common.Traits
 
 		public SubCell FreeSubCell(CPos cell, SubCell preferredSubCell = SubCell.Any, bool checkTransient = true)
 		{
-			if (preferredSubCell != SubCell.Any && !AnyActorsAt(cell, preferredSubCell, checkTransient))
+			var uv = cell.ToMPos(map);
+			if (!influence.Contains(uv))
+				return preferredSubCell != SubCell.Any ? preferredSubCell : SubCell.First;
+
+			if (preferredSubCell != SubCell.Any && !AnyActorsAt(uv, cell, preferredSubCell, checkTransient))
 				return preferredSubCell;
 
-			if (!AnyActorsAt(cell))
+			if (!AnyActorsAt(uv, cell.Layer))
 				return map.Grid.DefaultSubCell;
 
 			for (var i = (int)SubCell.First; i < map.Grid.SubCellOffsets.Length; i++)
-				if (i != (int)preferredSubCell && !AnyActorsAt(cell, (SubCell)i, checkTransient))
+				if (i != (int)preferredSubCell && !AnyActorsAt(uv, cell, (SubCell)i, checkTransient))
 					return (SubCell)i;
 
 			return SubCell.Invalid;
@@ -300,16 +305,28 @@ namespace OpenRA.Mods.Common.Traits
 
 		public SubCell FreeSubCell(CPos cell, SubCell preferredSubCell, Func<Actor, bool> checkIfBlocker)
 		{
-			if (preferredSubCell != SubCell.Any && !AnyActorsAt(cell, preferredSubCell, checkIfBlocker))
+			var uv = cell.ToMPos(map);
+			if (!influence.Contains(uv))
+				return preferredSubCell != SubCell.Any ? preferredSubCell : SubCell.First;
+
+			if (preferredSubCell != SubCell.Any && !AnyActorsAt(uv, cell, preferredSubCell, checkIfBlocker))
 				return preferredSubCell;
 
-			if (!AnyActorsAt(cell))
+			if (!AnyActorsAt(uv, cell.Layer))
 				return map.Grid.DefaultSubCell;
 
 			for (var i = (byte)SubCell.First; i < map.Grid.SubCellOffsets.Length; i++)
-				if (i != (byte)preferredSubCell && !AnyActorsAt(cell, (SubCell)i, checkIfBlocker))
+				if (i != (byte)preferredSubCell && !AnyActorsAt(uv, cell, (SubCell)i, checkIfBlocker))
 					return (SubCell)i;
+
 			return SubCell.Invalid;
+		}
+
+		// NOTE: pos required to be in map bounds
+		bool AnyActorsAt(MPos uv, int layerIndex)
+		{
+			var layer = layerIndex == 0 ? influence : customInfluence[layerIndex];
+			return layer[uv] != null;
 		}
 
 		// NOTE: always includes transients with influence
@@ -319,17 +336,12 @@ namespace OpenRA.Mods.Common.Traits
 			if (!influence.Contains(uv))
 				return false;
 
-			var layer = a.Layer == 0 ? influence : customInfluence[a.Layer];
-			return layer[uv] != null;
+			return AnyActorsAt(uv, a.Layer);
 		}
 
-		// NOTE: can not check aircraft
-		public bool AnyActorsAt(CPos a, SubCell sub, bool checkTransient = true)
+		// NOTE: pos required to be in map bounds
+		bool AnyActorsAt(MPos uv, CPos a, SubCell sub, bool checkTransient)
 		{
-			var uv = a.ToMPos(map);
-			if (!influence.Contains(uv))
-				return false;
-
 			var always = sub == SubCell.FullCell || sub == SubCell.Any;
 			var layer = a.Layer == 0 ? influence : customInfluence[a.Layer];
 			for (var i = layer[uv]; i != null; i = i.Next)
@@ -349,12 +361,18 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		// NOTE: can not check aircraft
-		public bool AnyActorsAt(CPos a, SubCell sub, Func<Actor, bool> withCondition)
+		public bool AnyActorsAt(CPos a, SubCell sub, bool checkTransient = true)
 		{
 			var uv = a.ToMPos(map);
 			if (!influence.Contains(uv))
 				return false;
 
+			return AnyActorsAt(uv, a, sub, checkTransient);
+		}
+
+		// NOTE: can not check aircraft
+		bool AnyActorsAt(MPos uv, CPos a, SubCell sub, Func<Actor, bool> withCondition)
+		{
 			var always = sub == SubCell.FullCell || sub == SubCell.Any;
 			var layer = a.Layer == 0 ? influence : customInfluence[a.Layer];
 			for (var i = layer[uv]; i != null; i = i.Next)
@@ -362,6 +380,16 @@ namespace OpenRA.Mods.Common.Traits
 					return true;
 
 			return false;
+		}
+
+		// NOTE: can not check aircraft
+		public bool AnyActorsAt(CPos a, SubCell sub, Func<Actor, bool> withCondition)
+		{
+			var uv = a.ToMPos(map);
+			if (!influence.Contains(uv))
+				return false;
+
+			return AnyActorsAt(uv, a, sub, withCondition);
 		}
 
 		public void AddInfluence(Actor self, IOccupySpace ios)
@@ -428,15 +456,18 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			// Position updates are done in one pass
 			// to ensure consistency during a tick
-			foreach (var bin in bins)
+			if (removeActorPosition.Count > 0)
 			{
-				var removed = bin.Actors.RemoveAll(actorShouldBeRemoved);
-				if (removed > 0)
-					foreach (var t in bin.ProximityTriggers)
-						t.Dirty = true;
-			}
+				foreach (var bin in bins)
+				{
+					var removed = bin.Actors.RemoveAll(actorShouldBeRemoved);
+					if (removed > 0)
+						foreach (var t in bin.ProximityTriggers)
+							t.Dirty = true;
+				}
 
-			removeActorPosition.Clear();
+				removeActorPosition.Clear();
+			}
 
 			foreach (var a in addActorPosition)
 			{
