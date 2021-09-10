@@ -171,6 +171,15 @@ namespace OpenRA.Platforms.Default
 					freeSources.Add(freeSource);
 					AL10.alSourceRewind(freeSource);
 					AL10.alSourcei(freeSource, AL10.AL_BUFFER, 0);
+
+					// Make sure we can accurately determine the end of the original sound,
+					// even if the source is immediately reused.
+					sound.Done = true;
+
+					var slot = kv.Value;
+					slot.SoundSource = null;
+					slot.Sound = null;
+					slot.IsActive = false;
 				}
 			}
 
@@ -178,14 +187,6 @@ namespace OpenRA.Platforms.Default
 			{
 				source = 0;
 				return false;
-			}
-
-			foreach (var freeSource in freeSources)
-			{
-				var slot = sourcePool[freeSource];
-				slot.SoundSource = null;
-				slot.Sound = null;
-				slot.IsActive = false;
 			}
 
 			source = freeSources[0];
@@ -416,6 +417,8 @@ namespace OpenRA.Platforms.Default
 		public readonly uint Source;
 		protected readonly float SampleRate;
 
+		public bool Done;
+
 		public OpenAlSound(uint source, bool looping, bool relative, WPos pos, float volume, int sampleRate, uint buffer)
 			: this(source, looping, relative, pos, volume, sampleRate)
 		{
@@ -458,6 +461,9 @@ namespace OpenRA.Platforms.Default
 		{
 			get
 			{
+				if (Done)
+					return true;
+
 				AL10.alGetSourcei(Source, AL10.AL_SOURCE_STATE, out var state);
 				return state == AL10.AL_STOPPED;
 			}
