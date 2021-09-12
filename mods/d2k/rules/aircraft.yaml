@@ -96,6 +96,7 @@ frigate:
 ornithopter:
 	Inherits: ^Plane
 	AttackBomber:
+		FacingTolerance: 8
 	Armament:
 		Weapon: OrniBomb
 	Health:

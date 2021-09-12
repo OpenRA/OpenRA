@@ -53,6 +53,7 @@ BADR.Bomber:
 	RenderSprites:
 		Image: badr
 	AttackBomber:
+		FacingTolerance: 8
 	AmmoPool:
 		Ammo: 10
 	Armament:
@@ -439,6 +440,7 @@ U2:
 		Repulsable: False
 		MaximumPitch: 56
 	AttackBomber:
+		FacingTolerance: 8
 	-Selectable:
 	-Voiced:
 	-Targetable@AIRBORNE:
