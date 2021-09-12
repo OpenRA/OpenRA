@@ -304,16 +304,22 @@ namespace OpenRA.Network
 					orderManager.ReceiveDisconnect(disconnect.ClientId, disconnect.Frame);
 				else if (OrderIO.TryParseSync(p.Data, out var sync))
 					orderManager.ReceiveSync(sync);
-				else if (OrderIO.TryParseAck(p, out var ackFrame))
+				else if (OrderIO.TryParseAck(p, out var ackFrame, out var count))
 				{
-					if (!sentOrders.TryDequeue(out var q))
-						throw new InvalidOperationException("Received Ack with empty send queue");
+					var orders = new List<OrderPacket>();
+					for (var i = 0; i < count; i++)
+					{
+						if (!sentOrders.TryDequeue(out var q))
+							throw new InvalidOperationException("Received Ack with empty send queue");
+						orders.Add(q.Orders);
+					}
 
-					// The Acknowledgement packet is a placeholder that tells us to process the first packet in our
+					// The Acknowledgement packet is a placeholder that tells us to process the first packet(s) in our
 					// local sent buffer and the frame at which it should be applied. This is an optimization to avoid having
 					// to send the (much larger than 5 byte) packet back to us over the network.
-					orderManager.ReceiveOrders(clientId, (ackFrame, q.Orders));
-					Recorder?.Receive(clientId, q.Orders.Serialize(ackFrame));
+					var packet = OrderPacket.Combine(orders, orderManager.World);
+					orderManager.ReceiveOrders(clientId, (ackFrame, packet));
+					Recorder?.Receive(clientId, packet.Serialize(ackFrame));
 					record = false;
 				}
 				else if (OrderIO.TryParseOrderPacket(p.Data, out var orders))

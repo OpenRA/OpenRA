@@ -31,6 +31,17 @@ namespace OpenRA.Network
 			this.data = data;
 		}
 
+		public static OrderPacket Combine(IEnumerable<OrderPacket> packets, World world)
+		{
+			List<Order> orders = new List<Order>();
+			foreach (var packet in packets)
+			{
+				orders.AddRange(packet.GetOrders(world));
+			}
+
+			return new OrderPacket(orders.ToArray());
+		}
+
 		public IEnumerable<Order> GetOrders(World world)
 		{
 			return orders ?? ParseData(world);
@@ -109,16 +120,32 @@ namespace OpenRA.Network
 			return true;
 		}
 
-		public static bool TryParseAck((int FromClient, byte[] Data) packet, out int frame)
+		public static bool TryParseAck((int FromClient, byte[] Data) packet, out int frame, out int count)
 		{
 			// Ack packets are only accepted from the server
-			if (packet.FromClient != 0 || packet.Data.Length != 5 || packet.Data[4] != (byte)OrderType.Ack)
+			if (packet.FromClient != 0 || packet.Data[4] != (byte)OrderType.Ack)
 			{
 				frame = 0;
+				count = 0;
 				return false;
 			}
 
 			frame = BitConverter.ToInt32(packet.Data, 0);
+			if (packet.Data.Length == 5)
+			{
+				count = 1;
+			}
+			else if (packet.Data.Length == 9)
+			{
+				count = BitConverter.ToInt32(packet.Data, 5);
+			}
+			else
+			{
+				frame = 0;
+				count = 0;
+				return false;
+			}
+
 			return true;
 		}
 

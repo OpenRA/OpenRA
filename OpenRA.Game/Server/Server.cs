@@ -622,13 +622,20 @@ namespace OpenRA.Server
 			return ms.GetBuffer();
 		}
 
-		byte[] CreateAckFrame(int frame)
+		byte[] CreateAckFrame(int frame, int count)
 		{
-			var ms = new MemoryStream(13);
-			ms.WriteArray(BitConverter.GetBytes(5));
+			var length = count == 1 ? 5 : 9;
+			var ms = new MemoryStream(8 + length);
+			ms.WriteArray(BitConverter.GetBytes(length));
 			ms.WriteArray(BitConverter.GetBytes(0));
 			ms.WriteArray(BitConverter.GetBytes(frame));
 			ms.WriteByte((byte)OrderType.Ack);
+
+			if (count != 1)
+			{
+				ms.WriteArray(BitConverter.GetBytes(count));
+			}
+
 			return ms.GetBuffer();
 		}
 
@@ -808,7 +815,7 @@ namespace OpenRA.Server
 				if (data.Length == 0 || data[0] != (byte)OrderType.SyncHash)
 				{
 					frame += OrderLatency;
-					DispatchFrameToClient(conn, conn.PlayerIndex, CreateAckFrame(frame));
+					DispatchFrameToClient(conn, conn.PlayerIndex, CreateAckFrame(frame, 1));
 
 					// Track the last frame for each client so the disconnect handling can write
 					// an EndOfOrders marker with the correct frame number.
