@@ -212,7 +212,7 @@ namespace OpenRA.Mods.Common
 		public static string FriendlyTypeName(Type t)
 		{
 			if (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(HashSet<>))
-				return $"Set of {t.GetGenericArguments().Select(FriendlyTypeName).ToArray()}";
+				return $"Set of {t.GetGenericArguments().Select(FriendlyTypeName).First()}";
 
 			if (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Dictionary<,>))
 			{
