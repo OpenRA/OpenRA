@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		IEnumerable<IRenderable> IDecoration.RenderDecoration(Actor self, WorldRenderer wr, ISelectionDecorations container)
 		{
-			var group = self.World.Selection.GetControlGroupForActor(self);
+			var group = self.World.ControlGroups.GetControlGroupForActor(self);
 			if (group == null)
 				return Enumerable.Empty<IRenderable>();
 

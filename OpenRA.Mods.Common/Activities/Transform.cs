@@ -88,7 +88,7 @@ namespace OpenRA.Mods.Common.Activities
 					nt.OnTransform(self);
 
 				var selected = w.Selection.Contains(self);
-				var controlgroup = w.Selection.GetControlGroupForActor(self);
+				var controlgroup = w.ControlGroups.GetControlGroupForActor(self);
 
 				self.Dispose();
 				foreach (var s in Sounds)
@@ -141,7 +141,7 @@ namespace OpenRA.Mods.Common.Activities
 					w.Selection.Add(a);
 
 				if (controlgroup.HasValue)
-					w.Selection.AddToControlGroup(a, controlgroup.Value);
+					w.ControlGroups.AddToControlGroup(a, controlgroup.Value);
 			});
 		}
 	}

@@ -477,10 +477,25 @@ namespace OpenRA.Traits
 		void Clear();
 		bool RolloverContains(Actor a);
 		void SetRollover(IEnumerable<Actor> actors);
-		void DoControlGroup(World world, WorldRenderer worldRenderer, int group, Modifiers mods, int multiTapCount);
+	}
+
+	public interface IControlGroupsInfo : ITraitInfoInterface
+	{
+		string[] Groups { get; }
+	}
+
+	public interface IControlGroups
+	{
+		string[] Groups { get; }
+
+		void SelectControlGroup(int group);
+		void CreateControlGroup(int group);
+		void AddSelectionToControlGroup(int group);
+		void CombineSelectionWithControlGroup(int group);
 		void AddToControlGroup(Actor a, int group);
 		void RemoveFromControlGroup(Actor a);
 		int? GetControlGroupForActor(Actor a);
+		IEnumerable<Actor> GetActorsInControlGroup(int group);
 	}
 
 	/// <summary>

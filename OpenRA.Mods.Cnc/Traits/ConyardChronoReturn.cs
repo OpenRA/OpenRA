@@ -158,7 +158,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		void ReturnToOrigin()
 		{
 			var selected = self.World.Selection.Contains(self);
-			var controlgroup = self.World.Selection.GetControlGroupForActor(self);
+			var controlgroup = self.World.ControlGroups.GetControlGroupForActor(self);
 			var mobileInfo = self.World.Map.Rules.Actors[info.OriginalActor].TraitInfo<MobileInfo>();
 			var destination = ChooseBestDestinationCell(mobileInfo, origin);
 
@@ -190,7 +190,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				self.World.Selection.Add(a);
 
 			if (controlgroup.HasValue)
-				self.World.Selection.AddToControlGroup(a, controlgroup.Value);
+				self.World.ControlGroups.AddToControlGroup(a, controlgroup.Value);
 
 			Game.Sound.Play(SoundType.World, info.ChronoshiftSound, self.World.Map.CenterOfCell(destination.Value));
 			self.Dispose();

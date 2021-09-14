@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic.Ingame
 				.ToArray();
 
 			foreach (var a in selectedActors)
-				selection.RemoveFromControlGroup(a);
+				world.ControlGroups.RemoveFromControlGroup(a);
 
 			return true;
 		}
