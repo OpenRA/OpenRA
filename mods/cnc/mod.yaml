@@ -159,6 +159,7 @@ Hotkeys:
 	common|hotkeys/supportpowers.yaml
 	common|hotkeys/viewport.yaml
 	common|hotkeys/chat.yaml
+	common|hotkeys/control-groups.yaml
 	cnc|hotkeys.yaml
 
 LoadScreen: CncLoadScreen

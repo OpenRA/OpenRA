@@ -22,10 +22,6 @@ CycleHarvesters: N
 	Description: Cycle Harvesters
 	Types: World, Player, Spectator
 
-RemoveFromControlGroup:
-	Description: Remove from control group
-	Types: World, Player
-
 Pause: PAUSE
 	Description: Pause / Unpause
 	Types: World, Player, Spectator

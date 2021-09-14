@@ -158,6 +158,7 @@ namespace OpenRA
 		}
 
 		public readonly ISelection Selection;
+		public readonly IControlGroups ControlGroups;
 
 		public void CancelInputMode() { OrderGenerator = new UnitOrderGenerator(); }
 
@@ -201,6 +202,7 @@ namespace OpenRA
 			ActorMap = WorldActor.Trait<IActorMap>();
 			ScreenMap = WorldActor.Trait<ScreenMap>();
 			Selection = WorldActor.Trait<ISelection>();
+			ControlGroups = WorldActor.Trait<IControlGroups>();
 			OrderValidators = WorldActor.TraitsImplementing<IValidateOrder>().ToArray();
 			notifyDisconnected = WorldActor.TraitsImplementing<INotifyPlayerDisconnected>().ToArray();
 

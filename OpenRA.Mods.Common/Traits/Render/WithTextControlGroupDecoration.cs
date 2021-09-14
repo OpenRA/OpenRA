@@ -60,14 +60,15 @@ namespace OpenRA.Mods.Common.Traits.Render
 			this.self = self;
 			font = Game.Renderer.Fonts[info.Font];
 			color = info.UsePlayerColor ? self.Owner.Color : info.Color;
-			label = new CachedTransform<int, string>(g => g.ToString());
+
+			label = new CachedTransform<int, string>(g => self.World.ControlGroups.Groups[g]);
 		}
 
 		bool IDecoration.RequiresSelection => true;
 
 		IEnumerable<IRenderable> IDecoration.RenderDecoration(Actor self, WorldRenderer wr, ISelectionDecorations container)
 		{
-			var group = self.World.Selection.GetControlGroupForActor(self);
+			var group = self.World.ControlGroups.GetControlGroupForActor(self);
 			if (group == null)
 				return Enumerable.Empty<IRenderable>();
 

@@ -201,6 +201,7 @@ Hotkeys:
 	common|hotkeys/supportpowers.yaml
 	common|hotkeys/viewport.yaml
 	common|hotkeys/chat.yaml
+	common|hotkeys/control-groups.yaml
 	ts|hotkeys.yaml
 
 LoadScreen: LogoStripeLoadScreen

@@ -128,8 +128,8 @@ sandtrail:
 
 pips:
 	groups: DATA.R8
-		Start: 17
 		Length: 10
+		Frames: 18, 19, 20, 21, 22, 23, 24, 25, 26, 17
 		Offset: 3, 3
 	pickup-indicator: DATA.R8
 		Start: 112

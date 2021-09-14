@@ -96,8 +96,8 @@ burn-s:
 
 pips:
 	groups:
-		Start: 8
 		Length: 10
+		Frames: 9, 10, 11, 12, 13, 14, 15, 16, 17, 8
 		Offset: 9, 5
 	medic:
 		Start: 20

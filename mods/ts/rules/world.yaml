@@ -4,6 +4,7 @@
 	ScreenMap:
 	ActorMap:
 	Selection:
+	ControlGroups:
 	MusicPlaylist:
 		VictoryMusic: score
 		DefeatMusic: maps
