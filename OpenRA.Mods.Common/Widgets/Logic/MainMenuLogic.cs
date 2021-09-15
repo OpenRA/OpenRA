@@ -343,9 +343,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void LoadMapIntoEditor(string uid)
 		{
-			// HACK: Work around a synced-code change check.
-			// It's not clear why this is needed here, but not in the other places that load maps.
-			Game.RunAfterTick(() => Game.LoadEditor(uid));
+			Game.LoadEditor(uid);
 
 			DiscordService.UpdateStatus(DiscordState.InMapEditor);
 
