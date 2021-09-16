@@ -63,8 +63,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			if (complete || actorNode.LastChildMatching("IsometricSelectable") != null)
 				yield break;
 
-			var height = 0;
-			if (!selectionHeight.TryGetValue(actorNode.Key.ToLowerInvariant(), out height))
+			if (!selectionHeight.TryGetValue(actorNode.Key.ToLowerInvariant(), out var height))
 				yield break;
 
 			// Don't redefine the default value
