@@ -97,11 +97,11 @@ clean:
 
 check:
 	@echo
-	@echo "Compiling in debug mode..."
+	@echo "Compiling in Debug mode..."
 ifeq ($(RUNTIME), mono)
-	@$(MSBUILD) -t:build -restore -p:Configuration=Debug -p:TargetPlatform=$(TARGETPLATFORM) -p:Mono=true
+	@$(MSBUILD) -t:build -restore -p:Configuration=Debug -warnaserror -p:TargetPlatform=$(TARGETPLATFORM) -p:Mono=true
 else
-	@$(DOTNET) build -c Debug -nologo -p:TargetPlatform=$(TARGETPLATFORM)
+	@$(DOTNET) build -c Debug -nologo -warnaserror -p:TargetPlatform=$(TARGETPLATFORM)
 endif
 ifeq ($(TARGETPLATFORM), unix-generic)
 	@./configure-system-libraries.sh

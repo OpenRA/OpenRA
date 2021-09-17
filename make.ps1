@@ -110,8 +110,8 @@ function Test-Command
 
 function Check-Command
 {
-	Write-Host "Compiling in debug configuration..." -ForegroundColor Cyan
-	dotnet build -c Debug --nologo -p:TargetPlatform=win-x64
+	Write-Host "Compiling in Debug configuration..." -ForegroundColor Cyan
+	dotnet build -c Debug --nologo -warnaserror -p:TargetPlatform=win-x64
 	if ($lastexitcode -ne 0)
 	{
 		Write-Host "Build failed." -ForegroundColor Red
