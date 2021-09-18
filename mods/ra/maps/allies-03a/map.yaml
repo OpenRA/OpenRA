@@ -512,7 +512,7 @@ Actors:
 	Actor155: v19
 		Location: 57,61
 		Owner: USSR
-	Actor156: brl3
+	Jail1Barrel: brl3
 		Location: 58,61
 		Owner: USSR
 	Actor157: barl
@@ -575,7 +575,7 @@ Actors:
 	Actor189: barl
 		Location: 59,69
 		Owner: USSR
-	Actor191: brl3
+	Jail2Barrel: brl3
 		Location: 56,67
 		Owner: USSR
 	Actor191b: brl3
