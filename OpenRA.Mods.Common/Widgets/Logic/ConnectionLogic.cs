@@ -151,7 +151,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class ConnectionSwitchModLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
-		public ConnectionSwitchModLogic(Widget widget, OrderManager orderManager, string password, NetworkConnection connection, Action onAbort, Action<string> onRetry)
+		public ConnectionSwitchModLogic(Widget widget, OrderManager orderManager, NetworkConnection connection, Action onAbort, Action<string> onRetry)
 		{
 			var panel = widget;
 			var abortButton = panel.Get<ButtonWidget>("ABORT_BUTTON");
