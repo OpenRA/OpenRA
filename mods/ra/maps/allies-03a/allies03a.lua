@@ -263,6 +263,13 @@ InitTriggers = function()
 			player.MarkCompletedObjective(KillUSSR)
 		end)
 	end)
+
+	Trigger.OnKilled(Jail1Barrel, function()
+		Jail1.Destroy()
+	end)
+	Trigger.OnKilled(Jail2Barrel, function()
+		Jail2.Destroy()
+	end)
 end
 
 WorldLoaded = function()
