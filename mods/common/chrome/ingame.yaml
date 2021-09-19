@@ -10,7 +10,7 @@ Container@INGAME_ROOT:
 				TakeScreenshotKey: TakeScreenshot
 				MuteAudioKey: ToggleMute
 		LogicKeyListener@WORLD_KEYHANDLER:
-			Logic: CycleBasesHotkeyLogic, CycleProductionActorsHotkeyLogic, CycleHarvestersHotkeyLogic, JumpToLastEventHotkeyLogic, JumpToSelectedActorsHotkeyLogic, ResetZoomHotkeyLogic, TogglePlayerStanceColorHotkeyLogic, CycleStatusBarsHotkeyLogic, PauseHotkeyLogic, RemoveFromControlGroupHotkeyLogic
+			Logic: CycleBasesHotkeyLogic, CycleProductionActorsHotkeyLogic, CycleHarvestersHotkeyLogic, JumpToLastEventHotkeyLogic, JumpToSelectedActorsHotkeyLogic, ResetZoomHotkeyLogic, TogglePlayerStanceColorHotkeyLogic, CycleStatusBarsHotkeyLogic, PauseHotkeyLogic, RemoveFromControlGroupHotkeyLogic, SelectUnitsByTypeHotkeyLogic, SelectAllUnitsHotkeyLogic
 				RemoveFromControlGroupKey: RemoveFromControlGroup
 				CycleBasesKey: CycleBase
 				CycleProductionActorsKey: CycleProductionBuildings
@@ -21,6 +21,8 @@ Container@INGAME_ROOT:
 				TogglePlayerStanceColorKey: TogglePlayerStanceColor
 				CycleStatusBarsKey: CycleStatusBars
 				PauseKey: Pause
+				SelectAllUnitsKey: SelectAllUnits
+				SelectUnitsByTypeKey: SelectUnitsByType
 		Container@WORLD_ROOT:
 			Logic: LoadIngamePerfLogic
 			Children:
@@ -37,8 +39,6 @@ Container@INGAME_ROOT:
 				WorldInteractionController@INTERACTION_CONTROLLER:
 					Width: WINDOW_RIGHT
 					Height: WINDOW_BOTTOM
-					SelectAllKey: SelectAllUnits
-					SelectSameTypeKey: SelectUnitsByType
 				ViewportController:
 					Width: WINDOW_RIGHT
 					Height: WINDOW_BOTTOM
