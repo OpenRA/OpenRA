@@ -1035,8 +1035,9 @@
 
 ^Tree:
 	Inherits@1: ^SpriteActor
+	Inherits@2: ^ExistsInWorld
 	Interactable:
-	HiddenUnderShroud:
+	FrozenUnderFog:
 	RenderSprites:
 		Palette: terraindecoration
 	WithSpriteBody:
@@ -1049,6 +1050,34 @@
 		Categories: Tree
 	RequiresSpecificOwners:
 		ValidOwnerNames: Neutral
+	HitShape:
+	Health:
+		HP: 200000
+	Armor:
+		Type: Wood
+	Targetable:
+		TargetTypes: Trees, NoAutoTarget
+	GrantConditionOnDamageState@Small:
+		Condition: small-fire
+		ValidDamageStates: Medium
+	GrantConditionOnDamageState@Large:
+		Condition: large-fire
+		ValidDamageStates: Heavy, Critical
+	WithIdleOverlay@SmallFire:
+		Image: fire2
+		Palette: effect
+		RequiresCondition: small-fire
+	WithIdleOverlay@LargeFire:
+		Image: fire1
+		Palette: effect
+		RequiresCondition: large-fire
+	SpreadsCondition@Fire:
+		RequiresCondition: small-fire || large-fire
+		SpreadCondition: burning
+	ChangesHealth:
+		StartIfBelow: 101
+		Step: -500
+		RequiresCondition: small-fire || large-fire || burning
 
 ^Rock:
 	Inherits@1: ^SpriteActor
