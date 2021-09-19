@@ -1,6 +1,6 @@
 MultiCluster:
 	Inherits: ^DefaultMissile
-	ValidTargets: Ground, Water, Air
+	ValidTargets: Ground, Water, Air, Trees
 	Projectile: Missile
 		MaximumLaunchSpeed: 120
 		Inaccuracy: 1c0
@@ -14,7 +14,7 @@ MultiCluster:
 	Warhead@1Dam: SpreadDamage
 		Spread: 216
 		Damage: 13000
-		ValidTargets: Ground, Water, Air
+		ValidTargets: Ground, Water, Air, Trees
 		Versus:
 			None: 100
 			Wood: 85
@@ -29,12 +29,12 @@ MultiCluster:
 	Warhead@ResourceDestruction: DestroyResource
 
 ClusterMissile:
-	ValidTargets: Ground, Water, Air
+	ValidTargets: Ground, Water, Air, Trees
 	Warhead@1Dam: SpreadDamage
 		Spread: 512
 		Falloff: 100, 100, 0
 		Damage: 26000
-		ValidTargets: Ground, Water, Air
+		ValidTargets: Ground, Water, Air, Trees
 		Versus:
 			None: 100
 			Wood: 85
@@ -69,7 +69,7 @@ SuicideBomb:
 		ValidTargets: Vehicle, Building, Defense, Infantry
 
 IonCannon:
-	ValidTargets: Ground, Water, Air
+	ValidTargets: Ground, Water, Air, Trees
 	Warhead@1Dam_impact: SpreadDamage
 		Spread: 1c0
 		Damage: 10000
@@ -81,7 +81,7 @@ IonCannon:
 		Damage: 25000
 		Falloff: 100, 50, 25, 0
 		Delay: 3
-		ValidTargets: Ground, Water, Air
+		ValidTargets: Ground, Water, Air, Trees
 		DamageTypes: Prone50Percent, TriggerProne, EnergyDeath
 	Warhead@3Smu_area: LeaveSmudge
 		SmudgeType: SmallScorch
