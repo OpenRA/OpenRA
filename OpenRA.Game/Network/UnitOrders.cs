@@ -292,24 +292,20 @@ namespace OpenRA.Network
 						break;
 					}
 
-				case "SyncClientPings":
+				case "SyncConnectionQuality":
 					{
-						var pings = new List<Session.ClientPing>();
 						var nodes = MiniYaml.FromString(order.TargetString);
 						foreach (var node in nodes)
 						{
 							var strings = node.Key.Split('@');
-							if (strings[0] == "ClientPing")
-								pings.Add(Session.ClientPing.Deserialize(node.Value));
+							if (strings[0] == "ConnectionQuality")
+							{
+								var client = orderManager.LobbyInfo.Clients.FirstOrDefault(c => c.Index == int.Parse(strings[1]));
+								if (client != null)
+									client.ConnectionQuality = FieldLoader.GetValue<Session.ConnectionQuality>("ConnectionQuality", node.Value.Value);
+							}
 						}
 
-						orderManager.LobbyInfo.ClientPings = pings;
-						break;
-					}
-
-				case "Ping":
-					{
-						orderManager.IssueOrder(Order.FromTargetString("Pong", order.TargetString, true));
 						break;
 					}
 

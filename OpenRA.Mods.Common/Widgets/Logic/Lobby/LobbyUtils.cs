@@ -306,34 +306,32 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			return AvailableSpawnPoints(spawnPoints, lobbyInfo).Count < lobbyInfo.Clients.Count(c => !c.IsObserver);
 		}
 
-		public static Color LatencyColor(Session.ClientPing ping)
+		public static Color LatencyColor(Session.Client client)
 		{
-			if (ping == null)
+			if (client == null)
 				return Color.Gray;
 
-			// Levels set relative to the default order lag of 3 net ticks (360ms)
-			// TODO: Adjust this once dynamic lag is implemented
-			if (ping.Latency < 0)
-				return Color.Gray;
-			if (ping.Latency < 300)
-				return Color.LimeGreen;
-			if (ping.Latency < 600)
-				return Color.Orange;
-			return Color.Red;
+			switch (client.ConnectionQuality)
+			{
+				case Session.ConnectionQuality.Good: return Color.LimeGreen;
+				case Session.ConnectionQuality.Moderate: return Color.Orange;
+				case Session.ConnectionQuality.Poor: return Color.Red;
+				default: return Color.Gray;
+			}
 		}
 
-		public static string LatencyDescription(Session.ClientPing ping)
+		public static string LatencyDescription(Session.Client client)
 		{
-			if (ping == null)
+			if (client == null)
 				return "Unknown";
 
-			if (ping.Latency < 0)
-				return "Unknown";
-			if (ping.Latency < 300)
-				return "Good";
-			if (ping.Latency < 600)
-				return "Moderate";
-			return "Poor";
+			switch (client.ConnectionQuality)
+			{
+				case Session.ConnectionQuality.Good: return "Good";
+				case Session.ConnectionQuality.Moderate: return "Moderate";
+				case Session.ConnectionQuality.Poor: return "Poor";
+				default: return "Unknown";
+			}
 		}
 
 		public static void SetupLatencyWidget(Widget parent, Session.Client c, OrderManager orderManager)
@@ -345,8 +343,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				block.IsVisible = () => visible;
 
 				if (visible)
-					block.Get<ColorBlockWidget>("LATENCY_COLOR").GetColor = () => LatencyColor(
-						orderManager.LobbyInfo.PingFromClient(c));
+					block.Get<ColorBlockWidget>("LATENCY_COLOR").GetColor = () => LatencyColor(c);
 			}
 
 			var tooltip = parent.Get<ClientTooltipRegionWidget>("LATENCY_REGION");

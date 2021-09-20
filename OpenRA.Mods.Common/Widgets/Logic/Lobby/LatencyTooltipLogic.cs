@@ -34,9 +34,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					widget.Bounds.Width = latency.Bounds.X + latencyFont.Measure(latency.GetText()).X + rightMargin;
 			};
 
-			var ping = orderManager.LobbyInfo.PingFromClient(client);
-			latency.GetText = () => LobbyUtils.LatencyDescription(ping);
-			latency.GetColor = () => LobbyUtils.LatencyColor(ping);
+			latency.GetText = () => LobbyUtils.LatencyDescription(client);
+			latency.GetColor = () => LobbyUtils.LatencyColor(client);
 		}
 	}
 }
