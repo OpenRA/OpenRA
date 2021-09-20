@@ -21,9 +21,6 @@ namespace OpenRA.Mods.Common.Server
 		static readonly int ConnReportInterval = 20000; // Report every 20 seconds
 		static readonly int ConnTimeout = 60000; // Drop unresponsive clients after 60 seconds
 
-		// TickTimeout is in microseconds
-		public int TickTimeout => PingInterval * 100;
-
 		long lastPing = 0;
 		long lastConnReport = 0;
 		bool isInitialPing = true;
@@ -40,13 +37,7 @@ namespace OpenRA.Mods.Common.Server
 				lock (server.LobbyInfo)
 					nonBotClientCount = server.LobbyInfo.NonBotClients.Count();
 
-				if (nonBotClientCount < 2 && server.Type != ServerType.Dedicated)
-				{
-					foreach (var c in server.Conns.ToList())
-						if (c.Validated)
-							server.SendOrderTo(c, "Ping", Game.RunTime.ToString());
-				}
-				else
+				if (nonBotClientCount >= 2 || server.Type == ServerType.Dedicated)
 				{
 					foreach (var c in server.Conns.ToList())
 					{
@@ -63,7 +54,6 @@ namespace OpenRA.Mods.Common.Server
 
 						if (c.TimeSinceLastResponse < ConnTimeout)
 						{
-							server.SendOrderTo(c, "Ping", Game.RunTime.ToString());
 							if (!c.TimeoutMessageShown && c.TimeSinceLastResponse > PingInterval * 2)
 							{
 								server.SendMessage(client.Name + " is experiencing connection problems.");

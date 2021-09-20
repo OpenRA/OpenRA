@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -76,6 +77,7 @@ namespace OpenRA.Server
 		ReplayRecorder recorder;
 		GameInformation gameInfo;
 		readonly List<GameInformation.Player> worldPlayers = new List<GameInformation.Player>();
+		Stopwatch pingUpdated = Stopwatch.StartNew();
 
 		public ServerState State
 		{
@@ -321,6 +323,11 @@ namespace OpenRA.Server
 			events.Add(new ConnectionPacketEvent(conn, frame, data));
 		}
 
+		internal void OnConnectionPing(Connection conn, int[] pingHistory)
+		{
+			events.Add(new ConnectionPingEvent(conn, pingHistory));
+		}
+
 		internal void OnConnectionDisconnect(Connection conn)
 		{
 			events.Add(new ConnectionDisconnectEvent(conn));
@@ -469,9 +476,6 @@ namespace OpenRA.Server
 						LobbyInfo.Clients.Add(client);
 						newConn.Validated = true;
 
-						var clientPing = new Session.ClientPing { Index = client.Index };
-						LobbyInfo.ClientPings.Add(clientPing);
-
 						Log.Write("server", "Client {0}: Accepted connection from {1}.", newConn.PlayerIndex, newConn.EndPoint);
 
 						if (client.Fingerprint != null)
@@ -486,9 +490,6 @@ namespace OpenRA.Server
 
 						if (Type != ServerType.Local)
 							SendMessage($"{client.Name} has joined the game.");
-
-						// Send initial ping
-						SendOrderTo(newConn, "Ping", Game.RunTime.ToString(CultureInfo.InvariantCulture));
 
 						if (Type == ServerType.Dedicated)
 						{
@@ -893,37 +894,6 @@ namespace OpenRA.Server
 					case "Chat":
 						DispatchOrdersToClients(conn, 0, o.Serialize());
 						break;
-					case "Pong":
-						{
-							if (!OpenRA.Exts.TryParseInt64Invariant(o.TargetString, out var pingSent))
-							{
-								Log.Write("server", "Invalid order pong payload: {0}", o.TargetString);
-								break;
-							}
-
-							var client = GetClient(conn);
-							if (client == null)
-								return;
-
-							var pingFromClient = LobbyInfo.PingFromClient(client);
-							if (pingFromClient == null)
-								return;
-
-							var history = pingFromClient.LatencyHistory.ToList();
-							history.Add(Game.RunTime - pingSent);
-
-							// Cap ping history at 5 values (25 seconds)
-							if (history.Count > 5)
-								history.RemoveRange(0, history.Count - 5);
-
-							pingFromClient.Latency = history.Sum() / history.Count;
-							pingFromClient.LatencyJitter = (history.Max() - history.Min()) / 2;
-							pingFromClient.LatencyHistory = history.ToArray();
-
-							SyncClientPing();
-
-							break;
-						}
 
 					case "GameSaveTraitData":
 						{
@@ -995,12 +965,7 @@ namespace OpenRA.Server
 							foreach (var c in LobbyInfo.Clients)
 							{
 								if (c.Bot != null)
-								{
 									LobbyInfo.Clients.Remove(c);
-									var ping = LobbyInfo.PingFromClient(c);
-									if (ping != null)
-										LobbyInfo.ClientPings.Remove(ping);
-								}
 								else
 									c.Slot = null;
 							}
@@ -1033,10 +998,39 @@ namespace OpenRA.Server
 
 							SyncLobbyInfo();
 							SyncLobbyClients();
-							SyncClientPing();
 
 							break;
 						}
+				}
+			}
+		}
+
+		public void ReceivePing(Connection conn, int[] pingHistory)
+		{
+			// Levels set relative to the default order lag of 3 net ticks (360ms)
+			// TODO: Adjust this once dynamic lag is implemented
+			var latency = pingHistory.Sum() / pingHistory.Length;
+
+			var quality = latency < 240 ? Session.ConnectionQuality.Good :
+				latency < 360 ? Session.ConnectionQuality.Moderate :
+				Session.ConnectionQuality.Poor;
+
+			lock (LobbyInfo)
+			{
+				foreach (var c in LobbyInfo.Clients)
+					if (c.Index == conn.PlayerIndex || (c.Bot != null && c.BotControllerClientIndex == conn.PlayerIndex))
+						c.ConnectionQuality = quality;
+
+				// Update ping without forcing a full update
+				// Note that syncing pings doesn't trigger INotifySyncLobbyInfo
+				if (pingUpdated.ElapsedMilliseconds > 5000)
+				{
+					var nodes = new List<MiniYamlNode>();
+					foreach (var c in LobbyInfo.Clients)
+						nodes.Add(new MiniYamlNode($"ConnectionQuality@{c.Index}", FieldSaver.FormatValue(c.ConnectionQuality)));
+
+					DispatchServerOrdersToClients(Order.FromTargetString("SyncConnectionQuality", nodes.WriteToString(), true));
+					pingUpdated.Restart();
 				}
 			}
 		}
@@ -1068,7 +1062,6 @@ namespace OpenRA.Server
 				SendMessage($"{dropClient.Name}{suffix} has disconnected.");
 
 				LobbyInfo.Clients.RemoveAll(c => c.Index == toDrop.PlayerIndex);
-				LobbyInfo.ClientPings.RemoveAll(p => p.Index == toDrop.PlayerIndex);
 
 				// Client was the server admin
 				// TODO: Reassign admin for game in progress via an order
@@ -1137,6 +1130,10 @@ namespace OpenRA.Server
 
 				foreach (var t in serverTraits.WithInterface<INotifySyncLobbyInfo>())
 					t.LobbyInfoSynced(this);
+
+				// The full LobbyInfo includes ping info, so we can delay the next partial ping update
+				// TODO: Replace the special-case ping updates with more general LobbyInfo delta updates
+				pingUpdated.Restart();
 			}
 		}
 
@@ -1170,18 +1167,6 @@ namespace OpenRA.Server
 
 				foreach (var t in serverTraits.WithInterface<INotifySyncLobbyInfo>())
 					t.LobbyInfoSynced(this);
-			}
-		}
-
-		public void SyncClientPing()
-		{
-			lock (LobbyInfo)
-			{
-				// TODO: Split this further into per client ping orders
-				var clientPings = LobbyInfo.ClientPings.Select(ping => ping.Serialize()).ToList();
-
-				// Note that syncing pings doesn't trigger INotifySyncLobbyInfo
-				DispatchServerOrdersToClients(Order.FromTargetString("SyncClientPings", clientPings.WriteToString(), true));
 			}
 		}
 
@@ -1359,6 +1344,23 @@ namespace OpenRA.Server
 			void IServerEvent.Invoke(Server server)
 			{
 				server.ReceiveOrders(connection, frame, data);
+			}
+		}
+
+		class ConnectionPingEvent : IServerEvent
+		{
+			readonly Connection connection;
+			readonly int[] pingHistory;
+
+			public ConnectionPingEvent(Connection connection, int[] pingHistory)
+			{
+				this.connection = connection;
+				this.pingHistory = pingHistory;
+			}
+
+			void IServerEvent.Invoke(Server server)
+			{
+				server.ReceivePing(connection, pingHistory);
 			}
 		}
 
