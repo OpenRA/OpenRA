@@ -34,8 +34,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly ScrollPanelWidget chatScrollPanel;
 		readonly ContainerWidget chatTemplate;
 		readonly TextFieldWidget chatText;
-
-		readonly INotifyChat[] chatTraits;
+		readonly CachedTransform<int, string> chatDisabledLabel;
 
 		readonly TabCompletionLogic tabCompletion = new TabCompletionLogic();
 
@@ -43,6 +42,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		TextNotification lastLine;
 		int repetitions;
+		bool chatEnabled = true;
 
 		[ObjectCreator.UseCtor]
 		public IngameChatLogic(Widget widget, OrderManager orderManager, World world, ModData modData, bool isMenuChat, Dictionary<string, MiniYaml> logicArgs)
@@ -50,8 +50,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			this.orderManager = orderManager;
 			modRules = modData.DefaultRules;
 
-			chatTraits = world.WorldActor.TraitsImplementing<INotifyChat>().ToArray();
-
+			var chatTraits = world.WorldActor.TraitsImplementing<INotifyChat>().ToArray();
 			var players = world.Players.Where(p => p != world.LocalPlayer && !p.NonCombatant && !p.IsBot);
 			var isObserver = orderManager.LocalClient != null && orderManager.LocalClient.IsObserver;
 			var alwaysDisabled = world.IsReplay || world.LobbyInfo.NonBotClients.Count() == 1;
@@ -82,7 +81,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				chatMode.IsDisabled = () =>
 				{
-					if (world.IsGameOver)
+					if (world.IsGameOver || !chatEnabled)
 						return true;
 
 					// The game is over for us, join spectator team chat
@@ -100,7 +99,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				};
 			}
 			else
-				chatMode.IsDisabled = () => disableTeamChat;
+				chatMode.IsDisabled = () => disableTeamChat || !chatEnabled;
 
 			// Disable team chat after the game ended
 			world.GameOver += () => disableTeamChat = true;
@@ -163,6 +162,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return true;
 			};
 
+			chatDisabledLabel = new CachedTransform<int, string>(x => x > 0 ? $"Chat available in {x} seconds..." : "Chat Disabled");
+
 			if (!isMenuChat)
 			{
 				var openTeamChatKey = new HotkeyReference();
@@ -203,7 +204,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			orderManager.AddTextNotification += AddChatLineWrapper;
 
-			chatText.IsDisabled = () => world.IsReplay && !Game.Settings.Debug.EnableDebugCommandsInReplays;
+			chatText.IsDisabled = () => !chatEnabled || (world.IsReplay && !Game.Settings.Debug.EnableDebugCommandsInReplays);
 
 			if (!isMenuChat)
 			{
@@ -315,6 +316,27 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			if (!suppressSound)
 				Game.Sound.PlayNotification(modRules, null, "Sounds", chatLineSound, null);
+		}
+
+		public override void Tick()
+		{
+			var chatWasEnabled = chatEnabled;
+			chatEnabled = Game.RunTime >= TextNotificationsManager.ChatDisabledUntil && TextNotificationsManager.ChatDisabledUntil != uint.MaxValue;
+
+			if (chatEnabled && !chatWasEnabled)
+			{
+				chatText.Text = "";
+				if (Ui.KeyboardFocusWidget == null)
+					chatText.TakeKeyboardFocus();
+			}
+			else if (!chatEnabled)
+			{
+				var remaining = 0;
+				if (TextNotificationsManager.ChatDisabledUntil != uint.MaxValue)
+					remaining = (int)(TextNotificationsManager.ChatDisabledUntil - Game.RunTime + 999) / 1000;
+
+				chatText.Text = chatDisabledLabel.Update(remaining);
+			}
 		}
 
 		bool disposed = false;
