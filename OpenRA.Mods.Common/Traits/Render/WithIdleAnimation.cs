@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			: base(info)
 		{
 			wsb = self.TraitsImplementing<WithSpriteBody>().Single(w => w.Info.Name == Info.Body);
-			ticks = Util.RandomDelay(self.World, info.Interval);
+			ticks = Util.RandomInRange(self.World.SharedRandom, info.Interval);
 		}
 
 		void ITick.Tick(Actor self)
@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (--ticks <= 0)
 			{
 				wsb.PlayCustomAnimation(self, Info.Sequences.Random(Game.CosmeticRandom));
-				ticks = Util.RandomDelay(self.World, Info.Interval);
+				ticks = Util.RandomInRange(self.World.SharedRandom, Info.Interval);
 			}
 		}
 

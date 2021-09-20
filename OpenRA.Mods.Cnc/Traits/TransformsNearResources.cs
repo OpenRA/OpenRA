@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public TransformsNearResources(Actor self, TransformsNearResourcesInfo info)
 		{
 			resourceLayer = self.World.WorldActor.Trait<IResourceLayer>();
-			delay = Common.Util.RandomDelay(self.World, info.Delay);
+			delay = Common.Util.RandomInRange(self.World.SharedRandom, info.Delay);
 			this.info = info;
 		}
 

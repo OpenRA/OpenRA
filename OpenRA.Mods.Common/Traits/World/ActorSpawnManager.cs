@@ -93,7 +93,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (spawnPoint == null)
 				return;
 
-			spawnCountdown = Util.RandomDelay(self.World, info.SpawnInterval);
+			spawnCountdown = Util.RandomInRange(self.World.SharedRandom, info.SpawnInterval);
 
 			do
 			{

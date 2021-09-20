@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Traits
 		public KillsSelf(Actor self, KillsSelfInfo info)
 			: base(info)
 		{
-			lifetime = Util.RandomDelay(self.World, info.Delay);
+			lifetime = Util.RandomInRange(self.World.SharedRandom, info.Delay);
 		}
 
 		protected override void TraitEnabled(Actor self)

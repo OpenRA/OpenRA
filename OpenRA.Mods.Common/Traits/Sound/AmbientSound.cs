@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Traits.Sound
 		public AmbientSound(Actor self, AmbientSoundInfo info)
 			: base(info)
 		{
-			delay = Util.RandomDelay(self.World, info.Delay);
+			delay = Util.RandomInRange(self.World.SharedRandom, info.Delay);
 			loop = Info.Interval.Length == 0 || (Info.Interval.Length == 1 && Info.Interval[0] == 0);
 		}
 
@@ -71,7 +71,7 @@ namespace OpenRA.Mods.Common.Traits.Sound
 			{
 				StartSound(self);
 				if (!loop)
-					delay = Util.RandomDelay(self.World, Info.Interval);
+					delay = Util.RandomInRange(self.World.SharedRandom, Info.Interval);
 			}
 		}
 
@@ -101,7 +101,7 @@ namespace OpenRA.Mods.Common.Traits.Sound
 			currentSounds.Clear();
 		}
 
-		protected override void TraitEnabled(Actor self) { delay = Util.RandomDelay(self.World, Info.Delay); }
+		protected override void TraitEnabled(Actor self) { delay = Util.RandomInRange(self.World.SharedRandom, Info.Delay); }
 		protected override void TraitDisabled(Actor self) { StopSound(); }
 
 		void INotifyRemovedFromWorld.RemovedFromWorld(Actor self) { StopSound(); }
