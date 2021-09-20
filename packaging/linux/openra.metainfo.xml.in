@@ -45,6 +45,7 @@
   </screenshots>
   <url type="homepage">https://www.openra.net</url>
   <url type="bugtracker">https://github.com/OpenRA/OpenRA/issues</url>
+  <url type="donation">https://www.patreon.com/orahosting</url>
   <update_contact>paul_at_chote.net</update_contact>
   <developer_name>The OpenRA Developers</developer_name>
   <developer id="net.openra">
