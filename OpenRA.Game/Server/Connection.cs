@@ -31,6 +31,7 @@ namespace OpenRA.Server
 		public readonly int PlayerIndex;
 		public readonly string AuthToken;
 		public readonly EndPoint EndPoint;
+		public readonly Stopwatch ConnectionTimer = Stopwatch.StartNew();
 
 		public long TimeSinceLastResponse => Game.RunTime - lastReceivedTime;
 

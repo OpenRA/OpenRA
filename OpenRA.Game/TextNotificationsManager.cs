@@ -20,6 +20,8 @@ namespace OpenRA
 		static Color chatMessageColor = Color.White;
 		static string systemMessageLabel;
 
+		public static long ChatDisabledUntil { get; internal set; }
+
 		static TextNotificationsManager()
 		{
 			ChromeMetrics.TryGet("ChatMessageColor", out chatMessageColor);

@@ -101,6 +101,9 @@ namespace OpenRA
 		[Desc("For dedicated servers only, treat maps that fail the lint checks as invalid.")]
 		public bool EnableLintChecks = true;
 
+		[Desc("Delay in milliseconds before newly joined players can send chat messages.")]
+		public int JoinChatDelay = 5000;
+
 		public ServerSettings Clone()
 		{
 			return (ServerSettings)MemberwiseClone();
