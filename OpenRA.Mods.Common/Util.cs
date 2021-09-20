@@ -198,7 +198,7 @@ namespace OpenRA.Mods.Common
 			}
 		}
 
-		public static int RandomDelay(World world, int[] range)
+		public static int RandomInRange(MersenneTwister random, int[] range)
 		{
 			if (range.Length == 0)
 				return 0;
@@ -206,7 +206,7 @@ namespace OpenRA.Mods.Common
 			if (range.Length == 1)
 				return range[0];
 
-			return world.SharedRandom.Next(range[0], range[1]);
+			return random.Next(range[0], range[1]);
 		}
 
 		public static string FriendlyTypeName(Type t)
