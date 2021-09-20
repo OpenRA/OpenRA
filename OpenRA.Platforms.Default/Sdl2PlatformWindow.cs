@@ -227,30 +227,7 @@ namespace OpenRA.Platforms.Default
 				window = SDL.SDL_CreateWindow("OpenRA", SDL.SDL_WINDOWPOS_CENTERED_DISPLAY(videoDisplay), SDL.SDL_WINDOWPOS_CENTERED_DISPLAY(videoDisplay),
 					windowSize.Width, windowSize.Height, windowFlags);
 
-				if (Platform.CurrentPlatform == PlatformType.OSX)
-				{
-					// Work around an issue in macOS's GL backend where the window remains permanently black
-					// (if dark mode is enabled) unless we drain the event queue before initializing GL
-					while (SDL.SDL_PollEvent(out var e) != 0)
-					{
-						// We can safely ignore all mouse/keyboard events and window size changes
-						// (these will be caught in the window setup below), but do need to process focus
-						if (e.type == SDL.SDL_EventType.SDL_WINDOWEVENT)
-						{
-							switch (e.window.windowEvent)
-							{
-								case SDL.SDL_WindowEventID.SDL_WINDOWEVENT_FOCUS_LOST:
-									HasInputFocus = false;
-									break;
-
-								case SDL.SDL_WindowEventID.SDL_WINDOWEVENT_FOCUS_GAINED:
-									HasInputFocus = true;
-									break;
-							}
-						}
-					}
-				}
-				else if (Platform.CurrentPlatform == PlatformType.Linux)
+				if (Platform.CurrentPlatform == PlatformType.Linux)
 				{
 					// The KDE task switcher limits itself to the 128px icon unless we
 					// set an X11 _KDE_NET_WM_DESKTOP_FILE property on the window
@@ -326,15 +303,9 @@ namespace OpenRA.Platforms.Default
 			// Run graphics rendering on a dedicated thread.
 			// The calling thread will then have more time to process other tasks, since rendering happens in parallel.
 			// If the calling thread is the main game thread, this means it can run more logic and render ticks.
-			// This is disabled when running in windowed mode on Windows because it breaks the ability to minimize/restore the window.
-			if (Platform.CurrentPlatform == PlatformType.Windows && windowMode == WindowMode.Windowed)
-			{
-				var ctx = new Sdl2GraphicsContext(this);
-				ctx.InitializeOpenGL();
-				context = ctx;
-			}
-			else
-				context = new ThreadedGraphicsContext(new Sdl2GraphicsContext(this), batchSize);
+			var ctx = new Sdl2GraphicsContext(this);
+			ctx.InitializeOpenGL();
+			context = ctx;
 
 			context.SetVSyncEnabled(Game.Settings.Graphics.VSync);
 
