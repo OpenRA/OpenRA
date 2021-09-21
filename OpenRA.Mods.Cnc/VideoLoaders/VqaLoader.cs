@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Cnc.VideoLoaders
 			if (!IsWestwoodVqa(s))
 				return false;
 
-			video = new VqaReader(s, useFramePadding);
+			video = new VqaVideo(s, useFramePadding);
 			return true;
 		}
 
