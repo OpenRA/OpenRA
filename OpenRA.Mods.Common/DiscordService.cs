@@ -168,7 +168,15 @@ namespace OpenRA.Mods.Common
 				},
 				Timestamps = timestamp.HasValue ? new Timestamps(timestamp.Value) : null,
 				Party = party,
-				Secrets = secrets
+				Secrets = secrets,
+				Buttons = new[]
+				{
+					new Button
+					{
+						Label = "Visit Website",
+						Url = Game.ModData.Manifest.Metadata.Website
+					}
+				}
 			};
 
 			client.SetPresence(richPresence);
