@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Cnc.VideoLoaders
 			if (!IsWsa(s))
 				return false;
 
-			video = new WsaReader(s, useFramePadding);
+			video = new WsaVideo(s, useFramePadding);
 			return true;
 		}
 

@@ -16,7 +16,7 @@ using OpenRA.Video;
 
 namespace OpenRA.Mods.Cnc.FileFormats
 {
-	public class VqaReader : IVideo
+	public class VqaVideo : IVideo
 	{
 		public ushort FrameCount { get; }
 		public byte Framerate { get; }
@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 		// Top half contains block info, bottom half contains references to cbf array
 		byte[] origData;
 
-		public VqaReader(Stream stream, bool useFramePadding)
+		public VqaVideo(Stream stream, bool useFramePadding)
 		{
 			this.stream = stream;
 

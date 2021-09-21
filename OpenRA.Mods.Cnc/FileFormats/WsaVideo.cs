@@ -15,7 +15,7 @@ using OpenRA.Video;
 
 namespace OpenRA.Mods.Cnc.FileFormats
 {
-	public class WsaReader : IVideo
+	public class WsaVideo : IVideo
 	{
 		public ushort FrameCount { get; }
 		public byte Framerate => 1;
@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 		byte[] previousFramePaletteIndexData;
 		byte[] currentFramePaletteIndexData;
 
-		public WsaReader(Stream stream, bool useFramePadding)
+		public WsaVideo(Stream stream, bool useFramePadding)
 		{
 			this.stream = stream;
 
