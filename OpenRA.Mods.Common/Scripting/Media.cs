@@ -80,7 +80,7 @@ namespace OpenRA.Mods.Common.Scripting
 
 		public static IVideo LoadVideo(Stream s)
 		{
-			return VideoLoader.GetVideo(s, Game.ModData.VideoLoaders);
+			return VideoLoader.GetVideo(s, true, Game.ModData.VideoLoaders);
 		}
 	}
 }

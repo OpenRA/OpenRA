@@ -18,14 +18,14 @@ namespace OpenRA.Mods.Cnc.VideoLoaders
 {
 	public class WsaLoader : IVideoLoader
 	{
-		public bool TryParseVideo(Stream s, out IVideo video)
+		public bool TryParseVideo(Stream s, bool useFramePadding, out IVideo video)
 		{
 			video = null;
 
 			if (!IsWsa(s))
 				return false;
 
-			video = new WsaReader(s);
+			video = new WsaReader(s, useFramePadding);
 			return true;
 		}
 

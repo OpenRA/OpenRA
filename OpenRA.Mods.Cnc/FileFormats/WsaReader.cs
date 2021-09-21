@@ -34,11 +34,12 @@ namespace OpenRA.Mods.Cnc.FileFormats
 		readonly Stream stream;
 		readonly uint[] palette;
 		readonly uint[] frameOffsets;
+		readonly ushort totalFrameWidth;
 
 		byte[] previousFramePaletteIndexData;
 		byte[] currentFramePaletteIndexData;
 
-		public WsaReader(Stream stream)
+		public WsaReader(Stream stream, bool useFramePadding)
 		{
 			this.stream = stream;
 
@@ -78,7 +79,17 @@ namespace OpenRA.Mods.Cnc.FileFormats
 					frameOffsets[i] += 768;
 			}
 
-			CurrentFrameData = new byte[Width * Height * 4];
+			if (useFramePadding)
+			{
+				var frameSize = Exts.NextPowerOf2(Math.Max(Width, Height));
+				CurrentFrameData = new byte[frameSize * frameSize * 4];
+				totalFrameWidth = (ushort)frameSize;
+			}
+			else
+			{
+				CurrentFrameData = new byte[Width * Height * 4];
+				totalFrameWidth = Width;
+			}
 
 			Reset();
 		}
@@ -133,6 +144,9 @@ namespace OpenRA.Mods.Cnc.FileFormats
 					CurrentFrameData[position++] = (byte)(color >> 16 & 0xFF);
 					CurrentFrameData[position++] = (byte)(color >> 24 & 0xFF);
 				}
+
+				// Recalculate the position in the byte array to the start of the next pixel row just in case there is padding in the frame.
+				position = (y + 1) * totalFrameWidth * 4;
 			}
 		}
 	}

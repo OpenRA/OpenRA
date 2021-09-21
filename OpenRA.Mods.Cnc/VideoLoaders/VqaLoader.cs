@@ -17,14 +17,14 @@ namespace OpenRA.Mods.Cnc.VideoLoaders
 {
 	public class VqaLoader : IVideoLoader
 	{
-		public bool TryParseVideo(Stream s, out IVideo video)
+		public bool TryParseVideo(Stream s, bool useFramePadding, out IVideo video)
 		{
 			video = null;
 
 			if (!IsWestwoodVqa(s))
 				return false;
 
-			video = new VqaReader(s);
+			video = new VqaReader(s, useFramePadding);
 			return true;
 		}
 
