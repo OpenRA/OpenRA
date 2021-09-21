@@ -37,6 +37,7 @@ namespace OpenRA.Mods.Common.Widgets
 		float overlayScale;
 		bool stopped;
 		bool paused;
+		int textureSize;
 
 		Action onComplete;
 
@@ -45,7 +46,7 @@ namespace OpenRA.Mods.Common.Widgets
 			if (filename == cachedVideo)
 				return;
 
-			var video = VideoLoader.GetVideo(Game.ModData.DefaultFileSystem.Open(filename), Game.ModData.VideoLoaders);
+			var video = VideoLoader.GetVideo(Game.ModData.DefaultFileSystem.Open(filename), true, Game.ModData.VideoLoaders);
 			Open(video);
 
 			cachedVideo = filename;
@@ -63,11 +64,11 @@ namespace OpenRA.Mods.Common.Widgets
 			invLength = video.Framerate * 1f / video.FrameCount;
 
 			var size = Math.Max(video.Width, video.Height);
-			var textureSize = Exts.NextPowerOf2(size);
+			textureSize = Exts.NextPowerOf2(size);
 			var videoSheet = new Sheet(SheetType.BGRA, new Size(textureSize, textureSize));
 
 			videoSheet.GetTexture().ScaleFilter = TextureScaleFilter.Linear;
-			videoSheet.GetTexture().SetData(video.CurrentFrameData);
+			videoSheet.GetTexture().SetData(video.CurrentFrameData, textureSize, textureSize);
 
 			videoSprite = new Sprite(videoSheet,
 				new Rectangle(
@@ -110,12 +111,12 @@ namespace OpenRA.Mods.Common.Widgets
 				while (nextFrame > video.CurrentFrameNumber)
 				{
 					video.AdvanceFrame();
-					videoSprite.Sheet.GetTexture().SetData(video.CurrentFrameData);
+					videoSprite.Sheet.GetTexture().SetData(video.CurrentFrameData, textureSize, textureSize);
 					skippedFrames++;
 				}
 
 				if (skippedFrames > 1)
-					Log.Write("perf", "VqaPlayer : {0} skipped {1} frames at position {2}", cachedVideo, skippedFrames, video.CurrentFrameNumber);
+					Log.Write("perf", "VideoPlayer: {0} skipped {1} frames at position {2}", cachedVideo, skippedFrames, video.CurrentFrameNumber);
 			}
 
 			WidgetUtils.DrawSprite(videoSprite, videoOrigin, videoSize);
@@ -218,7 +219,7 @@ namespace OpenRA.Mods.Common.Widgets
 			paused = true;
 			Game.Sound.StopVideo();
 			video.Reset();
-			videoSprite.Sheet.GetTexture().SetData(video.CurrentFrameData);
+			videoSprite.Sheet.GetTexture().SetData(video.CurrentFrameData, textureSize, textureSize);
 			Game.RunAfterTick(onComplete);
 		}
 

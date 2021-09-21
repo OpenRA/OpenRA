@@ -41,6 +41,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 		readonly uint[] offsets;
 		readonly uint[] palette;
 		readonly uint videoFlags; // if 0x10 is set the video is a 16 bit hq video (ts and later)
+		readonly ushort totalFrameWidth;
 
 		// Stores a list of subpixels, referenced by the VPTZ chunk
 		byte[] cbf;
@@ -60,7 +61,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 		// Top half contains block info, bottom half contains references to cbf array
 		byte[] origData;
 
-		public VqaReader(Stream stream)
+		public VqaReader(Stream stream, bool useFramePadding)
 		{
 			this.stream = stream;
 
@@ -145,7 +146,17 @@ namespace OpenRA.Mods.Cnc.FileFormats
 
 			CollectAudioData();
 
-			CurrentFrameData = new byte[Width * Height * 4];
+			if (useFramePadding)
+			{
+				var frameSize = Exts.NextPowerOf2(Math.Max(Width, Height));
+				CurrentFrameData = new byte[frameSize * frameSize * 4];
+				totalFrameWidth = (ushort)frameSize;
+			}
+			else
+			{
+				CurrentFrameData = new byte[Width * Height * 4];
+				totalFrameWidth = Width;
+			}
 
 			Reset();
 		}
@@ -485,7 +496,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 
 								var pixelX = x * blockWidth + i;
 								var pixelY = y * blockHeight + j;
-								var pos = pixelY * Width + pixelX;
+								var pos = pixelY * totalFrameWidth + pixelX;
 								CurrentFrameData[pos * 4] = (byte)(color & 0xFF);
 								CurrentFrameData[pos * 4 + 1] = (byte)(color >> 8 & 0xFF);
 								CurrentFrameData[pos * 4 + 2] = (byte)(color >> 16 & 0xFF);
@@ -511,7 +522,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 
 						var pixelX = x * blockWidth + bx;
 						var pixelY = y * blockHeight + by;
-						var pos = pixelY * Width + pixelX;
+						var pos = pixelY * totalFrameWidth + pixelX;
 						CurrentFrameData[pos * 4] = cbf[offset + p + 2];
 						CurrentFrameData[pos * 4 + 1] = cbf[offset + p + 1];
 						CurrentFrameData[pos * 4 + 2] = cbf[offset + p];
