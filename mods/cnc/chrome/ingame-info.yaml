@@ -2,97 +2,86 @@ Container@GAME_INFO_PANEL:
 	X: (WINDOW_RIGHT - WIDTH) / 2
 	Y: (WINDOW_BOTTOM - HEIGHT) / 2
 	Width: 512
-	Height: 405
+	Height: 435
 	Logic: GameInfoLogic
 	Visible: False
 	Children:
 		Label@TITLE:
 			Width: PARENT_RIGHT
-			Y: 0 - 17
+			Y: 0 - 22
 			Text: Game Information
 			Align: Center
 			Font: BigBold
 			Contrast: true
 		Container@TAB_CONTAINER_2:
+			X: 0 - 140 + 1
 			Visible: False
 			Children:
 				Button@BUTTON1:
-					Y: 5
 					Width: 140
 					Height: 35
 				Button@BUTTON2:
-					X: 150
-					Y: 5
+					Y: 45
 					Width: 140
 					Height: 35
 		Container@TAB_CONTAINER_3:
+			X: 0 - 140 + 1
 			Visible: False
 			Children:
 				Button@BUTTON1:
-					Y: 5
 					Width: 140
 					Height: 35
 				Button@BUTTON2:
-					X: 150
-					Y: 5
+					Y: 45
 					Width: 140
 					Height: 35
 				Button@BUTTON3:
-					X: 300
-					Y: 5
+					Y: 90
 					Width: 140
 					Height: 35
 		Container@TAB_CONTAINER_4:
+			X: 0 - 140 + 1
 			Visible: False
 			Children:
 				Button@BUTTON1:
-					Y: 5
-					Width: 121
+					Width: 140
 					Height: 35
 				Button@BUTTON2:
-					X: 131
-					Y: 5
-					Width: 120
+					Y: 45
+					Width: 140
 					Height: 35
 				Button@BUTTON3:
-					X: 261
-					Y: 5
-					Width: 120
+					Y: 90
+					Width: 140
 					Height: 35
 				Button@BUTTON4:
-					X: 391
-					Y: 5
-					Width: 121
+					Y: 135
+					Width: 140
 					Height: 35
 		Container@TAB_CONTAINER_5:
+			X: 0 - 140 + 1
 			Visible: False
 			Children:
 				Button@BUTTON1:
-					Y: 5
-					Width: 99
+					Width: 140
 					Height: 35
 				Button@BUTTON2:
-					X: 104
-					Y: 5
-					Width: 98
+					Y: 45
+					Width: 140
 					Height: 35
 				Button@BUTTON3:
-					X: 207
-					Y: 5
-					Width: 98
+					Y: 90
+					Width: 140
 					Height: 35
 				Button@BUTTON4:
-					X: 310
-					Y: 5
-					Width: 98
+					Y: 135
+					Width: 140
 					Height: 35
 				Button@BUTTON5:
-					X: 413
-					Y: 5
-					Width: 99
+					Y: 180
+					Width: 140
 					Height: 35
 		Background@BACKGROUND:
-			Y: 39
 			Width: PARENT_RIGHT
 			Height: PARENT_BOTTOM
 			Background: panel-black
