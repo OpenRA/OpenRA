@@ -3,217 +3,266 @@ Container@INPUT_PANEL:
 	Width: PARENT_RIGHT
 	Height: PARENT_BOTTOM
 	Children:
-		Label@INPUT_TITLE:
-			Y: 21
+		ScrollPanel@SETTINGS_SCROLLPANEL:
 			Width: PARENT_RIGHT
-			Font: Bold
-			Text: Input
-			Align: Center
-		Label@MOUSE_CONTROL_LABEL:
-			X: 15
-			Y: 40
-			Width: 110
-			Height: 25
-			Font: Regular
-			Text: Control Scheme:
-			Align: Right
-		DropDownButton@MOUSE_CONTROL_DROPDOWN:
-			X: 130
-			Y: 40
-			Width: 150
-			Height: 25
-			Font: Regular
-		Container@MOUSE_CONTROL_DESC_CLASSIC:
-			X: 25
-			Y: 70
-			Width: 300
+			Height: PARENT_BOTTOM
+			CollapseHiddenChildren: True
+			TopBottomSpacing: 5
+			ItemSpacing: 10
 			Children:
-				LabelWithHighlight@DESC_SELECTION:
-					Height: 16
-					Font: Small
-					Text: - Select units using the {Left} mouse button
-				LabelWithHighlight@DESC_COMMANDS:
-					Y: 17
-					Height: 16
-					Font: Small
-					Text: - Command units using the {Left} mouse button
-				LabelWithHighlight@DESC_BUILDIGS:
-					Y: 34
-					Height: 16
-					Font: Small
-					Text: - Place structures using the {Left} mouse button
-				LabelWithHighlight@DESC_SUPPORT:
-					Y: 51
-					Height: 16
-					Font: Small
-					Text: - Target support powers using the {Left} mouse button
-				LabelWithHighlight@DESC_ZOOM:
-					Y: 68
-					Height: 16
-					Font: Small
-					Text: - Zoom the battlefield using the {Scroll Wheel}
-				LabelWithHighlight@DESC_ZOOM_MODIFIER:
-					Y: 68
-					Height: 16
-					Font: Small
-					Text: - Zoom the battlefield using {MODIFIER + Scroll Wheel}
-				LabelWithHighlight@DESC_SCROLL_RIGHT:
-					Y: 85
-					Height: 16
-					Font: Small
-					Text: - Pan the battlefield using the {Right} mouse button
-				LabelWithHighlight@DESC_SCROLL_MIDDLE:
-					Y: 85
-					Height: 16
-					Font: Small
-					Text: - Pan the battlefield using the {Middle} mouse button
-				Label@DESC_EDGESCROLL:
-					X: 9
-					Y: 102
-					Height: 16
-					Font: Small
-					Text: or by moving the cursor to the edge of the screen
-		Container@MOUSE_CONTROL_DESC_MODERN:
-			X: 25
-			Y: 70
-			Width: 300
-			Children:
-				LabelWithHighlight@DESC_SELECTION:
-					Height: 16
-					Font: Small
-					Text: - Select units using the {Left} mouse button
-				LabelWithHighlight@DESC_COMMANDS:
-					Y: 17
-					Height: 16
-					Font: Small
-					Text: - Command units using the {Right} mouse button
-				LabelWithHighlight@DESC_BUILDIGS:
-					Y: 34
-					Height: 16
-					Font: Small
-					Text: - Place structures using the {Left} mouse button
-				LabelWithHighlight@DESC_SUPPORT:
-					Y: 51
-					Height: 16
-					Font: Small
-					Text: - Target support powers using the {Left} mouse button
-				LabelWithHighlight@DESC_ZOOM:
-					Y: 68
-					Height: 16
-					Font: Small
-					Text: - Zoom the battlefield using the {Scroll Wheel}
-				LabelWithHighlight@DESC_ZOOM_MODIFIER:
-					Y: 68
-					Height: 16
-					Font: Small
-					Text: - Zoom the battlefield using {MODIFIER + Scroll Wheel}
-				LabelWithHighlight@DESC_SCROLL_RIGHT:
-					Y: 85
-					Height: 16
-					Font: Small
-					Text: - Pan the battlefield using the {Right} mouse button
-				LabelWithHighlight@DESC_SCROLL_MIDDLE:
-					Y: 85
-					Height: 16
-					Font: Small
-					Text: - Pan the battlefield using the {Middle} mouse button
-				Label@DESC_EDGESCROLL:
-					X: 9
-					Y: 102
-					Height: 16
-					Font: Small
-					Text: or by moving the cursor to the edge of the screen
-		Label@MOUSE_SCROLL_TYPE_LABEL:
-			X: 15
-			Y: 210
-			Width: 110
-			Height: 25
-			Font: Regular
-			Text: Pan Behaviour:
-			Align: Right
-		DropDownButton@MOUSE_SCROLL_TYPE_DROPDOWN:
-			X: 130
-			Y: 210
-			Width: 150
-			Height: 25
-			Font: Regular
-		Checkbox@LOCKMOUSE_CHECKBOX:
-			X: 15
-			Y: 243
-			Width: 190
-			Height: 20
-			Font: Regular
-			Text: Lock Mouse to Window
-		Label@ZOOM_MODIFIER_LABEL:
-			X: 350
-			Y: 70
-			Width: 70
-			Height: 25
-			Font: Regular
-			Text: Zoom Modifier:
-			Align: Right
-		DropDownButton@ZOOM_MODIFIER:
-			X: 425
-			Y: 70
-			Width: 150
-			Height: 25
-			Font: Regular
-		Checkbox@EDGESCROLL_CHECKBOX:
-			X: 360
-			Y: 103
-			Width: 180
-			Height: 20
-			Font: Regular
-			Text: Screen Edge Panning
-		Checkbox@ALTERNATE_SCROLL_CHECKBOX:
-			X: 360
-			Y: 133
-			Width: 180
-			Height: 20
-			Font: Regular
-			Text: Alternate Mouse Panning
-		Label@SCROLL_SPEED_LABEL:
-			X: 310
-			Y: 210
-			Width: 100
-			Height: 25
-			Text: Pan Speed:
-			Align: Right
-		Slider@SCROLLSPEED_SLIDER:
-			X: 415
-			Y: 215
-			Width: 160
-			Height: 20
-			Ticks: 5
-			MinimumValue: 10
-			MaximumValue: 50
-		Label@ZOOM_SPEED_LABEL:
-			X: 310
-			Y: 240
-			Width: 100
-			Height: 25
-			Text: Zoom Speed:
-			Align: Right
-		ExponentialSlider@ZOOMSPEED_SLIDER:
-			X: 415
-			Y: 245
-			Width: 160
-			Height: 20
-			Ticks: 5
-			MinimumValue: 0.01
-			MaximumValue: 0.4
-		Label@UI_SCROLL_SPEED_LABEL:
-			X: 310
-			Y: 270
-			Width: 100
-			Height: 25
-			Text: UI Scroll Speed:
-			Align: Right
-		Slider@UI_SCROLLSPEED_SLIDER:
-			X: 415
-			Y: 275
-			Width: 160
-			Height: 20
-			Ticks: 5
-			MinimumValue: 1
-			MaximumValue: 100
+				Background@SECTION_HEADER:
+					X: 5
+					Width: PARENT_RIGHT - 24 - 10
+					Height: 13
+					Background: separator
+					Children:
+						Label@LABEL:
+							Width: PARENT_RIGHT
+							Height: PARENT_BOTTOM
+							Font: TinyBold
+							Align: Center
+							Text: Input
+				Container@ROW:
+					Width: PARENT_RIGHT - 24
+					Height: 50
+					Children:
+						Container@MOUSE_CONTROL_CONTAINER:
+							X: 10
+							Width: PARENT_RIGHT / 2 - 20
+							Children:
+								Label@MOUSE_CONTROL_LABEL:
+									Width: PARENT_RIGHT
+									Height: 20
+									Font: Regular
+									Text: Control Scheme:
+								DropDownButton@MOUSE_CONTROL_DROPDOWN:
+									Y: 25
+									Width: PARENT_RIGHT
+									Height: 25
+									Font: Regular
+						Container@ZOOM_MODIFIER_CONTAINER:
+							X: PARENT_RIGHT / 2 + 10
+							Width: PARENT_RIGHT / 2 - 20
+							Children:
+								Label@ZOOM_MODIFIER_LABEL:
+									Width: PARENT_RIGHT
+									Height: 20
+									Font: Regular
+									Text: Zoom Modifier:
+								DropDownButton@ZOOM_MODIFIER:
+									Y: 25
+									Width: PARENT_RIGHT
+									Height: 25
+									Font: Regular
+						Container@MOUSE_CONTROL_DESC_CLASSIC:
+							X: 10
+							Y: 55
+							Width: PARENT_RIGHT
+							Children:
+								LabelWithHighlight@DESC_SELECTION:
+									Height: 16
+									Font: Small
+									Text: - Select units using the {Left} mouse button
+								LabelWithHighlight@DESC_COMMANDS:
+									Y: 17
+									Height: 16
+									Font: Small
+									Text: - Command units using the {Left} mouse button
+								LabelWithHighlight@DESC_BUILDIGS:
+									Y: 34
+									Height: 16
+									Font: Small
+									Text: - Place structures using the {Left} mouse button
+								LabelWithHighlight@DESC_SUPPORT:
+									Y: 51
+									Height: 16
+									Font: Small
+									Text: - Target support powers using the {Left} mouse button
+								LabelWithHighlight@DESC_ZOOM:
+									Y: 68
+									Height: 16
+									Font: Small
+									Text: - Zoom the battlefield using the {Scroll Wheel}
+								LabelWithHighlight@DESC_ZOOM_MODIFIER:
+									Y: 68
+									Height: 16
+									Font: Small
+									Text: - Zoom the battlefield using {MODIFIER + Scroll Wheel}
+								LabelWithHighlight@DESC_SCROLL_RIGHT:
+									Y: 85
+									Height: 16
+									Font: Small
+									Text: - Pan the battlefield using the {Right} mouse button
+								LabelWithHighlight@DESC_SCROLL_MIDDLE:
+									Y: 85
+									Height: 16
+									Font: Small
+									Text: - Pan the battlefield using the {Middle} mouse button
+								Label@DESC_EDGESCROLL:
+									X: 9
+									Y: 102
+									Height: 16
+									Font: Small
+									Text: or by moving the cursor to the edge of the screen
+						Container@MOUSE_CONTROL_DESC_MODERN:
+							X: 10
+							Y: 55
+							Width: PARENT_RIGHT / 2 - 20
+							Children:
+								LabelWithHighlight@DESC_SELECTION:
+									Height: 16
+									Font: Small
+									Text: - Select units using the {Left} mouse button
+								LabelWithHighlight@DESC_COMMANDS:
+									Y: 17
+									Height: 16
+									Font: Small
+									Text: - Command units using the {Right} mouse button
+								LabelWithHighlight@DESC_BUILDIGS:
+									Y: 34
+									Height: 16
+									Font: Small
+									Text: - Place structures using the {Left} mouse button
+								LabelWithHighlight@DESC_SUPPORT:
+									Y: 51
+									Height: 16
+									Font: Small
+									Text: - Target support powers using the {Left} mouse button
+								LabelWithHighlight@DESC_ZOOM:
+									Y: 68
+									Height: 16
+									Font: Small
+									Text: - Zoom the battlefield using the {Scroll Wheel}
+								LabelWithHighlight@DESC_ZOOM_MODIFIER:
+									Y: 68
+									Height: 16
+									Font: Small
+									Text: - Zoom the battlefield using {MODIFIER + Scroll Wheel}
+								LabelWithHighlight@DESC_SCROLL_RIGHT:
+									Y: 85
+									Height: 16
+									Font: Small
+									Text: - Pan the battlefield using the {Right} mouse button
+								LabelWithHighlight@DESC_SCROLL_MIDDLE:
+									Y: 85
+									Height: 16
+									Font: Small
+									Text: - Pan the battlefield using the {Middle} mouse button
+								Label@DESC_EDGESCROLL:
+									X: 9
+									Y: 102
+									Height: 16
+									Font: Small
+									Text: or by moving the cursor to the edge of the screen
+				Container@ROW:
+					Width: PARENT_RIGHT - 24
+					Height: 20
+					Children:
+						Container@EDGESCROLL_CHECKBOX_CONTAINER:
+							X: PARENT_RIGHT / 2 + 10
+							Width: PARENT_RIGHT / 2 - 20
+							Children:
+								Checkbox@EDGESCROLL_CHECKBOX:
+									Width: PARENT_RIGHT
+									Height: 20
+									Font: Regular
+									Text: Screen Edge Panning
+				Container@ROW:
+					Width: PARENT_RIGHT - 24
+					Height: 20
+					Children:
+						Container@ALTERNATE_SCROLL_CHECKBOX_CONTAINER:
+							X: PARENT_RIGHT / 2 + 10
+							Width: PARENT_RIGHT / 2 - 20
+							Children:
+								Checkbox@ALTERNATE_SCROLL_CHECKBOX:
+									Width: PARENT_RIGHT
+									Height: 20
+									Font: Regular
+									Text: Alternate Mouse Panning
+				Container@ROW:
+					Width: PARENT_RIGHT - 24
+					Height: 20
+					Children:
+						Container@LOCKMOUSE_CHECKBOX_CONTAINER:
+							X: PARENT_RIGHT / 2 + 10
+							Width: PARENT_RIGHT / 2 - 20
+							Children:
+								Checkbox@LOCKMOUSE_CHECKBOX:
+									Width: PARENT_RIGHT
+									Height: 20
+									Font: Regular
+									Text: Lock Mouse to Window
+				Container@SPACER:
+					Height: 30
+				Container@ROW:
+					Width: PARENT_RIGHT - 24
+					Height: 50
+					Children:
+						Container@MOUSE_SCROLL_TYPE_CONTAINER:
+							X: 10
+							Width: PARENT_RIGHT / 2 - 20
+							Children:
+								Label@MOUSE_SCROLL_TYPE_LABEL:
+									Width: PARENT_RIGHT
+									Height: 20
+									Font: Regular
+									Text: Pan Behaviour:
+								DropDownButton@MOUSE_SCROLL_TYPE_DROPDOWN:
+									Y: 25
+									Width: PARENT_RIGHT
+									Height: 25
+									Font: Regular
+						Container@SCROLLSPEED_SLIDER_CONTAINER:
+							X: PARENT_RIGHT / 2 + 10
+							Width: PARENT_RIGHT / 2 - 20
+							Children:
+								Label@SCROLL_SPEED_LABEL:
+									Width: PARENT_RIGHT
+									Height: 20
+									Text: Pan Speed:
+								Slider@SCROLLSPEED_SLIDER:
+									Y: 25
+									Width: PARENT_RIGHT
+									Height: 20
+									Ticks: 7
+									MinimumValue: 10
+									MaximumValue: 50
+				Container@ROW:
+					Width: PARENT_RIGHT - 24
+					Height: 50
+					Children:
+						Container@ZOOMSPEED_SLIDER_CONTAINER:
+							X: PARENT_RIGHT / 2 + 10
+							Width: PARENT_RIGHT / 2 - 20
+							Children:
+								Label@ZOOM_SPEED_LABEL:
+									Width: PARENT_RIGHT
+									Height: 20
+									Text: Zoom Speed:
+								ExponentialSlider@ZOOMSPEED_SLIDER:
+									Y: 25
+									Width: PARENT_RIGHT
+									Height: 20
+									Ticks: 7
+									MinimumValue: 0.01
+									MaximumValue: 0.4
+				Container@ROW:
+					Width: PARENT_RIGHT - 24
+					Height: 50
+					Children:
+						Container@UI_SCROLLSPEED_SLIDER_CONTAINER:
+							X: PARENT_RIGHT / 2 + 10
+							Width: PARENT_RIGHT / 2 - 20
+							Children:
+								Label@UI_SCROLL_SPEED_LABEL:
+									Width: PARENT_RIGHT
+									Height: 20
+									Text: UI Scroll Speed:
+								Slider@UI_SCROLLSPEED_SLIDER:
+									Y: 25
+									Width: PARENT_RIGHT
+									Height: 20
+									Ticks: 7
+									MinimumValue: 1
+									MaximumValue: 100

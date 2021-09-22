@@ -448,6 +448,9 @@ dropdown-separators:
 		separator-pressed: 129, 34, 1, 19
 		separator-disabled: 161, 34, 1, 19
 
+separator:
+	Inherits: button
+
 #
 # Common chrome
 # ===

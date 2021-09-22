@@ -1,6 +1,6 @@
 Background@SETTINGS_PANEL:
 	Logic: SettingsLogic
-		ButtonStride: 90, 0
+		ButtonStride: 0, 35
 		Panels:
 			DISPLAY_PANEL: Display
 			AUDIO_PANEL: Audio
@@ -9,8 +9,8 @@ Background@SETTINGS_PANEL:
 			ADVANCED_PANEL: Advanced
 	X: (WINDOW_RIGHT - WIDTH) / 2
 	Y: (WINDOW_BOTTOM -  HEIGHT) / 2
-	Width: 600
-	Height: 400
+	Width: 900
+	Height: 600
 	Children:
 		Label@SETTINGS_LABEL_TITLE:
 			Y: 20
@@ -20,7 +20,7 @@ Background@SETTINGS_PANEL:
 			Align: Center
 			Font: Bold
 		Button@RESET_BUTTON:
-			X: 20
+			X: 20 + 10 + WIDTH
 			Y: PARENT_BOTTOM - 45
 			Width: 160
 			Height: 25
@@ -34,14 +34,14 @@ Background@SETTINGS_PANEL:
 			Height: 25
 			Text: Back
 			Font: Bold
-		Container@TAB_CONTAINER:
-			X: 70
+		Container@SETTINGS_TAB_CONTAINER:
+			X: 20
 			Y: 50
 			Width: PARENT_RIGHT
 			Height: 25
 			Children:
 				Button@BUTTON_TEMPLATE:
-					Width: 90
+					Width: 160
 					Height: 25
 					Font: Bold
 		Container@PANEL_CONTAINER:
@@ -49,8 +49,8 @@ Background@SETTINGS_PANEL:
 			Height: PARENT_BOTTOM
 			Children:
 				Container@PANEL_TEMPLATE:
-					X: 5
+					X: 190
 					Y: 50
-					Width: PARENT_RIGHT
-					Height: PARENT_BOTTOM
+					Width: PARENT_RIGHT - 190 - 20
+					Height: PARENT_BOTTOM - 105
 		TooltipContainer@SETTINGS_TOOLTIP_CONTAINER:

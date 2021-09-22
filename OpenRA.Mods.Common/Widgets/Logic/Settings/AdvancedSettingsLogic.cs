@@ -35,6 +35,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var ds = Game.Settings.Debug;
 			var ss = Game.Settings.Server;
 			var gs = Game.Settings.Game;
+			var scrollPanel = panel.Get<ScrollPanelWidget>("SETTINGS_SCROLLPANEL");
 
 			// Advanced
 			SettingsUtils.BindCheckboxPref(panel, "NAT_DISCOVERY", ss, "DiscoverNatDevices");
@@ -55,8 +56,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			SettingsUtils.BindCheckboxPref(panel, "CHECKBOTSYNC_CHECKBOX", ds, "SyncCheckBotModuleCode");
 			SettingsUtils.BindCheckboxPref(panel, "PERFLOGGING_CHECKBOX", ds, "EnableSimulationPerfLogging");
 
-			panel.Get("DEBUG_OPTIONS").IsVisible = () => ds.DisplayDeveloperSettings;
-			panel.Get("DEBUG_HIDDEN_LABEL").IsVisible = () => !ds.DisplayDeveloperSettings;
+			panel.Get("BOTDEBUG_CHECKBOX_CONTAINER").IsVisible = () => ds.DisplayDeveloperSettings;
+			panel.Get("CHECKUNSYNCED_CHECKBOX_CONTAINER").IsVisible = () => ds.DisplayDeveloperSettings;
+			panel.Get("CHECKBOTSYNC_CHECKBOX_CONTAINER").IsVisible = () => ds.DisplayDeveloperSettings;
+			panel.Get("LUADEBUG_CHECKBOX_CONTAINER").IsVisible = () => ds.DisplayDeveloperSettings;
+			panel.Get("REPLAY_COMMANDS_CHECKBOX_CONTAINER").IsVisible = () => ds.DisplayDeveloperSettings;
+			panel.Get("PERFLOGGING_CHECKBOX_CONTAINER").IsVisible = () => ds.DisplayDeveloperSettings;
+			panel.Get("DEBUG_HIDDEN_CONTAINER").IsVisible = () => !ds.DisplayDeveloperSettings;
+
+			SettingsUtils.AdjustSettingsScrollPanelLayout(scrollPanel);
 
 			return () => ss.DiscoverNatDevices != OriginalServerDiscoverNatDevices;
 		}

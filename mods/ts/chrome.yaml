@@ -702,6 +702,9 @@ dropdown-separators:
 		separator-pressed: 766, 2, 1, 19
 		separator-disabled: 513, 258, 1, 19
 
+separator:
+	Inherits: button
+
 logos:
 	Inherits: ^LoadScreen
 	Regions:
