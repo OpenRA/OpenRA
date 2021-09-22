@@ -1,6 +1,6 @@
 Container@SETTINGS_PANEL:
 	Logic: SettingsLogic
-		ButtonStride: 120, 0
+		ButtonStride: 0, 45
 		Panels:
 			DISPLAY_PANEL: Display
 			AUDIO_PANEL: Audio
@@ -9,40 +9,42 @@ Container@SETTINGS_PANEL:
 			ADVANCED_PANEL: Advanced
 	X: (WINDOW_RIGHT - WIDTH) / 2
 	Y: (WINDOW_BOTTOM - HEIGHT) / 2
-	Width: 590
-	Height: 328
+	Width: 640
+	Height: 435
 	Children:
 		Label@TITLE:
-			Width: 590
+			Width: PARENT_RIGHT
 			Y: 0 - 22
 			Font: BigBold
 			Contrast: true
 			Align: Center
 			Text: Settings
-		Container@TAB_CONTAINER:
-			Children:
-				Button@BUTTON_TEMPLATE:
-					Width: 110
-					Height: 35
-		Background@PANEL_CONTAINER:
-			Y: 34
-			Width: 590
-			Height: 310
-			Background: panel-black
-			Children:
-				Container@PANEL_TEMPLATE:
-					Width: PARENT_RIGHT
-					Height: PARENT_BOTTOM
 		Button@BACK_BUTTON:
 			Key: escape
-			Y: 343
+			Y: PARENT_BOTTOM - 1
 			Width: 140
 			Height: 35
 			Text: Back
 		Button@RESET_BUTTON:
 			X: 150
-			Y: 343
+			Y: PARENT_BOTTOM - 1
 			Width: 140
 			Height: 35
 			Text: Reset
+		Container@SETTINGS_TAB_CONTAINER:
+			X: 0 - 140 + 1
+			Children:
+				Button@BUTTON_TEMPLATE:
+					Width: 140
+					Height: 35
+		Background@PANEL_CONTAINER:
+			Width: PARENT_RIGHT
+			Height: PARENT_BOTTOM
+			Background: panel-black
+			Children:
+				Container@PANEL_TEMPLATE:
+					X: 15
+					Y: 15
+					Width: PARENT_RIGHT - 30
+					Height: PARENT_BOTTOM - 30
 		TooltipContainer@SETTINGS_TOOLTIP_CONTAINER:

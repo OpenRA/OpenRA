@@ -43,6 +43,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var musicPlaylist = worldRenderer.World.WorldActor.Trait<MusicPlaylist>();
 			var ss = Game.Settings.Sound;
+			var scrollPanel = panel.Get<ScrollPanelWidget>("SETTINGS_SCROLLPANEL");
 
 			SettingsUtils.BindCheckboxPref(panel, "CASH_TICKS", ss, "CashTicks");
 			SettingsUtils.BindCheckboxPref(panel, "MUTE_SOUND", ss, "Mute");
@@ -81,13 +82,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			// Replace controls with a warning label if sound is disabled
-			var noDeviceLabel = panel.GetOrNull("NO_AUDIO_DEVICE");
+			var noDeviceLabel = panel.GetOrNull("NO_AUDIO_DEVICE_CONTAINER");
 			if (noDeviceLabel != null)
 				noDeviceLabel.Visible = Game.Sound.DummyEngine;
 
-			var controlsContainer = panel.GetOrNull("AUDIO_CONTROLS");
-			if (controlsContainer != null)
-				controlsContainer.Visible = !Game.Sound.DummyEngine;
+			panel.Get("CASH_TICKS_CONTAINER").Visible = !Game.Sound.DummyEngine;
+			panel.Get("MUTE_SOUND_CONTAINER").Visible = !Game.Sound.DummyEngine;
+			panel.Get("MUTE_BACKGROUND_MUSIC_CONTAINER").Visible = !Game.Sound.DummyEngine;
+			panel.Get("SOUND_VOLUME_CONTAINER").Visible = !Game.Sound.DummyEngine;
+			panel.Get("MUSIC_VOLUME_CONTAINER").Visible = !Game.Sound.DummyEngine;
+			panel.Get("VIDEO_VOLUME_CONTAINER").Visible = !Game.Sound.DummyEngine;
 
 			var soundVolumeSlider = panel.Get<SliderWidget>("SOUND_VOLUME");
 			soundVolumeSlider.OnChange += x => Game.Sound.SoundVolume = x;
@@ -102,12 +106,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			soundDevice = devices.FirstOrDefault(d => d.Device == ss.Device) ?? devices.First();
 
 			var audioDeviceDropdown = panel.Get<DropDownButtonWidget>("AUDIO_DEVICE");
-			audioDeviceDropdown.OnMouseDown = _ => ShowAudioDeviceDropdown(audioDeviceDropdown, devices);
+			audioDeviceDropdown.OnMouseDown = _ => ShowAudioDeviceDropdown(audioDeviceDropdown, devices, scrollPanel);
 
 			var deviceFont = Game.Renderer.Fonts[audioDeviceDropdown.Font];
 			var deviceLabel = new CachedTransform<SoundDevice, string>(
 				s => WidgetUtils.TruncateText(s.Label, audioDeviceDropdown.UsableWidth, deviceFont));
 			audioDeviceDropdown.GetText = () => deviceLabel.Update(soundDevice);
+
+			var restartDesc = panel.Get("RESTART_REQUIRED_DESC");
+			restartDesc.IsVisible = () => soundDevice.Device != OriginalSoundDevice;
+
+			SettingsUtils.AdjustSettingsScrollPanelLayout(scrollPanel);
 
 			return () =>
 			{
@@ -142,7 +151,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 		}
 
-		void ShowAudioDeviceDropdown(DropDownButtonWidget dropdown, SoundDevice[] devices)
+		void ShowAudioDeviceDropdown(DropDownButtonWidget dropdown, SoundDevice[] devices, ScrollPanelWidget scrollPanel)
 		{
 			var i = 0;
 			var options = devices.ToDictionary(d => (i++).ToString(), d => d);
@@ -151,7 +160,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				var item = ScrollItemWidget.Setup(itemTemplate,
 					() => soundDevice == options[o],
-					() => soundDevice = options[o]);
+					() =>
+					{
+						soundDevice = options[o];
+						SettingsUtils.AdjustSettingsScrollPanelLayout(scrollPanel);
+					});
 
 				var deviceLabel = item.Get<LabelWidget>("LABEL");
 				var font = Game.Renderer.Fonts[deviceLabel.Font];

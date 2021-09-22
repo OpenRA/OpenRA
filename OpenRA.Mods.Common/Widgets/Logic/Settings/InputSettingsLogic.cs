@@ -28,6 +28,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		Func<bool> InitPanel(Widget panel)
 		{
 			var gs = Game.Settings.Game;
+			var scrollPanel = panel.Get<ScrollPanelWidget>("SETTINGS_SCROLLPANEL");
 
 			SettingsUtils.BindCheckboxPref(panel, "ALTERNATE_SCROLL_CHECKBOX", gs, "UseAlternateScrollButton");
 			SettingsUtils.BindCheckboxPref(panel, "EDGESCROLL_CHECKBOX", gs, "ViewportEdgeScroll");
@@ -88,6 +89,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var zoomModifierDropdown = panel.Get<DropDownButtonWidget>("ZOOM_MODIFIER");
 			zoomModifierDropdown.OnMouseDown = _ => ShowZoomModifierDropdown(zoomModifierDropdown, gs);
 			zoomModifierDropdown.GetText = () => gs.ZoomModifier.ToString();
+
+			SettingsUtils.AdjustSettingsScrollPanelLayout(scrollPanel);
 
 			return () => false;
 		}

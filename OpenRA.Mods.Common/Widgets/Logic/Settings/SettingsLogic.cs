@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var panelTemplate = panelContainer.Get<ContainerWidget>("PANEL_TEMPLATE");
 			panelContainer.RemoveChild(panelTemplate);
 
-			tabContainer = widget.Get("TAB_CONTAINER");
+			tabContainer = widget.Get("SETTINGS_TAB_CONTAINER");
 			tabTemplate = tabContainer.Get<ButtonWidget>("BUTTON_TEMPLATE");
 			tabContainer.RemoveChild(tabTemplate);
 

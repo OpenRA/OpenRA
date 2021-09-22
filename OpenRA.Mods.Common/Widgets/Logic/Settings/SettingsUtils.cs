@@ -48,5 +48,30 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			ss.Value = (float)(int)field.GetValue(group);
 			ss.OnChange += x => field.SetValue(group, (int)x);
 		}
+
+		public static void AdjustSettingsScrollPanelLayout(ScrollPanelWidget scrollPanel)
+		{
+			foreach (var row in scrollPanel.Children)
+			{
+				if (row.Children.Count == 0)
+					continue;
+
+				var hasVisibleChildren = false;
+
+				foreach (var container in row.Children)
+				{
+					if (container.IsVisible())
+					{
+						hasVisibleChildren = true;
+						break;
+					}
+				}
+
+				if (!hasVisibleChildren)
+					row.Visible = false;
+			}
+
+			scrollPanel.Layout.AdjustChildren();
+		}
 	}
 }

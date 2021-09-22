@@ -64,6 +64,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var ds = Game.Settings.Graphics;
 			var gs = Game.Settings.Game;
+			var scrollPanel = panel.Get<ScrollPanelWidget>("SETTINGS_SCROLLPANEL");
 
 			SettingsUtils.BindCheckboxPref(panel, "CURSORDOUBLE_CHECKBOX", ds, "CursorDouble");
 			SettingsUtils.BindCheckboxPref(panel, "VSYNC_CHECKBOX", ds, "VSync");
@@ -74,7 +75,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				SettingsUtils.BindCheckboxPref(panel, "PAUSE_SHELLMAP_CHECKBOX", gs, "PauseShellmap");
 
 			var windowModeDropdown = panel.Get<DropDownButtonWidget>("MODE_DROPDOWN");
-			windowModeDropdown.OnMouseDown = _ => ShowWindowModeDropdown(windowModeDropdown, ds);
+			windowModeDropdown.OnMouseDown = _ => ShowWindowModeDropdown(windowModeDropdown, ds, scrollPanel);
 			windowModeDropdown.GetText = () => ds.Mode == WindowMode.Windowed ?
 				"Windowed" : ds.Mode == WindowMode.Fullscreen ? "Fullscreen (Legacy)" : "Fullscreen";
 
@@ -130,8 +131,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			uiScaleDropdown.IsDisabled = () => disableUIScale;
 
-			panel.Get("DISPLAY_SELECTION").IsVisible = () => ds.Mode != WindowMode.Windowed;
-			panel.Get("WINDOW_RESOLUTION").IsVisible = () => ds.Mode == WindowMode.Windowed;
+			panel.Get("DISPLAY_SELECTION_CONTAINER").IsVisible = () => ds.Mode != WindowMode.Windowed;
+			panel.Get("WINDOW_RESOLUTION_CONTAINER").IsVisible = () => ds.Mode == WindowMode.Windowed;
 			var windowWidth = panel.Get<TextFieldWidget>("WINDOW_WIDTH");
 			var origWidthText = windowWidth.Text = ds.WindowedSize.X.ToString();
 
@@ -147,6 +148,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var frameLimitOrigLabel = frameLimitCheckbox.Text;
 			var frameLimitLabel = new CachedTransform<int, string>(fps => frameLimitOrigLabel + $" ({fps} FPS)");
 			frameLimitCheckbox.GetText = () => frameLimitLabel.Update(ds.MaxFramerate);
+
+			panel.Get<SliderWidget>("FRAME_LIMIT_SLIDER").IsDisabled = () => !frameLimitCheckbox.IsChecked();
 
 			// Player profile
 			var ps = Game.Settings.Player;
@@ -193,6 +196,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				Game.Settings.Save();
 			});
 			colorDropdown.Get<ColorBlockWidget>("COLORBLOCK").GetColor = () => ps.Color;
+
+			SettingsUtils.AdjustSettingsScrollPanelLayout(scrollPanel);
 
 			return () =>
 			{
@@ -244,7 +249,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 		}
 
-		static void ShowWindowModeDropdown(DropDownButtonWidget dropdown, GraphicSettings s)
+		static void ShowWindowModeDropdown(DropDownButtonWidget dropdown, GraphicSettings s, ScrollPanelWidget scrollPanel)
 		{
 			var options = new Dictionary<string, WindowMode>()
 			{
@@ -257,7 +262,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				var item = ScrollItemWidget.Setup(itemTemplate,
 					() => s.Mode == options[o],
-					() => s.Mode = options[o]);
+					() =>
+					{
+						s.Mode = options[o];
+						SettingsUtils.AdjustSettingsScrollPanelLayout(scrollPanel);
+					});
 
 				item.Get<LabelWidget>("LABEL").GetText = () => o;
 				return item;
@@ -393,9 +402,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			// HACK: Recalculate the widget bounds to fit within the new effective window bounds
 			// This is fragile, and only works when called when Settings is opened via the main menu.
 
-			// HACK: Skip children badges container on the main menu
-			// This has a fixed size, with calculated size and children positions that break if we adjust them here
-			if (w.Id == "BADGES_CONTAINER")
+			// HACK: Skip children badges container on the main menu and settings tab container
+			// These have a fixed size, with calculated size and children positions that break if we adjust them here
+			if (w.Id == "BADGES_CONTAINER" || w.Id == "SETTINGS_TAB_CONTAINER")
 				return;
 
 			var parentBounds = w.Parent == null
