@@ -1,28 +1,28 @@
 Container@MUSIC_PANEL:
 	Logic: MusicPlayerLogic
 	X: (WINDOW_RIGHT - WIDTH) / 2
-	Y: (WINDOW_BOTTOM - 400) / 2
-	Width: 360
+	Y: (WINDOW_BOTTOM - HEIGHT) / 2
+	Width: 410
 	Height: 435
 	Children:
 		LogicTicker@SONG_WATCHER:
 		Label@TITLE:
-			Width: 360
+			Width: PARENT_RIGHT
 			Y: 0 - 22
 			Font: BigBold
 			Contrast: true
 			Align: Center
 			Text: Music Player
 		Background@bg:
-			Width: 360
-			Height: 400
+			Width: PARENT_RIGHT
+			Height: PARENT_BOTTOM
 			Background: panel-black
 			Children:
 				ScrollPanel@MUSIC_LIST:
 					X: 15
 					Y: 30
-					Width: 330
-					Height: 275
+					Width: PARENT_RIGHT - 30
+					Height: PARENT_BOTTOM - 125
 					Children:
 						ScrollItem@MUSIC_TEMPLATE:
 							Width: PARENT_RIGHT - 27
@@ -46,7 +46,7 @@ Container@MUSIC_PANEL:
 				Container@LABEL_CONTAINER:
 					X: 25
 					Y: 4
-					Width: 330
+					Width: PARENT_RIGHT - 30
 					Children:
 						Label@TITLE:
 							Width: 100
@@ -64,7 +64,7 @@ Container@MUSIC_PANEL:
 				Container@BUTTONS:
 					X: 15
 					Y: PARENT_BOTTOM - HEIGHT - 40
-					Width: 170
+					Width: PARENT_RIGHT - 30
 					Children:
 						Button@BUTTON_PREV:
 							Width: 26
@@ -132,36 +132,36 @@ Container@MUSIC_PANEL:
 									ImageCollection: music
 									ImageName: next
 						ExponentialSlider@MUSIC_SLIDER:
-							X: 145
+							X: PARENT_RIGHT - WIDTH
 							Y: 3
-							Width: 185
+							Width: PARENT_RIGHT - 145
 							Height: 20
 							Ticks: 7
 				Label@TIME_LABEL:
 					X: (PARENT_RIGHT - WIDTH) / 2
-					Y: 317
+					Y: PARENT_BOTTOM - HEIGHT - 60 - 3
 					Width: 140
 					Height: 25
 					Align: Center
 				Checkbox@SHUFFLE:
 					X: 15
-					Y: 320
+					Y: PARENT_BOTTOM - HEIGHT - 60
 					Width: 85
 					Height: 20
 					Font: Regular
 					Text: Shuffle
 				Checkbox@REPEAT:
 					X: PARENT_RIGHT - 15 - WIDTH
-					Y: 320
+					Y: PARENT_BOTTOM - HEIGHT - 60
 					Width: 70
 					Height: 20
 					Font: Regular
 					Text: Loop
 				Container@NO_MUSIC_LABEL:
 					X: 15
-					Y: 121
-					Width: 330
-					Height: 60
+					Y: (PARENT_BOTTOM - HEIGHT - 60) / 2
+					Width: PARENT_RIGHT - 30
+					Height: 75
 					Visible: false
 					Children:
 						Label@TITLE:
@@ -185,13 +185,13 @@ Container@MUSIC_PANEL:
 		Button@BACK_BUTTON:
 			Key: escape
 			X: 0
-			Y: 399
+			Y: PARENT_BOTTOM - 1
 			Width: 140
 			Height: 35
 			Text: Back
 		Label@MUTE_LABEL:
 			X: 100
-			Y: 339
+			Y: PARENT_BOTTOM - 60 - 3
 			Width: 300
 			Height: 20
 			Font: Small

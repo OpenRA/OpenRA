@@ -1,9 +1,9 @@
 Background@CREDITS_PANEL:
 	Logic: CreditsLogic
 	X: (WINDOW_RIGHT - WIDTH) / 2
-	Y: (WINDOW_BOTTOM - 400) / 2
+	Y: (WINDOW_BOTTOM - HEIGHT) / 2
 	Width: 410
-	Height: 450
+	Height: 500
 	Children:
 		Label@CREDITS_TITLE:
 			Width: PARENT_RIGHT
@@ -14,9 +14,9 @@ Background@CREDITS_PANEL:
 			Text: Credits
 		Container@TAB_CONTAINER:
 			Visible: False
-			X: 15
+			X: 20
 			Y: 50
-			Width: PARENT_RIGHT - 30
+			Width: PARENT_RIGHT - 40
 			Height: 30
 			Children:
 				Button@MOD_TAB:
@@ -30,10 +30,10 @@ Background@CREDITS_PANEL:
 					Text: OpenRA
 					Font: Bold
 		ScrollPanel@CREDITS_DISPLAY:
-			X: 15
+			X: 20
 			Y: 50
-			Width: PARENT_RIGHT - 30
-			Height: 345
+			Width: PARENT_RIGHT - 40
+			Height: 395
 			TopBottomSpacing: 8
 			Children:
 				Label@CREDITS_TEMPLATE:
