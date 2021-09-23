@@ -1,7 +1,7 @@
 Container@CREDITS_PANEL:
 	Logic: CreditsLogic
 	X: (WINDOW_RIGHT - WIDTH) / 2
-	Y: (WINDOW_BOTTOM - 400) / 2
+	Y: (WINDOW_BOTTOM - HEIGHT) / 2
 	Width: 410
 	Height: 435
 	Children:
@@ -14,7 +14,7 @@ Container@CREDITS_PANEL:
 			Text: Credits
 		Background@bg:
 			Width: PARENT_RIGHT
-			Height: 400
+			Height: PARENT_BOTTOM
 			Background: panel-black
 			Children:
 				Container@TAB_CONTAINER:
@@ -45,7 +45,7 @@ Container@CREDITS_PANEL:
 							Height: 16
 							VAlign: Top
 		Button@BACK_BUTTON:
-			Y: 399
+			Y: PARENT_BOTTOM - 1
 			Width: 140
 			Height: 35
 			Text: Back
