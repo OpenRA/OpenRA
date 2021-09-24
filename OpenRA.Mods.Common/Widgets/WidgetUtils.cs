@@ -11,6 +11,7 @@
 
 using System;
 using System.Linq;
+using System.Text;
 using OpenRA.Graphics;
 using OpenRA.Network;
 using OpenRA.Primitives;
@@ -214,46 +215,76 @@ namespace OpenRA.Mods.Common.Widgets
 			return $"{minutes:D}:{seconds % 60:D2}";
 		}
 
+		static void SplitLine(ReadOnlySpan<char> line, int width, SpriteFont font, StringBuilder sb)
+		{
+			// Scan forwards until we find the last word that fits
+			// This guarantees a small bound on the amount of string we need to search before a linebreak
+			var start = 0;
+			var posPrevSpace = 0;
+			for (var i = 0; i <= line.Length; ++i)
+			{
+				if (i == line.Length || line[i] == ' ')
+				{
+					var length = i - start;
+					if (length > 0)
+					{
+						var fragment = line.Slice(start, length);
+						if (font.Measure(fragment).X > width)
+						{
+							sb.Append(line.Slice(start, posPrevSpace - start)).Append('\n');
+							start = posPrevSpace + 1;
+						}
+
+						posPrevSpace = i;
+					}
+				}
+			}
+
+			sb.Append(line.Slice(start, line.Length - start));
+		}
+
 		public static string WrapText(string text, int width, SpriteFont font)
 		{
 			var textSize = font.Measure(text);
-			if (textSize.X > width)
+			if (textSize.X <= width)
+				return text;
+
+			var sb = new StringBuilder(text.Length * 2);
+			var span = text.AsSpan();
+			var lineStart = 0;
+			var i = 0;
+			var length = 0;
+
+			for (; i < span.Length; ++i)
 			{
-				var lines = text.Split('\n').ToList();
-
-				for (var i = 0; i < lines.Count; i++)
+				if (span[i] == '\n')
 				{
-					var line = lines[i];
-					if (font.Measure(line).X <= width)
-						continue;
-
-					// Scan forwards until we find the last word that fits
-					// This guarantees a small bound on the amount of string we need to search before a linebreak
-					var start = 0;
-					while (true)
+					length = i - lineStart;
+					if (length > 0)
 					{
-						var spaceIndex = line.IndexOf(' ', start);
-						if (spaceIndex == -1)
-							break;
-
-						var fragmentWidth = font.Measure(line.Substring(0, spaceIndex)).X;
-						if (fragmentWidth > width)
-							break;
-
-						start = spaceIndex + 1;
+						var line = span.Slice(lineStart, length);
+						if (font.Measure(line).X > width)
+							SplitLine(line, width, font, sb);
+						else
+							sb.Append(line);
 					}
 
-					if (start > 0)
-					{
-						lines[i] = line.Substring(0, start - 1);
-						lines.Insert(i + 1, line.Substring(start));
-					}
+					sb.Append('\n');
+					lineStart = i + 1;
 				}
-
-				return string.Join("\n", lines);
 			}
 
-			return text;
+			length = i - lineStart;
+			if (length > 0)
+			{
+				var line = span.Slice(lineStart, length);
+				if (font.Measure(line).X > width)
+					SplitLine(line, width, font, sb);
+				else
+					sb.Append(line);
+			}
+
+			return sb.ToString();
 		}
 
 		public static string TruncateText(string text, int width, SpriteFont font)

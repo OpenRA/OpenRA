@@ -227,20 +227,29 @@ namespace OpenRA.Graphics
 			DrawTextWithShadow(text, location, fg, GetContrastColor(fg, bgDark, bgLight), offset, angle);
 		}
 
-		public int2 Measure(string text)
+		public int2 Measure(ReadOnlySpan<char> text)
 		{
-			if (string.IsNullOrEmpty(text))
+			if (text == null || text.IsEmpty)
 				return new int2(0, size);
 
-			var lines = text.SplitLines('\n');
-
 			var maxWidth = 0f;
-			var rows = 0;
-			foreach (var line in lines)
+			var rows = 1;
+
+			var lineStart = 0;
+			var i = 0;
+			for (; i < text.Length; ++i)
 			{
-				rows++;
-				maxWidth = Math.Max(maxWidth, LineWidth(line));
+				if (text[i] == '\n')
+				{
+					var line = text.Slice(lineStart, i - lineStart);
+					maxWidth = Math.Max(maxWidth, LineWidth(line));
+					lineStart = i + 1;
+					rows++;
+				}
 			}
+
+			var lastLine = text.Slice(lineStart, i - lineStart);
+			maxWidth = Math.Max(maxWidth, LineWidth(lastLine));
 
 			return new int2((int)Math.Ceiling(maxWidth), rows * size);
 		}
