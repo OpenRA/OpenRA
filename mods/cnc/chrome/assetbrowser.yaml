@@ -2,8 +2,8 @@ Container@ASSETBROWSER_PANEL:
 	Logic: AssetBrowserLogic
 	X: (WINDOW_RIGHT - WIDTH) / 2
 	Y: (WINDOW_BOTTOM - HEIGHT) / 2
-	Width: 695
-	Height: 435
+	Width: 900
+	Height: 540
 	Children:
 		LogicTicker@ANIMATION_TICKER:
 		Label@ASSETBROWSER_TITLE:
@@ -15,36 +15,35 @@ Container@ASSETBROWSER_PANEL:
 			Text: Asset Browser
 		Background@bg:
 			Width: PARENT_RIGHT
-			Height: 435
+			Height: PARENT_BOTTOM
 			Background: panel-black
 			Children:
 				Label@SOURCE_SELECTOR_DESC:
 					X: 15
 					Y: 6
-					Width: 160
+					Width: 195
 					Height: 25
 					Font: TinyBold
 					Align: Center
 					Text: Select asset source
 				DropDownButton@SOURCE_SELECTOR:
 					X: 15
-					Y: 35
-					Width: 160
+					Y: 30
+					Width: 195
 					Height: 25
 					Font: Bold
 					Text: Folders
 				ScrollPanel@ASSET_LIST:
 					X: 15
 					Y: 65
-					Width: 160
-					Height: 275
+					Width: 195
+					Height: PARENT_BOTTOM - 170
 					CollapseHiddenChildren: True
 					Children:
 						ScrollItem@ASSET_TEMPLATE:
 							Width: PARENT_RIGHT - 27
 							Height: 25
 							X: 2
-							Y: 0
 							Visible: false
 							EnableChildMouseOver: True
 							Children:
@@ -56,16 +55,16 @@ Container@ASSETBROWSER_PANEL:
 									TooltipTemplate: SIMPLE_TOOLTIP
 				Label@FILENAME_DESC:
 					X: 15
-					Y: 341
-					Width: 160
+					Y: PARENT_BOTTOM - HEIGHT - 74
+					Width: 195
 					Height: 25
 					Font: TinyBold
 					Align: Center
 					Text: Filter by name
 				TextField@FILENAME_INPUT:
 					X: 15
-					Y: 365
-					Width: 160
+					Y: PARENT_BOTTOM - HEIGHT - 50
+					Width: 195
 					Height: 25
 					Type: Filename
 				Label@PALETTE_DESC:
@@ -94,10 +93,10 @@ Container@ASSETBROWSER_PANEL:
 							Width: PARENT_RIGHT - 35
 							Height: PARENT_BOTTOM - 12
 				Background@SPRITE_BG:
-					X: 190
+					X: 225
 					Y: 65
-					Width: 490
-					Height: 325
+					Width: PARENT_RIGHT - 195 - 45
+					Height: PARENT_BOTTOM - 115
 					Background: scrollpanel-bg
 					Children:
 						Sprite@SPRITE:
@@ -108,15 +107,15 @@ Container@ASSETBROWSER_PANEL:
 							Height: PARENT_BOTTOM
 							AspectRatio: 1
 						Label@ERROR:
-							X: 5
-							Width: 490 - 10
-							Height: 325
+							Width: PARENT_RIGHT
+							Height: PARENT_BOTTOM
 							Align: Center
 							Visible: false
 							Text: Error displaying file. See assetbrowser.log for details.
 				Container@FRAME_SELECTOR:
-					X: 190
-					Y: 395
+					X: 225
+					Y: PARENT_BOTTOM - 40
+					Width: PARENT_RIGHT - 225
 					Children:
 						Button@BUTTON_PREV:
 							Width: 26
@@ -186,19 +185,19 @@ Container@ASSETBROWSER_PANEL:
 						Slider@FRAME_SLIDER:
 							X: 140
 							Y: 3
-							Width: 300
+							Width: PARENT_RIGHT - 140 - 85
 							Height: 20
 							MinimumValue: 0
 						Label@FRAME_COUNT:
-							X: 445
+							X: PARENT_RIGHT - WIDTH + 5
 							Y: 1
-							Width: 40
+							Width: 80
 							Height: 25
 							Font: TinyBold
 							Align: Left
 		Button@CLOSE_BUTTON:
 			Key: escape
-			Y: 434
+			Y: PARENT_BOTTOM - 1
 			Width: 140
 			Height: 35
 			Text: Back
