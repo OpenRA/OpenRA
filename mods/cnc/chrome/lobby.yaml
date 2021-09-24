@@ -6,9 +6,9 @@ Container@SERVER_LOBBY:
 			Mission: CHAT_LINE_TEMPLATE
 			Feedback: TRANSIENT_LINE_TEMPLATE
 	X: (WINDOW_RIGHT - WIDTH) / 2
-	Y: (WINDOW_BOTTOM - 560) / 2
+	Y: (WINDOW_BOTTOM - HEIGHT) / 2
 	Width: 900
-	Height: 575
+	Height: 540
 	Children:
 		Label@SERVER_NAME:
 			Width: PARENT_RIGHT
@@ -18,7 +18,7 @@ Container@SERVER_LOBBY:
 			Align: Center
 		Background@bg:
 			Width: PARENT_RIGHT
-			Height: PARENT_BOTTOM - 35
+			Height: PARENT_BOTTOM
 			Background: panel-black
 			Children:
 				Container@MAP_PREVIEW_ROOT:
@@ -119,13 +119,13 @@ Container@SERVER_LOBBY:
 							Width: PARENT_RIGHT - 55
 							Height: 25
 		Button@DISCONNECT_BUTTON:
-			Y: PARENT_BOTTOM - 36
+			Y: PARENT_BOTTOM - 1
 			Width: 140
 			Height: 35
 			Text: Leave Game
 		Button@START_GAME_BUTTON:
 			X: PARENT_RIGHT - WIDTH
-			Y: PARENT_BOTTOM - 36
+			Y: PARENT_BOTTOM - 1
 			Width: 140
 			Height: 35
 			Text: Start Game

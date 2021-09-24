@@ -1,9 +1,9 @@
 Container@MULTIPLAYER_PANEL:
 	Logic: MultiplayerLogic
 	X: (WINDOW_RIGHT - WIDTH) / 2
-	Y: (WINDOW_BOTTOM - 560) / 2
+	Y: (WINDOW_BOTTOM - HEIGHT) / 2
 	Width: 900
-	Height: 575
+	Height: 540
 	Children:
 		Label@TITLE:
 			Text: Multiplayer
@@ -14,7 +14,7 @@ Container@MULTIPLAYER_PANEL:
 			Align: Center
 		Background@bg:
 			Width: PARENT_RIGHT
-			Height: PARENT_BOTTOM - 35
+			Height: PARENT_BOTTOM
 			Background: panel-black
 			Children:
 				Container@LABEL_CONTAINER:
@@ -254,7 +254,7 @@ Container@MULTIPLAYER_PANEL:
 		Button@BACK_BUTTON:
 			Key: escape
 			X: 0
-			Y: PARENT_BOTTOM - 36
+			Y: PARENT_BOTTOM - 1
 			Width: 140
 			Height: 35
 			Text: Back

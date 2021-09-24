@@ -76,7 +76,7 @@ Background@MULTIPLAYER_PANEL:
 			X: 20
 			Y: 67
 			Width: 675
-			Height: PARENT_BOTTOM - 119
+			Height: PARENT_BOTTOM - 122
 			TopBottomSpacing: 2
 			Children:
 				ScrollItem@HEADER_TEMPLATE:

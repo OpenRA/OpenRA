@@ -3,7 +3,7 @@ Container@NEW_MAP_BG:
 	X: (WINDOW_RIGHT - WIDTH) / 2
 	Y: (WINDOW_BOTTOM - HEIGHT) / 2
 	Width: 300
-	Height: 125
+	Height: 95
 	Children:
 		Label@TITLE:
 			Text: New Map
@@ -14,7 +14,7 @@ Container@NEW_MAP_BG:
 			Align: Center
 		Background@bg:
 			Width: PARENT_RIGHT
-			Height: 90
+			Height: PARENT_BOTTOM
 			Background: panel-black
 			Children:
 				Label@TILESET_LABEL:
@@ -60,7 +60,7 @@ Container@NEW_MAP_BG:
 					Text: 128
 					Type: Integer
 		Button@CANCEL_BUTTON:
-			Y: 89
+			Y: PARENT_BOTTOM - 1
 			Width: 140
 			Height: 35
 			Text: Cancel
@@ -68,7 +68,7 @@ Container@NEW_MAP_BG:
 			Key: escape
 		Button@CREATE_BUTTON:
 			X: PARENT_RIGHT - WIDTH
-			Y: 89
+			Y: PARENT_BOTTOM - 1
 			Width: 140
 			Height: 35
 			Text: Create
@@ -80,7 +80,7 @@ Container@SAVE_MAP_PANEL:
 	X: (WINDOW_RIGHT - WIDTH) / 2
 	Y: (WINDOW_BOTTOM - HEIGHT) / 2
 	Width: 345
-	Height: 229
+	Height: 195
 	Children:
 		Label@LABEL_TITLE:
 			Text: Save Map
@@ -91,7 +91,7 @@ Container@SAVE_MAP_PANEL:
 			Align: Center
 		Background@SAVE_MAP_BACKGROUND:
 			Width: PARENT_RIGHT
-			Height: 195
+			Height: PARENT_BOTTOM
 			Background: panel-black
 			Children:
 				Label@TITLE_LABEL:
@@ -167,7 +167,7 @@ Container@SAVE_MAP_PANEL:
 					Height: 25
 					Font: Regular
 		Button@BACK_BUTTON:
-			Y: PARENT_BOTTOM - 35
+			Y: PARENT_BOTTOM - 1
 			Width: 140
 			Height: 35
 			Text: Cancel
@@ -175,7 +175,7 @@ Container@SAVE_MAP_PANEL:
 			Key: escape
 		Button@SAVE_BUTTON:
 			X: PARENT_RIGHT - 140
-			Y: PARENT_BOTTOM - 35
+			Y: PARENT_BOTTOM - 1
 			Width: 140
 			Height: 35
 			Text: Save

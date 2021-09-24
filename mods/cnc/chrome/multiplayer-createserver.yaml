@@ -14,7 +14,7 @@ Container@MULTIPLAYER_CREATESERVER_PANEL:
 			Text: Create Server
 		Background@bg:
 			Width: PARENT_RIGHT
-			Height: PARENT_BOTTOM - 35
+			Height: PARENT_BOTTOM
 			Background: panel-black
 			Children:
 				Label@SERVER_NAME_LABEL:
@@ -242,20 +242,20 @@ Container@MULTIPLAYER_CREATESERVER_PANEL:
 					Align: Center
 		Button@BACK_BUTTON:
 			Key: return
-			Y: PARENT_BOTTOM - 36
+			Y: PARENT_BOTTOM - 1
 			Width: 140
 			Height: 35
 			Text: Back
 		Button@MAP_BUTTON:
 			X: PARENT_RIGHT - WIDTH - 150
-			Y: PARENT_BOTTOM - 36
+			Y: PARENT_BOTTOM - 1
 			Width: 140
 			Height: 35
 			Text: Change Map
 		Button@CREATE_BUTTON:
 			Key: return
 			X: PARENT_RIGHT - WIDTH
-			Y: PARENT_BOTTOM - 36
+			Y: PARENT_BOTTOM - 1
 			Width: 140
 			Height: 35
 			Text: Create
