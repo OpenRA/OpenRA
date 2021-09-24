@@ -2,8 +2,8 @@ Container@REPLAYBROWSER_PANEL:
 	Logic: ReplayBrowserLogic
 	X: (WINDOW_RIGHT - WIDTH) / 2
 	Y: (WINDOW_BOTTOM - HEIGHT) / 2
-	Width: 780
-	Height: 500
+	Width: 900
+	Height: 540
 	Children:
 		Label@TITLE:
 			Width: PARENT_RIGHT
@@ -18,17 +18,18 @@ Container@REPLAYBROWSER_PANEL:
 			Background: panel-black
 			Children:
 				Container@FILTER_AND_MANAGE_CONTAINER:
-					X: 20
-					Y: 20
-					Width: 280
-					Height: PARENT_BOTTOM - 40
+					X: 15
+					Y: 15
+					Width: 285
+					Height: PARENT_BOTTOM
 					Children:
 						Container@FILTERS:
-							Width: 280
+							Width: PARENT_RIGHT
 							Height: 320
 							Children:
 								Label@FILTERS_TITLE:
 									X: 85
+									Y: 0 - 9
 									Width: PARENT_RIGHT - 85
 									Height: 25
 									Font: Bold
@@ -36,107 +37,106 @@ Container@REPLAYBROWSER_PANEL:
 									Text: Filter
 								Label@FLT_GAMETYPE_DESC:
 									X: 0
-									Y: 30
+									Y: 15
 									Width: 80
 									Height: 25
 									Text: Type:
 									Align: Right
 								DropDownButton@FLT_GAMETYPE_DROPDOWNBUTTON:
 									X: 85
-									Y: 30
+									Y: 15
 									Width: PARENT_RIGHT - 85
 									Height: 25
 									Text: Any
 								Label@FLT_DATE_DESC:
 									X: 0
-									Y: 60
+									Y: 45
 									Width: 80
 									Height: 25
 									Text: Date:
 									Align: Right
 								DropDownButton@FLT_DATE_DROPDOWNBUTTON:
 									X: 85
-									Y: 60
+									Y: 45
 									Width: PARENT_RIGHT - 85
 									Height: 25
 									Text: Any
 								Label@FLT_DURATION_DESC:
 									X: 0
-									Y: 90
+									Y: 75
 									Width: 80
 									Height: 25
 									Text: Duration:
 									Align: Right
 								DropDownButton@FLT_DURATION_DROPDOWNBUTTON:
 									X: 85
-									Y: 90
+									Y: 75
 									Width: PARENT_RIGHT - 85
 									Height: 25
 									Text: Any
 								Label@FLT_MAPNAME_DESC:
 									X: 0
-									Y: 120
+									Y: 105
 									Width: 80
 									Height: 25
 									Text: Map:
 									Align: Right
 								DropDownButton@FLT_MAPNAME_DROPDOWNBUTTON:
 									X: 85
-									Y: 120
+									Y: 105
 									Width: PARENT_RIGHT - 85
 									Height: 25
 									Text: Any
 								Label@FLT_PLAYER_DESC:
 									X: 0
-									Y: 150
+									Y: 135
 									Width: 80
 									Height: 25
 									Text: Player:
 									Align: Right
 								DropDownButton@FLT_PLAYER_DROPDOWNBUTTON:
 									X: 85
-									Y: 150
+									Y: 135
 									Width: PARENT_RIGHT - 85
 									Height: 25
 									Text: Anyone
 								Label@FLT_OUTCOME_DESC:
 									X: 0
-									Y: 180
+									Y: 165
 									Width: 80
 									Height: 25
 									Text: Outcome:
 									Align: Right
 								DropDownButton@FLT_OUTCOME_DROPDOWNBUTTON:
 									X: 85
-									Y: 180
+									Y: 165
 									Width: PARENT_RIGHT - 85
 									Height: 25
 									Text: Any
 								Label@FLT_FACTION_DESC:
 									X: 0
-									Y: 210
+									Y: 195
 									Width: 80
 									Height: 25
 									Text: Faction:
 									Align: Right
 								DropDownButton@FLT_FACTION_DROPDOWNBUTTON:
 									X: 85
-									Y: 210
+									Y: 195
 									Width: PARENT_RIGHT - 85
 									Height: 25
 									Text: Any
 								Button@FLT_RESET_BUTTON:
 									X: 85
-									Y: 250
+									Y: 235
 									Width: PARENT_RIGHT - 85
 									Height: 25
 									Text: Reset Filters
 									Font: Bold
 						Container@MANAGEMENT:
 							X: 85
-							Y: PARENT_BOTTOM - 115
+							Y: 395
 							Width: PARENT_RIGHT - 85
-							Height: 115
 							Children:
 								Label@MANAGE_TITLE:
 									Y: 1
@@ -166,13 +166,13 @@ Container@REPLAYBROWSER_PANEL:
 									Text: Delete All
 									Font: Bold
 				Container@REPLAY_LIST_CONTAINER:
-					X: 310
-					Y: 20
-					Width: 250
-					Height: PARENT_BOTTOM - 20 - 20
+					X: 314
+					Y: 15
+					Width: 383
+					Height: PARENT_BOTTOM - 45
 					Children:
 						Label@REPLAYBROWSER_LABEL_TITLE:
-							Y: 1
+							Y: 0 - 9
 							Width: PARENT_RIGHT
 							Height: 25
 							Text: Choose Replay
@@ -180,9 +180,9 @@ Container@REPLAYBROWSER_PANEL:
 							Font: Bold
 						ScrollPanel@REPLAY_LIST:
 							X: 0
-							Y: 30
+							Y: 15
 							Width: PARENT_RIGHT
-							Height: PARENT_BOTTOM - 30
+							Height: PARENT_BOTTOM
 							CollapseHiddenChildren: True
 							Children:
 								ScrollItem@REPLAY_TEMPLATE:
@@ -199,15 +199,15 @@ Container@REPLAYBROWSER_PANEL:
 											TooltipContainer: TOOLTIP_CONTAINER
 											TooltipTemplate: SIMPLE_TOOLTIP
 				Container@MAP_PREVIEW_ROOT:
-					X: PARENT_RIGHT - WIDTH - 20
-					Y: 50
-					Width: 194
+					X: PARENT_RIGHT - WIDTH - 15
+					Y: 30
+					Width: 174
 					Height: 250
 				Container@REPLAY_INFO:
-					X: PARENT_RIGHT - WIDTH - 20
-					Y: 250
-					Width: 194
-					Height: PARENT_BOTTOM - 260
+					X: PARENT_RIGHT - WIDTH - 15
+					Y: 230
+					Width: 174
+					Height: PARENT_BOTTOM - 240
 					Children:
 						Label@DURATION:
 							Y: 21
@@ -218,7 +218,7 @@ Container@REPLAYBROWSER_PANEL:
 						ScrollPanel@PLAYER_LIST:
 							Y: 40
 							Width: PARENT_RIGHT
-							Height: PARENT_BOTTOM - 50
+							Height: PARENT_BOTTOM - 45
 							IgnoreChildMouseOver: true
 							Children:
 								ScrollItem@HEADER:
@@ -254,18 +254,18 @@ Container@REPLAYBROWSER_PANEL:
 											X: 5
 											Width: PARENT_RIGHT
 											Height: 25
-				Button@CANCEL_BUTTON:
-					Key: escape
-					X: 0
-					Y: PARENT_BOTTOM - 1
-					Width: 140
-					Height: 35
-					Text: Back
-				Button@WATCH_BUTTON:
-					Key: return
-					X: PARENT_RIGHT - 140
-					Y: PARENT_BOTTOM - 1
-					Width: 140
-					Height: 35
-					Text: Watch
-				TooltipContainer@TOOLTIP_CONTAINER:
+		Button@CANCEL_BUTTON:
+			Key: escape
+			X: 0
+			Y: PARENT_BOTTOM - 1
+			Width: 140
+			Height: 35
+			Text: Back
+		Button@WATCH_BUTTON:
+			Key: return
+			X: PARENT_RIGHT - 140
+			Y: PARENT_BOTTOM - 1
+			Width: 140
+			Height: 35
+			Text: Watch
+		TooltipContainer@TOOLTIP_CONTAINER:

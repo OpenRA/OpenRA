@@ -2,12 +2,19 @@ Background@REPLAYBROWSER_PANEL:
 	Logic: ReplayBrowserLogic
 	X: (WINDOW_RIGHT - WIDTH) / 2
 	Y: (WINDOW_BOTTOM - HEIGHT) / 2
-	Width: 780
-	Height: 535
+	Width: 900
+	Height: 600
 	Children:
+		Label@TITLE:
+			Y: 16
+			Width: PARENT_RIGHT
+			Height: 25
+			Text: Replay Viewer
+			Align: Center
+			Font: Bold
 		Container@FILTER_AND_MANAGE_CONTAINER:
 			X: 20
-			Y: 20
+			Y: 37
 			Width: 280
 			Height: PARENT_BOTTOM - 75
 			Children:
@@ -17,6 +24,7 @@ Background@REPLAYBROWSER_PANEL:
 					Children:
 						Label@FILTERS_TITLE:
 							X: 85
+							Y: 6
 							Width: PARENT_RIGHT - 85
 							Height: 25
 							Font: Bold
@@ -122,9 +130,8 @@ Background@REPLAYBROWSER_PANEL:
 							Font: Bold
 				Container@MANAGEMENT:
 					X: 85
-					Y: PARENT_BOTTOM - 115
+					Y: 395
 					Width: PARENT_RIGHT - 85
-					Height: 115
 					Children:
 						Label@MANAGE_TITLE:
 							Y: 1
@@ -154,13 +161,13 @@ Background@REPLAYBROWSER_PANEL:
 							Text: Delete All
 							Font: Bold
 		Container@REPLAY_LIST_CONTAINER:
-			X: 310
-			Y: 20
-			Width: 250
-			Height: PARENT_BOTTOM - 20 - 55
+			X: 311
+			Y: 37
+			Width: 384
+			Height: PARENT_BOTTOM - 37 - 55
 			Children:
 				Label@REPLAYBROWSER_LABEL_TITLE:
-					Y: 1
+					Y: 6
 					Width: PARENT_RIGHT
 					Height: 25
 					Text: Choose Replay
@@ -188,14 +195,14 @@ Background@REPLAYBROWSER_PANEL:
 									TooltipTemplate: SIMPLE_TOOLTIP
 		Container@MAP_PREVIEW_ROOT:
 			X: PARENT_RIGHT - WIDTH - 20
-			Y: 50
-			Width: 194
+			Y: 67
+			Width: 174
 			Height: 250
 		Container@REPLAY_INFO:
 			X: PARENT_RIGHT - WIDTH - 20
-			Y: 250
-			Width: 194
-			Height: PARENT_BOTTOM - 250 - 45
+			Y: 267
+			Width: 174
+			Height: PARENT_BOTTOM - 267 - 45
 			Children:
 				Label@DURATION:
 					Y: 19
