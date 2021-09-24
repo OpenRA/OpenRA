@@ -2,8 +2,8 @@ Background@MISSIONBROWSER_PANEL:
 	Logic: MissionBrowserLogic
 	X: (WINDOW_RIGHT - WIDTH) / 2
 	Y: (WINDOW_BOTTOM - HEIGHT) / 2
-	Width: 682
-	Height: 487
+	Width: 700
+	Height: 500
 	Children:
 		Label@MISSIONBROWSER_TITLE:
 			Y: 21
@@ -15,8 +15,8 @@ Background@MISSIONBROWSER_PANEL:
 		ScrollPanel@MISSION_LIST:
 			X: 20
 			Y: 50
-			Width: 270
-			Height: 377
+			Width: 288
+			Height: PARENT_BOTTOM - 110
 			Children:
 				ScrollItem@HEADER:
 					BaseName: scrollheader
@@ -43,10 +43,10 @@ Background@MISSIONBROWSER_PANEL:
 							TooltipContainer: TOOLTIP_CONTAINER
 							TooltipTemplate: SIMPLE_TOOLTIP
 		Container@MISSION_INFO:
-			X: 300
+			X: 318
 			Y: 50
 			Width: 362
-			Height: 363
+			Height: PARENT_BOTTOM - 110
 			Children:
 				Background@MISSION_BG:
 					Width: PARENT_RIGHT
@@ -64,7 +64,7 @@ Background@MISSIONBROWSER_PANEL:
 				ScrollPanel@MISSION_DESCRIPTION_PANEL:
 					Y: 212
 					Width: PARENT_RIGHT
-					Height: 130
+					Height: 143
 					TopBottomSpacing: 5
 					Children:
 						Label@MISSION_DESCRIPTION:
@@ -73,27 +73,27 @@ Background@MISSIONBROWSER_PANEL:
 							VAlign: Top
 							Font: Small
 				Label@DIFFICULTY_DESC:
-					Y: 352
+					Y: PARENT_BOTTOM - HEIGHT
 					Width: 56
 					Height: 25
 					Text: Difficulty:
 					Align: Right
 				DropDownButton@DIFFICULTY_DROPDOWNBUTTON:
 					X: 61
-					Y: 352
+					Y: PARENT_BOTTOM - HEIGHT
 					Width: 135
 					Height: 25
 					Font: Regular
 				Label@GAMESPEED_DESC:
 					X: PARENT_RIGHT - WIDTH - 115
-					Y: 352
+					Y: PARENT_BOTTOM - HEIGHT
 					Width: 120
 					Height: 25
 					Text: Speed:
 					Align: Right
 				DropDownButton@GAMESPEED_DROPDOWNBUTTON:
 					X: PARENT_RIGHT - WIDTH
-					Y: 352
+					Y: PARENT_BOTTOM - HEIGHT
 					Width: 110
 					Height: 25
 					Font: Regular
@@ -143,15 +143,15 @@ Background@MISSIONBROWSER_PANEL:
 		Background@MISSION_BIN:
 			X: 20
 			Y: 50
-			Width: 642
-			Height: 377
+			Width: PARENT_RIGHT - 40
+			Height: PARENT_BOTTOM - 110
 			Background: dialog3
 			Children:
 				VideoPlayer@MISSION_VIDEO:
 					X: 1
 					Y: 1
-					Width: 640
-					Height: 375
+					Width: PARENT_RIGHT - 2
+					Height: PARENT_BOTTOM - 2
 		TooltipContainer@TOOLTIP_CONTAINER:
 
 Background@FULLSCREEN_PLAYER:
