@@ -67,6 +67,11 @@ namespace OpenRA
 			bottomRight = mapBottomRight;
 		}
 
+		public override string ToString()
+		{
+			return $"{TopLeft}->{BottomRight}";
+		}
+
 		public MapCoordsEnumerator GetEnumerator()
 		{
 			return new MapCoordsEnumerator(this);

@@ -50,6 +50,11 @@ namespace OpenRA
 			BottomRight = bottomRight.ToCPos(gridType);
 		}
 
+		public override string ToString()
+		{
+			return $"{TopLeft}->{BottomRight}";
+		}
+
 		/// <summary>Expand the specified region with an additional cordon. This may expand the region outside the map borders.</summary>
 		public static CellRegion Expand(CellRegion region, int cordon)
 		{
