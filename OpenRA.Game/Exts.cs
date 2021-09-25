@@ -375,6 +375,11 @@ namespace OpenRA
 			return ts.Concat(moreTs);
 		}
 
+		public static IEnumerable<T> Exclude<T>(this IEnumerable<T> ts, params T[] exclusions)
+		{
+			return ts.Except(exclusions);
+		}
+
 		public static HashSet<T> ToHashSet<T>(this IEnumerable<T> source)
 		{
 			return new HashSet<T>(source);
