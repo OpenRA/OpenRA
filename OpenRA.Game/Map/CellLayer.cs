@@ -25,6 +25,15 @@ namespace OpenRA
 		public CellLayer(MapGridType gridType, Size size)
 			: base(gridType, size) { }
 
+		public override void Clear()
+		{
+			if (CellEntryChanged != null)
+				throw new InvalidOperationException(
+					"Cannot clear values when there are listeners attached to the CellEntryChanged event.");
+
+			base.Clear();
+		}
+
 		public override void CopyValuesFrom(CellLayerBase<T> anotherLayer)
 		{
 			if (CellEntryChanged != null)
@@ -32,21 +41,6 @@ namespace OpenRA
 					"Cannot copy values when there are listeners attached to the CellEntryChanged event.");
 
 			base.CopyValuesFrom(anotherLayer);
-		}
-
-		public static CellLayer<T> CreateInstance(Func<MPos, T> initialCellValueFactory, Size size, MapGridType mapGridType)
-		{
-			var cellLayer = new CellLayer<T>(mapGridType, size);
-			for (var v = 0; v < size.Height; v++)
-			{
-				for (var u = 0; u < size.Width; u++)
-				{
-					var mpos = new MPos(u, v);
-					cellLayer[mpos] = initialCellValueFactory(mpos);
-				}
-			}
-
-			return cellLayer;
 		}
 
 		// Resolve an array index from cell coordinates

@@ -119,7 +119,8 @@ namespace OpenRA.Mods.Common.Pathfinder
 				var neighborCell = Graph[neighborCPos];
 
 				// Cost is even higher; next direction:
-				if (neighborCell.Status == CellStatus.Closed || gCost >= neighborCell.CostSoFar)
+				if (neighborCell.Status == CellStatus.Closed ||
+					(neighborCell.Status == CellStatus.Open && gCost >= neighborCell.CostSoFar))
 					continue;
 
 				// Now we may seriously consider this direction using heuristics. If the cell has

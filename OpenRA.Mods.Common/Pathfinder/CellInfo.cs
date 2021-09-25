@@ -9,13 +9,15 @@
  */
 #endregion
 
+using System;
+
 namespace OpenRA.Mods.Common.Pathfinder
 {
 	/// <summary>
 	/// Describes the three states that a node in the graph can have.
 	/// Based on A* algorithm specification
 	/// </summary>
-	public enum CellStatus
+	public enum CellStatus : byte
 	{
 		Unvisited,
 		Open,
@@ -23,36 +25,52 @@ namespace OpenRA.Mods.Common.Pathfinder
 	}
 
 	/// <summary>
-	/// Stores information about nodes in the pathfinding graph
+	/// Stores information about nodes in the pathfinding graph.
+	/// The default value of this struct represents an <see cref="CellStatus.Unvisited"/> location.
 	/// </summary>
 	public readonly struct CellInfo
 	{
 		/// <summary>
-		/// The cost to move from the start up to this node
+		/// The cost to move from the start up to this node.
 		/// </summary>
 		public readonly int CostSoFar;
 
 		/// <summary>
-		/// The estimation of how far is the node from our goal
+		/// The estimation of how far this node is from our target.
 		/// </summary>
 		public readonly int EstimatedTotal;
 
 		/// <summary>
-		/// The previous node of this one that follows the shortest path
+		/// The previous node of this one that follows the shortest path.
 		/// </summary>
 		public readonly CPos PreviousPos;
 
 		/// <summary>
-		/// The status of this node
+		/// The status of this node. Accessing other fields is only valid when the status is not <see cref="CellStatus.Unvisited"/>.
 		/// </summary>
 		public readonly CellStatus Status;
 
 		public CellInfo(int costSoFar, int estimatedTotal, CPos previousPos, CellStatus status)
 		{
-			CostSoFar = costSoFar;
-			PreviousPos = previousPos;
+			if (status == CellStatus.Unvisited)
+				throw new ArgumentException(
+					$"The default {nameof(CellInfo)} is the only such {nameof(CellInfo)} allowed for representing an {nameof(CellStatus.Unvisited)} location.",
+					nameof(status));
+
 			Status = status;
+			CostSoFar = costSoFar;
 			EstimatedTotal = estimatedTotal;
+			PreviousPos = previousPos;
+		}
+
+		public override string ToString()
+		{
+			if (Status == CellStatus.Unvisited)
+				return Status.ToString();
+
+			return
+				$"{Status} {nameof(CostSoFar)}={CostSoFar} " +
+				$"{nameof(EstimatedTotal)}={EstimatedTotal} {nameof(PreviousPos)}={PreviousPos}";
 		}
 	}
 }
