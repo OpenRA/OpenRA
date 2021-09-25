@@ -58,7 +58,13 @@ namespace OpenRA
 		public bool Equals(CPos other) { return Bits == other.Bits; }
 		public override bool Equals(object obj) { return obj is CPos && Equals((CPos)obj); }
 
-		public override string ToString() { return X + "," + Y; }
+		public override string ToString()
+		{
+			if (Layer == 0)
+				return X + "," + Y;
+
+			return X + "," + Y + "," + Layer;
+		}
 
 		public MPos ToMPos(Map map)
 		{
