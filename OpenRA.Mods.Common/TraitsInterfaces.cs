@@ -403,9 +403,9 @@ namespace OpenRA.Mods.Common.Traits
 		bool InteractsWithDefaultLayer { get; }
 		bool ReturnToGroundLayerOnIdle { get; }
 
-		bool EnabledForActor(ActorInfo a, LocomotorInfo li);
-		int EntryMovementCost(ActorInfo a, LocomotorInfo li, CPos cell);
-		int ExitMovementCost(ActorInfo a, LocomotorInfo li, CPos cell);
+		bool EnabledForLocomotor(LocomotorInfo li);
+		int EntryMovementCost(LocomotorInfo li, CPos cell);
+		int ExitMovementCost(LocomotorInfo li, CPos cell);
 
 		byte GetTerrainIndex(CPos cell);
 		WPos CenterOfCell(CPos cell);

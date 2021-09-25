@@ -103,7 +103,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 			// PERF: Avoid LINQ
 			foreach (var cml in world.GetCustomMovementLayers().Values)
-				if (cml.EnabledForActor(actor.Info, locomotorInfo))
+				if (cml.EnabledForLocomotor(locomotorInfo))
 					customLayerInfo[cml.Index] = (cml, pooledLayer.GetLayer());
 
 			World = world;
@@ -159,7 +159,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 				foreach (var cli in customLayerInfo.Values)
 				{
 					var layerPosition = new CPos(position.X, position.Y, cli.Layer.Index);
-					var entryCost = cli.Layer.EntryMovementCost(Actor.Info, locomotor.Info, layerPosition);
+					var entryCost = cli.Layer.EntryMovementCost(locomotor.Info, layerPosition);
 					if (entryCost != CostForInvalidCell)
 						validNeighbors.Add(new GraphConnection(layerPosition, entryCost));
 				}
@@ -167,7 +167,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			else
 			{
 				var layerPosition = new CPos(position.X, position.Y, 0);
-				var exitCost = customLayerInfo[posLayer].Layer.ExitMovementCost(Actor.Info, locomotor.Info, layerPosition);
+				var exitCost = customLayerInfo[posLayer].Layer.ExitMovementCost(locomotor.Info, layerPosition);
 				if (exitCost != CostForInvalidCell)
 					validNeighbors.Add(new GraphConnection(layerPosition, exitCost));
 			}
