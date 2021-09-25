@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
@@ -116,19 +117,40 @@ namespace OpenRA.Mods.Common.Pathfinder
 		// Sets of neighbors for each incoming direction. These exclude the neighbors which are guaranteed
 		// to be reached more cheaply by a path through our parent cell which does not include the current cell.
 		// For horizontal/vertical directions, the set is the three cells 'ahead'. For diagonal directions, the set
-		// is the three cells ahead, plus the two cells to the side, which we cannot exclude without knowing if
-		// the cell directly between them and our parent is passable.
+		// is the three cells ahead, plus the two cells to the side. Effectively, these are the cells left over
+		// if you ignore the ones reachable from the parent cell.
+		// We can do this because for any cell in range of both the current and parent location,
+		// if we can reach it from one we are guaranteed to be able to reach it from the other.
 		static readonly CVec[][] DirectedNeighbors =
 		{
-			new[] { new CVec(-1, -1), new CVec(0, -1), new CVec(1, -1), new CVec(-1, 0), new CVec(-1, 1) },
-			new[] { new CVec(-1, -1), new CVec(0, -1), new CVec(1, -1) },
-			new[] { new CVec(-1, -1), new CVec(0, -1), new CVec(1, -1), new CVec(1, 0), new CVec(1, 1) },
-			new[] { new CVec(-1, -1), new CVec(-1, 0), new CVec(-1, 1) },
+			new[] { new CVec(-1, -1), new CVec(0, -1), new CVec(1, -1), new CVec(-1, 0), new CVec(-1, 1) }, // TL
+			new[] { new CVec(-1, -1), new CVec(0, -1), new CVec(1, -1) }, // T
+			new[] { new CVec(-1, -1), new CVec(0, -1), new CVec(1, -1), new CVec(1, 0), new CVec(1, 1) }, // TR
+			new[] { new CVec(-1, -1), new CVec(-1, 0), new CVec(-1, 1) }, // L
 			CVec.Directions,
-			new[] { new CVec(1, -1), new CVec(1, 0), new CVec(1, 1) },
-			new[] { new CVec(-1, -1), new CVec(-1, 0), new CVec(-1, 1), new CVec(0, 1), new CVec(1, 1) },
-			new[] { new CVec(-1, 1), new CVec(0, 1), new CVec(1, 1) },
-			new[] { new CVec(1, -1), new CVec(1, 0), new CVec(-1, 1), new CVec(0, 1), new CVec(1, 1) },
+			new[] { new CVec(1, -1), new CVec(1, 0), new CVec(1, 1) }, // R
+			new[] { new CVec(-1, -1), new CVec(-1, 0), new CVec(-1, 1), new CVec(0, 1), new CVec(1, 1) }, // BL
+			new[] { new CVec(-1, 1), new CVec(0, 1), new CVec(1, 1) }, // B
+			new[] { new CVec(1, -1), new CVec(1, 0), new CVec(-1, 1), new CVec(0, 1), new CVec(1, 1) }, // BR
+		};
+
+		// With height discontinuities between the parent and current cell, we cannot optimize the possible neighbors.
+		// It is no longer true that for any cell in range of both the current and parent location,
+		// if we can reach it from one we are guaranteed to be able to reach it from the other.
+		// This is because a height discontinuity may have prevented the parent location from reaching,
+		// but our current cell on a new height may be able to reach as the height difference may be small enough.
+		// Therefore, we can only exclude the parent cell in each set of directions.
+		static readonly CVec[][] DirectedNeighborsConservative =
+		{
+			CVec.Directions.Exclude(new CVec(1, 1)).ToArray(), // TL
+			CVec.Directions.Exclude(new CVec(0, 1)).ToArray(), // T
+			CVec.Directions.Exclude(new CVec(-1, 1)).ToArray(), // TR
+			CVec.Directions.Exclude(new CVec(1, 0)).ToArray(), // L
+			CVec.Directions,
+			CVec.Directions.Exclude(new CVec(-1, 0)).ToArray(), // R
+			CVec.Directions.Exclude(new CVec(1, -1)).ToArray(), // BL
+			CVec.Directions.Exclude(new CVec(0, -1)).ToArray(), // B
+			CVec.Directions.Exclude(new CVec(-1, -1)).ToArray(), // BR
 		};
 
 		public List<GraphConnection> GetConnections(CPos position)
@@ -141,7 +163,12 @@ namespace OpenRA.Mods.Common.Pathfinder
 			var dy = position.Y - previousPos.Y;
 			var index = dy * 3 + dx + 4;
 
-			var directions = DirectedNeighbors[index];
+			var heightLayer = World.Map.Height;
+			var directions =
+				(checkTerrainHeight && layer == 0 && previousPos.Layer == 0 && heightLayer[position] != heightLayer[previousPos]
+				? DirectedNeighborsConservative
+				: DirectedNeighbors)[index];
+
 			var validNeighbors = new List<GraphConnection>(directions.Length + (layer == 0 ? cellInfoForLayer.Length : 1));
 			for (var i = 0; i < directions.Length; i++)
 			{
@@ -164,7 +191,9 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 					var layerPosition = new CPos(position.X, position.Y, cml.Index);
 					var entryCost = cml.EntryMovementCost(locomotor.Info, layerPosition);
-					if (entryCost != MovementCostForUnreachableCell)
+					if (entryCost != MovementCostForUnreachableCell &&
+						CanEnterNode(layerPosition) &&
+						this[layerPosition].Status != CellStatus.Closed)
 						validNeighbors.Add(new GraphConnection(layerPosition, entryCost));
 				}
 			}
@@ -172,11 +201,20 @@ namespace OpenRA.Mods.Common.Pathfinder
 			{
 				var layerPosition = new CPos(position.X, position.Y, 0);
 				var exitCost = cmls[layer].ExitMovementCost(locomotor.Info, layerPosition);
-				if (exitCost != MovementCostForUnreachableCell)
+				if (exitCost != MovementCostForUnreachableCell &&
+					CanEnterNode(layerPosition) &&
+					this[layerPosition].Status != CellStatus.Closed)
 					validNeighbors.Add(new GraphConnection(layerPosition, exitCost));
 			}
 
 			return validNeighbors;
+		}
+
+		bool CanEnterNode(CPos destNode)
+		{
+			return
+				locomotor.MovementCostToEnterCell(Actor, destNode, checkConditions, IgnoreActor)
+				!= MovementCostForUnreachableCell;
 		}
 
 		int GetPathCostToNode(CPos destNode, CVec direction)
