@@ -41,6 +41,7 @@ namespace OpenRA.Server
 		//   - byte containing the number of sent order packets to apply
 		// - 0x20: Ping
 		//   - Int64 containing the server timestamp when the ping was generated
+		//   - [client -> server only] byte containing the number of frames ready to simulate
 		//
 		// A connection handshake begins when a client opens a connection to the server:
 		// - Server sends:

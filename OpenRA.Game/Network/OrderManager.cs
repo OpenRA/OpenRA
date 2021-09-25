@@ -29,6 +29,7 @@ namespace OpenRA.Network
 		public Session LobbyInfo = new Session();
 		public Session.Client LocalClient => LobbyInfo.ClientWithIndex(Connection.LocalClientId);
 		public World World;
+		public int OrderQueueLength => pendingOrders.Count > 0 ? pendingOrders.Min(q => q.Value.Count) : 0;
 
 		public string ServerError = null;
 		public bool AuthenticationFailed = false;

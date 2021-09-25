@@ -128,13 +128,13 @@ namespace OpenRA.Server
 								{
 									// Ping packets are sent and processed internally within this thread to reduce
 									// server-introduced latencies from polling loops
-									if (expectLength == 9 && bytes[0] == (byte)OrderType.Ping)
+									if (expectLength == 10 && bytes[0] == (byte)OrderType.Ping)
 									{
 										if (pingHistory.Count == MaxPingSamples)
 											pingHistory.Dequeue();
 
 										pingHistory.Enqueue((int)(Game.RunTime - BitConverter.ToInt64(bytes, 1)));
-										server.OnConnectionPing(this, pingHistory.ToArray());
+										server.OnConnectionPing(this, pingHistory.ToArray(), bytes[9]);
 									}
 									else
 										server.OnConnectionPacket(this, frame, bytes);

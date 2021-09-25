@@ -323,9 +323,9 @@ namespace OpenRA.Server
 			events.Add(new ConnectionPacketEvent(conn, frame, data));
 		}
 
-		internal void OnConnectionPing(Connection conn, int[] pingHistory)
+		internal void OnConnectionPing(Connection conn, int[] pingHistory, byte queueLength)
 		{
-			events.Add(new ConnectionPingEvent(conn, pingHistory));
+			events.Add(new ConnectionPingEvent(conn, pingHistory, queueLength));
 		}
 
 		internal void OnConnectionDisconnect(Connection conn)
@@ -1021,7 +1021,7 @@ namespace OpenRA.Server
 			}
 		}
 
-		public void ReceivePing(Connection conn, int[] pingHistory)
+		public void ReceivePing(Connection conn, int[] pingHistory, byte queueLength)
 		{
 			// Levels set relative to the default order lag of 3 net ticks (360ms)
 			// TODO: Adjust this once dynamic lag is implemented
@@ -1367,16 +1367,18 @@ namespace OpenRA.Server
 		{
 			readonly Connection connection;
 			readonly int[] pingHistory;
+			readonly byte queueLength;
 
-			public ConnectionPingEvent(Connection connection, int[] pingHistory)
+			public ConnectionPingEvent(Connection connection, int[] pingHistory, byte queueLength)
 			{
 				this.connection = connection;
 				this.pingHistory = pingHistory;
+				this.queueLength = queueLength;
 			}
 
 			void IServerEvent.Invoke(Server server)
 			{
-				server.ReceivePing(connection, pingHistory);
+				server.ReceivePing(connection, pingHistory, queueLength);
 			}
 		}
 
