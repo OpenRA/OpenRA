@@ -121,17 +121,13 @@ namespace OpenRA.Mods.Common.Traits
 				if (Info.TotalCap > 0)
 				{
 					var totalCount = permanentTokens.Values.Sum(t => t.Count) + timedTokens.Count;
-					if (totalCount >= Info.TotalCap)
+					if (totalCount >= Info.TotalCap && timedTokens.Count > 0)
 					{
-						// Prefer tokens from the same source
-						if (timedTokens.Count > 0)
-						{
-							var expire = timedTokens[0].Token;
-							if (self.TokenValid(expire))
-								self.RevokeCondition(expire);
+						var expire = timedTokens[0].Token;
+						if (self.TokenValid(expire))
+							self.RevokeCondition(expire);
 
-							timedTokens.RemoveAt(0);
-						}
+						timedTokens.RemoveAt(0);
 					}
 				}
 
