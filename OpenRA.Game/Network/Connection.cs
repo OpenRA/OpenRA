@@ -312,16 +312,26 @@ namespace OpenRA.Network
 					Send(ping);
 					record = false;
 				}
-				else if (OrderIO.TryParseAck(p, out var ackFrame))
+				else if (OrderIO.TryParseAck(p, out var ackFrame, out var ackCount))
 				{
-					if (!sentOrders.TryDequeue(out var q))
-						throw new InvalidOperationException("Received Ack with empty send queue");
+					if (ackCount > sentOrders.Count)
+						throw new InvalidOperationException($"Received Ack for {ackCount} > {sentOrders.Count} frames.");
 
 					// The Acknowledgement packet is a placeholder that tells us to process the first packet in our
 					// local sent buffer and the frame at which it should be applied. This is an optimization to avoid having
 					// to send the (much larger than 5 byte) packet back to us over the network.
-					orderManager.ReceiveOrders(clientId, (ackFrame, q.Orders));
-					Recorder?.Receive(clientId, q.Orders.Serialize(ackFrame));
+					OrderPacket packet;
+					if (ackCount != 1)
+					{
+						var orders = Enumerable.Range(0, ackCount)
+							.Select(i => sentOrders.Dequeue().Orders);
+						packet = OrderPacket.Combine(orders);
+					}
+					else
+						packet = sentOrders.Dequeue().Orders;
+
+					orderManager.ReceiveOrders(clientId, (ackFrame, packet));
+					Recorder?.Receive(clientId, packet.Serialize(ackFrame));
 					record = false;
 				}
 				else if (OrderIO.TryParseOrderPacket(p.Data, out var orders))

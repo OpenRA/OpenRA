@@ -63,6 +63,20 @@ namespace OpenRA.Network
 				ms.WriteArray(o.Serialize());
 			return ms.ToArray();
 		}
+
+		public static OrderPacket Combine(IEnumerable<OrderPacket> packets)
+		{
+			var orders = new List<Order>();
+			foreach (var packet in packets)
+			{
+				if (packet.orders == null)
+					throw new InvalidOperationException("OrderPacket.Combine can only be used with locally generated OrderPackets.");
+
+				orders.AddRange(packet.orders);
+			}
+
+			return new OrderPacket(orders.ToArray());
+		}
 	}
 
 	public static class OrderIO
@@ -130,16 +144,17 @@ namespace OpenRA.Network
 			return true;
 		}
 
-		public static bool TryParseAck((int FromClient, byte[] Data) packet, out int frame)
+		public static bool TryParseAck((int FromClient, byte[] Data) packet, out int frame, out byte count)
 		{
 			// Ack packets are only accepted from the server
-			if (packet.FromClient != 0 || packet.Data.Length != 5 || packet.Data[4] != (byte)OrderType.Ack)
+			if (packet.FromClient != 0 || packet.Data.Length != 6 || packet.Data[4] != (byte)OrderType.Ack)
 			{
-				frame = 0;
+				frame = count = 0;
 				return false;
 			}
 
 			frame = BitConverter.ToInt32(packet.Data, 0);
+			count = packet.Data[5];
 			return true;
 		}
 
