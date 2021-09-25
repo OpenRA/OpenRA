@@ -35,11 +35,6 @@ namespace OpenRA
 			entries = new T[size.Width * size.Height];
 		}
 
-		public virtual void Clear()
-		{
-			Array.Clear(entries, 0, entries.Length);
-		}
-
 		public virtual void CopyValuesFrom(CellLayerBase<T> anotherLayer)
 		{
 			if (Size != anotherLayer.Size || GridType != anotherLayer.GridType)
@@ -48,11 +43,16 @@ namespace OpenRA
 			Array.Copy(anotherLayer.entries, entries, entries.Length);
 		}
 
-		/// <summary>Clears the layer contents with a known value</summary>
-		public void Clear(T clearValue)
+		/// <summary>Clears the layer contents with their default value</summary>
+		public virtual void Clear()
 		{
-			for (var i = 0; i < entries.Length; i++)
-				entries[i] = clearValue;
+			Array.Clear(entries, 0, entries.Length);
+		}
+
+		/// <summary>Clears the layer contents with a known value</summary>
+		public virtual void Clear(T clearValue)
+		{
+			Array.Fill(entries, clearValue);
 		}
 
 		public IEnumerator<T> GetEnumerator()

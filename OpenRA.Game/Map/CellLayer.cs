@@ -25,22 +25,31 @@ namespace OpenRA
 		public CellLayer(MapGridType gridType, Size size)
 			: base(gridType, size) { }
 
-		public override void Clear()
-		{
-			if (CellEntryChanged != null)
-				throw new InvalidOperationException(
-					"Cannot clear values when there are listeners attached to the CellEntryChanged event.");
-
-			base.Clear();
-		}
-
 		public override void CopyValuesFrom(CellLayerBase<T> anotherLayer)
 		{
 			if (CellEntryChanged != null)
 				throw new InvalidOperationException(
-					"Cannot copy values when there are listeners attached to the CellEntryChanged event.");
+					$"Cannot copy values when there are listeners attached to the {nameof(CellEntryChanged)} event.");
 
 			base.CopyValuesFrom(anotherLayer);
+		}
+
+		public override void Clear()
+		{
+			if (CellEntryChanged != null)
+				throw new InvalidOperationException(
+					$"Cannot clear values when there are listeners attached to the {nameof(CellEntryChanged)} event.");
+
+			base.Clear();
+		}
+
+		public override void Clear(T clearValue)
+		{
+			if (CellEntryChanged != null)
+				throw new InvalidOperationException(
+					$"Cannot clear values when there are listeners attached to the {nameof(CellEntryChanged)} event.");
+
+			base.Clear(clearValue);
 		}
 
 		// Resolve an array index from cell coordinates
