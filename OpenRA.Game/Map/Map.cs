@@ -309,14 +309,13 @@ namespace OpenRA
 			Resources = new CellLayer<ResourceTile>(Grid.Type, size);
 			Height = new CellLayer<byte>(Grid.Type, size);
 			Ramp = new CellLayer<byte>(Grid.Type, size);
+			Tiles.Clear(terrainInfo.DefaultTerrainTile);
 			if (Grid.MaximumTerrainHeight > 0)
 			{
 				Height.CellEntryChanged += UpdateProjection;
 				Tiles.CellEntryChanged += UpdateProjection;
 				Tiles.CellEntryChanged += UpdateRamp;
 			}
-
-			Tiles.Clear(terrainInfo.DefaultTerrainTile);
 
 			PostInit();
 		}
