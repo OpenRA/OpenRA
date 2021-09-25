@@ -94,7 +94,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 					yield return r;
 
 			if (selected && self.World.LocalPlayer != null && self.World.LocalPlayer.PlayerActor.Trait<DeveloperMode>().PathDebug)
-				yield return new TargetLineRenderable(ActivityTargetPath(self), Color.Green);
+				yield return new TargetLineRenderable(ActivityTargetPath(self), Color.Green, 1, 2);
 
 			// Hide decorations for spectators that zoom out further than the normal minimum level
 			// This avoids graphical glitches with pip rows and icons overlapping the selection box
