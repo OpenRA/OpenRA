@@ -35,6 +35,11 @@ namespace OpenRA
 			entries = new T[size.Width * size.Height];
 		}
 
+		public virtual void Clear()
+		{
+			Array.Clear(entries, 0, entries.Length);
+		}
+
 		public virtual void CopyValuesFrom(CellLayerBase<T> anotherLayer)
 		{
 			if (Size != anotherLayer.Size || GridType != anotherLayer.GridType)

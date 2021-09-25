@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.Pathfinder
 {
@@ -19,15 +18,11 @@ namespace OpenRA.Mods.Common.Pathfinder
 	{
 		const int MaxPoolSize = 4;
 		readonly Stack<CellLayer<CellInfo>> pool = new Stack<CellLayer<CellInfo>>(MaxPoolSize);
-		readonly CellLayer<CellInfo> defaultLayer;
+		readonly Map map;
 
 		public CellInfoLayerPool(Map map)
 		{
-			defaultLayer =
-				CellLayer<CellInfo>.CreateInstance(
-					mpos => new CellInfo(PathGraph.PathCostForInvalidPath, PathGraph.PathCostForInvalidPath, mpos.ToCPos(map), CellStatus.Unvisited),
-					new Size(map.MapSize.X, map.MapSize.Y),
-					map.Grid.Type);
+			this.map = map;
 		}
 
 		public PooledCellInfoLayer Get()
@@ -42,9 +37,14 @@ namespace OpenRA.Mods.Common.Pathfinder
 				if (pool.Count > 0)
 					layer = pool.Pop();
 
+			// As the default value of CellInfo represents an Unvisited location,
+			// we don't need to initialize the values in the layer,
+			// we can just clear them to the defaults.
 			if (layer == null)
-				layer = new CellLayer<CellInfo>(defaultLayer.GridType, defaultLayer.Size);
-			layer.CopyValuesFrom(defaultLayer);
+				layer = new CellLayer<CellInfo>(map);
+			else
+				layer.Clear();
+
 			return layer;
 		}
 
