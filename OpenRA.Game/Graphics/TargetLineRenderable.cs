@@ -22,7 +22,7 @@ namespace OpenRA.Graphics
 		readonly int width;
 		readonly int markerSize;
 
-		public TargetLineRenderable(IEnumerable<WPos> waypoints, Color color, int width = 1, int markerSize = 1)
+		public TargetLineRenderable(IEnumerable<WPos> waypoints, Color color, int width, int markerSize)
 		{
 			this.waypoints = waypoints;
 			this.color = color;
@@ -34,13 +34,13 @@ namespace OpenRA.Graphics
 		public int ZOffset => 0;
 		public bool IsDecoration => true;
 
-		public IRenderable WithZOffset(int newOffset) { return new TargetLineRenderable(waypoints, color); }
+		public IRenderable WithZOffset(int newOffset) { return this; }
 
 		public IRenderable OffsetBy(in WVec vec)
 		{
 			// Lambdas can't use 'in' variables, so capture a copy for later
 			var offset = vec;
-			return new TargetLineRenderable(waypoints.Select(w => w + offset), color);
+			return new TargetLineRenderable(waypoints.Select(w => w + offset), color, width, markerSize);
 		}
 
 		public IRenderable AsDecoration() { return this; }
