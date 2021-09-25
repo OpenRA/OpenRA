@@ -248,6 +248,7 @@ namespace OpenRA
 		CellLayer<PPos[]> cellProjection;
 		CellLayer<List<MPos>> inverseCellProjection;
 		CellLayer<byte> projectedHeight;
+		Rectangle projectionSafeBounds;
 
 		internal Translation Translation;
 
@@ -556,6 +557,7 @@ namespace OpenRA
 			if (!mapHeight.Contains(uv))
 				return NoProjectedCells;
 
+			// Any changes to this function should be reflected when setting projectionSafeBounds.
 			var height = mapHeight[uv];
 			if (height == 0)
 				return new[] { (PPos)uv };
@@ -838,6 +840,14 @@ namespace OpenRA
 			if (Grid.MaximumTerrainHeight == 0)
 				return Bounds.Contains(uv.U, uv.V);
 
+			// PERF: Most cells lie within a region where no matter their height,
+			// all possible projected cells would remain in the map area.
+			// For these, we can do a fast-path check.
+			if (projectionSafeBounds.Contains(uv.U, uv.V))
+				return true;
+
+			// Now we need to do a slow-check. Determine the actual projected tiles
+			// as they may or may not be in bounds depending on height.
 			// If the cell has no valid projection, then we're off the map.
 			var projectedCells = ProjectedCellsCovering(uv);
 			if (projectedCells.Length == 0)
@@ -1028,6 +1038,22 @@ namespace OpenRA
 			// The tl and br coordinates are inclusive, but the Rectangle
 			// is exclusive.  Pad the right and bottom edges to match.
 			Bounds = Rectangle.FromLTRB(tl.U, tl.V, br.U + 1, br.V + 1);
+
+			// See ProjectCellInner to see how any given position may be projected.
+			// U: May gain or lose 1, so bring in the left and right edge by 1.
+			// V: For an even height tile, this ranges from 0 to height
+			//    For an odd tile, the height may get rounded up to next even.
+			//    Then also it projects to four tiles which adds one more to the possible height change.
+			//    So we get a range of 0 to height + 1 + 1.
+			//    As the height only goes upwards, we only need to make room at the top of the map and not the bottom.
+			var maxHeight = Grid.MaximumTerrainHeight;
+			if ((maxHeight & 1) == 1)
+				maxHeight += 2;
+			projectionSafeBounds = Rectangle.FromLTRB(
+				Bounds.Left + 1,
+				Bounds.Top + maxHeight,
+				Bounds.Right - 1,
+				Bounds.Bottom);
 
 			// Directly calculate the projected map corners in world units avoiding unnecessary
 			// conversions.  This abuses the definition that the width of the cell along the x world axis
