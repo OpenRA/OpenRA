@@ -32,11 +32,7 @@ namespace OpenRA.UtilityCommands
 			if (args[1] == "user" || args[1] == "both")
 				type |= ModRegistration.User;
 
-			var mods = new ExternalMods();
-
-			ExternalMod activeMod = null;
-			mods.TryGetValue(ExternalMod.MakeKey(utility.ModData.Manifest), out activeMod);
-			mods.ClearInvalidRegistrations(activeMod, type);
+			new ExternalMods().ClearInvalidRegistrations(type);
 		}
 	}
 }
