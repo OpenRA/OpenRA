@@ -304,12 +304,11 @@ namespace OpenRA.Network
 					orderManager.ReceiveDisconnect(disconnect.ClientId, disconnect.Frame);
 				else if (OrderIO.TryParseSync(p.Data, out var sync))
 					orderManager.ReceiveSync(sync);
-				else if (OrderIO.TryParsePing(p.FromClient, p.Data, out var ping))
+				else if (OrderIO.TryParsePingRequest(p, out var timestamp))
 				{
-					// The Ping packet is sent back directly without changes
 					// Note that processing this here, rather than in NetworkConnectionReceive,
 					// so that poor world tick performance can be reflected in the latency measurement
-					Send(ping);
+					Send(OrderIO.SerializePingResponse(timestamp, (byte)orderManager.OrderQueueLength));
 					record = false;
 				}
 				else if (OrderIO.TryParseAck(p, out var ackFrame, out var ackCount))
