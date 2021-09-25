@@ -191,7 +191,7 @@ namespace OpenRA
 		/// * Filename doesn't match internal key
 		/// * Fails to parse as a mod registration
 		/// </summary>
-		internal void ClearInvalidRegistrations(ExternalMod activeMod, ModRegistration registration)
+		internal void ClearInvalidRegistrations(ModRegistration registration)
 		{
 			var sources = new List<string>();
 			if (registration.HasFlag(ModRegistration.System))
@@ -206,7 +206,6 @@ namespace OpenRA
 				sources.Add(Platform.GetSupportDir(SupportDirType.LegacyUser));
 			}
 
-			var activeModKey = ExternalMod.MakeKey(activeMod);
 			foreach (var source in sources.Distinct())
 			{
 				var metadataPath = Path.Combine(source, "ModMetadata");
@@ -222,13 +221,10 @@ namespace OpenRA
 						var m = FieldLoader.Load<ExternalMod>(yaml);
 						modKey = ExternalMod.MakeKey(m);
 
-						// Continue to the next entry if it is the active mod (even if the LaunchPath is bogus)
-						if (modKey == activeModKey)
-							continue;
-
 						// Continue to the next entry if this one is valid
-						if (File.Exists(m.LaunchPath) && Path.GetFileNameWithoutExtension(path) == modKey &&
-							!(activeMod != null && m.LaunchPath == activeMod.LaunchPath && m.Id == activeMod.Id && m.Version != activeMod.Version))
+						// HACK: Explicitly invalidate paths to OpenRA.dll to clean up bogus metadata files
+						// that were created after the initial migration from .NET Framework to Core/5.
+						if (File.Exists(m.LaunchPath) && Path.GetFileNameWithoutExtension(path) == modKey && Path.GetExtension(m.LaunchPath) != ".dll")
 							continue;
 					}
 					catch (Exception e)

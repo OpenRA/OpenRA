@@ -407,19 +407,11 @@ namespace OpenRA
 				if (launchPath != null && launchPath.First() == '"' && launchPath.Last() == '"')
 					launchPath = launchPath.Substring(1, launchPath.Length - 2);
 
-				if (launchPath == null)
-				{
-					// When launching the assembly directly we must propagate the Engine.EngineDir argument if defined
-					// Platform-specific launchers are expected to manage this internally.
-					launchPath = Assembly.GetEntryAssembly().Location;
-					if (!string.IsNullOrEmpty(engineDirArg))
-						launchArgs.Add("Engine.EngineDir=\"" + engineDirArg + "\"");
-				}
+				// Metadata registration requires an explicit launch path
+				if (launchPath != null)
+					ExternalMods.Register(Mods[modID], launchPath, launchArgs, ModRegistration.User);
 
-				ExternalMods.Register(Mods[modID], launchPath, launchArgs, ModRegistration.User);
-
-				if (ExternalMods.TryGetValue(ExternalMod.MakeKey(Mods[modID]), out var activeMod))
-					ExternalMods.ClearInvalidRegistrations(activeMod, ModRegistration.User);
+				ExternalMods.ClearInvalidRegistrations(ModRegistration.User);
 			}
 
 			Console.WriteLine("External mods:");
