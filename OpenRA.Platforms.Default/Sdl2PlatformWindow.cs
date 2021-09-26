@@ -303,9 +303,15 @@ namespace OpenRA.Platforms.Default
 			// Run graphics rendering on a dedicated thread.
 			// The calling thread will then have more time to process other tasks, since rendering happens in parallel.
 			// If the calling thread is the main game thread, this means it can run more logic and render ticks.
-			var ctx = new Sdl2GraphicsContext(this);
-			ctx.InitializeOpenGL();
-			context = ctx;
+			// This is disabled when running in windowed mode on Windows because it breaks the ability to minimize/restore the window.
+			if (Platform.CurrentPlatform == PlatformType.Windows && windowMode == WindowMode.Windowed)
+			{
+				var ctx = new Sdl2GraphicsContext(this);
+				ctx.InitializeOpenGL();
+				context = ctx;
+			}
+			else
+				context = new ThreadedGraphicsContext(new Sdl2GraphicsContext(this), batchSize);
 
 			context.SetVSyncEnabled(Game.Settings.Graphics.VSync);
 
