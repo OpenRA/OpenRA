@@ -12,6 +12,7 @@ World:
 	ScriptLobbyDropdown@difficulty:
 		ID: difficulty
 		Label: Difficulty
+		Description: Change the difficulty of the mission
 		Values:
 			easy: Easy
 			normal: Normal
