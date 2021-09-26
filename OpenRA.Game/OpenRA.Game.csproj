@@ -6,8 +6,8 @@
     <DefineConstants>MONO</DefineConstants>
   </PropertyGroup>
   <ItemGroup Condition="'$(Mono)' == ''">
+    <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="5.0.0" />
     <PackageReference Include="Microsoft.DotNet.PlatformAbstractions" Version="3.1.6" />
-    <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="5.0.0-preview.3-runtime.20214.6" />
     <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
   </ItemGroup>
   <ItemGroup>
