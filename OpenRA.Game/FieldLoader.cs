@@ -272,6 +272,11 @@ namespace OpenRA
 			if (value != null)
 			{
 				var parts = value.Split(SplitComma, StringSplitOptions.RemoveEmptyEntries);
+				if (parts.Length == 3)
+					return new CPos(
+						Exts.ParseIntegerInvariant(parts[0]),
+						Exts.ParseIntegerInvariant(parts[1]),
+						Exts.ParseByte(parts[2]));
 				return new CPos(Exts.ParseIntegerInvariant(parts[0]), Exts.ParseIntegerInvariant(parts[1]));
 			}
 
