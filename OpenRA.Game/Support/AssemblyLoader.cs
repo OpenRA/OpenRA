@@ -310,7 +310,7 @@ namespace OpenRA.Support
 				? dependencyContext.RuntimeGraph
 				: DependencyContext.Default.RuntimeGraph;
 
-			var rid = Microsoft.DotNet.PlatformAbstractions.RuntimeEnvironment.GetRuntimeIdentifier();
+			var rid = RuntimeInformation.RuntimeIdentifier;
 			var fallbackRid = GetFallbackRid();
 			var fallbackGraph = ridGraph.FirstOrDefault(g => g.Runtime == rid)
 								?? ridGraph.FirstOrDefault(g => g.Runtime == fallbackRid)
