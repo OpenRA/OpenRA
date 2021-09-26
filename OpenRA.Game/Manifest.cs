@@ -61,6 +61,7 @@ namespace OpenRA
 		public string Website;
 		public string WebIcon32;
 		public string WindowTitle;
+		public string WindowIcon;
 		public bool Hidden;
 	}
 

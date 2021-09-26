@@ -4,6 +4,7 @@ Metadata:
 	Website: https://www.openra.net
 	WebIcon32: https://www.openra.net/images/icons/d2k_32x32.png
 	WindowTitle: OpenRA - Dune 2000
+	WindowIcon: icon.png
 
 PackageFormats: D2kSoundResources
 
