@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string TechLevelDropdownLabel = "Tech Level";
 
 		[Desc("Tooltip description for the tech level option in the lobby.")]
-		public readonly string TechLevelDropdownDescription = "Change the units and abilities at your disposal";
+		public readonly string TechLevelDropdownDescription = "The units and abilities that players can use";
 
 		[Desc("Default tech level.")]
 		public readonly string TechLevel = "unrestricted";
@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string GameSpeedDropdownLabel = "Game Speed";
 
 		[Desc("Description of the game speed option in the lobby.")]
-		public readonly string GameSpeedDropdownDescription = "Change the rate at which time passes";
+		public readonly string GameSpeedDropdownDescription = "The rate at which time passes";
 
 		[Desc("Default game speed (leave empty to use the default defined in mod.yaml).")]
 		public readonly string GameSpeed = null;

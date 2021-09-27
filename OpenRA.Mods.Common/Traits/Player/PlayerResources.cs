@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string DefaultCashDropdownLabel = "Starting Cash";
 
 		[Desc("Tooltip description for the starting cash option in the lobby.")]
-		public readonly string DefaultCashDropdownDescription = "Change the amount of cash that players start with";
+		public readonly string DefaultCashDropdownDescription = "The amount of cash that players start with";
 
 		[Desc("Starting cash options that are available in the lobby options.")]
 		public readonly int[] SelectableCash = { 2500, 5000, 10000, 20000 };

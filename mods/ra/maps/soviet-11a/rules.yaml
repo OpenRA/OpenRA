@@ -10,7 +10,7 @@ World:
 	ScriptLobbyDropdown@difficulty:
 		ID: difficulty
 		Label: Difficulty
-		Description: Change the difficulty of the mission
+		Description: The difficulty of the mission
 		Values:
 			easy: Easy
 			normal: Normal
@@ -82,7 +82,7 @@ E3:
 CA:
 	Buildable:
 		Prerequisites: ~syrd, dome
-    
+
 HELI:
 	Buildable:
 		Prerequisites: ~hpad
