@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string DropdownLabel = "Starting Units";
 
 		[Desc("Tooltip description for the starting units option in the lobby.")]
-		public readonly string DropdownDescription = "Change the units that you start the game with";
+		public readonly string DropdownDescription = "The units that players start the game with";
 
 		[Desc("Prevent the starting units option from being changed in the lobby.")]
 		public readonly bool DropdownLocked = false;
