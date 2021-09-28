@@ -13,7 +13,7 @@ fi
 
 # Prompt for a mod to launch if one is not already specified
 MODARG=''
-if [ z"${*#*Game.Mod}" = z"$*" ]
+if [ z"${*#*Game.Mod=}" = z"$*" ]
 then
 	if command -v zenity > /dev/null
 	then
