@@ -174,7 +174,7 @@ namespace OpenRA.Platforms.Default
 
 					// Make sure we can accurately determine the end of the original sound,
 					// even if the source is immediately reused.
-					sound.Done = true;
+					sound.UnbindSource();
 
 					var slot = kv.Value;
 					slot.SoundSource = null;
@@ -279,7 +279,7 @@ namespace OpenRA.Platforms.Default
 
 		public void PauseSound(ISound sound, bool paused)
 		{
-			if (sound == null)
+			if (sound == null || sound.Complete)
 				return;
 
 			var source = ((OpenAlSound)sound).Source;
@@ -414,10 +414,10 @@ namespace OpenRA.Platforms.Default
 
 	class OpenAlSound : ISound
 	{
-		public readonly uint Source;
+		internal uint Source { get; private set; }
 		protected readonly float SampleRate;
 
-		public bool Done;
+		bool done;
 
 		public OpenAlSound(uint source, bool looping, bool relative, WPos pos, float volume, int sampleRate, uint buffer)
 			: this(source, looping, relative, pos, volume, sampleRate)
@@ -442,16 +442,39 @@ namespace OpenRA.Platforms.Default
 			AL10.alSourcef(source, AL10.AL_MAX_DISTANCE, 136533);
 		}
 
+		internal void UnbindSource()
+		{
+			done = true;
+			Source = uint.MaxValue;
+		}
+
 		public float Volume
 		{
-			get { AL10.alGetSourcef(Source, AL10.AL_GAIN, out var volume); return volume; }
-			set => AL10.alSourcef(Source, AL10.AL_GAIN, value);
+			get
+			{
+				if (done)
+					return float.NaN;
+
+				AL10.alGetSourcef(Source, AL10.AL_GAIN, out var volume);
+				return volume;
+			}
+
+			set
+			{
+				if (done)
+					return;
+
+				AL10.alSourcef(Source, AL10.AL_GAIN, value);
+			}
 		}
 
 		public virtual float SeekPosition
 		{
 			get
 			{
+				if (done)
+					return float.NaN;
+
 				AL10.alGetSourcei(Source, AL11.AL_SAMPLE_OFFSET, out var sampleOffset);
 				return sampleOffset / SampleRate;
 			}
@@ -461,7 +484,7 @@ namespace OpenRA.Platforms.Default
 		{
 			get
 			{
-				if (Done)
+				if (done)
 					return true;
 
 				AL10.alGetSourcei(Source, AL10.AL_SOURCE_STATE, out var state);
@@ -471,11 +494,17 @@ namespace OpenRA.Platforms.Default
 
 		public void SetPosition(WPos pos)
 		{
+			if (done)
+				return;
+
 			AL10.alSource3f(Source, AL10.AL_POSITION, pos.X, pos.Y, pos.Z);
 		}
 
 		protected void StopSource()
 		{
+			if (done)
+				return;
+
 			AL10.alGetSourcei(Source, AL10.AL_SOURCE_STATE, out var state);
 			if (state == AL10.AL_PLAYING || state == AL10.AL_PAUSED)
 				AL10.alSourceStop(Source);
@@ -483,6 +512,9 @@ namespace OpenRA.Platforms.Default
 
 		public virtual void Stop()
 		{
+			if (done)
+				return;
+
 			StopSource();
 			AL10.alSourcei(Source, AL10.AL_BUFFER, 0);
 		}
