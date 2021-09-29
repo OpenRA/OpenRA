@@ -139,6 +139,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				Ui.CloseWindow();
 				onComplete();
 			};
+
+			SettingsUtils.AdjustSettingsScrollPanelLayout(widget.Get<ScrollPanelWidget>("SETTINGS_SCROLLPANEL"));
 		}
 	}
 }
