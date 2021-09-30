@@ -49,8 +49,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			readonly Action<Actor> onActorEntered;
 			readonly Action<Actor> onActorExited;
-			readonly HashSet<Actor> oldActors = new HashSet<Actor>();
-			readonly HashSet<Actor> currentActors = new HashSet<Actor>();
+			HashSet<Actor> oldActors = new HashSet<Actor>();
+			HashSet<Actor> currentActors = new HashSet<Actor>();
 
 			public CellTrigger(CPos[] footprint, Action<Actor> onActorEntered, Action<Actor> onActorExited)
 			{
@@ -69,11 +69,15 @@ namespace OpenRA.Mods.Common.Traits
 					return;
 
 				// PERF: Reuse collection to avoid allocations.
-				oldActors.Clear();
-				oldActors.UnionWith(currentActors);
-
+				var temp = oldActors;
+				oldActors = currentActors;
+				currentActors = temp;
 				currentActors.Clear();
-				currentActors.UnionWith(Footprint.SelectMany(actorMap.GetActorsAt));
+
+				// PERF: Avoid LINQ.
+				foreach (var fp in Footprint)
+					foreach (var a in actorMap.GetActorsAt(fp))
+						currentActors.Add(a);
 
 				if (onActorEntered != null)
 					foreach (var a in currentActors)
@@ -98,8 +102,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			readonly Action<Actor> onActorEntered;
 			readonly Action<Actor> onActorExited;
-			readonly HashSet<Actor> oldActors = new HashSet<Actor>();
-			readonly HashSet<Actor> currentActors = new HashSet<Actor>();
+			HashSet<Actor> oldActors = new HashSet<Actor>();
+			HashSet<Actor> currentActors = new HashSet<Actor>();
 
 			WPos position;
 			WDist range;
@@ -133,15 +137,22 @@ namespace OpenRA.Mods.Common.Traits
 					return;
 
 				// PERF: Reuse collection to avoid allocations.
-				oldActors.Clear();
-				oldActors.UnionWith(currentActors);
-
-				var delta = new WVec(range, range, WDist.Zero);
+				var temp = oldActors;
+				oldActors = currentActors;
+				currentActors = temp;
 				currentActors.Clear();
-				currentActors.UnionWith(
-					am.ActorsInBox(position - delta, position + delta)
-					.Where(a => (a.CenterPosition - position).HorizontalLengthSquared < range.LengthSquared
-						&& (vRange.Length == 0 || (a.World.Map.DistanceAboveTerrain(a.CenterPosition).LengthSquared <= vRange.LengthSquared))));
+
+				var ra = Math.Abs(range.Length);
+				var rs = range.LengthSquared;
+				var vrs = ra == 0 ? 0 : vRange.LengthSquared;
+
+				// PERF: Avoid LINQ.
+				foreach (var a in am.ActorsInBox(position.X - ra, position.Y - ra, position.X + ra, position.Y + ra))
+				{
+					var c = a.CenterPosition;
+					if ((c - position).HorizontalLengthSquared < rs && (vrs == 0 || a.World.Map.DistanceAboveTerrain(c).LengthSquared <= vrs))
+						currentActors.Add(a);
+				}
 
 				if (onActorEntered != null)
 					foreach (var a in currentActors)
@@ -266,17 +277,24 @@ namespace OpenRA.Mods.Common.Traits
 			return new ActorsAtEnumerable(layer[uv]);
 		}
 
-		public IEnumerable<Actor> GetActorsAt(CPos a, SubCell sub)
+		IEnumerable<Actor> GetActorsAtInner(CPos a, SubCell sub)
 		{
 			var uv = a.ToMPos(map);
 			if (!influence.Contains(uv))
 				yield break;
 
-			var always = sub == SubCell.FullCell || sub == SubCell.Any;
 			var layer = a.Layer == 0 ? influence : customInfluence[a.Layer];
 			for (var i = layer[uv]; i != null; i = i.Next)
-				if (!i.Actor.Disposed && (i.SubCell == sub || i.SubCell == SubCell.FullCell || always))
+				if (!i.Actor.Disposed && (i.SubCell == sub || i.SubCell == SubCell.FullCell))
 					yield return i.Actor;
+		}
+
+		public IEnumerable<Actor> GetActorsAt(CPos a, SubCell sub)
+		{
+			if (sub == SubCell.FullCell || sub == SubCell.Any)
+				return GetActorsAt(a);
+
+			return GetActorsAtInner(a, sub);
 		}
 
 		public bool HasFreeSubCell(CPos cell, bool checkTransient = true)
@@ -437,10 +455,13 @@ namespace OpenRA.Mods.Common.Traits
 			if (influenceNode == null)
 				return;
 
-			RemoveInfluenceInner(ref influenceNode.Next, toRemove);
-
 			if (influenceNode.Actor == toRemove)
+			{
 				influenceNode = influenceNode.Next;
+				return;
+			}
+
+			RemoveInfluenceInner(ref influenceNode.Next, toRemove);
 		}
 
 		public void UpdateOccupiedCells(IOccupySpace ios)
@@ -617,13 +638,9 @@ namespace OpenRA.Mods.Common.Traits
 					yield return BinAt(row, col);
 		}
 
-		public IEnumerable<Actor> ActorsInBox(WPos a, WPos b)
+		IEnumerable<Actor> ActorsInBox(int left, int top, int right, int bottom)
 		{
 			// PERF: Inline BinsInBox here to avoid allocations as this method is called often.
-			var left = Math.Min(a.X, b.X);
-			var top = Math.Min(a.Y, b.Y);
-			var right = Math.Max(a.X, b.X);
-			var bottom = Math.Max(a.Y, b.Y);
 			var region = BinRectangleCoveringWorldArea(left, top, right, bottom);
 			var minCol = region.Left;
 			var minRow = region.Top;
@@ -644,6 +661,25 @@ namespace OpenRA.Mods.Common.Traits
 					}
 				}
 			}
+		}
+
+		public IEnumerable<Actor> ActorsInBox(WPos a, WPos b)
+		{
+			var left = Math.Min(a.X, b.X);
+			var top = Math.Min(a.Y, b.Y);
+			var right = Math.Max(a.X, b.X);
+			var bottom = Math.Max(a.Y, b.Y);
+			return ActorsInBox(left, top, right, bottom);
+		}
+
+		public IEnumerable<Actor> ActorsInCircle(WPos origin, WDist r)
+		{
+			// Target ranges are calculated in 2D, so ignore height differences
+			var ra = Math.Abs(r.Length);
+			var rs = ra * ra;
+			foreach (var a in ActorsInBox(origin.X - ra, origin.Y - ra, origin.X + ra, origin.Y + ra))
+				if ((a.CenterPosition - origin).HorizontalLengthSquared < rs)
+					yield return a;
 		}
 	}
 

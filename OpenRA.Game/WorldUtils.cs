@@ -36,10 +36,7 @@ namespace OpenRA
 
 		public static IEnumerable<Actor> FindActorsInCircle(this World world, WPos origin, WDist r)
 		{
-			// Target ranges are calculated in 2D, so ignore height differences
-			var vec = new WVec(r, r, WDist.Zero);
-			return world.ActorMap.ActorsInBox(origin - vec, origin + vec).Where(
-				a => (a.CenterPosition - origin).HorizontalLengthSquared <= r.LengthSquared);
+			return world.ActorMap.ActorsInCircle(origin, r);
 		}
 
 		public static bool ContainsTemporaryBlocker(this World world, CPos cell, Actor ignoreActor = null)
