@@ -34,14 +34,23 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new OwnerLostAction(init, this); }
 	}
 
-	public class OwnerLostAction : ConditionalTrait<OwnerLostActionInfo>, INotifyOwnerLost
+	public class OwnerLostAction : ConditionalTrait<OwnerLostActionInfo>, INotifyOwnerLost, ITick
 	{
+		bool ownerLost;
+
 		public OwnerLostAction(ActorInitializer init, OwnerLostActionInfo info)
 			: base(info) { }
 
 		void INotifyOwnerLost.OnOwnerLost(Actor self)
 		{
-			if (IsTraitDisabled)
+			// OnOwnerLost might get called before the actor's activity runs,
+			// so we defer the actual action to ITick.Tick to avoid potential NREs in activity code.
+			ownerLost = true;
+		}
+
+		void ITick.Tick(Actor self)
+		{
+			if (IsTraitDisabled || !ownerLost)
 				return;
 
 			if (Info.Action == OwnerLostActionType.Kill)
