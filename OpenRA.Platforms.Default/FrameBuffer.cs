@@ -143,16 +143,10 @@ namespace OpenRA.Platforms.Default
 
 		public void Dispose()
 		{
-			Dispose(true);
-		}
-
-		void Dispose(bool disposing)
-		{
 			if (disposed)
 				return;
 			disposed = true;
-			if (disposing)
-				texture.Dispose();
+			texture.Dispose();
 
 			OpenGL.glDeleteFramebuffers(1, ref framebuffer);
 			OpenGL.CheckGLError();
