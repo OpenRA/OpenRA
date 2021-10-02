@@ -39,9 +39,6 @@ namespace OpenRA.Mods.Common.Traits
 			if (!order.Queued || !(self.CurrentActivity is Transform currentTransform))
 				return;
 
-			if (!order.Queued)
-				currentTransform.NextActivity?.Cancel(self);
-
 			currentTransform.Queue(new IssueOrderAfterTransform("DeployTransform", order.Target));
 
 			self.ShowTargetLines();
