@@ -375,7 +375,6 @@ namespace OpenRA.Network
 		void IDisposable.Dispose()
 		{
 			Dispose(true);
-			GC.SuppressFinalize(this);
 		}
 	}
 }
