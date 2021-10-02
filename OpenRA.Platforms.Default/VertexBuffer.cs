@@ -97,11 +97,6 @@ namespace OpenRA.Platforms.Default
 
 		public void Dispose()
 		{
-			Dispose(true);
-		}
-
-		void Dispose(bool disposing)
-		{
 			if (disposed)
 				return;
 			disposed = true;

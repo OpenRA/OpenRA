@@ -357,7 +357,7 @@ namespace OpenRA.Network
 
 		public string ErrorMessage => errorMessage;
 
-		void Dispose(bool disposing)
+		void IDisposable.Dispose()
 		{
 			if (disposed)
 				return;
@@ -368,13 +368,7 @@ namespace OpenRA.Network
 			// This will mark the connection as no longer connected and the thread will terminate cleanly.
 			tcp?.Close();
 
-			if (disposing)
-				Recorder?.Dispose();
-		}
-
-		void IDisposable.Dispose()
-		{
-			Dispose(true);
+			Recorder?.Dispose();
 		}
 	}
 }

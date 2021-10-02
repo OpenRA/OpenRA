@@ -46,11 +46,6 @@ namespace OpenRA.Platforms.Default
 
 		public void Dispose()
 		{
-			Dispose(true);
-		}
-
-		void Dispose(bool disposing)
-		{
 			if (Cursor != IntPtr.Zero)
 			{
 				SDL.SDL_FreeCursor(Cursor);
