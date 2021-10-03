@@ -12,7 +12,7 @@ Join the [Forums](https://forum.openra.net/) for discussion.
 
 ## Play
 
-Distributed mods include a reimagining of
+Distributed mods include a reimagining of:
 
 * Command & Conquer: Red Alert
 * Command & Conquer: Tiberian Dawn
