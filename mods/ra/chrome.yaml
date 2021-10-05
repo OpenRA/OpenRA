@@ -497,7 +497,7 @@ slider-thumb-pressed:
 	Inherits: button-pressed
 
 slider-thumb-disabled:
-	Inherits: button
+	Inherits: button-disabled
 
 checkbox:
 	Inherits: button-pressed
