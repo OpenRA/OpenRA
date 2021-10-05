@@ -11,7 +11,6 @@
 
 using System;
 using System.Linq;
-using DiscordRPC.Helper;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Lint
