@@ -5,7 +5,7 @@
     </ProjectReference>
     <PackageReference Include="Microsoft.Win32.Registry" Version="4.7.0" />
     <PackageReference Include="OpenRA-FuzzyLogicLibrary" Version="1.0.1" />
-    <PackageReference Include="DiscordRichPresence" Version="1.0.175" />
+    <PackageReference Include="DiscordRichPresence" Version="1.0.150" />
     <PackageReference Include="MP3Sharp" Version="1.0.5" />
     <PackageReference Include="NVorbis" Version="0.10.3" />
     <PackageReference Include="TagLibSharp" Version="2.2.0" />
