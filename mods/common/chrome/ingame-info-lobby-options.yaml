@@ -7,39 +7,55 @@ Container@LOBBY_OPTIONS_PANEL:
 			X: 20
 			Y: 20
 			Width: 482
-			Height: 350
+			Height: 365
 			Children:
 				Container@LOBBY_OPTIONS:
-					X: 10
-					Y: 9
-					Width: PARENT_RIGHT - 10 - 24
+					Y: 10
+					Width: PARENT_RIGHT - 24
 					Children:
 						Container@CHECKBOX_ROW_TEMPLATE:
+							Width: PARENT_RIGHT
 							Height: 30
 							Children:
 								Checkbox@A:
-									Width: 220
+									X: 10
+									Width: PARENT_RIGHT / 2 - 20
 									Height: 20
 									Visible: False
 									TooltipContainer: TOOLTIP_CONTAINER
 								Checkbox@B:
-									X: 225
-									Width: 220
+									X: PARENT_RIGHT / 2 + 10
+									Width: PARENT_RIGHT / 2 - 20
 									Height: 20
 									Visible: False
 									TooltipContainer: TOOLTIP_CONTAINER
 						Container@DROPDOWN_ROW_TEMPLATE:
-							Height: 30
+							Height: 60
 							Width: PARENT_RIGHT
 							Children:
 								Label@A_DESC:
-									Width: 140
-									Height: 25
-									Align: Right
+									X: 10
+									Width: PARENT_RIGHT / 2 - 20
+									Height: 20
 									Visible: False
 								DropDownButton@A:
-									X: 145
-									Width: 180
+									X: 10
+									Y: 25
+									Width: PARENT_RIGHT / 2 - 20
 									Height: 25
+									Font: Regular
+									Visible: False
+									TooltipContainer: TOOLTIP_CONTAINER
+								Label@B_DESC:
+									X: PARENT_RIGHT / 2 + 10
+									Width: PARENT_RIGHT / 2 - 20
+									Height: 20
+									Visible: False
+								DropDownButton@B:
+									X: PARENT_RIGHT / 2 + 10
+									Y: 25
+									Width: PARENT_RIGHT / 2 - 20
+									Height: 25
+									Font: Regular
 									Visible: False
 									TooltipContainer: TOOLTIP_CONTAINER

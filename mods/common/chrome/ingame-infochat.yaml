@@ -1,7 +1,7 @@
 Container@CHAT_CONTAINER:
 	Y: 20
 	Width: PARENT_RIGHT
-	Height: PARENT_BOTTOM - 100
+	Height: PARENT_BOTTOM - 105
 	Logic: IngameChatLogic
 		Templates:
 			Chat: CHAT_LINE_TEMPLATE

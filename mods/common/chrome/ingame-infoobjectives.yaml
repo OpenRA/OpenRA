@@ -20,7 +20,7 @@ Container@MISSION_OBJECTIVES:
 			X: 20
 			Y: 60
 			Width: 482
-			Height: 310
+			Height: 325
 			TopBottomSpacing: 15
 			ItemSpacing: 15
 			Children:
