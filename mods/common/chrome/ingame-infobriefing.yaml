@@ -22,7 +22,7 @@ Container@MAP_PANEL:
 			X: 20
 			Y: 232
 			Width: PARENT_RIGHT - 40
-			Height: 138
+			Height: 153
 			Children:
 				Label@MAP_DESCRIPTION:
 					X: 4
