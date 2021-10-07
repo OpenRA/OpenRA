@@ -79,6 +79,9 @@ namespace OpenRA.Mods.Common
 
 			client.SetSubscription(EventType.Join | EventType.JoinRequest);
 			client.Initialize();
+
+			// Set an initial value for the rich presence to avoid a NRE in the library
+			client.SetPresence(new RichPresence());
 		}
 
 		void OnJoinRequested(object sender, JoinRequestMessage args)
