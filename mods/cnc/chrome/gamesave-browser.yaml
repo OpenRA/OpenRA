@@ -2,8 +2,8 @@ Container@GAMESAVE_BROWSER_PANEL:
 	Logic: GameSaveBrowserLogic
 	X: (WINDOW_RIGHT - WIDTH) / 2
 	Y: (WINDOW_BOTTOM - HEIGHT) / 2
-	Width: 600
-	Height: 400
+	Width: 714
+	Height: 435
 	Children:
 		Label@LOAD_TITLE:
 			Width: PARENT_RIGHT
@@ -27,10 +27,10 @@ Container@GAMESAVE_BROWSER_PANEL:
 			Background: panel-black
 			Children:
 				ScrollPanel@GAME_LIST:
-					X: 10
-					Y: 10
-					Width: PARENT_RIGHT - 20
-					Height: PARENT_BOTTOM - 20
+					X: 15
+					Y: 15
+					Width: PARENT_RIGHT - 30
+					Height: PARENT_BOTTOM - 30
 					Children:
 						ScrollItem@NEW_TEMPLATE:
 							Width: PARENT_RIGHT - 27
@@ -62,10 +62,10 @@ Container@GAMESAVE_BROWSER_PANEL:
 									Height: 25
 									Align: Right
 				Container@SAVE_WIDGETS:
-					X: 10
-					Y: PARENT_BOTTOM - 35
-					Width: PARENT_RIGHT - 20
-					Height: 35
+					X: 15
+					Y: PARENT_BOTTOM - 40
+					Width: PARENT_RIGHT - 30
+					Height: 30
 					Visible: False
 					Children:
 						TextField@SAVE_TEXTFIELD:
@@ -76,24 +76,24 @@ Container@GAMESAVE_BROWSER_PANEL:
 					Key: escape
 					X: 0
 					Y: PARENT_BOTTOM - 1
-					Width: 100
+					Width: 140
 					Height: 35
 					Text: Back
 				Button@DELETE_ALL_BUTTON:
-					X: PARENT_RIGHT - 330 - WIDTH
+					X: PARENT_RIGHT - 370 - WIDTH
 					Y: PARENT_BOTTOM - 1
 					Width: 100
 					Height: 35
 					Text: Delete All
 				Button@DELETE_BUTTON:
-					X: PARENT_RIGHT - 220 - WIDTH
+					X: PARENT_RIGHT - 260 - WIDTH
 					Y: PARENT_BOTTOM - 1
 					Width: 100
 					Height: 35
 					Text: Delete
 					Key: Delete
 				Button@RENAME_BUTTON:
-					X: PARENT_RIGHT - 110 - WIDTH
+					X: PARENT_RIGHT - 150 - WIDTH
 					Y: PARENT_BOTTOM - 1
 					Width: 100
 					Height: 35
@@ -103,7 +103,7 @@ Container@GAMESAVE_BROWSER_PANEL:
 					Key: return
 					X: PARENT_RIGHT - WIDTH
 					Y: PARENT_BOTTOM - 1
-					Width: 100
+					Width: 140
 					Height: 35
 					Text: Load
 					Visible: False
@@ -111,7 +111,7 @@ Container@GAMESAVE_BROWSER_PANEL:
 					Key: return
 					X: PARENT_RIGHT - WIDTH
 					Y: PARENT_BOTTOM - 1
-					Width: 100
+					Width: 140
 					Height: 35
 					Text: Save
 					Visible: False
