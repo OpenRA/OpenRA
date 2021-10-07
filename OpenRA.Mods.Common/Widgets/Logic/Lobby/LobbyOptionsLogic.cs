@@ -161,7 +161,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var label = row.GetOrNull<LabelWidget>(dropdown.Id + "_DESC");
 				if (label != null)
 				{
-					label.GetText = () => option.Name;
+					label.GetText = () => option.Name + ":";
 					label.IsVisible = () => true;
 				}
 			}
