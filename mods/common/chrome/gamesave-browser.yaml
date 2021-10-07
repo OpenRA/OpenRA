@@ -2,12 +2,12 @@ Background@GAMESAVE_BROWSER_PANEL:
 	Logic: GameSaveBrowserLogic
 	X: (WINDOW_RIGHT - WIDTH) / 2
 	Y: (WINDOW_BOTTOM - HEIGHT) / 2
-	Width: 600
-	Height: 400
+	Width: 700
+	Height: 500
 	Children:
 		Label@LOAD_TITLE:
 			Width: PARENT_RIGHT
-			Y: 21
+			Y: 16
 			Height: 25
 			Font: Bold
 			Align: Center
@@ -15,7 +15,7 @@ Background@GAMESAVE_BROWSER_PANEL:
 			Visible: False
 		Label@SAVE_TITLE:
 			Width: PARENT_RIGHT
-			Y: 21
+			Y: 16
 			Height: 25
 			Font: Bold
 			Align: Center
@@ -23,9 +23,9 @@ Background@GAMESAVE_BROWSER_PANEL:
 			Visible: False
 		ScrollPanel@GAME_LIST:
 			X: 20
-			Y: 50
+			Y: 45
 			Width: PARENT_RIGHT - 40
-			Height: PARENT_BOTTOM - 102
+			Height: PARENT_BOTTOM - 97
 			Children:
 				ScrollItem@NEW_TEMPLATE:
 					Width: PARENT_RIGHT - 27
