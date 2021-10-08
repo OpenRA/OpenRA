@@ -191,8 +191,7 @@ NALASR:
 		Offset: 298,-171,288
 		RealignDelay: -1
 	AttackTurreted:
-		RequiresCondition: !build-incomplete
-		PauseOnCondition: empdisable || disabled
+		PauseOnCondition: empdisable || disabled || build-incomplete
 	Armament:
 		Weapon: TurretLaserFire
 		LocalOffset: 498,0,317
@@ -231,8 +230,7 @@ NAOBEL:
 		Weapon: ObeliskLaserFire
 		LocalOffset: 1980,297,1131
 	AttackCharges:
-		RequiresCondition: !build-incomplete
-		PauseOnCondition: empdisable || disabled
+		PauseOnCondition: empdisable || disabled || build-incomplete
 		ChargeLevel: 65
 		ChargingCondition: charging
 	AmbientSound:
@@ -275,8 +273,7 @@ NASAM:
 		InitialFacing: 896
 		RealignDelay: -1
 	AttackTurreted:
-		RequiresCondition: !build-incomplete
-		PauseOnCondition: empdisable || disabled
+		PauseOnCondition: empdisable || disabled || build-incomplete
 	WithSpriteTurret:
 		RequiresCondition: !build-incomplete
 		Recoils: false
