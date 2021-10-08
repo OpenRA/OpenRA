@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Pathfinder;
 using OpenRA.Primitives;
 using OpenRA.Support;
 using OpenRA.Traits;
@@ -109,7 +110,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			public TerrainInfo()
 			{
-				Cost = short.MaxValue;
+				Cost = PathGraph.MovementCostForUnreachableCell;
 				Speed = 0;
 			}
 
@@ -168,13 +169,13 @@ namespace OpenRA.Mods.Common.Traits
 				if (!info.TerrainSpeeds.TryGetValue(terrainInfo.TerrainTypes[i].Type, out terrainInfos[i]))
 					terrainInfos[i] = LocomotorInfo.TerrainInfo.Impassable;
 
-			MovementClass = (uint)terrainInfos.Select(ti => ti.Cost < short.MaxValue).ToBits();
+			MovementClass = (uint)terrainInfos.Select(ti => ti.Cost != PathGraph.MovementCostForUnreachableCell).ToBits();
 		}
 
 		public short MovementCostForCell(CPos cell)
 		{
 			if (!world.Map.Contains(cell))
-				return short.MaxValue;
+				return PathGraph.MovementCostForUnreachableCell;
 
 			return cell.Layer == 0 ? cellsCost[cell] : customLayerCellsCost[cell.Layer][cell];
 		}
@@ -190,13 +191,13 @@ namespace OpenRA.Mods.Common.Traits
 		public short MovementCostToEnterCell(Actor actor, CPos destNode, BlockedByActor check, Actor ignoreActor)
 		{
 			if (!world.Map.Contains(destNode))
-				return short.MaxValue;
+				return PathGraph.MovementCostForUnreachableCell;
 
 			var cellCost = destNode.Layer == 0 ? cellsCost[destNode] : customLayerCellsCost[destNode.Layer][destNode];
 
-			if (cellCost == short.MaxValue ||
+			if (cellCost == PathGraph.MovementCostForUnreachableCell ||
 				!CanMoveFreelyInto(actor, destNode, check, ignoreActor))
-				return short.MaxValue;
+				return PathGraph.MovementCostForUnreachableCell;
 
 			return cellCost;
 		}
@@ -276,7 +277,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public SubCell GetAvailableSubCell(Actor self, CPos cell, BlockedByActor check, SubCell preferredSubCell = SubCell.Any, Actor ignoreActor = null)
 		{
-			if (MovementCostForCell(cell) == short.MaxValue)
+			if (MovementCostForCell(cell) == PathGraph.MovementCostForUnreachableCell)
 				return SubCell.Invalid;
 
 			if (check > BlockedByActor.None)
@@ -381,7 +382,7 @@ namespace OpenRA.Mods.Common.Traits
 					{
 						var index = cml.GetTerrainIndex(cell);
 
-						var cost = short.MaxValue;
+						var cost = PathGraph.MovementCostForUnreachableCell;
 
 						if (index != byte.MaxValue)
 							cost = terrainInfos[index].Cost;
@@ -416,7 +417,7 @@ namespace OpenRA.Mods.Common.Traits
 				? world.Map.GetTerrainIndex(cell)
 				: world.GetCustomMovementLayers()[cell.Layer].GetTerrainIndex(cell);
 
-			var cost = short.MaxValue;
+			var cost = PathGraph.MovementCostForUnreachableCell;
 
 			if (index != byte.MaxValue)
 				cost = terrainInfos[index].Cost;

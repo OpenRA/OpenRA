@@ -85,16 +85,16 @@ namespace OpenRA.Mods.Common.Traits
 			return map.Ramp[cell] == 0;
 		}
 
-		int ICustomMovementLayer.EntryMovementCost(LocomotorInfo li, CPos cell)
+		short ICustomMovementLayer.EntryMovementCost(LocomotorInfo li, CPos cell)
 		{
 			var sli = (SubterraneanLocomotorInfo)li;
-			return ValidTransitionCell(cell, sli) ? sli.SubterraneanTransitionCost : PathGraph.CostForInvalidCell;
+			return ValidTransitionCell(cell, sli) ? sli.SubterraneanTransitionCost : PathGraph.MovementCostForUnreachableCell;
 		}
 
-		int ICustomMovementLayer.ExitMovementCost(LocomotorInfo li, CPos cell)
+		short ICustomMovementLayer.ExitMovementCost(LocomotorInfo li, CPos cell)
 		{
 			var sli = (SubterraneanLocomotorInfo)li;
-			return ValidTransitionCell(cell, sli) ? sli.SubterraneanTransitionCost : PathGraph.CostForInvalidCell;
+			return ValidTransitionCell(cell, sli) ? sli.SubterraneanTransitionCost : PathGraph.MovementCostForUnreachableCell;
 		}
 
 		byte ICustomMovementLayer.GetTerrainIndex(CPos cell)

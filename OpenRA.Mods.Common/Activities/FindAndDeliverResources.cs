@@ -191,7 +191,7 @@ namespace OpenRA.Mods.Common.Activities
 				.WithCustomCost(loc =>
 				{
 					if ((loc - searchFromLoc).LengthSquared > searchRadiusSquared)
-						return PathGraph.CostForInvalidCell;
+						return PathGraph.PathCostForInvalidPath;
 
 					// Add a cost modifier to harvestable cells to prefer resources that are closer to the refinery.
 					// This reduces the tendancy for harvesters to move in straight lines

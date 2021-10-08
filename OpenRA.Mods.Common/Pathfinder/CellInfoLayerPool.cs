@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 		{
 			defaultLayer =
 				CellLayer<CellInfo>.CreateInstance(
-					mpos => new CellInfo(int.MaxValue, int.MaxValue, mpos.ToCPos(map), CellStatus.Unvisited),
+					mpos => new CellInfo(PathGraph.PathCostForInvalidPath, PathGraph.PathCostForInvalidPath, mpos.ToCPos(map), CellStatus.Unvisited),
 					new Size(map.MapSize.X, map.MapSize.Y),
 					map.Grid.Type);
 		}
