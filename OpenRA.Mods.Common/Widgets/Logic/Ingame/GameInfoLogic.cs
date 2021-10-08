@@ -81,6 +81,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (tabContainer != null)
 				tabContainer.IsVisible = () => true;
 
+			var chatPanel = widget.Get(panels[IngameInfoPanel.Chat].Panel);
+
 			for (var i = 0; i < numTabs; i++)
 			{
 				var type = visiblePanels[i];
@@ -90,7 +92,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (tabButton != null)
 				{
 					tabButton.Text = info.Label;
-					tabButton.OnClick = () => activePanel = type;
+					tabButton.OnClick = () =>
+					{
+						if (activePanel == IngameInfoPanel.Chat)
+							LeaveChatPanel(chatPanel);
+
+						activePanel = type;
+					};
 					tabButton.IsHighlighted = () => activePanel == type;
 				}
 
@@ -159,6 +167,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			Game.LoadWidget(world, "CHAT_CONTAINER", chatPanelContainer, new WidgetArgs() { { "isMenuChat", true } });
+		}
+
+		static void LeaveChatPanel(Widget chatPanelContainer)
+		{
+			chatPanelContainer.Get<TextFieldWidget>("CHAT_TEXTFIELD").YieldKeyboardFocus();
 		}
 	}
 }
