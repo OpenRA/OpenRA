@@ -88,22 +88,23 @@ namespace OpenRA.Mods.Common.Pathfinder
 		readonly Locomotor locomotor;
 		readonly CellInfoLayerPool.PooledCellInfoLayer pooledLayer;
 		readonly bool checkTerrainHeight;
-		CellLayer<CellInfo> groundInfo;
-
-		readonly Dictionary<byte, (ICustomMovementLayer Layer, CellLayer<CellInfo> Info)> customLayerInfo =
-			new Dictionary<byte, (ICustomMovementLayer, CellLayer<CellInfo>)>();
+		readonly CellLayer<CellInfo>[] cellInfoForLayer;
 
 		public PathGraph(CellInfoLayerPool layerPool, Locomotor locomotor, Actor actor, World world, BlockedByActor check)
 		{
-			pooledLayer = layerPool.Get();
-			groundInfo = pooledLayer.GetLayer();
-			var locomotorInfo = locomotor.Info;
 			this.locomotor = locomotor;
 
+			// As we support a search over the whole map area,
+			// use the pool to grab the CellInfos we need to track the graph state.
+			// This allows us to avoid the cost of allocating large arrays constantly.
 			// PERF: Avoid LINQ
-			foreach (var cml in world.GetCustomMovementLayers().Values)
-				if (cml.EnabledForLocomotor(locomotorInfo))
-					customLayerInfo[cml.Index] = (cml, pooledLayer.GetLayer());
+			var cmls = world.GetCustomMovementLayers();
+			pooledLayer = layerPool.Get();
+			cellInfoForLayer = new CellLayer<CellInfo>[cmls.Length];
+			cellInfoForLayer[0] = pooledLayer.GetLayer();
+			foreach (var cml in cmls)
+				if (cml != null && cml.EnabledForLocomotor(locomotor.Info))
+					cellInfoForLayer[cml.Index] = pooledLayer.GetLayer();
 
 			World = world;
 			Actor = actor;
@@ -132,8 +133,8 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 		public List<GraphConnection> GetConnections(CPos position)
 		{
-			var posLayer = position.Layer;
-			var info = posLayer == 0 ? groundInfo : customLayerInfo[posLayer].Info;
+			var layer = position.Layer;
+			var info = cellInfoForLayer[layer];
 			var previousPos = info[position].PreviousPos;
 
 			var dx = position.X - previousPos.X;
@@ -141,7 +142,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			var index = dy * 3 + dx + 4;
 
 			var directions = DirectedNeighbors[index];
-			var validNeighbors = new List<GraphConnection>(directions.Length + (posLayer == 0 ? customLayerInfo.Count : 1));
+			var validNeighbors = new List<GraphConnection>(directions.Length + (layer == 0 ? cellInfoForLayer.Length : 1));
 			for (var i = 0; i < directions.Length; i++)
 			{
 				var dir = directions[i];
@@ -153,12 +154,16 @@ namespace OpenRA.Mods.Common.Pathfinder
 					validNeighbors.Add(new GraphConnection(neighbor, pathCost));
 			}
 
-			if (posLayer == 0)
+			var cmls = World.GetCustomMovementLayers();
+			if (layer == 0)
 			{
-				foreach (var cli in customLayerInfo.Values)
+				foreach (var cml in cmls)
 				{
-					var layerPosition = new CPos(position.X, position.Y, cli.Layer.Index);
-					var entryCost = cli.Layer.EntryMovementCost(locomotor.Info, layerPosition);
+					if (cml == null || !cml.EnabledForLocomotor(locomotor.Info))
+						continue;
+
+					var layerPosition = new CPos(position.X, position.Y, cml.Index);
+					var entryCost = cml.EntryMovementCost(locomotor.Info, layerPosition);
 					if (entryCost != MovementCostForUnreachableCell)
 						validNeighbors.Add(new GraphConnection(layerPosition, entryCost));
 				}
@@ -166,7 +171,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			else
 			{
 				var layerPosition = new CPos(position.X, position.Y, 0);
-				var exitCost = customLayerInfo[posLayer].Layer.ExitMovementCost(locomotor.Info, layerPosition);
+				var exitCost = cmls[layer].ExitMovementCost(locomotor.Info, layerPosition);
 				if (exitCost != MovementCostForUnreachableCell)
 					validNeighbors.Add(new GraphConnection(layerPosition, exitCost));
 			}
@@ -226,14 +231,12 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 		public CellInfo this[CPos pos]
 		{
-			get => (pos.Layer == 0 ? groundInfo : customLayerInfo[pos.Layer].Info)[pos];
-			set => (pos.Layer == 0 ? groundInfo : customLayerInfo[pos.Layer].Info)[pos] = value;
+			get => cellInfoForLayer[pos.Layer][pos];
+			set => cellInfoForLayer[pos.Layer][pos] = value;
 		}
 
 		public void Dispose()
 		{
-			groundInfo = null;
-			customLayerInfo.Clear();
 			pooledLayer.Dispose();
 		}
 	}

@@ -428,10 +428,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (ToCell.Layer == 0)
 				return true;
 
-			if (self.World.GetCustomMovementLayers().TryGetValue(ToCell.Layer, out var layer))
-				return layer.InteractsWithDefaultLayer;
-
-			return true;
+			var layer = self.World.GetCustomMovementLayers()[ToCell.Layer];
+			return layer == null || layer.InteractsWithDefaultLayer;
 		}
 
 		#endregion
@@ -862,9 +860,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 			}
 
-			var cml = self.World.WorldActor.TraitsImplementing<ICustomMovementLayer>()
-				.First(l => l.Index == self.Location.Layer);
-
+			var cml = self.World.GetCustomMovementLayers()[self.Location.Layer];
 			if (!cml.ReturnToGroundLayerOnIdle)
 				return;
 
