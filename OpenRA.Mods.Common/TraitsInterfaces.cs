@@ -404,8 +404,8 @@ namespace OpenRA.Mods.Common.Traits
 		bool ReturnToGroundLayerOnIdle { get; }
 
 		bool EnabledForLocomotor(LocomotorInfo li);
-		int EntryMovementCost(LocomotorInfo li, CPos cell);
-		int ExitMovementCost(LocomotorInfo li, CPos cell);
+		short EntryMovementCost(LocomotorInfo li, CPos cell);
+		short ExitMovementCost(LocomotorInfo li, CPos cell);
 
 		byte GetTerrainIndex(CPos cell);
 		WPos CenterOfCell(CPos cell);

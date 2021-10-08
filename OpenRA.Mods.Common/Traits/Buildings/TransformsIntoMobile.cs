@@ -12,6 +12,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Activities;
+using OpenRA.Mods.Common.Pathfinder;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -210,7 +211,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			bool CanEnterCell(Actor self, CPos cell)
 			{
-				if (mobile.locomotor.MovementCostForCell(cell) == short.MaxValue)
+				if (mobile.locomotor.MovementCostForCell(cell) == PathGraph.MovementCostForUnreachableCell)
 					return false;
 
 				return mobile.locomotor.CanMoveFreelyInto(self, cell, BlockedByActor.All, null);

@@ -119,7 +119,7 @@ namespace OpenRA.Mods.Common.Traits
 				locomotor = world.WorldActor.TraitsImplementing<Locomotor>()
 				   .SingleOrDefault(l => l.Info.Name == Locomotor);
 
-			if (locomotor.MovementCostForCell(cell) == short.MaxValue)
+			if (locomotor.MovementCostForCell(cell) == PathGraph.MovementCostForUnreachableCell)
 				return false;
 
 			return locomotor.CanMoveFreelyInto(self, cell, subCell, check, ignoreActor);
@@ -520,7 +520,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool CanExistInCell(CPos cell)
 		{
-			return Locomotor.MovementCostForCell(cell) != short.MaxValue;
+			return Locomotor.MovementCostForCell(cell) != PathGraph.MovementCostForUnreachableCell;
 		}
 
 		public bool CanEnterCell(CPos cell, Actor ignoreActor = null, BlockedByActor check = BlockedByActor.All)
@@ -1020,7 +1020,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (mobile.IsTraitPaused
 					|| !self.World.Map.Contains(location)
 					|| (!explored && !locomotorInfo.MoveIntoShroud)
-					|| (explored && mobile.Locomotor.MovementCostForCell(location) == short.MaxValue))
+					|| (explored && mobile.Locomotor.MovementCostForCell(location) == PathGraph.MovementCostForUnreachableCell))
 					cursor = mobile.Info.BlockedCursor;
 				else if (!explored || !mobile.Info.TerrainCursors.TryGetValue(self.World.Map.GetTerrainInfo(location).Type, out cursor))
 					cursor = mobile.Info.Cursor;

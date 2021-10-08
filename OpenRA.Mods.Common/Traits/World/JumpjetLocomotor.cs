@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class JumpjetLocomotorInfo : LocomotorInfo
 	{
 		[Desc("Pathfinding cost for taking off or landing.")]
-		public readonly int JumpjetTransitionCost = 0;
+		public readonly short JumpjetTransitionCost = 0;
 
 		[Desc("The terrain types that this actor can transition on. Leave empty to allow any.")]
 		public readonly HashSet<string> JumpjetTransitionTerrainTypes = new HashSet<string>();
