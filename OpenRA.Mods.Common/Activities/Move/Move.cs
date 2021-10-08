@@ -96,38 +96,6 @@ namespace OpenRA.Mods.Common.Activities
 			this.targetLineColor = targetLineColor;
 		}
 
-		public Move(Actor self, CPos destination, SubCell subCell, WDist nearEnough, Color? targetLineColor = null)
-		{
-			// PERF: Because we can be sure that OccupiesSpace is Mobile here, we can save some performance by avoiding querying for the trait.
-			mobile = (Mobile)self.OccupiesSpace;
-
-			getPath = check => mobile.Pathfinder.FindUnitPathToRange(
-				mobile.FromCell, subCell, self.World.Map.CenterOfSubCell(destination, subCell), nearEnough, self, check);
-
-			this.destination = destination;
-			this.nearEnough = nearEnough;
-			this.targetLineColor = targetLineColor;
-		}
-
-		public Move(Actor self, Target target, WDist range, Color? targetLineColor = null)
-		{
-			// PERF: Because we can be sure that OccupiesSpace is Mobile here, we can save some performance by avoiding querying for the trait.
-			mobile = (Mobile)self.OccupiesSpace;
-
-			getPath = check =>
-			{
-				if (!target.IsValidFor(self))
-					return NoPath;
-
-				return mobile.Pathfinder.FindUnitPathToRange(
-					mobile.ToCell, mobile.ToSubCell, target.CenterPosition, range, self, check);
-			};
-
-			destination = null;
-			nearEnough = range;
-			this.targetLineColor = targetLineColor;
-		}
-
 		public Move(Actor self, Func<BlockedByActor, List<CPos>> getPath, Color? targetLineColor = null)
 		{
 			// PERF: Because we can be sure that OccupiesSpace is Mobile here, we can save some performance by avoiding querying for the trait.
@@ -138,16 +106,6 @@ namespace OpenRA.Mods.Common.Activities
 			destination = null;
 			nearEnough = WDist.Zero;
 			this.targetLineColor = targetLineColor;
-		}
-
-		static int HashList<T>(List<T> xs)
-		{
-			var hash = 0;
-			var n = 0;
-			foreach (var x in xs)
-				hash += n++ * x.GetHashCode();
-
-			return hash;
 		}
 
 		List<CPos> EvalPath(BlockedByActor check)
