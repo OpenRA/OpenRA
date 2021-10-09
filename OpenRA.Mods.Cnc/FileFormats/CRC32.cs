@@ -9,6 +9,8 @@
  */
 #endregion
 
+using System;
+
 namespace OpenRA.Mods.Cnc.FileFormats
 {
 	/// <summary>
@@ -20,7 +22,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 		/// <summary>
 		/// The CRC32 lookup table
 		/// </summary>
-		static uint[] lookUp = new uint[256]
+		static readonly uint[] LookUp = new uint[256]
 		{
 			0x00000000, 0x77073096, 0xEE0E612C, 0x990951BA,
 			0x076DC419, 0x706AF48F, 0xE963A535, 0x9E6495A3,
@@ -89,47 +91,32 @@ namespace OpenRA.Mods.Cnc.FileFormats
 		};
 
 		/// <summary>
-		/// A fast (native) CRC32 implementation that can be used on a regular byte arrays.
+		/// A CRC32 implementation that can be used on spans of bytes.
 		/// </summary>
 		/// <param name="data">The data from which to calculate the checksum.</param>
-		/// <param name="polynomial">The polynomial.</param>
+		/// <param name="polynomial">The polynomial to XOR with.</param>
 		/// <returns>
 		/// The calculated checksum.
 		/// </returns>
-		public static uint Calculate(byte[] data, uint polynomial)
+		public static uint Calculate(ReadOnlySpan<byte> data, uint polynomial)
 		{
 			var crc = polynomial;
 			for (var i = 0; i < data.Length; i++)
-				crc = (crc >> 8) ^ lookUp[(crc & 0xFF) ^ data[i]];
+				crc = (crc >> 8) ^ LookUp[(crc & 0xFF) ^ data[i]];
 			crc ^= polynomial;
 			return crc;
-		}
-
-		public static uint Calculate(byte[] data)
-		{
-			return Calculate(data, 0xFFFFFFFF);
 		}
 
 		/// <summary>
-		/// A fast (native) CRC32 implementation that can be used on a pinned byte array using
-		/// default polynomial.
+		/// A CRC32 implementation that can be used on spans of bytes, with default polynomial.
 		/// </summary>
-		/// <param name="data">		[in,out] If non-null, the.</param>
-		/// <param name="len">		The length of the data.</param>
-		/// <param name="polynomial">The polynomial to XOR with.</param>
-		/// <returns>The calculated checksum.</returns>
-		public static unsafe uint Calculate(byte* data, uint len, uint polynomial)
+		/// <param name="data">The data from which to calculate the checksum.</param>
+		/// <returns>
+		/// The calculated checksum.
+		/// </returns>
+		public static uint Calculate(ReadOnlySpan<byte> data)
 		{
-			var crc = polynomial;
-			for (var i = 0; i < len; i++)
-				crc = (crc >> 8) ^ lookUp[(crc & 0xFF) ^ *data++];
-			crc ^= polynomial;
-			return crc;
-		}
-
-		public static unsafe uint Calculate(byte* data, uint len)
-		{
-			return Calculate(data, len, 0xFFFFFFFF);
+			return Calculate(data, 0xFFFFFFFF);
 		}
 	}
 }
