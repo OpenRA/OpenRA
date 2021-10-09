@@ -20,6 +20,7 @@ namespace OpenRA
 		Ack = 0x10,
 		Ping = 0x20,
 		SyncHash = 0x65,
+		TickScale = 0x76,
 		Disconnect = 0xBF,
 		Handshake = 0xFE,
 		Fields = 0xFF

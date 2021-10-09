@@ -58,6 +58,7 @@ namespace OpenRA.Network
 		bool disposed;
 		bool generateSyncReport = false;
 		int sentOrdersFrame = 0;
+		float tickScale = 1f;
 
 		public struct ClientOrder
 		{
@@ -157,6 +158,11 @@ namespace OpenRA.Network
 				syncForFrame.Add(sync.Frame, (sync.SyncHash, sync.DefeatState));
 		}
 
+		public void ReceiveTickScale(float scale)
+		{
+			tickScale = scale;
+		}
+
 		public void ReceiveImmediateOrders(int clientId, OrderPacket orders)
 		{
 			foreach (var o in orders.GetOrders(World))
@@ -184,7 +190,7 @@ namespace OpenRA.Network
 
 		bool IsReadyForNextFrame => GameStarted && pendingOrders.All(p => p.Value.Count > 0);
 
-		int SuggestedTimestep
+		public int SuggestedTimestep
 		{
 			get
 			{
@@ -196,6 +202,9 @@ namespace OpenRA.Network
 
 				if (World.IsReplay)
 					return World.ReplayTimestep;
+
+				if (tickScale != 1f)
+					return Math.Max((int)(tickScale * World.Timestep), 1);
 
 				return World.Timestep;
 			}

@@ -299,17 +299,23 @@ namespace OpenRA.Network
 			// Orders from other players
 			while (receivedPackets.TryDequeue(out var p))
 			{
-				var record = true;
 				if (OrderIO.TryParseDisconnect(p, out var disconnect))
+				{
 					orderManager.ReceiveDisconnect(disconnect.ClientId, disconnect.Frame);
+					Recorder?.Receive(p.FromClient, p.Data);
+				}
 				else if (OrderIO.TryParseSync(p.Data, out var sync))
+				{
 					orderManager.ReceiveSync(sync);
+					Recorder?.Receive(p.FromClient, p.Data);
+				}
+				else if (OrderIO.TryParseTickScale(p, out var scale))
+					orderManager.ReceiveTickScale(scale);
 				else if (OrderIO.TryParsePingRequest(p, out var timestamp))
 				{
 					// Note that processing this here, rather than in NetworkConnectionReceive,
 					// so that poor world tick performance can be reflected in the latency measurement
 					Send(OrderIO.SerializePingResponse(timestamp, (byte)orderManager.OrderQueueLength));
-					record = false;
 				}
 				else if (OrderIO.TryParseAck(p, out var ackFrame, out var ackCount))
 				{
@@ -331,7 +337,6 @@ namespace OpenRA.Network
 
 					orderManager.ReceiveOrders(clientId, (ackFrame, packet));
 					Recorder?.Receive(clientId, packet.Serialize(ackFrame));
-					record = false;
 				}
 				else if (OrderIO.TryParseOrderPacket(p.Data, out var orders))
 				{
@@ -339,12 +344,11 @@ namespace OpenRA.Network
 						orderManager.ReceiveImmediateOrders(p.FromClient, orders.Orders);
 					else
 						orderManager.ReceiveOrders(p.FromClient, orders);
+
+					Recorder?.Receive(p.FromClient, p.Data);
 				}
 				else
 					throw new InvalidDataException($"Received unknown packet from client {p.FromClient} with length {p.Data.Length}");
-
-				if (record)
-					Recorder?.Receive(p.FromClient, p.Data);
 
 				// An immediate order may trigger a chain of actions that disposes the OrderManager and connection.
 				// Bail out to avoid potential problems from acting on disposed objects.

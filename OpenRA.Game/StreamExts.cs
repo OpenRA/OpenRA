@@ -84,6 +84,11 @@ namespace OpenRA
 			s.WriteArray(BitConverter.GetBytes(value));
 		}
 
+		public static void Write(this Stream s, float value)
+		{
+			s.WriteArray(BitConverter.GetBytes(value));
+		}
+
 		public static float ReadFloat(this Stream s)
 		{
 			return BitConverter.ToSingle(s.ReadBytes(4), 0);

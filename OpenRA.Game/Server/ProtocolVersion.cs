@@ -42,6 +42,8 @@ namespace OpenRA.Server
 		// - 0x20: Ping
 		//   - Int64 containing the server timestamp when the ping was generated
 		//   - [client -> server only] byte containing the number of frames ready to simulate
+		// - 0x76: TickScale
+		//   - Float containing the scale.
 		//
 		// A connection handshake begins when a client opens a connection to the server:
 		// - Server sends:
@@ -75,6 +77,6 @@ namespace OpenRA.Server
 		// The protocol for server and world orders
 		// This applies after the handshake has completed, and is provided to support
 		// alternative server implementations that wish to support multiple versions in parallel
-		public const int Orders = 17;
+		public const int Orders = 18;
 	}
 }

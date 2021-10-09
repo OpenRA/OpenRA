@@ -638,6 +638,17 @@ namespace OpenRA.Server
 			return ms.GetBuffer();
 		}
 
+		byte[] CreateTickScaleFrame(float scale)
+		{
+			var ms = new MemoryStream(17);
+			ms.WriteArray(BitConverter.GetBytes(9));
+			ms.WriteArray(BitConverter.GetBytes(0));
+			ms.WriteArray(BitConverter.GetBytes(0));
+			ms.WriteByte((byte)OrderType.TickScale);
+			ms.Write(scale);
+			return ms.GetBuffer();
+		}
+
 		void DispatchOrdersToClient(Connection c, int client, int frame, byte[] data)
 		{
 			DispatchFrameToClient(c, client, CreateFrame(client, frame, data));
