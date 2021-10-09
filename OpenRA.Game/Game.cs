@@ -779,9 +779,7 @@ namespace OpenRA
 
 				// ReplayTimestep = 0 means the replay is paused: we need to keep logicInterval as UI.Timestep to avoid breakage
 				if (logicWorld != null && !(logicWorld.IsReplay && logicWorld.ReplayTimestep == 0))
-					logicInterval = logicWorld.IsLoadingGameSave ? 1 :
-						logicWorld.IsReplay ? logicWorld.ReplayTimestep :
-						logicWorld.Timestep;
+					logicInterval = logicWorld == OrderManager.World ? OrderManager.SuggestedTimestep : logicWorld.Timestep;
 
 				// Ideal time between screen updates
 				var maxFramerate = Settings.Graphics.CapFramerate ? Settings.Graphics.MaxFramerate.Clamp(1, 1000) : 1000;
