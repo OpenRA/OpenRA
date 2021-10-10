@@ -1,6 +1,6 @@
 World:
 	LuaScript:
-		Scripts: allies05c.lua, allies05c-AI.lua, campaign-global.lua
+		Scripts: allies05c.lua, allies05c-AI.lua, campaign.lua, utils.lua
 	MissionData:
 		BriefingVideo: ally5.vqa
 		WinVideo: tanya2.vqa

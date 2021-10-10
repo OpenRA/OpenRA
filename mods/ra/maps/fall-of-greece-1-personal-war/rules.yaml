@@ -1,6 +1,6 @@
 World:
 	LuaScript:
-		Scripts: campaign-global.lua, personal-war.lua
+		Scripts: campaign.lua, utils.lua, personal-war.lua
 	MissionData:
 		WinVideo: toofar.vqa
 		LossVideo: bmap.vqa

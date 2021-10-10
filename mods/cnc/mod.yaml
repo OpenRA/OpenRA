@@ -31,7 +31,8 @@ Packages:
 	cnc|bits/jungle
 	cnc|bits/desert
 	cnc|bits/ss
-	cnc|bits/scripts
+	cnc|scripts
+	common|scripts
 	cnc|uibits
 
 MapFolders:

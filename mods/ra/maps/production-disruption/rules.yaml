@@ -1,6 +1,6 @@
 World:
 	LuaScript:
-		Scripts: campaign-global.lua, production-disruption.lua
+		Scripts: campaign.lua, utils.lua, production-disruption.lua
 	MissionData:
 		WinVideo: battle.vqa
 		LossVideo: slntsrvc.vqa

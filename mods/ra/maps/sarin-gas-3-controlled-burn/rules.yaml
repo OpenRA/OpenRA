@@ -1,6 +1,6 @@
 World:
 	LuaScript:
-		Scripts: campaign-global.lua, controlledburn.lua, controlledburn-AI.lua
+		Scripts: campaign.lua, utils.lua, controlledburn.lua, controlledburn-AI.lua
 	MissionData:
 		WinVideo: apcescpe.vqa
 		LossVideo: tesla.vqa

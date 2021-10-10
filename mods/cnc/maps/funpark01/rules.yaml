@@ -1,6 +1,6 @@
 World:
 	LuaScript:
-		Scripts: campaign-global.lua, scj01ea.lua
+		Scripts: campaign.lua, utils.lua, scj01ea.lua
 	MusicPlaylist:
 		StartingMusic: j1
 	MissionData:

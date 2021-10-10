@@ -1,6 +1,6 @@
 World:
 	LuaScript:
-		Scripts: campaign-global.lua, soviet11b.lua, soviet11b-AI.lua
+		Scripts: campaign.lua, utils.lua, soviet11b.lua, soviet11b-AI.lua
 	MissionData:
 		BriefingVideo: soviet11.vqa
 		WinVideo: sitduck.vqa
@@ -82,7 +82,7 @@ E3:
 CA:
 	Buildable:
 		Prerequisites: ~syrd, dome
-    
+
 HELI:
 	Buildable:
 		Prerequisites: ~hpad

@@ -1,6 +1,6 @@
 World:
 	LuaScript:
-		Scripts: campaign-global.lua, gdi08a.lua, gdi08a-AI.lua
+		Scripts: campaign.lua, utils.lua, gdi08a.lua, gdi08a-AI.lua
 	MusicPlaylist:
 		StartingMusic: march
 		VictoryMusic: gdi_win1

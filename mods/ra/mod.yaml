@@ -34,7 +34,8 @@ Packages:
 	~general.mix
 	ra|bits
 	ra|bits/desert
-	ra|bits/scripts
+	ra|scripts
+	common|scripts
 	ra|uibits
 
 MapFolders:

@@ -6,7 +6,33 @@
    the License, or (at your option) any later version. For more
    information, see COPYING.
 ]]
-IdleHunt = function(unit) if not unit.IsDead then Trigger.OnIdle(unit, unit.Hunt) end end
+
+Difficulty = Map.LobbyOption("difficulty")
+
+InitObjectives = function(player)
+	Trigger.OnObjectiveAdded(player, function(p, id)
+		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
+	end)
+
+	Trigger.OnObjectiveCompleted(player, function(p, id)
+		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
+	end)
+	Trigger.OnObjectiveFailed(player, function(p, id)
+		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
+	end)
+
+	Trigger.OnPlayerLost(player, function()
+		Trigger.AfterDelay(DateTime.Seconds(1), function()
+			Media.PlaySpeechNotification(player, "MissionFailed")
+		end)
+	end)
+
+	Trigger.OnPlayerWon(player, function()
+		Trigger.AfterDelay(DateTime.Seconds(1), function()
+			Media.PlaySpeechNotification(player, "MissionAccomplished")
+		end)
+	end)
+end
 
 AttackAircraftTargets = { }
 InitializeAttackAircraft = function(aircraft, enemyPlayer)
