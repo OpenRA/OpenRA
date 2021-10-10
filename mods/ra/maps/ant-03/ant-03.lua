@@ -92,26 +92,11 @@ WorldLoaded = function()
 	USSR = Player.GetPlayer("USSR")
 	England = Player.GetPlayer("England")
 
-	Trigger.OnObjectiveAdded(Spain, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
-	end)
+	InitObjectives(Spain)
 
 	EatSpain = BadGuy.AddObjective("For the Swarm!")
 	GasNests = Spain.AddObjective("Gas every ant nest.")
 	KillAll = Spain.AddObjective("Kill every ant lurking above ground.")
-
-	Trigger.OnObjectiveCompleted(Spain, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
-	end)
-	Trigger.OnObjectiveFailed(Spain, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
-	end)
-	Trigger.OnPlayerLost(Spain, function()
-		Media.PlaySpeechNotification(Spain, "Lose")
-	end)
-	Trigger.OnPlayerWon(Spain, function()
-		Media.PlaySpeechNotification(Spain, "Win")
-	end)
 
 	Camera.Position = DefaultCameraPosition.CenterPosition
 	Start()

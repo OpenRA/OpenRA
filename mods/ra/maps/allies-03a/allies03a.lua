@@ -106,34 +106,12 @@ InitPlayers = function()
 	ussr.Cash = 10000
 end
 
-InitObjectives = function()
-	Trigger.OnObjectiveAdded(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
-	end)
-
+AddObjectives = function()
 	KillBridges = player.AddObjective("Destroy all bridges.")
 	TanyaSurvive = player.AddObjective("Tanya must survive.")
 	KillUSSR = player.AddObjective("Destroy all Soviet oil pumps.", "Secondary", false)
 	FreePrisoners = player.AddObjective("Free all Allied soldiers and keep them alive.", "Secondary", false)
 	ussr.AddObjective("Bridges must not be destroyed.")
-
-	Trigger.OnObjectiveCompleted(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
-	end)
-	Trigger.OnObjectiveFailed(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
-	end)
-
-	Trigger.OnPlayerLost(player, function()
-		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			Media.PlaySpeechNotification(player, "MissionFailed")
-		end)
-	end)
-	Trigger.OnPlayerWon(player, function()
-		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			Media.PlaySpeechNotification(player, "MissionAccomplished")
-		end)
-	end)
 end
 
 InitTriggers = function()
@@ -276,7 +254,8 @@ WorldLoaded = function()
 
 	InitPlayers()
 
-	InitObjectives()
+	InitObjectives(player)
+	AddObjectives()
 	InitTriggers()
 	SendAlliedUnits()
 end

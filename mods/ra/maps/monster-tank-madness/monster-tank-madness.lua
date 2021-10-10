@@ -107,7 +107,7 @@ SetupAlliedBase = function()
 end
 
 SendAlliedUnits = function()
-	InitObjectives()
+	AddObjectives()
 
 	Camera.Position = StartEntryPoint.CenterPosition
 
@@ -124,7 +124,7 @@ SendAlliedUnits = function()
 					Trigger.OnKilled(unit, function()
 						player.MarkFailedObjective(StealMoney)
 					end)
-				end	
+				end
 			end)
 		end)
 	end)
@@ -294,10 +294,8 @@ InitPlayers = function()
 	Trigger.AfterDelay(0, function() badguy.Resources = badguy.ResourceCapacity * 0.75 end)
 end
 
-InitObjectives = function()
-	Trigger.OnObjectiveAdded(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
-	end)
+AddObjectives = function()
+	InitObjectives(player)
 
 	EliminateSuperTanks = player.AddObjective("Eliminate these super tanks.")
 	StealMoney = player.AddObjective("Steal money from the nearby outpost with the Thief.")
@@ -309,25 +307,15 @@ InitObjectives = function()
 	UkraineObj = ukraine.AddObjective("Survive.")
 	TurkeyObj = turkey.AddObjective("Destroy.")
 
-	Trigger.OnObjectiveCompleted(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
-	end)
-	Trigger.OnObjectiveFailed(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
-	end)
-
 	Trigger.OnPlayerLost(player, function()
-		Media.PlaySpeechNotification(player, "MissionFailed")
-
 		ussr.MarkCompletedObjective(USSRObj)
 		badguy.MarkCompletedObjective(BadGuyObj)
 		ukraine.MarkCompletedObjective(UkraineObj)
 		turkey.MarkCompletedObjective(TurkeyObj)
 	end)
-	Trigger.OnPlayerWon(player, function()
-		Media.PlaySpeechNotification(player, "MissionAccomplished")
-		Media.DisplayMessage("Dr. Demitri has been extracted and the super tanks have been dealt with.")
 
+	Trigger.OnPlayerWon(player, function()
+		Media.DisplayMessage("Dr. Demitri has been extracted and the super tanks have been dealt with.")
 		ussr.MarkFailedObjective(USSRObj)
 		badguy.MarkFailedObjective(BadGuyObj)
 		ukraine.MarkFailedObjective(UkraineObj)

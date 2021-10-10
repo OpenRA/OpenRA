@@ -371,36 +371,19 @@ InitTriggers = function()
 	end)
 end
 
-InitObjectives = function()
-	Trigger.OnObjectiveAdded(greece, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
-	end)
-
+AddObjectives = function()
 	ussrObj = ussr.AddObjective("Deny the Allies.")
 	mainObj = greece.AddObjective("Rescue Tanya.")
 	KillAll = greece.AddObjective("Eliminate all Soviet units in this area.")
 	infWarfactory = greece.AddObjective("Infiltrate the Soviet warfactory.", "Secondary", false)
-
-	Trigger.OnObjectiveCompleted(greece, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
-	end)
-	Trigger.OnObjectiveFailed(greece, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
-	end)
-
-	Trigger.OnPlayerLost(greece, function()
-		Media.PlaySpeechNotification(player, "Lose")
-	end)
-	Trigger.OnPlayerWon(greece, function()
-		Media.PlaySpeechNotification(player, "Win")
-	end)
 end
 
 WorldLoaded = function()
 	greece = Player.GetPlayer("Greece")
 	ussr = Player.GetPlayer("USSR")
 
-	InitObjectives()
+	InitObjectives(greece)
+	AddObjectives()
 	InitTriggers()
 	SendSpy()
 

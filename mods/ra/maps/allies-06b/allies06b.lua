@@ -183,24 +183,7 @@ WorldLoaded = function()
 	player = Player.GetPlayer("Greece")
 	ussr = Player.GetPlayer("USSR")
 
-	Trigger.OnObjectiveAdded(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
-	end)
-
-	Trigger.OnObjectiveCompleted(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
-	end)
-
-	Trigger.OnObjectiveFailed(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
-	end)
-
-	Trigger.OnPlayerLost(player, function()
-		Media.PlaySpeechNotification(player, "MissionFailed")
-	end)
-	Trigger.OnPlayerWon(player, function()
-		Media.PlaySpeechNotification(player, "MissionAccomplished")
-	end)
+	InitObjectives(player)
 
 	InfiltrateTechCenterObj = player.AddObjective("Infiltrate one of the Soviet tech centers with a spy.")
 	CaptureRadarDomeObj = player.AddObjective("Capture the Radar Dome at the shore.", "Secondary", false)

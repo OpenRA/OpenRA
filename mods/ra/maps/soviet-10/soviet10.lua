@@ -309,32 +309,12 @@ WorldLoaded = function()
 	Greece = Player.GetPlayer("Greece")
 	Turkey = Player.GetPlayer("Turkey")
 
-	Trigger.OnObjectiveAdded(USSR, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
-	end)
+	InitObjectives(USSR)
 
 	EscortTrucks = USSR.AddObjective("Escort the convoy through the mountain pass.")
 	ProtectEveryTruck = USSR.AddObjective("Do not lose a single truck.", "Secondary", false)
 	SaveMigs = USSR.AddObjective("Do not squander any of our new MiG aircraft.", "Secondary", false)
 	BeatUSSR = Greece.AddObjective("Defeat the Soviet forces.")
-
-	Trigger.OnObjectiveCompleted(USSR, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
-	end)
-	Trigger.OnObjectiveFailed(USSR, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
-	end)
-
-	Trigger.OnPlayerLost(USSR, function()
-		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			Media.PlaySpeechNotification(USSR, "MissionFailed")
-		end)
-	end)
-	Trigger.OnPlayerWon(USSR, function()
-		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			Media.PlaySpeechNotification(USSR, "MissionAccomplished")
-		end)
-	end)
 
 	ConvoyEscort = ConvoyEscort[Difficulty]
 	StartTimerDelay = StartTimerDelay[Difficulty]

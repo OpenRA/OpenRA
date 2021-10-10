@@ -31,31 +31,11 @@ end
 WorldLoaded = function()
 	USSR = Player.GetPlayer("USSR")
 	Greece = Player.GetPlayer("Greece")
-	
-	Trigger.OnObjectiveAdded(USSR, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
-	end)
+
+	InitObjectives(USSR)
 
 	DestroyNavalBase = USSR.AddPrimaryObjective("Destroy all Allied units and structures.")
 	BeatSoviets = Greece.AddPrimaryObjective("Destroy all Soviet troops.")
-	
-	Trigger.OnObjectiveCompleted(USSR, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
-	end)
-	Trigger.OnObjectiveFailed(USSR, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
-	end)
-
-	Trigger.OnPlayerLost(USSR, function()
-		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			Media.PlaySpeechNotification(USSR, "MissionFailed")
-		end)
-	end)
-	Trigger.OnPlayerWon(USSR, function()
-		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			Media.PlaySpeechNotification(USSR, "MissionAccomplished")
-		end)
-	end)
 
 	Camera.Position = DefaultCameraPosition.CenterPosition
 	InitialSovietReinforcements()

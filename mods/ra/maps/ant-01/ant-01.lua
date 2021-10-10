@@ -137,10 +137,8 @@ Tick = function()
 	end
 end
 
-InitObjectives = function()
-	Trigger.OnObjectiveAdded(Allies, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
-	end)
+AddObjectives = function()
+	InitObjectives(Allies)
 
 	DiscoverObjective = Allies.AddObjective("Find the outpost.")
 
@@ -154,21 +152,6 @@ InitObjectives = function()
 		Creeps.GetActorsByType("harv")[1].Stop()
 	end)
 
-	Trigger.OnObjectiveCompleted(Allies, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
-	end)
-	Trigger.OnObjectiveFailed(Allies, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
-	end)
-
-	Trigger.OnPlayerLost(Allies, function()
-		Media.PlaySpeechNotification(Allies, "MissionFailed")
-	end)
-
-	Trigger.OnPlayerWon(Allies, function()
-		Trigger.AfterDelay(DateTime.Seconds(1), function() Media.PlaySpeechNotification(Allies, "MissionAccomplished")  end)
-	end)
-
 	Camera.Position = Ranger.CenterPosition
 end
 
@@ -176,7 +159,7 @@ WorldLoaded = function()
 	Allies = Player.GetPlayer("Spain")
 	AntMan = Player.GetPlayer("AntMan")
 	Creeps = Player.GetPlayer("Creeps")
-	InitObjectives()
+	AddObjectives()
 	Trigger.OnKilled(MoneyDerrick, function()
 		Actor.Create("moneycrate", true, { Owner = Allies, Location = MoneyDerrick.Location + CVec.New(1,0) })
 	end)

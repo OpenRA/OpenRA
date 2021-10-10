@@ -54,26 +54,10 @@ WorldLoaded = function()
 	USSR = Player.GetPlayer("USSR")
 	BadGuy = Player.GetPlayer("BadGuy")
 
-	Trigger.OnObjectiveAdded(Allies, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
-	end)
+	InitObjectives(Allies)
 
 	SovietObj = USSR.AddObjective("Stop the Allies")
 	DestroyAll = Allies.AddObjective("Destroy all Soviet units and structures.")
-
-	Trigger.OnObjectiveCompleted(Allies, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
-	end)
-	Trigger.OnObjectiveFailed(Allies, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
-	end)
-
-	Trigger.OnPlayerLost(Allies, function()
-		Media.PlaySpeechNotification(Allies, "Lose")
-	end)
-	Trigger.OnPlayerWon(Allies, function()
-		Media.PlaySpeechNotification(Allies, "Win")
-	end)
 
 	Camera.Position = DefaultCameraPosition.CenterPosition
 	PowerProxy = Actor.Create("paratroopers", false, { Owner = BadGuy })

@@ -490,27 +490,11 @@ WorldLoaded = function()
 	England = Player.GetPlayer("England")
 	Civilians = Player.GetPlayer("GreekCivilians")
 
-	Trigger.OnObjectiveAdded(Allies, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
-	end)
+	AddObjectives(Allies)
 
 	SovietObj = USSR.AddObjective("Kill Stavros.")
 	ProtectVIPs = Allies.AddObjective("Keep Stavros and Tanya alive.")
 	ExtractStavros = Allies.AddObjective("Get Stavros and Tanya to the extraction helicopter.")
-
-	Trigger.OnObjectiveCompleted(Allies, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
-	end)
-	Trigger.OnObjectiveFailed(Allies, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
-	end)
-
-	Trigger.OnPlayerLost(Allies, function()
-		Media.PlaySpeechNotification(Allies, "Lose")
-	end)
-	Trigger.OnPlayerWon(Allies, function()
-		Media.PlaySpeechNotification(Allies, "Win")
-	end)
 
 	InsertionDrop = Actor.Create("insertiondrop", false, { Owner = Allies })
 	InsertionDropHard = Actor.Create("insertiondrophard", false, { Owner = Allies })

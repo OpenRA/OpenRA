@@ -233,9 +233,7 @@ WorldLoaded = function()
 	Allies = Player.GetPlayer("Allies")
 	USSR = Player.GetPlayer("USSR")
 
-	Trigger.OnObjectiveAdded(Allies, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
-	end)
+	InitObjectives(Allies)
 
 	if Difficulty == "easy" then
 		RescueCivilians = Allies.AddObjective("Evacuate at least half of the civilians to the island\nshelter.")
@@ -247,20 +245,6 @@ WorldLoaded = function()
 
 	ClearWaterway = Allies.AddObjective("Clear the area of enemy submarine activity.", "Secondary", false)
 	SovietObj = USSR.AddObjective("Defeat Allies.")
-
-	Trigger.OnObjectiveCompleted(Allies, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
-	end)
-	Trigger.OnObjectiveFailed(Allies, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
-	end)
-
-	Trigger.OnPlayerLost(Allies, function()
-		Media.PlaySpeechNotification(Allies, "Lose")
-	end)
-	Trigger.OnPlayerWon(Allies, function()
-		Media.PlaySpeechNotification(Allies, "Win")
-	end)
 
 	CiviliansEvacuatedThreshold = CiviliansEvacuatedThreshold[Difficulty]
 	CiviliansKilledThreshold = CiviliansKilledThreshold[Difficulty]

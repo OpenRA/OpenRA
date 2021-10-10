@@ -282,10 +282,8 @@ InitCountDown = function()
 	Trigger.AfterDelay(DateTime.Minutes(4), function() Media.PlaySpeechNotification(allies, "WarningOneMinuteRemaining") end)
 end
 
-InitObjectives = function()
-	Trigger.OnObjectiveAdded(allies, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
-	end)
+AddObjectives = function()
+	InitObjectives(allies)
 
 	SurviveObj = allies.AddObjective("Enforce your position and hold-out the onslaught.")
 	SovietObj = soviets.AddObjective("Eliminate all Allied forces.")
@@ -294,18 +292,7 @@ InitObjectives = function()
 		SetupBridges()
 	end)
 
-	Trigger.OnObjectiveCompleted(allies, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
-	end)
-	Trigger.OnObjectiveFailed(allies, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
-	end)
-
-	Trigger.OnPlayerLost(allies, function()
-		Media.PlaySpeechNotification(allies, "Lose")
-	end)
 	Trigger.OnPlayerWon(allies, function()
-		Media.PlaySpeechNotification(allies, "Win")
 		Media.DisplayMessage("We have destroyed the remaining Soviet presence!", "Incoming Report")
 	end)
 end
@@ -398,7 +385,7 @@ WorldLoaded = function()
 	allies = Player.GetPlayer("Allies")
 	soviets = Player.GetPlayer("Soviets")
 
-	InitObjectives()
+	AddObjectives()
 	InitMission()
 	SetupSoviets()
 end

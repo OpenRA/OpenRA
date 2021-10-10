@@ -186,16 +186,7 @@ WorldLoaded = function()
 	GoodGuy = Player.GetPlayer("GoodGuy")
 	Greece = Player.GetPlayer("Greece")
 
-	Trigger.OnObjectiveAdded(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
-	end)
-	Trigger.OnObjectiveCompleted(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
-		Media.PlaySpeechNotification(player, "ObjectiveMet")
-	end)
-	Trigger.OnObjectiveFailed(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
-	end)
+	InitObjectives(player)
 
 	CaptureObjective = player.AddObjective("Capture the Radar Dome.")
 	KillAll = player.AddObjective("Defeat the Allied forces.")
@@ -269,14 +260,6 @@ WorldLoaded = function()
 
 			Media.PlaySpeechNotification(player, "ReinforcementsArrived")
 		end
-	end)
-
-	Trigger.OnPlayerLost(player, function()
-		Media.PlaySpeechNotification(player, "Lose")
-	end)
-
-	Trigger.OnPlayerWon(player, function()
-		Media.PlaySpeechNotification(player, "Win")
 	end)
 
 	Camera.Position = StartCamPoint.CenterPosition

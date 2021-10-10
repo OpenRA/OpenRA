@@ -62,27 +62,12 @@ WorldLoaded = function()
 	end
 
 --Objectives Setup
-	Trigger.OnObjectiveAdded(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
-	end)
-	Trigger.OnObjectiveCompleted(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
-	end)
-	Trigger.OnObjectiveFailed(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
-	end)
+	InitObjectives(player)
 
 	DestroyControlCenter = player.AddObjective("Destroy the Control Center.")
 	KeepTanksAlive = player.AddObjective("Your tank division must not be destroyed before\n the alloy facility is dealt with.")
 	KeepVolkovAlive = player.AddObjective("Keep Volkov Alive.")
 	KeepChitzkoiAlive = player.AddObjective("Keep Chitzkoi Alive.", "Secondary", false)
-
-	Trigger.OnPlayerWon(player, function()
-		Media.PlaySpeechNotification(player, "MissionAccomplished")
-	end)
-	Trigger.OnPlayerLost(player, function()
-		Media.PlaySpeechNotification(player, "MissionFailed")
-	end)
 
 	Trigger.OnKilled(ControlCenter, function()
 		Utils.Do(HeavyTurrets, function(struc)

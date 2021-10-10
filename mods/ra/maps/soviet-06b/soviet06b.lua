@@ -78,14 +78,18 @@ end)
 WorldLoaded = function()
 	player = Player.GetPlayer("USSR")
 	enemy = Player.GetPlayer("Greece")
+
 	Camera.Position = CameraStart.CenterPosition
+
 	Mcv.Move(McvWaypoint.Location)
 	Harvester.FindResources()
 	Utils.Do(IntroAttackers, function(actor)
 		IdleHunt(actor)
 	end)
+
 	Reinforcements.ReinforceWithTransport(player, "apc", SovietReinforcements1, SovietReinforcements1Waypoints)
 	Reinforcements.ReinforceWithTransport(player, "apc", SovietReinforcements2, SovietReinforcements2Waypoints)
+
 	Utils.Do(Map.NamedActors, function(actor)
 		if actor.Owner == enemy and actor.HasProperty("StartBuildingRepairs") then
 			Trigger.OnDamaged(actor, function(building)
@@ -95,21 +99,8 @@ WorldLoaded = function()
 			end)
 		end
 	end)
-	Trigger.OnObjectiveAdded(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
-	end)
-	Trigger.OnObjectiveCompleted(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
-	end)
-	Trigger.OnObjectiveFailed(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
-	end)
-	Trigger.OnPlayerWon(player, function()
-		Media.PlaySpeechNotification(player, "Win")
-	end)
-	Trigger.OnPlayerLost(player, function()
-		Media.PlaySpeechNotification(player, "Lose")
-	end)
+
+	InitObjectives(player)
 	alliedObjective = enemy.AddObjective("Destroy all Soviet troops.")
 	sovietObjective = player.AddObjective("Escort the Convoy.")
 	sovietObjective2 = player.AddObjective("Destroy or capture the Allied radar dome to stop\nenemy reinforcements.", "Secondary", false)
