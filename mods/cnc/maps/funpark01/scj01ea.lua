@@ -46,7 +46,7 @@ WorldLoaded = function()
 	Trigger.AfterDelay(DateTime.Seconds(3), function() InitialUnitsArrived = true end)
 
 	Trigger.AfterDelay(DateTime.Seconds(15), function() ReinforceWithLandingCraft(Nod, BazookaReinforcments, SeaEntryB.Location, BeachReinforceB.Location, BeachReinforceB.Location) end)
-	if Map.LobbyOption("difficulty") == "easy" then
+	if Difficulty == "easy" then
 		Trigger.AfterDelay(DateTime.Seconds(25), function() ReinforceWithLandingCraft(Nod, BikeReinforcments, SeaEntryA.Location, BeachReinforceA.Location, BeachReinforceA.Location) end)
 		Trigger.AfterDelay(DateTime.Seconds(30), function() ReinforceWithLandingCraft(Nod, BikeReinforcments, SeaEntryB.Location, BeachReinforceB.Location, BeachReinforceB.Location) end)
 	end

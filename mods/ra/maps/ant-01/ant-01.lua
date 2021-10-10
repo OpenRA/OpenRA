@@ -12,7 +12,6 @@ baseDiscovered = false
 AtEndGame = false
 
 --Basic Vars
-DifficultySetting = Map.LobbyOption("difficulty")
 TimerColor = Player.GetPlayer("Spain").Color
 InsertionHelicopterType = "tran.insertion"
 TimerTicks = DateTime.Minutes(18) -- 18 minutes is roughly 30 mins in the original game

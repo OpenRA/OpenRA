@@ -26,7 +26,7 @@ Patrol2Path = { BridgeEntrancePoint.Location, NERoadTurnPoint.Location, Crossroa
 
 VillageCamArea = { CPos.New(68, 75),CPos.New(68, 76),CPos.New(68, 77),CPos.New(68, 78),CPos.New(68, 79), CPos.New(68, 80), CPos.New(68, 81), CPos.New(68, 82) }
 
-if Map.LobbyOption("difficulty") == "easy" then
+if Difficulty == "easy" then
 	ArmorReinfGreece = { "jeep", "1tnk", "1tnk" }
 else
 	ArmorReinfGreece = { "jeep", "jeep", "1tnk", "1tnk", "1tnk" }
@@ -68,7 +68,7 @@ BringPatrol1 = function()
 	end)
 
 	Trigger.OnAllKilled(units, function()
-		if Map.LobbyOption("difficulty") == "hard" then
+		if Difficulty == "hard" then
 			Trigger.AfterDelay(DateTime.Minutes(4), BringPatrol1)
 		else
 			Trigger.AfterDelay(DateTime.Minutes(7), BringPatrol1)
@@ -87,7 +87,7 @@ BringPatrol2 = function()
 	end)
 
 	Trigger.OnAllKilled(units, function()
-		if Map.LobbyOption("difficulty") == "hard" then
+		if Difficulty == "hard" then
 			Trigger.AfterDelay(DateTime.Minutes(4), BringPatrol2)
 		else
 			Trigger.AfterDelay(DateTime.Minutes(7), BringPatrol2)

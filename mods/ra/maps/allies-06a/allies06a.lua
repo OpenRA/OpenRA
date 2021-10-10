@@ -121,14 +121,14 @@ CaptureRadarDome = function()
 			end
 
 			Beacon.New(player, a.CenterPosition)
-			if Map.LobbyOption("difficulty") ~= "hard" then
+			if Difficulty ~= "hard" then
 				Actor.Create("TECH.CAM", true, { Owner = player, Location = a.Location + CVec.New(1, 1) })
 			end
 		end)
 
 		Media.DisplayMessage("Coordinates of the Soviet tech centers discovered.")
 
-		if Map.LobbyOption("difficulty") == "easy" then
+		if Difficulty == "easy" then
 			Actor.Create("Camera", true, { Owner = player, Location = Weapcam.Location })
 		end
 	end)
@@ -145,7 +145,7 @@ InfiltrateTechCenter = function()
 			player.MarkCompletedObjective(InfiltrateTechCenterObj)
 
 			local Proxy = Actor.Create("powerproxy.paratroopers", false, { Owner = ussr })
-			Utils.Do(ParadropWaypoints[Map.LobbyOption("difficulty")], function(waypoint)
+			Utils.Do(ParadropWaypoints[Difficulty], function(waypoint)
 				Proxy.TargetParatroopers(waypoint.CenterPosition, Angle.South)
 			end)
 			Proxy.Destroy()

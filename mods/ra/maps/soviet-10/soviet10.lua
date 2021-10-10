@@ -147,7 +147,7 @@ MissionSetup = function()
 		if not attackTriggered and unit.Type == "3tnk" then
 			Trigger.RemoveFootprintTrigger(id)
 			attackTriggered = true
-			
+
 			Utils.Do(LightVehicleAttack, function(unit)
 				if not unit.IsDead then
 					IdleHunt(unit)
@@ -177,7 +177,7 @@ MissionSetup = function()
 		if not chinookTriggered and unit.Owner == USSR then
 			Trigger.RemoveFootprintTrigger(id)
 			chinookTriggered = true
-			
+
 			local chalk = Reinforcements.ReinforceWithTransport(Greece, "tran", ChinookChalk , ChinookPath, { ChinookPath[1] })[2]
 			Utils.Do(chalk, function(unit)
 				Trigger.OnAddedToWorld(unit, IdleHunt)
@@ -336,9 +336,8 @@ WorldLoaded = function()
 		end)
 	end)
 
-	difficulty = Map.LobbyOption("difficulty")
-	ConvoyEscort = ConvoyEscort[difficulty]
-	StartTimerDelay = StartTimerDelay[difficulty]
+	ConvoyEscort = ConvoyEscort[Difficulty]
+	StartTimerDelay = StartTimerDelay[Difficulty]
 
 	MissionStart()
 	MissionSetup()

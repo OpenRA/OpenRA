@@ -65,7 +65,7 @@ Paradrop = function()
 		end)
 
 		Paradropped = Paradropped + 1
-		if Paradropped <= ParadropWaves[Map.LobbyOption("difficulty")] then
+		if Paradropped <= ParadropWaves[Difficulty] then
 			Paradrop()
 		end
 	end)
@@ -114,7 +114,7 @@ SendConvoys = function()
 			Trigger.RemoveFootprintTrigger(id)
 
 			ConvoysSent = ConvoysSent + 1
-			if ConvoysSent <= Convoys[Map.LobbyOption("difficulty")] then
+			if ConvoysSent <= Convoys[Difficulty] then
 				SendConvoys()
 			else
 				player.MarkCompletedObjective(DestroyConvoys)
@@ -173,9 +173,8 @@ WorldLoaded = function()
 
 	InitObjectives()
 
-	local difficulty = Map.LobbyOption("difficulty")
-	ConvoyDelay = ConvoyDelays[difficulty]
-	ParadropDelay = ParadropDelays[difficulty]
+	ConvoyDelay = ConvoyDelays[Difficulty]
+	ParadropDelay = ParadropDelays[Difficulty]
 	PowerProxy = Actor.Create("powerproxy.paratroopers", false, { Owner = ussr })
 	Paradrop()
 	SendConvoys()

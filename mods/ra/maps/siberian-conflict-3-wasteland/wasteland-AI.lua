@@ -69,7 +69,7 @@ ProduceBadGuyInfantry = function()
 	BadGuy.Build({ Utils.Random(SovietInfantry) }, function(units)
 		table.insert(BGAttackGroup, units[1])
 		SendBGAttackGroup()
-		Trigger.AfterDelay(ProductionInterval[Map.LobbyOption("difficulty")], ProduceBadGuyInfantry)
+		Trigger.AfterDelay(ProductionInterval[Difficulty], ProduceBadGuyInfantry)
 	end)
 end
 
@@ -81,7 +81,7 @@ ProduceBadGuyVehicles = function()
 	BadGuy.Build({ Utils.Random(SovietVehicles) }, function(units)
 		table.insert(BGAttackGroup, units[1])
 		SendBGAttackGroup()
-		Trigger.AfterDelay(ProductionInterval[Map.LobbyOption("difficulty")], ProduceBadGuyVehicles)
+		Trigger.AfterDelay(ProductionInterval[Difficulty], ProduceBadGuyVehicles)
 	end)
 end
 
@@ -107,7 +107,7 @@ ProduceUSSRInfantry = function()
 	USSR.Build({ Utils.Random(SovietInfantry) }, function(units)
 		table.insert(AttackGroup, units[1])
 		SendAttackGroup()
-		Trigger.AfterDelay(ProductionInterval[Map.LobbyOption("difficulty")], ProduceUSSRInfantry)
+		Trigger.AfterDelay(ProductionInterval[Difficulty], ProduceUSSRInfantry)
 	end)
 end
 
@@ -119,7 +119,7 @@ ProduceUSSRVehicles = function()
 	USSR.Build({ Utils.Random(SovietVehicles) }, function(units)
 		table.insert(AttackGroup, units[1])
 		SendAttackGroup()
-		Trigger.AfterDelay(ProductionInterval[Map.LobbyOption("difficulty")], ProduceUSSRVehicles)
+		Trigger.AfterDelay(ProductionInterval[Difficulty], ProduceUSSRVehicles)
 	end)
 end
 
@@ -136,7 +136,7 @@ ProduceAircraft = function()
 
 		local alive = Utils.Where(Planes, function(y) return not y.IsDead end)
 		if #alive < 2 then
-			Trigger.AfterDelay(DateTime.Seconds(ProductionInterval[Map.LobbyOption("difficulty")] / 2), ProduceAircraft)
+			Trigger.AfterDelay(DateTime.Seconds(ProductionInterval[Difficulty] / 2), ProduceAircraft)
 		end
 
 		InitializeAttackAircraft(plane, Allies)
@@ -183,11 +183,10 @@ USSRMammoths = function()
 end
 
 ActivateAI = function()
-	local difficulty = Map.LobbyOption("difficulty")
-	ParadropDelays = ParadropDelays[difficulty]
-	MammothDelays = MammothDelays[difficulty]
-	StartBGMammoths = StartBGMammoths[difficulty]
-	StartUSSRMammoths = StartUSSRMammoths[difficulty]
+	ParadropDelays = ParadropDelays[Difficulty]
+	MammothDelays = MammothDelays[Difficulty]
+	StartBGMammoths = StartBGMammoths[Difficulty]
+	StartUSSRMammoths = StartUSSRMammoths[Difficulty]
 
 	local buildings = Utils.Where(Map.ActorsInWorld, function(self) return self.Owner == USSR and self.HasProperty("StartBuildingRepairs") end)
 	Utils.Do(buildings, function(actor)

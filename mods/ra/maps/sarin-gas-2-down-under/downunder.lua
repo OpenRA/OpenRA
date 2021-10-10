@@ -32,7 +32,7 @@ ObjectiveTriggers = function()
 			EscapeGoalTrigger = true
 
 			greece.MarkCompletedObjective(ExitBase)
-			if Map.LobbyOption("difficulty") == "hard" then
+			if Difficulty == "hard" then
 				greece.MarkCompletedObjective(NoCasualties)
 			end
 
@@ -444,7 +444,7 @@ Tick = function()
 		greece.MarkFailedObjective(ExitBase)
 	end
 
-	if Map.LobbyOption("difficulty") == "hard" and greece.UnitsLost > AcceptableLosses then
+	if Difficulty == "hard" and greece.UnitsLost > AcceptableLosses then
 		greece.MarkFailedObjective(NoCasualties)
 	end
 end
@@ -466,7 +466,7 @@ WorldLoaded = function()
 	FreeTanya = greece.AddObjective("Free Tanya and keep her alive.")
 	KillVIPs = greece.AddObjective("Kill all Soviet officers and scientists.", "Secondary", false)
 	StealTank = greece.AddObjective("Steal a Soviet mammoth tank.", "Secondary", false)
-	if Map.LobbyOption("difficulty") == "hard" then
+	if Difficulty == "hard" then
 		NoCasualties = greece.AddPrimaryObjective("Do not lose a single soldier or civilian\nunder your command.")
 	end
 

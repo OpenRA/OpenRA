@@ -246,9 +246,8 @@ ActivateAI = function()
 	InitAIUnits()
 	ProtectHarvester(Harvester)
 
-	local difficulty = Map.LobbyOption("difficulty")
-	AttackDelay = AttackDelays[difficulty]
-	AttackGroupSize = AttackGroupSizes[difficulty]
+	AttackDelay = AttackDelays[Difficulty]
+	AttackGroupSize = AttackGroupSizes[Difficulty]
 	Trigger.AfterDelay(DateTime.Seconds(10), function()
 		ProduceInfantry()
 		ProduceVehicles()

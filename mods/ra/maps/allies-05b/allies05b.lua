@@ -413,12 +413,12 @@ WorldLoaded = function()
 	SendSpy()
 	ChurchFootprint()
 
-	if Map.LobbyOption("difficulty") == "easy" then
+	if Difficulty == "easy" then
 		TanyaType = "e7"
 		ReinforceCash = 5000
 		USSR.Cash = 8000
 		SpecialCameras = true
-	elseif Map.LobbyOption("difficulty") == "normal" then
+	elseif Difficulty == "normal" then
 		TanyaType = "e7.noautotarget"
 		ReinforceCash = 2250
 		USSR.Cash = 15000

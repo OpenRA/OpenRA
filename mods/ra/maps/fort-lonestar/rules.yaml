@@ -27,7 +27,7 @@ World:
 	FlashPaletteEffect@LIGHTNINGSTRIKE:
 		Type: LightningStrike
 	LuaScript:
-		Scripts: fort-lonestar.lua, fort-lonestar-AI.lua
+		Scripts: fort-lonestar.lua, fort-lonestar-AI.lua, campaign.lua
 	MapBuildRadius:
 		AllyBuildRadiusCheckboxVisible: False
 		BuildRadiusCheckboxVisible: False

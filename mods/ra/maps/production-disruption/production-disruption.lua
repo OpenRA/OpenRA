@@ -23,7 +23,7 @@ SubEscapePath = { SubPath1, SubPath2, SubPath3 }
 MissionStart = function()
 	LZCamera = Actor.Create("camera", true, { Owner = Greece, Location = LZ.Location })
 	Chalk1.TargetParatroopers(LZ.CenterPosition, Angle.New(740))
-	if Map.LobbyOption("difficulty") == "normal" then
+	if Difficulty == "normal" then
 		Actor.Create("tsla", true, { Owner = USSR, Location = EasyCamera.Location })
 		Actor.Create("4tnk", true, { Owner = USSR, Facing = Angle.South, Location = Mammoth.Location })
 		Actor.Create("4tnk", true, { Owner = USSR, Facing = Angle.South, Location = Mammoth.Location + CVec.New(1,0) })

@@ -91,8 +91,7 @@ ActivateHive7 = function()
 end
 
 ActivateAntHives = function()
-	local difficulty = Map.LobbyOption("difficulty")
-	AntSquad = AntSquad[difficulty]
+	AntSquad = AntSquad[Difficulty]
 
 	Trigger.AfterDelay(DateTime.Minutes(1), ActivateHive1)
 	Trigger.AfterDelay(DateTime.Minutes(1) + DateTime.Seconds(30), ActivateHive2)
