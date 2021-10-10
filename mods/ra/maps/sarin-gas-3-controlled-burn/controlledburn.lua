@@ -124,22 +124,7 @@ WorldLoaded = function()
 	SovietObj = USSR.AddObjective("Defeat the Allies.")
 	TakeOutPower = Greece.AddObjective("Bring down the power of the base to the east.")
 
-	Trigger.OnObjectiveAdded(Greece, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
-	end)
-
-	Trigger.OnObjectiveCompleted(Greece, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
-	end)
-	Trigger.OnObjectiveFailed(Greece, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
-	end)
-	Trigger.OnPlayerLost(Greece, function()
-		Media.PlaySpeechNotification(Greece, "Lose")
-	end)
-	Trigger.OnPlayerWon(Greece, function()
-		Media.PlaySpeechNotification(Greece, "Win")
-	end)
+	InitObjectives(Greece)
 
 	StartSpy.DisguiseAsType("e1", BadGuy)
 	Camera.Position = DefaultCameraPosition.CenterPosition

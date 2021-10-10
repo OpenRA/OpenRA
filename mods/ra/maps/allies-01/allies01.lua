@@ -171,14 +171,6 @@ HelicopterGone = function()
 	end
 end
 
-MissionAccomplished = function()
-	Media.PlaySpeechNotification(Greece, "MissionAccomplished")
-end
-
-MissionFailed = function()
-	Media.PlaySpeechNotification(Greece, "MissionFailed")
-end
-
 SetUnitStances = function()
 	Utils.Do(Map.NamedActors, function(a)
 		if a.Owner == Greece then
@@ -196,18 +188,7 @@ WorldLoaded = function()
 	England = Player.GetPlayer("England")
 	USSR = Player.GetPlayer("USSR")
 
-	Trigger.OnObjectiveAdded(Greece, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
-	end)
-	Trigger.OnObjectiveCompleted(Greece, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
-	end)
-	Trigger.OnObjectiveFailed(Greece, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
-	end)
-
-	Trigger.OnPlayerLost(Greece, MissionFailed)
-	Trigger.OnPlayerWon(Greece, MissionAccomplished)
+	InitObjectives(Greece)
 
 	FindEinsteinObjective = Greece.AddObjective("Find Einstein.")
 	TanyaSurviveObjective = Greece.AddObjective("Tanya must survive.")

@@ -296,10 +296,8 @@ SendLongBowReinforcements = function()
 	end
 end
 
-InitObjectives = function()
-	Trigger.OnObjectiveAdded(allies, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
-	end)
+AddObjectives = function()
+	InitObjectives(allies)
 
 	SurviveObj = allies.AddObjective("Enforce your position and hold-out the onslaught\nuntil reinforcements arrive.")
 	KillSams = allies.AddObjective("Destroy the two SAM sites before reinforcements\narrive.", "Secondary", false)
@@ -307,18 +305,7 @@ InitObjectives = function()
 	CaptureAirfields = allies.AddObjective("Capture and hold the Soviet airbase\nin the northeast.", "Secondary", false)
 	SovietObj = soviets.AddObjective("Eliminate all Allied forces.")
 
-	Trigger.OnObjectiveCompleted(allies, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
-	end)
-	Trigger.OnObjectiveFailed(allies, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
-	end)
-
-	Trigger.OnPlayerLost(allies, function()
-		Media.PlaySpeechNotification(allies, "MissionFailed")
-	end)
 	Trigger.OnPlayerWon(allies, function()
-		Media.PlaySpeechNotification(allies, "MissionAccomplished")
 		Media.DisplayMessage("The French forces have survived and dismantled the Soviet presence in the area!")
 	end)
 end
@@ -422,7 +409,7 @@ WorldLoaded = function()
 	allies = Player.GetPlayer("Allies")
 	soviets = Player.GetPlayer("Soviets")
 
-	InitObjectives()
+	AddObjectives()
 	InitMission()
 	SetupSoviets()
 end

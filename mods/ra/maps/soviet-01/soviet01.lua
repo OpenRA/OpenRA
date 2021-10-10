@@ -72,15 +72,7 @@ WorldLoaded = function()
 	france = Player.GetPlayer("France")
 	germany = Player.GetPlayer("Germany")
 
-	Trigger.OnObjectiveAdded(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
-	end)
-	Trigger.OnObjectiveCompleted(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
-	end)
-	Trigger.OnObjectiveFailed(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
-	end)
+	InitObjectives(player)
 
 	VillageRaidObjective = player.AddObjective("Raze the village.")
 
@@ -89,14 +81,6 @@ WorldLoaded = function()
 	end)
 
 	JeepDemolishingBridge()
-
-	Trigger.OnPlayerWon(player, function()
-		Media.PlaySpeechNotification(player, "MissionAccomplished")
-	end)
-
-	Trigger.OnPlayerLost(player, function()
-		Media.PlaySpeechNotification(player, "MissionFailed")
-	end)
 
 	Paradrop = Actor.Create("powerproxy.paratroopers", false, { Owner = player })
 	Trigger.AfterDelay(DateTime.Seconds(2), InsertYaks)

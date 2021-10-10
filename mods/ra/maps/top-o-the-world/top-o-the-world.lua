@@ -100,27 +100,12 @@ WorldLoaded = function()
 	Camera.Position	= DefaultCameraPosition.CenterPosition
 
 --Objectives Setup
-	Trigger.OnObjectiveAdded(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
-	end)
-	Trigger.OnObjectiveCompleted(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
-	end)
-	Trigger.OnObjectiveFailed(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
-	end)
+	InitObjectives(player)
 
 	BringSupplyTruck = player.AddObjective("Bring the supply truck to the waystation.")
 	ProtectWaystation = player.AddObjective("The waystation must not be destroyed.")
 	DestroyAAGuns = player.AddObjective("Destroy all the AA Guns to enable air support.", "Secondary", false)
 	PreventAlliedIncursions = player.AddObjective("Find and destroy the bridge the allies are using\nto bring their reinforcements in the area.", "Secondary", false)
-
-	Trigger.OnPlayerWon(player, function()
-		Media.PlaySpeechNotification(player, "MissionAccomplished")
-	end)
-	Trigger.OnPlayerLost(player, function()
-		Media.PlaySpeechNotification(player, "MissionFailed")
-	end)
 
 	Trigger.OnKilled(USSRTechCenter01, function()
 		player.MarkFailedObjective(ProtectWaystation)

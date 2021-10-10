@@ -103,36 +103,18 @@ WorldLoaded = function()
 
 	StartAI()
 
-	Trigger.OnObjectiveAdded(GDI, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
-	end)
-
-	Trigger.OnObjectiveCompleted(GDI, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
-	end)
-
-	Trigger.OnObjectiveFailed(GDI, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
-	end)
-
-	Trigger.OnPlayerWon(GDI, function()
-		Media.PlaySpeechNotification(Nod, "Win")
-	end)
-
-	Trigger.OnPlayerLost(GDI, function()
-		Media.PlaySpeechNotification(Nod, "Lose")
-	end)
+	InitObjectives(GDI)
 
 	ProtectMoebius = GDI.AddObjective("Protect Dr. Mobius.")
 	Trigger.OnKilled(DrMoebius, function()
 		GDI.MarkFailedObjective(ProtectMoebius)
 	end)
-	
+
 	ProtectHospital = GDI.AddObjective("Protect the Hospital.")
 	Trigger.OnKilled(Hospital, function()
 		GDI.MarkFailedObjective(ProtectHospital)
 	end)
-	
+
 	CiviliansKilledThreshold = CiviliansKilledThreshold[Difficulty]
 	ProtectCivilians = GDI.AddObjective("Keep at least " .. 14 - CiviliansKilledThreshold .. " out of 14 Civilians alive.")
 	Utils.Do(Civilians, function(civilian)
@@ -143,11 +125,11 @@ WorldLoaded = function()
 			end
 		end)
 	end)
-	
+
 	SecureArea = GDI.AddObjective("Destroy the Nod bases.")
 
 	KillGDI = Nod.AddObjective("Kill all enemies!")
-	
+
 	AirSupport = GDI.AddObjective("Destroy the SAM sites to receive air support.", "Secondary", false)
 	Trigger.OnAllKilled(SamSites, function()
 		GDI.MarkCompletedObjective(AirSupport)
@@ -159,20 +141,20 @@ WorldLoaded = function()
 	Trigger.AfterDelay(DateTime.Minutes(1), function() SendWaves(1, AutoAttackWaves) end)
 	Trigger.AfterDelay(DateTime.Minutes(2), function() ProduceInfantry(handofnod) end)
 	Trigger.AfterDelay(DateTime.Minutes(3), function() ProduceVehicle(nodairfield) end)
-	
+
 	local InitialArrivingUnits =
-	{ 
+	{
 		{ units = { Actor252, Actor253, Actor223, Actor225, Actor222, Actor258, Actor259, Actor260, Actor261, Actor254, Actor255, Actor256, Actor257 }, distance = -1 },
 		{ units = { Actor218, Actor220, Actor224, Actor226 }, distance = -2 },
 		{ units = { gdiAPC1 }, distance = -3 }
 	}
-	
+
 	Utils.Do(InitialArrivingUnits, function(group)
 		Utils.Do(group.units, function(unit)
 			unit.Move(unit.Location + CVec.New(0, group.distance), 0)
 		end)
 	end)
-	
+
 	Utils.Do(NodHelis, function(heli)
 		if heli.delay == DateTime.Seconds(0) then -- heli1 comes only when specific units are killed, see below
 			return

@@ -92,7 +92,7 @@ AlliedReinforcements = function()
 						Reinforcements.Reinforce(Greece, AlliedHouseSquad, { VillageSpawnAllies.Location, VillageRally.Location }, 0)
 					end
 				end)
-			end				
+			end
 		end
 	end)
 
@@ -356,25 +356,10 @@ WorldLoaded = function()
 	USSR = Player.GetPlayer("USSR")
 	GoodGuy = Player.GetPlayer("GoodGuy")
 
-	Trigger.OnObjectiveAdded(Greece, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
-	end)
+	InitObjectives(Greece)
 
 	SovietObj = USSR.AddObjective("Defeat Allies.")
 	RescueScientists = Greece.AddObjective("Rescue the scientists and escort them back to the\nextraction point.")
-
-	Trigger.OnObjectiveCompleted(Greece, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
-	end)
-	Trigger.OnObjectiveFailed(Greece, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
-	end)
-	Trigger.OnPlayerLost(Greece, function()
-		Media.PlaySpeechNotification(Greece, "Lose")
-	end)
-	Trigger.OnPlayerWon(Greece, function()
-		Media.PlaySpeechNotification(Greece, "Win")
-	end)
 
 	Camera.Position = DefaultCameraPosition.CenterPosition
 	Paradrop1 = Actor.Create("paradrop1", false, { Owner = USSR })

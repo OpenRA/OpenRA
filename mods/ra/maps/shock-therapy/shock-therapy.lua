@@ -120,7 +120,7 @@ MissionTriggers = function()
 				end
 			end)
 			Trigger.AfterDelay(DateTime.Seconds(3), function()
-				if not NEVillage3.IsDead then					
+				if not NEVillage3.IsDead then
 					Reinforcements.Reinforce(Spain, Utils.Random(CivSquads), { NECivSpawn3.Location, CivRallyNW.Location }, 0)
 				end
 				if not NEVillage4.IsDead then
@@ -249,7 +249,7 @@ MissionTriggers = function()
 				if not SWVillage3.IsDead then
 					Reinforcements.Reinforce(Spain, Utils.Random(CivSquads), { SWCivSpawn3.Location, CivRallySE.Location }, 0)
 				end
-				if not SWVillage4.IsDead then				
+				if not SWVillage4.IsDead then
 					Reinforcements.Reinforce(Spain, Utils.Random(CivSquads), { SWCivSpawn4.Location, CivRallyNW.Location }, 0)
 				end
 			end)
@@ -307,31 +307,11 @@ WorldLoaded = function()
 	GoodGuy = Player.GetPlayer("GoodGuy")
 	Spain = Player.GetPlayer("Spain")
 
-	Trigger.OnObjectiveAdded(USSR, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
-	end)
+	InitObjectives(USSR)
 
 	BeatRussia = Greece.AddObjective("Stop Ivan.")
 	KillAll = USSR.AddObjective("Destroy all that oppose us.")
 	CaptureDome = USSR.AddObjective("Capture the enemy radar dome.", "Secondary", false)
-
-	Trigger.OnObjectiveCompleted(USSR, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
-	end)
-	Trigger.OnObjectiveFailed(USSR, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
-	end)
-
-	Trigger.OnPlayerLost(USSR, function()
-		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			Media.PlaySpeechNotification(USSR, "MissionFailed")
-		end)
-	end)
-	Trigger.OnPlayerWon(USSR, function()
-		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			Media.PlaySpeechNotification(USSR, "MissionAccomplished")
-		end)
-	end)
 
 	Camera.Position = LZ.CenterPosition
 	ShockDrop = Actor.Create("shockdrop", false, { Owner = USSR })

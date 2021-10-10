@@ -138,31 +138,9 @@ Tick = function()
 	end
 end
 
-InitObjectives = function()
-	Trigger.OnObjectiveAdded(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
-	end)
-
+AddObjectives = function()
 	KillUSSR = player.AddObjective("Destroy all Soviet units and buildings in this region.")
 	DestroyConvoys = player.AddObjective("Eliminate all passing Soviet convoys.", "Secondary", false)
-
-	Trigger.OnObjectiveCompleted(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
-	end)
-	Trigger.OnObjectiveFailed(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
-	end)
-
-	Trigger.OnPlayerLost(player, function()
-		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			Media.PlaySpeechNotification(player, "MissionFailed")
-		end)
-	end)
-	Trigger.OnPlayerWon(player, function()
-		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			Media.PlaySpeechNotification(player, "MissionAccomplished")
-		end)
-	end)
 end
 
 WorldLoaded = function()
@@ -171,7 +149,8 @@ WorldLoaded = function()
 
 	Camera.Position = AlliedConyard.CenterPosition
 
-	InitObjectives()
+	InitObjectives(player)
+	AddObjectives()
 
 	ConvoyDelay = ConvoyDelays[Difficulty]
 	ParadropDelay = ParadropDelays[Difficulty]

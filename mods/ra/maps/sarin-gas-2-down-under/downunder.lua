@@ -457,9 +457,7 @@ WorldLoaded = function()
 	france = Player.GetPlayer("France")
 	germany = Player.GetPlayer("Germany")
 
-	Trigger.OnObjectiveAdded(greece, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
-	end)
+	InitObjectives(greece)
 
 	ussrObj = ussr.AddObjective("Defeat the Allies.")
 	ExitBase = greece.AddObjective("Reach the eastern exit of the facility.")
@@ -469,20 +467,6 @@ WorldLoaded = function()
 	if Difficulty == "hard" then
 		NoCasualties = greece.AddPrimaryObjective("Do not lose a single soldier or civilian\nunder your command.")
 	end
-
-	Trigger.OnObjectiveCompleted(greece, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
-	end)
-	Trigger.OnObjectiveFailed(greece, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
-	end)
-
-	Trigger.OnPlayerLost(greece, function()
-		Media.PlaySpeechNotification(greece, "Lose")
-	end)
-	Trigger.OnPlayerWon(greece, function()
-		Media.PlaySpeechNotification(greece, "Win")
-	end)
 
 	StartSpy.DisguiseAsType("e1", ussr)
 	StartAttacker1.AttackMove(start.Location)
