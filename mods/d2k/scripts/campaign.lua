@@ -9,12 +9,6 @@
 
 Difficulty = Map.LobbyOption("difficulty")
 
-IdleHunt = function(actor)
-	if actor.HasProperty("Hunt") and not actor.IsDead then
-		Trigger.OnIdle(actor, actor.Hunt)
-	end
-end
-
 InitObjectives = function(player)
 	Trigger.OnObjectiveAdded(player, function(p, id)
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")

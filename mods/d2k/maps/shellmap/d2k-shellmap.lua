@@ -63,8 +63,6 @@ OrdCarryHarvWaypoints = { ord_harvcarry_2.Location, ord_harvcarry_1.Location }
 CorCarryHarvWaypoints = { cor_harvcarry_2.Location, cor_harvcarry_1.Location }
 SmgCarryHarvWaypoints = { smg_harvcarry_2.Location, smg_harvcarry_1.Location }
 
-IdleHunt = function(unit) if not unit.IsDead then Trigger.OnIdle(unit, unit.Hunt) end end
-
 Produce = function(house, units)
     if HoldProduction[house.Name] then
         Trigger.AfterDelay(DateTime.Minutes(1), function() Produce(house, units) end)
