@@ -10,7 +10,9 @@ function All-Command
 		return
 	}
 
-	dotnet build -c Release --nologo -p:TargetPlatform=win-x64
+	Write-Host "Building in" $configuration "configuration..." -ForegroundColor Cyan
+	dotnet build -c $configuration --nologo -p:TargetPlatform=win-x64
+
 	if ($lastexitcode -ne 0)
 	{
 		Write-Host "Build failed. If just the development tools failed to build, try installing Visual Studio. You may also still be able to run the game." -ForegroundColor Red
@@ -235,6 +237,12 @@ else
 
 $env:ENGINE_DIR = ".."
 $utilityPath = "bin\OpenRA.Utility.exe"
+
+$configuration = "Release"
+if ($args.Contains("CONFIGURATION=Debug"))
+{
+	$configuration = "Debug"
+}
 
 $execute = $command
 if ($command.Length -gt 1)
