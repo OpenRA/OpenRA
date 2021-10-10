@@ -112,7 +112,7 @@ namespace OpenRA
 
 		public static int HashCPos(CPos i2)
 		{
-			return ((i2.X * 5) ^ (i2.Y * 3)) / 4;
+			return i2.Bits;
 		}
 
 		public static int HashCVec(CVec i2)
@@ -142,10 +142,11 @@ namespace OpenRA
 					return (int)(t.Actor.ActorID << 16) * 0x567;
 
 				case TargetType.FrozenActor:
-					if (t.FrozenActor.Actor == null)
+					var actor = t.FrozenActor.Actor;
+					if (actor == null)
 						return 0;
 
-					return (int)(t.FrozenActor.Actor.ActorID << 16) * 0x567;
+					return (int)(actor.ActorID << 16) * 0x567;
 
 				case TargetType.Terrain:
 					return HashUsingHashCode(t.CenterPosition);
