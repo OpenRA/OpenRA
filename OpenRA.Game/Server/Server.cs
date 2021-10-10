@@ -70,6 +70,8 @@ namespace OpenRA.Server
 		readonly TypeDictionary serverTraits = new TypeDictionary();
 		readonly PlayerDatabase playerDatabase;
 
+		OrderBuffer orderBuffer;
+
 		volatile ServerState internalState = ServerState.WaitingPlayers;
 
 		readonly BlockingCollection<IServerEvent> events = new BlockingCollection<IServerEvent>();
@@ -293,6 +295,18 @@ namespace OpenRA.Server
 
 						foreach (var t in serverTraits.WithInterface<ITick>())
 							t.Tick(this);
+
+						if (State == ServerState.GameStarted)
+						{
+							foreach (var (playerIndex, scale) in orderBuffer.GetTickScales())
+							{
+								var frame = CreateTickScaleFrame(scale);
+								var con = Conns.SingleOrDefault(c => c.PlayerIndex == playerIndex);
+
+								if (con != null && con.Validated)
+									DispatchFrameToClient(con, playerIndex, frame);
+							}
+						}
 					}
 
 					if (State == ServerState.ShuttingDown)
@@ -827,6 +841,8 @@ namespace OpenRA.Server
 					frame += OrderLatency;
 					DispatchFrameToClient(conn, conn.PlayerIndex, CreateAckFrame(frame, 1));
 
+					orderBuffer.AddOrderTimestamp(conn.PlayerIndex);
+
 					// Track the last frame for each client so the disconnect handling can write
 					// an EndOfOrders marker with the correct frame number.
 					// TODO: This should be handled by the order buffering system too
@@ -1074,6 +1090,7 @@ namespace OpenRA.Server
 		{
 			lock (LobbyInfo)
 			{
+				orderBuffer?.RemovePlayer(toDrop.PlayerIndex);
 				Conns.Remove(toDrop);
 
 				var dropClient = LobbyInfo.Clients.FirstOrDefault(c1 => c1.Index == toDrop.PlayerIndex);
@@ -1244,12 +1261,16 @@ namespace OpenRA.Server
 				SyncLobbyInfo();
 				State = ServerState.GameStarted;
 
+				var gameSpeeds = Game.ModData.Manifest.Get<GameSpeeds>();
+				var gameSpeedName = LobbyInfo.GlobalSettings.OptionOrDefault("gamespeed", gameSpeeds.DefaultSpeed);
+
+				var gameSpeed = gameSpeeds.Speeds[gameSpeedName];
+
+				orderBuffer = new OrderBuffer();
+				orderBuffer.Start(gameSpeed, Conns.Where(c => c.Validated).Select(c => c.PlayerIndex));
+
 				if (Type != ServerType.Local)
-				{
-					var gameSpeeds = Game.ModData.Manifest.Get<GameSpeeds>();
-					var gameSpeedName = LobbyInfo.GlobalSettings.OptionOrDefault("gamespeed", gameSpeeds.DefaultSpeed);
-					OrderLatency = gameSpeeds.Speeds[gameSpeedName].OrderLatency;
-				}
+					OrderLatency = gameSpeed.OrderLatency;
 
 				if (GameSave == null && LobbyInfo.GlobalSettings.GameSavesEnabled)
 					GameSave = new GameSave();
