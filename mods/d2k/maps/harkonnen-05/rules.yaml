@@ -4,7 +4,7 @@ Player:
 
 World:
 	LuaScript:
-		Scripts: campaign-global.lua, harkonnen05.lua, harkonnen05-AI.lua
+		Scripts: campaign.lua, utils.lua, harkonnen05.lua, harkonnen05-AI.lua
 	MissionData:
 		Briefing: Protect the Outpost at Habbanya to prevent Imperial interference. Rush ground troops through the mountain passes and secure our Outpost. Once this is done, turn on the Ordos and crush them.
 		BriefingVideo: H_BR05_E.VQA

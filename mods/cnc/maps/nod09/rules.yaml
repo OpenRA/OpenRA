@@ -1,6 +1,6 @@
 World:
 	LuaScript:
-		Scripts: campaign-global.lua, nod09.lua, nod09-AI.lua
+		Scripts: campaign.lua, utils.lua, nod09.lua, nod09-AI.lua
 	MusicPlaylist:
 		StartingMusic: march
 		VictoryMusic: nod_win1

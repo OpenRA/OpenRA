@@ -1,6 +1,6 @@
 World:
 	LuaScript:
-		Scripts: campaign-global.lua, soviet09.lua, soviet09-AI.lua
+		Scripts: campaign.lua, utils.lua, soviet09.lua, soviet09-AI.lua
 	MissionData:
 		BriefingVideo: soviet9.vqa
 		WinVideo: v2rocket.vqa

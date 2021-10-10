@@ -4,7 +4,7 @@ Player:
 
 World:
 	LuaScript:
-		Scripts: campaign-global.lua, harkonnen09a.lua, harkonnen09a-AI.lua
+		Scripts: campaign.lua, utils.lua, harkonnen09a.lua, harkonnen09a-AI.lua
 	MissionData:
 		Briefing: Only the Atreides and Imperial forces now remain. The Sardaukar, still scattered from their long march from the North, cannot mass their forces to attack. Only the destruction of the Emperor's base encampment will stop the flow of Imperial forces.\n\nOnce this has been accomplished, turn on the Atreides and annihilate them. Claim Arrakis for House Harkonnen!
 		BriefingVideo: H_BR09_E.VQA

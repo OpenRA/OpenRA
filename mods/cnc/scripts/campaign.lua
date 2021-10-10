@@ -6,11 +6,8 @@
    the License, or (at your option) any later version. For more
    information, see COPYING.
 ]]
-IdleHunt = function(actor)
-	if actor.HasProperty("Hunt") and not actor.IsDead then
-		Trigger.OnIdle(actor, actor.Hunt)
-	end
-end
+
+Difficulty = Map.LobbyOption("difficulty")
 
 InitObjectives = function(player)
 	Trigger.OnObjectiveAdded(player, function(p, id)

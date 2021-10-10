@@ -1,6 +1,6 @@
 World:
 	LuaScript:
-		Scripts: campaign-global.lua, nod07b.lua, nod07b-AI.lua
+		Scripts: campaign.lua, utils.lua, nod07b.lua, nod07b-AI.lua
 	MusicPlaylist:
 		StartingMusic: justdoit
 		VictoryMusic: nod_win1

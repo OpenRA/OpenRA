@@ -1,6 +1,6 @@
 World:
 	LuaScript:
-		Scripts: campaign-global.lua, in-the-nick-of-time.lua
+		Scripts: campaign.lua, utils.lua, in-the-nick-of-time.lua
 	MissionData:
 		WinVideo: cronfail.vqa
 		LossVideo: sfrozen.vqa

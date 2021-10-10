@@ -1,6 +1,6 @@
 World:
 	LuaScript:
-		Scripts: campaign-global.lua, situation-critical.lua
+		Scripts: campaign.lua, utils.lua, situation-critical.lua
 	MissionData:
 		WinVideo: flare.vqa
 		LossVideo: nukestok.vqa

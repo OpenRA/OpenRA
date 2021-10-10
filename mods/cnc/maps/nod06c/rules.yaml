@@ -1,6 +1,6 @@
 World:
 	LuaScript:
-		Scripts: campaign-global.lua, nod06c.lua
+		Scripts: campaign.lua, utils.lua, nod06c.lua
 	MusicPlaylist:
 		StartingMusic: rout
 		VictoryMusic: nod_win1
