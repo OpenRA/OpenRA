@@ -109,7 +109,10 @@ namespace OpenRA.Mods.Common.Scripting
 				.FirstOrDefault(sld => sld.Info.ID == id);
 
 			if (option == null)
-				throw new YamlException("A ScriptLobbyDropdown with ID `" + id + "` was not found.");
+			{
+				Log.Write("lua", "A ScriptLobbyDropdown with ID `" + id + "` was not found.");
+				return null;
+			}
 
 			return option.Value;
 		}
