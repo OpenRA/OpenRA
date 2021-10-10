@@ -8,12 +8,12 @@
 ]]
 
 AlliedInfantryTypes = { "e1", "e3" }
-if Map.LobbyOption("difficulty") == "easy" then
+if Difficulty == "easy" then
 	AlliedArmorTypes = { "1tnk", "1tnk" }
 else
 	AlliedArmorTypes = { "1tnk", "2tnk" }
 end
-if Map.LobbyOption("difficulty") == "hard" then
+if Difficulty == "hard" then
 	AlliedNavyGuard = { "ca", "ca" }
 else
 	AlliedNavyGuard = { "ca" }
@@ -87,10 +87,10 @@ ProduceArmor = function()
 	greece.Build(toBuild, function(unit)
 		ArmorAttack[#ArmorAttack + 1] = unit[1]
 
-		if #ArmorAttack >= ArmorAttackNumbers[Map.LobbyOption("difficulty")] then
+		if #ArmorAttack >= ArmorAttackNumbers[Difficulty] then
 			SendAttackToBase(ArmorAttack)
 			ArmorAttack = { }
-			Trigger.AfterDelay(ArmorAttackDelays[Map.LobbyOption("difficulty")], ProduceArmor)
+			Trigger.AfterDelay(ArmorAttackDelays[Difficulty], ProduceArmor)
 		else
 			Trigger.AfterDelay(delay, ProduceArmor)
 		end

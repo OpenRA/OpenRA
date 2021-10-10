@@ -6,7 +6,6 @@
    the License, or (at your option) any later version. For more
    information, see COPYING.
 ]]
-Difficulty = Map.LobbyOption("difficulty")
 
 IslandSamSites = { SAM01, SAM02 }
 NodBase = { PowerPlant1, PowerPlant2, PowerPlant3, PowerPlant4, PowerPlant5, Refinery, HandOfNod, Silo1, Silo2, Silo3, Silo4, ConYard, CommCenter }

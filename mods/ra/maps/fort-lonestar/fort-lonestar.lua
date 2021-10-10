@@ -21,7 +21,7 @@ Walls =
 	{ WallBottomRight1, WallBottomRight2, WallBottomRight3, WallBottomRight4, WallBottomRight5, WallBottomRight6, WallBottomRight7, WallBottomRight8, WallBottomRight9 }
 }
 
-if Map.LobbyOption("difficulty") == "veryeasy" then
+if Difficulty == "veryeasy" then
 	ParaChance = 20
 	Patrol = { "e1", "e2", "e1" }
 	Infantry = { "e4", "e1", "e1", "e2", "e2" }
@@ -30,7 +30,7 @@ if Map.LobbyOption("difficulty") == "veryeasy" then
 	LongRange = { "arty" }
 	Boss = { "v2rl" }
 	Swarm = { "shok", "shok", "shok" }
-elseif Map.LobbyOption("difficulty") == "easy" then
+elseif Difficulty == "easy" then
 	ParaChance = 25
 	Patrol = { "e1", "e2", "e1" }
 	Infantry = { "e4", "e1", "e1", "e2", "e1", "e2", "e1" }
@@ -39,7 +39,7 @@ elseif Map.LobbyOption("difficulty") == "easy" then
 	LongRange = { "v2rl" }
 	Boss = { "4tnk" }
 	Swarm = { "shok", "shok", "shok", "shok", "ttnk" }
-elseif Map.LobbyOption("difficulty") == "normal" then
+elseif Difficulty == "normal" then
 	ParaChance = 30
 	Patrol = { "e1", "e2", "e1", "e1" }
 	Infantry = { "e4", "e1", "e1", "e2", "e1", "e2", "e1" }
@@ -48,7 +48,7 @@ elseif Map.LobbyOption("difficulty") == "normal" then
 	LongRange = { "v2rl" }
 	Boss = { "4tnk" }
 	Swarm = { "shok", "shok", "shok", "shok", "ttnk", "ttnk", "ttnk" }
-elseif Map.LobbyOption("difficulty") == "hard" then
+elseif Difficulty == "hard" then
 	ParaChance = 35
 	Patrol = { "e1", "e2", "e1", "e1", "e4" }
 	Infantry = { "e4", "e1", "e1", "e2", "e1", "e2", "e1" }
@@ -85,7 +85,7 @@ Waves =
 }
 
 -- Now do some adjustments to the waves
-if Map.LobbyOption("difficulty") == "tough" or Map.LobbyOption("difficulty") == "endless" then
+if Difficulty == "tough" or Difficulty == "endless" then
 	Waves[8] = { delay = 1500, units = { Infantry, Infantry, Patrol, Infantry, Infantry, Infantry }, ironUnits = { LongRange } }
 	Waves[9] = { delay = 1500, units = { Infantry, Infantry, Patrol, Infantry, Infantry, Infantry, Infantry, Infantry, LongRange, LongRange, Vehicles, Tank }, ironUnits = { Tank } }
 	Waves[11] = { delay = 1500, units = { Vehicles, Infantry, Patrol, Patrol, Patrol, Infantry, LongRange, Tank, Boss, Infantry, Infantry, Patrol } }
@@ -159,7 +159,7 @@ SendWave = function()
 				SendWave()
 			end
 		else
-			if Map.LobbyOption("difficulty") == "endless" then
+			if Difficulty == "endless" then
 				Wave = 0
 				IncreaseDifficulty()
 				SendWave()

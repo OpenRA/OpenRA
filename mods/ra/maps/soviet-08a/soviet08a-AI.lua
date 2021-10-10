@@ -92,7 +92,7 @@ ProduceInfantry = function()
 	Greece.Build({ Utils.Random(AlliedInfantry) }, function(units)
 		table.insert(AttackGroup, units[1])
 		SendAttackGroup()
-		Trigger.AfterDelay(ProductionInterval[Map.LobbyOption("difficulty")], ProduceInfantry)
+		Trigger.AfterDelay(ProductionInterval[Difficulty], ProduceInfantry)
 	end)
 end
 
@@ -104,7 +104,7 @@ ProduceVehicles = function()
 	Greece.Build({ Utils.Random(AlliedVehicles[AlliedVehicleType]) }, function(units)
 		table.insert(AttackGroup, units[1])
 		SendAttackGroup()
-		Trigger.AfterDelay(ProductionInterval[Map.LobbyOption("difficulty")], ProduceVehicles)
+		Trigger.AfterDelay(ProductionInterval[Difficulty], ProduceVehicles)
 	end)
 end
 
@@ -120,7 +120,7 @@ BringDDPatrol = function(patrolPath)
 		if GreeceNavalYard.IsDead then
 			return
 		else
-			if Map.LobbyOption("difficulty") == "easy" then
+			if Difficulty == "easy" then
 				Trigger.AfterDelay(DateTime.Minutes(7), function() BringDDPatrol(patrolPath) end)
 			else
 				Trigger.AfterDelay(DateTime.Minutes(4), function() BringDDPatrol(patrolPath) end)
@@ -130,9 +130,8 @@ BringDDPatrol = function(patrolPath)
 end
 
 ActivateAI = function()
-	local difficulty = Map.LobbyOption("difficulty")
-	WTransUnits = WTransUnits[difficulty]
-	WTransDelays = WTransDelays[difficulty]
+	WTransUnits = WTransUnits[Difficulty]
+	WTransDelays = WTransDelays[Difficulty]
 
 	local buildings = Utils.Where(Map.ActorsInWorld, function(self) return self.Owner == Greece and self.HasProperty("StartBuildingRepairs") end)
 	Utils.Do(buildings, function(actor)

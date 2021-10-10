@@ -6,7 +6,6 @@
    the License, or (at your option) any later version. For more
    information, see COPYING.
 ]]
-Difficulty = Map.LobbyOption("difficulty")
 
 RepairThreshold = { easy = 0.3, normal = 0.6, hard = 0.9 }
 

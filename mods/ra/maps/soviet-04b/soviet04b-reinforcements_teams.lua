@@ -25,7 +25,7 @@ Patrol2Path = { EntranceSouthPoint.Location, ToRadarBridgePoint.Location, Island
 
 VillageCamArea = { CPos.New(37, 58),CPos.New(37, 59),CPos.New(37, 60),CPos.New(38, 60),CPos.New(39, 60), CPos.New(40, 60), CPos.New(41, 60), CPos.New(35, 57), CPos.New(34, 57), CPos.New(33, 57), CPos.New(32, 57) }
 
-if Map.LobbyOption("difficulty") == "easy" then
+if Difficulty == "easy" then
 	ArmorReinfGreece = { "jeep", "1tnk", "1tnk" }
 else
 	ArmorReinfGreece = { "jeep", "jeep", "1tnk", "1tnk", "1tnk" }
@@ -68,7 +68,7 @@ BringPatrol1 = function()
 	end)
 
 	Trigger.OnAllKilled(units, function()
-		if Map.LobbyOption("difficulty") == "hard" then
+		if Difficulty == "hard" then
 			Trigger.AfterDelay(DateTime.Minutes(4), BringPatrol1)
 		else
 			Trigger.AfterDelay(DateTime.Minutes(7), BringPatrol1)
@@ -87,7 +87,7 @@ BringPatrol2 = function()
 	end)
 
 	Trigger.OnAllKilled(units, function()
-		if Map.LobbyOption("difficulty") == "hard" then
+		if Difficulty == "hard" then
 			Trigger.AfterDelay(DateTime.Minutes(4), BringPatrol2)
 		else
 			Trigger.AfterDelay(DateTime.Minutes(7), BringPatrol2)

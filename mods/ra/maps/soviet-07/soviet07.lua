@@ -6,11 +6,11 @@
    the License, or (at your option) any later version. For more
    information, see COPYING.
 ]]
-if Map.LobbyOption("difficulty") == "easy" then
+if Difficulty == "easy" then
 	remainingTime = DateTime.Minutes(7)
-elseif Map.LobbyOption("difficulty") == "normal" then
+elseif Difficulty == "normal" then
 	remainingTime = DateTime.Minutes(6)
-elseif Map.LobbyOption("difficulty") == "hard" then
+elseif Difficulty == "hard" then
 	remainingTime = DateTime.Minutes(5)
 end
 
@@ -307,7 +307,7 @@ Tick = function()
 		enemy.MarkCompletedObjective(alliedObjective)
 	end
 
-	if remainingTime == DateTime.Minutes(5) and Map.LobbyOption("difficulty") ~= "hard" then
+	if remainingTime == DateTime.Minutes(5) and Difficulty ~= "hard" then
 		Media.PlaySpeechNotification(player, "WarningFiveMinutesRemaining")
 	elseif remainingTime == DateTime.Minutes(4) then
 		Media.PlaySpeechNotification(player, "WarningFourMinutesRemaining")

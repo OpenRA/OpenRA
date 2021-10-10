@@ -6,7 +6,6 @@
    the License, or (at your option) any later version. For more
    information, see COPYING.
 ]]
-Difficulty = Map.LobbyOption("difficulty")
 
 NodUnitsVehicle1 =
 {

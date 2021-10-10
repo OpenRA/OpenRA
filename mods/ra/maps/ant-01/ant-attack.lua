@@ -6,7 +6,6 @@
    the License, or (at your option) any later version. For more
    information, see COPYING.
 ]]
-DifficultySetting = Map.LobbyOption("difficulty")
 timeTracker = 0
 amount = 1
 SendAnts = true
@@ -53,19 +52,19 @@ StartAntAttack = function()
 		antType = Utils.Random(AntTypes)
 	end
 
-	if antType == "warriorant" and DifficultySetting == "easy" then
+	if antType == "warriorant" and Difficulty == "easy" then
 		antType = "scoutant"
 	end
 
-	if DifficultySetting == "normal" and timeTracker < DateTime.Minutes(6) and antType == "scoutant" then
+	if Difficulty == "normal" and timeTracker < DateTime.Minutes(6) and antType == "scoutant" then
 		antType = "warriorant"
-	elseif DifficultySetting == "hard" and timeTracker < DateTime.Minutes(8) and antType == "scoutant" then
+	elseif Difficulty == "hard" and timeTracker < DateTime.Minutes(8) and antType == "scoutant" then
 		antType = "warriorant"
 	end
 
-	local max = MaxAnts[DifficultySetting] - math.ceil(timeTracker / DateTime.Minutes(6))
+	local max = MaxAnts[Difficulty] - math.ceil(timeTracker / DateTime.Minutes(6))
 	if timeTracker > DateTime.Minutes(3) and antType == "fireant" then
-		amount = Utils.RandomInteger(1, MaxFireAnts[DifficultySetting])
+		amount = Utils.RandomInteger(1, MaxFireAnts[Difficulty])
 	elseif timeTracker > 15 and antType == "fireant" then
 		antType = "scoutant"
 	else
@@ -83,7 +82,7 @@ StartAntAttack = function()
 
 	-- Setup next wave
 	if SendAnts then
-		Trigger.AfterDelay(AttackInterval[DifficultySetting], function()
+		Trigger.AfterDelay(AttackInterval[Difficulty], function()
 			StartAntAttack()
 		end)
 	end

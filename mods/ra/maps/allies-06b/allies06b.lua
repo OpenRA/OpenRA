@@ -131,14 +131,14 @@ CaptureRadarDome = function()
 			end
 
 			Beacon.New(player, a.CenterPosition)
-			if Map.LobbyOption("difficulty") ~= "hard" then
+			if Difficulty ~= "hard" then
 				Actor.Create("TECH.CAM", true, { Owner = player, Location = a.Location + CVec.New(1, 1) })
 			end
 		end)
 
 		Media.DisplayMessage("Coordinates of the Soviet tech centers discovered.")
 
-		if Map.LobbyOption("difficulty") == "easy" then
+		if Difficulty == "easy" then
 			Actor.Create("Camera", true, { Owner = player, Location = Weapcam.Location })
 		end
 	end)
@@ -207,7 +207,7 @@ WorldLoaded = function()
 
 	Camera.Position = DefaultCameraPosition.CenterPosition
 
-	if Map.LobbyOption("difficulty") == "easy" then
+	if Difficulty == "easy" then
 		Trigger.OnEnteredProximityTrigger(SovietDefenseCam.CenterPosition, WDist.New(1024 * 7), function(a, id)
 			if a.Owner == player then
 				Trigger.RemoveProximityTrigger(id)
@@ -225,7 +225,7 @@ WorldLoaded = function()
 		end)
 	end
 
-	if Map.LobbyOption("difficulty") ~= "hard" then
+	if Difficulty ~= "hard" then
 		Trigger.OnKilled(DefBrl1, function(a, b)
 			if not DefenseFlame1.IsDead then
 				DefenseFlame1.Kill()

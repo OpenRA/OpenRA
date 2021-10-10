@@ -45,7 +45,7 @@ EnemyPaths =
 
 wave = 0
 SendEnemies = function()
-	Trigger.AfterDelay(EnemyAttackDelay[Map.LobbyOption("difficulty")], function()
+	Trigger.AfterDelay(EnemyAttackDelay[Difficulty], function()
 
 		wave = wave + 1
 		if wave > 3 then
@@ -53,10 +53,10 @@ SendEnemies = function()
 		end
 
 		if wave == 1 then
-			local units = Reinforcements.ReinforceWithTransport(enemy, "tran", EnemyReinforcements[Map.LobbyOption("difficulty")][wave], EnemyPaths[1], { EnemyPaths[1][1] })[2]
+			local units = Reinforcements.ReinforceWithTransport(enemy, "tran", EnemyReinforcements[Difficulty][wave], EnemyPaths[1], { EnemyPaths[1][1] })[2]
 			Utils.Do(units, IdleHunt)
 		else
-			local units = Reinforcements.ReinforceWithTransport(enemy, "lst", EnemyReinforcements[Map.LobbyOption("difficulty")][wave], EnemyPaths[2], { EnemyPaths[2][1] })[2]
+			local units = Reinforcements.ReinforceWithTransport(enemy, "lst", EnemyReinforcements[Difficulty][wave], EnemyPaths[2], { EnemyPaths[2][1] })[2]
 			Utils.Do(units, IdleHunt)
 		end
 

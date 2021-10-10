@@ -27,7 +27,7 @@ lstReinforcements =
 	}
 }
 
-if Map.LobbyOption("difficulty") == "easy" then
+if Difficulty == "easy" then
 	ActivateAIDelay = DateTime.Minutes(1)
 else
 	ActivateAIDelay = DateTime.Seconds(30)
@@ -82,7 +82,7 @@ CaptureRadarDome = function()
 end
 
 BaseRaids = function()
-	if Map.LobbyOption("difficulty") == "easy" then
+	if Difficulty == "easy" then
 		return
 	else
 		Trigger.AfterDelay(Utils.RandomInteger(BaseRaidDelay1[1], BaseRaidDelay1[2]), function()
@@ -108,7 +108,7 @@ BaseRaids = function()
 end
 
 StartTimerFunction = function()
-	if Map.LobbyOption("difficulty") == "hard" then
+	if Difficulty == "hard" then
 		StartTimer = true
 		Media.PlaySpeechNotification(greece, "TimerStarted")
 	end

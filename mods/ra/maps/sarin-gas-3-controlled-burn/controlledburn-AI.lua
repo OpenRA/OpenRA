@@ -44,7 +44,7 @@ ProduceBadGuyInfantry = function()
 	BadGuy.Build({ Utils.Random(SovietInfantry) }, function(units)
 		table.insert(BGAttackGroup, units[1])
 		SendBGAttackGroup()
-		Trigger.AfterDelay(ProductionInterval[Map.LobbyOption("difficulty")], ProduceBadGuyInfantry)
+		Trigger.AfterDelay(ProductionInterval[Difficulty], ProduceBadGuyInfantry)
 	end)
 end
 
@@ -70,7 +70,7 @@ ProduceUSSRInfantry = function()
 	USSR.Build({ Utils.Random(SovietInfantry) }, function(units)
 		table.insert(AttackGroup, units[1])
 		SendAttackGroup()
-		Trigger.AfterDelay(ProductionInterval[Map.LobbyOption("difficulty")], ProduceUSSRInfantry)
+		Trigger.AfterDelay(ProductionInterval[Difficulty], ProduceUSSRInfantry)
 	end)
 end
 
@@ -82,14 +82,14 @@ ProduceVehicles = function()
 	USSR.Build({ Utils.Random(SovietVehicles) }, function(units)
 		table.insert(AttackGroup, units[1])
 		SendAttackGroup()
-		Trigger.AfterDelay(ProductionInterval[Map.LobbyOption("difficulty")], ProduceVehicles)
+		Trigger.AfterDelay(ProductionInterval[Difficulty], ProduceVehicles)
 	end)
 end
 
 GroundAttackUnits = { {"4tnk", "3tnk", "e2", "e2", "e2", "e2" }, { "3tnk", "3tnk", "v2rl", "e4", "e4", "e4" }, {"ttnk", "ttnk", "ttnk", "shok", "shok", "shok" } }
 
-GroundAttackPaths = 
-{ 
+GroundAttackPaths =
+{
 	{ SovietGroundEntry1.Location },
 	{ SovietGroundEntry2.Location },
 	{ SovietGroundEntry3.Location }
@@ -124,7 +124,7 @@ ProduceAircraft = function()
 
 		local alive = Utils.Where(Planes, function(y) return not y.IsDead end)
 		if #alive < 2 then
-			Trigger.AfterDelay(DateTime.Seconds(ProductionInterval[Map.LobbyOption("difficulty")] / 2), ProduceAircraft)
+			Trigger.AfterDelay(DateTime.Seconds(ProductionInterval[Difficulty] / 2), ProduceAircraft)
 		end
 
 		InitializeAttackAircraft(plane, Greece)
@@ -132,8 +132,7 @@ ProduceAircraft = function()
 end
 
 ActivateAI = function()
-	local difficulty = Map.LobbyOption("difficulty")
-	GroundWavesDelays = GroundWavesDelays[difficulty]
+	GroundWavesDelays = GroundWavesDelays[Difficulty]
 
 	local buildings = Utils.Where(Map.ActorsInWorld, function(self) return self.Owner == USSR and self.HasProperty("StartBuildingRepairs") end)
 	Utils.Do(buildings, function(actor)

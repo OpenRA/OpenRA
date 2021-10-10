@@ -86,8 +86,7 @@ MissionStart = function()
 	end)
 
 	Trigger.AfterDelay(DateTime.Minutes(1), function()
-		local difficulty = Map.LobbyOption("difficulty")
-		CombatTeam2 = CombatTeam2[difficulty]
+		CombatTeam2 = CombatTeam2[Difficulty]
 		Reinforcements.Reinforce(greece, CombatTeam2, { TruckEscapeCenter.Location, DefaultCameraPosition.Location })
 		Media.PlaySpeechNotification(greece, "ReinforcementsArrived")
 	end)

@@ -76,7 +76,7 @@ RunInitialActivities = function()
 	Trigger.AfterDelay(DateTime.Minutes(1), ProduceInfantry)
 	Trigger.AfterDelay(DateTime.Minutes(2), ProduceArmor)
 
-	if Map.LobbyOption("difficulty") == "hard" or Map.LobbyOption("difficulty") == "normal" then
+	if Difficulty == "hard" or Difficulty == "normal" then
 		Trigger.AfterDelay(DateTime.Seconds(5), ReinfInf)
 	end
 	Trigger.AfterDelay(DateTime.Minutes(1), ReinfInf)
@@ -101,9 +101,9 @@ Tick = function()
 
 	if RCheck then
 		RCheck = false
-		if Map.LobbyOption("difficulty") == "hard" then
+		if Difficulty == "hard" then
 			Trigger.AfterDelay(DateTime.Seconds(150), ReinfArmor)
-		elseif Map.LobbyOption("difficulty") == "normal" then
+		elseif Difficulty == "normal" then
 			Trigger.AfterDelay(DateTime.Minutes(5), ReinfArmor)
 		else
 			Trigger.AfterDelay(DateTime.Minutes(8), ReinfArmor)

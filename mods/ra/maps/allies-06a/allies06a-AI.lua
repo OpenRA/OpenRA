@@ -197,12 +197,11 @@ WTransWaves = function()
 end
 
 ActivateAI = function()
-	local difficulty = Map.LobbyOption("difficulty")
-	WaterAttackTypes = WaterAttackTypes[difficulty]
-	WaterAttacks = WaterAttacks[difficulty]
-	WTransUnits = WTransUnits[difficulty]
-	WTransDelays = WTransDelays[difficulty]
-	BuildDelays = BuildDelays[difficulty]
+	WaterAttackTypes = WaterAttackTypes[Difficulty]
+	WaterAttacks = WaterAttacks[Difficulty]
+	WTransUnits = WTransUnits[Difficulty]
+	WTransDelays = WTransDelays[Difficulty]
+	BuildDelays = BuildDelays[Difficulty]
 
 	InitialiseAttack()
 	Trigger.AfterDelay(DateTime.Seconds(10), ProduceInfantry)

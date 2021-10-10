@@ -7,8 +7,6 @@
    information, see COPYING.
 ]]
 
-Difficulty = Map.LobbyOption("difficulty")
-
 SamSites = { sam1, sam2, sam3, sam4, sam5 }
 
 NodRetaliateIfDestroyedUnits = { harv1, bggy, ltnk1, ltnk2, ltnk3, arty1, arty2, arty3}

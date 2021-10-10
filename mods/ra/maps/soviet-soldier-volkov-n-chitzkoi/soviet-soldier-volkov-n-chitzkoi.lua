@@ -53,11 +53,11 @@ WorldLoaded = function()
 --AI Production Setup
 	ProduceArmor()
 
-	if Map.LobbyOption("difficulty") == "easy" then
+	if Difficulty == "easy" then
 		Trigger.AfterDelay(DateTime.Minutes(10), ProduceNavyGuard)
-	elseif Map.LobbyOption("difficulty") == "normal" then
+	elseif Difficulty == "normal" then
 		Trigger.AfterDelay(DateTime.Minutes(5), ProduceNavyGuard)
-	elseif Map.LobbyOption("difficulty") == "hard" then
+	elseif Difficulty == "hard" then
 		ProduceNavyGuard()
 	end
 
@@ -334,7 +334,7 @@ WorldLoaded = function()
 			Trigger.AfterDelay(DateTime.Seconds(10), function()
 				if prtcamera.IsInWorld then prtcamera.Destroy() end
 			end)
-			if Map.LobbyOption("difficulty") == "hard" and not RiflemanGuard01.IsDead then
+			if Difficulty == "hard" and not RiflemanGuard01.IsDead then
 				Trigger.ClearAll(RiflemanGuard01)
 				ProduceInfantry() --Greece will start infantry production right away if the difficulty is set to hard
 			end

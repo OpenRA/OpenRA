@@ -73,7 +73,7 @@ ChinookAttack = function()
 		end)
 
 		ChinookAttacks = ChinookAttacks + 1
-		if ChinookAttacks <= ChinookWaves[Map.LobbyOption("difficulty")] then
+		if ChinookAttacks <= ChinookWaves[Difficulty] then
 			ChinookAttack()
 		end
 	end)
@@ -87,7 +87,7 @@ ProduceInfantry = function()
 	Germany.Build({ Utils.Random(AlliedInfantry) }, function(units)
 		table.insert(AttackGroup, units[1])
 		SendAttackGroup()
-		Trigger.AfterDelay(ProductionInterval[Map.LobbyOption("difficulty")], ProduceInfantry)
+		Trigger.AfterDelay(ProductionInterval[Difficulty], ProduceInfantry)
 	end)
 end
 
@@ -99,7 +99,7 @@ ProduceVehicles = function()
 	Germany.Build({ Utils.Random(AlliedVehicles) }, function(units)
 		table.insert(AttackGroup, units[1])
 		SendAttackGroup()
-		Trigger.AfterDelay(ProductionInterval[Map.LobbyOption("difficulty")], ProduceVehicles)
+		Trigger.AfterDelay(ProductionInterval[Difficulty], ProduceVehicles)
 	end)
 end
 
@@ -146,7 +146,7 @@ GermanAircraft = function()
 
 		local alive = Utils.Where(Longbows, function(y) return not y.IsDead end)
 		if #alive < 2 then
-			Trigger.AfterDelay(DateTime.Seconds(ProductionInterval[Map.LobbyOption("difficulty")] / 2), GermanAircraft)
+			Trigger.AfterDelay(DateTime.Seconds(ProductionInterval[Difficulty] / 2), GermanAircraft)
 		end
 
 		InitializeAttackAircraft(longbow, USSR)
@@ -168,9 +168,8 @@ WTransWaves = function()
 end
 
 ActivateAI = function()
-	local difficulty = Map.LobbyOption("difficulty")
-	WTransDelays = WTransDelays[difficulty]
-	ChinookDelay = ChinookDelay[difficulty]
+	WTransDelays = WTransDelays[Difficulty]
+	ChinookDelay = ChinookDelay[Difficulty]
 
 	local buildings = Utils.Where(Map.ActorsInWorld, function(self) return self.Owner ~= USSR and self.HasProperty("StartBuildingRepairs") end)
 	Utils.Do(buildings, function(actor)

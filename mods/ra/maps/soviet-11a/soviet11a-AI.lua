@@ -33,7 +33,7 @@ TransportDelays =
 }
 
 AlliedShips =
-{ 
+{
 	easy = { "pt", "pt", "dd" },
 	normal = { "pt", "dd", "dd" },
 	hard = { "dd", "dd" , "dd" }
@@ -44,7 +44,7 @@ Helis = { }
 PatrolWay = { ShipWaypoint1.Location, ShipWaypoint2.Location, ShipWaypoint3.Location, ShipWaypoint4.Location, ShipWaypoint5.Location }
 
 TransportWays =
-{ 
+{
 	{ AlliedTransportEntry1.Location, AlliedTransportDrop1.Location },
 	{ AlliedTransportEntry2.Location, AlliedTransportDrop2.Location },
 	{ AlliedTransportEntry3.Location, AlliedTransportDrop3.Location }
@@ -169,7 +169,7 @@ ProduceHelicopters = function()
 	Greece.Build(HeliType, function(helis)
 		local heli = helis[1]
 		Helis[#Helis+1] = heli
-	
+
 		Trigger.OnKilled(heli, ProduceHelicopters)
 
 		local alive = Utils.Where(Helis, function(y) return not y.IsDead end)
@@ -205,11 +205,11 @@ BridgeTrigger = function()
 			TheBridge.Kill()
 		end
 	end)
-	
+
 	Trigger.OnEnteredProximityTrigger(BaseBridge.CenterPosition, WDist.FromCells(3), function(actor, id)
 		if actor.Owner == USSR and actor.Type ~= "badr" and actor.Type ~= "u2" and actor.Type ~= "camera.spyplane" then
 			Trigger.RemoveProximityTrigger(id)
-			
+
 			if not BridgeTank.IsDead and not BridgeBarrel.IsDead and not TheBridge.IsDead then
 				BridgeTank.Attack(BridgeBarrel, true, true)
 			end
@@ -218,13 +218,12 @@ BridgeTrigger = function()
 end
 
 ActivateAI = function()
-	local difficulty = Map.LobbyOption("difficulty")
-	TransportDelays = TransportDelays[difficulty]
-	DestroyerDelays = DestroyerDelays[difficulty]
-	TransportUnits = TransportUnits[difficulty]
-	ProductionDelays = ProductionDelays[difficulty]
-	AlliedShips = AlliedShips[difficulty]
-	SurpriseTransportUnits = SurpriseTransportUnits[difficulty]
+	TransportDelays = TransportDelays[Difficulty]
+	DestroyerDelays = DestroyerDelays[Difficulty]
+	TransportUnits = TransportUnits[Difficulty]
+	ProductionDelays = ProductionDelays[Difficulty]
+	AlliedShips = AlliedShips[Difficulty]
+	SurpriseTransportUnits = SurpriseTransportUnits[Difficulty]
 
 	BuildingsHealing()
 	AlliedTransportAmbush()

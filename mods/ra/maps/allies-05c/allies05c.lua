@@ -6,12 +6,12 @@
    the License, or (at your option) any later version. For more
    information, see COPYING.
 ]]
-if Map.LobbyOption("difficulty") == "easy" then
+if Difficulty == "easy" then
 	TanyaType = "e7"
 	ReinforceCash = 5000
 	HoldAITime = DateTime.Minutes(3)
 	SpecialCameras = true
-elseif Map.LobbyOption("difficulty") == "normal" then
+elseif Difficulty == "normal" then
 	TanyaType = "e7.noautotarget"
 	ReinforceCash = 3500
 	HoldAITime = DateTime.Minutes(2)
@@ -190,7 +190,7 @@ FreeTanya = function()
 
 	Trigger.OnKilled(Tanya, function() USSR.MarkCompletedObjective(USSRObj) end)
 
-	if Map.LobbyOption("difficulty") == "tough" then
+	if Difficulty == "tough" then
 		KillSams = Greece.AddObjective("Destroy all six SAM Sites that block\nour reinforcements' helicopter.")
 
 		Greece.MarkCompletedObjective(MainObj)
@@ -324,7 +324,7 @@ Tick = function()
 	end
 
 	if USSR.HasNoRequiredUnits() then
-		if not Greece.IsObjectiveCompleted(KillAll) and Map.LobbyOption("difficulty") == "tough" then
+		if not Greece.IsObjectiveCompleted(KillAll) and Difficulty == "tough" then
 			SendWaterExtraction()
 		end
 		Greece.MarkCompletedObjective(KillAll)
