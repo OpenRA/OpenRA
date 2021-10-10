@@ -17,7 +17,7 @@ World:
 		AllowMuteBackgroundMusic: true
 		DisableWorldSounds: true
 	LuaScript:
-		Scripts: d2k-shellmap.lua
+		Scripts: d2k-shellmap.lua, utils.lua
 
 ^ExistsInWorld:
 	-GivesExperience:

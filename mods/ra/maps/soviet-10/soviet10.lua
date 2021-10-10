@@ -248,7 +248,6 @@ RunForIt = function()
 	end)
 end
 
-IdleHunt = function(actor) if not actor.IsDead then Trigger.OnIdle(actor, actor.Hunt) end end
 SendHunters = function()
 	Media.PlaySpeechNotification(USSR, "AlliedForcesApproaching")
 	local Hunters1 = Reinforcements.Reinforce(Greece, HunterTeam, { ConvoyEntry.Location, TrucksStop.Location })
