@@ -35,13 +35,9 @@ namespace OpenRA.Mods.Common.FileFormats
 
 		public void Load(Stream s)
 		{
-			var reader = new StreamReader(s);
 			IniSection currentSection = null;
-
-			while (!reader.EndOfStream)
+			foreach (var line in s.ReadAllLines())
 			{
-				var line = reader.ReadLine();
-
 				if (line.Length == 0) continue;
 
 				switch (line[0])

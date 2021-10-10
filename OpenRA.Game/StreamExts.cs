@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -149,6 +150,64 @@ namespace OpenRA
 			using (var sr = new StreamReader(s))
 				while ((line = sr.ReadLine()) != null)
 					yield return line;
+		}
+
+		/// <summary>
+		/// Streams each line of characters from a stream, exposing the line as <see cref="ReadOnlyMemory{T}"/>.
+		/// The memory lifetime is only valid during that iteration. Advancing the iteration invalidates the memory.
+		/// Consumers should call <see cref="ReadOnlyMemory{T}.Span"/> on each line and otherwise avoid operating on
+		/// the memory to ensure they meet the lifetime restrictions.
+		/// </summary>
+		public static IEnumerable<ReadOnlyMemory<char>> ReadAllLinesAsMemory(this Stream s)
+		{
+			var buffer = ArrayPool<char>.Shared.Rent(128);
+			try
+			{
+				using (var sr = new StreamReader(s))
+				{
+					var offset = 0;
+					int read;
+					while ((read = sr.ReadBlock(buffer, offset, buffer.Length - offset)) != 0)
+					{
+						offset += read;
+
+						var consumedIndex = 0;
+						int newlineIndex;
+						while ((newlineIndex = Array.IndexOf(buffer, '\n', offset - read, read)) != -1)
+						{
+							if (newlineIndex > 0 && buffer[newlineIndex - 1] == '\r')
+								yield return buffer.AsMemory(consumedIndex, newlineIndex - consumedIndex - 1);
+							else
+								yield return buffer.AsMemory(consumedIndex, newlineIndex - consumedIndex);
+
+							var afterNewlineIndex = newlineIndex + 1;
+							read = offset - afterNewlineIndex;
+							consumedIndex = afterNewlineIndex;
+						}
+
+						if (consumedIndex > 0)
+						{
+							Array.Copy(buffer, consumedIndex, buffer, 0, offset - consumedIndex);
+							offset = read;
+						}
+
+						if (offset == buffer.Length)
+						{
+							var newBuffer = ArrayPool<char>.Shared.Rent(buffer.Length * 2);
+							Array.Copy(buffer, newBuffer, buffer.Length);
+							ArrayPool<char>.Shared.Return(buffer);
+							buffer = newBuffer;
+						}
+					}
+
+					if (offset > 0)
+						yield return buffer.AsMemory(0, offset);
+				}
+			}
+			finally
+			{
+				ArrayPool<char>.Shared.Return(buffer);
+			}
 		}
 
 		// The string is assumed to be length-prefixed, as written by WriteString()

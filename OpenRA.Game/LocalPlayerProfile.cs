@@ -83,9 +83,9 @@ namespace OpenRA
 					var client = HttpClientFactory.Create();
 
 					var httpResponseMessage = await client.GetAsync(playerDatabase.Profile + Fingerprint);
-					var result = await httpResponseMessage.Content.ReadAsStringAsync();
+					var result = await httpResponseMessage.Content.ReadAsStreamAsync();
 
-					var yaml = MiniYaml.FromString(result).First();
+					var yaml = MiniYaml.FromStream(result).First();
 					if (yaml.Key == "Player")
 					{
 						innerData = FieldLoader.Load<PlayerProfile>(yaml.Value);

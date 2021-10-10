@@ -183,9 +183,9 @@ namespace OpenRA
 					try
 					{
 						var httpResponseMessage = await client.GetAsync(url);
-						var result = await httpResponseMessage.Content.ReadAsStringAsync();
+						var result = await httpResponseMessage.Content.ReadAsStreamAsync();
 
-						var yaml = MiniYaml.FromString(result);
+						var yaml = MiniYaml.FromStream(result);
 						foreach (var kv in yaml)
 							previews[kv.Key].UpdateRemoteSearch(MapStatus.DownloadAvailable, kv.Value, mapDetailsReceived);
 

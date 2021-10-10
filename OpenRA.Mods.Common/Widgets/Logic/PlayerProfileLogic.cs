@@ -164,9 +164,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var httpClient = HttpClientFactory.Create();
 
 					var httpResponseMessage = await httpClient.GetAsync(playerDatabase.Profile + client.Fingerprint);
-					var result = await httpResponseMessage.Content.ReadAsStringAsync();
+					var result = await httpResponseMessage.Content.ReadAsStreamAsync();
 
-					var yaml = MiniYaml.FromString(result).First();
+					var yaml = MiniYaml.FromStream(result).First();
 					if (yaml.Key == "Player")
 					{
 						profile = FieldLoader.Load<PlayerProfile>(yaml.Value);
