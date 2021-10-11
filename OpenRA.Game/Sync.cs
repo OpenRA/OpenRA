@@ -187,6 +187,7 @@ namespace OpenRA
 			var sync = checkSyncHash ? world.SyncHash() : 0;
 			inUnsyncedCode = true;
 
+			// Running this inside a try with a finally statement means isUnsyncedCode is set to false again as soon as fn completes
 			try
 			{
 				return fn();
