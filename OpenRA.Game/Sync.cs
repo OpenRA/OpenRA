@@ -181,10 +181,10 @@ namespace OpenRA
 		public static T RunUnsynced<T>(bool checkSyncHash, World world, Func<T> fn)
 		{
 			// PERF: Detect sync changes in top level entry point only. Do not recalculate sync hash during reentry.
-			if (!checkSyncHash || inUnsyncedCode || world == null)
+			if (inUnsyncedCode || world == null)
 				return fn();
 
-			var sync = world.SyncHash();
+			var sync = checkSyncHash ? world.SyncHash() : 0;
 			inUnsyncedCode = true;
 
 			try
@@ -197,7 +197,7 @@ namespace OpenRA
 
 				// When the world is disposing all actors and effects have been removed
 				// So do not check the hash for a disposing world since it definitively has changed
-				if (!world.Disposing && sync != world.SyncHash())
+				if (checkSyncHash && !world.Disposing && sync != world.SyncHash())
 					throw new InvalidOperationException("RunUnsynced: sync-changing code may not run here");
 			}
 		}
