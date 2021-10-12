@@ -15,7 +15,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using OpenRA.Primitives;
-using OpenRA.Server;
 
 namespace OpenRA.Network
 {

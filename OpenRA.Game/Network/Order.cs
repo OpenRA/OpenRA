@@ -11,7 +11,6 @@
 
 using System;
 using System.IO;
-using OpenRA.Network;
 using OpenRA.Traits;
 
 namespace OpenRA

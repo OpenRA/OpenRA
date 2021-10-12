@@ -9,8 +9,6 @@
  */
 #endregion
 
-using OpenRA.Traits;
-
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Modifies the value of resources delivered to this actor.")]

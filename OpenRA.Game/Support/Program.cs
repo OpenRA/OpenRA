@@ -9,10 +9,6 @@
  */
 #endregion
 
-using System;
-using System.Diagnostics;
-using System.Linq;
-
 namespace OpenRA
 {
 	public enum RunStatus

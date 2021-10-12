@@ -9,10 +9,6 @@
  */
 #endregion
 
-using System;
-using OpenRA.FileSystem;
-using OpenRA.Primitives;
-
 namespace OpenRA.Video
 {
 	public interface IVideo

@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System;
 using System.Threading.Tasks;
 using OpenRA.Support;
 

@@ -13,7 +13,6 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Pathfinder

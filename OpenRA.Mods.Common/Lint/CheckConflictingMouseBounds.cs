@@ -12,7 +12,6 @@
 using System;
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Network;
 
 namespace OpenRA.Mods.Common.Lint
 {
