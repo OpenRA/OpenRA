@@ -264,6 +264,7 @@ World:
 	LoadWidgetAtGameStart:
 		ShellmapRoot: MENU_BACKGROUND
 	ScriptTriggers:
+	CellTriggerOverlay:
 	TimeLimitManager:
 	ColorPickerManager:
 		PreviewActor: fact.colorpicker

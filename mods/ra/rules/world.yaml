@@ -275,6 +275,7 @@ World:
 		PanelName: SKIRMISH_STATS
 	LoadWidgetAtGameStart:
 	ScriptTriggers:
+	CellTriggerOverlay:
 	TimeLimitManager:
 		TimeLimitWarnings:
 			40: FourtyMinutesRemaining

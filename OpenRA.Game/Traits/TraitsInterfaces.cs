@@ -216,6 +216,7 @@ namespace OpenRA.Traits
 		void AddInfluence(Actor self, IOccupySpace ios);
 		void RemoveInfluence(Actor self, IOccupySpace ios);
 		int AddCellTrigger(CPos[] cells, Action<Actor> onEntry, Action<Actor> onExit);
+		IEnumerable<CPos> TriggerPositions();
 		void RemoveCellTrigger(int id);
 		int AddProximityTrigger(WPos pos, WDist range, WDist vRange, Action<Actor> onEntry, Action<Actor> onExit);
 		void RemoveProximityTrigger(int id);

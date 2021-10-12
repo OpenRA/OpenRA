@@ -522,6 +522,11 @@ namespace OpenRA.Mods.Common.Traits
 			return id;
 		}
 
+		public IEnumerable<CPos> TriggerPositions()
+		{
+			return cellTriggerInfluence.Keys;
+		}
+
 		public void RemoveCellTrigger(int id)
 		{
 			if (!cellTriggers.TryGetValue(id, out var trigger))
