@@ -304,11 +304,10 @@ BGGY:
 		Weapon: MachineGun
 		LocalOffset: 171,0,43
 		MuzzleSequence: muzzle
-	AttackFrontal:
-		Voice: Attack
 	AttackMove:
 		Voice: Attack
 	AttackTurreted:
+		Voice: Attack
 	WithMuzzleOverlay:
 	WithSpriteTurret:
 	SpawnActorOnDeath:
