@@ -234,6 +234,7 @@ World:
 		PanelName: SKIRMISH_STATS
 	LoadWidgetAtGameStart:
 	ScriptTriggers:
+	CellTriggerOverlay:
 	StartGameNotification:
 	TimeLimitManager:
 	ColorPickerManager:
