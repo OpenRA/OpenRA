@@ -15,7 +15,8 @@ namespace OpenRA
 	{
 		public readonly string ModTabTitle = "Game";
 
-		[FieldLoader.Require]
 		public readonly string ModCreditsFile = null;
+
+		public readonly string EngineCreditsFile = "^EngineDir|AUTHORS";
 	}
 }
