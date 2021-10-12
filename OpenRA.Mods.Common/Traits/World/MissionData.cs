@@ -14,6 +14,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Defines the FMVs that can be played by missions.")]
+	[TraitLocation(SystemActors.World)]
 	public class MissionDataInfo : TraitInfo<MissionData>
 	{
 		[Desc("Briefing text displayed in the mission browser.")]

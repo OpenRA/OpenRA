@@ -14,6 +14,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("A placeholder bot that doesn't do anything.")]
+	[TraitLocation(SystemActors.Player)]
 	public sealed class DummyBotInfo : TraitInfo, IBotInfo
 	{
 		[Desc("Human-readable name this bot uses.")]

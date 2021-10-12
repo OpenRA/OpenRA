@@ -15,6 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	[TraitLocation(SystemActors.World)]
 	public class TerrainTunnelInfo : TraitInfo<TerrainTunnel>, Requires<TerrainTunnelLayerInfo>, ILobbyCustomRulesIgnore
 	{
 		[FieldLoader.Require]

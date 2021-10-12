@@ -18,6 +18,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Adds a particle-based overlay.")]
+	[TraitLocation(SystemActors.World | SystemActors.EditorWorld)]
 	public class WeatherOverlayInfo : TraitInfo, ILobbyCustomRulesIgnore
 	{
 		[Desc("Average number of particles per 100x100 px square.")]

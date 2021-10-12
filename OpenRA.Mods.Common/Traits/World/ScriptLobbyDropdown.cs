@@ -15,6 +15,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Controls the map difficulty, tech level, and short game lobby options.")]
+	[TraitLocation(SystemActors.World)]
 	public class ScriptLobbyDropdownInfo : TraitInfo, ILobbyOptions
 	{
 		[FieldLoader.Require]
