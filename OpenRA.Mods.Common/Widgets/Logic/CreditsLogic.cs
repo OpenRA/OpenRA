@@ -19,19 +19,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class CreditsLogic : ChromeLogic
 	{
-		readonly ModData modData;
 		readonly ScrollPanelWidget scrollPanel;
 		readonly LabelWidget template;
 
+		bool showModTab;
+		bool showEngineTab;
 		readonly IEnumerable<string> modLines;
 		readonly IEnumerable<string> engineLines;
-		bool showMod = false;
 
 		[ObjectCreator.UseCtor]
 		public CreditsLogic(Widget widget, ModData modData, Action onExit)
 		{
-			this.modData = modData;
-
 			var panel = widget.Get("CREDITS_PANEL");
 
 			panel.Get<ButtonWidget>("BACK_BUTTON").OnClick = () =>
@@ -40,42 +38,48 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				onExit();
 			};
 
-			engineLines = ParseLines(File.OpenRead(Platform.ResolvePath("./AUTHORS")));
-
+			var modCredits = modData.Manifest.Get<ModCredits>();
 			var tabContainer = panel.Get("TAB_CONTAINER");
-			var modTab = tabContainer.Get<ButtonWidget>("MOD_TAB");
-			modTab.IsHighlighted = () => showMod;
-			modTab.OnClick = () => ShowCredits(true);
 
-			var engineTab = tabContainer.Get<ButtonWidget>("ENGINE_TAB");
-			engineTab.IsHighlighted = () => !showMod;
-			engineTab.OnClick = () => ShowCredits(false);
+			if (modCredits.ModCreditsFile != null)
+			{
+				showModTab = true;
+				modLines = ParseLines(modData.DefaultFileSystem.Open(modCredits.ModCreditsFile));
+
+				var modTab = tabContainer.Get<ButtonWidget>("MOD_TAB");
+				modTab.IsHighlighted = () => showModTab;
+				modTab.OnClick = () => ShowCredits(true);
+				modTab.GetText = () => modCredits.ModTabTitle;
+			}
+
+			if (modCredits.EngineCreditsFile != null)
+			{
+				showEngineTab = true;
+				engineLines = ParseLines(File.OpenRead(Platform.ResolvePath(modCredits.EngineCreditsFile)));
+
+				var engineTab = tabContainer.Get<ButtonWidget>("ENGINE_TAB");
+				engineTab.IsHighlighted = () => !showModTab;
+				engineTab.OnClick = () => ShowCredits(false);
+			}
 
 			scrollPanel = panel.Get<ScrollPanelWidget>("CREDITS_DISPLAY");
 			template = scrollPanel.Get<LabelWidget>("CREDITS_TEMPLATE");
 
-			var hasModCredits = modData.Manifest.Contains<ModCredits>();
-			if (hasModCredits)
+			// Make space to show the tabs
+			tabContainer.IsVisible = () => showModTab && showEngineTab;
+			if (showModTab && showEngineTab)
 			{
-				var modCredits = modData.Manifest.Get<ModCredits>();
-				modLines = ParseLines(modData.DefaultFileSystem.Open(modCredits.ModCreditsFile));
-				modTab.GetText = () => modCredits.ModTabTitle;
-
-				// Make space to show the tabs
-				tabContainer.IsVisible = () => true;
 				scrollPanel.Bounds.Y += tabContainer.Bounds.Height;
 				scrollPanel.Bounds.Height -= tabContainer.Bounds.Height;
 			}
 
-			ShowCredits(hasModCredits);
+			ShowCredits(showModTab);
 		}
 
 		void ShowCredits(bool modCredits)
 		{
-			showMod = modCredits;
-
 			scrollPanel.RemoveChildren();
-			foreach (var line in showMod ? modLines : engineLines)
+			foreach (var line in modCredits ? modLines : engineLines)
 			{
 				var label = template.Clone() as LabelWidget;
 				label.GetText = () => line;
