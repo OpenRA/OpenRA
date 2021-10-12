@@ -10,7 +10,6 @@
 #endregion
 
 using System;
-using System.Threading;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Widgets;

@@ -10,7 +10,6 @@
 #endregion
 
 using System;
-using System.Linq;
 
 namespace OpenRA.Mods.Common.Lint
 {

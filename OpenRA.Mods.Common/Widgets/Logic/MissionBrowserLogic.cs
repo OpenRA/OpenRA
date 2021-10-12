@@ -17,7 +17,6 @@ using System.Threading;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Network;
-using OpenRA.Video;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic

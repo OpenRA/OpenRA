@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System.IO;
 using OpenRA.FileSystem;
 
 namespace OpenRA.GameRules
