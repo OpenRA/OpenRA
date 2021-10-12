@@ -10,10 +10,12 @@
 #endregion
 
 using System.Collections.Generic;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Used by Mobile. Required for subterranean actors. Attach these to the world actor. You can have multiple variants by adding @suffixes.")]
+	[TraitLocation(SystemActors.World | SystemActors.EditorWorld)]
 	public class SubterraneanLocomotorInfo : LocomotorInfo
 	{
 		[Desc("Pathfinding cost for submerging or reemerging.")]

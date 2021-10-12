@@ -18,6 +18,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	[Desc("Placeholder to make static elevated bridges work.",
 		"Define individual trait instances for each elevated bridge footprint in the map.")]
+	[TraitLocation(SystemActors.World)]
 	public class ElevatedBridgePlaceholderInfo : TraitInfo<ElevatedBridgePlaceholder>, Requires<ElevatedBridgeLayerInfo>, ILobbyCustomRulesIgnore
 	{
 		[FieldLoader.Require]

@@ -17,6 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Used for day/night effects.")]
+	[TraitLocation(SystemActors.World | SystemActors.EditorWorld)]
 	public class GlobalLightingPaletteEffectInfo : TraitInfo, ILobbyCustomRulesIgnore
 	{
 		[Desc("Do not modify graphics that use any palette in this list.")]

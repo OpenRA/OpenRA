@@ -18,6 +18,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	[TraitLocation(SystemActors.World)]
 	[Desc("Configuration options for the lobby player color picker. Attach this to the world actor.")]
 	public class ColorPickerManagerInfo : TraitInfo<ColorPickerManager>, IRulesetLoaded
 	{

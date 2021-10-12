@@ -16,6 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	[TraitLocation(SystemActors.World | SystemActors.EditorWorld)]
 	public class CloakPaletteEffectInfo : TraitInfo<CloakPaletteEffect> { }
 
 	public class CloakPaletteEffect : IPaletteModifier, ITick

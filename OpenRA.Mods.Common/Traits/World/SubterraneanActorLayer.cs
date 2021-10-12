@@ -15,6 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	[TraitLocation(SystemActors.World)]
 	public class SubterraneanActorLayerInfo : TraitInfo
 	{
 		[Desc("Terrain type of the underground layer.")]

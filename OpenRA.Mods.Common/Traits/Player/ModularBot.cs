@@ -18,6 +18,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Bot that uses BotModules.")]
+	[TraitLocation(SystemActors.Player)]
 	public sealed class ModularBotInfo : TraitInfo, IBotInfo
 	{
 		[FieldLoader.Require]

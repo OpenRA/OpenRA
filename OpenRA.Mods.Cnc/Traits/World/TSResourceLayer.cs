@@ -18,6 +18,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
 {
+	[TraitLocation(SystemActors.World)]
 	class TSResourceLayerInfo : ResourceLayerInfo
 	{
 		public readonly string VeinType = "Veins";
