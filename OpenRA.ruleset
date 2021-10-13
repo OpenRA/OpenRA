@@ -1,8 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RuleSet Name="OpenRA Code Style" ToolsVersion="14.0">
+
   <IncludeAll Action="Warning" />
+
+  <!-- Rules related to generating XML documentation that we need to silence. -->
+  <!-- These are here because of GenerateDocumentationFile, which is a workaround for forcing rule IDE0005 to work outside of an IDE. -->
+  <Rules AnalyzerId="Microsoft.CodeAnalysis.CSharp" RuleNamespace="Microsoft.CodeAnalysis.CSharp">
+    <Rule Id="CS1570" Action="None" /><!-- Invalid XML in XML comment. -->
+    <Rule Id="CS1573" Action="None" /><!-- Parameter has no matching param tag in the XML comment. -->
+    <Rule Id="CS1591" Action="None" /><!-- Missing XML comment for publicly visible type or member. -->
+  </Rules>
+
+  <Rules AnalyzerId="Microsoft.CodeAnalysis.CSharp.CodeStyle" RuleNamespace="Microsoft.CodeAnalysis.CSharp.CodeStyle">
+    <Rule Id="IDE0005" Action="Warning" /><!-- Using directive is unnecessary. -->
+  </Rules>
+
   <Rules AnalyzerId="StyleCop.Analyzers" RuleNamespace="StyleCop.Analyzers">
     <Rule Id="SX1101" Action="Warning" /><!-- DoNotPrefixLocalMembersWithThis -->
+
     <!-- Rules that conflict with OpenRA project style conventions -->
     <Rule Id="SA0001" Action="None" /><!-- XmlCommentAnalysisDisabled -->
     <Rule Id="SA1101" Action="None" /><!-- PrefixLocalCallsWithThis -->
