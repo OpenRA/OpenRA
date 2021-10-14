@@ -200,10 +200,7 @@
 		Description: Brotherhood of Nod\nThe Brotherhood is a religious cult centered around their leader Kane\nand the alien substance Tiberium. They utilize stealth technology\nand guerilla tactics to defeat those who oppose them.
 	TerrainGeometryOverlay:
 	DebugVisualizations:
-	ExitsDebugOverlayManager:
 	CliffBackImpassabilityLayer:
-	SubterraneanActorLayer:
-	JumpjetActorLayer:
 	TSTiberiumRenderer:
 		ResourceTypes:
 			Tiberium:
@@ -292,6 +289,9 @@ World:
 	CustomTerrainDebugOverlay:
 	ResourceClaimLayer:
 	WarheadDebugOverlay:
+	ExitsDebugOverlayManager:
+	SubterraneanActorLayer:
+	JumpjetActorLayer:
 	MapCreeps:
 		CheckboxVisible: False
 	SpawnMapActors:
