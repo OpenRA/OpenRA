@@ -135,11 +135,17 @@ namespace OpenRA
 							files = files.Append(mapFiles);
 						}
 
-						var sources = files.Select(s => MiniYaml.FromStream(fileSystem.Open(s), s).Where(IsLoadableRuleDefinition).ToList());
-						if (RuleDefinitions.Nodes.Any())
-							sources = sources.Append(RuleDefinitions.Nodes.Where(IsLoadableRuleDefinition).ToList());
+						var sources = files.Select(s =>
+						{
+							if (modData.TryGetYaml(s, out var nodes))
+								return nodes;
+							return MiniYaml.FromStream(fileSystem.Open(s), s);
+						});
 
-						var yamlNodes = MiniYaml.Merge(sources);
+						if (RuleDefinitions.Nodes.Any())
+							sources = sources.Append(RuleDefinitions.Nodes);
+
+						var yamlNodes = MiniYaml.Merge(sources.Select(nodes => nodes.Where(IsLoadableRuleDefinition).ToList()));
 						WorldActorInfo = new ActorInfo(modData.ObjectCreator, "world", yamlNodes.First(n => n.Key.ToLowerInvariant() == "world").Value);
 						PlayerActorInfo = new ActorInfo(modData.ObjectCreator, "player", yamlNodes.First(n => n.Key.ToLowerInvariant() == "player").Value);
 						return;

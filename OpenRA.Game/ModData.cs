@@ -16,6 +16,7 @@ using System.IO;
 using System.Linq;
 using OpenRA.FileSystem;
 using OpenRA.Graphics;
+using OpenRA.Primitives;
 using OpenRA.Video;
 using OpenRA.Widgets;
 using FS = OpenRA.FileSystem.FileSystem;
@@ -49,6 +50,8 @@ namespace OpenRA
 
 		readonly Lazy<IReadOnlyDictionary<string, SequenceProvider>> defaultSequences;
 		public IReadOnlyDictionary<string, SequenceProvider> DefaultSequences => defaultSequences.Value;
+
+		readonly Cache<string, List<MiniYamlNode>> yamlCache;
 
 		public ModData(Manifest mod, InstalledMods mods, bool useLoadScreen = false)
 		{
@@ -124,7 +127,21 @@ namespace OpenRA
 				return (IReadOnlyDictionary<string, SequenceProvider>)(new ReadOnlyDictionary<string, SequenceProvider>(items));
 			});
 
+			yamlCache = new Cache<string, List<MiniYamlNode>>(s => MiniYaml.FromStream(DefaultFileSystem.Open(s), s));
+
 			initialThreadId = Environment.CurrentManagedThreadId;
+		}
+
+		internal bool TryGetYaml(string filename, out List<MiniYamlNode> nodes)
+		{
+			if (DefaultFileSystem.Exists(filename))
+			{
+				nodes = yamlCache[filename];
+				return true;
+			}
+
+			nodes = null;
+			return false;
 		}
 
 		// HACK: Only update the loading screen if we're in the main thread.
