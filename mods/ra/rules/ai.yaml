@@ -274,9 +274,10 @@ Player:
 	SquadManagerBotModule@rush:
 		RequiresCondition: enable-rush-ai
 		SquadSize: 20
-		ExcludeFromSquadsTypes: harv, mcv, dog
 		NavalUnitsTypes: ss,msub,dd,ca,lst,pt
+		ExcludeFromSquadsTypes: harv, mcv, dog, badr.bomber, u2
 		ConstructionYardTypes: fact
+		AirUnitsTypes: mig, yak, heli, hind, mh60
 	McvManagerBotModule:
 		RequiresCondition: enable-rush-ai || enable-normal-ai || enable-turtle-ai || enable-naval-ai
 		McvTypes: mcv
@@ -311,10 +312,11 @@ Player:
 	SquadManagerBotModule@normal:
 		RequiresCondition: enable-normal-ai
 		SquadSize: 40
-		ExcludeFromSquadsTypes: harv, mcv, dog
 		NavalUnitsTypes: ss,msub,dd,ca,lst,pt
+		ExcludeFromSquadsTypes: harv, mcv, dog, badr.bomber, u2
 		ConstructionYardTypes: fact
 		NavalProductionTypes: spen,syrd
+		AirUnitsTypes: mig, yak, heli, hind, mh60
 	UnitBuilderBotModule@normal:
 		RequiresCondition: enable-normal-ai
 		UnitsToBuild:
@@ -353,10 +355,11 @@ Player:
 	SquadManagerBotModule@turtle:
 		RequiresCondition: enable-turtle-ai
 		SquadSize: 10
-		ExcludeFromSquadsTypes: harv, mcv, dog
 		NavalUnitsTypes: ss,msub,dd,ca,lst,pt
+		ExcludeFromSquadsTypes: harv, mcv, dog, badr.bomber, u2
 		ConstructionYardTypes: fact
 		NavalProductionTypes: spen,syrd
+		AirUnitsTypes: mig, yak, heli, hind, mh60
 	UnitBuilderBotModule@turtle:
 		RequiresCondition: enable-turtle-ai
 		UnitsToBuild:
@@ -395,10 +398,11 @@ Player:
 	SquadManagerBotModule@naval:
 		RequiresCondition: enable-naval-ai
 		SquadSize: 1
-		ExcludeFromSquadsTypes: harv, mcv, dog
+		ExcludeFromSquadsTypes: harv, mcv, dog, badr.bomber, u2
 		NavalUnitsTypes: ss,msub,dd,ca,lst,pt
 		ConstructionYardTypes: fact
 		NavalProductionTypes: spen,syrd
+		AirUnitsTypes: mig, yak, heli, hind, mh60
 	UnitBuilderBotModule@naval:
 		RequiresCondition: enable-naval-ai
 		UnitsToBuild:

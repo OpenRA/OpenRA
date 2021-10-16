@@ -216,8 +216,9 @@ Player:
 	SquadManagerBotModule@cabal:
 		RequiresCondition: enable-cabal-ai
 		SquadSize: 15
-		ExcludeFromSquadsTypes: harv, mcv
+		ExcludeFromSquadsTypes: harv, mcv, a10
 		ConstructionYardTypes: fact
+		AirUnitsTypes: heli, orca
 	UnitBuilderBotModule@cabal:
 		RequiresCondition: enable-cabal-ai
 		UnitQueues: Vehicle.Nod, Vehicle.GDI, Infantry.Nod, Infantry.GDI, Aircraft.Nod, Aircraft.GDI
@@ -250,8 +251,9 @@ Player:
 	SquadManagerBotModule@watson:
 		RequiresCondition: enable-watson-ai
 		SquadSize: 15
-		ExcludeFromSquadsTypes: harv, mcv
+		ExcludeFromSquadsTypes: harv, mcv, a10
 		ConstructionYardTypes: fact
+		AirUnitsTypes: heli, orca
 	UnitBuilderBotModule@watson:
 		RequiresCondition: enable-watson-ai
 		UnitQueues: Vehicle.Nod, Vehicle.GDI, Infantry.Nod, Infantry.GDI, Aircraft.Nod, Aircraft.GDI
@@ -279,8 +281,9 @@ Player:
 	SquadManagerBotModule@hal9001:
 		RequiresCondition: enable-hal9001-ai
 		SquadSize: 8
-		ExcludeFromSquadsTypes: harv, mcv
+		ExcludeFromSquadsTypes: harv, mcv, a10
 		ConstructionYardTypes: fact
+		AirUnitsTypes: heli, orca
 	UnitBuilderBotModule@hal9001:
 		RequiresCondition: enable-hal9001-ai
 		UnitQueues: Vehicle.Nod, Vehicle.GDI, Infantry.Nod, Infantry.GDI, Aircraft.Nod, Aircraft.GDI
