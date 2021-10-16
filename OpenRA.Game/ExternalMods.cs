@@ -66,12 +66,7 @@ namespace OpenRA
 			// Several types of support directory types are available, depending on
 			// how the player has installed and launched the game.
 			// Read registration metadata from all of them
-			var sources = Enum.GetValues(typeof(SupportDirType))
-				.Cast<SupportDirType>()
-				.Select(t => Platform.GetSupportDir(t))
-				.Distinct();
-
-			foreach (var source in sources)
+			foreach (var source in GetSupportDirs(ModRegistration.User | ModRegistration.System))
 			{
 				var metadataPath = Path.Combine(source, "ModMetadata");
 				if (!Directory.Exists(metadataPath))
@@ -148,7 +143,7 @@ namespace OpenRA
 				if (stream != null)
 					yaml.Value.Nodes.Add(new MiniYamlNode("Icon3x", Convert.ToBase64String(stream.ReadAllBytes())));
 
-			var sources = new List<string>();
+			var sources = new HashSet<string>();
 			if (registration.HasFlag(ModRegistration.System))
 				sources.Add(Platform.GetSupportDir(SupportDirType.System));
 
@@ -167,7 +162,7 @@ namespace OpenRA
 			LoadMod(yaml.Value, forceRegistration: true);
 
 			var lines = new List<MiniYamlNode> { yaml }.ToLines().ToArray();
-			foreach (var source in sources.Distinct())
+			foreach (var source in sources)
 			{
 				var metadataPath = Path.Combine(source, "ModMetadata");
 
@@ -193,20 +188,7 @@ namespace OpenRA
 		/// </summary>
 		internal void ClearInvalidRegistrations(ModRegistration registration)
 		{
-			var sources = new List<string>();
-			if (registration.HasFlag(ModRegistration.System))
-				sources.Add(Platform.GetSupportDir(SupportDirType.System));
-
-			if (registration.HasFlag(ModRegistration.User))
-			{
-				// User support dir may be using the modern or legacy value, or overridden by the user
-				// Add all the possibilities and let the .Distinct() below ignore the duplicates
-				sources.Add(Platform.GetSupportDir(SupportDirType.User));
-				sources.Add(Platform.GetSupportDir(SupportDirType.ModernUser));
-				sources.Add(Platform.GetSupportDir(SupportDirType.LegacyUser));
-			}
-
-			foreach (var source in sources.Distinct())
+			foreach (var source in GetSupportDirs(registration))
 			{
 				var metadataPath = Path.Combine(source, "ModMetadata");
 				if (!Directory.Exists(metadataPath))
@@ -254,23 +236,10 @@ namespace OpenRA
 
 		internal void Unregister(Manifest mod, ModRegistration registration)
 		{
-			var sources = new List<string>();
-			if (registration.HasFlag(ModRegistration.System))
-				sources.Add(Platform.GetSupportDir(SupportDirType.System));
-
-			if (registration.HasFlag(ModRegistration.User))
-			{
-				// User support dir may be using the modern or legacy value, or overridden by the user
-				// Add all the possibilities and let the .Distinct() below ignore the duplicates
-				sources.Add(Platform.GetSupportDir(SupportDirType.User));
-				sources.Add(Platform.GetSupportDir(SupportDirType.ModernUser));
-				sources.Add(Platform.GetSupportDir(SupportDirType.LegacyUser));
-			}
-
 			var key = ExternalMod.MakeKey(mod);
 			mods.Remove(key);
 
-			foreach (var source in sources.Distinct())
+			foreach (var source in GetSupportDirs(registration))
 			{
 				var path = Path.Combine(source, "ModMetadata", key + ".yaml");
 				try
@@ -284,6 +253,24 @@ namespace OpenRA
 					Log.Write("debug", e.ToString());
 				}
 			}
+		}
+
+		IEnumerable<string> GetSupportDirs(ModRegistration registration)
+		{
+			var sources = new HashSet<string>(4);
+			if (registration.HasFlag(ModRegistration.System))
+				sources.Add(Platform.GetSupportDir(SupportDirType.System));
+
+			if (registration.HasFlag(ModRegistration.User))
+			{
+				// User support dir may be using the modern or legacy value, or overridden by the user
+				// Add all the possibilities and let the HashSet ignore the duplicates
+				sources.Add(Platform.GetSupportDir(SupportDirType.User));
+				sources.Add(Platform.GetSupportDir(SupportDirType.ModernUser));
+				sources.Add(Platform.GetSupportDir(SupportDirType.LegacyUser));
+			}
+
+			return sources;
 		}
 
 		public ExternalMod this[string key] => mods[key];
