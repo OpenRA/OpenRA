@@ -100,8 +100,8 @@ namespace OpenRA
 			{
 				case PlatformType.Windows:
 				{
-					modernUserSupportPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "OpenRA");
-					legacyUserSupportPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "OpenRA");
+					modernUserSupportPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "OpenRA") + Path.DirectorySeparatorChar;
+					legacyUserSupportPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "OpenRA") + Path.DirectorySeparatorChar;
 					systemSupportPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "OpenRA") + Path.DirectorySeparatorChar;
 					break;
 				}
@@ -110,7 +110,7 @@ namespace OpenRA
 				{
 					modernUserSupportPath = legacyUserSupportPath = Path.Combine(
 						Environment.GetFolderPath(Environment.SpecialFolder.Personal),
-						"Library", "Application Support", "OpenRA");
+						"Library", "Application Support", "OpenRA") + Path.DirectorySeparatorChar;
 
 					systemSupportPath = "/Library/Application Support/OpenRA/";
 					break;
@@ -118,13 +118,13 @@ namespace OpenRA
 
 				case PlatformType.Linux:
 				{
-					legacyUserSupportPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), ".openra");
+					legacyUserSupportPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), ".openra") + Path.DirectorySeparatorChar;
 
 					var xdgConfigHome = Environment.GetEnvironmentVariable("XDG_CONFIG_HOME");
 					if (string.IsNullOrEmpty(xdgConfigHome))
-						xdgConfigHome = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), ".config");
+						xdgConfigHome = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), ".config") + Path.DirectorySeparatorChar;
 
-					modernUserSupportPath = Path.Combine(xdgConfigHome, "openra");
+					modernUserSupportPath = Path.Combine(xdgConfigHome, "openra") + Path.DirectorySeparatorChar;
 					systemSupportPath = "/var/games/openra/";
 
 					break;
@@ -132,22 +132,22 @@ namespace OpenRA
 
 				default:
 				{
-					modernUserSupportPath = legacyUserSupportPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), ".openra");
+					modernUserSupportPath = legacyUserSupportPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), ".openra") + Path.DirectorySeparatorChar;
 					systemSupportPath = "/var/games/openra/";
 					break;
 				}
 			}
 
 			// Use a local directory in the game root if it exists (shared with the system support dir)
-			var localSupportDir = Path.Combine(EngineDir, "Support");
+			var localSupportDir = Path.Combine(EngineDir, "Support") + Path.DirectorySeparatorChar;
 			if (Directory.Exists(localSupportDir))
-				userSupportPath = systemSupportPath = localSupportDir + Path.DirectorySeparatorChar;
+				userSupportPath = systemSupportPath = localSupportDir;
 
 			// Use the fallback directory if it exists and the preferred one does not
 			else if (!Directory.Exists(modernUserSupportPath) && Directory.Exists(legacyUserSupportPath))
-				userSupportPath = legacyUserSupportPath + Path.DirectorySeparatorChar;
+				userSupportPath = legacyUserSupportPath;
 			else
-				userSupportPath = modernUserSupportPath + Path.DirectorySeparatorChar;
+				userSupportPath = modernUserSupportPath;
 
 			supportDirInitialized = true;
 		}
