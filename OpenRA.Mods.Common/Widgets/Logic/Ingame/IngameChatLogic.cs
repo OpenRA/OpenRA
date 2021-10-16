@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		TextNotification lastLine;
 		int repetitions;
-		bool chatEnabled = true;
+		bool chatEnabled;
 
 		[ObjectCreator.UseCtor]
 		public IngameChatLogic(Widget widget, OrderManager orderManager, World world, ModData modData, bool isMenuChat, Dictionary<string, MiniYaml> logicArgs)
@@ -325,7 +325,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (chatEnabled && !chatWasEnabled)
 			{
 				chatText.Text = "";
-				if (Ui.KeyboardFocusWidget == null)
+				if (Ui.KeyboardFocusWidget == null && chatChrome.Visible)
 					chatText.TakeKeyboardFocus();
 			}
 			else if (!chatEnabled)

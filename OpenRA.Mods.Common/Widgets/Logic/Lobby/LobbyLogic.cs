@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		MapPreview map;
 		Session.MapStatus mapStatus;
 
-		bool chatEnabled = true;
+		bool chatEnabled;
 		bool addBotOnMapLoad;
 		bool disableTeamChat;
 		bool insufficientPlayerSpawns;
