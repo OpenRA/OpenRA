@@ -92,10 +92,10 @@ Player:
 		ExcessPowerIncreaseThreshold: 5
 		ConstructionYardTypes: fact
 		RefineryTypes: proc
-		PowerTypes: nuke,nuk2
-		BarracksTypes: pyle,hand
-		VehiclesFactoryTypes: weap,afld
-		ProductionTypes: pyle,hand,weap,afld,hpad
+		PowerTypes: nuke, nuk2
+		BarracksTypes: pyle, hand
+		VehiclesFactoryTypes: weap, afld
+		ProductionTypes: pyle, hand, weap, afld, hpad
 		SiloTypes: silo
 		BuildingLimits:
 			proc: 4
