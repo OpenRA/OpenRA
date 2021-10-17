@@ -81,6 +81,7 @@ fact.colorpicker:
 	Inherits: FACT
 	-Buildable:
 	-MapEditorData:
+	-BaseBuilding:
 	RenderSprites:
 		Image: fact
 		Palette: colorpicker
