@@ -12,7 +12,6 @@
 using System;
 using System.Linq;
 using OpenRA.Scripting;
-using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
@@ -91,7 +90,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				var catAttr = cg.GetCustomAttributes<ScriptPropertyGroupAttribute>(false).FirstOrDefault();
 				var category = catAttr != null ? catAttr.Category : "Unsorted";
 
-				var required = RequiredTraitNames(cg);
+				var required = ScriptMemberWrapper.RequiredTraitNames(cg);
 				return ScriptMemberWrapper.WrappableMembers(cg).Select(mi => (category, mi, required));
 			}).GroupBy(g => g.Item1).OrderBy(g => g.Key);
 
@@ -140,7 +139,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				var catAttr = cg.GetCustomAttributes<ScriptPropertyGroupAttribute>(false).FirstOrDefault();
 				var category = catAttr != null ? catAttr.Category : "Unsorted";
 
-				var required = RequiredTraitNames(cg);
+				var required = ScriptMemberWrapper.RequiredTraitNames(cg);
 				return ScriptMemberWrapper.WrappableMembers(cg).Select(mi => (category, mi, required));
 			}).GroupBy(g => g.Item1).OrderBy(g => g.Key);
 
@@ -181,21 +180,6 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 				Console.WriteLine();
 			}
-		}
-
-		static string[] RequiredTraitNames(Type t)
-		{
-			// Returns the inner types of all the Requires<T> interfaces on this type
-			var outer = t.GetInterfaces()
-				.Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(Requires<>));
-
-			// Get the inner types
-			var inner = outer.SelectMany(i => i.GetGenericArguments()).ToArray();
-
-			// Remove the namespace and the trailing "Info"
-			return inner.Select(i => i.Name.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries).LastOrDefault())
-				.Select(s => s.EndsWith("Info") ? s.Remove(s.Length - 4, 4) : s)
-				.ToArray();
 		}
 	}
 }
