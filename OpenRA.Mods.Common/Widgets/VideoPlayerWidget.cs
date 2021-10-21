@@ -93,11 +93,9 @@ namespace OpenRA.Mods.Common.Widgets
 
 			if (!stopped && !paused)
 			{
-				var nextFrame = 0;
+				var nextFrame = video.CurrentFrame + 1;
 				if (video.HasAudio && !Game.Sound.DummyEngine)
 					nextFrame = (int)float2.Lerp(0, video.Frames, Game.Sound.VideoSeekPosition * invLength);
-				else
-					nextFrame = video.CurrentFrame + 1;
 
 				// Without the 2nd check the sound playback sometimes ends before the final frame is displayed which causes the player to be stuck on the first frame
 				if (nextFrame > video.Frames || nextFrame < video.CurrentFrame)
