@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Lint
 						else
 							type = notificationReference.NotificationType;
 
-						var notifications = LintExts.GetFieldValues(traitInfo, field, emitError);
+						var notifications = LintExts.GetFieldValues(traitInfo, field);
 						foreach (var notification in notifications)
 						{
 							if (string.IsNullOrEmpty(notification))

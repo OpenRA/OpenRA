@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Lint
 								isPlayerPalette = paletteReference.IsPlayerPalette;
 						}
 
-						var references = LintExts.GetFieldValues(traitInfo, field, emitError);
+						var references = LintExts.GetFieldValues(traitInfo, field);
 						foreach (var reference in references)
 						{
 							if (string.IsNullOrEmpty(reference))
@@ -100,7 +100,7 @@ namespace OpenRA.Mods.Common.Lint
 							isPlayerPalette = paletteReference.IsPlayerPalette;
 					}
 
-					var references = LintExts.GetFieldValues(projectileInfo, field, emitError);
+					var references = LintExts.GetFieldValues(projectileInfo, field);
 					foreach (var reference in references)
 					{
 						if (string.IsNullOrEmpty(reference))
@@ -131,7 +131,7 @@ namespace OpenRA.Mods.Common.Lint
 					foreach (var field in fields.Where(x => x.HasAttribute<PaletteDefinitionAttribute>()))
 					{
 						var paletteDefinition = field.GetCustomAttributes<PaletteDefinitionAttribute>(true).First();
-						var values = LintExts.GetFieldValues(traitInfo, field, emitError);
+						var values = LintExts.GetFieldValues(traitInfo, field);
 						foreach (var value in values)
 						{
 							if (paletteDefinition.IsPlayerPalette)

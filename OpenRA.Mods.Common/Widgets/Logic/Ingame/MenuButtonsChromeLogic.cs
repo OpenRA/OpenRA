@@ -10,7 +10,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Widgets;
@@ -22,13 +21,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly World world;
 		readonly Widget worldRoot;
 		readonly Widget menuRoot;
-		readonly string clickSound = ChromeMetrics.Get<string>("ClickSound");
 
 		bool disableSystemButtons;
 		Widget currentWidget;
 
 		[ObjectCreator.UseCtor]
-		public MenuButtonsChromeLogic(Widget widget, ModData modData, World world, Dictionary<string, MiniYaml> logicArgs)
+		public MenuButtonsChromeLogic(Widget widget, World world)
 		{
 			this.world = world;
 
@@ -82,9 +80,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{ "initialPanel", IngameInfoPanel.Debug }
 				});
 			}
-
-			if (logicArgs.TryGetValue("ClickSound", out var yaml))
-				clickSound = yaml.Value;
 		}
 
 		void OpenMenuPanel(MenuButtonWidget button, WidgetArgs widgetArgs = null)

@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.Lint
 						if (cursorReference == null)
 							continue;
 
-						var cursor = LintExts.GetFieldValues(traitInfo, field, emitError, cursorReference.DictionaryReference).FirstOrDefault();
+						var cursor = LintExts.GetFieldValues(traitInfo, field, cursorReference.DictionaryReference).FirstOrDefault();
 						if (string.IsNullOrEmpty(cursor))
 							continue;
 
