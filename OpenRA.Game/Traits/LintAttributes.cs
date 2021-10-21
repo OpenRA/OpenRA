@@ -13,6 +13,7 @@ using System;
 
 namespace OpenRA.Traits
 {
+	[Flags]
 	public enum LintDictionaryReference
 	{
 		None = 0,
