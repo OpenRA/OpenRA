@@ -40,7 +40,8 @@ namespace OpenRA.Mods.Common.Traits
 		public PlayerReference Owner { get; set; }
 		public SubCell SubCell { get; private set; }
 		public bool Selected { get; set; }
-		public readonly Color RadarColor;
+		public Color RadarColor { get; private set; }
+		readonly RadarColorFromTerrainInfo terrainRadarColorInfo;
 
 		readonly WorldRenderer worldRenderer;
 		readonly TooltipInfoBase tooltip;
@@ -73,9 +74,6 @@ namespace OpenRA.Mods.Common.Traits
 			var subCellInit = reference.GetOrDefault<SubCellInit>();
 			var subCell = subCellInit != null ? subCellInit.Value : SubCell.Any;
 
-			var radarColorInfo = Info.TraitInfoOrDefault<RadarColorFromTerrainInfo>();
-			RadarColor = radarColorInfo == null ? owner.Color : radarColorInfo.GetColorFromTerrain(world);
-
 			Footprint = ios?.OccupiedCells(Info, location, subCell) ?? new Dictionary<CPos, SubCell>() { { location, SubCell.FullCell } };
 
 			tooltip = Info.TraitInfos<EditorOnlyTooltipInfo>().FirstOrDefault(info => info.EnabledByDefault) as TooltipInfoBase
@@ -84,6 +82,9 @@ namespace OpenRA.Mods.Common.Traits
 			DescriptiveName = tooltip != null ? tooltip.Name : Info.Name;
 
 			GeneratePreviews();
+
+			terrainRadarColorInfo = Info.TraitInfoOrDefault<RadarColorFromTerrainInfo>();
+			UpdateRadarColor();
 
 			// Bounds are fixed from the initial render.
 			// If this is a problem, then we may need to fetch the area from somewhere else
@@ -191,6 +192,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			reference.Add(init);
 			GeneratePreviews();
+			UpdateRadarColor();
 		}
 
 		public void RemoveInit<T>() where T : ActorInit, ISingleInstanceInit
@@ -249,6 +251,11 @@ namespace OpenRA.Mods.Common.Traits
 			previews = Info.TraitInfos<IRenderActorPreviewInfo>()
 				.SelectMany(rpi => rpi.RenderPreview(init))
 				.ToArray();
+		}
+
+		void UpdateRadarColor()
+		{
+			RadarColor = terrainRadarColorInfo == null ? Owner.Color : terrainRadarColorInfo.GetColorFromTerrain(worldRenderer.World);
 		}
 
 		public ActorReference Export()
