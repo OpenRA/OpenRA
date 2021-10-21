@@ -156,6 +156,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			ownersDropDown.Text = option.Name;
 			ownersDropDown.TextColor = option.Color;
 			InitializePreviews();
+
+			var actor = editorCursor.Actor;
+			if (actor != null)
+			{
+				actor.Owner = option;
+				actor.ReplaceInit(new OwnerInit(option.Name));
+				actor.ReplaceInit(new FactionInit(option.Faction));
+			}
 		}
 
 		protected override void InitializePreviews()
