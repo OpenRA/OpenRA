@@ -84,7 +84,7 @@ namespace OpenRA.Mods.Common.Lint
 							sequenceImages = new[] { imageOverride.ToLowerInvariant() };
 						}
 
-						foreach (var sequence in LintExts.GetFieldValues(traitInfo, field, emitError, sequenceReference.DictionaryReference))
+						foreach (var sequence in LintExts.GetFieldValues(traitInfo, field, sequenceReference.DictionaryReference))
 						{
 							if (string.IsNullOrEmpty(sequence))
 								continue;
@@ -129,7 +129,7 @@ namespace OpenRA.Mods.Common.Lint
 					}
 
 					image = image.ToLowerInvariant();
-					foreach (var sequence in LintExts.GetFieldValues(projectileInfo, field, emitError, sequenceReference.DictionaryReference))
+					foreach (var sequence in LintExts.GetFieldValues(projectileInfo, field, sequenceReference.DictionaryReference))
 					{
 						if (string.IsNullOrEmpty(sequence))
 							continue;

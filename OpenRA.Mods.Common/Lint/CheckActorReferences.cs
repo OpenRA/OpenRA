@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Lint
 		void CheckActorReference(Action<string> emitError, ActorInfo actorInfo, TraitInfo traitInfo,
 			FieldInfo fieldInfo, IReadOnlyDictionary<string, ActorInfo> dict, ActorReferenceAttribute attribute)
 		{
-			var values = LintExts.GetFieldValues(traitInfo, fieldInfo, emitError, attribute.DictionaryReference);
+			var values = LintExts.GetFieldValues(traitInfo, fieldInfo, attribute.DictionaryReference);
 			foreach (var value in values)
 			{
 				if (value == null)
@@ -82,7 +82,7 @@ namespace OpenRA.Mods.Common.Lint
 		void CheckWeaponReference(Action<string> emitError, ActorInfo actorInfo, TraitInfo traitInfo,
 			FieldInfo fieldInfo, IReadOnlyDictionary<string, WeaponInfo> dict)
 		{
-			var values = LintExts.GetFieldValues(traitInfo, fieldInfo, emitError);
+			var values = LintExts.GetFieldValues(traitInfo, fieldInfo);
 			foreach (var value in values)
 			{
 				if (value == null)
@@ -96,7 +96,7 @@ namespace OpenRA.Mods.Common.Lint
 		void CheckVoiceReference(Action<string> emitError, ActorInfo actorInfo, TraitInfo traitInfo,
 			FieldInfo fieldInfo, IReadOnlyDictionary<string, SoundInfo> dict)
 		{
-			var values = LintExts.GetFieldValues(traitInfo, fieldInfo, emitError);
+			var values = LintExts.GetFieldValues(traitInfo, fieldInfo);
 			foreach (var value in values)
 			{
 				if (value == null)

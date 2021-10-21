@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Lint
 					var fields = traitInfo.GetType().GetFields().Where(f => f.HasAttribute<VoiceSetReferenceAttribute>());
 					foreach (var field in fields)
 					{
-						var voiceSets = LintExts.GetFieldValues(traitInfo, field, emitError);
+						var voiceSets = LintExts.GetFieldValues(traitInfo, field);
 						foreach (var voiceSet in voiceSets)
 						{
 							if (string.IsNullOrEmpty(voiceSet))
@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.Lint
 				var fields = traitInfo.GetType().GetFields().Where(f => f.HasAttribute<VoiceReferenceAttribute>());
 				foreach (var field in fields)
 				{
-					var voices = LintExts.GetFieldValues(traitInfo, field, emitError);
+					var voices = LintExts.GetFieldValues(traitInfo, field);
 					foreach (var voice in voices)
 					{
 						if (string.IsNullOrEmpty(voice))

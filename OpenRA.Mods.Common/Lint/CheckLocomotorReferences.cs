@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.Lint
 					var fields = traitInfo.GetType().GetFields().Where(f => f.HasAttribute<LocomotorReferenceAttribute>());
 					foreach (var field in fields)
 					{
-						var locomotors = LintExts.GetFieldValues(traitInfo, field, emitError);
+						var locomotors = LintExts.GetFieldValues(traitInfo, field);
 						foreach (var locomotor in locomotors)
 						{
 							if (string.IsNullOrEmpty(locomotor))

@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Lint
 {
 	public class LintExts
 	{
-		public static IEnumerable<string> GetFieldValues(object ruleInfo, FieldInfo fieldInfo, Action<string> emitError,
+		public static IEnumerable<string> GetFieldValues(object ruleInfo, FieldInfo fieldInfo,
 			LintDictionaryReference dictionaryReference = LintDictionaryReference.None)
 		{
 			var type = fieldInfo.FieldType;
@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Common.Lint
 			throw new InvalidOperationException($"Bad type for reference on {ruleInfo.GetType().Name}.{fieldInfo.Name}. Supported types: {supportedTypes.JoinWith(", ")}");
 		}
 
-		public static IEnumerable<string> GetPropertyValues(object ruleInfo, PropertyInfo propertyInfo, Action<string> emitError,
+		public static IEnumerable<string> GetPropertyValues(object ruleInfo, PropertyInfo propertyInfo,
 			LintDictionaryReference dictionaryReference = LintDictionaryReference.None)
 		{
 			var type = propertyInfo.PropertyType;
