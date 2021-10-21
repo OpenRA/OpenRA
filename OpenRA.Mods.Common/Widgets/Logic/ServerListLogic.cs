@@ -678,7 +678,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						if (location != null)
 						{
 							var font = Game.Renderer.Fonts[location.Font];
-							var label = WidgetUtils.TruncateText(game.Location, location.Bounds.Width, font);
+							var label = WidgetUtils.TruncateText(game.Location == "false" ? "Unknown" : game.Location, location.Bounds.Width, font);
 							location.GetText = () => label;
 							location.GetColor = () => canJoin ? location.TextColor : incompatibleGameColor;
 						}
