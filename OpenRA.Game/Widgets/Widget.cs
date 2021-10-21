@@ -202,7 +202,7 @@ namespace OpenRA.Widgets
 		public string Y = "0";
 		public string Width = "0";
 		public string Height = "0";
-		public string[] Logic = { };
+		public string[] Logic = Array.Empty<string>();
 		public ChromeLogic[] LogicObjects { get; private set; }
 		public bool Visible = true;
 		public bool IgnoreMouseOver;
