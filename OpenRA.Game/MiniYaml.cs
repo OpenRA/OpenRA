@@ -118,7 +118,7 @@ namespace OpenRA
 		public Dictionary<TKey, TElement> ToDictionary<TKey, TElement>(
 			Func<string, TKey> keySelector, Func<MiniYaml, TElement> elementSelector)
 		{
-			var ret = new Dictionary<TKey, TElement>();
+			var ret = new Dictionary<TKey, TElement>(Nodes.Count);
 			foreach (var y in Nodes)
 			{
 				var key = keySelector(y.Key);
@@ -208,7 +208,10 @@ namespace OpenRA
 						throw new YamlException($"Bad indent in miniyaml at {location}");
 
 					while (levels.Count > level + 1)
+					{
+						levels[levels.Count - 1].TrimExcess();
 						levels.RemoveAt(levels.Count - 1);
+					}
 
 					// Extract key, value, comment from line as `<key>: <value>#<comment>`
 					// The # character is allowed in the value if escaped (\#).
@@ -315,7 +318,7 @@ namespace OpenRA
 				.Where(n => n.Key != null)
 				.ToDictionary(n => n.Key, n => n.Value);
 
-			var resolved = new Dictionary<string, MiniYaml>();
+			var resolved = new Dictionary<string, MiniYaml>(tree.Count);
 			foreach (var kv in tree)
 			{
 				var inherited = new Dictionary<string, MiniYamlNode.SourceLocation>();
@@ -398,8 +401,8 @@ namespace OpenRA
 		/// </summary>
 		static List<MiniYamlNode> MergeSelfPartial(List<MiniYamlNode> existingNodes)
 		{
-			var keys = new HashSet<string>();
-			var ret = new List<MiniYamlNode>();
+			var keys = new HashSet<string>(existingNodes.Count);
+			var ret = new List<MiniYamlNode>(existingNodes.Count);
 			foreach (var n in existingNodes)
 			{
 				if (keys.Add(n.Key))
@@ -435,7 +438,7 @@ namespace OpenRA
 			if (overrideNodes.Count == 0)
 				return existingNodes;
 
-			var ret = new List<MiniYamlNode>();
+			var ret = new List<MiniYamlNode>(existingNodes.Count + overrideNodes.Count);
 
 			var existingDict = existingNodes.ToDictionaryWithConflictLog(x => x.Key, "MiniYaml.Merge", null, x => $"{x.Key} (at {x.Location})");
 			var overrideDict = overrideNodes.ToDictionaryWithConflictLog(x => x.Key, "MiniYaml.Merge", null, x => $"{x.Key} (at {x.Location})");
