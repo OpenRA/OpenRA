@@ -17,22 +17,20 @@ using OpenRA.FileSystem;
 
 namespace OpenRA
 {
-	using MiniYamlNodes = List<MiniYamlNode>;
-
 	public static class MiniYamlExts
 	{
-		public static void WriteToFile(this MiniYamlNodes y, string filename)
+		public static void WriteToFile(this List<MiniYamlNode> y, string filename)
 		{
 			File.WriteAllLines(filename, y.ToLines().Select(x => x.TrimEnd()).ToArray());
 		}
 
-		public static string WriteToString(this MiniYamlNodes y)
+		public static string WriteToString(this List<MiniYamlNode> y)
 		{
 			// Remove all trailing newlines and restore the final EOF newline
 			return y.ToLines().JoinWith("\n").TrimEnd('\n') + "\n";
 		}
 
-		public static IEnumerable<string> ToLines(this MiniYamlNodes y)
+		public static IEnumerable<string> ToLines(this List<MiniYamlNode> y)
 		{
 			foreach (var kv in y)
 				foreach (var line in kv.Value.ToLines(kv.Key, kv.Comment))
@@ -99,7 +97,7 @@ namespace OpenRA
 
 		public MiniYaml Clone()
 		{
-			var clonedNodes = new MiniYamlNodes(Nodes.Count);
+			var clonedNodes = new List<MiniYamlNode>(Nodes.Count);
 			foreach (var node in Nodes)
 				clonedNodes.Add(node.Clone());
 			return new MiniYaml(Value, clonedNodes);
