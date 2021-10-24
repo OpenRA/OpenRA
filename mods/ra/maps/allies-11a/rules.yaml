@@ -1,0 +1,109 @@
+Player:
+	PlayerResources:
+		DefaultCash: 10000
+
+World:
+	LuaScript:
+		Scripts: campaign-global.lua, allies11a.lua, allies11a-AI.lua
+	MissionData:
+		Briefing: Our assault on the USSR is underway, although our efforts are being hindered by large pockets of soviet armor. To counter this we need to move warships up the Volga river, but there is also a bottleneck near Volograd which you must clear so our naval vessels can move in. Good Luck.  
+		StartVideo: 
+		WinVideo: 
+		LossVideo: 
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			easy: Easy
+			normal: Normal
+			hard: Hard
+		Default: normal
+
+LST.Reinforcement:
+	Inherits: LST
+	RejectsOrders:
+	-Buildable:
+	-Selectable:
+	RenderSprites:
+		Image: lst
+	Interactable:
+
+powerproxy.paratroopers:
+	ParatroopersPower:
+		DropItems: E1,E1,E1,E2,E2
+
+MCV:
+	Buildable:
+		Prerequisites: ~disabled
+
+TRAN:
+	Buildable:
+		Prerequisites: ~disabled
+
+TRUK:
+	Buildable:
+		Prerequisites: ~disabled
+
+MRJ:
+	Buildable:
+		Prerequisites: ~disabled
+
+3TNK:
+	Buildable:
+		Prerequisites: ~vehicles.soviet
+
+V2RL:
+	Buildable:
+		Prerequisites: ~vehicles.soviet
+
+4TNK:
+	Buildable:
+		Prerequisites: ~vehicles.soviet
+
+QTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+AFLD:
+	AirstrikePower@parabombs:
+		SquadSize: 2
+
+PDOX:
+	Buildable:
+		Prerequisites: ~disabled
+
+IRON:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSLO:
+	Buildable:
+		Prerequisites: ~disabled
+
+MECH:
+	Buildable:
+		Prerequisites: ~disabled
+
+THF:
+	Buildable:
+		Prerequisites: ~disabled
+
+E7:
+	Buildable:
+		Prerequisites: ~disabled
+
+E7.noautotarget:
+	Buildable:
+		Prerequisites: ~disabled
+
+CA:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSUB:
+	Buildable:
+		Prerequisites: ~disabled
+
+FCOM:
+	Targetable:
+		TargetTypes: GroundActor, Structure, C4, DetonateAttack
