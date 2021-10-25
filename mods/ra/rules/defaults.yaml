@@ -793,8 +793,6 @@
 		Terrain: Wall
 	MapEditorData:
 		Categories: Wall
-	UpdatesPlayerStatistics:
-		AddToAssetsValue: false
 
 ^TechBuilding:
 	Inherits: ^BasicBuilding
