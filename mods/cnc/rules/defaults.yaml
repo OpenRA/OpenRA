@@ -916,8 +916,6 @@
 		Terrain: Wall
 	MapEditorData:
 		Categories: Wall
-	UpdatesPlayerStatistics:
-		AddToAssetsValue: false
 
 ^Tree:
 	Inherits@1: ^SpriteActor
