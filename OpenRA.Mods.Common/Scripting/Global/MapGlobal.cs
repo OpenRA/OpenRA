@@ -59,6 +59,9 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Returns the location of the bottom-right corner of the map (assuming zero terrain height).")]
 		public WPos BottomRight => Context.World.Map.ProjectedBottomRight;
 
+		public int Width => Context.World.Map.MapSize.X;
+		public int Height => Context.World.Map.MapSize.Y;
+
 		[Desc("Returns a random cell inside the visible region of the map.")]
 		public CPos RandomCell()
 		{
