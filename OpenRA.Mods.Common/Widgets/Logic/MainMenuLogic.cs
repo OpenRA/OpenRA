@@ -312,7 +312,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							{
 								Game.RunAfterTick(() => // run on the main thread
 								{
-									SetNewsStatus($"Failed to retrieve news: {e}");
+									SetNewsStatus($"Failed to retrieve news: {e.Message}");
 								});
 							}
 						});
