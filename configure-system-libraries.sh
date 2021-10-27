@@ -30,7 +30,7 @@ patch_config()
 			done
 		done
 	else
-		# NET 5 does not support .config files, so we must use symlinks instead
+		# .NET 6 does not support .config files, so we must use symlinks instead
 		# Exit early if the symlink already exists
 		if [ -L "bin/${REPLACE}" ]; then
 			return 0

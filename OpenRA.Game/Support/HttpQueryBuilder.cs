@@ -31,7 +31,7 @@ namespace OpenRA.Support
 			parameters.Add(new Parameter
 			{
 				Name = name,
-				Value = Uri.EscapeUriString(value.ToString())
+				Value = Uri.EscapeDataString(value.ToString())
 			});
 		}
 

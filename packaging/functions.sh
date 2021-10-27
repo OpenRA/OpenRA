@@ -11,7 +11,7 @@
 #   SRC_PATH: Path to the root OpenRA directory
 #   DEST_PATH: Path to the root of the install destination (will be created if necessary)
 #   TARGETPLATFORM: Platform type (win-x86, win-x64, osx-x64, linux-x64, unix-generic)
-#   RUNTIME: Runtime type (net5, mono)
+#   RUNTIME: Runtime type (net6, mono)
 #   COPY_GENERIC_LAUNCHER: If set to True the OpenRA.exe will also be copied (True, False)
 #   COPY_CNC_DLL: If set to True the OpenRA.Mods.Cnc.dll will also be copied (True, False)
 #   COPY_D2K_DLL: If set to True the OpenRA.Mods.D2k.dll will also be copied (True, False)
@@ -153,7 +153,7 @@ install_windows_launcher()
 	rm -rf "${SRC_PATH}/OpenRA.WindowsLauncher/obj"
 	dotnet publish "${SRC_PATH}/OpenRA.WindowsLauncher/OpenRA.WindowsLauncher.csproj" -c Release -r "${TARGETPLATFORM}" -p:LauncherName="${LAUNCHER_NAME}" -p:TargetPlatform="${TARGETPLATFORM}" -p:ModID="${MOD_ID}" -p:DisplayName="${MOD_NAME}" -p:FaqUrl="${FAQ_URL}" -o "${DEST_PATH}" --self-contained true
 
-	# NET 5 is unable to customize the application host for windows when compiling from Linux,
+	# NET 6 is unable to customize the application host for windows when compiling from Linux,
 	# so we must patch the properties we need in the PE header.
 	# Setting the application icon requires an external tool, so is left to the calling code
 	python3 "${SRC_PATH}/packaging/windows/fixlauncher.py" "${DEST_PATH}/${LAUNCHER_NAME}.exe"

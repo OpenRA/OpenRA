@@ -74,7 +74,7 @@ build_app() {
 	fi
 
 	# Install engine and mod files
-	RUNTIME="net5"
+	RUNTIME="net6"
 	if [ "${PLATFORM}" = "compat" ]; then
 		RUNTIME="mono"
 	fi
@@ -128,8 +128,8 @@ build_platform() {
 		modify_plist "{MINIMUM_SYSTEM_VERSION}" "10.9" "${TEMPLATE_DIR}/Contents/Info.plist"
 		clang -m64 launcher-mono.m -o "${TEMPLATE_DIR}/Contents/MacOS/Launcher" -framework AppKit -mmacosx-version-min=10.9
 	else
-		modify_plist "{MINIMUM_SYSTEM_VERSION}" "10.13" "${TEMPLATE_DIR}/Contents/Info.plist"
-		clang -m64 launcher.m -o "${TEMPLATE_DIR}/Contents/MacOS/Launcher" -framework AppKit -mmacosx-version-min=10.13
+		modify_plist "{MINIMUM_SYSTEM_VERSION}" "10.14" "${TEMPLATE_DIR}/Contents/Info.plist"
+		clang -m64 launcher.m -o "${TEMPLATE_DIR}/Contents/MacOS/Launcher" -framework AppKit -mmacosx-version-min=10.14
 	fi
 
 	build_app "${PLATFORM}" "${TEMPLATE_DIR}" "${BUILTDIR}/OpenRA - Red Alert.app" "ra" "Red Alert" "699222659766026240"
