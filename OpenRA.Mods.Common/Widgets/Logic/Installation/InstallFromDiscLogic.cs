@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using OpenRA.Mods.Common.FileFormats;
 using OpenRA.Widgets;
@@ -470,6 +471,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					return null;
 
 				if (Platform.CurrentPlatform != PlatformType.Windows)
+					return null;
+
+				// We need an extra check for the platform here to silence a warning when the registry is accessed
+				// TODO: Remove this once our platform checks use the same method
+				if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
 					return null;
 
 				foreach (var prefix in source.RegistryPrefixes)

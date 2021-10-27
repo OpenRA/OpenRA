@@ -7,17 +7,17 @@ on:
 
 jobs:
   linux:
-    name: Linux (.NET 5.0)
+    name: Linux (.NET 6.0)
     runs-on: ubuntu-20.04
 
     steps:
       - name: Clone Repository
         uses: actions/checkout@v2
 
-      - name: Install .NET 5
+      - name: Install .NET 6.0
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '5.0.x'
+          dotnet-version: '6.0.x'
 
       - name: Check Code
         run: |
@@ -48,17 +48,17 @@ jobs:
           make RUNTIME=mono test
 
   windows:
-    name: Windows (.NET 5.0)
+    name: Windows (.NET 6.0)
     runs-on: windows-2019
 
     steps:
       - name: Clone Repository
         uses: actions/checkout@v2
 
-      - name: Install .NET 5
+      - name: Install .NET 6.0
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '5.0.x'
+          dotnet-version: '6.0.x'
 
       - name: Check Code
         shell: powershell
