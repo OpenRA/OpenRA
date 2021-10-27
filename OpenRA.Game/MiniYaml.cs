@@ -384,19 +384,6 @@ namespace OpenRA
 		/// Merges any duplicate keys that are defined within the same set of nodes.
 		/// Does not resolve inheritance or node removals.
 		/// </summary>
-		static MiniYaml MergeSelfPartial(MiniYaml existingNodes)
-		{
-			// Nothing to do
-			if (existingNodes.Nodes == null || existingNodes.Nodes.Count == 0)
-				return existingNodes;
-
-			return new MiniYaml(existingNodes.Value, MergeSelfPartial(existingNodes.Nodes));
-		}
-
-		/// <summary>
-		/// Merges any duplicate keys that are defined within the same set of nodes.
-		/// Does not resolve inheritance or node removals.
-		/// </summary>
 		static List<MiniYamlNode> MergeSelfPartial(List<MiniYamlNode> existingNodes)
 		{
 			var keys = new HashSet<string>(existingNodes.Count);
