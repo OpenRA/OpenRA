@@ -112,6 +112,17 @@
 			Tiberium: 78
 			BlueTiberium: 78
 			Beach: 89
+	Locomotor@VISC:
+		Name: visc
+		Crushes: crate
+		TerrainSpeeds:
+			Clear: 100
+			Rough: 89
+			Road: 111
+			Bridge: 111
+			Tiberium: 100
+			BlueTiberium: 100
+			Beach: 89
 	Faction@Random:
 		Name: Any
 		InternalName: Random

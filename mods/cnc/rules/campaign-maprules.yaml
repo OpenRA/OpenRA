@@ -92,3 +92,8 @@ MoneyCrate:
 TRUCK:
 	Buildable:
 		Prerequisites: ~disabled
+
+MISS:
+	Inherits: ^CivBuilding
+	RevealsShroud:
+		Range: 3c0

@@ -508,7 +508,7 @@
 	Armor:
 		Type: Wood
 	Buildable:
-		Queue: Biolab
+		Queue: Infantry.GDI, Infantry.Nod
 		BuildPaletteOrder: 50
 		Prerequisites: ~disabled
 	Valued:
@@ -556,8 +556,10 @@
 	Inherits@selection: ^SelectableCombatUnit
 	Inherits@handicaps: ^PlayerHandicaps
 	Huntable:
+	OwnerLostAction:
+		Action: Kill
 	Health:
-		HP: 40000
+		HP: 30000
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -565,7 +567,7 @@
 	Mobile:
 		Voice: Move
 		Speed: 68
-		Locomotor: critter
+		Locomotor: visc
 	Selectable:
 		Bounds: 1024, 1024
 	Targetable:
@@ -576,7 +578,7 @@
 		Voice: Attack
 	HiddenUnderFog:
 	Valued:
-		Cost: 1000
+		Cost: 700
 	Tooltip:
 		Name: Visceroid
 	Armament:
@@ -592,8 +594,12 @@
 	Guard:
 		Voice: Move
 	Guardable:
+	ChangesHealth:
+		Step: 100
+		Delay: 4
+		StartIfBelow: 100
 	DamagedByTerrain:
-		Damage: -100
+		Damage: -50
 		DamageInterval: 4
 		DamageTypes: TiberiumDeath
 		Terrain: Tiberium, BlueTiberium

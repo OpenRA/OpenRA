@@ -258,8 +258,9 @@ RMBO:
 PVICE:
 	Inherits: ^Viceroid
 	Buildable:
-		Queue: Biolab
-		BuildPaletteOrder: 40
+		Queue: Infantry.GDI, Infantry.Nod
+		BuildPaletteOrder: 50
+		Prerequisites: ~disabled
 		Description: Mutated abomination that spits liquid Tiberium.\n  Strong vs Infantry, Buildings\n  Weak vs Aircraft
 	Tooltip:
 	UpdatesPlayerStatistics:

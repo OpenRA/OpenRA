@@ -87,29 +87,11 @@ BIO:
 	Tooltip:
 		Name: Biological Lab
 	TooltipDescription@ally:
-		Description: Provides infantry with Tiberium immunity. Produces Visceroids.
+		Description: Provides infantry with Tiberium immunity.
 		ValidRelationships: Ally
 	TooltipDescription@other:
-		Description: Capture to enable Tiberium immunity for infantry. Produces Visceroids.
+		Description: Capture to enable Tiberium immunity for infantry.
 		ValidRelationships: Neutral, Enemy
-	Exit@1:
-		SpawnOffset: 0,-426,0
-		ExitCell: 0,-1
-	Production:
-		Produces: Biolab
-	ProductionQueue:
-		Type: Biolab
-		Group: Infantry
-		LowPowerModifier: 300
-		ReadyAudio: UnitReady
-		BlockedAudio: NoBuild
-		LimitedAudio: BuildingInProgress
-		QueuedAudio: Training
-		OnHoldAudio: OnHold
-		CancelledAudio: Cancelled
-	ProductionBar:
-		ProductionType: Biolab
-	RallyPoint:
 	SpawnActorOnDeath:
 		Actor: BIO.Husk
 	ProvidesPrerequisite@buildingname:
@@ -125,8 +107,11 @@ BIO.Husk:
 		Name: Biological Lab (Destroyed)
 
 MISS:
-	Inherits: ^CivBuilding
+	Inherits: ^TechBuilding
 	Inherits@shape: ^3x2Shape
+	HitShape:
+		UseTargetableCellsOffsets: false
+		TargetableOffsets: 0,0,0, 840,0,0, 840,-1024,0, 420,768,0, -840,0,0, -840,-1024,0, -840,1024,0
 	Selectable:
 		Bounds: 3072, 2048
 	Building:
@@ -139,7 +124,17 @@ MISS:
 		BuildPaletteOrder: 1000
 		Prerequisites: ~disabled
 	Valued:
-		Cost: 2000
+		Cost: 0
+	Health:
+		HP: 80000
+	RevealsShroud:
+		Range: 13c0
+	TooltipDescription@ally:
+		Description: Provides range of vision.
+		ValidRelationships: Ally
+	TooltipDescription@other:
+		Description: Capture to give visual range.
+		ValidRelationships: Neutral, Enemy
 	WithBuildingBib:
 		HasMinibib: true
 	WithMakeAnimation:

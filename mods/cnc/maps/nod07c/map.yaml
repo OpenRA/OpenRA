@@ -708,7 +708,7 @@ Actors:
 		Location: 49,52
 		Owner: GDI
 		ScriptTags: GDIBuilding
-	GDIBuilding5: nuke
+	GDIBuilding5: nuk2
 		Location: 56,53
 		Owner: GDI
 		ScriptTags: GDIBuilding
