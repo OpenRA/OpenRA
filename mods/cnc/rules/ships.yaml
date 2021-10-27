@@ -24,11 +24,10 @@ BOAT:
 	Armament:
 		Weapon: BoatMissile
 		LocalOffset: 85,-85,0, 85,85,0
-	AttackFrontal:
-		Voice: Attack
 	AttackMove:
 		Voice: Attack
 	AttackTDGunboatTurreted:
+		Voice: Attack
 	-QuantizeFacingsFromSequence:
 	BodyOrientation:
 		QuantizedFacings: 2

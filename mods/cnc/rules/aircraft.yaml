@@ -85,8 +85,6 @@ HELI:
 		LocalOffset: 128,-213,-85, 128,213,-85
 		MuzzleSequence: muzzle
 		PauseOnCondition: !ammo
-	AttackFrontal:
-		Voice: Attack
 	AttackMove:
 		Voice: Attack
 	AutoTarget:
@@ -96,6 +94,7 @@ HELI:
 		OpportunityFire: false
 		PersistentTargeting: false
 		AttackType: Hover
+		Voice: Attack
 	AmmoPool:
 		Ammo: 10
 		AmmoCondition: ammo
@@ -154,8 +153,6 @@ ORCA:
 		Weapon: OrcaAAMissiles
 		LocalOffset: 427,-171,-213, 427,171,-213
 		PauseOnCondition: !ammo
-	AttackFrontal:
-		Voice: Attack
 	AttackMove:
 		Voice: Attack
 	AutoTarget:
@@ -165,6 +162,7 @@ ORCA:
 		OpportunityFire: false
 		PersistentTargeting: false
 		AttackType: Hover
+		Voice: Attack
 	AmmoPool:
 		Ammo: 6
 		AmmoCondition: ammo

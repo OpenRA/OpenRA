@@ -153,11 +153,10 @@ APC:
 		RevokeDelay: 18
 		RevokeOnNewTarget: False
 		RevokeAll: True
-	AttackFrontal:
-		Voice: Attack
 	AttackMove:
 		Voice: Attack
 	AttackTurreted:
+		Voice: Attack
 	WithMuzzleOverlay:
 	WithSpriteTurret:
 		RequiresCondition: !attack-air
@@ -390,11 +389,10 @@ JEEP:
 		Weapon: MachineGunH
 		LocalOffset: 171,0,85
 		MuzzleSequence: muzzle
-	AttackFrontal:
-		Voice: Attack
 	AttackMove:
 		Voice: Attack
 	AttackTurreted:
+		Voice: Attack
 	WithMuzzleOverlay:
 	WithSpriteTurret:
 	SpawnActorOnDeath:
@@ -437,11 +435,10 @@ LTNK:
 		RecoilRecovery: 17
 		LocalOffset: 720,0,90
 		MuzzleSequence: muzzle
-	AttackFrontal:
-		Voice: Attack
 	AttackMove:
 		Voice: Attack
 	AttackTurreted:
+		Voice: Attack
 	WithMuzzleOverlay:
 	WithSpriteTurret:
 	SpawnActorOnDeath:
@@ -483,11 +480,10 @@ MTNK:
 		RecoilRecovery: 26
 		LocalOffset: 768,0,90
 		MuzzleSequence: muzzle
-	AttackFrontal:
-		Voice: Attack
 	AttackMove:
 		Voice: Attack
 	AttackTurreted:
+		Voice: Attack
 	WithMuzzleOverlay:
 	WithSpriteTurret:
 	Explodes:
@@ -544,11 +540,10 @@ HTNK:
 		LocalYaw: -100, 100
 		Recoil: 10
 		MuzzleSequence: muzzle
-	AttackFrontal:
-		Voice: Attack
 	AttackMove:
 		Voice: Attack
 	AttackTurreted:
+		Voice: Attack
 	WithMuzzleOverlay:
 	ChangesHealth:
 		Step: 500
