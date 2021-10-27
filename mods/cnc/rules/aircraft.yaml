@@ -110,8 +110,8 @@ HELI:
 	SpawnActorOnDeath:
 		Actor: HELI.Husk
 	ReloadAmmoPool:
-		Delay: 40
-		Count: 1
+		Delay: 70
+		Count: 2
 	Selectable:
 		DecorationBounds: 1280, 1024
 	WithAmmoPipsDecoration:
@@ -139,7 +139,7 @@ ORCA:
 		TurnSpeed: 28
 		Speed: 186
 	Health:
-		HP: 9000
+		HP: 10000
 	Armor:
 		Type: Light
 	RevealsShroud:

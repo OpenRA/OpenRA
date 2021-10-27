@@ -102,7 +102,7 @@ OrcaAAMissiles:
 	ValidTargets: Air
 	Projectile: Missile
 		Arm: 0
-		Speed: 298
+		Speed: 341
 	Warhead@1Dam: SpreadDamage
 		ValidTargets: Air
 		Versus:
@@ -222,7 +222,9 @@ BoatMissile:
 
 TowerMissile:
 	Inherits: ^MissileWeapon
-	ReloadDelay: 15
+	ReloadDelay: 30
+	Burst: 2
+	BurstDelays: 8
 	Range: 7c0
 	Report: rocket2.aud
 	ValidTargets: Ground, Water
@@ -240,11 +242,14 @@ TowerMissile:
 			Heavy: 100
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@3Eff: CreateEffect
-		Explosions: med_frag
+		Explosions: big_frag
+		ImpactSounds: xplobig4.aud
 
 TowerAAMissile:
 	Inherits: ^MissileWeapon
-	ReloadDelay: 15
+	ReloadDelay: 30
+	Burst: 2
+	BurstDelays: 8
 	Range: 8c0
 	Report: rocket2.aud
 	ValidTargets: Air

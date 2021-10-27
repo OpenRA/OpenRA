@@ -78,7 +78,7 @@ ArtilleryShell:
 		Damage: 10000
 		Versus:
 			None: 150
-			Wood: 120
+			Wood: 100
 			Light: 112
 			Heavy: 75
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath

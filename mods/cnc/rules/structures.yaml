@@ -375,8 +375,12 @@ HAND:
 	WithBuildingBib:
 	RallyPoint:
 	Exit@1:
+		Priority: 2
 		SpawnOffset: 512,1024,0
 		ExitCell: 1,2
+	Exit@fallback1:
+		SpawnOffset: -1024,256,0
+		ExitCell: -1,1
 	Production:
 		Produces: Infantry.Nod
 	ProductionQueue:
@@ -1008,7 +1012,7 @@ GTWR:
 	Turreted:
 		TurnSpeed: 512
 	Power:
-		Amount: -10
+		Amount: -20
 
 ATWR:
 	Inherits: ^Defense

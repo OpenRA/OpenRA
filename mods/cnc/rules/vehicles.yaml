@@ -222,8 +222,7 @@ ARTY:
 		EffectiveOwnerFromOwner: true
 	Explodes:
 		Weapon: ArtilleryShell
-		EmptyWeapon: UnitExplode
-		LoadedChance: 75
+		EmptyWeapon: ArtilleryShell
 
 FTNK:
 	Inherits: ^Tank
@@ -701,8 +700,8 @@ STNK:
 	RevealsShroud:
 		Range: 7c0
 	Cloak:
-		InitialDelay: 90
-		CloakDelay: 90
+		InitialDelay: 85
+		CloakDelay: 85
 		CloakSound: trans1.aud
 		UncloakSound: trans1.aud
 		UncloakOn: Attack, Unload, Dock, Damage, Heal

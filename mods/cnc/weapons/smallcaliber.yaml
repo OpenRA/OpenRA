@@ -83,7 +83,7 @@ HeliAAGun:
 	Warhead@1Dam: SpreadDamage
 		ValidTargets: Air
 		Versus:
-			Light: 50
+			Light: 55
 
 ^LightMG:
 	Inherits: ^HeavyMG
