@@ -2,6 +2,5 @@
 	"recommendations": [
 		"ms-dotnettools.csharp",
 		"EditorConfig.EditorConfig",
-		"ms-vscode.mono-debug"
 	]
 }
