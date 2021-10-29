@@ -115,9 +115,9 @@ namespace OpenRA
 		readonly INotifyBecomingIdle[] becomingIdles;
 		readonly INotifyIdle[] tickIdles;
 		readonly IEnumerable<ITargetablePositions> enabledTargetablePositions;
+		readonly bool setStaticTargetablePositions;
 		WPos[] staticTargetablePositions;
 		bool created;
-		bool setStaticTargetablePositions;
 
 		internal Actor(World world, string name, TypeDictionary initDict)
 		{
@@ -552,7 +552,7 @@ namespace OpenRA
 
 		void UpdateConditionState(string condition, int token, bool isRevoke)
 		{
-			ConditionState conditionState = conditionStates.GetOrAdd(condition);
+			var conditionState = conditionStates.GetOrAdd(condition);
 
 			if (isRevoke)
 				conditionState.Tokens.Remove(token);
