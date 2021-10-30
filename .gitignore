@@ -13,6 +13,9 @@ obj
 _ReSharper.*/
 /.vs
 
+# Visual Studio Code
+/.vscode/settings.json
+
 # binaries
 mods/*/*.dll
 mods/*/*.mdb
