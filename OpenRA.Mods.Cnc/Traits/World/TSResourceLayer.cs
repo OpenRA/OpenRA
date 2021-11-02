@@ -74,6 +74,9 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		bool IsValidResourceNeighbour(CPos cell, CPos neighbour)
 		{
+			if (!Map.Contains(neighbour))
+				return false;
+
 			// Non-vein resources are not allowed in the cardinal neighbours to
 			// an already existing vein cell
 			return Content[neighbour].Type != info.VeinType;
@@ -81,6 +84,9 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		bool IsValidVeinNeighbour(CPos cell, CPos neighbour)
 		{
+			if (!Map.Contains(neighbour))
+				return false;
+
 			// Cell is automatically valid if it contains a veinhole actor
 			if (veinholeCells.Contains(neighbour))
 				return true;
@@ -112,8 +118,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 			// Ensure there is space for the vein border tiles (not needed on ramps)
 			var check = resourceType == info.VeinType ? (Func<CPos, CPos, bool>)IsValidVeinNeighbour : IsValidResourceNeighbour;
-			var blockedByNeighbours = Map.Ramp[cell] == 0 && !Common.Util.ExpandFootprint(cell, false)
-				.All(c => check(cell, c));
+			var blockedByNeighbours = Map.Ramp[cell] == 0 && !Common.Util.ExpandFootprint(cell, false).All(c => check(cell, c));
 
 			return !blockedByNeighbours && (resourceType == info.VeinType || !BuildingInfluence.AnyBuildingAt(cell));
 		}
