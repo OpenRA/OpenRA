@@ -74,10 +74,10 @@ Dragon:
 
 HellfireAG:
 	Inherits: ^AntiGroundMissile
-	ReloadDelay: 30
+	ReloadDelay: 34
 	MinRange: 1c256
 	Burst: 2
-	BurstDelays: 7
+	BurstDelays: 10
 	Projectile: Missile
 		Speed: 256
 		HorizontalRateOfTurn: 40
@@ -149,7 +149,7 @@ Nike:
 		Inaccuracy: 0
 		Image: MISSILE
 		HorizontalRateOfTurn: 100
-		RangeLimit: 9c0
+		RangeLimit: 11c0
 		Speed: 341
 	Warhead@1Dam: SpreadDamage
 		Damage: 5000

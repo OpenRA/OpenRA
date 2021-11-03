@@ -1025,10 +1025,10 @@
 		Types: husk
 		ValidRelationships: Enemy, Neutral
 	TransformOnCapture:
-		ForceHealthPercentage: 25
+		ForceHealthPercentage: 15
 	InfiltrateForTransform:
 		Types: Husk
-		ForceHealthPercentage: 25
+		ForceHealthPercentage: 15
 	WithColoredOverlay@IDISABLE:
 		Color: 000000B4
 	Targetable:
@@ -1182,7 +1182,7 @@
 		AvoidFriendly: false
 		BlockFriendly: false
 	Health:
-		HP: 10000
+		HP: 5000
 		NotifyAppliedDamage: false
 	Armor:
 		Type: Light
