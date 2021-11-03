@@ -405,11 +405,11 @@ JEEP:
 		Type: Light
 	Mobile:
 		TurnSpeed: 40
-		Speed: 170
+		Speed: 160
 		PauseOnCondition: notmobile || being-captured
 	RevealsShroud:
 		MinRange: 4c0
-		Range: 8c0
+		Range: 7c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 4c0
@@ -723,11 +723,11 @@ DTRK:
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
-		HP: 5000
+		HP: 2800
 	Armor:
 		Type: Light
 	Mobile:
-		Speed: 72
+		Speed: 67
 	RevealsShroud:
 		Range: 4c0
 	Explodes:

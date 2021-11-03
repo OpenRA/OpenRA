@@ -419,7 +419,7 @@ IRON:
 		ChargeInterval: 3000
 		Description: Invulnerability
 		LongDesc: Makes a group of units invulnerable\nfor 20 seconds.
-		Duration: 500
+		Duration: 400
 		SelectTargetSpeechNotification: SelectTarget
 		InsufficientPowerSpeechNotification: InsufficientPower
 		BeginChargeSpeechNotification: IronCurtainCharging
@@ -638,7 +638,7 @@ DOME:
 		Prerequisites: proc, ~techlevel.medium
 		Description: Provides an overview\nof the battlefield.\nRequires power to operate.
 	Valued:
-		Cost: 1800
+		Cost: 1500
 	Tooltip:
 		Name: Radar Dome
 	Building:
@@ -1552,7 +1552,7 @@ AFLD:
 		QuantizedFacings: 8
 		DisplayBeacon: true
 		BeaconPoster: pbmbicon
-		SquadSize: 3
+		SquadSize: 1
 		SquadOffset: 1792,1792,0
 		ArrowSequence: arrow
 		ClockSequence: clock

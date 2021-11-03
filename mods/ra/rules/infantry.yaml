@@ -39,7 +39,7 @@ DOG:
 		Voice: Move
 	GrantConditionOnAttack:
 		Condition: eating
-		RevokeDelay: 45
+		RevokeDelay: 20
 	GrantConditionWhileAiming:
 		Condition: run
 	AutoTarget:
@@ -386,7 +386,7 @@ E7:
 		BuildLimit: 1
 		Description: Elite commando infantry. Armed with\ndual pistols and C4.\nMaximum 1 can be trained.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles, Aircraft\n  Special Ability: Destroy Building with C4
 	Valued:
-		Cost: 1200
+		Cost: 1500
 	Tooltip:
 		Name: Tanya
 	UpdatesPlayerStatistics:
