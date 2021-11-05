@@ -42,6 +42,9 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		bool IsValidVeinNeighbour(CPos cell, CPos neighbour)
 		{
+			if (!Map.Contains(neighbour))
+				return false;
+
 			// Cell is automatically valid if it contains a veinhole actor
 			if (actorLayer.PreviewsAt(neighbour).Any(a => info.VeinholeActors.Contains(a.Info.Name)))
 				return true;
