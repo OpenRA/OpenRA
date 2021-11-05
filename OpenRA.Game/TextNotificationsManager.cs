@@ -31,6 +31,11 @@ namespace OpenRA
 			AddTextNotification(TextNotificationPool.Feedback, SystemMessageLabel, text);
 		}
 
+		public static void AddMissionLine(string prefix, string text, Color? prefixColor = null)
+		{
+			AddTextNotification(TextNotificationPool.Mission, prefix, text, prefixColor);
+		}
+
 		public static void AddSystemLine(string text)
 		{
 			AddSystemLine(SystemMessageLabel, text);

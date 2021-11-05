@@ -6,7 +6,7 @@ Container@CHAT_CONTAINER:
 		Templates:
 			Chat: CHAT_LINE_TEMPLATE
 			System: SYSTEM_LINE_TEMPLATE
-			Mission: SYSTEM_LINE_TEMPLATE
+			Mission: CHAT_LINE_TEMPLATE
 	Children:
 		Container@CHAT_CHROME:
 			X: 15
