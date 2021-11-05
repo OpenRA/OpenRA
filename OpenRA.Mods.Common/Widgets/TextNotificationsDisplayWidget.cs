@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public string ChatTemplate = "CHAT_LINE_TEMPLATE";
 		public string SystemTemplate = "SYSTEM_LINE_TEMPLATE";
-		public string MissionTemplate = "SYSTEM_LINE_TEMPLATE";
+		public string MissionTemplate = "CHAT_LINE_TEMPLATE";
 		public string FeedbackTemplate = "TRANSIENT_LINE_TEMPLATE";
 		readonly Dictionary<TextNotificationPool, Widget> templates = new Dictionary<TextNotificationPool, Widget>();
 
