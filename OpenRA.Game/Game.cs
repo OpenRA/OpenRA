@@ -16,7 +16,6 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Reflection;
 using System.Runtime;
 using System.Threading;
 using OpenRA.Graphics;
@@ -357,7 +356,8 @@ namespace OpenRA
 					var platformType = loader.LoadDefaultAssembly().GetTypes().SingleOrDefault(t => typeof(IPlatform).IsAssignableFrom(t));
 
 #else
-					var assembly = Assembly.LoadFile(rendererPath);
+					// NOTE: This is currently the only use of System.Reflection in this file, so would give an unused using error if we import it above
+					var assembly = System.Reflection.Assembly.LoadFile(rendererPath);
 					var platformType = assembly.GetTypes().SingleOrDefault(t => typeof(IPlatform).IsAssignableFrom(t));
 #endif
 
