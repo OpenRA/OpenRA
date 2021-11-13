@@ -168,9 +168,9 @@ namespace OpenRA
 				var spaces = 0;
 				var textStart = false;
 
-				ReadOnlySpan<char> key = null;
-				ReadOnlySpan<char> value = null;
-				ReadOnlySpan<char> comment = null;
+				ReadOnlySpan<char> key = default;
+				ReadOnlySpan<char> value = default;
+				ReadOnlySpan<char> comment = default;
 				var location = new MiniYamlNode.SourceLocation { Filename = filename, Line = lineNo };
 
 				if (line.Length > 0)
@@ -254,25 +254,29 @@ namespace OpenRA
 					if (commentStart >= 0 && !discardCommentsAndWhitespace)
 						comment = line.Slice(commentStart);
 
-					// Remove leading/trailing whitespace guards
 					if (value.Length > 1)
 					{
+						// Remove leading/trailing whitespace guards
 						var trimLeading = value[0] == '\\' && (value[1] == ' ' || value[1] == '\t') ? 1 : 0;
 						var trimTrailing = value[value.Length - 1] == '\\' && (value[value.Length - 2] == ' ' || value[value.Length - 2] == '\t') ? 1 : 0;
 						if (trimLeading + trimTrailing > 0)
 							value = value.Slice(trimLeading, value.Length - trimLeading - trimTrailing);
-					}
 
-					// Remove escape characters from #
-					if (value.Contains("\\#", StringComparison.Ordinal))
-						value = value.ToString().Replace("\\#", "#");
+						// Remove escape characters from #
+						if (value.Contains("\\#", StringComparison.Ordinal))
+							value = value.ToString().Replace("\\#", "#");
+					}
 				}
 
-				if (key != null || !discardCommentsAndWhitespace)
+				if (!key.IsEmpty || !discardCommentsAndWhitespace)
 				{
-					var keyString = key == null ? null : key.ToString();
-					var valueString = value == null ? null : value.ToString();
-					var commentString = comment == null ? null : comment.ToString();
+					var keyString = key.IsEmpty ? null : key.ToString();
+					var valueString = value.IsEmpty ? null : value.ToString();
+
+					// Note: We need to support empty comments here to ensure that empty comments
+					// (i.e. a lone # at the end of a line) can be correctly re-serialized
+					var commentString = comment == default ? null : comment.ToString();
+
 					keyString = keyString == null ? null : stringPool.GetOrAdd(keyString, keyString);
 					valueString = valueString == null ? null : stringPool.GetOrAdd(valueString, valueString);
 					commentString = commentString == null ? null : stringPool.GetOrAdd(commentString, commentString);
