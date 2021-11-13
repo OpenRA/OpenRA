@@ -198,17 +198,30 @@ Test:
 		[TestCase(TestName = "Comments are correctly separated from values")]
 		public void TestEscapedHashInValues()
 		{
-			var trailingWhitespace = @"key: value # comment";
-			Assert.AreEqual("value", MiniYaml.FromString(trailingWhitespace, "trailingWhitespace")[0].Value.Value);
+			var trailingWhitespace = MiniYaml.FromString(@"key: value # comment", "trailingWhitespace", discardCommentsAndWhitespace: false)[0];
+			Assert.AreEqual("value", trailingWhitespace.Value.Value);
+			Assert.AreEqual(" comment", trailingWhitespace.Comment);
 
-			var noWhitespace = @"key:value# comment";
-			Assert.AreEqual("value", MiniYaml.FromString(noWhitespace, "noWhitespace")[0].Value.Value);
+			var noWhitespace = MiniYaml.FromString(@"key:value# comment", "noWhitespace", discardCommentsAndWhitespace: false)[0];
+			Assert.AreEqual("value", noWhitespace.Value.Value);
+			Assert.AreEqual(" comment", noWhitespace.Comment);
 
-			var escapedHashInValue = @"key: before \# after # comment";
-			Assert.AreEqual("before # after", MiniYaml.FromString(escapedHashInValue, "escapedHashInValue")[0].Value.Value);
+			var escapedHashInValue = MiniYaml.FromString(@"key: before \# after # comment", "escapedHashInValue", discardCommentsAndWhitespace: false)[0];
+			Assert.AreEqual("before # after", escapedHashInValue.Value.Value);
+			Assert.AreEqual(" comment", escapedHashInValue.Comment);
 
-			var emptyValue = @"key:# comment";
-			Assert.AreEqual(null, MiniYaml.FromString(emptyValue, "emptyValue")[0].Value.Value);
+			var emptyValueAndComment = MiniYaml.FromString(@"key:#", "emptyValueAndComment", discardCommentsAndWhitespace: false)[0];
+			Assert.AreEqual(null, emptyValueAndComment.Value.Value);
+			Assert.AreEqual("", emptyValueAndComment.Comment);
+
+			var noValue = MiniYaml.FromString(@"key:", "noValue", discardCommentsAndWhitespace: false)[0];
+			Assert.AreEqual(null, noValue.Value.Value);
+			Assert.AreEqual(null, noValue.Comment);
+
+			var emptyKey = MiniYaml.FromString(@" : value", "emptyKey", discardCommentsAndWhitespace: false)[0];
+			Assert.AreEqual(null, emptyKey.Key);
+			Assert.AreEqual("value", emptyKey.Value.Value);
+			Assert.AreEqual(null, emptyKey.Comment);
 		}
 
 		[TestCase(TestName = "Leading and trailing whitespace can be guarded using a backslash")]
