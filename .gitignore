@@ -17,18 +17,6 @@ _ReSharper.*/
 /.vscode/settings.json
 
 # binaries
-mods/*/*.dll
-mods/*/*.mdb
-mods/*/*.pdb
-/*.dll
-/*.dll.config
-/*.so
-/*.dylib
-/*.pdb
-/*.mdb
-/*.exe
-/*.exe.config
-thirdparty/download/*
 IP2LOCATION-LITE-DB1.IPV6.BIN.ZIP
 
 # backup files by various editors
