@@ -2,7 +2,7 @@ MapFormat: 11
 
 RequiresMod: cnc
 
-Title: 10a: Orcastration
+Title: GDI10a: Orcastration
 
 Author: Westwood Studios
 
@@ -24,20 +24,15 @@ Players:
 		OwnsWorld: True
 		NonCombatant: True
 		Faction: Random
-	PlayerReference@Creeps:
-		Name: Creeps
-		NonCombatant: True
-		Faction: Random
+		Allies: Neutral
+		Enemies: badguy, goodguy
 	PlayerReference@badguy:
 		Name: badguy
 		Faction: nod
 		Allies: badguy
 		Enemies: neutral, goodguy
-	PlayerReference@neutral:
-		Name: neutral
-		Faction: gdi
-		Allies: neutral
-		Enemies: badguy, goodguy
+		Color: FE1100
+		Bot: campaign
 	PlayerReference@goodguy:
 		Name: goodguy
 		Faction: gdi
