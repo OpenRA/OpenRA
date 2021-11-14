@@ -174,7 +174,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			{
 				var dir = directions[i];
 				var neighbor = position + dir;
-				var pathCost = GetPathCostToNode(neighbor, dir);
+				var pathCost = GetPathCostToNode(position, neighbor, dir);
 
 				// PERF: Skip closed cells already, 15% of all cells
 				if (pathCost != PathCostForInvalidPath && info[neighbor].Status != CellStatus.Closed)
@@ -192,7 +192,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 					var layerPosition = new CPos(position.X, position.Y, cml.Index);
 					var entryCost = cml.EntryMovementCost(locomotor.Info, layerPosition);
 					if (entryCost != MovementCostForUnreachableCell &&
-						CanEnterNode(layerPosition) &&
+						CanEnterNode(position, layerPosition) &&
 						this[layerPosition].Status != CellStatus.Closed)
 						validNeighbors.Add(new GraphConnection(layerPosition, entryCost));
 				}
@@ -202,7 +202,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 				var layerPosition = new CPos(position.X, position.Y, 0);
 				var exitCost = cmls[layer].ExitMovementCost(locomotor.Info, layerPosition);
 				if (exitCost != MovementCostForUnreachableCell &&
-					CanEnterNode(layerPosition) &&
+					CanEnterNode(position, layerPosition) &&
 					this[layerPosition].Status != CellStatus.Closed)
 					validNeighbors.Add(new GraphConnection(layerPosition, exitCost));
 			}
@@ -210,16 +210,16 @@ namespace OpenRA.Mods.Common.Pathfinder
 			return validNeighbors;
 		}
 
-		bool CanEnterNode(CPos destNode)
+		bool CanEnterNode(CPos srcNode, CPos destNode)
 		{
 			return
-				locomotor.MovementCostToEnterCell(Actor, destNode, checkConditions, IgnoreActor)
+				locomotor.MovementCostToEnterCell(Actor, srcNode, destNode, checkConditions, IgnoreActor)
 				!= MovementCostForUnreachableCell;
 		}
 
-		int GetPathCostToNode(CPos destNode, CVec direction)
+		int GetPathCostToNode(CPos srcNode, CPos destNode, CVec direction)
 		{
-			var movementCost = locomotor.MovementCostToEnterCell(Actor, destNode, checkConditions, IgnoreActor);
+			var movementCost = locomotor.MovementCostToEnterCell(Actor, srcNode, destNode, checkConditions, IgnoreActor);
 			if (movementCost != MovementCostForUnreachableCell && !(CustomBlock != null && CustomBlock(destNode)))
 				return CalculateCellPathCost(destNode, direction, movementCost);
 
@@ -240,15 +240,6 @@ namespace OpenRA.Mods.Common.Pathfinder
 					return PathCostForInvalidPath;
 
 				cellCost += customCost;
-			}
-
-			// Prevent units from jumping over height discontinuities
-			if (checkTerrainHeight && neighborCPos.Layer == 0)
-			{
-				var heightLayer = World.Map.Height;
-				var from = neighborCPos - direction;
-				if (Math.Abs(heightLayer[neighborCPos] - heightLayer[from]) > 1)
-					return PathCostForInvalidPath;
 			}
 
 			// Directional bonuses for smoother flow!

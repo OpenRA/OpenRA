@@ -172,8 +172,21 @@ namespace OpenRA.Mods.Common.Traits
 
 		public short MovementCostForCell(CPos cell)
 		{
+			return MovementCostForCell(cell, null);
+		}
+
+		short MovementCostForCell(CPos cell, CPos? fromCell)
+		{
 			if (!world.Map.Contains(cell))
 				return PathGraph.MovementCostForUnreachableCell;
+
+			// Prevent units from jumping over height discontinuities.
+			if (fromCell != null && cell.Layer == 0 && fromCell.Value.Layer == 0 && world.Map.Grid.MaximumTerrainHeight > 0)
+			{
+				var heightLayer = world.Map.Height;
+				if (Math.Abs(heightLayer[cell] - heightLayer[fromCell.Value]) > 1)
+					return PathGraph.MovementCostForUnreachableCell;
+			}
 
 			return cellsCost[cell.Layer][cell];
 		}
@@ -186,12 +199,9 @@ namespace OpenRA.Mods.Common.Traits
 			return terrainInfos[index].Speed;
 		}
 
-		public short MovementCostToEnterCell(Actor actor, CPos destNode, BlockedByActor check, Actor ignoreActor)
+		public short MovementCostToEnterCell(Actor actor, CPos srcNode, CPos destNode, BlockedByActor check, Actor ignoreActor)
 		{
-			if (!world.Map.Contains(destNode))
-				return PathGraph.MovementCostForUnreachableCell;
-
-			var cellCost = cellsCost[destNode.Layer][destNode];
+			var cellCost = MovementCostForCell(destNode, srcNode);
 
 			if (cellCost == PathGraph.MovementCostForUnreachableCell ||
 				!CanMoveFreelyInto(actor, destNode, check, ignoreActor))
