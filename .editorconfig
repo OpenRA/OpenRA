@@ -106,6 +106,11 @@ dotnet_style_predefined_type_for_member_access = true:suggestion
 #prefer the language keyword for local variables, method parameters, and class members, instead of the type name, for types that have a keyword to represent them
 dotnet_style_predefined_type_for_locals_parameters_members = true:suggestion
 
+#show an IDE warning when default access modifiers are explicitly specified
+dotnet_style_require_accessibility_modifiers = omit_if_default:warning
+#raise a warning on build when default access modifiers are explicitly specified
+dotnet_diagnostic.IDE0040.severity = warning
+
 #don't prefer braces (for one liners)
 dotnet_diagnostic.IDE0011.severity = none
 
