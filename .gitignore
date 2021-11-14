@@ -41,10 +41,6 @@ Settings.md
 openra.6
 update.log
 
-# StyleCop
-*.Cache
-StyleCopViolations.xml
-
 # SublimeText
 *.sublime-project
 *.sublime-workspace
