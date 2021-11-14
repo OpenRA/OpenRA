@@ -357,6 +357,11 @@ namespace OpenRA
 			return root;
 		}
 
+		public static int MultiplyBySqrtTwo(short number)
+		{
+			return number * 46341 / 32768;
+		}
+
 		public static int IntegerDivisionRoundingAwayFromZero(int dividend, int divisor)
 		{
 			var quotient = Math.DivRem(dividend, divisor, out var remainder);

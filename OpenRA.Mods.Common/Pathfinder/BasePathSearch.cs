@@ -72,7 +72,8 @@ namespace OpenRA.Mods.Common.Pathfinder
 		// a deterministic set of calculations
 		protected readonly IPriorityQueue<GraphConnection> StartPoints;
 
-		private readonly int cellCost, diagonalCellCost;
+		readonly short cellCost;
+		readonly int diagonalCellCost;
 
 		protected BasePathSearch(IGraph<CellInfo> graph)
 		{
@@ -84,7 +85,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			// Determine the minimum possible cost for moving horizontally between cells based on terrain speeds.
 			// The minimum possible cost diagonally is then Sqrt(2) times more costly.
 			cellCost = ((Mobile)graph.Actor.OccupiesSpace).Info.LocomotorInfo.TerrainSpeeds.Values.Min(ti => ti.Cost);
-			diagonalCellCost = cellCost * 141421 / 100000;
+			diagonalCellCost = Exts.MultiplyBySqrtTwo(cellCost);
 		}
 
 		/// <summary>
