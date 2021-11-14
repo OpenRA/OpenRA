@@ -226,12 +226,11 @@ namespace OpenRA.Mods.Common.Pathfinder
 			return PathCostForInvalidPath;
 		}
 
-		int CalculateCellPathCost(CPos neighborCPos, CVec direction, int movementCost)
+		int CalculateCellPathCost(CPos neighborCPos, CVec direction, short movementCost)
 		{
-			var cellCost = movementCost;
-
-			if (direction.X * direction.Y != 0)
-				cellCost = (cellCost * 34) / 24;
+			var cellCost = direction.X * direction.Y != 0
+				? Exts.MultiplyBySqrtTwo(movementCost)
+				: movementCost;
 
 			if (CustomCost != null)
 			{
