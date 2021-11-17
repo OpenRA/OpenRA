@@ -6,8 +6,10 @@ World:
 		VictoryMusic: gdi_win1
 	MissionData:
 		Briefing: Eliminate the Nod base in the area.\n\nUse your Orcas to clear the path through the canyon-lined turrets.
+		BackgroundVideo: tbrinfo2.vqa
 		BriefingVideo: gdi10.vqa
-		WinVideo: gunboat.vqa
+		StartVideo: bcanyon.vqa 
+		WinVideo: nodlose.vqa
 		LossVideo: gameover.vqa
 
 ATWR:

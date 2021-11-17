@@ -30,24 +30,30 @@ WorldLoaded = function()
 	airfield.RallyPoint = waypoint11.Location
 	hand.RallyPoint = waypoint11.Location
 
-	for _, building in ipairs(NodBase) do
-		SetBuildingRepairTrigger(building)
-	end
+	-- set repair triggers a few seconds after the game starts to give it a moment
+	Trigger.AfterDelay(DateTime.Seconds(5), SetRepairRebuildTriggers)
 
 	Trigger.OnAnyKilled(NodBase, BuildBuilding)
 end
 
--- a function to get a "hash" which is basically just an x:y coordinate string
-GetCoordHash = function(building) 
+SetRepairRebuildTriggers = function() 
+	-- repair buildings as they are damaged
+	for _, actor in ipairs(Map.ActorsInWorld) do
+		-- nod buildings get auto-repair turned on
+		if (actor.Owner == Nod and actor.HasProperty("StartBuildingRepairs")) then
+			SetBuildingRepairTrigger(actor)
+		end
+
+		-- nod harvesters get auto-rebuild turned on
+		if (actor.HasProperty("FindResources")) then
+			SetHarvesterRebuildTrigger(actor)
+		end
+	end
 end
 
---Nod "in-base" infantry patrol between waypoints 18 and 19; rebuild if any(some?)(all?) are killed; join patrol
---Nod "in-base" tank(s?) respond to attacks on harvester; rebuild if killed; move to 19
---Rebuild any harvesters when destroyed
-
---Actor115 to test "if destroyed" logic
-
+--TODO, maybe: Nod "in-base" infantry patrol between waypoints 18 and 19; rebuild if any(some?)(all?) are killed; join patrol
 --215-18, 223-26, 219-22 are patrol units
+--TODO, maybe: Nod "in-base" tank(s?) respond to attacks on harvester; rebuild if killed; move to 19
 
 Tick = function()
 	if DateTime.GameTime > 2 and Nod.HasNoRequiredUnits() then
@@ -107,6 +113,10 @@ function SetBuildingRepairTrigger(actor)
 	end)
 end
 
+function SetHarvesterRebuildTrigger(actor)
+	Trigger.OnKilled(actor, BuildHarvester)
+end
+
 -- attack wave code
 AttackPaths =
 {
@@ -115,11 +125,7 @@ AttackPaths =
 	{ waypoint11.Location, waypoint18.Location, waypoint12.Location, waypoint0.Location, waypoint7.Location, waypoint8.Location, waypoint9.Location, waypoint10.Location, waypoint17.Location }
 }
 
-AttackDelayMin = { easy = DateTime.Minutes(1), normal = DateTime.Seconds(45), hard = DateTime.Seconds(30) }
-AttackDelayMax = { easy = DateTime.Minutes(2), normal = DateTime.Seconds(90), hard = DateTime.Minutes(1) }
-
 -- kind of mimics what the original mission sends at you
--- BuildAttackGroup depends on this data structure having this arrangement
 AttackUnitTypes = 
 {
 	{ factory = "hand", types = { "e1", "e1", "e3", "e3", "e4", "e4" } },
@@ -129,15 +135,29 @@ AttackUnitTypes =
 	{ factory = "afld", types = { "ltnk", "ltnk" } }
 }
 
+BuildHarvester = function() 
+	local factoryArray = Nod.GetActorsByType("afld")
+	if (#factoryArray > 0) then
+		factoryArray[1].Build({ "harv" }, HarvesterHarvest)
+	end
+end
+
+HarvesterHarvest = function(units) 
+	for _, unit in ipairs(units) do
+		unit.FindResources(path, false)
+		SetHarvesterRebuildTrigger(unit)
+	end
+end
+
 BuildAttackGroup = function()
 	-- for LUA rookies, arrays are 1-indexed
 	-- .Build takes an array of strings indicating unit types
 
 	local unitSet = Utils.Random(AttackUnitTypes)
 
-	if #unitSet.factory > 0 then
-		-- data structure is arranged so there's only one entry in the factory table
-		Nod.GetActorsByType(unitSet.factory)[1].Build(unitSet.types, SendAttackWave)
+	local factoryArray = Nod.GetActorsByType(unitSet.factory)
+	if (#factoryArray > 0) then
+		factoryArray[1].Build(unitSet.types, SendAttackWave)
 	end
 end
 
