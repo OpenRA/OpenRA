@@ -518,79 +518,79 @@ Actors:
 	Actor154: tc01
 		Location: 38,60
 		Owner: Neutral
-	Actor155: gun
+	gun1: gun
 		Location: 39,45
 		Owner: Nod
-	Actor156: gun
+	gun2: gun
 		Location: 51,45
 		Owner: Nod
-	Actor157: sam
+	sam1: sam
 		Location: 50,47
 		Owner: Nod
-	Actor158: sam
+	sam2: sam
 		Location: 38,47
 		Owner: Nod
-	Actor159: nuke
+	power1: nuke
 		Location: 46,50
 		Owner: Nod
-	Actor160: nuke
+	power2: nuke
 		Location: 48,50
 		Owner: Nod
-	Actor161: nuke
+	power3: nuke
 		Location: 46,47
 		Owner: Nod
-	Actor162: obli
+	obelisk1: obli
 		Location: 39,49
 		Owner: Nod
-	Actor163: gun
+	gun3: gun
 		Location: 36,50
 		Owner: Nod
-	Actor164: gun
+	gun4: gun
 		Location: 36,54
 		Owner: Nod
-	Actor165: proc
+	refinery: proc
 		Location: 41,47
 		Owner: Nod
-	Actor166: hand
+	hand: hand
 		Location: 44,47
 		Owner: Nod
-	Actor167: nuke
+	power4: nuke
 		Location: 48,47
 		Owner: Nod
-	Actor168: nuke
+	power5: nuke
 		Location: 50,48
 		Owner: Nod
-	Actor169: nuke
+	power6: nuke
 		Location: 49,54
 		Owner: Nod
-	Actor170: nuke
+	power7: nuke
 		Location: 52,47
 		Owner: Nod
-	Actor171: nuke
+	power8: nuke
 		Location: 50,51
 		Owner: Nod
-	Actor172: afld
+	airfield: afld
 		Location: 44,54
 		Owner: Nod
-	Actor173: sam
+	sam3: sam
 		Location: 52,60
 		Owner: Nod
-	Actor174: sam
+	sam4: sam
 		Location: 39,60
 		Owner: Nod
-	Actor175: silo
+	silo1: silo
 		Location: 52,50
 		Owner: Nod
-	Actor176: silo
+	silo2: silo
 		Location: 52,52
 		Owner: Nod
-	Actor177: silo
+	silo3: silo
 		Location: 39,55
 		Owner: Nod
-	Actor178: silo
+	silo4: silo
 		Location: 41,55
 		Owner: Nod
-	Actor179: fact
+	conyard: fact
 		Location: 51,54
 		Owner: Nod
 	Actor180: gun
