@@ -110,7 +110,10 @@ namespace OpenRA.Mods.Common.Activities
 
 		List<CPos> EvalPath(BlockedByActor check)
 		{
-			var path = getPath(check).TakeWhile(a => a != mobile.ToCell).ToList();
+			var path = getPath(check);
+			var toCellIndex = path.IndexOf(mobile.ToCell);
+			if (toCellIndex != -1)
+				path.RemoveRange(toCellIndex, path.Count - toCellIndex);
 			return path;
 		}
 
