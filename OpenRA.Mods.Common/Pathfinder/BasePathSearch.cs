@@ -10,7 +10,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
@@ -24,14 +23,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 		/// </summary>
 		IGraph<CellInfo> Graph { get; }
 
-		/// <summary>
-		/// Stores the analyzed nodes by the expand function
-		/// </summary>
-		IEnumerable<(CPos Cell, int Cost)> Considered { get; }
-
 		Player Owner { get; }
-
-		int MaxCost { get; }
 
 		IPathSearch Reverse();
 
@@ -68,11 +60,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 		protected IPriorityQueue<GraphConnection> OpenQueue { get; private set; }
 
-		public abstract IEnumerable<(CPos Cell, int Cost)> Considered { get; }
-
 		public Player Owner => Graph.Actor.Owner;
-		public int MaxCost { get; protected set; }
-		public bool Debug { get; set; }
 		protected Func<CPos, int> heuristic;
 		protected Func<CPos, bool> isGoal;
 		protected int heuristicWeightPercentage;
@@ -91,7 +79,6 @@ namespace OpenRA.Mods.Common.Pathfinder
 			Graph = graph;
 			OpenQueue = new PriorityQueue<GraphConnection>(GraphConnection.ConnectionCostComparer);
 			StartPoints = new PriorityQueue<GraphConnection>(GraphConnection.ConnectionCostComparer);
-			MaxCost = 0;
 			heuristicWeightPercentage = 100;
 
 			// Determine the minimum possible cost for moving horizontally between cells based on terrain speeds.
