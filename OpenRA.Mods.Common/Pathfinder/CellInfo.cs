@@ -31,6 +31,11 @@ namespace OpenRA.Mods.Common.Pathfinder
 	public readonly struct CellInfo
 	{
 		/// <summary>
+		/// The status of this node. Accessing other fields is only valid when the status is not <see cref="CellStatus.Unvisited"/>.
+		/// </summary>
+		public readonly CellStatus Status;
+
+		/// <summary>
 		/// The cost to move from the start up to this node.
 		/// </summary>
 		public readonly int CostSoFar;
@@ -38,19 +43,14 @@ namespace OpenRA.Mods.Common.Pathfinder
 		/// <summary>
 		/// The estimation of how far this node is from our target.
 		/// </summary>
-		public readonly int EstimatedTotal;
+		public readonly int EstimatedTotalCost;
 
 		/// <summary>
 		/// The previous node of this one that follows the shortest path.
 		/// </summary>
-		public readonly CPos PreviousPos;
+		public readonly CPos PreviousNode;
 
-		/// <summary>
-		/// The status of this node. Accessing other fields is only valid when the status is not <see cref="CellStatus.Unvisited"/>.
-		/// </summary>
-		public readonly CellStatus Status;
-
-		public CellInfo(int costSoFar, int estimatedTotal, CPos previousPos, CellStatus status)
+		public CellInfo(CellStatus status, int costSoFar, int estimatedTotalCost, CPos previousNode)
 		{
 			if (status == CellStatus.Unvisited)
 				throw new ArgumentException(
@@ -59,8 +59,8 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 			Status = status;
 			CostSoFar = costSoFar;
-			EstimatedTotal = estimatedTotal;
-			PreviousPos = previousPos;
+			EstimatedTotalCost = estimatedTotalCost;
+			PreviousNode = previousNode;
 		}
 
 		public override string ToString()
@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 			return
 				$"{Status} {nameof(CostSoFar)}={CostSoFar} " +
-				$"{nameof(EstimatedTotal)}={EstimatedTotal} {nameof(PreviousPos)}={PreviousPos}";
+				$"{nameof(EstimatedTotalCost)}={EstimatedTotalCost} {nameof(PreviousNode)}={PreviousNode}";
 		}
 	}
 }
