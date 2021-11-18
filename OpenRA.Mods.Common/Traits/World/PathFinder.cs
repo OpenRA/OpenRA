@@ -199,10 +199,10 @@ namespace OpenRA.Mods.Common.Traits
 			var ret = new List<CPos>();
 			var currentNode = destination;
 
-			while (cellInfo[currentNode].PreviousPos != currentNode)
+			while (cellInfo[currentNode].PreviousNode != currentNode)
 			{
 				ret.Add(currentNode);
-				currentNode = cellInfo[currentNode].PreviousPos;
+				currentNode = cellInfo[currentNode].PreviousNode;
 			}
 
 			ret.Add(currentNode);
@@ -217,10 +217,10 @@ namespace OpenRA.Mods.Common.Traits
 			var ret = new List<CPos>();
 
 			var q = confluenceNode;
-			while (ca[q].PreviousPos != q)
+			while (ca[q].PreviousNode != q)
 			{
 				ret.Add(q);
-				q = ca[q].PreviousPos;
+				q = ca[q].PreviousNode;
 			}
 
 			ret.Add(q);
@@ -228,9 +228,9 @@ namespace OpenRA.Mods.Common.Traits
 			ret.Reverse();
 
 			q = confluenceNode;
-			while (cb[q].PreviousPos != q)
+			while (cb[q].PreviousNode != q)
 			{
-				q = cb[q].PreviousPos;
+				q = cb[q].PreviousNode;
 				ret.Add(q);
 			}
 

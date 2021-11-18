@@ -157,15 +157,15 @@ namespace OpenRA.Mods.Common.Pathfinder
 		{
 			var layer = position.Layer;
 			var info = cellInfoForLayer[layer];
-			var previousPos = info[position].PreviousPos;
+			var previousNode = info[position].PreviousNode;
 
-			var dx = position.X - previousPos.X;
-			var dy = position.Y - previousPos.Y;
+			var dx = position.X - previousNode.X;
+			var dy = position.Y - previousNode.Y;
 			var index = dy * 3 + dx + 4;
 
 			var heightLayer = World.Map.Height;
 			var directions =
-				(checkTerrainHeight && layer == 0 && previousPos.Layer == 0 && heightLayer[position] != heightLayer[previousPos]
+				(checkTerrainHeight && layer == 0 && previousNode.Layer == 0 && heightLayer[position] != heightLayer[previousNode]
 				? DirectedNeighborsConservative
 				: DirectedNeighbors)[index];
 
