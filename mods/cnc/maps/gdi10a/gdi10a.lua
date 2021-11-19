@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
+   Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -7,7 +7,8 @@
    information, see COPYING.
 ]]
 
-Difficulty = hard
+Difficulty = Map.LobbyOption("difficulty")
+
 SamSites = { sam1, sam2, sam3, sam4 }
 
 -- this is a list of all the buildings that will get rebuilt when they get destroyed
@@ -121,7 +122,7 @@ end
 AttackPaths =
 {
 	{ waypoint11.Location, waypoint18.Location, waypoint12.Location, waypoint3.Location, waypoint4.Location, waypoint5.Location, waypoint6.Location },
-	{ waypoint11.Location, waypoint18.Location, waypoint12.Location, waypoint0.Location, waypoint2.Location, waypoint13.Location, waypoint14.Location, waypoint15.Location },
+	{ waypoint11.Location, waypoint18.Location, waypoint12.Location, waypoint0.Location, waypoint2.Location, waypoint13.Location, waypoint14.Location, waypoint15.Location, waypoint17.Location },
 	{ waypoint11.Location, waypoint18.Location, waypoint12.Location, waypoint0.Location, waypoint7.Location, waypoint8.Location, waypoint9.Location, waypoint10.Location, waypoint17.Location }
 }
 
@@ -133,6 +134,11 @@ AttackUnitTypes =
 	{ factory = "afld", types = { "arty", "arty" } },
 	{ factory = "afld", types = { "bggy", "ltnk" } },
 	{ factory = "afld", types = { "ltnk", "ltnk" } }
+}
+
+AttackTimer =
+{
+	hard = 10, normal = 20, easy = 30
 }
 
 BuildHarvester = function() 
@@ -170,5 +176,5 @@ SendAttackWave = function(units)
 		unit.Patrol(path, false)
 	end
 
-	Trigger.AfterDelay(DateTime.Seconds(5), BuildAttackGroup)
+	Trigger.AfterDelay(DateTime.Seconds(AttackTimer[Difficulty]), BuildAttackGroup)
 end
