@@ -9,8 +9,18 @@ World:
 		BackgroundVideo: tbrinfo2.vqa
 		BriefingVideo: gdi10.vqa
 		StartVideo: bcanyon.vqa 
-		WinVideo: nodlose.vqa
+		WinVideo: nodflees.vqa
 		LossVideo: gameover.vqa
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Description: The difficulty of the mission
+		Values:
+			easy: Easy
+			normal: Normal
+			hard: Hard
+		Default: normal
+		Locked: false
 
 ATWR:
 	Buildable:
