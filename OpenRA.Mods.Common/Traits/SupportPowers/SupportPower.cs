@@ -47,6 +47,11 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool StartFullyCharged = false;
 		public readonly string[] Prerequisites = { };
 
+		public readonly string DetectedSound = null;
+
+		[NotificationReference("Speech")]
+		public readonly string DetectedSpeechNotification = null;
+
 		public readonly string BeginChargeSound = null;
 
 		[NotificationReference("Speech")]
@@ -137,6 +142,18 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 		}
 
+		protected override void Created(Actor self)
+		{
+			base.Created(self);
+
+			var renderPlayer = self.World.RenderPlayer;
+			if (renderPlayer != null && renderPlayer != self.Owner)
+			{
+				Game.Sound.Play(SoundType.UI, Info.DetectedSound);
+				Game.Sound.PlayNotification(self.World.Map.Rules, renderPlayer, "Speech", info.DetectedSpeechNotification, renderPlayer.Faction.InternalName);
+			}
+		}
+
 		public virtual SupportPowerInstance CreateInstance(string key, SupportPowerManager manager)
 		{
 			return new SupportPowerInstance(key, info, manager);
@@ -185,7 +202,6 @@ namespace OpenRA.Mods.Common.Traits
 			var isAllied = Self.Owner.IsAlliedWith(renderPlayer);
 			Game.Sound.Play(SoundType.UI, isAllied ? Info.LaunchSound : Info.IncomingSound);
 
-			// IsAlliedWith returns true if renderPlayer is null, so we are safe here.
 			var toPlayer = isAllied ? renderPlayer ?? Self.Owner : renderPlayer;
 			var speech = isAllied ? Info.LaunchSpeechNotification : Info.IncomingSpeechNotification;
 			Game.Sound.PlayNotification(Self.World.Map.Rules, toPlayer, "Speech", speech, toPlayer.Faction.InternalName);
