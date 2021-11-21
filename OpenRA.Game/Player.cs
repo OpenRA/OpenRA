@@ -253,6 +253,7 @@ namespace OpenRA
 			return PlayerRelationship.Neutral;
 		}
 
+		/// <summary> returns true if player is null </summary>
 		public bool IsAlliedWith(Player p)
 		{
 			return RelationshipWith(p) == PlayerRelationship.Ally;
