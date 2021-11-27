@@ -211,15 +211,15 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyCreated.Created(Actor self)
 		{
-			var cmls = self.TraitsImplementing<ICustomMovementLayer>().ToList();
-			if (cmls.Count == 0)
+			var customMovementLayers = self.TraitsImplementing<ICustomMovementLayer>().ToList();
+			if (customMovementLayers.Count == 0)
 				return;
 
-			var length = cmls.Max(cml => cml.Index) + 1;
+			var length = customMovementLayers.Max(cml => cml.Index) + 1;
 			Array.Resize(ref CustomMovementLayers, length);
 			Array.Resize(ref influence, length);
 
-			foreach (var cml in cmls)
+			foreach (var cml in customMovementLayers)
 			{
 				CustomMovementLayers[cml.Index] = cml;
 				influence[cml.Index] = new CellLayer<InfluenceNode>(self.World.Map);

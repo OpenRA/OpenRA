@@ -18,100 +18,54 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Pathfinder
 {
 	/// <summary>
-	/// Represents a graph with nodes and edges
+	/// A dense pathfinding graph that supports a search over all cells within a map.
+	/// It implements the ability to cost and get connections for cells, and supports <see cref="ICustomMovementLayer"/>.
 	/// </summary>
-	/// <typeparam name="T">The type of node used in the graph</typeparam>
-	public interface IGraph<T> : IDisposable
-	{
-		/// <summary>
-		/// Gets all the Connections for a given node in the graph
-		/// </summary>
-		List<GraphConnection> GetConnections(CPos position);
-
-		/// <summary>
-		/// Retrieves an object given a node in the graph
-		/// </summary>
-		T this[CPos pos] { get; set; }
-
-		Func<CPos, bool> CustomBlock { get; set; }
-
-		Func<CPos, int> CustomCost { get; set; }
-
-		int LaneBias { get; set; }
-
-		bool InReverse { get; set; }
-
-		Actor IgnoreActor { get; set; }
-
-		World World { get; }
-
-		Actor Actor { get; }
-	}
-
-	public readonly struct GraphConnection
-	{
-		public static readonly CostComparer ConnectionCostComparer = CostComparer.Instance;
-
-		public sealed class CostComparer : IComparer<GraphConnection>
-		{
-			public static readonly CostComparer Instance = new CostComparer();
-			CostComparer() { }
-			public int Compare(GraphConnection x, GraphConnection y)
-			{
-				return x.Cost.CompareTo(y.Cost);
-			}
-		}
-
-		public readonly CPos Destination;
-		public readonly int Cost;
-
-		public GraphConnection(CPos destination, int cost)
-		{
-			Destination = destination;
-			Cost = cost;
-		}
-	}
-
-	sealed class PathGraph : IGraph<CellInfo>
+	sealed class PathGraph : IPathGraph
 	{
 		public const int PathCostForInvalidPath = int.MaxValue;
 		public const short MovementCostForUnreachableCell = short.MaxValue;
+		const int LaneBiasCost = 1;
 
-		public Actor Actor { get; private set; }
-		public World World { get; private set; }
-		public Func<CPos, bool> CustomBlock { get; set; }
-		public Func<CPos, int> CustomCost { get; set; }
-		public int LaneBias { get; set; }
-		public bool InReverse { get; set; }
-		public Actor IgnoreActor { get; set; }
-
-		readonly BlockedByActor checkConditions;
+		readonly ICustomMovementLayer[] customMovementLayers;
+		readonly int customMovementLayersEnabledForLocomotor;
 		readonly Locomotor locomotor;
-		readonly CellInfoLayerPool.PooledCellInfoLayer pooledLayer;
+		readonly Actor actor;
+		readonly World world;
+		readonly BlockedByActor check;
+		readonly Func<CPos, int> customCost;
+		readonly Actor ignoreActor;
+		readonly bool inReverse;
+		readonly bool laneBias;
 		readonly bool checkTerrainHeight;
+		readonly CellInfoLayerPool.PooledCellInfoLayer pooledLayer;
 		readonly CellLayer<CellInfo>[] cellInfoForLayer;
 
-		public PathGraph(CellInfoLayerPool layerPool, Locomotor locomotor, Actor actor, World world, BlockedByActor check)
+		public PathGraph(CellInfoLayerPool layerPool, Locomotor locomotor, Actor actor, World world, BlockedByActor check,
+			Func<CPos, int> customCost, Actor ignoreActor, bool inReverse, bool laneBias)
 		{
+			customMovementLayers = world.GetCustomMovementLayers();
+			customMovementLayersEnabledForLocomotor = customMovementLayers.Count(cml => cml != null && cml.EnabledForLocomotor(locomotor.Info));
 			this.locomotor = locomotor;
+			this.world = world;
+			this.actor = actor;
+			this.check = check;
+			this.customCost = customCost;
+			this.ignoreActor = ignoreActor;
+			this.inReverse = inReverse;
+			this.laneBias = laneBias;
+			checkTerrainHeight = world.Map.Grid.MaximumTerrainHeight > 0;
 
 			// As we support a search over the whole map area,
 			// use the pool to grab the CellInfos we need to track the graph state.
 			// This allows us to avoid the cost of allocating large arrays constantly.
 			// PERF: Avoid LINQ
-			var cmls = world.GetCustomMovementLayers();
 			pooledLayer = layerPool.Get();
-			cellInfoForLayer = new CellLayer<CellInfo>[cmls.Length];
+			cellInfoForLayer = new CellLayer<CellInfo>[customMovementLayers.Length];
 			cellInfoForLayer[0] = pooledLayer.GetLayer();
-			foreach (var cml in cmls)
+			foreach (var cml in customMovementLayers)
 				if (cml != null && cml.EnabledForLocomotor(locomotor.Info))
 					cellInfoForLayer[cml.Index] = pooledLayer.GetLayer();
-
-			World = world;
-			Actor = actor;
-			LaneBias = 1;
-			checkConditions = check;
-			checkTerrainHeight = world.Map.Grid.MaximumTerrainHeight > 0;
 		}
 
 		// Sets of neighbors for each incoming direction. These exclude the neighbors which are guaranteed
@@ -156,35 +110,34 @@ namespace OpenRA.Mods.Common.Pathfinder
 		public List<GraphConnection> GetConnections(CPos position)
 		{
 			var layer = position.Layer;
-			var info = cellInfoForLayer[layer];
-			var previousNode = info[position].PreviousNode;
+			var info = this[position];
+			var previousNode = info.PreviousNode;
 
 			var dx = position.X - previousNode.X;
 			var dy = position.Y - previousNode.Y;
 			var index = dy * 3 + dx + 4;
 
-			var heightLayer = World.Map.Height;
+			var heightLayer = world.Map.Height;
 			var directions =
 				(checkTerrainHeight && layer == 0 && previousNode.Layer == 0 && heightLayer[position] != heightLayer[previousNode]
 				? DirectedNeighborsConservative
 				: DirectedNeighbors)[index];
 
-			var validNeighbors = new List<GraphConnection>(directions.Length + (layer == 0 ? cellInfoForLayer.Length : 1));
+			var validNeighbors = new List<GraphConnection>(directions.Length + (layer == 0 ? customMovementLayersEnabledForLocomotor : 1));
 			for (var i = 0; i < directions.Length; i++)
 			{
 				var dir = directions[i];
 				var neighbor = position + dir;
-				var pathCost = GetPathCostToNode(position, neighbor, dir);
 
-				// PERF: Skip closed cells already, 15% of all cells
-				if (pathCost != PathCostForInvalidPath && info[neighbor].Status != CellStatus.Closed)
+				var pathCost = GetPathCostToNode(position, neighbor, dir);
+				if (pathCost != PathCostForInvalidPath &&
+					this[neighbor].Status != CellStatus.Closed)
 					validNeighbors.Add(new GraphConnection(neighbor, pathCost));
 			}
 
-			var cmls = World.GetCustomMovementLayers();
 			if (layer == 0)
 			{
-				foreach (var cml in cmls)
+				foreach (var cml in customMovementLayers)
 				{
 					if (cml == null || !cml.EnabledForLocomotor(locomotor.Info))
 						continue;
@@ -199,12 +152,12 @@ namespace OpenRA.Mods.Common.Pathfinder
 			}
 			else
 			{
-				var layerPosition = new CPos(position.X, position.Y, 0);
-				var exitCost = cmls[layer].ExitMovementCost(locomotor.Info, layerPosition);
+				var groundPosition = new CPos(position.X, position.Y, 0);
+				var exitCost = customMovementLayers[layer].ExitMovementCost(locomotor.Info, groundPosition);
 				if (exitCost != MovementCostForUnreachableCell &&
-					CanEnterNode(position, layerPosition) &&
-					this[layerPosition].Status != CellStatus.Closed)
-					validNeighbors.Add(new GraphConnection(layerPosition, exitCost));
+					CanEnterNode(position, groundPosition) &&
+					this[groundPosition].Status != CellStatus.Closed)
+					validNeighbors.Add(new GraphConnection(groundPosition, exitCost));
 			}
 
 			return validNeighbors;
@@ -213,14 +166,14 @@ namespace OpenRA.Mods.Common.Pathfinder
 		bool CanEnterNode(CPos srcNode, CPos destNode)
 		{
 			return
-				locomotor.MovementCostToEnterCell(Actor, srcNode, destNode, checkConditions, IgnoreActor)
+				locomotor.MovementCostToEnterCell(actor, srcNode, destNode, check, ignoreActor)
 				!= MovementCostForUnreachableCell;
 		}
 
 		int GetPathCostToNode(CPos srcNode, CPos destNode, CVec direction)
 		{
-			var movementCost = locomotor.MovementCostToEnterCell(Actor, srcNode, destNode, checkConditions, IgnoreActor);
-			if (movementCost != MovementCostForUnreachableCell && !(CustomBlock != null && CustomBlock(destNode)))
+			var movementCost = locomotor.MovementCostToEnterCell(actor, srcNode, destNode, check, ignoreActor);
+			if (movementCost != MovementCostForUnreachableCell)
 				return CalculateCellPathCost(destNode, direction, movementCost);
 
 			return PathCostForInvalidPath;
@@ -232,26 +185,26 @@ namespace OpenRA.Mods.Common.Pathfinder
 				? Exts.MultiplyBySqrtTwo(movementCost)
 				: movementCost;
 
-			if (CustomCost != null)
+			if (customCost != null)
 			{
-				var customCost = CustomCost(neighborCPos);
-				if (customCost == PathCostForInvalidPath)
+				var customCellCost = customCost(neighborCPos);
+				if (customCellCost == PathCostForInvalidPath)
 					return PathCostForInvalidPath;
 
-				cellCost += customCost;
+				cellCost += customCellCost;
 			}
 
 			// Directional bonuses for smoother flow!
-			if (LaneBias != 0)
+			if (laneBias)
 			{
-				var ux = neighborCPos.X + (InReverse ? 1 : 0) & 1;
-				var uy = neighborCPos.Y + (InReverse ? 1 : 0) & 1;
+				var ux = neighborCPos.X + (inReverse ? 1 : 0) & 1;
+				var uy = neighborCPos.Y + (inReverse ? 1 : 0) & 1;
 
 				if ((ux == 0 && direction.Y < 0) || (ux == 1 && direction.Y > 0))
-					cellCost += LaneBias;
+					cellCost += LaneBiasCost;
 
 				if ((uy == 0 && direction.X < 0) || (uy == 1 && direction.X > 0))
-					cellCost += LaneBias;
+					cellCost += LaneBiasCost;
 			}
 
 			return cellCost;

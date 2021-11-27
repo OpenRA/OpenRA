@@ -22,8 +22,6 @@ namespace OpenRA.Mods.Common.Activities
 {
 	public class Move : Activity
 	{
-		static readonly List<CPos> NoPath = new List<CPos>();
-
 		readonly Mobile mobile;
 		readonly WDist nearEnough;
 		readonly Func<BlockedByActor, List<CPos>> getPath;
@@ -52,7 +50,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly bool evaluateNearestMovableCell;
 
 		// Scriptable move order
-		// Ignores lane bias and nearby units
+		// Ignores lane bias
 		public Move(Actor self, CPos destination, Color? targetLineColor = null)
 		{
 			// PERF: Because we can be sure that OccupiesSpace is Mobile here, we can save some performance by avoiding querying for the trait.
@@ -60,12 +58,9 @@ namespace OpenRA.Mods.Common.Activities
 
 			getPath = check =>
 			{
-				List<CPos> path;
-				using (var search =
-					PathSearch.FromPoint(self.World, mobile.Locomotor, self, mobile.ToCell, destination, check)
-					.WithoutLaneBias())
-					path = mobile.Pathfinder.FindPath(search);
-				return path;
+				using (var search = PathSearch.ToTargetCell(
+					self.World, mobile.Locomotor, self, mobile.ToCell, destination, check, laneBias: false))
+					return mobile.Pathfinder.FindPath(search);
 			};
 
 			this.destination = destination;
@@ -82,7 +77,7 @@ namespace OpenRA.Mods.Common.Activities
 			getPath = check =>
 			{
 				if (!this.destination.HasValue)
-					return NoPath;
+					return PathFinder.NoPath;
 
 				return mobile.Pathfinder.FindUnitPath(mobile.ToCell, this.destination.Value, self, ignoreActor, check);
 			};

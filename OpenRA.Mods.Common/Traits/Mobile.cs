@@ -799,7 +799,6 @@ namespace OpenRA.Mods.Common.Traits
 				notifyCrushed.Trait.WarnCrush(notifyCrushed.Actor, self, Info.LocomotorInfo.Crushes);
 		}
 
-		public Activity ScriptedMove(CPos cell) { return new Move(self, cell); }
 		public Activity MoveTo(Func<BlockedByActor, List<CPos>> pathFunc) { return new Move(self, pathFunc); }
 
 		Activity LocalMove(Actor self, WPos fromPos, WPos toPos, CPos cell)
@@ -821,9 +820,8 @@ namespace OpenRA.Mods.Common.Traits
 				return above;
 
 			List<CPos> path;
-			using (var search = PathSearch.Search(self.World, Locomotor, self, BlockedByActor.All,
-					loc => loc.Layer == 0 && CanEnterCell(loc))
-				.FromPoint(self.Location))
+			using (var search = PathSearch.ToTargetCellByPredicate(
+				self.World, Locomotor, self, new[] { self.Location }, loc => loc.Layer == 0 && CanEnterCell(loc), BlockedByActor.All))
 				path = Pathfinder.FindPath(search);
 
 			if (path.Count > 0)

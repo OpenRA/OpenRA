@@ -10,7 +10,6 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Linq;
 using OpenRA.Mods.Common.Pathfinder;
 using OpenRA.Traits;
 
@@ -29,29 +28,28 @@ namespace OpenRA.Mods.Common.Traits
 	public interface IPathFinder
 	{
 		/// <summary>
-		/// Calculates a path for the actor from source to destination
+		/// Calculates a path for the actor from source to target.
+		/// Returned path is *reversed* and given target to source.
 		/// </summary>
-		/// <returns>A path from start to target</returns>
 		List<CPos> FindUnitPath(CPos source, CPos target, Actor self, Actor ignoreActor, BlockedByActor check);
 
-		List<CPos> FindUnitPathToRange(CPos source, SubCell srcSub, WPos target, WDist range, Actor self, BlockedByActor check);
+		/// <summary>
+		/// Expands the path search until a path is found, and returns that path.
+		/// Returned path is *reversed* and given target to source.
+		/// </summary>
+		List<CPos> FindPath(PathSearch search);
 
 		/// <summary>
-		/// Calculates a path given a search specification
+		/// Expands both path searches until they intersect, and returns the path.
+		/// Returned path is from the source of the first search to the source of the second search.
 		/// </summary>
-		List<CPos> FindPath(IPathSearch search);
-
-		/// <summary>
-		/// Calculates a path given two search specifications, and
-		/// then returns a path when both search intersect each other
-		/// TODO: This should eventually disappear
-		/// </summary>
-		List<CPos> FindBidiPath(IPathSearch fromSrc, IPathSearch fromDest);
+		List<CPos> FindBidiPath(PathSearch fromSrc, PathSearch fromDest);
 	}
 
 	public class PathFinder : IPathFinder
 	{
-		static readonly List<CPos> EmptyPath = new List<CPos>(0);
+		public static readonly List<CPos> NoPath = new List<CPos>(0);
+
 		readonly World world;
 		DomainIndex domainIndex;
 		bool cached;
@@ -61,6 +59,10 @@ namespace OpenRA.Mods.Common.Traits
 			this.world = world;
 		}
 
+		/// <summary>
+		/// Calculates a path for the actor from source to target.
+		/// Returned path is *reversed* and given target to source.
+		/// </summary>
 		public List<CPos> FindUnitPath(CPos source, CPos target, Actor self, Actor ignoreActor, BlockedByActor check)
 		{
 			// PERF: Because we can be sure that OccupiesSpace is Mobile here, we can save some performance by avoiding querying for the trait.
@@ -74,153 +76,99 @@ namespace OpenRA.Mods.Common.Traits
 
 			// If a water-land transition is required, bail early
 			if (domainIndex != null && !domainIndex.IsPassable(source, target, locomotor))
-				return EmptyPath;
+				return NoPath;
 
 			var distance = source - target;
 			var canMoveFreely = locomotor.CanMoveFreelyInto(self, target, check, null);
 			if (distance.LengthSquared < 3 && !canMoveFreely)
-				return new List<CPos> { };
+				return NoPath;
 
 			if (source.Layer == target.Layer && distance.LengthSquared < 3 && canMoveFreely)
 				return new List<CPos> { target };
 
 			List<CPos> pb;
-
-			using (var fromSrc = PathSearch.FromPoint(world, locomotor, self, target, source, check).WithIgnoredActor(ignoreActor))
-			using (var fromDest = PathSearch.FromPoint(world, locomotor, self, source, target, check).WithIgnoredActor(ignoreActor).Reverse())
+			using (var fromSrc = PathSearch.ToTargetCell(world, locomotor, self, target, source, check, ignoreActor: ignoreActor))
+			using (var fromDest = PathSearch.ToTargetCell(world, locomotor, self, source, target, check, ignoreActor: ignoreActor, inReverse: true))
 				pb = FindBidiPath(fromSrc, fromDest);
 
 			return pb;
 		}
 
-		public List<CPos> FindUnitPathToRange(CPos source, SubCell srcSub, WPos target, WDist range, Actor self, BlockedByActor check)
+		/// <summary>
+		/// Expands the path search until a path is found, and returns that path.
+		/// Returned path is *reversed* and given target to source.
+		/// </summary>
+		public List<CPos> FindPath(PathSearch search)
 		{
-			if (!cached)
-			{
-				domainIndex = world.WorldActor.TraitOrDefault<DomainIndex>();
-				cached = true;
-			}
-
-			// PERF: Because we can be sure that OccupiesSpace is Mobile here, we can save some performance by avoiding querying for the trait.
-			var mobile = (Mobile)self.OccupiesSpace;
-			var locomotor = mobile.Locomotor;
-
-			var targetCell = world.Map.CellContaining(target);
-
-			// Correct for SubCell offset
-			target -= world.Map.Grid.OffsetOfSubCell(srcSub);
-
-			var rangeLengthSquared = range.LengthSquared;
-			var map = world.Map;
-
-			// Select only the tiles that are within range from the requested SubCell
-			// This assumes that the SubCell does not change during the path traversal
-			var tilesInRange = map.FindTilesInCircle(targetCell, range.Length / 1024 + 1)
-				.Where(t => (map.CenterOfCell(t) - target).LengthSquared <= rangeLengthSquared
-							&& mobile.Info.CanEnterCell(world, self, t));
-
-			// See if there is any cell within range that does not involve a cross-domain request
-			// Really, we only need to check the circle perimeter, but it's not clear that would be a performance win
-			if (domainIndex != null)
-			{
-				tilesInRange = new List<CPos>(tilesInRange.Where(t => domainIndex.IsPassable(source, t, locomotor)));
-				if (!tilesInRange.Any())
-					return EmptyPath;
-			}
-
-			using (var fromSrc = PathSearch.FromPoints(world, locomotor, self, tilesInRange, source, check))
-			using (var fromDest = PathSearch.FromPoint(world, locomotor, self, source, targetCell, check).Reverse())
-				return FindBidiPath(fromSrc, fromDest);
-		}
-
-		public List<CPos> FindPath(IPathSearch search)
-		{
-			List<CPos> path = null;
-
 			while (search.CanExpand)
 			{
 				var p = search.Expand();
 				if (search.IsTarget(p))
-				{
-					path = MakePath(search.Graph, p);
-					break;
-				}
+					return MakePath(search.Graph, p);
 			}
 
-			search.Graph.Dispose();
-
-			if (path != null)
-				return path;
-
-			// no path exists
-			return EmptyPath;
+			return NoPath;
 		}
 
-		// Searches from both ends toward each other. This is used to prevent blockings in case we find
-		// units in the middle of the path that prevent us to continue.
-		public List<CPos> FindBidiPath(IPathSearch fromSrc, IPathSearch fromDest)
-		{
-			List<CPos> path = null;
-
-			while (fromSrc.CanExpand && fromDest.CanExpand)
-			{
-				// make some progress on the first search
-				var p = fromSrc.Expand();
-				if (fromDest.Graph[p].Status == CellStatus.Closed &&
-					fromDest.Graph[p].CostSoFar != PathGraph.PathCostForInvalidPath)
-				{
-					path = MakeBidiPath(fromSrc, fromDest, p);
-					break;
-				}
-
-				// make some progress on the second search
-				var q = fromDest.Expand();
-				if (fromSrc.Graph[q].Status == CellStatus.Closed &&
-					fromSrc.Graph[q].CostSoFar != PathGraph.PathCostForInvalidPath)
-				{
-					path = MakeBidiPath(fromSrc, fromDest, q);
-					break;
-				}
-			}
-
-			fromSrc.Graph.Dispose();
-			fromDest.Graph.Dispose();
-
-			if (path != null)
-				return path;
-
-			return EmptyPath;
-		}
-
-		// Build the path from the destination. When we find a node that has the same previous
-		// position than itself, that node is the source node.
-		static List<CPos> MakePath(IGraph<CellInfo> cellInfo, CPos destination)
+		// Build the path from the destination.
+		// When we find a node that has the same previous position than itself, that node is the source node.
+		static List<CPos> MakePath(IPathGraph graph, CPos destination)
 		{
 			var ret = new List<CPos>();
 			var currentNode = destination;
 
-			while (cellInfo[currentNode].PreviousNode != currentNode)
+			while (graph[currentNode].PreviousNode != currentNode)
 			{
 				ret.Add(currentNode);
-				currentNode = cellInfo[currentNode].PreviousNode;
+				currentNode = graph[currentNode].PreviousNode;
 			}
 
 			ret.Add(currentNode);
 			return ret;
 		}
 
-		static List<CPos> MakeBidiPath(IPathSearch a, IPathSearch b, CPos confluenceNode)
+		/// <summary>
+		/// Expands both path searches until they intersect, and returns the path.
+		/// Returned path is from the source of the first search to the source of the second search.
+		/// </summary>
+		public List<CPos> FindBidiPath(PathSearch first, PathSearch second)
 		{
-			var ca = a.Graph;
-			var cb = b.Graph;
+			while (first.CanExpand && second.CanExpand)
+			{
+				// make some progress on the first search
+				var p = first.Expand();
+				var pInfo = second.Graph[p];
+				if (pInfo.Status == CellStatus.Closed &&
+					pInfo.CostSoFar != PathGraph.PathCostForInvalidPath)
+					return MakeBidiPath(first, second, p);
+
+				// make some progress on the second search
+				var q = second.Expand();
+				var qInfo = first.Graph[q];
+				if (qInfo.Status == CellStatus.Closed &&
+					qInfo.CostSoFar != PathGraph.PathCostForInvalidPath)
+					return MakeBidiPath(first, second, q);
+			}
+
+			return NoPath;
+		}
+
+		// Build the path from the destination of each search.
+		// When we find a node that has the same previous position than itself, that is the source of that search.
+		static List<CPos> MakeBidiPath(PathSearch first, PathSearch second, CPos confluenceNode)
+		{
+			var ca = first.Graph;
+			var cb = second.Graph;
 
 			var ret = new List<CPos>();
 
 			var q = confluenceNode;
-			while (ca[q].PreviousNode != q)
+			var previous = ca[q].PreviousNode;
+			while (previous != q)
 			{
 				ret.Add(q);
-				q = ca[q].PreviousNode;
+				q = previous;
+				previous = ca[q].PreviousNode;
 			}
 
 			ret.Add(q);
@@ -228,9 +176,11 @@ namespace OpenRA.Mods.Common.Traits
 			ret.Reverse();
 
 			q = confluenceNode;
-			while (cb[q].PreviousNode != q)
+			previous = cb[q].PreviousNode;
+			while (previous != q)
 			{
-				q = cb[q].PreviousNode;
+				q = previous;
+				previous = cb[q].PreviousNode;
 				ret.Add(q);
 			}
 
