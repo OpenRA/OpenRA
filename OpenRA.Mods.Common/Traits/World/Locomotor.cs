@@ -379,10 +379,10 @@ namespace OpenRA.Mods.Common.Traits
 			// This section needs to run after WorldLoaded() because we need to be sure that all types of ICustomMovementLayer have been initialized.
 			w.AddFrameEndTask(_ =>
 			{
-				var cmls = world.GetCustomMovementLayers();
-				Array.Resize(ref cellsCost, cmls.Length);
-				Array.Resize(ref blockingCache, cmls.Length);
-				foreach (var cml in cmls)
+				var customMovementLayers = world.GetCustomMovementLayers();
+				Array.Resize(ref cellsCost, customMovementLayers.Length);
+				Array.Resize(ref blockingCache, customMovementLayers.Length);
+				foreach (var cml in customMovementLayers)
 				{
 					if (cml == null)
 						continue;

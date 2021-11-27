@@ -21,8 +21,6 @@ namespace OpenRA.Mods.Common.Activities
 {
 	public class MoveAdjacentTo : Activity
 	{
-		static readonly List<CPos> NoPath = new List<CPos>();
-
 		protected readonly Mobile Mobile;
 		readonly DomainIndex domainIndex;
 		readonly Color? targetLineColor;
@@ -130,10 +128,10 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			if (!searchCells.Any())
-				return NoPath;
+				return PathFinder.NoPath;
 
-			using (var fromSrc = PathSearch.FromPoints(self.World, Mobile.Locomotor, self, searchCells, loc, check))
-			using (var fromDest = PathSearch.FromPoint(self.World, Mobile.Locomotor, self, loc, lastVisibleTargetLocation, check).Reverse())
+			using (var fromSrc = PathSearch.ToTargetCell(self.World, Mobile.Locomotor, self, searchCells, loc, check))
+			using (var fromDest = PathSearch.ToTargetCell(self.World, Mobile.Locomotor, self, loc, lastVisibleTargetLocation, check, inReverse: true))
 				return Mobile.Pathfinder.FindBidiPath(fromSrc, fromDest);
 		}
 

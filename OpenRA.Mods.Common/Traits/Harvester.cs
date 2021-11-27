@@ -195,8 +195,9 @@ namespace OpenRA.Mods.Common.Traits
 			// Start a search from each refinery's delivery location:
 			List<CPos> path;
 
-			using (var search = PathSearch.FromPoints(self.World, mobile.Locomotor, self, refineries.Select(r => r.Key), self.Location, BlockedByActor.None)
-				.WithCustomCost(location =>
+			using (var search = PathSearch.ToTargetCell(
+				self.World, mobile.Locomotor, self, refineries.Select(r => r.Key), self.Location, BlockedByActor.None,
+				location =>
 				{
 					if (!refineries.Contains(location))
 						return 0;
@@ -212,7 +213,7 @@ namespace OpenRA.Mods.Common.Traits
 				}))
 				path = mobile.Pathfinder.FindPath(search);
 
-			if (path.Count != 0)
+			if (path.Count > 0)
 				return refineries[path.Last()].First().Actor;
 
 			return null;
