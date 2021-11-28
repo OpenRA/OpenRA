@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public override object Create(ActorInitializer init)
 		{
-			return new PathFinderUnitPathCacheDecorator(new PathFinder(init.World), new PathCacheStorage(init.World));
+			return new PathFinder(init.World);
 		}
 	}
 
