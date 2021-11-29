@@ -388,6 +388,7 @@ namespace OpenRA
 			}
 
 			var name = prefix + clip + suffix;
+			var actorId = voicedActor != null && voicedActor.World.Selection.Contains(voicedActor) ? 0 : id;
 
 			if (!string.IsNullOrEmpty(name) && (p == null || p == p.World.LocalPlayer))
 			{
@@ -398,10 +399,10 @@ namespace OpenRA
 					else
 						return false;
 				}
-				else if (currentSounds.ContainsKey(id) && !currentSounds[id].Complete)
+				else if (currentSounds.ContainsKey(actorId) && !currentSounds[actorId].Complete)
 				{
 					if (pool.AllowInterrupt)
-						soundEngine.StopSound(currentSounds[id]);
+						soundEngine.StopSound(currentSounds[actorId]);
 					else
 						return false;
 				}
@@ -410,8 +411,8 @@ namespace OpenRA
 					false, relative, pos,
 					InternalSoundVolume * volumeModifier * pool.VolumeModifier, attenuateVolume);
 
-				if (id != 0)
-					currentSounds[id] = sound;
+				if (voicedActor != null)
+					currentSounds[actorId] = sound;
 				else
 					currentNotifications[name] = sound;
 			}
