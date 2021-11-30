@@ -32,6 +32,7 @@ namespace OpenRA.Mods.Common
 	public sealed class DiscordService : IGlobalModData, IDisposable
 	{
 		public readonly string ApplicationId = null;
+		public readonly string Tooltip = "Open Source real-time strategy game engine for early Westwood titles.";
 		DiscordRpcClient client;
 		DiscordState currentState;
 
@@ -167,7 +168,7 @@ namespace OpenRA.Mods.Common
 				Assets = new Assets
 				{
 					LargeImageKey = "large",
-					LargeImageText = Game.ModData.Manifest.Metadata.Title,
+					LargeImageText = Tooltip,
 				},
 				Timestamps = timestamp.HasValue ? new Timestamps(timestamp.Value) : null,
 				Party = party,
