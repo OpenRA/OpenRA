@@ -33,8 +33,8 @@ namespace OpenRA.Mods.Common.Activities
 		static readonly BlockedByActor[] PathSearchOrder =
 		{
 			BlockedByActor.All,
-			BlockedByActor.Immovable,
 			BlockedByActor.Stationary,
+			BlockedByActor.Immovable,
 			BlockedByActor.None
 		};
 
