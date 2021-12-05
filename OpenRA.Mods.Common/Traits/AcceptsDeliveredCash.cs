@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using OpenRA.Traits;
 
@@ -24,16 +25,16 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly PlayerRelationship ValidRelationships = PlayerRelationship.Ally;
 
 		[Desc("Play a randomly selected sound from this list when accepting cash.")]
-		public readonly string[] Sounds = { };
+		public readonly string[] Sounds = Array.Empty<string>();
 
-		public override object Create(ActorInitializer init) { return new AcceptsDeliveredCash(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new AcceptsDeliveredCash(this); }
 	}
 
 	public class AcceptsDeliveredCash : INotifyCashTransfer
 	{
 		readonly AcceptsDeliveredCashInfo info;
 
-		public AcceptsDeliveredCash(Actor self, AcceptsDeliveredCashInfo info)
+		public AcceptsDeliveredCash(AcceptsDeliveredCashInfo info)
 		{
 			this.info = info;
 		}

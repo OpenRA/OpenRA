@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			template = scrollPanel.Get<ContainerWidget>("PACKAGE_TEMPLATE");
 
 			var headerTemplate = panel.Get<LabelWidget>("HEADER_TEMPLATE");
-			var headerLines = !string.IsNullOrEmpty(content.HeaderMessage) ? content.HeaderMessage.Replace("\\n", "\n").Split('\n') : new string[0];
+			var headerLines = !string.IsNullOrEmpty(content.HeaderMessage) ? content.HeaderMessage.Replace("\\n", "\n").Split('\n') : Array.Empty<string>();
 			var headerHeight = 0;
 			foreach (var l in headerLines)
 			{

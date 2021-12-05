@@ -90,7 +90,7 @@ namespace OpenRA.Traits
 			return info.SelectionPriority(modifiers) - (long)pixelDistance << 16;
 		}
 
-		static readonly Actor[] NoActors = { };
+		static readonly Actor[] NoActors = Array.Empty<Actor>();
 
 		public static IEnumerable<Actor> SubsetWithHighestSelectionPriority(this IEnumerable<Actor> actors, Modifiers modifiers)
 		{

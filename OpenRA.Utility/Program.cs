@@ -73,7 +73,7 @@ namespace OpenRA
 			}
 
 			var modId = args[0];
-			var explicitModPaths = new string[0];
+			var explicitModPaths = Array.Empty<string>();
 			if (File.Exists(modId) || Directory.Exists(modId))
 			{
 				explicitModPaths = new[] { modId };

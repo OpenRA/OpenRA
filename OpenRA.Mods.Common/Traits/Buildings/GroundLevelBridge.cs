@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using OpenRA.GameRules;
 using OpenRA.Primitives;
@@ -23,7 +24,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly string Type = "GroundLevelBridge";
 
-		public readonly CVec[] NeighbourOffsets = { };
+		public readonly CVec[] NeighbourOffsets = Array.Empty<CVec>();
 
 		[WeaponReference]
 		[Desc("The name of the weapon to use when demolishing the bridge")]

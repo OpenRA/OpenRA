@@ -18,7 +18,7 @@ namespace OpenRA.Traits
 	public enum TargetType : byte { Invalid, Actor, Terrain, FrozenActor }
 	public readonly struct Target
 	{
-		public static readonly Target[] None = { };
+		public static readonly Target[] None = Array.Empty<Target>();
 		public static readonly Target Invalid = default(Target);
 
 		readonly TargetType type;
@@ -175,7 +175,7 @@ namespace OpenRA.Traits
 		}
 
 		// Positions available to target for range checks
-		static readonly WPos[] NoPositions = { };
+		static readonly WPos[] NoPositions = Array.Empty<WPos>();
 		public IEnumerable<WPos> Positions
 		{
 			get

@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -21,8 +22,8 @@ namespace OpenRA
 		public class ModPackage
 		{
 			public readonly string Title;
-			public readonly string[] TestFiles = { };
-			public readonly string[] Sources = { };
+			public readonly string[] TestFiles = Array.Empty<string>();
+			public readonly string[] Sources = Array.Empty<string>();
 			public readonly bool Required;
 			public readonly string Download;
 
@@ -106,21 +107,21 @@ namespace OpenRA
 		}
 
 		[FieldLoader.LoadUsing(nameof(LoadDownloads))]
-		public readonly string[] Downloads = { };
+		public readonly string[] Downloads = Array.Empty<string>();
 
 		static object LoadDownloads(MiniYaml yaml)
 		{
 			var downloadNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Downloads");
-			return downloadNode != null ? downloadNode.Value.Nodes.Select(n => n.Key).ToArray() : new string[0];
+			return downloadNode != null ? downloadNode.Value.Nodes.Select(n => n.Key).ToArray() : Array.Empty<string>();
 		}
 
 		[FieldLoader.LoadUsing(nameof(LoadSources))]
-		public readonly string[] Sources = { };
+		public readonly string[] Sources = Array.Empty<string>();
 
 		static object LoadSources(MiniYaml yaml)
 		{
 			var sourceNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Sources");
-			return sourceNode != null ? sourceNode.Value.Nodes.Select(n => n.Key).ToArray() : new string[0];
+			return sourceNode != null ? sourceNode.Value.Nodes.Select(n => n.Key).ToArray() : Array.Empty<string>();
 		}
 	}
 }

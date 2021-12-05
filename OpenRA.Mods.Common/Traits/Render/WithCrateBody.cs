@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 	class WithCrateBodyInfo : TraitInfo, Requires<RenderSpritesInfo>, IRenderActorPreviewSpritesInfo
 	{
 		[Desc("Easteregg sequences to use in December.")]
-		public readonly string[] XmasImages = { };
+		public readonly string[] XmasImages = Array.Empty<string>();
 
 		[Desc("Terrain types on which to display WaterSequence.")]
 		public readonly HashSet<string> WaterTerrainTypes = new HashSet<string> { "Water" };

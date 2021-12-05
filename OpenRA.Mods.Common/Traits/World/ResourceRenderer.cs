@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 			[FieldLoader.Require]
 			[SequenceReference(nameof(Image))]
 			[Desc("Randomly chosen image sequences.")]
-			public readonly string[] Sequences = { };
+			public readonly string[] Sequences = Array.Empty<string>();
 
 			[PaletteReference]
 			[Desc("Palette used for rendering the resource sprites.")]

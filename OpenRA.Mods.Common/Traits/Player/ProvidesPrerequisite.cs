@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Traits;
@@ -21,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Prerequisite = null;
 
 		[Desc("Only grant this prerequisite when you have these prerequisites.")]
-		public readonly string[] RequiresPrerequisites = { };
+		public readonly string[] RequiresPrerequisites = Array.Empty<string>();
 
 		[Desc("Only grant this prerequisite for certain factions.")]
 		public readonly HashSet<string> Factions = new HashSet<string>();

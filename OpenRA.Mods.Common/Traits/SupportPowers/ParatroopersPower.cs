@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[ActorReference(typeof(PassengerInfo))]
 		[Desc("Troops to be delivered.  They will be distributed between the planes if SquadSize > 1.")]
-		public readonly string[] DropItems = { };
+		public readonly string[] DropItems = Array.Empty<string>();
 
 		[Desc("Risks stuck units when they don't have the Paratrooper trait.")]
 		public readonly bool AllowImpassableCells = false;

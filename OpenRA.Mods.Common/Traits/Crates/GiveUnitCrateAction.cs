@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Primitives;
@@ -22,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 		[ActorReference]
 		[FieldLoader.Require]
 		[Desc("The list of units to spawn.")]
-		public readonly string[] Units = { };
+		public readonly string[] Units = Array.Empty<string>();
 
 		[Desc("Factions that are allowed to trigger this action.")]
 		public readonly HashSet<string> ValidFactions = new HashSet<string>();

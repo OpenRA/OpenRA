@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -18,7 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 		"trait, the production queue icon renders with an overlay defined in that trait.")]
 	public class ProducibleWithLevelInfo : TraitInfo, Requires<GainsExperienceInfo>
 	{
-		public readonly string[] Prerequisites = { };
+		public readonly string[] Prerequisites = Array.Empty<string>();
 
 		[Desc("Number of levels to give to the actor on creation.")]
 		public readonly int InitialLevels = 1;

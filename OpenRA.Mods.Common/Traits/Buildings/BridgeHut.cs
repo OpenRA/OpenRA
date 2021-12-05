@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Effects;
@@ -24,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string[] Types = { "GroundLevelBridge" };
 
 		[Desc("Offsets to look for adjacent bridges to act on")]
-		public readonly CVec[] NeighbourOffsets = { };
+		public readonly CVec[] NeighbourOffsets = Array.Empty<CVec>();
 
 		[Desc("Delay between each segment repair step")]
 		public readonly int RepairPropagationDelay = 20;

@@ -66,16 +66,16 @@ namespace OpenRA
 		public string Map = null;
 
 		[Desc("Takes a comma separated list of IP addresses that are not allowed to join.")]
-		public string[] Ban = { };
+		public string[] Ban = Array.Empty<string>();
 
 		[Desc("For dedicated servers only, allow anonymous clients to join.")]
 		public bool RequireAuthentication = false;
 
 		[Desc("For dedicated servers only, if non-empty, only allow authenticated players with these profile IDs to join.")]
-		public int[] ProfileIDWhitelist = { };
+		public int[] ProfileIDWhitelist = Array.Empty<int>();
 
 		[Desc("For dedicated servers only, if non-empty, always reject players with these user IDs from joining.")]
-		public int[] ProfileIDBlacklist = { };
+		public int[] ProfileIDBlacklist = Array.Empty<int>();
 
 		[Desc("For dedicated servers only, controls whether a game can be started with just one human player in the lobby.")]
 		public bool EnableSingleplayer = false;
@@ -227,7 +227,7 @@ namespace OpenRA
 		public string Name = "Commander";
 		public Color Color = Color.FromArgb(200, 32, 32);
 		public string LastServer = "localhost:1234";
-		public Color[] CustomColors = { };
+		public Color[] CustomColors = Array.Empty<Color>();
 		public string Language = "en";
 	}
 

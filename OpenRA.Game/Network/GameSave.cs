@@ -86,7 +86,7 @@ namespace OpenRA.Network
 		// Loaded from file and updated during gameplay
 		public int LastOrdersFrame { get; private set; }
 		public int LastSyncFrame { get; private set; }
-		byte[] lastSyncPacket = new byte[0];
+		byte[] lastSyncPacket = Array.Empty<byte>();
 
 		// Loaded from file or set on game start
 		public Session.Global GlobalSettings { get; private set; }
@@ -95,7 +95,7 @@ namespace OpenRA.Network
 		public Dictionary<int, MiniYaml> TraitData = new Dictionary<int, MiniYaml>();
 
 		// Set on game start
-		int[] clientsBySlotIndex = { };
+		int[] clientsBySlotIndex = Array.Empty<int>();
 		int firstBotSlotIndex = -1;
 
 		public GameSave()

@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
@@ -20,7 +21,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 	class WithDeadBridgeSpriteBodyInfo : WithSpriteBodyInfo
 	{
 		[ActorReference]
-		public readonly string[] RampActors = { };
+		public readonly string[] RampActors = Array.Empty<string>();
 
 		[Desc("Offset to search for the 'A' neighbour")]
 		public readonly CVec AOffset = CVec.Zero;

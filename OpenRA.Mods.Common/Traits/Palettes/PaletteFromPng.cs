@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Filename = null;
 
 		[Desc("Map listed indices to shadow. Ignores previous color.")]
-		public readonly int[] ShadowIndex = { };
+		public readonly int[] ShadowIndex = Array.Empty<int>();
 
 		public readonly bool AllowModifiers = true;
 

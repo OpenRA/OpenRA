@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
@@ -39,7 +40,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public readonly string Palette = "chrome";
 
 		[Desc("Name(s) of AmmoPool(s) that use this decoration. Leave empty to include all pools.")]
-		public readonly string[] AmmoPools = { };
+		public readonly string[] AmmoPools = Array.Empty<string>();
 
 		public override object Create(ActorInitializer init) { return new WithAmmoPipsDecoration(init.Self, this); }
 	}

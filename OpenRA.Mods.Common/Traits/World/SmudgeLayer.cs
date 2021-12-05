@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -42,7 +43,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[SequenceReference(nameof(SmokeImage))]
 		[Desc("Smoke sprite sequences randomly chosen from")]
-		public readonly string[] SmokeSequences = { };
+		public readonly string[] SmokeSequences = Array.Empty<string>();
 
 		[PaletteReference]
 		public readonly string SmokePalette = "effect";
