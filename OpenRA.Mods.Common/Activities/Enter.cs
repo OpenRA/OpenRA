@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		/// <summary>
 		/// Called when the actor has entered the target actor.
-		/// Actor will be be Killed/Disposed or they will enter/exit unharmed.
+		/// Actor will be Killed/Disposed or they will enter/exit unharmed.
 		/// Depends on either the EnterBehaviour of the actor or the requirements of an overriding function.
 		/// </summary>
 		protected virtual void OnEnterComplete(Actor self, Actor targetActor) { }

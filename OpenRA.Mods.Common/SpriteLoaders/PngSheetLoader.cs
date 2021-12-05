@@ -129,7 +129,7 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 			}
 			else if (png.EmbeddedData.ContainsKey("FrameAmount"))
 			{
-				// Otherwise, calculate the number of frames by splitting the image horizontaly by FrameAmount.
+				// Otherwise, calculate the number of frames by splitting the image horizontally by FrameAmount.
 				frameAmount = FieldLoader.GetValue<int>("FrameAmount", png.EmbeddedData["FrameAmount"]);
 				frameSize = new Size(png.Width / frameAmount, png.Height);
 			}

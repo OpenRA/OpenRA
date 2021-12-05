@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public readonly BitSet<DamageType> DamageTypes = default(BitSet<DamageType>);
 
 		[CursorReference]
-		[Desc("Cursor to display when targetting.")]
+		[Desc("Cursor to display when targeting.")]
 		public readonly string AttackCursor = "attack";
 
 		[CursorReference]

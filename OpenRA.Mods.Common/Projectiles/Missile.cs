@@ -79,7 +79,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Controls the way inaccuracy is calculated. Possible values are 'Maximum' - scale from 0 to max with range, 'PerCellIncrement' - scale from 0 with range and 'Absolute' - use set value regardless of range.")]
 		public readonly InaccuracyType InaccuracyType = InaccuracyType.Absolute;
 
-		[Desc("Inaccuracy override when sucessfully locked onto target. Defaults to Inaccuracy if negative.")]
+		[Desc("Inaccuracy override when successfully locked onto target. Defaults to Inaccuracy if negative.")]
 		public readonly WDist LockOnInaccuracy = new WDist(-1);
 
 		[Desc("Probability of locking onto and following target.")]
@@ -546,7 +546,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			// Attained height after ascent as predicted from upper part of incline surmounting manoeuvre
 			var predAttHght = loopRadius * (1024 - WAngle.FromFacing(vFacing).Cos()) / 1024 - diffClfMslHgt;
 
-			// Should the missile be slowed down in order to make it more manoeuverable
+			// Should the missile be slowed down in order to make it more maneuverable
 			var slowDown = info.Acceleration.Length != 0 // Possible to decelerate
 				&& ((desiredVFacing != 0 // Lower part of incline surmounting manoeuvre
 

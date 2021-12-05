@@ -193,7 +193,7 @@ namespace OpenRA.Mods.Common.Activities
 						return PathGraph.PathCostForInvalidPath;
 
 					// Add a cost modifier to harvestable cells to prefer resources that are closer to the refinery.
-					// This reduces the tendancy for harvesters to move in straight lines
+					// This reduces the tendency for harvesters to move in straight lines
 					if (procPos.HasValue && harvInfo.ResourceRefineryDirectionPenalty > 0 && harv.CanHarvestCell(self, loc))
 					{
 						var pos = map.CenterOfCell(loc);

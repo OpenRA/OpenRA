@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 		{
 			if (locations.Any())
 				yield return "[D2k]ResourceRenderer has been added.\n" +
-					"You need to adjust the the field RenderTypes on trait [D2k]ResourceRenderer\n" +
+					"You need to adjust the field RenderTypes on trait [D2k]ResourceRenderer\n" +
 					"on the following actors:\n" +
 					UpdateUtils.FormatMessageList(locations);
 

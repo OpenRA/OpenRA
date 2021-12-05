@@ -97,7 +97,7 @@ namespace OpenRA.Mods.Common
 			// It falls where t = [(point - target) . (source - target)] / |source - target|^2
 			// The normal DotProduct math would be (xDiff + yDiff) / dist, where dist = (target - source).LengthSquared;
 			// But in order to avoid floating points, we do not divide here, but rather work with the large numbers as far as possible.
-			// We then later divide by dist, only AFTER we have multiplied by the dotproduct.
+			// We then later divide by dist, only AFTER we have multiplied by the dot product.
 			var xDiff = ((long)point.X - lineEnd.X) * (lineStart.X - lineEnd.X);
 			var yDiff = ((long)point.Y - lineEnd.Y) * (lineStart.Y - lineEnd.Y);
 			var t = xDiff + yDiff;

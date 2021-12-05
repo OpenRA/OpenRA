@@ -30,8 +30,8 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			var message = "TurnToDock is now deprecated. The following actors had TurnToDock enabled:\n"
 				+ UpdateUtils.FormatMessageList(turningAircraft.Select(n => n.Item1 + " (" + n.Item2 + ")"))
 				+ "\n If you wish these units to keep their turning behaviour when docking with a host building" +
-					"you will need to define a 'Facing' parameter on the 'Exit' trait of the host building. This change" +
-					"does not affect the behaviour for landing on terrain which is governed by TurnToLand.";
+					" you will need to define a 'Facing' parameter on the 'Exit' trait of the host building. This change" +
+					" does not affect the behaviour for landing on terrain which is governed by TurnToLand.";
 
 			if (turningAircraft.Any())
 				yield return message;
