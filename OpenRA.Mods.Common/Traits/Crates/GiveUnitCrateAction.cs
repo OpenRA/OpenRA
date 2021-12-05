@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (info.ValidFactions.Any() && !info.ValidFactions.Contains(collector.Owner.Faction.InternalName))
 				return false;
 
-			foreach (string unit in info.Units)
+			foreach (var unit in info.Units)
 			{
 				// avoid dumping tanks in the sea, and ships on dry land.
 				if (!GetSuitableCells(collector.Location, unit).Any())
