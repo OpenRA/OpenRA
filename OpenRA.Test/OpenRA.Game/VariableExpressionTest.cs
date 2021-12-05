@@ -354,7 +354,7 @@ namespace OpenRA.Test
 			AssertParseFailure("t -1", "Missing binary operation before `-1` at index 2");
 		}
 
-		[TestCase(TestName = "Test mixed charaters at end of identifier parser errors")]
+		[TestCase(TestName = "Test mixed characters at end of identifier parser errors")]
 		public void TestParseMixedEndErrors()
 		{
 			AssertParseFailure("t- 1", "Invalid identifier end character at index 1 for `t-`");

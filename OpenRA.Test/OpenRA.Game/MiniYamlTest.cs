@@ -272,7 +272,7 @@ Parent: # comment without value
 			Assert.AreEqual(yaml, result);
 		}
 
-		[TestCase(TestName = "Comments should be be removed when discardCommentsAndWhitespace is false")]
+		[TestCase(TestName = "Comments should be removed when discardCommentsAndWhitespace is false")]
 		public void CommentsShouldntSurviveRoundTrip()
 		{
 			var yaml = @"

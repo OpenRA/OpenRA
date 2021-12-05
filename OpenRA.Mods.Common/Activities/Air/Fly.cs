@@ -133,7 +133,7 @@ namespace OpenRA.Mods.Common.Activities
 			var isLanded = dat <= aircraft.LandAltitude;
 
 			// HACK: Prevent paused (for example, EMP'd) aircraft from taking off.
-			// This is necessary until the TODOs in the IsCanceling block below are adressed.
+			// This is necessary until the TODOs in the IsCanceling block below are addressed.
 			if (isLanded && aircraft.IsTraitPaused)
 				return false;
 
@@ -236,7 +236,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (!isSlider)
 			{
 				// Using the turn rate, compute a hypothetical circle traced by a continuous turn.
-				// If it contains the destination point, it's unreachable without more complex manuvering.
+				// If it contains the destination point, it's unreachable without more complex maneuvering.
 				var turnRadius = CalculateTurnRadius(aircraft.MovementSpeed, aircraft.TurnSpeed);
 
 				// The current facing is a tangent of the minimal turn circle.

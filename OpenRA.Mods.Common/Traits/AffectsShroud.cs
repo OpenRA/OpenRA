@@ -156,7 +156,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyMoving.MovementTypeChanged(Actor self, MovementType type)
 		{
-			// Recalculate the visiblity at our final stop position
+			// Recalculate the visibility at our final stop position
 			if (type == MovementType.None && self.IsInWorld)
 			{
 				var centerPosition = self.CenterPosition;

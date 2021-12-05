@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Traits
 			"Non-positive values will make it use Health.HP.")]
 		public readonly int MaxHP = 0;
 
-		[Desc("Is the condition irrevokable once it has been granted?")]
+		[Desc("Is the condition irrevocable once it has been granted?")]
 		public readonly bool GrantPermanently = false;
 
 		public override object Create(ActorInitializer init) { return new GrantConditionOnHealth(init.Self, this); }

@@ -91,7 +91,7 @@ namespace OpenRA.Primitives
 		public static long Mask => allBits;
 	}
 
-	// Opitmized BitSet to be used only when guaranteed to be no more than 64 values.
+	// Optimized BitSet to be used only when guaranteed to be no more than 64 values.
 	public readonly struct LongBitSet<T> : IEnumerable<string>, IEquatable<LongBitSet<T>> where T : class
 	{
 		readonly long bits;

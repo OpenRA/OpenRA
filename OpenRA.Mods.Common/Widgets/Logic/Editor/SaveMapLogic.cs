@@ -208,7 +208,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						title: "Failed to save map",
 						text: "See debug.log for details.",
 						onConfirm: () => { },
-						confirmText: "Ok");
+						confirmText: "OK");
 				}
 			};
 		}

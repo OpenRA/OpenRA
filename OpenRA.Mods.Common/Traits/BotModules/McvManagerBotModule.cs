@@ -163,7 +163,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			// If the MCV has to move first, we can't be sure it reaches the destination alive, so we only
 			// update base and defense center if the MCV is deployed immediately (i.e. at game start).
-			// TODO: This could be adressed via INotifyTransform.
+			// TODO: This could be addressed via INotifyTransform.
 			foreach (var n in notifyPositionsUpdated)
 			{
 				n.UpdatedBaseCenter(mcv.Location);

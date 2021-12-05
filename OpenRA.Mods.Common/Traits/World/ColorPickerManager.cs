@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly float[] PresetSaturations = { };
 
 		[ActorReference]
-		[Desc("Actor type to show in the color picker. This can be overriden for specific factions with FactionPreviewActors.")]
+		[Desc("Actor type to show in the color picker. This can be overridden for specific factions with FactionPreviewActors.")]
 		public readonly string PreviewActor = null;
 
 		[SequenceReference(dictionaryReference: LintDictionaryReference.Values)]

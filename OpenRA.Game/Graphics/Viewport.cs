@@ -238,7 +238,7 @@ namespace OpenRA.Graphics
 
 			if (unlockMinZoom)
 			{
-				// Specators and the map editor support zooming out by an extra factor of two.
+				// Spectators and the map editor support zooming out by an extra factor of two.
 				// TODO: Allow zooming out until the full map is visible
 				// We need to improve our viewport scroll handling to center the map as we zoom out
 				// before this will work well enough to enable

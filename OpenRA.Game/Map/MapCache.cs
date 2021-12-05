@@ -68,7 +68,7 @@ namespace OpenRA
 
 				try
 				{
-					// HACK: If the path is inside the the support directory then we may need to create it
+					// HACK: If the path is inside the support directory then we may need to create it
 					// Assume that the path is a directory if there is not an existing file with the same name
 					var resolved = Platform.ResolvePath(name);
 					if (resolved.StartsWith(Platform.SupportDir) && !File.Exists(resolved))

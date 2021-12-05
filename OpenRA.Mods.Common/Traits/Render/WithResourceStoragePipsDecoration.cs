@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Number of pips to display how filled unit is.")]
 		public readonly int PipCount = 0;
 
-		[Desc("If non-zero, override the spacing between adjacing pips.")]
+		[Desc("If non-zero, override the spacing between adjacent pips.")]
 		public readonly int2 PipStride = int2.Zero;
 
 		[Desc("Image that defines the pip sequences.")]

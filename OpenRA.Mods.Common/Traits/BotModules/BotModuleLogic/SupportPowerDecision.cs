@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Common.Traits
 				var br = world.Map.CellContaining(pos + delta);
 				var checkFrozen = firedBy.FrozenActorLayer.FrozenActorsInRegion(new CellRegion(world.Map.Grid.Type, tl, br));
 
-				// IsValid check filters out Frozen Actors that have not initizialized their Owner
+				// IsValid check filters out Frozen Actors that have not initialized their Owner
 				foreach (var scrutinized in checkFrozen)
 					answer += consideration.GetAttractiveness(scrutinized, firedBy.RelationshipWith(scrutinized.Owner), firedBy);
 			}

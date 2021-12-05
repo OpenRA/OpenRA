@@ -95,7 +95,7 @@ namespace OpenRA
 		{
 			if (args.Length % 2 != 0)
 				throw new ArgumentException("Expected a comma separated list of name, value arguments"
-					+ "but the number of arguments is not a multiple of two", nameof(args));
+					+ " but the number of arguments is not a multiple of two", nameof(args));
 
 			var argumentDictionary = new Dictionary<string, object> { { name, value } };
 

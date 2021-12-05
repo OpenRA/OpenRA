@@ -72,7 +72,7 @@ namespace OpenRA
 			else
 				Polygons = new[] { Corners };
 
-			// Initial value must be asigned before HeightOffset can be called
+			// Initial value must be assigned before HeightOffset can be called
 			CenterHeightOffset = 0;
 			CenterHeightOffset = HeightOffset(0, 0);
 		}

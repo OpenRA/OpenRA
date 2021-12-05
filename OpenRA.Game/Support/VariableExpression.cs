@@ -625,7 +625,7 @@ namespace OpenRA.Support
 					if (lastToken.Opens != Grouping.None && token.Closes != Grouping.None)
 						throw new InvalidDataException($"Empty parenthesis at index {lastToken.Index}");
 
-					// Exactly one of two consective tokens must take the other's sub-expression evaluation as an operand
+					// Exactly one of two consecutive tokens must take the other's sub-expression evaluation as an operand
 					if (lastToken.RightOperand == token.LeftOperand)
 					{
 						if (lastToken.RightOperand)
