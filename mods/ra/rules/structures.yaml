@@ -37,8 +37,8 @@ MSLO:
 		Cursor: nuke
 		Icon: abomb
 		ChargeInterval: 13500
-		Description: Atom Bomb
-		LongDesc: Launches a devastating atomic bomb\nat a target location.
+		Name: Atom Bomb
+		Description: Launches a devastating atomic bomb\nat a target location.
 		BeginChargeSpeechNotification: AbombPrepping
 		EndChargeSpeechNotification: AbombReady
 		SelectTargetSpeechNotification: SelectTarget
@@ -417,8 +417,8 @@ IRON:
 		PauseOnCondition: disabled
 		Icon: invuln
 		ChargeInterval: 3000
-		Description: Invulnerability
-		LongDesc: Makes a group of units invulnerable\nfor 20 seconds.
+		Name: Invulnerability
+		Description: Makes a group of units invulnerable\nfor 20 seconds.
 		Duration: 400
 		SelectTargetSpeechNotification: SelectTarget
 		InsufficientPowerSpeechNotification: InsufficientPower
@@ -488,8 +488,8 @@ PDOX:
 		Prerequisites: !pdox.germany
 		Icon: chrono
 		ChargeInterval: 3000
-		Description: Chronoshift
-		LongDesc: Teleports a group of units across\nthe map for 20 seconds.
+		Name: Chronoshift
+		Description: Teleports a group of units across\nthe map for 20 seconds.
 		SelectTargetSpeechNotification: SelectTarget
 		InsufficientPowerSpeechNotification: InsufficientPower
 		BeginChargeSpeechNotification: ChronosphereCharging
@@ -506,8 +506,8 @@ PDOX:
 		Prerequisites: pdox.germany
 		Icon: chrono
 		ChargeInterval: 3000
-		Description: Advanced Chronoshift
-		LongDesc: Teleports a large group of units across\nthe map for 20 seconds.
+		Name: Advanced Chronoshift
+		Description: Teleports a large group of units across\nthe map for 20 seconds.
 		SelectTargetSpeechNotification: SelectTarget
 		InsufficientPowerSpeechNotification: InsufficientPower
 		BeginChargeSpeechNotification: ChronosphereCharging
@@ -980,8 +980,8 @@ ATEK:
 		Icon: gps
 		OneShot: true
 		ChargeInterval: 12000
-		Description: GPS Satellite
-		LongDesc: Reveals map terrain and provides tactical\ninformation. Requires power and active radar.
+		Name: GPS Satellite
+		Description: Reveals map terrain and provides tactical\ninformation. Requires power and active radar.
 		RevealDelay: 375
 		LaunchSpeechNotification: SatelliteLaunched
 		DisplayTimerRelationships: Ally, Neutral, Enemy
@@ -1501,8 +1501,8 @@ AFLD:
 		Prerequisites: aircraft.soviet
 		Icon: spyplane
 		ChargeInterval: 3750
-		Description: Spy Plane
-		LongDesc: Reveals an area of the map.
+		Name: Spy Plane
+		Description: Reveals an area of the map.
 		SelectTargetSpeechNotification: SelectTarget
 		EndChargeSpeechNotification: SpyPlaneReady
 		CameraActor: camera.spyplane
@@ -1522,8 +1522,8 @@ AFLD:
 		Prerequisites: aircraft.soviet
 		Icon: paratroopers
 		ChargeInterval: 7500
-		Description: Paratroopers
-		LongDesc: A Badger drops a squad of infantry\nanywhere on the map.
+		Name: Paratroopers
+		Description: A Badger drops a squad of infantry\nanywhere on the map.
 		DropItems: E1R1,E1R1,E1R1,E3R1,E3R1
 		ReinforcementsArrivedSpeechNotification: ReinforcementsArrived
 		SelectTargetSpeechNotification: SelectTarget
@@ -1543,8 +1543,8 @@ AFLD:
 		Prerequisites: aircraft.ukraine
 		Icon: parabombs
 		ChargeInterval: 7500
-		Description: Parabombs
-		LongDesc: A squad of Badgers drop parachuted\nbombs on your target.
+		Name: Parabombs
+		Description: A squad of Badgers drop parachuted\nbombs on your target.
 		SelectTargetSpeechNotification: SelectTarget
 		CameraActor: camera
 		CameraRemoveDelay: 150

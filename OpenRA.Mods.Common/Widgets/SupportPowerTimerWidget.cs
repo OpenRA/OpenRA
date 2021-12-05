@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				var self = p.Instances[0].Self;
 				var time = WidgetUtils.FormatTime(p.RemainingTicks, false, self.World.Timestep);
-				var text = Format.F(p.Info.Description, time);
+				var text = Format.F(p.Info.Name, time);
 				var playerColor = self.Owner.Color;
 
 				if (Game.Settings.Game.UsePlayerStanceColors)

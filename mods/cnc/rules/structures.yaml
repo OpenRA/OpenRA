@@ -637,8 +637,8 @@ HQ:
 		ChargeInterval: 7500
 		SquadSize: 3
 		QuantizedFacings: 8
-		Description: Air Strike
-		LongDesc: Deploy an aerial napalm strike.\nBurns buildings and infantry along a line.
+		Name: Air Strike
+		Description: Deploy an aerial napalm strike.\nBurns buildings and infantry along a line.
 		EndChargeSpeechNotification: AirstrikeReady
 		SelectTargetSpeechNotification: SelectTarget
 		InsufficientPowerSpeechNotification: InsufficientPower
@@ -744,8 +744,8 @@ EYE:
 		Icon: ioncannon
 		Cursor: ioncannon
 		ChargeInterval: 9000
-		Description: Ion Cannon
-		LongDesc: Initiate an Ion Cannon strike.\nApplies instant damage to a small area.
+		Name: Ion Cannon
+		Description: Initiate an Ion Cannon strike.\nApplies instant damage to a small area.
 		BeginChargeSpeechNotification: IonCannonCharging
 		EndChargeSpeechNotification: IonCannonReady
 		SelectTargetSpeechNotification: SelectTarget
@@ -798,8 +798,8 @@ TMPL:
 		Icon: abomb
 		Cursor: nuke
 		ChargeInterval: 11250
-		Description: Nuclear Strike
-		LongDesc: Launch a tactical nuclear warhead.\nApplies heavy damage over a large area.
+		Name: Nuclear Strike
+		Description: Launch a tactical nuclear warhead.\nApplies heavy damage over a large area.
 		EndChargeSpeechNotification: NuclearWeaponAvailable
 		SelectTargetSpeechNotification: SelectTarget
 		InsufficientPowerSpeechNotification: InsufficientPower
