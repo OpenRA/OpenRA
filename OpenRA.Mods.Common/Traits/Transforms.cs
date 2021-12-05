@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Activities;
@@ -32,10 +33,10 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly WAngle Facing = new WAngle(384);
 
 		[Desc("Sounds to play when transforming.")]
-		public readonly string[] TransformSounds = { };
+		public readonly string[] TransformSounds = Array.Empty<string>();
 
 		[Desc("Sounds to play when the transformation is blocked.")]
-		public readonly string[] NoTransformSounds = { };
+		public readonly string[] NoTransformSounds = Array.Empty<string>();
 
 		[NotificationReference("Speech")]
 		[Desc("Notification to play when transforming.")]

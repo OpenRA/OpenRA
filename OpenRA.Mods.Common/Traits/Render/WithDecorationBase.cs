@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
@@ -41,7 +42,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public readonly int BlinkInterval = 5;
 
 		[Desc("A pattern of ticks (BlinkInterval long) where the decoration is visible or hidden.")]
-		public readonly BlinkState[] BlinkPattern = { };
+		public readonly BlinkState[] BlinkPattern = Array.Empty<BlinkState>();
 
 		[Desc("Override blink conditions to use when defined conditions are enabled.",
 			"A dictionary of [condition string]: [pattern].")]

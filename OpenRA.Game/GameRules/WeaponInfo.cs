@@ -36,7 +36,7 @@ namespace OpenRA.GameRules
 	public class WarheadArgs
 	{
 		public WeaponInfo Weapon;
-		public int[] DamageModifiers = { };
+		public int[] DamageModifiers = Array.Empty<int>();
 		public WPos? Source;
 		public WRot ImpactOrientation;
 		public WPos ImpactPosition;

@@ -56,9 +56,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Clear smudges from underneath the building footprint on transform.")]
 		public readonly bool RemoveSmudgesOnTransform = true;
 
-		public readonly string[] BuildSounds = { };
+		public readonly string[] BuildSounds = Array.Empty<string>();
 
-		public readonly string[] UndeploySounds = { };
+		public readonly string[] UndeploySounds = Array.Empty<string>();
 
 		public override object Create(ActorInitializer init) { return new Building(init, this); }
 

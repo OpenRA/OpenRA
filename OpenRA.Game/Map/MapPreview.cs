@@ -54,7 +54,7 @@ namespace OpenRA
 		public readonly string[] categories;
 		public readonly int players;
 		public readonly Rectangle bounds;
-		public readonly short[] spawnpoints = { };
+		public readonly short[] spawnpoints = Array.Empty<short>();
 		public readonly MapGridType map_grid_type;
 		public readonly string minimap;
 		public readonly bool downloading;
@@ -160,7 +160,7 @@ namespace OpenRA
 			}
 		}
 
-		static readonly CPos[] NoSpawns = { };
+		static readonly CPos[] NoSpawns = Array.Empty<CPos>();
 		readonly MapCache cache;
 		readonly ModData modData;
 

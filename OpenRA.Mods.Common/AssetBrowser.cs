@@ -9,11 +9,13 @@
  */
 #endregion
 
+using System;
+
 namespace OpenRA
 {
 	public class AssetBrowser : IGlobalModData
 	{
 		[FieldLoader.Require]
-		public readonly string[] SupportedExtensions = new string[0];
+		public readonly string[] SupportedExtensions = Array.Empty<string>();
 	}
 }

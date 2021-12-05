@@ -141,7 +141,7 @@ namespace OpenRA
 
 		public object CreateBasic(Type type)
 		{
-			return type.GetConstructor(new Type[0]).Invoke(new object[0]);
+			return type.GetConstructor(Array.Empty<Type>()).Invoke(Array.Empty<object>());
 		}
 
 		public object CreateUsingArgs(ConstructorInfo ctor, Dictionary<string, object> args)

@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using OpenRA.Primitives;
 
 namespace OpenRA
@@ -53,8 +54,8 @@ namespace OpenRA
 		public bool LockHandicap = false;
 		public int Handicap = 0;
 
-		public string[] Allies = { };
-		public string[] Enemies = { };
+		public string[] Allies = Array.Empty<string>();
+		public string[] Enemies = Array.Empty<string>();
 
 		public PlayerReference() { }
 		public PlayerReference(MiniYaml my) { FieldLoader.Load(this, my); }

@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Orders;
@@ -38,7 +39,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("List of production queues for which the primary flag should be set.",
 			"If empty, the list given in the `Produces` property of the `" + nameof(Production) + "` trait will be used.")]
-		public readonly string[] ProductionQueues = { };
+		public readonly string[] ProductionQueues = Array.Empty<string>();
 
 		[CursorReference]
 		[Desc("Cursor to display when setting the primary building.")]

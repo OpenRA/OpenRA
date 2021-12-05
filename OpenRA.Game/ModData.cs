@@ -52,7 +52,7 @@ namespace OpenRA
 
 		public ModData(Manifest mod, InstalledMods mods, bool useLoadScreen = false)
 		{
-			Languages = new string[0];
+			Languages = Array.Empty<string>();
 
 			// Take a local copy of the manifest
 			Manifest = new Manifest(mod.Id, mod.Package);

@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int RefundPercent = 50;
 
 		[Desc("List of audio clips to play when the actor is being sold.")]
-		public readonly string[] SellSounds = { };
+		public readonly string[] SellSounds = Array.Empty<string>();
 
 		[NotificationReference("Speech")]
 		[Desc("The audio notification type to play.")]

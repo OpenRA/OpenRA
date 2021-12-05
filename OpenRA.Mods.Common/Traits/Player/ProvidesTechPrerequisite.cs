@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using OpenRA.Traits;
 
@@ -24,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Name;
 
 		[Desc("Prerequisites to grant when this tech level is active.")]
-		public readonly string[] Prerequisites = { };
+		public readonly string[] Prerequisites = Array.Empty<string>();
 
 		IEnumerable<string> ITechTreePrerequisiteInfo.Prerequisites(ActorInfo info) { return Prerequisites; }
 
@@ -36,7 +37,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly ProvidesTechPrerequisiteInfo info;
 		bool enabled;
 
-		static readonly string[] NoPrerequisites = new string[0];
+		static readonly string[] NoPrerequisites = Array.Empty<string>();
 
 		public string Name => info.Name;
 

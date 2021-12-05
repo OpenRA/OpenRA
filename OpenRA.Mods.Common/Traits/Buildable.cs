@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using OpenRA.Traits;
 
@@ -20,7 +21,7 @@ namespace OpenRA.Mods.Common.Traits
 			"This can be prefixed with ! to invert the prerequisite (disabling production if the prerequisite is available)",
 			"and/or ~ to hide the actor from the production palette if the prerequisite is not available.",
 			"Prerequisites are granted by actors with the ProvidesPrerequisite trait.")]
-		public readonly string[] Prerequisites = { };
+		public readonly string[] Prerequisites = Array.Empty<string>();
 
 		[Desc("Production queue(s) that can produce this.")]
 		public readonly HashSet<string> Queue = new HashSet<string>();

@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
@@ -35,7 +36,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public readonly Dictionary<string, string[]> AttackSequences = new Dictionary<string, string[]>();
 
 		[SequenceReference]
-		public readonly string[] IdleSequences = { };
+		public readonly string[] IdleSequences = Array.Empty<string>();
 
 		[SequenceReference]
 		public readonly string[] StandSequences = { "stand" };

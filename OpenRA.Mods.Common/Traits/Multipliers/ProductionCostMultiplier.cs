@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Traits;
@@ -22,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int Multiplier = 100;
 
 		[Desc("Only apply this cost change if owner has these prerequisites.")]
-		public readonly string[] Prerequisites = { };
+		public readonly string[] Prerequisites = Array.Empty<string>();
 
 		[Desc("Queues that this cost will apply.")]
 		public readonly HashSet<string> Queue = new HashSet<string>();

@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Traits;
@@ -21,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits
 		[WeaponReference]
 		[FieldLoader.Require]
 		[Desc("The weapons used for shrapnel.")]
-		public readonly string[] Weapons = { };
+		public readonly string[] Weapons = Array.Empty<string>();
 
 		[Desc("The amount of pieces of shrapnel to expel. Two values indicate a range.")]
 		public readonly int[] Pieces = { 3, 10 };

@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Traits;
@@ -35,7 +36,7 @@ namespace OpenRA.Mods.Common.Traits
 	public abstract class AffectsShroud : ConditionalTrait<AffectsShroudInfo>, ISync, INotifyAddedToWorld,
 		INotifyRemovedFromWorld, INotifyMoving, INotifyCenterPositionChanged, ITick
 	{
-		static readonly PPos[] NoCells = { };
+		static readonly PPos[] NoCells = Array.Empty<PPos>();
 
 		readonly HashSet<PPos> footprint;
 

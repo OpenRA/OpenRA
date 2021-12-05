@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Orders;
@@ -30,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Type = null;
 
 		[Desc("Sound to play when delivering cash")]
-		public readonly string[] Sounds = { };
+		public readonly string[] Sounds = Array.Empty<string>();
 
 		[CursorReference]
 		[Desc("Cursor to display when hovering over a valid actor to deliver cash to.")]

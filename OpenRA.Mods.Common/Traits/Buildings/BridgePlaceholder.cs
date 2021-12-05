@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -25,7 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Actor type to replace with on repair.")]
 		public readonly string ReplaceWithActor = null;
 
-		public readonly CVec[] NeighbourOffsets = { };
+		public readonly CVec[] NeighbourOffsets = Array.Empty<CVec>();
 
 		public override object Create(ActorInitializer init) { return new BridgePlaceholder(init.Self, this); }
 	}

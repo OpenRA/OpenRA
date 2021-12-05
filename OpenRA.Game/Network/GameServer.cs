@@ -133,7 +133,7 @@ namespace OpenRA.Network
 		public readonly GameClient[] Clients;
 
 		/// <summary>The list of spawnpoints that are disabled for this game</summary>
-		public readonly int[] DisabledSpawnPoints = { };
+		public readonly int[] DisabledSpawnPoints = Array.Empty<int>();
 
 		public string ModLabel => $"{ModTitle} ({Version})";
 

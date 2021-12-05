@@ -139,10 +139,10 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly WDist AltitudeVelocity = new WDist(43);
 
 		[Desc("Sounds to play when the actor is taking off.")]
-		public readonly string[] TakeoffSounds = { };
+		public readonly string[] TakeoffSounds = Array.Empty<string>();
 
 		[Desc("Sounds to play when the actor is landing.")]
-		public readonly string[] LandingSounds = { };
+		public readonly string[] LandingSounds = Array.Empty<string>();
 
 		[Desc("The distance of the resupply base that the aircraft will wait for its turn.")]
 		public readonly WDist WaitDistanceFromResupplyBase = new WDist(3072);

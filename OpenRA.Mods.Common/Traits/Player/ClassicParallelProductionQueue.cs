@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class ClassicParallelProductionQueue : ProductionQueue
 	{
-		static readonly ActorInfo[] NoItems = { };
+		static readonly ActorInfo[] NoItems = Array.Empty<ActorInfo>();
 
 		readonly Actor self;
 		readonly ClassicParallelProductionQueueInfo info;

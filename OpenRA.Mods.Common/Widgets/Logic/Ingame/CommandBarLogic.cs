@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly World world;
 
 		int selectionHash;
-		Actor[] selectedActors = { };
+		Actor[] selectedActors = Array.Empty<Actor>();
 		bool attackMoveDisabled = true;
 		bool forceMoveDisabled = true;
 		bool forceAttackDisabled = true;

@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Primitives;
@@ -32,7 +33,7 @@ namespace OpenRA.Mods.Common.Traits
 		[FieldLoader.Require]
 		[ActorReference]
 		[Desc("Name of the actor that will be randomly picked to spawn.")]
-		public readonly string[] Actors = { };
+		public readonly string[] Actors = Array.Empty<string>();
 
 		public readonly string Owner = "Creeps";
 

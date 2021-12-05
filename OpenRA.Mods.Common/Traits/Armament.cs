@@ -41,10 +41,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Muzzle position relative to turret or body, (forward, right, up) triples.",
 			"If weapon Burst = 1, it cycles through all listed offsets, otherwise the offset corresponding to current burst is used.")]
-		public readonly WVec[] LocalOffset = { };
+		public readonly WVec[] LocalOffset = Array.Empty<WVec>();
 
 		[Desc("Muzzle yaw relative to turret or body.")]
-		public readonly WAngle[] LocalYaw = { };
+		public readonly WAngle[] LocalYaw = Array.Empty<WAngle>();
 
 		[Desc("Move the turret backwards when firing.")]
 		public readonly WDist Recoil = WDist.Zero;

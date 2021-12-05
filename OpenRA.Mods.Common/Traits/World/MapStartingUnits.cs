@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using OpenRA.Traits;
 
@@ -36,7 +37,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("A group of units ready to defend or scout.")]
 		[ActorReference]
-		public readonly string[] SupportActors = { };
+		public readonly string[] SupportActors = Array.Empty<string>();
 
 		[Desc("Inner radius for spawning support actors")]
 		public readonly int InnerSupportRadius = 2;

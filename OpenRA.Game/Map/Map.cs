@@ -270,7 +270,7 @@ namespace OpenRA
 
 				// Take the SHA1
 				if (streams.Count == 0)
-					return CryptoUtil.SHA1Hash(new byte[0]);
+					return CryptoUtil.SHA1Hash(Array.Empty<byte>());
 
 				var merged = streams[0];
 				for (var i = 1; i < streams.Count; i++)
@@ -471,7 +471,7 @@ namespace OpenRA
 			foreach (var cell in AllCells)
 			{
 				var uv = cell.ToMPos(Grid.Type);
-				cellProjection[uv] = new PPos[0];
+				cellProjection[uv] = Array.Empty<PPos>();
 				inverseCellProjection[uv] = new List<MPos>(1);
 			}
 
@@ -973,7 +973,7 @@ namespace OpenRA
 			return (PPos)CellContaining(projectedPos).ToMPos(Grid.Type);
 		}
 
-		static readonly PPos[] NoProjectedCells = { };
+		static readonly PPos[] NoProjectedCells = Array.Empty<PPos>();
 		public PPos[] ProjectedCellsCovering(MPos uv)
 		{
 			if (!initializedCellProjection)

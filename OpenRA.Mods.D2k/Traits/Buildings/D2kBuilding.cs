@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.IO;
 using System.Linq;
 using OpenRA.Mods.Common.Terrain;
@@ -43,7 +44,7 @@ namespace OpenRA.Mods.D2k.Traits.Buildings
 		public readonly ushort ConcreteTemplate = 88;
 
 		[Desc("List of required prerequisites to place a terrain template.")]
-		public readonly string[] ConcretePrerequisites = { };
+		public readonly string[] ConcretePrerequisites = Array.Empty<string>();
 
 		public override object Create(ActorInitializer init) { return new D2kBuilding(init, this); }
 	}

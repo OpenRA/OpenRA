@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[FieldLoader.Require]
 		[Desc("e.g. Infantry, Vehicles, Aircraft, Buildings")]
-		public readonly string[] Produces = { };
+		public readonly string[] Produces = Array.Empty<string>();
 
 		public override object Create(ActorInitializer init) { return new Production(init, this); }
 	}
