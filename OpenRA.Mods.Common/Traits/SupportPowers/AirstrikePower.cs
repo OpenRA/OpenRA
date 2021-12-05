@@ -223,7 +223,6 @@ namespace OpenRA.Mods.Common.Traits
 
 			camera.QueueActivity(new Wait(info.CameraRemoveDelay));
 			camera.QueueActivity(new RemoveSelf());
-			camera = null;
 		}
 
 		void RemoveBeacon(Beacon beacon)
@@ -234,7 +233,6 @@ namespace OpenRA.Mods.Common.Traits
 			Self.World.AddFrameEndTask(w =>
 			{
 				w.Remove(beacon);
-				beacon = null;
 			});
 		}
 	}
