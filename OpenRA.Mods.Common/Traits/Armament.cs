@@ -125,9 +125,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		int ticksSinceLastShot;
 		int currentBarrel;
-		int barrelCount;
+		readonly int barrelCount;
 
-		List<(int Ticks, Action Func)> delayedActions = new List<(int, Action)>();
+		readonly List<(int Ticks, Action Func)> delayedActions = new List<(int, Action)>();
 
 		public WDist Recoil;
 		public int FireDelay { get; protected set; }

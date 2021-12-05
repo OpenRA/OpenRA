@@ -70,8 +70,8 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class IndexedColorRemap : IPaletteRemap
 	{
-		Dictionary<int, int> replacements = new Dictionary<int, int>();
-		IPalette basePalette;
+		readonly Dictionary<int, int> replacements = new Dictionary<int, int>();
+		readonly IPalette basePalette;
 
 		public IndexedColorRemap(IPalette basePalette, int[] ramp, int[] remap)
 		{
