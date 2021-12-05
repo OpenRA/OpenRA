@@ -85,7 +85,11 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 				foreach (var map in maps)
 				{
-					var testMap = new Map(modData, map.package.OpenPackage(map.map, modData.ModFiles));
+					var package = map.package.OpenPackage(map.map, modData.ModFiles);
+					if (package == null)
+						continue;
+
+					var testMap = new Map(modData, package);
 					TestMap(testMap, modData);
 				}
 
