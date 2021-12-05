@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (!info.Types.Overlaps(types))
 				return;
 
-			var transform = new Transform(self, info.IntoActor)
+			var transform = new Transform(info.IntoActor)
 			{
 				ForceHealthPercentage = info.ForceHealthPercentage,
 				Faction = faction,

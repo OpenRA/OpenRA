@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Relationship the watching player needs to see the generated shroud.")]
 		public readonly PlayerRelationship ValidRelationships = PlayerRelationship.Neutral | PlayerRelationship.Enemy;
 
-		public override object Create(ActorInitializer init) { return new CreatesShroud(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new CreatesShroud(this); }
 	}
 
 	public class CreatesShroud : AffectsShroud
@@ -28,8 +28,8 @@ namespace OpenRA.Mods.Common.Traits
 		readonly CreatesShroudInfo info;
 		IEnumerable<int> rangeModifiers;
 
-		public CreatesShroud(Actor self, CreatesShroudInfo info)
-			: base(self, info)
+		public CreatesShroud(CreatesShroudInfo info)
+			: base(info)
 		{
 			this.info = info;
 		}

@@ -99,7 +99,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			// Manually manage the inner activity queue
-			var activity = currentTransform ?? transform.GetTransformActivity(self);
+			var activity = currentTransform ?? transform.GetTransformActivity();
 			if (!order.Queued)
 				activity.NextActivity?.Cancel(self);
 

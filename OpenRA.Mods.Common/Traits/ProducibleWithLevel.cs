@@ -27,14 +27,14 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Should the level-up animation be suppressed when actor is created?")]
 		public readonly bool SuppressLevelupAnimation = true;
 
-		public override object Create(ActorInitializer init) { return new ProducibleWithLevel(init, this); }
+		public override object Create(ActorInitializer init) { return new ProducibleWithLevel(this); }
 	}
 
 	public class ProducibleWithLevel : INotifyCreated
 	{
 		readonly ProducibleWithLevelInfo info;
 
-		public ProducibleWithLevel(ActorInitializer init, ProducibleWithLevelInfo info)
+		public ProducibleWithLevel(ProducibleWithLevelInfo info)
 		{
 			this.info = info;
 		}

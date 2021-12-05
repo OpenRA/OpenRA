@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Traits
 				throw new YamlException($"{nameof(ActorSpawnManager)}.{nameof(SpawnInterval)}'s value(s) must not be less than 0");
 		}
 
-		public override object Create(ActorInitializer init) { return new ActorSpawnManager(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new ActorSpawnManager(this); }
 	}
 
 	public class ActorSpawnManager : ConditionalTrait<ActorSpawnManagerInfo>, ITick
@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common.Traits
 		int spawnCountdown;
 		int actorsPresent;
 
-		public ActorSpawnManager(Actor self, ActorSpawnManagerInfo info)
+		public ActorSpawnManager(ActorSpawnManagerInfo info)
 			: base(info)
 		{
 			this.info = info;

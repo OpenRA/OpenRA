@@ -205,7 +205,7 @@ namespace OpenRA
 			customDataLoaded = true;
 		}
 
-		static string[] YamlList(Dictionary<string, MiniYaml> yaml, string key, bool parsePaths = false)
+		static string[] YamlList(Dictionary<string, MiniYaml> yaml, string key)
 		{
 			if (!yaml.ContainsKey(key))
 				return Array.Empty<string>();

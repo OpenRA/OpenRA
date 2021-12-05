@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Traits.Sound
 		[Desc("Should the sound be delayed relative to preparation or actual attack?")]
 		public readonly AttackDelayType DelayRelativeTo = AttackDelayType.Preparation;
 
-		public override object Create(ActorInitializer init) { return new AttackSounds(init, this); }
+		public override object Create(ActorInitializer init) { return new AttackSounds(this); }
 	}
 
 	public class AttackSounds : ConditionalTrait<AttackSoundsInfo>, INotifyAttack, ITick
@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Traits.Sound
 		readonly AttackSoundsInfo info;
 		int tick;
 
-		public AttackSounds(ActorInitializer init, AttackSoundsInfo info)
+		public AttackSounds(AttackSoundsInfo info)
 			: base(info)
 		{
 			this.info = info;

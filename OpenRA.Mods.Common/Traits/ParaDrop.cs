@@ -81,10 +81,10 @@ namespace OpenRA.Mods.Common.Traits
 				OnExitedDropRange(self);
 
 			// Are we able to drop the next trooper?
-			if (!inDropRange || cargo.IsEmpty(self) || !self.World.Map.Contains(self.Location))
+			if (!inDropRange || cargo.IsEmpty() || !self.World.Map.Contains(self.Location))
 				return;
 
-			var dropActor = cargo.Peek(self);
+			var dropActor = cargo.Peek();
 			var dropPositionable = dropActor.Trait<IPositionable>();
 			var dropCell = self.Location;
 			var dropSubCell = dropPositionable.GetAvailableSubCell(dropCell);

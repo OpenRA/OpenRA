@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			var facing = self.TraitOrDefault<IFacing>();
-			var transform = new Transform(self, info.IntoActor) { ForceHealthPercentage = info.ForceHealthPercentage, Faction = faction };
+			var transform = new Transform(info.IntoActor) { ForceHealthPercentage = info.ForceHealthPercentage, Faction = faction };
 			if (facing != null) transform.Facing = facing.Facing;
 			transform.SkipMakeAnims = info.SkipMakeAnims;
 			self.QueueActivity(false, transform);

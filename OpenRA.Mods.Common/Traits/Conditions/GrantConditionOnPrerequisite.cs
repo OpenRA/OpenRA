@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("List of required prerequisites.")]
 		public readonly string[] Prerequisites = Array.Empty<string>();
 
-		public override object Create(ActorInitializer init) { return new GrantConditionOnPrerequisite(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new GrantConditionOnPrerequisite(this); }
 	}
 
 	public class GrantConditionOnPrerequisite : INotifyCreated, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyOwnerChanged
@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 		GrantConditionOnPrerequisiteManager globalManager;
 		int conditionToken = Actor.InvalidConditionToken;
 
-		public GrantConditionOnPrerequisite(Actor self, GrantConditionOnPrerequisiteInfo info)
+		public GrantConditionOnPrerequisite(GrantConditionOnPrerequisiteInfo info)
 		{
 			this.info = info;
 		}
