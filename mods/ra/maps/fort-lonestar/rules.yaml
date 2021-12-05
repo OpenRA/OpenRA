@@ -344,7 +344,7 @@ V2RL:
 
 powerproxy.parabombs:
 	AirstrikePower:
-		LongDesc: A MiG bomber drops a load of parachuted bombs on your target.
+		Description: A MiG bomber drops a load of parachuted bombs on your target.
 		CameraRemoveDelay: 50
 
 BADR.Bomber:

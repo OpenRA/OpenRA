@@ -540,8 +540,8 @@ GAPLUG:
 		EffectSequence: ionring
 		WeaponDelay: 0
 		ChargeInterval: 12750
-		Description: Ion Cannon
-		LongDesc: Initiate an Ion Cannon strike.\nApplies instant damage to a small area.
+		Name: Ion Cannon
+		Description: Initiate an Ion Cannon strike.\nApplies instant damage to a small area.
 		EndChargeSpeechNotification: IonCannonReady
 		SelectTargetSpeechNotification: SelectTarget
 		DisplayRadarPing: True
@@ -551,8 +551,8 @@ GAPLUG:
 		PauseOnCondition: disabled || empdisable
 		RequiresCondition: plug.droppoda || plug.droppodb
 		Icon: droppods
-		Description: Drop Pods
-		LongDesc: Drop Pod reinforcements.\nSmall team of elite soldiers orbital drops\nto target location.
+		Name: Drop Pods
+		Description: Drop Pod reinforcements.\nSmall team of elite soldiers orbital drops\nto target location.
 		SelectTargetSpeechNotification: SelectTarget
 		DisplayRadarPing: true
 		ChargeInterval: 10000
@@ -561,8 +561,8 @@ GAPLUG:
 	ProduceActorPower:
 		PauseOnCondition: disabled || empdisable
 		RequiresCondition: plug.hunterseekera || plug.hunterseekerb
-		Description: Hunter Seeker
-		LongDesc: Releases a drone that will acquire and destroy an enemy target.
+		Name: Hunter Seeker
+		Description: Releases a drone that will acquire and destroy an enemy target.
 		Icon: hunterseeker
 		Actors: hunter
 		Type: HunterSeeker

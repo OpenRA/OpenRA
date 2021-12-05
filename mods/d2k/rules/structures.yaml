@@ -917,12 +917,12 @@ high_tech_factory:
 	ProvidesPrerequisite@buildingname:
 	AirstrikePower:
 		Icon: ornistrike
-		Description: Air Strike
+		Name: Air Strike
 		Prerequisites: ~techlevel.superweapons, upgrade.hightech
 		ChargeInterval: 7500
 		SquadSize: 3
 		SquadOffset: -1536, 1024, 0
-		LongDesc: Ornithopters hit the target with bombs
+		Description: Ornithopters hit the target with bombs
 		UnitType: ornithopter
 		DisplayBeacon: True
 		CameraActor: camera
@@ -1060,8 +1060,8 @@ palace:
 		RequiresCondition: harkonnen
 		Prerequisites: ~techlevel.superweapons, ~palace.nuke
 		ChargeInterval: 7500
-		Description: Death Hand
-		LongDesc: Launches an atomic missile at a target location
+		Name: Death Hand
+		Description: Launches an atomic missile at a target location
 		BeginChargeSpeechNotification: DeathHandMissilePrepping
 		EndChargeSpeechNotification: DeathHandMissileReady
 		IncomingSpeechNotification: MissileLaunchDetected
@@ -1081,8 +1081,8 @@ palace:
 		TrailSequences: idle
 		SupportPowerPaletteOrder: 40
 	ProduceActorPower@fremen:
-		Description: Recruit Fremen
-		LongDesc: Elite infantry unit armed with assault rifles and rockets\n  Strong vs Infantry, Vehicles\n  Weak vs Artillery\n  Special Ability: Invisibility
+		Name: Recruit Fremen
+		Description: Elite infantry unit armed with assault rifles and rockets\n  Strong vs Infantry, Vehicles\n  Weak vs Artillery\n  Special Ability: Invisibility
 		Icon: fremen
 		PauseOnCondition: disabled
 		RequiresCondition: atreides
@@ -1095,8 +1095,8 @@ palace:
 		OrderName: ProduceActorPower.Fremen
 		SupportPowerPaletteOrder: 20
 	ProduceActorPower@saboteur:
-		Description: Recruit Saboteur
-		LongDesc: Sneaky infantry, armed with explosives\n  Strong vs Buildings\n  Weak vs Everything\n  Special Ability: destroy buildings
+		Name: Recruit Saboteur
+		Description: Sneaky infantry, armed with explosives\n  Strong vs Buildings\n  Weak vs Everything\n  Special Ability: destroy buildings
 		Icon: saboteur
 		PauseOnCondition: disabled
 		RequiresCondition: ordos

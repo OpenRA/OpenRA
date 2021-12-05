@@ -54,8 +54,8 @@ powerproxy.spyplane:
 		OrderName: SovietSpyPlane
 		Icon: spyplane
 		ChargeInterval: 4500
-		Description: Spy Plane (Single Use)
-		LongDesc: Reveals an area of the map and cloaked enemy units.
+		Name: Spy Plane (Single Use)
+		Description: Reveals an area of the map and cloaked enemy units.
 		OneShot: true
 		SelectTargetSpeechNotification: SelectTarget
 		EndChargeSpeechNotification: SpyPlaneReady
