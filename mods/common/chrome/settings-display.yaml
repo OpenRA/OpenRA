@@ -312,6 +312,16 @@ Container@DISPLAY_PANEL:
 									Height: 20
 									Font: Regular
 									Text: Enable VSync
+						Container@FRAME_LIMIT_GAMESPEED_CHECKBOX_CONTAINER:
+							X: PARENT_RIGHT / 2 + 10
+							Y: 25
+							Width: PARENT_RIGHT / 2 - 20
+							Children:
+								Checkbox@FRAME_LIMIT_GAMESPEED_CHECKBOX:
+									Width: PARENT_RIGHT
+									Height: 20
+									Font: Regular
+									Text: Limit framerate to game tick rate
 				Container@ROW:
 					Width: PARENT_RIGHT - 24
 					Height: 50
