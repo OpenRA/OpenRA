@@ -139,6 +139,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			SettingsUtils.BindCheckboxPref(panel, "CURSORDOUBLE_CHECKBOX", ds, "CursorDouble");
 			SettingsUtils.BindCheckboxPref(panel, "VSYNC_CHECKBOX", ds, "VSync");
 			SettingsUtils.BindCheckboxPref(panel, "FRAME_LIMIT_CHECKBOX", ds, "CapFramerate");
+			SettingsUtils.BindCheckboxPref(panel, "FRAME_LIMIT_GAMESPEED_CHECKBOX", ds, "CapFramerateToGameFps");
 			SettingsUtils.BindIntSliderPref(panel, "FRAME_LIMIT_SLIDER", ds, "MaxFramerate");
 			SettingsUtils.BindCheckboxPref(panel, "PLAYER_STANCE_COLORS_CHECKBOX", gs, "UsePlayerStanceColors");
 			if (panel.GetOrNull<CheckboxWidget>("PAUSE_SHELLMAP_CHECKBOX") != null)
@@ -223,12 +224,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			restartDesc.IsVisible = () => ds.Mode != OriginalGraphicsMode || ds.VideoDisplay != OriginalVideoDisplay || ds.GLProfile != OriginalGLProfile ||
 				(ds.Mode == WindowMode.Windowed && (origWidthText != windowWidth.Text || origHeightText != windowHeight.Text));
 
+			var frameLimitGamespeedCheckbox = panel.Get<CheckboxWidget>("FRAME_LIMIT_GAMESPEED_CHECKBOX");
 			var frameLimitCheckbox = panel.Get<CheckboxWidget>("FRAME_LIMIT_CHECKBOX");
 			var frameLimitOrigLabel = frameLimitCheckbox.Text;
 			var frameLimitLabel = new CachedTransform<int, string>(fps => frameLimitOrigLabel + $" ({fps} FPS)");
 			frameLimitCheckbox.GetText = () => frameLimitLabel.Update(ds.MaxFramerate);
+			frameLimitCheckbox.IsDisabled = () => ds.CapFramerateToGameFps;
 
-			panel.Get<SliderWidget>("FRAME_LIMIT_SLIDER").IsDisabled = () => !frameLimitCheckbox.IsChecked();
+			panel.Get<SliderWidget>("FRAME_LIMIT_SLIDER").IsDisabled = () => !frameLimitCheckbox.IsChecked() || frameLimitGamespeedCheckbox.IsChecked();
 
 			// Player profile
 			var ps = Game.Settings.Player;
@@ -305,6 +308,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				ds.CapFramerate = dds.CapFramerate;
 				ds.MaxFramerate = dds.MaxFramerate;
+				ds.CapFramerateToGameFps = dds.CapFramerateToGameFps;
 				ds.GLProfile = dds.GLProfile;
 				ds.Mode = dds.Mode;
 				ds.VideoDisplay = dds.VideoDisplay;

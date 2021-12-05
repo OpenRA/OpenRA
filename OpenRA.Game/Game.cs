@@ -787,8 +787,12 @@ namespace OpenRA
 					logicInterval = logicWorld == OrderManager.World ? OrderManager.SuggestedTimestep : logicWorld.Timestep;
 
 				// Ideal time between screen updates
-				var maxFramerate = Settings.Graphics.CapFramerate ? Settings.Graphics.MaxFramerate.Clamp(1, 1000) : 1000;
-				var renderInterval = 1000 / maxFramerate;
+				var renderInterval = logicInterval;
+				if (!Settings.Graphics.CapFramerateToGameFps)
+				{
+					var maxFramerate = Settings.Graphics.CapFramerate ? Settings.Graphics.MaxFramerate.Clamp(1, 1000) : 1000;
+					renderInterval = 1000 / maxFramerate;
+				}
 
 				// Tick as fast as possible while restoring game saves, capping rendering at 5 FPS
 				if (OrderManager.World != null && OrderManager.World.IsLoadingGameSave)

@@ -192,6 +192,9 @@ namespace OpenRA
 		[Desc("At which frames per second to cap the framerate.")]
 		public int MaxFramerate = 60;
 
+		[Desc("Set a frame rate limit of 1 render frame per game simulation frame (overrides CapFramerate/MaxFramerate).")]
+		public bool CapFramerateToGameFps = false;
+
 		[Desc("Disable the OpenGL debug message callback feature.")]
 		public bool DisableGLDebugMessageCallback = false;
 
