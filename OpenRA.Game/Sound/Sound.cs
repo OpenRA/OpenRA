@@ -45,7 +45,7 @@ namespace OpenRA
 		ISound video;
 		MusicInfo currentMusic;
 		Dictionary<uint, ISound> currentSounds = new Dictionary<uint, ISound>();
-		Dictionary<string, ISound> currentNotifications = new Dictionary<string, ISound>();
+		readonly Dictionary<string, ISound> currentNotifications = new Dictionary<string, ISound>();
 		public bool DummyEngine { get; private set; }
 
 		public Sound(IPlatform platform, SoundSettings soundSettings)
@@ -392,12 +392,16 @@ namespace OpenRA
 
 			if (!string.IsNullOrEmpty(name) && (p == null || p == p.World.LocalPlayer))
 			{
-				if (currentNotifications.ContainsKey(name) && !currentNotifications[name].Complete)
+				if (currentNotifications.ContainsKey(name))
 				{
-					if (pool.AllowInterrupt)
-						soundEngine.StopSound(currentNotifications[name]);
-					else
-						return false;
+					var currentNotification = currentNotifications[name];
+					if (currentNotification != null && !currentNotification.Complete)
+					{
+						if (pool.AllowInterrupt)
+							soundEngine.StopSound(currentNotification);
+						else
+							return false;
+					}
 				}
 				else if (currentSounds.ContainsKey(actorId) && !currentSounds[actorId].Complete)
 				{
@@ -407,9 +411,10 @@ namespace OpenRA
 						return false;
 				}
 
-				var sound = soundEngine.Play2D(sounds[name],
-					false, relative, pos,
-					InternalSoundVolume * volumeModifier * pool.VolumeModifier, attenuateVolume);
+				var volume = InternalSoundVolume * volumeModifier * pool.VolumeModifier;
+				var sound = soundEngine.Play2D(sounds[name], false, relative, pos, volume, attenuateVolume);
+				if (sound == null)
+					return false;
 
 				if (voicedActor != null)
 					currentSounds[actorId] = sound;
