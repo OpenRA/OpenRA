@@ -283,7 +283,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		IEnumerable<CPos> landingCells = Enumerable.Empty<CPos>();
 		bool requireForceMove;
-		int creationActivityDelay;
+
+		readonly int creationActivityDelay;
 
 		bool notify = true;
 

@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class ProvidesTechPrerequisite : ITechTreePrerequisite
 	{
 		readonly ProvidesTechPrerequisiteInfo info;
-		bool enabled;
+		readonly bool enabled;
 
 		static readonly string[] NoPrerequisites = Array.Empty<string>();
 

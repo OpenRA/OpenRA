@@ -274,9 +274,9 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Actor self;
 		readonly BuildingInfluence influence;
 
-		(CPos, SubCell)[] occupiedCells;
-		(CPos, SubCell)[] targetableCells;
-		CPos[] transitOnlyCells;
+		readonly (CPos, SubCell)[] occupiedCells;
+		readonly (CPos, SubCell)[] targetableCells;
+		readonly CPos[] transitOnlyCells;
 
 		public CPos TopLeft => topLeft;
 		public WPos CenterPosition { get; private set; }
