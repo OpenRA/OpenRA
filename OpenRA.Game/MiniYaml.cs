@@ -326,13 +326,13 @@ namespace OpenRA
 				var inherited = new Dictionary<string, MiniYamlNode.SourceLocation>();
 				inherited.Add(kv.Key, default(MiniYamlNode.SourceLocation));
 
-				var children = ResolveInherits(kv.Key, kv.Value, tree, inherited);
+				var children = ResolveInherits(kv.Value, tree, inherited);
 				resolved.Add(kv.Key, new MiniYaml(kv.Value.Value, children));
 			}
 
 			// Resolve any top-level removals (e.g. removing whole actor blocks)
 			var nodes = new MiniYaml("", resolved.Select(kv => new MiniYamlNode(kv.Key, kv.Value)).ToList());
-			return ResolveInherits("", nodes, tree, new Dictionary<string, MiniYamlNode.SourceLocation>());
+			return ResolveInherits(nodes, tree, new Dictionary<string, MiniYamlNode.SourceLocation>());
 		}
 
 		static void MergeIntoResolved(MiniYamlNode overrideNode, List<MiniYamlNode> existingNodes,
@@ -342,13 +342,13 @@ namespace OpenRA
 			if (existingNode != null)
 			{
 				existingNode.Value = MergePartial(existingNode.Value, overrideNode.Value);
-				existingNode.Value.Nodes = ResolveInherits(existingNode.Key, existingNode.Value, tree, inherited);
+				existingNode.Value.Nodes = ResolveInherits(existingNode.Value, tree, inherited);
 			}
 			else
 				existingNodes.Add(overrideNode.Clone());
 		}
 
-		static List<MiniYamlNode> ResolveInherits(string key, MiniYaml node, Dictionary<string, MiniYaml> tree, Dictionary<string, MiniYamlNode.SourceLocation> inherited)
+		static List<MiniYamlNode> ResolveInherits(MiniYaml node, Dictionary<string, MiniYaml> tree, Dictionary<string, MiniYamlNode.SourceLocation> inherited)
 		{
 			var resolved = new List<MiniYamlNode>(node.Nodes.Count);
 
@@ -367,7 +367,7 @@ namespace OpenRA
 						throw new YamlException($"{n.Location}: Parent type `{n.Value.Value}` was already inherited by this yaml tree at {inherited[n.Value.Value]} (note: may be from a derived tree)");
 
 					inherited.Add(n.Value.Value, n.Location);
-					foreach (var r in ResolveInherits(n.Key, parent, tree, inherited))
+					foreach (var r in ResolveInherits(parent, tree, inherited))
 						MergeIntoResolved(r, resolved, tree, inherited);
 				}
 				else if (n.Key.StartsWith("-", StringComparison.Ordinal))

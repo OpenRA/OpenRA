@@ -73,7 +73,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (enterLegacyHut != null)
 				enterLegacyHut.Repair(self);
 			else if (enterHut != null)
-				enterHut.Repair(enterActor, self);
+				enterHut.Repair(self);
 
 			Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", notification, self.Owner.Faction.InternalName);
 

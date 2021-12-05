@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Activities
 		public bool SkipMakeAnims = false;
 		public string Faction = null;
 
-		public Transform(Actor self, string toActor)
+		public Transform(string toActor)
 		{
 			ToActor = toActor;
 		}

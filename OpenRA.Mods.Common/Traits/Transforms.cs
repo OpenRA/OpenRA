@@ -89,9 +89,9 @@ namespace OpenRA.Mods.Common.Traits
 			return buildingInfo == null || self.World.CanPlaceBuilding(self.Location + Info.Offset, actorInfo, buildingInfo, self);
 		}
 
-		public Activity GetTransformActivity(Actor self)
+		public Activity GetTransformActivity()
 		{
-			return new Transform(self, Info.IntoActor)
+			return new Transform(Info.IntoActor)
 			{
 				Offset = Info.Offset,
 				Facing = Info.Facing,
@@ -140,7 +140,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 			}
 
-			self.QueueActivity(queued, GetTransformActivity(self));
+			self.QueueActivity(queued, GetTransformActivity());
 		}
 
 		public void ResolveOrder(Actor self, Order order)

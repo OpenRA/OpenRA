@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Activities
 				if (targetActor != enterActor)
 					return;
 
-				if (!enterCargo.CanLoad(enterActor, self))
+				if (!enterCargo.CanLoad(self))
 					return;
 
 				enterCargo.Load(enterActor, self);

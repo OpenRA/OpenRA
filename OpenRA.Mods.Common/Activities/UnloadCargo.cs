@@ -92,7 +92,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override bool Tick(Actor self)
 		{
-			if (IsCanceling || cargo.IsEmpty(self))
+			if (IsCanceling || cargo.IsEmpty())
 				return true;
 
 			if (cargo.CanUnload())
@@ -100,7 +100,7 @@ namespace OpenRA.Mods.Common.Activities
 				foreach (var inu in notifiers)
 					inu.Unloading(self);
 
-				var actor = cargo.Peek(self);
+				var actor = cargo.Peek();
 				var spawn = self.CenterPosition;
 
 				var exitSubCell = ChooseExitSubCell(actor);

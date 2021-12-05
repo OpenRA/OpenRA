@@ -133,7 +133,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public void Repair(Actor self, Actor repairer)
+		public void Repair(Actor repairer)
 		{
 			if (Info.RepairPropagationDelay > 0)
 			{
