@@ -51,10 +51,7 @@ namespace OpenRA.Traits
 	/// </summary>
 	public sealed class DamageType { DamageType() { } }
 
-	public interface IHealthInfo : ITraitInfoInterface
-	{
-		int MaxHP { get; }
-	}
+	public interface IHealthInfo : ITraitInfoInterface { }
 
 	public interface IHealth
 	{
