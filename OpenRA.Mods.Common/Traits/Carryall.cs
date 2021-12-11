@@ -66,11 +66,19 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Condition to grant to the Carryall while it is carrying something.")]
 		public readonly string CarryCondition = null;
 
+		[ActorReference(dictionaryReference: LintDictionaryReference.Keys)]
+		[Desc("Conditions to grant when a specified actor is being carried.",
+			"A dictionary of [actor id]: [condition].")]
+		public readonly Dictionary<string, string> CarryableConditions = new Dictionary<string, string>();
+
 		[VoiceReference]
 		public readonly string Voice = "Action";
 
 		[Desc("Color to use for the target line.")]
 		public readonly Color TargetLineColor = Color.Yellow;
+
+		[GrantedConditionReference]
+		public IEnumerable<string> LinterCarryableConditions => CarryableConditions.Values;
 
 		public override object Create(ActorInitializer init) { return new Carryall(init.Self, this); }
 	}
@@ -102,6 +110,7 @@ namespace OpenRA.Mods.Common.Traits
 		IActorPreview[] carryablePreview;
 		HashSet<string> landableTerrainTypes;
 		int carryConditionToken = Actor.InvalidConditionToken;
+		int carryableConditionToken = Actor.InvalidConditionToken;
 
 		/// <summary>Offset between the carryall's and the carried actor's CenterPositions</summary>
 		public WVec CarryableOffset { get; private set; }
@@ -209,6 +218,9 @@ namespace OpenRA.Mods.Common.Traits
 			if (carryConditionToken == Actor.InvalidConditionToken)
 				carryConditionToken = self.GrantCondition(Info.CarryCondition);
 
+			if (Info.CarryableConditions.TryGetValue(carryable.Info.Name, out var carryableCondition))
+				carryableConditionToken = self.GrantCondition(carryableCondition);
+
 			CarryableOffset = OffsetForCarryable(self, carryable);
 			landableTerrainTypes = Carryable.Trait<Mobile>().Info.LocomotorInfo.TerrainSpeeds.Keys.ToHashSet();
 
@@ -221,6 +233,9 @@ namespace OpenRA.Mods.Common.Traits
 			self.World.ScreenMap.AddOrUpdate(self);
 			if (carryConditionToken != Actor.InvalidConditionToken)
 				carryConditionToken = self.RevokeCondition(carryConditionToken);
+
+			if (carryableConditionToken != Actor.InvalidConditionToken)
+				carryableConditionToken = self.RevokeCondition(carryableConditionToken);
 
 			carryablePreview = null;
 			landableTerrainTypes = null;
