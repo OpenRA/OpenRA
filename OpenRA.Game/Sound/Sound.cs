@@ -395,7 +395,7 @@ namespace OpenRA
 				if (currentNotifications.ContainsKey(name))
 				{
 					var currentNotification = currentNotifications[name];
-					if (currentNotification != null && !currentNotification.Complete)
+					if (!currentNotification.Complete)
 					{
 						if (pool.AllowInterrupt)
 							soundEngine.StopSound(currentNotification);
@@ -403,12 +403,16 @@ namespace OpenRA
 							return false;
 					}
 				}
-				else if (currentSounds.ContainsKey(actorId) && !currentSounds[actorId].Complete)
+				else if (currentSounds.ContainsKey(actorId))
 				{
-					if (pool.AllowInterrupt)
-						soundEngine.StopSound(currentSounds[actorId]);
-					else
-						return false;
+					var currentSound = currentSounds[actorId];
+					if (!currentSound.Complete)
+					{
+						if (pool.AllowInterrupt)
+							soundEngine.StopSound(currentSound);
+						else
+							return false;
+					}
 				}
 
 				var volume = InternalSoundVolume * volumeModifier * pool.VolumeModifier;
