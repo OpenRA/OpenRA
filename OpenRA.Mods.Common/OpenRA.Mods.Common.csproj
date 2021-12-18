@@ -7,7 +7,7 @@
     <PackageReference Include="OpenRA-FuzzyLogicLibrary" Version="1.0.1" />
     <PackageReference Include="DiscordRichPresence" Version="1.0.175" />
     <PackageReference Include="MP3Sharp" Version="1.0.5" />
-    <PackageReference Include="NVorbis" Version="0.10.3" />
+    <PackageReference Include="NVorbis" Version="0.10.4" />
     <PackageReference Include="TagLibSharp" Version="2.2.0" />
     <PackageReference Include="rix0rrr.BeaconLib" Version="1.0.2" />
     <PackageReference Include="Pfim" Version="0.9.1" />
