@@ -121,6 +121,9 @@ ChromeLayout:
 	common|chrome/gamesave-loading.yaml
 	common|chrome/text-notifications.yaml
 
+Translations:
+	common|languages/en.ftl
+
 Weapons:
 	d2k|weapons/debris.yaml
 	d2k|weapons/smallguns.yaml

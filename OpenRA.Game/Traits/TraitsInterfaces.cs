@@ -545,9 +545,9 @@ namespace OpenRA.Traits
 			IsLocked = locked;
 		}
 
-		public virtual string ValueChangedMessage(string playerName, string newValue)
+		public virtual string Label(string value)
 		{
-			return playerName + " changed " + Name + " to " + Values[newValue] + ".";
+			return Values[value];
 		}
 	}
 
@@ -562,9 +562,9 @@ namespace OpenRA.Traits
 		public LobbyBooleanOption(string id, string name, string description, bool visible, int displayorder, bool defaultValue, bool locked)
 			: base(id, name, description, visible, displayorder, new ReadOnlyDictionary<string, string>(BoolValues), defaultValue.ToString(), locked) { }
 
-		public override string ValueChangedMessage(string playerName, string newValue)
+		public override string Label(string newValue)
 		{
-			return playerName + " " + BoolValues[newValue].ToLowerInvariant() + " " + Name + ".";
+			return BoolValues[newValue].ToLowerInvariant();
 		}
 	}
 

@@ -107,7 +107,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			widget.Get<LabelWidget>("CONNECTING_DESC").GetText = () => $"Could not connect to {connection.Target}";
 
 			var connectionError = widget.Get<LabelWidget>("CONNECTION_ERROR");
-			connectionError.GetText = () => orderManager.ServerError ?? connection.ErrorMessage ?? "Unknown error";
+			connectionError.GetText = () => Ui.Translate(orderManager.ServerError) ?? connection.ErrorMessage ?? "Unknown error";
 
 			var panelTitle = widget.Get<LabelWidget>("TITLE");
 			panelTitle.GetText = () => orderManager.AuthenticationFailed ? "Password Required" : "Connection Failed";

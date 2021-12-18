@@ -34,6 +34,22 @@ namespace OpenRA.Network
 					TextNotificationsManager.AddSystemLine(order.TargetString);
 					break;
 
+				// Client side translated server message
+				case "LocalizedMessage":
+					{
+						if (string.IsNullOrEmpty(order.TargetString))
+							break;
+
+						var yaml = MiniYaml.FromString(order.TargetString);
+						foreach (var node in yaml)
+						{
+							var localizedMessage = new LocalizedMessage(node.Value);
+							TextNotificationsManager.AddSystemLine(localizedMessage.Translate());
+						}
+
+						break;
+					}
+
 				case "DisableChatEntry":
 					{
 						// Order must originate from the server

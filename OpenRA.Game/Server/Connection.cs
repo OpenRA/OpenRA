@@ -171,7 +171,7 @@ namespace OpenRA.Server
 							var sent = socket.Send(data, start, length - start, SocketFlags.None, out var error);
 							if (error == SocketError.WouldBlock)
 							{
-								Log.Write("server", "Non-blocking send of {0} bytes failed. Falling back to blocking send.", length - start);
+								Log.Write("server", $"Non-blocking send of {length - start} bytes failed. Falling back to blocking send.");
 								socket.Blocking = true;
 								sent = socket.Send(data, start, length - start, SocketFlags.None);
 								socket.Blocking = false;

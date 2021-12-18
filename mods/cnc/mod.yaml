@@ -142,6 +142,9 @@ ChromeLayout:
 	cnc|chrome/editor.yaml
 	common|chrome/text-notifications.yaml
 
+Translations:
+	common|languages/en.ftl
+
 Voices:
 	cnc|audio/voices.yaml
 

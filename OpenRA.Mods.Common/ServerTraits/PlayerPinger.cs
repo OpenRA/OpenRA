@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Server;
 using S = OpenRA.Server.Server;
@@ -20,6 +21,18 @@ namespace OpenRA.Mods.Common.Server
 		static readonly int PingInterval = 5000; // Ping every 5 seconds
 		static readonly int ConnReportInterval = 20000; // Report every 20 seconds
 		static readonly int ConnTimeout = 60000; // Drop unresponsive clients after 60 seconds
+
+		[TranslationReference]
+		static readonly string PlayerDropped = "player-dropped";
+
+		[TranslationReference("player")]
+		static readonly string ConnectionProblems = "connection-problems";
+
+		[TranslationReference("player")]
+		static readonly string Timeout = "timeout";
+
+		[TranslationReference("player", "timeout")]
+		static readonly string TimeoutIn = "timeout-in";
 
 		long lastPing = 0;
 		long lastConnReport = 0;
@@ -48,7 +61,7 @@ namespace OpenRA.Mods.Common.Server
 						if (client == null)
 						{
 							server.DropClient(c);
-							server.SendMessage("A player has been dropped after timing out.");
+							server.SendLocalizedMessage(PlayerDropped);
 							continue;
 						}
 
@@ -56,13 +69,13 @@ namespace OpenRA.Mods.Common.Server
 						{
 							if (!c.TimeoutMessageShown && c.TimeSinceLastResponse > PingInterval * 2)
 							{
-								server.SendMessage(client.Name + " is experiencing connection problems.");
+								server.SendLocalizedMessage(ConnectionProblems, Translation.Arguments("player", client.Name));
 								c.TimeoutMessageShown = true;
 							}
 						}
 						else
 						{
-							server.SendMessage(client.Name + " has been dropped after timing out.");
+							server.SendLocalizedMessage(Timeout, Translation.Arguments("player", client.Name));
 							server.DropClient(c);
 						}
 					}
@@ -79,7 +92,14 @@ namespace OpenRA.Mods.Common.Server
 						{
 							var client = server.GetClient(c);
 							if (client != null)
-								server.SendMessage($"{client.Name} will be dropped in {(ConnTimeout - c.TimeSinceLastResponse) / 1000} seconds.");
+							{
+								var timeout = (ConnTimeout - c.TimeSinceLastResponse) / 1000;
+								server.SendLocalizedMessage(TimeoutIn, new Dictionary<string, object>()
+								{
+									{ "player", client.Name },
+									{ "timeout", timeout }
+								});
+							}
 						}
 					}
 				}
