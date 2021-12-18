@@ -138,6 +138,9 @@ ChromeLayout:
 	common|chrome/playerprofile.yaml
 	common|chrome/text-notifications.yaml
 
+Translations:
+	common|languages/en.ftl
+
 Weapons:
 	ra|weapons/explosions.yaml
 	ra|weapons/ballistics.yaml
@@ -154,9 +157,6 @@ Notifications:
 
 Music:
 	ra|audio/music.yaml
-
-Translations:
-	ra|languages/english.yaml
 
 Hotkeys:
 	common|hotkeys/game.yaml
