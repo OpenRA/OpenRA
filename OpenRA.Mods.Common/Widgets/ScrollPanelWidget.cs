@@ -45,6 +45,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public int ItemSpacing = 0;
 		public int ButtonDepth = ChromeMetrics.Get<int>("ButtonDepth");
 		public string ClickSound = ChromeMetrics.Get<string>("ClickSound");
+		public string ClickDisabledSound = ChromeMetrics.Get<string>("ClickDisabledSound");
 		public string Background = "scrollpanel-bg";
 		public string ScrollBarBackground = "scrollpanel-bg";
 		public string Button = "scrollpanel-button";
@@ -385,8 +386,13 @@ namespace OpenRA.Mods.Common.Widgets
 				if (thumbPressed)
 					lastMouseLocation = mi.Location;
 
-				if (mi.Event == MouseInputEvent.Down && ((upPressed && !upDisabled) || (downPressed && !downDisabled) || thumbPressed))
-					Game.Sound.PlayNotification(modRules, null, "Sounds", ClickSound, null);
+				if (mi.Event == MouseInputEvent.Down)
+				{
+					if (thumbPressed || (upPressed && !upDisabled) || (downPressed && !downDisabled))
+						Game.Sound.PlayNotification(modRules, null, "Sounds", ClickSound, null);
+					else if ((upPressed && upDisabled) || (downPressed && downDisabled))
+						Game.Sound.PlayNotification(modRules, null, "Sounds", ClickDisabledSound, null);
+				}
 			}
 
 			return upPressed || downPressed || thumbPressed;
