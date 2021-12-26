@@ -541,7 +541,6 @@
 	Inherits@bounty: ^GlobalBounty
 	Inherits@selection: ^SelectableCombatUnit
 	Inherits@handicaps: ^PlayerHandicaps
-	Huntable:
 	OwnerLostAction:
 		Action: Kill
 	Armor:
@@ -611,6 +610,7 @@
 ^Plane:
 	Inherits: ^NeutralPlane
 	Inherits@2: ^GainsExperience
+	Huntable:
 	Repairable:
 		RepairActors: fix
 

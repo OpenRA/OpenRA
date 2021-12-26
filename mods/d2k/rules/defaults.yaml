@@ -384,7 +384,6 @@
 	Interactable:
 	Tooltip:
 		GenericName: Unit
-	Huntable:
 	OwnerLostAction:
 		Action: Kill
 	AppearsOnRadar:

@@ -617,7 +617,6 @@
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^ClassicFacingSpriteActor
 	Inherits@handicaps: ^PlayerHandicaps
-	Huntable:
 	OwnerLostAction:
 		Action: Kill
 	AppearsOnRadar:
