@@ -9,10 +9,11 @@ Windows
 Compiling OpenRA requires the following dependencies:
 * [Windows PowerShell >= 4.0](http://microsoft.com/powershell) (included by default in recent Windows 10 versions)
 * [.NET 5 SDK](https://dotnet.microsoft.com/download/dotnet/5.0) (or via Visual Studio)
+* NuGet (included by default in .NET 5 SDK) with online source configured `dotnet nuget add source https://api.nuget.org/v3/index.json`
 
-To compile OpenRA, open the `OpenRA.sln` solution in the main folder, build it from the command-line with `dotnet` or use the Makefile analogue command `make all` scripted in PowerShell syntax.
+To compile OpenRA, open the `OpenRA.sln` solution in the main folder, build it from the command-line with `dotnet` or use the Makefile analogue command `.\make all` scripted in PowerShell syntax.
 
-Run the game with `launch-game.cmd`. It can be handed arguments that specify the exact mod one wishes to run, for example, run `launch-game.cmd Game.Mod=ra` to launch Red Alert, `launch-game.cmd Game.Mod=cnc` to start Tiberian dawn or `launch-game.cmd Game.Mod=d2k` to launch Dune 2000.
+Run the game with `launch-game.cmd`. It can be handed arguments that specify the exact mod one wishes to run, for example, run `launch-game.cmd Game.Mod=ra` to launch Red Alert, `launch-game.cmd Game.Mod=cnc` to start Tiberian dawn, `launch-game.cmd Game.Mod=d2k` to launch Dune 2000 or launch-game.cmd Game.Mod=ts` if you wish to try the experimental Tiberian Sun mod.
 
 Linux
 =====
