@@ -110,7 +110,9 @@ namespace OpenRA.Mods.Common.Traits
 					// Valid target found, delay by a few ticks to avoid rescanning before power fires via order
 					AIUtils.BotDebug("{0} found new target location {1} for support power {2}.", player.PlayerName, attackLocation, sp.Info.OrderName);
 					waitingPowers[sp] += 10;
-					bot.QueueOrder(new Order(sp.Key, supportPowerManager.Self, Target.FromCell(world, attackLocation.Value), false) { SuppressVisualFeedback = true });
+
+					// Note: SelectDirectionalTarget uses uint.MaxValue in ExtraData to indicate that the player did not pick a direction.
+					bot.QueueOrder(new Order(sp.Key, supportPowerManager.Self, Target.FromCell(world, attackLocation.Value), false) { SuppressVisualFeedback = true, ExtraData = uint.MaxValue });
 				}
 			}
 
