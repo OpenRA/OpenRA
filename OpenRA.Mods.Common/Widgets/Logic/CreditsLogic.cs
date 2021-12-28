@@ -24,6 +24,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		bool showModTab;
 		bool showEngineTab;
+		bool isShowingModTab;
 		readonly IEnumerable<string> modLines;
 		readonly IEnumerable<string> engineLines;
 
@@ -47,7 +48,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				modLines = ParseLines(modData.DefaultFileSystem.Open(modCredits.ModCreditsFile));
 
 				var modTab = tabContainer.Get<ButtonWidget>("MOD_TAB");
-				modTab.IsHighlighted = () => showModTab;
+				modTab.IsHighlighted = () => isShowingModTab;
 				modTab.OnClick = () => ShowCredits(true);
 				modTab.GetText = () => modCredits.ModTabTitle;
 			}
@@ -58,7 +59,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				engineLines = ParseLines(File.OpenRead(Platform.ResolvePath(modCredits.EngineCreditsFile)));
 
 				var engineTab = tabContainer.Get<ButtonWidget>("ENGINE_TAB");
-				engineTab.IsHighlighted = () => !showModTab;
+				engineTab.IsHighlighted = () => !isShowingModTab;
 				engineTab.OnClick = () => ShowCredits(false);
 			}
 
@@ -78,6 +79,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void ShowCredits(bool modCredits)
 		{
+			isShowingModTab = modCredits;
+
 			scrollPanel.RemoveChildren();
 			foreach (var line in modCredits ? modLines : engineLines)
 			{
