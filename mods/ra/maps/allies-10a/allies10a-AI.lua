@@ -45,7 +45,7 @@ ProduceBadGuyInfantry = function()
 	BadGuy.Build({ Utils.Random(SovietInfantry) }, function(units)
 		table.insert(BGAttackGroup, units[1])
 		SendBGAttackGroup()
-		Trigger.AfterDelay(ProductionInterval[Map.LobbyOption("difficulty")], ProduceBadGuyInfantry)
+		Trigger.AfterDelay(ProductionInterval[Difficulty], ProduceBadGuyInfantry)
 	end)
 end
 
@@ -74,7 +74,7 @@ ProduceInfantry = function()
 	USSR.Build({ Utils.Random(SovietInfantry) }, function(units)
 		table.insert(AttackGroup, units[1])
 		SendAttackGroup()
-		Trigger.AfterDelay(ProductionInterval[Map.LobbyOption("difficulty")], ProduceInfantry)
+		Trigger.AfterDelay(ProductionInterval[Difficulty], ProduceInfantry)
 	end)
 end
 
@@ -86,7 +86,7 @@ ProduceVehicles = function()
 	USSR.Build({ Utils.Random(SovietVehicles) }, function(units)
 		table.insert(AttackGroup, units[1])
 		SendAttackGroup()
-		Trigger.AfterDelay(ProductionInterval[Map.LobbyOption("difficulty")], ProduceVehicles)
+		Trigger.AfterDelay(ProductionInterval[Difficulty], ProduceVehicles)
 	end)
 end
 
@@ -103,7 +103,7 @@ ProduceAircraft = function()
 
 		local alive = Utils.Where(Migs, function(y) return not y.IsDead end)
 		if #alive < 2 then
-			Trigger.AfterDelay(DateTime.Seconds(ProductionInterval[Map.LobbyOption("difficulty")] / 2), ProduceAircraft)
+			Trigger.AfterDelay(DateTime.Seconds(ProductionInterval[Difficulty] / 2), ProduceAircraft)
 		end
 
 		InitializeAttackAircraft(mig, Greece)
@@ -155,9 +155,8 @@ SendParabombs = function()
 end
 
 ActivateAI = function()
-	local difficulty = Map.LobbyOption("difficulty")
-	ParadropDelay = ParadropDelay[difficulty]
-	BombDelays = BombDelays[difficulty]
+	ParadropDelay = ParadropDelay[Difficulty]
+	BombDelays = BombDelays[Difficulty]
 
 	local buildings = Utils.Where(Map.ActorsInWorld, function(self) return self.Owner == USSR and self.HasProperty("StartBuildingRepairs") end)
 	Utils.Do(buildings, function(actor)
