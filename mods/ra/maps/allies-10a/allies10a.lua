@@ -160,25 +160,10 @@ WorldLoaded = function()
 	USSR = Player.GetPlayer("USSR")
 	BadGuy = Player.GetPlayer("BadGuy")
 
-	Trigger.OnObjectiveAdded(Greece, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
-	end)
+	InitObjectives(Greece)
 
 	HoldOut = USSR.AddObjective("Hold out until missiles reach their destination")
 	ApproachBase = Greece.AddObjective("Find a way to take the atomic weapons off-line.")
-
-	Trigger.OnObjectiveCompleted(Greece, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
-	end)
-	Trigger.OnObjectiveFailed(Greece, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
-	end)
-	Trigger.OnPlayerLost(Greece, function()
-		Media.PlaySpeechNotification(Greece, "Lose")
-	end)
-	Trigger.OnPlayerWon(Greece, function()
-		Media.PlaySpeechNotification(Greece, "Win")
-	end)
 
 	Camera.Position = DefaultCameraPosition.CenterPosition
 	StandardDrop = Actor.Create("paradrop", false, { Owner = USSR })

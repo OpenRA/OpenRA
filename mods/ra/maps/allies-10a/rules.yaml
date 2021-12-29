@@ -1,6 +1,6 @@
 World:
 	LuaScript:
-		Scripts: allies10a.lua, allies10a-AI.lua, campaign-global.lua
+		Scripts: allies10a.lua, allies10a-AI.lua, campaign.lua, utils.lua
 	MissionData:
 		BriefingVideo: ally10.vqa
 		LossVideo: trinity.vqa
