@@ -816,4 +816,11 @@ namespace OpenRA.Mods.Common.Traits
 			Actor ignoreActor = null,
 			bool laneBias = true);
 	}
+
+	[RequireExplicitImplementation]
+	public interface IRejectsOrders
+	{
+		HashSet<string> Reject { get; }
+		HashSet<string> Except { get; }
+	}
 }
