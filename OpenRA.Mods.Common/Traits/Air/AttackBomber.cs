@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Primitives;
@@ -17,12 +18,13 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	[Desc("Trait used for scripted actors or actors spawned by a support power. Units with this trait will reject all orders given.")]
 	public class AttackBomberInfo : AttackBaseInfo
 	{
 		public override object Create(ActorInitializer init) { return new AttackBomber(init.Self, this); }
 	}
 
-	public class AttackBomber : AttackBase, ITick, ISync, INotifyRemovedFromWorld
+	public class AttackBomber : AttackBase, ITick, ISync, INotifyRemovedFromWorld, IRejectsOrders
 	{
 		readonly AttackBomberInfo info;
 
@@ -85,6 +87,11 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			OnRemovedFromWorld(self);
 		}
+
+		// Return an empty set for both reject and except to reject all orders
+		readonly HashSet<string> emptyHashset = new HashSet<string>();
+		HashSet<string> IRejectsOrders.Reject => emptyHashset;
+		HashSet<string> IRejectsOrders.Except => emptyHashset;
 
 		public override Activity GetAttackActivity(Actor self, AttackSource source, in Target newTarget, bool allowMove, bool forceAttack, Color? targetLineColor)
 		{
