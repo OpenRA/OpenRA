@@ -1,0 +1,45 @@
+World:
+	LuaScript:
+		Scripts: allies13.lua, campaign.lua, utils.lua
+	MissionData:
+		BackgroundVideo: spy.vqa
+		WinVideo: apcescpe.vqa
+		LossVideo: bmap.vqa
+		Briefing: LANDCOM 16 HQS.\nTOP SECRET.\nTO: FIELD COMMANDER A9\n\nCONGRATULATIONS. CAPTURING TECH CENTERS HAS REVEALED AN UNDERGROUND WEAPONS FACILITY. PLACE EXPLOSIVE CHARGES ON ALL GENERATORS. RESULTING EXPOSIONS SHOULD DESTROY FACILITY.\nGET OUT BEFORE NERVE GAS IS USED.\n\nTRANSMISSION ENDS.
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
+		Values:
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
+		Default: normal
+	TimeLimitManager:
+		CountdownLabel: MISSION_TEXT
+		CountdownText: Sarin gas released in {0}
+	StartGameNotification:
+		Notification: MissionTimerInitialised
+
+Player:
+	MissionObjectives:
+		GameOverDelay: 4000
+
+3TNK:
+	AutoTarget:
+		InitialStanceAI: HoldFire
+
+4TNK:
+	AutoTarget:
+		InitialStanceAI: HoldFire
+
+V2RL:
+	AutoTarget:
+		InitialStanceAI: HoldFire
+
+FTUR:
+	RevealOnDeath:
+		RevealForRelationships: Enemy
+		Duration: 60
+	Armor:
+		Type: Concrete
