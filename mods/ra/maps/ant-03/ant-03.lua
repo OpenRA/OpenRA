@@ -80,7 +80,7 @@ Tick = function()
 		Spain.MarkCompletedObjective(KillAll)
 	end
 
-	if Hive1Gassed and Hive2Gassed and Hive3Gassed and Hive4Gassed and Hive5Gassed and Hive6Gassed and Hive7Gassed then
+	if HiveGassed[1] and HiveGassed[2] and HiveGassed[3] and HiveGassed[4] and HiveGassed[5] and HiveGassed[6] and HiveGassed[7] then
 		Spain.MarkCompletedObjective(GasNests)
 		SendAnts()
 	end
