@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Activities
 		bool finishedApproach;
 
 		public Land(Actor self, WAngle? facing = null, Color? targetLineColor = null)
-			: this(self, Target.Invalid, new WDist(-1), WVec.Zero, facing, null)
+			: this(self, Target.Invalid, new WDist(-1), WVec.Zero, facing, targetLineColor: targetLineColor)
 		{
 			assignTargetOnFirstRun = true;
 		}
