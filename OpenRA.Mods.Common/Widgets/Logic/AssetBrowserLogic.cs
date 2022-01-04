@@ -481,20 +481,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					// Mute music so it doesn't interfere with the current asset.
 					MuteSounds();
 
-					using (var soundStream = Game.ModData.DefaultFileSystem.Open(prefix + filename))
+					currentAudioStream = Game.ModData.DefaultFileSystem.Open(prefix + filename);
+					foreach (var modDataSoundLoader in Game.ModData.SoundLoaders)
 					{
-						foreach (var modDataSoundLoader in Game.ModData.SoundLoaders)
+						if (modDataSoundLoader.TryParseSound(currentAudioStream, out currentSoundFormat))
 						{
-							if (modDataSoundLoader.TryParseSound(soundStream, out currentSoundFormat))
+							if (frameSlider != null)
 							{
-								if (frameSlider != null)
-								{
-									frameSlider.MaximumValue = currentSoundFormat.LengthInSeconds * currentSoundFormat.SampleRate;
-									frameSlider.Ticks = 0;
-								}
-
-								break;
+								frameSlider.MaximumValue = currentSoundFormat.LengthInSeconds * currentSoundFormat.SampleRate;
+								frameSlider.Ticks = 0;
 							}
+
+							break;
 						}
 					}
 				}
