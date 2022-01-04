@@ -49,15 +49,23 @@ namespace OpenRA.Mods.Common.AudioLoaders
 
 		public OggFormat(Stream stream)
 		{
-			this.stream = stream;
-			reader = new VorbisReader(stream);
-			LengthInSeconds = (float) reader.TotalTime.TotalSeconds;
+			var startPosition = stream.Position;
+			try
+			{
+				this.stream = stream;
+				reader = new VorbisReader(stream, false);
+				LengthInSeconds = (float)reader.TotalTime.TotalSeconds;
+			}
+			finally
+			{
+				stream.Position = startPosition;
+			}
 		}
 
 		OggFormat(OggFormat cloneFrom)
 		{
 			stream = SegmentStream.CreateWithoutOwningStream(cloneFrom.stream, 0, (int)cloneFrom.stream.Length);
-			reader = new VorbisReader(stream)
+			reader = new VorbisReader(stream, false)
 			{
 				// Tell NVorbis to clip samples so we don't have to range-check during reading.
 				ClipSamples = true
