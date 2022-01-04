@@ -37,10 +37,10 @@ namespace OpenRA.Mods.Common.AudioLoaders
 
 	public sealed class Mp3Format : ISoundFormat
 	{
-		public int Channels { get { return mp3.ChannelCount; } }
-		public int SampleBits { get { return 16; } }
-		public int SampleRate { get { return mp3.Frequency; } }
-		public float LengthInSeconds { get; private set; }
+		public int Channels => mp3.ChannelCount;
+		public int SampleBits => 16;
+		public int SampleRate => mp3.Frequency;
+		public float LengthInSeconds { get; }
 		public Stream GetPCMInputStream() { return new MP3Stream(Clone(this)); }
 		public void Dispose() { mp3.Dispose(); }
 

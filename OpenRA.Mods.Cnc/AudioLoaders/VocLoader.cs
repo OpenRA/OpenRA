@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Cnc.AudioLoaders
 	{
 		public int SampleBits => 8;
 		public int Channels => 1;
-		public int SampleRate { get; private set; }
+		public int SampleRate { get; }
 		public float LengthInSeconds => (float)totalSamples / SampleRate;
 		public Stream GetPCMInputStream() { return new VocStream(new VocFormat(this)); }
 		public void Dispose() { stream.Dispose(); }

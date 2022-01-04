@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.AudioLoaders
 		public int SampleBits => 16;
 		public int Channels => reader.Channels;
 		public int SampleRate => reader.SampleRate;
-		public float LengthInSeconds => (float)reader.TotalTime.TotalSeconds;
+		public float LengthInSeconds { get; }
 		public Stream GetPCMInputStream() { return new OggStream(new OggFormat(this)); }
 		public void Dispose() { reader.Dispose(); }
 
@@ -51,6 +51,7 @@ namespace OpenRA.Mods.Common.AudioLoaders
 		{
 			this.stream = stream;
 			reader = new VorbisReader(stream);
+			LengthInSeconds = (float) reader.TotalTime.TotalSeconds;
 		}
 
 		OggFormat(OggFormat cloneFrom)
