@@ -49,19 +49,27 @@ namespace OpenRA.Mods.Common.AudioLoaders
 
 		public Mp3Format(Stream stream)
 		{
-			mp3 = new MP3Stream(stream);
-			this.stream = stream;
-
-			// Make a first guess based on the file size and bitrate
-			// This should be fine for constant bitrate files
-			LengthInSeconds = mp3.Length * 8f / (2f * Channels * SampleRate);
-
+			var startPosition = stream.Position;
 			try
 			{
-				// Attempt to parse a more accurate length from the file metadata;
-				LengthInSeconds = (float)new TagLib.Mpeg.AudioFile(new StreamAbstraction(stream)).Properties.Duration.TotalSeconds;
+				mp3 = new MP3Stream(stream);
+				this.stream = stream;
+
+				// Make a first guess based on the file size and bitrate
+				// This should be fine for constant bitrate files
+				LengthInSeconds = mp3.Length * 8f / (2f * Channels * SampleRate);
+
+				try
+				{
+					// Attempt to parse a more accurate length from the file metadata;
+					LengthInSeconds = (float)new TagLib.Mpeg.AudioFile(new StreamAbstraction(stream)).Properties.Duration.TotalSeconds;
+				}
+				catch { }
 			}
-			catch { }
+			finally
+			{
+				stream.Position = startPosition;
+			}
 		}
 
 		Stream Clone(Mp3Format cloneFrom)
