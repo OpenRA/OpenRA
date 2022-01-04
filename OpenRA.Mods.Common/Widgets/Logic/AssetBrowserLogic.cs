@@ -500,12 +500,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				}
 				else if (allowedVideoExtensions.Contains(fileExtension))
 				{
+					// Mute music so it doesn't interfere with the current asset.
+					MuteSounds();
+
 					var video = VideoLoader.GetVideo(Game.ModData.DefaultFileSystem.Open(filename), Game.ModData.VideoLoaders);
 					if (video != null)
 					{
-						// Mute music so it doesn't interfere with the current asset.
-						MuteSounds();
-
 						player = panel.Get<VideoPlayerWidget>("PLAYER");
 						player.Load(prefix + filename);
 						player.DrawOverlay = false;
