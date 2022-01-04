@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Common.Activities
 			this.landRange = landRange.Length >= 0 ? landRange : aircraft.Info.LandRange;
 			this.targetLineColor = targetLineColor;
 
-			// NOTE: desiredFacing = -1 means we should not prefer any particular facing and instead just
+			// NOTE: Assigning null to desiredFacing means we should not prefer any particular facing and instead just
 			// use whatever facing gives us the most direct path to the landing site.
 			if (!facing.HasValue && aircraft.Info.TurnToLand)
 				desiredFacing = aircraft.Info.InitialFacing;
