@@ -32,28 +32,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 
 	public static class AudReader
 	{
-		public static float SoundLength(Stream s)
-		{
-			var originalPosition = s.Position;
-
-			var sampleRate = s.ReadUInt16();
-			/*var dataSize = */ s.ReadInt32();
-			var outputSize = s.ReadInt32();
-			var flags = (SoundFlags)s.ReadByte();
-
-			var samples = outputSize;
-			if ((flags & SoundFlags.Stereo) != 0)
-				samples /= 2;
-
-			if ((flags & SoundFlags._16Bit) != 0)
-				samples /= 2;
-
-			s.Seek(originalPosition, SeekOrigin.Begin);
-
-			return (float)samples / sampleRate;
-		}
-
-		public static bool LoadSound(Stream s, out Func<Stream> result, out int sampleRate, out int sampleBits, out int channels)
+		public static bool LoadSound(Stream s, out Func<Stream> result, out int sampleRate, out int sampleBits, out int channels, out float lengthInSeconds)
 		{
 			result = null;
 			var startPosition = s.Position;
@@ -62,9 +41,10 @@ namespace OpenRA.Mods.Cnc.FileFormats
 				sampleRate = s.ReadUInt16();
 				var dataSize = s.ReadInt32();
 				var outputSize = s.ReadInt32();
-				var readFlag = s.ReadByte();
-				sampleBits = (readFlag & (int)SoundFlags._16Bit) == 0 ? 8 : 16;
-				channels = (readFlag & (int)SoundFlags.Stereo) == 0 ? 1 : 2;
+				var audioFlags = (SoundFlags)s.ReadByte();
+				sampleBits = (audioFlags & SoundFlags._16Bit) == 0 ? 8 : 16;
+				channels = (audioFlags & SoundFlags.Stereo) == 0 ? 1 : 2;
+				lengthInSeconds = (float)(outputSize * 8) / (channels * sampleBits * sampleRate);
 
 				var readFormat = s.ReadByte();
 				if (!Enum.IsDefined(typeof(SoundFormat), readFormat))

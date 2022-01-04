@@ -20,12 +20,13 @@ namespace OpenRA.Mods.Common.FileFormats
 	{
 		enum WaveType { Pcm = 0x1, MsAdpcm = 0x2, ImaAdpcm = 0x11 }
 
-		public static bool LoadSound(Stream s, out Func<Stream> result, out short channels, out int sampleBits, out int sampleRate)
+		public static bool LoadSound(Stream s, out Func<Stream> result, out short channels, out int sampleBits, out int sampleRate, out float lengthInSeconds)
 		{
 			result = null;
 			channels = -1;
 			sampleBits = -1;
 			sampleRate = -1;
+			lengthInSeconds = -1;
 
 			var type = s.ReadASCII(4);
 			if (type != "RIFF")
@@ -65,6 +66,7 @@ namespace OpenRA.Mods.Common.FileFormats
 						s.ReadInt32(); // Byte Rate
 						blockAlign = s.ReadInt16();
 						sampleBits = s.ReadInt16();
+						lengthInSeconds = (float)(s.Length * 8) / (channels * sampleRate * sampleBits);
 						s.ReadBytes(fmtChunkSize - 16);
 						break;
 					case "fact":
@@ -105,25 +107,6 @@ namespace OpenRA.Mods.Common.FileFormats
 			};
 
 			return true;
-		}
-
-		public static float WaveLength(Stream s)
-		{
-			s.Position = 12;
-			var fmt = s.ReadASCII(4);
-
-			if (fmt != "fmt ")
-				return 0;
-
-			s.Position = 22;
-			var channels = s.ReadInt16();
-			var sampleRate = s.ReadInt32();
-
-			s.Position = 34;
-			var bitsPerSample = s.ReadInt16();
-			var length = s.Length * 8;
-
-			return (float)length / (channels * sampleRate * bitsPerSample);
 		}
 
 		sealed class WavStreamImaAdpcm : ReadOnlyAdapterStream
