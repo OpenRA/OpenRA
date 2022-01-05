@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			return LayerPoolTable.GetValue(world, CreateLayerPool);
 		}
 
-		private PathSearch(IGraph<CellInfo> graph)
+		PathSearch(IGraph<CellInfo> graph)
 			: base(graph)
 		{
 		}
