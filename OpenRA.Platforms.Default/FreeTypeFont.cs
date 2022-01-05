@@ -21,7 +21,7 @@ namespace OpenRA.Platforms.Default
 		Justification = "C-style naming is kept for consistency with the underlying native API.")]
 	[SuppressMessage("Microsoft.StyleCop.CSharp.NamingRules", "SA1310:FieldNamesMustNotContainUnderscore",
 		Justification = "C-style naming is kept for consistency with the underlying native API.")]
-	internal static class FreeType
+	static class FreeType
 	{
 		internal const uint OK = 0x00;
 		internal const int FT_LOAD_RENDER = 0x04;

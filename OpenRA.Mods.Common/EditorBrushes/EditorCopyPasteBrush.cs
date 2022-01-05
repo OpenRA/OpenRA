@@ -268,7 +268,7 @@ namespace OpenRA.Mods.Common.Widgets
 		}
 	}
 
-	internal class UndoCopyPaste
+	class UndoCopyPaste
 	{
 		public CPos Cell { get; private set; }
 		public TerrainTile MapTile { get; private set; }

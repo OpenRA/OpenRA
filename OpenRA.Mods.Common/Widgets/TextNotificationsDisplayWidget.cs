@@ -114,7 +114,7 @@ namespace OpenRA.Mods.Common.Widgets
 				Children[i].Bounds.Y += mostRecentChild.Bounds.Height + ItemSpacing;
 		}
 
-		private void RemoveNotification()
+		void RemoveNotification()
 		{
 			if (Children.Count == 0)
 				return;
