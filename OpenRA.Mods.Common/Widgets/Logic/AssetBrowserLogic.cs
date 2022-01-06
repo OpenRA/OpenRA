@@ -131,6 +131,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				paletteDropDown.OnMouseDown = _ => ShowPaletteDropdown(paletteDropDown, world);
 				paletteDropDown.GetText = () => currentPalette;
+				paletteDropDown.IsVisible = () => currentSprites != null || currentVoxel != null;
+				panel.GetOrNull<LabelWidget>("PALETTE_DESC").IsVisible = () => currentSprites != null || currentVoxel != null;
 			}
 
 			var colorManager = modData.DefaultRules.Actors[SystemActors.World].TraitInfo<ColorPickerManagerInfo>();
@@ -141,6 +143,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				colorDropdown.IsDisabled = () => !colorPickerPalettes.Contains(currentPalette);
 				colorDropdown.OnMouseDown = _ => ColorPickerLogic.ShowColorDropDown(colorDropdown, colorManager, worldRenderer);
+				colorDropdown.IsVisible = () => currentSprites != null || currentVoxel != null;
 				panel.Get<ColorBlockWidget>("COLORBLOCK").GetColor = () => colorManager.Color;
 			}
 
