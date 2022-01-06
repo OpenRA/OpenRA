@@ -287,8 +287,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				spriteScaleSlider.OnChange += x => spriteScale = x;
 				spriteScaleSlider.GetValue = () => spriteScale;
-				spriteScaleSlider.IsVisible = () => !isVideoLoaded && currentSoundFormat == null;
-				panel.GetOrNull<LabelWidget>("SPRITE_SCALE").IsVisible = () => !isVideoLoaded && currentSoundFormat == null;
+				spriteScaleSlider.IsVisible = () => currentSprites != null;
+				panel.GetOrNull<LabelWidget>("SPRITE_SCALE").IsVisible = () => currentSprites != null;
 			}
 
 			var voxelContainer = panel.GetOrNull("VOXEL_SELECTOR");
@@ -336,6 +336,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				modelScaleSlider.OnChange += x => modelScale = x;
 				modelScaleSlider.GetValue = () => modelScale;
+				modelScaleSlider.IsVisible = () => currentVoxel != null;
+				panel.GetOrNull<LabelWidget>("MODEL_SCALE").IsVisible = () => currentVoxel != null;
 			}
 
 			var assetBrowserModData = modData.Manifest.Get<AssetBrowser>();
