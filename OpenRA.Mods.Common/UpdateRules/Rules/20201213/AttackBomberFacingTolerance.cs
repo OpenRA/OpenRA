@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
 		{
-			foreach (var attackBomber in actorNode.ChildrenMatching("AttackBomber"))
+			foreach (var attackBomber in actorNode.ChildrenMatching("AttackBomber", includeRemovals: false))
 			{
 				var facingTolerance = attackBomber.LastChildMatching("FacingTolerance");
 				if (facingTolerance != null)
