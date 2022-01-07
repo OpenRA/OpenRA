@@ -52,6 +52,7 @@ LST:
 		Name: secondary
 		Weapon: M60mg
 	AttackFrontal:
+		FacingTolerance: 0
 	WithMuzzleOverlay:
 	MustBeDestroyed:
 		RequiredForShortGame: true

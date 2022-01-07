@@ -211,6 +211,7 @@ ARTY:
 		TargetFrozenActors: True
 		ForceFireIgnoresActors: True
 		Voice: Attack
+		FacingTolerance: 0
 	AttackMove:
 		Voice: Attack
 	WithMuzzleOverlay:
@@ -257,6 +258,7 @@ FTNK:
 		MuzzleSequence: muzzle
 	AttackFrontal:
 		Voice: Attack
+		FacingTolerance: 0
 	AttackMove:
 		Voice: Attack
 	WithMuzzleOverlay:
@@ -347,6 +349,7 @@ BIKE:
 		LocalYaw: 100, -100
 	AttackFrontal:
 		Voice: Attack
+		FacingTolerance: 0
 	AttackMove:
 		Voice: Attack
 	SpawnActorOnDeath:
@@ -600,6 +603,7 @@ MSAM:
 		TargetFrozenActors: True
 		ForceFireIgnoresActors: True
 		Voice: Attack
+		FacingTolerance: 0
 	AttackMove:
 		Voice: Attack
 	WithSpriteTurret:
@@ -717,6 +721,7 @@ STNK:
 		LocalOffset: 213,43,128, 213,-43,128
 	AttackFrontal:
 		Voice: Attack
+		FacingTolerance: 0
 	AttackMove:
 		Voice: Attack
 	AutoTarget:

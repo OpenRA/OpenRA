@@ -28,6 +28,7 @@ VOLK:
 		Voice: Action
 	AttackFrontal:
 		Voice: Action
+		FacingTolerance: 0
 	AttackMove:
 		Voice: Action
 	Passenger:

@@ -27,6 +27,7 @@ DOGGIE:
 		Weapon: FiendShard
 	AttackFrontal:
 		Voice: Attack
+		FacingTolerance: 0
 	AttackWander:
 		WanderMoveRadius: 2
 		MinMoveDelay: 200
@@ -97,6 +98,7 @@ VISC_LRG:
 		ScanRadius: 5
 	AttackFrontal:
 		Voice: Attack
+		FacingTolerance: 0
 	AttackWander:
 		WanderMoveRadius: 2
 		MinMoveDelay: 25
@@ -125,6 +127,7 @@ JFISH:
 	AutoTarget:
 		ScanRadius: 5
 	AttackFrontal:
+		FacingTolerance: 0
 	AttackWander:
 		WanderMoveRadius: 6
 		MinMoveDelay: 250

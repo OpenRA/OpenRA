@@ -136,6 +136,7 @@ SMECH:
 	AttackFrontal:
 		Voice: Attack
 		PauseOnCondition: empdisable
+		FacingTolerance: 0
 	Armament:
 		Weapon: AssaultCannon
 	Voiced:
@@ -254,6 +255,7 @@ HMEC:
 	AttackFrontal:
 		Voice: Attack
 		PauseOnCondition: empdisable
+		FacingTolerance: 0
 	Armament@MISSILES:
 		Weapon: MammothTusk
 		LocalOffset: -243,-368,1208, -243,368,1208

@@ -24,6 +24,7 @@ E1:
 		Weapon: M16
 	AttackFrontal:
 		Voice: Attack
+		FacingTolerance: 0
 	AttackMove:
 		Voice: Attack
 	WithInfantryBody:
@@ -58,6 +59,7 @@ E2:
 		FireDelay: 15
 	AttackFrontal:
 		Voice: Attack
+		FacingTolerance: 0
 	AttackMove:
 		Voice: Attack
 	TakeCover:
@@ -97,6 +99,7 @@ E3:
 		FireDelay: 5
 	AttackFrontal:
 		Voice: Attack
+		FacingTolerance: 0
 	AttackMove:
 		Voice: Attack
 	TakeCover:
@@ -133,6 +136,7 @@ E4:
 		MuzzleSequence: muzzle
 	AttackFrontal:
 		Voice: Attack
+		FacingTolerance: 0
 	AttackMove:
 		Voice: Attack
 	TakeCover:
@@ -171,6 +175,7 @@ E5:
 		MuzzleSequence: muzzle
 	AttackFrontal:
 		Voice: Attack
+		FacingTolerance: 0
 	AttackMove:
 		Voice: Attack
 	TakeCover:

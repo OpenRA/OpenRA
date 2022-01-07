@@ -49,6 +49,7 @@ SS:
 		LocalOffset: 0,-171,0, 0,171,0
 		FireDelay: 2
 	AttackFrontal:
+		FacingTolerance: 0
 	AutoTargetPriority@DEFAULT:
 		ValidTargets: WaterActor, Underwater
 		InvalidTargets: NoAutoTarget, Structure
@@ -122,6 +123,7 @@ MSUB:
 	AttackFrontal:
 		TargetFrozenActors: True
 		ForceFireIgnoresActors: True
+		FacingTolerance: 0
 	AutoTarget:
 		InitialStance: HoldFire
 		InitialStanceAI: ReturnFire
