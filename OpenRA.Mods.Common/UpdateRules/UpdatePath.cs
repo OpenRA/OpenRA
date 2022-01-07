@@ -34,11 +34,6 @@ namespace OpenRA.Mods.Common.UpdateRules
 			Justification = "Extracting update lists to temporary variables obfuscates the definitions.")]
 		static readonly UpdatePath[] Paths =
 		{
-			new UpdatePath("release-20191117", "release-20200202", new UpdateRule[]
-			{
-				new ReplaceAttackTypeStrafe()
-			}),
-
 			new UpdatePath("release-20200202", "release-20200503", new UpdateRule[]
 			{
 				new RemoveYesNo(),
