@@ -115,7 +115,6 @@ pips:
 		Length: *
 		Tick: 300
 		Offset: 0, -6
-
 	# TODO:
 	pip-empty-building:
 	pip-green-building:
