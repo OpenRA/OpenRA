@@ -90,6 +90,8 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new RemoveSmokeTrailWhenDamaged(),
 				new ReplaceCrateSecondsWithTicks(),
 				new UseMillisecondsForSounds(),
+				new UnhardcodeSquadManager(),
+				new RenameSupportPowerDescription(),
 				new AttackBomberFacingTolerance(),
 			})
 		};
