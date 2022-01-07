@@ -32,6 +32,7 @@ BGGY:
 	AttackFrontal:
 		Voice: Attack
 		PauseOnCondition: empdisable
+		FacingTolerance: 0
 	WithMuzzleOverlay:
 	-DamagedByTerrain@VEINS:
 	-LeavesTrails@VEINS:
@@ -74,6 +75,7 @@ BIKE:
 	AttackFrontal:
 		Voice: Attack
 		PauseOnCondition: empdisable
+		FacingTolerance: 0
 	DamagedByTerrain@VEINS:
 		RequiresCondition: !inside-tunnel && !rank-elite
 	LeavesTrails@VEINS:
@@ -154,6 +156,7 @@ TTNK:
 		Voice: Attack
 		RequiresCondition: undeployed
 		PauseOnCondition: empdisable
+		FacingTolerance: 0
 	Turreted:
 		TurnSpeed: 24
 		Turret: deployed
@@ -327,6 +330,7 @@ REPAIR:
 	AttackFrontal:
 		Voice: Attack
 		PauseOnCondition: empdisable
+		FacingTolerance: 0
 	AutoTarget:
 		ScanRadius: 8
 		InitialStance: AttackAnything
@@ -468,6 +472,7 @@ SUBTANK:
 	AttackFrontal:
 		Voice: Attack
 		PauseOnCondition: empdisable
+		FacingTolerance: 0
 	WithVoxelBody:
 		RequiresCondition: !submerged
 	Targetable:
@@ -530,6 +535,7 @@ STNK:
 	AttackFrontal:
 		Voice: Attack
 		PauseOnCondition: empdisable
+		FacingTolerance: 0
 	AutoTarget:
 		InitialStance: HoldFire
 		InitialStanceAI: ReturnFire

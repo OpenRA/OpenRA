@@ -27,6 +27,7 @@ E3:
 		ProneOffset: 52,64,-652
 	AttackFrontal:
 		Voice: Attack
+		FacingTolerance: 0
 	WithSplitAttackPaletteInfantryBody:
 		DefaultAttackSequence: attack
 	RevealsShroud:
@@ -68,6 +69,7 @@ CYBORG:
 		Weapon: Vulcan3
 	AttackFrontal:
 		Voice: Attack
+		FacingTolerance: 0
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
 
@@ -107,6 +109,7 @@ CYC2:
 		LocalOffset: 240,120,966
 	AttackFrontal:
 		Voice: Attack
+		FacingTolerance: 0
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
 

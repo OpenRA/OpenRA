@@ -33,6 +33,7 @@ V2RL:
 	AttackFrontal:
 		TargetFrozenActors: True
 		ForceFireIgnoresActors: True
+		FacingTolerance: 0
 	WithFacingSpriteBody:
 		RequiresCondition: !reloading
 		Name: loaded
@@ -276,6 +277,7 @@ ARTY:
 	AttackFrontal:
 		TargetFrozenActors: True
 		ForceFireIgnoresActors: True
+		FacingTolerance: 0
 	WithMuzzleOverlay:
 	Explodes:
 		Weapon: ArtilleryExplode
@@ -464,6 +466,7 @@ APC:
 		LocalOffset: 85,0,171
 		MuzzleSequence: muzzle
 	AttackFrontal:
+		FacingTolerance: 0
 	WithMuzzleOverlay:
 	Cargo:
 		Types: Infantry
@@ -786,6 +789,7 @@ CTNK:
 		LocalOffset: -160,276,232
 		LocalYaw: -60
 	AttackFrontal:
+		FacingTolerance: 0
 	PortableChrono:
 		ChargeDelay: 250
 	ProducibleWithLevel:

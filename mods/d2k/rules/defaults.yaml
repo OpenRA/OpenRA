@@ -376,6 +376,7 @@
 	MapEditorData:
 		Categories: Infantry
 	AttackFrontal:
+		FacingTolerance: 0
 
 ^Plane:
 	Inherits@1: ^ExistsInWorld

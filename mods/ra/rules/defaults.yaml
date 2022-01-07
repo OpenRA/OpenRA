@@ -450,6 +450,7 @@
 		IdleSequences: idle1,idle2
 		StandSequences: stand,stand2
 	AttackFrontal:
+		FacingTolerance: 0
 
 ^CivInfantry:
 	Inherits: ^Infantry
@@ -480,6 +481,7 @@
 	Armament:
 		Weapon: Pistol
 	AttackFrontal:
+		FacingTolerance: 0
 	WithInfantryBody:
 		DefaultAttackSequence: shoot
 

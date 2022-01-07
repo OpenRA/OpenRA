@@ -26,6 +26,7 @@ E2:
 		ProneOffset: 160,128,-555
 	AttackFrontal:
 		Voice: Attack
+		FacingTolerance: 0
 	WithSplitAttackPaletteInfantryBody:
 		DefaultAttackSequence: attack
 	RevealsShroud:
@@ -77,6 +78,7 @@ MEDIC:
 	AutoTargetPriority@DEFAULT:
 		ValidTargets: Infantry
 	AttackFrontal:
+		FacingTolerance: 0
 	WithSplitAttackPaletteInfantryBody:
 		DefaultAttackSequence: heal
 	ChangesHealth:
@@ -119,6 +121,7 @@ JUMPJET:
 	-Crushable:
 	AttackFrontal:
 		Voice: Attack
+		FacingTolerance: 0
 	WithSplitAttackPaletteInfantryBody:
 		RequiresCondition: !airborne
 		DefaultAttackSequence: attack
@@ -248,6 +251,7 @@ GHOST:
 		CrushSound: squishy2.aud
 	AttackFrontal:
 		Voice: Attack
+		FacingTolerance: 0
 	Demolition:
 		DetonationDelay: 45
 		Voice: Attack

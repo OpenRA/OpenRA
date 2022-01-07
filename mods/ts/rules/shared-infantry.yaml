@@ -26,6 +26,7 @@ E1:
 		RequiresCondition: rank-elite
 	AttackFrontal:
 		Voice: Attack
+		FacingTolerance: 0
 	WithSplitAttackPaletteInfantryBody:
 		DefaultAttackSequence: attack
 	ProducibleWithLevel:

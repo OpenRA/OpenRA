@@ -50,6 +50,7 @@ SLAV:
 		Description: Religious loyalist\narmed with sniper rifle.
 	AttackFrontal:
 		Voice: Attack
+		FacingTolerance: 0
 	Armament:
 		Weapon: Sniper
 
