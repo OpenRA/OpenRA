@@ -44,19 +44,28 @@ namespace OpenRA.Mods.Common.Widgets.Logic.Ingame
 			var eligiblePlayers = SelectionUtils.GetPlayersToIncludeInSelection(world);
 
 			// Select actors on the screen which belong to the current player(s)
-			var ownUnitsOnScreen = SelectionUtils.SelectActorsOnScreen(world, worldRenderer, null, eligiblePlayers).SubsetWithHighestSelectionPriority(e.Modifiers).ToList();
+			var newSelection = SelectionUtils.SelectActorsOnScreen(world, worldRenderer, null, eligiblePlayers).SubsetWithHighestSelectionPriority(e.Modifiers).ToList();
 
 			// Check if selecting actors on the screen has selected new units
-			if (ownUnitsOnScreen.Count > selection.Actors.Count())
-				TextNotificationsManager.AddFeedbackLine("Selected across screen.");
+			if (newSelection.Count > selection.Actors.Count())
+			{
+				if (newSelection.Count > 1)
+					TextNotificationsManager.AddFeedbackLine($"Selected {newSelection.Count} units across screen.");
+				else
+					TextNotificationsManager.AddFeedbackLine($"Selected one unit across screen.");
+			}
 			else
 			{
 				// Select actors in the world that have highest selection priority
-				ownUnitsOnScreen = SelectionUtils.SelectActorsInWorld(world, null, eligiblePlayers).SubsetWithHighestSelectionPriority(e.Modifiers).ToList();
-				TextNotificationsManager.AddFeedbackLine("Selected across map.");
+				newSelection = SelectionUtils.SelectActorsInWorld(world, null, eligiblePlayers).SubsetWithHighestSelectionPriority(e.Modifiers).ToList();
+
+				if (newSelection.Count > 1)
+					TextNotificationsManager.AddFeedbackLine($"Selected {newSelection.Count} units across map.");
+				else
+					TextNotificationsManager.AddFeedbackLine($"Selected one unit across map.");
 			}
 
-			selection.Combine(world, ownUnitsOnScreen, false, false);
+			selection.Combine(world, newSelection, false, false);
 
 			Game.Sound.PlayNotification(world.Map.Rules, world.LocalPlayer, "Sounds", ClickSound, null);
 
