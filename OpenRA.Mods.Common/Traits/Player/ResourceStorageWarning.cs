@@ -24,8 +24,11 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int Threshold = 80;
 
 		[NotificationReference("Speech")]
-		[Desc("The speech to play for the warning.")]
+		[Desc("Speech to play for the warning.")]
 		public readonly string Notification = "SilosNeeded";
+
+		[Desc("Text to display for the warning.")]
+		public readonly string TextNotification = null;
 
 		public override object Create(ActorInitializer init) { return new ResourceStorageWarning(init.Self, this); }
 	}
@@ -50,7 +53,10 @@ namespace OpenRA.Mods.Common.Traits
 				var owner = self.Owner;
 
 				if (resources.Resources > info.Threshold * resources.ResourceCapacity / 100)
+				{
 					Game.Sound.PlayNotification(self.World.Map.Rules, owner, "Speech", info.Notification, owner.Faction.InternalName);
+					TextNotificationsManager.AddTransientLine(info.TextNotification, owner);
+				}
 
 				lastSiloAdviceTime = Game.RunTime;
 			}

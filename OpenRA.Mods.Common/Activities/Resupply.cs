@@ -262,6 +262,7 @@ namespace OpenRA.Mods.Common.Activities
 					host.Actor.Owner.PlayerActor.TraitOrDefault<PlayerExperience>()?.GiveExperience(repairsUnits.Info.PlayerExperience);
 
 				Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", repairsUnits.Info.FinishRepairingNotification, self.Owner.Faction.InternalName);
+				TextNotificationsManager.AddTransientLine(repairsUnits.Info.FinishRepairingTextNotification, self.Owner);
 
 				activeResupplyTypes &= ~ResupplyType.Repair;
 				return;
@@ -279,6 +280,7 @@ namespace OpenRA.Mods.Common.Activities
 				{
 					played = true;
 					Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", repairsUnits.Info.StartRepairingNotification, self.Owner.Faction.InternalName);
+					TextNotificationsManager.AddTransientLine(repairsUnits.Info.StartRepairingTextNotification, self.Owner);
 				}
 
 				if (!playerResources.TakeCash(cost, true))

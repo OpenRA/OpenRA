@@ -26,6 +26,7 @@ namespace OpenRA.Mods.Common.Activities
 		public WAngle Facing = new WAngle(384);
 		public string[] Sounds = Array.Empty<string>();
 		public string Notification = null;
+		public string TextNotification = null;
 		public int ForceHealthPercentage = 0;
 		public bool SkipMakeAnims = false;
 		public string Faction = null;
@@ -95,6 +96,7 @@ namespace OpenRA.Mods.Common.Activities
 					Game.Sound.PlayToPlayer(SoundType.World, self.Owner, s, self.CenterPosition);
 
 				Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", Notification, self.Owner.Faction.InternalName);
+				TextNotificationsManager.AddTransientLine(TextNotification, self.Owner);
 
 				var init = new TypeDictionary
 				{

@@ -29,8 +29,11 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string ChuteSound = null;
 
 		[NotificationReference("Speech")]
-		[Desc("Notification to play when dropping the unit.")]
+		[Desc("Speech notification to play when dropping the unit.")]
 		public readonly string ReadyAudio = null;
+
+		[Desc("Text notification to display when dropping the unit.")]
+		public readonly string ReadyTextNotification = null;
 
 		public override object Create(ActorInitializer init) { return new ProductionParadrop(init, this); }
 	}
@@ -97,6 +100,7 @@ namespace OpenRA.Mods.Common.Traits
 					self.World.AddFrameEndTask(ww => DoProduction(self, producee, exit?.Info, productionType, inits));
 					Game.Sound.Play(SoundType.World, info.ChuteSound, self.CenterPosition);
 					Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", info.ReadyAudio, self.Owner.Faction.InternalName);
+					TextNotificationsManager.AddTransientLine(info.ReadyTextNotification, self.Owner);
 				}));
 
 				actor.QueueActivity(new Fly(actor, Target.FromCell(w, endPos)));

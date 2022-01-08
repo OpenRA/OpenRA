@@ -37,9 +37,15 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("Sound the victim will hear when they get robbed.")]
 		public readonly string InfiltratedNotification = null;
 
+		[Desc("Text notification the victim will see when they get robbed.")]
+		public readonly string InfiltratedTextNotification = null;
+
 		[NotificationReference("Speech")]
 		[Desc("Sound the perpetrator will hear after successful infiltration.")]
 		public readonly string InfiltrationNotification = null;
+
+		[Desc("Text notification the perpetrator will see after successful infiltration.")]
+		public readonly string InfiltrationTextNotification = null;
 
 		[Desc("Whether to show the cash tick indicators rising from the actor.")]
 		public readonly bool ShowTicks = true;
@@ -73,6 +79,9 @@ namespace OpenRA.Mods.Cnc.Traits
 
 			if (info.InfiltrationNotification != null)
 				Game.Sound.PlayNotification(self.World.Map.Rules, infiltrator.Owner, "Speech", info.InfiltrationNotification, infiltrator.Owner.Faction.InternalName);
+
+			TextNotificationsManager.AddTransientLine(info.InfiltratedTextNotification, self.Owner);
+			TextNotificationsManager.AddTransientLine(info.InfiltrationTextNotification, infiltrator.Owner);
 
 			if (info.ShowTicks)
 				self.World.AddFrameEndTask(w => w.Add(new FloatingText(self.CenterPosition, infiltrator.Owner.Color, FloatingText.FormatCashTick(toGive), 30)));

@@ -17,15 +17,21 @@ namespace OpenRA.Mods.Common.Traits.Sound
 	public class CaptureNotificationInfo : TraitInfo
 	{
 		[NotificationReference("Speech")]
-		[Desc("The speech notification to play to the new owner.")]
+		[Desc("Speech notification to play to the new owner.")]
 		public readonly string Notification = "BuildingCaptured";
+
+		[Desc("Text notification to display to the new owner.")]
+		public readonly string TextNotification = null;
 
 		[Desc("Specifies if Notification is played with the voice of the new owners faction.")]
 		public readonly bool NewOwnerVoice = true;
 
 		[NotificationReference("Speech")]
-		[Desc("The speech notification to play to the old owner.")]
+		[Desc("Speech notification to play to the old owner.")]
 		public readonly string LoseNotification = null;
+
+		[Desc("Text notification to display to the old owner.")]
+		public readonly string LoseTextNotification = null;
 
 		[Desc("Specifies if LoseNotification is played with the voice of the new owners faction.")]
 		public readonly bool LoseNewOwnerVoice = false;
@@ -45,9 +51,11 @@ namespace OpenRA.Mods.Common.Traits.Sound
 		{
 			var faction = info.NewOwnerVoice ? newOwner.Faction.InternalName : oldOwner.Faction.InternalName;
 			Game.Sound.PlayNotification(self.World.Map.Rules, newOwner, "Speech", info.Notification, faction);
+			TextNotificationsManager.AddTransientLine(info.TextNotification, newOwner);
 
 			var loseFaction = info.LoseNewOwnerVoice ? newOwner.Faction.InternalName : oldOwner.Faction.InternalName;
 			Game.Sound.PlayNotification(self.World.Map.Rules, oldOwner, "Speech", info.LoseNotification, loseFaction);
+			TextNotificationsManager.AddTransientLine(info.LoseTextNotification, oldOwner);
 		}
 	}
 }

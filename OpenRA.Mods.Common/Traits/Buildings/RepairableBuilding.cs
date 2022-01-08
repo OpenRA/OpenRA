@@ -49,6 +49,8 @@ namespace OpenRA.Mods.Common.Traits
 		[NotificationReference("Speech")]
 		public readonly string RepairingNotification = null;
 
+		public readonly string RepairingTextNotification = null;
+
 		public override object Create(ActorInitializer init) { return new RepairableBuilding(init.Self, this); }
 	}
 
@@ -111,7 +113,10 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			Repairers.Add(player);
+
 			Game.Sound.PlayNotification(self.World.Map.Rules, player, "Speech", Info.RepairingNotification, player.Faction.InternalName);
+			TextNotificationsManager.AddTransientLine(Info.RepairingTextNotification, self.Owner);
+
 			UpdateCondition(self);
 		}
 

@@ -41,6 +41,9 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("Notification to play when a target is infiltrated.")]
 		public readonly string Notification = null;
 
+		[Desc("Text notification to display when a target is infiltrated.")]
+		public readonly string TextNotification = null;
+
 		[Desc("Experience to grant to the infiltrating player.")]
 		public readonly int PlayerExperience = 0;
 

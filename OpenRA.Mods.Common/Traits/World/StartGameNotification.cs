@@ -20,11 +20,17 @@ namespace OpenRA.Mods.Common.Traits
 		[NotificationReference("Speech")]
 		public readonly string Notification = "StartGame";
 
+		public readonly string TextNotification = null;
+
 		[NotificationReference("Speech")]
 		public readonly string LoadedNotification = "GameLoaded";
 
+		public readonly string LoadedTextNotification = null;
+
 		[NotificationReference("Speech")]
 		public readonly string SavedNotification = "GameSaved";
+
+		public readonly string SavedTextNotification = null;
 
 		public override object Create(ActorInitializer init) { return new StartGameNotification(this); }
 	}
@@ -40,19 +46,28 @@ namespace OpenRA.Mods.Common.Traits
 		void IWorldLoaded.WorldLoaded(World world, WorldRenderer wr)
 		{
 			if (!world.IsLoadingGameSave)
+			{
 				Game.Sound.PlayNotification(world.Map.Rules, null, "Speech", info.Notification, world.RenderPlayer == null ? null : world.RenderPlayer.Faction.InternalName);
+				TextNotificationsManager.AddTransientLine(info.TextNotification, null);
+			}
 		}
 
 		void INotifyGameLoaded.GameLoaded(World world)
 		{
 			if (!world.IsReplay)
+			{
 				Game.Sound.PlayNotification(world.Map.Rules, null, "Speech", info.LoadedNotification, world.RenderPlayer == null ? null : world.RenderPlayer.Faction.InternalName);
+				TextNotificationsManager.AddTransientLine(info.LoadedTextNotification, null);
+			}
 		}
 
 		void INotifyGameSaved.GameSaved(World world)
 		{
 			if (!world.IsReplay)
+			{
 				Game.Sound.PlayNotification(world.Map.Rules, null, "Speech", info.SavedNotification, world.RenderPlayer == null ? null : world.RenderPlayer.Faction.InternalName);
+				TextNotificationsManager.AddTransientLine(info.SavedTextNotification, null);
+			}
 		}
 	}
 }

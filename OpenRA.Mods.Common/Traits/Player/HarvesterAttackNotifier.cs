@@ -28,8 +28,11 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int RadarPingDuration = 250;
 
 		[NotificationReference("Speech")]
-		[Desc("The audio notification type to play.")]
+		[Desc("Speech notification type to play.")]
 		public readonly string Notification = "HarvesterAttack";
+
+		[Desc("Text notification to display.")]
+		public string TextNotification = null;
 
 		public override object Create(ActorInitializer init) { return new HarvesterAttackNotifier(init.Self, this); }
 	}
@@ -61,6 +64,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (Game.RunTime > lastAttackTime + info.NotifyInterval)
 			{
 				Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", info.Notification, self.Owner.Faction.InternalName);
+				TextNotificationsManager.AddTransientLine(info.TextNotification, self.Owner);
+
 				radarPings?.Add(() => self.Owner.IsAlliedWith(self.World.RenderPlayer), self.CenterPosition, info.RadarPingColor, info.RadarPingDuration);
 
 				lastAttackTime = Game.RunTime;

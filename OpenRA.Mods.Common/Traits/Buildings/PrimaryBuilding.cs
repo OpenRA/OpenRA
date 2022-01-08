@@ -34,8 +34,11 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string PrimaryCondition = null;
 
 		[NotificationReference("Speech")]
-		[Desc("The speech notification to play when selecting a primary building.")]
+		[Desc("Speech notification to play when selecting a primary building.")]
 		public readonly string SelectionNotification = null;
+
+		[Desc("Text notification to display when selecting a primary building.")]
+		public readonly string SelectionTextNotification = null;
 
 		[Desc("List of production queues for which the primary flag should be set.",
 			"If empty, the list given in the `Produces` property of the `" + nameof(Production) + "` trait will be used.")]
@@ -113,6 +116,7 @@ namespace OpenRA.Mods.Common.Traits
 					primaryToken = self.GrantCondition(Info.PrimaryCondition);
 
 				Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", Info.SelectionNotification, self.Owner.Faction.InternalName);
+				TextNotificationsManager.AddTransientLine(Info.SelectionTextNotification, self.Owner);
 			}
 			else if (primaryToken != Actor.InvalidConditionToken)
 				primaryToken = self.RevokeCondition(primaryToken);

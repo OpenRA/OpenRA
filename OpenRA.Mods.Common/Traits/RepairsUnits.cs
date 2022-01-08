@@ -28,12 +28,18 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly BitSet<DamageType> RepairDamageTypes = default(BitSet<DamageType>);
 
 		[NotificationReference("Speech")]
-		[Desc("The sound played when starting to repair a unit.")]
+		[Desc("Speech notification played when starting to repair a unit.")]
 		public readonly string StartRepairingNotification = null;
 
+		[Desc("Text notification displayed when starting to repair a unit.")]
+		public readonly string StartRepairingTextNotification = null;
+
 		[NotificationReference("Speech")]
-		[Desc("The sound played when repairing a unit is done.")]
+		[Desc("Speech notification played when repairing a unit is done.")]
 		public readonly string FinishRepairingNotification = null;
+
+		[Desc("Text notification displayed when repairing a unit is done.")]
+		public readonly string FinishRepairingTextNotification = null;
 
 		[Desc("Experience gained by the player owning this actor for repairing an allied unit.")]
 		public readonly int PlayerExperience = 0;
