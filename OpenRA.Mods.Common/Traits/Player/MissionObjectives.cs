@@ -54,11 +54,17 @@ namespace OpenRA.Mods.Common.Traits
 		[NotificationReference("Speech")]
 		public readonly string WinNotification = null;
 
+		public readonly string WinTextNotification = null;
+
 		[NotificationReference("Speech")]
 		public readonly string LoseNotification = null;
 
+		public readonly string LoseTextNotification = null;
+
 		[NotificationReference("Speech")]
 		public readonly string LeaveNotification = null;
+
+		public readonly string LeaveTextNotification = null;
 
 		public override object Create(ActorInitializer init) { return new MissionObjectives(init.Self.Owner, this); }
 	}

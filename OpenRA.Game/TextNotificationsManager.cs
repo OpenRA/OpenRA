@@ -26,12 +26,13 @@ namespace OpenRA
 				SystemMessageLabel = "Battlefield Control";
 		}
 
-		public static void AddTransientLine(string text)
+		public static void AddTransientLine(string text, Player player)
 		{
 			if (string.IsNullOrEmpty(text))
 				return;
 
-			AddTextNotification(TextNotificationPool.Transients, SystemMessageLabel, text);
+			if (player == null || player == player.World.LocalPlayer)
+				AddTextNotification(TextNotificationPool.Transients, SystemMessageLabel, text);
 		}
 
 		public static void AddFeedbackLine(string text)

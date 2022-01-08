@@ -46,8 +46,11 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly CVec[] Path = Array.Empty<CVec>();
 
 		[NotificationReference("Speech")]
-		[Desc("The speech notification to play when setting a new rallypoint.")]
+		[Desc("Speech notification to play when setting a new rallypoint.")]
 		public readonly string Notification = null;
+
+		[Desc("Text notification to display when setting a new rallypoint.")]
+		public readonly string TextNotification = null;
 
 		[Desc("Used to group equivalent actors to allow force-setting a rallypoint (e.g. for Primary production).")]
 		public readonly string ForceSetType = null;
@@ -101,6 +104,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (order.OrderID == OrderID)
 			{
 				Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", Info.Notification, self.Owner.Faction.InternalName);
+				TextNotificationsManager.AddTransientLine(Info.TextNotification, self.Owner);
 
 				return new Order(order.OrderID, self, target, queued)
 				{

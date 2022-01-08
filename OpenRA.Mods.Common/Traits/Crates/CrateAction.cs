@@ -36,8 +36,11 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Sound = null;
 
 		[NotificationReference("Speech")]
-		[Desc("Notification to play when the crate is collected.")]
+		[Desc("Speech notification to play when the crate is collected.")]
 		public readonly string Notification = null;
+
+		[Desc("Text notification to display when the crate is collected.")]
+		public readonly string TextNotification = null;
 
 		[Desc("The earliest time (in ticks) that this crate action can occur on.")]
 		public readonly int TimeDelay = 0;
@@ -91,6 +94,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (!string.IsNullOrEmpty(Info.Notification))
 				Game.Sound.PlayNotification(self.World.Map.Rules, collector.Owner, "Speech",
 					Info.Notification, collector.Owner.Faction.InternalName);
+
+			TextNotificationsManager.AddTransientLine(Info.TextNotification, collector.Owner);
 
 			if (Info.Image != null && Info.Sequence != null)
 				collector.World.AddFrameEndTask(w => w.Add(new SpriteEffect(collector, w, Info.Image, Info.Sequence, Info.Palette)));

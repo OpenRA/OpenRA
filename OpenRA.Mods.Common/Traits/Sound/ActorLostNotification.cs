@@ -16,7 +16,11 @@ namespace OpenRA.Mods.Common.Traits.Sound
 	class ActorLostNotificationInfo : ConditionalTraitInfo
 	{
 		[NotificationReference("Speech")]
+		[Desc("Speech notification to play.")]
 		public readonly string Notification = "UnitLost";
+
+		[Desc("Text notification to display.")]
+		public readonly string TextNotification = null;
 
 		public readonly bool NotifyAll = false;
 
@@ -33,8 +37,15 @@ namespace OpenRA.Mods.Common.Traits.Sound
 			if (IsTraitDisabled)
 				return;
 
-			var player = Info.NotifyAll ? self.World.LocalPlayer : self.Owner;
+			var localPlayer = self.World.LocalPlayer;
+
+			if (localPlayer == null || localPlayer.Spectating)
+				return;
+
+			var player = Info.NotifyAll ? localPlayer : self.Owner;
+
 			Game.Sound.PlayNotification(self.World.Map.Rules, player, "Speech", Info.Notification, self.Owner.Faction.InternalName);
+			TextNotificationsManager.AddTransientLine(Info.TextNotification, player);
 		}
 	}
 }

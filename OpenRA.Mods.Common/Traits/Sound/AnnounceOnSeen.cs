@@ -23,7 +23,11 @@ namespace OpenRA.Mods.Common.Traits.Sound
 		public readonly bool PingRadar = false;
 
 		[NotificationReference("Speech")]
+		[Desc("Speech notification to play.")]
 		public readonly string Notification = null;
+
+		[Desc("Text notification to display.")]
+		public readonly string TextNotification = null;
 
 		public readonly bool AnnounceNeutrals = false;
 
@@ -55,6 +59,9 @@ namespace OpenRA.Mods.Common.Traits.Sound
 			// Audio notification
 			if (discoverer != null && !string.IsNullOrEmpty(Info.Notification))
 				Game.Sound.PlayNotification(self.World.Map.Rules, discoverer, "Speech", Info.Notification, discoverer.Faction.InternalName);
+
+			if (discoverer != null)
+				TextNotificationsManager.AddTransientLine(Info.TextNotification, discoverer);
 
 			// Radar notification
 			if (Info.PingRadar)

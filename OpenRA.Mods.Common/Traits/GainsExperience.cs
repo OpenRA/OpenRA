@@ -49,6 +49,8 @@ namespace OpenRA.Mods.Common.Traits
 		[NotificationReference("Sounds")]
 		public readonly string LevelUpNotification = null;
 
+		public readonly string LevelUpTextNotification = null;
+
 		public override object Create(ActorInitializer init) { return new GainsExperience(init, this); }
 	}
 
@@ -119,6 +121,8 @@ namespace OpenRA.Mods.Common.Traits
 				if (!silent)
 				{
 					Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Sounds", info.LevelUpNotification, self.Owner.Faction.InternalName);
+					TextNotificationsManager.AddTransientLine(info.LevelUpTextNotification, self.Owner);
+
 					if (info.LevelUpImage != null && info.LevelUpSequence != null)
 						self.World.AddFrameEndTask(w => w.Add(new SpriteEffect(self, w, info.LevelUpImage, info.LevelUpSequence, info.LevelUpPalette)));
 				}

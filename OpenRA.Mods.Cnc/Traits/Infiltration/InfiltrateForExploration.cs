@@ -26,9 +26,15 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("Sound the victim will hear when they get sabotaged.")]
 		public readonly string InfiltratedNotification = null;
 
+		[Desc("Text notification the victim will see when they get sabotaged.")]
+		public readonly string InfiltratedTextNotification = null;
+
 		[NotificationReference("Speech")]
 		[Desc("Sound the perpetrator will hear after successful infiltration.")]
 		public readonly string InfiltrationNotification = null;
+
+		[Desc("Text notification the perpetrator will see after successful infiltration.")]
+		public readonly string InfiltrationTextNotification = null;
 
 		public override object Create(ActorInitializer init) { return new InfiltrateForExploration(this); }
 	}
@@ -52,6 +58,9 @@ namespace OpenRA.Mods.Cnc.Traits
 
 			if (info.InfiltrationNotification != null)
 				Game.Sound.PlayNotification(self.World.Map.Rules, infiltrator.Owner, "Speech", info.InfiltrationNotification, infiltrator.Owner.Faction.InternalName);
+
+			TextNotificationsManager.AddTransientLine(info.InfiltratedTextNotification, self.Owner);
+			TextNotificationsManager.AddTransientLine(info.InfiltrationTextNotification, infiltrator.Owner);
 
 			infiltrator.Owner.Shroud.Explore(self.Owner.Shroud);
 			var preventReset = self.Owner.PlayerActor.TraitsImplementing<IPreventsShroudReset>()

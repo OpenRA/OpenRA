@@ -27,8 +27,11 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly WVec SquadOffset = new WVec(-1536, 1536, 0);
 
 		[NotificationReference("Speech")]
-		[Desc("Notification to play when entering the drop zone.")]
+		[Desc("Speech notification to play when entering the drop zone.")]
 		public readonly string ReinforcementsArrivedSpeechNotification = null;
+
+		[Desc("Text notification to display when entering the drop zone.")]
+		public readonly string ReinforcementsArrivedTextNotification = null;
 
 		[Desc("Number of facings that the delivery aircraft may approach from.")]
 		public readonly int QuantizedFacings = 32;
@@ -134,8 +137,12 @@ namespace OpenRA.Mods.Common.Traits
 				RemoveBeacon(beacon);
 
 				if (!aircraftInRange.Any(kv => kv.Value))
+				{
 					Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech",
 						info.ReinforcementsArrivedSpeechNotification, self.Owner.Faction.InternalName);
+
+					TextNotificationsManager.AddTransientLine(info.ReinforcementsArrivedTextNotification, self.Owner);
+				}
 
 				aircraftInRange[a] = true;
 			};

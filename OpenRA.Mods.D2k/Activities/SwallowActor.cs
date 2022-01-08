@@ -82,6 +82,9 @@ namespace OpenRA.Mods.D2k.Activities
 			foreach (var player in affectedPlayers)
 				self.World.AddFrameEndTask(w => w.Add(new MapNotificationEffect(player, "Speech", swallow.Info.WormAttackNotification, 25, true, attackPosition, Color.Red)));
 
+			if (affectedPlayers.Contains(self.World.LocalPlayer))
+				TextNotificationsManager.AddTransientLine(swallow.Info.WormAttackTextNotification, self.World.LocalPlayer);
+
 			var barrel = armament.CheckFire(self, facing, target);
 			if (barrel == null)
 				return false;

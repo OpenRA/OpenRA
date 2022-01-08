@@ -89,8 +89,9 @@ namespace OpenRA.Mods.Common.Traits
 				if (lastKnownActorIds.Contains(actor.Actor.ActorID))
 					continue;
 
-				// Should we play a sound notification?
-				var playNotification = !playedNotifications.Contains(actor.Trait.Info.Notification) && ticksBeforeNextNotification <= 0;
+				// Should we play a notification?
+				var notificationId = $"{actor.Trait.Info.Notification} {actor.Trait.Info.TextNotification}";
+				var playNotification = !playedNotifications.Contains(notificationId) && ticksBeforeNextNotification <= 0;
 
 				// Notify the actor that he has been discovered
 				foreach (var trait in actor.Actor.TraitsImplementing<INotifyDiscovered>())
@@ -109,7 +110,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (!playNotification)
 					continue;
 
-				playedNotifications.Add(actor.Trait.Info.Notification);
+				playedNotifications.Add(notificationId);
 				announcedAny = true;
 			}
 

@@ -26,11 +26,18 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int NewOptionsNotificationDelay = 10;
 
 		[NotificationReference("Speech")]
-		[Desc("Notification to play after building placement if new construction options are available.")]
+		[Desc("Speech notification to play after building placement if new construction options are available.")]
 		public readonly string NewOptionsNotification = null;
 
+		[Desc("Text notification to display after building placement if new construction options are available.")]
+		public readonly string NewOptionsTextNotification = null;
+
 		[NotificationReference("Speech")]
+		[Desc("Speech notification to play if building placement is not possible.")]
 		public readonly string CannotPlaceNotification = null;
+
+		[Desc("Text notification to display if building placement is not possible.")]
+		public readonly string CannotPlaceTextNotification = null;
 
 		[Desc("Hotkey to toggle between PlaceBuildingVariants when placing a structure.")]
 		public readonly HotkeyReference ToggleVariantKey = new HotkeyReference();
@@ -223,6 +230,8 @@ namespace OpenRA.Mods.Common.Traits
 		void PlayNotification(Actor self)
 		{
 			Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", info.NewOptionsNotification, self.Owner.Faction.InternalName);
+			TextNotificationsManager.AddTransientLine(info.NewOptionsTextNotification, self.Owner);
+
 			triggerNotification = false;
 			tick = 0;
 		}

@@ -121,6 +121,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					var faction = world.LocalPlayer?.Faction.InternalName;
 					Game.Sound.PlayNotification(world.Map.Rules, null, "Speech", moi.LeaveNotification, faction);
+					TextNotificationsManager.AddTransientLine(moi.LeaveTextNotification, null);
 				}
 			}
 
