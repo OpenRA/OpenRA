@@ -25,13 +25,12 @@ csharp_using_directive_placement = outside_namespace:suggestion
 csharp_new_line_before_open_brace = all
 csharp_space_around_binary_operators = before_and_after
 
-#### Naming styles ####
+# Naming styles:
 
 dotnet_naming_style.camel_case.capitalization = camel_case
-
 dotnet_naming_style.pascal_case.capitalization = pascal_case
 
-# Symbol specifications
+# Symbol specifications:
 
 dotnet_naming_symbols.interface.applicable_kinds = interface
 dotnet_naming_symbols.interface.applicable_accessibilities = public, internal, private, protected, protected_internal
@@ -57,12 +56,11 @@ dotnet_naming_symbols.non_field_members.applicable_accessibilities = public, int
 
 dotnet_naming_symbols.parameters.applicable_kinds = parameter
 
-# Naming rules
+# Naming rules:
 
 dotnet_naming_rule.non_field_members_should_be_pascal_case.severity = warning
 dotnet_naming_rule.non_field_members_should_be_pascal_case.symbols = non_field_members
 dotnet_naming_rule.non_field_members_should_be_pascal_case.style = pascal_case
-
 
 dotnet_naming_rule.static_private_or_internal_field_should_be_pascal_case.severity = none
 dotnet_naming_rule.static_private_or_internal_field_should_be_pascal_case.symbols = static_private_or_internal_field
@@ -84,34 +82,38 @@ dotnet_naming_rule.parameters.severity = warning
 dotnet_naming_rule.parameters.symbols = parameters
 dotnet_naming_rule.parameters.style = camel_case
 
-# Naming rules
+# Formatting:
 
-#require a space before the colon for bases or interfaces in a type declaration
+# Also handled by StyleCopAnalyzers - SA1024: ColonsMustBeSpacedCorrectly.
 csharp_space_after_colon_in_inheritance_clause = true
-#require a space after a keyword in a control flow statement such as a for loop
-csharp_space_after_keywords_in_control_flow_statements = true
-#require a space before the colon for bases or interfaces in a type declaration
+
+# Also handled by StyleCopAnalyzers - SA1024: ColonsMustBeSpacedCorrectly.
 csharp_space_before_colon_in_inheritance_clause = true
 
-#Formatting - wrapping options
+# Also handled by StyleCopAnalyzers - SA1000: KeywordsMustBeSpacedCorrectly.
+csharp_space_after_keywords_in_control_flow_statements = true
 
-#leave code block on single line
+# Leave code block on single line.
 csharp_preserve_single_line_blocks = true
-#leave statements and member declarations on the same line
+
+# Leave statements and member declarations on the same line.
 csharp_preserve_single_line_statements = true
 
-#prefer the language keyword for member access expressions, instead of the type name, for types that have a keyword to represent them
-dotnet_style_predefined_type_for_member_access = true:suggestion
+# Also handled by StyleCopAnalyzers - SA1121: UseBuiltInTypeAlias. Also by IDE0049, it seems.
+dotnet_style_predefined_type_for_member_access = true
 
-#prefer the language keyword for local variables, method parameters, and class members, instead of the type name, for types that have a keyword to represent them
-dotnet_style_predefined_type_for_locals_parameters_members = true:suggestion
+# Also handled by StyleCopAnalyzers - SA1121: UseBuiltInTypeAlias. Also by IDE0049, it seems.
+dotnet_style_predefined_type_for_locals_parameters_members = true
 
-#show an IDE warning when default access modifiers are explicitly specified
+# Others:
+
+# Show an IDE warning when default access modifiers are explicitly specified.
 dotnet_style_require_accessibility_modifiers = omit_if_default:warning
-#raise a warning on build when default access modifiers are explicitly specified
+
+# Raise a warning on build when default access modifiers are explicitly specified.
 dotnet_diagnostic.IDE0040.severity = warning
 
-#don't prefer braces (for one liners)
+# Don't prefer braces (for one liners).
 dotnet_diagnostic.IDE0011.severity = none
 
 ; 4-column tab indentation
