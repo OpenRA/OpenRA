@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 		public ushort Height { get; }
 
 		public byte[] CurrentFrameData { get; }
-		public int CurrentFrameNumber { get; private set; }
+		public int CurrentFrameIndex { get; private set; }
 
 		public bool HasAudio => false;
 		public byte[] AudioData => null;
@@ -99,7 +99,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 
 		public void Reset()
 		{
-			CurrentFrameNumber = 0;
+			CurrentFrameIndex = 0;
 			previousFramePaletteIndexData = null;
 			LoadFrame();
 		}
@@ -107,18 +107,18 @@ namespace OpenRA.Mods.Cnc.FileFormats
 		public void AdvanceFrame()
 		{
 			previousFramePaletteIndexData = currentFramePaletteIndexData;
-			CurrentFrameNumber++;
+			CurrentFrameIndex++;
 			LoadFrame();
 		}
 
 		void LoadFrame()
 		{
-			if (CurrentFrameNumber >= FrameCount)
+			if (CurrentFrameIndex >= FrameCount)
 				return;
 
-			stream.Seek(frameOffsets[CurrentFrameNumber], SeekOrigin.Begin);
+			stream.Seek(frameOffsets[CurrentFrameIndex], SeekOrigin.Begin);
 
-			var dataLength = frameOffsets[CurrentFrameNumber + 1] - frameOffsets[CurrentFrameNumber];
+			var dataLength = frameOffsets[CurrentFrameIndex + 1] - frameOffsets[CurrentFrameIndex];
 
 			var rawData = StreamExts.ReadBytes(stream, (int)dataLength);
 			var intermediateData = new byte[Width * Height];

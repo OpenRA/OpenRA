@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Widgets
 		Sprite videoSprite, overlaySprite;
 		Sheet overlaySheet;
 		IVideo video = null;
-		string cachedVideo;
+		string cachedVideoFileName;
 		float invLength;
 		float2 videoOrigin, videoSize;
 		float2 overlayOrigin, overlaySize;
@@ -43,13 +43,13 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public void Load(string filename)
 		{
-			if (filename == cachedVideo)
+			if (filename == cachedVideoFileName)
 				return;
 
 			var video = VideoLoader.GetVideo(Game.ModData.DefaultFileSystem.Open(filename), true, Game.ModData.VideoLoaders);
 			Open(video);
 
-			cachedVideo = filename;
+			cachedVideoFileName = filename;
 		}
 
 		public void Open(IVideo video)
@@ -98,17 +98,17 @@ namespace OpenRA.Mods.Common.Widgets
 				if (video.HasAudio && !Game.Sound.DummyEngine)
 					nextFrame = (int)float2.Lerp(0, video.FrameCount, Game.Sound.VideoSeekPosition * invLength);
 				else
-					nextFrame = video.CurrentFrameNumber + 1;
+					nextFrame = video.CurrentFrameIndex + 1;
 
 				// Without the 2nd check the sound playback sometimes ends before the final frame is displayed which causes the player to be stuck on the first frame
-				if (nextFrame > video.FrameCount || nextFrame < video.CurrentFrameNumber)
+				if (nextFrame > video.FrameCount || nextFrame < video.CurrentFrameIndex)
 				{
 					Stop();
 					return;
 				}
 
 				var skippedFrames = 0;
-				while (nextFrame > video.CurrentFrameNumber)
+				while (nextFrame > video.CurrentFrameIndex)
 				{
 					video.AdvanceFrame();
 					videoSprite.Sheet.GetTexture().SetData(video.CurrentFrameData, textureSize, textureSize);
@@ -116,7 +116,7 @@ namespace OpenRA.Mods.Common.Widgets
 				}
 
 				if (skippedFrames > 1)
-					Log.Write("perf", "VideoPlayer: {0} skipped {1} frames at position {2}", cachedVideo, skippedFrames, video.CurrentFrameNumber);
+					Log.Write("perf", $"{nameof(VideoPlayerWidget)}: {cachedVideoFileName} skipped {skippedFrames} frames at position {video.CurrentFrameIndex}");
 			}
 
 			WidgetUtils.DrawSprite(videoSprite, videoOrigin, videoSize);

@@ -180,7 +180,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				frameSlider.GetValue = () =>
 				{
 					if (isVideoLoaded)
-						return player.Video.CurrentFrameNumber;
+						return player.Video.CurrentFrameIndex;
 
 					if (currentSound != null)
 						return currentSound.SeekPosition * currentSoundFormat.SampleRate;
@@ -197,7 +197,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				frameText.GetText = () =>
 				{
 					if (isVideoLoaded)
-						return $"{player.Video.CurrentFrameNumber + 1} / {player.Video.FrameCount}";
+						return $"{player.Video.CurrentFrameIndex + 1} / {player.Video.FrameCount}";
 
 					if (currentSoundFormat != null)
 						return $"{Math.Round(currentSoundFormat.LengthInSeconds, 3)} sec";

@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 		public ushort Height { get; }
 
 		public byte[] CurrentFrameData { get; }
-		public int CurrentFrameNumber { get; private set; }
+		public int CurrentFrameIndex { get; private set; }
 
 		public bool HasAudio { get; set; }
 		public byte[] AudioData { get; private set; } // audio for this frame: 22050Hz 16bit mono pcm, uncompressed.
@@ -163,7 +163,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 
 		public void Reset()
 		{
-			CurrentFrameNumber = chunkBufferOffset = currentChunkBuffer = 0;
+			CurrentFrameIndex = chunkBufferOffset = currentChunkBuffer = 0;
 			LoadFrame();
 		}
 
@@ -260,18 +260,18 @@ namespace OpenRA.Mods.Cnc.FileFormats
 
 		public void AdvanceFrame()
 		{
-			CurrentFrameNumber++;
+			CurrentFrameIndex++;
 			LoadFrame();
 		}
 
 		void LoadFrame()
 		{
-			if (CurrentFrameNumber >= FrameCount)
+			if (CurrentFrameIndex >= FrameCount)
 				return;
 
 			// Seek to the start of the frame
-			stream.Seek(offsets[CurrentFrameNumber], SeekOrigin.Begin);
-			var end = (CurrentFrameNumber < FrameCount - 1) ? offsets[CurrentFrameNumber + 1] : stream.Length;
+			stream.Seek(offsets[CurrentFrameIndex], SeekOrigin.Begin);
+			var end = (CurrentFrameIndex < FrameCount - 1) ? offsets[CurrentFrameIndex + 1] : stream.Length;
 
 			while (stream.Position < end)
 			{
