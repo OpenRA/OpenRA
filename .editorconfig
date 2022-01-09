@@ -116,6 +116,9 @@ dotnet_diagnostic.IDE0040.severity = warning
 # Don't prefer braces (for one liners).
 dotnet_diagnostic.IDE0011.severity = none
 
+# Avoid unnecessary zero-length array allocations.
+dotnet_diagnostic.CA1825.severity = warning
+
 ; 4-column tab indentation
 [*.yaml]
 indent_style = tab
