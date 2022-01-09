@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			var modData = Game.ModData = utility.ModData;
 
 			var src = args[1];
-			var shadowIndex = new int[] { };
+			var shadowIndex = Array.Empty<int>();
 			if (args.Contains("--noshadow"))
 			{
 				Array.Resize(ref shadowIndex, shadowIndex.Length + 3);

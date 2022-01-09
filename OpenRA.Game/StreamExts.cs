@@ -229,7 +229,7 @@ namespace OpenRA
 			if (!string.IsNullOrEmpty(text))
 				bytes = encoding.GetBytes(text);
 			else
-				bytes = new byte[0];
+				bytes = Array.Empty<byte>();
 
 			s.Write(bytes.Length);
 			s.WriteArray(bytes);

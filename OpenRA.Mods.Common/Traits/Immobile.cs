@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using OpenRA.Traits;
 
@@ -46,7 +47,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (info.OccupiesSpace)
 				occupied = new[] { (TopLeft, SubCell.FullCell) };
 			else
-				occupied = new (CPos, SubCell)[0];
+				occupied = Array.Empty<(CPos, SubCell)>();
 		}
 
 		public CPos TopLeft => location;

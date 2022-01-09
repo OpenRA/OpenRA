@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Cnc.Graphics
 
 			cachedPos = WPos.Zero;
 			cachedLength = WVec.Zero;
-			cache = new IFinalizedRenderable[] { };
+			cache = Array.Empty<IFinalizedRenderable>();
 		}
 
 		public WPos Pos => pos;

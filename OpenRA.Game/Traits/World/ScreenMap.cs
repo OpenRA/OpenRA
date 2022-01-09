@@ -41,7 +41,7 @@ namespace OpenRA.Traits
 
 	public class ScreenMap : IWorldLoaded
 	{
-		static readonly IEnumerable<FrozenActor> NoFrozenActors = new FrozenActor[0];
+		static readonly IEnumerable<FrozenActor> NoFrozenActors = Array.Empty<FrozenActor>();
 		readonly Func<FrozenActor, bool> frozenActorIsValid = fa => fa.IsValid;
 		readonly Func<Actor, bool> actorIsInWorld = a => a.IsInWorld;
 		readonly Func<Actor, ActorBoundsPair> selectActorAndBounds;

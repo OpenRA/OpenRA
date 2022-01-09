@@ -72,8 +72,8 @@ namespace OpenRA.Traits
 
 		public Polygon MouseBounds = Polygon.Empty;
 
-		static readonly IRenderable[] NoRenderables = new IRenderable[0];
-		static readonly Rectangle[] NoBounds = new Rectangle[0];
+		static readonly IRenderable[] NoRenderables = Array.Empty<IRenderable>();
+		static readonly Rectangle[] NoBounds = Array.Empty<Rectangle>();
 
 		int flashTicks;
 		TintModifiers flashModifiers;
