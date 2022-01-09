@@ -77,7 +77,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class AttackGarrisoned : AttackFollow, INotifyPassengerEntered, INotifyPassengerExited, IRender
 	{
-		public readonly new AttackGarrisonedInfo Info;
+		public new readonly AttackGarrisonedInfo Info;
 		Lazy<BodyOrientation> coords;
 		List<Armament> armaments;
 		List<AnimationWithOffset> muzzles;

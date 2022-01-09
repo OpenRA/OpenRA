@@ -43,7 +43,7 @@ namespace OpenRA.Mods.D2k.Traits
 
 	class AttackSwallow : AttackFrontal
 	{
-		public readonly new AttackSwallowInfo Info;
+		public new readonly AttackSwallowInfo Info;
 
 		public AttackSwallow(Actor self, AttackSwallowInfo info)
 			: base(self, info)
