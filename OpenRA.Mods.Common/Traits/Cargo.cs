@@ -79,7 +79,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[ActorReference(dictionaryReference: LintDictionaryReference.Keys)]
 		[Desc("Conditions to grant when specified actors are loaded inside the transport.",
-			"A dictionary of [actor id]: [condition].")]
+			"A dictionary of [actor name]: [condition].")]
 		public readonly Dictionary<string, string> PassengerConditions = new Dictionary<string, string>();
 
 		[GrantedConditionReference]
