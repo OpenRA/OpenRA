@@ -22,7 +22,7 @@ namespace OpenRA.Video
 		/// Current frame color data in 32-bit BGRA.
 		/// </summary>
 		byte[] CurrentFrameData { get; }
-		int CurrentFrameNumber { get; }
+		int CurrentFrameIndex { get; }
 		void AdvanceFrame();
 
 		bool HasAudio { get; }
