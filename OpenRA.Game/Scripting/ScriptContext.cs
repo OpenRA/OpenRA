@@ -279,7 +279,7 @@ namespace OpenRA.Scripting
 			return outer.SelectMany(i => i.GetGenericArguments());
 		}
 
-		static readonly object[] NoArguments = new object[0];
+		static readonly object[] NoArguments = Array.Empty<object>();
 		Type[] FilterActorCommands(ActorInfo ai)
 		{
 			return FilterCommands(ai, knownActorCommands);

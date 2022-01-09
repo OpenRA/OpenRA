@@ -77,7 +77,7 @@ namespace OpenRA.Primitives
 		{
 			if (data.TryGetValue(typeof(T), out var objs))
 				return objs.Cast<T>();
-			return new T[0];
+			return Array.Empty<T>();
 		}
 
 		public void Remove<T>(T val)

@@ -370,11 +370,11 @@ namespace OpenRA
 					newData.SpawnPoints = spawns.ToArray();
 				}
 				else
-					newData.SpawnPoints = new CPos[0];
+					newData.SpawnPoints = Array.Empty<CPos>();
 			}
 			catch (Exception)
 			{
-				newData.SpawnPoints = new CPos[0];
+				newData.SpawnPoints = Array.Empty<CPos>();
 				newData.Status = MapStatus.Unavailable;
 			}
 

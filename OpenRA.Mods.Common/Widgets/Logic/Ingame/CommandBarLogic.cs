@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Widgets
 		int scatterHighlighted;
 		int stopHighlighted;
 
-		TraitPair<IIssueDeployOrder>[] selectedDeploys = { };
+		TraitPair<IIssueDeployOrder>[] selectedDeploys = Array.Empty<TraitPair<IIssueDeployOrder>>();
 
 		[ObjectCreator.UseCtor]
 		public CommandBarLogic(Widget widget, World world, Dictionary<string, MiniYaml> logicArgs)

@@ -51,7 +51,7 @@ namespace OpenRA
 		public LongBitSet<PlayerBitMask> AllPlayersMask = default(LongBitSet<PlayerBitMask>);
 		public readonly LongBitSet<PlayerBitMask> NoPlayersMask = default(LongBitSet<PlayerBitMask>);
 
-		public Player[] Players = new Player[0];
+		public Player[] Players = Array.Empty<Player>();
 
 		public event Action<Player> RenderPlayerChanged;
 

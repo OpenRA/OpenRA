@@ -68,7 +68,7 @@ namespace OpenRA
 
 			if (args.Length == 0)
 			{
-				PrintUsage(new InstalledMods(modSearchPaths, new string[0]), null);
+				PrintUsage(new InstalledMods(modSearchPaths, Array.Empty<string>()), null);
 				return;
 			}
 

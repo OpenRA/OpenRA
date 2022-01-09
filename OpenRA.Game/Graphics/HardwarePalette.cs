@@ -24,8 +24,8 @@ namespace OpenRA.Graphics
 		readonly Dictionary<string, ImmutablePalette> palettes = new Dictionary<string, ImmutablePalette>();
 		readonly Dictionary<string, MutablePalette> mutablePalettes = new Dictionary<string, MutablePalette>();
 		readonly Dictionary<string, int> indices = new Dictionary<string, int>();
-		byte[] buffer = new byte[0];
-		float[] colorShiftBuffer = new float[0];
+		byte[] buffer = Array.Empty<byte>();
+		float[] colorShiftBuffer = Array.Empty<float>();
 
 		public HardwarePalette()
 		{

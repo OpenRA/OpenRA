@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Traits;
@@ -27,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Actor[] parents = null;
 
 		public LineBuildParentInit(Actor[] value)
-			: base(new string[0])
+			: base(Array.Empty<string>())
 		{
 			parents = value;
 		}
@@ -70,7 +71,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class LineBuild : INotifyKilled, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyLineBuildSegmentsChanged
 	{
 		readonly LineBuildInfo info;
-		readonly Actor[] parentNodes = new Actor[0];
+		readonly Actor[] parentNodes = Array.Empty<Actor>();
 		HashSet<Actor> segments;
 
 		public LineBuild(ActorInitializer init, LineBuildInfo info)

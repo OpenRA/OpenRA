@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			// HACK: The engine code assumes that Game.modData is set.
 			var modData = Game.ModData = utility.ModData;
 
-			var palette = new ImmutablePalette(args[1], new[] { 0 }, new int[0]);
+			var palette = new ImmutablePalette(args[1], new[] { 0 }, Array.Empty<int>());
 
 			SequenceProvider sequences = null;
 			var mapPackage = new Folder(Platform.EngineDir).OpenPackage(args[2], modData.ModFiles);
