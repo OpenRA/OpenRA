@@ -668,7 +668,8 @@ scrollitem-hover:
 	Inherits: button
 
 scrollitem-nohover:
-	Inherits: ^Dialog
+
+scrollitem-nohover-hover:
 
 scrollheader-selected:
 	Inherits: button

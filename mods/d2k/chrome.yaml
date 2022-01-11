@@ -409,7 +409,8 @@ scrollheader-selected:
 	Inherits: button
 
 scrollitem-nohover:
-	Inherits: ^Dialog
+
+scrollitem-nohover-hover:
 
 scrollpanel-decorations:
 	Inherits: ^Glyphs
