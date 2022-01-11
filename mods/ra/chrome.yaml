@@ -539,6 +539,8 @@ scrollheader-selected:
 
 scrollitem-nohover:
 
+scrollitem-nohover-hover:
+
 logos:
 	Inherits: ^LoadScreen
 	Regions:
