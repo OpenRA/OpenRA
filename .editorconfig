@@ -25,12 +25,12 @@ csharp_using_directive_placement = outside_namespace:suggestion
 csharp_new_line_before_open_brace = all
 csharp_space_around_binary_operators = before_and_after
 
-# Naming styles:
+## Naming styles:
 
 dotnet_naming_style.camel_case.capitalization = camel_case
 dotnet_naming_style.pascal_case.capitalization = pascal_case
 
-# Symbol specifications:
+## Symbol specifications:
 
 dotnet_naming_symbols.interface.applicable_kinds = interface
 dotnet_naming_symbols.interface.applicable_accessibilities = public, internal, private, protected, protected_internal
@@ -56,16 +56,19 @@ dotnet_naming_symbols.non_field_members.applicable_accessibilities = public, int
 
 dotnet_naming_symbols.parameters.applicable_kinds = parameter
 
-# Naming rules:
+## Naming rules:
 
+# IDE1006, IDE-only counterpart of StyleCopAnalyzers - SA1300: ElementMustBeginWithUpperCaseLetter.
 dotnet_naming_rule.non_field_members_should_be_pascal_case.severity = warning
 dotnet_naming_rule.non_field_members_should_be_pascal_case.symbols = non_field_members
 dotnet_naming_rule.non_field_members_should_be_pascal_case.style = pascal_case
 
+# IDE1006, IDE-only counterpart of StyleCopAnalyzers - SA1311: StaticReadonlyFieldsMustBeginWithUpperCaseLetter.
 dotnet_naming_rule.static_private_or_internal_field_should_be_pascal_case.severity = none
 dotnet_naming_rule.static_private_or_internal_field_should_be_pascal_case.symbols = static_private_or_internal_field
 dotnet_naming_rule.static_private_or_internal_field_should_be_pascal_case.style = pascal_case
 
+# IDE1006, IDE-only counterpart of StyleCopAnalyzers - SA1303: ConstFieldNamesMustBeginWithUpperCaseLetter.
 dotnet_naming_rule.const_private_field_should_be_pascal_case.severity = warning
 dotnet_naming_rule.const_private_field_should_be_pascal_case.symbols = const_private_field
 dotnet_naming_rule.const_private_field_should_be_pascal_case.style = pascal_case
@@ -74,15 +77,17 @@ dotnet_naming_rule.const_private_or_internal_field_should_be_pascal_case.severit
 dotnet_naming_rule.const_private_or_internal_field_should_be_pascal_case.symbols = internal_field
 dotnet_naming_rule.const_private_or_internal_field_should_be_pascal_case.style = pascal_case
 
+# IDE1006, IDE-only counterpart of StyleCopAnalyzers - SA1306: FieldNamesMustBeginWithLowerCaseLetter.
 dotnet_naming_rule.private_or_internal_field_should_be_camel_case.severity = warning
 dotnet_naming_rule.private_or_internal_field_should_be_camel_case.symbols = private_or_internal_field
 dotnet_naming_rule.private_or_internal_field_should_be_camel_case.style = camel_case
 
+# IDE1006, IDE-only counterpart of StyleCopAnalyzers - SA1313: ParameterNamesMustBeginWithLowerCaseLetter.
 dotnet_naming_rule.parameters.severity = warning
 dotnet_naming_rule.parameters.symbols = parameters
 dotnet_naming_rule.parameters.style = camel_case
 
-# Formatting:
+## Formatting:
 
 # Also handled by StyleCopAnalyzers - SA1024: ColonsMustBeSpacedCorrectly.
 csharp_space_after_colon_in_inheritance_clause = true
@@ -99,13 +104,13 @@ csharp_preserve_single_line_blocks = true
 # Leave statements and member declarations on the same line.
 csharp_preserve_single_line_statements = true
 
-# Also handled by StyleCopAnalyzers - SA1121: UseBuiltInTypeAlias. Also by IDE0049, it seems.
+# IDE0049, IDE-only counterpart of StyleCopAnalyzers - SA1121: UseBuiltInTypeAlias.
 dotnet_style_predefined_type_for_member_access = true
 
-# Also handled by StyleCopAnalyzers - SA1121: UseBuiltInTypeAlias. Also by IDE0049, it seems.
+# IDE0049, IDE-only counterpart of StyleCopAnalyzers - SA1121: UseBuiltInTypeAlias.
 dotnet_style_predefined_type_for_locals_parameters_members = true
 
-# Others:
+## Others:
 
 # Show an IDE warning when default access modifiers are explicitly specified.
 dotnet_style_require_accessibility_modifiers = omit_if_default:warning
