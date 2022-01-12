@@ -114,7 +114,7 @@ dotnet_style_require_accessibility_modifiers = omit_if_default:warning
 dotnet_diagnostic.IDE0040.severity = warning
 
 # Don't prefer braces (for one liners).
-dotnet_diagnostic.IDE0011.severity = none
+dotnet_diagnostic.IDE0011.severity = silent
 
 # Modifiers are not ordered.
 dotnet_diagnostic.IDE0036.severity = warning
