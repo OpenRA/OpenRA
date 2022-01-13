@@ -345,7 +345,7 @@ namespace OpenRA
 			var existingNode = existingNodes.Find(n => n.Key == overrideNode.Key);
 			if (existingNode != null)
 			{
-				existingNode.Value = MergePartial(existingNode.Value, overrideNode.Value);
+				existingNode.Value = MergeAndResolveOverrides(existingNode.Value, overrideNode.Value);
 				existingNode.Value.Nodes = ResolveInherits(existingNode.Value, tree, inherited);
 			}
 			else
@@ -374,6 +374,8 @@ namespace OpenRA
 					foreach (var r in ResolveInherits(parent, tree, inherited))
 						MergeIntoResolved(r, resolved, tree, inherited);
 				}
+
+				// This is specifically here to handle removal of inherited nodes. It does not handle overrides.
 				else if (n.Key.StartsWith("-", StringComparison.Ordinal))
 				{
 					var removed = n.Key.Substring(1);
@@ -404,7 +406,7 @@ namespace OpenRA
 				{
 					// Node with the same key has already been added: merge new node over the existing one
 					var original = ret.First(r => r.Key == n.Key);
-					original.Value = MergePartial(original.Value, n.Value);
+					original.Value = MergeAndResolveOverrides(original.Value, n.Value);
 				}
 			}
 
@@ -412,7 +414,7 @@ namespace OpenRA
 			return ret;
 		}
 
-		static MiniYaml MergePartial(MiniYaml existingNodes, MiniYaml overrideNodes)
+		static MiniYaml MergeAndResolveOverrides(MiniYaml existingNodes, MiniYaml overrideNodes)
 		{
 			if (existingNodes == null)
 				return overrideNodes;
@@ -420,7 +422,23 @@ namespace OpenRA
 			if (overrideNodes == null)
 				return existingNodes;
 
-			return new MiniYaml(overrideNodes.Value ?? existingNodes.Value, MergePartial(existingNodes.Nodes, overrideNodes.Nodes));
+			var existingNodesList = new List<MiniYamlNode>(existingNodes.Nodes);
+			var overrideNodesList = new List<MiniYamlNode>(overrideNodes.Nodes);
+			foreach (var n in overrideNodes.Nodes)
+			{
+				// This is specifically here to handle removal of overriden nodes. It does not handle inheritance.
+				if (n.Key.StartsWith("-", StringComparison.Ordinal))
+				{
+					var removed = n.Key.Substring(1);
+
+					// This doesn't report an error if there is nothing to remove like the one in ResolveInherits does!
+					// This is because at this point in time we can't be sure whether removing should happen now or further down the line.
+					if (existingNodesList.RemoveAll(r => r.Key == removed) != 0)
+						overrideNodesList.Remove(n);
+				}
+			}
+
+			return new MiniYaml(overrideNodes.Value ?? existingNodes.Value, MergePartial(existingNodesList, overrideNodesList));
 		}
 
 		static List<MiniYamlNode> MergePartial(List<MiniYamlNode> existingNodes, List<MiniYamlNode> overrideNodes)
@@ -445,7 +463,8 @@ namespace OpenRA
 				var loc = overrideNode?.Location ?? default;
 				var comment = overrideNode?.Comment ?? existingNode?.Comment;
 				var merged = (existingNode == null || overrideNode == null) ? overrideNode ?? existingNode :
-					new MiniYamlNode(key, MergePartial(existingNode.Value, overrideNode.Value), comment, loc);
+					new MiniYamlNode(key, MergeAndResolveOverrides(existingNode.Value, overrideNode.Value), comment, loc);
+
 				ret.Add(merged);
 			}
 
