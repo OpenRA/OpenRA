@@ -443,7 +443,7 @@ namespace OpenRA
 				overrideDict.TryGetValue(key, out var overrideNode);
 
 				var loc = overrideNode?.Location ?? default;
-				var comment = (overrideNode ?? existingNode).Comment;
+				var comment = overrideNode?.Comment ?? existingNode?.Comment;
 				var merged = (existingNode == null || overrideNode == null) ? overrideNode ?? existingNode :
 					new MiniYamlNode(key, MergePartial(existingNode.Value, overrideNode.Value), comment, loc);
 				ret.Add(merged);
