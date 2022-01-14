@@ -208,7 +208,7 @@ C17:
 	Cloak:
 		InitialDelay: 0
 		CloakDelay: 0
-		CloakTypes: C17
+		DetectionTypes: C17
 		RequiresCondition: global-C17-stealth
 	Contrail@1:
 		Offset: -261,-650,0

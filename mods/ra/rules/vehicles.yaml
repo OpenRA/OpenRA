@@ -508,7 +508,7 @@ MNLY:
 		RearmSound: minelay1.aud
 	DetectCloaked:
 		Range: 5c0
-		CloakTypes: Mine
+		DetectionTypes: Mine
 	RenderDetectionCircle:
 	Explodes:
 		Weapon: ATMine

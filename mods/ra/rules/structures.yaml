@@ -214,7 +214,7 @@ SPEN:
 	Power:
 		Amount: -30
 	DetectCloaked:
-		CloakTypes: Underwater
+		DetectionTypes: Underwater
 		Range: 10c0
 	RenderDetectionCircle:
 	ProvidesPrerequisite@soviet:
@@ -329,7 +329,7 @@ SYRD:
 	Power:
 		Amount: -30
 	DetectCloaked:
-		CloakTypes: Underwater
+		DetectionTypes: Underwater
 		Range: 10c0
 	RenderDetectionCircle:
 	ProvidesPrerequisite@allies:

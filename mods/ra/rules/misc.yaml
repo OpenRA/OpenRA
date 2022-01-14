@@ -213,7 +213,7 @@ SONAR:
 		Name: (support power proxy camera)
 	-RevealsShroud:
 	DetectCloaked:
-		CloakTypes: Underwater
+		DetectionTypes: Underwater
 		Range: 10c0
 
 FLARE:

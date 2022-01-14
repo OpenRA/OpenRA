@@ -433,7 +433,7 @@
 		Categories: Infantry
 	EdibleByLeap:
 	DetectCloaked:
-		CloakTypes: Cloak
+		DetectionTypes: Cloak
 		Range: 1c0
 
 ^Soldier:
@@ -1190,7 +1190,7 @@
 		CloakSound:
 		UncloakSound:
 		Palette:
-		CloakTypes: Mine
+		DetectionTypes: Mine
 		InitialDelay: 0
 	Tooltip:
 		Name: Mine
