@@ -19,7 +19,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	class GrantExternalConditionPowerInfo : SupportPowerInfo
+	public class GrantExternalConditionPowerInfo : SupportPowerInfo
 	{
 		[FieldLoader.Require]
 		[Desc("The condition to apply. Must be included in the target actor's ExternalConditions list.")]
@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new GrantExternalConditionPower(init.Self, this); }
 	}
 
-	class GrantExternalConditionPower : SupportPower
+	public class GrantExternalConditionPower : SupportPower
 	{
 		readonly GrantExternalConditionPowerInfo info;
 		readonly char[] footprint;
