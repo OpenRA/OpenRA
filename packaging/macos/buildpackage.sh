@@ -75,7 +75,7 @@ build_app() {
 
 	# Install engine and mod files
 	RUNTIME="net6"
-	if [ "${PLATFORM}" = "compat" ]; then
+	if [ "${PLATFORM}" = "mono" ]; then
 		RUNTIME="mono"
 	fi
 
@@ -124,7 +124,7 @@ build_platform() {
 	modify_plist "{DEV_VERSION}" "${TAG}" "${TEMPLATE_DIR}/Contents/Info.plist"
 	modify_plist "{FAQ_URL}" "http://wiki.openra.net/FAQ" "${TEMPLATE_DIR}/Contents/Info.plist"
 
-	if [ "${PLATFORM}" = "compat" ]; then
+	if [ "${PLATFORM}" = "mono" ]; then
 		modify_plist "{MINIMUM_SYSTEM_VERSION}" "10.9" "${TEMPLATE_DIR}/Contents/Info.plist"
 		clang -m64 launcher-mono.m -o "${TEMPLATE_DIR}/Contents/MacOS/Launcher" -framework AppKit -mmacosx-version-min=10.9
 	else
@@ -182,7 +182,7 @@ build_platform() {
 	SetFile -a C "/Volumes/OpenRA"
 
 	# Replace duplicate .NET runtime files with hard links to improve compression
-	if [ "${PLATFORM}" != "compat" ]; then
+	if [ "${PLATFORM}" != "mono" ]; then
 		OIFS="$IFS"
 		IFS=$'\n'
 		for MOD in "Red Alert" "Tiberian Dawn"; do
@@ -263,7 +263,7 @@ finalize_package() {
 	INPUT_PATH="${2}"
 	OUTPUT_PATH="${3}"
 
-	if [ "${PLATFORM}" = "compat" ]; then
+	if [ "${PLATFORM}" = "mono" ]; then
 		hdiutil convert "${INPUT_PATH}" -format UDZO -imagekey zlib-level=9 -ov -o "${OUTPUT_PATH}"
 	else
 		# ULFO offers better compression and faster decompression speeds, but is only supported by 10.11+
@@ -274,7 +274,7 @@ finalize_package() {
 }
 
 build_platform "standard" "build.dmg"
-build_platform "compat" "build-compat.dmg"
+build_platform "mono" "build-mono.dmg"
 
 if [ -n "${MACOS_DEVELOPER_CERTIFICATE_BASE64}" ] && [ -n "${MACOS_DEVELOPER_CERTIFICATE_PASSWORD}" ] && [ -n "${MACOS_DEVELOPER_IDENTITY}" ]; then
 	security delete-keychain build.keychain
@@ -283,9 +283,9 @@ fi
 if [ -n "${MACOS_DEVELOPER_USERNAME}" ] && [ -n "${MACOS_DEVELOPER_PASSWORD}" ]; then
 	# Parallelize processing
 	(notarize_package "build.dmg") &
-	(notarize_package "build-compat.dmg") &
+	(notarize_package "build-mono.dmg") &
 	wait
 fi
 
 finalize_package "standard" "build.dmg" "${OUTPUTDIR}/OpenRA-${TAG}.dmg"
-finalize_package "compat" "build-compat.dmg" "${OUTPUTDIR}/OpenRA-${TAG}-compat.dmg"
+finalize_package "mono" "build-mono.dmg" "${OUTPUTDIR}/OpenRA-${TAG}-mono.dmg"
