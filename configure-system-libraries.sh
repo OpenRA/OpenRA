@@ -56,7 +56,11 @@ patch_config()
 }
 
 if [ "$(uname -s)" = "Darwin" ]; then
-	SEARCHDIRS="/usr/local/lib /usr/local/opt/openal-soft/lib"
+	if [ "$(arch)" = "arm64" ]; then
+		SEARCHDIRS="/opt/homebrew/lib /opt/homebrew/opt/openal-soft/lib"
+	else
+		SEARCHDIRS="/usr/local/lib /usr/local/opt/openal-soft/lib"
+	fi
 	patch_config "Lua 5.1" "${SEARCHDIRS}" bin/Eluant.dll.config lua51.dylib liblua5.1.dylib
 	patch_config SDL2 "${SEARCHDIRS}" bin/SDL2-CS.dll.config SDL2.dylib libSDL2-2.0.0.dylib
 	patch_config OpenAL "${SEARCHDIRS}" bin/OpenAL-CS.Core.dll.config soft_oal.dylib libopenal.1.dylib
