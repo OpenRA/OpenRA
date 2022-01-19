@@ -37,10 +37,11 @@ namespace OpenRA.Mods.Common.Pathfinder
 		public static IPathSearch Search(World world, Locomotor locomotor, Actor self, BlockedByActor check, Func<CPos, bool> goalCondition)
 		{
 			var graph = new PathGraph(LayerPoolForWorld(world), locomotor, self, world, check);
-			var search = new PathSearch(graph);
-			search.isGoal = goalCondition;
-			search.heuristic = loc => 0;
-			return search;
+			return new PathSearch(graph)
+			{
+				isGoal = goalCondition,
+				heuristic = loc => 0
+			};
 		}
 
 		public static IPathSearch FromPoint(World world, Locomotor locomotor, Actor self, CPos @from, CPos target, BlockedByActor check)

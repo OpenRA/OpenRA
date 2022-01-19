@@ -29,8 +29,7 @@ namespace OpenRA.Network
 
 		public string Serialize()
 		{
-			var data = new List<MiniYamlNode>();
-			data.Add(new MiniYamlNode("Handshake", FieldSaver.Save(this)));
+			var data = new List<MiniYamlNode> { new MiniYamlNode("Handshake", FieldSaver.Save(this)) };
 			return data.WriteToString();
 		}
 	}
@@ -54,8 +53,10 @@ namespace OpenRA.Network
 
 		public static HandshakeResponse Deserialize(string data)
 		{
-			var handshake = new HandshakeResponse();
-			handshake.Client = new Session.Client();
+			var handshake = new HandshakeResponse
+			{
+				Client = new Session.Client()
+			};
 
 			var ys = MiniYaml.FromString(data);
 			foreach (var y in ys)

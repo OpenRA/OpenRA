@@ -90,9 +90,11 @@ namespace OpenRA.Mods.Cnc.FileFormats
 					var count = s.ReadUInt8();
 					for (var j = 0; j < count; j++)
 					{
-						var v = new VxlElement();
-						v.Color = s.ReadUInt8();
-						v.Normal = s.ReadUInt8();
+						var v = new VxlElement
+						{
+							Color = s.ReadUInt8(),
+							Normal = s.ReadUInt8()
+						};
 
 						l.VoxelMap[x, y].Add(z, v);
 						z++;
@@ -120,8 +122,11 @@ namespace OpenRA.Mods.Cnc.FileFormats
 			Limbs = new VxlLimb[LimbCount];
 			for (var i = 0; i < LimbCount; i++)
 			{
-				Limbs[i] = new VxlLimb();
-				Limbs[i].Name = s.ReadASCII(16);
+				Limbs[i] = new VxlLimb
+				{
+					Name = s.ReadASCII(16)
+				};
+
 				s.Seek(12, SeekOrigin.Current);
 			}
 

@@ -66,11 +66,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		object IAssignSpawnPointsInfo.InitializeState(MapPreview map, Session lobbyInfo)
 		{
-			var state = new AssignSpawnLocationsState();
+			var state = new AssignSpawnLocationsState
+			{
+				// Initialize the list of unoccupied spawn points for AssignSpawnLocations to pick from
+				SpawnLocations = map.SpawnPoints,
+				AvailableSpawnPoints = LobbyUtils.AvailableSpawnPoints(map.SpawnPoints.Length, lobbyInfo)
+			};
 
-			// Initialize the list of unoccupied spawn points for AssignSpawnLocations to pick from
-			state.SpawnLocations = map.SpawnPoints;
-			state.AvailableSpawnPoints = LobbyUtils.AvailableSpawnPoints(map.SpawnPoints.Length, lobbyInfo);
 			foreach (var kv in lobbyInfo.Slots)
 			{
 				var client = lobbyInfo.ClientInSlot(kv.Key);
